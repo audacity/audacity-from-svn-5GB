@@ -116,6 +116,14 @@ function phpLang_detectLanguage($str, $from)
 if (isset($HTTP_GET_VARS[phpLang_urlParam]) && file_exists($HTTP_GET_VARS[phpLang_urlParam])) {
  // a language as been chosen by the user
  define('phpLang_current', $HTTP_GET_VARS[phpLang_urlParam]);
+ // defines a string to add at the end of each link
+ define('phpLang_link', phpLang_urlParam.'='.phpLang_current);
+ // defines a url query string
+ define('phpLang_query', '?'.phpLang_urlParam.'='.phpLang_current);
+}
+else {
+ define('phpLang_link', 'lang=');
+ define('phpLang_query', '');
 }
 
 // Otherwise, see if the HTTP headers indicate which languages the
@@ -150,16 +158,6 @@ if(!defined('phpLang_current')) {
  }
 }
 
-// Define link tag or give up
-if(defined('phpLang_current')) {
- // defines a string to add at the end of each link
- define('phpLang_link', phpLang_urlParam.'='.phpLang_current);
-} else {
- // no language found
- define('phpLang_current', '');
- define('phpLang_link', phpLang_urlParam.'=');
-}
-
 // function that adds the flags with links for existing files
 // give as first parameter the HTML string to put between each flag
 function AddFlags($between = "", $betw2 = "", $showCurrent = false)
@@ -183,8 +181,9 @@ function AddFlags($between = "", $betw2 = "", $showCurrent = false)
  }
 }
 
-// Now, you can use two constants in your scripts :
+// Now, you can use these constants in your scripts :
 //   phpLang_current : current language code
 //   phpLang_link    : add this in the links after a '?' or a '&'
+//   phpLang_query   : add this immediately after the url
 
 ?>

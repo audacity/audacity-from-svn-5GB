@@ -1,11 +1,11 @@
 <table border="0" width="100%">
 <tr>
 
-<td valign="top"><?php print "<a href=index.php?$langLinkStr>"; ?><img src="images/AudacityWebLogo100.jpg" width="253" height="100" border="0"></a></td>
+<td valign="top"><h1><?php print "<a href=./$langQueryStr>"; ?><img alt="Audacity" src="images/AudacityWebLogo100.jpg" width="253" height="100" border="0"></a></h1></td>
 
 </td>
 <td align="center" valign="top">
-<?php print "<a href=screenshots.php?$langLinkStr>"; ?><img src="images/audacity1.1.small.jpg" width="141" height="100" border="0"></a>
+<?php print "<a href=screenshots.php$langQueryStr>"; ?><img src="images/audacity1.1.small.jpg" width="141" height="100" border="0"></a>
 </td>
 
 <td align="right" valign="bottom">
