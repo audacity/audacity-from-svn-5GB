@@ -232,8 +232,8 @@ void WaveTrack::PrepareCacheMinMax(double start, double pps, int screenWidth)
 		  int((double(oldcache.len) * (cache.where[x] - oldcache.where[0])) /
 			  (oldcache.where[oldcache.len] - oldcache.where[0])+0.5);
 
-		cache.min[x] = oldcache.min[ox];
-		cache.max[x] = oldcache.max[ox];
+	  cache.min[x] = oldcache.min[ox];
+	  cache.max[x] = oldcache.max[ox];
 
 		// Unfortunately we can't make this check due to
 		// floating-point roundoff errors
