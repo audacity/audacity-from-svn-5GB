@@ -5,14 +5,14 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
- * by the XIPHOPHORUS Company http://www.xiph.org/                  *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
+ * by the Xiph.Org Foundation http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: code raw [Vorbis] packets into framed OggSquish stream and
            decode Ogg streams back into raw packets
- last mod: $Id: framing.c,v 1.1.1.2 2002-04-21 23:27:12 habes Exp $
+ last mod: $Id: framing.c,v 1.1.1.3 2002-10-26 19:24:05 dmazzoni Exp $
 
  note: The CRC code is directly derived from public domain code by
  Ross Williams (ross@guest.adelaide.edu.au).  See docs/framing.html
@@ -819,6 +819,12 @@ int ogg_stream_reset(ogg_stream_state *os){
   os->packetno=0;
   os->granulepos=0;
 
+  return(0);
+}
+
+int ogg_stream_reset_serialno(ogg_stream_state *os,int serialno){
+  ogg_stream_reset(os);
+  os->serialno=serialno;
   return(0);
 }
 

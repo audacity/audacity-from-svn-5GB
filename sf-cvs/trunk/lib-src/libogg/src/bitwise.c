@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
- * by the XIPHOPHORUS Company http://www.xiph.org/                  *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
+ * by the Xiph.Org Foundation http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
   function: packing variable sized words into an octet stream
-  last mod: $Id: bitwise.c,v 1.1.1.2 2002-04-21 23:27:12 habes Exp $
+  last mod: $Id: bitwise.c,v 1.1.1.3 2002-10-26 19:24:05 dmazzoni Exp $
 
  ********************************************************************/
 
@@ -38,6 +38,50 @@ void oggpack_writeinit(oggpack_buffer *b){
   b->ptr=b->buffer=_ogg_malloc(BUFFER_INCREMENT);
   b->buffer[0]='\0';
   b->storage=BUFFER_INCREMENT;
+}
+
+void oggpack_writetrunc(oggpack_buffer *b,long bits){
+  long bytes=bits>>3;
+  bits-=bytes*8;
+  b->ptr=b->buffer+bytes;
+  b->endbit=bits;
+  b->endbyte=bytes;
+  *b->ptr|=mask[bits];
+}
+
+void oggpack_writealign(oggpack_buffer *b){
+  int bits=8-b->endbit;
+  if(bits<8)
+    oggpack_write(b,0,bits);
+}
+
+void oggpack_writecopy(oggpack_buffer *b,void *source,long bits){
+  unsigned char *ptr=(unsigned char *)source;
+
+  long bytes=bits/8;
+  bits-=bytes*8;
+
+  if(b->endbit){
+    int i;
+    /* unaligned copy.  Do it the hard way. */
+    for(i=0;i<bytes;i++)
+      oggpack_write(b,(long)(ptr[i]),8);    
+  }else{
+    /* aligned block copy */
+    if(b->endbyte+bytes+1>=b->storage){
+      b->storage=b->endbyte+bytes+BUFFER_INCREMENT;
+      b->buffer=_ogg_realloc(b->buffer,b->storage);
+      b->ptr=b->buffer+b->endbyte;
+    }
+
+    memmove(b->ptr,source,bytes);
+    b->ptr+=bytes;
+    b->buffer+=bytes;
+    *b->ptr=0;
+
+  }
+  if(bits)
+    oggpack_write(b,(long)(ptr[bytes]),bits);    
 }
 
 void oggpack_reset(oggpack_buffer *b){
@@ -100,7 +144,7 @@ long oggpack_look(oggpack_buffer *b,int bits){
 
   if(b->endbyte+4>=b->storage){
     /* not the main path */
-    if(b->endbyte+(bits-1)/8>=b->storage)return(-1);
+    if(b->endbyte*8+bits>b->storage*8)return(-1);
   }
   
   ret=b->ptr[0]>>b->endbit;
@@ -123,21 +167,6 @@ long oggpack_look1(oggpack_buffer *b){
   return((b->ptr[0]>>b->endbit)&1);
 }
 
-/* Read in bits without advancing the bitptr; bits <= 8 */
-/* we never return 'out of bits'; we'll handle it on _adv */
-long oggpack_look_huff(oggpack_buffer *b,int bits){
-  unsigned long ret;
-  unsigned long m=mask[bits];
-  
-  bits+=b->endbit;
-  
-  ret=b->ptr[0]>>b->endbit;
-  if(bits>8){
-    ret|=b->ptr[1]<<(8-b->endbit);  
-  }
-  return(m&ret);
-}
-
 void oggpack_adv(oggpack_buffer *b,int bits){
   bits+=b->endbit;
   b->ptr+=bits/8;
@@ -153,16 +182,6 @@ void oggpack_adv1(oggpack_buffer *b){
   }
 }
 
-/* have to check for overflow now. return -1 on overflow */
-int oggpack_adv_huff(oggpack_buffer *b,int bits){
-  if(b->endbyte+(b->endbit+bits-1)/8>=b->storage)return(-1);
-  bits+=b->endbit;
-  b->ptr+=bits/8;
-  b->endbyte+=bits/8;
-  b->endbit=bits&7;
-  return 0;
-}
-
 /* bits <= 32 */
 long oggpack_read(oggpack_buffer *b,int bits){
   unsigned long ret;
@@ -173,7 +192,7 @@ long oggpack_read(oggpack_buffer *b,int bits){
   if(b->endbyte+4>=b->storage){
     /* not the main path */
     ret=-1UL;
-    if(b->endbyte+(bits-1)/8>=b->storage)goto overflow;
+    if(b->endbyte*8+bits>b->storage*8)goto overflow;
   }
   
   ret=b->ptr[0]>>b->endbit;
