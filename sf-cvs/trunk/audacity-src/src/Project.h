@@ -334,6 +334,8 @@ class AudacityProject:public wxFrame,
    enum ToolBarType mDraggingToolBar;
    int  mAudioIOToken;
 
+   bool mIsDeleting;
+
  public:
     DECLARE_EVENT_TABLE()
 };

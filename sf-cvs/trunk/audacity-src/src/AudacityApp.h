@@ -20,6 +20,8 @@ void QuitAudacity();
 
 extern wxFrame *gParentFrame;
 
+extern bool gIsQuitting;
+
 class AudacityApp:public wxApp {
  public:
    bool OnInit(void);

@@ -427,7 +427,7 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU(OnRateOtherID, TrackPanel::OnRateOther)
     EVT_MENU(OnSplitStereoID, TrackPanel::OnSplitStereo)
     EVT_MENU(OnMergeStereoID, TrackPanel::OnMergeStereo)
-    END_EVENT_TABLE()
+END_EVENT_TABLE()
 
 
 // Use CursorId as a fallback.
@@ -476,6 +476,8 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mIsSoloing = false;
    mIsGainSliding = false;
    mIsPanSliding = false;
+
+   gPrefs->Read("/GUI/AdjustSelectionEdges", &mAdjustSelectionEdges, true);
 
    mRedrawAfterStop = false;
 
@@ -646,6 +648,7 @@ void TrackPanel::UpdatePrefs()
                 true);
    gPrefs->Read("/GUI/UpdateSpectrogram", &mViewInfo->bUpdateSpectrogram,
                 true);
+   gPrefs->Read("/GUI/AdjustSelectionEdges", &mAdjustSelectionEdges, true);
 }
 
 void TrackPanel::SetStop(bool bStopped)
@@ -1226,15 +1229,19 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
                wxASSERT(!(rightSel < leftSel));
             }
 
-            // Is the cursor over the left selection boundary?
-            if (within(event.m_x, leftSel, SELECTION_RESIZE_REGION)) {
-               tip = _("Click and drag to move left selection boundary.");
-               SetCursor(*mAdjustLeftSelectionCursor);
-            }
-            // Is the cursor over the right selection boundary?
-            else if (within(event.m_x, rightSel, SELECTION_RESIZE_REGION)) {
-               tip = _("Click and drag to move right selection boundary.");
-               SetCursor(*mAdjustRightSelectionCursor);
+            // Adjusting the selection edges can be turned off in
+            // the preferences...
+            if (mAdjustSelectionEdges) {
+               // Is the cursor over the left selection boundary?
+               if (within(event.m_x, leftSel, SELECTION_RESIZE_REGION)) {
+                  tip = _("Click and drag to move left selection boundary.");
+                  SetCursor(*mAdjustLeftSelectionCursor);
+               }
+               // Is the cursor over the right selection boundary?
+               else if (within(event.m_x, rightSel, SELECTION_RESIZE_REGION)) {
+                  tip = _("Click and drag to move right selection boundary.");
+                  SetCursor(*mAdjustRightSelectionCursor);
+               }
             }
          }
          break;
@@ -1360,18 +1367,24 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
          int rightSel = TimeToPosition(mViewInfo->sel1, r.x);
          wxASSERT(leftSel <= rightSel);
 
-         // Check to see if the cursor is on top 
-         // of the left selection boundary
-         if (within(event.m_x, leftSel, SELECTION_RESIZE_REGION)) {
-            // Pin the right selection boundary
-            mSelStart = mViewInfo->sel1;
-            mIsSelecting = true;
-            startNewSelection = false;
-         } else if (within(event.m_x, rightSel, SELECTION_RESIZE_REGION)) {
-            // Pin the left selection boundary
-            mSelStart = mViewInfo->sel0;
-            mIsSelecting = true;
-            startNewSelection = false;
+         // Adjusting selection edges can be turned off in the
+         // preferences now
+         if (mAdjustSelectionEdges) {
+
+            // Check to see if the cursor is on top 
+            // of the left selection boundary
+            if (within(event.m_x, leftSel, SELECTION_RESIZE_REGION)) {
+               // Pin the right selection boundary
+               mSelStart = mViewInfo->sel1;
+               mIsSelecting = true;
+               startNewSelection = false;
+            }
+            else if (within(event.m_x, rightSel, SELECTION_RESIZE_REGION)) {
+               // Pin the left selection boundary
+               mSelStart = mViewInfo->sel0;
+               mIsSelecting = true;
+               startNewSelection = false;
+            }
          }
       }
 

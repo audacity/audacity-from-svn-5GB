@@ -79,8 +79,15 @@ ToolBarStub *gControlToolBarStub = NULL;
 ToolBarStub *gMixerToolBarStub = NULL;
 ToolBarStub *gEditToolBarStub = NULL;
 
+bool gIsQuitting = false;
+
 void QuitAudacity(bool bForce)
 {
+   if (gIsQuitting)
+      return;
+
+   gIsQuitting = true;
+
    if(bForce)
    {
       wxMessageBox(_("WARNING: You may be prompted to save your work. Clicking cancel will have the same effect as clicking no."));
