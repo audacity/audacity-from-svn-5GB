@@ -1,129 +1,148 @@
 <?php BoxTop("CVS"); ?>
 
-Nosaltres utilitzem un <a href="http://www.cvshome.org">CVS</a>, (Concurrent Versions System), per ajudar-nos a desenvolupar l'Audacity de manera col·lectiva. Cliqueu <a
-href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/audacity/audacity-src/">here</a> per navegar pel codi font en el nostre dipòsit CVS.
+Per coordinar el treball col·laboratiu de desenvolupament fem servir 
+el sistema <a href="http://www.cvshome.org">CVS</a>, (Concurrent Versions 
+System). Feu clic <a 
+href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/audacity/audacity-src/"
+>aquí</a> per consultar el nostre repositori CVS de codi font.
 
-<p><h3>Com s'utilitza l'Audacity:</h3>
-  Si voleu tenir accès al codi font de l'Audacity, podeu
-  utilitzar un client cvs per decsrregar una branca cvs en el vostre ordinador. Un vop ja hagueu descarregat una branca, el vostre programari de client de CVS serà capaç d'ajudar-vos a tenir la vostra versió actualitzada amb els altres desenvolupadors de l'Audacity. Seguiu les instruccions de sota per rebre el codi font.
+<p>
+<h3>Nota: La versió 1.2 es troba actualment bifurcada:</h3>
+Si voleu la branca estable de l'Audacity, versió 1.2.x, heu d'escriure 
+<tt>-r AUDACITY_1_2</tt> quan feu servir els comandaments cvs "update" o "checkout". 
+Altrament anireu a la capçalera del CVS, que pot ser força inestable 
+actualment, ja que hem començat a treballar en la versió 1.3.0.
+
+<p><h3>Guia ràpida del CVS de l'Audacity:</h3>
+  Si voleu accedir al codi font de l'Audacity, feu servir 
+  un client cvs per descarregar una branca cvs al vostre ordinador. 
+  Quan hagueu fet un "checkout", el vostre client CVS 
+  serà capaç d'ajudar-vos a mantenir la vostra versió actualitzada 
+  amb la dels altre4s desenvolupadors de l'Audacity. Seguiu les 
+  instruccions següents per obtenir el codi font:
 
 
-<h4>Anonymous CVS access with a command-line cvs client:</h4>
-<p>Enter the following on the command line (note that it
-is a single line with no carriage returns):<br>
+<h4>Accés CVS anònim amb un client cvs de línia d'ordres:</h4>
+<p>Escriviu aquesta línia d'ordres (tingueu en compte que és 
+una sola línia, sense retorns de carro):<br>
 <ul><tt>cvs -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity
 login </tt><br></ul>
-and hit the enter key when it asks for a password.
+i premeu la tecla de retorn quan us demani la contrasenya.
 
-<p>Then, <b>to get the latest branch (1.1.0)</b> (as a single line):
+<p>Tot seguit, <b>per obtenir el codi més recent (1.3.0)</b> (en una única línia):
 <br>
    <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co
 audacity</tt></ul>
-or <b>for the stable branch (0.9-1.0)</b> (as a single line):<br>
+o <b>per la branca estable (1.2.0)</b> (en una única línia):<br>
+   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co -r AUDACITY_1_2 audacity</tt></ul>
+o <b>per la branca antiga (1.0.0)</b> (en una única línia):<br>
    <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co -r audacity-0_9-branch audacity-old</tt></ul>
 
-<p> Alternately, you can set your <tt>CVSROOT</tt> environment
-variable to
-<tt>:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt>
-(see below).<br>
-Then, <b>to get the latest unstable branch (1.1.0)</b>, enter<br> 
+<p> També podeu definir la variable d'entorn <tt>CVSROOT</tt> com a 
+<tt>:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt> 
+(vegeu més avall).<br>
+Si feu això, per <b>obtenir la branca ,és recent i inestable (1.3.0)</b>, escriviu<br> 
    <ul><tt>cvs checkout audacity</tt></ul>
-Or, <b>for the stable branch (0.9-1.0)</b>, enter <br>
+o, <b>per la branca estable (1.2)</b>, escriviu <br>
+   <ul><tt>cvs checkout -r AUDACITY_1_2 audacity</tt></ul>
+o <b>per la branca antiga 1.0</b>, escriviu <br>
    <ul><tt>cvs checkout -r audacity-0_9-branch audacity-old</tt></ul>
 
-<p> To set the  <tt>CVSROOT</tt> environment variable, you
-can use your command shell's resource file, or one of the following
-commands:
-<h5>In bash or bourne shell, as one line:</h5>
+<p> Per fixar la variable d'entorn <tt>CVSROOT</tt> podeu fer servir 
+el fitxer de recursos del vostre shell, o una de les ordres següents: 
+<h5>Als shells bash o bourne, en una única línia:</h5>
 <ul><tt>export
 CVSROOT=:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt><br></ul>
-<h5>In csh or its descendents, as one line:</h5>
+<h5>Amb csh or els seus descendents, en una sola línia:</h5>
 <ul><tt>setenv CVSROOT
 :pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt><br></ul>
 
 <hr width="80%">
 
-<h4>Anonymous CVS access with a graphical client</h4>
+<h4>Accés anònim al CVS amb un client gràfic</h4>
 
-For a graphical client like wincvs, maccvs, or gcvs,
-(available at <a href="http://cvsgui.org">cvsgui.org</a>) you must set
-the 
-<tt>CVSROOT</tt> variable (in the Admin|Preferences submenu) to be 
+Si feu servir un client gràfic com ara wincvs, maccvs, o gcvs, 
+(disponibles a <a href="http://www.wincvs.org">wincvs.org</a>) heu d'establir la variable d'entorn 
+<tt>CVSROOT</tt> (al submenú Admin|Preferences) per tal que sigui 
 <tt>:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt>
-and select "pserver" or "Password" authentication. Then,
-under the Globals tab of the Preferences dialog, make sure
-you have unchecked "Checkout read-only (CVSREAD)".  Next,
-choose login, and hit the enter key for the password (it is
-""). Finally, choose "Create|Checkout module", choose a
-location that you want to put the checked-out branch, and
-follow the directions below depending on which branch you want.
-If you get an error, make sure that your <tt>CVSROOT</tt>
-variable does not contain any white space at the end--which
-can happen if you copied the variables directly from this web page.
+i seleccionar l'autenticació "pserver" o "Password". Tot seguit, 
+en la pestanya Globals del diàleg Preferences, assegureu-vos que 
+heu desmarcat la casella "Checkout read-only (CVSREAD)".  A continuació, 
+escolliu login, i feu clic a la tecla de retorn quan demani la contrasenya (és 
+""). Finalment, escolliu "Create|Checkout module", escolliu una ubicació 
+on vulgueu col·locar la branca seleccionada, i seguiu 
+les instruccions següents segons quina branca vulgueu.
+Si us dóna un error, assegureu-vos que la variable d'entorn <tt>CVSROOT</tt> 
+no contingui cap espai en blanc al final --cosa que pot passar 
+si copieu les variables directament des d'aquesta pàgina web.
 
 <p>
-<b>To get the latest unstable branch (1.1.0):</b><br>
-Under the "Checkout Settings" dialog, enter
-<tt>audacity</tt> as the module name. Hit "OK" and the
-branch will be automatically downloaded onto your computer.
+<b>Per obtenir la branca inestable més recent (1.3.0):</b><br>
+Al diàleg "Checkout Settings", escriviu 
+<tt>audacity</tt> com a nom del mòdul. Cliqueu a "OK" i la branca 
+es descarregarà automàticament al vostre ordinador.
 <p>
-<b>To get the stable (0.9-1.0) branch: </b><br>
-Under the "Checkout Settings" dialog, enter
-<tt>audacity-old</tt> as the module name.  Then, under the
-"Sticky options" tab, check the "Retrieve rev./tag/branch
-(-r)" box and enter <tt>audacity-0_9-branch</tt> into the
-box beside it. Hit "OK" and the branch will be automatically
-downloaded onto your computer.
+<b>Per obtenir la branca estable (1.2.0): </b><br>
+Al diàleg "Checkout Settings", escriviu 
+<tt>audacity</tt> com a nom del mòdul.  Tot seguit, a la pestanya 
+"Sticky options", marqueu la casella "Retrieve rev./tag/branch 
+(-r)" i escriviu <tt>AUDACITY_1_2</tt> a la caixeta que hi ha 
+al costat. Cliqueu a "OK" i la branca es descarregarà automàticament 
+al vostre ordinador.
+<p>
+<b>Per obtenir la branca de la versió antiga 1.0: </b><br>
+Al diàleg "Checkout Settings", escriviu 
+<tt>audacity-old</tt> com a nom del mòdul.  Després, a la pestanya 
+"Sticky options", marqueu la casella "Retrieve rev./tag/branch 
+(-r)" i escriviu <tt>audacity-0_9-branch</tt> a la caixeta 
+que hi ha al costat. Cliqueu a "OK" i la branca es descarregarà 
+automàticament al vostre ordinador.
 
 <hr width="80%">
-New to CVS?  Get started by reading Jim Blandy's <a href="">Introduction
-to
-CVS</a>, Bob Arnson's <a
-href="http://www.cvshome.org/new_users.html">CVS for new
-users</a>, or visit the cvs webpage at <a
+Sou novells en el CVS?  Comenceu per llegir els articles de Jim Blandy's <a href="">Introduction 
+to CVS</a>, o de Bob Arnson <a
+href="http://www.cvshome.org/new_users.html">CVS for new users</a>, o visiteu la pàgina web del cvs a <a 
 href="http://www.cvshome.org/">www.cvshome.org</a>.
-More detailed information is available in the GPLed chapters of Karl
-Fogel's
-<a href="http://cvsbook.red-bean.com/cvsbook.html">CVS Book
-at cvsbook.red-bean.com</a>, or the "Official" <a
-href="http://www.cvshome.org/docs/manual">Per
+Trobareu informació més detallada als capítols GPLitzats del llibre de Karl 
+Fogel <a href="http://cvsbook.red-bean.com/cvsbook.html">CVS Book
+at cvsbook.red-bean.com</a>, o a l'"Oficial" <a href="http://www.cvshome.org/docs/manual">Per
  Cederqvist manual</a>.
 
 
-<p> For specific help with CVS on sourceforge.net, try the
-sourceforge documentation for
-<a
+<p> Per a informació específica sobre el CVS de sourceforge.net, mireu-vos 
+la documentació corresponent a les plataformes 
+<a 
 href="http://sourceforge.net/docman/display_doc.php?docid=763&group_id=1">Unix</a>,
-<a
-href="http://sourceforge.net/docman/display_doc.php?docid=766&group_id=1">Microsoft Windows</a>, and <a
-href="http://sourceforge.net/docman/display_doc.php?docid=2973&group_id=1">MacOS
-(prior to OS X)</a> platforms.
+<a 
+href="http://sourceforge.net/docman/display_doc.php?docid=766&group_id=1">Microsoft Windows</a>, i <a 
+href="http://sourceforge.net/docman/display_doc.php?docid=2973&group_id=1">MacOS 
+(anterior a OS X)</a>.
 
 <hr width="80%">
 
 <p>
-<b>More details:</b>
+<b>Més detalls:</b>
 
 </p>
 
-<p>Audacity uses many third party libraries. Many of them require tweaking
-to build on all our target platforms. Therefore, we keep a local repository
-of all third party library source code in CVS. Here is how it works:
+<p>L'Audacity fa servir força biblioteques de tercers. La majoria d'elles necessiten ajustaments fins 
+per compilar el programa en les diverses plataformes a les que ens adrecem. Amb tot, mantenim 
+un repositori local de tot el codi font de tercers en el CVS. Així és com funciona:
 </p>
-<p>There are two repositories: 'audacity-src', which contains all of
-the code we have written, and
-'lib-src,' which contains the source code to all the
-libraries we use.
-In order to guarantee interoperability between Audacity and our
-libraries, we recommend that you use the versions of the libraries
-contained in 'lib-src'.  However, on a Unix system you can avoid compiling
-some of the libraries by using libraries you already have on your system.
-Type 'configure --help' to see the options.
+<p>Hi ha dos repositoris: 'audacity-src', que conté tot el 
+codi que hem escrit nosaltres, i 
+'lib-src,' que conté el codi font de totes les 
+biblioteques que fem servir.
+Per tal de garantir la interoperabilitat entre l'Audacity i 
+les biblioteques, us recomanem que feu servir les versions de les biblioteques 
+que hi ha a 'lib-src'.  Amb tot, en sistemes Unix podeu estalviar-vos de compilar 
+alguna de les biblioteques fent servir les que ja tingueu al vostre sistema. 
+Escriviu 'configure --help' per veure les opcions. 
 </p>
 <p>
-So, if you want to check out everything, including the library source code,
-checkout the module 'audacity' which will check out audacity-src but also
-grab the lib-src repository as a subdirectory of 'audacity'.
+Amb tot, si voleu comprovar-ho tot, fins i tot el codi font de les biblioteques, 
+feu un checkout al mòdul 'audacity' que descarregarà audacity-src juntament amb 
+el repositori lib-src com a subdirectori d''audacity'.
 </td>
 </tr>
 </table>
