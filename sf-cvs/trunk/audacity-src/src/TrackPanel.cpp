@@ -3059,8 +3059,8 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       // wxTimers seem to be a little unreliable, so this
       // "primes" it to make sure it keeps going for a while...
 
-      // TODO: Add a comment explaining what this 
-      // timer is for.
+      // When this timer fires, we call TrackPanel::OnTimer and
+      // possibly update the screen for offscreen scrolling.
       mTimer.Stop();
       mTimer.Start(50, FALSE);
    }
@@ -3148,7 +3148,10 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
          //a glyph (this is the second of three calls to the function).
          //std::cout << ((LabelTrack*)pTrack)->OverGlyph(event.m_x, event.m_y) << std::endl;
          if(((LabelTrack*)pTrack)->OverGlyph(event.m_x, event.m_y))
+         {
             mIsAdjustingLabel = true;
+            mCapturedTrack=pTrack;
+         }
       } else if (event.Dragging()) {
          ;
       } else if( event.ButtonUp(1)) {
