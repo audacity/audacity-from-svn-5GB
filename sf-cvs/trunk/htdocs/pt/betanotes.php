@@ -1,8 +1,11 @@
-<?php BoxTop("$releaseNotesStr $betaVersion"); ?>
+<?php BoxTop("$releaseNotesStr 1.1.3"); ?>
 
 <pre>
 Problemas encontrados na versão 1.1.3:
-  - O programa insere um arquivo chamado "Audacity-Commands.xml" em alguma pasta no computador onde está instalado. Este arquivo é necessário para executar o Audacity. Na próxima versão, este arquivo será salvo na pasta do próprio programa. 
+  - O programa insere um arquivo chamado "Audacity-Commands.xml" em alguma
+    pasta no computador onde está instalado. Este arquivo é necessário para
+    executar o Audacity. Na próxima versão, este arquivo será salvo na pasta
+    do próprio programa. 
 
 New features in Audacity 1.1.3: (Em inglês, apenas para referência)
   * User Interface
@@ -45,8 +48,8 @@ New features in Audacity 1.1.3: (Em inglês, apenas para referência)
 
 Problemas encontrados na versão 1.1.1:
 
-  * Não utilize a opção "Executar Diagnóstico" do menu Ajuda - além de instável, 
-    pode fazer o sistema parar.
+  * Não utilize a opção "Executar Diagnóstico" do menu Ajuda - além de
+    instável, pode fazer o sistema parar.
     Esta função é feita para uso avançado apenas e não afeta a edição de áudio.
 
   * Mac OS X: Alguns segundos de áudio podem se perder se o botão do mouse for 
