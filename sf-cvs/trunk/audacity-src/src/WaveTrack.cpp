@@ -612,7 +612,8 @@ bool WaveTrack::Set(samplePtr buffer, sampleFormat format,
    return mSequence->Set(buffer, format, s0, len);
 }
 
-bool WaveTrack::Append(samplePtr buffer, sampleFormat format, sampleCount len)
+bool WaveTrack::Append(samplePtr buffer, sampleFormat format,
+                       sampleCount len, unsigned int stride /* = 1 */)
 {
    sampleCount maxBlockSize = mSequence->GetMaxBlockSize();
    sampleCount blockSize = mSequence->GetIdealAppendLen();
@@ -644,10 +645,12 @@ bool WaveTrack::Append(samplePtr buffer, sampleFormat format, sampleCount len)
       CopySamples(buffer, format,
                   mAppendBuffer + mAppendBufferLen * SAMPLE_SIZE(seqFormat),
                   seqFormat,
-                  toCopy);
+                  toCopy,
+                  true, /* high quality */
+                  stride);
 
       mAppendBufferLen += toCopy;
-      buffer += toCopy * SAMPLE_SIZE(format);
+      buffer += toCopy * SAMPLE_SIZE(format) * stride;
       len -= toCopy;
    }
 
