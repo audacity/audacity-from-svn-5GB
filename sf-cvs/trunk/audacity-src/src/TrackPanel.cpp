@@ -1251,8 +1251,6 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 {
    mLastMouseEvent = event;
 
-   AudacityProject *p = GetProject();
-
    // (1), If possible, set the cursor based on the current activity
    //      ( leave the StatusBar alone ).
    if( SetCursorByActivity() )
@@ -2501,26 +2499,35 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
    else if (event.ButtonUp(1) ) {
 
       if (buttonRect.Inside(event.m_x, event.m_y)) {
-         if (solo)
-            t->SetSolo(!t->GetSolo());
-         else
-            t->SetMute(!t->GetMute());
-      }
-
-      // Shift-click unmutes (or unsolos) all other tracks.
-      if (event.ShiftDown()) {
-         TrackListIterator iter(mTracks);
-         Track *i = iter.First();
-         while (i) {
-            if (i != t) {
-               if (solo)
-                  i->SetSolo(false);
-               else
-                  i->SetMute(false);
+         if (event.ShiftDown()) {
+            // Shift-click mutes/solos this track and unmutes/unsolos other tracks.
+            TrackListIterator iter(mTracks);
+            Track *i = iter.First();
+            while (i) {
+               if (i == t) {
+                  if (solo)
+                     i->SetSolo(true);
+                  else
+                     i->SetMute(true);
+               }
+               else {
+                  if (solo)
+                     i->SetSolo(false);
+                  else
+                     i->SetMute(false);
+               }
+               i = iter.Next();
             }
-            i = iter.Next();
+         }
+         else {
+            // Normal click just toggles this track.
+            if (solo)
+               t->SetSolo(!t->GetSolo());
+            else
+               t->SetMute(!t->GetMute());
          }
       }
+
       SetCapturedTrack( NULL );
       // mTrackLabel.DrawMuteSolo(&dc, r, t, false, solo);
       Refresh(false);
