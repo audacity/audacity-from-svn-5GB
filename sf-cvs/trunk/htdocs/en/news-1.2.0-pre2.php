@@ -19,7 +19,7 @@ You can browse the updated
 <a href="manual-1.2">Complete Manual</a> or
 <a href="onlinehelp-1.2">Online Help</a> for Audacity 1.2.
 For more help options, see the
-<?php print "<a href=help.php?$langLinkStr>";
+<?php print "<a href=help.php?$langLinkStr>"; ?>
 Help</a> page.
 </p>
 
