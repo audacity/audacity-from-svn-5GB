@@ -1,3 +1,322 @@
+2004-11-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * Win32/sndfile.h Win32/config.h MacOS9/sndfile.h MacOS9/config.h
+    Updates from autoconfig versions.
+	
+2004-11-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/aiff.c
+    Fix parsing of COMT chunks. Store SF_STR_COMMENT data in ANNO chunks
+    instead of COMT chunk.
+
+2004-11-07  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c src/common.h
+    Change the ptr argument to psf_write() from "void*" to a "const void*".
+    Thanks to Tobias Gehrig for suggesting this.
+
+2004-10-31  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c src/common.h
+    Add functions psf_close_rsrc() and read length of resourse fork into
+    rsrclength field of SF_PRIVATE.
+
+    * src/sd2.c
+    Make sure resource fork gets closed.
+
+    * tests/util.tpl
+    Add functions to check for file descriptor leakage.
+
+    * src/write_read_test.tpl
+    Use the file descriptor leak checks.
+
+    * src/sndfile.h.in
+    Add SFC_GET_LOOP_INFO and SF_LOOP_INFO struct.
+
+    * src/common.h
+    Add SF_LOOP_INFO pointer to SF_PRIVATE.
+
+    * src/wav.c src/aiff.c
+    Improve and add parsing of 'ACID' and 'basc' chunks, filling in
+    SF_LOOP_INFO data in SF_PRIVATE.
+
+2004-10-30  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sd2.c
+    Further cleanup: remove printfs, change snprintf to LSF_SNPRINTF.
+
+    * Win32/config.h Win32/sndfile.h
+    Updates.
+
+    * tests/util.tpl
+    Add win32 macro for snprintf.
+
+2004-10-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sfendian.h
+    Add macros : H2BE_SHORT, H2BE_INT, H2LE_SHORT and H2LE_INT.
+
+    * src/sd2.c
+    Use macros to make sure writing SD2 files on little endian machines works
+    correctly.
+
+    * tests/util.tpl
+    Add a delete_file() function which also deletes the resource fork of SD2
+    files.
+
+    * tests/write_read_test.tpl
+    Use delete_file() so that "make distcheck" works.
+
+2004-10-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.c src/file_io.c
+    Move resource filename construction and testing to psf_open_rsrc().
+
+    * src/common.h src/sndfile.c
+    Add error SFE_SD2_FD_DISALLOWED.
+
+    * tests/util.tpl tests/*.(c|tpl)
+    Add and allow_fd parameter to test_open_file_or_die() so that use of
+    sf_open_fd() can be avoided when opening SD2 files.
+
+2004-10-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/wav.c
+    Update ACID chunk parsing.
+
+    * src/sd2.c
+    More fixes for files with large resource forks.
+
+2004-10-23  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/common.h src/sndfile.c
+    Add error numbers and messages for sd2 files.
+
+    * src/sd2.c
+    Reading of sd2 (resource fork version) now seems to be working.
+
+2004-10-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.h
+    Update file_io.c to include win32 psf_rsrc_open().
+
+    * tests/floating_point_test.tpl
+    Remove use of __func__ in test programs (MSVC++ doesn't grok this).
+
+    * Win32/(config|sndfile).h MacOS9/(config|sndfile).h
+    Updates.
+
+2004-10-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sfendian.h
+    Fix endswap_int64_t_(array|copy).
+
+    * src/test_endswap.(tpl|def)
+    Add tests for above and inprove all tests.
+
+2004-10-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sfendian.h
+    Improve type safety, add endswap_double_array().
+
+    * src/double64.c
+    Use endswap_double_array() instead of endswap_long_array().
+
+    * src/test_endswap.(tpl|def) src/Makefile.am
+    Add preliminary endswap tests and hook into build system.
+
+2004-10-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/configure.ac src/makefile.am
+    Finally fix the bulding of DLLs on Win32/MinGW.
+
+    * tests/makefile.am
+    Fix running of tests on Win32/MinGW.
+
+2004-10-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.h.in src/sndfile.c tests/floating_point_test.tpl
+    Rename SFC_SET_FLOAT_INT_MULTIPLIER to SFC_SET_SCALE_FLOAT_INT_READ.
+
+    * doc/command.html
+    Document SFC_SET_SCALE_FLOAT_INT_READ.
+
+2004-09-30  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/floating_point_test.(tpl|def)
+    Derived from floating_point_test.c.
+    Add (float|double)_(short|int)_test functions.
+
+    * tests/util.(tpl|def)
+    Make separate float and double versions of gen_windowed_sine().
+
+    * tests/write_read_test.tpl
+    Fix after changes to gen_windowed_sine().
+
+    * src/(float32|double64).c
+    Implement SFC_SET_FLOAT_INT_MULTIPPLIER.
+
+2004-09-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * acinclude.m4
+    Fix warnings from automake 1.8 and later.
+
+    * examples/sndfile-info.c
+    Add a "fflush (stdout)" after printing Win32 message.
+
+2004-09-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * Win32/Makefile.mingw.in
+    Add a "make install" target.
+
+2004-09-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.h.in src/common.h src/sndfile.c src/command.c
+    Start work on adding command SFC_SET_FLOAT_INT_MULTIPLIER.
+
+2004-09-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-convert.c
+    Fix a bug converting stereo integer PCM files to float.
+
+2004-09-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-play.c
+    Appy patch from Conrad Parker to make Mac OSX error messages more
+    consistent and informative.
+
+    * doc/api.html
+    Fix a HTML HREF which was wrong.
+
+    * doc/win32.html
+    Add information about when nmake fails.
+
+2004-09-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-play.c
+    Another patch from Denis Cote to prevent race conditions.
+
+2004-09-02  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/common.h src/ms_adpcm.c src/ima_adpcm.c
+    Fix alternative to ISO standard flexible struct array feature for broken
+    compilers.
+
+2004-08-31  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/common.h src/string.c src/sndfile.c
+    Make sf_set_string() return an error if trying to set a string when in
+    read mode.
+
+2004-08-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/common.h
+    Change the unnamed union into a named union so gcc-2.95 will compile it.
+
+    * src/*.c
+    Fixes to allow for the above change.
+
+2004-08-20  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-play.c
+    Fixes for Win32. Thanks to Denis Cote.
+
+    * Win32/Win32/Makefile.(msvc|mingw.in)
+    Fix build system after removal of sfendian.h.
+    Build sndfile-convert.
+
+    * src/Makefile.am
+    Remove sfendian.c from dependancies.
+
+2004-08-10  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.h.in
+    Fix typo in comments (thanks Tommi Sakari Uimonen).
+
+2004-07-31  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/(a|u)law_test.c
+    Minor cleanup.
+
+2004-07-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/(pcm|float|double64|ulaw|alaw|xi).c
+    Optimise read/write loops by removing a redundant variable.
+
+2004-07-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c
+    Remove call to fsync() in psf_close().
+
+2004-07-19  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/pcm.c
+    Inline x2y_array() functions where possible.
+
+    * configure.ac
+    Detect presence of type int64_t.
+
+    * src/sfendian.c src/sfendian.h
+    Move functions in the first file to the sfendian.h as static inline
+    functions.
+    Improve endswap_long_*() where possible.
+
+2004-07-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/pcm.c
+    When converting from unsigned char to float or double, subtract 128 before
+    converting to float/double rather than after to save a floating point
+    operation as suggested by Stefan Briesenick.
+
+    * src/(pcm|sfendian|alaw|ulaw|double64|float32).c
+    Optimize inner loops by changing the loop counting slightly as suggested
+    by Stefan Briesenick.
+
+    * configure.ac
+    Detect presence of <byteswap.h>.
+
+    * src/sfendian.h
+    Use <byteswap.h> if present as suggested by Stefan Briesenick.
+
+    * src/pcm.c
+    Update bytewapping.
+
+2004-07-02  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/common.h src/*.c
+    Change the psf->buffer field of SF_PRIVATE into a more type safe union with
+    double, float, int etc elements.
+
+2004-06-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-play.c
+    Merge slightly modifed patch from Stanko Juzbasic which allows playback of
+    mono files on MacOSX.
+
+2004-06-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-convert.c
+    Move copy_metadata() after the second sf_open().
+
+2004-06-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-convert.c
+    Fix a bug which caused the program to go into an infinite loop if the source
+    file has no meta-data. Thanks to Ron Parker for reporting this.
+
+    * src/sndfile.h.in
+    Add SF_STR_FIRST and SF_STR_LAST to allow enumeration of string types.
+
+    * Win32/sndfile.h MacOS9/sndfile.h
+    Update these as per the above file.
+
+2004-06-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac src/common.h src/ogg.c src/sndfile.c src/sndfile.h.in
+      src/Makefile.am
+    Apply large patch from Conrad Parker implementing Ogg Vorbis, Ogg Speex and
+    Annodex support via liboggz and libfishsound. Thanks Conrad.
+
 2004-06-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/avr.c src/ircam.c src/nist.c src/paf.c src/xi.c

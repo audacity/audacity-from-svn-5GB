@@ -24,6 +24,9 @@
 /* Define to 1 if you have the <alsa/asoundlib.h> header file. */
 #undef HAVE_ALSA_ASOUNDLIB_H
 
+/* Define to 1 if you have the <byteswap.h> header file. */
+#undef HAVE_BYTESWAP_H
+
 /* Define to 1 if you have the `calloc' function. */
 #undef HAVE_CALLOC
 
@@ -183,11 +186,17 @@
 /* The size of a `int', as computed by sizeof. */
 #undef SIZEOF_INT
 
+/* The size of a `int64_t', as computed by sizeof. */
+#undef SIZEOF_INT64_T
+
 /* The size of a `loff_t', as computed by sizeof. */
 #undef SIZEOF_LOFF_T
 
 /* The size of a `long', as computed by sizeof. */
 #undef SIZEOF_LONG
+
+/* The size of a `long long', as computed by sizeof. */
+#undef SIZEOF_LONG_LONG
 
 /* The size of a `off64_t', as computed by sizeof. */
 #undef SIZEOF_OFF64_T

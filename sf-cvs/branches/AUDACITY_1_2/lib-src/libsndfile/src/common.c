@@ -36,7 +36,7 @@
 */
 
 #define LOG_PUTCHAR(a,b)									\
-		{	if ((a)->logindex < SIGNED_SIZEOF ((a)->logbuffer) - 1)\
+		{	if ((a)->logindex < SIGNED_SIZEOF ((a)->logbuffer) - 1) \
 			{	(a)->logbuffer [(a)->logindex++] = (b) ;	\
 				(a)->logbuffer [(a)->logindex] = 0 ;		\
 				}											\
@@ -249,6 +249,7 @@ psf_log_printf (SF_PRIVATE *psf, const char *format, ...)
 					LOG_PUTCHAR (psf, c) ;
 					break ;
 
+			case 'x': /* hex */
 			case 'X': /* hex */
 					d = va_arg (ap, int) ;
 
@@ -377,6 +378,8 @@ psf_asciiheader_printf (SF_PRIVATE *psf, const char *format, ...)
 **		psf_binheader_writef ("b", &bindata, sizeof (bindata)) ;
 **
 **	To write N zero bytes use:
+**			NOTE: due to platform issues (ie x86-64) you should cast the
+**			argument to size_t or ensure the variable type is size_t.
 **		psf_binheader_writef ("z", N) ;
 */
 

@@ -70,7 +70,8 @@ enum
 	SF_FORMAT_SDS			= 0x110000,		/* Midi Sample Dump Standard */
 	SF_FORMAT_AVR			= 0x120000,		/* Audio Visual Research */
 	SF_FORMAT_WAVEX			= 0x130000,		/* MS WAVE with WAVEFORMATEX */
-	
+	SF_FORMAT_SD2			= 0x160000,		/* Sound Designer 2 */
+
 	/* Subtypes from here on. */
 
 	SF_FORMAT_PCM_S8		= 0x0001,		/* Signed 8 bit data */
@@ -102,7 +103,7 @@ enum
 
 	SF_FORMAT_DPCM_8		= 0x0050,		/* 8 bit differential PCM (XI only) */
 	SF_FORMAT_DPCM_16		= 0x0051,		/* 16 bit differential PCM (XI only) */
-	
+
 
 	/* Endian-ness options. */
 
@@ -130,6 +131,7 @@ enum
 	SFC_GET_NORM_FLOAT				= 0x1011,
 	SFC_SET_NORM_DOUBLE				= 0x1012,
 	SFC_SET_NORM_FLOAT				= 0x1013,
+	SFC_SET_SCALE_FLOAT_INT_READ	= 0x1014,
 
 	SFC_GET_SIMPLE_FORMAT_COUNT		= 0x1020,
 	SFC_GET_SIMPLE_FORMAT			= 0x1021,
@@ -152,7 +154,7 @@ enum
 	SFC_SET_UPDATE_HEADER_AUTO		= 0x1061,
 
 	SFC_FILE_TRUNCATE				= 0x1080,
-	
+
 	SFC_SET_RAW_START_OFFSET		= 0x1090,
 
 	SFC_SET_DITHER_ON_WRITE			= 0x10A0,
@@ -162,21 +164,23 @@ enum
 	SFC_GET_DITHER_INFO				= 0x10A3,
 
 	SFC_GET_EMBED_FILE_INFO			= 0x10B0,
-	
+
 	SFC_SET_CLIPPING				= 0x10C0,
 	SFC_GET_CLIPPING				= 0x10C1,
 
 	SFC_GET_INSTRUMENT				= 0x10D0,
 	SFC_SET_INSTRUMENT				= 0x10D1,
 
+	SFC_GET_LOOP_INFO				= 0x10E0,
+
 	/* Following commands for testing only. */
 	SFC_TEST_IEEE_FLOAT_REPLACE		= 0x6001,
 
 	/*
 	** SFC_SET_ADD_* values are deprecated and will disappear at some
-	** time in the future. They are guaranteed to be here up to and 
-	** including version 1.0.8 to avoid breakage of existng software. 
-	** They currently do nothing and will continue to do nothing. 
+	** time in the future. They are guaranteed to be here up to and
+	** including version 1.0.8 to avoid breakage of existng software.
+	** They currently do nothing and will continue to do nothing.
 	*/
 	SFC_SET_ADD_DITHER_ON_WRITE		= 0x1070,
 	SFC_SET_ADD_DITHER_ON_READ		= 0x1071
@@ -198,6 +202,14 @@ enum
 	SF_STR_DATE						= 0x06
 } ;
 
+/*
+** Use the following as the start and end index when doing metadata
+** transcoding.
+*/
+
+#define	SF_STR_FIRST	SF_STR_TITLE
+#define	SF_STR_LAST		SF_STR_DATE
+
 enum
 {	/* True and false */
 	SF_FALSE	= 0,
@@ -209,14 +221,14 @@ enum
 	SFM_RDWR	= 0x30
 } ;
 
-/* Pubic error values. These are guaranteed to remain unchanged for the duration
-** of the library major version number. 
+/* Public error values. These are guaranteed to remain unchanged for the duration
+** of the library major version number.
 ** There are also a large number of private error numbers which are internal to
 ** the library which can change at any time.
 */
 
 enum
-{	SF_ERR_NO_ERROR     		= 0,
+{	SF_ERR_NO_ERROR				= 0,
 	SF_ERR_UNRECOGNISED_FORMAT	= 1,
 	SF_ERR_SYSTEM				= 2
 } ;
@@ -226,7 +238,7 @@ enum
 typedef	struct SNDFILE_tag	SNDFILE ;
 
 /* The following typedef is system specific and is defined when libsndfile is.
-** compiled. sf_count_t can be one of loff_t (Linux), off_t (*BSD), 
+** compiled. sf_count_t can be one of loff_t (Linux), off_t (*BSD),
 ** off64_t (Solaris), __int64_t (Win32) etc.
 */
 
@@ -263,13 +275,13 @@ typedef	struct SF_INFO SF_INFO ;
 
 typedef struct
 {	int			format ;
-	const char  *name ;
-	const char  *extension ;
+	const char	*name ;
+	const char	*extension ;
 } SF_FORMAT_INFO ;
 
 /*
-** Enums and typedefs for adding dither on read and write. 
-** See the html documentation for sf_command(), SFC_SET_DITHER_ON_WRITE 
+** Enums and typedefs for adding dither on read and write.
+** See the html documentation for sf_command(), SFC_SET_DITHER_ON_WRITE
 ** and SFC_SET_DITHER_ON_READ.
 */
 
@@ -317,6 +329,25 @@ enum
 	SF_LOOP_BACKWARD
 } ;
 
+/* Struct used to retrieve loop information from a file.*/
+typedef struct
+{
+	short	time_sig_num ;	/* any positive integer    >0  */
+	short	time_sig_den ;	/* any positive power of 2 >0  */
+	int		loop_mode ;		/* see SF_LOOP enum            */
+
+	int		num_beats ;		/* this is NOT the amount of quarter notes !!!*/
+							/* a full bar of 4/4 is 4 beats */
+							/* a full bar of 7/8 is 7 beats */
+
+	float	bpm ;			/* suggestion, as it can be calculated using other fields:*/
+							/* file's lenght, file's sampleRate and our time_sig_den*/
+							/* -> bpms are always the amount of _quarter notes_ per minute */
+
+	int	root_key ;			/* MIDI note, or -1 for None */
+	int future [6] ;
+} SF_LOOP_INFO ;
+
 /* Open the specified file for read, write or both. On error, this will
 ** return a NULL pointer. To find the error number, pass a NULL SNDFILE
 ** to sf_perror () or sf_error_str ().
@@ -331,7 +362,7 @@ SNDFILE* 	sf_open		(const char *path, int mode, SF_INFO *sfinfo) ;
 ** When passed a descriptor like this, the library will assume that the start
 ** of file header is at the current file offset. This allows sound files within
 ** larger container files to be read and/or written.
-** On error, this will return a NULL pointer. To find the error number, pass a 
+** On error, this will return a NULL pointer. To find the error number, pass a
 ** NULL SNDFILE to sf_perror () or sf_error_str ().
 ** All calls to sf_open_fd() should be matched with a call to sf_close().
 
@@ -339,20 +370,20 @@ SNDFILE* 	sf_open		(const char *path, int mode, SF_INFO *sfinfo) ;
 
 SNDFILE* 	sf_open_fd	(int fd, int mode, SF_INFO *sfinfo, int close_desc) ;
 
-/* sf_error () returns a error number which can be translated to a text 
+/* sf_error () returns a error number which can be translated to a text
 ** string using sf_error_number().
 */
 
 int		sf_error		(SNDFILE *sndfile) ;
 
-/* sf_strerror () returns to the caller a pointer to the current error message for 
+/* sf_strerror () returns to the caller a pointer to the current error message for
 ** the given SNDFILE.
 */
 
 const char* sf_strerror (SNDFILE *sndfile) ;
 
 /* sf_error_number () allows the retrieval of the error string for each internal
-** error number. 
+** error number.
 **
 */
 
@@ -461,7 +492,7 @@ int		sf_close		(SNDFILE *sndfile) ;
 
 /*
 ** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
+** The arch-tag line is a file identity tag for the GNU Arch
 ** revision control system.
 **
 ** arch-tag: 906bb197-18f2-4f66-a395-b4722bab5114
