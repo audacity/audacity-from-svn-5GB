@@ -7,11 +7,11 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: stdio-based convenience library for opening/seeking/decoding
- last mod: $Id: vorbisfile.h,v 1.2 2002-04-21 23:55:25 habes Exp $
+ last mod: $Id: vorbisfile.h,v 1.3 2002-04-22 00:07:41 habes Exp $
 
  ********************************************************************/
 
@@ -117,6 +117,8 @@ extern double ov_time_tell(OggVorbis_File *vf);
 extern vorbis_info *ov_info(OggVorbis_File *vf,int link);
 extern vorbis_comment *ov_comment(OggVorbis_File *vf,int link);
 
+extern long ov_read_float(OggVorbis_File *vf,float ***pcm_channels,
+			  int *bitstream);
 extern long ov_read(OggVorbis_File *vf,char *buffer,int length,
 		    int bigendianp,int word,int sgned,int *bitstream);
 
