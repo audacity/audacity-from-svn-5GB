@@ -54,4 +54,5 @@ $releaseNotesStr = "Note";
 $releaseNotesStr2 = "Note (cosa c'è di nuovo in questa versione?)";
 $vstLinksHereStr = "Scarica i VST Plug-ins qui:";
 $docsStr = "Scarica la documentazione aggiornata";
+$clickEnlargeStr = "(Click on any image to enlarge.)";
 ?>
