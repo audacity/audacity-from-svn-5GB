@@ -163,6 +163,10 @@ extern long ptrtoabs();
 #define XL_LITTLE_ENDIAN
 #endif
 
+#ifdef __BIG_ENDIAN__ /* __POWERPC__, __APPLE__, __MACH__ */
+#define XL_BIG_ENDIAN
+#endif
+
 /* default important definitions */
 #ifndef NNODES
 #define NNODES		1000
@@ -856,7 +860,7 @@ LVAL rmlpar(void);
 LVAL rmrpar(void);
 LVAL rmsemi(void);
 LVAL tentry(int ch);
-int isnumber(char *str, LVAL *pval);
+int xlisnumber(char *str, LVAL *pval);
 void defmacro(int ch, LVAL type, int offset);
 LVAL callmacro(LVAL fptr, int ch);
 void xlrinit(void);

@@ -45,7 +45,7 @@ typedef unsigned long ulong;
 /* under Mach, ushort is defined in types.h, but ulong isn't (!) */
 #ifndef __sparc__
 #ifndef NeXT
-typedef unsigned short ushort;
+/* typedef unsigned short ushort; */
 #endif
 #endif
 #endif

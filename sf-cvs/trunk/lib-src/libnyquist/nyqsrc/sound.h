@@ -1,6 +1,11 @@
 /* sound.h -- new fugue sound data type */
 
-#include <math.h>
+#ifdef __APPLE__
+#define HUGE_VAL 1e50
+#else
+#include <math.h> */
+#endif
+
 #include "stdefs.h"
 
 #ifndef max

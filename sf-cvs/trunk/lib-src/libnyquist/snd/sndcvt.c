@@ -18,8 +18,6 @@
 #include "io.h"
 #elif defined(__FreeBSD__)
 #include <sys/stat.h>
-#else
-#include <stat.h>
 #endif /* WIN32 */
 #define L_SET SEEK_SET
 #define L_INCR SEEK_CUR

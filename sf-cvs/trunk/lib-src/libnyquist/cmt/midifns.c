@@ -796,7 +796,7 @@ short getkey(boolean waitflag)
 ulong gettime()         /*DMH: ulong is from mpu->midifns conversion, for Mac*/
 {
 #ifdef UNIX
-#ifdef UNIX_IRIX
+#if (defined(UNIX_IRIX) || defined(__APPLE__))
     struct timeval timeval;
 #else
     struct timeb ftime_res;
@@ -829,7 +829,7 @@ ulong gettime()         /*DMH: ulong is from mpu->midifns conversion, for Mac*/
 #endif  /* ifdef DOS */
 
 #ifdef UNIX
-#ifdef UNIX_IRIX
+#if (defined(UNIX_IRIX) || defined(__APPLE__))
     gettimeofday(&timeval, 0);
     ticks = timeval.tv_sec * 1000 + timeval.tv_usec / 1000 - timeoffset;
 #else
@@ -1659,7 +1659,7 @@ void settime(newtime)
 void timereset()
 {
 #ifdef UNIX
-#ifdef UNIX_IRIX
+#if (defined(UNIX_IRIX) || defined(__APPLE__))
     struct timeval timeval;
 #else
     struct timeb ftime_res;
@@ -1687,7 +1687,7 @@ void timereset()
 #endif
     
 #ifdef UNIX
-#ifdef UNIX_IRIX
+#if (defined(UNIX_IRIX) || defined(__APPLE__))
     gettimeofday(&timeval, 0);
     timeoffset = timeval.tv_sec * 1000 + timeval.tv_usec / 1000 - timeoffset;
 #else
