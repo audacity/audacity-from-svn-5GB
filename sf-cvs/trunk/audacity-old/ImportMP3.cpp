@@ -36,9 +36,8 @@
 #include "WaveTrack.h"
 #include "DirManager.h"
 
-#ifdef USE_MPG123
-  #include "mp3/mpg123.h"
-  #include "mp3/mpglib.h"
+#ifdef USE_LIBMPEG3
+  #include "mpeg3/libmpeg3.h"
 #else
   #ifdef __WXGTK__
     #include "xaudio/linux/include/decoder.h"
@@ -60,90 +59,75 @@ bool ImportMP3(wxWindow *parent,
 			   wxString fName, WaveTrack **left, WaveTrack **right, 
 			   DirManager *dirManager)
 {
-#ifdef USE_MPG123
+#ifdef USE_LIBMPEG3
 
   wxBusyCursor wait;
 
-  wxFile inf;
-  inf.Open(fName, wxFile::read);
-  if (!inf.IsOpened()) {
+  mpeg3_t *file = mpeg3_open((char *)fName.c_str());
+
+  if (!file) {
     wxMessageBox("Could not open "+fName);
     return false;
   }
 
-  int len = inf.Length();
+  int len = mpeg3_audio_samples(file, 0);
+  int stereo = (mpeg3_audio_channels(file, 0) > 1);
 
   *left = new WaveTrack(dirManager);
-  *right = new WaveTrack(dirManager);
-
   (*left)->channel = VTrack::LeftChannel;
-  (*right)->channel = VTrack::RightChannel;
+  if(stereo) {
+  	*right = new WaveTrack(dirManager);
+  	(*right)->channel = VTrack::RightChannel;
+  }
+
 
   wxProgressDialog *progress = NULL;
 
   wxYield();
   wxStartTimer();
 
-  struct mpstr mpinfo;
+#define BUFFER_SIZE 32768
+#define CODEC_TRANSFER_SIZE 4096
+  sampleType *leftBuffer = new sampleType[BUFFER_SIZE];
+  sampleType *rightBuffer = new sampleType[BUFFER_SIZE];
 
-  InitMP3(&mpinfo);
-
-  int inBufferSize = 32768;
-  char *inBuffer = new char[inBufferSize];
-  int outBufferSize = (*left)->GetIdealBlockSize() * sizeof(sampleType);
-  char *outBuffer = new char[outBufferSize];
-  int leftBufferSize = outBufferSize / 2;
-  char *leftBuffer = new char[leftBufferSize];
-  int rightBufferSize = outBufferSize / 2;
-  char *rightBuffer = new char[rightBufferSize];
-
-  wxASSERT(inBuffer);
-  wxASSERT(outBuffer);
   wxASSERT(leftBuffer);
   wxASSERT(rightBuffer);
 
-  int count = 0;
+  int decodedSamples = 0;
+  int pos = 0;
 
   bool cancelled = false;
 
-  while(count < len && !cancelled) {
-    int block = inf.Read((void *)inBuffer, inBufferSize);
-    int decodedBytes;
-	int pos=0;
-    if (block > 0) {
-      int rval = decodeMP3(&mpinfo,
-			   inBuffer, block,
-			   &outBuffer[pos], (outBufferSize-pos),
-			   &decodedBytes);
+  mpeg3_seek_percentage(file, 0);
+  while(!cancelled && pos < len) {
 
-      while(rval == MP3_OK) {
-		pos += decodedBytes;
-		if (pos > (outBufferSize / 2)) {
-		  int frames = pos/4;
-		  for(int i=0; i<frames; i++){
-			((sampleType *)leftBuffer)[i] =
-			  ((sampleType *)outBuffer)[2*i];
-			((sampleType *)rightBuffer)[i] =
-			  ((sampleType *)outBuffer)[2*i+1];
-		  }
-		  (*left)->Append((sampleType *)leftBuffer, frames);
-		  (*right)->Append((sampleType *)rightBuffer, frames);
-		  pos = 0;
-		}
-		
-		rval = decodeMP3(&mpinfo,
-						 NULL, 0,
-						 &outBuffer[pos], (outBufferSize-pos),
-						 &decodedBytes);
-      }
-    }
-	
-	
-	count += block;
-	
-    if (block==0)
-      break;
-	
+	  if(decodedSamples + CODEC_TRANSFER_SIZE > BUFFER_SIZE) {
+	      (*left)->Append((sampleType *)leftBuffer, decodedSamples);
+
+		  if(stereo)
+			  (*right)->Append((sampleType *)rightBuffer, decodedSamples);
+
+		  decodedSamples = 0;
+	   }
+
+	 mpeg3_read_audio(file, 
+			  NULL,  // pointer to array of floats (but we're using ints)
+			  (leftBuffer + decodedSamples), 
+			  0,     // Channel to decode
+              CODEC_TRANSFER_SIZE, // Number of _samples_ to decode
+			  0); 
+	 if(stereo)
+		 int leftBytes = mpeg3_reread_audio(file, 
+			  NULL, 
+			  (rightBuffer + decodedSamples),
+			  1,          // Channel to decode
+              CODEC_TRANSFER_SIZE,
+			  0);
+
+	  pos += CODEC_TRANSFER_SIZE;
+	  decodedSamples += CODEC_TRANSFER_SIZE;
+
 	if (!progress && wxGetElapsedTime(false) > 500) {
 	  progress =
 		new wxProgressDialog("Import",
@@ -157,16 +141,15 @@ bool ImportMP3(wxWindow *parent,
 	}
 
 	if (progress) {
-	  cancelled = !progress->Update((int)(count*1000.0/len));
+	  cancelled = !progress->Update((int)(mpeg3_tell_percentage(file) * 1000));
 	}
   }
 
-  ExitMP3(&mpinfo);
+  mpeg3_close(file);
 
-  delete[] inBuffer;
-  delete[] outBuffer;
   delete[] leftBuffer;
-  delete[] rightBuffer;
+  if(stereo)
+  	delete[] rightBuffer;
 
   delete progress;
 

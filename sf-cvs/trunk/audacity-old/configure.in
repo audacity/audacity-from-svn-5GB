@@ -7,8 +7,23 @@ dnl
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(AudacityApp.h)
 
+dnl option
+AC_ARG_WITH(libmpeg3,
+	[  --with-libmpeg3         use libmpeg3 instead of xaudio for mp3 support],
+	  [ AC_DEFINE(USE_LIBMPEG3)
+	  AC_CONFIG_SUBDIRS(mpeg3)
+	  AC_SUBST(LMDEP, "mpeg3/libmpeg3.a")
+	  AC_SUBST(LMRULE, "mpeg3/libmpeg3.a:")
+	  AC_SUBST(LMACTION, "	make -C mpeg3")
+	  AC_SUBST(XAUDIOLIB, "")],
+    [ AC_SUBST(LMDEP, "") 
+      AC_SUBST(LMRULE, "")
+	  AC_SUBST(LMACTION, "")
+	  AC_SUBST(XAUDIOLIB, "-Lxaudio/linux/lib -lxaudio")])
+
 dnl Checks for programs.
 AC_PROG_CC
+AC_PROG_CC_STDC
 AC_PROG_GCC_TRADITIONAL
 AC_LANG_SAVE
 AC_LANG_CPLUSPLUS
@@ -31,7 +46,7 @@ if test "$WX_CONFIG" = "no" ; then
 	AC_MSG_ERROR("Could not find wx-config: is wxWindows installed?")
 fi
 LIBS="$LIBS `$WX_CONFIG --libs`"
-CFLAGS="$CFLAGS `$WX_CONFIG --cflags`" ],
+CFLAGS="$CFLAGS `$WX_CONFIG --cflags`"
 
 
 dnl this complicated-looking thing is simple a nested function that checks for

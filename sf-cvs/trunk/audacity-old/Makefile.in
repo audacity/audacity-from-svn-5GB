@@ -8,7 +8,7 @@
 # from Makefile.in
 #
 
-LIBFLAGS = -Lxaudio/linux/lib -lxaudio @LIBS@
+LIBFLAGS = @XAUDIOLIB@ @LIBS@ @LMDEP@
 CFLAGS = @DEFS@ @CFLAGS@ @CPPFLAGS@ -Iallegro
 CCC = @CXX@
 CC = @CC@
@@ -85,9 +85,11 @@ DEPS = $(OBJS:$(OBJDIR)/%.o=%)
 
 all: dirs audacity
 
-audacity: $(OBJS) Makefile
+audacity: $(OBJS) Makefile @LMDEP@
 	$(CCC) -o audacity $(OBJS) $(LIBFLAGS)
 
+@LMRULE@
+@LMACTION@
 #
 # You can optionally "make dep" to make dependencies.
 # voodoo magic in the form of a perl script turns
