@@ -9,7 +9,7 @@ ilimitados Deshacer), mezclar pistas, o aplicar efectos a tus grabaciones.
 También posee un editor de envolvente de amplitud propio,
 un modo espectograma ajustable a medida y una
 ventana de análisis de frecuencia para aplicaciones de análisis de audio.
-Efectos propios incluidos Bass Bost (Realzador de Graves), Wahwah, y
+Efectos propios incluidos Bass Boost (Realzador de Graves), Wahwah, y
 Removedor de Ruido, y también soporta efectos plug-in VST.
 </p>
 
