@@ -398,54 +398,48 @@ void EditToolBar::OnRedo()
 
 void EditToolBar::OnZoomIn()
 {
-   if (!gAudioIO->IsBusy())
-      {
          wxCommandEvent event;
          AudacityProject *p = GetActiveProject();
          if (p) {
             p->OnZoomIn(event);
          }
-      }
+
    SetButton(false, mZoomIn);
 }
 
 
 void EditToolBar::OnZoomOut()
 {
-   if (!gAudioIO->IsBusy())
-      {
+
          wxCommandEvent event;
          AudacityProject *p = GetActiveProject();
          if (p) {
             p->OnZoomOut(event);
          }
-      }
+
    SetButton(false, mZoomOut);
 }
 
 void EditToolBar::OnZoomSel()
 {
-   if (!gAudioIO->IsBusy())
-      {
          wxCommandEvent event;
          AudacityProject *p = GetActiveProject();
          if (p) {
             p->OnZoomSel(event);
          }
-      }
+
    SetButton(false, mZoomSel);
 }
 
 void EditToolBar::OnZoomFit()
 {
-   // if (!gAudioIO->IsBusy())
-   //    {
+
          wxCommandEvent event;
          AudacityProject *p = GetActiveProject();
          if (p) {
             p->OnZoomFit(event);
          }
-         //     }
+
    SetButton(false, mZoomFit);
 }
 
