@@ -93,13 +93,17 @@ enum {
 
    // Effect Menu
 
-   FirstEffectID                // Keep this the last enum please
+   FirstEffectID = 2000,
+
+   // Plugin Menu
+
+   FirstPluginID = 3000,
 };
 #endif
 
 #ifdef AUDACITY_MENUS_EVENT_TABLE
   // File menu
-EVT_MENU(NewID, AudacityProject::OnNew)
+    EVT_MENU(NewID, AudacityProject::OnNew)
     EVT_MENU(OpenID, AudacityProject::OnOpen)
     EVT_MENU(CloseID, AudacityProject::OnClose)
     EVT_MENU(SaveID, AudacityProject::OnSave)

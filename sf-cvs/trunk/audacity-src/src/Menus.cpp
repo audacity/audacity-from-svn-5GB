@@ -155,10 +155,18 @@ void AudacityProject::CreateMenuBar()
 
    mEffectMenu = new wxMenu();
 
-   int numEffects = Effect::GetNumEffects();
-   for (int fi = 0; fi < numEffects; fi++)
+   int numEffects = Effect::GetNumEffects(false);
+   int fi;
+   for (fi = 0; fi < numEffects; fi++)
       mEffectMenu->Append(FirstEffectID + fi,
-                          (Effect::GetEffect(fi))->GetEffectName());
+                          (Effect::GetEffect(fi, false))->GetEffectName());
+
+   mPluginMenu = new wxMenu();
+
+   int numPlugins = Effect::GetNumEffects(true);
+   for (fi = 0; fi < numPlugins; fi++)
+      mPluginMenu->Append(FirstPluginID + fi,
+                          (Effect::GetEffect(fi, true))->GetEffectName());
 
 #ifdef __WXMAC__
    wxApp::s_macAboutMenuItemId = AboutID;
@@ -185,6 +193,7 @@ void AudacityProject::CreateMenuBar()
    mMenuBar->Append(mProjectMenu, "&Project");
    //  mMenuBar->Append(mTrackMenu, "&Track");
    mMenuBar->Append(mEffectMenu, "E&ffect");
+   mMenuBar->Append(mPluginMenu, "Plugin&s");
    mMenuBar->Append(mHelpMenu, "&Help");
 
    SetMenuBar(mMenuBar);
@@ -301,11 +310,21 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    mProjectMenu->Enable(mProjectMenu->FindItem("Remove Track(s)"),
                         numTracksSelected > 0);
 
-   for (int e = 0; e < Effect::GetNumEffects(); e++) {
-      Effect *f = Effect::GetEffect(e);
+   int e;
+   for (e = 0; e < Effect::GetNumEffects(false); e++) {
+      Effect *f = Effect::GetEffect(e, false);
       wxString effectName = f->GetEffectName();
       int itemNo = mEffectMenu->FindItem(effectName);
       mEffectMenu->Enable(itemNo,
+                          numWaveTracksSelected > 0
+                          && nonZeroRegionSelected);
+   }
+
+   for (e = 0; e < Effect::GetNumEffects(true); e++) {
+      Effect *f = Effect::GetEffect(e, true);
+      wxString effectName = f->GetEffectName();
+      int itemNo = mPluginMenu->FindItem(effectName);
+      mPluginMenu->Enable(itemNo,
                           numWaveTracksSelected > 0
                           && nonZeroRegionSelected);
    }

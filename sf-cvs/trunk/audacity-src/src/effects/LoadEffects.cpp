@@ -35,17 +35,17 @@
 
 void LoadEffects()
 {
-   Effect::RegisterEffect(new EffectAmplify());
-   Effect::RegisterEffect(new EffectBassBoost());
-   Effect::RegisterEffect(new EffectCompressor());
-   Effect::RegisterEffect(new EffectEcho());
-   Effect::RegisterEffect(new EffectFadeIn());
-   Effect::RegisterEffect(new EffectFadeOut());
-   Effect::RegisterEffect(new EffectFilter());
-   Effect::RegisterEffect(new EffectNoiseRemoval());
-   Effect::RegisterEffect(new EffectPhaser());
-   Effect::RegisterEffect(new EffectWahwah());
-   Effect::RegisterEffect(new EffectWaveletDenoise());
+   Effect::RegisterEffect(new EffectAmplify(), false);
+   Effect::RegisterEffect(new EffectBassBoost(), false);
+   Effect::RegisterEffect(new EffectCompressor(), false);
+   Effect::RegisterEffect(new EffectEcho(), false);
+   Effect::RegisterEffect(new EffectFadeIn(), false);
+   Effect::RegisterEffect(new EffectFadeOut(), false);
+   Effect::RegisterEffect(new EffectFilter(), false);
+   Effect::RegisterEffect(new EffectNoiseRemoval(), false);
+   Effect::RegisterEffect(new EffectPhaser(), false);
+   Effect::RegisterEffect(new EffectWahwah(), false);
+   Effect::RegisterEffect(new EffectWaveletDenoise(), false);
 
 #if defined(__WXMAC__) || defined(__WXMSW__)
    LoadVSTPlugins();

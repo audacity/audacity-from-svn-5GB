@@ -62,7 +62,7 @@ extern "C" {
                      title = title.Mid(0, len - 4);
 
                   VSTEffect *vst = new VSTEffect(title, theEffect);
-                  Effect::RegisterEffect(vst);
+                  Effect::RegisterEffect(vst, true);
                }
             }
 

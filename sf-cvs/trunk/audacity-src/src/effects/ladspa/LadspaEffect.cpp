@@ -58,8 +58,32 @@ LadspaEffect::LadspaEffect(const LADSPA_Descriptor *data)
       if (LADSPA_IS_PORT_CONTROL(d) &&
           LADSPA_IS_PORT_INPUT(d)) {
          numInputControls++;
+
+         float val = 1.0;
+         LADSPA_PortRangeHint hint = mData->PortRangeHints[p];
+
+         if (LADSPA_IS_HINT_BOUNDED_BELOW(hint.HintDescriptor) &&
+             val < hint.LowerBound)
+            val = hint.LowerBound;
+
+         if (LADSPA_IS_HINT_BOUNDED_ABOVE(hint.HintDescriptor) &&
+             val > hint.UpperBound)
+            val = hint.UpperBound;
+
+         if (LADSPA_IS_HINT_SAMPLE_RATE(hint.HintDescriptor))
+            val *= 44100;
+
+         inputControls[p] = val;
       }
    }
+}
+
+LadspaEffect::~LadspaEffect()
+{
+   delete[] inputPorts;
+   delete[] outputPorts;
+   delete[] inputControls;
+   delete[] outputControls;
 }
 
 wxString LadspaEffect::GetEffectName()
@@ -78,31 +102,36 @@ wxString LadspaEffect::GetEffectAction()
 bool LadspaEffect::Init()
 {
    mBlockSize = 0;
+   mainRate = 0;
 
-   if (inputs > 1) {
-      TrackListIterator iter(mWaveTracks);
-      VTrack *left = iter.First();
-      while(left) {
-         sampleCount lstart, rstart, llen, rlen;
-         GetSamples((WaveTrack *)left, &lstart, &llen);
+   TrackListIterator iter(mWaveTracks);
+   VTrack *left = iter.First();
+   while(left) {
+      sampleCount lstart, rstart, llen, rlen;
+      GetSamples((WaveTrack *)left, &lstart, &llen);
+      
+      if (mainRate == 0)
+         mainRate = (int)(((WaveTrack *)left)->GetRate() + 0.5);
+      
+      if (left->GetLinked()) {
+         VTrack *right = iter.Next();
+         GetSamples((WaveTrack *)right, &rstart, &rlen);
          
-         if (left->GetLinked()) {
-            VTrack *right = iter.Next();
-            GetSamples((WaveTrack *)right, &rstart, &rlen);
-            
-            if (llen != rlen ||
-                ((WaveTrack *)left)->GetRate() !=
-                ((WaveTrack *)right)->GetRate()) {
-               wxMessageBox("Sorry, Ladspa Effects cannot be performed "
-                            "on stereo tracks where the individual "
-                            "channels of the track do not match.");
-               return false;
-            }
+         if (llen != rlen ||
+             ((WaveTrack *)left)->GetRate() !=
+             ((WaveTrack *)right)->GetRate()) {
+            wxMessageBox("Sorry, Ladspa Effects cannot be performed "
+                         "on stereo tracks where the individual "
+                         "channels of the track do not match.");
+            return false;
          }
-         
-         left = iter.Next();
       }
+      
+      left = iter.Next();
    }
+
+   if (mainRate<=0)
+      mainRate = 44100;
 
    return true;
 }
@@ -110,7 +139,7 @@ bool LadspaEffect::Init()
 bool LadspaEffect::PromptUser()
 {
    if (numInputControls > 0) {
-      LadspaEffectDialog dlog(mParent, mData, inputControls);
+      LadspaEffectDialog dlog(mParent, mData, inputControls, mainRate);
       dlog.CentreOnParent();
       dlog.ShowModal();
       
@@ -199,7 +228,6 @@ bool LadspaEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
       LADSPA_PortDescriptor d = mData->PortDescriptors[p];
       if (LADSPA_IS_PORT_CONTROL(d)) {
          if (LADSPA_IS_PORT_INPUT(d)) {
-            inputControls[p] = 0.5; //mData->PortRangeHints[p].LowerBound;
             mData->connect_port(handle, p, &inputControls[p]);
          }
          else
@@ -276,30 +304,28 @@ void LadspaEffect::End()
 
       delete[] fInBuffer;
       delete[] fOutBuffer;
-      delete[] inputPorts;
-      delete[] outputPorts;
-      delete[] inputControls;
-      delete[] outputControls;
    }
    buffer = NULL;
    fInBuffer = NULL;
    fOutBuffer = NULL;
 }
 
-const int LadspaEFFECT_SLIDER_ID = 13100;
+const int LADSPA_SLIDER_ID = 13100;
+const int LADSPA_TEXTCTRL_ID = 13101;
 
 BEGIN_EVENT_TABLE(LadspaEffectDialog, wxDialog)
     EVT_BUTTON(wxID_OK, LadspaEffectDialog::OnOK)
     EVT_BUTTON(wxID_CANCEL, LadspaEffectDialog::OnCancel)
-    EVT_COMMAND_SCROLL(LadspaEFFECT_SLIDER_ID, LadspaEffectDialog::OnSlider)
-    EVT_SLIDER(LadspaEFFECT_SLIDER_ID, LadspaEffectDialog::OnSlider)
+    EVT_SLIDER(LADSPA_SLIDER_ID, LadspaEffectDialog::OnSlider)
+    EVT_TEXT(LADSPA_TEXTCTRL_ID, LadspaEffectDialog::OnTextCtrl)
 END_EVENT_TABLE()
 
 IMPLEMENT_CLASS(LadspaEffectDialog, wxDialog)
 
    LadspaEffectDialog::LadspaEffectDialog(wxWindow * parent,
                                           const LADSPA_Descriptor *data,
-                                          float *inputControls)
+                                          float *inputControls,
+                                          int sampleRate)
       :wxDialog(parent, -1, data->Name,
                 wxDefaultPosition, wxDefaultSize,
                 wxDEFAULT_DIALOG_STYLE)
@@ -307,6 +333,10 @@ IMPLEMENT_CLASS(LadspaEffectDialog, wxDialog)
    numParams = 0;
    this->mData = data;
    this->inputControls = inputControls;
+   this->sampleRate = sampleRate;
+   inSlider = false;
+   inText = false;
+   targetSlider = NULL;
 
    sliders = new wxSlider*[mData->PortCount];
    fields = new wxTextCtrl*[mData->PortCount];
@@ -353,17 +383,25 @@ IMPLEMENT_CLASS(LadspaEffectDialog, wxDialog)
       gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
       wxString fieldText;
-      fieldText.Printf("%f", inputControls[ports[p]]);
-      fields[p] = new wxTextCtrl(this, 0, fieldText);
+      LADSPA_PortRangeHint hint = mData->PortRangeHints[p];
+      if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
+         fieldText.Printf("%d", (int)(inputControls[ports[p]] + 0.5));
+      else
+         fieldText.Printf("%f", inputControls[ports[p]]);
+      fields[p] = new wxTextCtrl(this, LADSPA_TEXTCTRL_ID, fieldText);
       gridSizer->Add(fields[p], 0, wxALL, 5);
 
       sliders[p] =
-          new wxSlider(this, LadspaEFFECT_SLIDER_ID,
+          new wxSlider(this, LADSPA_SLIDER_ID,
                        0, 0, 1000,
                        wxDefaultPosition,
                        wxSize(200, -1));
       gridSizer->Add(sliders[p], 0, wxALL, 5);
    }
+
+   // Set all of the sliders based on the value in the
+   // text fields
+   HandleText();
    
    paramSizer->Add(gridSizer, 1, wxALL, 5);
    mainSizer->Add(paramSizer, 1, wxALL, 5);
@@ -396,24 +434,107 @@ LadspaEffectDialog::~LadspaEffectDialog()
    delete[]labels;
 }
 
-void LadspaEffectDialog::OnSlider(wxCommandEvent & WXUNUSED(event))
+void LadspaEffectDialog::OnSlider(wxCommandEvent &event)
 {
-#if 0
-   for (int p = 0; p < numParams; p++) {
+   targetSlider = (wxSlider *)event.GetEventObject();
+   HandleSlider();
+   targetSlider = NULL;
+}
+
+void LadspaEffectDialog::OnTextCtrl(wxCommandEvent & WXUNUSED(event))
+{
+   HandleText();
+}
+
+void LadspaEffectDialog::HandleSlider()
+{
+   // if we don't add the following three lines, changing
+   // the value of the slider will change the text, which
+   // will change the slider, and so on.  This gets rid of
+   // the implicit loop.
+   if (inText)
+      return;
+   inSlider = true;
+
+   for (unsigned long p = 0; p < numParams; p++) {
+      if (targetSlider && targetSlider!=sliders[p])
+         continue;
+
       float val;
+      float lower = 0.0;
+      float upper = 10.0;
+      float range;
 
-      val = sliders[p]->GetValue() / 1000.;
-      aEffect->setParameter(aEffect, p, val);
+      LADSPA_PortRangeHint hint = mData->PortRangeHints[p];      
+      if (LADSPA_IS_HINT_BOUNDED_BELOW(hint.HintDescriptor))
+         lower = hint.LowerBound;
+      if (LADSPA_IS_HINT_BOUNDED_ABOVE(hint.HintDescriptor))
+         upper = hint.UpperBound;
+      if (LADSPA_IS_HINT_SAMPLE_RATE(hint.HintDescriptor)) {
+         lower *= sampleRate;
+         upper *= sampleRate;
+      }
 
-      char label[256];
-      aEffect->dispatcher(aEffect, effGetParamDisplay, p, 0,
-                          (void *) label, 0.0);
-      char units[256];
-      aEffect->dispatcher(aEffect, effGetParamLabel, p, 0, (void *) units,
-                          0.0);
-      labels[p]->SetLabel(wxString::Format("%s %s", label, units));
+      range = upper - lower;
+
+      val = (sliders[p]->GetValue() / 1000.0) * range + lower;
+
+      wxString str;
+      if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
+         str.Printf("%d", (int)(val + 0.5));
+      else
+         str.Printf("%f", val);
+
+      fields[p]->SetValue(str);
+
+      inputControls[ports[p]] = val;
    }
-#endif
+
+   inSlider = false;
+}
+
+void LadspaEffectDialog::HandleText()
+{
+   // if we don't add the following three lines, changing
+   // the value of the slider will change the text, which
+   // will change the slider, and so on.  This gets rid of
+   // the implicit loop.
+
+   if (inSlider)
+      return;
+   inText = true;
+   for (unsigned long p = 0; p < numParams; p++) {
+      double dval;
+      float val;
+      float lower = 0.0;
+      float upper = 10.0;
+      float range;
+
+      fields[p]->GetValue().ToDouble(&dval);
+      val = dval;
+
+      LADSPA_PortRangeHint hint = mData->PortRangeHints[p];
+      if (LADSPA_IS_HINT_BOUNDED_BELOW(hint.HintDescriptor))
+         lower = hint.LowerBound;
+      if (LADSPA_IS_HINT_BOUNDED_ABOVE(hint.HintDescriptor))
+         upper = hint.UpperBound;      
+      if (LADSPA_IS_HINT_SAMPLE_RATE(hint.HintDescriptor)) {
+         lower *= sampleRate;
+         upper *= sampleRate;
+      }         
+      range = upper - lower;
+
+      if (val < lower)
+         val = lower;
+      if (val > upper)
+         val = upper;
+
+      inputControls[ports[p]] = val;
+
+      sliders[p]->SetValue((int)(((val-lower)/range) * 1000.0 + 0.5));      
+   }
+
+   inText = false;
 }
 
 void LadspaEffectDialog::OnOK(wxCommandEvent & WXUNUSED(event))

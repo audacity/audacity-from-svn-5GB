@@ -588,12 +588,21 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
 
 bool AudacityProject::ProcessEvent(wxEvent & event)
 {
-   int numEffects = Effect::GetNumEffects();
+   int numEffects = Effect::GetNumEffects(false);
+   int numPlugins = Effect::GetNumEffects(true);
+   Effect *f = NULL;
 
    if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED &&
        event.GetId() >= FirstEffectID &&
-       event.GetId() < FirstEffectID + numEffects) {
+       event.GetId() < FirstEffectID + numEffects)
+      f = Effect::GetEffect(event.GetId() - FirstEffectID, false);
+   
+   if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED &&
+       event.GetId() >= FirstPluginID &&
+       event.GetId() < FirstPluginID + numPlugins)
+      f = Effect::GetEffect(event.GetId() - FirstPluginID, true);
 
+   if (f) {
       TrackListIterator iter(mTracks);
       VTrack *t = iter.First();
       int count = 0;
@@ -608,8 +617,6 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
          wxMessageBox("No audio data is selected.");
          return true;
       }
-
-      Effect *f = Effect::GetEffect(event.GetId() - FirstEffectID);
 
       if (f->DoEffect(this, mTracks, mViewInfo.sel0, mViewInfo.sel1)) {
          PushState("Applied an effect. (maybe more specific?)");

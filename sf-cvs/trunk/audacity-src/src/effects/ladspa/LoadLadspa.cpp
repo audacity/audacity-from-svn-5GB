@@ -16,20 +16,20 @@
 **********************************************************************/
 
 #include <wx/dynlib.h>
+#include <wx/list.h>
 #include <wx/log.h>
 #include <wx/string.h>
-
-wxString searchDir =
-"/home/dmazzoni/install/ladspa_sdk/plugins";
 
 #include "ladspa.h"
 
 #include "LadspaEffect.h"
 
-void LoadLadspaPlugins()
+void SearchLadspaInDir(wxString dir)
 {
+   wxLogNull nolog;
+   
    wxString fname =
-      wxFindFirstFile((const char *)(searchDir + wxFILE_SEP_PATH + "*.so"));
+      wxFindFirstFile((const char *)(dir + wxFILE_SEP_PATH + "*.so"));
 
    while (fname != "") {
       wxLogNull logNo;
@@ -49,7 +49,7 @@ void LoadLadspaPlugins()
          data = mainFn(index);
          while(data) {
             LadspaEffect *effect = new LadspaEffect(data);
-            Effect::RegisterEffect(effect);
+            Effect::RegisterEffect(effect, true);
 
             // Get next plugin
             index++;
@@ -59,4 +59,33 @@ void LoadLadspaPlugins()
 
       fname = wxFindNextFile();
    }
+}
+
+void LoadLadspaPlugins()
+{
+   wxStringList paths;
+
+   wxString pathVar = wxGetenv("LADSPA_PATH");
+   if (pathVar != "") {
+      wxString onePath = pathVar.BeforeFirst(wxPATH_SEP[0]);
+      pathVar = pathVar.AfterFirst(wxPATH_SEP[0]);
+      if (!paths.Member(onePath))
+         paths.Add(onePath);
+   }
+
+   #ifdef __WXGTK__
+   wxString stdPath = "/usr/local/lib/ladspa";
+   if (!paths.Member(stdPath))
+      paths.Add(stdPath);
+   stdPath = "/usr/lib/ladspa";
+   if (!paths.Member(stdPath))
+      paths.Add(stdPath);
+   #endif
+
+   for ( wxStringList::Node *node = paths.GetFirst();
+         node;
+         node = node->GetNext() ) {
+      SearchLadspaInDir(node->GetData());
+   }
+
 }

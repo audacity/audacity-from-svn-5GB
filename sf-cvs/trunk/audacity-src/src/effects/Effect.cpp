@@ -19,22 +19,22 @@
 // public static methods
 //
 
-EffectArray *Effect::mEffects = new EffectArray();
+EffectArray *Effect::mEffects[2] = {new EffectArray(), new EffectArray()};
 
-int Effect::RegisterEffect(Effect * f)
+int Effect::RegisterEffect(Effect * f, bool plugin)
 {
-   mEffects->Add(f);
-   return mEffects->Count();
+   mEffects[plugin?1:0]->Add(f);
+   return mEffects[plugin?1:0]->Count();
 }
 
-int Effect::GetNumEffects()
+int Effect::GetNumEffects(bool plugin)
 {
-   return mEffects->Count();
+   return mEffects[plugin?1:0]->Count();
 }
 
-Effect *Effect::GetEffect(int i)
+Effect *Effect::GetEffect(int i, bool plugin)
 {
-   return (*mEffects)[i];
+   return (*mEffects[plugin?1:0])[i];
 }
 
 //

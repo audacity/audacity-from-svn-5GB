@@ -36,9 +36,9 @@ class Effect {
  // them by index number, usually when the user selects one from a menu.
  //
  public:
-   static int RegisterEffect(Effect * f);
-   static int GetNumEffects();
-   static Effect *GetEffect(int i);
+   static int RegisterEffect(Effect * f, bool plugin);
+   static int GetNumEffects(bool plugin);
+   static Effect *GetEffect(int i, bool plugin);
 
  // 
  // public methods
@@ -153,7 +153,7 @@ class Effect {
  // Used only by the base Effect class
  //
  private:
-   static EffectArray *mEffects;
+   static EffectArray *mEffects[2];
    
    int mNumTracks;
    int mNumGroups;

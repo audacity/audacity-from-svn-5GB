@@ -177,6 +177,7 @@ class AudacityProject:public wxFrame,
    wxMenu *mProjectMenu;
    wxMenu *mTrackMenu;
    wxMenu *mEffectMenu;
+   wxMenu *mPluginMenu;
    wxMenu *mHelpMenu;
 
    // Window elements

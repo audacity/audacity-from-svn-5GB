@@ -21,6 +21,7 @@ class LadspaEffect:public Effect {
  public:
 
    LadspaEffect(const LADSPA_Descriptor *data);
+   ~LadspaEffect();
 
    virtual wxString GetEffectName();
    
@@ -52,6 +53,7 @@ class LadspaEffect:public Effect {
    unsigned long *outputPorts;
    float *inputControls;
    float *outputControls;
+   int mainRate;
 };
 
 class LadspaEffectDialog:public wxDialog {
@@ -60,22 +62,32 @@ class LadspaEffectDialog:public wxDialog {
  public:
    LadspaEffectDialog(wxWindow * parent,
                       const LADSPA_Descriptor *data,
-                      float *inputControls);
+                      float *inputControls,
+                      int sampleRate);
 
    ~LadspaEffectDialog();
 
    void OnSlider(wxCommandEvent & event);
+   void OnTextCtrl(wxCommandEvent & event);
    void OnOK(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
 
-    DECLARE_EVENT_TABLE()
+   DECLARE_EVENT_TABLE()
 
  private:
-    const LADSPA_Descriptor *mData;
-    wxSlider **sliders;
-    wxTextCtrl **fields;
-    wxStaticText **labels;
-    unsigned long *ports;
-    unsigned long numParams;
-    float *inputControls;
+   void HandleSlider();
+   void HandleText();
+
+   bool inSlider;
+   bool inText;
+      
+   int sampleRate;
+   const LADSPA_Descriptor *mData;
+   wxSlider **sliders;
+   wxSlider *targetSlider;
+   wxTextCtrl **fields;
+   wxStaticText **labels;
+   unsigned long *ports;
+   unsigned long numParams;
+   float *inputControls;
 };

@@ -90,7 +90,7 @@ extern "C" {
 
                      VSTEffect *vst =
                          new VSTEffect(wxString(fragNameCStr), theEffect);
-                     Effect::RegisterEffect(vst);
+                     Effect::RegisterEffect(vst, true);
                   }
                }
             } else {
