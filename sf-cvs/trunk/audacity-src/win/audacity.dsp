@@ -208,6 +208,14 @@ SOURCE=..\src\FileFormats.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\FormatSelection.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\FormatSelection.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\FreqWindow.cpp
 # End Source File
 # Begin Source File
@@ -277,6 +285,14 @@ SOURCE=..\src\Legacy.cpp
 # Begin Source File
 
 SOURCE=..\src\Legacy.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\Menus.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\Menus.h
 # End Source File
 # Begin Source File
 
@@ -900,51 +916,19 @@ SOURCE=..\src\effects\nyquist\Nyquist.h
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\src\commands\Commands.cpp
+SOURCE=..\src\commands\CommandManager.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\commands\Commands.h
+SOURCE=..\src\commands\CommandManager.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\commands\CommandsCallback.cpp
+SOURCE=..\src\commands\Keyboard.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\commands\CommandsCallback.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\commands\CommandsCfg.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\commands\CommandsDefaultData.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\commands\CommandsMenu.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\commands\CommandsMenu.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\commands\CommandsReader.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\commands\CommandsReader.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\commands\CommandsWriter.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\commands\CommandsWriter.h
+SOURCE=..\src\commands\Keyboard.h
 # End Source File
 # End Group
 # Begin Group "src/blockfile"
