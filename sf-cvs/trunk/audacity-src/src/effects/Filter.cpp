@@ -334,10 +334,8 @@ void FilterPanel::OnMouseEvent(wxMouseEvent & event)
       Refresh(false);
 
    if (event.ButtonUp()) {
-      #ifdef USE_HASCAPTURE
       if (HasCapture())
-      #endif
-      ReleaseMouse();
+         ReleaseMouse();
    }
 }
 

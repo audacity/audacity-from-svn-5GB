@@ -26,7 +26,6 @@
 #include <wx/utils.h>
 
 #include "../Prefs.h"
-#include "../DiskFunctions.h"
 #include "../AudacityApp.h"
 #include "DirectoriesPrefs.h"
 
@@ -60,11 +59,7 @@ PrefsPanel(parent)
    //BG: wxWindows 2.3.2 and higher claim to support this, through a function called wxGetDiskSpace
 
    wxLongLong freeSpace;
-#if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
    wxGetDiskSpace(mTempDir, NULL, &freeSpace);
-#else
-   freeSpace = GetFreeDiskSpace((char *) (const char *) mTempDir);
-#endif
 
    /* Order is important here: mFreeSpace must be allocated before
       mTempDirText, so that the handler doesn't try to operate on
@@ -165,13 +160,7 @@ void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent &event)
 
    //BG: wxWindows 2.3.2 and higher claim to support this, through a function called wxGetDiskSpace
 
-#if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
    wxGetDiskSpace(tempDir, NULL, &space);
-#else
-   static char tmp[200];
-   strncpy(tmp, tempDir.c_str(), 200);
-   space = GetFreeDiskSpace(tmp);
-#endif
 
    mFreeSpace->SetLabel(FormatSize(space));
 }

@@ -144,10 +144,8 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
    //If the mouse button is released, the following stuff happens
    if (event.ButtonUp() ) {
       mIsClicking = false;
-      #ifdef USE_HASCAPTURE
       if (HasCapture())
-      #endif
-      ReleaseMouse();
+         ReleaseMouse();
 
 
       //Only process the event if you are releasing on the button--if you moved
@@ -270,9 +268,7 @@ void AButton::Disable()
 {
    mEnabled = false;
    mButtonState = AButtonDis;
-#ifdef USE_HASCAPTURE
    if (GetCapture()==this)
-#endif
       ReleaseMouse();
    this->Refresh(false);
 }
@@ -289,9 +285,7 @@ void AButton::PopUp()
     
    mButtonIsDown = false;
    mButtonState = AButtonUp;
-#ifdef USE_HASCAPTURE
    if (GetCapture()==this)
-#endif
       ReleaseMouse();
 
    this->Refresh(false);

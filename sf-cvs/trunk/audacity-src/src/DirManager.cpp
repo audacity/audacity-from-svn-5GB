@@ -26,7 +26,6 @@
 #include "blockfile/SimpleBlockFile.h"
 #include "blockfile/PCMAliasBlockFile.h"
 #include "DirManager.h"
-#include "DiskFunctions.h"
 #include "Prefs.h"
 
 #include "prefs/PrefsDialog.h"
@@ -121,11 +120,7 @@ DirManager::DirManager()
    //BG: wxWindows 2.3.2 and higher claim to support this, through a function called wxGetDiskSpace
 
    wxLongLong freeSpace;
-#if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
    wxGetDiskSpace(temp, NULL, &freeSpace);
-#else
-   freeSpace = GetFreeDiskSpace((char *) (const char *) temp);
-#endif
    if (freeSpace >= 0) {
       if (freeSpace < 1048576) {
          // TODO: allow user to select different temporary volume.

@@ -25,10 +25,6 @@
 // in an irrevocable way
 #define AUDACITY_FILE_FORMAT_VERSION "1.1.0"
 
-#if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
-#define USE_HASCAPTURE
-#endif
-
 class wxWindow;
 class ToolBarStub;
 

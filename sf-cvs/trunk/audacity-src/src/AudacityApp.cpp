@@ -20,9 +20,7 @@
 #include <wx/fs_zip.h>
 #include <wx/image.h>
 
-#if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
 #include <wx/filename.h>
-#endif
 
 #ifdef __WXGTK__
 #include <unistd.h>
@@ -508,20 +506,13 @@ bool AudacityApp::OnInit()
 void AudacityApp::AddUniquePathToPathList(wxString path,
                                           wxArrayString &pathList)
 {
-   #if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
    wxFileName pathNorm = path;
    pathNorm.Normalize();
    path = pathNorm.GetFullPath();
-   #endif
 
    for(unsigned int i=0; i<pathList.GetCount(); i++) {
-      #if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
       if (wxFileName(path) == wxFileName(pathList[i]))
          return;
-      #else
-      if (path == pathList[i])
-         return;
-      #endif
    }
 
    pathList.Add(path);
