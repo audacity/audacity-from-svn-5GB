@@ -476,7 +476,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 
 void TrackPanel::HandleSelect(wxMouseEvent & event)
 {
-   if (event.ButtonDown()) {
+   if (event.ButtonDown(1)) {
       wxRect r;
       int num;
 
@@ -626,7 +626,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       return;
    }
 
-   if (event.ButtonUp()) {
+   if (event.ButtonUp(1)) {
       mCapturedTrack = NULL;
       mIsSelecting = false;
    }
@@ -675,7 +675,7 @@ void TrackPanel::HandleEnvelope(wxMouseEvent & event)
          Refresh(false);
    }
 
-   if (event.ButtonUp()) {
+   if (event.ButtonUp(1)) {
       mCapturedTrack = NULL;
       MakeParentPushState();
    }
@@ -683,7 +683,7 @@ void TrackPanel::HandleEnvelope(wxMouseEvent & event)
 
 void TrackPanel::HandleSlide(wxMouseEvent & event)
 {
-   if (event.ButtonDown()) {
+   if (event.ButtonDown(1)) {
 
       wxRect r;
       int num;
@@ -848,7 +848,7 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
       mSelStart = selend;
    }
 
-   if (event.ButtonUp()) {
+   if (event.ButtonUp(1)) {
       mCapturedTrack = NULL;
       mIsSliding = false;
       MakeParentRedrawScrollbars();
@@ -858,7 +858,7 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
 
 void TrackPanel::HandleZoom(wxMouseEvent &event)
 {
-   if (event.ButtonDown() || event.ButtonDClick()) {
+   if (event.ButtonDown(1) || event.ButtonDClick(1)) {
       mZoomStart = event.m_x;
       mZoomEnd = event.m_x;
    }
@@ -951,7 +951,7 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
       DrawCloseBox(&dc, r, closeRect.Inside(event.m_x, event.m_y));
       return;
    }
-   if (event.ButtonUp()) {
+   if (event.ButtonUp(1)) {
       wxClientDC dc(this);
       DrawCloseBox(&dc, r, false);
       if (closeRect.Inside(event.m_x, event.m_y)) {
@@ -974,7 +974,7 @@ void TrackPanel::HandleMuting(wxMouseEvent & event)
       DrawMute(&dc, r, t, muteRect.Inside(event.m_x, event.m_y));
       return;
    }
-   if (event.ButtonUp()) {
+   if (event.ButtonUp(1)) {
       wxClientDC dc(this);
       if (muteRect.Inside(event.m_x, event.m_y)) {
          t->mute = !t->mute;
@@ -996,7 +996,7 @@ void TrackPanel::HandleSoloing(wxMouseEvent & event)
       DrawSolo(&dc, r, t, soloRect.Inside(event.m_x, event.m_y));
       return;
    }
-   if (event.ButtonUp()) {
+   if (event.ButtonUp(1)) {
       wxClientDC dc(this);
       if (soloRect.Inside(event.m_x, event.m_y)) {
          t->solo = !t->solo;
@@ -1008,7 +1008,7 @@ void TrackPanel::HandleSoloing(wxMouseEvent & event)
 
 void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 {
-   if (!(event.ButtonDown() || event.ButtonDClick()))
+   if (!(event.ButtonDown(1) || event.ButtonDClick(1)))
       return;
 
    wxRect r;
@@ -1167,7 +1167,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 
 void TrackPanel::HandleResize(wxMouseEvent & event)
 {
-   if (event.ButtonDown()) {
+   if (event.ButtonDown(1)) {
       wxRect r;
       int num;
 
@@ -1198,7 +1198,7 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
       Refresh(false);
    }
 
-   if (event.ButtonUp()) {
+   if (event.ButtonUp(1)) {
       mCapturedTrack = NULL;
       mIsResizing = false;
       MakeParentRedrawScrollbars();
@@ -1254,7 +1254,7 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       mMouseMostRecentY = event.m_y;
    }
 
-   if (event.ButtonDown()) {
+   if (event.ButtonDown(1)) {
       mCapturedTrack = NULL;
 
       wxActivateEvent *e = new wxActivateEvent();
@@ -1288,7 +1288,7 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
 
    VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
 
-   if (event.ButtonDown() &&
+   if (event.ButtonDown(1) &&
        event.m_y >= (r.y + r.height - 5) &&
        event.m_y < (r.y + r.height + 5)) {
       HandleResize(event);
@@ -1318,11 +1318,11 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       break;
    }
 
-   if ((event.Moving() || event.ButtonUp()) &&
+   if ((event.Moving() || event.ButtonUp(1)) &&
        !mIsSelecting && !mIsEnveloping && !mIsSliding) {
       HandleCursor(event);
    }
-   if (event.ButtonUp()) {
+   if (event.ButtonUp(1)) {
       mCapturedTrack = NULL;
    }
 }
