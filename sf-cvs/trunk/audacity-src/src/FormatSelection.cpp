@@ -22,6 +22,7 @@ wxArrayString GetSelectionFormats()
 
    a.Add(_("min:sec"));
    a.Add(_("sec"));
+   a.Add(_("hr:min:sec"));
    a.Add(_("film frames 24 fps"));
    a.Add(_("film h:mm:ss:ff 24 fps"));
    a.Add(_("PAL frames 25 fps"));
@@ -49,18 +50,16 @@ wxString FormatSelection(int iformat, int iSnapTo,
 
    // Items required for adding a new format:
    //
-   //   1. enum entry for iformat
-   //   2. enum entry for event ID
-   //   3. event table updated if needed in EVT_MENU_RANGE
-   //   4. mSelectionMenu entry
-   //   5. event handler OnSelectionChange entry
-   //   6. logic added in DisplaySelection
+   //   1. add enum entry for iformat in FormatSelection.h
+   //   2. add wxArrayString a entry in GetSelectionFormats()
+   //   3. add logic in FormatSelection()
 
    // use interger iformat to control selection output format
    //
    // formats that are based on ruler time
    //   iformat = SELECTION_FORMAT_RULER_MIN_SEC --> use min:sec.xxxxxx
    //   iformat = SELECTION_FORMAT_RULER_SEC --> use sec.xxxxxx
+   //   iformat = SELECTION_FORMAT_RULER_HR_MIN_SEC --> use hr:min:sec.xxxxxx
    //   iformat = SELECTION_FORMAT_RULER_FILM_FRAMES --> use film frames 24 fps
    //   iformat = SELECTION_FORMAT_RULER_FILM_HMMSSFF --> use film h:mm:ss:ff 24 fps
    //   iformat = SELECTION_FORMAT_RULER_PAL_FRAMES --> use PAL frames 25 fps
@@ -78,26 +77,12 @@ wxString FormatSelection(int iformat, int iSnapTo,
    //   iformat = SELECTION_FORMAT_CDDA_SECTORS_BYTES --> use cdda sectors+bytes (2352 byte blocks)
    //                   (only applicable for projects with rate = 44100)
    //
-   // iformat is a global variable defined near the top of
-   // TrackPanel.cpp to a default value of SELECTION_FORMAT_RULER_MIN_SEC.
-   // When event handler TrackPanel::OnSelectionChange is called, iformat is changed.
+   // iformat now gets passed into FormatSelection as an arguement
+   // which is now changed from the View menu of Audacity
    //
-   // iSnapTo is a global variable defined near the top of
-   // TrackPanel.cpp to a default value of 0 (or off).
-
+   // iSnapTo also gets passed into FormatSelection and is changed
+   // from the Audacity View menu
    //
-   // CAUTION: time shifting is not set up with snap-to, and this can
-   //          cause confusion since a snapped-to cursor position
-   //          can end up not aligned on a sample.  The project menu
-   //          align functions can be used to take care of this.
-   //          Also different tracks with different rates can cause
-   //          this same confusion.
-   //
-   // NOTE: best to zoom in to about the first 16 or so samples of a
-   //       project and observe for yourself the behavior of using
-   //       iformat values based on rate and samples.
-   //
-
    // samplerate is now set to the project sample rate
 
    // Issues related to rounding functions:
@@ -184,6 +169,53 @@ wxString FormatSelection(int iformat, int iSnapTo,
       else
          result.Printf(_("Selection: %lf - %lf (%lf sec)   %s"),
                        dsec1, dsec2, dsectot, SnapTo[0][iSnapTo]);
+      break;
+
+   case SELECTION_FORMAT_RULER_HR_MIN_SEC:
+      // use hr:min:sec.xxxxxx (from ruler)
+      ihr1 = int(start/3600.0);
+      ihr2 = int(end/3600.0);
+      ihrtot = int(length/3600.0);
+      dsec1 = start - double(ihr1*3600);
+      dsec2 = end - double(ihr2*3600);
+      dsectot = length - double(ihrtot*3600);
+      imin1 = int(dsec1/60.0);
+      imin2 = int(dsec2/60.0);
+      imintot = int(dsectot/60.0);
+      dsec1 -= double(imin1*60);
+      dsec2 -= double(imin2*60);
+      dsectot -= double(imintot*60);
+      if(iSnapTo == 1) {
+         // temporarily put total not leftover sec in dsec variables
+         dsec1 = rint(dsec1) + double(imin1*60) + double(ihr1*3600);
+         dsec2 = rint(dsec2) + double(imin2*60) + double(ihr2*3600);
+         dsectot = rint(dsec2 - dsec1);
+         viewInfo->sel0 = dsec1;
+         viewInfo->sel1 = dsec2;
+         // if rounding beyond end happens fix sel0 for proper cursor info
+         if(viewInfo->sel0 > viewInfo->sel1)
+            viewInfo->sel0 = viewInfo->sel1;
+         // now get the real ones to display
+         ihr1 = int(dsec1/3600.0);
+         ihr2 = int(dsec2/3600.0);
+         ihrtot = int(dsectot/3600.0);
+         dsec1 -= double(ihr1*3600);
+         dsec2 -= double(ihr2*3600);
+         dsectot -= double(ihrtot*3600);
+         imin1 = int(dsec1/60.0);
+         imin2 = int(dsec2/60.0);
+         imintot = int(dsectot/60.0);
+         dsec1 -= double(imin1*60);
+         dsec2 -= double(imin2*60);
+         dsectot -= double(imintot*60);
+      }
+      // display a message about the selection in the status message window
+      if(viewInfo->sel0 == viewInfo->sel1)
+         result.Printf(_("Cursor: %1i:%02i:%09.6f hr:min:sec   %s"),
+                       ihr1, imin1, dsec1, SnapTo[0][iSnapTo]);
+      else
+         result.Printf(_("Selection: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f hr:min:sec)   %s"),
+                       ihr1, imin1, dsec1, ihr2, imin2, dsec2, ihrtot, imintot, dsectot, SnapTo[0][iSnapTo]);
       break;
 
    case SELECTION_FORMAT_RULER_FILM_FRAMES:
@@ -726,10 +758,18 @@ wxString FormatSelection(int iformat, int iSnapTo,
       viewInfo->sel1 = double(isamples2)/samplerate;
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
-         result.Printf(_("Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [Snap-To Samples]"),
+         if((int)rint(samplerate) == 44100)
+           result.Printf(_("Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [Snap-To Samples]"),
+                       isector1, ibyte1);
+         else
+           result.Printf(_("Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [Snap-To Samples]   Change Project Rate to 44100 for cdda"),
                        isector1, ibyte1);
       else
-         result.Printf(_("Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]"),
+         if((int)rint(samplerate) == 44100)
+           result.Printf(_("Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]"),
+                       isector1, ibyte1, isector2, ibyte2, isectortot, ibytetot);
+         else
+           result.Printf(_("Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]   Change Project Rate to 44100 for cdda"),
                        isector1, ibyte1, isector2, ibyte2, isectortot, ibytetot);
       break;
 
