@@ -28,6 +28,7 @@ class GUIPrefs : public PrefsPanel {
 
  private:
     wxCheckBox *mAutoscroll;
+    wxCheckBox *mAlwaysEnablePause;
     wxCheckBox *mSpectrogram;
     wxCheckBox *mEditToolBar;
     wxTextCtrl *mLocale;

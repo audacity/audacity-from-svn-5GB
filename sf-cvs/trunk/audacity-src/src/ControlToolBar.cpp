@@ -39,6 +39,7 @@
 #include "widgets/AButton.h"
 #include "widgets/ASlider.h"
 #include "AudioIO.h"
+#include "Prefs.h"
 #include "Project.h"
 #include "Track.h"
 
@@ -159,8 +160,13 @@ void ControlToolBar::InitializeControlToolBar()
    mCurrentTool = 0;
    mTool[0]->PushDown();
 
+   gPrefs->Read("/GUI/AlwaysEnablePause", &mAlwaysEnablePause, false);
+
    mPaused=false;             //Turn the paused state to off
-   mPause->Disable();         //Turn the pause button off.
+   if(!mAlwaysEnablePause)
+      mPause->Disable();         //Turn the pause button off.
+   gAudioIO->SetAlwaysEnablePause(mAlwaysEnablePause);
+
 #if 0
 #if defined(__WXMAC__)          // && defined(TARGET_CARBON)
    mDivBitmap = new wxBitmap((const char **) Div);
@@ -439,6 +445,23 @@ void ControlToolBar::OnKeyEvent(wxKeyEvent & event)
 }
 
 
+void ControlToolBar::UpdatePrefs()
+{
+   gPrefs->Read("/GUI/AlwaysEnablePause", &mAlwaysEnablePause, false);
+
+   if(mAlwaysEnablePause)
+      mPause->Enable();
+   else if(!mAlwaysEnablePause && !gAudioIO->IsBusy())
+   {
+      mPause->PopUp();
+      mPause->Disable();
+      mPaused = false;
+      gAudioIO->SetPaused(false);
+   }
+
+   gAudioIO->SetAlwaysEnablePause(mAlwaysEnablePause);
+}
+
 int ControlToolBar::GetCurrentTool()
 {
    return mCurrentTool;
@@ -461,7 +484,8 @@ void ControlToolBar::SetStop(bool down)
       mStop->Disable();
       mRecord->Enable();
       mPlay->Enable();
-      mPause->Disable();
+      if(!mAlwaysEnablePause)
+         mPause->Disable();
       mRewind->Enable();
       mFF->Enable();
 
@@ -515,7 +539,8 @@ void ControlToolBar::OnStop(wxCommandEvent &evt)
    SetStop(false);
    
    mPause->PopUp();
-   mPause->Disable();
+   if(!mAlwaysEnablePause)
+      mPause->Disable();
    mPaused=false;
 }
 

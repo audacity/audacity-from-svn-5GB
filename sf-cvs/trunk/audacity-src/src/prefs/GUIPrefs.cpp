@@ -29,10 +29,11 @@ GUIPrefs::GUIPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
    // Scrolling
-   bool autoscroll, spectrogram, editToolBar;
-   gPrefs->Read("/GUI/AutoScroll", &autoscroll, false);
+   bool autoscroll, spectrogram, editToolBar, alwaysEnablePause;
+   gPrefs->Read("/GUI/AutoScroll", &autoscroll, true);
    gPrefs->Read("/GUI/UpdateSpectrogram", &spectrogram, true);
    gPrefs->Read("/GUI/EnableEditToolBar", &editToolBar, true);
+   gPrefs->Read("/GUI/AlwaysEnablePause", &alwaysEnablePause, false);
 
    topSizer = new wxBoxSizer( wxVERTICAL );
    
@@ -40,6 +41,11 @@ PrefsPanel(parent)
    mAutoscroll = new wxCheckBox(this, -1, _("Autoscroll while playing"));
    mAutoscroll->SetValue(autoscroll);
    topSizer->Add(mAutoscroll, 0, wxGROW|wxALL, 2);
+
+   //Always enable pause preference
+   mAlwaysEnablePause = new wxCheckBox(this, -1, _("Always allow pausing"));
+   mAlwaysEnablePause->SetValue(alwaysEnablePause);
+   topSizer->Add(mAlwaysEnablePause, 0, wxGROW|wxALL, 2);
 
    //Spectrogram preference
    mSpectrogram = new wxCheckBox(this, -1, _("Update spectrogram while playing"));
@@ -78,6 +84,7 @@ bool GUIPrefs::Apply()
 {
    gPrefs->Write("/GUI/AutoScroll", mAutoscroll->GetValue());
    gPrefs->Write("/GUI/UpdateSpectrogram", mSpectrogram->GetValue());
+   gPrefs->Write("/GUI/AlwaysEnablePause", mAlwaysEnablePause->GetValue());
 
    //-------------------------------------------------------------
    //---------------------- Edit toolbar loading/unloading
