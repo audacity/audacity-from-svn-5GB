@@ -677,7 +677,7 @@ void WaveTrack::Clear(double t0, double t1)
    sampleCount s0 = (sampleCount) ((t0 - tOffset) * rate + 0.5);
    sampleCount s1 = (sampleCount) ((t1 - tOffset) * rate + 0.5);
 
-   if (s0 < 0)
+   if (t0 < tOffset)
       s0 = 0;
    if (s1 >= numSamples)
       s1 = numSamples;
@@ -695,7 +695,7 @@ void WaveTrack::Silence(double t0, double t1)
    sampleCount s0 = (sampleCount) ((t0 - tOffset) * rate + 0.5);
    sampleCount s1 = (sampleCount) ((t1 - tOffset) * rate + 0.5);
 
-   if (s0 < 0)
+   if (t0 < tOffset)
       s0 = 0;
    if (s1 >= numSamples)
       s1 = numSamples;
