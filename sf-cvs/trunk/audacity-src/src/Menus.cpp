@@ -974,7 +974,7 @@ void AudacityProject::OnEffect(int type, int index)
       if ((f->GetEffectFlags() & (INSERT_EFFECT | ANALYZE_EFFECT))==0) {
          Effect::SetLastEffect( type, index, f );
          mCommandManager.Modify("RepeatLastEffect",
-            wxString::Format(_("Another %s\tCtrl+G"),
+            wxString::Format(_("Repeat %s\tCtrl+R"),
             (const char *)shortDesc));
       }
       
