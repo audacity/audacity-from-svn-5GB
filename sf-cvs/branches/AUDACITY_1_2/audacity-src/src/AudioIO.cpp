@@ -547,15 +547,15 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
    }
 
 
-   if( numCaptureChannels > 0 ) {
+   if( numCaptureChannels > 0 )
    {
       // For capture, every input channel gets its own track
       mNumCaptureChannels = numCaptureChannels;
-
+      
       mCaptureFormat = captureFormat;
       captureDevice =  Pa_GetDefaultInputDeviceID();
       wxString captureDeviceName = gPrefs->Read("/AudioIO/RecordingDevice", "");
-
+      
       if( captureDeviceName != "" )
       {
          for( int i = 0; i < Pa_CountDevices(); i++)
@@ -565,7 +565,7 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
                captureDevice = i;
          }
       }
-
+      
       paCaptureFormat =
          AudacityToPortAudioSampleFormat(mCaptureFormat);
    }
