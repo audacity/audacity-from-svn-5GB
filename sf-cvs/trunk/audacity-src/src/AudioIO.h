@@ -68,6 +68,8 @@ class AudioIO {
    void OnTimer();
 
    sampleFormat GetFormat();
+   void SetPaused(bool state);
+   bool GetPaused();
 
  private:
 
@@ -84,6 +86,7 @@ class AudioIO {
    double              mT0;
    double              mT1;
    bool                mHardStop;
+   bool                mPaused;
    
    PortAudioStream    *mPortStream;
 
