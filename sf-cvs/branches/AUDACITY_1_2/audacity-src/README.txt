@@ -308,6 +308,12 @@ Changes in 1.2.0-pre4:
   * MS Windows: Fixed problems in trying to set the Windows 
     registry as non-admin user, for file-type associations.
 
+  * Make sure the "Save" command is enabled after changing
+    gain and pan sliders.
+
+  * Updated translations.  Added translator credits to localized
+    versions of Audacity.
+
 Changes in 1.2.0-pre3:
 
   * Fixed bug where Export is grayed out when nothing is
