@@ -8,6 +8,9 @@
 
 **********************************************************************/
 
+#include <wx/defs.h>
+#include <wx/app.h>
+#include <wx/log.h>
 #include <wx/filefn.h>
 #include <wx/hash.h>
 #include <wx/msgdlg.h>
@@ -18,6 +21,8 @@
 #include "DirManager.h"
 #include "DiskFunctions.h"
 #include "Prefs.h"
+
+#include "prefs/PrefsDialog.h"
 
 // Static class variables
 
@@ -49,18 +54,61 @@ wxString DirManager::temp = (DirManager::home +
 DirManager::DirManager()
 {
    if (firstCtor) {
-      wxString tempPref = gPrefs->Read("/Directories/TempDir", temp);
-      if (tempPref == "")
-         tempPref = temp;
-      #ifdef __WXGTK__         
-      if (tempPref.GetChar(0) != '/')
-         tempPref = temp;
-      #endif
-      temp = tempPref;
-      if (!wxPathExists(temp))
-         wxMkdir(temp);
-      gPrefs->Write("/Directories/TempDir", temp);
+      // The first time a DirManager is created, we need to find
+      // a temp directory location.
+
       firstCtor = false;
+
+      wxString tempFromPrefs = gPrefs->Read("/Directories/TempDir", "");
+      wxString tempDefaultLoc = temp;
+
+      temp = "";
+
+      #ifdef __WXGTK__         
+      if (tempFromPrefs.GetChar(0) != '/')
+         tempFromPrefs = "";
+      #endif
+
+      // Stop wxWindows from printing its own error messages
+
+      wxLogNull logNo;
+
+      // Try temp dir that was stored in prefs first
+
+      if (tempFromPrefs != "") {
+         if (wxPathExists(tempFromPrefs))
+            temp = tempFromPrefs;
+         else if (wxMkdir(tempFromPrefs))
+            temp = tempFromPrefs;
+      }
+
+      // If that didn't work, try the default location
+
+      if (temp=="" && tempDefaultLoc != "") {
+         if (wxPathExists(tempDefaultLoc))
+            temp = tempDefaultLoc;
+         else if (wxMkdir(tempDefaultLoc))
+            temp = tempDefaultLoc;
+      }
+
+      if (temp != "") {
+         // Success
+         gPrefs->Write("/Directories/TempDir", temp);
+      }
+      else {
+         wxMessageBox("Audacity could not find a place to store temporary files.\n"
+                      "Please enter an appropriate directory in the "
+                      "preferences dialog.");
+
+         PrefsDialog dialog(NULL);
+         dialog.ShowTempDirPage();
+         dialog.ShowModal();
+
+         wxMessageBox("Audacity is now going to exit.  Please launch Audacity "
+                      "again to use the new temporary directory.");
+         wxExit();
+      }
+
    }
    numDirManagers++;
    if (numDirManagers == 1) {
