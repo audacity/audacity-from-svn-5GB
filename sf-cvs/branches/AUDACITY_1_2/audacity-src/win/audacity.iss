@@ -20,6 +20,7 @@ InfoBeforeFile=E:\sfw_dev\audacity\README.txt
 Name: desktopicon; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; MinVersion: 4,4
 Name: associate_aup; Description: "&Associate Audacity project files"; GroupDescription: "Other tasks:"; Flags: checkedonce; MinVersion: 4,4
 
+
 [Files]
 Source: "E:\sfw_dev\audacity\win\Release\audacity.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\audacity-1.2-help.htb"; DestDir: "{app}"; Flags: ignoreversion
@@ -77,13 +78,27 @@ Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\clicktrack.ny"; DestDir: "{app
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\delay.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\fadein.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\fadeout.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-; VST is turned off.    Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\Freeverb2.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-; VST is turned off.    Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\Freeverb-readme.txt"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+
+; Freeverb2 requires VST Enabler.
+Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\Freeverb2.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\Freeverb-readme.txt"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+
+; GVerb requires VST Enabler.
+Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\GVerb.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+
+Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\highpass.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\highpass.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\lowpass.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\pluck.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+
+; sc4 requires VST Enabler.
+Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\sc4.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\tremolo.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\undcbias.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+
+Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\VST Enabler.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+
 
 [Icons]
 Name: "{commonprograms}\Audacity"; Filename: "{app}\audacity.exe"
