@@ -72,8 +72,35 @@ LadspaEffect::LadspaEffect(const LADSPA_Descriptor *data)
              val > hint.UpperBound)
             val = hint.UpperBound;
 
+         if (LADSPA_IS_HINT_DEFAULT_MINIMUM(hint.HintDescriptor))
+            val = hint.LowerBound;
+
+         if (LADSPA_IS_HINT_DEFAULT_LOW(hint.HintDescriptor))
+            val = hint.LowerBound * 0.75f + hint.UpperBound * 0.25f;
+
+         if (LADSPA_IS_HINT_DEFAULT_MIDDLE(hint.HintDescriptor))
+            val = hint.LowerBound * 0.5f + hint.UpperBound * 0.5f;
+
+         if (LADSPA_IS_HINT_DEFAULT_HIGH(hint.HintDescriptor))
+            val = hint.LowerBound * 0.25f + hint.UpperBound * 0.75f;
+
+         if (LADSPA_IS_HINT_DEFAULT_MAXIMUM(hint.HintDescriptor))
+            val = hint.UpperBound;
+
          if (LADSPA_IS_HINT_SAMPLE_RATE(hint.HintDescriptor))
             val *= 44100;
+
+         if (LADSPA_IS_HINT_DEFAULT_0(hint.HintDescriptor))
+            val = 0.0f;
+
+         if (LADSPA_IS_HINT_DEFAULT_1(hint.HintDescriptor))
+            val = 1.0f;
+
+         if (LADSPA_IS_HINT_DEFAULT_100(hint.HintDescriptor))
+            val = 100.0f;
+
+         if (LADSPA_IS_HINT_DEFAULT_440(hint.HintDescriptor))
+            val = 440.0f;
 
          inputControls[p] = val;
       }
