@@ -60,6 +60,9 @@
 /* Define if the ogg vorbis decoding library is present */
 #undef USE_LIBVORBIS
 
+/* Define if libnyquist is present */
+#undef USE_NYQUIST
+
 /* Define if wave++ is present */
 #undef USE_WAVELET
 

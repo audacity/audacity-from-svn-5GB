@@ -270,6 +270,9 @@ bool WaveTrack::Paste(double t0, const Track *src)
    if (!Flush())
       return false;
 
+   if (!((WaveTrack *)src)->Flush())
+      return false;
+
    TimeToSamplesClip(t0, &s0);
 
    if (mSequence->Paste(s0, ((WaveTrack *)src)->mSequence)) {

@@ -566,6 +566,20 @@ const LabelStruct *LabelTrack::GetLabel(int index) const
    return mLabels[index];
 }
 
+void LabelTrack::Add(double t, wxString title)
+{
+   int len = mLabels.Count();
+   int pos = 0;
+
+   while (pos < len && mLabels[pos]->t < t)
+      pos++;
+
+   LabelStruct *l = new LabelStruct();
+   l->t = t;
+   l->title = title;
+   mLabels.Insert(l, pos);
+}
+
 // Private method called from the constructor
 void LabelTrack::InitColours()
 {

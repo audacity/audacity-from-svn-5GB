@@ -92,7 +92,8 @@ class Effect {
    // Returns true on success.  Will only operate on tracks that
    // have the "selected" flag set to true, which is consistent with
    // Audacity's standard UI.
-   bool DoEffect(wxWindow *parent, TrackList *list, double t0, double t1);
+   bool DoEffect(wxWindow *parent, TrackList *list,
+                 TrackFactory *factory, double *t0, double *t1);
 
  //
  // protected virtual methods
@@ -134,9 +135,11 @@ class Effect {
  // may be needed by any particular subclass of Effect.
  //
  protected:
-   wxWindow   *mParent;
-   TrackList  *mTracks;      // the complete list of all tracks
-   TrackList  *mWaveTracks;  // effects which do not add or remove tracks: use this
+   wxWindow     *mParent;
+   TrackFactory *mFactory;
+   TrackList    *mTracks;      // the complete list of all tracks
+   TrackList    *mWaveTracks;  // effects which do not add or remove tracks
+                               // should use this
    double      mT0;
    double      mT1;
 
@@ -161,6 +164,8 @@ class Effect {
    // Pass a fraction between 0.0 and 1.0, for the current track group
    // (when doing stereo groups at a time)
    bool TrackGroupProgress(int whichGroup, double frac);
+
+   int GetNumWaveTracks() { return mNumTracks; }
  
  //
  // private methods

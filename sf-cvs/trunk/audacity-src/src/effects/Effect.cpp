@@ -80,19 +80,22 @@ Effect::Effect()
    mProgress = NULL;
 }
 
-bool Effect::DoEffect(wxWindow *parent, TrackList *list, double t0, double t1)
+bool Effect::DoEffect(wxWindow *parent, TrackList *list,
+                      TrackFactory *factory,
+                      double *t0, double *t1)
 {
-   wxASSERT(t0 <= t1);
+   wxASSERT(*t0 <= *t1);
 
    if (mWaveTracks) {
       delete mWaveTracks;
       mWaveTracks = NULL;
    }
 
+   mFactory = factory;
    mParent = parent;
    mTracks = list;
-   mT0 = t0;
-   mT1 = t1;
+   mT0 = *t0;
+   mT1 = *t1;
    CountWaveTracks();
 
    if (!Init())
@@ -116,6 +119,11 @@ bool Effect::DoEffect(wxWindow *parent, TrackList *list, double t0, double t1)
    
    delete mWaveTracks;
    mWaveTracks = NULL;
+
+   if (returnVal) {
+      *t0 = mT0;
+      *t1 = mT1;
+   }
    
    return returnVal;
 }
