@@ -386,6 +386,7 @@ class TrackPanel:public wxWindow {
    wxCursor *mZoomInCursor;
    wxCursor *mZoomOutCursor;
    wxCursor *mRearrangeCursor;
+   wxCursor *mDisabledCursor;
    wxCursor *mAdjustLeftSelectionCursor;
    wxCursor *mAdjustRightSelectionCursor;
 
