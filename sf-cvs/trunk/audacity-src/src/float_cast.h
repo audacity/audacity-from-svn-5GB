@@ -68,7 +68,7 @@
 	*/
 	
 	__inline long int 
-	lrint (double flt) ;
+	lrint (double flt)
 	{	int intgr;
 
 		_asm
