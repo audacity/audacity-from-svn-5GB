@@ -20,8 +20,8 @@ libmad/mad.h: libmad/.libs/libmad.a
 libsndfile/src/.libs/libsndfile.a:
 	cd libsndfile && $(MAKE)
 
-portaudio/pa_linux_oss/portaudio.a:
-	cd portaudio/pa_linux_oss && $(MAKE)
+portaudio/pa_unix_oss/portaudio.a:
+	cd portaudio/pa_unix_oss && $(MAKE)
 
 clean:
 	cd allegro && $(MAKE) clean
@@ -29,4 +29,4 @@ clean:
 	cd libogg && $(MAKE) clean
 	cd libsndfile && $(MAKE) clean
 	cd libvorbis && $(MAKE) clean
-	cd portaudio/pa_linux_oss && $(MAKE) clean
+	cd portaudio/pa_unix_oss && $(MAKE) clean

@@ -2518,9 +2518,9 @@ SUBDIRS="$SUBDIRS lib-src/libsndfile"
 BUILDLIBS="$BUILDLIBS libsndfile/src/.libs/libsndfile.a"
 EXTRAOBJS="$EXTRAOBJS ../lib-src/libsndfile/src/.libs/libsndfile.a"
 
-SUBDIRS="$SUBDIRS lib-src/portaudio/pa_linux_oss"
-BUILDLIBS="$BUILDLIBS portaudio/pa_linux_oss/portaudio.a"
-EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_linux_oss/portaudio.a"
+SUBDIRS="$SUBDIRS lib-src/portaudio/pa_unix_oss"
+BUILDLIBS="$BUILDLIBS portaudio/pa_unix_oss/portaudio.a"
+EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
 
 BUILDLIBS="$BUILDLIBS allegro/allegro.a"
 EXTRAOBJS="$EXTRAOBJS ../lib-src/allegro/allegro.a"

@@ -2,10 +2,15 @@ INSTALL = @INSTALL@
 PREFIX = @prefix@
 ZIP = @ZIP@
 
-audacity: audacity-help.htb
+.PHONY: all
+all: audacity audacity-help.htb
+
+.PHONY: audacity
+audacity:
 	cd lib-src && $(MAKE)
 	cd src && $(MAKE)
 
+.PHONY: install
 install: audacity
 	-test -d $(PREFIX)/share/doc/audacity || \
 		mkdir -m 755 -p $(PREFIX)/share/doc/audacity
