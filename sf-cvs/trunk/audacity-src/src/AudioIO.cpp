@@ -682,13 +682,13 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    if (mPortStreamV19) {
       StopStream();
       while(mPortStreamV19)
-         wxUsleep( 50 );            
+         wxMilliSleep( 50 );            
    }
    #else
    if (mPortStreamV18) {
       StopStream();
       while(mPortStreamV18)
-         wxUsleep( 50 );
+         wxMilliSleep( 50 );
    }
    #endif
 
@@ -803,7 +803,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mAudioThreadShouldCallFillBuffersOnce = true;
 
    while( mAudioThreadShouldCallFillBuffersOnce == true )
-      wxUsleep( 50 );
+      wxMilliSleep( 50 );
 
    // Now start the PortAudio stream!
    PaError err;
@@ -913,7 +913,7 @@ void AudioIO::StopStream()
    mUpdateMeters = false;
    while(mUpdatingMeters) {
       wxYield();
-      wxUsleep( 50 );
+      wxMilliSleep( 50 );
    }
 
    // Turn off HW playthrough if PortMixer is being used
@@ -958,7 +958,7 @@ void AudioIO::StopStream()
       while( mAudioThreadShouldCallFillBuffersOnce == true )
       {
          wxYield();
-         wxUsleep( 50 );
+         wxMilliSleep( 50 );
       }
 
       //
