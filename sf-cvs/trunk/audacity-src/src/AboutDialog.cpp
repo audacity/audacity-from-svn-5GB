@@ -138,6 +138,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "Daniil Kolpakov<br>"
       "Robert Leidle<br>"
       "Logan Lewis<br>" 
+      "Shane Mueller<br>"
       "Tony Oetzmann<br>"
       "Jason Pepas<br>"
       "Mark Phillips<br>"
