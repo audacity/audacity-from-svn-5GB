@@ -40,20 +40,17 @@ extern "C" {
    extern void set_xlisp_path(const char *p);
 }
 
-#ifdef USE_NYQUIST
-	#ifdef __WXMSW__ // Not for Linux because stdlib.h for gcc defines its own random().
-		/* vjohnson */
-		extern "C" {
-		long random_seed = 1534781L;
-
-		short random(short lo, short hi)
-		{
-			random_seed *= 13L;
-			random_seed += 1874351L;
-			return((short)(lo + (((hi + 1 - lo) * ((0x00ffff00 & random_seed) >> 8)) >> 16)));
-		}
-		}
-	#endif
+#if defined(USE_NYQUIST) && defined(__WXMSW__) && !defined(__CYGWIN__)
+// Nyquist needs a random function and non-Cygwin MSW doesn't provide one...
+extern "C" {
+   long random_seed = 1534781L;
+   short random(short lo, short hi)
+   {
+      random_seed *= 13L;
+      random_seed += 1874351L;
+      return((short)(lo + (((hi + 1 - lo) * ((0x00ffff00 & random_seed) >> 8)) >> 16)));
+   }
+}
 #endif
 
 
@@ -676,7 +673,7 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
    :wxDialog(parent, id, title)
 {
    mControls = controlArray;
-   mInHandler = false;
+   mInHandler = true; // prevents race condition on MSW
 
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
    wxBoxSizer *hSizer;
@@ -742,6 +739,8 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
    hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   mInHandler = false;
 
    wxCommandEvent dummy;
    OnSlider(dummy);
