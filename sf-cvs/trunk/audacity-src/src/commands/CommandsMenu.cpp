@@ -29,16 +29,26 @@
 #define MAX_SUBMENU_LEN 1000
 #endif
 
+
+///
+///  Standard Constructor
+///
 CommandsMenu::CommandsMenu() : mCurrentID(0), mCurrentMenu(NULL)
 {
 }
 
+///
+///  Class Destructor.  Includes PurgeData, which removes
+///  menubars
 CommandsMenu::~CommandsMenu()
 {
    //WARNING: This removes menubars that could still be assigned to windows!
    PurgeData();
 }
 
+///
+/// Cleans up menubars that are wx arrays
+///
 void CommandsMenu::PurgeData()
 {
    //delete the menubars
@@ -60,6 +70,11 @@ void CommandsMenu::PurgeData()
    mCurrentID = 0;
 }
 
+
+
+///
+/// Makes a new menubar for placement on the top of a project
+/// Names it according to the passed-in string argument.
 void CommandsMenu::AddMenuBar(wxString sMenu)
 {
    MenuBarListEntry *tmpEntry = new MenuBarListEntry;
@@ -70,6 +85,10 @@ void CommandsMenu::AddMenuBar(wxString sMenu)
    mMenuBarList.Add(tmpEntry);
 }
 
+
+///
+/// Retrieves the menubar based on the name given in AddMenuBar(name) 
+///
 wxMenuBar * CommandsMenu::GetMenuBar(wxString sMenu)
 {
    for(unsigned int i = 0; i < mMenuBarList.GetCount(); i++)
@@ -81,6 +100,10 @@ wxMenuBar * CommandsMenu::GetMenuBar(wxString sMenu)
    return NULL;
 }
 
+
+///
+/// Retrieve the 'current' menubar; either NULL or the
+/// last on in the mMenuBarList.
 wxMenuBar * CommandsMenu::CurrentMenuBar()
 {
    if(mMenuBarList.IsEmpty())
@@ -89,6 +112,10 @@ wxMenuBar * CommandsMenu::CurrentMenuBar()
    return mMenuBarList[mMenuBarList.GetCount()-1]->menubar;
 }
 
+
+///
+/// This makes a new menu and adds it to the 'CurrentMenuBar'
+///
 void CommandsMenu::BeginMenu(wxString tName)
 {
    wxMenu *tmpMenu = new wxMenu();
@@ -98,11 +125,20 @@ void CommandsMenu::BeginMenu(wxString tName)
    CurrentMenuBar()->Append(mCurrentMenu, tName);
 }
 
+
+///
+/// This ends a menu by setting the pointer to it
+/// to NULL.  It is still attached to the CurrentMenuBar()
 void CommandsMenu::EndMenu()
 {
    mCurrentMenu = NULL;
 }
 
+
+
+///
+/// This starts a new submenu, and names it according to
+/// the function's argument.
 void CommandsMenu::BeginSubMenu(wxString tName)
 {
    SubMenuListEntry *tmpEntry = new SubMenuListEntry;
@@ -113,6 +149,11 @@ void CommandsMenu::BeginSubMenu(wxString tName)
    mSubMenuList.Add(tmpEntry);
 }
 
+
+///
+/// This function is called after the final item of a SUBmenu is added.
+/// Submenu items are added just like regular menu items; they just happen
+/// after BeginSubMenu() is called but before EndSubMenu() is called.
 void CommandsMenu::EndSubMenu()
 {
    size_t submenu_count = mSubMenuList.GetCount()-1;
@@ -129,6 +170,10 @@ void CommandsMenu::EndSubMenu()
    delete tmpSubMenu;
 }
 
+
+///
+/// This returns the 'Current' Submenu, which is the one at the
+///  end of the mSubMenuList (or NULL, if it doesn't exist).
 wxMenu * CommandsMenu::CurrentSubMenu()
 {
    if(mSubMenuList.IsEmpty())
@@ -252,10 +297,10 @@ void CommandsMenu::AppendEffects(EffectArray *effs, wxString sType, bool spill)
    EndSubMenu();
 }
 
-//Gets an unused identifier, currently used for menus only
-//WARNING: Does this conflict with the identifiers set for controls/windows?
-//If it does, a workarround may be to keep controls below wxID_LOWEST
-//and keep menus above wxID_HIGHEST
+///Gets an unused identifier, currently used for menus only
+///WARNING: Does this conflict with the identifiers set for controls/windows?
+///If it does, a workarround may be to keep controls below wxID_LOWEST
+///and keep menus above wxID_HIGHEST
 int CommandsMenu::GetUniqueIdentifier(wxString sFunctions, wxString sKeys)
 {
    mCurrentID++;
