@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+
+<HEAD>
+
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.5b2 [en] (WinNT; I) [Netscape]">
+
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#51188E" ALINK="#FF0000">
+
+
+
+<CENTER><IMG SRC="xaudio.gif" HEIGHT=112 WIDTH=276></CENTER>
+
+
+
+<CENTER>
+
+<H1>
+
+Xaudio Misc Topics</H1></CENTER>
+
+
+
+<CENTER>
+
+<HR WIDTH="100%"></CENTER>
+
+
+
+<H2>
+
+<A NAME="samples"></A>Output Samples Format</H2>
+
+In the decoder's output buffer, the audio data is stored as sequences of
+
+samples.
+
+<BR>By default, all samples are 16 bit signed values that have the native
+
+endianness of the platform (if the machine is little-endian, the samples
+
+will be in little-endian format, if the machine is big-endian, they will
+
+be in big-endian format).
+
+<BR>When the buffer is stereo,the samples are interleaved, alternating
+
+samples from the left channel and samples from the right channel ( L,R,L,R,L,R,L,R,
+
+etc...)
+
+<BR>If the output module declares that it does not support 16 bits, the
+
+Xaudio library will convert the buffer into an 8 bit buffer (losing audio
+
+quality). However, the output module can declare the it supports uLaw format,
+
+in which case the 8 bit samples will be coded as uLaw samples, which gives
+
+better quality than lineat 8 bit samples.
+
+<P>
+
+<HR WIDTH="100%">
+
+<H1>
+
+<A NAME="symbols"></A>Symbol Naming</H1>
+
+A few function will take a parameter that identifies a function (XA_MSG_COMMAND_INPUT_MODULE_REGISTER,
+
+XA_MSG_COMMAND_OUTPUT_MODULE_REGISTER, XA_MSG_COMMAND_INPUT_ADD_FILTER,
+
+XA_MSG_COMMAND_OUTPUT_ADD_FITLER, etc...). Each time such a parameter is
+
+needed, the caller can pass:
+
+<UL>
+
+<LI>
+
+The name of a dynamic library, in which the decoder engine will look for
+
+the right symbol name (depends on the function)</LI>
+
+
+
+<LI>
+
+The name of a dynamic library AND the name of the symbol to look for (in
+
+the case the symbol name is not the default name), expressed as: &lt;symbol-name>@&lt;library-name>.</LI>
+
+
+
+<LI>
+
+The name of a built-in module.</LI>
+
+
+
+<LI>
+
+The synthetic address of a function, expressed as function@&lt;addr>,&nbsp;
+
+where &lt;addr> is the address of the function in hexadecimal format.</LI>
+
+</UL>
+
+<B>Examples</B>:
+
+<P>Registering an input module implemented in a dynamic library:
+
+<BLOCKQUOTE>
+
+<PRE>control_message_send(player, XA_MSG_COMMAND_INPUT_MODULE_REGISTER, "my_input_module.dll")</PRE>
+
+</BLOCKQUOTE>
+
+Registering an output module with a registration name different from the
+
+default ('output_module_register'):
+
+<BLOCKQUOTE>
+
+<PRE>control_message_send(player, XA_MSG_COMMAND_INPUT_MODULE_REGISTER, "my_fucntion@my_input_module.dll")</PRE>
+
+</BLOCKQUOTE>
+
+Registering a builtin output module:
+
+<BLOCKQUOTE>
+
+<PRE>control_message_send(player, XA_MSG_COMMAND_OUTPUT_MODULE_REGISTER, "builtin-directsound-output-module")</PRE>
+
+</BLOCKQUOTE>
+
+Registering an input module implemented as a function that was linked with
+
+the program:
+
+<BLOCKQUOTE>
+
+<PRE>char name[256];
+
+sprintf(name, "function@%x", dsound_output_module_register);
+
+control_message_send(this->player, XA_MSG_COMMAND_OUTPUT_MODULE_REGISTER, name);</PRE>
+
+</BLOCKQUOTE>
+
+
+
+<PRE>
+
+<HR WIDTH="100%"></PRE>
+
+
+
+<H1>
+
+<A NAME="equalizer"></A>Equalizer Bands</H1>
+
+The API to set the codec equalizer uses the <A HREF="data-structures.html#XA_EqualizerInfo">XA_EqualizerInfo</A>
+
+structure to pass the equalizer settings to the library.
+
+<BR>This structure contains 2 sets of 32 equalizer band values (one set
+
+for the left channel, one set for the right channel).
+
+<BR>However, most programs will want to use less than 32 'sliders' or 'controls'
+
+to let the user set the bands. Typically, 8, to 12 bands are largely enough
+
+to get a good equalizer control. So the program needs to 'remap' the slider
+
+values into 32 band values for the codec.
+
+<BR>Keep in mind that the lower frequency values will make a much bigger
+
+difference than the higher frequency values. Therefore, it is best to make
+
+a one to one mapping of the lower frequency sliders and lower frequency
+
+bands, and a one to many mapping for the higher bands (i.e one slider will
+
+set the value of more than one band).
+
+<P>Each band value is a signed integer between -128 and +127. Negative
+
+values attenuate the corresponding frequency band, and positive values
+
+amplify the corresponding frequency band. Be aware that pushing these values
+
+to their min and max limits will produce a distorted sound. It is usually
+
+good that the user be constrained to a smaller range of values. It is best
+
+to experiment with these values to find the best range for each of the
+
+frequency band.
+
+<P><B>Example</B>:
+
+<BR>Assume we have a user interface with 10 sliders for the equalizer.
+
+We choose not to have independent controls for left and right, so we'll
+
+set the same values in the left and right channel.
+
+<BR>Each time the user makes a change to one of the sliders, we recompute
+
+the 2 sets of 32 values needed for the <A HREF="data-structures.html#XA_EqualizerInfo">XA_EqualizerInfo</A>&nbsp;
+
+structure. We choose this mapping:
+
+<P>slider 0 --> band index 0
+
+<BR>slider 1 --> band index 1
+
+<BR>slider 2 --> band index 2
+
+<BR>slider 3 --> band index 3
+
+<BR>slider 4 --> band index 4
+
+<BR>slider 5 --> band index 5
+
+<BR>slider 6 --> band index 6-7
+
+<BR>slider 7 --> band index 8-11
+
+<BR>slider 8 --> band index 12-19
+
+<BR>slider 9 --> band index 20-31
+
+<P>so if the slider values are
+
+<PRE>+10, +05, +03, +02, +00, -05, -10, -20, -13, -05</PRE>
+
+the corresponding band values would be:
+
+<PRE>+10, +05, +03, +02, +00, -05, -10, -10,&nbsp; -20, -20, -20, -20, -13, -13, -13, -13, -13, -13, -13, -13, -05, -05, -05, -05, -05, -05, -05, -05, -05, -05, -05, -05</PRE>
+
+
+
+<PRE>
+
+<HR WIDTH="100%"></PRE>
+
+
+
+<H1>
+
+<A NAME="environment-variables"></A>Environment Variables</H1>
+
+The Xaudio SDK provides a facility for the different software component
+
+to share global settings, called Environment Variables.
+
+<BR>The client application can set and retrieve the values of environment
+
+variables, as well as the decoder itself, and the different input and output
+
+modules, intput and output fitlers.
+
+<BR>For instance, a DirectSound output module could have the need for the
+
+window ID of the main application, and it would be cumbersome to require
+
+the client application to send that information to the module each time
+
+the output is opened. So the solution would be for the DirectSound output
+
+module to read an environment variable (the name is totally up to the software
+
+designer) that could be named 'output.directsound.window'. The client application
+
+only needs to set that environment variable once, and never have to worry
+
+about it again.
+
+<P>Environment variables come in 2 flavors: integer variables (can hold
+
+positive and negative integer values), and string variables (can hold string
+
+of up to 1023 characaters).
+
+<BR>&nbsp;
+
+</BODY>
+
+</HTML>
+

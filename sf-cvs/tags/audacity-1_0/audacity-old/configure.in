@@ -1,0 +1,267 @@
+dnl
+dnl audacity configure.in script
+dnl
+dnl Joshua Haberman
+dnl Dominic Mazzoni
+dnl
+
+dnl Process this file with autoconf to produce a configure script.
+
+dnl Require autoconf >= 2.50 (unfortunately 2.13 is standard)
+AC_PREREQ(2.50)
+
+dnl Init autoconf
+AC_INIT
+
+dnl Check for existence of AudacityApp.h
+AC_CONFIG_SRCDIR([AudacityApp.h])
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_GCC_TRADITIONAL
+AC_LANG([C++])
+AC_PROG_CXX
+AC_PROG_CXXCPP
+AC_PROG_INSTALL
+
+dnl extra variables
+AC_SUBST(EXTRAOBJS)
+AC_SUBST(MAKEALL)
+
+dnl options
+AC_ARG_WITH(oss,
+	[AC_HELP_STRING([--with-oss],
+      [use Open Sound System (OSS) for Audio I/O [default=yes]])],
+	use_oss=$withval,
+	use_oss="default")
+AC_ARG_WITH(arts-soundserver,
+	[AC_HELP_STRING([--with-arts-soundserver],
+      [use the KDE/aRts soundserver instead of OSS [default=no]])],
+	use_arts=$withval,
+	use_arts="no")
+AC_ARG_WITH(libmad,
+	[AC_HELP_STRING([--with-libmad],
+      [use libmad for mp3 support (libraries must be installed) [default=no]])],
+	use_libmad=$withval,
+	use_libmad="no")
+AC_ARG_WITH(xaudio,
+	[AC_HELP_STRING([--with-xaudio],
+		[use xaudio for mp3 support [default=auto]])],
+	use_xaudio=$withval,
+	use_xaudio="default") dnl to differentiate between explicit and default
+AC_ARG_WITH(vorbis,
+	[AC_HELP_STRING([--with-vorbis],
+		[enable ogg vorbis support (libraries must be installed) [default=no]])],
+	use_vorbis=$withval,
+	use_vorbis="no")
+AC_ARG_WITH(id3,
+	[AC_HELP_STRING([--with-id3],
+		[compile with id3lib (the source is included here) [default=no]])],
+	use_id3lib=$withval,
+	use_id3lib="no")
+AC_ARG_WITH(help,
+	[AC_HELP_STRING([--with-help],
+		[Make the help file "audacity-help.htb" [default=yes]])],
+	use_help=$withval,
+	use_help="yes")
+
+dnl check to make sure that all the user's options are valid
+AC_CANONICAL_HOST
+host_cpu=`echo "$host_cpu" | sed "s/i.86/i386/"`
+host_os=`echo "$host_os" | sed "s/-.*//"`
+
+dnl if user has explicitly enabled both xaudio and libmad,
+dnl warn that they are incompatible
+if [[ "$use_libmad" = "yes" ] && [ "$use_xaudio" = "yes" ]] ; then
+	AC_MSG_ERROR([*** --with-libmad and --with-xaudio are mutually exclusive])
+fi
+
+if [[ "$use_oss" = "default" ] && [ "$use_arts" = "yes" ]] ; then
+	use_oss="no";
+fi
+
+if [[ "$use_oss" = "default" ] && [ "$use_arts" = "no" ]] ; then
+	use_oss="yes";
+fi
+
+dnl if user has explicitly enabled both oss and arts,
+dnl warn that they are incompatible
+if [[ "$use_oss" = "yes" ] && [ "$use_arts" = "yes" ]] ; then
+	AC_MSG_ERROR([*** --with-oss and --with-arts-soundserver are mutually exclusive])
+fi
+
+dnl make use_xaudio's default behave as advertised above (default=yes on i386/linux, no elsewhere)
+if [[ "$host_os" = "linux" ] && [ "$host_cpu" = "i386" ] && [ "$use_xaudio" = "default" ]] ; then
+   use_xaudio="yes"
+elif [[ "$use_xaudio" = "default" ]]; then
+   use_xaudio="no"
+fi
+   
+
+if [[ "$use_libmad" = "yes" ]] ; then
+
+   dnl check for headers and libraries
+
+   AC_CHECK_LIB(mad, mad_decoder_init, true, dnl here true is just a nop
+	   AC_MSG_ERROR([*** libmad not found. Either compile and install it or use xaudio]) )
+
+   AC_CHECK_HEADER(mad.h, ,
+		AC_MSG_ERROR([*** libmad headers not found. Either compile and install it or use xaudio]))
+
+	AC_DEFINE(USE_LIBMAD, 1,
+		[Define if mp3 support is implemented with the libmad library])
+
+	LIBS="$LIBS -lmad"
+   mp3support="true"
+	use_xaudio="no"
+fi
+
+if [[ "$use_xaudio" = "yes" ]] ; then
+
+	if [[ "$host_cpu" != "i386" ]] ; then
+		AC_MSG_ERROR([*** xaudio is not supported on architectures other than i386])
+	fi
+
+	case "$host_os" in
+		"linux")
+			LIBS="$LIBS -Lxaudio/linux/lib -lxaudio"
+			;;
+		*)
+			AC_MSG_ERROR([*** xaudio is only supported on Linux])
+			;;
+	esac
+			
+	AC_DEFINE(USE_XAUDIO, 1,
+		[Define if mp3 support is implemented with the xaudio library])
+   mp3support="true"
+fi
+
+if [[ "$mp3support" = "true" ]] ; then
+
+	AC_DEFINE(MP3SUPPORT, 1,
+      [Define if at least one supported library for mp3 functions is present])
+
+fi
+
+
+if [[ $use_vorbis = "yes" ]] ; then
+
+   dnl check for both headers and libraries
+   
+   AC_CHECK_LIB(vorbisfile, ov_open, true, dnl here true is just a nop
+	   AC_MSG_ERROR([*** Ogg Vorbis libraries not found. libvorbis must be installed for Ogg Vorbis support]),
+	   -lvorbis -logg) dnl auxiliary library that -lvorbisfile needs
+
+   AC_CHECK_HEADER(vorbis/vorbisfile.h, ,
+		AC_MSG_ERROR([*** Ogg Vorbis headers not found. libvorbis must be installed for Ogg Vorbis support]))
+
+	LIBS="$LIBS -lvorbisenc -lvorbisfile -lvorbis -logg"
+	AC_DEFINE(USE_LIBVORBIS, 1,
+		[Define if the ogg vorbis decoding library is present])
+fi
+
+if [[ $use_id3lib = "yes" ]] ; then
+	EXTRAOBJS="$EXTRAOBJS id3lib/src/.libs/libid3.a"
+	MAKEALL="$MAKEALL id3lib/src/.libs/libid3.a"
+	CFLAGS="$CFLAGS -Iid3lib/include"
+		
+	AC_DEFINE(USE_ID3LIB, 1,
+      [Define if id3lib is present])
+fi
+
+if [[ $use_help = "yes" ]] ; then
+	MAKEALL="$MAKEALL audacity-help.htb"
+fi
+
+if [[ $use_oss = "yes" ]] ; then
+	EXTRAOBJS="$EXTRAOBJS \$(OBJDIR)/snd/audiooss.c.o"
+
+	AC_DEFINE(USE_OSS, 1,
+		[Define if audio I/O happens with OSS])
+
+elif [[ "$use_arts" = "yes" ]]; then
+	EXTRAOBJS="$EXTRAOBJS \$(OBJDIR)/snd/audioarts.c.o"
+	LIBS="$LIBS -lartsc"	
+
+	AC_DEFINE(USE_ARTS, 1,
+		[Define if audio I/O happens with KDE/aRts soundserver])
+
+else
+	EXTRAOBJS="$EXTRAOBJS \$(OBJDIR)/snd/audionone.c.o"
+
+	AC_DEFINE(USE_AUDIO_NONE, 1,
+		[Define if audio I/O was not compiled in])
+fi
+
+
+dnl --- check for required libraries ---
+
+dnl wxWindows -- we assume that if wx-config is found, wxWindows is successfully installed.
+AC_PATH_PROG(WX_CONFIG, wx-config, no)
+if [[ "$WX_CONFIG" = "no" ]] ; then
+	AC_MSG_ERROR("Could not find wx-config: is wxWindows installed? is wx-config in your path?")
+fi
+LIBS="$LIBS `$WX_CONFIG --libs`"
+CFLAGS="$CFLAGS `$WX_CONFIG --cflags`"
+
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_OFF_T
+AC_TYPE_SIZE_T
+
+dnl Checks for library functions.
+
+AC_CONFIG_HEADER(configunix.h:configtemplate.h)
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
+
+echo ""
+echo "Finished configure:"
+
+if [[ $use_id3lib = "yes" ]] ; then
+	echo "  with    id3lib";
+else
+	echo "  without id3lib";
+fi
+
+if [[ $use_xaudio = "yes" ]] ; then
+	echo "  with    xaudio";
+else
+	echo "  without xaudio";
+fi
+
+if [[ $use_libmad = "yes" ]] ; then
+	echo "  with    libmad";
+else
+	echo "  without libmad";
+fi
+
+if [[ $use_vorbis = "yes" ]] ; then
+	echo "  with    vorbis";
+else
+	echo "  without vorbis";
+fi
+
+if [[ $use_help = "yes" ]] ; then
+	echo "  with    help";
+else
+	echo "  without help";
+fi
+
+if [[ $use_oss = "yes" ]] ; then
+	echo "  with    OSS for audio I/O";
+elif [[ "$use_arts" = "yes" ]]; then
+	echo "  with    KDE/aRts soundserver for audio I/O";
+else
+	echo "  without any audio I/O support  <-- WARNING!!!!!!!!!!";
+	echo "     (you should probably configure using either --with-oss or";
+	echo "     --with-arts-soundserver, unless you are sure that neither";
+	echo "     are supported on your system.)";
+fi
+
+echo "prefix=$prefix";
+
+echo ""
+echo "Run configure --help for an explanation of these options,"
+echo "otherwise type 'make' to build Audacity."
