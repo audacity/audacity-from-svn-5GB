@@ -15,10 +15,15 @@
 
 **********************************************************************/
 
+#include <wx/wxprec.h>
+
+#ifndef WX_PRECOMP
 #include <wx/app.h>
 #include <wx/dc.h>
 #include <wx/menu.h>
 #include <wx/string.h>
+#endif
+
 #include <wx/textfile.h>
 
 #include "Project.h"
@@ -175,6 +180,7 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
 								 const wxPoint& pos, const wxSize& size) :
   wxFrame(parent, id, "Audacity", pos, size),
   mDirty(false),
+  mTrackPanel(NULL),
   mRate(44100.0)
 {
   CreateStatusBar(1);
@@ -322,8 +328,13 @@ AudacityProject::~AudacityProject()
 
   gOpenProjects--;
 
-  if (gOpenProjects <= 0)
+  if (gOpenProjects <= 0) {
+    #ifdef __WXMSW
+    exit(0);
+    #else
 	wxExit();
+    #endif
+  }
 }
 
 double AudacityProject::GetRate()
@@ -425,21 +436,24 @@ void AudacityProject::FixScrollbars()
 
 void AudacityProject::OnSize(wxSizeEvent &event)
 {
-  int width, height;
-  GetClientSize(&width, &height);
+  if (mTrackPanel) {
 
-  mTrackPanel->SetSize(0, 0,
-					   width-sbarWidth, height-sbarWidth);
+    int width, height;
+    GetClientSize(&width, &height);
 
-  int hoffset = mTrackPanel->GetLabelOffset()-1;
-  int voffset = mTrackPanel->GetRulerHeight();
+    mTrackPanel->SetSize(0, 0,
+  					     width-sbarWidth, height-sbarWidth);
 
-  mHsbar->SetSize(hoffset, height-sbarWidth,
-				  width-hoffset-sbarWidth, sbarWidth);
-  mVsbar->SetSize(width-sbarWidth, voffset,
-				  sbarWidth, height-sbarWidth-voffset);
+    int hoffset = mTrackPanel->GetLabelOffset()-1;
+    int voffset = mTrackPanel->GetRulerHeight();
 
-  FixScrollbars();
+    mHsbar->SetSize(hoffset, height-sbarWidth,
+				    width-hoffset-sbarWidth, sbarWidth);
+    mVsbar->SetSize(width-sbarWidth, voffset,
+				    sbarWidth, height-sbarWidth-voffset);
+
+    FixScrollbars();
+  }
 }
 
 void AudacityProject::OnScrollUpdate(wxScrollEvent &event)
