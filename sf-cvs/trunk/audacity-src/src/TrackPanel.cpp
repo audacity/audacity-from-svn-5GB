@@ -2670,23 +2670,31 @@ void TrackPanel::DisplaySelection()
 
    //Do more complex stuff here to support user-based configuration
    //of timescales (m/s/ms/samples/etc.).
-   float scale = float(1.0);
-
+   //float scale = float(1.0);
+   int minutes1 = int(start/60);
+   int minutes2 = int(end/60);
+   int minutestot = int(length/60);
+   float seconds1 = start - float(minutes1*60);
+   float seconds2 = end - float(minutes2*60);
+   float secondstot = length - float(minutestot*60);
+   
 
    //Display a message about the selection in the status message window
    if(start == end)
       {
         mListener->
              TP_DisplayStatusMessage(wxString::
-                                     Format(_("Cursor: %lf sec"), start * scale),
+                                     Format(_("Cursor: %i:%09.6f"), minutes1, seconds1),
                                      1);
       }
    else
       {
          mListener->
             TP_DisplayStatusMessage(wxString::
-                                    Format(_("Selection: %lf sec - %lf sec: (%lf sec)"),
-                                           start *scale, end* scale, length*scale),
+                                    Format(_("Selection: %i:%09.6f - %i:%09.6f (%i:%09.6f)"),
+                                           minutes1, seconds1, minutes2, seconds2, minutestot, secondstot),
+       
+
                                     1);
       }
 }
