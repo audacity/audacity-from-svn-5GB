@@ -35,6 +35,7 @@ class FileFormatPrefs:public PrefsPanel {
    wxButton *mMP3FindButton;
    wxStaticText *mMP3Version;
    wxSlider *mMP3Quality;
+   wxSlider *mOGGQuality;
 
    // leave room for expansion. pointers are cheap
    wxRadioButton *mDefaultExportFormats[20];
