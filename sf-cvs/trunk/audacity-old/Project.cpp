@@ -107,6 +107,10 @@ AudacityProject *CreateNewAudacityProject(wxWindow *parentWindow)
   where.y += 50;
   #endif
 
+  #ifdef __WXGTK__
+  height += 20;
+  #endif
+
   where.x += gAudacityDocNum*25;
   where.y += gAudacityDocNum*25;
 
