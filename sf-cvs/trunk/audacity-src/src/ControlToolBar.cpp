@@ -57,6 +57,7 @@ enum {
    ID_LAST_TOOL = ID_ZOOM
 };
 
+const int BUTTON_WIDTH = 50;
 
 ////////////////////////////////////////////////////////////
 /// Methods for ControlToolBar
@@ -300,14 +301,15 @@ AButton *ControlToolBar::MakeTool(const char **tool, const char **alpha,
 
 // This is a convenience function that allows for button creation in
 // MakeButtons() with fewer arguments
-AButton *ControlToolBar::MakeButton(wxImage * up, wxImage * down,
-                                    wxImage * hilite,
-                                    char const **foreground,
+AButton *ControlToolBar::MakeButton(char const **foreground,
                                     char const **disabled,
-                                    char const **alpha, int id, int left)
+                                    char const **alpha, int id)
 {
-   return ToolBar::MakeButton(up, down, hilite, foreground, disabled, alpha,
-             wxWindowID(id), wxPoint(left,4), wxSize(48, 48), 16, 16);
+   AButton *r = ToolBar::MakeButton(upPattern, downPattern, hilitePattern,
+                              foreground, disabled, alpha, wxWindowID(id),
+                              wxPoint(mButtonPos,4), wxSize(48, 48), 16, 16);
+   mButtonPos += BUTTON_WIDTH;
+   return r;
 }
 
 
@@ -320,42 +322,37 @@ void ControlToolBar::MakeButtons()
    wxColour newColour =
        wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
 
-   wxImage *upPattern = ChangeImageColour(upOriginal, newColour);
-   wxImage *downPattern = ChangeImageColour(downOriginal, newColour);
-   wxImage *hilitePattern = ChangeImageColour(hiliteOriginal, newColour);
-
+   upPattern = ChangeImageColour(upOriginal, newColour);
+   downPattern = ChangeImageColour(downOriginal, newColour);
+   hilitePattern = ChangeImageColour(hiliteOriginal, newColour);
 
    /* Buttons */
 
-   mRewind = MakeButton(upPattern, downPattern, hilitePattern,
-                        (char const **) Rewind,
+   mButtonPos = 64;
+
+   mRewind = MakeButton((char const **) Rewind,
                         (char const **) RewindDisabled,
-                        (char const **) RewindAlpha, ID_REW_BUTTON, 64);
+                        (char const **) RewindAlpha, ID_REW_BUTTON);
    mRewind->SetToolTip(_("Skip to Start"));
 
-   mPlay = MakeButton(upPattern, downPattern, hilitePattern,
-                      (char const **) Play,
+   mPlay = MakeButton((char const **) Play,
                       (char const **) PlayDisabled,
-                      (char const **) PlayAlpha, ID_PLAY_BUTTON, 114);
+                      (char const **) PlayAlpha, ID_PLAY_BUTTON);
    mPlay->SetToolTip(_("Play"));
 
-   mStop = MakeButton(upPattern, downPattern, hilitePattern,
-                      (char const **) Stop,
+   mStop = MakeButton((char const **) Stop,
                       (char const **) StopDisabled,
-                      (char const **) StopAlpha, ID_STOP_BUTTON, 164);
+                      (char const **) StopAlpha, ID_STOP_BUTTON);
    mStop->SetToolTip(_("Stop"));
 
-   mRecord = MakeButton(upPattern, downPattern, hilitePattern,
-                        (char const **) Record,
+   mRecord = MakeButton((char const **) Record,
                         (char const **) RecordDisabled,
-                        (char const **) RecordAlpha, ID_RECORD_BUTTON,
-                        214);
+                        (char const **) RecordAlpha, ID_RECORD_BUTTON);
    mRecord->SetToolTip(_("Record"));
 
-   mFF = MakeButton(upPattern, downPattern, hilitePattern,
-                    (char const **) FFwd,
+   mFF = MakeButton((char const **) FFwd,
                     (char const **) FFwdDisabled,
-                    (char const **) FFwdAlpha, ID_FF_BUTTON, 264);
+                    (char const **) FFwdAlpha, ID_FF_BUTTON);
    mFF->SetToolTip(_("Skip to End"));
 
    delete upPattern;
@@ -426,8 +423,8 @@ void ControlToolBar::OnKeyEvent(wxKeyEvent & event)
          OnPlay();
       }
       return;
-   } else
-      event.Skip();
+   }
+   event.Skip();
 }
 
 

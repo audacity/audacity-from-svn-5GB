@@ -155,7 +155,8 @@ void EditToolBar::MakeButtons()
    AddButton(Redo, RedoDisabled, RedoAlpha, ETBRedoID, _("Redo"));
    AddSeparator();
 
-   AddButton(ZoomIn, ZoomInDisabled, ZoomInAlpha, ETBZoomInID, _("Zoom In"));
+   AddButton(ZoomIn, ZoomInDisabled, ZoomInAlpha, ETBZoomInID,
+             _("Zoom In"));
    AddButton(ZoomOut, ZoomOutDisabled, ZoomOutAlpha, ETBZoomOutID,
              _("Zoom Out"));
    AddButton(ZoomSel, ZoomSelDisabled, ZoomSelAlpha, ETBZoomSelID,
