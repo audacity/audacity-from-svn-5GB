@@ -66,7 +66,8 @@ Ruler::Ruler()
 Ruler::~Ruler()
 {
    Invalidate();  // frees up our arrays
-
+   if( mUserBits )
+      delete [] mUserBits;//JKC
    delete mMinorFont;
    delete mMajorFont;
 }
