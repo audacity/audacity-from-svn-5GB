@@ -82,9 +82,12 @@ a configure cache and header dependencies:
   ./configure -C
   make dep
 
-For more information on compilation on other platforms (VC++
-for Windows and CodeWarrior for Mac are supported) please
-email audacity-devel@lists.sourceforge.net
+To compile on Windows using MSVC++, please follow the
+instructions found in compile.txt in the "win" subdirectory.
+
+For more information on compilation (CodeWarrior for Mac is
+also supported) please email
+audacity-devel@lists.sourceforge.net
 
 -------------------------------------------------------------
 
