@@ -499,14 +499,20 @@ bool EffectNyquist::ProcessOne()
       return false;
    }
 
+   double rate = mCurTrack[0]->GetRate();
    for(i=0; i<outChannels; i++) {
       sampleFormat format = mCurTrack[i]->GetSampleFormat();
       mOutputTrack[i] = mFactory->NewWaveTrack(format);
+
+      if (outChannels == mCurNumChannels)
+         rate = mCurTrack[i]->GetRate();
+
+      mOutputTrack[i]->SetRate( rate );
       mCurBuffer[i] = NULL;
    }
 
    nyx_get_audio(StaticPutCallback, (void *)this);
-   
+
    for(i=0; i<outChannels; i++) {
       mOutputTrack[i]->Flush();
       if (mCurBuffer[i])
