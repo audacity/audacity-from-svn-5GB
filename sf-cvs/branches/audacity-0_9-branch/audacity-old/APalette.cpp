@@ -382,6 +382,9 @@ void APalette::OnPlay()
                wxMessageBox( "This version of Audacity requires that all tracks\n"
                              "match the project sample rate to play or export.\n"
                              "To change the sample rate of a track, click on its title.");
+               SetPlay(false);
+               SetStop(false);
+               SetRecord(false);
                return;
             }
          }
