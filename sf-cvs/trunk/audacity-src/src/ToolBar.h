@@ -58,6 +58,7 @@ class AudacityProject;
 enum ToolBarType {
    NoneID,
    ControlToolBarID,
+   MixerToolBarID,
    EditToolBarID
 };
 

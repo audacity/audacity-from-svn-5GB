@@ -77,6 +77,7 @@ void wxOnAssert(const char *fileName, int lineNumber, const char *msg)
 wxFrame *gParentFrame = NULL;
 wxWindow *gParentWindow = NULL;
 ToolBarStub *gControlToolBarStub = NULL;
+ToolBarStub *gMixerToolBarStub = NULL;
 ToolBarStub *gEditToolBarStub = NULL;
 
 void QuitAudacity()
@@ -105,6 +106,11 @@ void QuitAudacity()
    if (gControlToolBarStub) {
       delete gControlToolBarStub;
       gControlToolBarStub = NULL;
+   }
+
+   if (gMixerToolBarStub) {
+      delete gMixerToolBarStub;
+      gMixerToolBarStub = NULL;
    }
 
    if (gEditToolBarStub) {
@@ -399,6 +405,8 @@ bool AudacityApp::OnInit()
 
    //Initiate globally-held toolbar stubs here.
    gControlToolBarStub = new ToolBarStub(gParentWindow, ControlToolBarID);
+
+   gMixerToolBarStub = new ToolBarStub(gParentWindow, MixerToolBarID);
    
    // Changing the following to NULL will make the application
    // load without the toolbar in memory at all.

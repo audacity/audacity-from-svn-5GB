@@ -54,6 +54,7 @@ OBJS = \
 	$(OBJDIR)/Languages.o \
 	$(OBJDIR)/LangChoice.o \
 	$(OBJDIR)/Mix.o \
+	$(OBJDIR)/MixerToolBar.o \
 	$(OBJDIR)/NoteTrack.o \
 	$(OBJDIR)/Prefs.o \
 	$(OBJDIR)/Project.o \

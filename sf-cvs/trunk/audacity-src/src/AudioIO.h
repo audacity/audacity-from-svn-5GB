@@ -15,6 +15,12 @@
 
 #include "portaudio.h"
 
+#include "Audacity.h"
+
+#if USE_PORTMIXER
+#include "portmixer.h"
+#endif
+
 #include <wx/string.h>
 #include <wx/thread.h>
 
@@ -70,6 +76,7 @@ class AudioIO {
 
    bool Start();
    bool OpenDevice();
+   void AdjustMixer();
    void PrepareOutTracks(TrackList * tracks);
    void FillBuffers();
    void AddDroppedSamples(sampleCount nSamples);
@@ -109,6 +116,10 @@ class AudioIO {
    float              *mTempFloats;
    int                 mDroppedSamples;
    int                 mLostSamples;
+
+   #if USE_PORTMIXER
+   PxMixer            *mMixer;
+   #endif
 
    friend class AudioThread;
 

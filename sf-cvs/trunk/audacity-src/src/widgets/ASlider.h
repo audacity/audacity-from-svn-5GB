@@ -6,17 +6,15 @@
 
   Dominic Mazzoni
 
-  This class is a custom slider (currently used just for the volume
-  control).  It is not very customizable in the sense that the
-  background image must be exactly the size you want it, but it does
-  allow for a slicker look and feel by allowing you to use images
-  for the slider background and the thumb.
+  This class is a custom slider.  Values are always returned
+  between 0.0 and 1.0, inclusive.
 
 **********************************************************************/
 
 #ifndef __AUDACITY_SLIDER__
 #define __AUDACITY_SLIDER__
 
+#include <wx/defs.h>
 #include <wx/window.h>
 
 class wxBitmap;
@@ -28,33 +26,47 @@ class ASlider:public wxWindow {
  public:
 
    ASlider(wxWindow * parent, wxWindowID id,
+           wxString name,
            const wxPoint & pos,
-           const wxSize & size,
-           wxImage * slider, wxImage * thumb, int max);
+           const wxSize & size);
 
     virtual ~ ASlider();
 
-   virtual int Get();
-   virtual void Set(int value);
+   virtual float Get();
+   virtual void Set(float value);
 
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnMouseEvent(wxMouseEvent & event);
 
  private:
 
+   void FormatPopWin();
+
    int mWidth;                  //In pixels
    int mHeight;                 //In pixels
+
+   int mCenterY;
+
+   int mLeftX;
+   int mRightX;
+   int mWidthX;
 
    int mThumbWidth;             //In pixels
    int mThumbHeight;            //In pixels
 
-   int mValue;                  //slider value units
-   int mMax;                    //max slider value units
+   int mValue;                  //slider position, 0...mWidthX
+
+   int mClickValue;
+   int mClickX;
+
+   wxWindow *mPopWin;
 
    bool mIsDragging;
 
    wxBitmap *mBitmap;
    wxBitmap *mThumbBitmap;
+
+   wxString mName;
 
  public:
 

@@ -34,6 +34,7 @@ class ToolBarStub;
 
 extern wxWindow *gParentWindow;
 extern ToolBarStub *gControlToolBarStub;
+extern ToolBarStub *gMixerToolBarStub;
 extern ToolBarStub *gEditToolBarStub;
 
 void QuitAudacity();

@@ -14,6 +14,7 @@
 #include <wx/intl.h>
 
 #include "BlockFile.h"
+#include "FileFormats.h"
 #include "WaveTrack.h"
 
 #include "sndfile.h"
@@ -133,28 +134,27 @@ int BlockFile::ReadData(void *data, sampleFormat format,
       samplePtr buffer = NewSamples(len * info.channels, floatSample);
 
       int framesRead = 0;
-      switch(format) {
-      case int16Sample:
+
+      if (format == int16Sample &&
+          !sf_subtype_more_than_16_bits(info.format)) {
+         // Special case: if the file is in 16-bit (or less) format,
+         // and the calling method wants 16-bit data, go ahead and
+         // read 16-bit data directly.  This is a pretty common
+         // case, as most audio files are 16-bit.
          framesRead = sf_readf_short(sf, (short *)buffer, len);
          for (i = 0; i < framesRead; i++)
             ((short *)data)[i] =
                ((short *)buffer)[(info.channels * i) + mChannel];
-         break;
-
-      case floatSample:
+      }
+      else {
+         // Otherwise, let libsndfile handle the conversion and
+         // scaling, and pass us normalized data as floats.  We can
+         // then convert to whatever format we want.
          framesRead = sf_readf_float(sf, (float *)buffer, len);
-         for (i = 0; i < framesRead; i++)
-            ((float *)data)[i] =
-               ((float *)buffer)[(info.channels * i) + mChannel];
-         break;
-      
-      default:
-         framesRead = sf_readf_float(sf, (float *)buffer, len);
-         for (i = 0; i < framesRead; i++)
-            ((float *)buffer)[i] =
-               ((float *)buffer)[(info.channels * i) + mChannel];
-         CopySamples((samplePtr)buffer, floatSample,
-                     (samplePtr)data, format, framesRead);
+         float *bufferPtr = &((float *)buffer)[mChannel];
+         CopySamples((samplePtr)bufferPtr, floatSample,
+                     (samplePtr)data, format,
+                     framesRead, true, info.channels);
       }
 
       DeleteSamples(buffer);
