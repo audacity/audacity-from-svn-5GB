@@ -307,6 +307,14 @@ SOURCE=..\src\SampleFormat.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\Sequence.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\Sequence.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\Spectrum.cpp
 # End Source File
 # Begin Source File
@@ -472,6 +480,14 @@ SOURCE=..\src\effects\Reverse.cpp
 # Begin Source File
 
 SOURCE=..\src\effects\Reverse.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\SimpleMono.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\SimpleMono.h
 # End Source File
 # Begin Source File
 
