@@ -161,10 +161,11 @@ bool Export(AudacityProject *project,
       ::wxSplitPath(fName, &pathOnly, &nameOnly, &extension);
       gPrefs->Write("/DefaultExportPath", pathOnly);
 
-      if (nameOnly.Left(1)=="." && extension=="") {
+      if ((nameOnly.Left(1)=="." && extension=="") ||
+          (nameOnly=="" && extension!="")) {
          wxString prompt =
             "Are you sure you want to save the file as \""+
-            nameOnly+"\"?\n";
+            ::wxFileNameFromPath(fName)+"\"?\n";
 
          int action = wxMessageBox(prompt,
                                    "Warning",

@@ -679,7 +679,7 @@ public:
    {
       return "Audacity does not export MP3 files directly, but instead uses the\n"
              "freely available LAME library to handle MP3 file encoding.  You must\n"
-             "obtain lame_enc.dll separately, by downloading the LAME MP3 encoder,"
+             "obtain lame_enc.dll separately, by downloading the LAME MP3 encoder,\n"
              "and then locate this file for Audacity.  You only need to do this once.\n\n"
              "Would you like to locate lame_enc.dll now?";
    }
