@@ -137,6 +137,10 @@ regardless of how big the buffers are.
  informed as soon as all the data is available....".   -eub]
 
 */
+
+/* Prevent compiler errors */
+struct snd_struct;
+
 /* these do not use snd_type because it is not defined yet... */
 typedef int (*snd_reset_fn)(struct snd_struct *snd);
 typedef long (*snd_poll_fn)(struct snd_struct *snd);
