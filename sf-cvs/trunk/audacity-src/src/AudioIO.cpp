@@ -38,6 +38,10 @@
 #include "Prefs.h"
 #include "TimeTrack.h"
 
+#if USE_PORTMIXER
+#include "MixerToolBar.h"
+#endif
+
 AudioIO *gAudioIO;
 
 #if USE_PORTAUDIO_V19
@@ -121,21 +125,23 @@ AudioIO::~AudioIO()
 
 void AudioIO::AdjustMixer()
 {
-#if 0 //USE_PORTMIXER
-   AudacityProject *project = mProject;
+#if USE_PORTMIXER
+#ifndef USE_PORTAUDIO_V19 // PortMixer doesn't support v19 yet...
+
+   MixerToolBar *mixerToolbar = GetCurrentMixerToolBar();
    PxMixer *mixer = mPortMixer;
 
-   if (project && mixer) {
-      MixerToolBar *mixerToolbar = project->GetMixerToolBar();
-      if (mixerToolbar) {
-         if (mNumOutChannels > 0)
-            Px_SetPCMOutputVolume(mixer, mixerToolbar->GetOutputVol());
-         if (mNumInChannels > 0) {
-            Px_SetInputVolume(mixer, mixerToolbar->GetInputVol());
-            Px_SetCurrentInputSource(mixer, mixerToolbar->GetInputSource());
-         }
+   if (mixerToolbar && mixer) {
+      if (mNumPlaybackChannels > 0) {
+         Px_SetPCMOutputVolume(mixer, mixerToolbar->GetOutputVol());
+      }
+      if (mNumCaptureChannels > 0) {
+         Px_SetCurrentInputSource(mixer, mixerToolbar->GetInputSource());
+         Px_SetInputVolume(mixer, mixerToolbar->GetInputVol());
       }
    }
+
+#endif
 #endif
 }
 
@@ -251,6 +257,15 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
                                 paNoFlag,
                                 audacityAudioCallback, NULL );
 
+#if 0 //USE_PORTMIXER  TODO: support PortMixer with v19
+   mPortMixer = NULL;
+   if (mPortStream != NULL && error == paNoError) {
+      mPortMixer = Px_OpenMixer(mPortStream, 0);
+      if (mPortMixer)
+         AdjustMixer();
+   }
+#endif
+
    // these may be null, but deleting a null pointer should never crash.
    delete captureParameters;
    delete playbackParameters;
@@ -258,7 +273,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
 #else
 
    PaDeviceID captureDevice, playbackDevice;
-   PaSampleFormat paCaptureFormat;
+   PaSampleFormat paCaptureFormat = floatSample;
 
    if( playbackTracks.GetCount() > 0 )
    {
@@ -350,6 +365,15 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
                                 mRate, 256, 0,
                                 paClipOff | paDitherOff,
                                 audacityAudioCallback, NULL );
+
+#if USE_PORTMIXER
+   mPortMixer = NULL;
+   if (mPortStreamV18 != NULL && err == paNoError) {
+      mPortMixer = Px_OpenMixer(mPortStreamV18, 0);
+      if (mPortMixer)
+         AdjustMixer();
+   }
+#endif
 
    mInCallbackFinishedState = false;
 
@@ -862,7 +886,7 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
       if (len < framesPerBuffer)
       {
          gAudioIO->mLostSamples += (framesPerBuffer - len);
-         printf("lost %d samples\n", framesPerBuffer - len);
+         printf("lost %d samples\n", (int)(framesPerBuffer - len));
       }
 
       if (len > 0) {
