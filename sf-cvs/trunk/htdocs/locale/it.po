@@ -1,3 +1,4 @@
+# translation of audacity_website.po to
 # translation of audacity_website.po to italiano
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
@@ -8,20 +9,13 @@ msgstr ""
 "Project-Id-Version: audacity_website\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-01-11 20:35-0800\n"
-"PO-Revision-Date: 2005-01-27 14:23+0000\n"
+"PO-Revision-Date: 2005-02-20 15:53+0000\n"
 "Last-Translator: Aldo Boccacci <zorba_@tin.it>\n"
 "Language-Team: italiano <audacity-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.9.1\n"
-
-#: download/windows.php:18
-#, fuzzy, php-format
-msgid ""
-"<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest "
-"version of the free Audacity audio editor."
-msgstr ""
 
 #: include/header.inc.php:11
 msgid "Audacity"
@@ -36,7 +30,7 @@ msgid "Powered by Google"
 msgstr ""
 
 #: include/header.inc.php:24
-msgid "Search this site"
+msgid "Search"
 msgstr "Cerca"
 
 #: include/header.inc.php:28
@@ -69,7 +63,7 @@ msgstr "Creative Commons Attribution license"
 
 #: include/footer.inc.php:17
 msgid "Creative Commons: Some rights reserved."
-msgstr "Creative Commons: alcuni diritti sono riservati"
+msgstr "Creative Commons: alcuni diritti sono riservati."
 
 #: include/footer.inc.php:18
 msgid "Development hosted by SourceForge"
@@ -169,7 +163,7 @@ msgstr "Home"
 
 #: main.inc.php:18
 msgid "About"
-msgstr ""
+msgstr "Informazioni"
 
 #: main.inc.php:20 about/features.php:9
 msgid "Features"
@@ -258,7 +252,7 @@ msgstr "Mailing Lists"
 
 #: main.inc.php:53 community/main.inc.php:11 community/index.php:9
 msgid "Get Involved"
-msgstr ""
+msgstr "Collabora"
 
 #: main.inc.php:55 community/index.php:18
 msgid "Users"
@@ -303,11 +297,11 @@ msgstr ""
 msgid ""
 "You may modify, distribute, and sell Audacity under the <a href=\"../about/"
 "license\">GNU GPL</a>."
-msgstr "S"
+msgstr ""
 
 #: download/windows.php:16 download/source.php:16 download/mac.php:17
 msgid "Recommended Download"
-msgstr "Donwload raccomandati"
+msgstr "Download raccomandati"
 
 #: download/windows.php:21 download/source.php:22 download/mac.php:26
 msgid "Optional Downloads"
@@ -325,7 +319,7 @@ msgstr "Windows 98, ME, 2000 o successivi (Spiacenti, Audacity non è supportato
 
 #: download/windows.php:32 download/mac.php:35
 msgid "Audacity runs best with at least 64 MB RAM and 300 MHz processor."
-msgstr "Audcity funziona al meglio con almeno 64 MB di Ram e un processore a 300 MHz."
+msgstr "Audacity funziona al meglio con almeno 64 MB di Ram e un processore a 300 MHz."
 
 #: download/source.php:24
 msgid ""
@@ -356,7 +350,7 @@ msgid ""
 "b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the gtk2 or "
 "unicode options.  (Future versions of Audacity will support newer wxWidgets "
 "and GTK libraries.)"
-msgstr ""
+msgstr "Le librerie <a href=\"http://wxwidgets.org\">wxWidgets</a> sono <b>necessarie</b>.  Audacity 1.2 richiede le librerie wxGTK 2.4, compilate <em>senza</em> le opzioni gtk2 o unicode. (Le future versioni di Audacity supporteranno nuove versioni delle librerie wxWidgets e GTK.)"
 
 #: download/source.php:32
 msgid ""
@@ -368,7 +362,7 @@ msgstr "Potete anche scegliere di installare le seguenti <b>librerie opzionali</
 msgid ""
 "If you install libraries using a package management system like Apt or RPM, "
 "make sure to install the \"dev\" (development) packages for each library."
-msgstr ""
+msgstr "Se installate le librerie usando un gestore di pacchetti come APT o RPM, assicuratevi di installare anche i relativi pacchetti \"dev\" (di sviluppo) di ogni libreria."
 
 #: download/source.php:40
 msgid "Compilation"
@@ -397,7 +391,7 @@ msgid ""
 "the program, thanks to the <a href=\"../about/license\">GNU General Public "
 "License</a>.  If you want a copy of Audacity on CD-ROM, we encourage you to "
 "buy from a vendor listed below."
-msgstr ""
+msgstr "Audacity è scaricabile gratuitamente, ma è possibile vendere copie del programma, grazie alla <a href=\"../about/license\">GNU General Public License</a>. Se volete acquistare una copia di Audacity su CD-ROM, vi consigliamo di acquistarla scegliendo dall'elenco sottostante."
 
 #: download/buy.php:15
 msgid ""
@@ -416,7 +410,7 @@ msgstr "Mac OS 9 / X"
 msgid ""
 "(Unfortunately, we no longer have the resources to provide new versions of "
 "Audacity for Mac OS 9.)"
-msgstr "(Sfortunatamente, non abbiamo più risorse per fornire nuove versioni di Audacity anche per Mac OS 9)"
+msgstr "(Sfortunatamente, non abbiamo piú risorse per fornire nuove versioni di Audacity anche per Mac OS 9)"
 
 #: download/mac.php:33
 msgid "Audacity 1.2 requires Mac OS X 10.1 or later."
@@ -431,14 +425,14 @@ msgid ""
 "The easiest way to install the free Audacity audio editor on GNU/Linux (and "
 "other Unix-like systems) is to download a package built for your operating "
 "system:"
-msgstr "La via più semplice per installare Audacity su GNU/Linux (e gli altri sistemi Unix) è di scaricare un pacchetto appositamente predisposto per il vostro sistema operativo:"
+msgstr "La via piú semplice per installare Audacity su GNU/Linux (e gli altri sistemi Unix) è di scaricare un pacchetto appositamente predisposto per il vostro sistema operativo:"
 
 #: download/linux.php:29
 msgid ""
 "Linux and Unix users may also compile Audacity from <a href=\"source"
 "\">source code</a>."
 msgstr ""
-"Gli untenti di Linux e Unix possono in alternatica compilare Audacity dal <a href=\"source"
+"Gli utenti di Linux e Unix possono in alternativa compilare Audacity dal <a href=\"source"
 "\">codice sorgente</a>."
 
 #: download/plugins.php:9
@@ -451,7 +445,7 @@ msgstr "LAME MP3 encoder"
 
 #: download/common.inc.php:10
 msgid "Allows Audacity to export MP3 files."
-msgstr "Permette ad Audacity di esportare files MP3"
+msgstr "Permette ad Audacity di esportare files MP3."
 
 #: download/common.inc.php:11
 msgid "VST Enabler"
@@ -485,6 +479,17 @@ msgid ""
 "p>\n"
 "</ul>"
 msgstr ""
+"<p>Audacity è un editor e registratore audio semplice e libero, disponibile per Windows, Mac OS X, GNU/Linux, e altri sistemi operativi. Potete usare Audacity per: </p>\n"
+"\n"
+"<ul>\n"
+"  <li>Registrare audio dal vivo</li>\n"
+"  <li>Convertire dischi e musicassette in formato digitale oppure su CD.</li>\n"
+"  <li>Modificare file audio in formato Ogg Vorbis, MP3 e Wav</li>\n"
+"  <li>Tagliare, copiare, dividere, e mixare file audio.</li>\n"
+"  <li>Cambiare la velocità o l'intonazione di una registrazione.</li>\n"
+"  <li>E molto altro! Leggete la <a href=\"features\">lista completa delle funzionalità</a>.</"
+"li>\n"
+"</ul>"
 
 #. i18n-hint: You may change the link addresses below, if there is a
 #. version of the page in your language at a different location.
@@ -510,6 +515,16 @@ msgid ""
 "\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Linux-based operating "
 "systems</a>.</p>"
 msgstr ""
+"<h3> Informazioni sul software libero</h3>n "
+"\n"
+"<p>Audacity è un software libero, sviluppato da un gruppo di volontari e "
+"distribuito sotto la <a href=\"license\">GNU General Public License (GPL)</a>.</p>\n"
+"\n"
+"<p><firstterm>Software libero</firstterm>(free software in inglese) non si riferisce al costo, ma alla libertà di usare un programma, studiare il suo funzionamento, migliorarlo e condividerlo con altri. "
+"L'equivoco nasce dal fatto che in inglese il termine <i>free</i> ha il doppio significato di gratis (\"free beer\" = birra gratis) e di libero (\"free speech\" = libertà di parola). "
+"Per maggiori informazioni, visitate le pagine della <a href=\"http://www.fsf.org/\">Free Software Foundation</a>.</p>\n"
+"\n"
+"<p>I programmi come Audacity sono anche chiamati <b>software open source</b>, a causa del fatto che il loro codice sorgente è disponibile a chiunque per studiarlo o usarlo. Esistono centinaia di software liberi e open source, tra i quali il browser web <a href=\"http://www.mozilla.org/\">Mozilla</a>, la suite <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> e interi sistemi operativi basati su <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Linux</a>.</p>"
 
 #: about/screenshots.php:15
 msgid "Click any screenshot for a larger version."
@@ -539,6 +554,14 @@ msgid ""
 "recording.</li>\n"
 "</ul>"
 msgstr ""
+"<h3>Registrazione</h3>\n"
+"<p>Audacity può registrare audio dal vivo attraverso un microfono o un mixer, può digitalizzare registrazioni da musicassette, dischi in vinile o minidisc. Con alcune schede audio può anche catturare flussi audio in streaming.</p>\n"
+"<ul>\n"
+"  <li>Registrare da microfoni, line input e altre sorgenti.</li>\n"
+"  <li>Mixare tracce esistenti per creare registrazioni multitraccia.</li>\n"
+"  <li>Registrare fino a 16 canali in contemporanea (richiede hardware multicanale).</li>\n"
+"  <li>Con gli indicatori potete monitorare i livelli di volume prima, durante e dopo la registrazione.</li>\n"
+"</ul>"
 
 #: about/features.php:25
 msgid ""
@@ -607,6 +630,14 @@ msgid ""
 "convert them automatically in realtime.</li>\n"
 "</ul>"
 msgstr ""
+"<h3>Qualità audio</h3>\n"
+"<ul>\n"
+"  <li>Registra e modifica audio campionato a 16-bit, 24-bit e 32-bit (floating point) </"
+"li>\n"
+"  <li>Registra fino a 96 Khz.</li>\n"
+"  <li>I formati audio e le frequenze di campionamento sono convertiti mantenendo un'alta qualità.</li>\n"
+"  <li>Mixando tracce con differenti frequenze di campionamento o in diversi formati audio, Audacity si occuperà automaticamente della conversione in tempo reale.</li>\n"
+"</ul>"
 
 #: about/features.php:71
 msgid ""
@@ -631,6 +662,11 @@ msgid ""
 "  <li>“Plot Spectrum” command for detailed frequency analysis.</li>\n"
 "</ul>"
 msgstr ""
+"<h3>Analisi</h3>\n"
+"<ul>\n"
+"  <li>Modalità Spettrogramma per visualizzare le frequenze.</li>\n"
+"  <li>“Disegna lo spettro” per un'analisi dettagliata delle frequenze.</li>\n"
+"</ul>"
 
 #: about/features.php:85
 msgid ""
@@ -641,6 +677,12 @@ msgid ""
 "  <li>Runs on Mac OS X, Windows, and GNU/Linux.</li>\n"
 "</ul>"
 msgstr ""
+"<h3>Libero e Multi-Piattaforma</h3>\n"
+"<ul>\n"
+"  <li>Rilasciato sotto la <a href=\"license\">GNU General Public License (GPL)"
+"</a>.</li>\n"
+"  <li>Disponibile per Mac OS X, Windows, e GNU/Linux.</li>\n"
+"</ul>"
 
 #: about/credits.php:15
 msgid ""
@@ -651,7 +693,7 @@ msgid ""
 msgstr ""
 "Queste sono alcune delle persone che hanno <a href=\"../community/\">contribuito</"
 "a> ad Audacity. </p>  \n"
-"</p>Se avete domande o avete bisogno di informazioni su Audacity, visitate la <a href="
+"Se avete domande o avete bisogno di informazioni su Audacity, visitate la <a href="
 "\"../contact/\">pagina dei contatti</a>."
 
 #: about/credits.php:18
@@ -668,7 +710,7 @@ msgstr "Sviluppatori attivi"
 
 #: about/credits.php:35
 msgid "Contributors"
-msgstr ""
+msgstr "Contributi"
 
 #: about/credits.php:85
 msgid "Libraries"
@@ -689,6 +731,8 @@ msgid ""
 "things to the project.  Others simply produce tools that made this whole "
 "thing possible."
 msgstr ""
+"Esistono molte altre persone e organizzazioni che vorremmo ringraziare. Molti di loro "
+"hanno contribuito al progetto con codice, patch, feedback, denaro, tempo o altre cose.  Altri piú semplicemente hanno creato strumenti che hanno reso possibile tutto ciò."
 
 #: about/credits.php:121
 msgid "(Let us know if we're forgetting anyone!)"
@@ -726,7 +770,7 @@ msgstr "Altri oggetti chiamati \"Audacity\" (non in relazione con noi)"
 msgid ""
 "<a href=\"http://www.audiost.com/advr.htm\">Audacity DVR</a> is a digital "
 "voice recorder for Palm OS and Treo handheld computers"
-msgstr ""
+msgstr "<a href=\"http://www.audiost.com/advr.htm\">Audacity DVR</a> è un registratore vocale digitale per computer palmari Palm OS e Treo."
 
 #: about/links.php:17
 msgid ""
@@ -738,7 +782,7 @@ msgstr ""
 msgid ""
 "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> is a "
 "street-rock band from Finland."
-msgstr ""
+msgstr "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> è un complesso rock proveniente dalla Finlandia."
 
 #: about/links.php:19
 msgid ""
@@ -754,19 +798,19 @@ msgstr "Altri software audio"
 msgid ""
 "<a href=\"http://ardour.org/\">Ardour</a> is a powerful digital audio "
 "workstation that runs on GNU/Linux."
-msgstr ""
+msgstr "<a href=\"http://ardour.org/\">Ardour</a> è un potente sistema di registrazione digitale disponibile per GNU/Linux."
 
 #: about/links.php:24
 msgid ""
 "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> is a free CD ripper for "
 "Microsoft Windows."
-msgstr ""
+msgstr "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> è un CD ripper libero per Microsoft Windows."
 
 #: about/links.php:25
 msgid ""
 "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> is a "
 "free tool for capturing and cleaning recordings from vinyl records."
-msgstr ""
+msgstr "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> è uno strumento libero per catturare e ripulire registrazioni ricavate da dischi in vinile."
 
 #: about/links.php:26
 msgid "More free software at SourceForge.net:"
@@ -794,7 +838,7 @@ msgstr "Audacity è un software libero, sviluppato da volontari.  Qui potete ved
 msgid ""
 "Give us feedback, report bugs, and become part of the Audacity user "
 "community."
-msgstr "Dateci il vostro feedback, riportati gli errori che avete scoperto, e diventate parte integrante della Comunità dei Utenti di Audacity"
+msgstr "Dateci il vostro feedback, riportati gli errori che avete scoperto, e diventate parte integrante della Comunità degli Utenti di Audacity."
 
 #: community/index.php:22
 msgid ""
@@ -1080,11 +1124,11 @@ msgstr "Manuale utente di Audacity"
 
 #: help/documentation.php:27
 msgid "Read the Audacity manual online."
-msgstr "Leggi il manuale di Audacity on-line"
+msgstr "Leggi il manuale di Audacity on-line."
 
 #: help/documentation.php:28
 msgid "Download the Audacity manual."
-msgstr "Scarica il manuale di Audacity"
+msgstr "Scarica il manuale di Audacity."
 
 #: help/documentation.php:28
 msgid ""
@@ -1104,7 +1148,7 @@ msgstr ""
 
 #: help/faq.php:26
 msgid "Is Audacity really free?  Why?"
-msgstr "Audacity è veramente libero?  Perchè?"
+msgstr "Audacity è veramente libero?  Perché?"
 
 #: help/faq.php:27
 msgid ""
@@ -1137,7 +1181,7 @@ msgstr ""
 
 #: help/faq.php:36
 msgid "May I distribute copies of Audacity?"
-msgstr "May I distribute copies of Audacity?"
+msgstr ""
 
 #: help/faq.php:37
 msgid ""
@@ -1167,7 +1211,7 @@ msgstr ""
 
 #: help/faq.php:46
 msgid "Does Audacity work with screen-reader programs for blind users?"
-msgstr "Audacity funziona con i software di lettura dello shermo per utenti non vedenti?"
+msgstr "Audacity funziona con i software di lettura dello schermo per utenti non vedenti?"
 
 #. i18n-hint: The link below is in English.
 #: help/faq.php:48
@@ -1197,7 +1241,7 @@ msgstr "Installazione e Plug-ins"
 
 #: help/faq.php:60
 msgid "How do I download and install the LAME MP3 encoder?"
-msgstr ""
+msgstr "Come posso scaricare e installare l'encoder MP3 Lame?"
 
 #: help/faq.php:61
 #, php-format
@@ -1264,7 +1308,7 @@ msgstr ""
 
 #: help/faq.php:95
 msgid "What should I do if I have problems downloading or installing Audacity?"
-msgstr ""
+msgstr "Cosa devo fare se ho problemi a scaricare o installare Audacity?"
 
 #: help/faq.php:96
 msgid ""
@@ -1290,7 +1334,7 @@ msgstr ""
 
 #: help/faq.php:108
 msgid "How do I record from vinyl records, cassette tapes, or minidiscs?"
-msgstr ""
+msgstr "Come posso fare a registrare a partire da dischi in vinile, musicassette o minidisc?"
 
 #: help/faq.php:109
 msgid ""
@@ -1324,11 +1368,11 @@ msgstr "Vedi anche:"
 
 #: help/faq.php:118 help/faq.php:202
 msgid "How do I save my recording on an audio CD?"
-msgstr ""
+msgstr "Come posso salvare le mie registrazioni su un CD audio?"
 
 #: help/faq.php:121
 msgid "Why can’t I hear what I’m recording?"
-msgstr ""
+msgstr "Perché non riesco a sentire quello che che sto registrando?"
 
 #: help/faq.php:122
 msgid ""
@@ -1428,7 +1472,7 @@ msgstr "Aprire e salvare file"
 
 #: help/faq.php:171 help/faq.php:177
 msgid "How do I open an Audacity project (AUP file) in another program?"
-msgstr ""
+msgstr "Posso aprire un file di progetto di Audacity (AUP file) in un altro programma?"
 
 #: help/faq.php:172
 msgid ""
@@ -1454,7 +1498,7 @@ msgstr ""
 
 #: help/faq.php:180
 msgid "Audacity crashed!  Can I recover any unsaved data?"
-msgstr ""
+msgstr "Audacity è andato in crash!  Posso recuperare i dati che non ho salvato?"
 
 #. i18n-hint: Sorry, these links are in English only.  If you would
 #. like to make more information available, please create a page on
@@ -1489,7 +1533,7 @@ msgstr ""
 
 #: help/faq.php:194
 msgid "Why can’t I play MIDI files?"
-msgstr ""
+msgstr "Perché non posso riprodurre i file MIDI?"
 
 #: help/faq.php:195
 msgid ""
@@ -2367,7 +2411,7 @@ msgid ""
 "Send a message to this list if you have questions or comments for the "
 "Audacity developers.  You do not need to subscribe to this list to send a "
 "message."
-msgstr ""
+msgstr "Inviate un messaggio a questa lista se avente domande o commenti da porre agli sviluppatori di audacity.  Non è necessario iscriversi a questa lista per inviare un messaggio."
 
 #: news/1.2.3-release.inc.php:5
 msgid "Audacity 1.2.3 Released"
@@ -2382,4 +2426,6 @@ msgid ""
 "<p>See the <a href=\"download/release-notes\">Release Notes</a> for a "
 "complete list of changes and known problems in this version.</p>"
 msgstr ""
+"<p>Audacity 1.2.3 è una nuova versione stabile di Audacity. Questa versione corregge un errore che interferiva con le lunghe registrazioni su alcuni sistemi Windows, e un altro bug che causava crash imprevedibili su Mac OS X. Include numerose traduzioni aggiornate, e altri miglioramenti e correzioni minori.</p>\n"
+"<p>Leggete le <a href=\"download/release-notes\">Note di rilascio</a> per una lista completa dei cambiamenti e dei problemi conosciuti.</p>"
 
