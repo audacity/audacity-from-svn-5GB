@@ -11,14 +11,10 @@
 #ifndef __AUDACITY_IMPORT_MP3__
 #define __AUDACITY_IMPORT_MP3__
 
-#include <wx/string.h>
+class ImportPluginList;
+class UnusableImportPluginList;
 
-class AudacityProject;
-class DirManager;
-class WaveTrack;
-
-bool ImportMP3(AudacityProject * project,
-               wxString fName, WaveTrack ** left, WaveTrack ** right);
-
+void GetMP3ImportPlugin(ImportPluginList *importPluginList,
+                        UnusableImportPluginList *unusableImportPluginList);
 
 #endif

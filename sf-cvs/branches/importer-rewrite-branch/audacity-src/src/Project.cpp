@@ -1673,8 +1673,10 @@ void AudacityProject::Import(wxString fileName)
                                  AudacityProject::ImportProgressCallback,
                                  this);
 
-   if(mImportProgressDialog)
+   if(mImportProgressDialog) {
       delete mImportProgressDialog;
+      mImportProgressDialog = NULL;
+   }
 
    if (numTracks <= 0) {
       wxMessageBox(errorMessage);

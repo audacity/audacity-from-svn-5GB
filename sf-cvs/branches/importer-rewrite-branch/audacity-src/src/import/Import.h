@@ -24,6 +24,7 @@
 class TrackFactory;
 class Track;
 class ImportPlugin;
+class ImportFileHandle;
 class UnusableImportPlugin;
 typedef bool progress_callback_t( void *userData, float percent );
 
@@ -68,7 +69,7 @@ public:
 private:
    ImportPluginList *mImportPluginList;
    UnusableImportPluginList *mUnusableImportPluginList;
-   ImportPlugin *mSelectedPlugin;
+   ImportFileHandle *mInFile;
 };
 
 #endif

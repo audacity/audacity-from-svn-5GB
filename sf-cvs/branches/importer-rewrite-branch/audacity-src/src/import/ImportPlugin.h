@@ -25,6 +25,8 @@ class Track;
 
 typedef bool progress_callback_t( void *userData, float percent );
 
+class ImportFileHandle;
+
 class ImportPlugin
 {
 public:
@@ -49,8 +51,24 @@ public:
    // Open the given file, returning true if it is in a recognized
    // format, false otherwise.  This puts the importer into the open
    // state.
-   virtual bool Open(wxString Filename) = 0;
+   virtual ImportFileHandle *Open(wxString Filename) = 0;
 
+   virtual ~ImportPlugin() { }
+
+protected:
+
+   ImportPlugin(wxStringList supportedExtensions):
+      mExtensions(supportedExtensions)
+   {
+   }
+
+   wxStringList mExtensions;
+};
+
+
+class ImportFileHandle
+{
+public:
    virtual void SetProgressCallback(progress_callback_t *function,
                                     void *userData) = 0;
 
@@ -69,18 +87,7 @@ public:
    virtual bool Import(TrackFactory *trackFactory, Track ***outTracks,
                        int *outNumTracks) = 0;
 
-   virtual void Close() = 0;
-
-   virtual ~ImportPlugin() { }
-
-protected:
-
-   ImportPlugin(wxStringList supportedExtensions):
-      mExtensions(supportedExtensions)
-   {
-   }
-
-   wxStringList mExtensions;
+   virtual ~ImportFileHandle() { }
 };
 
 
