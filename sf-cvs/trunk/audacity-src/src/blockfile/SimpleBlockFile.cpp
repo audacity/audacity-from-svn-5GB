@@ -46,6 +46,8 @@ SimpleBlockFile::SimpleBlockFile(wxFileName baseFileName,
                                  sampleFormat format):
    BlockFile(wxFileName(baseFileName.GetFullPath() + ".au"), sampleLen)
 {
+   wxASSERT( !mFileName.FileExists() );
+
    // Open and write the file
    wxFFile file;
 
