@@ -22,8 +22,9 @@ class DirManager;
 class UndoStack;
 class TimeTrack;
 class WaveTrack;
-
+#ifdef __WXMSW__
 #pragma warning(disable:4284)
+#endif
 WX_DEFINE_ARRAY(WaveTrack*, WaveTrackArray);
 
 class Track: public XMLTagHandler {
