@@ -14,6 +14,7 @@
 #include <wx/msgdlg.h>
 #include <wx/filefn.h>
 #include <wx/utils.h>
+#include <wx/dirdlg.h>
 
 #include "../Prefs.h"
 #include "../DiskFunctions.h"
@@ -73,34 +74,16 @@ DirectoriesPrefs::DirectoriesPrefs(wxWindow *parent):
 void DirectoriesPrefs::SetTempDir(wxCommandEvent& event)
 {
 	wxString dir;
+	wxDirDialog dialog(NULL, "Select Temporary Directory", mTempDir->GetLabel());
+
+	if(dialog.ShowModal() == wxID_CANCEL)
+		return;
+
+	dir = dialog.GetPath();
 	
-	do {
-		dir = wxGetTextFromUser("Enter new temporary directory:");
-		if(dir.IsEmpty())
-			return;
-
-#ifdef __WXGTK__
-		/* expand ~ to user's home for UNIX users */
-		dir.Replace("~", wxGetHomeDir());
-#endif
-	
-		if(!wxPathExists(dir)) {
-			int ans = wxMessageBox("Directory does not exist. Create it?",
-					"Directory not found", wxYES_NO | wxCENTRE | wxICON_QUESTION);
-			if(ans == wxYES)
-				if(!wxMkdir(dir))
-					/* something pops up a dialog for me. but what? */
-					/* wxMessageBox("Unable to create directory",
-							"Error", wxOK | wxICON_EXCLAMATION); */
-							;
-
-			/* TODO: make sure directory is writable */
-		}
-
-	} while(!wxPathExists(dir));
+	/* TODO: make sure directory is writable */
 
 	mTempDir->SetLabel(dir);
-	
 	mFreeSpace->SetLabel(FormatSize(GetFreeDiskSpace(dir)));
 }
 
