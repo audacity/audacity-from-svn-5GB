@@ -180,6 +180,37 @@ but you only output a single (mono) sound, Audacity will automatically
 copy it to both the left and right channels.
 </p>
 
+<p>
+<b>Where to go from here</b>
+</p>
+
+<p>
+Audacity comes with some sample plug-ins that you can examine or
+modify as a starting point.  The best way to learn Nyquist is
+to try it.  If you're having trouble debugging, consider
+downloading the standalone version of Nyquist (see the link in Part 1).
+</p>
+
+<p>
+If you're having trouble getting Nyquist to work at all, please
+send your email to
+<a href="mailto:audacity-help@lists.sourceforge.net"
+>audacity-help@lists.sourceforge.net</a>
+</p>
+
+<p>
+If you are working on Nyquist plug-in effects and would like to
+share them with others, or if you would like to discuss general
+details of how to achieve certain effects in Nyquist, please
+join the 
+<a href=http://lists.sourceforge.net/lists/listinfo/audacity-users>
+<?php print $usersListStr; ?>
+</a>
+</p>
+
+<p>
+If there is enough interest in using Nyquist with Audacity, we
+may set up a separate mailing list.
+</p>
+
 <?php BoxBottom(); ?>
-
-

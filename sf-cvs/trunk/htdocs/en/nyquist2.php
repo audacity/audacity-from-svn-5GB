@@ -26,6 +26,16 @@ of this tutorial.
 </p>
 
 <p>
+<b>To try out a Nyquist expression in Audacity, you can use
+"Nyquist Prompt" in the Effect menu.  Whatever audio you have
+selected will be in the variable <tt>s</tt>, and the selection
+will be replaced with the result of the Nyquist expression you
+enter.  In Part 3, you will learn how to create a plug-in effect
+using Nyquist.
+</b>
+</p>
+
+<p>
 <b>Synthesizing</b>
 </p>
 
