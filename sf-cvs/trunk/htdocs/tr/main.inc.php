@@ -63,5 +63,5 @@ $altDownloadStr = "Dowload sorununuzmu var? Bir önceki version'amý ihtiyacýnýz v
 $altDownloadStr2 = "Diðer download linkleri için buraya týklayýn";
 $docsStr = "En son dökümanlarý download edin";
 $clickEnlargeStr = "(Resmi büyütmek için üzerine týklayýn)";
-$listPrivacyStr = ">gizlilik kurallarý.)";
+$listPrivacyStr = "gizlilik kurallarý";
 ?>
