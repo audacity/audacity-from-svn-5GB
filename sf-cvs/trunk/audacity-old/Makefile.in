@@ -8,7 +8,7 @@
 # from Makefile.in
 #
 
-LIBFLAGS = @LIBS@
+LIBFLAGS = -Lxaudio/linux/lib -lxaudio @LIBS@
 CFLAGS = @CFLAGS@ @CPPFLAGS@ \
 	-D__WXDEBUG__
 CCC = @CXX@
