@@ -11,7 +11,7 @@ Verze Audacity 1.0.0 je prozatím nejstabilnìjší verze, kterou jsme uvolnili, a m
 <p>
 Vývojáøi Audacity uvolnili také
 <a href="<?php print "beta.php?$langLinkStr"; ?>">
-verzi 1.2.0-pre1</a>, která pøedstavuje "beta-quality" ukázku nových vìcí, na kterých se aktivnì pracuje. Obsahuje mnoho a mnoho nových vlastností, ale není pøíliš dotažená a stabilní.
+verzi 1.2.0-pre2</a>, která pøedstavuje "beta-quality" ukázku nových vìcí, na kterých se aktivnì pracuje. Obsahuje mnoho a mnoho nových vlastností, ale není pøíliš dotažená a stabilní.
 </p>
 
 <center>
