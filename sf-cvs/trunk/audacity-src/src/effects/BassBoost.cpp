@@ -30,6 +30,33 @@ EffectBassBoost::EffectBassBoost()
    dB_boost = 12;
 }
 
+bool EffectBassBoost::NewTrackSimpleMono(int count, double samplerate)
+{
+//(re)initialise filter parameters
+   xn1=0;
+   xn2=0;
+   yn1=0;
+   yn2=0;
+
+   /* Compute coefficents of the biquand IIR filter */
+   omega = 2 * 3.141592653589 * frequency / samplerate;
+   sn = sin(omega);
+   cs = cos(omega);
+   a = exp(log(10) * dB_boost / 40);
+   shape = 1.0;           /*Low Shelf filter's shape, if this is too large
+                            or too small it will result an unstable filter */
+   beta = sqrt((a * a + 1) / shape - (pow((a - 1), 2)));
+   /*  Coefficients  */
+   b0 = a * ((a + 1) - (a - 1) * cs + beta * sn);
+   b1 = 2 * a * ((a - 1) - (a + 1) * cs);
+   b2 = a * ((a + 1) - (a - 1) * cs - beta * sn);
+   a0 = ((a + 1) + (a - 1) * cs + beta * sn);
+   a1 = -2 * ((a - 1) + (a + 1) * cs);
+   a2 = (a + 1) + (a - 1) * cs - beta * sn;
+
+   return true;
+}
+
 bool EffectBassBoost::PromptUser()
 {
    BassBoostDialog dlog(mParent, -1, _("BassBoost"));
@@ -48,89 +75,30 @@ bool EffectBassBoost::PromptUser()
    return true;
 }
 
-bool EffectBassBoost::Process()
+bool EffectBassBoost::ProcessSimpleMono(float *buffer, sampleCount len, double samplerate)
 {
-   TrackListIterator iter(mWaveTracks);
-   Track *t = iter.First();
-   int count = 0;
-   while(t) {
-      sampleCount start, len;
-      GetSamples((WaveTrack *)t, &start, &len);
-      bool success = ProcessOne(count, (WaveTrack *)t, start, len);
-      
-      if (!success)
-         return false;
    
-      t = iter.Next();
-      count++;
-   }
-   
-   return true;
-}
-
-bool EffectBassBoost::ProcessOne(int count, WaveTrack * t,
-                                 sampleCount start, sampleCount len)
-{
-   float samplerate = (float) (t->GetRate());
-
-   /* Compute coefficents of the biquand IIR filter */
-   float omega = 2 * 3.141592653589 * frequency / samplerate;
-   float sn = sin(omega);
-   float cs = cos(omega);
-   float a = exp(log(10) * dB_boost / 40);
-   float shape = 1.0;           /*Low Shelf filter's shape, if this is too large
-                                   or too small it will result an unstable filter */
-   float beta = sqrt((a * a + 1) / shape - (pow((a - 1), 2)));
-   /*  Coefficients  */
-   float b0 = a * ((a + 1) - (a - 1) * cs + beta * sn);
-   float b1 = 2 * a * ((a - 1) - (a + 1) * cs);
-   float b2 = a * ((a + 1) - (a - 1) * cs - beta * sn);
-   float a0 = ((a + 1) + (a - 1) * cs + beta * sn);
-   float a1 = -2 * ((a - 1) + (a + 1) * cs);
-   float a2 = (a + 1) + (a - 1) * cs - beta * sn;
    /* initialise the filter */
-   float xn1 = 0, xn2 = 0, yn1 = 0, yn2 = 0;
 
    float out, in = 0;
 
-   sampleCount s = start;
    sampleCount originalLen = len;
-   sampleCount blockSize = t->GetMaxBlockSize();
 
-   float *buffer = new float[blockSize];
+   for (int i = 0; i < len; i++) {
+      in = buffer[i];
+      out = (b0 * in + b1 * xn1 + b2 * xn2 - a1 * yn1 - a2 * yn2) / a0;
+      xn2 = xn1;
+      xn1 = in;
+      yn2 = yn1;
+      yn1 = out;
 
-   while (len) {
-      sampleCount block = t->GetBestBlockSize(s);
-      if (block > len)
-         block = len;
+      if (out < -1.0)
+         out = -1.0;
+      else if (out > 1.0)
+         out = 1.0;        //Prevents clipping
 
-      t->Get(buffer, s, block);
-
-      for (int i = 0; i < block; i++) {
-         in = buffer[i];
-         out = (b0 * in + b1 * xn1 + b2 * xn2 - a1 * yn1 - a2 * yn2) / a0;
-         xn2 = xn1;
-         xn1 = in;
-         yn2 = yn1;
-         yn1 = out;
-
-         if (out < -1.0)
-            out = -1.0;
-         else if (out > 1.0)
-            out = 1.0;        //Prevents clipping
-
-         buffer[i] = out;
-      }
-
-      t->Set(buffer, s, block);
-      
-      len -= block;
-      s += block;
-      
-      TrackProgress(count, (s-start)/(double)originalLen);
+      buffer[i] = out;
    }
-
-   delete[]buffer;
 
    return true;
 }
@@ -160,9 +128,6 @@ END_EVENT_TABLE()
 BassBoostDialog::BassBoostDialog(wxWindow * parent, wxWindowID id, const wxString & title, const wxPoint & position, const wxSize & size, long style):
 wxDialog(parent, id, title, position, size, style)
 {
-   freq = 200;
-   boost = 12;
-
    MakeBassBoostDialog(this, TRUE, TRUE);
 }
 
@@ -232,12 +197,7 @@ void BassBoostDialog::OnBoostText(wxCommandEvent & event)
       long boost;
 
       c->GetValue().ToLong(&boost);
-      freq = TrapLong(boost, BOOST_MIN, BOOST_MAX);
-
-      if (boost < BOOST_MIN)
-         boost = BOOST_MIN;
-      else if (boost > BOOST_MAX)
-         boost = BOOST_MAX;
+      boost = TrapLong(boost, BOOST_MIN, BOOST_MAX);
 
       wxSlider *slider = GetBoostSlider();
       if (slider)

@@ -43,12 +43,13 @@
 
 void LoadEffects(wxString searchDir)
 {
-   Effect::RegisterEffect(new EffectInvert(), false);
    Effect::RegisterEffect(new EffectAmplify(), false);
+   Effect::RegisterEffect(new EffectBassBoost(), false);
+   Effect::RegisterEffect(new EffectInvert(), false);
    Effect::RegisterEffect(new EffectToneGen(), false);
 
-#if 0
-   Effect::RegisterEffect(new EffectBassBoost(), false);
+#if 0 //temporary disable effects that haven't been ported
+      //to the new WaveTrack/Sequence classes
    Effect::RegisterEffect(new EffectCompressor(), false);
    Effect::RegisterEffect(new EffectEcho(), false);
    Effect::RegisterEffect(new EffectFadeIn(), false);
