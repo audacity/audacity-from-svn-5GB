@@ -67,8 +67,11 @@ OBJS = \
 	$(OBJDIR)/UndoManager.o \
 	$(OBJDIR)/WaveTrack.o \
 	$(OBJDIR)/effects/Effect.o \
+	$(OBJDIR)/effects/SimpleMono.o \
+	$(OBJDIR)/effects/SimplePairedTwoTrack.o \
 	$(OBJDIR)/effects/LoadEffects.o \
 	$(OBJDIR)/effects/Amplify.o \
+	$(OBJDIR)/effects/AvcCompressor.o \
 	$(OBJDIR)/effects/BassBoost.o \
 	$(OBJDIR)/effects/Compressor.o \
 	$(OBJDIR)/effects/Echo.o \
@@ -78,7 +81,6 @@ OBJS = \
 	$(OBJDIR)/effects/NoiseRemoval.o \
 	$(OBJDIR)/effects/Phaser.o \
 	$(OBJDIR)/effects/Reverse.o \
-	$(OBJDIR)/effects/SimpleMono.o \
 	$(OBJDIR)/effects/ToneGen.o \
 	$(OBJDIR)/effects/Wahwah.o \
 	$(OBJDIR)/export/Export.o \
