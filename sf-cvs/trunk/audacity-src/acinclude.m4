@@ -27,7 +27,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBNYQUIST], [
       LIBNYQUIST_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libnyquist/nyx'
       LIBNYQUIST_LOCAL_CPPSYMBOLS="USE_NYQUIST"
       LIBNYQUIST_LOCAL_OPTOBJS="effects/nyquist/Nyquist.o"
-      LIBNYQUIST_LOCAL_OPTOBJS="$LIBNYQUIST_LOCAL_OBJS effects/nyquist/LoadNyquist.o"
+      LIBNYQUIST_LOCAL_OPTOBJS="$LIBNYQUIST_LOCAL_OPTOBJS effects/nyquist/LoadNyquist.o"
 
       AC_MSG_NOTICE([nyquist libraries are available in the local tree])
    else
