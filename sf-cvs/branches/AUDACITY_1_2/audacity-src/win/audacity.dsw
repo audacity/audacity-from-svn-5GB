@@ -45,9 +45,6 @@ Package=<4>
     Project_Dep_Name portmixer
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name soundtouch
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name libresample
     End Project Dependency
 }}}
@@ -55,6 +52,18 @@ Package=<4>
 ###############################################################################
 
 Project: "PAStaticWMME"="..\lib-src\portaudio\winproj\PAStaticWMME\PAStaticWMME.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SoundTouch"="..\lib-src\soundtouch\source\SoundTouch\SoundTouch.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -199,18 +208,6 @@ Package=<4>
 ###############################################################################
 
 Project: "portmixer"="..\lib-src\portmixer\winproj\portmixer.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "soundtouch"="..\LIB-SRC\SOUNDTOUCH\WIN\soundtouch.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
