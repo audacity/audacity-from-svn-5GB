@@ -22,14 +22,18 @@
  *
  */
  
-#include "memory.h"
-#include "stdio.h"
+#ifdef __DARWIN__
+# include <CoreServices/CoreServices.h>
+#else
+# include <FixMath.h>
+# include <TextUtils.h>
+#endif
+
+#include <memory.h>
+#include <stdio.h>
 
 #include "snd.h"
 #include "audiomac.h"
-
-#include <FixMath.h>
-#include <TextUtils.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -119,10 +123,10 @@ pascal void recordingCallback(SPBPtr params, Ptr buffer, short peakAmplitude, lo
 
 int audio_open(snd_node *n, long *f)
 {
-  buffer_state *data = (buffer_state *)malloc(sizeof(buffer_state));
-  n->u.audio.descriptor = (void *)data;
   OSErr	err;
   Fixed sampleRateFixed;
+  buffer_state *data = (buffer_state *)malloc(sizeof(buffer_state));
+  n->u.audio.descriptor = (void *)data;
 
   data->frameSize = snd_bytes_per_frame(n);
 
@@ -164,8 +168,8 @@ int audio_open(snd_node *n, long *f)
     data->recording = 1;
     
     len = strlen(n->u.audio.devicename);
-    device = new char[len+1];
-    input = new char[len+1];
+    device = (char *)malloc(len+1);
+    input = (char *)malloc(len+1);
     
     strcpy(device, n->u.audio.devicename);
     input[0] = 0;
@@ -186,7 +190,7 @@ int audio_open(snd_node *n, long *f)
     SPBGetDeviceInfo (data->refnum, siInputSourceNames, &buffer);
     deviceData = buffer[0] + 2;
    
-    for(int x=0; x<infoList.count; x++) {
+    for(x=0; x<infoList.count; x++) {
       int y = *deviceData++;
       z = 0;
       while(y) {
@@ -336,9 +340,10 @@ int audio_close(snd_node *n)
     free((void *)data->recBuffer);
   }
   else {
+    SndCallBackUPP callBack;
     data->finished = 1;
     
-    SndCallBackUPP callBack = data->chan->callBack;
+    callBack = data->chan->callBack;
     
     err = SndDisposeChannel(data->chan,
                             true         // quiets the channel now
@@ -428,17 +433,20 @@ long audio_read(snd_node *n, void *buffer, long length)
 long audio_write(snd_node *n, void *buffer, long length)
 {
   buffer_state *data = (buffer_state *)n->u.audio.descriptor;
+  long block;
+  long written;
 
   while(data->busy)
     ;
   
   data->busy = 1;
 
-  long written = 0;
-  long block;
+  written = 0;
   
   if (data->curBuffer==0 && length>0) {
-    block = min(length, data->bufferSize - data->curSize);
+    block = data->bufferSize - data->curSize;
+    if (length < block)
+      block = length;
     
     if (block>0) {
     
@@ -460,7 +468,9 @@ long audio_write(snd_node *n, void *buffer, long length)
   // Copy into the second buffer (the one we don't pass to the Sound Manager directly)
 
   if (data->curBuffer == 1 && length>0) {
-    block = min(length, data->nextBufferSize - data->curSize);
+    block = data->nextBufferSize - data->curSize;
+    if (length < block)
+      block = length;
     
     if (block > 0) {
     
