@@ -261,6 +261,16 @@ bool Export(AudacityProject *project,
    if (!project->GetDirManager()->EnsureSafeFilename(fName))
       return false;
 
+   bool returnValue;
+
+   wxString tempName = fName;
+   int tempIndex = 1;
+
+   while(wxFileExists(tempName)) {
+      tempName = wxString::Format("%s%d", (const char *)fName, tempIndex);
+      tempIndex++;
+   }
+
    /* Finally, dispatch to the correct procedure... 
     * These functions take too many parameters, almost to the point where I
     * am tempted to create a structure to contain this data... */
@@ -268,18 +278,22 @@ bool Export(AudacityProject *project,
        format == "AIFF" ||
        format == "IRCAM" ||
        format == "AU" || format == "AIFF with track markers")
-      return ExportPCM(project, format, stereo, fName,
+      returnValue = ExportPCM(project, format, stereo, tempName,
                        selectionOnly, t0, t1);
    else if (format == "MP3")
-      return ExportMP3(project, stereo, fName,
+      returnValue = ExportMP3(project, stereo, tempName,
                        selectionOnly, t0, t1);
 #ifdef USE_LIBVORBIS
    else if (format == "OGG")
-      return ExportOGG(project, stereo, fName,
-                       selectionOnly, t0, t1);
+      returnValue = ExportOGG(project, stereo, tempName,
+                              selectionOnly, t0, t1);
 #endif
 
-   /* Execution should never reach this point...!
-      Return false only so we don't get a compiler warning */
-   return false;
+   if (returnValue == true && tempName != fName) {
+      /* rename the file to the correct name */
+      wxRemoveFile(fName);
+      wxRenameFile(tempName, fName);
+   }
+
+   return returnValue;
 }
