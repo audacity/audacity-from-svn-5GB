@@ -355,11 +355,13 @@ void nyx_get_audio(nyx_audio_callback callback, void *userdata)
    sample_block_type block;
    sound_type snd;
    sound_type *snds;
+   float *buffer;
+   long bufferlen;
    long *totals;
    long cnt;
    int result = 0;
    int num_channels;
-   int ch;
+   int ch, i;
 
    if (nyx_get_type(nyx_result) != nyx_audio)
       return;
@@ -382,6 +384,9 @@ void nyx_get_audio(nyx_audio_callback callback, void *userdata)
       totals[ch] = 0;
    }
 
+   buffer = NULL;
+   bufferlen = 0;
+
    while(result==0) {
       for(ch=0; ch<num_channels; ch++) {
          snd = snds[ch];
@@ -392,7 +397,22 @@ void nyx_get_audio(nyx_audio_callback callback, void *userdata)
             break;
          }
 
-         result = callback(block->samples, ch,
+         /* copy the data to a temporary buffer and scale it
+            by the appropriate scale factor */
+
+         if (cnt > bufferlen) {
+            if (buffer)
+               free(buffer);
+            buffer = (float *)malloc(cnt * sizeof(float));
+            bufferlen = cnt;
+         }
+
+         memcpy(buffer, block->samples, cnt * sizeof(float));
+
+         for(i=0; i<cnt; i++)
+            buffer[i] *= snd->scale;
+
+         result = callback(buffer, ch,
                            totals[ch], cnt, userdata);
 
          if (result == 0)
@@ -401,6 +421,8 @@ void nyx_get_audio(nyx_audio_callback callback, void *userdata)
    }
 
  finish:
+      if (buffer)
+         free(buffer);
    free(snds);
    free(totals);
 
