@@ -61,12 +61,9 @@ class EffectChangeSpeed : public Effect {
 	// libsamplerate related
 	SRC_STATE *	m_pSRC_STATE;
 
-	// track related (from EffectSoundTouch)
+	// track related
    int    mCurTrackNum;
-   double mCurRate;
-   double mCurT0;
-   double mCurT1;
-   int    mCurChannel;
+	double m_maxNewLength;
 
 	// control values
    double	m_PercentChange;	// percent change to apply to tempo

@@ -32,6 +32,7 @@ bool EffectSoundTouch::Process()
    TrackListIterator iter(mWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    mCurTrackNum = 0;
+	m_maxNewLength = 0.0;
    while (track) {
       //Get start and end times from track
       double trackStart = track->GetStartTime();
@@ -66,6 +67,7 @@ bool EffectSoundTouch::Process()
    delete mSoundTouch;
    mSoundTouch = NULL;
 
+	mT1 = mT0 + m_maxNewLength; // Update selection.
    return true;
 }
 
@@ -146,6 +148,10 @@ bool EffectSoundTouch::ProcessOne(WaveTrack *track,
 
    track->Clear(mT0, mT1);
    track->Paste(mT0, outputTrack);
+
+	double newLength = outputTrack->GetEndTime(); 
+	if (newLength > m_maxNewLength) 
+		m_maxNewLength = newLength; 
 
    // Delete the outputTrack now that its data is inserted in place
    delete outputTrack;
