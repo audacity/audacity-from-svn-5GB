@@ -26,19 +26,18 @@
   
 **********************************************************************/
 
-#include "Audacity.h"
-
 #ifndef __AUDACITY_TAGS__
 #define __AUDACITY_TAGS__
 
+#include "Audacity.h"
+#include "xml/XMLTagHandler.h"
+
 #include <wx/string.h>
-#include <wx/choice.h>
-#include <wx/radiobox.h>
-#include <wx/textctrl.h>
-#include <wx/panel.h>
 #include <wx/dialog.h>
 
-#include "xml/XMLTagHandler.h"
+class wxRadioBox;
+class wxTextCtrl;
+class wxChoice;
 
 class Tags: public XMLTagHandler {
 

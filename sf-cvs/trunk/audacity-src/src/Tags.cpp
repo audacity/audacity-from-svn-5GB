@@ -26,14 +26,19 @@
   
 **********************************************************************/
 
-#include <wx/sizer.h>
-#include <wx/stattext.h>
-#include <wx/button.h>
-#include <wx/intl.h>
-#include <wx/msgdlg.h>
+#include "Tags.h"
 
 #include "Audacity.h"
 #include "Internat.h"
+
+#include <wx/button.h>
+#include <wx/choice.h>
+#include <wx/intl.h>
+#include <wx/msgdlg.h>
+#include <wx/radiobox.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
 
 #ifdef USE_LIBID3TAG 
    #include <id3tag.h>
@@ -46,8 +51,6 @@
       void id3_latin1_decode(id3_latin1_t const *, id3_ucs4_t *);
    } 
 #endif
-
-#include "Tags.h"
 
 Tags::Tags()
 {
@@ -92,6 +95,7 @@ bool Tags::HandleXMLTag(const char *tag, const char **attrs)
       else if (!strcmp(attr, "id3v2"))
          mID3V2 = atoi(value);         
    } // while
+
    
    return true;
 }
