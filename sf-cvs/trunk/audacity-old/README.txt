@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.94: January 15, 2001
+Version 0.94: February 2, 2001
 
 http://www.cs.cmu.edu/~music/audacity/
 
@@ -16,6 +16,11 @@ Authors:
   Robert Leidle <rfl+@andrew.cmu.edu>
   Mark Tomlinson <marktoml@hotmail.com>
   Joshua Haberman <joshua@haberman.com>
+
+Icons and logo:
+
+  Harvey Lubin <agrapha@agrapha.com>
+  http://www.agrapha.com/
 
 For changelog, see the bottom of this document
 
