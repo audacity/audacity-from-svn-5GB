@@ -786,7 +786,7 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
       } // while
       return true;
    }
-   
+
    return false;
 }
 
@@ -795,6 +795,8 @@ XMLTagHandler *WaveTrack::HandleXMLChild(const char *tag)
    if (!strcmp(tag, "waveblock") ||
        !strcmp(tag, "blockfile"))
       return this;
+   else if (!strcmp(tag, "envelope"))
+      return mEnvelope;
    else
       return NULL;
 }
@@ -831,6 +833,8 @@ void WaveTrack::WriteXML(int depth, FILE *fp)
          fprintf(fp, "\t");
       fprintf(fp, "</waveblock>\n");
    }
+
+   mEnvelope->WriteXML(depth+1, fp);
 
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");

@@ -16,7 +16,11 @@
 #ifndef __AUDACITY_ENVELOPE__
 #define __AUDACITY_ENVELOPE__
 
+#include <stdlib.h>
+
 #include <wx/dynarray.h>
+
+#include "xml/XMLTagHandler.h"
 
 class wxRect;
 class wxDC;
@@ -25,16 +29,47 @@ class wxTextFile;
 
 class DirManager;
 
-struct EnvPoint {
+struct EnvPoint : public XMLTagHandler {
    double t;
    double val;
+
+   bool HandleXMLTag(const char *tag, const char **attrs)
+   {
+      if (!strcmp(tag, "controlpoint")) {
+         while (*attrs) {
+            const char *attr = *attrs++;
+            const char *value = *attrs++;
+            if (!strcmp(attr, "t"))
+               t = atof(value);
+            else if (!strcmp(attr, "val"))
+               val = atof(value);
+         }
+         return true;
+      }
+      else
+         return false;
+   }
+
+   XMLTagHandler *HandleXMLChild(const char *tag)
+   {
+      return NULL;
+   }
+
+   void WriteXML(int depth, FILE *fp)
+   {
+      int i;
+      for (i=0; i<depth; i++)
+         fprintf(fp, "\t");
+      fprintf(fp, "<controlpoint t='%f' val='%f'/>\n", t, val);
+   }
 };
 
 WX_DEFINE_ARRAY(EnvPoint *, EnvArray);
 
-class Envelope {
+class Envelope : public XMLTagHandler {
  public:
    Envelope();
+   void Initialize(int numPoints);
 
    virtual ~ Envelope();
 
@@ -43,10 +78,18 @@ class Envelope {
 
    void Flatten(double value);
 
+#if LEGACY_PROJECT_FILE_SUPPORT
    // File I/O
 
    virtual bool Load(wxTextFile * in, DirManager * dirManager);
    virtual bool Save(wxTextFile * out, bool overwrite);
+#endif
+
+   // Newfangled XML file I/O
+   virtual bool HandleXMLTag(const char *tag, const char **attrs);
+   virtual XMLTagHandler *HandleXMLChild(const char *tag);
+   virtual void WriteXML(int depth, FILE *fp);
+
 
    // Event Handlers
 
