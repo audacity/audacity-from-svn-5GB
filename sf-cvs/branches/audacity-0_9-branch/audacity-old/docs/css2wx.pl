@@ -172,7 +172,9 @@ foreach $filename (@list) {
     # all tags were processed for this file
 
 # ------------- #
-
+	 if ($filename =~ "(.*).html") {
+		  $filename = "$1.htm";
+	 }
     open ( TARGET, ">$targetdir" . "$filename" );
     for ($i=0;$i<=$#file;$i++){
       print TARGET $file[$i] . "\n";
