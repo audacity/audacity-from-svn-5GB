@@ -16,7 +16,10 @@
 #include <wx/window.h>
 #endif
 
+#ifndef __WXMAC__
 #include <wx/fs_zip.h>
+#endif
+
 #include <wx/image.h>
 
 #ifdef __WXGTK__
@@ -99,7 +102,11 @@ IMPLEMENT_APP(AudacityApp)
 
 #ifdef __WXMAC__
 
+#ifdef TARGET_CARBON
+pascal OSErr AEQuit (const AppleEvent *theAppleEvent, AppleEvent *theReply, unsigned long Refcon)
+#else
 pascal OSErr AEQuit (AppleEvent *theAppleEvent, AppleEvent *theReply, long Refcon)
+#endif
 {
   QuitAudacity();
   
@@ -111,7 +118,11 @@ pascal	OSErr	FSpGetFullPath(const FSSpec *spec,
 							               short *fullPathLength,
 							               Handle *fullPath);
 
+#ifdef TARGET_CARBON
+pascal OSErr AEOpenFiles (const AppleEvent *theAppleEvent, AppleEvent *theReply, unsigned long Refcon)
+#else
 pascal OSErr AEOpenFiles (AppleEvent *theAppleEvent, AppleEvent *theReply, long Refcon)
+#endif
 {
 	AEDescList docList;
 	AEKeyword keywd;
@@ -151,7 +162,7 @@ pascal OSErr AEOpenFiles (AppleEvent *theAppleEvent, AppleEvent *theReply, long 
           !project->GetTracks()->IsEmpty()) {
         project = CreateNewAudacityProject(gParentWindow);
       }
-      project->OpenFile(::wxMac2UnixFilename(str));
+      project->OpenFile(str);
       
       delete[] str;
     }
@@ -167,7 +178,9 @@ bool AudacityApp::OnInit()
 {
   ::wxInitAllImageHandlers();
 
+#ifndef __WXMAC__
   wxFileSystem::AddHandler(new wxZipFSHandler);
+#endif
 
   InitPreferences();
   InitAudioIO();
@@ -186,7 +199,7 @@ bool AudacityApp::OnInit()
   LoadVSTPlugins();
   #endif
   
-  #if defined(__WXMAC__) && !defined(TARGET_CARBON)
+  #ifdef __WXMAC__
   AEInstallEventHandler(kCoreEventClass,
                         kAEOpenDocuments,
                         NewAEEventHandlerUPP(AEOpenFiles),
