@@ -1313,6 +1313,10 @@ void AudacityProject::ImportOGG(wxString fileName)
 void AudacityProject::ZoomFit()
 {
   double len = mTracks->GetMaxLen();
+  
+  if (len <= 0.0)
+    return;
+  
   int w, h;
   mTrackPanel->GetTracksUsableArea(&w, &h);
   w -= 10;
