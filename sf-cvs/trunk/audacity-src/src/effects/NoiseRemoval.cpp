@@ -6,8 +6,6 @@
 
   Dominic Mazzoni
 
-  This effect attempts 
-
   The noise is removed using noise gates on each frequency band in
   the FFT, and the signal is reconstructed using overlap/add of
   Hanning windows.
@@ -18,9 +16,12 @@
 
 #ifdef __WXMSW__
 #include <float.h>
-#define isfinite(X) _finite(X)
-#else
-#define isfinite(X) finite(X)
+#define finite(x) _finite(x)
+#endif
+
+#ifdef __WXMAC__
+#include <fp.h>
+#define finite(x) isfinite(x)
 #endif
 
 #include <wx/msgdlg.h>
@@ -31,6 +32,7 @@
 #include <wx/statbox.h>
 
 #include "NoiseRemoval.h"
+#include "../Envelope.h"
 #include "../FFT.h"
 #include "../WaveTrack.h"
 
@@ -129,10 +131,10 @@ bool EffectNoiseRemoval::ProcessOne(int count, WaveTrack * t,
    sampleCount originalLen = len;
    
    int i;
-   bool first = true;
    
    for(i=0; i<windowSize; i++) {
       lastWindow[i] = 0;
+      smoothing[i] = 0.0;
    }
    
    while(len) {
@@ -157,8 +159,7 @@ bool EffectNoiseRemoval::ProcessOne(int count, WaveTrack * t,
          if (doProfile)
             GetProfile(windowSize, thisWindow);
          else {
-            RemoveNoise(windowSize, thisWindow, first);
-            first = false;
+            RemoveNoise(windowSize, thisWindow);
             for(j=0; j<windowSize/2; j++)
                buffer[i+j] = thisWindow[j] + lastWindow[windowSize/2 + j];
          }
@@ -205,7 +206,7 @@ void EffectNoiseRemoval::GetProfile(sampleCount len,
    for(i=0; i<=len/2; i++) {
       float value = log(out[i]);
       
-      if (isfinite(value)) {
+      if (finite(value)) {
          sum[i] += value;
          sumsq[i] += value*value;
          profileCount[i]++;
@@ -217,8 +218,7 @@ void EffectNoiseRemoval::GetProfile(sampleCount len,
 }
 
 void EffectNoiseRemoval::RemoveNoise(sampleCount len,
-                                     sampleType *buffer,
-                                     bool first)
+                                     sampleType *buffer)
 {
    float *inr = new float[len];
    float *ini = new float[len];
@@ -246,7 +246,6 @@ void EffectNoiseRemoval::RemoveNoise(sampleCount len,
     
    int half = len/2;
    for(i=0; i<=half; i++) {
-      int j = len - i;
       float smooth;
       
       if (plog[i] < noiseGate[i] + (level/2.0))
@@ -254,17 +253,32 @@ void EffectNoiseRemoval::RemoveNoise(sampleCount len,
       else
          smooth = 1.0;
       
-      if (!first)
-         smooth = smooth * 0.5 + smoothing[i] * 0.5;
-      smoothing[i] = smooth;
-      
+      smoothing[i] = smooth * 0.5 + smoothing[i] * 0.5;
+   }
+
+   /* try to eliminate tinkle bells */
+   for(i=2; i<=half-2; i++) {
+      if (smoothing[i]>=0.5 &&
+          smoothing[i]<=0.55 &&
+          smoothing[i-1]<0.1 &&
+          smoothing[i-2]<0.1 &&
+          smoothing[i+1]<0.1 &&
+          smoothing[i+2]<0.1)
+         smoothing[i] = 0.0;
+   }
+
+   outr[0] *= smoothing[0];
+   outi[0] *= smoothing[0];
+   outr[half] *= smoothing[half];
+   outi[half] *= smoothing[half];
+   for(i=0; i<=half; i++) {
+      int j = len - i;
+      float smooth = smoothing[i];
+
       outr[i] *= smooth;
       outi[i] *= smooth;
-      
-      if (i!=0 && i!=len/2) {
-         outr[j] *= smooth;
-         outi[j] *= smooth;
-      }
+      outr[j] *= smooth;
+      outi[j] *= smooth;
    }
 
    // Inverse FFT and normalization
@@ -322,7 +336,7 @@ void NoiseRemovalDialog::OnCancel(wxCommandEvent &event)
    EndModal(0);
 }
 
-wxSizer *NoiseRemovalDialog::MakeNoiseRemovalDialog( wxPanel *parent, bool call_fit, bool set_sizer )
+wxSizer *NoiseRemovalDialog::MakeNoiseRemovalDialog( wxWindow *parent, bool call_fit, bool set_sizer )
 {
    wxBoxSizer *mainSizer = new wxBoxSizer( wxVERTICAL );
    wxStaticBoxSizer *group;
