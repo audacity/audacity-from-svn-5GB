@@ -128,8 +128,6 @@ class DirManager: public XMLTagHandler {
    wxString projPath;
    wxString projFull;
 
-   wxString lastProject;
-
    wxStringList aliasList;
 
    BlockFile **mLoadingTarget;
