@@ -323,9 +323,7 @@ bool BlockFile::Read256(float *buffer,
 bool BlockFile::Read64K(float *buffer,
                         sampleCount start, sampleCount len)
 {
-   wxASSERT(b);
    wxASSERT(start >= 0);
-   wxASSERT(start + len <= ((b->len + 65535) / 65536));
 
    char *summary = new char[mSummaryInfo.totalSummaryBytes];
    if (!this->ReadSummary(summary)) {
