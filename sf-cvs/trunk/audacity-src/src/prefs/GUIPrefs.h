@@ -16,6 +16,8 @@
 
 class wxWindow;
 class wxCheckBox;
+class wxTextCtrl;
+class wxStaticText;
 
 class GUIPrefs : public PrefsPanel {
 
@@ -27,6 +29,8 @@ class GUIPrefs : public PrefsPanel {
  private:
     wxCheckBox *mAutoscroll;
     wxCheckBox *mSpectrogram;
+    wxTextCtrl *mLocale;
+    wxStaticText *mLocaleLabel;
 };
 
 #endif
