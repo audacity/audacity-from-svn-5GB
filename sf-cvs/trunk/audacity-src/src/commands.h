@@ -191,7 +191,7 @@ enum {
    CMD_ADDMENU("---", "Seperator", OnSeperator, editMenu, enabledMenu);
    CMD_ADDMENU("Cut\tCtrl+X", "Cut", Cut, editMenu, enabledMenu);
    CMD_ADDMENU("Copy\tCtrl+C", "Copy", Copy, editMenu, enabledMenu);
-   CMD_ADDMENU("Pase\tCtrl+V", "Paste", Paste, editMenu, enabledMenu);
+   CMD_ADDMENU("Paste\tCtrl+V", "Paste", Paste, editMenu, enabledMenu);
    CMD_ADDMENU("Trim\tCtrl+T", "Trim", Trim, editMenu, enabledMenu);
    CMD_ADDMENU("---", "Seperator", OnSeperator, editMenu, enabledMenu);
    CMD_ADDMENU("Delete\tCtrl+K", "Delete", OnDelete, editMenu, enabledMenu);
