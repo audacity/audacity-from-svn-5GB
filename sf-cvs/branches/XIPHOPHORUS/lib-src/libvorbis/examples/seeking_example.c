@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: illustrate seeking, and test it too
- last mod: $Id: seeking_example.c,v 1.1.1.2 2002-04-21 23:36:52 habes Exp $
+ last mod: $Id: seeking_example.c,v 1.1.1.3 2002-10-26 19:40:06 dmazzoni Exp $
 
  ********************************************************************/
 
@@ -54,6 +54,16 @@ void _verify(OggVorbis_File *ov,ogg_int64_t pos,
   for(j=0;j<bread;j++){
     if(buffer[j]!=bigassbuffer[j+pos*2]){
       printf("data position after seek doesn't match pcm position\n");
+
+      {
+	FILE *f=fopen("a.m","w");
+	for(j=0;j<bread;j++)fprintf(f,"%d\n",(int)buffer[j]);
+	fclose(f);
+	f=fopen("b.m","w");
+	for(j=0;j<bread;j++)fprintf(f,"%d\n",(int)bigassbuffer[j+pos*2]);
+	fclose(f);
+      }
+
       exit(1);
     }
   }
@@ -94,7 +104,6 @@ int main(){
     
     /* because we want to do sample-level verification that the seek
        does what it claimed, decode the entire file into memory */
-    printf("loading....\n");
     fflush(stdout);
     pcmlength=ov_pcm_total(&ov,-1);
     bigassbuffer=malloc(pcmlength*2); /* w00t */
@@ -107,6 +116,8 @@ int main(){
       }else{
 	pcmlength=i/2;
       }
+      fprintf(stderr,"\rloading.... [%ld left]              ",
+	      (long)(pcmlength*2-i));
     }
     
     /* Exercise all the real seeking cases; ov_raw_seek,
@@ -114,7 +125,7 @@ int main(){
        on pcm_seek */
     {
       ogg_int64_t length=ov.end;
-      printf("testing raw seeking to random places in %ld bytes....\n",
+      printf("\rtesting raw seeking to random places in %ld bytes....\n",
 	     (long)length);
     
       for(i=0;i<1000;i++){
@@ -135,7 +146,6 @@ int main(){
 
     printf("\r");
     {
-      ogg_int64_t length=ov.end;
       printf("testing pcm page seeking to random places in %ld samples....\n",
 	     (long)pcmlength);
     
@@ -172,7 +182,7 @@ int main(){
 	  exit(1);
 	}
 	if(ov_pcm_tell(&ov)!=val){
-	  printf("Decalred position didn't perfectly match request: %ld != %ld\n",
+	  printf("Declared position didn't perfectly match request: %ld != %ld\n",
 		 (long)val,(long)ov_pcm_tell(&ov));
 	  exit(1);
 	}

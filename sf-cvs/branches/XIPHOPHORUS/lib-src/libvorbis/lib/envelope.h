@@ -5,21 +5,49 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: PCM data envelope analysis and manipulation
- last mod: $Id: envelope.h,v 1.1.1.2 2002-04-21 23:36:46 habes Exp $
+ last mod: $Id: envelope.h,v 1.1.1.3 2002-10-26 19:39:35 dmazzoni Exp $
 
  ********************************************************************/
 
 #ifndef _V_ENVELOPE_
 #define _V_ENVELOPE_
 
-#include "iir.h"
-#include "smallft.h"
+#include "mdct.h"
+
+#define VE_PRE    16
+#define VE_WIN    4
+#define VE_POST   2
+#define VE_AMP    (VE_PRE+VE_POST-1)
+
+#define VE_BANDS  7
+#define VE_NEARDC 15
+
+#define VE_MINSTRETCH 2   /* a bit less than short block */
+#define VE_MAXSTRETCH 12  /* one-third full block */
+
+typedef struct {
+  float ampbuf[VE_AMP];
+  int   ampptr;
+
+  float nearDC[VE_NEARDC];
+  float nearDC_acc;
+  float nearDC_partialacc;
+  int   nearptr;
+
+} envelope_filter_state;
+
+typedef struct {
+  int begin;
+  int end;
+  float *window;
+  float total;
+} envelope_band;
 
 typedef struct {
   int ch;
@@ -27,13 +55,18 @@ typedef struct {
   int searchstep;
   float minenergy;
 
-  IIR_state *iir;
-  float    **filtered;
+  mdct_lookup  mdct;
+  float       *mdct_win;
+
+  envelope_band          band[VE_BANDS];
+  envelope_filter_state *filter;
+  int   stretch;
+
+  int                   *mark;
 
   long storage;
   long current;
-  long mark;
-  long prevmark;
+  long curmark;
   long cursor;
 } envelope_lookup;
 

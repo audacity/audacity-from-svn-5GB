@@ -1,6 +1,6 @@
-# Makefile.in generated automatically by automake 1.4-p4 from Makefile.am
+# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
 
-# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -92,7 +92,7 @@ pthread_lib = @pthread_lib@
 
 AUTOMAKE_OPTIONS = foreign
 
-EXTRA_DIST = vorbis.def vorbis_dynamic.dsp vorbis_static.dsp 	vorbisfile.def vorbisfile_dynamic.dsp vorbisfile_static.dsp 	vorbisenc.def vorbisenc_dynamic.dsp vorbisenc_static.dsp 	build_vorbis_dynamic.bat build_vorbis_dynamic_debug.bat 	build_vorbis_static.bat build_vorbis_static_debug.bat 	build_vorbisenc_dynamic.bat build_vorbisenc_dynamic_debug.bat 	build_vorbisenc_static.bat build_vorbisenc_static_debug.bat 	build_vorbisfile_dynamic.bat build_vorbisfile_dynamic_debug.bat 	build_vorbisfile_static.bat build_vorbisfile_static_debug.bat
+EXTRA_DIST = vorbis.def vorbis_dynamic.dsp vorbis_static.dsp 	vorbisfile.def vorbisfile_dynamic.dsp vorbisfile_static.dsp 	vorbisenc.def vorbisenc_dynamic.dsp vorbisenc_static.dsp 	build_vorbis_dynamic.bat build_vorbis_dynamic_debug.bat 	build_vorbis_static.bat build_vorbis_static_debug.bat 	build_vorbisenc_dynamic.bat build_vorbisenc_dynamic_debug.bat 	build_vorbisenc_static.bat build_vorbisenc_static_debug.bat 	build_vorbisfile_dynamic.bat build_vorbisfile_dynamic_debug.bat 	build_vorbisfile_static.bat build_vorbisfile_static_debug.bat vorbis.dsw
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_CLEAN_FILES = 
