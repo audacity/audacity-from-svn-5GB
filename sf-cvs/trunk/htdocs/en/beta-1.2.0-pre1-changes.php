@@ -1,8 +1,8 @@
-<h2>Changes Since Audacity 1.0</h2>
+<h2>Changes in Audacity 1.2</h2>
 
 This section lists major changes since our last stable release, Audacity
 1.0.0.   Users of our beta versions should see the release notes for
-<a href="<?php print "betanotes.php$langQueryStr"; ?>">changes since Audacity 1.1.3</a>.
+<a href="<?php print "betanotes.php$langQueryStr"; ?>">changes since Audacity 1.1.0</a>.
 
 <h3>Professional-Quality Audio</h3>
 
@@ -12,19 +12,18 @@ Audacity can now record and edit 24-bit and 32-bit (floating-point)
 samples.  Tracks with different sample rates and formats can exist in
 the same project, and Audacity will convert them in realtime whenever
 necessary.  High-quality dithering and resampling is used for all
-conversions.  Resampling now uses algorithms from the
-<a href="http://www.mega-nerd.com/SRC/">SRC</a> library by
-Erik de Castro Lopo.
+conversions.  
 </li>
 
 <li>
 Audacity's sound input and output has been improved.  Audacity can now
-record more than two channels at once.  Latency is reduced, for lower
+record more than two channels at once.  Buffering is improved, for lower
 chances of skipping and buffer underruns.
 </li>
 </ul>
 
-
+<a href="screenshots.php<?php print $langQueryStr; ?>">
+<img alt="screenshots" border="0" src="images/screen/linux/change-pitch.png" align="right"></a>
 <h3>Effects</h3>
 
 <ul>
@@ -72,6 +71,7 @@ instead changes the playback speed smoothly as a track plays.
 
 <li>
 Each track now has its own Gain and Pan controls, for easier mixing.
+<a href="screenshots.php<?php print $langQueryStr; ?>"><img alt="screenshots" border="0" src="images/screen/linux/track-controls.png" align="right"></a>
 </li>
 
 <li>
@@ -113,11 +113,6 @@ improved compatibility with many uncompressed audio file formats.
 </li>
 
 <li>
-The latest version of the <a href="http://www.vorbis.com/">Vorbis</a>
-libraries are used, for higher-quality Ogg Vorbis encoding.
-</li>
-
-<li>
 The import and open dialogs now allow Audacity users to select several
 audio files at once, and open them into a single project.  A new "LOF"
 file format provides a way for Audacity to open a group of files with
@@ -128,6 +123,7 @@ offsets listed in a text file.
 
 <h3>Improved User Interface</h3>
 
+<a href="screenshots.php<?php print $langQueryStr; ?>"><img alt="screenshots" border="0" src="images/screen/macosx/main-toolbar.png" align="right"></a>
 <ul>
 <li>
 New Edit and Mixer toolbars for fast access to common functions.

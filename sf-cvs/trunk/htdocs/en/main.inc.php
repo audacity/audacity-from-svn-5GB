@@ -42,6 +42,7 @@ $macOSXReqStr = "Requires Mac OS X 10.1 or higher";
 $windowsReqStr = "Requires Windows 98, ME, 2000, or XP";
 $lameStr = "LAME MP3 Encoder Library";
 $lameStr2 = "(You must download this for Audacity to create MP3 files.)";
+$vstEnablerStr = "VST Enabler";
 $installerStr = "Installer program";
 $zipStr = "ZIP file";
 $sitStr = "StuffIt archive";
