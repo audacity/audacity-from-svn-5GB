@@ -123,7 +123,7 @@ flt_scale_clip_test_16 (const char *filename, int filetype, float maxval)
 	**		un-normalized and clipped.
 	*/
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, SF_TRUE, __LINE__) ;
 	sf_command (file, SFC_SET_CLIPPING, NULL, SF_TRUE) ;
 	test_write_float_or_die (file, 0, data_out, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_command (file, SFC_SET_NORM_FLOAT, NULL, SF_FALSE) ;
@@ -132,7 +132,7 @@ flt_scale_clip_test_16 (const char *filename, int filetype, float maxval)
 
 	memset (buffer_in, 0, sizeof (buffer_in)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 
 	sfinfo.format &= (SF_FORMAT_TYPEMASK | SF_FORMAT_SUBMASK) ;
 
@@ -253,7 +253,7 @@ flt_scale_clip_test_24 (const char *filename, int filetype, float maxval)
 	**		un-normalized and clipped.
 	*/
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, SF_TRUE, __LINE__) ;
 	sf_command (file, SFC_SET_CLIPPING, NULL, SF_TRUE) ;
 	test_write_float_or_die (file, 0, data_out, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_command (file, SFC_SET_NORM_FLOAT, NULL, SF_FALSE) ;
@@ -262,7 +262,7 @@ flt_scale_clip_test_24 (const char *filename, int filetype, float maxval)
 
 	memset (buffer_in, 0, sizeof (buffer_in)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 
 	sfinfo.format &= (SF_FORMAT_TYPEMASK | SF_FORMAT_SUBMASK) ;
 
@@ -383,7 +383,7 @@ flt_scale_clip_test_32 (const char *filename, int filetype, float maxval)
 	**		un-normalized and clipped.
 	*/
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, SF_TRUE, __LINE__) ;
 	sf_command (file, SFC_SET_CLIPPING, NULL, SF_TRUE) ;
 	test_write_float_or_die (file, 0, data_out, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_command (file, SFC_SET_NORM_FLOAT, NULL, SF_FALSE) ;
@@ -392,7 +392,7 @@ flt_scale_clip_test_32 (const char *filename, int filetype, float maxval)
 
 	memset (buffer_in, 0, sizeof (buffer_in)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 
 	sfinfo.format &= (SF_FORMAT_TYPEMASK | SF_FORMAT_SUBMASK) ;
 
@@ -513,7 +513,7 @@ flt_scale_clip_test_08 (const char *filename, int filetype, float maxval)
 	**		un-normalized and clipped.
 	*/
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, SF_TRUE, __LINE__) ;
 	sf_command (file, SFC_SET_CLIPPING, NULL, SF_TRUE) ;
 	test_write_float_or_die (file, 0, data_out, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_command (file, SFC_SET_NORM_FLOAT, NULL, SF_FALSE) ;
@@ -522,7 +522,7 @@ flt_scale_clip_test_08 (const char *filename, int filetype, float maxval)
 
 	memset (buffer_in, 0, sizeof (buffer_in)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 
 	sfinfo.format &= (SF_FORMAT_TYPEMASK | SF_FORMAT_SUBMASK) ;
 
@@ -645,7 +645,7 @@ dbl_scale_clip_test_16 (const char *filename, int filetype, float maxval)
 	**		un-normalized and clipped.
 	*/
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, SF_TRUE, __LINE__) ;
 	sf_command (file, SFC_SET_CLIPPING, NULL, SF_TRUE) ;
 	test_write_double_or_die (file, 0, data_out, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_command (file, SFC_SET_NORM_DOUBLE, NULL, SF_FALSE) ;
@@ -654,7 +654,7 @@ dbl_scale_clip_test_16 (const char *filename, int filetype, float maxval)
 
 	memset (buffer_in, 0, sizeof (buffer_in)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 
 	sfinfo.format &= (SF_FORMAT_TYPEMASK | SF_FORMAT_SUBMASK) ;
 
@@ -775,7 +775,7 @@ dbl_scale_clip_test_24 (const char *filename, int filetype, float maxval)
 	**		un-normalized and clipped.
 	*/
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, SF_TRUE, __LINE__) ;
 	sf_command (file, SFC_SET_CLIPPING, NULL, SF_TRUE) ;
 	test_write_double_or_die (file, 0, data_out, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_command (file, SFC_SET_NORM_DOUBLE, NULL, SF_FALSE) ;
@@ -784,7 +784,7 @@ dbl_scale_clip_test_24 (const char *filename, int filetype, float maxval)
 
 	memset (buffer_in, 0, sizeof (buffer_in)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 
 	sfinfo.format &= (SF_FORMAT_TYPEMASK | SF_FORMAT_SUBMASK) ;
 
@@ -905,7 +905,7 @@ dbl_scale_clip_test_32 (const char *filename, int filetype, float maxval)
 	**		un-normalized and clipped.
 	*/
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, SF_TRUE, __LINE__) ;
 	sf_command (file, SFC_SET_CLIPPING, NULL, SF_TRUE) ;
 	test_write_double_or_die (file, 0, data_out, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_command (file, SFC_SET_NORM_DOUBLE, NULL, SF_FALSE) ;
@@ -914,7 +914,7 @@ dbl_scale_clip_test_32 (const char *filename, int filetype, float maxval)
 
 	memset (buffer_in, 0, sizeof (buffer_in)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 
 	sfinfo.format &= (SF_FORMAT_TYPEMASK | SF_FORMAT_SUBMASK) ;
 
@@ -1035,7 +1035,7 @@ dbl_scale_clip_test_08 (const char *filename, int filetype, float maxval)
 	**		un-normalized and clipped.
 	*/
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, SF_TRUE, __LINE__) ;
 	sf_command (file, SFC_SET_CLIPPING, NULL, SF_TRUE) ;
 	test_write_double_or_die (file, 0, data_out, HALF_BUFFER_SIZE, __LINE__) ;
 	sf_command (file, SFC_SET_NORM_DOUBLE, NULL, SF_FALSE) ;
@@ -1044,7 +1044,7 @@ dbl_scale_clip_test_08 (const char *filename, int filetype, float maxval)
 
 	memset (buffer_in, 0, sizeof (buffer_in)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
 
 	sfinfo.format &= (SF_FORMAT_TYPEMASK | SF_FORMAT_SUBMASK) ;
 
