@@ -138,7 +138,7 @@
    mExportString.Printf(_("&Export as %s..."), pcmFormat.c_str());
    mExportSelectionString.Printf(_("Export Selection as %s..."),
                                  pcmFormat.c_str());
-   wxString lossyFormat = gPrefs->Read(_("/FileFormats/LossyExportFormat"), "MP3");
+   wxString lossyFormat = gPrefs->Read("/FileFormats/LossyExportFormat", "MP3");
    mExportLossyString.Printf(_("Export as %s..."), lossyFormat.c_str());
    mExportSelectionLossyString.Printf(_("Export Selection as %s..."),
                                       lossyFormat.c_str());

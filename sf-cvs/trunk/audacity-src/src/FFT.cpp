@@ -50,7 +50,7 @@ int NumberOfBitsNeeded(int PowerOfTwo)
    int i;
 
    if (PowerOfTwo < 2) {
-      fprintf(stderr, _("Error: FFT called with size %d\n"), PowerOfTwo);
+      fprintf(stderr, "Error: FFT called with size %d\n", PowerOfTwo);
       exit(1);
    }
 
@@ -111,7 +111,7 @@ void FFT(int NumSamples,
    float tr, ti;                /* temp real, temp imaginary */
 
    if (!IsPowerOfTwo(NumSamples)) {
-      fprintf(stderr, _("%d is not a power of two\n"), NumSamples);
+      fprintf(stderr, "%d is not a power of two\n", NumSamples);
       exit(1);
    }
 
