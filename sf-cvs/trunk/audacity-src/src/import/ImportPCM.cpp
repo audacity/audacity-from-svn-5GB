@@ -177,6 +177,12 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
    if (copyEdit.IsSameAs("copy", false))
       doEdit = false;
 
+   // If the format is not seekable, we must use 'copy' mode,
+   // because 'edit' mode depends on the ability to seek to an
+   // arbitrary location in the file.
+   if (!mInfo.seekable)
+      doEdit = false;
+
    if (doEdit) {
 
       // If this mode has been selected, we form the tracks as
