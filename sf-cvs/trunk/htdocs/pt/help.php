@@ -32,5 +32,8 @@
 <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a> - Escreva por este endereço para obter ajuda de outros usuários do Audacity, assim como partilhar experiências e conhecimentos.
 </p>
+<p>
+<a href="docs1.1">(Documentação da versão 1.1 - em construção)</a>
+</p>
 
 <?php BoxBottom(); ?>

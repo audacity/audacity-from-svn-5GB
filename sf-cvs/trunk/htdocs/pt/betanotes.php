@@ -1,6 +1,48 @@
 <?php BoxTop("$releaseNotesStr $betaVersion"); ?>
 
 <pre>
+Problemas encontrados na versão 1.1.3:
+  - O programa insere um arquivo chamado "Audacity-Commands.xml" em alguma pasta no computador onde está instalado. Este arquivo é necessário para executar o Audacity. Na próxima versão, este arquivo será salvo na pasta do próprio programa. 
+
+New features in Audacity 1.1.3:
+  * User Interface
+    - New Mixer toolbar allows you to control the output
+      volume, input volume, and input source directly
+      from Audacity.
+    - Every track now has its own gain and pan controls.
+
+  * File I/O
+    - Uses improved project file format.  (Unfortunately reading
+      previous formats, including 1.1.1, is not supported.)
+    - Block files (stored in Audacity project directories) now
+      use the standard AU format.  Though some Audacity
+      meta-information is in these files, they can now be
+      read by many other popular audio programs as well.
+    - Fixed some bugs relating to reading/writing audio
+      files with more than 16 bits per sample.
+    - Import RAW is functional again, with a simpler GUI
+      but support for far more file formats.  The
+      autodetection algorithms are much more accurate than
+      in 1.0.
+
+  * Audio I/O
+    - Completely rewritten audio I/O, with lower latency
+      and minimal chance of buffer underruns while
+      recording.
+
+  * Resampling
+    - Using high quality resampling algorithms, with the
+      option of better quality for mixing than for real-time
+      playback
+
+    - Preliminary support for Time Tracks, for changing
+      playback speed over time.
+
+  * Many more bug fixes and new features
+
+
+
+
 Problemas encontrados na versão 1.1.1:
 
   * Não utilize a opção "Executar Diagnóstico" do menu Ajuda - além de instável, 
@@ -49,6 +91,8 @@ Novos recursos da versão 1.1.1:
   * Tipos de arquivo:
     - A nova versão utiliza a biblioteca libsndfile 1.0, com problemas corrigidos 
       e uma melhor performance.
+
+
 
 
 Novos recursos da versão 1.1.0:
