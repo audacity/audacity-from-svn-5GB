@@ -18,16 +18,15 @@ int sf_num_headers()
    return 14;
 }
 
-// MB: Should these be translated?
-// (We would need to use a no-op marker and
-// do translation before display.)
+// i18n: These are marked with wxTRANSLATE(), which is a no-op macro.
+// The actual translation call must take place when the array is accessed.
 
 wxString HeaderNames[14] = {
    "Windows Wave",
    "Apple/SGI AIFF",
    "Sun/NeXT AU",
    "DEC AU",
-   "Raw PCM data",
+   wxTRANSLATE("Raw PCM data"),
    "Ensoniq PARIS",
    "Amiga IFF/SVX8/SV16",
    "NIST/Sphere",
@@ -92,9 +91,9 @@ OSType sf_header_mactype(int format)
 wxString sf_header_name(int format)
 {
    if (format >= 0x10000)
-      return HeaderNames[(format/0x10000)-1];
+      return _(HeaderNames[(format/0x10000)-1]);
    else if (format>=0 && format<14)
-      return HeaderNames[format];
+      return _(HeaderNames[format]);
    else
       return _("Unknown header");
 }
