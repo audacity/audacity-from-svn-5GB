@@ -27,6 +27,7 @@
 #include <wx/dcmemory.h>
 #include <wx/intl.h>
 #include <wx/string.h>
+#include <wx/filefn.h>
 #include <wx/ffile.h>
 #include <wx/log.h>
 #include <wx/timer.h>
@@ -1033,7 +1034,9 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
 
       mTrackPanel->Refresh(false);
 #ifdef __WXMAC__
+ #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
       mTrackPanel->MacUpdateImmediately();
+ #endif
 #endif
    }
 }

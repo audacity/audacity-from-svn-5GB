@@ -1835,8 +1835,10 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
          Refresh(false, &trackRect);
 
 #ifdef __WXMAC__
+ #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
          if (mAutoScrolling)
             MacUpdateImmediately();
+ #endif
 #endif
       }
    }
@@ -4077,7 +4079,7 @@ const char *channelmsgs[] = { _("'left' channel"), _("'right' channel"),
    _("'mono'")
 };
 
-void TrackPanel::OnChannelChange(wxEvent & event)
+void TrackPanel::OnChannelChange(wxCommandEvent & event)
 {
    int id = event.GetId();
    wxASSERT(id >= OnChannelLeftID && id <= OnChannelMonoID);
@@ -4094,7 +4096,7 @@ void TrackPanel::OnChannelChange(wxEvent & event)
 }
 
 // AS: Split a stereo track into two tracks...
-void TrackPanel::OnSplitStereo(wxEvent &event)
+void TrackPanel::OnSplitStereo(wxCommandEvent &event)
 {
    wxASSERT(mPopupMenuTarget);
    mPopupMenuTarget->SetLinked(false);
@@ -4107,7 +4109,7 @@ void TrackPanel::OnSplitStereo(wxEvent &event)
 }
 
 // AS: Merge two tracks into one steroe track ??
-void TrackPanel::OnMergeStereo(wxEvent &event)
+void TrackPanel::OnMergeStereo(wxCommandEvent &event)
 {
    wxASSERT(mPopupMenuTarget);
    mPopupMenuTarget->SetLinked(true);
@@ -4128,7 +4130,7 @@ void TrackPanel::OnMergeStereo(wxEvent &event)
 // AS: Set the Display mode based on the menu choice in the Track Menu.
 //  Note that gModes MUST BE IN THE SAME ORDER AS THE MENU CHOICES!!
 //  const char *gModes[] = { "waveform", "waveformDB", "spectrum", "pitch" };
-void TrackPanel::OnSetDisplay(wxEvent & event)
+void TrackPanel::OnSetDisplay(wxCommandEvent & event)
 {
    int id = event.GetId();
    wxASSERT(id >= OnWaveformID && id <= OnPitchID);
@@ -4158,7 +4160,7 @@ void TrackPanel::SetRate(Track * pTrack, double rate)
 
 // DM: Handles the selection from the Format submenu of the
 //  track menu.
-void TrackPanel::OnFormatChange(wxEvent & event)
+void TrackPanel::OnFormatChange(wxCommandEvent & event)
 {
    int id = event.GetId();
    wxASSERT(id >= On16BitID && id <= OnFloatID);
@@ -4240,7 +4242,7 @@ void TrackPanel::SetMenuCheck( wxMenu & menu, int newId )
 //  IN THE SAME ORDER!!
 const int nRates=7;
 int gRates[nRates] = { 8000, 11025, 16000, 22050, 44100, 48000, 96000 };
-void TrackPanel::OnRateChange(wxEvent & event)
+void TrackPanel::OnRateChange(wxCommandEvent & event)
 {
    int id = event.GetId();
    wxASSERT(id >= OnRate8ID && id <= OnRate96ID);
@@ -4267,7 +4269,7 @@ int TrackPanel::IdOfRate( int rate )
 }
 
 
-void TrackPanel::OnRateOther(wxEvent &event)
+void TrackPanel::OnRateOther(wxCommandEvent &event)
 {
    wxASSERT(mPopupMenuTarget
             && mPopupMenuTarget->GetKind() == Track::Wave);
@@ -4305,7 +4307,7 @@ void TrackPanel::OnRateOther(wxEvent &event)
    Refresh(false);
 }
 
-void TrackPanel::OnSetTimeTrackRange(wxEvent &event)
+void TrackPanel::OnSetTimeTrackRange(wxCommandEvent &event)
 {
    TimeTrack *t = (TimeTrack*)mPopupMenuTarget;
 
@@ -4341,7 +4343,7 @@ void TrackPanel::OnSetTimeTrackRange(wxEvent &event)
 }
 
 // AS: Move a track up or down, depending.
-void TrackPanel::OnMoveTrack(wxEvent & event)
+void TrackPanel::OnMoveTrack(wxCommandEvent & event)
 {
    wxASSERT(event.GetId() == OnMoveUpID || event.GetId() == OnMoveDownID);
    if (mTracks->Move(mPopupMenuTarget, OnMoveUpID == event.GetId())) {
@@ -4358,7 +4360,7 @@ void TrackPanel::OnMoveTrack(wxEvent & event)
 
 // AS: This only applies to MIDI tracks.  Presumably, it shifts the
 //  whole sequence by an octave.
-void TrackPanel::OnChangeOctave(wxEvent & event)
+void TrackPanel::OnChangeOctave(wxCommandEvent & event)
 {
    wxASSERT(event.GetId() == OnUpOctaveID
             || event.GetId() == OnDownOctaveID);
@@ -4372,7 +4374,7 @@ void TrackPanel::OnChangeOctave(wxEvent & event)
    Refresh(false);
 }
 
-void TrackPanel::OnSetName(wxEvent &event)
+void TrackPanel::OnSetName(wxCommandEvent &event)
 {
    Track *t = mPopupMenuTarget;
 

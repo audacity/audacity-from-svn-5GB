@@ -229,23 +229,23 @@ class TrackPanel:public wxWindow {
 
    void MakeParentResize();
 
-   void OnSetName(wxEvent &event);
+   void OnSetName(wxCommandEvent &event);
 
-   void OnMoveTrack    (wxEvent &event);
-   void OnChangeOctave (wxEvent &event);
-   void OnChannelChange(wxEvent &event);
-   void OnSetDisplay   (wxEvent &event);
-   void OnSetTimeTrackRange (wxEvent &event);
+   void OnMoveTrack    (wxCommandEvent &event);
+   void OnChangeOctave (wxCommandEvent &event);
+   void OnChannelChange(wxCommandEvent &event);
+   void OnSetDisplay   (wxCommandEvent &event);
+   void OnSetTimeTrackRange (wxCommandEvent &event);
 
    void SetMenuCheck( wxMenu & menu, int newId );
    void SetRate(Track *pTrack, double rate);
-   void OnRateChange(wxEvent &event);
-   void OnRateOther(wxEvent &event);
+   void OnRateChange(wxCommandEvent &event);
+   void OnRateOther(wxCommandEvent &event);
 
-   void OnFormatChange(wxEvent &event);
+   void OnFormatChange(wxCommandEvent &event);
 
-   void OnSplitStereo(wxEvent &event);
-   void OnMergeStereo(wxEvent &event);
+   void OnSplitStereo(wxCommandEvent &event);
+   void OnMergeStereo(wxCommandEvent &event);
 
    void RemoveTrack(Track * toRemove);
 

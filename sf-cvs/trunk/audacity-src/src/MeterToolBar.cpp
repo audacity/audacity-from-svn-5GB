@@ -12,6 +12,9 @@
 
 #include <wx/defs.h>
 #include <wx/intl.h>
+#include <wx/dc.h>
+#include <wx/dcclient.h>
+#include <wx/event.h>
 
 #include "MeterToolBar.h"
 
