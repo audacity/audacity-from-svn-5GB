@@ -1,6 +1,7 @@
 // Microsoft Windows specific include file
 
 #define MP3SUPPORT 1
+#define USE_LADSPA 1
 #define USE_LIBID3TAG 1
 #define USE_LIBMAD 1
 #define USE_LIBRESAMPLE 1

@@ -990,6 +990,30 @@ SOURCE=..\src\blockfile\SimpleBlockFile.cpp
 SOURCE=..\src\blockfile\SimpleBlockFile.h
 # End Source File
 # End Group
+# Begin Group "src/effects/ladspa"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\src\effects\ladspa\ladspa.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\ladspa\LadspaEffect.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\ladspa\LadspaEffect.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\ladspa\LoadLadspa.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\ladspa\LoadLadspa.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\wx\msw\blank.cur

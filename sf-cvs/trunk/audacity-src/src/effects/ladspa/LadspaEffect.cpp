@@ -406,6 +406,7 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
 
    sliders = new wxSlider*[mData->PortCount];
    fields = new wxTextCtrl*[mData->PortCount];
+	fields[0] = NULL; // Use for flag in LadspaEffectDialog::OnTextCtrl().
    labels = new wxStaticText*[mData->PortCount];
    ports = new unsigned long [mData->PortCount];
 
@@ -515,7 +516,10 @@ void LadspaEffectDialog::OnSlider(wxCommandEvent &event)
 
 void LadspaEffectDialog::OnTextCtrl(wxCommandEvent & WXUNUSED(event))
 {
-   HandleText();
+	// This gets called when wxWindows creates the control, but HandleText 
+	// uses fields, assuming they've been created.
+	if (fields[0] != NULL)
+		HandleText();
 }
 
 void LadspaEffectDialog::HandleSlider()
