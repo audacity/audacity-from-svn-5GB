@@ -166,7 +166,9 @@ void AudacityProject::CreateMenusAndCommands()
    c->SetCommandFlags("ExportLabels",
                       AudioIONotBusyFlag | LabelTracksExistFlag,
                       AudioIONotBusyFlag | LabelTracksExistFlag);
-
+   c->SetCommandFlags("ExportMultiple",
+                      AudioIONotBusyFlag | TracksExistFlag,
+                      AudioIONotBusyFlag | TracksExistFlag);                      
    // On Mac OS X, Preferences and Quit are in the application menu,
    // not the File menu.
   #ifndef __WXMAC__
