@@ -22,11 +22,6 @@
 
 #include <math.h>
 
-#ifdef __WXMSW__
-#define rint(a) ((int)floor(a+0.5))
-#define lrint(a) ((long)floor(a+0.5))
-#endif
-
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
 #include <wx/menu.h>
