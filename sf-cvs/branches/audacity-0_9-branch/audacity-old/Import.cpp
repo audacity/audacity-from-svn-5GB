@@ -42,6 +42,13 @@ int Import(AudacityProject *project,
    DirManager *dirManager = project->GetDirManager();
    wxWindow *parent = project;
 
+   if (!fName.Right(3).CmpNoCase("aup")) {
+      wxMessageBox("Audacity does not support importing Audacity Projects.\n"
+                   "Please use the Open command instead of Import.",
+                   "Import audio file", wxOK | wxCENTRE, parent);
+      return 0;
+   }
+
    if (!fName.Right(3).CmpNoCase("mid") ||
        !fName.Right(3).CmpNoCase("midi")) {
       wxMessageBox("Please use the Import MIDI command instead.",
