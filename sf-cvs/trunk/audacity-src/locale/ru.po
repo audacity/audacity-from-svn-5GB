@@ -13,8 +13,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
-"POT-Creation-Date: 2003-04-27 17:27+0400\n"
-"PO-Revision-Date: 2003-04-27 17:52+0400\n"
+"POT-Creation-Date: 2003-04-27 19:15+0400\n"
+"PO-Revision-Date: 2003-04-27 20:00+0400\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -553,7 +553,7 @@ msgstr ""
 
 #: ../src/AboutDialog.cpp:255
 msgid "Audacious!"
-msgstr "Оригинально!"
+msgstr "Смело!"
 
 #: ../src/ControlToolBar.cpp:133
 msgid "Audacity Control Toolbar"
@@ -727,15 +727,15 @@ msgstr "Ошибка: блок %d семпл %d\n"
 
 #: ../src/effects/BassBoost.cpp:68
 msgid "BassBoost"
-msgstr "Повышение баса"
+msgstr "Усилить басовые частоты..."
 
 #: ../src/effects/BassBoost.cpp:265
 msgid "BassBoost by Nasca Octavian Paul"
-msgstr "Повышение баса - Наска Октавиан Пол"
+msgstr "Усиление басовых частот - Наска Октавиан Пол"
 
 #: ../src/effects/BassBoost.h:44
 msgid "BassBoost..."
-msgstr "Повышение баса..."
+msgstr "Усиление басовых частот..."
 
 #: ../src/effects/ChangeTempo.cpp:183
 msgid "Beats per Minute (BPM):   from"
@@ -983,7 +983,7 @@ msgstr "Щёлкните и перетащите отметку для установки левой границы выделения"
 
 #: ../src/TrackPanel.cpp:1074
 msgid "Click and drag to move right selection boundary."
-msgstr "Щёлкните и перетащите отметку для установки левой границы выделения"
+msgstr "Щёлкните и перетащите отметку для установки правой границы выделения"
 
 #: ../src/TrackPanel.cpp:1105
 msgid "Click and drag to resize the track."
@@ -1606,11 +1606,11 @@ msgstr "Размер FFT"
 
 #: ../src/effects/Fade.h:23
 msgid "Fade In"
-msgstr "Нарастание"
+msgstr "Применить нарастание"
 
 #: ../src/effects/Fade.h:43
 msgid "Fade Out"
-msgstr "Затухание"
+msgstr "Применить затухание"
 
 #: ../src/effects/Fade.h:27
 msgid "Fading In"
@@ -1893,13 +1893,13 @@ msgstr "Левый, "
 #: ../src/prefs/MousePrefs.cpp:86 ../src/prefs/MousePrefs.cpp:90
 #: ../src/prefs/MousePrefs.cpp:98
 msgid "Left-Click"
-msgstr ""
+msgstr "Левая клавиша-Щелчок"
 
 #: ../src/prefs/MousePrefs.cpp:87 ../src/prefs/MousePrefs.cpp:91
 #: ../src/prefs/MousePrefs.cpp:95 ../src/prefs/MousePrefs.cpp:96
 #: ../src/prefs/MousePrefs.cpp:100
 msgid "Left-Drag"
-msgstr ""
+msgstr "Левая клавиша-Перетаскивание"
 
 #: ../src/ControlToolBar.cpp:75
 msgid "Left=Zoom In, Right=Zoom Out, Middle=Normal"
@@ -2148,7 +2148,7 @@ msgstr ""
 
 #: ../src/effects/NoiseRemoval.cpp:69
 msgid "Noise Removal"
-msgstr "Удаление шума"
+msgstr "Удалить шум"
 
 #: ../src/effects/NoiseRemoval.cpp:367
 msgid "Noise Removal by Dominic Mazzoni"
@@ -2308,7 +2308,7 @@ msgstr "Другие участники проекта:"
 #: ../src/AStatus.cpp:70 ../src/TrackPanel.cpp:323
 #: ../src/prefs/FileFormatPrefs.cpp:105
 msgid "Other..."
-msgstr "Другие..."
+msgstr "Другая..."
 
 #: ../src/Project.cpp:2474
 msgid "Out of disk space"
@@ -2604,11 +2604,11 @@ msgstr "Правый, "
 
 #: ../src/prefs/MousePrefs.cpp:92
 msgid "Right-Click"
-msgstr ""
+msgstr "Правая клавиша - Щелчок"
 
 #: ../src/prefs/MousePrefs.cpp:93
 msgid "Right-Drag"
-msgstr ""
+msgstr "Правая клавиша - Перетаскивание"
 
 #: ../src/Benchmark.cpp:209
 msgid "Run"
@@ -2620,7 +2620,7 @@ msgstr "Запустить тест производительности..."
 
 #: ../src/prefs/MousePrefs.cpp:93
 msgid "Same as Left-Drag"
-msgstr ""
+msgstr "То же, что и Левая клавиша - Перетаскивание"
 
 #: ../src/prefs/MousePrefs.cpp:103 ../src/prefs/MousePrefs.cpp:104
 msgid "Same as select tool"
@@ -2628,7 +2628,7 @@ msgstr "То же, что и инструмент для выделения"
 
 #: ../src/prefs/MousePrefs.cpp:105 ../src/prefs/MousePrefs.cpp:106
 msgid "Same as zoom tool"
-msgstr ""
+msgstr "То же, что и инструмент масштабирования"
 
 #: ../src/TrackPanel.cpp:3588 ../src/TrackPanel.cpp:3589
 msgid "Sample rate conversion method"
@@ -2695,7 +2695,7 @@ msgstr "Выделить"
 
 #: ../src/commands/CommandsDefaultData.h:234
 msgid "Select All"
-msgstr "Выделить все"
+msgstr "Выделить всё"
 
 #: ../src/commands/CommandsDefaultData.h:236
 msgid "Select Cursor to End"
@@ -2893,11 +2893,11 @@ msgstr "Установить частоту"
 
 #: ../src/TrackPanel.cpp:377
 msgid "Set Sample Format"
-msgstr "Установить формат семпла"
+msgstr "Установить частоту квантования семпла"
 
 #: ../src/TrackPanel.cpp:381
 msgid "Set Selection Format"
-msgstr "Установить формат семплов"
+msgstr "Установить формат времени"
 
 #: ../src/prefs/MousePrefs.cpp:86
 msgid "Set Selection Point"
@@ -2909,7 +2909,7 @@ msgstr "Установить область выделения"
 
 #: ../src/TrackPanel.cpp:382
 msgid "Set Snap-To Mode"
-msgstr "Мгновенный режим"
+msgstr "Режим привязки выделения к линейке"
 
 #: ../src/TrackPanel.cpp:3559
 #, c-format
@@ -2934,7 +2934,7 @@ msgstr "Показать подробную информацию о каждой правке"
 
 #: ../src/effects/Silence.h:27
 msgid "Silence"
-msgstr "Тишина"
+msgstr "Создать тишину"
 
 #: ../src/EditToolBar.cpp:152
 msgid "Silence selection"
@@ -3191,7 +3191,7 @@ msgstr "Генератор волны"
 
 #: ../src/effects/ToneGen.h:40
 msgid "Tone..."
-msgstr "Волна..."
+msgstr "Создать волну..."
 
 #: ../src/commands/CommandsCallback.cpp:726
 #, c-format
@@ -3381,7 +3381,7 @@ msgstr "Где файл audacity-help.htb?"
 
 #: ../src/effects/Noise.h:27
 msgid "White Noise"
-msgstr "Белый шум"
+msgstr "Создать белый шум"
 
 #: ../src/Tags.cpp:602
 msgid "Year:"
