@@ -684,12 +684,6 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
       } else if (HandleMenuEvent(event))
          return true;
    }
-   /*
-   else if ((event.GetEventType() == wxEVT_CHAR) || (event.GetEventType() == wxEVT_CHAR_HOOK) || (event.GetEventType() == wxEVT_NAVIGATION_KEY) || (event.GetEventType() == wxEVT_KEY_DOWN))
-   {
-      return false;
-   }
-   */
 
    if (f) {
       TrackListIterator iter(mTracks);
