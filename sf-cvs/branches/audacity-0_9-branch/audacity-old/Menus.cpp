@@ -187,38 +187,20 @@ void AudacityProject::CreateMenuBar()
 void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 {
    if (mMenusDirtyCheck != gMenusDirty) {
-   
-      /*
-      
-      TODO!
-      
-      This crashes - need to fix:
+      /* This no longer crashes, at least not on GTK */
       
       wxString pcmFormat =
        gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");
-      mExportString.Printf("&Export as %s...", pcmFormat);
-      mExportSelectionString.Printf("Export &Selection as %s...", pcmFormat);
-      wxString lossyFormat =
-          "MP3";
-      mExportLossyString.Printf("Export as %s...", lossyFormat);
-      mExportSelectionLossyString.Printf("Export Selection as %s...", lossyFormat);
+      wxString lossyFormat = "MP3";
    
-      wxMenuItem *item = mFileMenu->Remove(7);
-      item->SetName(mExportString);
-      mFileMenu->Insert(7, item);
-      
-      item = mFileMenu->Remove(8);
-      item->SetName(mExportSelectionString);
-      mFileMenu->Insert(8, item);
-      
-      item = mFileMenu->Remove(10);
-      item->SetName(mExportLossyString);
-      mFileMenu->Insert(10, item);
-      
-      item = mFileMenu->Remove(11);
-      item->SetName(mExportSelectionLossyString);
-      mFileMenu->Insert(11, item);
-      */
+      mFileMenu->FindItem(ExportMixID)->SetName(
+		      "Export as " + pcmFormat + "...");
+      mFileMenu->FindItem(ExportSelectionID)->SetName(
+		      "Export Selection as " + pcmFormat + "...");
+      mFileMenu->FindItem(ExportLossyMixID)->SetName(
+		      "Export as " + lossyFormat + "...");
+      mFileMenu->FindItem(ExportLossySelectionID)->SetName(
+		      "Export as " + lossyFormat + "...");
    }
 
    // Note that the titles of the menus here are dependent on the
