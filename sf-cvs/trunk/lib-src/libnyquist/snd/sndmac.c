@@ -56,7 +56,7 @@ long snd_file_write(int fp, char *data, long len)
 
 int snd_file_close(int fp)
 {
-    return fmac_close((FILE *)fp);
+    return fclose((FILE *)fp);
 }
 
 int snd_file_lseek(int file, long offset, int param)
