@@ -483,6 +483,14 @@ SOURCE=..\src\VoiceKey.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\WaveClip.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\WaveClip.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\WaveTrack.cpp
 # End Source File
 # Begin Source File
