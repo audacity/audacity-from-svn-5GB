@@ -857,7 +857,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 {
    if (mUndoManager.UnsavedChanges()) {
       int result = wxMessageBox("Save changes before closing?",
-            "Save changes?", wxYES_NO | wxCANCEL | wxICON_QUESTION);
+            "Save changes?", wxYES_NO | wxCANCEL | wxICON_QUESTION, this);
 
       if (result == wxCANCEL || (result == wxYES && !Save()) ) {
          event.Veto();
