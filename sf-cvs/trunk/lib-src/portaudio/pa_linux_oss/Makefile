@@ -1,6 +1,6 @@
 # Make PortAudio Library for Linux
 
-DEST = ../../../lib/linux/lib
+#DEST = ../../../lib/linux/lib
 
 CC = gcc
 
@@ -12,7 +12,7 @@ PAOBJ = ../pa_common/pa_lib.o pa_linux_oss.o
 portaudio.a: $(PAOBJ)
 	ar ruv portaudio.a $(PAOBJ)
 	ranlib portaudio.a
-	cp portaudio.a $(DEST)
+#	cp portaudio.a $(DEST)
 
 %.o: %.c $(PAINC) Makefile
 	$(CC) -c $(CFLAGS) $< -o $@
