@@ -1061,6 +1061,43 @@ void AudacityProject::OnAlignZero()
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::OnAlignGroupZero()
+{
+   double minOffset = 1000000.0;
+   double delta = 0.0;
+   double thisOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         if (t->GetOffset() < minOffset)
+            minOffset = t->GetOffset();
+      }
+
+      t = iter.Next();
+   }
+
+   delta = -minOffset;
+
+   TrackListIterator iter2(mTracks);
+   t = iter2.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisOffset = t->GetOffset();
+         t->SetOffset(thisOffset + delta);
+      }
+
+      t = iter2.Next();
+   }
+
+   PushState(_("Aligned group with zero"));
+
+   mTrackPanel->Refresh(false);
+}
+
 void AudacityProject::OnAlign()
 {
    double avg = 0.0;
@@ -1231,7 +1268,6 @@ void AudacityProject::OnAlignGroupCursor()
 
    delta = mViewInfo.sel0 - minOffset;
 
-
    TrackListIterator iter2(mTracks);
    t = iter2.First();
 
@@ -1269,7 +1305,6 @@ void AudacityProject::OnAlignGroupSelStart()
 
    delta = mViewInfo.sel0 - minOffset;
 
-
    TrackListIterator iter2(mTracks);
    t = iter2.First();
 
@@ -1306,7 +1341,6 @@ void AudacityProject::OnAlignGroupSelEnd()
    }
 
    delta = mViewInfo.sel1 - minOffset;
-
 
    TrackListIterator iter2(mTracks);
    t = iter2.First();
