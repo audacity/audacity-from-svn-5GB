@@ -640,19 +640,11 @@ SOURCE=..\src\effects\VST\LoadVSTWin.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\effects\VST\vstcontrols.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\src\effects\VST\VSTEffect.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=..\src\effects\VST\VSTEffect.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\vstgui.h
 # End Source File
 # End Group
 # Begin Group "src/export"
@@ -1014,6 +1006,14 @@ SOURCE=.\wx\msw\info.ico
 # Begin Source File
 
 SOURCE=.\wx\msw\magnif1.cur
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\prefs\MousePrefs.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\prefs\MousePrefs.h
 # End Source File
 # Begin Source File
 
