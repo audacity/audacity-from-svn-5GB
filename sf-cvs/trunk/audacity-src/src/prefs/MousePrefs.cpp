@@ -46,7 +46,7 @@
 
 
 // The numbers of the columns of the mList.
-enum { BlankColumn=0, ToolColumn=1, ActionColumn=2, ButtonsColumn=3};
+enum { BlankColumn=0, ToolColumn=1, ActionColumn=2, ButtonsColumn=3, CommentColumn=4};
 
 
 BEGIN_EVENT_TABLE(MousePrefs, wxPanel)
@@ -84,15 +84,16 @@ PrefsPanel(parent)
    mList->InsertColumn(ToolColumn,    _("Tool"),            wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(ActionColumn,  _("Command Action"),  wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(ButtonsColumn, _("Buttons"),         wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(CommentColumn, _("Comments"),         wxLIST_FORMAT_LEFT );
 
    AddItem( _("Left-Click"),       _("Select"),    _("Set Selection Point") );
    AddItem( _("Left-Drag"),        _("Select"),    _("Set Selection Range") );
    AddItem( _("Shift-Left-Click"), _("Select"),    _("Extend Selection Range") );
 
    AddItem( _("Left-Click"),       _("Zoom"),      _("Zoom in on Point") );
-   AddItem( _("Left-Drag"),        _("Zoom"),      _("Zoom in on a Range") );
+   AddItem( _("Left-Drag"),        _("Zoom"),      _("Zoom in on a Range"), _("same as right-drag") );
    AddItem( _("Right-Click"),      _("Zoom"),      _("Zoom out one step") );
-   AddItem( _("Right-Drag"),       _("Zoom"),      _("Same as Left-Drag") );
+   AddItem( _("Right-Drag"),       _("Zoom"),      _("Zoom in on a Range"), _("same as left-drag") );
 
    AddItem( _("Left-Drag"),        _("Time-Shift"),_("Time shift sequence") );
    AddItem( _("Left-Drag"),        _("Envelope"),  _("Change Amplification Envelope") );
@@ -102,10 +103,10 @@ PrefsPanel(parent)
    AddItem( _("Left-Drag"),        _("Pencil"),    _("Change Several Samples") );
    AddItem( _("Ctrl-Left-Drag"),   _("Pencil"),    _("Change ONE Sample only") );
 
-   AddItem( _("Left Click"),       _("Multi"),     _("Same as select tool") );
-   AddItem( _("Left Drag"),        _("Multi"),     _("Same as select tool") );
-   AddItem( _("Right Click"),      _("Multi"),     _("Same as zoom tool") );
-   AddItem( _("Right Drag"),       _("Multi"),     _("Same as zoom tool") );
+   AddItem( _("Left Click"),       _("Multi"),     _("Set Selection Point"), _("same as select tool") );
+   AddItem( _("Left Drag"),        _("Multi"),     _("Set Selection Range"), _("same as select tool") );
+   AddItem( _("Right Click"),      _("Multi"),     _("Zoom out one step"),   _("same as zoom tool") );
+   AddItem( _("Right Drag"),       _("Multi"),     _("Zoom in on a Range"),  _("same as zoom tool") );
 
    AddItem( _("Wheel-Rotate"),     _("Any"),       _("Scroll up or down") );
    AddItem( _("Ctrl-Wheel-Rotate"),_("Any"),       _("Zoom in or out") );
@@ -114,6 +115,11 @@ PrefsPanel(parent)
    mList->SetColumnWidth( ToolColumn,   wxLIST_AUTOSIZE );
    mList->SetColumnWidth( ActionColumn, wxLIST_AUTOSIZE );
    mList->SetColumnWidth( ButtonsColumn, wxLIST_AUTOSIZE );
+   // Not sure if this extra column is a good idea or not.
+   // Anyway, 5 pixels wide is wide enough that some people who are curious will drag it
+   // wider to see what's there (the comments show that the duplication of functions
+   // is for a reason, and not just random).
+   mList->SetColumnWidth( CommentColumn, 5 ); 
 
    bindingsSizer->Add( mList, 1, wxEXPAND );
 //   topSizer->Add( bindingsSizer, 1, wxEXPAND );
@@ -130,13 +136,20 @@ MousePrefs::~MousePrefs()
 {
 }
 
-void MousePrefs::AddItem( wxString const & MouseButtons, wxString const & Tool, wxString const & Action )
+void MousePrefs::AddItem( wxString const & MouseButtons, wxString const & Tool, 
+                         wxString const & Action, wxString const & Comment )
 {
    int i=mList->GetItemCount();
    mList->InsertItem( i, "" );
    mList->SetItem( i, ToolColumn, Tool );
    mList->SetItem( i, ActionColumn, Action );
    mList->SetItem( i, ButtonsColumn, MouseButtons );
+
+   // Add a space before the text to work around a minor bug in the 
+   // list control when showing narrow columns.
+   wxString Temp(" ");
+   Temp+=Comment;
+   mList->SetItem( i, CommentColumn, Temp );
 }
 
 
