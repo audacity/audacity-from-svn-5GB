@@ -345,7 +345,7 @@ TrackPanel::~TrackPanel()
    delete mLabelTrackMenu;
 }
 
-void TrackPanel::ReReadSettings()
+void TrackPanel::UpdatePrefs()
 {
    gPrefs->Read("/GUI/AutoScroll", &mViewInfo->bUpdateTrackIndicator,
                 true);
@@ -2686,7 +2686,6 @@ void TrackPanel::OnSetDisplay(wxEvent & event)
                                         c_str(),
                                         gModes[id - OnWaveformID]));
    mPopupMenuTarget = NULL;
-   ReReadSettings();
    Refresh(false);
 }
 

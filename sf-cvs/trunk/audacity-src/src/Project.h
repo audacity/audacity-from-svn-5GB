@@ -145,11 +145,11 @@ class AudacityProject:public wxFrame,
 
    // Other commands
 
+   void UpdatePrefs();
    void RedrawProject();
    void SelectNone();
    void Rewind(bool shift);
    void SkipEnd(bool shift);
-   void ReReadSettings();
    void SetStop(bool bStopped);
 
    // Scrollbars

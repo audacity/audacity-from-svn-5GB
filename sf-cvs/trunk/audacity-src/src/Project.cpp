@@ -453,6 +453,11 @@ AudacityProject::~AudacityProject()
    }
 }
 
+void AudacityProject::UpdatePrefs()
+{
+   mTrackPanel->UpdatePrefs();
+}
+
 void AudacityProject::RedrawProject()
 {
    FixScrollbars();
@@ -1919,11 +1924,6 @@ ControlToolBar *AudacityProject::GetControlToolBar()
    return (ControlToolBar *) tb;
 }
 
-
-void AudacityProject::ReReadSettings()
-{
-   mTrackPanel->ReReadSettings();
-}
 
 void AudacityProject::SetStop(bool bStopped)
 {

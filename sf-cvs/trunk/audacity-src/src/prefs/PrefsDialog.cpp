@@ -21,6 +21,7 @@
 #include <wx/sizer.h>
 
 #include "../Audacity.h"
+#include "../Project.h"
 
 #include "../Prefs.h"
 
@@ -135,11 +136,12 @@ void PrefsDialog::OnCancel(wxCommandEvent & event)
 
 void PrefsDialog::OnOK(wxCommandEvent & event)
 {
+   int i;
    PrefsPanel *panel;
 
    gPrefs->Write("/Prefs/PrefsCategory", (long)mCategories->GetSelection());
 
-   for (int i = 0; i < mCategories->GetPageCount(); i++) {
+   for (i = 0; i < mCategories->GetPageCount(); i++) {
       panel = (PrefsPanel *) mCategories->GetPage(i);
 
       /* The dialog doesn't end until all the input is valid */
@@ -148,6 +150,12 @@ void PrefsDialog::OnOK(wxCommandEvent & event)
          mSelected = i;
          return;
       }
+   }
+
+   // BG: Send all Audacity projects a prefrence update notification
+   for(i = 0; i < gAudacityProjects.GetCount(); i++)
+   {
+      gAudacityProjects[i]->UpdatePrefs();
    }
 
    EndModal(0);
