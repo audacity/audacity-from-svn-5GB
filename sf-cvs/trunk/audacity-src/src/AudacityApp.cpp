@@ -88,7 +88,6 @@ void QuitAudacity()
          return;
    }
 
-
    if (gFreqWindow)
       gFreqWindow->Destroy();
 

@@ -813,8 +813,17 @@ bool AudacityProject::ProcessEffectEvent(int nEffectIndex)
       }
 
       if (count == 0) {
-         wxMessageBox(_("You must select a track first."));
-         return true;
+         // No tracks were selected...
+         if (f->GetEffectFlags() & INSERT_EFFECT) {
+            // Create a new track for the generated audio...
+            WaveTrack *newTrack = mTrackFactory->NewWaveTrack();
+            mTracks->Add(newTrack);
+            newTrack->SetSelected(true);
+         }
+         else {
+            wxMessageBox(_("You must select a track first."));
+            return true;
+         }
       }
 
       if (f->DoEffect(this, mTracks, mTrackFactory,
@@ -1021,11 +1030,13 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    EffectArray *effs;
    unsigned int e;
 
+#if 0 // dmazzoni: Generate menu is now always enabled
    effs = Effect::GetEffects(BUILTIN_EFFECT | PLUGIN_EFFECT | INSERT_EFFECT);
    for(e=0; e<effs->GetCount(); e++)
       GetCommands()->EnableItemsByFunction("appmenu", wxString::Format("%i@GeneratePlugins@Effect", (*effs)[e]->GetID()),
                           numWaveTracksSelected > 0);
    delete effs;
+#endif
 
    effs = Effect::GetEffects(BUILTIN_EFFECT | PLUGIN_EFFECT | PROCESS_EFFECT);
    for(e=0; e<effs->GetCount(); e++)
