@@ -10,6 +10,8 @@
 
 #include <math.h>
 
+#include <wx/defs.h>
+#include <wx/log.h>
 #include <wx/intl.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
