@@ -15,7 +15,7 @@ Se você quiser saber mais sobre o que o Audacity é, sua instalação e como execut
 <li>
 Cadastre-se na lista de usuários: (em inglês)<a href="http://lists.sourceforge.net/lists/listinfo/audacity-users">Audacity-Users Mailing List</a><br>
 Navegue pela página: (em inglês)<a href="http://www.geocrawler.com/lists/3/SourceForge/14680/0/">Audacity-Users Archives</a><br>
-Esta é uma lista nova, onde os usuários do Audacity podem conversar e trocar idéias, experiências e savoir-fare no uso do programa. Se você acha que uma pergunta sua poderia ser respondida por algum outro usuário do Audacity ou acha que é capaz de responder às perguntas de outros usuários, comece por aqui.
+Esta é uma lista nova, onde os usuários do Audacity podem conversar e trocar idéias, experiências e savoir-faire no uso do programa. Se você acha que uma pergunta sua poderia ser respondida por algum outro usuário do Audacity ou acha que é capaz de responder às perguntas de outros usuários, comece por aqui.
 <p>
 
 <li>
