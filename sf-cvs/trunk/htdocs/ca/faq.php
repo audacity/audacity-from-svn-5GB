@@ -74,7 +74,7 @@ div.Section1
 <div class=Section1>
 
 <p><span lang=CA style='mso-ansi-language:CA'>General:<br>
-<a href="#g1">És l'Audacity gratuït de debò? Why?</a><br>
+<a href="#g1">És l'Audacity gratuït de debò? Per què?</a><br>
 <a href="#g2">Qui crea l'Audacity?</a><br>
 <a href="#g3">Com puc ajudar i millorar l'Audacity?</a><br>
 <a href="#g4">He trobat un error! I ara què faig?</a><o:p></o:p></span></p>
@@ -83,7 +83,7 @@ div.Section1
 <a href="#i1">Windows: Què faig amb l'arxiu .exe?</a><br>
 <a href="#i2">Windows: Com desinstal·lo l'Audacity?</a><br>
 <a href="#i3">Mac: Què faig amb l'arxiu .sit?</a><br>
-<a href="#i4">Unix: Per què rebo el missatge &quot;error en les dependències&quot;
+<a href="#i4">Unix: Per què rebo el missatge "error en les dependències"
 quan instal·lo des de l'RPM?</a><br>
 <a href="#i5">Unix: Per què apareix un error mentre carrego la llibreria
 compartida libwx_gtk.so?</a><o:p></o:p></span></p>
@@ -196,7 +196,7 @@ el text exacte del missatge d'error. <o:p></o:p></span></p>
 <p><span lang=CA style='mso-ansi-language:CA'>Volem eliminar tots els errors!
 Gràcies per gastar el vostre temps per ajuda-nos a rastrejar-los. <o:p></o:p></span></p>
 
-<p><span lang=CA style='mso-ansi-language:CA'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+<p><span lang=CA style='mso-ansi-language:CA'><![if !supportEmptyParas]> <![endif]><o:p></o:p></span></p>
 
 <table border=0 cellspacing=3 cellpadding=0 width="100%" style='width:100.0%;
  mso-cellspacing:1.5pt;mso-padding-alt:3.6pt 3.6pt 3.6pt 3.6pt'>
@@ -214,7 +214,7 @@ CA'>1. Windows: Què faig amb l'arxiu .exe?</span></b><span lang=CA
 style='mso-ansi-language:CA'><o:p></o:p></span></p>
 
 <p><span lang=CA style='mso-ansi-language:CA'>Des del navegador seleccioneu
-l'opció &quot;executa des d'internet&quot;. això farà que s’iniciï el programa
+l'opció "executa des d'internet". això farà que s’iniciï el programa
 d'instal·lació de l'Audacity, que instal·larà els fitxers del programa i crearà
 una entrada en el menú d'inici. <o:p></o:p></span></p>
 
@@ -231,7 +231,7 @@ style='mso-ansi-language:CA'><o:p></o:p></span></p>
 
 <p><span lang=CA style='mso-ansi-language:CA'>L'Audacity pot ser desinstal·lat
 obrint el Afegeix/Elimina Programes del plafó de control. Seleccioneu
-l'&quot;Audacity&quot; del llistat amb el botó &quot;Afegeix/Extreu&quot;.
+l'"Audacity" del llistat amb el botó "Afegeix/Extreu".
 D'aquesta manera s'inciarà el programa de desinstal·lació. <o:p></o:p></span></p>
 
 <p><a name=i3></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
@@ -241,7 +241,7 @@ style='mso-ansi-language:CA'><o:p></o:p></span></p>
 <p><span lang=CA style='mso-ansi-language:CA'>Necessiteu una versió més nova de
 StuffIt Expander. StuffIt Expander prové amb tots els Macintoshes i normalment
 està configurat com a predeterminat amb tot els navagadors web del Mac. Si
-l'Audacity no descomprimeix automàticament arrossegueu &quot;audacity.sit&quot;
+l'Audacity no descomprimeix automàticament arrossegueu "audacity.sit"
 a StuffIt Expander per descomprimir-lo. <o:p></o:p></span></p>
 
 <p><span lang=CA style='mso-ansi-language:CA'>No hi ha cap necessitat
@@ -251,7 +251,7 @@ Per desinstal·lar-lo, només cal que arrossegueu la carpeta sencera a la
 paperera. <o:p></o:p></span></p>
 
 <p><a name=i4></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
-CA'>4. Unix: Per què rebo el missatge &quot;error en les dependències&quot;
+CA'>4. Unix: Per què rebo el missatge "error en les dependències"
 quan instal·lo des de l'RPM? </span></b><span lang=CA style='mso-ansi-language:
 CA'><o:p></o:p></span></p>
 
@@ -263,20 +263,20 @@ això vol dir que no heu resolt el problema. Instal·leu l'RPM emprant l'opció
 
 <p><a name=i5></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
 CA'>5. Unix: Per què apareix un error mentre carrego la llibreria compartida
-libwx_gtk.so?br&gt;</span></b><span lang=CA style='mso-ansi-language:CA'> <o:p></o:p></span></p>
+libwx_gtk.so?br></span></b><span lang=CA style='mso-ansi-language:CA'> <o:p></o:p></span></p>
 
 <p><span lang=CA style='mso-ansi-language:CA'>això podria ser degut a dos
 problemes diferents: <br>
 - Si instal·leu l'RPM wxWindows RPM, assegureu-vos-en d'executar
-&quot;ldconfig&quot; (com a arrel) així el vostre sistema coneixerà la
+"ldconfig" (com a arrel) així el vostre sistema coneixerà la
 llibreria nova. <br>
 <br>
 - Si heu instal·lat el wxWindows del del codi, pot haver estat instal·lat a
 /usr/local, però /usr/local/lib pot no ser a la ruta de la llibreria. Afegiu
-/usr/local/lib al fitxer &quot;/etc/ld.so.conf&quot; i llavors executeu
-&quot;ldconfig&quot;. També podeu afegir &quot;/usr/local/bin&quot; a la vostra
+/usr/local/lib al fitxer "/etc/ld.so.conf" i llavors executeu
+"ldconfig". També podeu afegir "/usr/local/bin" a la vostra
 ruta, de manera que aquests programes poden trobar la utilitat
-&quot;wx-config&quot;.<o:p></o:p></span></p>
+"wx-config".<o:p></o:p></span></p>
 
 <table border=0 cellspacing=3 cellpadding=0 width="100%" style='width:100.0%;
  mso-cellspacing:1.5pt;mso-padding-alt:3.6pt 3.6pt 3.6pt 3.6pt'>
@@ -295,15 +295,15 @@ CA'><o:p></o:p></span></p>
 
 <p><span lang=CA style='mso-ansi-language:CA'>L'Audacity barreja
 automàticament. Tot el que heu de fer és importar dues peces en el mateix
-projecte, com ho podeu fer emprant l'ordre &quot;Importa Àudio&quot; en el menú
-&quot;projecte&quot;, o simplement arrossegant els dos fitxers d'àudio a
+projecte, com ho podeu fer emprant l'ordre "Importa Àudio" en el menú
+"projecte", o simplement arrossegant els dos fitxers d'àudio a
 l'Audacity. quan pitgeu el botó de gravació, l'audacity generarà una peça nova
 també automàticament. <o:p></o:p></span></p>
 
 <p><span lang=CA style='mso-ansi-language:CA'>A fi de desar la vostra barreja,
 també podeu exportar el projecte, que automàticament barrejarà totes les
 vostres peces, o podeu seleccionar les vostres peces a través de l'ordre
-&quot;Barreja ràpida&quot; en el menú &quot;Projecte&quot;. <o:p></o:p></span></p>
+"Barreja ràpida" en el menú "Projecte". <o:p></o:p></span></p>
 
 <p><a name=a2></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
 CA'>2. Com puc extreure la veu d'una gravació? </span></b><span lang=CA
@@ -323,8 +323,8 @@ algunes gravacions!</span></b><span lang=CA style='mso-ansi-language:CA'> <o:p><
 <p><span lang=CA style='mso-ansi-language:CA'>Per provar-ho amb l'Audacity,
 importeu una gravació en estèreo, després cliqueu el menú de la peça (la petita
 fletxa que al costat del nom de la peça assenyala cap a baix) i seleccioneu
-&quot;Divideix peça estèreo&quot;. Ara seleccioneu la peça de sota (el canal
-dret) i utilitzeu l'efecte &quot;Inversió&quot; en el menú d'efectes.
+"Divideix peça estèreo". Ara seleccioneu la peça de sota (el canal
+dret) i utilitzeu l'efecte "Inversió" en el menú d'efectes.
 Finalment, empreu el menú de la peça per convertir els dos canals a mono, i després
 barregeu-los utilitzant el barrejador de peces. si heu tingut sort les veus
 hauran desaparegut. <o:p></o:p></span></p>
