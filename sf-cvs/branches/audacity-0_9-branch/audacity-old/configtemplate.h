@@ -45,6 +45,15 @@
 /* Define if mp3 support is implemented with the xaudio library */
 #undef USE_XAUDIO
 
+/* Define if audio I/O happens with OSS */
+#undef USE_OSS
+
+/* Define if audio I/O happens with KDE/aRts soundserver */
+#undef USE_ARTS
+
+/* define if audio I/O was not compiled in */
+#undef USE_AUDIO_NONE
+
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 
