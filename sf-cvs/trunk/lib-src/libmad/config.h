@@ -18,12 +18,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: config.h,v 1.8 2002-02-04 00:15:46 mbrubeck Exp $
+ * $Id: config.h,v 1.9 2002-04-07 04:03:33 nestify Exp $
  */
-
-#ifdef _WIN32
-#include "configwin32.h"
-#endif
 
 # ifndef LIBMAD_CONFIG_H
 # define LIBMAD_CONFIG_H
