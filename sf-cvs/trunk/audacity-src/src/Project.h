@@ -71,6 +71,9 @@ AudacityProject *GetActiveProject();
 void RedrawAllProjects();
 void CloseAllProjects();
 
+void GetDefaultWindowRect(wxRect *defRect);
+void GetNextWindowPlacement(wxRect *nextRect, bool *bMaximized);
+
 WX_DEFINE_ARRAY(AudacityProject *, AProjectArray);
 
 extern AProjectArray gAudacityProjects;
