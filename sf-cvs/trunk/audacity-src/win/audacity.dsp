@@ -644,26 +644,6 @@ SOURCE=..\src\effects\Wahwah.h
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\src\effects\VST\AEffect.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\VST\aeffectx.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\VST\AudioEffect.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\VST\audioeffectx.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\VST\audioeffectx.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\src\effects\VST\LoadVSTWin.cpp
 # End Source File
 # Begin Source File
