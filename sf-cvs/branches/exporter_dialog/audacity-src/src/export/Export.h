@@ -106,6 +106,7 @@ class  FormatSelectionDialog: public wxDialog
   int mNumExportedChannels;                 //The number of channels that the file will be exported to.
   int mNumTotalChannels;                    //The total number of channels 
   int mRate;                          //Selected Sample Rate.
+  int mBitRate;
 };
 
 #endif

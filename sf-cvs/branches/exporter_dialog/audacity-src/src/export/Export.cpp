@@ -110,7 +110,8 @@ FormatSelectionDialog::FormatSelectionDialog(AudacityProject * project, bool sel
   mEncodings(NULL),
   mSelectionOnly(selection),
   m_t0(t0),
-  m_t1(t1)
+  m_t1(t1),
+  mBitRate(0)
 {
 
   //Create a top-level sizer, which hase to sizers inside it, 
@@ -552,7 +553,7 @@ void FormatSelectionDialog::OnOptions(wxCommandEvent &event)
     
     m_sf_Encoding = mEncodings[index];
   
-
+  mBitRate = atoi(mOptionChooser->GetStringSelection());
 }
 
 
@@ -586,21 +587,19 @@ void FormatSelectionDialog::OnOK(wxCommandEvent &event)
       
     case FORMAT_TYPE_MP3:         //MP3
 
-
+      {
       formatStr = "MP3";
       defaultExtension = ".mp3";
       
       //Determine what platform you are on. Depending on
       //this, we use a different mp3exporter subclass.
 
-      
-
       tmpExporter = new PlatformMP3Exporter(mProject, m_t0, m_t1, 
 					    mSelectionOnly, mRate, 
 					    mNumExportedChannels,
-					    128,
+					    128,//mBitRate,
 					    5);
-
+      }
 
       break;
 
@@ -830,8 +829,13 @@ void FormatSelectionDialog::OnOK(wxCommandEvent &event)
 
    if (success && actualName != fName)
       ::wxRenameFile(fName, actualName);
+
    delete tmpExporter;
-  EndModal(wxID_OK);
+   
+   if (success)
+     wxMessageBox(actualName + _(" exported successfully."));
+   
+   EndModal(wxID_OK);
 }
 
 
