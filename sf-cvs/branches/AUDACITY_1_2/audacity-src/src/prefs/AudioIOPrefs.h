@@ -39,6 +39,9 @@ class AudioIOPrefs:public PrefsPanel {
 
    wxChoice *mChannelsChoice;
 
+   wxString *mPlayNames;
+   wxString *mRecNames;
+
  public:
     DECLARE_EVENT_TABLE()
 

@@ -94,7 +94,8 @@ PrefsPanel(parent)
          numDevices++;
    }
 
-   wxString *playNames = new wxString[numDevices];
+   mPlayNames = new wxString[numDevices];
+   wxString *playLabels = new wxString[numDevices];
    k = 0;
 #if USE_PORTAUDIO_V19
    for(j=0; j<Pa_GetDeviceCount(); j++) {
@@ -103,17 +104,25 @@ PrefsPanel(parent)
 #endif
       const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
       if (info->maxOutputChannels > 0) {
-         playNames[k] = info->name;
-         if (playNames[k] == mPlayDevice)
+         mPlayNames[k] = info->name;
+#if USE_PORTAUDIO_V19
+         playLabels[k].Printf("%s: %s",
+                             Pa_GetHostApiInfo(info->hostApi)->name,
+                             info->name);
+#else
+         playLabels[k] = info->name;
+#endif
+
+         if (mPlayNames[k] == mPlayDevice)
             playIndex = k;
          k++;
       }
    }
 
    mPlayChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
-                              numDevices, playNames);
+                              numDevices, playLabels);
    mPlayChoice->SetSelection(playIndex);
-   delete[] playNames;
+   delete [] playLabels;
 
    pFileSizer->Add(
       new wxStaticText(this, -1, _("Device:")), 0, 
@@ -152,7 +161,8 @@ PrefsPanel(parent)
          numDevices++;
    }
 
-   wxString *recNames = new wxString[numDevices];
+   mRecNames = new wxString[numDevices];
+   wxString *recLabels = new wxString[numDevices];
    k = 0;
 #if USE_PORTAUDIO_V19
    for(j=0; j<Pa_GetDeviceCount(); j++) {
@@ -161,17 +171,24 @@ PrefsPanel(parent)
 #endif
       const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
       if (info->maxInputChannels > 0) {
-         recNames[k] = info->name;
-         if (recNames[k] == mRecDevice)
+         mRecNames[k] = info->name;
+#if USE_PORTAUDIO_V19
+         recLabels[k].Printf("%s: %s",
+                             Pa_GetHostApiInfo(info->hostApi)->name,
+                             info->name);
+#else
+         recLabels[k] = info->name;
+#endif
+         if (mRecNames[k] == mRecDevice)
             recIndex = k;
          k++;
       }
    }
 
    mRecChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
-                              numDevices, recNames);
+                              numDevices, recLabels);
    mRecChoice->SetSelection(recIndex);
-   delete[] recNames;
+   delete[] recLabels;
 
    rFileSizer->Add(
       new wxStaticText(this, -1, _("Device:")), 0, 
@@ -231,12 +248,14 @@ PrefsPanel(parent)
 
 AudioIOPrefs::~AudioIOPrefs()
 {
+   delete[] mPlayNames;
+   delete[] mRecNames;
 }
 
 bool AudioIOPrefs::Apply()
 {
-   mPlayDevice = mPlayChoice->GetStringSelection();
-   mRecDevice = mRecChoice->GetStringSelection();   
+   mPlayDevice = mPlayNames[mPlayChoice->GetSelection()];
+   mRecDevice = mRecNames[mRecChoice->GetSelection()];
 
    long recordChannels = mChannelsChoice->GetSelection()+1;
    bool duplex = mDuplex->GetValue();
