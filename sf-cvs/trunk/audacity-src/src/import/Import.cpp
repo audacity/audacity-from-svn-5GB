@@ -54,6 +54,7 @@ Importer::~Importer()
 {
    mImportPluginList->DeleteContents(true);
    delete mImportPluginList;
+   mUnusableImportPluginList->DeleteContents(true);//JKC
    delete mUnusableImportPluginList;
 }
 
