@@ -12,21 +12,21 @@
 **********************************************************************/  
 
 #include "ToolBar.h"
-    
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
-    
+
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif  /*  */
-    
+
 #ifndef WX_PRECOMP
 #include <wx/brush.h>
 #include <wx/dcclient.h>
 #include <wx/intl.h>
 #include <wx/settings.h>
 #endif  /*  */
-    
+
 
 #include <wx/image.h>
 
@@ -36,24 +36,11 @@
 #include "EditToolBar.h"
 #include "Project.h"
 #include "Audacity.h"
-    
-#ifdef __WXMAC__
-#define TOOLBAR_HEIGHT_OFFSET 0
-#endif  /*  */
-    
-#ifdef __WXGTK__
-#define TOOLBAR_HEIGHT_OFFSET 22
-#endif  /*  */
-    
-#ifdef __WXMSW__
-#define TOOLBAR_HEIGHT_OFFSET 25
-#endif  /*  */
-    
-    
+
 ////////////////////////////////////////////////////////////
 /// Methods for ToolBarStub
 ////////////////////////////////////////////////////////////
-    
+
 
 // ToolBarStub Constructer. Requires a ToolBarType.
 // Whenever a ToolBarStub is around, there will be a floating
@@ -62,7 +49,6 @@ ToolBarStub::ToolBarStub(wxWindow * Parent, enum ToolBarType tbt)
 {
    //Create a frame with a toolbar of type tbt inside it
    mToolBarFrame = new ToolBarFrame(Parent, tbt);
-
 
    //Get the newly-created toolbar to get some info from it.
    ToolBar * tempTB = mToolBarFrame->GetToolBar();
@@ -159,16 +145,14 @@ ToolBar * ToolBarStub::GetToolBar()
 ////////////////////////////////////////////////////////////
 /// Methods for ToolBar
 ////////////////////////////////////////////////////////////
-    IMPLEMENT_DYNAMIC_CLASS(ToolBar, wxWindow)  
+
 // Constructor for ToolBar. Should be used by children toolbars
 // to instantiate the initial parameters of the toolbar.
-ToolBar::ToolBar(wxWindow * parent, wxWindowID id, const wxPoint & pos, const wxSize & size):wxWindow(parent, id, pos,
-              size)
-    
+ToolBar::ToolBar(wxWindow * parent, wxWindowID id, const wxPoint & pos, const
+      wxSize & size) : wxWindow(parent, id, pos, size)
 {
    //Set some default values that should be overridden
    mTitle = "Audacity Toolbar";
-   mType = DummyToolBarID;
 
    wxColour backgroundColour =
       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
@@ -176,7 +160,6 @@ ToolBar::ToolBar(wxWindow * parent, wxWindowID id, const wxPoint & pos, const wx
    mBackgroundBrush.SetColour(backgroundColour);
    mBackgroundPen.SetColour(backgroundColour);
    mIdealSize = wxSize(300, size.y);
-
 } 
 
 
@@ -187,7 +170,6 @@ ToolBar::ToolBar(wxWindow * parent):wxWindow(parent, -1, wxPoint(1, 1),
 {
    //Set some default values that should be overridden
    mTitle = "Audacity Toolbar";
-   mType = DummyToolBarID;
 
    wxColour backgroundColour =
       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
@@ -198,19 +180,11 @@ ToolBar::ToolBar(wxWindow * parent):wxWindow(parent, -1, wxPoint(1, 1),
 } 
 
 
-// Destructor
-ToolBar::~ToolBar() 
-{
-
-} 
-
-
 // This looks at the first pixel in the image, and shifts
 // the entire image by the vector difference between that 
 // pixel and the dstColour.  For better control, use
 // ChangeImageColour(wxImage, wxColour*, wxColour*) below
-    wxImage * ToolBar::ChangeImageColour(wxImage * srcImage,
-                                         wxColour & dstColour) 
+wxImage * ToolBar::ChangeImageColour(wxImage * srcImage, wxColour & dstColour) 
 {
    unsigned char *src = srcImage->GetData();
    wxColour c;
@@ -222,12 +196,10 @@ ToolBar::~ToolBar()
 
 //This will explicitly shift the image color from
 //srcColour to dstColour. 
-    wxImage * ToolBar::ChangeImageColour(wxImage * srcImage,
-                                         wxColour & srcColour,
-                                         wxColour & dstColour) 
+wxImage * ToolBar::ChangeImageColour(wxImage * srcImage,
+                                     wxColour & srcColour,
+                                     wxColour & dstColour) 
 {
-
-
    // This function takes a source image, which it assumes to
    // be grayscale, and smoothly changes the overall color
    // to the specified color, and returns the result as a
@@ -235,6 +207,7 @@ ToolBar::~ToolBar()
    // Audacity uses this routines to make the buttons
    // (skip-start, play, stop, record, skip-end) adapt to
    // the color scheme of the user.
+
    unsigned char *src = srcImage->GetData();
    int width = srcImage->GetWidth();
    int height = srcImage->GetHeight();
@@ -278,11 +251,9 @@ ToolBar::~ToolBar()
 }
 
 
-wxImage * ToolBar::OverlayImage(wxImage * background,
-                                   wxImage * foreground, wxImage * mask,
-                                   int xoff, int yoff) 
+wxImage * ToolBar::OverlayImage(wxImage * background, wxImage * foreground,
+                                wxImage * mask, int xoff, int yoff) 
 {
-
    // Takes a background image, foreground image, and mask
    // (i.e. the alpha channel for the foreground), and
    // returns an new image where the foreground has been
@@ -298,7 +269,6 @@ wxImage * ToolBar::OverlayImage(wxImage * background,
    int fgHeight = foreground->GetHeight();
    int mkWidth = mask->GetWidth();
    int mkHeight = mask->GetHeight();
-
 
 
    //Now, determine the dimensions of the images to be masked together
@@ -342,10 +312,10 @@ wxImage * ToolBar::OverlayImage(wxImage * background,
             dstp[x * 3 + c] = 
                ((bkp[x * 3 + c] * opp) + 
                 (fg[3 * (y * fgWidth + x) + c] * value)) / 255;
-      } } 
-      return dstImage;
+      }
+   } 
+   return dstImage;
 }
-
 
 
 AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
@@ -356,7 +326,6 @@ AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
                                   wxPoint placement, wxSize size,
                                   int xoff, int yoff) 
 {
-
    //This is a generic function that will make a button, given
    //generic button images.
    //  Parameters:
@@ -364,9 +333,11 @@ AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
    // up:           An image of the blank button in its "up" state
    // down:         An image of the blank button in its "down" state
    // hilite        An image of the blank button with the hilite halo
-   // foreground:   A color bitmap of the icon on the button when its enabled--Can be a solid field.
+   // foreground:   A color bitmap of the icon on the button when its
+   //                 enabled--Can be a solid field.
    // disabledfg:   A color bitmap of the icon when its disabled--can be a solid field.
-   // alpha:        A greyscale mask that determines how much of the foreground shows through
+   // alpha:        A greyscale mask that determines how much of the
+   //                 foreground shows through
    // id            Button ID
    // placement     Location on the toolbar
    // xoff          x-offset to place icon pixmaps at, with respect to background image
@@ -397,30 +368,14 @@ AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
    return button;
 }
 
-
-
-//Virtual Key Handling callback
-void ToolBar::OnKeyEvent(wxKeyEvent & event) 
-{
-} 
-
-
-//Virtual Paint callback
-void ToolBar::OnPaint(wxPaintEvent & evt) 
-{
-} 
-
-
 //This changes the state a button (from up to down or vice versa)
 void ToolBar::SetButton(bool down, AButton * button) 
 {
    if (down)
       button->PushDown();
-   
    else
       button->PopUp();
 }
-
 
 
 ////////////////////////////////////////////////////////////
@@ -428,21 +383,22 @@ void ToolBar::SetButton(bool down, AButton * button)
 ////////////////////////////////////////////////////////////
     
 BEGIN_EVENT_TABLE(ToolBarFrame, wxMiniFrame) 
-EVT_CLOSE(ToolBarFrame::OnCloseWindow)  END_EVENT_TABLE()  
-    // There are three Constructors for ToolBarFrame. The first two take an actual toolbar
-    // as an argument, and create a frame around it.  The third takes a ToolBarType, and
-    // constructs a new ToolBar of that type inside the new frame.
-    // To instantiate a new toolbar, add a condition to the switch statement inside the 
-    // third constructor.
+   EVT_CLOSE(ToolBarFrame::OnCloseWindow)
+END_EVENT_TABLE()  
+
+// There are three Constructors for ToolBarFrame. The first two take an actual
+// toolbar as an argument, and create a frame around it.  The third takes a
+// ToolBarType, and constructs a new ToolBar of that type inside the new
+// frame.  To instantiate a new toolbar, add a condition to the switch
+// statement inside the third constructor.
+
 ToolBarFrame::ToolBarFrame(wxWindow * parent, ToolBar * TB,
-                               const wxString & Title,
-                               const wxPoint &
-                               position)
-   : wxMiniFrame(parent, -1, Title,
-         position, wxSize(TB->GetSize().x, TB->GetSize().y +
-            TOOLBAR_HEIGHT_OFFSET),
-         wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP | wxMINIMIZE_BOX |
-         wxFRAME_FLOAT_ON_PARENT),
+                           const wxString & Title, const wxPoint & position)
+   : wxMiniFrame(parent, -1, Title, position,
+                 wxSize(TB->GetSize().x,
+                        TB->GetSize().y + TOOLBAR_HEIGHT_OFFSET),
+                 wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP | wxMINIMIZE_BOX |
+                 wxFRAME_FLOAT_ON_PARENT),
      mToolBar(TB) 
 {
    SetSize(TB->GetIdealSize());
@@ -470,15 +426,9 @@ ToolBarFrame::ToolBarFrame(wxWindow * parent, enum ToolBarType tbt)
       case ControlToolBarID:
          mToolBar = new ControlToolBar(this);
          break;
-
       case EditToolBarID:
          mToolBar = new EditToolBar(this);
          break;
-
-      case DummyToolBarID:
-         mToolBar = new ToolBar(this);
-         break;
-
       case NoneID:
       default:
          break;
@@ -501,33 +451,3 @@ void ToolBarFrame::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
 {
    this->Hide();
 } 
-
-void ToolBar::EnableDisableButtons(int sumOfFlags) 
-{
-   // Place toolbar-specific button-enabling code here
-   // sumOfFlags gets sent to all toolbars.
-   // These flags are as follows:
-   // 1 =2^0: if there is a selection
-   // 2 =2^1: if there is at least one track
-   // 4 =2^2: if UNDO is possible
-   // 8 =2^3: if REDO is possible
-   // 16=2^4: if zoomin is possible  (max zoom in not hit)
-   // 32=2^5: if zoomout is possible (max zoom out not hit)
-
-   //These should be added up and passed to EnableDisableButtons.
-   //Within EnableDisableButtons, ExtractFlag(sum, bit)
-   //can be used to extract a particular flag, which is
-   //the log base 2 of the summand (0,1,2,etc.)
-} 
-
-
-
-//***********************************************************
-//This extracts a flag in the nth binary digit of an integer,
-//from its least significant to its most
-//The actual form of the int shouldn't matter, because it
-//is accomplished entirely through modular arithmetic
-bool ToolBar::ExtractFlag(int flagsum, int bit)
-{
-   return flagsum & (1<<bit);
-}

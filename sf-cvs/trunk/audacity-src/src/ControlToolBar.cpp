@@ -24,67 +24,62 @@
 #include <wx/defs.h>
 #include <wx/event.h>
 #include <wx/brush.h>
-#include <wx/dcclient.h>
 #include <wx/intl.h>
 #include <wx/settings.h>
 #endif
 
-#include <wx/log.h>
 #include <wx/image.h>
 #include <wx/tooltip.h>
 
+// For pow() in GetSoundVol()
 #include <math.h>
 
 #include "widgets/AButton.h"
 #include "widgets/ASlider.h"
-#include "ToolBar.h"
 #include "AudioIO.h"
 #include "Project.h"
 #include "Track.h"
 
-
-#ifdef __WXMAC__
-#define TOOLBAR_HEIGHT_OFFSET 0
-#endif
-
-#ifdef __WXGTK__
-#define TOOLBAR_HEIGHT_OFFSET 22
-#endif
-
-#ifdef __WXMSW__
-#define TOOLBAR_HEIGHT_OFFSET 25
-#endif
-
 #include "../images/ControlButtons.h"
 
+enum {
+   ID_SELECT,
+   ID_ENVELOPE,
+   ID_SLIDE,
+   ID_ZOOM,
+   ID_PLAY_BUTTON,
+   ID_STOP_BUTTON,
+   ID_RECORD_BUTTON,
+   ID_FF_BUTTON,
+   ID_REW_BUTTON,
 
-class ToolBar;
+   ID_FIRST_TOOL = ID_SELECT,
+   ID_LAST_TOOL = ID_ZOOM
+};
+
 
 ////////////////////////////////////////////////////////////
 /// Methods for ControlToolBar
 ////////////////////////////////////////////////////////////
 
-//This is necessary to do RTTI  Require a DECLARE_DYNAMIC_CLASS() in header.
-IMPLEMENT_DYNAMIC_CLASS(ControlToolBar, ToolBar)
-
-
-    BEGIN_EVENT_TABLE(ControlToolBar, wxWindow)
-    EVT_PAINT(ControlToolBar::OnPaint)
-    EVT_CHAR(ControlToolBar::OnKeyEvent)
-    EVT_COMMAND_RANGE(ID_FIRST_TOOL, ID_LAST_TOOL,
-                  wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnTool)
-    EVT_COMMAND(ID_PLAY_BUTTON,
-            wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnPlay)
-    EVT_COMMAND(ID_STOP_BUTTON,
-            wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnStop)
-    EVT_COMMAND(ID_RECORD_BUTTON,
-            wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnRecord)
-    EVT_COMMAND(ID_REW_BUTTON,
+BEGIN_EVENT_TABLE(ControlToolBar, wxWindow)
+   EVT_PAINT(ControlToolBar::OnPaint)
+   EVT_CHAR(ControlToolBar::OnKeyEvent)
+   EVT_COMMAND_RANGE(ID_FIRST_TOOL, ID_LAST_TOOL,
+         wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnTool)
+   EVT_COMMAND(ID_PLAY_BUTTON,
+         wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnPlay)
+   EVT_COMMAND(ID_STOP_BUTTON,
+         wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnStop)
+   EVT_COMMAND(ID_RECORD_BUTTON,
+         wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnRecord)
+   EVT_COMMAND(ID_REW_BUTTON,
             wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnRewind)
-    EVT_COMMAND(ID_FF_BUTTON,
+   EVT_COMMAND(ID_FF_BUTTON,
             wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnFF)
-    END_EVENT_TABLE()
-    //Standard contructor
+END_EVENT_TABLE()
+
+//Standard contructor
 ControlToolBar::ControlToolBar(wxWindow * parent):
 ToolBar(parent, -1, wxPoint(1, 1), wxSize(440, 55))
 {
@@ -134,15 +129,12 @@ void ControlToolBar::InitializeControlToolBar()
 
    mVolume->SetToolTip(_("Master Gain Control"));
 
-
    delete sliderOriginal;
    delete thumbOriginal;
    delete sliderNew;
    delete thumbNew;
 
-
    mVolume->Set(80);
-
 
    mCurrentTool = 0;
    mTool[0]->PushDown();
@@ -161,7 +153,6 @@ void ControlToolBar::InitializeControlToolBar()
    mLoudBitmap = new wxBitmap((const char **) Loud);
 #endif
 #endif
-
 }
 
 
@@ -315,26 +306,13 @@ AButton *ControlToolBar::MakeButton(wxImage * up, wxImage * down,
                                     char const **disabled,
                                     char const **alpha, int id, int left)
 {
-
-   wxPoint p;
-   p.x = left;
-   p.y = 4;
-
-   AButton *button = this->ToolBar::MakeButton(up, down, hilite,
-                                               foreground,
-                                               disabled,
-                                               alpha,
-                                               wxWindowID(id), p,
-                                               wxSize(48, 48),
-                                               16, 16);
-   return button;
+   return ToolBar::MakeButton(up, down, hilite, foreground, disabled, alpha,
+             wxWindowID(id), wxPoint(left,4), wxSize(48, 48), 16, 16);
 }
-
 
 
 void ControlToolBar::MakeButtons()
 {
-
    wxImage *upOriginal = new wxImage(UpButton);
    wxImage *downOriginal = new wxImage(DownButton);
    wxImage *hiliteOriginal = new wxImage(HiliteButton);
@@ -345,7 +323,6 @@ void ControlToolBar::MakeButtons()
    wxImage *upPattern = ChangeImageColour(upOriginal, newColour);
    wxImage *downPattern = ChangeImageColour(downOriginal, newColour);
    wxImage *hilitePattern = ChangeImageColour(hiliteOriginal, newColour);
-
 
 
    /* Buttons */
@@ -391,13 +368,13 @@ void ControlToolBar::MakeButtons()
 
    /* Tools */
 
-   mTool[0] = MakeTool(IBeam, IBeamAlpha, ID_IBEAM, 0, 0);
+   mTool[0] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
    mTool[0]->SetToolTip(_("Selection Tool"));
 
-   mTool[1] = MakeTool(Envelope, EnvelopeAlpha, ID_SELECT, 28, 0);
+   mTool[1] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 28, 0);
    mTool[1]->SetToolTip(_("Envelope Tool"));
 
-   mTool[2] = MakeTool(TimeShift, TimeShiftAlpha, ID_MOVE, 0, 28);
+   mTool[2] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 0, 28);
    mTool[2]->SetToolTip(_("Time Shift Tool"));
 
    mTool[3] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 28, 28);
@@ -409,7 +386,6 @@ void ControlToolBar::MakeButtons()
 
 ControlToolBar::~ControlToolBar()
 {
-
    for (int i = 0; i < 4; i++)
       delete mTool[i];
 
@@ -476,6 +452,8 @@ void ControlToolBar::SetStop(bool down)
    else {
       mStop->PopUp();
       mStop->Disable();
+      mRecord->Enable();
+      mPlay->Enable();
       mRewind->Enable();
       mFF->Enable();
    }
@@ -496,6 +474,7 @@ void ControlToolBar::OnPlay()
 
    mStop->Enable();
    mRewind->Disable();
+   mRecord->Disable();
    mFF->Disable();
 
    AudacityProject *p = GetActiveProject();
@@ -523,8 +502,6 @@ void ControlToolBar::OnStop()
 {
    gAudioIO->Stop();
    SetStop(false);
-
-
 }
 
 void ControlToolBar::OnRecord()
@@ -532,6 +509,7 @@ void ControlToolBar::OnRecord()
    if (gAudioIO->IsBusy())
       return;
 
+   mPlay->Disable();
    mStop->Enable();
    mRewind->Disable();
    mFF->Disable();
@@ -579,21 +557,16 @@ void ControlToolBar::OnFF()
 float ControlToolBar::GetSoundVol()
 {
    int v = mVolume->Get();
-   float vol;
 
    if (v == 0)
-      vol = 0.0;
+      return 0.0;
 
-   else
-      vol = (pow(2.0, (v / 10.0)) / 256.0);
-
-   return vol;
+   return (pow(2.0, (v / 10.0)) / 256.0);
 }
 
 void ControlToolBar::OnTool(wxCommandEvent & evt)
 {
    int prev = mCurrentTool;
-
    mCurrentTool = evt.GetId() - ID_FIRST_TOOL;
 
    for (int i = 0; i < 4; i++)
@@ -602,7 +575,7 @@ void ControlToolBar::OnTool(wxCommandEvent & evt)
       else
          mTool[i]->PopUp();
 
-   if (mCurrentTool == 1 || prev == 1)
+   if (mCurrentTool == envelopeTool || prev == envelopeTool)
       RedrawAllProjects();
 }
 
@@ -612,7 +585,6 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
 
    int width, height;
    GetSize(&width, &height);
-
 
 #if defined(__WXMAC__0)          // && defined(TARGET_CARBON)
 
@@ -660,27 +632,19 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
 #endif
 }
 
-void ControlToolBar::EnableDisableButtons(int sumOfFlags)
+void ControlToolBar::EnableDisableButtons()
 {
    AudacityProject *p = GetActiveProject();
 
-   if (p && !p->GetTracks()->IsEmpty()) {
-      mPlay->Enable();
+   bool tracks = (p && !p->GetTracks()->IsEmpty());
+   bool busy = gAudioIO->IsBusy();
 
-      if (gAudioIO->IsBusy()) {
+   if (tracks) {
+      if (!busy)
+         mPlay->Enable();
+   } else mPlay->Disable();
 
-         mRewind->Disable();
-         mFF->Disable();
-      } else {
-         mStop->Disable();
-         mRewind->Enable();
-         mFF->Enable();
-      }
-   } else {
-      //There are no tracks in this project, so disable everything except record
-      mRewind->Disable();
-      mPlay->Disable();
-      mStop->Disable();
-      mFF->Disable();
-   }
+   mStop->SetEnabled(busy);
+   mRewind->SetEnabled(tracks && !busy);
+   mFF->SetEnabled(tracks && !busy);
 }
