@@ -67,7 +67,14 @@ struct priv_data {
    wxWindow *parent;        /* Likewise. */
 };
 
-
+/* Declare Static functions */
+static enum mad_flow input_cb(void *_data, struct mad_stream *stream);
+static enum mad_flow output_cb(void *_data,
+                        struct mad_header const *header,
+                        struct mad_pcm *pcm);
+static enum mad_flow error_cb(void *_data, struct mad_stream *stream, 
+                       struct mad_frame *frame);
+                                              
 /* convert libmad's fixed point representation to 16 bit signed integers. This
  * code is taken verbatim from minimad.c. */
 

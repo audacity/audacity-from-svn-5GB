@@ -17,6 +17,8 @@ class wxTextCtrl;
 #include "../Effect.h"
 #include "ladspa.h"
 
+void LoadLadspaPlugins();
+
 class LadspaEffect:public Effect {
 
  public:

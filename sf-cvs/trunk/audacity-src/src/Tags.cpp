@@ -157,6 +157,12 @@ bool Tags::ShowEditDialog(wxWindow *parent, wxString title)
 
 #ifdef USE_LIBID3TAG
 
+/* Declare Static functions */
+static wxString GetID3FieldStr(struct id3_tag *tp, const char *name);
+static int GetNumGenres();
+static wxString GetGenreNum(int i);
+
+
 wxString GetID3FieldStr(struct id3_tag *tp, const char *name)
 {
    struct id3_frame *frame;
@@ -248,6 +254,9 @@ void Tags::ImportID3(wxString fileName)
 }
 
 #ifdef USE_LIBID3TAG 
+
+/* Declare Static functions */
+static struct id3_frame *MakeID3Frame(const char *name, const char *data);
 
 struct id3_frame *MakeID3Frame(const char *name, const char *data)
 {

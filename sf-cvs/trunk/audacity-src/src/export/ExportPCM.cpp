@@ -27,13 +27,13 @@
 #include "../Track.h"
 #include "../WaveTrack.h"
 
+#include "ExportPCM.h"
+
 #ifdef __WXMAC__
 # ifdef __UNIX__
 #  include <CoreServices/CoreServices.h>
 # else
-#  include <Files.h>
 # endif
- void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 #endif
 
 bool ExportPCM(AudacityProject *project,

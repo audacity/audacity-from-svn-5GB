@@ -42,6 +42,8 @@
 #include "ladspa/LoadLadspa.h"
 #endif
 
+#include "LoadEffects.h"
+
 void LoadEffects(wxString searchDir)
 {
    Effect::RegisterEffect(new EffectAmplify(), false);

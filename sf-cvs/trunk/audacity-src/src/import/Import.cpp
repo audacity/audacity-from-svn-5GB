@@ -25,6 +25,7 @@
 #include "ImportMP3.h"
 #include "ImportOGG.h"
 #include "ImportRaw.h"
+#include "Import.h"
 
 #include "../Project.h"
 
@@ -32,9 +33,7 @@
 # ifdef __UNIX__
 #  include <CoreServices/CoreServices.h>
 # else
-#  include <Files.h>
 # endif
- void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 #endif
 
 // General purpose function used by importers

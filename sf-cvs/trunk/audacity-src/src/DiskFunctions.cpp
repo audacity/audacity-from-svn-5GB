@@ -123,6 +123,9 @@ wxLongLong GetFreeDiskSpace(TCHAR * path)
 # include <Files.h>
 #endif
 
+/* Declare Static functions */
+static void my_c2pstr(char *str);
+
 void my_c2pstr(char *str)
 {
    int len = strlen((const char *) str);

@@ -34,6 +34,12 @@
 int **gFFTBitTable = NULL;
 const int MaxFastBits = 16;
 
+/* Declare Static functions */
+static int IsPowerOfTwo(int x);
+static int NumberOfBitsNeeded(int PowerOfTwo);
+static int ReverseBits(int index, int NumBits);
+static void InitFFT();
+
 int IsPowerOfTwo(int x)
 {
    if (x < 2)

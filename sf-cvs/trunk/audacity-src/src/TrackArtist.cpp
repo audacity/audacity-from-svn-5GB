@@ -786,6 +786,17 @@ and optional attributes as follows:
     
  */
 
+/* Declare Static functions */
+static char *IsShape(Allegro_note_ptr note);
+static double LookupRealAttribute(Allegro_note_ptr note, Attribute attr, double def);
+static long LookupIntAttribute(Allegro_note_ptr note, Attribute attr, long def);
+static bool LookupLogicalAttribute(Allegro_note_ptr note, Attribute attr, bool def);
+static const char *LookupStringAttribute(Allegro_note_ptr note, Attribute attr, const char *def);
+static char *LookupAtomAttribute(Allegro_note_ptr note, Attribute attr, char *def);
+static int PITCH_TO_Y(double p, int bottom);
+static char *LookupAtomAttribute(Allegro_note_ptr note, Attribute attr, char *def);
+static int PITCH_TO_Y(double p, int bottom);
+
 // returns NULL if note is not a shape,
 // returns atom (string) value of note if note is a shape
 char *IsShape(Allegro_note_ptr note)
@@ -843,7 +854,7 @@ bool LookupLogicalAttribute(Allegro_note_ptr note, Attribute attr, bool def)
 }
 
 // returns value of attr, or default if not found
-char *LookupStringAttribute(Allegro_note_ptr note, Attribute attr, char *def)
+const char *LookupStringAttribute(Allegro_note_ptr note, Attribute attr, const char *def)
 {
   Parameters_ptr parameters = note->parameters;
   while (parameters) {
@@ -884,9 +895,9 @@ char *LookupAtomAttribute(Allegro_note_ptr note, Attribute attr, char *def)
 #define CLIP(x) { long c = (x); if (c < -CLIP_MAX) c = -CLIP_MAX; \
                   if (c > CLIP_MAX) c = CLIP_MAX; (x) = c; }
 
-#define RED(i) (((i) >> 16) & 0xff)
-#define GREEN(i) (((i) >> 8) & 0xff)
-#define BLUE(i) ((i) & 0xff)
+#define RED(i) ( unsigned char )( (((i) >> 16) & 0xff) )
+#define GREEN(i) ( unsigned char )( (((i) >> 8) & 0xff) )
+#define BLUE(i) ( unsigned char )( ((i) & 0xff) )
 
 //#define PITCH_TO_Y(p) (r.y + r.height - int(pitchht * ((p) + 0.5 - pitch0) + 0.5))
 
@@ -1169,7 +1180,7 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
               char *font = LookupAtomAttribute(note, fonta, NULL);
               char *weight = LookupAtomAttribute(note, weighta, NULL);
               int size = LookupIntAttribute(note, sizei, 8);
-              char *justify = LookupStringAttribute(note, justifys, "ld");
+              const char *justify = LookupStringAttribute(note, justifys, "ld");
               wxFont wxfont;
               wxfont.SetFamily(font == roman ? wxROMAN : 
                                 (font == swiss ? wxSWISS :
@@ -1180,7 +1191,7 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
               dc.SetFont(wxfont);
 
               // now do justification
-              char *s = LookupStringAttribute(note, texts, "");
+              const char *s = LookupStringAttribute(note, texts, "");
               #ifdef __WXMAC__
 		      long textWidth, textHeight;
               #else

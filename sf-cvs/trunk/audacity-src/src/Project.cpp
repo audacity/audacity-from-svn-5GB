@@ -103,19 +103,19 @@ const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the 
 #include "../images/AudacityLogo.xpm"
 #endif
 
+/* Define Global Variables */
 //The following global counts the number of documents that have been opened
 //for the purpose of project placement (not to keep track of the number)
 //It is only accurate modulo ten, and does not decrement when a project is
 //closed.
-int gAudacityDocNum = 0;
-
-
+static int gAudacityDocNum = 0;
+//This is a pointer to the currently-active project.
+static AudacityProject *gActiveProject;
 //This array holds onto all of the projects currently open
 AProjectArray gAudacityProjects;
-//This is a pointer to the currently-active project.
-AudacityProject *gActiveProject;
 
-
+/* Declare Static functions */
+static void SetActiveProject(AudacityProject * project);
 
 AudacityProject *GetActiveProject()
 {
@@ -130,8 +130,6 @@ void SetActiveProject(AudacityProject * project)
 
 AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
 {
-
-
    //where determines the point that a new window should open at.
    wxPoint where;
    where.x = 10;
