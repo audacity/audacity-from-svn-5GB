@@ -223,37 +223,36 @@ void AColor::DarkMIDIChannel(wxDC *dc, int channel /* 1 - 16 */)
 
 void GetColorGradient(float value,
 					  bool selected,
+					  bool grayscale,
                       unsigned char *red,
                       unsigned char *green,
                       unsigned char *blue)
 {
-  /* grayscale
-  *red = unsigned char (255*(1.0-value));
-  *green = *red;
-  *blue = *red;
-  */
-
-  const int gsteps = 4;
-  float gradient[gsteps+1][3] = {
-	{0.75, 0.75, 0.75},  // lt gray
-	{0.30, 0.60, 1.00},  // lt blue
-	{0.90, 0.10, 0.90},  // violet
-	{1.00, 0.00, 0.00},  // red
-	{1.00, 1.00, 1.00}}; // white
-
-  
   float r, g, b;
 
-  int left = int(value * gsteps);
-  int right = (left==gsteps? gsteps: left+1);
+  if (grayscale) {
+	r = g = b = 0.84 - 0.84*value;
+  }
+  else {
+	const int gsteps = 4;
+	float gradient[gsteps+1][3] = {
+	  {0.75, 0.75, 0.75},  // lt gray
+	  {0.30, 0.60, 1.00},  // lt blue
+	  {0.90, 0.10, 0.90},  // violet
+	  {1.00, 0.00, 0.00},  // red
+	  {1.00, 1.00, 1.00}}; // white
 
-  float rweight = (value * gsteps) - left;
-  float lweight = 1.0 - rweight;
+	int left = int(value * gsteps);
+	int right = (left==gsteps? gsteps: left+1);
+	
+	float rweight = (value * gsteps) - left;
+	float lweight = 1.0 - rweight;
+	
+	r = (gradient[left][0] * lweight) + (gradient[right][0] * rweight);
+	g = (gradient[left][1] * lweight) + (gradient[right][1] * rweight);
+	b = (gradient[left][2] * lweight) + (gradient[right][2] * rweight);
+  }  
 
-  r = (gradient[left][0] * lweight) + (gradient[right][0] * rweight);
-  g = (gradient[left][1] * lweight) + (gradient[right][1] * rweight);
-  b = (gradient[left][2] * lweight) + (gradient[right][2] * rweight);
-  
   if (selected) {
 	r *= 0.77;
 	g *= 0.77;

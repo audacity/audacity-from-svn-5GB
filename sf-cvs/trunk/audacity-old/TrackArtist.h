@@ -77,7 +77,8 @@ private:
 
   void PrepareCacheSpectrum(TrackInfoCache *cache,
 							double start, double pps,
-							int screenWidth, int screenHeight);
+							int screenWidth, int screenHeight,
+							bool autocorrelation);
 
   void DrawSpectrum(TrackInfoCache *cache,
 					wxDC &dc, wxRect &r,

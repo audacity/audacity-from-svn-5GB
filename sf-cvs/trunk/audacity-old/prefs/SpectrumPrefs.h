@@ -15,6 +15,8 @@
 #include <wx/statbox.h>
 #include <wx/checkbox.h>
 #include <wx/radiobox.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
 
 #include "PrefsPanel.h"
 
@@ -26,9 +28,12 @@ public:
 	bool Apply();
 
 private:
-	wxStaticBox *mEnclosingBox;
-	wxRadioBox  *mFFTSize;
-    wxCheckBox  *mGrayscale;
+	wxStaticBox  *mEnclosingBox;
+	wxRadioBox   *mFFTSize;
+    wxCheckBox   *mGrayscale;
+
+    wxStaticText *mMaxFreqLabel;
+    wxTextCtrl   *mMaxFreqCtrl;
 };
 
 #endif

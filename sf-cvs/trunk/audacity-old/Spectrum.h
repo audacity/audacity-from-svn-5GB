@@ -22,7 +22,8 @@
 */
 
 bool ComputeSpectrum(sampleType *data, int width, int height,
-		     double rate, float *out);
+					 double rate, float *out,
+					 bool autocorrelation);
 
 int GetSpectrumWindowSize();
 

@@ -15,6 +15,8 @@
 #include <wx/font.h>
 #include <wx/msgdlg.h>
 
+#include "../Prefs.h"
+
 #include "PrefsDialog.h"
 #include "PrefsPanel.h"
 
@@ -78,11 +80,13 @@ PrefsDialog::PrefsDialog(wxWindow *parent):
 		panel->HidePrefsPanel();
   }
 
-	mCategories->SetSelection(0);
-	panel = (PrefsPanel *)mCategories->GetClientData(0);
-	panel->ShowPrefsPanel();
+	mSelected = gPrefs->Read("/Prefs/PrefsCategory", 0L);
+	if (mSelected < 0 || mSelected>=mCategories->Number())
+	  mSelected = 0;
 
-	mSelected = 0;
+	mCategories->SetSelection(mSelected);
+	panel = (PrefsPanel *)mCategories->GetClientData(mSelected);
+	panel->ShowPrefsPanel();
 }
 
 
@@ -115,6 +119,8 @@ void PrefsDialog::OnCancel(wxCommandEvent& event)
 void PrefsDialog::OnOK(wxCommandEvent& event)
 {
 	PrefsPanel *panel;
+
+	gPrefs->Write("/Prefs/PrefsCategory", (long)mSelected);
 
 	for(int i = 0; i < mCategories->Number(); i++) {
 		panel = (PrefsPanel *)mCategories->GetClientData(i);

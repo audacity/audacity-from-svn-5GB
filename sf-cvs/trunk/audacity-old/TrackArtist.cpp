@@ -226,6 +226,9 @@ void TrackArtist::DrawVRuler(VTrack *t,
 	wxRect bev = r;
 	bev.Inflate(-1, -1);
 	AColor::Bevel(*dc, true, bev);
+
+	if (r.height < 40)
+	  return;
   
 	dc->SetPen(*wxBLACK_PEN);
 	int ctr = r.height / 2;
@@ -249,7 +252,54 @@ void TrackArtist::DrawVRuler(VTrack *t,
 	dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + r.height - 2 - textHeight);
   }
 
-  if (t->GetKind()==VTrack::Wave && ((WaveTrack *)t)->GetDisplay()>0) {
+  if (t->GetKind()==VTrack::Wave && ((WaveTrack *)t)->GetDisplay()==1) {
+	// Waveform (db)
+	wxRect bev = r;
+	bev.Inflate(-1, -1);
+	AColor::Bevel(*dc, true, bev);
+  }
+
+  if (t->GetKind()==VTrack::Wave && ((WaveTrack *)t)->GetDisplay()==2) {
+	// Spectrum
+	wxRect bev = r;
+	bev.Inflate(-1, -1);
+	AColor::Bevel(*dc, true, bev);
+
+	if (r.height < 60)
+	  return;
+	
+	double rate = ((WaveTrack *)t)->GetRate();
+	int windowSize = gPrefs->Read("/Spectrum/FFTSize", 256);
+	int maxFreq = gPrefs->Read("/Spectrum/MaxFreq", 8000);
+	int maxSamples = int(maxFreq * windowSize / rate + 0.5);
+	if (maxSamples > windowSize/2)
+	  maxSamples = windowSize/2;
+	maxFreq = int(maxSamples * rate / windowSize + 0.5);
+	int minFreq = int(rate / windowSize);
+
+	wxString num;
+	long textWidth, textHeight;
+	
+	num.Printf("%dK", int(maxFreq/1000 + 0.5));
+	dc->GetTextExtent(num, &textWidth, &textHeight);
+	dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + 2);
+	num = "Hz";
+	dc->GetTextExtent(num, &textWidth, &textHeight);
+	dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + textHeight + 2);
+	
+	num.Printf("%d", minFreq);
+	dc->GetTextExtent(num, &textWidth, &textHeight);
+	dc->DrawText(num, r.x + r.width - 3 - textWidth,
+				 r.y + r.height - 2 - 2*textHeight);
+
+	num = "Hz";
+	dc->GetTextExtent(num, &textWidth, &textHeight);
+	dc->DrawText(num, r.x + r.width - 3 - textWidth,
+				 r.y + r.height - 2 - textHeight);	
+  }
+
+  if (t->GetKind()==VTrack::Wave && ((WaveTrack *)t)->GetDisplay()==3) {
+	// Pitch
 	wxRect bev = r;
 	bev.Inflate(-1, -1);
 	AColor::Bevel(*dc, true, bev);
@@ -841,7 +891,8 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
 
 void TrackArtist::PrepareCacheSpectrum(TrackInfoCache *cache,
 									   double start, double pps, 
-									   int screenWidth, int screenHeight)
+									   int screenWidth, int screenHeight,
+									   bool autocorrelation)
 {
   wxASSERT(start>=0.0);
   wxASSERT(pps>0.0);
@@ -943,7 +994,8 @@ void TrackArtist::PrepareCacheSpectrum(TrackInfoCache *cache,
 		track->Get(buffer, start, len);
 	  
 		ComputeSpectrum(buffer, windowSize, screenHeight, rate,
-						&cache->freq[screenHeight*x]);
+						&cache->freq[screenHeight*x],
+						autocorrelation);
 	  }
 	}
 
@@ -997,7 +1049,7 @@ void TrackArtist::DrawSpectrum(TrackInfoCache *cache,
   wxASSERT(image);
   unsigned char *data = image->GetData();
 
-  PrepareCacheSpectrum(cache, t0, pps, r.width, r.height);
+  PrepareCacheSpectrum(cache, t0, pps, r.width, r.height, autocorrelation);
 
   bool isGrayscale = false;
   gPrefs->Read("/Spectrum/Grayscale", &isGrayscale, false);
@@ -1024,10 +1076,10 @@ void TrackArtist::DrawSpectrum(TrackInfoCache *cache,
 
 	  unsigned char rv, gv, bv;
 
-	  if (isGrayscale)
-		rv = gv = bv = char(214-214*spec[r.height-1-yy]);
-	  else
-		GetColorGradient(spec[r.height-1-yy], selflag, &rv, &gv, &bv);
+	  GetColorGradient(spec[r.height-1-yy],
+					   selflag,
+					   isGrayscale,
+					   &rv, &gv, &bv);
 	  
 	  data[(yy*r.width + x)*3] = rv;
 	  data[(yy*r.width + x)*3+1] = gv;
