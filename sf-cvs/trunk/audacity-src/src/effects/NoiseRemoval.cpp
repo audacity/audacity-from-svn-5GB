@@ -67,12 +67,14 @@ EffectNoiseRemoval::~EffectNoiseRemoval()
 bool EffectNoiseRemoval::PromptUser()
 {
    NoiseRemovalDialog dlog(this, mParent, -1, _("Noise Removal"));
-   if (hasProfile)
+   if (hasProfile) {
       dlog.m_pSlider->SetValue(level);
-   else {
+		dlog.m_pButton_RemoveNoise->SetDefault();
+		dlog.m_pButton_RemoveNoise->SetFocus();
+	} else {
+      dlog.m_pSlider->Enable(false);
       dlog.m_pButton_Preview->Enable(false);
       dlog.m_pButton_RemoveNoise->Enable(false);
-      dlog.m_pSlider->Enable(false);
    }
    dlog.CentreOnParent();
    dlog.ShowModal();
@@ -349,6 +351,7 @@ NoiseRemovalDialog::NoiseRemovalDialog(EffectNoiseRemoval * effect,
 	m_pEffect = effect;
    
 	// NULL out the control members until the controls are created.
+	m_pButton_GetProfile = NULL;
 	m_pSlider = NULL;
 	m_pButton_Preview = NULL;
 	m_pButton_RemoveNoise = NULL;
@@ -413,8 +416,8 @@ wxSizer *NoiseRemovalDialog::MakeNoiseRemovalDialog(bool call_fit /* = true */,
                            wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
    group->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
 
-   item = new wxButton(this, ID_BUTTON_GETPROFILE, _("Get Noise Profile"), wxDefaultPosition, wxDefaultSize, 0 );
-   group->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
+   m_pButton_GetProfile = new wxButton(this, ID_BUTTON_GETPROFILE, _("Get Noise Profile"), wxDefaultPosition, wxDefaultSize, 0 );
+   group->Add(m_pButton_GetProfile, 0, wxALIGN_CENTRE|wxALL, 5 );
 
    mainSizer->Add( group, 0, wxALIGN_CENTRE|wxALL, 5 );
    
