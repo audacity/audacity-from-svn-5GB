@@ -439,39 +439,88 @@ int AudacityApp::OnExit()
 // where it's possible to have a menu bar but no windows open.
 // It doesn't hurt any other platforms, though.
 
-//STM:  BUT...they are getting used on other platforms, 
-// hiding the  OnOpen etc.
-//
-// Conditional compilation should fix this:
+// ...That is, as long as you check to see if no windows are open 
+// before executing the stuff.
+// To fix this, check to see how many project windows are open,
+// and skip the event unless none are open (which should only happen
+// on the Mac, at least currently.)
 
-#ifdef __WXMAC__
 void AudacityApp::OnMenuAbout(wxCommandEvent & event)
 {
+   // This function shadows a similar function
+   // in Menus.cpp, but should only be used on the Mac platform
+   // when no project windows are open. This check assures that 
+   // this happens, and enable the same code to be present on
+   // all platforms.
+   if(gAudacityProjects.GetCount() == 0) {
    AboutDialog dlog(NULL);
    dlog.ShowModal();
+   }
+   else
+      event.Skip();
 }
 
 void AudacityApp::OnMenuNew(wxCommandEvent & event)
 {
-   CreateNewAudacityProject(gParentWindow);
+   // This function shadows a similar function
+   // in Menus.cpp, but should only be used on the Mac platform
+   // when no project windows are open. This check assures that 
+   // this happens, and enable the same code to be present on
+   // all platforms.
+ 
+   if(gAudacityProjects.GetCount() == 0)
+      CreateNewAudacityProject(gParentWindow);
+   else
+      event.Skip();
 }
 
 
 void AudacityApp::OnMenuOpen(wxCommandEvent & event)
 {
+   // This function shadows a similar function
+   // in Menus.cpp, but should only be used on the Mac platform
+   // when no project windows are open. This check assures that 
+   // this happens, and enable the same code to be present on
+   // all platforms.
 
-   AudacityProject::ShowOpenDialog(NULL);
+
+   if(gAudacityProjects.GetCount() == 0)
+      AudacityProject::ShowOpenDialog(NULL);
+   else
+      event.Skip();
+
+
 }
 
 void AudacityApp::OnMenuPreferences(wxCommandEvent & event)
 {
-   PrefsDialog dialog(NULL /* parent */ );
-   dialog.ShowModal();
+   // This function shadows a similar function
+   // in Menus.cpp, but should only be used on the Mac platform
+   // when no project windows are open. This check assures that 
+   // this happens, and enable the same code to be present on
+   // all platforms.
+
+   if(gAudacityProjects.GetCount() == 0) {
+      PrefsDialog dialog(NULL /* parent */ );
+      dialog.ShowModal();
+   }
+   else
+      event.Skip();
+   
 }
 
 void AudacityApp::OnMenuExit(wxCommandEvent & event)
 {
-   QuitAudacity();
+   // This function shadows a similar function
+   // in Menus.cpp, but should only be used on the Mac platform
+   // when no project windows are open. This check assures that 
+   // this happens, and enable the same code to be present on
+   // all platforms.
+
+   if(gAudacityProjects.GetCount() == 0)
+      QuitAudacity();
+   else
+      event.Skip();
+   
 }
 
-#endif
