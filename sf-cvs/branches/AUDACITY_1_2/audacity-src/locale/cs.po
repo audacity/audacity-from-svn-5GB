@@ -521,7 +521,7 @@ msgstr "Délka náběhu:"
 #: ../src/effects/Compressor.cpp:515
 #, c-format
 msgid "Attack Time: %.1f secs"
-msgstr "Čas náběhu: %f sec\n"
+msgstr "Čas náběhu: %f sec"
 
 #: ../src/AboutDialog.cpp:275
 msgid "Audacious!"
