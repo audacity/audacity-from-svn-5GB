@@ -3,7 +3,7 @@
 require_once 'main.inc.php';
 $title = $helpStr;
 include 'top.inc.php';
-IncludeFile("faq");
+IncludeFile("help");
 include 'bottom.inc.php';
 
 ?>
