@@ -4,14 +4,11 @@
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
  */
 
-/* $Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/gsm_option.c,v 1.1.1.1 2001-10-15 04:39:19 dmazzoni Exp $ */
-
-#include "private.h"
+#include "gsm610_priv.h"
 
 #include "gsm.h"
-#include "proto.h"
 
-int gsm_option P3((r, opt, val), gsm r, int opt, int * val)
+int gsm_option (gsm r, int opt, int * val)
 {
 	int 	result = -1;
 

@@ -50,7 +50,7 @@
  */
 
 #include "g72x.h"
-#include "private.h"
+#include "g72x_priv.h"
 
 static short qtab_721[7] = {-124, 80, 178, 246, 300, 349, 400};
 /*

@@ -1,5 +1,5 @@
 /* 
-** Copyright (C) 1999-2001 Erik de Castro Lopo <erikd@zip.com.au> 
+** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au> 
 **   
 ** This program is free software; you can redistribute it and/or modify 
 ** it under the terms of the GNU General Public License as published by 
@@ -23,17 +23,18 @@
 
 #include	<sndfile.h> 
 
-#ifndef M_PI 
-	#define M_PI 3.14159 
-#endif 
+#ifndef		M_PI
+#define		M_PI		3.14159265358979323846264338
+#endif
 
-#define		SAMPLE_RATE			44100 
+#define		SAMPLE_RATE			8000 
 #define		SAMPLE_COUNT		(SAMPLE_RATE*3)  /* 3 seconds */ 
 #define		AMPLITUDE			32000.0 
-#define		LEFT_FREQ			(440.0 / SAMPLE_RATE) 
-#define		RIGHT_FREQ			(660.0 / SAMPLE_RATE) 
+#define		LEFT_FREQ			(3440.0 / SAMPLE_RATE) 
+#define		RIGHT_FREQ			(3660.0 / SAMPLE_RATE) 
 
-int main (void) 
+int 
+main (void) 
 {	SNDFILE	*file ; 
 	SF_INFO	sfinfo ; 
 	int		k ; 
@@ -47,12 +48,11 @@ int main (void)
 	memset (&sfinfo, 0, sizeof (sfinfo)) ; 
 	 
 	sfinfo.samplerate  = SAMPLE_RATE ; 
-	sfinfo.samples     = SAMPLE_COUNT ; 
-	sfinfo.pcmbitwidth = 16 ; 
-	sfinfo.channels	   = 1; 
-	sfinfo.format      = (SF_FORMAT_WAV | SF_FORMAT_GSM610) ; 
+	sfinfo.frames     = SAMPLE_COUNT ; 
+	sfinfo.channels	   = 1 ; 
+	sfinfo.format      = (SF_FORMAT_WAV | SF_FORMAT_PCM_16) ; 
 
-	if (! (file = sf_open_write ("sine.wav", &sfinfo))) 
+	if (! (file = sf_open ("sine.wav", SFM_WRITE, &sfinfo))) 
 	{	printf ("Error : Not able to open output file.\n") ; 
 		return 1 ; 
 		} ; 
@@ -68,7 +68,10 @@ int main (void)
 			} ; 
 		}
 	else
-		printf ("makesine can only generate mono or stereo files.\n") ;
+	{	printf ("makesine can only generate mono or stereo files.\n") ;
+		exit (1) ;
+		} ;
+		
 	if (sf_write_short (file, buffer, sfinfo.channels * SAMPLE_COUNT) != 
 											sfinfo.channels * SAMPLE_COUNT) 
 		sf_perror (file) ; 

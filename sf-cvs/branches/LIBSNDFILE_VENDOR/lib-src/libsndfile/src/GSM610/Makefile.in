@@ -1,6 +1,6 @@
-# Makefile.in generated automatically by automake 1.4-p4 from Makefile.am
+# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
 
-# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -68,19 +68,30 @@ target_triplet = @target@
 AS = @AS@
 CC = @CC@
 DLLTOOL = @DLLTOOL@
+ECHO = @ECHO@
+ENABLE_EXPERIMENTAL_CODE = @ENABLE_EXPERIMENTAL_CODE@
+EXEEXT = @EXEEXT@
+GETCONF = @GETCONF@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
+OS_SPECIFIC_INCLUDES = @OS_SPECIFIC_INCLUDES@
+OS_SPECIFIC_LINKS = @OS_SPECIFIC_LINKS@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SHARED_VERSION_INFO = @SHARED_VERSION_INFO@
+SIZEOF_SF_COUNT_T = @SIZEOF_SF_COUNT_T@
+STRIP = @STRIP@
+TYPEOF_SF_COUNT_T = @TYPEOF_SF_COUNT_T@
 VERSION = @VERSION@
+autogen = @autogen@
 subdirs = @subdirs@
 
 EXTRA_DIST = README COPYRIGHT ChangeLog
 
-noinst_HEADERS = gsm.h config.h private.h proto.h unproto.h
+noinst_HEADERS = gsm.h config.h gsm610_priv.h
 noinst_LTLIBRARIES = libgsm.la
 
 CFILES = add.c decode.c gsm_decode.c gsm_encode.c long_term.c preprocess.c 	short_term.c code.c gsm_create.c gsm_destroy.c gsm_option.c lpc.c rpe.c table.c
@@ -124,9 +135,9 @@ OBJECTS = $(libgsm_la_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
-.SUFFIXES: .S .c .lo .o .s
+.SUFFIXES: .S .c .lo .o .obj .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps src/GSM610/Makefile
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign --include-deps src/GSM610/Makefile
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
@@ -145,6 +156,11 @@ maintainer-clean-noinstLTLIBRARIES:
 .c.o:
 	$(COMPILE) -c $<
 
+# FIXME: We should only use cygpath when building on Windows,
+# and only if it is available.
+.c.obj:
+	$(COMPILE) -c `cygpath -w $<`
+
 .s.o:
 	$(COMPILE) -c $<
 
@@ -153,6 +169,7 @@ maintainer-clean-noinstLTLIBRARIES:
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
+	-rm -f *.$(OBJEXT)
 
 clean-compile:
 
@@ -201,7 +218,7 @@ TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
 	  awk '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
 	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
-	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+	  || (cd $(srcdir) && etags -o $$here/TAGS $(ETAGS_ARGS) $$tags  $$unique $(LISP))
 
 mostlyclean-tags:
 
@@ -227,27 +244,6 @@ distdir: $(DISTFILES)
 	    || cp -p $$d/$$file $(distdir)/$$file || :; \
 	  fi; \
 	done
-add.lo add.o : add.c private.h proto.h unproto.h gsm.h
-code.lo code.o : code.c config.h private.h proto.h unproto.h gsm.h
-decode.lo decode.o : decode.c private.h proto.h unproto.h gsm.h
-gsm_create.lo gsm_create.o : gsm_create.c config.h gsm.h private.h \
-	proto.h unproto.h
-gsm_decode.lo gsm_decode.o : gsm_decode.c private.h proto.h unproto.h \
-	gsm.h
-gsm_destroy.lo gsm_destroy.o : gsm_destroy.c gsm.h config.h proto.h
-gsm_encode.lo gsm_encode.o : gsm_encode.c private.h proto.h unproto.h \
-	gsm.h
-gsm_option.lo gsm_option.o : gsm_option.c private.h proto.h unproto.h \
-	gsm.h
-long_term.lo long_term.o : long_term.c private.h proto.h unproto.h gsm.h
-lpc.lo lpc.o : lpc.c private.h proto.h unproto.h gsm.h
-preprocess.lo preprocess.o : preprocess.c private.h proto.h unproto.h \
-	gsm.h
-rpe.lo rpe.o : rpe.c private.h proto.h unproto.h gsm.h
-short_term.lo short_term.o : short_term.c private.h proto.h unproto.h \
-	gsm.h
-table.lo table.o : table.c private.h proto.h unproto.h gsm.h
-
 info-am:
 info: info-am
 dvi-am:

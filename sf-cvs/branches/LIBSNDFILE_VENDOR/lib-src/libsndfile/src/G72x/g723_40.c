@@ -47,7 +47,7 @@
  */
 
 #include "g72x.h"
-#include "private.h"
+#include "g72x_priv.h"
 
 /*
  * Maps G.723_40 code word to ructeconstructed scale factor normalized log

@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -31,24 +31,22 @@ typedef	struct
 	SF_INFO	infileinfo, outfileinfo ;
 } OptionData ;
 
-static
-void    copy_data (SNDFILE *outfile, SNDFILE *infile, unsigned int len, double normfactor)
+static void    
+copy_data (SNDFILE *outfile, SNDFILE *infile, int len)
 {	static double	data [BUFFER_LEN] ;
-	unsigned int	readcount, k ;
+	long	readcount ;
 
 	readcount = len ;
 	while (readcount == len)
-	{	readcount = sf_read_double (infile, data, len, 0) ;
-		for (k = 0 ; k < readcount ; k++)
-			data [k] *= normfactor ;
-		sf_write_double (outfile, data, readcount, 0) ;
+	{	readcount = sf_read_double (infile, data, len) ;
+		sf_write_double (outfile, data, readcount) ;
 		} ;
 
 	return ;
 } /* copy_data */
 
-static
-int	guess_output_file_type (char *str, unsigned int format)
+static int	
+guess_output_file_type (char *str, int format)
 {	char	buffer [16], *cptr ;
 	int		k ;
 	
@@ -72,17 +70,26 @@ int	guess_output_file_type (char *str, unsigned int format)
 	if (! strcmp (buffer, "svx"))
 		return	(SF_FORMAT_SVX | format) ;
 	if (! strcmp (buffer, "paf"))
-		return	(SF_FORMAT_NIST | format) ;
+		return	(SF_FORMAT_PAF | format) ;
+	if (! strcmp (buffer, "fap"))
+		return	(SF_ENDIAN_LITTLE | SF_FORMAT_PAF | format) ;
 	if (! strcmp (buffer, "nist"))
 		return	(SF_FORMAT_NIST | format) ;
 	if (! strcmp (buffer, "ircam") || ! strcmp (buffer, "sf"))
 		return	(SF_FORMAT_IRCAM | format) ;
+	if (! strcmp (buffer, "voc"))
+		return	(SF_FORMAT_VOC | format) ;
+	if (! strcmp (buffer, "w64"))
+		return	(SF_FORMAT_W64 | format) ;
+	if (! strcmp (buffer, "raw"))
+		return	(SF_FORMAT_RAW | format) ;
+
 	return	0 ;
 } /* guess_output_file_type */
 
 
-static
-void	print_usage (char *progname)
+static void	
+print_usage (char *progname)
 {	printf ("\nUsage : %s [options] <input file> <output file>\n", progname) ;
 	printf ("\n        where [options] may be one of the following:\n") ;
 	printf ("            -pcm16     : force the output to 16 bit pcm\n") ;
@@ -91,18 +98,19 @@ void	print_usage (char *progname)
 	printf ("            -float32   : force the output to 32 bit floating point\n") ;
 	printf ("            -ima-adpcm : force the output IMA ADPCM (WAV only)\n") ;
 	printf ("            -ms-adpcm  : force the output MS ADPCM (WAV only)\n") ;
-	printf ("\n        with one of the following extra specifiers:\n") ;
-	printf ("            -fullscale	: force the output signal to the full bit width\n") ;
+	printf ("            -gsm610    : force the GSM6.10 (WAV only)\n") ;
+	printf ("            -dwvw12    : force the output to 12 bit DWVW (AIFF only)\n") ;
+	printf ("            -dwvw16    : force the output to 16 bit DWVW (AIFF only)\n") ;
+	printf ("            -dwvw24    : force the output to 24 bit DWVW (AIFF only)\n") ;
 	printf ("\n") ;
 } /* print_usage */
 
-int     main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {	char 		*progname, *infilename, *outfilename ;
 	SNDFILE	 	*infile, *outfile ;
 	SF_INFO	 	sfinfo ;
-	int			k, outfilemajor ;
-	int			outfileminor = 0, infilebits, outfilebits = 0, fullscale = 0 ;
-	double		normfactor, signal_max ;
+	int			k, outfilemajor, outfileminor = 0 ;
 
 	progname = strrchr (argv [0], '/') ;
 	progname = progname ? progname + 1 : argv [0] ;
@@ -134,103 +142,79 @@ int     main (int argc, char *argv[])
 		} ;
 		
 	for (k = 1 ; k < argc - 2 ; k++)
-	{	
-		if (! strcmp (argv [k], "-pcm8"))
-		{	outfileminor = SF_FORMAT_PCM ;
-			outfilebits = 8 ;
-			continue ;
-			} ;
-		if (! strcmp (argv [k], "-pcm16"))
-		{	outfileminor = SF_FORMAT_PCM ;
-			outfilebits = 16 ;
+	{	if (! strcmp (argv [k], "-pcm16"))
+		{	outfileminor = SF_FORMAT_PCM_16 ;
 			continue ;
 			} ;
 		if (! strcmp (argv [k], "-pcm24"))
-		{	outfileminor = SF_FORMAT_PCM ;
-			outfilebits = 24 ;
+		{	outfileminor = SF_FORMAT_PCM_24 ;
 			continue ;
 			} ;
 		if (! strcmp (argv [k], "-pcm32"))
-		{	outfileminor = SF_FORMAT_PCM ;
-			outfilebits = 32 ;
+		{	outfileminor = SF_FORMAT_PCM_32 ;
 			continue ;
 			} ;
 		if (! strcmp (argv [k], "-float32"))
 		{	outfileminor = SF_FORMAT_FLOAT ;
-			outfilebits = 32 ;
 			continue ;
 			} ;
 		if (! strcmp (argv [k], "-ima-adpcm"))
 		{	outfileminor = SF_FORMAT_IMA_ADPCM ;
-			outfilebits = 32 ;
 			continue ;
 			} ;
 		if (! strcmp (argv [k], "-ms-adpcm"))
 		{	outfileminor = SF_FORMAT_MS_ADPCM ;
-			outfilebits = 32 ;
 			continue ;
 			} ;
-		if (! strcmp (argv [k], "-fullscale"))
-			fullscale = 1 ;
+		if (! strcmp (argv [k], "-gsm610"))
+		{	outfileminor = SF_FORMAT_GSM610 ;
+			continue ;
+			} ;
+		if (! strcmp (argv [k], "-dwvw12"))
+		{	outfileminor = SF_FORMAT_DWVW_12 ;
+			continue ;
+			} ;
+		if (! strcmp (argv [k], "-dwvw16"))
+		{	outfileminor = SF_FORMAT_DWVW_16 ;
+			continue ;
+			} ;
+		if (! strcmp (argv [k], "-dwvw24"))
+		{	outfileminor = SF_FORMAT_DWVW_24 ;
+			continue ;
+			} ;
 		} ;
 
 	
-	if (! (infile = sf_open_read (infilename, &sfinfo)))
+	if (! (infile = sf_open (infilename, SFM_READ, &sfinfo)))
 	{	printf ("Not able to open input file %s.\n", infilename) ;
 		sf_perror (NULL) ;
 		return  1 ;
 		} ;
 	
-	infilebits = sfinfo.pcmbitwidth ;
-		
 	if (! (sfinfo.format = guess_output_file_type (outfilename, sfinfo.format)))
 	{	printf ("Error : Not able to determine output file type for %s.\n", outfilename) ;
 		return 1 ;
 		} ;
 	
-	outfilemajor = sfinfo.format & SF_FORMAT_TYPEMASK ;
+	outfilemajor = sfinfo.format & (SF_FORMAT_TYPEMASK | SF_FORMAT_ENDMASK) ;
 
 	if (outfileminor)
 		sfinfo.format = outfilemajor | outfileminor ;
 	else
 		sfinfo.format = outfilemajor | (sfinfo.format & SF_FORMAT_SUBMASK) ;
 		
-	if (outfilebits)
-		sfinfo.pcmbitwidth = outfilebits ;
-		
 	if (! sf_format_check (&sfinfo))
 	{	printf ("Error : output file format is invalid (0x%08X).\n", sfinfo.format) ;
 		return 1 ;
 		} ;	
 
-	/* Figure out how to scale between the input and output formats. */
-	if (fullscale && outfileminor != SF_FORMAT_FLOAT)
-	{	signal_max = sf_signal_max (infile) ;
-		if (signal_max > 1e-5)
-			normfactor = 0.9999 * normfactor * (1 << (infilebits - 1)) / signal_max ;
-		else
-			normfactor = 1e5 ;
-		} 
-	else if (outfileminor == SF_FORMAT_FLOAT)
-	{	signal_max = sf_signal_max (infile) ;
-	 	normfactor = (signal_max > 1e-5) ? 1.0 / signal_max : 1.0 ;
-		}
-	else if ((sfinfo.format & SF_FORMAT_TYPEMASK) == SF_FORMAT_FLOAT)
-	{	signal_max = sf_signal_max (infile) ;
-	 	normfactor = (1 << infilebits) / signal_max ;
-		}
-	else if (outfilebits > infilebits)
-		normfactor = (double) (1 << (outfilebits - infilebits)) ;
-	else if (outfilebits < infilebits)
-		normfactor = 1.0 / (1 << (infilebits - outfilebits)) ;
-		
 	/* Open the output file. */
-	if (! (outfile = sf_open_write (outfilename, &sfinfo)))
+	if (! (outfile = sf_open (outfilename, SFM_WRITE, &sfinfo)))
 	{	printf ("Not able to open output file %s.\n", outfilename) ;
 		return  1 ;
 		} ;
 		
-	copy_data (outfile, infile, BUFFER_LEN / sfinfo.channels, normfactor) ;
+	copy_data (outfile, infile, BUFFER_LEN / sfinfo.channels) ;
 		
 	sf_close (infile) ;
 	sf_close (outfile) ;

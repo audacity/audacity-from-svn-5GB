@@ -1,6 +1,6 @@
-# Makefile.in generated automatically by automake 1.4-p4 from Makefile.am
+# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
 
-# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -12,7 +12,6 @@
 
 # This file was automatically generated
 # DO NOT EDIT!
-#
 
 
 SHELL = @SHELL@
@@ -69,30 +68,43 @@ target_triplet = @target@
 AS = @AS@
 CC = @CC@
 DLLTOOL = @DLLTOOL@
+ECHO = @ECHO@
+ENABLE_EXPERIMENTAL_CODE = @ENABLE_EXPERIMENTAL_CODE@
+EXEEXT = @EXEEXT@
+GETCONF = @GETCONF@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
+OS_SPECIFIC_INCLUDES = @OS_SPECIFIC_INCLUDES@
+OS_SPECIFIC_LINKS = @OS_SPECIFIC_LINKS@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SHARED_VERSION_INFO = @SHARED_VERSION_INFO@
+SIZEOF_SF_COUNT_T = @SIZEOF_SF_COUNT_T@
+STRIP = @STRIP@
+TYPEOF_SF_COUNT_T = @TYPEOF_SF_COUNT_T@
 VERSION = @VERSION@
+autogen = @autogen@
 subdirs = @subdirs@
 
-DIST_SUBDIRS = GSM610 G72x
 SUBDIRS = GSM610 G72x
 
 lib_LTLIBRARIES = libsndfile.la
 include_HEADERS = sndfile.h
-INCLUDES = -I$(srcdir)/../src -I$(srcdir)
 
-noinst_HEADERS = common.h sfendian.h floatcast.h wav.h au.h
+EXTRA_DIST = sndfile.h.in config.h.in
 
-COMMON = common.c pcm.c ulaw.c alaw.c float32.c sndfile.c  
-FILESPECIFIC = aiff.c au.c au_g72x.c nist.c paf.c raw.c samplitude.c 				svx.c wav.c wav_gsm610.c wav_ima_adpcm.c 				wav_ms_adpcm.c voc.c ircam.c
+noinst_HEADERS = common.h sfendian.h float_cast.h wav_w64.h au.h
+
+COMMON = sndfile.c common.c file_io.c command.c pcm.c ulaw.c alaw.c float32.c 			double64.c ima_adpcm.c ms_adpcm.c gsm610.c dwvw.c sfendian.c
 
 
-libsndfile_la_SOURCES = $(COMMON) $(FILESPECIFIC) sndfile.h
+FILESPECIFIC = aiff.c au.c au_g72x.c nist.c paf.c raw.c svx.c 				wav.c wav_w64.c voc.c ircam.c w64.c 				sd2.c rx2.c txw.c sds.c
+
+
+libsndfile_la_SOURCES = $(COMMON) $(FILESPECIFIC) $(noinst_HEADERS)
 libsndfile_la_LDFLAGS = -version-info @SHARED_VERSION_INFO@
 libsndfile_la_LIBADD = GSM610/libgsm.la G72x/libg72x.la
 
@@ -100,7 +112,7 @@ libsndfile_la_LIBADD = GSM610/libgsm.la G72x/libg72x.la
 AUTOHEADER = echo
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = 
+CONFIG_CLEAN_FILES =  sndfile.h
 LTLIBRARIES =  $(lib_LTLIBRARIES)
 
 
@@ -109,10 +121,11 @@ CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 libsndfile_la_DEPENDENCIES =  GSM610/libgsm.la G72x/libg72x.la
-libsndfile_la_OBJECTS =  common.lo pcm.lo ulaw.lo alaw.lo float32.lo \
-sndfile.lo aiff.lo au.lo au_g72x.lo nist.lo paf.lo raw.lo samplitude.lo \
-svx.lo wav.lo wav_gsm610.lo wav_ima_adpcm.lo wav_ms_adpcm.lo voc.lo \
-ircam.lo
+libsndfile_la_OBJECTS =  sndfile.lo common.lo file_io.lo command.lo \
+pcm.lo ulaw.lo alaw.lo float32.lo double64.lo ima_adpcm.lo ms_adpcm.lo \
+gsm610.lo dwvw.lo sfendian.lo aiff.lo au.lo au_g72x.lo nist.lo paf.lo \
+raw.lo svx.lo wav.lo wav_w64.lo voc.lo ircam.lo w64.lo sd2.lo rx2.lo \
+txw.lo sds.lo
 CFLAGS = @CFLAGS@
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -120,7 +133,8 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
 HEADERS =  $(include_HEADERS) $(noinst_HEADERS)
 
-DIST_COMMON =  ./stamp-h.in Makefile.am Makefile.in config.h.in
+DIST_COMMON =  ./stamp-h.in Makefile.am Makefile.in config.h.in \
+sndfile.h.in
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
@@ -132,9 +146,9 @@ OBJECTS = $(libsndfile_la_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
-.SUFFIXES: .S .c .lo .o .s
+.SUFFIXES: .S .c .lo .o .obj .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps src/Makefile
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign --include-deps src/Makefile
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
@@ -168,6 +182,8 @@ distclean-hdr:
 	-rm -f config.h
 
 maintainer-clean-hdr:
+sndfile.h: $(top_builddir)/config.status sndfile.h.in
+	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 mostlyclean-libLTLIBRARIES:
 
@@ -197,6 +213,11 @@ uninstall-libLTLIBRARIES:
 .c.o:
 	$(COMPILE) -c $<
 
+# FIXME: We should only use cygpath when building on Windows,
+# and only if it is available.
+.c.obj:
+	$(COMPILE) -c `cygpath -w $<`
+
 .s.o:
 	$(COMPILE) -c $<
 
@@ -205,6 +226,7 @@ uninstall-libLTLIBRARIES:
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
+	-rm -f *.$(OBJEXT)
 
 clean-compile:
 
@@ -286,7 +308,7 @@ maintainer-clean-recursive:
 	dot_seen=no; \
 	rev=''; list='$(SUBDIRS)'; for subdir in $$list; do \
 	  rev="$$subdir $$rev"; \
-	  test "$$subdir" = "." && dot_seen=yes; \
+	  test "$$subdir" != "." || dot_seen=yes; \
 	done; \
 	test "$$dot_seen" = "no" && rev=". $$rev"; \
 	target=`echo $@ | sed s/-recursive//`; \
@@ -328,7 +350,7 @@ TAGS: tags-recursive $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) $(LI
 	  awk '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
 	test -z "$(ETAGS_ARGS)config.h.in$$unique$(LISP)$$tags" \
-	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags config.h.in $$unique $(LISP) -o $$here/TAGS)
+	  || (cd $(srcdir) && etags -o $$here/TAGS $(ETAGS_ARGS) $$tags config.h.in $$unique $(LISP))
 
 mostlyclean-tags:
 
@@ -354,7 +376,7 @@ distdir: $(DISTFILES)
 	    || cp -p $$d/$$file $(distdir)/$$file || :; \
 	  fi; \
 	done
-	for subdir in $(DIST_SUBDIRS); do \
+	for subdir in $(SUBDIRS); do \
 	  if test "$$subdir" = .; then :; else \
 	    test -d $(distdir)/$$subdir \
 	    || mkdir $(distdir)/$$subdir \
@@ -364,32 +386,6 @@ distdir: $(DISTFILES)
 	      || exit 1; \
 	  fi; \
 	done
-aiff.lo aiff.o : aiff.c sndfile.h config.h sfendian.h common.h
-alaw.lo alaw.o : alaw.c sndfile.h floatcast.h common.h
-au.lo au.o : au.c sndfile.h config.h sfendian.h common.h au.h
-au_g72x.lo au_g72x.o : au_g72x.c config.h sndfile.h sfendian.h \
-	floatcast.h common.h au.h G72x/g72x.h
-common.lo common.o : common.c sndfile.h sfendian.h config.h common.h
-float32.lo float32.o : float32.c sndfile.h config.h sfendian.h common.h
-ircam.lo ircam.o : ircam.c sndfile.h config.h sfendian.h common.h
-nist.lo nist.o : nist.c sndfile.h config.h sfendian.h common.h
-paf.lo paf.o : paf.c config.h sndfile.h sfendian.h floatcast.h common.h
-pcm.lo pcm.o : pcm.c config.h sndfile.h sfendian.h floatcast.h common.h
-raw.lo raw.o : raw.c sndfile.h config.h sfendian.h common.h
-samplitude.lo samplitude.o : samplitude.c sndfile.h config.h sfendian.h \
-	common.h
-sndfile.lo sndfile.o : sndfile.c sndfile.h config.h sfendian.h common.h
-svx.lo svx.o : svx.c sndfile.h config.h sfendian.h common.h
-ulaw.lo ulaw.o : ulaw.c sndfile.h floatcast.h common.h
-voc.lo voc.o : voc.c sndfile.h config.h sfendian.h common.h
-wav.lo wav.o : wav.c sndfile.h config.h sfendian.h common.h wav.h
-wav_gsm610.lo wav_gsm610.o : wav_gsm610.c sndfile.h config.h sfendian.h \
-	floatcast.h common.h wav.h GSM610/gsm.h
-wav_ima_adpcm.lo wav_ima_adpcm.o : wav_ima_adpcm.c sndfile.h config.h \
-	sfendian.h floatcast.h common.h wav.h
-wav_ms_adpcm.lo wav_ms_adpcm.o : wav_ms_adpcm.c sndfile.h config.h \
-	sfendian.h floatcast.h common.h wav.h
-
 info-am:
 info: info-recursive
 dvi-am:

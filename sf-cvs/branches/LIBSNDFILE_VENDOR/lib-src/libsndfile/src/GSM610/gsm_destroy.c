@@ -4,11 +4,8 @@
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
  */
 
-/* $Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/gsm_destroy.c,v 1.1.1.1 2001-10-15 04:39:19 dmazzoni Exp $ */
-
 #include "gsm.h"
 #include "config.h"
-#include "proto.h"
 
 #ifdef	HAS_STDLIB_H
 #	include	<stdlib.h>
@@ -20,7 +17,7 @@
 #	endif
 #endif
 
-void gsm_destroy P1((S), gsm S)
+void gsm_destroy (gsm S)
 {
 	if (S) free((char *)S);
 }

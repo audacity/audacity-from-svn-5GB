@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -22,7 +22,8 @@
 #include	<unistd.h>
 
 #include	<sndfile.h>
-#include	"check_log_buffer.h"
+
+#include	"utils.h"
 
 #define	BUFFER_SIZE		(65536)
 
@@ -32,28 +33,29 @@ static int				alaw_decode (unsigned int alawbyte) ;
 static	short			short_buffer [BUFFER_SIZE] ;
 static	unsigned char	alaw_buffer [BUFFER_SIZE] ;
 
-int		main (int argc, char *argv[])
+int		
+main (void)
 {	SNDFILE	*file ;
 	SF_INFO sfinfo ;
 	char	*filename ;
 	int		k ;
 	
-	filename = "test.au" ;
+	filename = "test.raw" ;
 	
-	sfinfo.format      = SF_FORMAT_AU | SF_FORMAT_ALAW ;
+	sfinfo.format      = SF_FORMAT_RAW | SF_FORMAT_ALAW ;
 	sfinfo.samplerate  = 44100 ;
-	sfinfo.samples     = 123456789 ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.frames     = 123456789 ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels    = 1 ;
-	sfinfo.pcmbitwidth = 16 ;
 
-	if (! (file = sf_open_write (filename, &sfinfo)))
+	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
+		fflush (stdout) ;
 		sf_perror (NULL) ;
 		exit (1) ;
 		} ;
 		
 	/* Generate a file containing all possible 16 bit sample values 
-	** and write it to disk as alaw encoded samples. 
+	** and write it to disk as alaw encoded.frames. 
 	*/
 
 	for (k = 0 ; k < 0x10000 ; k++)
@@ -66,13 +68,13 @@ int		main (int argc, char *argv[])
 	** with what they should be.
 	*/
 
-	if (! (file = sf_open_read (filename, &sfinfo)))
+	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
 		sf_perror (NULL) ;
 		exit (1) ;
 		} ;
 
-	check_log_buffer (file) ;
+	check_log_buffer_or_die (file) ;
 		
 	if (sf_read_raw (file, alaw_buffer, BUFFER_SIZE) != BUFFER_SIZE)
 	{	printf ("sf_read_raw : ") ;
@@ -91,10 +93,10 @@ int		main (int argc, char *argv[])
 	printf ("    alaw_test : encoder ... ok\n") ;
 
 	/* Now generate a file containing all possible 8 bit encoded
-	** sample values and write it to disk as alaw encoded samples. 
+	** sample values and write it to disk as alaw encoded.frames. 
 	*/
 
-	if (! (file = sf_open_write (filename, &sfinfo)))
+	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
 		sf_perror (NULL) ;
 		exit (1) ;
@@ -110,13 +112,13 @@ int		main (int argc, char *argv[])
 	** with what they should be.
 	*/
 
-	if (! (file = sf_open_read (filename, &sfinfo)))
+	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
 		sf_perror (NULL) ;
 		exit (1) ;
 		} ;
 
-	check_log_buffer (file) ;
+	check_log_buffer_or_die (file) ;
 		
 	if (sf_read_short (file, short_buffer, 256) != 256)
 	{	printf ("sf_read_short : ") ;
