@@ -18,6 +18,7 @@
 #include <wx/timer.h>
 #include <wx/window.h>
 #include <wx/ffile.h>
+#include <wx/log.h>
 
 #include "Mix.h"
 #include "WaveTrack.h"
@@ -30,7 +31,7 @@ typedef int  (*lame_encode_buffer_interleavedTYPE)(lame_global_flags *, short in
   int, char *, int);
 typedef int  (*lame_encode_finishTYPE)(lame_global_flags *, char *, int);
 
-#ifdef __WXWIN__
+#ifdef __WXMSW__
 const char *libname = "lame_enc.dll";
 #elif defined(__WXGTK__)
 const char *libname = "libmp3lame.so";
@@ -39,13 +40,11 @@ const char *libname = "libmp3lame.so";
 bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow *parent, 
         TrackList *tracks, bool selectionOnly, double t0, double t1)
 {
-  
+  wxLogNull logNo; /* temporarily disable wxWindows error messages */
+    
   wxDllType libHandle = NULL;
 
-  /* Load the library and resolve all the function names. This is less clear
-   * than it could be, but wxWindows is extra helpful by dispatching its
-   * own error dialog if an attempt to load the library fails, even if I don't
-   * WANT it to! */
+  /* Load the library and resolve all the function names. */
   
   if(wxFileExists(wxString("./") + libname))
     libHandle = wxDllLoader::LoadLibrary(wxString("./") + libname);
@@ -54,11 +53,8 @@ bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow *parent,
     libHandle = wxDllLoader::LoadLibrary(libname);
 
   if(!libHandle) {
-    /* urgh -- wxWindows dispatches its own failure messages which is helpful
-     * to a certain extent, but I want to give a *CUSTOM* error message, but I 
-     * don't want a user to be faced with two at once... 
     wxMessageBox("Could not find mp3 encoder library. Audacity requires a library" +
-      wxString::Format("file called %s which you must download or build", libname)); */
+      wxString::Format("file called %s which you must download or build", libname));
       return false;
   }
 
