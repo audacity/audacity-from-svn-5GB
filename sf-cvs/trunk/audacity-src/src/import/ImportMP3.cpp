@@ -205,8 +205,10 @@ bool MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
       /* copy the WaveTrack pointers into the Track pointer list that
        * we are expected to fill */
       *outTracks = new Track* [mPrivateData.numChannels];
-      for(chn = 0; chn < mPrivateData.numChannels; chn++)
+      for(chn = 0; chn < mPrivateData.numChannels; chn++) {
+         mPrivateData.channels[chn]->Flush();
          (*outTracks)[chn] = mPrivateData.channels[chn];
+      }
       *outNumTracks = mPrivateData.numChannels;
 
       delete mPrivateData.inputBuffer;

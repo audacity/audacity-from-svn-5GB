@@ -264,6 +264,9 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
                               samplesRead,
                               *outNumTracks);
 
+   for(c = 0; c < *outNumTracks; c++)
+      channels[c]->Flush();
+
    /* ...the rest is de-allocation */
    delete[]mainBuffer;
 

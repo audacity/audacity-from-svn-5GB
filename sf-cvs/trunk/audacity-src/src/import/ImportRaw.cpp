@@ -225,6 +225,9 @@ int ImportRaw(wxWindow *parent, wxString fileName,
       return 0;
    }
    else {
+      for (c = 0; c < numChannels; c++)
+         channels[c]->Flush();
+
       *outTracks = (Track **)channels;
 
       return numChannels;

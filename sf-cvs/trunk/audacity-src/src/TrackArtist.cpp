@@ -335,7 +335,8 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
 
    //Get the sequence of samples from the actual track structure
    Sequence *seq = track->GetSequence();
-   sampleCount numSamples = seq->GetNumSamples();    //keep track of how many samples there are
+   double trackLen = track->GetEndTime() - track->GetStartTime();
+   //sampleCount numSamples = seq->GetNumSamples();    //keep track of how many samples there are
    double tOffset = track->GetOffset();              //The offset of the track.
 
 
@@ -357,7 +358,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
 
    //calculate actual selection bounds so that t0 > 0 and t1 < the end of the track
    double t0 = (tpre >= 0.0 ? tpre : 0.0);
-   double t1 = (tpost < (numSamples / rate) ? tpost : (numSamples / rate));
+   double t1 = (tpost < trackLen ? tpost : trackLen);
 
    //Make sure t1 (the right bound) is greater than 0
    if (t1 < 0.0) {
@@ -374,8 +375,8 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    int ssel1 = wxMax(0, int((sel1 - tOffset) * rate + 0.5));
 
    //trim selection so that it only contains the actual samples
-   if (ssel0 != ssel1 && ssel1 > numSamples)
-         ssel1 = numSamples;
+   if (ssel0 != ssel1 && ssel1 > (int)(0.5+trackLen*rate))
+      ssel1 = (int)(0.5+trackLen*rate);
 
    //Draw a rectangle around the passed-in region (the selection)
    dc.SetBrush(blankBrush);

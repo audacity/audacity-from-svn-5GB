@@ -135,9 +135,12 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
       }
    }
 
+   mixLeft->Flush();
    tracks->Add(mixLeft);
-   if (!mono)
+   if (!mono) {
+      mixRight->Flush();
       tracks->Add(mixRight);
+   }
 
    delete progress;
 

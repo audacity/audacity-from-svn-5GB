@@ -254,8 +254,10 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
    }
    else {
       *outTracks = new Track *[*outNumTracks];
-      for(c = 0; c < *outNumTracks; c++)
+      for(c = 0; c < *outNumTracks; c++) {
+         channels[c]->Flush();
          (*outTracks)[c] = channels[c];
+      }
       delete[] channels;
 
       return true;
