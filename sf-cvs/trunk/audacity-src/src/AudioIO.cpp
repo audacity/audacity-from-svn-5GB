@@ -44,6 +44,7 @@ AudioIO::AudioIO()
    mFormat = floatSample;
    mPaused = false;
    mDroppedSamples = 0;
+   mPausePosition = 0;
 
    PaError err = Pa_Initialize();
 
@@ -243,6 +244,7 @@ bool AudioIO::Start()
    mRepeats = 0;
    mDroppedSamples = 0;
    mPaused = false;
+   mPausePosition = 0;
 
    unsigned int i;
 
@@ -353,13 +355,21 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
    return Start();
 }
 
-void AudioIO::AddDroppedSamples(int nSamples)
+void AudioIO::AddDroppedSamples(sampleCount nSamples)
 {
    mDroppedSamples += nSamples;
 }
 
+double AudioIO::GetPauseIndicator()
+{
+   return mPausePosition;
+}
+
 void AudioIO::SetPaused(bool state)
 {
+   if(state)
+      mPausePosition = GetIndicator();
+
    mPaused = state;
 }
 
@@ -654,7 +664,10 @@ AudacityProject *AudioIO::GetProject()
 double AudioIO::GetIndicator()
 {
    if (mProject && mPortStream)
-      return mT0 + ((Pa_StreamTime(mPortStream)-mDroppedSamples)/ mRate);
+      if(GetPaused())
+         return GetPauseIndicator();
+      else
+         return mT0 + ((Pa_StreamTime(mPortStream)-mDroppedSamples)/ mRate);
    else
       return -1000000000.0;
 }
