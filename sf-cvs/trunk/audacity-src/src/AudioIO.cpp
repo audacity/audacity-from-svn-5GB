@@ -419,13 +419,15 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
    mLastPaError = paNoError;
    mRate = sampleRate;
 
+   mNumPlaybackChannels = numPlaybackChannels;
+   mNumCaptureChannels = numCaptureChannels;
+
 #if USE_PORTAUDIO_V19
-   PaStreamParameters *playbackParameters;
-   PaStreamParameters *captureParameters;
+   PaStreamParameters *playbackParameters = NULL;
+   PaStreamParameters *captureParameters = NULL;
 
    if( numPlaybackChannels > 0)
    {
-      mNumPlaybackChannels = numPlaybackChannels;
       playbackParameters = new PaStreamParameters;
       wxString playbackDeviceName = gPrefs->Read("/AudioIO/PlaybackDevice", "");
       const PaDeviceInfo *playbackDeviceInfo;
@@ -454,14 +456,9 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
       playbackParameters->suggestedLatency =
          playbackDeviceInfo->defaultLowOutputLatency;
    }
-   else
-   {
-      playbackParameters = NULL;
-   }
 
    if( numCaptureChannels > 0)
    {
-      mNumCaptureChannels = numCaptureChannels;
       mCaptureFormat = captureFormat;
       captureParameters = new PaStreamParameters;
       const PaDeviceInfo *captureDeviceInfo;
@@ -492,10 +489,6 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
       captureParameters->suggestedLatency =
          captureDeviceInfo->defaultHighInputLatency;
    }
-   else
-   {
-      captureParameters = NULL;
-   }
 
    mLastPaError = Pa_OpenStream( &mPortStreamV19,
                                  captureParameters, playbackParameters,
@@ -520,13 +513,12 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
 
 #else
 
-   PaDeviceID captureDevice, playbackDevice;
+   PaDeviceID captureDevice = paNoDevice,
+              playbackDevice = paNoDevice;
    PaSampleFormat paCaptureFormat = paFloat32;
 
    if( numPlaybackChannels > 0 )
    {
-      mNumPlaybackChannels = numPlaybackChannels;
-
       playbackDevice =  Pa_GetDefaultOutputDeviceID();
       wxString playbackDeviceName = gPrefs->Read("/AudioIO/PlaybackDevice", "");
 
@@ -540,18 +532,10 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
          }
       }
    }
-   else
-   {
-      playbackDevice = paNoDevice;
-      mNumPlaybackChannels = 0;
-   }
-
 
    if( numCaptureChannels > 0 )
    {
       // For capture, every input channel gets its own track
-      mNumCaptureChannels = numCaptureChannels;
-
       mCaptureFormat = captureFormat;
       captureDevice =  Pa_GetDefaultInputDeviceID();
       wxString captureDeviceName = gPrefs->Read("/AudioIO/RecordingDevice", "");
@@ -568,12 +552,6 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
 
       paCaptureFormat =
          AudacityToPortAudioSampleFormat(mCaptureFormat);
-   }
-   else
-   {
-      captureDevice = paNoDevice;
-      mNumCaptureChannels = 0;
-      mCaptureFormat = (sampleFormat)0;
    }
 
    mPortStreamV18 = NULL;
