@@ -190,11 +190,11 @@ bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
 
       left->Get(buffer, ls, block);
       for (i = 0; i < block; i++)
-         fInBuffer[0][i] = float (buffer[i] / 32767.);
+         fInBuffer[0][i] = buffer[i];
       if (right) {
          right->Get(buffer, rs, block);
          for (i = 0; i < block; i++)
-            fInBuffer[1][i] = float (buffer[i] / 32767.);
+            fInBuffer[1][i] = buffer[i];
       }
 
       callProcessReplacing(aEffect, fInBuffer, fOutBuffer, block);
