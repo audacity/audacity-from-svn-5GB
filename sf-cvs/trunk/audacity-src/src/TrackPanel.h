@@ -132,7 +132,7 @@ class TrackPanel:public wxWindow {
 
    void MakeParentResize();
 
-   void OnSetName();
+   void OnSetName(wxEvent &event);
 
    void OnMoveTrack    (wxEvent &event);
    void OnChangeOctave (wxEvent &event);
@@ -141,7 +141,7 @@ class TrackPanel:public wxWindow {
 
    void SetRate(Track *pTrack, double rate);
    void OnRateChange(wxEvent &event);
-   void OnRateOther();
+   void OnRateOther(wxEvent &event);
 
    void OnFormatChange(wxEvent &event);
 
@@ -149,8 +149,8 @@ class TrackPanel:public wxWindow {
 
    void OnSnapToChange(wxEvent &event);
 
-   void OnSplitStereo();
-   void OnMergeStereo();
+   void OnSplitStereo(wxEvent &event);
+   void OnMergeStereo(wxEvent &event);
 
    void RemoveTrack(Track * toRemove);
 

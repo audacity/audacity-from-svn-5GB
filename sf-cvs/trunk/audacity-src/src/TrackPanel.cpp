@@ -2649,7 +2649,7 @@ void TrackPanel::OnChannelChange(wxEvent & event)
 }
 
 // AS: Split a stereo track into two tracks... ??
-void TrackPanel::OnSplitStereo()
+void TrackPanel::OnSplitStereo(wxEvent &event)
 {
    wxASSERT(mPopupMenuTarget);
    mPopupMenuTarget->SetLinked(false);
@@ -2661,7 +2661,7 @@ void TrackPanel::OnSplitStereo()
 }
 
 // AS: Merge two tracks into one steroe track ??
-void TrackPanel::OnMergeStereo()
+void TrackPanel::OnMergeStereo(wxEvent &event)
 {
    wxASSERT(mPopupMenuTarget);
    mPopupMenuTarget->SetLinked(true);
@@ -2838,7 +2838,7 @@ void TrackPanel::OnRateChange(wxEvent & event)
 
 // AS: This function handles the case when the user selects "Other"
 //  from the Rate submenu on the Track menu.
-void TrackPanel::OnRateOther()
+void TrackPanel::OnRateOther(wxEvent &event)
 {
    wxASSERT(mPopupMenuTarget
             && mPopupMenuTarget->GetKind() == Track::Wave);
@@ -2909,7 +2909,7 @@ void TrackPanel::OnChangeOctave(wxEvent & event)
    Refresh(false);
 }
 
-void TrackPanel::OnSetName()
+void TrackPanel::OnSetName(wxEvent &event)
 {
    Track *t = mPopupMenuTarget;
 
