@@ -9,6 +9,22 @@
   include GetTranslation("plugins");
 ?>
 
+<p>
+<b>Cross-platform <a href="nyquist.php">Nyquist</a>
+plug-ins (contributed by users)</b>
+</p>
+<p>
+(To use, unzip and drop in Audacity's <b>Plug-ins</b> folder.
+</p>
+
+<ul>
+<li><a href="nyquist/bouncingball.zip">Bouncing Ball Delay</a>
+<li><a href="nyquist/lfolp.zip">LFO Low Pass Filter</a>
+<li><a href="nyquist/lfopan.zip">LFO Pan</a>
+<li><a href="nyquist/pan.zip">Pan</a>
+<li><a href="nyquist/ramppan.zip">Ramp Pan</a>
+</ul>
+
 <b>Windows:</b>
 <ul>
 

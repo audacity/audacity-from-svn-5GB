@@ -16,7 +16,3 @@ Audacity's Plug-in support is improving.  Please let us know if you
 find a VST Plug-in that doesn't seem to work in Audacity, and we'll
 try to fix it. 
 </p>
-
-<p>
-Here are some places to download or purchase VST Plug-ins:
-</p>
