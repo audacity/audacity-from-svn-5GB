@@ -23,7 +23,7 @@
 
 #if USE_LIBRESAMPLE
 
-#include "resample.h"
+#include "libresample.h"
 
 bool Resample::ResamplingEnabled()
 {
