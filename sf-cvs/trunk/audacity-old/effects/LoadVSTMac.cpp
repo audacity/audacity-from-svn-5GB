@@ -9,6 +9,7 @@
 **********************************************************************/
 
 #include <CodeFragments.h>
+#include <Resources.h>
 
 #include "AudioEffect.hpp"  // VST API
 
@@ -45,11 +46,10 @@ void LoadVSTPlugins()
 
     while (fname != "") {
         short resID;
-        char *tmp = ::wxUnix2MacFilename(fname);
-        char *macFname = new char[strlen(tmp)+1];
-        strcpy(macFname, tmp);
-        c2pstr(macFname);        
-        resID = OpenResFile((const unsigned char *)macFname);
+        FSSpec spec;
+        
+        wxUnixFilename2FSSpec(fname, &spec);
+        resID = FSpOpenResFile(&spec, fsRdPerm);
         Handle codeH;
         
         int count = Count1Resources('aEff');
@@ -109,7 +109,6 @@ void LoadVSTPlugins()
         }
 
         CloseResFile(resID);
-        delete[] macFname;        
         fname = wxFindNextFile();
     }
 }
