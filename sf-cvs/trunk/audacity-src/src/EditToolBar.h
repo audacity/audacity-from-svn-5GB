@@ -46,8 +46,8 @@ class wxSize;
 class wxPoint;
 
 enum {
+   ETBCutID, 
    ETBCopyID,
-   ETBCutID,
    ETBPasteID,
    ETBTrimID,
    ETBSilenceID,
@@ -81,8 +81,8 @@ class EditToolBar:public ToolBar {
    virtual void OnKeyEvent(wxKeyEvent & event);
 
 
+   void OnCut(); 
    void OnCopy();
-   void OnCut();
    void OnPaste();
    void OnTrim();
    void OnSilence();
@@ -105,8 +105,8 @@ class EditToolBar:public ToolBar {
                         char const ** foreground,
                         char const ** alpha,
                         int id, int left);
-   AButton *mCopy;
    AButton *mCut;
+   AButton *mCopy;
    AButton *mPaste;
    AButton *mTrim;
    AButton *mSilence;
