@@ -126,6 +126,9 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
       _("Standard Autocorrelation"),
       _("Cuberoot Autocorrelation"),
       _("Enhanced Autocorrelation"),
+     /* i18n-hint: This is a technical term, derived from the word
+        "spectrum".  Do not translate it unless you are sure you
+        know the correct technical word in your language. */
       _("Cepstrum")
    };
 
@@ -154,8 +157,11 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    int f = NumWindowFuncs();
 
    wxString *funcChoiceStrings = new wxString[f];
-   for (int i = 0; i < f; i++)
+   for (int i = 0; i < f; i++) {
+      /* i18n-hint: This refers to a "window function", used in the
+         Frequency analyze dialog box. */
       funcChoiceStrings[i] = WindowFuncName(i) + wxString(_(" window"));
+   }
 
    mFuncChoice = new wxChoice(this, FreqFuncChoiceID,
                               wxPoint(10, 290),

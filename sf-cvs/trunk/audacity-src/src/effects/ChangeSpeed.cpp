@@ -246,7 +246,11 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
 void EffectChangeSpeed::ReportLibSampleRateError(int error)
 {
 	wxString str;
+   /* i18n-hint: LibSampleRate is the name of a library and
+      doesn't need to be translated. */
 	str.Printf(_("LibSampleRate error: %s"), src_strerror(error));
+   /* i18n-hint: LibSampleRate is the name of a library and
+      doesn't need to be translated. */
 	wxMessageBox(str, _("LibSampleRate error"));
 }
 
@@ -374,7 +378,12 @@ ChangeSpeedDialog::ChangeSpeedDialog(EffectChangeSpeed * effect,
 	// from/to Vinyl controls
    wxBoxSizer * pBoxSizer_Vinyl = new wxBoxSizer(wxHORIZONTAL);
 
-	const wxString strArray_VinylRPM[] = {"33 1/3", "45", "78", _("n/a")};
+	const wxString strArray_VinylRPM[] = {"33 1/3", "45", "78",
+                                         /* i18n-hint: n/a is an English
+                                            abbreviation meaning "not
+                                            applicable" (in other words,
+                                            unimportant, not relevant). */
+                                         _("n/a")};
 	const int numChoices = 4;
 
    pStaticText = new wxStaticText(this, -1, _("Standard Vinyl RPM:   from"),

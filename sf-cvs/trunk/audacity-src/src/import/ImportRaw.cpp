@@ -294,9 +294,17 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
    // Endian choice
 
    wxString endianStrings[4] =
-      {_("No endianness"),
+      {/* i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
+          know the correct technical word. */
+         _("No endianness"),
+         /* i18n-hint: Refers to byte-order.  Don't translate this if you don't
+          know the correct technical word. */
        _("Little-endian"),
+         /* i18n-hint: Refers to byte-order.  Don't translate this if you don't
+            know the correct technical word. */
        _("Big-endian"),
+         /* i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
+            know the correct technical word. */
        _("Default endianness")};
    mEndianChoice =
       new wxChoice(this, ChoiceID,
@@ -354,7 +362,7 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
    mPercentText = new wxTextCtrl(this, 0, "100");
    gridSizer->Add(mPercentText, 0, wxALIGN_LEFT | wxALL, 5);
 
-   gridSizer->Add(new wxStaticText(this, 0, _("%")),
+   gridSizer->Add(new wxStaticText(this, 0, "%"),
                   0, wxALIGN_LEFT | wxALL, 5);
 
    // Rate text
@@ -365,6 +373,8 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
    mRateText = new wxTextCtrl(this, 0, wxString::Format("%d", (int)mRate));
    gridSizer->Add(mRateText, 0, wxALIGN_LEFT | wxALL, 5);
 
+   /* i18n-hint: This is the abbreviation for "Hertz", or
+      cycles per second. */
    gridSizer->Add(new wxStaticText(this, 0, _("Hz")),
                   0, wxALIGN_LEFT | wxALL, 5);
 

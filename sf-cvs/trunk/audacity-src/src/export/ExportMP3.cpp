@@ -88,6 +88,9 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
 
       if (action == wxYES) {
          wxString question;
+         /* i18n-hint: It's asking for the location of a file, for
+            example, "Where is lame_enc.dll?" - you could translate
+            "Where would I find the file %s" instead if you want. */
          question.Printf(_("Where is %s?"), (const char *)GetLibraryName());
          mLibPath = wxFileSelector(question, 
                                    GetLibraryPath(),        // Path
@@ -234,6 +237,7 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
          
          wxString GetLibraryMessage()
          {
+            /* i18n-hint: This message is used on Unix/Linux */
             return _("Audacity does not export MP3 files directly, but instead uses the \n"
                    "freely available LAME library to handle MP3 file encoding.  You must \n"
                    "obtain libmp3lame.so separately, either by downloading it or building \n"
@@ -514,6 +518,8 @@ void ReleaseMP3Exporter()
          wxString GetLibraryMessage()
          {
             // Must be <= 255 characters on Mac
+            /* i18n-hint: This message is used on Mac OS X.  This particular
+             message must be <= 255 characters.  Be brief. */
             return _("Audacity does not export MP3 files directly, but instead uses LAME, "
                    "an MP3 exporting library available separately.  See the documentation "
                    "for more information.\n\n"
@@ -808,6 +814,8 @@ void ReleaseMP3Exporter()
          wxString GetLibraryMessage()
          {
             // Must be <= 255 characters on Mac
+            /* i18n-hint: This message is used on Mac OS 9.  This particular
+             message must be <= 255 characters.  Be brief. */
             return _("Audacity does not export MP3 files directly, but instead uses LAME, "
                    "an MP3 exporting library available separately.  See the documentation "
                    "for more information.\n\n"
@@ -1055,6 +1063,7 @@ public:
    
    wxString GetLibraryMessage()
    {
+      /* i18n-hint: This message is used on Windows. */
       return _("Audacity does not export MP3 files directly, but instead uses the\n"
              "freely available LAME library to handle MP3 file encoding.  You must\n"
              "obtain lame_enc.dll separately, by downloading the LAME MP3 encoder,"

@@ -573,9 +573,10 @@ bool AudacityApp::OnInit()
             continue;
          bool handled = false;
 
-         /* i18n-hint: '-help', '-test' and '-blocksize' need to stay in English. */
          if (!wxString("-help").CmpNoCase(argv[option])) {
-            printf(_("Command-line options supported:\n"
+            printf(/* i18n-hint: '-help', '-test' and
+                      '-blocksize' need to stay in English. */
+                   _("Command-line options supported:\n"
                      "  -help (this message)\n"
                      "  -test (run self diagnostics)\n"
                      "  -blocksize ### (set max disk block size in bytes)\n"

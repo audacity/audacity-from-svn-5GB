@@ -23,19 +23,34 @@ wxArrayString GetSelectionFormats()
    a.Add(_("min:sec"));
    a.Add(_("sec"));
    a.Add(_("hr:min:sec"));
+   /* i18n-hint: fps is "frames per second" */
    a.Add(_("film frames 24 fps"));
+   /* i18n-hint: fps is "frames per second",
+    and the other letters are for hours, minutes, seconds, frames */
    a.Add(_("film h:mm:ss:ff 24 fps"));
+   /* i18n-hint: fps is "frames per second" */
    a.Add(_("PAL frames 25 fps"));
+   /* i18n-hint: fps is "frames per second",
+    and the other letters are for hours, minutes, seconds, frames */
    a.Add(_("PAL h:mm:ss:ff 25 fps"));
+   /* i18n-hint: fps is "frames per second" */
    a.Add(_("NTSC frames 29.97 fps"));
+   /* i18n-hint: hours, minutes, seconds, frames */
    a.Add(_("NTSC drop-frame h:mm:ss:ff"));
+   /* i18n-hint: hours, minutes, seconds, frames */
    a.Add(_("NTSC non-drop-frame h:mm:ss:ff"));
+   /* i18n-hint: fps is "frames per second",
+    cdda is "Compact Disc Digital Audio - don't translate */
    a.Add(_("cdda min:sec:frames 75 fps"));
    a.Add(_("samples (snap to samples)"));
    a.Add(_("min:sec (snap to samples)"));
    a.Add(_("sec (snap to samples)"));
    a.Add(_("min:sec+samples (snap to samples)"));
    a.Add(_("sec+samples (snap to samples)"));
+
+   /* i18n-hint: cdda is "Compact Disc Digital Audio - don't translate.
+    A "sector" is a technical term - don't translate unless you're sure
+    you know the correct term. */
    a.Add(_("cdda sectors+bytes (snap to samples)"));
 
    return a;
@@ -94,8 +109,9 @@ wxString FormatSelection(int iformat, int iSnapTo,
    wxString result;
    // TODO: Check whether we need a 'const' in the char * somewhere.
    char * SnapTo[2];
-   /* i18n-hint: These snap-to strings will appear in the status bar. */
+   /* i18n-hint: This snap-to string will appear in the status bar. */
    SnapTo[0] = (char *)_("[Snap-To Off]");
+   /* i18n-hint: This snap-to string will appear in the status bar. */
    SnapTo[1] = (char *)_("[Snap-To On]");
 
    // variables used
@@ -776,7 +792,8 @@ wxString FormatSelection(int iformat, int iSnapTo,
       break;
 
    default:
-      result.Printf(_("Selection: invalid iformat value (%i) in FormatSelection.cpp"),iformat);
+      // This is an unusual error - doesn't need to be translated.
+      result.Printf("Selection: invalid iformat value (%i) in FormatSelection.cpp",iformat);
       break;
 
    }

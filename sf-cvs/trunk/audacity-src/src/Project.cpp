@@ -2050,6 +2050,8 @@ bool AudacityProject::ImportProgressCallback(void *_self, float percent)
       wxString description;
 
       if (self->mImportingRaw)
+         /* i18n-hint: This refers to files that are opened directly
+            without looking at the file header.  Same as "Import Raw" */
          description = _("Raw");
       else
          description = self->mImporter->GetFileDescription();

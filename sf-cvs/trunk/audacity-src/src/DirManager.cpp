@@ -632,6 +632,9 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
    int i = 0;
    do {
       i++;
+      /* i18n-hint: This is the pattern for filenames that are created
+         when a file needs to be backed up to a different name.  For
+         example, mysong would become mysong-old1, mysong-old2, etc. */
       renamedFile.SetName(wxString::Format(_("%s-old%d"), fName.GetName().c_str(), i));
    } while (renamedFile.FileExists());
 
