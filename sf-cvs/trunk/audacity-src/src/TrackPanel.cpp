@@ -480,6 +480,8 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */ )
    DrawRuler(&memDC);
 
    dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
+
+
 }
 
 // AS: Make our Parent (well, whoever is listening to us) push their state.
@@ -1909,7 +1911,7 @@ void TrackPanel::DrawTrackIndicator(wxDC * dc)
                   dc->DrawLine(x, y + kTopInset + 1, x, y + height - 2);
                
                }
-               //Incriment y so you draw on the proper track
+               //Increment y so you draw on the proper track
                y += height;
             }
 
@@ -1966,6 +1968,7 @@ void TrackPanel::GetTrackControlsRect(const wxRect r, wxRect & dest) const
 // no longer there won't get  XORed (to erase it), thus redrawing it on the 
 // TrackPanel
 //
+
 void TrackPanel::Refresh(bool eraseBackground /* = TRUE */,
                          const wxRect *rect /* = NULL */)
 {

@@ -68,7 +68,6 @@ void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 #include "effects/Effect.h"
 #include "xml/XMLFileReader.h"
 
-
 #include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
 
 TrackList *AudacityProject::msClipboard = new TrackList();
@@ -887,6 +886,10 @@ void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
    AColor::Medium(&dc, false);
    dc.DrawRectangle(f);
    AColor::Bevel(dc, true, f);
+
+   //This makes the TrackPanel refresh properly, so that
+   //it doesn't leave a little trail of indicator cursors
+   mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnActivate(wxActivateEvent & event)
