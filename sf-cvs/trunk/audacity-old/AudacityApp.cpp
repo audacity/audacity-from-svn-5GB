@@ -110,10 +110,11 @@ bool AudacityApp::OnInit()
   #endif
   */
 
-  InitAPalette(gParentWindow);
-  InitFreqWindow(gParentWindow);
   AudacityProject *project = CreateNewAudacityProject(gParentWindow);
   SetTopWindow(gAPalette);
+
+  InitAPalette(project);
+  InitFreqWindow(gParentWindow);
 
   // Parse command-line arguments
 

@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.91: October 3, 2000
+Version 0.92: November 13, 2000
 
 http://www.cs.cmu.edu/~music/audacity/
 
@@ -20,18 +20,23 @@ For changelog, see the bottom of this document
 
 -------------------------------------------------------------
 
-This program is free software; you can redistribute it and/or
+With the exception of the Xaudio library for importing MP3 files,
+this program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public
 License as published by the Free Software Foundation; either
 version 2 of the License, or (at your option) any later version.
 
-This library is distributed in the hope that it will be useful,
+The Xaudio library is commercial software and has been licensed
+for use in this program.  For more information, see their
+website at http://www.xaudio.com/
+
+This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
 
 You should have received a copy of the GNU General Public
-License along with this library (in a file called COPYING.txt); if not,
+License along with this program (in a file called LICENSE.txt); if not,
 go to http://www.gnu.org/copyleft/gpl.html or write to the Free
 Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 

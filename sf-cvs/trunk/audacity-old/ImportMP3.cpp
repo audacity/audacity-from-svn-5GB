@@ -169,11 +169,7 @@ bool ImportMP3(wxWindow *parent,
 							 parent,
 							 wxPD_CAN_ABORT |
 							 wxPD_REMAINING_TIME |
-							 wxPD_AUTO_HIDE
-                             #ifdef __WXMSW__
-							   | wxPD_SMOOTH
-                             #endif
-							 );
+							 wxPD_AUTO_HIDE);
     
 	if (progress) {
 	  cancelled = !progress->Update(int(decoder->status->position*1000.0));

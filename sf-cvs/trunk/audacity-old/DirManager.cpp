@@ -113,16 +113,12 @@ void DirManager::CleanTempDir()
 
 	if (!progress && wxGetElapsedTime(false) > 500)
 	  progress =
-		new wxProgressDialog("Starting up",
+		new wxProgressDialog("Progress",
 							 "Cleaning up temporary files...",
 							 1000,
 							 NULL,
 							 wxPD_REMAINING_TIME |
-							 wxPD_AUTO_HIDE
-                             #ifdef __WXMSW__
-							   | wxPD_SMOOTH
-                             #endif
-							 );
+							 wxPD_AUTO_HIDE);
     
 	if (progress)
 	  progress->Update(int((i*1000.0)/count));

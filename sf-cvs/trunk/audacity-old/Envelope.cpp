@@ -89,12 +89,13 @@ bool Envelope::Load(wxTextFile *in, DirManager *dirManager)
   long len;
   if (!(in->GetNextLine().ToLong(&len))) return false;
 
-  for(int i=0; i<mEnv.Count(); i++)
+  int i;
+  for(i=0; i<mEnv.Count(); i++)
 	delete mEnv[i];
   mEnv.Clear();
   mEnv.Alloc(len);
 
-  for(int i=0; i<len; i++) {
+  for(i=0; i<len; i++) {
 	EnvPoint *e = new EnvPoint();
 	if (!(in->GetNextLine().ToDouble(&e->t))) return false;
 	if (!(in->GetNextLine().ToDouble(&e->val))) return false;

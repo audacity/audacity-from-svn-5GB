@@ -132,11 +132,7 @@ bool ImportWAV(wxWindow *parent,
 							 parent,
 							 wxPD_CAN_ABORT |
 							 wxPD_REMAINING_TIME |
-							 wxPD_AUTO_HIDE
-                             #ifdef __WXMSW__
-							   | wxPD_SMOOTH
-                             #endif
-							 );
+							 wxPD_AUTO_HIDE);
 	}
 	if (progress) {
 	  int progressvalue = (framescompleted > fileTotalFrames)?

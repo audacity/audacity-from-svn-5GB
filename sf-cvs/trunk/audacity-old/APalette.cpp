@@ -62,6 +62,10 @@ void InitAPalette(wxWindow *parent)
   where.y += 20;
   #endif
 
+  #ifdef __WXMSW__
+  where.y -= 3;
+  #endif
+
   gAPalette = new APalette(parent, -1, "Audacity Palette",
 						   where);
   gAPalette->Show(TRUE);

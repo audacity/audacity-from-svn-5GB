@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include <math.h>
+
 #include <wx/textdlg.h>
 
 #include "Filter.h"

@@ -12,6 +12,7 @@
 #include <wx/dc.h>
 #include <wx/event.h>
 #include <wx/pen.h>
+#include <wx/string.h>
 #include <wx/textfile.h>
 
 #include "LabelTrack.h"
@@ -245,7 +246,7 @@ void LabelTrack::Export(wxTextFile& f)
   for(int i=0; i<mLabels.Count(); i++) {
 	f.AddLine(wxString::Format("%lf\t%d\t%s",
 							   mLabels[i]->t,
-							   int(44100*mLabels[i]->t+0.5),
+							   (int(44100*mLabels[i]->t+0.5)),
 							   (const char *)(mLabels[i]->title)));
   }
 }
@@ -272,12 +273,13 @@ bool LabelTrack::Load(wxTextFile *in, DirManager *dirManager)
   long len;
   if (!(in->GetNextLine().ToLong(&len))) return false;
 
-  for(int i=0; i<mLabels.Count(); i++)
+  int i;
+  for(i=0; i<mLabels.Count(); i++)
 	delete mLabels[i];
   mLabels.Clear();
   mLabels.Alloc(len);
 
-  for(int i=0; i<len; i++) {
+  for(i=0; i<len; i++) {
 	LabelStruct *l = new LabelStruct();
 	if (!(in->GetNextLine().ToDouble(&l->t))) return false;
 	l->title = in->GetNextLine();

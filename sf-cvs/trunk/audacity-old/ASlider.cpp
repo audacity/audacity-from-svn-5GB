@@ -61,7 +61,7 @@ void ASlider::OnPaint(wxPaintEvent& event)
   int thumbPos = mValue * (mWidth - mThumbWidth) / mMax;
   int thumbY = (mHeight - mThumbHeight) / 2;
 
-  #ifdef __WXMAC__
+  #if defined(__WXMAC__) || defined(__WXMSW__)
   dc.DrawBitmap(*mBitmap, 0, 0);
   dc.DrawBitmap(*mThumbBitmap, thumbPos, thumbY);
   #else

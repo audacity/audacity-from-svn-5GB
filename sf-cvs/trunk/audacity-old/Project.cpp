@@ -693,24 +693,105 @@ void AudacityProject::OnCloseWindow()
 
 void AudacityProject::OpenFile(wxString fileName)
 {
-  VTrack *t;
-  wxTextFile f(fileName);
-  f.Open();
-  if (!f.IsOpened()) {
-	wxMessageBox("Couldn't open "+mFileName);
-	return;
+  // Check for .MP3 suffix
+
+  if (!fileName.Right(3).CmpNoCase("mp3")) {
+    if (mDirty || mTracks->First() != NULL) {
+	    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
+	    project->ImportMP3(fileName);
+      return;
+    }
+    else {
+	    ImportMP3(fileName);
+      if (mTracks->First() != NULL) {
+        mFileName = fileName;
+        mName = wxFileNameFromPath(mFileName);
+        SetTitle(mName);
+      }
+	    return;
+    }
   }
 
-  if (f.GetFirstLine() != "AudacityProject") {
-	f.Close();
-	if (mDirty) {
-	  AudacityProject *project = CreateNewAudacityProject(gParentWindow);
-	  project->ImportFile(fileName);
-	}
-	else {
-	  ImportFile(fileName);
+  // Check for .WAV, .AIFF, .AIF, .AU, or .IRCAM suffix
+
+  if (!fileName.Right(3).CmpNoCase("wav") ||
+      !fileName.Right(4).CmpNoCase("aiff") ||
+      !fileName.Right(3).CmpNoCase("aif") ||
+      !fileName.Right(2).CmpNoCase("au") ||
+      !fileName.Right(5).CmpNoCase("ircam")) {
+    if (mDirty || mTracks->First() != NULL) {
+	    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
+	    project->ImportMP3(fileName);
+      return;
+    }
+    else {
+	    ImportFile(fileName);
+      if (mTracks->First() != NULL) {
+        mFileName = fileName;
+        mName = wxFileNameFromPath(mFileName);
+        SetTitle(mName);
+      }
+	    return;
+    }
+  }
+  
+  // If it didn't end in any of those extensions, next we check to see
+  // if it's a project file (should end in .aup, but we don't care).
+
+  // We want to open projects using wxTextFile, but if it's NOT a project
+  // file (but actually a WAV file, for example), then wxTextFile will spin
+  // for a long time searching for line breaks.  So, we look for our signature
+  // at the beginning of the file first:
+
+  bool isProjectFile;
+  wxString firstLine = "AudacityProject";
+  char temp[16];
+
+  wxFile ff(fileName);
+  if (!ff.IsOpened()) {
+    wxMessageBox("Couldn't open "+mFileName);
+    return;
+  }
+  ff.Read(temp, 15);
+  temp[15] = 0;
+  isProjectFile = (firstLine == temp);
+  ff.Close();
+
+  // If we think it's a project file, try to open it using wxTextFile
+
+  wxTextFile f;
+
+  if (isProjectFile) {
+    f.Open(fileName);
+    if (!f.IsOpened()) {
+	  wxMessageBox("Couldn't open "+mFileName);
 	  return;
-	}
+    }
+  }
+
+  // If not, try to import it as a WAV file or some other recognized format
+
+  if (!isProjectFile || f.GetFirstLine() != firstLine) {
+    f.Close();
+    if (mDirty || mTracks->First() != NULL) {
+	    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
+	    project->ImportFile(fileName);
+      return;
+    }
+    else {
+	    ImportFile(fileName);
+      if (mTracks->First() != NULL) {
+        mFileName = fileName;
+        mName = wxFileNameFromPath(mFileName);
+        SetTitle(mName);
+      }
+
+      // TODO:
+      // If we get here, we have no idea what the file format is.
+      // Later this could pop up the "Import Raw Data..." dialog.
+
+	    return;
+    }
   }
 
   mFileName = fileName;
@@ -728,7 +809,7 @@ void AudacityProject::OpenFile(wxString fileName)
   if (f.GetNextLine() != "Version") goto openFileError;
   if (f.GetNextLine() != AUDACITY_FILE_FORMAT_VERSION) {
 	wxMessageBox("This project was saved by a different version of "
-				 "Audacity and is no longer supported.");
+				       "Audacity and is no longer supported.");
 	return;
   }
 
@@ -760,6 +841,7 @@ void AudacityProject::OpenFile(wxString fileName)
   // the version saved on disk will be preserved until the
   // user selects Save().
 
+  VTrack *t;
   mLastSavedTracks = new TrackList();
   t = mTracks->First();
   while(t) {
@@ -947,9 +1029,12 @@ void AudacityProject::OnSaveAs()
 
 void AudacityProject::OnExit()
 {
-  // TODO: The proper way to exit is to destroy all frames
-
+  #ifdef __WXMSW__
+  this->Destroy();
+  QuitAudacity();
+  #else
   wxExit();
+  #endif
 }
 
 void AudacityProject::ImportFile(wxString fileName)
@@ -1237,17 +1322,20 @@ void AudacityProject::OnImportMIDI()
 void AudacityProject::OnImportMP3()
 {
   wxString fileName =
-	wxFileSelector("Select a MP3 File...",
+	wxFileSelector("Select an MP3 file...",
 				   "", // Path
 				   "", // Name
 				   ".mp3", // Extension
 				   "*.mp3", // Wildcard
 				   0, // Flags
 				   this); // Parent
-  
-  if (fileName == "")
-    return;
 
+  if (fileName != "")
+	  ImportMP3(fileName);
+}
+
+void AudacityProject::ImportMP3(wxString fileName)
+{
   WaveTrack *left = 0;
   WaveTrack *right = 0;
 
@@ -1270,7 +1358,7 @@ void AudacityProject::OnImportMP3()
     PushState();
     
     FixScrollbars();
-	mTrackPanel->Refresh(false);
+    mTrackPanel->Refresh(false);
   }
 }
 
@@ -1329,8 +1417,8 @@ void AudacityProject::OnPlotSpectrum()
 	t = mTracks->Next();
   }
   if (selcount != 1) {
-	wxMessageBox("Please select a single track first.\n");
-	return;
+	  wxMessageBox("Please select a single track first.\n");
+	  return;
   }
 
   sampleCount s0 = (sampleCount)((mViewInfo.sel0 - selt->tOffset)
@@ -1344,8 +1432,8 @@ void AudacityProject::OnPlotSpectrum()
 
   selt->Get(data_sample, s0, slen);
 
-  for(int i=0; i<slen; i++)
-	data[i] = data_sample[i] / 32767.;
+  for(sampleCount i=0; i<slen; i++)
+	  data[i] = data_sample[i] / 32767.;
 
   gFreqWindow->Plot(slen, data, selt->rate);
   gFreqWindow->Show(true);

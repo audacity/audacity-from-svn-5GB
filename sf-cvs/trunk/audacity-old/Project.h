@@ -58,6 +58,7 @@ public:
 
   void OpenFile(wxString fileName);
   void ImportFile(wxString fileName);
+  void ImportMP3(wxString fileName);
 
   // File Menu
 
