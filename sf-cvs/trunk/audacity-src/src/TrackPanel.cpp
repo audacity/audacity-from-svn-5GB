@@ -159,6 +159,7 @@ mAutoScrolling(false)
    mResizeCursor = new wxCursor(wxCURSOR_SIZENS);
    mZoomInCursor = new wxCursor(wxCURSOR_MAGNIFIER);
    mZoomOutCursor = new wxCursor(wxCURSOR_MAGNIFIER);
+   mRearrangeCursor = new wxCursor(wxCURSOR_HAND);
 
    mRateMenu = new wxMenu();
    mRateMenu->Append(OnRate8ID, "8000 Hz");
@@ -243,6 +244,7 @@ TrackPanel::~TrackPanel()
    delete mResizeCursor;
    delete mZoomInCursor;
    delete mZoomOutCursor;
+   delete mRearrangeCursor;
 
    // Note that the submenus (mRateMenu, ...)
    // are deleted by their parent
@@ -490,17 +492,29 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
    if      (mIsSelecting ) { SetCursor(*mSelectCursor); return; }
    else if (mIsSliding   ) { SetCursor(*mSlideCursor ); return; }
    else if (mIsEnveloping) { SetCursor(*mArrowCursor ); return; }
+   else if (mIsRearranging){ SetCursor(*mRearrangeCursor); return; }
 
    wxRect r;
    int num;
 
-   VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
+   VTrack *label = FindTrack(event.m_x, event.m_y, true, &r, &num);
+   VTrack *nonlabel = FindTrack(event.m_x, event.m_y, false, &r, &num);
 
-   if (t) {
+   // if the mouse is over either a label *or* non-label part
+   // of any track
+   if (label || nonlabel) {
 
-      // First test to see if we're over the area that
+      // see if we are over the label, which can be
+      // used to drag the track
+      if(label) {
+         mListener->
+            TP_DisplayStatusMessage(_("Drag this track up or down to change the"
+                     " order of the tracks."), 0);
+         
+      }
+      // next test to see if we're over the area that
       // resizes a track
-      if (event.m_y >= (r.y + r.height - 5) &&
+      else if (event.m_y >= (r.y + r.height - 5) &&
           event.m_y < (r.y + r.height + 5)) {
 	// AS: MAGIC NUMBER: What is 5?
 
