@@ -1,0 +1,48 @@
+dnl
+dnl audacity configure.in script
+dnl
+dnl Dominic Mazzoni
+dnl
+
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(AudioApp.h)
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_GCC_TRADITIONAL
+AC_LANG_SAVE
+AC_LANG_CPLUSPLUS
+AC_PROG_CXX
+
+dnl Checks for libraries.
+AC_CHECK_LIB(dl, dlopen)
+AC_CHECK_LIB(gdk, gdk_im_open)
+AC_CHECK_LIB(gtk, main)
+AC_CHECK_LIB(m, main)
+AC_CHECK_LIB(pthread, pthread_create)
+AC_CHECK_LIB(resolv, main)
+AC_CHECK_LIB(wx_gtk, main)
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(fcntl.h unistd.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_OFF_T
+AC_TYPE_SIZE_T
+
+WX_CONFIG="wx-config"
+if test "$WX_CONFIG" != "no" ; then
+  AC_MSG_CHECKING(wxWindows compiling and linking flags)
+  WX_CFLAGS=`$WX_CONFIG --cflags`
+  WX_LIBS=`$WX_CONFIG --libs`
+  CFLAGS="$CFLAGS $WX_CFLAGS"
+  LIBS="$LIBS $WX_LIBS"
+else
+  AC_MSG_ERROR("Could not find $WX_CONFIG")
+fi
+
+dnl Checks for library functions.
+
+AC_OUTPUT(Makefile)
