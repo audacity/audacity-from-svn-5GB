@@ -250,7 +250,7 @@ class TrackPanel:public wxWindow {
    void RemoveTrack(Track * toRemove);
 
    // Find track info by coordinate
-   Track *FindTrack(int mouseX, int mouseY, bool label,
+   Track *FindTrack(int mouseX, int mouseY, bool label, bool link,
                      wxRect * trackRect = NULL, int *trackNum = NULL);
 
 //   int GetTitleWidth() const { return 100; }

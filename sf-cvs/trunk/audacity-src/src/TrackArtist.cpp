@@ -352,8 +352,9 @@ int TrackArtist::GetWaveYPos(float value, int height, bool dB, float dBr)
 // ToDo:  Should this function move int GuiWaveTrack where it can
 // then use the zoomMin, zoomMax and height values without having 
 // to have them passed in to it??
-int TrackArtist::GetWaveYPosNew(float value, float min, float max,
-                                int height, bool dB, float dBr, bool clip)
+int GetWaveYPosNew(float value, float min, float max,
+		   int height, bool dB, bool outer,
+		   float dBr, bool clip)
 {
    float sign = (value >= 0 ? 1 : -1);
 
@@ -363,14 +364,17 @@ int TrackArtist::GetWaveYPosNew(float value, float min, float max,
      if(value != 0.){
       float db = 20 * log10(fabs(value));
        value = (db + dBr) / dBr;
-       if (value < 0.0){
+       if(!outer)value -= .5;
+       if (value < 0.0)
          value = float(0.0);
-       }
-       if (clip && value > 1.0)
-         value = float(1.0);
       value *= sign;
    }
-   }
+   }else
+     if(!outer) 
+       if( value >= 0.0)
+	 value -= 0.5;
+       else
+	 value += 0.5;
 
    if (clip) {
       if (value < min)
@@ -461,16 +465,16 @@ void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r,
 
    for (x = 0; x < r.width; x++) {
       maxtop[x] = GetWaveYPosNew(env[x], zoomMin, zoomMax,
-                                 r.height, dB, dBr, true);
-      maxbot[x] = GetWaveYPosNew(env[x]-0.5, zoomMin, zoomMax,
-                                 r.height, dB, dBr, true);
+                                 r.height, dB, true, dBr, true);
+      maxbot[x] = GetWaveYPosNew(env[x], zoomMin, zoomMax,
+                                 r.height, dB, false, dBr, true);
 
-      mintop[x] = GetWaveYPosNew(-env[x]+0.5, zoomMin, zoomMax,
-                                 r.height, dB, dBr, true);
+      mintop[x] = GetWaveYPosNew(-env[x]-.000000001, zoomMin, zoomMax,
+                                 r.height, dB, false, dBr, true);
       minbot[x] = GetWaveYPosNew(-env[x], zoomMin, zoomMax,
-                                 r.height, dB, dBr, true);
+                                 r.height, dB, true, dBr, true);
 
-      if (!drawEnvelope || dB || maxbot[x] > mintop[x]) {
+      if (!drawEnvelope || maxbot[x] > mintop[x]) {
          maxbot[x] = halfHeight;
          mintop[x] = halfHeight;
       }
@@ -605,7 +609,7 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
       xpos[s] = (int) xx;
 
       ypos[s] = GetWaveYPosNew(buffer[s] * track->GetEnvelope()->GetValue(tt),
-                               zoomMin, zoomMax, r.height, dB, dBr, false);
+                               zoomMin, zoomMax, r.height, dB, true, dBr, false);
       if (ypos[s] < -1)
          ypos[s] = -1;
       if (ypos[s] > r.height)
@@ -657,13 +661,13 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
 
    for (x = 0; x < r.width; x++) {
       h1[x] = GetWaveYPosNew(min[x] * envValues[x], zoomMin, zoomMax,
-                             r.height, dB, dBr, true);
+                             r.height, dB, true, dBr, true);
       h2[x] = GetWaveYPosNew(max[x] * envValues[x], zoomMin, zoomMax,
-                             r.height, dB, dBr, true);
+                             r.height, dB, true, dBr, true);
       r1[x] = GetWaveYPosNew(-rms[x] * envValues[x], zoomMin, zoomMax,
-                             r.height, dB, dBr, true);
+                             r.height, dB, true, dBr, true);
       r2[x] = GetWaveYPosNew(rms[x] * envValues[x], zoomMin, zoomMax,
-                             r.height, dB, dBr, true);
+                             r.height, dB, true, dBr, true);
 
       // JKC: This adjustment to h1[] and h2[] ensures that the drawn
       // waveform is continuous.
@@ -744,11 +748,11 @@ void TrackArtist::DrawEnvLine(wxDC &dc, wxRect r, int x, int y, bool top)
    if (y < 0) {
       if (x % 4 != 3)
          dc.DrawLine(r.x + x, r.y,
-                     r.x + x, r.y + 2);
+                     r.x + x, r.y + 3);
    }
    else if (y >= r.height) {
       if (x % 4 != 3)
-         dc.DrawLine(r.x + x, r.y + r.height - 2,
+         dc.DrawLine(r.x + x, r.y + r.height - 3,
                      r.x + x, r.y + r.height);
    }
    else {
@@ -961,10 +965,10 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
 	 float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
 
          envTop = GetWaveYPosNew(envValues[x], zoomMin, zoomMax,
-                                 mid.height, dB, dBr, false);
+                                 mid.height, dB, true, dBr, false);
 
-         envBottom = GetWaveYPosNew(-envValues[x]-.000000001, zoomMin, zoomMax,
-                                    mid.height, dB, dBr, false);
+         envBottom = GetWaveYPosNew(-envValues[x], zoomMin, zoomMax,
+                                    mid.height, dB, true, dBr, false);
 
 	 /* make the collision at zero actually look solid */
 	 if(envBottom-envTop < 3){
@@ -1708,6 +1712,7 @@ void TrackArtist::DrawTimeTrack(TimeTrack *track,
    track->Draw(dc, r, viewInfo->h, viewInfo->zoom);
    wxRect envRect = r;
    envRect.height -= 2;
-   track->GetEnvelope()->Draw(dc, envRect, viewInfo->h, viewInfo->zoom, false);
+   track->GetEnvelope()->Draw(dc, envRect, viewInfo->h, viewInfo->zoom, 
+			      false,0.0,1.0);
 }
 

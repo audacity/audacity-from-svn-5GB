@@ -1424,8 +1424,8 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
    //     clear the StatusBar, 
    wxRect r;
    int num;
-   Track *label = FindTrack(event.m_x, event.m_y, true, &r, &num);
-   Track *nonlabel = FindTrack(event.m_x, event.m_y, false, &r, &num);
+   Track *label = FindTrack(event.m_x, event.m_y, true, true, &r, &num);
+   Track *nonlabel = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
    Track *t = label ? label : nonlabel;
 
    if (!t) {
@@ -1556,7 +1556,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       wxRect r;
       int num;
 
-      Track *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
+      Track *t = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
 
       // AS: Now, did they click in a track somewhere?  If so, we want
       //  to extend the current selection or start a new selection, 
@@ -1696,7 +1696,7 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
 
       // AS: Note that FindTrack will replace r and num's values.
       if (!pTrack)
-         pTrack = FindTrack(event.m_x, event.m_y, false, &r, &num);
+         pTrack = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
 
       if (pTrack) {             // Selecting
          int x = mAutoScrolling ? mMouseMostRecentX : event.m_x;
@@ -1718,7 +1718,7 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
 
          // Handle which tracks are selected
          int num2;
-         if (0 != FindTrack(x, y, false, NULL, &num2)) {
+         if (0 != FindTrack(x, y, false, false, NULL, &num2)) {
             // The tracks numbered num...num2 should be selected
 
             TrackListIterator iter(mTracks);
@@ -1789,7 +1789,7 @@ void TrackPanel::HandleEnvelope(wxMouseEvent & event)
    if (event.ButtonDown(1)) {
       wxRect r;
       int num;
-      mCapturedTrack = FindTrack(event.m_x, event.m_y, false, &r, &num);
+      mCapturedTrack = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
 
       if (!mCapturedTrack)
          return;
@@ -1832,7 +1832,7 @@ void TrackPanel::ForwardEventToEnvelope(wxMouseEvent & event)
       bool needUpdate =
          pspeedenvelope->MouseEvent(event, envRect,
                                     mViewInfo->h, mViewInfo->zoom,
-                                    false);
+                                    false,0.,1.);
       if( needUpdate )
       {
          //ptimetrack->Draw();
@@ -1931,7 +1931,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event, double &totalOffset,
    wxRect r;
    int num;
 
-   Track *vt = FindTrack(event.m_x, event.m_y, false, &r, &num);
+   Track *vt = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
 
    if (vt) {
       // AS: This name is used when we put a message in the undo list via
@@ -2007,7 +2007,7 @@ void TrackPanel::HandleVZoom(wxMouseEvent & event)
       if (mCapturedTrack)
          return;
 
-      mCapturedTrack = FindTrack(event.m_x, event.m_y, true,
+      mCapturedTrack = FindTrack(event.m_x, event.m_y, true, false,
                                  &mCapturedRect, &mCapturedNum);
 
       if (!mCapturedTrack)
@@ -2038,14 +2038,6 @@ void TrackPanel::HandleVZoom(wxMouseEvent & event)
       WaveTrack *partner = (WaveTrack *)mTracks->GetLink(track);
       int height = track->GetHeight();
       int ypos = mCapturedRect.y;
-      if (partner) {
-         int h1 = track->GetHeight();
-         int h2 = track->GetHeight();
-         if (mZoomStart > h1) {
-            ypos += h1;
-            height = h2;
-         }
-      }
 
       if (mZoomEnd < mZoomStart) {
          int temp = mZoomEnd;
@@ -2244,7 +2236,7 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
       int dummy;
       
       //Get the track the mouse is over, and save it away for future events
-      mDrawingTrack = FindTrack(event.m_x, event.m_y, false, &r, &dummy);
+      mDrawingTrack = FindTrack(event.m_x, event.m_y, false, false, &r, &dummy);
       mDrawingTrackTop=r.y;
 
       //If the mouse isn't over a track, exit the function and don't do anything
@@ -2770,7 +2762,7 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
 #endif
    }
 
-   Track *t2 = FindTrack(event.m_x, event.m_y, true, &r, &num);
+   Track *t2 = FindTrack(event.m_x, event.m_y, true, true, &r, &num);
    if (t2 == t) {
       wxClientDC dc(this);
       mTrackLabel.DrawTitleBar(&dc, r, t, false);
@@ -2789,7 +2781,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    wxRect r;
    int num;
 
-   Track *t = FindTrack(event.m_x, event.m_y, true, &r, &num);
+   Track *t = FindTrack(event.m_x, event.m_y, true, true, &r, &num);
 
    // AS: If the user clicked outside all tracks, make nothing
    //  selected.
@@ -3013,8 +3005,8 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
       int num;
 
       // DM: Figure out what track is about to be resized
-      Track *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
-      Track *label = FindTrack(event.m_x, event.m_y, true, &rLabel, &num);
+      Track *t = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
+      Track *label = FindTrack(event.m_x, event.m_y, true, true, &rLabel, &num);
 
       // If the click is at the bottom of a non-linked track label, we
       // treat it as a normal resize.  If the label is of a linked track,
@@ -3316,8 +3308,8 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
    wxRect rLabel;
    int dummy;
 
-   FindTrack(event.m_x, event.m_y, false, &r, &dummy);
-   FindTrack(event.m_x, event.m_y, true, &rLabel, &dummy);
+   FindTrack(event.m_x, event.m_y, false, false, &r, &dummy);
+   FindTrack(event.m_x, event.m_y, true, true, &rLabel, &dummy);
 
    //call HandleResize if I'm over the border area 
    if (event.ButtonDown(1) &&
@@ -3401,7 +3393,7 @@ int TrackPanel::DetermineToolToUse( ControlToolBar * pCtb, wxMouseEvent & event)
    wxRect r;
    int num;
 
-   Track *pTrack = FindTrack(event.m_x, event.m_y, false, &r, &num);
+   Track *pTrack = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
    if( !pTrack )
       return currentTool;
 
@@ -3455,14 +3447,14 @@ bool TrackPanel::HitTestEnvelope(Track *track, wxRect &r, wxMouseEvent & event)
 
    // Get y position of envelope point.
    float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
-   int yValue = mTrackArtist->GetWaveYPosNew( envValue,
+   int yValue = GetWaveYPosNew( envValue,
       zoomMin, zoomMax,      
-      r.height, dB, dBr, false ) + r.y;
+      r.height, dB, true, dBr, false ) + r.y;
 
    // Get y position of center line
-   int ctr = mTrackArtist->GetWaveYPosNew( 0.0,
+   int ctr = GetWaveYPosNew( 0.0,
       zoomMin, zoomMax,      
-      r.height, dB, dBr, false ) + r.y;
+      r.height, dB, true, dBr, false ) + r.y;
   
    // Get y distance of mouse from center line (in pixels).
    int yMouse = abs(ctr - event.m_y);
@@ -3525,10 +3517,10 @@ bool TrackPanel::HitTestSamples(Track *track, wxRect &r, wxMouseEvent & event)
 
    wavetrack->GetDisplayBounds(&zoomMin, &zoomMax);
    float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
-   int yValue = mTrackArtist->GetWaveYPosNew( oneSample *
+   int yValue = GetWaveYPosNew( oneSample *
       wavetrack->GetEnvelope()->GetValue(tt), 
       zoomMin, zoomMax,      
-      r.height, dB, dBr, false) + r.y;   
+      r.height, dB, true, dBr, false) + r.y;   
 
    // Get y position of mouse (in pixels)
    int yMouse = event.m_y;
@@ -4318,7 +4310,7 @@ void TrackPanel::OnSetName(wxEvent &event)
 ///  @param label  - true iff the X Y position is relative to side-panel with the labels in it.
 ///  @param *trackRect - returns track rectangle.
 ///  @param *trackNum  - returns track number.
-Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
+Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label, bool link,
                               wxRect * trackRect, int *trackNum)
 {
    wxRect r;
@@ -4343,7 +4335,7 @@ Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
         r.y += t->GetHeight(), n++, t = iter.Next()) {
       r.height = t->GetHeight();
 
-      if (label && t->GetLinked()) {
+      if (link && t->GetLinked()) {
          Track *link = mTracks->GetLink(t);
          r.height += link->GetHeight();
       }

@@ -52,9 +52,6 @@ class TrackArtist {
    void DrawVRuler(Track * t, wxDC * dc, wxRect & r);
    int GetWaveYPos(float value, int height, bool dB, float dBr);
    int GetWaveYPosUnclipped(float value, int height, bool dB, float dBr);
-   int GetWaveYPosNew(float value, float min, float max,
-                      int height, bool dB, float dBr, bool clip);
-
 
    void SetInset(int left, int top, int right, int bottom);
 
@@ -131,5 +128,11 @@ class TrackArtist {
    void DrawEnvLine(wxDC &dc, wxRect r, int x, int y, bool top);
 
 };
+
+extern int GetWaveYPosNew(float value, float min, float max,
+			  int height, bool dB, bool outer, float dBr, 
+			  bool clip);
+
+
 
 #endif                          // define __AUDACITY_TRACKARTIST__
