@@ -41,6 +41,19 @@ AC_SUBST(EXTRAOBJS)
 AC_SUBST(OPTOBJS)
 AC_SUBST(CDEPEND)
 AC_SUBST(AFTERBUILD)
+AC_SUBST(INSTALL_PREFIX)
+
+dnl
+dnl Make the install prefix available to the program so that it
+dnl knows where to look for help files, plug-ins, etc.
+dnl
+
+AC_PREFIX_DEFAULT(/usr/local)
+if [[ $prefix = "NONE" ]] ; then
+	AC_DEFINE(INSTALL_PREFIX, "/usr/local")
+else
+	AC_DEFINE(INSTALL_PREFIX, "$prefix")
+fi
 
 dnl
 dnl Required sublibraries
