@@ -24,6 +24,7 @@
 <li>
 Пишете на адрес: <a href="mailto:audacity-help@lists.sourceforge.net">audacity-help@lists.sourceforge.net</a><br>
 или прегледайте: <a target=_top href="http://sourceforge.net/mailarchive/forum.php?forum_id=828">архива на Audacity-Help</a><br>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font>
 Ако имате технически проблем с Audacity и той е прекалено специфичен, за да се занимават останалите потребители с него,
 пишете на този адрес. Писмото ви ще бъде прегледано от екипа на Audacity. Ако по друга причина искате да се свържете
 пряко с разработчиците на Audacity, използвайте същия адрес.
