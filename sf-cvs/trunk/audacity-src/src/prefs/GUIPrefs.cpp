@@ -20,10 +20,9 @@
 GUIPrefs::GUIPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
-   bool autoscroll, spectrogram, pitch;
+   bool autoscroll, spectrogram;
    gPrefs->Read("/GUI/AutoScroll", &autoscroll, false);
-   gPrefs->Read("/GUI/SpectroGram", &spectrogram, true);
-   gPrefs->Read("/GUI/Pitch", &pitch, true);
+   gPrefs->Read("/GUI/UpdateSpectrogram", &spectrogram, true);
 
    topSizer = new wxStaticBoxSizer(
       new wxStaticBox(this, -1, _("Interface")), wxVERTICAL );
@@ -36,10 +35,6 @@ PrefsPanel(parent)
    mSpectrogram->SetValue(spectrogram);
    topSizer->Add(mSpectrogram, 0, wxGROW|wxALL, 2);
 
-   mPitch = new wxCheckBox(this, -1, _("Update pitch while playing (LEAVE CHECKED FOR NOW)"));
-   mPitch->SetValue(pitch);
-   topSizer->Add(mPitch, 0, wxGROW|wxALL, 2);
-
    SetAutoLayout(true);
    SetSizer(topSizer);
 
@@ -50,11 +45,10 @@ PrefsPanel(parent)
 
 bool GUIPrefs::Apply()
 {
-   bool autoscroll = mAutoscroll->GetValue(), spectrogram = mSpectrogram->GetValue(), pitch = mPitch->GetValue();
+   bool autoscroll = mAutoscroll->GetValue(), spectrogram = mSpectrogram->GetValue();
 
    gPrefs->Write("/GUI/AutoScroll", autoscroll);
-   gPrefs->Write("/GUI/SpectroGram", spectrogram);
-   gPrefs->Write("/GUI/Pitch", pitch);
+   gPrefs->Write("/GUI/UpdateSpectrogram", spectrogram);
 
    return true;
 }
