@@ -40,7 +40,8 @@ void      DeleteSamples(samplePtr p);
 
 void      CopySamples(samplePtr src, sampleFormat srcFormat,
                       samplePtr dst, sampleFormat dstFormat,
-                      unsigned int len, bool highQuality=true);
+                      unsigned int len, bool highQuality=true,
+                      unsigned int stride=1);
 
 void      ClearSamples(samplePtr buffer, sampleFormat format,
                        int start, int len);
