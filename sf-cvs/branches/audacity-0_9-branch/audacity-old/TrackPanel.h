@@ -34,8 +34,8 @@ class AudacityTimer:public wxTimer {
 class TrackPanelListener {
  public:
    virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum) = 0;
-   virtual int TP_GetCurrentTool() = 0;
-   virtual void TP_OnPlayKey() = 0;
+   virtual int  TP_GetCurrentTool() = 0;
+   virtual bool TP_OnKey(long key, bool shift, bool ctrl) = 0;
    virtual void TP_PushState() = 0;
    virtual void TP_RedrawScrollbars() = 0;
    virtual void TP_ScrollLeft() = 0;
@@ -83,6 +83,8 @@ class TrackPanel:public wxWindow {
 
    void MakeParentRedrawScrollbars();
    void MakeParentPushState();
+
+   void SetToolCursor(bool shiftDown);
 
    void OnSetName();
 

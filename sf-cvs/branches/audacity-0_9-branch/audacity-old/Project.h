@@ -110,7 +110,7 @@ class AudacityProject:public wxFrame,
 
    virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum);
    virtual int TP_GetCurrentTool();
-   virtual void TP_OnPlayKey();
+   virtual bool TP_OnKey(long key, bool shift, bool ctrl);
    virtual void TP_PushState();
    virtual void TP_RedrawScrollbars();
    virtual void TP_ScrollLeft();

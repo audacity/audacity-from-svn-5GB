@@ -28,6 +28,7 @@ class DirManager;
 
 struct LabelStruct {
    double t;
+   double t1;
    wxString title;
    int width;
 };
@@ -52,6 +53,8 @@ class LabelTrack:public VTrack {
       return Label;
    } virtual double GetMaxLen();
 
+   bool IsLabelSelected();
+
    virtual VTrack *Duplicate();
 
    virtual bool Load(wxTextFile * in, DirManager * dirManager);
@@ -65,9 +68,12 @@ class LabelTrack:public VTrack {
    virtual void Silence(double t0, double t1);
    virtual void InsertSilence(double t, double len);
 
-   void MouseDown(int x, int y, wxRect & r, double h, double pps);
+   void MouseDown(int x, int y, wxRect & r, double h, double pps,
+                  double *newSel0, double *newSel1);
 
    void KeyEvent(double sel0, double sel1, wxKeyEvent & event);
+
+   void AddLabel(double sel0, double sel1);
 
    void Import(wxTextFile & f);
    void Export(wxTextFile & f);

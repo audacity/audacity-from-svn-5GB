@@ -237,14 +237,10 @@ APalette::~APalette()
 #endif
 }
 
-void APalette::OnKeyEvent(wxKeyEvent & event)
+bool APalette::OnKey(long key, bool shift)
 {
-   if (event.ControlDown() || event.AltDown()) {
-      event.Skip();
-      return;
-   }
-
-   if (event.KeyCode() == WXK_SPACE) {
+   switch (key) {
+   case WXK_SPACE:
       if (gAudioIO->IsBusy()) {
          OnStop();
          SetPlay(false);
@@ -254,14 +250,84 @@ void APalette::OnKeyEvent(wxKeyEvent & event)
          SetStop(false);
          OnPlay();
       }
+      return true;
+      
+   case 's':
+   case 'S':
+      SetCurrentTool(0);  // Selection
+      return true;
+
+   case 'e':
+   case 'E':
+      SetCurrentTool(1);  // Envelope
+      return true;
+
+   case 't':
+   case 'T':
+      SetCurrentTool(2);  // Time Shift
+      return true;
+
+   case 'z':
+   case 'Z':
+      SetCurrentTool(3);  // Zoom
+      return true;
+
+   case 'r':
+   case 'R':
+      if (!gAudioIO->IsBusy()) {
+         SetRecord(false);
+         SetPlay(false);
+         SetStop(false);
+         OnRecord();
+      } else {
+         SetPlay(true);
+         SetStop(false);
+         OnPlay();
+      }
+      return true;
+
+   case WXK_TAB:
+      if (shift)
+         SetCurrentTool((GetCurrentTool()+3)%4);
+      else
+         SetCurrentTool((GetCurrentTool()+1)%4);
+      return true;
+   }
+
+   return false;
+}
+
+void APalette::OnKeyEvent(wxKeyEvent & event)
+{
+   if (event.ControlDown() || event.AltDown()) {
+      event.Skip();
       return;
    }
-   event.Skip();
+
+   if (!OnKey(event.KeyCode(), event.ShiftDown())) {
+      event.Skip();
+      return;
+   }
 }
 
 int APalette::GetCurrentTool()
 {
    return mCurrentTool;
+}
+
+void APalette::SetCurrentTool(int tool)
+{
+   int prev = mCurrentTool;
+   mCurrentTool = tool;
+
+   for (int i = 0; i < 4; i++)
+      if (i == mCurrentTool)
+         mTool[i]->PushDown();
+      else
+         mTool[i]->PopUp();
+
+   if (mCurrentTool == 1 || prev == 1)
+      RedrawAllProjects();
 }
 
 void APalette::SetPlay(bool down)
@@ -354,18 +420,7 @@ float APalette::GetSoundVol()
 
 void APalette::OnTool(wxCommandEvent & evt)
 {
-   int prev = mCurrentTool;
-
-   mCurrentTool = evt.GetId() - ID_FIRST_TOOL;
-
-   for (int i = 0; i < 4; i++)
-      if (i == mCurrentTool)
-         mTool[i]->PushDown();
-      else
-         mTool[i]->PopUp();
-
-   if (mCurrentTool == 1 || prev == 1)
-      RedrawAllProjects();
+   SetCurrentTool(evt.GetId() - ID_FIRST_TOOL);
 }
 
 void APalette::OnPaint(wxPaintEvent & evt)
