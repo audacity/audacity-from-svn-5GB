@@ -152,7 +152,7 @@ VTrack *WaveTrack::Duplicate()
 void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
                           sampleType * outMin, sampleType * outMax)
 {
-   if (block->Count() == 0) {
+   if (len == 0 || block->Count() == 0) {
       *outMin = 0;
       *outMax = 0;
       return;
@@ -260,7 +260,7 @@ void WaveTrack::Copy(double t0, double t1, VTrack ** dest)
    sampleCount s0 = (sampleCount) ((t0 - tOffset) * rate + 0.5);
    sampleCount s1 = (sampleCount) ((t1 - tOffset) * rate + 0.5);
 
-   if (s0 < 0)
+   if (t0 < tOffset)
       s0 = 0;
    if (s1 >= numSamples)
       s1 = numSamples;

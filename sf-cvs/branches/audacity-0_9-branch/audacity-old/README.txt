@@ -18,6 +18,7 @@ Authors:
   Joshua Haberman <joshua@haberman.com>
   Nasca Octavian Paul <paulnasca@email.ro> or <paulnasca@yahoo.com>
   Logan Lewis <proxima@proxc.com>
+  Matt Brubeck <mbrubeck@hmc.edu>
 
 Icons and logo:
 
@@ -100,9 +101,6 @@ Known issues/problems:
   does not seem to work, even if your sound card supports it.
   This is likely a problem with the way we are using OSS.
 
-* Linux: Some users report choppy audio.  This is likely a
-  problem with the way we are using OSS.
-
 * Linux: Sound cards that only deal with more than two
   channels are not yet supported.
 
@@ -117,6 +115,30 @@ Changes in 0.98:
 
   - Better handling of case when temp directory is invalid at
     start of program
+
+  - Doesn't overwrite a file the project was depending on anymore
+    (it renames the old file).  You can now export to a file
+	 with the same as the file you imported without any problems.
+
+  - Save As.. for a project doesn't destroy the old project anymore.
+
+  - Duplicate of a track with an offset now works
+
+  - Fixed another crash in Amplify... (if no data is selected in
+    one of the tracks)
+
+  - Windows: recording/playback devices are no longer reversed
+    in the preferences!
+
+  - Bug fixes to make install
+
+* Unix:
+
+  - New OSS code, should provide better playback and record on
+    almost all OSS Unix systems.
+
+  - Preliminary support for the KDE/aRts soundserver (a compile-time
+    option; must be configured to use this in place of OSS code)
 
 Changes in 0.97:
 
