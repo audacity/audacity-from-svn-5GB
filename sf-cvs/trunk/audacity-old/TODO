@@ -12,6 +12,14 @@ META::
 -----------------------------------------------------------
 
 UI::
+- Make Alt-F select the File menu on Windows
+- Make "Exit program upon closing last window" an option
+  in the Preferences.  (The alternative would be to create
+  a new empty project when you close the last window.)
+- When the user exports, for example, a WAV file, but
+  they don't type the WAV extension, it should add it
+  for them.  (If they type a DIFFERENT extension, it
+  should leave it alone.)
 - better ruler, both for time (horizontally) and magnitude/pitch (vertical)
 - add "trim" (= opposite of delete -- delete all but selection)
 - invert selection (for now, until we allow discontiguous selections,
