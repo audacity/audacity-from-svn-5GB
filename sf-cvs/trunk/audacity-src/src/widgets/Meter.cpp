@@ -11,6 +11,8 @@
   This is a bunch of common code that can display many different
   forms of VU meters and other displays.
 
+  2004.06.25 refresh rate limited to 30mS, by ChackoN
+
 **********************************************************************/
 
 #include "../Audacity.h"
@@ -610,6 +612,14 @@ void Meter::RepaintBarsNow()
 
    wxClientDC dc(this);
    int i;
+
+   // to limit repaint at <=30 mS intervals, by ChackoN
+   static wxLongLong lastTime = ::wxGetLocalTimeMillis();
+   wxLongLong now = ::wxGetLocalTimeMillis();
+   long delta = (now - lastTime).ToLong();
+   if (delta < 30)
+       return;
+   lastTime = now;
 
   #ifdef __WXMAC__
    // Mac OS X automatically double-buffers the screen for you,
