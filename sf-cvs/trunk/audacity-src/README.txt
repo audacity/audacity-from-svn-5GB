@@ -185,10 +185,6 @@ New features in Audacity 1.1.3:
       autodetection algorithms are much more accurate than
       in 1.0.
 
-  * Editing
-    - Snap-to mode, plus selection display formats for
-      common domains such as CD audio, NTSC frames, etc.
-
   * Audio I/O
     - Completely rewritten audio I/O, with lower latency
       and minimal chance of buffer underruns while
