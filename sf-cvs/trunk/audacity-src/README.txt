@@ -186,6 +186,16 @@ New features in Audacity 1.1.3:
       and minimal chance of buffer underruns while
       recording.
 
+  * Resampling
+    - Using high quality resampling algorithms, with the
+      option of better quality for mixing than for real-time
+      playback
+
+    - Preliminary support for Time Tracks, for changing
+      playback speed over time.
+
+  * Many bug fixes and other features, too
+
 New features in Audacity 1.1.2:
   * User Interface
     - Fixed bug in Windows version, for track menu commands 
