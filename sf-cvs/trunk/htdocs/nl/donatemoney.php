@@ -3,24 +3,22 @@
 <p>
 Audacity is door vrijwillers in hun vrije tijd geschreven. Het is geen
 shareware en niemand die eraan werkt verwacht hieruit geld te verdienen.
-Echter door een vrijwillige geldelijke bijdrage kun je ons helpen de bandbreedte, de webhosting, de ontwikkeltools en audio hardware te betalen
-- Zaken die nodig zijn om te bewerkstelligen dat Audacity gratis blijft en ons in staat stelt het te verbeteren.  Scroll naar de onderkant van dit document om een vrijwillige bijdrage via je credit card te doneren.  Je kunt zelfs een donatie doen van tenminste 1 dollar.
+Echter door een vrijwillige geldelijke bijdrage kun je ons helpen de bandbreedte, webhosting, de ontwikkeltools en audio hardware te betalen - Zaken die nodig zijn om Audacity gratis te houden en het te verbeteren.  Scroll naar de onderkant van dit document om een vrijwillige bijdrage via je credit card te doneren.  Je kunt zelfs een donatie doen van tenminste 1 dollar.
 </p>
 
 <p>
-Door jouw donatie help je ons de kosten te dekken van het gebruik van de bandbreedte, de ontwikkeltools en de nieuwe audio hardware, welke benodigd zijn.
-Merk op dat we op dit moment in de gelukkige positie verkeren dat bijna al onze hosting gratis wordt verstrekt, maar dit zou in de toekomst kunnen veranderen.  Jouw donatie van vandaag helpt ons deze website ook morgen in de lucht te houden.
+Door jouw donatie help je ons de kosten te dekken van het gebruik van de bandbreedte, de ontwikkeltools en de nieuwe audio hardware, welke benodigd zijn. Merk op dat we op dit moment in de gelukkige positie verkeren dat bijna al onze hosting gratis wordt verstrekt, maar dit zou in de toekomst kunnen veranderen.  Jouw donatie van vandaag helpt ons deze website ook morgen in de lucht te houden.
 <p>
-De Audacity ontwikkelaars zouden graag wat high-end audio hardware willen aanschaffen, zodat we kunnen beginnen met het door ontwikkelen van Audacity tot een compleet multitrack bewerkingsprogramma.  Jouw donatie maakt het ons mogelijk om eerder met het ontwikkelen van deze mogelijkheden te kunnen beginnen.
+De Audacity ontwikkelaars zouden graag wat high-end audio hardware willen aanschaffen, zodat we kunnen beginnen met het doorontwikkelen van Audacity tot een compleet multitrack bewerkingsprogramma.  Jouw donatie maakt het ons mogelijk om eerder met het ontwikkelen van deze mogelijkheden te kunnen beginnen.
 <p>
 Begrijp a.u.b. wel dat we je geen enkele soort garantie of belofte kunnen geven als je een donatie verricht.
 <p>
 Momenteel accepteren we geld via het Amazon Honor System.  Gebruik je credit
 card en doneer een bedrag van minimaal 1 dollar tot maximaal $50.
 <p>
-Als je meer dan $50 wilt doneren, of als je een persoonslijke cheque of overmaking wilt doen, bezoek dan a.u.b. de
+Als je meer dan $50 wilt doneren, of als je een persoonlijke cheque of overboeking wilt maken, bezoek dan a.u.b. de
 <?php print "<a href=credits.php?$langLinkStr>";
-?>Credits</a> pagina en stuur een afzonderlijke e-mail naar één of meerdere van onze ontwikkelaars.
+?>Credits</a> pagina en stuur een e-mail naar één of meerdere individuele ontwikkelaars.
 <p>
 
 <center>
@@ -34,5 +32,15 @@ Als je meer dan $50 wilt doneren, of als je een persoonslijke cheque of overmaki
 </center>
 
 <p>
+We accepteren ook PayPal betalingen via het SourceForge donatie systeem:
+
+<center>
+<a href="http://sourceforge.net/donate/index.php?group_id=6235"><img
+src="images/paypal.gif" border="0" alt="Doneer via PayPal"></a>
+</center>
+
+<p>
+
+<?php BoxBottom(); ?>
 
 <?php BoxBottom(); ?>
