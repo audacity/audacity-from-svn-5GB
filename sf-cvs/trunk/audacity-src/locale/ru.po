@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacity Latest CVS version\n"
-"POT-Creation-Date: 2002-05-01 16:15-0700\n"
+"POT-Creation-Date: 2002-05-01 16:42-0700\n"
 "PO-Revision-Date: 2002-04-24 17:36+0400\n"
 "Last-Translator: Alexandre Prokoudine <techwriter@tamb.ru>\n"
 "Language-Team:  <ru@li.org>\n"
@@ -47,17 +47,16 @@ msgstr ""
 msgid "&Delete\tCtrl+K"
 msgstr ""
 
-#: ../src/Menus.cpp:86 ../src/Menus.cpp:111 ../src/bak/Menus.cpp:149
+#: ../src/Menus.cpp:86 ../src/Menus.cpp:111
 msgid "&Edit"
 msgstr "Правка"
 
-#: ../src/bak/FileFormatPrefs.cpp:344 ../src/commands.h:140
-#: ../src/prefs/FileFormatPrefs.cpp:344
+#: ../src/commands.h:140 ../src/prefs/FileFormatPrefs.cpp:344
 #, c-format
 msgid "&Export as %s..."
 msgstr "Экспортировать как %s..."
 
-#: ../src/Menus.cpp:85 ../src/Menus.cpp:110 ../src/bak/Menus.cpp:148
+#: ../src/Menus.cpp:85 ../src/Menus.cpp:110
 msgid "&File"
 msgstr "&Файл"
 
@@ -65,7 +64,7 @@ msgstr "&Файл"
 msgid "&Fit in Window\tCtrl+F"
 msgstr ""
 
-#: ../src/Menus.cpp:91 ../src/Menus.cpp:116 ../src/bak/Menus.cpp:154
+#: ../src/Menus.cpp:91 ../src/Menus.cpp:116
 msgid "&Help"
 msgstr "Помощь"
 
@@ -90,7 +89,7 @@ msgstr ""
 msgid "&Preferences...\tCtrl+P"
 msgstr ""
 
-#: ../src/Menus.cpp:88 ../src/Menus.cpp:113 ../src/bak/Menus.cpp:151
+#: ../src/Menus.cpp:88 ../src/Menus.cpp:113
 msgid "&Project"
 msgstr "Проект"
 
@@ -121,11 +120,11 @@ msgstr ""
 msgid "&Trim\tCtrl+T"
 msgstr ""
 
-#: ../src/Menus.cpp:87 ../src/Menus.cpp:112 ../src/bak/Menus.cpp:150
+#: ../src/Menus.cpp:87 ../src/Menus.cpp:112
 msgid "&View"
 msgstr "Вид"
 
-#: ../src/bak/FileFormatPrefs.cpp:409 ../src/prefs/FileFormatPrefs.cpp:409
+#: ../src/prefs/FileFormatPrefs.cpp:409
 msgid ""
 "(Not all combinations of headers, data sizes,\n"
 "and encodings are possible.)"
@@ -133,7 +132,7 @@ msgstr ""
 "(Возможны не все комбинации заголовков, \n"
 "объёма даных и кодировок)"
 
-#: ../src/bak/FileFormatPrefs.cpp:269 ../src/prefs/FileFormatPrefs.cpp:269
+#: ../src/prefs/FileFormatPrefs.cpp:269
 #, c-format
 msgid ", %d-bit data"
 msgstr ", %d-битные данные"
@@ -187,7 +186,7 @@ msgstr "О программе..."
 msgid "Action"
 msgstr "Дей"
 
-#: ../src/KeyConfigPrefs.cpp:95 ../src/prefs/KeyConfigPrefs.cpp:95
+#: ../src/prefs/KeyConfigPrefs.cpp:96
 msgid "Add"
 msgstr ""
 
@@ -215,19 +214,19 @@ msgstr ""
 msgid "Align with Zero"
 msgstr ""
 
-#: ../src/Menus.cpp:1315 ../src/bak/Menus.cpp:1303
+#: ../src/Menus.cpp:1315
 msgid "Aligned tracks"
 msgstr ""
 
-#: ../src/Menus.cpp:1279 ../src/bak/Menus.cpp:1267
+#: ../src/Menus.cpp:1279
 msgid "Aligned with zero"
 msgstr ""
 
-#: ../src/Menus.cpp:1205 ../src/bak/Menus.cpp:1193
+#: ../src/Menus.cpp:1205
 msgid "All files (*.*)|*.*"
 msgstr "Все файлы (*.*)|*.*"
 
-#: ../src/Menus.cpp:418 ../src/bak/Menus.cpp:406
+#: ../src/Menus.cpp:418
 msgid ""
 "All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|"
 "AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|IRCAM files (*.snd)|*.snd|MP3 "
@@ -237,13 +236,13 @@ msgstr ""
 "AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|IRCAM files (*.snd)|*.snd|MP3 "
 "files (*.mp3)|*.mp3"
 
-#: ../src/Menus.cpp:1169 ../src/bak/Menus.cpp:1157
+#: ../src/Menus.cpp:1169
 msgid ""
 "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
 msgstr ""
 "Все файлы (*.*)|*.*|Файлы MIDI (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
 
-#: ../src/Menus.cpp:1102 ../src/bak/Menus.cpp:1090
+#: ../src/Menus.cpp:1102
 msgid ""
 "All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU "
 "files (*.au)|*.au|IRCAM files (*.snd)|*.snd|MP3 files (*.mp3)|*.mp3|Ogg "
@@ -412,8 +411,7 @@ msgstr "Автор: "
 msgid "Autoscroll while playing"
 msgstr "Автопрокручивание при воспроизведении"
 
-#: ../src/Menus.cpp:843 ../src/Menus.cpp:847 ../src/bak/Menus.cpp:831
-#: ../src/bak/Menus.cpp:835
+#: ../src/Menus.cpp:843 ../src/Menus.cpp:847
 msgid "Bad number of seconds."
 msgstr "Ошибочное количество секунд"
 
@@ -438,7 +436,7 @@ msgstr "Усиление баса..."
 msgid "Benchmark"
 msgstr "Бенчмарк"
 
-#: ../src/bak/FileFormatPrefs.cpp:196 ../src/prefs/FileFormatPrefs.cpp:196
+#: ../src/prefs/FileFormatPrefs.cpp:196
 msgid "Bit Rate:"
 msgstr "Битрейт: "
 
@@ -454,12 +452,12 @@ msgstr "У"
 msgid "Boosting Bass Frequencies"
 msgstr "Частоты усиления баса"
 
-#: ../src/Tags.cpp:598 ../src/bak/FileFormatPrefs.cpp:486
-#: ../src/effects/Amplify.cpp:395 ../src/effects/BassBoost.cpp:352
-#: ../src/effects/Filter.cpp:439 ../src/effects/Phaser.cpp:575
-#: ../src/effects/VST/VSTEffect.cpp:310 ../src/effects/Wahwah.cpp:560
-#: ../src/effects/ladspa/LadspaEffect.cpp:417 ../src/import/ImportRaw.cpp:891
-#: ../src/prefs/FileFormatPrefs.cpp:486 ../src/prefs/PrefsDialog.cpp:95
+#: ../src/Tags.cpp:598 ../src/effects/Amplify.cpp:395
+#: ../src/effects/BassBoost.cpp:352 ../src/effects/Filter.cpp:439
+#: ../src/effects/Phaser.cpp:575 ../src/effects/VST/VSTEffect.cpp:310
+#: ../src/effects/Wahwah.cpp:560 ../src/effects/ladspa/LadspaEffect.cpp:417
+#: ../src/import/ImportRaw.cpp:891 ../src/prefs/FileFormatPrefs.cpp:486
+#: ../src/prefs/PrefsDialog.cpp:95
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -583,7 +581,7 @@ msgstr ""
 "В качестве дополнения укажите имя аудиофайла или проекта\n"
 "Audacity, который будет открыт при запуске программы\n"
 
-#: ../src/KeyConfigPrefs.cpp:53 ../src/prefs/KeyConfigPrefs.cpp:53
+#: ../src/prefs/KeyConfigPrefs.cpp:53
 msgid "Commands"
 msgstr "Команды"
 
@@ -612,9 +610,9 @@ msgid "Could not open MP3 encoding library!"
 msgstr "Не удалось открыть библиотеку компрессии в MP3!"
 
 #: ../src/Menus.cpp:1141 ../src/Project.cpp:1081 ../src/Project.cpp:1087
-#: ../src/Project.cpp:1280 ../src/bak/Menus.cpp:1129
-#: ../src/import/ImportMIDI.cpp:30 ../src/import/ImportMP3.cpp:221
-#: ../src/import/ImportRaw.cpp:300 ../src/import/ImportRaw.cpp:768
+#: ../src/Project.cpp:1280 ../src/import/ImportMIDI.cpp:30
+#: ../src/import/ImportMP3.cpp:221 ../src/import/ImportRaw.cpp:300
+#: ../src/import/ImportRaw.cpp:768
 msgid "Could not open file: "
 msgstr "Не удалось открыть файл: "
 
@@ -632,15 +630,14 @@ msgid "Couldn't open the Audacity Help file."
 msgstr "Не удалось открыть файл справки Audacity."
 
 #: ../src/FreqWindow.cpp:1078 ../src/Menus.cpp:504 ../src/Project.cpp:1441
-#: ../src/bak/Menus.cpp:492
 msgid "Couldn't write to file: "
 msgstr "Не удалось записать файл: "
 
-#: ../src/Menus.cpp:1329 ../src/bak/Menus.cpp:1317
+#: ../src/Menus.cpp:1329
 msgid "Created new audio track"
 msgstr "Создан новый аудиотрек"
 
-#: ../src/Menus.cpp:1344 ../src/bak/Menus.cpp:1332
+#: ../src/Menus.cpp:1344
 msgid "Created new label track"
 msgstr "Создан новый тре с метками"
 
@@ -688,7 +685,7 @@ msgstr ""
 msgid "Cut (%d, %d) failed.\n"
 msgstr "Не удалось вырезать (%d, %d).\n"
 
-#: ../src/Menus.cpp:622 ../src/bak/Menus.cpp:610
+#: ../src/Menus.cpp:622
 msgid "Cut to the clipboard"
 msgstr "Вырезать в буфер"
 
@@ -706,7 +703,7 @@ msgstr "Продублировано"
 msgid "DRY"
 msgstr ""
 
-#: ../src/bak/FileFormatPrefs.cpp:437 ../src/prefs/FileFormatPrefs.cpp:437
+#: ../src/prefs/FileFormatPrefs.cpp:437
 msgid "Data Size: "
 msgstr "Объём данных: "
 
@@ -743,10 +740,10 @@ msgstr "Глубина (%):"
 msgid "Depth:"
 msgstr "Глубина:"
 
-#: ../src/KeyConfigPrefs.cpp:65 ../src/prefs/KeyConfigPrefs.cpp:65
+#: ../src/prefs/KeyConfigPrefs.cpp:66 ../src/prefs/KeyConfigPrefs.cpp:132
 msgid ""
 "Description:\n"
-" Nothing selected."
+" "
 msgstr ""
 
 #: ../src/prefs/AudioIOPrefs.cpp:100 ../src/prefs/AudioIOPrefs.cpp:149
@@ -787,7 +784,7 @@ msgstr ""
 msgid "Dock Control Toolbar"
 msgstr "Вернуть контрольную панель"
 
-#: ../src/Menus.cpp:352 ../src/bak/Menus.cpp:340
+#: ../src/Menus.cpp:352
 msgid "Dock Edit Toolbar"
 msgstr "Вернуть инструментальную панель"
 
@@ -809,7 +806,7 @@ msgstr ""
 "Перетащите мышкой этот трек ниже или выше для смены порядка представления "
 "треков."
 
-#: ../src/Menus.cpp:780 ../src/bak/Menus.cpp:768
+#: ../src/Menus.cpp:780
 msgid "Duplicated"
 msgstr "Продублировано"
 
@@ -833,7 +830,7 @@ msgstr "Эхо..."
 msgid "Edit ID3 Tags"
 msgstr ""
 
-#: ../src/Menus.cpp:1241 ../src/bak/Menus.cpp:1229
+#: ../src/Menus.cpp:1241
 msgid "Edit ID3 Tags (for MP3 exporting)"
 msgstr "Редактировать теги ID3 (для экспорта в MP3)"
 
@@ -845,11 +842,11 @@ msgstr ""
 msgid "Edit the ID3 tags for the MP3 file"
 msgstr "Редактировать теги ID3 для файла MP3"
 
-#: ../src/bak/FileFormatPrefs.cpp:80 ../src/prefs/FileFormatPrefs.cpp:80
+#: ../src/prefs/FileFormatPrefs.cpp:80
 msgid "Edit the original in place"
 msgstr "Редактировать оригинал напрямую"
 
-#: ../src/Menus.cpp:89 ../src/Menus.cpp:114 ../src/bak/Menus.cpp:152
+#: ../src/Menus.cpp:89 ../src/Menus.cpp:114
 #, fuzzy
 msgid "Effec&t"
 msgstr "Эффект"
@@ -863,7 +860,7 @@ msgstr "Программирование эффектов"
 msgid "Elapsed time: %f sec\n"
 msgstr "Оставшееся время: %f сек\n"
 
-#: ../src/bak/FileFormatPrefs.cpp:455 ../src/prefs/FileFormatPrefs.cpp:455
+#: ../src/prefs/FileFormatPrefs.cpp:455
 msgid "Encoding: "
 msgstr "Кодирование: "
 
@@ -985,7 +982,7 @@ msgstr "Экспортировать данные бенчмарка как:"
 msgid "Export Labels"
 msgstr "Экспортировать метки как:"
 
-#: ../src/Menus.cpp:485 ../src/bak/Menus.cpp:473
+#: ../src/Menus.cpp:485
 msgid "Export Labels As:"
 msgstr "Экспортировать метки как:"
 
@@ -1003,7 +1000,6 @@ msgstr "Экспортировать выделенное как %s..."
 msgid "Export Selection As (lossy)"
 msgstr "Экспортировать выделенное как %s..."
 
-#: ../src/bak/FileFormatPrefs.cpp:345 ../src/bak/FileFormatPrefs.cpp:347
 #: ../src/commands.h:141 ../src/commands.h:145
 #: ../src/prefs/FileFormatPrefs.cpp:345 ../src/prefs/FileFormatPrefs.cpp:347
 #, c-format
@@ -1014,8 +1010,7 @@ msgstr "Экспортировать выделенное как %s..."
 msgid "Export Spectral Data As:"
 msgstr "Экспортировать данные спектрограммы как:"
 
-#: ../src/bak/FileFormatPrefs.cpp:346 ../src/commands.h:144
-#: ../src/prefs/FileFormatPrefs.cpp:346
+#: ../src/commands.h:144 ../src/prefs/FileFormatPrefs.cpp:346
 #, c-format
 msgid "Export as %s..."
 msgstr "Экспортировать как %s..."
@@ -1088,7 +1083,7 @@ msgstr "Применяется эффект Угасания"
 msgid "Feedback (%):"
 msgstr "Отклик (%)"
 
-#: ../src/bak/FileFormatPrefs.cpp:398 ../src/prefs/FileFormatPrefs.cpp:398
+#: ../src/prefs/FileFormatPrefs.cpp:398
 msgid "File Format"
 msgstr "Формат файла"
 
@@ -1100,7 +1095,7 @@ msgstr "Форматы файлов"
 msgid "File not large enough to analyze."
 msgstr "Файл недостаточно велик для анализа."
 
-#: ../src/bak/FileFormatPrefs.cpp:189 ../src/prefs/FileFormatPrefs.cpp:189
+#: ../src/prefs/FileFormatPrefs.cpp:189
 msgid "Find Library"
 msgstr "Найти библиотеку"
 
@@ -1122,7 +1117,7 @@ msgstr "Уместить выделенное в окне"
 msgid "Float Control Toolbar"
 msgstr "Отцепить контрольную панель"
 
-#: ../src/Menus.cpp:354 ../src/bak/Menus.cpp:342 ../src/commands.h:198
+#: ../src/Menus.cpp:354 ../src/commands.h:198
 msgid "Float Edit Toolbar"
 msgstr "Отцепить инструментальную панель"
 
@@ -1162,7 +1157,7 @@ msgstr "В оттенках серого"
 msgid "HTML Help Books (*.htb)|*.htb"
 msgstr "Файлы HTML-справок (*.htb)|*.htb"
 
-#: ../src/bak/FileFormatPrefs.cpp:419 ../src/prefs/FileFormatPrefs.cpp:419
+#: ../src/prefs/FileFormatPrefs.cpp:419
 msgid "Header: "
 msgstr "Заголовок: "
 
@@ -1225,17 +1220,17 @@ msgstr "Импортировать аудиофайл"
 msgid "Imported '%s'"
 msgstr "Иимпортировано '%s'"
 
-#: ../src/Menus.cpp:1187 ../src/bak/Menus.cpp:1175
+#: ../src/Menus.cpp:1187
 #, c-format
 msgid "Imported MIDI from '%s'"
 msgstr "Импортирован файл MIDI из '%s'"
 
-#: ../src/Menus.cpp:1154 ../src/bak/Menus.cpp:1142
+#: ../src/Menus.cpp:1154
 #, c-format
 msgid "Imported labels from '%s'"
 msgstr "Импортированый метки из '%s'"
 
-#: ../src/Menus.cpp:1230 ../src/bak/Menus.cpp:1218
+#: ../src/Menus.cpp:1230
 #, c-format
 msgid "Imported raw audio from '%s'"
 msgstr "Импортировано Raw-аудио из '%s'"
@@ -1249,11 +1244,11 @@ msgstr "Импортируется файл %s ..."
 msgid "Importing Ogg Vorbis File..."
 msgstr "Импортируется файл Ogg Vorbis..."
 
-#: ../src/Menus.cpp:836 ../src/bak/Menus.cpp:824 ../src/commands.h:179
+#: ../src/Menus.cpp:836 ../src/commands.h:179
 msgid "Insert Silence"
 msgstr "Вставить тишину"
 
-#: ../src/Menus.cpp:868 ../src/bak/Menus.cpp:856
+#: ../src/Menus.cpp:868
 #, c-format
 msgid "Inserted %.2f seconds of silence at %.2f"
 msgstr "Вставлено %.2f сек тишины на отметке %.2f"
@@ -1294,7 +1289,7 @@ msgstr "Обращение"
 msgid "Keyboard"
 msgstr "Клавиатура"
 
-#: ../src/KeyConfigPrefs.cpp:81 ../src/prefs/KeyConfigPrefs.cpp:81
+#: ../src/prefs/KeyConfigPrefs.cpp:82
 msgid "Keys"
 msgstr "Клавиши"
 
@@ -1350,7 +1345,7 @@ msgstr "Уровни отмены: "
 msgid "Linear frequency"
 msgstr "Линейная частота"
 
-#: ../src/Menus.cpp:346 ../src/bak/Menus.cpp:334 ../src/commands.h:197
+#: ../src/Menus.cpp:346 ../src/commands.h:197
 msgid "Load Edit Toolbar"
 msgstr "Загрузить панель инструментов для правки"
 
@@ -1362,15 +1357,15 @@ msgstr "Расположение:"
 msgid "Log frequency"
 msgstr "Частота записи лога"
 
-#: ../src/bak/FileFormatPrefs.cpp:171 ../src/prefs/FileFormatPrefs.cpp:171
+#: ../src/prefs/FileFormatPrefs.cpp:171
 msgid "MP3 Export Setup"
 msgstr "Настройка экспорта в MP3"
 
-#: ../src/bak/FileFormatPrefs.cpp:179 ../src/prefs/FileFormatPrefs.cpp:179
+#: ../src/prefs/FileFormatPrefs.cpp:179
 msgid "MP3 Library Version:"
 msgstr "Версия библиотеки MP3:"
 
-#: ../src/bak/FileFormatPrefs.cpp:258 ../src/prefs/FileFormatPrefs.cpp:258
+#: ../src/prefs/FileFormatPrefs.cpp:258
 msgid "MP3 exporting plugin not found"
 msgstr "Плагин для экспорта в MP3 не найден"
 
@@ -1387,7 +1382,7 @@ msgstr "Основной логотип"
 msgid "Make Stereo Track"
 msgstr "Создать стереотрек"
 
-#: ../src/bak/FileFormatPrefs.cpp:73 ../src/prefs/FileFormatPrefs.cpp:73
+#: ../src/prefs/FileFormatPrefs.cpp:73
 msgid "Make a copy of the file to edit"
 msgstr "Скопировать файл для правки"
 
@@ -1532,7 +1527,7 @@ msgstr "Это не файл в формате Ogg Vorbis"
 msgid "Not enough data selected."
 msgstr "Выбрано недостаточное количество данных."
 
-#: ../src/Menus.cpp:1002 ../src/bak/Menus.cpp:990
+#: ../src/Menus.cpp:1002
 msgid "Not enough samples selected.\n"
 msgstr "Выбрано недостаточное количество сэмплов.\n"
 
@@ -1540,11 +1535,16 @@ msgstr "Выбрано недостаточное количество сэмплов.\n"
 msgid "Note Track"
 msgstr "Разметить трек"
 
-#: ../src/Menus.cpp:574 ../src/bak/Menus.cpp:562
+#: ../src/prefs/KeyConfigPrefs.cpp:66
+#, fuzzy
+msgid "Nothing selected."
+msgstr "Выбрано недостаточное количество данных."
+
+#: ../src/Menus.cpp:574
 msgid "Nothing to redo"
 msgstr "Нечего повторить"
 
-#: ../src/Menus.cpp:557 ../src/bak/Menus.cpp:545
+#: ../src/Menus.cpp:557
 msgid "Nothing to undo"
 msgstr "Нечего отменить"
 
@@ -1556,25 +1556,14 @@ msgstr "Количество правок :"
 msgid "Number of edits should be in the range 1 - 10000."
 msgstr "Количество правок может быть от 1 до 10000."
 
-#: ../src/Menus.cpp:835 ../src/bak/Menus.cpp:823
+#: ../src/Menus.cpp:835
 msgid "Number of seconds of silence to insert:"
 msgstr "Количество секунд тишины для вставки:"
 
-#: ../src/bak/FileFormatPrefs.cpp:140 ../src/prefs/FileFormatPrefs.cpp:140
-#, fuzzy
-msgid "OGG Export Setup"
-msgstr "Настройка экспорта в MP3"
-
-#: ../src/bak/FileFormatPrefs.cpp:147 ../src/prefs/FileFormatPrefs.cpp:147
-#, fuzzy
-msgid "OGG Quality:"
-msgstr "Качество"
-
-#: ../src/Tags.cpp:591 ../src/bak/FileFormatPrefs.cpp:479
-#: ../src/effects/Amplify.cpp:388 ../src/effects/BassBoost.cpp:345
-#: ../src/effects/Filter.cpp:435 ../src/effects/Phaser.cpp:569
-#: ../src/effects/VST/VSTEffect.cpp:308 ../src/effects/Wahwah.cpp:554
-#: ../src/effects/ladspa/LadspaEffect.cpp:412
+#: ../src/Tags.cpp:591 ../src/effects/Amplify.cpp:388
+#: ../src/effects/BassBoost.cpp:345 ../src/effects/Filter.cpp:435
+#: ../src/effects/Phaser.cpp:569 ../src/effects/VST/VSTEffect.cpp:308
+#: ../src/effects/Wahwah.cpp:554 ../src/effects/ladspa/LadspaEffect.cpp:412
 #: ../src/prefs/FileFormatPrefs.cpp:479 ../src/prefs/PrefsDialog.cpp:86
 msgid "OK"
 msgstr "ОК"
@@ -1608,7 +1597,7 @@ msgid "Other contributors:"
 msgstr "Другие участники проекта:"
 
 #: ../src/AStatus.cpp:69 ../src/TrackPanel.cpp:180
-#: ../src/bak/FileFormatPrefs.cpp:107 ../src/prefs/FileFormatPrefs.cpp:107
+#: ../src/prefs/FileFormatPrefs.cpp:107
 msgid "Other..."
 msgstr "Другие..."
 
@@ -1630,7 +1619,7 @@ msgstr ""
 msgid "Paste: %d\n"
 msgstr "Вставка: %d\n"
 
-#: ../src/Menus.cpp:691 ../src/bak/Menus.cpp:679
+#: ../src/Menus.cpp:691
 msgid "Pasted from the clipboard"
 msgstr "Вставлено из буфера"
 
@@ -1692,11 +1681,11 @@ msgstr "Введите положительное число для коэффициента распада: "
 msgid "Please enter a positive number for the delay time: "
 msgstr "Введите положительно число для времени задержки: "
 
-#: ../src/Menus.cpp:975 ../src/bak/Menus.cpp:963
+#: ../src/Menus.cpp:975
 msgid "Please select a single track first.\n"
 msgstr "Сперва выберите одиночный трек.\n"
 
-#: ../src/Menus.cpp:984 ../src/bak/Menus.cpp:972
+#: ../src/Menus.cpp:984
 msgid "Please select a track first.\n"
 msgstr "Сперва выберите трек.\n"
 
@@ -1713,7 +1702,7 @@ msgstr "Спектр"
 msgid "Plot Spectrum\tCtrl+U"
 msgstr ""
 
-#: ../src/Menus.cpp:90 ../src/Menus.cpp:115 ../src/bak/Menus.cpp:153
+#: ../src/Menus.cpp:90 ../src/Menus.cpp:115
 msgid "Plugin&s"
 msgstr "Плагины"
 
@@ -1750,7 +1739,7 @@ msgstr "Качество"
 msgid "Quick Mix"
 msgstr "Быстрый микс"
 
-#: ../src/Menus.cpp:1260 ../src/bak/Menus.cpp:1248
+#: ../src/Menus.cpp:1260
 msgid "Quick mix"
 msgstr "Быстрый микс"
 
@@ -1795,7 +1784,7 @@ msgstr "Удалить шум"
 msgid "Remove Track(s)"
 msgstr "Удален(ы) аудиотрек(и)"
 
-#: ../src/Menus.cpp:1362 ../src/bak/Menus.cpp:1350
+#: ../src/Menus.cpp:1362
 msgid "Removed audio track(s)"
 msgstr "Удален(ы) аудиотрек(и)"
 
@@ -1913,7 +1902,7 @@ msgstr "Инструмент для выделения"
 msgid "Select All\tCtrl+A"
 msgstr ""
 
-#: ../src/Menus.cpp:1165 ../src/bak/Menus.cpp:1153
+#: ../src/Menus.cpp:1165
 msgid "Select a MIDI file..."
 msgstr "Выберите файл MIDI..."
 
@@ -1928,7 +1917,7 @@ msgstr ""
 "отфильтровывать, а затем нажмите кнопку \n"
 "Получить шумовой профайл:"
 
-#: ../src/Menus.cpp:1125 ../src/bak/Menus.cpp:1113
+#: ../src/Menus.cpp:1125
 msgid "Select a text file containing labels..."
 msgstr "Выберите файл, содержащий метки..."
 
@@ -1942,12 +1931,11 @@ msgstr ""
 "применить фильтр, выберите уровень убираемого \n"
 "шума, а затем нажмите кнопку 'Удалить шум'.\n"
 
-#: ../src/Menus.cpp:414 ../src/Menus.cpp:1098 ../src/bak/Menus.cpp:402
-#: ../src/bak/Menus.cpp:1086
+#: ../src/Menus.cpp:414 ../src/Menus.cpp:1098
 msgid "Select an audio file..."
 msgstr "Выберите аудиофайл..."
 
-#: ../src/Menus.cpp:1201 ../src/bak/Menus.cpp:1189
+#: ../src/Menus.cpp:1201
 msgid "Select any uncompressed audio file..."
 msgstr "Выберите любой некомпрессированный аудиофайл..."
 
@@ -1993,7 +1981,7 @@ msgstr "Вставить тишину"
 msgid "Silence selection"
 msgstr ""
 
-#: ../src/Menus.cpp:746 ../src/bak/Menus.cpp:734
+#: ../src/Menus.cpp:746
 #, c-format
 msgid "Silenced selected tracks for %.2f seconds at %.2f"
 msgstr "В выделенных треках установлена тишина в %.2f сек с позиции %.2f"
@@ -2057,7 +2045,7 @@ msgstr "Спектрограммы"
 msgid "Spectrum"
 msgstr "Спектр"
 
-#: ../src/Menus.cpp:826 ../src/bak/Menus.cpp:814
+#: ../src/Menus.cpp:826
 msgid "Split"
 msgstr "Разделить"
 
@@ -2114,7 +2102,7 @@ msgstr "Тестировать данные в объёме (Мб):"
 msgid "Test data size should be in the range 1 - 2000 MB."
 msgstr "Объём данных для теста должен быть в пределах от 1 до 2000 Мб."
 
-#: ../src/Menus.cpp:1129 ../src/bak/Menus.cpp:1117
+#: ../src/Menus.cpp:1129
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*"
 
@@ -2127,7 +2115,7 @@ msgstr "Файл с именем \"%s\" в проекте отсутствует."
 msgid "The maximum frequency must be an integer"
 msgstr "Максимальная частота должна быть переменной"
 
-#: ../src/Menus.cpp:479 ../src/bak/Menus.cpp:467
+#: ../src/Menus.cpp:479
 msgid "There are no label tracks to export."
 msgstr "Треков с метками для экспорта нет."
 
@@ -2219,7 +2207,7 @@ msgstr ""
 msgid "Trim everything outside selection"
 msgstr ""
 
-#: ../src/Menus.cpp:722 ../src/bak/Menus.cpp:710
+#: ../src/Menus.cpp:722
 msgid "Trim file to selection"
 msgstr ""
 
@@ -2231,7 +2219,7 @@ msgstr "Определение невозможно"
 msgid "Unable to open target file for writing"
 msgstr "Невозможно открыть конечный файл для записи"
 
-#: ../src/bak/FileFormatPrefs.cpp:94 ../src/prefs/FileFormatPrefs.cpp:94
+#: ../src/prefs/FileFormatPrefs.cpp:94
 msgid "Uncompressed Export Format"
 msgstr "Некомпрессированный формат экспорта"
 
@@ -2273,7 +2261,7 @@ msgstr "Неизвестный тип файла"
 msgid "Unknown header"
 msgstr "Неизвестный заголовок"
 
-#: ../src/Menus.cpp:343 ../src/bak/Menus.cpp:331 ../src/commands.h:197
+#: ../src/Menus.cpp:343 ../src/commands.h:197
 msgid "Unload Edit Toolbar"
 msgstr "Убрать панель инструментов для редактирования"
 
@@ -2284,10 +2272,6 @@ msgstr "Октавой выше"
 #: ../src/prefs/GUIPrefs.cpp:37
 msgid "Update spectrogram while playing"
 msgstr "Обновлять спектрограмму при воспроизведении"
-
-#: ../src/bak/FileFormatPrefs.cpp:155 ../src/prefs/FileFormatPrefs.cpp:155
-msgid "Use OGG instead of MP3"
-msgstr ""
 
 #: ../src/Benchmark.cpp:337
 #, c-format
@@ -2348,7 +2332,7 @@ msgstr "Волновая форма (Дб)"
 msgid "Wavelet Denoising..."
 msgstr ""
 
-#: ../src/bak/FileFormatPrefs.cpp:69 ../src/prefs/FileFormatPrefs.cpp:69
+#: ../src/prefs/FileFormatPrefs.cpp:69
 msgid "When importing uncompressed audio files"
 msgstr "При импортировании некомпрессированных аудиофайлов"
 
@@ -2423,7 +2407,7 @@ msgstr "benchmark.txt"
 msgid "big-endian"
 msgstr ""
 
-#: ../src/Menus.cpp:483 ../src/bak/Menus.cpp:471
+#: ../src/Menus.cpp:483
 msgid "labels.txt"
 msgstr "labels.txt"
 
@@ -2458,6 +2442,14 @@ msgstr "стерео"
 #: ../src/import/ImportRaw.cpp:873
 msgid "unsigned"
 msgstr ""
+
+#, fuzzy
+#~ msgid "OGG Export Setup"
+#~ msgstr "Настройка экспорта в MP3"
+
+#, fuzzy
+#~ msgid "OGG Quality:"
+#~ msgstr "Качество"
 
 #~ msgid "I WILL RESUME WORKING ON THIS SOON"
 #~ msgstr "Скоро будет имплементировано"
