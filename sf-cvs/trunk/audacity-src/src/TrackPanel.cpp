@@ -628,29 +628,70 @@ wxCursor * MakeCursor( int CursorId, const char * pXpm[36],  int HotX, int HotY 
    const int HotAdjust =8;
 #endif
 
-#ifdef __WXMAC__
+#if 0
    pCursor = new wxCursor(CursorId);
-#else
-   {
-      wxImage Image = wxImage(wxBitmap(pXpm).ConvertToImage());
+#endif
+
+   wxImage Image = wxImage(wxBitmap(pXpm).ConvertToImage());   
+   Image.SetMaskColour(255,0,0);
+   Image.SetMask();// Enable mask.
 
 #ifdef __WXGTK__
-      // Because of a bug in GTK's XPM reader, the red color may
-      // not end up pure red.  So we grab the color of the first
-      // pixel.
-      unsigned char *base = Image.GetData();
-      Image.SetMaskColour(base[0], base[1], base[2]);      
-#else
-      Image.SetMaskColour(255,0,0);
-#endif
+   //
+   // Kludge: the wxCursor Image constructor is broken in wxGTK.
+   // This code, based loosely on the broken code from the wxGTK source,
+   // works around the problem by constructing a 1-bit bitmap and
+   // calling the other custom cursor constructor.
+   //
+   // -DMM
+   //
 
-      Image.SetMask();// Enable mask.
+   unsigned char *rgbBits = Image.GetData();
+   int w = Image.GetWidth() ;
+   int h = Image.GetHeight();
+   int imagebitcount = (w*h)/8;
+   
+   unsigned char *bits = new unsigned char [imagebitcount];
+   unsigned char *maskBits = new unsigned char [imagebitcount];
 
-      Image.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_X, HotX-HotAdjust );
-      Image.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_Y, HotY-HotAdjust );
-      pCursor = new wxCursor( Image );
+   int i, j, i8;
+   unsigned char cMask;
+   for (i=0; i<imagebitcount; i++) {
+      bits[i] = 0;
+      i8 = i * 8;
+        
+      cMask = 1;
+      for (j=0; j<8; j++) {
+         if (rgbBits[(i8+j)*3+2] < 127)
+            bits[i] = bits[i] | cMask;
+         cMask = cMask * 2;
+      }
    }
+
+   for (i=0; i<imagebitcount; i++) {
+      maskBits[i] = 0x0;
+      i8 = i * 8;
+      
+      cMask = 1;
+      for (j=0; j<8; j++) {
+         if (rgbBits[(i8+j)*3] < 127 || rgbBits[(i8+j)*3+1] > 127)
+            maskBits[i] = maskBits[i] | cMask;
+         cMask = cMask * 2;
+      }
+   }
+
+   pCursor = new wxCursor((const char *)bits, w, h,
+                          HotX-HotAdjust, HotY-HotAdjust,
+                          (const char *)maskBits,
+                          new wxColour(0, 0, 0),
+                          new wxColour(255, 255, 255));
+
+#else
+   Image.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_X, HotX-HotAdjust );
+   Image.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_Y, HotY-HotAdjust );
+   pCursor = new wxCursor( Image );
 #endif
+
    return pCursor;
 }
 
@@ -694,6 +735,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mSlideCursor   = MakeCursor( wxCURSOR_SIZEWE,    TimeCursorXpm,    16, 16);
    mZoomInCursor  = MakeCursor( wxCURSOR_MAGNIFIER, ZoomInCursorXpm,  19, 15);
    mZoomOutCursor = MakeCursor( wxCURSOR_MAGNIFIER, ZoomOutCursorXpm, 19, 15);
+
 
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
    mSmoothCursor = new wxCursor(wxCURSOR_SPRAYCAN);
