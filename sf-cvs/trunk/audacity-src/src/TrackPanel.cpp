@@ -605,28 +605,23 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
                   // Check to see if the cursor is on top 
                   //of the left selection boundary
                   if (leftSel < rightSel
-                      && event.m_x >=
-                      leftSel - HORIZONTAL_SELECTION_RESIZE_REGION
-                      && event.m_x <=
-                      leftSel + HORIZONTAL_SELECTION_RESIZE_REGION) {
-                     mListener->
-                        TP_DisplayStatusMessage(_
+                      && event.m_x >= leftSel - HORIZONTAL_SELECTION_RESIZE_REGION
+                      && event.m_x <= leftSel + HORIZONTAL_SELECTION_RESIZE_REGION) {
+                     mListener->TP_DisplayStatusMessage(_
                                                 ("Click and drag to move left selection boundary."),
                                                 0);
                      SetCursor(*mAdjustLeftSelectionCursor);
                   }
                   ///////////////////////////////////////
                   // Check to see if the cursor is on top 
-                  //of the right selection boundary, (or if right==left)
+                  //of the right selection boundary, 
                   
-                  else if (event.m_x >=
-                           rightSel - HORIZONTAL_SELECTION_RESIZE_REGION
-                           && event.m_x <=
-                           rightSel + HORIZONTAL_SELECTION_RESIZE_REGION) {
-                     mListener->
-                        TP_DisplayStatusMessage(_
-                                                ("Click and drag to move right selection boundary."),
-                                                0);
+                  else if (leftSel < rightSel
+                           && event.m_x >= rightSel - HORIZONTAL_SELECTION_RESIZE_REGION
+                           && event.m_x <= rightSel + HORIZONTAL_SELECTION_RESIZE_REGION) {
+                     mListener->TP_DisplayStatusMessage(_
+                                                        ("Click and drag to move right selection boundary."),
+                                                        0);
                      SetCursor(*mAdjustRightSelectionCursor);
                   } else {
                      //Draw a normal cursor
