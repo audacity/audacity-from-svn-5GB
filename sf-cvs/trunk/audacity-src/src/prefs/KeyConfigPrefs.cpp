@@ -59,7 +59,8 @@ PrefsPanel(parent), mCommandSelected(-1)
       //Insert supported commands into list control
       for(int i = 0; i < mAudacity->GetNumCommands(); i++)
       {
-         mCommandsList->InsertItem(i, mAudacity->GetCommandName(i));
+         if(mAudacity->GetMenuType(i) != typeSeparator)
+            mCommandsList->InsertItem(i, mAudacity->GetCommandName(i));
       }
 
       vCommandSizer->Add(mCommandsList, 0,

@@ -59,6 +59,7 @@ void RebuildMenuBar();
 
 wxString GetCommandName(int nIndex);
 wxString GetCommandDesc(int nIndex);
+menuType GetMenuType(int nIndex);
 audEventFunction GetCommandFunc(int nIndex);
 int GetNumCommands();
 
