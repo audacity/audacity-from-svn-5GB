@@ -157,30 +157,30 @@ void EffectNyquist::Parse(wxString line)
       return;
    }
 
-+    if (len>=6 && tokens[0]=="control") {
-        NyqControl ctrl;
+   if (len>=6 && tokens[0]=="control") {
+      NyqControl ctrl;
   
-        ctrl.var = tokens[1];
-        ctrl.name = tokens[2];
-        ctrl.label = tokens[4];
-        ctrl.valStr = tokens[5];
+      ctrl.var = tokens[1];
+      ctrl.name = tokens[2];
+      ctrl.label = tokens[4];
+      ctrl.valStr = tokens[5];
  
-       if (tokens[3]=="string")
-          ctrl.type = NYQ_CTRL_STRING;
-       else {
-          if (len < 8)
-             return;
+      if (tokens[3]=="string")
+         ctrl.type = NYQ_CTRL_STRING;
+      else {
+         if (len < 8)
+            return;
           
-          if (tokens[3]=="real")
-             ctrl.type = NYQ_CTRL_REAL;
-          else
-             ctrl.type = NYQ_CTRL_INT;
+         if (tokens[3]=="real")
+            ctrl.type = NYQ_CTRL_REAL;
+         else
+            ctrl.type = NYQ_CTRL_INT;
           
-          ctrl.lowStr = tokens[6];
-          ctrl.highStr = tokens[7];
-       }
+         ctrl.lowStr = tokens[6];
+         ctrl.highStr = tokens[7];
+      }
 
-       ctrl.val = UNINITIALIZED_CONTROL;
+      ctrl.val = UNINITIALIZED_CONTROL;
 
       mControls.Add(ctrl);
    }
