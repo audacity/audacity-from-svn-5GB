@@ -32,6 +32,7 @@ class AStatus:public wxWindow {
 
    virtual ~ AStatus();
 
+   void DrawDragHandle( wxDC * pDC, int x, int y );
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnMouseEvent(wxMouseEvent & event);
 

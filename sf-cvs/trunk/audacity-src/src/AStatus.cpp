@@ -57,9 +57,9 @@ AStatus::AStatus(wxWindow * parent, wxWindowID id,
                      const wxPoint & pos,
                      const wxSize & size,
                      double rate,
-                     AStatusListener * listener):wxWindow(parent, id, pos,
-                                                          size),
-mListener(listener), mBitmap(NULL), mRate(rate)
+                     AStatusListener * listener):
+   wxWindow(parent, id, pos,  size),
+   mListener(listener), mBitmap(NULL), mRate(rate)
 {
    GetSize(&mWidth, &mHeight);
 
@@ -108,6 +108,41 @@ void AStatus::SetRate(double rate)
    }
 }
 
+/// Draw resizing drag handle in bottom left corner of status
+/// bar.  This is to give a more MS Windows look on that platform.
+/// An alternative would be to derive AStatus from wxStatusBar,
+/// rather than from wxWindow and set style wxST_SIZEGRIP.
+void AStatus::DrawDragHandle( wxDC * pDC, int x, int y )
+{
+   int i, d;
+   const int nStripes = 3;
+   const int StripeSpacing = 4;
+   const int r=5;
+
+   AColor::Medium( pDC, false );
+   // Background is medium dark.
+   pDC->DrawRectangle( x-12-r, y-11, 13+r,12);
+   AColor::Dark(pDC, false);
+   // Dark diagonal line is needed here because our beveled
+   // edge is higher up than on a MS Windows status bar.
+   // This line makes it OK to have the drag handle lower 
+   // down.
+   pDC->DrawLine( x-13,y, x-13-r, y-r);
+
+   // Draw the dark diagonal lines of the drag handle.
+   for(i=0;i<nStripes;i++){
+      d = i*4+2; pDC->DrawLine( x-d, y, x, y-d);
+      d = i*4+3; pDC->DrawLine( x-d, y, x, y-d);
+   }
+  
+   // Drwaw the light diagonal lines of the drag handle.
+   AColor::Light(pDC, false);
+   for(i=0;i<nStripes;i++){
+      d = i*4+4;
+      pDC->DrawLine( x-d, y, x, y-d);
+   }
+}
+
 void AStatus::OnPaint(wxPaintEvent & event)
 {
    wxPaintDC dc(this);
@@ -145,6 +180,7 @@ void AStatus::OnPaint(wxPaintEvent & event)
    AColor::Medium(&memDC, false);
    memDC.DrawRectangle(0, 0, mWidth, mHeight);
 
+
    int fontSize = 10;
 #ifdef __WXMSW__
    fontSize = 8;
@@ -170,6 +206,8 @@ void AStatus::OnPaint(wxPaintEvent & event)
    msgField.height = 17;
 
    AColor::Bevel(memDC, false, msgField);
+
+
    wxString msg = mField[0];
    long textWidth, textHeight;
    memDC.GetTextExtent(msg, &textWidth, &textHeight);
@@ -190,6 +228,10 @@ void AStatus::OnPaint(wxPaintEvent & event)
 #endif
 
    AColor::Bevel(memDC, false, cursorField);
+#if defined __WXMSW__
+   DrawDragHandle( &memDC, mWidth-4, mHeight-4 );
+#endif
+
    msg = mField[1];
    memDC.GetTextExtent(msg, &textWidth, &textHeight);
    while (msg != "" && textWidth > cursorField.width) {
