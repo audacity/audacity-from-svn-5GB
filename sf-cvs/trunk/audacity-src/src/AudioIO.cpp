@@ -333,10 +333,14 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
                          double t0, double t1)
 {
    if( IsBusy() )
-      return false;
+      return 0;
 
-   // Temporary - just so we don't have a race condition
-   mStreamToken = -1;
+   // We just want to set mStreamToken to -1 - this way avoids
+   // an extremely rare but possible race condition, if two functions
+   // somehow called StartStream at the same time...
+   mStreamToken--;
+   if (mStreamToken != -1)
+      return 0;
 
    mRate    = sampleRate;
    mT0      = t0;
