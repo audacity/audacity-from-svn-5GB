@@ -41,8 +41,7 @@
 #include "portmixer.h"
 #endif
 
-#include "../images/Speaker.xpm"
-#include "../images/Mic.xpm"
+#include "../images/MixerImages.h"
 
 ////////////////////////////////////////////////////////////
 /// Methods for MixerToolBar
