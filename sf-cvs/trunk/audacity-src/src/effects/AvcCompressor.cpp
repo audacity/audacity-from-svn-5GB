@@ -17,7 +17,7 @@
 		of samples.
   4.  Radio button selection so Amplification Settings can be db instead
         of raw values.
-  5.  Save settings by name 
+  5.  Save settings by name
   6.  Remove "help" text in window when Audacity help available.
 
 */
@@ -32,6 +32,7 @@
 #include "../WaveTrack.h"
 #include "../Envelope.h"
 #include "../widgets/Ruler.h"
+#include "../Prefs.h"
 
 // Including the following cpp file is quite unorthodox, but it gives the opportunity to
 //		use iAVC's capability of generating inline code for the important methods.  We
@@ -54,7 +55,7 @@
 #define ADJWIN_MIN		1000
 #define ADJWIN_MAX		10000
 
-#define DELAY_DEFAULT	0  //TEMP?  DEFAULT_MINIMUM_SAMPLES_BEFORE_SWITCH
+#define DELAY_DEFAULT	DEFAULT_MINIMUM_SAMPLES_BEFORE_SWITCH
 #define DELAY_MIN		0
 #define DELAY_MAX		5000
 
@@ -67,7 +68,10 @@
 #define MINPCT_MAX		50
 
 EffectAvcCompressor::EffectAvcCompressor():
-			mpDialog ( NULL )
+			mpDialog ( NULL ),
+			mpBufferList ( NULL ),
+			mpBufferPrevious ( NULL ),
+			mnDelay ( 0 )
 {
 }
 
@@ -76,6 +80,27 @@ EffectAvcCompressor::~EffectAvcCompressor()
 	if ( mpDialog != NULL )
 		delete mpDialog;
 }
+
+inline
+void EffectAvcCompressor::OutputSample ( IAVCSAMPLETYPE left, IAVCSAMPLETYPE right )
+{
+	if ( mpBufferList->mnNext >= mpBufferList->mnLen )
+	{	// have filled up this buffer, move to next
+		iAVCBufferList * pOld = mpBufferList;
+		mpBufferList = mpBufferList->mpNext;
+		delete pOld;
+	}
+	if ( mpBufferList == NULL )
+		return;
+
+	// set the output sample values
+	((IAVCSAMPLETYPE*)mpBufferList->mpLeftBuffer)[mpBufferList->mnNext] = left;
+	if ( mpBufferList->mpRightBuffer )
+		((IAVCSAMPLETYPE*)mpBufferList->mpRightBuffer)[mpBufferList->mnNext] = right;
+
+	++mpBufferList->mnNext;
+}
+
 
 bool EffectAvcCompressor::PromptUser()
 {
@@ -105,6 +130,7 @@ bool EffectAvcCompressor::PromptUser()
    mAutoVolCtrl.SetMaxPctChangeAtOnce(mpDialog->GetMinimumPercent());
    mAutoVolCtrl.SetMultipliers(nTransform);
    mAutoVolCtrl.SetNumberTracks(mnTracks);
+   mnDelay = mpDialog->GetDelay();
 
    return true;
 }
@@ -117,10 +143,24 @@ bool EffectAvcCompressor::Init()	// invoked before PromptUser
 	return true;
 }
 
-bool EffectAvcCompressor::ProcessSimplePairedTwoTrack(/*IAVCSAMPLETYPE*/ void *bufferLeft, 
+bool EffectAvcCompressor::ProcessSimplePairedTwoTrack(/*IAVCSAMPLETYPE*/ void *bufferLeft,
 													  /*IAVCSAMPLETYPE*/ void *bufferRight, // may be 0
 													  sampleCount len)
 {
+	// build new iAVCBufferList node
+	iAVCBufferList *  pBufferNode = new iAVCBufferList;
+	if ( mpBufferPrevious != NULL )
+		mpBufferPrevious->mpNext = pBufferNode;	// link to end of list
+	else
+		mpBufferList = pBufferNode;				// have first node in list
+	mpBufferPrevious = pBufferNode;				// this node now the last added to list
+	pBufferNode->mpNext = NULL;
+	pBufferNode->mpLeftBuffer = bufferLeft;
+	pBufferNode->mpRightBuffer = bufferRight;
+	pBufferNode->mnLen = len;
+	pBufferNode->mnNext = 0;
+
+	// process samples in these buffer(s)
 	IAVCSAMPLETYPE* typedBufferLeft  = (IAVCSAMPLETYPE*)bufferLeft;
 	IAVCSAMPLETYPE* typedBufferRight = (IAVCSAMPLETYPE*)bufferRight;
 	sampleCount i;
@@ -137,19 +177,58 @@ bool EffectAvcCompressor::ProcessSimplePairedTwoTrack(/*IAVCSAMPLETYPE*/ void *b
 			#include "../../lib-src/iAVC/iAVC.cpp"
 			#undef  IAVC_SETNEXTSAMPLE
 			// use inline GetNextSample()
+			if ( mnDelay <= 0 )
+			{	// get a value only if past desired delay
+				#define IAVC_GETNEXTSAMPLE
+				#include "../../lib-src/iAVC/iAVC.cpp"
+				#undef  IAVC_SETNEXTSAMPLE
+			}
+		#else
+			// call SetNextSample() and GetNextSample()
+			mAutoVolCtrl.SetNextSample(left, right);
+			if ( mnDelay <= 0 )
+			{	// get a value only if past desired delay
+				mAutoVolCtrl.GetNextSample(left, right);
+			}
+		#endif
+			if ( mnDelay <= 0 )
+			{	// get a value only if past desired delay
+				OutputSample ( left, right );
+				typedBufferLeft[i] = left;
+				if ( typedBufferRight )
+					typedBufferRight[i] = right;
+			}
+			else
+			{	// count down the delay amount
+				--mnDelay;
+			}
+	}
+	return true;
+}
+
+void EffectAvcCompressor::End()
+{
+	IAVCSAMPLETYPE left;
+	IAVCSAMPLETYPE right = 0;
+
+	// We now need to output any samples still waiting because
+	while ( mpBufferList != NULL )
+	{
+		#ifdef IAVC_INLINE
+			// use inline GetNextSample()
 			#define IAVC_GETNEXTSAMPLE
 			#include "../../lib-src/iAVC/iAVC.cpp"
 			#undef  IAVC_SETNEXTSAMPLE
 		#else
-			// call SetNextSample() and GetNextSample()
-			mAutoVolCtrl.SetNextSample(left, right);
+			// call GetNextSample()
 			mAutoVolCtrl.GetNextSample(left, right);
 		#endif
-		typedBufferLeft[i] = left;
-		if ( typedBufferRight )
-			typedBufferRight[i] = right;
+
+		OutputSample ( left, right );
 	}
-	return true;
+	mpBufferPrevious = NULL;
+
+	EffectSimplePairedTwoTrack<IAVCSAMPLETYPE,AVCCOMPSAMPLETYPE>::End();
 }
 
 // WDR: class implementations
@@ -157,6 +236,15 @@ bool EffectAvcCompressor::ProcessSimplePairedTwoTrack(/*IAVCSAMPLETYPE*/ void *b
 //----------------------------------------------------------------------------
 // AvcCompressorDialog
 //----------------------------------------------------------------------------
+
+#define PREF_ADJWIN "/Effect/AVC/user1/adjwin"
+#define PREF_DELAY  "/Effect/AVC/user1/delay"
+#define PREF_CHANGE "/Effect/AVC/user1/change"
+#define PREF_MINPCT "/Effect/AVC/user1/minpct"
+#define PREF_ENABLE "/Effect/AVC/user1/%d/enable"
+#define PREF_HORIZ  "/Effect/AVC/user1/%d/horiz"
+#define PREV_VERT   "/Effect/AVC/user1/%d/vert"
+
 
 // WDR: event table for AvcCompressorDialog
 
@@ -187,10 +275,13 @@ AvcCompressorDialog::AvcCompressorDialog(wxWindow *parent, wxWindowID id,
 		mctlYAxis[i] = 0;
 	}
 
-	MakeAvcCompressorDialog( this, TRUE ); 
+	MakeAvcCompressorDialog( this, TRUE );
 
-	wxCommandEvent eventDummy;
-	OnRestoreDefaults(eventDummy);
+	// First make sure all value initialized, especially horiz and vert first & last values
+	wxCommandEvent event;
+	OnRestoreDefaults(event);
+	// Now read in from registry
+	ReadPrefs();
 }
 
 AvcCompressorDialog::~AvcCompressorDialog()
@@ -303,20 +394,24 @@ void AvcCompressorDialog::OnOK(wxCommandEvent &event)
 
 		// Check Amplification Settings
 		long iPrevPoint= 0;		// index to mnXAxis and mnYAxis
-		for ( int i = 0 ; i < NUM_CURVE_POINTS ; ) {
+		for ( int i = 0 ; i < NUM_CURVE_POINTS ; ++i ) {
 			mstrXAxis[i].ToLong(&mnXAxis[i]);
 			mstrYAxis[i].ToLong(&mnYAxis[i]);
 
+			// see if this is a checked point
+			if ( mctlCheckBoxes[i]->GetValue() == false)
+				continue;	// last box guaranteed to be checked
+
 			if ( i > 0 ) {
 				if ( mnXAxis[i] <= mnXAxis[iPrevPoint] ) {
-					wxMessageBox(_("Values in columns must be in ascending order."), 
+					wxMessageBox(_("Values in columns must be in ascending order."),
 								 _("Validation error"),
 								 wxOK | wxICON_EXCLAMATION, GetParent() );
 					mctlXAxis[(i==NUM_CURVE_POINTS-1) ? iPrevPoint : i]->SetFocus();
 					return;
 				}
 				if ( mnYAxis[i] <= mnYAxis[iPrevPoint] ) {
-					wxMessageBox(_("Values in columns must be in ascending order."), 
+					wxMessageBox(_("Values in columns must be in ascending order."),
 								 _("Validation error"),
 								 wxOK | wxICON_EXCLAMATION, GetParent() );
 					mctlYAxis[(i==NUM_CURVE_POINTS-1) ? iPrevPoint : i]->SetFocus();
@@ -324,12 +419,11 @@ void AvcCompressorDialog::OnOK(wxCommandEvent &event)
 				}
 			}
 			iPrevPoint = i;
-			// find next checked point
-			while ( ++i < NUM_CURVE_POINTS && mctlCheckBoxes[i]->GetValue() == false)
-				;	// last box guaranteed to be checked
 		}
 
 		// AOK, time to return
+		WritePrefs();			// save values user entered for next execution
+
         if ( IsModal() )
             EndModal(wxID_OK);
         else {
@@ -343,6 +437,9 @@ void AvcCompressorDialog::OnCancel(wxCommandEvent &event)
 {
    EndModal(false);
 }
+
+	static int* naSampleChoicesHoriz[5] = {iHoriz_1K_1K,iHoriz_1K_3HK,iHoriz_E75_5K,iHoriz_75_3500,iHoriz_AE75_3HK};
+	static int* naSampleChoicesVert[5]  = {iVert_1K_1K, iVert_1K_3HK, iVert_E75_5K, iVert_75_3500, iVert_AE75_3HK};
 
 void AvcCompressorDialog::OnRestoreDefaults(wxCommandEvent &event)
 {
@@ -361,6 +458,58 @@ void AvcCompressorDialog::OnRestoreDefaults(wxCommandEvent &event)
 		mstrYAxis[i].Printf( "%d", naSampleChoicesVert[4][i] );
 	}
 	TransferDataToWindow();
+}
+
+void AvcCompressorDialog::ReadPrefs()
+{
+	int			nTemp;
+	bool		bTemp;
+	wxString	strTemp;
+
+	nTemp = gPrefs->Read ( PREF_ADJWIN, ADJWIN_DEFAULT );
+	mstrAdjWin.Printf("%d", nTemp);
+	nTemp = gPrefs->Read ( PREF_DELAY, DELAY_DEFAULT );
+	mstrDelay.Printf("%d", nTemp);
+	nTemp = gPrefs->Read ( PREF_CHANGE, CHANGE_DEFAULT );
+	mstrChangeWin.Printf("%d", nTemp);
+	nTemp = gPrefs->Read ( PREF_MINPCT, MINPCT_DEFAULT );
+	mstrMinPct.Printf("%d", nTemp);
+
+	for ( int i = 1 ; i < NUM_CURVE_POINTS - 1 ; ++ i ) {
+		strTemp.Printf(PREF_ENABLE,i);
+		bTemp = ( gPrefs->Read ( strTemp, true ) == 0 ) ? false : true;
+		mctlCheckBoxes[i]->SetValue(bTemp);
+		mctlXAxis[i]->Show ( bTemp );
+		mctlYAxis[i]->Show ( bTemp );
+
+		strTemp.Printf(PREF_HORIZ,i);
+		nTemp = gPrefs->Read ( strTemp, naSampleChoicesHoriz[4][i] );
+		mstrXAxis[i].Printf( "%d", nTemp );
+		strTemp.Printf(PREV_VERT,i);
+		nTemp = gPrefs->Read ( strTemp, naSampleChoicesVert[4][i] );
+		mstrYAxis[i].Printf( "%d", nTemp );
+	}
+	TransferDataToWindow();
+}
+
+void AvcCompressorDialog::WritePrefs()
+{
+	wxString	strTemp;
+
+	gPrefs->Write ( PREF_ADJWIN, mnAdjWin );
+	gPrefs->Write ( PREF_DELAY, mnDelay );
+	gPrefs->Write ( PREF_CHANGE, mnChangeWin );
+	gPrefs->Write ( PREF_MINPCT, mnMinPct );
+
+	for ( int i = 1 ; i < NUM_CURVE_POINTS - 1 ; ++ i ) {
+		strTemp.Printf(PREF_ENABLE,i);
+		gPrefs->Write ( strTemp, mctlCheckBoxes[i]->GetValue() );
+
+		strTemp.Printf(PREF_HORIZ,i);
+		gPrefs->Write ( strTemp, mnXAxis[i] );
+		strTemp.Printf(PREV_VERT,i);
+		gPrefs->Write ( strTemp, mnYAxis[i] );
+	}
 }
 
 void AvcCompressorDialog::OnCheckBox(wxCommandEvent & event)
@@ -394,7 +543,7 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
 	wxBoxSizer *leftSizer = new wxBoxSizer(wxVERTICAL);
 
 	// 1.1  Group Box for adjustment window settings
-   
+
 	group = new wxStaticBoxSizer(new wxStaticBox(parent, -1,
                                                 _("Adjustment Settings")), wxVERTICAL);
 	flexGridSizer = new wxFlexGridSizer(2, 0, 0);
@@ -412,16 +561,16 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
 	flexGridSizer->Add(mctlAdjWin, 0, wxALIGN_CENTRE | wxALL, 5);
 
 	// 1.1.2  Adjustment Delay
-	//staticText =
-    //   new wxStaticText(parent, ID_TEXT, _("Adjustment Delay:"),
-    //                    wxDefaultPosition, wxDefaultSize, 0);
-	//flexGridSizer->Add(staticText, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	staticText =
+       new wxStaticText(parent, ID_TEXT, _("Adjustment Delay:"),
+                        wxDefaultPosition, wxDefaultSize, 0);
+	flexGridSizer->Add(staticText, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	//mctlDelay =
-    //   new wxTextCtrl(parent, ID_DELAYTEXT, "", wxDefaultPosition,
-    //                  wxSize(40, -1), 0,
-	//				  wxTextValidator(wxFILTER_NUMERIC, &mstrDelay ));
-	//flexGridSizer->Add(mctlDelay, 0, wxALIGN_CENTRE | wxALL, 5);
+	mctlDelay =
+       new wxTextCtrl(parent, ID_DELAYTEXT, "", wxDefaultPosition,
+                      wxSize(40, -1), 0,
+					  wxTextValidator(wxFILTER_NUMERIC, &mstrDelay ));
+	flexGridSizer->Add(mctlDelay, 0, wxALIGN_CENTRE | wxALL, 5);
 
 	// 1.1.3  Min Change Window
 	staticText =
@@ -463,15 +612,15 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
 						  "For more information see: \n"
 						  "http://www.busam.com/skyland/iavc\n"
 						  "7/21/02: WAV and MP3 files both work."
-						 ), 
+						 ),
                         wxDefaultPosition, wxDefaultSize, 0);
 	leftSizer->Add(staticText, 0, wxALIGN_CENTRE | wxALL, 5);
 
-	// 1.end 
+	// 1.end
 	horizontalSizer->Add( leftSizer, 0, wxALIGN_TOP |wxALL, 5 );
 
 	// 2.  Group Box for volume settings
-   
+
 	group = new wxStaticBoxSizer(new wxStaticBox(parent, -1,
                                                 _("Amplification Settings")), wxVERTICAL);
 
@@ -488,7 +637,7 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
        new wxStaticText(parent, ID_TEXT, _("Original Value"),
                         wxDefaultPosition, wxDefaultSize, 0);
 	flexGridSizer->Add(staticText, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-	
+
 	staticText =
        new wxStaticText(parent, ID_TEXT, _("New Value"),
                         wxDefaultPosition, wxDefaultSize, 0);
