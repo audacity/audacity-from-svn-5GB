@@ -162,6 +162,7 @@ mAutoScrolling(false)
    mIndicatorShowing = false;
 
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
+   mPencilCursor = new wxCursor(wxCURSOR_PENCIL);
    mSelectCursor = new wxCursor(wxCURSOR_IBEAM);
    mSlideCursor = new wxCursor(wxCURSOR_SIZEWE);
    mResizeCursor = new wxCursor(wxCURSOR_SIZENS);
@@ -248,6 +249,7 @@ TrackPanel::~TrackPanel()
    delete mRuler;
 
    delete mArrowCursor;
+   delete mPencilCursor;
    delete mSelectCursor;
    delete mSlideCursor;
    delete mResizeCursor;
@@ -591,7 +593,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
          SetCursor(event.ShiftDown()? *mZoomOutCursor : *mZoomInCursor);
          break;
       case drawTool:
-         SetCursor(*mArrowCursor);
+         SetCursor(*mPencilCursor);
          break;
       }
    }
