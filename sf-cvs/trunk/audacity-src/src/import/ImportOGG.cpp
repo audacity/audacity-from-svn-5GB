@@ -40,6 +40,10 @@
 #include "../WaveTrack.h"
 #include "../DirManager.h"
 
+#ifdef __WXMAC__
+#include <Files.h>
+#endif
+
 bool ImportOGG(wxWindow * parent,
                wxString Filename, WaveTrack ** channels[],
                int *numChannels, DirManager * dirManager)

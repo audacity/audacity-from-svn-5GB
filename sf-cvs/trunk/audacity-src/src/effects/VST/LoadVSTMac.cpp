@@ -18,6 +18,8 @@
 
 int audacityVSTID = 1;
 
+void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
+
 extern "C" {
 
    long audioMaster(AEffect * effect, long opcode, long index,

@@ -121,9 +121,9 @@ void EditToolBar::MakeButtons()
        wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
    wxColour baseColour = wxColour(204, 204, 204);
 
-   wxImage *upOriginal = new wxImage(Up);
-   wxImage *downOriginal = new wxImage(Down);
-   wxImage *hiliteOriginal = new wxImage(Hilite);
+   wxImage *upOriginal = new wxImage(wxBitmap(Up));
+   wxImage *downOriginal = new wxImage(wxBitmap(Down));
+   wxImage *hiliteOriginal = new wxImage(wxBitmap(Hilite));
 
    upImage = ChangeImageColour(upOriginal, baseColour, newColour);
    downImage = ChangeImageColour(downOriginal, baseColour, newColour);

@@ -41,7 +41,7 @@ enum {
 };
 
 BEGIN_EVENT_TABLE(AudioIOPrefs, wxPanel)
-END_EVENT_TABLE()
+END_EVENT_TABLE()	
 
 AudioIOPrefs::AudioIOPrefs(wxWindow * parent):
 PrefsPanel(parent)

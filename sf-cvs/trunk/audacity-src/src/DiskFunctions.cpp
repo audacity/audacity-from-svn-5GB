@@ -115,7 +115,11 @@ wxLongLong GetFreeDiskSpace(TCHAR * path)
 
 #elif defined(__WXMAC__)
 
-#include <CoreServices/CoreServices.h>
+#ifdef __UNIX__
+# include <CoreServices/CoreServices.h>
+#else
+# include <Files.h>
+#endif
 
 void my_c2pstr(char *str)
 {

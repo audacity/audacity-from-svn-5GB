@@ -343,9 +343,9 @@ AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
    // xoff          x-offset to place icon pixmaps at, with respect to background image
    // yoff          y-offset to place icon pixmaps at, with respect to background image
 
-   wxImage * color = new wxImage(foreground);
-   wxImage * color_disabled = new wxImage(disabledfg);
-   wxImage * mask = new wxImage(alpha);
+   wxImage * color = new wxImage(wxBitmap(foreground));
+   wxImage * color_disabled = new wxImage(wxBitmap(disabledfg));
+   wxImage * mask = new wxImage(wxBitmap(alpha));
 
    wxImage * up2 = OverlayImage(up, color, mask, xoff, yoff);
    wxImage * hilite2 = OverlayImage(hilite, color, mask, xoff, yoff);
