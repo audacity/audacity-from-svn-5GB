@@ -1313,6 +1313,8 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
       DeleteSamples(temp);
 
    ConsistencyCheck("Append");
+
+   return true;
 }
 
 BlockArray *Sequence::Blockify(samplePtr buffer, sampleCount len)
