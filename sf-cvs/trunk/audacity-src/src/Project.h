@@ -140,7 +140,6 @@ class AudacityProject:public wxFrame,
    void OnScrollLeftButton(wxScrollEvent & event);
    void OnScrollRightButton(wxScrollEvent & event);
 
-
    void FinishAutoScroll();
    void FixScrollbars();
 

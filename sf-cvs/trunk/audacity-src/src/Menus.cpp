@@ -977,40 +977,58 @@ void AudacityProject::OnSelectAll(wxEvent & event)
 // View Menu
 //
 
+// Utility function called by other zoom methods
+void AudacityProject::Zoom(double level)
+{
+   if (level > gMaxZoom)
+      level = gMaxZoom;
+   if (level <= gMinZoom)
+      level = gMinZoom;
+
+   mViewInfo.zoom = level;
+   FixScrollbars();
+}
+
 void AudacityProject::OnZoomIn(wxEvent & event)
 {
-   mViewInfo.zoom *= 2.0;
-   if (mViewInfo.zoom > gMaxZoom)
-      mViewInfo.zoom = gMaxZoom;
-   FixScrollbars();
+   Zoom(mViewInfo.zoom *= 2.0);
    mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnZoomOut(wxEvent & event)
 {
-   mViewInfo.zoom /= 2.0;
-   if (mViewInfo.zoom <= 1.0)
-      mViewInfo.zoom = 1.0;
-   FixScrollbars();
+   Zoom(mViewInfo.zoom /= 2.0);
    mTrackPanel->Refresh(false);
-   
 }
 
 void AudacityProject::OnZoomNormal(wxEvent & event)
 {
-   mViewInfo.zoom = 44100.0 / 512.0;
-   FixScrollbars();
+   Zoom(44100.0 / 512.0);
    mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnZoomFit(wxEvent & event)
 {
-   ZoomFit();
+   double len = mTracks->GetMaxLen();
+
+   if (len <= 0.0)
+      return;
+
+   int w, h;
+   mTrackPanel->GetTracksUsableArea(&w, &h);
+   w -= 10;
+
+   Zoom(w / len);
+   TP_ScrollWindow(0.0);
 }
 
 void AudacityProject::OnZoomSel(wxEvent & event)
 {
-   ZoomSel();
+   if (mViewInfo.sel1 <= mViewInfo.sel0)
+      return;
+
+   Zoom(mViewInfo.screen / (mViewInfo.sel1 - mViewInfo.sel0)),
+   TP_ScrollWindow(mViewInfo.sel0);
 }
 
 void AudacityProject::OnPlotSpectrum(wxEvent & event)
