@@ -427,18 +427,20 @@ uninstall-am uninstall all-redirect all-am all installdirs \
 mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
-
-$(srcdir)/frametype.c: $(srcdir)/frametype.gperf Makefile.am
-	gperf -tCcTonD -K id -N id3_frametype_lookup -s -3 -k '*' $< |  \
-	sed -e '/\$$''Id: /s/\$$//g' >$@
-
-$(srcdir)/compat.c: $(srcdir)/compat.gperf Makefile.am
-	gperf -tCcTonD -K id -N id3_compat_lookup -s -3 -k '*' $< |  \
-	sed -e '/\$$''Id: /s/\$$//g' >$@
-
-$(srcdir)/genre.dat: $(srcdir)/genre.dat.in $(srcdir)/genre.dat.sed Makefile.am
-	sed -n -f $(srcdir)/genre.dat.sed $< |  \
-	sed -e '/\$$''Id: /s/\$$//g' >$@
+# dmazzoni: commented out these because they're just more trouble
+# than they're worth (since gperf doesn't get configured properly...)
+#
+#$(srcdir)/frametype.c: $(srcdir)/frametype.gperf Makefile.am
+#	gperf -tCcTonD -K id -N id3_frametype_lookup -s -3 -k '*' $< |  \
+#	sed -e '/\$$''Id: /s/\$$//g' >$@
+#
+#$(srcdir)/compat.c: $(srcdir)/compat.gperf Makefile.am
+#	gperf -tCcTonD -K id -N id3_compat_lookup -s -3 -k '*' $< |  \
+#	sed -e '/\$$''Id: /s/\$$//g' >$@
+#
+#$(srcdir)/genre.dat: $(srcdir)/genre.dat.in $(srcdir)/genre.dat.sed Makefile.am
+#	sed -n -f $(srcdir)/genre.dat.sed $< |  \
+#	sed -e '/\$$''Id: /s/\$$//g' >$@
 
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
