@@ -293,6 +293,11 @@ if [[ "$use_libsndfile" = "system" ]] ; then
 	LIBS="$LIBS -lsndfile"	
 fi
 
+if [[ "$use_libsamplerate" = "yes" ]] ; then
+	use_libsamplerate=$default_libsamplerate;
+	use_libresample="no"
+fi
+
 if [[ "$use_libresample" = "yes" ]] ; then
 	use_libsamplerate="none";
 	BUILDLIBS="$BUILDLIBS libresample/libresample.a"
