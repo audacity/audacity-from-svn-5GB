@@ -6,6 +6,14 @@
 
   Dominic Mazzoni
 
+  This class is thread-safe, assuming that there is only one
+  thread writing, and one thread reading.  If two threads both
+  need to read, or both need to write, they need to lock this
+  class from outside using their own mutex.
+
+  AvailForPut and AvailForGet may underestimate but will never
+  overestimate.
+
 **********************************************************************/
 
 #include "RingBuffer.h"
@@ -15,7 +23,7 @@ RingBuffer::RingBuffer(sampleFormat format, int size)
    mFormat = format;
    mBufferSize = (size > 64? size: 64);
    mStart = 0;
-   mLen = 0;
+   mEnd = 0;
    mBuffer = NewSamples(mBufferSize, mFormat);
 }
 
@@ -24,13 +32,18 @@ RingBuffer::~RingBuffer()
    DeleteSamples(mBuffer);
 }
 
+int RingBuffer::Len()
+{
+   return (mEnd + mBufferSize - mStart) % mBufferSize;
+}
+
 //
 // For the writer only:
 //
 
 int RingBuffer::AvailForPut()
 {
-   return mBufferSize - mLen;
+   return (mBufferSize-4) - Len();
 }
 
 int RingBuffer::Put(samplePtr buffer, sampleFormat format,
@@ -40,13 +53,14 @@ int RingBuffer::Put(samplePtr buffer, sampleFormat format,
    int block;
    int copied;
    int pos;
+   int len = Len();
 
-   if (samplesToCopy > mBufferSize - mLen)
-      samplesToCopy = mBufferSize - mLen;
+   if (samplesToCopy > (mBufferSize-4) - len)
+      samplesToCopy = (mBufferSize-4) - len;
 
    src = buffer;
    copied = 0;
-   pos = (mStart + mLen) % mBufferSize;
+   pos = mEnd;
 
    while(samplesToCopy) {
       block = samplesToCopy;
@@ -61,8 +75,9 @@ int RingBuffer::Put(samplePtr buffer, sampleFormat format,
       pos = (pos + block) % mBufferSize;
       samplesToCopy -= block;
       copied += block;
-      mLen += block;
    }
+
+   mEnd = pos;
 
    return copied;
 }
@@ -73,7 +88,7 @@ int RingBuffer::Put(samplePtr buffer, sampleFormat format,
 
 int RingBuffer::AvailForGet()
 {
-   return mLen;
+   return Len();
 }
 
 int RingBuffer::Get(samplePtr buffer, sampleFormat format,
@@ -82,9 +97,10 @@ int RingBuffer::Get(samplePtr buffer, sampleFormat format,
    samplePtr dest;
    int block;
    int copied;
+   int len = Len();
 
-   if (samplesToCopy > mLen)
-      samplesToCopy = mLen;
+   if (samplesToCopy > len)
+      samplesToCopy = len;
 
    dest = buffer;
    copied = 0;
@@ -100,7 +116,6 @@ int RingBuffer::Get(samplePtr buffer, sampleFormat format,
 
       dest += block;
       mStart = (mStart + block) % mBufferSize;
-      mLen -= block;
       samplesToCopy -= block;
       copied += block;
    }
@@ -110,11 +125,12 @@ int RingBuffer::Get(samplePtr buffer, sampleFormat format,
 
 int RingBuffer::Discard(int samplesToDiscard)
 {
-   if (samplesToDiscard > mLen)
-      samplesToDiscard = mLen;
+   int len = Len();
+
+   if (samplesToDiscard > len)
+      samplesToDiscard = len;
 
    mStart = (mStart + samplesToDiscard) % mBufferSize;
-   mLen -= samplesToDiscard;
 
    return samplesToDiscard;
 }

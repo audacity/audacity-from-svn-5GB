@@ -287,10 +287,10 @@ bool AudioIO::Start()
       // 5 seconds of buffering per channel
       mOutBufferSize = (sampleCount)(mRate * 5);
       mOutBuffers = new RingBuffer*[mNumOutTracks];
-      for(i=0; i<mNumOutTracks; i++)
+      for(i=0; i<(unsigned int)mNumOutTracks; i++)
          mOutBuffers[i] = new RingBuffer(floatSample, mOutBufferSize);
    }
-   
+
    FillBuffers();
 
    if (!OpenDevice()) {
@@ -427,6 +427,10 @@ bool AudioIO::GetPaused(){
 
 void AudioIO::FillBuffers()
 {
+   AudacityProject *project = mProject;
+   if (!project)
+      return;
+
    int i;
 
    // Playback buffers
@@ -440,7 +444,7 @@ void AudioIO::FillBuffers()
          if (avail < block)
             block = avail;
       }
-      
+
       // Don't fill playback buffers unless we have at least 1 second free
       if (block >= mRate || (mStopping && !mHardStop)) {
          double deltat = block / mRate;
@@ -451,7 +455,7 @@ void AudioIO::FillBuffers()
                deltat = 0.0;
             block = (unsigned int)(deltat * mRate + 0.5);
          }
-         
+
          if (block > 0) {
             for(i=0; i<mNumOutTracks; i++) {
                WaveTrack *t = mOutTracks[i];
@@ -461,6 +465,7 @@ void AudioIO::FillBuffers()
                mixer->Clear();
                mixer->MixMono(t, mT, mT + deltat);
                samplePtr outbytes = mixer->GetBuffer();
+
                mOutBuffers[i]->Put(outbytes, floatSample, block);
                delete mixer;
             }
@@ -494,31 +499,44 @@ void AudioIO::FillBuffers()
          // We can't redraw from this thread, so post a message
          // telling the project to redraw itself next time through
          // its main event loop.
-         mProject->PostRedrawMessage();
+         project->PostRedrawMessage();
       }
    }
 }
 
 void AudioIO::Stop()
 {
-   if (!mProject)
+   // Only allow one thread to access this code at a time
+   wxCriticalSectionLocker locker(mStopSection);
+
+   if (mStopping)
+      return;
+
+   AudacityProject *project = mProject;
+
+   if (!project)
       return;
 
    if (!mHardStop) {
-      mProject->GetControlToolBar()->SetPlay(false);
-      mProject->GetControlToolBar()->SetStop(false);
-      mProject->GetControlToolBar()->SetRecord(false);
+      project->GetControlToolBar()->SetPlay(false);
+      project->GetControlToolBar()->SetStop(false);
+      project->GetControlToolBar()->SetRecord(false);
    }
    
    // If we reached the end of the selection, we call Pa_StopStream,
    // which waits until all buffers are finished.  If the user requested
    // the stop, we call Pa_AbortStream, which stops immediately.
-   if (mReachedEnd && !mHardStop)
-      Pa_StopStream(mPortStream);
-   else
-      Pa_AbortStream(mPortStream);
 
-   Pa_CloseStream(mPortStream);
+   PortAudioStream *stream = mPortStream;
+
+   if (stream) {
+      if (mReachedEnd && !mHardStop)
+         Pa_StopStream(stream);
+      else
+         Pa_AbortStream(stream);
+
+      Pa_CloseStream(stream);
+   }
 
    mPortStream = NULL;
 
@@ -567,11 +585,14 @@ AudacityProject *AudioIO::GetProject()
 
 double AudioIO::GetIndicator()
 {
-   if (mProject && mPortStream)
+   PortAudioStream *stream = mPortStream;
+   AudacityProject *project = mProject;
+
+   if (project && stream)
       if(GetPaused())
          return GetPauseIndicator();
       else {
-         double streamTime = Pa_StreamTime(mPortStream);
+         double streamTime = Pa_StreamTime(stream);
          double indicator = mT0 + ((streamTime-mDroppedSamples)/ mRate);
 
          // Pa_StreamTime can sometimes return wacky results, so we
@@ -595,6 +616,8 @@ void AudioIO::SetAlwaysEnablePause(bool bEnable)
 
 void AudioIO::Finish()
 {
+   AudacityProject *project = mProject;
+
    // Note that this should only be called from the AudioThread,
    // after it has received the Stop message
 
@@ -613,8 +636,8 @@ void AudioIO::Finish()
    }
 
    if (!mHardStop) {
-      if (mNumInChannels > 0)
-         mProject->TP_PushState("Recorded Audio");
+      if (mNumInChannels > 0 && project)
+         project->TP_PushState("Recorded Audio");
       
       if (mLostSamples) {
          wxString str;
@@ -630,9 +653,11 @@ void AudioIO::Finish()
    mNumInChannels = 0;
    mInBuffers = NULL;
    mInTracks = NULL;
-   
-   mProject->SetStop(true);
-   mProject->HandleResize();
+
+   if (project) {
+      project->SetStop(true);
+      project->HandleResize();
+   }
    mStarted = false;
    mProject = NULL;
    mStopping = false;
