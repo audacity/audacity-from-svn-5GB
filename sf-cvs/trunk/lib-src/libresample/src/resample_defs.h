@@ -14,9 +14,7 @@
 #ifndef __RESAMPLE_DEFS__
 #define __RESAMPLE_DEFS__
 
-#ifdef WIN32
-#include "configwin.h"
-#else
+#ifndef WIN32
 #include "config.h"
 #endif
 
