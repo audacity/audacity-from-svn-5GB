@@ -60,27 +60,45 @@ A.sf                {        font-weight : bold;        }
 .ablue                {        background-color : #ECECFF;        }
 
 
-.a,.title_y,.title_b,.title_r,.title_g,.title_o,.title_0
+.a,.ar,.ag,.ao,.ab,.ay,
+.title_y,.title_b,.title_r,.title_g,.title_o,.title_0
                 {        width : 92%; margin-left : 16px;        }
 
 .ss,.top_y,.top_r,.top_b,.top_g,.top_o
-                {        font-size : xx-small;        font-weight : bold;        }
-
+				{	font-size : xx-small;
+					font-weight : bold;        }
 .title_r,.top_r,.bg_r,
 .title_g,.top_g,.bg_g,
 .title_b,.top_b,.bg_b,
 .title_y,.top_y,.bg_y,
 .title_o,.top_o,.bg_o,
-.title_0                {        padding:2px;        }
+.title_0			{	padding:2px;        }
 
-.title_r,.top_r,.bg_r,.qr        {        background-color : #FFD0D0;        }
-.title_g,.top_g,.bg_g,.qg        {        background-color : #D0FFD0;        }
-.title_b,.top_b,.bg_b,.qb        {        background-color : #D0D0FF;        }
-.title_y,.top_y,.bg_y,.qy        {        background-color : #FFFF80;        }
-.title_o,.top_o,.bg_o,.qo        {        background-color : #FFD060;        }
+.title_r,.top_r,.bg_r,.qr	{	background-color : #FFD0D0;        }
+.title_g,.top_g,.bg_g,.qg	{	background-color : #D0FFD0;        }
+.title_b,.top_b,.bg_b,.qb	{	background-color : #D0D0FF;        }
+.title_y,.top_y,.bg_y,.qy	{	background-color : #FFFF80;        }
+.title_o,.top_o,.bg_o,.qo	{	background-color : #FFD060;        }
 
-.a  {        font-size : x-small;
-        font-weight : normal;
+.ar	{       border-color: #FF7D7D;	background-color : #FFF0F0;	}
+.ag	{       border-color: #B4FFA7;	background-color : #F0FFF0;	}
+.ab	{       border-color: #907DFF;	background-color : #F0F0FF;	}
+.ay	{       border-color: #FEFF7D;	background-color : #FFFFE0;	}
+.ao	{	border-color: #FFD277;	background-color : #FFF6E2;	}
+
+.ar,.ag,.ab,.ay,.ao
+	{	font-weight:Bold;
+		font-size: 10pt; 
+		color: #000000 ;
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		border-width:2px;
+		border-style:solid;
+		padding:4px;
+	}
+
+.ar,.ag,.ab,.ay,.ao,.a
+	{	font-size : x-small;
+        	font-weight : normal;
         }
 
 .pushin        {        margin-left : 16px;        }
@@ -91,7 +109,8 @@ A.sf                {        font-weight : bold;        }
                         padding : 2px;
                 }
 .keybshc_menu        {        text-decoration:none;        }
-.keybshc,.keybshc_menu{        font-family : Verdana, Arial, Helvetica, sans-serif;
+.keybshc,.keybshc_menu
+		{       font-family : Verdana, Arial, Helvetica, sans-serif;
                         font-size : 14pt;
                         font-style: normal; font-weight: normal;
                         line-height: 26pt;
@@ -99,6 +118,18 @@ A.sf                {        font-weight : bold;        }
                         padding : 3px;
                         padding-left : 6px;
                         padding-right : 6px;
+                        border-color: #FF0033 black black;
+                        border: thin double
+                }
+
+.keybshc_s	{       font-family : Verdana, Arial, Helvetica, sans-serif;
+                        font-size : 10pt;
+                        font-style: normal; font-weight: bold;
+                        line-height: 16pt;
+                        background-color : #EEDCD5;
+                        padding : 2px;
+                        padding-left : 3px;
+                        padding-right : 3px;
                         border-color: #FF0033 black black;
                         border: thin double
                 }

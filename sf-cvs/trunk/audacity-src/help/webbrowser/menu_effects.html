@@ -26,7 +26,9 @@
 	  	<td><a class=menuref href="menu_edit.html">Edit</a></td>
 	  	<td><a class=menuref href="menu_view.html">View</a></td>
 	  	<td><a class=menuref href="menu_project.html">Project</a></td>
-	  	<td><a class=menuref_current href="menu_effects.html">Effects</a></td>
+	  	<td><a class=menuref href="menu_generate.html">Generate</a></td>
+	  	<td><a class=menuref_current href="menu_effects.html">Effect</a></td>
+	  	<td><a class=menuref href="menu_analyze.html">Analyze</a></td>
 	  	</tr></table>
 	  </td>
 	</tr>
@@ -38,14 +40,26 @@
 <p class=a>
 Audacity includes many built-in effects and also lets you use
 plug-in effects (VST plug-ins) in the MacOS and Windows
-versions.</p>
+versions. You can download many free VST plugins at <a href="http://www.databaseaudio.co.uk">http://www.databaseaudio.co.uk</a>.
+Loads of information is also available at <a href="http://www.kvr-vst.com">http://www.kvr-vst.com</a>.</p>
+
 
 <p class=a>
 To apply an effect, simply select part or all of the tracks you want
 to modify, and select the effect from the menu.  Titles which end in
 an ellipsis (...) will bring up a dialog asking you for more parameters.</p>
 
+<P class=a>
+There are four classes of effects and they are all applied the same way. These are
+<br>
+<center><table><tr><td>
+<span class=bg_b><a href="#internal">Internal Effects</a></span>,
+<span class=bg_o><a href="#vstfx">VST Effect Plugins</a></span>(Windows/Mac only),
+<span class=bg_g><a href="#nyquistfx">Nyquist Effects</a></span> and
+<span class=bg_r><a href="#ladspafx">LADSPA Effects</a></span>(Linux only).
+</td></tr></table></center>
 
+<a name="internal"></a>
 <H2 align=center class=bg_b>Internal Effects</H2>
 <center>
   <table width="100%"><tr>
@@ -190,8 +204,8 @@ the speakers.</p>
 </center>
 
 
-
-<H2 align=center class=bg_o>Plug-ins</H2>
+<a name=vstfx></a>
+<H2 align=center class=bg_o>VST Plug-ins</H2>
 <p class=a>To use a VST plug-in effect, put the effect in the directory (folder)
 called "VST", which should be in the same directory where Audacity
 resides.  If there is no directory called VST, create one.  The next
@@ -200,6 +214,7 @@ Effect menu.</p>
 
 <a name="freeverb"></a>
 <p class=menuref_item>Freeverb2...</p>
+
 
 <center>
   <table width="100%"><tr>
@@ -270,6 +285,25 @@ highpass filter filters out the low frequencies.</p>
     <tr><td colspan=2 class=top_o>&nbsp;</td></tr>
 </table>
 </center>
+
+
+<a name=nyquistfx></a>
+<H2 align=center class=bg_g>Nyquist Plugins</H2>
+<p class=a>To use a Nyquist effect, put the effect in the directory (folder)
+called "nyquist", which should be in the same directory where Audacity
+resides.  Upon installation, some nyquist scripts are included, so you needn't worry
+about creating this directory.  The next time you launch Audacity, any plug-ins you
+added will appear in the Effect menu.</p>
+<!-- a name="nyquist1"></a>
+<p class=menuref_item>Freeverb2...</p -->
+
+
+<a name=ladspafx></a>
+<H2 align=center class=bg_r>LADSPA Plugins</H2>
+<p class=a>
+&nbsp;
+</p>
+
 
 <center>
 <table width="100%" border=0 cellspacing=0 cellpadding=0>
