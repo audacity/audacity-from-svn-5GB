@@ -118,8 +118,15 @@ pascal OSErr AEQuit(const AppleEvent * theAppleEvent,
 }
 
 /* prototype of MoreFiles fn, included in wxMac already */
+#ifdef __UNIX__
+extern "C" {
+pascal OSErr FSpGetFullPath(const FSSpec * spec,
+		     short *fullPathLength, Handle * fullPath);
+};
+#else
 pascal OSErr FSpGetFullPath(const FSSpec * spec,
                             short *fullPathLength, Handle * fullPath);
+#endif
 
 pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent,
                          AppleEvent * theReply, long Refcon)
