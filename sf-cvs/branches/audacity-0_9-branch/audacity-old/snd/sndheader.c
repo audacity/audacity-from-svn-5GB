@@ -139,7 +139,7 @@ char readchar(int file, long *read_in)
 long readlong(int file, long *read_in)
 {
     long l = 0;
-    readitem(file, &l, long);
+    readitem(file, &l, int32_t);
     return ntohl(l);
 }
 
@@ -386,9 +386,8 @@ static double StepToHz(double step)
     return exp(step * 0.0577622650466621 + 2.1011784386926213);
 }
 
-
-#define AIFF_SND_MAGIC (*((long *) "FORM"))
-#define WAVE_SND_MAGIC (*((long *) "RIFF"))
+#define AIFF_SND_MAGIC (*((int32_t *) "FORM"))
+#define WAVE_SND_MAGIC (*((int32_t *) "RIFF"))
 
 long snd_read_header(snd_type snd, long *flags)
 {

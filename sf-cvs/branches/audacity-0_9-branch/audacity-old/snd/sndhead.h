@@ -1,7 +1,7 @@
 /* sndhead.h -- header info */
 
 /* NeXT sound headers */
-#define NEXT_SND_MAGIC (*((long *) ".snd"))  // was: ((int)0x2e736e64)
+#define NEXT_SND_MAGIC (*((int32_t *) ".snd"))  // was: ((int)0x2e736e64)
 #define NEXT_SND_FORMAT_UNSPECIFIED		(0)
 #define	NEXT_SND_FORMAT_ULAW_8			(1)
 #define NEXT_SND_FORMAT_LINEAR_8		(2)
