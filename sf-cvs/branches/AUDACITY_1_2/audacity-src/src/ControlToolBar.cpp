@@ -341,14 +341,19 @@ void ControlToolBar::RegenerateToolsTooltips()
 //   to workaround the problem.  The problem is not fully understood though
 //   (as of April 2003).
    
-   wxSafeYield(); //Deal with some queued up messages...
+   //	Vaughan, October 2003: Now we're crashing on Win2K if 
+	// "Quit when closing last window" is unchecked, when we come back 
+	// through here, on either of the wxSafeYield calls.
+	// James confirms that commenting them out does not cause his original problem 
+	// to reappear, so they're commented out now.
+	//		wxSafeYield(); //Deal with some queued up messages...
    mTool[selectTool]->SetToolTip(_("Selection Tool"));
    mTool[envelopeTool]->SetToolTip(_("Envelope Tool"));
    mTool[slideTool]->SetToolTip(_("Time Shift Tool"));
    mTool[zoomTool]->SetToolTip(_("Zoom Tool"));
    mTool[drawTool]->SetToolTip(_("Draw Tool"));
    mTool[multiTool]->SetToolTip(_("Multi-Tool Mode"));
-   wxSafeYield();
+   //		wxSafeYield();
    return;
 
 }
@@ -432,7 +437,6 @@ void ControlToolBar::MakeButtons()
    mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 27, 28);
    mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 54, 0);
    mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 54, 28); 
-   RegenerateToolsTooltips();
 
 #ifdef __WXMAC__
    wxToolTip::Enable(false);    // DM: tooltips are broken in wxMac
@@ -441,6 +445,8 @@ void ControlToolBar::MakeButtons()
    wxToolTip::Enable(true);     
    wxToolTip::SetDelay(1000);
 #endif
+
+   RegenerateToolsTooltips();
 }
 
 ControlToolBar::~ControlToolBar()
