@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+	<title>Edit Menu</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+
+<body>
+<!--top table-->
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="screen.html">Back to the Stuff On Screen page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+<BR>
+<table cellpadding=0 cellspacing=0 width="98%">
+	<tr>
+	  <td align=center>
+	  	<table cellpadding=0 cellspacing=0><tr>
+	  	<td><a class=menuref href="menu_file.html">File</a></td>
+	  	<td><a class=menuref_current href="menu_edit.html">Edit</a></td>
+	  	<td><a class=menuref href="menu_view.html">View</a></td>
+	  	<td><a class=menuref href="menu_project.html">Project</a></td>
+	  	<td><a class=menuref href="menu_generate.html">Generate</a></td>
+	  	<td><a class=menuref href="menu_effects.html">Effect</a></td>
+	  	<td><a class=menuref href="menu_analyze.html">Analyze</a></td>
+	  	</tr></table>
+	  </td>
+	</tr>
+	<tr>
+	  <td class=bg_r align=center><font size="+3">Edit Menu</font></td>
+	</tr>
+</table>
+
+<center>
+  <table width="100%"><tr>
+    <td valign=top width="50%">
+
+
+<a name="undo"></a>
+<p class=menuref_item>Undo</p>
+<p class=a>This will undo the last editing operation you performed to your
+project.  Audacity currently supports full unlimited undo - meaning
+you can undo every editing operation back to when you opened the window.</p>
+
+
+
+<a name="redo"></a>
+<p class=menuref_item>Redo</p>
+<p class=a>This will redo any editing operations that were just undone.
+After you perform a new editing operation, you can no longer redo
+the operations that were undone.</p>
+
+
+<a name="cut"></a>
+<P class=menuref_item>Cut</P>
+<p class=a>Removes the selected audio data and places it on the clipboard.
+Only one "thing" can be on the clipboard at a time, but it may
+contain multiple tracks.</p>
+
+
+<a name="copy"></a>
+<p class=menuref_item>Copy</p>
+<p class=a>Copies the selected audio data to the clipboard without removing it from the project.</p>
+
+
+	</td>
+	<td valign=top width="50%">
+
+
+<a name="paste"></a>
+<p class=menuref_item>Paste</p>
+<p class=a>Inserts whatever is on the clipboard at the position of the
+selection cursor in the project, replacing whatever audio data
+is currently selected, if any.</p>
+
+
+<a name="trim"></a>
+<p class=menuref_item>Trim</p>
+<p class=a>Deletes everything but the selection.</P>
+
+
+<a name="delete"></a>
+<p class=menuref_item>Delete</p>
+<p class=a>Removes the audio data that is currently selected without
+copying it to the clipboard.</p>
+
+<a name="silence"></a>
+<p class=menuref_item>Silence</p>
+<p class=a>Erases the audio data currently selected, replacing it with
+silence instead of removing it completely.</p>
+
+<!-- a name="insertsilence"></a>
+<p class=menuref_item>Insert Silence...</p>
+<p class=a>Prompts for a dialog indicating the number of seconds of silence
+to insert, then inserts that amount of silence at the current
+selection cursor position in the project, replacing whatever audio
+data is currently selected, if any.</p -->
+
+
+	</td>
+    </tr>
+    <tr><td colspan=2 class=top_b>&nbsp;</td></tr>
+
+    <tr>
+      <td valign=top>
+
+<a name="split"></a>
+<p class=menuref_item>Split</p>
+<p class=a>Moves the selected region into its own track or tracks, replacing
+the affected portion of the original track with silence.  See the figure below:</p>
+
+<center><img border=0 src="images/split.png" width="320" height="80" alt="Split function illustration"></center>
+
+<a name="duplicate"></a>
+<p class=menuref_item>Duplicate</p>
+<p class=a>Makes a copy of all or part of a track or set of tracks into new
+tracks.  See the figure below:</p>
+
+<center><img border=0 src="images/duplicate.png" width="320" height="80" alt="Duplicate function illustration"></center>
+
+    </td>
+    <td valign=top>
+
+<a name="splitatlabels"></a>
+<p class=menuref_item>Split at Labels</p>
+<p class=a>Uses the split function to give you seperate tracks for every label. The source track remains unchanged.</p>
+<p class=a>Select the label track(click on the track panel), then select the track you wish to split by
+ <span class=keybshc_s>SHIFT+click</span>'ing on its track panel. Now activate the <i>Split by Labels</i> function.</p>
+<p class=a>The result is that for each label, a new track will be created that contains a duplicate of the material up to the next label or the end of the track, whichever comes first.</p>
+
+<a name="selectall"></a>
+<p class=menuref_item>Select All</p>
+<p class=a>Selects all of the audio in all of the tracks.</p>
+
+<a name="selectstarttocursor"></a>
+<p class=menuref_item>Select Start to Cursor</p>
+<p class=a>Selects all the audio from the start of the timeline to the current cursor.</p>
+
+<a name="selectcursortoend"></a>
+<p class=menuref_item>Select Cursor to End</p>
+<p class=a>Selects all the audio from the cursor to the end of project, which is as far as audio exists in the project.</p>
+
+
+    </td>
+  </tr>
+</table>
+</center>
+
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="screen.html">Back to the Stuff On Screen page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+</body>
+</html>
+
+
+
