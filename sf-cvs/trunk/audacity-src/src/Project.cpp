@@ -204,6 +204,34 @@ mDefaultFormat((sampleFormat) gPrefs->
 mTrackPanel(NULL), mAutoScrolling(false), mHistoryWindow(NULL),
 mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
 {
+   #ifdef __WXMSW__
+
+   //BG: On Windows, associate the aup file type with Audacity
+   {
+      wxRegKey associateFileTypes;
+
+      associateFileTypes.SetName("HKCR\\.AUP");
+      associateFileTypes.Create(true);
+      associateFileTypes = "Audacity.Project";
+
+      associateFileTypes.SetName("HKCR\\Audacity.Project");
+      associateFileTypes.Create(true);
+      associateFileTypes = "Audacity Project File";
+
+      associateFileTypes.SetName("HKCR\\Audacity.Project\\shell");
+      associateFileTypes.Create(true);
+      associateFileTypes = "";
+
+      associateFileTypes.SetName("HKCR\\Audacity.Project\\shell\\open");
+      associateFileTypes.Create(true);
+
+      associateFileTypes.SetName("HKCR\\Audacity.Project\\shell\\open\\command");
+      associateFileTypes.Create(true);
+      associateFileTypes = "C:\\audacity\\audacity\\win\\Release\\audacity.exe %1";
+   }
+
+   #endif
+
    #ifndef __WXMAC__
    mDrag = NULL;
    #endif
