@@ -230,6 +230,7 @@ class TrackPanel:public wxWindow {
    void MakeParentResize();
 
    void OnSetName(wxCommandEvent &event);
+   void OnSetFont(wxCommandEvent &event);
 
    void OnMoveTrack    (wxCommandEvent &event);
    void OnChangeOctave (wxCommandEvent &event);
