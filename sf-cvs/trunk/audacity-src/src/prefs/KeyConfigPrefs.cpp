@@ -137,6 +137,7 @@ KeyConfigPrefs::~KeyConfigPrefs()
 
 BEGIN_EVENT_TABLE(SysKeyTextCtrl, wxTextCtrl)
    EVT_KEY_DOWN(SysKeyTextCtrl::OnKey)
+   EVT_CHAR(SysKeyTextCtrl::OnChar)
 END_EVENT_TABLE()
 
 SysKeyTextCtrl::SysKeyTextCtrl(wxWindow *parent, wxWindowID id,
@@ -153,7 +154,7 @@ SysKeyTextCtrl::~SysKeyTextCtrl()
 {
 }
 
-//BG: Still Not working yet
+//BG: It works on Windows, but we need to trap WM_CHAR
 //DM: On Linux, now it works except for Ctrl+3...Ctrl+8
 void SysKeyTextCtrl::OnKey(wxKeyEvent& event)
 {
@@ -184,4 +185,9 @@ void SysKeyTextCtrl::OnKey(wxKeyEvent& event)
       return; // Don't change it if we don't recognize the key
 
    SetValue(newStr);
+}
+
+//BG: Trap WM_CHAR
+void SysKeyTextCtrl::OnChar(wxKeyEvent& event)
+{
 }

@@ -60,6 +60,7 @@ public:
 
 private:
    void OnKey(wxKeyEvent& event);
+   void OnChar(wxKeyEvent& event);
 
 protected:
    DECLARE_EVENT_TABLE()
