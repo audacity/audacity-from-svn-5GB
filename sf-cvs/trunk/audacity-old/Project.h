@@ -21,8 +21,8 @@
 #include <wx/frame.h>
 #include <wx/window.h>
 #include <wx/scrolbar.h>
-#include <wx/statusbr.h>
 
+#include "AStatus.h"
 #include "DirManager.h"
 #include "TrackPanel.h"
 #include "UndoManager.h"
@@ -32,6 +32,7 @@ class wxDragImage;
 
 class TrackList;
 class APalette;
+
 
 class AudacityProject;
 
@@ -43,7 +44,9 @@ WX_DEFINE_ARRAY(AudacityProject *, AProjectArray);
 
 extern AProjectArray gAudacityProjects;
 
-class AudacityProject: public wxFrame, public TrackPanelListener
+class AudacityProject: public wxFrame,
+					   public TrackPanelListener,
+					   public AStatusListener
 {
 public:
 
@@ -163,6 +166,10 @@ public:
   void ShowPalette();
   void HidePalette();
 
+  // AStatus callback methods
+
+  virtual void AS_SetRate(double rate);
+
 private:
 
   // Private Methods
@@ -210,10 +217,10 @@ private:
   // Window elements
 
   APalette    *mAPalette;
+  AStatus     *mStatus;
   wxPoint      mPaletteHotspot;
   wxDragImage *mDrag;
   TrackPanel  *mTrackPanel;
-  wxStatusBar *mStatusBar;
   wxScrollBar *mHsbar;
   wxScrollBar *mVsbar;
 

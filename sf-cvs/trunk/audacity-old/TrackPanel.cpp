@@ -765,10 +765,10 @@ void TrackPanel::HandleLabelClick(wxMouseEvent& event)
 		  mPopupMenuTarget = t;
 		  
 		  wxClientDC dc(this);
-		  Bevel(dc, false, fieldRect);
+		  AColor::Bevel(dc, false, fieldRect);
 		  PopupMenu(popupMenu,
 					fieldRect.x, fieldRect.y + fieldRect.height);
-		  Bevel(dc, true, fieldRect);
+		  AColor::Bevel(dc, true, fieldRect);
 
 		  return;
 		}
@@ -948,7 +948,7 @@ void TrackPanel::DrawRuler(wxDC& dc)
 
   r.width--;
   r.height--;
-  Bevel(dc, true, r);  
+  AColor::Bevel(dc, true, r);  
 
   dc.SetPen(*wxBLACK_PEN);
   dc.DrawLine(r.x, r.y+r.height+1, r.x+r.width+1, r.y+r.height+1);
@@ -1143,12 +1143,12 @@ void TrackPanel::DrawTracks(wxDC& dc)
 	labelRect.Inflate(-4, -4);
 	AColor::Medium(&dc, t->selected);
 	dc.DrawRectangle(labelRect);
-	Bevel(dc, false, labelRect);
+	AColor::Bevel(dc, false, labelRect);
 	labelRect.Inflate(4, 4);
 
 	wxRect titleRect;
 	if (GetLabelFieldRect(labelRect, 0, false, titleRect)) {
-	  Bevel(dc, false, titleRect);
+	  AColor::Bevel(dc, false, titleRect);
 	  dc.DrawText(wxString::Format("Track %d", num+1),
 				  titleRect.x + 7, titleRect.y + 2);
 	}
@@ -1156,7 +1156,7 @@ void TrackPanel::DrawTracks(wxDC& dc)
 	wxRect channelRect;
 	if (GetLabelFieldRect(labelRect, 1, true, channelRect)) {
 	  dc.DrawText("Channel:", labelRect.x + 7, channelRect.y + 2);
-	  Bevel(dc, true, channelRect);
+	  AColor::Bevel(dc, true, channelRect);
 	  wxString str;
 	  switch(t->channel) {
 	  case VTrack::MonoChannel: str = "Mono"; break;
@@ -1171,7 +1171,7 @@ void TrackPanel::DrawTracks(wxDC& dc)
 	  wxRect rateRect;
 	  if (GetLabelFieldRect(labelRect, 2, true, rateRect)) {
 		dc.DrawText("Rate:", labelRect.x + 7, rateRect.y + 2);
-		Bevel(dc, true, rateRect);
+		AColor::Bevel(dc, true, rateRect);
 		dc.DrawText(wxString::Format("%d",int(((WaveTrack *)t)->rate + 0.5)),
 					rateRect.x + 3, rateRect.y + 2);
 	  }
@@ -1179,7 +1179,7 @@ void TrackPanel::DrawTracks(wxDC& dc)
 	  wxRect displayRect;
 	  if (GetLabelFieldRect(labelRect, 3, true, displayRect)) {
 		dc.DrawText("Display:", labelRect.x + 7, displayRect.y + 2);
-		Bevel(dc, true, displayRect);
+		AColor::Bevel(dc, true, displayRect);
 		wxString str;
 		if (((WaveTrack *)t)->GetDisplay() == 1)
 		  str = "Spectr";
@@ -1199,7 +1199,7 @@ void TrackPanel::DrawTracks(wxDC& dc)
 	dc.DrawRectangle(trackRect);
 
 	trackRect.Inflate(-4, -4);
-	Bevel(dc, false, trackRect);	
+	AColor::Bevel(dc, false, trackRect);	
 
 	// Don't draw if it's not visible at all (vertically)
 	// if (r.y < (visible->y + visible->height)
@@ -1356,7 +1356,7 @@ void TrackPanel::OnRateOther()
 {
   if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
 	wxString defaultStr;
-	defaultStr.Printf("%d",(int)((WaveTrack *)mPopupMenuTarget)->rate);
+	defaultStr.Printf("%d",(int)((WaveTrack *)mPopupMenuTarget)->rate+0.5);
 	wxString rateStr =
 	  wxGetTextFromUser("Enter a rate in Hz (samples per second):",
 						"Set Rate",
@@ -1511,26 +1511,6 @@ int TrackPanel::GetLabelOffset()
 int TrackPanel::GetRulerHeight()
 {
   return 20;
-}
-
-// inline
-void TrackPanel::Bevel(wxDC& dc, bool up, wxRect& r)
-{
-  if (up)
-	AColor::Light(&dc, false);
-  else
-	AColor::Dark(&dc, false);
-
-  dc.DrawLine(r.x, r.y, r.x + r.width, r.y);
-  dc.DrawLine(r.x, r.y, r.x, r.y + r.height);
-
-  if (!up)
-	AColor::Light(&dc, false);
-  else
-	AColor::Dark(&dc, false);
-
-  dc.DrawLine(r.x + r.width, r.y, r.x + r.width, r.y + r.height);
-  dc.DrawLine(r.x, r.y + r.height, r.x + r.width + 1, r.y + r.height);
 }
 
 //

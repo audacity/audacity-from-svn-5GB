@@ -23,6 +23,25 @@ wxPen AColor::lightPen[2];
 wxPen AColor::mediumPen[2];
 wxPen AColor::darkPen[2];
 
+void AColor::Bevel(wxDC& dc, bool up, wxRect& r)
+{
+  if (up)
+	AColor::Light(&dc, false);
+  else
+	AColor::Dark(&dc, false);
+
+  dc.DrawLine(r.x, r.y, r.x + r.width, r.y);
+  dc.DrawLine(r.x, r.y, r.x, r.y + r.height);
+
+  if (!up)
+	AColor::Light(&dc, false);
+  else
+	AColor::Dark(&dc, false);
+
+  dc.DrawLine(r.x + r.width, r.y, r.x + r.width, r.y + r.height);
+  dc.DrawLine(r.x, r.y + r.height, r.x + r.width + 1, r.y + r.height);
+}
+
 void AColor::Light(wxDC *dc, bool selected)
 {
   if (!inited) Init();

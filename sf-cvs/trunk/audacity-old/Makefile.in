@@ -24,6 +24,7 @@ OBJS = \
 	$(OBJDIR)/AColor.cpp.o \
 	$(OBJDIR)/APalette.cpp.o \
 	$(OBJDIR)/ASlider.cpp.o \
+	$(OBJDIR)/AStatus.cpp.o \
 	$(OBJDIR)/AboutDialog.cpp.o \
 	$(OBJDIR)/AudacityApp.cpp.o \
 	$(OBJDIR)/BlockFile.cpp.o \

@@ -137,8 +137,6 @@ private:
   void DrawRuler(wxDC& dc);
   void DrawTracks(wxDC& dc);
 
-  inline void Bevel(wxDC& dc, bool up, wxRect &r);
-
   TrackPanelListener *mListener;
 
   TrackList       *mTracks;

@@ -6,7 +6,8 @@
 
   Dominic Mazzoni
 
-  Manages color brushes and pens
+  Manages color brushes and pens and provides utility
+  drawing functions
 
 **********************************************************************/
 
@@ -17,10 +18,13 @@
 #include <wx/pen.h>
 
 class wxDC;
+class wxRect;
 
 class AColor
 {
 public:
+  static void Bevel(wxDC& dc, bool up, wxRect& r);
+
   static void Light(wxDC *dc, bool selected);
   static void Medium(wxDC *dc, bool selected);
   static void Dark(wxDC *dc, bool selected);

@@ -248,11 +248,6 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   mDrag(NULL),
   mAutoScrolling(false)
 {
-  mStatusBar = CreateStatusBar(1);
-
-  mStatusBar->SetStatusText("Welcome to Audacity version " 
-							AUDACITY_VERSION_STRING, 0);
-
   //
   // Create track list
   //
@@ -379,13 +374,29 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   if (!gWindowedPalette) {
 	int h = GetAPaletteHeight();
 
-	mAPalette = new APalette(this, 52,
+	mAPalette = new APalette(this, 0,
 							 wxPoint(10, 0),
 							 wxSize(width-10, h));
 	
 	top += h+1;
 	height -= h+1;
   }
+
+  //
+  // Create the status bar
+  //
+
+  int sh = GetStatusHeight();
+
+  mStatus = new AStatus(this, 0,
+						wxPoint(0, height-sh),
+						wxSize(width, sh),
+						mRate,
+						this);
+  height -= sh;
+
+  mStatus->SetField("Welcome to Audacity version " 
+					AUDACITY_VERSION_STRING, 0);
 
   //
   // Create the TrackPanel and the scrollbars
@@ -452,6 +463,11 @@ wxString AudacityProject::GetName()
 double AudacityProject::GetRate()
 {
   return mRate;
+}
+
+void AudacityProject::AS_SetRate(double rate)
+{
+  mRate = rate;
 }
 
 double AudacityProject::GetSel0()
@@ -607,6 +623,12 @@ void AudacityProject::HandleResize()
 	  height -= h+1;
 	}
 
+	int sh = GetStatusHeight();
+
+	mStatus->SetSize(0, top+height-sh,
+					 width, sh);
+	height -= sh;
+
     mTrackPanel->SetSize(left, top,
   					     width-sbarSpaceWidth, height-sbarSpaceWidth);
 
@@ -713,6 +735,18 @@ void AudacityProject::OnPaint(wxPaintEvent& event)
   GetClientSize(&width, &height);
     
   AColor::Medium(&dc, false);
+
+  int top = 0;
+
+  if (!gWindowedPalette) {
+	int h = GetAPaletteHeight();
+	
+	top += h+1;
+	height -= h+1;
+  }
+
+  int sh = GetStatusHeight();
+  height -= sh;  
   
   wxRect r;
   r.x = width-sbarSpaceWidth;
@@ -754,6 +788,21 @@ void AudacityProject::OnPaint(wxPaintEvent& event)
 
 	dc.DrawLine(0, h, width, h);
   }
+
+  // Fill in space on sides of scrollbars
+
+  dc.SetPen(*wxBLACK_PEN);
+  dc.DrawLine(width-sbarSpaceWidth, top,
+			  width-sbarSpaceWidth, top+height-sbarSpaceWidth+1);
+  dc.DrawLine(0, top+height-sbarSpaceWidth,
+			  width-sbarSpaceWidth, top+height-sbarSpaceWidth);
+
+  wxRect f;
+  f.x = 0;
+  f.y = top+height-sbarSpaceWidth+1;
+  f.width = mTrackPanel->GetLabelOffset()-2;
+  f.height = sbarSpaceWidth-2;
+  AColor::Bevel(dc, true, f);
 }
 
 void AudacityProject::OnActivate(wxActivateEvent& event)
@@ -1221,11 +1270,30 @@ void AudacityProject::ImportFile(wxString fileName)
 {
   WaveTrack *left = 0;
   WaveTrack *right = 0;
-  
+
   if (ImportWAV(this, fileName, &left, &right, &mDirManager)) {
 
 	if (left || right) {
-	  // TODO SelectNone();
+
+	  SelectNone();
+
+	  if (mTracks->First() == NULL) {
+		if (left)
+		  mRate = left->rate;
+		else
+		  mRate = right->rate;
+
+		mStatus->SetRate(mRate);
+	  }
+	  else {
+		if ((left && left->rate != mRate) ||
+			(right && right->rate != mRate)) {
+		  wxMessageBox("Warning: your file has multiple sampling rates.  "
+					   "Audacity will ignore any track which is not at "
+					   "the same sampling rate as the project.");
+		}
+	  }
+
 	}
 
 	if (left) {
@@ -1842,9 +1910,7 @@ void AudacityProject::SelectNone()
 // TrackPanel callback method
 void AudacityProject::TP_DisplayStatusMessage(const char *msg, int fieldNum)
 {
-  if (mStatusBar->GetFieldsCount() < (fieldNum+1))
-	mStatusBar->SetFieldsCount(fieldNum+1);
-  mStatusBar->SetStatusText(msg, fieldNum);
+  mStatus->SetField(msg, fieldNum);
 }
 
 // TrackPanel callback method
