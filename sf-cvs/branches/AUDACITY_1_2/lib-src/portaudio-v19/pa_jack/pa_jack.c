@@ -1,5 +1,5 @@
 /*
- * $Id: pa_jack.c,v 1.1.2.1 2004-04-22 04:39:41 mbrubeck Exp $
+ * $Id: pa_jack.c,v 1.1.2.2 2004-06-01 09:21:11 dmazzoni Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * JACK Implementation by Joshua Haberman
@@ -763,10 +763,16 @@ error:
 static int JackCallback( jack_nframes_t frames, void *userData )
 {
     PaJackStream *stream = (PaJackStream*)userData;
-    PaStreamCallbackTimeInfo timeInfo = {0,0,0}; /* IMPLEMENT ME */
+    PaStreamCallbackTimeInfo timeInfo;
     int callbackResult;
     int chn;
     int framesProcessed;
+
+    /* TODO: make this a lot more accurate */
+    PaTime now = GetStreamTime(stream);
+    timeInfo.currentTime = now;
+    timeInfo.outputBufferDacTime = now;
+    timeInfo.inputBufferAdcTime = now;
 
     if( stream->t0 == -1 )
     {
@@ -904,6 +910,7 @@ static PaError StartStream( PaStream *s )
     }
 
     stream->is_running = TRUE;
+    stream->is_active = TRUE;
 
     return result;
 }
@@ -968,7 +975,8 @@ static PaTime GetStreamTime( PaStream *s )
     PaJackStream *stream = (PaJackStream*)s;
 
     /* TODO: what if we're recording-only? */
-    return jack_frame_time( stream->jack_client ) - stream->t0;
+    int delta_t = jack_frame_time( stream->jack_client ) - stream->t0;
+    return delta_t / jack_get_sample_rate( stream->jack_client );
 }
 
 
