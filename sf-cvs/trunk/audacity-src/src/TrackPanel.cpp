@@ -93,6 +93,7 @@ enum {
    SELECTION_FORMAT_RULER_FILM_FRAMES,
    SELECTION_FORMAT_RULER_PAL_FRAMES,
    SELECTION_FORMAT_RULER_NTSC_FRAMES,
+   SELECTION_FORMAT_RULER_CDDA_MIN_SEC_FRAMES,
    SELECTION_FORMAT_SAMPLES,
    SELECTION_FORMAT_MIN_SEC,
    SELECTION_FORMAT_SEC,
@@ -140,6 +141,7 @@ enum {
    OnFormatRulerFilmFramesID,
    OnFormatRulerPALFramesID,
    OnFormatRulerNTSCFramesID,
+   OnFormatRulerCddaMinSecFramesID,
    OnFormatSamplesID,
    OnFormatMinSecID,
    OnFormatSecID,
@@ -229,6 +231,7 @@ mAutoScrolling(false)
    mSelectionMenu->Append(OnFormatRulerFilmFramesID, "film frames 24 fps (from ruler)");
    mSelectionMenu->Append(OnFormatRulerPALFramesID, "PAL frames 25 fps (from ruler)");
    mSelectionMenu->Append(OnFormatRulerNTSCFramesID, "NTSC frames 29.97 fps (from ruler)");
+   mSelectionMenu->Append(OnFormatRulerCddaMinSecFramesID, "cdda min:sec:frames 75 fps (from ruler)");
    mSelectionMenu->Append(OnFormatSamplesID, "samples");
    mSelectionMenu->Append(OnFormatMinSecID, "min:sec");
    mSelectionMenu->Append(OnFormatSecID, "sec");
@@ -2705,6 +2708,9 @@ void TrackPanel::OnSelectionChange(wxEvent & event)
    case OnFormatRulerNTSCFramesID:
       iformat = SELECTION_FORMAT_RULER_NTSC_FRAMES;
       break;
+   case OnFormatRulerCddaMinSecFramesID:
+      iformat = SELECTION_FORMAT_RULER_CDDA_MIN_SEC_FRAMES;
+      break;
    case OnFormatSamplesID:
       iformat = SELECTION_FORMAT_SAMPLES;
       break;
@@ -2959,6 +2965,7 @@ void TrackPanel::DisplaySelection()
    //   iformat = SELECTION_FORMAT_RULER_FILM_FRAMES --> use film frames 24 fps
    //   iformat = SELECTION_FORMAT_RULER_PAL_FRAMES --> use PAL frames 25 fps
    //   iformat = SELECTION_FORMAT_RULER_NTSC_FRAMES --> use NTSC frames 29.97 fps
+   //   iformat = SELECTION_FORMAT_RULER_CDDA_MIN_SEC_FRAMES --> use cdda min:sec:frames 75 fps
    // formats that are based on rate and samples
    //   iformat = SELECTION_FORMAT_SAMPLES --> use samples
    //   iformat = SELECTION_FORMAT_MIN_SEC --> use min:sec.xxxxxx
@@ -3147,6 +3154,36 @@ void TrackPanel::DisplaySelection()
                                        Format(_("Selection: %lf - %lf (%lf NTSC frames)"),
                                               dframes1, dframes2, dframestot),
                                        1);
+         }
+      break;
+
+   case SELECTION_FORMAT_RULER_CDDA_MIN_SEC_FRAMES:
+      // use cdda min:sec:frames.xxxxxx (from ruler)
+      imin1 = int(start/60);
+      imin2 = int(end/60);
+      imintot = int(length/60);
+      isec1 = int(start) - (imin1*60);
+      isec2 = int(end) - (imin2*60);
+      isectot = int(length) - (imintot*60);
+      dframes1 = (double(start - float(int(start)))) * 75.0;
+      dframes2 = (double(end - float(int(end)))) * 75.0;
+      dframestot = (double(length - float(int(length)))) * 75.0;
+      // display a message about the selection in the status message window
+      if(start == end)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                              Format(_("Cursor: %02i:%02i:%06.3lf cdda min:sec:frames (75 fps)"),
+                                                  imin1, isec1, dframes1),
+                              1);
+         }
+      else
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+                             Format(_("Selection: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda min:sec:frames)"),
+                                    imin1, isec1, dframes1, imin2, isec2, dframes2, imintot, isectot, dframestot),
+                             1);
          }
       break;
 
