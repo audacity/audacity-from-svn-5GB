@@ -21,6 +21,7 @@
 #include <wx/statbox.h>
 #include <wx/stattext.h>
 #include <wx/intl.h>
+#include <wx/frame.h>
 
 #include "../images/Arrow.xpm"
 #include "HistoryWindow.h"
@@ -37,16 +38,16 @@ enum {
    DiscardID
 };
 
-BEGIN_EVENT_TABLE(HistoryWindow, wxDialog)
+BEGIN_EVENT_TABLE(HistoryWindow, wxFrame)
+   EVT_CLOSE(HistoryWindow::OnCloseWindow)
    EVT_LIST_END_LABEL_EDIT(HistoryListID, HistoryWindow::OnLabelChanged)
    EVT_LIST_ITEM_SELECTED(HistoryListID, HistoryWindow::OnItemSelected)
    EVT_BUTTON(DiscardID, HistoryWindow::OnDiscard)
 END_EVENT_TABLE()
 
 HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
-wxDialog(parent, -1, _("Undo History"), wxDefaultPosition,
-         wxDefaultSize,
-	wxDIALOG_MODELESS | wxCAPTION | wxTHICK_FRAME | wxSYSTEM_MENU)
+  wxFrame(parent, -1, _("Undo History"), wxDefaultPosition,  wxDefaultSize)
+
 {
    mTopSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -171,6 +172,13 @@ void HistoryWindow::OnItemSelected(wxListEvent &event)
    mProject->SetStateTo(mSelected + 1);
    UpdateDisplay();
 }  
+
+
+void HistoryWindow::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
+{
+  this->Show(FALSE);
+}
+
 
 HistoryWindow::~HistoryWindow()
 {

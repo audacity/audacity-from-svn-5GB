@@ -80,12 +80,9 @@ END_EVENT_TABLE()
 
 FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
                            const wxString & title,
-                           const wxPoint & pos):wxFrame(parent, id, title,
-                                                        pos,
-                                                        wxSize
-                                                        (FREQ_WINDOW_WIDTH,
-                                                         FREQ_WINDOW_HEIGHT)),
-mData(NULL), mProcessed(NULL), mBitmap(NULL)
+                           const wxPoint & pos):
+  wxFrame(parent, id, title, pos, wxSize(FREQ_WINDOW_WIDTH, FREQ_WINDOW_HEIGHT)),
+  mData(NULL), mProcessed(NULL), mBitmap(NULL)
 {
    mMouseX = 0;
    mMouseY = 0;
