@@ -202,21 +202,22 @@ void KeyConfigPrefs::ClearComboList(wxCommandEvent& event)
 
 void KeyConfigPrefs::AddComboToList(wxCommandEvent& event)
 {
+   int i;
    wxString comboString = mCurrentComboText->GetValue();
 
    //BG: Cannot add blank key or empty category or seperator items
    if((!comboString.length()) || (mCommandSelected < 0) || (mAudacity->GetMenuType(mCommandSelected) == typeSeparator))
       return;
 
-   for(int i = 0; i < mKeysList->GetItemCount(); i++)
-   {
-      if(comboString == mKeysList->GetItemText(i))
-         return;
-   }
+   //BG: Check to see if shortcut is in use
+   if(mAudacity->FindCommandByCombos(comboString) >= 0)
+      return;
 
    mKeysList->InsertItem(mKeysList->GetItemCount(), comboString);
 
    gPrefs->Write("/Keyboard/" + wxString::Format("%i", mCommandSelected) + "/" + comboString, (long)0);
+
+   mAudacity->TokenizeCommandStrings(mCommandSelected);
 
    mCurrentComboText->SetValue("");
 }

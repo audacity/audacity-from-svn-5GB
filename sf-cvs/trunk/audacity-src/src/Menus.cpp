@@ -189,24 +189,7 @@ void AudacityProject::BuildMenuBar()
       }
 
 
-
-
-      gPrefs->SetPath("/Keyboard/" + wxString::Format("%i", i));
-      long keyIndex;
-      wxString keyString;
-
-      mCommandMenuItem[i]->comboStrings = "";
-
-      if(gPrefs->GetFirstEntry(keyString, keyIndex))
-      {
-         mCommandMenuItem[i]->comboStrings = keyString;
-         while(gPrefs->GetNextEntry(keyString, keyIndex))
-         {
-            mCommandMenuItem[i]->comboStrings += ":" + keyString;
-         }
-      }
-
-      gPrefs->SetPath("/");
+      TokenizeCommandStrings(-1);
    }
 
 
@@ -280,6 +263,38 @@ void AudacityProject::BuildMenuBar()
 #endif
 
    mInsertSilenceAmount = 1.0;
+}
+
+void AudacityProject::TokenizeCommandStrings(int mVal)
+{
+   int startVal = mVal;
+   int maxVal = mVal;
+
+   if(mVal < 0)
+   {
+      startVal = 0;
+      maxVal = mCommandMenuItem.Count()-1;
+   }
+
+   for(int i = startVal; i <= maxVal; i++)
+   {
+      gPrefs->SetPath("/Keyboard/" + wxString::Format("%i", i));
+      long keyIndex;
+      wxString keyString;
+
+      mCommandMenuItem[i]->comboStrings = "";
+
+      if(gPrefs->GetFirstEntry(keyString, keyIndex))
+      {
+         mCommandMenuItem[i]->comboStrings = keyString;
+         while(gPrefs->GetNextEntry(keyString, keyIndex))
+         {
+            mCommandMenuItem[i]->comboStrings += ":" + keyString;
+         }
+      }
+   }
+
+   gPrefs->SetPath("/");
 }
 
 wxString AudacityProject::GetCommandName(int nIndex)
