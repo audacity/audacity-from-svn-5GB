@@ -40,6 +40,9 @@ class wxImage;
 class wxSize;
 class wxPoint;
 
+// Code duplication warning: these apparently need to be in the
+// same order as the enum in ControlToolBar.cpp
+
 enum {
    selectTool,
    envelopeTool,
