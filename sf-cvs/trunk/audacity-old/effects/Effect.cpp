@@ -149,8 +149,10 @@ void Effect::CountWaveTracks()
    VTrack *t = iter.First();
    
    while(t) {
-      if (!t->selected)
+      if (!t->selected) {
+         t = iter.Next();
          continue;
+      }
       
       if (t->GetKind() == VTrack::Wave) {
          mWaveTracks->Add(t);
