@@ -20,25 +20,12 @@
 #include <wx/msgdlg.h>
 
 #include <vorbis/vorbisenc.h>
-#include <vorbis/codec.h>
 
 #include "../Project.h"
 #include "../Mix.h"
 #include "../Prefs.h"
 
 #define SAMPLES_PER_RUN 8192
-
-// JH: This is so strange: these functions are declared in <vorbis/codec.h> which is
-// included by <vorbis/vorbisenc.h>.  I *know* the prototype is successfully
-// included, because I checked it with g++ -E.  However, without these prototypes
-// here, g++ complains of "implicit declarations.  Even weirder, the function
-// vorbis_analysis_buffer(), which is ALSO in codec.h and ALSO used in this file
-// works fine.  I'm so confused!!
-//extern "C" {
-//extern int      vorbis_bitrate_addblock(vorbis_block *vb);
-//extern int      vorbis_bitrate_flushpacket(vorbis_dsp_state *vd,
-//					   ogg_packet *op);
-//}
 
 bool ExportOGG(AudacityProject *project,
                bool stereo, wxString fName,
