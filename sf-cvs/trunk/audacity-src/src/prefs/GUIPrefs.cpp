@@ -140,7 +140,7 @@ void GUIPrefs::ShowOrHideWindow( int ID, bool bShow )
 {
    if( ID==-1 )
       return;
-   ToolBarStub ** ppStub;
+   ToolBarStub ** ppStub = NULL;
    switch( ID )
    {
    default:      wxASSERT( false );      break;
@@ -177,12 +177,12 @@ void GUIPrefs::CheckBoxAction(
    bool bValue;
    bool bIsInListBox;
 
-   int Counter = ++(mCheckBoxCounters[mCurrentCheckBoxContainer]);
-
 // TODO:  What should we do if on a Mac?
 // wxWidgets 2.4.1 documentation suggests that wxCheckListBox isn't 
 // supported on Mac.
 #if USE_SCROLLING_CHECK_LISTBOX_IN_PREFS
+   int Counter = ++(mCheckBoxCounters[mCurrentCheckBoxContainer]);
+
    wxCheckListBox * pCurrentList = mCheckListBoxes[mCurrentCheckBoxContainer];
    // If there was a non null list box, then it goes in it.
    bIsInListBox = ( pCurrentList != NULL );
