@@ -2,7 +2,8 @@
 /*	Stylesheet for Audacity Manual Pages				*/
 /*	All font sizes are expressed in pixels and thus are displayed	*/
 /*	in an almost identical fashion across standard browsers,	*/
-/*	namely Gecko based browsers, Opera and IE.			*/
+/*	namely Gecko based browsers, Opera and IE,			*/
+/*      on Windows, Linux and MacOS X.					*/
 /*----------------------------------------------------------------------*/
 
 A,A:Visited,
@@ -37,6 +38,17 @@ A.sf             {      font-weight : bold;		}
 
 
 .negative        {      color : Red;			}
+
+
+.menu_major      {      font-size : 24px; /*12pt;110%;*/
+                        font-weight : bold;
+                        padding : 0px;
+                        padding-left  : 8px;
+                        padding-right : 10px; 
+                        text-decoration : none;		}
+
+.menu_tutorials  {	font-size : 16px;
+                        font-weight : normal; /*bold;*/		}
 
 
 .menuref,.menuref_current,.menuref_item
