@@ -1819,6 +1819,7 @@ void TrackPanel::OnSplitStereo()
 {
    if (mPopupMenuTarget) {
       mPopupMenuTarget->linked = false;
+      MakeParentPushState();
       Refresh(false);
    }
 }
@@ -1833,7 +1834,7 @@ void TrackPanel::OnMergeStereo()
          partner->channel = VTrack::RightChannel;
       } else
          mPopupMenuTarget->linked = false;
-
+      MakeParentPushState();
       Refresh(false);
    }
 }
