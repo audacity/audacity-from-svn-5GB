@@ -52,13 +52,19 @@ TrackList *AudacityProject::msClipboard = new TrackList();
 double     AudacityProject::msClipLen = 0.0;
 
 #ifdef __WXMAC__
-const int sbarWidth = 16;
+const int sbarSpaceWidth = 15;
+const int sbarControlWidth = 16;
+const int sbarExtraLen = 1;
 #endif
 #ifdef __WXMSW__
-const int sbarWidth = 16;
+const int sbarSpaceWidth = 16;
+const int sbarControlWidth = 16;
+const int sbarExtraLen = 1;
 #endif
 #ifdef __WXGTK__
-const int sbarWidth = 15;
+const int sbarSpaceWidth = 15;
+const int sbarControlWidth = 15;
+const int sbarExtraLen = 1;
 #endif
 
 int gAudacityDocNum = 0;
@@ -317,7 +323,7 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   mViewMenu->AppendSeparator();
   mViewMenu->Append(PlotSpectrumID, "&Plot Spectrum\tCtrl+U");
   mViewMenu->AppendSeparator();
-  mViewMenu->Append(FloatPaletteID, "Float/Unfloat Palette");
+  mViewMenu->Append(FloatPaletteID, "Float or Unfloat Palette");
 
   mProjectMenu = new wxMenu();
   mProjectMenu->Append(ImportID, "&Import Audio...\tCtrl+I");
@@ -387,23 +393,28 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
 
   mTrackPanel = new TrackPanel(this, TrackPanelID,
 							   wxPoint(left, top),
-							   wxSize(width-sbarWidth, height-sbarWidth),
+							   wxSize(width-sbarSpaceWidth, height-sbarSpaceWidth),
 							   mTracks, &mViewInfo,
 							   this);
 
   int hoffset = mTrackPanel->GetLabelOffset()-1;
   int voffset = mTrackPanel->GetRulerHeight();
-
+  
+  #ifdef __WXMAC__
+  width++;
+  height++;
+  #endif
+  
   mHsbar =
 	new wxScrollBar(this, HSBarID, 
-					wxPoint(hoffset, top+height-sbarWidth),
-					wxSize(width-hoffset-sbarWidth, sbarWidth),
+					wxPoint(hoffset, top+height-sbarSpaceWidth),
+					wxSize(width-hoffset-sbarSpaceWidth+sbarExtraLen, sbarControlWidth),
 					wxSB_HORIZONTAL);
 
   mVsbar =
 	new wxScrollBar(this, VSBarID,
-					wxPoint(width-sbarWidth, voffset),
-					wxSize(sbarWidth, top+height-sbarWidth-voffset),
+					wxPoint(width-sbarSpaceWidth, top+voffset),
+					wxSize(sbarControlWidth, height-sbarSpaceWidth-voffset+sbarExtraLen),
 					wxSB_VERTICAL);
 
   InitialState();
@@ -597,15 +608,15 @@ void AudacityProject::HandleResize()
 	}
 
     mTrackPanel->SetSize(left, top,
-  					     width-sbarWidth, height-sbarWidth);
+  					     width-sbarSpaceWidth, height-sbarSpaceWidth);
 
     int hoffset = mTrackPanel->GetLabelOffset()-1;
     int voffset = mTrackPanel->GetRulerHeight();
 
-    mHsbar->SetSize(hoffset, top+height-sbarWidth,
-				    width-hoffset-sbarWidth, sbarWidth);
-    mVsbar->SetSize(width-sbarWidth, voffset,
-				    sbarWidth, top+height-sbarWidth-voffset);
+    mHsbar->SetSize(hoffset, top+height-sbarSpaceWidth,
+				    width-hoffset-sbarSpaceWidth+sbarExtraLen, sbarControlWidth);
+    mVsbar->SetSize(width-sbarSpaceWidth, top+voffset,
+				    sbarControlWidth, height-sbarSpaceWidth-voffset+sbarExtraLen);
 
     FixScrollbars();
   }
@@ -704,16 +715,16 @@ void AudacityProject::OnPaint(wxPaintEvent& event)
   AColor::Medium(&dc, false);
   
   wxRect r;
-  r.x = width-sbarWidth;
+  r.x = width-sbarSpaceWidth;
   r.y = 0;
-  r.width = sbarWidth;
+  r.width = sbarSpaceWidth;
   r.height = height;
   dc.DrawRectangle(r);
   
   r.x = 0;
-  r.y = height-sbarWidth;
+  r.y = height-sbarSpaceWidth;
   r.width = width;
-  r.height = sbarWidth;
+  r.height = sbarSpaceWidth;
   dc.DrawRectangle(r);
 
   // If we're displaying the palette inside the window,
@@ -793,6 +804,32 @@ void AudacityProject::OnMouseEvent(wxMouseEvent& event)
 	int width, height;
 	mAPalette->GetSize(&width, &height);
 
+    #ifdef __WXMAC__
+    
+    Point startPt;
+    startPt.h = hotspot.x;
+    startPt.v = hotspot.y;
+    Rect limitRect, slopRect, r;
+    SetRect(&limitRect, -32767,-32767,32767,32767);
+    SetRect(&slopRect, -32767,-32767,32767,32767);
+    SetRect(&r, 10, 0, 10+width, height);
+    int axis = noConstraint;
+    RgnHandle theRgn = NewRgn();
+    RectRgn(theRgn, &r);
+
+    int result = DragGrayRgn(theRgn, startPt, &limitRect, &slopRect, axis, NULL);
+    
+    if (result == 0x80008000)
+      return;
+    
+    mouse -= hotspot;
+    mouse.x += (short)(result & 0xFFFF);
+    mouse.y += (short)((result & 0xFFFF0000)>>16);
+    
+    ShowWindowedPalette(&mouse);
+    
+    #else
+
 	wxClientDC dc(this);
 
 	wxBitmap *bitmap = new wxBitmap(width, height);
@@ -807,8 +844,11 @@ void AudacityProject::OnMouseEvent(wxMouseEvent& event)
 	mDrag->Move(mouse);
 	mDrag->Show();
 	mPaletteHotspot = hotspot;
+	
+	#endif
   }
 
+  #ifndef __WXMAC__
   if (event.Dragging() && mDrag) {
 	mDrag->Move(mouse);
   }
@@ -822,6 +862,7 @@ void AudacityProject::OnMouseEvent(wxMouseEvent& event)
 	mouse -= mPaletteHotspot;
 	ShowWindowedPalette(&mouse);
   }
+  #endif
 }
 
 void AudacityProject::OnAbout()
