@@ -2,12 +2,12 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppName=Audacity 1.2
-AppId=Audacity
+AppName=Audacity
 AppVerName=Audacity 1.2.0
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
+ChangesAssociations=yes
 DefaultDirName={pf}\Audacity
 DefaultGroupName=Audacity
 ; AlwaysCreateUninstallIcon=yes
@@ -89,19 +89,24 @@ Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\undcbias.ny"; DestDir: "{app}\
 Name: "{commonstartup}\Audacity"; Filename: "{app}\audacity.exe"
 Name: "{userdesktop}\Audacity"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
 
+[InstallDelete]
+; Get rid of Audacity 1.0.0 stuff that's no longer used.
+Type: files; Name: "{app}\audacity-help.htb"
+; Not sure we want to do this because user may have stored their own.
+;   Type: filesandordirs; Name: "{app}\vst"
+
+; We've switched from a folder in the start menu to just the Audacity.exe at the top level.
+; Get rid of 1.0.0 folder and its icons.
+Type: files; Name: "{commonstartup}\Audacity\audacity.exe"
+Type: files; Name: "{commonstartup}\Audacity\unins000.exe"
+Type: dirifempty; Name: "{commonstartup}\Audacity"
+
 [Registry]
 Root: HKCR; Subkey: ".AUP"; ValueType: string; ValueData: "Audacity.Project"; Flags: createvalueifdoesntexist uninsdeletekey 
 Root: HKCR; Subkey: "Audacity.Project"; ValueType: string; ValueData: "Audacity Project File"; Flags: createvalueifdoesntexist uninsdeletekey 
 Root: HKCR; Subkey: "Audacity.Project\\shell"; ValueType: string; ValueData: ""; Flags: createvalueifdoesntexist uninsdeletekey 
 Root: HKCR; Subkey: "Audacity.Project\\shell\\open"; Flags: createvalueifdoesntexist uninsdeletekey 
-
-; Brian's code in AudacityApp::OnInit() made this depend 
-; on whether the existing value contains "audacity.exe", but I don't know how to do that with InnoSetup
-;	Root: HKCR; Subkey: "Audacity.Project\\shell\\open\\command"; ValueType: string; ValueData: "data"; Flags: createvalueifdoesntexist uninsdeletekey 
-
-
-Root: HKCR; Subkey: "subkey"; ValueType: string; ValueData: "data"; Flags: createvalueifdoesntexist uninsdeletekey 
-
+Root: HKCR; Subkey: "Audacity.Project\\shell\\open\\command"; ValueType: string; ValueData: "{app}\audacity.exe ""%1"""; Flags: createvalueifdoesntexist uninsdeletekey
 
 [Run]
 Filename: "{app}\audacity.exe"; Description: "Launch Audacity"; Flags: nowait postinstall skipifsilent
