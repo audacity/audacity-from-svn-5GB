@@ -101,7 +101,9 @@ Effect::Effect()
    mProgress = NULL;
 }
 
-bool Effect::DoEffect(wxWindow *parent, int flags, TrackList *list,
+bool Effect::DoEffect(wxWindow *parent, int flags,
+                      double projectRate,
+                      TrackList *list,
                       TrackFactory *factory,
                       double *t0, double *t1)
 {
@@ -113,6 +115,7 @@ bool Effect::DoEffect(wxWindow *parent, int flags, TrackList *list,
    }
 
    mFactory = factory;
+   mProjectRate = projectRate;
    mParent = parent;
    mTracks = list;
    mT0 = *t0;
@@ -257,8 +260,7 @@ void Effect::Preview()
 
    WaveTrack *mixLeft = NULL;
    WaveTrack *mixRight = NULL;
-   double rate = gPrefs->Read("/SamplingRate/DefaultProjectSampleRate",
-                              AudioIO::GetOptimalSupportedSampleRate());
+   double rate = mProjectRate;
    double t0 = mT0;
    double t1 = t0 + previewLen;
 

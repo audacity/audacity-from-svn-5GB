@@ -88,7 +88,7 @@ LadspaEffect::LadspaEffect(const LADSPA_Descriptor *data)
             val = hint.UpperBound;
 
          if (LADSPA_IS_HINT_SAMPLE_RATE(hint.HintDescriptor))
-            val *= 44100;
+            val *= mProjectRate;
 
          if (LADSPA_IS_HINT_DEFAULT_0(hint.HintDescriptor))
             val = 0.0f;
@@ -165,7 +165,7 @@ bool LadspaEffect::Init()
    }
 
    if (mainRate<=0)
-      mainRate = 44100;
+      mainRate = (int)(mProjectRate + 0.5);
 
    return true;
 }
