@@ -17,6 +17,7 @@
 #include "BassBoost.h"
 #include "Compressor.h"
 #include "Echo.h"
+#include "Equalization.h"
 #include "Fade.h"
 #include "Filter.h"
 #include "Invert.h"
@@ -62,6 +63,7 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectBassBoost());
    Effect::RegisterEffect(new EffectCompressor());
    Effect::RegisterEffect(new EffectEcho());
+   Effect::RegisterEffect(new EffectEqualization());
    Effect::RegisterEffect(new EffectFadeIn());
    Effect::RegisterEffect(new EffectFadeOut());
    Effect::RegisterEffect(new EffectFilter());

@@ -79,6 +79,7 @@ OBJS = \
 	$(OBJDIR)/effects/BassBoost.o \
 	$(OBJDIR)/effects/Compressor.o \
 	$(OBJDIR)/effects/Echo.o \
+        $(OBJDIR)/effects/Equalization.o \
 	$(OBJDIR)/effects/Fade.o \
 	$(OBJDIR)/effects/Filter.o \
 	$(OBJDIR)/effects/Invert.o \

@@ -115,7 +115,7 @@ class Ruler {
  private:
    void Invalidate();
    void Update();
-   void FindTickSizes();
+   void FindLinearTickSizes(double UPP);
    wxString LabelString(double d, bool major);
    void Tick(int pos, double d, bool major);
 
@@ -127,7 +127,6 @@ class Ruler {
    wxFont      *mMinorFont, *mMajorFont;
 
    double       mMin, mMax;
-   double       mUPP; // Units per pixel
 
    double       mMajor;
    double       mMinor;
