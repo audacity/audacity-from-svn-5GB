@@ -68,12 +68,15 @@ class TrackArtist {
    wxBrush sampleBrush;
    wxBrush selsampleBrush;
    wxBrush dragsampleBrush;// for samples which are draggable.
+   wxBrush muteSampleBrush;
    wxPen blankPen;
    wxPen unselectedPen;
    wxPen selectedPen;
    wxPen samplePen;
    wxPen rmsPen;
+   wxPen muteRmsPen;
    wxPen selsamplePen;
+   wxPen muteSamplePen;
    wxPen shadowPen;
 
    Ruler *vruler;
@@ -82,7 +85,7 @@ class TrackArtist {
                      wxDC & dc, wxRect & r,
                      ViewInfo * viewInfo, 
                      bool drawEnvelope, bool drawSamples,
-                     bool drawSliders, bool dB);
+                     bool drawSliders, bool dB, bool muted);
 
    void DrawSpectrum(WaveTrack *track,
                      wxDC & dc, wxRect & r,
@@ -115,13 +118,13 @@ class TrackArtist {
                               float zoomMin, float zoomMax,
                               bool dB,
                               bool drawSamples,
-                              bool showPoints);
+                              bool showPoints, bool muted);
 
    void DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                       float zoomMin, float zoomMax,
                       double *envValues,
                       float *min, float *max, float *rms,
-                      bool dB);
+                      bool dB, bool muted);
 
    void DrawNegativeOffsetTrackArrows(wxDC &dc, wxRect &r);
 
