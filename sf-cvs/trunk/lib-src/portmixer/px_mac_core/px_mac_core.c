@@ -37,6 +37,7 @@
 
 #include <CoreServices/CoreServices.h>
 #include <CoreAudio/CoreAudio.h>
+#include <AudioToolbox/AudioConverter.h>
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <unistd.h>
@@ -46,11 +47,32 @@
 #include "pa_host.h"
 #include "portmixer.h"
 
+typedef enum PaDeviceMode
+{
+    PA_MODE_OUTPUT_ONLY,
+    PA_MODE_INPUT_ONLY,
+    PA_MODE_IO_ONE_DEVICE,
+    PA_MODE_IO_TWO_DEVICES
+} PaDeviceMode;
+
+typedef struct PaHostInOut_s
+{
+    AudioDeviceID      audioDeviceID; /* CoreAudio specific ID */
+    int                bytesPerUserNativeBuffer; /* User buffer size in native host format. Depends on numChannels. */
+    AudioConverterRef  converter;
+    void              *converterBuffer;
+    int                numChannels;
+} PaHostInOut;
+
+/**************************************************************
+ * Structure for internal host specific stream data.
+ * This is allocated on a per stream basis.
+ */
 typedef struct PaHostSoundControl
 {
-   AudioDeviceID      pahsc_AudioDeviceID;  // Must be the same for input and output for now.
-
-   // More stuff (not needed by PortMixer)
+    PaHostInOut        input;
+    PaHostInOut        output;
+    AudioDeviceID      primaryDeviceID;
 } PaHostSoundControl;
 
 // define value of isInput passed to CoreAudio routines
@@ -83,8 +105,12 @@ PxMixer *Px_OpenMixer( void *pa_stream, int index )
    past = (internalPortAudioStream *) pa_stream;
    macInfo = (PaHostSoundControl *) past->past_DeviceData;
 
-   info->input = macInfo->pahsc_AudioDeviceID;
-   info->output = macInfo->pahsc_AudioDeviceID;
+   info->input = macInfo->input.audioDeviceID;
+   info->output = macInfo->output.audioDeviceID;
+
+   printf("\n\n\n***input=%d output=%d primary=%d\n",
+          (int)info->input, (int)info->output, (int)macInfo->primaryDeviceID);
+
    return (PxMixer *)info;
 }
 
@@ -128,9 +154,17 @@ PxVolume Px_GetPCMOutputVolume( PxMixer *mixer )
    Float32  left, right;
 
    outSize = sizeof(Float32);
+   err =  AudioDeviceGetProperty(info->output, 0, IS_OUTPUT,
+                                 kAudioDevicePropertyVolumeScalar,
+                                 &outSize, &left);
+
+   if (err == 0)
+      return (PxVolume)left;
+
    err =  AudioDeviceGetProperty(info->output, 1, IS_OUTPUT,
                                  kAudioDevicePropertyVolumeScalar,
                                  &outSize, &left);
+
    if (err)
       return 0.0;
 
@@ -149,6 +183,9 @@ void Px_SetPCMOutputVolume( PxMixer *mixer, PxVolume volume )
    Float32  vol = volume;
    OSStatus err;
 
+   err =  AudioDeviceSetProperty(info->output, 0, 0, IS_OUTPUT,
+                                 kAudioDevicePropertyVolumeScalar,
+                                 sizeof(Float32), &vol);
    err =  AudioDeviceSetProperty(info->output, 0, 1, IS_OUTPUT,
                                  kAudioDevicePropertyVolumeScalar,
                                  sizeof(Float32), &vol);
@@ -229,9 +266,17 @@ PxVolume Px_GetInputVolume( PxMixer *mixer )
    Float32  left, right;
 
    outSize = sizeof(Float32);
-   err =  AudioDeviceGetProperty(info->input, 1, IS_INPUT,
+   err =  AudioDeviceGetProperty(info->input, 0, IS_INPUT,
                                  kAudioDevicePropertyVolumeScalar,
                                  &outSize, &left);
+
+   if (err == 0)
+      return (PxVolume)left;
+
+   err =  AudioDeviceGetProperty(info->input, 1, IS_INPUT,
+                                 kAudioDevicePropertyVolumeScalar,
+                                 &outSize, &left);   
+
    if (err)
       return 0.0;
 
@@ -250,6 +295,9 @@ void Px_SetInputVolume( PxMixer *mixer, PxVolume volume )
    Float32  vol = volume;
    OSStatus err;
 
+   err =  AudioDeviceSetProperty(info->input, 0, 0, IS_INPUT,
+                                 kAudioDevicePropertyVolumeScalar,
+                                 sizeof(Float32), &vol);
    err =  AudioDeviceSetProperty(info->input, 0, 1, IS_INPUT,
                                  kAudioDevicePropertyVolumeScalar,
                                  sizeof(Float32), &vol);
