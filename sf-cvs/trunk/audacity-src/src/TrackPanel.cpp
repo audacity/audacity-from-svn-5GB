@@ -2689,15 +2689,18 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
       DoPopupMenu(event, titleRect, t, r, num);
       return;
    }
+
+   // MM: Check minimize buttons on WaveTracks. Must be before
+   //     solo/mute buttons, sliders etc.
+   if (!second) {
+      if (MinimizeFunc(t, r, event.m_x, event.m_y))
+         return;
+   }
+
    // DM: Check Mute and Solo buttons on WaveTracks:
    if (!second && t->GetKind() == Track::Wave) {
       if (MuteSoloFunc(t, r, event.m_x, event.m_y, false) ||
           MuteSoloFunc(t, r, event.m_x, event.m_y, true))
-         return;
-   }
-   // MM: Check minimize buttons on WaveTracks
-   if (!second) {
-      if (MinimizeFunc(t, r, event.m_x, event.m_y))
          return;
    }
    // DM: Check Gain and Pan on WaveTracks:
@@ -2968,11 +2971,11 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
          int newUpperTrackHeight = static_cast < int >
              (mInitialUpperTrackHeight + delta * (1.0 - proportion));
 
-         //make sure neither track is smaller than 20;
-         if (newTrackHeight < 20)
-            newTrackHeight = 20;
-         if (newUpperTrackHeight < 20)
-            newUpperTrackHeight = 20;
+         //make sure neither track is smaller than its minimum height
+         if (newTrackHeight < mCapturedTrack->GetMinimizedHeight())
+            newTrackHeight = mCapturedTrack->GetMinimizedHeight();
+         if (newUpperTrackHeight < prev->GetMinimizedHeight())
+            newUpperTrackHeight = prev->GetMinimizedHeight();
 
          mCapturedTrack->SetHeight(newTrackHeight);
          prev->SetHeight(newUpperTrackHeight);
@@ -2982,24 +2985,24 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
          int newUpperTrackHeight = mInitialUpperTrackHeight + delta;
          int newTrackHeight = mInitialTrackHeight - delta;
 
-         // make sure neither track is smaller than 20;
-         if (newTrackHeight < 20) {
-            newTrackHeight = 20;
+         // make sure neither track is smaller than its minimum height
+         if (newTrackHeight < next->GetMinimizedHeight()) {
+            newTrackHeight = next->GetMinimizedHeight();
             newUpperTrackHeight =
-                mInitialUpperTrackHeight + mInitialTrackHeight - 20;
+                mInitialUpperTrackHeight + mInitialTrackHeight - next->GetMinimizedHeight();
          }
-         if (newUpperTrackHeight < 20) {
-            newUpperTrackHeight = 20;
+         if (newUpperTrackHeight < mCapturedTrack->GetMinimizedHeight()) {
+            newUpperTrackHeight = mCapturedTrack->GetMinimizedHeight();
             newTrackHeight =
-                mInitialUpperTrackHeight + mInitialTrackHeight - 20;
+                mInitialUpperTrackHeight + mInitialTrackHeight - mCapturedTrack->GetMinimizedHeight();
          }
 
          mCapturedTrack->SetHeight(newUpperTrackHeight);
          next->SetHeight(newTrackHeight);
       } else if (mMouseCapture == IsResizing )   {
          int newTrackHeight = mInitialTrackHeight + delta;
-         if (newTrackHeight < 20)
-            newTrackHeight = 20;
+         if (newTrackHeight < mCapturedTrack->GetMinimizedHeight())
+            newTrackHeight = mCapturedTrack->GetMinimizedHeight();
          mCapturedTrack->SetHeight(newTrackHeight);
       }
       else
@@ -3884,11 +3887,15 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
       #else
       offset = 16;
       #endif
-
-      dc->DrawText(TrackSubText(t), r.x + offset, r.y + 22);
-      dc->DrawText(GetSampleFormatStr
-                   (((WaveTrack *) t)->GetSampleFormat()), r.x + offset,
-                   r.y + 38);
+      
+      if (r.y + 22 + 12 < rec.y + rec.height - 19)
+         dc->DrawText(TrackSubText(t), r.x + offset, r.y + 22);
+         
+      if (r.y + 38 + 12 < rec.y + rec.height - 19)
+         dc->DrawText(GetSampleFormatStr
+                      (((WaveTrack *) t)->GetSampleFormat()), r.x + offset,
+                      r.y + 38);
+                      
    } else if (t->GetKind() == Track::Note) {
       wxRect midiRect;
       mTrackLabel.GetTrackControlsRect(trackRect, midiRect);
@@ -4625,6 +4632,10 @@ void TrackLabel::DrawMuteSolo(wxDC * dc, const wxRect r, Track * t,
    wxRect bev;
    GetMuteSoloRect(r, bev, solo);
    bev.Inflate(-1, -1);
+   
+   if (bev.y + bev.height >= r.y + r.height - 19)
+      return; // don't draw mute and solo buttons, because they don't fit into track label
+      
    (solo) ? AColor::Solo(dc, t->GetSolo(), t->GetSelected()) :
        AColor::Mute(dc, t->GetMute(), t->GetSelected(), t->GetSolo());
    dc->DrawRectangle(bev);
@@ -4727,13 +4738,13 @@ void TrackLabel::DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index)
    GetGainRect(r, gainRect);
    GetPanRect(r, panRect);
 
-   if (gainRect.y + gainRect.height < r.y + r.height - 1) {
+   if (gainRect.y + gainRect.height < r.y + r.height - 19) {
       mGains[index]->Move(wxPoint(gainRect.x, gainRect.y));
       mGains[index]->Set(t->GetGain());
       mGains[index]->OnPaint(*dc, t->GetSelected());
    }
 
-   if (panRect.y + panRect.height < r.y + r.height - 1) {
+   if (panRect.y + panRect.height < r.y + r.height - 19) {
       mPans[index]->Move(wxPoint(panRect.x, panRect.y));
       mPans[index]->Set(t->GetPan());
       mPans[index]->OnPaint(*dc, t->GetSelected());

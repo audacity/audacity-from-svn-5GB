@@ -35,7 +35,9 @@ Track::Track(DirManager * projDirManager)
    mMute      = false;
    mSolo      = false;
 
-   mHeight = 136;
+   //mHeight = 136;
+   mHeight = 150;
+   
    mMinimized = false;
 
    mOffset = 0.0;
@@ -78,6 +80,22 @@ void Track::Init(const Track &orig)
 Track::~Track()
 {
    mDirManager->Deref();
+}
+
+int Track::GetMinimizedHeight() const
+{
+   if (mChannel == LeftChannel || mChannel == RightChannel)
+      return 20;
+   else
+      return 40;
+}
+
+int Track::GetHeight() const
+{
+   if (mMinimized)
+      return GetMinimizedHeight();
+   else
+      return mHeight;
 }
 
 // TrackListIterator
