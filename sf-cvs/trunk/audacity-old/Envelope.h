@@ -74,6 +74,7 @@ private:
 
   int Insert(double when, double value);
 
+  double fromDB(double x);
   double toDB(double x);
 
   EnvArray   mEnv;

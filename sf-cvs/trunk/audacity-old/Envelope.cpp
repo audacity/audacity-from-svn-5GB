@@ -66,6 +66,14 @@ double Envelope::toDB(double value)
   return sign*val;
 }
 
+double Envelope::fromDB(double value)
+{
+  if (value == 0)
+	return 0;
+
+  return pow(10.0, ((value*45.0)-45.0)/10.0);
+}
+
 void Envelope::Draw(wxDC &dc, wxRect &r, double h, double pps, bool dB)
 {
   h -= mOffset;
@@ -209,7 +217,7 @@ bool Envelope::MouseEvent(wxMouseEvent &event, wxRect &r,
 	  double newVal;
 
 	  if (dB)
-		newVal = pow(10.0, 4.5*(dy / double(r.height/2)));
+		newVal = fromDB(dy / double(r.height/2));
 	  else
 		newVal = dy / double(r.height/2);
 
@@ -263,7 +271,13 @@ bool Envelope::MouseEvent(wxMouseEvent &event, wxRect &r,
 	else
 	  y = event.m_y - ctr;
 
-	double newVal = y / double(r.height/2);
+	double newVal;
+
+	if (dB)
+	  newVal = fromDB(y / double(r.height/2));
+	else
+	  newVal = y / double(r.height/2);
+
 	if (newVal < 0.0)
 	  newVal = 0.0;
 	if (newVal > 1.0)

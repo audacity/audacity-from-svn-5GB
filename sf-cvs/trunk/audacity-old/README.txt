@@ -84,36 +84,78 @@ Known problems:
   minimizing a project window.  As a workaround, you can
   just keep the tool palette docked with the project window.
 
+* Linux: Full duplex (play one track while recording another)
+  does not seem to work, even if your sound card supports it.
+  This is likely a problem with the way we are using OSS.
+
 -------------------------------------------------------------
 
 Changes in 0.95:
 
-* Fixed the Import Raw Data feature, so now you can
-  import files of almost any arbitrary format
+* Installation/Compilation:
 
-* Lazy import added, speeding up importing by 2x
+  - Improved configure script on unix systems (Joshua)
 
-* New track labels with a single integrated pop-up menu
-  to handle all track options
+* General User Interface:
 
-* Vertical ruler added, along with preliminary support for
-  vertical zooming
+  - Menu items are now disabled when unavailable
 
-* Stereo tracks can be linked together so changes affect
-  both tracks
+  - Online help added (Dominic and Logan)
 
-* Envelopes are now interpolated using decibels, making
-  cross-fades sound much better
+* Importing Audio:
 
-* Menus are disabled when unavailable
+  - Lazy import added, speeding up importing of PCM files by 2x
 
-* Online help added
+  - Added support for the Free libmpeg3 library on unix 
+    to replace the proprietary xaudio (Joshua)
 
-* Added Maximize Amplitude effect
+  - Fixed the Import Raw Data feature, so now you can
+    import files of almost any arbitrary format (as long
+    as it's uncompressed).
 
-* Improved memory management over long Undo histories
+* Main window:
 
-* Many bug fixes
+  - New track labels with a single integrated pop-up menu
+    to handle all track options
+
+  - Vertical ruler added, along with preliminary support for
+    vertical zooming
+
+  - Stereo tracks can be linked together so changes affect
+    both tracks
+
+  - Point-sample display takes over when you zoom very far in
+
+  - Two new wave displays: a dB (logarithmic) wave display and
+    a spectral pitch display (using enhanced autocorrelation)
+
+* Preferences:
+
+  - New spectral display preferences
+
+  - Temp directory can be set in preferences
+
+* Frequency display:
+
+  - Many new frequency window enhancements, including support for
+    cepstrum, autocorrelation, and enhanced autocorrelation.
+
+* Envelope editor:
+
+  - Envelopes are now interpolated using decibels, making
+    cross-fades sound much better
+
+* Effects:
+
+  - Fixed a bug that caused incompatibility with many VST plug-ins.
+
+  - Added Maximize Amplitude effect
+
+* Other:
+
+  - Improved memory management over long Undo histories
+
+  - Many more bug fixes
 
 Changes in 0.94:
 
