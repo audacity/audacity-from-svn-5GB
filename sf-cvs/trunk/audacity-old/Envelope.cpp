@@ -25,6 +25,8 @@ Envelope::Envelope()
 
   mDragPoint = -1;
   mDirty = false;
+
+  mIsDeleting = false;
 }
 
 void Envelope::CopyFrom(Envelope *e)
