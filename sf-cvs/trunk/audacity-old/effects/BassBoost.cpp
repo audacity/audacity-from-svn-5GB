@@ -10,7 +10,7 @@
 
 #include <math.h>
 
-//#include <wx/generic/textdlgg.h>
+#include <wx/msgdlg.h>
 
 #include "BassBoost.h"
 #include "../WaveTrack.h"
@@ -27,12 +27,25 @@ EffectBassBoost::EffectBassBoost()
 
 bool EffectBassBoost::Begin(wxWindow *parent)
 {
+  BassBoostDialog dlog(parent, -1, "BassBoost");
+  dlog.freq = frequency;
+  dlog.boost = dB_boost;
+  dlog.TransferDataToWindow();
+  dlog.CentreOnParent();
+  dlog.ShowModal();
+
+  if (!dlog.GetReturnCode())
+	return false;
+
+  frequency = dlog.freq;
+  dB_boost = dlog.boost;
+
   return true;
 }
 
 bool EffectBassBoost::DoIt(WaveTrack *t,
-						   sampleCount start,
-						   sampleCount len)
+                           sampleCount start,
+                           sampleCount len)
 {
   float samplerate = (float)(t->rate);
 
@@ -42,7 +55,7 @@ bool EffectBassBoost::DoIt(WaveTrack *t,
   float cs=cos(omega);
   float a=exp(log(10)*dB_boost/40);
   float shape=1.0;/*Low Shelf filter's shape, if this is too large
-				or too small it will result an unstable filter */
+                or too small it will result an unstable filter */
   float beta=sqrt((a*a+1)/shape-(pow((a-1),2)));
   /*  Coefficients  */
   float b0=a*((a+1)-(a-1)*cs+beta*sn);
@@ -69,18 +82,18 @@ bool EffectBassBoost::DoIt(WaveTrack *t,
     t->Get(buffer, s, block);
 
     for(int i=0; i<block; i++) {
-	  in=buffer[i];
-	  out=(b0*in+b1*xn1+b2*xn2-a1*yn1-a2*yn2)/a0;
-	  xn2=xn1;
-	  xn1=in;
-	  yn2=yn1;
-	  yn1=out;
-	  
-	  if (out<-32768) out=-32768;
-	  else if (out>32767) out=32767; //Prevents clipping
+      in=buffer[i];
+      out=(b0*in+b1*xn1+b2*xn2-a1*yn1-a2*yn2)/a0;
+      xn2=xn1;
+      xn1=in;
+      yn2=yn1;
+      yn1=out;
+      
+      if (out<-32768) out=-32768;
+      else if (out>32767) out=32767; //Prevents clipping
 
       buffer[i] = (sampleType)out;
-	}
+    }
 
     t->Set(buffer, s, block);
     
@@ -93,3 +106,229 @@ bool EffectBassBoost::DoIt(WaveTrack *t,
   return true;
 }
 
+// WDR: class implementations
+
+//----------------------------------------------------------------------------
+// BassBoostDialog
+//----------------------------------------------------------------------------
+
+#define FREQ_MIN 1
+#define FREQ_MAX 1000
+#define BOOST_MIN 0
+#define BOOST_MAX 36
+
+// WDR: event table for BassBoostDialog
+
+BEGIN_EVENT_TABLE(BassBoostDialog,wxDialog)
+    EVT_BUTTON( wxID_OK, BassBoostDialog::OnOk )
+    EVT_BUTTON( wxID_CANCEL, BassBoostDialog::OnCancel )
+    EVT_SLIDER( ID_FREQ_SLIDER, BassBoostDialog::OnFreqSlider )
+    EVT_SLIDER( ID_BOOST_SLIDER, BassBoostDialog::OnBoostSlider )
+    EVT_TEXT( ID_FREQ_TEXT, BassBoostDialog::OnFreqText )
+    EVT_TEXT( ID_BOOST_TEXT, BassBoostDialog::OnBoostText )
+END_EVENT_TABLE()
+
+BassBoostDialog::BassBoostDialog( wxWindow *parent, wxWindowID id, const wxString &title,
+    const wxPoint &position, const wxSize& size, long style ) :
+    wxDialog( parent, id, title, position, size, style )
+{
+  freq = 200;
+  boost = 12;
+
+  MakeBassBoostDialog( this, TRUE , TRUE );
+}
+
+bool BassBoostDialog::Validate()
+{
+    return TRUE;
+}
+
+bool BassBoostDialog::TransferDataToWindow()
+{
+  wxSlider *slider;
+
+  slider = GetBoostSlider();
+  if (slider)
+	slider->SetValue(boost);
+
+  slider = GetFreqSlider();
+  if (slider)
+	slider->SetValue(freq);
+
+  wxTextCtrl *text = GetBoostText();
+  if (text) {
+	wxString str;
+	str.Printf("%d", (int)boost);
+	text->SetValue(str);
+  }
+
+  text = GetFreqText();
+  if (text) {
+	wxString str;
+	str.Printf("%d", (int)freq);
+	text->SetValue(str);
+  }
+
+  return TRUE;
+}
+
+bool BassBoostDialog::TransferDataFromWindow()
+{
+  wxTextCtrl *c = GetBoostText();
+  if (c) {
+	long b;
+
+	wxString val = c->GetValue();
+	val.ToLong(&b);
+	if (b < BOOST_MIN)
+	  b = BOOST_MIN;
+	else if (b > BOOST_MAX)
+	  b = BOOST_MAX;
+	boost = b;
+  }
+
+  c = GetFreqText();
+  if (c) {
+	long f;
+
+	wxString val = c->GetValue();
+	val.ToLong(&f);
+	if (f < FREQ_MIN)
+	  f = FREQ_MIN;
+	else if (f > FREQ_MAX)
+	  f = FREQ_MAX;
+
+	freq = f;
+  }
+
+  return TRUE;
+}
+
+// WDR: handler implementations for BassBoostDialog
+
+void BassBoostDialog::OnBoostText( wxCommandEvent &event )
+{
+  wxTextCtrl *c = GetBoostText();
+  if (c) {
+	long boost;
+
+	wxString val = c->GetValue();
+	val.ToLong(&boost);
+	if (boost < BOOST_MIN)
+	  boost = BOOST_MIN;
+	else if (boost > BOOST_MAX)
+	  boost = BOOST_MAX;
+	
+	wxSlider *slider = GetBoostSlider();
+	if (slider)
+	  slider->SetValue(boost);
+  }
+}
+
+void BassBoostDialog::OnFreqText( wxCommandEvent &event )
+{
+  wxTextCtrl *c = GetFreqText();
+  if (c) {
+	long freq;
+
+	wxString val = c->GetValue();
+	val.ToLong(&freq);
+	if (freq < FREQ_MIN)
+	  freq = FREQ_MIN;
+	else if (freq > FREQ_MAX)
+	  freq = FREQ_MAX;
+	
+	wxSlider *slider = GetFreqSlider();
+	if (slider)
+	  slider->SetValue(freq);
+  }
+}
+
+void BassBoostDialog::OnBoostSlider( wxCommandEvent &event )
+{
+  wxString str;
+  str.Printf("%d", GetBoostSlider()->GetValue());
+  GetBoostText()->SetValue(str);
+}
+
+void BassBoostDialog::OnFreqSlider( wxCommandEvent &event )
+{
+  wxString str;
+  long freq = GetFreqSlider()->GetValue();
+  freq = ((freq+5)/10)*10;  // round to nearest multiple of 10
+  str.Printf("%d", freq);
+  GetFreqText()->SetValue(str);
+}
+
+void BassBoostDialog::OnOk(wxCommandEvent &event)
+{
+  TransferDataFromWindow();
+
+  if (Validate())
+    EndModal(true);
+  else {
+    event.Skip();
+  }
+}
+
+void BassBoostDialog::OnCancel(wxCommandEvent &event)
+{
+  EndModal(false);
+}
+
+wxSizer *MakeBassBoostDialog( wxPanel *parent, bool call_fit, bool set_sizer )
+{
+    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
+
+    wxStaticText *item1 = new wxStaticText( parent, ID_TEXT, "BassBoost by Nasca Octavian Paul", wxDefaultPosition, wxDefaultSize, 0 );
+    item0->Add( item1, 0, wxALIGN_CENTRE|wxALL, 5 );
+
+    wxFlexGridSizer *item2 = new wxFlexGridSizer( 3, 0, 0 );
+
+    wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, "Frequency (Hz):", wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item3, 0, wxALIGN_CENTRE|wxALL, 5 );
+
+    wxTextCtrl *item4 = new wxTextCtrl( parent, ID_FREQ_TEXT, "", wxDefaultPosition, wxSize(40,-1), 0 );
+    item2->Add( item4, 0, wxALIGN_CENTRE|wxALL, 5 );
+
+    wxSlider *item5 = new wxSlider( parent, ID_FREQ_SLIDER, 0, FREQ_MIN, FREQ_MAX, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+	//item5->SetValue(200);
+    item2->Add( item5, 0, wxALIGN_CENTRE|wxALL, 5 );
+
+    wxStaticText *item6 = new wxStaticText( parent, ID_TEXT, "Boost (dB):", wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item6, 0, wxALIGN_CENTRE|wxALL, 5 );
+
+    wxTextCtrl *item7 = new wxTextCtrl( parent, ID_BOOST_TEXT, "", wxDefaultPosition, wxSize(40,-1), 0 );
+    item2->Add( item7, 0, wxALIGN_CENTRE|wxALL, 5 );
+
+    wxSlider *item8 = new wxSlider( parent, ID_BOOST_SLIDER, 0, BOOST_MIN, BOOST_MAX, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+	//item8->SetValue(12);
+    item2->Add( item8, 0, wxALIGN_CENTRE|wxALL, 5 );
+
+    item0->Add( item2, 0, wxALIGN_CENTRE|wxALL, 5 );
+
+    wxBoxSizer *item9 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxButton *item10 = new wxButton( parent, wxID_OK, "OK", wxDefaultPosition, wxDefaultSize, 0 );
+    item10->SetDefault();
+    item10->SetFocus();
+    item9->Add( item10, 0, wxALIGN_CENTRE|wxALL, 5 );
+
+    wxButton *item11 = new wxButton( parent, wxID_CANCEL, "Cancel", wxDefaultPosition, wxDefaultSize, 0 );
+    item9->Add( item11, 0, wxALIGN_CENTRE|wxALL, 5 );
+
+    item0->Add( item9, 0, wxALIGN_CENTRE|wxALL, 5 );
+
+    if (set_sizer)
+    {
+        parent->SetAutoLayout( TRUE );
+        parent->SetSizer( item0 );
+        if (call_fit)
+        {
+            item0->Fit( parent );
+            item0->SetSizeHints( parent );
+        }
+    }
+    
+    return item0;
+}
