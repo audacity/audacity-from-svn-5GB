@@ -63,6 +63,7 @@ bool mFirstTimeUpdateMenus;
 public:
 void CreateMenuBar();
 void BuildMenuBar();
+void RebuildMenuBar();
 
 wxString GetCommandName(int nIndex);
 wxString GetCommandDesc(int nIndex);

@@ -346,7 +346,7 @@ bool FileFormatPrefs::Apply()
    mAudacity->SetCommandValue(ExportLossyMixID, wxString::Format(_("Export as %s..."), lossyFormat.c_str()));
    mAudacity->SetCommandValue(ExportLossySelectionID, wxString::Format(_("Export Selection as %s..."), lossyFormat.c_str()));
 
-   mAudacity->BuildMenuBar();
+   mAudacity->RebuildMenuBar();
    return true;
 }
 

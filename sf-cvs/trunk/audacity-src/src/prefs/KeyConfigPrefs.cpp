@@ -152,7 +152,7 @@ void KeyConfigPrefs::AddComboToList(wxCommandEvent& event)
 
 bool KeyConfigPrefs::Apply()
 {
-   mAudacity->BuildMenuBar();
+   mAudacity->RebuildMenuBar();
    return true;
 }
 
