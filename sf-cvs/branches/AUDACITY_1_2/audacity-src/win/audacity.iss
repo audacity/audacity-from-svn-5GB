@@ -97,8 +97,6 @@ Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\sc4.dll"; DestDir: "{app}\Plug
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\tremolo.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\undcbias.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\VST Enabler.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-
 
 [Icons]
 Name: "{commonprograms}\Audacity"; Filename: "{app}\audacity.exe"
