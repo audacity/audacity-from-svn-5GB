@@ -488,6 +488,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    int hoffset = mTrackPanel->GetLeftOffset() - 1;
    int voffset = mTrackPanel->GetRulerHeight();
 
+   // MM: Give track panel the focus to ensure keyboard commands work
+   mTrackPanel->SetFocus();
+
 #if defined __WXMAC__ 
    width++;
    height++;
