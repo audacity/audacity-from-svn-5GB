@@ -24,6 +24,13 @@ Known bugs to fix:
 - Get rid of any "exit()" calls in snd/ or other
   libraries
 - Use latest FreeVerb (3.0)
+- Fix divide-by-zero bug in Envelope.cpp (can crash
+  on Windows)
+- (possibly Mac only?) Copy portion of file, paste into
+  new project, save and close new project, CRASH!
+  See email from TC Baker
+- Link against libwx_gtk.so in RPM, and add instructions
+  to ln -s /usr/lib/libwx_gtk-2.2.so /usr/lib/libwx_gtk.so
 
 -----------------------------------------------------------
 Possible bugs to investigate:
@@ -41,6 +48,7 @@ Possible bugs to investigate:
   it wants to installs into
 - Audacity won't start under (some versions of?) MacOS 8.5,
   complains about InterfaceLib and SetAntiAliasedTextEnabled
+- Test USB mics under Mac OS 9 (see email from J. Blucher)
 
 -----------------------------------------------------------
 Fixed, need to port:

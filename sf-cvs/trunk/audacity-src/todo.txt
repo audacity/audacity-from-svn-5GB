@@ -87,6 +87,8 @@ Import/Export
 - Command-line LAME exporting
 
 Effects::
+- Freeverb 3.0 (and better interface)
+- Pitch/tempo change
 - Smart Mix (like Quick Mix but guarantees no clipping)
 - Cross-fade (smooth between two tracks)
 - Compressor/Limiter/Expander
