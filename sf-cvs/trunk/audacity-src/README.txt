@@ -175,10 +175,16 @@ New features in Audacity 1.1.3:
     - New Mixer toolbar allows you to control the output
       volume, input volume, and input source directly
       from Audacity.
+    - Every track now has its own gain and pan controls.
 
   * File I/O
     - Fixed some bugs relating to reading/writing audio
       files with more than 16 bits per sample.
+
+  * Audio I/O
+    - Completely rewritten audio I/O, with lower latency
+      and minimal chance of buffer underruns while
+      recording.
 
 New features in Audacity 1.1.2:
   * User Interface
