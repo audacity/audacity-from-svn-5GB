@@ -22,11 +22,15 @@
 // Define lrintf() function because it is not available
 // on this specific platform.
 // XXX: Add autoconf code to detect availability on compile time!
+#ifdef _WIN32
+
 static inline int lrintf(float f)
 {
     f += (3<<22);
     return *((int*)&f) - 0x4b400000;
 }
+
+#endif
 //////////////////////////////////////////////////////////////////////////
 
 // Constants for the noise shaping buffer
