@@ -112,7 +112,8 @@ all: dirs ../audacity
 # The sed script turns "Foo.o: bar/Foo.cpp" into "obj/bar/Foo.o:".
 #
 
-dep:
+dep: .depend
+.depend: $(DEPS)
 	$(CCC) -MM $(CXXFLAGS) $(CPPFLAGS) $(DEPS) | \
 		sed -e 's/^.*: \([^ ]*\)\.cpp/$(OBJDIR)\/\1.o: /' \
 		> .depend

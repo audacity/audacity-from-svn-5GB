@@ -52,9 +52,9 @@ void SearchLadspaInDir(wxString dir)
       //    wxDllLoader::GetSymbol(libHandle,
       //                           "ladspa_descriptor");
       
+#ifdef __WXGTK__
       void *libHandle = NULL;
 
-#ifdef __WXGTK__
       libHandle = dlopen(fname, RTLD_LAZY);
 
       mainFn = (LADSPA_Descriptor_Function)
