@@ -30,10 +30,10 @@ extern bool gIsQuitting;
 
 class AudacityApp:public wxApp {
  public:
-   bool OnInit(void);
-   int OnExit(void);
+   virtual bool OnInit(void);
+   virtual int OnExit(void);
 
-   int FilterEvent(wxEvent& event);
+   virtual int FilterEvent(wxEvent& event);
 
    int OnAllKeys(wxKeyEvent& event);
 
