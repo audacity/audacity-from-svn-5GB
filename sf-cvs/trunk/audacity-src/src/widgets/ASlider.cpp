@@ -63,6 +63,7 @@ class TipPanel : public wxPanel
    void OnPaint(wxPaintEvent & event);
 
    wxString label;
+   wxString origLabel;
 
    wxWindow *mParent;
 
@@ -80,6 +81,7 @@ TipPanel::TipPanel(wxWindow *parent, wxWindowID id,
    wxPopupWindow(parent)
 {
    this->label = label;
+   this->origLabel = label;
    mParent = parent;
    SetPos(pos);
 }
@@ -96,8 +98,7 @@ void TipPanel::SetPos(const wxPoint& pos)
    wxFont labelFont(sliderFontSize, wxSWISS, wxNORMAL, wxNORMAL);
    dc.SetFont(labelFont);
    int width, height;
-   dc.GetTextExtent(label, &width, &height);
-   width = (width * 4) / 3;
+   dc.GetTextExtent(origLabel, &width, &height);
    height += 4;
    SetSize(x - width/2, y, width, height);
 }
@@ -114,6 +115,7 @@ TipPanel::TipPanel(wxWindow *parent, wxWindowID id,
    wxPanel(parent, id)
 {
    this->label = label;
+   this->origLabel = label;
    SetPos(pos);
 }
 
@@ -123,7 +125,7 @@ void TipPanel::SetPos(const wxPoint& pos)
    wxFont labelFont(sliderFontSize, wxSWISS, wxNORMAL, wxNORMAL);
    dc.SetFont(labelFont);
    int width, height;
-   dc.GetTextExtent(label, &width, &height);
+   dc.GetTextExtent(origLabel, &width, &height);
    width += 4;
    height += 4;
    SetSize(pos.x - width/2, pos.y, width, height);   
@@ -142,7 +144,6 @@ void TipPanel::OnPaint(wxPaintEvent& event)
    dc.SetPen(*wxBLACK_PEN);
    dc.SetBrush(*wxWHITE_BRUSH);
    dc.DrawRectangle(0, 0, width, height);
-
    dc.GetTextExtent(label, &textWidth, &textHeight);
    dc.DrawText(label, (width-textWidth)/2, (height-textHeight)/2);
 }
