@@ -1,4 +1,4 @@
-<?php BoxTop('listopad 2004: Audacity 1.2.3 uvolnìna'); ?>
+<?php BoxTop('22. listopadu 2004: Audacity 1.2.3 uvolnìna'); ?>
 
 <p>
 Audacity 1.2.3 je nová stabilní verze svobodného zvukového edioru. Opravuje chybu, která se na nìkterých Windowsových systémech objevila v souvislosti s dlouhými nahrávkami a obsahuje i další menší opravy a vylepšení.

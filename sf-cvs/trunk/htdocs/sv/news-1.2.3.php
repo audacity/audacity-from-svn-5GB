@@ -1,4 +1,4 @@
-<?php BoxTop('15 november, 2004: Audacity 1.2.3 släppt'); ?>
+<?php BoxTop('19 november, 2004: Audacity 1.2.3 släppt'); ?>
 
 <p>
 Audacity 1.2.3 är en ny stabil version av ljudredigeringsprogrammet Audacity (freeware).
