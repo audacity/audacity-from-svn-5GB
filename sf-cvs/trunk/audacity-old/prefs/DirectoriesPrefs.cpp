@@ -143,9 +143,9 @@ bool DirectoriesPrefs::Apply()
 
    if(!wxDirExists(mTempDir)) {
       int ans = wxMessageBox("Directory " + mTempDir + " does not exist. Create it?", "New Temporary Directory",
-         wxOK|wxCANCEL|wxCENTRE|wxICON_EXCLAMATION);
+         wxYES_NO|wxCENTRE|wxICON_EXCLAMATION);
 
-      if(ans == wxOK) {
+      if(ans == wxYES) {
          if(!wxMkdir(mTempDir, 0600)) {
             /* wxWindows throws up a decent looking dialog */
             return false;
