@@ -34,6 +34,7 @@ class ASlider;
 class ControlToolBar;
 class ToolBar;
 class ToolBarFrame;
+class AudacityProject;
 
 class wxImage;
 class wxSize;
@@ -101,7 +102,8 @@ class ControlToolBar:public ToolBar {
    AButton *mPause;
    AButton *mStop;
    AButton *mFF;
-   
+
+   static AudacityProject *mBusyProject;
 
    ASlider *mVolume;
    int mCurrentTool;

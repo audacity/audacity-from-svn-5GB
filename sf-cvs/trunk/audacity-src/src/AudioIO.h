@@ -63,8 +63,16 @@ class AudioIO {
    /* Returns true if the audio i/o is running at all */
    bool IsStreamActive();
    /* Returns true if the audio i/o is still running the stream instance
-    * identified by this token */
+    * identified by this token, but doesn't return true if the device
+    * has been closed but some disk i/o or cleanup is still going on
+    */
    bool IsStreamActive(int token);
+   /* Returns true if the stream is active, or even if audio I/O is
+    * busy cleaning up its data or writing to disk.  This is used
+    * by TrackPanel to determine when a track has been completely
+    * recorded, and it's safe to flush to disk.
+   */
+   bool IsAudioTokenActive(int token);
 
    void SetPaused(bool state);
    bool IsPaused();

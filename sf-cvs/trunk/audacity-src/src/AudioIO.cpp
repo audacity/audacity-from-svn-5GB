@@ -618,8 +618,6 @@ void AudioIO::StopStream()
    mInCallbackFinishedState = false;
 #endif
 
-   mStreamToken = 0;
-
    // In either of the above cases, we want to make sure that any
    // capture data that made it into the PortAudio callback makes it
    // to the target WaveTrack.  To do this, we ask the audio thread to
@@ -632,6 +630,12 @@ void AudioIO::StopStream()
       wxYield();
       wxUsleep( 50 );
    }
+
+   //
+   // Only set token to 0 after we're finished writing all of our
+   // data to the WaveTracks.
+   //
+   mStreamToken = 0;
 
    //
    // Everything is taken care of.  Now, just free all the resources
@@ -708,10 +712,15 @@ bool AudioIO::IsStreamActive()
 
 bool AudioIO::IsStreamActive(int token)
 {
-   if( IsStreamActive() && token == mStreamToken )
+   if( IsStreamActive() && token > 0 && token == mStreamToken )
       return true;
    else
       return false;
+}
+
+bool AudioIO::IsAudioTokenActive(int token)
+{
+   return ( token > 0 && token == mStreamToken );
 }
 
 double AudioIO::GetStreamTime()
