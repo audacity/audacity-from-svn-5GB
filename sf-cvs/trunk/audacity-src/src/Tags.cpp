@@ -139,6 +139,8 @@ wxString GetID3FieldStr(struct id3_tag *tp, const char *name)
    return "";
 }
 
+#endif // ifdef USE_LIBID3TAG 
+
 int GetNumGenres()
 {
    return 148;
@@ -146,6 +148,7 @@ int GetNumGenres()
 
 wxString GetGenreNum(int i)
 {
+#ifdef USE_LIBID3TAG
   id3_latin1_t      i_latin1[50];
   id3_ucs4_t       *i_ucs4;
   const id3_ucs4_t *genre_ucs4;
@@ -164,10 +167,10 @@ wxString GetGenreNum(int i)
     return genreStr;    
   }   
 
+#endif // ifdef USE_LIBID3TAG 
+
   return "";
 }
-
-#endif // ifdef USE_LIBID3TAG 
 
 void Tags::ImportID3(wxString fileName)
 {
@@ -290,7 +293,9 @@ int Tags::ExportID3(char **buffer, bool *endOfFile)
    id3_tag_delete(tp);
 
    return len;
-#endif //ifdef USE_LIBID3TAG 
+#else //ifdef USE_LIBID3TAG 
+   return 0;
+#endif
 }
 
 //
