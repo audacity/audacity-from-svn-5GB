@@ -90,8 +90,8 @@ void AudacityProject::CreateMenuBar()
    mMenuBar->Append(mPluginMenu, _("Plugin&s"));
    mMenuBar->Append(mHelpMenu, _("&Help"));
 
-   BuildMenuBar();
    SetMenuBar(mMenuBar);
+   BuildMenuBar();
 }
 
 void AudacityProject::RebuildMenuBar()
