@@ -155,6 +155,8 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
 
    int block0 = FindBlock(start);
    int block1 = FindBlock(start + len);
+   
+   sampleCount s0, l0, maxl0;
 
    // First calculate the min/max of the blocks in the middle of this region;
    // this is very fast because we have the min/max of every entire block already
@@ -175,9 +177,9 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
    // we need read some samples and summaries from disk.
 
    if (block->Item(block0)->min < min || block->Item(block0)->max > max) {
-      int s0 = start - block->Item(block0)->start;
-      int l0 = len;
-      int maxl0 = block->Item(block0)->len - start;
+      s0 = start - block->Item(block0)->start;
+      l0 = len;
+      maxl0 = block->Item(block0)->start + block->Item(block0)->len - start;
       if (l0 > maxl0)
          l0 = maxl0;
       sampleType *buffer = new sampleType[l0];
@@ -199,8 +201,8 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
        (block->Item(block1)->min < min
         || block->Item(block1)->max > max)) {
 
-      int s0 = 0;
-      int l0 = (start + len) - block->Item(block1)->start;
+      s0 = 0;
+      l0 = (start + len) - block->Item(block1)->start;
       sampleType *buffer = new sampleType[l0];
 
       // TODO: optimize this to use Read256 and Read64K
@@ -1215,16 +1217,14 @@ void WaveTrack::UpdateSummaries(sampleType * buffer,
    sumLen = (len + 65535) / 65536;
 
    for (i = 0; i < sumLen; i++) {
-      min = summary256[i * 256];
-      max = summary256[i * 256];
-      if (i * 256 + jcount > ((len + 255) / 256))
-         jcount = ((len + 255) / 256) - i * 256;
+      min = summary256[2 * i * 256];
+      max = summary256[2 * i * 256 + 1];
 
       for (j = 1; j < 256; j++) {
-         if (summary256[i * 256 + j] < min)
-            min = summary256[i * 256 + j];
-         else if (summary256[i * 256 + j] > max)
-            max = summary256[i * 256 + j];
+         if (summary256[2 * (i * 256 + j)] < min)
+            min = summary256[2 * (i * 256 + j)];
+         if (summary256[2 * (i * 256 + j) + 1] > max)
+            max = summary256[2 * (i * 256 + j) + 1];
       }
       summary64K[i * 2] = min;
       summary64K[i * 2 + 1] = max;
@@ -1237,12 +1237,12 @@ void WaveTrack::UpdateSummaries(sampleType * buffer,
    // Recalc block-level summary
 
    min = summary64K[0];
-   max = summary64K[0];
+   max = summary64K[1];
    for (i = 1; i < sumLen; i++) {
-      if (summary64K[i] < min)
-         min = summary64K[i];
-      else if (summary64K[i] > max)
-         max = summary64K[i];
+      if (summary64K[2*i] < min)
+         min = summary64K[2*i];
+      else if (summary64K[2*i+1] > max)
+         max = summary64K[2*i+1];
    }
    b->min = min;
    b->max = max;

@@ -193,7 +193,6 @@ bool AudacityApp::OnInit()
    Effect::RegisterEffect(new EffectFadeIn());
    Effect::RegisterEffect(new EffectFadeOut());
    Effect::RegisterEffect(new EffectFilter());
-   Effect::RegisterEffect(new EffectMaxAmplify());
    Effect::RegisterEffect(new EffectPhaser());
    Effect::RegisterEffect(new EffectWahwah());
 
