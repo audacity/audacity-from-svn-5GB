@@ -2003,7 +2003,7 @@ void AudacityProject::Paste(wxCommandEvent& event)
   double tsel = mViewInfo.sel0;
 
   TrackListIterator iter(mTracks);
-  TrackListIterator clipIter(mTracks);
+  TrackListIterator clipIter(msClipboard);
 
   VTrack *n = iter.First();
   VTrack *c = clipIter.First();
