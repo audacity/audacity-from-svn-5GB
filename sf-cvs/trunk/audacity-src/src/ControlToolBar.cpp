@@ -305,9 +305,18 @@ AButton *ControlToolBar::MakeButton(char const **foreground,
                                     char const **disabled,
                                     char const **alpha, int id)
 {
+
+   // Windows (TM) has a little extra room for some reason, so the top of the
+   // buttons should be a little lower.
+   int buttonTop = 4;
+#ifdef __WXMSW__
+   buttonTop=6;
+#endif
+
+
    AButton *r = ToolBar::MakeButton(upPattern, downPattern, hilitePattern,
                               foreground, disabled, alpha, wxWindowID(id),
-                              wxPoint(mButtonPos,4), wxSize(48, 48), 16, 16);
+                              wxPoint(mButtonPos,buttonTop), wxSize(48, 48), 16, 16);
    mButtonPos += BUTTON_WIDTH;
    return r;
 }
