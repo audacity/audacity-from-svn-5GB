@@ -1347,8 +1347,9 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
    int numPlaybackTracks = gAudioIO->mPlaybackTracks.GetCount();
    int numCaptureChannels = gAudioIO->mNumCaptureChannels;
    int callbackReturn = paContinue;
-   float *tempFloats = (float*)alloca(framesPerBuffer*sizeof(float)*
-                                      MAX(numCaptureChannels,numPlaybackChannels));
+   void *tempBuffer = alloca(framesPerBuffer*sizeof(float)*
+                             MAX(numCaptureChannels,numPlaybackChannels));
+   float *tempFloats = (float*)tempBuffer;
    unsigned int i;
    int t;
 
@@ -1474,7 +1475,6 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
 
    if( inputBuffer && (numCaptureChannels > 0) )
    {
-      float *inputFloats = (float *)inputBuffer;
       unsigned int len = framesPerBuffer;
       for( t = 0; t < numCaptureChannels; t++) {
          unsigned int avail =
@@ -1496,10 +1496,46 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
 
       if (len > 0) {
          for( t = 0; t < numCaptureChannels; t++) {
-            for( i = 0; i < len; i++)
-               tempFloats[i] = inputFloats[numCaptureChannels*i+t] * gain;
 
-            gAudioIO->mCaptureBuffers[t]->Put((samplePtr)tempFloats,
+            // dmazzoni:
+            // Un-interleave.  Ugly special-case code required because the
+            // capture channels could be in three different sample formats;
+            // it'd be nice to be able to call CopySamples, but it can't handle
+            // multiplying by the gain and then clipping.  Bummer.
+
+            switch(gAudioIO->mCaptureFormat) {
+            case floatSample: {
+               float *inputFloats = (float *)inputBuffer;
+               for( i = 0; i < len; i++)
+                  tempFloats[i] = inputFloats[numCaptureChannels*i+t] * gain;
+            } break;
+            case int24Sample: {
+               int *inputInts = (int *)inputBuffer;
+               int *tempInts = (int *)tempBuffer;
+               for( i = 0; i < len; i++) {
+                  float tmp = inputInts[numCaptureChannels*i+t] * gain;
+                  if (tmp > 8388607)
+                     tmp = 8388607;
+                  if (tmp < -8388608)
+                     tmp = -8388608;
+                  tempInts[i] = (int)(tmp);
+               }
+            } break;
+            case int16Sample: {
+               short *inputShorts = (short *)inputBuffer;
+               short *tempShorts = (short *)tempBuffer;
+               for( i = 0; i < len; i++) {
+                  float tmp = inputShorts[numCaptureChannels*i+t] * gain;
+                  if (tmp > 32767)
+                     tmp = 32767;
+                  if (tmp < -32768)
+                     tmp = -32768;
+                  tempShorts[i] = (short)(tmp);
+               }
+            } break;
+            } // switch
+
+            gAudioIO->mCaptureBuffers[t]->Put((samplePtr)tempBuffer,
                                               gAudioIO->mCaptureFormat, len);
          }
       }
