@@ -262,6 +262,14 @@ SOURCE=.\effects\Fade.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\effects\Filter.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\effects\Filter.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\effects\LoadVSTWin.cpp
 # End Source File
 # Begin Source File
@@ -443,14 +451,6 @@ SOURCE=.\res\AudacitySmall.bmp
 # End Source File
 # Begin Source File
 
-SOURCE=.\AutoCorrelate.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AutoCorrelate.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\BlockFile.cpp
 # End Source File
 # Begin Source File
@@ -504,22 +504,6 @@ SOURCE=.\FFT.cpp
 # Begin Source File
 
 SOURCE=.\FFT.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\FFTMisc.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Fourier.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\FourierD.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\FourierF.cpp
 # End Source File
 # Begin Source File
 
@@ -595,31 +579,11 @@ SOURCE=.\NoteTrack.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Peak.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Peak.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Pitch.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Pitch.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\Play.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\Play.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\PlayUp.bmp
 # End Source File
 # Begin Source File
 

@@ -51,7 +51,11 @@ WX_DEFINE_ARRAY(AudacityProject *, AProjectArray);
 
 #ifdef __WXMAC__
 const int sbarWidth = 16;
-#else
+#endif
+#ifdef __WXMSW__
+const int sbarWidth = 16;
+#endif
+#ifdef __WXGTK__
 const int sbarWidth = 15;
 #endif
 
