@@ -46,12 +46,19 @@ BEGIN_EVENT_TABLE(PrefsDialog, wxDialog)
    EVT_BUTTON(wxID_CANCEL, PrefsDialog::OnCancel)
 END_EVENT_TABLE()
 
-
-
 PrefsDialog::PrefsDialog(wxWindow * parent):
-wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
+   wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
          wxDefaultSize, wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
 {
+#ifdef __WXMAC__
+   mMacHiddenFrame = new wxFrame(NULL, -1, "", wxPoint(5000, 5000),
+                        wxSize(100, 100));
+   wxMenuBar *blankMenuBar = new wxMenuBar();
+   mMacHiddenFrame->SetMenuBar(blankMenuBar);
+   blankMenuBar->MacInstallMenuBar();
+   mMacHiddenFrame->Show();
+#endif
+
    wxRect rect = GetRect();
    if(rect.x < 0) rect.x = 0;
    if(rect.y < 0) rect.y = 0;
@@ -165,6 +172,9 @@ void PrefsDialog::OnOK(wxCommandEvent & event)
 
 PrefsDialog::~PrefsDialog()
 {
+#ifdef __WXMAC__
+   mMacHiddenFrame->Destroy();
+#endif
 }
 
 void PrefsDialog::SelectPageByName(wxString pageName)

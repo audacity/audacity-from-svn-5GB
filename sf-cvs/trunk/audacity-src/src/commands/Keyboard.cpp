@@ -28,6 +28,14 @@ wxString KeyEventToKeyString(wxKeyEvent &event)
    if(event.ShiftDown())
       newStr += "Shift+";
 
+   if(event.MetaDown()) {
+      #ifdef __WXMAC__
+      newStr += "Cmd+";
+      #else
+      newStr += "Meta+";
+      #endif
+   }
+
    #if 0
    //BG: Don't allow noncombo letters to be bound
    if(((!event.ControlDown() && !event.AltDown() && !event.ShiftDown()) &&

@@ -121,10 +121,20 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("ExportLossySel", "Export Selection As Lossy...",      FN(OnExportLossySelection));
    c->AddSeparator();
    c->AddItem("ExportLabels",   _("Export &Labels..."),              FN(OnExportLabels));
+
+   //
+   // On Mac OS X, Preferences and Quit are in the application menu,
+   // not the File menu.
+   //
+
+#ifndef __WXMAC__
    c->AddSeparator();
    c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
    c->AddSeparator();
+
    c->AddItem("Exit",           _("E&xit"),                          FN(OnExit));
+#endif
+
    c->EndMenu();
 
    c->BeginMenu(_("&Edit"));
