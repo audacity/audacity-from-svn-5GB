@@ -1063,9 +1063,10 @@ void AudacityProject::Import(wxString fileName)
       mRate = newRate;
       mStatus->SetRate(mRate);
    } else if (rateWarning) {
-      wxMessageBox("Warning: your file has multiple sampling rates.  "
-                   "Audacity will ignore any track which is not at "
-                   "the same sampling rate as the project.");
+      wxMessageBox("Warning: your file has multiple sampling rates.\n"
+                   "This version of Audacity requires that all tracks\n"
+                   "match the project sample rate to play or export.\n"
+                   "To change the sample rate of a track, click on its title.");
    }
 
    PushState();
