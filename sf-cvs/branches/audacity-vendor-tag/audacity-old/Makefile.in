@@ -1,0 +1,135 @@
+########################################
+#
+# Audacity Makefile
+#
+# Dominic Mazzoni
+#
+# Run configure to generate Makefile
+# from Makefile.in
+#
+
+LIBFLAGS = @LIBS@
+CFLAGS = @CFLAGS@ @CPPFLAGS@ \
+	-D__WXDEBUG__
+CCC = @CXX@
+CC = @CC@
+
+########################################
+# ALL OBJECT FILES
+
+OBJDIR = obj
+
+OBJS = \
+	$(OBJDIR)/AudioApp.cpp.o \
+	$(OBJDIR)/AudioFrame.cpp.o \
+	$(OBJDIR)/AudioView.cpp.o \
+	$(OBJDIR)/AudioDoc.cpp.o \
+	$(OBJDIR)/NoteTrack.cpp.o \
+	$(OBJDIR)/WaveTrack.cpp.o \
+	$(OBJDIR)/LabelTrack.cpp.o \
+	$(OBJDIR)/Track.cpp.o \
+	$(OBJDIR)/BlockFile.cpp.o \
+	$(OBJDIR)/Export.cpp.o \
+	$(OBJDIR)/Import.cpp.o \
+	$(OBJDIR)/ImportRaw.cpp.o \
+	$(OBJDIR)/ImportMIDI.cpp.o \
+	$(OBJDIR)/ImportMP3.cpp.o \
+	$(OBJDIR)/Landmark.cpp.o \
+	$(OBJDIR)/Peak.cpp.o \
+	$(OBJDIR)/Spectrum.cpp.o \
+	$(OBJDIR)/AutoCorrelate.cpp.o \
+	$(OBJDIR)/FourierD.cpp.o \
+	$(OBJDIR)/FourierF.cpp.o \
+	$(OBJDIR)/FFTMisc.cpp.o \
+	$(OBJDIR)/DirManager.cpp.o \
+	$(OBJDIR)/UndoManager.cpp.o \
+	$(OBJDIR)/AboutDialog.cpp.o \
+	$(OBJDIR)/GenericStream.cpp.o \
+	$(OBJDIR)/Pitch.cpp.o \
+	$(OBJDIR)/Mix.cpp.o \
+	$(OBJDIR)/PlayLinux.cpp.o \
+	$(OBJDIR)/effects/Effect.cpp.o \
+	$(OBJDIR)/effects/Amplify.cpp.o \
+	$(OBJDIR)/effects/Echo.cpp.o \
+	$(OBJDIR)/effects/Fade.cpp.o \
+	$(OBJDIR)/snd/audiolinux.c.o \
+	$(OBJDIR)/snd/ieeecvt.c.o \
+	$(OBJDIR)/snd/snd.c.o \
+	$(OBJDIR)/snd/sndheader.c.o \
+	$(OBJDIR)/snd/sndlinux.c.o \
+	$(OBJDIR)/snd/sndcvt.c.o \
+	$(OBJDIR)/snd/sndio.c.o \
+	$(OBJDIR)/mp3/common.c.o \
+	$(OBJDIR)/mp3/dct64_i386.c.o \
+	$(OBJDIR)/mp3/decode_i386.c.o \
+	$(OBJDIR)/mp3/layer3.c.o \
+	$(OBJDIR)/mp3/tabinit.c.o \
+	$(OBJDIR)/mp3/interface.c.o
+
+########################################
+# DEPENDENCIES
+
+DEPS = $(OBJS:$(OBJDIR)/%.o=%)
+
+########################################
+
+all: dirs audacity
+
+audacity: $(OBJS) Makefile
+	$(CCC) -o audacity $(LIBFLAGS) $(OBJS)
+
+#
+# You can optionally "make dep" to make dependencies.
+# The sed script sticks the object directory name before .o files
+# in .depend, i.e. it replaces foo.o: with obj/foo.o
+#
+
+dep:
+	$(CCC) -M $(CFLAGS) $(DEPS) | \
+		sed "s/\(.*\)\.o:/$(OBJDIR)\/\1.o:/" \
+		> .depend
+
+#
+# clean: Get rid of executable, dependencies, and all object files
+#
+
+clean:
+	rm -f audacity .depend
+	rm -rf obj/
+
+#
+# We stick object files in separate directories for convenience
+#
+
+dirs: obj obj/snd obj/mp3 obj/effects
+
+obj:
+	mkdir obj
+
+obj/snd:
+	mkdir obj/snd
+
+obj/mp3:
+	mkdir obj/mp3
+
+obj/effects:
+	mkdir obj/effects
+
+#
+# Rules for compiling C/C++ files
+#
+
+$(OBJDIR)/%.cpp.o: %.cpp
+	$(CCC) -c $(CFLAGS) $< -o $@
+
+$(OBJDIR)/%.c.o: %.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
+#
+# Include ".depend" if it exists (run "make dep" to generate it)
+#
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif
+
