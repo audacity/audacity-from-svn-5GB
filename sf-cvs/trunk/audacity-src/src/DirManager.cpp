@@ -390,7 +390,8 @@ bool DirManager::HandleXMLTag(const char *tag, const char **attrs)
       *mLoadingTarget = SimpleBlockFile::BuildFromXML(projFull, attrs);
    else if( !wxStricmp(tag, "pcmaliasblockfile") )
       *mLoadingTarget = PCMAliasBlockFile::BuildFromXML(projFull, attrs);
-   else if( !wxStricmp(tag, "blockfile") ) {
+   else if( !wxStricmp(tag, "blockfile") ||
+            !wxStricmp(tag, "legacyblockfile") ) {
       // Support Audacity version 1.1.1 project files?
 
       /*

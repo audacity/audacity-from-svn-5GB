@@ -22,6 +22,8 @@ char headerTag[headerTagLen + 1] = "AudacityBlockFile112";
 
 SummaryInfo::SummaryInfo(sampleCount samples)
 {
+   format = floatSample;
+
    bytesPerFrame = sizeof(float) * 3; /* min, max, rms */
 
    frames64K = (samples + 65535) / 65536;
@@ -305,9 +307,12 @@ bool BlockFile::Read256(float *buffer,
       return false;
    }
 
-   memcpy(buffer,
-          summary + mSummaryInfo.offset256 + (start * mSummaryInfo.bytesPerFrame),
-          len * mSummaryInfo.bytesPerFrame);
+   if (start+len > mSummaryInfo.frames256)
+      len = mSummaryInfo.frames256 - start;
+
+   CopySamples(summary + mSummaryInfo.offset256 + (start * mSummaryInfo.bytesPerFrame),
+               mSummaryInfo.format,
+               (samplePtr)buffer, floatSample, len*3);
 
    delete[] summary;
 
@@ -334,9 +339,12 @@ bool BlockFile::Read64K(float *buffer,
       return false;
    }
 
-   memcpy(buffer,
-          summary + mSummaryInfo.offset64K + (start * mSummaryInfo.bytesPerFrame),
-          len * mSummaryInfo.bytesPerFrame);
+   if (start+len > mSummaryInfo.frames64K)
+      len = mSummaryInfo.frames64K - start;
+
+   CopySamples(summary + mSummaryInfo.offset64K + (start * mSummaryInfo.bytesPerFrame),
+               mSummaryInfo.format,
+               (samplePtr)buffer, floatSample, len*3);
 
    delete[] summary;
 
