@@ -441,7 +441,7 @@ void AudacityApp::AddUniquePathToPathList(wxString path,
    #if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
    wxFileName pathNorm = path;
    pathNorm.Normalize();
-   path = pathNorm;
+   path = pathNorm.GetFullPath();
    #endif
 
    for(unsigned int i=0; i<pathList.GetCount(); i++) {
