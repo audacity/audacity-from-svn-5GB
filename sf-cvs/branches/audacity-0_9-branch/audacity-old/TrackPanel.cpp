@@ -1536,7 +1536,7 @@ void TrackPanel::GetMuteRect(wxRect & r, wxRect & dest)
    dest.x = r.x + 8;
    dest.y = r.y + 34;
    dest.width = 36;
-   dest.height = 16;
+   dest.height = 17;
 }
 
 void TrackPanel::GetSoloRect(wxRect & r, wxRect & dest)
@@ -1544,7 +1544,7 @@ void TrackPanel::GetSoloRect(wxRect & r, wxRect & dest)
    dest.x = r.x + 8 + 36 + 8;
    dest.y = r.y + 34;
    dest.width = 36;
-   dest.height = 16;
+   dest.height = 17;
 }
 
 void TrackPanel::GetTrackControlsRect(wxRect & r, wxRect & dest)
