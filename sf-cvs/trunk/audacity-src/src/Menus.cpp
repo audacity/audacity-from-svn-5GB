@@ -297,6 +297,8 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand("SelStart",    _("Selection to Start\tShift+Home"), FN(OnSelToStart));
    c->AddCommand("SelEnd",      _("Selection to End\tShift+End"),    FN(OnSelToEnd));
 
+   c->AddCommand("DeleteKey",      _("DeleteKey\tDelete"),           FN(OnDelete));
+
    c->AddCommand("CursorLeft",  _("Cursor Left\tLeft"),           FN(OnCursorLeft));
    c->AddCommand("CursorRight", _("Cursor Right\tRight"),         FN(OnCursorRight));
    c->AddCommand("SelExtLeft",  _("Selection Extend Left\tShift+Left"),     FN(OnSelExtendLeft));
@@ -1794,9 +1796,13 @@ void AudacityProject::OnEditID3()
 
 void AudacityProject::OnQuickMix()
 {
-   if (::QuickMix(mTracks, mTrackFactory, mRate, mDefaultFormat)) {
+   WaveTrack *newLeft = NULL;
+   WaveTrack *newRight = NULL;
 
-      // After the tracks have been mixed, remove the originals
+   if (::QuickMix(mTracks, mTrackFactory, mRate, mDefaultFormat, 0.0, 0.0,
+                  &newLeft, &newRight)) {
+
+      // Remove originals
 
       TrackListIterator iter(mTracks);
       Track *t = iter.First();
@@ -1807,6 +1813,12 @@ void AudacityProject::OnQuickMix()
          else
             t = iter.Next();
       }
+
+      // Add new tracks
+
+      mTracks->Add(newLeft);
+      if (newRight)
+         mTracks->Add(newRight);
 
       PushState(_("Quick mix"));
 

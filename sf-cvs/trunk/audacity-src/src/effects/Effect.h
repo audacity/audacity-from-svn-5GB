@@ -106,6 +106,10 @@ class Effect {
    bool DoEffect(wxWindow *parent, TrackList *list,
                  TrackFactory *factory, double *t0, double *t1);
 
+   wxString GetPreviewName();
+
+   void Preview();
+
  //
  // protected virtual methods
  //

@@ -71,6 +71,8 @@ public:
    double   *mCircle;
    double   *mLevelCircle;
    double    mLastLevel;
+
+   friend class CompressorDialog;
 };
 
 class CompressorPanel: public wxPanel
@@ -105,7 +107,8 @@ class CompressorDialog: public wxDialog
 {
 public:
    // constructors and destructors
-   CompressorDialog( wxWindow *parent, wxWindowID id, const wxString &title,
+   CompressorDialog( EffectCompressor *effect,
+                     wxWindow *parent, wxWindowID id, const wxString &title,
                      const wxPoint& pos = wxDefaultPosition,
                      const wxSize& size = wxDefaultSize,
                      long style = wxDEFAULT_DIALOG_STYLE );
@@ -123,7 +126,9 @@ private:
    void OnCancel( wxCommandEvent &event );
    void OnSize( wxSizeEvent &event );
    void OnSlider( wxCommandEvent &event );
+   void OnPreview( wxCommandEvent &event );
 
+   EffectCompressor *mEffect;
    CompressorPanel *mPanel;
    wxSlider *mThresholdSlider;
    wxSlider *mRatioSlider;

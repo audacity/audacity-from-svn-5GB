@@ -31,7 +31,9 @@
 #endif
 
 bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
-              double rate, sampleFormat format)
+              double rate, sampleFormat format,
+              double startTime, double endTime,
+              WaveTrack **newLeft, WaveTrack **newRight)
 {
    WaveTrack **waveArray;
    Track *t;
@@ -98,8 +100,13 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
 
    int maxBlockLen = mixLeft->GetIdealBlockSize();
 
+   if (startTime == endTime) {
+      startTime = 0.0;
+      endTime = totalTime;
+   }
+
    Mixer *mixer = new Mixer(numWaves, waveArray, tracks->GetTimeTrack(),
-                            0.0, totalTime, mono ? 1 : 2, maxBlockLen, false,
+                            startTime, endTime, mono ? 1 : 2, maxBlockLen, false,
                             rate, format);
 
    wxProgressDialog *progress = NULL;
@@ -136,15 +143,15 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
    }
 
    mixLeft->Flush();
-   tracks->Add(mixLeft);
+   *newLeft = mixLeft;
    if (!mono) {
-      mixRight->Flush();
       tracks->Add(mixRight);
+      *newRight = mixRight;
    }
 
    delete progress;
 
-#ifdef __WXGTK__
+#if 0
    int elapsedMS = wxGetElapsedTime();
    double elapsedTime = elapsedMS * 0.001;
    double maxTracks = totalTime / (elapsedTime / numWaves);
@@ -155,7 +162,7 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
    printf(_("Max number of tracks to mix in real time: %f\n"), maxTracks);
 #endif
 
-   delete waveArray;
+   delete[] waveArray;
    delete mixer;
 
    return true;

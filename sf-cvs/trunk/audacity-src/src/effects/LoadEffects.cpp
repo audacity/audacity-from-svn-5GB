@@ -25,6 +25,7 @@
 #include "Noise.h"
 #include "NoiseRemoval.h"
 #include "Phaser.h"
+#include "Repeat.h"
 #include "Reverse.h"
 #include "Silence.h"
 #include "ToneGen.h"
@@ -80,6 +81,7 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectInvert());
    Effect::RegisterEffect(new EffectNoiseRemoval());
    Effect::RegisterEffect(new EffectPhaser());
+   Effect::RegisterEffect(new EffectRepeat());
    Effect::RegisterEffect(new EffectReverse());
    Effect::RegisterEffect(new EffectWahwah());
 
