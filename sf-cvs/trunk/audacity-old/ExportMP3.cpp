@@ -70,20 +70,6 @@ bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
       return false;
    }
    
-   long numSymbols;
-   OSErr err;
-   err = CountSymbols(libHandle, &numSymbols);
-   if (!err)
-       for(int y=0; y<numSymbols; y++) {
-       
-           Str255 symbolName;
-           Ptr symbolAddress;
-               CFragSymbolClass symbolClass;
-           err = GetIndSymbol(libHandle, y, symbolName, &symbolAddress, &symbolClass);
-           
-           
-       }
-
    lame_initTYPE lame_init =
        (lame_initTYPE) wxDllLoader::GetSymbol(libHandle,
                                               "lame_init");
