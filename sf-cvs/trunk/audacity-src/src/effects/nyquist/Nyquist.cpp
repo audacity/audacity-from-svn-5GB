@@ -508,6 +508,7 @@ bool EffectNyquist::ProcessOne()
          ltrack->AddLabel(t + mT0, t + mT0, str);
       }
 
+      nyx_cleanup();
       return true;
    }
 
@@ -525,6 +526,7 @@ bool EffectNyquist::ProcessOne()
       wxMessageBox(_("Nyquist returned too many audio channels.\n"),
                    "Nyquist",
                    wxOK | wxCENTRE, mParent);
+      nyx_cleanup();
       return false;
    }
 
