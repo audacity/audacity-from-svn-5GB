@@ -63,7 +63,7 @@
 
 void AudacityProject::CreateMenuBar()
 {
-   int i;
+   unsigned int i;
 
    mMenusDirtyCheck = gMenusDirty;
    mFirstTimeUpdateMenus = true;
@@ -356,67 +356,27 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    mEditMenu->Enable(PasteID, numTracksSelected > 0 && msClipLen > 0.0);
    SetCommandState(PasteID, numTracksSelected > 0 && msClipLen > 0.0);
 
-
-
-
-
-
-
    //Modify toolbar-specific Menus
 
    if (gEditToolBarStub) {
+      wxMenuItem *load = mViewMenu->FindItem(LoadEditToolBarID);
+      wxMenuItem *dock = mViewMenu->FindItem(FloatEditToolBarID);
 
+      // Loaded or unloaded?
       if (gEditToolBarStub->GetLoadedStatus()) {
-
-         if (gEditToolBarStub->GetWindowedStatus()) {
-
-            //Loaded/windowed
-            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
-                SetName(_("Unload Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                SetName(_("Dock Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                Enable(true);
-         } else {
-
-            //Loaded/unwindowed
-            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
-                SetName(_("Unload Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                SetName(_("Float Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                Enable(true);
-         }
+         load->SetName(_("Unload Edit Toolbar"));
+         dock->Enable(true);
       } else {
-
-         if (gEditToolBarStub->GetWindowedStatus()) {
-
-            //Unloaded/windowed
-            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
-                SetName(_("Load Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                SetName(_("Dock Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                Enable(false);
-         } else {
-
-            //Unloaded/unwindowed
-            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
-                SetName(_("Load Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                SetName(_("Float Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                Enable(false);
-
-         }
+         load->SetName(_("Load Edit Toolbar"));
+         dock->Enable(false);
       }
+
+      // Floating or docked?
+      if (gEditToolBarStub->GetWindowedStatus())
+         dock->SetName(_("Dock Edit Toolbar"));
+      else
+         dock->SetName(_("Float Edit Toolbar"));
    }
-
-
-
-
-
-
 
    // Return from this function if nothing's changed since
    // the last time we were here.
@@ -503,14 +463,10 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 
    //Now, go through each toolbar, and and call EnableDisableButtons()
 
-   int i;
+   unsigned int i;
    for (i = 0; i < mToolBarArray.GetCount(); i++) {
-
       mToolBarArray[i]->EnableDisableButtons(anySelection, numTracks);
-
    }
-
-
 }
 
 //
