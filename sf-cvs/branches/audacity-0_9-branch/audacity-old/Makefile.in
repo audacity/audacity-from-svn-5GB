@@ -154,6 +154,7 @@ clean:
 	rm -f audacity audacity-help.htb .depend
 	rm -rf obj/
 	rm -f mpeg3/libmpeg3.a:
+	cd id3lib && $(MAKE) clean
 
 #
 # We stick object files in separate directories for convenience
