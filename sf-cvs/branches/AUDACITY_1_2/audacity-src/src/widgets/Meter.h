@@ -94,7 +94,7 @@ class Meter : public wxPanel
    void SetStyle(Style newStyle);
 
    //
-   // These three methods are thread-safe!  Feel free to call from a
+   // These methods are thread-safe!  Feel free to call from a
    // different thread (like from an audio I/O callback)
    void Reset(double sampleRate, bool resetClipping);
    void UpdateDisplay(int numChannels,
@@ -135,6 +135,7 @@ class Meter : public wxPanel
    void ResetBar(MeterBar *bar, bool resetClipping);
    void RepaintBarsNow();
    void StartMonitoring();
+   void CreateIcon(int aquaOffset);
    wxFont GetFont();
 
    MeterUpdateQueue mQueue;
@@ -162,6 +163,7 @@ class Meter : public wxPanel
    bool      mLayoutValid;
 
    wxBitmap *mBitmap;
+   wxBitmap *mBackgroundBitmap;
    wxRect    mMenuRect;
    wxPoint   mIconPos;
    wxPoint   mLeftTextPos;
