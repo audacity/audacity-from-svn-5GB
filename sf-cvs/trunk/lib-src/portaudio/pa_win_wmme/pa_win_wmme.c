@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_wmme.c,v 1.10 2004-07-31 20:55:33 cqfma Exp $
+ * $Id: pa_win_wmme.c,v 1.11 2004-09-15 13:55:04 jamescrook Exp $
  * pa_win_wmme.c
  * Implementation of PortAudio for Windows MultiMedia Extensions (WMME)
  *
@@ -1669,6 +1669,7 @@ static PaError PaHost_UpdateStreamTime( PaWMMEStreamData *wmmeStreamData )
 {
     MMRESULT  mmresult;
     MMTIME    mmtime;
+    const int shift = 6;
     mmtime.wType = TIME_SAMPLES;
 
     if( wmmeStreamData->hWaveOut != NULL )
@@ -1689,10 +1690,22 @@ static PaError PaHost_UpdateStreamTime( PaWMMEStreamData *wmmeStreamData )
     /* This data has two variables and is shared by foreground and background.
      * So we need to make it thread safe. */
     EnterCriticalSection( &wmmeStreamData->streamLock );
-    wmmeStreamData->framesPlayed += (long)((DWORD)mmtime.u.sample - (DWORD)(wmmeStreamData->lastPosition));
-    wmmeStreamData->lastPosition = (long)mmtime.u.sample;
+
+// The casting and shifting in computing frames played is
+// to deal with wrap-around.  
+//    mmtime.u.sample will 
+// wrap at 27 bits, for typical sound cards under windows.
+// The shifting and casting is to ensure we get the right sign
+// bits. 
+   wmmeStreamData->framesPlayed += 
+      ((long)((((DWORD)mmtime.u.sample)<<shift) - 
+      (((DWORD)(wmmeStreamData->lastPosition))<<shift)))>>shift;
+// First attempted fix.
+//    wmmeStreamData->framesPlayed += (long)((DWORD)mmtime.u.sample - (DWORD)(wmmeStreamData->lastPosition));
+// Original code:
 //    wmmeStreamData->framesPlayed += ((long)mmtime.u.sample) - wmmeStreamData->lastPosition;
-//    wmmeStreamData->lastPosition = (long)mmtime.u.sample;
+
+    wmmeStreamData->lastPosition = (long)mmtime.u.sample;
     LeaveCriticalSection( &wmmeStreamData->streamLock );
     
     return paNoError;
