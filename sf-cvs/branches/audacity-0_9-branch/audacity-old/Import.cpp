@@ -49,7 +49,6 @@ int Import(AudacityProject *project,
    int numTracks = 0;
    DirManager *dirManager = project->GetDirManager();
    wxWindow *parent = project;
-   bool isMP3 = false;
 
    if (!fName.Right(3).CmpNoCase("aup")) {
       wxMessageBox("Audacity does not support importing Audacity Projects.\n"
@@ -65,9 +64,10 @@ int Import(AudacityProject *project,
       return 0;
    }
    
-   isMP3 = false;
+   bool isMP3 = false;
 
    if (!fName.Right(3).CmpNoCase("mp3") ||
+       !fName.Right(3).CmpNoCase("mp2") ||
        !fName.Right(3).CmpNoCase("mpg") ||
        !fName.Right(4).CmpNoCase("mpeg"))
       isMP3 = true;
