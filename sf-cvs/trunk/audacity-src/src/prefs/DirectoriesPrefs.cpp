@@ -27,6 +27,7 @@
 
 #include "../Prefs.h"
 #include "../AudacityApp.h"
+#include "../Internat.h"
 #include "DirectoriesPrefs.h"
 
 enum {
@@ -183,7 +184,7 @@ bool DirectoriesPrefs::Apply()
             wxYES_NO|wxCENTRE|wxICON_EXCLAMATION);
 
       if(ans == wxYES) {
-         if(!wxMkdir(mTempDir, 0755)) {
+         if(!wxMkdir(FILENAME(mTempDir), 0755)) {
             /* wxWindows throws up a decent looking dialog */
             return false;
          }
@@ -196,14 +197,14 @@ bool DirectoriesPrefs::Apply()
       /* If the directory already exists, make sure it is writable */
       wxLogNull logNo;
       wxString tempDir = mTempDir + wxFILE_SEP_PATH + "canicreate";
-      if(!wxMkdir(tempDir, 0755)) {
+      if(!wxMkdir(FILENAME(tempDir), 0755)) {
          wxMessageBox(
                wxString::Format(_("Directory %s is not writable"),
                                 (const char *) mTempDir),
                _("Error"), wxOK|wxICON_ERROR);
          return false;
       }
-      wxRmdir(tempDir);
+      wxRmdir(FILENAME(tempDir));
    }
 
    gPrefs->Write("/Directories/TempDir", mTempDir);

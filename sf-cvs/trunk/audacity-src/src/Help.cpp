@@ -29,6 +29,7 @@
 #include "Audacity.h"
 #include "AudacityApp.h"
 #include "Help.h"
+#include "Internat.h"
 #include "Prefs.h"
 
 wxHtmlHelpController *gHelp = NULL;
@@ -52,7 +53,7 @@ void InitHelp(wxWindow * parent)
       wxString helpFilePath =
           gPrefs->Read("/Help/HelpFilePath1.2", defaultLoc);
 
-      if (!::wxFileExists(helpFilePath)) {
+      if (!::wxFileExists(FILENAME(helpFilePath))) {
          helpFilePath = wxFileSelector(_("Where is audacity-1.2-help.htb?"), NULL,
                                        "audacity-1.2-help.htb",    // Name
                                        "",                     // Extension

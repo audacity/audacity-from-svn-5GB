@@ -47,6 +47,7 @@
 #include "effects/LoadEffects.h"
 #include "FreqWindow.h"
 #include "Help.h"
+#include "Internat.h"
 #include "LangChoice.h"
 #include "Prefs.h"
 #include "Project.h"
@@ -367,7 +368,7 @@ bool AudacityApp::OnInit()
    wxString pathVar = wxGetenv("AUDACITY_PATH");
    if (pathVar != "")
       AddMultiPathsToPathList(pathVar, audacityPathList);
-   AddUniquePathToPathList(::wxGetCwd(), audacityPathList);
+   AddUniquePathToPathList(FROMFILENAME(::wxGetCwd()), audacityPathList);
    AddUniquePathToPathList(wxString::Format("%s/.audacity-files",
                                             (const char *)home),
                            audacityPathList);
@@ -396,7 +397,7 @@ bool AudacityApp::OnInit()
    wxFileName tmpFile;
    tmpFile.AssignTempFileName("nn");
    wxString tmpDirLoc = tmpFile.GetPath(wxPATH_GET_VOLUME);
-   ::wxRemoveFile(tmpFile.GetFullPath());
+   ::wxRemoveFile(FILENAME(tmpFile.GetFullPath()));
 
    // On Mac and Windows systems, use the directory which contains Audacity.
    #ifdef __WXMSW__

@@ -32,8 +32,9 @@
 #include "AudioEffect.hpp"        // VST API
 
 #include "VSTEffect.h"
-#include "../../AudacityApp.h"
 #include "LoadVSTMac.h"   
+#include "../../AudacityApp.h"
+#include "../../Internat.h"
 
 int audacityVSTID = 1;
 
@@ -97,7 +98,7 @@ extern "C" {
          short   resFileID;
          FSSpec  spec;
          
-         wxMacFilename2FSSpec(files[i], &spec);
+         wxMacFilename2FSSpec(FILENAME(files[i]), &spec);
          resFileID = FSpOpenResFile(&spec, fsRdPerm);
          short cResCB = Count1Resources('aEff');
 

@@ -23,6 +23,7 @@
 
 #include "LegacyBlockFile.h"
 #include "../FileFormats.h"
+#include "../Internat.h"
 
 #include "sndfile.h"
 
@@ -110,7 +111,7 @@ LegacyBlockFile::LegacyBlockFile(wxFileName existingFile,
    BlockFile(existingFile, len),
    mFormat(format)
 {
-   if( !existingFile.FileExists() )
+   if( !wxFileExists(FILENAME(existingFile.GetFullPath())) )
       // throw an exception?
       ;
 
@@ -180,7 +181,7 @@ int LegacyBlockFile::ReadData(samplePtr data, sampleFormat format,
    info.frames = mLen + (mSummaryInfo.totalSummaryBytes /
                          SAMPLE_SIZE(mFormat));
    
-   SNDFILE *sf = sf_open(mFileName.GetFullPath(), SFM_READ, &info);
+   SNDFILE *sf = sf_open(FILENAME(mFileName.GetFullPath()), SFM_READ, &info);
 
    if (!sf)
       return 0;

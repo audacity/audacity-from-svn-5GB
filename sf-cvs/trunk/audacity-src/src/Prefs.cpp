@@ -102,8 +102,8 @@ void InitPreferences()
    if (path.Length() > 0 && path.Left(1)=="/")
       fix = true;
    if (fix) {
-      gPrefs->Write("/DefaultOpenPath", ::wxGetCwd());
-      gPrefs->Write("/DefaultExportPath", ::wxGetCwd());
+      gPrefs->Write("/DefaultOpenPath", FROMFILENAME(::wxGetCwd()));
+      gPrefs->Write("/DefaultExportPath", FROMFILENAME(::wxGetCwd()));
       gPrefs->Write("/Directories/TempDir", "");
       wxMessageBox(_("Some of your preferences were from an earlier version "
                      "of Audacity and have been reset."));

@@ -13,6 +13,7 @@
 
 #include <string.h>
 
+#include "../Internat.h"
 #include "XMLFileReader.h"
 
 XMLFileReader::XMLFileReader()
@@ -39,7 +40,7 @@ XMLFileReader::~XMLFileReader()
 bool XMLFileReader::Parse(XMLTagHandler *baseHandler,
                           const char *fname)
 {
-   FILE *fp = fopen(fname, "rb");
+   FILE *fp = fopen(FILENAME(fname), "rb");
    if (!fp || ferror(fp)) {
       const char *formatStr = _("Could not open file: \"%s\"");
       if (mErrorStr)

@@ -36,7 +36,9 @@
 #include "blockfile/SilentBlockFile.h"
 #include "blockfile/PCMAliasBlockFile.h"
 #include "DirManager.h"
+#include "Internat.h"
 #include "Prefs.h"
+#include "widgets/Warning.h"
 
 #include "prefs/PrefsDialog.h"
 
@@ -72,18 +74,18 @@ bool DirManager::InitDirManager()
    // Try temp dir that was stored in prefs first
    
    if (tempFromPrefs != "") {
-      if (wxPathExists(tempFromPrefs))
+      if (wxPathExists(FILENAME(tempFromPrefs)))
          temp = tempFromPrefs;
-      else if (wxMkdir(tempFromPrefs))
+      else if (wxMkdir(FILENAME(tempFromPrefs)))
          temp = tempFromPrefs;
    }
 
    // If that didn't work, try the default location
    
    if (temp=="" && tempDefaultLoc != "") {
-      if (wxPathExists(tempDefaultLoc))
+      if (wxPathExists(FILENAME(tempDefaultLoc)))
          temp = tempDefaultLoc;
-      else if (wxMkdir(tempDefaultLoc))
+      else if (wxMkdir(FILENAME(tempDefaultLoc)))
          temp = tempDefaultLoc;
    }
 
@@ -93,7 +95,7 @@ bool DirManager::InitDirManager()
       // The permissions don't always seem to be set on
       // some platforms.  Hopefully this fixes it...
       #ifdef __UNIX__
-      chmod(temp, 0755);
+      chmod(FILENAME(temp), 0755);
       #endif
 
       gPrefs->Write("/Directories/TempDir", temp);
@@ -125,7 +127,7 @@ DirManager::DirManager()
 
    numDirManagers++;
    if (numDirManagers == 1) {
-      CleanTempDir();
+      CleanTempDir(true);
    }
 
    projPath = "";
@@ -138,14 +140,14 @@ DirManager::DirManager()
 
    // Make sure there is plenty of space for temp files
 
-   //BG: wxWindows 2.3.2 and higher claim to support this, through a function called wxGetDiskSpace
+   //BG: wxWindows 2.3.2 and higher claim to support this,
+   //through a function called wxGetDiskSpace
 
    wxLongLong freeSpace;
    wxGetDiskSpace(temp, NULL, &freeSpace);
    if (freeSpace >= 0) {
       if (freeSpace < 1048576) {
-         // TODO: allow user to select different temporary volume.
-         wxMessageBox(
+         ShowWarningDialog(NULL, "DiskSpaceWarning",
               _("Warning: there is very little free disk space left on this "
                 "volume. Please select another temporary directory in your "
                 "preferences."));
@@ -162,12 +164,12 @@ DirManager::~DirManager()
 
    numDirManagers--;
    if (numDirManagers == 0) {
-      CleanTempDir();
+      CleanTempDir(false);
       //::wxRmdir(temp);
    }
 }
 
-void DirManager::CleanTempDir()
+void DirManager::CleanTempDir(bool startup)
 {
    wxString fname;
    wxStringList fnameList;
@@ -181,6 +183,25 @@ void DirManager::CleanTempDir()
       fname = wxFindNextFile();
    }
 
+   if (count == 0)
+      return;
+
+   if (startup) {
+      wxString prompt =
+         _("Audacity found temporary files that were not deleted or saved\n"
+           "the last time you used Audacity.  Would you like to delete them now?\n\n"
+           "(Audacity can't recover them automatically, but if you choose not\n"
+           "to delete them, you can recover them manually.)");
+      
+      int action = wxMessageBox(prompt,
+                                "Warning",
+                                wxYES_NO | wxICON_EXCLAMATION,
+                                NULL);
+      
+      if (action != wxYES)
+         return;
+   }
+
    wxChar **array = fnameList.ListToArray();
 
    wxProgressDialog *progress = NULL;
@@ -190,7 +211,7 @@ void DirManager::CleanTempDir()
 
    for (int i = 0; i < count; i++) {
       wxString fileName = array[i];
-      wxRemoveFile(fileName);
+      wxRemoveFile(FILENAME(fileName));
 
       if (!progress && wxGetElapsedTime(false) > 500)
          progress =
@@ -222,24 +243,24 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
    lastProject = projPath;
    
    if (projPath == "")
-      projPath =::wxGetCwd();
+      projPath = FROMFILENAME(::wxGetCwd());
 
    this->projPath = projPath;
    this->projName = projName;
    this->projFull = projPath + wxFILE_SEP_PATH + projName;
 
    if (create) {
-      if (!wxPathExists(projFull))
-         if (!wxMkdir(projFull))
+      if (!wxPathExists(FILENAME(projFull)))
+         if (!wxMkdir(FILENAME(projFull)))
             return false;
 
       #ifdef __UNIX__
-      chmod(projFull, 0775);
+      chmod(FILENAME(projFull), 0775);
       #endif
 
    } else {
       #ifndef __WXMAC__
-      if (!wxPathExists(projFull))
+      if (!wxPathExists(FILENAME(projFull)))
          return false;
       #endif
    }
@@ -304,7 +325,7 @@ wxLongLong DirManager::GetFreeDiskSpace()
    if (projPath == "")
       path = temp;
 
-   if (!wxGetDiskSpace(path, NULL, &freeSpace))
+   if (!wxGetDiskSpace(FILENAME(path), NULL, &freeSpace))
       freeSpace = -1;
 
    return freeSpace;
@@ -374,7 +395,8 @@ BlockFile *DirManager::CopyBlockFile(BlockFile *b)
    // as the existing file
    newFile.SetExt(b->GetFileName().GetExt());
 
-   if( !wxCopyFile(b->GetFileName().GetFullPath(), newFile.GetFullPath()) )
+   if( !wxCopyFile(FILENAME(b->GetFileName().GetFullPath()),
+                   FILENAME(newFile.GetFullPath())) )
       return NULL;
 
    BlockFile *b2 = b->Copy(newFile);
@@ -500,7 +522,7 @@ BlockFile *DirManager::LoadBlockFile(wxTextFile * in, sampleFormat format)
 
       CheckHashTableSize();
 
-      if (!wxFileExists(pathName))
+      if (!wxFileExists(FILENAME(pathName)))
          return 0;
       return newBlockFile;
    }
@@ -512,14 +534,16 @@ bool DirManager::MoveToNewProjectDirectory(BlockFile *f)
    wxFileName newFileName(projFull, f->mFileName.GetFullName());
 
    if ( !(newFileName == f->mFileName) ) {
-      bool ok = wxRenameFile(f->mFileName.GetFullPath(), newFileName.GetFullPath());
+      bool ok = wxRenameFile(FILENAME(f->mFileName.GetFullPath()),
+                             FILENAME(newFileName.GetFullPath()));
 
       if (ok)
          f->mFileName = newFileName;
       else {
-         ok = wxCopyFile(f->mFileName.GetFullPath(), newFileName.GetFullPath());
+         ok = wxCopyFile(FILENAME(f->mFileName.GetFullPath()),
+                         FILENAME(newFileName.GetFullPath()));
          if (ok) {
-            wxRemoveFile(f->mFileName.GetFullPath());
+            wxRemoveFile(FILENAME(f->mFileName.GetFullPath()));
             f->mFileName = newFileName;
          }
          else
@@ -534,7 +558,8 @@ bool DirManager::CopyToNewProjectDirectory(BlockFile *f)
 {
    wxFileName newFileName(projFull, f->mFileName.GetFullName());
    if ( !(newFileName == f->mFileName) ) {
-      bool ok = wxCopyFile(f->mFileName.GetFullPath(), newFileName.GetFullPath());
+      bool ok = wxCopyFile(FILENAME(f->mFileName.GetFullPath()),
+                           FILENAME(newFileName.GetFullPath()));
       if (ok) {
          f->mFileName = newFileName;
       }
@@ -636,17 +661,17 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
          when a file needs to be backed up to a different name.  For
          example, mysong would become mysong-old1, mysong-old2, etc. */
       renamedFile.SetName(wxString::Format(_("%s-old%d"), fName.GetName().c_str(), i));
-   } while (renamedFile.FileExists());
+   } while (wxFileExists(FILENAME(renamedFile.GetFullPath())));
 
    // Test creating a file by that name to make sure it will
    // be possible to do the rename
 
-   wxFile testFile(renamedFile.GetFullPath(), wxFile::write);
+   wxFile testFile(FILENAME(renamedFile.GetFullPath()), wxFile::write);
    if (!testFile.IsOpened()) {
       wxMessageBox(errStr);
       return false;
    }
-   if (!wxRemoveFile(renamedFile.GetFullPath())) {
+   if (!wxRemoveFile(FILENAME(renamedFile.GetFullPath()))) {
       wxMessageBox(errStr);
       return false;
    }
@@ -676,7 +701,8 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
    }
 
    if (needToRename) {
-      if (!wxRenameFile(fName.GetFullPath(), renamedFile.GetFullPath())) {
+      if (!wxRenameFile(FILENAME(fName.GetFullPath()),
+                        FILENAME(renamedFile.GetFullPath()))) {
          // ACK!!! The renaming was unsuccessful!!!
          // (This shouldn't happen, since we tried creating a
          // file of this name and then deleted it just a

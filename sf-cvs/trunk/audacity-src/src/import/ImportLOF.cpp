@@ -65,6 +65,7 @@
 #include "../WaveTrack.h"
 #include "ImportPlugin.h"
 #include "Import.h"
+#include "../Internat.h"
 #include "../NoteTrack.h"
 #include "../Project.h"
 #include "../FileFormats.h"
@@ -152,7 +153,7 @@ wxString LOFImportPlugin::GetPluginFormatDescription()
 
 ImportFileHandle *LOFImportPlugin::Open(wxString filename)
 {
-   wxTextFile *file = new wxTextFile(filename);
+   wxTextFile *file = new wxTextFile(FILENAME(filename));
    file->Open();
 
    if (!file->IsOpened())

@@ -112,7 +112,7 @@ int ImportRaw(wxWindow *parent, wxString fileName,
    sndInfo.samplerate = (int)rate;
    sndInfo.channels = (int)numChannels;
    sndInfo.format = encoding | SF_FORMAT_RAW;
-   sndFile = sf_open((const char *)fileName, SFM_READ, &sndInfo);
+   sndFile = sf_open((const char *)FILENAME(fileName), SFM_READ, &sndInfo);
    if (!sndFile) {
       // TODO: Handle error
       char str[1000];

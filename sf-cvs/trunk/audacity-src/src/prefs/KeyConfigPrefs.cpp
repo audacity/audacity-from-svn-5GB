@@ -28,6 +28,7 @@
 #include "../xml/XMLFileReader.h"
 
 #include "KeyConfigPrefs.h"
+#include "../Internat.h"
 
 #define AssignDefaultsButtonID  7001
 #define CurrentComboID          7002
@@ -152,7 +153,8 @@ void KeyConfigPrefs::OnSave(wxCommandEvent& event)
    Apply();
 
    wxString fName = "Audacity-keys.xml";
-   wxString path = gPrefs->Read("/DefaultExportPath", ::wxGetCwd());
+   wxString path = gPrefs->Read("/DefaultExportPath",
+                                FROMFILENAME(::wxGetCwd()));
 
    fName = wxFileSelector(_("Export Keyboard Shortcuts As:"),
                           NULL,
@@ -166,7 +168,7 @@ void KeyConfigPrefs::OnSave(wxCommandEvent& event)
    path = wxPathOnly(fName);
    gPrefs->Write("/DefaultExportPath", path);
 
-   FILE *fp = fopen((const char *)fName, "wb");
+   FILE *fp = fopen((const char *)FILENAME(fName), "wb");
    if (!fp || ferror(fp)) {
       wxMessageBox(_("Couldn't write to file: ") + fName,
                    _("Error saving keyboard shortcuts"),
@@ -180,7 +182,8 @@ void KeyConfigPrefs::OnSave(wxCommandEvent& event)
 
 void KeyConfigPrefs::OnLoad(wxCommandEvent& event)
 {
-   wxString path = gPrefs->Read("/DefaultOpenPath", ::wxGetCwd());
+   wxString path = gPrefs->Read("/DefaultOpenPath",
+                                FROMFILENAME(::wxGetCwd()));
 
    wxString fileName = wxFileSelector(_("Select an XML file containing Audacity keyboard shortcuts..."),
                                       path,     // Path

@@ -35,6 +35,7 @@
 
 #include "AColor.h"
 #include "FFT.h"
+#include "Internat.h"
 #include "PitchName.h"
 
 
@@ -992,10 +993,10 @@ void FreqWindow::OnExport(wxCommandEvent & WXUNUSED(event))
    if (fName == "")
       return;
 
-   wxTextFile f(fName);
+   wxTextFile f(FILENAME(fName));
 #ifdef __WXMAC__
    wxFile *temp = new wxFile();
-   temp->Create(fName);
+   temp->Create(FILENAME(fName));
    delete temp;
 #else
    f.Create();

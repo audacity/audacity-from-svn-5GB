@@ -25,6 +25,7 @@
 #include <wx/string.h>
 #include <wx/textfile.h>
 
+#include "Internat.h"
 #include "Legacy.h"
 
 class AutoRollbackRenamer {
@@ -32,7 +33,7 @@ public:
    AutoRollbackRenamer(wxString oldName, wxString newName) {
       mOldName = oldName;
       mNewName = newName;
-      mRenameSucceeded = ::wxRenameFile(mOldName, mNewName);
+      mRenameSucceeded = ::wxRenameFile(FILENAME(mOldName), FILENAME(mNewName));
       mFinished = false;
       mNewFile = NULL;
    }
@@ -42,8 +43,8 @@ public:
          fclose(mNewFile);
 
       if (mRenameSucceeded && !mFinished) {
-         ::wxRemoveFile(mOldName);
-         ::wxRenameFile(mNewName, mOldName);
+         ::wxRemoveFile(FILENAME(mOldName));
+         ::wxRenameFile(FILENAME(mNewName), FILENAME(mOldName));
       }
    }
    bool RenameSucceeded()
@@ -274,7 +275,7 @@ bool ConvertLegacyProjectFile(wxFileName filename)
       fflush(stdout);
       backupName = filename.GetPath() + wxFILE_SEP_PATH + filename.GetName() +
          "_bak" + wxString::Format("%d", index) + "." + filename.GetExt();
-   } while(::wxFileExists(backupName));
+   } while(::wxFileExists(FILENAME(backupName)));
 
    // This will move the original file out of the way, but 
    // move it back if we exit from this function early.
@@ -282,13 +283,13 @@ bool ConvertLegacyProjectFile(wxFileName filename)
    if (!renamer.RenameSucceeded())
       return false;
 
-   f.Open(backupName);
+   f.Open(FILENAME(backupName));
    if (!f.IsOpened())
       return false;
 
    wxString name = filename.GetFullPath();
 
-   outf = fopen((const char *)name, "wb");
+   outf = fopen((const char *)FILENAME(name), "wb");
    if (!outf)
       return false;
 

@@ -27,6 +27,7 @@
 #include "../Audacity.h"
 #include "../DirManager.h"
 #include "../FileFormats.h"
+#include "../Internat.h"
 #include "../LabelTrack.h"
 #include "../Mix.h"
 #include "../Prefs.h"
@@ -133,7 +134,8 @@ wxString ExportCommon(AudacityProject *project,
 
    /* Prepare and display the filename selection dialog */
 
-   wxString path = gPrefs->Read("/DefaultExportPath",::wxGetCwd());
+   wxString path = gPrefs->Read("/DefaultExportPath",
+                                FROMFILENAME(::wxGetCwd()));
    wxString nameOnly;
    wxString extension;
    wxString defaultName = project->GetName();
@@ -266,7 +268,7 @@ wxString ExportCommon(AudacityProject *project,
    actualName = fName;
 
    int suffix = 0;
-   while(::wxFileExists(fName)) {
+   while(::wxFileExists(FILENAME(fName))) {
       fName = path + wxFILE_SEP_PATH + 
          nameOnly + wxString::Format("%d", suffix) + "." + extension;
       suffix++;
@@ -302,7 +304,7 @@ bool Export(AudacityProject *project,
                          selectionOnly, t0, t1);
 
    if (success && actualName != fName)
-      ::wxRenameFile(fName, actualName);
+      ::wxRenameFile(FILENAME(fName), FILENAME(actualName));
 
    return success;
 }
@@ -360,7 +362,7 @@ bool ExportLossy(AudacityProject *project,
    }
 
    if (success && actualName != fName)
-      ::wxRenameFile(fName, actualName);
+      ::wxRenameFile(FILENAME(fName), FILENAME(actualName));
 
    return success;
 }

@@ -9,6 +9,7 @@
 **********************************************************************/
 
 #include "../Audacity.h"
+#include "../Internat.h"
 #include "ImportPCM.h"
 
 #include <wx/string.h>
@@ -81,7 +82,7 @@ ImportFileHandle *PCMImportPlugin::Open(wxString filename)
    SNDFILE *file;
 
    memset(&info, 0, sizeof(info));
-   file = sf_open(filename, SFM_READ, &info);
+   file = sf_open(FILENAME(filename), SFM_READ, &info);
    if (!file) {
       // TODO: Handle error
       //char str[1000];
@@ -301,7 +302,7 @@ bool IsPCM(wxString fName)
    SF_INFO    info;
    SNDFILE   *fp;
 
-   fp = sf_open_read(fName, &info);
+   fp = sf_open_read(FILENAME(fName), &info);
 
    if (fp) {
       sf_close(fp);
@@ -322,7 +323,7 @@ bool ImportPCM(wxWindow * parent,
    SNDFILE      *fp;
    sampleFormat  format;
 
-   fp = sf_open_read(fName, &info);
+   fp = sf_open_read(FILENAME(fName), &info);
 
    if (!fp) {
       char str[1000];

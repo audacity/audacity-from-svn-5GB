@@ -5,6 +5,7 @@
   Internat.h
 
   Markus Meyer
+  Dominic Mazzoni (Mac OS X code)
 
 **********************************************************************/
 
@@ -13,8 +14,11 @@
 
 #include <wx/string.h>
 
-// This class is used to help internationalisation
-// Currently, it deals mostly with converting numbers.
+// This class is used to help internationalisation and in general
+// compatibility with different locales and character sets.
+// It deals mostly with converting numbers, but also has important
+// functions to convert to/from UTF-8, which is used in XML files
+// and on Mac OS X for the filesystem.
 class Internat
 {
 public:
@@ -52,9 +56,28 @@ public:
    static wxString UTF8ToLocal(const wxString &s);
    static wxString LocalToUTF8(const wxString &s);
 
+   static wxString ToFilename(const wxString &s);
+   static wxString FromFilename(const wxString &s);
+
 private:
    static wxChar mDecimalSeparator;
    static wxMBConv *mConvLocal;
+
+   #ifdef __WXMAC__
+   static void *mTECToUTF;
+   static void *mTECFromUTF;
+   #endif
 };
+
+// Use this macro to wrap all filenames and pathnames that get
+// passed directly to a system call, like opening a file, creating
+// a directory, checking to see that a file exists, etc...
+#ifdef __WXMAC__
+#define FILENAME(X) Internat::ToFilename(X)
+#define FROMFILENAME(X) Internat::FromFilename(X)
+#else
+#define FILENAME(X) (X)
+#define FROMFILENAME(X) (X)
+#endif
 
 #endif

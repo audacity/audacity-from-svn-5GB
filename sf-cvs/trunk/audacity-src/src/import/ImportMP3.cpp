@@ -21,6 +21,7 @@
 #include "Import.h"
 #include "ImportMP3.h"
 #include "ImportPlugin.h"
+#include "../Internat.h"
 
 #ifndef USE_LIBMAD
 
@@ -137,7 +138,7 @@ wxString MP3ImportPlugin::GetPluginFormatDescription()
 
 ImportFileHandle *MP3ImportPlugin::Open(wxString Filename)
 {
-   wxFile *file = new wxFile((char *) Filename.c_str());
+   wxFile *file = new wxFile((const char *)FILENAME(Filename));
 
    if (!file->IsOpened()) {
       delete file;

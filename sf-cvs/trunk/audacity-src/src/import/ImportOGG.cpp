@@ -19,6 +19,7 @@
 
 #include "../Audacity.h"
 #include "ImportOGG.h"
+#include "../Internat.h"
 
 #ifndef USE_LIBVORBIS
 /* BPF There is no real reason to compile without LIBVORBIS, but if you do, you will needs this header */
@@ -104,7 +105,7 @@ wxString OggImportPlugin::GetPluginFormatDescription()
 ImportFileHandle *OggImportPlugin::Open(wxString filename)
 {
    OggVorbis_File *vorbisFile = new OggVorbis_File;
-   wxFFile *file = new wxFFile(filename, "rb");
+   wxFFile *file = new wxFFile(FILENAME(filename), "rb");
 
    if (!file->IsOpened()) {
       // No need for a message box, it's done automatically (but how?)
