@@ -551,7 +551,7 @@ int LWSlider::ValueToPosition(float val)
 
 float LWSlider::PositionToValue(int xPos, bool shiftDown)
 {
-   int pos = (xPos - mLeft) - mLeftX + 1;
+   int pos = (xPos - mLeft) - mLeftX;
 
    // MM: Special cases: If position is at the very left or the
    // very right, set minimum/maximum value without other checks
@@ -568,7 +568,7 @@ float LWSlider::PositionToValue(int xPos, bool shiftDown)
       // MM: If shift is not down, or we don't allow usage
       // of shift key at all, trim value to steps of
       // provided size.
-      val = (int)(val / mStepValue + 0.5) * mStepValue;
+      val = (int)(val / mStepValue + 0.5 * (val>0?1.0f:-1.0f)) * mStepValue;
    }
 
    return val;
