@@ -312,7 +312,17 @@ void TrackPanel::OnTimer()
 //  to the window TrackPanel is embedded in.
 void TrackPanel::ScrollDuringDrag()
 {
-  // AS: Why do we need AutoScrolling?
+   // DM: If we're "autoscrolling" (which means that we're scrolling
+   // because the user dragged from inside to outside the window,
+   // not because the user clicked in the scroll bar), then
+   // the selection code needs to be handled slightly differently.
+   // We set this flag ("mAutoScrolling") to tell the selecting
+   // code that we didn't get here as a result of a mouse event,
+   // and therefore it should ignore the mouseEvent parameter,
+   // and instead use the last known mouse position.  Setting
+   // this flag also causes the Mac to redraw immediately rather
+   // than waiting for the next update event; this makes scrolling
+   // smoother on MacOS 9.
   mAutoScrolling = true;
   
   if (mMouseMostRecentX > mCapturedRect.x + mCapturedRect.width)
@@ -556,10 +566,12 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent &event,
 }
 
 // AS: Reset our selection markers.
-void TrackPanel::StartSelection(int x1, int x2)
+void TrackPanel::StartSelection(int mouseXCoordinate,
+                                int trackLeftEdge)
 {
   mSelStart =
-    mViewInfo->h + ((x1 - x2) / mViewInfo->zoom);
+    mViewInfo->h + ((mouseXCoordinate - trackLeftEdge)
+                    / mViewInfo->zoom);
   
   mViewInfo->sel0 = mSelStart;
   mViewInfo->sel1 = mSelStart;
@@ -621,9 +633,10 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent &event)
   
 // AS: Extend the selection to x, where x is in the context of the 
 //  current viewable area of the selected track.
-void TrackPanel::ExtendSelectionRight(int x1, int x2)
+void TrackPanel::ExtendSelectionRight(int mouseXCoordinate,
+                                      int trackLeftEdge)
 {
-  double selend = ZoomBorder(x1, x2);
+  double selend = PositionToTime(mouseXCoordinate, trackLeftEdge);
 
   // JR: grabs either the left or right side, depending on
   // which is closer.
@@ -643,9 +656,10 @@ void TrackPanel::ExtendSelectionRight(int x1, int x2)
 }
 
 // AS: Extend the selection to the left.
-void TrackPanel::ExtendSelectionLeft(int x1, int x2)
+void TrackPanel::ExtendSelectionLeft(int mouseXCoordinate,
+                                     int trackLeftEdge)
 {
-  double selend = ZoomBorder(x1, x2);
+   double selend = PositionToTime(mouseXCoordinate, trackLeftEdge);
 
   clip_bottom(selend, 0.0);
   
@@ -657,6 +671,18 @@ void TrackPanel::ExtendSelectionLeft(int x1, int x2)
     mViewInfo->sel1 = mSelStart;
   }
 }
+
+// DM: Converts a position (mouse X coordinate) to 
+// project time, in seconds.  Needs the left edge of
+// the track as an additional parameter.
+double TrackPanel::PositionToTime(int mouseXCoordinate,
+                                  int trackLeftEdge) const
+{
+   return mViewInfo->h + ((mouseXCoordinate - trackLeftEdge)
+                          / mViewInfo->zoom);  
+}
+
+
 
 // AS: HandleEnvelope gets called when the user is changing the
 //  amplitude envelope on a track.
@@ -861,10 +887,10 @@ void TrackPanel::HandleZoom(wxMouseEvent &event)
 
 // AS: This actually sets the Zoom value when you're done doing
 //  a drag zoom.
-void TrackPanel::DragZoom(int x)
+void TrackPanel::DragZoom(int trackLeftEdge)
 {
-  double left  = ZoomBorder(mZoomStart, x);
-  double right = ZoomBorder(mZoomEnd  , x);      
+  double left  = PositionToTime(mZoomStart, trackLeftEdge);
+  double right = PositionToTime(mZoomEnd  , trackLeftEdge);      
 
   mViewInfo->zoom *= mViewInfo->screen/(right-left);
 
@@ -872,11 +898,11 @@ void TrackPanel::DragZoom(int x)
 }
 
 // AS: This handles normal Zoom In/Out, if you just clicked;
-//  IOW, if you were NOT dragging to zoom an area.
+// IOW, if you were NOT dragging to zoom an area.
 // AS: MAGIC NUMBER: We've got several in this function.
-void TrackPanel::DoZoomInOut(wxMouseEvent &event, int x_center)
+void TrackPanel::DoZoomInOut(wxMouseEvent &event, int trackLeftEdge)
 {
-  double center_h = ZoomBorder(event.m_x, x_center);
+  double center_h = PositionToTime(event.m_x, trackLeftEdge);
 
   if (event.RightUp() || event.RightDClick() || event.ShiftDown())
     mViewInfo->zoom /= 2.0;
@@ -886,7 +912,7 @@ void TrackPanel::DoZoomInOut(wxMouseEvent &event, int x_center)
   if (event.MiddleUp() || event.MiddleDClick())
     mViewInfo->zoom = 44100.0 / 512.0;  // AS: Reset zoom.
 
-  double new_center_h = ZoomBorder(event.m_x, x_center);
+  double new_center_h = PositionToTime(event.m_x, trackLeftEdge);
 
   mViewInfo->h += (center_h - new_center_h);
 }
