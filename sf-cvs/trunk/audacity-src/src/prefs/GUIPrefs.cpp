@@ -34,7 +34,8 @@ PrefsPanel(parent)
 {
    // Scrolling
    bool autoscroll, spectrogram, editToolBar,mixerToolBar, alwaysEnablePause,
-      quitOnClose, adjustSelectionEdges, ergonomicTransportButtons;
+      quitOnClose, adjustSelectionEdges, ergonomicTransportButtons,
+      meterToolBar;
    int envdBRange;
 
    gPrefs->Read("/GUI/AutoScroll", &autoscroll, true);
@@ -42,6 +43,7 @@ PrefsPanel(parent)
 
    gPrefs->Read("/GUI/EnableEditToolBar", &editToolBar, true);
    gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, true);
+   gPrefs->Read("/GUI/EnableMeterToolBar", &meterToolBar, true);
    gPrefs->Read("/GUI/AlwaysEnablePause", &alwaysEnablePause, false);
 
    // Code duplication warning: this default is repeated in Project.cpp
@@ -81,12 +83,15 @@ PrefsPanel(parent)
    mEditToolBar->SetValue(editToolBar);
    topSizer->Add(mEditToolBar, 0, wxGROW|wxALL, 2);
 
-
-
    //Enable Mixer toolbar preference
    mMixerToolBar = new wxCheckBox(this, -1, _("Enable Mixer Toolbar"));
    mMixerToolBar->SetValue(mixerToolBar);
    topSizer->Add(mMixerToolBar, 0, wxGROW|wxALL, 2);
+
+   //Enable Meter toolbar preference
+   mMeterToolBar = new wxCheckBox(this, -1, _("Enable Meter Toolbar"));
+   mMeterToolBar->SetValue(meterToolBar);
+   topSizer->Add(mMeterToolBar, 0, wxGROW|wxALL, 2);
 
 
    // Quit Audacity when last window closes?
@@ -239,22 +244,39 @@ bool GUIPrefs::Apply()
    //---------------------------------------------------------------
 
 
-  //-------------------------------------------------------------
+   //-------------------------------------------------------------
    //---------------------- Mixer toolbar loading/unloading
    gPrefs->Write("/GUI/EnableMixerToolBar", mMixerToolBar->GetValue());
    enable = mMixerToolBar->GetValue();
- 
+   
    if(gMixerToolBarStub && !enable) {
-     gMixerToolBarStub->UnloadAll();    //Unload all docked MIXER toolbars
-     delete gMixerToolBarStub;
+      gMixerToolBarStub->UnloadAll();    //Unload all docked MIXER toolbars
+      delete gMixerToolBarStub;
       gMixerToolBarStub = NULL;
    }
-   else if(!gMixerToolBarStub && enable)
-      {  
-	gMixerToolBarStub =  new ToolBarStub(gParentWindow, MixerToolBarID);
-	gMixerToolBarStub->LoadAll();
-      }
+   else if(!gMixerToolBarStub && enable) {
+      gMixerToolBarStub =  new ToolBarStub(gParentWindow, MixerToolBarID);
+      gMixerToolBarStub->LoadAll();
+   }
    //----------------------End of Mixer toolbar loading/unloading
+   //---------------------------------------------------------------
+
+
+   //-------------------------------------------------------------
+   //---------------------- Meter toolbar loading/unloading
+   gPrefs->Write("/GUI/EnableMeterToolBar", mMeterToolBar->GetValue());
+   enable = mMeterToolBar->GetValue();
+   
+   if(gMeterToolBarStub && !enable) {
+      gMeterToolBarStub->UnloadAll();    //Unload all docked METER toolbars
+      delete gMeterToolBarStub;
+      gMeterToolBarStub = NULL;
+   }
+   else if(!gMeterToolBarStub && enable) {
+      gMeterToolBarStub =  new ToolBarStub(gParentWindow, MeterToolBarID);
+      gMeterToolBarStub->LoadAll();
+   }
+   //----------------------End of Meter toolbar loading/unloading
    //---------------------------------------------------------------
 
 

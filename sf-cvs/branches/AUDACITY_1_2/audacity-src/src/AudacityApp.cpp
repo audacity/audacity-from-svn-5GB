@@ -483,6 +483,14 @@ bool AudacityApp::OnInit()
    else
       gMixerToolBarStub = NULL;
 
+   //Only load the meter toolbar if it says so in the preferences
+   bool meterToolBar;
+   gPrefs->Read("/GUI/EnableMeterToolBar", &meterToolBar, true);
+   if(meterToolBar)
+      gMeterToolBarStub =  new ToolBarStub(gParentWindow, MeterToolBarID);
+   else
+      gMeterToolBarStub = NULL;
+
    // Changing the following to NULL will make the application
    // load without the toolbar in memory at all.
 
@@ -492,8 +500,6 @@ bool AudacityApp::OnInit()
       gEditToolBarStub =  new ToolBarStub(gParentWindow, EditToolBarID);
    else
       gEditToolBarStub = NULL;
-
-   gMeterToolBarStub = new ToolBarStub(gParentWindow, MeterToolBarID);
 
    #if 0
    // dmazzoni: no longer create FreqWindow on startup because
