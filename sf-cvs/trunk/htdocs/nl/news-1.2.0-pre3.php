@@ -1,10 +1,10 @@
 <?php BoxTop(2 november 2003: Audacity 1.2.0-pre3 vrijgegeven'); ?>
 
 <p>
-Audacity 1.2.0-pre3 is een publieke testvrijgave van de gratis geluidseditor Audacity. In deze versie zijn alle bekende fouten uit versie 1.2.0-pr2 hersteld en is ondersteuning voor de <a href="http://audacityteam.org/vst/"
->VST Enabler</a> toegevoegd.
+Audacity 1.2.0-pre3 is een publieke testvrijgave van de gratis geluidseditor Audacity. In deze versie zijn alle fouten uit versie 1.2.0-pr2 hersteld en is ondersteuning toegevoegd voor de <a href="http://audacityteam.org/vst/"
+>VST Enabler</a>.
 Iedereen die versie 1.2.0-pre2 test of een vorige beta versie van
-Audacity (1.1.x), wordt hierbij aangemoedigd om direct een upgrade uit te voeren.
+Audacity (1.1.x)wordt hierbij aangemoedigd om direct een upgrade uit te voeren.
 </p>
 
 <p>
