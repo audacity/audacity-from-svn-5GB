@@ -69,7 +69,11 @@ class BlockFile {
    // General variables
    int mRefCount;
 
-   bool mAlias;                 // Does this file alias another file
+   enum {
+      BLOCK_TYPE_UNCOMPRESSED,
+      BLOCK_TYPE_ALIAS,
+      BLOCK_TYPE_FLAC
+   } mType;
 
    int mPos;
 

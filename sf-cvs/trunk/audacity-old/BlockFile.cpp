@@ -20,7 +20,7 @@ BlockFile::BlockFile(wxString name, wxString fullPath)
 {
    mName = name;
    mFullPath = fullPath;
-   mAlias = false;
+   mType = BLOCK_TYPE_UNCOMPRESSED;
 
    mFile = NULL;
    mSndNode = NULL;
@@ -39,7 +39,7 @@ BlockFile::BlockFile(wxString name, wxString fullPath,
    mName = name;
    mFullPath = fullPath;
 
-   mAlias = true;
+   mType = BLOCK_TYPE_ALIAS;
 
    mFile = NULL;
 
@@ -67,7 +67,7 @@ wxString BlockFile::GetName()
 
 bool BlockFile::IsAlias()
 {
-   return mAlias;
+   return mType == BLOCK_TYPE_ALIAS;
 }
 
 void BlockFile::Ref()
@@ -99,7 +99,7 @@ bool BlockFile::OpenReadHeader()
 
 bool BlockFile::OpenReadData()
 {
-   if (mAlias) {
+   if (mType == BLOCK_TYPE_ALIAS) {
       mSndNode = (void *) new snd_node();
       ((snd_node *) mSndNode)->device = SND_DEVICE_FILE;
       ((snd_node *) mSndNode)->write_flag = SND_READ;
@@ -148,7 +148,7 @@ void BlockFile::Close()
       mFile = 0;
    }
 
-   if (mAlias && ((snd_node *) mSndNode)) {
+   if (mType == BLOCK_TYPE_ALIAS && ((snd_node *) mSndNode)) {
       snd_close(((snd_node *) mSndNode));
       delete((snd_node *) mSndNode);
       mSndNode = NULL;
@@ -158,9 +158,9 @@ void BlockFile::Close()
 
 int BlockFile::Read(void *data, int len)
 {
-   wxASSERT(!(mAlias && mPos < mLocalLen && mPos + len > mLocalLen));
+   wxASSERT(!(mType == BLOCK_TYPE_ALIAS && mPos < mLocalLen && mPos + len > mLocalLen));
 
-   if (!mAlias || (mAlias && mPos < mLocalLen)) {
+   if (mType != BLOCK_TYPE_ALIAS || (mType == BLOCK_TYPE_ALIAS && mPos < mLocalLen)) {
       wxASSERT(mFile);
 
       int rval = (int) mFile->Read(data, (size_t) len);
@@ -217,7 +217,7 @@ int BlockFile::Read(void *data, int len)
 int BlockFile::Write(void *data, int len)
 {
    wxASSERT(mFile);
-   wxASSERT(!mAlias || mPos < mLocalLen);
+   wxASSERT(mType != BLOCK_TYPE_ALIAS || mPos < mLocalLen);
 
    int rval = (int) mFile->Write((const void *) data, (size_t) len);
    mPos += rval;
@@ -227,7 +227,7 @@ int BlockFile::Write(void *data, int len)
 
 bool BlockFile::SeekTo(int where)
 {
-   if (mAlias && where >= mLocalLen) {
+   if (mType == BLOCK_TYPE_ALIAS && where >= mLocalLen) {
       int skipSamples = (where - mPos) / 2;
       mPos = where;
       double secs = skipSamples / ((snd_node *) mSndNode)->format.srate;
