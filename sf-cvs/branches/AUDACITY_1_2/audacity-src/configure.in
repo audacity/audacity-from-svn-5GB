@@ -43,6 +43,8 @@ AC_SUBST(CDEPEND)
 AC_SUBST(AFTERBUILD)
 AC_SUBST(INSTALL_PREFIX)
 AC_SUBST(CONFIGHEADER)
+AC_SUBST(PRECOMP_CFLAGS)
+AC_SUBST(EXTRATARGETS)
 
 dnl allow the user to specify options to configure that change the
 dnl name "audacity" anywhere it appears in a pathname.  This allows
@@ -579,7 +581,7 @@ else
 		LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
 		LIBS="-framework CoreAudio $LIBS -lz"
 
-		AFTERBUILD="cp ../audacity ../Audacity.app && `$WX_CONFIG --rezflags` ../Audacity.app ../mac/audacity.r -c auDy && /Developer/Tools/SetFile -a avBstClinmed ../Audacity.app"
+		EXTRATARGETS="../Audacity.app"
 
 		if [[ "$use_ladspa" = "default" ]] ; then
 			use_ladspa="yes";
@@ -638,9 +640,26 @@ else
 	esac
 fi
 
+use_precomp="no"
+
 case "$host_os" in
 	darwin* | rhapsody*)
 		AC_MSG_WARN([[Not using native lrint() and lrintf() because they are missing on 10.1.]])
+
+		cc_version=`$CC --version | head -1`
+		if echo "$cc_version" | grep "3\." >/dev/null ; then
+		   echo "checking for gcc 3.x... yes"
+		   gcc3="yes"
+		   echo "Enabling precompiled headers"
+		   use_precomp="yes"
+		else
+		   echo "checking for gcc 3.x... no"
+		   gcc3="no"
+		fi
+
+		echo "Enabling prebinding"
+		LIBS="$LIBS -prebind"
+
 		;;
 	*)
       dnl For all other Unix systems, we want to check for lrint/lrintf
@@ -648,6 +667,12 @@ case "$host_os" in
 		AC_C99_FUNC_LRINTF
 		;;
 	esac
+
+dnl Precompiled header support (currently only for gcc 3.3 on Mac OS X)
+if [[ "$use_precomp" = "yes" ]] ; then
+   CDEPEND="${CDEPEND} AudacityHeaders.h.gch"
+   PRECOMP_CFLAGS="-include AudacityHeaders.h"
+fi
 
 dnl Special configuration for LADSPA on Mac OS X
 if [[ "$use_ladspa" = "yes" ]] ; then
