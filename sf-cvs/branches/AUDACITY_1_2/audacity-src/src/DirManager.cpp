@@ -57,7 +57,7 @@ wxString DirManager::temp;
 bool DirManager::InitDirManager()
 {
    // We need to find a temp directory location.
-   
+
    wxString tempFromPrefs = gPrefs->Read("/Directories/TempDir", "");
    wxString tempDefaultLoc = wxGetApp().defaultTempDir;
    
@@ -100,7 +100,6 @@ bool DirManager::InitDirManager()
       #endif
 
       gPrefs->Write("/Directories/TempDir", temp);
-      return true;
    }
    else {
       wxMessageBox(_("Audacity could not find a place to store "
@@ -116,6 +115,8 @@ bool DirManager::InitDirManager()
                      "Audacity again to use the new temporary directory."));
       return false;
    }
+
+   DirManager::CleanTempDir(true);
 }
 
 // Methods
@@ -127,9 +128,6 @@ DirManager::DirManager()
    mRef = 1; // MM: Initial refcount is 1 by convention
 
    numDirManagers++;
-   if (numDirManagers == 1) {
-      CleanTempDir(true);
-   }
 
    projPath = "";
    projName = "";
@@ -170,6 +168,7 @@ DirManager::~DirManager()
    }
 }
 
+// static
 void DirManager::CleanTempDir(bool startup)
 {
    wxString fname;
