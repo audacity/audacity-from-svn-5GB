@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.1.3
+Version 1.2.0
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -126,6 +126,68 @@ license.  Specifically:
 For more information, see the documentation inside
 each library's source code directory.
 
+-------------------------------------------------------------------------
+Additional copyright information:
+-------------------------------------------------------------------------
+
+Nyquist
+
+Copyright (c) 2000-2002, by Roger B. Dannenberg
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.
+
+Redistributions of source code must retain the copyright notice, the
+list of conditions, and the disclaimer, all three of which appear below under
+"COPYRIGHT AND LICENSE INFORMATION FOR XLISP."
+
+Redistributions in binary form must reproduce the above copyright notice, this
+list of conditions and the following disclaimer in the documentation and/or
+other materials provided with the distribution.
+
+Redistributions in binary form must reproduce the copyright notice, the
+list of conditions, and the disclaimer, all three of which appear below under
+"COPYRIGHT AND LICENSE INFORMATION FOR XLISP," in the documentation and/or
+other materials provided with the distribution.
+
+Neither the name of Roger B. Dannenberg, Carnegie Mellon University, nor the 
+names of any contributors may be used to endorse or promote products derived 
+from this software without specific prior written permission.
+
+COPYRIGHT AND LICENSE INFORMATION FOR XLISP (part of Nyquist):
+
+Copyright (c) 1984-2002, by David Michael Betz
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer. 
+
+Redistributions in binary form must reproduce the above copyright notice, this
+list of conditions and the following disclaimer in the documentation and/or
+other materials provided with the distribution.
+
+Neither the name of David Michael Betz nor the names of any contributors may be
+used to endorse or promote products derived from this software without specific
+prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 -------------------------------------------------------------
 
 Compilation instructions:
@@ -169,6 +231,39 @@ Known issues/problems:
   just keep the tool palette docked with the project window.
 
 -------------------------------------------------------------
+
+New features in Audacity 1.2.0:
+  * User Interface
+    - Vertical zooming of tracks.  Click or drag on a track's
+      ruler to zoom in.  Shift-click or right-click to zoom in.
+    - Improved look and placement of toolbars
+    - Complete implementation of editable keyboard shortcuts.
+      You can optionally save/load a keyboard layout to share
+      with friends.
+    - Type "Z" to snap the selection to the nearest zero-crossings.
+
+  * Effects
+    - Improved VST plug-in support
+    - Most effects now have a Preview button
+    - Compressor (Dynamic Range Compressor)
+    - Change Pitch (without changing tempo) - automatically
+      determines the starting fundamental frequency of the
+      area you have selected
+    - Change Tempo (without changing pitch)
+    - Change Speed (changing both pitch and tempo)
+    - Repeat
+
+  * Audio I/O
+    - Type "1" to hear a 1-second preview of the audio surrounding
+      the cursor
+    - Looped-play mode - hold down Shift while clicking Play, or
+      type "L".
+
+  * File I/O
+    - Audacity 1.2.0 opens project files from all previous versions
+      of Audacity from 0.98 through 1.1.3.
+
+  * Many more bug fixes and new features
 
 New features in Audacity 1.1.3:
   * User Interface
