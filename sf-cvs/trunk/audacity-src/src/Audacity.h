@@ -33,6 +33,7 @@ extern ToolBarStub *gControlToolBarStub;
 extern ToolBarStub *gMixerToolBarStub;
 extern ToolBarStub *gEditToolBarStub;
 extern ToolBarStub *gMeterToolBarStub;
+extern ToolBarStub *gTranscriptionToolBarStub;
 
 void QuitAudacity(bool bForce);
 void QuitAudacity();

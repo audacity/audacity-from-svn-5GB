@@ -19,6 +19,7 @@
 
 #include <stdio.h>
 
+#include <iostream>
 #include <wx/wxprec.h>
 
 #include <wx/defs.h>
@@ -65,6 +66,7 @@
 #include "ControlToolBar.h"
 #include "EditToolBar.h"
 #include "MeterToolBar.h"
+#include "TranscriptionToolBar.h"
 #include "FormatSelection.h"
 #include "FreqWindow.h"
 #include "HistoryWindow.h"
@@ -87,6 +89,9 @@
 #include "xml/XMLFileReader.h"
 #include "PlatformCompatibility.h"
 #include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
+
+
+using std::cout;
 
 TrackList *AudacityProject::msClipboard = new TrackList();
 double AudacityProject::msClipLen = 0.0;
@@ -437,6 +442,21 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
       }
    }
 
+
+   if (gTranscriptionToolBarStub) {
+      if (gTranscriptionToolBarStub->GetLoadedStatus()
+          && !gTranscriptionToolBarStub->GetWindowedStatus()) {
+         int h = gTranscriptionToolBarStub->GetHeight();
+         ToolBar *ttb = new TranscriptionToolBar(this, 0, wxPoint(10, top),
+                                                 wxSize(width - 10 - sbarSpaceWidth, h));
+         mToolBarArray.Add((ToolBar *) ttb);
+
+//         top += h + 1;
+//         height -= h + 1;
+//         mTotalToolBarHeight += h;
+      }
+   }
+
    if (gEditToolBarStub) {
       if (gEditToolBarStub->GetLoadedStatus()
           && !gEditToolBarStub->GetWindowedStatus()) {
@@ -450,6 +470,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 //         mTotalToolBarHeight += h;
       }
    }
+
 
    LayoutToolBars();
    height -= mTotalToolBarHeight;
@@ -562,6 +583,7 @@ AudacityProject::~AudacityProject()
    delete mTimer;
    mTimer=NULL;
 
+
 // JKC: For Win98 and Linux do not detach the menu bar.
 // We want wxWindows to clean it up for us.
 // TODO: Is there a Mac issue here??
@@ -602,6 +624,7 @@ AudacityProject::~AudacityProject()
       mLastSavedTracks = NULL;
    }
 
+
    delete mTags;
    mTags = NULL;
 
@@ -616,6 +639,7 @@ AudacityProject::~AudacityProject()
    mDirManager->Deref();
 
    gAudacityProjects.Remove(this);
+
 
    if (gActiveProject == this) {
       // Find a new active project
@@ -662,6 +686,23 @@ void AudacityProject::RedrawProject()
    FixScrollbars();
    mTrackPanel->Refresh(false);
 }
+
+
+void AudacityProject::SetSel0(double newSel0)
+{
+   //Bound checking should go on here
+   
+   mViewInfo.sel0 = newSel0;
+}
+
+void AudacityProject::SetSel1(double newSel1)
+{
+   //Bound checking should go on here
+   
+   mViewInfo.sel1 = newSel1;
+}
+
+
 
 DirManager *AudacityProject::GetDirManager()
 {

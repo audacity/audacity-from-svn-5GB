@@ -88,6 +88,7 @@ ToolBarStub *gControlToolBarStub = NULL;
 ToolBarStub *gMixerToolBarStub = NULL;
 ToolBarStub *gEditToolBarStub = NULL;
 ToolBarStub *gMeterToolBarStub = NULL;
+ToolBarStub *gTranscriptionToolBarStub = NULL;
 
 bool gIsQuitting = false;
 
@@ -173,6 +174,11 @@ void QuitAudacity(bool bForce)
    if (gMeterToolBarStub) {
       delete gMeterToolBarStub;
       gMeterToolBarStub = NULL;
+   }
+
+   if (gTranscriptionToolBarStub){
+      delete gTranscriptionToolBarStub;
+      gTranscriptionToolBarStub = NULL;
    }
 
    //Delete the clipboard
@@ -471,6 +477,9 @@ bool AudacityApp::OnInit()
 
    SetExitOnFrameDelete(true);
 
+
+   ///////////////////////////////////////////////////////////////////
+   //////////////////////////////////////////////////////////////////
    //Initiate pointers to toolbars here, and create 
    //the toolbars that should be loaded at startup.
 
@@ -503,6 +512,18 @@ bool AudacityApp::OnInit()
       gEditToolBarStub =  new ToolBarStub(gParentWindow, EditToolBarID);
    else
       gEditToolBarStub = NULL;
+
+   bool transcriptionToolBar;
+   gPrefs->Read("/GUI/EnableTranscriptionToolBar", &transcriptionToolBar, true);
+   if(transcriptionToolBar)
+      gTranscriptionToolBarStub =  new ToolBarStub(gParentWindow, TranscriptionToolBarID);
+   else
+      gTranscriptionToolBarStub = NULL;
+
+
+   /// ToolBar Initiation Complete.
+   ////////////////////////////////////////////////////////////////
+   ////////////////////////////////////////////////////////////////
 
    #if 0
    // dmazzoni: no longer create FreqWindow on startup because
