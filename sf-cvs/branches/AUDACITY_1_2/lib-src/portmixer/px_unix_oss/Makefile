@@ -2,7 +2,7 @@
 
 CC = gcc
 
-CFLAGS = -g -I../px_common -I../../portaudio/pa_common
+override CFLAGS += -g -I../px_common -I../../portaudio/pa_common
 PASRC = px_unix_oss.c
 PAINC = ../px_common/portmixer.h
 PAOBJ = px_unix_oss.o 
