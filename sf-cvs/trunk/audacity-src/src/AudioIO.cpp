@@ -157,7 +157,6 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mT0      = t0;
    mT       = t0;
    mT1      = t1;
-   mPaused  = false;
    mPlaybackTracks = playbackTracks;
    mCaptureTracks  = captureTracks;
    mTotalSamplesPlayed = 0;
