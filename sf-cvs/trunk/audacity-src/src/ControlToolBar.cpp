@@ -65,6 +65,9 @@ enum {
 
 const int BUTTON_WIDTH = 50;
 
+//static
+AudacityProject *ControlToolBar::mBusyProject = NULL;
+
 ////////////////////////////////////////////////////////////
 /// Methods for ControlToolBar
 ////////////////////////////////////////////////////////////
@@ -504,6 +507,7 @@ void ControlToolBar::OnPlay(wxCommandEvent &evt)
          {
             success = true;
             p->SetAudioIOToken(token);
+            mBusyProject = p;
          }
       }
 
@@ -517,7 +521,6 @@ void ControlToolBar::OnPlay(wxCommandEvent &evt)
 
 void ControlToolBar::OnStop(wxCommandEvent &evt)
 {
-   bool mRecording = (gAudioIO->GetNumCaptureChannels() > 0);
    SetStop(false);
    gAudioIO->StopStream();
    SetPlay(false);
@@ -527,10 +530,8 @@ void ControlToolBar::OnStop(wxCommandEvent &evt)
    mPaused=false;
    //Make sure you tell gAudioIO to unpause
    gAudioIO->SetPaused(mPaused);
-   GetActiveProject()->SetAudioIOToken(0);
 
-   if (mRecording)
-      GetActiveProject()->TP_PushState("Recorded Audio");
+   mBusyProject = NULL;
 }
 
 void ControlToolBar::OnRecord(wxCommandEvent &evt)
@@ -600,7 +601,8 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
             delete newRecordingTracks[i];
 
       if (success) {
-         GetActiveProject()->SetAudioIOToken(token);
+         p->SetAudioIOToken(token);
+         mBusyProject = p;
       }
       else {
          SetPlay(false);

@@ -637,15 +637,39 @@ void TrackPanel::OnTimer()
       ScrollDuringDrag();
    }
 
-   // JH: each time through this loop we poll to see if the audio i/o
-   // is still playing.  If not, stop it and update the GUI
    wxCommandEvent dummyEvent;
    AudacityProject *p = (AudacityProject*)GetParent();
-   if(!gAudioIO->IsStreamActive(p->GetAudioIOToken()) && !mRedrawAfterStop)
-   {
-      mRedrawAfterStop = true;
-      p->GetControlToolBar()->OnStop(dummyEvent);
-      p->RedrawProject();
+
+   // Each time the loop, check to see if we were playing or
+   // recording audio, but the stream has stopped.
+   if (p->GetAudioIOToken()>0 &&
+       !gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
+      p->GetControlToolBar()->OnStop(dummyEvent);      
+   }
+
+   // Next, check to see if we were playing or recording
+   // audio, but now Audio I/O is completely finished.
+   // The main point of this is to properly push the state
+   // and flush the tracks once we've completely finished
+   // recording new state.
+   if (p->GetAudioIOToken()>0 &&
+       !gAudioIO->IsAudioTokenActive(p->GetAudioIOToken())) {
+
+      if (gAudioIO->GetNumCaptureChannels() > 0) {
+         // Tracks are buffered during recording.  This flushes
+         // them so that there's nothing left in the append
+         // buffers.
+         TrackListIterator iter(mTracks);
+         for (Track * t = iter.First(); t; t = iter.Next()) {
+            if (t->GetKind() == Track::Wave) {
+               ((WaveTrack *)t)->Flush();
+            }
+         }
+         p->TP_PushState("Recorded Audio");
+      }
+
+      p->SetAudioIOToken(0);
+      p->RedrawProject();         
    }
 
    // AS: The "indicator" is the little graphical mark shown in the ruler
