@@ -29,7 +29,7 @@ if ($fp) {
   }
 
   if ($update == "true") {
-	 if (!dir_exists("../updates/$lang")) {
+	 if (!is_dir("../updates/$lang")) {
       mkdir("../updates/$lang", 0777);
     }
 

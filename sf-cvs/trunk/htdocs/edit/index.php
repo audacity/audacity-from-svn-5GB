@@ -31,7 +31,7 @@ Under development.  Please don't use it yet...
 </h1>
 </p>
 
-<form action=trmain.php method=post>
+<form action=trlist.php method=post>
 
 <p>
 Choose language to edit:
