@@ -123,6 +123,18 @@
       /*DUMMY SEPARATOR*/
       AlignID = QuickMixID + 2,
       AlignZeroID,
+      AlignCursorID,
+      AlignSelStartID,
+      AlignSelEndID,
+      AlignEndCursorID,
+      AlignEndSelStartID,
+      AlignEndSelEndID,
+      AlignGroupCursorID,
+      AlignGroupSelStartID,
+      AlignGroupSelEndID,
+      AlignGroupEndCursorID,
+      AlignGroupEndSelStartID,
+      AlignGroupEndSelEndID,
       //*DUMMY SEPARATOR*/
       NewWaveTrackID = AlignZeroID + 2,
       NewLabelTrackID,
@@ -251,6 +263,24 @@
    CMD_ADDMENU_SEP(projectMenu);
    CMD_ADDMENU(_("Align Tracks &Together"), _("Align Tracks Together"), OnAlign, projectMenu, enabledMenu);
    CMD_ADDMENU(_("Align with &Zero"), _("Align with Zero"), OnAlignZero, projectMenu, enabledMenu);
+   CMD_ADDMENU(_("Align with &Cursor"), _("Align with Cursor"), OnAlignSelStart, projectMenu, enabledMenu);
+   CMD_ADDMENU(_("Align with Selection &Start"), _("Align with Selection Start"), OnAlignSelStart, projectMenu, enabledMenu);
+   CMD_ADDMENU(_("Align with Selection &End"), _("Align with Selection End"), OnAlignSelEnd, projectMenu, enabledMenu);
+   // TODO: Put these into a submenu under Project menu item "Align End"
+   // Then have submenu entries "with Cursor", "with Selection Start", and "with Selection End"
+   CMD_ADDMENU(_("Align End with Cursor"), _("Align End with Cursor"), OnAlignEndSelStart, projectMenu, enabledMenu);
+   CMD_ADDMENU(_("Align End with Selection Start"), _("Align End with Selection Start"), OnAlignEndSelStart, projectMenu, enabledMenu);
+   CMD_ADDMENU(_("Align End with Selection End"), _("Align End with Selection End"), OnAlignEndSelEnd, projectMenu, enabledMenu);
+   // TODO: Put these into a submenu under Project menu item "Align Group"
+   // Then have submenu entries "with Cursor", "with Selection Start", and "with Selection End"
+   CMD_ADDMENU(_("Align Group with Cursor"), _("Align Group with Cursor"), OnAlignGroupSelStart, projectMenu, enabledMenu);
+   CMD_ADDMENU(_("Align Group with Selection Start"), _("Align Group with Selection Start"), OnAlignGroupSelStart, projectMenu, enabledMenu);
+   CMD_ADDMENU(_("Align Group with Selection End"), _("Align Group with Selection End"), OnAlignGroupSelEnd, projectMenu, enabledMenu);
+   // TODO: Put these into a submenu under Project menu item "Align Group End"
+   // Then have submenu entries "with Cursor", "with Selection Start", and "with Selection End"
+   CMD_ADDMENU(_("Align Group End with Cursor"), _("Align Group End with Cursor"), OnAlignGroupEndSelStart, projectMenu, enabledMenu);
+   CMD_ADDMENU(_("Align Group End with Selection Start"), _("Align Group End with Selection Start"), OnAlignGroupEndSelStart, projectMenu, enabledMenu);
+   CMD_ADDMENU(_("Align Group End with Selection End"), _("Align Group End with Selection End"), OnAlignGroupEndSelEnd, projectMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(projectMenu);
    CMD_ADDMENU(_("New &Audio Track"), _("New Audio Track"), OnNewWaveTrack, projectMenu, enabledMenu);
