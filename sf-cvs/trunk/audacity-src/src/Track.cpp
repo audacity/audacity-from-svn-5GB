@@ -74,6 +74,7 @@ void Track::Init(const Track &orig)
    mMute = orig.mMute;
    mSolo = orig.mSolo;
    mHeight = orig.mHeight;
+   mMinimized = orig.mMinimized;
    mChannel = orig.mChannel;
 }
 
