@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "POT-Creation-Date: 2003-03-31 13:12+0400\n"
-"PO-Revision-Date: 2003-03-31 13:46+0400\n"
+"PO-Revision-Date: 2003-03-31 14:35+0400\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -73,7 +73,7 @@ msgstr "%d"
 
 #: ../src/commands/CommandsDefaultData.h:309
 msgid "&Analyze"
-msgstr "&Анализ"
+msgstr "(&A) Анализ"
 
 #: ../src/commands/CommandsDefaultData.h:200
 msgid "&Close"
@@ -85,7 +85,7 @@ msgstr "&Удалить"
 
 #: ../src/commands/CommandsDefaultData.h:217
 msgid "&Edit"
-msgstr "&Правка"
+msgstr "(&E) Правка"
 
 #: ../src/commands/CommandsDefaultData.h:204
 #: ../src/prefs/FileFormatPrefs.cpp:344
@@ -95,7 +95,7 @@ msgstr "&Экспортировать в %s..."
 
 #: ../src/commands/CommandsDefaultData.h:196
 msgid "&File"
-msgstr "&Файл"
+msgstr "(&F) Файл"
 
 #: ../src/commands/CommandsDefaultData.h:244
 msgid "&Fit in Window"
@@ -103,11 +103,11 @@ msgstr "&Уместить в окне"
 
 #: ../src/commands/CommandsDefaultData.h:303
 msgid "&Generate"
-msgstr "&Создание"
+msgstr "(&G) Создание"
 
 #: ../src/commands/CommandsDefaultData.h:312
 msgid "&Help"
-msgstr "Справ&ка"
+msgstr "(&H) Справка"
 
 #: ../src/commands/CommandsDefaultData.h:257
 msgid "&Import Audio..."
@@ -127,7 +127,7 @@ msgstr "&Настройки..."
 
 #: ../src/commands/CommandsDefaultData.h:255
 msgid "&Project"
-msgstr "Пр&оект"
+msgstr "(&P) Проект"
 
 #: ../src/commands/CommandsDefaultData.h:264
 msgid "&Quick Mix"
@@ -155,7 +155,7 @@ msgstr "&Обрезать по краям"
 
 #: ../src/commands/CommandsDefaultData.h:239
 msgid "&View"
-msgstr "&Вид"
+msgstr "(&V) Вид"
 
 #: ../src/prefs/FileFormatPrefs.cpp:406
 msgid ""
@@ -202,18 +202,22 @@ msgid ""
 "http://www.busam.com/skyland/iavc\n"
 "7/21/02: WAV and MP3 files both work."
 msgstr ""
-"Значения выше измеряются в семплах (выборках).\n"
-"Окно подстройки определяет число семплов\n"
-"в обрабатываемом потоке.\n"
-"Окно изменения определяет минимальное\n"
-"время между изменениями уровня громкости.\n"
-"Стоит минимизировать процентное изменение\n"
-"подстройки перед изменением уровня громкости.\n"
-"В матрице справа можно указать новые значения\n"
-"для каждого уровня громкости.\n"
-"Более подробную информацию можно получить здесь:\n"
+"Значения выше измеряются в семплах.\n"
+"Окно подстройки определяет число\n"
+"семплов в обрабатываемом потоке.\n"
+"Окно изменения определяет \n"
+"минимальное время между изменениями.\n"
+"уровня громкости.\n"
+"Стоит минимизировать процентное\n"
+"изменение подстройки перед изменением\n"
+"уровня громкости.\n"
+"В матрице справа можно указать новые\n"
+"значения для каждого уровня громкости.\n"
+"Более подробную информацию можно \n"
+"получить здесь:\n"
 "http://www.busam.com/skyland/iavc\n"
-"На 21 июля 2002 обрабатываются как WAV-, так и MP3-файлы."
+"На 21 июля 2002 обрабатываются как \n"
+"WAV-, так и MP3-файлы."
 
 #: ../src/HistoryWindow.cpp:61
 msgid "Action"
@@ -422,19 +426,19 @@ msgstr "Настройки усиления"
 
 #: ../src/effects/Amplify.cpp:61
 msgid "Amplify"
-msgstr "Усилить"
+msgstr "Усиление сигнала"
 
 #: ../src/effects/Amplify.cpp:296
 msgid "Amplify by Dominic Mazzoni"
-msgstr "Усиление - Доминик Маццони"
+msgstr "Усиление сигнала - Доминик Маццони"
 
 #: ../src/effects/Amplify.h:47
 msgid "Amplify..."
-msgstr "Усилить..."
+msgstr "Усилить сигнал..."
 
 #: ../src/effects/Amplify.h:51
 msgid "Amplifying"
-msgstr "Производится усиление"
+msgstr "Производится усиление сигнала"
 
 #: ../src/effects/ToneGen.cpp:307
 msgid "Amplitude (0-1)"
@@ -719,7 +723,7 @@ msgstr "Повышение баса..."
 
 #: ../src/effects/ChangeTempo.cpp:183
 msgid "Beats per Minute (BPM):   from"
-msgstr "Ударов в минуту (BPM):     От"
+msgstr "Ударов в минуту (BPM):   от"
 
 #: ../src/Benchmark.cpp:117
 msgid "Benchmark"
@@ -996,7 +1000,7 @@ msgstr "Производится сжатие"
 
 #: ../src/effects/Compressor.h:28
 msgid "Compressor"
-msgstr "Сжать амплитуду..."
+msgstr "Сжать амплитуду (компрессирование)"
 
 #: ../src/EditToolBar.cpp:146 ../src/commands/CommandsDefaultData.h:223
 msgid "Copy"
@@ -1332,15 +1336,15 @@ msgstr "Продублированный"
 
 #: ../src/commands/CommandsDefaultData.h:214
 msgid "E&xit"
-msgstr "Вы&йти"
+msgstr "Вы&йти\tCtrl+Q"
 
 #: ../src/effects/Echo.cpp:33
 msgid "Echo"
-msgstr "Эхо"
+msgstr "Добавка эхо"
 
 #: ../src/effects/Echo.h:28
 msgid "Echo..."
-msgstr "Эхо..."
+msgstr "Добавить эхо..."
 
 #: ../src/commands/CommandsCallback.cpp:1009
 msgid "Edit ID3 Tags (for MP3 exporting)"
@@ -1356,7 +1360,7 @@ msgstr "Правка ID3-тегов для MP3-файла"
 
 #: ../src/commands/CommandsDefaultData.h:306
 msgid "Effec&t"
-msgstr "&Эффект"
+msgstr "(&F) Эффект"
 
 #: ../src/AboutDialog.cpp:189
 msgid "Effects programmer"
@@ -1409,11 +1413,11 @@ msgstr "Инструмент диапазона"
 
 #: ../src/effects/Equalization.cpp:155 ../src/effects/Equalization.cpp:653
 msgid "Equalization"
-msgstr "Эквализация"
+msgstr "Эквалайзер"
 
 #: ../src/effects/Equalization.h:37
 msgid "Equalization..."
-msgstr "Эквализация..."
+msgstr "Эквалайзер..."
 
 #: ../src/prefs/DirectoriesPrefs.cpp:203
 msgid "Error"
@@ -1756,7 +1760,7 @@ msgstr "Неверная частота"
 
 #: ../src/effects/Invert.h:27
 msgid "Invert"
-msgstr "Инвертировать..."
+msgstr "Инвертировать"
 
 #: ../src/effects/Invert.h:31
 msgid "Inverting"
@@ -2275,7 +2279,7 @@ msgstr "Питч (EAC)"
 
 #: ../src/effects/ChangePitch.cpp:201
 msgid "Pitch:   from"
-msgstr ""
+msgstr "Высота тона:   от"
 
 #: ../src/ControlToolBar.cpp:306
 msgid "Play"
@@ -2502,7 +2506,7 @@ msgstr "Сохранить файл %s как:"
 
 #: ../src/commands/CommandsDefaultData.h:202
 msgid "Save Project &As..."
-msgstr "Сохранить проект как..."
+msgstr "Сохранить проект &как...\tCtrl+Shift+S"
 
 #: ../src/Project.cpp:2205
 msgid "Save Project As:"
@@ -2543,11 +2547,11 @@ msgstr "Выделить все"
 
 #: ../src/commands/CommandsDefaultData.h:236
 msgid "Select Cursor to End"
-msgstr "Выделить от курсора до конца\t Shift+End"
+msgstr "Выделить от курсора до конца\tShift+End"
 
 #: ../src/commands/CommandsDefaultData.h:235
 msgid "Select Start to Cursor"
-msgstr "Выделить от курсора до начала\t Shift+Home"
+msgstr "Выделить от курсора до начала\tShift+Home"
 
 #: ../src/commands/CommandsCallback.cpp:931
 msgid "Select a MIDI file..."
@@ -2721,7 +2725,7 @@ msgstr "Выделение: неверное значение iformat (%i) в файле TrackPanel.cpp"
 
 #: ../src/effects/ChangePitch.cpp:232
 msgid "Semitones (half-steps):"
-msgstr ""
+msgstr "Полутонов (half-steps):"
 
 #: ../src/TrackPanel.cpp:338
 msgid "Set Converter..."
@@ -3256,7 +3260,7 @@ msgstr "benchmark.txt"
 #: ../src/effects/ChangeSpeed.cpp:126 ../src/effects/ChangeTempo.cpp:135
 #: ../src/effects/ChangePitch.cpp:185
 msgid "by Vaughan Johnson && Dominic Mazzoni"
-msgstr ""
+msgstr "(Vaughan Johnson && Dominic Mazzoni)"
 
 #: ../src/import/ImportRaw.cpp:346
 msgid "bytes"
@@ -3298,11 +3302,11 @@ msgstr "вверх"
 
 #: ../src/effects/ChangeSpeed.cpp:131
 msgid "using SampleRate, by Erik de Castro Lopo"
-msgstr ""
+msgstr "с использованием библиотеки SampleRate (Erik de Castro Lopo)"
 
 #: ../src/effects/ChangeTempo.cpp:140 ../src/effects/ChangePitch.cpp:190
 msgid "using SoundTouch, by Olli Parviainen"
-msgstr ""
+msgstr "с использованием SoundTouch (Olli Parviainen)"
 
 #~ msgid "To"
 #~ msgstr "К"
