@@ -524,19 +524,24 @@ bool ExportMultipleByLabel(AudacityProject *project,
    bool ok = true;
 
    while(l < numLabels) {
+      const LabelStruct *info = 0;
+
       if (l < 0) {
          name = firstFileName;
          t0 = 0.0;
       }
       else {
-         const LabelStruct *info = labels->GetLabel(l);
+         info = labels->GetLabel(l);
          name = info->title;
          t0 = info->t;
       }
 
-      if (l < numLabels-1) {
-         const LabelStruct *info = labels->GetLabel(l+1);
-         t1 = info->t;
+      if (info && info->t < info->t1) {
+         t1 = info->t1;
+      }
+      else if (l < numLabels-1) {
+         const LabelStruct *info1 = labels->GetLabel(l+1);
+         t1 = info1->t;
       }
       else
          t1 = tracks->GetEndTime();
