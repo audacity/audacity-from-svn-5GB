@@ -300,7 +300,7 @@ bool AudacityApp::OnInit()
 
    wxFileSystem::AddHandler(new wxZipFSHandler);
 
-   #if defined(__WXMSW__) && !defined(__WXUNIVERSAL__)
+   #if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
 
    //BG: On Windows, associate the aup file type with Audacity
    {

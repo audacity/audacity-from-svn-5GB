@@ -50,7 +50,7 @@
 #include "VST/LoadVSTMac.h"
 #endif
 
-#ifdef __WXMSW__
+#if defined(__WXMSW__) && !defined(__CYGWIN__)
 #include "VST/LoadVSTWin.h"
 #endif
 
@@ -104,7 +104,7 @@ void LoadEffects()
    LoadNyquistPlugins();
 #endif
 
-#if defined(__WXMAC__) || defined(__WXMSW__)
+#if defined(__WXMAC__) || defined(__WXMSW__)  && !defined(__CYGWIN__)
    LoadVSTPlugins();
 #endif
 
