@@ -1606,6 +1606,44 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
       return;
    }
 
+   // Check to see if we were playing or recording
+   // audio, and if so, make sure Audio I/O is completely finished.
+   // The main point of this is to properly push the state
+   // and flush the tracks once we've completely finished
+   // recording new state.
+   // This code is derived from similar code in 
+   // AudacityProject::~AudacityProject() and TrackPanel::OnTimer().
+   if (this->GetAudioIOToken()>0 &&
+       gAudioIO->IsStreamActive(this->GetAudioIOToken())) {
+
+      wxBusyCursor busy;
+      gAudioIO->StopStream();
+      while(gAudioIO->IsBusy()) {
+         wxUsleep(100);
+      }
+      
+      // We were playing or recording audio, but we've stopped the stream.
+      wxCommandEvent dummyEvent;
+      this->GetControlToolBar()->OnStop(dummyEvent);      
+         
+      if (gAudioIO->GetNumCaptureChannels() > 0) {
+         // Tracks are buffered during recording.  This flushes
+         // them so that there's nothing left in the append
+         // buffers.
+         TrackListIterator iter(mTracks);
+         for (Track * t = iter.First(); t; t = iter.Next()) {
+            if (t->GetKind() == Track::Wave) {
+               ((WaveTrack *)t)->Flush();
+            }
+         }
+         this->PushState(_("Recorded Audio"), _("Record"));
+      }
+
+      this->FixScrollbars();
+      this->SetAudioIOToken(0);
+      this->RedrawProject();
+   }
+
    if (mUndoManager.UnsavedChanges()) {
       int result = wxMessageBox(_("Save changes before closing?"),
                                 _("Save changes?"),
