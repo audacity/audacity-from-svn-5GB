@@ -177,6 +177,60 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB)
    }
 }
 
+bool Envelope::HandleXMLTag(const char *tag, const char **attrs)
+{
+   if (!strcmp(tag, "envelope")) {
+      int numPoints = 0;
+
+      while (*attrs) {
+         const char *attr = *attrs++;
+         const char *value = *attrs++;
+         if (!strcmp(attr, "numpoints"))
+            numPoints = atoi(value);
+      }
+      WX_CLEAR_ARRAY(mEnv)
+      mEnv.Alloc(numPoints);
+      return true;
+   }
+   else {
+      return false;
+   }
+}
+
+XMLTagHandler *Envelope::HandleXMLChild(const char *tag)
+{
+   if (!strcmp(tag, "controlpoint")) {
+      EnvPoint *e = new EnvPoint();
+      mEnv.Add(e);
+      return e;
+   }
+   else
+      return NULL;
+}
+
+void Envelope::WriteXML(int depth, FILE *fp)
+{
+   unsigned int ctrlPt;
+   int i;
+
+   for (i = 0; i < depth; i++)
+      fprintf(fp, "\t");
+   fprintf(fp, "<envelope numpoints='%d'>\n", mEnv.GetCount());
+
+   for (ctrlPt = 0; ctrlPt < mEnv.GetCount(); ctrlPt++) {
+      for(i = 0; i < depth+1; i++)
+         fprintf(fp, "\t");
+      fprintf(fp, "<controlpoint t='%f' val='%f'/>\n", mEnv[ctrlPt]->t,
+                                                       mEnv[ctrlPt]->val);
+   }
+
+   for (i = 0; i < depth; i++)
+      fprintf(fp, "\t");
+   fprintf(fp, "</envelope>\n");
+}
+
+#if LEGACY_PROJECT_FILE_SUPPORT
+
 bool Envelope::Load(wxTextFile * in, DirManager * dirManager)
 {
    if (in->GetNextLine() != "EnvNumPoints")
@@ -221,6 +275,8 @@ bool Envelope::Save(wxTextFile * out, bool overwrite)
 
    return true;
 }
+
+#endif /* LEGACY_PROJECT_FILE_SUPPORT */
 
 // Returns true if parent needs to be redrawn
 bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
