@@ -417,15 +417,17 @@ void ControlToolBar::OnKeyEvent(wxKeyEvent & event)
       return;
    }
 
+   wxCommandEvent dummyEvent;
+
    if (event.KeyCode() == WXK_SPACE) {
       if (gAudioIO->IsBusy()) {
          SetPlay(false);
          SetStop(true);
-         OnStop();
+         OnStop(dummyEvent);
       } else {
          SetPlay(true);
          SetStop(false);
-         OnPlay();
+         OnPlay(dummyEvent);
       }
       return;
    }
@@ -471,7 +473,7 @@ void ControlToolBar::SetRecord(bool down)
 }
 
 
-void ControlToolBar::OnPlay()
+void ControlToolBar::OnPlay(wxCommandEvent &evt)
 {
    if (gAudioIO->IsBusy())
       return;
@@ -503,7 +505,7 @@ void ControlToolBar::OnPlay()
    }
 }
 
-void ControlToolBar::OnStop()
+void ControlToolBar::OnStop(wxCommandEvent &evt)
 {
    gAudioIO->Stop();
    SetStop(false);
@@ -513,7 +515,7 @@ void ControlToolBar::OnStop()
    mPaused=false;
 }
 
-void ControlToolBar::OnRecord()
+void ControlToolBar::OnRecord(wxCommandEvent &evt)
 {
    if (gAudioIO->IsBusy())
       return;
@@ -541,40 +543,38 @@ void ControlToolBar::OnRecord()
 }
 
 
-void ControlToolBar::OnPause()
-{
- 
+void ControlToolBar::OnPause(wxCommandEvent &evt)
+{ 
    if(mPaused)
-      {
-         mPaused=false;
-
-      }
+   {
+      mPaused=false;
+   }
    else
-      {       
-         mPaused=true;
-      }
+   {       
+      mPaused=true;
+   }
    
    gAudioIO->SetPaused(mPaused);
 }
 
-void ControlToolBar::OnRewind()
+void ControlToolBar::OnRewind(wxCommandEvent &evt)
 {
    mRewind->PopUp();
 
    if (gAudioIO->IsBusy())
-      OnStop();
+      OnStop(evt);
 
    AudacityProject *p = GetActiveProject();
    if (p)
       p->Rewind(mRewind->WasShiftDown());
 }
 
-void ControlToolBar::OnFF()
+void ControlToolBar::OnFF(wxCommandEvent &evt)
 {
    mFF->PopUp();
 
    if (gAudioIO->IsBusy())
-      OnStop();
+      OnStop(evt);
 
    AudacityProject *p = GetActiveProject();
    if (p)

@@ -1956,19 +1956,18 @@ int AudacityProject::TP_GetCurrentTool()
 void AudacityProject::TP_OnPlayKey()
 {
    ControlToolBar *toolbar = GetControlToolBar();
+   wxCommandEvent evt;
 
    //If busy, stop playing, make sure everything is unpaused.
    if (gAudioIO->IsBusy()) {
       toolbar->SetPlay(false);        //Pops
       toolbar->SetStop(true);         //Pushes stop down
-      toolbar->OnStop();
-
-
+      toolbar->OnStop(evt);
    } else {
       //Otherwise, start playing
       toolbar->SetPlay(true);
       toolbar->SetStop(false);
-      toolbar->OnPlay();
+      toolbar->OnPlay(evt);
    }
 }
 
