@@ -8,14 +8,16 @@
 
 **********************************************************************/
 
+#include "WaveTrack.h"
+
 #include <math.h>
 
 #include <wx/msgdlg.h>
 #include <wx/textfile.h>
 #include <wx/intl.h>
 
-#include "WaveTrack.h"
 #include "BlockFile.h"
+#include "Envelope.h"
 #include "DirManager.h"
 
 const int headerTagLen = 20;
@@ -55,6 +57,7 @@ VTrack(projDirManager)
    mSampleFormat = int16Sample;
 
    mBlock = new BlockArray();
+   mEnvelope = new Envelope();
 
    mMinSamples = sMaxDiskBlockSize / SAMPLE_SIZE(mSampleFormat) / 2;
    mMaxSamples = mMinSamples * 2;
@@ -65,6 +68,7 @@ VTrack(projDirManager)
 WaveTrack::WaveTrack(const WaveTrack &orig) :
 VTrack(orig)
 {
+   mNumSamples = 0;
    mRate = orig.mRate;
    mDisplay = orig.mDisplay;
    mSampleFormat = orig.mSampleFormat;
@@ -72,11 +76,11 @@ VTrack(orig)
    mMaxSamples = orig.mMaxSamples;
    mMinSamples = orig.mMinSamples;
 
-   mNumSamples = 0;
    mBlock = new BlockArray();
-   Paste(0.0, &orig);
+   mEnvelope = new Envelope();
 
-   mEnvelope.CopyFrom(&(orig.mEnvelope), GetOffset(), GetMaxLen());
+   Paste(0.0, &orig);
+   mEnvelope->SetOffset(GetOffset());
 }
 
 WaveTrack::~WaveTrack()
@@ -87,7 +91,7 @@ WaveTrack::~WaveTrack()
    }
 
    delete mBlock;
-
+   delete mEnvelope;
 }
 
 int WaveTrack::GetSummaryBytes() const
@@ -136,7 +140,7 @@ void WaveTrack::SetRate(double newRate)
 void WaveTrack::SetOffset(double t)
 {
    VTrack::SetOffset(t);
-   mEnvelope.SetOffset(t);
+   mEnvelope->SetOffset(t);
 }
 
 sampleFormat WaveTrack::GetSampleFormat() const
@@ -359,7 +363,7 @@ void WaveTrack::Paste(double t, const VTrack * src)
 {
    wxASSERT(src->GetKind() == WaveTrack::Wave);
 
-   mEnvelope.Paste(t, &((WaveTrack *) src)->mEnvelope);
+   mEnvelope->Paste(t, ((WaveTrack *) src)->mEnvelope);
 
    sampleCount s = (sampleCount) ((t - GetOffset()) * mRate + 0.5);
 
@@ -385,10 +389,7 @@ void WaveTrack::Paste(double t, const VTrack * src)
       for (unsigned int i = 0; i < srcNumBlocks; i++)
          AppendBlock(srcBlock->Item(i));
 
-      mEnvelope.SetTrackLen(mNumSamples / mRate);
-
       ConsistencyCheck("Paste branch one");
-
       return;
    }
 
@@ -426,10 +427,7 @@ void WaveTrack::Paste(double t, const VTrack * src)
 
       DeleteSamples(buffer);
 
-      mEnvelope.SetTrackLen(mNumSamples / mRate);
-
       ConsistencyCheck("Paste branch two");
-
       return;
    }
 
@@ -557,8 +555,6 @@ void WaveTrack::Paste(double t, const VTrack * src)
 
    mNumSamples += addedLen;
 
-   mEnvelope.SetTrackLen(mNumSamples / mRate);
-
    ConsistencyCheck("Paste branch three");
 }
 
@@ -566,7 +562,7 @@ void WaveTrack::Clear(double t0, double t1)
 {
    wxASSERT(t0 <= t1);
 
-   mEnvelope.CollapseRegion(t0, t1);
+   mEnvelope->CollapseRegion(t0, t1);
 
    sampleCount s0 = (sampleCount) ((t0 - GetOffset()) * mRate + 0.5);
    sampleCount s1 = (sampleCount) ((t1 - GetOffset()) * mRate + 0.5);
@@ -677,7 +673,7 @@ void WaveTrack::AppendAlias(wxString fullPath,
    mBlock->Add(newBlock);
    mNumSamples += newBlock->len;
 
-   mEnvelope.SetTrackLen(mNumSamples / mRate);
+   mEnvelope->SetTrackLen(mNumSamples / mRate);
 }
 
 void WaveTrack::AppendBlock(WaveBlock * b)
@@ -695,7 +691,7 @@ void WaveTrack::AppendBlock(WaveBlock * b)
    mBlock->Add(newBlock);
    mNumSamples += newBlock->len;
 
-   mEnvelope.SetTrackLen(mNumSamples / mRate);
+   mEnvelope->SetTrackLen(mNumSamples / mRate);
 
    // Don't do a consistency check here because this
    // function gets called in an inner loop
@@ -727,10 +723,10 @@ bool WaveTrack::Load(wxTextFile * in, DirManager * dirManager)
 {
    bool result = VTrack::Load(in, dirManager);
 
-   mEnvelope.SetOffset(GetOffset());
+   mEnvelope->SetOffset(GetOffset());
 
    if (result) {
-      result = mEnvelope.Load(in, dirManager);
+      result = mEnvelope->Load(in, dirManager);
    }
 
    if (!result) {
@@ -827,7 +823,7 @@ bool WaveTrack::Save(wxTextFile * out, bool overwrite)
 {
    VTrack::Save(out, overwrite);
 
-   mEnvelope.Save(out, overwrite);
+   mEnvelope->Save(out, overwrite);
 
    unsigned int b;
 
@@ -1281,7 +1277,7 @@ void WaveTrack::Append(samplePtr buffer, sampleFormat format,
       len -= l;
    }
 
-   mEnvelope.SetTrackLen(mNumSamples / mRate);
+   mEnvelope->SetTrackLen(mNumSamples / mRate);
 
    if (format != mSampleFormat)
       DeleteSamples(temp);
@@ -1357,7 +1353,7 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
       delete b;
 
       mNumSamples -= len;
-      mEnvelope.SetTrackLen(mNumSamples / mRate);
+      mEnvelope->SetTrackLen(mNumSamples / mRate);
       ConsistencyCheck("Delete - branch one");
 
       return;
@@ -1523,7 +1519,7 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
    // Update total number of samples, update the envelope,
    // and do a consistency check.
    mNumSamples -= len;
-   mEnvelope.SetTrackLen(mNumSamples / mRate);
+   mEnvelope->SetTrackLen(mNumSamples / mRate);
    ConsistencyCheck("Delete - branch two");
 }
 

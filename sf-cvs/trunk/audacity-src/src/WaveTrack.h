@@ -16,13 +16,13 @@
 #include <wx/thread.h>
 
 #include "SampleFormat.h"
-#include "Envelope.h"
 #include "Track.h"
 
 typedef int sampleCount;
 
 class DirManager;
 class BlockFile;
+class Envelope;
 
 class WaveBlock {
  public:
@@ -107,8 +107,8 @@ class WaveTrack:public VTrack {
    sampleCount GetNumSamples() const { return mNumSamples; }
    void SetNumSamples(sampleCount sc) { mNumSamples = sc; }
 
-   Envelope *GetEnvelope() { return &mEnvelope; }
-   const Envelope *GetEnvelope() const { return &mEnvelope; }
+   Envelope *GetEnvelope() { return mEnvelope; }
+   const Envelope *GetEnvelope() const { return mEnvelope; }
 
    float Get(sampleCount pos) const;
    void  Get(float * buffer, sampleCount start, sampleCount len) const;
@@ -134,12 +134,12 @@ class WaveTrack:public VTrack {
 
  private:
    static int    sMaxDiskBlockSize;
- private:
+
    BlockArray   *mBlock;
    sampleFormat  mSampleFormat;
    sampleCount   mNumSamples;
    double        mRate;
-   Envelope      mEnvelope;
+   Envelope     *mEnvelope;
    SummaryInfo   mSummary;
 
    sampleCount   mMinSamples;
