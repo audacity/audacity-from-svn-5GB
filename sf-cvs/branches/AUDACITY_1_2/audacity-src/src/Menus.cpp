@@ -1863,6 +1863,31 @@ void AudacityProject::OnSelectStartCursor()
 
 void AudacityProject::OnZoomIn()
 {
+   // DMM: Here's my attempt to get logical zooming behavior
+   // when there's a selection that's currently at least
+   // partially on-screen
+
+   if (mViewInfo.sel1 > mViewInfo.sel0 &&
+       mViewInfo.sel0 < mViewInfo.h + mViewInfo.screen &&
+       mViewInfo.sel1 > mViewInfo.h) {
+      // Start with the center of the selection
+      double selCenter = (mViewInfo.sel0 + mViewInfo.sel1) / 2;
+
+      // Clip it to the screen
+      if (selCenter < mViewInfo.h)
+         selCenter = mViewInfo.h;
+      if (selCenter > mViewInfo.h + mViewInfo.screen)
+         selCenter = mViewInfo.h + mViewInfo.screen;
+         
+      // Zoom in
+      Zoom(mViewInfo.zoom *= 2.0);
+
+      // Recenter on selCenter
+      TP_ScrollWindow(selCenter - mViewInfo.screen / 2);
+      return;
+   }
+
+
    double origLeft = mViewInfo.h;
    double origWidth = mViewInfo.screen;
    Zoom(mViewInfo.zoom *= 2.0);
@@ -1880,7 +1905,7 @@ void AudacityProject::OnZoomIn()
    // no further *right* than 2/3 of the way across the screen
    if (mViewInfo.sel0 > newh + mViewInfo.screen * 2 / 3)
       newh = mViewInfo.sel0 - mViewInfo.screen * 2 / 3;
-      */
+   */
 
    TP_ScrollWindow(newh);
 }
