@@ -1,33 +1,32 @@
-<h2>Wijzigingen sinds Audacity 1.0</h2>
+<h2>Wijzigingen sinds Audacity 1.2</h2>
 
 In deze sectie, een lijst van wijzigingen na de vrijgave van onze laatste stabiele versie, Audacity 1.0.0. Gebruikers van onze beta versies zouden de vrijgave notities moeten lezen i.v.m. wijzigingen
-<a href="<?php print "betanotes.php$langQueryStr"; ?>"> sinds Audacity 1.1.3</a>.
+<a href="<?php print "betanotes.php$langQueryStr"; ?>"> sinds Audacity 1.1.0</a>.
 
 <h3>Professional-Quality Audio</h3>
 
 <ul>
 <li>
-Audacity kan nu nu 24-bit en 32-bit (floating-point) samples opnemen en bewerken.  Tracks met verschillende sample rates en formaten kunnen nu in hetzelfde project bestaan en Audacity converteert ze in realtime, indien nodig.  High-quality dithering en resampling wordt voor alle conversies gebruikt.  Resampling gebruikt nu de algoritmes van de 
-<a href="http://www.mega-nerd.com/SRC/">SRC</a> bibliotheek, gemaakt door
-Erik de Castro Lopo.
+Audacity kan nu nu 24-bit en 32-bit (floating-point) samples opnemen en bewerken.  Tracks met verschillende sample rates en formaten kunnen nu in hetzelfde project bestaan en Audacity converteert ze in realtime, indien nodig.  High-quality dithering en resampling wordt voor alle conversies gebruikt.
 </li>
 
 <li>
 Audacity's geluid input en output is verbeterd.  Audacity kan nu
-meer dan twee kanalen tegelijkertijd opnemen.  Latency is verminderd voor he verlagen van de kans op overslaan of buffer underruns.
+meer dan twee kanalen tegelijkertijd opnemen.  Buffering is verbeterd voor het verlagen van de kans op overslaan en buffer underruns.
 </li>
 </ul>
 
-
+<a href="screenshots.php<?php print $langQueryStr; ?>">
+<img alt="screenshots" border="0" src="images/screen/linux/change-pitch.png" align="right"></a>
 <h3>Effecten</h3>
 
 <ul>
 <li>
-Drie nieuwe effecten veranderen de the pitch en tempo van een track:
+Drie nieuwe effecten veranderen de pitch en tempo van een track:
  <ul>
-  <li>Wijziging van Pitch vergoogd of verlaagde de toon van een selectie, zonder
+  <li>Wijziging van Pitch verhoogd of verlaagd de toon van een selectie, zonder
   aantasting van de snelheid.</li>
-  <li>Wijziging van Tempo zorgt ervoor dat de selectiesneller of langzamer 
+  <li>Wijziging van Tempo zorgt ervoor dat de selectie sneller of langzamer 
   afspeelt zonder wijziging van de pitch.</li>
   <li>Wijziging van Snelheid wijzigt zowel playback snelheid als pitch, 
   precies zoals wijzigen van snelheid van een platen- of cassettespeler. </ul>
@@ -52,7 +51,7 @@ Andere nieuwe effecten bevatten:
 
 <ul>
 <li>
-De Envelope tool, te gebruiken voor in en uit faden van tracks, kan nu ook gebruikt worden om het tracksvolume luider of zachter te maken dan het origineel.
+De Envelope tool, te gebruiken voor in en uit faden van tracks, kan nu ook gebruikt worden om het tracksvolume luider of zachter dan het origineel te maken.
 </li>
 
 <li>
@@ -62,6 +61,7 @@ in tegenstelling daarvan wijzigt deze de playback snelheid tijdens het afspelen 
 
 <li>
 Elke track bevat nu zijn eigen Gain and Pan controle om makkelijker te mixen.
+<a href="screenshots.php<?php print $langQueryStr; ?>"><img alt="screenshots" border="0" src="images/screen/linux/track-controls.png" align="right"></a>
 </li>
 
 <li>
@@ -101,18 +101,14 @@ verbeterde compabiliteit met vele uncompressed audiobestandsformaten.
 </li>
 
 <li>
-De laatste versie van de <a href="http://www.vorbis.com/">Vorbis</a>
-bibliotheken worden gebruikt voor hoge kwaliteits Ogg Vorbis encoding.
-</li>
-
-<li>
-Via de import en open dialoovensters kunnen Audacity gebruikers nu meerdere audiobestanden ineens swlecteren en deze als een enkel project openen.  Een nieuw "LOF" bestandsformaat geeft Audacity de mogelijkheid om een groep bestanden met offsets te openen als een text bestand.
+Via de import en open dialoogvensters kunnen Audacity gebruikers nu meerdere audiobestanden ineens selecteren en deze als een enkel project openen.  Een nieuw "LOF" bestandsformaat geeft Audacity de mogelijkheid om een groep bestanden te openen waarvan de offsets in een text bestand worden weergegeven.
 </li>
 </ul>
 
 
 <h3>Verbeterde gebruikersinterface</h3>
 
+<a href="screenshots.php<?php print $langQueryStr; ?>"><img alt="screenshots" border="0" src="images/screen/macosx/main-toolbar.png" align="right"></a>
 <ul>
 <li>
 Nieuwe Bewerkings- en Mixer knoppenbalk voor snelle toegang tot veel voorkomende functies.
