@@ -27,7 +27,7 @@
   <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity checkout audacity</kbd></p></li>
 </ul>
 <p>For more information, read the <a href="http://sourceforge.net/cvs/?group_id=6235">SourceForge CVS instructions</a>.</p>
-<p>See the source code page for <a href="../download/source#instructions">compilation instructions</a>.</a>')?>
+<p>See the source code page for <a href="../download/source#instructions">compilation instructions</a>.</p>')?>
 
 <?=_('<h3 id="bugzilla">Bugzilla</h3>
 <p>The Audacity developers use <a href="http://audacity.sourceforge.net/cgi-bin/bugzilla/index.cgi">Bugzilla</a> to keep track of confirmed bugs.  Check the list of <a href="http://audacity.sourceforge.net/cgi-bin/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED">open bugs</a> if you are looking for something to work on.</p>
