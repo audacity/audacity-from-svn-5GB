@@ -249,15 +249,13 @@ pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent, AppleEvent * theReply
 
 typedef int (AudacityApp::*SPECIALKEYEVENT)(wxKeyEvent&);
 
-BEGIN_EVENT_TABLE(AudacityApp, wxApp)
+#define globalNewID 4750
+#define globalOpenID 4751
 
-   //These appear to cause trouble on non-mac platforms:
-#if 0 //def __WXMAC__
-	EVT_MENU(AboutID, AudacityApp::OnMenuAbout)
-	EVT_MENU(NewID, AudacityApp::OnMenuNew)
-	EVT_MENU(OpenID, AudacityApp::OnMenuOpen)
-	EVT_MENU(PreferencesID, AudacityApp::OnMenuPreferences)
-	EVT_MENU(ExitID, AudacityApp::OnMenuExit)
+BEGIN_EVENT_TABLE(AudacityApp, wxApp)
+#ifdef __WXMAC__
+   EVT_MENU(globalNewID, AudacityApp::OnMenuNew)
+   EVT_MENU(globalOpenID, AudacityApp::OnMenuOpen)
 #endif
 
 END_EVENT_TABLE()
@@ -500,30 +498,14 @@ bool AudacityApp::OnInit()
 
    gParentFrame = new wxFrame(NULL, -1, "invisible", wxPoint(5000, 5000), wxSize(100, 100));
 
-#if 0
-
    wxMenu *fileMenu = new wxMenu();
-   fileMenu->Append(NewID, "&New\tCtrl+N");
-   fileMenu->Append(OpenID, "&Open...\tCtrl+O");
+   fileMenu->Append(globalNewID, "&New\tCtrl+N");
+   fileMenu->Append(globalOpenID, "&Open...\tCtrl+O");
 
-#ifdef __MACOS9__
-   fileMenu->AppendSeparator();
-   fileMenu->Append(PreferencesID, "&Preferences...\tCtrl+P");
-#endif
-
-   fileMenu->AppendSeparator();
-   fileMenu->Append(ExitID, "Quit\tCtrl+Q");
-   wxMenu *helpMenu = new wxMenu();
-   helpMenu->Append(AboutID, "About Audacity...");
-   wxApp::s_macAboutMenuItemId = AboutID;
-   
    wxMenuBar *menuBar = new wxMenuBar();
    menuBar->Append(fileMenu, "&File");
-   menuBar->Append(helpMenu, "&Help");
 
    gParentFrame->SetMenuBar(menuBar);
-
-#endif // #if 0
 
    gParentFrame->Show();
 
