@@ -300,54 +300,59 @@ bool AudacityApp::OnInit()
 
    wxFileSystem::AddHandler(new wxZipFSHandler);
 
-   #if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
+	/* We do this in the Windows installer now, 
+		to avoid issues where user doesn't have admin privileges.
 
-   //BG: On Windows, associate the aup file type with Audacity
-   {
-      wxRegKey associateFileTypes;
+		May want to move this to Prefs if people want to manually change associations.
 
-      associateFileTypes.SetName("HKCR\\.AUP");
-      if(!associateFileTypes.Exists())
-      {
-         associateFileTypes.Create(true);
-         associateFileTypes = "Audacity.Project";
-      }
+		#if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
+			//BG: On Windows, associate the aup file type with Audacity
+			{
+				wxRegKey associateFileTypes;
 
-      associateFileTypes.SetName("HKCR\\Audacity.Project");
-      if(!associateFileTypes.Exists())
-      {
-         associateFileTypes.Create(true);
-         associateFileTypes = "Audacity Project File";
-      }
+				associateFileTypes.SetName("HKCR\\.AUP");
+				if(!associateFileTypes.Exists())
+				{
+					associateFileTypes.Create(true);
+					associateFileTypes = "Audacity.Project";
+				}
 
-      associateFileTypes.SetName("HKCR\\Audacity.Project\\shell");
-      if(!associateFileTypes.Exists())
-      {
-         associateFileTypes.Create(true);
-         associateFileTypes = "";
-      }
+				associateFileTypes.SetName("HKCR\\Audacity.Project");
+				if(!associateFileTypes.Exists())
+				{
+					associateFileTypes.Create(true);
+					associateFileTypes = "Audacity Project File";
+				}
 
-      associateFileTypes.SetName("HKCR\\Audacity.Project\\shell\\open");
-      if(!associateFileTypes.Exists())
-      {
-         associateFileTypes.Create(true);
-      }
+				associateFileTypes.SetName("HKCR\\Audacity.Project\\shell");
+				if(!associateFileTypes.Exists())
+				{
+					associateFileTypes.Create(true);
+					associateFileTypes = "";
+				}
 
-      associateFileTypes.SetName("HKCR\\Audacity.Project\\shell\\open\\command");
+				associateFileTypes.SetName("HKCR\\Audacity.Project\\shell\\open");
+				if(!associateFileTypes.Exists())
+				{
+					associateFileTypes.Create(true);
+				}
 
-      wxString tmpRegAudPath;
-      if(associateFileTypes.Exists())
-      {
-         tmpRegAudPath = wxString(associateFileTypes).Lower();
-      }
-      if(!associateFileTypes.Exists() || (tmpRegAudPath.Find("\\audacity.exe") >= 0))
-      {
-         associateFileTypes.Create(true);
-         associateFileTypes = (wxString)argv[0] + (wxString)" \"%1\"";
-      }
-   }
+				associateFileTypes.SetName("HKCR\\Audacity.Project\\shell\\open\\command");
 
-   #endif
+				wxString tmpRegAudPath;
+				if(associateFileTypes.Exists())
+				{
+					tmpRegAudPath = wxString(associateFileTypes).Lower();
+				}
+				if(!associateFileTypes.Exists() || (tmpRegAudPath.Find("\\audacity.exe") >= 0))
+				{
+					associateFileTypes.Create(true);
+					associateFileTypes = (wxString)argv[0] + (wxString)" \"%1\"";
+				}
+			}
+
+		#endif
+	*/
 
    InitPreferences();
 
