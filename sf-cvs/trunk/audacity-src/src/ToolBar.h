@@ -86,6 +86,8 @@ class ToolBar:public wxWindow {
    wxSize GetIdealSize() {
       return mIdealSize;
    };
+   virtual void EnableDisableButtons(bool anySelection, bool anyTracks);
+
  protected:
 
    virtual AButton * MakeButton(wxImage * up,

@@ -78,7 +78,6 @@ IMPLEMENT_DYNAMIC_CLASS(ControlToolBar, ToolBar)
     EVT_COMMAND(ID_FF_BUTTON,
             wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnFF)
     END_EVENT_TABLE()
-
     //Standard contructor
 ControlToolBar::ControlToolBar(wxWindow * parent):
 ToolBar(parent, -1, wxPoint(1, 1), wxSize(440, 55))
@@ -305,6 +304,7 @@ AButton *ControlToolBar::MakeTool(const char **tool, const char **alpha,
 AButton *ControlToolBar::MakeButton(wxImage * up, wxImage * down,
                                     wxImage * hilite,
                                     char const **foreground,
+                                    char const **disabled,
                                     char const **alpha, int id, int left)
 {
 
@@ -314,10 +314,10 @@ AButton *ControlToolBar::MakeButton(wxImage * up, wxImage * down,
 
    AButton *button = this->ToolBar::MakeButton(up, down, hilite,
                                                foreground,
-                                               (const char **) Disabled,
+                                               disabled,
                                                alpha,
                                                wxWindowID(id), p,
-                                               wxSize(48,48),
+                                               wxSize(48, 48),
                                                16, 16);
    return button;
 }
@@ -344,28 +344,33 @@ void ControlToolBar::MakeButtons()
 
    mRewind = MakeButton(upPattern, downPattern, hilitePattern,
                         (char const **) Rewind,
+                        (char const **) Disabled,
                         (char const **) RewindAlpha, ID_REW_BUTTON, 64);
    mRewind->SetToolTip(_("Skip to Start"));
 
    mPlay = MakeButton(upPattern, downPattern, hilitePattern,
-                      (char const **) Play, (char const **) PlayAlpha,
-                      ID_PLAY_BUTTON, 114);
+                      (char const **) Play,
+                      (char const **) Disabled,
+                      (char const **) PlayAlpha, ID_PLAY_BUTTON, 114);
    mPlay->SetToolTip(_("Play"));
 
    mStop = MakeButton(upPattern, downPattern, hilitePattern,
-                      (char const **) Stop, (char const **) StopAlpha,
-                      ID_STOP_BUTTON, 164);
+                      (char const **) Stop,
+                      (char const **) Disabled,
+                      (char const **) StopAlpha, ID_STOP_BUTTON, 164);
    mStop->SetToolTip(_("Stop"));
 
    mRecord = MakeButton(upPattern, downPattern, hilitePattern,
                         (char const **) Record,
+                        (char const **) Disabled,
                         (char const **) RecordAlpha, ID_RECORD_BUTTON,
                         214);
    mRecord->SetToolTip(_("Record"));
 
    mFF = MakeButton(upPattern, downPattern, hilitePattern,
-                    (char const **) FFwd, (char const **) FFwdAlpha,
-                    ID_FF_BUTTON, 264);
+                    (char const **) FFwd,
+                    (char const **) Disabled,
+                    (char const **) FFwdAlpha, ID_FF_BUTTON, 264);
    mFF->SetToolTip(_("Skip to End"));
 
    delete upPattern;
@@ -390,7 +395,7 @@ void ControlToolBar::MakeButtons()
    mTool[3] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 28, 28);
    mTool[3]->SetToolTip(_("Zoom Tool"));
 
-   wxToolTip::Enable(true);   // MB: Should make this a pref
+   wxToolTip::Enable(true);     // MB: Should make this a pref
    wxToolTip::SetDelay(1000);
 }
 
@@ -458,8 +463,12 @@ void ControlToolBar::SetStop(bool down)
 {
    if (down)
       mStop->PushDown();
-   else
+   else {
       mStop->PopUp();
+      mStop->Disable();
+      mRewind->Enable();
+      mFF->Enable();
+   }
 }
 
 void ControlToolBar::SetRecord(bool down)
@@ -474,6 +483,10 @@ void ControlToolBar::OnPlay()
 {
    if (gAudioIO->IsBusy())
       return;
+
+   mStop->Enable();
+   mRewind->Disable();
+   mFF->Disable();
 
    AudacityProject *p = GetActiveProject();
    if (p) {
@@ -490,8 +503,8 @@ void ControlToolBar::OnPlay()
 
       if (!success) {
          SetPlay(false);
-         SetStop(false);
-         SetRecord(false);
+         //     SetStop(false);
+         //     SetRecord(false);
       }
    }
 }
@@ -501,12 +514,17 @@ void ControlToolBar::OnStop()
    gAudioIO->Stop();
    SetStop(false);
 
+
 }
 
 void ControlToolBar::OnRecord()
 {
    if (gAudioIO->IsBusy())
       return;
+
+   mStop->Enable();
+   mRewind->Disable();
+   mFF->Disable();
 
    AudacityProject *p = GetActiveProject();
    if (p) {
@@ -630,4 +648,34 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
    dc.DrawLine(55, 0, 55, height - 1);
    dc.DrawLine(0, 27, 55, 27);
 #endif
+}
+
+
+void ControlToolBar::EnableDisableButtons(bool anySelection,
+                                          bool anyTracks)
+{
+
+   //Enable/disable based on presence of a wavetrack
+   if (anyTracks) {
+
+      mPlay->Enable();
+
+      if (gAudioIO->IsBusy()) {
+
+         mRewind->Disable();
+         mFF->Disable();
+      } else {
+         mRewind->Enable();
+         mFF->Enable();
+      }
+   } else {
+      //There are no tracks in this project, so disable everything except record
+      mRewind->Disable();
+      mPlay->Disable();
+      mStop->Disable();
+      mFF->Disable();
+
+   }
+
+
 }

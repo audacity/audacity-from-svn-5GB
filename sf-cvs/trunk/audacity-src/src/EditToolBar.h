@@ -46,7 +46,7 @@ class wxSize;
 class wxPoint;
 
 enum {
-   ETBCutID, 
+   ETBCutID,
    ETBCopyID,
    ETBPasteID,
    ETBTrimID,
@@ -54,7 +54,7 @@ enum {
 
    ETBUndoID,
    ETBRedoID,
-   
+
    ETBZoomInID,
    ETBZoomOutID,
    ETBZoomSelID,
@@ -71,45 +71,44 @@ class EditToolBar:public ToolBar {
    EditToolBar() {
    };
    EditToolBar(wxWindow * parent, wxWindowID id,
-                  const wxPoint & pos, const wxSize & size);
+               const wxPoint & pos, const wxSize & size);
    EditToolBar(wxWindow * parent);
    virtual ~ EditToolBar();
    void InitializeEditToolBar();
 
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnKeyEvent(wxKeyEvent & event);
+   virtual void EnableDisableButtons(bool anySelection, bool anyTracks);
 
 
-   void OnCut(); 
+   void OnCut();
    void OnCopy();
    void OnPaste();
    void OnTrim();
    void OnSilence();
-   
+
    void OnUndo();
    void OnRedo();
-   
+
    void OnZoomIn();
    void OnZoomOut();
    void OnZoomSel();
    void OnZoomFit();
 
 
-
  private:
 
 
    void MakeButtons();
-   AButton * MakeButton(wxImage* up, wxImage* down, wxImage* hilite,
-                        char const ** foreground,
-                        char const ** alpha,
-                        int id, int left);
+   AButton *MakeButton(wxImage * up, wxImage * down, wxImage * hilite,
+                       char const **foreground,
+                       char const **alpha, int id, int left);
    AButton *mCut;
    AButton *mCopy;
    AButton *mPaste;
    AButton *mTrim;
    AButton *mSilence;
-   
+
    AButton *mUndo;
    AButton *mRedo;
 
