@@ -33,6 +33,13 @@ extern "C"
                                      int channel,
                                      long start, long len,
                                      void *userdata);
+
+   /* Set to 0 to stop capturing output */
+   void        nyx_capture_output(int max_len);
+
+   /* Returns all output text captured so far, and resets it */
+   void        nyx_get_captured_output(int *out_len,
+                                       const char **out_chars);
    
    void        nyx_set_input_audio(nyx_audio_callback callback,
                                    void *userdata,
