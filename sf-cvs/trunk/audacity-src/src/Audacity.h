@@ -14,11 +14,11 @@
 **********************************************************************/
 
 // Increment this every time you release a new version
-#define AUDACITY_VERSION_STRING "1.1.1"
+#define AUDACITY_VERSION_STRING "1.1.0"
 
 // Don't change this unless the file format changes
 // in an irrevocable way
-#define AUDACITY_FILE_FORMAT_VERSION "0.97"
+#define AUDACITY_FILE_FORMAT_VERSION "1.1.0"
 
 class wxWindow;
 class ToolBarStub;
