@@ -142,7 +142,9 @@ bool EffectNormalize::ProcessOne(WaveTrack * track,
          s += block;
          
          //Update the Progress meter
-         if (TrackProgress(mCurTrackNum, (pass*len/2) + (s - start) / (len*2)))
+			if (TrackProgress(mCurTrackNum, 
+									((double)(pass)*0.5) + // Approximate each pass as half.
+										((double)(s - start) / (len*2))))
             return false;
       }
    }
