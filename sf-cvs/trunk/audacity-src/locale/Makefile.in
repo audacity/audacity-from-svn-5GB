@@ -10,11 +10,17 @@
 PROGNAME=audacity
 LINGUAS=bg da de es fr hu it nl pl pt ru sl
 
+prefix=@prefix@
+# this defaults to /usr/share
+DATADIR=@datadir@
+top_srcdir=@top_srcdir@
+INSTALL=@INSTALL@
+
 all: allmo
 
 # Merge POT file with all existing message catalogs
 allpo: $(LINGUAS:%=%.po) FORCE
-allmo: $(LINGUAS:%=../%/$(PROGNAME).mo) FORCE
+allmo: $(LINGUAS:%=%/$(PROGNAME).mo) FORCE
 
 # Update the POT template file.
 POTFILE=$(PROGNAME).pot 
@@ -31,8 +37,8 @@ XGETTEXT_ARGS=-C -k_ -s -j
 
 # implicit rules
 
-../%/$(PROGNAME).mo: %.po
-	@test -d ../$* || mkdir ../$*
+%/$(PROGNAME).mo: %.po
+	@test -d $* || mkdir $*
 	$(MSGFMT) -o $@ $<
 
 %.po: $(POTFILE)
@@ -53,3 +59,24 @@ force-update: FORCE
 	rm -f $(POTFILE)
 
 FORCE:
+
+install: allmo
+	linguas='$(LINGUAS)'; for lang in $$linguas ; do \
+	   $(INSTALL) -d $(top_srcdir)/$(DESTDIR)$(DATADIR)/locale/$$lang/LC_MESSAGES ; \
+	   $(INSTALL) -m 644 $$lang/audacity.mo $(top_srcdir)/$(DESTDIR)$(DATADIR)/locale/$$lang/LC_MESSAGES ; \
+	done
+
+uninstall:
+	linguas='$(LINGUAS)'; for lang in $$linguas ; do \
+	   rm -f $(top_srcdir)/$(DESTDIR)$(DATADIR)/locale/$$lang/LC_MESSAGES/audacity.mo ; \
+	done
+
+clean:
+	-linguas='$(LINGUAS)'; for lang in $$linguas ; do \
+	   rm -rf $$lang ; \
+	   rm -f audacity.pot ; \
+	done
+
+distclean: clean
+	rm -f Makefile
+

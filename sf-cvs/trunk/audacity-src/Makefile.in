@@ -1,5 +1,10 @@
+
 INSTALL = @INSTALL@
-PREFIX = @prefix@
+exec_prefix= @exec_prefix@
+prefix= @prefix@
+BINDIR= @bindir@
+DATADIR= @datadir@
+MANDIR= @mandir@
 ZIP = @ZIP@
 
 .PHONY: all
@@ -7,49 +12,43 @@ all: audacity help/audacity.1.gz
 
 .PHONY: audacity
 audacity:
-	cd lib-src && $(MAKE)
-	cd src && $(MAKE)
-	cd locale && $(MAKE)
+	$(MAKE) -C lib-src
+	$(MAKE) -C src
+	$(MAKE) -C locale
 
 .PHONY: install
 install: audacity
-	$(INSTALL) -d $(PREFIX)/bin
-	$(INSTALL) -m 755 audacity $(PREFIX)/bin/audacity
-	$(INSTALL) -d $(PREFIX)/share/doc/audacity
+	# install the binary
+	$(INSTALL) -d $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 755 audacity $(DESTDIR)$(BINDIR)/audacity
+	
+	# install docs
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/doc/audacity
 	-test -f audacity-help.htb && $(INSTALL) -m 644 audacity-help.htb \
-		$(PREFIX)/share/doc/audacity/audacity-help.htb
-	$(INSTALL) -m 644 README.txt $(PREFIX)/share/doc/audacity/README.txt
-	$(INSTALL) -m 644 LICENSE.txt $(PREFIX)/share/doc/audacity/LICENSE.txt
-	$(INSTALL) -d $(PREFIX)/share/man/man1
+		$(DESTDIR)$(DATADIR)/doc/audacity/audacity-help.htb
+	$(INSTALL) -m 644 README.txt $(DESTDIR)$(DATADIR)/doc/audacity/README.txt
+	$(INSTALL) -m 644 LICENSE.txt $(DESTDIR)$(DATADIR)/doc/audacity/LICENSE.txt
+
+	# install manpage
+	$(INSTALL) -d $(DESTDIR)$(MANDIR)/man1
 	-test -f help/audacity.1.gz && \
 		$(INSTALL) -m 644 help/audacity.1.gz \
-		$(PREFIX)/share/man/man1
-	$(INSTALL) -d $(PREFIX)/share/audacity/nyquist
-	$(INSTALL) -m 644 nyquist/*.lsp $(PREFIX)/share/audacity/nyquist
-	$(INSTALL) -d $(PREFIX)/share/audacity/plug-ins
-	$(INSTALL) -m 644 plug-ins/*.ny $(PREFIX)/share/audacity/plug-ins
-	$(INSTALL) -d $(PREFIX)/share/locale/bg/LC_MESSAGES
-	$(INSTALL) -m 644 bg/audacity.mo $(PREFIX)/share/locale/bg/LC_MESSAGES
-	$(INSTALL) -d $(PREFIX)/share/locale/da/LC_MESSAGES
-	$(INSTALL) -m 644 da/audacity.mo $(PREFIX)/share/locale/da/LC_MESSAGES
-	$(INSTALL) -d $(PREFIX)/share/locale/de/LC_MESSAGES
-	$(INSTALL) -m 644 de/audacity.mo $(PREFIX)/share/locale/de/LC_MESSAGES
-	$(INSTALL) -d $(PREFIX)/share/locale/es/LC_MESSAGES
-	$(INSTALL) -m 644 es/audacity.mo $(PREFIX)/share/locale/es/LC_MESSAGES
-	$(INSTALL) -d $(PREFIX)/share/locale/fr/LC_MESSAGES
-	$(INSTALL) -m 644 fr/audacity.mo $(PREFIX)/share/locale/fr/LC_MESSAGES
-	$(INSTALL) -d $(PREFIX)/share/locale/hu/LC_MESSAGES
-	$(INSTALL) -m 644 hu/audacity.mo $(PREFIX)/share/locale/hu/LC_MESSAGES
-	$(INSTALL) -d $(PREFIX)/share/locale/it/LC_MESSAGES
-	$(INSTALL) -m 644 it/audacity.mo $(PREFIX)/share/locale/it/LC_MESSAGES
-	$(INSTALL) -d $(PREFIX)/share/locale/nl/LC_MESSAGES
-	$(INSTALL) -m 644 nl/audacity.mo $(PREFIX)/share/locale/nl/LC_MESSAGES
-	$(INSTALL) -d $(PREFIX)/share/locale/pl/LC_MESSAGES
-	$(INSTALL) -m 644 pl/audacity.mo $(PREFIX)/share/locale/pl/LC_MESSAGES
-	$(INSTALL) -d $(PREFIX)/share/locale/ru/LC_MESSAGES
-	$(INSTALL) -m 644 ru/audacity.mo $(PREFIX)/share/locale/ru/LC_MESSAGES
-	$(INSTALL) -d $(PREFIX)/share/locale/sl/LC_MESSAGES
-	$(INSTALL) -m 644 sl/audacity.mo $(PREFIX)/share/locale/sl/LC_MESSAGES
+		$(DESTDIR)$(MANDIR)/man1
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/audacity/nyquist
+	$(INSTALL) -m 644 nyquist/*.lsp $(DESTDIR)$(DATADIR)/audacity/nyquist
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/audacity/plug-ins
+	$(INSTALL) -m 644 plug-ins/*.ny $(DESTDIR)$(DATADIR)/audacity/plug-ins
+
+	# install locales
+	$(MAKE) -C locale install
+
+uninstall:
+	rm -rf $(BINDIR)/audacity
+	rm -rf $(DATADIR)/doc/audacity
+	rm -rf $(DATADIR)/audacity
+	rm -rf $(MANDIR)/man1/audacity.1.gz
+
+	$(MAKE) -C locale uninstall
 
 help/audacity.1.gz:
 	gzip help/audacity.1
@@ -62,11 +61,11 @@ dox:
 	doxygen audacity.dox
 
 dep:
-	cd src && $(MAKE) dep
+	$(MAKE) -C src dep
 
 clean:
-	cd lib-src && $(MAKE) clean
-	cd src && $(MAKE) clean
+	$(MAKE) -C lib-src clean
+	$(MAKE) -C src clean
 	rm -f audacity-help.htb
 	rm -f audacity
 
@@ -75,3 +74,11 @@ veryclean: clean
 	rm -f src/configunix.h
 	rm -f `find . -name "*~"`
 	rm -f `find . -name core`
+
+distclean: clean
+	$(MAKE) -C locale distclean
+	$(MAKE) -C lib-src distclean
+
+	rm -f Makefile src/Makefile lib-src/Makefile lib-src/allegro/Makefile
+	rm -f lib-src/expat/Makefile locale/Makefile src/configunix.h
+
