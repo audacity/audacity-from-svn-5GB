@@ -1359,6 +1359,37 @@ void AudacityProject::OnNewLabelTrack()
    mTrackPanel->Refresh(false);
 }
 
+//FIXME: This does not work for selections.
+//LabelTrack appears to be missing functionality
+void AudacityProject::OnAddLabel()
+{
+   TrackListIterator iter(mTracks);
+   LabelTrack *lt = NULL;
+
+   Track *t = iter.First();
+   while (t && !lt) {
+      if (t->GetKind() == Track::Label)
+         lt = (LabelTrack *)t;
+      else
+         t = iter.Next();
+   }
+
+   if (!lt) {
+      lt = new LabelTrack(&mDirManager);
+
+      SelectNone();
+
+      mTracks->Add(lt);
+   }
+
+   lt->Add(mViewInfo.sel0, "");
+
+   PushState(_("Added label"));
+
+   FixScrollbars();
+   mTrackPanel->Refresh(false);
+}
+
 void AudacityProject::OnRemoveTracks()
 {
    TrackListIterator iter(mTracks);
