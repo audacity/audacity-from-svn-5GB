@@ -1428,10 +1428,11 @@ void AudacityProject::OnCut()
    TrackListIterator iter(mTracks);
 
    Track *n = iter.First();
-   Track *dest = 0;
+   Track *dest;
 
    while (n) {
       if (n->GetSelected()) {
+         dest = NULL;
          n->Cut(mViewInfo.sel0, mViewInfo.sel1, &dest);
          if (dest) {
             dest->SetChannel(n->GetChannel());
@@ -1466,10 +1467,11 @@ void AudacityProject::OnCopy()
    TrackListIterator iter(mTracks);
 
    Track *n = iter.First();
-   Track *dest = 0;
+   Track *dest;
 
    while (n) {
       if (n->GetSelected()) {
+         dest = NULL;
          n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          if (dest) {
             dest->SetChannel(n->GetChannel());
@@ -1675,12 +1677,13 @@ void AudacityProject::OnDuplicate()
    TrackListIterator iter(mTracks);
 
    Track *n = iter.First();
-   Track *dest = 0;
+   Track *dest;
 
    TrackList newTracks;
 
    while (n) {
       if (n->GetSelected()) {
+         dest = NULL;
          n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          if (dest) {
             dest->Init(*n);
@@ -1709,7 +1712,7 @@ void AudacityProject::OnSplit()
    TrackListIterator iter(mTracks);
 
    Track *n = iter.First();
-   Track *dest = 0;
+   Track *dest;
 
    TrackList newTracks;
 
@@ -1718,6 +1721,7 @@ void AudacityProject::OnSplit()
          double sel0 = mViewInfo.sel0;
          double sel1 = mViewInfo.sel1;
 
+         dest = NULL;
          n->Copy(sel0, sel1, &dest);
          if (dest) {
             dest->Init(*n);
