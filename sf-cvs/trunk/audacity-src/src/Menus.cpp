@@ -100,8 +100,13 @@ void AudacityProject::CreateMenusAndCommands()
    wxArrayString names;
    unsigned int i;
 
+// Use the following to build only a tiny part of the interface
+// So as to track down the memory leak.
+//#define BuildInterface 1
+#define BuildInterface 0
+
    wxMenuBar *menubar = c->AddMenuBar("appmenu");
-   
+
    c->BeginMenu(_("&File"));
    c->AddItem("New",            _("&New\tCtrl+N"),                   FN(OnNew));
    c->AddItem("Open",           _("&Open...\tCtrl+O"),               FN(OnOpen));
@@ -220,9 +225,11 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->BeginMenu(_("&Generate"));
    effects = Effect::GetEffects(INSERT_EFFECT | BUILTIN_EFFECT);
-   for(i=0; i<effects->GetCount(); i++)
-      names.Add((*effects)[i]->GetEffectName());
-   c->AddItemList("Generate", names, FN(OnGenerateEffect));
+   if(effects->GetCount()){
+      for(i=0; i<effects->GetCount(); i++)
+         names.Add((*effects)[i]->GetEffectName());
+      c->AddItemList("Generate", names, FN(OnGenerateEffect));
+   }
    delete effects;
 
    effects = Effect::GetEffects(INSERT_EFFECT | PLUGIN_EFFECT);
@@ -238,10 +245,12 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->BeginMenu(_("&Effect"));
    effects = Effect::GetEffects(PROCESS_EFFECT | BUILTIN_EFFECT);
-   names.Clear();
-   for(i=0; i<effects->GetCount(); i++)
-      names.Add((*effects)[i]->GetEffectName());
-   c->AddItemList("Effect", names, FN(OnProcessEffect));
+   if(effects->GetCount()){
+      names.Clear();
+      for(i=0; i<effects->GetCount(); i++)
+         names.Add((*effects)[i]->GetEffectName());
+      c->AddItemList("Effect", names, FN(OnProcessEffect));
+   }
    delete effects;
 
    effects = Effect::GetEffects(PROCESS_EFFECT | PLUGIN_EFFECT);
@@ -256,11 +265,14 @@ void AudacityProject::CreateMenusAndCommands()
    c->EndMenu();
 
    c->BeginMenu(_("&Analyze"));
+
    effects = Effect::GetEffects(ANALYZE_EFFECT | BUILTIN_EFFECT);
-   names.Clear();
-   for(i=0; i<effects->GetCount(); i++)
-      names.Add((*effects)[i]->GetEffectName());
-   c->AddItemList("Analyze", names, FN(OnAnalyzeEffect));
+   if(effects->GetCount()){
+      names.Clear();
+      for(i=0; i<effects->GetCount(); i++)
+         names.Add((*effects)[i]->GetEffectName());
+      c->AddItemList("Analyze", names, FN(OnAnalyzeEffect));
+   }
    delete effects;
 
    effects = Effect::GetEffects(ANALYZE_EFFECT | PLUGIN_EFFECT);
@@ -280,6 +292,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("Help",           _("&Online Help..."),             FN(OnHelp));
    c->AddSeparator();   
    c->AddItem("Benchmark",      _("&Run Benchmark..."),           FN(OnBenchmark));
+ 
    c->EndMenu();
 
    ModifyExportMenus();

@@ -542,8 +542,12 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 AudacityProject::~AudacityProject()
 {
    delete mTimer;
+   mTimer=NULL;
 
-   SetMenuBar(NULL);
+// JKC: For Win98 and Linux do not detach the menu bar.
+// We want wxWindows to clean it up for us.
+// TODO: Is there a Mac issue here??
+// SetMenuBar(NULL);
 
    if (gAudioIO->IsStreamActive(mAudioIOToken)) {
       gAudioIO->StopStream();
@@ -554,18 +558,7 @@ AudacityProject::~AudacityProject()
    }
 
    mTrackPanel->Destroy();
-
-   //Go through the toolbar array and delete all the toolbars
-   //Do this from the bottom, to avoid too much popping forward in the array
-   // that would be obtained if you keep deleting the 0th item from the front
-
-   size_t i = mToolBarArray.GetCount();
-   while (i > 0) {
-      delete mToolBarArray[--i];
-      mToolBarArray.RemoveAt(i);
-   }
-   mToolBarArray.Clear();
-   WX_CLEAR_ARRAY(mToolBarArray)
+   WX_CLEAR_ARRAY(mToolBarArray);
 
    delete mImporter;
    mImporter = NULL;
