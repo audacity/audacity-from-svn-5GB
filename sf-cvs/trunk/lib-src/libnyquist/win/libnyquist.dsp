@@ -206,6 +206,10 @@ SOURCE=..\xlisp\extern.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\xlisp\path.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\xlisp\xlbfun.c
 # End Source File
 # Begin Source File
