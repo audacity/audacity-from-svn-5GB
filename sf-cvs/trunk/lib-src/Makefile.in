@@ -74,6 +74,7 @@ clean:
 	-$(MAKE) -C expat clean
 	-$(MAKE) -C libid3tag clean
 	-$(MAKE) -C libmad clean
+	-$(MAKE) -C libnyquist clean
 	-$(MAKE) -C libogg clean
 	-$(MAKE) -C libsamplerate clean
 	-$(MAKE) -C libresample clean
@@ -92,6 +93,7 @@ distclean:
 	-$(MAKE) -C expat distclean
 	-$(MAKE) -C libid3tag distclean
 	-$(MAKE) -C libmad distclean
+	-$(MAKE) -C libnyquist distclean
 	-$(MAKE) -C libogg distclean
 	-$(MAKE) -C libsamplerate distclean
 	-$(MAKE) -C libresample distclean
