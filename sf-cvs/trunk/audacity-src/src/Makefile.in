@@ -41,7 +41,6 @@ OBJS = \
 	$(OBJDIR)/Benchmark.o \
 	$(OBJDIR)/ControlToolBar.o \
 	$(OBJDIR)/DirManager.o \
-	$(OBJDIR)/DiskFunctions.o \
 	$(OBJDIR)/Envelope.o \
 	$(OBJDIR)/EditToolBar.o \
 	$(OBJDIR)/FFT.o \

@@ -176,14 +176,6 @@ SOURCE=..\src\DirManager.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\DiskFunctions.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\DiskFunctions.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\src\EditToolBar.cpp
 # End Source File
 # Begin Source File
