@@ -89,6 +89,6 @@ private:
    MenuBarList mMenuBarList;
    SubMenuList mSubMenuList;
    IdentifierNameList mIdentifierNameList;
-   wxMenu * mCurrentMenu;
    int mCurrentID;
+   wxMenu * mCurrentMenu;
 };
