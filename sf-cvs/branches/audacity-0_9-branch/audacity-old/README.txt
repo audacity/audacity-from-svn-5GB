@@ -130,7 +130,9 @@ Changes in 0.98:
   - Windows: recording/playback devices are no longer reversed
     in the preferences!
 
-  - Bug fixes to make install
+  - If recording fails, a phantom track is no longer created.
+
+  - Changing the export format now changes the menu bar.
 
 * Unix:
 
@@ -139,6 +141,8 @@ Changes in 0.98:
 
   - Preliminary support for the KDE/aRts soundserver (a compile-time
     option; must be configured to use this in place of OSS code)
+
+  - Bug fixes to "make install" script
 
 Changes in 0.97:
 
