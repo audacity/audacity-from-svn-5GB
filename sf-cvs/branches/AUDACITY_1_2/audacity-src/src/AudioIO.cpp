@@ -549,6 +549,8 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
                                 audacityAudioCallback, NULL );
 
 #if 0 //USE_PORTMIXER  TODO: support PortMixer with v19
+   if (mPortMixer)
+      Px_CloseMixer(mPortMixer);         
    mPortMixer = NULL;
    if (mPortStream != NULL && error == paNoError) {
       mPortMixer = Px_OpenMixer(mPortStream, 0);
@@ -658,19 +660,29 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
                                 audacityAudioCallback, NULL );
 
 #if USE_PORTMIXER
-   if( mPortMixer )
-      Px_CloseMixer(mPortMixer);
-   mPortMixer = Px_OpenMixer(mPortStreamV18, 0);
+
+   if (mPortMixer)
+      Px_CloseMixer(mPortMixer);         
+   mPortMixer = NULL;
+   if (mPortStreamV18 != NULL && err == paNoError) {
+      mPortMixer = Px_OpenMixer(mPortStreamV18, 0);
+   }
+
 #endif
 
    mInCallbackFinishedState = false;
 
 #endif
 
-   if( err != paNoError )
-   {
-      // we'll need a more complete way to indicate error
-      printf("%s\n", Pa_GetErrorText(err));
+   if (err != paNoError) {
+      wxString errStr = _("There was an error opening your audio device.\n");
+      wxString paErrStr = Pa_GetErrorText(err);
+      if (paErrStr)
+         errStr += _("Error: ")+paErrStr;
+      // XXX: we are in libaudacity, popping up dialogs not allowed!  A
+      // long-term solution will probably involve exceptions
+      wxMessageBox(errStr, _("Error Opening Audio Device"), wxICON_ERROR|wxOK);
+
       return 0;
    }
 
