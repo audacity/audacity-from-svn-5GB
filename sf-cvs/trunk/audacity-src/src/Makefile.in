@@ -103,6 +103,7 @@ OBJS = \
 	effects/ToneGen.o \
 	effects/Wahwah.o \
 	export/Export.o \
+	export/ExportMultiple.o \
 	export/ExportMP3.o \
 	export/ExportOGG.o \
 	export/ExportPCM.o \
