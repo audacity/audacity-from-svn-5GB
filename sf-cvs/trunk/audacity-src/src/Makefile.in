@@ -107,12 +107,14 @@ all: dirs ../audacity
 ../audacity: $(OBJS) $(EXTRAOBJS) Makefile
 	$(CCC) -o ../audacity $(OBJS) $(EXTRAOBJS) $(LIBS)
 
+#
 # You can optionally "make dep" to make dependencies.
-# The sed script turns "Foo.o:" into "obj/Foo.o:".
+# The sed script turns "Foo.o: bar/Foo.cpp" into "obj/bar/Foo.o:".
+#
 
 dep:
 	$(CCC) -MM $(CXXFLAGS) $(CPPFLAGS) $(DEPS) | \
-		sed -e 's/^\(.*\): /$(OBJDIR)\/\1: /' \
+		sed -e 's/^.*: \([^ ]*\)\.cpp/$(OBJDIR)\/\1.o: /' \
 		> .depend
 
 clean:
