@@ -48,8 +48,8 @@ AudioIO::AudioIO()
    mMaxBuffers = 24;
    mInitialNumOutBuffers = 2;
    
-   // Run our timer function once every 100 ms, i.e. 10 times/sec
-   mTimer.Start(100, FALSE);
+   // Run our timer function once every 200 ms, i.e. 5 times/sec
+   mTimer.Start(200, FALSE);
 }
 
 AudioIO::~AudioIO()
@@ -112,9 +112,11 @@ int audacityAudioCallback(
    if (numInChannels > 0) {
       for(i=0; i<gAudioIO->mNumInBuffers; i++)
          if (gAudioIO->mInBuffer[i].ID == 0) {
+            int len = framesPerBuffer; //gAudioIO->mBufferSize;
+            
             AudioIOBuffer *b = &gAudioIO->mInBuffer[i];
-            memcpy(b->data, outputBuffer, framesPerBuffer * numInChannels * sizeof(sampleType));
-            b->len = framesPerBuffer;
+            memcpy(b->data, inputBuffer, len * numInChannels * sizeof(sampleType));
+            b->len = len;
             b->ID = gAudioIO->mInID;
             gAudioIO->mInID++;
             break;
@@ -127,7 +129,31 @@ int audacityAudioCallback(
 bool AudioIO::OpenDevice()
 {
    PaError         error;
- 
+   int             numPortAudioBuffers;
+   
+   numPortAudioBuffers = Pa_GetMinNumBuffers(mBufferSize, mRate);
+
+   error = Pa_OpenStream(&mPortStream,
+                         mNumInChannels>0?
+                            Pa_GetDefaultInputDeviceID():
+                            paNoDevice,
+                         mNumInChannels,
+                         paInt16,
+                         NULL, /* inputDriverInfo */
+                         mNumOutChannels>0?
+                            Pa_GetDefaultOutputDeviceID():
+                            paNoDevice,
+                         mNumOutChannels,
+                         paInt16,
+                         NULL,
+                         mRate,
+                         (unsigned long)mBufferSize,
+                         (unsigned long)numPortAudioBuffers,
+                         paClipOff | paDitherOff,
+                         audacityAudioCallback,
+                         NULL);
+
+   /*
    error = Pa_OpenDefaultStream(&mPortStream,
                                 mNumInChannels,
                                 mNumOutChannels,
@@ -137,6 +163,7 @@ bool AudioIO::OpenDevice()
                                 (unsigned long)2,
                                 audacityAudioCallback,
                                 NULL);
+   */
 
    return (error == paNoError);
 }
@@ -235,6 +262,7 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
    for(int i=0; i<mNumInChannels; i++) {
       mInTracks[i] = new WaveTrack(project->GetDirManager());
       mInTracks[i]->selected = true;
+      mInTracks[i]->tOffset = mT0;
       if (stereo)
          mInTracks[i]->channel = i==0? VTrack::LeftChannel : VTrack::RightChannel;
       else
@@ -261,97 +289,96 @@ void AudioIO::FillBuffers()
          numEmpty++;
    }
    
-   if (numEmpty == 0)
-      return;
-
-   sampleCount block = numEmpty * mBufferSize;   
-   double deltat = block / mRate;
-   if (mT + deltat > mT1) {
-      deltat = mT1 - mT;
-      block = (sampleCount)(deltat * mRate + 0.5);
-   }
-   
-   Mixer *mixer = new Mixer(mNumOutChannels, block, true);
-   mixer->UseVolumeSlider(mProject->GetAPalette());
-   mixer->Clear();
-
-   TrackListIterator iter2(mTracks);
-   int numSolo = 0;
-   VTrack *vt = iter2.First();
-   while (vt) {
-      if (vt->GetKind() == VTrack::Wave && vt->solo)
-         numSolo++;
-      vt = iter2.Next();
-   }
-
-   TrackListIterator iter(mTracks);
-   vt = iter.First();
-   while (vt) {
-      if (vt->GetKind() == VTrack::Wave) {      
-
-         VTrack *mt = vt;
+   if (numEmpty > (mNumOutBuffers/2)) {
+      sampleCount block = numEmpty * mBufferSize;   
+      double deltat = block / mRate;
+      if (mT + deltat > mT1) {
+         deltat = mT1 - mT;
+         block = (sampleCount)(deltat * mRate + 0.5);
+      }
       
-         // We want to extract mute and solo information from
-         // the top of the two tracks if they're linked
-         // (i.e. a stereo pair only has one set of mute/solo buttons)
-         VTrack *partner = mTracks->GetLink(vt);
-         if (partner && !vt->linked)
-            mt = partner;
-         else
-            mt = vt;
+      Mixer *mixer = new Mixer(mNumOutChannels, block, true);
+      mixer->UseVolumeSlider(mProject->GetAPalette());
+      mixer->Clear();
 
-         // Cut if somebody else is soloing
-         if (numSolo>0 && !mt->solo) {
-            vt = iter.Next();
-            continue;
-         }
-         
-         // Cut if we're muted (unless we're soloing)
-         if (mt->mute && !mt->solo) {
-            vt = iter.Next();
-            continue;
-         }
-
-         WaveTrack *t = (WaveTrack *) vt;
-         
-         switch (t->channel) {
-         case VTrack::LeftChannel:
-            mixer->MixLeft(t, mT, mT + deltat);
-            break;
-         case VTrack::RightChannel:
-            mixer->MixRight(t, mT, mT + deltat);
-            break;
-         case VTrack::MonoChannel:
-            mixer->MixMono(t, mT, mT + deltat);
-            break;
-         }
+      TrackListIterator iter2(mTracks);
+      int numSolo = 0;
+      VTrack *vt = iter2.First();
+      while (vt) {
+         if (vt->GetKind() == VTrack::Wave && vt->solo)
+            numSolo++;
+         vt = iter2.Next();
       }
 
-      vt = iter.Next();
-   }
+      TrackListIterator iter(mTracks);
+      vt = iter.First();
+      while (vt) {
+         if (vt->GetKind() == VTrack::Wave) {      
+
+            VTrack *mt = vt;
+         
+            // We want to extract mute and solo information from
+            // the top of the two tracks if they're linked
+            // (i.e. a stereo pair only has one set of mute/solo buttons)
+            VTrack *partner = mTracks->GetLink(vt);
+            if (partner && !vt->linked)
+               mt = partner;
+            else
+               mt = vt;
+
+            // Cut if somebody else is soloing
+            if (numSolo>0 && !mt->solo) {
+               vt = iter.Next();
+               continue;
+            }
+            
+            // Cut if we're muted (unless we're soloing)
+            if (mt->mute && !mt->solo) {
+               vt = iter.Next();
+               continue;
+            }
+
+            WaveTrack *t = (WaveTrack *) vt;
+            
+            switch (t->channel) {
+            case VTrack::LeftChannel:
+               mixer->MixLeft(t, mT, mT + deltat);
+               break;
+            case VTrack::RightChannel:
+               mixer->MixRight(t, mT, mT + deltat);
+               break;
+            case VTrack::MonoChannel:
+               mixer->MixMono(t, mT, mT + deltat);
+               break;
+            }
+         }
+
+         vt = iter.Next();
+      }     
    
-   // Copy the mixed samples into the buffers
+      // Copy the mixed samples into the buffers
 
-   sampleType *outbytes = mixer->GetBuffer();   
-   for(i=0; i<mNumOutBuffers && block>0; i++)
-      if (mOutBuffer[i].ID == 0) {
-         sampleCount count;
-         if (block > mBufferSize)
-            count = mBufferSize;
-         else
-            count = block;
-         
-         memcpy(mOutBuffer[i].data, outbytes, count*mNumOutChannels*sizeof(sampleType));
-         block -= count;
-         outbytes += (count*mNumOutChannels);
-         mOutBuffer[i].len = count;
-         mOutBuffer[i].ID = mOutID;
-         mOutID++;
-      }
+      sampleType *outbytes = mixer->GetBuffer();   
+      for(i=0; i<mNumOutBuffers && block>0; i++)
+         if (mOutBuffer[i].ID == 0) {
+            sampleCount count;
+            if (block > mBufferSize)
+               count = mBufferSize;
+            else
+               count = block;
+            
+            memcpy(mOutBuffer[i].data, outbytes, count*mNumOutChannels*sizeof(sampleType));
+            block -= count;
+            outbytes += (count*mNumOutChannels);
+            mOutBuffer[i].len = count;
+            mOutBuffer[i].ID = mOutID;
+            mOutID++;
+         }
 
-   delete mixer;
+      delete mixer;
 
-   mT += deltat;
+      mT += deltat;
+   }
    
    // Recording buffers
    
@@ -364,34 +391,38 @@ void AudioIO::FillBuffers()
          numFull++;
    }
    
-   sampleType **flat = new sampleType*[mNumInChannels];
-   for(i=0; i<mNumInChannels; i++)
-      flat[i] = new sampleType[numFull * mBufferSize];
+   if (numFull > (mNumInBuffers/2)) {
    
-   flatLen = 0;
-   for(f=0; f<numFull; f++) {
-      int minID = mInID+1;
-      int minIndex;
-      for(i=0; i<mNumInBuffers; i++)
-         if (mInBuffer[i].ID > 0 &&
-             mInBuffer[i].ID < minID) {
-            minIndex = i;
-            minID = mInBuffer[i].ID;
-         }
-      for(j=0; j<mInBuffer[minIndex].len; j++)
-         for(c=0; c<mNumInChannels; c++)
-            flat[c][flatLen+j] = mInBuffer[minIndex].data[j*mNumInChannels + c];
-      flatLen += mInBuffer[minIndex].len;
+      sampleType **flat = new sampleType*[mNumInChannels];
+      for(i=0; i<mNumInChannels; i++)
+         flat[i] = new sampleType[numFull * mBufferSize];
+      
+      flatLen = 0;
+      for(f=0; f<numFull; f++) {
+         int minID = mInID+1;
+         int minIndex;
+         for(i=0; i<mNumInBuffers; i++)
+            if (mInBuffer[i].ID > 0 &&
+                mInBuffer[i].ID < minID) {
+               minIndex = i;
+               minID = mInBuffer[i].ID;
+            }
+         for(j=0; j<mInBuffer[minIndex].len; j++)
+            for(c=0; c<mNumInChannels; c++)
+               flat[c][flatLen+j] = mInBuffer[minIndex].data[j*mNumInChannels + c];
+         flatLen += mInBuffer[minIndex].len;
+         mInBuffer[minIndex].ID = 0;
+      }
+      
+      for(i=0; i<mNumInChannels; i++)
+         mInTracks[i]->Append(flat[i], flatLen);
+
+      for(i=0; i<mNumInChannels; i++)
+         delete[] flat[i];
+      delete[] flat;
+
+      mProject->RedrawProject();
    }
-   
-   for(i=0; i<mNumInChannels; i++)
-      mInTracks[i]->Append(flat[i], flatLen);
-
-   for(i=0; i<mNumInChannels; i++)
-      delete[] flat[i];
-   delete[] flat;
-
-   mProject->RedrawProject();
 }
 
 void AudioIO::OnTimer()
@@ -401,7 +432,7 @@ void AudioIO::OnTimer()
    
    FillBuffers();
    
-   if (mT >= mT1 && GetIndicator() >= mT1) {
+   if (mT1!=mT0 && mT >= mT1 && GetIndicator() >= mT1) {
       Stop();
       return;
    }
@@ -441,8 +472,8 @@ void AudioIO::Stop()
       delete[] mInTracks;
       mInTracks = NULL;
       
-      //if (!mHardStop)
-      //   mProject->TP_PushState("Recorded Audio");
+      if (!mHardStop)
+         mProject->TP_PushState("Recorded Audio");
    }
 
    mProject = NULL;
