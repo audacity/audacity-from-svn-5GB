@@ -44,14 +44,6 @@ extern "C" {
  * that, but g++ complains of it being undeclared if you do. This isn't
  * a pretty solution, but it's really the only one. */
 
-struct mad_pcm {
-  unsigned int samplerate;		/* sampling frequency (Hz) */
-  unsigned short channels;		/* number of channels */
-  unsigned short length;		/* number of samples per channel */
-  mad_fixed_t samples[2][1152];	/* PCM output samples */
-} pcm;
-
-
 #define INPUT_BUFFER_SIZE 65535
 #define PROGRESS_SCALING_FACTOR 100000
 
