@@ -68,8 +68,8 @@ public:
    void AppendEffect(int idEffect, wxString &sName, wxString &sType);
    void AppendEffects(EffectArray *effs, wxString &sType, bool spill);
 
-   int GetUniqueIdentifier(wxString &sFunctions = wxString(""), wxString &sKeys = wxString(""));
-   void SetIdentifierData(int nID, wxString &sFunctions = wxString(""), wxString &sKeys = wxString(""));
+   int GetUniqueIdentifier(wxString sFunctions = "", wxString sKeys = "");
+   void SetIdentifierData(int nID, wxString sFunctions = "", wxString sKeys = "");
 
    wxMenu * GetMenuFromIdentifier(int nID);
 
@@ -86,8 +86,6 @@ public:
    wxString AppendComboString(wxString &tName, wxString &sKeys);
 
 private:
-   void RecursiveRemoveMenus(wxMenu *mnuPtr);
-
    MenuBarList mMenuBarList;
    SubMenuList mSubMenuList;
    IdentifierNameList mIdentifierNameList;

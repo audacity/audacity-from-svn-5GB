@@ -53,7 +53,6 @@ OBJS = \
 	$(OBJDIR)/LabelTrack.o \
 	$(OBJDIR)/Languages.o \
 	$(OBJDIR)/LangChoice.o \
-	$(OBJDIR)/Menus.o \
 	$(OBJDIR)/Mix.o \
 	$(OBJDIR)/NoteTrack.o \
 	$(OBJDIR)/Prefs.o \
@@ -69,6 +68,11 @@ OBJS = \
 	$(OBJDIR)/ToolBar.o \
 	$(OBJDIR)/UndoManager.o \
 	$(OBJDIR)/WaveTrack.o \
+	$(OBJDIR)/commands/Commands.o \
+	$(OBJDIR)/commands/CommandsCallback.o \
+	$(OBJDIR)/commands/CommandsMenu.o \
+	$(OBJDIR)/commands/CommandsReader.o \
+	$(OBJDIR)/commands/CommandsWriter.o \
 	$(OBJDIR)/effects/Effect.o \
 	$(OBJDIR)/effects/SimpleMono.o \
 	$(OBJDIR)/effects/SimplePairedTwoTrack.o \
