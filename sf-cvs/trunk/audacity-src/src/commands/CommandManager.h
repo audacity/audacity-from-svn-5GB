@@ -48,6 +48,7 @@ struct CommandListEntry
    CommandFunctor *callback;
    bool multi;
    int index;
+   int count;
 };
 
 WX_DEFINE_ARRAY(MenuBarListEntry *, MenuBarList);
@@ -124,8 +125,10 @@ class CommandManager
    wxMenu * CurrentSubMenu();
    wxMenu * CurrentMenu();
 
+   int NextIdentifier(int ID);
    int NewIdentifier(wxString name, wxString label, wxMenu *menu,
-                     CommandFunctor *callback, bool multi, int index);
+                     CommandFunctor *callback,
+                     bool multi, int index, int count);
 
    wxString GetKey(wxString label);
 
