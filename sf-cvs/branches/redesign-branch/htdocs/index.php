@@ -33,7 +33,7 @@
   <h2><?=_("The Free, Cross-Platform Sound Editor")?></h2>
   <div id="screenshot">
     <!-- TODO: Auto-select or randomly rotate screenshot? -->
-    <a title="Click for more screenshots." href="about/screenshots"><img alt="Audacity Screenshots" src="about/images/audacity-linux-small.jpg"></a>
+    <a title="<?=_("Screenshots")?>" href="about/screenshots"><img alt="<?=_("Screenshots")?>" src="about/images/audacity-linux-small.jpg"></a>
   </div>
   <p><?=_('Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href="about/">Learn more about Audacity...</a>')?></p>
 </div>
