@@ -79,6 +79,12 @@ bool SoundPlayer::Begin(AudacityProject *project,
 	wxMessageBox(wxString::Format("Error opening audio device: %d",err));
 	return false;
   }
+  
+  mStopWatch.Start(0);
+
+  #ifdef __WXMAC__
+  mStartTicks = TickCount();
+  #endif
 
   mTicks = 0;
 
@@ -110,10 +116,12 @@ void SoundPlayer::OnTimer()
   }
 
   if (mT>=mT1) {
+    if (GetIndicator() >= mT1) {
       if (snd_flush(&mAudioOut) == SND_SUCCESS) {
         Finish();
         return;
       }
+    }
   }
 
   // TODO: Don't fill the buffer with more data every time
@@ -267,4 +275,25 @@ bool SoundPlayer::Begin(WaveTrack *track, double t0, double t1)
 void SoundTimer::Notify()
 {
   gSoundPlayer->OnTimer();
+}
+
+AudacityProject *SoundPlayer::GetProject()
+{
+  return mProject;
+}
+
+double SoundPlayer::GetIndicator()
+{
+  double i;
+
+#ifdef __WXMAC__
+  i = mT0 + ((TickCount() - mStartTicks) / 60.0);
+#else
+  i = mT0 + (mStopWatch.Time() / 1000.0);
+#endif
+
+  if (i > mT1)
+    i = mT1;
+    
+  return i;
 }

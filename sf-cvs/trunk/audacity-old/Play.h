@@ -43,11 +43,13 @@ public:
 			 TrackList *tracks,
 			 double t0, double t1);
 
-  void Stop();
+  void OnTimer();
 
+  void Stop();
   bool IsBusy();
 
-  void OnTimer();
+  AudacityProject *GetProject();
+  double GetIndicator();
 
 private:
 
@@ -62,6 +64,11 @@ private:
   bool            mStop;
   snd_node        mAudioOut;
   SoundTimer      mTimer;
+  wxStopWatch     mStopWatch;
+  
+  #ifdef __WXMAC__
+  int             mStartTicks;
+  #endif
 };
 
 #endif
