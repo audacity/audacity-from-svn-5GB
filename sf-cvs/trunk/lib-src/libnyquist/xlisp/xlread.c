@@ -208,8 +208,8 @@ int xlload(char *fname, int vflag, int pflag)
 #define paths_max 1024
             char paths[paths_max];
             char *p = paths;
-            int prefs_found = false;
-            get_xlisp_path(paths, paths_max, &prefs_found);
+            int prefs_found = true;
+            get_xlisp_path(paths, paths_max);
             /* make sure we got paths, and the list is not empty */
             if (!*p) {
                 if (prefs_found) {
