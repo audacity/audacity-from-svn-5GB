@@ -143,6 +143,8 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
    wxWindow *wDescLabel = FindWindow(DescriptionTextID);
    mCommandSelected = event.GetIndex();
 
+   mKeysList->DeleteAllItems();
+
    if(mAudacity->GetMenuType(mCommandSelected) == typeSeparator)
    {
       if(wDescLabel)
@@ -172,8 +174,6 @@ void KeyConfigPrefs::UpdateKeyList()
 
    long keyIndex;
    wxString keyString;
-
-   mKeysList->DeleteAllItems();
 
    if(gPrefs->GetFirstEntry(keyString, keyIndex))
    {
