@@ -33,6 +33,7 @@
 #include <wx/wx.h>
 #include <wx/brush.h>
 #include <wx/intl.h>
+#include <wx/choice.h>
 #endif
 
 #include <wx/image.h>
@@ -81,12 +82,14 @@ BEGIN_EVENT_TABLE(TranscriptionToolBar, wxWindow)
    EVT_COMMAND_RANGE(TTB_Calibrate, TTB_Calibrate,
                      wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnCalibrate)
    EVT_SLIDER(TTB_SensitivitySlider, TranscriptionToolBar::OnSensitivitySlider)
+
+   EVT_CHOICE(TTB_KeyType, TranscriptionToolBar::SetKeyType)
 END_EVENT_TABLE()
    ;   //semicolon enforces  proper automatic indenting in emacs.
 
 ////Standard Constructor
 TranscriptionToolBar::TranscriptionToolBar(wxWindow * parent):
-      ToolBar(parent, -1, wxPoint(1,1), wxSize(377,27))
+      ToolBar(parent, -1, wxPoint(1,1), wxSize(377,27),gTranscriptionToolBarStub)
 {
    InitializeTranscriptionToolBar();
 }
@@ -95,7 +98,7 @@ TranscriptionToolBar::TranscriptionToolBar(wxWindow * parent):
 TranscriptionToolBar::TranscriptionToolBar(wxWindow * parent, wxWindowID id,
 					   const wxPoint & pos,
 					   const wxSize & size):
-   ToolBar(parent, id, pos, size)
+   ToolBar(parent, id, pos, size,gTranscriptionToolBarStub)
 {
 
    InitializeTranscriptionToolBar();
@@ -140,6 +143,9 @@ void TranscriptionToolBar::InitializeTranscriptionToolBar()
    else
       mTimeTrack = NULL;
    mPlaySpeed = 1.0;
+
+
+
    //Process a dummy event to set up the slider
    wxCommandEvent dummy;
    OnSpeedSlider(dummy);
@@ -248,6 +254,20 @@ void TranscriptionToolBar::MakeButtons()
   
    mSensitivitySlider->SetLabel(_("Sensitivity"));
    mxButtonPos +=  SliderWidth;
+
+   
+   mKeyTypeChoice = new wxChoice(this, TTB_KeyType,
+                                 wxPoint(mxButtonPos, 2),
+                                 wxSize(120, 27));
+
+   mKeyTypeChoice->Append(_("Energy"));
+   mKeyTypeChoice->Append(_("Sign Changes (Low Threshold)"));
+   mKeyTypeChoice->Append(_("Sign Changes (High Threshold)"));
+   mKeyTypeChoice->Append(_("Direction Changes (Low Threshold)"));
+   mKeyTypeChoice->Append(_("Direction Changes (High Threshold)"));
+   mKeyTypeChoice->SetSelection(0);
+   mxButtonPos += 120;
+
    mIdealSize = wxSize(mxButtonPos+3, 27);
    SetSize(mIdealSize );
 
@@ -267,6 +287,8 @@ TranscriptionToolBar::~TranscriptionToolBar()
    
    for (int i=0; i<TTBNumButtons; i++)
       if(mButtons[i]) delete mButtons[i];
+
+   if(mKeyTypeChoice) delete mKeyTypeChoice;
 }
 
 
@@ -933,6 +955,32 @@ void TranscriptionToolBar::PlaceButton(int i, wxWindow *pWind)
    mxButtonPos+=Size.GetX()+1;
    mIdealSize = wxSize(mxButtonPos+3, 27);
    SetSize(mIdealSize );
+}
+
+void TranscriptionToolBar::SetKeyType(wxCommandEvent & event)
+{
+   int value = mKeyTypeChoice->GetSelection();
+
+   //Only use one key type at a time.
+   switch(value)
+      {
+      case 0:
+         vk->SetKeyType(true,0,0,0,0);
+         break;
+      case 1:
+         vk->SetKeyType(0,true,0,0,0);
+         break;
+      case 2:
+         vk->SetKeyType(0,0,true,0,0);
+         break;
+      case 3:
+         vk->SetKeyType(0,0,0,true,0);
+         break;
+      case 4:
+         vk->SetKeyType(0,0,0,0,true);
+         break;
+      }
+
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

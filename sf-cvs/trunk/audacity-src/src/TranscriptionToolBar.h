@@ -23,7 +23,7 @@ class ASlider;
 class VoiceKey;
 class WaveTrack;
 class TimeTrack;
-
+class wxChoice;
 
 //TTB 0-8 are button-ids, which also correspond to their
 //position in mButtons.  9 & 10 are ids for sliders, which aren't
@@ -43,6 +43,7 @@ enum
 
       TTB_SensitivitySlider,
       TTB_PlaySpeedSlider,
+      TTB_KeyType
    };
 
 #define TTBNumButtons 10
@@ -77,6 +78,7 @@ class TranscriptionToolBar:public ToolBar {
    virtual void EnableDisableButtons();
    virtual void PlaceButton(int i, wxWindow *pWind);
 
+   virtual void SetKeyType(wxCommandEvent & event);
  private:
    void InitializeTranscriptionToolBar();
    void AddButton(const char **fg, const char **disabled, const char **alpha,
@@ -104,7 +106,7 @@ class TranscriptionToolBar:public ToolBar {
    int mBackgroundHeight;
 
    TimeTrack * mTimeTrack;
-   
+   wxChoice * mKeyTypeChoice;
    
 DECLARE_EVENT_TABLE()
 };
