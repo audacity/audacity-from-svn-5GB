@@ -73,9 +73,7 @@ void LoadEffects()
    //Effect::RegisterEffect(new EffectAvcCompressor());
 
    Effect::RegisterEffect(new EffectBassBoost());
-	#if USE_LIBSAMPLERATE
-		Effect::RegisterEffect(new EffectChangeSpeed());
-	#endif
+   Effect::RegisterEffect(new EffectChangeSpeed());
 	#ifdef USE_SOUNDTOUCH
 		Effect::RegisterEffect(new EffectChangePitch());
 		Effect::RegisterEffect(new EffectChangeTempo());
