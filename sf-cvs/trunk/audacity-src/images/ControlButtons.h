@@ -35,3 +35,5 @@
 #include "ControlButtons/TimeShift.xpm"
 #include "ControlButtons/ZoomAlpha.xpm"
 #include "ControlButtons/Zoom.xpm"
+#include "ControlButtons/DrawAlpha.xpm"
+#include "ControlButtons/Draw.xpm"
