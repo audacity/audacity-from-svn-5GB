@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: acconfig.h,v 1.1.1.1 2002-04-14 08:52:39 dmazzoni Exp $
+ * $Id: acconfig.h,v 1.1.1.1.6.1 2003-09-29 17:03:19 dmazzoni Exp $
  */
 
 # ifndef LIBID3TAG_CONFIG_H
