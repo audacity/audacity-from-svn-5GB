@@ -36,9 +36,9 @@ void InitAPalette(wxFrame *parent);
 class APalette: public wxMiniFrame
 {
 public:
-  APalette(wxFrame *parent, wxWindowID id = -1,
-		   const wxString& title = "wxToolBar Sample",
-		   const wxPoint& pos = wxDefaultPosition);
+  APalette(wxFrame *parent, wxWindowID id,
+		   const wxString& title,
+		   const wxPoint& pos);
 
   virtual ~APalette();
 
