@@ -1209,9 +1209,10 @@ void AudacityProject::OnOpen(wxCommandEvent& event)
   }
 }
 
-void AudacityProject::Save(bool overwrite /* = true */)
+void AudacityProject::Save(bool overwrite /* = true */,
+						   bool fromSaveAs /* = false */)
 {
-  if (mDirManager.GetProjectName() == "") {
+  if (!fromSaveAs && mDirManager.GetProjectName() == "") {
 	SaveAs();
 	return;
   }
@@ -1373,7 +1374,7 @@ void AudacityProject::SaveAs()
   mName = wxFileNameFromPath(mFileName);
   SetTitle(mName);
 
-  Save(false);
+  Save(false, true);
 }
 
 void AudacityProject::OnExit(wxCommandEvent& event)

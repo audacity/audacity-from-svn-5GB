@@ -69,7 +69,7 @@ public:
   // File I/O
 
   void OpenFile(wxString fileName);
-  void Save(bool overwrite = true);
+  void Save(bool overwrite = true, bool fromSaveAs = false);
   void SaveAs();
   void ImportFile(wxString fileName);
   void ImportMP3(wxString fileName);
