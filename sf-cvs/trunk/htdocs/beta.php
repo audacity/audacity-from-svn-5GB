@@ -8,7 +8,7 @@
   $zip = "$betaDownloadDir/audacity-win-zip.php/audacity-win.zip";
   $os9 = "$betaDownloadDir/audacity-mac.php/audacity-mac.sit";
   $osx = "$betaDownloadDir/audacity-macosx.php/audacity-macosx.dmg";
-  $src = "$betaDownloadDir/audacity-src.php/audacity-src.tgz";
+  $src = "$betaDownloadDir/audacity-src.php/audacity-src.tar.bz2";
   $rpm = "$betaDownloadDir/audacity-rpm.php/audacity-i386.rpm";
 
   BoxTop($betaVersionsStr);
@@ -93,7 +93,7 @@
 ?><img src=images/DownloadIcon.gif width=32 height=32 border=0></a>
 </td>
 <td valign=center
-><?php print "<a href=\"$src\">audacity-src.tgz";
+><?php print "<a href=\"$src\">audacity-src.tar.bz2";
 ?></a>
 <?php print "($tarballStr, $srcBetaSize)"; ?>
 </td>

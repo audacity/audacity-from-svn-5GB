@@ -4,6 +4,6 @@
 
 include 'mirror.php.inc';
 include 'versions.php.inc';
-header('Location: '.mirror.'audacity-src-'.src.'.tgz');
+header('Location: '.mirror.'audacity-src-'.src.'.tar.bz2');
 
 ?>
