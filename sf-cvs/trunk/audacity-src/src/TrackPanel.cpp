@@ -2987,9 +2987,9 @@ void TrackPanel::DisplaySelection()
    if (!mListener)
       return;
 
-   float start = mViewInfo->sel0;
-   float end = mViewInfo->sel1;
-   float length = end-start;
+   double start = mViewInfo->sel0;
+   double end = mViewInfo->sel1;
+   double length = end-start;
 
    // Items required for adding a new format:
    //
@@ -3044,6 +3044,12 @@ void TrackPanel::DisplaySelection()
    // and OnRateOther resets this samplerate value.  For each selection format
    // that is based on rate, the current rate is printed in the info line.
 
+   // Issues related to rounding functions:
+   //   rint of a double is a double
+   //   need to use rintf of a float to get a float
+   //   lrint produces a long int from a double - but is not cross platform
+   //   use (long int)rint() to get a long int out of a double
+
    char *SnapTo[12][1];
    SnapTo[0][0] = "[Snap-To Off]";
    SnapTo[0][1] = "[Snap-To On]";
@@ -3055,7 +3061,6 @@ void TrackPanel::DisplaySelection()
    int isector1, isector2, isectortot;
    int ibyte1, ibyte2, ibytetot;
    long int isamples1, isamples2, isamplestot;
-   float fsec1, fsec2, fsectot;
    double dsec1, dsec2, dsectot;
    double dframes1, dframes2, dframestot;
 
@@ -3063,37 +3068,37 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_RULER_MIN_SEC:
       // use min:sec.xxxxxx (from ruler)
-      imin1 = int(start/60);
-      imin2 = int(end/60);
-      imintot = int(length/60);
-      fsec1 = start - float(imin1*60);
-      fsec2 = end - float(imin2*60);
-      fsectot = length - float(imintot*60);
+      imin1 = int(start/60.0);
+      imin2 = int(end/60.0);
+      imintot = int(length/60.0);
+      dsec1 = start - double(imin1*60);
+      dsec2 = end - double(imin2*60);
+      dsectot = length - double(imintot*60);
       if(iSnapTo == 1)
          {
-            // temporarily put total not leftover sec in fsec variables
-            fsec1 = rint(fsec1) + float(imin1*60);
-            fsec2 = rint(fsec2) + float(imin2*60);
-            fsectot = rint(fsec2 - fsec1);
-            mViewInfo->sel0 = fsec1;
-            mViewInfo->sel1 = fsec2;
+            // temporarily put total not leftover sec in dsec variables
+            dsec1 = rint(dsec1) + double(imin1*60);
+            dsec2 = rint(dsec2) + double(imin2*60);
+            dsectot = rint(dsec2 - dsec1);
+            mViewInfo->sel0 = dsec1;
+            mViewInfo->sel1 = dsec2;
             // if rounding beyond end happens fix sel0 for proper cursor info
             if(mViewInfo->sel0 > mViewInfo->sel1)
                mViewInfo->sel0 = mViewInfo->sel1;
             // now get the real ones to display
-            imin1 = int(fsec1/60);
-            imin2 = int(fsec2/60);
-            imintot = int(fsectot/60);
-            fsec1 = fsec1 - float(imin1*60);
-            fsec2 = fsec2 - float(imin2*60);
-            fsectot = fsectot - float(imintot*60);
+            imin1 = int(dsec1/60.0);
+            imin2 = int(dsec2/60.0);
+            imintot = int(dsectot/60.0);
+            dsec1 = dsec1 - double(imin1*60);
+            dsec2 = dsec2 - double(imin2*60);
+            dsectot = dsectot - double(imintot*60);
          }
       // display a message about the selection in the status message window
       if(start == end)
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %i:%09.6f min:sec   %s"), imin1, fsec1, SnapTo[0][iSnapTo]),
+                                        Format(_("Cursor: %i:%09.6f min:sec   %s"), imin1, dsec1, SnapTo[0][iSnapTo]),
                                         1);
          }
       else
@@ -3101,23 +3106,23 @@ void TrackPanel::DisplaySelection()
             mListener->
                TP_DisplayStatusMessage(wxString::
                                        Format(_("Selection: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)   %s"),
-                        imin1, fsec1, imin2, fsec2, imintot, fsectot, SnapTo[0][iSnapTo]),
+                        imin1, dsec1, imin2, dsec2, imintot, dsectot, SnapTo[0][iSnapTo]),
                                        1);
          }
       break;
 
    case SELECTION_FORMAT_RULER_SEC:
       // use sec.xxxxxx (from ruler)
-      fsec1 = start;
-      fsec2 = end;
-      fsectot = length;
+      dsec1 = start;
+      dsec2 = end;
+      dsectot = length;
       if(iSnapTo == 1)
          {
-            fsec1 = rint(fsec1);
-            fsec2 = rint(fsec2);
-            fsectot = rint(fsec2 - fsec1);
-            mViewInfo->sel0 = fsec1;
-            mViewInfo->sel1 = fsec2;
+            dsec1 = rint(dsec1);
+            dsec2 = rint(dsec2);
+            dsectot = rint(dsec2 - dsec1);
+            mViewInfo->sel0 = dsec1;
+            mViewInfo->sel1 = dsec2;
             // if rounding beyond end happens fix sel0 for proper cursor info
             if(mViewInfo->sel0 > mViewInfo->sel1)
                mViewInfo->sel0 = mViewInfo->sel1;
@@ -3127,7 +3132,7 @@ void TrackPanel::DisplaySelection()
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %lf sec   %s"), fsec1, SnapTo[0][iSnapTo]),
+                                        Format(_("Cursor: %lf sec   %s"), dsec1, SnapTo[0][iSnapTo]),
                                         1);
          }
       else
@@ -3135,23 +3140,23 @@ void TrackPanel::DisplaySelection()
             mListener->
                TP_DisplayStatusMessage(wxString::
                                        Format(_("Selection: %lf - %lf (%lf sec)   %s"),
-                                              fsec1, fsec2, fsectot, SnapTo[0][iSnapTo]),
+                                              dsec1, dsec2, dsectot, SnapTo[0][iSnapTo]),
                                        1);
          }
       break;
 
    case SELECTION_FORMAT_RULER_FILM_FRAMES:
       // use film frames 24 fps (from ruler)
-      dframes1 = (double)(start * 24.0);
-      dframes2 = (double)(end * 24.0);
-      dframestot = (double)(length * 24.0);
+      dframes1 = start * 24.0;
+      dframes2 = end * 24.0;
+      dframestot = length * 24.0;
       if(iSnapTo == 1)
          {
             dframes1 = rint(dframes1);
             dframes2 = rint(dframes2);
             dframestot = rint(dframes2 - dframes1);
-            mViewInfo->sel0 = float(dframes1/24.0);
-            mViewInfo->sel1 = float(dframes2/24.0);
+            mViewInfo->sel0 = dframes1 / 24.0;
+            mViewInfo->sel1 = dframes2 / 24.0;
             // if rounding beyond end happens fix sel0 for proper cursor info
             if(mViewInfo->sel0 > mViewInfo->sel1)
                mViewInfo->sel0 = mViewInfo->sel1;
@@ -3177,16 +3182,16 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_RULER_PAL_FRAMES:
       // use PAL frames 25 fps (from ruler)
-      dframes1 = (double)(start * 25.0);
-      dframes2 = (double)(end * 25.0);
-      dframestot = (double)(length * 25.0);
+      dframes1 = start * 25.0;
+      dframes2 = end * 25.0;
+      dframestot = length * 25.0;
       if(iSnapTo == 1)
          {
             dframes1 = rint(dframes1);
             dframes2 = rint(dframes2);
             dframestot = rint(dframes2 - dframes1);
-            mViewInfo->sel0 = float(dframes1/25.0);
-            mViewInfo->sel1 = float(dframes2/25.0);
+            mViewInfo->sel0 = dframes1 / 25.0;
+            mViewInfo->sel1 = dframes2 / 25.0;
             // if rounding beyond end happens fix sel0 for proper cursor info
             if(mViewInfo->sel0 > mViewInfo->sel1)
                mViewInfo->sel0 = mViewInfo->sel1;
@@ -3212,16 +3217,16 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_RULER_NTSC_FRAMES:
       // use NTSC frames 29.97 fps (from ruler)
-      dframes1 = (double)(start * (30000.0/1001.0));
-      dframes2 = (double)(end * (30000.0/1001.0));
-      dframestot = (double)(length * (30000.0/1001.0));
+      dframes1 = start * (30000.0/1001.0);
+      dframes2 = end * (30000.0/1001.0);
+      dframestot = length * (30000.0/1001.0);
       if(iSnapTo == 1)
          {
             dframes1 = rint(dframes1);
             dframes2 = rint(dframes2);
             dframestot = rint(dframes2 - dframes1);
-            mViewInfo->sel0 = float(dframes1*1001.0/30000.0);
-            mViewInfo->sel1 = float(dframes2*1001.0/30000.0);
+            mViewInfo->sel0 = dframes1 * (1001.0/30000.0);
+            mViewInfo->sel1 = dframes2 * (1001.0/30000.0);
             // if rounding beyond end happens fix sel0 for proper cursor info
             if(mViewInfo->sel0 > mViewInfo->sel1)
                mViewInfo->sel0 = mViewInfo->sel1;
@@ -3247,23 +3252,23 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_RULER_CDDA_MIN_SEC_FRAMES:
       // use cdda min:sec:frames.xxxxxx (from ruler)
-      imin1 = int(start/60);
-      imin2 = int(end/60);
-      imintot = int(length/60);
+      imin1 = int(start/60.0);
+      imin2 = int(end/60.0);
+      imintot = int(length/60.0);
       isec1 = int(start) - (imin1*60);
       isec2 = int(end) - (imin2*60);
       isectot = int(length) - (imintot*60);
-      dframes1 = (double(start - float(int(start)))) * 75.0;
-      dframes2 = (double(end - float(int(end)))) * 75.0;
-      dframestot = (double(length - float(int(length)))) * 75.0;
+      dframes1 = (start - double(int(start))) * 75.0;
+      dframes2 = (end - double(int(end))) * 75.0;
+      dframestot = (length - double(int(length))) * 75.0;
       if(iSnapTo == 1)
          {
             // temporarily put total not leftover frames in dframes variables
-            dframes1 = rint(dframes1) + float(isec1*75) + float(imin1*60*75);
-            dframes2 = rint(dframes2) + float(isec2*75) + float(imin2*60*75);
-            dframestot = rint(dframes2 - dframes1);
-            mViewInfo->sel0 = float(dframes1/75.0);
-            mViewInfo->sel1 = float(dframes2/75.0);
+            dframes1 = rint(dframes1) + double(isec1*75) + double(imin1*60*75);
+            dframes2 = rint(dframes2) + double(isec2*75) + double(imin2*60*75);
+            dframestot = dframes2 - dframes1;
+            mViewInfo->sel0 = dframes1/75.0;
+            mViewInfo->sel1 = dframes2/75.0;
             // if rounding beyond end happens fix sel0 for proper cursor info
             if(mViewInfo->sel0 > mViewInfo->sel1)
                mViewInfo->sel0 = mViewInfo->sel1;
@@ -3299,12 +3304,12 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_SAMPLES:
       // use samples (in single sample time increments)
-      isamples1 = (long)rint(samplerate*double(start)); 
-      isamples2 = (long)rint(samplerate*double(end));
+      isamples1 = (long int)rint(samplerate*start); 
+      isamples2 = (long int)rint(samplerate*end);
       isamplestot = isamples2 - isamples1;
       // snap to samples irregardless of snap-to mode
-      mViewInfo->sel0 = float(double(isamples1)/samplerate);
-      mViewInfo->sel1 = float(double(isamples2)/samplerate);
+      mViewInfo->sel0 = double(isamples1)/samplerate;
+      mViewInfo->sel1 = double(isamples2)/samplerate;
       // display a message about the selection in the status message window
       if(start == end)
          {
@@ -3326,19 +3331,19 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_MIN_SEC:
       // use min:sec.xxxxxx (in single sample time increments)
-      isamples1 = (long)rint(samplerate*double(start)); 
-      isamples2 = (long)rint(samplerate*double(end));
+      isamples1 = (long int)rint(samplerate*start); 
+      isamples2 = (long int)rint(samplerate*end);
       isamplestot = isamples2 - isamples1;
       // based on samples get min and sec
-      imin1 = int((double(isamples1)/samplerate)/60);
-      imin2 = int((double(isamples2)/samplerate)/60);
-      imintot = int((double(isamplestot)/samplerate)/60);
+      imin1 = int((double(isamples1)/samplerate)/60.0);
+      imin2 = int((double(isamples2)/samplerate)/60.0);
+      imintot = int((double(isamplestot)/samplerate)/60.0);
       dsec1 = double(isamples1)/samplerate - double(imin1*60);
       dsec2 = double(isamples2)/samplerate - double(imin2*60);
       dsectot = double(isamplestot)/samplerate - double(imintot*60);
       // snap to samples irregardless of snap-to mode
-      mViewInfo->sel0 = float(double(isamples1)/samplerate);
-      mViewInfo->sel1 = float(double(isamples2)/samplerate);
+      mViewInfo->sel0 = double(isamples1)/samplerate;
+      mViewInfo->sel1 = double(isamples2)/samplerate;
       // display a message about the selection in the status message window
       if(start == end)
          {
@@ -3360,16 +3365,16 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_SEC:
       // use sec.xxxxxx (in sample time increments)
-      isamples1 = (long)rint(samplerate*double(start)); 
-      isamples2 = (long)rint(samplerate*double(end));
+      isamples1 = (long int)rint(samplerate*start); 
+      isamples2 = (long int)rint(samplerate*end);
       isamplestot = isamples2 - isamples1;
       // based on samples get sec
       dsec1 = double(isamples1)/samplerate;
       dsec2 = double(isamples2)/samplerate;
       dsectot = double(isamplestot)/samplerate;
       // snap to samples irregardless of snap-to mode
-      mViewInfo->sel0 = float(double(isamples1)/samplerate);
-      mViewInfo->sel1 = float(double(isamples2)/samplerate);
+      mViewInfo->sel0 = double(isamples1)/samplerate;
+      mViewInfo->sel1 = double(isamples2)/samplerate;
       // display a message about the selection in the status message window
       if(start == end)
          {
@@ -3391,22 +3396,22 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_MIN_SEC_SAMPLES:
       // use min:sec+samples (in single sample time increments)
-      isamples1 = (long)rint(samplerate*double(start)); 
-      isamples2 = (long)rint(samplerate*double(end));
+      isamples1 = (long int)rint(samplerate*start); 
+      isamples2 = (long int)rint(samplerate*end);
       isamplestot = isamples2 - isamples1;
       // based on samples get min sec samp
-      imin1 = int((double(isamples1)/samplerate)/60);
-      imin2 = int((double(isamples2)/samplerate)/60);
-      imintot = int((double(isamplestot)/samplerate)/60);
+      imin1 = int((double(isamples1)/samplerate)/60.0);
+      imin2 = int((double(isamples2)/samplerate)/60.0);
+      imintot = int((double(isamplestot)/samplerate)/60.0);
       isec1 = int(double(isamples1)/samplerate - double(imin1*60));
       isec2 = int(double(isamples2)/samplerate - double(imin2*60));
       isectot = int(double(isamplestot)/samplerate - double(imintot*60));
-      isamp1 = int(isamples1-(long int)(imin1*60*rint(samplerate))-(long int)(isec1*rint(samplerate)));
-      isamp2 = int(isamples2-(long int)(imin2*60*rint(samplerate))-(long int)(isec2*rint(samplerate)));
-      isamptot = int(isamplestot-(long int)(imintot*60*rint(samplerate))-(long int)(isectot*rint(samplerate)));
+      isamp1 = int(isamples1-(long int)(double(imin1)*60.0*samplerate)-(long int)(double(isec1)*samplerate));
+      isamp2 = int(isamples2-(long int)(double(imin2)*60.0*samplerate)-(long int)(double(isec2)*samplerate));
+      isamptot = int(isamplestot-(long int)(double(imintot)*60.0*samplerate)-(long int)(double(isectot)*samplerate));
       // snap to samples irregardless of snap-to mode
-      mViewInfo->sel0 = float(double(isamples1)/samplerate);
-      mViewInfo->sel1 = float(double(isamples2)/samplerate);
+      mViewInfo->sel0 = double(isamples1)/samplerate;
+      mViewInfo->sel1 = double(isamples2)/samplerate;
       // display a message about the selection in the status message window
       if(start == end)
          {
@@ -3428,19 +3433,19 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_SEC_SAMPLES:
       // use sec+samples (in single sample time increments)
-      isamples1 = (long)rint(samplerate*double(start)); 
-      isamples2 = (long)rint(samplerate*double(end));
+      isamples1 = (long int)rint(samplerate*start); 
+      isamples2 = (long int)rint(samplerate*end);
       isamplestot = isamples2 - isamples1;
       // based on samples get sec samp
       isec1 = int(double(isamples1)/samplerate);
       isec2 = int(double(isamples2)/samplerate);
       isectot = int(double(isamplestot)/samplerate);
-      isamp1 = int(isamples1-(long int)(isec1*rint(samplerate)));
-      isamp2 = int(isamples2-(long int)(isec2*rint(samplerate)));
-      isamptot = int(isamplestot-(long int)(isectot*rint(samplerate)));
+      isamp1 = int(isamples1-(long int)(double(isec1)*samplerate));
+      isamp2 = int(isamples2-(long int)(double(isec2)*samplerate));
+      isamptot = int(isamplestot-(long int)(double(isectot)*samplerate));
       // snap to samples irregardless of snap-to mode
-      mViewInfo->sel0 = float(double(isamples1)/samplerate);
-      mViewInfo->sel1 = float(double(isamples2)/samplerate);
+      mViewInfo->sel0 = double(isamples1)/samplerate;
+      mViewInfo->sel1 = double(isamples2)/samplerate;
       // display a message about the selection in the status message window
       if(start == end)
          {
@@ -3462,8 +3467,8 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_CDDA_SECTORS_BYTES:
       // use cdda sectors + bytes (2352 byte blocks)
-      isamples1 = (long)rint(samplerate*double(start)); 
-      isamples2 = (long)rint(samplerate*double(end));
+      isamples1 = (long int)rint(samplerate*start); 
+      isamples2 = (long int)rint(samplerate*end);
       isamplestot = isamples2 - isamples1;
       //
       // based on samples get cdda sectors bytes
@@ -3476,15 +3481,15 @@ void TrackPanel::DisplaySelection()
       // ----------- * -------------- * ------------- * ------ = 74.0 minutes per cd (Checks out)
       //   1 sector         1 cd        44100 samples   60 sec
       //
-      isector1 = int(double(isamples1)/588);
-      isector2 = int(double(isamples2)/588);
-      isectortot = int(double(isamplestot)/588);
+      isector1 = int(double(isamples1)/588.0);
+      isector2 = int(double(isamples2)/588.0);
+      isectortot = int(double(isamplestot)/588.0);
       ibyte1 = int(isamples1-(long int)(isector1*588))*4;
       ibyte2 = int(isamples2-(long int)(isector2*588))*4;
       ibytetot = int(isamplestot-(long int)(isectortot*588))*4;
       // snap to samples irregardless of snap-to mode
-      mViewInfo->sel0 = float(double(isamples1)/samplerate);
-      mViewInfo->sel1 = float(double(isamples2)/samplerate);
+      mViewInfo->sel0 = double(isamples1)/samplerate;
+      mViewInfo->sel1 = double(isamples2)/samplerate;
       // display a message about the selection in the status message window
       if(start == end)
          {
