@@ -1,5 +1,11 @@
 Compiling Audacity under Windows using Microsoft Visual C++ 6.0
 
+================================================================
+This version is currently accurate for Audacity version 1.1, June 2002.
+If the advice here is inaccurate or incomplete, please
+email audacity-devel@lists.sourceforge.net.
+================================================================
+
 Before trying to compile Audacity, please make sure that
 your copy of Visual C++ 6.0 has been upgraded to Service
 Patch 5.  If you require it, this patch is available from
