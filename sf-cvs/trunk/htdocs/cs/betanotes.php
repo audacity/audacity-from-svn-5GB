@@ -83,7 +83,7 @@ Nové vlastnosti v Audacity 1.1.1:
       Analyzovat
     - Menu Generovat vám umožní generovat ticho, šum nebo tón
     - Podpora pro Nyquist (podporuje psaní plug-inù v Nyquistu,
-      interpretovaném funkcionálním jazice založeném na Lisp)
+      interpretovaném funkcionálním jazyce založeném na Lisp)
   * Lokalizace
     - Vylepšená lokalizaèní podpora
     - K dispozici je více jazykù
