@@ -51,7 +51,7 @@
 </p>
 
 <p>
-<a target=_top href="http://sourceforge.net/mailarchive/forum.php?forum_id=828"
+<a href="http://sourceforge.net/mailarchive/forum.php?forum_id=828"
 >Архиви на пощенския списък Audacity-Help</a>
 </p>
 
@@ -90,13 +90,14 @@
 </p>
 
 <p>
-<a target=_top href="<a target=_top href="http://sourceforge.net/mailarchive/forum.php?forum_id=828"
+<a href="http://sourceforge.net/mailarchive/forum.php?forum_id=828"
 >Архиви на пощенския списък Audacity-Help</a>
 </p>
 
 <p>
 <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font>
 </p>
 
 

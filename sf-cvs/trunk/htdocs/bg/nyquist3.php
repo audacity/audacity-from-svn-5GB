@@ -191,13 +191,14 @@ Nyquist представя стерео пистите като масив от звуци (не списък). Много
 Ако изобщо не успявате да накарате Nyquist да работи, моля, пишете
 на адрес <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font>.
 </p>
 
 <p>
 Ако работите по приставки на Nyquist и искате да ги споделите, или
 ако искате да обсъждате общите принципи на постигане на определен
 ефект чрез Nyquist, запишете се тук:
-<a target=_top href=http://lists.sourceforge.net/lists/listinfo/audacity-users>
+<a href=http://lists.sourceforge.net/lists/listinfo/audacity-users>
 <?php print $usersListStr; ?>
 </a>
 </p>
