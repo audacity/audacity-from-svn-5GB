@@ -58,7 +58,6 @@ class PreviewPanel:public wxPanel {
 };
 
 class ImportDialog:public wxDialog {
-   DECLARE_DYNAMIC_CLASS(ImportDialog)
   public:
    wxRadioButton * bits[2];
    wxRadioButton *sign[2];

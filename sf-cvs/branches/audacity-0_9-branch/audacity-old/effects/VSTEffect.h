@@ -52,8 +52,6 @@ class VSTEffect:public Effect {
 };
 
 class VSTEffectDialog:public wxDialog {
-   DECLARE_DYNAMIC_CLASS(VSTEffectDialog)
-
  public:
    VSTEffectDialog(wxWindow * parent,
                    wxString effectName,

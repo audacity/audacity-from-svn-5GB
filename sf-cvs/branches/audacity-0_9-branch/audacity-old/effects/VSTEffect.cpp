@@ -257,13 +257,11 @@ BEGIN_EVENT_TABLE(VSTEffectDialog, wxDialog)
     EVT_SLIDER(VSTEFFECT_SLIDER_ID, VSTEffectDialog::OnSlider)
 END_EVENT_TABLE()
 
-IMPLEMENT_CLASS(VSTEffectDialog, wxDialog)
-
-    VSTEffectDialog::VSTEffectDialog(wxWindow * parent,
-                                     wxString effectName,
-                                     int numParams,
-                                     AEffect * aEffect,
-                                     const wxPoint & pos)
+VSTEffectDialog::VSTEffectDialog(wxWindow * parent,
+                                 wxString effectName,
+                                 int numParams,
+                                 AEffect * aEffect,
+                                 const wxPoint & pos)
 :wxDialog(parent, -1, effectName, pos, wxSize(320, 430),
           wxDEFAULT_DIALOG_STYLE)
 {
