@@ -81,6 +81,8 @@ void QuitAudacity()
   gFreqWindow = NULL;
   gParentFrame = NULL;
 
+  FinishPreferences();
+
   int len = gAudacityProjects.Count();
   for(int i=0; i<len; i++)
     gAudacityProjects[i]->Destroy();

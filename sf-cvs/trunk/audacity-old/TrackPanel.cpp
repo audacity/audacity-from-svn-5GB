@@ -189,7 +189,7 @@ void TrackPanel::OnTimer()
 	  mAutoScrolling = false;
 	}
   }
-  
+
   if (mIndicatorShowing ||
       (gSoundPlayer->IsBusy() &&
        gSoundPlayer->GetProject() == (AudacityProject *)GetParent())) {
@@ -220,6 +220,7 @@ void TrackPanel::OnTimer()
       
       delete memDC;
       delete rulerBitmap;      
+	  
     }
   }
    

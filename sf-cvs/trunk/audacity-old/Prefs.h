@@ -11,6 +11,7 @@
 #include <wx/config.h>
 
 void InitPreferences();
+void FinishPreferences();
 
 extern wxConfig* gPrefs;
 

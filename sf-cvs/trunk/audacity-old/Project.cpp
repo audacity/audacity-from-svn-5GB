@@ -891,8 +891,6 @@ void AudacityProject::OnMouseEvent(wxMouseEvent& event)
 
 	mDrag = new wxDragImage(*bitmap);
 
-    // TODO
-    prinf("Does this crash?  About to delete the bitmap we're going to drag...");
     delete bitmap;
 
 	mDrag->BeginDrag(hotspot, this, true);

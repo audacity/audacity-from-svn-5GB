@@ -19,10 +19,13 @@ pascal	OSErr	FSpGetFullPath(const FSSpec *spec,
 
 #endif
 
+#include <wx/app.h>
+#include <wx/config.h>
+
 #include "AudacityApp.h"
 #include "Prefs.h"
 
-wxConfig *gPrefs;
+wxConfig *gPrefs = NULL;
 
 void InitPreferences()
 {
@@ -34,7 +37,10 @@ void InitPreferences()
 
   #ifndef __WXMAC__
   
-  gPrefs = wxConfigBase::Get();
+  gPrefs = new wxConfig(appName);
+  wxConfigBase::Set(gPrefs);
+
+  printf("Created prefs.");
   
   #else
   
@@ -90,4 +96,13 @@ void InitPreferences()
   #endif
 
   gPrefs->Write("/Version", AUDACITY_VERSION_STRING);
+}
+
+void FinishPreferences()
+{
+  if (gPrefs) {
+	wxConfigBase::Set(NULL);
+	delete gPrefs;
+	gPrefs = NULL;
+  }
 }

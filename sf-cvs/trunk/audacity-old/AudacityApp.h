@@ -18,6 +18,8 @@
 // in an irrevocable way
 #define AUDACITY_FILE_FORMAT_VERSION "0.9"
 
+class wxWindow;
+
 // Macintosh-specific: Audacity's four-character "creator" code
 // and project type code
 #define AUDACITY_CREATOR      'auDy'

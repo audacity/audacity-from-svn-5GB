@@ -42,6 +42,7 @@ OBJS = \
 	$(OBJDIR)/Mix.cpp.o \
 	$(OBJDIR)/NoteTrack.cpp.o \
 	$(OBJDIR)/Play.cpp.o \
+	$(OBJDIR)/Prefs.cpp.o \
 	$(OBJDIR)/Project.cpp.o \
 	$(OBJDIR)/Spectrum.cpp.o \
 	$(OBJDIR)/Track.cpp.o \
