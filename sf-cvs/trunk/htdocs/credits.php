@@ -75,6 +75,15 @@ Michigan.<br>
 </p>
 
 <p>
+<b>James Crook</b> is a real-time programmer based 
+in Dublin, Ireland.  He joined Audacity development just 
+prior to 1.2.0.  He has a strong interest in development 
+factors that make Open Source work fun, productive 
+and effective.
+<tt>email:james.crook <b>@</b> virtualaccess.com</tt><br>
+</p>
+
+<p>
 <b>Greg Mekkes</b> wrote some of the functional enhancements for Audacity 1.1,
 including selection format, snap-to, and align functions.
 He is an aerospace engineer working at NASA Langley Research Center
