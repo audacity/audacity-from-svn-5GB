@@ -30,6 +30,7 @@ $sourceForgeStr = "Projekt Sourceforge";
 $browseSourceStr = "Przeglądaj kod źródłowy";
 $browseDoxygenStr = "Przeglądaj dokumentację Doxygen";
 $creditsStr = "Twórcy";
+$sourceStr = "Kod źródłowy";
 $linuxStr = "Linux - Binaria";
 $installerStr = "Program instalacyjny";
 $zipStr = "plik ZIP";

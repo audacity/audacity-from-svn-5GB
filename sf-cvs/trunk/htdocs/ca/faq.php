@@ -1,4 +1,4 @@
-<?php BoxTop("Frequently Asked Questions"); ?>
+<?php BoxTop("Preguntes Més Freqüents"); ?>
 
 <!--
 <table width=100% cellpadding=6 width=100%><tr><td bgcolor="#ffd0d0" align="center">
@@ -27,14 +27,13 @@ compartida libwx_gtk.so?</a><br>
 
 <p>
 
-<b>Utilitzant l'Audacity:</b><br>
+<b>Ús de l'Audacity:</b><br>
 <a href="#a1">Com puc barrejar dues pistes?</a><br>
 <a href="#a2">Puc extreure les veus d'un enregistrament?</a><br>
-<a href="#a3">Quant intento gravar harmonies amb la meva pròpia veu, per què
-les dues pistes surten desincronitzades?</a><br>
+<a href="#a3">Quant intento enregistrar harmonies amb la meva pròpia veu, per què queden les dues pistes desincronitzades?</a><br>
 <a href="#a4">Per què l'Audacity no ve amb un codificador d'MP3?</a><br>
 <a href="#a5">Puc enregistrar des de RealAudio o altres fonts d'àudio a raig?</a><br>
-<a href="#a6">Ajuda! Faig clic al botó d'enregistrament, però tot el que obtinc és silenci!</a><br>
+<a href="#a6">Ajuda! Faig clic al botó d'enregistrament, però només obtinc silenci!</a><br>
 <a href="#a7">Com puc dividir un fitxer en diverses pistes?</a><br>
 <a href="#a8">Com puc obtenir cançons d'un CD d'àudio?</a><br>
 <p>
@@ -96,7 +95,7 @@ Assegureu-vos d'indicar quin sistema operatiu esteu utilitzant (Windows 98, MacO
 <p>
 Podeu reproduir aquest error? si passa constantment, expliqueu-nos la seqüència exacta d'esdeveniments que provoquen l'error. Si apareix algun missatge, assegureu-vos d'enviar el seu text exacte.
 <p>
-Volem eliminar tots els errors! Gràcies per gastar el vostre temps per ajudar-nos a rastrejar-los.
+Volem eliminar tots els errors! Gràcies per gastar el vostre temps en ajudar-nos a trobar-ne.
 <p>
 <br>
 <p>
@@ -146,12 +145,12 @@ No cal instal·lar l'Audacity. Simplement arrossegueu la carpeta de l'Audacity a 
 
 <p><font size=+0>
 Això podria ser degut a dos problemes diferents: <br>
-- Si heu instal·lat l'RPM wxWindows, assegureu-vos d'executar "ldconfig" (com a root) per tal que el vostre sistema sàpiga que hi ha una nova llibreria. <br>
+- Si heu instal·lat l'RPM wxWindows, assegureu-vos d'executar "ldconfig" (com a root) per tal que el vostre sistema sàpiga que hi ha una nova biblioteca. <br>
 <br>
 - Si heu instal·lat l'wxWindows des del codi font, segurament s'ha col·locat a /usr/local, però podria ser que /usr/local/lib no es trobi al "library path". Afegiu /usr/local/lib al fitxer "/etc/ld.so.conf" i llavors executeu "ldconfig". També podeu afegir "/usr/local/bin" al path, de manera que els programes puguin trobar directament la utilitat "wx-config".
 <p>
 <table cellpadding=6 width=100%><tr><td bgcolor="#ffd0d0" align="center">
-<font size="+1">Utilitzant l'Audacity</font>
+<font size="+1">Ús de l'Audacity</font>
 </td></tr></table>
 
 <p>
@@ -170,7 +169,7 @@ Per desar la vostra mescla teniu dues opcions: exportar el projecte, que automàt
 2. Es poden extreure les veus d'un enregistrament?
 </b></font>
 <p>
-Si, és possible... però només si es tracta d'un enregistrament estereofònic d'estudi que tingui la veu just al centre dels dos canals estereofònics. Si resteu el canal dret de l'esquerre les veus es veuran totalment anul·lades, deixant només la resta d'instruments.
+Si, és possible... però només si es tracta d'un enregistrament estereofònic d'estudi que tingui la veu just al centre dels dos canals. Si resteu el canal dret de l'esquerre les veus es veuran totalment anul·lades, deixant només la resta d'instruments.
 <p>
 
 <b>Això només funciona amb alguns enregistraments!</b>
@@ -179,7 +178,7 @@ Per provar-ho amb l'Audacity, importeu una pista estèreo i feu clic al menú desp
 <p>
 <a name="a3"></a>
 <font size=+1><b>
-3. Quant intento gravar harmonies amb la meva pròpia veu, per què les dues peces estan desincronitzades? 
+3. Quant intento enregistrar harmonies amb la meva pròpia veu, per què queden les dues pistes desincronitzades? 
 </b></font>
 <p>
 Això és normal, i és degut a que hi ha un petit retard entre el moment en que l'Audacity comença a reproduir el so i aquest surt pels vostres altaveus. L'Audacity no pot corregir automàticament aquest retard: ho heu d'ajustar manualment.
@@ -208,7 +207,7 @@ No pas de manera automàtica.  Molts intèrprets d'àudio a raig, incloent el RealO
 </p><p>
 De totes maneres... sempre és possible enregistrar qualsevol cosa que estigui sonant al vostre ordinador, amb un cable que desviï el so del connector de sortida de la targeta de so a l'entrada de línia o micròfon.
 </p><p>
-Feu servir un cable amb un connector mini-estèreo d'1/8 de polzada a cada extrem. Endolleu-ne un al connector de sortida (que usualment és de color verd) i l'altre a l'entrada de línia o al connector del micròfon (que acostuma a ser de color vermell).
+Feu servir un cable amb un connector mini-estèreo d'1/8 de polzada a cada extrem. Endolleu un extrem al connector de sortida (que usualment és de color verd) i l'altre a l'entrada de línia o al connector del micròfon (que acostuma a ser de color vermell).
 </p><p>
 Ara l'Audacity pot enregistrar tot el que soni per l'ordinador. Feu clic al botó d'enregistrar de l'Audacity i, tot seguit, cliqueu el botó d'interpretar del programa d'àudio a raig.
 </p><p>
