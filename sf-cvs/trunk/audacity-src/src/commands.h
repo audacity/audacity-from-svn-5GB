@@ -87,6 +87,8 @@
       DuplicateID,
       /*DUMMY SEPARATOR*/
       SelectAllID = DuplicateID + 2,
+      SelectStartCursorID,
+      SelectCursorEndID,
 
       // View Menu
 
@@ -239,6 +241,8 @@
 
    CMD_ADDMENU_SEP(editMenu);
    CMD_ADDMENU(_("Select All"), _("Select All"), OnSelectAll, editMenu, enabledMenu);
+   CMD_ADDMENU(_("Select Start to Cursor"), _("Select Start to Cursor"), OnSelectStartCursor, editMenu, enabledMenu);
+   CMD_ADDMENU(_("Select Cursor to End"), _("Select Cursor to End"), OnSelectCursorEnd, editMenu, enabledMenu);
 
    // View menu
    CMD_ADDMENU(_("Zoom &In"), _("Zoom In"), OnZoomIn, viewMenu, enabledMenu);

@@ -525,6 +525,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    SetMenuState(mEditMenu, SplitLabelsID, numLabelTracksSelected == 1 && numWaveTracksSelected == 1);
    SetMenuState(mEditMenu, DuplicateID, anySelection);
    SetMenuState(mEditMenu, SelectAllID, numTracks > 0);
+   SetMenuState(mEditMenu, SelectCursorEndID, numWaveTracksSelected > 0 && !nonZeroRegionSelected);
+   SetMenuState(mEditMenu, SelectStartCursorID, numWaveTracksSelected > 0 && !nonZeroRegionSelected);
 
    SetMenuState(mEditMenu, UndoID, mUndoManager.UndoAvailable());
    SetMenuState(mEditMenu, RedoID, mUndoManager.RedoAvailable());
@@ -1172,6 +1174,48 @@ void AudacityProject::OnSelectAll(wxEvent & event)
    }
    mViewInfo.sel0 = mTracks->GetMinOffset();
    mViewInfo.sel1 = mTracks->GetEndTime();
+
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnSelectCursorEnd(wxEvent & event)
+{
+   double maxEndOffset = -1000000.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         if (t->GetEndTime() > maxEndOffset)
+            maxEndOffset = t->GetEndTime();
+      }
+
+      t = iter.Next();
+   }
+
+   mViewInfo.sel1 = maxEndOffset;
+
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnSelectStartCursor(wxEvent & event)
+{
+   double minOffset = 1000000.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         if (t->GetOffset() < minOffset)
+            minOffset = t->GetOffset();
+      }
+
+      t = iter.Next();
+   }
+
+   mViewInfo.sel0 = minOffset;
 
    mTrackPanel->Refresh(false);
 }

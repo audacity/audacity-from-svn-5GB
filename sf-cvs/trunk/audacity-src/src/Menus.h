@@ -121,6 +121,8 @@ void OnSplitLabels(wxEvent & event);
 void OnDuplicate(wxEvent & event);
 
 void OnSelectAll(wxEvent & event);
+void OnSelectCursorEnd(wxEvent & event);
+void OnSelectStartCursor(wxEvent & event);
 
         // View Menu
 
