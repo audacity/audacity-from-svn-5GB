@@ -143,38 +143,38 @@ APalette::APalette(wxWindow* parent, wxWindowID id,
 {
   mTool[0] =
     new AButton(this, ID_IBEAM, wxPoint(0, 0), wxSize(27, 27),
-				IBeamUp, IBeamOver,
-				IBeamDown, IBeamUp);
+				(char **)IBeamUp, (char **)IBeamOver,
+				(char **)IBeamDown, (char **)IBeamUp);
   mTool[1] = 
     new AButton(this, ID_SELECT, wxPoint(28, 0), wxSize(27, 27),
-				SelectUp, SelectOver,
-				SelectDown, SelectUp);
+				(char **)SelectUp, (char **)SelectOver,
+				(char **)SelectDown, (char **)SelectUp);
   mTool[2] = 
     new AButton(this, ID_MOVE, wxPoint(0, 28), wxSize(27, 27),
-				MoveUp, MoveOver,
-				MoveDown, MoveUp);
+				(char **)MoveUp, (char **)MoveOver,
+				(char **)MoveDown, (char **)MoveUp);
   mTool[3] = 
     new AButton(this, ID_ZOOM, wxPoint(28, 28), wxSize(27, 27),
-				ZoomUp, ZoomOver,
-				ZoomDown, ZoomUp);
+				(char **)ZoomUp, (char **)ZoomOver,
+				(char **)ZoomDown, (char **)ZoomUp);
 
   mPlay =
 	new AButton(this, ID_PLAY_BUTTON, wxPoint(64, 4), wxSize(48, 48),
-				PlayUp, PlayOver,
-				PlayDown, PlayDisabled);
+				(char **)PlayUp, (char **)PlayOver,
+				(char **)PlayDown, (char **)PlayDisabled);
   mStop =
 	new AButton(this, ID_STOP_BUTTON, wxPoint(114, 4), wxSize(48, 48),
-				StopUp, StopOver,
-				StopDown, StopDisabled);
+				(char **)StopUp, (char **)StopOver,
+				(char **)StopDown, (char **)StopDisabled);
 
   mRecord =
 	new AButton(this, ID_RECORD_BUTTON, wxPoint(164, 4), wxSize(48, 48),
-				RecordUp, RecordOver,
-				RecordDown, RecordDisabled);
+				(char **)RecordUp, (char **)RecordOver,
+				(char **)RecordDown, (char **)RecordDisabled);
   
   mVolume =
 	new ASlider(this, 0, wxPoint(222, 14), wxSize(100, 28),
-				Slider, SliderThumb, 100);
+				(char **)Slider, (char **)SliderThumb, 100);
 
   mVolume->Set(80);
 

@@ -39,9 +39,9 @@ ASlider::ASlider(wxWindow *parent, wxWindowID id,
 
   mIsDragging = false;
 
-  mBitmap = new wxBitmap(sliderXPM);
+  mBitmap = new wxBitmap((const char **)sliderXPM);
 
-  mThumbBitmap = new wxBitmap(thumbXPM);
+  mThumbBitmap = new wxBitmap((const char **)thumbXPM);
 
   mThumbWidth = mThumbBitmap->GetWidth();
   mThumbHeight = mThumbBitmap->GetHeight();
