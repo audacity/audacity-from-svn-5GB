@@ -4,9 +4,9 @@
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
  */
 
-/* $Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/gsm_encode.c,v 1.1.1.1 2001-10-15 04:39:16 dmazzoni Exp $ */
+/* $Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/gsm_encode.c,v 1.2 2002-04-16 04:30:52 dmazzoni Exp $ */
 
-#include "private.h"
+#include "gsmprivate.h"
 #include "gsm.h"
 #include "proto.h"
 

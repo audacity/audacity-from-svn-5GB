@@ -4,7 +4,7 @@
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
  */
 
-/* $Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/add.c,v 1.1.1.1 2001-10-15 04:39:14 dmazzoni Exp $ */
+/* $Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/add.c,v 1.2 2002-04-16 04:30:34 dmazzoni Exp $ */
 
 /*
  *  See private.h for the more commonly used macro versions.
@@ -13,7 +13,7 @@
 #include	<stdio.h>
 #include	<assert.h>
 
-#include	"private.h"
+#include	"gsmprivate.h"
 #include	"gsm.h"
 #include	"proto.h"
 

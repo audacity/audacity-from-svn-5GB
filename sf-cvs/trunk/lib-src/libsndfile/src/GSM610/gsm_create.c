@@ -4,7 +4,7 @@
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
  */
 
-static char const	ident[] = "$Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/gsm_create.c,v 1.1.1.1 2001-10-15 04:39:19 dmazzoni Exp $";
+static char const	ident[] = "$Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/gsm_create.c,v 1.2 2002-04-16 04:30:46 dmazzoni Exp $";
 
 #include	"config.h"
 
@@ -28,7 +28,7 @@ static char const	ident[] = "$Header: /var/tmp/richard/audsvn/sf-cvs-backup/auda
 #include <stdio.h>
 
 #include "gsm.h"
-#include "private.h"
+#include "gsmprivate.h"
 #include "proto.h"
 
 gsm gsm_create P0()

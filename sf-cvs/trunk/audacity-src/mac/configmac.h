@@ -5,10 +5,11 @@
 #define AUDACITY_PROJECT_TYPE 'auDp'
 
 // Use libmad for importing MP3 on the mac
-//#define MP3SUPPORT
+#define MP3SUPPORT
+#define USE_LIBMAD
 
-// No Ogg Vorbis support (yet)
+// Ogg Vorbis support
 #define USE_LIBVORBIS
 
 // ID3 support
-#define USE_ID3LIB
+#define USE_LIBID3TAG
