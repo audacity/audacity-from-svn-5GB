@@ -1,9 +1,9 @@
 //#include "ControlButtons/Disabled.xpm"
 
 #ifdef __WXMAC__
-#include "Aqua/UpButtonWhite.xpm"
-#include "Aqua/DownButtonWhite.xpm"
-#include "Aqua/HiliteButtonWhite.xpm"
+#include "Aqua/UpButtonSquare.xpm"
+#include "Aqua/DownButtonSquare.xpm"
+#include "Aqua/HiliteButtonSquare.xpm"
 #else
 #include "ControlButtons/UpButton.xpm"
 #include "ControlButtons/DownButton.xpm"
