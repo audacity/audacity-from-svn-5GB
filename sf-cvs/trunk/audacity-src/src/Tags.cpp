@@ -34,17 +34,15 @@
 #include "Audacity.h"
 
 #ifdef USE_LIBID3TAG 
-   #include "libid3tag/id3tag.h"
-
-// DM: the following functions were supposed to have been
-// included in id3tag.h - should be fixed in the next release
-// of mad.
-extern "C" {
-   struct id3_frame *id3_frame_new(char const *);
-   id3_length_t id3_latin1_length(id3_latin1_t const *);
-   void id3_latin1_decode(id3_latin1_t const *, id3_ucs4_t *);
-} 
-
+   #include <id3tag.h>
+   // DM: the following functions were supposed to have been
+   // included in id3tag.h - should be fixed in the next release
+   // of mad.
+   extern "C" {
+      struct id3_frame *id3_frame_new(char const *);
+      id3_length_t id3_latin1_length(id3_latin1_t const *);
+      void id3_latin1_decode(id3_latin1_t const *, id3_ucs4_t *);
+   } 
 #endif
 
 #include "Tags.h"
