@@ -314,9 +314,17 @@ AudacityProject::~AudacityProject()
    delete mTracks;
 
    gAudacityProjects.Remove(this);
-
+   
    if (gAudacityProjects.IsEmpty())
       QuitAudacity();
+
+   if (gActiveProject == this) {
+      // Find a new active project
+      if (gAudacityProjects.Count() > 0)
+         gActiveProject = gAudacityProjects[0];
+      else
+         gActiveProject = NULL;
+   }
 }
 
 void AudacityProject::RedrawProject()
@@ -870,6 +878,14 @@ void AudacityProject::OpenFile(wxString fileName)
       wxMessageBox("Couldn't open " + mFileName);
       return;
    }
+
+   // Make sure it isn't already open
+   int numProjects = gAudacityProjects.Count();
+   for (int i = 0; i < numProjects; i++)
+      if (gAudacityProjects[i]->mFileName == fileName) {
+         wxMessageBox("That project is already open in another window.");
+         return;
+      }
 
    wxFile ff(fileName);
    if (!ff.IsOpened()) {
