@@ -1,7 +1,7 @@
 <?php BoxTop("Mandrake"); ?>
 
 <p>
-Mandrake kullan&#305;c&#305;lar&#305; Audacity'i kurmak için (root olarak) a&#351;a&#287;&#305;daki komutu yazabilir:
+Mandrake kullanıcıları Audacity'i kurmak için (root olarak) aşağıdaki komutu yazabilir:
 </p>
 
 <ul>
@@ -9,14 +9,14 @@ Mandrake kullan&#305;c&#305;lar&#305; Audacity'i kurmak için (root olarak) a&#35
 </ul>
 
 <p>
-Audacity Mandrake packetlerini manuel olarak download edip kurmak için:
+Audacity Mandrake paketlerini manuel olarak indirip kurmak için:
 </p>
 <p>
-Paket ad&#305; "audacity" olan versiyon 1.0 ve "hackaudacity" versiyon 1.1'i a&#351;a&#287;&#305;daki ftp sitesinde bulabilirsiniz.
+Paket adı "audacity" olan versiyon 1.0 ve "hackaudacity" versiyon 1.1'i aşağıdaki ftp sitesinde bulabilirsiniz.
 <ul>
 <li><a href="ftp://sunsite.uio.no/pub/unix/Linux/Mandrake/Mandrake-devel/contrib/">ftp://sunsite.uio.no/pub/unix/Linux/Mandrake/Mandrake-devel/contrib/</a>
 </ul>
-yada a&#351;a&#287;&#305;daki ba&#351;ka bir Mandrake Cooker sitesinden download edebilirsiniz.
+yada aşağıdaki başka bir Mandrake Cooker sitesinden indirebilirsiniz.
 <ul>
 <li><a href="http://www.mandrakelinux.com/en/cookerdevel.php3">Mandrake Linux Cooker</a>
 </ul>

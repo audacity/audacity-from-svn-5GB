@@ -1,7 +1,7 @@
 <?php
 $charset = "iso-8859-9";
-$translatorName = "Ali Erdinç Köroðlu";
-$languageStr = "Türkçe";
+$translatorName = "Ali Erdinc Koroglu";
+$languageStr = "Turkish";
 $metaDescription = "Audacity, özgür bir cross-platform dijital ses editörü";
 $helpSectionStr = "Yardým";
 $aboutStr = "Audacity nedir?";
