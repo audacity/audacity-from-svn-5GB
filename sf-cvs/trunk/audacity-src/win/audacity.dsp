@@ -280,6 +280,14 @@ SOURCE=..\src\Mix.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\MixerToolBar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\MixerToolBar.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\NoteTrack.cpp
 # End Source File
 # Begin Source File
