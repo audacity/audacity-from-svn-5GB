@@ -81,7 +81,7 @@ class VTrack {
    }
 
    virtual int GetChannel() {
-      return MonoChannel;
+      return channel;
    }
 
    virtual bool Load(wxTextFile * in, DirManager * dirManager);
