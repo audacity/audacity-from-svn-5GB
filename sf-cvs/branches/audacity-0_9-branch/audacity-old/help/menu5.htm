@@ -58,6 +58,39 @@ However, doing an FFT filter is more likely to result in
 artifacts, especially if the filter you draw is not smooth.
 <p>
 
+<li><b>Noise Removal...</b>
+This effect is ideal for removing constant background noise such as
+fans, tape noise, or hums.  It will not work very well for removing
+talking or music in the background.
+<p>
+Removing noise is a two-step process.  In the first step, you select
+a portion of your sound which contains all noise and no signal,
+in other words, select the part that's silent except for the noise.
+Then choose <b>Noise Removal...</b> from the Effect menu and click
+Get Profile.  Audacity learns from this selection what the noise
+sounds like, so it knows what to filter out later.
+<p>
+Then, select all of the audio where you want the noise removed from
+and choose <b>Noise Removal...</b> again.  This time, click the
+"Remove Noise" button.  It may take a few seconds or longer depending
+on how much you selected.
+<p>
+If too much or not enough noise was removed, you can <b>Undo</b>
+(from the Edit menu) and try <b>Noise Removal...</b> again with a
+different noise removal level.  You don't have to get a new noise
+profile again if you think the first one was fine.
+<p>
+Removing noise usually results in some distortion.  This is normal
+and there's virtually nothing you can do about it.  When there's only
+a little bit of noise, and the signal (i.e. the voice or the music or
+whatever) is much louder than the noise, this effect works well and
+there's very little audible distortion.  But when the noise is very
+loud, when the noise is variable, or when the signal is not much
+louder than the noise, then the result is often too distorted.
+<p>
+Future versions of Audacity may include improved versions of this
+effect.
+
 <li><b>Phaser...</b>
 Spice up your sound effects!
 <p>
