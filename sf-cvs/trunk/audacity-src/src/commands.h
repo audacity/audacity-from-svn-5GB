@@ -91,9 +91,11 @@ enum {
    UndoHistoryID,
    PlotSpectrumID,
 
+#ifndef __WXMAC__
    FloatControlToolBarID, 
    LoadEditToolBarID,
    FloatEditToolBarID,
+#endif
 
    // Project Menu
 
@@ -101,7 +103,10 @@ enum {
    ImportLabelsID,
    ImportMIDIID,
    ImportRawID,
-   
+#ifdef USE_ID3LIB
+   EditID3ID,
+#endif
+
    QuickMixID,
 
    AlignID,
@@ -184,6 +189,9 @@ enum {
    CMD_ADDMENU("Import Labels...", "Import Labels...", OnImportLabels, projectMenu, enabledMenu);
    CMD_ADDMENU("Import &MIDI...", "Import MIDI", OnImportMIDI, projectMenu, enabledMenu);
    CMD_ADDMENU("Import Raw Data...", "Import Raw Data", OnImportRaw, projectMenu, enabledMenu);
+#ifdef USE_ID3LIB
+   CMD_ADDMENU("Edit ID3 Tags...", "Edit ID3 Tags", OnEditID3, projectMenu, enabledMenu);
+#endif
    CMD_ADDMENU("&Quick Mix", "Quick Mix", OnQuickMix, projectMenu, enabledMenu);
    CMD_ADDMENU("Align Tracks Together", "Align Tracks Together", OnAlign, projectMenu, enabledMenu);
    CMD_ADDMENU("Align with Zero", "Align with Zero", OnAlignZero, projectMenu, enabledMenu);

@@ -79,6 +79,11 @@ void AudacityProject::CreateMenuBar()
    mExportSelectionLossyString.Printf(_("Export Selection as %s..."),
                                       lossyFormat.c_str());
 
+#define AUDACITY_MENUS_COMMANDS_EVENT_TABLE
+#include "commands.h" // BG: Generate an array of command names, and their corresponding functions
+#undef AUDACITY_MENUS_COMMANDS_EVENT_TABLE
+#include "commandkeys.h" // BG: Generate an array of keys combos that cannot be used
+
    mFileMenu = new wxMenu();
    mFileMenu->Append(NewID, _("&New"));
    mFileMenu->Append(OpenID, _("&Open..."));
@@ -246,11 +251,6 @@ void AudacityProject::CreateMenuBar()
    SetMenuBar(mMenuBar);
 
    mInsertSilenceAmount = 1.0;
-
-#define AUDACITY_MENUS_COMMANDS_EVENT_TABLE
-#include "commands.h" // BG: Generate an array of command names, and their corresponding functions
-#undef AUDACITY_MENUS_COMMANDS_EVENT_TABLE
-#include "commandkeys.h" // BG: Generate an array of keys combos that cannot be used
 }
 
 wxString AudacityProject::GetCommandName(int nIndex)
