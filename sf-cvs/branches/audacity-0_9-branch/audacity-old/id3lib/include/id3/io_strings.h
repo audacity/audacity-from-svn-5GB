@@ -1,5 +1,5 @@
 // -*- C++ -*-
-// $Id: io_strings.h,v 1.2 2001-07-25 04:36:58 habes Exp $
+// $Id: io_strings.h,v 1.2.2.1 2001-09-30 01:51:52 dmazzoni Exp $
 
 // id3lib: a software library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug
@@ -36,7 +36,7 @@ namespace dami
 {
   namespace io
   {
-    class StringReader : public ID3_Reader
+    class ID3_CPP_EXPORT StringReader : public ID3_Reader
     {
       const String&  _string;
       pos_type _cur;
@@ -63,7 +63,7 @@ namespace dami
       }
       virtual size_type readChars(char_type buf[], size_type len)
       {
-        size_type size = min((unsigned long)len, (unsigned long)_string.size() - _cur);
+        size_type size = min(len, _string.size() - _cur);
         _string.copy(reinterpret_cast<String::value_type *>(buf), size, _cur);
         _cur += size;
         return size;
@@ -100,13 +100,13 @@ namespace dami
 
       virtual size_type skipChars(size_type len)
       {
-        size_type size = min((unsigned long)len, (unsigned long)_string.size() - _cur);
+        size_type size = min(len, _string.size() - _cur);
         _cur += size;
         return size;
       }
     };
 
-    class BStringReader : public ID3_Reader
+    class ID3_CPP_EXPORT BStringReader : public ID3_Reader
     {
       const BString&  _string;
       pos_type _cur;
@@ -133,7 +133,7 @@ namespace dami
       }
       virtual size_type readChars(char_type buf[], size_type len)
       {
-        size_type size = min((unsigned long)len, (unsigned long)_string.size() - _cur);
+        size_type size = min(len, _string.size() - _cur);
         _string.copy(reinterpret_cast<BString::value_type *>(buf), size, _cur);
         _cur += size;
         return size;
@@ -170,13 +170,13 @@ namespace dami
 
       virtual size_type skipChars(size_type len)
       {
-        size_type size = min((unsigned long)len, (unsigned long)_string.size() - _cur);
+        size_type size = min(len, _string.size() - _cur);
         _cur += size;
         return size;
       }
     };
 
-    class StringWriter : public ID3_Writer
+    class ID3_CPP_EXPORT StringWriter : public ID3_Writer
     {
       String& _string;
      public:
@@ -202,7 +202,7 @@ namespace dami
       }
     };
 
-    class BStringWriter : public ID3_Writer
+    class ID3_CPP_EXPORT BStringWriter : public ID3_Writer
     {
       BString& _string;
      public:

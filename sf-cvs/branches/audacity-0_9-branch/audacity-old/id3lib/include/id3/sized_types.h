@@ -1,5 +1,5 @@
 // -*- C++ -*-
-/* $Id: sized_types.h,v 1.1 2001-07-08 08:57:31 dmazzoni Exp $
+/* $Id: sized_types.h,v 1.1.2.1 2001-09-30 01:51:52 dmazzoni Exp $
 
  * id3lib: a C++ library for creating and manipulating id3v1/v2 tags Copyright
  * 1999, 2000 Scott Thomas Haug

@@ -1,5 +1,5 @@
 // -*- C++ -*-
-// $Id: frame.h,v 1.1 2001-07-08 08:56:51 dmazzoni Exp $
+// $Id: frame.h,v 1.1.2.1 2001-09-30 01:51:52 dmazzoni Exp $
 
 // id3lib: a C++ library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug
@@ -35,7 +35,7 @@ class ID3_FrameImpl;
 class ID3_Reader;
 class ID3_Writer;
 
-class ID3_Frame
+class ID3_CPP_EXPORT ID3_Frame
 {
   ID3_FrameImpl* _impl;
 public:

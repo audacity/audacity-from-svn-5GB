@@ -1,5 +1,5 @@
 // -*- C++ -*-
-// $Id: io_helpers.h,v 1.1 2001-07-08 08:57:04 dmazzoni Exp $
+// $Id: io_helpers.h,v 1.1.2.1 2001-09-30 01:51:52 dmazzoni Exp $
 
 // id3lib: a software library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug
@@ -38,7 +38,7 @@ namespace dami
   {
     /**
      **/
-    class ExitTrigger
+    class ID3_CPP_EXPORT ExitTrigger
     {
       ID3_Reader& _reader;
       ID3_Reader::pos_type _pos;
@@ -57,24 +57,24 @@ namespace dami
       void setExitPos(ID3_Reader::pos_type pos) { _pos = pos; }
     };
 
-    String      readString(ID3_Reader&);
-    String      readText(ID3_Reader&, size_t);
-    String      readUnicodeString(ID3_Reader&);
-    String      readUnicodeText(ID3_Reader&, size_t);
-    BString     readAllBinary(ID3_Reader&);
-    BString     readBinary(ID3_Reader&, size_t);
-    uint32      readLENumber(ID3_Reader&, size_t);
-    uint32      readBENumber(ID3_Reader&, size_t);
-    String      readTrailingSpaces(ID3_Reader&, size_t);
-    uint32      readUInt28(ID3_Reader&);
+    ID3_C_EXPORT String      readString(ID3_Reader&);
+    ID3_C_EXPORT String      readText(ID3_Reader&, size_t);
+    ID3_C_EXPORT String      readUnicodeString(ID3_Reader&);
+    ID3_C_EXPORT String      readUnicodeText(ID3_Reader&, size_t);
+    ID3_C_EXPORT BString     readAllBinary(ID3_Reader&);
+    ID3_C_EXPORT BString     readBinary(ID3_Reader&, size_t);
+    ID3_C_EXPORT uint32      readLENumber(ID3_Reader&, size_t);
+    ID3_C_EXPORT uint32      readBENumber(ID3_Reader&, size_t);
+    ID3_C_EXPORT String      readTrailingSpaces(ID3_Reader&, size_t);
+    ID3_C_EXPORT uint32      readUInt28(ID3_Reader&);
 
-    size_t      writeString(ID3_Writer&, String);
-    size_t      writeText(ID3_Writer&, String);
-    size_t      writeUnicodeString(ID3_Writer&, String, bool = true);
-    size_t      writeUnicodeText(ID3_Writer&, String, bool = true);
-    size_t      writeBENumber(ID3_Writer&, uint32 val, size_t);
-    ID3_Writer::size_type      writeTrailingSpaces(ID3_Writer&, String, size_t);
-    size_t      writeUInt28(ID3_Writer&, uint32);
+    ID3_C_EXPORT size_t      writeString(ID3_Writer&, String);
+    ID3_C_EXPORT size_t      writeText(ID3_Writer&, String);
+    ID3_C_EXPORT size_t      writeUnicodeString(ID3_Writer&, String, bool = true);
+    ID3_C_EXPORT size_t      writeUnicodeText(ID3_Writer&, String, bool = true);
+    ID3_C_EXPORT size_t      writeBENumber(ID3_Writer&, uint32 val, size_t);
+    ID3_C_EXPORT size_t      writeTrailingSpaces(ID3_Writer&, String, size_t);
+    ID3_C_EXPORT size_t      writeUInt28(ID3_Writer&, uint32);
   };
 };
 

@@ -1,4 +1,4 @@
-// $Id: field.cpp,v 1.1 2001-07-08 09:01:25 dmazzoni Exp $
+// $Id: field.cpp,v 1.1.2.1 2001-09-30 01:51:52 dmazzoni Exp $
 
 // id3lib: a C++ library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug
@@ -667,7 +667,7 @@ static ID3_FieldDef ID3FD_Volume[] =
   },
   { ID3FN_NOFIELD }
 };
-#endif /* _UNEFINED_ */
+#endif /* _UNDEFINED_ */
 
 // **** Currently Implemented Frames
 // APIC  PIC  ID3FID_PICTURE           Attached picture
@@ -766,10 +766,10 @@ static  ID3_FrameDef ID3_FrameDefs[] =
   {ID3FID_CDID,              "MCI", "MCDI", false, false, ID3FD_Unimplemented, "Music CD identifier"},
   {ID3FID_MPEGLOOKUP,        "MLL", "MLLT", false, true,  ID3FD_Unimplemented, "MPEG location lookup table"},
   {ID3FID_OWNERSHIP,         ""   , "OWNE", false, false, ID3FD_Unimplemented, "Ownership frame"},
+  {ID3FID_PRIVATE,           ""   , "PRIV", false, false, ID3FD_Private,       "Private frame"},
   {ID3FID_PLAYCOUNTER,       "CNT", "PCNT", false, false, ID3FD_PlayCounter,   "Play counter"},
   {ID3FID_POPULARIMETER,     "POP", "POPM", false, false, ID3FD_Popularimeter, "Popularimeter"},
   {ID3FID_POSITIONSYNC,      ""   , "POSS", false, true,  ID3FD_Unimplemented, "Position synchronisation frame"},
-  {ID3FID_PRIVATE,           ""   , "PRIV", false, false, ID3FD_Private,       "Private frame"},
   {ID3FID_BUFFERSIZE,        "BUF", "RBUF", false, false, ID3FD_Unimplemented, "Recommended buffer size"},
   {ID3FID_VOLUMEADJ,         "RVA", "RVAD", false, true,  ID3FD_Unimplemented, "Relative volume adjustment"},
   {ID3FID_REVERB,            "REV", "RVRB", false, false, ID3FD_Unimplemented, "Reverb"},
@@ -785,11 +785,11 @@ static  ID3_FrameDef ID3_FrameDefs[] =
   {ID3FID_ENCODEDBY,         "TEN", "TENC", false, true,  ID3FD_Text,          "Encoded by"},
   {ID3FID_LYRICIST,          "TXT", "TEXT", false, false, ID3FD_Text,          "Lyricist/Text writer"},
   {ID3FID_FILETYPE,          "TFT", "TFLT", false, false, ID3FD_Text,          "File type"},
-  {ID3FID_INITIALKEY,        "TKE", "TKEY", false, false, ID3FD_Text,          "Initial key"},
   {ID3FID_TIME,              "TIM", "TIME", false, false, ID3FD_Text,          "Time"},
   {ID3FID_CONTENTGROUP,      "TT1", "TIT1", false, false, ID3FD_Text,          "Content group description"},
   {ID3FID_TITLE,             "TT2", "TIT2", false, false, ID3FD_Text,          "Title/songname/content description"},
   {ID3FID_SUBTITLE,          "TT3", "TIT3", false, false, ID3FD_Text,          "Subtitle/Description refinement"},
+  {ID3FID_INITIALKEY,        "TKE", "TKEY", false, false, ID3FD_Text,          "Initial key"},
   {ID3FID_LANGUAGE,          "TLA", "TLAN", false, false, ID3FD_Text,          "Language(s)"},
   {ID3FID_SONGLEN,           "TLE", "TLEN", false, true,  ID3FD_Text,          "Length"},
   {ID3FID_MEDIATYPE,         "TMT", "TMED", false, false, ID3FD_Text,          "Media type"},
@@ -882,7 +882,7 @@ static  ID3_FrameDef ID3_FrameDefs[] =
  ** if you only plan to generate 3.0 tags.
  ** 
  ** @author Dirk Mahoney
- ** @version $Id: field.cpp,v 1.1 2001-07-08 09:01:25 dmazzoni Exp $
+ ** @version $Id: field.cpp,v 1.1.2.1 2001-09-30 01:51:52 dmazzoni Exp $
  ** \sa ID3_Tag
  ** \sa ID3_Frame
  ** \sa ID3_Err 
@@ -979,7 +979,7 @@ ID3_FieldImpl::HasChanged() const
  ** \brief Returns the size of a field.
  ** 
  ** The value returned is dependent on the type of the field.  For ASCII
- ** strings, this returns the number of characters in the field, no including
+ ** strings, this returns the number of characters in the field, not including
  ** any NULL-terminator.  The same holds true for Unicode---it returns the
  ** number of characters in the field, not bytes, and this does not include
  ** the Unicode BOM, which isn't put in a Unicode string obtained by the
@@ -1188,3 +1188,108 @@ bool ID3_FieldImpl::SetEncoding(ID3_TextEnc enc)
   }
   return changed;
 }
+
+/** \class ID3_FrameInfo field.h id3/field.h
+ ** \brief Provides information about the frame and field types supported by id3lib
+ ** 
+ ** You normally only need (at most) one instance of the ID3_FrameInfo.  It
+ ** has no member data -- only methods which provide information about the
+ ** frame types (and their component fields) supported by id3lib as defined
+ ** in field.cpp .
+ **
+ ** Usage is straightforward.  The following function uses ID3_FrameInfo
+ ** to display a summary of all the frames known to id3lib:
+ ** \code
+ ** 
+ ** void ShowKnownFrameInfo {
+ **   ID3_FrameInfo myFrameInfo;
+ **   for (int cur = ID3FID_NOFRAME+1; cur <= myFrameInfo.MaxFrameID(); cur ++)
+ **   { 
+ **     cout << "Short ID: " << myFrameInfo.ShortName(ID3_FrameID(cur)) <<
+ ** 	" Long ID: " << myFrameInfo.LongName(ID3_FrameID(cur)) <<
+ ** 	" Desription: " << myFrameInfo.Description(ID3_FrameID(cur)) << endl;
+ **   }
+ ** } 
+ ** \endcode 
+ **
+ ** Functions are also provided to glean more information about the individual
+ ** fields which make up any given frame type.  The following for() loop,
+ ** embedded into the previous for() loop would provide a raw look at such
+ ** information.  Realize, of course, that the field type is meaningless
+ ** when printed.  Only when it is taken in the context of the ID3_FieldType enum
+ ** does it take on any meaningful significance.
+ **
+ ** \code
+ **  for (int cur = ID3FID_NOFRAME+1; cur <= fi.MaxFrameID(); cur ++)
+ **  {
+ **	int numfields = fi.NumFields(ID3_FrameID(cur));
+ **
+ **        cout << "ID: " << fi.LongName(ID3_FrameID(cur)) <<
+ **	" FIELDS: " << numfields << endl;
+ **	for(int i=0;i<numfields;i++) {
+ **		cout << "TYPE: " << fi.FieldType(ID3_FrameID(cur),i) <<
+ **		" SIZE: " << fi.FieldSize(ID3_FrameID(cur),i) <<
+ **		" FLAGS: " << fi.FieldFlags(ID3_FrameID(cur),i) << endl;
+ **
+ **	}
+ **
+ **	cout << endl;
+ **
+ **  }
+ ** \endcode
+ **
+ ** @author Cedric Tefft
+ ** @version $Id: field.cpp,v 1.1.2.1 2001-09-30 01:51:52 dmazzoni Exp $
+ **/
+
+
+char *ID3_FrameInfo::ShortName(ID3_FrameID frameid) {
+	if(frameid < ID3FID_LASTFRAMEID) {
+		return ID3_FrameDefs[frameid-1].sShortTextID;
+	} else {
+		return NULL;
+	}
+}
+
+char *ID3_FrameInfo::LongName(ID3_FrameID frameid) {
+	if(frameid < ID3FID_LASTFRAMEID) {
+		return ID3_FrameDefs[frameid-1].sLongTextID;
+	} else {
+		return NULL;
+	}
+}
+
+const char *ID3_FrameInfo::Description(ID3_FrameID frameid) {
+	if(frameid < ID3FID_LASTFRAMEID) {
+		return ID3_FrameDefs[frameid-1].sDescription;
+	} else {
+		return NULL;
+	}
+}
+
+int ID3_FrameInfo::MaxFrameID() {
+	return ID3FID_LASTFRAMEID-1;
+}
+
+int ID3_FrameInfo::NumFields(ID3_FrameID frameid) {
+	int fieldnum=0;
+
+	while (ID3_FrameDefs[frameid-1].aeFieldDefs[fieldnum]._id !=
+	       ID3FN_NOFIELD) {
+		fieldnum++;
+	}
+	return fieldnum;
+}
+
+ID3_FieldType ID3_FrameInfo::FieldType(ID3_FrameID frameid, int fieldnum) {
+	return (ID3_FrameDefs[frameid-1].aeFieldDefs[fieldnum]._type);
+}
+
+size_t ID3_FrameInfo::FieldSize(ID3_FrameID frameid, int fieldnum) {
+	return (ID3_FrameDefs[frameid-1].aeFieldDefs[fieldnum]._fixed_size);
+}
+
+flags_t ID3_FrameInfo::FieldFlags(ID3_FrameID frameid, int fieldnum) {
+	return (ID3_FrameDefs[frameid-1].aeFieldDefs[fieldnum]._flags);
+}
+

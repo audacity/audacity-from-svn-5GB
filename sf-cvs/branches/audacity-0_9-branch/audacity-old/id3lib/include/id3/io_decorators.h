@@ -1,5 +1,5 @@
 // -*- C++ -*-
-// $Id: io_decorators.h,v 1.1 2001-07-08 08:57:01 dmazzoni Exp $
+// $Id: io_decorators.h,v 1.1.2.1 2001-09-30 01:51:52 dmazzoni Exp $
 
 // id3lib: a software library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug
@@ -41,7 +41,7 @@ namespace dami
      * Set a window on the buffer.  Characters can only be read within this 
      * window.
      */
-    class WindowedReader : public ID3_Reader
+    class ID3_CPP_EXPORT WindowedReader : public ID3_Reader
     {
       typedef ID3_Reader SUPER;
 
@@ -90,7 +90,7 @@ namespace dami
       void close() { ; }
     };
 
-    class CharReader : public ID3_Reader
+    class ID3_CPP_EXPORT CharReader : public ID3_Reader
     {
       typedef ID3_Reader SUPER;
 
@@ -124,7 +124,7 @@ namespace dami
     };
 
 
-    class LineFeedReader : public CharReader
+    class ID3_CPP_EXPORT LineFeedReader : public CharReader
     {
       typedef CharReader SUPER;
 
@@ -133,7 +133,7 @@ namespace dami
       int_type readChar();
     };
 
-    class UnsyncedReader : public CharReader
+    class ID3_CPP_EXPORT UnsyncedReader : public CharReader
     {
       typedef CharReader SUPER;
 
@@ -142,7 +142,7 @@ namespace dami
       int_type readChar();
     };
 
-    class CompressedReader : public ID3_MemoryReader
+    class ID3_CPP_EXPORT CompressedReader : public ID3_MemoryReader
     {
       char_type* _uncompressed;
      public:
@@ -150,7 +150,7 @@ namespace dami
       virtual ~CompressedReader();
     };
 
-    class UnsyncedWriter : public ID3_Writer
+    class ID3_CPP_EXPORT UnsyncedWriter : public ID3_Writer
     {
       typedef ID3_Writer SUPER;
 

@@ -1,4 +1,4 @@
-// $Id: utils.cpp,v 1.2 2001-07-28 23:57:18 habes Exp $
+// $Id: utils.cpp,v 1.2.2.1 2001-09-30 01:51:53 dmazzoni Exp $
 
 // id3lib: a C++ library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug
@@ -33,11 +33,8 @@
 # include <errno.h>
 #endif
 
+#include <ctype.h>
 #include <iostream.h>
-
-#include "utils.h"
-
-using namespace dami;
 
 #ifdef macintosh
 #define NOCREATE ((std::ios_base::openmode)0)
@@ -45,6 +42,10 @@ using namespace dami;
 #else
 #define NOCREATE ios::nocreate
 #endif
+
+#include "utils.h"
+
+using namespace dami;
 
 size_t dami::renderNumber(uchar *buffer, uint32 val, size_t size)
 {
@@ -103,8 +104,11 @@ namespace
   {
     String target;
     size_t source_size = source.size();
-    char* source_str = new char[source.length() + 1];
-    strcpy(source_str, source.c_str());
+//    const char* source_str = source.data();
+    char * source_str = new char[source.length()+1]; 
+    source.copy(source_str, string::npos); 
+    source_str[source.length()] = 0; 
+
 #define BUFSIZ 1024
     char buf[BUFSIZ];
     char* target_str = buf;
@@ -124,8 +128,6 @@ namespace
       target_size = BUFSIZ;
     }
     while (source_size > 0);
-
-    delete source_str;
     return target;
   }
 

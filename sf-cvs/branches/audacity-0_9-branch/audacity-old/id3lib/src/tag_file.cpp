@@ -1,4 +1,4 @@
-// $Id: tag_file.cpp,v 1.1 2001-07-08 09:03:30 dmazzoni Exp $
+// $Id: tag_file.cpp,v 1.1.2.1 2001-09-30 01:51:53 dmazzoni Exp $
 
 // id3lib: a C++ library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug
@@ -107,6 +107,14 @@ static int truncate(const char *path, size_t length)
   }
   
   return result;
+}
+
+#elif defined(macintosh)
+	
+static int truncate(const char *path, size_t length)
+{
+   /* not implemented on the Mac */
+   return -1;
 }
 	
 #endif
@@ -240,7 +248,7 @@ size_t RenderV2ToFile(const ID3_TagImpl& tag, fstream& file)
     
     while (!feof(tempOut))
     {
-      size_t nBytes = fread(tmpBuffer, 1, BUFSIZ, tempOut);
+      size_t nBytes = fread((char *)tmpBuffer, 1, BUFSIZ, tempOut);
       file.write((char *)tmpBuffer, nBytes);
     }
     
@@ -448,14 +456,12 @@ flags_t ID3_TagImpl::Strip(flags_t ulTagFlag)
     nNewFileSize += this->GetPrependedBytes();
   }
 
-#ifndef macintosh // dmazzoni
   if (ulTags && (truncate(_file_name.c_str(), nNewFileSize) == -1))
   {
     // log this
     return 0;
     //ID3_THROW(ID3E_NoFile);
   }
-#endif
 
   _prepended_bytes = (ulTags & ID3TT_PREPENDED) ? 0 : _prepended_bytes;
   _appended_bytes  = (ulTags & ID3TT_APPENDED)  ? 0 : _appended_bytes;

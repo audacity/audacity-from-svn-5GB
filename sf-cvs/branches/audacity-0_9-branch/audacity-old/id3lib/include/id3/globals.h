@@ -1,5 +1,5 @@
 // -*- C++ -*-
-/* $Id: globals.h,v 1.3 2001-07-28 23:57:17 habes Exp $
+/* $Id: globals.h,v 1.3.2.1 2001-09-30 01:51:52 dmazzoni Exp $
 
  * id3lib: a C++ library for creating and manipulating id3v1/v2 tags Copyright
  * 1999, 2000 Scott Thomas Haug
@@ -41,16 +41,18 @@
  * properly get exported in windows dlls.
  * (borrowed from glib.h http://www.gtk.org)
  */
-
-//#ifdef WIN32
-//#  ifdef ID3LIB_COMPILATION
-//#    define ID3_C_EXPORT extern _declspec(dllexport)
-//#  else /* !ID3LIB_COMPILATION */
-//#    define ID3_C_EXPORT extern _declspec(dllimport)
-//#  endif /* !ID3LIB_COMPILATION */
-//#else /* !WIN32 */
+#ifdef WIN32
+#  ifdef ID3LIB_COMPILATION
+#    define ID3_C_EXPORT extern _declspec(dllexport)
+#    define ID3_CPP_EXPORT __declspec(dllexport)
+#  else /* !ID3LIB_COMPILATION */
+#    define ID3_C_EXPORT extern _declspec(dllimport)
+#    define ID3_CPP_EXPORT __declspec(dllimport)
+#  endif /* !ID3LIB_COMPILATION */
+#else /* !WIN32 */
 #  define ID3_C_EXPORT
-//#endif /* !WIN32 */
+#  define ID3_CPP_EXPORT
+#endif /* !WIN32 */
 #define ID3_C_VAR extern
 
 #ifndef __cplusplus
@@ -280,7 +282,8 @@ ID3_ENUM(ID3_FrameID)
   /* WPUB */ ID3FID_WWWPUBLISHER,      /**< Official publisher webpage */
   /* WXXX */ ID3FID_WWWUSER,           /**< User defined URL link */
   /*      */ ID3FID_METACRYPTO,        /**< Encrypted meta frame (id3v2.2.x) */
-  /*      */ ID3FID_METACOMPRESSION    /**< Compressed meta frame (id3v2.2.1) */
+  /*      */ ID3FID_METACOMPRESSION,   /**< Compressed meta frame (id3v2.2.1) */
+  /* >>>> */ ID3FID_LASTFRAMEID        /**< Last field placeholder */
 };
 
 ID3_ENUM(ID3_V1Lengths)
@@ -375,22 +378,9 @@ ID3_ENUM(ID3_TimeStampFormat)
 #  define ID3_SEARCHPATH_SEPARATOR ';'
 #  define ID3_SEARCHPATH_SEPARATOR_S ";"
 
-#elif defined(macintosh)  /* dmazzoni */
+#else  /* !WIN32 */
 
-#    define ID3_DIR_SEPARATOR ':'
-#    define ID3_DIR_SEPARATOR_S ":"
-#    define ID3_SEARCHPATH_SEPARATOR ';'
-#    define ID3_SEARCHPATH_SEPARATOR_S ";"
-
-#elif defined(_EMX_)
-/* EMX/OS2 */
-
-#    define ID3_DIR_SEPARATOR '/'
-#    define ID3_DIR_SEPARATOR_S "/"
-#    define ID3_SEARCHPATH_SEPARATOR ';'
-#    define ID3_SEARCHPATH_SEPARATOR_S ";"
-
-#else
+#  ifndef _EMX_
 /* Unix */
 
 #    define ID3_DIR_SEPARATOR '/'
@@ -398,7 +388,17 @@ ID3_ENUM(ID3_TimeStampFormat)
 #    define ID3_SEARCHPATH_SEPARATOR ':'
 #    define ID3_SEARCHPATH_SEPARATOR_S ":"
 
-#endif
+#  else
+/* EMX/OS2 */
+
+#    define ID3_DIR_SEPARATOR '/'
+#    define ID3_DIR_SEPARATOR_S "/"
+#    define ID3_SEARCHPATH_SEPARATOR ';'
+#    define ID3_SEARCHPATH_SEPARATOR_S ";"
+
+#  endif
+
+#endif /* !WIN32 */
 
 #ifndef NULL
 #  define NULL ((void*) 0)

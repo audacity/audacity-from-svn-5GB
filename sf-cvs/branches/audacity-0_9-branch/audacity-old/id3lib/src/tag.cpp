@@ -1,4 +1,4 @@
-// $Id: tag.cpp,v 1.1 2001-07-08 09:03:27 dmazzoni Exp $
+// $Id: tag.cpp,v 1.1.2.1 2001-09-30 01:51:53 dmazzoni Exp $
 
 // id3lib: a C++ library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug
@@ -72,9 +72,9 @@ using namespace dami;
  **   ID3_Tag myTag("song.mp3");
  ** \endcode
  **
- ** This constructor links, or associates, the object \c tag with the file
+ ** This constructor links, or associates, the object \c myTag with the file
  ** "song.mp3".  In doing so, the tagging information from "song.mp3" is parsed
- ** and added to \c tag.  This association can also be accomplished by creating
+ ** and added to \c myTag.  This association can also be accomplished by creating
  ** an empty tag and making an explicit call to Link().
  **
  ** \code
@@ -85,7 +85,7 @@ using namespace dami;
  ** The default behavior of Link() is to parse all possible tagging information
  ** and convert it into ID3v2 frames.  The tagging information parsed can be
  ** limited to a particular type (or types) of tag by passing an ID3_TagType
- ** (or combination of ID3_TagType's).  For example, to read only the ID3v1
+ ** (or combination of ID3_TagTypes).  For example, to read only the ID3v1
  ** tag, pass in the constant ID3TT_ID3V1.
  **
  ** \code
@@ -103,14 +103,14 @@ using namespace dami;
  **
  ** After linking with a file, the object \c myTag now contains some or all of
  ** the tagging information present in the file "song.mp3", represented as
- ** ID3v2 frames.  How can that information be accessed?  There a variety of
+ ** ID3v2 frames.  How can that information be accessed?  There are a variety of
  ** ways to do this.  One is to iterate through all the frames in the tag.
  **
  ** \code
  **   // use an std::auto_ptr here to handle object cleanup automatically
- **   ID3_Tag::Iterator* iter = tag.createIterator();
+ **   ID3_Tag::Iterator* iter = myTag.createIterator();
  **   ID3_Frame* myFrame = NULL;
- **   while (NULL != (myFrame = iter->GetNext())
+ **   while (NULL != (myFrame = iter->GetNext()))
  **   {
  **     // do something with myFrame
  **   }
@@ -154,7 +154,7 @@ using namespace dami;
  **
  ** \code
  **   // use an std::auto_ptr here to handle object cleanup automatically
- **   ID3_Frame::Iterator* iter = myFrame->createIterator();
+ **   ID3_Frame::Iterator* iter = myFrame->CreateIterator();
  **   ID3_Field* myField = NULL;
  **   while (NULL != (myField = iter->GetNext())
  **   {
@@ -174,15 +174,12 @@ using namespace dami;
  **   }
  ** \endcode
  **
- ** This documentation currently does not include a list of all possible field
- ** types, nor does it include all possible frame types and the fields they 
- ** contain.  The source code is the best resource for that information.
- **
- ** \todo List all field and frame types.
+ ** Note: The ID3_FrameInfo class provides information about the frame types known
+ ** to id3lib.
  **
  ** The ID3_Field represents a single piece of data within an ID3v2 frame.  As
  ** mentioned, an ID3_Field can represent three possible types of
- ** data: integers, binary data, and test strings.  The type of a particular
+ ** data: integers, binary data, and text strings.  The type of a particular
  ** field object is immutable; it is determined at the time of its construction
  ** (almost always when a frame is constructed) and can't be changed.  If in
  ** doubt, the field type can be accessed through its GetType() method.
@@ -280,7 +277,7 @@ using namespace dami;
  ** formatted 'CDM' frames from the unreleased ID3v2 2.01 draft specification.
  **
  ** \author Dirk Mahoney
- ** \version $Id: tag.cpp,v 1.1 2001-07-08 09:03:27 dmazzoni Exp $
+ ** \version $Id: tag.cpp,v 1.1.2.1 2001-09-30 01:51:53 dmazzoni Exp $
  ** \sa ID3_Frame
  ** \sa ID3_Field
  ** \sa ID3_Err
@@ -632,7 +629,7 @@ size_t ID3_Tag::Parse(const uchar header[ID3_TAGHEADERSIZE],
  ** can be used.
  ** 
  ** Make sure the rendering parameters are set before calling the method.
- ** See the Link dcoumentation for an example of this method in use.
+ ** See the Link documentation for an example of this method in use.
  ** 
  ** \sa ID3_TagType
  ** \sa Link
@@ -918,7 +915,7 @@ ID3_Tag& ID3_Tag::operator=( const ID3_Tag &rTag )
 
 bool ID3_Tag::HasTagType(uint16 tt) const
 {
-  return _impl->HasTagType(16);
+  return _impl->HasTagType(tt);
 }
 
 ID3_V2Spec ID3_Tag::GetSpec() const

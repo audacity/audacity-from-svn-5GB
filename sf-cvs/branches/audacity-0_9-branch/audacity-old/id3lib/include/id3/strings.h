@@ -1,5 +1,5 @@
 // -*- C++ -*-
-// $Id: strings.h,v 1.1 2001-07-08 08:57:34 dmazzoni Exp $
+// $Id: strings.h,v 1.1.2.1 2001-09-30 01:51:52 dmazzoni Exp $
 
 // id3lib: a software library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug

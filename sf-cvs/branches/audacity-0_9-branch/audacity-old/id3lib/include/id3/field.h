@@ -1,5 +1,5 @@
 // -*- C++ -*-
-// $Id: field.h,v 1.1 2001-07-08 08:56:48 dmazzoni Exp $
+// $Id: field.h,v 1.1.2.1 2001-09-30 01:51:52 dmazzoni Exp $
 
 // id3lib: a C++ library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug
@@ -33,7 +33,7 @@
 class ID3_Reader;
 class ID3_Writer;
 
-class ID3_Field
+class ID3_CPP_EXPORT ID3_Field
 {
 public:
   virtual void Clear() = 0;
@@ -91,6 +91,22 @@ protected:
 
   // To prevent public instantiation, the constructor is made protected
   ID3_Field() { };
+};
+
+class ID3_CPP_EXPORT ID3_FrameInfo
+{
+
+public:
+  ID3_FrameInfo() {};
+  ~ID3_FrameInfo() {};
+  char *ShortName(ID3_FrameID frameid);
+  char *LongName(ID3_FrameID frameid);
+  const char *Description(ID3_FrameID frameid);
+  int MaxFrameID();
+  int NumFields(ID3_FrameID frameid);
+  ID3_FieldType FieldType(ID3_FrameID frameid, int fieldnum);
+  size_t FieldSize(ID3_FrameID frameid, int fieldnum);
+  flags_t FieldFlags(ID3_FrameID frameid, int fieldnum);
 };
 
 #endif /* _ID3LIB_FIELD_H_ */

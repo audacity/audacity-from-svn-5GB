@@ -1,5 +1,5 @@
 // -*- C++ -*- 
-// $Id: field_impl.h,v 1.1 2001-07-08 09:01:36 dmazzoni Exp $
+// $Id: field_impl.h,v 1.1.2.1 2001-09-30 01:51:53 dmazzoni Exp $
 
 // id3lib: a C++ library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug
@@ -143,6 +143,7 @@ protected:
   bool ParseBinary(ID3_Reader&);
   
 };
+
 
 // Ack! Not for public use
 ID3_FrameDef *ID3_FindFrameDef(ID3_FrameID id);

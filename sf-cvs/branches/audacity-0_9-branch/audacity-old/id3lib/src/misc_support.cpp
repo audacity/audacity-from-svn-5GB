@@ -1,4 +1,4 @@
-// $Id: misc_support.cpp,v 1.1 2001-07-08 09:03:08 dmazzoni Exp $
+// $Id: misc_support.cpp,v 1.1.2.1 2001-09-30 01:51:53 dmazzoni Exp $
 
 // id3lib: a C++ library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug
@@ -67,6 +67,12 @@ char *ID3_GetString(const ID3_Frame *frame, ID3_FieldID fldName, size_t nIndex)
     frame->GetField(fldName)->Get(text, nText + 1, nIndex);
   }
   return text;
+}
+
+void ID3_FreeString(char *str)
+{
+  if(str != NULL)
+    delete [] str;
 }
 
 char *ID3_GetArtist(const ID3_Tag *tag)

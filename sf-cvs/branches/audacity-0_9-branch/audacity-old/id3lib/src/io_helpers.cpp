@@ -1,4 +1,4 @@
-// $Id: io_helpers.cpp,v 1.1 2001-07-08 09:02:57 dmazzoni Exp $
+// $Id: io_helpers.cpp,v 1.1.2.1 2001-09-30 01:51:53 dmazzoni Exp $
 
 // id3lib: a C++ library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug
@@ -295,11 +295,11 @@ size_t io::writeBENumber(ID3_Writer& writer, uint32 val, size_t len)
   return writer.writeChars(bytes, size);
 }
 
-ID3_Writer::size_type io::writeTrailingSpaces(ID3_Writer& writer, String buf, size_t len)
+size_t io::writeTrailingSpaces(ID3_Writer& writer, String buf, size_t len)
 {
   ID3_Writer::pos_type beg = writer.getCur();
   ID3_Writer::size_type strLen = buf.size();
-  ID3_Writer::size_type size = min((unsigned long)len, (unsigned long)strLen);
+  ID3_Writer::size_type size = min(len,strLen);
   writer.writeChars(buf.data(), size);
   for (; size < len; ++size)
   {
