@@ -451,6 +451,9 @@ if [[ $use_libflac = "system" ]] ; then
    AC_CHECK_HEADER(FLAC/format.h, ,
 		AC_MSG_ERROR([*** FLAC headers not found.  Run configure --without-libflac to disable it]))
 
+   AC_CHECK_HEADER(FLAC++/all.h, ,
+		AC_MSG_ERROR([*** FLAC++ headers not found.  Run configure --without-libflac to disable it]))
+
    LIBS="$LIBS -lFLAC -lFLAC++"
    AC_DEFINE(USE_LIBFLAC, 1,
       [Define if the FLAC library is present])
