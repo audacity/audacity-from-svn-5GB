@@ -174,6 +174,8 @@ void AudacityProject::CreateMenusAndCommands()
   #ifdef __WXMAC__
    /* i18n-hint: Mac OS X shortcut should be Ctrl+, */
    c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
+   c->AddItem("Exit",           _("E&xit"),                          FN(OnExit));
+   c->SetCommandFlags("Exit", 0, 0);
   #else
    c->AddSeparator();
    /* i18n-hint: On Windows and Linux, the Preferences shortcut should be Ctrl+P or something like that */

@@ -375,7 +375,8 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    CommandListEntry *tmpEntry = new CommandListEntry;
    
    // wxMac 2.5 and higher will do special things with the
-   // Preferences and About menu items, if we give them the right IDs.
+   // Preferences, Exit (Quit), and About menu items,
+   // if we give them the right IDs.
    // Otherwise we just pick increasing ID numbers for each new
    // command.  Note that the name string we are comparing
    // ("About", "Preferences") is the internal command name
@@ -388,6 +389,8 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
   #ifdef __WXMAC__
    if (name == "Preferences")
       tmpEntry->id = wxID_PREFERENCES;
+   else if (name == "Exit")
+      tmpEntry->id = wxID_EXIT;
    else if (name == "About")
       tmpEntry->id = wxID_ABOUT;
   #endif
@@ -542,6 +545,7 @@ bool CommandManager::HandleKey(wxKeyEvent &evt, wxUint32 flags, wxUint32 mask)
 {
    wxString keyStr = KeyEventToKeyString(evt);
 	CommandListEntry *entry = mCommandKeyHash[keyStr];
+
    if (!entry)
       return false;
 
