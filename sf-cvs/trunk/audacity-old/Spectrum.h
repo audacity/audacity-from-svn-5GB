@@ -19,14 +19,12 @@
 
   width: the number of samples
   height: the desired number of frequencies
-
-  The function returns false if it is not given enough data to
-  compute an accurate spectrogram - this allows you to call it with
-  a bigger window if possible.
 */
 
 bool ComputeSpectrum(sampleType *data, int width, int height,
 		     double rate, float *out);
+
+int GetSpectrumWindowSize();
 
 #endif
 

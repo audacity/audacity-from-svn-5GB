@@ -160,13 +160,14 @@ VTrack *WaveTrack::Duplicate()
   return (VTrack *)copy;
 }
 
-void WaveTrack::PrepareCache(double start, double pps, int screenWidth)
+void WaveTrack::PrepareCacheMinMax(double start, double pps, int screenWidth)
 {
   wxASSERT(start>=0.0);
   wxASSERT(pps>0.0);
   wxASSERT(screenWidth>0);
 
-  if (!cache.dirty &&
+  if (!cache.spectrum &&
+	  !cache.dirty &&
       pps == cache.pps &&
       start == cache.start &&
       screenWidth <= cache.len)
@@ -176,6 +177,13 @@ void WaveTrack::PrepareCache(double start, double pps, int screenWidth)
   wxMutexLocker lock(*blockMutex);
   #endif
 
+  if (cache.min) delete[] cache.min;
+  if (cache.max) delete[] cache.max;
+  if (cache.where) delete[] cache.where;
+  if (cache.freq) delete[] cache.freq;
+  cache.freq = NULL;
+
+  cache.spectrum = false;
   cache.pps = pps;
   cache.start = start;
   cache.len = screenWidth;
@@ -392,7 +400,7 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
     dc.SetPen(*wxRED_PEN);	    
     dc.DrawLine(mid.x, ctr, mid.x + mid.width, ctr);
 
-    PrepareCache(t0, pps, mid.width);
+    PrepareCacheMinMax(t0, pps, mid.width);
   }
 
   int *heights = new int[mid.width];
@@ -480,6 +488,81 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
   }
 }
 
+void WaveTrack::PrepareCacheSpectrum(double start, double pps, 
+									 int screenWidth, int screenHeight)
+{
+  wxASSERT(start>=0.0);
+  wxASSERT(pps>0.0);
+  wxASSERT(screenWidth>0);
+  wxASSERT(screenHeight>0);
+
+  if (cache.spectrum &&
+	  !cache.dirty &&
+      pps == cache.pps &&
+      start == cache.start &&
+      screenWidth <= cache.len &&
+	  cache.fheight == screenHeight)
+    return;
+
+  #if wxUSE_THREADS
+  wxMutexLocker lock(*blockMutex);
+  #endif
+
+  if (cache.min) delete[] cache.min;
+  if (cache.max) delete[] cache.max;
+  if (cache.where) delete[] cache.where;
+  if (cache.freq) delete[] cache.freq;
+  cache.min = NULL;
+  cache.max = NULL;
+
+  cache.spectrum = true;
+  cache.pps = pps;
+  cache.start = start;
+  cache.len = screenWidth;
+  cache.fheight = screenHeight;
+  cache.freq = new float[cache.len * screenHeight];
+  wxASSERT(cache.freq);
+  cache.where = new sampleCount[cache.len+1];
+  wxASSERT(cache.where);
+  
+  sampleCount x;
+
+  for(x=0; x<cache.len+1; x++)
+	cache.where[x] = (sampleCount)(start*rate + x*rate/pps);
+  
+  int windowSize = GetSpectrumWindowSize();
+  sampleType *buffer = new sampleType[windowSize];
+
+  for(x=0; x<cache.len; x++) {
+	
+	sampleCount start = cache.where[x];
+	sampleCount len = windowSize;
+
+	sampleCount i;
+
+	if (start >= numSamples) {
+	  for(i=0; i<screenHeight; i++)
+		cache.freq[screenHeight*x + i] = 0;
+
+	}
+	else {
+
+	  if (start + len > numSamples) {
+		len = numSamples - start;
+		for(i=len; i<windowSize; i++)
+		  buffer[i] = 0;
+	  }
+	  
+	  Get(buffer, start, len);
+	  
+	  ComputeSpectrum(buffer, windowSize, screenHeight, rate,
+					  &cache.freq[screenHeight*x]);
+	}
+  }
+
+  delete[] buffer;
+}
+
 void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
 							 double sel0, double sel1,
 							 bool drawEnvelope)
@@ -487,6 +570,8 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
   int x=0;
   double tpre = h - tOffset;
   double tstep = 1.0/pps;
+
+  double t0 = (tpre >= 0.0? tpre: 0.0);
 
   int ssel0 = (int)((sel0 - tOffset) * rate);
   int ssel1 = (int)((sel1 - tOffset) * rate);
@@ -503,8 +588,9 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
   wxASSERT(image);
   unsigned char *data = image->GetData();
 
-  float *spec = new float[r.height];
+  PrepareCacheSpectrum(t0, pps, r.width, r.height);
 
+  int i=0;
   while(x<r.width) {
     sampleCount w0 = (sampleCount)((tpre+x*tstep)*rate);
 
@@ -518,45 +604,26 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
       continue;
     }
 
-    sampleCount wsize;
-    int k=0;
-    do {
-      k++;
-      wsize = (sampleCount)(tstep*k*rate);
-    } while (k<30 && !ComputeSpectrum(0, (int)wsize, r.height, rate, 0));
-
-    if (wsize > (numSamples - w0))
-      wsize = numSamples - w0;
-
-    sampleType *buffer = new sampleType[wsize];
-    Get(buffer, w0, wsize);
-
-    if (ComputeSpectrum(buffer, (int)wsize, r.height, rate, spec)) {
-
-      for(int yy=0; yy<r.height; yy++) {
-        
-        unsigned char rv, gv, bv;
-        GetColorGradient(spec[r.height-1-yy], &rv, &gv, &bv);
-        
-        if (ssel0 <= w0 && w0 < ssel1) {
-          rv = (rv * 2 / 3);
-          gv = (gv * 2 / 3);
-          bv = (bv * 2 / 3);
-        }
-        
-        for(int xx=0; xx<k; xx++) {
-	      data[(yy*r.width + x+xx)*3] = rv;
-	      data[(yy*r.width + x+xx)*3+1] = gv;
-	      data[(yy*r.width + x+xx)*3+2] = bv;	  
-	    }
-      }
-
-    }
-    
-    delete[] buffer;
-    
-    //    x += k;
-    x += 2;
+	float *spec = &cache.freq[r.height * i];
+	
+	for(int yy=0; yy<r.height; yy++) {
+	  
+	  unsigned char rv, gv, bv;
+	  GetColorGradient(spec[r.height-1-yy], &rv, &gv, &bv);
+	  
+	  if (ssel0 <= w0 && w0 < ssel1) {
+		rv = (rv * 2 / 3);
+		gv = (gv * 2 / 3);
+		bv = (bv * 2 / 3);
+	  }
+	  
+	  data[(yy*r.width + x)*3] = rv;
+	  data[(yy*r.width + x)*3+1] = gv;
+	  data[(yy*r.width + x)*3+2] = bv;	  
+	}
+	
+	i++;
+	x++;
   }
 
   wxBitmap converted = image->ConvertToBitmap();
@@ -565,8 +632,6 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
 
   delete image;
 
-  delete[] spec;
-  
   if (drawEnvelope) {
 	wxRect envRect = r;
 	envRect.height-=2;

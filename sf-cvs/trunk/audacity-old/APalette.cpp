@@ -49,6 +49,8 @@ APalette *gAPalette = NULL;
 #define APALETTE_HEIGHT 80
 #endif
 
+#include "xpm/Palette.xpm"
+
 void InitAPalette(wxWindow *parent)
 {
   wxPoint where;
@@ -81,37 +83,38 @@ END_EVENT_TABLE()
 APalette::APalette(wxWindow* parent, wxWindowID id, const wxString& title,
 				   const wxPoint& pos) :
   wxMiniFrame(parent, id, title, pos, wxSize(300, APALETTE_HEIGHT),
-              wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP )
+              wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP |
+			  wxFRAME_FLOAT_ON_PARENT)
 {
   mTool[0] =
     new AButton(this, ID_IBEAM, wxPoint(0, 0), wxSize(27, 27),
-				"IBeamUp", "IBeamOver",
-				"IBeamDown", "IBeamUp");
+				IBeamUp, IBeamOver,
+				IBeamDown, IBeamUp);
   mTool[1] = 
     new AButton(this, ID_SELECT, wxPoint(28, 0), wxSize(27, 27),
-				"SelectUp", "SelectOver",
-				"SelectDown", "SelectUp");
+				SelectUp, SelectOver,
+				SelectDown, SelectUp);
   mTool[2] = 
     new AButton(this, ID_MOVE, wxPoint(0, 28), wxSize(27, 27),
-				"MoveUp", "MoveOver",
-				"MoveDown", "MoveUp");
+				MoveUp, MoveOver,
+				MoveDown, MoveUp);
   mTool[3] = 
     new AButton(this, ID_ZOOM, wxPoint(28, 28), wxSize(27, 27),
-				"ZoomUp", "ZoomOver",
-				"ZoomDown", "ZoomUp");
+				ZoomUp, ZoomOver,
+				ZoomDown, ZoomUp);
 
   mPlay =
 	new AButton(this, ID_PLAY_BUTTON, wxPoint(64, 4), wxSize(48, 48),
-				"PlayUp", "PlayOver",
-				"PlayDown", "PlayDisabled");
+				PlayUp, PlayOver,
+				PlayDown, PlayDisabled);
   mStop =
 	new AButton(this, ID_STOP_BUTTON, wxPoint(114, 4), wxSize(48, 48),
-				"StopUp", "StopOver",
-				"StopDown", "StopDisabled");
+				StopUp, StopOver,
+				StopDown, StopDisabled);
   
   mVolume =
 	new ASlider(this, 0, wxPoint(172, 14), wxSize(100, 28),
-				"Slider", "SliderThumb", 100);
+				Slider, SliderThumb, 100);
 
   mVolume->Set(80);
 

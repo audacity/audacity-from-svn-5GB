@@ -53,6 +53,7 @@ public:
   sampleType    *max;
 
   // spectrum only
+  int           fheight;
   float         *freq;
 };
 
@@ -164,7 +165,9 @@ private:
 
   BlockArray *Blockify(sampleType *buffer, sampleCount len);
 
-  void PrepareCache(double start, double pps, int screenWidth);
+  void PrepareCacheMinMax(double start, double pps, int screenWidth);
+  void PrepareCacheSpectrum(double start, double pps,
+							int screenWidth, int screenHeight);
 
   static sampleCount summary64KLen;
   static sampleCount summary256Len;

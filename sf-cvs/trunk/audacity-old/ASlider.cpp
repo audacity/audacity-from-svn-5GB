@@ -29,8 +29,8 @@ END_EVENT_TABLE()
 ASlider::ASlider(wxWindow *parent, wxWindowID id,
 				 const wxPoint& pos,
 				 const wxSize& size,
-				 wxString sliderImage,
-				 wxString thumbImage,
+				 char **sliderXPM,
+				 char **thumbXPM,
 				 int max) :
   wxWindow(parent, id, pos, size)
 {
@@ -39,11 +39,9 @@ ASlider::ASlider(wxWindow *parent, wxWindowID id,
 
   mIsDragging = false;
 
-  mBitmap = 
-	new wxBitmap(BITMAP_PRE +sliderImage+ BITMAP_SUF, AUDACITY_BITMAP_TYPE);
+  mBitmap = new wxBitmap(sliderXPM);
 
-  mThumbBitmap = 
-	new wxBitmap(BITMAP_PRE +thumbImage+ BITMAP_SUF, AUDACITY_BITMAP_TYPE);
+  mThumbBitmap = new wxBitmap(thumbXPM);
 
   mThumbWidth = mThumbBitmap->GetWidth();
   mThumbHeight = mThumbBitmap->GetHeight();

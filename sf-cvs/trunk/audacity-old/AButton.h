@@ -27,13 +27,13 @@ class AButton: public wxWindow
 public:
 
   AButton(wxWindow *parent, wxWindowID id,
-	  const wxPoint& pos,
-	  const wxSize& size,
-	  wxString upImage,
-	  wxString overImage,
-	  wxString downImage,
-	  wxString disImage);
-
+		  const wxPoint& pos,
+		  const wxSize& size,
+		  char **upXPM,
+		  char **overXPM,
+		  char **downXPM,
+		  char **disXPM);
+  
   virtual ~AButton();
 
   virtual void Disable();
@@ -68,23 +68,5 @@ public:
 
   DECLARE_EVENT_TABLE()
 };
-
-#ifdef __WXMSW__
-  #define AUDACITY_BITMAP_TYPE wxBITMAP_TYPE_BMP_RESOURCE
-  #define BITMAP_PRE ""
-  #define BITMAP_SUF ""
-#endif
-
-#ifdef __WXMAC__
-  #define AUDACITY_BITMAP_TYPE wxBITMAP_TYPE_PICT_RESOURCE
-  #define BITMAP_PRE ""
-  #define BITMAP_SUF ".png"
-#endif
-
-#ifdef __WXGTK__
-  #define AUDACITY_BITMAP_TYPE wxBITMAP_TYPE_PNG
-  #define BITMAP_PRE "icons/"
-  #define BITMAP_SUF ".png"
-#endif
 
 #endif

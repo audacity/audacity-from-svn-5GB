@@ -13,6 +13,8 @@
 #include "AboutDialog.h"
 #include "AudacityApp.h"
 
+#include "xpm/AudacityLogo.xpm"
+
 // ----------------------------------------------------------------------------
 // icons
 // ----------------------------------------------------------------------------
@@ -47,27 +49,13 @@ AboutDialog::AboutDialog()
   
   topsizer = new wxBoxSizer( wxVERTICAL );
   
-  logo = new wxBitmap();
-  
-#ifdef __WXMSW__
-  if (logo->LoadFile("AudacityLogo",wxBITMAP_TYPE_BMP_RESOURCE)) {
-#else
-#ifdef __WXMAC__
-  if (logo->LoadFile("AudacityLogo",wxBITMAP_TYPE_PICT_RESOURCE)) {
-#else
-  if (logo->LoadFile("icons/AudacityLogo.XPM",wxBITMAP_TYPE_XPM)) {
-#endif
-#endif
+  logo = new wxBitmap(AudacityLogo);
 
-	icon =
-	  new wxStaticBitmap(this, -1, *logo, wxPoint(0, 0), wxSize(530, 142));
-	
-	topsizer->Add( icon, 0, wxCENTER );
-	topsizer->Add( CreateTextSizer(caption), 0, wxCENTER, 10 );
-  }
-  else {
-	topsizer->Add( CreateTextSizer(fullMessage), 0, wxCENTER, 10 );	
-  }
+  icon =
+	new wxStaticBitmap(this, -1, *logo, wxPoint(0, 0), wxSize(530, 142));
+  
+  topsizer->Add( icon, 0, wxCENTER );
+  topsizer->Add( CreateTextSizer(caption), 0, wxCENTER, 10 );
   
   topsizer->Add( CreateButtonSizer( wxOK ),
 				 0, wxCENTRE | wxALL, 10 );

@@ -26,11 +26,11 @@ class ASlider: public wxWindow
 public:
 
   ASlider(wxWindow *parent, wxWindowID id,
-	  const wxPoint& pos,
-	  const wxSize& size,
-	  wxString sliderImage,
-	  wxString thumbImage,
-	  int max);
+		  const wxPoint& pos,
+		  const wxSize& size,
+		  char **sliderXPM,
+		  char **thumbXPM,
+		  int max);
 
   virtual ~ASlider();
 

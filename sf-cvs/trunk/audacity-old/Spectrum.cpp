@@ -14,10 +14,15 @@
 
 #include "FFT.h"
 
+int GetSpectrumWindowSize()
+{
+  return 512;
+}
+
 bool ComputeSpectrum(sampleType *data, int width, int height,
 		     double rate, float *grayscaleOut)
 {
-  int windowSize = 512;
+  int windowSize = GetSpectrumWindowSize();
   int windowFunc = 3;
 
   if (width < windowSize)

@@ -10,7 +10,7 @@
   supports that a wxButton does not is mouseovers.  It uses an image
   for all of its states: up, over, down, and disabled, allowing any
   sort of customization you want.  Currently it does not support
-  transparency effects, so the image musts be rectangular and
+  transparency effects, so the images must be rectangular and
   opaque.
 
 **********************************************************************/
@@ -27,12 +27,12 @@ BEGIN_EVENT_TABLE(AButton, wxWindow)
 END_EVENT_TABLE()
 
 AButton::AButton(wxWindow *parent, wxWindowID id,
-		 const wxPoint& pos,
-		 const wxSize& size,
-		 wxString upImage,
-		 wxString overImage,
-		 wxString downImage,
-		 wxString disImage) :
+				 const wxPoint& pos,
+				 const wxSize& size,
+				 char **upXPM,
+				 char **overXPM,
+				 char **downXPM,
+				 char **disXPM):
   wxWindow(parent, id, pos, size)
 {
   mButtonIsDown = false;
@@ -40,14 +40,10 @@ AButton::AButton(wxWindow *parent, wxWindowID id,
   mIsClicking = false;
   mEnabled = true;
 
-  mBitmap[0] =
-	new wxBitmap(BITMAP_PRE +upImage+ BITMAP_SUF, AUDACITY_BITMAP_TYPE);
-  mBitmap[1] =
-	new wxBitmap(BITMAP_PRE +overImage+ BITMAP_SUF, AUDACITY_BITMAP_TYPE);
-  mBitmap[2] =
-	new wxBitmap(BITMAP_PRE +downImage+ BITMAP_SUF, AUDACITY_BITMAP_TYPE);
-  mBitmap[3] =
-	new wxBitmap(BITMAP_PRE +disImage+ BITMAP_SUF, AUDACITY_BITMAP_TYPE);
+  mBitmap[0] = new wxBitmap(upXPM);
+  mBitmap[1] = new wxBitmap(overXPM);
+  mBitmap[2] = new wxBitmap(downXPM);
+  mBitmap[3] = new wxBitmap(disXPM);
 
   GetSize(&mWidth, &mHeight);
 }
