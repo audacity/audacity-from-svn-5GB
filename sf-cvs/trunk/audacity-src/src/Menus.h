@@ -18,6 +18,7 @@ void CommandManagerListCallback(void *fptr, int index);
 void CreateMenusAndCommands();
 
 void ModifyExportMenus();
+void ModifyUndoMenus();
 
 // used in routines OnSelectionSave
 // and OnSelectionRestore
