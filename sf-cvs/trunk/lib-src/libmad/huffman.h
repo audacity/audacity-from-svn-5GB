@@ -16,13 +16,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: huffman.h,v 1.1.1.1 2001-08-12 21:22:14 habes Exp $
+ * $Id: huffman.h,v 1.2 2001-08-12 22:18:57 habes Exp $
  */
 
 # ifndef LIBMAD_HUFFMAN_H
 # define LIBMAD_HUFFMAN_H
 
 union huffquad {
+  unsigned short raw      : 16;  /* used for initialization, see macros in huffman.c */
   struct {
     unsigned short final  :  1;
     unsigned short hlen   :  3;
@@ -40,6 +41,7 @@ union huffquad {
 };
 
 union huffpair {
+  unsigned short raw      : 16;  /* used for initialization, see macros in huffman.c */
   struct {
     unsigned short final  :  1;
     unsigned short hlen   :  3;

@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: huffman.c,v 1.1.1.1 2001-08-12 21:22:14 habes Exp $
+ * $Id: huffman.c,v 1.2 2001-08-12 22:18:57 habes Exp $
  */
 
 # ifdef HAVE_CONFIG_H
@@ -34,8 +34,15 @@
  * These tables support decoding up to 4 Huffman code bits at a time.
  */
 
-# define V(v, w, x, y, hlen)	{      { 1, hlen, v, w, x, y } }
-# define PTR(offs, bits)	{ ptr: { 0, bits, offs       } }
+/* [JH]: These macros try to achieve what the commented ones below do,
+ *       without the benefit of the 'ptr:' notation. */
+# define V(v, w, x, y, hlen) { 1 | (hlen >> 1) | (v    >> 4) | (w >> 5) | (x >> 6) | (y >> 7) }
+# define PTR(offs, bits)     {     (bits >> 1) | (offs >> 4)                                  }
+
+/*
+ * # define V(v, w, x, y, hlen)	{      { 1, hlen, v, w, x, y } }
+ * # define PTR(offs, bits)	{ ptr: { 0, bits, offs       } }
+ */
 
 static
 union huffquad const hufftabA[] = {
@@ -100,8 +107,15 @@ union huffquad const hufftabB[] = {
 # undef V
 # undef PTR
 
-# define V(x, y, hlen)		{      { 1, hlen, x, y } }
-# define PTR(offs, bits)	{ ptr: { 0, bits, offs } }
+/* [JH]: These macros try to achieve what the commented ones below do,
+ *       without the benefit of the 'ptr:' notation. */
+# define V(x, y, hlen)      { 1 | (hlen >> 1) | (x    >> 4) | (y >> 8) }
+# define PTR(offs, bits)    {     (bits >> 1) | (offs >> 4)            }
+
+/*
+ * # define V(x, y, hlen)		{      { 1, hlen, x, y } }
+ * # define PTR(offs, bits)	{ ptr: { 0, bits, offs } }
+ */
 
 static
 union huffpair const hufftab0[] = {
