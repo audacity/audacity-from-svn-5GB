@@ -40,7 +40,9 @@ int term_testchar()
 #else
 
 #include <termios.h>
+#ifndef __APPLE__
 #include <asm/ioctls.h>
+#endif
 #include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
