@@ -95,8 +95,8 @@ int Resample::Process(double  factor,
                       float  *outBuffer,
                       int     outBufferLen)
 {
-   resample_process(mHandle, factor, inBuffer, inBufferLen,
-                    (int)lastFlag, inBufferUsed, outBuffer, outBufferLen);
+   return resample_process(mHandle, factor, inBuffer, inBufferLen,
+									(int)lastFlag, inBufferUsed, outBuffer, outBufferLen);
 }
 
 Resample::~Resample()
