@@ -28,6 +28,9 @@
 #include <sys/stat.h>
 #endif
 
+// seed random number generator
+#include <time.h>
+
 #include "Audacity.h"
 #include "AudacityApp.h"
 #include "BlockFile.h"
@@ -46,13 +49,9 @@
 // Static class variables
 
 int DirManager::numDirManagers = 0;
-int DirManager::fileIndex = 0;
-int DirManager::dirIndex = 0;
 bool DirManager::dontDeleteTempFiles = false;
 
-unsigned int DirManager::defaultHashTableSize = 10000;
-
-wxString DirManager::temp;
+wxString DirManager::globaltemp;
 
 // Methods
 
@@ -61,6 +60,11 @@ DirManager::DirManager()
    wxLogDebug("DirManager: Created new instance");
 
    mRef = 1; // MM: Initial refcount is 1 by convention
+   
+   // set up local temp subdir
+   wxString numstring;
+   numstring.Printf("project%d",numDirManagers);
+   mytemp=globaltemp + wxFILE_SEP_PATH + numstring;
 
    numDirManagers++;
 
@@ -69,12 +73,15 @@ DirManager::DirManager()
 
    mLoadingTarget = NULL;
 
-   hashTableSize = defaultHashTableSize;
-   blockFileHash = new wxHashTable(wxKEY_STRING, hashTableSize);
+   // toplevel pool hash is fully populated to begin 
+   {
+      int i;
+      for(i=0; i< 256; i++) dirTopPool[i]=0;
+   }
 
    // Make sure there is plenty of space for temp files
    wxLongLong freeSpace = 0;
-   if (wxGetDiskSpace(temp, NULL, &freeSpace)) {
+   if (wxGetDiskSpace(globaltemp, NULL, &freeSpace)) {
       if (freeSpace < 1048576) {
          ShowWarningDialog(NULL, "DiskSpaceWarning",
               _("Warning: there is very little free disk space left on this "
@@ -82,14 +89,15 @@ DirManager::DirManager()
                 "preferences."));
       }
    }
+
+   // this need not be strictly uniform or random, but it should give
+   // unclustered numbers
+   srand(time(0));
 }
 
 DirManager::~DirManager()
 {
    wxASSERT(mRef == 0); // MM: Otherwise, we shouldn't delete it
-
-   if (blockFileHash)
-      delete blockFileHash;
 
    numDirManagers--;
    if (numDirManagers == 0) {
@@ -98,46 +106,105 @@ DirManager::~DirManager()
    }
 }
 
+// behavior of dash_rf_enum is tailored to our two uses and thus not
+// entirely strightforward.  It recurses depth-first from the passed
+// in directory into its subdirs according to optional dirspec
+// matching, building a list of directories and [optionally] files to
+// be rm()ed in the listed order.  The dirspec is not applied to
+// subdirs of subdirs. Files in the passed in directory will not be
+// enumerated.  Also, the passed-in directory is the last entry added
+// to the list.
+
+static int rm_dash_rf_enumerate(wxString dirpath, 
+                                wxStringList *flist, 
+                                wxString dirspec,
+                                int files_p,
+                                int dirs_p){
+   int count=0;
+   bool cont;
+
+   wxDir dir(dirpath);
+   if(dir.IsOpened()){
+      wxString name;
+
+      if(files_p){
+         cont= dir.GetFirst(&name, dirspec, wxDIR_FILES);
+         while ( cont ){
+            wxString filepath=dirpath + wxFILE_SEP_PATH + name;
+            
+            count++;
+            flist->Add(filepath);
+            
+            cont = dir.GetNext(&name);
+         }
+      }
+
+      cont= dir.GetFirst(&name, dirspec, wxDIR_DIRS);
+      while ( cont ){
+         wxString subdirpath=dirpath + wxFILE_SEP_PATH + name;
+         count+=rm_dash_rf_enumerate(subdirpath,flist,wxEmptyString,
+                                     files_p,dirs_p);  
+         cont = dir.GetNext(&name);
+      }
+   }
+
+   if(dirs_p){
+      flist->Add(dirpath);
+      count++;
+   }
+
+   return count;
+}
+
+static void rm_dash_rf_execute(wxStringList fnameList, 
+                               char *prompt, int count,
+                               int files_p, int dirs_p){
+
+   char **array = fnameList.ListToArray();   
+   wxProgressDialog *progress = NULL;
+   wxStartTimer();
+
+   for (int i = 0; i < count; i++) {
+      char *file = array[i];
+      if(files_p){
+         wxRemoveFile(file);
+      }
+      if(dirs_p){
+         wxRmdir(file);
+      }
+
+      if (prompt && !progress && wxGetElapsedTime(false) > 500)
+         progress =
+            new wxProgressDialog(_("Progress"),
+                                 _(prompt),
+                                 1000,
+                                 NULL,
+                                 wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
+      
+      if (progress)
+         progress->Update(int ((i * 1000.0) / count));
+   }
+   
+   if (progress)
+      delete progress;
+   
+   delete [] array;
+}
+
 // static
 void DirManager::CleanTempDir(bool startup)
 {
-   wxString fname;
    wxStringList fnameList;
    int count = 0;
 
    if (dontDeleteTempFiles)
       return;
 
-   // XXX: is this too destructive, to delete everything?
-   fname = wxFindFirstFile((const char *) (temp + wxFILE_SEP_PATH + "b*"));
-   while (fname != "") {
-      count++;
-      fnameList.Add(fname);
-      fname = wxFindNextFile();
-   }
-   {
-     // also need to clean up the new subdirs. Wildcards in the path
-     // spec of wxFindFirstFile don't seem to work; do it the hard way
-     wxDir dir(temp);
-     if(dir.IsOpened()){
-       bool cont= dir.GetFirst(&fname, "d*");
-       while ( cont ){
-
-	 fname = wxFindFirstFile((const char *) 
-				 (temp + wxFILE_SEP_PATH + 
-				  fname.c_str() + wxFILE_SEP_PATH + "d*"));
-	 while (fname != "") {
-	   count++;
-	   fnameList.Add(fname);
-	   fname = wxFindNextFile();
-	 }
-	 
-	 cont = dir.GetNext(&fname);
-       }
-     }
-   }
-
-   if (count == 0)
+   // don't coun the global temp directory, which this will find and
+   // list last
+   count=rm_dash_rf_enumerate(globaltemp,&fnameList,"project*",1,1)-1;
+   
+   if (count == 0) 
       return;
 
    if (startup) {
@@ -159,52 +226,25 @@ void DirManager::CleanTempDir(bool startup)
       }
    }
 
-   wxChar **array = fnameList.ListToArray();
-
-   wxProgressDialog *progress = NULL;
-
-   //wxYield();
-   wxStartTimer();
-
-   for (int i = 0; i < count; i++) {
-      wxString fileName = array[i];
-      wxRemoveFile(FILENAME(fileName));
-
-      if (!progress && wxGetElapsedTime(false) > 500)
-         progress =
-             new wxProgressDialog(_("Progress"),
-                                  _("Cleaning up temporary files..."),
-                                  1000,
-                                  NULL,
-                                  wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
-
-      if (progress)
-         progress->Update(int ((i * 1000.0) / count));
-   }
-
-   if (progress)
-      delete progress;
-
-   delete [] array;
+   rm_dash_rf_execute(fnameList,"Cleaning up temporary files",count,1,1);
 }
 
 bool DirManager::SetProject(wxString & projPath, wxString & projName,
                             bool create)
 {
-   wxString oldPath = projPath;
-   wxString oldName = projName;
+   wxString oldPath = this->projPath;
+   wxString oldName = this->projName;
    wxString oldFull = projFull;
    wxString oldLoc = projFull;
    if (oldLoc == "")
-      oldLoc = temp;
-   lastProject = projPath;
-   
-   if (projPath == "")
-      projPath = FROMFILENAME(::wxGetCwd());
+      oldLoc = mytemp;
 
    this->projPath = projPath;
    this->projName = projName;
-   this->projFull = projPath + wxFILE_SEP_PATH + projName;
+   projFull = projPath + wxFILE_SEP_PATH + projName;
+
+   wxString cleanupLoc1=oldLoc;
+   wxString cleanupLoc2=projFull;
 
    if (create) {
       if (!wxPathExists(FILENAME(projFull)))
@@ -228,18 +268,36 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
       saved version of the old project must not be moved,
       otherwise the old project would not be safe. */
 
-   blockFileHash->BeginFind();
-   wxNode *n = blockFileHash->Next();
-   bool success = true;
-   while(n && success) {
-      BlockFile *b = (BlockFile *)n->GetData();
+   wxProgressDialog *progress = NULL;
+   int total=blockFileHash.size();
+   int count=0;
+   wxStartTimer();
 
+   BlockHash::iterator i=blockFileHash.begin();
+   bool success = true;
+   while(i != blockFileHash.end() && success) {
+      BlockFile *b = i->second;
+      
       if (b->IsLocked())
          success = CopyToNewProjectDirectory(b);
-      else
+      else{
          success = MoveToNewProjectDirectory(b);
+      }
 
-      n = blockFileHash->Next();
+
+      if (!progress && wxGetElapsedTime(false) > 500)
+         progress =
+            new wxProgressDialog(_("Progress"),
+                                 _("Saving project data files"),
+                                 1000,
+                                 NULL,
+                                 wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
+      
+      if (progress)
+         progress->Update(int ((count * 1000.0) / total));
+
+      i++;
+      count++;
    }
 
    if (!success) {
@@ -251,21 +309,49 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
 
       projFull = oldLoc;
 
-      blockFileHash->BeginFind();
-      wxNode *n = blockFileHash->Next();
-      while(n) {
-         BlockFile *b = (BlockFile *)n->GetData();
-         MoveToNewProjectDirectory(b);         
-         n = blockFileHash->Next();
+      BlockHash::iterator i=blockFileHash.begin();
+      while(i != blockFileHash.end()) {
+         BlockFile *b = i->second;
+         MoveToNewProjectDirectory(b);
+
+         if (progress && count>=0)
+            progress->Update(int ((count * 1000.0) / total));
+
+         i++;
+         count--;
       }
 
       projFull = oldFull;
-      projPath = oldPath;
-      projName = oldName;
+      this->projPath = oldPath;
+      this->projName = oldName;
+
+      if (progress)
+         delete progress;
 
       return false;
    }
 
+   if (progress)
+      delete progress;
+
+   // Some subtlety; SetProject is used both to move a temp project
+   // into a permanent home as well as just set up path variables when
+   // loading a project; in this latter case, the movement code does
+   // nothing because SetProject is called before there are any
+   // blockfiles.  Cleanup code trigger is the same
+   if(blockFileHash.size()>0){
+      // Clean up after ourselves; look for empty directories in the old
+      // and new project directories.  The easiest way to do this is to
+      // recurse depth-first and rmdir every directory seen in old and
+      // new; rmdir will fail on non-empty dirs.
+      
+      wxStringList dirlist;
+      count=rm_dash_rf_enumerate(cleanupLoc1,&dirlist,wxEmptyString,0,1);
+      count+=rm_dash_rf_enumerate(cleanupLoc2,&dirlist,wxEmptyString,0,1);
+      
+      if(count)
+         rm_dash_rf_execute(dirlist,"Cleaning up cache directories",count,0,1);
+   }
    return true;
 }
 
@@ -280,7 +366,7 @@ wxLongLong DirManager::GetFreeDiskSpace()
    wxString path = projPath;
 
    if (projPath == "")
-      path = temp;
+      path = mytemp;
 
    if (!wxGetDiskSpace(FILENAME(path), NULL, &freeSpace))
       freeSpace = -1;
@@ -289,55 +375,243 @@ wxLongLong DirManager::GetFreeDiskSpace()
 }
 
 void DirManager::AssignFile(wxFileName &fileName,
-			    wxString value){
+			    wxString value)
+{
 
-  fileName.AssignDir(projFull != ""? projFull: temp);
+   wxFileName dir;
+   dir.AssignDir(projFull != ""? projFull: mytemp);
+   
+   if(value.GetChar(0)=='d'){
+      // this file is located in a subdiretory tree 
+      int location=value.Find('b');
+      wxString subdir=value.Mid(0,location);
+      dir.AppendDir(subdir);
+      
+      if(!dir.DirExists())dir.Mkdir();
+   }
+   
+   if(value.GetChar(0)=='e'){
+      // this file is located in a new style two-deep subdirectory tree 
+      wxString topdir=value.Mid(0,3);
+      wxString middir="d";
+      middir.Append(value.Mid(3,2));
+      
+      dir.AppendDir(topdir);
+      dir.AppendDir(middir);
+      if(!dir.DirExists())dir.Mkdir(0777,wxPATH_MKDIR_FULL);
+   }
 
-  if(value.GetChar(0)=='d'){
-    // this file is located in a subdiretory tree 
-    int location=value.Find('b');
-    wxString subdir=value.Mid(0,location);
-    fileName.AppendDir(subdir);
-
-    if(!fileName.DirExists())fileName.Mkdir();
-  }
-
-  fileName.SetName(value);
+   fileName.Assign(dir.GetFullPath(),value);
 }
 
-#define CHUNK_OF_FILES 0x80
+static inline unsigned int hexcahr_to_int(unsigned int x)
+{
+   if(x<48U)return 0;
+   if(x<58U)return x-48U;
+   if(x<65U)return 10U;
+   if(x<71U)return x-55U;
+   if(x<97U)return 10U;
+   if(x<103U)return x-87U;
+   return 15U;
+}
 
+void DirManager::BalanceMidAdd(int topnum, int midkey)
+{
+   // enter the midlevel directory if it doesn't exist
+
+   if(dirMidPool.find(midkey) == dirMidPool.end() &&
+         dirMidFull.find(midkey) == dirMidFull.end()){
+      dirMidPool[midkey]=0;
+
+      // increment toplevel directory fill
+      dirTopPool[topnum]++;
+      if(dirTopPool[topnum]>=256){
+         // this toplevel is now full; move it to the full hash
+         dirTopPool.erase(topnum);
+         dirTopFull[topnum]=256;
+      }
+   }
+}
+
+void DirManager::BalanceFileAdd(int midkey)
+{
+   // increment the midlevel directory usage information
+   if(dirMidPool.find(midkey) != dirMidPool.end()){
+      dirMidPool[midkey]++;
+      if(dirMidPool[midkey]>=256){
+         // this middir is now full; move it to the full hash
+         dirMidPool.erase(midkey);
+         dirMidFull[midkey]=256;
+      }
+   }else{
+      // this case only triggers in absurdly large projects; we still
+      // need to track directory fill even if we're over 256/256/256
+      dirMidPool[midkey]++;
+   }
+}
+
+void DirManager::BalanceInfoAdd(wxString file)
+{
+   const char *s=file.c_str();
+   if(s[0]=='e'){
+      // this is one of the modern two-deep managed files 
+      // convert filename to keys 
+      unsigned int topnum = (hexcahr_to_int(s[1]) << 4) | 
+         hexcahr_to_int(s[2]);
+      unsigned int midnum = (hexcahr_to_int(s[3]) << 4) | 
+         hexcahr_to_int(s[4]);
+      unsigned int midkey=topnum<<8|midnum;
+
+      BalanceMidAdd(topnum,midkey);
+      BalanceFileAdd(midkey);
+   }
+}
+
+// Note that this will try to clean up directories out from under even
+// locked blockfiles; this is actually harmless as the rmdir will fail
+// on non-empty directories.
+void DirManager::BalanceInfoDel(wxString file)
+{
+   const char *s=file.c_str();
+   if(s[0]==(int)'e'){
+      // this is one of the modern two-deep managed files 
+
+      unsigned int topnum = (hexcahr_to_int(s[1]) << 4) | 
+         hexcahr_to_int(s[2]);
+      unsigned int midnum = (hexcahr_to_int(s[3]) << 4) | 
+         hexcahr_to_int(s[4]);
+      unsigned int midkey=topnum<<8|midnum;
+
+      // look for midkey in the mid pool
+      if(dirMidFull.find(midkey) != dirMidFull.end()){
+         // in the full pool
+
+         if(--dirMidFull[midkey]<256){
+            // move out of full into available
+            dirMidPool[midkey]=dirMidFull[midkey];
+            dirMidFull.erase(midkey);
+         }
+      }else{
+         if(--dirMidPool[midkey]<1){
+            // erasing the key here is OK; we have provision to add it
+            // back if its needed (unlike the dirTopPool hash)
+            dirMidPool.erase(midkey);
+
+            // delete the actual directory
+            wxString dir=(projFull != ""? projFull: mytemp);
+            dir += wxFILE_SEP_PATH;
+            dir += file.Mid(0,3);
+            dir += wxFILE_SEP_PATH;
+            dir += "d";
+            dir += file.Mid(3,2);
+            wxFileName::Rmdir(dir);
+
+            // also need to remove from toplevel
+            if(dirTopFull.find(topnum) != dirTopFull.end()){
+               // in the full pool
+               if(--dirTopFull[topnum]<256){
+                  // move out of full into available
+                  dirTopPool[topnum]=dirTopFull[topnum];
+                  dirTopFull.erase(topnum);
+               }
+            }else{
+               if(--dirTopPool[topnum]<1){
+                  // do *not* erase the hash entry from dirTopPool
+                  // *do* delete the actual directory
+                  wxString dir=(projFull != ""? projFull: mytemp);
+                  dir += wxFILE_SEP_PATH;
+                  dir += file.Mid(0,3);
+                  wxFileName::Rmdir(dir);
+               }
+            }
+         }
+      }
+   }
+}
+
+// only determines appropriate filename and subdir balance; does not
+// perform maintainence
 wxFileName DirManager::MakeBlockFileName()
 {
    wxFileName ret;
    wxString baseFileName;
 
-   do{
-     baseFileName.Printf("d%03db%03d", dirIndex,fileIndex);
+   unsigned int filenum,midnum,topnum,midkey;
 
-     fileIndex++;
-     if((fileIndex & (CHUNK_OF_FILES-1)) == 0){
+   while(1){
 
-       int dirMajor=(dirIndex + 1) & ~(CHUNK_OF_FILES-1);
+      /* blockfiles are divided up into heirarchical directories.
+         Each toplevel directory is represented by "e" + two unique
+         hexadecimal digits, for a total possible number of 256
+         toplevels.  Each toplevel contains up to 256 subdirs named
+         "d" + two hex digits.  Each subdir contains 'a number' of
+         files.  */
 
-       // finished off the current chunk of files
-       // are we balancing or are we filling new directories?
+      filenum=0;
+      midnum=0;
+      topnum=0;
 
-       if(dirIndex + 1 == fileIndex){
-	 // done filling chunk of new directories; go back and balance
-	 dirIndex = 0;
-       }else if (dirMajor == fileIndex - CHUNK_OF_FILES){
-	 // start filling next new directory
-	 dirIndex++;
-	 fileIndex=0;
-       }else if (dirMajor < fileIndex - CHUNK_OF_FILES){
-	 // balance the next preexisting directory
-	 dirIndex++;
-	 fileIndex -= CHUNK_OF_FILES;
-       } // else we continue
-     }
-   }while ( blockFileHash->Get(baseFileName) );
-   
+      // first action: if there is no available two-level directory in
+      // the available pool, try to make one
+
+      if(dirMidPool.empty()){
+         
+         // is there a toplevel directory with space for a new subdir?
+
+         if(!dirTopPool.empty()){
+
+            // there's still a toplevel with room for a subdir
+
+            DirHash::iterator i = dirTopPool.begin();
+            int newcount        = 0;
+            topnum              = i->first;
+            
+
+            // search for unused midlevels; linear search adequate
+            for(midnum=0;midnum<256;midnum++){
+               midkey=(topnum<<8)+midnum;
+               if(dirMidPool.find(midkey) == dirMidPool.end()){
+                  BalanceMidAdd(topnum,midkey);
+                  newcount++;
+                  if(newcount>=32)break;
+               }
+            }
+
+            // why loop?  minor internal bulletproofing.  Any misfiled
+            // directory entries will get moved to full and we get a
+            // second shot building a subdir
+            continue;
+         }
+      }
+
+      if(dirMidPool.empty()){
+         // still empty, thus an absurdly large project; all dirs are
+         // full to 256/256/256; keep working, but fall back to 'big
+         // filenames' and randomized placement
+
+         filenum = rand();
+         midnum  = (int)(256.*rand()/(RAND_MAX+1.));
+         topnum  = (int)(256.*rand()/(RAND_MAX+1.));
+         midkey=(topnum<<8)+midnum;
+
+            
+      }else{
+
+         DirHash::iterator i = dirMidPool.begin();
+         midkey              = i->first;
+
+         // split the retrieved 16 bit directory key into two 8 bit numbers
+         topnum = midkey >> 8;
+         midnum = midkey & 0xff;
+         filenum = (int)(4096.*rand()/(RAND_MAX+1.));
+
+      }
+
+      baseFileName.Printf("e%02x%02x%03x",topnum,midnum,filenum);
+      if (blockFileHash.find(baseFileName) == blockFileHash.end()) break;
+   }
+
+   BalanceFileAdd(midkey);
    AssignFile(ret,baseFileName);
    return ret;
 }
@@ -351,9 +625,7 @@ BlockFile *DirManager::NewSimpleBlockFile(
    BlockFile *newBlockFile =
        new SimpleBlockFile(fileName, sampleData, sampleLen, format);
 
-   blockFileHash->Put(fileName.GetName(), (wxObject *) newBlockFile);
-
-   CheckHashTableSize();
+   blockFileHash[fileName.GetName()]=newBlockFile;
 
    return newBlockFile;
 }
@@ -368,10 +640,8 @@ BlockFile *DirManager::NewAliasBlockFile(
        new PCMAliasBlockFile(fileName,
                              aliasedFile, aliasStart, aliasLen, aliasChannel);
 
-   blockFileHash->Put(fileName.GetName(), (wxObject *) newBlockFile);
+   blockFileHash[fileName.GetName()]=newBlockFile;
    aliasList.Add(aliasedFile);
-
-   CheckHashTableSize();
 
    return newBlockFile;
 }
@@ -401,10 +671,8 @@ BlockFile *DirManager::CopyBlockFile(BlockFile *b)
    if (b2 == NULL)
       return NULL;
 
-   blockFileHash->Put(newFile.GetName(), (wxObject *) b2);
+   blockFileHash[newFile.GetName()]=b2;
    aliasList.Add(newFile.GetFullPath());
-
-   CheckHashTableSize();
 
    return b2;
 }
@@ -458,7 +726,7 @@ bool DirManager::HandleXMLTag(const char *tag, const char **attrs)
    //
 
    wxString name = (*mLoadingTarget)->GetFileName().GetName();    
-   BlockFile *retrieved = (BlockFile *) blockFileHash->Get(name);
+   BlockFile *retrieved = blockFileHash[name];
    if (retrieved) {
       // Lock it in order to delete it safely, i.e. without having
       // it delete the file, too...
@@ -471,89 +739,18 @@ bool DirManager::HandleXMLTag(const char *tag, const char **attrs)
    }
 
    // This is a new object
-   blockFileHash->Put( name, (wxObject*) *mLoadingTarget );
-   CheckHashTableSize();
+   blockFileHash[name]=*mLoadingTarget;
+   // MakeBlockFileName wasn't used so we must add the directory
+   // balancing information
+   BalanceInfoAdd(name);
 
    return true;
 }
 
-#if LEGACY_PROJECT_FILE_SUPPORT
-void DirManager::SaveBlockFile(BlockFile * f, wxTextFile * out)
-{
-   out->AddLine(wxString::Format("%d", f->mSummaryLen));
-   if (f->IsAlias()) {
-      out->AddLine("Alias");
-      out->AddLine(f->mAliasFullPath);
-      out->AddLine(wxString::Format("%d", f->mStart));
-      out->AddLine(wxString::Format("%d", f->mLen));
-      out->AddLine(wxString::Format("%d", f->mChannel));
-   }
-   out->AddLine(f->mName);
-}
-
-BlockFile *DirManager::LoadBlockFile(wxTextFile * in, sampleFormat format)
-{
-   wxASSERT(projFull != "");
-
-   long summaryLen;
-
-   if (!(in->GetNextLine().ToLong(&summaryLen)))
-      return NULL;
-
-   wxString blockName = in->GetNextLine();
-
-   bool alias = false;
-   wxString aliasFullPath;
-   long localLen, start, len, channel;
-
-   if (blockName == "Alias") {
-      alias = true;
-      aliasFullPath = in->GetNextLine();
-      
-      //if (!(in->GetNextLine().ToLong(&localLen)))
-      //   return NULL;
-
-      if (!(in->GetNextLine().ToLong(&start)))
-         return NULL;
-      if (!(in->GetNextLine().ToLong(&len)))
-         return NULL;
-      if (!(in->GetNextLine().ToLong(&channel)))
-         return NULL;
-
-      blockName = in->GetNextLine();
-   }
-
-   wxString pathName = projFull + wxFILE_SEP_PATH + blockName;
-   BlockFile *retrieved = (BlockFile *) blockFileHash->Get(blockName);
-   if (retrieved) {
-      wxASSERT(retrieved->IsAlias() == alias);
-      retrieved->Ref();
-      return retrieved;
-   } else {
-      BlockFile *newBlockFile =
-         new BlockFile(blockName, pathName, summaryLen);
-
-      if (alias) {
-         newBlockFile->SetAliasedData(aliasFullPath, start, len, channel);
-         aliasList.Add(aliasFullPath);
-      }
-
-      newBlockFile->mSampleFormat = format;
-
-      blockFileHash->Put(blockName, (wxObject *) newBlockFile);
-
-      CheckHashTableSize();
-
-      if (!wxFileExists(FILENAME(pathName)))
-         return 0;
-      return newBlockFile;
-   }
-}
-#endif // if LEGACY_PROJECT_FILE_SUPPORT
-
 bool DirManager::MoveToNewProjectDirectory(BlockFile *f)
 {
    wxFileName newFileName;
+   wxFileName oldFileName=f->mFileName;
    AssignFile(newFileName,f->mFileName.GetFullName()); 
 
    if ( !(newFileName == f->mFileName) ) {
@@ -617,32 +814,9 @@ void DirManager::Deref(BlockFile * f)
       // and this block is no longer needed.  Remove it from the hash
       // table.
 
-      blockFileHash->Delete(theFileName);
-   }
-}
+      blockFileHash.erase(theFileName);
+      BalanceInfoDel(theFileName);
 
-void DirManager::CheckHashTableSize()
-{
-   // This method makes sure that our hash table doesn't fill up.
-   // When it's about halfway full (i.e. starting to exceed its
-   // capacity), we create a new hash table with double the size,
-   // and copy everything over.
-
-   if (blockFileHash->GetCount() >= hashTableSize/2) {
-      wxBusyCursor busy;
-      hashTableSize *= 2;
-
-      wxHashTable *newHash = new wxHashTable(wxKEY_STRING, hashTableSize);
-      blockFileHash->BeginFind();
-      wxNode *n = blockFileHash->Next();
-      while(n) {
-         BlockFile *b = (BlockFile *)n->GetData();
-         newHash->Put(b->mFileName.GetName(), (wxObject *) b);
-         n = blockFileHash->Next();
-      }
-
-      delete blockFileHash;
-      blockFileHash = newHash;
    }
 }
 
@@ -709,10 +883,9 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
 
    bool needToRename = false;
    wxBusyCursor busy;
-   blockFileHash->BeginFind();
-   wxNode *n = blockFileHash->Next();
-   while(n) {
-      BlockFile *b = (BlockFile *)n->GetData();
+   BlockHash::iterator it=blockFileHash.begin();
+   while(it != blockFileHash.end()) {
+      BlockFile *b = it->second;
       // don't worry, we don't rely on this cast unless IsAlias is true
       AliasBlockFile *ab = (AliasBlockFile*)b;
 
@@ -722,7 +895,7 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
          ab->ChangeAliasedFile(renamedFile);
       }
 
-      n = blockFileHash->Next();
+      it++;
    }
 
    if (needToRename) {
@@ -735,15 +908,14 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
          // just in case!!!
 
          // Put things back where they were
-         blockFileHash->BeginFind();
-         n = blockFileHash->Next();
-         while(n) {
-            BlockFile *b = (BlockFile *)n->GetData();
+         BlockHash::iterator it=blockFileHash.begin();
+         while(it != blockFileHash.end()) {
+            BlockFile *b = it->second;
             AliasBlockFile *ab = (AliasBlockFile*)b;
 
             if (b->IsAlias() && ab->GetAliasedFile() == renamedFile)
                ab->ChangeAliasedFile(fName);
-            n = blockFileHash->Next();
+            it++;
          }
 
          // Print error message and cancel the export

@@ -34,12 +34,16 @@
 #include <wx/list.h>
 #include <wx/string.h>
 #include <wx/filename.h>
+#include <wx/hashmap.h>
 
 #include "WaveTrack.h"
 
 class wxHashTable;
 class BlockFile;
 class SequenceTest;
+
+WX_DECLARE_HASH_MAP(int, int, wxIntegerHash, wxIntegerEqual, DirHash);
+WX_DECLARE_HASH_MAP(wxString,BlockFile *,wxStringHash,wxStringEqual,BlockHash);
 
 class DirManager: public XMLTagHandler {
  public:
@@ -50,7 +54,7 @@ class DirManager: public XMLTagHandler {
    // MM: Only called by Deref() when refcount reaches zero.
    virtual ~DirManager();
 
-   static void SetTempDir(wxString _temp) { temp = _temp; }
+   static void SetTempDir(wxString _temp) { globaltemp = _temp; }
 
    // MM: Ref count mechanism for the DirManager itself
    void Ref();
@@ -119,12 +123,18 @@ class DirManager: public XMLTagHandler {
 
    int mRef; // MM: Current refcount
 
-   wxHashTable *blockFileHash;
+   BlockHash blockFileHash; // repository for blockfiles
+   DirHash   dirTopPool;    // available toplevel dirs
+   DirHash   dirTopFull;    // full toplevel dirs
+   DirHash   dirMidPool;    // available two-level dirs
+   DirHash   dirMidFull;    // full two-level dirs
 
-   static unsigned int defaultHashTableSize;
+   void BalanceInfoDel(wxString);
+   void BalanceInfoAdd(wxString);
+   void BalanceFileAdd(int);
+   void BalanceMidAdd(int, int);
+
    static bool dontDeleteTempFiles;
-   unsigned int hashTableSize;
-   void CheckHashTableSize();
 
    wxString projName;
    wxString projPath;
@@ -138,12 +148,9 @@ class DirManager: public XMLTagHandler {
    sampleFormat mLoadingFormat;
    sampleCount mLoadingBlockLen;
 
-   static wxString temp;
-
+   static wxString globaltemp;
+   wxString mytemp;
    static int numDirManagers;
-   static int fileIndex;
-   static int dirIndex;
-   static wxString tempDirName;
 
    friend class SequenceTest;
 };
