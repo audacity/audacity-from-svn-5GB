@@ -45,6 +45,12 @@ developers.
 </map>
 <!-- End Amazon Honor System Paybox -->
 <p>
+</center>
+
+<p>
+We also accept PayPal payments through the SourceForge donation system:
+
+<center>
 <a href="http://sourceforge.net/donate/index.php?group_id=6235"><img
 src="images/paypal.gif" border="0" alt="Donate by PayPal"></a>
 </center>
