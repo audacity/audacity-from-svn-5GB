@@ -285,6 +285,14 @@ Changes in 1.2.2:
   * Clicking on a label now selects all of the tracks, making it
     easier to use the label track to recall selections.
 
+  * Fixed cosmetic bug that caused improper waveform display if
+    you tried to open an Audacity project saved on a different
+    platform (e.g., copying a project from a Mac to a PC).
+
+  * Fixed serious bug that could cause data loss when you save and
+    then load an Audacity project containing repeated or duplicate
+    data.
+
 Changes in 1.2.1:
 
   * Fix a possible crash when opening or resizing the Equalization window.
