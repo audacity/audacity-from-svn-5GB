@@ -10,12 +10,7 @@ La versió 1.0.0 és la final versió estable de l'Audacity original.
 </p>
 
 <p>
-Version 1.1.0 is the first beta release of the next version of Audacity,
-which includes support for higher-quality audio, more audio file formats,
-more effects, more editing functions, an improved user interface, and
-support for foreign languages.  Though this version has many new and useful
-features, some of these features are still under development and they have
-not been tested as much, and there may have problems.
+La versioó 1.1.0 és la primera realització beta de la següent versió de l'Audacity, que permet l'ús d'àudio d'alta qualitat, més formats de fitxers d'àudio, més efectes, més funcions d'edició, una interfície d'usuari millorada i disponible en diverses llengües. Pensem que aquesta versió té noves i útils característiques, algunes d'aquestes característiques encara estan en desenvolupament i no han estat molt provades de manera que poden contenir problemes.
 </p>
 
 <p>
