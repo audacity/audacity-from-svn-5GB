@@ -157,6 +157,7 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
    // Initiate processing buffers, most likely shorter than 
 	//	the length of the selection being processed.
 	sampleCount inBufferSize = track->GetMaxBlockSize();
+
    float * inBuffer = new float[inBufferSize];
 
 	// If the speed is slowed, the output buffer needs to be bigger 
@@ -341,7 +342,7 @@ ChangeSpeedDialog::ChangeSpeedDialog(wxWindow * parent,
 
    wxSlider * pSlider_PercentChange =
        new wxSlider(this, ID_SLIDER_PERCENTCHANGE, 
-							0, PERCENTCHANGE_MIN, PERCENTCHANGE_MAX,
+							0, (int)PERCENTCHANGE_MIN, (int)PERCENTCHANGE_MAX,
 							wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
    pBoxSizer_Dialog->Add(pSlider_PercentChange, 1, 
 									wxGROW | wxALIGN_CENTER | wxLEFT | wxRIGHT, 4);
@@ -597,11 +598,13 @@ void ChangeSpeedDialog::Update_PercentChange()
 		double fromRPM;
 		double toRPM;
 		switch (m_FromVinyl) {
+      default:
 		case CHOICE_33ANDATHIRD:	fromRPM = 33.0 + (1.0 / 3.0); break;
 		case CHOICE_45:				fromRPM = 45.0; break;
 		case CHOICE_78:				fromRPM = 78; break;
 		}
 		switch (m_ToVinyl) {
+      default:
 		case CHOICE_33ANDATHIRD:	toRPM = 33.0 + (1.0 / 3.0); break;
 		case CHOICE_45:				toRPM = 45.0; break;
 		case CHOICE_78:				toRPM = 78; break;
