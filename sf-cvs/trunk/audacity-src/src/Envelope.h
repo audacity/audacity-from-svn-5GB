@@ -164,6 +164,7 @@ class Envelope : public XMLTagHandler {
    EnvArray mEnv;
    double mOffset;
    double mTrackLen;
+   double mTrackEpsilon;
    double mDefaultValue;
 
    int mDragPoint;

@@ -142,6 +142,7 @@ WaveTrack::WaveTrack(WaveTrack &orig):
    mEnvelope = new Envelope();
    mEnvelope->Paste(0.0, orig.mEnvelope);
    mEnvelope->SetOffset(orig.GetOffset());
+   mEnvelope->SetTrackLen(orig.mSequence->GetNumSamples() / orig.mRate);
    mWaveCache = new WaveCache(1);
    mSpecCache = new SpecCache(1, 1, false);
 }
@@ -285,6 +286,7 @@ bool WaveTrack::Cut(double t0, double t1, Track **dest)
    }
 
    newTrack->GetEnvelope()->CopyFrom(GetEnvelope(), t0, t1);
+   mEnvelope->CollapseRegion(t0, t1);
 
    *dest = newTrack;
    MarkChanged();
@@ -799,8 +801,11 @@ bool WaveTrack::AppendAlias(wxString fName, sampleCount start,
                             sampleCount len, int channel)
 {
    MarkChanged();
+   bool ret=mSequence->AppendAlias(fName, start, len, channel);
+   if(ret==true)
+      mEnvelope->SetTrackLen(mSequence->GetNumSamples() / mRate);
 
-   return mSequence->AppendAlias(fName, start, len, channel);
+   return ret;
 }
 
 sampleCount WaveTrack::GetBestBlockSize(longSampleCount s)
@@ -854,8 +859,10 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
          
          if (!strcmp(attr, "rate"))
             wxString(value).ToDouble(&mRate);
-         else if (!strcmp(attr, "offset"))
+         else if (!strcmp(attr, "offset")) {
             wxString(value).ToDouble(&mOffset);
+            mEnvelope->SetOffset(mOffset);
+         }
          else if (!strcmp(attr, "gain")) {
             double d;
             wxString(value).ToDouble(&d);
@@ -879,6 +886,13 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
    }
 
    return false;
+}
+
+void WaveTrack::HandleXMLEndTag(const char *tag)
+{
+   if (!strcmp(tag, "wavetrack")) {
+      mEnvelope->SetTrackLen(mSequence->GetNumSamples() / mRate);
+   }   
 }
 
 XMLTagHandler *WaveTrack::HandleXMLChild(const char *tag)

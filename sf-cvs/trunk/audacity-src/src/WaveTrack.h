@@ -154,6 +154,7 @@ class WaveTrack: public Track {
    //
 
    virtual bool HandleXMLTag(const char *tag, const char **attrs);
+   virtual void HandleXMLEndTag(const char *tag);
    virtual XMLTagHandler *HandleXMLChild(const char *tag);
    virtual void WriteXML(int depth, FILE *fp);
 
