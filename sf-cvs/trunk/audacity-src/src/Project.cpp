@@ -493,6 +493,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                               height - sbarSpaceWidth - voffset +
                               sbarExtraLen), wxSB_VERTICAL);
 
+   mLastUpdateUITime = ::wxGetUTCTime();
+
    InitialState();
    FixScrollbars();
 
@@ -1199,7 +1201,7 @@ void AudacityProject::UpdateMenus()
 //TODO: This function is still kinda hackish, clean up
 void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 {
-   if (::wxGetUTCTime() == mLastUpdateUITime)
+   if (::wxGetUTCTime() - mLastUpdateUITime < 3)
       return;
 
    mLastUpdateUITime = ::wxGetUTCTime();
@@ -1294,7 +1296,9 @@ void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
 
    //This makes the TrackPanel refresh properly, so that
    //it doesn't leave a little trail of indicator cursors
+   #ifndef __WXMAC__
    mTrackPanel->Refresh(false);
+   #endif
 }
 
 void AudacityProject::OnActivate(wxActivateEvent & event)
