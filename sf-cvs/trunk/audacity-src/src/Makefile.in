@@ -91,6 +91,7 @@ OBJS = \
 	$(OBJDIR)/effects/Invert.o \
 	$(OBJDIR)/effects/Noise.o \
 	$(OBJDIR)/effects/NoiseRemoval.o \
+	$(OBJDIR)/effects/Normalize.o \
 	$(OBJDIR)/effects/Phaser.o \
 	$(OBJDIR)/effects/Repeat.o \
 	$(OBJDIR)/effects/Reverse.o \

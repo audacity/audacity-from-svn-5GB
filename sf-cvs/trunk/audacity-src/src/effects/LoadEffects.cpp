@@ -24,6 +24,7 @@
 #include "Invert.h"
 #include "Noise.h"
 #include "NoiseRemoval.h"
+#include "Normalize.h"
 #include "Phaser.h"
 #include "Repeat.h"
 #include "Reverse.h"
@@ -87,6 +88,7 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectFilter());
    Effect::RegisterEffect(new EffectInvert());
    Effect::RegisterEffect(new EffectNoiseRemoval());
+   Effect::RegisterEffect(new EffectNormalize());
    Effect::RegisterEffect(new EffectPhaser());
    Effect::RegisterEffect(new EffectRepeat());
    Effect::RegisterEffect(new EffectReverse());
