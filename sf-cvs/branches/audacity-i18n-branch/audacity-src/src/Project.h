@@ -21,6 +21,7 @@
 #include <wx/frame.h>
 #include <wx/window.h>
 #include <wx/scrolbar.h>
+#include <wx/intl.h>
 
 #include "AStatus.h"
 #include "DirManager.h"
@@ -114,7 +115,7 @@ class AudacityProject:public wxFrame,
    virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum);
    virtual int TP_GetCurrentTool();
    virtual void TP_OnPlayKey();
-   virtual void TP_PushState(wxString desc = wxString("Not SPECIFIED YET!"));
+   virtual void TP_PushState(wxString desc = wxString(_("Not SPECIFIED YET!")));
    virtual void TP_RedrawScrollbars();
    virtual void TP_ScrollLeft();
    virtual void TP_ScrollRight();
