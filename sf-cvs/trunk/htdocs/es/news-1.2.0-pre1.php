@@ -1,4 +1,4 @@
-<?php BoxTop(2 de Agosto del 2003: Audacity 1.2.0-pre1 lanzada'); ?>
+<?php BoxTop('2 de Agosto del 2003: Audacity 1.2.0-pre1 lanzada'); ?>
 
 <p>
 Audacity 1.2.0-pre1 es un lanzamiento de prueba público del editor de
