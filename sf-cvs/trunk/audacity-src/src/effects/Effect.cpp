@@ -287,7 +287,16 @@ void Effect::Preview()
    double t1save = mT1;
    mT0 = t0;
    mT1 = t1;
-   Process();
+
+   if (Init()) {
+      Process();
+      End();   
+      if (mProgress) {
+         delete mProgress;
+         mProgress = NULL;
+      }
+   }
+
    mT0 = t0save;
    mT1 = t1save;
 
