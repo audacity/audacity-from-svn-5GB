@@ -107,6 +107,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    localLanguageName["ru"] = "Russky";
    localLanguageName["sl"] = "Slovenscina";
    localLanguageName["sv"] = "Svenska";
+   localLanguageName["zh"] = "Chinese(Simplified)";
 
    wxArrayString audacityPathList = wxGetApp().audacityPathList;
    wxGetApp().AddUniquePathToPathList(wxString::Format("%s/share/locale",
