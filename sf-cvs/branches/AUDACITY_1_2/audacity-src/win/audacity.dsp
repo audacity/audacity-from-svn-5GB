@@ -1,24 +1,24 @@
 # Microsoft Developer Studio Project File - Name="Audacity" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
-# ** NICHT BEARBEITEN **
+# ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Application" 0x0101
 
 CFG=Audacity - Win32 Debug
-!MESSAGE Dies ist kein gültiges Makefile. Zum Erstellen dieses Projekts mit NMAKE
-!MESSAGE verwenden Sie den Befehl "Makefile exportieren" und führen Sie den Befehl
+!MESSAGE This is not a valid makefile. To build this project using NMAKE,
+!MESSAGE use the Export Makefile command and run
 !MESSAGE 
 !MESSAGE NMAKE /f "audacity.mak".
 !MESSAGE 
-!MESSAGE Sie können beim Ausführen von NMAKE eine Konfiguration angeben
-!MESSAGE durch Definieren des Makros CFG in der Befehlszeile. Zum Beispiel:
+!MESSAGE You can specify a configuration when running NMAKE
+!MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
 !MESSAGE NMAKE /f "audacity.mak" CFG="Audacity - Win32 Debug"
 !MESSAGE 
-!MESSAGE Für die Konfiguration stehen zur Auswahl:
+!MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "Audacity - Win32 Release" (basierend auf  "Win32 (x86) Application")
-!MESSAGE "Audacity - Win32 Debug" (basierend auf  "Win32 (x86) Application")
+!MESSAGE "Audacity - Win32 Release" (based on "Win32 (x86) Application")
+!MESSAGE "Audacity - Win32 Debug" (based on "Win32 (x86) Application")
 !MESSAGE 
 
 # Begin Project
@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 libresample.lib soundtouch.lib libsamplerate.lib portmixer.lib libnyquist.lib libid3tag.lib expat.lib mad.lib sndfile.lib PAStaticWMME.lib wxmsw.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib png.lib zlib.lib jpeg.lib tiff.lib libci.lib libFLAC++.lib libFLAC.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /libpath:"..\lib-src\libogg\win32\static_release" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_release" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_release" /libpath:"$(WXWIN)\lib" /libpath:"..\lib-src\libid3tag" /libpath:"..\lib-src\expat" /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro" /libpath:"..\lib-src\libnyquist" /libpath:"..\lib-src\portmixer\winproj" /libpath:"..\lib-src\libsamplerate\Win32" /libpath:"..\lib-src\libflac\obj\lib" /libpath:"..\lib-src\soundtouch\win" /libpath:"..\lib-src\libresample\win"
+# ADD LINK32 libresample.lib soundtouch.lib portmixer.lib libnyquist.lib libid3tag.lib expat.lib mad.lib sndfile.lib PAStaticWMME.lib wxmsw.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib png.lib zlib.lib jpeg.lib tiff.lib libci.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /libpath:"..\lib-src\libogg\win32\static_release" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_release" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_release" /libpath:"$(WXWIN)\lib" /libpath:"..\lib-src\libid3tag" /libpath:"..\lib-src\expat" /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro" /libpath:"..\lib-src\libnyquist" /libpath:"..\lib-src\portmixer\winproj" /libpath:"..\lib-src\libsamplerate\Win32" /libpath:"..\lib-src\libflac\obj\lib" /libpath:"..\lib-src\soundtouch\win" /libpath:"..\lib-src\libresample\win"
 # SUBTRACT LINK32 /pdb:none /nodefaultlib
 
 !ELSEIF  "$(CFG)" == "Audacity - Win32 Debug"
@@ -81,7 +81,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 libresampled.lib soundtouchd.lib libsamplerated.lib portmixerd.lib libnyquistd.lib libid3tagd.lib expatd.lib madd.lib sndfiled.lib PAStaticWMMED.lib wxmswd.lib ogg_static_d.lib vorbis_static_d.lib vorbisfile_static_d.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib libFLAC++d.lib libFLACd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"..\lib-src\libogg\win32\static_debug" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_debug" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_debug" /libpath:"$(WXWIN)\lib" /libpath:"..\lib-src\libid3tag" /libpath:"..\lib-src\expat" /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro" /libpath:"..\lib-src\libnyquist" /libpath:"..\lib-src\portmixer\winproj" /libpath:"..\lib-src\libsamplerate\Win32" /libpath:"..\lib-src\libflac\obj\lib" /libpath:"..\lib-src\soundtouch\win" /libpath:"..\lib-src\libresample\win" /IGNORE:4049
+# ADD LINK32 libresampled.lib soundtouchd.lib portmixerd.lib libnyquistd.lib libid3tagd.lib expatd.lib madd.lib sndfiled.lib PAStaticWMMED.lib wxmswd.lib ogg_static_d.lib vorbis_static_d.lib vorbisfile_static_d.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"..\lib-src\libogg\win32\static_debug" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_debug" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_debug" /libpath:"$(WXWIN)\lib" /libpath:"..\lib-src\libid3tag" /libpath:"..\lib-src\expat" /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro" /libpath:"..\lib-src\libnyquist" /libpath:"..\lib-src\portmixer\winproj" /libpath:"..\lib-src\libsamplerate\Win32" /libpath:"..\lib-src\libflac\obj\lib" /libpath:"..\lib-src\soundtouch\win" /libpath:"..\lib-src\libresample\win" /IGNORE:4049
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
