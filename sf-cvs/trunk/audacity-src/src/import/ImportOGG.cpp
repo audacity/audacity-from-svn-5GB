@@ -87,14 +87,7 @@ bool ImportOGG(wxWindow * parent,
    *numChannels = vi->channels;
    *channels = new WaveTrack *[*numChannels];
 
-   /* The Stroustrup book says that variables declared in the
-    * initialization part of a for loop are only in scope until
-    * the end of the loop, but Visual C complains about you
-    * "redefining" the variable if you assume that. So
-    * I'll declare a function-global count variable once,
-    * and use it in all the loops. Grudgingly. */
    int c;
-
    for (c = 0; c < *numChannels; c++) {
       (*channels)[c] = new WaveTrack(dirManager);
       (*channels)[c]->SetRate(vi->rate);
