@@ -8,6 +8,10 @@
 
 **********************************************************************/
 
+#ifdef __MACOSX__
+#include "AudioIOPrefs-OSX.h"
+#else
+
 #ifndef __AUDACITY_AUDIO_IO_PREFS__
 #define __AUDACITY_AUDIO_IO_PREFS__
 
@@ -78,4 +82,5 @@ class AudioIOPrefs:public PrefsPanel {
 
 };
 
+#endif
 #endif
