@@ -557,12 +557,31 @@ case "$host_os" in
 		;;
 	esac
 
+dnl Special configuration for LADSPA on Mac OS X
 if [[ "$use_ladspa" = "yes" ]] ; then
-	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/ladspa/LoadLadspa.o"
-	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/ladspa/LadspaEffect.o"
+   case "$host_os" in
+      darwin* | rhapsody*)
 
-	AC_DEFINE(USE_LADSPA, 1,
-		[Define if LADSPA plug-ins are enabled])
+      EXTRAOBJS="$EXTRAOBJS ../lib-src/dlcompat/libdl.a"
+      BUILDLIBS="$BUILDLIBS dlcompat/libdl.a"
+      CXXFLAGS="$CXXFLAGS -I../lib-src/dlcompat"
+      if test ! -f "lib-src/dlcompat/Makefile"; then
+         echo "--- Configuring dlcompat";
+         AC_CONFIG_SUBDIRS([[lib-src/dlcompat]])
+      fi		
+
+      ;;
+   *)
+      ;;
+   esac
+fi
+
+if [[ "$use_ladspa" = "yes" ]] ; then
+   OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/ladspa/LoadLadspa.o"
+   OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/ladspa/LadspaEffect.o"
+
+   AC_DEFINE(USE_LADSPA, 1,
+             [Define if LADSPA plug-ins are enabled])
 fi
 
 dnl Checks for typedefs, structures, and compiler characteristics.

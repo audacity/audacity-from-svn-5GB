@@ -15,13 +15,16 @@
 
 **********************************************************************/
 
-// For temporary dlopen() fix.
-#ifdef __WXMAC__
-#else
-#include <dlfcn.h>
-#endif  //  __WXMAC__
+#define descriptorFnName "ladspa_descriptor"
 
+// For Mac and Linux, use dlopen
+#if defined(__WXMAC__) || defined(__WXGTK__)
+#include <dlfcn.h>
+// For Windows, use the wxWindows Dynamic Library Loader
+#else
 #include <wx/dynlib.h>
+#endif
+
 #include <wx/list.h>
 #include <wx/log.h>
 #include <wx/string.h>
@@ -37,13 +40,15 @@ void LoadLadspaEffect(wxString fname)
    wxLogNull logNo;
    LADSPA_Descriptor_Function mainFn = NULL;
    
-#ifdef __WXGTK__
+#if defined(__WXGTK__) || defined(__WXMAC__)
+
    void *libHandle = NULL;
    
    libHandle = dlopen(fname, RTLD_LAZY);
    
    mainFn = (LADSPA_Descriptor_Function)
-      dlsym(libHandle, "ladspa_descriptor");
+      dlsym(libHandle, descriptorFnName);
+
 #else
    // The following code uses the wxWindows DLL class, which does
    // not allow us to control the flags passed to dlopen().  This
@@ -54,15 +59,16 @@ void LoadLadspaEffect(wxString fname)
    wxDllType libHandle = NULL;
      
    libHandle = wxDllLoader::LoadLibrary(fname);
+   printf("Loading from %s\n", (const char *)fname);
    mainFn = (LADSPA_Descriptor_Function)
-      wxDllLoader::GetSymbol(libHandle,
-                             "ladspa_descriptor");
+      wxDllLoader::GetSymbol(libHandle, descriptorFnName);
+   printf("mainFn: %d\n", (int)mainFn);
 #endif
 
    if (mainFn) {
       int index = 0;
       const LADSPA_Descriptor *data;
-      
+
       data = mainFn(index);
       while(data) {
          LadspaEffect *effect = new LadspaEffect(data);
