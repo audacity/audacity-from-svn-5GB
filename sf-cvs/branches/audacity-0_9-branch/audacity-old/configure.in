@@ -132,6 +132,7 @@ fi
 if [[ $use_id3lib = "yes" ]] ; then
 	EXTRAOBJS="$EXTRAOBJS id3lib/src/.libs/libid3.a"
 	MAKEALL="$MAKEALL id3lib/src/.libs/libid3.a"
+	CFLAGS="$CFLAGS -Iid3lib/include"
 		
 	AC_DEFINE(USE_ID3LIB, 1,
       [Define if id3lib is present])

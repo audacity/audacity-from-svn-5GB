@@ -118,7 +118,8 @@ audacity-help.htb: help/*
 #
 # build id3lib from included source -- only if selected in configure script
 id3lib/src/.libs/libid3.a:
-	-test -f id3lib/Makefile || (cd id3lib && ./configure)
+	-test -f id3lib/Makefile || \
+		(cd id3lib && chmod u+x configure && ./configure)
 	cd id3lib && $(MAKE)
 
 #

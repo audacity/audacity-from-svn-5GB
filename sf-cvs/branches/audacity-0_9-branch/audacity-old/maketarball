@@ -44,6 +44,9 @@ if($ARGV[0] eq "debian") {
 	printf "removing emacs temp files...\n";
 	`find . -name "*~" -exec rm -rf '{}' \\; 2> /dev/null`;
 
+	print "fixing id3lib configure file...\n";
+	`chmod oug+x id3lib/configure`;
+	
 	printf "removing the copy of this script...\n";
 	`rm -f maketarball`;
 
@@ -53,7 +56,7 @@ if($ARGV[0] eq "debian") {
 	
 	print "deleting temporary copy...\n";
 	`rm -rf audacity-$version`;
-	
+
 	print "done.\n";
 }
 elsif($ARGV[0] eq "src") {
@@ -74,6 +77,9 @@ elsif($ARGV[0] eq "src") {
 
 	printf "removing the copy of this script...\n";
 	`rm -f maketarball`;
+
+	print "fixing id3lib configure file...\n";
+	`chmod oug+x id3lib/configure`;
 
 	print "making tarball audacity-src-$version.tgz...\n";
 	chdir "..";
@@ -100,15 +106,18 @@ elsif($ARGV[0] eq "rpm") {
 	printf "removing executable and other intermediate files...\n";
 	`rm -rf audacity .depend obj config.cache config.status config.log Makefile`;
 
+	print "fixing id3lib configure file...\n";
+	`chmod oug+x id3lib/configure`;
+	
 	printf "removing the copy of this script...\n";
 	`rm -f maketarball`;
 
-	print "making tarball audacity-src-$version.tgz...\n";
+	print "making tarball audacity-$version.tgz...\n";
 	chdir "..";
-	`tar zcf audacity-src-$version.tgz audacity-src-$version`;
+	`tar zcf audacity-$version.tgz audacity-$version`;
 	
 	print "deleting temporary copy...\n";
-	`rm -rf audacity-src-$version`;
+	`rm -rf audacity-$version`;
 	
 	print "done.\n";
 } else {
