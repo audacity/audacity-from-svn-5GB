@@ -383,8 +383,12 @@ void ControlToolBar::MakeButtons()
    mTool[4] = MakeTool(Draw, DrawAlpha, ID_DRAW, 56, 0);
    mTool[4]->SetToolTip(_("Draw Tool"));
 
+#ifdef __WXMAC__
+   wxToolTip::Enable(false);    // DM: tooltips are broken in wxMac
+#else
    wxToolTip::Enable(true);     // MB: Should make this a pref
    wxToolTip::SetDelay(1000);
+#endif
 }
 
 ControlToolBar::~ControlToolBar()
