@@ -32,13 +32,29 @@ void Tracks::append(Events_ptr track)
     len++;
 }
 
+
 void Tracks::reset()
 {
+    // all track events are incorporated into the seq,
+    // so all we need to delete are the arrays of pointers
     for (int i = 0; i < len; i++) {
         delete tracks[i];
     }
     if (tracks) delete [] tracks;
+    tracks = NULL;
     len = 0;
+}
+
+
+Allegro_midifile_reader::~Allegro_midifile_reader()
+{
+    if (seq) delete seq;
+    while (pending) {
+        Pending_ptr to_be_freed = pending;
+        pending = pending->next;
+        delete to_be_freed;
+    }
+    tracks.reset();
 }
 
 
@@ -55,7 +71,7 @@ void Allegro_midifile_reader::merge_tracks()
         sum = sum + tracks[i]->len;
     }
     // preallocate array for efficiency:
-    Event_ptr *notes = new Event_ptr[sum];
+    Allegro_event_ptr *notes = new Allegro_event_ptr[sum];
     long notes_index = 0;
 
     bool done = false;
@@ -97,7 +113,7 @@ void Allegro_midifile_reader::initialize(FILE *f)
 
 void Allegro_midifile_reader::Mf_starttrack()
 {
-  //printf("starting new track\n");
+    printf("starting new track\n");
     track = new Events;
 }
 
@@ -105,8 +121,9 @@ void Allegro_midifile_reader::Mf_starttrack()
 void Allegro_midifile_reader::Mf_endtrack()
 {
     tracks.append(track);
-	//    printf("finished track, length %d number %d\n", track->len, track_num / 100);
+    printf("finished track, length %d number %d\n", track->len, track_num / 100);
     track_num += 100;
+    track = NULL;
 }
 
 
@@ -151,9 +168,9 @@ void Allegro_midifile_reader::Mf_on(int chan, int key, int vel)
         Mf_off(chan, key, vel);
         return;
     }
-    Note_ptr note = new Allegro_Note();
+    Allegro_note_ptr note = new Allegro_note();
     pending = new Pending(note, pending);
-    /*    trace("on: %d at %g\n", key, get_time()); */
+    /*trace("on: %d at %g\n", key, get_time());*/
     note->time = get_time();
     note->chan = chan;
     note->dur = 0;
@@ -171,7 +188,7 @@ void Allegro_midifile_reader::Mf_off(int chan, int key, int vel)
     while (*p) {
         if ((*p)->note->key == key && (*p)->note->chan == chan) {
             (*p)->note->dur = time - (*p)->note->time;
-            // trace("updated %d dur %g\n", (*p)->note->key, (*p)->note->dur);
+            /*trace("updated %d dur %g\n", (*p)->note->key, (*p)->note->dur);*/
             Pending_ptr to_be_freed = *p;
             *p = to_be_freed->next;
             delete to_be_freed;
@@ -184,11 +201,14 @@ void Allegro_midifile_reader::Mf_off(int chan, int key, int vel)
 
 void Allegro_midifile_reader::update(int chan, int key, Parameter_ptr param)
 {
-    Update_ptr update = new Allegro_Update;
+    Allegro_update_ptr update = new Allegro_update;
     update->time = get_time();
     update->chan = chan;
     update->key = key;
     update->parameter = *param;
+    // prevent the destructor from destroying the string twice!
+    // the new Update takes the string from param
+    if (param->attr_type() == 's') param->s = NULL;
     track->append(update);
 }
 
@@ -242,31 +262,31 @@ void Allegro_midifile_reader::Mf_chanpressure(int chan, int val)
 
 void Allegro_midifile_reader::Mf_sysex(int len, char *msg)
 {
-  //Mf_error("sysex message ignored - not implemented");
+    Mf_error("sysex message ignored - not implemented");
 }
 
 
 void Allegro_midifile_reader::Mf_arbitrary(int len, char *msg)
 {
-  //Mf_error("arbitrary data ignored");
+    Mf_error("arbitrary data ignored");
 }
 
 
 void Allegro_midifile_reader::Mf_metamisc(int type, int len, char *msg)
 {
-  //Mf_error("metamisc data ignored");
+    Mf_error("metamisc data ignored");
 }
 
 
 void Allegro_midifile_reader::Mf_seqnum(int n)
 {
-  //Mf_error("seqnum data ignored");
+    Mf_error("seqnum data ignored");
 }
 
 
 void Allegro_midifile_reader::Mf_smpte(int i1, int i2, int i3, int i4, int i5)
 {
-  //Mf_error("SMPTE data ignored");
+    Mf_error("SMPTE data ignored");
 }
 
 

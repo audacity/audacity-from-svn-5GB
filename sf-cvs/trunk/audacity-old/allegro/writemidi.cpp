@@ -30,8 +30,8 @@ WriteMIDI::~WriteMIDI()
 
 int EventCompareFunc(const void *p1, const void *p2)
 {
-  Allegro_Event **e1 = (Allegro_Event **)p1;
-  Allegro_Event **e2 = (Allegro_Event **)p2;
+  Allegro_event **e1 = (Allegro_event **)p1;
+  Allegro_event **e2 = (Allegro_event **)p2;
   
   if ((*e1)->time < (*e2)->time)
     return -1;
@@ -56,25 +56,25 @@ void WriteMIDI::CreateEventList()
   
   mNumEvents = 0;
   mMaxEvents = numEvents * 2;
-  mEvents = new Allegro_Event *[mMaxEvents];
+  mEvents = new Allegro_event *[mMaxEvents];
 
   for(int i=0; i<numEvents; i++) {
   
     if (mSeq->notes[i]->type == 'n') {
       // note event must be split into note on and note off messages
     
-      Allegro_Note *note = (Allegro_Note *)mSeq->notes[i];
+      Allegro_note *note = (Allegro_note *)mSeq->notes[i];
     
-      mEvents[mNumEvents] = new Allegro_Note();
-      mEvents[mNumEvents+1] = new Allegro_Note();
+      mEvents[mNumEvents] = new Allegro_note();
+      mEvents[mNumEvents+1] = new Allegro_note();
   
       // note-on event
-      *((Allegro_Note *)mEvents[mNumEvents]) = *note;
+      *((Allegro_note *)mEvents[mNumEvents]) = *note;
       
       // note-off event
-      *((Allegro_Note *)mEvents[mNumEvents+1]) = *note;
+      *((Allegro_note *)mEvents[mNumEvents+1]) = *note;
       mEvents[mNumEvents+1]->time += note->dur;
-      ((Allegro_Note *)mEvents[mNumEvents+1])->loud = 0.0;
+      ((Allegro_note *)mEvents[mNumEvents+1])->loud = 0.0;
       
       // Use the high bits of the channel to store relative ordering of events
       mEvents[mNumEvents]->chan &= 15;
@@ -100,7 +100,7 @@ void WriteMIDI::CreateEventList()
   
   // Now quicksort them, first by time and then by original order
   
-  qsort((void *)mEvents, mNumEvents, sizeof(Allegro_Event *), EventCompareFunc);
+  qsort((void *)mEvents, mNumEvents, sizeof(Allegro_event *), EventCompareFunc);
 }
 
 void WriteMIDI::Write(FILE *fp)
@@ -170,7 +170,7 @@ void WriteMIDI::Write(FILE *fp)
     if (mEvents[i]->type == 'n') {
       WriteVarinum(deltaDivisions);
       
-      Note_ptr note = (Note_ptr)(mEvents[i]);
+      Allegro_note_ptr note = (Allegro_note_ptr)(mEvents[i]);
 
       int vel = note->loud;
       if (vel < 0)

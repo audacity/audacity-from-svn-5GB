@@ -23,7 +23,7 @@ private:
   int            mDivision;
   int            mInitialTempo;
   
-  Allegro_Event  **mEvents;
+  Allegro_event  **mEvents;
   int            mNumEvents;
   int            mMaxEvents;
   

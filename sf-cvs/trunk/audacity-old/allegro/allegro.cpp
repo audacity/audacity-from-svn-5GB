@@ -12,8 +12,6 @@
 //#include "memory.h"
 #include "trace.h"
 
-
-
 Atoms symbol_table;
 
 bool within(double d1, double d2, double epsilon)
@@ -27,9 +25,9 @@ void Events::expand()
 {
     max = (max + 5); // extra growth for small sizes
     max += (max >> 2); // add 25%
-    Event_ptr *new_events = new Event_ptr[max];
+    Allegro_event_ptr *new_events = new Allegro_event_ptr[max];
     // now do copy
-    memcpy(new_events, events, len * sizeof(Event_ptr));
+    memcpy(new_events, events, len * sizeof(Allegro_event_ptr));
     if (events) delete[] events;
     events = new_events;
 }
@@ -38,12 +36,12 @@ void Events::expand()
 Events::~Events()
 {
     if (events) {
-        delete [] events;
+        delete[] events;
     }
 }
 
 
-void Events::insert(Event_ptr event)
+void Events::insert(Allegro_event_ptr event)
 {
     if (max <= len) {
         expand();
@@ -55,7 +53,7 @@ void Events::insert(Event_ptr event)
         if (events[i]->time > event->time) {
             // insert event at i
             memmove(&events[i + 1], &events[i], 
-                    sizeof(Event_ptr) * (len - i - 1));
+                    sizeof(Allegro_event_ptr) * (len - i - 1));
             events[i] = event;
             return;
         }
@@ -63,7 +61,7 @@ void Events::insert(Event_ptr event)
 }
 
 
-void Events::append(Event_ptr event)
+void Events::append(Allegro_event_ptr event)
 {
     if (max <= len) {
         expand();
@@ -142,7 +140,8 @@ void Parameters::insert_string(Parameters **list, char *name, char *s)
     Parameters_ptr a = new Parameters(*list);
     *list = a;
     a->parm.set_attr(symbol_table.insert_string(name));
-    a->parm.s = s;
+    // string is deleted when parameter is deleted
+    a->parm.s = heapify(s);
     assert(a->parm.attr_type() == 's');
 }
 
@@ -186,6 +185,22 @@ Parameters *Parameters::remove_key(Parameters **list, char *name)
         *list = (*list)->next;
     }
     return NULL;
+}
+
+
+Parameter::~Parameter()
+{
+    if (attr_type() == 's' && s) delete[] s;
+}
+
+
+Allegro_note::~Allegro_note()
+{
+    while (parameters) {
+        Parameters_ptr to_delete = parameters;
+        parameters = parameters->next;
+        delete to_delete;
+    }
 }
 
 
@@ -326,11 +341,18 @@ void Time_sigs::insert(double beat, double num, double den)
 }
 
 
+Seq::~Seq()
+{
+    for (int i = 0; i < notes.len; i++)
+        delete notes.events[i];
+}
+
 
 long Seq::seek_time(double time)
 // find index of first score event after time
 {
     long i;
+
     for (i = 0; i < notes.len; i++) {
         if (notes[i]->time > time) {
             break;
@@ -346,10 +368,10 @@ void Seq::convert_to_beats()
     if (units_are_seconds) {
         units_are_seconds = false;
         for (long i = 0; i < notes.len; i++) {
-            Event_ptr e = notes[i];
+            Allegro_event_ptr e = notes[i];
             double beat = map.time_to_beat(e->time);
             if (e->type == 'n') {
-                Note_ptr n = (Note_ptr) e;
+                Allegro_note_ptr n = (Allegro_note_ptr) e;
                 n->dur = map.time_to_beat(n->time + n->dur) - beat;
                 n->time = beat;
             }
@@ -364,10 +386,10 @@ void Seq::convert_to_seconds()
     if (!units_are_seconds) {
         units_are_seconds = true;
         for (long i = 0; i < notes.len; i++) {
-            Event_ptr e = notes[i];
+            Allegro_event_ptr e = notes[i];
             double time = map.beat_to_time(e->time);
             if (e->type == 'n') {
-                Note_ptr n = (Note_ptr) e;
+                Allegro_note_ptr n = (Allegro_note_ptr) e;
                 n->dur = map.beat_to_time(n->time + n->dur) - time;
                 n->time = time;
             }
@@ -445,13 +467,13 @@ bool Seq::insert_tempo(double tempo, double beat)
 }
 
 
-void Seq::add_event(Event_ptr event)
+void Seq::add_event(Allegro_event_ptr event)
 {
     convert_to_seconds();
     notes.insert(event);
 /*
     if (event->type == 'n') {
-        Note_ptr n = (Note_ptr) event;
+        Allegro_note_ptr n = (Allegro_note_ptr) event;
         trace("note %d at %g for %g\n", n->key, n->time, n->dur);
     }
  */
@@ -494,6 +516,7 @@ void Seq::beat_to_measure(double beat, long *measure, double *m_beat,
     double m = 0; // measure number
     double bpm;
     int tsx;
+
     for (tsx = 0; tsx < time_sig.len; tsx++) {
         bpm = 4;
         // assume 4/4 if no time signature
@@ -533,7 +556,7 @@ void Seq::beat_to_measure(double beat, long *measure, double *m_beat,
 }
 
 
-void Seq::set_events(Event_ptr *events, long len, long max)
+void Seq::set_events(Allegro_event_ptr *events, long len, long max)
 {
     convert_to_seconds(); // because notes are in seconds
     notes.set_events(events, len, max);
