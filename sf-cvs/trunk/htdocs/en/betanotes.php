@@ -1,4 +1,4 @@
-<?php BoxTop("$releaseNotesStr $betaVersion"); ?>
+<?php BoxTop("$releaseNotesStr 1.1.3"); ?>
 
 <pre>
 Known issues in Audacity 1.1.3:
@@ -43,6 +43,7 @@ New features in Audacity 1.1.3:
 
   * Many more bug fixes and new features
 
+
 New features in Audacity 1.1.2:
   * User Interface
     - Fixed bug in Windows version, for track menu commands 
@@ -51,6 +52,7 @@ New features in Audacity 1.1.2:
     - Nyquist support on Windows (supports plug-ins written 
 	  in Nyquist, an interpreted functional language based 
 	  on Lisp).
+
 
 Known bugs in Audacity 1.1.1:
 
@@ -109,6 +111,7 @@ New features in Audacity 1.1.1:
       in <prefix>/share/audacity and also in any paths in
       the AUDACITY_PATH environment variable
 
+
 New features in Audacity 1.1.0:
 
   * Core audio processing:
@@ -140,7 +143,7 @@ New features in Audacity 1.1.0:
     - Audacity can now be localized to different foreign
       languages.
 
-New libraries in Audacity 1.1:
+New libraries in Audacity 1.1.0:
 
   * libmad for fast MP3 importing
   * libid3tag for editing MP3 file information
