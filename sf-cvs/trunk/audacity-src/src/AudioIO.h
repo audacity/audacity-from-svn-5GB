@@ -32,6 +32,7 @@ class RingBuffer;
 class Mixer;
 class TimeTrack;
 class AudioThread;
+class Meter;
 
 extern AudioIO *gAudioIO;
 
@@ -44,6 +45,8 @@ class AudioIO {
    AudioIO();
    ~AudioIO();
 
+   void StartMonitoring(double sampleRate);
+
    /* If successful, returns a token identifying this particular stream
     * instance.  For use with IsStreamActive() below */
    int StartStream(WaveTrackArray playbackTracks, WaveTrackArray captureTracks,
@@ -53,8 +56,8 @@ class AudioIO {
    void StopStream();
 
    /* Returns true if audio i/o is busy starting, stopping,
-      playing, or recording.  If it returns false, it's safe
-      to call StartStream. */
+      playing, or recording.  When this is
+      false, it's safe to start playing or recording */
    bool IsBusy();
 
    /* Returns true if the audio i/o is running at all,
@@ -78,6 +81,10 @@ class AudioIO {
    */
    bool IsAudioTokenActive(int token);
 
+   /* Returns true if we're monitoring input (but not recording or
+      playing actual audio) */
+   bool IsMonitoring();
+
    void SetPaused(bool state);
    bool IsPaused();
 
@@ -93,6 +100,10 @@ class AudioIO {
                  float *playbackVolume);
    wxArrayString GetInputSourceNames();
    void HandleDeviceChange();
+
+   /* Set the current VU meters - this should be done once after
+      each call to StartStream currently */
+   void SetMeters(Meter *inputMeter, Meter *outputMeter);
    
    /* Get a list of sample rates the current input/output device
     * supports. Since there is no concept (yet) for different input/output
@@ -125,6 +136,11 @@ class AudioIO {
 
 private:
 
+   bool StartPortAudioStream(double sampleRate,
+                             unsigned int numPlaybackChannels,
+                             unsigned int numCaptureChannels,
+                             sampleFormat captureFormat);
+
    void FillBuffers();
 
    int GetCommonlyAvailPlayback();
@@ -139,6 +155,7 @@ private:
    WaveTrackArray      mPlaybackTracks;
    Mixer             **mPlaybackMixers;
    int                 mStreamToken;
+   int                 mStopStreamCount;
    static int          mNextStreamToken;
    double              mRate;
    double              mT;
@@ -168,6 +185,12 @@ private:
    volatile bool       mAudioThreadFillBuffersLoopRunning;
    volatile double     mLastBufferAudibleTime;
    volatile double     mTotalSamplesPlayed;
+   PaError             mLastPaError;
+
+   Meter              *mInputMeter;
+   Meter              *mOutputMeter;
+   bool                mUpdateMeters;
+   bool                mUpdatingMeters;
 
    #if USE_PORTMIXER
    PxMixer            *mPortMixer;

@@ -98,7 +98,6 @@ wxString ExportCommon(AudacityProject *project,
                   numRight++;
                }
             }
-            
             if(tr->GetOffset() < earliestBegin)
                earliestBegin = tr->GetOffset();
 
@@ -122,7 +121,7 @@ wxString ExportCommon(AudacityProject *project,
                      "Choose Export... to export all tracks."));
       return "";
    }
-
+   
    /* Detemine if exported file will be stereo or mono,
       and if mixing will occur */
 
@@ -132,7 +131,7 @@ wxString ExportCommon(AudacityProject *project,
 
    numRight += numMono;
    numLeft += numMono;
-
+   
    if (numLeft > 1 || numRight > 1)
       if (stereo) {
          ShowWarningDialog(project, "MixStereo",
@@ -154,6 +153,7 @@ wxString ExportCommon(AudacityProject *project,
    wxString defaultName = project->GetName();
    wxString fName;
    wxString maskString;
+   wxString endOfPathSep;
 
    if (defaultExtension.Left(1) == ".")
       defaultExtension =
@@ -255,7 +255,12 @@ wxString ExportCommon(AudacityProject *project,
          }
       }
 
-      fName = path + wxFILE_SEP_PATH + 
+      if (path.Length() > 0 && path.Last() == wxFILE_SEP_PATH)
+         endOfPathSep = "";
+      else
+         endOfPathSep = wxFILE_SEP_PATH;
+
+      fName = path + endOfPathSep + 
          nameOnly + "." + extension;
    } while(!fileOkay);
 
@@ -282,7 +287,7 @@ wxString ExportCommon(AudacityProject *project,
 
    int suffix = 0;
    while(::wxFileExists(FILENAME(fName))) {
-      fName = path + wxFILE_SEP_PATH + 
+      fName = path + endOfPathSep + 
          nameOnly + wxString::Format("%d", suffix) + "." + extension;
       suffix++;
    }

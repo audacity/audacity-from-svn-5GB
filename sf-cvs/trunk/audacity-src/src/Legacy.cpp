@@ -99,7 +99,7 @@ bool ConvertLegacyTrack(wxTextFile *f, FILE *outf)
          fprintf(outf, " linked='1'");
          line = f->GetNextLine();
       }
-      
+
       if (line != "offset")
          return false;
       fprintf(outf, " offset='%s'", (const char *)f->GetNextLine());

@@ -8,21 +8,9 @@
 
 **********************************************************************/
 
-#include "DirManager.h"
-
-#include "Audacity.h"
-#include "AudacityApp.h"
-#include "BlockFile.h"
-#include "blockfile/LegacyBlockFile.h"
-#include "blockfile/LegacyAliasBlockFile.h"
-#include "blockfile/SimpleBlockFile.h"
-#include "blockfile/SilentBlockFile.h"
-#include "blockfile/PCMAliasBlockFile.h"
-#include "Internat.h"
-#include "widgets/Warning.h"
-
 #include <wx/defs.h>
 #include <wx/app.h>
+#include <wx/dir.h>
 #include <wx/log.h>
 #include <wx/filefn.h>
 #include <wx/hash.h>
@@ -32,9 +20,7 @@
 #include <wx/intl.h>
 #include <wx/file.h>
 #include <wx/filename.h>
-#include <wx/dir.h>
 #include <wx/object.h>
-#include <wx/utils.h>
 
 // chmod
 #ifdef __UNIX__
@@ -42,6 +28,20 @@
 #include <sys/stat.h>
 #endif
 
+#include "Audacity.h"
+#include "AudacityApp.h"
+#include "BlockFile.h"
+#include "blockfile/LegacyBlockFile.h"
+#include "blockfile/LegacyAliasBlockFile.h"
+#include "blockfile/SimpleBlockFile.h"
+#include "blockfile/SilentBlockFile.h"
+#include "blockfile/PCMAliasBlockFile.h"
+#include "DirManager.h"
+#include "Internat.h"
+#include "Prefs.h"
+#include "widgets/Warning.h"
+
+#include "prefs/PrefsDialog.h"
 
 // Static class variables
 
@@ -98,7 +98,7 @@ DirManager::~DirManager()
    }
 }
 
-
+// static
 void DirManager::CleanTempDir(bool startup)
 {
    wxString fname;

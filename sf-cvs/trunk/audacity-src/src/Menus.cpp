@@ -23,6 +23,7 @@
 #include <wx/filedlg.h>
 #include <wx/textfile.h>
 #include <wx/progdlg.h>
+#include <wx/scrolbar.h>
 
 #include "Project.h"
 
@@ -299,6 +300,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("FloatControlTB", _("Float Control Toolbar"),          FN(OnFloatControlToolBar));
    c->AddItem("FloatEditTB",    _("Float Edit Toolbar"),             FN(OnFloatEditToolBar));
    c->AddItem("FloatMixerTB",   _("Float Mixer Toolbar"),            FN(OnFloatMixerToolBar));
+   c->AddItem("FloatMeterTB",   _("Float Meter Toolbar"),            FN(OnFloatMeterToolBar));
    c->EndMenu();
 
    //
@@ -358,7 +360,9 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();   
    c->AddItem("AddLabel",       _("Add Label At Selection\tCtrl+B"), FN(OnAddLabel));
+   c->AddItem("AddLabelPlaying",       _("Add Label At Playback Position\tCtrl+M"), FN(OnAddLabelPlaying));
    c->SetCommandFlags("AddLabel", 0, 0);
+   c->SetCommandFlags("AddLabelPlaying", 0, AudioIONotBusyFlag);
    c->EndMenu();
 
    //
@@ -489,6 +493,11 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag,
                       AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag);
 
+   c->AddCommand("DeleteKey2",      _("DeleteKey2\tDelete"),           FN(OnDelete));
+   c->SetCommandFlags("DeleteKey2",
+                      AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag,
+                      AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag);
+
    c->AddCommand("CursorLeft",  _("Cursor Left\tLeft"),           FN(OnCursorLeft));
    c->AddCommand("CursorRight", _("Cursor Right\tRight"),         FN(OnCursorRight));
    c->AddCommand("SelExtLeft",  _("Selection Extend Left\tShift+Left"),     FN(OnSelExtendLeft));
@@ -608,21 +617,24 @@ int AudacityProject::GetToolBarChecksum()
 {
    //Calculate the ToolBarCheckSum (uniquely specifies state of all toolbars):
    int toolBarCheckSum = 0;
-   toolBarCheckSum += gControlToolBarStub->GetWindowedStatus() ? 2 : 1;
+   if (gControlToolBarStub->GetWindowedStatus())
+      toolBarCheckSum += 1;
    if (gEditToolBarStub) {
       if (gEditToolBarStub->GetLoadedStatus()) {
          if(gEditToolBarStub->GetWindowedStatus())
-            toolBarCheckSum += 6;
-         else
-            toolBarCheckSum += 3;
+            toolBarCheckSum += 2;
       }
    }
    if (gMixerToolBarStub) {
       if (gMixerToolBarStub->GetLoadedStatus()) {
          if(gMixerToolBarStub->GetWindowedStatus())
-            toolBarCheckSum += 12;
-         else
-            toolBarCheckSum += 24;
+            toolBarCheckSum += 4;
+      }
+   }
+   if (gMeterToolBarStub) {
+      if (gMeterToolBarStub->GetLoadedStatus()) {
+         if(gMeterToolBarStub->GetWindowedStatus())
+            toolBarCheckSum += 8;
       }
    }
 
@@ -660,6 +672,21 @@ void AudacityProject::ModifyToolbarMenus()
    else {
       mCommandManager.Enable("FloatMixerTB", false);
    }   
+
+   if (gMeterToolBarStub) {
+     
+     // Loaded or unloaded?
+     mCommandManager.Enable("FloatMeterTB", gMeterToolBarStub->GetLoadedStatus());
+     
+     // Floating or docked?
+     if (gMeterToolBarStub->GetWindowedStatus())
+        mCommandManager.Modify("FloatMeterTB", _("Dock Meter Toolbar"));
+     else
+        mCommandManager.Modify("FloatMeterTB", _("Float Meter Toolbar"));
+   }
+   else {
+      mCommandManager.Enable("FloatMeterTB", false);
+   }   
 }
 
 void AudacityProject::UpdateMenus()
@@ -689,9 +716,14 @@ void AudacityProject::UpdateMenus()
    }
 
    //Now, do the same thing for the (possibly invisible) floating toolbars
-   gControlToolBarStub->GetToolBar()->EnableDisableButtons();
-   if(gEditToolBarStub)
-      gEditToolBarStub->GetToolBar()->EnableDisableButtons();
+   ToolBar *tb1 = gControlToolBarStub->GetToolBar();
+   if (tb1)
+      tb1->EnableDisableButtons();
+   if(gEditToolBarStub) {
+      tb1 = gEditToolBarStub->GetToolBar();
+      if (tb1)
+         tb1->EnableDisableButtons();
+   }
 }
 
 //
@@ -1853,6 +1885,39 @@ void AudacityProject::OnSelectStartCursor()
 
 void AudacityProject::OnZoomIn()
 {
+   // DMM: Here's my attempt to get logical zooming behavior
+   // when there's a selection that's currently at least
+   // partially on-screen
+
+   bool selectionIsOnscreen =
+      (mViewInfo.sel0 < mViewInfo.h + mViewInfo.screen) &&
+      (mViewInfo.sel1 > mViewInfo.h);
+
+   bool selectionFillsScreen =
+      (mViewInfo.sel0 < mViewInfo.h) &&
+      (mViewInfo.sel1 > mViewInfo.h + mViewInfo.screen);
+   
+   if (selectionIsOnscreen && !selectionFillsScreen) {
+      // Start with the center of the selection
+      double selCenter = (mViewInfo.sel0 + mViewInfo.sel1) / 2;
+
+      // If the selection center is off-screen, pick the
+      // center of the part that is on-screen.
+      if (selCenter < mViewInfo.h)
+         selCenter = mViewInfo.h + (mViewInfo.sel1 - mViewInfo.h) / 2;
+      if (selCenter > mViewInfo.h + mViewInfo.screen)
+         selCenter = mViewInfo.h + mViewInfo.screen -
+            (mViewInfo.h + mViewInfo.screen - mViewInfo.sel0) / 2;
+         
+      // Zoom in
+      Zoom(mViewInfo.zoom *= 2.0);
+
+      // Recenter on selCenter
+      TP_ScrollWindow(selCenter - mViewInfo.screen / 2);
+      return;
+   }
+
+
    double origLeft = mViewInfo.h;
    double origWidth = mViewInfo.screen;
    Zoom(mViewInfo.zoom *= 2.0);
@@ -1870,7 +1935,7 @@ void AudacityProject::OnZoomIn()
    // no further *right* than 2/3 of the way across the screen
    if (mViewInfo.sel0 > newh + mViewInfo.screen * 2 / 3)
       newh = mViewInfo.sel0 - mViewInfo.screen * 2 / 3;
-      */
+   */
 
    TP_ScrollWindow(newh);
 }
@@ -1967,6 +2032,7 @@ void AudacityProject::OnZoomFitV()
       t = iter2.Next();
    }
 
+   mVsbar->SetThumbPosition(0);
    FixScrollbars();
    Refresh(false);
    ModifyState();
@@ -2058,6 +2124,7 @@ void AudacityProject::OnPlotSpectrum()
       wxMessageBox(msg);
    }
 
+   InitFreqWindow(gParentWindow);
    gFreqWindow->Plot(len, buffer, rate);
    gFreqWindow->Show(true);
    gFreqWindow->Raise();
@@ -2180,6 +2247,58 @@ void AudacityProject::OnFloatMixerToolBar()
 
          gMixerToolBarStub->ShowWindowedToolBar();
          gMixerToolBarStub->UnloadAll();
+      }
+   }
+}
+
+void AudacityProject::OnLoadMeterToolBar()
+{
+   if (gMeterToolBarStub) {
+      if (gMeterToolBarStub->GetLoadedStatus()) {
+
+         //the toolbar is "loaded", meaning its visible either in the window
+         //or floating
+
+         gMeterToolBarStub->SetLoadedStatus(false);
+         gMeterToolBarStub->HideWindowedToolBar();
+         gMeterToolBarStub->UnloadAll();
+
+      } else {
+
+         //the toolbar is not "loaded", meaning that although the stub exists, 
+         //the toolbar is not visible either in a window or floating around
+         gMeterToolBarStub->SetLoadedStatus(true);
+
+         if (gMeterToolBarStub->GetWindowedStatus()) {
+            //Make the floating toolbar appear
+            gMeterToolBarStub->ShowWindowedToolBar();
+            gMeterToolBarStub->LoadAll();
+         } else {
+            //Make it appear in all the windows
+            gMeterToolBarStub->LoadAll();
+         }
+
+      }
+   } else {
+      gMeterToolBarStub = new ToolBarStub(gParentWindow, MeterToolBarID);
+      gMeterToolBarStub->LoadAll();
+   }
+}
+
+
+void AudacityProject::OnFloatMeterToolBar()
+{
+   if (gMeterToolBarStub) {
+
+      if (gMeterToolBarStub->GetWindowedStatus()) {
+
+         gMeterToolBarStub->HideWindowedToolBar();
+         gMeterToolBarStub->LoadAll();
+
+      } else {
+
+         gMeterToolBarStub->ShowWindowedToolBar();
+         gMeterToolBarStub->UnloadAll();
       }
    }
 }
@@ -2667,7 +2786,7 @@ void AudacityProject::OnNewTimeTrack()
       }
 }
 
-void AudacityProject::OnAddLabel()
+void AudacityProject::DoAddLabel(double left, double right)
 {
    TrackListIterator iter(mTracks);
    LabelTrack *lt = NULL;
@@ -2688,12 +2807,26 @@ void AudacityProject::OnAddLabel()
    SelectNone();
    lt->SetSelected(true);
 
-   lt->AddLabel(mViewInfo.sel0, mViewInfo.sel1);
+   lt->AddLabel(left, right);
 
    PushState(_("Added label"), _("Label"));
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnAddLabel()
+{
+   DoAddLabel(mViewInfo.sel0, mViewInfo.sel1);
+}
+
+void AudacityProject::OnAddLabelPlaying()
+{
+   if (GetAudioIOToken()>0 &&
+       gAudioIO->IsStreamActive(GetAudioIOToken())) {
+      double indicator = gAudioIO->GetStreamTime();
+      DoAddLabel(indicator, indicator);
+   }
 }
 
 void AudacityProject::OnRemoveTracks()

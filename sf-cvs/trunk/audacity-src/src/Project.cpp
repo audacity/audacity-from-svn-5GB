@@ -63,6 +63,7 @@
 #include "AudioIO.h"
 #include "ControlToolBar.h"
 #include "EditToolBar.h"
+#include "MeterToolBar.h"
 #include "FormatSelection.h"
 #include "FreqWindow.h"
 #include "HistoryWindow.h"
@@ -83,9 +84,8 @@
 #include "prefs/PrefsDialog.h"
 #include "widgets/Warning.h"
 #include "xml/XMLFileReader.h"
-
+#include "PlatformCompatibility.h"
 #include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
-
 
 TrackList *AudacityProject::msClipboard = new TrackList();
 double AudacityProject::msClipLen = 0.0;
@@ -406,6 +406,20 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 //      top += h + 1;
 //      height -= h + 1;
 //      mTotalToolBarHeight += h;
+   }
+
+   if (gMeterToolBarStub) {
+      if (gMeterToolBarStub->GetLoadedStatus()
+          && !gMeterToolBarStub->GetWindowedStatus()) {
+         int h = gMeterToolBarStub->GetHeight();
+         ToolBar *etb = new MeterToolBar(this, 0, wxPoint(10, top),
+                                        wxSize(width - 10 - sbarSpaceWidth, h));
+         mToolBarArray.Add((ToolBar *) etb);
+
+//         top += h + 1;
+//         height -= h + 1;
+//         mTotalToolBarHeight += h;
+      }
    }
 
    if (gMixerToolBarStub) {
@@ -965,6 +979,9 @@ void AudacityProject::OnIconize(wxIconizeEvent &event)
       if (gEditToolBarStub) {
          gEditToolBarStub->Iconize( mIconized );
       }
+      if (gMeterToolBarStub) {
+         gMeterToolBarStub->Iconize( mIconized );
+      }
    }
 
    event.Skip();
@@ -1285,7 +1302,7 @@ int AudacityProject::FlowLayout( int i, int x, int y, int width, int height )
                mToolBarArray[i-2]->GetPosition( &bar2X, &bar2Y );
                if( bar2Y == barY ){
                   int dummy;
-                  mToolBarArray[i-2]->GetSize( &barWidth, &dummy );
+                  mToolBarArray[i-2]->GetIdealSize( &barWidth, &dummy );
                   mToolBarArray[i-2]->SetSize( barWidth,  barHeight + height+extraSpace);
 //                  wxLogDebug("b: At %i,%i for %i Toolbar %i has adjusted height %i", x,y,bar2Y, i-2, barHeight + height + extraSpace );
                }
@@ -1415,6 +1432,22 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
      break;
       
      
+   case MeterToolBarID:
+
+     if (!gMeterToolBarStub) {
+       gMeterToolBarStub = new ToolBarStub(gParentWindow, MeterToolBarID);
+     }
+     
+     h = gMeterToolBarStub->GetHeight();
+     toolbar =
+       new MeterToolBar(this, -1, wxPoint(10, tbheight),
+			wxSize(width - 10, h));
+     
+     
+     mToolBarArray.Insert(toolbar, 1);
+     break;
+      
+     
    case NoneID:
    default:
      toolbar = NULL;
@@ -1458,6 +1491,8 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
          case MixerToolBarID:
             break;
 
+         case MeterToolBarID:
+            break;
 
          case NoneID:
          default:
@@ -1493,8 +1528,15 @@ int AudacityProject::GetGrabberFromEvent(wxMouseEvent & event)
    {
       wxRect r = mToolBarArray[i]->GetRect();
       if(( r.y < event.m_y )  && ( event.m_y < (r.y+r.height) ) &&
-         ( (r.x- grabberWidth) < event.m_x) && (event.m_x < r.x ))
-         return i;
+         ( (r.x- grabberWidth) < event.m_x) && (event.m_x < r.x )) {
+
+         // Can't drag the Meter toolbar while Audio I/O is busy at all,
+         // so don't return it in this case...
+         if (gAudioIO->IsStreamActive())
+            return -1;
+         else
+            return i;
+      }
    }
    return -1;
 }
@@ -1586,6 +1628,10 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
          gMixerToolBarStub->ShowWindowedToolBar(&mouse);
          gMixerToolBarStub->UnloadAll();
          break;
+      case MeterToolBarID:
+         gMeterToolBarStub->ShowWindowedToolBar(&mouse);
+         gMeterToolBarStub->UnloadAll();
+         break;
 
       case NoneID:
       default:
@@ -1602,6 +1648,44 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    if (gPrefsDialogVisible) {
       event.Veto();
       return;
+   }
+
+   // Check to see if we were playing or recording
+   // audio, and if so, make sure Audio I/O is completely finished.
+   // The main point of this is to properly push the state
+   // and flush the tracks once we've completely finished
+   // recording new state.
+   // This code is derived from similar code in 
+   // AudacityProject::~AudacityProject() and TrackPanel::OnTimer().
+   if (this->GetAudioIOToken()>0 &&
+       gAudioIO->IsStreamActive(this->GetAudioIOToken())) {
+
+      wxBusyCursor busy;
+      gAudioIO->StopStream();
+      while(gAudioIO->IsBusy()) {
+         wxUsleep(100);
+      }
+      
+      // We were playing or recording audio, but we've stopped the stream.
+      wxCommandEvent dummyEvent;
+      this->GetControlToolBar()->OnStop(dummyEvent);      
+         
+      if (gAudioIO->GetNumCaptureChannels() > 0) {
+         // Tracks are buffered during recording.  This flushes
+         // them so that there's nothing left in the append
+         // buffers.
+         TrackListIterator iter(mTracks);
+         for (Track * t = iter.First(); t; t = iter.Next()) {
+            if (t->GetKind() == Track::Wave) {
+               ((WaveTrack *)t)->Flush();
+            }
+         }
+         this->PushState(_("Recorded Audio"), _("Record"));
+      }
+
+      this->FixScrollbars();
+      this->SetAudioIOToken(0);
+      this->RedrawProject();
    }
 
    if (mUndoManager.UnsavedChanges()) {
@@ -1707,6 +1791,11 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
 
 void AudacityProject::OpenFile(wxString fileName)
 {
+   // On Win32, we may be given a short (DOS-compatible) file name on rare
+   // occassions (e.g. stuff like "C:\PROGRA~1\AUDACI~1\PROJEC~1.AUP"). We
+   // convert these to long file name first.
+   fileName = PlatformCompatibility::GetLongFileName(fileName);
+
    // We want to open projects using wxTextFile, but if it's NOT a project
    // file (but actually a WAV file, for example), then wxTextFile will spin
    // for a long time searching for line breaks.  So, we look for our
@@ -2485,6 +2574,18 @@ MixerToolBar *AudacityProject::GetMixerToolBar()
 
    if (gMixerToolBarStub)
       return (MixerToolBar *)gMixerToolBarStub->GetToolBar();
+
+   return NULL;
+}
+
+MeterToolBar *AudacityProject::GetMeterToolBar()
+{
+   for(unsigned int i=0; i<mToolBarArray.GetCount(); i++)
+      if ((mToolBarArray[i]->GetType()) == MeterToolBarID)
+         return (MeterToolBar *)mToolBarArray[i];
+
+   if (gMeterToolBarStub)
+      return (MeterToolBar *)gMeterToolBarStub->GetToolBar();
 
    return NULL;
 }

@@ -87,6 +87,7 @@ wxWindow *gParentWindow = NULL;
 ToolBarStub *gControlToolBarStub = NULL;
 ToolBarStub *gMixerToolBarStub = NULL;
 ToolBarStub *gEditToolBarStub = NULL;
+ToolBarStub *gMeterToolBarStub = NULL;
 
 bool gIsQuitting = false;
 
@@ -165,6 +166,11 @@ void QuitAudacity(bool bForce)
    if (gEditToolBarStub) {
       delete gEditToolBarStub;
       gEditToolBarStub = NULL;
+   }
+
+   if (gMeterToolBarStub) {
+      delete gMeterToolBarStub;
+      gMeterToolBarStub = NULL;
    }
 
    //Delete the clipboard
@@ -346,8 +352,14 @@ bool AudacityApp::OnInit()
    #ifdef __MACOSX__
    // On Mac OS X, the path to the Audacity program is in argv[0]
    wxString progPath = wxPathOnly(argv[0]);
+
    AddUniquePathToPathList(progPath, audacityPathList);
+   // If Audacity is a "bundle" package, then the root directory is
+   // the great-great-grandparent of the directory containing the executable.
+   AddUniquePathToPathList(progPath+"/../../../", audacityPathList);
+
    AddUniquePathToPathList(progPath+"/Languages", audacityPathList);
+   AddUniquePathToPathList(progPath+"/../../../Languages", audacityPathList);
    defaultTempDir.Printf("%s/audacity1.2-%s",
                          (const char *)tmpDirLoc,
                          (const char *)wxGetUserId());
@@ -412,7 +424,6 @@ bool AudacityApp::OnInit()
 
    LoadEffects();
 
-
 #ifdef __WXMAC__
 
 #ifdef __MACOSX__
@@ -465,8 +476,6 @@ bool AudacityApp::OnInit()
    //Initiate globally-held toolbar stubs here.
    gControlToolBarStub = new ToolBarStub(gParentWindow, ControlToolBarID);
 
-
-
    //Only load the mixer toolbar if it says so in the preferences
    bool mixerToolBar;
    gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, true);
@@ -474,7 +483,6 @@ bool AudacityApp::OnInit()
       gMixerToolBarStub =  new ToolBarStub(gParentWindow, MixerToolBarID);
    else
       gMixerToolBarStub = NULL;
-
 
    // Changing the following to NULL will make the application
    // load without the toolbar in memory at all.
@@ -486,8 +494,14 @@ bool AudacityApp::OnInit()
    else
       gEditToolBarStub = NULL;
 
+   gMeterToolBarStub = new ToolBarStub(gParentWindow, MeterToolBarID);
 
+   #if 0
+   // dmazzoni: no longer create FreqWindow on startup because
+   // it just wastes time.  Now it's created as needed.
    InitFreqWindow(gParentWindow);
+   #endif
+
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
    SetTopWindow(project);
 
@@ -546,33 +560,32 @@ bool AudacityApp::OnInit()
 
       }                         // for option...
    }                            // if (argc>1)
-
    #endif // not Mac OS X
-
+	
    // Cygwin command line parser (by Dave Fancella)
-	#if defined(__CYGWIN__)
+   #if defined(__CYGWIN__)
    if (argc > 1) {
-		int optionstart = 1;
-		bool startAtOffset = false;
+      int optionstart = 1;
+      bool startAtOffset = false;
 		
-		// Scan command line arguments looking for trouble
-		for (int option = 1; option < argc; option++) {
-			if (!argv[option])
-				continue;
-			// Check to see if argv[0] is copied across other arguments.
+      // Scan command line arguments looking for trouble
+      for (int option = 1; option < argc; option++) {
+         if (!argv[option])
+            continue;
+         // Check to see if argv[0] is copied across other arguments.
          // This is the reason Cygwin gets its own command line parser.
-			if (wxString(argv[option]).Lower().Contains(wxString("audacity.exe"))) {
-				startAtOffset = true;
-				optionstart = option + 1;
-			}
-		}
+         if (wxString(argv[option]).Lower().Contains(wxString("audacity.exe"))) {
+            startAtOffset = true;
+            optionstart = option + 1;
+         }
+      }
 		
       for (int option = optionstart; option < argc; option++) {
-			if (!argv[option])
+         if (!argv[option])
             continue;
          bool handled = false;
-			bool openThisFile = false;
-			wxString fileToOpen;
+         bool openThisFile = false;
+         wxString fileToOpen;
 			
          if (!wxString("-help").CmpNoCase(argv[option])) {
             printf(/* i18n-hint: '-help', '-test' and
@@ -612,21 +625,21 @@ bool AudacityApp::OnInit()
             exit(0);
          }
 			
-			if(handled)
-				fileToOpen.Clear();
+         if(handled)
+            fileToOpen.Clear();
 			
          if (!handled)
-				fileToOpen = fileToOpen + " " + argv[option];
-				if(wxString(argv[option]).Lower().Contains(".aup"))
-					openThisFile = true;
-				if(openThisFile) {
-					openThisFile = false;
-					project->OpenFile(fileToOpen);
-				}
+            fileToOpen = fileToOpen + " " + argv[option];
+         if(wxString(argv[option]).Lower().Contains(".aup"))
+            openThisFile = true;
+         if(openThisFile) {
+            openThisFile = false;
+            project->OpenFile(fileToOpen);
+         }
 
       }                         // for option...
    }                            // if (argc>1)
-	#endif // Cygwin command-line parser
+   #endif // Cygwin command-line parser
 
    return TRUE;
 }

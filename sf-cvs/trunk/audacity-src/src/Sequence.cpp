@@ -1045,6 +1045,13 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,
       srcX = mBlock->Item(b)->start;
 
    }
+   
+   // Make sure that min[pixel - 1] doesn't segfault
+   if (pixel <= 0)
+      pixel = 1;
+
+   if (pixel == 0)
+      pixel++;
 
    if (pixel == 0)
       pixel++;

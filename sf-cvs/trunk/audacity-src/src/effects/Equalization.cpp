@@ -666,13 +666,11 @@ wxSizer * MakeEqualizationDialog(
 {
    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-	/* //v After 1.2.0 -- so we postpone extra translation burdens.
-		wxStaticText *item1 = 
-			new wxStaticText(parent, -1,
-								  _("Equalization, by Mitch Golden && Vaughan Johnson"), 
-								  wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER);
-		item0->Add( item1, 0, wxALIGN_CENTRE|wxALL, 4 );
-		*/ 
+	wxStaticText *item1 = 
+		new wxStaticText(parent, -1,
+							  _("Equalization, by Mitch Golden && Vaughan Johnson"), 
+							  wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER);
+	item0->Add( item1, 0, wxALIGN_CENTRE|wxALL, 4 );
 
    (*pan) = new EqualizationPanel( loFreq, hiFreq, 
 				   env,

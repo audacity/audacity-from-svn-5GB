@@ -106,6 +106,15 @@ void CopySamples(samplePtr src, sampleFormat srcFormat,
       src, srcFormat, dst, dstFormat, len, stride);
 }
 
+void CopySamplesNoDither(samplePtr src, sampleFormat srcFormat,
+                 samplePtr dst, sampleFormat dstFormat,
+                 unsigned int len,
+                 unsigned int stride /* = 1 */)
+{
+   gDitherAlgorithm.Apply(
+      Dither::none,
+      src, srcFormat, dst, dstFormat, len, stride);
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
@@ -117,4 +126,3 @@ void CopySamples(samplePtr src, sampleFormat srcFormat,
 //
 // vim: et sts=3 sw=3
 // arch-tag: 1dacb18a-a027-463b-b558-73b6d24995d6
-

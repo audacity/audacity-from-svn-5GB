@@ -57,10 +57,12 @@ OBJS = \
 	LangChoice.o \
 	Legacy.o \
 	Menus.o \
+	MeterToolBar.o \
 	Mix.o \
 	MixerToolBar.o \
 	NoteTrack.o \
 	PitchName.o \
+	PlatformCompatibility.o \
 	Project.o \
 	Resample.o \
 	RingBuffer.o \
@@ -125,6 +127,7 @@ OBJS = \
 	prefs/SpectrumPrefs.o \
 	widgets/AButton.o \
 	widgets/ASlider.o \
+	widgets/Meter.o \
 	widgets/Ruler.o \
 	widgets/Warning.o \
 	xml/XMLFileReader.o \

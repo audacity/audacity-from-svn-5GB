@@ -79,9 +79,16 @@ int Importer::Import(wxString fName,
 {
    int numTracks = 0;
 
-   // see if any of the plugins expect this extension and if so give
-   // that plugins first dibs
    wxString extension = fName.AfterLast('.');
+   if (extension.IsSameAs("cda", false)) {
+      errorMessage = "\"" + fName + "\"" + 
+         _(" is an audio CD file. \n"
+            "Audacity does not open this type of file.\n"
+            "Try ripping it to a native audio format that Audacity can import.");
+      return 0;
+   }
+   // see if any of the plugins expect this extension and if so give
+   // that plugin first dibs
    ImportPluginList::Node *importPluginNode = mImportPluginList->GetFirst();
    while(importPluginNode)
    {

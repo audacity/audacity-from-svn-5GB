@@ -654,7 +654,7 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
    dc.SetPen(muted ? muteSamplePen : samplePen);
    
    for (s = 0; s < slen; s++) {
-      double tt = double (s) / rate;
+      double tt = (s / rate);
       double envt = t0 + tOffset + tt;
 
       // MB: (s0/rate - t0) is the distance from the left edge of the screen
@@ -744,11 +744,13 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
          // shrink to nothing.  This scenario is handled differently
          // if we use wx to draw, instead of the image buffer - see
          // MM comment below.
-         if( h1[x] == h2[x]) {
-            if (h1[x] < r.height-1)
-               h1[x]++;
-            else
+         if( h1[x] <= h2[x]) {
+            if (h2[x] < r.height-1)
+               h1[x] = h2[x] + 1;
+            else {
+               h1[x] = h2[x];
                h2[x]--;
+            }
          }
       }
 
