@@ -90,7 +90,6 @@ void AudacityProject::CreateMenuBar()
    mMenuBar->Append(mProjectMenu, _("&Project"));
    mMenuBar->Append(mEffectMenu, _("Effec&t"));
    mMenuBar->Append(mPluginMenu, _("Plugin&s"));
-
    mMenuBar->Append(mHelpMenu, _("&Help"));
 
    SetMenuBar(mMenuBar);
@@ -109,8 +108,7 @@ void AudacityProject::RebuildMenuBar()
    mEffectMenu = new wxMenu();
    mPluginMenu = new wxMenu();
    mHelpMenu = new wxMenu();
-   
- 
+
    delete mMenuBar->Replace(fileMenu, mFileMenu, _("&File"));
    delete mMenuBar->Replace(editMenu, mEditMenu, _("&Edit"));
    delete mMenuBar->Replace(viewMenu, mViewMenu, _("&View"));
@@ -127,7 +125,6 @@ void AudacityProject::RebuildMenuBar()
 
    BuildMenuBar();
 }
-
 
 void AudacityProject::BuildMenuBar()
 {
@@ -153,7 +150,6 @@ void AudacityProject::BuildMenuBar()
             menu = mHelpMenu;
             break;
          default:
-    
             // ERROR -- should not happen
             break;
       }

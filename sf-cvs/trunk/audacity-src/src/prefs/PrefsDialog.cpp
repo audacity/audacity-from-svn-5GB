@@ -121,12 +121,10 @@ wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
 
 }
 
-
 void PrefsDialog::OnCancel(wxCommandEvent & event)
 {
    EndModal(0);
 }
-
 
 void PrefsDialog::OnOK(wxCommandEvent & event)
 {

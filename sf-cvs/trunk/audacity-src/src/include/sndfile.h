@@ -48,7 +48,8 @@ extern "C" {
 */
 
 enum
-{	SF_FORMAT_WAV		= 0x10000,		/* Microsoft WAV format (little endian). */
+{
+	SF_FORMAT_WAV		= 0x10000,		/* Microsoft WAV format (little endian). */
 	SF_FORMAT_AIFF		= 0x20000,		/* Apple/SGI AIFF format (big endian). */
 	SF_FORMAT_AU		= 0x30000,		/* Sun/NeXT AU format (big endian). */
 	SF_FORMAT_AULE		= 0x40000,		/* DEC AU format (little endian). */

@@ -457,7 +457,7 @@ void TrackPanel::UpdateIndicator()
 
 // AS: OnPaint( ) is called during the normal course of 
 //  completing a repaint operation.
-void TrackPanel::OnPaint(wxPaintEvent & /* event */ )
+void TrackPanel::OnPaint(wxPaintEvent & /* event */)
 {
    wxPaintDC dc(this);
    int width, height;
@@ -663,8 +663,6 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       mIsSelecting = false;
    } else if (event.ButtonDClick(1) && !event.ShiftDown()) {
       // Deselect all other tracks and select this one.
-
-
       SelectNone();
       mTracks->Select(mCapturedTrack);
       mViewInfo->sel0 = mCapturedTrack->GetOffset();
@@ -1080,7 +1078,6 @@ bool TrackPanel::IsDragDrawing()
    return (result > 3);
 }
 
-
 // BG: This handles drawing
 void TrackPanel::HandleDraw(wxMouseEvent & event)
 {
@@ -1150,7 +1147,6 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
          // Now, yoffset should indicate the current vertical position of the sample on the track.  
          // use it to calculate yval, which does???
          float yval = -(event.m_y-yoffset) + (selectedTrack->GetHeight()/2);
-
 
          //Calculate the sign of yval
          float sign = (yval >= 0 ? 1 : -1);
@@ -2608,7 +2604,6 @@ void TrackPanel::OnSetName()
       Refresh(false);
    }
 }
-
 
 //  Here, 'label' refers to the rectangle to the left of the track
 // or tracks (if stereo); i.e., whether the label should be considered.
