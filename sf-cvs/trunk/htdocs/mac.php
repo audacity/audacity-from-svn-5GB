@@ -86,10 +86,10 @@ Known incompatibilities:
 
 <p>
 <b>Note: We now recommend that all Mac OS X users try version 
-<a href="beta.php">Audacity 1.1.3</a> instead of 1.0.0.
+<a href="beta.php">Audacity 1.2</a> instead of 1.0.0.
 It's still in beta, but it has far surpassed version 1.0 in
 OS X support.  Both recording and MP3 exporting are broken
-   in Audacity 1.0, but they work much better in 1.1.3.
+   in Audacity 1.0, but they work much better in 1.2.
 </b>
 </p>
 
