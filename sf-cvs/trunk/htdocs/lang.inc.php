@@ -55,6 +55,7 @@ $phpLang_languages = array(
  "nl([-_][[:alpha:]]{2})?|dutch"   => array('nl', 'dutch'),
  "de([-_][[:alpha:]]{2})?|german"  => array('de', 'german'),
  "fi|finnish"  => array('fi', 'finnish'),
+ "mk|macedonian" => array('mk', 'macedonian'),
  "is|icelandic"  => array('is', 'icelandic'),
  "it|italian"  => array('it', 'italian'),
  "no|norwegian"  => array('no', 'norwegian'),
