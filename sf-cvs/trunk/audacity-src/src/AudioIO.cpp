@@ -993,12 +993,14 @@ void AudioIO::FillBuffers()
          if (secsAvail > mMaxPlaybackSecsToCopy)
             secsAvail = mMaxPlaybackSecsToCopy;
 
+         double deltat;
+
          // msmeyer: When playing a very short selection in looped
          // mode, the selection must be copied to the buffer multiple
          // times, to ensure, that the buffer has a reasonable size
          // This is the purpose of this loop.
          do {
-            double deltat = secsAvail;
+            deltat = secsAvail;
 
             if( mT + deltat > mT1 )
             {
@@ -1028,7 +1030,7 @@ void AudioIO::FillBuffers()
                   mPlaybackMixers[i]->Restart();
                mT = mT0;
             }
-         } while (mPlayLooped && secsAvail > 0.0);
+         } while (mPlayLooped && secsAvail > 0 && deltat > 0);
       }
    }
 

@@ -553,13 +553,18 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
       // JS: clarified how the final play region is computed;
       
       if (t1 == t0) {
-         // we play from t0 to end
-
-         // move t0 to valid range
-         if (t0 < 0)
+         // msmeyer: When playing looped, we play the whole file, if
+         // no range is selected. Otherwise, we play from t0 to end
+         if (looped) {
+            // msmeyer: always play from start
             t0 = t->GetStartTime();
-         if (t0 > t->GetEndTime())
-            t0 = t->GetEndTime();
+         } else {
+            // move t0 to valid range
+            if (t0 < 0)
+               t0 = t->GetStartTime();
+            if (t0 > t->GetEndTime())
+               t0 = t->GetEndTime();
+         }
          
          // always play to end
          t1 = t->GetEndTime();
