@@ -329,8 +329,9 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
 
       int FinishStream(unsigned char outbuffer[]) {
          mEncoding = false;
-         lame_encode_flush(mGF, outbuffer, mOutBufferSize);
+         int result = lame_encode_flush(mGF, outbuffer, mOutBufferSize);
          lame_close(mGF);
+         return result;
       }
 
       void CancelEncoding() { mEncoding = false; }
