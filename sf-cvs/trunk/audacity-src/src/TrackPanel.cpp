@@ -22,6 +22,11 @@
 
 #include <math.h>
 
+#ifdef __WXMSW__
+#define rint(a) ((int)floor(a+0.5))
+#define lrint(a) ((long)floor(a+0.5))
+#endif
+
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
 #include <wx/menu.h>
@@ -2757,7 +2762,7 @@ void TrackPanel::DisplaySelection()
    float f2sectot = length;
 
    // iformat = 3 --> use samples (in single sample time increments)
-   long int i3samp1 = (long)rint(rate*double(start)) + 1;
+   long int i3samp1 = (long)rint((rate*double(start)) + 1);
    long int i3samp2 = (long)rint(rate*double(end));
    long int i3samptot = i3samp2 - i3samp1 + 1;
    // for cursor position do not round
