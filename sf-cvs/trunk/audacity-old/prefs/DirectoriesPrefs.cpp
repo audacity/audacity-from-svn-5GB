@@ -74,7 +74,9 @@ DirectoriesPrefs::DirectoriesPrefs(wxWindow *parent):
 void DirectoriesPrefs::SetTempDir(wxCommandEvent& event)
 {
 	wxString dir;
-	wxDirDialog dialog(NULL, "Select Temporary Directory", mTempDir->GetLabel());
+	wxDirDialog dialog(this,
+					   "Select Temporary Directory",
+					   mTempDir->GetLabel());
 
 	if(dialog.ShowModal() == wxID_CANCEL)
 		return;
