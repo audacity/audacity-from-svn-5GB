@@ -78,7 +78,7 @@ VERSION = @VERSION@
 lib_LTLIBRARIES = libmad.la
 include_HEADERS = mad.h
 
-EXTRA_DIST = mad.h.sed
+EXTRA_DIST = COPYRIGHT mad.h.sed
 
 exported_headers =  	version.h fixed.h bit.h timer.h stream.h frame.h synth.h decoder.h
 
@@ -135,7 +135,7 @@ acinclude.m4 aclocal.m4 config.h.in configure configure.in
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = gtar
+TAR = tar
 GZIP_ENV = --best
 SOURCES = $(libmad_la_SOURCES) $(EXTRA_libmad_la_SOURCES)
 OBJECTS = $(libmad_la_OBJECTS)
@@ -337,7 +337,7 @@ distdir: $(DISTFILES)
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$/$$file $(distdir)/$$file; \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
@@ -432,10 +432,13 @@ mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
 
-mad.h: Makefile.am config.status config.h  \
-		$(srcdir)/../COPYRIGHT $(srcdir)/mad.h.sed $(exported_headers)
+mad.h: config.status config.h Makefile.am  \
+		$(srcdir)/COPYRIGHT $(srcdir)/mad.h.sed $(exported_headers)
 	(sed -e '1s|.*|/*|' -e '1b' -e '$$s|.*| */|' -e '$$b'  \
-		-e 's/^.*/ *&/' $(srcdir)/../COPYRIGHT; echo;  \
+		-e 's/^.*/ *&/' $(srcdir)/COPYRIGHT; echo;  \
+	echo "# ifdef __cplusplus";  \
+	echo 'extern "C" {';  \
+	echo "# endif"; echo;  \
 	if [ ".$(FPM)" != "." ]; then  \
 		echo ".$(FPM)" | sed -e 's|^\.-D|# define |'; echo;  \
 	fi;  \
@@ -448,7 +451,10 @@ mad.h: Makefile.am config.status config.h  \
 	for header in $(exported_headers); do  \
 		echo;  \
 		sed -n -f $(srcdir)/mad.h.sed $(srcdir)/$$header; echo;  \
-	done) | cat -s >$@
+	done;  \
+	echo "# ifdef __cplusplus";  \
+	echo '}';  \
+	echo "# endif") | cat -s >$@
 
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
