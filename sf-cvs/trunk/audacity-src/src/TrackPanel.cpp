@@ -2659,8 +2659,10 @@ Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
    return NULL;
 }
 
+
 //This method displays the bounds of the selection
 //in the status bar.
+
 void TrackPanel::DisplaySelection()
 {
 
@@ -2670,31 +2672,304 @@ void TrackPanel::DisplaySelection()
 
    //Do more complex stuff here to support user-based configuration
    //of timescales (m/s/ms/samples/etc.).
-   //float scale = float(1.0);
-   int minutes1 = int(start/60);
-   int minutes2 = int(end/60);
-   int minutestot = int(length/60);
-   float seconds1 = start - float(minutes1*60);
-   float seconds2 = end - float(minutes2*60);
-   float secondstot = length - float(minutestot*60);
-   
 
-   //Display a message about the selection in the status message window
-   if(start == end)
+   // use interger iformat to control selection output format
+   //
+   // formats that allow selection to be smoothly adjustable
+   //   iformat = 1 --> use min:sec.xxxxxx
+   //   iformat = 2 --> use sec.xxxxxx
+   // formats that adjust only in increments of single sample duration
+   //   iformat = 3 --> use samples
+   //   iformat = 4 --> use min:sec.xxxxxx
+   //   iformat = 5 --> use sec.xxxxxx
+   //   iformat = 6 --> use min:sec+samples
+   //   iformat = 7 --> use sec+samples
+   //   iformat = 8 --> use cdda sectors+bytes (2352 byte blocks)
+   //                   (only applicable for projects with rate = 44100)
+
+   int iformat = 4;
+
+   //
+   // CAUTION: iformat >= 3 are a little touchy as far as
+   //          selection information, but cursor position is
+   //          accurate.  Make sure that selection range is
+   //          confirmed with cursor position information.
+   //          There is a small range of movement when zoomed
+   //          way in on the individual samples where selection
+   //          information increments to the next position but
+   //          the actual samples selected have not quite yet
+   //          switched to reflect this change.  Most of the
+   //          potential movement range gives the right answer,
+   //          but a small section of it does not.  This seems
+   //          to be increasingly an issue as you go father away
+   //          from time = 0, where it works very well.  The issue 
+   //          seems to lie in the uncoupling of the highlighted
+   //          or selected samples in the track and the infinitely
+   //          variable highlighted part of the time scale.  Those
+   //          two things should be directly coupled.  The iformat
+   //          values of 3+ are an attempt to get the selection 
+   //          information to reflect the highlighted audio samples
+   //          in the track itself.
+   //
+   // NOTE: best to zoom in to about the first 16 or so samples of a
+   //       project and observe for yourself the behavior of using
+   //       iformat>=3.  When a cursor location is given in samples,
+   //       it tells you how many samples are to the left of the
+   //       current cursor position.  For example, click between
+   //       the sixth and seventh sample and the cursor location
+   //       says 6 since there are 6 pixels left of the selection
+   //       point.  Now drag the selection boundary down to zero.
+   //       You see that you now have selected samples 1 to 6,
+   //       for a total of 6 samples.  If thinking in terms of time,
+   //       it would be expected that this should be samples 0 to 5.
+   //       This is because the first sample actually spans the first
+   //       1/rate seconds of sound, it is not a point in time 
+   //       located at time = 0.  The same thing applies to iformat=8.
+   //       The lowest the selection will go is 0+0004 since 1 sample
+   //       is 4 bytes of cd audio.
+
+   // Get project sample rate
+   //
+   // Do something to get the real rate here.
+   // Since everything I tried did not work, it is hardwired to 44100.
+   // Help - someone bail me out on this!!
+// double rate = ???? ;
+   double rate = 44100.0;
+
+   // Variables needed for the various iformat values.
+   // (general form: i1xxx is an integer for format1, f1xxx is a float for format 1)
+   //
+   // Probably best to leave them all together prior to iformat if-then-else test
+   // rather than trying to calculate just the ones needed since some depend on
+   // variables from other iformat variables.  Four depends on three for example.
+
+   // iformat = 1 --> use min:sec.xxxxxx
+   int i1min1 = int(start/60);
+   int i1min2 = int(end/60);
+   int i1mintot = int(length/60);
+   float f1sec1 = start - float(i1min1*60);
+   float f1sec2 = end - float(i1min2*60);
+   float f1sectot = length - float(i1mintot*60);
+
+   // iformat = 2 --> use sec.xxxxxx
+   float f2sec1 = start;
+   float f2sec2 = end;
+   float f2sectot = length;
+
+   // iformat = 3 --> use samples (in single sample time increments)
+   long int i3samp1 = lrint(rate*double(start)) + 1;
+   long int i3samp2 = lrint(rate*double(end));
+   long int i3samptot = i3samp2 - i3samp1 + 1;
+   // for cursor position do not round
+   long int i3samp1pos = (long int)(rate*double(start)) + 1;
+
+   // iformat = 4 --> use min:sec.xxxxxx (in single sample time increments)
+   int i4min1 = int((double(i3samp1-1)/rate)/60);
+   int i4min2 = int((double(i3samp2)/rate)/60);
+   int i4mintot = int((double(i3samptot)/rate)/60);
+   double f4sec1 = double(i3samp1-1)/rate - double(i4min1*60);
+   double f4sec2 = double(i3samp2)/rate - double(i4min2*60);
+   double f4sectot = double(i3samptot)/rate - double(i4mintot*60);
+   int i4min1pos = int(i3samp1pos/rate/60);
+   double f4sec1pos = double(i3samp1pos)/rate - double(i4min1pos)*60;
+
+   // iformat = 5 --> use sec.xxxxxx (in sample time increments)
+   double f5sec1 = double(i3samp1-1)/rate;
+   double f5sec2 = double(i3samp2)/rate;
+   double f5sectot = double(i3samptot)/rate;
+   // for position do not round
+   double f5sec1pos = double(i3samp1pos)/rate;
+
+   // iformat = 6 --> use min:sec+samples (in single sample time increments)
+   int i6min1 = int((double(i3samp1)/rate)/60);
+   int i6min2 = int((double(i3samp2)/rate)/60);
+   int i6mintot = int((double(i3samptot)/rate)/60);
+   int i6sec1 = int(double(i3samp1)/rate - double(i6min1*60));
+   int i6sec2 = int(double(i3samp2)/rate - double(i6min2*60));
+   int i6sectot = int(double(i3samptot)/rate - double(i6mintot*60));
+   int i6samp1 = int(i3samp1-(long int)(i6min1*60*lrint(rate))-(long int)(i6sec1*lrint(rate)));
+   int i6samp2 = int(i3samp2-(long int)(i6min2*60*lrint(rate))-(long int)(i6sec2*lrint(rate)));
+   int i6samptot = int(i3samptot-(long int)(i6mintot*60*lrint(rate))-(long int)(i6sectot*lrint(rate)));
+   // for cursor position do not round
+   int i6min1pos = int((double(int(rate*double(start))+1)/rate)/60);
+   int i6sec1pos = int(double(int(rate*double(start))+1)/rate - double(i6min1pos*60));
+   int i6samp1pos = int(i3samp1pos-(long int)(i6min1pos*60*lrint(rate))-(long int)(i6sec1pos*lrint(rate)));
+
+   // iformat = 7 --> use sec+samples (in single sample time increments)
+   int i7sec1 = int(double(i3samp1)/rate);
+   int i7sec2 = int(double(i3samp2)/rate);
+   int i7sectot = int(double(i3samptot)/rate);
+   int i7samp1 = int(i3samp1-(long int)(i7sec1*lrint(rate)));
+   int i7samp2 = int(i3samp2-(long int)(i7sec2*lrint(rate)));
+   int i7samptot = int(i3samptot-(long int)(i7sectot*lrint(rate)));
+   // for cursor position do not round
+   int i7sec1pos = int(double(int(rate*double(start))+1)/rate);
+   int i7samp1pos = int(i3samp1pos-(long int)(i7sec1*lrint(rate)));
+
+   // iformat = 8 --> use cdda sectors + bytes (2352 byte blocks)
+   //
+   // Audio CDs use 2352 byte blocks as sector size.  At 16 bit stereo each sample = 4 bytes
+   // and each sector = 2352 / 4 = 588 samples.  As a sanity check, a 74 minute audio cd
+   // contains 333000 sectors:
+   // 
+   // 588 samples   333000 sectors       1 sec        1 min
+   // ----------- * -------------- * ------------- * ------ = 74.0 minutes per cd (Checks out)
+   //   1 sector         1 cd        44100 samples   60 sec
+   //
+   int i8sector1 = int(double(i3samp1)/588);
+   int i8sector2 = int(double(i3samp2)/588);
+   int i8sectortot = int(double(i3samptot)/588);
+   int i8byte1 = int(i3samp1-(long int)(i8sector1*588))*4;
+   if((i8byte1 == 0) && (i8sector1 > 0))
       {
-        mListener->
-             TP_DisplayStatusMessage(wxString::
-                                     Format(_("Cursor: %i:%09.6f"), minutes1, seconds1),
-                                     1);
+         i8byte1 = 2349;
+         i8sector1 = i8sector1 - 1;
       }
    else
       {
-         mListener->
-            TP_DisplayStatusMessage(wxString::
-                                    Format(_("Selection: %i:%09.6f - %i:%09.6f (%i:%09.6f)"),
-                                           minutes1, seconds1, minutes2, seconds2, minutestot, secondstot),
-       
-
-                                    1);
+         i8byte1 = i8byte1 - 3;
       }
+   int i8byte2 = int(i3samp2-(long int)(i8sector2*588))*4;
+   int i8bytetot = int(i3samptot-(long int)(i8sectortot*588))*4;
+   // for cursor position do not round
+   int i8sector1pos = int(double(int(rate*double(start))+1)/588);
+   int i8byte1pos = int(i3samp1pos-(i8sector1pos*588))*4;
+
+   //Display a message about the selection in the status message window
+   if(start == end)
+      if(iformat == 1)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: %i:%09.6f min:sec"), i1min1, f1sec1),
+                                        1);
+         }
+      else if(iformat == 2)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: %lf sec"), f2sec1),
+                                        1);
+         }
+      else if(iformat == 3)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: %li samples"), i3samp1pos),
+                                        1);
+         }
+      else if(iformat == 4)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: %i:%09.6lf min:sec"), i4min1pos, f4sec1pos),
+                                        1);
+         }
+      else if(iformat == 5)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: %lf sec"), f5sec1pos),
+                                        1);
+         }
+      else if(iformat == 6)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: %i:%02i+%i min:sec+samples"), i6min1pos, i6sec1pos, i6samp1pos),
+                                        1);
+         }
+      else if(iformat == 7)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: %i+%i sec+samples"), i7sec1pos, i7samp1pos),
+                                        1);
+         }
+      else if(iformat == 8)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)"), i8sector1pos, i8byte1pos),
+                                        1);
+         }
+      else
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: invalid iformat value (%i) in TrackPanel.cpp"),iformat),
+                                        1);
+         }
+   else
+      if(iformat == 1)
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+                                       Format(_("Selection: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)"),
+                        i1min1, f1sec1, i1min2, f1sec2, i1mintot, f1sectot),
+                                       1);
+         }
+      else if(iformat == 2)
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+                                       Format(_("Selection: %lf - %lf (%lf sec)"),
+                                              f2sec1, f2sec2, f2sectot),
+                                       1);
+         }
+      else if(iformat == 3)
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+                                       Format(_("Selection: %li - %li (%li samples)"),
+                                              i3samp1, i3samp2, i3samptot),
+                                       1);
+         }
+      else if(iformat == 4)
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+                                       Format(_("Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)"),
+                        i4min1, f4sec1, i4min2, f4sec2, i4mintot, f4sectot),
+                                       1);
+         }
+      else if(iformat == 5)
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+                                       Format(_("Selection: %lf - %lf (%lf sec)"),
+                                              f5sec1, f5sec2, f5sectot),
+                                       1);
+         }
+      else if(iformat == 6)
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+                                       Format(_("Selection: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sec+samples)"),
+                                         i6min1, i6sec1, i6samp1, i6min2, i6sec2, i6samp2, i6mintot, i6sectot, i6samptot),
+                                       1);
+         }
+      else if(iformat == 7)
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+                                       Format(_("Selection: %i+%i - %i+%i (%i+%i sec+samples)"),
+                                         i7sec1, i7samp1, i7sec2, i7samp2, i7sectot, i7samptot),
+                                       1);
+         }
+      else if(iformat == 8)
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+                                       Format(_("Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)"),
+                                         i8sector1, i8byte1, i8sector2, i8byte2, i8sectortot, i8bytetot),
+                                       1);
+         }
+      else
+         {
+            mListener->
+                TP_DisplayStatusMessage(wxString::
+                          Format(_("Selection: invalid iformat value (%i) in TrackPanel.cpp"),iformat),
+                             1);
+         }
 }
