@@ -106,22 +106,16 @@ static const char *CommandsDefaultXML[] = {
 "\t\t\t<submenu translation=\"Align\">",
 "\t\t\t\t<item translation=\"Align Tracks Together\" functions=\"OnAlign\"/>",
 "\t\t\t\t<item translation=\"Align with Zero\" functions=\"OnAlignZero\"/>",
-"\t\t\t\t<item translation=\"Align with Cursor\" functions=\"OnAlignSelStart\"/>",
+"\t\t\t\t<item translation=\"Align with Cursor\" functions=\"OnAlignCursor\"/>",
 "\t\t\t\t<item translation=\"Align with Selection Start\" functions=\"OnAlignSelStart\"/>",
 "\t\t\t\t<item translation=\"Align with Selection End\" functions=\"OnAlignSelEnd\"/>",
-   // TODO: Put these into a submenu under Project menu item "Align End"
-   // Then have submenu entries "with Cursor", "with Selection Start", and "with Selection End"
-"\t\t\t\t<item translation=\"Align End with Cursor\" functions=\"OnAlignEndSelStart\"/>",
+"\t\t\t\t<item translation=\"Align End with Cursor\" functions=\"OnAlignEndCursor\"/>",
 "\t\t\t\t<item translation=\"Align End with Selection Start\" functions=\"OnAlignEndSelStart\"/>",
 "\t\t\t\t<item translation=\"Align End with Selection End\" functions=\"OnAlignEndSelEnd\"/>",
-   // TODO: Put these into a submenu under Project menu item "Align Group"
-   // Then have submenu entries "with Cursor", "with Selection Start", and "with Selection End"
-"\t\t\t\t<item translation=\"Align Group with Cursor\" functions=\"OnAlignGroupSelStart\"/>",
+"\t\t\t\t<item translation=\"Align Group with Cursor\" functions=\"OnAlignGroupCursor\"/>",
 "\t\t\t\t<item translation=\"Align Group with Selection Start\" functions=\"OnAlignGroupSelStart\"/>",
 "\t\t\t\t<item translation=\"Align Group with Selection End\" functions=\"OnAlignGroupSelEnd\"/>",
-   // TODO: Put these into a submenu under Project menu item "Align Group End"
-   // Then have submenu entries "with Cursor", "with Selection Start", and "with Selection End"
-"\t\t\t\t<item translation=\"Align Group End with Cursor\" functions=\"OnAlignGroupEndSelStart\"/>",
+"\t\t\t\t<item translation=\"Align Group End with Cursor\" functions=\"OnAlignGroupEndCursor\"/>",
 "\t\t\t\t<item translation=\"Align Group End with Selection Start\" functions=\"OnAlignGroupEndSelStart\"/>",
 "\t\t\t\t<item translation=\"Align Group End with Selection End\" functions=\"OnAlignGroupEndSelEnd\"/>",
 "\t\t\t</submenu>",

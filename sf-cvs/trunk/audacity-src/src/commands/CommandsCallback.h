@@ -23,7 +23,7 @@
 
 #ifdef AUDACITY_COMMANDS_CALLBACK_POINTERS
 
-#define NUM_CALLBACK_FUNCTIONS 69
+#define NUM_CALLBACK_FUNCTIONS 73
 
 audEventFunction callback_function_pointers[] = {&AudacityProject::OnNew,&AudacityProject::OnOpen,&AudacityProject::OnClose,
 &AudacityProject::OnSave,&AudacityProject::OnSaveAs,&AudacityProject::OnExportMix,&AudacityProject::OnExportSelection,
@@ -39,9 +39,11 @@ audEventFunction callback_function_pointers[] = {&AudacityProject::OnNew,&Audaci
 &AudacityProject::OnImportMIDI,&AudacityProject::OnImportRaw,&AudacityProject::OnEditID3,&AudacityProject::OnQuickMix,
 &AudacityProject::OnSelectionSave,&AudacityProject::OnSelectionRestore,&AudacityProject::OnCursorTrackStart,
 &AudacityProject::OnCursorTrackEnd,&AudacityProject::OnCursorSelStart,&AudacityProject::OnCursorSelEnd,
-&AudacityProject::OnAlignZero,&AudacityProject::OnAlign,&AudacityProject::OnAlignSelStart,&AudacityProject::OnAlignSelEnd,
-&AudacityProject::OnAlignEndSelStart,&AudacityProject::OnAlignEndSelEnd,&AudacityProject::OnAlignGroupSelStart,
-&AudacityProject::OnAlignGroupSelEnd,&AudacityProject::OnAlignGroupEndSelStart,&AudacityProject::OnAlignGroupEndSelEnd,
+&AudacityProject::OnAlignZero,&AudacityProject::OnAlign,&AudacityProject::OnAlignCursor,
+&AudacityProject::OnAlignSelStart,&AudacityProject::OnAlignSelEnd,&AudacityProject::OnAlignEndCursor,
+&AudacityProject::OnAlignEndSelStart,&AudacityProject::OnAlignEndSelEnd,&AudacityProject::OnAlignGroupCursor,
+&AudacityProject::OnAlignGroupSelStart,&AudacityProject::OnAlignGroupSelEnd,&AudacityProject::OnAlignGroupEndCursor,
+&AudacityProject::OnAlignGroupEndSelStart,&AudacityProject::OnAlignGroupEndSelEnd,
 &AudacityProject::OnNewWaveTrack,&AudacityProject::OnNewLabelTrack,&AudacityProject::OnRemoveTracks,
 &AudacityProject::OnAbout,&AudacityProject::OnHelp,&AudacityProject::OnHelpIndex,&AudacityProject::OnHelpSearch,
 &AudacityProject::OnBenchmark,&AudacityProject::OnSeparator,&AudacityProject::OnAddLabel};
@@ -52,8 +54,9 @@ const char *callback_function_strings[] = {"OnNew","OnOpen","OnClose","OnSave","
 "OnSelectStartCursor","OnZoomIn","OnZoomOut","OnZoomNormal","OnZoomFit","OnZoomSel","OnPlotSpectrum",
 "OnFloatControlToolBar","OnLoadEditToolBar","OnFloatEditToolBar","OnImport","OnImportLabels","OnImportMIDI","OnImportRaw",
 "OnEditID3","OnQuickMix","OnSelectionSave","OnSelectionRestore","OnCursorTrackStart","OnCursorTrackEnd","OnCursorSelStart",
-"OnCursorSelEnd","OnAlignZero","OnAlign","OnAlignSelStart","OnAlignSelEnd","OnAlignEndSelStart","OnAlignEndSelEnd",
-"OnAlignGroupSelStart","OnAlignGroupSelEnd","OnAlignGroupEndSelStart","OnAlignGroupEndSelEnd","OnNewWaveTrack",
+"OnCursorSelEnd","OnAlignZero","OnAlign","OnAlignCursor","OnAlignSelStart","OnAlignSelEnd","OnAlignEndCursor",
+"OnAlignEndSelStart","OnAlignEndSelEnd", "OnAlignGroupCursor","OnAlignGroupSelStart","OnAlignGroupSelEnd",
+"OnAlignGroupEndCursor","OnAlignGroupEndSelStart","OnAlignGroupEndSelEnd","OnNewWaveTrack",
 "OnNewLabelTrack","OnRemoveTracks","OnAbout","OnHelp","OnHelpIndex","OnHelpSearch","OnBenchmark","OnSeparator","OnAddLabel"};
 
 #endif
@@ -139,12 +142,16 @@ void OnCursorSelEnd();
 
 void OnAlignZero();
 void OnAlign();
+void OnAlignCursor();
 void OnAlignSelStart();
 void OnAlignSelEnd();
+void OnAlignEndCursor();
 void OnAlignEndSelStart();
 void OnAlignEndSelEnd();
+void OnAlignGroupCursor();
 void OnAlignGroupSelStart();
 void OnAlignGroupSelEnd();
+void OnAlignGroupEndCursor();
 void OnAlignGroupEndSelStart();
 void OnAlignGroupEndSelEnd();
 
