@@ -652,13 +652,36 @@ void AudacityProject::OnDuplicate(wxCommandEvent & event)
 
    while (n) {
       if (n->selected) {
-         n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
-         if (dest) {
-            dest->name = n->name;
-            dest->linked = n->linked;
-            dest->SetOffset( wxMax(n->tOffset, mViewInfo.sel0) );
+         if (!n->linked) {
+            n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
+            if (dest) {
+               dest->name = n->name;
+               dest->linked = n->linked;
+               dest->SetOffset( wxMax(n->tOffset, mViewInfo.sel0) );
 
-            iter.Insert(dest);
+               iter.Insert(dest);
+            }
+         }
+         else {
+            n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
+            if (dest) {
+               dest->name = n->name;
+               dest->linked = n->linked;
+               dest->SetOffset( wxMax(n->tOffset, mViewInfo.sel0) );
+
+               n = iter.Next();
+               iter.Insert(dest);
+               n = iter.Prev();
+            }
+            n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
+            if (dest) {
+               dest->name = n->name;
+               dest->linked = n->linked;
+               dest->SetOffset( wxMax(n->tOffset, mViewInfo.sel0) );
+
+               n = iter.Next();
+               iter.Insert(dest);
+            }
          }
       }
       n = iter.Next();
@@ -691,21 +714,63 @@ void AudacityProject::OnSplit(wxCommandEvent & event)
          double sel0 = mViewInfo.sel0;
          double sel1 = mViewInfo.sel1;
          
-         n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
-         if (dest) {
-            dest->linked = n->linked;
-            dest->SetOffset(wxMax(sel0, n->tOffset));
+         if (!n->linked) {
+            n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
+            if (dest) {
+               dest->name = n->name;
+               dest->linked = n->linked;
+               dest->SetOffset(wxMax(sel0, n->tOffset));
 
-            if (sel1 >= n->GetMaxLen())
-               n->Clear(sel0, sel1);
-            else if (sel0 <= n->tOffset) {
-               n->Clear(sel0, sel1);
-               n->SetOffset(sel1);
+               if (sel1 >= n->GetMaxLen())
+                  n->Clear(sel0, sel1);
+               else if (sel0 <= n->tOffset) {
+                  n->Clear(sel0, sel1);
+                  n->SetOffset(sel1);
+               }
+               else
+                  n->Silence(sel0, sel1);
+
+               iter.Insert(dest);
             }
-            else
-               n->Silence(sel0, sel1);
+         }
+         else {
+            n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
+            if (dest) {
+               dest->name = n->name;
+               dest->linked = n->linked;
+               dest->SetOffset(wxMax(sel0, n->tOffset));
 
-            iter.Insert(dest);
+               if (sel1 >= n->GetMaxLen())
+                  n->Clear(sel0, sel1);
+               else if (sel0 <= n->tOffset) {
+                  n->Clear(sel0, sel1);
+                  n->SetOffset(sel1);
+               }
+               else
+                  n->Silence(sel0, sel1);
+
+               n = iter.Next();
+               iter.Insert(dest);
+               n = iter.Prev();
+            }
+            n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
+            if (dest) {
+               dest->name = n->name;
+               dest->linked = n->linked;
+               dest->SetOffset(wxMax(sel0, n->tOffset));
+
+               if (sel1 >= n->GetMaxLen())
+                  n->Clear(sel0, sel1);
+               else if (sel0 <= n->tOffset) {
+                  n->Clear(sel0, sel1);
+                  n->SetOffset(sel1);
+               }
+               else
+                  n->Silence(sel0, sel1);
+
+               n = iter.Next();
+               iter.Insert(dest);
+            }
          }
       }
       n = iter.Next();
