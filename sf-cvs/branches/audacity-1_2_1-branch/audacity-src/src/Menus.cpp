@@ -2413,8 +2413,10 @@ void AudacityProject::OnQuickMix()
       Track *t = iter.First();
 
       while (t) {
-         if (t->GetSelected())
+         if (t->GetSelected()) {
+            delete t;
             t = iter.RemoveCurrent();
+         }
          else
             t = iter.Next();
       }
@@ -2742,8 +2744,10 @@ void AudacityProject::OnRemoveTracks()
    Track *t = iter.First();
 
    while (t) {
-      if (t->GetSelected())
+      if (t->GetSelected()) {
+         delete t;
          t = iter.RemoveCurrent();
+      }
       else
          t = iter.Next();
    }
