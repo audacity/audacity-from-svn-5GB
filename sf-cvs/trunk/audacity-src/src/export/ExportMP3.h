@@ -20,6 +20,7 @@ class MP3Exporter {
    
       MP3Exporter();
    
+      virtual wxString GetLibraryPath() = 0;
       virtual wxString GetLibraryName() = 0;
       virtual wxString GetLibraryMessage() = 0;
       virtual wxString GetLibraryTypeString() = 0;

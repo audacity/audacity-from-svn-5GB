@@ -86,7 +86,8 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
       if (action == wxYES) {
          wxString question;
          question.Printf(_("Where is %s?"), (const char *)GetLibraryName());
-         mLibPath = wxFileSelector(question, NULL,
+         mLibPath = wxFileSelector(question, 
+                                   GetLibraryPath(),        // Path
                                    GetLibraryName(),        // Name
                                    "",      // Extension
                                    GetLibraryTypeString(),
@@ -213,6 +214,11 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
             mGF = NULL;
          }
          
+      wxString GetLibraryPath()
+      {
+         return "/usr/lib";
+      }
+
          wxString GetLibraryName()
          {
             return "libmp3lame.so";
@@ -220,7 +226,7 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
          
          wxString GetLibraryTypeString()
          {
-            return wxString(_("Shared Object files (*.so)|*.so"));
+            return wxString(_("Only libmp3lame.so|libmp3lame.so|Shared Object files (*.so)|*.so|All Files (*)|*"));
          }
          
          wxString GetLibraryMessage()
@@ -466,6 +472,11 @@ MP3Exporter *GetMP3Exporter()
             mGF = NULL;
          }
 
+         wxString GetLibraryPath()
+         {
+            return NULL;
+         }
+
          wxString GetLibraryName()
          {
             return "LAMELib";
@@ -473,7 +484,7 @@ MP3Exporter *GetMP3Exporter()
          
          wxString GetLibraryTypeString()
          {
-            return _("Shared Libraries|*");
+            return _("Only LAMELib|LAMELib|Shared Libraries (*)|*");
          }
          
          wxString GetLibraryMessage()
@@ -691,6 +702,12 @@ public:
       mDefaultRate = 128;
    }
 
+
+   wxString GetLibraryPath()
+   {
+      return NULL;
+   }
+
    wxString GetLibraryName()
    {
       return "lame_enc.dll";
@@ -698,7 +715,7 @@ public:
    
    wxString GetLibraryTypeString()
    {
-      return _("Dynamically Linked Libraries (*.dll)|*.dll");
+      return _("Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*");
    }
    
    wxString GetLibraryMessage()
