@@ -14,11 +14,14 @@
 
 **********************************************************************/
 
+#include "ASlider.h"
+
+#include "../Project.h"
+
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
 #include <wx/image.h>
-
-#include "ASlider.h"
+#include <wx/tooltip.h>
 
 BEGIN_EVENT_TABLE(ASlider, wxWindow)
    EVT_MOUSE_EVENTS(ASlider::OnMouseEvent)
@@ -71,6 +74,17 @@ void ASlider::OnPaint(wxPaintEvent & event)
 
 void ASlider::OnMouseEvent(wxMouseEvent & event)
 {
+   if (event.Entering()) {
+      // Display the tooltip in the status bar
+      wxString tip = GetToolTip()->GetTip();
+      GetActiveProject()->TP_DisplayStatusMessage(tip, 0);
+      this->Refresh(false);
+   }
+   else if (event.Leaving()) {
+      GetActiveProject()->TP_DisplayStatusMessage("",0);
+      this->Refresh(false);
+   }
+
    if (event.ButtonDown()) {
 
       //This jumps the thumb to clicked position
