@@ -22,20 +22,21 @@ int sf_num_headers()
 // The actual translation call must take place when the array is accessed.
 
 wxString HeaderNames[14] = {
-   "Windows Wave",
-   "Apple/SGI AIFF",
-   "Sun/NeXT AU",
-   "DEC AU",
-   wxTRANSLATE("Raw PCM data"),
-   "Ensoniq PARIS",
-   "Amiga IFF/SVX8/SV16",
-   "NIST/Sphere",
-   "Windows Media Audio",
-   "SEK'D Samplitude",
-   "VOC",
-   "Sound Designer 2",
-   "Propellorheads Rex2",
-   "Berkeley/IRCAM/CARL"};
+   _("Windows Wave"),
+   _("Apple/SGI AIFF"),
+   _("Sun/NeXT AU"),
+   _("DEC AU"),
+   _("Raw PCM data"),
+   _("Ensoniq PARIS"),
+   _("Amiga IFF/SVX8/SV16"),
+   _("NIST/Sphere"),
+   _("Windows Media Audio"),
+   _("SEK'D Samplitude"),
+   _("VOC"),
+   _("Sound Designer 2"),
+   _("Propellorheads Rex2"),
+   _("Berkeley/IRCAM/CARL")
+};
 
 wxString ExtensionNames[14] = {
    "wav",
@@ -51,7 +52,8 @@ wxString ExtensionNames[14] = {
    "voc",
    "sd2",
    "rex2",
-   "ircam"};
+   "ircam"
+};
 
 #ifdef __WXMAC__
 
@@ -74,7 +76,8 @@ OSType MacNames[14] = {
    'VOC ', // VOC
    'SFIL', // Sound Designer II
    'REX2', // ?? Propellorheads Rex2
-   'IRCM'};// IRCAM
+   'IRCM'  // IRCAM
+};
 
 OSType sf_header_mactype(int format)
 {
@@ -91,9 +94,9 @@ OSType sf_header_mactype(int format)
 wxString sf_header_name(int format)
 {
    if (format >= 0x10000)
-      return _(HeaderNames[(format/0x10000)-1]);
+      return HeaderNames[(format/0x10000)-1];
    else if (format>=0 && format<14)
-      return _(HeaderNames[format]);
+      return HeaderNames[format];
    else
       return _("Unknown header");
 }
@@ -114,23 +117,24 @@ int sf_num_encodings()
 }
 
 wxString EncodingNames[17] = {
-   "PCM",
-   "floating-point",
-   "8-bit u-law encoding",
-   "8-bit a-law encoding",
-   "4-bit IMA ADPCM encoding",
-   "4-bit MS ADPCM encoding",
-   "PCM big-endian",
-   "PCM little-endian",
-   "signed PCM",
-   "unsigned PCM",
-   "SVX Fibonacci Delta encoding",
-   "SVX Exponential Delta encoding",
-   "GSM 6.10 encoding",
-   "32kbs G721 ADPCM encoding",
-   "24kbs G723 ADPCM encoding",
-   "big-endian floating-point",
-   "little-endian floating-point"};
+   _("PCM"),
+   _("floating-point"),
+   _("8-bit u-law encoding"),
+   _("8-bit a-law encoding"),
+   _("4-bit IMA ADPCM encoding"),
+   _("4-bit MS ADPCM encoding"),
+   _("PCM big-endian"),
+   _("PCM little-endian"),
+   _("signed PCM"),
+   _("unsigned PCM"),
+   _("SVX Fibonacci Delta encoding"),
+   _("SVX Exponential Delta encoding"),
+   _("GSM 6.10 encoding"),
+   _("32kbs G721 ADPCM encoding"),
+   _("24kbs G723 ADPCM encoding"),
+   _("big-endian floating-point"),
+   _("little-endian floating-point")
+};
 
 wxString sf_encoding_name(int subtype)
 {
