@@ -35,9 +35,12 @@ VoiceKey::VoiceKey(){
    mSignalWindowSize = .05;              //Amount of time (in seconds) above threshold to call it signal
 
    
-   mUseSignChanges = false;
-   mUseDirectionChanges = false;
    mUseEnergy = true;
+   mUseSignChangesLow = false;
+   mUseSignChangesHigh = false;
+   mUseDirectionChangesLow = false;
+   mUseDirectionChangesHigh = false;
+
 
 };
 
@@ -141,10 +144,10 @@ sampleCount VoiceKey::OnForward (WaveTrack & t, sampleCount start, sampleCount l
          if(mUseEnergy)
             erg = TestEnergy(t, lastsubthresholdsample, WindowSizeInt);                        
          
-         if(mUseSignChanges)
+         if(mUseSignChangesLow || mUseSignChangesHigh)
             sc  = TestSignChanges(t,lastsubthresholdsample, WindowSizeInt);
          
-         if(mUseDirectionChanges)
+         if(mUseDirectionChangesLow || mUseDirectionChangesHigh)
             dc  = TestDirectionChanges(t,lastsubthresholdsample,WindowSizeInt);
 
 
@@ -160,23 +163,36 @@ sampleCount VoiceKey::OnForward (WaveTrack & t, sampleCount start, sampleCount l
                   tests += (int)(erg>mThresholdEnergy);
                   testThreshold++;
                }
-            if(mUseSignChanges)
+            if(mUseSignChangesLow)
                {
                   TestSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i+1],buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
-                  tests += (int)(sc > mThresholdSignChangesUpper);
                   tests += (int)(sc < mThresholdSignChangesLower);
                   testThreshold++;
                }
-            if(mUseDirectionChanges)
+
+            if(mUseSignChangesHigh)
+               {
+                  TestSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i+1],buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(sc > mThresholdSignChangesUpper);
+                  testThreshold++;
+               }
+
+            if(mUseDirectionChangesLow)
                {
                   TestDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i+1],ztrend,buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
-                  tests += (int)(dc > mThresholdDirectionChangesUpper);
                   tests += (int)(dc < mThresholdDirectionChangesLower);
                   testThreshold++;                  
                }
-				
-       
-
+            
+            if(mUseDirectionChangesHigh)
+               {
+                  TestDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i+1],ztrend,buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(dc > mThresholdDirectionChangesUpper);
+                  testThreshold++;                  
+               }
+            
+            
+            
             if(tests >= testThreshold)
                {	//Finish off on the first hit
                   break;
@@ -275,9 +291,9 @@ sampleCount VoiceKey::OnBackward (WaveTrack & t, sampleCount end, sampleCount le
          //Get initial test statistic values.
          if(mUseEnergy)
             erg = TestEnergy(t, lastsubthresholdsample, WindowSizeInt);                        
-         if(mUseSignChanges)
+         if(mUseSignChangesLow || mUseSignChangesHigh)
             sc  = TestSignChanges(t,lastsubthresholdsample, WindowSizeInt);
-         if(mUseDirectionChanges)
+         if(mUseDirectionChangesLow || mUseDirectionChangesHigh)
             dc  = TestDirectionChanges(t,lastsubthresholdsample,WindowSizeInt);
 
          //Now, go through the sound again, sample by sample.
@@ -291,22 +307,30 @@ sampleCount VoiceKey::OnBackward (WaveTrack & t, sampleCount end, sampleCount le
                   tests += (int)(erg>mThresholdEnergy);
                   testThreshold++;
                }
-            if(mUseSignChanges)
+            if(mUseSignChangesLow)
                {
                   TestSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i+1],buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
-                  tests += (int)(sc > mThresholdSignChangesUpper);
                   tests += (int)(sc < mThresholdSignChangesLower);
                   testThreshold++;
                }
-            if(mUseDirectionChanges)
+            if(mUseSignChangesHigh)
+               {
+                  TestSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i+1],buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(sc > mThresholdSignChangesUpper);
+                  testThreshold++;
+               }
+            if(mUseDirectionChangesLow)
                {
                   TestDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i+1],ztrend,buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
-                  tests += (int)(dc > mThresholdDirectionChangesUpper);
                   tests += (int)(dc < mThresholdDirectionChangesLower);
                   testThreshold++;                  
                }
-				
-       
+            if(mUseDirectionChangesHigh)
+               {
+                  TestDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i+1],ztrend,buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(dc > mThresholdDirectionChangesUpper);
+                  testThreshold++;                  
+               }
 
             if(tests >= testThreshold)
                {	//Finish off on the first hit
@@ -406,9 +430,9 @@ sampleCount VoiceKey::OffForward (WaveTrack & t, sampleCount start, sampleCount 
          //Get initial test statistic values.
          if(mUseEnergy)
             erg = TestEnergy(t, lastsubthresholdsample, WindowSizeInt);                        
-         if(mUseSignChanges)
+         if(mUseSignChangesLow || mUseSignChangesHigh)
             sc  = TestSignChanges(t,lastsubthresholdsample, WindowSizeInt);
-         if(mUseDirectionChanges)
+         if(mUseDirectionChangesLow || mUseDirectionChangesHigh)
             dc  = TestDirectionChanges(t,lastsubthresholdsample,WindowSizeInt);
 
          //Now, go through the sound again, sample by sample.
@@ -422,22 +446,30 @@ sampleCount VoiceKey::OffForward (WaveTrack & t, sampleCount start, sampleCount 
                   tests += (int)(erg>mThresholdEnergy);
                   testThreshold++;
                }
-            if(mUseSignChanges)
+            if(mUseSignChangesLow)
                {
                   TestSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i+1],buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
-                  tests += (int)(sc > mThresholdSignChangesUpper);
                   tests += (int)(sc < mThresholdSignChangesLower);
                   testThreshold++;
                }
-            if(mUseDirectionChanges)
+            if(mUseSignChangesHigh)
+               {
+                  TestSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i+1],buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(sc > mThresholdSignChangesUpper);
+                  testThreshold++;
+               }
+            if(mUseDirectionChangesLow)
                {
                   TestDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i+1],ztrend,buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
-                  tests += (int)(dc > mThresholdDirectionChangesUpper);
                   tests += (int)(dc < mThresholdDirectionChangesLower);
                   testThreshold++;                  
                }
-				
-       
+            if(mUseDirectionChangesHigh)
+               {
+                  TestDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i+1],ztrend,buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(dc > mThresholdDirectionChangesUpper);
+                  testThreshold++;                  
+               }
 
             if(tests < testThreshold)
                {	//Finish off on the first below-threshold block
@@ -536,9 +568,9 @@ sampleCount VoiceKey::OffBackward (WaveTrack & t, sampleCount end, sampleCount l
          //Get initial test statistic values.
          if(mUseEnergy)
             erg = TestEnergy(t, lastsubthresholdsample, WindowSizeInt);                        
-         if(mUseSignChanges)
+         if(mUseSignChangesLow || mUseSignChangesHigh)
             sc  = TestSignChanges(t,lastsubthresholdsample, WindowSizeInt);
-         if(mUseDirectionChanges)
+         if(mUseDirectionChangesLow || mUseDirectionChangesHigh)
             dc  = TestDirectionChanges(t,lastsubthresholdsample,WindowSizeInt);
 
          //Now, go through the sound again, sample by sample.
@@ -553,18 +585,28 @@ sampleCount VoiceKey::OffBackward (WaveTrack & t, sampleCount end, sampleCount l
                   tests += (int)(erg>mThresholdEnergy);
                   testThreshold++;
                }
-            if(mUseSignChanges)
+            if(mUseSignChangesLow)
                {
                   TestSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i+1],buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
-                  tests += (int)(sc > mThresholdSignChangesUpper);
                   tests += (int)(sc < mThresholdSignChangesLower);
                   testThreshold++;
                }
-            if(mUseDirectionChanges)
+            if(mUseSignChangesHigh)
+               {
+                  TestSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i+1],buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(sc > mThresholdSignChangesUpper);
+                  testThreshold++;
+               }
+            if(mUseDirectionChangesLow)
+               {
+                  TestDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i+1],ztrend,buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(dc < mThresholdDirectionChangesLower);
+                  testThreshold++;                  
+               }
+            if(mUseDirectionChangesHigh)
                {
                   TestDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i+1],ztrend,buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
                   tests += (int)(dc > mThresholdDirectionChangesUpper);
-                  tests += (int)(dc < mThresholdDirectionChangesLower);
                   testThreshold++;                  
                }
 				
@@ -603,24 +645,50 @@ bool VoiceKey::AboveThreshold(WaveTrack & t, sampleCount start, sampleCount len)
          testThreshold++;
          erg = TestEnergy(t, start,len);       
          tests +=(int)(erg > mThresholdEnergy);
+#if 0
+         std::cout << "Energy: " << erg << " " <<mThresholdEnergy << std::endl;
+#endif
       }
 
-   if(mUseSignChanges)
+   if(mUseSignChangesLow)
+      {
+         testThreshold++;
+         sc  = TestSignChanges(t,start,len);
+         tests += (int)(sc < mThresholdSignChangesLower);
+#if 0
+         std::cout << "SignChanges: " << sc << " " <<mThresholdSignChangesLower<< " < " << mThresholdSignChangesUpper << std::endl;
+#endif
+         
+      }
+   if(mUseSignChangesHigh)
       {
          testThreshold++;
          sc  = TestSignChanges(t,start,len);
          tests += (int)(sc > mThresholdSignChangesUpper);
-         tests += (int)(sc < mThresholdSignChangesLower);
+#if 0
+         std::cout << "SignChanges: " << sc << " " <<mThresholdSignChangesLower<< " < " << mThresholdSignChangesUpper << std::endl;
+#endif
+         
       }
 
 
-   if(mUseDirectionChanges)
+   if(mUseDirectionChangesLow)
+      {
+         testThreshold++;
+         dc  = TestDirectionChanges(t,start,len);
+         tests += (int)(dc < mThresholdDirectionChangesLower);
+#if 0
+         std::cout << "DirectionChanges: " << dc << " " <<mThresholdDirectionChangesLower<< " < " << mThresholdDirectionChangesUpper << std::endl;
+#endif
+      }
+   if(mUseDirectionChangesHigh)
       {
          testThreshold++;
          dc  = TestDirectionChanges(t,start,len);
          tests += (int)(dc > mThresholdDirectionChangesUpper);
-         tests += (int)(dc < mThresholdDirectionChangesLower);
-         
+#if 0
+         std::cout << "DirectionChanges: " << dc << " " <<mThresholdDirectionChangesLower<< " < " << mThresholdDirectionChangesUpper << std::endl;
+#endif
       }
    
    //Test whether we are above threshold (the number of stats)
@@ -671,15 +739,18 @@ void VoiceKey::CalibrateNoise(WaveTrack & t, sampleCount start, sampleCount len)
 
    //Get the first test statistics
 
-   if(mUseEnergy)
-      erg = TestEnergy(t, start, WindowSizeInt);   
+   //Calibrate all of the statistic, because they might be 
+   //changed later.
 
-   if(mUseSignChanges)
-      sc = TestSignChanges(t,start, WindowSizeInt);
-
-   if(mUseDirectionChanges)
-      dc = TestDirectionChanges(t,start,WindowSizeInt);
-
+   //   if(mUseEnergy)
+   erg = TestEnergy(t, start, WindowSizeInt);   
+   
+   //   if(mUseSignChanges)
+   sc = TestSignChanges(t,start, WindowSizeInt);
+   
+   //   if(mUseDirectionChanges)
+   dc = TestDirectionChanges(t,start,WindowSizeInt);
+   
    //Calculate initial values for the trend trackers--------------------//
    //Get((samplePtr)a1, floatSample, start,  1);                        
    // t.Get((samplePtr)a2, floatSample, start+1, 1);                       
@@ -719,51 +790,61 @@ void VoiceKey::CalibrateNoise(WaveTrack & t, sampleCount start, sampleCount len)
             {
                blocksize = WindowSizeInt;
             }
+
+         erg = TestEnergy(t, i, blocksize);                        
+         sumerg +=(double)erg;
+         sumerg2 += pow((double)erg,2);
          
-         if(mUseEnergy)
-            {
-               erg = TestEnergy(t, i, blocksize);                        
-               sumerg +=(double)erg;
-               sumerg2 += pow((double)erg,2);
-            }
-         if(mUseSignChanges)
-            {
-               sc = TestSignChanges(t,i, blocksize);
-               sumsc += (double)sc;
-               sumsc2 += pow((double)sc,2);
-  
-           }
-         if(mUseDirectionChanges)
-            {
-               dc = TestDirectionChanges(t,i,blocksize);
-               sumdc += (double)dc;
-               sumdc2 += pow((double)dc,2);
-            }
+         sc = TestSignChanges(t,i, blocksize);
+         sumsc += (double)sc;
+         sumsc2 += pow((double)sc,2);
+         
+         
+         dc = TestDirectionChanges(t,i,blocksize);
+         sumdc += (double)dc;
+         sumdc2 += pow((double)dc,2);
          
          
 
       }
 	
-   if(mUseEnergy)
-      {
-         mEnergyMean = sumerg / samples;
-         mEnergySD =  sqrt(sumerg2/samples - mEnergyMean*mEnergyMean);
-      }
-
-   if(mUseSignChanges)
-      {
-         mSignChangesMean = sumsc / samples;
-         mSignChangesSD = sqrt(sumsc2 / samples - mSignChangesMean * mSignChangesMean);
-      }
+   mEnergyMean = sumerg / samples;
+   mEnergySD =  sqrt(sumerg2/samples - mEnergyMean*mEnergyMean);
    
-   if(mUseDirectionChanges)
-      {
-         mDirectionChangesMean = sumdc / samples;
-         mDirectionChangesSD =sqrt(sumdc2 / samples - mDirectionChangesMean * mDirectionChangesMean) ;
-      }
+   mSignChangesMean = sumsc / samples;
+   mSignChangesSD = sqrt(sumsc2 / samples - mSignChangesMean * mSignChangesMean);
+   
+   mDirectionChangesMean = sumdc / samples;
+   mDirectionChangesSD =sqrt(sumdc2 / samples - mDirectionChangesMean * mDirectionChangesMean) ;
+
+
+   
+
+
+   wxString text =   wxString::Format(_("Calibration Results\n"));
+   text +=           wxString::Format(_("Energy                  -- mean: %1.4f  sd: (%1.4f)\n"),mEnergyMean,mEnergySD);
+   text+=            wxString::Format(_("Sign Changes        -- mean: %1.4f  sd: (%1.4f)\n"),mSignChangesMean,mSignChangesSD);
+   text+=            wxString::Format(_("Direction Changes  -- mean: %1.4f  sd: (%1.4f)\n"),mDirectionChangesMean,mDirectionChangesSD);
+   wxMessageDialog  * stats =  new wxMessageDialog(NULL, text, 
+                                                  "Calibration Complete", 
+                                                  wxOK | wxICON_INFORMATION,
+                                                  wxPoint(-1,-1));
+   stats->ShowModal();
+   delete stats;
+
    AdjustThreshold(mThresholdAdjustment);
 }
 
+
+void VoiceKey::SetKeyType(bool erg, bool scLow , bool scHigh,
+                          bool dcLow, bool dcHigh)
+{
+   mUseEnergy = erg;
+   mUseSignChangesLow = scLow;
+   mUseSignChangesHigh = scHigh;
+   mUseDirectionChangesLow = dcLow;
+   mUseDirectionChangesHigh = dcHigh;
+}
 
 
 //This might continue over a number of blocks.
