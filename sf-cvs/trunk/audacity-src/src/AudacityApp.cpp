@@ -96,11 +96,13 @@ void SaveWindowSize()
    if(!gAudacityProjects.IsEmpty())
    {
       // BG: Save size of Window 0.
-      wxSize wndSize = gAudacityProjects[0]->GetSize();
-      bool wndMaximized = gAudacityProjects[0]->IsMaximized();
-      gPrefs->Write("/Window/Width", wndSize.GetWidth());
-      gPrefs->Write("/Window/Height", wndSize.GetHeight());
-      gPrefs->Write("/Window/Maximized", wndMaximized);   
+      if (!gAudacityProjects[0]->IsIconized()) {
+         wxSize wndSize = gAudacityProjects[0]->GetSize();
+         bool wndMaximized = gAudacityProjects[0]->IsMaximized();
+         gPrefs->Write("/Window/Width", wndSize.GetWidth());
+         gPrefs->Write("/Window/Height", wndSize.GetHeight());
+         gPrefs->Write("/Window/Maximized", wndMaximized);   
+      }
    }
 }
 
