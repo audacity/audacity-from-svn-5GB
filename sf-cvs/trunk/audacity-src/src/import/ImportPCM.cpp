@@ -80,6 +80,7 @@ ImportFileHandle *PCMImportPlugin::Open(wxString filename)
    SF_INFO info;
    SNDFILE *file;
 
+   memset(&info, 0, sizeof(info));
    file = sf_open(filename, SFM_READ, &info);
    if (!file) {
       // TODO: Handle error

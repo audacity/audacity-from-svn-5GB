@@ -122,6 +122,8 @@ int BlockFile::ReadData(void *data, sampleFormat format,
 
    if (mType == BLOCK_TYPE_ALIAS) {
       SF_INFO info;
+
+      memset(&info, 0, sizeof(info));
       SNDFILE *sf = sf_open(mAliasFullPath, SFM_READ, &info);
 
       if (!sf)
