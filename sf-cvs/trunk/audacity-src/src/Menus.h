@@ -20,14 +20,6 @@
 
 #endif
 
-#ifdef AUDACITY_MENUS_ENUM
-
-#define AUDACITY_MENUS_COMMANDS_ENUM
-#include "commands.h"
-#undef AUDACITY_MENUS_COMMANDS_ENUM
-
-#endif
-
 #ifdef AUDACITY_MENUS_METHODS
 private:
 double mInsertSilenceAmount;

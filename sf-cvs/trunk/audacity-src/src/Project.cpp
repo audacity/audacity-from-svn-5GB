@@ -179,10 +179,6 @@ enum {
 #include "Menus.h"
 #undef AUDACITY_MENUS_GLOBALS
 
-#define AUDACITY_MENUS_ENUM
-#include "Menus.h"
-#undef AUDACITY_MENUS_ENUM
-
 BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
     EVT_PAINT(AudacityProject::OnPaint)
