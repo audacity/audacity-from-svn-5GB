@@ -12,7 +12,7 @@
 
 #include "Invert.h"
 
-bool EffectInvert::ProcessSimpleMono(float *buffer, sampleCount len)
+bool EffectInvert::ProcessSimpleMono(float *buffer, sampleCount len, double samplerate)
 {
    sampleCount i;
    for (i = 0; i < len; i++)
