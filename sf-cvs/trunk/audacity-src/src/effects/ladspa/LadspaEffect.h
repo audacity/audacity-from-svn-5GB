@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  VSTEffect.h
+  LadspaEffect.h
 
   Dominic Mazzoni
 
