@@ -17,14 +17,7 @@
 
 #define descriptorFnName "ladspa_descriptor"
 
-// For Mac and Linux, use dlopen
-#if defined(__WXMAC__) || defined(__WXGTK__)
-#include <dlfcn.h>
-// For Windows, use the wxWindows Dynamic Library Loader
-#else
 #include <wx/dynlib.h>
-#endif
-
 #include <wx/list.h>
 #include <wx/log.h>
 #include <wx/string.h>
@@ -49,33 +42,9 @@ void LoadLadspaEffect(wxString fname)
    wxString prefix = ::wxPathOnly(fname);
    ::wxSetWorkingDirectory(FILENAME(prefix));
 
-#if defined(__WXGTK__) || defined(__WXMAC__)
-
-   void *libHandle = NULL;
-
-   libHandle = dlopen(FILENAME(fname).fn_str(), RTLD_LAZY);
-   
-   mainFn = (LADSPA_Descriptor_Function)
-      dlsym(libHandle, descriptorFnName);
-
-#else
-   /*
-   // The following code uses the wxWindows DLL class, which does
-   // not allow us to control the flags passed to dlopen().  This
-   // leads to potential segfault bugs when plugins have conflicting
-   // symbols, so until wxWindows adds this capability we are calling
-   // dlopen() by hand under WXGTK, above...
-
-   wxDllType libHandle = NULL;
-     
-   libHandle = wxDllLoader::LoadLibrary(FILENAME(fname));
-   mainFn = (LADSPA_Descriptor_Function)
-      wxDllLoader::GetSymbol(libHandle, descriptorFnName);
-      */
    wxDynamicLibrary* pDLL = new wxDynamicLibrary();
    if (pDLL && pDLL->Load(FILENAME(fname)), wxDL_LAZY)
       mainFn = (LADSPA_Descriptor_Function)(pDLL->GetSymbol(descriptorFnName));
-#endif
 
    if (mainFn) {
       int index = 0;
