@@ -11,6 +11,7 @@ LIBS = ../wxWindows/macbuild/lib/libwx_mac-2.3.a \
        ../libogg/src/.libs/libogg.a \
        ../libvorbis/lib/.libs/libvorbis.a \
        ../libvorbis/lib/.libs/libvorbisfile.a \
+       ../libvorbis/lib/.libs/libvorbisenc.a \
 	-lz -lpthread -lm
 
 CFLAGS = -g -O2 \
@@ -51,6 +52,7 @@ OBJS = \
 	$(OBJDIR)/Envelope.cpp.o \
 	$(OBJDIR)/Export.cpp.o \
 	$(OBJDIR)/ExportMP3.cpp.o \
+	$(OBJDIR)/ExportOGG.cpp.o \
 	$(OBJDIR)/ExportPCM.cpp.o \
 	$(OBJDIR)/FFT.cpp.o \
 	$(OBJDIR)/FreqWindow.cpp.o \
