@@ -3,14 +3,14 @@
 # Copyright (C) 2002,2003 Free Software Foundation, Inc.
 # Alexandre Prokoudine <avp@altlinux.ru>, 2002.#: ../src/ToolBar.cpp:419
 # Alexandre Prokoudine <avp@altlinux.ru>, 2003
-#: ../src/effects/ChangeTempo.cpp:165 ../src/effects/ChangeTempo.cpp:178
-#: ../src/effects/ChangeTempo.cpp:197 ../src/effects/ChangeTempo.cpp:211
-#: ../src/effects/ChangeTempo.cpp:266 ../src/effects/ChangeTempo.cpp:275
+#: ../src/effects/ChangeTempo.cpp:171 ../src/effects/ChangeTempo.cpp:184
+#: ../src/effects/ChangeTempo.cpp:203 ../src/effects/ChangeTempo.cpp:217
+#: ../src/effects/ChangeTempo.cpp:272 ../src/effects/ChangeTempo.cpp:281
 msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
-"POT-Creation-Date: 2003-03-24 12:48+0300\n"
-"PO-Revision-Date: 2003-03-24 12:54+0300\n"
+"POT-Creation-Date: 2003-03-27 15:15+0300\n"
+"PO-Revision-Date: 2003-03-27 16:42+0300\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr "      Дорожки: %d\n"
 #: ../src/Mix.cpp:153
 #, c-format
 msgid "  Mix length: %f sec\n"
-msgstr "  Продолжительность смешиваемых дорожек: %f сек\n"
+msgstr "  Продолжительность микшируемых дорожек: %f сек\n"
 
 #: ../src/widgets/AButton.cpp:126
 msgid " (disabled)"
@@ -46,19 +46,19 @@ msgstr " окно"
 msgid "%"
 msgstr "%"
 
-#: ../src/effects/ChangeSpeed.cpp:360 ../src/effects/ChangeTempo.cpp:499
+#: ../src/effects/ChangeSpeed.cpp:360 ../src/effects/ChangeTempo.cpp:502
 #, c-format
 msgid "%.1f"
 msgstr "%.1f"
 
-#: ../src/effects/ChangeTempo.cpp:283 ../src/effects/ChangeTempo.cpp:290
-#: ../src/effects/ChangeTempo.cpp:537
+#: ../src/effects/ChangeTempo.cpp:289 ../src/effects/ChangeTempo.cpp:296
+#: ../src/effects/ChangeTempo.cpp:540
 #, c-format
 msgid "%.2f"
 msgstr "%.2f"
 
-#: ../src/effects/ChangeTempo.cpp:264 ../src/effects/ChangeTempo.cpp:273
-#: ../src/effects/ChangeTempo.cpp:525
+#: ../src/effects/ChangeTempo.cpp:270 ../src/effects/ChangeTempo.cpp:279
+#: ../src/effects/ChangeTempo.cpp:528
 #, c-format
 msgid "%d"
 msgstr "%d"
@@ -157,7 +157,7 @@ msgstr ""
 "(Возможны не все комбинации заголовков,\n"
 "объёма данных и кодировок.)"
 
-#: ../src/effects/ChangeSpeed.cpp:136 ../src/effects/ChangeTempo.cpp:139
+#: ../src/effects/ChangeSpeed.cpp:136 ../src/effects/ChangeTempo.cpp:145
 msgid "0.0"
 msgstr "0.0"
 
@@ -193,8 +193,8 @@ msgid ""
 "http://www.busam.com/skyland/iavc\n"
 "7/21/02: WAV and MP3 files both work."
 msgstr ""
-"Значения выше измеряются в сэмплах (выборках).\n"
-"Окно подстройки определяет число сэмплов\n"
+"Значения выше измеряются в семплах (выборках).\n"
+"Окно подстройки определяет число семплов\n"
 "в обрабатываемом потоке.\n"
 "Окно изменения определяет минимальное\n"
 "время между изменениями уровня громкости.\n"
@@ -441,7 +441,7 @@ msgstr "Применён эффект: %s"
 msgid "Applied effect: %s %.1f dB"
 msgstr "Применен эффект: %s %.1f ДБ"
 
-#: ../src/effects/ChangeSpeed.cpp:35 ../src/effects/ChangeTempo.cpp:38
+#: ../src/effects/ChangeSpeed.cpp:35 ../src/effects/ChangeTempo.cpp:43
 #, c-format
 msgid "Applied effect: %s %.1f%%"
 msgstr "Применён эффект: %s %.1f%%"
@@ -458,7 +458,7 @@ msgstr ""
 #: ../src/effects/AvcCompressor.cpp:86
 #, c-format
 msgid "Applied effect: %s change window = %d samples"
-msgstr "Применён эффект: %s окно изменения = %d сэмплов"
+msgstr "Применён эффект: %s окно изменения = %d семплов"
 
 #: ../src/effects/Echo.cpp:26
 #, c-format
@@ -522,7 +522,7 @@ msgid ""
 "At 44100 Hz, 16-bits per sample, the estimated number of\n"
 "simultaneous tracks that could be played at once: %.1f\n"
 msgstr ""
-"При 44100 Гц и 16 битах на сэмпл может быть одновременно\n"
+"При 44100 Гц и 16 битах на семпл может быть одновременно\n"
 "воспроизведено следующее количество дорожек: %.1f\n"
 
 #: ../src/AboutDialog.cpp:251
@@ -563,7 +563,7 @@ msgid ""
 "If it is uncompressed, try importing it using \"Import Raw\""
 msgstr ""
 "Программе не удалось распознать тип предложенного файла.\n"
-"Вы хотите попробовать импортировать этот файл как raw PCM?"
+"Если это несжатый файл, попробуйте импортировать его как RAW PCM."
 
 #: ../src/export/ExportMP3.cpp:512 ../src/export/ExportMP3.cpp:799
 msgid ""
@@ -577,7 +577,7 @@ msgstr ""
 "LAME - библиотеку для экспорта в MP3, доступную отдельно.\n"
 "За более подробной информацией обратитесь к документации.\n"
 "\n"
-"Вы хотели бы сейчас указать расположение LameLib?"
+"Вы хотели бы сейчас указать местоположение LameLib?"
 
 #: ../src/export/ExportMP3.cpp:1038
 msgid ""
@@ -588,13 +588,14 @@ msgid ""
 "\n"
 "Would you like to locate lame_enc.dll now?"
 msgstr ""
-"Audacity не экспортирует данные в MP3 напрямую, а использует для этого\n"
-"LAME - библиотеку для экспорта в MP3, доступную отдельно. Для этого вам\n"
-"необходимо отдельно достать библиотеку lame_enc.dll, поставляемую в составе\n"
-"пакета кодера LAME MP3, а затем указать расположение этого файла\n"
-"для Audacity. Это необходимо сделать только один раз\n"
+"Audacity не экспортирует данные в MP3 напрямую, а использует\n"
+"для этого LAME - библиотеку для экспорта в MP3, доступную\n"
+"отдельно. Для этого вам необходимо отдельно достать библиотеку\n"
+"lame_enc.dll, поставляемую в составе пакета кодера LAME MP3, \n"
+"а затем указать расположение этого файла для Audacity.\n"
+"Это необходимо сделать только один раз\n"
 "\n"
-"Вы хотели бы сейчас указать расположение lame_enc.dll?"
+"Вы хотели бы сейчас указать местоположение lame_enc.dll?"
 
 #: ../src/export/ExportMP3.cpp:237
 msgid ""
@@ -606,13 +607,14 @@ msgid ""
 "\n"
 "Would you like to locate libmp3lame.so now?"
 msgstr ""
-"Audacity не экспортирует данные в MP3 напрямую, а использует для этого\n"
-"LAME - библиотеку для экспорта в MP3, доступную отдельно. Для этого вам\n"
-"необходимо отдельно достать библиотеку libmp3lame.so, скачав её в готовом "
-"виде, либо скомипилировав из исходных текстов, а затем указать расположение "
-"этого файла для Audacity. Это необходимо сделать только один раз\n"
+"Audacity не экспортирует данные в MP3 напрямую, а использует\n"
+"для этого LAME - библиотеку для экспорта в MP3, доступную\n"
+"отдельно. Для этого вам необходимо отдельно достать библиотеку\n "
+"libmp3lame.so, скачав её в готовом виде, либо скомипилировав из\n "
+"исходных кодов, а затем указать расположение этого файла для\n"
+"Audacity. Это необходимо сделать только один раз\n"
 "\n"
-"Вы хотели бы сейчас указать расположение libmp3lame.so?"
+"Вы хотели бы сейчас указать местоположение libmp3lame.so?"
 
 #: ../src/AboutDialog.cpp:114
 msgid ""
@@ -658,7 +660,7 @@ msgstr ""
 
 #: ../src/prefs/PrefsDialog.cpp:74
 msgid "Audio I/O"
-msgstr "Аудио Вход/Выход"
+msgstr "Audio I/O"
 
 #: ../src/WaveTrack.cpp:125
 msgid "Audio Track"
@@ -687,7 +689,7 @@ msgstr "Автопрокрутка при воспроизведении"
 #: ../src/Benchmark.cpp:467
 #, c-format
 msgid "Bad: block %d sample %d\n"
-msgstr "Ошибка: блок %d сэмпл %d\n"
+msgstr "Ошибка: блок %d семпл %d\n"
 
 #: ../src/effects/BassBoost.cpp:68
 msgid "BassBoost"
@@ -701,7 +703,7 @@ msgstr "Повышение баса - Наска Октавиан Пол"
 msgid "BassBoost..."
 msgstr "Повышение баса..."
 
-#: ../src/effects/ChangeTempo.cpp:159
+#: ../src/effects/ChangeTempo.cpp:165
 msgid "Beats per Minute (BPM):     From"
 msgstr "Ударов в минуту (BPM):     От"
 
@@ -715,7 +717,7 @@ msgstr "\"тупоконечник\""
 
 #: ../src/prefs/FileFormatPrefs.cpp:194
 msgid "Bit Rate:"
-msgstr "Битрейт:"
+msgstr "Битовая частота:"
 
 #: ../src/Benchmark.cpp:305
 msgid "Block size should be in the range 1 - 1024 KB."
@@ -731,7 +733,7 @@ msgstr "Повышаемые басовые частоты"
 
 #: ../src/Tags.cpp:657 ../src/effects/Amplify.cpp:356
 #: ../src/effects/AvcCompressor.cpp:706 ../src/effects/BassBoost.cpp:315
-#: ../src/effects/ChangeSpeed.cpp:194 ../src/effects/ChangeTempo.cpp:231
+#: ../src/effects/ChangeSpeed.cpp:194 ../src/effects/ChangeTempo.cpp:237
 #: ../src/effects/Equalization.cpp:682 ../src/effects/Filter.cpp:453
 #: ../src/effects/Phaser.cpp:537 ../src/effects/ToneGen.cpp:347
 #: ../src/effects/Wahwah.cpp:528 ../src/effects/ladspa/LadspaEffect.cpp:479
@@ -771,25 +773,21 @@ msgstr "Извините, но функция изменения скорости пока не реализована."
 
 #: ../src/effects/ChangeSpeed.cpp:120
 msgid "Change Speed, affecting both Tempo and Pitch"
-msgstr "Изменить скорость с влиянием на темп и питч"
+msgstr "Изменить скорость, влияя на темп и высоту тона"
 
 #: ../src/effects/ChangeSpeed.h:45
 msgid "Change Speed..."
 msgstr "Изменить скорость..."
 
-#: ../src/effects/ChangeTempo.cpp:54
+#: ../src/effects/ChangeTempo.cpp:62
 msgid "Change Tempo"
 msgstr "Изменить темп"
 
-#: ../src/effects/ChangeTempo.cpp:477
-msgid "Change Tempo not yet implemented."
-msgstr "Извините, но функция изменения темпа пока не реализована."
-
-#: ../src/effects/ChangeTempo.cpp:123
+#: ../src/effects/ChangeTempo.cpp:129
 msgid "Change Tempo without Changing Pitch"
-msgstr "Изменить темп не изменяя питч"
+msgstr "Изменить темп, не изменяя высоту тона"
 
-#: ../src/effects/ChangeTempo.h:47
+#: ../src/effects/ChangeTempo.h:49
 msgid "Change Tempo..."
 msgstr "Изменить темп..."
 
@@ -851,7 +849,7 @@ msgstr ""
 msgid "Changing Speed"
 msgstr "Изменяется скорость"
 
-#: ../src/effects/ChangeTempo.h:51
+#: ../src/effects/ChangeTempo.h:53
 msgid "Changing Tempo"
 msgstr "Изменяется темп"
 
@@ -902,7 +900,7 @@ msgstr "Щёлкните и перетащите для редактирования огибающей амплитуды"
 
 #: ../src/TrackPanel.cpp:919
 msgid "Click and drag to edit the samples"
-msgstr "Щёлкните и перетащите для редактирования сэмплов"
+msgstr "Щёлкните и перетащите для редактирования семплов"
 
 #: ../src/TrackPanel.cpp:911
 msgid "Click and drag to move a track in time"
@@ -1097,7 +1095,7 @@ msgid ""
 "Cursor: %i+%i sec+samples   [based on rate = %7.1f - use Set Rate to reset/"
 "set]"
 msgstr ""
-"Курсор: %i+%i сек+сэмплов   [при частоте = %7.1f - нажмите \"Установить "
+"Курсор: %i+%i сек+семплов   [при частоте = %7.1f - нажмите \"Установить "
 "частоту\" для установки/переустановки]"
 
 #: ../src/TrackPanel.cpp:4035
@@ -1106,7 +1104,7 @@ msgid ""
 "Cursor: %i:%02i+%i min:sec+samples   [based on rate = %7.1f - use Set Rate "
 "to reset/set]"
 msgstr ""
-"Курсор: %i:%02i+%i мин:сек+сэмплов   [при частоте = %7.1f - нажмите "
+"Курсор: %i:%02i+%i мин:сек+семплов   [при частоте = %7.1f - нажмите "
 "\"Установить частоту\" для установки/переустановки]"
 
 #: ../src/TrackPanel.cpp:3716
@@ -1139,7 +1137,7 @@ msgstr ""
 #, c-format
 msgid "Cursor: %li samples   [based on rate = %7.1f - use Set Rate to reset/set]"
 msgstr ""
-"Курсор: %li сэмплов   [при частоте = %7.1f - нажмите \"Установить частоту\" "
+"Курсор: %li семплов   [при частоте = %7.1f - нажмите \"Установить частоту\" "
 "для установки/переустановки"
 
 #: ../src/EditToolBar.cpp:144 ../src/commands/CommandsDefaultData.h:222
@@ -1170,11 +1168,11 @@ msgstr "DRY"
 
 #: ../src/prefs/QualityPrefs.cpp:116
 msgid "Default Sample Format:"
-msgstr "Формат сэмплов по умолчанию:"
+msgstr "Формат семплов по умолчанию:"
 
 #: ../src/prefs/QualityPrefs.cpp:93
 msgid "Default Sample Rate:"
-msgstr "Частота сэмплирования по умолчанию:"
+msgstr "Частота семплирования по умолчанию:"
 
 #: ../src/import/ImportRaw.cpp:300
 msgid "Default endianness"
@@ -1295,10 +1293,6 @@ msgstr "Правка ID3-тегов..."
 msgid "Edit the ID3 tags for the MP3 file"
 msgstr "Правка ID3-тегов для MP3-файла"
 
-#: ../src/prefs/FileFormatPrefs.cpp:79
-msgid "Edit the original in place"
-msgstr "Редактировать файл напрямую"
-
 #: ../src/commands/CommandsDefaultData.h:306
 msgid "Effec&t"
 msgstr "&Эффект"
@@ -1338,11 +1332,11 @@ msgstr "Введите Nyquist-команду:"
 
 #: ../src/AStatus.cpp:262
 msgid "Enter a rate in Hz (samples per second):"
-msgstr "Введите частоту в Гц (сэмплов в сек):"
+msgstr "Введите частоту в Гц (семплов в сек):"
 
 #: ../src/TrackPanel.cpp:3400
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
-msgstr "Введите частоту в Гц (сэмплов в сек) в диапазоне между 1 и 100000:"
+msgstr "Введите частоту в Гц (семплов в сек) в диапазоне между 1 и 100000:"
 
 #: ../src/effects/Echo.cpp:49
 msgid "Enter the decay factor: "
@@ -1395,7 +1389,7 @@ msgstr "Ожидалась продолжительность %d, дорожка продолжительностью %d.\n"
 #: ../src/Sequence.cpp:722
 #, c-format
 msgid "Expected to read %d samples, got %d samples.\n"
-msgstr "Предполагалось прочитать %d сэмплов, получено %d сэмплов.\n"
+msgstr "Предполагалось прочитать %d семплов, получено %d семплов.\n"
 
 #: ../src/export/ExportMP3.cpp:1302 ../src/export/ExportOGG.cpp:172
 #: ../src/export/ExportPCM.cpp:135
@@ -1408,7 +1402,7 @@ msgstr "Экспортировать &заметки..."
 
 #: ../src/Benchmark.cpp:241
 msgid "Export Benchmark Data As:"
-msgstr "Экспортировать результаты теста производительности как:"
+msgstr "Экспортировать результаты теста производительности в файл:"
 
 #: ../src/commands/CommandsCallback.cpp:101
 msgid "Export Labels As:"
@@ -1427,7 +1421,7 @@ msgstr "Экспортировать выделенное как %s..."
 
 #: ../src/FreqWindow.cpp:1074
 msgid "Export Spectral Data As:"
-msgstr "Экспортировать результаты спектрального анализа"
+msgstr "Экспортировать результаты спектрального анализа в файл:"
 
 #: ../src/commands/CommandsDefaultData.h:207
 #: ../src/prefs/FileFormatPrefs.cpp:346
@@ -1437,7 +1431,7 @@ msgstr "Экспортировать как %s..."
 
 #: ../src/FreqWindow.cpp:116
 msgid "Export..."
-msgstr "Экспортировать"
+msgstr "Экспорт..."
 
 #: ../src/export/ExportOGG.cpp:169
 msgid "Exporting the entire project as Ogg Vorbis"
@@ -1599,7 +1593,7 @@ msgstr "Заголовок: "
 
 #: ../src/prefs/QualityPrefs.cpp:155
 msgid "High-quality sample rate converter:"
-msgstr "Высококачественный преобразователь частоты сэмплирования:"
+msgstr "Высококачественный преобразователь частоты семплирования:"
 
 #: ../src/commands/CommandsDefaultData.h:247
 msgid "History"
@@ -1640,7 +1634,7 @@ msgstr "Вставить заметки..."
 
 #: ../src/commands/CommandsDefaultData.h:260
 msgid "Import Raw &Data..."
-msgstr "Вставить Raw-&файл..."
+msgstr "Вставить RAW-&файл..."
 
 #: ../src/import/ImportRaw.cpp:256
 msgid "Import Raw Data"
@@ -1649,17 +1643,17 @@ msgstr "Вставить Raw-файл"
 #: ../src/Project.cpp:2157
 #, c-format
 msgid "Imported '%s'"
-msgstr "Импортирован файл '%s'"
+msgstr "Вставлен файл '%s'"
 
 #: ../src/commands/CommandsCallback.cpp:953
 #, c-format
 msgid "Imported MIDI from '%s'"
-msgstr "Импортирован MIDI-файл из '%s'"
+msgstr "Вставлен MIDI-файл из '%s'"
 
 #: ../src/commands/CommandsCallback.cpp:920
 #, c-format
 msgid "Imported labels from '%s'"
-msgstr "Импортированы метки из файла '%s'"
+msgstr "Вставлены метки из файла '%s'"
 
 #: ../src/Project.cpp:2118
 #, c-format
@@ -1763,7 +1757,7 @@ msgstr "Щелчок по левой кнопке мыши - приблизить, по правой - отдалить"
 msgid "Left=Zoom In, Right=Zoom Out, Middle=Normal"
 msgstr "Левая=Приблизить, Правая=Отдалить, Средняя=Обычный вид"
 
-#: ../src/effects/ChangeTempo.cpp:191
+#: ../src/effects/ChangeTempo.cpp:197
 msgid "Length (seconds):     From"
 msgstr "Продолжительность (сек):     От"
 
@@ -1837,8 +1831,8 @@ msgid "Make Stereo Track"
 msgstr "Создать стереодорожку"
 
 #: ../src/prefs/FileFormatPrefs.cpp:72
-msgid "Make a copy of the file to edit"
-msgstr "Скопировать файл для правки"
+msgid "Make a copy of the file before editing (safer)"
+msgstr "Скопировать файл перед правкой (это безопаснее)"
 
 #: ../src/Mix.cpp:155
 #, c-format
@@ -1936,7 +1930,7 @@ msgstr "Смещено '%s' %s"
 
 #: ../src/TrackPanel.cpp:1797
 msgid "Moved Sample"
-msgstr "Сэмпл смещён"
+msgstr "Семпл смещён"
 
 #: ../src/TrackPanel.cpp:2886
 msgid "Mute"
@@ -2004,7 +1998,7 @@ msgstr "Ничего"
 msgid "Not SPECIFIED YET!"
 msgstr "Пока НЕ ОПРЕДЕЛЕНО!"
 
-#: ../src/effects/ChangeSpeed.cpp:339 ../src/effects/ChangeTempo.cpp:478
+#: ../src/effects/ChangeSpeed.cpp:339
 msgid "Not Yet Implemented"
 msgstr "Эта функция пока не реализована"
 
@@ -2076,7 +2070,7 @@ msgstr "Качество OGG:"
 
 #: ../src/LangChoice.cpp:91 ../src/Tags.cpp:650 ../src/effects/Amplify.cpp:349
 #: ../src/effects/AvcCompressor.cpp:698 ../src/effects/BassBoost.cpp:308
-#: ../src/effects/ChangeSpeed.cpp:187 ../src/effects/ChangeTempo.cpp:224
+#: ../src/effects/ChangeSpeed.cpp:187 ../src/effects/ChangeTempo.cpp:230
 #: ../src/effects/Equalization.cpp:677 ../src/effects/Filter.cpp:449
 #: ../src/effects/Phaser.cpp:531 ../src/effects/Wahwah.cpp:522
 #: ../src/effects/ladspa/LadspaEffect.cpp:474
@@ -2169,9 +2163,9 @@ msgstr "Вставлено из буфера"
 
 #: ../src/ControlToolBar.cpp:320
 msgid "Pause"
-msgstr "Пауза"
+msgstr "Приостановить"
 
-#: ../src/effects/ChangeSpeed.cpp:129 ../src/effects/ChangeTempo.cpp:132
+#: ../src/effects/ChangeSpeed.cpp:129 ../src/effects/ChangeTempo.cpp:138
 msgid "Percent Change:"
 msgstr "Процентное изменение:"
 
@@ -2249,7 +2243,7 @@ msgstr "Модули 1 до %i"
 
 #: ../src/effects/Equalization.cpp:697
 msgid "Predefined:"
-msgstr "Предопределённый:"
+msgstr "Готовые настройки:"
 
 #: ../src/Benchmark.cpp:353
 msgid "Preparing...\n"
@@ -2309,13 +2303,17 @@ msgstr "Случайная величина :"
 msgid "Raw"
 msgstr "Raw"
 
+#: ../src/prefs/FileFormatPrefs.cpp:79
+msgid "Read directly from the original file (faster)"
+msgstr "Прочитать напрямую из файла (быстрее)"
+
 #: ../src/Benchmark.cpp:479
 msgid "Reading data again...\n"
 msgstr "Заново читаются данные...\n"
 
 #: ../src/prefs/QualityPrefs.cpp:144
 msgid "Real-time sample rate converter:"
-msgstr "Real-time преобразователь частоты сэмплирования:"
+msgstr "Real-time преобразователь частоты семплирования:"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:67
 msgid "Rebuild Menus"
@@ -2417,11 +2415,11 @@ msgstr "Запустить тест производительности..."
 
 #: ../src/TrackPanel.cpp:3479 ../src/TrackPanel.cpp:3480
 msgid "Sample rate conversion method"
-msgstr "Метод преобразования частоты сэмплирования"
+msgstr "Метод преобразования частоты семплирования"
 
 #: ../src/import/ImportRaw.cpp:362
 msgid "Sample rate:"
-msgstr "Частота сэмплирования:"
+msgstr "Частота семплирования:"
 
 #: ../src/Benchmark.cpp:212
 msgid "Save"
@@ -2475,11 +2473,11 @@ msgstr "Выделить все"
 
 #: ../src/commands/CommandsDefaultData.h:236
 msgid "Select Cursor to End"
-msgstr "Выделить от курсора до конца"
+msgstr "Выделить от курсора до конца\t Shift+End"
 
 #: ../src/commands/CommandsDefaultData.h:235
 msgid "Select Start to Cursor"
-msgstr "Выделить от курсора до начала"
+msgstr "Выделить от курсора до начала\t Shift+Home"
 
 #: ../src/commands/CommandsCallback.cpp:931
 msgid "Select a MIDI file..."
@@ -2560,7 +2558,7 @@ msgid ""
 "Selection: %i+%i - %i+%i (%i+%i sec+samples)   [based on rate = %7.1f - use "
 "Set Rate to reset/set]"
 msgstr ""
-"Выделение: %i+%i - %i+%i (%i+%i сек+сэмплов)   [при частоте = %7.1f - "
+"Выделение: %i+%i - %i+%i (%i+%i сек+семплов)   [при частоте = %7.1f - "
 "нажмите \"Установить частоту\" для установки/переустановки]"
 
 #: ../src/TrackPanel.cpp:4043
@@ -2569,7 +2567,7 @@ msgid ""
 "Selection: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sec+samples)   [based on "
 "rate = %7.1f - use Set Rate to reset/set]"
 msgstr ""
-"Выделение: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i мин:сек+сэмплов)   [при "
+"Выделение: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i мин:сек+семплов)   [при "
 "частоте  = %7.1f - нажмите \"Установить частоту\" для установки/"
 "переустановки]"
 
@@ -2607,7 +2605,7 @@ msgid ""
 "Selection: %li - %li (%li samples)   [based on rate = %7.1f - use Set Rate "
 "to reset/set]"
 msgstr ""
-"Выделение: %li - %li (%li сэмплов)   [при частоте = %7.1f - нажмите "
+"Выделение: %li - %li (%li семплов)   [при частоте = %7.1f - нажмите "
 "\"Установить частоту\" для установки/переустановки]"
 
 #: ../src/TrackPanel.cpp:4131
@@ -2629,11 +2627,11 @@ msgstr "Установить частоту"
 
 #: ../src/TrackPanel.cpp:295
 msgid "Set Sample Format"
-msgstr "Установить формат сэмпла"
+msgstr "Установить формат семпла"
 
 #: ../src/TrackPanel.cpp:299
 msgid "Set Selection Format"
-msgstr "Установить формат сэмплов"
+msgstr "Установить формат семплов"
 
 #: ../src/TrackPanel.cpp:300
 msgid "Set Snap-To Mode"
@@ -2834,14 +2832,15 @@ msgid ""
 msgstr ""
 "Эта часть исходного кода сейчас переписывается и графический интерфейс не "
 "закончен.\n"
-"Вы по-прежнему можете назначать горячие клавиши, редактируя файл 'Audacity-Commands.xml'.\n"
+"Вы по-прежнему можете назначать горячие клавиши, редактируя файл 'Audacity-"
+"Commands.xml'.\n"
 "Если вы хотите узнать, что приводит к нажатию той или иной комбинации "
 "клавиш, \n"
 "введите её в поле внизу.\n"
-"Щёлкните по кнопке \"Применить стандартные установки\" для возврата к стандартным "
-"горячим клавишам.\n"
-"Щёлкните по \"Перестроить меню\" для повторного считывания 'Audacity-Commands.xml' и "
-"перестройки меню."
+"Щёлкните по кнопке \"Применить стандартные установки\" для возврата к "
+"стандартным горячим клавишам.\n"
+"Щёлкните по \"Перестроить меню\" для повторного считывания 'Audacity-"
+"Commands.xml' и перестройки меню."
 
 #: ../src/AboutDialog.cpp:120
 msgid ""
@@ -2892,8 +2891,8 @@ msgstr "Время внесения %d правок: %ld мс\n"
 msgid "Title:"
 msgstr "Название:"
 
-#: ../src/effects/ChangeSpeed.cpp:170 ../src/effects/ChangeTempo.cpp:172
-#: ../src/effects/ChangeTempo.cpp:205
+#: ../src/effects/ChangeSpeed.cpp:170 ../src/effects/ChangeTempo.cpp:178
+#: ../src/effects/ChangeTempo.cpp:211
 msgid "To"
 msgstr "К"
 
@@ -2999,7 +2998,7 @@ msgstr "Использовать Ogg вместо MP3"
 #: ../src/Benchmark.cpp:343
 #, c-format
 msgid "Using %d blocks of %d samples each, for a total of %.1f MB.\n"
-msgstr "Используется %d блоков каждого из %d сэмплов, всего %.1f MB.\n"
+msgstr "Используется %d блоков каждого из %d семплов, всего %.1f MB.\n"
 
 #: ../src/AudacityApp.cpp:570
 #, c-format
@@ -3073,8 +3072,8 @@ msgid "Waveform:"
 msgstr "Волна:"
 
 #: ../src/prefs/FileFormatPrefs.cpp:68
-msgid "When importing uncompressed audio files"
-msgstr "При импорте несжатых  аудиофайлов"
+msgid "When importing uncompressed audio files into Audacity"
+msgstr "При импорте несжатых  аудиофайлов в Audacity"
 
 #: ../src/export/ExportMP3.cpp:91
 #, c-format
@@ -3180,6 +3179,12 @@ msgstr "spectrum.txt"
 #: ../src/TrackPanel.cpp:3501
 msgid "up"
 msgstr "вверх"
+
+#~ msgid "Change Tempo not yet implemented."
+#~ msgstr "Извините, но функция изменения темпа пока не реализована."
+
+#~ msgid "Edit the original in place"
+#~ msgstr "Редактировать файл напрямую"
 
 #~ msgid "Equaliation"
 #~ msgstr "Эквализация"
