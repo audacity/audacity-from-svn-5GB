@@ -27,8 +27,6 @@
 
 #include "LadspaEffect.h"
 
-const LADSPA_Descriptor *mb_test;
-
 void SearchLadspaInDir(wxString dir)
 {
    wxLogNull nolog;
