@@ -30,7 +30,6 @@
 #include "WaveTrack.h"
 
 #ifdef BOUNCE
-foobar
 #include "Bounce.h"
 extern Bounce *gBounce;
 #endif
