@@ -902,4 +902,6 @@ void Meter::OnDisable(wxCommandEvent &evt)
       delete gMeterToolBarStub;
       gMeterToolBarStub = NULL;
    }
+
+   gAudioIO->SetMeters(NULL, NULL);
 }
