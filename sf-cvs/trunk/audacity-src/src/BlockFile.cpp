@@ -397,6 +397,7 @@ AliasBlockFile::AliasBlockFile(wxFileName existingSummaryFile,
 /// summarize.
 void AliasBlockFile::WriteSummary()
 {
+   wxASSERT( !mFileName.FileExists() );
    // I would much rather have this code as part of the constructor, but
    // I can't call virtual functions from the constructor.  So we just
    // need to ensure that every derived class calls this in *its* constructor
