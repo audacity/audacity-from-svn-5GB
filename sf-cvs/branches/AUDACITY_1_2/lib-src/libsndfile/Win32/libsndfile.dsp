@@ -201,10 +201,6 @@ SOURCE=..\src\sds.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\sfendian.c
-# End Source File
-# Begin Source File
-
 SOURCE=..\src\sndfile.c
 # End Source File
 # Begin Source File
