@@ -1,0 +1,348 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+
+<html>
+
+<head>
+
+<title>File Menu</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+</head>
+
+<body>
+
+
+
+<font size=+3>
+
+File Menu
+
+</font>
+
+
+
+<a name="new"></a>
+
+<p><font size=+0><b>
+
+New...
+
+</b></font>
+
+
+
+<p>Creates a new empty project window.
+
+
+
+<a name="open"></a>
+
+<p><font size=+0><b>
+
+Open...
+
+</b></font>
+
+<p>Selecting <i>Open</i> presents you with a dialog where you
+
+can choose a file to open.  If the current project window
+
+is empty, the new file will take over the current window,
+
+otherwise a new project window will be opened.  The file formats
+
+recognized by Audacity are
+
+<a href="fileformats.htm#wav">WAV</a>,
+
+<a href="fileformats.htm#aiff">AIFF</a>,
+
+<a href="fileformats.htm#au">NeXT/AU</a>,
+
+<a href="fileformats.htm#ircam">IRCAM</a>,
+
+<a href="fileformats.htm#mp3">MP3</a>,
+
+<a href="fileformats.htm#ogg">Ogg Vorbis</a>,
+
+<a href="fileformats.htm#midi">MIDI</a>,
+
+and the Audacity Project file format 
+
+(<a href="fileformats.htm#aup">AUP</a>).
+
+In addition, Audacity can also attempt to open an audio file in
+
+a different format, as long as it is uncompressed - to do this,
+
+use the <a href="menu4.htm#importraw">Import Raw Data</a> command.
+
+
+
+<a name="close"></a>
+
+<p><font size=+0><b>
+
+Close
+
+</b></font>
+
+
+
+<p>Closes the current project window.
+
+
+
+<a name="save"></a>
+
+<p><font size=+0><b>
+
+Save Project
+
+</b></font>
+
+
+
+<p>Saves the current Audacity project (<a href="fileformats.htm#aup">AUP</a>)
+
+file.  Audacity projects are <i>not</i> intended to be read by other
+
+programs, but they are extremely fast to load and save within Audacity.
+
+When you are finished working on a project and you want to be able to
+
+use it in another program, select one of the
+
+<a href="#export">Export</a> commands instead.
+
+Note that most of the audio data for an Audacity project is not
+
+stored in the <a href="fileformats.htm#aup">AUP</a> file, but in a
+
+directory (folder) with the same name as the project.  For example,
+
+if you save a project as <tt>chanson.aup</tt>, there will be a directory
+
+called <tt>chanson_data</tt> created to store the actual audio tracks
+
+of the project.  For more information on the project file format,
+
+see <a href="fileformats.htm#aup">the file formats page</a>.
+
+
+
+<a name="saveas"></a>
+
+<p><font size=+0><b>
+
+Save Project As...
+
+</b></font>
+
+
+
+<p>Saves the current Audacity project (<a href="fileformats.htm#aup">AUP</a>)
+
+file, allowing you to give it a different name or move it to a new location
+
+if you have already saved it in one location.
+
+Audacity projects are <i>not</i> intended to be read by other
+
+programs, but they are extremely fast to load and save within Audacity.
+
+When you are finished working on a project and you want to be able to
+
+use it in another program, select one of the <a href="#export">Export</a>
+
+commands instead.
+
+For more information on the project file format,
+
+see <a href="fileformats.htm#aup">the file formats page</a>.
+
+
+
+<a name="export"></a>
+
+<p><font size=+0><b>
+
+Export As WAV...
+
+</b></font>
+
+
+
+<p>Exports the current Audacity project as a standard audio file format
+
+such as 
+
+<a href="fileformats.htm#wav">WAV</a> or 
+
+<a href="fileformats.htm#aiff">AIFF</a>.
+
+You can change the format of exported files in the
+
+<a href="prefs.htm">Preferences</a> dialog.
+
+<p>
+
+If there are multiple tracks of the same channel in your project,
+
+they will be automatically mixed in the exported data.  For more
+
+information about mixing, see
+
+<a href="menu4.htm#quickmix">Quick Mix</a>.
+
+To export only a single track or part of a track,
+
+use <a href="#exportsel">Export Selection</a>.
+
+
+
+<a name="exportsel"></a>
+
+<p><font size=+0><b>
+
+Export Selection As WAV...
+
+</b></font>
+
+
+
+<p>This is the same as <a href="#export">Export</a>, but it only
+
+exports the part of the project that is selected.  This is very
+
+useful if you want to save a small clip from part of a track as
+
+a separate file.
+
+
+
+
+
+
+
+<a name="exportmp3"></a>
+
+<p><font size=+0><b>
+
+Export As MP3...
+
+</b></font>
+
+
+
+<p>Exports the current Audacity project as an MP3 file.
+
+Audacity does not encode MP3 files directly, but instead
+
+requires that you download a separate MP3 encoder.
+
+See <a href="exportmp3.htm">Exporting MP3 Files</a> for
+
+details.
+
+<p>
+
+
+
+To export only a single track or part of track,
+
+use <a href="#exportselmp3">Export Selection as MP3</a>.
+
+
+
+<a name="exportselmp3"></a>
+
+<p><font size=+0><b>
+
+Export Selection As WAV...
+
+</b></font>
+
+
+
+<p>This is the same as <a href="#exportmp3">Export MP3</a>, but it only
+
+exports the part of the project that is selected.  This is very
+
+useful if you want to save a small clip from part of a track as
+
+a separate file.  See <a href="exportmp3.htm">Exporting MP3 Files</a>.
+
+
+
+<a name="exportlabels"></a>
+
+<p><font size=+0><b>
+
+Export Labels...
+
+</b></font>
+
+
+
+<p>If you have any <a href="tracks.htm#label">Label Tracks</a>, this
+
+command will export them as a text file.  This feature is commonly
+
+used in Speech Recognition research to annotate a speech utterance
+
+and export the annotation to be later processed by another program.
+
+To import these labels into a different project later, use the
+
+<a href="menu4.htm#importlabels">Import Labels</a> command.
+
+<a name="prefs"></a>
+
+
+
+<p><font size=+0><b>
+
+Preferences
+
+</b></font>
+
+
+
+<p>Opens a dialog window that lets you configure Audacity.
+
+For more information on the different preferences, see
+
+the section on <a href="prefs.htm">Audacity Preferences</a>.
+
+
+
+<a name="exit"></a>
+
+<p><font size=+0><b>
+
+Exit/Quit
+
+</b></font>
+
+
+
+<p>
+
+Closes all project windows and exits Audacity.
+
+This menu item does not ask you if you want to save changes,
+
+so be careful not to select it by accident.  (When we release
+
+version 1.0, it will ask you if you want to save changes.)
+
+
+
+</body>
+
+</html>
+
+
+
