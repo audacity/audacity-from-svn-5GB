@@ -12,7 +12,7 @@
   $rpm = "$betaDownloadDir/audacity-rpm.php/audacity-i386.rpm";
 
   include GetTranslation("news-1.2.0-pre1");
-  print "<p><\/p>\n"
+  print "<p>\n";
   BoxTop($betaVersionsStr);
 ?>
 
