@@ -15,10 +15,24 @@
 #include <wx/string.h>
 #include <wx/textfile.h>
 #include <wx/intl.h>
+#include <wx/icon.h>
 
 #include "LabelTrack.h"
 #include "DirManager.h"
 #include "Internat.h"
+
+// static member variables.
+bool LabelTrack::mbGlyphsReady=false;
+// TODO: Currently we're only using three of these icons, since we
+// don't yet support highlighting of the icons.
+// The plan is to make the icons draggable, and can drag one boundary
+// or all boundaries at the sime timecode depending on whether you 
+// click the centre (for all) or the arrow part (for one).
+wxIcon LabelTrack::mBoundaryGlyphs[ NUM_GLYPH_CONFIGS * NUM_GLYPH_HIGHLIGHTS ];
+int LabelTrack::mIconHeight;
+int LabelTrack::mIconWidth;
+int LabelTrack::mTextHeight;
+
 
 LabelTrack *TrackFactory::NewLabelTrack()
 {
@@ -31,8 +45,11 @@ Track(projDirManager)
    InitColours();
    SetName(_("Label Track"));
 
-   mHeight = 30;     // Label tracks are narrow
-
+   // Label tracks are narrow
+   // Default is to allow two rows so that new users get the
+   // idea that labels can 'stack' when they would overlap.
+   mHeight = 62;     
+   CreateCustomGlyphs();
    mSelIndex = -1;
 }
 
@@ -63,6 +80,290 @@ LabelTrack::~LabelTrack()
 }
 
 
+/// ComputeTextPosition is 'smart' about where to display 
+/// the label text.
+///
+/// The text must be displayed between its endpoints x and x1
+/// We'd also like it centered between them, and we'd like it on
+/// screen.  It isn't always possible to achieve all of this,
+/// so we do the best we can.
+///
+/// This function has a number of tests and adjustments to the
+/// text start position.  The tests later in the function will
+/// take priority over the ones earlier, so because centering 
+/// is the first thing we do, it's the first thing we lose if 
+/// we can't do everything we want to.
+void LabelTrack::ComputeTextPosition(wxRect & r, int index)
+{
+   // xExtra is extra space 
+   // between the text and the endpoints.
+   const int xExtra=mIconWidth;
+   int x     = mLabels[index]->x;  // left endpoint
+   int x1    = mLabels[index]->x1; // right endpoint.
+   int width = mLabels[index]->width;
+
+   int xText; // This is where the text will end up.
+
+   // Will the text all fit at this zoom?
+   bool bTooWideForScreen = width > (r.width-2*xExtra);
+// bool bSimpleCentering = !bTooWideForScreen;
+   bool bSimpleCentering = false;
+
+   //TODO (possibly):
+   // Add configurable options as to when to use simple 
+   // and when complex centering.
+   //
+   // Simple centering does its best to keep the text  
+   // centered between the label limits.
+   //
+   // Complex centering positions the text proportionally
+   // to how far we are through the label.
+   //
+   // If we add preferences for this, want to be able to
+   // choose separately whether:
+   //   a) Wide text labels centered simple/complex.
+   //   b) Other text labels centered simple/complex.
+   //
+
+   if( bSimpleCentering )
+   {
+      // Center text between the two end points.
+      xText = (x+x1-width)/2;
+   }
+   else
+   {
+      // Calculate xText position to make text line
+      // scroll sideways evenly as r moves right.
+
+      // xText is a linear function of r.x.
+      // These variables are used to compute that function.
+      int rx0,rx1,xText0,xText1;
+
+      // Since we will be using a linear function,
+      // we should blend smoothly between left and right 
+      // aligned text as r, the 'viewport' moves.
+      if( bTooWideForScreen )
+      {
+         rx0=x;           // when viewport at label start.
+         xText0=x+xExtra; // text aligned left.
+         rx1=x1-r.width;  // when viewport end at label end
+         xText1=x1-(width+xExtra); // text aligned right.
+      }
+      else
+      {
+         // when label start + width + extra spacing at viewport end..
+         rx0=x-r.width+width+2*xExtra; 
+         // ..text aligned left.
+         xText0=x+xExtra;  
+         // when viewport start + width + extra spacing at label end..
+         rx1=x1-(width+2*xExtra);
+         // ..text aligned right.
+         xText1=x1-(width+xExtra);
+      }
+
+      if( rx1 > rx0 ) // Avoid divide by zero case.
+      {
+         // Compute the blend between left and right aligned.
+         xText = xText0 + ((xText1-xText0)*(r.x-rx0))/(rx1-rx0);
+      }
+      else
+      {
+         // Avoid divide by zero by reverting to
+         // simple centering.
+         //
+         // We could also fall into this case if x and x1
+         // are swapped, in which case we'll end up
+         // left aligned anyway because code later on
+         // will catch that.
+         xText = (x+x1-width)/2;
+      }
+   }
+
+   // Is the text now appearing partly outside r? 
+   bool bOffLeft = xText < r.x+xExtra;
+   bool bOffRight = xText > r.x+r.width-width-xExtra;
+
+   // IF any part of the text is offscreen
+   // THEN we may bring it back.
+   if( bOffLeft == bOffRight )
+   {
+      //IF both sides on screen, THEN nothing to do.
+      //IF both sides off screen THEN don't do 
+      //anything about it.
+      //(because if we did, you'd never get to read
+      //all the text by scrolling).
+   }
+   else if( bOffLeft != bTooWideForScreen)
+   {
+      // IF we're off on the left, OR we're
+      // too wide for the screen and off on the right
+      // (only) THEN align left.
+      xText = r.x+xExtra;
+   }
+   else
+   {
+      // We're off on the right, OR we're
+      // too wide and off on the left (only)
+      // SO align right.
+      xText =r.x+r.width-width-xExtra;
+   }
+
+   // But if we've taken the text out from its endpoints
+   // we must move it back so that it's between the endpoints.
+   
+   // We test the left end point last because the
+   // text might not even fit between the endpoints (at this
+   // zoom factor), and in that case we'd like to position 
+   // the text at the left end point.
+   if( xText > (x1-width-xExtra))
+      xText=(x1-width-xExtra);
+   if( xText < x+xExtra )
+      xText=x+xExtra;
+
+   mLabels[index]->xText = xText;
+}
+
+/// ComputeLayout determines which row each label
+/// should be placed on, and reserves space for it.
+/// Function assumes that the labels are sorted.
+void LabelTrack::ComputeLayout( wxRect & r, double h, double pps)
+{
+   int i;
+   int iRow;
+   // Rows are the 'same' height as icons or as the text,
+   // whichever is taller.
+   const int yRowHeight = ((mTextHeight>mIconHeight) ?
+        mTextHeight : 
+        mIconHeight)+3; // pixels.
+   // Extra space at end of rows.
+   // We allow space for one half icon at the start and two
+   // half icon widths for extra x for the text frame.
+   // [we don't allow half a width space for the end icon since it is
+   // allowed to be obscured by the text].
+   const int xExtra= (3 * mIconWidth)/2;
+
+   int nRows = (r.height / yRowHeight) + 1;
+   if( nRows > MAX_NUM_ROWS )
+      nRows = MAX_NUM_ROWS;
+   // Initially none of the rows have been used.
+   // So set a value that is less than any valid value.
+   const int xStart = r.x -(int)(h*pps) -100;
+   for(i=0;i<MAX_NUM_ROWS;i++)
+      xUsed[i]=xStart;
+
+   for (i = 0; i < (int)mLabels.Count(); i++) 
+   {
+      int x  = r.x + (int) ((mLabels[i]->t  - h) * pps);
+      int x1 = r.x + (int) ((mLabels[i]->t1 - h) * pps);
+      int y = r.y;
+      int height = r.height;
+      mLabels[i]->x=x;
+      mLabels[i]->x1=x1;
+      mLabels[i]->y=-1;// -ve indicates nothing doing.
+      iRow=0;
+      // Find a row that can take a span starting at x.
+      while( (iRow<nRows) && (xUsed[iRow] > x ))
+         iRow++;
+      // IF we found such a row THEN record a valid position.
+      if( iRow<nRows )
+      {
+         y= r.y + iRow * yRowHeight +(yRowHeight/2)+1;
+         mLabels[i]->y=y;
+         // On this row we have used up to max of end marker and width.
+         // Plus also allow space to show the start icon and
+         // some space for the text frame.
+         xUsed[iRow]=x+mLabels[i]->width+xExtra;
+         if( xUsed[iRow] < x1 ) xUsed[iRow]=x1;
+         ComputeTextPosition( r, i );
+      }
+   }
+}
+
+
+/// Draw vertical lines that go exactly through the position
+/// of the start or end of a label.
+///   @param  dc the device context
+///   @param  r  the LabelTrack rectangle.
+void LabelStruct::DrawLines( wxDC & dc, wxRect & r)
+{
+   // How far out from the centre line should the vertical lines
+   // start, i.e. what is the y position of the icon?
+   // We addjust this slightly so that the line encroaches on 
+   // the icon slightly (there is white space in the design).
+   const int yIconStart = y - (LabelTrack::mIconHeight /2)+1;
+   const int yIconEnd   = yIconStart + LabelTrack::mIconHeight-2;
+
+   if (y<0) 
+      return;
+   // If y is positive then it is the center line for the 
+   // Label.
+   if((x  >= r.x) && (x  <= (r.x+r.width)))
+   {
+      // Draw line above and below left dragging widget.
+      dc.DrawLine(x, r.y,  x, yIconStart);
+      dc.DrawLine(x, yIconEnd, x, r.y + r.height);
+   }
+   if((x1 >= r.x) && (x1 <= (r.x+r.width)))
+   {
+      // Draw line above and below right dragging widget.
+      dc.DrawLine(x1, r.y,  x1, y -yIconStart);
+      dc.DrawLine(x1, yIconEnd, x1, r.y + r.height);
+   }
+}
+
+/// DrawGlyphs draws the wxIcons at the start and end of a label.
+///   @param  dc the device context
+///   @param  r  the LabelTrack rectangle.
+void LabelStruct::DrawGlyphs( wxDC & dc, wxRect & r)
+{
+   if (y<0) 
+      return;
+   const int xHalfWidth=LabelTrack::mIconWidth/2;
+   const int yStart=y-LabelTrack::mIconHeight/2;
+
+   if((x  >= r.x) && (x  <= (r.x+r.width)))
+      dc.DrawIcon( LabelTrack::mBoundaryGlyphs[0], x-xHalfWidth,yStart );
+   // The extra test here suppresses right hand markers when they overlap
+   // the left hand marker (e.g. zoomed out) or are to the left.
+   if((x1 >= r.x) && (x1 <= (r.x+r.width)) && (x1>x+LabelTrack::mIconWidth))
+      dc.DrawIcon( LabelTrack::mBoundaryGlyphs[1], x1-xHalfWidth,yStart );
+}
+
+/// Draw the text of the label and also draw
+/// a long thin rectangle for its full extent 
+/// from x to x1 and a rectangular frame 
+/// behind the text itself.
+///   @param  dc the device context
+///   @param  r  the LabelTrack rectangle.
+void LabelStruct::DrawText( wxDC & dc, wxRect & r)
+{
+   if (y<0) 
+      return;
+   //If y is positive then it is the center line for the 
+   //text we are about to draw.
+   const int yBarHeight=3;
+   const int yFrameHeight = LabelTrack::mTextHeight+3;
+   const int xBarShorten  = LabelTrack::mIconWidth+4;
+
+   // Draw bar for label extent...
+   // We don't quite draw from x to x1 because we allow 
+   // half an icon width at each end.
+   wxRect bar( x+xBarShorten/2,y-yBarHeight/2, 
+      x1-(x+xBarShorten),yBarHeight);
+   if( x1 > x+xBarShorten )
+      dc.DrawRectangle(bar);
+   // Draw frame for the text...
+   // We draw it half an icon width left of the text itself.
+   wxRect frame(xText-LabelTrack::mIconWidth/2,y-yFrameHeight/2,
+      width+LabelTrack::mIconWidth,yFrameHeight );
+   dc.DrawRectangle(frame);
+   // Now draw the text itself.
+   dc.DrawText(title, xText, y-LabelTrack::mTextHeight/2);
+}
+
+/// Draw calls other functions to draw the LabelTrack.
+///   @param  dc the device context
+///   @param  r  the LabelTrack rectangle.
 void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
                       double sel0, double sel1)
 {
@@ -102,75 +403,51 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
    dc.SetPen(mUnselectedPen);
    dc.DrawRectangle(after);
 
-   dc.SetBrush(mFlagBrush);
-   dc.SetPen(mFlagPen);
-
-   int nextx = 0;
-
-   for (int i = 0; i < (int)mLabels.Count(); i++) {
-
-      int x = r.x + (int) ((mLabels[i]->t - h) * pps);
-      int y = r.y;
-      int height = r.height;
-
-      if (x >= r.x && x < r.x + r.width) {
-
-         if (x < nextx && i != mSelIndex) {
-            // Draw flag obscured by the previous label
-
-            dc.DrawLine(x, y, x, y + 2);
-            dc.DrawLine(x, y + height - 2, x, y + height);
-
-            mLabels[i]->width = 0;
-         } else {
-            // Draw the flag and label
-
-            wxPoint tri[3];
-            tri[0].x = x;
-            tri[0].y = y;
-            tri[1].x = x - 8;
-            tri[1].y = y + 4;
-            tri[2].x = x;
-            tri[2].y = y + 8;
-
-            if (mSelIndex == i)
-               dc.SetBrush(*wxWHITE_BRUSH);
-            dc.DrawPolygon(3, tri);
-            if (mSelIndex == i)
-               dc.SetBrush(mFlagBrush);
-
-            dc.DrawLine(x, y, x, y + height);
-
-            dc.SetTextForeground(wxColour(204, 0, 0));
+   int i;
 
 #ifdef __WXMAC__
-            long textWidth, textHeight;
+   long textWidth, textHeight;
 #else
-            int textWidth, textHeight;
+   int textWidth, textHeight;
 #endif
 
-            dc.GetTextExtent(mLabels[i]->title, &textWidth, &textHeight);
-            dc.DrawText(mLabels[i]->title, x + 4, y + 4);
+   // Get the text widths.
+   // TODO: Make more efficient by only re-computing when a
+   // text label title changes.
+   for (i = 0; i < (int)mLabels.Count(); i++) 
+   {
+         dc.GetTextExtent(mLabels[i]->title, &textWidth, &textHeight);
+         mLabels[i]->width = textWidth;
+   }
 
-            if (i == mSelIndex) {
-               wxRect outline;
+   // TODO: And this only needs to be done once, but we
+   // do need the dc to do it.
+   // We need to set mTextHeight to something sensible, 
+   // guarding against the case where there are no
+   // labels or all are empty strings, which for example
+   // happens with a new label track.
+   dc.GetTextExtent("Demo Text x^y", &textWidth, &textHeight);
+   mTextHeight = (int)textHeight;   
 
-               outline.x = x + 2;
-               outline.y = y + 2;
-               outline.width = textWidth + 4;
-               outline.height = height - 4;
+   ComputeLayout( r, h , pps );
 
-               dc.SetBrush(*wxTRANSPARENT_BRUSH);
-               dc.DrawRectangle(outline);
-               dc.SetBrush(mFlagBrush);
-            }
+   dc.SetTextForeground(wxColour(0, 0, 0));
+   dc.SetBackgroundMode(wxTRANSPARENT);
+   dc.SetBrush(mSelectedBrush);
+   dc.SetPen(mLabelSurroundPen);
 
-            mLabels[i]->width = textWidth + 8;
-
-            nextx = x + textWidth + 8;
-         }
-
-      }
+   const int nLabels = (int)mLabels.Count();
+   // Now we draw the various items in this order,
+   // so that the correct things overpaint each other.
+   for (i = 0; i < nLabels; i++) 
+      mLabels[i]->DrawLines( dc, r );
+   for (i = 0; i < nLabels; i++) 
+      mLabels[i]->DrawGlyphs( dc, r );
+   for (i = 0; i < nLabels; i++)
+   {
+      if( mSelIndex==i) dc.SetBrush(mTextEditBrush);
+      mLabels[i]->DrawText( dc, r );
+      if( mSelIndex==i) dc.SetBrush(mSelectedBrush);
    }
 }
 
@@ -197,18 +474,20 @@ double LabelTrack::GetEndTime()
 void LabelTrack::MouseDown(int x, int y, wxRect & r, double h, double pps,
                            double *newSel0, double *newSel1)
 {
-   double mouseH = h + (x - r.x) / pps;
+   LabelStruct * pLabel;
 
    for (int i = 0; i < (int)mLabels.Count(); i++) {
-      if (mLabels[i]->t - (8 / pps) < mouseH &&
-          mouseH < mLabels[i]->t + (mLabels[i]->width / pps)) {
+      pLabel = mLabels[i];
+      if( (pLabel->xText-(mIconWidth/2) < x) && 
+          (x<pLabel->xText+pLabel->width+(mIconWidth/2)) &&
+          (abs(pLabel->y-y)<mIconHeight/2))
+      {
          mSelIndex = i;
          *newSel0 = mLabels[i]->t;
          *newSel1 = mLabels[i]->t1;
          return;
       }
    }
-
    mSelIndex = -1;
 }
 
@@ -511,7 +790,7 @@ bool LabelTrack::Cut(double t0, double t1, Track ** dest)
    return true;
 }
 
-bool LabelTrack::Copy(double t0, double t1, Track ** dest) const
+bool LabelTrack::Copy(double t0, double t1, Track ** dest)
 {
    *dest = new LabelTrack(GetDirManager());
    int len = mLabels.Count();
@@ -640,13 +919,128 @@ void LabelTrack::AddLabel(double t, double t1, const wxString &title)
 // Private method called from the constructor
 void LabelTrack::InitColours()
 {
-   mFlagBrush.SetColour(204, 0, 0);
+// JKC: Standard Audacity colours are grays and shades of blue.
+// To keep interface 'unified' only use special colors
+// where there is a good/established reason, e.g.
+//   Red   - Record.
+//   Green - Playback.
+   mLabelSurroundPen.SetColour( 0, 0, 0);
+   mTextEditBrush.SetColour( 255,255,255);
+
    mUnselectedBrush.SetColour(192, 192, 192);
    mSelectedBrush.SetColour(148, 148, 170);
 
-   mFlagPen.SetColour(204, 0, 0);
    mUnselectedPen.SetColour(192, 192, 192);
    mSelectedPen.SetColour(148, 148, 170);
+}
+
+
+// This one XPM spec is used to generate a number of
+// different wxIcons.
+/* XPM */
+static char *GlyphXpmRegionSpec[] = {
+/* columns rows colors chars-per-pixel */
+"15 23 7 1",
+/* Default colors, with first color transparent */
+". c #C0C0C0",
+"2 c black",
+"3 c black",
+"4 c black",
+"5 c #D0D0D0",
+"6 c #D0D0D0",
+"7 c #D0D0D0",
+/* pixels */
+"...............",
+"...............",
+"...............",
+"....333.444....",
+"...3553.4774...",
+"...3553.4774...",
+"..35553.47774..",
+"..35522222774..",
+".3552666662774.",
+".3526666666274.",
+"355266666662774",
+"355266666662774",
+"355266666662774",
+".3526666666274.",
+".3552666662774.",
+"..35522222774..",
+"..35553.47774..",
+"...3553.4774...",
+"...3553.4774...",
+"....333.444....",
+"...............",
+"...............",
+"..............."
+};
+
+/// CreateCustomGlyphs() creates the mBoundaryGlyph array.
+/// It's a bit like painting by numbers!
+/// 
+/// Schematically the glyphs we want will 'look like':
+///   <O,  O>   and   <O>
+/// for a left boundary to a label, a right boundary and both.
+/// we're create all three glyphs using the one Xpm Spec.
+///
+/// When we hover over a glyph we highlight the
+/// inside of either the '<', the 'O' or the '>' or none,
+/// giving 3 x 4 = 12 combinations.
+///
+/// Two of those combinations aren't used, but
+/// treating them specially would make other code more 
+/// complicated.
+void LabelTrack::CreateCustomGlyphs()
+{
+   int iConfig;
+   int iHighlight;
+   int index;
+   const int nSpecRows = 
+      sizeof( GlyphXpmRegionSpec )/sizeof( GlyphXpmRegionSpec[0]);
+   char *XmpBmp[nSpecRows];
+
+   // The glyphs are declared static wxIcon; so we only need
+   // to create them once, no matter how many LabelTracks.
+   // July 2004 - Audacity doesn't really support multiple
+   // LabelTracks yet.  TODO: fix it so that can have more
+   // than one.
+   if( mbGlyphsReady )
+      return;
+
+// KLUDGE!  Color #C0C0C0 is transparent for icons in wxWindows 2.4.0
+// Might not be that way in future, in which case we might need to
+// explicitly create a mask for the bitmap dependent on the colors before
+// creating the icon.
+
+// We're about to tweak the basic color spec to get 12 variations.
+   for( iConfig=0;iConfig<NUM_GLYPH_CONFIGS;iConfig++)
+   {
+      for( iHighlight=0;iHighlight<NUM_GLYPH_HIGHLIGHTS;iHighlight++)
+      {
+         index = iConfig + NUM_GLYPH_CONFIGS * iHighlight;
+         // Copy the basic spec...
+         memcpy( XmpBmp, GlyphXpmRegionSpec, sizeof( GlyphXpmRegionSpec ));
+         // The higlighted region (if any) is white...
+         if( iHighlight==1 ) XmpBmp[5]="5 c #FFFFFF";
+         if( iHighlight==2 ) XmpBmp[6]="6 c #FFFFFF";
+         if( iHighlight==3 ) XmpBmp[7]="7 c #FFFFFF";
+         // For left or right arrow the other side of the glyph
+         // is the transparent color.
+         if( iConfig==0) { XmpBmp[3]="3 c #C0C0C0"; XmpBmp[5]="5 c #C0C0C0"; }
+         if( iConfig==1) { XmpBmp[4]="4 c #C0C0C0"; XmpBmp[7]="7 c #C0C0C0"; }
+         // Create the icon from the tweaked spec.
+         mBoundaryGlyphs[index] = wxIcon(XmpBmp);
+      }
+   }
+
+   mIconWidth  = mBoundaryGlyphs[0].GetWidth();
+   mIconHeight = mBoundaryGlyphs[0].GetHeight();
+   mTextHeight = mIconHeight; // until proved otherwise...
+   // The icon should have an odd width so that the
+   // line goes exactly down the middle.
+   wxASSERT( (mIconWidth %2)==1);
+
+   mbGlyphsReady=true;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

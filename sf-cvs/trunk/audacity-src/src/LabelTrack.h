@@ -21,27 +21,47 @@
 class wxKeyEvent;
 class wxTextFile;
 class wxWindow;
+class wxIcon;
 class TrackList;
 
 class AudacityProject;
 class DirManager;
 
-struct LabelStruct {
+class LabelStruct 
+{
+public:
+   void DrawLines( wxDC & dc, wxRect & r);
+   void DrawGlyphs( wxDC & dc, wxRect & r);
+   void DrawText( wxDC & dc, wxRect & r);
+   
+public:
    double t;
    double t1;
    wxString title;
    int width;
+// Working storage for on-screen layout.
+   int x;
+   int x1;
+   int xText;
+   int y;
+
 };
 
 WX_DEFINE_ARRAY(LabelStruct *, LabelArray);
 
+const int NUM_GLYPH_CONFIGS = 3;
+const int NUM_GLYPH_HIGHLIGHTS = 4;
+const int MAX_NUM_ROWS =80;
+
 class LabelTrack:public Track {
+   friend class LabelStruct;
    friend class BouncePane;
    friend bool ExportPCM(AudacityProject *project,
                wxString format, bool stereo, wxString fName,
                bool selectionOnly, double t0, double t1);
 
  public:
+	 void CreateCustomGlyphs();
    LabelTrack(DirManager * projDirManager);
    LabelTrack(const LabelTrack &orig);
 
@@ -67,7 +87,10 @@ class LabelTrack:public Track {
 #endif
 
    virtual bool Cut  (double t0, double t1, Track ** dest);
-   virtual bool Copy (double t0, double t1, Track ** dest) const;
+   // JKC Do not add the const modifier to Copy(), because then it 
+   // is no longer recognised as a virtual function matching the 
+   // one in Track.
+   virtual bool Copy (double t0, double t1, Track ** dest);// const;
    virtual bool Clear(double t0, double t1);
    virtual bool Paste(double t, const Track * src);
 
@@ -97,18 +120,27 @@ class LabelTrack:public Track {
 
    LabelArray mLabels;
 
-   wxBrush mFlagBrush;
    wxBrush mUnselectedBrush;
    wxBrush mSelectedBrush;
+   wxBrush mTextEditBrush;
 
-   wxPen mFlagPen;
+   wxPen mLabelSurroundPen;
    wxPen mUnselectedPen;
    wxPen mSelectedPen;
 
+   static int mIconHeight;
+   static int mIconWidth;
+   static int mTextHeight;
+   static bool mbGlyphsReady;
+   static wxIcon mBoundaryGlyphs[ NUM_GLYPH_CONFIGS * NUM_GLYPH_HIGHLIGHTS];
+
+   int xUsed[MAX_NUM_ROWS];
    // Used only for a LabelTrack on the clipboard
    double mClipLen;
 
    void InitColours();
+   void ComputeLayout(wxRect & r, double h, double pps);
+   void ComputeTextPosition(wxRect & r, int index);
 };
 
 #endif
