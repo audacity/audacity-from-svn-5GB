@@ -23,6 +23,7 @@
 #include <wx/dcmemory.h>
 #include <wx/intl.h>
 #include <wx/string.h>
+#include <wx/ffile.h>
 
 #ifdef __MACOSX__
 #include <CoreServices/CoreServices.h>
@@ -1229,7 +1230,7 @@ void AudacityProject::OpenFile(wxString fileName)
       return;
    }
 
-   wxFile ff(fileName);
+   wxFFile ff(fileName);
    if (!ff.IsOpened()) {
       wxMessageBox(_("Could not open file: ") + mFileName);
       return;

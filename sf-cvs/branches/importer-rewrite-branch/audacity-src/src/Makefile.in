@@ -18,7 +18,7 @@ CFLAGS = @CFLAGS@
 CXXFLAGS = @CXXFLAGS@
 
 # CPPFLAGS are for both C and C++.
-CPPFLAGS = -Wall -Iinclude -Iinclude/linux @CPPFLAGS@ 
+CPPFLAGS = -Wall -Iinclude -Iinclude/linux -D_FILE_OFFSET_BITS=64 @CPPFLAGS@ 
 
 # Files that must exist in order to compile a C/C++ files
 CDEPEND = @CDEPEND@
@@ -89,6 +89,7 @@ OBJS = \
 	$(OBJDIR)/import/Import.o \
 	$(OBJDIR)/import/ImportMP3.o \
 	$(OBJDIR)/import/ImportOGG.o \
+	$(OBJDIR)/import/ImportPCM.o \
 	$(OBJDIR)/prefs/PrefsDialog.o \
 	$(OBJDIR)/prefs/AudioIOPrefs.o \
 	$(OBJDIR)/prefs/QualityPrefs.o \

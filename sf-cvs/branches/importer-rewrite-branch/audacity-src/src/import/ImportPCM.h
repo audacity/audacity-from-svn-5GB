@@ -8,18 +8,14 @@
 
 **********************************************************************/
 
-#ifndef _IMPORT_PCM_
-#define _IMPORT_PCM_
+#ifndef __AUDACITY_IMPORT_PCM__
+#define __AUDACITY_IMPORT_PCM__
 
-class WaveTrack;
-class DirManager;
+class ImportPluginList;
+class UnusableImportPluginList;
 
-bool IsPCM(wxString fName);
+void GetPCMImportPlugin(ImportPluginList *importPluginList,
+                        UnusableImportPluginList *unusableImportPluginList);
 
-bool ImportPCM(wxWindow * parent,
-               wxString fName,
-               WaveTrack ** channels[],
-               int *numChannels,
-               DirManager * dirManager);
 
 #endif
