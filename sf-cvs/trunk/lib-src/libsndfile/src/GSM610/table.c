@@ -4,7 +4,7 @@
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
  */
 
-/* $Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/table.c,v 1.1.1.1 2001-10-15 04:39:20 dmazzoni Exp $ */
+/* $Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/table.c,v 1.2 2002-04-16 04:31:40 dmazzoni Exp $ */
 
 /*  Most of these tables are inlined at their point of use.
  */
@@ -16,7 +16,7 @@
  */
 
 #define	GSM_TABLE_C
-#include "private.h"
+#include "gsmprivate.h"
 #include	"gsm.h"
 
 /*  Table 4.1  Quantization of the Log.-Area Ratios

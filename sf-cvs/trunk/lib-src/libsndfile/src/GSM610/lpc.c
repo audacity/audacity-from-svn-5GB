@@ -4,12 +4,12 @@
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
  */
 
-/* $Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/lpc.c,v 1.1.1.1 2001-10-15 04:39:19 dmazzoni Exp $ */
+/* $Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/lpc.c,v 1.2 2002-04-16 04:31:27 dmazzoni Exp $ */
 
 #include <stdio.h>
 #include <assert.h>
 
-#include "private.h"
+#include "gsmprivate.h"
 
 #include "gsm.h"
 #include "proto.h"
