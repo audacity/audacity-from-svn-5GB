@@ -194,6 +194,12 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("SnapOff",        _("Snap Off"),                       FN(OnSnapOff));
    c->EndSubMenu();
 
+   // Alternate strings
+   wxString dummy1 = _("Turn Snap-To On");
+   wxString dummy2 = _("Turn Snap-To Off");
+   wxString dummy3 = _("Turn Grid Snap On");
+   wxString dummy4 = _("Turn Grid Snap Off");
+
    c->EndMenu();
 
    c->BeginMenu(_("&View"));
