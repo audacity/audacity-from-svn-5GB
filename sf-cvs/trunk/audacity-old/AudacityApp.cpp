@@ -22,12 +22,17 @@
 #include <unistd.h>
 #endif
 
+#ifdef __WXMAC__
+#include <AppleEvents.h>
+#endif
+
 #include "AudacityApp.h"
 #include "AButton.h"
 #include "ASlider.h"
 #include "APalette.h"
 #include "FreqWindow.h"
 #include "Play.h"
+#include "Prefs.h"
 #include "Project.h"
 #include "WaveTrack.h"
 #include "effects/Amplify.h"
@@ -66,9 +71,9 @@ wxWindow *gParentWindow = NULL;
 void QuitAudacity()
 {
   if (gAPaletteFrame)
-	gAPaletteFrame->Destroy();
+    gAPaletteFrame->Destroy();
   if (gFreqWindow)
-	gFreqWindow->Destroy();
+    gFreqWindow->Destroy();
   if (gParentFrame)
     gParentFrame->Destroy();
   
@@ -78,10 +83,74 @@ void QuitAudacity()
 
   int len = gAudacityProjects.Count();
   for(int i=0; i<len; i++)
-	gAudacityProjects[i]->Destroy();
+    gAudacityProjects[i]->Destroy();
 }
 
 IMPLEMENT_APP(AudacityApp)
+
+#ifdef __WXMAC__
+
+pascal OSErr AEQuit (AppleEvent *theAppleEvent, AppleEvent *theReply, long Refcon)
+{
+  QuitAudacity();
+  
+  return noErr;
+}
+
+/* prototype of MoreFiles fn, included in wxMac already */
+pascal	OSErr	FSpGetFullPath(const FSSpec *spec,
+							               short *fullPathLength,
+							               Handle *fullPath);
+
+pascal OSErr AEOpenFiles (AppleEvent *theAppleEvent, AppleEvent *theReply, long Refcon)
+{
+	AEDescList docList;
+	AEKeyword keywd;
+	DescType returnedType;
+	Size actualSize;
+	long itemsInList;
+	FSSpec theSpec;
+	CInfoPBRec pb;
+  Handle nameh;
+  short namelen;
+	OSErr err;
+	short i;
+	
+	err = AEGetParamDesc (theAppleEvent, keyDirectObject, typeAEList, &docList);
+	if (err != noErr) return err;
+
+	err = AECountItems (&docList, &itemsInList);
+	if (err != noErr) return err;
+		
+	for (i = 1; i <= itemsInList; i++) {
+		AEGetNthPtr (&docList, i, typeFSS, &keywd, &returnedType, 
+			(Ptr) &theSpec, sizeof(theSpec), &actualSize);
+
+    if (noErr == FSpGetFullPath(&theSpec,
+                                &namelen,
+                                &nameh)) {
+      HLock(nameh);
+      char *str = new char[namelen+1];
+      memcpy(str, (char *)*nameh, namelen);
+      str[namelen] = 0;
+      HUnlock(nameh);
+      DisposeHandle(nameh);
+      
+      AudacityProject *project = GetActiveProject();
+      
+      if (project==NULL ||
+          project->GetTracks()->First()!=NULL) {
+        project = CreateNewAudacityProject(gParentWindow);
+      }
+      project->OpenFile(::wxMac2UnixFilename(str));
+      
+      delete[] str;
+    }
+	}
+	
+	return noErr;
+}
+#endif
 
 // The `main program' equivalent, creating the windows and returning the
 // main frame
@@ -89,6 +158,7 @@ bool AudacityApp::OnInit()
 {
   ::wxInitAllImageHandlers();
 
+  InitPreferences();
   InitSoundPlayer();
   
   Effect::RegisterEffect(new EffectAmplify());
@@ -99,6 +169,19 @@ bool AudacityApp::OnInit()
 
   #if defined(__WXMAC__) || defined(__WXMSW__)
   LoadVSTPlugins();
+  #endif
+  
+  #ifdef __WXMAC__
+  AEInstallEventHandler(kCoreEventClass,
+                        kAEOpenDocuments,
+                        NewAEEventHandlerUPP(AEOpenFiles),
+                        0,
+                        0);
+  AEInstallEventHandler(kCoreEventClass,
+                        kAEQuitApplication,
+                        NewAEEventHandlerUPP(AEQuit),
+                        0,
+                        0);
   #endif
 
   SetExitOnFrameDelete(true);
