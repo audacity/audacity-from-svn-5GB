@@ -1219,12 +1219,8 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
 
 bool AudacityProject::SaveAs()
 {
-   wxString fName;
-
-   wxString path, baseName, extension;
-   ::wxSplitPath(mFileName, &path, &baseName, &extension);
-   extension = "aup";
-   fName = baseName + "." + extension;
+   wxString path = wxPathOnly(mFileName);
+   wxString fName = mName + ".aup";
 
    fName = wxFileSelector(_("Save Project As:"),
                           path,
@@ -1240,12 +1236,9 @@ bool AudacityProject::SaveAs()
       return false;
    }
 
-   ::wxSplitPath(fName, &path, &baseName, &extension);
-   extension = "aup";
-
-   mName = baseName + "." + extension;
-   mFileName = path + wxFILE_SEP_PATH + mName;
-   SetTitle(baseName);
+   mFileName = fName;
+   mName =::TrackNameFromFileName(fName);
+   SetTitle(mName);
 
    return Save(false, true);
 }

@@ -31,7 +31,7 @@
 // General purpose function used by importers
 wxString TrackNameFromFileName(wxString fName)
 {
-   return fName.AfterLast(wxFILE_SEP_PATH).BeforeFirst('.');
+   return fName.AfterLast(wxFILE_SEP_PATH).BeforeLast('.');
 }
 
 // returns number of tracks imported
