@@ -778,6 +778,8 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
             wxString(value).ToDouble(&mRate);
          else if (!strcmp(attr, "offset"))
             wxString(value).ToDouble(&tOffset);
+         else if (!strcmp(attr, "name"))
+            name = value;
          else if (!strcmp(attr, "channel"))
             channel = atoi(value);
          else if (!strcmp(attr, "linked"))
@@ -809,6 +811,7 @@ void WaveTrack::WriteXML(int depth, FILE *fp)
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
    fprintf(fp, "<wavetrack ");
+   fprintf(fp, "name=\"%s\" ", name.c_str());
    fprintf(fp, "channel=\"%d\" ", channel);
    fprintf(fp, "linked=\"%d\" ", linked);
    fprintf(fp, "offset=\"%.8g\" ", tOffset);
@@ -1211,9 +1214,9 @@ void WaveTrack::UpdateSummaries(samplePtr buffer,
       summary64K[i * 3 + 2] = rms;
    }
    for (i = sumLen; i < mSummary.frames64K; i++) {
-      summary256[i * 3] = 0.0f;
-      summary256[i * 3 + 1] = 0.0f;
-      summary256[i * 3 + 2] = 0.0f;
+      summary64K[i * 3] = 0.0f;
+      summary64K[i * 3 + 1] = 0.0f;
+      summary64K[i * 3 + 2] = 0.0f;
    }
 
    // Recalc block-level summary

@@ -344,7 +344,9 @@ bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
          if (!value)
             return true;
 
-         if (!strcmp(attr, "numlabels")) {
+         if (!strcmp(attr, "name"))
+            name = value;
+         else if (!strcmp(attr, "numlabels")) {
             int len = atoi(value);
             mLabels.Clear();
             mLabels.Alloc(len);
@@ -373,6 +375,7 @@ void LabelTrack::WriteXML(int depth, FILE *fp)
    for(j=0; j<depth; j++)
       fprintf(fp, "\t");
    fprintf(fp, "<labeltrack ");
+   fprintf(fp, "name=\"%s\" ", name.c_str());
    fprintf(fp, "numlabels=\"%d\">\n", len);
 
    for (i = 0; i < len; i++) {
