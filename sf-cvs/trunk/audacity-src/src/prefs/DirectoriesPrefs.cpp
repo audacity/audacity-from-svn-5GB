@@ -15,6 +15,7 @@
 #include <wx/dirdlg.h>
 #include <wx/event.h>
 #include <wx/filefn.h>
+#include <wx/filename.h>
 #include <wx/intl.h>
 #include <wx/log.h>
 #include <wx/msgdlg.h>
@@ -26,6 +27,7 @@
 
 #include "../Prefs.h"
 #include "../DiskFunctions.h"
+#include "../AudacityApp.h"
 #include "DirectoriesPrefs.h"
 
 enum {
@@ -55,11 +57,20 @@ PrefsPanel(parent)
       this, -1, _("Location:"), wxDefaultPosition,
       wxDefaultSize, wxALIGN_RIGHT );
 
+   //BG: wxWindows 2.3.2 and higher claim to support this, through a function called wxGetDiskSpace
+
+   wxLongLong freeSpace;
+#if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
+   wxGetDiskSpace(mTempDir, NULL, &freeSpace);
+#else
+   freeSpace = GetFreeDiskSpace((char *) (const char *) mTempDir);
+#endif
+
    /* Order is important here: mFreeSpace must be allocated before
       mTempDirText, so that the handler doesn't try to operate on
       mFreeSpace before it exists! */
    mFreeSpace = new wxStaticText(
-      this, -1, FormatSize(GetFreeDiskSpace((char *) (const char *) mTempDir)),
+      this, -1, FormatSize(freeSpace),
       wxDefaultPosition, wxDefaultSize, 0 );
 
    mTempDirText = NULL;
@@ -126,7 +137,7 @@ wxString DirectoriesPrefs::FormatSize(wxLongLong size)
 void DirectoriesPrefs::OnChooseTempDir(wxCommandEvent &event)
 {
    wxDirDialog dlog(this, _("Choose a location to place the "
-                            "temporary directory"), "");
+                            "temporary directory"), gPrefs->Read("/Directories/TempDir", wxGetApp().defaultTempDir));
    dlog.ShowModal();
    if (dlog.GetPath() != "") {
       mTempDirText->SetValue(dlog.GetPath() +
@@ -140,23 +151,28 @@ void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent &event)
 {
    static wxLongLong space;
    static wxString tempDir;
-   static char tmp[200];
 
    if (!mTempDirText)
       return;
 
    tempDir = mTempDirText->GetValue();
 
-#ifndef __WXMAC__  // the mac GetFreeDiskSpace routine does this automatically
    /* Try to be smart: if the directory doesn't exist, go up the
     * directory path until one is, because that's the volume that
     * the new directory would be created on */
    while(!wxDirExists(tempDir) && tempDir.Find(wxFILE_SEP_PATH) != -1)
       tempDir = tempDir.BeforeLast(wxFILE_SEP_PATH);
-#endif
+
+   //BG: wxWindows 2.3.2 and higher claim to support this, through a function called wxGetDiskSpace
+
+#if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
+   wxGetDiskSpace(tempDir, NULL, &space);
+#else
+   static char tmp[200];
    strncpy(tmp, tempDir.c_str(), 200);
    space = GetFreeDiskSpace(tmp);
-   
+#endif
+
    mFreeSpace->SetLabel(FormatSize(space));
 }
    
