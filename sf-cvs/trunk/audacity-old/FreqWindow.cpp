@@ -18,6 +18,10 @@
 #ifndef WX_PRECOMP
 #include <wx/brush.h>
 #include <wx/image.h>
+#include <wx/dcmemory.h>
+#include <wx/msgdlg.h>
+#include <wx/file.h>
+#include <wx/filedlg.h>
 #endif
 
 #include <wx/textfile.h>
@@ -41,20 +45,8 @@ enum {
 
 FreqWindow *gFreqWindow = NULL;
 
-#ifdef __WXMAC__
 #define FREQ_WINDOW_WIDTH 440
 #define FREQ_WINDOW_HEIGHT 330
-#endif
-
-#ifdef __WXGTK__
-#define FREQ_WINDOW_WIDTH 450
-#define FREQ_WINDOW_HEIGHT 330
-#endif
-
-#ifdef __WXMSW__
-#define FREQ_WINDOW_WIDTH 450
-#define FREQ_WINDOW_HEIGHT 330
-#endif
 
 void InitFreqWindow(wxFrame *parent)
 {
@@ -178,6 +170,10 @@ FreqWindow::FreqWindow(wxFrame* parent, wxWindowID id, const wxString& title,
   
   mBackgroundBrush.SetColour(wxColour(204, 204, 204));
   mBackgroundPen.SetColour(wxColour(204, 204, 204));
+
+  // Min size, max size
+  SetSizeHints(FREQ_WINDOW_WIDTH, FREQ_WINDOW_HEIGHT,
+			   20000, 20000);
 }
 
 FreqWindow::~FreqWindow()
@@ -200,85 +196,37 @@ void FreqWindow::OnSize(wxSizeEvent &event)
   //mTrackPanel->SetSize(0, 0,
   //					     width-sbarWidth, height-sbarWidth);
 
-  /*
+  // 440 x 330
+
   mUpdateRect.x = 0;
   mUpdateRect.y = 0;
-  mUpdateRect.width = FREQ_WINDOW_WIDTH;
-  mUpdateRect.height = 250;
+  mUpdateRect.width = width;
+  mUpdateRect.height = height - 80;
 
   mPlotRect.x = 10;
   mPlotRect.y = 10;
-  mPlotRect.width = 420;
-  mPlotRect.height = 215;
+  mPlotRect.width = width - 20;
+  mPlotRect.height = height - 115;
   
   mLeftMargin = 40;
   mBottomMargin = 20;
 
   mInfoRect.x = 10;
-  mInfoRect.y = 230;
-  mInfoRect.width = 420;
+  mInfoRect.y = height - 100;
+  mInfoRect.width = width - 20;
   mInfoRect.height = 15;
 
-  mExportButton = new wxButton(this, FreqExportButtonID,
-							   "Export...",
-							   wxPoint(350, 260),
-							   wxSize(70, 20));
+  mExportButton->SetSize(width - 90, height - 70, 70, 20);
+  mCloseButton->SetSize(width - 90, height - 40, 70, 20);
 
-  mCloseButton = new wxButton(this, FreqCloseButtonID,
-							  "Close",
-							  wxPoint(350, 290),
-							  wxSize(70, 20));
+  mAlgChoice->SetSize(10, height - 70, 160, 20);
+  mSizeChoice->SetSize(180, height - 70, 160, 20);
+  mFuncChoice->SetSize(10, height - 40, 160, 20);
+  mAxisChoice->SetSize(180, height - 40, 160, 20);
 
-  wxString algChoiceStrings[1] = {"Spectrum"};
-								  //"Cepstrum"};
-  
-  mAlgChoice = new wxChoice(this, FreqAlgChoiceID,
-							wxPoint(10, 260),
-							wxSize(160, 20),
-							1, algChoiceStrings);
-
-  mAlgChoice->SetSelection(0);
-
-  wxString sizeChoiceStrings[8] = {"128",
-								   "256",
-								   "512",
-								   "1024",
-								   "2048",
-								   "4096",
-								   "8192",
-								   "16384"};
-  
-  mSizeChoice = new wxChoice(this, FreqSizeChoiceID,
-							 wxPoint(180, 260),
-							 wxSize(160, 20),
-							 8, sizeChoiceStrings);  
-
-  mSizeChoice->SetSelection(2);
-
-  int f = NumWindowFuncs();
-  
-  wxString *funcChoiceStrings = new wxString[f];
-  for(int i=0; i<f; i++)
-    funcChoiceStrings[i] = WindowFuncName(i) + wxString(" window");
-  
-  mFuncChoice = new wxChoice(this, FreqFuncChoiceID,
-							 wxPoint(10, 290),
-							 wxSize(160, 20),
-							 f, funcChoiceStrings);
-
-  mFuncChoice->SetSelection(3);
-  delete[] funcChoiceStrings;
-  
-  wxString axisChoiceStrings[2] = {"Linear frequency",
-								   "Log frequency"};
-  
-  mAxisChoice = new wxChoice(this, FreqAxisChoiceID,
-							 wxPoint(180, 290),
-							 wxSize(160, 20),
-							 2, axisChoiceStrings);  
-
-  mAxisChoice->SetSelection(0);
-  */
+  if (mBitmap)
+	delete mBitmap;
+  mBitmap = NULL;
 }
 
 void FreqWindow::OnMouseEvent(wxMouseEvent& event)
@@ -614,9 +562,9 @@ void FreqWindow::OnPaint(wxPaintEvent &evt)
 
     int px;
     if (mLogAxis)
-      px = log(bestpeak/min_freq)/log(freq_step);
+      px = int(log(bestpeak/min_freq)/log(freq_step));
     else
-      px = (bestpeak-min_freq)*width/(max_freq-min_freq);
+      px = int((bestpeak-min_freq)*width/(max_freq-min_freq));
     
     memDC.SetPen(wxPen(wxColour(200,0,0),1,wxSOLID));
     memDC.DrawLine(r.x + 1 + px, r.y, r.x + 1 + px, r.y + r.height);
