@@ -339,6 +339,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mHistoryWindow(NULL),
      mTotalToolBarHeight(0),
      mDraggingToolBar(NoneID),
+     mAudioIOToken(-1),
      mIsDeleting(false)
 {
    mDrag = NULL;
@@ -523,8 +524,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mTrackFactory = new TrackFactory(mDirManager);
    mImporter = new Importer;
    mImportingRaw = false;
-
-   mAudioIOToken = -1;
 
 #ifdef __WXMSW__
    // Accept drag 'n' drop files
