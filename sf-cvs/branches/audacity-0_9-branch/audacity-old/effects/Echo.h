@@ -11,6 +11,8 @@
 #ifndef __AUDACITY_EFFECT_ECHO__
 #define __AUDACITY_EFFECT_ECHO__
 
+#include <wx/defs.h>
+
 class wxString;
 
 #include "Effect.h"

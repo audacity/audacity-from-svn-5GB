@@ -3,10 +3,6 @@
 #include "snd.h"
 #include "sndfileio.h"
 
-#ifdef __WXMAC__
-#include "wx/filefn.h"
-#endif
-
 void snd_fail(char *msg)
 {
     printf("ERROR: %s\n", msg);
@@ -29,8 +25,9 @@ long snd_file_len(int file)
   FILE *fp = (FILE *)file;
   
   long save = ftell(fp);
+  long len;
   fseek(fp, 0, SEEK_END);
-  long len = ftell(fp);
+  len = ftell(fp);
   fseek(fp, save, SEEK_SET);
   
   return len;

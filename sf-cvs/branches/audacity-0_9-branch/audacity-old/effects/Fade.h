@@ -11,6 +11,8 @@
 #ifndef __AUDACITY_EFFECT_FADE__
 #define __AUDACITY_EFFECT_FADE__
 
+#include <wx/defs.h>
+
 class wxString;
 
 #include "Effect.h"

@@ -23,7 +23,9 @@
 #elif defined(__FreeBSD__)
 #include <sys/stat.h>
 #else
+#ifndef __WXMAC__
 #include <stat.h>
+#endif
 #endif
 #endif
 #include "audio.h"

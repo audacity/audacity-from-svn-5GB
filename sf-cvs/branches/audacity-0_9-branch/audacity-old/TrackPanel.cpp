@@ -14,6 +14,7 @@
 
 #include <math.h>
 
+#include <wx/defs.h>
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
 #include <wx/image.h>
@@ -1095,14 +1096,14 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
          theMenu->Enable(theMenu->FindItem
                          ("Move Track Down"), mTracks->CanMoveDown(t));
 
-#ifdef __WXMAC__
+#if defined(__WXMAC__) && !defined(__DARWIN__)
          ::InsertMenu((MenuHandle)mRateMenu->GetHMenu(), -1);
 #endif
 
          PopupMenu(theMenu, titleRect.x + 1,
                    titleRect.y + titleRect.height + 1);
 
-#ifdef __WXMAC__
+#if defined(__WXMAC__) && !defined(__DARWIN__)
          ::DeleteMenu(mRateMenu->MacGetMenuId());
 #endif
       }

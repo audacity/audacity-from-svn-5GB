@@ -13,6 +13,7 @@
 #ifndef __AUDACITY_EFFECT_REVERSE__
 #define __AUDACITY_EFFECT_REVERSE__
 
+#include <wx/defs.h>
 #include <wx/checkbox.h>
 #include <wx/button.h>
 #include <wx/dialog.h>

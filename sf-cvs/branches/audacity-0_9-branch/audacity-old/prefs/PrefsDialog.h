@@ -11,6 +11,7 @@
 #ifndef __AUDACITY_PREFS_DIALOG__
 #define __AUDACITY_PREFS_DIALOG__
 
+#include <wx/defs.h>
 #include <wx/dialog.h>
 #include <wx/window.h>
 #include <wx/event.h>

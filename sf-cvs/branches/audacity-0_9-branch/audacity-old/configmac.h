@@ -4,6 +4,14 @@
 #define AUDACITY_CREATOR      'auDy'
 #define AUDACITY_PROJECT_TYPE 'auDp'
 
+#ifdef __DARWIN__
+
+// Mac OS X, compiled with g++
+
+#else
+
+// Mac OS 9, compiled with CodeWarrior
+
 // Use xaudio for importing MP3 on the mac
 #define USE_XAUDIO
 #define MP3SUPPORT
@@ -13,3 +21,6 @@
 
 // ID3 support
 #define USE_ID3LIB
+
+#endif
+
