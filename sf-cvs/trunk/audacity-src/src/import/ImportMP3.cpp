@@ -108,7 +108,7 @@ enum mad_flow input_cb(void *_data, struct mad_stream *stream)
    size_t read = data->file->Read(data->inputBuffer + unconsumedBytes,
                                   INPUT_BUFFER_SIZE - unconsumedBytes);
 
-   mad_stream_buffer(stream, data->inputBuffer, read);
+   mad_stream_buffer(stream, data->inputBuffer, read + unconsumedBytes);
 
    return MAD_FLOW_CONTINUE;
 }
