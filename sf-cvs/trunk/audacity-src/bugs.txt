@@ -7,6 +7,9 @@ in Audacity.
 Known bugs to fix:
 -----------------------------------------------------------
 
+- Export does not add the file extension (like ".wav")
+- If sample format is set to 24-bit, importing a file
+  causes corruption.
 - Mac OS 9: very small edit boxes in Prefs!
 - In 1.1.1: Windows only: selecting from the track
   pop-up menu CRASHES!!!
