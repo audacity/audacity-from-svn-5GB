@@ -1867,9 +1867,6 @@ void AudacityProject::OnZoomIn()
    // when there's a selection that's currently at least
    // partially on-screen
 
-   bool nonzeroSelection =
-      (mViewInfo.sel1 > mViewInfo.sel0);
-
    bool selectionIsOnscreen =
       (mViewInfo.sel0 < mViewInfo.h + mViewInfo.screen) &&
       (mViewInfo.sel1 > mViewInfo.h);
@@ -1878,9 +1875,7 @@ void AudacityProject::OnZoomIn()
       (mViewInfo.sel0 < mViewInfo.h) &&
       (mViewInfo.sel1 > mViewInfo.h + mViewInfo.screen);
    
-   if (nonzeroSelection &&
-       selectionIsOnscreen &&
-       !selectionFillsScreen) {
+   if (selectionIsOnscreen && !selectionFillsScreen) {
       // Start with the center of the selection
       double selCenter = (mViewInfo.sel0 + mViewInfo.sel1) / 2;
 
