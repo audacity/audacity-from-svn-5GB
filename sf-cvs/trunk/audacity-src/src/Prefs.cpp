@@ -41,29 +41,28 @@
 
 **********************************************************************/
 
-#include <wx/wxprec.h>
+#include "Audacity.h"
 
-#ifndef WX_PRECOMP
 #include <wx/msgdlg.h>
 #include <wx/app.h>
 #include <wx/config.h>
 #include <wx/intl.h>
-#endif
 
 #include "sndfile.h"
 
-#ifdef __WXMAC__
-#ifdef __UNIX__
+#ifdef __MACOSX__
 #include <CoreServices/CoreServices.h>
-#else
+#endif
+
+#ifdef __MACOS9__
 #include <Files.h>
 #include <Folders.h>
 #endif
 
+#ifdef __WXMAC__
 /* prototype of MoreFiles fn, included in wxMac already */
 pascal OSErr FSpGetFullPath(const FSSpec * spec,
                             short *fullPathLength, Handle * fullPath);
-
 #endif
 
 #include "Audacity.h"

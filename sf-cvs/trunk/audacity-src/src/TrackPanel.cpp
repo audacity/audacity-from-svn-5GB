@@ -12,9 +12,11 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include "TrackPanel.h"
 
-#if defined(__WXMAC__) && defined(__UNIX__)
+#ifdef __MACOSX__
 #include <Carbon/Carbon.h>
 #endif
 

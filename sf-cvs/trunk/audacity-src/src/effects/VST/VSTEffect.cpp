@@ -14,15 +14,21 @@
 
 **********************************************************************/
 
+#include "../../Audacity.h"
+
 #include "AEffect.h"            // VST API
 
+#include <wx/defs.h>
 #include <wx/button.h>
 #include <wx/slider.h>
 #include <wx/msgdlg.h>
-#include <wx/intl.h>
 
 #include "../Effect.h"          // Audacity Effect base class
 #include "VSTEffect.h"          // This class's header file
+
+#ifdef __MACOSX__
+#include <Carbon/Carbon.h>
+#endif
 
 VSTEffect::VSTEffect(wxString pluginName, AEffect * aEffect)
 {
@@ -36,6 +42,10 @@ VSTEffect::VSTEffect(wxString pluginName, AEffect * aEffect)
    isOpened = false;
 }
 
+VSTEffect::~VSTEffect()
+{
+}
+
 wxString VSTEffect::GetEffectName()
 {
    return pluginName + "...";
@@ -43,16 +53,11 @@ wxString VSTEffect::GetEffectName()
 
 wxString VSTEffect::GetEffectAction()
 {
-   return _("Performing VST Effect: \"") + pluginName + "\"";
+   return "Performing VST Effect: \""+pluginName+"\"";
 }
 
 bool VSTEffect::Init()
 {
-   if (!isOpened) {
-      aEffect->dispatcher(aEffect, effOpen, 0, 0, NULL, 0.0);
-      isOpened = true;
-   }
-   
    inputs = aEffect->numInputs;
    outputs = aEffect->numOutputs;
 
@@ -70,9 +75,8 @@ bool VSTEffect::Init()
             GetSamples((WaveTrack *)right, &rstart, &rlen);
             
             if (llen != rlen || ((WaveTrack *)left)->GetRate() != ((WaveTrack *)right)->GetRate()) {
-               wxMessageBox(_("Sorry, VST Effects cannot be performed "
-                              "on stereo tracks where the individual channels "
-                              "of the track do not match."));
+               wxMessageBox("Sorry, VST Effects cannot be performed on stereo tracks where "
+                            "the individual channels of the track do not match.");
                return false;
             }
          }
@@ -89,11 +93,16 @@ bool VSTEffect::PromptUser()
    // Try to figure out how many parameters it takes by seeing how
    // many parameters have names
    char temp[8][256];
-   int numParameters = 0;
+   numParameters = 0;
    do {
-      aEffect->dispatcher(aEffect, effGetParamName, numParameters, 0,
-                          (void *) temp[numParameters], 0.0);
+      long result;
 
+      temp[numParameters][0] = 0;
+      result = callDispatcher(aEffect, effGetParamName, numParameters, 0,
+                              (void *) temp[numParameters], 0.0);
+
+      if (temp[numParameters][0]==0)
+         break;
       if (strstr(temp[numParameters], "ABOUT"))
          break;
       if (numParameters > 0
@@ -103,10 +112,8 @@ bool VSTEffect::PromptUser()
       numParameters++;
    } while (temp[0] != 0 && numParameters < 8);
 
-   //numParameters = aEffect->numParams;
-
    if (numParameters > 0) {
-      VSTEffectDialog d(mParent, pluginName, numParameters, aEffect);
+      VSTEffectDialog d(mParent, pluginName, numParameters, this, aEffect);
       d.ShowModal();
 
       if (!d.GetReturnCode())
@@ -125,16 +132,20 @@ bool VSTEffect::Process()
    while(left) {
       sampleCount lstart, rstart, len;
       GetSamples((WaveTrack *)left, &lstart, &len);
-      
+
       right = NULL;
       if (left->GetLinked() && inputs>1) {
          right = iter.Next();         
          GetSamples((WaveTrack *)right, &rstart, &len);
       }
+
+      // Reset the effect
+      callDispatcher(aEffect, effOpen, 0, 0, NULL, 0.0);
       
-      bool success = ProcessStereo(count, (WaveTrack *)left, (WaveTrack *)right,
+      bool success = ProcessStereo(count,
+                                   (WaveTrack *)left, (WaveTrack *)right,
                                    lstart, rstart, len);
-      
+
       if (!success)
          return false;
    
@@ -162,23 +173,9 @@ bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
 
    }
 
-   aEffect->dispatcher(aEffect, effSetSampleRate, 0, 0, NULL,
+   callDispatcher(aEffect, effSetSampleRate, 0, 0, NULL,
                        (float) left->GetRate());
-   aEffect->dispatcher(aEffect, effSetBlockSize, 0, mBlockSize * 2, NULL, 0.0);
-
-   // HACK:
-   //
-   // Some plug-ins save a lot of state.  We attempt to flush that
-   // here by feeding it two seconds of zeroes before each track.
-
-   int i, j, c;
-   for (i = 0; i < inputs; i++) {
-      for (j = 0; j < mBlockSize; j++)
-         fInBuffer[i][j] = 0.0;
-   }
-   for (c = 0; c < 2; c++)
-      aEffect->processReplacing(aEffect, fInBuffer, fOutBuffer,
-                                mBlockSize);
+   callDispatcher(aEffect, effSetBlockSize, 0, mBlockSize * 2, NULL, 0.0);
 
    // Actually perform the effect here
 
@@ -186,20 +183,21 @@ bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
    sampleCount ls = lstart;
    sampleCount rs = rstart;
    while (len) {
+      int i;
       int block = mBlockSize;
       if (block > len)
          block = len;
 
       left->Get(buffer, ls, block);
       for (i = 0; i < block; i++)
-         fInBuffer[0][i] = buffer[i];
+         fInBuffer[0][i] = float (buffer[i] / 32767.);
       if (right) {
          right->Get(buffer, rs, block);
          for (i = 0; i < block; i++)
-            fInBuffer[1][i] = buffer[i];
+            fInBuffer[1][i] = float (buffer[i] / 32767.);
       }
 
-      aEffect->processReplacing(aEffect, fInBuffer, fOutBuffer, block);
+      callProcessReplacing(aEffect, fInBuffer, fOutBuffer, block);
 
       for (i = 0; i < block; i++)
          buffer[i] = fOutBuffer[0][i];
@@ -215,10 +213,14 @@ bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
       ls += block;
       rs += block;
       
-      if (inputs > 1)
-         TrackGroupProgress(count, (ls-lstart)/(double)originalLen);
-      else
-         TrackProgress(count, (ls-lstart)/(double)originalLen);
+      if (inputs > 1) {      
+         if (TrackGroupProgress(count, (ls-lstart)/(double)originalLen))
+            break;
+      }
+      else {
+         if (TrackProgress(count, (ls-lstart)/(double)originalLen))
+            break;
+      }
    }
 
    return true;
@@ -252,22 +254,22 @@ BEGIN_EVENT_TABLE(VSTEffectDialog, wxDialog)
     EVT_SLIDER(VSTEFFECT_SLIDER_ID, VSTEffectDialog::OnSlider)
 END_EVENT_TABLE()
 
-IMPLEMENT_CLASS(VSTEffectDialog, wxDialog)
-
-    VSTEffectDialog::VSTEffectDialog(wxWindow * parent,
-                                     wxString effectName,
-                                     int numParams,
-                                     AEffect * aEffect,
-                                     const wxPoint & pos)
+VSTEffectDialog::VSTEffectDialog(wxWindow * parent,
+                                 wxString effectName,
+                                 int numParams,
+                                 VSTEffect * vst,
+                                 AEffect * aEffect,
+                                 const wxPoint & pos)
 :wxDialog(parent, -1, effectName, pos, wxSize(320, 430),
           wxDEFAULT_DIALOG_STYLE)
 {
+   this->vst = vst;
    this->aEffect = aEffect;
    this->numParams = numParams;
 
    int y = 10;
 
-   new wxStaticText(this, 0, _("VST Plug-in parameters:"), wxPoint(10, y),
+   new wxStaticText(this, 0, "VST Plug-in parameters:", wxPoint(10, y),
                     wxSize(300, 15));
    y += 20;
 
@@ -277,12 +279,12 @@ IMPLEMENT_CLASS(VSTEffectDialog, wxDialog)
    for (int p = 0; p < numParams; p++) {
 
       char paramName[256];
-      aEffect->dispatcher(aEffect, effGetParamName, p, 0,
-                          (void *) paramName, 0.0);
+      vst->callDispatcher(aEffect, effGetParamName, p, 0,
+                     (void *) paramName, 0.0);
       new wxStaticText(this, 0, wxString(paramName), wxPoint(10, y),
                        wxSize(85, 15));
 
-      float val = aEffect->getParameter(aEffect, p);
+      float val = vst->callGetParameter(aEffect, p);
 
       sliders[p] =
           new wxSlider(this, VSTEFFECT_SLIDER_ID,
@@ -290,10 +292,10 @@ IMPLEMENT_CLASS(VSTEffectDialog, wxDialog)
                        wxPoint(100, y + 5), wxSize(200, 25));
 
       char label[256];
-      aEffect->dispatcher(aEffect, effGetParamDisplay, p, 0,
+      vst->callDispatcher(aEffect, effGetParamDisplay, p, 0,
                           (void *) label, 0.0);
       char units[256];
-      aEffect->dispatcher(aEffect, effGetParamLabel, p, 0, (void *) units,
+      vst->callDispatcher(aEffect, effGetParamLabel, p, 0, (void *) units,
                           0.0);
 
       labels[p] =
@@ -305,9 +307,9 @@ IMPLEMENT_CLASS(VSTEffectDialog, wxDialog)
    }
 
    wxButton *ok =
-       new wxButton(this, wxID_OK, _("OK"), wxPoint(110, y), wxSize(80, 30));
+       new wxButton(this, wxID_OK, "OK", wxPoint(110, y), wxSize(80, 30));
    wxButton *cancel =
-       new wxButton(this, wxID_CANCEL, _("Cancel"), wxPoint(210, y),
+       new wxButton(this, wxID_CANCEL, "Cancel", wxPoint(210, y),
                     wxSize(80, 30));
    y += 40;
 
@@ -338,13 +340,13 @@ void VSTEffectDialog::OnSlider(wxCommandEvent & WXUNUSED(event))
       float val;
 
       val = sliders[p]->GetValue() / 1000.;
-      aEffect->setParameter(aEffect, p, val);
+      vst->callSetParameter(aEffect, p, val);
 
       char label[256];
-      aEffect->dispatcher(aEffect, effGetParamDisplay, p, 0,
+      vst->callDispatcher(aEffect, effGetParamDisplay, p, 0,
                           (void *) label, 0.0);
       char units[256];
-      aEffect->dispatcher(aEffect, effGetParamLabel, p, 0, (void *) units,
+      vst->callDispatcher(aEffect, effGetParamLabel, p, 0, (void *) units,
                           0.0);
       labels[p]->SetLabel(wxString::Format("%s %s", label, units));
    }
@@ -359,3 +361,139 @@ void VSTEffectDialog::OnCancel(wxCommandEvent & WXUNUSED(event))
 {
    EndModal(FALSE);
 }
+
+#ifdef __MACOSX__
+
+// Mac OS X methods
+//
+// Cross-platform VST plug-ins on the Mac are compiled as Carbon,
+// CFM code.  Audacity is compiled as Carbon, Mach-O code.  Special care
+// must be taken when calling funtions in the other mode - these
+// functions make it easier.
+//
+
+// MachOFunctionPointerForCFMFunctionPointer(void *cfmfp)
+//
+// Borrowed from the Apple Sample Code file "CFM_MachO_CFM.c"
+// This function allocates a block of CFM glue code which contains
+// the instructions to call CFM routines
+
+void *NewMachOFromCFM(void *cfmfp)
+{
+   UInt32 CFMTemplate[6] = {0x3D800000, 0x618C0000, 0x800C0000,
+                            0x804C0004, 0x7C0903A6, 0x4E800420};
+   UInt32	*mfp = (UInt32*)NewPtr(sizeof(CFMTemplate));
+   
+   mfp[0] = CFMTemplate[0] | ((UInt32)cfmfp >> 16);
+   mfp[1] = CFMTemplate[1] | ((UInt32)cfmfp & 0xFFFF);
+   mfp[2] = CFMTemplate[2];
+   mfp[3] = CFMTemplate[3];
+   mfp[4] = CFMTemplate[4];
+   mfp[5] = CFMTemplate[5];
+   MakeDataExecutable(mfp, sizeof(CFMTemplate));
+   
+   return(mfp);
+}
+
+void DisposeMachOFromCFM(void *ptr)
+{
+   DisposePtr((Ptr)ptr);
+}
+
+void *NewCFMFromMachO(void *machofp)
+{
+   void *result = NewPtr(8);
+   ((void **)result)[0] = machofp;
+   ((void **)result)[1] = result;
+
+   return result;
+}
+
+void DisposeCFMFromMachO(void *ptr)
+{
+   DisposePtr((Ptr)ptr);
+}
+
+long VSTEffect::callDispatcher(AEffect * effect, long opCode,
+                               long index, long value, void *ptr,
+                               float opt)
+{
+   long rval;
+
+   dispatcherFn fp = (dispatcherFn)NewMachOFromCFM(effect->dispatcher);
+   rval = fp(effect, opCode, index, value, ptr, opt);
+   DisposeMachOFromCFM(fp);
+
+   return rval;
+}
+
+void VSTEffect::callProcess(AEffect * effect, float **inputs,
+                            float **outputs, long sampleframes)
+{
+   processFn fp = (processFn)NewMachOFromCFM(effect->process);
+   fp(effect, inputs, outputs, sampleframes);
+   DisposeMachOFromCFM(fp);
+}
+
+void VSTEffect::callProcessReplacing(AEffect * effect, float **inputs,
+                                     float **outputs, long sampleframes)
+{
+   processFn fp = (processFn)NewMachOFromCFM(effect->processReplacing);
+   fp(effect, inputs, outputs, sampleframes);
+   DisposeMachOFromCFM(fp);
+}
+
+void VSTEffect::callSetParameter(AEffect * effect, long index,
+                                 float parameter)
+{
+   setParameterFn fp = (setParameterFn)NewMachOFromCFM(effect->setParameter);
+   fp(effect, index, parameter);
+   DisposeMachOFromCFM(fp);
+}
+
+float VSTEffect::callGetParameter(AEffect * effect, long index)
+{
+   float rval;
+
+   getParameterFn fp = (getParameterFn)NewMachOFromCFM(effect->getParameter);
+   rval = fp(effect, index);
+   DisposeMachOFromCFM(fp);
+
+   return rval;
+}
+
+#else // ifdef __MACOSX__
+
+long VSTEffect::callDispatcher(AEffect * effect, long opCode,
+                               long index, long value, void *ptr,
+                               float opt)
+{
+   return effect->dispatcher(effect, opCode, index, value, ptr, opt);
+}
+
+void VSTEffect::callProcess(AEffect * effect, float **inputs,
+                            float **outputs, long sampleframes)
+{
+   effect->process(effect, inputs, outputs, sampleframes);
+}
+
+void VSTEffect::callProcessReplacing(AEffect * effect, float **inputs,
+                                     float **outputs, long sampleframes)
+{
+   effect->processReplacing(effect, inputs, outputs, sampleframes);
+}
+
+void VSTEffect::callSetParameter(AEffect * effect, long index,
+                                 float parameter)
+{
+   effect->setParameter(effect, index, parameter);
+}
+
+float VSTEffect::callGetParameter(AEffect * effect, long index)
+{
+   return effect->getParameter(effect, index);
+}
+
+#endif
+
+

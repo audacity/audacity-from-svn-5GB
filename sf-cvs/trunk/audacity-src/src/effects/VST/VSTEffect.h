@@ -8,7 +8,8 @@
 
 **********************************************************************/
 
-struct AEffect;
+#include "AudioEffect.hpp"      // VST API
+
 class wxSlider;
 class labels;
 
@@ -17,11 +18,25 @@ class labels;
 
 #include "../Effect.h"
 
+typedef long (*dispatcherFn)(AEffect * effect, long opCode,
+                             long index, long value, void *ptr,
+                             float opt);
+
+typedef void (*processFn)(AEffect * effect, float **inputs,
+                          float **outputs, long sampleframes);
+
+typedef void (*setParameterFn)(AEffect * effect, long index,
+                               float parameter);
+
+typedef float (*getParameterFn)(AEffect * effect, long index);
+
 class VSTEffect:public Effect {
 
  public:
 
    VSTEffect(wxString pluginName, AEffect * aEffect);
+
+   virtual ~VSTEffect();
 
    virtual wxString GetEffectName();
    
@@ -34,6 +49,19 @@ class VSTEffect:public Effect {
    virtual bool Process();
    
    virtual void End();
+
+   // VST methods
+
+   long callDispatcher(AEffect * effect, long opCode,
+                       long index, long value, void *ptr,
+                       float opt);
+   void callProcess(AEffect * effect, float **inputs,
+                    float **outputs, long sampleframes);
+   void callProcessReplacing(AEffect * effect, float **inputs,
+                             float **outputs, long sampleframes);
+   void callSetParameter(AEffect * effect, long index,
+                         float parameter);
+   float callGetParameter(AEffect * effect, long index);
 
  private:
    bool ProcessStereo(int count, WaveTrack * left, WaveTrack *right,
@@ -49,15 +77,15 @@ class VSTEffect:public Effect {
    float **fOutBuffer;
    int inputs;
    int outputs;
+   int numParameters;
 };
 
 class VSTEffectDialog:public wxDialog {
-   DECLARE_DYNAMIC_CLASS(VSTEffectDialog)
-
  public:
    VSTEffectDialog(wxWindow * parent,
                    wxString effectName,
                    int numParams,
+                   VSTEffect * vst,
                    AEffect * aEffect,
                    const wxPoint & pos = wxDefaultPosition);
 
@@ -67,11 +95,21 @@ class VSTEffectDialog:public wxDialog {
    void OnOK(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
 
-    DECLARE_EVENT_TABLE()
+   DECLARE_EVENT_TABLE()
 
  private:
-    AEffect * aEffect;
+   VSTEffect * vst;
+   AEffect * aEffect;
    wxSlider **sliders;
    wxStaticText **labels;
    int numParams;
 };
+
+#if defined(__WXMAC__) && defined(__UNIX__)
+
+void *NewMachOFromCFM(void *cfmfp);
+void DisposeMachOFromCFM(void *ptr);
+void *NewCFMFromMachO(void *machofp);
+void DisposeCFMFromMachO(void *ptr);
+
+#endif
