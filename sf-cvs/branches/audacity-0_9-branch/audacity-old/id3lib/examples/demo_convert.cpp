@@ -1,4 +1,4 @@
-// $Id: demo_convert.cpp,v 1.1 2001-07-08 09:15:04 dmazzoni Exp $
+// $Id: demo_convert.cpp,v 1.1.2.1 2001-09-30 08:18:15 dmazzoni Exp $
 //
 //  The authors have released ID3Lib as Public Domain (PD) and claim no
 //  copyright, patent or other intellectual property protection in this work.
@@ -16,11 +16,12 @@
 #  include <config.h>
 #endif
 
+#include <string.h>
 #include <iostream.h>
 #include <id3/tag.h>
 #include "demo_convert_options.h"
 
-static const char* VERSION_NUMBER = "$Revision: 1.1 $";
+static const char* VERSION_NUMBER = "$Revision: 1.1.2.1 $";
 
 void PrintUsage(const char *sName)
 {

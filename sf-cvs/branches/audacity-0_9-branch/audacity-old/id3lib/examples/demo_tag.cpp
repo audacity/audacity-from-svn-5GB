@@ -1,4 +1,4 @@
-// $Id: demo_tag.cpp,v 1.1 2001-07-08 09:15:39 dmazzoni Exp $
+// $Id: demo_tag.cpp,v 1.1.2.1 2001-09-30 08:18:15 dmazzoni Exp $
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -13,7 +13,7 @@
 
 #include "demo_tag_options.h"
 
-static const char* VERSION_NUMBER = "$Revision: 1.1 $";
+static const char* VERSION_NUMBER = "$Revision: 1.1.2.1 $";
 
 void PrintUsage(const char *sName)
 {

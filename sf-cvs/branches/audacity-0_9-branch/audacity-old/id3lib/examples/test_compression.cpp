@@ -1,4 +1,4 @@
-// $Id: test_compression.cpp,v 1.1 2001-07-08 09:16:36 dmazzoni Exp $
+// $Id: test_compression.cpp,v 1.1.2.1 2001-09-30 08:18:15 dmazzoni Exp $
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
