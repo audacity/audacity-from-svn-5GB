@@ -278,11 +278,15 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
          }
          break;
 
+      case WXK_DELETE:
+         break;
+
       default:
-         mLabels[mSelIndex]->title += keyCode;
+         if (keyCode > 31 && keyCode < 127)
+            mLabels[mSelIndex]->title += keyCode;
          break;
       }
-   } else {
+   } else if (keyCode > 31 && keyCode < 127) {
       // Create new label
 
       LabelStruct *l = new LabelStruct();
