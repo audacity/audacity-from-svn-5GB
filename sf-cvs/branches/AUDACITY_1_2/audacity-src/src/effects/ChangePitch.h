@@ -16,23 +16,11 @@
 #ifndef __AUDACITY_EFFECT_CHANGEPITCH__
 #define __AUDACITY_EFFECT_CHANGEPITCH__
 
-// wxWindows controls 
-#include <wx/button.h>
-#include <wx/choice.h>
-#include <wx/dialog.h>
-#include <wx/radiobox.h>
-#include <wx/sizer.h>
-#include <wx/slider.h>
-#include <wx/stattext.h>
-#include <wx/textctrl.h>
-
-#include <wx/intl.h>
-
 #include "SoundTouchEffect.h"
 
-
-class wxString;
-
+#include <wx/dialog.h>
+#include <wx/intl.h>
+#include <wx/slider.h>
 
 class EffectChangePitch:public EffectSoundTouch {
 
@@ -52,7 +40,7 @@ class EffectChangePitch:public EffectSoundTouch {
 
    virtual bool Init();
 
-	// DeduceFrequency is Dominic's extremely cool trick (Vaughan sez so!) 
+	// DeduceFrequencies is Dominic's extremely cool trick (Vaughan sez so!) 
 	// to set deduce m_FromFrequency from the samples at the beginning of 
 	// the selection. Then we set some other params accordingly.
 	virtual void DeduceFrequencies(); 
@@ -78,6 +66,11 @@ friend class ChangePitchDialog;
 //----------------------------------------------------------------------------
 // ChangePitchDialog
 //----------------------------------------------------------------------------
+
+class wxChoice;
+class wxRadioBox;
+class wxString;
+class wxTextCtrl;
 
 class ChangePitchDialog:public wxDialog {
  public:
@@ -167,3 +160,15 @@ class ChangePitchDialog:public wxDialog {
 #endif // __AUDACITY_EFFECT_CHANGEPITCH__
 
 #endif // USE_SOUNDTOUCH
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: a2885d66-6848-451b-aa61-3d54cec833d6
+

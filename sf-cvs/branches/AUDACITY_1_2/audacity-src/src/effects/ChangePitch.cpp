@@ -15,19 +15,23 @@
 
 #if USE_SOUNDTOUCH
 
-#include <math.h>
+#include "SoundTouch.h"
 
-#include <wx/intl.h>
-#include <wx/valtext.h>
-
-#include <SoundTouch.h>
+#include "ChangePitch.h"
 
 #include "../PitchName.h"
 #include "../Spectrum.h"
 #include "../WaveTrack.h"
-#include "../Internat.h"
 
-#include "ChangePitch.h"
+#include <math.h>
+
+#include <wx/button.h>
+#include <wx/choice.h>
+#include <wx/radiobox.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
+#include <wx/valtext.h>
 
 //
 // EffectChangePitch
@@ -60,7 +64,7 @@ bool EffectChangePitch::Init()
 	return true;
 }
 
-// DeduceFrequency is Dominic's extremely cool trick (Vaughan sez so!) 
+// DeduceFrequencies is Dominic's extremely cool trick (Vaughan sez so!) 
 // to set deduce m_FromFrequency from the samples at the beginning of 
 // the selection. Then we set some other params accordingly.
 void EffectChangePitch::DeduceFrequencies()
@@ -353,7 +357,7 @@ ChangePitchDialog::ChangePitchDialog(EffectChangePitch * effect,
    pBoxSizer_PercentChange->Add(pStaticText, 0, 
 											wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-	//v Override wxTextValidator to disallow negative values <= -100.0?
+	//v Override wxTextValidator to disallow negative values < -100.0?
    m_pTextCtrl_PercentChange = 
 		new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, "0.0", 
 							wxDefaultPosition, wxSize(40, -1), 0,
@@ -709,7 +713,9 @@ void ChangePitchDialog::OnText_PercentChange(wxCommandEvent & event)
 		this->Update_Slider_PercentChange();
       m_bLoopDetect = false;
 
-      FindWindow(wxID_OK)->Enable(m_PercentChange > -100.0);
+      //v Probably better to override wxTextValidator to disallow negative values.
+      // See comment in ChangePitchDialog::ChangePitchDialog.
+      this->FindWindow(wxID_OK)->Enable(m_PercentChange > -100.0);
    }
 }
 
@@ -840,3 +846,15 @@ void ChangePitchDialog::Update_Slider_PercentChange()
 
 
 #endif // USE_SOUNDTOUCH
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 0b070f91-579c-4b57-bc29-82ceb6775355
+
