@@ -28,6 +28,7 @@
 #include "DirectoriesPrefs.h"
 #include "FileFormatPrefs.h"
 #include "GUIPrefs.h"
+#include "KeyConfigPrefs.h"
 #include "SampleRatePrefs.h"
 #include "SpectrumPrefs.h"
 
@@ -72,6 +73,7 @@ wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
    mCategories->AddPage(new SpectrumPrefs(mCategories), _("Spectrograms"));
    mCategories->AddPage(new DirectoriesPrefs(mCategories), _("Directories"));
    mCategories->AddPage(new GUIPrefs(mCategories), _("Interface"));
+   mCategories->AddPage(new KeyConfigPrefs(mCategories), _("Configure Keyboard"));
 
    long selected = gPrefs->Read("/Prefs/PrefsCategory", 0L);
    if (selected < 0 || selected >= mCategories->GetPageCount())
@@ -105,12 +107,12 @@ wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
 
    #ifdef __WXMAC__
    // Until sizing works properly on the Mac
-   SetSize(500, 350);
+   SetSize(525, 350);
    #endif
 
    #ifdef __WXMSW__
    // Because it looks nice (tm)   (you can see all the tabs at once)
-   SetSize(425, 363);
+   SetSize(525, 363);
    #endif
 
 }
