@@ -223,6 +223,7 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks)
    }
 
    mRecordLeft = new WaveTrack(project->GetDirManager());
+   mRecordLeft->rate = project->GetRate();
    mRecordLeft->selected = true;
    mRecordLeft->channel = (mRecordStereo ?
                            VTrack::LeftChannel : VTrack::MonoChannel);
@@ -230,6 +231,7 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks)
    if (mRecordStereo) {
       mRecordLeft->linked = true;
       mRecordRight = new WaveTrack(project->GetDirManager());
+      mRecordRight->rate = project->GetRate();
       mRecordRight->selected = true;
       mRecordRight->channel = VTrack::RightChannel;
    }
