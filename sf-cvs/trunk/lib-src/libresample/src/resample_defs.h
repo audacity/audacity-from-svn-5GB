@@ -14,7 +14,7 @@
 #ifndef __RESAMPLE_DEFS__
 #define __RESAMPLE_DEFS__
 
-#ifndef WIN32
+#if !defined(WIN32) && !defined(__CYGWIN__)
 #include "config.h"
 #endif
 
