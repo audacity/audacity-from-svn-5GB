@@ -24,6 +24,7 @@
 
 #include "ChangePitch.h"
 #include "../WaveTrack.h"
+#include "../Spectrum.h"
 
 //
 // EffectChangePitch
@@ -57,6 +58,44 @@ bool EffectChangePitch::Init()
 
 bool EffectChangePitch::PromptUser()
 {
+   // As a neat trick, attempt to get the frequency of the note at the
+   // beginning of the selection.
+   TrackListIterator iter(mWaveTracks);
+   WaveTrack *track = (WaveTrack *) iter.First();
+   if (track) {
+      const int windowSize = 1024;
+      const int analyzeSize = 8192;
+      const int numWindows = analyzeSize / windowSize;
+      double trackStart = track->GetStartTime();
+      double t0 = mT0 < trackStart? trackStart: mT0;
+      longSampleCount start = track->TimeToLongSamples(t0);
+      double rate = track->GetRate();
+      float buffer[analyzeSize];
+      float freq[analyzeSize];
+      float freqa[analyzeSize];
+      int i, j, argmax;
+      int lag;
+
+      for(j=0; j<windowSize/2; j++)
+         freqa[j] = 0;
+
+      track->Get((samplePtr) buffer, floatSample, start, analyzeSize);
+      for(i=0; i<numWindows; i++) {
+         ComputeSpectrum(&buffer[i*windowSize], windowSize, windowSize/2,
+                         (int)rate, windowSize, rate, freq, true);
+         for(j=0; j<windowSize/2; j++)
+            freqa[j] += freq[j];
+      }
+      argmax=0;
+      for(j=1; j<windowSize/2; j++)
+         if (freqa[j] > freqa[argmax])
+            argmax = j;
+      lag = (windowSize/2 - 1) - argmax;
+      m_FromFrequency = (unsigned int)(rate / lag + 0.5);
+      m_ToFrequency = (unsigned int)(((double)(m_FromFrequency) * 
+                                      (100.0 + m_PercentChange)) / 100.0);
+   }
+
    ChangePitchDialog dlog(mParent, -1, _("Change Pitch"));
    dlog.m_FromPitch = m_FromPitch;
    dlog.m_ToPitch = m_ToPitch;
@@ -548,7 +587,7 @@ void ChangePitchDialog::OnText_ToFrequency(wxCommandEvent & event)
       wxString str = pTextCtrl_ToFrequency->GetValue();
 		double newValue;
 		str.ToDouble(&newValue);
-		m_ToFrequency = newValue;
+		m_ToFrequency = (unsigned int)newValue;
 
 		if (m_FromFrequency != 0) {
 			m_PercentChange = (((double)(m_ToFrequency) * 100.0) / 

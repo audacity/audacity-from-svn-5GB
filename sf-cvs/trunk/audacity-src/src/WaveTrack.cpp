@@ -621,7 +621,8 @@ bool WaveTrack::GetSpectrogram(float *freq, sampleCount *where,
          }
    }
 
-   int windowSize = GetSpectrumWindowSize();
+   int maxFreqPref = gPrefs->Read("/Spectrum/MaxFreq", 8000);
+   int windowSize = gPrefs->Read("/Spectrum/FFTSize", 256);
    float *buffer = new float[windowSize];
 
    for (x = 0; x < mSpecCache->len; x++)
@@ -647,8 +648,9 @@ bool WaveTrack::GetSpectrogram(float *freq, sampleCount *where,
             mSequence->Get((samplePtr)buffer, floatSample,
                            start, len);
 
-            ComputeSpectrum(buffer, windowSize, height, mRate,
-                            &mSpecCache->freq[height * x],
+            ComputeSpectrum(buffer, windowSize, height,
+                            maxFreqPref, windowSize,
+                            mRate, &mSpecCache->freq[height * x],
                             autocorrelation);
          }
       }
