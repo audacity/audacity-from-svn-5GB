@@ -1526,10 +1526,21 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
       mDrawingTrackTop=r.y;
 
       //If the mouse isn't over a track, exit the function and don't do anything
-      if(mDrawingTrack == NULL)
+      if(mDrawingTrack == NULL) {
+         // The calling function captured the mouse, but we don't want to
+         // keep tracking it, so we release it.
+         ReleaseMouse();
          return;
+      }
       
-     
+      //Also exit if it's not a WaveTrack
+      if(mDrawingTrack->GetKind() != Track::Wave) {
+         // The calling function captured the mouse, but we don't want to
+         // keep tracking it, so we release it.
+         ReleaseMouse();
+         mDrawingTrack = NULL;
+         return;
+      }
       
       ///
       /// Get out of here if we shouldn't be drawing right now:
@@ -1538,8 +1549,9 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
       //If we aren't displaying the waveform, Display a message dialog
       if(((WaveTrack *)mDrawingTrack)->GetDisplay() != WaveTrack::WaveformDisplay)
          {
-            
-            ReleaseMouse();   //<--Not sure why this is really needed, but it fixes a wierd mouse problem
+            // The calling function captured the mouse, but we don't want to
+            // keep tracking it, so we release it.
+            ReleaseMouse();
             wxMessageBox("Draw currently only works with waveforms.", "Notice");
             return;
          }
