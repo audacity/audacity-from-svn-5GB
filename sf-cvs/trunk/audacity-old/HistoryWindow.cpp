@@ -8,6 +8,9 @@
 
 **********************************************************************/
 
+#include <wx/image.h>
+#include <wx/imaglist.h>
+#include <wx/textctrl.h>
 #include <wx/statbox.h>
 #include <wx/stattext.h>
 
@@ -38,7 +41,7 @@ wxDialog(parent, -1, "Undo History", wxDefaultPosition,
    mList->SetSizeHints(350, 180);
 
    wxImageList *imageList = new wxImageList(24, 24); //TODO: free
-   imageList->Add(empty_24x24_xpm);
+   imageList->Add(wxIcon(empty_24x24_xpm));
    imageList->Add(wxIcon(arrow_xpm));
    mList->SetImageList(imageList, wxIMAGE_LIST_SMALL);
    mList->InsertColumn(0, "Action", wxLIST_FORMAT_LEFT, 280);

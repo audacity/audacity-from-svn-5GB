@@ -16,6 +16,13 @@
 
 #include <math.h>
 
+#ifdef __WXMSW__
+#include <float.h>
+#define isfinite(X) _finite(X)
+#else
+#define isfinite(X) finite(X)
+#endif
+
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
 #include <wx/brush.h>
@@ -199,7 +206,7 @@ void EffectNoiseRemoval::GetProfile(sampleCount len,
    for(i=0; i<=len/2; i++) {
       float value = log(out[i]);
       
-      if (finite(value)) {
+      if (isfinite(value)) {
          sum[i] += value;
          sumsq[i] += value*value;
          profileCount[i]++;

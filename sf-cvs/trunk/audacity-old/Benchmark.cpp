@@ -8,6 +8,7 @@
 
 **********************************************************************/
 
+#include <wx/textctrl.h>
 #include <wx/button.h>
 #include <wx/checkbox.h>
 #include <wx/choice.h>

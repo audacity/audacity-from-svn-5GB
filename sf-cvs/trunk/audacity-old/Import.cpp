@@ -16,6 +16,7 @@
 
 #include "Audacity.h"
 
+#include <wx/textctrl.h>
 #include <wx/msgdlg.h>
 #include <wx/string.h>
 

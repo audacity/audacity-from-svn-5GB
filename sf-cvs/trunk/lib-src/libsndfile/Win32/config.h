@@ -78,7 +78,7 @@
 #define HAVE_VSNPRINTF 1
 
 /* Define if you have the <endian.h> header file.  */
-#define HAVE_ENDIAN_H 1
+#define HAVE_ENDIAN_H 0
 
 /* Name of package */
 #define PACKAGE "libsndfile"
@@ -86,3 +86,7 @@
 /* Version number of package */
 #define VERSION "0.0.25"
 
+/* dmazzoni */
+
+#define snprintf _snprintf
+#define vsnprintf _vsnprintf

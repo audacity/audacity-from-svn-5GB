@@ -1,9 +1,6 @@
 // Microsoft Windows specific include file
 
-// Use xaudio for importing MP3 on Windows
-#define USE_XAUDIO
+#define USE_LIBMAD
 #define MP3SUPPORT
-
-// No Ogg Vorbis support (yet)
-// #define USE_LIBVORBIS
+#define USE_LIBVORBIS
 

@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include <wx/textctrl.h>
+
 #include "UndoManager.h"
 #include "Track.h"
 

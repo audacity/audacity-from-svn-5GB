@@ -13,8 +13,8 @@
 #include "Audacity.h"
 
 struct PCMFormatInfo {
-   wxString name;
-   wxString extension;
+   const char *name;
+   const char *extension;
    int id;  // LibSndFile format ID
 };
 

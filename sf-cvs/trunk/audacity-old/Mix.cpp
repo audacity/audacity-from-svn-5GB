@@ -2,15 +2,15 @@
 
   Audacity: A Digital Audio Editor
 
-  Filter.cpp
+  Mix.cpp
 
   Dominic Mazzoni
 
 **********************************************************************/
 
+#include <wx/textctrl.h>
 #include <wx/msgdlg.h>
 #include <wx/progdlg.h>
-#include <wx/timer.h>
 #include <wx/timer.h>
 
 #include "Mix.h"

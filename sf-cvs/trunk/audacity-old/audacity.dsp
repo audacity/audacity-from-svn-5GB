@@ -19,8 +19,6 @@ CFG=Audacity - Win32 Debug
 !MESSAGE 
 !MESSAGE "Audacity - Win32 Release" (based on "Win32 (x86) Application")
 !MESSAGE "Audacity - Win32 Debug" (based on "Win32 (x86) Application")
-!MESSAGE "Audacity - Win32 Debug DLL" (based on "Win32 (x86) Application")
-!MESSAGE "Audacity - Win32 Release DLL" (based on "Win32 (x86) Application")
 !MESSAGE 
 
 # Begin Project
@@ -45,7 +43,8 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /Ob2 /I "../../include" /I "../../contrib/include" /I "h:\wx2\include" /D "NDEBUG" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /YX"wx/wxprec.h" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /Ob2 /I "include" /I "include\win32" /D "NDEBUG" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FD /c
+# SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x809 /d "NDEBUG"
@@ -55,7 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 wx.lib xpm.lib png.lib zlib.lib jpeg.lib tiff.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib xaudio.lib id3lib.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"msvcrtd.lib" /nodefaultlib:"libc.lib" /nodefaultlib:"libci.lib" /libpath:"../../lib" /libpath:"../../contrib/lib" /libpath:"./xaudio/win/lib" /libpath:"h:\wx2\lib" /libpath:"./id3lib/libprj"
+# ADD LINK32 mad.lib sndfile.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib PAStaticWMME.lib wx.lib xpm.lib png.lib zlib.lib jpeg.lib tiff.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"MSVCRT.LIB" /nodefaultlib:"MSVCIRT.LIB" /libpath:"lib-src\libmad" /libpath:"lib-src\libsndfile\Win32" /libpath:"lib-src\libogg\win32\static_release" /libpath:"lib-src\libvorbis\win32\vorbis_static_release" /libpath:"lib-src\libvorbis\win32\vorbisfile_static_release" /libpath:"lib-src\portaudio\winproj\lib"
 # SUBTRACT LINK32 /nodefaultlib
 
 !ELSEIF  "$(CFG)" == "Audacity - Win32 Debug"
@@ -72,7 +71,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /Gm /GX /ZI /Od /I "../../include" /I "../../contrib/include" /I "./allegro" /I "./vorbis/win/include" /I "h:\wx2\include" /D "_DEBUG" /D DEBUG=1 /D "__WXDEBUG__" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /YX"wx/wxprec.h" /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /ZI /Od /I "include" /I "include\win32" /D "_DEBUG" /D DEBUG=1 /D "__WXDEBUG__" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /YX"wx/wxprec.h" /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x809 /d "_DEBUG"
@@ -82,61 +81,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 wxd.lib xpmd.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib xaudio.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"../../lib" /libpath:"../../contrib/lib" /libpath:"./xaudio/win/lib" /libpath:"./vorbis/win/lib" /libpath:"h:\wx2\lib"
-
-!ELSEIF  "$(CFG)" == "Audacity - Win32 Debug DLL"
-
-# PROP BASE Use_MFC 0
-# PROP BASE Use_Debug_Libraries 1
-# PROP BASE Output_Dir "DebugDLL"
-# PROP BASE Intermediate_Dir "DebugDLL"
-# PROP BASE Target_Dir ""
-# PROP Use_MFC 0
-# PROP Use_Debug_Libraries 1
-# PROP Output_Dir "DebugDLL"
-# PROP Intermediate_Dir "DebugDLL"
-# PROP Ignore_Export_Lib 0
-# PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "../../include" /I "../../contrib/include" /I "h:\wx2\include" /D "_DEBUG" /D DEBUG=1 /D "__WXDEBUG__" /D WXUSINGDLL=1 /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FD /c
-# SUBTRACT CPP /YX /Yc /Yu
-# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
-# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
-# ADD BASE RSC /l 0x809 /d "_DEBUG"
-# ADD RSC /l 0x809 /i "h:\wx2\include" /d "_DEBUG"
-BSC32=bscmake.exe
-# ADD BASE BSC32 /nologo
-# ADD BSC32 /nologo
-LINK32=link.exe
-# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 wx22_7d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib xaudio.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"../../lib" /libpath:"../../contrib/lib" /libpath:"./xaudio/win/lib" /libpath:"h:\wx2\lib"
-
-!ELSEIF  "$(CFG)" == "Audacity - Win32 Release DLL"
-
-# PROP BASE Use_MFC 0
-# PROP BASE Use_Debug_Libraries 0
-# PROP BASE Output_Dir "ReleaseDLL"
-# PROP BASE Intermediate_Dir "ReleaseDLL"
-# PROP BASE Target_Dir ""
-# PROP Use_MFC 0
-# PROP Use_Debug_Libraries 0
-# PROP Output_Dir "ReleaseDLL"
-# PROP Intermediate_Dir "ReleaseDLL"
-# PROP Ignore_Export_Lib 0
-# PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O1 /Ob2 /I "../../include" /I "../../contrib/include" /I "h:\wx2\include" /D "NDEBUG" /D WXUSINGDLL=1 /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FD /c
-# SUBTRACT CPP /YX
-# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
-# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
-# ADD BASE RSC /l 0x809 /d "NDEBUG"
-# ADD RSC /l 0x809 /i "h:\wx2\include" /d "NDEBUG"
-BSC32=bscmake.exe
-# ADD BASE BSC32 /nologo
-# ADD BSC32 /nologo
-LINK32=link.exe
-# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 wx22_7.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib xaudio.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libc.lib" /nodefaultlib:"libci.lib" /libpath:"../../lib" /libpath:"../../contrib/lib" /libpath:"./xaudio/win/lib" /libpath:"h:\wx2\lib"
+# ADD LINK32 madd.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib sndfiled.lib PAStaticWMMED.lib wxd.lib xpm.lib png.lib zlib.lib jpeg.lib tiff.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /incremental:no /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /nodefaultlib:"msvcrtd.lib" /nodefaultlib:"msvcirt.lib" /nodefaultlib:"msvcirtd.lib" /pdbtype:sept /libpath:"lib-src\libmad" /libpath:"lib-src\libsndfile\Win32" /libpath:"lib-src\libogg\win32\static_release" /libpath:"lib-src\libvorbis\win32\vorbis_static_release" /libpath:"lib-src\libvorbis\win32\vorbisfile_static_release" /libpath:"lib-src\portaudio\winproj\lib"
+# SUBTRACT LINK32 /pdb:none /nodefaultlib
 
 !ENDIF 
 
@@ -144,8 +90,6 @@ LINK32=link.exe
 
 # Name "Audacity - Win32 Release"
 # Name "Audacity - Win32 Debug"
-# Name "Audacity - Win32 Debug DLL"
-# Name "Audacity - Win32 Release DLL"
 # Begin Group "snd"
 
 # PROP Default_Filter ""
@@ -247,6 +191,14 @@ SOURCE=.\effects\BassBoost.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\effects\Compressor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\effects\Compressor.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\effects\Echo.cpp
 # End Source File
 # Begin Source File
@@ -284,6 +236,14 @@ SOURCE=.\effects\LoadVSTWin.cpp
 # Begin Source File
 
 SOURCE=.\effects\LoadVSTWin.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\effects\NoiseRemoval.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\effects\NoiseRemoval.h
 # End Source File
 # Begin Source File
 
@@ -414,10 +374,6 @@ SOURCE=.\res\warning.ico
 SOURCE=.\res\watch1.cur
 # End Source File
 # End Group
-# Begin Group "xaudio"
-
-# PROP Default_Filter ""
-# End Group
 # Begin Group "allegro"
 
 # PROP Default_Filter ""
@@ -428,6 +384,14 @@ SOURCE=.\allegro\allegro.cpp
 # Begin Source File
 
 SOURCE=.\allegro\allegro.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\allegrord.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\allegrord.h
 # End Source File
 # Begin Source File
 
@@ -589,6 +553,15 @@ SOURCE=.\AStatus.h
 # Begin Source File
 
 SOURCE=.\AudacityApp.cpp
+
+!IF  "$(CFG)" == "Audacity - Win32 Release"
+
+# ADD CPP /MT /FAcs
+
+!ELSEIF  "$(CFG)" == "Audacity - Win32 Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -604,6 +577,14 @@ SOURCE=.\AudioIO.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Benchmark.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Benchmark.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\BladeMP3EncDLL.h
 # End Source File
 # Begin Source File
@@ -613,6 +594,10 @@ SOURCE=.\BlockFile.cpp
 # Begin Source File
 
 SOURCE=.\BlockFile.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\configwin.h
 # End Source File
 # Begin Source File
 
@@ -672,6 +657,14 @@ SOURCE=.\FFT.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\FileFormats.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\FileFormats.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\FreqWindow.cpp
 # End Source File
 # Begin Source File
@@ -685,6 +678,14 @@ SOURCE=.\Help.cpp
 # Begin Source File
 
 SOURCE=.\Help.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\HistoryWindow.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\HistoryWindow.h
 # End Source File
 # Begin Source File
 

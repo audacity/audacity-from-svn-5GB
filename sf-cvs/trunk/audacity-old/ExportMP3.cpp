@@ -36,6 +36,7 @@
 
 **********************************************************************/
 
+#include <wx/textctrl.h>
 #include <wx/dynlib.h>
 #include <wx/msgdlg.h>
 #include <wx/utils.h>

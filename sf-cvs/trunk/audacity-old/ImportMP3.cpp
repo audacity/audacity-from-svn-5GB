@@ -21,6 +21,7 @@
 
 #ifdef USE_LIBMAD
 
+#include <wx/textctrl.h>
 #include <wx/file.h>
 #include <wx/thread.h>
 #include <wx/msgdlg.h>
@@ -29,7 +30,7 @@
 #include <wx/timer.h>
 
 extern "C" {
-#include <mad.h>
+#include "mad.h"
 }
 
 #include "Import.h"
@@ -196,6 +197,14 @@ enum mad_flow output_cb(void *_data,
 enum mad_flow error_cb(void *_data, struct mad_stream *stream, 
                        struct mad_frame *frame)
 {
+/* enum mad_flow {
+     MAD_FLOW_CONTINUE = 0x0000,
+     MAD_FLOW_STOP     = 0x0010,
+     MAD_FLOW_BREAK    = 0x0011,
+     MAD_FLOW_IGNORE   = 0x0020
+   }; */
+
+   return MAD_FLOW_CONTINUE;
 }
 
 

@@ -8,6 +8,7 @@
 
 **********************************************************************/
 
+#include <wx/textctrl.h>
 #include <wx/string.h>
 #include <wx/window.h>
 #include <wx/msgdlg.h>

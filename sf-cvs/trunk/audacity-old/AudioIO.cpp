@@ -10,8 +10,8 @@
 
 **********************************************************************/
 
+#include <wx/textctrl.h>
 #include <wx/msgdlg.h>
-#include <wx/textdlg.h>
 #include <wx/timer.h>
 
 #include "AudioIO.h"

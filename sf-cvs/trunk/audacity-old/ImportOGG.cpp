@@ -110,6 +110,9 @@ bool ImportOGG(wxWindow * parent,
       }
    }
 
+   if (*numChannels == 2)
+      (*channels)[0]->linked = true;
+
    wxProgressDialog *progress = NULL;
 
    wxYield();
