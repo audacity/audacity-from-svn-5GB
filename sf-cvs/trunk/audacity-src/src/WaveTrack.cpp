@@ -115,7 +115,7 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
          Read("/SamplingRate/DefaultProjectSampleRate", AudioIO::GetOptimalSupportedSampleRate());
    }
 
-   mDisplay = 0; // DELETEME
+   mDisplay = 0; // Move to GUIWaveTrack
 
    mSequence = new Sequence(projDirManager, format);
    mEnvelope = new Envelope();
@@ -127,12 +127,14 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
    SetName(_("Audio Track"));
    mWaveCache = new WaveCache(1);
    mSpecCache = new SpecCache(1, 1, false);
+   mDisplayMin = -1.0;
+   mDisplayMax = 1.0;
 }
 
 WaveTrack::WaveTrack(WaveTrack &orig):
    Track(orig)
 {
-   mDisplay = 0; // DELETEME
+   mDisplay = 0; // Move to GUIWaveTrack
 
    Init(orig);
 
@@ -155,6 +157,9 @@ void WaveTrack::Init(const WaveTrack &orig)
    mGain = orig.mGain;
    mPan = orig.mPan;
    SetName(orig.GetName());
+   mDisplay = orig.mDisplay;
+   mDisplayMin = orig.mDisplayMin;
+   mDisplayMax = orig.mDisplayMax;
 }
 
 WaveTrack::~WaveTrack()
@@ -165,6 +170,18 @@ WaveTrack::~WaveTrack()
    delete mEnvelope;
    delete mWaveCache;
    delete mSpecCache;
+}
+
+void WaveTrack::GetDisplayBounds(float *min, float *max)
+{
+   *min = mDisplayMin;
+   *max = mDisplayMax;
+}
+
+void WaveTrack::SetDisplayBounds(float min, float max)
+{
+   mDisplayMin = min;
+   mDisplayMax = max;
 }
 
 Track *WaveTrack::Duplicate()

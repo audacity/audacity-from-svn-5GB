@@ -77,7 +77,8 @@ class TrackArtist {
    void DrawWaveform(WaveTrack *track,
                      wxDC & dc, wxRect & r,
                      ViewInfo * viewInfo, 
-                     bool drawEnvelope, bool drawSamples,bool drawSliders, bool dB);
+                     bool drawEnvelope, bool drawSamples,
+                     bool drawSliders, bool dB);
 
    void DrawSpectrum(WaveTrack *track,
                      wxDC & dc, wxRect & r,
@@ -93,7 +94,36 @@ class TrackArtist {
                        wxDC & dc, wxRect & r, ViewInfo * viewInfo);
 
    void DrawTimeSlider(WaveTrack *track,
-                       wxDC & dc, wxRect & r, ViewInfo * viewInfo, bool rightwards);
+                       wxDC & dc, wxRect & r, ViewInfo * viewInfo,
+                       bool rightwards);
+
+   // Waveform utility functions
+
+   void DrawWaveformBackground(wxDC &dc, wxRect r, int ctr,
+                               int *where, int ssel0, int ssel1,
+                               double *env, 
+                               float zoomMin, float zoomMax,
+                               bool dB, bool drawEnvelope);
+
+   void DrawIndividualSamples(wxDC &dc, wxRect r,
+                              int ctr, WaveTrack *track,
+                              double t0, double pps, double h,
+                              bool dB,
+                              bool drawSamples,
+                              bool showPoints);
+
+   void DrawMinMaxRMS(wxDC &dc, wxRect r,
+                      float zoomMin, float zoomMax,
+                      double *envValues,
+                      float *min, float *max, float *rms,
+                      bool dB);
+
+   void DrawNegativeOffsetTrackArrows(wxDC &dc, wxRect &r);
+
+   int GetWaveYPosNew(float value, float min, float max,
+                      int height, bool dB, bool clip);
+
+   void DrawEnvLine(wxDC &dc, wxRect r, int x, int y, bool top);
 
 };
 

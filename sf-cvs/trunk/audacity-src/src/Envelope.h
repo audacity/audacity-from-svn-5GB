@@ -31,6 +31,8 @@ class wxTextFile;
 
 class DirManager;
 
+#define ENV_DB_RANGE 36.0
+
 struct EnvPoint : public XMLTagHandler {
    double t;
    double val;
@@ -96,19 +98,28 @@ class Envelope : public XMLTagHandler {
 
    // Event Handlers
 
-   void Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB);
+   void Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB,
+             float zoomMin=-1.0, float zoomMax=1.0);
 
    // Each ofthese returns true if parents needs to be redrawn
+
    bool MouseEvent(wxMouseEvent & event, wxRect & r,
-      double h, double pps, bool dB);
+                   double h, double pps, bool dB,
+                   float zoomMin=-1.0, float zoomMax=1.0);
+
    bool HandleMouseButtonDown( wxMouseEvent & event, wxRect & r,
-      double h, double pps, bool dB );
+                               double h, double pps, bool dB,
+                               float zoomMin=-1.0, float zoomMax=1.0);
    bool HandleDragging( wxMouseEvent & event, wxRect & r,
-      double h, double pps, bool dB );
+                        double h, double pps, bool dB,
+                        float zoomMin=-1.0, float zoomMax=1.0);
    bool HandleMouseButtonUp( wxMouseEvent & event, wxRect & r,
-      double h, double pps, bool dB );
-   void GetEventParams( int &ctr, int &height, bool &upper, 
-      wxMouseEvent & event, wxRect & r );
+                             double h, double pps, bool dB,
+                             float zoomMin=-1.0, float zoomMax=1.0);
+
+   void GetEventParams( int &height, bool &upper, bool dB,
+                        wxMouseEvent & event, wxRect & r,
+                        float &zoomMin, float &zoomMax);
 
    // Handling Cut/Copy/Paste events
    void CollapseRegion(double t0, double t1);
@@ -148,6 +159,9 @@ class Envelope : public XMLTagHandler {
    // Move a point at when to value
    // Returns 0 if point moved, -1 if not found.
    int Move(double when, double value);
+
+   // Return number of points
+   int GetNumberOfPoints() const;
 
    // Returns the sets of when and value pairs
    void GetPoints(double *bufferWhen,
@@ -189,7 +203,11 @@ class Envelope : public XMLTagHandler {
    // and this function resets them (call whenever the Envelope changes)
    void resetIntegralMemoizer() { lastIntegral_t0=0; lastIntegral_t1=0; lastIntegral_result=0; }
 
-   int PixelPositionOf( double v, int ctr, int height, bool upper, bool dB );
+   int PixelPositionOf( double v, int height, bool upper, bool dB,
+                        float zoomMin, float zoomMax );
+
+   float ValueOfPixel( int y, int height, bool upper, bool dB,
+                       float zoomMin, float zoomMax );
 };
 
 #endif

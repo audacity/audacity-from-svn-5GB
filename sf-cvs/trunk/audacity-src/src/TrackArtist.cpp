@@ -156,10 +156,12 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
       wxRect bev = r;
       bev.Inflate(-1, -1);
       AColor::Bevel(*dc, true, bev);
+      float min, max;
 
+      ((WaveTrack *)t)->GetDisplayBounds(&min, &max);
       vruler->SetBounds(r.x, r.y+1, r.x + r.width, r.y + r.height-2);
       vruler->SetOrientation(wxVERTICAL);
-      vruler->SetRange(1.0, -1.0);
+      vruler->SetRange(max, min);
       vruler->SetFormat(Ruler::RealFormat);
 
       vruler->Draw(*dc);
@@ -308,9 +310,8 @@ int TrackArtist::GetWaveYPos(float value, int height, bool dB)
    if (dB) {
       if (value == 0 || height == 0)
          return 0;
-      float db = 10 * log10(fabs(value));
-      // The smallest value we will see is -45.15 (10*log10(1/32768))
-      float val = (db + 45.0) / 45.0;
+      float db = 20 * log10(fabs(value));
+      float val = (db + ENV_DB_RANGE) / ENV_DB_RANGE;
       if (val < 0.0)
          val = float(0.0);
       if (val > 1.0)
@@ -326,6 +327,35 @@ int TrackArtist::GetWaveYPos(float value, int height, bool dB)
    }
 }
 
+int TrackArtist::GetWaveYPosNew(float value, float min, float max,
+                                int height, bool dB, bool clip)
+{
+   float sign = (value >= 0 ? 1 : -1);
+
+   if (dB) {
+      if (value == 0 || height == 0)
+         return 0;
+      float db = 20 * log10(fabs(value));
+      value = (db + ENV_DB_RANGE) / ENV_DB_RANGE;
+      if (value < 0.0)
+         value = float(0.0);
+      if (value > 1.0)
+         value = float(1.0);
+      value *= sign;
+   }
+
+   if (clip) {
+      if (value < min)
+         value = min;
+      if (value > max)
+         value = max;
+   }
+
+   value = (max - value) / (max - min);
+
+   return (int) (value * height + sign * 0.5);
+}
+
 int TrackArtist::GetWaveYPosUnclipped(float value, int height, bool dB)
 {
    float sign = (value >= 0 ? 1 : -1);
@@ -333,9 +363,8 @@ int TrackArtist::GetWaveYPosUnclipped(float value, int height, bool dB)
    if (dB) {
       if (value == 0 || height == 0)
          return 0;
-      float db = 10 * log10(fabs(value));
-      // The smallest value we will see is -45.15 (10*log10(1/32768))
-      float val = (db + 45.0) / 45.0;
+      float db = 20 * log10(fabs(value));
+      float val = (db + ENV_DB_RANGE) / ENV_DB_RANGE;
       if (val < 0.0)
          val = float(0.0);
       return (int) (sign * (height * val + 0.5));
@@ -344,54 +373,323 @@ int TrackArtist::GetWaveYPosUnclipped(float value, int height, bool dB)
    }
 }
 
+void TrackArtist::DrawNegativeOffsetTrackArrows(wxDC &dc, wxRect &r)
+{
+   // Draws two white arrows on the left side of the track to
+   // indicate the user that the track has been time-shifted
+   // to the left beyond t=0.0.
+
+   dc.SetPen(*wxWHITE_PEN);
+   dc.DrawLine(r.x + 2, r.y + 6, r.x + 8, r.y + 6);
+   dc.DrawLine(r.x + 2, r.y + 6, r.x + 6, r.y + 2);
+   dc.DrawLine(r.x + 2, r.y + 6, r.x + 6, r.y + 10);
+   
+   dc.DrawLine(r.x + 2, r.y + r.height - 8, r.x + 8,
+               r.y + r.height - 8);
+   dc.DrawLine(r.x + 2, r.y + r.height - 8, r.x + 6,
+               r.y + r.height - 4);
+   dc.DrawLine(r.x + 2, r.y + r.height - 8, r.x + 6,
+               r.y + r.height - 12);
+}
+
+void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r, int ctr,
+                                         int *where, int ssel0, int ssel1,
+                                         double *env,
+                                         float zoomMin, float zoomMax,
+                                         bool dB, bool drawEnvelope)
+{
+   // Visually (one vertical slice of the waveform background, on its side;
+   // the "*" is the actual waveform background we're drawing
+   //
+   //1.0                              0.0                             -1.0
+   // |--------------------------------|--------------------------------|
+   //      ***************                           ***************
+   //      |             |                           |             |
+   //    maxtop        maxbot                      mintop        minbot
+
+   int halfHeight    = wxMax(r.height/2, 1);
+   int *maxtop = new int[r.width];
+   int *maxbot = new int[r.width];
+   int *mintop = new int[r.width];
+   int *minbot = new int[r.width];
+   int x;
+
+   // First we compute the truncated shape of the waveform background.
+   // If drawEnvelope is true, then we compute the lower border of the
+   // envelope.
+
+   for (x = 0; x < r.width; x++) {
+      maxtop[x] = GetWaveYPosNew(env[x], zoomMin, zoomMax,
+                                 r.height, dB, true);
+      maxbot[x] = GetWaveYPosNew(env[x]-0.5, zoomMin, zoomMax,
+                                 r.height, dB, true);
+
+      mintop[x] = GetWaveYPosNew(-env[x]+0.5, zoomMin, zoomMax,
+                                 r.height, dB, true);
+      minbot[x] = GetWaveYPosNew(-env[x], zoomMin, zoomMax,
+                                 r.height, dB, true);
+
+      if (!drawEnvelope || dB || maxbot[x] > mintop[x]) {
+         maxbot[x] = halfHeight;
+         mintop[x] = halfHeight;
+      }
+   }
+
+   // First drawing pass: draw everything that's background-colored:
+   // above, below, and in the middle of the waveform.
+
+   dc.SetPen(blankPen);
+   for (x = 0; x < r.width; x++) {
+      if (maxtop[x] > 0)
+         dc.DrawLine(r.x + x, r.y, r.x + x, r.y + maxtop[x]);
+      if (maxbot[x] != mintop[x])
+         dc.DrawLine(r.x + x, r.y + maxbot[x],
+                     r.x + x, r.y + mintop[x]);
+      if (minbot[x] < r.height)
+         dc.DrawLine(r.x + x, r.y + minbot[x],
+                     r.x + x, r.y + r.height);
+   }
+
+   // Finally draw the waveform background itself, using the selected
+   // pen when we're between the selections.
+
+   bool usingSelPen = false;
+   dc.SetPen(unselectedPen);
+   for (x = 0; x < r.width; x++) {
+      bool sel = false;
+      if (ssel0 <= where[x] && where[x + 1] < ssel1)
+         sel = true;
+      
+      if (sel && !usingSelPen)
+         dc.SetPen(selectedPen);
+      else if (!sel && usingSelPen)
+         dc.SetPen(unselectedPen);
+      usingSelPen = sel;
+
+      if (maxbot[x] != mintop[x]) {
+         dc.DrawLine(r.x + x, r.y + maxtop[x],
+                     r.x + x, r.y + maxbot[x]);
+         dc.DrawLine(r.x + x, r.y + mintop[x],
+                     r.x + x, r.y + minbot[x]);
+      }
+      else
+         dc.DrawLine(r.x + x, r.y + maxtop[x],
+                     r.x + x, r.y + minbot[x]);
+   }
+
+   delete[] maxtop;
+   delete[] maxbot;
+   delete[] mintop;
+   delete[] minbot;
+}
+
+void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
+                                        int ctr, WaveTrack *track,
+                                        double t0, double pps, double h,
+                                        bool dB,
+                                        bool drawSamples,
+                                        bool showPoints)
+{
+   Sequence *seq = track->GetSequence();
+   double tOffset = track->GetOffset();
+   double rate = track->GetRate();
+   sampleCount s0 = (sampleCount) (t0 * rate + 0.5);
+   sampleCount slen = (sampleCount) (r.width * rate / pps + 0.5);
+   
+   if (s0 > 1)
+      s0--;
+
+   slen += 4;
+
+   if (s0 + slen > seq->GetNumSamples())
+      slen = seq->GetNumSamples() - s0;
+   
+   float *buffer = new float[slen];
+   seq->Get((samplePtr)buffer, floatSample, s0, slen);
+
+   int *xpos = new int[slen];
+   int *ypos = new int[slen];
+   sampleCount s;
+   
+   dc.SetPen(samplePen);
+   
+   for (s = 0; s < slen; s++) {
+      double tt = double (s0 + s) / rate + tOffset;
+      double xx = ((tt - h) * pps + 0.5);
+      
+      if (xx < -10000)
+         xx = -10000;
+      if (xx > 10000)
+         xx = 10000;
+      
+      xpos[s] = (int) xx;
+      ypos[s] = ctr - GetWaveYPos(buffer[s] *
+                                  track->GetEnvelope()->GetValue(tt),
+                                  r.height / 2, dB);
+   }
+   
+   // Draw lines
+   for (s = 0; s < slen - 1; s++) {
+      dc.DrawLine(r.x + xpos[s], ypos[s],
+                  r.x + xpos[s + 1], ypos[s + 1]);
+   }
+   
+   if (showPoints) {
+      // Draw points
+      int tickSize= drawSamples ? 4 : 3;// Bigger ellipses when draggable.
+      wxRect pr;
+      pr.width = tickSize;
+      pr.height = tickSize;
+      //different colour when draggable.
+      dc.SetBrush( drawSamples ? dragsampleBrush : sampleBrush);
+      for (s = 0; s < slen; s++) {
+         pr.x = r.x + xpos[s] - tickSize/2;
+         pr.y = ypos[s] - tickSize/2;
+         dc.DrawEllipse(pr);
+      }
+   }
+   
+   delete[]buffer;
+   delete[]xpos;
+   delete[]ypos;
+}
+
+void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r,
+                                float zoomMin, float zoomMax,
+                                double *envValues,
+                                float *min, float *max, float *rms,
+                                bool dB)
+{
+   // Display a line representing the
+   // min and max of the samples in this region
+   int *h1 = new int[r.width];
+   int *h2 = new int[r.width];
+   int *r1 = new int[r.width];
+   int *r2 = new int[r.width];
+   int x;
+
+   for (x = 0; x < r.width; x++) {
+      h1[x] = GetWaveYPosNew(min[x] * envValues[x], zoomMin, zoomMax,
+                             r.height, dB, true);
+      h2[x] = GetWaveYPosNew(max[x] * envValues[x], zoomMin, zoomMax,
+                             r.height, dB, true);
+      r1[x] = GetWaveYPosNew(-rms[x] * envValues[x], zoomMin, zoomMax,
+                             r.height, dB, true);
+      r2[x] = GetWaveYPosNew(rms[x] * envValues[x], zoomMin, zoomMax,
+                             r.height, dB, true);
+
+      // JKC: This adjustment to h1[] and h2[] ensures that the drawn
+      // waveform is continuous.
+      if( x>0 )
+      {
+         if( h1[x] < h2[x-1] )
+            h1[x]=h2[x-1]-1;
+         if( h2[x] > h1[x-1] )
+            h2[x]=h1[x-1]+1;
+      }
+
+      // Make sure the rms isn't larger than the waveform
+      // min/max
+      if (r1[x] > h1[x]-1)
+         r1[x] = h1[x]-1;
+      if (r2[x] < h2[x]+1)
+         r2[x] = h2[x]+1;
+      if (r2[x]>r1[x])
+         r2[x] = r1[x];
+   }
+   
+   // Draw the waveform min/max lines
+   dc.SetPen(samplePen);
+   for (x = 0; x < r.width; x++) {
+      if (r1[x] != r2[x]) {
+         dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + r2[x] );
+         dc.DrawLine(r.x + x, r.y + r1[x], r.x + x, r.y + h1[x]+1 );
+      }
+      else
+         dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + h1[x]+1 );
+   }
+
+   // Draw the waveform rms lines
+   dc.SetPen(rmsPen);
+   for (x = 0; x < r.width; x++) {
+      if (r1[x] != r2[x])
+         dc.DrawLine(r.x + x, r.y + r2[x], r.x + x, r.y + r1[x]);
+   }
+   
+   delete[] h1;
+   delete[] h2;
+   delete[] r1;
+   delete[] r2;
+}
+
+void TrackArtist::DrawEnvLine(wxDC &dc, wxRect r, int x, int y, bool top)
+{
+   if (y < 0) {
+      if (x % 4 != 3)
+         dc.DrawLine(r.x + x, r.y,
+                     r.x + x, r.y + 2);
+   }
+   else if (y >= r.height) {
+      if (x % 4 != 3)
+         dc.DrawLine(r.x + x, r.y + r.height - 2,
+                     r.x + x, r.y + r.height);
+   }
+   else {
+      if (top)
+         dc.DrawLine(r.x + x, r.y + y,
+                     r.x + x, r.y + y + 3);
+      else
+         dc.DrawLine(r.x + x, r.y + y - 2,
+                     r.x + x, r.y + y + 1);
+   }
+}
+
 void TrackArtist::DrawWaveform(WaveTrack *track,
                                wxDC & dc, wxRect & r,
                                ViewInfo * viewInfo,
-                               bool drawEnvelope, bool drawSamples,bool drawSliders, bool dB)
+                               bool drawEnvelope,
+                               bool drawSamples,
+                               bool drawSliders,
+                               bool dB)
 {
    double h = viewInfo->h;          //The horizontal position in seconds
    double pps = viewInfo->zoom;     //points-per-second--the zoom level
    double sel0 = viewInfo->sel0;    //left selection bound
    double sel1 = viewInfo->sel1;    //right selection bound
-
-   //Get the sequence of samples from the actual track structure
-   Sequence *seq = track->GetSequence();
    double trackLen = track->GetEndTime() - track->GetStartTime();
-   //sampleCount numSamples = seq->GetNumSamples();    //keep track of how many samples there are
-   double tOffset = track->GetOffset();              //The offset of the track.
+   double tOffset = track->GetOffset();
+   double rate = track->GetRate();
 
-
-   //If the track isn't selected, make the selection be zero
+   //If the track isn't selected, make the selection empty
    if (!track->GetSelected())
       sel0 = sel1 = 0.0;
 
-
    //Some bookkeeping time variables:
-   double tpre = h - tOffset;                    // offset corrected time of selection beginning
-   double tstep = 1.0 / pps;                     // Seconds per point
-   double tpost = tpre + (r.width * tstep);      // offset corrected time of selection end
+   double tstep = 1.0 / pps;                  // Seconds per point
+   double tpre = h - tOffset;                 // offset corrected time of
+                                              //  left edge of display
+   double tpost = tpre + (r.width * tstep);   // offset corrected time of
+                                              //  right edge of display
 
-   double rate = track->GetRate();
+   // Determine whether we should show individual samples
+   // or draw circular points as well
+   bool showIndividualSamples = (pps / rate > 0.5);   //zoomed in a lot
+   bool showPoints = (pps / rate > 3.0);              //zoomed in even more
 
-   // Determine whether we should show individual sample or draw circular points as well
-   bool showIndividualSamples = (pps / rate > 0.5);        //zoomed in a lot
-   bool showPoints = (pps / rate > 3.0);                   //zoomed in even more
-
-   //calculate actual selection bounds so that t0 > 0 and t1 < the end of the track
+   // Calculate actual selection bounds so that
+   // t0 > 0 and t1 < the end of the track
    double t0 = (tpre >= 0.0 ? tpre : 0.0);
    double t1 = (tpost < trackLen ? tpost : trackLen);
 
-   //Make sure t1 (the right bound) is greater than 0
-   if (t1 < 0.0) {
+   // Make sure t1 (the right bound) is greater than 0
+   if (t1 < 0.0)
       t1 = 0.0;
-   }
 
-   //make sure t1 is greater than t0
+   // Make sure t1 is greater than t0
    if (t0 > t1)
       t0 = t1;
 
-
-   //calculate sample-based offset-corrected selection?
+   // Calculate sample-based offset-corrected selection
    int ssel0 = wxMax(0, int((sel0 - tOffset) * rate + 0.5));
    int ssel1 = wxMax(0, int((sel1 - tOffset) * rate + 0.5));
 
@@ -399,345 +697,138 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    if (ssel0 != ssel1 && ssel1 > (int)(0.5+trackLen*rate))
       ssel1 = (int)(0.5+trackLen*rate);
 
-   //Draw a rectangle around the passed-in region (the selection)
-   dc.SetBrush(blankBrush);
-   dc.SetPen(blankPen);
-
-   dc.DrawRectangle(r);
-
-   //copy this rectangle away for future use.
+   // The variable "mid" will be the rectangle containing the
+   // actual waveform, as opposed to any blank area before
+   // or after the track.
    wxRect mid = r;
 
-   //Do the following if tpre is less than t0 (e.g., if the track was shifted left of 0)
-   if (t0 > tpre) {
-      
-      //adjust selection region by the negative offset.
+   dc.SetPen(*wxTRANSPARENT_PEN);
+
+   // If the left edge of the track is to the right of the left
+   // edge of the display, then there's some blank area to the
+   // left of the track.  Fill it in, and reduce the "mid"
+   // rect by size of the blank area.
+   if (tpre < 0) {
+      // Fill in the area to the left of the track
       wxRect pre = r;
       pre.width = (int) ((t0 - tpre) * pps);
+      dc.SetBrush(blankBrush);
+      dc.DrawRectangle(pre);
+
+      // Offset the rectangle containing the waveform by the width
+      // of the area we just erased.
       mid.x += pre.width;
       mid.width -= pre.width;
-      //dc.DrawRectangle(pre);        //STM:  Why is this commented out? 
    }
 
-   //Do the following if the tpost is greater than t1 (e.g., if the track was shifted from 0)
+   // If the right edge of the track is to the left of the the right
+   // edge of the display, then there's some blank area to the right
+   // of the track.  Fill it in, and reduce the "mid" rect by the
+   // size of the blank area.
    if (tpost > t1) {
-      
-      //adjust selection region by the offset
       wxRect post = r;
       post.x += (int) ((t1 - tpre) * pps);
       post.width = r.width - (post.x - r.x);
+      dc.SetBrush(blankBrush);
+      dc.DrawRectangle(post);
 
+      // Reduce the rectangle containing the waveform by the width
+      // of the area we just erased.
       mid.width -= post.width;
-      if (post.x < r.x) {
-         post.width -= (r.x - post.x);
-         post.x = r.x;
-      }
-
-      //if (post.width > 0)        //STM: Why are these commented out?
-      //dc.DrawRectangle(post);   
    }
 
-   //ctr determines the horizontal center of the track
+   // The "mid" rect contains the part of the display actually
+   // containing the waveform.  If it's empty, we're done.
+   if (mid.width <= 0)
+      return;
+
+   // The vertical center of the track
    int ctr = r.y + (r.height / 2);
 
-   //initialize a bunch of pointers to data:
-   int *heights = NULL;
-   double *envValues = NULL;
-   float *min=NULL, *max=NULL, *rms=NULL;
-   sampleCount *where = NULL;
+   // The bounds (controlled by vertical zooming; -1.0...1.0
+   // by default)
+   float zoomMin, zoomMax;
+   track->GetDisplayBounds(&zoomMin, &zoomMax);
 
-   if (mid.width > 0) {
-
-      min = new float[mid.width];
-      max = new float[mid.width];
-      rms = new float[mid.width];
-      where = new sampleCount[mid.width+1];
-
-      //If there is nothing within these regions, clean up and bail out.  Otherwise, my
-      //variables should be filled up with the appropriate numbers.
-      if (!track->GetWaveDisplay(min, max, rms, where,
-                                 mid.width, t0, pps)) {
-         delete[] min;
-         delete[] max;
-         delete[] rms;
-         delete[] where;
-         return;
-      }
-      heights = new int[mid.width];
-      envValues = new double[mid.width];
-   }
-
-   // Start working on the envelope
-   track->GetEnvelope()->GetValues(envValues, mid.width, t0 + tOffset, tstep);
-
-   double t = t0;
-   int x;
-   for (x = 0; x < mid.width; x++) {
-      heights[x] = GetWaveYPosUnclipped(envValues[x], mid.height / 2, dB);
-      t += tstep;
-   }
-
-   // Draw track area
-   bool usingSelPen = false;
-   dc.SetPen(unselectedPen);
-
-   int quarterHeight = r.height/4;
-   int halfHeight    = r.height/2;
+   // Arrays containing the shape of the waveform - each array
+   // has one value per pixel.
+   float *min = new float[mid.width];
+   float *max = new float[mid.width];
+   float *rms = new float[mid.width];
+   sampleCount *where = new sampleCount[mid.width+1];
    
-   // 'fix' to prevent us possibly dividing by zero on very narrow tracks.
-   if (halfHeight <1)
-      halfHeight=1;
-
-   int lowerLimit;
-   for (x = 0; x < mid.width; x++) {
-
-      bool sel = false;
-      if (ssel0 <= where[x] && where[x + 1] < ssel1)
-         sel = true;
-
-      if (sel && !usingSelPen)
-         dc.SetPen(selectedPen);
-      else if (!sel && usingSelPen)
-         dc.SetPen(unselectedPen);
-      usingSelPen = sel;
-
-      //JKC: Now draw the envelope background (for this x)
-      //The lower limit gives us a second 'envelope'
-      //boundary inside the first one.  
-      //The visual of a second boundary means we still know 
-      //how wide the envelope is even when it is being used
-      //to amplify and it is wider than the panel is.
-      //If people like this visual cue we can perhaps build
-      //drag-to-amplify functionality on to it.
-      lowerLimit = heights[x]-quarterHeight;
-      if((drawEnvelope) && ( lowerLimit > 0 ))
-      {
-         int h1 = heights[x] % halfHeight;
-         int l1 = lowerLimit % halfHeight;
-         if( h1 >= l1 )
-         {
-            //Draw envelope with an inner envelope boundary.
-            //(Uses the existing track background for central part)
-            dc.DrawLine(mid.x + x, ctr - h1, mid.x + x,
-                  ctr - l1);
-            dc.DrawLine(mid.x + x, ctr + h1, mid.x + x,
-                  ctr + l1);
-         }
-         else
-         {
-            dc.DrawLine(mid.x + x, ctr - halfHeight, mid.x + x,
-                  ctr - l1);
-//            dc.DrawLine(mid.x + x, ctr-h1, mid.x + x,
-//                  ctr + h1);
-            dc.DrawLine(mid.x + x, ctr + l1, mid.x + x,
-                  ctr + halfHeight);
-         }
-      }
-      else
-      {
-         //Original draw envelope code for when no inner 
-         //boundary is visible.
-         dc.DrawLine(mid.x + x, ctr - heights[x], mid.x + x,
-                  ctr + heights[x]);
-      }
-   }
-
-   //Draw the center line in red.
-   //Disabled until someone
-   // a) makes center line an option and 
-   // b) gives configurable color for it.
-#if 0
-   if (mid.width > 0) {
-      dc.SetPen(*wxRED_PEN);
-      dc.DrawLine(mid.x, ctr, mid.x + mid.width, ctr);
-   }
-#endif
-
-   // Draw samples
-   dc.SetPen(samplePen);
-
-   if (showIndividualSamples) {
-      // We're zoomed in really far, so show points and curves
-
-      if (mid.width > 0) {
-         sampleCount s0 = (sampleCount) (t0 * rate + 0.5);
-         sampleCount slen = (sampleCount) (mid.width * rate / pps + 0.5);
-
-         if (s0 > 1) {
-            s0--;
-         }
-         slen += 4;
-         if (s0 + slen > seq->GetNumSamples())
-            slen = seq->GetNumSamples() - s0;
-
-         float *buffer = new float[slen];
-         seq->Get((samplePtr)buffer, floatSample, s0, slen);
-         int *xpos = new int[slen];
-         int *ypos = new int[slen];
-
-         sampleCount s;
-         for (s = 0; s < slen; s++) {
-            double tt = double (s0 + s) / rate + tOffset;
-            double xx = ((tt - h) * pps + 0.5);
-
-            if (xx < -10000)
-               xx = -10000;
-            if (xx > 10000)
-               xx = 10000;
-
-            xpos[s] = (int) xx;
-            ypos[s] = ctr - GetWaveYPos(buffer[s] *
-                                        track->GetEnvelope()->GetValue(tt),
-                                        mid.height / 2, dB);
-         }
-
-         // Draw lines
-         for (s = 0; s < slen - 1; s++) {
-            dc.DrawLine(r.x + xpos[s], ypos[s],
-                        r.x + xpos[s + 1], ypos[s + 1]);
-         }
-
-         if (showPoints) {
-            // Draw points
-            int tickSize= drawSamples ? 4 : 3;// Bigger ellipses when draggable.
-            wxRect pr;
-            pr.width = tickSize;
-            pr.height = tickSize;
-            //different colour when draggable.
-            dc.SetBrush( drawSamples ? dragsampleBrush : sampleBrush);
-            for (s = 0; s < slen; s++) {
-               pr.x = r.x + xpos[s] - tickSize/2;
-               pr.y = ypos[s] - tickSize/2;
-               dc.DrawEllipse(pr);
-            }
-         }
-
-         delete[]buffer;
-         delete[]xpos;
-         delete[]ypos;
-      }
-   }
-   else if (mid.width > 0) {
-
-      // Display a line representing the
-      // min and max of the samples in this region
-      t = t0;
-      short *h1 = new short[mid.width];
-      short *h2 = new short[mid.width];
-
-      for (x = 0; x < mid.width; x++) {
-         h1[x] = ctr - GetWaveYPos(min[x] *
-                                   track->GetEnvelope()->GetValue(t + tOffset),
-                                   mid.height / 2,
-                                   dB);
-         h2[x] = ctr - GetWaveYPos(max[x] *
-                                   track->GetEnvelope()->GetValue(t + tOffset),
-                                   mid.height / 2,
-                                   dB);
-
-         //JKC: This adjustment to h1[] and h2[] ensures that the drawn
-         //waveform is continuous.
-         if( x>0 )
-         {
-            if( h1[x] < h2[x-1] )
-               h1[x]=h2[x-1]-1;
-            if( h2[x] > h1[x-1] )
-               h2[x]=h1[x-1]+1;
-         }
-
-         dc.DrawLine(mid.x + x, h2[x], mid.x + x, h1[x]+1 );
-         
-         t += tstep;
-      }
-
-      dc.SetPen(rmsPen);
-
-      // Draw the RMS (root-mean-squared) of the samples within the
-      // region
-      t = t0;
-      for (x = 0; x < mid.width; x++) {
-
-         int r1 = ctr - GetWaveYPos(-rms[x] *
-                                    track->GetEnvelope()->GetValue(t + tOffset),
-                                    mid.height / 2,
-                                    dB);
-         int r2 = ctr - GetWaveYPos(rms[x] *
-                                    track->GetEnvelope()->GetValue(t + tOffset),
-                                    mid.height / 2,
-                                    dB);
-
-         // Ensure rms doesn't totally obscure samples further out.
-         if (r1 > h1[x]-1)
-            r1 = h1[x]-1;
-         if (r2 < h2[x]+1)
-            r2 = h2[x]+1;
-
-         // Draw rms provided it's got some +ve width.
-         if( r2 <= r1)
-            dc.DrawLine(mid.x + x, r2, mid.x + x, r1+1 );
-
-         t += tstep;
-      }
-
-      delete[] h1;
-      delete[] h2;
-   }
-
-   if (drawEnvelope) {
-      dc.SetPen(AColor::envelopePen);
-      int MaxHeight = mid.height/2;
-
-      for (x = 0; x < mid.width; x++) {
-         // JKC: This 'if' draws the envelope boundary dotted if it goes off screen.
-         if (heights[x] > MaxHeight )
-         {
-            // three dots on, one dot off, three on, etc...
-            if( x%4 == 3 )
-               continue;
-            heights[x]=MaxHeight;
-         }
-
-         int z1 = ctr - heights[x] + 3 > ctr ? ctr : ctr - heights[x] + 3;
-         int z2 = ctr + heights[x] - 3 < ctr ? ctr : ctr + heights[x] - 3;
-         dc.DrawLine(mid.x + x, ctr - heights[x], mid.x + x, z1);
-         dc.DrawLine(mid.x + x, ctr + heights[x], mid.x + x, z2);
-
-      }
-   }
-
-   if (heights)
-      delete[]heights;
-   if (envValues)
-      delete[]envValues;
-
-   // Draw arrows on the left side if the track extends to the left of the
-   // beginning of time.  :)
-   if (h == 0.0 && tOffset < 0.0) {
-      dc.SetPen(*wxWHITE_PEN);
-      dc.DrawLine(r.x + 2, r.y + 6, r.x + 8, r.y + 6);
-      dc.DrawLine(r.x + 2, r.y + 6, r.x + 6, r.y + 2);
-      dc.DrawLine(r.x + 2, r.y + 6, r.x + 6, r.y + 10);
-
-      dc.DrawLine(r.x + 2, r.y + r.height - 8, r.x + 8,
-                  r.y + r.height - 8);
-      dc.DrawLine(r.x + 2, r.y + r.height - 8, r.x + 6,
-                  r.y + r.height - 4);
-      dc.DrawLine(r.x + 2, r.y + r.height - 8, r.x + 6,
-                  r.y + r.height - 12);
-   }
-
-   if (drawEnvelope) {
-      wxRect envRect = r;
-      envRect.height -= 2;
-      track->GetEnvelope()->Draw(dc, envRect, h, pps, dB);
-   }
-
-   if (mid.width > 0) {
+   // The WaveTrack class handles the details of computing the shape
+   // of the waveform.  The only way GetWaveDisplay will fail is if
+   // there's a serious error, like some of the waveform data can't
+   // be loaded.  So if the function returns false, we can just exit.
+   if (!track->GetWaveDisplay(min, max, rms, where,
+                              mid.width, t0, pps)) {
       delete[] min;
       delete[] max;
       delete[] rms;
       delete[] where;
+      return;
    }
+
+   // Get the values of the envelope corresponding to each pixel
+   // in the display, and use these to compute the height of the
+   // track at each pixel
+
+   double *envValues = new double[mid.width];
+   track->GetEnvelope()->GetValues(envValues, mid.width, t0 + tOffset, tstep);
+
+   // Draw the background of the track, outlining the shape of
+   // the envelope and using a colored pen for the selected
+   // part of the waveform
+
+   DrawWaveformBackground(dc, mid, ctr, where, ssel0, ssel1,
+                          envValues, zoomMin, zoomMax, dB, drawEnvelope);
+
+   if (showIndividualSamples) {
+      DrawIndividualSamples(dc, mid, ctr, track, t0, pps, h,
+                            dB, drawSamples, showPoints);
+
+   }
+   else {
+      DrawMinMaxRMS(dc, mid, zoomMin, zoomMax,
+                    envValues, min, max, rms, dB);
+   }
+
+   if (drawEnvelope) {
+      dc.SetPen(AColor::envelopePen);
+      int x;
+
+      for (x = 0; x < mid.width; x++) {
+         int envTop, envBottom;
+
+         envTop = GetWaveYPosNew(envValues[x], zoomMin, zoomMax,
+                                 mid.height, dB, false);
+
+         envBottom = GetWaveYPosNew(-envValues[x], zoomMin, zoomMax,
+                                    mid.height, dB, false);
+
+         DrawEnvLine(dc, mid, x, envTop, true);
+         DrawEnvLine(dc, mid, x, envBottom, false);
+      }
+   }
+
+   // Draw arrows on the left side if the track extends to the left of the
+   // beginning of time.  :)
+   if (h == 0.0 && tOffset < 0.0) {
+      DrawNegativeOffsetTrackArrows(dc, r);
+   }
+
+   if (drawEnvelope) {
+      wxRect envRect = r;
+      track->GetEnvelope()->Draw(dc, envRect, h, pps, dB,
+                                 zoomMin, zoomMax);
+   }
+
+   delete[] envValues;
+   delete[] min;
+   delete[] max;
+   delete[] rms;
+   delete[] where;
    
    if( drawSliders )
    {
@@ -748,7 +839,8 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
 
 
 void TrackArtist::DrawTimeSlider(WaveTrack *track,
-                       wxDC & dc, wxRect & r, ViewInfo * viewInfo, bool rightwards)
+                                 wxDC & dc, wxRect & r, 
+                                 ViewInfo * viewInfo, bool rightwards)
 {
    const int border=3; // 3 pixels all round.
    const int width=6; // width of the drag box.
@@ -796,8 +888,6 @@ void TrackArtist::DrawTimeSlider(WaveTrack *track,
       y = firstBar + barSpacing*i+1;
       dc.DrawLine( xLeft, y, xLeft+barWidth, y);
    }
-
-
 }
 
 

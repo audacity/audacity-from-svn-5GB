@@ -85,7 +85,11 @@ class WaveTrack: public Track {
    sampleFormat GetSampleFormat() {return mSequence->GetSampleFormat();}
    bool ConvertToSampleFormat(sampleFormat format);
 
-   // GET RID OF THESE
+   //
+   // The following code will eventually become part of a GUIWaveTrack
+   // and will be taken out of the WaveTrack class:
+   //
+   
    enum {
       WaveformDisplay,
       WaveformDBDisplay,
@@ -94,6 +98,9 @@ class WaveTrack: public Track {
    } WaveTrackDisplay;
    void SetDisplay(int display) {mDisplay = display;}
    int GetDisplay() {return mDisplay;}
+
+   void GetDisplayBounds(float *min, float *max);
+   void SetDisplayBounds(float min, float max);
 
    //
    // High-level editing
@@ -203,8 +210,13 @@ class WaveTrack: public Track {
    WaveCache    *mWaveCache;
    SpecCache    *mSpecCache;
 
-   // GET RID OF THIS
+   //
+   // Data that should be part of GUIWaveTrack
+   // and will be taken out of the WaveTrack class:
+   //
    int           mDisplay;
+   float         mDisplayMin;
+   float         mDisplayMax;
 
    //
    // Protected methods

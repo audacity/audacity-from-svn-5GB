@@ -994,11 +994,14 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
 
 bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
 {
-   // Allow the Play button to change to a Loop button
+   // Allow the Play button to change to a Loop button,
+   // and the zoom cursor to change to a zoom out cursor
    if (event.GetKeyCode() == WXK_SHIFT) {
       ControlToolBar *tb = GetControlToolBar();
       if (tb)
          tb->OnShiftDown(event);
+
+      mTrackPanel->HandleShiftKey(true);
    }
 
    // If there is a selected label track and the event did not
@@ -1021,11 +1024,14 @@ bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
 
 bool AudacityProject::HandleKeyUp(wxKeyEvent & event)
 {
-   // Allow the Play button to change to a Loop button
+   // Allow the Loop button to change back to a Play button,
+   // and Zoom Out cursor back to Zoom In
    if (event.GetKeyCode() == WXK_SHIFT) {
       ControlToolBar *tb = GetControlToolBar();
       if (tb)
          tb->OnShiftUp(event);
+
+      mTrackPanel->HandleShiftKey(false);
    }
 
    return false;

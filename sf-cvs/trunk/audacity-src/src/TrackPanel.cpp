@@ -311,6 +311,84 @@ static const char * ZoomCursorXpm[] = {
 "................................"};
 
 
+
+static const char * ZoomInCursorXpm[] = {
+"32 32 3 1",
+".	c #808080", // background color = RGB:128,128,128
+"#	c #000000",
+"+	c #FFFFFF",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................++++............",
+"...............+####+...........",
+"..............+##...#+..........",
+".............+#......#+.........",
+"............+##......##+........",
+"............+#........#+........",
+"............+#........#+........",
+"............+##......##+........",
+".............+#......#+.........",
+"............+####..##+..........",
+"...........+###+####+...........",
+"..........+###+.++++............",
+".........+###+..................",
+"........+###+...................",
+".......+###+............##......",
+"........+#+.............##......",
+".........+..............##......",
+".....................########...",
+".....................########...",
+"........................##......",
+"........................##......",
+"........................##......",
+"................................"};
+
+static const char * ZoomOutCursorXpm[] = {
+"32 32 3 1",
+".	c #808080", // background color = RGB:128,128,128
+"#	c #000000",
+"+	c #FFFFFF",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................++++............",
+"...............+####+...........",
+"..............+##...#+..........",
+".............+#......#+.........",
+"............+##......##+........",
+"............+#........#+........",
+"............+#........#+........",
+"............+##......##+........",
+".............+#......#+.........",
+"............+####..##+..........",
+"...........+###+####+...........",
+"..........+###+.++++............",
+".........+###+..................",
+"........+###+...................",
+".......+###+....................",
+"........+#+.....................",
+".........+......................",
+".....................########...",
+".....................########...",
+"................................",
+"................................",
+"................................",
+"................................"};
+
+
 //-- End of XPM FIXME
 
 //FIXME: the code below is obsolete
@@ -464,6 +542,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
      mBitmap(NULL),
      mAutoScrolling(false)
 {
+   mIsVZooming = false;
    mIsClosing = false;
    mIsSelecting = false;
    mIsResizing = false;
@@ -487,8 +566,8 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mSelectCursor  = MakeCursor( wxCURSOR_IBEAM,     IBeamCursorXpm,17, 16);
    mEnvelopeCursor= MakeCursor( wxCURSOR_ARROW,     EnvCursorXpm,  16, 16);
    mSlideCursor   = MakeCursor( wxCURSOR_SIZEWE,    TimeCursorXpm, 16, 16);
-   mZoomInCursor  = MakeCursor( wxCURSOR_MAGNIFIER, ZoomCursorXpm, 19, 16);
-   mZoomOutCursor = MakeCursor( wxCURSOR_MAGNIFIER, ZoomCursorXpm, 19, 16);
+   mZoomInCursor  = MakeCursor( wxCURSOR_MAGNIFIER, ZoomInCursorXpm, 19, 16);
+   mZoomOutCursor = MakeCursor( wxCURSOR_MAGNIFIER, ZoomOutCursorXpm, 19, 16);
 
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
    mSmoothCursor = new wxCursor(wxCURSOR_SPRAYCAN);
@@ -1139,13 +1218,19 @@ void TrackPanel::MakeParentResize()
    mListener->TP_HandleResize();
 }
 
-
+void TrackPanel::HandleShiftKey(bool down)
+{
+   mLastMouseEvent.m_shiftDown = down;
+   HandleCursor(mLastMouseEvent);
+}
 
 // AS: THandleCursor( ) sets the cursor drawn at the mouse location.
 //  As this procedure checks which region the mouse is over, it is
 //  appropriate to establish the message in the status bar.
 void TrackPanel::HandleCursor(wxMouseEvent & event)
 {
+   mLastMouseEvent = event;
+
    // (1), If possible, set the cursor based on the current activity
    //      ( leave the StatusBar alone ).
    if (mIsSelecting) {
@@ -1182,11 +1267,20 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 
    const char *tip = 0;
 
-   // (3) Set a status message if over a label 
+   // (3) They're over the label or vertical ruler.
    if (label) {
-      tip = _("Drag the label vertically to change the "
-              "order of the tracks.");
-        SetCursor(*mArrowCursor);
+      if (event.m_x >= GetVRulerOffset() &&
+          label->GetKind() == Track::Wave) {
+         tip = _("Click to vertically zoom in, Shift-click to zoom out, "
+                 "Drag to create a particular zoom region.");
+         SetCursor(event.ShiftDown()? *mZoomOutCursor : *mZoomInCursor);
+      }
+      else {
+         // Set a status message if over a label
+         tip = _("Drag the label vertically to change the "
+                 "order of the tracks.");
+         SetCursor(*mArrowCursor);
+      }
    }
    // Otherwise, we must be over the wave window 
    else {
@@ -1562,9 +1656,13 @@ void TrackPanel::ForwardEventToEnvelope(wxMouseEvent & event)
       TimeTrack *ptimetrack = (TimeTrack *) mCapturedTrack;
       Envelope *pspeedenvelope = ptimetrack->GetEnvelope();
       
-      bool needUpdate = pspeedenvelope->MouseEvent(event, mCapturedRect,
-         mViewInfo->h, mViewInfo->zoom,
-         false);
+      wxRect envRect = mCapturedRect;
+      envRect.y++;
+      envRect.height -=3;
+      bool needUpdate =
+         pspeedenvelope->MouseEvent(event, envRect,
+                                    mViewInfo->h, mViewInfo->zoom,
+                                    false);
       if( needUpdate )
       {
          //ptimetrack->Draw();
@@ -1586,19 +1684,30 @@ void TrackPanel::ForwardEventToEnvelope(wxMouseEvent & event)
       if (display <= 1) {
          bool dB = (display == 1);
          
-         // AS: Then forward our mouse event to the envelope.  It'll recalculate
-         //  and then tell us wether or not to redraw.
-         needUpdate = penvelope->MouseEvent(event, mCapturedRect,
-            mViewInfo->h, mViewInfo->zoom,
-            dB);
+         // AS: Then forward our mouse event to the envelope.
+         // It'll recalculate and then tell us whether or not to redraw.
+         wxRect envRect = mCapturedRect;
+         envRect.y++;
+         envRect.height -=3;
+         float zoomMin, zoomMax;
+         pwavetrack->GetDisplayBounds(&zoomMin, &zoomMax);
+         needUpdate = penvelope->MouseEvent(event, envRect,
+                                            mViewInfo->h, mViewInfo->zoom,
+                                            dB, zoomMin, zoomMax);
          
          // If this track is linked to another track, make the identical
          // change to the linked envelope:
          WaveTrack *link = (WaveTrack *) mTracks->GetLink(mCapturedTrack);
          if (link) {
             Envelope *e2 = link->GetEnvelope();
-            needUpdate |= e2->MouseEvent(event, mCapturedRect,
-               mViewInfo->h, mViewInfo->zoom, dB);
+            wxRect envRect = mCapturedRect;
+            envRect.y++;
+            envRect.height -=3;
+            float zoomMin, zoomMax;
+            pwavetrack->GetDisplayBounds(&zoomMin, &zoomMax);
+            needUpdate |= e2->MouseEvent(event, envRect,
+                                         mViewInfo->h, mViewInfo->zoom, dB,
+                                         zoomMin, zoomMax);
          }
       }
       if (needUpdate) {
@@ -1718,6 +1827,141 @@ void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
    }
 
    mSelStart = selend;
+}
+
+// DMM: Vertical zooming (triggered by clicking in the
+// vertical ruler)
+void TrackPanel::HandleVZoom(wxMouseEvent & event)
+{
+   if (event.ButtonDown() || event.ButtonDClick()) {
+      mCapturedTrack = FindTrack(event.m_x, event.m_y, true,
+                                 &mCapturedRect, &mCapturedNum);
+
+      if (!mCapturedTrack)
+         return;
+
+      if (mCapturedTrack->GetKind() != Track::Wave)
+         return;
+
+      mIsVZooming = true;
+      mZoomStart = event.m_y;
+      mZoomEnd = event.m_y;
+   }
+   else if (event.Dragging()) {
+      mZoomEnd = event.m_y;
+      if (IsDragZooming()){
+         Refresh(false);
+      }
+   }
+   else if (event.ButtonUp()) {
+      mIsVZooming = false;
+      if (mCapturedTrack->GetKind() != Track::Wave)
+         return;
+
+      WaveTrack *track = (WaveTrack *)mCapturedTrack;
+      WaveTrack *partner = (WaveTrack *)mTracks->GetLink(track);
+      int height = track->GetHeight();
+      int ypos = mCapturedRect.y;
+      if (partner) {
+         int h1 = track->GetHeight();
+         int h2 = track->GetHeight();
+         if (mZoomStart > h1) {
+            ypos += h1;
+            height = h2;
+         }
+      }
+
+      if (mZoomEnd < mZoomStart) {
+         int temp = mZoomEnd;
+         mZoomEnd = mZoomStart;
+         mZoomStart = temp;
+      }
+
+      if (IsDragZooming()) {
+         float p1, p2, tmin, tmax, min, max;
+
+         track->GetDisplayBounds(&tmin, &tmax);
+
+         p1 = (mZoomStart - ypos) / (float)height;
+         p2 = (mZoomEnd - ypos) / (float)height;
+         max = (tmax * (1.0-p1) + tmin * p1);
+         min = (tmax * (1.0-p2) + tmin * p2);
+
+         // Enforce maximum vertical zoom
+         if (max - min < 0.2) {
+            float c = (min+max/2);
+            min = c-0.1;
+            max = c+0.1;
+         }
+
+         track->SetDisplayBounds(min, max);
+         if (partner)
+            partner->SetDisplayBounds(min, max);
+         Refresh(false);
+      }
+      else {
+         if (event.ShiftDown() || event.ButtonUp(3)) {
+            float min, max, c, l;
+
+            track->GetDisplayBounds(&min, &max);
+
+            // Zoom out to -1.0...1.0 first, then, and only
+            // then, if they click again, allow one more
+            // zoom out.
+            if (min <= -1.0 && max >= 1.0) {
+               min = -2.0;
+               max = 2.0;
+            }
+            else {
+               c = 0.5*(min+max);
+               l = (c - min);
+               min = c - 2*l;
+               max = c + 2*l;
+               if (min < -1.0)
+                  min = -1.0;
+               if (max > 1.0)
+                  max = 1.0;
+            }
+            track->SetDisplayBounds(min, max);
+            if (partner)
+               partner->SetDisplayBounds(min, max);
+            Refresh(false);
+         }
+         else {
+            float min, max, c, l, p1;
+
+            // Zoom in centered on cursor
+            track->GetDisplayBounds(&min, &max);
+
+            if (min < -1.0 || max > 1.0) {
+               min = -1.0;
+               max = 1.0;
+            }
+            else {
+               c = 0.5*(min+max);
+               l = (c - min);
+
+               // Enforce maximum vertical zoom
+               if (l < 0.1)
+                  l = 0.1;
+
+               p1 = (mZoomStart - ypos) / (float)height;
+               c = (max * (1.0-p1) + min * p1);
+               min = c - 0.5*l;
+               max = c + 0.5*l;
+            }
+            track->SetDisplayBounds(min, max);
+            if (partner)
+               partner->SetDisplayBounds(min, max);
+            Refresh(false);
+         }
+      }
+
+      mZoomEnd = mZoomStart = 0;
+
+      Refresh(false);
+      mCapturedTrack = NULL;
+   }
 }
 
 // AS: This function takes care of our different zoom 
@@ -1853,7 +2097,7 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
             // The calling function captured the mouse, but we don't want to
             // keep tracking it, so we release it.
             ReleaseMouse();
-            wxMessageBox("Draw currently only works with waveforms.", "Notice");
+            wxMessageBox(_("Draw currently only works with waveforms."), "Notice");
             return;
          }
       
@@ -1867,7 +2111,7 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
       if(!showPoints)
          {
             ReleaseMouse(); //<--Not sure why this is really needed, but it fixes a wierd mouse problem
-            wxMessageBox("You are not zoomed in enough. Zoom in until you can see the individual samples.", "Notice");
+            wxMessageBox(_("You are not zoomed in enough. Zoom in until you can see the individual samples."), "Notice");
             return;
          }
       
@@ -2833,7 +3077,9 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
          ReleaseMouse();
    }
 
-   if (mIsClosing)
+   if (mIsVZooming)
+      HandleVZoom(event);
+   else if (mIsClosing)
       HandleClosing(event);
    else if (mIsMuting)
       HandleMutingSoloing(event, false);
@@ -2875,8 +3121,14 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
    }
 
    if (!mCapturedTrack && event.m_x < GetLabelWidth()) {
-      HandleLabelClick(event);
-      HandleCursor(event);
+      if (event.m_x >= GetVRulerOffset()) {
+         HandleVZoom(event);
+         HandleCursor(event);
+      }
+      else {
+         HandleLabelClick(event);
+         HandleCursor(event);
+      }
       return;
    }
 
@@ -3300,17 +3552,29 @@ void TrackPanel::DrawEverythingElse(Track * t, wxDC * dc, wxRect & r,
 
 void TrackPanel::DrawZooming(wxDC * dc, const wxRect clip)
 {
-   // Draw zooming indicator
-   wxRect r;
+   // Draw zooming indicator that shows the region that will
+   // be zoomed into when the user clicks and drags with a
+   // zoom cursor.  Handles both vertical and horizontal
+   // zooming.
 
-   r.x = mZoomStart;
-   r.y = -1;
-   r.width = mZoomEnd - mZoomStart;
-   r.height = clip.height + 2;
+   wxRect r;
 
    dc->SetBrush(*wxTRANSPARENT_BRUSH);
    dc->SetPen(*wxBLACK_DASHED_PEN);
 
+   if (mIsVZooming) {
+      r.y = mZoomStart;
+      r.x = GetVRulerOffset();
+      r.width = 10000;
+      r.height = mZoomEnd - mZoomStart;
+   }
+   else {
+      r.x = mZoomStart;
+      r.y = -1;
+      r.width = mZoomEnd - mZoomStart;
+      r.height = clip.height + 2;
+   }
+      
    dc->DrawRectangle(r);
 }
 
@@ -3972,7 +4236,7 @@ void TrackLabel::DrawBackground(wxDC * dc, const wxRect r, bool bSelected,
    fill.width = labelw - r.x;
    AColor::Medium(dc, bSelected);
    dc->DrawRectangle(fill);
-   fill=wxRect( r.x+1, r.y+17, fill.width - 32, fill.height-20); 
+   fill=wxRect( r.x+1, r.y+17, fill.width - 38, fill.height-20); 
    AColor::Bevel( *dc, true, fill );
 }
 

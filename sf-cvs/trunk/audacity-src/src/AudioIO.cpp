@@ -43,6 +43,10 @@
 #include "Prefs.h"
 #include "TimeTrack.h"
 
+#if 0 // VU METER
+#include "widgets/Meter.h"
+#endif
+
 #if USE_PORTMIXER
 #include "MixerToolBar.h"
 #endif
@@ -1307,6 +1311,26 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
    gAudioIO->mTotalSamplesPlayed += framesPerBuffer;
    gAudioIO->mLastBufferAudibleTime = timeInfo->outputBufferDacTime;
 #endif
+
+   #if 0 // VU METER
+
+   // Example code showing how to use the Meter class
+
+   if( outputBuffer && numPlaybackChannels == 2 )
+   {
+      float left = 0, right = 0;
+      float *outputFloats = (float *)outputBuffer;
+
+      for( i = 0; i < framesPerBuffer; i++) {
+         if (outputFloats[2*i] > left)
+            left = outputFloats[2*i];
+         if (outputFloats[2*i+1] > right)
+            right = outputFloats[2*i+1];
+      }
+      gMeter->PostUpdate(left, right, (double)outTime);
+   }
+
+   #endif
 
    return callbackReturn;
 }
