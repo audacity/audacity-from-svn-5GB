@@ -1,6 +1,12 @@
 <?php BoxTop("$releaseNotesStr $betaVersion"); ?>
 
 <pre>
+Known issues in Audacity 1.1.3:
+  - It places a file called "Audacity-Commands.xml" in your home directory
+    or somewhere else on your computer.  This file is necessary for
+    Audacity 1.1.3 to run.  We apologize for cluttering up your computer
+    and promise to put the file in a nicer place in the next version.
+
 New features in Audacity 1.1.3:
   * User Interface
     - New Mixer toolbar allows you to control the output
