@@ -342,6 +342,19 @@ main (int argc, char *argv[])
 		nTests++ ;
 		} ;
 
+	if (bDoAll || ! strcmp (argv [1], "vox_adpcm"))
+	{	lcomp_test_short	("adpcm.vox", SF_FORMAT_RAW | SF_FORMAT_VOX_ADPCM, 1, 0.17) ;
+		lcomp_test_int		("adpcm.vox", SF_FORMAT_RAW | SF_FORMAT_VOX_ADPCM, 1, 0.17) ;
+		lcomp_test_float	("adpcm.vox", SF_FORMAT_RAW | SF_FORMAT_VOX_ADPCM, 1, 0.17) ;
+		lcomp_test_double	("adpcm.vox", SF_FORMAT_RAW | SF_FORMAT_VOX_ADPCM, 1, 0.17) ;
+
+		sdlcomp_test_short	("adpcm.vox", SF_FORMAT_RAW | SF_FORMAT_VOX_ADPCM, 1, 0.072) ;
+		sdlcomp_test_int	("adpcm.vox", SF_FORMAT_RAW | SF_FORMAT_VOX_ADPCM, 1, 0.072) ;
+		sdlcomp_test_float	("adpcm.vox", SF_FORMAT_RAW | SF_FORMAT_VOX_ADPCM, 1, 0.072) ;
+		sdlcomp_test_double	("adpcm.vox", SF_FORMAT_RAW | SF_FORMAT_VOX_ADPCM, 1, 0.072) ;
+		nTests++ ;
+		} ;
+
 	if (nTests == 0)
 	{	printf ("************************************\n") ;
 		printf ("*  No '%s' test defined.\n", argv [1]) ;
@@ -356,12 +369,6 @@ main (int argc, char *argv[])
 **	Here are the test functions.
 */ 
  
-#define PUT_DOTS(k)					\
-			{	while (k--)			\
-					putchar ('.') ;	\
-				putchar (' ') ;		\
-				}
-
 static void	
 lcomp_test_short (char *filename, int filetype, int channels, double margin)
 {	SNDFILE			*file ;
@@ -370,11 +377,7 @@ lcomp_test_short (char *filename, int filetype, int channels, double margin)
 	long			datalen ;
 	short			*orig, *data ;
 
-	printf ("    lcomp_test_short    : %s ", filename) ;
-	fflush (stdout) ;
-	
-	k = abs (18 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+	print_test_name ("lcomp_test_short", filename) ;
 
 	datalen = BUFFER_SIZE / channels ;
 
@@ -393,7 +396,7 @@ lcomp_test_short (char *filename, int filetype, int channels, double margin)
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
 		fflush (stdout) ;
-		sf_perror (NULL) ;		
+		puts (sf_strerror (NULL)) ;		
 		exit (1) ;
 		} ;
 	
@@ -410,7 +413,7 @@ lcomp_test_short (char *filename, int filetype, int channels, double margin)
 	
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("Line %d: sf_open_read failed with error : ", __LINE__) ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	
@@ -576,12 +579,8 @@ lcomp_test_int (char *filename, int filetype, int channels, double margin)
 	int			k, m, *orig, *data, sum_abs ;
 	long		datalen, seekpos ;
 	double		scale ;
-	
-	printf ("    lcomp_test_int      : %s ", filename) ;
-	fflush (stdout) ;
-	
-	k = abs (18 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+
+	print_test_name ("lcomp_test_int", filename) ;
 
 	datalen = BUFFER_SIZE / channels ;
 	
@@ -601,7 +600,7 @@ lcomp_test_int (char *filename, int filetype, int channels, double margin)
 
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	
@@ -618,7 +617,7 @@ lcomp_test_int (char *filename, int filetype, int channels, double margin)
 
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	
@@ -786,11 +785,7 @@ lcomp_test_float (char *filename, int filetype, int channels, double margin)
 	long			datalen ;
 	float			*orig, *data ;
 
-	printf ("    lcomp_test_float    : %s ", filename) ;
-	fflush (stdout) ;
-	
-	k = abs (18 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+	print_test_name ("lcomp_test_float", filename) ;
 
 	datalen = BUFFER_SIZE / channels ;
 
@@ -808,7 +803,7 @@ lcomp_test_float (char *filename, int filetype, int channels, double margin)
 
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	
@@ -827,7 +822,7 @@ lcomp_test_float (char *filename, int filetype, int channels, double margin)
 	
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	
@@ -999,11 +994,7 @@ lcomp_test_double (char *filename, int filetype, int channels, double margin)
 	long			datalen ;
 	double			*orig, *data ;
 
-	printf ("    lcomp_test_double   : %s ", filename) ;
-	fflush (stdout) ;
-	
-	k = abs (18 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+	print_test_name ("lcomp_test_double", filename) ;
 
 	datalen = BUFFER_SIZE / channels ;
 
@@ -1021,7 +1012,7 @@ lcomp_test_double (char *filename, int filetype, int channels, double margin)
 
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	
@@ -1040,7 +1031,7 @@ lcomp_test_double (char *filename, int filetype, int channels, double margin)
 	
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	
@@ -1212,11 +1203,7 @@ sdlcomp_test_short	(char *filename, int filetype, int channels, double margin)
 	short			*orig, *data, *smooth ;
 
 channels = 1 ;
-	printf ("    sdlcomp_test_short  : %s ", filename) ;
-	fflush (stdout) ;
-	
-	k = abs (18 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+	print_test_name ("sdlcomp_test_short", filename) ;
 
 	datalen = BUFFER_SIZE ;
 
@@ -1235,7 +1222,7 @@ channels = 1 ;
 
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	
@@ -1252,7 +1239,7 @@ channels = 1 ;
 	
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	
@@ -1422,11 +1409,7 @@ sdlcomp_test_int	(char *filename, int filetype, int channels, double margin)
 
 channels = 1 ;
 
-	printf ("    sdlcomp_test_int    : %s ", filename) ;
-	fflush (stdout) ;
-	
-	k = abs (18 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+	print_test_name ("sdlcomp_test_int", filename) ;
 
 	datalen = BUFFER_SIZE ;
 	scale = 1.0 * 0x10000 ;
@@ -1446,7 +1429,7 @@ channels = 1 ;
 
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	
@@ -1463,7 +1446,7 @@ channels = 1 ;
 	
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	
@@ -1634,11 +1617,7 @@ sdlcomp_test_float	(char *filename, int filetype, int channels, double margin)
 
 channels = 1 ;
 
-	printf ("    sdlcomp_test_float  : %s ", filename) ;
-	fflush (stdout) ;
-	
-	k = abs (18 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+	print_test_name ("sdlcomp_test_float", filename) ;
 
 printf ("** fix this ** ") ;
 
@@ -1659,7 +1638,7 @@ printf ("** fix this ** ") ;
 
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	
@@ -1678,7 +1657,7 @@ printf ("** fix this ** ") ;
 	
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	
@@ -1847,11 +1826,7 @@ sdlcomp_test_double	(char *filename, int filetype, int channels, double margin)
 	double			*orig, *data, *smooth, sum_abs ;
 
 channels = 1 ;
-	printf ("    sdlcomp_test_double : %s ", filename) ;
-	fflush (stdout) ;
-	
-	k = abs (18 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+	print_test_name ("sdlcomp_test_double", filename) ;
 
 	datalen = BUFFER_SIZE ;
 
@@ -1868,7 +1843,7 @@ channels = 1 ;
 
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 
@@ -1887,7 +1862,7 @@ channels = 1 ;
 	
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	

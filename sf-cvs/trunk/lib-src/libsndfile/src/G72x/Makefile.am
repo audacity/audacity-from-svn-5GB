@@ -12,8 +12,8 @@ CFILES = g72x.c g721.c g723_16.c g723_24.c g723_40.c
 
 libg72x_la_SOURCES = $(CFILES) $(noinst_HEADERS)
 
-g72x_test_SOURCES = g72x_test.c $(CFILES)
-g72x_test_LDADD = -lm
+g72x_test_SOURCES = g72x_test.c
+g72x_test_LDADD = ./libg72x.la -lm
 
 check: g72x_test
 	./g72x_test all

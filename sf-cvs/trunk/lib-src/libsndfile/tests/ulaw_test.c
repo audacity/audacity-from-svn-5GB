@@ -50,7 +50,7 @@ main (void)
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
 		fflush (stdout) ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 		
@@ -70,7 +70,7 @@ main (void)
 
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 
@@ -78,7 +78,7 @@ main (void)
 		
 	if (sf_read_raw (file, ulaw_buffer, BUFFER_SIZE) != BUFFER_SIZE)
 	{	printf ("sf_read_raw : ") ;
-		sf_perror (file) ;
+		puts (sf_strerror (file)) ;
 		exit (1) ;
 		} ;
 	
@@ -98,7 +98,7 @@ main (void)
 
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 
@@ -114,7 +114,7 @@ main (void)
 
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 
@@ -122,7 +122,7 @@ main (void)
 		
 	if (sf_read_short (file, short_buffer, 256) != 256)
 	{	printf ("sf_read_short : ") ;
-		sf_perror (file) ;
+		puts (sf_strerror (file)) ;
 		exit (1) ;
 		} ;
 	

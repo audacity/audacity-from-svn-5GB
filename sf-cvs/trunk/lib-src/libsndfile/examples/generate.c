@@ -84,7 +84,7 @@ encode_file (char *infilename, char *outfilename, int filetype)
 
 	if (! (infile = sf_open (infilename, SFM_READ, &sfinfo)))
 	{	printf ("Error : could not open file : %s\n", infilename) ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		}
 
@@ -98,7 +98,7 @@ encode_file (char *infilename, char *outfilename, int filetype)
 		
 	if (! (outfile = sf_open (outfilename, SFM_WRITE, &sfinfo)))
 	{	printf ("Error : could not open file : %s\n", outfilename) ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 		

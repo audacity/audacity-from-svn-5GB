@@ -61,9 +61,11 @@ linux_play (int argc, char *argv [])
 	int		k, audio_device, readcount, subformat ;
 
 	for (k = 1 ; k < argc ; k++)
-	{	printf ("Playing %s\n", argv [k]) ;
+	{	memset (&sfinfo, 0, sizeof (sfinfo)) ;
+
+		printf ("Playing %s\n", argv [k]) ;
 		if (! (sndfile = sf_open (argv [k], SFM_READ, &sfinfo)))
-		{	sf_perror (NULL) ;
+		{	puts (sf_strerror (NULL)) ;
 			continue ;
 			} ;
 
@@ -79,7 +81,7 @@ linux_play (int argc, char *argv [])
 		if (subformat == SF_FORMAT_FLOAT || subformat == SF_FORMAT_DOUBLE)
 		{	static float float_buffer [BUFFER_LEN] ;
 			double	scale ;
-			int 	k ;
+			int 	m ;
 
 			sf_command (sndfile, SFC_CALC_SIGNAL_MAX, &scale, sizeof (scale)) ;
 			if (scale < 1e-10)
@@ -88,8 +90,8 @@ linux_play (int argc, char *argv [])
 				scale = 32700.0 / scale ;
 
 			while ((readcount = sf_read_float (sndfile, float_buffer, BUFFER_LEN)))
-			{	for (k = 0 ; k < readcount ; k++)
-					buffer [k] = scale * float_buffer [k] ;
+			{	for (m = 0 ; m < readcount ; m++)
+					buffer [m] = scale * float_buffer [m] ;
 				write (audio_device, buffer, readcount * sizeof (short)) ;
 				} ;
 			}
@@ -237,7 +239,7 @@ macosx_play (int argc, char *argv [])
 	for (k = 1 ; k < argc ; k++)
 	{	printf ("Playing %s\n", argv [k]) ;
 		if (! (audio_data.sndfile = sf_open (argv [k], SFM_READ, &(audio_data.sfinfo))))
-		{	sf_perror (NULL) ;
+		{	puts (sf_strerror (NULL)) ;
 			continue ;
 			} ;
 
@@ -387,7 +389,7 @@ win32_play (int argc, char *argv [])
 	{	printf ("Playing %s\n", argv [k]) ;
 
 		if (! (audio_data.sndfile = sf_open (argv [k], SFM_READ, &(audio_data.sfinfo))))
-		{	sf_perror (NULL) ;
+		{	puts (sf_strerror (NULL)) ;
 			continue ;
 			} ;
 			
@@ -483,7 +485,7 @@ solaris_play (int argc, char *argv [])
 	for (k = 1 ; k < argc ; k++)
 	{	printf ("Playing %s\n", argv [k]) ;
 		if (! (sndfile = sf_open (argv [k], SFM_READ, &sfinfo)))
-		{	sf_perror (NULL) ;
+		{	puts (sf_strerror (NULL)) ;
 			continue ;
 			} ;
 

@@ -1,19 +1,19 @@
 [+ AutoGen5 template c +]
 /*
 ** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
-**  
+**
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
-** 
+**
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software 
+** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
@@ -36,20 +36,20 @@ static int truncate (const char *filename, int ignored) ;
 
 #define	SILLY_WRITE_COUNT	(234)
 
-[+ FOR data_type 
+[+ FOR data_type
 +]static void	pcm_test_[+ (get "type_name") +]	(char *str, int filetype, int long_file_ok) ;
-[+ ENDFOR data_type 
+[+ ENDFOR data_type
 +]
 
 enum
 {	FALSE = 0,
 	TRUE  = 1
 } ;
- 
+
 static	double	orig_data [DATA_LENGTH] ;
 static	double	test_data [DATA_LENGTH] ;
 
-int		
+int
 main (int argc, char **argv)
 {	int		bDoAll = 0 ;
 	int		nTests = 0 ;
@@ -72,7 +72,7 @@ main (int argc, char **argv)
 		} ;
 
 	bDoAll = !strcmp (argv [1], "all");
-		
+
 	if (bDoAll || ! strcmp (argv [1], "wav"))
 	{	pcm_test_char 	("char.wav"  , SF_FORMAT_WAV | SF_FORMAT_PCM_U8, FALSE) ;
 		pcm_test_short	("short.wav" , SF_FORMAT_WAV | SF_FORMAT_PCM_16, FALSE) ;
@@ -128,7 +128,7 @@ main (int argc, char **argv)
 	if (bDoAll || ! strcmp (argv [1], "raw"))
 	{	pcm_test_char	("char_s8.raw", SF_FORMAT_RAW | SF_FORMAT_PCM_S8, FALSE) ;
 		pcm_test_char	("char_u8.raw", SF_FORMAT_RAW | SF_FORMAT_PCM_U8, FALSE) ;
-		
+
 		pcm_test_short	("short_le.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_PCM_16, FALSE) ;
 		pcm_test_short	("short_be.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_PCM_16, FALSE) ;
 		pcm_test_24bit	("24bit_le.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_PCM_24, FALSE) ;
@@ -152,7 +152,7 @@ main (int argc, char **argv)
 		pcm_test_short	("short_be.paf", SF_ENDIAN_BIG    | SF_FORMAT_PAF | SF_FORMAT_PCM_16, FALSE) ;
 		pcm_test_24bit	("24bit_le.paf", SF_ENDIAN_LITTLE | SF_FORMAT_PAF | SF_FORMAT_PCM_24, TRUE) ;
 		pcm_test_24bit	("24bit_be.paf", SF_ENDIAN_BIG    | SF_FORMAT_PAF | SF_FORMAT_PCM_24, TRUE) ;
-		
+
 		nTests++ ;
 		} ;
 
@@ -243,43 +243,34 @@ main (int argc, char **argv)
 
 /*============================================================================================
 **	Helper functions and macros.
-*/ 
+*/
 
-static void	create_short_file (char *filename) ; 
+static void	create_short_file (char *filename) ;
 
 #define	CHAR_ERROR(x,y)		(abs ((x) - (y)) > 255)
 #define	INT_ERROR(x,y)		(((x) - (y)) != 0)
 #define	TRIBYTE_ERROR(x,y)	(abs ((x) - (y)) > 255)
 #define	FLOAT_ERROR(x,y)	(fabs ((x) - (y)) > 1e-5)
 
-#define PUT_DOTS(k)					\
-			{	while (k--)			\
-					putchar ('.') ;	\
-				putchar (' ') ;		\
-				}
-
 #define CONVERT_DATA(k,len,new,orig)	\
 			{	for ((k) = 0 ; (k) < (len) ; (k)++)	\
 					(new) [k] = (orig) [k] ;		\
 				}
 
-[+ FOR data_type 
+[+ FOR data_type
 +]
 /*======================================================================================
 */
 
-static void	
+static void
 pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	[+ (get "data_type") +]		*orig, *test ;
+	sf_count_t	count ;
 	int			k, items, frames, pass ;
-	
-	printf ("    %-18s  : %s ", "pcm_test_[+ (get "type_name") +]", filename) ;
-	fflush (stdout) ;
-	
-	k = abs (18 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+
+	print_test_name ("pcm_test_[+ (get "type_name") +]", filename) ;
 
 	sfinfo.samplerate  = 44100 ;
 	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
@@ -287,46 +278,57 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 	sfinfo.format 	   = filetype ;
 
 	gen_windowed_sine (orig_data, DATA_LENGTH, [+ (get "max_val") +]) ;
-	
+
 	orig = ([+ (get "data_type") +]*) orig_data ;
 	test = ([+ (get "data_type") +]*) test_data ;
 
-	/* Make this a macro so gdb steps over it in one go. */	
+	/* Make this a macro so gdb steps over it in one go. */
 	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
 
 	items = DATA_LENGTH ;
 
 	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
-		
+
 	test_write_[+ (get "data_type") +]_or_die (file, 0, orig, items, __LINE__) ;
 
 	/* Add non-audio data after the audio. */
 	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
 
 	sf_close (file) ;
-	
+
+/*-if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM_16)
+{
+	char str [256] ;
+	snprintf (str, sizeof (str), "hexdump %s", filename) ;
+
+	puts ("\n") ;
+
+	system (str) ;
+	exit (1) ;
+}-*/
+
 	memset (test, 0, items * sizeof ([+ (get "data_type") +])) ;
-	
+
 	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
-	
+
 	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
 
 	if (sfinfo.format != filetype)
 	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.frames < items)
 	{	printf ("\n\nLine %d : Mono : Incorrect number of frames in file (too short). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), items) ;
 		exit (1) ;
 		} ;
-	
+
 	if (! long_file_ok && sfinfo.frames > items)
 	{	printf ("\n\nLine %d : Mono : Incorrect number of frames in file (too long). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), items) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.channels != 1)
 	{	printf ("\n\nLine %d : Mono : Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
@@ -349,15 +351,15 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 		if ([+ (get "error_func") +] (orig [k], test [k]))
 		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : [+ (get "format_char") +] => [+ (get "format_char") +]).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
-			};
-	
+			} ;
+
 	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
-		(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
+			(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
 	{	unlink (filename) ;
 		printf ("ok\n") ;
 		return ;
 		} ;
-	
+
 	/* Seek to offset from start of file. */
 	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
 
@@ -366,7 +368,7 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 		if ([+ (get "error_func") +] (orig [k], test [k]))
 		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : [+ (get "format_char") +] => [+ (get "format_char") +]).\n", __LINE__, k, test [k], orig [k]) ;
 			exit (1) ;
-			};
+			} ;
 
 	/* Seek to offset from current position. */
 	test_seek_or_die (file, 6, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
@@ -376,7 +378,7 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 		if ([+ (get "error_func") +] (orig [k], test [k]))
 		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : [+ (get "format_char") +] => [+ (get "format_char") +]).\n", __LINE__, k, test [k], orig [k]) ;
 			exit (1) ;
-			};
+			} ;
 
 	/* Seek to offset from end of file. */
 	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
@@ -386,13 +388,26 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 		if ([+ (get "error_func") +] (orig [k], test [k]))
 		{	printf ("\n\nLine %d : Mono : Incorrect sample D (#%d : [+ (get "format_char") +] => [+ (get "format_char") +]).\n", __LINE__, k, test [k], orig [k]) ;
 			exit (1) ;
-			};
+			} ;
+
+	/* Check read past end of file followed by sf_seek (sndfile, 0, SEEK_CUR). */
+	test_seek_or_die (file, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
+
+	count = 0 ;
+	while (count < sfinfo.frames)
+		count += sf_read_[+ (get "data_type") +] (file, test, 311) ;
+
+	if (count > sfinfo.frames)
+	{	printf ("\n\nLines %d : read past end of file (%ld should be %ld)\n", __LINE__, (long) count, (long) sfinfo.frames) ;
+		exit (1) ;
+		} ;
+
+	test_seek_or_die (file, 0, SEEK_CUR, sfinfo.frames, sfinfo.channels, __LINE__) ;
 
 	sf_close (file) ;
-	
 
 	/*==================================================================================
-	** Now test Mono RDWR. 
+	** Now test Mono RDWR.
 	*/
 
 	sfinfo.samplerate = SAMPLE_RATE ;
@@ -404,16 +419,16 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 		unlink (filename) ;
 	else
 	{	/* Create a short file. */
-		create_short_file (filename) ; 
+		create_short_file (filename) ;
 
-		/* Opening a already existing short file (ie invalid header) RDWR is disallowed. 
+		/* Opening a already existing short file (ie invalid header) RDWR is disallowed.
 		** If this returns a valif pointer sf_open() screwed up.
-		*/ 
+		*/
 		if ((file = sf_open (filename, SFM_RDWR, &sfinfo)))
 		{	printf ("\n\nLine %d: sf_open should (SFM_RDWR) have failed but didn't.\n", __LINE__) ;
 			exit (1) ;
 			} ;
-		
+
 		/* Truncate the file to zero bytes. */
 		if (truncate (filename, 0) < 0)
 		{	printf ("\n\nLine %d: truncate (%s) failed", __LINE__, filename) ;
@@ -437,10 +452,10 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 	*/
 	for (pass = 1 ; pass <= 3 ; pass ++)
 	{	orig [20] = pass * 2 ;
-	
+
 		/* Write some data. */
 		test_write_[+ (get "data_type") +]_or_die (file, 0, orig, DATA_LENGTH, __LINE__) ;
-	
+
 		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, pass * DATA_LENGTH) ;
 
 		/* Read what we just wrote. */
@@ -456,17 +471,17 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 
 		test_read_write_position_or_die (file, __LINE__, pass, pass * DATA_LENGTH, pass * DATA_LENGTH) ;
 		} ; /* for (pass ...) */
-				
+
 	sf_close (file) ;
 
 	/* Open the file again to check the data. */
 	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
-		
+
 	if (sfinfo.format != filetype)
 	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.frames < 3 * DATA_LENGTH)
 	{	printf ("\n\nLine %d : Not enough frames in file. (%ld < %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), 3 * DATA_LENGTH ) ;
 		exit (1) ;
@@ -476,7 +491,7 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 	{	printf ("\n\nLine %d : Incorrect number of frames in file. (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), 3 * DATA_LENGTH ) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.channels != 1)
 	{	printf ("\n\nLine %d : Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
@@ -486,11 +501,11 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 		test_read_write_position_or_die (file, __LINE__, 0, 0, 3 * DATA_LENGTH) ;
 	else
 		test_seek_or_die (file, 3 * DATA_LENGTH, SFM_WRITE | SEEK_SET, 3 * DATA_LENGTH, sfinfo.channels, __LINE__) ;
-		
+
 
 	for (pass = 1 ; pass <= 3 ; pass ++)
 	{	orig [20] = pass * 2 ;
-	
+
 		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, 3 * DATA_LENGTH) ;
 
 		/* Read what we just wrote. */
@@ -509,7 +524,7 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 	sf_close (file) ;
 
 	/*==================================================================================
-	** Now test Stereo. 
+	** Now test Stereo.
 	*/
 
 	sfinfo.samplerate  = 44100 ;
@@ -525,15 +540,15 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 		printf ("ok\n") ;
 		return ;
 		} ;
-	
+
 	gen_windowed_sine (orig_data, DATA_LENGTH, [+ (get "max_val") +]) ;
 
 	orig = ([+ (get "data_type") +]*) orig_data ;
 	test = ([+ (get "data_type") +]*) test_data ;
 
-	/* Make this a macro so gdb steps over it in one go. */	
+	/* Make this a macro so gdb steps over it in one go. */
 	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
-		
+
 	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
 
@@ -544,32 +559,32 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
 
 	sf_close (file) ;
-	
+
 	memset (test, 0, items * sizeof ([+ (get "data_type") +])) ;
-	
+
 	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
-	
+
 	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
-	
+
 	if (sfinfo.format != filetype)
-	{	printf ("\n\nLine %d : Stereo : Returned format incorrect (0x%08X => 0x%08X).\n", 
+	{	printf ("\n\nLine %d : Stereo : Returned format incorrect (0x%08X => 0x%08X).\n",
 				__LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.frames < frames)
-	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too short). (%ld should be %d)\n", 
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too short). (%ld should be %d)\n",
 				__LINE__, SF_COUNT_TO_LONG (sfinfo.frames), frames) ;
 		exit (1) ;
 		} ;
 
 	if (! long_file_ok && sfinfo.frames > frames)
-	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too long). (%ld should be %d)\n", 
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too long). (%ld should be %d)\n",
 				__LINE__, SF_COUNT_TO_LONG (sfinfo.frames), frames) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.channels != 2)
 	{	printf ("\n\nLine %d : Stereo : Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
@@ -592,15 +607,15 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 		if ([+ (get "error_func") +] (test [k], orig [k]))
 		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : [+ (get "format_char") +] => [+ (get "format_char") +]).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
-			};
-	
+			} ;
+
 	/* Seek to offset from start of file. */
 	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
 
 	/* Check for errors here. */
 	if (sf_error (file))
 	{	printf ("Line %d: Should NOT return an error.\n", __LINE__) ;
-		sf_perror (file) ;
+		puts (sf_strerror (file)) ;
 		exit (1) ;
 		} ;
 
@@ -620,7 +635,7 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 		if ([+ (get "error_func") +] (test [k], orig [k]))
 		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : [+ (get "format_char") +] => [+ (get "format_char") +]).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
-			};
+			} ;
 
 	/* Seek to offset from current position. */
 	test_seek_or_die (file, 8, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
@@ -630,7 +645,7 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 		if ([+ (get "error_func") +] (test [k], orig [k]))
 		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : [+ (get "format_char") +] => [+ (get "format_char") +]).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
-			};
+			} ;
 
 	/* Seek to offset from end of file. */
 	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
@@ -640,14 +655,14 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 		if ([+ (get "error_func") +] (test [k], orig [k]))
 		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : [+ (get "format_char") +] => [+ (get "format_char") +]).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
-			};
-			
+			} ;
+
 	sf_close (file) ;
 
 	unlink (filename) ;
 	printf ("ok\n") ;
 
-	return ;			
+	return ;
 } /* pcm_test_[+ (get "type_name") +] */
 
 [+ ENDFOR data_type +]
@@ -655,38 +670,38 @@ pcm_test_[+ (get "type_name") +] (char *filename, int filetype, int long_file_ok
 /*----------------------------------------------------------------------------------------
 */
 
-static void	
+static void
 create_short_file (char *filename)
 {	FILE *file ;
 
 	if (! (file = fopen (filename, "w")))
 	{	printf ("create_short_file : fopen (%s, \"w\") failed.", filename) ;
 		fflush (stdout) ;
-		perror (NULL) ; 
+		perror (NULL) ;
 		exit (1) ;
 		} ;
 
 	fprintf (file, "This is the file data.\n") ;
-	
+
 	fclose (file) ;
-} /* create_short_file */ 
+} /* create_short_file */
 
 #if (defined (WIN32) || defined (__WIN32))
 
 /* Win32 does not have truncate (nor does it have the POSIX function ftruncate).
-** Hack somethng up here to over come this. This function can only truncate to a 
+** Hack somethng up here to over come this. This function can only truncate to a
 ** length of zero.
 */
 
-static int 
+static int
 truncate (const char *filename, int ignored)
 {	int fd ;
 
 	if ((fd = open (filename, O_RDWR | O_TRUNC | O_BINARY)) < 0)
 		return 0 ;
-	
+
 	close (fd) ;
-	
+
 	return 0 ;
 } /* truncate */
 

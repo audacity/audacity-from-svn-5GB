@@ -158,7 +158,7 @@ voc_read_header	(SF_PRIVATE *psf)
 	int		offset ;
 
 	/* Set position to start of file to begin reading header. */
-	offset = psf_binheader_readf (psf, "pb", 0, creative, sizeof (creative)) ;
+	offset = psf_binheader_readf (psf, "pb", 0, creative, SIGNED_SIZEOF (creative)) ;
 		
 	if (creative [sizeof (creative) - 1] != 0x1A)
 		return SFE_VOC_NO_CREATIVE ;
@@ -410,12 +410,12 @@ voc_write_header (SF_PRIVATE *psf, int calc_length)
 {	sf_count_t	current ;
 	int			rate_const, subformat ;
 	
-	current = psf_ftell (psf->filedes) ;
+	current = psf_ftell (psf) ;
 
 	if (calc_length)
-	{	psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf->filedes) ;
-		psf_fseek (psf->filedes, 0, SEEK_SET) ;
+	{	psf_fseek (psf, 0, SEEK_END) ;
+		psf->filelength = psf_ftell (psf) ;
+		psf_fseek (psf, 0, SEEK_SET) ;
 
 		psf->datalength = psf->filelength - psf->dataoffset ;
 		if (psf->dataend)
@@ -428,7 +428,7 @@ voc_write_header (SF_PRIVATE *psf, int calc_length)
 	/* Reset the current header length to zero. */
 	psf->header [0] = 0 ;
 	psf->headindex = 0 ;
-	psf_fseek (psf->filedes, 0, SEEK_SET) ;
+	psf_fseek (psf, 0, SEEK_SET) ;
 
 	/* VOC marker and 0x1A byte. */
 	psf_binheader_writef (psf, "eb1", "Creative Voice File", 19, 0x1A) ;
@@ -503,13 +503,17 @@ voc_write_header (SF_PRIVATE *psf, int calc_length)
 			} ;
 		} ;
 		
-	psf_fwrite (psf->header, psf->headindex, 1, psf->filedes) ;
+	psf_fwrite (psf->header, psf->headindex, 1, psf) ;
+	
+	if (psf->error)
+		return psf->error ;
+
 	psf->dataoffset = psf->headindex ;
 
 	if (current > 0)
-		psf_fseek (psf->filedes, current, SEEK_SET) ;
+		psf_fseek (psf, current, SEEK_SET) ;
 		
-	return 0 ;
+	return psf->error ;
 } /* voc_write_header */
 
 static int	
@@ -522,13 +526,13 @@ voc_close	(SF_PRIVATE  *psf)
 		unsigned byte = VOC_TERMINATOR ;
 		
 		
-		psf_fseek (psf->filedes, 0, SEEK_END) ;
+		psf_fseek (psf, 0, SEEK_END) ;
 		
 		/* Write terminator */
-		psf_fwrite (&byte, 1, 1, psf->filedes) ;
+		psf_fwrite (&byte, 1, 1, psf) ;
 		
-		psf->filelength = psf_ftell (psf->filedes) ;
-		psf_fseek (psf->filedes, 0, SEEK_SET) ;
+		psf->filelength = psf_ftell (psf) ;
+		psf_fseek (psf, 0, SEEK_SET) ;
 		
 		psf->datalength = psf->filelength - psf->dataoffset ;
  		psf->sf.frames = psf->datalength / (psf->bytewidth * psf->sf.channels) ;

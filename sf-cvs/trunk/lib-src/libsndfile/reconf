@@ -2,6 +2,10 @@
 
 rm -f config.cache
 
+if [ ! -e "src/config.h.in" ]; then
+	autoheader
+	fi
+
 if [ -d $HOME/Proj/M4 ]; then
 
 	rm -f acinclude.m4.new
@@ -11,12 +15,16 @@ if [ -d $HOME/Proj/M4 ]; then
 	cat $HOME/Proj/M4/lrint.m4 >>acinclude.m4.new
 	cat $HOME/Proj/M4/lrintf.m4 >>acinclude.m4.new
 
-	cmp_data=`cmp acinclude.m4 acinclude.m4.new`
-	if [ x"$cmp_data" = "x" ]; then
-		echo "File acinclude.m4 unchanged."
+	if [ -f acinclude.m4 ]; then
+		cmp_data=`cmp acinclude.m4 acinclude.m4.new`
+		if [ x"$cmp_data" = "x" ]; then
+			echo "File acinclude.m4 unchanged."
+		else
+			echo "Updating acinclude.m4"
+			mv -f acinclude.m4.new acinclude.m4
+			fi
 	else
-		echo "Updating acinclude.m4"
-		mv -f acinclude.m4.new acinclude.m4
+		mv acinclude.m4.new acinclude.m4
 		fi
 
 	echo "Looking in $HOME/Proj/M4 directory."
@@ -28,6 +36,7 @@ else
 sed s/AM_PROG_INSTALL/AC_PROG_INSTALL/ aclocal.m4 >aclocal.m4.bak   
 mv -f aclocal.m4.bak aclocal.m4
 
+automake --copy --add-missing
 autoconf
-autoreconf -i --force --foreign
+# autoreconf -i --force --foreign
 exit

@@ -6,7 +6,7 @@
 	The libsndfile API.
 	</TITLE>
 	<META NAME="Author"      CONTENT="Erik de Castro Lopo (erikd AT zip DOT com DOT au)">
-	<META NAME="Version"     CONTENT="Version 1.0.1">
+	<META NAME="Version"     CONTENT="Version 1.0.3">
 	<!-- Another date at bottom of page. -->
 	<META NAME="Description" CONTENT="The libsndfile API.">
 	<META NAME="Keywords"    CONTENT="WAV AIFF AU libsndfile sound audio dsp Linux">
@@ -68,6 +68,10 @@ The functions of linbsndfile are defined as follows:
       sf_count_t  <A HREF="#seek">sf_seek</A>          (SNDFILE *sndfile, sf_count_t frames, int whence) ;
 
       int         <A HREF="#command">sf_command</A>       (SNDFILE *sndfile, int cmd, void *data, int datasize) ;
+
+      int         <A HREF="#error">sf_error</A>         (SNDFILE *sndfile) ;
+      const char* <A HREF="#error">sf_strerror</A>      (SNDFILE *sndfile) ;
+      const char* <A HREF="#error">sf_error_number</A>  (int errnum) ;
 
       int         <A HREF="#error">sf_perror</A>        (SNDFILE *sndfile) ;
       int         <A HREF="#error">sf_error_str</A>     (SNDFILE *sndfile, char* str, size_t len) ;
@@ -139,9 +143,11 @@ The mode parameter for this function can be any one of the following three value
 </PRE>
 
 <P>
-When opening a file for read, all the structure members are filled in by the library.
-The only exception to this is the case of RAW files where the caller has to fill in 
-the channels and format fields.
+When opening a file for read, the <b>format</B> field should be set to zero before
+calling sf_open().
+All other fields of the structure are filled in by the library.
+The only exception to this is the case of RAW files where the caller has to set in 
+the channels and format fields to valid values.
 </P>
 <P>
 When opening a file for write, the caller must fill in structure members samplerate,
@@ -190,6 +196,7 @@ Not all combinations of endian-ness and major and minor file types are valid.
           SF_FORMAT_MS_ADPCM     = 0x0013,       /* Microsoft ADPCM. */
 
           SF_FORMAT_GSM610       = 0x0020,       /* GSM 6.10 encoding. */
+          SF_FORMAT_VOX_ADPCM    = 0x0021,       /* Oki Dialogic ADPCM encoding. */
       
           SF_FORMAT_G721_32      = 0x0030,       /* 32kbs G721 ADPCM encoding. */
           SF_FORMAT_G723_24      = 0x0031,       /* 24kbs G723 ADPCM encoding. */
@@ -212,6 +219,11 @@ Not all combinations of endian-ness and major and minor file types are valid.
           SF_FORMAT_ENDMASK      = 0x30000000
       } ;
 </PRE>
+
+<P>
+Every call to sf_open() should be matched with a call to sf_close() to free up
+memory allocated by during the call to sf_open().
+</P>
 
 <P>
 On success, the sf_open functions return a non NULL pointer which should be passed as
@@ -311,16 +323,44 @@ This function is explained more fully <A HREF="command.html">here</A>.
 
 
 <PRE>
-      int  sf_perror     (SNDFILE *sndfile) ;
-      int  sf_error_str  (SNDFILE *sndfile, char* str, size_t len) ;
+      int         sf_error        (SNDFILE *sndfile) ;
+</PRE>
+<P>
+This function returns the current error number for the given SNDFILE.
+The error number may be one of the following:
+</P>
+<PRE>
+        enum
+        {   SF_ERR_NO_ERROR             = 0,
+            SF_ERR_UNRECOGNISED_FORMAT  = 1
+        } ;
+</PRE>
+<P>
+or any one of many other internal error values.
+Applications should only test the return value against error values defined in
+&lt;sndfile.h&gt; as the internal error values are subject to change at any 
+time.
+For errors not in the above list, the function sf_error_number() can be used to
+convert it to an error string.
+</P>
 
+<PRE>
+      const char* sf_strerror     (SNDFILE *sndfile) ;
+      const char* sf_error_number (int errnum) ;
 </PRE>
 
 <P>
-The error functions convert the library's internal error enumerations into text
-strings. The function sf_perror function simply prints the error message to
-stderr, while sf_error_str copies it into a buffer of a given length supplied by 
-the caller.
+The error functions sf_strerror() and sf_error_number() convert the library's internal 
+error enumerations into text strings. 
+</P>
+<PRE>
+      int         sf_perror     (SNDFILE *sndfile) ;
+      int         sf_error_str  (SNDFILE *sndfile, char* str, size_t len) ;
+</PRE>
+
+<P>
+The functions sf_perror() and sf_error_str() are depricated and will be dropped
+from the library at some later date.
 </P>
 
 <A NAME="close"></A>
@@ -505,7 +545,7 @@ values read from the file will be zero.
 		<A HREF="http://www.zip.com.au/~erikd/libsndfile/">here</A>.
 </P>
 <P>
-Version : 1.0.1
+Version : 1.0.3
 </P>
 
 </BODY>

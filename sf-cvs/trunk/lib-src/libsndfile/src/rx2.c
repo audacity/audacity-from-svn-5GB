@@ -75,7 +75,7 @@ static int	rx2_close	(SF_PRIVATE  *psf) ;
 
 int 	
 rx2_open	(SF_PRIVATE *psf)
-{	int error, marker, length, glob_offset, slce_count ;
+{	int error, marker, length, glob_offset, slce_count, frames ;
 
 	int sdat_length = 0, slce_total = 0 ;
 
@@ -178,23 +178,16 @@ rx2_open	(SF_PRIVATE *psf)
 					break ;
 					
 			case SLCE_MARKER:
-					/*-psf_log_printf (psf, "   %M\n", marker) ;-*/
-					
-					psf_binheader_readf (psf, "E4", &length) ;
-					/*-psf_log_printf (psf, "    ???????? : 0x%X\n", length) ;-*/
-					
-					psf_binheader_readf (psf, "E4", &length) ;
-					/*-psf_log_printf (psf, "    Start  ? : %d\n", length) ;-*/
+					{	int len [4] ;
 
-					psf_binheader_readf (psf, "E4", &length) ;
-					/*-psf_log_printf (psf, "    Length ? : %d\n", length) ;-*/
-
-				slce_total += length ;
+						psf_binheader_readf (psf, "E4444", &len [0], &len [1], &len [2], &len [3]) ;
+					
+				slce_total += len [2] ;
 				
-					psf_binheader_readf (psf, "E4", &length) ;
-					/*-psf_log_printf (psf, "    ???????? : 0x%X\n", length) ;-*/
-					
-					slce_count ++ ;
+						psf_log_printf (psf, "   %M : %d (%5d, %d, %X)\n", marker, len [0], len [1], len [2], len [3]) ;
+	
+						slce_count ++ ;
+						} ;
 					break ;
 					
 			case SINF_MARKER:
@@ -204,9 +197,10 @@ rx2_open	(SF_PRIVATE *psf)
 					psf_binheader_readf (psf, "E2", &length) ;
 					psf_log_printf (psf, "  REX Version : %X ?\n", length) ;
 
-					psf_binheader_readf (psf, "E44", &psf->sf.samplerate, &psf->sf.frames) ;
+					psf_binheader_readf (psf, "E44", &psf->sf.samplerate, &frames) ;
+					psf->sf.frames = frames ;
 					psf_log_printf (psf, "  Sample Rate : %d\n", psf->sf.samplerate) ;
-					psf_log_printf (psf, "  Frames      : %d\n", psf->sf.frames) ;
+					psf_log_printf (psf, "  Frames      : %D\n", psf->sf.frames) ;
 
 					psf_binheader_readf (psf, "E4", &length) ;
 					psf_log_printf (psf, "  ??????????? : %d\n", length) ;
@@ -245,6 +239,12 @@ rx2_open	(SF_PRIVATE *psf)
 	puts ("-----------------------------------") ;
 
 	printf ("SDAT length  : %d\n", sdat_length) ;
+	printf ("SLCE count   : %d\n", slce_count) ;
+	
+	/* Hack for zero slice count. */
+	if (slce_count == 0 && slce_total == 1)
+		slce_total = frames ;
+
 	printf ("SLCE samples : %d\n", slce_total) ;
 
 	/* Two bytes per sample. */
@@ -254,13 +254,13 @@ rx2_open	(SF_PRIVATE *psf)
 	
 	psf->logbuffer [0] = 0 ;
 	
-	/* OK, have the header althought not too sure what it all means. */
+	/* OK, have the header although not too sure what it all means. */
 	
 	psf->endian = SF_ENDIAN_BIG ;
 
 	psf->datalength = psf->filelength - psf->dataoffset ;
 
- 	if (psf_fseek (psf->filedes, psf->dataoffset, SEEK_SET))
+ 	if (psf_fseek (psf, psf->dataoffset, SEEK_SET))
 		return SFE_BAD_SEEK ;
 
 	psf->sf.format = (SF_FORMAT_REX2 | SF_FORMAT_DWVW_12) ;

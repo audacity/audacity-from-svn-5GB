@@ -55,7 +55,8 @@ main (void)
 	{	snprintf (buffer, sizeof (buffer), "./stdout_test %s %d > stdio.%s", filetypes [k], SAMPLE_COUNT, filetypes [k]) ;
 		if ((retval = system (buffer)))
 		{	retval = WEXITSTATUS (retval) ;
-			exit (retval) ;
+			printf ("%s : %s", buffer, (strerror (retval))) ;
+			exit (1) ;
 			} ;
 
 		snprintf (buffer, sizeof (buffer), "stdio.%s", filetypes [k]) ;
@@ -66,12 +67,17 @@ main (void)
 		
 		snprintf (buffer, sizeof (buffer), "./stdin_test %s %d < stdio.%s", filetypes [k], SAMPLE_COUNT, filetypes [k]) ;
 		if ((retval = system (buffer)))
-			exit (retval) ;
+		{	retval = WEXITSTATUS (retval) ;
+			printf ("%s : %s", buffer, (strerror (retval))) ;
+			exit (1) ;
+			} ;
 
 		snprintf (buffer, sizeof (buffer), "rm stdio.%s", filetypes [k]) ;
 		if ((retval = system (buffer)))
-			exit (retval) ;
-
+		{	retval = WEXITSTATUS (retval) ;
+			printf ("%s : %s", buffer, (strerror (retval))) ;
+			exit (1) ;
+			} ;
 		} ;
 
 	return 0;

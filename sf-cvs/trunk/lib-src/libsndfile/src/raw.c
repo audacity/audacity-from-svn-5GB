@@ -42,6 +42,8 @@ raw_open	(SF_PRIVATE *psf)
 	psf->blockwidth = psf->bytewidth * psf->sf.channels ;
 	psf->dataoffset = 0 ;
 	psf->datalength = psf->filelength ;
+	
+	psf->last_op = psf->mode ;
 
 	switch (subformat)
 	{	case SF_FORMAT_PCM_S8 :
@@ -88,6 +90,10 @@ raw_open	(SF_PRIVATE *psf)
 
 		case SF_FORMAT_GSM610 :
 				error = gsm610_init (psf) ;
+				break ;
+
+		case SF_FORMAT_VOX_ADPCM :
+				error = vox_adpcm_init (psf) ;
 				break ;
 
 		default : return SFE_BAD_OPEN_FORMAT ;

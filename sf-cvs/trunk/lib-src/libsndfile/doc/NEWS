@@ -1,3 +1,12 @@
+Version 1.0.3 (2002-12-09)
+  * Minor bug fixes.
+
+Version 1.0.2 (2002-11-24)
+  * Added support for VOX ADPCM.
+  * Improved error reporting.
+  * Added version scripting on Linux and Solaris.
+  * Minor bug fixes.
+
 Version 1.0.1 (2002-09-14)
   * Added MAT and MAT5 file formats.
   * Minor bug fixes.

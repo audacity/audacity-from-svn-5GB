@@ -63,7 +63,7 @@ typedef struct
 	sf_count_t		sample_count ;
 	int				*samples ;
 	unsigned char	*block ;
-	unsigned char	data [1] ; /* Data size fixed during malloc (). */
+	int				data [1] ; /* Data size fixed during malloc (). */
 } PAF24_PRIVATE ;
 
 /*------------------------------------------------------------------------------
@@ -271,8 +271,12 @@ paf_write_header (SF_PRIVATE  *psf, int calc_length)
 {	int			paf_format ;
 
 	/* PAF header already written so no need to re-write. */
-	if (psf_ftell (psf->filedes) >= PAF_HEADER_LENGTH)
+	if (psf_ftell (psf) >= PAF_HEADER_LENGTH)
 		return 0 ;
+
+	psf->dataoffset = PAF_HEADER_LENGTH ;
+
+	psf->dataoffset = PAF_HEADER_LENGTH ;
 
 	/* Prevent compiler warning. */
 	calc_length = calc_length ;
@@ -296,7 +300,7 @@ paf_write_header (SF_PRIVATE  *psf, int calc_length)
 	/* Reset the current header length to zero. */
 	psf->header [0] = 0 ;
 	psf->headindex = 0 ;
-	psf_fseek (psf->filedes, 0, SEEK_SET) ;
+	psf_fseek (psf, 0, SEEK_SET) ;
 
 	if (psf->endian == SF_ENDIAN_BIG)
 	{	/* Marker, version, endianness, samplerate */
@@ -314,9 +318,9 @@ paf_write_header (SF_PRIVATE  *psf, int calc_length)
 	/* Zero fill to dataoffset. */
 	psf_binheader_writef (psf, "z", (int) (psf->dataoffset - psf->headindex)) ;
 
-	psf_fwrite (psf->header, psf->headindex, 1, psf->filedes) ;
-
-	return 0 ;
+	psf_fwrite (psf->header, psf->headindex, 1, psf) ;
+	
+	return psf->error ;
 } /* paf_write_header */
 
 /*===============================================================================
@@ -354,7 +358,7 @@ paf24_init (SF_PRIVATE  *psf)
 
 	ppaf24->channels = psf->sf.channels ;
 	ppaf24->block    = (unsigned char*) ppaf24->data ;
-	ppaf24->samples  = (int*) (ppaf24->data + PAF24_BLOCK_SIZE * ppaf24->channels) ;
+	ppaf24->samples  = (int*) (ppaf24->block + PAF24_BLOCK_SIZE * ppaf24->channels) ;
 
 	ppaf24->blocksize = PAF24_BLOCK_SIZE * ppaf24->channels ;
 	ppaf24->samplesperblock = PAF24_SAMPLES_PER_BLOCK ;
@@ -378,7 +382,7 @@ paf24_init (SF_PRIVATE  *psf)
 	psf->new_seek 	= paf24_seek ;
 	psf->close     	= paf24_close ;
 
-	psf->filelength = psf_get_filelen (psf->filedes) ;
+	psf->filelength = psf_get_filelen (psf) ;
 	psf->datalength = psf->filelength - psf->dataoffset ;
 
 	if (psf->datalength % PAF24_BLOCK_SIZE)
@@ -429,7 +433,7 @@ paf24_seek (SF_PRIVATE *psf, int mode, sf_count_t offset)
 				if (psf->last_op == SFM_WRITE && ppaf24->write_count)
 					paf24_write_block (psf, ppaf24) ;
 
-				psf_fseek (psf->filedes, psf->dataoffset + newblock * ppaf24->blocksize, SEEK_SET) ;
+				psf_fseek (psf, psf->dataoffset + newblock * ppaf24->blocksize, SEEK_SET) ;
 				ppaf24->read_block  = newblock ;
 				paf24_read_block (psf, ppaf24) ;
 				ppaf24->read_count = newsample ;
@@ -444,7 +448,7 @@ paf24_seek (SF_PRIVATE *psf, int mode, sf_count_t offset)
 				if (psf->last_op == SFM_WRITE && ppaf24->write_count)
 					paf24_write_block (psf, ppaf24) ;
 
-				psf_fseek (psf->filedes, psf->dataoffset + newblock * ppaf24->blocksize, SEEK_SET) ;
+				psf_fseek (psf, psf->dataoffset + newblock * ppaf24->blocksize, SEEK_SET) ;
 				ppaf24->read_block  = newblock ;
 				paf24_read_block (psf, ppaf24) ;
 				ppaf24->read_count = newsample ;
@@ -494,14 +498,14 @@ paf24_read_block (SF_PRIVATE  *psf, PAF24_PRIVATE *ppaf24)
 		} ;
 
 	/* Read the block. */
-	if ((k = psf_fread (ppaf24->block, 1, ppaf24->blocksize, psf->filedes)) != ppaf24->blocksize)
+	if ((k = psf_fread (ppaf24->block, 1, ppaf24->blocksize, psf)) != ppaf24->blocksize)
 		psf_log_printf (psf, "*** Warning : short read (%d != %d).\n", k, ppaf24->blocksize) ;
 
 
 	if (CPU_IS_LITTLE_ENDIAN)
 	{	/* Do endian swapping if necessary. */
 		if (psf->endian == SF_ENDIAN_BIG)
-			endswap_int_array 	((int*) ppaf24->data, 8 * ppaf24->channels) ;
+			endswap_int_array 	(ppaf24->data, 8 * ppaf24->channels) ;
 
 		/* Unpack block. */
 		for (k = 0 ; k < PAF24_SAMPLES_PER_BLOCK * ppaf24->channels ; k++)
@@ -513,7 +517,7 @@ paf24_read_block (SF_PRIVATE  *psf, PAF24_PRIVATE *ppaf24)
 	else
 	{	/* Do endian swapping if necessary. */
 		if (psf->endian == SF_ENDIAN_BIG)
-			endswap_int_array 	((int*) ppaf24->data, 8 * ppaf24->channels) ;
+			endswap_int_array 	(ppaf24->data, 8 * ppaf24->channels) ;
 
 		/* Unpack block. */
 		for (k = 0 ; k < PAF24_SAMPLES_PER_BLOCK * ppaf24->channels ; k++)
@@ -664,7 +668,7 @@ paf24_write_block (SF_PRIVATE  *psf, PAF24_PRIVATE *ppaf24)
 
 		/* Do endian swapping if necessary. */
 		if (psf->endian == SF_ENDIAN_BIG)
-			endswap_int_array ((int*) ppaf24->data, 8 * ppaf24->channels) ;
+			endswap_int_array (ppaf24->data, 8 * ppaf24->channels) ;
 		}
 	else if (CPU_IS_BIG_ENDIAN)
 	{	/* This is correct. */
@@ -677,11 +681,11 @@ paf24_write_block (SF_PRIVATE  *psf, PAF24_PRIVATE *ppaf24)
 			cptr [2] = nextsample >> 16 ;
 			} ;
 		if (psf->endian == SF_ENDIAN_BIG)
-			endswap_int_array ((int*) ppaf24->data, 8 * ppaf24->channels) ;
+			endswap_int_array (ppaf24->data, 8 * ppaf24->channels) ;
 		} ;
 
 	/* Write block to disk. */
-	if ((k = psf_fwrite (ppaf24->block, 1, ppaf24->blocksize, psf->filedes)) != ppaf24->blocksize)
+	if ((k = psf_fwrite (ppaf24->block, 1, ppaf24->blocksize, psf)) != ppaf24->blocksize)
 		psf_log_printf (psf, "*** Warning : short write (%d != %d).\n", k, ppaf24->blocksize) ;
 
 	if (ppaf24->sample_count < ppaf24->write_block * ppaf24->samplesperblock + ppaf24->write_count)

@@ -17,6 +17,7 @@
 */
 
 #include	<stdio.h>
+#include	<string.h>
 #include	<unistd.h>
 #include    <string.h>
 
@@ -187,7 +188,7 @@ wav_w64_msadpcm_init (SF_PRIVATE *psf, int blockalign, int samplesperblock)
 
 static int
 msadpcm_decode_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms)
-{	int		chan, k, blockindex, sampleindex ;
+{	int		chan, k, blockindx, sampleindx ;
 	short	bytecode, bpred [2], chan_idelta [2] ;
 	
     int predict ;
@@ -202,7 +203,7 @@ msadpcm_decode_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms)
 		return 1 ;
 		} ;
 
-	if ((k = psf_fread (pms->block, 1, pms->blocksize, psf->filedes)) != pms->blocksize)
+	if ((k = psf_fread (pms->block, 1, pms->blocksize, psf)) != pms->blocksize)
 		psf_log_printf (psf, "*** Warning : short read (%d != %d).\n", k, pms->blocksize) ;
 
 	/* Read and check the block header. */
@@ -220,7 +221,7 @@ msadpcm_decode_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms)
 
 		pms->samples [1] = pms->block [3] | (pms->block [4] << 8) ;
 		pms->samples [0] = pms->block [5] | (pms->block [6] << 8) ;
-		blockindex = 7 ;
+		blockindx = 7 ;
 		}
 	else
 	{	bpred [0] = pms->block [0] ;
@@ -240,7 +241,7 @@ msadpcm_decode_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms)
 		pms->samples [0] = pms->block [10] | (pms->block [11] << 8) ;
 		pms->samples [1] = pms->block [12] | (pms->block [13] << 8) ;
 
-		blockindex = 14 ;
+		blockindx = 14 ;
 		} ;
 
 	/*--------------------------------------------------------
@@ -258,11 +259,11 @@ msadpcm_decode_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms)
 	** correct sample positions.
 	*/
 	
-	sampleindex = 2 * pms->channels ;
-	while (blockindex <  pms->blocksize)
-	{	bytecode = pms->block [blockindex++] ;
-  		pms->samples [sampleindex++] = (bytecode >> 4) & 0x0F ;
-		pms->samples [sampleindex++] = bytecode & 0x0F ;
+	sampleindx = 2 * pms->channels ;
+	while (blockindx <  pms->blocksize)
+	{	bytecode = pms->block [blockindx++] ;
+  		pms->samples [sampleindx++] = (bytecode >> 4) & 0x0F ;
+		pms->samples [sampleindx++] = bytecode & 0x0F ;
 		} ;
 		
 	/* Decode the encoded 4 bit samples. */
@@ -297,11 +298,11 @@ msadpcm_decode_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms)
 
 static sf_count_t 
 msadpcm_read_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms, short *ptr, int len)
-{	int	count, total = 0, index = 0 ;
+{	int	count, total = 0, indx = 0 ;
 	
-	while (index < len)
+	while (indx < len)
 	{	if (pms->blockcount >= pms->blocks && pms->samplecount >= pms->samplesperblock)
-		{	memset (&(ptr[index]), 0, (size_t) ((len - index) * sizeof (short))) ;
+		{	memset (&(ptr[indx]), 0, (size_t) ((len - indx) * sizeof (short))) ;
 			return total ;
 			} ;
 		
@@ -309,12 +310,12 @@ msadpcm_read_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms, short *ptr, int len)
 			msadpcm_decode_block (psf, pms) ;
 		
 		count = (pms->samplesperblock - pms->samplecount) * pms->channels ;
-		count = (len - index > count) ? count : len - index ;
+		count = (len - indx > count) ? count : len - indx ;
 		
-		memcpy (&(ptr[index]), &(pms->samples [pms->samplecount * pms->channels]), count * sizeof (short)) ;
-		index += count ;
+		memcpy (&(ptr[indx]), &(pms->samples [pms->samplecount * pms->channels]), count * sizeof (short)) ;
+		indx += count ;
 		pms->samplecount += count / pms->channels ;
-		total = index ;
+		total = indx ;
 		} ;
 
 	return total ;		
@@ -442,7 +443,7 @@ msadpcm_seek   (SF_PRIVATE *psf, int mode, sf_count_t offset)
 		} ;
 
 	if (offset == 0)
-	{	psf_fseek (psf->filedes, psf->dataoffset, SEEK_SET) ;
+	{	psf_fseek (psf, psf->dataoffset, SEEK_SET) ;
 		pms->blockcount  = 0 ;
 		msadpcm_decode_block (psf, pms) ;
 		pms->samplecount = 0 ;
@@ -458,7 +459,7 @@ msadpcm_seek   (SF_PRIVATE *psf, int mode, sf_count_t offset)
 	newsample = offset % pms->samplesperblock ;
 		
 	if (mode == SFM_READ)
-	{	psf_fseek (psf->filedes, psf->dataoffset + newblock * pms->blocksize, SEEK_SET) ;
+	{	psf_fseek (psf, psf->dataoffset + newblock * pms->blocksize, SEEK_SET) ;
 		pms->blockcount  = newblock ;
 		msadpcm_decode_block (psf, pms) ;
 		pms->samplecount = newsample ;
@@ -489,7 +490,7 @@ msadpcm_write_adapt_coeffs (SF_PRIVATE *psf)
 
 static int
 msadpcm_encode_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms)
-{	unsigned int	blockindex ;
+{	unsigned int	blockindx ;
 	unsigned char	byte ;
 	int				chan, k, predict, bpred [2], idelta [2], errordelta, newsamp ;
 	
@@ -506,7 +507,7 @@ msadpcm_encode_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms)
 		pms->block [5]	= pms->samples [0] & 0xFF ;
 		pms->block [6]	= pms->samples [0] >> 8 ;
 
-		blockindex = 7 ;
+		blockindx = 7 ;
 		byte = 0 ;
 
 		/* Encode the samples as 4 bit. */
@@ -528,7 +529,7 @@ msadpcm_encode_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms)
 				
 			byte = (byte << 4) | (errordelta & 0xF) ;
 			if (k % 2)
-			{	pms->block [blockindex++] = byte ;
+			{	pms->block [blockindx++] = byte ;
 				byte = 0 ;
 				} ;
 
@@ -558,7 +559,7 @@ msadpcm_encode_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms)
 		pms->block [12]	= pms->samples [1] & 0xFF ;
 		pms->block [13]	= pms->samples [1] >> 8 ;
 	
-		blockindex = 14 ;
+		blockindx = 14 ;
 		byte = 0 ;
 		chan = 1 ;
 		
@@ -584,7 +585,7 @@ msadpcm_encode_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms)
 			byte = (byte << 4) | (errordelta & 0xF) ;
 
 			if (chan)
-			{	pms->block [blockindex++] = byte ;
+			{	pms->block [blockindx++] = byte ;
 				byte = 0 ;
 				} ;
 
@@ -597,7 +598,7 @@ msadpcm_encode_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms)
 
 	/* Write the block to disk. */
 
-	if ((k = psf_fwrite (pms->block, 1, pms->blocksize, psf->filedes)) != pms->blocksize)
+	if ((k = psf_fwrite (pms->block, 1, pms->blocksize, psf)) != pms->blocksize)
 		psf_log_printf (psf, "*** Warning : short write (%d != %d).\n", k, pms->blocksize) ;
 		
 	memset (pms->samples, 0, pms->samplesperblock * sizeof (short)) ;
@@ -610,18 +611,18 @@ msadpcm_encode_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms)
 
 static sf_count_t 
 msadpcm_write_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms, short *ptr, int len)
-{	int		count, total = 0, index = 0 ;
+{	int		count, total = 0, indx = 0 ;
 	
-	while (index < len)
+	while (indx < len)
 	{	count = (pms->samplesperblock - pms->samplecount) * pms->channels ;
 
-		if (count > len - index)
-			count = len - index ;
+		if (count > len - indx)
+			count = len - indx ;
 
 		memcpy (&(pms->samples [pms->samplecount * pms->channels]), &(ptr [total]), count * sizeof (short)) ;
-		index += count ;
+		indx += count ;
 		pms->samplecount += count / pms->channels ;
-		total = index ;
+		total = indx ;
 
 		if (pms->samplecount >= pms->samplesperblock)
 			msadpcm_encode_block (psf, pms) ;	
@@ -758,8 +759,8 @@ msadpcm_close	(SF_PRIVATE  *psf)
 		if (pms->samplecount && pms->samplecount < pms->samplesperblock)
 			msadpcm_encode_block (psf, pms) ;	
 
-		psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf->filedes) ;
+		psf_fseek (psf, 0, SEEK_END) ;
+		psf->filelength = psf_ftell (psf) ;
 
 		psf->sf.frames = pms->samplesperblock * pms->blockcount ;
 		psf->datalength = psf->filelength - psf->dataoffset ;
@@ -782,7 +783,7 @@ msadpcm_close	(SF_PRIVATE  *psf)
 /*----------------------------------------------------------------------------------------
 **	Choosing the block predictor.
 **	Each block requires a predictor and an idelta for each channel. 
-**	The predictor is in the range [0..6] which is an index into the	two AdaptCoeff tables. 
+**	The predictor is in the range [0..6] which is an indx into the	two AdaptCoeff tables. 
 **	The predictor is chosen by trying all of the possible predictors on a small set of
 **	samples at the beginning of the block. The predictor with the smallest average
 **	abs (idelta) is chosen as the best predictor for this block. 

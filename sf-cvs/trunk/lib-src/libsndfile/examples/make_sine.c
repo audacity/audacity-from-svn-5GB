@@ -74,7 +74,7 @@ main (void)
 		
 	if (sf_write_short (file, buffer, sfinfo.channels * SAMPLE_COUNT) != 
 											sfinfo.channels * SAMPLE_COUNT) 
-		sf_perror (file) ; 
+		puts (sf_strerror (file)) ; 
 
 	sf_close (file) ; 
 	return	 0 ; 

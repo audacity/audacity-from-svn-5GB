@@ -79,7 +79,9 @@ LINK32_OBJS= \
 	".\src\dwd.obj" \
 	".\src\wve.obj" \
 	".\src\mat4.obj" \
-	".\src\mat5.obj"
+	".\src\mat5.obj" \
+	".\src\vox_adpcm.obj" \
+	".\src\ogg.obj"
 
 libsndfile.dll : $(LINK32_OBJS) ".\Win32\libsndfile.def"
     $(LINK32) $(DLL_LINK_FLAGS) /def:".\Win32\libsndfile.def" $(LINK32_OBJS)
@@ -390,6 +392,12 @@ CHECK: $(TEST_PROGS)
 
 ".\src\mat5.obj" : ".\src\mat5.c"
     $(CPP) $(CFLAGS) /Fo".\src\mat5.obj" /c ".\src\mat5.c"
+
+".\src\vox_adpcm.obj" : ".\src\vox_adpcm.c"
+    $(CPP) $(CFLAGS) /Fo".\src\vox_adpcm.obj" /c ".\src\vox_adpcm.c"
+
+".\src\ogg.obj" : ".\src\ogg.c"
+    $(CPP) $(CFLAGS) /Fo".\src\ogg.obj" /c ".\src\ogg.c"
 
 #====================================================================
 # Object files for test programs.
