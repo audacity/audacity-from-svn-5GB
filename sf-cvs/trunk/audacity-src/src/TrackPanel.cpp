@@ -154,7 +154,8 @@ mAutoScrolling(false)
    mIsClosing = false;
    mIsSelecting = false;
    mIsResizing = false;
-   mIsResizingLinkedTracks = false;
+   mIsResizingBetweenLinkedTracks = false;
+   mIsResizingBelowLinkedTracks = false;
    mIsRearranging = false;
    mIsSliding = false;
    mIsEnveloping = false;
@@ -547,7 +548,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
                
                mListener->
                   TP_DisplayStatusMessage(_
-                                          ("Click and drag to resize both tracks"),
+                                          ("Click and drag to resize both tracks."),
                                           0);
                SetCursor(*mResizeCursor);               
             }
@@ -556,7 +557,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
                //It is not linked to anything
                mListener->
                   TP_DisplayStatusMessage(_
-                                          ("Click and drag to resize the track"),
+                                          ("Click and drag to resize the track."),
                                           0);
                SetCursor(*mResizeCursor);
             }
@@ -580,11 +581,35 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
          if (event.m_y >= (r.y + r.height - VERTICAL_TRACK_RESIZE_REGION)
              && event.m_y < (r.y + r.height + VERTICAL_TRACK_RESIZE_REGION)) {
             
-            mListener->
-               TP_DisplayStatusMessage(_
-                                       ("Click and drag to resize the track"),
-                                       0);
-            SetCursor(*mResizeCursor);
+            //Check to see if it is the second channel of a stereo track
+            VTrack *prev = mTracks->GetPrev(nonlabel);
+            VTrack *next = mTracks->GetNext(nonlabel);
+
+            if(mTracks->GetLink(prev) == nonlabel) {
+               
+               mListener->
+                  TP_DisplayStatusMessage(_
+                                          ("Click and drag to resize both tracks."),
+                                          0);
+               SetCursor(*mResizeCursor);               
+            }
+            else if (next && mTracks->GetLink(nonlabel) == next) {
+               mListener->
+                  TP_DisplayStatusMessage(_
+                                          ("Click and drag to adjust relative size of stereo tracks."),
+                                          0);
+               SetCursor(*mResizeCursor);     
+               
+            }
+            else if ( !nonlabel->GetLinked() ) {
+               
+               //It is not linked to anything
+               mListener->
+                  TP_DisplayStatusMessage(_
+                                          ("Click and drag to resize the track."),
+                                          0);
+               SetCursor(*mResizeCursor);
+            }
          }
          else {
             
@@ -1472,7 +1497,9 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
       // DM: Figure out what track is about to be resized
       VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
       VTrack *label = FindTrack(event.m_x, event.m_y, true, &rLabel, &num);
-      
+
+      VTrack *prev, *next;
+
       if(label) {
          //STM: The mouse is clicking on the label part. make sure it is not
          // over the mid-region of two linked tracks
@@ -1481,7 +1508,8 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
          // treat it exactly as if it is over the non-label portion
  
          //Check to see if it is the second channel of a stereo track
-         VTrack *prev = mTracks->GetPrev(label);
+         prev = mTracks->GetPrev(label);
+         next = mTracks->GetNext(label);
   
          if ( mTracks->GetLink(prev) == label ) {     
             
@@ -1490,10 +1518,9 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
             mMouseClickY = event.m_y;
             mInitialTrackHeight = label->GetHeight();
             mInitialUpperTrackHeight = prev->GetHeight();
-            //Keep track of the relative size of the two tracks:
-            // mInitialLowerTrackProportion =  static_cast <double> (mInitialTrackHeight / (mInitialTrackHeight + mInitialUpperTrackHeight));
+  
             mIsResizing = true;
-            mIsResizingLinkedTracks=true;
+            mIsResizingBelowLinkedTracks = true;
 
          } else if (!label->GetLinked()){
             //It is not linked to anything: treat it as if it is a normal resize
@@ -1501,23 +1528,53 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
             t = label;
              
          }}
-    
-         if (t) {
+      
+      if (t) {
+         prev = mTracks->GetPrev(t);
+         next = mTracks->GetNext(t);
+
+  
+         // DM: Capture the track so that we continue to resize
+         //  THIS track, no matter where the user moves the mouse
+         mCapturedTrack = t;
+         //mCapturedRect = r;
+         //mCapturedNum = num;
             
-            // DM: Capture the track so that we continue to resize
-            //  THIS track, no matter where the user moves the mouse
-            mCapturedTrack = t;
-            //mCapturedRect = r;
-            //mCapturedNum = num;
-            
-            // DM: Save the initial mouse location and the initial height
-            mMouseClickX = event.m_x;
-            mMouseClickY = event.m_y;
-            mInitialTrackHeight = t->GetHeight();
-            
-            mIsResizing = true;
-         }
-      } else if (mIsResizing) {
+         //STM:  Determine whether we should rescale one or two tracks
+         if (mTracks->GetLink(prev) == t)
+            {
+
+               mCapturedTrack = t;         //mCapturedTrack is the lower track
+               mMouseClickX = event.m_x;
+               mMouseClickY = event.m_y;
+               mInitialTrackHeight = t->GetHeight();
+               mInitialUpperTrackHeight = prev->GetHeight();
+               mIsResizing = true;
+               mIsResizingBelowLinkedTracks=true;  
+            }
+         else if (next && mTracks ->GetLink(t) == next)
+            { 
+
+               mCapturedTrack = t;            //mCapturedTrack is the upper track
+               mMouseClickX = event.m_x;
+               mMouseClickY = event.m_y;
+               mInitialTrackHeight = next->GetHeight();
+               mInitialUpperTrackHeight = t->GetHeight();
+               mIsResizing = true;
+               mIsResizingBetweenLinkedTracks=true;  
+          }
+         else
+            {
+
+               // DM: Save the initial mouse location and the initial height
+               mMouseClickX = event.m_x;
+               mMouseClickY = event.m_y;
+               mInitialTrackHeight = t->GetHeight();
+               
+               mIsResizing = true;
+            }
+      }
+   } else if (mIsResizing) {
 
       // DM: Dragging means that the mouse button IS down and has moved
       //  from its initial location.  By the time we get here, we
@@ -1527,10 +1584,12 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
          
          int delta = (event.m_y - mMouseClickY);
 
-   
          
-         //STM: We may be dragging one or two (stereo) tracks.  If two, resize proportionally
-         if(mIsResizingLinkedTracks) {
+         
+         //STM: We may be dragging one or two (stereo) tracks.  
+         // If two, resize proportionally if we are dragging the lower track, and
+         // adjust compensatively if we are dragging the upper track.
+         if(mIsResizingBelowLinkedTracks) {
             VTrack *prev = mTracks->GetPrev(mCapturedTrack);
             double proportion = static_cast <double>(mInitialTrackHeight) / (mInitialTrackHeight + mInitialUpperTrackHeight);
             int newTrackHeight = static_cast <int> (mInitialTrackHeight + delta * proportion); 
@@ -1544,7 +1603,28 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
             prev->SetHeight(newUpperTrackHeight);
             Refresh(false);
             
-         } else {
+         } else if (mIsResizingBetweenLinkedTracks) {
+
+            VTrack *next = mTracks->GetNext(mCapturedTrack);
+            int newUpperTrackHeight = mInitialUpperTrackHeight + delta;      
+            int newTrackHeight = mInitialTrackHeight - delta ;
+       
+            //make sure neither track is smaller than 20;
+            if(newTrackHeight < 20) {
+               newTrackHeight = 20;
+               newUpperTrackHeight = mInitialUpperTrackHeight + mInitialTrackHeight - 20;
+            }
+            if(newUpperTrackHeight < 20){
+               newUpperTrackHeight = 20;
+               newTrackHeight = mInitialUpperTrackHeight + mInitialTrackHeight - 20;
+            }
+            
+            mCapturedTrack->SetHeight(newUpperTrackHeight);
+            next->SetHeight(newTrackHeight);
+            Refresh(false);
+    
+         }
+         else {
             int newTrackHeight = mInitialTrackHeight + delta ;          
             if (newTrackHeight < 20)
                newTrackHeight = 20;   
@@ -1560,7 +1640,8 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
       else if (event.ButtonUp(1)) {
          mCapturedTrack = NULL;
          mIsResizing = false;
-         mIsResizingLinkedTracks = false;
+         mIsResizingBelowLinkedTracks = false;
+         mIsResizingBetweenLinkedTracks = false;
          MakeParentRedrawScrollbars();
          MakeParentPushState("TrackPanel::HandleResize() FIXME!!");
       }
