@@ -4,31 +4,82 @@ better to write an idea down and throw it away than to have a good idea
 and never remember it again.
 
 META::
-- decide which of these are planned for 1.0!
 - library reorganization
+
+
+-----------------------------------------------------------
+1.0 (required):
+-----------------------------------------------------------
+
+UI::
+- better ruler, both for time (horizontally) and magnitude/pitch (vertical)
+- add "trim" (= opposite of delete -- delete all but selection)
+- invert selection (for now, until we allow discontiguous selections,
+                    this should mean two options: select up to selection,
+                    and select after selection)
+- legend for pitch and spectrum
+- resampling
+- Out of disk space checks
+- History window, with ability to throw away undo information to
+  save disk space
+- Autoscrolling during playback
+
+Audio I/O::
+- import/export ogg vorbis everywhere
+- move to portaudio (www.portaudio.com)
+
+Effects::
+- Smart Mix (like Quick Mix but guarantees no clipping)
+- Cross-fade (smooth between two tracks)
+- Compressor/Limiter/Expander
+- Native port of Freeverb (ideally optimized)
+
+Low level issues:
+- Automatic approximate resampling, if two tracks are at
+  different sample rates but are supposed to be played
+  together
+
+-----------------------------------------------------------
+1.0 (desired):
+-----------------------------------------------------------
+
+UI::
+- ability to drag tracks instead of move down, move down, move down
+- "Fit in window" also works vertically
+- auto-fit on open (configurable?)
+- right-click capabilities
+- loop over a small segment
+- better adaptation to different font sizes (sizers)
+- move to lossless compression (FLAC?) for internal representation
+- Pan control for each track
+
+Audio I/O::
+- move to libsndfile (or something like it)?
+  ideally support many more sound file formats
+
+Effects::
+- Noise reduction (this is the most requested effect)
+
+Low level issues::
+- Make projects one big file
+
+-----------------------------------------------------------
+1.2 (planned):
+-----------------------------------------------------------
 
 UI::
 - make colors configurable
-- better ruler, both for time (horizontally) and magnitude/pitch (vertical)
-- right-click capabilities
-- ability to drag tracks instead of move down, move down, move down
 - allow labels to contain selections, which would be activated by clicking
   on the label
-- "Fit in window" also works vertically
-- auto-fit on open (configurable?)
-- add "trim" (= opposite of delete -- delete all but selection)
-- invert selection
-- legend for pitch and spectrum
-- loop over a small segment
-- better adaptation to different font sizes (sizers)
+- invert selection (i.e. allow discontiguous selection)
 
-NEW FEATURES::
+New features::
 - visualization window: VU meters, equalizer, continuous waveform, oscilloscope
 - EQ
 
-LOW LEVEL ISSUES::
-- support more bit rates, allow conversion
-- more robust up/downsampling
-- import/export ogg vorbis everywhere
-- move to portaudio (www.portaudio.com), when it's ready
-- move to lossless compression (FLAC?) for internal representation
+Low level issues::
+- support more sample sizes, allow conversion
+- support multi-track I/O
+- support an arbitrary number of channels
+- Make projects one big file
+
