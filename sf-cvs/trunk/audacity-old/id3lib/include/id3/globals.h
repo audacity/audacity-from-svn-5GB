@@ -1,5 +1,5 @@
 // -*- C++ -*-
-/* $Id: globals.h,v 1.2 2001-07-25 04:36:58 habes Exp $
+/* $Id: globals.h,v 1.3 2001-07-28 23:57:17 habes Exp $
 
  * id3lib: a C++ library for creating and manipulating id3v1/v2 tags Copyright
  * 1999, 2000 Scott Thomas Haug
@@ -375,27 +375,14 @@ ID3_ENUM(ID3_TimeStampFormat)
 #  define ID3_SEARCHPATH_SEPARATOR ';'
 #  define ID3_SEARCHPATH_SEPARATOR_S ";"
 
-#else  /* !WIN32 */
-
-# ifdef macintosh /* dmazzoni */
-
-# else /* !macintosh */
+#elif defined(macintosh)  /* dmazzoni */
 
 #    define ID3_DIR_SEPARATOR ':'
 #    define ID3_DIR_SEPARATOR_S ":"
 #    define ID3_SEARCHPATH_SEPARATOR ';'
 #    define ID3_SEARCHPATH_SEPARATOR_S ";"
 
-#  ifndef _EMX_
-/* Unix */
-
-#    define ID3_DIR_SEPARATOR '/'
-#    define ID3_DIR_SEPARATOR_S "/"
-#    define ID3_SEARCHPATH_SEPARATOR ':'
-#    define ID3_SEARCHPATH_SEPARATOR_S ":"
-
-#  else
-
+#elif defined(_EMX_)
 /* EMX/OS2 */
 
 #    define ID3_DIR_SEPARATOR '/'
@@ -403,11 +390,15 @@ ID3_ENUM(ID3_TimeStampFormat)
 #    define ID3_SEARCHPATH_SEPARATOR ';'
 #    define ID3_SEARCHPATH_SEPARATOR_S ";"
 
-#  endif
+#else
+/* Unix */
 
-# endif /* !macintosh */
+#    define ID3_DIR_SEPARATOR '/'
+#    define ID3_DIR_SEPARATOR_S "/"
+#    define ID3_SEARCHPATH_SEPARATOR ':'
+#    define ID3_SEARCHPATH_SEPARATOR_S ":"
 
-#endif /* !WIN32 */
+#endif
 
 #ifndef NULL
 #  define NULL ((void*) 0)
