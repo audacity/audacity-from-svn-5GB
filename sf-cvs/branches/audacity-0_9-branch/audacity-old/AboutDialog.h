@@ -16,8 +16,6 @@
 #include "wx/dialog.h"
 
 class AboutDialog:public wxDialog {
-   DECLARE_DYNAMIC_CLASS(AboutDialog)
-
  public:
    AboutDialog(wxWindow * parent);
    virtual ~ AboutDialog();

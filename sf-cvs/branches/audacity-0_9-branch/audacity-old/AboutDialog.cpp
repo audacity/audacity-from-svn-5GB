@@ -128,11 +128,10 @@ BEGIN_EVENT_TABLE(Eraser, wxWindow)
     EVT_BUTTON(wxID_YES, AboutDialog::OnOK)
     EVT_BUTTON(wxID_NO, AboutDialog::OnOK)
     EVT_BUTTON(wxID_CANCEL, AboutDialog::OnOK)
-    END_EVENT_TABLE()
+END_EVENT_TABLE()
 
-    IMPLEMENT_CLASS(AboutDialog, wxDialog)
 
-    AboutDialog::AboutDialog(wxWindow * parent)
+AboutDialog::AboutDialog(wxWindow * parent)
 :  wxDialog(parent, -1, "About Audacity...",
          wxDefaultPosition, wxSize(400, DLOG_HEIGHT))
 {
