@@ -1098,6 +1098,69 @@ bool TrackPanel::MuteSoloFunc(VTrack *t, wxRect r, wxMouseEvent &event, bool sol
   return false;
 }
 
+
+/*
+void TrackPanel::HandleResize(wxMouseEvent & event)
+{
+   // This gets called when:
+   // 1. A mouse-down event occurs in the "resize region" of a track,
+   //    i.e. to change its vertical height.
+   // 2. A mouse event occurs and mIsResizing==true (i.e. while
+   //    the resize is going on)
+
+   // ButtonDown means they just clicked and haven't released yet.
+   // We use this opportunity to save which track they clicked on,
+   // and the initial height of the track, so as they drag we can
+   // update the track size.
+   if (event.ButtonDown()) {
+
+      // Figure out what track is about to be resized
+      VTrack *t = FindTrack(event.m_x, event.m_y);
+
+      if (t) {
+
+         // Capture the track so that we continue to resize
+         // THIS track, no matter where the user moves the mouse
+         mCapturedTrack = t;
+
+         // Save the initial mouse location and the initial height
+         mMouseClickX = event.m_x;
+         mMouseClickY = event.m_y;
+         mInitialTrackHeight = t->GetHeight();
+
+         mIsResizing = true;
+      }
+   }
+
+   else if (mIsResizing) {
+
+      // Dragging means that the mouse button IS down and has moved
+      // from its initial location.  By the time we get here, we
+      // have already received a ButtonDown() event and saved the
+      // track being resized in mCapturedTrack.
+      if (event.Dragging()) {
+         int delta = (event.m_y - mMouseClickY);
+         int newTrackHeight = mInitialTrackHeight + delta;
+         if (newTrackHeight < 20)
+            newTrackHeight = 20;
+         mCapturedTrack->SetHeight(newTrackHeight);
+         Refresh(false);
+      }
+
+      // This happens when the button is released from a drag.
+      // Since we actually took care of resizing the track when
+      // we got drag events, all we have to do here is clean up.
+      // We also push the state so that this action is undo-able.
+      if (event.ButtonUp()) {
+         mCapturedTrack = NULL;
+         mIsResizing = false;
+         MakeParentRedrawScrollbars();
+         MakeParentPushState("TrackPanel::HandleResize() FIXME!!");
+      }
+   }
+}
+*/
+
 void TrackPanel::HandleResize(wxMouseEvent & event)
 {
    if (event.ButtonDown()) {
