@@ -28,7 +28,7 @@ class EffectNoise:public Effect {
    }
 
    virtual wxString GetEffectDescription() { 
-      return wxString(_("Applied effect: Generate White Noise")); 
+      return wxString::Format(_("Applied effect: Generate White Noise, %.6lf seconds"), length); 
    } 
 
    virtual wxString GetEffectAction() {
@@ -39,8 +39,11 @@ class EffectNoise:public Effect {
       return BUILTIN_EFFECT | INSERT_EFFECT;
    }
 
+   virtual bool PromptUser();
    virtual bool Process();
 
+ private:
+   double length;
 };
 
 #endif
