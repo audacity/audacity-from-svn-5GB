@@ -17,6 +17,7 @@
 
 #include "Ruler.h"
 
+
 //
 // Ruler
 //
@@ -740,6 +741,9 @@ void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
    }
 }
 
+
+
+
 //
 // RulerPanel
 //
@@ -781,4 +785,162 @@ void RulerPanel::OnSize(wxSizeEvent &evt)
    ruler.SetBounds(0, 0, width-1, height-1);
 
    Refresh(false);
+}
+
+
+/**********************************************************************
+
+  Implementation of AdornedRulerPanel.
+  Either we find a way to make this more generic, Or it will move
+  out of the widgets subdirectory into its own source file.
+
+**********************************************************************/
+//#include <math.h>
+//#include <wx/dcscreen.h>
+//#include "Ruler.h"
+
+#include "../ViewInfo.h"
+#include "../AColor.h"
+
+#if 0
+AdornedRulerPanel::AdornedRulerPanel(wxWindow* parent, wxWindowID id,
+              const wxPoint& pos,
+              const wxSize& size ) :
+   RulerPanel( parent, id, pos, size )
+{
+   ruler.SetLabelEdges(false);
+   ruler.SetFormat(Ruler::TimeFormat);
+
+}
+#endif
+
+AdornedRulerPanel::AdornedRulerPanel()
+{
+   ruler.SetLabelEdges(false);
+   ruler.SetFormat(Ruler::TimeFormat);
+}
+
+
+AdornedRulerPanel::~AdornedRulerPanel()
+{
+}
+
+void AdornedRulerPanel::SetSize( const wxRect & r )
+{
+   mRect = r;
+}
+
+void AdornedRulerPanel::GetSize( int * width, int * height )
+{
+   *width = mRect.width;
+   *height= mRect.height;
+}
+
+
+void AdornedRulerPanel::DrawAdornedRuler(wxDC * dc, ViewInfo * pViewInfo, bool text, bool indicator)
+{
+   wxRect r;
+
+   mViewInfo = pViewInfo;
+
+   GetSize(&r.width, &r.height);
+   r.x = 0;
+   r.y = 0;
+
+
+   DrawBorder(dc, r);
+
+   if (pViewInfo->sel0 < pViewInfo->sel1)
+      DrawSelection(dc, r);
+
+   DrawMarks(dc, r, text);
+
+   if( indicator )
+      DrawIndicator(dc);
+}
+
+void AdornedRulerPanel::DrawBorder(wxDC * dc, wxRect & r)
+{
+   // Draw AdornedRulerPanel border
+   AColor::Medium(dc, false);
+   dc->DrawRectangle(r);
+
+   r.width--;
+   r.height--;
+   AColor::Bevel(*dc, true, r);
+
+   dc->SetPen(*wxBLACK_PEN);
+   dc->DrawLine(r.x, r.y + r.height + 1, r.x + r.width + 1,
+                r.y + r.height + 1);
+}
+
+void AdornedRulerPanel::DrawSelection(wxDC * dc, const wxRect r)
+{
+   // Draw selection
+   double sel0 = mViewInfo->sel0 - mViewInfo->h +
+       GetLeftOffset() / mViewInfo->zoom;
+   double sel1 = mViewInfo->sel1 - mViewInfo->h +
+       GetLeftOffset() / mViewInfo->zoom;
+
+   if (sel0 < 0.0)
+      sel0 = 0.0;
+   if (sel1 > (r.width / mViewInfo->zoom))
+      sel1 = r.width / mViewInfo->zoom;
+
+   int p0 = int (sel0 * mViewInfo->zoom + 0.5);
+   int p1 = int (sel1 * mViewInfo->zoom + 0.5);
+
+   wxBrush selectedBrush;
+   selectedBrush.SetColour(148, 148, 170);
+   wxPen selectedPen;
+   selectedPen.SetColour(148, 148, 170);
+   dc->SetBrush(selectedBrush);
+   dc->SetPen(selectedPen);
+
+   wxRect sr;
+   sr.x = p0;
+   sr.y = 1;
+   sr.width = p1 - p0 - 1;
+   sr.height = GetRulerHeight() - 3;
+   dc->DrawRectangle(sr);
+}
+
+void AdornedRulerPanel::DrawMarks(wxDC * dc, const wxRect r, bool /*text */ )
+{
+   ruler.SetBounds(r.x, r.y, r.x + r.width - 1, r.y + r.height - 1);
+   double min = mViewInfo->h - GetLeftOffset() / mViewInfo->zoom;
+   double max = min + r.width / mViewInfo->zoom;
+   ruler.SetRange(min, max);
+
+   ruler.Draw(*dc);
+}
+
+//
+//This draws the little triangular indicator on the 
+//AdornedRulerPanel.
+//
+void AdornedRulerPanel::DrawIndicator(wxDC * dc)
+{
+   // Draw indicator
+   double ind = indicatorPos; 
+
+   if (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen)) {
+      int indp =
+          GetLeftOffset() + int ((ind - mViewInfo->h) * mViewInfo->zoom);
+
+      dc->SetPen(*wxTRANSPARENT_PEN);
+      dc->SetBrush(*wxBLACK_BRUSH);
+
+      int indsize = 6;
+
+      wxPoint tri[3];
+      tri[0].x = indp;
+      tri[0].y = indsize + 1;
+      tri[1].x = indp - indsize;
+      tri[1].y = 1;
+      tri[2].x = indp + indsize;
+      tri[2].y = 1;
+
+      dc->DrawPolygon(3, tri);
+   }
 }

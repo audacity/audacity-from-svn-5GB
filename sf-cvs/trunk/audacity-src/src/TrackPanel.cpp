@@ -20,8 +20,51 @@
 
 **********************************************************************/
 
-#include "Audacity.h"
+/*********************************************************************
+ 
+  JKC: Incremental refactoring started April/2003
 
+  Aiming for classes something like this:
+
+   +----------------------------------------------------+
+   |      AdornedRulerPanel                             |
+   +----------------------------------------------------+
+   +----------------------------------------------------+
+   |+------------+ +-----------------------------------+|
+   ||            | | (L)  TrackPanel                   ||
+   || LabelPanel | +-----------------------------------+|
+   ||            | +-----------------------------------+|
+   ||            | | (R)  TrackPanel                   ||
+   |+------------+ +-----------------------------------+|
+   +-------- TrackGroup --------------------------------+
+   +----------------------------------------------------+
+   |+------------+ +-----------------------------------+|
+   ||            | | (L)  TrackPanel                   ||
+   || LabelPanel | +-----------------------------------+|
+   ||            | +-----------------------------------+|
+   ||            | | (R)  TrackPanel                   ||
+   |+------------+ +-----------------------------------+|
+   +-------- TrackGroup --------------------------------+
+    
+  With the whole lot sitting in a ProjectPanel which forwards 
+  events to the sub objects.
+
+  The TrackGroup class will do the special logic for
+  Stereo channel grouping.  
+  
+  The precise names of the classes are subject to revision.
+  Have deliberately not created new files for the new classes 
+  such as AdornedRulerPanel and LabelPanel - yet.
+
+  TODO:
+    - Move menus from current TrackPanel into LabelPanel.
+    - Convert LabelPanel from 'flyweight' to heavyweight.
+    - Split TrackGroup and ProjectPanel out from TrackPanel.
+
+*********************************************************************/
+ 
+
+#include "Audacity.h"
 #include "TrackPanel.h"
 
 #ifdef __MACOSX__
@@ -128,6 +171,22 @@ enum {
 double samplerate = 44100.0;
 
 
+// This function is used in both TrackPanel and LabemLabelPanel.
+// Probably should move to 'Utils.cpp'.
+void SetLabelFont(wxDC * dc)
+{
+   int fontSize = 10;
+#if defined __WXMSW__
+   fontSize = 8;
+#endif
+
+   wxFont labelFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
+   dc->SetFont(labelFont);
+}
+
+
+
+
 enum {
    TrackPanelFirstID = 2000,
 
@@ -217,7 +276,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
                        TrackPanelListener * listener)
 :wxWindow(parent, id, pos, size, wxWANTS_CHARS),
 mListener(listener), mTracks(tracks), mViewInfo(viewInfo), mBitmap(NULL),
-mAutoScrolling(false)
+mAutoScrolling(false), mLabelPanel(this)
 {
 
    iformat = SELECTION_FORMAT_RULER_MIN_SEC;
@@ -354,9 +413,7 @@ mAutoScrolling(false)
 
    mPopupMenuTarget = NULL;
 
-   mRuler = new Ruler();
-   mRuler->SetLabelEdges(false);
-   mRuler->SetFormat(Ruler::TimeFormat);
+   mRuler = new AdornedRulerPanel();
 
    mTimeCount = 0;
    mTimer.parent = this;
@@ -366,7 +423,7 @@ mAutoScrolling(false)
    //we know that no drawing line needs to be erased.
    mPlayIndicatorExists=false;
 
-   //Initialize a a member variable pointing to the current
+   //Initialize a member variable pointing to the current
    //drawing track.
    mDrawingTrack =NULL;
 
@@ -377,11 +434,7 @@ mAutoScrolling(false)
    mPrevWidth = -1;
    mPrevHeight = -1;
 
-   //To prevent flicker, we create an initial set of 16 sliders
-   //which won't ever be shown.
-   int i;
-   for(i=0; i<16; i++)
-      MakeMoreSliders();
+
 }
 
 TrackPanel::~TrackPanel()
@@ -415,11 +468,6 @@ TrackPanel::~TrackPanel()
    delete mLabelTrackMenu;
    delete mTimeTrackMenu;
 
-   unsigned int i;
-   for(i=0; i<mGains.Count(); i++)
-      delete mGains[i];
-   for(i=0; i<mPans.Count(); i++)
-      delete mPans[i];
 
    while(!mScreenAtIndicator.IsEmpty())
    {
@@ -1842,14 +1890,14 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
    wxRect r = mCapturedRect;
 
    wxRect closeRect;
-   GetCloseBoxRect(r, closeRect);
+   mLabelPanel.GetCloseBoxRect(r, closeRect);
 
    wxClientDC dc(this);
 
    if (event.Dragging())
-      DrawCloseBox(&dc, r, closeRect.Inside(event.m_x, event.m_y));
+      mLabelPanel.DrawCloseBox(&dc, r, closeRect.Inside(event.m_x, event.m_y));
    else if (event.ButtonUp(1)) {
-      DrawCloseBox(&dc, r, false);
+      mLabelPanel.DrawCloseBox(&dc, r, false);
       if (closeRect.Inside(event.m_x, event.m_y)) {
          //BG: We may want to check if we are busy in just this project
          if (!gAudioIO->IsStreamActive())
@@ -1908,12 +1956,12 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
    wxRect r = mCapturedRect;
 
    wxRect buttonRect;
-   GetMuteSoloRect(r, buttonRect, solo);
+   mLabelPanel.GetMuteSoloRect(r, buttonRect, solo);
 
    wxClientDC dc(this);
 
    if (event.Dragging())
-      DrawMuteSolo(&dc, r, t, buttonRect.Inside(event.m_x, event.m_y),
+      mLabelPanel.DrawMuteSolo(&dc, r, t, buttonRect.Inside(event.m_x, event.m_y),
                    solo);
    else if (event.ButtonUp(1)) {
 
@@ -1924,45 +1972,25 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
             t->SetMute(!t->GetMute());
       }
 
-      DrawMuteSolo(&dc, r, t, false, solo);
+      mLabelPanel.DrawMuteSolo(&dc, r, t, false, solo);
       if (solo) {
          mIsSoloing = false;
-         DrawMuteSolo(&dc, r, t, false, !solo);
+         mLabelPanel.DrawMuteSolo(&dc, r, t, false, !solo);
       } else
          mIsMuting = false;
    }
 }
 
-void TrackPanel::MakeMoreSliders()
-{
-   wxRect r(0, 0, 1000, 1000);
-   wxRect gainRect;
-   wxRect panRect;
 
-   GetGainRect(r, gainRect);
-   GetPanRect(r, panRect);
-
-   LWSlider *slider = new LWSlider(this, _("Gain"),
-                                   wxPoint(gainRect.x, gainRect.y),
-                                   wxSize(gainRect.width, gainRect.height),
-                                   DB_SLIDER);
-   mGains.Add(slider);
-   
-   slider = new LWSlider(this, _("Pan"),
-                         wxPoint(panRect.x, panRect.y),
-                         wxSize(panRect.width, panRect.height),
-                         PAN_SLIDER);
-   mPans.Add(slider);
-}
 
 void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
 {
    LWSlider *slider;
 
    if (pan)
-      slider = mPans[mCapturedNum];
+      slider = mLabelPanel.mPans[mCapturedNum];
    else
-      slider = mGains[mCapturedNum];
+      slider = mLabelPanel.mGains[mCapturedNum];
 
    slider->OnMouseEvent(event);
 
@@ -2004,8 +2032,7 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
    mPopupMenuTarget = t;
    {
       wxClientDC dc(this);
-      SetLabelFont(&dc);
-      DrawTitleBar(&dc, r, t, true);
+      mLabelPanel.DrawTitleBar(&dc, r, t, true);
    }
    bool canMakeStereo = false;
    Track *next = mTracks->GetNext(t);
@@ -2074,8 +2101,7 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
    Track *t2 = FindTrack(event.m_x, event.m_y, true, &r, &num);
    if (t2 == t) {
       wxClientDC dc(this);
-      SetLabelFont(&dc);
-      DrawTitleBar(&dc, r, t, false);
+      mLabelPanel.DrawTitleBar(&dc, r, t, false);
    }
 }
 
@@ -2106,7 +2132,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
       second = true;
 
    wxRect closeRect;
-   GetCloseBoxRect(r, closeRect);
+   mLabelPanel.GetCloseBoxRect(r, closeRect);
 
    // AS: If they clicked on the x (ie, close button) on this
    //  track, then we capture the mouse and display the x
@@ -2114,7 +2140,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    //  we'll see if we're still supposed to close the track.
    if (!second && closeRect.Inside(event.m_x, event.m_y)) {
       wxClientDC dc(this);
-      DrawCloseBox(&dc, r, true);
+      mLabelPanel.DrawCloseBox(&dc, r, true);
       mIsClosing = true;
       mCapturedTrack = t;
       mCapturedRect = r;
@@ -2122,7 +2148,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    }
 
    wxRect titleRect;
-   GetTitleBarRect(r, titleRect);
+   mLabelPanel.GetTitleBarRect(r, titleRect);
 
    // AS: If the clicked on the title area, show the popup menu.
    if (!second && titleRect.Inside(event.m_x, event.m_y)) {
@@ -2150,7 +2176,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    // DM: If it's a NoteTrack, it has special controls
    if (!second && t && t->GetKind() == Track::Note) {
       wxRect midiRect;
-      GetTrackControlsRect(r, midiRect);
+      mLabelPanel.GetTrackControlsRect(r, midiRect);
       if (midiRect.Inside(event.m_x, event.m_y)) {
          ((NoteTrack *) t)->LabelClick(midiRect, event.m_x, event.m_y,
                                        event.RightDown()
@@ -2237,7 +2263,7 @@ bool TrackPanel::GainFunc(Track * t, wxRect r, wxMouseEvent &event,
                           int index, int x, int y)
 {
    wxRect sliderRect;
-   GetGainRect(r, sliderRect);
+   mLabelPanel.GetGainRect(r, sliderRect);
    if (sliderRect.Inside(x, y)) {
       mIsGainSliding = true;
       mCapturedTrack = t;
@@ -2255,7 +2281,7 @@ bool TrackPanel::PanFunc(Track * t, wxRect r, wxMouseEvent &event,
                          int index, int x, int y)
 {
    wxRect sliderRect;
-   GetPanRect(r, sliderRect);
+   mLabelPanel.GetPanRect(r, sliderRect);
    if (sliderRect.Inside(x, y)) {
       mIsPanSliding = true;
       mCapturedTrack = t;
@@ -2276,11 +2302,11 @@ bool TrackPanel::MuteSoloFunc(Track * t, wxRect r, int x, int y,
                               bool solo)
 {
    wxRect buttonRect;
-   GetMuteSoloRect(r, buttonRect, solo);
+   mLabelPanel.GetMuteSoloRect(r, buttonRect, solo);
    if (buttonRect.Inside(x, y)) {
 
       wxClientDC dc(this);
-      DrawMuteSolo(&dc, r, t, true, solo);
+      mLabelPanel.DrawMuteSolo(&dc, r, t, true, solo);
 
       if (solo)
          mIsSoloing = true;
@@ -2718,7 +2744,7 @@ int TrackPanel::DetermineToolToUse( ControlToolBar * pCtb, wxMouseEvent & event)
    }
 
    //Use the false argument since in multimode we don't 
-   //want the toolpanel to update.
+   //want the toomLabelPanel to update.
    pCtb->SetCurrentTool( currentTool, false );
    return currentTool;
 }
@@ -2815,126 +2841,6 @@ bool TrackPanel::HitTestSlide(Track *track, wxRect &r, wxMouseEvent & event)
    return false;
 }
 
-
-void TrackPanel::SetLabelFont(wxDC * dc)
-{
-   int fontSize = 10;
-#if defined __WXMSW__
-   fontSize = 8;
-#endif
-
-   wxFont labelFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
-   dc->SetFont(labelFont);
-}
-
-void TrackPanel::DrawRuler(wxDC * dc, bool text)
-{
-   wxRect r;
-
-   GetSize(&r.width, &r.height);
-   r.x = 0;
-   r.y = 0;
-   r.height = GetRulerHeight() - 1;
-
-   DrawRulerBorder(dc, r);
-
-   if (mViewInfo->sel0 < mViewInfo->sel1)
-      DrawRulerSelection(dc, r);
-
-   DrawRulerMarks(dc, r, text);
-
-   AudacityProject *p = (AudacityProject*)GetParent();
-   if (gAudioIO->IsStreamActive(p->GetAudioIOToken()))
-      DrawRulerIndicator(dc);
-}
-
-void TrackPanel::DrawRulerBorder(wxDC * dc, wxRect & r)
-{
-   // Draw ruler border
-   AColor::Medium(dc, false);
-   dc->DrawRectangle(r);
-
-   r.width--;
-   r.height--;
-   AColor::Bevel(*dc, true, r);
-
-   dc->SetPen(*wxBLACK_PEN);
-   dc->DrawLine(r.x, r.y + r.height + 1, r.x + r.width + 1,
-                r.y + r.height + 1);
-}
-
-void TrackPanel::DrawRulerSelection(wxDC * dc, const wxRect r)
-{
-   // Draw selection
-   double sel0 = mViewInfo->sel0 - mViewInfo->h +
-       GetLeftOffset() / mViewInfo->zoom;
-   double sel1 = mViewInfo->sel1 - mViewInfo->h +
-       GetLeftOffset() / mViewInfo->zoom;
-
-   if (sel0 < 0.0)
-      sel0 = 0.0;
-   if (sel1 > (r.width / mViewInfo->zoom))
-      sel1 = r.width / mViewInfo->zoom;
-
-   int p0 = int (sel0 * mViewInfo->zoom + 0.5);
-   int p1 = int (sel1 * mViewInfo->zoom + 0.5);
-
-   wxBrush selectedBrush;
-   selectedBrush.SetColour(148, 148, 170);
-   wxPen selectedPen;
-   selectedPen.SetColour(148, 148, 170);
-   dc->SetBrush(selectedBrush);
-   dc->SetPen(selectedPen);
-
-   wxRect sr;
-   sr.x = p0;
-   sr.y = 1;
-   sr.width = p1 - p0 - 1;
-   sr.height = GetRulerHeight() - 3;
-   dc->DrawRectangle(sr);
-}
-
-void TrackPanel::DrawRulerMarks(wxDC * dc, const wxRect r, bool /*text */ )
-{
-   mRuler->SetBounds(r.x, r.y, r.x + r.width - 1, r.y + r.height - 1);
-   double min = mViewInfo->h - GetLeftOffset() / mViewInfo->zoom;
-   double max = min + r.width / mViewInfo->zoom;
-   mRuler->SetRange(min, max);
-
-   mRuler->Draw(*dc);
-}
-
-//
-//This draws the little triangular indicator on the 
-//ruler.
-//
-void TrackPanel::DrawRulerIndicator(wxDC * dc)
-{
-   // Draw indicator
-   double ind = gAudioIO->GetStreamTime();
-
-   if (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen)) {
-      int indp =
-          GetLeftOffset() + int ((ind - mViewInfo->h) * mViewInfo->zoom);
-
-      dc->SetPen(*wxTRANSPARENT_PEN);
-      dc->SetBrush(*wxBLACK_BRUSH);
-
-      int indsize = 6;
-
-      wxPoint tri[3];
-      tri[0].x = indp;
-      tri[0].y = indsize + 1;
-      tri[1].x = indp - indsize;
-      tri[1].y = 1;
-      tri[2].x = indp + indsize;
-      tri[2].y = 1;
-
-      dc->DrawPolygon(3, tri);
-   }
-}
-
-
 //
 // This draws the play indicator as a vertical line on each of the tracks
 //
@@ -3009,58 +2915,11 @@ void TrackPanel::DrawTrackIndicator(wxDC * dc)
    }
 }
 
-void TrackPanel::GetCloseBoxRect(const wxRect r, wxRect & dest) const
-{
-   dest.x = r.x;
-   dest.y = r.y;
-   dest.width = 16;
-   dest.height = 16;
+int TrackPanel::GetRulerHeight()
+{ 
+   return AdornedRulerPanel::GetRulerHeight();
 }
 
-void TrackPanel::GetTitleBarRect(const wxRect r, wxRect & dest) const
-{
-   dest.x = r.x + 16;
-   dest.y = r.y;
-   dest.width = GetTitleWidth() - r.x - 16;
-   dest.height = 16;
-}
-
-void TrackPanel::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo) const
-{
-   dest.x = r.x + 8;
-   dest.y = r.y + 50;
-   dest.width = 36;
-   dest.height = 16;
-
-   if (solo)
-      dest.x += 36 + 8;
-}
-
-void TrackPanel::GetGainRect(const wxRect r, wxRect & dest) const
-{
-   dest.x = r.x + 7;
-   dest.y = r.y + 70;
-   dest.width = 84;
-   dest.height = 25;
-}
-
-void TrackPanel::GetPanRect(const wxRect r, wxRect & dest) const
-{
-   dest.x = r.x + 7;
-   dest.y = r.y + 100;
-   dest.width = 84;
-   dest.height = 25;
-}
-
-void TrackPanel::GetTrackControlsRect(const wxRect r, wxRect & dest) const
-{
-   dest = r;
-   dest.width = GetTitleWidth();
-   dest.x += 4 + kLeftInset;
-   dest.width -= (8 + kLeftInset);
-   dest.y += 18 + kTopInset;
-   dest.height -= (24 + kTopInset);
-}
 
 
 //
@@ -3079,71 +2938,6 @@ void TrackPanel::Refresh(bool eraseBackground /* = TRUE */,
 }
 
 
-
-void TrackPanel::DrawCloseBox(wxDC * dc, const wxRect r, bool down)
-{
-   dc->SetPen(*wxBLACK_PEN);
-   dc->DrawLine(r.x + 3, r.y + 3, r.x + 13, r.y + 13);  // close "x"
-   dc->DrawLine(r.x + 13, r.y + 3, r.x + 3, r.y + 13);
-   wxRect bev;
-   GetCloseBoxRect(r, bev);
-   bev.Inflate(-1, -1);
-   AColor::Bevel(*dc, !down, bev);
-}
-
-void TrackPanel::DrawTitleBar(wxDC * dc, const wxRect r, Track * t,
-                              bool down)
-{
-   wxRect bev;
-   GetTitleBarRect(r, bev);
-   bev.Inflate(-1, -1);
-   AColor::Bevel(*dc, true, bev);
-
-   // Draw title text
-   wxString titleStr = t->GetName();
-   int allowableWidth = GetTitleWidth() - 38 - kLeftInset;
-   long textWidth, textHeight;
-   dc->GetTextExtent(titleStr, &textWidth, &textHeight);
-   while (textWidth > allowableWidth) {
-      titleStr = titleStr.Left(titleStr.Length() - 1);
-      dc->GetTextExtent(titleStr, &textWidth, &textHeight);
-   }
-   dc->DrawText(titleStr, r.x + 19, r.y + 2);
-
-   // Pop-up triangle
-   dc->SetPen(*wxBLACK_PEN);
-   int xx = r.x + GetTitleWidth() - 16 - kLeftInset;
-   int yy = r.y + 5;
-   int triWid = 11;
-   while (triWid >= 1) {
-      dc->DrawLine(xx, yy, xx + triWid, yy);
-      xx++;
-      yy++;
-      triWid -= 2;
-   }
-
-   AColor::Bevel(*dc, !down, bev);
-}
-
-// AS: Draw the Mute or the Solo button, depending on the value of solo.
-void TrackPanel::DrawMuteSolo(wxDC * dc, const wxRect r, Track * t,
-                              bool down, bool solo)
-{
-   wxRect bev;
-   GetMuteSoloRect(r, bev, solo);
-   bev.Inflate(-1, -1);
-   (solo) ? AColor::Solo(dc, t->GetSolo(), t->GetSelected()) :
-       AColor::Mute(dc, t->GetMute(), t->GetSelected(), t->GetSolo());
-   dc->DrawRectangle(bev);
-
-   long textWidth, textHeight;
-   wxString str = (solo) ? _("Solo") : _("Mute");
-   SetLabelFont(dc);
-   dc->GetTextExtent(str, &textWidth, &textHeight);
-   dc->DrawText(str, bev.x + (bev.width - textWidth) / 2, bev.y + 2);
-
-   AColor::Bevel(*dc, !down, bev);
-}
 
 // AS: Draw the actual track areas.  We only draw the borders
 //  and the little buttons and menues and whatnot here, the
@@ -3275,26 +3069,6 @@ void TrackPanel::DrawZooming(wxDC * dc, const wxRect clip)
    dc->DrawRectangle(r);
 }
 
-void TrackPanel::DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index)
-{
-   wxRect gainRect;
-   wxRect panRect;
-
-   GetGainRect(r, gainRect);
-   GetPanRect(r, panRect);
-
-   while (mGains.Count() < (unsigned int)index+1 ||
-          mPans.Count() < (unsigned int)index+1)
-      MakeMoreSliders();
-
-   mGains[index]->Move(wxPoint(gainRect.x, gainRect.y));
-   mGains[index]->Set(t->GetGain());
-   mGains[index]->OnPaint(*dc, t->GetSelected());
-
-   mPans[index]->Move(wxPoint(panRect.x, panRect.y));
-   mPans[index]->Set(t->GetPan());
-   mPans[index]->OnPaint(*dc, t->GetSelected());
-}
 
 void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
                              const int labelw, const int vrul,
@@ -3309,19 +3083,19 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    r.width -= kLeftInset * 2;
    r.height -= kTopInset;
 
-   FillInLabel(t, dc, r, labelw);
+   mLabelPanel.DrawBackground(dc, r, t->GetSelected(), labelw);
    DrawBordersAroundTrack(t, dc, r, labelw, vrul);
    DrawShadow(t, dc, r);
 
-   r.width = GetTitleWidth();
-   DrawCloseBox(dc, r, false);
-   DrawTitleBar(dc, r, t, false);
+   r.width = mLabelPanel.GetTitleWidth();
+   mLabelPanel.DrawCloseBox(dc, r, false);
+   mLabelPanel.DrawTitleBar(dc, r, t, false);
 
    if (t->GetKind() == Track::Wave) {
-      DrawMuteSolo(dc, r, t, false, false);
-      DrawMuteSolo(dc, r, t, false, true);
+      mLabelPanel.DrawMuteSolo(dc, r, t, false, false);
+      mLabelPanel.DrawMuteSolo(dc, r, t, false, true);
 
-      DrawSliders(dc, (WaveTrack *)t, r, index);
+      mLabelPanel.DrawSliders(dc, (WaveTrack *)t, r, index);
    }
 
    r = trackRect;
@@ -3333,7 +3107,7 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
                    r.y + 38);
    } else if (t->GetKind() == Track::Note) {
       wxRect midiRect;
-      GetTrackControlsRect(trackRect, midiRect);
+      mLabelPanel.GetTrackControlsRect(trackRect, midiRect);
       ((NoteTrack *) t)->DrawLabelControls(*dc, midiRect);
 
    }
@@ -3362,15 +3136,25 @@ void TrackPanel::DrawOutsideOfTrack(Track * t, wxDC * dc, const wxRect r)
    }
 }
 
-void TrackPanel::FillInLabel(Track * t, wxDC * dc, const wxRect r,
-                             const int labelw)
+
+
+
+void TrackPanel::DrawRuler( wxDC * dc, bool text )
 {
-   // fill in label
-   wxRect fill = r;
-   fill.width = labelw - r.x;
-   AColor::Medium(dc, t->GetSelected());
-   dc->DrawRectangle(fill);
+   AudacityProject *p = (AudacityProject*)GetParent();
+   bool bIndicators = gAudioIO->IsStreamActive(p->GetAudioIOToken());
+   mRuler->indicatorPos = bIndicators ? gAudioIO->GetStreamTime() : 0.0;
+
+   wxRect r;
+   GetSize( &r.width, &r.height );
+   r.x = 0;
+   r.y = 0;
+   r.height = GetRulerHeight() - 1;
+   mRuler->SetSize( r );
+   mRuler->SetLeftOffset( GetLeftOffset() );
+   mRuler->DrawAdornedRuler( dc, mViewInfo, text, bIndicators );
 }
+
 
 void TrackPanel::DrawBordersAroundTrack(Track * t, wxDC * dc,
                                         const wxRect r, const int vrul,
@@ -3392,7 +3176,7 @@ void TrackPanel::DrawBordersAroundTrack(Track * t, wxDC * dc,
                    h1 + kTopInset);
    }
 
-   dc->DrawLine(r.x, r.y + 16, GetTitleWidth(), r.y + 16);      // title bar
+   dc->DrawLine(r.x, r.y + 16, mLabelPanel.GetTitleWidth(), r.y + 16);      // title bar
    dc->DrawLine(r.x + 16, r.y, r.x + 16, r.y + 16);     // close box
 }
 
@@ -4810,3 +4594,214 @@ void TrackPanel::DisplaySelection()
 
    }
 }
+
+
+/**********************************************************************
+
+  LabelPanel code is destined to move out of this file.
+  Code should become a lot cleaner when we have sizers.  
+
+**********************************************************************/
+
+LabelPanel::LabelPanel(wxWindow * pParentIn)
+{
+   //To prevent flicker, we create an initial set of 16 sliders
+   //which won't ever be shown.
+   pParent = pParentIn;
+   int i;
+   for(i=0; i<16; i++)
+      MakeMoreSliders();
+}
+
+
+LabelPanel::~LabelPanel()
+{
+   unsigned int i;
+   for(i=0; i<mGains.Count(); i++)
+      delete mGains[i];
+   for(i=0; i<mPans.Count(); i++)
+      delete mPans[i];
+}
+
+
+void LabelPanel::GetCloseBoxRect(const wxRect r, wxRect & dest) const
+{
+   dest.x = r.x;
+   dest.y = r.y;
+   dest.width = 16;
+   dest.height = 16;
+}
+
+void LabelPanel::GetTitleBarRect(const wxRect r, wxRect & dest) const
+{
+   dest.x = r.x + 16;
+   dest.y = r.y;
+   dest.width = GetTitleWidth() - r.x - 16;
+   dest.height = 16;
+}
+
+void LabelPanel::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo) const
+{
+   dest.x = r.x + 8;
+   dest.y = r.y + 50;
+   dest.width = 36;
+   dest.height = 16;
+
+   if (solo)
+      dest.x += 36 + 8;
+}
+
+void LabelPanel::GetGainRect(const wxRect r, wxRect & dest) const
+{
+   dest.x = r.x + 7;
+   dest.y = r.y + 70;
+   dest.width = 84;
+   dest.height = 25;
+}
+
+void LabelPanel::GetPanRect(const wxRect r, wxRect & dest) const
+{
+   dest.x = r.x + 7;
+   dest.y = r.y + 100;
+   dest.width = 84;
+   dest.height = 25;
+}
+
+
+void LabelPanel::DrawBackground(wxDC * dc, const wxRect r, bool bSelected,
+                             const int labelw)
+{
+   // fill in label
+   wxRect fill = r;
+   fill.width = labelw - r.x;
+   AColor::Medium(dc, bSelected);
+   dc->DrawRectangle(fill);
+}
+
+void LabelPanel::GetTrackControlsRect(const wxRect r, wxRect & dest) const
+{
+   dest = r;
+   dest.width = GetTitleWidth();
+   dest.x += 4 + kLeftInset;
+   dest.width -= (8 + kLeftInset);
+   dest.y += 18 + kTopInset;
+   dest.height -= (24 + kTopInset);
+}
+
+
+void LabelPanel::DrawCloseBox(wxDC * dc, const wxRect r, bool down)
+{
+   dc->SetPen(*wxBLACK_PEN);
+   dc->DrawLine(r.x + 3, r.y + 3, r.x + 13, r.y + 13);  // close "x"
+   dc->DrawLine(r.x + 13, r.y + 3, r.x + 3, r.y + 13);
+   wxRect bev;
+   GetCloseBoxRect(r, bev);
+   bev.Inflate(-1, -1);
+   AColor::Bevel(*dc, !down, bev);
+}
+
+void LabelPanel::DrawTitleBar(wxDC * dc, const wxRect r, Track * t,
+                              bool down)
+{
+   wxRect bev;
+   GetTitleBarRect(r, bev);
+   bev.Inflate(-1, -1);
+   AColor::Bevel(*dc, true, bev);
+
+   // Draw title text
+   SetLabelFont(dc);
+   wxString titleStr = t->GetName();
+   int allowableWidth = GetTitleWidth() - 38 - kLeftInset;
+   long textWidth, textHeight;
+   dc->GetTextExtent(titleStr, &textWidth, &textHeight);
+   while (textWidth > allowableWidth) {
+      titleStr = titleStr.Left(titleStr.Length() - 1);
+      dc->GetTextExtent(titleStr, &textWidth, &textHeight);
+   }
+   dc->DrawText(titleStr, r.x + 19, r.y + 2);
+
+   // Pop-up triangle
+   dc->SetPen(*wxBLACK_PEN);
+   int xx = r.x + GetTitleWidth() - 16 - kLeftInset;
+   int yy = r.y + 5;
+   int triWid = 11;
+   while (triWid >= 1) {
+      dc->DrawLine(xx, yy, xx + triWid, yy);
+      xx++;
+      yy++;
+      triWid -= 2;
+   }
+
+   AColor::Bevel(*dc, !down, bev);
+}
+
+// AS: Draw the Mute or the Solo button, depending on the value of solo.
+void LabelPanel::DrawMuteSolo(wxDC * dc, const wxRect r, Track * t,
+                              bool down, bool solo)
+{
+   wxRect bev;
+   GetMuteSoloRect(r, bev, solo);
+   bev.Inflate(-1, -1);
+   (solo) ? AColor::Solo(dc, t->GetSolo(), t->GetSelected()) :
+       AColor::Mute(dc, t->GetMute(), t->GetSelected(), t->GetSolo());
+   dc->DrawRectangle(bev);
+
+   long textWidth, textHeight;
+   wxString str = (solo) ? _("Solo") : _("Mute");
+   SetLabelFont(dc);
+   dc->GetTextExtent(str, &textWidth, &textHeight);
+   dc->DrawText(str, bev.x + (bev.width - textWidth) / 2, bev.y + 2);
+
+   AColor::Bevel(*dc, !down, bev);
+}
+
+void LabelPanel::MakeMoreSliders()
+{
+   wxRect r(0, 0, 1000, 1000);
+   wxRect gainRect;
+   wxRect panRect;
+
+   GetGainRect(r, gainRect);
+   GetPanRect(r, panRect);
+
+   LWSlider *slider = new LWSlider(pParent, _("Gain"),
+                                   wxPoint(gainRect.x, gainRect.y),
+                                   wxSize(gainRect.width, gainRect.height),
+                                   DB_SLIDER);
+   mGains.Add(slider);
+   
+   slider = new LWSlider(pParent, _("Pan"),
+                         wxPoint(panRect.x, panRect.y),
+                         wxSize(panRect.width, panRect.height),
+                         PAN_SLIDER);
+   mPans.Add(slider);
+}
+
+void LabelPanel::EnsureSufficientSliders(int index)
+{
+   while (mGains.Count() < (unsigned int)index+1 ||
+          mPans.Count() < (unsigned int)index+1)
+      MakeMoreSliders();
+}
+
+
+void LabelPanel::DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index)
+{
+   wxRect gainRect;
+   wxRect panRect;
+
+   EnsureSufficientSliders( index );
+
+   GetGainRect(r, gainRect);
+   GetPanRect(r, panRect);
+
+   mGains[index]->Move(wxPoint(gainRect.x, gainRect.y));
+   mGains[index]->Set(t->GetGain());
+   mGains[index]->OnPaint(*dc, t->GetSelected());
+
+   mPans[index]->Move(wxPoint(panRect.x, panRect.y));
+   mPans[index]->Set(t->GetPan());
+   mPans[index]->OnPaint(*dc, t->GetSelected());
+}
+
+

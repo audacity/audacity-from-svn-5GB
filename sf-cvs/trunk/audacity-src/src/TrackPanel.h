@@ -27,6 +27,7 @@ class TrackPanel;
 class TrackArtist;
 class WaveTrack;
 class Ruler;
+class AdornedRulerPanel;
 class LWSlider;
 class ControlToolBar; //Needed because state of controls can affect what gets drawn.
 
@@ -57,6 +58,55 @@ class TrackPanelListener {
    virtual void TP_HandleResize() = 0;
 };
 
+
+/// The LabelPanel is the panel to the side of a track 
+/// It has the menus, pan and gain controls displayed in it.
+///
+/// In its current implementation it is not derived from
+/// wxPanel.  Following the original coding style, it has 
+/// been coded as a 'flyweight' class, which is passed 
+/// state as needed, except for the array of gains and pans.
+/// 
+/// An alternative way to code this is to have an instance
+/// of this class for each label panel displayed.
+/// 
+class LabelPanel
+{
+public:
+   LabelPanel(wxWindow * pParentIn);
+   ~LabelPanel();
+
+   int GetTitleWidth() const { return 100; }
+private:
+   void MakeMoreSliders();
+   void EnsureSufficientSliders(int index);
+
+   void DrawBackground(wxDC * dc, const wxRect r, bool bSelected, const int labelw);
+   void DrawCloseBox(wxDC * dc, const wxRect r, bool down);
+   void DrawTitleBar(wxDC * dc, const wxRect r, Track * t, bool down);
+   void DrawMuteSolo(wxDC * dc, const wxRect r, Track * t, bool down, bool solo);
+   void DrawVRuler(wxDC * dc, const wxRect r, Track * t);
+   void DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index);
+
+   void GetTrackControlsRect(const wxRect r, wxRect &dest) const;
+   void GetCloseBoxRect(const wxRect r, wxRect &dest) const;
+   void GetTitleBarRect(const wxRect r, wxRect &dest) const;
+   void GetMuteSoloRect(const wxRect r, wxRect &dest, bool solo) const;
+   void GetGainRect(const wxRect r, wxRect &dest) const;
+   void GetPanRect(const wxRect r, wxRect &dest) const;
+
+public:
+   LWSliderArray mGains;
+   LWSliderArray mPans;
+   wxWindow * pParent;
+
+friend TrackPanel;
+};
+
+
+/// The TrackPanel manages multiple tracks and their LabelPanels.
+/// Note that with stereo tracks there will be one LabelPanel
+/// being used by two wavetracks.
 class TrackPanel:public wxWindow {
  public:
 
@@ -77,7 +127,7 @@ class TrackPanel:public wxWindow {
 
    void OnTimer();
 
-   int GetRulerHeight() const { return 22;}
+   int GetRulerHeight();
    int GetLeftOffset() const { return GetLabelWidth() + 1;}
 
    void GetTracksUsableArea(int *width, int *height) const;
@@ -143,14 +193,12 @@ class TrackPanel:public wxWindow {
 
    void HandleResize(wxMouseEvent & event);
 
-
    void HandleLabelClick(wxMouseEvent & event);
    void HandleRearrange(wxMouseEvent & event);
    void CalculateRearrangingThresholds(wxMouseEvent & event);
    void HandleClosing(wxMouseEvent & event);
    void HandleMutingSoloing(wxMouseEvent & event, bool solo);
    void HandleSliders(wxMouseEvent &event, bool pan);
-   void MakeMoreSliders();
    bool MuteSoloFunc(Track *t, wxRect r, int x, int f, bool solo);
    bool GainFunc(Track * t, wxRect r, wxMouseEvent &event,
                  int index, int x, int y);
@@ -192,36 +240,16 @@ class TrackPanel:public wxWindow {
    Track *FindTrack(int mouseX, int mouseY, bool label,
                      wxRect * trackRect = NULL, int *trackNum = NULL);
 
-   int GetTitleWidth() const { return 100; }
+//   int GetTitleWidth() const { return 100; }
    int GetTitleOffset() const { return 0; }
    int GetVRulerWidth() const { return 30;}
-   int GetVRulerOffset() const { return GetTitleOffset() + GetTitleWidth();}
-   int GetLabelWidth() const { return GetTitleWidth() + GetVRulerWidth();}
-
-   void SetLabelFont(wxDC * dc);
+   int GetVRulerOffset() const { return GetTitleOffset() + mLabelPanel.GetTitleWidth();}
+   int GetLabelWidth() const { return mLabelPanel.GetTitleWidth() + GetVRulerWidth();}
 
    void DrawRuler(wxDC * dc, bool text = true);
-   void DrawRulerBorder   (wxDC* dc, wxRect &r);
-   void DrawRulerSelection(wxDC* dc, const wxRect r);
-   void DrawRulerMarks    (wxDC *dc, const wxRect r, bool text);
-   void DrawRulerIndicator(wxDC *dc);
-
    void DrawTrackIndicator(wxDC *dc);
 
    void DrawTracks(wxDC * dc);
-
-   void GetTrackControlsRect(const wxRect r, wxRect &dest) const;
-   void GetCloseBoxRect(const wxRect r, wxRect &dest) const;
-   void GetTitleBarRect(const wxRect r, wxRect &dest) const;
-   void GetMuteSoloRect(const wxRect r, wxRect &dest, bool solo) const;
-   void GetGainRect(const wxRect r, wxRect &dest) const;
-   void GetPanRect(const wxRect r, wxRect &dest) const;
-
-   void DrawCloseBox(wxDC * dc, const wxRect r, bool down);
-   void DrawTitleBar(wxDC * dc, const wxRect r, Track * t, bool down);
-   void DrawMuteSolo(wxDC * dc, const wxRect r, Track * t, bool down, bool solo);
-
-   void DrawVRuler(wxDC * dc, const wxRect r, Track * t);
 
    void DrawEverythingElse(wxDC *dc, const wxRect panelRect, const wxRect clip);
    void DrawEverythingElse(Track *t, wxDC *dc, wxRect &r, wxRect &wxTrackRect,
@@ -229,16 +257,13 @@ class TrackPanel:public wxWindow {
    void DrawOutside(Track *t, wxDC *dc, const wxRect rec, const int labelw, 
                     const int vrul, const wxRect trackRect, int index);
    void DrawZooming(wxDC* dc, const wxRect clip);
-   void DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index);
 
    void DrawShadow            (Track *t, wxDC* dc, const wxRect r);
    void DrawBordersAroundTrack(Track *t, wxDC* dc, const wxRect r, const int labelw, const int vrul);
-   void FillInLabel           (Track *t, wxDC* dc, const wxRect r, const int labelw);
    void DrawOutsideOfTrack    (Track *t, wxDC* dc, const wxRect r);
 
    int IdOfRate( int rate );
    int IdOfFormat( int format );
-
 
    wxString TrackSubText(Track *t);
 
@@ -249,16 +274,15 @@ class TrackPanel:public wxWindow {
    int iSnapTo;
 
 
+   LabelPanel mLabelPanel;
    TrackPanelListener *mListener;
 
    TrackList *mTracks;
    ViewInfo *mViewInfo;
    wxStatusBar *mStatusBar;
 
-   Ruler *mRuler;
+   AdornedRulerPanel *mRuler;
 
-   LWSliderArray mGains;
-   LWSliderArray mPans;
 
    TrackArtist *mTrackArtist;
 
