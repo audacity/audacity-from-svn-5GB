@@ -21,7 +21,7 @@
 #endif
 
 #include <math.h>
-//#include <algorithm>
+#include <algorithm>
 
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
@@ -894,8 +894,8 @@ void TrackPanel::HandleZoom(wxMouseEvent &event)
          Refresh(false);
    }
    else if (event.ButtonUp()) {
-      //if (mZoomEnd < mZoomStart)
-         //std::swap(mZoomEnd, mZoomStart);
+      if (mZoomEnd < mZoomStart)
+         std::swap(mZoomEnd, mZoomStart);
 
       wxRect r;
 
