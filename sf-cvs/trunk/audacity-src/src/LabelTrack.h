@@ -96,8 +96,8 @@ class LabelTrack:public Track {
 
    virtual bool Silence(double t0, double t1);
    virtual bool InsertSilence(double t, double len);
-
-   void MouseDown(int x, int y, wxRect & r, double h, double pps,
+   int OverGlyph(int x, int y);
+   void HandleMouse(const wxMouseEvent & evt, wxRect & r, double h, double pps,
                            double *newSel0, double *newSel1);
 
    void KeyEvent(double sel0, double sel1, wxKeyEvent & event);
@@ -112,12 +112,13 @@ class LabelTrack:public Track {
    int GetNumLabels() const;
    const LabelStruct *GetLabel(int index) const;
 
-   void AddLabel(double t, double t1, const wxString &title = "");
+   //This returns the index of the label we just added.
+   int AddLabel(double t, double t1, const wxString &title = "");
 
  private:
 
-   int mSelIndex;
-
+   int mSelIndex;           //Keeps track of the currently selected label
+   int mMouseOverLabel;     //Keeps track of which label the mouse is currently over.
    LabelArray mLabels;
 
    wxBrush mUnselectedBrush;
@@ -141,6 +142,10 @@ class LabelTrack:public Track {
    void InitColours();
    void ComputeLayout(wxRect & r, double h, double pps);
    void ComputeTextPosition(wxRect & r, int index);
+
+   bool mIsAdjustingLabel;
+   int mAdjustingEdge;
+      
 };
 
 #endif
