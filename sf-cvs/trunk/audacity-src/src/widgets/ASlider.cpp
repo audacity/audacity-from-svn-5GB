@@ -295,13 +295,9 @@ void LWSlider::Init(wxWindow * parent,
          dc->DrawRectangle(0, 0, mWidth, mHeight);
       }
 
-      if( i==1) {
-         AColor::Light(dc, i==1);
-      } else {
-         AColor::Dark(dc, i==1);
-      }
+      AColor::Medium(dc, i==1);
       dc->DrawLine(mLeftX, mCenterY, mRightX+2, mCenterY);
-      AColor::Dark(dc, i==1);
+      AColor::Dark(dc, false);
       dc->DrawLine(mLeftX, mCenterY+1, mRightX+2, mCenterY+1);
 
       int divs = 10;

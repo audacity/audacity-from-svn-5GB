@@ -9,6 +9,7 @@
 **********************************************************************/
 
 #include <wx/textctrl.h>
+#include <wx/log.h>
 
 #include "UndoManager.h"
 #include "Track.h"
@@ -137,7 +138,7 @@ void UndoManager::ModifyState(TrackList * l, double sel0, double sel1)
    }
 
    // Replace
-
+   delete stack[current]->tracks;
    stack[current]->tracks = tracksCopy;
    stack[current]->sel0 = sel0;
    stack[current]->sel1 = sel1;
