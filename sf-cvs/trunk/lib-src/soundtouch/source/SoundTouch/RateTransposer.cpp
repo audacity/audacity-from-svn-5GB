@@ -8,10 +8,10 @@
  * Author e-mail : oparviai @ iki.fi
  * File created  : 13-Jan-2002
  * 
- * Last changed  : $Date: 2004-03-21 03:53:16 $
- * File revision : $Revision: 1.2 $
+ * Last changed  : $Date: 2004-10-26 19:09:37 $
+ * File revision : $Revision: 1.3 $
  *
- * $Id: RateTransposer.cpp,v 1.2 2004-03-21 03:53:16 mbrubeck Exp $
+ * $Id: RateTransposer.cpp,v 1.3 2004-10-26 19:09:37 vjohnson Exp $
  *
  * License :
  * 
@@ -44,13 +44,86 @@
 
 using namespace soundtouch;
 
+
+
+/// A linear samplerate transposer class that uses integer arithmetics.
+/// for the transposing.
+class RateTransposerInteger : public RateTransposer
+{
+protected:
+    int iSlopeCount;
+    uint uRate;
+    soundtouch::SAMPLETYPE sPrevSampleL, sPrevSampleR;
+
+    virtual void resetRegisters();
+
+    virtual uint transposeStereo(soundtouch::SAMPLETYPE *dest, 
+                         const soundtouch::SAMPLETYPE *src, 
+                         uint numSamples);
+    virtual uint transposeMono(soundtouch::SAMPLETYPE *dest, 
+                       const soundtouch::SAMPLETYPE *src, 
+                       uint numSamples);
+
+public:
+    RateTransposerInteger();
+    virtual ~RateTransposerInteger();
+
+    /// Sets new target rate. Normal rate = 1.0, smaller values represent slower 
+    /// rate, larger faster rates.
+    virtual void setRate(float newRate);
+
+};
+
+
+/// A linear samplerate transposer class that uses floating point arithmetics
+/// for the transposing.
+class RateTransposerFloat : public RateTransposer
+{
+protected:
+    float fSlopeCount;
+    float fRateStep;
+    soundtouch::SAMPLETYPE sPrevSampleL, sPrevSampleR;
+
+    virtual void resetRegisters();
+
+    virtual uint transposeStereo(soundtouch::SAMPLETYPE *dest, 
+                         const soundtouch::SAMPLETYPE *src, 
+                         uint numSamples);
+    virtual uint transposeMono(soundtouch::SAMPLETYPE *dest, 
+                       const soundtouch::SAMPLETYPE *src, 
+                       uint numSamples);
+
+public:
+    RateTransposerFloat();
+    virtual ~RateTransposerFloat();
+};
+
+
+
 #ifndef min
 #define min(a,b) ((a > b) ? b : a)
 #define max(a,b) ((a < b) ? b : a)
 #endif
 
-/// fixed-point interpolation routine precision
-#define SCALE    65536
+
+// Operator 'new' is overloaded so that it automatically creates a suitable instance 
+// depending on if we've a MMX/SSE/etc-capable CPU available or not.
+void * RateTransposer::operator new(size_t s)
+{
+    // Notice! don't use "new TDStretch" directly, use "newInstance" to create a new instance instead!
+    assert(FALSE);  
+    return NULL;
+}
+
+
+RateTransposer *RateTransposer::newInstance()
+{
+#ifdef INTEGER_SAMPLES
+    return ::new RateTransposerInteger;
+#else
+    return ::new RateTransposerFloat;
+#endif
+}
 
 
 // Constructor
@@ -59,14 +132,11 @@ RateTransposer::RateTransposer() : FIFOProcessor(&outputBuffer)
     uChannels = 2;
     bUseAAFilter = TRUE;
 
-    resetRegisters();
-
     // Instantiates the anti-alias filter with default tap length
     // of 32
     pAAFilter = new AAFilter(32);
-
-    setRate(1.0f);
 }
+
 
 
 RateTransposer::~RateTransposer()
@@ -75,22 +145,15 @@ RateTransposer::~RateTransposer()
 }
 
 
-void RateTransposer::resetRegisters()
-{
-    iSlopeCount = 0;
-    sPrevSampleL = 
-    sPrevSampleR = 0;
-}
 
-
-// Enables/disables the anti-alias filter. Zero to disable, nonzero to enable
+/// Enables/disables the anti-alias filter. Zero to disable, nonzero to enable
 void RateTransposer::enableAAFilter(const BOOL newMode)
 {
     bUseAAFilter = newMode;
 }
 
 
-// Returns nonzero if anti-alias filter is enabled.
+/// Returns nonzero if anti-alias filter is enabled.
 BOOL RateTransposer::isAAFilterEnabled() const
 {
     return bUseAAFilter;
@@ -103,10 +166,234 @@ AAFilter *RateTransposer::getAAFilter() const
 }
 
 
+
+// Sets new target uRate. Normal uRate = 1.0, smaller values represent slower 
+// uRate, larger faster uRates.
+void RateTransposer::setRate(float newRate)
+{
+    float fCutoff;
+
+    fRate = newRate;
+
+    // design a new anti-alias filter
+    if (newRate > 1.0f) 
+    {
+        fCutoff = 0.5f / newRate;
+    } 
+    else 
+    {
+        fCutoff = 0.5f * newRate;
+    }
+    pAAFilter->setCutoffFreq(fCutoff);
+}
+
+
+// Outputs as many samples of the 'outputBuffer' as possible, and if there's
+// any room left, outputs also as many of the incoming samples as possible.
+// The goal is to drive the outputBuffer empty.
+//
+// It's allowed for 'output' and 'input' parameters to point to the same
+// memory position.
+void RateTransposer::flushStoreBuffer()
+{
+    if (storeBuffer.isEmpty()) return;
+
+    outputBuffer.moveSamples(storeBuffer);
+}
+
+
+// Adds 'numSamples' pcs of samples from the 'samples' memory position into
+// the input of the object.
+void RateTransposer::putSamples(const SAMPLETYPE *samples, uint numSamples)
+{
+    processSamples(samples, numSamples);
+}
+
+
+
+// Transposes up the sample rate, causing the observed playback 'rate' of the
+// sound to decrease
+void RateTransposer::upsample(const SAMPLETYPE *src, uint numSamples)
+{
+    int count, sizeTemp, num;
+
+    // If the parameter 'uRate' value is smaller than 'SCALE', first transpose
+    // the samples and then apply the anti-alias filter to remove aliasing.
+
+    // First check that there's enough room in 'storeBuffer' 
+    // (+16 is to reserve some slack in the destination buffer)
+    sizeTemp = (int)((float)numSamples / fRate + 16.0f);
+
+    // Transpose the samples, store the result into the end of "storeBuffer"
+    count = transpose(storeBuffer.ptrEnd(sizeTemp), src, numSamples);
+    storeBuffer.putSamples(count);
+
+    // Apply the anti-alias filter to samples in "store output", output the
+    // result to "dest"
+    num = storeBuffer.numSamples();
+    count = pAAFilter->evaluate(outputBuffer.ptrEnd(num), 
+        storeBuffer.ptrBegin(), num, uChannels);
+    outputBuffer.putSamples(count);
+
+    // Remove the processed samples from "storeBuffer"
+    storeBuffer.receiveSamples(count);
+}
+
+
+// Transposes down the sample rate, causing the observed playback 'rate' of the
+// sound to increase
+void RateTransposer::downsample(const SAMPLETYPE *src, uint numSamples)
+{
+    int count, sizeTemp;
+
+    // If the parameter 'uRate' value is larger than 'SCALE', first apply the
+    // anti-alias filter to remove high frequencies (prevent them from folding
+    // over the lover frequencies), then transpose. */
+
+    // Add the new samples to the end of the storeBuffer */
+    storeBuffer.putSamples(src, numSamples);
+
+    // Anti-alias filter the samples to prevent folding and output the filtered 
+    // data to tempBuffer. Note : because of the FIR filter length, the
+    // filtering routine takes in 'filter_length' more samples than it outputs.
+    assert(tempBuffer.isEmpty());
+    sizeTemp = storeBuffer.numSamples();
+
+    count = pAAFilter->evaluate(tempBuffer.ptrEnd(sizeTemp), 
+        storeBuffer.ptrBegin(), sizeTemp, uChannels);
+
+    // Remove the filtered samples from 'storeBuffer'
+    storeBuffer.receiveSamples(count);
+
+    // Transpose the samples (+16 is to reserve some slack in the destination buffer)
+    sizeTemp = (int)((float)numSamples / fRate + 16.0f);
+    count = transpose(outputBuffer.ptrEnd(sizeTemp), tempBuffer.ptrBegin(), count);
+    outputBuffer.putSamples(count);
+}
+
+
+// Transposes sample rate by applying anti-alias filter to prevent folding. 
+// Returns amount of samples returned in the "dest" buffer.
+// The maximum amount of samples that can be returned at a time is set by
+// the 'set_returnBuffer_size' function.
+void RateTransposer::processSamples(const SAMPLETYPE *src, uint numSamples)
+{
+    uint count;
+    uint sizeReq;
+
+    if (numSamples == 0) return;
+    assert(pAAFilter);
+
+    // If anti-alias filter is turned off, simply transpose without applying
+    // the filter
+    if (bUseAAFilter == FALSE) 
+    {
+        sizeReq = (int)((float)numSamples / fRate + 1.0f);
+        count = transpose(outputBuffer.ptrEnd(sizeReq), src, numSamples);
+        outputBuffer.putSamples(count);
+        return;
+    }
+
+    // Transpose with anti-alias filter
+    if (fRate < 1.0f) 
+    {
+        upsample(src, numSamples);
+    } 
+    else  
+    {
+        downsample(src, numSamples);
+    }
+}
+
+
+// Transposes the sample rate of the given samples using linear interpolation. 
+// Returns the number of samples returned in the "dest" buffer
+inline uint RateTransposer::transpose(SAMPLETYPE *dest, const SAMPLETYPE *src, uint numSamples)
+{
+    if (uChannels == 2) 
+    {
+        return transposeStereo(dest, src, numSamples);
+    } 
+    else 
+    {
+        return transposeMono(dest, src, numSamples);
+    }
+}
+
+
+// Sets the number of channels, 1 = mono, 2 = stereo
+void RateTransposer::setChannels(const uint numchannels)
+{
+    if (uChannels == numchannels) return;
+
+    assert(numchannels == 1 || numchannels == 2);
+    uChannels = numchannels;
+
+    storeBuffer.setChannels(uChannels);
+    tempBuffer.setChannels(uChannels);
+    outputBuffer.setChannels(uChannels);
+
+    // Inits the linear interpolation registers
+    resetRegisters();
+}
+
+
+// Clears all the samples in the object
+void RateTransposer::clear()
+{
+    outputBuffer.clear();
+    storeBuffer.clear();
+}
+
+
+// Returns nonzero if there aren't any samples available for outputting.
+uint RateTransposer::isEmpty()
+{
+    int res;
+
+    res = FIFOProcessor::isEmpty();
+    if (res == 0) return 0;
+    return storeBuffer.isEmpty();
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// RateTransposerInteger - integer arithmetic implementation
+// 
+
+/// fixed-point interpolation routine precision
+#define SCALE    65536
+
+// Constructor
+RateTransposerInteger::RateTransposerInteger() : RateTransposer()
+{
+    // call these here as these are virtual functions; calling these
+    // from the base class constructor wouldn't execute the overloaded
+    // versions (<master yoda>peculiar C++ can be</my>).
+    resetRegisters();
+    setRate(1.0f);
+}
+
+
+RateTransposerInteger::~RateTransposerInteger()
+{
+}
+
+
+void RateTransposerInteger::resetRegisters()
+{
+    iSlopeCount = 0;
+    sPrevSampleL = 
+    sPrevSampleR = 0;
+}
+
+
+
 // Transposes the sample rate of the given samples using linear interpolation. 
 // 'Mono' version of the routine. Returns the number of samples returned in 
 // the "dest" buffer
-uint RateTransposer::transposeMono(SAMPLETYPE *dest, const SAMPLETYPE *src, uint numSamples)
+uint RateTransposerInteger::transposeMono(SAMPLETYPE *dest, const SAMPLETYPE *src, uint numSamples)
 {
     unsigned int i, used;
     LONG_SAMPLETYPE temp, vol1;
@@ -152,7 +439,7 @@ end:
 // Transposes the sample rate of the given samples using linear interpolation. 
 // 'Mono' version of the routine. Returns the number of samples returned in 
 // the "dest" buffer
-uint RateTransposer::transposeStereo(SAMPLETYPE *dest, const SAMPLETYPE *src, uint numSamples)
+uint RateTransposerInteger::transposeStereo(SAMPLETYPE *dest, const SAMPLETYPE *src, uint numSamples)
 {
     unsigned int srcPos, i, used;
     LONG_SAMPLETYPE temp, vol1;
@@ -205,205 +492,128 @@ end:
 
 // Sets new target uRate. Normal uRate = 1.0, smaller values represent slower 
 // uRate, larger faster uRates.
-void RateTransposer::setRate(float newRate)
+void RateTransposerInteger::setRate(float newRate)
 {
-    float fCutoff;
-
     uRate = (int)(newRate * SCALE + 0.5f);
-
-    // design a new anti-alias filter
-    if (newRate > 1.0f) 
-    {
-        fCutoff = 0.5f / newRate;
-    } 
-    else 
-    {
-        fCutoff = 0.5f * newRate;
-    }
-    pAAFilter->setCutoffFreq(fCutoff);
+    RateTransposer::setRate(newRate);
 }
 
 
-// Outputs as many samples of the 'outputBuffer' as possible, and if there's
-// any room left, outputs also as many of the incoming samples as possible.
-// The goal is to drive the outputBuffer empty.
+//////////////////////////////////////////////////////////////////////////////
 //
-// It's allowed for 'output' and 'input' parameters to point to the same
-// memory position.
-void RateTransposer::flushStoreBuffer()
-{
-    if (storeBuffer.isEmpty()) return;
+// RateTransposerFloat - floating point arithmetic implementation
+// 
+//////////////////////////////////////////////////////////////////////////////
 
-    outputBuffer.moveSamples(storeBuffer);
+// Constructor
+RateTransposerFloat::RateTransposerFloat() : RateTransposer()
+{
+    // call these here as these are virtual functions; calling these
+    // from the base class constructor wouldn't execute the overloaded
+    // versions (<master yoda>peculiar C++ can be</my>).
+    resetRegisters();
+    setRate(1.0f);
 }
 
 
-// Adds 'numSamples' pcs of samples from the 'samples' memory position into
-// the input of the object.
-void RateTransposer::putSamples(const SAMPLETYPE *samples, uint numSamples)
+RateTransposerFloat::~RateTransposerFloat()
 {
-    processSamples(samples, numSamples);
 }
 
 
-// Transposes up the sample rate, causing the observed playback 'rate' of the
-// sound to decrease
-void RateTransposer::upsample(const SAMPLETYPE *src, uint numSamples)
+void RateTransposerFloat::resetRegisters()
 {
-    int count, sizeTemp, num;
-
-    // If the parameter 'uRate' value is smaller than 'SCALE', first transpose
-    // the samples and then apply the anti-alias filter to remove aliasing.
-
-    // First check that there's enough room in 'storeBuffer' 
-    // (+16 is to reserve some slack in the destination buffer)
-    sizeTemp = (int)(SCALE * (double)numSamples / uRate + 16);
-
-    // Transpose the samples, store the result into the end of "storeBuffer"
-    count = transpose(storeBuffer.ptrEnd(sizeTemp), src, numSamples);
-    storeBuffer.putSamples(count);
-
-    // Apply the anti-alias filter to samples in "store output", output the
-    // result to "dest"
-    num = storeBuffer.numSamples();
-    count = pAAFilter->evaluate(outputBuffer.ptrEnd(num), 
-        storeBuffer.ptrBegin(), num, uChannels);
-    outputBuffer.putSamples(count);
-
-    // Remove the processed samples from "storeBuffer"
-    storeBuffer.receiveSamples(count);
+    fSlopeCount = 0;
+    sPrevSampleL = 
+    sPrevSampleR = 0;
 }
 
 
-// Transposes down the sample rate, causing the observed playback 'rate' of the
-// sound to increase
-void RateTransposer::downsample(const SAMPLETYPE *src, uint numSamples)
+
+// Transposes the sample rate of the given samples using linear interpolation. 
+// 'Mono' version of the routine. Returns the number of samples returned in 
+// the "dest" buffer
+uint RateTransposerFloat::transposeMono(SAMPLETYPE *dest, const SAMPLETYPE *src, uint numSamples)
 {
-    int count, sizeTemp;
+    unsigned int i, used;
 
-    // If the parameter 'uRate' value is larger than 'SCALE', first apply the
-    // anti-alias filter to remove high frequencies (prevent them from folding
-    // over the lover frequencies), then transpose. */
+    used = 0;    
+    i = 0;
 
-    // Add the new samples to the end of the storeBuffer */
-    storeBuffer.putSamples(src, numSamples);
-
-    // Anti-alias filter the samples to prevent folding and output the filtered 
-    // data to tempBuffer. Note : because of the FIR filter length, the
-    // filtering routine takes in 'filter_length' more samples than it outputs.
-    assert(tempBuffer.isEmpty());
-    sizeTemp = storeBuffer.numSamples();
-
-    count = pAAFilter->evaluate(tempBuffer.ptrEnd(sizeTemp), 
-        storeBuffer.ptrBegin(), sizeTemp, uChannels);
-
-    // Remove the filtered samples from 'storeBuffer'
-    storeBuffer.receiveSamples(count);
-
-    // Transpose the samples (+16 is to reserve some slack in the destination buffer)
-    sizeTemp = (int)(SCALE * (double)numSamples / uRate + 16);
-    count = transpose(outputBuffer.ptrEnd(sizeTemp), tempBuffer.ptrBegin(), count);
-    outputBuffer.putSamples(count);
-}
-
-
-// Transposes sample rate by applying anti-alias filter to prevent folding. 
-// Returns amount of samples returned in the "dest" buffer.
-// The maximum amount of samples that can be returned at a time is set by
-// the 'set_returnBuffer_size' function.
-void RateTransposer::processSamples(const SAMPLETYPE *src, uint numSamples)
-{
-    uint count;
-    uint sizeReq;
-
-    if (numSamples == 0) return;
-    assert(pAAFilter);
-
-    /* Enable this code snippet to disable transposing algorithm when no rate change
-       is required; this will reduce cpu burden by a small amount, but also cause a 
-       'click' in the sound if rate changed goes from a non-zero setting to zero during
-       the sound stream.
-
-    if (uRate == SCALE) 
+    // Process the last sample saved from the previous call first...
+    while (fSlopeCount <= 1.0f) 
     {
-        // Rate not changed from the original; simply pass through the samples
-        flushStoreBuffer();
-        outputBuffer.putSamples(src, numSamples);
-        resetRegisters();
-        return;
+        dest[i] = (SAMPLETYPE)((1.0f - fSlopeCount) * sPrevSampleL + fSlopeCount * src[0]);
+        i++;
+        fSlopeCount += fRate;
     }
-    */
+    fSlopeCount -= 1.0f;
 
-    // If anti-alias filter is turned off, simply transpose without applying
-    // the filter
-    if (bUseAAFilter == FALSE) 
+    while (1)
     {
-        sizeReq = SCALE * numSamples / uRate + 1;
-        count = transpose(outputBuffer.ptrEnd(sizeReq), src, numSamples);
-        outputBuffer.putSamples(count);
-        return;
+        while (fSlopeCount > 1.0f) 
+        {
+            fSlopeCount -= 1.0f;
+            used ++;
+            if (used >= numSamples - 1) goto end;
+        }
+        dest[i] = (SAMPLETYPE)((1.0f - fSlopeCount) * src[used] + fSlopeCount * src[used + 1]);
+        i++;
+        fSlopeCount += fRate;
     }
+end:
+    // Store the last sample for the next round
+    sPrevSampleL = src[numSamples - 1];
 
-    // Transpose with anti-alias filter
-    if (uRate < SCALE) 
-    {
-        upsample(src, numSamples);
-    } 
-    else  
-    {
-        downsample(src, numSamples);
-    }
+    return i;
 }
 
 
 // Transposes the sample rate of the given samples using linear interpolation. 
-// Returns the number of samples returned in the "dest" buffer
-inline uint RateTransposer::transpose(SAMPLETYPE *dest, const SAMPLETYPE *src, uint numSamples)
+// 'Mono' version of the routine. Returns the number of samples returned in 
+// the "dest" buffer
+uint RateTransposerFloat::transposeStereo(SAMPLETYPE *dest, const SAMPLETYPE *src, uint numSamples)
 {
-    if (uChannels == 2) 
+    unsigned int srcPos, i, used;
+
+    if (numSamples == 0) return 0;  // no samples, no work
+
+    used = 0;    
+    i = 0;
+
+    // Process the last sample saved from the sPrevSampleLious call first...
+    while (fSlopeCount <= 1.0f) 
     {
-        return transposeStereo(dest, src, numSamples);
-    } 
-    else 
-    {
-        return transposeMono(dest, src, numSamples);
+        dest[2 * i] = (SAMPLETYPE)((1.0f - fSlopeCount) * sPrevSampleL + fSlopeCount * src[0]);
+        dest[2 * i + 1] = (SAMPLETYPE)((1.0f - fSlopeCount) * sPrevSampleR + fSlopeCount * src[1]);
+        i++;
+        fSlopeCount += fRate;
     }
-}
+    // now always (iSlopeCount > 1.0f)
+    fSlopeCount -= 1.0f;
 
+    while (1)
+    {
+        while (fSlopeCount > 1.0f) 
+        {
+            fSlopeCount -= 1.0f;
+            used ++;
+            if (used >= numSamples - 1) goto end;
+        }
+        srcPos = 2 * used;
 
-// Sets the number of channels, 1 = mono, 2 = stereo
-void RateTransposer::setChannels(const uint numchannels)
-{
-    if (uChannels == numchannels) return;
+        dest[2 * i] = (SAMPLETYPE)((1.0f - fSlopeCount) * src[srcPos] 
+            + fSlopeCount * src[srcPos + 2]);
+        dest[2 * i + 1] = (SAMPLETYPE)((1.0f - fSlopeCount) * src[srcPos + 1] 
+            + fSlopeCount * src[srcPos + 3]);
 
-    assert(numchannels == 1 || numchannels == 2);
-    uChannels = numchannels;
+        i++;
+        fSlopeCount += fRate;
+    }
+end:
+    // Store the last sample for the next round
+    sPrevSampleL = src[2 * numSamples - 2];
+    sPrevSampleR = src[2 * numSamples - 1];
 
-    storeBuffer.setChannels(uChannels);
-    tempBuffer.setChannels(uChannels);
-    outputBuffer.setChannels(uChannels);
-
-    // Inits the linear interpolation registers
-    sPrevSampleL = 
-    sPrevSampleR = 0;
-    iSlopeCount = 0;
-}
-
-
-// Clears all the samples in the object
-void RateTransposer::clear()
-{
-    outputBuffer.clear();
-    storeBuffer.clear();
-}
-
-
-// Returns nonzero if there aren't any samples available for outputting.
-uint RateTransposer::isEmpty()
-{
-    int res;
-
-    res = FIFOProcessor::isEmpty();
-    if (res == 0) return 0;
-    return storeBuffer.isEmpty();
+    return i;
 }

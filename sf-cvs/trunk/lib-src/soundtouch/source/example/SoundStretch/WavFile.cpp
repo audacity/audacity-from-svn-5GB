@@ -15,10 +15,10 @@
  * Author e-mail : oparviai @ iki.fi
  * File created  : 13-Jan-2002
  *
- * Last changed  : $Date: 2004-03-14 15:51:42 $
- * File revision : $Revision: 1.1.1.1 $
+ * Last changed  : $Date: 2004-10-26 19:09:39 $
+ * File revision : $Revision: 1.2 $
  *
- * $Id: WavFile.cpp,v 1.1.1.1 2004-03-14 15:51:42 mbrubeck Exp $
+ * $Id: WavFile.cpp,v 1.2 2004-10-26 19:09:39 vjohnson Exp $
  *
  * License :
  *
@@ -561,6 +561,9 @@ void WavOutFile::write(const void *buffer, const int numBytes)
     {
         unsigned short *pTemp;
 
+        // 16 bit samples
+        if (numBytes < 2) return;   // nothing to do
+
         // allocate temp buffer to swap byte order if necessary
         pTemp = new unsigned short[numBytes / 2];
         memcpy(pTemp, buffer, numBytes);
@@ -573,6 +576,9 @@ void WavOutFile::write(const void *buffer, const int numBytes)
     else
     {
         // 8bit samples
+
+        if (numBytes < 1) return;   // nothing to do
+
         assert(header.format.bits_per_sample == 8);
 
         res = fwrite(buffer, 1, numBytes, fptr);

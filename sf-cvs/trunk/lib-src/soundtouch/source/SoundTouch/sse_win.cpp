@@ -21,10 +21,10 @@
  * Author e-mail : oparviai @ iki.fi
  * File created  : 02-Nov-2003
  *
- * Last changed  : $Date: 2004-03-14 15:51:44 $
- * File revision : $Revision: 1.1.1.1 $
+ * Last changed  : $Date: 2004-10-26 19:09:37 $
+ * File revision : $Revision: 1.2 $
  *
- * $Id: sse_win.cpp,v 1.1.1.1 2004-03-14 15:51:44 mbrubeck Exp $
+ * $Id: sse_win.cpp,v 1.2 2004-10-26 19:09:37 vjohnson Exp $
  *
  * License :
  * 
@@ -54,6 +54,7 @@
 #error "wrong platform - this source code file is exclusively for Win32 platform"
 #endif
 
+using namespace soundtouch;
 
 #ifdef ALLOW_SSE
 // SSE routines available only with float sample type    
@@ -71,7 +72,7 @@
 extern int scanOffsets[4][24];
 
 // Calculates cross correlation of two buffers
-_inline float TDStretchSSE::calculateCrossCorrelation(const float *pV1, const float *pV2) const
+double TDStretchSSE::calcCrossCorrStereo(const float *pV1, const float *pV2) const
 {
     uint overlapLengthLocal = overlapLength;
     float corr;
@@ -164,117 +165,7 @@ _inline float TDStretchSSE::calculateCrossCorrelation(const float *pV1, const fl
         movss   corr, xmm2
     }
 
-    return (float)corr;
-}
-
-
-
-
-// SSE-optimized version of the function "seekBestOverlapPositionStereo"
-uint TDStretchSSE::seekBestOverlapPositionStereo(const float *other)
-{
-    uint bestoffs;
-    float bestcorr, corr;
-    uint corrOffset, i;
-
-    // Slopes the amplitude of the "midBuffer" samples
-    slopeReferenceSamplesStereo();
-
-    bestcorr = INT_MIN;
-    bestoffs = 0;
-    corrOffset = 0;
-
-    // Scans for the best correlation value by testing each possible position
-    // over the permitted range.
-    for (i = 0; i < seekLength; i ++)
-    {
-            // Calculates the cross-correlation value for the mixing position 
-            // corresponding to "i"
-            corr = calculateCrossCorrelation(other + 2 * i, pRefMidBuffer);
-
-            // Checks for the highest correlation value
-            if (corr > bestcorr) 
-            {
-                bestoffs = i;
-                bestcorr = corr;
-            }
-        }
-    
-    return bestoffs;
-}
-
-
-
-// SSE-optimized version of the function "seekBestOverlapPositionStereoQuick"
-uint TDStretchSSE::seekBestOverlapPositionStereoQuick(const float *other)
-{
-    float *local_refMidBuffer = pRefMidBuffer;
-    uint bestpos, scancount, i;
-    float bestcorr,corr;
-    uint corrPos, tempPos;
-
-    // Slopes the amplitude of the "midBuffer" samples
-    slopeReferenceSamplesStereo();
-
-    bestcorr = INT_MIN;
-    bestpos = scanOffsets[0][0];
-    corrPos = 0;
-    tempPos = 0;
-
-    // Scans for the best correlation value using four-pass hierarchical search.
-    //
-    // The look-up table "scans" has hierarchical position adjusting steps.
-    // In first pass the routine searhes for the highest correlation with 
-    // relatively coarse steps, then rescans the neighbourhood of the highest
-    // correlation with better resolution and so on.
-
-    for (scancount = 0;scancount < 4; scancount ++) 
-    {
-        i = 0;
-        while (scanOffsets[scancount][i]) 
-        {
-            tempPos = corrPos + scanOffsets[scancount][i];
-            if (tempPos >= seekLength) break;
-
-            // Calculates correlation value for the mixing position corresponding
-            // to "tempPos"
-            corr = calculateCrossCorrelation(other + 2 * tempPos, pRefMidBuffer);
-            // Checks for the highest correlation value
-            if (corr > bestcorr) 
-            {
-                bestpos = tempPos;
-                bestcorr = corr;
-            }
-
-            i ++;
-        }
-        corrPos = bestpos;
-    }
-    
-    return bestpos;
-}
-
-
-
-// SSE-optimized version of the function overlapStereo
-void TDStretchSSE::overlapStereo(float *output, const float *input) const
-{
-    int i;
-    uint cnt2;
-    float fTemp;
-    float fScale;
-    float fi;
-
-    fScale = 1.0f / (float)overlapLength;
-
-    for (i = 0; i < (int)overlapLength ; i ++) 
-    {
-        fTemp = (float)(overlapLength - i) * fScale;
-        fi = (float)i * fScale;
-        cnt2 = 2 * i;
-        output[cnt2 + 0] = input[cnt2 + 0] * fi + pMidBuffer[cnt2 + 0] * fTemp;
-        output[cnt2 + 1] = input[cnt2 + 1] * fi + pMidBuffer[cnt2 + 1] * fTemp;
-    }
+    return (double)corr;
 }
 
 
@@ -309,6 +200,7 @@ void FIRFilterSSE::setCoefficients(const float *coeffs, uint newLength, uint uRe
     // Scale the filter coefficients so that it won't be necessary to scale the filtering result
     // also rearrange coefficients suitably for 3DNow!
     // Ensure that filter coeffs array is aligned to 16-byte boundary
+    delete[] filterCoeffsUnalign;
     filterCoeffsUnalign = new float[2 * newLength + 4];
     filterCoeffsAlign = (float *)(((uint)filterCoeffsUnalign + 15) & -16);
 
@@ -462,7 +354,6 @@ uint FIRFilterSSE::evaluateFilterStereo(float *dest, const float *src, const uin
         dec     edx
         jnz     loop1
     }
-
 
     return count;
 }
