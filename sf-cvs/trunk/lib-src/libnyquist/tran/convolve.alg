@@ -16,11 +16,9 @@ void h_reverse(sample_type *h, long len)
 ")
 
 (ARGUMENTS ("sound_type" "x_snd") ("sound_type" "h_snd") )
-
 (TABLE "h_snd")
-
+(START (MIN x_snd))
 (NOT-IN-INNER-LOOP "h_snd")
-
 (STATE 
         ("table_type" "table" "sound_to_table(h_snd)")
         ("sample_type *" "h_buf" "susp->table->samples")
@@ -31,16 +29,11 @@ void h_reverse(sample_type *h, long len)
         ("sample_type *" "x_buffer_pointer" 
          "calloc((2 * (susp->h_len)), sizeof(float))")
         ("sample_type *" "x_buffer_current" "susp->x_buffer_pointer")  )
-
 (ALWAYS-SCALE x_snd)
-
 (TERMINATE (MIN x_snd))
-
 (LOGICAL-STOP (MIN x_snd))
-
 (INNER-LOOP-LOCALS 
   "long i; double sum;")
-
 (INNER-LOOP "
         /* see if we've reached end of x_buffer */
         if ((x_buffer_pointer + x_buf_len) <= (x_buffer_current + h_len)) {
@@ -63,12 +56,8 @@ void h_reverse(sample_type *h, long len)
 
         output = (sample_type) sum;
 ")
-
-
 (CONSTANT "h_buf" "h_len" "x_buf_len" "table")
-
 (SAMPLE-RATE "x_snd->sr")
-
 (FINALIZATION "    table_unref(susp->table); 
     free(susp->x_buffer_pointer);")
 )

@@ -124,9 +124,9 @@ void pluck_initialize(sample_type *shiftreg, sample_type *array,
 (SAMPLE-RATE "sr")
 (NOT-REGISTER shiftreg)
 (TERMINATE (AFTER "d"))
-(INNER-LOOP "            sample_type sum =
-                (*i1++ * x2) + (*i2++ * x3) + 
-                (*i3++ * stretch) - (*i4++ * cons);
+(INNER-LOOP "            sample_type sum = (sample_type)
+                ((*i1++ * x2) + (*i2++ * x3) + 
+                 (*i3++ * stretch) - (*i4++ * cons));
             /* wrap pointers around shift register if necessary */
             if (i1 == endptr) i1 = susp->shiftreg;
             if (i2 == endptr) i2 = susp->shiftreg;
@@ -134,7 +134,7 @@ void pluck_initialize(sample_type *shiftreg, sample_type *array,
             if (i4 == endptr) i4 = susp->shiftreg;
 
             /* store new value in shift register */
-            *i4 = sum * loss;
+            *i4 = (sample_type) (sum * loss);
 
             /* deliver sample */
             output = sum;

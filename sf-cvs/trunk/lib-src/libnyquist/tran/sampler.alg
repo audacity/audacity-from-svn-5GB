@@ -12,6 +12,11 @@
        ("double" "table_len" "susp->the_table->length;
     { long index = (long) susp->loop_to;
       double frac = susp->loop_to - index;
+      if (index > round(susp->table_len) ||
+          index < 0) {
+          index = 0;
+          frac = 0;
+      }
       susp->table_ptr[round(susp->table_len)] = /* copy interpolated start to last entry */
           (sample_type) (susp->table_ptr[index] * (1.0 - frac) + 
                          susp->table_ptr[index + 1] * frac);}")
@@ -34,7 +39,7 @@
             phase += ph_incr + s_fm;
             while (phase > table_len) phase -= (table_len - loop_to);
             /* watch out for negative frequencies! */
-            while (phase < loop_to) phase += (table_len - loop_to)")
+            if (phase < 0) phase = 0")
 (CONSTANT "ph_incr" "table_len" "table_ptr" "loop_to")
 
 (SAMPLE-RATE "sr")

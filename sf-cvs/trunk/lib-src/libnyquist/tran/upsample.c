@@ -48,72 +48,72 @@ void up_n_fetch(register up_susp_type susp, snd_list_type snd_list)
     snd_list->block = out;
 
     while (cnt < max_sample_block_len) { /* outer loop */
-    /* first compute how many samples to generate in inner loop: */
-    /* don't overflow the output sample block: */
-    togo = max_sample_block_len - cnt;
+	/* first compute how many samples to generate in inner loop: */
+	/* don't overflow the output sample block: */
+	togo = max_sample_block_len - cnt;
 
-    /* don't run past the input input sample block: */
-    susp_check_term_log_samples(input, input_ptr, input_cnt);
-    togo = min(togo, susp->input_cnt);
+	/* don't run past the input input sample block: */
+	susp_check_term_log_samples(input, input_ptr, input_cnt);
+	togo = min(togo, susp->input_cnt);
 
-    /* don't run past terminate time */
-    if (susp->terminate_cnt != UNKNOWN &&
-        susp->terminate_cnt <= susp->susp.current + cnt + togo) {
-        togo = susp->terminate_cnt - (susp->susp.current + cnt);
-        if (togo == 0) break;
-    }
+	/* don't run past terminate time */
+	if (susp->terminate_cnt != UNKNOWN &&
+	    susp->terminate_cnt <= susp->susp.current + cnt + togo) {
+	    togo = susp->terminate_cnt - (susp->susp.current + cnt);
+	    if (togo == 0) break;
+	}
 
 
-    /* don't run past logical stop time */
-    if (!susp->logically_stopped && susp->susp.log_stop_cnt != UNKNOWN) {
-        int to_stop = susp->susp.log_stop_cnt - (susp->susp.current + cnt);
-        /* break if to_stop == 0 (we're at the logical stop)
-         * AND cnt > 0 (we're not at the beginning of the
-         * output block).
-         */
-        if (to_stop < togo) {
-        if (to_stop == 0) {
-            if (cnt) {
-            togo = 0;
-            break;
-            } else /* keep togo as is: since cnt == 0, we
-                    * can set the logical stop flag on this
-                    * output block
-                    */
-            susp->logically_stopped = true;
-        } else /* limit togo so we can start a new
-                * block at the LST
-                */
-            togo = to_stop;
-        }
-    }
+	/* don't run past logical stop time */
+	if (!susp->logically_stopped && susp->susp.log_stop_cnt != UNKNOWN) {
+	    int to_stop = susp->susp.log_stop_cnt - (susp->susp.current + cnt);
+	    /* break if to_stop == 0 (we're at the logical stop)
+	     * AND cnt > 0 (we're not at the beginning of the
+	     * output block).
+	     */
+	    if (to_stop < togo) {
+		if (to_stop == 0) {
+		    if (cnt) {
+			togo = 0;
+			break;
+		    } else /* keep togo as is: since cnt == 0, we
+		            * can set the logical stop flag on this
+		            * output block
+		            */
+			susp->logically_stopped = true;
+		} else /* limit togo so we can start a new
+		        * block at the LST
+		        */
+		    togo = to_stop;
+	    }
+	}
 
-    n = togo;
-    input_ptr_reg = susp->input_ptr;
-    out_ptr_reg = out_ptr;
-    if (n) do { /* the inner sample computation loop */
+	n = togo;
+	input_ptr_reg = susp->input_ptr;
+	out_ptr_reg = out_ptr;
+	if (n) do { /* the inner sample computation loop */
 *out_ptr_reg++ = (sample_type) *input_ptr_reg++;
-    } while (--n); /* inner loop */
+	} while (--n); /* inner loop */
 
-    /* using input_ptr_reg is a bad idea on RS/6000: */
-    susp->input_ptr += togo;
-    out_ptr += togo;
-    susp_took(input_cnt, togo);
-    cnt += togo;
+	/* using input_ptr_reg is a bad idea on RS/6000: */
+	susp->input_ptr += togo;
+	out_ptr += togo;
+	susp_took(input_cnt, togo);
+	cnt += togo;
     } /* outer loop */
 
     /* test for termination */
     if (togo == 0 && cnt == 0) {
-    snd_list_terminate(snd_list);
+	snd_list_terminate(snd_list);
     } else {
-    snd_list->block_len = cnt;
-    susp->susp.current += cnt;
+	snd_list->block_len = cnt;
+	susp->susp.current += cnt;
     }
     /* test for logical stop */
     if (susp->logically_stopped) {
-    snd_list->logically_stopped = true;
+	snd_list->logically_stopped = true;
     } else if (susp->susp.log_stop_cnt == susp->susp.current) {
-    susp->logically_stopped = true;
+	susp->logically_stopped = true;
     }
 } /* up_n_fetch */
 
@@ -138,88 +138,88 @@ void up_i_fetch(register up_susp_type susp, snd_list_type snd_list)
 
     /* make sure sounds are primed with first values */
     if (!susp->started) {
-    susp->started = true;
-    susp_check_term_log_samples(input, input_ptr, input_cnt);
-    susp->input_x1_sample = susp_fetch_sample(input, input_ptr, input_cnt);
+	susp->started = true;
+	susp_check_term_log_samples(input, input_ptr, input_cnt);
+	susp->input_x1_sample = susp_fetch_sample(input, input_ptr, input_cnt);
     }
 
     susp_check_term_log_samples(input, input_ptr, input_cnt);
     input_x2_sample = susp_current_sample(input, input_ptr);
 
     while (cnt < max_sample_block_len) { /* outer loop */
-    /* first compute how many samples to generate in inner loop: */
-    /* don't overflow the output sample block: */
-    togo = max_sample_block_len - cnt;
+	/* first compute how many samples to generate in inner loop: */
+	/* don't overflow the output sample block: */
+	togo = max_sample_block_len - cnt;
 
-    /* don't run past terminate time */
-    if (susp->terminate_cnt != UNKNOWN &&
-        susp->terminate_cnt <= susp->susp.current + cnt + togo) {
-        togo = susp->terminate_cnt - (susp->susp.current + cnt);
-        if (togo == 0) break;
-    }
+	/* don't run past terminate time */
+	if (susp->terminate_cnt != UNKNOWN &&
+	    susp->terminate_cnt <= susp->susp.current + cnt + togo) {
+	    togo = susp->terminate_cnt - (susp->susp.current + cnt);
+	    if (togo == 0) break;
+	}
 
 
-    /* don't run past logical stop time */
-    if (!susp->logically_stopped && susp->susp.log_stop_cnt != UNKNOWN) {
-        int to_stop = susp->susp.log_stop_cnt - (susp->susp.current + cnt);
-        /* break if to_stop == 0 (we're at the logical stop)
-         * AND cnt > 0 (we're not at the beginning of the
-         * output block).
-         */
-        if (to_stop < togo) {
-        if (to_stop == 0) {
-            if (cnt) {
-            togo = 0;
-            break;
-            } else /* keep togo as is: since cnt == 0, we
-                    * can set the logical stop flag on this
-                    * output block
-                    */
-            susp->logically_stopped = true;
-        } else /* limit togo so we can start a new
-                * block at the LST
-                */
-            togo = to_stop;
-        }
-    }
+	/* don't run past logical stop time */
+	if (!susp->logically_stopped && susp->susp.log_stop_cnt != UNKNOWN) {
+	    int to_stop = susp->susp.log_stop_cnt - (susp->susp.current + cnt);
+	    /* break if to_stop == 0 (we're at the logical stop)
+	     * AND cnt > 0 (we're not at the beginning of the
+	     * output block).
+	     */
+	    if (to_stop < togo) {
+		if (to_stop == 0) {
+		    if (cnt) {
+			togo = 0;
+			break;
+		    } else /* keep togo as is: since cnt == 0, we
+		            * can set the logical stop flag on this
+		            * output block
+		            */
+			susp->logically_stopped = true;
+		} else /* limit togo so we can start a new
+		        * block at the LST
+		        */
+		    togo = to_stop;
+	    }
+	}
 
-    n = togo;
-    input_pHaSe_ReG = susp->input_pHaSe;
-    input_x1_sample_reg = susp->input_x1_sample;
-    out_ptr_reg = out_ptr;
-    if (n) do { /* the inner sample computation loop */
-        if (input_pHaSe_ReG >= 1.0) {
-        input_x1_sample_reg = input_x2_sample;
-        /* pick up next sample as input_x2_sample: */
-        susp->input_ptr++;
-        susp_took(input_cnt, 1);
-        input_pHaSe_ReG -= 1.0;
-        susp_check_term_log_samples_break(input, input_ptr, input_cnt, input_x2_sample);
-        }
+	n = togo;
+	input_pHaSe_ReG = susp->input_pHaSe;
+	input_x1_sample_reg = susp->input_x1_sample;
+	out_ptr_reg = out_ptr;
+	if (n) do { /* the inner sample computation loop */
+	    if (input_pHaSe_ReG >= 1.0) {
+		input_x1_sample_reg = input_x2_sample;
+		/* pick up next sample as input_x2_sample: */
+		susp->input_ptr++;
+		susp_took(input_cnt, 1);
+		input_pHaSe_ReG -= 1.0;
+		susp_check_term_log_samples_break(input, input_ptr, input_cnt, input_x2_sample);
+	    }
 *out_ptr_reg++ = (sample_type) 
-        (input_x1_sample_reg * (1 - input_pHaSe_ReG) + input_x2_sample * input_pHaSe_ReG);
-        input_pHaSe_ReG += input_pHaSe_iNcR_rEg;
-    } while (--n); /* inner loop */
+		(input_x1_sample_reg * (1 - input_pHaSe_ReG) + input_x2_sample * input_pHaSe_ReG);
+	    input_pHaSe_ReG += input_pHaSe_iNcR_rEg;
+	} while (--n); /* inner loop */
 
-    togo -= n;
-    susp->input_pHaSe = input_pHaSe_ReG;
-    susp->input_x1_sample = input_x1_sample_reg;
-    out_ptr += togo;
-    cnt += togo;
+	togo -= n;
+	susp->input_pHaSe = input_pHaSe_ReG;
+	susp->input_x1_sample = input_x1_sample_reg;
+	out_ptr += togo;
+	cnt += togo;
     } /* outer loop */
 
     /* test for termination */
     if (togo == 0 && cnt == 0) {
-    snd_list_terminate(snd_list);
+	snd_list_terminate(snd_list);
     } else {
-    snd_list->block_len = cnt;
-    susp->susp.current += cnt;
+	snd_list->block_len = cnt;
+	susp->susp.current += cnt;
     }
     /* test for logical stop */
     if (susp->logically_stopped) {
-    snd_list->logically_stopped = true;
+	snd_list->logically_stopped = true;
     } else if (susp->susp.log_stop_cnt == susp->susp.current) {
-    susp->logically_stopped = true;
+	susp->logically_stopped = true;
     }
 } /* up_i_fetch */
 
@@ -243,93 +243,93 @@ void up_r_fetch(register up_susp_type susp, snd_list_type snd_list)
 
     /* make sure sounds are primed with first values */
     if (!susp->started) {
-    susp->started = true;
-    susp->input_pHaSe = 1.0;
+	susp->started = true;
+	susp->input_pHaSe = 1.0;
     }
 
     susp_check_term_log_samples(input, input_ptr, input_cnt);
     input_x2_sample = susp_current_sample(input, input_ptr);
 
     while (cnt < max_sample_block_len) { /* outer loop */
-    /* first compute how many samples to generate in inner loop: */
-    /* don't overflow the output sample block: */
-    togo = max_sample_block_len - cnt;
+	/* first compute how many samples to generate in inner loop: */
+	/* don't overflow the output sample block: */
+	togo = max_sample_block_len - cnt;
 
-    /* grab next input_x2_sample when phase goes past 1.0; */
-    /* we use input_n (computed below) to avoid roundoff errors: */
-    if (susp->input_n <= 0) {
-        susp->input_x1_sample = input_x2_sample;
-        susp->input_ptr++;
-        susp_took(input_cnt, 1);
-        susp->input_pHaSe -= 1.0;
-        susp_check_term_log_samples(input, input_ptr, input_cnt);
-        input_x2_sample = susp_current_sample(input, input_ptr);
-        /* input_n gets number of samples before phase exceeds 1.0: */
-        susp->input_n = (long) ((1.0 - susp->input_pHaSe) *
-                    susp->output_per_input);
-    }
-    togo = min(togo, susp->input_n);
-    input_DeLtA = (sample_type) ((input_x2_sample - susp->input_x1_sample) * susp->input_pHaSe_iNcR);
-    input_val = (sample_type) (susp->input_x1_sample * (1.0 - susp->input_pHaSe) +
-         input_x2_sample * susp->input_pHaSe);
+	/* grab next input_x2_sample when phase goes past 1.0; */
+	/* we use input_n (computed below) to avoid roundoff errors: */
+	if (susp->input_n <= 0) {
+	    susp->input_x1_sample = input_x2_sample;
+	    susp->input_ptr++;
+	    susp_took(input_cnt, 1);
+	    susp->input_pHaSe -= 1.0;
+	    susp_check_term_log_samples(input, input_ptr, input_cnt);
+	    input_x2_sample = susp_current_sample(input, input_ptr);
+	    /* input_n gets number of samples before phase exceeds 1.0: */
+	    susp->input_n = (long) ((1.0 - susp->input_pHaSe) *
+					susp->output_per_input);
+	}
+	togo = min(togo, susp->input_n);
+	input_DeLtA = (sample_type) ((input_x2_sample - susp->input_x1_sample) * susp->input_pHaSe_iNcR);
+	input_val = (sample_type) (susp->input_x1_sample * (1.0 - susp->input_pHaSe) +
+		 input_x2_sample * susp->input_pHaSe);
 
-    /* don't run past terminate time */
-    if (susp->terminate_cnt != UNKNOWN &&
-        susp->terminate_cnt <= susp->susp.current + cnt + togo) {
-        togo = susp->terminate_cnt - (susp->susp.current + cnt);
-        if (togo == 0) break;
-    }
+	/* don't run past terminate time */
+	if (susp->terminate_cnt != UNKNOWN &&
+	    susp->terminate_cnt <= susp->susp.current + cnt + togo) {
+	    togo = susp->terminate_cnt - (susp->susp.current + cnt);
+	    if (togo == 0) break;
+	}
 
 
-    /* don't run past logical stop time */
-    if (!susp->logically_stopped && susp->susp.log_stop_cnt != UNKNOWN) {
-        int to_stop = susp->susp.log_stop_cnt - (susp->susp.current + cnt);
-        /* break if to_stop == 0 (we're at the logical stop)
-         * AND cnt > 0 (we're not at the beginning of the
-         * output block).
-         */
-        if (to_stop < togo) {
-        if (to_stop == 0) {
-            if (cnt) {
-            togo = 0;
-            break;
-            } else /* keep togo as is: since cnt == 0, we
-                    * can set the logical stop flag on this
-                    * output block
-                    */
-            susp->logically_stopped = true;
-        } else /* limit togo so we can start a new
-                * block at the LST
-                */
-            togo = to_stop;
-        }
-    }
+	/* don't run past logical stop time */
+	if (!susp->logically_stopped && susp->susp.log_stop_cnt != UNKNOWN) {
+	    int to_stop = susp->susp.log_stop_cnt - (susp->susp.current + cnt);
+	    /* break if to_stop == 0 (we're at the logical stop)
+	     * AND cnt > 0 (we're not at the beginning of the
+	     * output block).
+	     */
+	    if (to_stop < togo) {
+		if (to_stop == 0) {
+		    if (cnt) {
+			togo = 0;
+			break;
+		    } else /* keep togo as is: since cnt == 0, we
+		            * can set the logical stop flag on this
+		            * output block
+		            */
+			susp->logically_stopped = true;
+		} else /* limit togo so we can start a new
+		        * block at the LST
+		        */
+		    togo = to_stop;
+	    }
+	}
 
-    n = togo;
-    out_ptr_reg = out_ptr;
-    if (n) do { /* the inner sample computation loop */
+	n = togo;
+	out_ptr_reg = out_ptr;
+	if (n) do { /* the inner sample computation loop */
 *out_ptr_reg++ = (sample_type) input_val;
-        input_val += input_DeLtA;
-    } while (--n); /* inner loop */
+	    input_val += input_DeLtA;
+	} while (--n); /* inner loop */
 
-    out_ptr += togo;
-    susp->input_pHaSe += togo * susp->input_pHaSe_iNcR;
-    susp->input_n -= togo;
-    cnt += togo;
+	out_ptr += togo;
+	susp->input_pHaSe += togo * susp->input_pHaSe_iNcR;
+	susp->input_n -= togo;
+	cnt += togo;
     } /* outer loop */
 
     /* test for termination */
     if (togo == 0 && cnt == 0) {
-    snd_list_terminate(snd_list);
+	snd_list_terminate(snd_list);
     } else {
-    snd_list->block_len = cnt;
-    susp->susp.current += cnt;
+	snd_list->block_len = cnt;
+	susp->susp.current += cnt;
     }
     /* test for logical stop */
     if (susp->logically_stopped) {
-    snd_list->logically_stopped = true;
+	snd_list->logically_stopped = true;
     } else if (susp->susp.log_stop_cnt == susp->susp.current) {
-    susp->logically_stopped = true;
+	susp->logically_stopped = true;
     }
 } /* up_r_fetch */
 
@@ -344,8 +344,8 @@ void up_toss_fetch(susp, snd_list)
 
     /* fetch samples from input up to final_time for this block of zeros */
     while ((round((final_time - susp->input->t0) * susp->input->sr)) >=
-       susp->input->current)
-    susp_get_samples(input, input_ptr, input_cnt);
+	   susp->input->current)
+	susp_get_samples(input, input_ptr, input_cnt);
     /* convert to normal processing when we hit final_count */
     /* we want each signal positioned at final_time */
     n = round((final_time - susp->input->t0) * susp->input->sr -
@@ -394,8 +394,8 @@ sound_type snd_make_up(rate_type sr, sound_type input)
     if (input->sr < sr) { input->scale = scale_factor; scale_factor = 1.0F; }
 
     if (input->sr > sr) {
-    sound_unref(input);
-    xlfail("snd-up: output sample rate must be higher than input");
+        sound_unref(input);
+        xlfail("snd-up: output sample rate must be higher than input");
     }
     falloc_generic(susp, up_susp_node, "snd_make_up");
 
@@ -405,6 +405,7 @@ sound_type snd_make_up(rate_type sr, sound_type input)
       case INTERP_n: susp->susp.fetch = up_n_fetch; break;
       case INTERP_i: susp->susp.fetch = up_i_fetch; break;
       case INTERP_r: susp->susp.fetch = up_r_fetch; break;
+      default: snd_badsr(); break;
     }
 
     susp->terminate_cnt = UNKNOWN;
@@ -415,8 +416,8 @@ sound_type snd_make_up(rate_type sr, sound_type input)
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {
-    susp->susp.keep_fetch = susp->susp.fetch;
-    susp->susp.fetch = up_toss_fetch;
+	susp->susp.keep_fetch = susp->susp.fetch;
+	susp->susp.fetch = up_toss_fetch;
     }
 
     /* initialize susp state */

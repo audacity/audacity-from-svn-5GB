@@ -1,7 +1,8 @@
 (SHAPE-ALG
         (NAME "shape") 
         (ARGUMENTS ("sound_type" "sin") ("sound_type" "fn") 
-                ("double" "origin"))	
+                ("double" "origin"))
+        (START (MIN sin))	
         (TABLE "fn")
         (NOT-IN-INNER-LOOP "fn")
         (STATE 

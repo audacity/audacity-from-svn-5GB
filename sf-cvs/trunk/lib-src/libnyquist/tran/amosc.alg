@@ -5,6 +5,7 @@
            ("double" "phase"))
 (TABLE "input")
 (NOT-IN-INNER-LOOP "input")
+(START (MIN input))
 (STATE 
        ("double" "ph_incr" "0")
        ("table_type" "the_table" "sound_to_table(input)")
