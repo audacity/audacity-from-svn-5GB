@@ -90,7 +90,7 @@ if ($update == "true") {
   print "<center><p>Main phrase list updated.";
   print "</p>\n";
   print "<p>\n";
-  print "<form action=trmain.php method=post>\n";
+  print "<form action=trlist.php method=post>\n";
   print "<input type=hidden name=lang value=$lang>\n";
   print "<input type=hidden name=passwd value=\"$passwd\">\n";
   print "<input type=submit value=\"Back to translation editor\">\n";
