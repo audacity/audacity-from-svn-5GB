@@ -616,14 +616,6 @@ SOURCE=.\BlockFile.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\DDC.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\DDCMath.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\DirManager.cpp
 # End Source File
 # Begin Source File

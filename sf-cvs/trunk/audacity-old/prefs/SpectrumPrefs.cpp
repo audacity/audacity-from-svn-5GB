@@ -68,11 +68,13 @@ PrefsPanel(parent)
       mFFTSize[0] = new wxRadioButton(
          this, -1, stringFFTSizes[0], wxDefaultPosition,
          wxDefaultSize, wxRB_GROUP );
+      mFFTSize[0]->SetValue(false);
       fftSizeSizer->Add(mFFTSize[0], 0, 
          wxGROW|wxLEFT|wxRIGHT, RADIO_BUTTON_BORDER );
 
       for(i = 1; i < numFFTSizes; i++) {
          mFFTSize[i] = new wxRadioButton(this, -1, stringFFTSizes[i]);
+         mFFTSize[i]->SetValue(false);
          fftSizeSizer->Add(mFFTSize[i], 0,
             wxGROW|wxLEFT|wxRIGHT, RADIO_BUTTON_BORDER );
       }

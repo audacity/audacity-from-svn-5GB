@@ -60,11 +60,14 @@ PrefsPanel(parent)
       mSampleRates[0] = new wxRadioButton(this, -1, stringRates[0],
                                           wxDefaultPosition, wxDefaultSize,
                                           wxRB_GROUP);
+      mSampleRates[0]->SetValue(false);
+
       defProjSizer->Add(
          mSampleRates[0], 0, wxGROW | wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER);
 
       for(int j = 1; j < NUM_RATES; j++) {
          mSampleRates[j] = new wxRadioButton(this, -1, stringRates[j]);
+         mSampleRates[j]->SetValue(false);
          defProjSizer->Add(
             mSampleRates[j], 0, wxGROW| wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER);
       }

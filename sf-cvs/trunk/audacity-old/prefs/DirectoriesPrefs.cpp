@@ -119,15 +119,19 @@ void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent &event)
 {
    static wxLongLong space;
    static wxString tempDir;
+   static char tmp[200];
+
    tempDir = event.GetString();
 
+#ifndef __WXMAC__  // the mac GetFreeDiskSpace routine does this automatically
    /* Try to be smart: if the directory doesn't exist, go up the
     * directory path until one is, because that's the volume that
     * the new directory would be created on */
    while(!wxDirExists(tempDir) && tempDir.Find(wxFILE_SEP_PATH) != -1)
-      tempDir = tempDir.BeforeLast(wxFILE_SEP_PATH) + wxFILE_SEP_PATH;
-      
-   space = GetFreeDiskSpace(tempDir.c_str());
+      tempDir = tempDir.BeforeLast(wxFILE_SEP_PATH);
+#endif
+   strncpy(tmp, tempDir.c_str(), 200);
+   space = GetFreeDiskSpace(tmp);
    
    mFreeSpace->SetLabel(FormatSize(space));
 }

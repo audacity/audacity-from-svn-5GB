@@ -86,6 +86,7 @@ PrefsPanel(parent)
       mCopyOrEdit[0] = new wxRadioButton(
          this, -1, "Make a copy of the file to edit",
          wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+      mCopyOrEdit[0]->SetValue(false);
           
       copyOrEditSizer->Add( mCopyOrEdit[0], 0,
          wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
@@ -93,6 +94,7 @@ PrefsPanel(parent)
       mCopyOrEdit[1] = new wxRadioButton(
          this, -1, "Edit the original in place",
          wxDefaultPosition, wxDefaultSize, 0 );
+      mCopyOrEdit[1]->SetValue(false);
    
       copyOrEditSizer->Add( mCopyOrEdit[1], 0,
          wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
@@ -121,6 +123,7 @@ PrefsPanel(parent)
       for(int i = 1; i < mNumFormats; i++) {
          mDefaultExportFormats[i] = new wxRadioButton(
             this, -1, gDefaultExportFormatOptions[i]);
+         mDefaultExportFormats[i]->SetValue(false);
 
          if(gDefaultExportFormatOptions[i] == "MP3" && !gMP3Exporter->ValidLibraryLoaded())
             mDefaultExportFormats[i]->Enable(false);

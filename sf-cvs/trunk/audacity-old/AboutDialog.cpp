@@ -24,10 +24,10 @@
 
 const char *creditText =
   "<html>"
-  "<body bgcolor=\"#cccccc\">"
+  "<body bgcolor=\"#ffffff\">"
   "<font size=1>"
   "<center>"
-  "<b>Audacity " AUDACITY_VERSION_STRING "</b><br>"
+  "<h3>Audacity " AUDACITY_VERSION_STRING "</h3>"
   "A New Digital Audio Editor"
   "</center>"
   "<p>"
@@ -131,7 +131,7 @@ BEGIN_EVENT_TABLE(Eraser, wxWindow)
 
    Eraser *panel = new Eraser(this, -1,
                               wxPoint(0, 0),
-                              wxSize(400, 400));
+                              wxSize(400, DLOG_HEIGHT));
    panel->SetBackgroundColour(wxColour(255, 255, 255));
 
    wxString creditStr = creditText;

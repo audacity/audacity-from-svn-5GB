@@ -18,7 +18,9 @@ void QuitAudacity();
 class AudacityApp:public wxApp {
  public:
    bool OnInit(void);
+   int OnExit(void);
 
  private:
    void RunTest();
+//   wxSingleInstanceChecker *mChecker;
 };
