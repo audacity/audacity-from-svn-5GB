@@ -27,8 +27,16 @@ wxString gCommandsCfgLocation;
 
 Commands::Commands()
 {
+   wxString newCommandsCfgDirectory;
    wxString oldCommandsCfgLocation;
    bool bFalse = false;
+
+   //Figure out where to put commands.cfg
+   gCommandsCfgLocation = gPrefs->Read("/CmdCfgLocation", "");
+   if(!gCommandsCfgLocation.Length())
+   {
+      newCommandsCfgDirectory = wxGetHomeDir();
+   }
 
    //See if we need to change the location of commands.cfg
    if(gPrefs->Read("/DeleteCmdCfgLocation", &bFalse))
@@ -42,21 +50,19 @@ Commands::Commands()
 
       if(gPrefs->HasEntry("/CmdCfgLocation"))
          gPrefs->DeleteEntry("/CmdCfgLocation");
+
+      newCommandsCfgDirectory = wxDirSelector(_("Choose the location for commands.cfg"), wxGetHomeDir());
+      if(!newCommandsCfgDirectory.Length())
+      {
+         newCommandsCfgDirectory = wxGetHomeDir();
+      }
    }
 
-   //Figure out where to put commands.cfg
-   gCommandsCfgLocation = gPrefs->Read("/CmdCfgLocation", "");
-
-   if(!gCommandsCfgLocation.Length())
+   //Write new location to preferences
+   if(newCommandsCfgDirectory.Length())
    {
-      gCommandsCfgLocation = wxDirSelector(_("Choose the location for commands.cfg"), wxGetHomeDir());
-      if(!gCommandsCfgLocation.Length())
-      {
-         gCommandsCfgLocation = wxGetHomeDir();
-      }
-
       wxFileName CommandsCfgFilename("commands.cfg");
-      CommandsCfgFilename.PrependDir(gCommandsCfgLocation);
+      CommandsCfgFilename.PrependDir(newCommandsCfgDirectory);
 
       gCommandsCfgLocation = CommandsCfgFilename.GetFullPath();
       gPrefs->Write("/CmdCfgLocation", gCommandsCfgLocation);
