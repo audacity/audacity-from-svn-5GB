@@ -62,8 +62,9 @@ PrefsPanel(parent), mCommandSelected(-1)
                           wxALL, GENERIC_CONTROL_BORDER);
 
       vCommandSizer->Add(
-               new wxStaticText(this, DescriptionTextID, _("Description:\n Nothing selected.")), 0,
-               wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
+               new wxStaticText(this, DescriptionTextID,
+                  _("Description:\n ") + wxString(_("Nothing selected."))),
+               0, wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
 
       vKeyConfigSizer->Add(
          vCommandSizer, 0, 
@@ -128,7 +129,8 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
    if(wDescLabel)
    {
       // BG: Set the description
-      wDescLabel->SetLabel("Description:\n " + mAudacity->GetCommandDesc(mCommandSelected));
+      wDescLabel->SetLabel(_("Description:\n ")
+            + mAudacity->GetCommandDesc(mCommandSelected));
    }
 
 /*
