@@ -33,10 +33,7 @@
 #include "ImportRaw.h"
 #include "ImportMIDI.h"
 #include "ImportMP3.h"
-
-#ifdef HAVE_LIBVORBISFILE
 #include "ImportOGG.h"
-#endif
 
 #include "LabelTrack.h"
 #include "Mix.h"
@@ -109,8 +106,11 @@ void AudacityProject::CreateMenuBar()
   mProjectMenu->Append(ImportID, "&Import Audio...\tCtrl+I");
   mProjectMenu->Append(ImportLabelsID, "Import Labels...");
   mProjectMenu->Append(ImportMIDIID, "Import &MIDI...");
+#ifdef MP3SUPPORT
   mProjectMenu->Append(ImportMP3ID, "Import MP&3...");
-#ifdef HAVE_LIBVORBISFILE
+#endif
+
+#ifdef USE_LIBVORBIS
   mProjectMenu->Append(ImportOGGID, "Import &OGG...");
 #endif
   mProjectMenu->Append(ImportRawID, "Import Raw Data...");
@@ -858,6 +858,7 @@ void AudacityProject::OnImportMIDI(wxCommandEvent& event)
   }
 }
 
+#ifdef MP3SUPPORT
 void AudacityProject::OnImportMP3(wxCommandEvent& event)
 {
   wxString path = gPrefs->Read("/DefaultOpenPath", ::wxGetCwd());
@@ -879,8 +880,9 @@ void AudacityProject::OnImportMP3(wxCommandEvent& event)
 	ImportMP3(fileName);
   }
 }
+#endif /* MP3SUPPORT */
 
-#ifdef HAVE_LIBVORBISFILE
+#ifdef USE_LIBVORBIS
 void AudacityProject::OnImportOGG(wxCommandEvent& event)
 {
   wxString path = gPrefs->Read("/DefaultOpenPath", ::wxGetCwd());
@@ -902,7 +904,7 @@ void AudacityProject::OnImportOGG(wxCommandEvent& event)
 	ImportOGG(fileName);
   }
 }
-#endif /* HAVE_LIBVORBISFILE */
+#endif /* USE_LIBVORBIS */
 
 void AudacityProject::OnImportRaw(wxCommandEvent& event)
 {

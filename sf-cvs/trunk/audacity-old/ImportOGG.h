@@ -8,7 +8,7 @@
 
 **********************************************************************/
 
-#ifdef HAVE_LIBVORBISFILE
+#ifdef USE_LIBVORBIS
 
 #ifndef __AUDACITY_IMPORT_OGG__
 #define __AUDACITY_IMPORT_OGG__

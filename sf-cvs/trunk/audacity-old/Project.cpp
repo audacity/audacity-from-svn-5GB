@@ -39,10 +39,7 @@
 #include "FreqWindow.h"
 #include "Import.h"
 #include "ImportMP3.h"
-
-#ifdef HAVE_LIBVORBISFILE
 #include "ImportOGG.h"
-#endif
 
 #include "LabelTrack.h"
 #include "Mix.h"
@@ -830,6 +827,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent& event)
 
 void AudacityProject::OpenFile(wxString fileName)
 {
+#ifdef MP3SUPPORT
   // Check for .MP3 suffix
 
   if (!fileName.Right(3).CmpNoCase("mp3")) {
@@ -848,8 +846,9 @@ void AudacityProject::OpenFile(wxString fileName)
 	    return;
     }
   }
+#endif /* MP3SUPPORT */
 
-#ifdef HAVE_LIBVORBISFILE
+#ifdef USE_LIBVORBIS
   // Check for .OGG suffix
 
   if (!fileName.Right(3).CmpNoCase("ogg")) {
@@ -868,7 +867,7 @@ void AudacityProject::OpenFile(wxString fileName)
 	    return;
     }
   }
-#endif /* HAVE_LIBVORBISFILE */
+#endif /* USE_LIBVORBIS */
 
   // Check for .WAV, .AIFF, .AIF, .AU, or .IRCAM suffix
 
@@ -880,7 +879,9 @@ void AudacityProject::OpenFile(wxString fileName)
       !fileName.Right(5).CmpNoCase("ircam")) {
     if (mDirty || !mTracks->IsEmpty()) {
 	    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
+#ifdef MP3SUPPORT
 	    project->ImportMP3(fileName);
+#endif
       return;
     }
     else {
@@ -1250,6 +1251,7 @@ void AudacityProject::ImportFile(wxString fileName)
   }
 }
 
+#ifdef MP3SUPPORT
 void AudacityProject::ImportMP3(wxString fileName)
 {
   WaveTrack *left = 0;
@@ -1277,8 +1279,9 @@ void AudacityProject::ImportMP3(wxString fileName)
 
   }
 }
+#endif /* MP3SUPPORT */
 
-#ifdef HAVE_LIBVORBISFILE
+#ifdef USE_LIBVORBIS
 void AudacityProject::ImportOGG(wxString fileName)
 {
 	WaveTrack **channels = 0;
@@ -1297,7 +1300,7 @@ void AudacityProject::ImportOGG(wxString fileName)
 		ZoomFit();
 	}
 }
-#endif /* HAVE_LIBVORBISFILE */
+#endif /* USE_LIBVORBIS */
 
 //
 // Zoom methods

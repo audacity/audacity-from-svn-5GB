@@ -72,8 +72,11 @@ public:
   void Save(bool overwrite = true, bool fromSaveAs = false);
   void SaveAs();
   void ImportFile(wxString fileName);
+#ifdef MP3SUPPORT
   void ImportMP3(wxString fileName);
-#ifdef HAVE_LIBVORBISFILE
+#endif
+
+#ifdef USE_LIBVORBIS
   void ImportOGG(wxString fileName);
 #endif
 

@@ -17,7 +17,7 @@
 
 **********************************************************************/
 
-#ifdef HAVE_LIBVORBISFILE
+#ifdef USE_LIBVORBIS
 
 #include <wx/string.h>
 #include <wx/timer.h>
@@ -189,4 +189,4 @@ bool ImportOGG(wxWindow *parent,
 
 }
 
-#endif /* HAVE_LIBVORBISFILE */
+#endif /* USE_LIBVORBIS */

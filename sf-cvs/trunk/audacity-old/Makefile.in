@@ -8,7 +8,7 @@
 # from Makefile.in
 #
 
-LIBFLAGS = @XAUDIOLIB@ @LIBS@ @LMDEP@
+LIBS = @LIBS@
 CFLAGS = @DEFS@ @CFLAGS@ @CPPFLAGS@ -Iallegro
 CCC = @CXX@
 CC = @CC@
@@ -74,7 +74,7 @@ OBJS = \
 	$(OBJDIR)/prefs/AudioIOPrefs.cpp.o \
 	$(OBJDIR)/prefs/SampleRatePrefs.cpp.o \
 	$(OBJDIR)/prefs/FileFormatPrefs.cpp.o \
-	$(OBJDIR)/prefs/SpectrumPrefs.cpp.o
+	$(OBJDIR)/prefs/SpectrumPrefs.cpp.o @EXTRAOBJS@
 
 ########################################
 # DEPENDENCIES
@@ -85,11 +85,15 @@ DEPS = $(OBJS:$(OBJDIR)/%.o=%)
 
 all: dirs audacity
 
-audacity: $(OBJS) Makefile @LMDEP@
-	$(CCC) -o audacity $(OBJS) $(LIBFLAGS)
+audacity: $(OBJS) Makefile
+	$(CCC) -o audacity $(OBJS) $(LIBS)
 
-@LMRULE@
-@LMACTION@
+#
+# rule for building libmpeg3 -- however, it's only built if selected in
+# the configure script
+mpeg3/libmpeg3.a:
+	make -C mpeg3
+
 #
 # You can optionally "make dep" to make dependencies.
 # voodoo magic in the form of a perl script turns

@@ -7,19 +7,6 @@ dnl
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(AudacityApp.h)
 
-dnl option
-AC_ARG_WITH(libmpeg3,
-	[  --with-libmpeg3         use libmpeg3 instead of xaudio for mp3 support],
-	  [ AC_DEFINE(USE_LIBMPEG3)
-	  AC_CONFIG_SUBDIRS(mpeg3)
-	  AC_SUBST(LMDEP, "mpeg3/libmpeg3.a")
-	  AC_SUBST(LMRULE, "mpeg3/libmpeg3.a:")
-	  AC_SUBST(LMACTION, "	make -C mpeg3")
-	  AC_SUBST(XAUDIOLIB, "")],
-    [ AC_SUBST(LMDEP, "") 
-      AC_SUBST(LMRULE, "")
-	  AC_SUBST(LMACTION, "")
-	  AC_SUBST(XAUDIOLIB, "-Lxaudio/linux/lib -lxaudio")])
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -29,39 +16,85 @@ AC_LANG_SAVE
 AC_LANG_CPLUSPLUS
 AC_PROG_CXX
 
-dnl Checks for libraries.
+dnl extra variables
+AC_SUBST(EXTRAOBJS)
 
-dnl wx-config takes care of these:
-dnl AC_CHECK_LIB(dl, dlopen)
-dnl AC_CHECK_LIB(gdk, gdk_im_open)
-dnl AC_CHECK_LIB(gtk, main)
-dnl AC_CHECK_LIB(m, main)
-dnl AC_CHECK_LIB(pthread, pthread_create)
+dnl options
+AC_ARG_WITH(libmpeg3,
+	[AC_HELP_STRING([--with-libmpeg3],
+		[use libmpeg3 for mp3 support [default=no]])],
+	use_libmpeg3=$withval,
+	use_libmpeg3="no")
+AC_ARG_WITH(xaudio,
+	[AC_HELP_STRING([--with-xaudio],
+		[use xaudio for mp3 support [default=yes]])],
+	use_xaudio=$withval,
+	use_xaudio="default") dnl to differentiate between explicit and default
+AC_ARG_WITH(vorbis,
+	[AC_HELP_STRING([--with-vorbis],
+		[enable ogg vorbis support (libraries must be installed) [default=no]])],
+	use_vorbis=$withval,
+	use_vorbis="no")
 
-dnl we don't seem to be using this one at the moment
-dnl AC_CHECK_LIB(resolv, main)
+dnl check to make sure that all the user's options are valid
+AC_CANONICAL_HOST
+host_cpu=`echo "$host_cpu" | sed "s/i.86/i386/"`
+host_os=`echo "$host_os" | sed "s/-.*//"`
+
+if [[ "$use_libmpeg3" = "yes" ] && [ "$use_xaudio" = "yes" ]] ; then
+	AC_MSG_ERROR([*** --use-libmpeg3 and --use-xaudio are mutually exclusive])
+fi
+
+if [[ "$use_libmpeg3" = "yes" ]] ; then
+
+	dnl do we need to do a host check?? I have no idea what os's 
+	dnl libmpeg3 will compile on...
+
+	AC_DEFINE(USE_LIBMPEG3)
+	AC_DEFINE(MP3SUPPORT)
+	EXTRAOBJS="$EXTRAOBJS mpeg3/libmpeg3.a"
+	use_xaudio="no"
+fi
+
+if [[ "$use_xaudio" = "yes" ] || [ "$use_xaudio" = "default" ]] ; then
+
+	if [[ "$host_cpu" != "i386" ]] ; then
+		AC_MSG_ERROR([*** xaudio is not supported on architectures other than i386])
+	fi
+
+	case "$host_os" in
+		"linux")
+			LIBS="$LIBS -Lxaudio/linux/lib -lxaudio"
+			;;
+		*)
+			AC_MSG_ERROR([*** xaudio is only supported on Linux])
+			;;
+	esac
+			
+	AC_DEFINE(USE_XAUDIO)
+	AC_DEFINE(MP3SUPPORT)
+fi
+
+dnl this complicated-looking thing is simple a nested function that checks for
+dnl the library, checking for the header as well on success
+if [[ $use_vorbis = "yes" ]] ; then
+
+AC_CHECK_LIB(vorbisfile, ov_open,
+	[ AC_CHECK_HEADER(vorbis/vorbisfile.h, ,
+		AC_MSG_ERROR([*** Ogg Vorbis headers not found. libvorbis must be installed for Ogg Vorbis support]))],
+	AC_MSG_ERROR([*** Ogg Vorbis libraries not found. libvorbis must be installed for Ogg Vorbis support]),
+	-lvorbis -logg) dnl auxiliary library that -lvorbisfile needs
+
+	LIBS="$LIBS -lvorbisfile -lvorbis -logg"
+	AC_DEFINE(USE_LIBVORBIS)
+fi
 
 AC_PATH_PROG(WX_CONFIG, wx-config, no)
-if test "$WX_CONFIG" = "no" ; then
+if [[ "$WX_CONFIG" = "no" ]] ; then
 	AC_MSG_ERROR("Could not find wx-config: is wxWindows installed?")
 fi
 LIBS="$LIBS `$WX_CONFIG --libs`"
 CFLAGS="$CFLAGS `$WX_CONFIG --cflags`"
-
-
-dnl this complicated-looking thing is simple a nested function that checks for
-dnl the library, checking for the header as well on success
-AC_CHECK_LIB(vorbisfile, ov_open, [
-	AC_CHECK_HEADER(vorbis/vorbisfile.h, [
-		  LIBS="$LIBS -lvorbisfile -lvorbis -logg"
-		  AC_DEFINE(HAVE_LIBVORBISFILE) ],
-		AC_MSG_WARN("Ogg Vorbis headers not found. Ogg vorbis support disabled"))],
-	AC_MSG_WARN("Ogg Vorbis libraries not found. Ogg vorbis support disabled"),
-	-lvorbis -logg) dnl auxiliary library that -lvorbisfile needs
-
-dnl Checks for header files.
-AC_HEADER_STDC
-AC_CHECK_HEADERS(fcntl.h unistd.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST

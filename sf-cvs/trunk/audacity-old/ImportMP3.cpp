@@ -14,15 +14,17 @@
   unlimited license to.  The library is available in binary form
   only from www.xaudio.com.  It is very fast, robust, and stable.
 
-  mpg123: this is the free version of a library which has since
-  been put under a more restrictive license.  It works, but its
-  error checking is not very good, it's not super fast, and
-  it sometimes fails on MP3 files with certain ID3 tags.  But...
-  it's totally Free.
+  libmpeg3: a free as in speech and beer mp3 decoding library. I'm not
+  sure where it will and won't compile, but it works at least on Linux
 
-  Choose which library to compile using the USE_MPG123 macro.
-
+  There is a master symbol MP3SUPPORT -- if it is not defined, there
+  be no MP3 support at all. If MP3SUPPORT is defined, another symbol
+  must be defined as well to indicate which library -- at the moment,
+  either USE_XAUDIO or USE_LIBMPEG3
+  
 **********************************************************************/
+
+#ifdef MP3SUPPORT
 
 #include <wx/file.h>
 #include <wx/thread.h>
@@ -38,7 +40,7 @@
 
 #ifdef USE_LIBMPEG3
   #include "mpeg3/libmpeg3.h"
-#else
+#elif defined(USE_XAUDIO)
   #ifdef __WXGTK__
     #include "xaudio/linux/include/decoder.h"
     #include "xaudio/linux/include/mpeg_codec.h"
@@ -53,6 +55,8 @@
     #include "xaudio/mac/include/mpeg_codec.h"
     #include "xaudio/mac/include/file_input.h"
   #endif
+#else
+  #error MP3 support selected but no mp3 decoding library specified
 #endif
 
 bool ImportMP3(wxWindow *parent,
@@ -168,7 +172,7 @@ bool ImportMP3(wxWindow *parent,
 
   return true;
 
-#else
+#elif defined(USE_XAUDIO)
 
   /* Use XAUDIO */
   wxBusyCursor wait;
@@ -346,4 +350,6 @@ bool ImportMP3(wxWindow *parent,
 
 #endif
 }
+
+#endif /* defined(MP3SUPPORT) */
 
