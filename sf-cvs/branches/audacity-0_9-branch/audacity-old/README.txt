@@ -1,16 +1,16 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.96b
+Version 0.97
 
 http://audacity.sourceforge.net/
 
 Primary author:
 
-  Dominic Mazzoni <dmazzoni+@cs.cmu.edu>
+  Dominic Mazzoni <dominic@minorninth.com>
 
 Authors:
 
-  Dominic Mazzoni <dmazzoni+@cs.cmu.edu>
+  Dominic Mazzoni <dominic@minorninth.com>
   Roger Dannenberg <rbd+@cs.cmu.edu>
   Jason Cohen <cohen3+@andrew.cmu.edu>
   Robert Leidle <rfl+@andrew.cmu.edu>
@@ -57,21 +57,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
 Source code to this program is always available; for more
 information visit our website at:
 
-  http://www.cs.cmu.edu/~music/audacity/
+  http://audacity.sourceforge.net/
 
 This program uses wxWindows, a cross-platform GUI toolkit.  To
 compile this program, you will need to download wxWindows from:
 
   http://www.wxwindows.org/
 
-To compile under Linux, simply run:
+To compile on Linux and other Unix systems, simply run:
 
   ./configure
   make
+  make install
   
-(There is no make install, so just copy the executable
- "audacity" whereever you want it.)
-
 If you want to do any development, you might want to generate
 dependencies:
 
@@ -123,12 +121,16 @@ Changes in 0.97:
   - Fixed Effects menu bug that would freeze if some but
     not all tracks were selected.
 
+  - Added Noise Removal effect (Dominic)
+
   - Improved click-drag zoom.
+
+  - Other bug fixes
 
 * MacOS:
 
   - Fixed autoscrolling bug (would sometimes appear if you
-    drag the cursor outside the window while selecting).
+    release the cursor outside the window while selecting).
 
 * Unix:
 
