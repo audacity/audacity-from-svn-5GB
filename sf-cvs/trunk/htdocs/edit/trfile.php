@@ -94,13 +94,15 @@ print "</textarea>\n";
 
 print "<center><b><font size=+1>Your Translation ($lang):</font></b></center>\n";
 print "<textarea name=newtext rows=25 cols=80>\n";
-$fp = fopen($dstfile, "r");
-if ($fp) {
-  while($line = fgets($fp, 1024)) {
-    print "$line";
+if (is_file($dstfile)) {
+  $fp = fopen($dstfile, "r");
+  if ($fp) {
+    while($line = fgets($fp, 1024)) {
+      print "$line";
+    }
   }
+  fclose($fp);
 }
-fclose($fp);
 print "</textarea>\n";
 
 print "<center>\n";

@@ -136,26 +136,29 @@ if ($dir = @opendir("../en/")) {
       $b2 = "";
       $n++;
       if (is_file("../updates/$lang/$file"))
-	     $langfile = "../updates/$lang/$file";
-      else
+	     $s = "update pending...";
+        $langfile = "../updates/$lang/$file";
+      }
+      else {
 	     $langfile = "../$lang/$file";
-      if (is_file($langfile)) {
-        $new = filemtime($langfile);
-        if ($new > $old + 60)
-          $s = "up to date";
+        if (is_file($langfile)) {
+          $new = filemtime($langfile);
+          if ($new > $old + 60)
+            $s = "up to date";
+          else {
+            $when = date("Y-m-d", $old);
+            $s = "modified $when";
+            $bg = " bgcolor=#eeeeee";
+            $b1 = "<b>";
+            $b2 = "</b>";
+          }
+        }
         else {
-          $when = date("Y-m-d", $old);
-          $s = "modified $when";
+          $s = "not translated";
           $bg = " bgcolor=#eeeeee";
           $b1 = "<b>";
           $b2 = "</b>";
         }
-      }
-      else {
-        $s = "not translated";
-        $bg = " bgcolor=#eeeeee";
-        $b1 = "<b>";
-        $b2 = "</b>";
       }
 
       print "<tr>\n";
@@ -181,6 +184,13 @@ print "</table>\n";
 
 print "<input type=hidden name=lang value=$lang>\n";
 print "<input type=hidden name=passwd value=\"$passwd\">\n";
+print "</form>\n";
+
+
+print "<form action=trfile.php method=post>\n";
+print "<input type=hidden name=lang value=$lang>\n";
+print "<input type=hidden name=passwd value=\"$passwd\">\n";
+print "<input type=submit value=\"Refresh\">\n";
 print "</form>\n";
 
 BoxBottom();
