@@ -35,17 +35,12 @@ class AudioIO;
 class RingBuffer;
 class Mixer;
 class TimeTrack;
+class AudioThread;
 
 extern AudioIO *gAudioIO;
 
 void InitAudioIO();
 void DeinitAudioIO();
-
-class AudioThread : public wxThread {
- public:
-   AudioThread();
-   virtual ExitCode Entry();
-};
 
 class AudioIO {
 

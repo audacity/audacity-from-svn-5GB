@@ -65,6 +65,62 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
 
 //////////////////////////////////////////////////////////////////////
 //
+//     class AudioThread - declaration and glue code
+//
+//////////////////////////////////////////////////////////////////////
+
+#ifdef __WXMAC__
+
+// On Mac OS X, it's better not to use the wxThread class.
+// We use our own implementation based on pthreads instead.
+
+#include <pthread.h>
+#include <time.h>
+
+class AudioThread {
+ public:
+   typedef int ExitCode;
+   AudioThread() { mDestroy = false; mThread = NULL; }
+   ExitCode Entry();
+   void Create() {}
+   void Delete() {
+      mDestroy = true;
+      pthread_join(mThread, NULL);
+   }
+   bool TestDestroy() { return mDestroy; }
+   void Sleep(int ms) {
+      struct timespec spec;
+      spec.tv_sec = 0;
+      spec.tv_nsec = ms * 1000 * 1000;
+      nanosleep(&spec, NULL);
+   }
+   static void *callback(void *p) {
+      AudioThread *th = (AudioThread *)p;
+      return (void *)th->Entry();
+   }
+   void Run() {
+      pthread_create(&mThread, NULL, callback, this);
+   }
+ private:
+   bool mDestroy;
+   pthread_t mThread;
+
+};
+
+#else
+
+// The normal wxThread-derived AudioThread class for all other
+// platforms:
+class AudioThread : public wxThread {
+ public:
+   AudioThread():wxThread(wxTHREAD_JOINABLE) {}
+   virtual ExitCode Entry();
+};
+
+#endif
+
+//////////////////////////////////////////////////////////////////////
+//
 //     UI Thread Context
 //
 //////////////////////////////////////////////////////////////////////
@@ -900,12 +956,7 @@ double AudioIO::GetStreamTime()
 //
 //////////////////////////////////////////////////////////////////////
 
-AudioThread::AudioThread():
-   wxThread(wxTHREAD_JOINABLE)
-{
-}
-
-wxThread::ExitCode AudioThread::Entry()
+AudioThread::ExitCode AudioThread::Entry()
 {
    while( !TestDestroy() )
    {
