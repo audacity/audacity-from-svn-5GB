@@ -148,6 +148,14 @@ void OnEditID3(wxEvent & event);
 
 void OnQuickMix(wxEvent & event);
 
+void OnSelectionSave(wxEvent & event);
+void OnSelectionRestore(wxEvent & event);
+
+void OnCursorTrackStart(wxEvent & event);
+void OnCursorTrackEnd(wxEvent & event);
+void OnCursorSelStart(wxEvent & event);
+void OnCursorSelEnd(wxEvent & event);
+
 void OnAlignZero(wxEvent & event);
 void OnAlign(wxEvent & event);
 void OnAlignSelStart(wxEvent & event);

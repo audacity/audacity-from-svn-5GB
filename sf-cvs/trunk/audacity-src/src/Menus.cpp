@@ -70,6 +70,11 @@
 #define MAX_SUBMENU_LEN 1000
 #endif
 
+// global variables used in routines OnSelectionSave
+// and OnSelectionRestore
+double sel0save = 0.0;
+double sel1save = 0.0;
+
 void AudacityProject::CreateMenuBar()
 {
    mMenusDirtyCheck = gMenusDirty;
@@ -555,20 +560,26 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 #endif
 
    SetMenuState(mProjectMenu, QuickMixID, numWaveTracksSelected > 1);
-   SetMenuState(mProjectMenu, AlignID, numTracksSelected > 1);
-   SetMenuState(mProjectMenu, AlignZeroID, numTracksSelected > 0);
-   SetMenuState(mProjectMenu, AlignCursorID, numTracksSelected > 0);
-   SetMenuState(mProjectMenu, AlignSelStartID, numTracksSelected > 0);
-   SetMenuState(mProjectMenu, AlignSelEndID, numTracksSelected > 0);
-   SetMenuState(mProjectMenu, AlignEndCursorID, numTracksSelected > 0);
-   SetMenuState(mProjectMenu, AlignEndSelStartID, numTracksSelected > 0);
-   SetMenuState(mProjectMenu, AlignEndSelEndID, numTracksSelected > 0);
-   SetMenuState(mProjectMenu, AlignGroupCursorID, numTracksSelected > 0);
-   SetMenuState(mProjectMenu, AlignGroupSelStartID, numTracksSelected > 0);
-   SetMenuState(mProjectMenu, AlignGroupSelEndID, numTracksSelected > 0);
-   SetMenuState(mProjectMenu, AlignGroupEndCursorID, numTracksSelected > 0);
-   SetMenuState(mProjectMenu, AlignGroupEndSelStartID, numTracksSelected > 0);
-   SetMenuState(mProjectMenu, AlignGroupEndSelEndID, numTracksSelected > 0);
+   SetMenuState(mProjectMenu, SelectionSaveID, numWaveTracksSelected > 0);
+   SetMenuState(mProjectMenu, SelectionRestoreID, numWaveTracksSelected > 0);
+   SetMenuState(mProjectMenu, CursorTrackStartID, numWaveTracksSelected > 0);
+   SetMenuState(mProjectMenu, CursorTrackEndID, numWaveTracksSelected > 0);
+   SetMenuState(mProjectMenu, CursorSelStartID, numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   SetMenuState(mProjectMenu, CursorSelEndID, numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   SetMenuState(mProjectMenu, AlignID, numWaveTracksSelected > 1);
+   SetMenuState(mProjectMenu, AlignZeroID, numWaveTracksSelected > 0);
+   SetMenuState(mProjectMenu, AlignCursorID, numWaveTracksSelected > 0 && !nonZeroRegionSelected);
+   SetMenuState(mProjectMenu, AlignSelStartID, numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   SetMenuState(mProjectMenu, AlignSelEndID, numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   SetMenuState(mProjectMenu, AlignEndCursorID, numWaveTracksSelected > 0 && !nonZeroRegionSelected);
+   SetMenuState(mProjectMenu, AlignEndSelStartID, numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   SetMenuState(mProjectMenu, AlignEndSelEndID, numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   SetMenuState(mProjectMenu, AlignGroupCursorID, numWaveTracksSelected > 1 && !nonZeroRegionSelected);
+   SetMenuState(mProjectMenu, AlignGroupSelStartID, numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   SetMenuState(mProjectMenu, AlignGroupSelEndID, numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   SetMenuState(mProjectMenu, AlignGroupEndCursorID, numWaveTracksSelected > 1 && !nonZeroRegionSelected);
+   SetMenuState(mProjectMenu, AlignGroupEndSelStartID, numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   SetMenuState(mProjectMenu, AlignGroupEndSelEndID, numWaveTracksSelected > 1 && nonZeroRegionSelected);
    SetMenuState(mProjectMenu, RemoveTracksID, numTracksSelected > 0);
 
    // Effects menus
@@ -756,7 +767,6 @@ void AudacityProject::Undo(wxEvent & event)
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
-   mTrackPanel->DisplaySelection();
 
    if (mHistoryWindow)
       mHistoryWindow->UpdateDisplay();
@@ -775,7 +785,6 @@ void AudacityProject::Redo(wxEvent & event)
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
-   mTrackPanel->DisplaySelection();
 
    if (mHistoryWindow)
       mHistoryWindow->UpdateDisplay();
@@ -1165,7 +1174,6 @@ void AudacityProject::OnSelectAll(wxEvent & event)
    mViewInfo.sel1 = mTracks->GetEndTime();
 
    mTrackPanel->Refresh(false);
-   mTrackPanel->DisplaySelection();
 }
 
 //
@@ -1558,6 +1566,76 @@ void AudacityProject::OnQuickMix(wxEvent & event)
       FixScrollbars();
       mTrackPanel->Refresh(false);
    }
+}
+
+void AudacityProject::OnSelectionSave(wxEvent & event)
+{
+   sel0save = mViewInfo.sel0;
+   sel1save = mViewInfo.sel1;
+}
+
+void AudacityProject::OnSelectionRestore(wxEvent & event)
+{
+   mViewInfo.sel0 = sel0save;
+   mViewInfo.sel1 = sel1save;
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnCursorTrackStart(wxEvent & event)
+{
+   double minOffset = 1000000.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         if (t->GetOffset() < minOffset)
+            minOffset = t->GetOffset();
+      }
+
+      t = iter.Next();
+   }
+
+   if (minOffset < 0.0) minOffset = 0.0;
+   mViewInfo.sel0 = minOffset;
+   mViewInfo.sel1 = minOffset;
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnCursorTrackEnd(wxEvent & event)
+{
+   double maxEndOffset = -1000000.0;
+   double thisEndOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisEndOffset = t->GetEndTime();
+         if (thisEndOffset > maxEndOffset)
+            maxEndOffset = thisEndOffset;
+      }
+
+      t = iter.Next();
+   }
+
+   mViewInfo.sel0 = maxEndOffset;
+   mViewInfo.sel1 = maxEndOffset;
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnCursorSelStart(wxEvent & event)
+{
+   mViewInfo.sel1 = mViewInfo.sel0;
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnCursorSelEnd(wxEvent & event)
+{
+   mViewInfo.sel0 = mViewInfo.sel1;
+   mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnAlignZero(wxEvent & event)
