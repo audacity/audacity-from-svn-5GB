@@ -1,5 +1,5 @@
 /*
- * $Id: pa_jack.c,v 1.1.2.3 2004-06-01 09:26:50 dmazzoni Exp $
+ * $Id: pa_jack.c,v 1.1.2.4 2004-06-09 06:40:34 dmazzoni Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * JACK Implementation by Joshua Haberman
@@ -266,25 +266,29 @@ static PaError BuildDeviceList( PaJackHostApiRepresentation *jackApi )
         jack_ports = jack_get_ports( jackApi->jack_client, regex_pattern,
                                      NULL, JackPortIsOutput);
         curDevInfo->maxInputChannels = 0;
-        for( i = 0; jack_ports[i] != NULL ; i++)
-        {
-            /* The number of ports returned is the number of output channels.
-             * We don't care what they are, we just care how many */
-            curDevInfo->maxInputChannels++;
+        if (jack_ports) {
+           for( i = 0; jack_ports[i] != NULL ; i++)
+           {
+              /* The number of ports returned is the number of output channels.
+               * We don't care what they are, we just care how many */
+              curDevInfo->maxInputChannels++;
+           }
+           free(jack_ports);
         }
-        free(jack_ports);
 
         /* ... what are your input ports (that we could output to)? */
         jack_ports = jack_get_ports( jackApi->jack_client, regex_pattern,
                                      NULL, JackPortIsInput);
-        curDevInfo->maxOutputChannels = 0;
-        for( i = 0; jack_ports[i] != NULL ; i++)
-        {
-            /* The number of ports returned is the number of input channels.
-             * We don't care what they are, we just care how many */
-            curDevInfo->maxOutputChannels++;
+        if (jack_ports) {
+           curDevInfo->maxOutputChannels = 0;
+           for( i = 0; jack_ports[i] != NULL ; i++)
+           {
+              /* The number of ports returned is the number of input channels.
+               * We don't care what they are, we just care how many */
+              curDevInfo->maxOutputChannels++;
+           }
+           free(jack_ports);
         }
-        free(jack_ports);
 
         curDevInfo->defaultLowInputLatency = 0.;  /* IMPLEMENT ME */
         curDevInfo->defaultLowOutputLatency = 0.;  /* IMPLEMENT ME */
