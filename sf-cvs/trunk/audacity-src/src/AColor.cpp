@@ -23,7 +23,7 @@ wxPen AColor::lightPen[2];
 wxPen AColor::mediumPen[2];
 wxPen AColor::darkPen[2];
 
-wxBrush AColor::muteBrush;
+wxBrush AColor::muteBrush[2];
 wxBrush AColor::soloBrush;
 
 wxBrush AColor::envelopeBrush;
@@ -75,14 +75,14 @@ void AColor::Dark(wxDC * dc, bool selected)
    dc->SetPen(darkPen[index]);
 }
 
-void AColor::Mute(wxDC * dc, bool on, bool selected)
+void AColor::Mute(wxDC * dc, bool on, bool selected, bool soloing)
 {
    if (!inited)
       Init();
    int index = (int) selected;
    if (on) {
       dc->SetPen(*wxBLACK_PEN);
-      dc->SetBrush(muteBrush);
+      dc->SetBrush(muteBrush[(int) soloing]);
    }
    else {
       dc->SetPen(*wxTRANSPARENT_PEN);
@@ -119,7 +119,9 @@ void AColor::Init()
    envelopePen.SetColour(110, 110, 220);
    envelopeBrush.SetColour(110, 110, 220);
    
-   muteBrush.SetColour(110, 220, 110);
+   // muteBrush[1] is used when solo is on, since solo overrides mute.
+   muteBrush[0].SetColour(110, 220, 110);
+   muteBrush[1].SetColour(140, 160, 140);
    soloBrush.SetColour(255, 140, 140);
 
 #if defined(__WXMSW__) || defined(__WXGTK__)
