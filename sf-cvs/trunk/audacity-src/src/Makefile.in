@@ -77,9 +77,6 @@ OBJS = \
 	$(OBJDIR)/effects/Phaser.o \
 	$(OBJDIR)/effects/Reverse.o \
 	$(OBJDIR)/effects/Wahwah.o \
-	$(OBJDIR)/effects/WaveletDenoise.o \
-	$(OBJDIR)/effects/ladspa/LoadLadspa.o \
-	$(OBJDIR)/effects/ladspa/LadspaEffect.o \
 	$(OBJDIR)/export/Export.o \
 	$(OBJDIR)/export/ExportMP3.o \
 	$(OBJDIR)/export/ExportPCM.o \
@@ -113,6 +110,7 @@ all: dirs ../audacity
 
 ../audacity: $(OBJS) $(EXTRAOBJS) Makefile
 	$(CCC) -o ../audacity $(OBJS) $(EXTRAOBJS) $(LIBS)
+	@AFTERBUILD@
 
 #
 # You can optionally "make dep" to make dependencies.
