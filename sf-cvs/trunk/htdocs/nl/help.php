@@ -9,6 +9,7 @@ Audacity 1.2 Complete Handleiding:
 <p>
 Audacity 1.2 Snelgids:
 [<a href="onlinehelp-1.2/contents.htm">Bekijk Online</a>]
+[<a href="onlinehelp-1.2/reference.html">Printer Versie</a>]
 </p>
 
 <p>
@@ -69,7 +70,7 @@ Doorzoek de Audacity websites en documentatie:
 <?php BoxTop("$helpStr - Audacity 1.0.0"); ?>
 
 <p>
-<a href="docs/contents.html">Read documentation Online</a>
+<a href="docs/contents.html">Online handleiding lezen</a>
 </p>
 
 <p>
