@@ -320,6 +320,9 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
    }
 }
 
+// Takes a value between -1      and     +1 and returns a value between 
+//                       -height and height.
+// This function isn't used anymore.  Use GetWaveYPosNew instead.
 int TrackArtist::GetWaveYPos(float value, int height, bool dB)
 {
    float sign = (value >= 0 ? 1 : -1);
@@ -344,6 +347,11 @@ int TrackArtist::GetWaveYPos(float value, int height, bool dB)
    }
 }
 
+// Takes a value between min    and max and returns a value between 
+//                       height and 0 
+// ToDo:  Should this function move int GuiWaveTrack where it can
+// then use the zoomMin, zoomMax and height values without having 
+// to have them passed in to it??
 int TrackArtist::GetWaveYPosNew(float value, float min, float max,
                                 int height, bool dB, bool clip)
 {
@@ -373,6 +381,8 @@ int TrackArtist::GetWaveYPosNew(float value, float min, float max,
    return (int) (value * height + sign * 0.5);
 }
 
+// This function isn't used anymore.  Use GetWaveYPosNew instead.
+// (and pass in clip=false)
 int TrackArtist::GetWaveYPosUnclipped(float value, int height, bool dB)
 {
    float sign = (value >= 0 ? 1 : -1);

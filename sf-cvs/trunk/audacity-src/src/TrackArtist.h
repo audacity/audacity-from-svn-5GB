@@ -52,6 +52,9 @@ class TrackArtist {
    void DrawVRuler(Track * t, wxDC * dc, wxRect & r);
    int GetWaveYPos(float value, int height, bool dB);
    int GetWaveYPosUnclipped(float value, int height, bool dB);
+   int GetWaveYPosNew(float value, float min, float max,
+                      int height, bool dB, bool clip);
+
 
    void SetInset(int left, int top, int right, int bottom);
 
@@ -124,9 +127,6 @@ class TrackArtist {
                       bool dB);
 
    void DrawNegativeOffsetTrackArrows(wxDC &dc, wxRect &r);
-
-   int GetWaveYPosNew(float value, float min, float max,
-                      int height, bool dB, bool clip);
 
    void DrawEnvLine(wxDC &dc, wxRect r, int x, int y, bool top);
 
