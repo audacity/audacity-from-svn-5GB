@@ -78,7 +78,7 @@ public:
 #ifdef __WXMAC__
   #define AUDACITY_BITMAP_TYPE wxBITMAP_TYPE_PICT_RESOURCE
   #define BITMAP_PRE ""
-  #define BITMAP_SUF ""
+  #define BITMAP_SUF ".png"
 #endif
 
 #ifdef __WXGTK__

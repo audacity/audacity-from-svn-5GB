@@ -46,8 +46,10 @@
 TrackList *AudacityProject::msClipboard = new TrackList();
 double     AudacityProject::msClipLen = 0.0;
 
+WX_DEFINE_ARRAY(AudacityProject *, AProjectArray);
 const int sbarWidth = 15;
 int gAudacityDocNum = 0;
+AProjectArray gAudacityProjects;
 AudacityProject *gActiveProject;
 
 AudacityProject *CreateNewAudacityProject()
@@ -79,6 +81,13 @@ AudacityProject *CreateNewAudacityProject()
 AudacityProject *GetActiveProject()
 {
   return gActiveProject;
+}
+
+void RedrawAllProjects()
+{
+  int len = gAudacityProjects.Count();
+  for(int i=0; i<len; i++)
+	gAudacityProjects[i]->RedrawProject();
 }
 
 enum {
@@ -321,6 +330,7 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   SetSizeHints(250,200,20000,20000);
 
   gOpenProjects++;
+  gAudacityProjects.Add(this);
 }
 
 AudacityProject::~AudacityProject()
@@ -328,10 +338,18 @@ AudacityProject::~AudacityProject()
   // TODO delete mTracks;
 
   gOpenProjects--;
+  gAudacityProjects.Remove(this);
 
   if (gOpenProjects <= 0) {
+	// This forces us to quit the application
 	gAPalette->Destroy();
   }
+}
+
+void AudacityProject::RedrawProject()
+{
+  FixScrollbars();
+  mTrackPanel->Refresh(false);
 }
 
 double AudacityProject::GetRate()
@@ -902,34 +920,7 @@ void AudacityProject::OnImportRaw()
 
 void AudacityProject::OnQuickMix()
 {
-  WaveTrack **waveArray;
-  VTrack *t;
-  int numWaves = 0;
-  int w;
-
-  t = mTracks->First();
-  while(t) {
-    if (t->selected && t->GetKind() == VTrack::Wave)
-      numWaves++;
-    t = mTracks->Next();
-  }
-  
-  if (numWaves == 0)
-	return;
-
-  waveArray = new WaveTrack*[numWaves];
-  w = 0;
-  t = mTracks->First();
-  while(t) {
-    if (t->selected && t->GetKind() == VTrack::Wave)
-      waveArray[w++] = (WaveTrack *)t;
-    t = mTracks->Next();
-  }  
-
-  WaveTrack *mix = ::QuickMix(numWaves, waveArray, &mDirManager);
-  if (mix) {
-    mTracks->Add(mix);
-
+  if (::QuickMix(mTracks, &mDirManager)) {
     PushState();
     
     FixScrollbars();

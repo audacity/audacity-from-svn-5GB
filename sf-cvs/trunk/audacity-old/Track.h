@@ -52,7 +52,7 @@ public:
   virtual VTrack *Duplicate();
 
   virtual void Draw(wxDC &dc, wxRect &r, double h, double pps,
-		    double sel0, double sel1) {}
+					double sel0, double sel1, bool drawEnvelope) {}
 	
   virtual void Cut(double t0, double t1, VTrack **dest) { dest = 0; }
   virtual void Copy(double t0, double t1, VTrack **dest) { dest = 0; }

@@ -177,6 +177,8 @@ float APalette::GetSoundVol()
 
 void APalette::OnTool(wxCommandEvent& evt)
 {
+  int prev = mCurrentTool;
+
   mCurrentTool = evt.GetId() - ID_FIRST_TOOL;
 
   for(int i=0; i<4; i++)
@@ -184,6 +186,9 @@ void APalette::OnTool(wxCommandEvent& evt)
       mTool[i]->PushDown();
     else
       mTool[i]->PopUp();
+
+  if (mCurrentTool==1 || prev==1)
+	RedrawAllProjects();
 }
 
 void APalette::OnPaint(wxPaintEvent &evt)

@@ -33,6 +33,7 @@ OBJS = \
 	$(OBJDIR)/LabelTrack.cpp.o \
 	$(OBJDIR)/Track.cpp.o \
 	$(OBJDIR)/BlockFile.cpp.o \
+	$(OBJDIR)/Envelope.cpp.o \
 	$(OBJDIR)/Export.cpp.o \
 	$(OBJDIR)/Import.cpp.o \
 	$(OBJDIR)/ImportRaw.cpp.o \

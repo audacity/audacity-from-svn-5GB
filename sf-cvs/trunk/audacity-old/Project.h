@@ -32,8 +32,8 @@ class TrackList;
 class AudacityProject;
 
 AudacityProject *CreateNewAudacityProject();
-
 AudacityProject *GetActiveProject();
+void RedrawAllProjects();
 
 class AudacityProject: public wxFrame
 {
@@ -109,6 +109,10 @@ public:
   void OnScrollUpdate(wxScrollEvent &event);
   void OnCloseWindow();
   void OnExit();
+
+  // Other commands
+
+  void RedrawProject();
 
   // Scrollbars
 

@@ -13,10 +13,41 @@
 
 #include <wx/string.h>
 
-class WaveTrack;
+#include "WaveTrack.h"
+
 class DirManager;
 
-WaveTrack *QuickMix(int count, WaveTrack **tracks, DirManager *dirManager);
+bool QuickMix(TrackList *tracks, DirManager *dirManager);
+
+class Mixer {
+public:
+  Mixer(int numChannels, int bufferSize, bool interleaved);
+  virtual ~Mixer();
+
+  void UseVolumeSlider(bool yes);
+
+  void Clear();
+  void MixLeft(WaveTrack *src, double t0, double t1);
+  void MixRight(WaveTrack *src, double t0, double t1);
+  void MixMono(WaveTrack *src, double t0, double t1);
+  void Mix(int *channelFlags, WaveTrack *src, double t0, double t1);
+
+  // Interleaved
+  sampleType *GetBuffer();
+
+  // Non-interleaved
+  sampleType *GetBuffer(int channel);
+
+private:
+  int        mNumChannels;
+  int        mNumBuffers;
+  int        mBufferSize;
+  int        mInterleavedBufferSize;
+  bool       mInterleaved;
+  bool       mUseVolumeSlider;
+  sampleType **mBuffer;
+  sampleType *mTemp;
+};
 
 #endif
 

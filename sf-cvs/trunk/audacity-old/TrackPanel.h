@@ -125,6 +125,7 @@ private:
   bool            mIsSelecting;
   bool            mIsResizing;
   bool            mIsSliding;
+  bool            mIsEnveloping;
 
   wxCursor        *mArrowCursor;
   wxCursor        *mSelectCursor;

@@ -84,6 +84,8 @@ WaveTrack::WaveTrack(DirManager *projDirManager):
   selectedPen.SetColour(148,148,170);
   samplePen.SetColour(50,50,200);
   selsamplePen.SetColour(50,50,200);
+  shadowPen.SetColour(148, 148, 148);
+  envelopePen.SetColour(0, 220, 0);
 
   cache.dirty = true;
   cache.len = 0;
@@ -112,6 +114,13 @@ double WaveTrack::GetMaxLen()
   return ((double)numSamples)/(rate) + tOffset;
 }
 
+void WaveTrack::Offset(double t)
+{
+  VTrack::Offset(t);
+
+  envelope.SetOffset(tOffset);
+}
+
 VTrack *WaveTrack::Duplicate()
 {
   WaveTrack *copy = new WaveTrack(dirManager);
@@ -122,6 +131,7 @@ VTrack *WaveTrack::Duplicate()
   copy->collapsedHeight = collapsedHeight;
   copy->expandedHeight = expandedHeight;
   copy->selected = selected;
+  copy->envelope.CopyFrom(&envelope);
 
   return (VTrack *)copy;
 }
@@ -286,7 +296,8 @@ void WaveTrack::PrepareCache(double start, double pps, int screenWidth)
 }
 
 void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
-						   double sel0, double sel1)
+						   double sel0, double sel1,
+						   bool drawEnvelope)
 {
   double tpre = h - tOffset;
   double tstep = 1.0/pps;
@@ -310,6 +321,11 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
   int ssel0 = (int)((sel0 - tOffset) * rate);
   int ssel1 = (int)((sel1 - tOffset) * rate);
 
+  if (sel1 < tOffset) {
+	ssel0 = 0;
+	ssel1 = 0;
+  }
+
   if (ssel0 != ssel1) {
     if (ssel0 < 0)
       ssel0 = 0;
@@ -320,10 +336,8 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
   dc.SetBrush(blankBrush);
   dc.SetPen(blankPen);
   
-  int ctr = r.y + (r.height/2);
-  
   wxRect mid = r;
-  
+
   if (t0 > tpre) {
     wxRect pre = r;
     pre.width = (int)((t0 - tpre)*pps);
@@ -340,46 +354,78 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
     dc.DrawRectangle(post);
   }
   
-  dc.SetBrush(unselectedBrush);
-  dc.SetPen(unselectedPen);
+  mid.height -= 2;
+  int ctr = r.y + (r.height/2);
   
-  if (s1 > s0) {
-    dc.DrawRectangle(mid);
-    
+  if (mid.width > 0) {
     dc.SetPen(*wxRED_PEN);	    
     dc.DrawLine(mid.x, ctr, mid.x + mid.width, ctr);
-  }
- 
-  bool black = true;
-  dc.SetPen(samplePen);
-  
-  if (mid.width > 0)
+
     PrepareCache(t0, pps, mid.width);
+  }
+
+  int *heights = new int[mid.width];
+  double t = t0;
+  for(int x=0; x<mid.width; x++) {
+	heights[x] = int((mid.height/2.0) *
+					 envelope.GetValue(t+tOffset));
+	t += 1/pps;
+  }
+
+  // Draw shadow
+
+  dc.SetPen(shadowPen);
+  for(int x=0; x<mid.width; x++) {
+	if (x+2<r.width)
+	  dc.DrawLine(mid.x+x+2, ctr-heights[x]+2, mid.x+x+2, ctr+heights[x]+2);
+  }
+
+  // Draw track area
+  bool usingSelPen = false;
+  dc.SetPen(unselectedPen);
 
   for(int x=0; x<mid.width; x++) {
+	
+	bool sel = false;
+	if (ssel0 <= cache.where[x] && cache.where[x+1] < ssel1) 
+	  sel = true;
 
-    if (ssel0 <= cache.where[x] && cache.where[x+1] < ssel1) {
-      dc.SetPen(selectedPen);
-      dc.DrawLine(mid.x+x, r.y, mid.x+x, r.y + r.height);
-      dc.SetPen(selsamplePen);
-      black = false;
-    }
-    else {
-      if (!black) {
-	dc.SetPen(selsamplePen);
-	black = true;
-      }
-    }
-    
-    int h1 = ctr+(cache.min[x] * (r.height/2)) / 32767;
-    int h2 = ctr+(cache.max[x] * (r.height/2)) / 32767;
-    
-#ifdef __WXMAC__
-    dc.DrawLine(mid.x+x,h1,mid.x+x,h2);
-#else
-    dc.DrawLine(mid.x+x,h1,mid.x+x,h2+1);
-#endif
+	if (sel && !usingSelPen)
+	  dc.SetPen(selectedPen);
+	else 
+	  if (!sel && usingSelPen)
+		dc.SetPen(unselectedPen);
+	usingSelPen = sel;
+
+	dc.DrawLine(mid.x+x, ctr-heights[x], mid.x+x, ctr+heights[x]);
   }
+
+  // Draw samples
+
+  dc.SetPen(samplePen);
+
+  for(int x=0; x<mid.width; x++) {
+	
+	int h1 = ctr+(cache.min[x] * heights[x]) / 32767;
+    int h2 = ctr+(cache.max[x] * heights[x]) / 32767;
+	
+    dc.DrawLine(mid.x+x,h1,mid.x+x,h2+1);
+  }
+
+  if (drawEnvelope) {
+	dc.SetPen(envelopePen);
+
+	for(int x=0; x<mid.width; x++) {
+	  
+	  int z1 = ctr-heights[x]+3 > ctr? ctr: ctr-heights[x]+3;
+	  int z2 = ctr+heights[x]-3 < ctr? ctr: ctr+heights[x]-3;  
+	  dc.DrawLine(mid.x+x, ctr-heights[x], mid.x+x, z1);
+	  dc.DrawLine(mid.x+x, ctr+heights[x], mid.x+x, z2);
+
+	}
+  }
+
+  delete[] heights;
 
   // Draw arrows on the left side if the track extends to the left of the
   // beginning of time.  :)
@@ -390,14 +436,21 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
     dc.DrawLine(r.x + 2, r.y + 6, r.x + 6, r.y + 2);
     dc.DrawLine(r.x + 2, r.y + 6, r.x + 6, r.y + 10);
 
-    dc.DrawLine(r.x + 2, r.y + r.height - 6, r.x + 8, r.y + r.height - 6);
-    dc.DrawLine(r.x + 2, r.y + r.height - 6, r.x + 6, r.y + r.height - 2);
-    dc.DrawLine(r.x + 2, r.y + r.height - 6, r.x + 6, r.y + r.height - 10);
+    dc.DrawLine(r.x + 2, r.y + r.height - 8, r.x + 8, r.y + r.height - 8);
+    dc.DrawLine(r.x + 2, r.y + r.height - 8, r.x + 6, r.y + r.height - 4);
+    dc.DrawLine(r.x + 2, r.y + r.height - 8, r.x + 6, r.y + r.height - 12);
+  }
+
+  if (drawEnvelope) {
+	wxRect envRect = r;
+	envRect.height-=2;
+	envelope.Draw(dc, envRect, h, pps);
   }
 }
 
 void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
-			     double sel0, double sel1)
+							 double sel0, double sel1,
+							 bool drawEnvelope)
 {
   int x=0;
   double tpre = h - tOffset;
@@ -465,13 +518,13 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
 }
 
 void WaveTrack::Draw(wxDC &dc, wxRect &r, double h, double pps,
-                     double sel0, double sel1)
+                     double sel0, double sel1, bool drawEnvelope)
 {
   if (GetDisplay() == WaveTrack::SpectrumDisplay) {
-	DrawSpectrum(dc, r, h, pps, sel0, sel1);
+	DrawSpectrum(dc, r, h, pps, sel0, sel1, drawEnvelope);
   }
   else {
-	DrawMinmax(dc, r, h, pps, sel0, sel1);
+	DrawMinmax(dc, r, h, pps, sel0, sel1, drawEnvelope);
   }
 }
 
@@ -610,6 +663,8 @@ void WaveTrack::Paste(double t, VTrack *src)
 
     delete[] buffer;
 
+	envelope.SetTrackLen(numSamples / rate);
+
     ConsistencyCheck("Paste branch one");
     
     return;
@@ -694,6 +749,8 @@ void WaveTrack::Paste(double t, VTrack *src)
 
   delete[] buffer;
 
+  envelope.SetTrackLen(numSamples / rate);
+
   ConsistencyCheck("Paste branch two");
 }
 
@@ -725,6 +782,8 @@ void WaveTrack::AppendBlock(WaveBlock *b)
   block->Add(newBlock);
   numSamples += newBlock->len;
 
+  envelope.SetTrackLen(numSamples / rate);
+
   ConsistencyCheck("AppendBlock");
 }
 
@@ -732,8 +791,12 @@ bool WaveTrack::Load(wxTextFile *in, DirManager *dirManager)
 {
   bool result = VTrack::Load(in, dirManager);
 
+  if (result) {
+	result = envelope.Load(in, dirManager);
+  }
+
   if (!result) {
-    wxMessageBox("Could not load Track.\n");
+    wxMessageBox("Error loading a Track.\n");
     return false;
   }
 
@@ -795,6 +858,8 @@ readWaveTrackError:
 bool WaveTrack::Save(wxTextFile *out, bool overwrite)
 {
   VTrack::Save(out, overwrite);
+
+  envelope.Save(out, overwrite);
 
   int i, b;
 
@@ -1160,6 +1225,8 @@ void WaveTrack::Append(sampleType *buffer, sampleCount len)
     len -= l;
   }
 
+  envelope.SetTrackLen(numSamples / rate);
+	
   ConsistencyCheck("Append");
 }
 
@@ -1261,6 +1328,8 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
   block = newBlock;
 
   numSamples -= len;
+
+  envelope.SetTrackLen(numSamples / rate);
 
   ConsistencyCheck("Delete");
 }

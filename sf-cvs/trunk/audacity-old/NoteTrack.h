@@ -33,7 +33,7 @@ public:
   NoteTrack(DirManager *projDirManager);
 
   virtual void Draw(wxDC &dc, wxRect &r, double h, double pps,
-					double sel0, double sel1);
+					double sel0, double sel1, bool drawEnvelope);
 
   virtual int GetKind() {return Note;}
   virtual double GetMaxLen();

@@ -17,6 +17,7 @@
 #include <wx/string.h>
 #include <wx/thread.h>
 
+#include "Envelope.h"
 #include "Track.h"
 
 typedef signed short sampleType;
@@ -75,13 +76,16 @@ public:
   virtual void Clear(double t0, double t1);
   
   virtual void Draw(wxDC &dc, wxRect &r, double h, double pps,
-					double sel0, double sel1);
+					double sel0, double sel1,
+					bool drawEnvelope);
 
   void DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
-					double sel0, double sel1);
+					double sel0, double sel1,
+					bool drawEnvelope);
 
   void DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
-					double sel0, double sel1);
+					double sel0, double sel1,
+					bool drawEnvelope);
 
   virtual void SetDisplay(int d);
   virtual int GetDisplay();
@@ -91,7 +95,11 @@ public:
 
   virtual int GetKind() {return Wave;}
 
+  virtual void Offset(double t);
+
   virtual double GetMaxLen();
+
+  Envelope *GetEnvelope() {return &envelope;}
 
   sampleType Get(sampleCount pos);
   void Get(sampleType *buffer, sampleCount start, sampleCount len);
@@ -113,6 +121,8 @@ private:
   #if wxUSE_THREADS
   wxMutex *blockMutex;
   #endif
+
+  Envelope envelope;
   
   DisplayCache cache;
 
@@ -126,6 +136,8 @@ private:
   wxPen selectedPen;
   wxPen samplePen;
   wxPen selsamplePen;
+  wxPen shadowPen;
+  wxPen envelopePen;
 
   void Reblockify();
   int FindBlock(sampleCount pos);

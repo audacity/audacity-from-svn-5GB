@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  PlaySnd.cpp
+  Play.cpp
 
   Dominic Mazzoni
 
@@ -19,11 +19,12 @@
 #include <wx/msgdlg.h>
 #endif
 
-#include "APalette.h"
 #include "Play.h"
 #include "Project.h"
 #include "Track.h"
 #include "WaveTrack.h"
+#include "Mix.h"
+#include "APalette.h"
 
 SoundPlayer *gSoundPlayer;
 
@@ -141,73 +142,34 @@ void SoundPlayer::OnTimer()
 
     int i;
 
-    // TODO: we have a buffer overrun somewhere, and if you
-    // don't double the size of both of these buffers, it
-    // crashes.  The "*2" at the end of both of these shouldn't
-    // be there.
-
-    sampleType *stereo = new sampleType[2*block  *2]; // temp
-    for(i=0; i<2*block; i++)
-      stereo[i] = 0;
-
-    sampleType *temp = new sampleType[block  *2]; // temp
-
-    //printf("Block: %d samples\n", block);
+	Mixer *mixer = new Mixer(2, maxFrames, true);
+	mixer->Clear();
 
     VTrack *vt = mTracks->First();
     while(vt) {
       if (vt->GetKind() == VTrack::Wave) {
 	    WaveTrack *t = (WaveTrack *)vt;
 
-	    //printf("Track: numSamples %d\n", t->numSamples);
-
-	    double t0 = mT - t->tOffset;
-	    double t1 = (mT + deltat) - t->tOffset;
-
-	    if (t0 < t->numSamples/t->rate && t1 > 0) {
-	      int s0 = int(t0*t->rate);
-	      int s1 = int(t1*t->rate);
-	      int slen = s1 - s0;
-	      int soffset = 0;
-	      if (s0 < 0) {
-		    soffset = -s0;
-		    slen -= soffset;
-		    s0 = 0;
-	      }
-	      if (s1 > (int)t->numSamples) {
-		    slen -= (s1 - t->numSamples);
-		    s1 = t->numSamples;
-	      }
-
-          if (slen > 0) {
-	          //printf("soffset %d, s0 %d, slen %d\n",
-	          //		 soffset, s0, slen);
-	          t->Get(&temp[soffset], (sampleCount)s0, (sampleCount)slen);
-
-	          if (t->channel == VTrack::LeftChannel ||
-		          t->channel == VTrack::MonoChannel) {
-		        for(i=0; i<slen; i++)
-		          stereo[2*(i+soffset)] += sampleType(vol * temp[(i+soffset)]);
-	          }
-
-	          if (t->channel == VTrack::RightChannel ||
-		          t->channel == VTrack::MonoChannel) {
-		        for(i=0; i<slen; i++)
-		          stereo[2*(i+soffset)+1] += sampleType(vol * temp[(i+soffset)]);
-	          }
-          }
-
+		switch(t->channel) {
+		case VTrack::LeftChannel:
+		  mixer->MixLeft(t, mT, mT+deltat);
+		  break;
+		case VTrack::RightChannel:
+		  mixer->MixRight(t, mT, mT+deltat);
+		  break;
+		case VTrack::MonoChannel:
+		  mixer->MixMono(t, mT, mT+deltat);
+		  break;
 	    }
       }
 
       vt = mTracks->Next();
     }
 
-    snd_write(&mAudioOut, stereo, block);
-    //printf("Wrote %d bytes\n", block);
+	sampleType *outbytes = mixer->GetBuffer();
+    snd_write(&mAudioOut, outbytes, block);
 
-    delete[] temp;
-    delete[] stereo;
+	delete mixer;
 
     mT += deltat;
 }

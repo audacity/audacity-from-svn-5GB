@@ -64,6 +64,7 @@ VTrack *VTrack::Duplicate()
   copy->collapsedHeight = collapsedHeight;
   copy->expandedHeight = expandedHeight;
   copy->tOffset = tOffset;
+  copy->channel = channel;
 
   return copy;
 }

@@ -38,6 +38,7 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
   mIsSelecting = false;
   mIsResizing = false;
   mIsSliding = false;
+  mIsEnveloping = false;
 
   mArrowCursor = new wxCursor(wxCURSOR_ARROW);
   mSelectCursor = new wxCursor(wxCURSOR_IBEAM);
@@ -150,8 +151,8 @@ void TrackPanel::OnPaint(wxPaintEvent& event)
   memDC.DrawRectangle(0, 0, width, height);
   */
 
-  DrawRuler(memDC);
   DrawTracks(memDC);
+  DrawRuler(memDC);
 
   dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
 }
@@ -176,6 +177,11 @@ void TrackPanel::HandleCursor(wxMouseEvent& event)
 
   if (mIsSliding) {
 	SetCursor(*mSlideCursor);	
+	return;
+  }
+
+  if (mIsEnveloping) {
+	SetCursor(*mArrowCursor);	
 	return;
   }
 
@@ -345,6 +351,31 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 
 void TrackPanel::HandleEnvelope(wxMouseEvent& event)
 {
+  if (!mCapturedTrack) {
+	wxRect r;
+	int num;
+	VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
+	
+	if (t) {
+	  mCapturedTrack = t;
+	  mCapturedRect = r;
+	  mCapturedRect.height -=12;
+	  mCapturedNum = num;
+	}
+  }
+
+  if (mCapturedTrack && mCapturedTrack->GetKind()==VTrack::Wave) {
+	Envelope *e = ((WaveTrack *)mCapturedTrack)->GetEnvelope();
+
+	bool needUpdate = e->MouseEvent(event, mCapturedRect,
+									mViewInfo->h, mViewInfo->zoom);
+	if (needUpdate)
+	  Refresh(false);
+  }
+
+  if (event.ButtonUp()) {
+	mCapturedTrack = NULL;
+  }
 }
 
 void TrackPanel::HandleSlide(wxMouseEvent& event)
@@ -374,8 +405,7 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
   if (!mIsSliding)
 	return;
   
-  if (event.Dragging()) {
-	
+  if (event.Dragging() && mCapturedTrack) {	
 
 	mMouseMostRecentX = event.m_x;
 	mMouseMostRecentY = event.m_y;
@@ -543,8 +573,10 @@ void TrackPanel::OnMouseEvent(wxMouseEvent& event)
 	break;
   }
 
-  if (event.Moving() || event.ButtonUp())
+  if (event.Moving() || event.ButtonUp()) {
 	HandleCursor(event);
+	mCapturedTrack = NULL;
+  }
 }
 
 void TrackPanel::DrawRuler(wxDC& dc)
@@ -719,6 +751,8 @@ void TrackPanel::DrawTracks(wxDC& dc)
   
   VTrack *t;
   int num=0;
+
+  bool envelopeFlag = (gAPalette->GetCurrentTool() == 1);
   
   t = mTracks->First();
   while(t) {
@@ -828,10 +862,12 @@ void TrackPanel::DrawTracks(wxDC& dc)
 	if (!t->IsCollapsed()) {
 	  if (sel)
 		t->Draw(dc, innerRect, h,
-				mViewInfo->zoom, mViewInfo->sel0, mViewInfo->sel1);
+				mViewInfo->zoom, mViewInfo->sel0, mViewInfo->sel1,
+				envelopeFlag);
 	  else
 		t->Draw(dc, innerRect, h,
-				mViewInfo->zoom, 0.0, 0.0);
+				mViewInfo->zoom, 0.0, 0.0,
+				envelopeFlag);
 	}
 	else {
 	  /*

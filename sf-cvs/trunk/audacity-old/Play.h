@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  PlaySnd.h
+  Play.h
 
   Dominic Mazzoni
 

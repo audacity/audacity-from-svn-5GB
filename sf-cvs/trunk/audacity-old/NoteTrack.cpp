@@ -25,7 +25,7 @@ NoteTrack::NoteTrack(DirManager *projDirManager):
 }
 
 void NoteTrack::Draw(wxDC &dc, wxRect &r, double h, double pps,
-					 double sel0, double sel1)
+					 double sel0, double sel1, bool drawEnvelope)
 {
   int note0 = 50;
   int noteht = 4;
