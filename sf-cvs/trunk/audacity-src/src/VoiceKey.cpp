@@ -34,72 +34,16 @@ VoiceKey::VoiceKey(){
    mSilentWindowSize = .05;              //Amount of time (in seconds) below threshold to call it silence 
    mSignalWindowSize = .05;              //Amount of time (in seconds) above threshold to call it signal
 
+   
+   mUseSignChanges = false;
+   mUseDirectionChanges = false;
+   mUseEnergy = true;
+
 };
 
 
 VoiceKey::~VoiceKey(){
 };
-
-
-
-// This is an all-purpose function that allows the voicekey to actually test
-// things.
-//
-// sampleCount Test(const WaveTrack & t, sampleCount start, sampleCount len,
-//                  int direction, bool onoff)
-// {
-
-//    if((mWindowSize) >= len+10){
-
-//       wxMessageBox(_("Selection is too small to use voice key."));
-//       return start;
-//    }
-//    else{
-
-
-//       sampleCount lastsubthresholdsample;     // keeps track of the sample number of the last sample to not exceed the threshold
-
-//    //Change the millisecond-based parameters into sample-based parameters
-//       double rate = t.GetRate();                                                     //Translates seconds to samples
-//       unsigned int windowSamples = (unsigned int)(rate  * mWindowSize);               //Size of window to examine
-
-		
-//       int samplesleft = len - WindowSizeInt;   //Indexes the number of samples remaining in the selection
-//       lastsubthresholdsample = start;          //start this off at the selection start
-//       unsigned int i;                          //iterates through waveblock
-//       int blocksize;                           //The final block may be smaller than WindowSizeInt, so use this
-
-//       int samplesleft = len - WindowSizeInt;   //Indexes the number of samples remaining in the selection
-
-
-
-//       sampleCount startSample;
-//       //We should scan through the selection, in the specified direction.
-//       if(direction < 0 )
-//          {
-//             left   = start + len - WindowSize;
-//             middle = start + len;
-//             right  = start + len + WindowSize; 
-//          }
-//       else
-//          {
-//             left   = start - WindowSize;
-//             middle = start;
-//             right  = start WindowSize;
-//          }
-
-
-//    //Calculate the test statistics
-//       float erg = testEnergy(t, i, blocksize);                        
-//       int sc  = testSignChanges(t,i, blocksize);
-//       int dc  = testDirectionChanges(t,i,blocksize);
-		
-
-
-//       return 0;
-
-// }
-
 
 
 
@@ -125,9 +69,7 @@ sampleCount VoiceKey::OnForward (const WaveTrack & t, sampleCount start, sampleC
    }
    else{
 
-      double erg, sc, dc;                     //These store three statistics: energy, signchanges, and directionchanges
       sampleCount lastsubthresholdsample;     // keeps track of the sample number of the last sample to not exceed the threshold
-
 
       //Change the millisecond-based parameters into sample-based parameters
       double rate = t.GetRate();                                                     //Translates seconds to samples
@@ -140,7 +82,7 @@ sampleCount VoiceKey::OnForward (const WaveTrack & t, sampleCount start, sampleC
       int blockruns=0;                         //keeps track of the number of consecutive above-threshold blocks
       int blocksize;                           //The final block may be smaller than WindowSizeInt, so use this
 
-      int tests = 0;
+
       //This loop goes through the selection a block at a time.  If a long enough run
       //of above-threshold blocks occur, we return to the last sub-threshold block and 
       //go through one sample at a time.
@@ -156,30 +98,14 @@ sampleCount VoiceKey::OnForward (const WaveTrack & t, sampleCount start, sampleC
             blocksize = WindowSizeInt;
          }
 
-         //Calculate the test statistics
-         erg = testEnergy(t, i, blocksize);                        
-         sc  = testSignChanges(t,i, blocksize);
-         dc  = testDirectionChanges(t,i,blocksize);
-		
-         
-         //Test whether we are above threshold
-         //We need two out of three tests to pass
-         tests = (int)(erg > mThresholdEnergy)
-            + (int)(sc > mThresholdSignChangesUpper)
-            + (int)(sc < mThresholdSignChangesLower)
-            + (int)(dc > mThresholdDirectionChangesUpper)
-            + (int)(dc < mThresholdDirectionChangesLower);
-
-
-         if(tests >= 2)
+         //Test whether we are above threshold (the number of stats)
+         if(AboveThreshold(t,i,blocksize))
             {
                blockruns++;                   //Hit
+            } else{
+               blockruns=0;                   //Miss--start over
+               lastsubthresholdsample = i;
             }
-         else{
-            blockruns=0;                   //Miss--start over
-            lastsubthresholdsample = i;
-            
-         }
 		
          //If the blockrun is long enough, break out of the loop early:
          if(blockruns > mSignalWindowSize/mWindowSize)
@@ -190,10 +116,6 @@ sampleCount VoiceKey::OnForward (const WaveTrack & t, sampleCount start, sampleC
       //Now, if we broke out early (samplesleft > 10), go back to the lastsubthresholdsample and look more carefully
       if(samplesleft > 10){
 			
-         //Get initial test statistic values.
-         erg = testEnergy(t, lastsubthresholdsample, WindowSizeInt);                        
-         sc  = testSignChanges(t,lastsubthresholdsample, WindowSizeInt);
-         dc  = testDirectionChanges(t,lastsubthresholdsample,WindowSizeInt);
 					
          //Calculate how many to scan through--we only have to go through (at most)
          //the first window + 1 samples--but we need another window samples to draw from.
@@ -204,30 +126,59 @@ sampleCount VoiceKey::OnForward (const WaveTrack & t, sampleCount start, sampleC
          sampleFormat *buffer = new sampleFormat[samplesleft];
          t.Get((samplePtr)buffer, floatSample,lastsubthresholdsample,samplesleft);
 			
+
+
          //Initialize these trend markers atrend and ztrend.  They keep track of the
          //up/down trends at the start and end of the evaluation window.  
          int atrend = sgn(buffer[1]-buffer[0]);                          
          int ztrend = sgn(buffer[WindowSizeInt+1]-buffer[WindowSizeInt]);
 			
-         int tests = 0;
+
+         double erg=0;
+         double  sc=0;
+         double  dc=0;
+         
+         //Get initial test statistic values.
+         if(mUseEnergy)
+            erg = TestEnergy(t, lastsubthresholdsample, WindowSizeInt);                        
+         
+         if(mUseSignChanges)
+            sc  = TestSignChanges(t,lastsubthresholdsample, WindowSizeInt);
+         
+         if(mUseDirectionChanges)
+            dc  = TestDirectionChanges(t,lastsubthresholdsample,WindowSizeInt);
+
+
          //Now, go through the sound again, sample by sample.
          for(i=0; i<SignalWindowSizeInt-WindowSizeInt;i++){
-				
+			
+            int tests = 0;
+            int testThreshold = 0;
             //Update the test statistics
-            testEnergyUpdate(erg, WindowSizeInt,buffer[i],buffer[i+WindowSizeInt+1]);		
-            testSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i+1],buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
-            testDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i+1],ztrend,buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+            if(mUseEnergy)
+               {
+                  TestEnergyUpdate(erg, WindowSizeInt,buffer[i],buffer[i+WindowSizeInt+1]);		
+                  tests += (int)(erg>mThresholdEnergy);
+                  testThreshold++;
+               }
+            if(mUseSignChanges)
+               {
+                  TestSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i+1],buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(sc > mThresholdSignChangesUpper);
+                  tests += (int)(sc < mThresholdSignChangesLower);
+                  testThreshold++;
+               }
+            if(mUseDirectionChanges)
+               {
+                  TestDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i+1],ztrend,buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(dc > mThresholdDirectionChangesUpper);
+                  tests += (int)(dc < mThresholdDirectionChangesLower);
+                  testThreshold++;                  
+               }
 				
-            //Test whether we are above threshold
-            //We need two out of three tests to pass
-            tests = (int)(erg > mThresholdEnergy)
-               + (int)(sc > mThresholdSignChangesUpper)
-               + (int)(sc < mThresholdSignChangesLower)
-               + (int)(dc > mThresholdDirectionChangesUpper)
-               + (int)(dc < mThresholdDirectionChangesLower);
+       
 
-
-            if(tests >= 2)
+            if(tests >= testThreshold)
                {	//Finish off on the first hit
                   break;
                }
@@ -255,9 +206,7 @@ sampleCount VoiceKey::OnBackward (const WaveTrack & t, sampleCount end, sampleCo
    }
    else{
 
-      double erg, sc, dc;                     //These store three statistics: energy, signchanges, and directionchanges
       sampleCount lastsubthresholdsample;     // keeps track of the sample number of the last sample to not exceed the threshold
-
 
       //Change the millisecond-based parameters into sample-based parameters
       double rate = t.GetRate();                                                     //Translates seconds to samples
@@ -270,7 +219,7 @@ sampleCount VoiceKey::OnBackward (const WaveTrack & t, sampleCount end, sampleCo
       int blockruns=0;                         //keeps track of the number of consecutive above-threshold blocks
       int blocksize;                           //The final block may be smaller than WindowSizeInt, so use this
 
-      int tests=0;
+
       //This loop goes through the selection a block at a time in reverse order.  If a long enough run
       //of above-threshold blocks occur, we return to the last sub-threshold block and 
       //go through one sample at a time.
@@ -284,26 +233,11 @@ sampleCount VoiceKey::OnBackward (const WaveTrack & t, sampleCount end, sampleCo
          else{
             blocksize = WindowSizeInt;
          }
-
-         //Calculate the test statistics
-         erg = testEnergy(t, i, blocksize);                        
-         sc  = testSignChanges(t,i, blocksize);
-         dc  = testDirectionChanges(t,i,blocksize);
-		
-			
-         //Test whether we are above threshold
-         //We need two out of three tests to pass
-         tests = (int)(erg > mThresholdEnergy)
-            + (int)(sc > mThresholdSignChangesUpper)
-            + (int)(sc < mThresholdSignChangesLower)
-            + (int)(dc > mThresholdDirectionChangesUpper)
-            + (int)(dc < mThresholdDirectionChangesLower);
-
-
-         
-         if(tests >= 2)
+ 			
+                   
+         //Test whether we are above threshold 
+         if(AboveThreshold(t,i,blocksize))
             {
-               
                blockruns++;                   //Hit
             }
          else
@@ -321,11 +255,6 @@ sampleCount VoiceKey::OnBackward (const WaveTrack & t, sampleCount end, sampleCo
       //Now, if we broke out early (samplesleft > 10), go back to the lastsubthresholdsample and look more carefully
       if(samplesleft > 10){
 			
-         //Get initial test statistic values.
-         erg = testEnergy(t, lastsubthresholdsample, WindowSizeInt);                        
-         sc  = testSignChanges(t,lastsubthresholdsample, WindowSizeInt);
-         dc  = testDirectionChanges(t,lastsubthresholdsample,WindowSizeInt);
-					
          //Calculate how many to scan through--we only have to go through (at most)
          //the first window + 1 samples--but we need another window samples to draw from.
          samplesleft = 2*WindowSizeInt+1;
@@ -339,24 +268,48 @@ sampleCount VoiceKey::OnBackward (const WaveTrack & t, sampleCount end, sampleCo
          //up/down trends at the start and end of the evaluation window.  
          int atrend = sgn(buffer[samplesleft - 2]-buffer[samplesleft - 1]);                          
          int ztrend = sgn(buffer[samplesleft - WindowSizeInt-2]-buffer[samplesleft - WindowSizeInt-2]);
-			
+
+         double erg=0;
+         double sc = 0;
+         double dc = 0;
+
+         //Get initial test statistic values.
+         if(mUseEnergy)
+            erg = TestEnergy(t, lastsubthresholdsample, WindowSizeInt);                        
+         if(mUseSignChanges)
+            sc  = TestSignChanges(t,lastsubthresholdsample, WindowSizeInt);
+         if(mUseDirectionChanges)
+            dc  = TestDirectionChanges(t,lastsubthresholdsample,WindowSizeInt);
+
          //Now, go through the sound again, sample by sample.
          for(i=samplesleft-1;  i>WindowSizeInt; i--){
-				
+            int tests = 0;
+            int testThreshold = 0;
             //Update the test statistics
-            testEnergyUpdate(erg, WindowSizeInt,buffer[i],buffer[i-WindowSizeInt-1]);		
-            testSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i-1],buffer[i-WindowSizeInt-1],buffer[i-WindowSizeInt-2]);
-            testDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i-1],ztrend,buffer[i-WindowSizeInt-1],buffer[i+WindowSizeInt-2]);
+            if(mUseEnergy)
+               {
+                  TestEnergyUpdate(erg, WindowSizeInt,buffer[i],buffer[i+WindowSizeInt+1]);		
+                  tests += (int)(erg>mThresholdEnergy);
+                  testThreshold++;
+               }
+            if(mUseSignChanges)
+               {
+                  TestSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i+1],buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(sc > mThresholdSignChangesUpper);
+                  tests += (int)(sc < mThresholdSignChangesLower);
+                  testThreshold++;
+               }
+            if(mUseDirectionChanges)
+               {
+                  TestDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i+1],ztrend,buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(dc > mThresholdDirectionChangesUpper);
+                  tests += (int)(dc < mThresholdDirectionChangesLower);
+                  testThreshold++;                  
+               }
 				
-            //test whether we have a hit
-            tests = (int)(erg > mThresholdEnergy)
-               + (int)(sc > mThresholdSignChangesUpper)
-               + (int)(sc < mThresholdSignChangesLower)
-               + (int)(dc > mThresholdDirectionChangesUpper)
-               + (int)(dc < mThresholdDirectionChangesLower);
-            
-            
-            if(tests >= 2)
+       
+
+            if(tests >= testThreshold)
                {	//Finish off on the first hit
                   break;
                }
@@ -384,8 +337,7 @@ sampleCount VoiceKey::OffForward (const WaveTrack & t, sampleCount start, sample
    }
    else{
 
-      double erg, sc, dc;                     //These store three statistics: energy, signchanges, and directionchanges
-      sampleCount lastsubthresholdsample;     // keeps track of the sample number of the last sample to not exceed the threshold
+       sampleCount lastsubthresholdsample;     // keeps track of the sample number of the last sample to not exceed the threshold
 
 
       //Change the millisecond-based parameters into sample-based parameters
@@ -399,7 +351,6 @@ sampleCount VoiceKey::OffForward (const WaveTrack & t, sampleCount start, sample
       int blockruns=0;                         //keeps track of the number of consecutive above-threshold blocks
       int blocksize;                           //The final block may be smaller than WindowSizeInt, so use this
 
-      int tests =0;
       //This loop goes through the selection a block at a time.  If a long enough run
       //of above-threshold blocks occur, we return to the last sub-threshold block and 
       //go through one sample at a time.
@@ -414,45 +365,25 @@ sampleCount VoiceKey::OffForward (const WaveTrack & t, sampleCount start, sample
             blocksize = WindowSizeInt;
          }
 
-         //Calculate the test statistics
-         erg = testEnergy(t, i, blocksize);                        
-         sc  = testSignChanges(t,i, blocksize);
-         dc  = testDirectionChanges(t,i,blocksize);
-		
-				
-         //Test whether we are above threshold
-         //We need two out of three tests to pass
-         //test whether we have a hit
-         tests = (int)(erg > mThresholdEnergy)
-            + (int)(sc > mThresholdSignChangesUpper)
-            + (int)(sc < mThresholdSignChangesLower)
-            + (int)(dc > mThresholdDirectionChangesUpper)
-            + (int)(dc < mThresholdDirectionChangesLower);
- 
-
-         if(tests < 2)
+         if(!AboveThreshold(t,i,blocksize))
             {
                blockruns++;                   //Hit
             }
          else
             {
-               blockruns=0;                   //Miss--start over
+               blockruns=0;                   //Above threshold--start over
                lastsubthresholdsample = i;
             }
-		
+         
          //If the blockrun is long enough, break out of the loop early:
          if(blockruns > mSilentWindowSize/mWindowSize)
             break;
-			
+         
       }
-		
+      
       //Now, if we broke out early (samplesleft > 10), go back to the lastsubthresholdsample and look more carefully
       if(samplesleft > 10){
 			
-         //Get initial test statistic values.
-         erg = testEnergy(t, lastsubthresholdsample, WindowSizeInt);                        
-         sc  = testSignChanges(t,lastsubthresholdsample, WindowSizeInt);
-         dc  = testDirectionChanges(t,lastsubthresholdsample,WindowSizeInt);
 					
          //Calculate how many to scan through--we only have to go through (at most)
          //the first window + 1 samples--but we need another window samples to draw from.
@@ -468,23 +399,49 @@ sampleCount VoiceKey::OffForward (const WaveTrack & t, sampleCount start, sample
          int atrend = sgn(buffer[1]-buffer[0]);                          
          int ztrend = sgn(buffer[WindowSizeInt+1]-buffer[WindowSizeInt]);
 			
+
+         double erg=0;
+         double sc=0;
+         double dc=0;
+         
+         //Get initial test statistic values.
+         if(mUseEnergy)
+            erg = TestEnergy(t, lastsubthresholdsample, WindowSizeInt);                        
+         if(mUseSignChanges)
+            sc  = TestSignChanges(t,lastsubthresholdsample, WindowSizeInt);
+         if(mUseDirectionChanges)
+            dc  = TestDirectionChanges(t,lastsubthresholdsample,WindowSizeInt);
+
          //Now, go through the sound again, sample by sample.
          for(i=0; i<SilentWindowSizeInt-WindowSizeInt;i++){
-				
+            int tests = 0;
+            int testThreshold = 0;
             //Update the test statistics
-            testEnergyUpdate(erg, WindowSizeInt,buffer[i],buffer[i+WindowSizeInt+1]);		
-            testSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i+1],buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
-            testDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i+1],ztrend,buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+            if(mUseEnergy)
+               {
+                  TestEnergyUpdate(erg, WindowSizeInt,buffer[i],buffer[i+WindowSizeInt+1]);		
+                  tests += (int)(erg>mThresholdEnergy);
+                  testThreshold++;
+               }
+            if(mUseSignChanges)
+               {
+                  TestSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i+1],buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(sc > mThresholdSignChangesUpper);
+                  tests += (int)(sc < mThresholdSignChangesLower);
+                  testThreshold++;
+               }
+            if(mUseDirectionChanges)
+               {
+                  TestDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i+1],ztrend,buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(dc > mThresholdDirectionChangesUpper);
+                  tests += (int)(dc < mThresholdDirectionChangesLower);
+                  testThreshold++;                  
+               }
 				
-            //test whether we have a hit
-            tests = (int)(erg > mThresholdEnergy)
-               + (int)(sc > mThresholdSignChangesUpper)
-               + (int)(sc < mThresholdSignChangesLower)
-               + (int)(dc > mThresholdDirectionChangesUpper)
-               + (int)(dc < mThresholdDirectionChangesLower);
-            
-            if(tests < 2)
-               {	//Finish off on the first hit
+       
+
+            if(tests < testThreshold)
+               {	//Finish off on the first below-threshold block
                   break;
                }
          }
@@ -512,9 +469,7 @@ sampleCount VoiceKey::OffBackward (const WaveTrack & t, sampleCount end, sampleC
    }
    else{
 
-      double erg, sc, dc;                     //These store three statistics: energy, signchanges, and directionchanges
       sampleCount lastsubthresholdsample;     // keeps track of the sample number of the last sample to not exceed the threshold
-
 
       //Change the millisecond-based parameters into sample-based parameters
       double rate = t.GetRate();                                                     //Translates seconds to samples
@@ -526,7 +481,6 @@ sampleCount VoiceKey::OffBackward (const WaveTrack & t, sampleCount end, sampleC
       unsigned int i;                                   //iterates through waveblock
       int blockruns=0;                         //keeps track of the number of consecutive above-threshold blocks
       int blocksize;                           //The final block may be smaller than WindowSizeInt, so use this
-      int tests = 0;
 
       //This loop goes through the selection a block at a time in reverse order.  If a long enough run
       //of above-threshold blocks occur, we return to the last sub-threshold block and 
@@ -541,22 +495,8 @@ sampleCount VoiceKey::OffBackward (const WaveTrack & t, sampleCount end, sampleC
          else{
             blocksize = WindowSizeInt;
          }
-
-         //Calculate the test statistics
-         erg = testEnergy(t, i, blocksize);                        
-         sc  = testSignChanges(t,i, blocksize);
-         dc  = testDirectionChanges(t,i,blocksize);
-		
-			
-         //Test whether we are above threshold
-         //sc and dc have a high and a low threshold, and may thus screw things up
-         tests = (int)(erg > mThresholdEnergy)
-            + (int)(sc > mThresholdSignChangesUpper)
-            + (int)(sc < mThresholdSignChangesLower)
-            + (int)(dc > mThresholdDirectionChangesUpper)
-            + (int)(dc < mThresholdDirectionChangesLower);
          
-         if(tests < 2)
+         if(!AboveThreshold(t,i,blocksize))
             {
 			
                blockruns++;                   //Hit
@@ -576,11 +516,6 @@ sampleCount VoiceKey::OffBackward (const WaveTrack & t, sampleCount end, sampleC
 		
       //Now, if we broke out early (samplesleft > 10), go back to the lastsubthresholdsample and look more carefully
       if(samplesleft > 10){
-			
-         //Get initial test statistic values.
-         erg = testEnergy(t, lastsubthresholdsample, WindowSizeInt);                        
-         sc  = testSignChanges(t,lastsubthresholdsample, WindowSizeInt);
-         dc  = testDirectionChanges(t,lastsubthresholdsample,WindowSizeInt);
 					
          //Calculate how many to scan through--we only have to go through (at most)
          //the first window + 1 samples--but we need another window samples to draw from.
@@ -595,23 +530,48 @@ sampleCount VoiceKey::OffBackward (const WaveTrack & t, sampleCount end, sampleC
          //up/down trends at the start and end of the evaluation window.  
          int atrend = sgn(buffer[samplesleft - 2]-buffer[samplesleft - 1]);                          
          int ztrend = sgn(buffer[samplesleft - WindowSizeInt-2]-buffer[samplesleft - WindowSizeInt-2]);
-			
+		
+         double erg=0;
+         double  sc=0;
+         double  dc=0;
+         //Get initial test statistic values.
+         if(mUseEnergy)
+            erg = TestEnergy(t, lastsubthresholdsample, WindowSizeInt);                        
+         if(mUseSignChanges)
+            sc  = TestSignChanges(t,lastsubthresholdsample, WindowSizeInt);
+         if(mUseDirectionChanges)
+            dc  = TestDirectionChanges(t,lastsubthresholdsample,WindowSizeInt);
+
          //Now, go through the sound again, sample by sample.
          for(i=samplesleft-1;  i>WindowSizeInt; i--){
 				
+            int tests = 0;
+            int testThreshold = 0;
             //Update the test statistics
-            testEnergyUpdate(erg, WindowSizeInt,buffer[i],buffer[i-WindowSizeInt-1]);		
-            testSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i-1],buffer[i-WindowSizeInt-1],buffer[i-WindowSizeInt-2]);
-            testDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i-1],ztrend,buffer[i-WindowSizeInt-1],buffer[i+WindowSizeInt-2]);
+            if(mUseEnergy)
+               {
+                  TestEnergyUpdate(erg, WindowSizeInt,buffer[i],buffer[i+WindowSizeInt+1]);		
+                  tests += (int)(erg>mThresholdEnergy);
+                  testThreshold++;
+               }
+            if(mUseSignChanges)
+               {
+                  TestSignChangesUpdate(sc,WindowSizeInt,buffer[i],buffer[i+1],buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(sc > mThresholdSignChangesUpper);
+                  tests += (int)(sc < mThresholdSignChangesLower);
+                  testThreshold++;
+               }
+            if(mUseDirectionChanges)
+               {
+                  TestDirectionChangesUpdate(dc,WindowSizeInt,atrend,buffer[i],buffer[i+1],ztrend,buffer[i+WindowSizeInt],buffer[i+WindowSizeInt+1]);
+                  tests += (int)(dc > mThresholdDirectionChangesUpper);
+                  tests += (int)(dc < mThresholdDirectionChangesLower);
+                  testThreshold++;                  
+               }
 				
-            //test whether we have a hit
-            tests = (int)(erg > mThresholdEnergy)
-               + (int)(sc > mThresholdSignChangesUpper)
-               + (int)(sc < mThresholdSignChangesLower)
-               + (int)(dc > mThresholdDirectionChangesUpper)
-               + (int)(dc < mThresholdDirectionChangesLower);
-            
-            if(tests < 2)
+       
+
+            if(tests < testThreshold)
                {	//Finish off on the first hit
                   break;
                }
@@ -626,6 +586,47 @@ sampleCount VoiceKey::OffBackward (const WaveTrack & t, sampleCount end, sampleC
          return end ;
       }
    }
+}
+
+//This tests whether a specified block region is above or below threshold.
+bool VoiceKey::AboveThreshold(const WaveTrack & t, sampleCount start, sampleCount len)
+{
+
+   double erg=0;
+   double  sc=0;
+   double  dc=0;   //These store three statistics: energy, signchanges, and directionchanges
+   int tests =0;   //Keeps track of how many statistics surpass the threshold.
+   int testThreshold=0;  //Keeps track of the threshold.
+
+   //Calculate the test statistics
+   if(mUseEnergy)
+      {
+         testThreshold++;
+         erg = TestEnergy(t, start,len);       
+         tests +=(int)(erg > mThresholdEnergy);
+      }
+
+   if(mUseSignChanges)
+      {
+         testThreshold++;
+         sc  = TestSignChanges(t,start,len);
+         tests += (int)(sc > mThresholdSignChangesUpper);
+         tests += (int)(sc < mThresholdSignChangesLower);
+      }
+
+
+   if(mUseDirectionChanges)
+      {
+         testThreshold++;
+         dc  = TestDirectionChanges(t,start,len);
+         tests += (int)(dc > mThresholdDirectionChangesUpper);
+         tests += (int)(dc < mThresholdDirectionChangesLower);
+         
+      }
+   
+   //Test whether we are above threshold (the number of stats)
+   return (tests >= testThreshold);
+
 }
 
 //This adjusts the threshold.  Larger values of t expand the noise region,
@@ -648,9 +649,10 @@ void VoiceKey::CalibrateNoise(const WaveTrack & t, sampleCount start, sampleCoun
    //Then, we set the BaselineThreshold to be one 
 
    //initialize some sample statistics: sums of X and X^2
-   double sumerg=0, sumerg2=0;
-   double sumsc=0, sumsc2=0;
-   double sumdc=0, sumdc2=0;
+
+   double sumerg, sumerg2;
+   double sumsc, sumsc2;
+   double sumdc, sumdc2;
    double erg, sc, dc;
    // sampleFormat a1=0;
    //   sampleFormat a2=0;
@@ -667,10 +669,15 @@ void VoiceKey::CalibrateNoise(const WaveTrack & t, sampleCount start, sampleCoun
 	
 
    //Get the first test statistics
-   erg = testEnergy(t, start, WindowSizeInt);   
-   sc = testSignChanges(t,start, WindowSizeInt);
-   dc = testDirectionChanges(t,start,WindowSizeInt);
 
+   if(mUseEnergy)
+      erg = TestEnergy(t, start, WindowSizeInt);   
+
+   if(mUseSignChanges)
+      sc = TestSignChanges(t,start, WindowSizeInt);
+
+   if(mUseDirectionChanges)
+      dc = TestDirectionChanges(t,start,WindowSizeInt);
 
    //Calculate initial values for the trend trackers--------------------//
    //Get((samplePtr)a1, floatSample, start,  1);                        
@@ -712,42 +719,57 @@ void VoiceKey::CalibrateNoise(const WaveTrack & t, sampleCount start, sampleCoun
                blocksize = WindowSizeInt;
             }
          
-         erg = testEnergy(t, i, blocksize);                        
-         sc = testSignChanges(t,i, blocksize);
-         dc = testDirectionChanges(t,i,blocksize);
+         if(mUseEnergy)
+            {
+               erg = TestEnergy(t, i, blocksize);                        
+               sumerg +=(double)erg;
+               sumerg2 += pow((double)erg,2);
+            }
+         if(mUseSignChanges)
+            {
+               sc = TestSignChanges(t,i, blocksize);
+               sumsc += (double)sc;
+               sumsc2 += pow((double)sc,2);
+  
+           }
+         if(mUseDirectionChanges)
+            {
+               dc = TestDirectionChanges(t,i,blocksize);
+               sumdc += (double)dc;
+               sumdc2 += pow((double)dc,2);
+            }
          
-         //update my statistics
-         
-         
-         //These numbers get really big, creating a loss of precision and possible
-         //overflows.  So, we instead keep track of ergs and changes per sample.
-         sumerg +=(double)erg;
-         sumerg2 += pow((double)erg,2);
-         sumsc += (double)sc;
-         sumsc2 += pow((double)sc,2);
-         sumdc += (double)dc;
-         sumdc2 += pow((double)dc,2);
          
 
       }
-		
-   mEnergyMean = sumerg / samples;
-   mEnergySD =  sqrt(sumerg2/samples - mEnergyMean*mEnergyMean);
-   mSignChangesMean = sumsc / samples;
-   mSignChangesSD = sqrt(sumsc2 / samples - mSignChangesMean * mSignChangesMean);
-   mDirectionChangesMean = sumdc / samples;
-   mDirectionChangesSD =sqrt(sumdc2 / samples - mDirectionChangesMean * mDirectionChangesMean) ;
+	
+   if(mUseEnergy)
+      {
+         mEnergyMean = sumerg / samples;
+         mEnergySD =  sqrt(sumerg2/samples - mEnergyMean*mEnergyMean);
+      }
 
+   if(mUseSignChanges)
+      {
+         mSignChangesMean = sumsc / samples;
+         mSignChangesSD = sqrt(sumsc2 / samples - mSignChangesMean * mSignChangesMean);
+      }
+   
+   if(mUseDirectionChanges)
+      {
+         mDirectionChangesMean = sumdc / samples;
+         mDirectionChangesSD =sqrt(sumdc2 / samples - mDirectionChangesMean * mDirectionChangesMean) ;
+      }
    AdjustThreshold(mThresholdAdjustment);
 }
 
 
 
 //This might continue over a number of blocks.
-double VoiceKey::testEnergy (const WaveTrack & t, sampleCount start, sampleCount len)
+double VoiceKey::TestEnergy (const WaveTrack & t, sampleCount start, sampleCount len)
 {
 	
-   double sum = 0;
+   double sum = 1;
    sampleCount s = start;                                //Keep track of start
    sampleCount originalLen = len;                        //Keep track of the length of block to process (its not the length of t)
    sampleCount blockSize = t.GetMaxBlockSize();         //Determine size of sampling buffer
@@ -778,7 +800,7 @@ double VoiceKey::testEnergy (const WaveTrack & t, sampleCount start, sampleCount
 
 
 //This will update RMSE by adding one element and subtracting another
-void VoiceKey::testEnergyUpdate (double & prevErg, int len, const sampleFormat & drop, const sampleFormat & add)
+void VoiceKey::TestEnergyUpdate (double & prevErg, int len, const sampleFormat & drop, const sampleFormat & add)
 {
    //This is an updating formula for RMSE. It will only recalculate what's changed.
    prevErg =  prevErg + (double)(abs(add) - abs(drop))/len;
@@ -786,14 +808,14 @@ void VoiceKey::testEnergyUpdate (double & prevErg, int len, const sampleFormat &
 }
 
 
-double VoiceKey::testSignChanges(const WaveTrack & t, sampleCount start, sampleCount len)
+double VoiceKey::TestSignChanges(const WaveTrack & t, sampleCount start, sampleCount len)
 {
 	
  
    sampleCount s = start;                                //Keep track of start
    sampleCount originalLen = len;                        //Keep track of the length of block to process (its not the length of t)
    sampleCount blockSize = t.GetMaxBlockSize();         //Determine size of sampling buffer
-   unsigned long signchanges = 0;
+   unsigned long signchanges = 1;
    int currentsign=0;
 	
 
@@ -830,7 +852,7 @@ double VoiceKey::testSignChanges(const WaveTrack & t, sampleCount start, sampleC
    return (double)signchanges/originalLen;
 }
 
-void VoiceKey::testSignChangesUpdate(double & currentsignchanges, int len,
+void VoiceKey::TestSignChangesUpdate(double & currentsignchanges, int len,
 				     const sampleFormat & a1,
 				     const sampleFormat & a2,
 				     const sampleFormat & z1,
@@ -843,14 +865,14 @@ void VoiceKey::testSignChangesUpdate(double & currentsignchanges, int len,
 }
 
 
-double VoiceKey::testDirectionChanges(const WaveTrack & t, sampleCount start, sampleCount len)
+double VoiceKey::TestDirectionChanges(const WaveTrack & t, sampleCount start, sampleCount len)
 {
 	
 
    sampleCount s = start;                                //Keep track of start
    sampleCount originalLen = len;                        //Keep track of the length of block to process (its not the length of t)
    sampleCount blockSize = t.GetMaxBlockSize();         //Determine size of sampling buffer
-   unsigned long directionchanges = 0;
+   unsigned long directionchanges = 1;
    sampleFormat lastval=sampleFormat(0);
    int lastdirection=1;
 
@@ -892,7 +914,7 @@ double VoiceKey::testDirectionChanges(const WaveTrack & t, sampleCount start, sa
 
 // This method does an updating by looking at the trends
 // This will change currentdirections and atrend/trend, so be warned.
-void VoiceKey::testDirectionChangesUpdate(double & currentdirectionchanges, int len,
+void VoiceKey::TestDirectionChangesUpdate(double & currentdirectionchanges, int len,
 					  int & atrend, const sampleFormat & a1, const sampleFormat & a2,
 					  int & ztrend, const sampleFormat & z1, const sampleFormat & z2)
 {
@@ -910,16 +932,6 @@ void VoiceKey::testDirectionChangesUpdate(double & currentdirectionchanges, int 
 
 }
 
-//double VoiceKey::GetLikelihood(float erg, float sc,float dc)
-//{     
-//   //test whether we have a hit
-//   double sum = 0;
-//   
-//   /*   sum += log(logistic((erg- mEnergyMean)/mEnergySD));
-//   sum += log(logistic((sc - mSignChangesMean)/mSignChangesSD));
-//   sum += log(logistic((dc - mDirectionChangesMean)/ mDirectionChangesSD));
-//   */ 
-//}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

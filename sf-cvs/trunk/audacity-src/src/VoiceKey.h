@@ -32,6 +32,10 @@ class VoiceKey {
 	void CalibrateNoise(const  WaveTrack & t, sampleCount start, sampleCount len);
 	void AdjustThreshold(double t);
 
+
+	bool AboveThreshold(const WaveTrack & t, sampleCount start,sampleCount len);
+
+
  private:
 	
 	double mWindowSize;                 //Size of analysis window, in milliseconds
@@ -51,17 +55,22 @@ class VoiceKey {
 	double mThresholdDirectionChangesLower;   
 	double mThresholdDirectionChangesUpper;   
 
+	//These determine which statistics should be used.
+	bool mUseSignChanges;
+	bool mUseDirectionChanges;
+	bool mUseEnergy;
+
 	double mSilentWindowSize;           //Time in milliseconds of below-threshold windows required for silence
 	double mSignalWindowSize;           //Time in milliseconds of above-threshold windows required for speech
 	
-	double testEnergy (const WaveTrack & t, sampleCount start,sampleCount len);
-	double testSignChanges (const WaveTrack & t, sampleCount start, sampleCount len);
-	double testDirectionChanges(const WaveTrack & t, sampleCount start, sampleCount len);	
+	double TestEnergy (const WaveTrack & t, sampleCount start,sampleCount len);
+	double TestSignChanges (const WaveTrack & t, sampleCount start, sampleCount len);
+	double TestDirectionChanges(const WaveTrack & t, sampleCount start, sampleCount len);	
 	
-	void testEnergyUpdate (double & prevErg, int length, const sampleFormat & drop, const sampleFormat & add);
-	void testSignChangesUpdate(double & currentsignchanges,int length, const sampleFormat & a1,
+	void TestEnergyUpdate (double & prevErg, int length, const sampleFormat & drop, const sampleFormat & add);
+	void TestSignChangesUpdate(double & currentsignchanges,int length, const sampleFormat & a1,
 				   const sampleFormat & a2,   const sampleFormat & z1, const sampleFormat & z2);
-	void testDirectionChangesUpdate(double & currentdirectionchanges,int length, 
+	void TestDirectionChangesUpdate(double & currentdirectionchanges,int length, 
 					int & atrend, const sampleFormat & a1, const sampleFormat & a2,
 					int & ztrend, const sampleFormat & z1, const sampleFormat & z2);
 	

@@ -543,8 +543,8 @@ int LabelTrack::OverGlyph(int x, int y)
       pLabel = mLabels[i];
       
       //over left selection bound
-      if(abs(pLabel->y - y) < 4 &&
-         abs(pLabel->x - x) < 4
+      if(abs(pLabel->y - y) < 5 &&
+         abs(pLabel->x - x) < 5
          )
          {
             mMouseOverLabel = i;
@@ -552,8 +552,8 @@ int LabelTrack::OverGlyph(int x, int y)
          }
       
       //click on right selection bound
-      if(abs(pLabel->y-y ) < 4 &&
-         abs(pLabel->x1-x) < 4)
+      if(abs(pLabel->y-y ) < 5 &&
+         abs(pLabel->x1-x) < 5)
          {
             mMouseOverLabel = i;
             return 2;

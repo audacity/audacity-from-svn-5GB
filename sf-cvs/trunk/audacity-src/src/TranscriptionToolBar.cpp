@@ -483,7 +483,10 @@ void TranscriptionToolBar::OnCalibrate()
   mButtons[TTB_EndOn]->Enable();
   mButtons[TTB_EndOff]->Enable();
   mButtons[TTB_AutomateSelection]->Enable();
-  
+
+  //Make the sensititivy slider set the sensitivity by processing an event.
+  wxCommandEvent dummy;
+  OnSensitivitySlider(dummy);
 }
 
 //This automates selection through a selected region,
