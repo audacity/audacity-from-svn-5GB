@@ -29,15 +29,45 @@ plug-ins (contributed by users)</b>:
 <li><b>Generators</b>
     <p>
 
-<li><a href="nyquist/buzz.zip">Buzz</a>
-    <a href="nyquist/buzz.html">[Info]</a>
+<?php
+
+function plugins($process) {
+ if ($dir = @opendir("nyquist/")) {
+  while(($file = readdir($dir)) != false) {
+    if (ereg("^(.*)\.ny$", $file, $matches)) {
+      $base = $matches[1];
+      system("grep -q \";type generate\" nyquist/$file", $result);
+      if ($result == $process) {
+        $nameline = `grep ";name" nyquist/$file`;
+        if (preg_match(';name "*([0-9a-zA-Z ]*);', $nameline, $matches)) {
+          $name = $matches[1];
+          print "<li>";
+          print "<a href=\"nyquist/$base.zip\">";
+          print "$name</a>\n";
+          print "<a href=\"nyquist/$base.html\">[Info]</a>\n";
+        }
+        else {
+          print "<li>No name from $nameline\n";
+        }
+      }
+    }
+  }
+ }
+}
+
+plugins(0);
+
+?>
 
 <p>
 <li><b>Effects</b>
 <p>
 
-<li><a href="nyquist/10bandeq.zip">10-Band Equalizer</a>
-    <a href="nyquist/10bandeq.html">[Info]</a>
+<?php
+
+plugins(1);
+
+?>
 
 </ul>
 
@@ -188,9 +218,3 @@ Carbon VST plug-ins.
   include 'bottom.inc.php';
 
 ?>
-
-
-
-
-
-
