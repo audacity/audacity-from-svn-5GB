@@ -16,6 +16,7 @@
 #include "Echo.h"
 #include "Fade.h"
 #include "Filter.h"
+#include "Invert.h"
 #include "NoiseRemoval.h"
 #include "Phaser.h"
 #include "Reverse.h"
@@ -43,6 +44,7 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectFadeIn(), false);
    Effect::RegisterEffect(new EffectFadeOut(), false);
    Effect::RegisterEffect(new EffectFilter(), false);
+   Effect::RegisterEffect(new EffectInvert(), false);
    Effect::RegisterEffect(new EffectNoiseRemoval(), false);
    Effect::RegisterEffect(new EffectPhaser(), false);
    Effect::RegisterEffect(new EffectReverse(), false);

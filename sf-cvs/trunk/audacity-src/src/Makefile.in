@@ -69,6 +69,7 @@ OBJS = \
 	$(OBJDIR)/effects/Echo.o \
 	$(OBJDIR)/effects/Fade.o \
 	$(OBJDIR)/effects/Filter.o \
+	$(OBJDIR)/effects/Invert.o \
 	$(OBJDIR)/effects/NoiseRemoval.o \
 	$(OBJDIR)/effects/Phaser.o \
 	$(OBJDIR)/effects/Reverse.o \
