@@ -102,7 +102,6 @@ void QuitAudacity()
    QuitHelp();
 
    FinishPreferences();
-
 }
 
 IMPLEMENT_APP(AudacityApp)
@@ -279,6 +278,10 @@ bool AudacityApp::OnInit()
 
 int AudacityApp::OnExit()
 {
+   while(Pending())
+   {
+      Dispatch();
+   }
 
 //   delete mChecker;
    return 0;
