@@ -1,16 +1,15 @@
-<?php BoxTop('19 de Março de 2003: Lançada a versão 1.1.3'); ?>
+<?php BoxTop('Liberada para testes a versão 1.1.3   <font size=1>19/03/03</font>'); ?>
+
 
 <p>
-Vá à página <?php print "<a href=beta.php?$langLinkStr>"; ?>Versões Beta </a> para copiar.</p><p>
-Esta nova versão dispõe de controles de ganho (volume) e "pan" (balanço) para cada faixa, re-amostragens de alta qualidade e a correção de diversas falhas das versões anteriores.</p><p>
+Esta nova versão dispõe de controles de volume e balanço para cada faixa de áudio, re-amostragem de alta qualidade e a correção de diversas falhas da versão anterior.</p><p>
 Veja a lista completa de novos recursos na <?php print "<a href=betanotes.php?$langLinkStr>"; ?>lista de novos recursos da versão 1.1.3.</a>
 </p>
-
 <p>
-Atenção! Esta versão do Audacity não é capaz de ler ou salvar projetos de versões anteriores do programa. Exporte suas faixas de áudio em formato WAV ou AIFF para abri-las nesta nova versão.
+O link para download está em <?php print "<a href=beta.php?$langLinkStr>"; ?>Versões Beta</a>.
 </p>
 
-<p>
-Esperamos que este seja o último release beta antes da liberação da versão final estável ao público.</p>
-
+<p><font size=1>
+Atenção: esta versão do Audacity não é capaz de ler ou salvar arquivos de projeto de versões anteriores. Exporte suas faixas de áudio em formato WAV ou AIFF para abri-las nesta nova versão.
+</p></font>
 <?php BoxBottom(); ?>
