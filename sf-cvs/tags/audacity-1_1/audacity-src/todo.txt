@@ -1,0 +1,146 @@
+todo.txt
+
+This is the file where we keep track of all feature
+requests and plans, and organize them by which
+release they're going in.
+
+-----------------------------------------------------------
+Website / Sourceforge
+-----------------------------------------------------------
+
+- Get announcement list running
+- Upload some icons for people to use with
+  KDE, GNOME, WindowMaker, AfterStep, BlackBox...
+- Note on website that Audacity is incompatible
+  with Norton Protected Recycle Bin (see email
+  from Josef Ravenscroft)
+
+-----------------------------------------------------------
+1.0 / Audacity 0.9 branch
+-----------------------------------------------------------
+
+- Address all bugs in "bugs.txt"
+- Make Audacity compile on Unix even if dlopen is
+  not supported (work around wxGTK 2.2.9 bug where
+  it can't be found)
+- Experiment with much larger recording buffers - does
+  latency suffer?  Do we care?  Does it result in fewer
+  underflows?
+- Test the "instant stop" on Windows and Mac.  Should
+  it be used for recording, too?
+- Bug on Linux: hold down spacebar to keep playing/stopping,
+  gets in endless loop...
+- Support MP3 exporting at even lower bitrates
+- Select region by typing in start and stop times
+
+-----------------------------------------------------------
+1.1 / HEAD
+-----------------------------------------------------------
+
+Unit tests:
+- Need to verify that the new 1.0 mixing code plays every
+  sample one and only once.
+
+Audio:
+- Choice of dither
+- Pre-roll and post-roll: amount to play before and after
+  a selection (see DG Malham email)
+- Latency control in Audio I/O prefs
+- Playthrough (definitely on Mac OS, maybe on others?)
+
+UI::
+- While playing, click in ruler to change playback
+  position
+- Remember window size and position
+- Import... should be able to import Audacity projects
+  and Audacity project files
+- Crash recovery
+- Clean up a project directory upon open
+- Make "Exit program upon closing last window" an option
+  in the Preferences.  (The alternative would be to create
+  a new empty project when you close the last window.)
+- Out of disk space checks
+- Nudge selection with arrow keys
+- Make all keyboard shortcuts configurable
+- Make colors configurable
+- Adapt text color - should be white by default if
+  the background color is very dark
+- Select dialog box ("1.5 - 3.0 seconds")
+  and allow selection by frames (24 frames/sec), samples, etc.
+- Invert selection (for now, until we allow discontiguous selections,
+                    this should mean two options: select up to selection,
+                    and select after selection)
+- Zero Crossings (nudge selection to nearest ZC's)
+- Finish history window
+- Vertical zooming
+- Pan control for each track
+- Volume control for each track
+- Vertical bar indicating playback/recording position, too
+- Add high-quality resampling
+- Legend (Ruler) for pitch and spectrum
+- Recognize .mp2, .mpg, .mpeg as libmad-capable files
+- Plug-ins should be split into many separate menus on Linux/GTK
+  (if you have lots of them)
+- 1/24, 1/25 and 1/30-second frame count options for ruler.
+- Envelope editor should support linear, quadratic, and exponential,
+  ideally with a right-click.  Default should be linear; it makes the
+  most sense visually.
+- Some way to insert silence with the mouse???
+- Looping - two forms of looping:
+  * An option to continuously loop the selection during playback
+    (maybe a "loop" checkbox under the Play button)
+  * A way to turn a track into a loop.  It would be cool if the
+    display showed the "real" waveform once, and then "ghosts" of
+    that waveform repeating forever...
+- Drag the play marker in the ruler to "skip" to a new time
+   
+Import/Export
+- Import latest libsndfile; finish exporting code
+- Rewrite the Import Raw Data... code
+- Command-line LAME exporting
+
+Effects::
+- Show spectrum in FFT filter
+- Add preview button to all effects dialogs
+- Freeverb 3.0 (and better interface)
+- Pitch/tempo change
+- Smart Mix (like Quick Mix but guarantees no clipping)
+- Cross-fade (smooth between two tracks)
+- Compressor/Limiter/Expander
+- Native port of Freeverb (ideally optimized)
+- EQ
+- Auto find track boundaries
+- Pop/click removal
+- Save VST plug-in parameters to a file, or at least
+  remember the last settings
+
+-----------------------------------------------------------
+Future:
+-----------------------------------------------------------
+
+- Speed issues when you have a project of 5 or more tracks
+- Edit markers
+- Ability to drag tracks instead of move down, move down, move down
+- "Fit in window" also works vertically
+- Better adaptation to different font sizes (sizers)
+- Move to lossless compression (FLAC?) for internal representation
+- discontiguous selection
+- visualization window: VU meters, equalizer, continuous waveform, oscilloscope
+- Scrubbing
+- Mouse scroller should vertically scroll project
+- Delete key should be permanently mapped on to the delete operation
+- User-adjustable fonts so I don't have to recompile just to get the
+  ruler looking decent and the track label fitting.
+- Export menu options changed to generic "Export as..." and   "Export selection as..." leading to a format selection dialog.
+  (ogg/mp3/flac/wav/etc.)
+- A way to use the envelope tool to amplify (I have no clue
+  how this would work).
+- a way to manually manipulate individual samples (e.g., a new tool mode
+  or a keyboard modifier that allows you to grab a sample and drag it to
+  the spot you really want it at)
+
+Low level issues::
+- support multi-track I/O
+- support an arbitrary number of channels
+- Make projects one big file
+

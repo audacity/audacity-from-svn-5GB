@@ -1,0 +1,135 @@
+bugs.txt
+
+This file is where we keep track of all known bugs
+in Audacity. 
+
+-----------------------------------------------------------
+Known bugs to fix:
+-----------------------------------------------------------
+
+- Segfault if slide tool is used while playing/recording
+- Problems recording at other than 44100 Hz on Mac
+- Recording at a rate other than 44100 works, but the
+  track created has the wrong rate in its label
+- Fix id3lib compilation problems on Linux
+- Freeze when opening Prefs panel on MacOS 8.6
+- Exporting using LAME does incorrect sample rate,
+  or incorrect # of channels?  Maybe only with certain
+  versions of LAME?
+- Core dump when doing long recordings on Linux
+- ID3 genre list doesn't fit in the window on Linux/GTK
+- Fix underflow problems when recording (as much as
+  possible) and try to report them if not
+- Menu bar does not function when Prefs dialog is
+  in front on MacOS
+- Get rid of any "exit()" calls in snd/ or other
+  libraries
+- Use latest FreeVerb (3.0)
+- Fix divide-by-zero bug in Envelope.cpp (can crash
+  on Windows)
+- (possibly Mac only?) Copy portion of file, paste into
+  new project, save and close new project, CRASH!
+  See email from TC Baker
+- Link against libwx_gtk.so in RPM, and add instructions
+  to ln -s /usr/lib/libwx_gtk-2.2.so /usr/lib/libwx_gtk.so
+- 'amplify' effect can change -1 amplitude to +1
+-  when the top track of a stereo track is shrunk so that
+  the 'solo' and 'mute' fields appear beside the lower track, these   buttons no longer work
+- layout of Edit toolbar buttons sucks in Windows(tm) (my fault)
+- drag-floating toolbars produces wierd ghosting of other previous
+  images in Windows(tm).
+- Skip-to-beginning/skip-to-end go to the absolute beginning or the
+  absolute end of all tracks, rather than the beginning/end of the
+  current track.
+- The ruler selection coloring responds strangely when you click or
+  double-click on the ruler.
+- Clicking on the track label selects the entire track, but is also used
+  for dragging the track vertically.  These can be conflicting
+  operations. Maybe the label needs a dragging 'affordance' on the left
+  edge or top (little graphical bumps or something) that can be used to
+  grab drag the track, with the rest of the label offering the 'select
+  all' behavior. This would make the ability to drag tracks around more
+  obvious as well.
+-----------------------------------------------------------
+Possible bugs to investigate:
+-----------------------------------------------------------
+
+- Exporting tracks with envelopes and an offset can result
+  in different WAV output than what you see on the screen in
+  the editor.  (See email from Mike Tyson).
+- Linux: hit Undo lots of times in a row crashes.
+  (Email from Daniel James)  Can't reproduce.
+- Audacity is unstable when working with very large files
+- Possible memory leak in Windows 98 (???)
+  See emails from degarb@softhome.net
+- Typing in the root directory as the Temp Files path
+  doesn't work (on Mac OS X)?
+- Problem reading AIFF files on Mac OS X?
+  (Private email from Tobias Jeger - the attached
+	AIFF file worked fine under Linux)
+- Does "make install" create all of the directories
+  it wants to installs into
+- Audacity won't start under (some versions of?) MacOS 8.5,
+  complains about InterfaceLib and SetAntiAliasedTextEnabled
+- Test USB mics under Mac OS 9 (see email from J. Blucher)
+
+-----------------------------------------------------------
+Fixed, need to port:
+-----------------------------------------------------------
+
+- Single instance checker (added to MSW only of 0.9
+  branch, need to port to HEAD)
+- Change menu item when you change export format
+  (need to port to HEAD)
+- Find VST folder on startup (need to port to HEAD)
+
+-----------------------------------------------------------
+Fixed:
+-----------------------------------------------------------
+
+- Copy and Paste between projects
+- Temp directory in Prefs dialog should have a "Chooose..."
+  button to let you select a directory with a standard
+  file dialog.
+- RPM dependency is wrong - it should depend on:
+  libwx_gtk-2.2.so.6, not libwx_gtk.so
+  # Necessary for building the package: rpm -ba
+    BuildRequires:	wxGTK >= [version number if required]i 
+  # Necessary for installing the package: rpm -ivh
+    Requires:	wxGTK >= [version number if required]
+- Clicking close box only deletes one track of
+  stereo pair
+- Audacity "forgets" tracks' channels when saving/loading
+- Needs to handle temp directory better - bring up a
+  dialog if it's not there...
+- Undoing an envelope edit sometimes causes problems
+- Recording/Playback devices backwards on Windows
+- Need to have a warning when you write over a file the
+  project depends on - and an option to rename the file
+  if necessary.
+- Set Rate... dialog doesn't initialize with the
+  current rate.  Sometimes 0, sometimes junk.
+  (Note that there are two of these dialogs.)
+- Better aRts support (or at least a warning???)
+- Zoom tool shouldn't change selection
+- Scrolling with the zoom tool shouldn't zoom.
+- Closing a project window should throw away all blockfiles
+  other than the ones in the last saved version.  (Implement
+  this in conjunction with save changes dialogs.)
+- Save As... for a project should work.
+- Bug fixed: each track's channel was not being saved
+  in the project file.
+  (Was: stereo "linked" track that's really two mono tracks,
+   Check upon opening project)
+- Bug fixed: Must warn user if temp directory can't be created
+  Now checks on startup and opens Prefs Dialog for user to fix.
+- Bug fixed: Duplicate track doesn't work if track is shifted
+  past zero.  Track selection and copying are now more aware
+  of offsets.
+- Filenames with a period outside the extension are truncated.
+- "New..." menu item should be "New"
+- Crash in NoiseRemoval effect on Windows.
+- Shouldn't create envelope points outside the track range.
+- Compiled id3lib for Windows version.
+- Changed pthread_yield to sched_yield for portability.
+- Crash closing track or project while recording.
