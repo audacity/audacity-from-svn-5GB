@@ -415,9 +415,9 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
   double t = t0;
   int x;
   for(x=0; x<mid.width; x++) {
-	heights[x] = int((mid.height/2.0) *
-					 envelope.GetValue(t+tOffset));
-	t += 1/pps;
+    heights[x] = int(0.5 + (mid.height/2.0) *
+    				 envelope.GetValue(t+tOffset));
+    t += 1/pps;
   }
 
   // Draw shadow
@@ -674,14 +674,24 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
 
   wxBitmap converted = image->ConvertToBitmap();
 
-  dc.DrawBitmap(converted, r.x, r.y);
+  //wxBitmap converted;
+  //converted.Create(r.width, r.height);
+
+  wxMemoryDC memDC;  
+
+  memDC.SelectObject(converted);
+
+  dc.Blit(r.x, r.y, r.width, r.height,
+		  &memDC, 0, 0, wxCOPY, FALSE);
+
+  //dc.DrawBitmap(converted, r.x, r.y);
 
   delete image;
 
   if (drawEnvelope) {
-	wxRect envRect = r;
-	envRect.height-=2;
-	envelope.Draw(dc, envRect, h, pps);
+    wxRect envRect = r;
+    envRect.height-=2;
+    envelope.Draw(dc, envRect, h, pps);
   }
 }
 
@@ -779,7 +789,6 @@ void WaveTrack::Copy(double t0, double t1, VTrack **dest)
   delete[] buffer;
 }
 
-
 void WaveTrack::Paste(double t, VTrack *src)
 {
   wxASSERT(src->GetKind() == WaveTrack::Wave);
@@ -808,12 +817,12 @@ void WaveTrack::Paste(double t, VTrack *src)
   int numBlocks = block->Count();
 
   if (numBlocks == 0) {
-	// Special case: this track is currently empty.
+    // Special case: this track is currently empty.
 
-	for(int i=0; i<srcNumBlocks; i++)
-	  AppendBlock(srcBlock->Item(i));
+    for(int i=0; i<srcNumBlocks; i++)
+      AppendBlock(srcBlock->Item(i));
 
-	envelope.SetTrackLen(numSamples / rate);
+    envelope.SetTrackLen(numSamples / rate);
 
     ConsistencyCheck("Paste branch one");
     
@@ -824,7 +833,7 @@ void WaveTrack::Paste(double t, VTrack *src)
     // Special case: we can fit all of the new samples inside of
     // one block!
 
-	sampleType *buffer = new sampleType[maxSamples];
+    sampleType *buffer = new sampleType[maxSamples];
 
     int splitPoint = s - block->Item(b)->start;
     Read(buffer, block->Item(b), 0, splitPoint);
@@ -1152,6 +1161,76 @@ void WaveTrack::Clear(double t0, double t1)
   Delete(s0, (s1-s0));
 }
 
+void WaveTrack::Silence(double t0, double t1)
+{
+  wxASSERT(t0 <= t1);
+
+  sampleCount s0 = (sampleCount)((t0 - tOffset) * rate);
+  sampleCount s1 = (sampleCount)((t1 - tOffset) * rate);
+
+  if (s0 < 0)
+    s0 = 0;
+  if (s1 >= numSamples)
+    s1 = numSamples;
+  
+  if (s0 >= s1 || s0>=numSamples || s1<0)
+    return;
+	
+  Set(NULL, s0, s1-s0);
+}
+
+void WaveTrack::InsertSilence(double t, double lenSecs)
+{
+  // Create a new track containing as much silence as we
+  // need to insert, and then call Paste to do the insertion
+
+  sampleCount len = (sampleCount)(lenSecs * rate);
+
+  WaveTrack *sTrack = new WaveTrack(dirManager);	
+  sTrack->rate = rate;
+
+  sampleCount idealSamples = GetIdealBlockSize();
+  sampleType *buffer = new sampleType[idealSamples];
+  sampleCount i;  
+  for(i=0; i<idealSamples; i++)
+    buffer[i] = 0;
+  
+  sampleCount pos = 0;
+  BlockFile *firstBlockFile = NULL;
+  
+  while(len) {
+    sampleCount l = (len > idealSamples? idealSamples: len);
+
+    WaveBlock *w = new WaveBlock();
+    w->start = pos;
+    w->len = l;
+    if (pos == 0 || len==l) {
+      w->f = dirManager->NewBlockFile();
+      firstBlockFile = w->f;
+      bool inited = InitBlock(w);
+      wxASSERT(inited);
+      Write(buffer, w, 0, l, false);
+    }
+    else {
+      w->f = firstBlockFile;
+      dirManager->Ref(w->f);
+    }
+    
+    sTrack->block->Add(w);
+    
+    pos += l;
+    len -= l;
+  }
+  
+  sTrack->numSamples = pos;
+  
+  Paste(t, sTrack);
+  
+  delete sTrack;
+  
+  ConsistencyCheck("InsertSilence");
+}
+
 void WaveTrack::AppendBlock(WaveBlock *b)
 {
   WaveBlock *newBlock = new WaveBlock();
@@ -1455,10 +1534,10 @@ void WaveTrack::Write(sampleType *buffer, WaveBlock *b,
     for(int i=0; i<len; i++)
       newBuffer[start+i] = buffer[i];
 
-	BlockFile *oldBlockFile = b->f;
+    BlockFile *oldBlockFile = b->f;
     b->f = dirManager->NewBlockFile();
-	bool inited = InitBlock(b);
-	wxASSERT(inited);
+    bool inited = InitBlock(b);
+    wxASSERT(inited);
 
     buffer = newBuffer;
     start = 0;
@@ -1586,6 +1665,7 @@ void WaveTrack::Get(sampleType *buffer, sampleCount start, sampleCount len)
   }
 }
 
+// Pass NULL to set silence
 void WaveTrack::Set(sampleType *buffer, sampleCount start, sampleCount len)
 {
   wxASSERT(start < numSamples && start+len <= numSamples);
@@ -1596,16 +1676,32 @@ void WaveTrack::Set(sampleType *buffer, sampleCount start, sampleCount len)
 
   int b = FindBlock(start);
 
+  sampleType *silence;
+  if (!buffer) {
+    silence = new sampleType[maxSamples];
+    for(int i=0; i<maxSamples; i++)
+      silence[i] = 0;
+  }
+
   while(len) {
     int blen = block->Item(b)->start + block->Item(b)->len - start;
     if (blen > len)
       blen = len;
-    Write(buffer, block->Item(b), start - block->Item(b)->start, blen);
+
+    if (buffer) {
+      Write(buffer, block->Item(b), start - block->Item(b)->start, blen);
+      buffer += blen;
+    }
+    else
+      Write(silence, block->Item(b), start - block->Item(b)->start, blen);
+
     len -= blen;
-    buffer += blen;
     start += blen;
     b++;
   }
+
+  if (!buffer)
+    delete[] silence;
 
   ConsistencyCheck("Set");
 }
@@ -1927,7 +2023,7 @@ void WaveTrack::Reblockify()
   // TODO
 }
 
-void WaveTrack::ConsistencyCheck(char *whereStr)
+void WaveTrack::ConsistencyCheck(const char *whereStr)
 {
   int i;
   int pos=0;

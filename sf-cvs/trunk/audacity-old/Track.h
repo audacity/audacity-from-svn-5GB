@@ -59,6 +59,9 @@ public:
   virtual void Paste(double t, VTrack *src) {}
   virtual void Clear(double t0, double t1) {}
 
+  virtual void Silence(double t0, double t1) {}
+  virtual void InsertSilence(double t, double len) {}
+
   virtual void SetHeight(int h);
 
   virtual void Collapse();

@@ -80,6 +80,9 @@ public:
   virtual void Paste(double t, VTrack *src);
   virtual void Clear(double t0, double t1);
   
+  virtual void Silence(double t0, double t1);
+  virtual void InsertSilence(double t, double len);
+
   virtual void Draw(wxDC &dc, wxRect &r, double h, double pps,
 					double sel0, double sel1,
 					bool drawEnvelope);
@@ -179,7 +182,7 @@ public:
 
   // This function makes sure that the track isn't messed up
   // because of inconsistent block starts & lengths
-  void ConsistencyCheck(char *whereStr);
+  void ConsistencyCheck(const char *whereStr);
 
   // This function prints information to stdout about the blocks in the
   // tracks and indicates if there are inconsistencies.
