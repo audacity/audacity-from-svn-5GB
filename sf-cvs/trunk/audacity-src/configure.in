@@ -124,6 +124,10 @@ AC_CHECK_FILE(lib-src/libsamplerate/src/samplerate.h,
               default_libsamplerate="local",
               default_libsamplerate="system")
 
+AC_CHECK_FILE(lib-src/libflac/include/FLAC/format.h,
+              default_libflac="local",
+              default_libflac="system")
+
 dnl If any of the optional sublibraries was not found in lib-src,
 dnl we assume the user wants to use a system library.  If the
 dnl library isn't installed, though, disable this library by
@@ -139,6 +143,10 @@ fi
 
 if [[ "$default_libid3tag" = "system" ]] ; then
 	AC_CHECK_HEADER(id3tag.h, , default_libid3tag="no")
+fi
+
+if [[ "$default_libflac" = "system" ]] ; then
+	AC_CHECK_HEADER(FLAC/format.h, , default_libflac="no")
 fi
 
 dnl options
@@ -172,6 +180,12 @@ AC_ARG_WITH(libsamplerate,
 		[which libsamplerate to use: [local, system, or none]])],
 	use_libsamplerate=$withval,
 	use_libsamplerate=$default_libsamplerate)
+
+AC_ARG_WITH(libflac,
+	[AC_HELP_STRING([--with-libflac],
+		[enable FLAC support])],
+	use_libflac=$withval,
+	use_libflac=$default_libflac)
 
 AC_ARG_WITH(ladspa,
 	[AC_HELP_STRING([--with-ladspa],
@@ -352,6 +366,31 @@ if [[ $use_libid3tag = "system" ]] ; then
 
 fi
 
+if [[ $use_libflac = "yes" ]] ; then
+   EXTRAOBJS="$EXTRAOBJS ../lib-src/libflac/src/libFLAC/.libs/libFLAC.a"
+   EXTRAOBJS="$EXTRAOBJS ../lib-src/libflac/src/libFLAC++/.libs/libFLAC++.a"
+   BUILDLIBS="$BUILDLIBS libflac/src/libFLAC/.libs/libFLAC.a"
+   BUILDLIBS="$BUILDLIBS libflac/src/libFLAC++/.libs/libFLAC++.a"
+   SUBDIRS="$SUBDIRS lib-src/libflac"
+   CXXFLAGS="$CXXFLAGS -I../lib-src/libflac/include"
+
+   AC_DEFINE(USE_LIBFLAC, 1,
+      [Define if the FLAC library is present])
+fi
+
+if [[ $use_libflac = "system" ]] ; then
+   AC_CHECK_LIB(FLAC, FLAC__format_sample_rate_is_valid, true, dnl here true is just a nop
+	   AC_MSG_ERROR([*** FLAC libraries not found or they are too old. Run configure --without-libflac to disable it.]),
+	   -lFLAC++) dnl auxiliary library that -lFLAC needs
+
+   AC_CHECK_HEADER(FLAC/format.h, ,
+		AC_MSG_ERROR([*** FLAC headers not found.  Run configure --without-libflac to disable it]))
+
+   LIBS="$LIBS -lFLAC -lFLAC++"
+   AC_DEFINE(USE_LIBFLAC, 1,
+      [Define if the FLAC library is present])
+fi
+
 dnl if [[ $use_help = "yes" ]] ; then
 dnl   enable help
 dnl fi
@@ -507,6 +546,16 @@ else
 		echo "  with    vorbis (system)";
 	else
 		echo "  without libvorbis";	
+	fi
+fi
+
+if [[ $use_libflac = "yes" ]] ; then	
+	echo "  with    libflac";
+else
+	if [[ $use_libflac = "system" ]] ; then
+		echo "  with    libflac (system)";
+	else
+		echo "  without libflac";	
 	fi
 fi
 
