@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
+# Makefile.in generated automatically by automake 1.4-p6 from Makefile.am
 
 # Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
@@ -59,24 +59,37 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 host_alias = @host_alias@
 host_triplet = @host@
+AR = @AR@
 AS = @AS@
 CC = @CC@
 CPP = @CPP@
+CXX = @CXX@
+CXXCPP = @CXXCPP@
 DEBUG = @DEBUG@
 DLLTOOL = @DLLTOOL@
 ECHO = @ECHO@
+EGREP = @EGREP@
 EXEEXT = @EXEEXT@
+F77 = @F77@
+GCJ = @GCJ@
+GCJFLAGS = @GCJFLAGS@
+HAVE_LIB = @HAVE_LIB@
+LIB = @LIB@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
+LTLIB = @LTLIB@
+MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 OGG_CFLAGS = @OGG_CFLAGS@
 OGG_LIBS = @OGG_LIBS@
 PACKAGE = @PACKAGE@
+PDFXMLTEX = @PDFXMLTEX@
 PROFILE = @PROFILE@
 RANLIB = @RANLIB@
+RC = @RC@
 STRIP = @STRIP@
 VERSION = @VERSION@
 VE_LIB_AGE = @VE_LIB_AGE@
@@ -88,6 +101,7 @@ VF_LIB_REVISION = @VF_LIB_REVISION@
 V_LIB_AGE = @V_LIB_AGE@
 V_LIB_CURRENT = @V_LIB_CURRENT@
 V_LIB_REVISION = @V_LIB_REVISION@
+XSLTPROC = @XSLTPROC@
 pthread_lib = @pthread_lib@
 
 AUTOMAKE_OPTIONS = foreign
@@ -96,10 +110,23 @@ SUBDIRS = vorbisfile vorbisenc
 
 docdir = $(datadir)/doc/$(PACKAGE)-$(VERSION)
 
-doc_DATA = components.png 	draft-moffitt-vorbis-rtp-00.txt 	eightphase.png 	evenlsp.png 	floor1-1.png 	floor1-2.png 	floor1-3.png 	floor1-4.png 	floor1_inverse_dB_table.html 	floorval.png 	fourphase.png 	framing.html 	helper.html 	hufftree-under.png 	hufftree.png 	index.html 	lspmap.png 	oddlsp.png 	oggstream.html 	programming.html 	residue-pack.png 	residue2.png 	squarepolar.png 	stereo.html 	stream.png 	v-comment.html 	vorbis-clip.txt 	vorbis-errors.txt 	vorbis-fidelity.html 	vorbis-ogg.html 	vorbis-spec-bitpack.html 	vorbis-spec-codebook.html 	vorbis-spec-floor0.html 	vorbis-spec-floor1.html 	vorbis-spec-intro.html 	vorbis-spec-ref.html 	vorbis-spec-res.html 	vorbis.html 	vorbisword2.png 	wait.png 	white-ogg.png 	white-xifish.png 	window1.png 	window2.png
+static_docs = components.png 	draft-kerr-avt-vorbis-rtp-02.txt 	eightphase.png 	evenlsp.png 	floor1-1.png 	floor1-2.png 	floor1-3.png 	floor1-4.png 	floor1_inverse_dB_table.html 	floorval.png 	fourphase.png 	framing.html 	helper.html 	hufftree-under.png 	hufftree.png 	index.html 	lspmap.png 	oddlsp.png 	oggstream.html 	programming.html 	residue-pack.png 	residue2.png 	squarepolar.png 	stereo.html 	stream.png 	v-comment.html 	vorbis-clip.txt 	vorbis-errors.txt 	vorbis-fidelity.html 	vorbis.html 	vorbisword2.png 	wait.png 	white-ogg.png 	white-xifish.png 	window1.png 	window2.png
 
 
-EXTRA_DIST = $(doc_DATA)
+built_docs = Vorbis_I_spec.html Vorbis_I_spec.pdf
+@BUILD_DOCS_TRUE@doc_DATA = $(static_docs) $(built_docs)
+@BUILD_DOCS_FALSE@doc_DATA = $(static_docs)
+
+EXTRA_DIST = $(static_docs) $(built_docs)
+
+doc_sources = xml/Vorbis_I_spec.xml 	xml/01-introduction.xml 	xml/02-bitpacking.xml 	xml/03-codebook.xml 	xml/04-codec.xml 	xml/05-comment.xml 	xml/06-floor0.xml 	xml/07-floor1.xml 	xml/08-residue.xml 	xml/09-helper.xml 	xml/10-tables.xml 	xml/a1-encapsulation_ogg.xml 	xml/a2-encapsulation_rtp.xml 	xml/footer.xml 	xml/spec-common.xsl 	xml/spec-fo.xsl 	xml/spec-html.xsl
+
+
+nobase_EXTRA_DIST = $(doc_sources)
+
+# these are expensive; only remove if we have to
+MAINTAINERCLEANFILES = $(built_docs)
+CLEANFILES = Vorbis_I_spec.fo spec.aux spec.log spec.out
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_CLEAN_FILES = 
 DATA =  $(doc_DATA)
@@ -113,7 +140,7 @@ TAR = tar
 GZIP_ENV = --best
 all: all-redirect
 .SUFFIXES:
-$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --foreign --include-deps doc/Makefile
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
@@ -285,12 +312,14 @@ installdirs-am:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 mostlyclean-am:  mostlyclean-tags mostlyclean-generic
 
 mostlyclean: mostlyclean-recursive
@@ -324,6 +353,20 @@ uninstall-am uninstall all-redirect all-am all installdirs-am \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
+
+# explicit rules for generating docs
+Vorbis_I_spec.html:
+	xsltproc --xinclude --output $@ $(srcdir)/xml/spec-html.xsl $(srcdir)/xml/Vorbis_I_spec.xml
+
+Vorbis_I_spec.fo:
+	xsltproc --xinclude --output $@ $(srcdir)/xml/spec-fo.xsl $(srcdir)/xml/Vorbis_I_spec.xml
+
+Vorbis_I_spec.pdf: Vorbis_I_spec.fo
+	cp $< spec.fo # work around a passivetex bug
+	pdfxmltex --interaction nonstopmode spec.fo
+	pdfxmltex --interaction nonstopmode spec.fo
+	rm spec.fo
+	mv spec.pdf $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

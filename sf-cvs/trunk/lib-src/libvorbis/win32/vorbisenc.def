@@ -1,9 +1,13 @@
 ;
-; $Id: vorbisenc.def,v 1.4 2002-10-31 07:00:49 dmazzoni Exp $
+; $Id: vorbisenc.def,v 1.5 2004-03-21 17:23:35 mbrubeck Exp $
 ;
 LIBRARY
 
 EXPORTS
 vorbis_encode_init
+vorbis_encode_setup_managed
+vorbis_encode_setup_vbr
 vorbis_encode_init_vbr
+vorbis_encode_setup_init
 vorbis_encode_ctl
+
