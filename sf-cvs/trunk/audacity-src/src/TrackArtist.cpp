@@ -323,62 +323,80 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
                                ViewInfo * viewInfo,
                                bool drawEnvelope, bool dB)
 {
-   double h = viewInfo->h;
-   double pps = viewInfo->zoom;
-   double sel0 = viewInfo->sel0;
-   double sel1 = viewInfo->sel1;
+   double h = viewInfo->h;          //The horizontal position in seconds
+   double pps = viewInfo->zoom;     //points-per-second--the zoom level
+   double sel0 = viewInfo->sel0;    //left selection bound
+   double sel1 = viewInfo->sel1;    //right selection bound
 
+   //Get the sequence of samples from the actual track structure
    Sequence *seq = track->GetSequence();
-   sampleCount numSamples = seq->GetNumSamples();
-   double tOffset = track->GetOffset();
+   sampleCount numSamples = seq->GetNumSamples();    //keep track of how many samples there are
+   double tOffset = track->GetOffset();              //The offset of the track.
 
+
+   //If the track isn't selected, make the selection be zero
    if (!track->GetSelected())
       sel0 = sel1 = 0.0;
 
-   double tpre = h - tOffset;
-   double tstep = 1.0 / pps;
-   double tpost = tpre + (r.width * tstep);
+
+   //Some bookkeeping time variables:
+   double tpre = h - tOffset;                    // offset corrected time of selection beginning
+   double tstep = 1.0 / pps;                     // Seconds per point
+   double tpost = tpre + (r.width * tstep);      // offset corrected time of selection end
 
    double rate = track->GetRate();
 
-   // Determine whether we 
-   bool showIndividualSamples = (pps / rate > 0.5);
-   bool showPoints = (pps / rate > 3.0);
+   // Determine whether we should show individual sample or draw circular points as well
+   bool showIndividualSamples = (pps / rate > 0.5);        //zoomed in a lot
+   bool showPoints = (pps / rate > 3.0);                   //zoomed in even more
 
+   //calculate actual selection bounds so that t0 > 0 and t1 < the end of the track
    double t0 = (tpre >= 0.0 ? tpre : 0.0);
    double t1 = (tpost < (numSamples / rate) ? tpost : (numSamples / rate));
 
+   //Make sure t1 (the right bound) is greater than 0
    if (t1 < 0.0) {
       t1 = 0.0;
    }
 
+   //make sure t1 is greater than t0
    if (t0 > t1)
       t0 = t1;
 
+
+   //calculate sample-based offset-corrected selection?
    int ssel0 = wxMax(0, int((sel0 - tOffset) * rate + 0.5));
    int ssel1 = wxMax(0, int((sel1 - tOffset) * rate + 0.5));
 
+   //trim selection so that it only contains the actual samples
    if (ssel0 != ssel1 && ssel1 > numSamples)
          ssel1 = numSamples;
 
+   //Draw a rectangle around the passed-in region (the selection)
    dc.SetBrush(blankBrush);
    dc.SetPen(blankPen);
 
    dc.DrawRectangle(r);
 
+   //copy this rectangle away for future use.
    wxRect mid = r;
 
+   //Do the following if tpre is less than t0 (e.g., if the track was shifted left of 0)
    if (t0 > tpre) {
+      
+      //adjust selection region by the negative offset.
       wxRect pre = r;
       pre.width = (int) ((t0 - tpre) * pps);
       mid.x += pre.width;
       mid.width -= pre.width;
-      //dc.DrawRectangle(pre);        
+      //dc.DrawRectangle(pre);        //STM:  Why is this commented out? 
    }
 
+   //Do the following if the tpost is greater than t1 (e.g., if the track was shifted from 0)
    if (tpost > t1) {
+      
+      //adjust selection region by the offset
       wxRect post = r;
-
       post.x += (int) ((t1 - tpre) * pps);
       post.width = r.width - (post.x - r.x);
 
@@ -387,18 +405,21 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
          post.width -= (r.x - post.x);
          post.x = r.x;
       }
-      //if (post.width > 0)
-      //dc.DrawRectangle(post);
+
+      //if (post.width > 0)        //STM: Why are these commented out?
+      //dc.DrawRectangle(post);   
    }
 
+   //ctr determines the horizontal center of the track
    int ctr = r.y + (r.height / 2);
 
+   //initialize a bunch of pointers to data:
    int *heights = NULL;
    double *envValues = NULL;
-
    float *min=NULL, *max=NULL, *rms=NULL;
    sampleCount *where = NULL;
 
+   //STM:  Not sure what this does. Something gets drawn in red, but I don't see it.
    if (mid.width > 0) {
       dc.SetPen(*wxRED_PEN);
       dc.DrawLine(mid.x, ctr, mid.x + mid.width, ctr);
@@ -407,6 +428,9 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
       max = new float[mid.width];
       rms = new float[mid.width];
       where = new sampleCount[mid.width+1];
+      
+      //If there is nothing within these regions, clean up and bail out.  Otherwise, my
+      //variables should be filled up with the appropriate numbers.
       if (!track->GetWaveDisplay(min, max, rms, where,
                                  mid.width, t0, pps)) {
          delete[] min;
@@ -419,6 +443,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
       envValues = new double[mid.width];
    }
 
+   // Start working on the volume envelope
    track->GetEnvelope()->GetValues(envValues, mid.width, t0 + tOffset, tstep);
 
    double t = t0;
