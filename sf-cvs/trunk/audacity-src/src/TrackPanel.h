@@ -55,6 +55,8 @@ class TrackPanel:public wxWindow {
 
    virtual ~ TrackPanel();
 
+   void UpdatePrefs();
+
    void OnPaint(wxPaintEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
    void TrackSpecificMouseEvent(wxMouseEvent & event);
@@ -69,7 +71,6 @@ class TrackPanel:public wxWindow {
 
    void SelectNone();
 
-   void ReReadSettings();
    void SetStop(bool bStopped);
 
    virtual void Refresh(bool eraseBackground = TRUE,
