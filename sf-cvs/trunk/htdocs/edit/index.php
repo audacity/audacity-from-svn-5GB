@@ -25,12 +25,6 @@ BoxTop('Audacity Website Translation Editor');
 
 <center>
 
-<p>
-<h1>
-Under development.  Please don't use it yet...
-</h1>
-</p>
-
 <form action=trlist.php method=post>
 
 <p>
