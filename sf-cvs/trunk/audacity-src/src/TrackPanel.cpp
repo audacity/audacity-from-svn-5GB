@@ -109,6 +109,13 @@ double samplerate = 44100.0;
 // set default selection format
 int iformat = SELECTION_FORMAT_RULER_MIN_SEC;
 
+// initialize ThisTrackEndTime which is used in snap-to
+// mode to check for rounding beyond end of track
+float ThisTrackEndTime = 0.0;
+
+// initialize SnapTo mode to off
+int iSnapTo = 0;
+
 enum {
    TrackPanelFirstID = 2000,
 
@@ -149,6 +156,9 @@ enum {
    OnFormatSecSamplesID,
    OnFormatCDDASectorsBytesID,
 
+   OnSnapToOffID,
+   OnSnapToOnID,
+
    OnWaveformID,
    OnWaveformDBID,
    OnSpectrumID,
@@ -172,6 +182,7 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU_RANGE(OnRate8ID, OnRate48ID, TrackPanel::OnRateChange)
     EVT_MENU_RANGE(On16BitID, OnFloatID, TrackPanel::OnFormatChange)
     EVT_MENU_RANGE(OnFormatRulerMinSecID, OnFormatCDDASectorsBytesID, TrackPanel::OnSelectionChange)
+    EVT_MENU_RANGE(OnSnapToOffID, OnSnapToOnID, TrackPanel::OnSnapToChange)
     EVT_MENU(OnRateOtherID, TrackPanel::OnRateOther)
     EVT_MENU(OnSplitStereoID, TrackPanel::OnSplitStereo)
     EVT_MENU(OnMergeStereoID, TrackPanel::OnMergeStereo)
@@ -239,6 +250,10 @@ mAutoScrolling(false)
    mSelectionMenu->Append(OnFormatSecSamplesID, "sec+samples");
    mSelectionMenu->Append(OnFormatCDDASectorsBytesID, "cdda sectors+bytes (44100 only)");
 
+   mSnapToMenu = new wxMenu();
+   mSnapToMenu->Append(OnSnapToOffID, "Off (for ruler based formats)");
+   mSnapToMenu->Append(OnSnapToOnID, "On (for ruler based formats)");
+
    mWaveTrackMenu = new wxMenu();
    mWaveTrackMenu->Append(OnSetNameID, _("Name..."));
    mWaveTrackMenu->AppendSeparator();
@@ -261,6 +276,7 @@ mAutoScrolling(false)
    mWaveTrackMenu->Append(0, _("Set Rate"), mRateMenu);
    mWaveTrackMenu->AppendSeparator();
    mWaveTrackMenu->Append(0, _("Set Selection Format"), mSelectionMenu);
+   mWaveTrackMenu->Append(0, _("Set Snap-To Mode"), mSnapToMenu);
 
    mNoteTrackMenu = new wxMenu();
    mNoteTrackMenu->Append(OnSetNameID, _("Name..."));
@@ -715,6 +731,8 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
          SelectionHandleClick(event, t, r, num);
       else
          SelectNone();
+
+      ThisTrackEndTime = t->GetEndTime();
       
       Refresh(false);
       
@@ -1577,6 +1595,7 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
       ::InsertMenu((MenuRef) mRateMenu->GetHMenu(), -1);
       ::InsertMenu((MenuRef) mFormatMenu->GetHMenu(), -1);
       ::InsertMenu((MenuRef) mSelectionMenu->GetHMenu(), -1);
+      ::InsertMenu((MenuRef) mSnapToMenu->GetHMenu(), -1);
 #endif
 
       PopupMenu(theMenu, titleRect.x + 1,
@@ -1586,6 +1605,7 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
       ::DeleteMenu(mFormatMenu->MacGetMenuId());
       ::DeleteMenu(mRateMenu->MacGetMenuId());
       ::DeleteMenu(mSelectionMenu->MacGetMenuId());
+      ::DeleteMenu(mSnapToMenu->MacGetMenuId());
 #endif
    }
 
@@ -2733,6 +2753,22 @@ void TrackPanel::OnSelectionChange(wxEvent & event)
    DisplaySelection();
 }
 
+// GM: Handles selection from the Set Snap-To Mode submenu
+//  of the track menu.
+void TrackPanel::OnSnapToChange(wxEvent & event)
+{
+   int id = event.GetId();
+   switch (id) {
+   case OnSnapToOffID:
+      iSnapTo = 0;
+      break;
+   case OnSnapToOnID:
+      iSnapTo = 1;
+      break;
+   }
+   DisplaySelection();
+}
+
 // DM: Handles the selection from the Format submenu of the
 //  track menu.
 void TrackPanel::OnFormatChange(wxEvent & event)
@@ -3047,6 +3083,31 @@ void TrackPanel::DisplaySelection()
       fsec1 = start - float(imin1*60);
       fsec2 = end - float(imin2*60);
       fsectot = length - float(imintot*60);
+      if(iSnapTo == 1)
+         {
+            // temporarily put total not leftover sec in fsec variables
+            fsec1 = rint(fsec1) + float(imin1*60);
+            fsec2 = rint(fsec2) + float(imin2*60);
+            fsectot = rint(fsec2 - fsec1);
+            // check for rounding beyond the end
+            if(fsec2 > ThisTrackEndTime)
+               {
+                  fsec2 = fsec2 - 1.0;
+                  fsectot = rint(fsec2 - fsec1);
+               }
+            mViewInfo->sel0 = fsec1;
+            mViewInfo->sel1 = fsec2;
+            // if rounding beyond end happens fix sel0 for proper cursor info
+            if(mViewInfo->sel0 > mViewInfo->sel1)
+               mViewInfo->sel0 = mViewInfo->sel1;
+            // now get the real ones to display
+            imin1 = int(fsec1/60);
+            imin2 = int(fsec2/60);
+            imintot = int(fsectot/60);
+            fsec1 = fsec1 - float(imin1*60);
+            fsec2 = fsec2 - float(imin2*60);
+            fsectot = fsectot - float(imintot*60);
+         }
       // display a message about the selection in the status message window
       if(start == end)
          {
@@ -3070,6 +3131,23 @@ void TrackPanel::DisplaySelection()
       fsec1 = start;
       fsec2 = end;
       fsectot = length;
+      if(iSnapTo == 1)
+         {
+            fsec1 = rint(fsec1);
+            fsec2 = rint(fsec2);
+            fsectot = rint(fsec2 - fsec1);
+            // check for rounding beyond the end
+            if(fsec2 > ThisTrackEndTime)
+               {
+                  fsec2 = fsec2 - 1.0;
+                  fsectot = rint(fsec2 - fsec1);
+               }
+            mViewInfo->sel0 = fsec1;
+            mViewInfo->sel1 = fsec2;
+            // if rounding beyond end happens fix sel0 for proper cursor info
+            if(mViewInfo->sel0 > mViewInfo->sel1)
+               mViewInfo->sel0 = mViewInfo->sel1;
+         }
       // display a message about the selection in the status message window
       if(start == end)
          {
@@ -3093,19 +3171,36 @@ void TrackPanel::DisplaySelection()
       dframes1 = (double)(start * 24.0);
       dframes2 = (double)(end * 24.0);
       dframestot = (double)(length * 24.0);
+      if(iSnapTo == 1)
+         {
+            dframes1 = rint(dframes1);
+            dframes2 = rint(dframes2);
+            dframestot = rint(dframes2 - dframes1);
+            // check for rounding beyond the end
+            if( float(dframes2/24.0) > ThisTrackEndTime)
+               {
+                  dframes2 = dframes2 - 1.0;
+                  dframestot = rint(dframes2 - dframes1);
+               }
+            mViewInfo->sel0 = float(dframes1/24.0);
+            mViewInfo->sel1 = float(dframes2/24.0);
+            // if rounding beyond end happens fix sel0 for proper cursor info
+            if(mViewInfo->sel0 > mViewInfo->sel1)
+               mViewInfo->sel0 = mViewInfo->sel1;
+         }
       // display a message about the selection in the status message window
       if(start == end)
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %lf film frames (24 fps)"), dframes1),
+                                        Format(_("Cursor: %.3lf film frames (24 fps)"), dframes1),
                                         1);
          }
       else
          {
             mListener->
                TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %lf - %lf (%lf film frames)"),
+                                       Format(_("Selection: %.3lf - %.3lf (%.3lf film frames)"),
                                               dframes1, dframes2, dframestot),
                                        1);
          }
@@ -3116,19 +3211,36 @@ void TrackPanel::DisplaySelection()
       dframes1 = (double)(start * 25.0);
       dframes2 = (double)(end * 25.0);
       dframestot = (double)(length * 25.0);
+      if(iSnapTo == 1)
+         {
+            dframes1 = rint(dframes1);
+            dframes2 = rint(dframes2);
+            dframestot = rint(dframes2 - dframes1);
+            // check for rounding beyond the end
+            if( float(dframes2/25.0) > ThisTrackEndTime)
+               {
+                  dframes2 = dframes2 - 1.0;
+                  dframestot = rint(dframes2 - dframes1);
+               }
+            mViewInfo->sel0 = float(dframes1/25.0);
+            mViewInfo->sel1 = float(dframes2/25.0);
+            // if rounding beyond end happens fix sel0 for proper cursor info
+            if(mViewInfo->sel0 > mViewInfo->sel1)
+               mViewInfo->sel0 = mViewInfo->sel1;
+         }
       // display a message about the selection in the status message window
       if(start == end)
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %lf PAL frames (25 fps)"), dframes1),
+                                        Format(_("Cursor: %.3lf PAL frames (25 fps)"), dframes1),
                                         1);
          }
       else
          {
             mListener->
                TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %lf - %lf (%lf PAL frames)"),
+                                       Format(_("Selection: %.3lf - %.3lf (%.3lf PAL frames)"),
                                               dframes1, dframes2, dframestot),
                                        1);
          }
@@ -3139,19 +3251,36 @@ void TrackPanel::DisplaySelection()
       dframes1 = (double)(start * (30000.0/1001.0));
       dframes2 = (double)(end * (30000.0/1001.0));
       dframestot = (double)(length * (30000.0/1001.0));
+      if(iSnapTo == 1)
+         {
+            dframes1 = rint(dframes1);
+            dframes2 = rint(dframes2);
+            dframestot = rint(dframes2 - dframes1);
+            // check for rounding beyond the end
+            if( float(dframes2*1001.0/30000.0) > ThisTrackEndTime)
+               {
+                  dframes2 = dframes2 - 1.0;
+                  dframestot = rint(dframes2 - dframes1);
+               }
+            mViewInfo->sel0 = float(dframes1*1001.0/30000.0);
+            mViewInfo->sel1 = float(dframes2*1001.0/30000.0);
+            // if rounding beyond end happens fix sel0 for proper cursor info
+            if(mViewInfo->sel0 > mViewInfo->sel1)
+               mViewInfo->sel0 = mViewInfo->sel1;
+         }
       // display a message about the selection in the status message window
       if(start == end)
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %lf NTSC frames (29.97 fps)"), dframes1),
+                                        Format(_("Cursor: %.3lf NTSC frames (29.97 fps)"), dframes1),
                                         1);
          }
       else
          {
             mListener->
                TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %lf - %lf (%lf NTSC frames)"),
+                                       Format(_("Selection: %.3lf - %.3lf (%.3lf NTSC frames)"),
                                               dframes1, dframes2, dframestot),
                                        1);
          }
@@ -3168,6 +3297,34 @@ void TrackPanel::DisplaySelection()
       dframes1 = (double(start - float(int(start)))) * 75.0;
       dframes2 = (double(end - float(int(end)))) * 75.0;
       dframestot = (double(length - float(int(length)))) * 75.0;
+      if(iSnapTo == 1)
+         {
+            // temporarily put total not leftover frames in dframes variables
+            dframes1 = rint(dframes1) + float(isec1*75) + float(imin1*60*75);
+            dframes2 = rint(dframes2) + float(isec2*75) + float(imin2*60*75);
+            dframestot = rint(dframes2 - dframes1);
+            // check for rounding beyond the end
+            if( float(dframes2/75.0) > ThisTrackEndTime)
+               {
+                  dframes2 = dframes2 - 1.0;
+                  dframestot = rint(dframes2 - dframes1);
+               }
+            mViewInfo->sel0 = float(dframes1/75.0);
+            mViewInfo->sel1 = float(dframes2/75.0);
+            // if rounding beyond end happens fix sel0 for proper cursor info
+            if(mViewInfo->sel0 > mViewInfo->sel1)
+               mViewInfo->sel0 = mViewInfo->sel1;
+            // now get the real ones to display
+            imin1 = int(dframes1/75.0/60.0);
+            imin2 = int(dframes2/75.0/60.0);
+            imintot = int(dframestot/75.0/60.0);
+            isec1 = int(dframes1/75.0) - (imin1*60);
+            isec2 = int(dframes2/75.0) - (imin2*60);
+            isectot = int(dframestot/75.0) - (imintot*60);
+            dframes1 = dframes1 - double(imin1*60*75) - double(isec1*75);
+            dframes2 = dframes2 - double(imin2*60*75) - double(isec2*75);
+            dframestot = dframestot - double(imintot*60*75) - double(isectot*75);
+         }
       // display a message about the selection in the status message window
       if(start == end)
          {
