@@ -12,7 +12,7 @@ Audacity 1.2.0 är en ny stabil release av ljudredigeringsprogrammet Audacity (fr
 </ul>
 
 <p>
-Läs gärna <a href="releasenotes.php<?php print $langQueryStr; ?>">Release 
+Läs gärna <a href="stablenotes.php<?php print $langQueryStr; ?>">Release 
 anteckningar</a> för att se vad som är nytt i denna version, och även en lista på kända problem.
 </p>
 
