@@ -17,13 +17,17 @@
 wxString gCopyOrEditOptions [] = { "Make a copy of the file to edit",
                                    "Edit the original in place" };
 wxString gDefaultExportFormatOptions [] = { "AIFF",
-	                                        "WAV",
-										    "IRCAM",
-										    "AU",
-										#ifdef HAVE_LIBVORBISFILE
-										    "Ogg Vorbis",
-										#endif
-                                            "MP3" };
+                                          #ifdef __WXMAC__
+                                            "AIFF with track markers",
+                                          #endif
+                                            "WAV",
+                                            "IRCAM",
+                                            "AU",
+                                          #ifdef HAVE_LIBVORBISFILE
+                                            "Ogg Vorbis",
+                                          #endif
+                                            "MP3",
+                                            "***last" };
 
 FileFormatPrefs::FileFormatPrefs(wxWindow *parent):
 	PrefsPanel(parent)
@@ -60,6 +64,10 @@ FileFormatPrefs::FileFormatPrefs(wxWindow *parent):
 			pos = i;
 			break;
 		}
+		
+  int numFormats = 1;
+  while(gDefaultExportFormatOptions[numFormats-1] != "***last")
+    numFormats++;
 	
 	mDefaultExportFormat = new wxRadioBox(this, -1,
 			                       "Default export format",
@@ -68,11 +76,7 @@ FileFormatPrefs::FileFormatPrefs(wxWindow *parent):
 								   wxSize (GetSize().GetWidth() -
 								   		   PREFS_SIDE_MARGINS * 2,
 								   		   160),
-								#ifdef HAVE_LIBVORBISFILE
-								   6,
-								#else
-								   5,
-								#endif
+								   numFormats,
 								   gDefaultExportFormatOptions,
 								   1);
 	mDefaultExportFormat->SetSelection(pos);

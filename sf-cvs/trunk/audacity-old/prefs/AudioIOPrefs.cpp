@@ -53,7 +53,7 @@ AudioIOPrefs::AudioIOPrefs(wxWindow *parent):
 	gPrefs->Read("Duplex", &duplex, false);
 	gPrefs->SetPath("/");
 
-	
+#ifdef __WXGTK__	
 	mPlaybackDeviceLabel  = new wxStaticText(this, 
 											-1, 
 											"Playback Device:",
@@ -104,6 +104,7 @@ AudioIOPrefs::AudioIOPrefs(wxWindow *parent):
 											"Default",
 											wxPoint(255, LINE_TWO_TOP),
 											wxSize (60, 20));
+#endif // __WXGTK__
 
 	mRecordStereo = new wxCheckBox(this, -1,
 				       "Record in Stereo",
@@ -129,6 +130,7 @@ AudioIOPrefs::AudioIOPrefs(wxWindow *parent):
 bool AudioIOPrefs::Apply()
 {
 	/* Step 1: Validate input */
+#ifdef __WXGTK__
 	wxString playDevice = mPlaybackDeviceCtrl->GetValue();
 	if(!wxFileExists(playDevice) || wxDirExists(playDevice)) {
 		wxMessageBox("Invalid playback device.", "Error", 
@@ -142,14 +144,17 @@ bool AudioIOPrefs::Apply()
 			wxOK | wxCENTRE | wxICON_EXCLAMATION);
 		return false;
 	}
+#endif // __WXGTK__
 
 	bool recordStereo = mRecordStereo->GetValue();
 	bool duplex = mDuplex->GetValue();
 
 	/* Step 2: Write to gPrefs */
 	gPrefs->SetPath("/AudioIO");
+#ifdef __WXGTK__
 	gPrefs->Write("PlaybackDevice", playDevice);
 	gPrefs->Write("RecordingDevice", recDevice);
+#endif // __WXGTK__
 	gPrefs->Write("RecordStereo", recordStereo);
 	gPrefs->Write("Duplex", duplex);
 	gPrefs->SetPath("/");
@@ -167,7 +172,9 @@ void AudioIOPrefs::TestPlaybackDevice(wxCommandEvent& event)
 void AudioIOPrefs::SetPlaybackDeviceDefault(wxCommandEvent& event)
 {
 	/* TODO: attempt autodetection? */
+#ifdef __WXGTK__
 	mPlaybackDeviceCtrl->SetValue("/dev/dsp");
+#endif // __WXGTK__
 }
 
 void AudioIOPrefs::TestRecordingDevice(wxCommandEvent& event)
@@ -176,12 +183,15 @@ void AudioIOPrefs::TestRecordingDevice(wxCommandEvent& event)
 
 void AudioIOPrefs::SetRecordingDeviceDefault(wxCommandEvent& event)
 {
+#ifdef __WXGTK__
 	mRecordingDeviceCtrl->SetValue("/dev/dsp");
+#endif // __WXGTK__
 }
 
 AudioIOPrefs::~AudioIOPrefs()
 {
 	delete mEnclosingBox;
+#ifdef __WXGTK__
 	delete mPlaybackDeviceLabel;
 	delete mPlaybackDeviceCtrl;
 	delete mPlaybackDeviceTest;
@@ -190,6 +200,7 @@ AudioIOPrefs::~AudioIOPrefs()
 	delete mRecordingDeviceCtrl;
 	delete mRecordingDeviceTest;
 	delete mRecordingDeviceDefault;
+#endif // __WXGTK__
 
 	delete mRecordStereo;
 	delete mDuplex;
