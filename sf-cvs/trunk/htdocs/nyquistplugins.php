@@ -49,6 +49,8 @@ BoxTop("Generator Nyquist Plug-ins");
 plugins(0);
 BoxBottom();
 
+print "<p>\n";
+
 BoxTop("Effect Nyquist Plug-ins");
 plugins(1);
 BoxBottom();
