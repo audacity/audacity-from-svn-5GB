@@ -46,18 +46,6 @@ int LabelTrack::mTextHeight;
 int LabelTrack::mFontHeight=-1;
 
 
-// Aug-04: TODO: Surely there is a header file which already defines max and min?
-// Oct-04: Should we use wxMin and wxMax which exist, but appear to be undocumented???
-int max(int a,int b)
-{
-   return((a>b)?a:b);
-}
-
-int min(int a,int b)
-{
-   return((a<b)?a:b);
-}
-
 LabelTrack *TrackFactory::NewLabelTrack()
 {
    return new LabelTrack(mDirManager);
