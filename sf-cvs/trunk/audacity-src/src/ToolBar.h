@@ -86,7 +86,8 @@ class ToolBar:public wxWindow {
    wxSize GetIdealSize() {
       return mIdealSize;
    };
-   virtual void EnableDisableButtons(bool anySelection, bool anyTracks);
+   virtual void EnableDisableButtons(int sumOfFlags);
+
 
  protected:
 
@@ -111,7 +112,7 @@ class ToolBar:public wxWindow {
                               wxColour & dstColour);
 
    void SetButton(bool down, AButton* button);
-
+   bool ExtractFlag(int flagsum, int bit);
    wxBrush mBackgroundBrush;
    wxPen mBackgroundPen;
    enum ToolBarType mType;

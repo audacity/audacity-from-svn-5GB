@@ -61,6 +61,7 @@
 #include "Menus.h"
 #undef AUDACITY_MENUS_ENUM
 
+
 void AudacityProject::CreateMenuBar()
 {
    unsigned int i;
@@ -310,6 +311,7 @@ int AudacityProject::GetCommandState(int nIndex)
    return mCommandMenuItem[nIndex]->state;
 }
 
+
 void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 {
    if (mMenusDirtyCheck != gMenusDirty) {
@@ -354,42 +356,34 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 
    SetMenuState(mEditMenu, PasteID, numTracksSelected > 0 && msClipLen > 0.0);
 
-#ifndef __WXMAC__
-   //Modify toolbar-specific Menus
 
-   if (gEditToolBarStub) {
-      wxMenuItemBase *load = mViewMenu->FindItem(LoadEditToolBarID);
-      wxMenuItemBase *dock = mViewMenu->FindItem(FloatEditToolBarID);
+   
 
-      // Loaded or unloaded?
-      if (gEditToolBarStub->GetLoadedStatus()) {
-         load->SetName(_("Unload Edit Toolbar"));
-         dock->Enable(true);
-      } else {
-         load->SetName(_("Load Edit Toolbar"));
-         dock->Enable(false);
-      }
-
-      // Floating or docked?
-      if (gEditToolBarStub->GetWindowedStatus())
-         dock->SetName(_("Dock Edit Toolbar"));
+   //Calculate the ToolBarCheckSum:
+   unsigned int toolBarCheckSum =0;
+   toolBarCheckSum += gControlToolBarStub->GetWindowedStatus() ? 2 : 1;
+   if (gEditToolBarStub->GetLoadedStatus()) {
+      if(gEditToolBarStub->GetWindowedStatus())
+         toolBarCheckSum += 6;
       else
-         dock->SetName(_("Float Edit Toolbar"));
+         toolBarCheckSum += 3;
    }
-#endif
-
+   
    // Return from this function if nothing's changed since
    // the last time we were here.
+   //STM: None of these appear to be initialized, which may cause random trouble
 
-   if (!mFirstTimeUpdateMenus &&
+    if (!mFirstTimeUpdateMenus &&
        mLastNonZeroRegionSelected == nonZeroRegionSelected &&
        mLastNumTracks == numTracks &&
        mLastNumTracksSelected == numTracksSelected &&
        mLastNumWaveTracks == numWaveTracks &&
        mLastNumWaveTracksSelected == numWaveTracksSelected &&
-       mLastNumLabelTracks == numLabelTracks)
+       mLastNumLabelTracks == numLabelTracks &&
+       mLastZoomLevel == mViewInfo.zoom &&
+       mLastToolBarCheckSum == toolBarCheckSum)
       return;
-
+   
    // Otherwise, save state and then update all of the menus
 
    mFirstTimeUpdateMenus = false;
@@ -399,6 +393,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    mLastNumWaveTracks = numWaveTracks;
    mLastNumWaveTracksSelected = numWaveTracksSelected;
    mLastNumLabelTracks = numLabelTracks;
+   mLastZoomLevel = mViewInfo.zoom;
+   mLastToolBarCheckSum = toolBarCheckSum;
 
    bool anySelection = numTracksSelected > 0 && nonZeroRegionSelected;
 
@@ -440,12 +436,54 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    }
 
 
-   //Now, go through each toolbar, and and call EnableDisableButtons()
+#ifndef __WXMAC__
+   //Modify toolbar-specific Menus
 
+   if (gEditToolBarStub) {
+      wxMenuItemBase *load = mViewMenu->FindItem(LoadEditToolBarID);
+      wxMenuItemBase *dock = mViewMenu->FindItem(FloatEditToolBarID);
+
+      // Loaded or unloaded?
+      if (gEditToolBarStub->GetLoadedStatus()) {
+         load->SetName(_("Unload Edit Toolbar"));
+         dock->Enable(true);
+      } else {
+         load->SetName(_("Load Edit Toolbar"));
+         dock->Enable(false);
+      }
+
+      // Floating or docked?
+      if (gEditToolBarStub->GetWindowedStatus())
+         dock->SetName(_("Dock Edit Toolbar"));
+      else
+         dock->SetName(_("Float Edit Toolbar"));
+   }
+#endif
+
+
+
+   //****************************************************
+   //Intructions for what these flags are can be found in
+   // ToolBar.cpp ToolBar::EnableDisableButtons()
+   //Calculate the sum of flags to send to each toolbar.
+   int sumFlags=0;
+   sumFlags += anySelection? 1: 0;
+   sumFlags += numTracks ? 2: 0;
+   sumFlags += mUndoManager.UndoAvailable()? 4: 0;
+   sumFlags += mUndoManager.RedoAvailable()? 8: 0;
+   sumFlags += (mViewInfo.zoom > 5999999) ? 16: 0;   //zoom-in limit is 6000000
+   sumFlags += (mViewInfo.zoom < 1.001) ? 32: 0;     //zoom-out limit is 1.0
+
+   //Now, go through each toolbar, and and call EnableDisableButtons()
    unsigned int i;
    for (i = 0; i < mToolBarArray.GetCount(); i++) {
-      mToolBarArray[i]->EnableDisableButtons(anySelection, numTracks);
+      mToolBarArray[i]->EnableDisableButtons(sumFlags);
    }
+
+   //Now, do the same thing for the (possibly invisible) floating toolbars
+   gControlToolBarStub->GetToolBar()->EnableDisableButtons(sumFlags);
+   gEditToolBarStub->GetToolBar()->EnableDisableButtons(sumFlags);
+
 }
 
 //
@@ -968,6 +1006,7 @@ void AudacityProject::OnZoomOut(wxEvent & event)
       mViewInfo.zoom = 1.0;
    FixScrollbars();
    mTrackPanel->Refresh(false);
+   
 }
 
 void AudacityProject::OnZoomNormal(wxEvent & event)

@@ -34,11 +34,11 @@
 
 #include "widgets/AButton.h"
 #include "widgets/ASlider.h"
+#include "ToolBar.h"
 #include "EditToolBar.h"
 #include "AudioIO.h"
 #include "Project.h"
 
-#include <iostream.h>
 
 #ifdef __WXMAC__
 #define TOOLBAR_HEIGHT_OFFSET 0
@@ -457,10 +457,10 @@ void EditToolBar::OnPaint(wxPaintEvent & evt)
 }
 
 
-void EditToolBar::EnableDisableButtons(bool anySelection, bool anyTracks)
+void EditToolBar::EnableDisableButtons(int sumOfFlags)
 {
    //Enable/disable based on presence of a wavetrack
-   if (anyTracks) {
+   if (ExtractFlag(sumOfFlags,1)) {
       mCut->Enable();
       mCopy->Enable();
       mPaste->Enable();
@@ -485,7 +485,7 @@ void EditToolBar::EnableDisableButtons(bool anySelection, bool anyTracks)
    }
 
    //Enable/disable based on selection
-   if (anySelection) {
+   if (ExtractFlag(sumOfFlags,0)) {
 
       //enable CUT, COPY, TRIM, and SILENCE
       mCut->Enable();
@@ -503,4 +503,30 @@ void EditToolBar::EnableDisableButtons(bool anySelection, bool anyTracks)
       mSilence->Disable();
       mZoomSel->Disable();
    }
+
+   //Enable/Disable undo
+   if(ExtractFlag(sumOfFlags,2))
+      mUndo->Enable();
+   else
+      mUndo->Disable();
+
+   //Enable/Disable redo
+   if(ExtractFlag(sumOfFlags,3))
+      mRedo->Enable();
+   else
+      mRedo->Disable();
+   
+   //Enable/Disable zoomin
+ if(ExtractFlag(sumOfFlags,4))
+      mZoomIn->Disable();
+   else
+      mZoomIn->Enable();
+ 
+
+   //Enable/Disable zoomin
+ if(ExtractFlag(sumOfFlags,5))
+      mZoomOut->Disable();
+   else
+      mZoomOut->Enable();
+ 
 }

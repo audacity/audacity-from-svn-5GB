@@ -35,6 +35,7 @@
 
 #include "widgets/AButton.h"
 #include "widgets/ASlider.h"
+#include "ToolBar.h"
 #include "ControlToolBar.h"
 #include "AudioIO.h"
 #include "Project.h"
@@ -657,13 +658,11 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
 #endif
 }
 
-
-void ControlToolBar::EnableDisableButtons(bool anySelection,
-                                          bool anyTracks)
+void ControlToolBar::EnableDisableButtons(int sumOfFlags)
 {
 
    //Enable/disable based on presence of a wavetrack
-   if (anyTracks) {
+   if (ExtractFlag(sumOfFlags, 1)) {
 
       mPlay->Enable();
 
@@ -672,6 +671,7 @@ void ControlToolBar::EnableDisableButtons(bool anySelection,
          mRewind->Disable();
          mFF->Disable();
       } else {
+         mStop->Disable();
          mRewind->Enable();
          mFF->Enable();
       }
