@@ -177,7 +177,7 @@ void AudacityProject::CreateMenuBar()
    mMenuBar->Append(mViewMenu, "&View");
    mMenuBar->Append(mProjectMenu, "&Project");
    //  mMenuBar->Append(mTrackMenu, "&Track");
-   mMenuBar->Append(mEffectMenu, "E&ffect");
+   mMenuBar->Append(mEffectMenu, "Effe&ct");
    mMenuBar->Append(mHelpMenu, "&Help");
 
    SetMenuBar(mMenuBar);

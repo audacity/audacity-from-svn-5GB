@@ -1209,21 +1209,19 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
 
 void TrackPanel::OnKeyEvent(wxKeyEvent & event)
 {
-   if (event.ControlDown()) {
+   if (event.ControlDown() || event.AltDown()) {
       event.Skip();
       return;
    }
 
-   long key = event.KeyCode();
-
    TrackListIterator iter(mTracks);
 
    switch (event.KeyCode()) {
-   case WXK_SPACE:
+    case WXK_SPACE:
       mListener->TP_OnPlayKey();
-      break;
+      return;
 
-   default:
+    default:
       VTrack * t = iter.First();
       while (t) {
          if ( /* t->selected && */ t->GetKind() == VTrack::Label) {
@@ -1236,8 +1234,9 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
 
          t = iter.Next();
       }
-
    }
+   // None of the above
+   event.Skip();
 }
 
 void TrackPanel::OnMouseEvent(wxMouseEvent & event)
