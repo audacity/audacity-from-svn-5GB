@@ -1,2 +1,0 @@
-Nota: Audacity 1.2.0-pre3 è apparentemente incompatibile con il G5.
-Se avete un G5 oppure un dispositivo audio che non risulta supportato nella versione 1.2.0-pre3, leggete <a href="http://audacityteam.org/mac/">questa pagina</a> per maggiori informazioni. Ora abbiamo un aversione di test di Audacity che dovrebbe funzionare su tutti questi sistemi, ma stiamo ancora lavorando su una versione definitiva.

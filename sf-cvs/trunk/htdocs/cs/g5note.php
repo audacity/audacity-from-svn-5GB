@@ -1,1 +1,0 @@
-Poznámka: Audacity 1.2.0-pre3 zøejmì není kompatibilní s G5. Jestliže máte G5, nebo jiné zvukové zaøízení, které není podporováno ve verzi 1.2.0-pre3, <a href="http://audacityteam.org/mac/">podívejte se na tuto stránku</a>, kde najdete další informace. Už máme testovací verzi Audacity, která by mìla na tìchto systémech pracovat, ale stále ještì pracujeme na koneèné podobì.

@@ -1,0 +1,9 @@
+help/documentation: Change links by locale?
+sort news items
+nyquist plugin listing
+link to release notes from download/*?
+links to wiki from help pages?
+add more links to about/features?
+RSS feed
+use absolute paths when path_info is set?
+custom 404 page

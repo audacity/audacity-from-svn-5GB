@@ -8,8 +8,8 @@ $fp = fopen("download_stats.txt", "a");
 fwrite($fp, "$d\tmacos9\n");
 fclose($fp);
 
-include 'mirror.php.inc';
-include 'versions.php.inc';
-header('Location: '.mirror.'audacity-mac-'.mac.'.sit');
+include 'mirror.inc.php';
+include 'versions.inc.php';
+header('Location: '.download_url('audacity-mac-'.mac_classic_version.'.sit'));
 
 ?>
