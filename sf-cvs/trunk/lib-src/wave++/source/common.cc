@@ -1,6 +1,7 @@
 #include "common.h"
 #include <fstream.h>
 #include <assert.h>
+#include <stdlib.h>
 
 integer Log2(integer r)
 {

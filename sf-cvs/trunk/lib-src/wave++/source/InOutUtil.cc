@@ -5,6 +5,7 @@
 #include "InOutUtil.h"
 #include <iostream.h>
 #include <fstream.h>
+#include <stdlib.h>
 
 ostream &operator<<(ostream &output, const Interval &I)
 {

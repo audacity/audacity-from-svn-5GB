@@ -6,6 +6,7 @@
 #include <iostream.h>
 #include <fstream.h>
 #include <assert.h>
+#include <stdlib.h>
 #include "Hedge.h"
 
 /********************** Hedge Periodic **************************************/
