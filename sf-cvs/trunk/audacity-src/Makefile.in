@@ -22,7 +22,7 @@ src/libaudacity.a:
 	$(MAKE) -C src libaudacity.a
 
 .PHONY: install
-install: audacity audacity-help.htb
+install: audacity
 	# install the binary
 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
 	$(INSTALL) -m 755 audacity $(DESTDIR)$(BINDIR)/$(AUDACITY_NAME)
