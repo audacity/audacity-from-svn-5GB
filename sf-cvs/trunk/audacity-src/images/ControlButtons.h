@@ -1,11 +1,20 @@
 //#include "ControlButtons/Disabled.xpm"
+
+#ifdef __WXMAC__
+#include "Aqua/UpButtonWhite.xpm"
+#include "Aqua/DownButtonWhite.xpm"
+#include "Aqua/HiliteButtonWhite.xpm"
+#else
+#include "ControlButtons/UpButton.xpm"
 #include "ControlButtons/DownButton.xpm"
+#include "ControlButtons/HiliteButton.xpm"
+#endif
+
 #include "ControlButtons/EnvelopeAlpha.xpm"
 #include "ControlButtons/Envelope.xpm"
 #include "ControlButtons/FFwdAlpha.xpm"
 #include "ControlButtons/FFwdDisabled.xpm"
 #include "ControlButtons/FFwd.xpm"
-#include "ControlButtons/HiliteButton.xpm"
 #include "ControlButtons/IBeamAlpha.xpm"
 #include "ControlButtons/IBeam.xpm"
 #include "ControlButtons/PlayAlpha.xpm"
@@ -24,6 +33,5 @@
 #include "ControlButtons/Stop.xpm"
 #include "ControlButtons/TimeShiftAlpha.xpm"
 #include "ControlButtons/TimeShift.xpm"
-#include "ControlButtons/UpButton.xpm"
 #include "ControlButtons/ZoomAlpha.xpm"
 #include "ControlButtons/Zoom.xpm"
