@@ -61,7 +61,7 @@ wxHtmlHelpController *gHelp = NULL;
 void InitHelp(wxWindow * parent)
 {
    if (!gHelp) {
-      wxString defaultLoc = wxGetCwd() + "/audacity-help.htb";
+      wxString defaultLoc = wxGetCwd() + wxFILE_SEP_PATH + "audacity-help.htb";
 
       wxString helpFilePath =
           gPrefs->Read("/Help/HelpFilePath", defaultLoc);

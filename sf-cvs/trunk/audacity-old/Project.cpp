@@ -1001,7 +1001,7 @@ void AudacityProject::Import(wxString fileName)
 
    if (initiallyEmpty) {
       mName =::TrackNameFromFileName(fileName);
-      mFileName =::wxPathOnly(fileName) + "/" + mName;
+      mFileName =::wxPathOnly(fileName) + wxFILE_SEP_PATH + mName;
       SetTitle(mName);
    }
 }
@@ -1164,7 +1164,7 @@ void AudacityProject::SaveAs()
    extension = "aup";
 
    mName = baseName + "." + extension;
-   mFileName = path + "/" + mName;
+   mFileName = path + wxFILE_SEP_PATH + mName;
    SetTitle(baseName);
 
    Save(false, true);
