@@ -33,15 +33,7 @@ bool DirManager::hashWarning = false;
 // to platform.  On Unix, it's a "/", on Windows it's "/" or "\"
 // (with "\" preferred), and on the Mac it's a ":".
 
-#ifdef __WXMAC__
-wxString DirManager::pathChar = "/";
-#else
-#ifdef __WXMSW__
-wxString DirManager::pathChar = "\\";
-#else
-wxString DirManager::pathChar = "/";
-#endif
-#endif
+wxString DirManager::pathChar = wxFILE_SEP_PATH;
 
 #ifdef __WXGTK__
 wxString DirManager::home = wxGetHomeDir();
