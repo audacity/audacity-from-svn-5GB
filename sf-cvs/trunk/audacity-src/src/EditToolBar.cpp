@@ -176,7 +176,6 @@ EditToolBar::~EditToolBar()
 {
    for (int i=0; i<ETBNumButtons; i++)
       delete mButtons[i];
-   delete[] mButtons;
 
    if (mBackgroundBitmap)
       delete mBackgroundBitmap;
