@@ -4,7 +4,7 @@
 Audacity 1.2.3 er en ny, stabil versjon av det 
 kostnadsfrie lydredigeringsprogrammet Audacity. 
 Denne utgaven retter en feil som forstyrret lange
-opptak på noen Windows-maskiner. Den inkluderer 
+opptak på noen Windows-maskiner, og en annen feil som forårsaket tilfeldige krasj på Mac OS X. Den inkluderer 
 også flere oppdaterte oversettelser, og noen mindre
 feilrettinger og forbedringer. 
 </p>
