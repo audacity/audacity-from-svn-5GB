@@ -1,14 +1,14 @@
 <?php BoxTop($contactUsStr); ?>
 
 <p>
-Se hai qualche dubbio riguardo ad Audacity, ci sono molte risorse disponibili:
+Se hai qualche dubbio riguardanti Audacity, ci sono molte risorse disponibili:
 </p>
 
 <p>
 <ul>
 
 <li>
-Leggi il <?php print "<a href=faq.php?$langLinkStr>$faqStr"; ?></a><br>
+Leggi le <?php print "<a href=faq.php?$langLinkStr>$faqStr"; ?></a><br>
 Se desideri sapere cosa è Audacity o hai problemi riguardanti l'installazione
 o il funzionamento, per favore controlla prima questa pagina per vedere se la
 domanda ha già una risposta.
