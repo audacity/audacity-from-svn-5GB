@@ -860,6 +860,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    double trackLen = track->GetEndTime() - track->GetStartTime();
    double tOffset = track->GetOffset();
    double rate = track->GetRate();
+   double sps = 1./rate;            //seconds-per-sample
 
    //If the track isn't selected, make the selection empty
    if (!track->GetSelected())
@@ -877,10 +878,14 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    bool showIndividualSamples = (pps / rate > 0.5);   //zoomed in a lot
    bool showPoints = (pps / rate > 3.0);              //zoomed in even more
 
-   // Calculate actual selection bounds so that
-   // t0 > 0 and t1 < the end of the track
+   // Calculate actual selection bounds so that t0 > 0 and t1 < the
+   // end of the track 
+
    double t0 = (tpre >= 0.0 ? tpre : 0.0);
-   double t1 = (tpost < trackLen ? tpost : trackLen);
+   double t1 = (tpost < trackLen - sps*.99 ? tpost : trackLen - sps*.99);
+   if(showIndividualSamples) t1+=2./pps; // adjustment so that the
+   // last circular point doesn't appear to be hanging off the end
+
 
    // Make sure t1 (the right bound) is greater than 0
    if (t1 < 0.0)
@@ -890,9 +895,13 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    if (t0 > t1)
       t0 = t1;
 
-   // Calculate sample-based offset-corrected selection
-   int ssel0 = wxMax(0, int((sel0 - tOffset) * rate + 0.5));
-   int ssel1 = wxMax(0, int((sel1 - tOffset) * rate + 0.5));
+   // Calculate sample-based offset-corrected selection 
+
+   // +.99 better centers the selection drag area at single-sample
+   // granularity.  Not 1.0 as that would cause 'select whole
+   // track' to lose the first sample
+   int ssel0 = wxMax(0, int((sel0 - tOffset) * rate + .99)); 
+   int ssel1 = wxMax(0, int((sel1 - tOffset) * rate + .99));
 
    //trim selection so that it only contains the actual samples
    if (ssel0 != ssel1 && ssel1 > (int)(0.5+trackLen*rate))
@@ -1173,6 +1182,7 @@ void TrackArtist::DrawSpectrum(WaveTrack *track,
    sampleCount numSamples = seq->GetNumSamples();
    double tOffset = track->GetOffset();
    double rate = track->GetRate();
+   double sps = 1./rate;            
 
    // if nothing is on the screen
    if ((sampleCount) (h * rate + 0.5) >= numSamples)
@@ -1181,33 +1191,99 @@ void TrackArtist::DrawSpectrum(WaveTrack *track,
    if (!track->GetSelected())
       sel0 = sel1 = 0.0;
 
-   int x = 0;
    double tpre = h - tOffset;
    double tstep = 1.0 / pps;
+   double tpost = tpre + (r.width * tstep); 
+   double trackLen = track->GetEndTime() - track->GetStartTime();
 
+   bool showIndividualSamples = (pps / rate > 0.5);   //zoomed in a lot
    double t0 = (tpre >= 0.0 ? tpre : 0.0);
+   double t1 = (tpost < trackLen - sps*.99 ? tpost : trackLen - sps*.99);
+   if(showIndividualSamples) t1+=2./pps; // for display consistency
+   // with Waveform display
 
-   sampleCount ssel0 = (sampleCount) ((sel0 - tOffset) * rate + 0.5);
-   sampleCount ssel1 = (sampleCount) ((sel1 - tOffset) * rate + 0.5);
+   // Make sure t1 (the right bound) is greater than 0
+   if (t1 < 0.0)
+      t1 = 0.0;
 
-   if (sel0 < tOffset)
-       ssel0 = 0;
-   if (sel1 < tOffset)
-       ssel1 = 0;
+   // Make sure t1 is greater than t0
+   if (t0 > t1)
+      t0 = t1;
+
+   sampleCount ssel0 = wxMax(0, int((sel0 - tOffset) * rate + .99)); 
+   sampleCount ssel1 = wxMax(0, int((sel1 - tOffset) * rate + .99));
+
+   //trim selection so that it only contains the actual samples
+   if (ssel0 != ssel1 && ssel1 > (int)(0.5+trackLen*rate))
+      ssel1 = (int)(0.5+trackLen*rate);
+
+   // The variable "mid" will be the rectangle containing the
+   // actual waveform, as opposed to any blank area before
+   // or after the track.
+   wxRect mid = r;
+
+   dc.SetPen(*wxTRANSPARENT_PEN);
+
+   // If the left edge of the track is to the right of the left
+   // edge of the display, then there's some blank area to the
+   // left of the track.  Fill it in, and reduce the "mid"
+   // rect by size of the blank area.
+   if (tpre < 0) {
+      // Fill in the area to the left of the track
+      wxRect pre = r;
+      if (t0 < tpost) pre.width = (int) ((t0 - tpre) * pps);
+      dc.SetBrush(blankBrush);
+      dc.DrawRectangle(pre);
+
+      // Offset the rectangle containing the waveform by the width
+      // of the area we just erased.
+      mid.x += pre.width;
+      mid.width -= pre.width;
+   }
+
+   // If the right edge of the track is to the left of the the right
+   // edge of the display, then there's some blank area to the right
+   // of the track.  Fill it in, and reduce the "mid" rect by the
+   // size of the blank area.
+   if (tpost > t1) {
+      wxRect post = r;
+      if (t1 > tpre) post.x += (int) ((t1 - tpre) * pps);
+      post.width = r.width - (post.x - r.x);
+      dc.SetBrush(blankBrush);
+      dc.DrawRectangle(post);
+
+      // Reduce the rectangle containing the waveform by the width
+      // of the area we just erased.
+      mid.width -= post.width;
+   }
+
+   // The "mid" rect contains the part of the display actually
+   // containing the waveform.  If it's empty, we're done.
+   if (mid.width <= 0) {
+     #if PROFILE_WAVEFORM
+      gettimeofday(&tv1, NULL);
+      double elapsed =
+         (tv1.tv_sec + tv1.tv_usec*0.000001) -
+         (tv0.tv_sec + tv0.tv_usec*0.000001);
+      gWaveformTimeTotal += elapsed;
+      gWaveformTimeCount++;
+     #endif
+
+     return;
+   }
 
    // We draw directly to a bit image in memory,
    // and then paint this directly to our offscreen
    // bitmap.  Note that this could be optimized even
    // more, but for now this is not bad.  -dmazzoni
-   wxImage *image = new wxImage((int) r.width, (int) r.height);
-   if (!image)
-      return;
+   wxImage *image = new wxImage((int) mid.width, (int) mid.height);
+   if (!image)return;
    unsigned char *data = image->GetData();
 
-   float *freq = new float[r.width * r.height];
-   sampleCount *where = new sampleCount[r.width+1];
+   float *freq = new float[mid.width * mid.height];
+   sampleCount *where = new sampleCount[mid.width+1];
 
-   if (!track->GetSpectrogram(freq, where, r.width, r.height,
+   if (!track->GetSpectrogram(freq, where, mid.width, mid.height,
                               t0, pps, autocorrelation)) {
       delete image;
       delete[] where;
@@ -1218,52 +1294,37 @@ void TrackArtist::DrawSpectrum(WaveTrack *track,
    bool isGrayscale = false;
    gPrefs->Read("/Spectrum/Grayscale", &isGrayscale, false);
 
-   int i = 0;
-   while (x < r.width) {
-      sampleCount w0 = (sampleCount) ((tpre + x * tstep) * rate + 0.5);
+   int x = 0;
+   sampleCount w1 = (sampleCount) ((t0*rate + x *rate *tstep) + .5);
+   while (x < mid.width) {
 
-      if (w0 < 0 || w0 >= numSamples) {
-         for (int yy = 0; yy < r.height; yy++) {
-            data[(yy * r.width + x) * 3] = 214;
-            data[(yy * r.width + x) * 3 + 1] = 214;
-            data[(yy * r.width + x) * 3 + 2] = 214;
-         }
-         x++;
-         continue;
-      }
+      sampleCount w0 = w1;
+      w1 = (sampleCount) ((t0*rate + (x+1) *rate *tstep) + .5);
 
-      float *spec = &freq[r.height * i];
+      float *spec = &freq[mid.height * x];
 
-      for (int yy = 0; yy < r.height; yy++) {
-
-         bool selflag = (ssel0 <= w0 && w0 < ssel1);
-
+      for (int yy = 0; yy < mid.height; yy++) {
+         bool selflag = (ssel0 <= w0 && w1 < ssel1);
          unsigned char rv, gv, bv;
 
-         GetColorGradient(spec[r.height - 1 - yy],
+         GetColorGradient(spec[mid.height - 1 - yy],
                           selflag, isGrayscale, &rv, &gv, &bv);
 
-         data[(yy * r.width + x) * 3] = rv;
-         data[(yy * r.width + x) * 3 + 1] = gv;
-         data[(yy * r.width + x) * 3 + 2] = bv;
+         data[(yy * mid.width + x) * 3] = rv;
+         data[(yy * mid.width + x) * 3 + 1] = gv;
+         data[(yy * mid.width + x) * 3 + 2] = bv;
       }
 
-      i++;
       x++;
    }
 
    wxBitmap converted = wxBitmap(image);
 
-   //wxBitmap converted;
-   //converted.Create(r.width, r.height);
-
    wxMemoryDC memDC;
 
    memDC.SelectObject(converted);
 
-   dc.Blit(r.x, r.y, r.width, r.height, &memDC, 0, 0, wxCOPY, FALSE);
-
-   //dc.DrawBitmap(converted, r.x, r.y);
+   dc.Blit(mid.x, mid.y, mid.width, mid.height, &memDC, 0, 0, wxCOPY, FALSE);
 
    delete image;
    delete[] where;

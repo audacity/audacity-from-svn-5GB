@@ -94,8 +94,13 @@ PrefsPanel(parent)
          numDevices++;
    }
 
-   mPlayNames = new wxString[numDevices];
-   wxString *playLabels = new wxString[numDevices];
+   wxString *playLabels=NULL;
+   mPlayNames=NULL;
+   if(numDevices){
+      mPlayNames = new wxString[numDevices];
+      playLabels = new wxString[numDevices];
+   }
+
    k = 0;
 #if USE_PORTAUDIO_V19
    for(j=0; j<Pa_GetDeviceCount(); j++) {
@@ -118,11 +123,11 @@ PrefsPanel(parent)
          k++;
       }
    }
-
+      
    mPlayChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
                               numDevices, playLabels);
    mPlayChoice->SetSelection(playIndex);
-   delete [] playLabels;
+   if(playLabels) delete [] playLabels;
 
    pFileSizer->Add(
       new wxStaticText(this, -1, _("Device:")), 0, 
@@ -161,8 +166,13 @@ PrefsPanel(parent)
          numDevices++;
    }
 
-   mRecNames = new wxString[numDevices];
-   wxString *recLabels = new wxString[numDevices];
+   mRecNames = NULL;
+   wxString *recLabels = NULL;
+   if(numDevices){
+      mRecNames = new wxString[numDevices];
+      recLabels = new wxString[numDevices];
+   }
+
    k = 0;
 #if USE_PORTAUDIO_V19
    for(j=0; j<Pa_GetDeviceCount(); j++) {
@@ -188,7 +198,7 @@ PrefsPanel(parent)
    mRecChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
                               numDevices, recLabels);
    mRecChoice->SetSelection(recIndex);
-   delete[] recLabels;
+   if(recLabels) delete[] recLabels;
 
    rFileSizer->Add(
       new wxStaticText(this, -1, _("Device:")), 0, 
@@ -248,14 +258,17 @@ PrefsPanel(parent)
 
 AudioIOPrefs::~AudioIOPrefs()
 {
-   delete[] mPlayNames;
-   delete[] mRecNames;
+   if(mPlayNames)delete[] mPlayNames;
+   if(mRecNames) delete[] mRecNames;
 }
 
 bool AudioIOPrefs::Apply()
 {
-   mPlayDevice = mPlayNames[mPlayChoice->GetSelection()];
-   mRecDevice = mRecNames[mRecChoice->GetSelection()];
+   mPlayDevice = wxEmptyString;
+   mRecDevice = wxEmptyString;
+
+   if(mPlayNames) mPlayDevice = mPlayNames[mPlayChoice->GetSelection()];
+   if(mRecNames) mRecDevice = mRecNames[mRecChoice->GetSelection()];
 
    long recordChannels = mChannelsChoice->GetSelection()+1;
    bool duplex = mDuplex->GetValue();

@@ -60,6 +60,8 @@ class SpecCache {
 public:
    SpecCache(int cacheLen, int viewHeight, bool autocorrelation)
    {
+      windowSizeOld = -1;
+      maxFreqPrefOld = -1;
       dirty = -1;
       start = -1.0;
       pps = 0.0;
@@ -76,6 +78,8 @@ public:
       delete[] where;
    }
 
+   int          maxFreqPrefOld;
+   int          windowSizeOld;
    int          dirty;
    int          height;
    bool         ac;
@@ -436,13 +440,14 @@ bool WaveTrack::GetWaveDisplay(float *min, float *max, float *rms,
    mWaveCache = new WaveCache(numPixels);
    mWaveCache->pps = pixelsPerSecond;
    mWaveCache->start = t0;
+   double tstep = 1.0 / pixelsPerSecond;
 
    sampleCount x;
 
    for (x = 0; x < mWaveCache->len + 1; x++) {
       mWaveCache->where[x] =
          (sampleCount) floor(t0 * mRate +
-                             ((double) x) * mRate / pixelsPerSecond + 0.5);
+                             ((double) x) * mRate * tstep + 0.5);
    }
 
    sampleCount s0 = mWaveCache->where[0];
@@ -583,7 +588,12 @@ bool WaveTrack::GetSpectrogram(float *freq, sampleCount *where,
                                double t0, double pixelsPerSecond,
                                bool autocorrelation)
 {
+   int maxFreqPref = gPrefs->Read("/Spectrum/MaxFreq", 8000);
+   int windowSize = gPrefs->Read("/Spectrum/FFTSize", 256);
+
    if (mSpecCache &&
+       mSpecCache->maxFreqPrefOld == maxFreqPref &&
+       mSpecCache->windowSizeOld == windowSize &&
        mSpecCache->dirty == mDirty &&
        mSpecCache->start == t0 &&
        mSpecCache->ac == autocorrelation &&
@@ -607,14 +617,18 @@ bool WaveTrack::GetSpectrogram(float *freq, sampleCount *where,
 
    for (x = 0; x < mSpecCache->len + 1; x++) {
       recalc[x] = true;
+      // purposely offset the display 1/2 bin to the left (as compared
+      // to waveform display to properly center response of the FFT
       mSpecCache->where[x] =
-         (sampleCount)floor((t0*mRate) + (x*mRate/pixelsPerSecond) + 0.5);
+         (sampleCount)floor((t0*mRate) + (x*mRate/pixelsPerSecond) + 1.);
    }
 
    // Optimization: if the old cache is good and overlaps
    // with the current one, re-use as much of the cache as
    // possible
-   if (oldCache->dirty == GetDirty() &&
+   if (oldCache->maxFreqPrefOld == maxFreqPref &&
+       oldCache->windowSizeOld == windowSize &&
+       oldCache->dirty == mDirty &&
        oldCache->pps == pixelsPerSecond &&
        oldCache->height == height &&
        oldCache->ac == autocorrelation &&
@@ -623,13 +637,13 @@ bool WaveTrack::GetSpectrogram(float *freq, sampleCount *where,
 
       for (x = 0; x < mSpecCache->len; x++)
          if (mSpecCache->where[x] >= oldCache->where[0] &&
-             mSpecCache->where[x] <= oldCache->where[oldCache->len - 1]) {
+             mSpecCache->where[x] < oldCache->where[oldCache->len]) {
 
             int ox = (int) ((double (oldCache->len) *
                       (mSpecCache->where[x] - oldCache->where[0]))
                        / (oldCache->where[oldCache->len] -
                                              oldCache->where[0]) + 0.5);
-            if (ox >= 0 && ox <= oldCache->len &&
+            if (ox >= 0 && ox < oldCache->len &&
                 mSpecCache->where[x] == oldCache->where[ox]) {
 
                for (sampleCount i = 0; i < (sampleCount)height; i++)
@@ -641,32 +655,42 @@ bool WaveTrack::GetSpectrogram(float *freq, sampleCount *where,
          }
    }
 
-   int maxFreqPref = gPrefs->Read("/Spectrum/MaxFreq", 8000);
-   int windowSize = gPrefs->Read("/Spectrum/FFTSize", 256);
    float *buffer = new float[windowSize];
+   mSpecCache->maxFreqPrefOld = maxFreqPref;
+   mSpecCache->windowSizeOld = windowSize;
 
    for (x = 0; x < mSpecCache->len; x++)
       if (recalc[x]) {
 
          sampleCount start = mSpecCache->where[x];
          sampleCount len = windowSize;
-
          sampleCount i;
 
-         if (start >= mSequence->GetNumSamples()) {
+         if (start <= 0 || start >= mSequence->GetNumSamples()) {
+
             for (i = 0; i < (sampleCount)height; i++)
                mSpecCache->freq[height * x + i] = 0;
 
          } else {
 
+            float *adj = buffer;
+            start -= windowSize >> 1;
+
+            if (start < 0) {
+               for(i = start; i < 0; i++) *adj++ = 0;
+               len += start;
+               start = 0;
+            }
+
             if (start + len > mSequence->GetNumSamples()) {
                len = mSequence->GetNumSamples() - start;
                for (i = len; i < (sampleCount)windowSize; i++)
-                  buffer[i] = 0;
+                  adj[i] = 0;
             }
 
-            mSequence->Get((samplePtr)buffer, floatSample,
-                           start, len);
+            if(len>0)
+               mSequence->Get((samplePtr)adj, floatSample,
+                              start, len);
 
             ComputeSpectrum(buffer, windowSize, height,
                             maxFreqPref, windowSize,
@@ -679,7 +703,7 @@ bool WaveTrack::GetSpectrogram(float *freq, sampleCount *where,
    delete[]recalc;
    delete oldCache;
 
-   mSpecCache->dirty = GetDirty();
+   mSpecCache->dirty = mDirty;
    memcpy(freq, mSpecCache->freq, numPixels*height*sizeof(float));
    memcpy(where, mSpecCache->where, (numPixels+1)*sizeof(sampleCount));
 
@@ -707,22 +731,20 @@ bool WaveTrack::GetMinMax(float *min, float *max,
 }
 
 //
-// Getting/setting samples.  The sample counts here are
-// expressed relative to t=0.0 at the track's sample rate.
+// Getting/setting samples.  The sample counts here are expressed
+// relative to beginning of track at the track's sample rate.
 //
 
 bool WaveTrack::Get(samplePtr buffer, sampleFormat format,
                     longSampleCount start, sampleCount len) const
 {
-   longSampleCount startTime = (longSampleCount)floor(mOffset*mRate + 0.5);
-   longSampleCount endTime = startTime + mSequence->GetNumSamples();
 
-   if (start+len < startTime || start>=endTime) {
+   if (start+len < 0 || start>=mSequence->GetNumSamples()) {
       ClearSamples(buffer, format, 0, len);
       return true;
    }
 
-   sampleCount s0 = (sampleCount)(start - startTime);
+   sampleCount s0 = (sampleCount)start;
    sampleCount soffset = 0;
    sampleCount getlen = len;
 
@@ -748,9 +770,8 @@ bool WaveTrack::Get(samplePtr buffer, sampleFormat format,
 bool WaveTrack::Set(samplePtr buffer, sampleFormat format,
                     longSampleCount start, sampleCount len)
 {
-   longSampleCount startTime = (longSampleCount)floor(mOffset*mRate + 0.5);
 
-   sampleCount s0 = (sampleCount)(start - startTime);
+   sampleCount s0 = (sampleCount)start;
 
    if (s0 < 0) {
       len += s0;

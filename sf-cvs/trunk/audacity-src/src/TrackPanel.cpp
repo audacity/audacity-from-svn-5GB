@@ -1975,7 +1975,7 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
             // The calling function captured the mouse, but we don't want to
             // keep tracking it, so we release it.
             ReleaseMouse();
-            wxMessageBox(_("Draw currently only works with waveforms."), "Notice");
+            wxMessageBox(_("Draw currently only works with linear-view waveforms."), "Notice");
             return;
          }
       
@@ -2005,7 +2005,7 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
       
       //Now, figure out what the value of that sample is.      
       //First, get the sequence of samples so you can mess with it
-      Sequence *seq = ((WaveTrack *)mDrawingTrack)->GetSequence();
+      //Sequence *seq = ((WaveTrack *)mDrawingTrack)->GetSequence();
 
 
  
@@ -2093,7 +2093,7 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
          // Calculate where the mouse is located vertically (between +/- 1)
          
 
-         seq->Get((samplePtr)&mDrawingStartSampleValue, floatSample,(int) mDrawingStartSample, 1);
+         ((WaveTrack*)mDrawingTrack)->Get((samplePtr)&mDrawingStartSampleValue, floatSample,(int) mDrawingStartSample, 1);
 
 
          float zoomMin, zoomMax;
@@ -2115,7 +2115,7 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
          newLevel = newLevel < -1.0 ? -1.0: newLevel;
 
          //Set the sample to the point of the mouse event
-         seq->Set((samplePtr)&newLevel, floatSample, mDrawingStartSample, 1);
+         ((WaveTrack*)mDrawingTrack)->Set((samplePtr)&newLevel, floatSample, mDrawingStartSample, 1);
       
   
      }
@@ -2177,8 +2177,8 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
             s0 = (sampleCount) (double)(t0 * rate + 0.5);
          }
 
-         Sequence *seq = ((WaveTrack *)mDrawingTrack)->GetSequence();
-         seq->Get((samplePtr)&mDrawingStartSampleValue, floatSample, (int)mDrawingStartSample, 1);
+         //Sequence *seq = ((WaveTrack *)mDrawingTrack)->GetSequence();
+         ((WaveTrack*)mDrawingTrack)->Get((samplePtr)&mDrawingStartSampleValue, floatSample, (int)mDrawingStartSample, 1);
          
          //Otherwise, do normal redrawing, based on the mouse position.
          // Calculate where the mouse is located vertically (between +/- 1)
@@ -2207,7 +2207,7 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
          
          //Handle cases of 0 or 1 special, to improve speed
          if(abs(s0 - mDrawingLastDragSample) <= 1){
-            seq->Set((samplePtr)&newLevel,  floatSample, s0, 1);         
+            ((WaveTrack*)mDrawingTrack)->Set((samplePtr)&newLevel,  floatSample, s0, 1);         
          }
          //Go from the smaller to larger sample. 
          else if(s0 < mDrawingLastDragSample) {
@@ -2217,7 +2217,7 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
                //This interpolates each sample linearly:
                tmpvalue=mDrawingLastDragSampleValue + (newLevel - mDrawingLastDragSampleValue)  * 
                   (float)(i-mDrawingLastDragSample)/(s0-mDrawingLastDragSample );
-               seq->Set((samplePtr)&tmpvalue, floatSample, i, 1);
+               ((WaveTrack*)mDrawingTrack)->Set((samplePtr)&tmpvalue, floatSample, i, 1);
             }
          }
 
@@ -2228,7 +2228,7 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
               
                tmpvalue=mDrawingLastDragSampleValue + (newLevel - mDrawingLastDragSampleValue)  * 
                   (float)(i-mDrawingLastDragSample)/(s0 - mDrawingLastDragSample);
-               seq->Set((samplePtr)&tmpvalue, floatSample, i, 1);
+               ((WaveTrack *)mDrawingTrack)->Set((samplePtr)&tmpvalue, floatSample, i, 1);
             }
          }
          
