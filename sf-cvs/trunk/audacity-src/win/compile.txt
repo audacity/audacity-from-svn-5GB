@@ -7,8 +7,8 @@ Authors:
   Vaughan Johnson
 
 ================================================================
-This version is currently accurate for Audacity version 1.1.2.
-Last Updated: February 7, 2003
+This version is currently accurate for Audacity version 1.1.3.
+Last Updated: May 29, 2003
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 ================================================================
@@ -141,3 +141,53 @@ is likely to be "try it again with a clean installation of
 the wxWindows source and the latest Audacity source from
 CVS" though, so if that's not what you just attempted, you
 might want to try that first... 
+
+-----------------------
+(OPTIONAL) STEP 7:  Add VST support
+-----------------------
+Audacity does not support VST plug-ins by default, but 
+here is how to enable it.
+
+1. Close the Audacity workspace. 
+
+2. Get the VST SDK source code, at 
+	"http://www.kvr-vst.com/get.php?mode=show&id=502" 
+	or
+	"http://www.steinberg.net/en/ps/support/3rdparty/vst_sdk/index.php?sid=0". 
+
+	Licensing restrictions prohibit us from distributing 
+	these files with Audacity. 
+
+	The VST SDK files are:
+
+	   AEffect.h
+	   aeffectx.h
+	   AEffEditor.hpp
+	   AudioEffect.cpp
+	   AudioEffect.hpp
+	   audioeffectx.cpp
+	   audioeffectx.h
+	   vstcontrols.h
+	   vstgui.h
+
+3. Put copies of the VST SDK files in your local 
+	"audacity\src\effects\VST" directory.
+
+4. Open the Audacity workspace. 
+	Add the VST SDK files to the "src\effects\VST" folder.
+
+5. Edit the file "audacity\win\configwin.h".
+	Change the USE_VST line from 
+		#undef USE_VST
+	to 
+		#define USE_VST 1
+
+6. Build Audacity.
+
+7. Put your VST plug-ins in the "Plug-Ins" subdirectory 
+	of the directory containing your executable, e.g., 
+	"audacity\win\Release\Plug-Ins". 
+
+8. Run Audacity and the plug-ins should appear in the 
+	Generate, Effect, &/or Analyze menus.
+
