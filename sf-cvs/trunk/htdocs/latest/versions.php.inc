@@ -7,6 +7,6 @@ define('winzip', '1.2.0');
 define('src', '1.2.0');
 define('srcrpm', '0.98-1');
 define('i386rpm', '1.0.0-2');
-define('linux-i386', '1.2.0');
+define('linux386', '1.2.0');
 
 ?>
