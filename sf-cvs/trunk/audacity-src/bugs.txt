@@ -54,6 +54,8 @@ Possible bugs to investigate:
 - Audacity won't start under (some versions of?) MacOS 8.5,
   complains about InterfaceLib and SetAntiAliasedTextEnabled
 - Test USB mics under Mac OS 9 (see email from J. Blucher)
+- Closing track while recording (see Brian G's email on
+  3/30/02)
 
 -----------------------------------------------------------
 Fixed, need to port:
