@@ -82,12 +82,6 @@ extern AProjectArray gAudacityProjects;
 WX_DEFINE_ARRAY(ToolBar *, ToolBarArray);
 WX_DEFINE_ARRAY(wxMenu *, MenuArray);
 
-class NullEventHandler:public wxEvtHandler
-{
- public:
-    bool ProcessEvent(wxEvent& event) { return true; }
-};
-
 class AudacityProject:public wxFrame,
                       public TrackPanelListener,
                       public AStatusListener,
@@ -295,10 +289,6 @@ class AudacityProject:public wxFrame,
    ToolBarArray mToolBarArray;
    int mTotalToolBarHeight;
    enum ToolBarType mDraggingToolBar;
-
-   // Processing
-
-   NullEventHandler mNullEventHandler;
 
  public:
 

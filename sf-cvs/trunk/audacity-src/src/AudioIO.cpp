@@ -98,6 +98,7 @@ AudioIO::~AudioIO()
 {
    Pa_Terminate();
 
+   wxSafeYield();
    mThread->Delete();
    int deadlock_counter = 0;
    while(mThread->IsRunning())
