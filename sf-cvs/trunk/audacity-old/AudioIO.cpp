@@ -224,44 +224,44 @@ void AudioIO::OnTimer()
   if (!mProject) return;
 
   if (mRecording) {
-	int block = snd_poll(&mSndNode);
+    int block = snd_poll(&mSndNode);
 
-	if (block <= 0) {
-	  if (mStop)
-		Finish();
+    if (block <= 0) {
+      if (mStop)
+    	Finish();
 
-	  return;
-	}
-	
-	#ifdef __WXMAC__
-	if (block < 22050)
-	  return;
-	#endif
+      return;
+    }
 
-	sampleType *in = new sampleType[block*2];
-	sampleType *left = new sampleType[block];
-	sampleType *right = new sampleType[block];
+    #ifdef __WXMAC__
+    if (block < 22050)
+      return;
+    #endif
 
-	snd_read(&mSndNode, in, block);
+    sampleType *in = new sampleType[block*2];
+    sampleType *left = new sampleType[block];
+    sampleType *right = new sampleType[block];
 
-	for(int i=0; i<block; i++) {
-	  left[i] = in[2*i];
-	  right[i] = in[2*i+1];
-	}
-	
-	mRecordLeft->Append(left, block);
-	mRecordRight->Append(right, block);
+    snd_read(&mSndNode, in, block);
 
-	mProject->RedrawProject();
+    for(int i=0; i<block; i++) {
+      left[i] = in[2*i];
+      right[i] = in[2*i+1];
+    }
 
-	delete[] in;
-	delete[] left;
-	delete[] right;
+    mRecordLeft->Append(left, block);
+    mRecordRight->Append(right, block);
 
-	if (mStop)
-	  Finish();
+    mProject->RedrawProject();
 
-	return;
+    delete[] in;
+    delete[] left;
+    delete[] right;
+
+    if (mStop)
+  	  Finish();
+
+  	return;
   }
 
   if (mStop) {
@@ -282,6 +282,8 @@ void AudioIO::OnTimer()
         return;
       }
     }
+    else
+      return;
   }
 
   double deltat = mSndNode.u.audio.latency;
@@ -330,8 +332,11 @@ void AudioIO::OnTimer()
   
   sampleType *outbytes = mixer->GetBuffer();
   snd_write(&mSndNode, outbytes, block);
-  if (mT + deltat >= mT1)
-    snd_flush(&mSndNode);
+  
+  // TODO: Make sure that calling "snd_flush" is not necessary
+  // to start playback on any platform.
+  //if (mT + deltat >= mT1)
+  //  snd_flush(&mSndNode);
   
   delete mixer;
   
