@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include "AStatus.h"
+
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
 #include <wx/intl.h>
@@ -17,7 +19,6 @@
 #include <wx/textdlg.h>
 
 #include "AColor.h"
-#include "AStatus.h"
 
 int GetStatusHeight()
 {
