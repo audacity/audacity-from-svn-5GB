@@ -4,3 +4,6 @@ authors (David Michael Betz for xlisp and Roger Dannenberg for Nyquist)
 be notified of any changes.  The authors have all agreed to this
 relicensing; Roger Dannenberg is working on the wording now.
 
+For the latest details on the Nyquist license, please see:
+
+  http://www-2.cs.cmu.edu/~music/nyquist/
