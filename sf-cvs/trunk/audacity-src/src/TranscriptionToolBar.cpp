@@ -19,6 +19,7 @@
 #include "Prefs.h"
 #include "Project.h"
 #include "WaveTrack.h"
+#include "TimeTrack.h"
 #include "VoiceKey.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -40,6 +41,9 @@
 #include <iostream>
 
 #include "../images/TranscriptionButtons.h"
+#include "../images/ControlButtons/Play.xpm"
+#include "../images/ControlButtons/PlayAlpha.xpm"
+#include "../images/ControlButtons/PlayDisabled.xpm"
 
 const int BUTTON_WIDTH = 27;
 const int SEPARATOR_WIDTH = 14;
@@ -55,6 +59,9 @@ using std::endl;
 BEGIN_EVENT_TABLE(TranscriptionToolBar, wxWindow)
    EVT_PAINT(TranscriptionToolBar::OnPaint)
    EVT_CHAR(TranscriptionToolBar::OnKeyEvent)
+   EVT_COMMAND_RANGE(TTB_PlaySpeed, TTB_PlaySpeed,
+                     wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnPlaySpeed)
+   EVT_SLIDER(TTB_PlaySpeedSlider, TranscriptionToolBar::OnSpeedSlider)
    EVT_COMMAND_RANGE(TTB_StartOn, TTB_StartOn,
                      wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnStartOn)
    EVT_COMMAND_RANGE(TTB_StartOff, TTB_StartOff,
@@ -116,6 +123,21 @@ void TranscriptionToolBar::InitializeTranscriptionToolBar()
    mButtons[TTB_Calibrate]->Enable();
    mButtons[TTB_AutomateSelection]->Disable();
    mButtons[TTB_MakeLabel]->Enable();
+
+   AudacityProject * p = GetActiveProject();
+   if(p)
+      {
+         mTimeTrack = new TimeTrack(p->GetDirManager());
+         mTimeTrack->SetRangeUpper(100);
+         mTimeTrack->SetRangeLower(100);
+      }
+   else
+      mTimeTrack = NULL;
+   mPlaySpeed = 1.0;
+   //Process a dummy event to set up the slider
+   wxCommandEvent dummy;
+   OnSpeedSlider(dummy);
+
 }
 
 
@@ -132,6 +154,8 @@ void TranscriptionToolBar::AddButton(const char **fg, const char **disabled, con
 #ifdef __WXMSW__
    buttonTop=0;
 #endif
+   //The image needs to be centered in the button--not all icons are (e.g., the playback button).
+
    mButtons[id] = ToolBar::MakeButton(
                                       upImage, downImage, hiliteImage, fg,
                                       disabled, alpha,
@@ -167,6 +191,20 @@ void TranscriptionToolBar::MakeButtons()
 
 
    mxButtonPos = 0;
+   AddButton(Play,     PlayDisabled,   PlayAlpha,   TTB_PlaySpeed,
+      _("Play at selected speed"),
+      _("Play-at-speed"));
+   
+   //Add a slider that controls the speed of playback.
+   const int SliderWidth=100;
+   mPlaySpeedSlider = new ASlider(this,TTB_PlaySpeedSlider,  _("Playback Speed (Unimplemented)"), 
+                                  wxPoint(mxButtonPos,0),wxSize(SliderWidth,28),
+                                  SPEED_SLIDER);
+   mPlaySpeedSlider->Set(1.0);
+   mPlaySpeedSlider->SetLabel(_("Playback Speed (Unimplimented)"));
+   mxButtonPos +=  SliderWidth;
+
+
    AddButton(StartOn,     StartOnDisabled,   StartOnAlpha,   TTB_StartOn,
       _("Adjust left selection to  next onset"),
       _("Left-to-On"));
@@ -189,9 +227,9 @@ void TranscriptionToolBar::MakeButtons()
       _("Add label at selection"),
       _("Add Label"));
   
-   const int SliderWidth=100;
+ 
    mSensitivitySlider = new ASlider(this, TTB_SensitivitySlider, _("Adjust Sensitivity"),
-                                    wxPoint(mxButtonPos,0),wxSize(SliderWidth,28));
+                                    wxPoint(mxButtonPos,0),wxSize(SliderWidth,28),SPEED_SLIDER);
   
    mSensitivitySlider->SetLabel(_("Sensitivity"));
    mxButtonPos +=  SliderWidth;
@@ -208,11 +246,15 @@ TranscriptionToolBar::~TranscriptionToolBar()
    delete vk;	
    
    if (mBackgroundBitmap) delete mBackgroundBitmap;
+   if(mPlaySpeedSlider)delete mPlaySpeedSlider;
    if(mSensitivitySlider)delete mSensitivitySlider;
+
    
    for (int i=0; i<TTBNumButtons; i++)
       if(mButtons[i]) delete mButtons[i];
 }
+
+
 
 
 //This handles key-stroke events????
@@ -280,6 +322,136 @@ void TranscriptionToolBar::GetSamples(WaveTrack *t, sampleCount *s0, sampleCount
       *s0 = ss0;
       *slen = ss1 - ss0;
    }
+}
+
+void TranscriptionToolBar::OnPlaySpeed(wxCommandEvent & event)
+{
+ //If IO is busy, abort immediately
+   if (gAudioIO->IsBusy()){
+      SetButton(false,mButtons[TTB_PlaySpeed]);
+      return;
+   }
+
+   AudacityProject * p = GetActiveProject();
+   if(p)
+      {
+         
+         if(!mTimeTrack)
+            {   
+               AudacityProject * p = GetActiveProject();
+               if(p)
+                  {
+                     mTimeTrack = new TimeTrack(p->GetDirManager());
+                     mTimeTrack->SetRangeUpper((long int)mPlaySpeed);
+                     mTimeTrack->SetRangeLower((long int)mPlaySpeed);
+                  }
+               
+            }
+
+         if(mTimeTrack)
+            {   
+               mTimeTrack->SetRangeLower((long int)mPlaySpeed);
+               mTimeTrack->SetRangeUpper((long int)mPlaySpeed);
+            }
+
+
+
+         double t0 = p->GetSel0();
+         double t1 = p->GetSel1();
+         double maxofmins,minofmaxs;
+         bool looped = false;
+         TrackList *t = p->GetTracks();
+             
+         // JS: clarified how the final play region is computed;
+         
+         if (t1 == t0) 
+            {
+               // msmeyer: When playing looped, we play the whole file, if
+               // no range is selected. Otherwise, we play from t0 to end
+               if (looped)
+                  {
+                     // msmeyer: always play from start
+                     t0 = t->GetStartTime();
+                  } else {
+                     // move t0 to valid range
+                     if (t0 < 0)
+                        t0 = t->GetStartTime();
+                     if (t0 > t->GetEndTime())
+                        t0 = t->GetEndTime();
+                  }
+         
+               // always play to end
+               t1 = t->GetEndTime();
+            }
+         else 
+            {
+               // always t0 < t1 right?
+               
+               // the set intersection between the play region and the
+               // valid range maximum of lower bounds
+               if (t0 < t->GetStartTime())
+                  maxofmins = t->GetStartTime();
+               else
+                  maxofmins = t0;
+               
+               // minimum of upper bounds
+               if (t1 > t->GetEndTime())
+                  minofmaxs = t->GetEndTime();
+               else
+                  minofmaxs = t1;
+               
+               // we test if the intersection has no volume 
+               if (minofmaxs <= maxofmins) {
+                  // no volume; play nothing
+                  return;
+               }
+               else {
+                  t0 = maxofmins;
+                  t1 = minofmaxs;
+               }
+            }
+
+         //Now, t1 is correct for the 'unwarped' wave.  This is how it _Should_ be, 
+         //but is not how it is.  Adjust t1 for the speed adjustment.
+         t1 = t0 + (t1-t0)* 100.0/mPlaySpeed;
+         
+         bool success = false;
+         if (t1 > t0) 
+            {
+               int token =   gAudioIO->StartStream(t->GetWaveTrackArray(false),
+                                                   WaveTrackArray(), mTimeTrack,
+                                                   p->GetRate(), t0, t1, looped);
+                                                   
+               if (token != 0) {
+                  success = true;
+                  p->SetAudioIOToken(token);
+                  
+               }
+            }
+         SetButton(false, mButtons[TTB_PlaySpeed]); 
+      }
+}
+
+void TranscriptionToolBar::OnSpeedSlider(wxCommandEvent& event)
+{
+   mPlaySpeed = (mPlaySpeedSlider->Get()) * 100;
+   if(!mTimeTrack)
+      {   
+         AudacityProject * p = GetActiveProject();
+         if(p)
+            {
+               mTimeTrack = new TimeTrack(p->GetDirManager());
+               mTimeTrack->SetRangeUpper((long int)mPlaySpeed);
+               mTimeTrack->SetRangeLower((long int)mPlaySpeed);
+            }
+
+      }
+
+   if(mTimeTrack)
+      {   
+         mTimeTrack->SetRangeLower((long int)mPlaySpeed);
+         mTimeTrack->SetRangeUpper((long int)mPlaySpeed);
+      }
 }
 
 void TranscriptionToolBar::OnStartOn(wxCommandEvent &event)
@@ -474,6 +646,7 @@ void TranscriptionToolBar::OnCalibrate(wxCommandEvent &event)
    //Make the sensititivy slider set the sensitivity by processing an event.
    wxCommandEvent dummy;
    OnSensitivitySlider(dummy);
+
 }
 
 //This automates selection through a selected region,
@@ -629,7 +802,7 @@ void TranscriptionToolBar::OnPaint(wxPaintEvent & evt)
 
 void TranscriptionToolBar::OnSensitivitySlider(wxCommandEvent & event)
 {
-   mSensitivity = (mSensitivitySlider->Get())* 5;
+   mSensitivity = (mSensitivitySlider->Get());
 }
 
 void TranscriptionToolBar::EnableDisableButtons()

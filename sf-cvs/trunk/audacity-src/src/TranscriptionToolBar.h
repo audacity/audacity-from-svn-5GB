@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  AVoiceKeyPalette.h
+  TranscriptionToolBar.h
 
   Shane T. Mueller
 
@@ -22,9 +22,15 @@ class AButton;
 class ASlider;
 class VoiceKey;
 class WaveTrack;
+class TimeTrack;
 
+
+//TTB 0-8 are button-ids, which also correspond to their
+//position in mButtons.  9 & 10 are ids for sliders, which aren't
+//in the button array.
 enum
    {
+      TTB_PlaySpeed,
       TTB_StartOn,
       TTB_EndOn,
       TTB_StartOff,
@@ -32,10 +38,11 @@ enum
       TTB_Calibrate,
       TTB_AutomateSelection,
       TTB_MakeLabel,
-      TTB_SensitivitySlider
+      TTB_SensitivitySlider,
+      TTB_PlaySpeedSlider,
    };
 
-#define TTBNumButtons 7
+#define TTBNumButtons 8
 
 class TranscriptionToolBar:public ToolBar {
  public:
@@ -50,6 +57,8 @@ class TranscriptionToolBar:public ToolBar {
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnKeyEvent(wxKeyEvent & event);
 
+   virtual void OnPlaySpeed(wxCommandEvent & event);
+   virtual void OnSpeedSlider(wxCommandEvent& event);
    virtual void OnStartOn(wxCommandEvent &event);
    virtual void OnStartOff(wxCommandEvent &event);
    virtual void OnEndOn(wxCommandEvent &event);
@@ -77,6 +86,8 @@ class TranscriptionToolBar:public ToolBar {
    wxImage *downImage;
    wxImage *hiliteImage;
    
+   ASlider * mPlaySpeedSlider;
+   double mPlaySpeed;
    ASlider * mSensitivitySlider;
    double mSensitivity;
    VoiceKey *vk;
@@ -87,6 +98,9 @@ class TranscriptionToolBar:public ToolBar {
    int mBackgroundWidth;
    int mBackgroundHeight;
 
+   TimeTrack * mTimeTrack;
+   
+   
 DECLARE_EVENT_TABLE()
 };
 
