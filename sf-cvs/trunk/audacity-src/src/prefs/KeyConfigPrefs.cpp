@@ -175,7 +175,9 @@ void SysKeyTextCtrl::OnKey(wxKeyEvent& event)
    else if (key >= 33 && key <= 126)
       newStr += (char)key;
    else if (key == WXK_BACK)
-      newStr = "";
+      newStr = "Backspace";
+   else if (key == WXK_DELETE)
+      newStr = "Delete";
    else if (key == WXK_SPACE)
       newStr = "Spacebar";
    else
