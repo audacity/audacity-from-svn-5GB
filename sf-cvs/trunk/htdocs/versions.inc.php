@@ -30,7 +30,7 @@
   $srcBetaVersion =   "1.2.0-pre4";
   $srcBetaSize =      "3.2 MB";
 
-  $linuxBetaVersion =   "1.2.0-pre3";
+  $linuxBetaVersion =   "1.2.0-pre4";
   $linuxBetaSize =      "2.5 MB";
 
   $rpmStableVersion = "1.0.0-2";
