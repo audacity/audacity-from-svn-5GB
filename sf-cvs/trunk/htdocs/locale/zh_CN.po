@@ -1,84 +1,137 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-21 13:23-0800\n"
-"PO-Revision-Date: 2005-01-06 18:03+0800\n"
+"Project-Id-Version: Simplified Chinese Translation Project for Audacity website\n"
+"Report-Msgid-Bugs-To: Audacity Translation mail-list <audacity-translation@lists.sourceforge.net>\n"
+"POT-Creation-Date: 2005-02-20 10:11-0800\n"
+"PO-Revision-Date: 2005-02-21 16:44+0800\n"
 "Last-Translator: Liu Xiaoxi <liouxiao@hotmail.com>\n"
 "Language-Team: Simplified Chinese Translation Team. <liouxiao@hotmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: download/windows.php:18
-#, fuzzy, php-format
+#: about/main.inc.php:11 about/index.php:9 help/faq.php:23
+msgid "About Audacity"
+msgstr "关于Audacity"
+
+#: about/index.php:14
 msgid ""
-"<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest "
-"version of the free Audacity audio editor."
+"<p>Audacity is a free, easy-to-use audio editor and recorder for Windows, "
+"Mac OS X, GNU/Linux, and other operating systems.  You can use Audacity to:</"
+"p>\n"
+"\n"
+"<ul>\n"
+"  <li>Record live audio.</li>\n"
+"  <li>Convert tapes and records into digital recordings or CDs.</li>\n"
+"  <li>Edit Ogg Vorbis, MP3, and WAV sound files.</li>\n"
+"  <li>Cut, copy, splice, and mix sounds together.</li>\n"
+"  <li>Change the speed or pitch of a recording.</li>\n"
+"  <li>And more! See the complete <a href=\"features\">list of features</a>.</"
+"li>\n"
+"</ul>"
 msgstr ""
+"<p>Audacity是一款免费的、易于使用的音频编辑器和录音器，可运行在Windows、"
+"Mac OS X、GNU/Linux及其它操作系统上。您可将Audacity用于:</"
+"p>\n"
+"\n"
+"<ul>\n"
+"  <li>现场录音。</li>\n"
+"  <li>将磁带和录音带转录为数字录音或CD。</li>\n"
+"  <li>编辑Ogg Vorbis、MP3及WAV音频文件。</li>\n"
+"  <li>剪切、拷贝、接合及混音。</li>\n"
+"  <li>改变录音的速率或音高。</li>\n"
+"  <li>还有更多! 参见完整的<a href=\"features\">特性列表</a>。</"
+"p>\n"
+"</ul>"
 
-#: about/credits.php:10 main.inc.php:24
-msgid "Credits"
-msgstr "谢启"
-
-#: about/credits.php:15
+#. i18n-hint: You may change the link addresses below, if there is a
+#. version of the page in your language at a different location.
+#.
+#. For official translations of the phrase "free software", please see:
+#. http://www.fsf.org/philosophy/fs-translations.html
+#.
+#. Also check the translations of this web page:
+#. http://www.fsf.org/philosophy/free-sw.html
+#: about/index.php:33
 msgid ""
-"These are some of the people who have <a href=\"../community/\">contributed</"
-"a> to the free Audacity audio editor.</p>  \n"
-"</p>If you have questions or feedback about Audacity, please see the <a href="
-"\"../contact/\">contact page</a>."
+"<h3>About Free Software</h3>\n"
+"\n"
+"<p>Audacity is free software, developed by a group of volunteers and "
+"distributed under the <a href=\"license\">GNU General Public License (GPL)</"
+"a>.</p>\n"
+"\n"
+"<p>Free software is not just free of cost (like “free beer”).  It is <b>free "
+"as in freedom</b> (like “free speech”).  Free software gives you the freedom "
+"to use a program, study how it works, improve it, and share it with others.  "
+"For more information, visit the <a href=\"http://www.fsf.org/\">Free "
+"Software Foundation</a>.</p>\n"
+"\n"
+"<p>Programs like Audacity are also called <b>open source software</b>, "
+"because their source code is available for anyone to study or use.  There "
+"are thousands of other free and open source programs, including the <a href="
+"\"http://www.mozilla.org/\">Mozilla</a> web browser, the <a href=\"http://"
+"www.openoffice.org/\">OpenOffice.org</a> office suite, and entire <a title="
+"\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Linux-based operating "
+"systems</a>.</p>"
 msgstr ""
-"这里列出了部分为Audacity音频编辑器作出了<a href=\"../community/\">贡献</a>"
-"人。</p>  \n"
-"</p>如果您对Audacity有什么问题或反馈，请见<a href=\"../contact/\">联系页</"
-"a>。"
+"<h3>关于自由(Free，免费)软件</h3>\n"
+"\n"
+"<p>Audacity是自由软件，由一组志愿者开发，并在"
+"<a href=\"license\">GNU General Public License (GPL)</a>"
+"的许可下发布。</p>\n"
+"\n"
+"<p>自由软件不仅仅意味着免费(像“免费啤酒”)；它还意味着"
+"没有拘束(像“自由发言”)。自由软件赋予你"
+"使用软件、学习其工作机理、改进它以及和别人共享它的种种自由。"
+"如果要了解更多信息，请访问<a href=\"http://www.fsf.org/\">自由"
+"软件基金会</a>的网站(<a href=\"http://www.fsf.org/home.cn.html\">"
+"简体中文版首页</a>)。</p>\n"
+"\n"
+"<p>类似Audacity的软件也被称为<b>开放源码软件</a>，"
+"因为其源码可以为任何人学习和使用。"
+"目前有数千种开放源码软件，包括<a "
+"href=\"http://www.mozilla.org/\">Mozilla</a>浏览器(<a href="
+"\"http://www.mozcn.org/\">简体中文社区</a>)、<a href="
+"\"http://www.openoffice.org/\">OpenOffice.org</a>办公套件(<a href="
+"\"http://zh.openoffice.org/index_gb.html\">简体中文版首页</a>)，以及所有的"
+"<a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">基于Linux的"
+"操作系统</a>。</p>"
 
-#: about/credits.php:18
-msgid "Lead Developers"
-msgstr "主要开发者"
+#: about/screenshots.php:9 index.php:36 main.inc.php:21
+msgid "Screenshots"
+msgstr "屏幕截图"
 
-#: about/credits.php:21
-msgid "Dominic is the project leader and original author of Audacity."
-msgstr "Dominic是Audacity的项目主管及原创作者。"
+#: about/screenshots.php:15
+msgid "Click any screenshot for a larger version."
+msgstr "点击放大屏幕截图"
 
-#: about/credits.php:29
-msgid "Active Developers"
-msgstr "积极活跃的开发者"
+#: about/screenshots.php:17
+msgid "Audacity running on Linux"
+msgstr "运行在Linux系统的Audacity"
 
-#: about/credits.php:35
-msgid "Contributors"
-msgstr "贡献者"
+#: about/screenshots.php:19
+msgid "Audacity running on Windows"
+msgstr "运行在Windows系统的Audacity"
 
-#: about/credits.php:49 main.inc.php:56 community/index.php:21
-#: community/translation.php:10
-msgid "Translators"
-msgstr "翻译人员"
+#: about/screenshots.php:21
+msgid "Audacity running on Mac OS X"
+msgstr "运行在Mac OS X系统的Audacity"
 
-#: about/credits.php:86
-msgid "Libraries"
-msgstr "库"
+#: about/screenshots.php:23
+msgid "Noise Removal effect"
+msgstr "噪声消除的特效"
 
-#: about/credits.php:87
-msgid "Audacity is based on code from the following projects:"
-msgstr "Audacity基于来自以下项目的代码:"
+#: about/screenshots.php:25
+msgid "Change Pitch effect"
+msgstr "改变音高的特效"
 
-#: about/credits.php:101
-msgid "Thanks"
-msgstr "致谢"
+#: about/screenshots.php:27
+msgid "Change Tempo effect"
+msgstr "改变节拍的特效"
 
-#: about/credits.php:102
-msgid ""
-"There are many other people and organizations we would like to thank. Many "
-"of these have contributed code, patches, feedback, money, time, or other "
-"things to the project.  Others simply produce tools that made this whole "
-"thing possible."
-msgstr ""
-"我们还要感谢许多其它的人及组织。他们中许多人都为该项目贡献了代码、补丁、反"
-"馈、金钱、时间或其它东西。其他人不过制作了工具，以使这一切成为可能。"
-
-#: about/credits.php:122
-msgid "(Let us know if we're forgetting anyone!)"
-msgstr "(如果我们忘记了某人的话请通知我们!)"
+#: about/screenshots.php:29
+msgid "Recording with Audacity"
+msgstr "用Audacity录音"
 
 #: about/features.php:9 main.inc.php:20
 msgid "Features"
@@ -90,8 +143,9 @@ msgid ""
 "information on how to use these features, go to the <a href=\"../help/"
 "\">help pages</a>."
 msgstr ""
-"这里有Audacity的特性列表。关于怎样使用这些特性的更多信息，请访问<a href=\"../"
-"help/\">帮助页面</a>。"
+"这里有Audacity的特性列表。关于怎样使用这些"
+"特性的更多信息，请访问<a href=\"../help/"
+"\">帮助页面</a>。"
 
 #: about/features.php:15
 msgid ""
@@ -109,17 +163,19 @@ msgid ""
 "</ul>"
 msgstr ""
 "<h3>录音</h3>\n"
-"<p>Audacity可通过麦克风或混音器进行现场录音，也能从盒式磁带、唱片或MD转录数字"
-"化录音。通过某些声卡，它还能捕获音频流。</p>\n"
+"<p>Audacity可通过麦克风或混音器进行现场录音，也能从盒式磁"
+"带、唱片或MD转录数字化录音。通过某些声卡，"
+"它还能捕获音频流。</p>\n"
 "<ul>\n"
 "  <li>从麦克风、线路输入或其它信号源录音。</li>\n"
 "  <li>在现有音轨上配音，以生成多音轨的录音。</li>\n"
-"  <li>一次可以录制多达16声道(需要多声道硬件支持)。</li>\n"
-"  <li>音量指示可监视录音前、录音中及录音后的音量大小。</li>\n"
+"  <li>一次可以录制多达16声道(需要多声道硬件支持)。</"
+"li>\n"
+"  <li>音量指示可监视录音前、录音中及录音后的"
+"音量大小。</li>\n"
 "</ul>"
 
 #: about/features.php:25
-#, fuzzy
 msgid ""
 "<h3>Import and Export</h3>\n"
 "<p>Import sound files, edit them, and combine them with other files or new "
@@ -140,20 +196,21 @@ msgid ""
 "</ul>"
 msgstr ""
 "<h3>导入和导出</h3>\n"
-"<p>导入声音文件，编辑它们，将它们与其它文件或新的录音进行合并。导出您的录音为"
-"数种常见文件格式。</p>\n"
+"<p>导入声音文件，编辑它们，将它们与其它文件或新的录音进行合并。"
+"导出您的录音为数种常见文件格式。</p>\n"
 "<ul>\n"
-"  <li>导入及导出WAV、AIFF、AU及<a href=\"http://vorbis.com\">Ogg Vorbis</a>文"
-"件。</li>\n"
-"  <li>导入MPEG音频(包括MP2和MP3文件)，使用<a href=\"http://www.underbit.com/"
-"products/mad/\">libmad</a>。</li>\n"
+"  <li>导入及导出WAV、AIFF、AU及<a href=\"http://vorbis.com\">Ogg "
+"Vorbis</a>文件。</li>\n"
+"  <li>导入MPEG音频(包括MP2和MP3文件)，使用<a href=\"http://"
+"www.underbit.com/products/mad/\">libmad</a>。</li>\n"
 "  <li>导出MP3文件，使用可选的LAME编码库。</li>\n"
 "  <li>创建适于刻录CD的WAV或AIFF文件。</li>\n"
-"  <li>导入及导出所有<a href=\"http://www.mega-nerd.com/libsndfile/"
-"\">libsndfile</a>支持的文件格式。</li>\n"
-"  <li>打开raw(不含头部)音频文件，使用“导入Raw”命令。</li>\n"
-"  <li><strong>注意：</strong> Audacity目前不支持WMA、AAC及其它私有的或者受限"
-"制的文件格式。</li>\n"
+"  <li>导入及导出所有<a href=\"http://www."
+"mega-nerd.com/libsndfile/\">libsndfile</a>支持的文件格式。</li>\n"
+"  <li>打开raw(不含头部)音频文件，使用“导入Raw”命令。</"
+"li>\n"
+"  <li><strong>注意：</strong> Audacity目前不支持WMA、AAC"
+"及其它私有的或者受限制的文件格式。</li>\n"
 "</ul>"
 
 #: about/features.php:37
@@ -197,17 +254,18 @@ msgid ""
 "  </li>\n"
 "</ul>"
 msgstr ""
-"<h3>效果</h3>\n"
+"<h3>特效</h3>\n"
 "<ul>\n"
 "  <li>保持节拍的同时改变音高，反之亦然。</li>\n"
 "  <li>去除静电噪声、嘶嘶声、嗡嗡声或其它持续背景噪声。</li>\n"
-"  <li>使用均衡器、FFT过滤器及低音增强等效果以改变频率。</li>\n"
-"  <li>使用压缩、放大、归一化等效果调整音量。\n"
-"  <li>其它内嵌效果包括：\n"
+"  <li>使用均衡器、FFT过滤器及低音增强等特效以改变"
+"频率。</li>\n"
+"  <li>使用压缩、放大、归一化等特效调整音量。\n"
+"  <li>其它内嵌特效包括：\n"
 "    <ul>\n"
 "      <li>回声</li>\n"
 "      <li>移相器</li>\n"
-"      <li>呜咿声(Wahwah)</li>\n"
+"      <li>哇声(Wahwah)</li>\n"
 "      <li>前后反转</li>\n"
 "    </ul>\n"
 "  </li>\n"
@@ -228,14 +286,16 @@ msgid ""
 msgstr ""
 "<h3>声音品质</h3>\n"
 "<ul>\n"
-"  <li>录音及编辑16-bit、24-bit及32-bit(浮点)采样。</li>\n"
+"  <li>录音及编辑16-bit、24-bit及32-bit(浮点)采样。</"
+"li>\n"
 "  <li>最高带宽达96KHz。</li>\n"
-"  <li>使用高品质重采样和抖动算法进行采样率和格式转换。</li>\n"
-"  <li>在混合不同采样率或格式的音轨时，Audacity将自动实时地进行转换。</li>\n"
+"  <li>使用高品质重采样和抖动算法进行采样率和"
+"格式转换。</li>\n"
+"  <li>在混合不同采样率或格式的音轨时，Audacity将"
+"自动实时地进行转换。</li>\n"
 "</ul>"
 
 #: about/features.php:71
-#, fuzzy
 msgid ""
 "<h3>Plug-Ins</h3>\n"
 "<ul>\n"
@@ -251,17 +311,17 @@ msgid ""
 msgstr ""
 "<h3>插件</h3>\n"
 "<ul>\n"
-"  <li>使用<a href=\"http://www.ladspa.org/\">LADSPA插件</a>增加新的效果。</"
-"li>\n"
-"  <li>Audacity包括一些由<a href=\"http://plugin.org.uk/\">Steve Harris</a>提"
-"供的插件样例。</li>\n"
-"  <li>载入用于Windows及Mac系统的VST插件，请使用可选的<a href=\"http://"
-"audacityteam.org/vst/\">VST Enabler</a>。</li>\n"
-"  <li>使用内建的奈奎斯特(Nyquist)编程语言编写新的效果。</li>\n"
+"  <li>使用<a href=\"http://www.ladspa.org/\">LADSPA插件</a>"
+"增加新的特效。</li>\n"
+"  <li>Audacity包括一些由<a href=\"http://plugin.org."
+"uk/\">Steve Harris</a>提供的插件样例。</li>\n"
+"  <li>载入用于Windows及Mac系统的VST插件，请使用可选的<a href="
+"\"http://audacityteam.org/vst/\">VST Enabler</a>。</li>\n"
+"  <li>使用内建的<a href=\"../help/nyquist"
+"\">Nyquist</a>编程语言编写新的特效。</li>\n"
 "</ul>"
 
 #: about/features.php:79
-#, fuzzy
 msgid ""
 "<h3>Analysis</h3>\n"
 "<ul>\n"
@@ -284,91 +344,77 @@ msgid ""
 "  <li>Runs on Mac OS X, Windows, and GNU/Linux.</li>\n"
 "</ul>"
 msgstr ""
-
-#: about/index.php:9 about/main.inc.php:11 help/faq.php:23
-msgid "About Audacity"
-msgstr "关于Audacity"
-
-#: about/index.php:14
-#, fuzzy
-msgid ""
-"<p>Audacity is a free, easy-to-use audio editor and recorder for Windows, "
-"Mac OS X, GNU/Linux, and other operating systems.  You can use Audacity to:</"
-"p>\n"
-"\n"
+"<h3>自由和跨平台</h3>\n"
 "<ul>\n"
-"  <li>Record live audio.</li>\n"
-"  <li>Convert tapes and records into digital recordings or CDs.</li>\n"
-"  <li>Edit Ogg Vorbis, MP3, and WAV sound files.</li>\n"
-"  <li>Cut, copy, splice, and mix sounds together.</li>\n"
-"  <li>Change the speed or pitch of a recording.</li>\n"
-"  <li>And more! See the complete <a href=\"features\">list of features</a>.</"
-"li>\n"
-"</ul>"
-msgstr ""
-"<p>Audacity是一款免费的、易于使用的音频编辑器和录音器，可运行在Windows、Mac "
-"OS X、GNU/Linux及其它操作系统上。您可将Audacity用于:</p>\n"
-"\n"
-"<ul>\n"
-"  <li>现场录音。</li>\n"
-"  <li>将磁带和录音带转录为数字录音或CD。</li>\n"
-"  <li>编辑Ogg Vorbis、MP3及WAV音频文件。</li>\n"
-"  <li>剪切、拷贝、接合及混音。</li>\n"
-"  <li>改变录音的速率或音高。</li>\n"
-"  <li>还有更多! 参见完整的<a href=\"features\">特性列表</a>。</p>\n"
+"  <li>在<a href=\"license\">GNU General Public License (GPL)"
+"</a>许可证的许可下。</li>\n"
+"  <li>可运行在Mac OS X、Windows及GNU/Linux操作系统之上。</li>\n"
 "</ul>"
 
-#. i18n-hint: You may change the link addresses below, if there is a
-#. version of the page in your language at a different location.
-#.
-#. For official translations of the phrase "free software", please see:
-#. http://www.fsf.org/philosophy/fs-translations.html
-#.
-#. Also check the translations of this web page:
-#. http://www.fsf.org/philosophy/free-sw.html
-#: about/index.php:33
-#, fuzzy
+#: about/credits.php:10 main.inc.php:24
+msgid "Credits"
+msgstr "贡献者"
+
+#: about/credits.php:15
 msgid ""
-"<h3>About Free Software</h3>\n"
-"\n"
-"<p>Audacity is free software, developed by a group of volunteers and "
-"distributed under the <a href=\"license\">GNU General Public License (GPL)</"
-"a>.</p>\n"
-"\n"
-"<p>Free software is not just free of cost (like “free beer”).  It is <b>free "
-"as in freedom</b> (like “free speech”).  Free software gives you the freedom "
-"to use a program, study how it works, improve it, and share it with others.  "
-"For more information, visit the <a href=\"http://www.fsf.org/\">Free "
-"Software Foundation</a>.</p>\n"
-"\n"
-"<p>Programs like Audacity are also called <b>open source software</b>, "
-"because their source code is available for anyone to study or use.  There "
-"are thousands of other free and open source programs, including the <a href="
-"\"http://www.mozilla.org/\">Mozilla</a> web browser, the <a href=\"http://"
-"www.openoffice.org/\">OpenOffice.org</a> office suite, and entire <a title="
-"\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Linux-based operating "
-"systems</a>.</p>"
+"These are some of the people who have <a href=\"../community/\">contributed</"
+"a> to the free Audacity audio editor.</p>  \n"
+"</p>If you have questions or feedback about Audacity, please see the <a href="
+"\"../contact/\">contact page</a>."
 msgstr ""
-"<h3>关于自由(Free，免费)软件</h3>\n"
-"\n"
-"<p>Audacity是自由软件，由一组志愿者开发，并在<a href=\"license\">GNU General "
-"Public License (GPL)</a>的许可下发布。</p>\n"
-"\n"
-"<p><firstterm>自由软件</firstterm>不仅仅意味着免费(像“免费啤酒”)；它还意味着"
-"没有拘束(like“自由发言”)。自由软件赋予你使用软件、学习其工作机理、改进它以及"
-"和别人共享它的种种自由。如果要了解更多信息，请访问<a href=\"http://www.fsf."
-"org/\">自由软件基金会</a>的网站(<a href=\"http://www.fsf.org/home.cn.html\">"
-"简体中文版首页</a>)。</p>\n"
-"\n"
-"<p>类似Audacity的软件也被称为<a href=\"http://opensource.org/\">开放源代码软"
-"件</a>，因为其源代码可以为任何人学习和使用。</p>\n"
-"\n"
-"<p>目前有数千种开放源代码软件，包括<a href=\"http://www.mozilla.org/"
-"\">Mozilla</a>浏览器(<a href=\"http://www.mozcn.org/\">简体中文社区</a>)、<a "
-"href=\"http://www.openoffice.org/\">OpenOffice.org</a>办公套件(<a href="
-"\"http://zh.openoffice.org/index_gb.html\">简体中文版首页</a>)，以及所有的<a "
-"title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">基于Linux的操作系"
-"统</a>。</p>"
+"这里列出了部分为Audacity音频编辑器作出了<a href=\"../community/\">贡献</"
+"a>人。</p>  \n"
+"</p>如果您对Audacity有什么问题或反馈，请见<a href="
+"\"../contact/\">联系页</a>。"
+
+#: about/credits.php:18
+msgid "Lead Developers"
+msgstr "主要开发者"
+
+#: about/credits.php:21
+msgid "Dominic is the project leader and original author of Audacity."
+msgstr "Dominic是Audacity的项目主管及原创作者。"
+
+#: about/credits.php:28
+msgid "Active Developers"
+msgstr "积极活跃的开发者"
+
+#: about/credits.php:35
+msgid "Contributors"
+msgstr "贡献者"
+
+#: about/credits.php:49 community/index.php:21 community/translation.php:10
+#: main.inc.php:56
+msgid "Translators"
+msgstr "翻译人员"
+
+#: about/credits.php:86
+msgid "Libraries"
+msgstr "库"
+
+#: about/credits.php:87
+msgid "Audacity is based on code from the following projects:"
+msgstr "Audacity基于来自以下项目的代码:"
+
+#: about/credits.php:101
+msgid "Thanks"
+msgstr "致谢"
+
+#: about/credits.php:102
+msgid ""
+"There are many other people and organizations we would like to thank. Many "
+"of these have contributed code, patches, feedback, money, time, or other "
+"things to the project.  Others simply produce tools that made this whole "
+"thing possible."
+msgstr ""
+"我们还要感谢许多其它的人及组织。他们中许多"
+"人都为该项目贡献了代码、补丁、反馈、金钱、"
+"时间或其它东西。其他人不过制作了工具，以使"
+"这一切成为可能。"
+
+#: about/credits.php:124
+msgid "(Let us know if we're forgetting anyone!)"
+msgstr "(如果我们忘记了某人的话请通知我们!)"
 
 #: about/license.php:9 main.inc.php:23
 msgid "License"
@@ -383,7 +429,6 @@ msgstr "许可证"
 #. See the bottom of each page for versions in other languages.
 #.
 #: about/license.php:25
-#, fuzzy
 msgid ""
 "<p>Audacity is free software; you can redistribute it and/or modify it under "
 "the terms of the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL"
@@ -398,22 +443,33 @@ msgid ""
 "<p>See also: <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Frequently "
 "Asked Questions about the GNU GPL</a>.</p>"
 msgstr ""
-"<p>Audacity是自由软件；你可以重发布和/或修改它，但必须遵循自由软件基金会的<a "
-"href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public "
-"License</a>许可证(<a href=\"http://www.gnu.org/licenses/licenses.cn.html#GPL"
-"\">简体中文版</a>)；可以是该许可证的第二版，或者是(随你自己选择)任何后续版"
-"本。</p>\n"
+"<p>Audacity是自由软件；你可以重发布和/或修改它，但必须遵循"
+"自由软件基金会的<a href=\"http://www.gnu.org/licenses/licenses.html#GPL"
+"\">GNU General Public License</a>许可证(<a href=\"http://www.gnu.org/"
+"licenses/licenses.cn.html#GPL\">简体中文版</a>)；"
+"可以是该许可证的第二版，或者是"
+"(随你自己选择)任何后续版本。</p>\n"
 "\n"
-"<p>本版本允许你修改、拷贝、分发及销售Audacity，只要你遵循它的要求。有任何疑"
-"问，请<a href=\"../contact/\">联系我们</a>。也可见<a href=\"http://www.gnu."
-"org/licenses/gpl-faq.html\">关于GNU GPL的常见问题解答</a>。</p>"
+"<p>该许可证允许你修改、拷贝、分发及"
+"销售Audacity，只要你遵循GPL许可证公布你发行的源码。有任何"
+"疑问，请<a href=\"../contact/\">联系我们</a>。\n"
+"\n"
+"也可见<a href=\"http://www.gnu.org/licenses/gpl-faq.html\">关于"
+"GNU GPL的常见问题解答</a>。</p>"
+
+#: about/news.php:21 index.php:64
+msgid "More news items..."
+msgstr "更多新闻..."
+
+#: about/news.php:25 main.inc.php:22
+msgid "News"
+msgstr "新闻"
 
 #: about/links.php:9 main.inc.php:25
 msgid "Links"
 msgstr "链接"
 
 #: about/links.php:14
-#, fuzzy
 msgid "Other Things Named “Audacity” (not related to us)"
 msgstr "其它叫做“Audacity”的东西(与我们无关)"
 
@@ -422,8 +478,8 @@ msgid ""
 "<a href=\"http://www.audiost.com/advr.htm\">Audacity DVR</a> is a digital "
 "voice recorder for Palm OS and Treo handheld computers"
 msgstr ""
-"<a href=\"http://www.audiost.com/advr.htm\">Audacity DVR</a> 是一款 针对Palm "
-"OS及Treo手持电脑的数字语音录音软件"
+"<a href=\"http://www.audiost.com/advr.htm\">Audacity DVR</a> 是一款 "
+"针对Palm OS及Treo手持电脑的数字语音录音软件"
 
 #: about/links.php:17
 msgid ""
@@ -438,16 +494,16 @@ msgid ""
 "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> is a "
 "street-rock band from Finland."
 msgstr ""
-"<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a>是一个来自"
-"芬兰的街头摇滚乐队。"
+"<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a>是一个"
+"来自芬兰的街头摇滚乐队。"
 
 #: about/links.php:19
 msgid ""
 "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> builds custom "
 "enterprise and departmental Windows applications."
 msgstr ""
-"<a href=\"http://www.audacity.com/\">Audacity, Inc.</a>构建定制的企业用及部门"
-"用的Windows软件。"
+"<a href=\"http://www.audacity.com/\">Audacity, Inc.</a>构建定制的"
+"企业用及部门用的Windows软件。"
 
 #: about/links.php:22
 msgid "Other Audio Software"
@@ -458,8 +514,8 @@ msgid ""
 "<a href=\"http://ardour.org/\">Ardour</a> is a powerful digital audio "
 "workstation that runs on GNU/Linux."
 msgstr ""
-"<a href=\"http://ardour.org/\">Ardour</a>是一款运行在GNU/Linux上的功能强大的"
-"数字音频工作站。"
+"<a href=\"http://ardour.org/\">Ardour</a>是一款运行在GNU/Linux上的"
+"功能强大的数字音频工作站。"
 
 #: about/links.php:24
 msgid ""
@@ -474,8 +530,8 @@ msgid ""
 "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> is a "
 "free tool for capturing and cleaning recordings from vinyl records."
 msgstr ""
-"<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a>是一个"
-"免费的用于捕获及清除唱片录音的工具。"
+"<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a>是"
+"一个免费的用于捕获及清除唱片录音的工具。"
 
 #: about/links.php:26
 msgid "More free software at SourceForge.net:"
@@ -493,277 +549,131 @@ msgstr "音频捕获/录音"
 msgid "Audio Analysis"
 msgstr "音频分析"
 
-#: about/news.php:21 index.php:64
-msgid "More news items..."
-msgstr ""
-
-#: about/news.php:25 main.inc.php:22
-msgid "News"
-msgstr "新闻"
-
-#: about/screenshots.php:9 main.inc.php:21
-msgid "Screenshots"
-msgstr "屏幕截图"
-
-#: about/screenshots.php:15
-msgid "Click any screenshot for a larger version."
-msgstr ""
-
-#: about/screenshots.php:17
-msgid "Audacity running on Linux"
-msgstr ""
-
-#: about/screenshots.php:19
-msgid "Audacity running on Windows"
-msgstr ""
-
-#: about/screenshots.php:21
-msgid "Audacity running on Mac OS X"
-msgstr ""
-
-#: about/screenshots.php:23
-msgid "Noise Removal effect"
-msgstr ""
-
-#: about/screenshots.php:25
-msgid "Change Pitch effect"
-msgstr ""
-
-#: about/screenshots.php:27
-msgid "Change Tempo effect"
-msgstr ""
-
-#: about/screenshots.php:29
-msgid "Recording with Audacity"
-msgstr ""
-
-#: copyright.php:8
-msgid "Web Site Copyright and Trademark"
-msgstr "网站版权和商标"
-
-#. i18n-hint: The Creative Commons web page below is available in several
-#. languages.  Please link to the version in your language if possible.
-#.
-#. You may add a sentence like "Czech translation copyright YOUR NAME HERE"
-#. if you wish.
-#: copyright.php:22
-#, php-format
-msgid ""
-"This web site is Copyright &copy; %s members of the Audacity development "
-"team.  Except where otherwise noted, all text and images on this site are "
-"licensed under the <a href=\"http://creativecommons.org/licenses/by/2.0/"
-"\">Creative Commons Attribution License, version 2.0</a>.  You may modify, "
-"copy, distribute, and display this material, but you must give credit to the "
-"original authors.  Please see the license for details."
-msgstr ""
-"本网站为Audacity开发团队成员版权所有&copy; %s。除非别处另有说明，本网站的全部"
-"文字及图像均在<a href=\"http://creativecommons.org/licenses/by/2.0/"
-"\">Creative Commons Attribution License, version 2.0(创作共用组织署名许可证，"
-"第二版)</a>的许可下。你可以修改、拷贝、分发及显示这些材料，但你必须注明原创作"
-"者。详细条款请见许可证书。\n"
-"参见<a href=\"http://creativecommons.org/licenses/by/2.0/deed.zh_TW\">繁体中"
-"文版本</a>；\n"
-"及<a href=\"http://www.creativecommons.cn/\">简体中文方面的文档</a>。"
-
-#: copyright.php:24
-msgid ""
-"\"Audacity\" is a trademark of Dominic Mazzoni.  The Google logo is a "
-"trademark of Google, Inc."
-msgstr ""
-"\"Audacity\"是Dominic Mazzoni的商标。Google图标是Google公司(Google, Inc.)的商"
-"标。"
-
-#: index.php:9
-msgid "Free Audio Editor and Recorder"
-msgstr "免费的音频编辑器和录音器"
-
-#: index.php:18
-msgid "for Microsoft Windows"
-msgstr "Microsoft Windows 版"
-
-#: index.php:23
-msgid "for Mac OS 9 or X"
-msgstr "Mac OS 9或X 版"
-
-#: index.php:28
-msgid "For Windows, Mac, or GNU/Linux"
-msgstr "Windows, Mac, 或 GNU/Linux 版本"
-
-#: index.php:33
-msgid "The Free, Cross-Platform Sound Editor"
-msgstr "跨平台的免费声音编辑器"
-
-#: index.php:38
-msgid ""
-"Audacity is free, open source software for recording and editing sounds.  It "
-"is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating "
-"systems.  <a href=\"about/\">Learn more about Audacity...</a>"
-msgstr ""
-"Audacity是一款用于录音和编辑声音的、免费的、开放源码软件。它可以运行于Mac OS "
-"X、Microsoft Windows、GNU/Linux和其它操作系统。<a href=\"about/\">更多关于"
-"Audacity的信息...</a>"
-
-#: index.php:42
-#, php-format
-msgid "Download Audacity %s"
-msgstr "下载Audacity %s"
-
-#: index.php:46
-msgid "Other downloads"
-msgstr "其它下载"
-
-#: index.php:68
-msgid "Get Notified of New Versions"
-msgstr ""
-
-#: index.php:80
-msgid "Email address"
-msgstr ""
-
-#: index.php:81
-msgid "Add"
-msgstr ""
-
-#: index.php:82
-msgid "Remove"
-msgstr ""
-
-#: main.inc.php:17
-msgid "Home"
-msgstr "主页"
-
-#: main.inc.php:18
-msgid "About"
-msgstr "关于"
-
-#: main.inc.php:28 download/index.php:9 download/main.inc.php:11
-msgid "Download"
-msgstr "下载"
-
-#: main.inc.php:30 download/index.php:19 download/windows.php:10
-msgid "Windows"
-msgstr "Windows"
-
-#: main.inc.php:31
-msgid "Mac"
-msgstr "Mac"
-
-#: main.inc.php:32 download/index.php:25 download/linux.php:9
-msgid "Linux/Unix"
-msgstr "Linux/Unix"
-
-#: main.inc.php:33 download/source.php:10
-msgid "Source Code"
-msgstr "源代码"
-
-#: main.inc.php:34 download/release-notes.php:9
-msgid "Release Notes"
-msgstr "发行注记"
-
-#: main.inc.php:35 download/common.inc.php:12
-msgid "Plug-Ins"
-msgstr "插件"
-
-#: main.inc.php:36
-msgid "Buy a CD"
-msgstr "购买CD光盘"
-
-#: main.inc.php:39 help/main.inc.php:11
-msgid "Help"
-msgstr "帮助"
-
-#: main.inc.php:41
-msgid "FAQ"
-msgstr "常见问题解答"
-
-#: main.inc.php:42 help/documentation.php:9
-msgid "Documentation"
-msgstr "文档"
-
-#: main.inc.php:43 help/tutorials.php:9
-msgid "Tutorials"
-msgstr "教程"
-
-#: main.inc.php:44 help/nyquist.php:10
-msgid "Nyquist"
-msgstr ""
-
-#: main.inc.php:47 contact/index.php:9 contact/main.inc.php:11
-msgid "Contact Us"
-msgstr "联系方式"
-
-#: main.inc.php:49 community/developers.php:15 contact/lists.php:9
-#: contact/main.inc.php:13
-msgid "Mailing Lists"
-msgstr "邮件列表"
-
-#: main.inc.php:50 contact/main.inc.php:14 contact/privacy.php:10
-msgid "Privacy Policy"
-msgstr "隐私权政策"
-
-#: main.inc.php:53 community/index.php:9 community/main.inc.php:11
+#: community/main.inc.php:11 community/index.php:9 main.inc.php:53
 msgid "Get Involved"
 msgstr "参与"
 
-#: main.inc.php:55 community/index.php:18
+#: community/index.php:15
+msgid ""
+"Audacity is free software, developed by volunteers.  Here's how you can "
+"contribute to the Audacity project:"
+msgstr ""
+"Audacity是由志愿者开发的免费软件。参与Audacity项目的方式"
+"如下:"
+
+#: community/index.php:18 main.inc.php:55
 msgid "Users"
 msgstr "用户"
 
-#: main.inc.php:57 community/developers.php:9 community/index.php:24
+#: community/index.php:19
+msgid ""
+"Give us feedback, report bugs, and become part of the Audacity user "
+"community."
+msgstr ""
+"请给我们反馈、报告错误，您也可以成为Audacity用户"
+"社区的一员。"
+
+#: community/index.php:22
+msgid ""
+"If you are fluent in both English and another language, you can help "
+"translate the Audacity software and web site.  We also need people to help "
+"provide support for Audacity in different languages."
+msgstr ""
+"如果您同时通晓英语和其它语言，您可以帮助"
+"翻译Audacity软件及网站。我们也需要人手以提供"
+"不同语言的Audacity的支持。"
+
+#: community/index.php:24 community/developers.php:9 main.inc.php:57
 msgid "Developers"
 msgstr "开发人员"
 
-#: main.inc.php:58
-msgid "Donate"
-msgstr "捐赠"
-
-#: site-map.php:8 include/footer.inc.php:15
-msgid "Site Map"
-msgstr "网站地图"
-
-#: community/developers.php:16
+#: community/index.php:25
 msgid ""
-"Join the <a href=\"../contact/lists#devel\">audacity-devel</a> mailing list "
-"to discuss current and future development, or to get help building and "
-"modifying the Audacity source code."
+"If you are a C++ programmer, you can join the development team and help us "
+"improve Audacity.  We welcome documentation and other contributions too."
 msgstr ""
+"如果您是一位C++程序员，您可以加入开发者团队并帮助我们改进"
+"Audacity。我们也欢迎文档及其它方面的贡献。"
 
-#: community/developers.php:18
+#: community/index.php:28
 msgid ""
-"<h3 id=\"cvs\">CVS</h3>\n"
-"<p>You can get the latest development code from our CVS repository.</p>\n"
-"<ul>\n"
-"  <li><p><a href=\"http://cvs.sourceforge.net/viewcvs.py/audacity/audacity-"
-"src/\">Browse the Audacity source code online.</a></p></li>\n"
-"\n"
-"  <li><p>Use this command to check out the latest Audacity 1.2 (stable) "
-"source code from CVS:</p>\n"
-"  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity co -"
-"R AUDACITY_1_2 audacity</kbd></p></li>\n"
-"\n"
-"  <li><p>Or use this command to check out the latest Audacity 1.3 (unstable) "
-"source code from CVS:</p>\n"
-"  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity co "
-"audacity</kbd></p></li>\n"
-"</ul>\n"
-"<p>For more information, read the <a href=\"http://sourceforge.net/cvs/?"
-"group_id=6235\">SourceForge CVS instructions</a>.</p>\n"
-"<p>See the source code page for <a href=\"../download/source#instructions"
-"\">compilation instructions</a>.</a>"
+"You may also <a href=\"donate\">donate money</a> to support Audacity\n"
+"development."
 msgstr ""
+"您也可通过<a href=\"donate\">资金捐助</a>的方式来支持Audacity\n"
+"的开发工作。"
 
-#: community/developers.php:32
+#: community/users.php:10
+msgid "User Community"
+msgstr "用户社区"
+
+#: community/users.php:15
 msgid ""
-"<h3 id=\"bugzilla\">Bugzilla</h3>\n"
-"<p>The Audacity developers use <a href=\"http://audacity.sourceforge.net/cgi-"
-"bin/bugzilla/index.cgi\">Bugzilla</a> to keep track of confirmed bugs.  "
-"Check the list of <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/"
-"buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">open "
-"bugs</a> if you are looking for something to work on.</p>\n"
-"<p><strong>Note:</strong> This Bugzilla is for development use only.  If you "
-"are a user reporting new bugs, please <a href=\"../contact/\">send us e-"
-"mail</a> instead.  Thank you!</p>"
+"Audacity was written by volunteers in their spare time.  If you appreciate "
+"Audacity and would like to help out, here are some ideas:"
 msgstr ""
+"Audacity是由志愿者在业余时间开发的免费软件。如果您欣赏它并愿意出一份力，"
+"这里有一些主意："
+
+#: community/users.php:18
+msgid ""
+"<h3>Say Hello!</h3>\n"
+"<p>If you enjoy Audacity, <a href=\"../contact/\">write to us</a> and let us "
+"know that you like it.  It makes us happy to know that people enjoy it.  "
+"Also feel free to send comments and suggestions.  We're always improving "
+"Audacity, and we value your input.</p>"
+msgstr ""
+"<h3>打个招呼！</h3>\n"
+"<p>如果您喜欢Audacity的话，<a href=\"../contact/\">写信给我们</a>，让我们"
+"知道您喜欢它。我们将很高兴见到人们从中获得乐趣。"
+"如果您有评论和建议，也不必犹豫。我们一直在改进"
+"Audacity，您的意见对我们非常重要。</p>"
+
+#. i18n-hint:  Note that the wiki is in English.  If you want, you can create
+#. a page in your language on the wiki, and link to it instead.
+#: community/users.php:24
+msgid ""
+"<h3>Join the User Community</h3>\n"
+"<p>Subscribe to the <a href=\"../contact/lists#users\">audacity-users "
+"mailing list</a> to share tips, questions, and feedback with other Audacity "
+"users and developers.</p> <p>Visit the <a href=\"http://audacityteam.org/"
+"wiki/\">Audacity Wiki</a>, a community resource where users can add or edit "
+"information about Audacity.</p>"
+msgstr ""
+"<h3>加入用户社区</h3>\n"
+"<p>订阅<a href=\"../contact/lists#users\">audacity-users(Audacity用户)"
+"邮件列表</a>，与其它Audacity用户及开发者分享提示、问题和反馈。"
+"</p> <p>访问<a href=\"http://audacityteam.org/"
+"wiki/\">Audacity Wiki</a>，用户可以在这个社区里增加或编辑"
+"关于Audacity的信息。</p>"
+
+#: community/users.php:28
+msgid ""
+"<h3>Report bugs</h3>\n"
+"<p>If you find a bug in Audacity, <a href=\"../contact/\">let us know</a>.</"
+"p>"
+msgstr ""
+"<h3>报告错误</h3>\n"
+"<p>如果您在Audacity中发现错误，请<a href=\"../contact/\">让我们知道</a>。</"
+"p>"
+
+#: community/users.php:31
+msgid ""
+"<h3>Be a Beta Tester</h3>\n"
+"<p>In addition to the latest stable version of Audacity, we often have beta "
+"versions available.  These versions usually contain new features that "
+"haven't been tested yet.  If you want to help out, download this version of "
+"Audacity and play with it.  Let us know what you like and don't like, and "
+"tell us how you think it should be improved.  Tell us if you find any "
+"<em>regressions</em> - things that used to work but don't work anymore.</p>"
+msgstr ""
+"<h3>成为“Beta”版测试者</h3>\n"
+"<p>除了最新稳定版的Audacity之外，我们常常还提供beta版本。"
+"这些版本通常包含一些未经测试的新功能。"
+"如果您愿意帮助进行测试，可以下载这些版本的Audacity并使用它。"
+"告诉我们您是否喜欢它，以及您认为它应该改进的地方。"
+"如果您发现任何"
+"<em>倒退</em> - 即那些以前没问题的地方出了问题，也请告诉我们。</p>"
 
 #: community/donate.php:10
 msgid "Make a Donation"
@@ -777,64 +687,55 @@ msgid ""
 "development tools, and audio hardware&mdash;things that help us provide "
 "Audacity for free and continue to make it better."
 msgstr ""
+"Audacity是由志愿者在业余时间开发的。她不是"
+"共享软件(shareware)，我们不会做从中盈利的事情。然而，"
+"您可以通过捐献帮助我们获得足够的网络带宽、网站空间所需的服务、"
+"开发工具以及音频硬件&mdash;这一切使得我们能够"
+"提供免费而自由的Audacity软件，并继续完善她。"
 
 #: community/donate.php:18
+msgid ""
+"For a special gift if you donate US$20 or more, see our <a href=\"http://"
+"audacityteam.org/tshirt.php\">Audacity T-shirt offer</a>."
+msgstr ""
+"如果您捐献20美元以上（含20美元）即可获得一份特殊的礼物，参见我们的<a href=\"http://"
+"audacityteam.org/tshirt.php\">纪念品——Audacity的T恤衫</a>。"
+
+#: community/donate.php:20
 msgid ""
 "We currently accept money via the Amazon Honor System. Use your credit card "
 "and make a payment as small as US$1.00, or up to US$50.00:"
 msgstr ""
+"目前我们通过Amazon Honor System(亚马逊信用系统)接受金钱捐赠。您可以使用信用卡"
+"支付，少则1美元，多则50美元："
 
-#: community/donate.php:28
+#: community/donate.php:30
 msgid "We also accept PayPal payments through the SourceForge donation system:"
-msgstr ""
+msgstr "我们同时通过SourceForge捐赠系统(donation system)接受PayPal形式的支付。"
 
-#: community/donate.php:31
+#: community/donate.php:33
 msgid "Donate via PayPal"
-msgstr ""
+msgstr "通过PayPal捐赠"
 
-#: community/donate.php:34
+#: community/donate.php:36
 msgid ""
 "If you prefer to send a personal check or another form of payment, please "
 "visit the <a href=\"../about/credits\">credits</a> page and contact one of "
 "the lead developers."
 msgstr ""
+"如果您希望通过个人支票或另一种形式支付，请"
+"访问<a href=\"../about/credits\">贡献者</a>页面并与任何一个主要开发人员"
+"联系即可。"
 
-#: community/index.php:15
+#: community/donate.php:38
 msgid ""
-"Audacity is free software, developed by volunteers.  Here's how you can "
-"contribute to the Audacity project:"
-msgstr "Audacity是由志愿者开发的免费软件。参与Audacity项目的方式如下:"
-
-#: community/index.php:19
-msgid ""
-"Give us feedback, report bugs, and become part of the Audacity user "
-"community."
-msgstr "请给我们反馈、报告错误，您也可以成为Audacity用户社区的一员。"
-
-#: community/index.php:22
-msgid ""
-"If you are fluent in both English and another language, you can help "
-"translate the Audacity software and web site.  We also need people to help "
-"provide support for Audacity in different languages."
+"We would also like to hear from any companies or groups interested in <a "
+"href=\"http://audacityteam.org/sponsor.php\">sponsoring Audacity "
+"development</a>."
 msgstr ""
-"如果您同时通晓英语和其它语言，您可以帮助翻译Audacity软件及网站。我们也需要人"
-"手以提供不同语言的Audacity的支持。"
-
-#: community/index.php:25
-msgid ""
-"If you are a C++ programmer, you can join the development team and help us "
-"improve Audacity.  We welcome documentation and other contributions too."
-msgstr ""
-"如果您是一位C++程序员，您可以加入开发者团队并帮助我们改进Audacity。我们也欢迎"
-"文档及其它方面的贡献。"
-
-#: community/index.php:28
-msgid ""
-"You may also <a href=\"donate\">donate money</a> to support Audacity\n"
-"development."
-msgstr ""
-"您也可通过<a href=\"donate\">资金捐助</a>的方式来支持Audacity\n"
-"的开发工作。"
+"我们也希望各界有识的公司团体能够有兴趣<a "
+"href=\"http://audacityteam.org/sponsor.php\">赞助Audacity的"
+"开发</a>。"
 
 #: community/translation.php:16
 msgid ""
@@ -843,9 +744,10 @@ msgid ""
 "contact/lists#translation\">audacity-translation mailing list</a> and "
 "introduce yourself."
 msgstr ""
-"一群志愿者在把Audacity声音编辑器软件翻译为不同语言。如果您想参与，请加入<a "
-"href=\"../contact/lists#translation\">audacity-translation邮件列表</a>并做个"
-"自我介绍。"
+"一群志愿者在把Audacity声音编辑器软件翻译为"
+"不同语言。如果您想参与，请加入<a href=\"../"
+"contact/lists#translation\">audacity-translation邮件列表</a>并"
+"做个自我介绍。"
 
 #: community/translation.php:18
 msgid "Resources for Translators"
@@ -865,7 +767,7 @@ msgstr "最新的audacity_website.pot文件"
 
 #: community/translation.php:23
 msgid "wxWidgets i18n"
-msgstr ""
+msgstr "wxWidgets国际化(i18n)"
 
 #. i18n-hint: These instructions are for translators only, so you may
 #. leave them untranslated if you like.
@@ -921,8 +823,9 @@ msgid ""
 msgstr ""
 "<h3>翻译说明</h3>\n"
 "\n"
-"<p>开始着手翻译时，请下载上面的POT文件。在翻译前先将其改名为\"audacity.po\"。"
-"如果要编辑一个已有的翻译文件，请下载相应语言的PO文件:</p>\n"
+"<p>开始着手翻译时，请下载上面的POT文件。在翻译前先将其改名为"
+"\"audacity.po\"。如果要编辑一个已有的翻译文件，"
+"请下载相应语言的PO文件:</p>\n"
 "<ul>\n"
 "  <li><a href=\"%s\">Audacity翻译</a></li>\n"
 "  <li><a href=\"%s\">Audacity网站翻译</a></li>\n"
@@ -930,83 +833,129 @@ msgstr ""
 "\n"
 "<p>以下软件可用于创建和编辑PO文件:</p>\n"
 "<ul>\n"
-"  <li><a href=\"http://poedit.sourceforge.net/\">poEdit</a>，有Windows和Unix"
-"两个版本。</li>\n"
-"  <li><a href=\"http://i18n.kde.org/tools/kbabel/\">KBabel</a>运行于KDE环境。"
-"</li>\n"
-"  <li><a href=\"http://www.gnu.org/software/gettext/\">GNU gettext</a>在大多"
-"数Unix系统上是标准配置。它包含一个用于Emacs文本编辑器的PO模式。</li>\n"
+"  <li><a href=\"http://poedit.sourceforge.net/\">poEdit</a>，有Windows和"
+"Unix两个版本。</li>\n"
+"  <li><a href=\"http://i18n.kde.org/tools/kbabel/\">KBabel</a>运行于KDE环境"
+"。</li>\n"
+"  <li><a href=\"http://www.gnu.org/software/gettext/\">GNU gettext</a>在大"
+"多数Unix系统上是标准配置。它包含一个用于Emacs文本编辑器的PO"
+"模式。</li>\n"
 "</ul>\n"
 "\n"
-"<p>请将完成好的PO文件发送给Matt Brubeck，<a href=\"mailto:mbrubeck@cs.hmc.edu"
-"\">mbrubeck@cs.hmc.edu</a>。</p>\n"
+"<p>请将完成好的PO文件发送给Matt Brubeck，<a href=\"mailto:mbrubeck@cs.hmc."
+"edu\">mbrubeck@cs.hmc.edu</a>。</p>\n"
 "\n"
 "<h3>注意</h3>\n"
 "\n"
 "<ul>\n"
-"  <li><p>在poEdit中，确保将\"charset\"项设正确。 否则，poEdit将无法保存含非英"
-"文字母的翻译。</p>\n"
-"  <li><p>诸如<b>\"&amp;File\"</b>和<b>\"New &amp;Audio Track\"</b>的字符串是"
-"菜单项。在\"&amp;\"符号之后的字符是用作键盘快捷方式的。</p>\n"
-"  <li><p><b>\"Import Audio...\\tCtrl+i\"</b>也是菜单项。其中\"\\t\"表示一个"
-"\"tab\"字符，它将菜单文本和键盘命令分隔开来。</p>\n"
-"  <li><p>您还能发现许多诸如<b>\"There were %%d buffer underruns, last near %%"
-"lf seconds.\"</b>之类的字符串。\"%%\"记号表示了在字符串中插入数字或名字的地"
-"方。例如，所述字符串可能变为\"There were 4 buffer underruns, last near 3.01 "
-"seconds.\"。如果您要改变字符串中\"%%\"记号的顺序，只需在要变为第一个的百分号"
-"后加上\"1$\"，在要变为第二个的百分号后加\"2$\"，依此类推。例如：</p>\n"
+"  <li><p>在poEdit中，确保将\"charset\"项设正确。 "
+"否则，poEdit将无法保存含非英文字母的翻译。"
+"</p>\n"
+"  <li><p>诸如<b>\"&amp;File\"</b>和<b>\"New &amp;Audio Track\"</"
+"b>的字符串是菜单项。在\"&amp;\"符号之后的字符是用作"
+"键盘快捷方式的。</p>\n"
+"  <li><p><b>\"Import Audio...\\tCtrl+i\"</b>也是菜单项。其中\"\\t\""
+"表示一个\"tab\"字符，它将菜单文本和键盘命令"
+"分隔开来。</p>\n"
+"  <li><p>您还能发现许多诸如<b>\"There were %%d buffer "
+"underruns, last near %%lf seconds.\"</b>之类的字符串。\"%%\"记号表示了在"
+"字符串中插入数字或名字的地方。例如，所述字符串"
+"可能变为\"There were 4 buffer underruns, last near 3.01 seconds.\"。如果"
+"您要改变字符串中\"%%\"记号的顺序，只需在要变为第一个的百分号后加上\"1$\"，"
+"在要变为第二个的百分号后加\"2$\"，"
+"依此类推。例如：</p>\n"
 "  <blockquote><p><b>\"The buffer underrun near %%2$lf seconds was the last "
 "of %%1$d.\"</b></p></blockquote>\n"
 "</ul>"
 
-#: community/users.php:10
-msgid "User Community"
-msgstr "用户社区"
+#: community/developers.php:15 contact/main.inc.php:13 contact/lists.php:9
+#: main.inc.php:49
+msgid "Mailing Lists"
+msgstr "邮件列表"
 
-#: community/users.php:15
+#: community/developers.php:16
 msgid ""
-"Audacity was written by volunteers in their spare time.  If you appreciate "
-"Audacity and would like to help out, here are some ideas:"
+"Join the <a href=\"../contact/lists#devel\">audacity-devel</a> mailing list "
+"to discuss current and future development, or to get help building and "
+"modifying the Audacity source code."
 msgstr ""
+"加入<a href=\"../contact/lists#devel\">audacity-devel(Audacity开发)</a>邮件列表"
+"参与目前及将来开发的讨论，或获得构建及修改Audacity源码"
+"的帮助。"
 
-#: community/users.php:18
+#: community/developers.php:18
 msgid ""
-"<h3>Say Hello!</h3>\n"
-"<p>If you enjoy Audacity, <a href=\"../contact/\">write to us</a> and let us "
-"know that you like it.  It makes us happy to know that people enjoy it.  "
-"Also feel free to send comments and suggestions.  We're always improving "
-"Audacity, and we value your input.</p>"
+"<h3 id=\"cvs\">CVS</h3>\n"
+"<p>You can get the latest development code from our CVS repository.</p>\n"
+"<ul>\n"
+"  <li><p><a href=\"http://cvs.sourceforge.net/viewcvs.py/audacity/audacity-"
+"src/\">Browse the Audacity source code online.</a></p></li>\n"
+"\n"
+"  <li><p>Use this command to check out the latest Audacity 1.2 (stable) "
+"source code from CVS:</p>\n"
+"  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity "
+"checkout -r AUDACITY_1_2 audacity</kbd></p></li>\n"
+"\n"
+"  <li><p>Or use this command to check out the latest Audacity 1.3 (unstable) "
+"source code from CVS:</p>\n"
+"  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity "
+"checkout audacity</kbd></p></li>\n"
+"</ul>\n"
+"<p>For more information, read the <a href=\"http://sourceforge.net/cvs/?"
+"group_id=6235\">SourceForge CVS instructions</a>.</p>\n"
+"<p>See the source code page for <a href=\"../download/source#instructions"
+"\">compilation instructions</a>.</p>"
 msgstr ""
+"<h3 id=\"cvs\">CVS</h3>\n"
+"<p>您可以从CVS代码库获得最新的开发源码。</p>\n"
+"<ul>\n"
+"  <li><p><a href=\"http://cvs.sourceforge.net/viewcvs.py/audacity/audacity-"
+"src/\">在线阅读Audacity源码。</a></p></li>\n"
+"\n"
+"  <li><p>使用本命令可以将最新的Audacity 1.2 (稳定版本) "
+"源码从CVS库里取出:</p>\n"
+"  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity "
+"checkout -r AUDACITY_1_2 audacity</kbd></p></li>\n"
+"\n"
+"  <li><p>或者使用本命令可以将最新的Audacity 1.3 (非稳定版本) "
+"源码从CVS库里取出:</p>\n"
+"  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity "
+"checkout audacity</kbd></p></li>\n"
+"</ul>\n"
+"<p>更多信息请阅读<a href=\"http://sourceforge.net/cvs/?"
+"group_id=6235\">SourceForge CVS用法说明</a>。</p>\n"
+"<p>参见源码页面的<a href=\"../download/source#instructions"
+"\">编译说明</a>。</p>"
 
-#. i18n-hint:  Note that the wiki is in English.  If you want, you can create
-#. a page in your language on the wiki, and link to it instead.
-#: community/users.php:24
+#: community/developers.php:32
 msgid ""
-"<h3>Join the User Community</h3>\n"
-"<p>Subscribe to the <a href=\"../contact/lists#users\">audacity-users "
-"mailing list</a> to share tips, questions, and feedback with other Audacity "
-"users and developers.</p> <p>Visit the <a href=\"http://audacityteam.org/"
-"wiki/\">Audacity Wiki</a>, a community resource where users can add or edit "
-"information about Audacity.</p>"
+"<h3 id=\"bugzilla\">Bugzilla</h3>\n"
+"<p>The Audacity developers use <a href=\"http://audacity.sourceforge.net/cgi-"
+"bin/bugzilla/index.cgi\">Bugzilla</a> to keep track of confirmed bugs.  "
+"Check the list of <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/"
+"buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">open "
+"bugs</a> if you are looking for something to work on.</p>\n"
+"<p><strong>Note:</strong> This Bugzilla is for development use only.  If you "
+"are a user reporting new bugs, please <a href=\"../contact/\">send us e-"
+"mail</a> instead.  Thank you!</p>"
 msgstr ""
+"<h3 id=\"bugzilla\">Bugzilla系统</h3>\n"
+"<p>Audacity开发者使用<a href=\"http://audacity.sourceforge.net/cgi-"
+"bin/bugzilla/index.cgi\">Bugzilla</a>来跟踪那些已被确认的错误。  "
+"如果您想修正这些错误，请查看<a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/"
+"buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">待解决的"
+"错误</a>列表。</p>\n"
+"<p><strong>注意:</strong> 本Bugzilla系统仅限于从事开发的用途。"
+"如果您只是一位要报告错误的用户，请<a href=\"../contact/\">给我们发电子邮件"
+"</a>。谢谢！</p>"
 
-#: community/users.php:28
-msgid ""
-"<h3>Report bugs</h3>\n"
-"<p>If you find a bug in Audacity, <a href=\"../contact/\">let us know</a>.</"
-"p>"
-msgstr ""
+#: contact/main.inc.php:11 contact/index.php:9 main.inc.php:47
+msgid "Contact Us"
+msgstr "联系方式"
 
-#: community/users.php:31
-msgid ""
-"<h3>Be a Beta Tester</h3>\n"
-"<p>In addition to the latest stable version of Audacity, we often have beta "
-"versions available.  These versions usually contain new features that "
-"haven't been tested yet.  If you want to help out, download this version of "
-"Audacity and play with it.  Let us know what you like and don't like, and "
-"tell us how you think it should be improved.  Tell us if you find any "
-"<em>regressions</em> - things that used to work but don't work anymore.</p>"
-msgstr ""
+#: contact/main.inc.php:14 contact/privacy.php:10 main.inc.php:50
+msgid "Privacy Policy"
+msgstr "隐私权政策"
 
 #. i18n-hint:  Please add a note that we can answer questions to
 #. audacity-help in English only.  If there is an Audacity forum or mailing
@@ -1029,23 +978,25 @@ msgid ""
 "or other problems you experience.</li>\n"
 "</ol>"
 msgstr ""
-"<p>如果您有疑问或意见要发给Audacity的开发者，请发e-mail至: <a href=\"mailto:"
-"audacity-help@lists.sourceforge.net\">audacity-help@lists.sourceforge.net</"
-"a>。\n"
-"(这是一个公开的邮件列表。详情请见我们的<a href=\"../contact/privacy\">隐私权"
-"政策</a>。)</p>\n"
+"<p>如果您有疑问或意见要发给Audacity的开发者，请发e-mail"
+"至: <a href=\"mailto:audacity-help@lists.sourceforge.net\">audacity-"
+"help@lists.sourceforge.net</a>。\n"
+"(这是一个公开的邮件列表。详情请见我们的<a href=\"../contact/"
+"privacy\">隐私权政策</a>。)</p>\n"
 "\n"
 "<p><b>当您要报告错误或问题时，请：</b></p>\n"
 "<ol>\n"
-"  <li>在您联系我们之前，核查一下<a href=\"../help/faq\">常见问题解答</a>。</"
-"li>\n"
-"  <li>告诉我们您使用是哪个版本的Audacity以及您的操作系统。</li>\n"
-"  <li>包含您试图做什么、所有的错误信息及您遇到的其它问题等等有关的详细资料。"
+"  <li>在您联系我们之前，核查一下<a href=\"../help/faq\">常见"
+"问题解答</a>。</li>\n"
+"  <li>告诉我们您使用是哪个版本的Audacity以及您的操作系统。"
 "</li>\n"
-"</ol>\n"
+"  <li>包含您试图做什么、所有的错误信息及您遇到的其它问题等等"
+"有关的详细资料。</li>\n"
+"</ol>"
+"\n"
 "<p><b>注意：</b></p>\n"
-"<p>在audacity-help列表上，Audacity的开发者只能用英语回答疑问，所以请您最好用"
-"英语描述您的问题。</p>"
+"<p>在audacity-help列表上，Audacity的开发者只能用英语回答疑问，所以"
+"请您最好用英语描述您的问题。</p>"
 
 #: contact/index.php:29
 msgid ""
@@ -1054,8 +1005,67 @@ msgid ""
 "\"../contact/lists\">mailing lists</a>.</p>"
 msgstr ""
 "<h3>讨论列表</h3>\n"
-"<p>如要和其他用户及开发者讨论Audacity，请加入我们的<a href=\"../contact/lists"
-"\">邮件列表</a>。</p>"
+"<p>如要和其他用户及开发者讨论Audacity，请加入我们的<a href="
+"\"../contact/lists\">邮件列表</a>。</p>"
+
+#: contact/privacy.php:21
+msgid "Announcement List Policy"
+msgstr "公告列表政策"
+
+#: contact/privacy.php:23
+msgid ""
+"<p>You can subscribe to our announcement list by entering your address in "
+"the form on the <a href=\"../\">Audacity home page</a>.  We will use this "
+"list only to send you brief announcements of new Audacity releases.  We will "
+"never share the addresses on this list with anyone.</p>\n"
+"<p>To <b>unsubscribe</b> from the list at any time, enter your address in "
+"the form on our <a href=\"../\">home page</a> and press the \"Remove\" "
+"button.  If you have any problems or questions, please contact <a href="
+"\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>.</p>"
+msgstr ""
+"<p>欲订阅我们的公告列表，您只需在<a href=\"../\">Audacity主页</a>的表格里填写"
+"您的地址。我们将使用此列表向您发送有关Audacity新版本的简要公告。"
+"我们不会将您的地址透露给其他人。</p>\n"
+"<p>欲<b>取消订阅</b>，您只需随时在我们<a href=\"../\">主页</a>的表格里填入"
+"您的地址，然后点击\"删除\"(Remove)按钮。"
+"如果您遇到任何问题，请与<a href="
+"\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>联系。</p>"
+
+#: contact/privacy.php:26
+msgid "Mailing List Policy"
+msgstr "邮件列表政策"
+
+#: contact/privacy.php:28
+msgid ""
+"<p>(This applies to audacity-help, audacity-users, and other <a href=\"../"
+"contact/lists\">discussion lists</a>.)</p>\n"
+"<p>These are public mailing lists.  When you send a message to any of these "
+"addresses, including <a href=\"../contact/\">audacity-help</a>, it will be "
+"forwarded to dozens of people, including Audacity developers and others.  "
+"SourceForge and other web sites may publish archives of these lists.  "
+"<b>Your email address will normally be removed from published archives for "
+"your privacy, and the Audacity developers will not share your address with "
+"anyone or add it to any lists.</b>  However, we can't prevent other "
+"subscribers from seeing or publishing your messages.</p>\n"
+"<p>If you have any questions about this policy or are not comfortable "
+"writing to a public mailing list, send a private e-mail to the lead Audacity "
+"developer at: <a href=\"mailto:dominic@audacityteam.org"
+"\">dominic@audacityteam.org</a>.</p>"
+msgstr ""
+"<p>(这些条款适用于audacity-help、audacity-users以及其它的<a href=\"../"
+"contact/lists\">讨论列表</a>。)</p>\n"
+"<p>这些列表都是公共的邮件列表。当您要向其中任何一个地址(包括"
+"<a href=\"../contact/\">audacity-help</a>)发信时，您的信将被"
+"转寄给许多人，他们可能时Audacity的开发者，也可能是别的人。 "
+"SourceForge和其它网站可能公布这些列表的存档内容。 "
+"<b>处于银丝方面的考虑，您的邮件地址通常会被从公布的存档中删去，"
+"Audacity的开发者们也不会将您的地址透露给任何人或者加入其它列表。</b> "
+"但是，我们无法防止其他订阅我们邮件列表的"
+"用户看到及公布您发往此列表的信件内容。</p>\n"
+"<p>如果您对此政策有任何问题，或者您不愿意在"
+"公开的邮件列表发信，请给Audacity的主要开发者发送私人邮件，邮箱是:"
+"<a href=\"mailto:dominic@audacityteam.org"
+"\">dominic@audacityteam.org</a>。</p>"
 
 #: contact/lists.php:12
 msgid "You must subscribe to send messages to this list."
@@ -1075,30 +1085,37 @@ msgid ""
 "<p>Note: These are public mailing lists.  For details, see our <a href="
 "\"privacy\">privacy policy</a>."
 msgstr ""
+"这些邮件列表用于讨论Audacity相关的问题。 </p>\n"
+"<p>注意: 它们是公共的邮件列表。 详情见我们的<a href="
+"\"privacy\">隐私权政策</a>。"
 
 #: contact/lists.php:27
 msgid "Discuss Audacity with other users and developers."
-msgstr ""
+msgstr "和其他用户及开发者讨论Audacity。"
 
 #: contact/lists.php:33
 msgid "For translators localizing the Audacity software and web site."
-msgstr ""
+msgstr "为 翻译者讨论Audacity软件和网站的本地化 提供便利。"
 
 #: contact/lists.php:39
 msgid "For developers working with the Audacity source code and documentation."
-msgstr ""
+msgstr "为 开发者讨论Audacity的源码和文档 提供便利。"
 
 #: contact/lists.php:45
 msgid ""
 "Share questions and tips about programming <a href=\"../help/nyquist"
 "\">Nyquist plug-ins</a>."
 msgstr ""
+"分享关于<a href=\"../help/nyquist"
+"\">Nyquist插件</a>编程的问题和技巧。"
 
 #: contact/lists.php:51
 msgid ""
 "Developers can subscribe to this mailing list to receive automatic updates "
 "from <a href=\"../community/developers#bugzilla\">Bugzilla</a>."
 msgstr ""
+"开发者可以订阅此邮件列表，以便从"
+"<a href=\"../community/developers#bugzilla\">Bugzilla</a>接收自动更新。"
 
 #: contact/lists.php:57
 msgid ""
@@ -1106,55 +1123,69 @@ msgid ""
 "Audacity developers.  You do not need to subscribe to this list to send a "
 "message."
 msgstr ""
+"如果您有问题或评价给Audacity的开发者，请向此邮件列表发信。"
+"在此列表发信不需事先订阅。"
 
-#: contact/privacy.php:21
-msgid "Announcement List Policy"
-msgstr ""
+#: copyright.php:8
+msgid "Web Site Copyright and Trademark"
+msgstr "网站版权和商标"
 
-#: contact/privacy.php:23
+#. i18n-hint: The Creative Commons web page below is available in several
+#. languages.  Please link to the version in your language if possible.
+#.
+#. You may add a sentence like "Czech translation copyright YOUR NAME HERE"
+#. if you wish.
+#: copyright.php:22
+#, php-format
 msgid ""
-"<p>You can subscribe to our announcement list by entering your address in "
-"the form on the <a href=\"../\">Audacity home page</a>.  We will use this "
-"list only to send you brief announcements of new Audacity releases.  We will "
-"never share the addresses on this list with anyone.</p>\n"
-"<p>To <b>unsubscribe</b> from the list at any time, enter your address in "
-"the form on our <a href=\"../\">home page</a> and press the \"Remove\" "
-"button.  If you have any problems or questions, please contact <a href="
-"\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>.</p>"
+"This web site is Copyright &copy; %s members of the Audacity development "
+"team.  Except where otherwise noted, all text and images on this site are "
+"licensed under the <a href=\"http://creativecommons.org/licenses/by/2.0/"
+"\">Creative Commons Attribution License, version 2.0</a>.  You may modify, "
+"copy, distribute, and display this material, but you must give credit to the "
+"original authors.  Please see the license for details."
 msgstr ""
+"本网站为Audacity开发团队成员版权所有&copy; %s。"
+"除非别处另有说明，本网站的全部文字及图像均在"
+"<a href=\"http://creativecommons.org/licenses/by/2.0/\">Creative Commons Attribution License, version 2.0(创作共用组织署名许可证，第二版)</a>"
+"的许可下。你可以修改、拷贝、分发及显示这些材料，但你必须注明"
+"原创作者。详细条款请见许可证书。"
+"\n"
+"参见<a href=\"http://creativecommons.org/licenses/by/2.0/deed.zh_TW\">"
+"繁体中文版本</a>；\n"
+"及<a href=\"http://www.creativecommons.cn/\">简体中文方面的文档</a>。"
 
-#: contact/privacy.php:26
-#, fuzzy
-msgid "Mailing List Policy"
-msgstr "邮件列表"
-
-#: contact/privacy.php:28
+#: copyright.php:24
 msgid ""
-"<p>(This applies to audacity-help, audacity-users, and other <a href=\"../"
-"contact/lists\">discussion lists</a>.)</p>\n"
-"<p>These are public mailing lists.  When you send a message to any of these "
-"addresses, including <a href=\"../contact/\">audacity-help</a>, it will be "
-"forwarded to dozens of people, including Audacity developers and others.  "
-"SourceForge and other web sites may publish archives of these lists.  "
-"<b>Your email address will normally be removed from published archives for "
-"your privacy, and the Audacity developers will not share your address with "
-"anyone or add it to any lists.</b>  However, we can't prevent other "
-"subscribers from seeing or publishing your messages.</p>\n"
-"<p>If you have any questions about this policy or are not comfortable "
-"writing to a public mailing list, send a private e-mail to the lead Audacity "
-"developer at: <a href=\"mailto:dominic@audacityteam.org"
-"\">dominic@audacityteam.org</a>.</p>"
+"\"Audacity\" is a trademark of Dominic Mazzoni.  The Google logo is a "
+"trademark of Google, Inc."
 msgstr ""
+"\"Audacity\"是Dominic Mazzoni的商标。Google图标是"
+"Google公司(Google, Inc.)的商标。"
+
+#: download/index.php:9 download/main.inc.php:11 main.inc.php:28
+msgid "Download"
+msgstr "下载"
 
 #: download/index.php:15
 msgid ""
 "Select your operating system to download the latest version of the free "
 "Audacity sound editor."
-msgstr "选择您的操作系统，以便下载相应的免费最新版Audacity声音编辑器。"
+msgstr ""
+"选择您的操作系统，以便下载相应的免费最新版"
+"Audacity声音编辑器。"
+
+#: download/index.php:19 download/windows.php:10 main.inc.php:30
+msgid "Windows"
+msgstr "Windows"
 
 #: download/index.php:22
 msgid "Mac OS 9 or X"
-msgstr "Mac OS 9 或 X"
+msgstr "Mac OS 9或X"
+
+#: download/index.php:25 download/linux.php:9 main.inc.php:32
+msgid "Linux/Unix"
+msgstr "Linux/Unix"
 
 #: download/index.php:28
 msgid "You can also <a href=\"buy\">purchase</a> a copy of Audacity on CD."
@@ -1164,15 +1195,167 @@ msgstr "您还能通过<a href=\"buy\">购买</a>获得一张Audacity的CD光盘
 msgid ""
 "If you wish to compile Audacity yourself, download the <a href=\"source"
 "\">source code</a>."
-msgstr "如果您愿意自己编译Audacity，请下载<a href=\"source\">源代码</a>。"
+msgstr ""
+"如果您愿意自己编译Audacity，请下载<a href=\"source"
+"\">源码</a>。"
 
 #: download/index.php:32
 msgid ""
 "You may modify, distribute, and sell Audacity under the <a href=\"../about/"
 "license\">GNU GPL</a>."
 msgstr ""
-"你可以在<a href=\"../about/license\">GNU GPL</a>的许可下修改、拷贝、分发及出"
-"售Audacity软件。"
+"你可以在<a href=\"../about/license\">GNU GPL</a>的许可下修改、拷贝、分发"
+"及出售Audacity软件。"
+
+#: download/windows.php:16 download/source.php:16 download/mac.php:17
+msgid "Recommended Download"
+msgstr "推荐下载"
+
+#: download/windows.php:18
+#, php-format
+msgid ""
+"<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest "
+"version of the free Audacity audio editor."
+msgstr ""
+"<a href=\"%s\">Audacity %s 安装程序</a> (.exe文件, %.1lf MB) - 最"
+"新版的Audacity。"
+
+#: download/windows.php:21 download/source.php:22 download/mac.php:26
+msgid "Optional Downloads"
+msgstr "可选下载"
+
+#. i18n-hint:  If this string is translated, it will appear above the list of
+#. optional downloads on the "downloads/windows" page.  If there are extra
+#. files available in your language, add them here.  Otherwise, do not
+#. translate this string.  (Or make the translation identical to the
+#. original string.)
+#: download/windows.php:28 download/windows.php:29
+msgid "localized_downloads_windows"
+msgstr ""
+
+#: download/windows.php:34
+#, php-format
+msgid ""
+"<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
+"  - If you can鈥檛 run the installer because you are in a computer lab or "
+"other restricted environment, download and unzip this file instead."
+msgstr ""
+"<a href=\"%s\">Audacity %s zip文件</a> (%.1lf MB)\n"
+" - 如果您在计算机实验室或受限的场所而无法运行安装程序，则请下载并解压此文件。"
+
+#: download/windows.php:39 download/mac.php:31
+msgid "System Requirements"
+msgstr "系统需求"
+
+#: download/windows.php:41
+msgid ""
+"Windows 98, ME, 2000, XP, or later.  (Sorry, Audacity is not supported on "
+"Windows 95 or NT 4.0.)"
+msgstr ""
+"Windows 98, ME, 2000, XP, 或者之后的操作系统版本。 (抱歉，Audacity不支持"
+"Windows 95 或 NT 4.0)"
+
+#: download/windows.php:42 download/mac.php:35
+msgid "Audacity runs best with at least 64 MB RAM and 300 MHz processor."
+msgstr "Audacity的最佳运行配置至少应为64MB RAM及300MHz处理器。"
+
+#: download/source.php:10 main.inc.php:33
+msgid "Source Code"
+msgstr "源码"
+
+#: download/source.php:19
+#, php-format
+msgid "<a href=\"%s\">Audacity %s source tarball</a> (%.1lf MB)"
+msgstr "<a href=\"%s\">Audacity %s 源码的tar打包文件</a> (%.1lf MB)"
+
+#: download/source.php:24
+msgid ""
+"You can also get the latest development code from <a href=\"../community/"
+"developers#cvs\">CVS</a>."
+msgstr ""
+"您也可以从<a href=\"../community/developers#cvs\">CVS</a>"
+"获得最新的开发代码。"
+
+#: download/source.php:25 download/common.inc.php:13
+#, php-format
+msgid ""
+"If you have trouble with your download, or need an older version of "
+"Audacity, try our <a href=\"%s\">alternate download links</a>."
+msgstr ""
+"如果您在下载中遇到问题、或者您需要一份更老版本的"
+"Audacity, 请访问<a href=\"%s\">候补下载链接</a>。"
+
+
+#: download/source.php:28
+msgid "How to Build Audacity"
+msgstr "怎样构建Audacity"
+
+#: download/source.php:30
+msgid "Dependencies"
+msgstr "依赖性"
+
+#: download/source.php:31
+msgid ""
+"The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is <b>required</"
+"b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the gtk2 or "
+"unicode options.  (Future versions of Audacity will support newer wxWidgets "
+"and GTK libraries.)"
+msgstr ""
+"<a href=\"http://wxwidgets.org\">wxWidgets</a>库是<b>必需的</b>。"
+"Audacity 1.2需要wxGTK 2.4，编译时<em>去掉</em>gtk2或者"
+"unicode选项。(以后Audacity将支持更新的wxWidgets和"
+"GTK库。)"
+
+#: download/source.php:32
+msgid ""
+"You may also choose to install the following <b>optional libraries</b>, or "
+"get them by checking out Audacity from CVS."
+msgstr ""
+"您也可以选择安装以下<b>可选库</b>，或"
+"从CVS中取出Audacity时得到。"
+
+#: download/source.php:38
+msgid ""
+"If you install libraries using a package management system like Apt or RPM, "
+"make sure to install the \"dev\" (development) packages for each library."
+msgstr ""
+"如果您使用诸如Apt或RPM的打包管理系统来安装库，"
+"务必安装各库所需的\"dev\"(开发)包。"
+
+#: download/source.php:40
+msgid "Compilation"
+msgstr "编译"
+
+#: download/source.php:41
+msgid ""
+"To build Audacity, run the following command in the Audacity source "
+"directory:"
+msgstr ""
+"构建Audacity时，请运行在源码目录中的下列"
+"命令："
+
+#: download/source.php:47
+msgid ""
+"You can type <kbd>./configure --help</kbd> to see a list of compilation "
+"options.  After Audacity is compiled, run <kbd>make install</kbd> as root to "
+"install it."
+msgstr ""
+"您可以敲入<kbd>./configure --help</kbd>查看编译选项的"
+"列表。在编译完成后，以root用户身份运行<kbd>make install</kbd>进行"
+"安装。"
+
+#: download/source.php:49
+msgid "Notes"
+msgstr "注意"
+
+#: download/source.php:50
+msgid ""
+"For additional information about building Audacity on Windows or Mac OS X, "
+"see the files <b>win/compile.txt</b> and <b>mac/compile.txt</b> in the "
+"Audacity source code directory."
+msgstr ""
+"要了解关于在Windows或Mac OS X系统下构建Audacity的更多信息，"
+"请看源码目录中的<b>win/compile.txt</b>和<b>mac/compile.txt</b>。"
 
 #: download/buy.php:9
 msgid "Purchase Audacity on CD"
@@ -1185,9 +1368,10 @@ msgid ""
 "License</a>.  If you want a copy of Audacity on CD-ROM, we encourage you to "
 "buy from a vendor listed below."
 msgstr ""
-"Audacity可以自由下载，但多亏有了<a href=\"../about/license\">GNU General "
-"Public License</a>许可证，代理商也可以自由地出售此软件的拷贝。如果您想要一张"
-"Audacity软件光盘，我们鼓励您从下列代理商那里购买。"
+"Audacity可以自由下载，但多亏有了<a href=\"../about/license\">GNU General Public "
+"License</a>许可证，代理商也可以自由地出售此软件的拷贝。"
+"如果您想要一张Audacity软件光盘，我们鼓励您从下列"
+"代理商那里购买。"
 
 #: download/buy.php:15
 msgid ""
@@ -1198,39 +1382,44 @@ msgid ""
 "copy of TheOpenCD</a> from several different vendors.</p>"
 msgstr ""
 "<h3>TheOpenCD (Windows)</h3>\n"
-"  <p><a href=\"http://theopencd.sunsite.dk/\">TheOpenCD</a>收集了许多运行在"
-"Microsoft Windows上的高品质免费软件，包括Audacity。您能从几个不同的代理商那里"
-"<a href=\"http://theopencd.sunsite.dk/wheretobuy.php\">购买TheOpenCD的拷贝</"
-"a>。</p>"
+"  <p><a href=\"http://theopencd.sunsite.dk/\">TheOpenCD</a>收集了"
+"许多运行在Microsoft Windows上的高品质免费软件，包括Audacity。"
+"您能从几个不同的代理商那里<a href=\"http://theopencd.sunsite.dk/wheretobuy.php\">"
+"购买TheOpenCD的拷贝</a>。</p>"
 
-#: download/common.inc.php:10
-msgid "LAME MP3 encoder"
-msgstr ""
+#: download/mac.php:10
+msgid "Mac OS 9 / X"
+msgstr "Mac OS 9 / X"
 
-#: download/common.inc.php:10
-msgid "Allows Audacity to export MP3 files."
-msgstr ""
-
-#: download/common.inc.php:11
-msgid "VST Enabler"
-msgstr ""
-
-#: download/common.inc.php:11
-msgid "Allows Audacity to load VST plug-ins."
-msgstr ""
-
-#: download/common.inc.php:12
-msgid "Download additional effects and filters."
-msgstr ""
-
-#: download/common.inc.php:13 download/source.php:25
+#: download/mac.php:19
 #, php-format
 msgid ""
-"If you have trouble with your download, or need an older version of "
-"Audacity, try our <a href=\"%s\">alternate download links</a>."
+"For Mac OS X: <a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB) - The "
+"latest version of the free Audacity audio editor."
 msgstr ""
-"如果您在下载中遇到问题、或者您需要一份更老版本的Audacity, 请访问<a href=\"%s"
-"\">候补下载链接</a>。"
+"对于 Mac OS X: <a href=\"%s\">Audacity %s</a> (.dmg文件, %.1lf MB) - 最"
+"新版的Audacity。"
+
+#: download/mac.php:22
+#, php-format
+msgid "For Mac OS 9: <a href=\"%s\">Audacity %s</a> (.sit file, %.1lf MB)"
+msgstr "对于 Mac OS 9: <a href=\"%s\">Audacity %s</a> (.sit文件, %.1lf MB)"
+
+#: download/mac.php:23
+msgid ""
+"(Unfortunately, we no longer have the resources to provide new versions of "
+"Audacity for Mac OS 9.)"
+msgstr ""
+"(很不幸，我们没有可用于提供新的Mac OS 9版本Audacity"
+"的资源。)"
+
+#: download/mac.php:33
+msgid "Audacity 1.2 requires Mac OS X 10.1 or later."
+msgstr "Audacity 1.2 需要Mac OS X 10.1 或之后的版本。"
+
+#: download/mac.php:34
+msgid "Audacity 1.0 requires Mac OS 9.0 or later."
+msgstr "Audacity 1.0 需要Mac OS 9.0或之后的版本。"
 
 #: download/linux.php:15
 msgid ""
@@ -1238,130 +1427,35 @@ msgid ""
 "other Unix-like systems) is to download a package built for your operating "
 "system:"
 msgstr ""
+"在GNU/Linux(及其它类Unix系统)上安装Audacity音频编辑器的最简单的方法"
+"是下载一个适合您的超作系统的安装包："
 
 #: download/linux.php:29
-#, fuzzy
 msgid ""
 "Linux and Unix users may also compile Audacity from <a href=\"source"
 "\">source code</a>."
-msgstr "如果您愿意自己编译Audacity，请下载<a href=\"source\">源代码</a>。"
-
-#: download/mac.php:10
-msgid "Mac OS 9 / X"
-msgstr "Mac OS 9 / X"
-
-#: download/mac.php:17 download/source.php:16 download/windows.php:16
-msgid "Recommended Download"
-msgstr "推荐下载"
-
-#: download/mac.php:23
-msgid ""
-"(Unfortunately, we no longer have the resources to provide new versions of "
-"Audacity for Mac OS 9.)"
-msgstr "(很不幸，我们没有可用于提供新的Mac OS 9版本Audacity的资源。)"
-
-#: download/mac.php:26 download/source.php:22 download/windows.php:21
-msgid "Optional Downloads"
-msgstr "可选下载"
-
-#: download/mac.php:31 download/windows.php:39
-msgid "System Requirements"
-msgstr "系统需求"
-
-#: download/mac.php:33
-msgid "Audacity 1.2 requires Mac OS X 10.1 or later."
-msgstr "Audacity 1.2 需要Mac OS X 10.1 或之后的版本。"
-
-#: download/mac.php:34
-#, fuzzy
-msgid "Audacity 1.0 requires Mac OS 9.0 or later."
-msgstr "Audacity 1.0 需要Mac OS 8.6或之后的版本。"
-
-#: download/mac.php:35 download/windows.php:42
-msgid "Audacity runs best with at least 64 MB RAM and 300 MHz processor."
-msgstr "Audacity的最佳运行配置为64MB RAM及300MHz处理器。"
-
-#: download/nyquistplugins.php:10
-#, fuzzy
-msgid "Download Nyquist Plug-Ins"
-msgstr "下载Audacity %s"
-
-#. i18n-hint: Sorry, the actual plug-in descriptions are not translatable yet.
-#: download/nyquistplugins.php:15
-msgid ""
-"<p>These are optional plug-in effects for the Audacity sound editor.  They "
-"are written in the <a href=\"../help/nyquist\">Nyquist programming language</"
-"a>.  For installation instructions, see the main <a href=\"plugins\">plug-"
-"ins page</a>.</p>"
 msgstr ""
+"Linux和Unix用户也可以从<a href=\"source\">源码</a>编译"
+"Audacity。"
 
-#: download/plugins.php:9
-msgid "Plug-In Effects"
-msgstr "插件效果"
-
-#: download/plugins.php:14
-msgid ""
-"You can download and install plug-ins to add extra effects to Audacity.  "
-"Plug-ins appear at the bottom of the \"Effect\" menu.  To install new plug-"
-"ins, place them in the <b>Plug-Ins</b> folder inside the Audacity "
-"installation folder.  On Windows computers, this is usually under \"Program "
-"Files.\"  On Mac OS X, it is usually under \"Applications.\""
-msgstr ""
-
-#: download/plugins.php:16
-#, fuzzy
-msgid "LADSPA Plug-Ins"
-msgstr "插件"
-
-#: download/plugins.php:17
-msgid ""
-"Audacity has built-in support for LADSPA plug-ins.  These plug-ins are "
-"mostly built for Linux, but some are available for other operating systems "
-"too.  Audacity comes with sample LADSPA effects for Mac and Windows.  For "
-"more information and downloads, see the <a href=\"http://www.ladspa.org/"
-"\">LADSPA web site</a>.</p>"
-msgstr ""
-
-#: download/plugins.php:19
-#, fuzzy
-msgid "Nyquist Plug-Ins"
-msgstr "插件"
-
-#: download/plugins.php:20
-msgid ""
-"Audacity has built-in support for cross-platform Nyquist effects.  You can "
-"download additional <a href=\"nyquistplugins\">Nyquist plug-ins</a>, or "
-"create your own using the <a href=\"../help/nyquist\">Nyquist programming "
-"language</a>"
-msgstr ""
-
-#: download/plugins.php:22
-#, fuzzy
-msgid "VST Plug-Ins"
-msgstr "插件"
-
-#: download/plugins.php:23
-msgid ""
-"Audacity can load VST effects (for Mac OS or Windows) using the optional <a "
-"href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>.  You can "
-"find VST effects at <a href=\"http://www.kvraudio.com/\">KVR Audio</a> and "
-"<a href=\"http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-"
-"ins/\">other plug-in sites</a>.</p>"
-msgstr ""
+#: download/release-notes.php:9 main.inc.php:34
+msgid "Release Notes"
+msgstr "发行注记"
 
 #: download/release-notes.php:16
 msgid "Known Problems"
-msgstr ""
+msgstr "已知的问题"
 
 #: download/release-notes.php:17
 #, php-format
 msgid "The following are known bugs or problems in Audacity %s:"
-msgstr ""
+msgstr "以下是在Audacity %s中的已知错误或问题："
 
 #: download/release-notes.php:19
 msgid ""
 "Audacity can import and display MIDI files, but cannot play or edit them."
 msgstr ""
+"Audacity可以导入和显示MIDI文件，但不能播放或编辑它们。"
 
 #: download/release-notes.php:20
 msgid ""
@@ -1369,6 +1463,9 @@ msgid ""
 "on some systems causes mono recordings to sound distorted or low-pitched.  "
 "To work around this problem, set Audacity to record in stereo."
 msgstr ""
+"Linux:  在某些系统上使用全双工方式录音(在录音时播放已有音轨) "
+"将导致单声道录音听起来失真或音调偏低。"
+"要避免这些问题，请将Audacity设置为立体声录音。"
 
 #: download/release-notes.php:21
 msgid ""
@@ -1378,6 +1475,11 @@ msgid ""
 "accented characters work.  Only folders with accented characters in their "
 "names will cause problems."
 msgstr ""
+"MacOS X: Audacity不能处理被包含在名称含有非英文字母"
+"(如重音标志、符号等)的文件夹里的文件或文件夹。"
+"含有重音字符的文件及Audacity工程都可以正常工作；只有"
+"名称里含有重音字符的文件夹会引起问题。"
+
 
 #: download/release-notes.php:24
 msgid ""
@@ -1412,86 +1514,199 @@ msgid ""
 "Bokmal (nb), French (fr), Russian (ru).</p></li>\n"
 "</ul>"
 msgstr ""
+"<h3>Audacity 1.2.3中的改动部分</h3>\n"
+"<ul>\n"
+"  <li><p>Windows: 修正了一个在某些Windows系统上在运行大概50分钟后导致"
+"录音停止或者显示错乱的错误。(这个错误"
+"在Audacity 1.2.2中被部分修正了，但在某些系统上还无法工作。)</p></"
+"li>\n"
+"  <li><p>Mac OS X: 修正了一个大的错误。改错误导致在Mac系统上运行的"
+"Audacity在经过一段随机的时间后崩溃，特别是在回放或录音时。"
+"</p></li>\n"
+"  <li><p>升级了改变音高和节拍的特效。采用Olli Parviainen提供的"
+"新版SoundTouch库，速度更快，音质更好。"
+"</p></li>\n"
+"  <li><p>libsnd文件升级到1.0.11版。Audacity现在可以"
+"导入Sound Designer II (SDII)文件了。</p></li>\n"
+"  <li><p>修正了使用包络线工具导致程序运行变慢的错误。"
+"</p></li>\n"
+"<li><p>现在按住Shift键点击“静音”或“独奏”按钮将不会导致其它所有音轨都"
+"变为“非静音”(“非独奏”)了。</p></li>\n"
+"  <li><p>Nyquist插件现在可以接受字符串输入了。同样，在Nyquist特效对话"
+"框里加入了\"调试\"(Debug)按钮，这样您就可以看到Nyquist输出的所有信息，"
+"便于调试。</p></li>\n"
+"  <li><p>当Audacity工程所参考的(化名的)音频文件找不到了，"
+"Audacity将一直播放静音。在这之前，Audacity可能"
+"有时会重复先前最近播放的音频。</p></li>\n"
+"  <li><p>现在，当音频I/O停止时音量单位表(UV表)将会复位。</p></"
+"li>\n"
+"  <li><p>新增的或升级的本地化文件: 意大利语(it)、匈牙利语(hu)、"
+"乌克兰语(uk)、西班牙语(es)、波兰语(pl)、简体中文(zh)、标准挪威语"
+"(nb)、法语(fr)、俄语(ru)。</p></li>\n"
+"</ul>"
 
-#: download/source.php:24
+#: download/common.inc.php:10
+msgid "LAME MP3 encoder"
+msgstr "LAME MP3编码器"
+
+#: download/common.inc.php:10
+msgid "Allows Audacity to export MP3 files."
+msgstr "允许Audacity导出MP3文件。"
+
+#: download/common.inc.php:11
+msgid "VST Enabler"
+msgstr "VST Enabler"
+
+#: download/common.inc.php:11
+msgid "Allows Audacity to load VST plug-ins."
+msgstr "允许Audacity读取VST插件。"
+
+#: download/common.inc.php:12 main.inc.php:35
+msgid "Plug-Ins"
+msgstr "插件"
+
+#: download/common.inc.php:12
+msgid "Download additional effects and filters."
+msgstr "下载特效和过滤器。"
+
+#: download/plugins.php:9
+msgid "Plug-In Effects"
+msgstr "插件特效"
+
+#: download/plugins.php:14
 msgid ""
-"You can also get the latest development code from <a href=\"../community/"
-"developers#cvs\">CVS</a>."
+"You can download and install plug-ins to add extra effects to Audacity.  "
+"Plug-ins appear at the bottom of the \"Effect\" menu.  To install new plug-"
+"ins, place them in the <b>Plug-Ins</b> folder inside the Audacity "
+"installation folder.  On Windows computers, this is usually under \"Program "
+"Files.\"  On Mac OS X, it is usually under \"Applications.\""
 msgstr ""
+"通过下载并安装插件，您能为Audacity增加特效功能。"
+"插件将显示在\"特效\"菜单下。安装新插件时，"
+"将其放至Audacity安装目录里的<b>Plug-Ins</b>目录中。"
+"在Windows系统里，Audacity的安装目录通常在\"Program "
+"Files\"下；在Mac OS X系统里，它通常在\"Applications\"目录下。"
 
-#: download/source.php:28
-msgid "How to Build Audacity"
-msgstr "怎样构建Audacity"
+#: download/plugins.php:16
+msgid "LADSPA Plug-Ins"
+msgstr "LADSPA插件"
 
-#: download/source.php:30
-msgid "Dependencies"
-msgstr ""
-
-#: download/source.php:31
+#: download/plugins.php:17
 msgid ""
-"The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is <b>required</"
-"b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the gtk2 or "
-"unicode options.  (Future versions of Audacity will support newer wxWidgets "
-"and GTK libraries.)"
+"Audacity has built-in support for LADSPA plug-ins.  These plug-ins are "
+"mostly built for Linux, but some are available for other operating systems "
+"too.  Audacity comes with sample LADSPA effects for Mac and Windows.  For "
+"more information and downloads, see the <a href=\"http://www.ladspa.org/"
+"\">LADSPA web site</a>.</p>"
 msgstr ""
+"Audacity内嵌了对LADSPA插件的支持。这些插件大多数是用于"
+"Linux系统的，但也有一些可以用于其它的操作系统。"
+"Audacity自带一些用于Mac及Windows系统的LADSPA特效例子。如要了解更多信息及下载插件，"
+"请访问<a href=\"http://www.ladspa.org/"
+"\">LADSPA网站</a>。</p>"
 
-#: download/source.php:32
+#: download/plugins.php:19
+msgid "Nyquist Plug-Ins"
+msgstr "Nyquist插件"
+
+#: download/plugins.php:20
 msgid ""
-"You may also choose to install the following <b>optional libraries</b>, or "
-"get them by checking out Audacity from CVS."
+"Audacity has built-in support for cross-platform Nyquist effects.  You can "
+"download additional <a href=\"nyquistplugins\">Nyquist plug-ins</a>, or "
+"create your own using the <a href=\"../help/nyquist\">Nyquist programming "
+"language</a>"
 msgstr ""
+"Audacity内嵌了对跨平台Nyquist特效的支持。您可以"
+"下载<a href=\"nyquistplugins\">Nyquist插件</a>，或者"
+"使用<a href=\"../help/nyquist\">Nyquist编程语言</a>"
+"创建您自己的特效。"
 
-#: download/source.php:38
+#: download/plugins.php:22
+msgid "VST Plug-Ins"
+msgstr "VST插件"
+
+#: download/plugins.php:23
 msgid ""
-"If you install libraries using a package management system like Apt or RPM, "
-"make sure to install the \"dev\" (development) packages for each library."
+"Audacity can load VST effects (for Mac OS or Windows) using the optional <a "
+"href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>.  You can "
+"find VST effects at <a href=\"http://www.kvraudio.com/\">KVR Audio</a> and "
+"<a href=\"http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-"
+"ins/\">other plug-in sites</a>.</p>"
 msgstr ""
+"Audacity可以使用可选的<a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>"
+"读取VST特效(适用于Mac OS或Windows平台)。您可以在"
+"<a href=\"http://www.kvraudio.com/\">KVR Audio</a>及<a href="
+"\"http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-"
+"ins/\">其它关于插件的网站</a>找到VST特效。</p>"
 
-#: download/source.php:40
-msgid "Compilation"
-msgstr ""
+#: download/nyquistplugins.php:10
+msgid "Download Nyquist Plug-Ins"
+msgstr "下载Nyquist插件"
 
-#: download/source.php:41
+#. i18n-hint: Sorry, the actual plug-in descriptions are not translatable yet.
+#: download/nyquistplugins.php:15
 msgid ""
-"To build Audacity, run the following command in the Audacity source "
-"directory:"
+"<p>These are optional plug-in effects for the Audacity sound editor.  They "
+"are written in the <a href=\"../help/nyquist\">Nyquist programming language</"
+"a>.  For installation instructions, see the main <a href=\"plugins\">plug-"
+"ins page</a>.</p>"
 msgstr ""
+"<p>这些是可选的特效插件。它们是用"
+"<a href=\"../help/nyquist\">Nyquist编程语言</a>编写的。"
+"安装的方法见<a href=\"plugins\">有关插件的页面</a>。</p>"
 
-#: download/source.php:47
+#: help/index.php:9
+msgid "Documentation and Support"
+msgstr "文档和支持"
+
+#. i18n-hint: If there are any special resources for Audacity users in your
+#. language (forums, documentation, mailing lists...), you can add links to
+#. them here.
+#: help/index.php:17
 msgid ""
-"You can type <kbd>./configure --help</kbd> to see a list of compilation "
-"options.  After Audacity is compiled, run <kbd>make install</kbd> as root to "
-"install it."
+"<p>If you have a question, check the list of <a href=\"faq\">Frequently "
+"Asked Questions</a>.</p>\n"
+"<p>For instructions and help using Audacity, see:</p>\n"
+"<ul>\n"
+"  <li><a href=\"documentation\">Documentation</a> - Read the user’s manual "
+"and quick reference.</li>\n"
+"  <li><a href=\"tutorials\">Tutorials</a> - Step by step articles teach you "
+"how to use Audacity.</li>\n"
+"</ul>\n"
+"<p>If your question isn’t answered here, please <a href=\"../contact/"
+"\">contact us</a>.</p>"
 msgstr ""
+"<p>如果您有疑问，核查一下<a href=\"faq\">常见"
+"问题解答</a>的列表。</p>\n"
+"<p>关于Audacity使用方面的指南和帮助，见：</p>\n"
+"<ul>\n"
+"  <li><a href=\"documentation\">文档</a> - 阅读用户手册"
+"及快速参考。</li>\n"
+"  <li><a href=\"tutorials\">教程</a> - 进阶(step by step)文章教您"
+"如何使用Audacity。</li>\n"
+"</ul>\n"
+"<p>如果您的疑问在此处没有解答，请<a href=\"../contact/"
+"\">联系我们</a>。</p>"
 
-#: download/source.php:49
-#, fuzzy
-msgid "Notes"
-msgstr "新闻"
+#: help/index.php:26 help/documentation.php:31
+msgid "Other Resources"
+msgstr "其它资源"
 
-#: download/source.php:50
+#: help/index.php:28 help/documentation.php:33
 msgid ""
-"For additional information about building Audacity on Windows or Mac OS X, "
-"see the files <b>win/compile.txt</b> and <b>mac/compile.txt</b> in the "
-"Audacity source code directory."
+"<a href=\"http://audacityteam.org/wiki/\">The Audacity Wiki</a> contains "
+"tips, tricks, and documentation that anyone can edit."
 msgstr ""
+"<a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a>提供了任何人都可以编辑的"
+"各种技巧、窍门及文档。"
 
-#. i18n-hint:  If this string is translated, it will appear above the list of
-#. optional downloads on the "downloads/windows" page.  If there are extra
-#. files available in your language, add them here.  Otherwise, do not
-#. translate this string.  (Or make the translation identical to the
-#. original string.)
-#: download/windows.php:28 download/windows.php:29
-msgid "localized_downloads_windows"
-msgstr ""
+#: help/main.inc.php:11 main.inc.php:39
+msgid "Help"
+msgstr "帮助"
 
-#: download/windows.php:41
-msgid ""
-"Windows 98, ME, 2000, XP, or later.  (Sorry, Audacity is not supported on "
-"Windows 95 or NT 4.0.)"
-msgstr ""
-"Windows 98, ME, 2000, XP, 或者之后的操作系统版本。 (抱歉，Audacity不支持"
-"Windows 95 或 NT 4.0)"
+#: help/documentation.php:9 main.inc.php:42
+msgid "Documentation"
+msgstr "文档"
 
 #. i18n-hint:  Please add a note that the manuals below are in English.  If
 #. there is documentation available in your language, link to it here.
@@ -1501,60 +1716,55 @@ msgid ""
 "editor.  For additional help, see the <a href=\"faq\">Frequently Asked "
 "Questions</a> and <a href=\"tutorials\">Tutorials</a>."
 msgstr ""
+"此页提供了Audacity的用户手册和指南。"
+"更多帮助见<<a href=\"faq\">常见问题解答</a>及"
+"<a href=\"tutorials\">教程</a>。"
 
 #: help/documentation.php:19
 msgid "Quick Reference Guide"
-msgstr ""
+msgstr "快速参考"
 
 #: help/documentation.php:21
 msgid "Read the Audacity reference online."
-msgstr ""
+msgstr "在线阅读Audacity参考"
 
 #: help/documentation.php:21
 msgid ""
 "(You can also access this reference though the \"Help\" menu in the Audacity "
 "program.)"
 msgstr ""
+"(您也可以通过Audacity程序的\"帮助\"菜单访问这些"
+"参考文档。)"
 
 #: help/documentation.php:22
 msgid "Printable version of the Audacity reference."
-msgstr ""
+msgstr "打印版的Audacity参考。"
 
 #: help/documentation.php:25
 msgid "Audacity User’s Manual"
-msgstr ""
+msgstr "Audacity用户手册"
 
 #: help/documentation.php:27
 msgid "Read the Audacity manual online."
-msgstr ""
+msgstr "在线阅读Audacity用户手册。"
 
 #: help/documentation.php:28
-#, fuzzy
 msgid "Download the Audacity manual."
-msgstr "下载Audacity %s"
+msgstr "下载Audacity手册。"
 
 #: help/documentation.php:28
 msgid ""
 "(To use the downloaded manual, unzip it and then open the \"index.html\" "
 "file.)"
 msgstr ""
-
-#: help/documentation.php:31
-msgid "Other Resources"
-msgstr ""
-
-#: help/documentation.php:33
-msgid ""
-"<a href=\"http://audacityteam.org/wiki/\">The Audacity Wiki</a> contains "
-"tips, tricks, and documentation that anyone can edit."
-msgstr ""
+"(欲使用下载好的手册，解压(unzip)并打开\"index.html\""
+"文件。)"
 
 #: help/faq.php:26
 msgid "Is Audacity really free?  Why?"
 msgstr "Audacity真的是免费的吗? 为什么?"
 
 #: help/faq.php:27
-#, fuzzy
 msgid ""
 "<p>Yes, Audacity is <a href=\"../about/\">completely free, open source "
 "software</a>.  You are free to use this program for personal or commercial "
@@ -1570,19 +1780,18 @@ msgid ""
 "Audacity's free license, dozens of people around the world have contributed "
 "code, bug fixes, documentation, and graphics.</p>"
 msgstr ""
-"<p>是的，Audacity是<a href=\"../about/\">完全自由及开放源码的软件</a>。您可以"
-"为个人或商业用途中自由地使用该程序。您也可以随意地分发、销售或者为了您自己的"
-"用途而修改它，只要您遵循<a href=\"../about/license\">GNU General Public "
-"License</a>的条款。</p>\n"
-"\n"
-"<p>Audacity的作者决定在GPL许可证下发行此软件，这是出于多种原因的考虑。我们中"
-"的部分人这么做是出于慷慨；部分人这么做是出于道德上的考量，因为我们觉得所有的"
-"软件都应该是自由且免费的；其余人则相信世上对自由软件和商业软件都存在需求。</"
-"p>\n"
-"\n"
-"<p>Audacity是自由软件的一个原因是只有这样她才会变得更加受欢迎及更加\n"
-"有用。还有另一个原因是她鼓励协作。因为\n"
-"Audacity的自由许可，世界各地的许多人都贡献了\n"
+"<p>是的，Audacity是<a href=\"../about/\">完全自由及开放源码的"
+"软件</a>。您可以为个人或商业用途而自由地使用该程序。"
+"您也可以随意地分发、销售或者为了您自己的用途而修改它，"
+"只要您遵循<a href=\"../about/license\">GNU General "
+"Public License</a>的条款。</p>\n"
+"<p>Audacity的作者决定在GPL许可证下发行此软件，这是出于多种原因的"
+"考虑。我们中的部分人这么做是出于慷慨；部分人这么做是出于道德上的"
+"考量，因为我们觉得所有的软件都应该是自由且免费的；其余人则相信"
+"自由软件和商业软件都有存在的空间。</p>\n"
+"<p>Audacity是自由软件的原因之一是因为只有这样她才会变得更加受欢迎及\n"
+"有用。还有另一个原因是她鼓励协作。因为"
+"Audacity的自由许可，世界各地的许多人都贡献了"
 "代码、错误修正、文档以及图像。</p>"
 
 #: help/faq.php:32
@@ -1596,9 +1805,10 @@ msgid ""
 "a not-for-profit volunteer group, and the source code is available for "
 "anyone to study or use.</p>"
 msgstr ""
-"<p>不。Audacity不包含任何spyware或adware。Audacity是<a href=\"../about/\">完"
-"全自由及开放源码的</a>。它是由一个非盈利性群体开发的，任何人都可以获得其源代"
-"码、用于学习和使用等目的。</p>"
+"<p>不。Audacity不包含任何spyware或adware。Audacity是<a "
+"href=\"../about/\">完全自由及开放源码的</a>。它是由"
+"一个非盈利性群体开发的，任何人都可以获得其源码、用于"
+"学习和使用等目的。</p>"
 
 #: help/faq.php:36
 msgid "May I distribute copies of Audacity?"
@@ -1611,16 +1821,16 @@ msgid ""
 "keep the same license and make the source code available.  For details, see "
 "our <a href=\"../about/license\">license information</a>.</p>"
 msgstr ""
-"<p>你可以在GNU General Public License许可证下分发Audacity软件，该许可证允许你"
-"修改、拷贝及销售此软件，只要你遵守同样的许可证并公布源代码。详情见我们的<a "
-"href=\"../about/license\">许可证信息</a>。</p>"
+"<p>你可以在GNU General Public License许可证下分发Audacity软件，该"
+"许可证允许你修改、拷贝及销售此软件，只要你遵守同样的"
+"许可证并公布源码。详情见"
+"我们的<a href=\"../about/license\">许可证信息</a>。</p>"
 
 #: help/faq.php:40
 msgid "Someone is selling Audacity on eBay.  Is this legal?"
 msgstr "有人在eBay网站上出售Audacity。这种行为合法吗?"
 
 #: help/faq.php:41
-#, fuzzy
 msgid ""
 "<p>It is legal to sell Audacity, as long as the seller makes the program and "
 "source code available under the <a href=\"../about/license\">GNU General "
@@ -1633,14 +1843,16 @@ msgid ""
 "<p><b>If you want to buy Audacity on CD</b>, please check out the vendors "
 "listed on our <a href=\"../download/buy\">purchase page</a>.</p>"
 msgstr ""
-"<p>销售Audacity是合法的，只要销售者提供的程序和源代码遵循<a href=\"../about/"
-"license\">GNU General Public License</a>许可证。</p>\n"
-"<p>一些代理商试图欺骗客户，他们把销售的软件换成了另一个名字。如果您购买了这样"
-"的产品并在后来发现它原来是Audacity的话，我们鼓励您要求退款或者进行投诉——如果"
-"您觉得交易不公平。我们要求代理商正确地注明Audacity项目，以便用户得到足够的信"
-"息做选择。</p>\n"
-"<p>如果您需要Audacity的CD光盘，请访问列出的代理商的our <a href=\"../download/"
-"buy\">购买网页</a>。</p>"
+"<p>销售Audacity是合法的，只要销售者提供的程序和源码遵循"
+"<a href=\"../about/license\">GNU General Public License</a>"
+"许可证。</p>\n"
+"<p>一些代理商试图欺骗客户，他们把销售的软件换成了另一个名字。"
+"如果您购买了这样的产品并在后来发现它原来是Audacity的话，"
+"我们鼓励您<b>要求退款或者进行投诉</b>——如果您觉得交易不公平。"
+"我们要求代理商正确地注明Audacity项目，以便用户得到"
+"足够的信息做选择。</p>\n"
+"<p><b>如果您需要Audacity的CD光盘</b>，请访问列出的代理商的"
+"<a href=\"../download/buy\">购买网页</a>。</p>"
 
 #: help/faq.php:46
 msgid "Does Audacity work with screen-reader programs for blind users?"
@@ -1648,7 +1860,6 @@ msgstr "Audacity能和盲人用的“读屏”软件一起工作吗?"
 
 #. i18n-hint: The link below is in English.
 #: help/faq.php:48
-#, fuzzy
 msgid ""
 "<p>Audacity works with most screen-reader programs, but some of Audacity’s "
 "features are difficult or impossible to use without a mouse.  We are working "
@@ -1656,27 +1867,27 @@ msgid ""
 "information, see <a href=\"http://audacityteam.org/wiki/index.pl?"
 "AudacityForBlindUsers\">Audacity for Blind Users</a>.</p>"
 msgstr ""
-"<p>Audacity可以和大多数“读屏”软件一起工作，但一些Audacity的功能是需要鼠标操作"
-"的，没有鼠标会使操作变得很困难或根本不可能。我们正在致力于改进软件的辅助可用"
-"性及键盘快捷键。详情见<a href=\"http://audacityteam.org/wiki/index.pl?"
+"<p>Audacity可以和大多数“读屏”软件一起工作，但一些Audacity的"
+"功能是需要鼠标操作的，没有鼠标会使操作变得很困难或根本不可能。我们正在"
+"致力于改进软件的辅助可用性及键盘快捷方式。详情见"
+"<a href=\"http://audacityteam.org/wiki/index.pl?"
 "AudacityForBlindUsers\">给盲人用户的Audacity</a>。</p>"
 
 #: help/faq.php:51
-#, fuzzy
 msgid "What does “time remaining” mean?  Does Audacity expire?"
 msgstr "“剩余时间(time remaining)”是什么意思? Audacity会过期吗?"
 
 #: help/faq.php:52
-#, fuzzy
 msgid ""
 "<p>Audacity does not expire.  During recording, it displays how long you can "
 "record before running out of space on your computer’s hard drive.  To record "
 "for a longer time, delete old files or save your project on a larger disk.</"
 "p>"
 msgstr ""
-"<p>Audacity不会过期。在录音期间，它会显示在耗尽您电脑硬盘的存储空间之前还有多"
-"少时间可以录制。为了能录制更长的时间，请删除旧的文件或者将您的档案保存在一个"
-"更大的磁盘上。</p>"
+"<p>Audacity不会过期。在录音期间，它会显示在耗尽您电脑硬盘的存储空间之前还有"
+"多少时间可以录制。为了能录制更长的时间，请删除旧的文件或者将您的工程保存在"
+"一个更大的磁盘上。</"
+"p>"
 
 #: help/faq.php:57
 msgid "Installation and Plug-Ins"
@@ -1712,6 +1923,27 @@ msgid ""
 "ask you where LameLib is saved.</li>\n"
 "</ol>"
 msgstr ""
+"<p>因为许可证及专利的限制，我们无法自行发布MP3编码软件。"
+"请按照如下说明使用免费的LAME编码器从Audacity导出MP3文件。\n"
+"<h3>Windows</h3>\n"
+"<ol>\n"
+"  <li>转至<a href=\"%s\">LAME下载页面</a>。</li>\n"
+"  <li>点击具有那些同样效果的\"%s\"链接列表中的任何一个链接。</li>\n"
+"  <li>下载完LAME后，解压并将<b>lame_enc.dll</b>保存"
+"到您的机器上。</li>\n"
+"  <li>当您第一次使用\"导出为MP3\"命令时，Audacity将"
+"问您lame_enc.dll文件所在的位置。</li>\n"
+"</ol>\n"
+"<h3>Mac OS 9或X</h3>\n"
+"<ol>\n"
+"  <li>转至<a href=\"%s\">LAME下载页面</a>。</li>\n"
+"  <li>下载对应于您的操作系统版本的LameLib。</li>\n"
+"  <li>下载完后用\"Stuffit Expander\"解开"
+"文件。 (系统可能会自动调用此程序解开已下载的文件。)</li>\n"
+"  <li>将解开的文件保存到您机器上任何一处的\"LameLib\"目录下。</li>\n"
+"  <li>当您第一次使用\"导出为MP3\"命令时，Audacity将"
+"问您LameLib所在的位置。</li>\n"
+"</ol>"
 
 #: help/faq.php:80
 msgid "How do I install VST plug-ins?"
@@ -1732,13 +1964,23 @@ msgid ""
 "<p>See also: <a href=\"faq?s=install&amp;i=vst-bugs\">Why do some VST plug-"
 "ins look wrong, or not work?</a></p>"
 msgstr ""
+"<ol>\n"
+"<li><p>首先，下载并解压缩<a href=\"%s\">VST Enabler</a>。</li>\n"
+"<li><p>将解压的VST Enabler连同您自己的VST插件一起放在"
+"Audacity安装目录下的“Plug-ins”目录中。 (在Mac OS X系统里，"
+"Audacity的安装目录通常在Applications目录下。在Windows系统，其安装目录一般会在"
+"Program Files目录里。)</li>\n"
+"<li><p>下次您启动Audacity的时候，您的VST特效插件将显示在"
+"“特效”菜单下。</li>\n"
+"</ol>\n"
+"<p>又见: <a href=\"faq?s=install&amp;i=vst-bugs\">为什么一些VST插件"
+"看上去有问题，无法工作?</a></p>"
 
 #: help/faq.php:89
 msgid "Why do some VST plug-ins look wrong, or not work?"
 msgstr "为什么一些VST插件看上去有问题，无法工作?"
 
 #: help/faq.php:90
-#, fuzzy
 msgid ""
 "<p>The <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> is not "
 "yet able to display custom interfaces for plug-ins.  Instead, it uses "
@@ -1749,13 +1991,15 @@ msgid ""
 "that do not work.</p>  \n"
 "<p>Audacity also does not support VST instrument (VSTi) plug-ins.</p>"
 msgstr ""
-"<p><a href=\"faq?section=install&amp;item=vst-enabler\">VST Enabler</a> 提供"
-"的插件还不能显示定制的界面。相反，所有的VST插件都使用通用的控制。因此，许多插"
-"件看上去和执行起来和它们在别的程序里的外观和行为不太一样。</p>\n"
-"<p>其它VST插件可能根本无法工作，因为VST Enabler还含有错误(bugs)。如果您发现无"
-"法工作的插件，请<a href\"../contact/\">联系我们</a>报告问题。</p>  \n"
-"<p>Audacity还不支持VST软件音源(Virtul Studio Technology Instrument，VSTi)插"
-"件。</p>"
+"<p><a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a>"
+"提供的插件还不能显示定制的界面。相反，所有的VST插件都"
+"使用通用的控制。因此，许多插件看上去和执行起来和它们在别的程序里的外观和行为"
+"不太一样。</p>\n"
+"<p>其它VST插件可能根本无法工作，因为VST Enabler还含有错误(bugs)。"
+"如果您发现无法工作的插件，请<a href\"../contact/\">联系我们</a>报告"
+"问题。</p>  \n"
+"<p>Audacity还不支持VST软件音源(Virtul Studio Technology Instrument，VSTi)"
+"插件。</p>"
 
 #: help/faq.php:95
 msgid "What should I do if I have problems downloading or installing Audacity?"
@@ -1767,9 +2011,9 @@ msgid ""
 "corrupt, try downloading it from our <a href=\"http://sourceforge.net/"
 "project/showfiles.php?group_id=6235\">alternate servers</a>.</p>"
 msgstr ""
-"<p>如果您不能下载Audacity，或如果下载的安装程序被破坏了，请尝试从我们的<a "
-"href=\"http://sourceforge.net/project/showfiles.php?group_id=6235\">候补服务"
-"器</a>下载。</p>"
+"<p>如果您不能下载Audacity，或如果下载的安装程序被"
+"破坏了，请尝试从我们的<a href=\"http://sourceforge.net/"
+"project/showfiles.php?group_id=6235\">候补服务器</a>下载。</p>"
 
 #: help/faq.php:101
 msgid "Recording"
@@ -1780,21 +2024,20 @@ msgid "How can I record in stereo?"
 msgstr "怎样录制立体声?"
 
 #: help/faq.php:105
-#, fuzzy
 msgid ""
 "<p>To record in stereo, open the Audacity preferences.  In the “Audio I/O” "
 "section, change the number of recording channels from 1 (mono) to 2 (stereo)."
 "</p>"
 msgstr ""
-"<p>如需录制立体声，请打开Audacity参数设定项。在“音频I/O”栏，将录音声道从1 (单"
-"声道)改为2 (立体声)。</p>"
+"<p>如需录制立体声，请打开Audacity参数设定项。在“音频I/O”"
+"栏，将录音声道从1 (单声道)改为2 (立体声)。"
+"</p>"
 
 #: help/faq.php:108
 msgid "How do I record from vinyl records, cassette tapes, or minidiscs?"
 msgstr "怎样从唱片、卡式磁带或MD录音?"
 
 #: help/faq.php:109
-#, fuzzy
 msgid ""
 "<p>First, set Audacity to <a href=\"faq?s=recording&amp;i=stereo\">record in "
 "stereo</a>.</p>\n"
@@ -1819,40 +2062,42 @@ msgid ""
 "<p>See also: <a href=\"faq?s=files&amp;i=split\">How to split a long "
 "recording into multiple files</a>.</p>"
 msgstr ""
-"<p>首先，将Audacity设为<a href=\"faq?section=recording&amp;item=stereo\">立体"
-"声录音</a>。</p>\n"
-"<p>接下来，将立体声音频线的一端插入您的磁带放音机、MD播放机或立体声系统的“线"
-"性输出(Line Out)”或“耳机(Headphone)”接口中。将音频线的另一端插入您计算机的“线"
-"性输入(Line In)”接口中。如果您没有适合这些接口的线缆，可以去电子器材商店购"
-"买。</p>\n"
-"<p>在Audacity工具栏中选择“线性输入(Line In)”作为输入源，然后按下录音按钮。录"
-"音时，请启动播放您的磁带或碟片。当完成录音后，按下停止按钮。</p>\n"
+"<p>首先，将Audacity设为<a href=\"faq?s=recording&amp;i=stereo\">"
+"立体声录音</a>。</p>\n"
+"<p>接下来，将立体声音频线的一端插入您的磁带放音机、MD播放机或立体声系统的"
+"“线性输出(Line Out)”或“耳机(Headphone)”接口中。将音频线的另一端插入"
+"您计算机的“线性输入(Line In)”接口中。如果您没有适合这些接口的"
+"线缆，可以去电子器材商店"
+"购买。</p>\n"
+"<p>在Audacity工具栏中选择“线性输入(Line In)”作为输入源，然后按下"
+"录音按钮。录音时，请启动播放您的磁带或碟片。"
+"当完成录音后，按下停止按钮。</"
+"p>\n"
 "<p>注意：</p>\n"
 "<ul>\n"
-"\t<li><p>不要把立体声设备的输出连接至计算机的“麦克风(Microphone)”接口，此接口"
-"只能馈入低功率(麦克风级，mic-level)的信号。正确的方法是使用“线性输入(Line "
-"In)”接口。</p></li>\n"
-"\t<li><p>请不要把唱机跟计算机直接连接。从唱机输出的信号有失真；它必须通过唱机"
-"前置放大器或者带“唱机输入(Phono)”接口接收机的校正才行。</p></li>\n"
+"\t<li><p>不要把立体声设备的输出连接至计算机的“麦克风(Microphone)”"
+"接口，此接口只能馈入低功率(麦克风级，mic-level)的信号。正确的方法是"
+"使用“线性输入(Line In)”接口。</p></li>\n"
+"\t<li><p>请不要把唱机跟计算机直接连接。从唱机输出的信号"
+"有失真；它必须通过唱机前置放大器或者带“唱机输入(Phono)”"
+"接口接收机的校正才行。</p></li>\n"
 "</ul>\n"
-"<p>又见：<a href=\"faq?section=files&amp;item=split\">怎样将一段长的录音分割"
-"成多个文件</a>。</p>"
+"<p>又见：<a href=\"faq?s=files&amp;i=split\">怎样将"
+"一段长的录音分割成多个文件</a>。</p>"
 
 #: help/faq.php:118 help/faq.php:177 help/faq.php:226
 msgid "See also:"
-msgstr ""
+msgstr "又见："
 
 #: help/faq.php:118 help/faq.php:202 help/faq.php:226
 msgid "How do I save my recording on an audio CD?"
-msgstr "如何将我的录音保存在音频CD盘上?"
+msgstr "我怎样才能在音频CD光盘上保存我的录音?"
 
 #: help/faq.php:121
-#, fuzzy
 msgid "Why can’t I hear what I’m recording?"
 msgstr "为什么我不能在录音时听到所录制的声音?"
 
 #: help/faq.php:122
-#, fuzzy
 msgid ""
 "<h3>Windows and Linux</h3>\n"
 "<p>To monitor your recording, open your computer's volume control panel.  "
@@ -1866,22 +2111,21 @@ msgid ""
 "If it does not work, you can choose “Software Playthrough” instead.</p>\n"
 msgstr ""
 "<h3>Windows与Linux</h3>\n"
-"<p>如要监听录音，打开计算机的音量控制面板。调高录音源的回放音量(注意去掉“静"
-"音”复选框的对勾)，该录音源通常是“麦克风(Microphone)”或“线性输入(Line in)”。</"
-"p>\n"
-"<p>如果还不起作用的话，打开Audacity的参数设定项。在“音频I/O”栏, 选中“软件回"
-"放”选项。</p>\n"
+"<p>如要监听录音，打开计算机的音量控制面板。"
+"调高录音源的回放音量并且去掉“静音”复选框的对勾"
+"(该录音源通常是“麦克风(Microphone)”或“线性输入(Line in)”)。</p>\n"
+"<p>如果还不起作用的话，打开Audacity的参数设定项。在“音频I/O”"
+"栏, 选中“软件回放”选项。</p>\n"
 "<h3>Mac OS X</h3>\n"
-"<p>打开Audacity的参数设定项。在“音频I/O”栏，选中“回放”选项。如果“硬件回放”项"
-"可用的话，最好选该项。假如“硬件回放”不起作用的话，您可以选择“软件回放”。</"
-"p>\n"
+"<p>打开Audacity的参数设定项。在“音频I/O”栏，选中"
+"“回放”选项。如果“硬件回放”项可用的话，最好选该项。"
+"假如“硬件回放”不起作用的话，您可以选择“软件回放”。</p>\n"
 
 #: help/faq.php:130
 msgid "Can I play a track while recording a new one on top of it?"
 msgstr "我可以在某个音轨正在录音时播放它吗?"
 
 #: help/faq.php:131
-#, fuzzy
 msgid ""
 "<p>This is called multi-track recording.  It makes it possible to record "
 "harmonies with yourself, or add new instruments or vocals to an existing "
@@ -1895,16 +2139,22 @@ msgid ""
 "<p>See also: <a href=\"faq?s=recording&amp;i=sync\">Why isn't my new track "
 "in sync with the previous ones?</a></p>"
 msgstr ""
-"<p>是的。导入或录制第一个音轨。然后打开参数设定项的“音频I/O”栏，在“在录制新轨"
-"时播放其它的轨道”前选勾。现在您能在录制新音轨时听到旧音轨的声音了。</p>"
+"<p>这叫做多音轨录音。它使您可以自己录制和声，或者给一段现有的录音增加新的"
+"音源(instrument)或人声。实现的方法请遵循以下步骤:</p>\n"
+"<ol>\n"
+"  <li>导入或录制第一个音轨。</li>\n"
+"  <li>打开参数设定项的“音频I/O”栏，勾上"
+"<b>“在录制新轨时播放其它的轨道”</b>那个选框。</li>\n"
+"  <li>关闭参数设定，然后点击<b>录音</b>按钮。</li>\n"
+"</ol>\n"
+"<p>又见: <a href=\"faq?s=recording&amp;i=sync\">为什么我的新音轨"
+"不能与前面的音轨同步?</a></p>"
 
 #: help/faq.php:140
-#, fuzzy
 msgid "Why isn’t my new track in sync with the previous ones?"
 msgstr "为什么我的新音轨不能与前面的音轨同步?"
 
 #: help/faq.php:141
-#, fuzzy
 msgid ""
 "<p>When you make a <a href=\"faq?s=recording&amp;i=multi-track\">multi-track "
 "recording</a>, there is an unpredictable delay between playback and "
@@ -1913,18 +2163,18 @@ msgid ""
 "<p>If a new track is not synchronized with the others, you can zoom in and "
 "use the Time Shift tool to drag it to the correct location.</p>"
 msgstr ""
-"<p>当您进行<a href=\"faq?section=recording&amp;item=multi-track\">多音轨录音"
-"</a>时，在回放和录音之间会有一段不可预知的时延。Audacity试图自动修正这个时"
-"延，但目前还不能在所有的计算机上都解决这个问题。</p>\n"
-"<p>如果一个新音轨不能和其它音轨同步，请先放大，再用时间移动工具将新音轨拖至正"
-"确的位置。</p>"
+"<p>当您进行<a href=\"faq?s=recording&amp;i=multi-track\">多音轨"
+"录音</a>时，在回放和录音之间会有一段"
+"不可预知的时延。Audacity试图自动修正这个时延，"
+"但目前还不能在所有的计算机上都解决这个问题。</p>\n"
+"<p>如果一个新音轨不能和其它音轨同步，请先放大，再用"
+"时间移动工具将新音轨拖至正确的位置。</p>"
 
 #: help/faq.php:145
 msgid "Can Audacity record RealAudio or other streaming audio?"
 msgstr "Audacity能录制RealAudio或其它音频流吗?"
 
 #: help/faq.php:146
-#, fuzzy
 msgid ""
 "<h3>Windows and Linux</h3>\n"
 "<p>With most Windows and Linux audio devices, it is possible to record "
@@ -1943,24 +2193,29 @@ msgid ""
 "\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> or <a href="
 "\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>\n"
 msgstr ""
-"<p>对于大多数<b>Windows及Linux</b>上的音频设备，均可实现对计算机上正在播放声"
-"音的录制，包括因特网广播流。 \n"
-"<p>在Audacity混音器工具栏的下拉菜单里，选择“Wave Out(波形输出)”或者“Stereo "
-"Mix(立体声混音)”作为输入源(实际确切的名称可能不一样，取决于您计算机的声卡)。 "
-"当按下录音按钮时，Audacity将会捕获所有正在计算机扬声器上播放的声音。</p>\n"
-"<p>如果这些措施在您的计算机上不起作用，您可以用一根音频线将“线性输出(Line "
-"Out)”接口(外接音箱用的)和“线性输入(Line In)”接口对接起来，再将Audacity设为"
-"从“线性输入(Line In)”录音。</p>\n"
-"<p><b>Mac OS X</b>用户可以使用诸如<a href=\"http://www.rogueamoeba.com/"
-"audiohijack/\">Audio Hijack</a>或者<a href=\"http://www.ambrosiasw.com/"
-"utilities/wiretap/\">Wiretap Pro</a>之类的软件捕获音频流。</p>\n"
+"<h3>Windows和Linux</h3>\n"
+"<p>对于大多数Windows及Linux上的音频设备，均可实现"
+"对计算机上正在播放声音的录制，包括因特网"
+"广播流。</p>\n"
+"<p>在Audacity混音器工具栏的下拉菜单里，选择“Wave Out(波形输出)”或者"
+"“Stereo Mix(立体声混音)”作为输入源(实际确切的名称可能不一样，"
+"取决于您计算机的声卡)。 当按下录音按钮时，"
+"Audacity将会捕获所有正在计算机扬声器上播"
+"放的声音。</p>\n"
+"<p>如果这些措施在您的计算机上不起作用，您可以用一根音频线"
+"将“线性输出(Line Out)”接口(外接音箱用的)和“线性输入(Line In)”接口对接起来，再"
+"将Audacity设为从“线性输入(Line In)”录音。</p>\n"
+"<h3>Mac OS X</h3>\n"
+"<p>Mac OS X用户可以使用诸如<a href=\"http://www.rogueamoeba.com/"
+"audiohijack/\">Audio Hijack</a>或者"
+"<a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">"
+"Wiretap Pro</a>之类的软件捕获音频流。</p>\n"
 
 #: help/faq.php:155
 msgid "Can I set Audacity to record at a certain time?"
 msgstr "我可以设定Audacity在特定的时间开始录音吗?"
 
 #: help/faq.php:156
-#, fuzzy
 msgid ""
 "<p>Sorry, Audacity does not yet support scheduled recording.  We may add "
 "this feature to a future version of the program.</p>\n"
@@ -1976,15 +2231,18 @@ msgid ""
 "reaches the end of the selected area.</li>\n"
 "</ol>"
 msgstr ""
-"<p>抱歉，Audacity还不支持计划(定时)录音。我们可能会在以后的版本中加入此功能。"
-"</p>\n"
-"<p>目前您可以通过以下步骤使Audacity在某段时限后停止录音：</p>\n"
+"<p>抱歉，Audacity还不支持计划(定时)录音。我们可能会在"
+"以后的版本中加入此功能。</p>\n"
+"<p>目前您可以通过以下步骤使Audacity在"
+"某段时限后<b>停止</b>录音：</p>\n"
 "<ol>\n"
-"  <li>在参数设定项的“音频I/O”栏中打开“在录制新轨时播放其它的轨道”选项。</"
-"li>\n"
-"  <li>在档案菜单中选择“新建音轨”。</li>\n"
-"  <li>如必要的话先缩小显示，然后点击拖动，选定您希望录制的时长。</li>\n"
-"  <li>开始录音。Audacity将在到达选段区域结束点时自动停止录音。</li>\n"
+"  <li>在参数设定项的“音频I/O”栏中打开"
+"“在录制新轨时播放其它的轨道”选项。</li>\n"
+"  <li>在工程菜单中选择“新建音轨”。</li>\n"
+"  <li>如必要的话先缩小显示，然后点击拖动，选定您希望"
+"录制的时长。</li>\n"
+"  <li>开始录音。Audacity将在到达选段区域结束点时"
+"自动停止录音。</li>\n"
 "</ol>"
 
 #: help/faq.php:168
@@ -1993,28 +2251,26 @@ msgstr "打开和保存文件"
 
 #: help/faq.php:171 help/faq.php:177
 msgid "How do I open an Audacity project (AUP file) in another program?"
-msgstr "我可以在别的程序里打开一个Audacity的档案(AUP文件)吗?"
+msgstr "我可以在别的程序里打开Audacity的工程(AUP文件)吗?"
 
 #: help/faq.php:172
-#, fuzzy
 msgid ""
 "<p>Audacity project files are saved in a special format that only Audacity "
 "can open.  To open your project in another program or burn it to CD, you "
 "must open the “project.aup” file in Audacity, and use the Export commands "
 "(in the File menu) to save it in a standard format like WAV or AIFF.</p>"
 msgstr ""
-"<p>Audacity档案文件的格式是私有的，只有Audacity才能打开。为了在别的程序里打开"
-"Audacity档案，或者将档案刻录为音频CD光盘，您必须在Audacity中打开档案的“."
-"aup”文件，然后用“导出”命令(在“文件”菜单)将其保存为标准格式的文件，例如WAV或者"
-"AIFF。</p>"
+"<p>Audacity工程文件的格式是私有的，只有Audacity才能打开。"
+"为了在别的程序里打开Audacity工程，或者将工程刻录为音频CD光盘，您"
+"必须在Audacity中打开工程的“.aup”文件，然后用“导出”命令"
+"(在“文件”菜单)将其保存为标准格式的文件，例如WAV或者AIFF。</p>"
 
 #: help/faq.php:175
 msgid ""
 "Why does Audacity create a folder full of .au files when I save a project?"
-msgstr "为什么在我保存档案时Audacity会创建一个满是“.au”文件的文件夹?"
+msgstr "为什么在我保存工程时Audacity会创建一个满是“.au”文件的文件夹?"
 
 #: help/faq.php:176
-#, fuzzy
 msgid ""
 "<p>Audacity breaks long tracks into small pieces so it can edit them more "
 "efficiently.  When you save a project, Audacity stores all of the pieces in "
@@ -2023,10 +2279,12 @@ msgid ""
 "the “project.aup” file, which is saved in the same location as the “data” "
 "folder.</p>"
 msgstr ""
-"<p>Audacity会把长的音轨分成小的片段以便有效地进行编辑。 当您保存档案时，"
-"Audacity会把所有的片段文件存储在一个如“档案名_data”(即档案名+“_data”)的文件夹"
-"中。</p>  <p>您不必自己打开这些文件。Audacity会在您打开档案的“.aup”文件时自动"
-"读入它们，此档案文件与“_data”文件夹位于同一个目录。</p>"
+"<p>Audacity会把长的音轨分成小的片段以便有效地进行编辑。"
+" 当您保存工程时，Audacity会把所有的片段文件存储在一个如"
+"“工程名_data”(即工程名+“_data”)的文件夹中。</p>  <p>您不必自己"
+"打开这些文件。Audacity会在您打开工程的“.aup”文件时自动读入它们，"
+"此工程文件与“_data”文件夹位于同一个"
+"目录。</p>"
 
 #: help/faq.php:180
 msgid "Audacity crashed!  Can I recover any unsaved data?"
@@ -2042,17 +2300,16 @@ msgid ""
 "Please see the <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery"
 "\">Crash Recovery</a> page for more information.</p>"
 msgstr ""
-"<p>您也许能用<a href=\"http://www.mesw.de/audacity/recovery/\">Audacity还原工"
-"具(Audacity Recovery Utility)</a>来自动恢复您的档案。更多信息请见<a href="
-"\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">崩溃恢复(Crash "
-"Recovery)</a>页面。</p>"
+"<p>您也许能用<a href=\"http://www.mesw.de/audacity/recovery/\">Audacity还原"
+"工具(Audacity Recovery Utility)</a>来自动恢复您的工程。"
+"更多信息请见<a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery"
+"\">崩溃恢复(Crash Recovery)</a>页面。</p>"
 
 #: help/faq.php:187
 msgid "Can Audacity import file formats like WMA, AAC, FLAC, etc.?"
 msgstr "Audacity能导入诸如WMA、AAC、FLAC等等之类格式的文件吗?"
 
 #: help/faq.php:188
-#, fuzzy
 msgid ""
 "<p>Audacity <b>cannot</b> import or export files in <b>WMA, AAC, RealAudio, "
 "Shorten (SHN)</b>, or most other proprietary formats.  Because of licensing "
@@ -2067,32 +2324,34 @@ msgid ""
 "<p>See also: <a href=\"faq?s=files&amp;i=midi\">Why can't I play MIDI files?"
 "</a></p>"
 msgstr ""
-"<p>Audacity不能导入或导出WMA、AAC、RealAudio、Shorten(SHN)及许多其它私有格式"
-"的文件。因为许可证及专利的限制，我们无法将这些格式的支持加入Audacity中。将来"
-"的版本也许可以通过使用安装在您操作系统中的编解码器来支持这些格式。</p>\n"
-"<p>Audacity还不支持某些开放格式，包括Ogg Speex及FLAC。我们希望以后的版本能支"
-"持它们。</p>\n"
-"<p>已支持格式的列表见<a href=\"../about/features\">特性列表</a>。</p>\n"
-"<p>另见：<a href=\"faq?section=files&amp;item=midi\">为什么不能播放MIDI文件?"
-"</a></p>"
+"<p>Audacity<b>不能</b>导入或导出<b>WMA、AAC、RealAudio、Shorten"
+"(SHN)</b>及许多其它私有格式的文件。因为许可证及专利的"
+"限制，我们无法将这些格式的支持加入Audacity中。"
+"将来的版本也许可以通过使用安装在您操作系统中的编解码器来"
+"支持这些格式。</p>\n"
+"<p>Audacity还不支持某些开放格式，包括<b>Ogg Speex</b>及"
+"<b>FLAC</b>。我们希望以后的版本能支持它们。</"
+"p>\n"
+"<p>已支持格式的列表见<a href=\"../about/features"
+"\">特性列表</a>。</p>\n"
+"<p>另见：<a href=\"faq?s=files&amp;i=midi\">为什么不能播放"
+"MIDI文件?</a></p>"
 
 #: help/faq.php:194
-#, fuzzy
 msgid "Why can’t I play MIDI files?"
 msgstr "为什么不能播放MIDI文件?"
 
 #: help/faq.php:195
-#, fuzzy
 msgid ""
 "<p>Sorry, Audacity cannot play, edit, or convert MIDI files.  It can only "
 "display them visually (for comparison with recorded sounds).  We might add "
 "MIDI editing to a future version of Audacity, but for now Audacity is "
 "focused on sampled audio (like WAV files).</p>"
 msgstr ""
-"<p>Audacity不能播放、编辑或者转换MIDI或MOD文件。它只能图形化地显示MIDI文件(相"
-"对录音的音频而言，“导入MIDI”的命令在“档案”菜单里)。我们可能在以后的版本里加入"
-"编辑MIDI的功能，当目前我们还是关注于使Audacity能很好地处理基于采样的音频(如"
-"WAV文件)。</p>"
+"<p>对不起，Audacity不能播放、编辑或者转换MIDI文件。它只能"
+"图形化地显示MIDI文件(相对录音的音频而言，“导入MIDI”的命令在“工程”菜单里)。"
+"我们可能在以后的版本里加入编辑MIDI的功能，但目前Audacity还是关注于"
+"处理基于采样的音频(如WAV文件)。</p>"
 
 #: help/faq.php:198
 msgid "How do I import a track from an audio CD?"
@@ -2105,19 +2364,20 @@ msgid ""
 "<a href=\"http://www.apple.com/itunes/\">iTunes</a> to extract CD tracks "
 "into a format that Audacity can read, like WAV or AIFF.</p>"
 msgstr ""
-"<p>Audacity无法从音频CD上直接导入音轨。您必须使用类似<a href=\"http://cdexos."
-"sourceforge.net/\">CDex</a>或<a href=\"http://www.apple.com/itunes/"
-"\">iTunes</a>之类的其它软件将CD音轨转换成Audacity可以读取的格式，例如WAV或"
-"AIFF格式。</p>"
+"<p>Audacity无法从音频CD上直接导入音轨。您必须使用类似"
+"<a href=\"http://cdexos.sourceforge.net/\">CDex</a>或"
+"<a href=\"http://www.apple.com/itunes/\">iTunes</a>之类的其它软件将CD音轨"
+"转换成Audacity可以读取的格式，例如WAV或AIFF格式。</p>"
 
 #: help/faq.php:203
 msgid ""
 "After making a recording or editing a file in Audacity, follow these steps "
 "to save your work on an audio CD:"
 msgstr ""
+"在Audacity中录音或编辑文件后，请按照以下步骤将"
+"您的工作保存在音频CD盘上:"
 
 #: help/faq.php:204
-#, fuzzy
 msgid ""
 "<ol>\n"
 "  <li>Use the “Export as WAV” or “Export as AIFF” command to save your "
@@ -2143,29 +2403,35 @@ msgid ""
 "<p>See also: <a href=\"faq?s=files&amp;i=split\">How can I split a long "
 "recording into multiple tracks?</a></p>"
 msgstr ""
-"<p>使用“导出为WAV”或“导出为AIFF”命令将您的Audacity录音保存为声音文件。您可以"
-"使用任一款CD光盘刻录软件(例如iTunes或者Nero)将这些文件刻录到CD盘片上。</p>\n"
-"<p>如果您需要创建能在大多数CD播放器上播放的CD盘，您必须选择刻录为“音乐光盘"
-"(Music CD)”或“音频光盘(Audio CD)”，而不是“数据光盘(Data CD)”。用CD-R盘片比CD-"
-"RW盘片的效果要好。</p>\n"
-"<p>一些刻录软件只能刻录16-bit、44.1KHz的立体声音频文件。如果如果您的刻录软件"
-"无法打开声音文件，请使用下列设置重新从Audacity中导出声音文件：</p>\n"
-"<ul>\n"
-"  <li>在Audacity窗口的底部，将档案的速率变为44100 Hz。</li>\n"
-"  <li>在“参数设定”项的“文件格式”栏，选择WAV(16-bit...)或者AIFF(16-bit...)。</"
-"li>\n"
-"  <li>如果您的档案还不包含立体声音轨，在档案菜单里选择“新建立体声音轨”(这将使"
-"Audacity将您的录音导出为立体声文件)。</li>\n"
-"</ul>\n"
-"<p>又见：<a href=\"faq?section=files&amp;item=split\">怎样将一段长的录音分割"
-"成多个文件?</a></p>"
+"<ol>\n"
+"  <li>使用“导出为WAV”或“导出为AIFF”命令将您的Audacity录音保存为"
+"声音文件。</li>\n"
+"  <li>再用任一款CD光盘刻录软件(例如iTunes或者Nero)将"
+"这些文件刻录到CD盘片上。</li>\n"
+"</ol>\n"
+"<p>如果您需要创建能在大多数CD播放器上播放的CD盘，您必须选择"
+"刻录为“音乐光盘(Music CD)”或“音频光盘(Audio CD)”，而不是“数据光盘(Data CD)”。"
+"请尽量用CD-R盘片，因为某些播放器不能读CD-RW盘片。</p>\n"
+"<p>一些刻录软件只能刻录16-bit、44.1KHz的立体声音频文件。如果"
+"如果您的刻录软件无法打开声音文件，请使用下列设置重新从Audacity中"
+"导出声音文件：</p>\n"
+"<ol>\n"
+"  <li>在Audacity窗口的底部，将工程的速率变为44100 Hz。"
+"</li>\n"
+"  <li>在“参数设定”项的“文件格式”栏，选择WAV(16-bit...)或者AIFF(16-"
+"bit...)。</li>\n"
+"  <li>如果您的工程还不包含立体声音轨，在工程菜单里选择“新建"
+"立体声音轨”(这将使Audacity将您的录音导出为"
+"立体声文件)。</li>\n"
+"</ol>\n"
+"<p>又见：<a href=\"faq?s=files&amp;i=split\">怎样将一段长的"
+"录音分割成多个文件?</a></p>"
 
 #: help/faq.php:218
 msgid "How can I split a long recording into multiple files or CD tracks?"
 msgstr "怎样才能将一段长的录音分割成多个文件或CD音轨?"
 
 #: help/faq.php:219
-#, fuzzy
 msgid ""
 "<p>Follow these steps to create a separate file for each song or segment of "
 "a long recording.  This is particularly useful if you are creating a CD, "
@@ -2180,15 +2446,17 @@ msgid ""
 "separate file, using the format and location you choose.</li>\n"
 "</ol>"
 msgstr ""
-"<p>以下步骤教您从一段长录音中为每首歌或段落创建一个单独的文件。这在创建CD时特"
-"别有用，因为在CD上每个文件都表现为一个单独的音轨。</p>\n"
+"<p>以下步骤教您从一段长录音中为每首歌或段落"
+"创建一个单独的文件。这在创建CD时特别有用，"
+"因为在CD上每个文件都表现为一个单独的音轨。</p>\n"
 "<ol>\n"
 "  <li>点击第一首歌的起始位置，使光标位于该处。</li>\n"
-"  <li>在“档案”菜单里选择“给音频选段加上标题”。如果您愿意的话，您可以输入歌曲"
-"的名字(很遗憾，标签名目前不支持汉字)。</li>\n"
+"  <li>在“工程”菜单里选择“给音频选段加上标题”。如果您愿意的话，"
+"您可以输入歌曲的名字(很遗憾，标签名目前不支持汉字)。</li>\n"
 "  <li>针对每首歌曲都重复第1步和第2步的操作。</li>\n"
-"  <li>完成后，在“文件”菜单里的选择“导出多个文件”命令。当您按下“导出”按钮，"
-"Audacity将按照您选定的格式和位置把每首歌都保存为一个单独的文件。</li>\n"
+"  <li>完成后，在“文件”菜单里的选择“导出多个文件”命令。"
+"当您按下“导出”按钮，Audacity将按照您选定的格式和位置"
+"把每首歌都保存为一个单独的文件。</li>\n"
 "</ol>"
 
 #: help/faq.php:231
@@ -2196,28 +2464,26 @@ msgid "Editing"
 msgstr "编辑"
 
 #: help/faq.php:234
-#, fuzzy
 msgid "Why can’t I use the effects or other menu items?"
-msgstr "为什么我不能使用“效果”或其它一些菜单项?"
+msgstr "为什么我不能使用“特效”或其它一些菜单项?"
 
 #: help/faq.php:235
-#, fuzzy
 msgid ""
 "<p>Some menu items are grayed out or disabled until they are ready for use.  "
 "Before choosing an effect, you must select the audio that you want to "
 "change.  To select audio, click and drag with the Selection tool to "
 "highlight it, or choose the “Select All” command from the Edit menu.</p>"
 msgstr ""
-"<p>一些菜单项在可用之前是灰色的或无效的。在选择效果之前，您必须选定希望修改的"
-"音频。通过点击和拖动选段工具可以使音频选段变为高亮显示，或者也可以在编辑菜单"
-"中选择“全部”音频。</p>"
+"<p>一些菜单项在可用之前是灰色的或无效的。"
+"在选择特效之前，您必须选定希望修改的音频。"
+"通过点击和拖动选段工具可以使音频选段变为高亮显示，"
+"或者也可以在编辑菜单中选择“全部”音频。</p>"
 
 #: help/faq.php:238
 msgid "How do I combine two files into one longer file?"
 msgstr "怎样才能将两个文件合并为一个长文件?"
 
 #: help/faq.php:239
-#, fuzzy
 msgid ""
 "<p>Follow these steps to splice two files together:</p>\n"
 "<ol>\n"
@@ -2235,13 +2501,15 @@ msgstr ""
 "<p>使用以下步骤将两个文件接合在一起：</p>\n"
 "<ol>\n"
 "  <li>将两个文件都导入Audacity中。</li>\n"
-"  <li>点击标题选中第二个音轨(标题位于“静音/独奏”按钮附近的区域)。</li>\n"
+"  <li>点击标题选中第二个音轨(标题位于"
+"“静音/独奏”按钮附近的区域)。</li>\n"
 "  <li>在“编辑”菜单选择“剪切”。</li>\n"
-"  <li>点击第一个音轨的结束点之后的区域，使光标移至该处。</li>\n"
+"  <li>点击第一个音轨的结束点之后的区域，使光"
+"标移至该处。</li>\n"
 "  <li>在“编辑”菜单选择“粘贴”。</li>\n"
 "</ol>\n"
-"<p>按播放按钮听听效果，您可以用“导出”命令(在“文件”菜单里)将其保存为声音文件。"
-"</p>"
+"<p>按播放按钮听听效果，您可以用“导出”命令(在“文件”菜单里)"
+"将其保存为声音文件。</p>"
 
 #: help/faq.php:250
 msgid "How do I mix two tracks together?"
@@ -2255,17 +2523,17 @@ msgid ""
 "they start at different times, or use the other editing commands to alter "
 "either of the tracks.</p>"
 msgstr ""
-"<p>为了混合两个文件，只需将它们都导入Audacity中。它们会显示为不同的音轨，在播"
-"放时两个音轨的声音就被混合了。您可以使用“时间移动”工具来移动它们，使其起始位"
-"置在不同的时刻，或者您也可以用其它的编辑命令改变任一音轨。</p>"
+"<p>为了混合两个文件，只需将它们都导入Audacity中。它们会"
+"显示为不同的音轨，在播放时两个音轨的声音就被混合了。"
+"您可以使用“时间移动”工具来移动它们，使其起始位置"
+"在不同的时刻，或者您也可以用其它的编辑命令改变任一"
+"音轨。</p>"
 
 #: help/faq.php:254
-#, fuzzy
 msgid "Can I remove the vocals from a recording to make a Karaoke track?"
-msgstr "我能删除一段录音中的部分声音吗?"
+msgstr "我能删除一段录音中的人声以便生成卡拉OK音轨吗?"
 
 #: help/faq.php:255
-#, fuzzy
 msgid ""
 "<p>This is possible <b>only for certain stereo tracks</b>.  When the vocals "
 "are exactly the same on both stereo channels, you can remove them by "
@@ -2286,22 +2554,24 @@ msgid ""
 "a karaoke track.  You can use the Export commands in the File menu to save "
 "the results.</p>\n"
 msgstr ""
-"<p><b>仅仅</b>对于<b>特定的立体声音轨</b>来说是可能的。当要删除的声音恰好在立"
-"体声的两个声道上都是一样时，您可以通过用一个声道“减(subtract)”另一个声道来删"
-"除它。 这对于许多录音室的录音都是有效的，只要声音轨道正好在中间位置混合录制。"
-"</p>\n"
+"<p><b>仅仅</b>对于<b>特定的立体声音轨</b>来说是可能的。当要删除的声音"
+"恰好在立体声的两个声道上都是一样时，您可以通过用一个"
+"声道“减(subtract)”另一个声道来删除它。 这对于许多录音室的"
+"录音都是有效的，只要声音轨道正好在中间位置混合录制。</p>\n"
 "<p>在Audacity里这么做：</p>\n"
 "<ol>\n"
 "  <li>将您的立体声文件导入Audacity。</li>\n"
-"  <li>打开“音轨”菜单(点击音轨标题后的箭头)，然后选择“分割立体声轨道”。</li>\n"
-"  <li>选择下面的音轨(右声道)。选择音轨时可以点击“静音/独奏”按钮附近的区域。</"
-"li>\n"
-"  <li>在“效果”菜单里选择“上下反转”。</li>\n"
+"  <li>打开“音轨”菜单(点击音轨标题后的箭头)，然后"
+"选择“分割立体声轨道”。</li>\n"
+"  <li>选择下面的音轨(右声道)。选择音轨时可以点击“静音/独奏”"
+"按钮附近的区域。</li>\n"
+"  <li>在“特效”菜单里选择“上下反转”。</li>\n"
 "  <li>使用“音轨”菜单，将每个音轨都变为“单声道”的。</li>\n"
 "</ol>\n"
-"<p>按播放按钮听听效果。如果幸运的话，杂声将会被消除掉，而大部分其它的音源将不"
-"受影响，就像一个卡拉OK音轨。您可以用“文件”菜单里的“导出”命令保存修改后的结"
-"果。</p>\n"
+"<p>按播放按钮听听效果。如果幸运的话，杂声将会被消除掉，而"
+"大部分其它的音源将不受影响，就像一个"
+"卡拉OK音轨。您可以用“文件”菜单里的“导出”命令保存"
+"修改后的结果。</p>\n"
 
 #: help/faq.php:284
 msgid "Other frequently asked questions..."
@@ -2312,61 +2582,86 @@ msgid "Frequently Asked Questions"
 msgstr "常见问题解答"
 
 #: help/faq.php:292
-#, fuzzy
 msgid ""
 "These are some of the most common questions about Audacity.  If your "
 "question isn’t answered here, see the <a href=\"documentation"
 "\">documentation</a>, or <a href=\"../contact/\">contact us</a> for help."
 msgstr ""
-"这些是关于Audacity的最常见的问题。如果您的疑问此处没有解答，请见<a href="
-"\"documentation\">文档</a>的帮助，或者<a href=\"../contact/\">与我们联系</"
-"a>。"
+"这些是关于Audacity的最常见的问题。如果您的疑问"
+"此处没有解答，请见<a href=\"documentation"
+"\">文档</a>的帮助，或者<a href=\"../contact/\">与我们联系</a>。"
 
-#: help/index.php:9
-msgid "Documentation and Support"
-msgstr "文档和支持"
+#: help/tutorials.php:9 main.inc.php:43
+msgid "Tutorials"
+msgstr "教程"
 
-#. i18n-hint: If there are any special resources for Audacity users in your
-#. language (forums, documentation, mailing lists...), you can add links to
-#. them here.
-#: help/index.php:17
-#, fuzzy
+#. i18n-hint:  Please add a note that the links on this page are in English.
+#. If there are tutorials in your language, link to them here.
+#: help/tutorials.php:16
 msgid ""
-"<p>If you have a question, check the list of <a href=\"faq\">Frequently "
-"Asked Questions</a>.</p>\n"
-"<p>For instructions and help using Audacity, see:</p>\n"
-"<ul>\n"
-"  <li><a href=\"documentation\">Documentation</a> - Read the user’s manual "
-"and quick reference.</li>\n"
-"  <li><a href=\"tutorials\">Tutorials</a> - Step by step articles teach you "
-"how to use Audacity.</li>\n"
-"</ul>\n"
-"<p>If your question isn’t answered here, please <a href=\"../contact/"
-"\">contact us</a>.</p>"
+"These articles give step-by-step instructions for common tasks using the "
+"free Audacity sound editor."
 msgstr ""
-"<p>如果您有疑问，核查一下<a href=\"faq\">常见问题解答</a>的列表。</p>\n"
-"<p>关于Audacity使用方面的指南和帮助，见：</p>\n"
-"<ul>\n"
-"  <li><a href=\"documentation\">文档</a> - 阅读或下载用户手册及快速参考。</"
-"li>\n"
-"  <li><a href=\"tutorials\">教程</a> - 进阶(step by step)文章教您如何使用"
-"Audacity。</li>\n"
-"</ul>\n"
-"<p>如果您的疑问在此处没有解答，请<a href=\"../contact/\">联系我们</a>。</p>"
+"这些文章会一步一步地指导您如何使用Audacity完成一些常"
+"见的音频编辑工作。"
+
+#. i18n-hint:  If this string is translated, it will appear above the list of
+#. tutorials on the "help/tutorials" page.  If there are extra tutorials
+#. available in your language, add them here.  Otherwise, do not translate
+#. this string.  (Or make the translation identical to the original string.)
+#: help/tutorials.php:22 help/tutorials.php:23
+msgid "localized_tutorials"
+msgstr ""
+
+#: help/tutorials.php:27
+msgid "Audacity 1.2 Tutorial by Dan Eliot"
+msgstr "Audacity 1.2教程 (作者：Dan Eliot)"
+
+#: help/tutorials.php:27
+msgid "Learn how to open and edit a WAV file, and save the result in an MP3."
+msgstr "学习如何打开和编辑WAV文件，以及将结果保存为MP3。"
+
+#: help/tutorials.php:28
+msgid "Multi-Track Recording Tutorial from AGNULA"
+msgstr "来自AGNULA的多音轨录音教程"
+
+#: help/tutorials.php:28
+msgid "Make a simple multi-track recording."
+msgstr "进行简单的多音轨录音。"
+
+#: help/tutorials.php:29
+msgid "Audacity Tutorial by Daniel James"
+msgstr "Audacity教程 (作者：Daniel James)"
+
+#: help/tutorials.php:29
+msgid "Shows how to mix a multi-track project.  Includes sample sound files."
+msgstr "教您怎样混合多音轨工程。内含声音文件样例。"
+
+#: help/tutorials.php:32
+msgid ""
+"For additional help, see the <a href=\"documentation\">Audacity "
+"documentation</a>."
+msgstr ""
+"如需更多帮助，请见<a href=\"documentation\">Audacity"
+"文档</a>。"
+
+#: help/nyquist.php:10 main.inc.php:44
+msgid "Nyquist"
+msgstr "Nyquist"
 
 #: help/nyquist.php:17 help/nyquist2.php:17 help/nyquist3.php:17
 msgid "Introduction to Nyquist and Lisp Programming"
-msgstr ""
+msgstr "关于Nyquist及List编程的介绍"
 
 #: help/nyquist.php:18 help/nyquist2.php:10 help/nyquist2.php:18
 #: help/nyquist3.php:18
 msgid "Programming in Nyquist"
-msgstr ""
+msgstr "正在进行Nyquist编程"
 
 #: help/nyquist.php:19 help/nyquist2.php:19 help/nyquist3.php:10
 #: help/nyquist3.php:19
 msgid "Creating Nyquist Plug-ins"
-msgstr ""
+msgstr "正在创建Nyquist插件"
 
 #: help/nyquist.php:22
 msgid ""
@@ -2555,6 +2850,187 @@ msgid ""
 "\n"
 "<h3><a href=\"nyquist2\">Next: Programming in Nyquist</a></h3>"
 msgstr ""
+"<p>从1.1.1版开始，Audacity允许您使用Nyquist编程语言"
+"您自己的插件特效。与"
+"VST插件及LADSPA插件不同，Nyquist可用普通的文本编辑器"
+"编写，无需编译。</p>\n"
+"\n"
+"<p>Nyquist是由<a href=\"http://www-2.cs.cmu.edu/~rbd/\">Roger B. "
+"Dannenberg</a>发明的，其目的是作为一种完整的音频合成和分析的编程"
+"语言，能支持MIDI、音频录音和回放、文件读写操作、面向对象编程，提供"
+"具有测试、调试等许多功能。Audacity仅仅使用了Nyquist函数集的子集，"
+"允许您利用一些简单的Nyquist函数来处理"
+"音频数据。   Audacity不支持对Nyquist代码的调试，"
+"所以如果您要写一个比较复杂的插件，您会发现使用完整版的Nyquist来开发将"
+"更容易，测试之后再将它改为Audacity插件。"
+"您可以从卡耐基梅隆大学(Carnegie Mellon University)的计算机音乐项目"
+"(Computer Music Project)获得Nyquist:</p>\n"
+"<ul>\n"
+"\t<li><a href=\"http://www-2.cs.cmu.edu/~music/music.software.html\">CMU"
+"计算机音乐项目软件(Computer Music Project Software)</a> - 在此下载完全版的Nyquist</a></"
+"li>\n"
+"\t<li><a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html"
+"\">CMU的Nyquist完全参考手册</a></li>\n"
+"</ul>\n"
+"\n"
+"<p>注意如果您只是写用于Audacity的简单插件，则无需下载Nyquist。"
+"您所需的全部使用说明将列在后面。</"
+"p>\n"
+"\n"
+"<h3>Lisp</h3>\n"
+"\n"
+"<p>Nyquist是基于Lisp的。如果您曾经使用过Lisp语言编程，您可以"
+"跳过本段，直接阅读<a href=\"nyquist2\">下一页</a>。  "
+"否则的话，请阅读下面对于Lisp的简要介绍：</p>\n"
+"\n"
+"<p>在Lisp(以及Nyquist)里，一切都是S表达式(S-Expression)，即用空格分隔的、并且用圆括号括住的"
+"并且用圆括号括住的一系列记号(token，或单词)。"
+"函数名总是S表达式的第一个记号，其它的记号都是该函数的参数。"
+"这有一个简单的例子：</p>\n"
+"\n"
+"<pre>\n"
+"  (setf area (* 3.14159 (expt radius 2)))\n"
+"</pre>\n"
+"\n"
+"<p>让我们分析一下这个例子。  最外面的S表达式有3个成员记号。"
+"第一个为<code>setf</code>，是该函数的名称(其意思为"
+"英文“set-field”，即“赋值”)。 <code>setf</code>用于给变量赋值。"
+"(还有其它的类似函数，如<code>set</code>和"
+"<code>setq</code>，但<code>setf</code>是最有用的，所以我们在例子里用了它。)"
+"在<code>setf</code>之后是<code>area</"
+"code>，为需要赋值的变量名。接下来是"
+"赋予该变量的值，在这里是另一个S表达式。"
+"</p>\n"
+"\n"
+"<p>Lisp没有任何特殊的数学运算符 - 象在"
+"其它地方一样，数学运算使用<i>前缀</i>标记，函数名(或操作符)"
+"出现在参数前面。 所以3乘以7在Lisp中不是“3*7”，而是"
+"写作“(* 3 7)”。在Nyquist中，"
+"<code>expt</code>(指数)函数的第一个参数为第二个参数的幂。"
+"所以<code>(* 3.14159 (expt radius 2))</"
+"code>表示3.14159乘以<code>radius</code>(“半径”)的平方，即圆面积公式。"
+"</p>\n"
+"\n"
+"<p>为了避免每次都敲入全部的表达式，我们定义了圆面积函数，以供需要时调用:"
+"</p>\n"
+"\n"
+"<pre>\n"
+"  (defun circlearea (radius) (* 3.14159 (expt radius 2)))\n"
+"</pre>\n"
+"\n"
+"<p><code>defun</code>函数用于定义新的函数。"
+"第一个参数是新函数的名称，本例中是<code>circlearea</"
+"code>。 第二个参数是所定义函数的参数列表"
+" - 这是少数几个不被解释为函数调用的S表达式之一。"
+" 最后一个表达式是函数的值。"
+" 现在如果我们要计算半径为<code>r</code>的圆的面积，"
+"只需如下书写:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf area (circlearea r))\n"
+"</pre>\n"
+"\n"
+"<p>S表达式仅仅是列表(list)的一种表示方法。Lisp使用列表来表示"
+"所有东西(“LISP”这个名称来自于其英文全称“LISt Processing "
+"language”，即列表处理语言)；因此知道怎样操作列表是很有用的。"
+"让我们从给变量赋一个数字列表开始。您不能这样写：</p>\n"
+"\n"
+"<pre>\n"
+"  (setf mylist (1 2 3 4 5))  <font color=#cc0000><--  error!</font>\n"
+"</pre>\n"
+"\n"
+"<p>原因是当Nyquist遇到一个S表达式时，"
+"它总是把表达式当作函数来运算，除非您表明它有其它的含义。"
+"<code>(1 2 3 4 5)</code>被看做参数为<code>(2 3 4 5)</code>的函数\"1\"；"
+"但因为没有叫做\"1\"函数，Nyquist就会报错。为了告诉Lisp您要将一个S表达式"
+"当作文本来处理，而不是作为函数处理，您需要"
+"<i>用引号表明</i>它。 在Nyquist中，您可以在一个列表前放一个单引号以标明之，"
+"如下所示:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf mylist '(1 2 3 4 5))\n"
+"</pre>\n"
+"\n"
+"<p>Nyquist还提供了一个<code>list</code>函数，可用于构建列表"
+" - 如果列表中的某些元素是函数时这将很有用:"
+"</p>\n"
+"\n"
+"<pre>\n"
+"  (setf mylist (list 1 2 3 4 (sqrt 25)))\n"
+"</pre>\n"
+"\n"
+"<p>从列表中取出元素，您可以使用<code>first</code>和"
+"<code>rest</code>函数。 (通常它们分别被<code>car</"
+"code>和<code>cdr</code>调用，但是<code>first</code>和"
+"<code>rest</code>更容易记。 Nyquist对于这两组名称"
+"都支持。)  <code>(first mylist)</code>的结果为1，"
+"<code>(rest mylist)</code>的结果为列表<code>(2 3 4 5)</"
+"code>。  可想而知，原列表的第二个元素是<code>(first (rest mylist))</"
+"code>。</p>\n"
+"\n"
+"<h3>Lisp函数参考</h3>\n"
+"\n"
+"<p>此处有一些您可能需要的基本Lisp函数的清单。  完整的Lisp / Nyquist函数"
+"清单见<a href=\"http://www-2.cs."
+"cmu.edu/~rbd/doc/nyquist/root.html\">Nyquist参考手册</a>。</p>\n"
+"\n"
+"<p><b>注意: 在Nyquist中的符号(如变量名和函数名)是"
+"不区分大小写的。  在处理机内部所有的符号都会变成大写。</b></p>\n"
+"\n"
+"<h4>数学函数</h4>\n"
+"<table class=\"function-list\" summary=\"List of functions and explanations"
+"\">\n"
+"<tr><td><code>(+ a b)</code></td><td>加</td></tr>\n"
+"<tr><td><code>(- a b)</code></td><td>减</td></tr>\n"
+"<tr><td><code>(* a b)</code></td><td>乘</td></tr>\n"
+"<tr><td><code>(/ a b)</code></td><td>除</td></tr>\n"
+"<tr><td><code>(truncate a b)</code></td><td>向下取整 (floor)</"
+"td></tr>\n"
+"<tr><td><code>(float a b)</code></td><td>整数转为浮点数</td></"
+"tr>\n"
+"<tr><td><code>(rem a b c ...)</code></td><td>求余</td></tr>\n"
+"<tr><td><code>(min a b c ...)</code></td><td>找最小值</td></tr>\n"
+"<tr><td><code>(max a b c ...)</code></td><td>找最大值</td></tr>\n"
+"<tr><td><code>(abs a)</code></td><td>绝对值</td></tr>\n"
+"<tr><td><code>(random n)</code></td><td>随机整数 (介于1至n-1之间)</"
+"td></tr>\n"
+"<tr><td><code>(sin a b)</code></td><td>正弦函数</td></tr>\n"
+"<tr><td><code>(cos a b)</code></td><td>余弦函数</td></tr>\n"
+"<tr><td><code>(tan a b)</code></td><td>正切函数</td></tr>\n"
+"<tr><td><code>(expt a b)</code></td><td>指数 (b的a次幂)</td></"
+"tr>\n"
+"<tr><td><code>(sqrt a b)</code></td><td>平方根</td></tr>\n"
+"<tr><td><code>(< a b)</code></td><td>判断a是否小于b</td></tr>\n"
+"<tr><td><code>(<= a b)</code></td><td>判断a是否小于等于b</"
+"td></tr>\n"
+"<tr><td><code>(> a b)</code></td><td>判断a是否大于b</td></tr>\n"
+"<tr><td><code>(>= a b)</code></td><td>判断a是否大于等于b</"
+"td></tr>\n"
+"<tr><td><code>(= a b)</code></td><td>判断相等</td></tr>\n"
+"<tr><td><code>(/= a b)</code></td><td>判断不等</td></tr>\n"
+"</table>\n"
+"<h4>列表函数</h4>\n"
+"<table class=\"function-list\" summary=\"List of functions and explanations"
+"\">\n"
+"<tr><td><code>(first l)</code></td><td>列表的第一个元素 (car)</td></"
+"tr>\n"
+"<tr><td><code>(rest l)</code></td><td>列表的剩余部分 (cdr)</td></tr>\n"
+"<tr><td><code>(reverse l)</code></td><td>将一个列表反序</td></tr>\n"
+"<tr><td><code>(list a b ...)</code></td><td>构造列表</td></tr>\n"
+"<tr><td><code>(append l1 l2)</code></td><td>将一个列表附加在另一个列表之后</td></tr>\n"
+"<tr><td><code>(length l)</code></td><td>列表的长度</td></tr>\n"
+"<tr><td><code>(maplist function l)</code></td><td>对列表中每个元素都调用指定的函数"
+"</td></tr>\n"
+"</table>\n"
+"\n"
+"<h4>控制</h4>\n"
+"<table class=\"function-list\" summary=\"List of functions and explanations"
+"\">\n"
+"<tr><td><code>(if expr expr1 expr2)</code></td><td>如果表达式expr为真，"
+"则结果为对expr1求值；否则结果为expr2的值</td></tr> \n"
+"</table>\n"
+"\n"
+"<h3><a href=\"nyquist2\">下一节: 用Nyquist编程</a></h3>"
 
 #: help/nyquist2.php:22
 msgid ""
@@ -2756,6 +3232,202 @@ msgid ""
 "\n"
 "<h3><a href=\"nyquist3\">Next: Creating Nyquist Plug-Ins</a></h3>"
 msgstr ""
+"<p>Nyquist区别于Lisp的地方在于它是设计为用于"
+"处理声音，它内嵌有许多用以合成、分析及操作"
+"声音的基本表达式和函数。  Audacity集成了Nyquist，利用Nyquist内嵌的函数库，"
+"使得生成一些复杂的特效变得十分方便。"
+"</p>\n"
+"\n"
+"<p>在Nyquist中，可以将声音赋给一个变量，就像给变量赋数值或字符串一样简单。"
+"它提供的许多函数允许您高效地延伸、扭曲及合并声音。"
+"您甚至可以\"抓取\"一段声音并修改它的单个采样点，但是那已经"
+"超出了本教程的范围了。</p>\n"
+"\n"
+"<p>在Audacity中使用Nyquist表达式，您只需选择\"特效\"菜单中的"
+"\"Nyquist表达式\"项。  已选的音频将赋给"
+"变量<code>s</code>，该选段将被您键入的Nyquist表达式的结果代替。"
+" 在第3部分，您将学习"
+"怎样用Nyquist创建特效插件。</p>\n"
+"\n"
+"<h3>合成</h3>\n"
+"\n"
+"<p>以下的函数会生成新的声音数据。您可以用它们来"
+"创建\"制作\"菜单中的特效插件，或者您可以将这些合成的声音和所选的"
+"音频合并，以实现一些有趣的效果。</p>\n"
+"\n"
+"<table class=\"function-list\" class=\"function-list\">\n"
+"<tr>\n"
+"<td>(noise)</td>\n"
+"<td>产生白噪声</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(const value [duration])</td>\n"
+"<td>生成一段常量(静音)信号</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(sine pitch [duration])</td>\n"
+"<td>生成给定音调和时长的正弦波。<br>\n"
+"    音调是MIDI音符数，60代表中音C。</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(hzosc hz)</td>\n"
+"<td>生成给定频率(单位为Hz)的正弦波。</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(osc-saw hz)</td>\n"
+"<td>生成给定频率(单位为Hz)的锯齿波。</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(osc-tri hz)</td>\n"
+"<td>生成给定频率(单位为Hz)的三角波。</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(osc-pulse hz bias)</td>\n"
+"<td>生成给定频率(单位为Hz)、及波宽的方波脉冲。\n"
+"    bias参数为脉冲宽度，其值应介于-1和+1之间，\n"
+"   表示脉冲宽度的占空比从0%(bias=-1)到100%\n"
+"   (bias=+1)。当bias为零时，输出为标准方波。</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(pluck pitch)</td>\n"
+"<td>生成给定音高的声音，使用\n"
+"    修改过的Karplus-Strong plucked string算法。</td>\n"
+"</tr>\n"
+"\n"
+"</table>\n"
+"\n"
+"<p>\n"
+"<b>包络线(波封)</b>\n"
+"</p>\n"
+"\n"
+"<p>Nyquist支持包络处理。  通过给声音设置包络，"
+"您可以控制其振幅的总体形状。构建包络的最简单方法是"
+"用<code>env</code>函数，它有7个参数，这些参数通常"
+"用于修整合成的律音: "
+"attack time(上升时间), decay time(下降时间), release time(释放时间), "
+"attack level(上升水平), decay level(下降水平), sustain "
+"level(持续水平), 以及overall duration(总持续时长)。 见下图:</p>\n"
+"\n"
+"<p><img alt=\"Nyquist envelope diagram.\" src=\"../images/nyquist-envelope\" "
+"width=\"467\" height=\"200\"></p>\n"
+"\n"
+"<p>给一段声音设置包络，只需用<code>mult</code> "
+"函数。 如果<code>s</code>是声音的话，那么给这段声音设置一个简单"
+"包络的写法如下:</p>\n"
+"\n"
+"<pre>\n"
+"  (mult s (env 0.1 0.1 0.2 1.0 0.5 0.3 1.0))\n"
+"</pre>\n"
+"\n"
+"<p>最常见的包络类型是分段线性函数，"
+"可以使用<code>pwl</code>函数构建。 pwl函数的参数为"
+"一系列(时刻,数值)的组合对构成的列表。隐含的"
+"起始(时刻,数值)对为(0,0)，隐含的终点数值为0。"
+"参数的个数必须为奇数个，因为需要指明"
+"终点的时刻。例如:</p>\n"
+"\n"
+"<pre>\n"
+"  ; 上下对称地升至0.7 (在时刻1)，然后回落到0 (在时刻2):\n"
+"  (pwl 1.0 0.7 2.0)\n"
+"</pre>\n"
+"\n"
+"<h3>合并声音</h3>\n"
+"\n"
+"<p>除了使用<code>mult</code>函数将两段声音相乘，您还可以"
+"使用<code>add</code>函数将两段声音(或包络线)相加。</p>\n"
+"\n"
+"<h3>过滤器</h3>\n"
+"\n"
+"<p>Nyquist内嵌了许多常用的过滤器。 这里列出"
+"一些较常用的:</p>\n"
+"\n"
+"<table class=\"function-list\">\n"
+"\n"
+"<tr>\n"
+"<td>(lp sound cutoff)</td>\n"
+"<td>低通滤波器(一阶Butterworth)。Cutoff may be a float or a "
+"signal (for time-varying filtering) and expresses hertz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(hp sound cutoff)</td>\n"
+"<td>High-pass filter (first-order Butterworth). cutoff表示截止频率(单位Hz)，"
+"可以为一个浮点数，也可以是一个信号(对于时变滤波而言)。</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(comb sound hz decay)</td>\n"
+"<td>梳状滤波器。在hz整数倍的频率(共振)处\n"
+"    被增强。\n"
+"</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(alpass sound decay hz)</td>\n"
+"<td>全通滤波器。 产生时延效果，不会有梳状滤波器的\n"
+"    共振。  </td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(notch2 sound hz)</td>\n"
+"<td>二阶陷波滤波器。以频率hz为中心点。</td>\n"
+"</tr>\n"
+"\n"
+"</table>\n"
+"\n"
+"<h3>变换及合并声音</h3>\n"
+"\n"
+"<p>Nyquist提供了许多种变换声音的方法，逐一说明它们已经超出了"
+"这个介绍性教程的范围。这些函数不会直接修改声音，"
+"而是修改Nyquist<em>环境</"
+"em>.  为了让这些变化能影响声音数据，您必须使用"
+"<code>cue</code>函数。</p>\n"
+"\n"
+"<table class=\"function-list\">\n"
+"\n"
+"<tr>\n"
+"<td>(stretch factor (cue sound))</td>\n"
+"<td>按给定的系数(\"factor\")改变所指(cue)声音的时长。</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(scale factor (cue sound))</td>\n"
+"<td>以给定的系数(\"factor\")为比例调整所指(cue)声音的振幅。</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(loud dB (cue sound))</td>\n"
+"<td>以给定的十进制数为变化量增大或减小<br>\n"
+"    所指(cue)声音的音量。</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(at t (cue sound))</td>\n"
+"<td>在特定的时刻(单位:秒)开始指定的声音。<br>\n"
+"    这个函数不能用于在开始或结束处添加静音，<br>\n"
+"    但它可以用于合并两段或更多段的声音。</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(seq (cue s1) (cue s2))</td>\n"
+"<td>创建一个声音序列，使声音s2紧接着在s1之后。</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(sim (cue s1) (cue s2))</td>\n"
+"<td>合并两段声音，使之能同步第播放。\n"
+"</tr>\n"
+"\n"
+"</table>\n"
+"\n"
+"<h3><a href=\"nyquist3\">下一页: 创建Nyquist插件</a></h3>"
 
 #: help/nyquist3.php:22
 msgid ""
@@ -2919,53 +3591,189 @@ msgid ""
 "doc/nyquist/root.html\">Nyquist Reference Manual</a> for more details of how "
 "Nyquist works.</p>"
 msgstr ""
+"<p>用Nyquist为Audacity创建插件，只需新建一个扩展名为\".ny\"的文本文件，"
+"并在里面写入若干Nyquist代码，加入一些标明插件类型的注释，"
+"然后把该文件放到Audacity程序的"
+"<code>plug-ins</code>目录就好了。下面有一个非常简单的插件例子:"
+"</p>\n"
+"\n"
+"<pre>\n"
+"  ;nyquist plug-in\n"
+"  ;version 1\n"
+"  ;type process\n"
+"  ;name \"Fade In\"\n"
+"  ;action \"Fading In...\"\n"
+"  (mult (ramp) s)\n"
+"</pre>\n"
+"\n"
+"<p>Nyquist插件的头两行必须按照上面例子中那样写，"
+"否则Audacity将无法加载它。  (版本号\"version\"是为了"
+"支持将来对插件格式的扩展。) 后面一行"
+"是插件的类型，我们将在以后讨论它。接下来是插件的名称，"
+"它将显示在菜单栏里。再后面一行的\"action\"是"
+"Audacity在忙于处理该插件时显示的文字。  后面还可能有"
+"其它的可选行。不已分号(;)开头的行视为"
+"含有Nyquist代码，将会被执行。</"
+"p>\n"
+"\n"
+"<p>Audacity目前支持3种类型的"
+"Nyquist插件:</p>\n"
+"\n"
+"<pre>\n"
+"  ;type generate\n"
+"  ;type process\n"
+"  ;type analyze\n"
+"</pre>\n"
+"\n"
+"<p>它们分别对应可以包含插件的3个菜单: 制作(Generate)、"
+"特效(Effect)，分析(Analyze)。 “制作(generate)”类插件用于从素材中生成"
+"新的音频，“特效(effect)”类插件(\"process\")原地修改现有的音频，"
+"“分析(analyze)”类插件处理音频但不会修改其数据(尽管它们可能会"
+"被允许增加标签)。</p>\n"
+"\n"
+"<p>对于“特效”类和“分析”类插件而言，Audacity设置的Nyquist环境"
+"会将用户选择的音频默认地赋给变量<code>s</code>。  "
+"在插件文件里的表达式将按顺序执行，最后一个表达式的"
+"返回值将取代原来的选段。"
+"如果最后表达式返回的不是音频，Audacity会返回一个"
+"错误。</p>\n"
+"\n"
+"<h3>参数对话框</h3>\n"
+"\n"
+"<p>有时需要在插件中显示对话框以获得用户输入的参数，Audacity对"
+"此提供了有限的支持。 下面是插件打开一个对话框的"
+"例子:</p>\n"
+"\n"
+"<pre>\n"
+"  ;nyquist plug-in\n"
+"  ;version 1\n"
+"  ;type process\n"
+"  ;name \"Delay...\"\n"
+"  ;action \"Performing Delay Effect...\"\n"
+"  ;info \"Demo effect for Nyquist by Roger Dannenberg.\\nThis effect \n"
+"     creates a fixed number of echos.\"  ; (should be all on one line)\n"
+"  ;control decay \"Decay amount\" int \"dB\" 6 0 24\n"
+"  ;control delay \"Delay time\" real \"seconds\" 0.5 0.0 5.0\n"
+"  ;control count \"Number of echos\" int \"times\" 5 1 30\n"
+"\n"
+"  (defun delays (s decay delay count)\n"
+"    (if (= count 0) (cue s)\n"
+"\t   (sim (cue s)\n"
+"        (loud decay (at delay (delays s decay delay (- count 1)))))))\n"
+"  (stretch-abs 1 (delays s (- 0 decay) delay count))\n"
+"</pre>\n"
+"\n"
+"<p>如果Audacity发现有\"control\"行，它将打开对话框提示"
+"用户为插件输入参数。每个参数"
+"含有一个文字框和滚动栏，用户每输入一个参数，其值就会"
+"保存在以您在\"control\"行指定的名称为名"
+"的Nyquist变量中。下图是上例Delay特效在Linux版的Audacity"
+"中显示的对话框:</p>\n"
+"\n"
+"<p><img alt=\"Nyquist plugin screenshot\" src=\"../images/nyquist-plugin-"
+"screenshot\" width=\"414\" height=\"221\"></p>\n"
+"\n"
+"<p>注意\"info\"行会显示在对话框的顶部，换行使用"
+"\"\\n\"。\"control\"行的参数会影响参数的"
+"显示外观和限制条件。  每个\"control\"行"
+"必须包含以下8个元素，依次为:</p>\n"
+"\n"
+"<ol>\n"
+"\t<li>关键字\"control\"</li>\n"
+"\t<li>该控制的名称 - 用户填写对话框时影响到(\"get\"、\"set\")的"
+"Nyquist变量的名称。</li>\n"
+"\t<li>在控制变量左边的标示</li>\n"
+"\t<li>值的类型: 要么是<code>int</code>(整型)，要么是<code>real</"
+"code>。</li>\n"
+"\t<li>在数值右边的标示 (通常为单位，如\"Hz\"或"
+"\"dB\")。</li>\n"
+"\t<li>参数的缺省/初始值</li>\n"
+"\t<li>参数的最小取值</li>\n"
+"\t<li>参数的最大取值</li>\n"
+"</ol>\n"
+"\n"
+"<h3>返回标签(label)</h3>\n"
+"\n"
+"<p>除了返回音频，Nyquist插件还可以返回一组标签(label)的"
+"列表。 所谓标签列表就是一组(时刻/标签)对的列表，"
+"例如:</p>\n"
+"\n"
+"<pre>\n"
+"  ((0.0 \"start\") (30.0 \"middle\") (60.0 \"end\"))\n"
+"</pre>\n"
+"\n"
+"<p>当插件返回的正好是这种形式的列表时，Audacity将新建一条标签轨"
+"并在相应的位置加上标签。 这种类型的"
+"插件通常为\"分析(analyze)\"类插件。</p>\n"
+"\n"
+"<h3>处理立体声的音轨</h3>\n"
+"\n"
+"<p>Nyquist将立体声音轨表示为声音的数组(而不是列表)。  "
+"许多Nyquist函数可以自动处理这些数组，但不是全部的函数都可以。所以"
+"有时您可能需要将一个立体声的数组拆分，或者重新合并为一个。"
+"下面是一些较有用的函数:</p>\n"
+"\n"
+"<table class=\"function-list\">\n"
+"<tr><td><code>(arrayp s)</code></td><td>如果<code>s</code>是数组的话返回"
+"为true(真)</td></tr>\n"
+"<tr><td><code>(aref s 0)</code></td><td>数组<code>s</"
+"code>的第一个元素 - 左通道</td></tr>\n"
+"<tr><td><code>(aref s 1)</code></td><td>数组<code>s</"
+"code>的第二个元素 - 右通道</td></tr>\n"
+"<tr><td><code>(setf s (make-array 2))</code></td><td>将<code>s</code>"
+"转换为一个长度为2的新数组</td></tr>\n"
+"<tr><td><code>(setf (aref s 0) left)</code></td><td>使<code>left</code>"
+"成为数组<code>s</code>的第一个元素</td></tr>\n"
+"<tr><td><code>(setf (aref s 1) right)</code></td><td>使<code>right</"
+"成为数组<code>s</code>的第二个元素</td></tr>\n"
+"</table>\n"
+"\n"
+"<p>为方便起见，如果您的Nyquist插件的输入为立体声，而"
+"输出仅为单声道，Audacity将自动把输出同样复制在"
+"左右两个声道上。</p>\n"
+"\n"
+"<h3>到此之后下一步可以涉足的地方</h3>\n"
+"\n"
+"<p>Audacity自带一些插件的样例，您可以以这些样例为出发点，试着去"
+"查看和修改它们。学习Nyquist的最好方法是去尝试。如果您在调试过程中"
+"遇到麻烦，请考虑下载完全独立版的"
+"Nyquist(见第1部分的链接)。</p>\n"
+"\n"
+"<p>如果您在使用Nyquist的过程中遇到了麻烦，请<a href="
+"\"../contact/\">联系我们</a>。</p>\n"
+"\n"
+"<p>如果您在编写Nyquist特效插件，并且愿意将其"
+"与别人共享，或者您愿意讨论关于用Nyquist制作某种特效的"
+"细节，请加入<a href=\"../contact/"
+"lists#nyquist\">audacity-nyquist邮件列表</a>。</p>\n"
+"\n"
+"<p>如欲了解有关Nyquist工作机制的更多详情，别忘了参考完整的"
+"<a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">Nyquist"
+"参考手册</a>。 </p>"
 
-#. i18n-hint:  Please add a note that the links on this page are in English.
-#. If there are tutorials in your language, link to them here.
-#: help/tutorials.php:16
-#, fuzzy
-msgid ""
-"These articles give step-by-step instructions for common tasks using the "
-"free Audacity sound editor."
-msgstr "选择您的操作系统，以便下载相应的免费最新版Audacity声音编辑器。"
-
-#. i18n-hint:  If this string is translated, it will appear above the list of
-#. tutorials on the "help/tutorials" page.  If there are extra tutorials
-#. available in your language, add them here.  Otherwise, do not translate
-#. this string.  (Or make the translation identical to the original string.)
-#: help/tutorials.php:22 help/tutorials.php:23
-msgid "localized_tutorials"
+#: include/header.inc.php:11
+msgid "Audacity"
 msgstr ""
 
-#: help/tutorials.php:27
-msgid "Audacity 1.2 Tutorial by Dan Eliot"
-msgstr ""
+#: include/header.inc.php:16
+msgid "Jump to page content"
+msgstr "转到内容页面"
 
-#: help/tutorials.php:27
-msgid "Learn how to open and edit a WAV file, and save the result in an MP3."
-msgstr ""
+#: include/header.inc.php:19
+msgid "Powered by Google"
+msgstr "由Google提供"
 
-#: help/tutorials.php:28
-msgid "Multi-Track Recording Tutorial from AGNULA"
-msgstr ""
+#: include/header.inc.php:24
+msgid "Search this site"
+msgstr "在网站内搜索"
 
-#: help/tutorials.php:28
-msgid "Make a simple multi-track recording."
-msgstr ""
+#: include/header.inc.php:28
+msgid "Audacity: Free Sound Editor and Recording Software"
+msgstr "Audacity: 自由而免费的声音编辑器和录音软件"
 
-#: help/tutorials.php:29
-msgid "Audacity Tutorial by Daniel James"
-msgstr ""
-
-#: help/tutorials.php:29
-msgid "Shows how to mix a multi-track project.  Includes sample sound files."
-msgstr ""
-
-#: help/tutorials.php:32
-msgid ""
-"For additional help, see the <a href=\"documentation\">Audacity "
-"documentation</a>."
-msgstr ""
+#: include/header.inc.php:40
+msgid "Site Navigation"
+msgstr "网站导航"
 
 #: include/footer.inc.php:11
 msgid "Page Footer"
@@ -2978,6 +3786,10 @@ msgstr "隐私权"
 #: include/footer.inc.php:14
 msgid "Copyright"
 msgstr "版权"
+
+#: include/footer.inc.php:15 site-map.php:8
+msgid "Site Map"
+msgstr "网站地图"
 
 #: include/footer.inc.php:17
 msgid "Creative Commons Attribution license"
@@ -2995,63 +3807,120 @@ msgstr "SourceForge网站提供开发平台"
 msgid "View this page in a different language"
 msgstr "浏览此页的其它语言版本"
 
-#: include/header.inc.php:11
-msgid "Audacity"
-msgstr "Audacity"
-
-#: include/header.inc.php:16
-msgid "Jump to page content"
-msgstr "转到内容页面"
-
-#: include/header.inc.php:19
-msgid "Powered by Google"
-msgstr ""
-
-#: include/header.inc.php:24
-msgid "Search this site"
-msgstr "搜索"
-
-#: include/header.inc.php:28
-msgid "Audacity: Free Sound Editor and Recording Software"
-msgstr "Audacity: 免费的声音编辑器和录音软件"
-
-#: include/header.inc.php:40
-msgid "Site Navigation"
-msgstr "网站导航"
-
 #. i18n-hint: Controls how dates are formatted.
 #. See http://www.php.net/manual/function.strftime.php for details.
 #: include/news.inc.php:24
 msgid "%B %d, %Y"
 msgstr "%Y年 %m月 %d日"
 
-#: include/news.inc.php:41 news/1.2.3-release.inc.php:5
+#: include/news.inc.php:41
 msgid "Audacity 1.2.3 Released"
 msgstr "Audacity 1.2.3版"
 
-#: include/news.inc.php:42 news/1.2.3-release.inc.php:6
+#: include/news.inc.php:42
 msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a "
 "bug that interfered with long recordings on some Windows systems, and "
 "another bug that causes random crashes on Mac OS X. It also includes several "
 "updated translations, and other bug fixes and minor improvements.</p>\n"
-"<p>See the <a href=\"download/release-notes\">Release Notes</a> for a "
+"<p>See the <a href=\"/download/release-notes\">Release Notes</a> for a "
 "complete list of changes and known problems in this version.</p>"
 msgstr ""
-"<p>Audacity 1.2.3是Audacity的稳定的新版本。该版本修正了在某些Windows系统上干"
-"扰长时间录音的错误，以及另一个在Mac OS X上导致随机性崩溃的错误。 它同时包括了"
-"几个升级后的翻译包，以及其它的错误修正和小的改进。</p>\n"
-"<p>此版本的变动和已知问题的完整列表参见<a href=\"download/release-notes\">发"
-"行注记</a>。"
+"<p>Audacity 1.2.3是Audacity的稳定的新版本。该版本修正了"
+"在某些Windows系统上干扰长时间录音的错误，以及另一个"
+"在Mac OS X上导致随机性崩溃的错误。 它同时包括了几个 "
+"升级后的翻译包，以及其它的错误修正和小的改进。</p>\n"
+"<p>此版本的变动和已知问题的完整列表参见"
+"<a href=\"/download/release-notes\">发行注记</a>。"
 
-#~ msgid "Recent News:"
-#~ msgstr "最新消息:"
+#: index.php:9
+msgid "Free Audio Editor and Recorder"
+msgstr "自由且免费的音频编辑器和录音器"
 
-#~ msgid "Contents"
-#~ msgstr "内容"
+#: index.php:18
+msgid "for Microsoft Windows"
+msgstr "Microsoft Windows 版"
 
-#~ msgid "<p></p>"
-#~ msgstr "<p></p>"
+#: index.php:23
+msgid "for Mac OS 9 or X"
+msgstr "Mac OS 9或X 版"
 
-#~ msgid "<p>First, download and unzip the <a href=\"%s\">VST Enabler</a>.</p>"
-#~ msgstr "<p>首先，下载并解压缩<a href=\"%s\">VST Enabler</a>。</p>"
+#: index.php:28
+msgid "For Windows, Mac, or GNU/Linux"
+msgstr "Windows, Mac, 或 GNU/Linux 版本"
+
+#: index.php:33
+msgid "The Free, Cross-Platform Sound Editor"
+msgstr "跨平台的免费声音编辑器"
+
+#: index.php:38
+msgid ""
+"Audacity is free, open source software for recording and editing sounds.  It "
+"is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating "
+"systems.  <a href=\"about/\">Learn more about Audacity...</a>"
+msgstr ""
+"Audacity是一款用于录音和编辑声音的、免费的、开放源码软件。它可以"
+"运行于Mac OS X、Microsoft Windows、GNU/Linux和其它操作系统。"
+"<a href=\"about/\">更多关于Audacity的信息...</a>"
+
+#: index.php:42
+#, php-format
+msgid "Download Audacity %s"
+msgstr "下载Audacity %s"
+
+#: index.php:46
+msgid "Other downloads"
+msgstr "其它下载"
+
+#: index.php:68
+msgid "Get Notified of New Versions"
+msgstr "获得新版本通知"
+
+#: index.php:80
+msgid "Email address"
+msgstr "Email地址"
+
+#: index.php:81
+msgid "Add"
+msgstr "加入"
+
+#: index.php:82
+msgid "Remove"
+msgstr "删除"
+
+#: main.inc.php:17
+msgid "Home"
+msgstr "主页"
+
+#: main.inc.php:18
+msgid "About"
+msgstr "关于"
+
+#: main.inc.php:31
+msgid "Mac"
+msgstr "Mac"
+
+#: main.inc.php:36
+msgid "Buy a CD"
+msgstr "购买CD光盘"
+
+#: main.inc.php:41
+msgid "FAQ"
+msgstr "常见问题解答"
+
+#: main.inc.php:58
+msgid "Donate"
+msgstr "捐赠"
+
+#: 404.php:9
+msgid "Page Not Found"
+msgstr "找不到页面"
+
+#: 404.php:14
+msgid ""
+"Sorry, the page you are looking for was not found.  Please try the <a href="
+"\"/\">Audacity home page</a> or the <a href=\"/site-map\">site map</a>."
+msgstr ""
+"对不起，您要访问的页面无法找到。请尝试<a href="
+"\"/\">Audacity主页</a>或者<a href=\"/site-map\">网站地图</a>。"
+
