@@ -5,10 +5,10 @@
   // file gets downloaded are in latest/versions.inc.php and
   // beta/versions.inc.php...
 
-  $stableVersion =   "1.2.1";
+  $stableVersion =   "1.2.2";
   $betaVersion =     "1.2.2-pre1";
 
-  $winStableVersion = "1.2.1";
+  $winStableVersion = "1.2.2";
   $winStableSize =    "2.9 MB";
   $winStableZipSize = "2.6 MB";
   $winBetaVersion =   "1.2.0-pre4";
@@ -20,12 +20,12 @@
   $macOS9BetaVersion =   "1.1.1";
   $macOS9BetaSize =      "2.0 MB";
 
-  $macOSXStableVersion = "1.2.1";
+  $macOSXStableVersion = "1.2.2";
   $macOSXStableSize =    "3.0 MB";
   $macOSXBetaVersion =   "1.2.0-pre3";
   $macOSXBetaSize =      "2.6 MB";
 
-  $srcStableVersion = "1.2.1";
+  $srcStableVersion = "1.2.2";
   $srcStableSize =    "2.6 MB";
   $srcBetaVersion =   "1.2.0-pre4";
   $srcBetaSize =      "3.2 MB";
