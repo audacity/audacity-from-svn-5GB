@@ -23,6 +23,7 @@
 #include <wx/defs.h>
 #include <wx/log.h>
 #include <wx/dragimag.h>
+#include <wx/generic/dragimgg.h>
 #include <wx/frame.h>
 #include <wx/intl.h>
 
