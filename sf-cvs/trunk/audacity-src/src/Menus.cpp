@@ -385,13 +385,13 @@ void AudacityProject::ModifyExportMenus()
    wxString lossyFormat = gPrefs->Read("/FileFormats/LossyExportFormat", "MP3");
 
    mCommandManager.Modify("Export",
-                          wxString::Format(_("&Export as %s..."),
+                          wxString::Format(_("&Export As %s..."),
                                            (const char *)pcmFormat));
    mCommandManager.Modify("ExportSel",
                           wxString::Format(_("&Export Selection as %s..."),
                                            (const char *)pcmFormat));
    mCommandManager.Modify("ExportLossy",
-                          wxString::Format(_("&Export as %s..."),
+                          wxString::Format(_("&Export As %s..."),
                                            (const char *)lossyFormat));
    mCommandManager.Modify("ExportLossySel",
                           wxString::Format(_("&Export Selection as %s..."),
