@@ -365,10 +365,10 @@ bool AudacityApp::OnInit()
    AddUniquePathToPathList(progPath, audacityPathList);
    // If Audacity is a "bundle" package, then the root directory is
    // the great-great-grandparent of the directory containing the executable.
-   AddUniquePathToPathList(progPath+"/../../../..", audacityPathList);
+   AddUniquePathToPathList(progPath+"/../../../", audacityPathList);
 
    AddUniquePathToPathList(progPath+"/Languages", audacityPathList);
-   AddUniquePathToPathList(progPath+"/../../../../Languages", audacityPathList);
+   AddUniquePathToPathList(progPath+"/../../../Languages", audacityPathList);
    defaultTempDir.Printf("%s/audacity1.2-%s",
                          (const char *)tmpDirLoc,
                          (const char *)wxGetUserId());
