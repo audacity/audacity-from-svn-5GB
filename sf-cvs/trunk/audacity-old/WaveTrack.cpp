@@ -670,7 +670,7 @@ void WaveTrack::Copy(double t0, double t1, VTrack **dest)
 {
   *dest = 0;
 
-  wxASSERT(t0 < t1);
+  wxASSERT(t0 <= t1);
 
   #if wxUSE_THREADS
   wxMutexLocker lock(*blockMutex);
@@ -1088,7 +1088,7 @@ void WaveTrack::Paste(double t, VTrack *src)
 
 void WaveTrack::Clear(double t0, double t1)
 {
-  wxASSERT(t0 < t1);
+  wxASSERT(t0 <= t1);
 
   envelope.CollapseRegion(t0, t1);
 

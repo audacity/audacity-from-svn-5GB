@@ -50,8 +50,8 @@ AudioIO::~AudioIO()
 }
 
 bool AudioIO::StartPlay(AudacityProject *project,
-						TrackList *tracks,
-						double t0, double t1)
+                        TrackList *tracks,
+                        double t0, double t1)
 {
   if (mProject)
 	return false;
@@ -106,6 +106,10 @@ void AudioIO::Finish()
   mProject->GetAPalette()->SetRecord(false);
   mStop = false;
 
+  if (mRecording) {
+    mProject->TP_PushState();
+  }
+
   // TODO mProject->SoundDone();
   mProject = NULL;
   mRecordLeft = NULL;
@@ -113,13 +117,20 @@ void AudioIO::Finish()
 }
 
 bool AudioIO::StartRecord(AudacityProject *project,
-						  TrackList *tracks)
+                          TrackList *tracks)
 {
   if (mProject)
 	return false;
 
   mRecordLeft = new WaveTrack(project->GetDirManager());
+  mRecordLeft->selected = true;
+  mRecordLeft->channel = VTrack::LeftChannel;
+
   mRecordRight = new WaveTrack(project->GetDirManager());
+  mRecordRight->selected = true;
+  mRecordRight->channel = VTrack::RightChannel;
+
+  project->SelectNone();
 
   tracks->Add(mRecordLeft);
   tracks->Add(mRecordRight);
@@ -140,7 +151,7 @@ bool AudioIO::StartRecord(AudacityProject *project,
   strcpy(mSndNode.u.audio.interfacename,"");
   mSndNode.u.audio.descriptor = 0;
   mSndNode.u.audio.protocol = SND_COMPUTEAHEAD;
-  mSndNode.u.audio.latency = 1.0;
+  mSndNode.u.audio.latency = 0.25;
   mSndNode.u.audio.granularity = 0.0;
 
   long flags = 0;
@@ -162,17 +173,14 @@ bool AudioIO::StartRecord(AudacityProject *project,
   // Do this last because this is what signals the timer to go
   mProject = project;
 
+  mProject->RedrawProject();
+
   return true;
 }
 
 void AudioIO::OnTimer()
 {
   if (!mProject) return;
-
-  if (mStop) {
-	Finish();
-	return;
-  }
 
   if (mRecording) {
 	int block = snd_poll(&mSndNode);
@@ -194,11 +202,21 @@ void AudioIO::OnTimer()
 	mRecordLeft->Append(left, block);
 	mRecordRight->Append(right, block);
 
+        mProject->RedrawProject();
+
 	delete[] in;
 	delete[] left;
 	delete[] right;
 
+        if (mStop)
+          Finish();
+
 	return;
+  }
+
+  if (mStop) {
+    Finish();
+    return;
   }
 
   if (mT>=mT1) {
@@ -213,7 +231,7 @@ void AudioIO::OnTimer()
   // TODO: Don't fill the buffer with more data every time
   // timer is called
 
-  double deltat = 1.0;
+  double deltat = mSndNode.u.audio.latency;
   if (mT + deltat > mT1)
 	deltat = mT1 - mT;
   
@@ -229,8 +247,6 @@ void AudioIO::OnTimer()
   if (block < maxFrames) {
 	deltat = block / mProject->GetRate();
   }
-  
-  int i;
   
   Mixer *mixer = new Mixer(2, block, true);
   mixer->UseVolumeSlider(mProject->GetAPalette());
@@ -261,6 +277,8 @@ void AudioIO::OnTimer()
   
   sampleType *outbytes = mixer->GetBuffer();
   snd_write(&mSndNode, outbytes, block);
+  if (mT + deltat >= mT1)
+    snd_flush(&mSndNode);
   
   delete mixer;
   
@@ -297,7 +315,7 @@ double AudioIO::GetIndicator()
   i = mT0 + (mStopWatch.Time() / 1000.0);
 #endif
 
-  if (i > mT1)
+  if (!mRecording && i > mT1)
     i = mT1;
     
   return i;

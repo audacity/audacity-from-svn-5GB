@@ -2074,7 +2074,7 @@ void AudacityProject::TP_OnPlayKey()
 // TrackPanel callback method
 void AudacityProject::TP_PushState()
 {
-  
+  PushState();
 }
 
 // TrackPanel callback method

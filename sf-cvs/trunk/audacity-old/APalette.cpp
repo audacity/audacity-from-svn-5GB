@@ -224,14 +224,24 @@ void APalette::SetRecord(bool down)
 
 void APalette::OnPlay()
 {
+  if (gAudioIO->IsBusy())
+    return;
+
   AudacityProject *p = GetActiveProject();
   if (p) {
-	TrackList *t = p->GetTracks();
-	double t0 = p->GetSel0();
-	double t1 = p->GetSel1();
-	if (t1 == t0)
-	  t1 = t->GetMaxLen();
-	gAudioIO->StartPlay(p, t, t0, t1);
+    TrackList *t = p->GetTracks();
+    double t0 = p->GetSel0();
+    double t1 = p->GetSel1();
+    if (t1 == t0)
+      t1 = t->GetMaxLen();
+    bool success = gAudioIO->StartPlay(p, t, t0, t1);
+
+    if (!success) {
+      SetPlay(false);
+      SetStop(false);
+      SetRecord(false);
+    }
+
   }
 }
 
@@ -243,10 +253,18 @@ void APalette::OnStop()
 
 void APalette::OnRecord()
 {
+  if (gAudioIO->IsBusy())
+    return;
+
   AudacityProject *p = GetActiveProject();
   if (p) {
-	TrackList *t = p->GetTracks();
-	gAudioIO->StartRecord(p, t);
+    TrackList *t = p->GetTracks();
+    bool success = gAudioIO->StartRecord(p, t);
+    if (!success) {
+      SetPlay(false);
+      SetStop(false);
+      SetRecord(false);
+    }
   }
 }
 

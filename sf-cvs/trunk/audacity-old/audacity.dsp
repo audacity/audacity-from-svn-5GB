@@ -451,6 +451,14 @@ SOURCE=.\AudacityApp.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\AudioIO.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AudioIO.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\BlockFile.cpp
 # End Source File
 # Begin Source File
@@ -576,14 +584,6 @@ SOURCE=.\NoteTrack.cpp
 # Begin Source File
 
 SOURCE=.\NoteTrack.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Play.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Play.h
 # End Source File
 # Begin Source File
 
