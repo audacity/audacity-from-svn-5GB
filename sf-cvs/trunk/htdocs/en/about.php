@@ -23,7 +23,7 @@ audio editors, including commercial ones.
 <p>
 The developers of Audacity have also released
 <a href="<?php print "beta.php?$langLinkStr"; ?>">
-version 1.2.0-pre1</a>, which is a beta-quality preview of new things we are
+version 1.2.0-pre2</a>, which is a beta-quality preview of new things we are
 actively working on.  It contains many, many new features, but is not quite as
 polished and stable.
 </p>
