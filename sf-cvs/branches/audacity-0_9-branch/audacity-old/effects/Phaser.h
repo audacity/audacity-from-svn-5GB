@@ -15,6 +15,7 @@
 #ifndef __AUDACITY_EFFECT_PHASER__
 #define __AUDACITY_EFFECT_PHASER__
 
+#include <wx/defs.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
 #include <wx/stattext.h>

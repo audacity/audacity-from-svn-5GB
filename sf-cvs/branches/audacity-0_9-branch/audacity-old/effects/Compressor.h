@@ -11,6 +11,7 @@
 #ifndef __FILTER_COMPRESSOR__
 #define __FILTER_COMPRESSOR__
 
+#include <wx/defs.h>
 #include <wx/string.h>
 
 #include "WaveTrack.h"

@@ -106,7 +106,7 @@ void QuitAudacity()
 }
 
 IMPLEMENT_APP(AudacityApp)
-#ifdef __WXMAC__
+#if defined(__WXMAC__) && !defined(__DARWIN__)
 pascal OSErr AEQuit(const AppleEvent * theAppleEvent, AppleEvent * theReply,
                     long Refcon)
 {
@@ -225,14 +225,14 @@ bool AudacityApp::OnInit()
    Effect::RegisterEffect(new EffectReverse());
    Effect::RegisterEffect(new EffectWahwah());
 
-#if defined(__WXMAC__)
+#if defined(__WXMAC__) && !defined(__DARWIN__)
    LoadVSTPlugins();
 #endif
 #if defined(__WXMSW__)
    LoadVSTPlugins(wxPathOnly(argv[0]));
 #endif
 
-#ifdef __WXMAC__
+#if defined(__WXMAC__) && !defined(__DARWIN__)
    AEInstallEventHandler(kCoreEventClass,
                          kAEOpenDocuments,
                          NewAEEventHandlerUPP(AEOpenFiles), 0, 0);

@@ -14,8 +14,6 @@
 
 #include <math.h>
 
-//#include <wx/generic/textdlgg.h>
-
 #include "Phaser.h"
 #include "../WaveTrack.h"
 #include "../FFT.h"
