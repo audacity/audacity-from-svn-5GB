@@ -10,6 +10,7 @@ preview and test the new features that will appear in our next stable version.
 Please report any bugs or comments to:
 <a href="mailto:audacity-help@lists.sourceforge.net">
 audacity-help@lists.sourceforge.net</a>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font></br>
 </p>
 
 <p>

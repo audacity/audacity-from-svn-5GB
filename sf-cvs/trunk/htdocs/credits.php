@@ -12,6 +12,7 @@ BoxTop($creditsStr);
 General comments and questions about Audacity should be sent to 
 <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>.
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font></br>
 </p>
 
 <h3>Lead Developers</h3>

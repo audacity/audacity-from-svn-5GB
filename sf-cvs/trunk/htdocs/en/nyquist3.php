@@ -196,6 +196,7 @@ If you're having trouble getting Nyquist to work at all, please
 send your email to
 <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font>
 </p>
 
 <p>
