@@ -37,7 +37,9 @@ class KeyConfigPrefs:public PrefsPanel {
    bool Apply();
 
  private:
-   void AssignDefaults(wxCommandEvent& event);
+   void OnDefaults(wxCommandEvent& event);
+   void OnLoad(wxCommandEvent& event);
+   void OnSave(wxCommandEvent& event);
    void OnSet(wxCommandEvent& event);
    void OnClear(wxCommandEvent& event);
    void OnItemSelected(wxListEvent &event);

@@ -6,8 +6,25 @@
 
   Dominic Mazzoni
 
+  Figure out what translations are installed and return a list
+  of language codes (like "es", "fr", or "pt-br") and corresponding
+  language names (like "Español", "Français", and "Português").
+  We use our own list of translations of language names (i.e.
+  "Français" instead of "French") but we fallback on the language
+  name in wxWindows if we don't have it listed.
+
+  This code is designed to work well with all of the current
+  languages, but adapt to any language that wxWindows supports.
+  Other languages will only be supported if they're added to
+  the database using wxLocale::AddLanguage.
+
+  But for the most part, this means that somebody could add a new
+  translation and have it work immediately.
+
 **********************************************************************/
 
+#include <wx/defs.h>
+#include <wx/hashmap.h>
 #include <wx/intl.h>
 
 #include "Languages.h"
@@ -15,61 +32,139 @@
 #include "Audacity.h"
 #include "AudacityApp.h"
 
-void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
-{
-   //
-   // TODO:
-   //
-   // This is a placeholder until the code which
-   // actually searches for locale files (below)
-   // is finished...
-   //
+WX_DECLARE_STRING_HASH_MAP(wxString, LangHash);
 
-   langCodes.Add("bg"); langNames.Add("Balgarski");
-   langCodes.Add("ca"); langNames.Add("Catalan");
-   langCodes.Add("da"); langNames.Add("Dansk");
-   langCodes.Add("de"); langNames.Add("Deutsch");
-   langCodes.Add("en"); langNames.Add("English");
-   langCodes.Add("es"); langNames.Add("Español");
-   langCodes.Add("fr"); langNames.Add("Français");
-   langCodes.Add("it"); langNames.Add("Italiano");
-   langCodes.Add("hu"); langNames.Add("Magyar");
-   langCodes.Add("nl"); langNames.Add("Nederlands");
-   langCodes.Add("pl"); langNames.Add("Polski");
-   langCodes.Add("ru"); langNames.Add("Russky");
-   langCodes.Add("sl"); langNames.Add("Slovenscina");
+bool TranslationExists(wxArrayString &audacityPathList, wxString code)
+{
+   wxArrayString results;   
+   wxGetApp().FindFilesInPathList(wxString::Format("%s/audacity.mo",
+                                                   (const char *)code),
+                                  audacityPathList,
+                                  wxFILE,
+                                  results);
+   
+   wxGetApp().FindFilesInPathList(wxString::Format("%s/LC_MESSAGES/audacity.mo",
+                                                   (const char *)code),
+                                  audacityPathList,
+                                  wxFILE,
+                                  results);
+   
+   return (results.GetCount() > 0);
 }
 
-#if 0
+wxString GetSystemLanguageCode()
+{
+   wxArrayString langCodes;
+   wxArrayString langNames;
 
-// This code doesn't work yet
+   GetLanguages(langCodes, langNames);
+   int sysLang = wxLocale::GetSystemLanguage();
+   const wxLanguageInfo *info = wxLocale::GetLanguageInfo(sysLang);
+   
+   if (info) {
+      wxString fullCode = info->CanonicalName;
+      if (fullCode.Length() < 2)
+         return "en";
+
+      wxString code = fullCode.Left(2);
+      unsigned int i;
+
+      for(i=0; i<langCodes.GetCount(); i++) {
+         if (langCodes[i] == fullCode)
+            return fullCode;
+
+         if (langCodes[i] == code)
+            return code;
+      }
+   }
+
+   return "en";
+}
+
+void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
+{
+   wxArrayString tempNames;
+   wxArrayString tempCodes;
+   LangHash localLanguageName;
+   LangHash reverseHash;
+
+   localLanguageName["bg"] = "Balgarski";
+   localLanguageName["ca"] = "Catalan";
+   localLanguageName["da"] = "Dansk";
+   localLanguageName["de"] = "Deutsch";
+   localLanguageName["en"] = "English";
+   localLanguageName["es"] = "Español";
+   localLanguageName["fr"] = "Français";
+   localLanguageName["it"] = "Italiano";
+   localLanguageName["hu"] = "Magyar";
+   localLanguageName["nl"] = "Nederlands";
+   localLanguageName["pl"] = "Polski";
+   localLanguageName["pt"] = "Português";
+   localLanguageName["ru"] = "Russky";
+   localLanguageName["sl"] = "Slovenscina";
 
    wxArrayString audacityPathList = wxGetApp().audacityPathList;
-   wxArrayString results;
-
-   langCodes.Add("en"); langNames.Add("English");
-
    wxGetApp().AddUniquePathToPathList(wxString::Format("%s/share/locale",
                                                        INSTALL_PREFIX),
                                       audacityPathList);
+   wxString lastCode = "";
 
-   wxGetApp().FindFilesInPathList("*/audacity.mo",
-                                  audacityPathList,
-                                  wxFILE,
-                                  results);
+   int i;
+   for(i=wxLANGUAGE_UNKNOWN; i<wxLANGUAGE_USER_DEFINED;i++) {
+      const wxLanguageInfo *info = wxLocale::GetLanguageInfo(i);
 
-   wxGetApp().FindFilesInPathList("*/LC_MESSAGES/audacity.mo",
-                                  audacityPathList,
-                                  wxFILE,
-                                  results);
+      if (!info)
+         continue;
 
-   for(unsigned int i=0; i<results.GetCount(); i++) {
-      wxString path = ::wxPathOnly(results[i]);
-      if (path.Length() > 12 && path.Right(11)=="LC_MESSAGES")
-         path = path.Left(path.Length()-12);
-      wxString langCode = path.AfterLast(wxFILE_SEP_PATH);
-      //wxLanguageInfo *info = wxLocale::GetLanguageInfo(langCode);
-      printf("Found %s\n", (const char *)langCode);
+      wxString fullCode = info->CanonicalName;
+      wxString code = fullCode.Left(2);
+      wxString name = info->Description;
+      bool found = false;
+
+      if (localLanguageName[fullCode] != "") {
+         name = localLanguageName[fullCode];
+      }
+      if (localLanguageName[code] != "") {
+         name = localLanguageName[code];
+      }
+
+      if (fullCode.Length() < 2)
+         continue;
+
+      if (TranslationExists(audacityPathList, fullCode)) {
+         tempCodes.Add(fullCode);
+         tempNames.Add(name);
+         found = true;
+      }
+
+      if (code != lastCode) {
+         if (TranslationExists(audacityPathList, code)) {
+            tempCodes.Add(code);
+            tempNames.Add(name);
+            found = true;
+         }
+
+         if (code == "en" && !found) {
+            tempCodes.Add(code);
+            tempNames.Add(name);
+            found = true;
+         }
+      }
+
+      lastCode = code;
    }
-#endif
+
+   // Sort
+
+   unsigned int j;
+   for(j=0; j<tempNames.GetCount(); j++)
+      reverseHash[tempNames[j]] = tempCodes[j];
+
+   tempNames.Sort();
+
+   for(j=0; j<tempNames.GetCount(); j++) {
+      langNames.Add(tempNames[j]);
+      langCodes.Add(reverseHash[tempNames[j]]);
+   }
+}
 

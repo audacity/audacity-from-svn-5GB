@@ -12,10 +12,14 @@
 #ifndef __AUDACITY_GUI_PREFS__
 #define __AUDACITY_GUI_PREFS__
 
+#include <wx/defs.h>
+#include <wx/string.h>
+
 #include "PrefsPanel.h"
 
 class wxWindow;
 class wxCheckBox;
+class wxChoice;
 class wxTextCtrl;
 class wxStaticText;
 
@@ -32,8 +36,11 @@ class GUIPrefs : public PrefsPanel {
     wxCheckBox *mSpectrogram;
     wxCheckBox *mEditToolBar;
     wxCheckBox *mMixerToolBar;
-    wxTextCtrl *mLocale;
+    wxChoice *mLocale;
     wxStaticText *mLocaleLabel;
+
+    wxArrayString mLangCodes;
+    wxArrayString mLangNames;
 };
 
 #endif

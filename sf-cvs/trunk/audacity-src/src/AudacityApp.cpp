@@ -640,6 +640,7 @@ void AudacityApp::FindFilesInPathList(wxString pattern,
 
       wxString fname = 
          wxFindFirstFile((const char *)(path + wxFILE_SEP_PATH + pattern));
+
       while(fname != "") {
          results.Add(fname);
          fname = wxFindNextFile();

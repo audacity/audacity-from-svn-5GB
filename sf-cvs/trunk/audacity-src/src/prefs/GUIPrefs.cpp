@@ -6,13 +6,15 @@
 
   Brian Gunlogson
   Joshua Haberman
+  Dominic Mazzoni
 
 **********************************************************************/
 
-
+#include "../Audacity.h"
 
 #include <wx/defs.h>
 #include <wx/checkbox.h>
+#include <wx/choice.h>
 #include <wx/intl.h>
 #include <wx/sizer.h>
 #include <wx/statbox.h>
@@ -21,7 +23,7 @@
 
 #include "GUIPrefs.h"
 #include "../Prefs.h"
-#include "../Audacity.h"
+#include "../Languages.h"
 #include "../EditToolBar.h"
 
 
@@ -69,8 +71,21 @@ PrefsPanel(parent)
 
 
    // Locale
-   wxString lang = gPrefs->Read("/Locale/Language", "en");
-   mLocale = new wxTextCtrl(this, -1, lang);
+   GetLanguages(mLangCodes, mLangNames);
+   int numLangs = mLangNames.GetCount();
+
+   wxString currentLang = gPrefs->Read("/Locale/Language", "en");
+   wxString *langArray = new wxString[numLangs];
+   int i;
+   for(i=0; i<numLangs; i++)
+      langArray[i] = mLangNames[i];
+   mLocale = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
+                          numLangs, langArray);
+   delete[] langArray;
+   for(i=0; i<numLangs; i++)
+      if (mLangCodes[i] == currentLang)
+         mLocale->SetSelection(i);
+
    mLocaleLabel = new wxStaticText(this, -1, _("Language:"));
 
    wxFlexGridSizer *localeSizer = new wxFlexGridSizer( 0, 2, 0, 0 );
@@ -133,8 +148,8 @@ bool GUIPrefs::Apply()
    //---------------------------------------------------------------
 
 
-
-   gPrefs->Write("/Locale/Language", mLocale->GetValue());
+   int localeIndex = mLocale->GetSelection();
+   gPrefs->Write("/Locale/Language", mLangCodes[localeIndex]);
 
 
    return true;

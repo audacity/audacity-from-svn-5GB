@@ -18,12 +18,14 @@
 #include <wx/listctrl.h>
 #include <wx/choice.h>
 #include <wx/intl.h>
+#include <wx/filedlg.h>
 #include <wx/msgdlg.h>
 #include <wx/menuitem.h>
 
 #include "../Prefs.h"
 #include "../commands/CommandManager.h"
 #include "../commands/Keyboard.h"
+#include "../xml/XMLFileReader.h"
 
 #include "KeyConfigPrefs.h"
 
@@ -32,15 +34,19 @@
 #define SetButtonID             7003
 #define ClearButtonID           7004
 #define CommandsListID          7005
+#define SaveButtonID            7006
+#define LoadButtonID            7007
 
 
 // The numbers of the columns of the mList.
 enum { BlankColumn=0, CommandColumn=1, KeyComboColumn=2};
 
 BEGIN_EVENT_TABLE(KeyConfigPrefs, wxPanel)
-   EVT_BUTTON(AssignDefaultsButtonID, KeyConfigPrefs::AssignDefaults)
+   EVT_BUTTON(AssignDefaultsButtonID, KeyConfigPrefs::OnDefaults)
    EVT_BUTTON(SetButtonID, KeyConfigPrefs::OnSet)
    EVT_BUTTON(ClearButtonID, KeyConfigPrefs::OnClear)
+   EVT_BUTTON(SaveButtonID, KeyConfigPrefs::OnSave)
+   EVT_BUTTON(LoadButtonID, KeyConfigPrefs::OnLoad)
    EVT_LIST_ITEM_SELECTED(CommandsListID, KeyConfigPrefs::OnItemSelected)
 END_EVENT_TABLE()
 
@@ -50,6 +56,7 @@ PrefsPanel(parent)
    AudacityProject *project = GetActiveProject();
    if (!project)
       return;
+
    mManager = project->GetCommandManager();
 
    topSizer = new wxBoxSizer( wxVERTICAL );
@@ -101,8 +108,21 @@ PrefsPanel(parent)
    topSizer->Add(pComboLabelSizer, 0,
                        wxALL, GENERIC_CONTROL_BORDER);
 
-   //Add assign defaults button
-   topSizer->Add(new wxButton(this, AssignDefaultsButtonID, _("Assign Defaults")), 0,
+   wxButton *pDefaultsButton =
+      new wxButton(this, AssignDefaultsButtonID, _("Defaults"));
+   wxButton *pSaveButton =
+      new wxButton(this, SaveButtonID, _("Save..."));
+   wxButton *pLoadButton =
+      new wxButton(this, LoadButtonID, _("Load..."));
+
+   pComboLabelSizer = new wxBoxSizer( wxHORIZONTAL );
+   pComboLabelSizer->Add( pDefaultsButton, 0,
+                       wxALL, GENERIC_CONTROL_BORDER);
+   pComboLabelSizer->Add( pSaveButton, 0,
+                       wxALL, GENERIC_CONTROL_BORDER);
+   pComboLabelSizer->Add( pLoadButton, 0,
+                       wxALL, GENERIC_CONTROL_BORDER);
+   topSizer->Add(pComboLabelSizer, 0,
                  wxALL, GENERIC_CONTROL_BORDER);
 
    outSizer = new wxBoxSizer( wxVERTICAL );
@@ -115,6 +135,65 @@ PrefsPanel(parent)
    outSizer->SetSizeHints(this);
 
    mCommandSelected = -1;
+}
+
+void KeyConfigPrefs::OnSave(wxCommandEvent& event)
+{
+   Apply();
+
+   wxString fName = "Audacity-keys.xml";
+   wxString path = gPrefs->Read("/DefaultExportPath", ::wxGetCwd());
+
+   fName = wxFileSelector(_("Export Keyboard Shortcuts As:"),
+                          NULL,
+                          fName,
+                          "xml",
+                          "*.xml", wxSAVE | wxOVERWRITE_PROMPT, this);
+
+   if (!fName)
+      return;
+
+   path = wxPathOnly(fName);
+   gPrefs->Write("/DefaultExportPath", path);
+
+   FILE *fp = fopen((const char *)fName, "wb");
+   if (!fp || ferror(fp)) {
+      wxMessageBox(_("Couldn't write to file: ") + fName,
+                   _("Error saving keyboard shortcuts"),
+                   wxOK | wxCENTRE, this);
+      return;
+   }
+
+   mManager->WriteXML(0, fp);
+   fclose(fp);
+}
+
+void KeyConfigPrefs::OnLoad(wxCommandEvent& event)
+{
+   wxString path = gPrefs->Read("/DefaultOpenPath", ::wxGetCwd());
+
+   wxString fileName = wxFileSelector(_("Select an XML file containing Audacity keyboard shortcuts..."),
+                                      path,     // Path
+                                      "",       // Name
+                                      "",       // Extension
+                                      _("XML files (*.xml)|*.xml|"
+                                        "All files (*.*)|*.*"),
+                                      0,        // Flags
+                                      this);    // Parent
+
+   if (!fileName)
+      return;
+
+   path = wxPathOnly(fileName);
+   gPrefs->Write("/DefaultOpenPath", path);
+
+   XMLFileReader reader;
+   if (!reader.Parse(mManager, fileName))
+      wxMessageBox(reader.GetErrorStr(),
+                   _("Error loading keyboard shortcuts"),
+                   wxOK | wxCENTRE, this);
+
+   RepopulateBindingsList();
 }
 
 void KeyConfigPrefs::OnSet(wxCommandEvent& event)
@@ -165,7 +244,7 @@ void KeyConfigPrefs::RepopulateBindingsList()
 }
 
 
-void KeyConfigPrefs::AssignDefaults(wxCommandEvent& event)
+void KeyConfigPrefs::OnDefaults(wxCommandEvent& event)
 {
    unsigned int i;
 
