@@ -19,6 +19,11 @@
 #include "LabelTrack.h"
 #include "DirManager.h"
 
+LabelTrack *TrackFactory::NewLabelTrack()
+{
+   return new LabelTrack(mDirManager);
+}
+
 LabelTrack::LabelTrack(DirManager * projDirManager):
 Track(projDirManager)
 {

@@ -44,6 +44,7 @@ void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 #include <wx/scrolbar.h>
 #include <wx/textfile.h>
 #include <wx/menu.h>
+#include <wx/progdlg.h>
 
 #include "Project.h"
 
@@ -224,13 +225,19 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                  const wxPoint & pos,
                                  const wxSize & size)
    : wxFrame(parent, id, "Audacity", pos, size),
-     mRate((double) gPrefs->Read("/SamplingRate/DefaultProjectSampleRate",
-                                 44100)),
+     mImportProgressDialog(NULL),
+     mRate((double) gPrefs->Read("/SamplingRate/DefaultProjectSampleRate", 44100)),
      mDefaultFormat((sampleFormat) gPrefs->
            Read("/SamplingRate/DefaultProjectSampleFormat", floatSample)),
      mDirty(false),
-     mTrackPanel(NULL), mAutoScrolling(false), mActive(true), mHistoryWindow(NULL),
-     mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
+     mTrackPanel(NULL),
+     mTrackFactory(NULL),
+     mImporter(NULL),
+     mAutoScrolling(false),
+     mActive(true),
+     mHistoryWindow(NULL),
+     mTotalToolBarHeight(0),
+     mDraggingToolBar(NoneID)
 {
    bool alreadyAssigned = false;
    //BG: Assign default keybindings if needed
@@ -384,6 +391,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    // Create tags object
    mTags = new Tags();
+
+   mTrackFactory = new TrackFactory(&mDirManager);
+   mImporter = new Importer;
 
 #ifdef __WXMSW__
    // Accept drag 'n' drop files
@@ -1343,19 +1353,19 @@ XMLTagHandler *AudacityProject::HandleXMLChild(const char *tag)
    }
 
    if (!strcmp(tag, "wavetrack")) {
-      WaveTrack *newTrack = new WaveTrack(&mDirManager);
+      WaveTrack *newTrack = mTrackFactory->NewWaveTrack();
       mTracks->Add(newTrack);
       return newTrack;
    }
 
    if (!strcmp(tag, "notetrack")) {
-      NoteTrack *newTrack = new NoteTrack(&mDirManager);
+      NoteTrack *newTrack = mTrackFactory->NewNoteTrack();
       mTracks->Add(newTrack);
       return newTrack;
    }
 
    if (!strcmp(tag, "labeltrack")) {
-      LabelTrack *newTrack = new LabelTrack(&mDirManager);
+      LabelTrack *newTrack = mTrackFactory->NewLabelTrack();
       mTracks->Add(newTrack);
       return newTrack;
    }
@@ -1620,31 +1630,74 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    return true;
 }
 
+bool AudacityProject::ImportProgressCallback(void *_self, float percent)
+{
+   AudacityProject *self = (AudacityProject*)_self;
+   const int progressDialogGranularity = 1000;
+
+   if (self->mImportProgressDialog) {
+      return !self->mImportProgressDialog->Update(percent * progressDialogGranularity);
+   }
+   else if (wxGetElapsedTime(false) > 500) {
+      wxString dialogMessage = _("Importing ") +
+                               self->mImporter->GetFileDescription() +
+                               _(" File...");
+
+      self->mImportProgressDialog = new wxProgressDialog(_("Import"),
+                                         dialogMessage,
+                                         progressDialogGranularity,
+                                         self,
+                                         wxPD_CAN_ABORT |
+                                         wxPD_REMAINING_TIME |
+                                         wxPD_AUTO_HIDE);
+      return self->mImportProgressDialog->Update(percent * progressDialogGranularity);
+   }
+   else {
+      return 0;
+   }
+}
+
 void AudacityProject::Import(wxString fileName)
 {
-   WaveTrack **newTracks;
+   Track **newTracks;
    int numTracks;
+   wxString errorMessage;
 
-   numTracks =::Import(this, fileName, &newTracks);
+   wxStartTimer();
 
-   if (numTracks <= 0)
+   wxASSERT(!mImportProgressDialog);
+
+   // TODO: use the callback to draw a progressdialog
+   numTracks = mImporter->Import(fileName, mTrackFactory, &newTracks,
+                                 errorMessage,
+                                 AudacityProject::ImportProgressCallback,
+                                 this);
+
+   if(mImportProgressDialog)
+      delete mImportProgressDialog;
+
+   if (numTracks <= 0) {
+      wxMessageBox(errorMessage);
       return;
+   }
 
    SelectNone();
 
+   // TODO: detect which (if any) were WaveTracks and get the rate from them
    bool initiallyEmpty = mTracks->IsEmpty();
-   double newRate = newTracks[0]->GetRate();
+   //double newRate = newTracks[0]->GetRate();
 
    for (int i = 0; i < numTracks; i++) {
       mTracks->Add(newTracks[i]);
       newTracks[i]->SetSelected(true);
+      newTracks[i]->SetName(fileName.AfterLast(wxFILE_SEP_PATH).BeforeLast('.'));
    }
 
    delete[]newTracks;
 
    if (initiallyEmpty) {
-      mRate = newRate;
-      mStatus->SetRate(mRate);
+      //mRate = newRate;
+      //mStatus->SetRate(mRate);
    }
 
    PushState(wxString::Format(_("Imported '%s'"), fileName.c_str()));
@@ -1655,7 +1708,7 @@ void AudacityProject::Import(wxString fileName)
    mTrackPanel->Refresh(false);
 
    if (initiallyEmpty) {
-      wxString name =::TrackNameFromFileName(fileName);
+      wxString name = fileName.AfterLast(wxFILE_SEP_PATH).BeforeLast('.');
       mFileName =::wxPathOnly(fileName) + wxFILE_SEP_PATH + name + ".aup";
       SetTitle(GetName());
    }
