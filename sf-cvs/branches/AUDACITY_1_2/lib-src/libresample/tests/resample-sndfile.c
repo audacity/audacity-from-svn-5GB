@@ -174,7 +174,14 @@ int main(int argc, char **argv)
          }
 
          for(i=0; i<out; i++)
-            dsti[i*channels+c] = dst[i];
+	 {
+	    if(dst[i] <= -1)
+	       dsti[i*channels+c] = -1;
+	    else if(dst[i] >= 1)
+	       dsti[i*channels+c] = 1;
+	    else
+	       dsti[i*channels+c] = dst[i];
+	 }
       }
 
       sf_writef_float(dstfile, dsti, out);
