@@ -29,7 +29,7 @@ Verwendung:<br>
 <a href="#a3">Wenn ich versuche Harmonien aufzunehmen sind beide Stücke nicht zeitgleich bzw. nicht synchron ?
              </a><br>
 <a href="#a4">Warum wird bei Audacity kein MP3 encoder mitgeliefert?</a><br>
-<a href="#a5">Kann man RealAudio oder anderes "gestreamte audio" aufnehmen ?</a><br>
+<a href="#a5">Kann man RealAudio oder andere Streaminmedien aufnehmen ?</a><br>
 <a href="#a6">Hilfe! Ich drücke Aufnahme, aber alles was ich bekomme ist "Stille"!</a><br>
 <a href="#a7">Wie trenne ich ein Lied (Track) in verschiedene Stücke ?</a><br>
 <a href="#a8">Wie bekomme ich die Lieder von einer Audio CD ?</a><br>
@@ -275,9 +275,7 @@ Einfach probieren!
 <p>
 <a name="a3"></a>
 <font size=+1><b>
-3. When I try to record harmonies with myself,
-              why are the two tracks out of sync?
-</b></font>
+3. Wenn ich versuche eigene Harmonien aufzunehmen, sind diese nicht synchron. Was kann ich tun?</b></font>
 <p>
 Das ist normal und liegt daran, daß es eine kurze Zeitverzögerung zwischen dem Abspielen der Töne im Programm und dem erreichen deiner Lautsprecher gibt (Also dem Hören). Audacity berichtigt diese kurze Zeitverzögerung nicht automatisch, daß musst du manuell machen.
 
@@ -287,7 +285,7 @@ Um dies zu tun, benutze das "Timeshift" Modul von Audacity und verschiebe eine d
 
 <a name="a4"></a>
 <font size=+1><b>
-4. Warum wird Audacity nicht mit einem MP3 encoder ausgeliefert?
+4. Warum wird Audacity nicht mit einem MP3 Encoder ausgeliefert?
 </b></font>
 
 <p>
@@ -299,21 +297,21 @@ in vielen Ländern strafbar zu machen.
 Als Kompromiss wurde die Möglichkeit, externe Encoder zu verwenden, eingebaut.
 Die Encoder müssen separat geladen werden und es liegt an Ihnen,
 ob Sie deren Lizenzbestimmungen akzepieren wollen.
-
-<a href="#a5"></a>
+<p></p>
+<a name="#a5"></a>
 <font size=+1><b>
-5. Kann man RealAudio oder anderes "gestreamte Audio" aufnehmen ?<br><p>
+5. Kann man RealAudio oder andere Streaminmedien mit Audacity aufnehmen?<br><p>
 </b></font>
-Eigentlich nicht. Die meiste Musik , die gestreamt wird, auch die die für den RealOne Player, Windows Media Player oder Quicktime geliefert wird, soll eigentlich verhindern, dass du diese aufnehmen kannst.
+Eigentlich nicht. Die meiste Musik , die gestreamt wird, auch die die für den RealOne Player, Windows Media Player oder Quicktime geliefert wird, soll eigentlich verhindern, dass Sie diese aufnehmen können.
 <p>
-Aber es ist immer noch möglich alles, was du auf deinem Computer abspielen kannst, auch aufzunehmen. Verbinde dazu nur deinen Outputkanal an der Soundkarte (in der Regel der grüne Ausgang) mit dem Line In Eingang deiner Soundkarte. Benutzte dazu ein 1/8 Inch Audio Stereo Kabel.
+Aber heutzutage ist es immer noch möglich, alles was Sie auf Ihrem Computer abspielen können, auch aufzunehmen. Verbinde dazu nur deinen Outputkanal an der Soundkarte (in der Regel der grüne Ausgang) mit dem "Line In" Eingang deiner Soundkarte. Benutzte dazu ein 1/8 Inch Audio Stereo Kabel.
 <p>
 Wenn du dies so gemacht hast, kann Audacity alles aufnehmen, was abgespielt wird. Drücke dazu erst den Aufnahmeknopf in Audacity, danach den „Start“ Knopf in deiner Anwendung und Audacity nimmt alles auf ! (vgl. auch die nächste Frage).
 
 
 
 <p>
-<a href="#a6"></a>
+<a name="#a6"></a>
 <font size=+1><b>
 6. Hilfe! Ich drücke Aufnahme, aber alles was ich bekomme ist "Stille"!</b></font>
 <br>
@@ -326,43 +324,43 @@ Wenn du Windows benutzt, kann du mit Rechts-Klick auf das Lautstärke-Symbol (Rec
 Wenn du Mac OS9 besitzt, geht dies über die Sound Control. Wenn du Mac OSX benutzt, gehe über die Sound Control in den Systemeinstellungen (Bei 10.2 oder höher ist dies ein eigener Reiter).
 
 <p>
-<a href="#a7"></a>
+<a name="#a7"></a>
 <font size=+1><b>
-7. Wie trenne ich ein Lied (Track) in verschiedene Stücke ?</b></font><br>
+7. Wie trenne ich ein Lied (Track) in verschiedene Stücke?</b></font><br>
 <p>
-Manchmal nimmst du verschiedene Lieder auf, die aber zum Schlu&suml; in einem St&uuml;ck gespeichert sind (zum Beispiel du nimmst eine Seite einer LP in einem "Rutsch" auf).  Wenn du diese Lieder dann auf eine CD brennen willst, aber in verschiedenen Liedern, musst du für jedes Lied eine einzelne Datei speichern.
+Manchmal nimmst du verschiedene Lieder auf, die aber zum Schlu&suml; in einem Stück gespeichert sind (zum Beispiel du nimmst eine Seite einer LP in einem "Rutsch" auf).  Wenn du diese Lieder dann auf eine CD brennen willst, aber in verschiedenen Liedern, musst du für jedes Lied eine einzelne Datei speichern.
 </p><p>
 Es gibt verschiedene Wege dies mit Audacity zu tun, hier sind ein paar davon:
  </p><p>
 <b>Methode 1: Export Auswahl</b>
 </p><ul>
 <li>Markiere das erste Lied in deiner Datei (mit der Maus):
- </li><li>W&auml;hle im Dateimen&uuml; "Speichere Auswahl als WAV" und speichere das Lied auf der Festplatte. 
-</li><li> Mache dies f&uuml;r alle weiteren Lieder.
+ </li><li>Wähle im Dateimenü "Speichere Auswahl als WAV" und speichere das Lied auf der Festplatte. 
+</li><li> Mache dies für alle weiteren Lieder.
 </li></ul>
 <p>
-<b>Methode 2: L&ouml;schen und Wiederherstellen</b>
+<b>Methode 2: Löschen und Wiederherstellen</b>
 </p><ul>
-<li>L&ouml;sche alles <i>mit Ausnahme vont</i> dem ersten Lied.
-</li><li> W&auml;hle im Dateimen&uuml; "Speichere Auswahl als WAV" und speichere das Lied auf der Festplatte.
-</li><li>Nimm "Undo" (Wiederherstellen) aus dem &Auml;ndern Men&uuml;.  Mach dieses bis die komßplette Datei wieder da ist. (Audacity kann unlimitiert wiederherstellen.)
-</li><li> Mache dies f&uuml;r alle weiteren Lieder.
+<li>Lösche alles <i>mit Ausnahme vont</i> dem ersten Lied.
+</li><li> Wähle im Dateimenü "Speichere Auswahl als WAV" und speichere das Lied auf der Festplatte.
+</li><li>Nimm "Undo" (Wiederherstellen) aus dem Ändern Menü.  Mach dieses bis die komßplette Datei wieder da ist. (Audacity kann unlimitiert wiederherstellen.)
+</li><li> Mache dies für alle weiteren Lieder.
 </li></ul>
 <p>
 <b>Method 3: Trennen und Exportieren</b>
 </p><ul>
 <li>Suche den Teil der Datei, der das erste Lied darstellt
-</li><li>W&auml;hle  "Split (Teilen)" aus dem &Auml;ndern Men&uuml;, dies sorgt daf&uuml;, dass deine Auswahl in eine zus&auml;tzliche Datei innerhalb Audacity verschoben wird.
+</li><li>Wähle  "Split (Teilen)" aus dem Ändern Menü, dies sorgt dafü, dass deine Auswahl in eine zusätzliche Datei innerhalb Audacity verschoben wird.
  </li><li>Mache dies mit allen weiteren Liedern. Du kannst mit "Wiederherstellen" jederzeit den alten Zustand wiederhertsellen, falls du einen Fehler machst.
-</li><li>gehe nun wieder zur&uuml;ck in die erste separierte Datei und w&auml;hle im Dateimen&uuml; "Speichere Auswahl als WAV" und speichere das Lied auf der Festplatte.
+</li><li>gehe nun wieder zurück in die erste separierte Datei und wähle im Dateimenü "Speichere Auswahl als WAV" und speichere das Lied auf der Festplatte.
 Dies musst du mit jeder Datei machen.</li>
-<li>  Hinweis: Um eine Datei komplett und schnell zu markieren dr&uuml;cke auf den Label (Linke Seite neben der Waveform, unter dem Titel).
+<li>  Hinweis: Um eine Datei komplett und schnell zu markieren drücke auf den Label (Linke Seite neben der Waveform, unter dem Titel).
 </li></ul>
 <p>
 
 
 <p>
-<a href="#a8"></a>
+<a name="#a8"></a>
 <font size=+1><b>
 8. Wie bekomme ich die Lieder von einer Audio CD ?</b></font><br>
 <p>
