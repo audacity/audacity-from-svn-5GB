@@ -8,19 +8,17 @@
 # This makefile may be invoked to build either audacity.pot or any lang.mo
 
 PROGNAME=audacity
+LINGUAS=es fr ru
 
 all: allmo
 
-# Files 
-POFILES=*.po
-POTFILE=$(PROGNAME).pot 
+# Merge POT file with all existing message catalogs
+allpo: $(LINGUAS:%=%.po) FORCE
+allmo: $(LINGUAS:%=../%/$(PROGNAME).mo) FORCE
 
 # Update the POT template file.
-update: force-update $(POTFILE)
-
-# Merge POT file with all existing message catalogs
-allpo: $(POFILES)
-allmo: $(POFILES:%.po=../%/$(PROGNAME).mo)
+POTFILE=$(PROGNAME).pot 
+update: force-update $(POTFILE) FORCE
 
 # the programs we use (TODO: use configure to detect them)
 MSGFMT=msgfmt -v
@@ -29,12 +27,13 @@ XGETTEXT=xgettext
 XARGS=xargs
 
 # common xgettext args: C++ syntax, use the specified macro names as markers
-XGETTEXT_ARGS=-C -k_ -kwxGetTranslation -kwxTRANSLATE -s -j
+XGETTEXT_ARGS=-C -k_ -s -j
 
 # implicit rules
-../%/$(PROGNAME).mo: %.po
-	$(MSGFMT) -o $@ $<
 
+../%/$(PROGNAME).mo: %.po
+	@test -d ../$* || mkdir ../$*
+	$(MSGFMT) -o $@ $<
 
 %.po: $(POTFILE)
 	@if [ -f $@ ]; then \
@@ -50,8 +49,7 @@ $(POTFILE):
 	find ../src -name "*.cpp" -or -name "*.h" \
 		| $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o $(POTFILE)
 
-force-update:
+force-update: FORCE
 	rm -f $(POTFILE)
 
-.PHONY: allpo allmo update-pot
 FORCE:
