@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: linear scale -> dB, Bark and Mel scales
- last mod: $Id: scales.h,v 1.1.1.3 2002-10-26 19:39:35 dmazzoni Exp $
+ last mod: $Id: scales.h,v 1.1.1.4 2004-11-13 16:54:53 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -37,13 +37,9 @@ static float FABS(float *x){
   return(*x);
 }
 
+/* Segher was off (too high) by ~ .3 decibel.  Center the conversion correctly. */
 static float todB(const float *x){
-  float calc;
-  ogg_int32_t *i=(ogg_int32_t *)x;
-  calc = ((*i) & 0x7fffffff);
-  calc *= 7.1771144e-7f;
-  calc += -764.27118f;
-  return calc;
+  return (float)((*(ogg_int32_t *)x)&0x7fffffff) * 7.17711438e-7f -764.6161886f;
 }
 
 #define todB_nn(x) todB(x)

@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: utility for paring low hit count cells from lattice codebook
- last mod: $Id: latticepare.c,v 1.1.1.2 2002-04-21 23:36:53 habes Exp $
+ last mod: $Id: latticepare.c,v 1.1.1.3 2004-11-13 16:54:30 mbrubeck Exp $
 
  ********************************************************************/
 
