@@ -9,49 +9,15 @@
   Audacity uses the wxWindows HTML help controller and gets the
   HTML files from a zip archive with a "htb" extension, which
   is supposed to stand for "HTML Book".  It expects the help
-  file to be called "audacity-help.htb".
+  file to be called "audacity-1.2-help.htb".
 
-  If you want to edit the help file, unzip audacity-help.htb
-  (rename it to audacity-help.zip first if you have to), edit
+  If you want to edit the help file, unzip audacity-1.2-help.htb
+  (rename it to audacity-1.2-help.zip first if you have to), edit
   the files, and then zip them again.  Audacity asks the user
-  for the location of the help file the first time and then
-  remembers it from then on.
+  for the location of the help file the first time (if necessary)
+  and then remembers it from then on.
 
 **********************************************************************/
-
-#ifdef __WXMAC__
-
-#include <wx/defs.h>
-#include <wx/window.h>
-
-#include "Help.h"
-
-void InitHelp(wxWindow * parent)
-{
-}
-
-void ShowHelp(wxWindow * parent)
-{
-}
-
-void ShowHelpIndex(wxWindow * parent)
-{
-}
-
-void ShowHelp(wxWindow * parent, wxString topic)
-{
-}
-
-void SearchHelp(wxWindow * parent)
-{
-}
-
-void QuitHelp()
-{
-}
-
-
-#else
 
 #include <wx/defs.h>
 #include <wx/filedlg.h>
@@ -73,7 +39,7 @@ void InitHelp(wxWindow * parent)
       wxString defaultLoc;
       wxArrayString helpFiles;
 
-      wxGetApp().FindFilesInPathList("audacity-help.htb",
+      wxGetApp().FindFilesInPathList("audacity-1.2-help.htb",
                                      wxGetApp().audacityPathList,
                                      wxFILE,
                                      helpFiles);
@@ -81,14 +47,14 @@ void InitHelp(wxWindow * parent)
       if (helpFiles.GetCount() > 0)
          defaultLoc = helpFiles[0];
       else
-         defaultLoc = INSTALL_PREFIX "/share/doc/audacity/audacity-help.htb";
+         defaultLoc = INSTALL_PREFIX "/share/doc/audacity/audacity-1.2-help.htb";
 
       wxString helpFilePath =
-          gPrefs->Read("/Help/HelpFilePath", defaultLoc);
+          gPrefs->Read("/Help/HelpFilePath1.2", defaultLoc);
 
       if (!::wxFileExists(helpFilePath)) {
-         helpFilePath = wxFileSelector(_("Where is audacity-help.htb?"), NULL,
-                                       "audacity-help.htb",    // Name
+         helpFilePath = wxFileSelector(_("Where is audacity-1.2-help.htb?"), NULL,
+                                       "audacity-1.2-help.htb",    // Name
                                        "",                     // Extension
                                        _("HTML Help Books (*.htb)|*.htb"),
                                        wxOPEN, parent);
@@ -103,7 +69,7 @@ void InitHelp(wxWindow * parent)
          gHelp = NULL;
       }
 
-      gPrefs->Write("/Help/HelpFilePath", helpFilePath);
+      gPrefs->Write("/Help/HelpFilePath1.2", helpFilePath);
    }
 }
 
@@ -112,7 +78,7 @@ void ShowHelp(wxWindow * parent)
    InitHelp(parent);
 
    if (gHelp)
-      gHelp->Display(_("Introduction"));
+      gHelp->Display("contents.htm");
 }
 
 void ShowHelpIndex(wxWindow * parent)
@@ -153,5 +119,3 @@ void QuitHelp()
       gHelp = NULL;
    }
 }
-
-#endif
