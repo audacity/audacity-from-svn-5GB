@@ -104,6 +104,7 @@
 #include "ViewInfo.h"
 #include "WaveTrack.h"
 #include "TimeTrack.h"
+#include "Experimental.h"
 
 #include "widgets/ASlider.h"
 #include "widgets/Ruler.h"
@@ -324,7 +325,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
                        TrackList * tracks,
                        ViewInfo * viewInfo,
                        TrackPanelListener * listener)
-   : wxWindow(parent, id, pos, size, wxWANTS_CHARS),
+   : wxPanel(parent, id, pos, size, wxWANTS_CHARS),
      mTrackLabel(this),
      mListener(listener),
      mTracks(tracks),
@@ -568,19 +569,21 @@ void TrackPanel::GetTracksUsableArea(int *width, int *height) const
 
 AudacityProject * TrackPanel::GetProject() const
 {
-   wxWindow * pWind;
-   pWind = GetParent(); //Page
+   //JKC casting away constness here.
+   //Do it in two stages in case 'this' is not a wxWindow.
+   //when the compiler will flag the error.
+   wxWindow const * const pConstWind = this;
+   wxWindow * pWind=(wxWindow*)pConstWind;
+#ifdef EXPERIMENTAL_NOTEBOOK
+   pWind = pWind->GetParent(); //Page
    wxASSERT( pWind );
-// Commented out section will be used when we have
-// the tracks in a Notebook
-#if 0
    pWind = pWind->GetParent(); //Notebook
    wxASSERT( pWind );
+#endif
    pWind = pWind->GetParent(); //MainPanel
    wxASSERT( pWind );
    pWind = pWind->GetParent(); //Project
    wxASSERT( pWind );
-#endif
    return (AudacityProject*)pWind;
 }
 

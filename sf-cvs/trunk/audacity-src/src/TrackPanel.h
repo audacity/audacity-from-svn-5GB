@@ -119,7 +119,7 @@ const int DragThreshold = 3;// Anything over 3 pixels is a drag, else a click.
 /// The TrackPanel manages multiple tracks and their TrackLabels.
 /// Note that with stereo tracks there will be one TrackLabel
 /// being used by two wavetracks.
-class TrackPanel:public wxWindow {
+class TrackPanel:public wxPanel {
  public:
 
    TrackPanel(wxWindow * parent,
@@ -273,6 +273,7 @@ class TrackPanel:public wxWindow {
    int GetVRulerOffset() const { return GetTitleOffset() + mTrackLabel.GetTitleWidth();}
    int GetLabelWidth() const { return mTrackLabel.GetTitleWidth() + GetVRulerWidth();}
 
+private:
    void DrawRuler(wxDC * dc, bool text = true);
    void DrawTrackIndicator(wxDC *dc);
 
@@ -292,14 +293,14 @@ class TrackPanel:public wxWindow {
    int IdOfRate( int rate );
    int IdOfFormat( int format );
 
+   int startXPos;
+   int startYPos;
+   
    wxString TrackSubText(Track *t);
 
    int MoveClipToTrack(int clipIndex, WaveTrack* src, WaveTrack* dst);
 
    TrackLabel mTrackLabel;
-   int startXPos;
-   int startYPos;
-   
 
    TrackPanelListener *mListener;
 
@@ -453,4 +454,3 @@ class TrackPanel:public wxWindow {
 //
 // vim: et sts=3 sw=3
 // arch-tag: 1f8c3d0e-849e-4f3c-95b5-9ead0789f999
-

@@ -32,6 +32,7 @@
 #include <wx/ffile.h>
 #include <wx/log.h>
 #include <wx/timer.h>
+#include <wx/Notebook.h>
 
 #ifdef __MACOSX__
 #include <CoreServices/CoreServices.h>
@@ -90,6 +91,8 @@
 #include "xml/XMLFileReader.h"
 #include "PlatformCompatibility.h"
 #include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
+#include "Experimental.h"
+
 
 
 using std::cout;
@@ -326,6 +329,8 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
 
 END_EVENT_TABLE()
 
+
+
 AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                  const wxPoint & pos,
                                  const wxSize & size)
@@ -352,7 +357,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    // These consts are used to make the function call more readable.
    const bool ONLY_IF_STUB_EXISTS=false;
    const bool CREATE_STUB_IF_REQUIRED=true;
-//   int i;
 
    mDrag = NULL;
 
@@ -414,77 +418,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    LoadToolBar( TranscriptionToolBarID, ONLY_IF_STUB_EXISTS );
    LoadToolBar( EditToolBarID,          ONLY_IF_STUB_EXISTS );
 
-#if 0
-   if (!gControlToolBarStub->GetWindowedStatus()) {
-      int h = gControlToolBarStub->GetHeight();
-
-      ToolBar *tb = new ControlToolBar(this, 0, wxPoint(10, top),
-                                       wxSize(width - 10 - sbarSpaceWidth, h));
-      mToolBarArray.Add((ToolBar *) tb);
-
-//      top += h + 1;
-//      height -= h + 1;
-//      mTotalToolBarHeight += h;
-   }
-
-   if (gMeterToolBarStub) {
-      if (gMeterToolBarStub->GetLoadedStatus()
-          && !gMeterToolBarStub->GetWindowedStatus()) {
-         int h = gMeterToolBarStub->GetHeight();
-         ToolBar *etb = new MeterToolBar(this, 0, wxPoint(10, top),
-                                        wxSize(width - 10 - sbarSpaceWidth, h));
-         mToolBarArray.Add((ToolBar *) etb);
-
-//         top += h + 1;
-//         height -= h + 1;
-//         mTotalToolBarHeight += h;
-      }
-   }
-
-   if (gMixerToolBarStub) {
-      if (gMixerToolBarStub->GetLoadedStatus()
-          && !gMixerToolBarStub->GetWindowedStatus()) {
-         int h = gMixerToolBarStub->GetHeight();
-         ToolBar *etb = new MixerToolBar(this, 0, wxPoint(10, top),
-                                         wxSize(width - 10 - sbarSpaceWidth, h));
-         mToolBarArray.Add((ToolBar *) etb);
-
-//         top += h + 1;
-//         height -= h + 1;
-//         mTotalToolBarHeight += h;
-      }
-   }
-
-
-   if (gTranscriptionToolBarStub) {
-      if (gTranscriptionToolBarStub->GetLoadedStatus()
-          && !gTranscriptionToolBarStub->GetWindowedStatus()) {
-         int h = gTranscriptionToolBarStub->GetHeight();
-         ToolBar *ttb = new TranscriptionToolBar(this, 0, wxPoint(10, top),
-                                                 wxSize(width - 10 - sbarSpaceWidth, h));
-         mToolBarArray.Add((ToolBar *) ttb);
-
-//         top += h + 1;
-//         height -= h + 1;
-//         mTotalToolBarHeight += h;
-      }
-   }
-
-   if (gEditToolBarStub) {
-      if (gEditToolBarStub->GetLoadedStatus()
-          && !gEditToolBarStub->GetWindowedStatus()) {
-         int h = gEditToolBarStub->GetHeight();
-         ToolBar *etb = new EditToolBar(this, 0, wxPoint(10, top),
-                                        wxSize(width - 10 - sbarSpaceWidth, h));
-         mToolBarArray.Add((ToolBar *) etb);
-
-//         top += h + 1;
-//         height -= h + 1;
-//         mTotalToolBarHeight += h;
-      }
-   }
-#endif
-
    LayoutToolBars();
    height -= mTotalToolBarHeight;
    top     = mTotalToolBarHeight;
@@ -519,11 +452,33 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    // Create the TrackPanel and the scrollbars
    //
 
-   mTrackPanel = new TrackPanel(this, TrackPanelID,
-                                wxPoint(left, top),
-                                wxSize(width - sbarSpaceWidth,
-                                       height - sbarSpaceWidth), mTracks,
-                                &mViewInfo, this);
+   wxWindow    * pPage;
+
+#ifdef EXPERIMENTAL_NOTEBOOK
+   // We are using a notebook (tabbed panel), so we create the notebook and add pages.
+   GuiFactory Factory;
+   wxNotebook  * pNotebook;
+   mMainPanel = Factory.AddPanel( 
+      this, wxPoint( left, top ), wxSize( width, height ) );
+   pNotebook  = Factory.AddNotebook( mMainPanel );
+   pPage = Factory.AddPage( pNotebook, _("Main Mix"));
+#else
+   // Not using a notebook, so we place the track panel inside another panel, 
+   // this keeps the notebook code and normal code consistant and also
+   // paves the way for adding additional windows inside the track panel.
+   mMainPanel = new wxPanel(this, -1, 
+      wxPoint( left, top ), 
+      wxSize( width, height ),
+      wxTAB_TRAVERSAL | wxCLIP_CHILDREN | wxNO_BORDER);
+   mMainPanel->SetSizer( new wxBoxSizer(wxVERTICAL) );
+   pPage = mMainPanel;
+#endif
+
+   mTrackPanel = new TrackPanel(pPage, TrackPanelID,
+        wxPoint(0, 0),
+        wxSize(width - sbarSpaceWidth,
+               height - sbarSpaceWidth), mTracks,
+        &mViewInfo, this);
 
    int hoffset = mTrackPanel->GetLeftOffset() - 1;
    int voffset = mTrackPanel->GetRulerHeight();
@@ -537,18 +492,34 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 #endif
 
    mHsbar =
-       new wxScrollBar(this, HSBarID,
-                       wxPoint(hoffset, top + height - sbarSpaceWidth),
+       new wxScrollBar(pPage, HSBarID,
+                       wxPoint(hoffset, height - sbarSpaceWidth),
                        wxSize(width - hoffset - sbarSpaceWidth +
                               sbarExtraLen, sbarControlWidth),
                        wxSB_HORIZONTAL);
-
    mVsbar =
-       new wxScrollBar(this, VSBarID,
-                       wxPoint(width - sbarSpaceWidth, top + voffset),
+       new wxScrollBar(pPage, VSBarID,
+                       wxPoint(width - sbarSpaceWidth, voffset),
                        wxSize(sbarControlWidth,
                               height - sbarSpaceWidth - voffset +
                               sbarExtraLen), wxSB_VERTICAL);
+
+#ifdef EXPERIMENTAL_NOTEBOOK
+   AddPages(this, Factory, pNotebook);
+#endif   
+
+   mMainPanel->Layout();
+
+   wxASSERT( mTrackPanel->GetProject()==this);
+
+   // MM: Give track panel the focus to ensure keyboard commands work
+   mTrackPanel->SetFocus();
+
+#if defined __WXMAC__ 
+   width++;
+   height++;
+#endif
+
 
    InitialState();
    FixScrollbars();
@@ -693,15 +664,14 @@ AudacityProject::~AudacityProject()
          #endif
       }
    }
+#ifdef EXPERIMENTAL_VOCAL_STUDIO
+   ButtonWindow::ClearStripesAndButtons();
+#endif
 }
 
 void AudacityProject::UpdatePrefs()
 {
    mTrackPanel->UpdatePrefs();
-#if 0
-   ControlToolBar *controltoolbar = (ControlToolBar *)mToolBarArray[0];
-   controltoolbar->UpdatePrefs();
-#endif
    mStatus->UpdateRates();
 }
 
@@ -994,17 +964,33 @@ void AudacityProject::HandleResize()
    mStatus->SetSize(0, top + height - sh, width, sh);
    height -= sh;
 
-   mTrackPanel->SetSize(left, top,
-                        width - sbarSpaceWidth,
-                        height - sbarSpaceWidth);
+   mMainPanel->SetSize( left,top, width,height);
+   mMainPanel->Layout();
+
+#ifdef EXPERIMENTAL_NOTEBOOK
+   // TODO: Remove horrible constants to adjust sizing.
+   // We OUGHT to be able to query the notebook for the
+   // size of its client area
+   // mMainPanel->GetClientSize(&width, &height);
+   // but this doesn't seem to help us determine the border
+   // size.
+   const int xBorder=15;
+   const int yBorder=35;
+   width-=xBorder;
+   height-=yBorder;
+#endif
+
+   mTrackPanel->SetSize(
+      width - sbarSpaceWidth,
+      height - sbarSpaceWidth);
 
    int hoffset = mTrackPanel->GetLeftOffset() - 1;
    int voffset = mTrackPanel->GetRulerHeight();
 
-   mHsbar->SetSize(hoffset, top + height - sbarSpaceWidth,
+   mHsbar->SetSize(hoffset, height - sbarSpaceWidth,
                    width - hoffset - sbarSpaceWidth + sbarExtraLen,
                    sbarControlWidth);
-   mVsbar->SetSize(width - sbarSpaceWidth, top + voffset - sbarExtraLen,
+   mVsbar->SetSize(width - sbarSpaceWidth, voffset - sbarExtraLen,
                    sbarControlWidth,
                    height - sbarSpaceWidth - voffset +
                    2 * sbarExtraLen);
@@ -1036,8 +1022,6 @@ void AudacityProject::OnIconize(wxIconizeEvent &event)
 
    if( bToolBarIconizationChange )
    {
-//JKC: Commented out code will replace existing code.
-#if 0
       ToolBarStub * pStub;
       for(i=0;i<nToolBars;i++)
       {
@@ -1045,23 +1029,6 @@ void AudacityProject::OnIconize(wxIconizeEvent &event)
          if( pStub )
             pStub->Iconize( mIconized );
       }
-#endif
-      if (gControlToolBarStub) {
-         gControlToolBarStub->Iconize( mIconized );
-      }
-      if (gMixerToolBarStub) {
-         gMixerToolBarStub->Iconize( mIconized );
-      }
-      if (gEditToolBarStub) {
-         gEditToolBarStub->Iconize( mIconized );
-      }
-      if (gMeterToolBarStub) {
-         gMeterToolBarStub->Iconize( mIconized );
-      }
-      if ( gTranscriptionToolBarStub) {
-         gTranscriptionToolBarStub->Iconize( mIconized );
-      }
-
    }
 
    event.Skip();
@@ -1224,16 +1191,6 @@ void AudacityProject::DecorateToolBar( wxPaintDC & dc, int iToolBar )
    AColor::Bevel( dc, true, r );
    #endif
 
-#if 0
-   //JKC: Draw a beveled rectangle round the grab-bar.
-   AColor::Light(&dc, false);
-   dc.DrawLine( r.x, r.y, r.x+r.width, r.y);
-   dc.DrawLine( r.x, r.y, r.x,         r.y+r.height);
-   AColor::Dark(&dc, false);
-   dc.DrawLine( r.x+1,         r.y+r.height-1, r.x+r.width, r.y+r.height-1);
-   dc.DrawLine( r.x+r.width-2, r.y+1,          r.x+r.width-2, r.y+r.height);
-#endif
-
    // Draw little bumps to the left of the toolbar to
    // make it a "grab-bar".
 
@@ -1250,13 +1207,6 @@ void AudacityProject::DecorateToolBar( wxPaintDC & dc, int iToolBar )
    for (j = minbump + 1; j < maxbump + 1; j += 4)
       dc.DrawLine(r.x+3, toolbartop + j, r.x+6, toolbartop + j);
 
-#if 0
-   //Draw a black line to the right of the grab-bar
-   dc.SetPen(*wxBLACK_PEN);
-   dc.DrawLine(r.x+9, toolbartop, r.x+9, toolbarbottom);
-
-   dc.DrawLine(r.x, toolbarbottom, r.x+toolbarwidth+grabberWidth, toolbarbottom);
-#endif
 }
 
 void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
@@ -1506,13 +1456,6 @@ void AudacityProject::LoadToolBar(enum ToolBarType t, bool bCreateStubIfRqd)
    //First, go through ToolBarArray and determine the current 
    //combined height of all toolbars.
    int tbheight = 0;
-#if 0
-   //Code not needed, as positioning is determined by calling 
-   //a Layout function.
-   size_t len = mToolBarArray.GetCount();
-   for (size_t i = 0; i < len; i++)
-      tbheight += mToolBarArray[i]->GetHeight();
-#endif
 
    //Get the size of the current project window
    int width, height;
@@ -1551,51 +1494,6 @@ void AudacityProject::LoadToolBar(enum ToolBarType t, bool bCreateStubIfRqd)
    if( toolbar )
       mToolBarArray.Add(toolbar);
 
-#if 0
-   switch (t) {
-   case ControlToolBarID:
-      toolbar =
-          new ControlToolBar(this, -1, wxPoint(10, tbheight),
-                             wxSize(width - 10, h));
-      mCommandManager.Modify("FloatControlTB", _("Float Control Toolbar"));
-      mToolBarArray.Insert(toolbar, 0);
-      break;
-
-   case EditToolBarID:
-      toolbar =
-          new EditToolBar(this, -1, wxPoint(10, tbheight),
-                          wxSize(width - 10, h));
-      mToolBarArray.Add(toolbar);
-      break;
-
-   case MixerToolBarID:
-     toolbar =
-       new MixerToolBar(this, -1, wxPoint(10, tbheight),
-			wxSize(width - 10, h));
-     mToolBarArray.Add(toolbar);
-     break;
-     
-   case MeterToolBarID:
-     toolbar =
-       new MeterToolBar(this, -1, wxPoint(10, tbheight),
-			wxSize(width - 10, h));
-     mToolBarArray.Insert(toolbar, 
-        (mToolBarArray.GetCount() > 0 )?1:0);
-     break;
-
-   case TranscriptionToolBarID:
-     toolbar =
-       new TranscriptionToolBar(this, -1, wxPoint(10, tbheight),
-			wxSize(width - 10, h));
-     mToolBarArray.Add(toolbar);
-     break;
-     
-   case NoneID:
-   default:
-     toolbar = NULL;
-     break;
-   }
-#endif
 }
 
 
@@ -1610,32 +1508,9 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
       
       //Remove a toolbar if it is of the correct type.
       if (mToolBarArray[i]->GetType() == t) {
-         
          mTotalToolBarHeight -= mToolBarArray[i]->GetHeight();
          delete mToolBarArray[i];
          mToolBarArray.RemoveAt(i);
-         
-         //Now, do any changes specific to different toolbar types
-         switch (t) {
-         case ControlToolBarID:
-            //If the ControlToolBar is being unloaded from this project, you
-            //should change the menu entry of this project
-            mCommandManager.Modify("FloatControlTB", _("Dock Control Toolbar"));
-            break;
-            
-         case EditToolBarID:
-            break;
-            
-         case MixerToolBarID:
-            break;
-
-         case MeterToolBarID:
-            break;
-
-         case NoneID:
-         default:
-            break;
-         }
       }
    }
    HandleResize();
@@ -1753,33 +1628,15 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 
       mouse -= mToolBarHotspot;
 
-      switch (mDraggingToolBar) {
-      case ControlToolBarID:
-         gControlToolBarStub->ShowWindowedToolBar(&mouse);
-         gControlToolBarStub->UnloadAll();
-         break;
-      case EditToolBarID:
-         gEditToolBarStub->ShowWindowedToolBar(&mouse);
-         gEditToolBarStub->UnloadAll();
-         break;
-      case MixerToolBarID:
-         gMixerToolBarStub->ShowWindowedToolBar(&mouse);
-         gMixerToolBarStub->UnloadAll();
-         break;
-      case MeterToolBarID:
-         gMeterToolBarStub->ShowWindowedToolBar(&mouse);
-         gMeterToolBarStub->UnloadAll();
-         break;
-      case TranscriptionToolBarID:
-         gTranscriptionToolBarStub->ShowWindowedToolBar(&mouse);
-         gTranscriptionToolBarStub->UnloadAll();
-         break;
-
-      case NoneID:
-      default:
-         break;
+      ToolBarStub ** ppStub = ppToolBarStubOfToolBarType( mDraggingToolBar );
+      if( ppStub )
+      {
+         if( *ppStub )
+         {
+            (*ppStub)->ShowWindowedToolBar(&mouse);
+            (*ppStub)->UnloadAll();
+         }
       }
-
       mDraggingToolBar = NoneID;
       HandleResize();
    }
@@ -2516,16 +2373,16 @@ bool AudacityProject::SaveAs()
    mFileName = fName + ".aup";
    SetTitle(GetName());
 
-   bool sucess = Save(false, true);
+   bool success = Save(false, true);
 
-   if(sucess) {
+   if(success) {
       mRecentProjects->AddFileToHistory(mFileName);
       gPrefs->SetPath("/RecentProjects");
       mRecentProjects->Save(*gPrefs);
       gPrefs->SetPath("..");
    }
 
-   return(sucess);
+   return(success);
 }
 
 //
@@ -2750,6 +2607,22 @@ ControlToolBar *AudacityProject::GetControlToolBar()
 
    if (!tb && gControlToolBarStub)
       tb = gControlToolBarStub->GetToolBar();
+
+   // Extra tests that allow the control toolbar to 
+   // be other than at position 0.
+   if(!tb)
+   {
+      for(int i=1;i<mToolBarArray.GetCount();i++)
+      {
+         if ((mToolBarArray[i]->GetType()) == ControlToolBarID)
+         {
+            tb = mToolBarArray[i];
+            break;
+         }
+      }
+   }
+
+   wxASSERT( tb );
 
    return (ControlToolBar *) tb;
 }
