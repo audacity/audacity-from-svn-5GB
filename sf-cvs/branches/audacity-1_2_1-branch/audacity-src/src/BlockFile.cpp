@@ -48,7 +48,7 @@ SummaryInfo::SummaryInfo(sampleCount samples)
 ///
 /// @param samples  The number of samples this BlockFile contains.
 BlockFile::BlockFile(wxFileName fileName, sampleCount samples):
-   mLocked(false),
+   mLockCount(0),
    mRefCount(1),
    mFileName(fileName),
    mLen(samples),
@@ -58,7 +58,7 @@ BlockFile::BlockFile(wxFileName fileName, sampleCount samples):
 
 BlockFile::~BlockFile()
 {
-   if (!mLocked && mFileName.HasName())
+   if (!IsLocked() && mFileName.HasName())
       wxRemoveFile(FILENAME(mFileName.GetFullPath()));
 }
 
@@ -81,19 +81,19 @@ wxFileName BlockFile::GetFileName()
 /// refcount hits zero.
 void BlockFile::Lock()
 {
-   mLocked = true;
+   mLockCount++;
 }
 
 /// Marks this BlockFile as "unlocked."
 void BlockFile::Unlock()
 {
-   mLocked = false;
+   mLockCount--;
 }
 
 /// Returns true if the block is locked.
 bool BlockFile::IsLocked()
 {
-   return mLocked;
+   return mLockCount > 0;
 }
 
 /// Increases the reference count of this block by one.  Only
