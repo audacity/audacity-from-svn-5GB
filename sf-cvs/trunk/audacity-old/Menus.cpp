@@ -95,8 +95,11 @@ void AudacityProject::CreateMenuBar()
   mViewMenu->Append(ZoomFitID, "Fit in &Window\tCtrl+F");
   mViewMenu->AppendSeparator();
   mViewMenu->Append(PlotSpectrumID, "&Plot Spectrum\tCtrl+U");
+  
+#ifndef __WXMAC__
   mViewMenu->AppendSeparator();
   mViewMenu->Append(FloatPaletteID, "Float or Unfloat Palette");
+#endif
 
   mProjectMenu = new wxMenu();
   mProjectMenu->Append(ImportID, "&Import Audio...\tCtrl+I");
