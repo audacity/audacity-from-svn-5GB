@@ -87,7 +87,10 @@ VERSION = @VERSION@
 autogen = @autogen@
 subdirs = @subdirs@
 
-DIST_SUBDIRS = src examples doc man tests Win32 MacOS Octave
+#DIST_SUBDIRS = src examples doc man tests Win32 MacOS Octave
+#dmazzoni: removed "tests" directory...
+DIST_SUBDIRS = src examples doc man Win32 MacOS Octave
+
 SUBDIRS = @subdirs@
 EXTRA_DIST = reconf acinclude.m4 libsndfile.spec.in sndfile.pc.in 			check_libsndfile.py libsndfile_version_convert.py Make.bat
 
