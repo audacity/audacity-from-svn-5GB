@@ -1,5 +1,5 @@
 /*
- * $Id: pa_mac_core.c,v 1.6 2003-03-06 08:18:13 dmazzoni Exp $
+ * $Id: pa_mac_core.c,v 1.7 2003-03-16 08:32:19 dmazzoni Exp $
  * pa_mac_core.c
  * Implementation of PortAudio for Mac OS X Core Audio
  *
@@ -91,10 +91,8 @@
               Use kAudioDevicePropertyStreamFormatMatch to determine max channels.
  02.03.2003 - Phil Burk - always use AudioConverters so that we can adapt when format changes.
               Synchronize with device when format changes.
- 02.13.2003 - Phil Burk - scan for maxChannels because FormatMatch won't tell us.
- 03.05.2003 - Phil Burk and Dominic Mazzoni - interleave and deinterleave multiple
-              CoreAudio buffers. Needed for MOTU828 and some other N>2 channel devices.
-              See code related to "streamInterleavingBuffer".
+
+TODO:
 */
 
 #include <CoreServices/CoreServices.h>
@@ -152,9 +150,6 @@ typedef struct PaHostInOut_s
     AudioConverterRef  converter;
     void              *converterBuffer;
     int                numChannels;
-    /** Used for interleaving or de-interleaving multiple streams for devices like MOTU828. */
-    int                streamInterleavingBufferLen; /**< size in bytes */
-    Float32           *streamInterleavingBuffer; 
 } PaHostInOut;
 
 /**************************************************************
@@ -520,66 +515,6 @@ static int PaOSX_ScanDevices( Boolean isInput )
     return numAdded;
 }
 
-/*************************************************************************
-** Determine the maximum number of channels a device will support.
-** @return maxChannels or negative error.
-*/
-static int PaOSX_GetMaxChannels( AudioDeviceID devID, Boolean isInput )
-{
-    OSStatus         err;
-    UInt32           outSize;
-    AudioStreamBasicDescription formatDesc;
-    int              maxChannels;
-    int              numChannels;
-    int              channelOffset;
-    Boolean          gotMax;
-
-	// Scan to find highest matching format.
-    // Unfortunately some devices won't just return maxChannels for the match.
-    // For example, some 8 channel devices return 2 when given 256 as input.
-    gotMax = false;
-    maxChannels = 0;
-    channelOffset = 2;
-    while( !gotMax && (channelOffset <= 1024) )
-    {
-    
-        memset( &formatDesc, 0, sizeof(formatDesc));
-        numChannels = maxChannels + channelOffset;
-        DBUG(("PaOSX_GetMaxChannels: try numChannels = %d = %d + %d\n",
-            numChannels, maxChannels, channelOffset ));
-        formatDesc.mChannelsPerFrame = numChannels;
-        outSize = sizeof(formatDesc);
-#if 0
-        // This hack is for debugging the search algorithm.
-        err = 0;
-        if (numChannels > 22 ) formatDesc.mChannelsPerFrame = 2;
-#else
-        err = AudioDeviceGetProperty( devID, 0,
-            isInput, kAudioDevicePropertyStreamFormatMatch, &outSize, &formatDesc);
-#endif
-        if( (err != noErr) || (formatDesc.mChannelsPerFrame != numChannels) )
-        {
-            if( channelOffset == 2 )
-            {
-            // That's about as close as we can get.
-                gotMax = true;
-            }
-            else
-            {
-            // Slow down scan so we can fine tune maxChannels.
-                channelOffset = 2;
-            }
-        }
-        else
-        {
-            // This value worked so we have a new candidate for maxChannels.
-            maxChannels = numChannels;
-            // Scan geometrically to speed up search on big devices.
-        	channelOffset *= 2;
-        }
-    }
-    return maxChannels;
-}
 
 /*************************************************************************
 ** Try to fill in the device info for this device.
@@ -595,7 +530,6 @@ static int PaOSX_QueryDeviceInfo( PaHostDeviceInfo *hostDeviceInfo, int coreDevi
     AudioStreamBasicDescription formatDesc;
     AudioDeviceID    devID;
     PaDeviceInfo    *deviceInfo = &hostDeviceInfo->paInfo;
-    int              maxChannels;
 
     deviceInfo->structVersion = 1;
     deviceInfo->maxInputChannels = 0;
@@ -607,7 +541,7 @@ static int PaOSX_QueryDeviceInfo( PaHostDeviceInfo *hostDeviceInfo, int coreDevi
     devID = sCoreDeviceIDs[ coreDeviceIndex ];
     hostDeviceInfo->audioDeviceID = devID;
     DBUG(("PaOSX_QueryDeviceInfo: coreDeviceIndex = %d, devID = %d, isInput = %d\n",
-        coreDeviceIndex, (int) devID, isInput ));
+        coreDeviceIndex, devID, isInput ));
         
     // Get data format info from the device.
     outSize = sizeof(formatDesc);
@@ -615,8 +549,10 @@ static int PaOSX_QueryDeviceInfo( PaHostDeviceInfo *hostDeviceInfo, int coreDevi
     // This just may not be an appropriate device for input or output so leave quietly.
     if( (err != noErr)  || (formatDesc.mChannelsPerFrame == 0) ) goto error;
     
-    DBUG(("PaOSX_QueryDeviceInfo: mFormatID = 0x%x\n", (unsigned int) formatDesc.mFormatID));
-    DBUG(("PaOSX_QueryDeviceInfo: mFormatFlags = 0x%x\n",(unsigned int)  formatDesc.mFormatFlags));
+    DBUG(("PaOSX_QueryDeviceInfo: mFormatID = 0x%x\n", formatDesc.mFormatID));
+    DBUG(("PaOSX_QueryDeviceInfo: kAudioFormatLinearPCM = 0x%x\n", kAudioFormatLinearPCM));
+    DBUG(("PaOSX_QueryDeviceInfo: mFormatFlags = 0x%x\n", formatDesc.mFormatFlags));
+    DBUG(("PaOSX_QueryDeviceInfo: kLinearPCMFormatFlagIsFloat = 0x%x\n", kLinearPCMFormatFlagIsFloat));
 
     // Right now the Core Audio headers only define one formatID: LinearPCM
     // Apparently LinearPCM must be Float32 for now.
@@ -630,18 +566,29 @@ static int PaOSX_QueryDeviceInfo( PaHostDeviceInfo *hostDeviceInfo, int coreDevi
         PRINT(("PaOSX_QueryDeviceInfo: ERROR - not LinearPCM & Float32!!!\n"));
         return paSampleFormatNotSupported;
     }
-    
-    maxChannels = PaOSX_GetMaxChannels( devID, isInput );
-    if( maxChannels <= 0 ) goto error;
+
+    // Determine maximum number of channels supported.
+    memset( &formatDesc, 0, sizeof(formatDesc));
+    formatDesc.mChannelsPerFrame = 256; // FIXME - what about device with > 256 channels
+    outSize = sizeof(formatDesc);
+    err = AudioDeviceGetProperty( devID, 0,
+        isInput, kAudioDevicePropertyStreamFormatMatch, &outSize, &formatDesc);
+    if( err != noErr )
+    {
+        PRINT_ERR("PaOSX_QueryDeviceInfo: Could not get device format match", err);
+        sSavedHostError = err;
+        return paHostError;
+    }
+
     if( isInput )
     {
-        deviceInfo->maxInputChannels = maxChannels;
+        deviceInfo->maxInputChannels = formatDesc.mChannelsPerFrame;
     }
     else
     {
-        deviceInfo->maxOutputChannels = maxChannels;
+        deviceInfo->maxOutputChannels = formatDesc.mChannelsPerFrame;
     }
-    
+
     // Get the device name
     deviceInfo->name = PaOSX_DeviceNameFromID( devID, isInput );
     return 1;
@@ -762,121 +709,42 @@ static OSStatus PaOSX_OutputConverterCallbackProc (AudioConverterRef			inAudioCo
 }
 
 /**********************************************************************
-** dmazzoni:
-** Convert from CoreAudio's arrangement of multiple buffers, each
-** containing interleaved samples, to the more sensible arrangement
-** of a single interleaved buffer.
+** Fill any available output buffers and use any available
+** input buffers by calling user callback.
+** Will set past->past_StopSoon if user callback indicates that it is finished.
 */
-static char *PaOSX_CombineBuffers( internalPortAudioStream *past,
-                                   const AudioBufferList* inputData )
-{
-    PaHostSoundControl *pahsc = (PaHostSoundControl *) past->past_DeviceData;
-    int numBytes = 0;
-    int numChannels = 0;
-    int i, ch;
-    
-    /* Count bytes and channels across multiple buffers. */
-    for( i=0; i<inputData->mNumberBuffers; i++ )
-    {
-        numBytes += inputData->mBuffers[i].mDataByteSize;
-        numChannels += inputData->mBuffers[i].mNumberChannels;
-    }
-
-    /* Allocate temporary buffer if needed. */
-    if ( (pahsc->input.streamInterleavingBuffer != NULL) &&
-         (pahsc->input.streamInterleavingBufferLen < numBytes) )
-    {
-        PaHost_FreeFastMemory( pahsc->input.streamInterleavingBuffer, pahsc->input.streamInterleavingBufferLen );
-        pahsc->input.streamInterleavingBuffer = NULL;
-    }
-    if ( pahsc->input.streamInterleavingBuffer == NULL )
-    {
-        pahsc->input.streamInterleavingBufferLen = numBytes;
-        pahsc->input.streamInterleavingBuffer = (float *)PaHost_AllocateFastMemory( pahsc->input.streamInterleavingBufferLen );
-    }
-
-    /* Perform interleaving by writing to temp buffer. */
-    ch = 0;
-    for( i=0; i<inputData->mNumberBuffers; i++ )
-    {
-        int j;
-        int chans = inputData->mBuffers[i].mNumberChannels;
-        int len = inputData->mBuffers[i].mDataByteSize / (sizeof(float) * chans);
-        for( j=0; j<chans; j++ )
-        {
-            int k;
-            for( k=0; k<len; k++ )
-            {
-                pahsc->input.streamInterleavingBuffer[ k*numChannels + ch ] = 
-                   ((float *)inputData->mBuffers[i].mData)[ k*chans + j ];
-            }
-            ch++;
-        }
-    }
-
-    return (char *)pahsc->input.streamInterleavingBuffer;
-}
-
-/**********************************************************************
-** If data available, write it to the Ring Buffer so we can
-** pull it from the other side.
-*/
-static OSStatus PaOSX_WriteInputRingBuffer( internalPortAudioStream   *past,
-        const AudioBufferList*  inInputData  )
-{
-	int                 i;
-    long                writeRoom;
-    long                numBytes;
-    char               *inputNativeBufferfPtr = NULL;
-    PaHostSoundControl *pahsc = (PaHostSoundControl *) past->past_DeviceData;
-
-    /* Do we need to interleave the buffers first? */
-    if (inInputData->mNumberBuffers > 0) // FIXME > 1
-    {
-        inputNativeBufferfPtr = PaOSX_CombineBuffers( past, inInputData );
-    }
-    else
-    {
-        inputNativeBufferfPtr = (char*)inInputData->mBuffers[0].mData;
-    }
-
-    writeRoom = RingBuffer_GetWriteAvailable( &pahsc->ringBuffer );
-    numBytes = 0;
-    /* Sum byte count from multiple streams. */
-    for( i=0; i<inInputData->mNumberBuffers; i++ )
-    {
-        numBytes += inInputData->mBuffers[i].mDataByteSize;
-    }
-    
-    if( numBytes <= writeRoom )
-    {
-        RingBuffer_Write(  &pahsc->ringBuffer, inputNativeBufferfPtr, numBytes );
-        DBUGBACK(("PaOSX_WriteInputRingBuffer: wrote %ld bytes to FIFO.\n", inInputData->mBuffers[0].mDataByteSize));
-    } // FIXME else drop samples on floor, remember overflow???            
-
-    return noErr;
-}
-
-/**********************************************************************
-** Use any available input buffers by writing to RingBuffer.
-** Process input if PA_MODE_INPUT_ONLY.
-*/
-static OSStatus PaOSX_HandleInput( internalPortAudioStream   *past,
-        const AudioBufferList*  inInputData )
+static OSStatus PaOSX_HandleInputOutput( internalPortAudioStream   *past,
+        const AudioBufferList*  inInputData,
+        AudioBufferList*  outOutputData )
 {
     OSStatus            err = noErr;
+    char               *inputNativeBufferfPtr = NULL;
+    char               *outputNativeBufferfPtr = NULL;
     PaHostSoundControl *pahsc = (PaHostSoundControl *) past->past_DeviceData;
 
+    /* If we are using output, then we need an empty output buffer. */
+    if( outOutputData->mNumberBuffers > 0 )
+    {
+        outputNativeBufferfPtr =  (char*)outOutputData->mBuffers[0].mData;
+    }
+
     if(  inInputData->mNumberBuffers > 0  )
-    {    
+    {
+        inputNativeBufferfPtr = (char*)inInputData->mBuffers[0].mData;
+    
         /* Write to FIFO here if we are only using this callback. */
         if( (pahsc->mode == PA_MODE_INPUT_ONLY) || (pahsc->mode == PA_MODE_IO_ONE_DEVICE) )
         {
-            err = PaOSX_WriteInputRingBuffer( past, inInputData  );
-            if( err != noErr ) goto error;
+            long writeRoom = RingBuffer_GetWriteAvailable( &pahsc->ringBuffer );
+            long numBytes = inInputData->mBuffers[0].mDataByteSize;
+            if( numBytes <= writeRoom )
+            {
+                RingBuffer_Write(  &pahsc->ringBuffer, inputNativeBufferfPtr, numBytes );
+                DBUGBACK(("PaOSX_HandleInputOutput: wrote %ld bytes to FIFO.\n", inInputData->mBuffers[0].mDataByteSize));
+            } // FIXME else drop samples on floor, remember overflow???            
         }
     }
-    
+
     if( pahsc->mode == PA_MODE_INPUT_ONLY )
     {
         /* Generate user buffers as long as we have a half full input FIFO. */
@@ -888,95 +756,19 @@ static OSStatus PaOSX_HandleInput( internalPortAudioStream   *past,
             if( err != noErr ) goto error;
         }
     }
-        
-error:
-    return err;
-}
-
-/**********************************************************************
-** Fill any available output buffers.
-*/
-static OSStatus PaOSX_HandleOutput( internalPortAudioStream   *past,
-            AudioBufferList*  outOutputData )
-{
-    OSStatus            err = noErr;
-    void               *outputNativeBufferfPtr = NULL;
-    PaHostSoundControl *pahsc = (PaHostSoundControl *) past->past_DeviceData;
-    UInt32              numBytes = 0;
-    int                 numChannels = 0;
-    Boolean             deinterleavingNeeded = (outOutputData->mNumberBuffers > 1);
-    
-    if( pahsc->mode != PA_MODE_INPUT_ONLY )
+    else
     {
-        /* If we are using output, then we need an empty output buffer. */
-        if( outOutputData->mNumberBuffers > 0 )
+        UInt32 size = outOutputData->mBuffers[0].mDataByteSize;
+        err = AudioConverterFillBuffer(
+            pahsc->output.converter,
+            PaOSX_OutputConverterCallbackProc,
+            past,
+            &size,
+            outputNativeBufferfPtr);
+        if( err != noErr )
         {
-            /* If we have multiple CoreAudio buffers, then we will need to deinterleave after conversion. */
-            if( deinterleavingNeeded )
-            {
-                int i;
-                
-                for( i=0; i<outOutputData->mNumberBuffers; i++ )
-                {
-                    numBytes += outOutputData->mBuffers[i].mDataByteSize;
-                    numChannels += outOutputData->mBuffers[i].mNumberChannels;
-                }
-                
-                /* Allocate temporary buffer if needed. */
-                if ( (pahsc->output.streamInterleavingBuffer != NULL) &&
-                     (pahsc->output.streamInterleavingBufferLen < numBytes) )
-                {
-                    PaHost_FreeFastMemory( pahsc->output.streamInterleavingBuffer, pahsc->output.streamInterleavingBufferLen );
-                    pahsc->output.streamInterleavingBuffer = NULL;
-                }
-                if ( pahsc->output.streamInterleavingBuffer == NULL )
-                {
-                    pahsc->output.streamInterleavingBufferLen = numBytes;
-                    pahsc->output.streamInterleavingBuffer = (float *)PaHost_AllocateFastMemory( pahsc->output.streamInterleavingBufferLen );
-                }
-
-                outputNativeBufferfPtr =  (void*)pahsc->output.streamInterleavingBuffer;
-            }
-            else
-            {
-                numBytes = outOutputData->mBuffers[0].mDataByteSize;
-                outputNativeBufferfPtr =  (void*)outOutputData->mBuffers[0].mData;
-            }
-    
-            /* Pull code from PA user through converter. */
-            err = AudioConverterFillBuffer(
-                pahsc->output.converter,
-                PaOSX_OutputConverterCallbackProc,
-                past,
-                &numBytes,
-                outputNativeBufferfPtr);
-            if( err != noErr )
-            {
-                PRINT_ERR("PaOSX_HandleOutput: AudioConverterFillBuffer failed", err);
-                goto error;
-            }
-            
-            /* Deinterleave data from PortAudio and write to multiple CoreAudio buffers. */
-            if( deinterleavingNeeded )
-            {
-                int i, ch = 0;
-                for( i=0; i<outOutputData->mNumberBuffers; i++ )
-                {
-                    int chans = outOutputData->mBuffers[i].mNumberChannels;
-                    int j;            
-                    int len = outOutputData->mBuffers[i].mDataByteSize / (sizeof(float) * chans);
-                    for( j=0; j<chans; j++ )
-                    {
-                        int k;
-                        for( k=0; k<len; k++ )
-                        {
-                            ((float *)outOutputData->mBuffers[i].mData)[ k*chans + j ] =
-                                pahsc->output.streamInterleavingBuffer[ k*numChannels + ch ];
-                        }
-                        ch++;
-                    }
-                }
-            }
+            PRINT_ERR("PaOSX_HandleInputOutput: AudioConverterFillBuffer failed", err);
+            goto error;
         }
     }
     
@@ -995,7 +787,6 @@ static OSStatus PaOSX_CoreAudioInputCallback (AudioDeviceID  inDevice, const Aud
                     AudioBufferList*  outOutputData, const AudioTimeStamp* inOutputTime,
                     void* contextPtr)
 {
-    OSStatus      err = noErr;
     internalPortAudioStream *past = (internalPortAudioStream *) contextPtr;
     PaHostSoundControl *pahsc;
     pahsc = (PaHostSoundControl *) past->past_DeviceData;
@@ -1003,11 +794,19 @@ static OSStatus PaOSX_CoreAudioInputCallback (AudioDeviceID  inDevice, const Aud
     /* If there is a FIFO for input then write to it. */
     if( pahsc->ringBufferData != NULL )
     {
-        err = PaOSX_WriteInputRingBuffer( past, inInputData  );
-        if( err != noErr ) goto error;
+        long writeRoom = RingBuffer_GetWriteAvailable( &pahsc->ringBuffer );
+        long numBytes = inInputData->mBuffers[0].mDataByteSize;
+        if( numBytes <= writeRoom )
+        {
+            RingBuffer_Write(  &pahsc->ringBuffer, inInputData->mBuffers[0].mData, inInputData->mBuffers[0].mDataByteSize );
+        }
+        else
+        {
+            DBUGBACK(("PaOSX_CoreAudioInputCallback: FIFO too full to write!\n"));
+        }            
     }
-error:
-    return err;
+    
+    return noErr;
 }
 
 /******************************************************************
@@ -1057,20 +856,14 @@ static OSStatus PaOSX_CoreAudioIOCallback (AudioDeviceID  inDevice, const AudioT
         Pa_StartUsageCalculation( past );
         past->past_NumCallbacks += 1;
         
-        /* Process full input buffer. */
-        err = PaOSX_HandleInput( past, inInputData );
-        if( err != 0 ) goto error;
-        
-        /* Fill up empty output buffers. */
-        err = PaOSX_HandleOutput( past, outOutputData );
-        if( err != 0 ) goto error;
+        /* Process full input buffer and fill up empty output buffers. */
+        err = PaOSX_HandleInputOutput( past, inInputData, outOutputData );
         
         Pa_EndUsageCalculation( past );
     }
 
     if( err != 0 ) DBUG(("PaOSX_CoreAudioIOCallback: returns %ld.\n", err ));
-    
-error:
+
     return err;
 }
 
@@ -1170,6 +963,7 @@ static void PaOSX_FixVolumeScalars( AudioDeviceID devID, Boolean isInput,
         dataSize = sizeof( fdata32 );
         err = AudioDeviceGetProperty( devID, iChannel, isInput, 
             kAudioDevicePropertyVolumeScalar, &dataSize, &fdata32 );
+
         if( err == noErr )
         {
             DBUG(("kAudioDevicePropertyVolumeScalar for channel %d = %f\n", iChannel, fdata32));
@@ -1508,8 +1302,10 @@ static PaError PaOSX_OpenCommonDevice( internalPortAudioStream   *past,
     OSStatus         err = noErr;
     Float64          deviceRate;
 
+    /* dmazzoni: set threshold below zero so that it doesn't adjust
+       input levels - however, it will still unmute, which is nice */
     PaOSX_FixVolumeScalars( inOut->audioDeviceID, isInput,
-        inOut->numChannels, 0.1, 0.9 );
+        inOut->numChannels, -0.1, 0.9 );
 
     // The HW device format changes are asynchronous.
     // So we don't know when or if the PAOSX_DevicePropertyListener() will
@@ -1937,15 +1733,7 @@ PaError PaHost_CloseStream( internalPortAudioStream   *past )
     {
         verify_noerr(AudioConverterDispose (pahsc->input.converter));
     }
-	if ( pahsc->input.streamInterleavingBuffer != NULL )
-    {
-        PaHost_FreeFastMemory( pahsc->input.streamInterleavingBuffer, pahsc->input.streamInterleavingBufferLen );
-    }
-	if ( pahsc->output.streamInterleavingBuffer != NULL )
-    {
-        PaHost_FreeFastMemory( pahsc->output.streamInterleavingBuffer, pahsc->output.streamInterleavingBufferLen );
-    }
-
+    
     free( pahsc );
     past->past_DeviceData = NULL;
 
