@@ -9,32 +9,11 @@ BoxTop($screenshotsStr);
 ?>
 
 <center>
+<?php print "<a href=screenshots-win98.php$langQueryStr>"; ?><img src="images/screen/win98/thumb.png" border=0 width=299 height=255><br>Windows 98</a>
+</center>
 
-<p>
-<?php print "$clickEnlargeStr"; ?>
-</p>
-
-<p>
-<a href="images/audacity-1.2.0-pre1.png"
-><img src="images/audacity-1.2.0-pre1-small.png" border=0 width=273 height=226></a>
-<br>
-Audacity 1.2.0-pre1 / Linux
-</p>
-
-<p>
-<a href="images/audacity-1.0.png"
-><img src="images/audacity-1.0-small.png" border=0 width=304 height=224></a>
-<br>
-Audacity 1.0.0 / Linux.
-</p>
-
-<p>
-<a href="images/audacity-osx-screen.png"
-><img src="images/audacity-osx-small.png" border=0 width=314 height=224></a>
-<br>
-Audacity 1.0.0 / Mac OS X
-</p>
-
+<center>
+<?php print "<a href=screenshots-macosx.php$langQueryStr>"; ?><img src="images/screen/macosx/thumb.png" border=0 width=300 height=229><br>Mac OS X</a>
 </center>
 
 <?php
