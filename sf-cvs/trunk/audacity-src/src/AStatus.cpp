@@ -71,13 +71,13 @@ AStatus::AStatus(wxWindow * parent, wxWindowID id,
    GetSize(&mWidth, &mHeight);
 
    mRateMenu = new wxMenu();
-   mRateMenu->AppendCheckItem(OnRate8ID, "8000 Hz");
-   mRateMenu->AppendCheckItem(OnRate11ID, "11025 Hz");
-   mRateMenu->AppendCheckItem(OnRate16ID, "16000 Hz");
-   mRateMenu->AppendCheckItem(OnRate22ID, "22050 Hz");
-   mRateMenu->AppendCheckItem(OnRate44ID, "44100 Hz");
-   mRateMenu->AppendCheckItem(OnRate48ID, "48000 Hz");
-   mRateMenu->AppendCheckItem(OnRate96ID, "96000 Hz");
+   mRateMenu->AppendCheckItem(OnRate8ID, wxT("8000 Hz"));
+   mRateMenu->AppendCheckItem(OnRate11ID, wxT("11025 Hz"));
+   mRateMenu->AppendCheckItem(OnRate16ID, wxT("16000 Hz"));
+   mRateMenu->AppendCheckItem(OnRate22ID, wxT("22050 Hz"));
+   mRateMenu->AppendCheckItem(OnRate44ID, wxT("44100 Hz"));
+   mRateMenu->AppendCheckItem(OnRate48ID, wxT("48000 Hz"));
+   mRateMenu->AppendCheckItem(OnRate96ID, wxT("96000 Hz"));
    mRateMenu->AppendCheckItem(OnRateOtherID, _("Other..."));
 
    UpdateRates();
@@ -96,7 +96,7 @@ AStatus::~AStatus()
    delete mRateMenu;
 }
 
-void AStatus::SetField(const char *msg, int fieldNum)
+void AStatus::SetField(const wxChar *msg, int fieldNum)
 {
    if (fieldNum < 0 || fieldNum >= 10)
       return;
@@ -217,7 +217,7 @@ void AStatus::OnPaint(wxPaintEvent & event)
    wxString msg = mField[0];
    wxCoord textWidth, textHeight;
    memDC.GetTextExtent(msg, &textWidth, &textHeight);
-   while (msg != "" && textWidth > msgField.width) {
+   while (msg != wxT("") && textWidth > msgField.width) {
       msg = msg.Left(msg.Length() - 1);
       memDC.GetTextExtent(msg, &textWidth, &textHeight);
    }
@@ -235,7 +235,7 @@ void AStatus::OnPaint(wxPaintEvent & event)
    memDC.DrawText(label, 3, mRateField.y + 2);
 
    AColor::Bevel(memDC, true, mRateField);
-   memDC.DrawText(wxString::Format("%d", int (mRate + 0.5)),
+   memDC.DrawText(wxString::Format(wxT("%d"), int (mRate + 0.5)),
                   mRateField.x + 3, mRateField.y + 2);
 
    // Display cursor and selection position.
@@ -265,7 +265,7 @@ void AStatus::OnPaint(wxPaintEvent & event)
 
    msg = mField[1];
    memDC.GetTextExtent(msg, &textWidth, &textHeight);
-   while (msg != "" && textWidth > cursorField.width) {
+   while (msg != wxT("") && textWidth > cursorField.width) {
       msg = msg.Left(msg.Length() - 1);
       memDC.GetTextExtent(msg, &textWidth, &textHeight);
    }
@@ -346,13 +346,13 @@ void AStatus::OnRate96(wxCommandEvent & WXUNUSED(event))
 void AStatus::OnRateOther(wxCommandEvent & WXUNUSED(event))
 {
    wxString defaultStr;
-   defaultStr.Printf("%d", (int) (mRate + 0.5));
+   defaultStr.Printf(wxT("%d"), (int) (mRate + 0.5));
    wxString rateStr =
        wxGetTextFromUser(_("Enter a rate in Hz (samples per second):"),
                          _("Set Rate"),
                          defaultStr);
 
-   if (rateStr != "") {
+   if (rateStr != wxT("")) {
       double theRate;
       if (rateStr.ToDouble(&theRate) && theRate >= 1 && theRate <= 100000) {
          mRate = theRate;

@@ -40,7 +40,7 @@ void InitHelp(wxWindow * parent)
       wxString defaultLoc;
       wxArrayString helpFiles;
 
-      wxGetApp().FindFilesInPathList("audacity-1.2-help.htb",
+      wxGetApp().FindFilesInPathList(wxT("audacity-1.2-help.htb"),
                                      wxGetApp().audacityPathList,
                                      wxFILE,
                                      helpFiles);
@@ -48,21 +48,21 @@ void InitHelp(wxWindow * parent)
       if (helpFiles.GetCount() > 0)
          defaultLoc = helpFiles[0];
       else
-         defaultLoc = INSTALL_PREFIX "/share/audacity/audacity-1.2-help.htb";
+         defaultLoc = wxT(INSTALL_PREFIX "/share/audacity/audacity-1.2-help.htb");
 
       wxString helpFilePath =
-          gPrefs->Read("/Help/HelpFilePath1.2", defaultLoc);
+          gPrefs->Read(wxT("/Help/HelpFilePath1.2"), defaultLoc);
 
       if (!::wxFileExists(FILENAME(helpFilePath))) {
          helpFilePath = defaultLoc;
       }
       if (!::wxFileExists(FILENAME(helpFilePath))) {
          helpFilePath = wxFileSelector(_("Where is audacity-1.2-help.htb?"), NULL,
-                                       "audacity-1.2-help.htb",    // Name
-                                       "",                     // Extension
+                                       wxT("audacity-1.2-help.htb"),    // Name
+                                       wxT(""),                     // Extension
                                        _("HTML Help Books (*.htb)|*.htb"),
                                        wxOPEN, parent);
-         if (helpFilePath == "")
+         if (helpFilePath == wxT(""))
             return;
       }
 
@@ -73,7 +73,7 @@ void InitHelp(wxWindow * parent)
          gHelp = NULL;
       }
 
-      gPrefs->Write("/Help/HelpFilePath1.2", helpFilePath);
+      gPrefs->Write(wxT("/Help/HelpFilePath1.2"), helpFilePath);
    }
 }
 
@@ -82,7 +82,7 @@ void ShowHelp(wxWindow * parent)
    InitHelp(parent);
 
    if (gHelp)
-      gHelp->Display("contents.htm");
+      gHelp->Display(wxT("contents.htm"));
 }
 
 void ShowHelpIndex(wxWindow * parent)
@@ -108,7 +108,7 @@ void SearchHelp(wxWindow * parent)
    if (gHelp) {
       wxString key = wxGetTextFromUser(_("Search for?"),
                                        _("Search help for keyword"),
-                                       "",
+                                       wxT(""),
                                        parent);
 
       if (!key.IsEmpty())

@@ -332,7 +332,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mSlideUpDownOnly = false;
    mLabelTrackStartXPos=-1;
 
-   gPrefs->Read("/GUI/AdjustSelectionEdges", &mAdjustSelectionEdges, true);
+   gPrefs->Read(wxT("/GUI/AdjustSelectionEdges"), &mAdjustSelectionEdges, true);
 
    mRedrawAfterStop = false;
    mIndicatorShowing = false;
@@ -357,13 +357,13 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    // Use AppendCheckItem so we can have ticks beside the items.
    // We would use AppendRadioItem but it only currently works on windows and GTK.
    mRateMenu = new wxMenu();
-   mRateMenu->AppendCheckItem(OnRate8ID, "8000 Hz");
-   mRateMenu->AppendCheckItem(OnRate11ID, "11025 Hz");
-   mRateMenu->AppendCheckItem(OnRate16ID, "16000 Hz");
-   mRateMenu->AppendCheckItem(OnRate22ID, "22050 Hz");
-   mRateMenu->AppendCheckItem(OnRate44ID, "44100 Hz");
-   mRateMenu->AppendCheckItem(OnRate48ID, "48000 Hz");
-   mRateMenu->AppendCheckItem(OnRate96ID, "96000 Hz");
+   mRateMenu->AppendCheckItem(OnRate8ID, wxT("8000 Hz"));
+   mRateMenu->AppendCheckItem(OnRate11ID, wxT("11025 Hz"));
+   mRateMenu->AppendCheckItem(OnRate16ID, wxT("16000 Hz"));
+   mRateMenu->AppendCheckItem(OnRate22ID, wxT("22050 Hz"));
+   mRateMenu->AppendCheckItem(OnRate44ID, wxT("44100 Hz"));
+   mRateMenu->AppendCheckItem(OnRate48ID, wxT("48000 Hz"));
+   mRateMenu->AppendCheckItem(OnRate96ID, wxT("96000 Hz"));
    mRateMenu->AppendCheckItem(OnRateOtherID, _("Other..."));
 
    mFormatMenu = new wxMenu();
@@ -505,11 +505,11 @@ TrackPanel::~TrackPanel()
 
 void TrackPanel::UpdatePrefs()
 {
-   gPrefs->Read("/GUI/AutoScroll", &mViewInfo->bUpdateTrackIndicator,
+   gPrefs->Read(wxT("/GUI/AutoScroll"), &mViewInfo->bUpdateTrackIndicator,
                 true);
-   gPrefs->Read("/GUI/UpdateSpectrogram", &mViewInfo->bUpdateSpectrogram,
+   gPrefs->Read(wxT("/GUI/UpdateSpectrogram"), &mViewInfo->bUpdateSpectrogram,
                 true);
-   gPrefs->Read("/GUI/AdjustSelectionEdges", &mAdjustSelectionEdges, true);
+   gPrefs->Read(wxT("/GUI/AdjustSelectionEdges"), &mAdjustSelectionEdges, true);
 }
 
 void TrackPanel::SetStop(bool bStopped)
@@ -986,7 +986,7 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    
    #if DEBUG_DRAW_TIMING
    gettimeofday(&t2, NULL);
-   printf("Total: %.3f\n", 
+   wxPrintf(wxT("Total: %.3f\n"), 
           (t2.tv_sec + t2.tv_usec*0.000001) - 
           (t1.tv_sec + t1.tv_usec*0.000001));
    #endif
@@ -1096,7 +1096,7 @@ bool TrackPanel::SetCursorByActivity( )
 
 /// When in the label, we can either vertical zoom or re-order tracks.
 void TrackPanel::SetCursorAndTipWhenInLabel( Track * t, 
-         wxMouseEvent &event, const char ** ppTip )
+         wxMouseEvent &event, const wxChar ** ppTip )
 {
    if (event.m_x >= GetVRulerOffset() &&
       t->GetKind() == Track::Wave) {
@@ -1114,7 +1114,7 @@ void TrackPanel::SetCursorAndTipWhenInLabel( Track * t,
 
 /// When in the resize area we can adjust size or relative size.
 void TrackPanel::SetCursorAndTipWhenInVResizeArea( Track * label, 
-         bool bLinked, const char ** ppTip )
+         bool bLinked, const wxChar ** ppTip )
 {
    // Check to see whether it is the first channel of a stereo track
    if (bLinked) {
@@ -1139,7 +1139,7 @@ void TrackPanel::SetCursorAndTipWhenInVResizeArea( Track * label,
 /// When in a label track, find out if we've hit anything that 
 /// would cause a cursor change.
 void TrackPanel::SetCursorAndTipWhenInLabelTrack( LabelTrack * pLT, 
-       wxMouseEvent & event, const char ** ppTip )
+       wxMouseEvent & event, const wxChar ** ppTip )
 {
    int edge=pLT->OverGlyph(event.m_x, event.m_y);
    if(edge !=0)
@@ -1173,7 +1173,7 @@ void TrackPanel::SetCursorAndTipWhenInLabelTrack( LabelTrack * pLT,
 // we hover over, most notably when hovering over the selction boundaries.
 // Determine and set the cursor and tip accordingly.
 void TrackPanel::SetCursorAndTipWhenSelectTool( Track * t, 
-        wxMouseEvent & event, wxRect &r, bool bMultiToolMode, const char ** ppTip )
+        wxMouseEvent & event, wxRect &r, bool bMultiToolMode, const wxChar ** ppTip )
 {
    SetCursor(*mSelectCursor);
 
@@ -1219,7 +1219,7 @@ void TrackPanel::SetCursorAndTipWhenSelectTool( Track * t,
 /// In this function we know what tool we are using,
 /// so set the cursor accordingly.
 void TrackPanel::SetCursorAndTipByTool( int tool, 
-         wxMouseEvent & event, const char ** /*ppTip*/ )
+         wxMouseEvent & event, const wxChar ** /*ppTip*/ )
 {
    bool unsafe = IsUnsafe();
 
@@ -1270,7 +1270,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 
    if (!t) {
       SetCursor(*mArrowCursor);
-      mListener->TP_DisplayStatusMessage("", 0);
+      mListener->TP_DisplayStatusMessage(wxT(""), 0);
       return;
    }
 
@@ -1281,7 +1281,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
    // Strategy here is to set the tip when we have determined and
    // set the correct cursor.  We stop doing tests for what we've
    // hit once the tip is not NULL.
-   const char *tip = NULL;
+   const wxChar *tip = NULL;
 
    if (label) {
       SetCursorAndTipWhenInLabel( label, event, &tip );
@@ -2118,7 +2118,7 @@ bool TrackPanel::IsSampleEditingPossible( wxMouseEvent & event )
    // If we aren't displaying the waveform, Display a message dialog
    if(((WaveTrack *)mDrawingTrack)->GetDisplay() != WaveTrack::WaveformDisplay)
    {
-      wxMessageBox(_("Draw currently only works with linear-view waveforms."), "Notice");
+      wxMessageBox(_("Draw currently only works with linear-view waveforms."), wxT("Notice"));
       return false;
    }
    
@@ -2130,7 +2130,7 @@ bool TrackPanel::IsSampleEditingPossible( wxMouseEvent & event )
    //If we aren't zoomed in far enough, show a message dialog.
    if(!showPoints)
    {
-      wxMessageBox(_("You are not zoomed in enough. Zoom in until you can see the individual samples."), "Notice");
+      wxMessageBox(_("You are not zoomed in enough. Zoom in until you can see the individual samples."), wxT("Notice"));
       return false;
    }
    return true;
@@ -2454,7 +2454,7 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
       mViewInfo->sel1 = 0.0;
 
       mListener->TP_RedrawScrollbars();
-      mListener->TP_DisplayStatusMessage("", 0);        //STM: Clear message if all tracks are removed
+      mListener->TP_DisplayStatusMessage(wxT(""), 0);        //STM: Clear message if all tracks are removed
       
       Refresh(false);
    }
@@ -3576,7 +3576,7 @@ bool TrackPanel::HitTestEnvelope(Track *track, wxRect &r, wxMouseEvent & event)
    wavetrack->GetDisplayBounds(&zoomMin, &zoomMax);
 
    // Get y position of envelope point.
-   float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
+   float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
    int yValue = GetWaveYPosNew( envValue,
       zoomMin, zoomMax,      
       r.height, dB, true, dBr, false ) + r.y;
@@ -3645,7 +3645,7 @@ bool TrackPanel::HitTestSamples(Track *track, wxRect &r, wxMouseEvent & event)
    float zoomMin, zoomMax;
 
    wavetrack->GetDisplayBounds(&zoomMin, &zoomMax);
-   float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
+   float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
    
    double envValue = 1.0;
    Envelope* env = wavetrack->GetEnvelopeAtX(event.GetX());
@@ -3884,7 +3884,7 @@ void TrackPanel::DrawEverythingElse(Track * t, wxDC * dc, wxRect & r,
 
 #if DEBUG_DRAW_TIMING
    wxRect rbox = region.GetBox();
-   printf("Update Region: %d %d %d %d\n",
+   wxPrintf(wxT("Update Region: %d %d %d %d\n"),
           rbox.x, rbox.y, rbox.width, rbox.height);
 #endif
    wxRegionContain contain = region.Contains(0, 0, GetLeftOffset(), height);
@@ -4281,7 +4281,7 @@ void TrackPanel::OnTrackClose(Track * t)
       mViewInfo->sel1 = 0.0;
       
       mListener->TP_RedrawScrollbars();
-      mListener->TP_DisplayStatusMessage("", 0);        //STM: Clear message if all tracks are removed
+      mListener->TP_DisplayStatusMessage(wxT(""), 0);        //STM: Clear message if all tracks are removed
    }
    Refresh(false);
 }
@@ -4374,7 +4374,7 @@ void TrackPanel::DrawShadow(Track * /* t */ , wxDC * dc, const wxRect r)
 ///  stereo and what sample rate it's using.
 wxString TrackPanel::TrackSubText(Track * t)
 {
-   wxString s = wxString::Format("%dHz",
+   wxString s = wxString::Format(wxT("%dHz"),
                                  (int) (((WaveTrack *) t)->GetRate() +
                                         0.5));
    if (t->GetLinked())
@@ -4397,7 +4397,7 @@ int channels[] = { Track::LeftChannel, Track::RightChannel,
    Track::MonoChannel
 };
 
-const char *channelmsgs[] = { _("'left' channel"), _("'right' channel"),
+const wxChar *channelmsgs[] = { _("'left' channel"), _("'right' channel"),
    _("'mono'")
 };
 
@@ -4454,7 +4454,8 @@ void TrackPanel::OnMergeStereo(wxCommandEvent &event)
 
 /// AS: Set the Display mode based on the menu choice in the Track Menu.
 ///  Note that gModes MUST BE IN THE SAME ORDER AS THE MENU CHOICES!!
-///  const char *gModes[] = { "waveform", "waveformDB", "spectrum", "pitch" };
+///  const wxChar *gModes[] = { wxT("waveform"), wxT("waveformDB"),
+///  wxT("spectrum"), wxT("pitch") };
 void TrackPanel::OnSetDisplay(wxCommandEvent & event)
 {
    int id = event.GetId();
@@ -4598,7 +4599,7 @@ void TrackPanel::OnRateOther(wxCommandEvent &event)
             && mPopupMenuTarget->GetKind() == Track::Wave);
 
    wxString defaultStr;
-   defaultStr.Printf("%d",
+   defaultStr.Printf(wxT("%d"),
                      (int) (((WaveTrack *) mPopupMenuTarget)->GetRate() +
                             0.5));
 
@@ -4612,7 +4613,7 @@ void TrackPanel::OnRateOther(wxCommandEvent &event)
                             _("Set Rate"), defaultStr);
 
       // AS: Exit if they type in nothing.
-      if ("" == rateStr)
+      if (wxT("") == rateStr)
          return;
 
       if (rateStr.ToDouble(&theRate) && theRate >= 1 && theRate <= 100000)
@@ -4705,7 +4706,7 @@ void TrackPanel::OnSetName(wxCommandEvent &event)
       wxString defaultStr = t->GetName();
       wxString newName = wxGetTextFromUser(_("Change track name to:"),
                                            _("Track Name"), defaultStr);
-      if (newName != "")
+      if (newName != wxT(""))
          t->SetName(newName);
       MakeParentPushState(wxString::Format(_("Renamed '%s' to '%s'"),
                                            defaultStr.c_str(),
@@ -4775,7 +4776,7 @@ void TrackPanel::OnSetFont(wxCommandEvent &event)
 
    wxString facename = fontEnumerator.facenames[i];
 
-   gPrefs->Write("/GUI/LabelFontFacename", facename);
+   gPrefs->Write(wxT("/GUI/LabelFontFacename"), facename);
 
    LabelTrack::ResetFont();
 

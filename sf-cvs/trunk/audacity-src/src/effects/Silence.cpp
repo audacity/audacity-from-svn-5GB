@@ -83,7 +83,7 @@ bool GenerateDialog::TransferDataToWindow()
    wxTextCtrl *text = (wxTextCtrl *) FindWindow(ID_LENGTHTEXT);
    if (text) {
       wxString str;
-      str.Printf("%.6lf", length);
+      str.Printf(wxT("%.6lf"), length);
       text->SetValue(str);
       text->SetSelection(-1, -1);
       text->SetFocus();
@@ -128,7 +128,7 @@ wxSizer *CreateGenerateDialog(const wxString &action, wxWindow * parent, bool ca
          wxDefaultPosition, wxDefaultSize, 0);
    item2->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   wxTextCtrl *item10 = new wxTextCtrl(parent, ID_LENGTHTEXT, "",
+   wxTextCtrl *item10 = new wxTextCtrl(parent, ID_LENGTHTEXT, wxT(""),
          wxDefaultPosition, wxSize(120, -1), 0);
    item2->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
 

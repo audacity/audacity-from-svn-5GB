@@ -39,7 +39,7 @@ EffectBassBoost::EffectBassBoost()
 wxString EffectBassBoost::GetEffectDescription() { 
    // Note: This is useful only after values have been set. 
    return wxString::Format(_("Applied effect: %s frequency = %.0f Hz, boost = %.0f dB"), 
-                           (const char *)(this->GetEffectName()), frequency, dB_boost); 
+                           this->GetEffectName().c_str(), frequency, dB_boost); 
 } 
 
 bool EffectBassBoost::NewTrackSimpleMono()
@@ -165,14 +165,14 @@ bool BassBoostDialog::TransferDataToWindow()
    wxTextCtrl *text = GetBoostText();
    if (text) {
       wxString str;
-      str.Printf("%d", (int) boost);
+      str.Printf(wxT("%d"), (int) boost);
       text->SetValue(str);
    }
 
    text = GetFreqText();
    if (text) {
       wxString str;
-      str.Printf("%d", (int) freq);
+      str.Printf(wxT("%d"), (int) freq);
       text->SetValue(str);
    }
 
@@ -237,7 +237,7 @@ void BassBoostDialog::OnFreqText(wxCommandEvent & event)
 void BassBoostDialog::OnBoostSlider(wxCommandEvent & event)
 {
    wxString str;
-   str.Printf("%d", GetBoostSlider()->GetValue());
+   str.Printf(wxT("%d"), GetBoostSlider()->GetValue());
    GetBoostText()->SetValue(str);
 }
 
@@ -246,7 +246,7 @@ void BassBoostDialog::OnFreqSlider(wxCommandEvent & event)
    wxString str;
    long freq = GetFreqSlider()->GetValue();
    freq = ((freq + 5) / 10) * 10;       // round to nearest multiple of 10
-   str.Printf("%ld", freq);
+   str.Printf(wxT("%ld"), freq);
    GetFreqText()->SetValue(str);
 }
 
@@ -293,7 +293,7 @@ wxSizer *BassBoostDialog::MakeBassBoostDialog(wxWindow * parent, bool call_fit,
    item2->Add(item3, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxTextCtrl *item4 =
-       new wxTextCtrl(parent, ID_FREQ_TEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_FREQ_TEXT, wxT(""), wxDefaultPosition,
                       wxSize(40, -1), 0);
    item2->Add(item4, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -309,7 +309,7 @@ wxSizer *BassBoostDialog::MakeBassBoostDialog(wxWindow * parent, bool call_fit,
    item2->Add(item6, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxTextCtrl *item7 =
-       new wxTextCtrl(parent, ID_BOOST_TEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_BOOST_TEXT, wxT(""), wxDefaultPosition,
                       wxSize(40, -1), 0);
    item2->Add(item7, 0, wxALIGN_CENTRE | wxALL, 5);
 

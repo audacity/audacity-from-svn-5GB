@@ -35,21 +35,21 @@ void LoadNyquistPlugins()
    unsigned int i;
 
    // Create one "interactive Nyquist"
-   EffectNyquist *effect = new EffectNyquist("");
+   EffectNyquist *effect = new EffectNyquist(wxT(""));
    Effect::RegisterEffect(effect);
 
    // Load .ny plug-ins
    for(i=0; i<audacityPathList.GetCount(); i++) {
       wxString prefix = audacityPathList[i] + wxFILE_SEP_PATH;
-      wxGetApp().AddUniquePathToPathList(prefix + "nyquist",
+      wxGetApp().AddUniquePathToPathList(prefix + wxT("nyquist"),
                                          pathList);
-      wxGetApp().AddUniquePathToPathList(prefix + "plugins",
+      wxGetApp().AddUniquePathToPathList(prefix + wxT("plugins"),
                                          pathList);
-      wxGetApp().AddUniquePathToPathList(prefix + "plug-ins",
+      wxGetApp().AddUniquePathToPathList(prefix + wxT("plug-ins"),
                                          pathList);
    }
 
-   wxGetApp().FindFilesInPathList("*.ny", pathList, wxFILE, files);
+   wxGetApp().FindFilesInPathList(wxT("*.ny"), pathList, wxFILE, files);
 
    for(i=0; i<files.GetCount(); i++)
       LoadNyquistEffect(files[i]);

@@ -122,7 +122,7 @@ wxString ExportCommon(AudacityProject *project,
    if (numSelected == 0 && selectionOnly) {
       wxMessageBox(_("No tracks are selected!\n"
                      "Choose Export... to export all tracks."));
-      return "";
+      return wxT("");
    }
    
    /* Detemine if exported file will be stereo or mono,
@@ -137,19 +137,19 @@ wxString ExportCommon(AudacityProject *project,
    
    if (numLeft > 1 || numRight > 1)
       if (stereo) {
-         ShowWarningDialog(project, "MixStereo",
+         ShowWarningDialog(project, wxT("MixStereo"),
                            _("Your tracks will be mixed down to two "
                              "stereo channels in the exported file."));
       }
       else {
-         ShowWarningDialog(project, "MixMono",
+         ShowWarningDialog(project, wxT("MixMono"),
                            _("Your tracks will be mixed down to a "
                              "single mono channel in the exported file."));
       }
 
    /* Prepare and display the filename selection dialog */
 
-   wxString path = gPrefs->Read("/DefaultExportPath",
+   wxString path = gPrefs->Read(wxT("/DefaultExportPath"),
                                 FROMFILENAME(::wxGetCwd()));
    wxString nameOnly;
    wxString extension;
@@ -158,21 +158,21 @@ wxString ExportCommon(AudacityProject *project,
    wxString maskString;
    wxString endOfPathSep;
 
-   if (defaultExtension.Left(1) == ".")
+   if (defaultExtension.Left(1) == wxT("."))
       defaultExtension =
          defaultExtension.Right(defaultExtension.Length()-1);
 
-   maskString.Printf("%s files (*.%s)|*.%s|All files (*.*)|*.*", (const char *)format,
-                     (const char *)defaultExtension, (const char *)defaultExtension);
+   maskString.Printf(wxT("%s files (*.%s)|*.%s|All files (*.*)|*.*"), format.c_str(),
+                     defaultExtension.c_str(), defaultExtension.c_str());
 
    bool fileOkay;
 
    do {
       fileOkay = true;
 
-      fName = defaultName + "." + defaultExtension;
+      fName = defaultName + wxT(".") + defaultExtension;
       fName = wxFileSelector(wxString::Format(_("Save %s File As:"),
-                                              (const char *) format),
+                                              format.c_str()),
                              path,
                              fName,       // default file name
                              defaultExtension,
@@ -182,11 +182,11 @@ wxString ExportCommon(AudacityProject *project,
       if (fName.Length() >= 256) {
          wxMessageBox
             (_("Sorry, pathnames longer than 256 characters not supported."));
-         return "";
+         return wxT("");
       }
       
-      if (fName == "")
-         return "";
+      if (fName == wxT(""))
+         return wxT("");
 
       ::wxSplitPath(fName, &path, &nameOnly, &extension);
 
@@ -195,14 +195,14 @@ wxString ExportCommon(AudacityProject *project,
       // as an extension with no name, like just plain ".wav".
       //
 
-      if ((nameOnly.Left(1)=="." && extension=="") ||
-          (nameOnly=="" && extension!="")) {
+      if ((nameOnly.Left(1)==wxT(".") && extension==wxT("")) ||
+          (nameOnly==wxT("") && extension!=wxT(""))) {
          wxString prompt =
             _("Are you sure you want to save the file as \"")+
-            ::wxFileNameFromPath(fName)+"\"?\n";
+            ::wxFileNameFromPath(fName)+wxT("\"?\n");
          
          int action = wxMessageBox(prompt,
-                                   "Warning",
+                                   wxT("Warning"),
                                    wxYES_NO | wxICON_EXCLAMATION,
                                    project);
          
@@ -219,7 +219,7 @@ wxString ExportCommon(AudacityProject *project,
       if (defaultExtension.Length() > 3)
          defaultExtension = defaultExtension.Left(3);
       
-      if (extension == "") {
+      if (extension == wxT("")) {
          #ifdef __WXMSW__
          // Windows prefers 3-char uppercase extensions
          extension = defaultExtension;
@@ -241,12 +241,12 @@ wxString ExportCommon(AudacityProject *project,
                        "will not open files with nonstandard extensions.\n"
                        "Are you sure you want to save the file "
                        "under this name?"),
-                       (const char *)format,
-                       (const char *)("\""+nameOnly+"."+extension+"\""),
-                       (const char *)("\"."+defaultExtension+"\""));
+                       format.c_str(),
+                       (wxT("\"")+nameOnly+wxT(".")+extension+wxT("\"")).c_str(),
+                       (wxT("\".")+defaultExtension+wxT("\"")).c_str());
 
          int action = wxMessageBox(prompt,
-                                   "Warning",
+                                   wxT("Warning"),
                                    wxYES_NO | wxICON_EXCLAMATION,
                                    project);
 
@@ -254,17 +254,17 @@ wxString ExportCommon(AudacityProject *project,
             fileOkay = true;
          else {
             fileOkay = false;
-            defaultName = nameOnly + "." + extension;
+            defaultName = nameOnly + wxT(".") + extension;
          }
       }
 
       if (path.Length() > 0 && path.Last() == wxFILE_SEP_PATH)
-         endOfPathSep = "";
+         endOfPathSep = wxT("");
       else
          endOfPathSep = wxFILE_SEP_PATH;
 
       fName = path + endOfPathSep + 
-         nameOnly + "." + extension;
+         nameOnly + wxT(".") + extension;
    } while(!fileOkay);
 
    /*
@@ -275,9 +275,9 @@ wxString ExportCommon(AudacityProject *project,
     */
 
    if (!project->GetDirManager()->EnsureSafeFilename(wxFileName(fName)))
-      return "";
+      return wxT("");
 
-   gPrefs->Write("/DefaultExportPath", path);
+   gPrefs->Write(wxT("/DefaultExportPath"), path);
 
    *isStereo = stereo;
 
@@ -291,7 +291,7 @@ wxString ExportCommon(AudacityProject *project,
    int suffix = 0;
    while(::wxFileExists(FILENAME(fName))) {
       fName = path + endOfPathSep + 
-         nameOnly + wxString::Format("%d", suffix) + "." + extension;
+         nameOnly + wxString::Format(wxT("%d"), suffix) + wxT(".") + extension;
       suffix++;
    }
 
@@ -312,13 +312,13 @@ bool Export(AudacityProject *project,
    format = ReadExportFormatPref();
                          
    formatStr = sf_header_name(format & SF_FORMAT_TYPEMASK);
-   extension = "." + sf_header_extension(format & SF_FORMAT_TYPEMASK);
+   extension = wxT(".") + sf_header_extension(format & SF_FORMAT_TYPEMASK);
 
    fName = ExportCommon(project, formatStr, extension,
                         selectionOnly, &t0, &t1, &stereo,
                         actualName);
 
-   if (fName == "")
+   if (fName == wxT(""))
       return false;
 
    success = ::ExportPCM(project, stereo, fName,
@@ -337,26 +337,26 @@ bool ExportLossy(AudacityProject *project,
    bool stereo;
    wxString actualName;
    bool     success = false;
-   wxString format = gPrefs->Read("/FileFormats/LossyExportFormat", "MP3");
+   wxString format = gPrefs->Read(wxT("/FileFormats/LossyExportFormat"), wxT("MP3"));
 
-   if( format == "MP3" ) {
-      fName = ExportCommon(project, "MP3", ".mp3",
+   if( format == wxT("MP3") ) {
+      fName = ExportCommon(project, wxT("MP3"), wxT(".mp3"),
                            selectionOnly, &t0, &t1, &stereo,
                            actualName);
 
-      if (fName == "")
+      if (fName == wxT(""))
          return false;
 
       success = ::ExportMP3(project, stereo, fName,
                             selectionOnly, t0, t1);
    }
-   else if( format == "OGG" ) {
+   else if( format == wxT("OGG") ) {
 #ifdef USE_LIBVORBIS
-      fName = ExportCommon(project, "OGG", ".ogg",
+      fName = ExportCommon(project, wxT("OGG"), wxT(".ogg"),
                            selectionOnly, &t0, &t1, &stereo,
                            actualName);
 
-      if (fName == "")
+      if (fName == wxT(""))
          return false;
 
       success = ::ExportOGG(project, stereo, fName,
@@ -365,14 +365,14 @@ bool ExportLossy(AudacityProject *project,
       wxMessageBox(_("Ogg Vorbis support is not included in this build of Audacity"));
 #endif
    }
-   else if( format == "External Program" ) {
+   else if( format == wxT("External Program") ) {
 #ifdef __WXGTK__
-      wxString extension = gPrefs->Read( "/FileFormats/ExternalProgramExportExtension", "" );
-      fName = ExportCommon(project, "External Program", "." + extension,
+      wxString extension = gPrefs->Read( wxT("/FileFormats/ExternalProgramExportExtension"), wxT("") );
+      fName = ExportCommon(project, wxT("External Program"), wxT(".") + extension,
                            selectionOnly, &t0, &t1, &stereo,
                            actualName);
 
-      if (fName == "")
+      if (fName == wxT(""))
          return false;
 
       success = ::ExportCL(project, stereo, fName,

@@ -348,8 +348,8 @@ bool WaveClip::GetSpectrogram(float *freq, sampleCount *where,
                                double t0, double pixelsPerSecond,
                                bool autocorrelation)
 {
-   int maxFreqPref = gPrefs->Read("/Spectrum/MaxFreq", 8000);
-   int windowSize = gPrefs->Read("/Spectrum/FFTSize", 256);
+   int maxFreqPref = gPrefs->Read(wxT("/Spectrum/MaxFreq"), 8000);
+   int windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
    
    if (mSpecCache &&
        mSpecCache->maxFreqPrefOld == maxFreqPref &&
@@ -531,7 +531,7 @@ void WaveClip::GetDisplayRect(wxRect* r)
 bool WaveClip::Append(samplePtr buffer, sampleFormat format,
                       sampleCount len, unsigned int stride /* = 1 */)
 {
-   //wxLogDebug("Append: len=%i\n", len);
+   //wxLogDebug(wxT("Append: len=%i\n"), len);
    
    sampleCount maxBlockSize = mSequence->GetMaxBlockSize();
    sampleCount blockSize = mSequence->GetIdealAppendLen();
@@ -592,13 +592,13 @@ bool WaveClip::AppendAlias(wxString fName, sampleCount start,
 
 bool WaveClip::Flush()
 {
-   //wxLogDebug("Flush!");
+   //wxLogDebug(wxT("Flush!"));
 
    bool success = true;
    sampleFormat seqFormat = mSequence->GetSampleFormat();
 
-   //wxLogDebug("mAppendBufferLen=%i\n", mAppendBufferLen);
-   //wxLogDebug("previous sample count %i\n", mSequence->GetNumSamples());
+   //wxLogDebug(wxT("mAppendBufferLen=%i\n"), mAppendBufferLen);
+   //wxLogDebug(wxT("previous sample count %i\n"), mSequence->GetNumSamples());
 
    if (mAppendBufferLen > 0) {
       success = mSequence->Append(mAppendBuffer, seqFormat, mAppendBufferLen);
@@ -609,23 +609,23 @@ bool WaveClip::Flush()
       }
    }
 
-   //wxLogDebug("now sample count %i\n", mSequence->GetNumSamples());
+   //wxLogDebug(wxT("now sample count %i\n"), mSequence->GetNumSamples());
 
    return success;
 }
 
-bool WaveClip::HandleXMLTag(const char *tag, const char **attrs)
+bool WaveClip::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
-   if (!strcmp(tag, "waveclip"))
+   if (!wxStrcmp(tag, wxT("waveclip")))
    {
       while(*attrs) {
-         const char *attr = *attrs++;
-         const char *value = *attrs++;
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
          
          if (!value)
             break;
          
-         if (!strcmp(attr, "offset"))
+         if (!wxStrcmp(attr, wxT("offset")))
             Internat::CompatibleToDouble(wxString(value), &mOffset);
          
       }
@@ -635,19 +635,19 @@ bool WaveClip::HandleXMLTag(const char *tag, const char **attrs)
    return false;
 }
 
-void WaveClip::HandleXMLEndTag(const char *tag)
+void WaveClip::HandleXMLEndTag(const wxChar *tag)
 {
-   if (!strcmp(tag, "waveclip"))
+   if (!wxStrcmp(tag, wxT("waveclip")))
       UpdateEnvelopeTrackLen();
 }
 
-XMLTagHandler *WaveClip::HandleXMLChild(const char *tag)
+XMLTagHandler *WaveClip::HandleXMLChild(const wxChar *tag)
 {
-   if (!strcmp(tag, "sequence"))
+   if (!wxStrcmp(tag, wxT("sequence")))
       return mSequence;
-   else if (!strcmp(tag, "envelope"))
+   else if (!wxStrcmp(tag, wxT("envelope")))
       return mEnvelope;
-   else if (!strcmp(tag, "waveclip"))
+   else if (!wxStrcmp(tag, wxT("waveclip")))
    {
       // Nested wave clips are cut lines
       WaveClip *newCutLine = new WaveClip(mSequence->GetDirManager(),
@@ -665,7 +665,7 @@ void WaveClip::WriteXML(int depth, FILE *fp)
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
    fprintf(fp, "<waveclip ");
-   fprintf(fp, "offset=\"%s\" ", Internat::ToString(mOffset, 8).c_str());
+   fprintf(fp, "offset=\"%s\" ", (const char *)Internat::ToString(mOffset, 8).mb_str());
    fprintf(fp, ">\n");
 
    mSequence->WriteXML(depth+1, fp);

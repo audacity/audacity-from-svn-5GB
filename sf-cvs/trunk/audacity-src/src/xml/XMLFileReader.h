@@ -18,9 +18,9 @@ class XMLFileReader {
    virtual ~XMLFileReader();
 
    bool Parse(XMLTagHandler *baseHandler,
-              const char *fname);
+              const wxString &fname);
 
-   const char *GetErrorStr();
+   wxString GetErrorStr();
 
    // Callback functions for expat
 
@@ -35,7 +35,7 @@ class XMLFileReader {
    int              mDepth;
    XMLTagHandler  **mHandler;
    XMLTagHandler   *mBaseHandler;
-   char            *mErrorStr;
+   wxString         mErrorStr;
 };
 
 

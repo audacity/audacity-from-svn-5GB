@@ -37,24 +37,24 @@ int SilentBlockFile::ReadData(samplePtr data, sampleFormat format,
 void SilentBlockFile::SaveXML(int depth, wxFFile &xmlFile)
 {
    for(int i = 0; i < depth; i++)
-      xmlFile.Write("\t");
-   xmlFile.Write("<silentblockfile ");
-   xmlFile.Write(wxString::Format("len='%d' ", mLen));
-   xmlFile.Write("/>\n");
+      xmlFile.Write(wxT("\t"));
+   xmlFile.Write(wxT("<silentblockfile "));
+   xmlFile.Write(wxString::Format(wxT("len='%d' "), mLen));
+   xmlFile.Write(wxT("/>\n"));
 }
 
 /// static
-BlockFile *SilentBlockFile::BuildFromXML(DirManager &dm, const char **attrs)
+BlockFile *SilentBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs)
 {
    sampleCount len = 0;
 
    while(*attrs)
    {
-       const char *attr =  *attrs++;
-       const char *value = *attrs++;
+       const wxChar *attr =  *attrs++;
+       const wxChar *value = *attrs++;
 
-       if( !strcmp(attr, "len") )
-          len = atoi(value);
+       if( !wxStrcmp(attr, wxT("len")) )
+          len = wxAtoi(value);
    }
 
    return new SilentBlockFile(len);

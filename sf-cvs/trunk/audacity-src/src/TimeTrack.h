@@ -44,8 +44,8 @@ class TimeTrack: public Track {
 
    // XMLTagHandler callback methods for loading and saving
 
-   virtual bool HandleXMLTag(const char *tag, const char **attrs);
-   virtual XMLTagHandler *HandleXMLChild(const char *tag);
+   virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
+   virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
    virtual void WriteXML(int depth, FILE *fp);
 
    // Lock and unlock the track: you must lock the track before

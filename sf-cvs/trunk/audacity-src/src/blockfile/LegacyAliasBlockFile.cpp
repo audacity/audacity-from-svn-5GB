@@ -16,6 +16,7 @@
 #include "LegacyAliasBlockFile.h"
 #include "LegacyBlockFile.h"
 #include "../FileFormats.h"
+#include "../Internat.h"
 
 LegacyAliasBlockFile::LegacyAliasBlockFile(wxFileName fileName,
                                            wxFileName aliasedFile,
@@ -63,23 +64,23 @@ BlockFile *LegacyAliasBlockFile::Copy(wxFileName newFileName)
 void LegacyAliasBlockFile::SaveXML(int depth, wxFFile &xmlFile)
 {
    for(int i = 0; i < depth; i++)
-      xmlFile.Write("\t");
-   xmlFile.Write("<legacyblockfile ");
-   xmlFile.Write("alias='1' ");
-   xmlFile.Write(wxString::Format("name='%s' ",
+      xmlFile.Write(wxT("\t"));
+   xmlFile.Write(wxT("<legacyblockfile "));
+   xmlFile.Write(wxT("alias='1' "));
+   xmlFile.Write(wxString::Format(wxT("name='%s' "),
                                   XMLTagHandler::XMLEsc(mFileName.GetFullName()).c_str()));
-   xmlFile.Write(wxString::Format("aliaspath='%s' ",
+   xmlFile.Write(wxString::Format(wxT("aliaspath='%s' "),
                                   XMLTagHandler::XMLEsc(mAliasedFileName.GetFullPath()).c_str()));
-   xmlFile.Write(wxString::Format("aliasstart='%d' ", mAliasStart));
-   xmlFile.Write(wxString::Format("aliaslen='%d' ", mLen));
-   xmlFile.Write(wxString::Format("aliaschannel='%d' ", mAliasChannel));
-   xmlFile.Write(wxString::Format("summarylen='%d' ", mSummaryInfo.totalSummaryBytes));
+   xmlFile.Write(wxString::Format(wxT("aliasstart='%d' "), mAliasStart));
+   xmlFile.Write(wxString::Format(wxT("aliaslen='%d' "), mLen));
+   xmlFile.Write(wxString::Format(wxT("aliaschannel='%d' "), mAliasChannel));
+   xmlFile.Write(wxString::Format(wxT("summarylen='%d' "), mSummaryInfo.totalSummaryBytes));
    if (mSummaryInfo.fields < 3)
-      xmlFile.Write(wxString::Format("norms='1' "));
-   xmlFile.Write("/>\n");
+      xmlFile.Write(wxString::Format(wxT("norms='1' ")));
+   xmlFile.Write(wxT("/>\n"));
 }
 
-BlockFile *LegacyAliasBlockFile::BuildFromXML(wxString projDir, const char **attrs)
+BlockFile *LegacyAliasBlockFile::BuildFromXML(wxString projDir, const wxChar **attrs)
 {
    wxFileName summaryFileName;
    wxFileName aliasFileName;
@@ -90,23 +91,23 @@ BlockFile *LegacyAliasBlockFile::BuildFromXML(wxString projDir, const char **att
 
    while(*attrs)
    {
-       const char *attr =  *attrs++;
-       const char *value = *attrs++;
+       const wxChar *attr =  *attrs++;
+       const wxChar *value = *attrs++;
 
-       if( !wxStricmp(attr, "name") )
-          summaryFileName.Assign(projDir, value, "");
-       if( !wxStricmp(attr, "aliaspath") )
+       if( !wxStricmp(attr, wxT("name")) )
+          summaryFileName.Assign(projDir, value, wxT(""));
+       if( !wxStricmp(attr, wxT("aliaspath")) )
           aliasFileName.Assign(value);
-       if( !wxStricmp(attr, "aliasstart") )
-          aliasStart = atoi(value);
-       if( !wxStricmp(attr, "aliaslen") )
-          aliasLen = atoi(value);
-       if( !wxStricmp(attr, "aliaschannel") )
-          aliasChannel = atoi(value);
-       if( !wxStricmp(attr, "summarylen") )
-          summaryLen = atoi(value);
-       if( !wxStricmp(attr, "norms") )
-          noRMS = atoi(value)?true:false;
+       if( !wxStricmp(attr, wxT("aliasstart")) )
+          aliasStart = wxAtoi(value);
+       if( !wxStricmp(attr, wxT("aliaslen")) )
+          aliasLen = wxAtoi(value);
+       if( !wxStricmp(attr, wxT("aliaschannel")) )
+          aliasChannel = wxAtoi(value);
+       if( !wxStricmp(attr, wxT("summarylen")) )
+          summaryLen = wxAtoi(value);
+       if( !wxStricmp(attr, wxT("norms")) )
+          noRMS = wxAtoi(value)?true:false;
    }
 
    return new LegacyAliasBlockFile(summaryFileName, aliasFileName,

@@ -79,9 +79,9 @@ void ShowWarningDialog(wxWindow *parent,
 {
    bool dontShow = false;
 
-   gPrefs->SetPath("/Warnings");
+   gPrefs->SetPath(wxT("/Warnings"));
    gPrefs->Read(internalDialogName, &dontShow, false);
-   gPrefs->SetPath("/");
+   gPrefs->SetPath(wxT("/"));
 
    if (dontShow)
       return;
@@ -91,9 +91,9 @@ void ShowWarningDialog(wxWindow *parent,
    dlog.ShowModal();
 
    if (dlog.dontShow) {
-      gPrefs->SetPath("/Warnings");
+      gPrefs->SetPath(wxT("/Warnings"));
       gPrefs->Write(internalDialogName, true);
-      gPrefs->SetPath("/");
+      gPrefs->SetPath(wxT("/"));
    }
 }
 

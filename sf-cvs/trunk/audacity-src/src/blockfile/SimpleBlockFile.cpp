@@ -47,15 +47,15 @@ typedef struct {
 SimpleBlockFile::SimpleBlockFile(wxFileName baseFileName,
                                  samplePtr sampleData, sampleCount sampleLen,
                                  sampleFormat format):
-   BlockFile(wxFileName(baseFileName.GetFullPath() + ".au"), sampleLen)
+   BlockFile(wxFileName(baseFileName.GetFullPath() + wxT(".au")), sampleLen)
 {
    // Now checked in the DirManager
    //wxASSERT( !wxFileExists(FILENAME(mFileName.GetFullPath())) );
 
    // Open and write the file
-   wxFFile file;
+   wxFFile file(fopen(FILENAME(mFileName.GetFullPath()).fn_str(), "wb"));
 
-   if( !file.Open((const wxChar *)FILENAME(mFileName.GetFullPath()), "wb") ){
+   if( !file.IsOpened() ){
       // Can't do anything else.
       return;
    }
@@ -148,12 +148,12 @@ SimpleBlockFile::~SimpleBlockFile()
 /// mSummaryinfo.totalSummaryBytes long.
 bool SimpleBlockFile::ReadSummary(void *data)
 {
-   wxFFile file;
+   wxFFile file(fopen(FILENAME(mFileName.GetFullPath()).fn_str(), "rb"));
 
    wxLogNull *silence=0;
    if(mSilentLog)silence= new wxLogNull();
    
-   if(!file.Open((const wxChar *)FILENAME(mFileName.GetFullPath()), "rb") ){
+   if(!file.IsOpened() ){
       
       memset(data,0,(size_t)mSummaryInfo.totalSummaryBytes);
 
@@ -193,7 +193,7 @@ int SimpleBlockFile::ReadData(samplePtr data, sampleFormat format,
    if(mSilentLog)silence= new wxLogNull();
    
    memset(&info, 0, sizeof(info));
-   SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()), SFM_READ, &info);
+   SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()).fn_str(), SFM_READ, &info);
 
    if (!sf){
       
@@ -251,22 +251,22 @@ int SimpleBlockFile::ReadData(samplePtr data, sampleFormat format,
 void SimpleBlockFile::SaveXML(int depth, wxFFile &xmlFile)
 {
    for(int i = 0; i < depth; i++)
-      xmlFile.Write("\t");
-   xmlFile.Write("<simpleblockfile ");
-   xmlFile.Write(wxString::Format("filename='%s' ",
+      xmlFile.Write(wxT("\t"));
+   xmlFile.Write(wxT("<simpleblockfile "));
+   xmlFile.Write(wxString::Format(wxT("filename='%s' "),
                                   XMLTagHandler::XMLEsc(mFileName.GetFullName()).c_str()));
-   xmlFile.Write(wxString::Format("len='%d' ", mLen));
-   xmlFile.Write(wxString::Format("min='%s' ",
+   xmlFile.Write(wxString::Format(wxT("len='%d' "), mLen));
+   xmlFile.Write(wxString::Format(wxT("min='%s' "),
             Internat::ToString(mMin).c_str()));
-   xmlFile.Write(wxString::Format("max='%s' ",
+   xmlFile.Write(wxString::Format(wxT("max='%s' "),
             Internat::ToString(mMax).c_str()));
-   xmlFile.Write(wxString::Format("rms='%s'",
+   xmlFile.Write(wxString::Format(wxT("rms='%s'"),
             Internat::ToString(mRMS).c_str()));
-   xmlFile.Write("/>\n");
+   xmlFile.Write(wxT("/>\n"));
 }
 
 /// static
-BlockFile *SimpleBlockFile::BuildFromXML(DirManager &dm, const char **attrs)
+BlockFile *SimpleBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs)
 {
    wxFileName fileName;
    float min=0, max=0, rms=0;
@@ -274,18 +274,18 @@ BlockFile *SimpleBlockFile::BuildFromXML(DirManager &dm, const char **attrs)
 
    while(*attrs)
    {
-       const char *attr =  *attrs++;
-       const char *value = *attrs++;
+       const wxChar *attr =  *attrs++;
+       const wxChar *value = *attrs++;
 
-       if( !strcmp(attr, "filename") )
+       if( !wxStrcmp(attr, wxT("filename")) )
 	  dm.AssignFile(fileName,value,FALSE);
-       if( !strcmp(attr, "len") )
-          len = atoi(value);
-       if( !strcmp(attr, "min") )
+       if( !wxStrcmp(attr, wxT("len")) )
+          len = wxAtoi(value);
+       if( !wxStrcmp(attr, wxT("min")) )
           min = Internat::CompatibleToDouble(value);
-       if( !strcmp(attr, "max") )
+       if( !wxStrcmp(attr, wxT("max")) )
           max = Internat::CompatibleToDouble(value);
-       if( !strcmp(attr, "rms") )
+       if( !wxStrcmp(attr, wxT("rms")) )
           rms = Internat::CompatibleToDouble(value);
    }
 
@@ -310,10 +310,10 @@ int SimpleBlockFile::GetSpaceUsage()
 }
 
 void SimpleBlockFile::Recover(){
-   wxFFile file;
+   wxFFile file(fopen(FILENAME(mFileName.GetFullPath()).fn_str(), "wb"));
    int i;
 
-   if( !file.Open((const wxChar *)FILENAME(mFileName.GetFullPath()), "wb") ){
+   if( !file.IsOpened() ){
       // Can't do anything else.
       return;
    }
@@ -330,10 +330,10 @@ void SimpleBlockFile::Recover(){
    file.Write(&header, sizeof(header));
 
    for(i=0;i<mSummaryInfo.totalSummaryBytes;i++)
-      file.Write("\0",1);
+      file.Write(wxT("\0"),1);
 
    for(i=0;i<mLen*2;i++)
-      file.Write("\0",1);
+      file.Write(wxT("\0"),1);
 
 }
 

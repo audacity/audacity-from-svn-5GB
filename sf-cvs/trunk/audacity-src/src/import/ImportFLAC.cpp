@@ -22,8 +22,8 @@ void GetFLACImportPlugin(ImportPluginList *importPluginList,
                         UnusableImportPluginList *unusableImportPluginList)
 {
    UnusableImportPlugin* flacIsUnsupported =
-      new UnusableImportPlugin("FLAC",
-                               wxStringList("flac", "flc", NULL));
+      new UnusableImportPlugin(wxT("FLAC"),
+                               wxStringList(wxT("flac"), wxT("flc"), NULL));
 
    unusableImportPluginList->Append(flacIsUnsupported);
 }
@@ -66,7 +66,7 @@ class FLACImportPlugin : public ImportPlugin
 {
  public:
    FLACImportPlugin():
-      ImportPlugin(wxStringList("flac",NULL))
+      ImportPlugin(wxStringList(wxT("flac"),NULL))
    {
    }
 
@@ -170,7 +170,7 @@ void GetFLACImportPlugin(ImportPluginList *importPluginList,
 
 wxString FLACImportPlugin::GetPluginFormatDescription()
 {
-    return "FLAC";
+    return wxT("FLAC");
 }
 
 
@@ -197,12 +197,12 @@ FLACImportFileHandle::FLACImportFileHandle(wxString name):
    mStreamInfoDone(false)
 {
    mFormat = (sampleFormat)
-      gPrefs->Read("/SamplingRate/DefaultProjectSampleFormat", floatSample);
+      gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
 }
 
 bool FLACImportFileHandle::Init()
 {
-   bool success = mFile->set_filename(mName);
+   bool success = mFile->set_filename(mName.fn_str());
    if (!success) {
       return false;
    }
@@ -228,7 +228,7 @@ void FLACImportFileHandle::SetProgressCallback(progress_callback_t progressCallb
 
 wxString FLACImportFileHandle::GetFileDescription()
 {
-   return "FLAC";
+   return wxT("FLAC");
 }
 
 

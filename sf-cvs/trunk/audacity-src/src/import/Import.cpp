@@ -80,9 +80,9 @@ int Importer::Import(wxString fName,
 {
    int numTracks = 0;
 
-   wxString extension = fName.AfterLast('.');
-   if (extension.IsSameAs("cda", false)) {
-      errorMessage = "\"" + fName + "\"" + 
+   wxString extension = fName.AfterLast(wxT('.'));
+   if (extension.IsSameAs(wxT("cda"), false)) {
+      errorMessage = wxT("\"") + fName + wxT("\"") + 
          _(" is an audio CD file. \n"
             "Audacity does not open this type of file.\n"
             "Try ripping it to a native audio format that Audacity can import.");
@@ -103,7 +103,7 @@ int Importer::Import(wxString fName,
             if( mInFile->Import(trackFactory, tracks, &numTracks) == true )
             {
                // LOF ("list-of-files") has different semantics
-               if (extension.IsSameAs("lof", false))
+               if (extension.IsSameAs(wxT("lof"), false))
                   return 1;
 
                if (numTracks > 0) {
@@ -161,9 +161,8 @@ int Importer::Import(wxString fName,
       {
          errorMessage.Printf(_("This version of Audacity was not "
                                "compiled with %s support."),
-                             (const char *)
                              unusableImportPlugin->
-                             GetPluginFormatDescription());
+                             GetPluginFormatDescription().c_str());
          return 0;
       }
       unusableImporterNode = unusableImporterNode->GetNext();

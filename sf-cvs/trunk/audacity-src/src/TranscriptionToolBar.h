@@ -82,7 +82,7 @@ class TranscriptionToolBar:public ToolBar {
  private:
    void InitializeTranscriptionToolBar();
    void AddButton(const char **fg, const char **disabled, const char **alpha,
-                  int id, const char *tooltip, const char *label);
+                  int id, const wxChar *tooltip, const wxChar *label);
    void MakeButtons();
    void GetSamples(WaveTrack *t, sampleCount *s0, sampleCount *slen);
    void SetButton(bool newstate, AButton* button); 

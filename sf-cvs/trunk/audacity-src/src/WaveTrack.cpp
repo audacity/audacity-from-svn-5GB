@@ -29,12 +29,12 @@ WaveTrack *TrackFactory::NewWaveTrack(sampleFormat format, double rate)
    if (format == (sampleFormat)0) 
    {
       format = (sampleFormat) gPrefs->
-         Read("/SamplingRate/DefaultProjectSampleFormat", int16Sample);
+         Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), int16Sample);
    }
    if (rate == 0) 
    {
       rate = (double) gPrefs->
-         Read("/SamplingRate/DefaultProjectSampleRate", AudioIO::GetOptimalSupportedSampleRate());
+         Read(wxT("/SamplingRate/DefaultProjectSampleRate"), AudioIO::GetOptimalSupportedSampleRate());
    }
 
    return new WaveTrack(mDirManager, format, rate);
@@ -46,12 +46,12 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
    if (format == (sampleFormat)0) 
    {
       format = (sampleFormat) gPrefs->
-         Read("/SamplingRate/DefaultProjectSampleFormat", int16Sample);
+         Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), int16Sample);
    }
    if (rate == 0) 
    {
       rate = (double) gPrefs->
-         Read("/SamplingRate/DefaultProjectSampleRate", AudioIO::GetOptimalSupportedSampleRate());
+         Read(wxT("/SamplingRate/DefaultProjectSampleRate"), AudioIO::GetOptimalSupportedSampleRate());
    }
 
    mDisplay = 0; // Move to GUIWaveTrack
@@ -598,40 +598,40 @@ bool WaveTrack::Flush()
    return GetLastOrCreateClip()->Flush();
 }
 
-bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
+bool WaveTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
-   if (!strcmp(tag, "wavetrack")) {
+   if (!wxStrcmp(tag, wxT("wavetrack"))) {
       while(*attrs) {
-         const char *attr = *attrs++;
-         const char *value = *attrs++;
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
          
          if (!value)
             break;
          
-         if (!strcmp(attr, "rate"))
-            mRate = atoi(value);
-         else if (!strcmp(attr, "offset")) {
+         if (!wxStrcmp(attr, wxT("rate")))
+            mRate = wxAtoi(value);
+         else if (!wxStrcmp(attr, wxT("offset"))) {
             double ofs = 0.0;
             Internat::CompatibleToDouble(wxString(value), &ofs);
             GetLastOrCreateClip()->SetOffset(ofs);
          }
-         else if (!strcmp(attr, "gain")) {
+         else if (!wxStrcmp(attr, wxT("gain"))) {
             double d;
             Internat::CompatibleToDouble(wxString(value), &d);
             mGain = d;
          }
-         else if (!strcmp(attr, "pan")) {
+         else if (!wxStrcmp(attr, wxT("pan"))) {
             double d;
             Internat::CompatibleToDouble(wxString(value), &d);
             if (d >= -1.0 && d <= 1.0)
                mPan = d;
          }
-         else if (!strcmp(attr, "name"))
+         else if (!wxStrcmp(attr, wxT("name")))
             mName = value;
-         else if (!strcmp(attr, "channel"))
-            mChannel = atoi(value);
-         else if (!strcmp(attr, "linked"))
-            mLinked = atoi(value) != 0;
+         else if (!wxStrcmp(attr, wxT("channel")))
+            mChannel = wxAtoi(value);
+         else if (!wxStrcmp(attr, wxT("linked")))
+            mLinked = wxAtoi(value) != 0;
          
       } // while
       return true;
@@ -640,27 +640,27 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
    return false;
 }
 
-void WaveTrack::HandleXMLEndTag(const char *tag)
+void WaveTrack::HandleXMLEndTag(const wxChar *tag)
 {
    // In case we opened a pre-multiclip project, we need to
    // simulate closing the waveclip tag.
-   GetLastOrCreateClip()->HandleXMLEndTag( "waveclip" );
+   GetLastOrCreateClip()->HandleXMLEndTag( wxT("waveclip") );
 }
 
-XMLTagHandler *WaveTrack::HandleXMLChild(const char *tag)
+XMLTagHandler *WaveTrack::HandleXMLChild(const wxChar *tag)
 {
    //
    // This is legacy code (1.2 and previous) and is not called for new projects!
    //
-   if (!strcmp(tag, "sequence"))
+   if (!wxStrcmp(tag, wxT("sequence")))
       return GetLastOrCreateClip()->GetSequence();
-   else if (!strcmp(tag, "envelope"))
+   else if (!wxStrcmp(tag, wxT("envelope")))
       return GetLastOrCreateClip()->GetEnvelope();
    
    //
    // This is for the new file format (post-1.2)
    //
-   if (!strcmp(tag, "waveclip"))
+   if (!wxStrcmp(tag, wxT("waveclip")))
       return CreateClip();
    else
       return NULL;
@@ -673,13 +673,13 @@ void WaveTrack::WriteXML(int depth, FILE *fp)
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
    fprintf(fp, "<wavetrack ");
-   fprintf(fp, "name=\"%s\" ", XMLEsc(mName).c_str());
+   fprintf(fp, "name=\"%s\" ", (const char *)XMLEsc(mName).mb_str());
    fprintf(fp, "channel=\"%d\" ", mChannel);
    fprintf(fp, "linked=\"%d\" ", mLinked);
-   fprintf(fp, "offset=\"%s\" ", Internat::ToString(mOffset, 8).c_str());
-   fprintf(fp, "rate=\"%s\" ", Internat::ToString(mRate).c_str());
-   fprintf(fp, "gain=\"%s\" ", Internat::ToString((double)mGain).c_str());
-   fprintf(fp, "pan=\"%s\" ", Internat::ToString((double)mPan).c_str());
+   fprintf(fp, "offset=\"%s\" ", (const char *)Internat::ToString(mOffset, 8).mb_str());
+   fprintf(fp, "rate=\"%s\" ", (const char *)Internat::ToString(mRate).mb_str());
+   fprintf(fp, "gain=\"%s\" ", (const char *)Internat::ToString((double)mGain).mb_str());
+   fprintf(fp, "pan=\"%s\" ", (const char *)Internat::ToString((double)mPan).mb_str());
    fprintf(fp, ">\n");
    
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())

@@ -29,8 +29,8 @@ void GetMP3ImportPlugin(ImportPluginList *importPluginList,
                         UnusableImportPluginList *unusableImportPluginList)
 {
    UnusableImportPlugin* mp3IsUnsupported =
-      new UnusableImportPlugin("MP3",
-                               wxStringList("mp3", "mp2", "mpg", "mpeg", NULL));
+      new UnusableImportPlugin(wxT("MP3"),
+                               wxStringList(wxT("mp3"), wxT("mp2"), wxT("mpg"), wxT("mpeg"), NULL));
 
    unusableImportPluginList->Append(mp3IsUnsupported);
 }
@@ -73,7 +73,7 @@ class MP3ImportPlugin : public ImportPlugin
 {
 public:
    MP3ImportPlugin():
-      ImportPlugin(wxStringList("mp3", "mp2", "mpg", "mpeg", NULL))
+      ImportPlugin(wxStringList(wxT("mp3"), wxT("mp2"), wxT("mpg"), wxT("mpeg"), NULL))
    {
    }
 
@@ -133,12 +133,12 @@ inline float scale(mad_fixed_t sample)
 
 wxString MP3ImportPlugin::GetPluginFormatDescription()
 {
-   return "MP3";
+   return wxT("MP3");
 }
 
 ImportFileHandle *MP3ImportPlugin::Open(wxString Filename)
 {
-   wxFile *file = new wxFile((const char *)FILENAME(Filename));
+   wxFile *file = new wxFile(FILENAME(Filename));
 
    if (!file->IsOpened()) {
       delete file;
@@ -161,7 +161,7 @@ void MP3ImportFileHandle::SetProgressCallback(progress_callback_t function,
 
 wxString MP3ImportFileHandle::GetFileDescription()
 {
-   return "MP3";
+   return wxT("MP3");
 }
 
 int MP3ImportFileHandle::GetFileUncompressedBytes()

@@ -56,7 +56,7 @@ class SimpleBlockFile : public BlockFile {
    virtual int GetSpaceUsage();
    virtual void Recover();
 
-   static BlockFile *BuildFromXML(DirManager &dm, const char **attrs);
+   static BlockFile *BuildFromXML(DirManager &dm, const wxChar **attrs);
 };
 
 #endif

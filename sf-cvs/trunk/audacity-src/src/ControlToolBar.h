@@ -106,7 +106,7 @@ class ControlToolBar:public ToolBar {
    bool GetDrawToolDown();
    bool GetMultiToolDown();
 
-   const char * GetMessageForTool( int ToolNumber );
+   const wxChar * GetMessageForTool( int ToolNumber );
 
    virtual void EnableDisableButtons();
 

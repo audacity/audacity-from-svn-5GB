@@ -24,11 +24,12 @@
 
 #include "../Effect.h"          // Audacity Effect base class
 #include "LadspaEffect.h"       // This class's header file
+#include "../Internat.h"
 
 LadspaEffect::LadspaEffect(const LADSPA_Descriptor *data)
 {
    mData = data;
-   pluginName = data->Name;
+   pluginName = LAT1CTOWX(data->Name);
 
    buffer = NULL;
    fInBuffer = NULL;
@@ -127,7 +128,7 @@ LadspaEffect::~LadspaEffect()
 wxString LadspaEffect::GetEffectName()
 {
    if (numInputControls > 0)
-      return pluginName + "...";
+      return pluginName + wxT("...");
    else
       return pluginName;
 }
@@ -135,7 +136,7 @@ wxString LadspaEffect::GetEffectName()
 wxString LadspaEffect::GetEffectAction()
 {
    return wxString::Format(_("Performing Effect: %s"), 
-                           (const char *) pluginName);
+                           pluginName.c_str());
 }
 
 bool LadspaEffect::Init()
@@ -390,7 +391,7 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
                                        const LADSPA_Descriptor *data,
                                        float *inputControls,
                                        int sampleRate)
-   :wxDialog(parent, -1, data->Name,
+   :wxDialog(parent, -1, LAT1CTOWX(data->Name),
              wxDefaultPosition, wxDefaultSize,
              wxDEFAULT_DIALOG_STYLE),
     effect(eff)
@@ -432,18 +433,18 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
 
    if (mData->Maker &&
        mData->Maker[0] && 
-       mData->Maker != wxString(_("None"))) {       
+       LAT1CTOWX(mData->Maker) != wxString(_("None"))) {       
       item = new wxStaticText(this, 0,
-                              wxString(_("Author: "))+mData->Maker);
+                              wxString(_("Author: "))+LAT1CTOWX(mData->Maker));
       mainSizer->Add(item, 0, wxALL, 5);
    }
    
    if (mData->Copyright &&
        mData->Copyright[0] && 
-       mData->Copyright != wxString(_("None"))) {
+       LAT1CTOWX(mData->Copyright) != wxString(_("None"))) {
       
       item = new wxStaticText(this, 0,
-                              mData->Copyright);
+                              LAT1CTOWX(mData->Copyright));
       mainSizer->Add(item, 0, wxALL, 5);
    }
 
@@ -457,15 +458,15 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
 
    for (p = 0; p < numParams; p++) {
 
-      item = new wxStaticText(this, 0, mData->PortNames[ports[p]]);
+      item = new wxStaticText(this, 0, wxString(mData->PortNames[ports[p]], wxConvISO8859_1));
       gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
       wxString fieldText;
       LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];
       if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
-         fieldText.Printf("%d", (int)(inputControls[ports[p]] + 0.5));
+         fieldText.Printf(wxT("%d"), (int)(inputControls[ports[p]] + 0.5));
       else
-         fieldText.Printf("%f", inputControls[ports[p]]);
+         fieldText.Printf(wxT("%f"), inputControls[ports[p]]);
       fields[p] = new wxTextCtrl(this, LADSPA_TEXTCTRL_ID, fieldText);
       gridSizer->Add(fields[p], 0, wxALL, 5);
 
@@ -562,9 +563,9 @@ void LadspaEffectDialog::HandleSlider()
 
       wxString str;
       if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
-         str.Printf("%d", (int)(val + 0.5));
+         str.Printf(wxT("%d"), (int)(val + 0.5));
       else
-         str.Printf("%f", val);
+         str.Printf(wxT("%f"), val);
 
       fields[p]->SetValue(str);
 

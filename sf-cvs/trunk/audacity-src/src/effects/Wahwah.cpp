@@ -44,7 +44,7 @@ EffectWahwah::EffectWahwah()
 wxString EffectWahwah::GetEffectDescription() { 
    // Note: This is useful only after values have been set. 
    return wxString::Format(_("Applied effect: %s frequency = %.1f Hz, start phase = %.0f deg, depth = %.0f%%, resonance = %.1f, frequency offset = %.0f%%"),
-                           (const char *)(this->GetEffectName()), 
+                           this->GetEffectName().c_str(), 
                            freq, 
                            (startphase * 180 / M_PI), 
                            (depth * 100), 
@@ -217,35 +217,35 @@ bool WahwahDialog::TransferDataToWindow()
    wxTextCtrl *text = GetFreqText();
    if (text) {
       wxString str;
-      str.Printf("%.1f", freq);
+      str.Printf(wxT("%.1f"), freq);
       text->SetValue(str);
    }
 
    text = GetFreqOffText();
    if (text) {
       wxString str;
-      str.Printf("%d", (int) freqoff);
+      str.Printf(wxT("%d"), (int) freqoff);
       text->SetValue(str);
    }
 
    text = GetPhaseText();
    if (text) {
       wxString str;
-      str.Printf("%d", (int) startphase);
+      str.Printf(wxT("%d"), (int) startphase);
       text->SetValue(str);
    }
 
    text = GetDepthText();
    if (text) {
       wxString str;
-      str.Printf("%d", (int) depth);
+      str.Printf(wxT("%d"), (int) depth);
       text->SetValue(str);
    }
 
    text = GetResonanceText();
    if (text) {
       wxString str;
-      str.Printf("%.1f", res);
+      str.Printf(wxT("%.1f"), res);
       text->SetValue(str);
    }
 
@@ -299,7 +299,7 @@ void WahwahDialog::OnResonanceSlider(wxCommandEvent & event)
 {
    wxString str;
    long res = GetResonanceSlider()->GetValue();
-   str.Printf("%.1f", res / 10.0);
+   str.Printf(wxT("%.1f"), res / 10.0);
    GetResonanceText()->SetValue(str);
 }
 
@@ -307,7 +307,7 @@ void WahwahDialog::OnDepthSlider(wxCommandEvent & event)
 {
    wxString str;
    long depth = GetDepthSlider()->GetValue();
-   str.Printf("%ld", depth);
+   str.Printf(wxT("%ld"), depth);
    GetDepthText()->SetValue(str);
 }
 
@@ -316,7 +316,7 @@ void WahwahDialog::OnPhaseSlider(wxCommandEvent & event)
    wxString str;
    long phase = GetPhaseSlider()->GetValue();
    phase = ((phase + 5) / 10) * 10;     // round to nearest multiple of 10
-   str.Printf("%ld", phase);
+   str.Printf(wxT("%ld"), phase);
    GetPhaseText()->SetValue(str);
 }
 
@@ -324,7 +324,7 @@ void WahwahDialog::OnFreqSlider(wxCommandEvent & event)
 {
    wxString str;
    long freql = GetFreqSlider()->GetValue();
-   str.Printf("%.1f", freql / 10.0);
+   str.Printf(wxT("%.1f"), freql / 10.0);
    GetFreqText()->SetValue(str);
 }
 
@@ -332,7 +332,7 @@ void WahwahDialog::OnFreqOffSlider(wxCommandEvent & event)
 {
    wxString str;
    long freqoff = GetFreqOffSlider()->GetValue();
-   str.Printf("%d", (int) freqoff);
+   str.Printf(wxT("%d"), (int) freqoff);
    GetFreqOffText()->SetValue(str);
 }
 
@@ -476,7 +476,7 @@ wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit,
                5);
 
    wxTextCtrl *item12 =
-       new wxTextCtrl(parent, ID_FREQTEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_FREQTEXT, wxT(""), wxDefaultPosition,
                       wxSize(40, -1), 0);
    item10->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -492,7 +492,7 @@ wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit,
                5);
 
    wxTextCtrl *item15 =
-       new wxTextCtrl(parent, ID_PHASETEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_PHASETEXT, wxT(""), wxDefaultPosition,
                       wxSize(40, -1), 0);
    item10->Add(item15, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -508,7 +508,7 @@ wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit,
                5);
 
    wxTextCtrl *item18 =
-       new wxTextCtrl(parent, ID_DEPTHTEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_DEPTHTEXT, wxT(""), wxDefaultPosition,
                       wxSize(40, -1), 0);
    item10->Add(item18, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -524,7 +524,7 @@ wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit,
                5);
 
    wxTextCtrl *item21 =
-       new wxTextCtrl(parent, ID_RESONANCETEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_RESONANCETEXT, wxT(""), wxDefaultPosition,
                       wxSize(40, -1), 0);
    item10->Add(item21, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -540,7 +540,7 @@ wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit,
                5);
 
    wxTextCtrl *item31 =
-       new wxTextCtrl(parent, ID_FREQOFFTEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_FREQOFFTEXT, wxT(""), wxDefaultPosition,
                       wxSize(40, -1), 0);
    item10->Add(item31, 0, wxALIGN_CENTRE | wxALL, 5);
 

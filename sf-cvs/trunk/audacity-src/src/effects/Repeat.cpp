@@ -235,7 +235,7 @@ RepeatDialog::RepeatDialog(wxWindow *parent, wxWindowID id,
    hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
    
    mRepeatCount =
-      new wxTextCtrl(this, ID_REPEAT_TEXT, "10", wxDefaultPosition,
+      new wxTextCtrl(this, ID_REPEAT_TEXT, wxT("10"), wxDefaultPosition,
                      wxSize(60, -1), 0,
                      wxTextValidator(wxFILTER_NUMERIC));
    hSizer->Add(mRepeatCount, 0, wxALL, 5);
@@ -244,7 +244,7 @@ RepeatDialog::RepeatDialog(wxWindow *parent, wxWindowID id,
    hSizer = new wxBoxSizer(wxHORIZONTAL);
    mTotalTime =
       new wxStaticText(this, -1, wxString(_("New selection length: ")) +
-                       "XX minutes, XX seconds");
+                       wxT("XX minutes, XX seconds"));
    hSizer->Add(mTotalTime, 1, wxALL | wxEXPAND, 5);
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -300,7 +300,7 @@ bool RepeatDialog::Validate()
 
 bool RepeatDialog::TransferDataToWindow()
 {
-   mRepeatCount->SetValue(wxString::Format("%d", repeatCount));
+   mRepeatCount->SetValue(wxString::Format(wxT("%d"), repeatCount));
    DisplayNewTime();
 
    return true;

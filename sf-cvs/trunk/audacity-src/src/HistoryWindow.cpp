@@ -81,7 +81,7 @@ HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
                            0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 3);
 
    secondLine->Add(
-      mDiscardNum = new wxSpinCtrl(this, -1, "1", wxDefaultPosition, wxDefaultSize,
+      mDiscardNum = new wxSpinCtrl(this, -1, wxT("1"), wxDefaultPosition, wxDefaultSize,
                      wxSP_ARROW_KEYS, 1, manager->GetCurrentState() - 1),
                      0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
 

@@ -26,7 +26,7 @@ class MousePrefs:public PrefsPanel {
    void AddItem( wxString const & MouseButtons, 
       wxString const & Tool, 
       wxString const & Action,
-      wxString const & Comment = wxString(""));
+      wxString const & Comment = wxString(wxT("")));
    bool Apply();
 
  private:

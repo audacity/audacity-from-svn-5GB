@@ -139,8 +139,8 @@ void MixerToolBar::InitializeMixerToolBar()
    mInputSlider = new ASlider(this, InputVolumeID, _("Input Volume"),
                               wxPoint(210, offset), wxSize(130, 25));
 
-   mOutputSlider->SetLabel( "Slider-Output" );
-   mInputSlider->SetLabel( "Slider-Input" );
+   mOutputSlider->SetLabel( wxT("Slider-Output") );
+   mInputSlider->SetLabel( wxT("Slider-Input") );
 
    mInputSourceChoice = NULL;
 

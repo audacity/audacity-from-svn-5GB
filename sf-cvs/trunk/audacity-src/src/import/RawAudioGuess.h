@@ -13,6 +13,8 @@
 
 **********************************************************************/
 
+#include <wx/defs.h>
+
 #include <sndfile.h>
 
 #ifndef SNDFILE_1
@@ -22,7 +24,7 @@
 /* Returns the best guess as to the format, as a libsndfile
    SF_FORMAT value
 */
-int RawAudioGuess(const char *in_fname,
+int RawAudioGuess(const wxString &in_fname,
                   int *out_offset, int *out_channels);
 
 

@@ -54,7 +54,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
          wxDefaultSize, wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
 {
 #ifdef __WXMAC__
-   mMacHiddenFrame = new wxFrame(NULL, -1, "", wxPoint(5000, 5000),
+   mMacHiddenFrame = new wxFrame(NULL, -1, wxT(""), wxPoint(5000, 5000),
                         wxSize(100, 100));
    wxMenuBar *blankMenuBar = new wxMenuBar();
    mMacHiddenFrame->SetMenuBar(blankMenuBar);
@@ -91,7 +91,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    mCategories->AddPage(new KeyConfigPrefs(mCategories), _("Keyboard"));
    mCategories->AddPage(new MousePrefs(mCategories), _("Mouse"));
 
-   long selected = gPrefs->Read("/Prefs/PrefsCategory", 0L);
+   long selected = gPrefs->Read(wxT("/Prefs/PrefsCategory"), 0L);
    if (selected < 0 || selected >= mCategories->GetPageCount())
       mSelected = 0;
 
@@ -164,7 +164,7 @@ void PrefsDialog::OnOK(wxCommandEvent & event)
    int i;
    unsigned int j;
 
-   gPrefs->Write("/Prefs/PrefsCategory", (long)mCategories->GetSelection());
+   gPrefs->Write(wxT("/Prefs/PrefsCategory"), (long)mCategories->GetSelection());
    for (i = 0; i < mCategories->GetPageCount(); i++) {
       PrefsPanel *panel = (PrefsPanel *) mCategories->GetPage(i);
 

@@ -36,9 +36,9 @@ EffectToneGen::EffectToneGen()
 
 wxString EffectToneGen::GetEffectDescription() { 
    // Note: This is useful only after values have been set. 
-   const char* waveformNames[] = {"sine", "square", "sawtooth"};
+   const wxChar* waveformNames[] = {wxT("sine"), wxT("square"), wxT("sawtooth")};
    return wxString::Format(_("Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f, %.6lf seconds"), 
-                           (const char *)(this->GetEffectName()), 
+                           this->GetEffectName().c_str(), 
                            waveformNames[waveform], frequency, amplitude, length); 
 } 
 
@@ -189,21 +189,21 @@ bool ToneGenDialog::TransferDataToWindow()
    text = GetFreqText();
    if (text) {
       wxString str;
-      str.Printf("%.2f", frequency);
+      str.Printf(wxT("%.2f"), frequency);
       text->SetValue(str);
    }
 
    text = GetAmpText();
    if (text) {
       wxString str;
-      str.Printf("%.2f", amplitude);
+      str.Printf(wxT("%.2f"), amplitude);
       text->SetValue(str);
    }
 
    text = GetLengthText();
    if (text) {
       wxString str;
-      str.Printf("%.6lf", length);
+      str.Printf(wxT("%.6lf"), length);
       text->SetValue(str);
    }
 
@@ -287,7 +287,7 @@ wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
    item5->Add(item6, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxTextCtrl *item7 =
-       new wxTextCtrl(parent, ID_FREQTEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_FREQTEXT, wxT(""), wxDefaultPosition,
                       wxSize(60, -1), 0);
    item5->Add(item7, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -303,7 +303,7 @@ wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
    item8->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxTextCtrl *item10 =
-       new wxTextCtrl(parent, ID_AMPTEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_AMPTEXT, wxT(""), wxDefaultPosition,
                       wxSize(60, -1), 0);
    item8->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -315,7 +315,7 @@ wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
                         wxDefaultSize, 0);
    item8->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   item10 = new wxTextCtrl(parent, ID_LENGTHTEXT, "", wxDefaultPosition,
+   item10 = new wxTextCtrl(parent, ID_LENGTHTEXT, wxT(""), wxDefaultPosition,
                       wxSize(120, -1), 0);
    item8->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
 

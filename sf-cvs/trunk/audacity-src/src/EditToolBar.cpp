@@ -89,7 +89,7 @@ void EditToolBar::InitializeEditToolBar()
 // MakeButtons() with fewer arguments
 
 void EditToolBar::AddButton(const char **fg, const char **disabled, const char **alpha,
-                            int id, const char *tooltip, const char *label)
+                            int id, const wxChar *tooltip, const wxChar *label)
 {
 
    // Windows (TM) has a little extra room for some reason, so the top of the

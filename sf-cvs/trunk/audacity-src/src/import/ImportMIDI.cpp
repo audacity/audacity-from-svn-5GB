@@ -25,7 +25,7 @@
 
 bool ImportMIDI(wxString fName, NoteTrack * dest)
 {
-   FILE *mf = fopen(FILENAME(fName), "rb");
+   FILE *mf = fopen(FILENAME(fName).fn_str(), "rb");
 
    if (!mf || ferror(mf)) {
       wxMessageBox( _("Could not open file: ") + fName);
@@ -33,7 +33,7 @@ bool ImportMIDI(wxString fName, NoteTrack * dest)
    }
 
    if (fName.Length() > 4 &&
-       !fName.Right(4).CmpNoCase(".gro")) {
+       !fName.Right(4).CmpNoCase(wxT(".gro"))) {
 
       // Import Allegro file (Roger Dannenberg)
 

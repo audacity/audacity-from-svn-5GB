@@ -78,7 +78,7 @@ public:
    enum {nCurvePoints=28};
    static const float curvex[];
    static const float curvey[][nCurvePoints];
-   static const char * curveNames[];
+   static const wxChar * curveNames[];
 
 friend class EqualizationDialog;
 };

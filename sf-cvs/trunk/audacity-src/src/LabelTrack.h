@@ -97,8 +97,8 @@ class LabelTrack:public Track {
 
    virtual Track *Duplicate() { return new LabelTrack(*this); }
 
-   virtual bool HandleXMLTag(const char *tag, const char **attrs);
-   virtual XMLTagHandler *HandleXMLChild(const char *tag);
+   virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
+   virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
    virtual void WriteXML(int depth, FILE *fp);
 
 #if LEGACY_PROJECT_FILE_SUPPORT
@@ -154,7 +154,7 @@ class LabelTrack:public Track {
    const LabelStruct *GetLabel(int index) const;
 
    //This returns the index of the label we just added.
-   int AddLabel(double t, double t1, const wxString &title = "");
+   int AddLabel(double t, double t1, const wxString &title = wxT(""));
 
    //get current cursor position
    int getCurrentCursorPosition() const { return mCurrentCursorPos; };

@@ -84,7 +84,7 @@ class EditToolBar:public ToolBar {
 
  private:
    void AddButton(const char **fg, const char **disabled, const char **alpha,
-                  int id, const char *tooltip, const char *label);
+                  int id, const wxChar *tooltip, const wxChar *label);
    void AddSeparator();
 
    void MakeButtons();

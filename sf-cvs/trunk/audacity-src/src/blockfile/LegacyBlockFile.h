@@ -60,7 +60,7 @@ class LegacyBlockFile : public BlockFile {
    virtual int GetSpaceUsage();
    virtual void Recover();
 
-   static BlockFile *BuildFromXML(wxString dir, const char **attrs,
+   static BlockFile *BuildFromXML(wxString dir, const wxChar **attrs,
                                   sampleCount len,
                                   sampleFormat format);
 

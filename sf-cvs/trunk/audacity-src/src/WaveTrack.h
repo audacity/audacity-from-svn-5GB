@@ -152,9 +152,9 @@ class WaveTrack: public Track {
    // XMLTagHandler callback methods for loading and saving
    //
 
-   virtual bool HandleXMLTag(const char *tag, const char **attrs);
-   virtual void HandleXMLEndTag(const char *tag);
-   virtual XMLTagHandler *HandleXMLChild(const char *tag);
+   virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
+   virtual void HandleXMLEndTag(const wxChar *tag);
+   virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
    virtual void WriteXML(int depth, FILE *fp);
 
    // Returns true if an error occurred while reading from XML

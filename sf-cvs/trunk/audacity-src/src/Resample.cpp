@@ -50,25 +50,25 @@ wxString Resample::GetMethodName(int index)
 
 int Resample::GetFastMethod()
 {
-   return gPrefs->Read("/Quality/LibresampleSampleRateConverter",
+   return gPrefs->Read(wxT("/Quality/LibresampleSampleRateConverter"),
                        (long)0);
 }
 
 int Resample::GetBestMethod()
 {
-   return gPrefs->Read("/Quality/LibresampleHQSampleRateConverter",
+   return gPrefs->Read(wxT("/Quality/LibresampleHQSampleRateConverter"),
                        (long)1);
 }
 
 void Resample::SetFastMethod(int index)
 {
-   gPrefs->Write("/Quality/LibresampleSampleRateConverter",
+   gPrefs->Write(wxT("/Quality/LibresampleSampleRateConverter"),
                  (long)index);
 }
 
 void Resample::SetBestMethod(int index)
 {
-   gPrefs->Write("/Quality/LibresampleHQSampleRateConverter",
+   gPrefs->Write(wxT("/Quality/LibresampleHQSampleRateConverter"),
                  (long)index);   
 }
 
@@ -135,25 +135,25 @@ wxString Resample::GetMethodName(int index)
 
 int Resample::GetFastMethod()
 {
-   return gPrefs->Read("/Quality/SampleRateConverter",
+   return gPrefs->Read(wxT("/Quality/SampleRateConverter"),
                        (long)SRC_SINC_FASTEST);
 }
 
 int Resample::GetBestMethod()
 {
-   return gPrefs->Read("/Quality/HQSampleRateConverter",
+   return gPrefs->Read(wxT("/Quality/HQSampleRateConverter"),
                        (long)SRC_SINC_FASTEST);
 }
 
 void Resample::SetFastMethod(int index)
 {
-   gPrefs->Write("/Quality/SampleRateConverter",
+   gPrefs->Write(wxT("/Quality/SampleRateConverter"),
                  (long)index);
 }
 
 void Resample::SetBestMethod(int index)
 {
-   gPrefs->Write("/Quality/HQSampleRateConverter",
+   gPrefs->Write(wxT("/Quality/HQSampleRateConverter"),
                  (long)index);   
 }
 
@@ -208,7 +208,7 @@ int Resample::Process(double  factor,
 
    int err = src_process((SRC_STATE *)mHandle, &data);
    if (err) {
-      fprintf(stderr, _("Libsamplerate error: %d\n"), err);
+      wxFprintf(stderr, _("Libsamplerate error: %d\n"), err);
       return 0;
    }
 

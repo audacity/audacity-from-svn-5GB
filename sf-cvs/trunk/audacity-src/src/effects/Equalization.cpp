@@ -125,20 +125,20 @@ const float EffectEqualization::curvey[][nCurvePoints] =
 
 #pragma warning( default: 4305 )
 
-const char * EffectEqualization::curveNames[] =
+const wxChar * EffectEqualization::curveNames[] =
   {
-    "acoustic",
-    "NAB",
-    "Columbia LP",
-    "AES",
-    "Decca FFRR Micro",
-    "Decca FFRR 78",
-    "RIAA",
-    "Columbia 78",
-    "Decca FFRR LP",
-    "EMI 78",
-    "RCA Victor 1938",
-    "RCA Victor 1947"
+    wxT("acoustic"),
+    wxT("NAB"),
+    wxT("Columbia LP"),
+    wxT("AES"),
+    wxT("Decca FFRR Micro"),
+    wxT("Decca FFRR 78"),
+    wxT("RIAA"),
+    wxT("Columbia 78"),
+    wxT("Decca FFRR LP"),
+    wxT("EMI 78"),
+    wxT("RCA Victor 1938"),
+    wxT("RCA Victor 1947")
   };
     
    
@@ -456,7 +456,7 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
    dbRuler.SetOrientation(wxVERTICAL);
    dbRuler.SetRange(30, -30);
    dbRuler.SetFormat(Ruler::LinearDBFormat);
-   dbRuler.SetUnits("dB");
+   dbRuler.SetUnits(wxT("dB"));
    dbRuler.Draw(memDC);
 
    Ruler freqRuler;
@@ -465,7 +465,7 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
    freqRuler.SetLog(true);
    freqRuler.SetRange(mLoFreq, mHiFreq);
    freqRuler.SetFormat(Ruler::IntFormat);
-   freqRuler.SetUnits("Hz");
+   freqRuler.SetUnits(wxT("Hz"));
    freqRuler.SetFlip(true);
    freqRuler.Draw(memDC);
 

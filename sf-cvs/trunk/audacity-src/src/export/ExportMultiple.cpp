@@ -248,7 +248,7 @@ wxString MakeFullPath(bool overwrite,
       int i = 2;
       while(::wxFileExists(fullPath)) {
          fullPath = dir+sep+
-            wxString::Format("%s-%d", name.c_str(), i) +
+            wxString::Format(wxT("%s-%d"), name.c_str(), i) +
             extension;
          i++;
       }
@@ -259,9 +259,9 @@ wxString MakeFullPath(bool overwrite,
  
 wxString getMpgExePath()
 {
-   wxString mMpgExePath = gPrefs->Read("/MP3/MpgExePath", "");
+   wxString mMpgExePath = gPrefs->Read(wxT("/MP3/MpgExePath"), wxT(""));
 
-   if (mMpgExePath=="" || !::wxFileExists(FILENAME(mMpgExePath))) {
+   if (mMpgExePath==wxT("") || !::wxFileExists(FILENAME(mMpgExePath))) {
          
       int action = wxMessageBox(
          _("Audacity needs to know the location of the TOMPG.EXE program.\n"
@@ -277,24 +277,24 @@ wxString getMpgExePath()
          question.Printf(_("Where is the mp3 encoder TOMPG.EXE located?"));
          mMpgExePath = wxFileSelector(question, 
                                    
-            ".",     // Path
-            "tompg", // Name
-            ".exe",  // Extension
-            "Only tompg.exe|tompg.exe|*.exe|*.exe|All Files|*", //type of files
+            wxT("."),     // Path
+            wxT("tompg"), // Name
+            wxT(".exe"),  // Extension
+            wxT("Only tompg.exe|tompg.exe|*.exe|*.exe|All Files|*"), //type of files
             wxOPEN, 0);
          
-         if (mMpgExePath == "") {
-            //gPrefs->Write("/MP3/MpgExePath", mMpgExePath);
-            return "";
+         if (mMpgExePath == wxT("")) {
+            //gPrefs->Write(wxT("/MP3/MpgExePath"), mMpgExePath);
+            return wxT("");
          }
 
-         gPrefs->Write("/MP3/MpgExePath", mMpgExePath);
+         gPrefs->Write(wxT("/MP3/MpgExePath"), mMpgExePath);
 
       }
       else {
-         //mMpgExePath = "";
-         //gPrefs->Write("/MP3/MpgExePath", mMpgExePath);
-         return "";
+         //mMpgExePath = wxT("");
+         //gPrefs->Write(wxT("/MP3/MpgExePath"), mMpgExePath);
+         return wxT("");
       }
    }
    
@@ -313,7 +313,7 @@ static bool DoExport(AudacityProject *project,
    case 0:
    default: {
       int format = ReadExportFormatPref();
-      wxString extension = "." +
+      wxString extension = wxT(".") +
          sf_header_extension(format & SF_FORMAT_TYPEMASK);
       wxString fullPath = MakeFullPath(overwrite,
                                        dir, name, extension);
@@ -325,34 +325,34 @@ static bool DoExport(AudacityProject *project,
       tags->SetTitle(name);            
       tags->SetTrackNumber(trackNumber);
       wxString fullPath = MakeFullPath(overwrite,
-                                       dir, name, ".mp3");
+                                       dir, name, wxT(".mp3"));
       return ExportMP3(project, stereo, fullPath,
                        selectionOnly, t0, t1); }
    case 2: {
       wxString fullPath = MakeFullPath(overwrite,
-                                       dir, name, ".ogg");
+                                       dir, name, wxT(".ogg"));
       return ExportOGG(project, stereo, fullPath,
                        selectionOnly, t0, t1);
    }
    case 3: {//tompg.  First make wav files, then call tompg.exe to convert
-      wxString mp3OutputFile = MakeFullPath(overwrite,dir, name, ".mp3");
-      long mpgBitrate = gPrefs->Read("/FileFormats/MP3Bitrate", 128)/2;
+      wxString mp3OutputFile = MakeFullPath(overwrite,dir, name, wxT(".mp3"));
+      long mpgBitrate = gPrefs->Read(wxT("/FileFormats/MP3Bitrate"), 128)/2;
       //mpg uses per channel rate 1/2 of total for stereo
-      wxString mpgBitrateString = wxString::Format("%ld", mpgBitrate);
-      wxString mono = ""; if (!stereo) mono = " -M3";
+      wxString mpgBitrateString = wxString::Format(wxT("%ld"), mpgBitrate);
+      wxString mono = wxT(""); if (!stereo) mono = wxT(" -M3");
       wxString mpgPath = getMpgExePath();
 
-      if (mpgPath != ""){
+      if (mpgPath != wxT("")){
          //1. make temporary wav file
          int format = ReadExportFormatPref();
-         wxString extension = "." +
-            sf_header_extension(format & SF_FORMAT_TYPEMASK) + "_tmp";
+         wxString extension = wxT(".") +
+            sf_header_extension(format & SF_FORMAT_TYPEMASK) + wxT("_tmp");
          wxString tmpWavOuput = MakeFullPath(overwrite,
                                        dir, name, extension);
          if (ExportPCM(project, stereo, tmpWavOuput,
                        selectionOnly, t0, t1)){
             //2. convert the wav to mp3 using tompg.exe
-            wxString tompgCmd = _("\"" + mpgPath + "\" " + tmpWavOuput + " " + mp3OutputFile + mono + " -B" + mpgBitrateString);
+            wxString tompgCmd = wxT("\"") + mpgPath + wxT("\" ") + tmpWavOuput + wxT(" ") + mp3OutputFile + mono + wxT(" -B") + mpgBitrateString;
 
             wxBeginBusyCursor();
             wxArrayString output, errors;
@@ -360,7 +360,7 @@ static bool DoExport(AudacityProject *project,
             wxLogStatus(_T("command '%s' terminated with exit code %d."),
                tompgCmd.c_str(), code);
 
-            remove (tmpWavOuput); //delete the tmp wav file
+            remove (tmpWavOuput.fn_str()); //delete the tmp wav file
             wxEndBusyCursor();
 
             return (code!=0);
@@ -381,7 +381,7 @@ void MakeNameUnique(wxArrayString otherNames, wxString &newName)
       int i=2;
       wxString orig = newName;
       do {
-         newName.Printf("%s-%d", orig.c_str(), i);
+         newName.Printf(wxT("%s-%d"), orig.c_str(), i);
          i++;
       } while (otherNames.Index(newName, false) >= 0);
    }
@@ -428,9 +428,9 @@ bool ExportMultipleByTrack(AudacityProject *project,
          }
          else {
             if (numTracks > 9)
-               name.Printf("%s-%02d", prefix.c_str(), i+1);
+               name.Printf(wxT("%s-%02d"), prefix.c_str(), i+1);
             else
-               name.Printf("%s-%d", prefix.c_str(), i+1);
+               name.Printf(wxT("%s-%d"), prefix.c_str(), i+1);
          }
 
          MakeNameUnique(otherNames, name);
@@ -543,9 +543,9 @@ bool ExportMultipleByLabel(AudacityProject *project,
       
       if (!byName) {
          if (numFiles > 9)
-            name.Printf("%s-%02d", prefix.c_str(), count+1);
+            name.Printf(wxT("%s-%02d"), prefix.c_str(), count+1);
          else
-            name.Printf("%s-%d", prefix.c_str(), count+1);
+            name.Printf(wxT("%s-%d"), prefix.c_str(), count+1);
       }
       
       MakeNameUnique(otherNames, name);
@@ -603,7 +603,7 @@ bool ExportMultiple(AudacityProject *project)
       if (tags->IsEmpty()) {
          wxString saveTitle = tags->GetTitle();
          int saveTrackNumber = tags->GetTrackNumber();
-         tags->SetTitle("(automatic)");
+         tags->SetTitle(wxT("(automatic)"));
          tags->SetTrackNumber(0);
          tags->AllowEditTitle(false);
          tags->AllowEditTrackNumber(false);
@@ -671,14 +671,14 @@ ExportMultipleDialog::ExportMultipleDialog(wxWindow *parent, wxWindowID id):
    wxString formatList[4];
    int format = ReadExportFormatPref();
    formatList[0] = sf_header_shortname(format & SF_FORMAT_TYPEMASK);
-   formatList[1] = "MP3";
-   formatList[2] = "Ogg Vorbis";
-   formatList[3] = "MP3_mpg";
+   formatList[1] = wxT("MP3");
+   formatList[2] = wxT("Ogg Vorbis");
+   formatList[3] = wxT("MP3_mpg");
 
    mFormat = new wxChoice(this, FormatID,
                           wxDefaultPosition, wxDefaultSize,
                           numFormats, formatList);
-   int selFormat = gPrefs->Read("/FileFormats/ExportMultipleFormat", format);
+   int selFormat = gPrefs->Read(wxT("/FileFormats/ExportMultipleFormat"), format);
 
 
    mFormat->SetSelection(selFormat);
@@ -702,15 +702,15 @@ ExportMultipleDialog::ExportMultipleDialog(wxWindow *parent, wxWindowID id):
 
    // bit rate display and stereo/mono selection
    hSizer = new wxBoxSizer(wxHORIZONTAL);
-   long mp3Bitrate = gPrefs->Read("/FileFormats/MP3Bitrate", 128);
-   wxString mp3BitrateString = wxString::Format("%ld", mp3Bitrate);
+   long mp3Bitrate = gPrefs->Read(wxT("/FileFormats/MP3Bitrate"), 128);
+   wxString mp3BitrateString = wxString::Format(wxT("%ld"), mp3Bitrate);
 
    hSizer->Add(new wxStaticText(this, -1, _("MP3 Bit Rate: " + mp3BitrateString)),
                0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
    hSizer->Add(20, 5); // indent
    mForceMono = new wxCheckBox(this, ForceMonoID, _("Force Mono"));
-   long mono = gPrefs->Read("/FileFormats/MpgForceMono", (long)0);
+   long mono = gPrefs->Read(wxT("/FileFormats/MpgForceMono"), (long)0);
    mForceMono->SetValue(mono!=0);
    mForceMono->Enable(selFormat == 3);
    hSizer->Add(mForceMono, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -842,10 +842,10 @@ void ExportMultipleDialog::EnableControls()
    bool ok = true;
 
    if (mLabel->GetValue() && mFirst->GetValue() &&
-       mFirstFileName->GetValue() == "")
+       mFirstFileName->GetValue() == wxT(""))
       ok = false;
    if (mByNumber->GetValue() &&
-       mPrefix->GetValue() == "")
+       mPrefix->GetValue() == wxT(""))
       ok = false;
 
    mExport->Enable(ok);
@@ -853,9 +853,9 @@ void ExportMultipleDialog::EnableControls()
 
 void ExportMultipleDialog::CopyDataToControls()
 {
-   wxString defaultPath = gPrefs->Read("/DefaultExportPath",
+   wxString defaultPath = gPrefs->Read(wxT("/DefaultExportPath"),
                                        FROMFILENAME(::wxGetCwd()));
-   wxString path = gPrefs->Read("/DefaultMultiplExportPath",
+   wxString path = gPrefs->Read(wxT("/DefaultMultiplExportPath"),
                                 defaultPath);
    mDir->SetValue(path);
 
@@ -887,7 +887,7 @@ void ExportMultipleDialog::OnFormat(wxCommandEvent& event)
       mForceMono->Enable(false);
       }
    
-   gPrefs->Write("/FileFormats/ExportMultipleFormat", mFormat->GetSelection());
+   gPrefs->Write(wxT("/FileFormats/ExportMultipleFormat"), mFormat->GetSelection());
 
    EnableControls();
    }
@@ -898,7 +898,7 @@ void ExportMultipleDialog::OnChoose(wxCommandEvent& event)
                     _("Choose a location to save the exported files"),
                     mDir->GetValue());
    dlog.ShowModal();
-   if (dlog.GetPath() != "")
+   if (dlog.GetPath() != wxT(""))
       mDir->SetValue(dlog.GetPath());
 }
 
@@ -963,8 +963,8 @@ void ExportMultipleDialog::OnExport(wxCommandEvent& event)
    prefix = mPrefix->GetValue();
    overwrite = mOverwrite->GetValue();
 
-   gPrefs->Write("/DefaultMultiplExportPath", dir);
-   gPrefs->Write("/FileFormats/MpgForceMono", forceMono);
+   gPrefs->Write(wxT("/DefaultMultiplExportPath"), dir);
+   gPrefs->Write(wxT("/FileFormats/MpgForceMono"), forceMono);
 
 
    EndModal(1);

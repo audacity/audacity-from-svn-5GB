@@ -39,10 +39,10 @@ void UndoManager::GetLongDescription(unsigned int n, wxString *desc,
    *desc = stack[n]->description;
 
    if (n == 0)
-      size->Printf("%d MB", stack[n]->tracks->GetSpaceUsage() / 1048576);
+      size->Printf(wxT("%d MB"), stack[n]->tracks->GetSpaceUsage() / 1048576);
    else {
       int bytes = stack[n]->tracks->GetAdditionalSpaceUsage(&stack);
-      size->Printf("%d MB", bytes / 1048576);
+      size->Printf(wxT("%d MB"), bytes / 1048576);
    }
 }
 
@@ -223,7 +223,7 @@ TrackList *UndoManager::SetStateTo(unsigned int n, double *sel0, double *sel1)
       current--;
    }
 
-   lastAction = "";
+   lastAction = wxT("");
    consolidationCount = 0;
 
    return stack[current]->tracks;
@@ -238,7 +238,7 @@ TrackList *UndoManager::Undo(double *sel0, double *sel1)
    *sel0 = stack[current]->sel0;
    *sel1 = stack[current]->sel1;
 
-   lastAction = "";
+   lastAction = wxT("");
    consolidationCount = 0;
 
    return stack[current]->tracks;
@@ -266,7 +266,7 @@ TrackList *UndoManager::Redo(double *sel0, double *sel1)
    }
    */
 
-   lastAction = "";
+   lastAction = wxT("");
    consolidationCount = 0;
 
    return stack[current]->tracks;
@@ -288,7 +288,7 @@ void UndoManager::Debug()
 
       TrackListIterator iter(stack[i]->tracks);
       WaveTrack *t = (WaveTrack *) (iter.First());
-      printf("*%d* %s %f\n", i, (i == (unsigned int)current) ? "-->" : "   ",
+      wxPrintf(wxT("*%d* %s %f\n"), i, (i == (unsigned int)current) ? wxT("-->") : wxT("   "),
              t ? t->GetEndTime()-t->GetStartTime() : 0);
    }
 }

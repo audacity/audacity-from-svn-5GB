@@ -77,9 +77,9 @@ class Sequence: public XMLTagHandler {
    // XMLTagHandler callback methods for loading and saving
    //
 
-   virtual bool HandleXMLTag(const char *tag, const char **attrs);
-   virtual void HandleXMLEndTag(const char *tag);
-   virtual XMLTagHandler *HandleXMLChild(const char *tag);
+   virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
+   virtual void HandleXMLEndTag(const wxChar *tag);
+   virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
    virtual void WriteXML(int depth, FILE *fp);
 
    bool GetErrorOpening() { return mErrorOpening; }
@@ -183,7 +183,7 @@ class Sequence: public XMLTagHandler {
 
    // This function makes sure that the track isn't messed up
    // because of inconsistent block starts & lengths
-   bool ConsistencyCheck(const char *whereStr);
+   bool ConsistencyCheck(const wxChar *whereStr);
 
    // This function prints information to stdout about the blocks in the
    // tracks and indicates if there are inconsistencies.

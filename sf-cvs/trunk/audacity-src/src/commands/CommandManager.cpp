@@ -25,6 +25,8 @@
 
 #include "Keyboard.h"
 
+#include "../Internat.h"
+
 // On wxGTK, there may be many many many plugins, but the menus don't automatically
 // allow for scrolling, so we build sub-menus.  If the menu gets longer than
 // MAX_MENU_LEN, we put things in submenus that have MAX_SUBMENU_LEN items in them.
@@ -250,7 +252,7 @@ void CommandManager::AddItem(wxString name, wxString label,
    int ID = NewIdentifier(name, label, CurrentMenu(), callback, false, 0, 0);
 
    // Replace the accel key with the one from the preferences
-   label = label.BeforeFirst('\t');
+   label = label.BeforeFirst(wxT('\t'));
 
    // This is a very weird hack.  Under GTK, menu labels are totally
    // linked to accelerators the first time you create a menu item
@@ -261,7 +263,7 @@ void CommandManager::AddItem(wxString name, wxString label,
    // -DMM
    mHiddenID++;
    wxString dummy, newLabel;
-   dummy.Printf("%s%08d", (const char *)label, mHiddenID);
+   dummy.Printf(wxT("%s%08d"), label.c_str(), mHiddenID);
    newLabel = label;
 
    bool shortcut = false;
@@ -271,18 +273,18 @@ void CommandManager::AddItem(wxString name, wxString label,
    
    // Mac OS X fixes
   #ifdef __WXMAC__
-   if (newLabel.Length() > 0 && newLabel[0] == '&')
+   if (newLabel.Length() > 0 && newLabel[0] == wxT('&'))
       newLabel = newLabel.Right(newLabel.Length()-1);
 
    if (shortcut == true &&
        (mCommandIDHash[ID]->key.Length() < 5 ||
-        mCommandIDHash[ID]->key.Left(5) != "Ctrl+"))
+        mCommandIDHash[ID]->key.Left(5) != wxT("Ctrl+")))
       shortcut = false;
   #endif
    
    if (shortcut) {
-      dummy = dummy + "\t" + mCommandIDHash[ID]->key;
-      newLabel = newLabel + "\t" + mCommandIDHash[ID]->key;
+      dummy = dummy + wxT("\t") + mCommandIDHash[ID]->key;
+      newLabel = newLabel + wxT("\t") + mCommandIDHash[ID]->key;
    }
 
    CurrentMenu()->Append(ID, dummy);
@@ -392,11 +394,11 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    tmpEntry->id = mCurrentID;
 
   #ifdef __WXMAC__
-   if (name == "Preferences")
+   if (name == wxT("Preferences"))
       tmpEntry->id = wxID_PREFERENCES;
-   else if (name == "Exit")
+   else if (name == wxT("Exit"))
       tmpEntry->id = wxID_EXIT;
-   else if (name == "About")
+   else if (name == wxT("About"))
       tmpEntry->id = wxID_ABOUT;
   #endif
 
@@ -414,11 +416,11 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    tmpEntry->enabled = true;
 
    // Key from preferences overridse the default key given
-   gPrefs->SetPath("/NewKeys");
+   gPrefs->SetPath(wxT("/NewKeys"));
    if (gPrefs->HasEntry(name)) {
       tmpEntry->key = gPrefs->Read(name, GetKey(label));
    }
-   gPrefs->SetPath("/");
+   gPrefs->SetPath(wxT("/"));
    
    mCommandList.Add(tmpEntry);
    mCommandIDHash[tmpEntry->id] = tmpEntry;   
@@ -426,7 +428,7 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    if (index==0 || !multi)
       mCommandNameHash[name] = tmpEntry;
 
-   if (tmpEntry->key != "")
+   if (tmpEntry->key != wxT(""))
       mCommandKeyHash[tmpEntry->key] = tmpEntry;
 
    return tmpEntry->id;
@@ -436,12 +438,12 @@ wxString CommandManager::GetKey(wxString label)
 {
    int loc = -1;
 
-   loc = label.Find('\t');
+   loc = label.Find(wxT('\t'));
    if (loc == -1)
-      loc = label.Find("\\t");
+      loc = label.Find(wxT("\\t"));
 
    if (loc == -1)
-      return "";
+      return wxT("");
 
    return label.Right(label.Length() - (loc+1));
 }
@@ -479,7 +481,7 @@ void CommandManager::Enable(wxString name, bool enabled)
 {
    CommandListEntry *entry = mCommandNameHash[name];
    if (!entry && entry->menu) {
-      //printf("WARNING: Unknown command enabled: '%s'\n", (const char *)name);
+      //printf("WARNING: Unknown command enabled: '%s'\n", (const char *)name.mb_str());
       return;
    }
 
@@ -509,9 +511,9 @@ void CommandManager::Modify(wxString name, wxString newLabel)
 {
    CommandListEntry *entry = mCommandNameHash[name];
    if (entry && entry->menu) {
-      newLabel = newLabel.BeforeFirst('\t');
+      newLabel = newLabel.BeforeFirst(wxT('\t'));
       if (entry->key)
-        newLabel = newLabel + "\t" + entry->key;
+        newLabel = newLabel + wxT("\t") + entry->key;
       entry->menu->SetLabel(entry->id, newLabel);
    }
 }
@@ -582,7 +584,7 @@ wxString CommandManager::GetLabelFromName(wxString name)
 {
    CommandListEntry *entry = mCommandNameHash[name];
    if (!entry)
-      return "";
+      return wxT("");
 
    return entry->label;
 }
@@ -591,7 +593,7 @@ wxString CommandManager::GetKeyFromName(wxString name)
 {
    CommandListEntry *entry = mCommandNameHash[name];
    if (!entry)
-      return "";
+      return wxT("");
  
    return entry->key;
 }
@@ -600,31 +602,31 @@ wxString CommandManager::GetDefaultKeyFromName(wxString name)
 {
    CommandListEntry *entry = mCommandNameHash[name];
    if (!entry)
-      return "";
+      return wxT("");
  
    return entry->defaultKey;
 }
 
-bool CommandManager::HandleXMLTag(const char *tag, const char **attrs)
+bool CommandManager::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
-   if (!strcmp(tag, "audacitykeyboard")) {
+   if (!wxStrcmp(tag, wxT("audacitykeyboard"))) {
       mXMLKeysRead = 0;
    }
 
-   if (!strcmp(tag, "command")) {
+   if (!wxStrcmp(tag, wxT("command"))) {
       wxString name;
       wxString key;
 
       while(*attrs) {
-         const char *attr = *attrs++;
-         const char *value = *attrs++;
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
          
          if (!value)
             break;
          
-         if (!strcmp(attr, "name"))
+         if (!wxStrcmp(attr, wxT("name")))
             name = value;
-         if (!strcmp(attr, "key"))
+         if (!wxStrcmp(attr, wxT("key")))
             key = value;
       }
 
@@ -637,9 +639,9 @@ bool CommandManager::HandleXMLTag(const char *tag, const char **attrs)
    return true;
 }
 
-void CommandManager::HandleXMLEndTag(const char *tag)
+void CommandManager::HandleXMLEndTag(const wxChar *tag)
 {
-   if (!strcmp(tag, "audacitykeyboard")) {
+   if (!wxStrcmp(tag, wxT("audacitykeyboard"))) {
       wxMessageBox(wxString::Format(_("Loaded %d "
                                       "keyboard shortcuts\n"),
                                     mXMLKeysRead),
@@ -648,7 +650,7 @@ void CommandManager::HandleXMLEndTag(const char *tag)
    }
 }
 
-XMLTagHandler *CommandManager::HandleXMLChild(const char *tag)
+XMLTagHandler *CommandManager::HandleXMLChild(const wxChar *tag)
 {
    return this;
 }
@@ -668,12 +670,12 @@ void CommandManager::WriteXML(int depth, FILE *fp)
             fprintf(fp, "\t");
          
          wxString label = mCommandList[j]->label;
-         label = wxMenuItem::GetLabelFromText(label.BeforeFirst('\t'));
+         label = wxMenuItem::GetLabelFromText(label.BeforeFirst(wxT('\t')));
          
          fprintf(fp, "<command name=\"%s\" label=\"%s\" key=\"%s\" />\n",
-                 XMLEsc(mCommandList[j]->name).c_str(),
-                 XMLEsc(label).c_str(),
-                 XMLEsc(mCommandList[j]->key).c_str());
+                 (const char *)XMLEsc(mCommandList[j]->name).mb_str(),
+                 (const char *)XMLEsc(label).mb_str(),
+                 (const char *)XMLEsc(mCommandList[j]->key).mb_str());
       }
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
@@ -696,10 +698,10 @@ void CommandManager::SetCommandFlags(wxString name,
    }
 }
 
-void CommandManager::SetCommandFlags(const char **names,
+void CommandManager::SetCommandFlags(const wxChar **names,
                                      wxUint32 flags, wxUint32 mask)
 {
-   const char **nptr = names;
+   const wxChar **nptr = names;
    while(*nptr) {
       SetCommandFlags(wxString(*nptr), flags, mask);
       nptr++;
@@ -711,7 +713,7 @@ void CommandManager::SetCommandFlags(wxUint32 flags, wxUint32 mask, ...)
    va_list list;
    va_start(list, mask); 
    for(;;) {
-      const char *name = va_arg(list, const char *);
+      const wxChar *name = va_arg(list, const wxChar *);
       if (!name)
          break;
       SetCommandFlags(wxString(name), flags, mask);

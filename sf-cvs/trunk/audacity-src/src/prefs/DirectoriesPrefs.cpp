@@ -43,7 +43,7 @@ END_EVENT_TABLE()
 DirectoriesPrefs::DirectoriesPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
-   mTempDir = gPrefs->Read("/Directories/TempDir", "");
+   mTempDir = gPrefs->Read(wxT("/Directories/TempDir"), wxT(""));
    mOldTempDir = mTempDir;
 
    topSizer = new wxBoxSizer( wxVERTICAL );
@@ -115,15 +115,15 @@ wxString DirectoriesPrefs::FormatSize(wxLongLong size)
    else {
       /* make it look nice, by formatting into k, MB, etc */
       if (size < 1024)
-         sizeStr.sprintf("%ld bytes", size.GetLo());
+         sizeStr.sprintf(wxT("%ld bytes"), size.GetLo());
       else if (size < 1024 * 1024) {
-         sizeStr.sprintf("%.1f kB", dSize / 1024);
+         sizeStr.sprintf(wxT("%.1f kB"), dSize / 1024);
       }
       else if (size < 1024 * 1024 * 1024) {
-         sizeStr.sprintf("%.1f MB", dSize / (1024 * 1024));
+         sizeStr.sprintf(wxT("%.1f MB"), dSize / (1024 * 1024));
       }
       else {
-         sizeStr.sprintf("%.1f GB", dSize / (1024 * 1024 * 1024));
+         sizeStr.sprintf(wxT("%.1f GB"), dSize / (1024 * 1024 * 1024));
       }
    }
 
@@ -133,15 +133,15 @@ wxString DirectoriesPrefs::FormatSize(wxLongLong size)
 void DirectoriesPrefs::OnChooseTempDir(wxCommandEvent &event)
 {
    wxDirDialog dlog(this, _("Choose a location to place the "
-                            "temporary directory"), gPrefs->Read("/Directories/TempDir", wxGetApp().defaultTempDir));
+                            "temporary directory"), gPrefs->Read(wxT("/Directories/TempDir"), wxGetApp().defaultTempDir));
    dlog.ShowModal();
-   if (dlog.GetPath() != "") {
+   if (dlog.GetPath() != wxT("")) {
       wxFileName tmpDirPath;
       tmpDirPath.AssignDir(dlog.GetPath());
 #ifdef __WXMSW__
-      tmpDirPath.AppendDir("audacity_temp");
+      tmpDirPath.AppendDir(wxT("audacity_temp"));
 #else
-      tmpDirPath.AppendDir(".audacity_temp");
+      tmpDirPath.AppendDir(wxT(".audacity_temp"));
 #endif
       mTempDirText->SetValue(tmpDirPath.GetPath(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR));
       UpdateFreeSpace(event);
@@ -179,7 +179,7 @@ bool DirectoriesPrefs::Apply()
    if(!wxDirExists(mTempDir)) {
       int ans = wxMessageBox(
             wxString::Format(_("Directory %s does not exist. Create it?"),
-                             (const char *) mTempDir),
+                             mTempDir.c_str()),
             _("New Temporary Directory"),
             wxYES_NO|wxCENTRE|wxICON_EXCLAMATION);
 
@@ -196,24 +196,24 @@ bool DirectoriesPrefs::Apply()
    else {
       /* If the directory already exists, make sure it is writable */
       wxLogNull logNo;
-      wxString tempDir = mTempDir + wxFILE_SEP_PATH + "canicreate";
+      wxString tempDir = mTempDir + wxFILE_SEP_PATH + wxT("canicreate");
       if(!wxMkdir(FILENAME(tempDir), 0755)) {
          wxMessageBox(
                wxString::Format(_("Directory %s is not writable"),
-                                (const char *) mTempDir),
+                                mTempDir.c_str()),
                _("Error"), wxOK|wxICON_ERROR);
          return false;
       }
       wxRmdir(FILENAME(tempDir));
    }
 
-   gPrefs->Write("/Directories/TempDir", mTempDir);
+   gPrefs->Write(wxT("/Directories/TempDir"), mTempDir);
 
    if (mTempDir != mOldTempDir)
       wxMessageBox(
             _("Changes to temporary directory will not take effect "
               "until Audacity is restarted"),
-            "Temp Directory Update", wxOK|wxCENTRE|wxICON_INFORMATION);
+            wxT("Temp Directory Update"), wxOK|wxCENTRE|wxICON_INFORMATION);
 
    return true;
 }

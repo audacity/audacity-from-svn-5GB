@@ -319,7 +319,7 @@ bool Sequence::Paste(sampleCount s, const Sequence *src)
       for (unsigned int i = 0; i < srcNumBlocks; i++)
          AppendBlock(srcBlock->Item(i));
 
-      return ConsistencyCheck("Paste branch one");
+      return ConsistencyCheck(wxT("Paste branch one"));
    }
 
    if (b >= 0 && b < numBlocks
@@ -354,7 +354,7 @@ bool Sequence::Paste(sampleCount s, const Sequence *src)
 
       DeleteSamples(buffer);
 
-      return ConsistencyCheck("Paste branch two");
+      return ConsistencyCheck(wxT("Paste branch two"));
    }
 
    // Case two: if we are inserting four or fewer blocks,
@@ -478,7 +478,7 @@ bool Sequence::Paste(sampleCount s, const Sequence *src)
 
    mNumSamples += addedLen;
 
-   return ConsistencyCheck("Paste branch three");
+   return ConsistencyCheck(wxT("Paste branch three"));
 }
 
 bool Sequence::SetSilence(sampleCount s0, sampleCount len)
@@ -522,7 +522,7 @@ bool Sequence::InsertSilence(sampleCount s0, sampleCount len)
 
    delete sTrack;
 
-   return ConsistencyCheck("InsertSilence");
+   return ConsistencyCheck(wxT("InsertSilence"));
 }
 
 bool Sequence::AppendAlias(wxString fullPath,
@@ -593,9 +593,9 @@ sampleCount Sequence::GetBestBlockSize(sampleCount start) const
    return result;
 }
 
-bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
+bool Sequence::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
-   if (!strcmp(tag, "waveblock")) {
+   if (!wxStrcmp(tag, wxT("waveblock"))) {
       SeqBlock *wb = new SeqBlock();
       wb->f = 0;
       wb->start = 0;
@@ -603,18 +603,18 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
       // loop through attrs, which is a null-terminated list of
       // attribute-value pairs
       while(*attrs) {
-         const char *attr = *attrs++;
-         const char *value = *attrs++;
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
          
          if (!value)
             break;
          
-         if (!strcmp(attr, "start"))
-            wb->start = atoi(value);
+         if (!wxStrcmp(attr, wxT("start")))
+            wb->start = wxAtoi(value);
 
          // Handle length tag from legacy project file
-         if (!strcmp(attr, "len"))
-            mDirManager->SetLoadingBlockLength(atoi(value));
+         if (!wxStrcmp(attr, wxT("len")))
+            mDirManager->SetLoadingBlockLength(wxAtoi(value));
  
       } // while
 
@@ -624,20 +624,20 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
       return true;
    }
    
-   if (!strcmp(tag, "sequence")) {
+   if (!wxStrcmp(tag, wxT("sequence"))) {
       while(*attrs) {
-         const char *attr = *attrs++;
-         const char *value = *attrs++;
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
          
          if (!value)
             break;
          
-         if (!strcmp(attr, "maxsamples"))
-            mMaxSamples = atoi(value);
-         else if (!strcmp(attr, "sampleformat"))
-            mSampleFormat = (sampleFormat)atoi(value);
-         else if (!strcmp(attr, "numsamples"))
-            mNumSamples = atoi(value);         
+         if (!wxStrcmp(attr, wxT("maxsamples")))
+            mMaxSamples = wxAtoi(value);
+         else if (!wxStrcmp(attr, wxT("sampleformat")))
+            mSampleFormat = (sampleFormat)wxAtoi(value);
+         else if (!wxStrcmp(attr, wxT("numsamples")))
+            mNumSamples = wxAtoi(value);         
       } // while
 
       return true;
@@ -646,9 +646,9 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
    return false;
 }
 
-void Sequence::HandleXMLEndTag(const char *tag)
+void Sequence::HandleXMLEndTag(const wxChar *tag)
 {
-   if (strcmp(tag, "sequence") != 0)
+   if (wxStrcmp(tag, wxT("sequence")) != 0)
       return;
 
    // Make sure that the sequence is valid
@@ -664,7 +664,7 @@ void Sequence::HandleXMLEndTag(const char *tag)
             len = mNumSamples - mBlock->Item(b)->start;
 
          mBlock->Item(b)->f = new SilentBlockFile(len);
-         wxLogWarning("Gap detected in project file\n");
+         wxLogWarning(wxT("Gap detected in project file\n"));
          mErrorOpening = true;
       }
    }
@@ -674,21 +674,21 @@ void Sequence::HandleXMLEndTag(const char *tag)
    for (b = 0; b < mBlock->Count(); b++) {
       if (mBlock->Item(b)->start != numSamples) {
          mBlock->Item(b)->start = numSamples;
-         wxLogWarning("Gap detected in project file\n");
+         wxLogWarning(wxT("Gap detected in project file\n"));
          mErrorOpening = true;         
       }
       numSamples += mBlock->Item(b)->f->GetLength();
    }
    if (mNumSamples != numSamples) {
       mNumSamples = numSamples;
-      wxLogWarning("Gap detected in project file\n");
+      wxLogWarning(wxT("Gap detected in project file\n"));
       mErrorOpening = true;
    }
 }
 
-XMLTagHandler *Sequence::HandleXMLChild(const char *tag)
+XMLTagHandler *Sequence::HandleXMLChild(const wxChar *tag)
 {
-   if (!strcmp(tag, "waveblock"))
+   if (!wxStrcmp(tag, wxT("waveblock")))
       return this;
    else {
       mDirManager->SetLoadingFormat(mSampleFormat);
@@ -781,7 +781,7 @@ bool Sequence::Read(samplePtr buffer, sampleFormat format,
 
    if (result != len) {
       // TODO err
-      printf(_("Expected to read %d samples, got %d samples.\n"),
+      wxPrintf(_("Expected to read %d samples, got %d samples.\n"),
              len, result);
       if (result < 0)
          result = 0;
@@ -910,7 +910,7 @@ bool Sequence::Set(samplePtr buffer, sampleFormat format,
    if (format != mSampleFormat)
       DeleteSamples(temp);
 
-   return ConsistencyCheck("Set");
+   return ConsistencyCheck(wxT("Set"));
 }
 
 bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,
@@ -1176,7 +1176,7 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
    if (format != mSampleFormat)
       DeleteSamples(temp);
 
-   ConsistencyCheck("Append");
+   ConsistencyCheck(wxT("Append"));
 
    return true;
 }
@@ -1251,7 +1251,7 @@ bool Sequence::Delete(sampleCount start, sampleCount len)
       delete b;
 
       mNumSamples -= len;
-      return ConsistencyCheck("Delete - branch one");
+      return ConsistencyCheck(wxT("Delete - branch one"));
    }
 
    // Create a new array of blocks
@@ -1414,10 +1414,10 @@ bool Sequence::Delete(sampleCount start, sampleCount len)
 
    // Update total number of samples and do a consistency check.
    mNumSamples -= len;
-   return ConsistencyCheck("Delete - branch two");
+   return ConsistencyCheck(wxT("Delete - branch two"));
 }
 
-bool Sequence::ConsistencyCheck(const char *whereStr)
+bool Sequence::ConsistencyCheck(const wxChar *whereStr)
 {
    unsigned int i;
    int pos = 0;
@@ -1433,7 +1433,7 @@ bool Sequence::ConsistencyCheck(const char *whereStr)
       error = true;
 
    if (error) {
-      printf("*** Consistency check failed after %s ***\n", whereStr);
+      wxPrintf(wxT("*** Consistency check failed after %s ***\n"), whereStr);
       Debug();
       printf("*** Please report this error to audacity-devel@lists.sourceforge.net ***\n");
 
@@ -1454,28 +1454,28 @@ void Sequence::DebugPrintf(wxString *dest)
 
    for (i = 0; i < mBlock->Count(); i++) {
       *dest += wxString::Format
-         ("Block %3d: start %8d len %8d refs %d %s",
+         (wxT("Block %3d: start %8d len %8d refs %d %s"),
           i,
           mBlock->Item(i)->start,
           mBlock->Item(i)->f->GetLength(),
           mDirManager->GetRefCount(mBlock->Item(i)->f),
-          (const char *) (mBlock->Item(i)->f->GetFileName().GetFullName()));
+          mBlock->Item(i)->f->GetFileName().GetFullName().c_str());
       if (pos != mBlock->Item(i)->start)
-         *dest += "  ERROR\n";
+         *dest += wxT("  ERROR\n");
       else
-         *dest += "\n";
+         *dest += wxT("\n");
       pos += mBlock->Item(i)->f->GetLength();
    }
    if (pos != mNumSamples)
       *dest += wxString::Format
-         ("ERROR mNumSamples = %d\n", mNumSamples);
+         (wxT("ERROR mNumSamples = %d\n"), mNumSamples);
 }
 
 void Sequence::Debug()
 {
    wxString s;
    DebugPrintf(&s);
-   printf((const char *)s);
+   wxPrintf(wxT("%s"), s.c_str());
 }
 
 // Static

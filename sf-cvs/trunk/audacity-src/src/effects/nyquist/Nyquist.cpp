@@ -61,7 +61,7 @@ wxString EffectNyquist::UnQuote(wxString s)
    wxString out;
    int len = s.Length();
    
-   if (len>=2 && s.GetChar(0)=='\"' && s.GetChar(len-1)=='\"')
+   if (len>=2 && s.GetChar(0)==wxT('\"') && s.GetChar(len-1)==wxT('\"'))
       return s.Mid(1, len-2);
    else
       return s;
@@ -69,7 +69,7 @@ wxString EffectNyquist::UnQuote(wxString s)
 
 double EffectNyquist::GetCtrlValue(wxString s)
 {
-   if (s == "rate") {
+   if (s == wxT("rate")) {
       TrackListIterator iter(mWaveTracks);
       return ((WaveTrack *)iter.First())->GetRate();
    }
@@ -88,51 +88,51 @@ void EffectNyquist::Parse(wxString line)
    int len = line.Length();
    bool sl = false;
    bool q = false;
-   wxString tok = "";
+   wxString tok = wxT("");
    for(i=1; i<len; i++) {
-      if (line.GetChar(i)=='\\')
+      if (line.GetChar(i)==wxT('\\'))
          sl = true;
-      else if (line.GetChar(i)=='"')
+      else if (line.GetChar(i)==wxT('"'))
          q = !q;
       else {
-         if (!q && !sl && line.GetChar(i)==' ' || line.GetChar(i)=='\t') {
+         if (!q && !sl && line.GetChar(i)==wxT(' ') || line.GetChar(i)==wxT('\t')) {
             tokens.Add(tok);
-            tok = "";
+            tok = wxT("");
          }
-         else if (sl && line.GetChar(i)=='n')
-            tok += '\n';
+         else if (sl && line.GetChar(i)==wxT('n'))
+            tok += wxT('\n');
          else
             tok += line.GetChar(i);
          
          sl = false;
       }
    }
-   if (tok != "")
+   if (tok != wxT(""))
       tokens.Add(tok);
 
    len = tokens.GetCount();
    if (len < 1)
       return;
 
-   if (len==2 && tokens[0]=="nyquist" && tokens[1]=="plug-in") {
+   if (len==2 && tokens[0]==wxT("nyquist") && tokens[1]==wxT("plug-in")) {
       mOK = true;
       return;
    }
 
-   if (len>=2 && tokens[0]=="type") {
-      if (tokens[1]=="process")
+   if (len>=2 && tokens[0]==wxT("type")) {
+      if (tokens[1]==wxT("process"))
          mFlags = PROCESS_EFFECT | PLUGIN_EFFECT;
-      if (tokens[1]=="generate")
+      if (tokens[1]==wxT("generate"))
          mFlags = INSERT_EFFECT | PLUGIN_EFFECT;
-      if (tokens[1]=="analyze")
+      if (tokens[1]==wxT("analyze"))
          mFlags = ANALYZE_EFFECT | PLUGIN_EFFECT;
       return;
    }
 
    // We support versions 1 and 2
    // (Version 2 added support for string parameters.)
-   if (len>=2 && tokens[0]=="version") {
-      if (tokens[1]=="1" || tokens[1]=="2") {
+   if (len>=2 && tokens[0]==wxT("version")) {
+      if (tokens[1]==wxT("1") || tokens[1]==wxT("2")) {
          // We're okay
       }
       else {
@@ -142,22 +142,22 @@ void EffectNyquist::Parse(wxString line)
       }
    }
 
-   if (len>=2 && tokens[0]=="name") {
+   if (len>=2 && tokens[0]==wxT("name")) {
       mName = UnQuote(tokens[1]);
       return;
    }
 
-   if (len>=2 && tokens[0]=="action") {
+   if (len>=2 && tokens[0]==wxT("action")) {
       mAction = UnQuote(tokens[1]);
       return;
    }
 
-   if (len>=2 && tokens[0]=="info") {
+   if (len>=2 && tokens[0]==wxT("info")) {
       mInfo = UnQuote(tokens[1]);
       return;
    }
 
-   if (len>=6 && tokens[0]=="control") {
+   if (len>=6 && tokens[0]==wxT("control")) {
       NyqControl ctrl;
   
       ctrl.var = tokens[1];
@@ -165,13 +165,13 @@ void EffectNyquist::Parse(wxString line)
       ctrl.label = tokens[4];
       ctrl.valStr = tokens[5];
  
-      if (tokens[3]=="string")
+      if (tokens[3]==wxT("string"))
          ctrl.type = NYQ_CTRL_STRING;
       else {
          if (len < 8)
             return;
           
-         if (tokens[3]=="real")
+         if (tokens[3]==wxT("real"))
             ctrl.type = NYQ_CTRL_REAL;
          else
             ctrl.type = NYQ_CTRL_INT;
@@ -192,7 +192,7 @@ void EffectNyquist::ParseFile()
    if (!f.Open())
       return;
 
-   mCmd = "";
+   mCmd = wxT("");
    mFlags = PROCESS_EFFECT | PLUGIN_EFFECT;
    mOK = false;
    mControls.Clear();
@@ -202,10 +202,10 @@ void EffectNyquist::ParseFile()
    wxString line;
    for(i=0; i<len; i++) {
       line = f[i];
-      if (line.Length()>1 && line.GetChar(0)==';')
+      if (line.Length()>1 && line.GetChar(0)==wxT(';'))
          Parse(line);
       else
-         mCmd += line + "\n";
+         mCmd += line + wxT("\n");
    }
 }
 
@@ -214,11 +214,11 @@ EffectNyquist::EffectNyquist(wxString fName)
    mInteractive = false;
    mAction = _("Applying Nyquist Effect...");
 
-   if (fName == "") {
+   if (fName == wxT("")) {
       // Interactive Nyquist
       mOK = true;
       mInteractive = true;
-      mCmd = "";
+      mCmd = wxT("");
       mName = _("Nyquist Prompt...");
       mFlags = PROCESS_EFFECT | BUILTIN_EFFECT;
       return;
@@ -240,11 +240,11 @@ bool EffectNyquist::SetXlispPath()
 {
    wxString fname;
 
-   fname = mXlispPath + wxFILE_SEP_PATH + "nyinit.lsp";
+   fname = mXlispPath + wxFILE_SEP_PATH + wxT("nyinit.lsp");
    if (!(::wxFileExists(FILENAME(fname))))
-      mXlispPath = "";
+      mXlispPath = wxT("");
 
-   if (mXlispPath == "") {
+   if (mXlispPath == wxT("")) {
       wxArrayString audacityPathList = wxGetApp().audacityPathList;
       wxArrayString pathList;
       wxArrayString files;
@@ -252,20 +252,20 @@ bool EffectNyquist::SetXlispPath()
 
       for(i=0; i<audacityPathList.GetCount(); i++) {
          wxString prefix = audacityPathList[i] + wxFILE_SEP_PATH;
-         wxGetApp().AddUniquePathToPathList(prefix + "nyquist",
+         wxGetApp().AddUniquePathToPathList(prefix + wxT("nyquist"),
                                             pathList);
       }
 
-      wxGetApp().FindFilesInPathList("nyquist.lsp", pathList, wxFILE, files);
+      wxGetApp().FindFilesInPathList(wxT("nyquist.lsp"), pathList, wxFILE, files);
 
       if (files.GetCount() > 0) {
          mXlispPath = ::wxPathOnly(files[0]);
       }
    }
 
-   set_xlisp_path((const char *)mXlispPath);
+   set_xlisp_path(mXlispPath.fn_str());
 
-   fname = mXlispPath + wxFILE_SEP_PATH + "nyinit.lsp";
+   fname = mXlispPath + wxFILE_SEP_PATH + wxT("nyinit.lsp");
    return ::wxFileExists(FILENAME(fname));
 }
 
@@ -352,7 +352,7 @@ bool EffectNyquist::Process()
    mOutputTime = mT1 - mT0;
    mCount = 0;
    mProgress = 0;
-   mDebugOutput = "";
+   mDebugOutput = wxT("");
    while (mCurTrack[0]) {
       mCurNumChannels = 1;
       double trackStart = mCurTrack[0]->GetStartTime();
@@ -366,7 +366,7 @@ bool EffectNyquist::Process()
             mCurTrack[1] = (WaveTrack *)iter.Next();
             if (mCurTrack[1]->GetRate() != mCurTrack[0]->GetRate()) {
                wxMessageBox(_("Sorry, cannot apply effect on stereo tracks "
-                            "where the tracks don't match."), "Nyquist",
+                            "where the tracks don't match."), wxT("Nyquist"),
                             wxOK | wxCENTRE, mParent);
                return false;
             }
@@ -426,7 +426,7 @@ int EffectNyquist::GetCallback(float *buffer, int ch,
       if (!mCurTrack[ch]->Get(mCurBuffer[ch], floatSample,
                               mCurBufferStart[ch], mCurBufferLen[ch])) {
 
-         printf("GET error\n");
+         wxPrintf(wxT("GET error\n"));
 
          return -1;
       }
@@ -497,23 +497,23 @@ bool EffectNyquist::ProcessOne()
    wxString cmd;
 
    if (mDebug) {
-      cmd = cmd + "(setf *tracenable* T)\n";
+      cmd = cmd + wxT("(setf *tracenable* T)\n");
    }
 
    for(unsigned int j=0; j<mControls.GetCount(); j++) {
       if (mControls[j].type==NYQ_CTRL_REAL)
-         cmd = cmd+wxString::Format("(setf %s %f)\n",
-                                    (const char *)mControls[j].var,
+         cmd = cmd+wxString::Format(wxT("(setf %s %f)\n"),
+                                    mControls[j].var.c_str(),
                                     mControls[j].val);
       else if (mControls[j].type==NYQ_CTRL_INT)
-         cmd = cmd+wxString::Format("(setf %s %d)\n",
-                                    (const char *)mControls[j].var,
+         cmd = cmd+wxString::Format(wxT("(setf %s %d)\n"),
+                                    mControls[j].var.c_str(),
                                     (int)(mControls[j].val));
       else if (mControls[j].type==NYQ_CTRL_STRING) {
          wxString str = mControls[j].valStr;
-         str.Replace("\"", "'");
-         cmd = cmd+wxString::Format("(setf %s \"%s\")\n",
-                                    (const char *)mControls[j].var,
+         str.Replace(wxT("\""), wxT("'"));
+         cmd = cmd+wxString::Format(wxT("(setf %s \"%s\")\n"),
+                                    mControls[j].var.c_str(),
                                     str.c_str());
       }
    }
@@ -523,18 +523,18 @@ bool EffectNyquist::ProcessOne()
    int i;
 	for (i = 0; i < mCurNumChannels; i++)
 		mCurBuffer[i] = NULL;
-   rval = nyx_eval_expression(cmd);
+   rval = nyx_eval_expression(cmd.mb_str());
 
    if (mDebug) {
       int len;
       const char *str;
 
       nyx_get_captured_output(&len, &str);
-      mDebugOutput += wxString(str, len);
+      mDebugOutput += wxString(str, wxConvISO8859_1, len);
    }
 
    if (rval == nyx_string) {
-      wxMessageBox(nyx_get_string(), "Nyquist",
+      wxMessageBox(wxString(nyx_get_string(), wxConvISO8859_1), wxT("Nyquist"),
                    wxOK | wxCENTRE, mParent);
       nyx_cleanup();
       return true;
@@ -543,7 +543,7 @@ bool EffectNyquist::ProcessOne()
    if (rval == nyx_double) {
       wxString str;
       str.Printf(_("Nyquist returned the value: %f"), nyx_get_double());
-      wxMessageBox(str, "Nyquist",
+      wxMessageBox(str, wxT("Nyquist"),
                    wxOK | wxCENTRE, mParent);
       nyx_cleanup();
       return true;
@@ -552,7 +552,7 @@ bool EffectNyquist::ProcessOne()
    if (rval == nyx_int) {
       wxString str;
       str.Printf(_("Nyquist returned the value: %d"), nyx_get_int());
-      wxMessageBox(str, "Nyquist",
+      wxMessageBox(str, wxT("Nyquist"),
                    wxOK | wxCENTRE, mParent);
       nyx_cleanup();
       return true;
@@ -582,7 +582,7 @@ bool EffectNyquist::ProcessOne()
 
          nyx_get_label(l, &t, &str);
 
-         ltrack->AddLabel(t + mT0, t + mT0, str);
+         ltrack->AddLabel(t + mT0, t + mT0, LAT1CTOWX(str));
       }
 
       nyx_cleanup();
@@ -590,7 +590,7 @@ bool EffectNyquist::ProcessOne()
    }
 
    if (rval != nyx_audio) {
-      wxMessageBox(_("Nyquist did not return audio.\n"), "Nyquist",
+      wxMessageBox(_("Nyquist did not return audio.\n"), wxT("Nyquist"),
                    wxOK | wxCENTRE, mParent);
       nyx_cleanup();
       return false;
@@ -601,7 +601,7 @@ bool EffectNyquist::ProcessOne()
    outChannels = nyx_get_audio_num_channels();
    if (outChannels > mCurNumChannels) {
       wxMessageBox(_("Nyquist returned too many audio channels.\n"),
-                   "Nyquist",
+                   wxT("Nyquist"),
                    wxOK | wxCENTRE, mParent);
       nyx_cleanup();
       return false;
@@ -708,7 +708,7 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
       else {
          // Integer or Real
 
-         item = new wxTextCtrl(this, ID_NYQ_TEXT+i, "",
+         item = new wxTextCtrl(this, ID_NYQ_TEXT+i, wxT(""),
                                wxDefaultPosition, wxSize(60, -1));
          grid->Add(item, 0, wxALIGN_CENTRE |
                    wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -774,18 +774,18 @@ void NyquistDialog::OnSlider(wxCommandEvent & /* event */)
       wxString valStr;
       if (ctrl->type == NYQ_CTRL_REAL) {
          if (ctrl->high - ctrl->low < 1)
-            valStr.Printf("%.3f", ctrl->val);
+            valStr.Printf(wxT("%.3f"), ctrl->val);
          else if (ctrl->high - ctrl->low < 10)
-            valStr.Printf("%.2f", ctrl->val);
+            valStr.Printf(wxT("%.2f"), ctrl->val);
          else if (ctrl->high - ctrl->low < 100)
-            valStr.Printf("%.1f", ctrl->val);
+            valStr.Printf(wxT("%.1f"), ctrl->val);
          else
-            valStr.Printf("%d", (int)floor(ctrl->val + 0.5));
+            valStr.Printf(wxT("%d"), (int)floor(ctrl->val + 0.5));
       }
       else if (ctrl->type == NYQ_CTRL_INT)
-         valStr.Printf("%d", (int)floor(ctrl->val + 0.5));
+         valStr.Printf(wxT("%d"), (int)floor(ctrl->val + 0.5));
 
-      if (valStr != "")
+      if (valStr != wxT(""))
          text->SetValue(valStr);
    }
 

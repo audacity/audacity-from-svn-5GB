@@ -66,12 +66,12 @@ void ComputeLegacySummaryInfo(wxFileName fileName,
                                info->format);
 
    wxLogNull *silence=0;
-   wxFFile summaryFile;
+   wxFFile summaryFile(fopen(fileName.GetFullPath().fn_str(), "rb"));
    int read;
    if(Silent)silence= new wxLogNull();
 
-   if( !summaryFile.Open(fileName.GetFullPath(), "rb") ) {
-      wxLogWarning("Unable to access summary file %s; substituting silence for remainder of session",
+   if( !summaryFile.IsOpened() ) {
+      wxLogWarning(wxT("Unable to access summary file %s; substituting silence for remainder of session"),
                    fileName.GetFullPath().c_str());
 
       read=info->frames64K * info->bytesPerFrame;
@@ -147,11 +147,11 @@ LegacyBlockFile::~LegacyBlockFile()
 /// mSummaryinfo.totalSummaryBytes long.
 bool LegacyBlockFile::ReadSummary(void *data)
 {
-   wxFFile summaryFile;
+   wxFFile summaryFile(fopen(mFileName.GetFullPath().fn_str(), "rb"));
    wxLogNull *silence=0;
    if(mSilentLog)silence= new wxLogNull();
 
-   if( !summaryFile.Open(mFileName.GetFullPath(), "rb") ){
+   if( !summaryFile.IsOpened() ){
 
       memset(data,0,(size_t)mSummaryInfo.totalSummaryBytes);
 
@@ -202,7 +202,7 @@ int LegacyBlockFile::ReadData(samplePtr data, sampleFormat format,
    info.frames = mLen + (mSummaryInfo.totalSummaryBytes /
                          SAMPLE_SIZE(mFormat));
    
-   SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()), SFM_READ, &info);
+   SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()).fn_str(), SFM_READ, &info);
    wxLogNull *silence=0;
    if(mSilentLog)silence= new wxLogNull();
 
@@ -260,19 +260,19 @@ int LegacyBlockFile::ReadData(samplePtr data, sampleFormat format,
 void LegacyBlockFile::SaveXML(int depth, wxFFile &xmlFile)
 {
    for(int i = 0; i < depth; i++)
-      xmlFile.Write("\t");
-   xmlFile.Write("<legacyblockfile ");
-   xmlFile.Write(wxString::Format("name='%s' ",
+      xmlFile.Write(wxT("\t"));
+   xmlFile.Write(wxT("<legacyblockfile "));
+   xmlFile.Write(wxString::Format(wxT("name='%s' "),
                                   XMLTagHandler::XMLEsc(mFileName.GetFullName()).c_str()));
-   xmlFile.Write(wxString::Format("len='%d' ", mLen));
+   xmlFile.Write(wxString::Format(wxT("len='%d' "), mLen));
    if (mSummaryInfo.fields < 3)
-      xmlFile.Write(wxString::Format("norms='1' "));
-   xmlFile.Write(wxString::Format("summarylen='%d' ", mSummaryInfo.totalSummaryBytes));
-   xmlFile.Write("/>\n");
+      xmlFile.Write(wxString::Format(wxT("norms='1' ")));
+   xmlFile.Write(wxString::Format(wxT("summarylen='%d' "), mSummaryInfo.totalSummaryBytes));
+   xmlFile.Write(wxT("/>\n"));
 }
 
 /// static
-BlockFile *LegacyBlockFile::BuildFromXML(wxString projDir, const char **attrs,
+BlockFile *LegacyBlockFile::BuildFromXML(wxString projDir, const wxChar **attrs,
                                          sampleCount len, sampleFormat format)
 {
    wxFileName fileName;
@@ -281,19 +281,19 @@ BlockFile *LegacyBlockFile::BuildFromXML(wxString projDir, const char **attrs,
 
    while(*attrs)
    {
-       const char *attr =  *attrs++;
-       const char *value = *attrs++;
+       const wxChar *attr =  *attrs++;
+       const wxChar *value = *attrs++;
 
-       if( !strcmp(attr, "name") )
+       if( !wxStrcmp(attr, wxT("name")) )
           fileName.Assign(projDir, value);
-       if( !strcmp(attr, "len") )
-          len = atoi(value);
-       if( !strcmp(attr, "norms") )
-          noRMS = atoi(value)?true:false;
-       if( !strcmp(attr, "format") )
-          format = (sampleFormat)atoi(value);
-       if( !strcmp(attr, "summarylen") )
-          summaryLen = atoi(value);
+       if( !wxStrcmp(attr, wxT("len")) )
+          len = wxAtoi(value);
+       if( !wxStrcmp(attr, wxT("norms")) )
+          noRMS = wxAtoi(value)?true:false;
+       if( !wxStrcmp(attr, wxT("format")) )
+          format = (sampleFormat)wxAtoi(value);
+       if( !wxStrcmp(attr, wxT("summarylen")) )
+          summaryLen = wxAtoi(value);
    }
 
    return new LegacyBlockFile(fileName, format, summaryLen, len, noRMS);

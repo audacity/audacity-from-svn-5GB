@@ -32,9 +32,9 @@ int formats[] = {
 };
 
 wxString stringFormats[] = {
-   "16-bit",
-   "24-bit",
-   "32-bit float"
+   wxT("16-bit"),
+   wxT("24-bit"),
+   wxT("32-bit float")
 };
 
 #define NUM_FORMATS 3
@@ -55,11 +55,11 @@ PrefsPanel(parent)
    wxArrayLong sampleRates = AudioIO::GetSupportedSampleRates();
    
    int rate =
-       gPrefs->Read("/SamplingRate/DefaultProjectSampleRate",
+       gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"),
                     AudioIO::GetOptimalSupportedSampleRate());
 
    int format =
-      gPrefs->Read("/SamplingRate/DefaultProjectSampleFormat", floatSample);
+      gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
 
    int pos = sampleRates.GetCount(); // Fall back to "Other..."
    for (i = 0; i < (int)sampleRates.GetCount(); i++)
@@ -97,7 +97,7 @@ PrefsPanel(parent)
       for (i = 0; i < (int)sampleRates.GetCount(); i++)
       {
          int sampleRate = (int)sampleRates[i];
-         stringRates[i] = wxString::Format("%i Hz", sampleRate);
+         stringRates[i] = wxString::Format(wxT("%i Hz"), sampleRate);
       }
       
       stringRates[sampleRates.GetCount()] = _("Other...");
@@ -110,7 +110,7 @@ PrefsPanel(parent)
 
       mOtherSampleRate = NULL;
       mOtherSampleRate = new wxTextCtrl(
-         this, -1, wxString::Format("%i", rate),
+         this, -1, wxString::Format(wxT("%i"), rate),
          wxDefaultPosition, wxSize(50, -1), 0 );
 
       mOtherSampleRate->Enable(pos == (int)sampleRates.GetCount() + 1);
@@ -170,7 +170,7 @@ PrefsPanel(parent)
    ditherStrings[Dither::shaped] = _("Shaped");
    
    // Low-quality dithering option
-   int dither = gPrefs->Read("/Quality/DitherAlgorithm", (long)Dither::none);
+   int dither = gPrefs->Read(wxT("/Quality/DitherAlgorithm"), (long)Dither::none);
    
    gridSizer->Add(
          new wxStaticText(this, -1, _("Real-time dither:"), wxPoint(-1,-1), wxDefaultSize, wxALIGN_RIGHT), 0,
@@ -183,7 +183,7 @@ PrefsPanel(parent)
    gridSizer->Add(mDithers, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER);
    
    // High quality dithering option
-   int ditherHQ = gPrefs->Read("/Quality/HQDitherAlgorithm", (long)Dither::triangle);;
+   int ditherHQ = gPrefs->Read(wxT("/Quality/HQDitherAlgorithm"), (long)Dither::triangle);;
    
    gridSizer->Add(
          new wxStaticText(this, -1, _("High-quality dither:"), wxPoint(-1,-1), wxDefaultSize, wxALIGN_RIGHT), 0,
@@ -217,11 +217,11 @@ bool QualityPrefs::Apply()
    else
       (mOtherSampleRate->GetValue()).ToLong(&rate);
 
-   gPrefs->Write("/SamplingRate/DefaultProjectSampleRate", rate);
+   gPrefs->Write(wxT("/SamplingRate/DefaultProjectSampleRate"), rate);
 
    format = formats[fmtsel];
 
-   gPrefs->Write("/SamplingRate/DefaultProjectSampleFormat", format);
+   gPrefs->Write(wxT("/SamplingRate/DefaultProjectSampleFormat"), format);
 
    /* Audacity will automatically re-read this value whenever a new project
     * is created, so don't bother making it do so now... */
@@ -234,8 +234,8 @@ bool QualityPrefs::Apply()
    // Save dither options
    int dither = mDithers->GetSelection();
    int ditherHQ = mHQDithers->GetSelection();
-   gPrefs->Write("/Quality/HQDitherAlgorithm", (long)ditherHQ);
-   gPrefs->Write("/Quality/DitherAlgorithm", (long)dither);
+   gPrefs->Write(wxT("/Quality/HQDitherAlgorithm"), (long)ditherHQ);
+   gPrefs->Write(wxT("/Quality/DitherAlgorithm"), (long)dither);
    
    // Tell CopySamples() to use these ditherers now
    InitDitherers();

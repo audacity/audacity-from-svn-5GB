@@ -50,7 +50,7 @@ WX_DEFINE_ARRAY(LWSlider *, LWSliderArray);
 class TrackPanelListener {
  public:
    virtual void TP_DisplaySelection() = 0;
-   virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum) = 0;
+   virtual void TP_DisplayStatusMessage(const wxChar *msg, int fieldNum) = 0;
    virtual int TP_GetCurrentTool() = 0;
    virtual ControlToolBar * TP_GetControlToolBar() = 0;
    virtual void TP_OnPlayKey() = 0;
@@ -206,11 +206,11 @@ class TrackPanel:public wxPanel {
 
    // AS: Cursor handling
    bool SetCursorByActivity( );
-   void SetCursorAndTipWhenInLabel( Track * t, wxMouseEvent &event, const char ** ppTip );
-   void SetCursorAndTipWhenInVResizeArea( Track * label, bool blinked, const char ** ppTip );
-   void SetCursorAndTipWhenInLabelTrack( LabelTrack * pLT, wxMouseEvent & event, const char ** ppTip );
-   void SetCursorAndTipWhenSelectTool( Track * t, wxMouseEvent & event, wxRect &r, bool bMultiToolMode, const char ** ppTip );
-   void SetCursorAndTipByTool( int tool, wxMouseEvent & event, const char **ppTip );
+   void SetCursorAndTipWhenInLabel( Track * t, wxMouseEvent &event, const wxChar ** ppTip );
+   void SetCursorAndTipWhenInVResizeArea( Track * label, bool blinked, const wxChar ** ppTip );
+   void SetCursorAndTipWhenInLabelTrack( LabelTrack * pLT, wxMouseEvent & event, const wxChar ** ppTip );
+   void SetCursorAndTipWhenSelectTool( Track * t, wxMouseEvent & event, wxRect &r, bool bMultiToolMode, const wxChar ** ppTip );
+   void SetCursorAndTipByTool( int tool, wxMouseEvent & event, const wxChar **ppTip );
    void HandleCursor(wxMouseEvent & event);
 
    // AS: Envelope editing handlers

@@ -82,7 +82,7 @@ class Effect {
    virtual wxString GetEffectDescription() { 
       // Default provides effect name. 
       return wxString::Format(_("Applied effect: %s"), 
-                              (const char *)(this->GetEffectName())); 
+                              this->GetEffectName().c_str()); 
    } 
 	 
    // Return flags which tell you what kind of effect this is.

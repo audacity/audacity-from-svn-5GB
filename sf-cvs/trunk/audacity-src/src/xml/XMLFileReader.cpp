@@ -26,27 +26,22 @@ XMLFileReader::XMLFileReader()
    mMaxDepth = 128;
    mHandler = new XMLTagHandler*[mMaxDepth];
    mDepth = -1;
-   mErrorStr = 0;
+   mErrorStr = wxT("");
 }
 
 XMLFileReader::~XMLFileReader()
 {
-   if (mErrorStr)
-      delete[] mErrorStr;
    delete[] mHandler;
    XML_ParserFree(mParser);
 }
 
 bool XMLFileReader::Parse(XMLTagHandler *baseHandler,
-                          const char *fname)
+                          const wxString &fname)
 {
-   FILE *fp = fopen(FILENAME(fname), "rb");
+   FILE *fp = fopen(FILENAME(fname).fn_str(), "rb");
    if (!fp || ferror(fp)) {
-      const char *formatStr = _("Could not open file: \"%s\"");
-      if (mErrorStr)
-         delete[] mErrorStr;
-      mErrorStr = new char[strlen(fname) + strlen(formatStr) + 10];
-      sprintf(mErrorStr, formatStr, fname);
+      wxString errStr;
+      mErrorStr.Printf(_("Could not open file: \"%s\""), fname.c_str());
       return false;
    }
 
@@ -60,13 +55,9 @@ bool XMLFileReader::Parse(XMLTagHandler *baseHandler,
       size_t len = fread(buffer, 1, bufferSize, fp);
       done = (len < bufferSize);
       if (!XML_Parse(mParser, buffer, len, done)) {
-         const char *formatStr = _("Error: %s at line %d");
-         const char *errorStr = XML_ErrorString(XML_GetErrorCode(mParser));
-         if (mErrorStr)
-            delete[] mErrorStr;
-         mErrorStr = new char[strlen(errorStr) + strlen(formatStr) + 10];
-         sprintf(mErrorStr, formatStr,
-                 errorStr, XML_GetCurrentLineNumber(mParser));
+         mErrorStr.Printf(_("Error: %hs at line %d"),
+			  XML_ErrorString(XML_GetErrorCode(mParser)),
+			  XML_GetCurrentLineNumber(mParser));
          fclose(fp);
          return false;
       }
@@ -80,19 +71,14 @@ bool XMLFileReader::Parse(XMLTagHandler *baseHandler,
    if (mHandler[0])
       return true;
    else {
-      const char *errorStr = _("Unable to open project file.");
-      if (mErrorStr)
-         delete[] mErrorStr;
-      mErrorStr = new char[strlen(errorStr)+1];
-      strcpy(mErrorStr, errorStr);
-
+      mErrorStr.Printf(_("Unable to open project file."));
       return false;
    }
 }
 
-const char *XMLFileReader::GetErrorStr()
+wxString XMLFileReader::GetErrorStr()
 {
-   return (const char *)mErrorStr;
+   return mErrorStr;
 }
 
 // static

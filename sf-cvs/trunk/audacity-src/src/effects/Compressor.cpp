@@ -373,7 +373,7 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
    vRuler.SetOrientation(wxVERTICAL);
    vRuler.SetRange(0, -rangeDB);
    vRuler.SetFormat(Ruler::LinearDBFormat);
-   vRuler.SetUnits("dB");
+   vRuler.SetUnits(wxT("dB"));
    vRuler.Draw(memDC);
 
    Ruler hRuler;
@@ -381,7 +381,7 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
    hRuler.SetOrientation(wxHORIZONTAL);
    hRuler.SetRange(-rangeDB, 0);
    hRuler.SetFormat(Ruler::LinearDBFormat);
-   hRuler.SetUnits("dB");
+   hRuler.SetUnits(wxT("dB"));
    hRuler.SetFlip(true);
    hRuler.Draw(memDC);
 
@@ -432,21 +432,21 @@ CompressorDialog::CompressorDialog(EffectCompressor *effect,
 
    wxFlexGridSizer *gridSizer = new wxFlexGridSizer(2, 0, 0);
 
-   mThresholdText = new wxStaticText(this, -1, wxString(_("Threshold: ")) + "XXX dB");
+   mThresholdText = new wxStaticText(this, -1, wxString(_("Threshold: ")) + wxT("XXX dB"));
    gridSizer->Add(mThresholdText, 0, wxALIGN_LEFT|wxALL, 5);
 
    mThresholdSlider = new wxSlider(this, ThresholdID, -8, -36, -1,
                                    wxDefaultPosition, wxSize(200, -1), wxSL_HORIZONTAL);
    gridSizer->Add(mThresholdSlider, 1, wxEXPAND|wxALL, 5);
 
-   mRatioText = new wxStaticText(this, -1, wxString(_("Ratio: ")) + "XXXX:1");
+   mRatioText = new wxStaticText(this, -1, wxString(_("Ratio: ")) + wxT("XXXX:1"));
    gridSizer->Add(mRatioText, 0, wxALIGN_LEFT|wxALL, 5);
 
    mRatioSlider = new wxSlider(this, RatioID, 4, 3, 20,
                                wxDefaultPosition, wxSize(200, -1), wxSL_HORIZONTAL);
    gridSizer->Add(mRatioSlider, 1, wxEXPAND|wxALL, 5);
 
-   mAttackText = new wxStaticText(this, -1, wxString(_("Attack Time: ")) + "XXXX secs");
+   mAttackText = new wxStaticText(this, -1, wxString(_("Attack Time: ")) + wxT("XXXX secs"));
    gridSizer->Add(mAttackText, 0, wxALIGN_LEFT|wxALL, 5);
 
    mAttackSlider = new wxSlider(this, AttackID, 2, 1, 10,

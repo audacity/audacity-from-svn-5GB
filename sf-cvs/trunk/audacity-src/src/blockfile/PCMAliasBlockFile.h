@@ -40,7 +40,7 @@ class PCMAliasBlockFile : public AliasBlockFile
    virtual BlockFile *Copy(wxFileName fileName);
    virtual void Recover();
 
-   static BlockFile *BuildFromXML(DirManager &dm, const char **attrs);
+   static BlockFile *BuildFromXML(DirManager &dm, const wxChar **attrs);
 };
 
 #endif

@@ -40,7 +40,7 @@ EffectChangeSpeed::EffectChangeSpeed()
 wxString EffectChangeSpeed::GetEffectDescription() { 
    // Note: This is useful only after change amount has been set. 
    return wxString::Format(_("Applied effect: %s %.1f%%"), 
-                           (const char *)(this->GetEffectName()), 
+                           this->GetEffectName().c_str(), 
 									m_PercentChange); 
 } 
 
@@ -312,7 +312,7 @@ ChangeSpeedDialog::ChangeSpeedDialog(EffectChangeSpeed * effect,
 
 	//v Override wxTextValidator to disallow negative values <= -100.0?
    m_pTextCtrl_PercentChange = 
-		new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, "0.0", 
+		new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, wxT("0.0"), 
 							wxDefaultPosition, wxSize(40, -1), 0,
 							wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_PercentChange->Add(m_pTextCtrl_PercentChange, 0, 
@@ -333,7 +333,7 @@ ChangeSpeedDialog::ChangeSpeedDialog(EffectChangeSpeed * effect,
 	// from/to Vinyl controls
    wxBoxSizer * pBoxSizer_Vinyl = new wxBoxSizer(wxHORIZONTAL);
 
-	const wxString strArray_VinylRPM[] = {"33 1/3", "45", "78",
+	const wxString strArray_VinylRPM[] = {wxT("33 1/3"), wxT("45"), wxT("78"),
                                          /* i18n-hint: n/a is an English
                                             abbreviation meaning "not
                                             applicable" (in other words,
@@ -546,7 +546,7 @@ void ChangeSpeedDialog::Update_Text_PercentChange()
 {
 	if (m_pTextCtrl_PercentChange) {
 		wxString str;
-		str.Printf("%.1f", m_PercentChange);
+		str.Printf(wxT("%.1f"), m_PercentChange);
 		m_pTextCtrl_PercentChange->SetValue(str);
 	}
 }

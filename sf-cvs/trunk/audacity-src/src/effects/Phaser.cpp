@@ -51,7 +51,7 @@ EffectPhaser::EffectPhaser()
 wxString EffectPhaser::GetEffectDescription() { 
    // Note: This is useful only after values have been set. 
    return wxString::Format(_("Applied effect: %s %d stages, %.0f%% wet, frequency = %.1f Hz, start phase = %.0f deg, depth = %d, feedback = %.0f%%"), 
-                           (const char *)(this->GetEffectName()), 
+                           this->GetEffectName().c_str(), 
                            stages, 
                            float(drywet*100/255), 
                            freq, 
@@ -225,28 +225,28 @@ bool PhaserDialog::TransferDataToWindow()
    wxTextCtrl *text = GetFreqText();
    if (text) {
       wxString str;
-      str.Printf("%.1f", freq);
+      str.Printf(wxT("%.1f"), freq);
       text->SetValue(str);
    }
 
    text = GetPhaseText();
    if (text) {
       wxString str;
-      str.Printf("%d", (int) startphase);
+      str.Printf(wxT("%d"), (int) startphase);
       text->SetValue(str);
    }
 
    text = GetDepthText();
    if (text) {
       wxString str;
-      str.Printf("%d", (int) depth);
+      str.Printf(wxT("%d"), (int) depth);
       text->SetValue(str);
    }
 
    text = GetFeedbackText();
    if (text) {
       wxString str;
-      str.Printf("%d", (int) fb);
+      str.Printf(wxT("%d"), (int) fb);
       text->SetValue(str);
    }
 
@@ -309,7 +309,7 @@ void PhaserDialog::OnFeedbackSlider(wxCommandEvent & event)
       fb = ((fb + 5) / 10) * 10;
    else
       fb = ((fb - 5) / 10) * 10;
-   str.Printf("%ld", fb);
+   str.Printf(wxT("%ld"), fb);
    GetFeedbackText()->SetValue(str);
 }
 
@@ -317,7 +317,7 @@ void PhaserDialog::OnDepthSlider(wxCommandEvent & event)
 {
    wxString str;
    long depth = GetDepthSlider()->GetValue();
-   str.Printf("%ld", depth);
+   str.Printf(wxT("%ld"), depth);
    GetDepthText()->SetValue(str);
 }
 
@@ -326,7 +326,7 @@ void PhaserDialog::OnPhaseSlider(wxCommandEvent & event)
    wxString str;
    long phase = GetPhaseSlider()->GetValue();
    phase = ((phase + 5) / 10) * 10;     // round to nearest multiple of 10
-   str.Printf("%ld", phase);
+   str.Printf(wxT("%ld"), phase);
    GetPhaseText()->SetValue(str);
 }
 
@@ -334,7 +334,7 @@ void PhaserDialog::OnFreqSlider(wxCommandEvent & event)
 {
    wxString str;
    long freq = GetFreqSlider()->GetValue();
-   str.Printf("%.1f", freq / 10.0);
+   str.Printf(wxT("%.1f"), freq / 10.0);
    GetFreqText()->SetValue(str);
 }
 
@@ -463,7 +463,7 @@ wxSizer *CreatePhaserDialog(wxWindow * parent, bool call_fit,
    item2->Add(item3, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxSpinCtrl *item4 =
-       new wxSpinCtrl(parent, ID_STAGES, "2", wxDefaultPosition,
+       new wxSpinCtrl(parent, ID_STAGES, wxT("2"), wxDefaultPosition,
                       wxSize(80, -1), 0, 2, 24, 2);
    item2->Add(item4, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -506,7 +506,7 @@ wxSizer *CreatePhaserDialog(wxWindow * parent, bool call_fit,
                5);
 
    wxTextCtrl *item12 =
-       new wxTextCtrl(parent, ID_FREQTEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_FREQTEXT, wxT(""), wxDefaultPosition,
                       wxSize(40, -1), 0);
    item10->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -522,7 +522,7 @@ wxSizer *CreatePhaserDialog(wxWindow * parent, bool call_fit,
                5);
 
    wxTextCtrl *item15 =
-       new wxTextCtrl(parent, ID_PHASETEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_PHASETEXT, wxT(""), wxDefaultPosition,
                       wxSize(40, -1), 0);
    item10->Add(item15, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -538,7 +538,7 @@ wxSizer *CreatePhaserDialog(wxWindow * parent, bool call_fit,
                5);
 
    wxTextCtrl *item18 =
-       new wxTextCtrl(parent, ID_DEPTHTEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_DEPTHTEXT, wxT(""), wxDefaultPosition,
                       wxSize(40, -1), 0);
    item10->Add(item18, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -554,7 +554,7 @@ wxSizer *CreatePhaserDialog(wxWindow * parent, bool call_fit,
                5);
 
    wxTextCtrl *item21 =
-       new wxTextCtrl(parent, ID_FEEDBACKTEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_FEEDBACKTEXT, wxT(""), wxDefaultPosition,
                       wxSize(40, -1), 0);
    item10->Add(item21, 0, wxALIGN_CENTRE | wxALL, 5);
 

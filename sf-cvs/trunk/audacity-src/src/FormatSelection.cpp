@@ -107,12 +107,12 @@ wxString FormatSelection(int iformat, int iSnapTo,
    //   use (long int)rint() to get a long int out of a double
 
    wxString result;
-   // TODO: Check whether we need a 'const' in the char * somewhere.
-   char * SnapTo[2];
+   // TODO: Check whether we need a 'const' in the wxChar * somewhere.
+   wxChar * SnapTo[2];
    /* i18n-hint: This snap-to string will appear in the status bar. */
-   SnapTo[0] = (char *)_("[Snap-To Off]");
+   SnapTo[0] = (wxChar *)_("[Snap-To Off]");
    /* i18n-hint: This snap-to string will appear in the status bar. */
-   SnapTo[1] = (char *)_("[Snap-To On]");
+   SnapTo[1] = (wxChar *)_("[Snap-To On]");
 
    // variables used
    int ihr1, ihr2, ihrtot;
@@ -793,7 +793,7 @@ wxString FormatSelection(int iformat, int iSnapTo,
 
    default:
       // This is an unusual error - doesn't need to be translated.
-      result.Printf("Selection: invalid iformat value (%i) in FormatSelection.cpp",iformat);
+      result.Printf(wxT("Selection: invalid iformat value (%i) in FormatSelection.cpp"),iformat);
       break;
 
    }

@@ -29,20 +29,20 @@ wxString XMLTagHandler::XMLEsc(wxString s)
       wxChar c = s.GetChar(i);
 
       switch (c) {
-         case '\'':
-            result += "&apos;";
+         case wxT('\''):
+            result += wxT("&apos;");
             break;
-         case '"':
-            result += "&quot;";
+         case wxT('"'):
+            result += wxT("&quot;");
             break;
-         case '&':
-            result += "&amp;";
+         case wxT('&'):
+            result += wxT("&amp;");
             break;
-         case '<':
-            result += "&lt;";
+         case wxT('<'):
+            result += wxT("&lt;");
             break;
-         case '>':
-            result += "&gt;";
+         case wxT('>'):
+            result += wxT("&gt;");
             break;
          default:
             result += c;
@@ -58,20 +58,20 @@ bool XMLTagHandler::ReadXMLTag(const char *tag, const char **attrs)
 
    while (*attrs) {
       const char *s = *attrs++;
-      tmp_attrs.Add(Internat::UTF8ToLocal(s));
+      tmp_attrs.Add(UTF8CTOWX(s));
    }
 
 // JKC: Previously the next line was:
 // const char **out_attrs = new char (const char *)[tmp_attrs.GetCount()+1];
 // however MSVC doesn't like the constness in this position, so this is now 
 // added by a cast after creating the array of pointers-to-non-const chars.
-   const char **out_attrs = (const char**)new char *[tmp_attrs.GetCount()+1];
+   const wxChar **out_attrs = (const wxChar**)new wxChar *[tmp_attrs.GetCount()+1];
    for (size_t i=0; i<tmp_attrs.GetCount(); i++) {
       out_attrs[i] = tmp_attrs[i].c_str();
    }
    out_attrs[tmp_attrs.GetCount()] = 0;
 
-   bool result = HandleXMLTag(Internat::UTF8ToLocal(tag), out_attrs);
+   bool result = HandleXMLTag(UTF8CTOWX(tag).c_str(), out_attrs);
 
    delete[] out_attrs;
    return result;
@@ -79,12 +79,12 @@ bool XMLTagHandler::ReadXMLTag(const char *tag, const char **attrs)
 
 void XMLTagHandler::ReadXMLEndTag(const char *tag)
 {
-   HandleXMLEndTag(Internat::UTF8ToLocal(tag));
+   HandleXMLEndTag(UTF8CTOWX(tag).c_str());
 }
 
 XMLTagHandler *XMLTagHandler::ReadXMLChild(const char *tag)
 {
-   return HandleXMLChild(Internat::UTF8ToLocal(tag));
+   return HandleXMLChild(UTF8CTOWX(tag).c_str());
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

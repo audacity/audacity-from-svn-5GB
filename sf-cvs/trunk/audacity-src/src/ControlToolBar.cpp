@@ -73,7 +73,7 @@ enum {
 
 // Strings to convert a tool number into a status message
 // These MUST be in the same order as the ids above.
-const char * MessageOfTool[numTools] = { wxTRANSLATE("Click and drag to select audio"),
+const wxChar * MessageOfTool[numTools] = { wxTRANSLATE("Click and drag to select audio"),
    wxTRANSLATE("Click and drag to edit the amplitude envelope"),
    wxTRANSLATE("Click and drag to edit the samples"),
 #if defined( __WXMAC__ )
@@ -84,7 +84,7 @@ const char * MessageOfTool[numTools] = { wxTRANSLATE("Click and drag to select a
    wxTRANSLATE("Left=Zoom In, Right=Zoom Out, Middle=Normal"),
 #endif
    wxTRANSLATE("Click and drag to move a track in time"),
-   "" // multi-mode tool
+   wxT("") // multi-mode tool
 };
 
 
@@ -180,7 +180,7 @@ void ControlToolBar::InitializeControlToolBar()
    mCurrentTool = selectTool;
    mTool[mCurrentTool]->PushDown();
 
-   gPrefs->Read("/GUI/AlwaysEnablePause", &mAlwaysEnablePause, false);
+   gPrefs->Read(wxT("/GUI/AlwaysEnablePause"), &mAlwaysEnablePause, false);
 
    mPaused=false;             //Turn the paused state to off
 #if 0
@@ -414,7 +414,7 @@ void ControlToolBar::MakeButtons()
    int buttonOrder[6];
    mxButtonPos = 95;
    
-   gPrefs->Read("/GUI/ErgonomicTransportButtons", &mErgonomicTransportButtons, true);
+   gPrefs->Read(wxT("/GUI/ErgonomicTransportButtons"), &mErgonomicTransportButtons, true);
 
    if (mErgonomicTransportButtons)
    {
@@ -584,7 +584,7 @@ void ControlToolBar::OnKeyEvent(wxKeyEvent & event)
 void ControlToolBar::UpdatePrefs()
 {
 #if 0
-   gPrefs->Read("/GUI/AlwaysEnablePause", &mAlwaysEnablePause, false);
+   gPrefs->Read(wxT("/GUI/AlwaysEnablePause"), &mAlwaysEnablePause, false);
 
    if(mAlwaysEnablePause)
       mPause->Enable();
@@ -850,8 +850,8 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       WaveTrackArray newRecordingTracks, playbackTracks;
 
       bool duplex;
-      gPrefs->Read("/AudioIO/Duplex", &duplex, true);
-      int recordingChannels = gPrefs->Read("/AudioIO/RecordChannels", 1);
+      gPrefs->Read(wxT("/AudioIO/Duplex"), &duplex, true);
+      int recordingChannels = gPrefs->Read(wxT("/AudioIO/RecordChannels"), 1);
 
       if( duplex )
          playbackTracks = t->GetWaveTrackArray(false);
@@ -989,11 +989,11 @@ bool ControlToolBar::GetMultiToolDown()
    return mTool[ multiTool ]->IsDown();
 }
 
-const char * ControlToolBar::GetMessageForTool( int ToolNumber )
+const wxChar * ControlToolBar::GetMessageForTool( int ToolNumber )
 {
    wxASSERT( ToolNumber >= 0 );
    wxASSERT( ToolNumber < numTools );
-   return _(MessageOfTool[ ToolNumber ]);
+   return wxGetTranslation(MessageOfTool[ ToolNumber ]);
 }
 
 
