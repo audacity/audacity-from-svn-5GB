@@ -148,7 +148,7 @@ DIRS = \
 dirs: $(DIRS)
 
 $(DIRS): %: 
-	mkdir $@
+	-test -d $@ || mkdir $@
 
 #
 # Include ".depend" if it exists (run "make dep" to generate it)
