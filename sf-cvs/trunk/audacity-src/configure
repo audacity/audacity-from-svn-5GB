@@ -4933,9 +4933,9 @@ _ACEOF
    LIBSOUNDTOUCH_SYSTEM_AVAILABLE="no"
 
 
-   as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/soundtouch/src/SoundTouch.h" | $as_tr_sh`
-echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/soundtouch/src/SoundTouch.h" >&5
-echo $ECHO_N "checking for ${srcdir}/lib-src/soundtouch/src/SoundTouch.h... $ECHO_C" >&6
+   as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/soundtouch/include/SoundTouch.h" | $as_tr_sh`
+echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/soundtouch/include/SoundTouch.h" >&5
+echo $ECHO_N "checking for ${srcdir}/lib-src/soundtouch/include/SoundTouch.h... $ECHO_C" >&6
 if eval "test \"\${$as_ac_File+set}\" = set"; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
@@ -4943,7 +4943,7 @@ else
   { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
 echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
    { (exit 1); exit 1; }; }
-if test -r "${srcdir}/lib-src/soundtouch/src/SoundTouch.h"; then
+if test -r "${srcdir}/lib-src/soundtouch/include/SoundTouch.h"; then
   eval "$as_ac_File=yes"
 else
   eval "$as_ac_File=no"
