@@ -100,10 +100,18 @@ void EditToolBar::InitializeEditToolBar()
 void EditToolBar::AddButton(char **fg, char **disabled, char **alpha,
                             int id, const char *tooltip)
 {
+
+   // Windows (TM) has a little extra room for some reason, so the top of the
+   // buttons should be a little lower.
+   int buttonTop = 0;
+#ifdef __WXMSW__
+   buttonTop=2;
+#endif
+
    mButtons[id] = ToolBar::MakeButton(
                      upImage, downImage, hiliteImage, (const char **) fg,
                      (const char **) disabled, (const char **) alpha,
-                     wxWindowID(id), wxPoint(mButtonPos, 0),
+                     wxWindowID(id), wxPoint(mButtonPos, buttonTop),
                      wxSize(BUTTON_WIDTH, BUTTON_WIDTH), 3, 3);
 
    mButtons[id]->SetToolTip(tooltip);
