@@ -783,6 +783,9 @@ bool Sequence::Read(samplePtr buffer, sampleFormat format,
       // TODO err
       printf(_("Expected to read %d samples, got %d samples.\n"),
              len, result);
+      if (result < 0)
+         result = 0;
+      ClearSamples(buffer, format, result, len-result);
    }
 
    return true;

@@ -295,8 +295,8 @@ void LWSlider::Init(wxWindow * parent,
          dc->DrawBitmap(backgroundBitmap, 0, 0);
       }
       else {
-         AColor::Medium(dc, i==1);
-         dc->DrawRectangle(0, 0, mWidth, mHeight);
+         //AColor::Medium(dc, i==1);
+         //dc->DrawRectangle(0, 0, mWidth, mHeight);
       }
 
       AColor::Medium(dc, i==1);

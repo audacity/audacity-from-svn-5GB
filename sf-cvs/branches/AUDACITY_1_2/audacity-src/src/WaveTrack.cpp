@@ -736,8 +736,10 @@ bool WaveTrack::Get(samplePtr buffer, sampleFormat format,
       getlen = mSequence->GetNumSamples() - s0;
 
    if (!mSequence->Get(buffer + soffset*SAMPLE_SIZE(format), format,
-                       s0, getlen))
+                       s0, getlen)) {
+      ClearSamples(buffer, format, 0, len);
       return false;
+   }
 
    ClearSamples(buffer, format, 0, soffset);
    ClearSamples(buffer, format, soffset+getlen, len-(soffset+getlen));
