@@ -67,6 +67,7 @@
 
 <p>
 
+<!--
 <?php BoxTop($linuxStr); ?>
 
 <center>
@@ -93,6 +94,7 @@
 <?php BoxBottom(); ?>
 
 <p>
+-->
 
 <?php
   print "<p>";
