@@ -13,33 +13,22 @@ Authors:
   Shane Mueller
 
 ================================================================
-This version is currently accurate for Audacity version 1.2.3.
-Last Updated: December 9, 2004
+This version is currently accurate for Audacity version 1.3.0.
+Last Updated: February 2, 2005
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 ================================================================
 
-Audacity releases to date have been built with Visual C++ 6.0, 
+Audacity releases are now built with Visual C++ .NET 2003. 
+
+Previous Audacity releases have been built with Visual C++ 6.0, 
 with Service Pack 5.  If you require it, this patch is available from
 Microsoft at
 
   http://msdn.microsoft.com/vstudio/downloads/updates/sp/vs6/sp5/default.asp
 
-Audacity can be built with Visual C++ .NET 7.1 (or 2003). Just 
-build wxWidgets with the .NET C++, and then use 
-"audacity.vcproj" instead of "audacity.dsw".
-
 It is worth noting that Audacity uses VC++'s multithreaded
-statically-linked run-time libraries.
-
-A note regarding the library wxWidgets, which is used by Audacity:
-
-  This library was formerly known as wxWindows, but its name has
-  now changed to wxWidgets. At the time of writing, the current
-  version 2.4.2 is advertised as "wxWidgets 2.4.2", but the file
-  archives still contain the old name. It is expected that this will
-  change in future releases, so some of the instructions below
-  may or may not apply.
+statically-linked runtime libraries.
 
 ---------------------------
 MSVC++ STEP 1:  Download wxWidgets
@@ -54,8 +43,8 @@ wxWidgets is available from http://www.wxwidgets.org.
 Similar to the Linux kernel, wxWidgets is available as
 stable and development branches.  
 
-Audacity uses wxWidgets 2.4.2 or greater for Microsoft
-Windows (MSW),  available at "http://www.wxwidgets.org/".
+Audacity now uses wxWidgets 2.5.3 or greater for Microsoft
+Windows (MSW), available at "http://www.wxwidgets.org/".
 
 
 ------------------------
@@ -64,25 +53,31 @@ MSVC++ STEP 2:  Build wxWidgets
 When you have downloaded and installed wxWidgets, you must
 build it.  First though, to be compatible with Audacity, you
 must alter the build settings to use the multithreaded
-statically-linked run-time libraries instead of the
-multithreaded DLL run-time libraries.  This isn't hard:
+statically-linked runtime libraries instead of the
+multithreaded DLL runtime libraries.  This isn't hard:
 
 1. Launch Visual C++ and open the workspace file called
-   "wxWidgets.dsw" in the "src" directory of your wxWidgets
+   "wxWindows.dsw" in the "src" directory of your wxWidgets
    installation.
+   
+2. For each project in the solution, you'll need to 
+   change the runtime. These instructions will use the 
+   expat project. Open the Property Pages dialog for 
+   the expat project. Start with the Debug configuration. 
+   Select the "Code Generation" page in the "C/C++" folder, and 
+   for the "Runtime Library" parameter, change the popup 
+   menu selection from "Multi-threaded Debug DLL (/MDd)" 
+   to "Multi-threaded Debug (/MTd)". Click the Apply button.
+   
+3. Now select Release in the Configuration menu. Now the 
+   "Runtime Library" should show as "Multi-threaded DLL (/MD)". 
+   Change it to "Multi-threaded (/MT)". Click OK.
+   
+4. Do steps 2 & 3 for all the other projects: 
+	jpeg, png, regex, tiff, wxWindows, and zlib.
 
-2. Select "Project"->"Settings" (Alt+F7), choose "Win32 Release"
-   in the "Settings For" combo box and select everything visible
-   in the tree window on the left of the dialog box.
-
-3. Now select the "C/C++" tab and change "Use run-time library"
-   under the 'Code Generation' combo box to "Multithreaded".
-
-4. Now select "Win32 Debug" from the "Settings For" combo and
-   change the run-time library to "Debug Multithreaded".
-
-5. Now you can click "OK" and build wxWidgets by selecting
-   "Build"->"Batch Build" and clicking "Rebuild All".
+5. Now you can build wxWidgets. Give the "Build"->"Batch Build" 
+	command, select all projects, and click Rebuild. 
 
 This will build both Debug and Release versions of the
 wxWidgets library.
