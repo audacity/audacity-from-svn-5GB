@@ -108,9 +108,6 @@ PxMixer *Px_OpenMixer( void *pa_stream, int index )
    info->input = macInfo->input.audioDeviceID;
    info->output = macInfo->output.audioDeviceID;
 
-   printf("\n\n\n***input=%d output=%d primary=%d\n",
-          (int)info->input, (int)info->output, (int)macInfo->primaryDeviceID);
-
    return (PxMixer *)info;
 }
 
