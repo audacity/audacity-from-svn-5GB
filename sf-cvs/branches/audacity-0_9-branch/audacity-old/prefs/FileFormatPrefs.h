@@ -15,6 +15,7 @@
 #include <wx/statbox.h>
 #include <wx/radiobut.h>
 #include <wx/choice.h>
+#include <wx/slider.h>
 
 #include "PrefsPanel.h"
 
@@ -33,6 +34,7 @@ class FileFormatPrefs:public PrefsPanel {
    wxChoice *mMP3Bitrate;
    wxButton *mMP3FindButton;
    wxStaticText *mMP3Version;
+   wxSlider *mMP3Quality;
 
    // leave room for expansion. pointers are cheap
    wxRadioButton *mDefaultExportFormats[20];
