@@ -28,6 +28,12 @@
 #include <unistd.h>
 #endif
 
+// chmod
+#ifdef __UNIX__
+#include <sys/types.h>
+#include <sys/stat.h>
+#endif
+
 #ifdef __MACOS9__
 #include <AEDataModel.h>
 #include <AppleEvents.h>
@@ -271,27 +277,6 @@ bool AudacityApp::OnInit()
    wxString future2 = _("Input Meter");
    wxString future3 = _("Output Meter");
 
-   {
-      wxLogNull dontLog;
-
-      const wxString name = wxString::Format("Audacity-%s", wxGetUserId().c_str());
-      mChecker = new wxSingleInstanceChecker(name);
-      if ( mChecker->IsAnotherRunning() ) {
-         wxString prompt =
-            _("The system has detected that another copy of Audacity is running.\n"
-            "Running two copies of Audacity simultaneously may lead to\n"
-            "data loss or cause your system to crash, so is not allowed.\n\n"
-            "Use the New or Open commands in the currently running Audacity\n"
-            "process to open multiple projects simultaneously.\n");
-         int action = wxMessageBox(prompt,
-                                   _("Audacity is already running"),
-                                   wxOK | wxICON_ERROR);
-         delete mChecker;
-         mChecker = NULL;
-         return false;
-      }
-   }
-
    ::wxInitAllImageHandlers();
 
    wxFileSystem::AddHandler(new wxZipFSHandler);
@@ -419,7 +404,7 @@ bool AudacityApp::OnInit()
    // Init DirManager, which initializes the temp directory
    // If this fails, we must exit the program.
 
-   if (!DirManager::InitDirManager()) {
+   if (!InitTempDir()) {
       FinishPreferences();
       return false;
    }
@@ -647,6 +632,128 @@ bool AudacityApp::OnInit()
 	
    return TRUE;
 }
+
+
+bool AudacityApp::InitTempDir()
+{
+   // We need to find a temp directory location.
+
+   wxString tempFromPrefs = gPrefs->Read("/Directories/TempDir", "");
+   wxString tempDefaultLoc = wxGetApp().defaultTempDir;
+
+   wxString temp = "";
+
+   #ifdef __WXGTK__
+   if (tempFromPrefs.GetChar(0) != '/')
+      tempFromPrefs = "";
+   #endif
+
+   // Stop wxWindows from printing its own error messages
+
+   wxLogNull logNo;
+
+   // Try temp dir that was stored in prefs first
+
+   if (tempFromPrefs != "") {
+      if (wxPathExists(FILENAME(tempFromPrefs)))
+         temp = tempFromPrefs;
+      else if (wxMkdir(FILENAME(tempFromPrefs)))
+         temp = tempFromPrefs;
+   }
+
+   // If that didn't work, try the default location
+
+   if (temp=="" && tempDefaultLoc != "") {
+      if (wxPathExists(FILENAME(tempDefaultLoc)))
+         temp = tempDefaultLoc;
+      else if (wxMkdir(FILENAME(tempDefaultLoc)))
+         temp = tempDefaultLoc;
+   }
+
+   if (temp == "") {
+      // Failed
+      wxMessageBox(_("Audacity could not find a place to store "
+                     "temporary files.\n"
+                     "Please enter an appropriate "
+                     "directory in the preferences dialog."));
+
+      PrefsDialog dialog(NULL);
+      dialog.ShowTempDirPage();
+      dialog.ShowModal();
+
+      wxMessageBox(_("Audacity is now going to exit.  Please launch "
+                     "Audacity again to use the new temporary directory."));
+      return false;
+   }
+
+   // The permissions don't always seem to be set on
+   // some platforms.  Hopefully this fixes it...
+   #ifdef __UNIX__
+   chmod(FILENAME(temp), 0755);
+   #endif
+
+   gPrefs->Write("/Directories/TempDir", temp);
+   DirManager::SetTempDir(temp);
+
+   // Make sure the temp dir isn't locked by another process.
+   if (!CreateSingleInstanceChecker(temp))
+      return false;
+
+   DirManager::CleanTempDir(true);
+
+   return true;
+}
+
+
+// Return true if there are no other instances of Audacity running,
+// false otherwise.
+//
+// Use "dir" for creating lockfiles (on OS X and Unix).
+
+bool AudacityApp::CreateSingleInstanceChecker(wxString dir)
+{
+   wxLogNull dontLog;
+
+   wxString name = wxString::Format("audacity-lock-%s", wxGetUserId().c_str());
+   mChecker = new wxSingleInstanceChecker();
+
+   if (!mChecker->Create(FILENAME(name), FILENAME(dir))) {
+      // Error initializing the wxSingleInstanceChecker.  We don't know
+      // whether there is another instance running or not.
+
+      wxString prompt =
+         _("Audacity was not able to lock the temporary files directory.\n"
+         "This folder may be in use by another copy of Audacity.\n"
+         "Running two copies of Audacity simultaneously may cause\n"
+         "data loss or cause your system to crash.\n\n"
+         "Do you still want to start Audacity?");
+      int action = wxMessageBox(prompt,
+                                _("Error locking temporary folder"),
+                                wxYES_NO | wxICON_EXCLAMATION,
+                                NULL);
+      if (action == wxNO) {
+         delete mChecker;
+         return false;
+      }
+   }
+   else if ( mChecker->IsAnotherRunning() ) {
+      // There is another copy of Audacity running.  Force quit.
+      
+      wxString prompt =
+         _("The system has detected that another copy of Audacity is running.\n"
+         "Running two copies of Audacity simultaneously may lead to\n"
+         "data loss or cause your system to crash, so is not allowed.\n\n"
+         "Use the New or Open commands in the currently running Audacity\n"
+         "process to open multiple projects simultaneously.\n");
+      wxMessageBox(prompt, _("Audacity is already running"),
+            wxOK | wxICON_ERROR);
+      delete mChecker;
+      return false;
+   }
+
+   return true;
+}
+
 
 // static
 void AudacityApp::AddUniquePathToPathList(wxString path,
