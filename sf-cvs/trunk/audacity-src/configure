@@ -876,7 +876,8 @@ Optional Packages:
   --with-soundtouch       compile with SoundTouch [default=yes]
   --with-nyquist          compile with Nyquist support [default=yes]
   --with-ladspa           compile with ladspa plug-in support [default=yes]
-  --with-audiounits       compile with ladspa plug-in support [default=auto]
+  --with-audiounits       compile with audio unit plug-in support
+                          [default=auto]
   --with-portmixer        compile with PortMixer [default=yes]
   --with-portaudio        which version of PortAudio to use (=[v18,v19])
                           [default=v18]

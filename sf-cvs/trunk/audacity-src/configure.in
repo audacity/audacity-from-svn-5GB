@@ -240,7 +240,7 @@ AC_ARG_WITH(ladspa,
 
 AC_ARG_WITH(audiounits,
    [AC_HELP_STRING([--with-audiounits],
-      [compile with ladspa plug-in support [default=auto]])],
+      [compile with audio unit plug-in support [default=auto]])],
    use_audiounits=$withval,
    use_audiounits="auto")
 
