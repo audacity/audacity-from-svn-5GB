@@ -31,6 +31,7 @@
 #ifndef __AUDACITY_TOOLBAR__
 #define __AUDACITY_TOOLBAR__
 
+#include <wx/defs.h>
 #include <wx/brush.h>
 #include <wx/pen.h>
 #include <wx/minifram.h>

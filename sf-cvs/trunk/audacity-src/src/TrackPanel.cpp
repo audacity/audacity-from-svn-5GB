@@ -48,7 +48,9 @@
 #include "widgets/Ruler.h"
 
 #ifdef __WXMAC__
-#include <Menus.h>
+# ifndef __UNIX__
+#  include <Menus.h>
+# endif
 #endif
 
 #define kLeftInset 4
