@@ -599,6 +599,7 @@ bool AudacityProject::ProcessEvent(wxEvent& event)
     PushState();
     
     FixScrollbars();
+
 	mTrackPanel->Refresh(false);
     
     // This indicates we handled the event.

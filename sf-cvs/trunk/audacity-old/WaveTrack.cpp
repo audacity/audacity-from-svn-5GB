@@ -284,7 +284,8 @@ void WaveTrack::PrepareCacheMinMax(double start, double pps, int screenWidth)
   // with the current one, re-use as much of the cache as
   // possible
 
-  if (!oldcache.spectrum &&
+  if (!oldcache.dirty &&
+	  !oldcache.spectrum &&
 	  oldcache.pps == pps &&
 	  oldcache.where[0] < cache.where[cache.len] &&
 	  oldcache.where[oldcache.len] > cache.where[0]) {
@@ -680,7 +681,8 @@ void WaveTrack::PrepareCacheSpectrum(double start, double pps,
   // with the current one, re-use as much of the cache as
   // possible
 
-  if (oldcache.spectrum &&
+  if (!oldcache.dirty &&
+	  oldcache.spectrum &&
 	  oldcache.pps == pps &&
 	  oldcache.fheight == screenHeight &&
 	  oldcache.where[0] < cache.where[cache.len] &&
