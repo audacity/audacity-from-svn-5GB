@@ -25,6 +25,11 @@ Website / Sourceforge
 - Make Audacity compile on Unix even if dlopen is
   not supported (work around wxGTK 2.2.9 bug where
   it can't be found)
+- Experiment with much larger recording buffers - does
+  latency suffer?  Do we care?  Does it result in fewer
+  underflows?
+- Test the "instant stop" on Windows and Mac.  Should
+  it be used for recording, too?
 
 -----------------------------------------------------------
 1.1.1 / HEAD
@@ -39,6 +44,7 @@ Audio:
 - Choice of dither
 - Pre-roll and post-roll: amount to play before and after
   a selection (see DG Malham email)
+- Latency control in Audio I/O prefs
 
 UI::
 - While playing, click in ruler to change playback
@@ -94,6 +100,8 @@ Effects::
 - EQ
 - Auto find track boundaries
 - Pop/click removal
+- Save VST plug-in parameters to a file, or at least
+  remember the last settings
 
 -----------------------------------------------------------
 Future:
