@@ -55,7 +55,7 @@ Effect *Effect::GetEffect(int ID)
       return NULL;
 }
 
-EffectArray *Effect::GetEffects(int flags = ALL_EFFECTS)
+EffectArray *Effect::GetEffects(int flags /* = ALL_EFFECTS */)
 {
    EffectArray *results = new EffectArray();
 
