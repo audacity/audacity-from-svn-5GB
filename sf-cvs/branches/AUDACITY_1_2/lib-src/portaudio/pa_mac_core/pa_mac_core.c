@@ -1,5 +1,5 @@
 /*
- * $Id: pa_mac_core.c,v 1.9.2.1 2004-03-01 09:28:00 dmazzoni Exp $
+ * $Id: pa_mac_core.c,v 1.9.2.2 2004-07-07 07:28:57 dmazzoni Exp $
  * pa_mac_core.c
  * Implementation of PortAudio for Mac OS X Core Audio
  *
@@ -1075,9 +1075,10 @@ static PaError PaOSX_SetFormat( AudioDeviceID devID, Boolean isInput,
 
             /*
               Should this be in here?  I'm not sure...
+	      (Yes, if not many devices will default to mono instead of stereo...)
+	    */
 
-              formatDesc.mChannelsPerFrame = desiredNumChannels;
-            */
+	    formatDesc.mChannelsPerFrame = desiredNumChannels;
 
             /*
               These probably don't matter...
