@@ -18,6 +18,7 @@
 #include <wx/timer.h>
 #include <wx/textfile.h>
 
+#include "prefs/PrefsDialog.h"
 #include "DirManager.h"
 #include "DiskFunctions.h"
 #include "Prefs.h"

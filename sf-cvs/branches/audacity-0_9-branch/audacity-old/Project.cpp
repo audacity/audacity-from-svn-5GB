@@ -296,7 +296,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mTags = new Tags();
 
    // Accept drag 'n' drop files
+   #ifdef __WXMSW__
    DragAcceptFiles(true);
+   #endif
 
    gAudacityProjects.Add(this);
 }

@@ -86,7 +86,8 @@ OBJS = \
 	$(OBJDIR)/prefs/SampleRatePrefs.cpp.o \
 	$(OBJDIR)/prefs/FileFormatPrefs.cpp.o \
 	$(OBJDIR)/prefs/DirectoriesPrefs.cpp.o \
-	$(OBJDIR)/prefs/SpectrumPrefs.cpp.o @EXTRAOBJS@
+	$(OBJDIR)/prefs/SpectrumPrefs.cpp.o \
+	@EXTRAOBJS@
 
 ########################################
 # DEPENDENCIES
@@ -103,10 +104,14 @@ audacity: $(OBJS) Makefile
 #
 #
 install:
-	-test ! -f audacity-help.htb || $(INSTALL) -m 644 audacity-help.htb \
+	-test -d $(PREFIX)/share/doc/audacity || \
+		mkdir -m 755 -p $(PREFIX)/share/doc/audacity
+	-test -f audacity-help.htb || $(INSTALL) -m 644 audacity-help.htb \
 		$(PREFIX)/share/doc/audacity/audacity-help.htb
 	$(INSTALL) -m 644 README.txt $(PREFIX)/share/doc/audacity/README.txt
 	$(INSTALL) -m 644 LICENSE.txt $(PREFIX)/share/doc/audacity/LICENSE.txt
+	-test -d $(PREFIX)/bin || \
+		mkdir -m 755 -p $(PREFIX)/bin
 	$(INSTALL) -m 755 audacity $(PREFIX)/bin/audacity
 
 #
@@ -153,22 +158,14 @@ clean:
 # We stick object files in separate directories for convenience
 #
 
-dirs: obj obj/snd obj/effects obj/prefs obj/allegro
+DIRS = \
+	$(OBJDIR) $(OBJDIR)/effects $(OBJDIR)/snd \
+	$(OBJDIR)/prefs $(OBJDIR)/allegro
 
-obj:
-	mkdir obj
+dirs: $(DIRS)
 
-obj/allegro:
-	mkdir obj/allegro
-
-obj/snd:
-	mkdir obj/snd
-
-obj/effects:
-	mkdir obj/effects
-
-obj/prefs:
-	mkdir obj/prefs
+$(DIRS): %: 
+	mkdir $@
 
 #
 # Rules for compiling C/C++ files
