@@ -291,6 +291,8 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 	VTrack *t;
 	wxRect r;
 	int num;
+
+	printf("Dragging: mCapturedTrack = %d\n", mCapturedTrack);
 	
 	if (mCapturedTrack) {
 	  t = mCapturedTrack;
@@ -341,6 +343,7 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 
 	  Refresh(false);
     }
+	return;
   }
 
   if (event.ButtonUp()) {
@@ -575,6 +578,8 @@ void TrackPanel::OnMouseEvent(wxMouseEvent& event)
 
   if (event.Moving() || event.ButtonUp()) {
 	HandleCursor(event);
+  }
+  if (event.ButtonUp()) {
 	mCapturedTrack = NULL;
   }
 }
