@@ -15,7 +15,7 @@
   BoxTop($betaVersionsStr);
 ?>
 
-<?php include GetTranslation("beta-1.2.0-pre3"); ?>
+<?php include GetTranslation("beta-about"); ?>
 
 <p>
 <?php print "<a href=betanotes.php?$langLinkStr>$releaseNotesStr2</a>"; ?>
