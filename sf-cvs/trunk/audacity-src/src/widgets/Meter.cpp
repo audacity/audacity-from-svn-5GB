@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  Meter.h
+  Meter.cpp
 
   Dominic Mazzoni
 
