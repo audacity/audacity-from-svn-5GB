@@ -138,10 +138,9 @@ enum {
 #ifdef AUDACITY_MENUS_COMMANDS_EVENT_TABLE
 
 {
-   #define CMD_ADDFUNCTION(a) {fp = &AudacityProject::a; tmpCmd.callbackFunction = fp;}
-   #define CMD_ADDMENU(commandName, commandDesc, callback, nCategory, nState) { tmpCmd.commandString = commandName; tmpCmd.descriptionString = commandDesc; tmpCmd.category = nCategory; tmpCmd.state = nState; CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( (CommandMenuItem *)memcpy((new CommandMenuItem), &tmpCmd, sizeof(CommandMenuItem)) ); }
+   #define CMD_ADDFUNCTION(a) {fp = &AudacityProject::a; tmpCmd->callbackFunction = fp;}
+   #define CMD_ADDMENU(commandName, commandDesc, callback, nCategory, nState) { CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; tmpCmd->state = nState; CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( tmpCmd ); }
 
-   CommandMenuItem tmpCmd; // BG: Temporary command structure
    audEventFunction fp;  //Set up temporary function pointer to use for assigning keybindings
 
    // File menu

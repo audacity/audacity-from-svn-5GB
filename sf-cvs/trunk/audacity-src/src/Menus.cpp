@@ -63,6 +63,8 @@
 
 void AudacityProject::CreateMenuBar()
 {
+   int i;
+
    mMenusDirtyCheck = gMenusDirty;
    mFirstTimeUpdateMenus = true;
 
@@ -85,6 +87,32 @@ void AudacityProject::CreateMenuBar()
 #include "commandkeys.h" // BG: Generate an array of keys combos that cannot be used
 
    mFileMenu = new wxMenu();
+   mEditMenu = new wxMenu();
+   mViewMenu = new wxMenu();
+   mProjectMenu = new wxMenu();
+   mHelpMenu = new wxMenu();
+   for(i = 0; i < mCommandMenuItem.Count(); i++)
+   {
+      switch(mCommandMenuItem[i]->category)
+      {
+      case fileMenu:
+         mFileMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+         break;
+      case editMenu:
+         mEditMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+         break;
+      case viewMenu:
+         mViewMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+         break;
+      case projectMenu:
+         mProjectMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+         break;
+      case helpMenu:
+         mHelpMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+         break;
+      }
+   }
+   /*
    mFileMenu->Append(NewID, _("&New"));
    mFileMenu->Append(OpenID, _("&Open..."));
    mFileMenu->Append(CloseID, _("&Close"));
@@ -103,7 +131,6 @@ void AudacityProject::CreateMenuBar()
    mFileMenu->AppendSeparator();
    mFileMenu->Append(ExitID, _("E&xit"));
 
-   mEditMenu = new wxMenu();
    mEditMenu->Append(UndoID, _("&Undo"));
    mEditMenu->Append(RedoID, _("&Redo"));
    mEditMenu->AppendSeparator();
@@ -121,7 +148,6 @@ void AudacityProject::CreateMenuBar()
    mEditMenu->AppendSeparator();
    mEditMenu->Append(SelectAllID, _("Select &All"));
 
-   mViewMenu = new wxMenu();
    mViewMenu->Append(ZoomInID, _("Zoom &In"));
    mViewMenu->Append(ZoomNormalID, _("Zoom &Normal"));
    mViewMenu->Append(ZoomOutID, _("Zoom &Out"));
@@ -217,7 +243,7 @@ void AudacityProject::CreateMenuBar()
    wxApp::s_macAboutMenuItemId = AboutID;
 #endif
 
-   mHelpMenu = new wxMenu();
+/*
    mHelpMenu->Append(AboutID, _("About Audacity..."));
 
 #ifndef __WXMAC__
@@ -231,6 +257,7 @@ void AudacityProject::CreateMenuBar()
    mHelpMenu->AppendSeparator();
 
    mHelpMenu->Append(BenchmarkID, _("Run Benchmark..."));
+*/
 
    mMenuBar->Append(mFileMenu, _("&File"));
    mMenuBar->Append(mEditMenu, _("&Edit"));
