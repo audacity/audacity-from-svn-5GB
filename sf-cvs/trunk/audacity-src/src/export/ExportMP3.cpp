@@ -109,7 +109,7 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
          if (extension != "")
             baseName += "." + extension;
          
-         if (baseName != GetLibraryName()) {
+         if (baseName.CmpNoCase(GetLibraryName())) {
          
             wxString question;
             question.Printf(_("Audacity was expecting a library named \"%s\".  "
@@ -375,6 +375,307 @@ MP3Exporter *GetMP3Exporter()
    
    return gMP3Exporter;
 }
+
+
+
+
+#elif defined(__MACOSX__)
+
+   /* --------------------------------------------------------------------------*/
+
+   struct lame_global_flags;
+   typedef lame_global_flags *lame_init_t(void);
+   typedef int lame_init_params_t(lame_global_flags*);
+   typedef const char* get_lame_version_t(void);
+
+   typedef int lame_encode_buffer_t (
+         lame_global_flags* gf,
+         const short int    buffer_l [],
+         const short int    buffer_r [],
+         const int          nsamples,
+         unsigned char *    mp3buf,
+         const int          mp3buf_size );
+
+   typedef int lame_encode_buffer_interleaved_t(
+         lame_global_flags* gf,
+         short int          pcm[],
+         int                num_samples,   /* per channel */
+         unsigned char*     mp3buf,
+         int                mp3buf_size );
+
+   typedef int lame_encode_flush_t(
+         lame_global_flags *gf,
+         unsigned char*     mp3buf,
+         int                size );
+
+   typedef int lame_close_t(lame_global_flags*);
+   
+   typedef int lame_set_in_samplerate_t(lame_global_flags*, int);
+   typedef int lame_set_num_channels_t(lame_global_flags*, int );
+   typedef int lame_set_quality_t(lame_global_flags*, int);
+   typedef int lame_get_quality_t(lame_global_flags*);
+   typedef int lame_set_brate_t(lame_global_flags*, int);
+   typedef int lame_get_brate_t(lame_global_flags*);
+   
+
+   /* --------------------------------------------------------------------------*/
+
+   class MacOSXLAMEExporter : public MP3Exporter {
+      private:
+         /* function pointers to the symbols we get from the library */
+         lame_init_t* lame_init;
+         lame_init_params_t* lame_init_params;
+         lame_encode_buffer_interleaved_t* lame_encode_buffer_interleaved;
+         lame_encode_flush_t* lame_encode_flush;
+         lame_close_t* lame_close;
+         get_lame_version_t* get_lame_version;
+         
+         lame_set_in_samplerate_t* lame_set_in_samplerate;
+         lame_set_num_channels_t* lame_set_num_channels;
+         lame_set_quality_t* lame_set_quality;
+         lame_get_quality_t* lame_get_quality;
+         lame_set_brate_t* lame_set_brate;
+         lame_get_brate_t* lame_get_brate;
+
+         lame_global_flags *mGF;
+         
+         bool mLibraryLoaded, mEncoding;
+         char mVersion[20];
+
+         static const int mSamplesPerChunk = 220500;
+         static const int mOutBufferSize = int(1.25 * mSamplesPerChunk + 7200);
+      public:
+         
+         MacOSXLAMEExporter() {
+            mLibraryLoaded = false;
+            mEncoding = false;
+            mGF = NULL;
+         }
+         
+      wxString GetLibraryPath()
+      {
+         return "";
+      }
+
+
+         void MakePString(unsigned char *p, const char *c)
+         {
+            int len = strlen(c);
+            for(int i=len; i>=1; i--)
+               p[i] = (unsigned char)c[i-1];
+            p[0] = (unsigned char)len;
+         }
+
+         // MachOFunctionPointerForCFMFunctionPointer(void *cfmfp)
+         //
+         // Borrowed from the Apple Sample Code file "CFM_MachO_CFM.c"
+         // This function allocates a block of CFM glue code which contains
+         // the instructions to call CFM routines
+
+         void *NewMachOFromCFM(void *cfmfp)
+         {
+            if (cfmfp == 0)
+               return 0;
+
+            UInt32 CFMTemplate[6] = {0x3D800000, 0x618C0000, 0x800C0000,
+                                     0x804C0004, 0x7C0903A6, 0x4E800420};
+            UInt32 *mfp = (UInt32*)NewPtr(sizeof(CFMTemplate));
+
+            mfp[0] = CFMTemplate[0] | ((UInt32)cfmfp >> 16);
+            mfp[1] = CFMTemplate[1] | ((UInt32)cfmfp & 0xFFFF);
+            mfp[2] = CFMTemplate[2];
+            mfp[3] = CFMTemplate[3];
+            mfp[4] = CFMTemplate[4];
+            mfp[5] = CFMTemplate[5];
+            MakeDataExecutable(mfp, sizeof(CFMTemplate));
+   
+            return(mfp);
+         }
+
+
+
+         wxString GetLibraryName()
+         {
+            return "LameLib";
+         }
+         
+         wxString GetLibraryTypeString()
+         {
+            return wxString(_("Only LameLib|LameLib|All Files (*)|*"));
+         }
+         
+         wxString GetLibraryMessage()
+         {
+            // Must be <= 255 characters on Mac
+            return _("Audacity does not export MP3 files directly, but instead uses LAME, "
+                   "an MP3 exporting library available separately.  See the documentation "
+                   "for more information.\n\n"
+                   "Would you like to locate LameLib now?");
+         }
+
+         bool  LoadLibrary() {
+            FSSpec spec;
+            OSErr err;
+            CFragConnectionID connID;
+            Ptr mainAddr;
+            Str255 errMsg;
+            Str255 name;
+            CFragSymbolClass symClass;
+
+            if (!wxFileExists(mLibPath))
+               return false;
+
+            wxMacFilename2FSSpec(mLibPath, &spec);
+
+            name[0] = 0;
+            err = GetDiskFragment(&spec, 0, kCFragGoesToEOF,
+                                  name,
+                                  kPrivateCFragCopy,
+                                  &connID,
+                                  &mainAddr,
+                                  errMsg);
+
+            if (err) {
+               printf("GetDiskFragment: err=%d\n", err);
+               return false;
+            }
+
+            MakePString(name, "lame_init");
+            FindSymbol(connID, name, &mainAddr, &symClass);
+            lame_init = NewMachOFromCFM(mainAddr);
+
+            MakePString(name, "get_lame_version");
+            FindSymbol(connID, name, &mainAddr, &symClass);
+            get_lame_version = NewMachOFromCFM(mainAddr);
+
+            MakePString(name, "lame_init_params");
+            FindSymbol(connID, name, &mainAddr, &symClass);
+            lame_init_params = NewMachOFromCFM(mainAddr);
+
+            MakePString(name, "lame_encode_buffer_interleaved");
+            FindSymbol(connID, name, &mainAddr, &symClass);
+            lame_encode_buffer_interleaved = NewMachOFromCFM(mainAddr);
+
+            MakePString(name, "lame_encode_flush");
+            FindSymbol(connID, name, &mainAddr, &symClass);
+            lame_encode_flush = NewMachOFromCFM(mainAddr);
+
+            MakePString(name, "lame_close");
+            FindSymbol(connID, name, &mainAddr, &symClass);
+            lame_close = NewMachOFromCFM(mainAddr);
+
+            MakePString(name, "lame_set_in_samplerate");
+            FindSymbol(connID, name, &mainAddr, &symClass);
+            lame_set_in_samplerate = NewMachOFromCFM(mainAddr);
+
+            MakePString(name, "lame_set_num_channels");
+            FindSymbol(connID, name, &mainAddr, &symClass);
+            lame_set_num_channels = NewMachOFromCFM(mainAddr);
+
+            MakePString(name, "lame_set_quality");
+            FindSymbol(connID, name, &mainAddr, &symClass);
+            lame_set_quality = NewMachOFromCFM(mainAddr);
+
+            MakePString(name, "lame_get_quality");
+            FindSymbol(connID, name, &mainAddr, &symClass);
+            lame_get_quality = NewMachOFromCFM(mainAddr);
+
+            MakePString(name, "lame_set_brate");
+            FindSymbol(connID, name, &mainAddr, &symClass);
+            lame_set_brate = NewMachOFromCFM(mainAddr);
+
+            MakePString(name, "lame_get_brate");
+            FindSymbol(connID, name, &mainAddr, &symClass);
+            lame_get_brate = NewMachOFromCFM(mainAddr);
+
+
+            /* we assume that if all the symbols are found, it's a valid library */
+
+            if (!lame_init ||
+                !get_lame_version ||
+                !lame_init_params ||
+                !lame_encode_buffer_interleaved ||
+                !lame_encode_flush ||
+                !lame_close ||
+                !lame_set_in_samplerate ||
+                !lame_set_num_channels ||
+                !lame_set_quality ||
+                !lame_set_brate) {
+               return false;
+            }
+
+            mGF = lame_init();
+            mLibraryLoaded = true;
+            return true;
+         }
+
+      bool ValidLibraryLoaded() { return mLibraryLoaded; }
+
+      const char *GetLibraryVersion() {
+         if(!mLibraryLoaded) return "";
+
+         return wxString::Format("LAME %s", get_lame_version()).c_str();
+      }
+
+      int InitializeStream(int channels, int sampleRate) {
+         if(!mLibraryLoaded) return -1;
+
+         lame_set_num_channels(mGF, channels);
+         lame_set_in_samplerate(mGF, sampleRate);
+
+         lame_init_params(mGF);
+
+         mEncoding = true;
+         return mSamplesPerChunk;
+      }
+
+      int GetOutBufferSize() {
+         return mOutBufferSize;
+      }
+
+      int EncodeBuffer(short int inbuffer[], unsigned char outbuffer[]) {
+         if(!mEncoding) return -1;
+
+         return lame_encode_buffer_interleaved(mGF, inbuffer, mSamplesPerChunk,
+            outbuffer, mOutBufferSize);
+      }
+
+      int EncodeRemainder(short int inbuffer[], int nSamples,
+                        unsigned char outbuffer[]) {
+         return lame_encode_buffer_interleaved(mGF, inbuffer, nSamples, outbuffer,
+            mOutBufferSize);
+      }
+
+      int FinishStream(unsigned char outbuffer[]) {
+         mEncoding = false;
+         int result = lame_encode_flush(mGF, outbuffer, mOutBufferSize);
+         lame_close(mGF);
+         return result;
+      }
+
+      void CancelEncoding() { mEncoding = false; }
+
+      int GetConfigurationCaps() { return MP3CONFIG_BITRATE|MP3CONFIG_QUALITY; }
+
+      int GetQualityVariance() { return 10; }
+
+      void SetBitrate(int rate) { lame_set_brate(mGF, rate); }
+      int GetBitrate() { return lame_get_quality(mGF); }
+
+      void SetQuality(int quality) { lame_set_quality(mGF, quality); }
+      int GetQuality() { return lame_get_quality(mGF); }
+   };
+
+MP3Exporter *gMP3Exporter = NULL;
+
+MP3Exporter *GetMP3Exporter()
+{
+   if (!gMP3Exporter)
+      gMP3Exporter = new MacOSXLAMEExporter();
+   
+   return gMP3Exporter;
+}
+
 
 #elif defined(__WXMAC__)
 
