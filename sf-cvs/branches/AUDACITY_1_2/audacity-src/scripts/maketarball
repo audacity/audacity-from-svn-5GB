@@ -74,6 +74,36 @@ print "removing out-of-date translations: fr hu ja pl sl\n";
 `sed 's/bg ca cs da de es fr hu it ja mk nl pl pt ru sl sv/bg ca cs da de es it mk nl pt ru sv/' /tmp/Makefile.in.tmp > locale/Makefile.in`;
 `rm /tmp/Makefile.in.tmp`;
 
+print "Giving VC++ project/workspace files DOS line endings\n";
+@projfiles = split("\n", `find . -name "*.ds?"`);
+foreach $f (@projfiles) {
+	 print `unix2dos "$f"`;
+}
+
+print "Changing Windows header so that it doesn't build with\n";
+print "support for libmad, libid3tag, or libvorbis by default.\n";
+print "\n";
+
+open FP, ">>win/configwin.h";
+print FP "\n\n";
+print FP "// The Audacity source tarball does NOT come with\n";
+print FP "// libmad, libid3tag, libogg, or libvorbis.\n";
+print FP "\n";
+print FP "// Delete the following lines if you install them manually.\n";
+print FP "\n";
+print FP "#undef MP3SUPPORT\n";
+print FP "#undef USE_LIBID3TAG\n";
+print FP "#undef USE_LIBMAD\n";
+print FP "#undef USE_LIBVORBIS\n";
+close FP;
+
+print "Using the VC++ workspace that doesn't depend on libmad, libid3tag,\n";
+print "libogg, libvorbis, libsamplerate, or libflac.\n";
+print "\n";
+
+`cp win/audacity-nomp3ogg.dsw win/audacity.dsw`;
+
+
 #print "making tarball audacity-src-$version.tgz...\n";
 chdir "..";
 #`tar zcf audacity-src-$version.tgz audacity-src-$version`;
