@@ -12,32 +12,73 @@
 
 **********************************************************************/
 
+#include "XMLTagHandler.h"
+
 #include "../Audacity.h"
+#include "../Internat.h"
 
 #include <wx/defs.h>
-#include <wx/string.h>
-
-#include "XMLTagHandler.h"
 
 // See http://www.w3.org/TR/REC-xml for reference
 wxString XMLTagHandler::XMLEsc(wxString s)
 {
-   int len = s.Length();
-   int i;
-   wxChar c;
    wxString result;
+   int len = s.Length();
 
-   for(i=0; i<len; i++) {
-      c = s.GetChar(i);
+   for(int i=0; i<len; i++) {
+      wxChar c = s.GetChar(i);
 
-      if (c < 32 || c>127 ||
-          c=='\'' || c=='"' ||
-          c=='&' || c=='<' || c=='>') {
-         result += wxString::Format("&#x%02X;", (int)c);
+      switch (c) {
+         case '\'':
+            result += "&apos;";
+            break;
+         case '"':
+            result += "&quot;";
+            break;
+         case '&':
+            result += "&amp;";
+            break;
+         case '<':
+            result += "&lt;";
+            break;
+         case '>':
+            result += "&gt;";
+            break;
+         default:
+            result += c;
       }
-      else
-         result += c;
    }
 
+   return Internat::LocalToUTF8(result);
+}
+
+bool XMLTagHandler::ReadXMLTag(const char *tag, const char **attrs)
+{
+   wxArrayString tmp_attrs;
+
+   while (*attrs) {
+      const char *s = *attrs++;
+      tmp_attrs.Add(Internat::UTF8ToLocal(s));
+   }
+
+   const char **out_attrs = new (const char *)[tmp_attrs.GetCount()+1];
+   for (size_t i=0; i<tmp_attrs.GetCount(); i++) {
+      out_attrs[i] = tmp_attrs[i].c_str();
+   }
+   out_attrs[tmp_attrs.GetCount()] = 0;
+
+   bool result = HandleXMLTag(Internat::UTF8ToLocal(tag), out_attrs);
+
+   delete[] out_attrs;
    return result;
+}
+
+void XMLTagHandler::ReadXMLEndTag(const char *tag)
+{
+   HandleXMLEndTag(Internat::UTF8ToLocal(tag));
+}
+
+XMLTagHandler *XMLTagHandler::ReadXMLChild(const char *tag)
+{
+   return HandleXMLChild(Internat::UTF8ToLocal(tag));
 }
