@@ -29,103 +29,53 @@
 #include <wx/radiobut.h>
 
 
-GUIPrefs::GUIPrefs(wxWindow * parent):
-PrefsPanel(parent)
+// Titles for the lists of check boxes.
+const wxString Titles[NUM_CHECKBOX_CONTAINERS] =
 {
+   _("Behaviors"),  // e.g. 'Pause Always Allowed'.
+   _("Show / Hide") // e.g. show/hide a toolbar or a tabbed window.
+};
 
-   bool autoscroll,             // Scrolling
-      spectrogram, 
-      editToolBar,              //Whether the edit toolbar should be loaded
-      mixerToolBar,             //Whether the mixer toolbar should be loaded
-      meterToolBar,             //Whether the meter toolbar should be loaded
-      transcriptionToolBar,     //Whether the transcription toolbar should be loaded
-      alwaysEnablePause,
-      quitOnClose, 
-      adjustSelectionEdges, 
-      ergonomicTransportButtons;
-
-   int envdBRange;
-
-   //Read default settings.
-   gPrefs->Read("/GUI/AutoScroll", &autoscroll, true);
-   gPrefs->Read("/GUI/UpdateSpectrogram", &spectrogram, true);
-   gPrefs->Read("/GUI/EnableEditToolBar", &editToolBar, true);
-   gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, true);
-   gPrefs->Read("/GUI/EnableMeterToolBar", &meterToolBar, true);
-   gPrefs->Read("/GUI/EnableTranscriptionToolBar", &transcriptionToolBar, false);
-   gPrefs->Read("/GUI/AlwaysEnablePause", &alwaysEnablePause, false);
-
-   // Code duplication warning: this default is repeated in Project.cpp
-   // in the destructor.  -DMM
-   #ifdef __WXMAC__
-   bool defaultQuitOnClose = false;
-   #else
-   bool defaultQuitOnClose = true;
-   #endif
-   // End code duplication warning
-
-   gPrefs->Read("/GUI/QuitOnClose", &quitOnClose, defaultQuitOnClose);
-   gPrefs->Read("/GUI/AdjustSelectionEdges", &adjustSelectionEdges, true);
-   gPrefs->Read("/GUI/ErgonomicTransportButtons", &ergonomicTransportButtons, true);
-   gPrefs->Read("/GUI/EnvdBRange", &envdBRange, ENV_DB_RANGE);
+GUIPrefs::GUIPrefs(wxWindow * parent):
+   PrefsPanel(parent)
+{
+   int i;
 
    topSizer = new wxBoxSizer( wxVERTICAL );
-   
-   //Auto-scrolling preference
-   mAutoscroll = new wxCheckBox(this, -1, _("Autoscroll while playing"));
-   mAutoscroll->SetValue(autoscroll);
-   topSizer->Add(mAutoscroll, 0, wxGROW|wxALL, 2);
+   // CheckSizer is a sizer that holds the left and right sizers.
+   wxBoxSizer * CheckSizer = new wxBoxSizer( wxHORIZONTAL );
 
-   //Always enable pause preference
-   mAlwaysEnablePause = new wxCheckBox(this, -1, _("Always allow pausing"));
-   mAlwaysEnablePause->SetValue(alwaysEnablePause);
-   topSizer->Add(mAlwaysEnablePause, 0, wxGROW|wxALL, 2);
+   // We have two containers, a left and a right one.
+   for(i=0;i<NUM_CHECKBOX_CONTAINERS;i++)
+   {
+      mCheckListSizers[i] = new wxStaticBoxSizer( 
+            new wxStaticBox(this, -1, 
+         Titles[i] ),
+         wxVERTICAL );
 
-   //Spectrogram preference
-   mSpectrogram = new wxCheckBox(this, -1, _("Update spectrogram while playing"));
-   mSpectrogram->SetValue(spectrogram);
-   topSizer->Add(mSpectrogram, 0, wxGROW|wxALL, 2);
+#if USE_SCROLLING_CHECK_LISTBOX_IN_PREFS
+      mCheckListBoxes[i] = new wxCheckListBox
+           (
+            this,                  // parent
+            -1,                    // control id
+            wxPoint(10, 10),       // listbox poistion
+            wxSize(245, 130),      // listbox size
+            0,                     // initially no entries.
+            NULL,                  // initial empty list of strings.
+            0
+           );
+      if( mCheckListBoxes[i] )
+         mCheckListSizers[i]->Add(mCheckListBoxes[i], 0, wxGROW|wxALL, 2);
+#endif
+      CheckSizer->Add( mCheckListSizers[i], 0, wxGROW | wxALL, TOP_LEVEL_BORDER );
+   }
 
-   //Enable Edit toolbar preference
+   // And CheckSizer is itself added in to the topSizer.
+   topSizer->Add( CheckSizer, 0, wxGROW | wxALL, 2 );
 
-   mEditToolBar = new wxCheckBox(this, -1, _("Enable Edit Toolbar"));
-   mEditToolBar->SetValue(editToolBar);
-   topSizer->Add(mEditToolBar, 0, wxGROW|wxALL, 2);
-
-   //Enable Mixer toolbar preference
-   mMixerToolBar = new wxCheckBox(this, -1, _("Enable Mixer Toolbar"));
-   mMixerToolBar->SetValue(mixerToolBar);
-   topSizer->Add(mMixerToolBar, 0, wxGROW|wxALL, 2);
-
-   //Enable Meter toolbar preference
-   mMeterToolBar = new wxCheckBox(this, -1, _("Enable Meter Toolbar"));
-   mMeterToolBar->SetValue(meterToolBar);
-   topSizer->Add(mMeterToolBar, 0, wxGROW|wxALL, 2);
-
-   //Enable Meter toolbar preference
-   mTranscriptionToolBar = new wxCheckBox(this, -1, _("Enable Transcription Toolbar"));
-   mTranscriptionToolBar->SetValue(transcriptionToolBar);
-   topSizer->Add(mTranscriptionToolBar, 0, wxGROW|wxALL, 2);
-
-   // Quit Audacity when last window closes?
-   mQuitOnClose = new wxCheckBox(this, -1,
-                                 _("Quit Audacity upon closing last window"));
-   mQuitOnClose->SetValue(quitOnClose);
-   topSizer->Add(mQuitOnClose, 0, wxGROW|wxALL, 2);
-
-   // Enable/disable adjust selection edges
-   mAdjustSelectionEdges =
-      new wxCheckBox(this, -1,
-                     _("Enable dragging of left and right selection edges"));
-   mAdjustSelectionEdges->SetValue(adjustSelectionEdges);
-   topSizer->Add(mAdjustSelectionEdges, 0, wxGROW|wxALL, 2);
-
-   // Enable/disable ergonomic order of transport buttons
-   mErgonomicTransportButtons =
-      new wxCheckBox(this, -1,
-                     _("Enable ergonomic order of audio I/O buttons"));
-   mErgonomicTransportButtons->SetValue(ergonomicTransportButtons);
-   topSizer->Add(mErgonomicTransportButtons, 0, wxGROW|wxALL, 2);
+   // Create all the checkboxes.
+   mbCreating=true;
+   AllCheckBoxActions();
 
    // Locale
    GetLanguages(mLangCodes, mLangNames);
@@ -133,7 +83,7 @@ PrefsPanel(parent)
 
    wxString currentLang = gPrefs->Read("/Locale/Language", "en");
    wxString *langArray = new wxString[numLangs];
-   int i;
+
    for(i=0; i<numLangs; i++)
       langArray[i] = mLangNames[i];
    mLocale = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
@@ -152,68 +102,13 @@ PrefsPanel(parent)
    topSizer->Add(localeSizer, 0, wxGROW|wxALL, 2);
    
    // dB range display setup
-   {
-      wxStaticBoxSizer *dbRangeSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1,
-            _("Minimum of dB mode display range")),
-         wxVERTICAL );
+   mCurrentSizer = new wxStaticBoxSizer(
+      new wxStaticBox(this, -1,
+          _("Minimum of dB mode display range")),
+      wxVERTICAL );
 
-      
-      mdBArray[0] = new wxRadioButton(
-	 this, -1, _("-36 dB (shallow range for high-amplitude editing)"),
-         wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
-
-      dbRangeSizer->Add( mdBArray[0], 0,
-         wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
-
-      mdBArray[1] = new wxRadioButton(
-	 this, -1, _("-48 dB (PCM range of 8 bit samples)"),
-         wxDefaultPosition, wxDefaultSize, 0 );
-
-      dbRangeSizer->Add( mdBArray[1], 0,
-         wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
-
-      mdBArray[2] = new wxRadioButton(
-	 this, -1, _("-96 dB (PCM range of 16 bit samples)"),
-         wxDefaultPosition, wxDefaultSize, 0 );
-
-      dbRangeSizer->Add( mdBArray[2], 0,
-         wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
-
-      mdBArray[3] = new wxRadioButton(
-	 this, -1, _("-120 dB (approximate limit of human hearing)"),
-         wxDefaultPosition, wxDefaultSize, 0 );
-          
-      dbRangeSizer->Add( mdBArray[3], 0,
-         wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
-
-      mdBArray[4] = new wxRadioButton(
-	 this, -1, _("-145 dB (PCM range of 24 bit samples)"),
-         wxDefaultPosition, wxDefaultSize, 0 );
-
-      dbRangeSizer->Add( mdBArray[4], 0,
-         wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
-
-      mdBArray[0]->SetValue(false);
-      mdBArray[1]->SetValue(false);
-      mdBArray[2]->SetValue(false);
-      mdBArray[3]->SetValue(false);
-      mdBArray[4]->SetValue(false);
-
-      if(envdBRange<=36){
-	mdBArray[0]->SetValue(true);
-      }else if(envdBRange<=48){
-	mdBArray[1]->SetValue(true);
-      }else if(envdBRange<=96){
-	mdBArray[2]->SetValue(true);
-      }else if(envdBRange<=120){
-	mdBArray[3]->SetValue(true);
-      }else{
-	mdBArray[4]->SetValue(true);
-      }
-
-      topSizer->Add( dbRangeSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER );
-   }
+   AllRadioButtonActions();
+   topSizer->Add( mCurrentSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER );
 
    // Finish layout
    outSizer = new wxBoxSizer( wxVERTICAL );
@@ -226,127 +121,282 @@ PrefsPanel(parent)
    outSizer->SetSizeHints(this);
 }
 
+
+wxCheckBox * GUIPrefs::CreateCheckBox(const wxString Description, const bool State)
+{
+   wxSizer * pSizer;
+   pSizer = mCheckListSizers[mCurrentCheckBoxContainer];
+   wxASSERT( pSizer );
+   wxCheckBox * pCheckBox = new wxCheckBox(this, -1, Description);
+   pCheckBox->SetValue(State);
+   pSizer->Add(pCheckBox, 0, wxGROW|wxALL, 2);
+   return pCheckBox;
+}
+
+// Originally for toolbars, this function will
+// either remove a window or add it, if there is 
+// a change.
+void GUIPrefs::ShowOrHideWindow( int ID, bool bShow )
+{
+   if( ID==-1 )
+      return;
+   ToolBarStub ** ppStub;
+   switch( ID )
+   {
+   default:      wxASSERT( false );      break;
+   case EditToolBarID:     ppStub = &gEditToolBarStub;     break;
+   case MixerToolBarID:    ppStub = &gMixerToolBarStub;    break;
+   case MeterToolBarID:    ppStub = &gMeterToolBarStub;    break;
+   case TranscriptionToolBarID: ppStub = &gTranscriptionToolBarStub; break;
+   }
+
+// Now create or delete the relevant window.
+   if(*ppStub && !bShow) {
+      (*ppStub)->UnloadAll();    //Unload all toolbars of this type.
+      delete *ppStub;
+      *ppStub = NULL;
+   }
+   else if(!*ppStub && bShow)
+   {  
+      // The ID determines what type of stub is created.
+      *ppStub = new ToolBarStub(gParentWindow, (enum ToolBarType)ID);
+      (*ppStub)->LoadAll();
+   }
+}
+
+// Function that deals with one checkbox, either creating it or
+// using its value to update gPrefs and the GUI.
+// The function is made more complex by coping with 
+// checkboxes in a sizer or checkboxes in a check list box.
+void GUIPrefs::CheckBoxAction(
+   const wxString Description,
+   const wxString SettingName,
+   bool bDefault,
+   int mWindowID)
+{
+   bool bValue;
+   bool bIsInListBox;
+
+   int Counter = ++(mCheckBoxCounters[mCurrentCheckBoxContainer]);
+
+// TODO:  What should we do if on a Mac?
+// wxWidgets 2.4.1 documentation suggests that wxCheckListBox isn't 
+// supported on Mac.
+#if USE_SCROLLING_CHECK_LISTBOX_IN_PREFS
+   wxCheckListBox * pCurrentList = mCheckListBoxes[mCurrentCheckBoxContainer];
+   // If there was a non null list box, then it goes in it.
+   bIsInListBox = ( pCurrentList != NULL );
+#else
+   bIsInListBox = false;
+#endif
+
+   if( !bIsInListBox )
+   {
+      // It's on the dialog, better make sure we
+      // have a slot for a check box pointer for it.
+      mCurrentCheckBox++;
+      wxASSERT( mCurrentCheckBox < MAX_CHECKBOXES );
+   }
+
+   // IF Creating THEN create the checkbox, reading from gPrefs
+   if( mbCreating )
+   {
+      gPrefs->Read(SettingName, &bValue, bDefault);
+      if( !bIsInListBox )
+      {
+         mCheckBoxes[ mCurrentCheckBox ] = 
+            CreateCheckBox( Description, bValue );
+      }
+      else
+      {
+#if USE_SCROLLING_CHECK_LISTBOX_IN_PREFS
+         wxASSERT( pCurrentList );
+         pCurrentList->Append( Description );
+         pCurrentList->Check(Counter, bValue);
+#endif
+      }
+   }
+   // ELSE we are taking the value and writing it to 
+   // gPrefs and then applying the settings
+   else
+   {
+      if( !bIsInListBox )
+      {
+         wxASSERT( mCheckBoxes[ mCurrentCheckBox ] != NULL );
+         bValue = mCheckBoxes[ mCurrentCheckBox ]->GetValue();
+      }
+      else
+      {
+#if USE_SCROLLING_CHECK_LISTBOX_IN_PREFS
+         wxASSERT( pCurrentList );
+         bValue = pCurrentList->IsChecked( Counter );
+#endif
+      }
+      gPrefs->Write(SettingName,bValue);
+      if( mWindowID != NoneID )
+      {
+         ShowOrHideWindow( mWindowID, bValue );
+      }
+   }
+}
+
+
+void GUIPrefs::RadioButtonAction(
+   const wxString mDescription,
+   int iValue)
+{
+   mCurrentRadioButton++;
+   if( mbCreating )
+   {
+      mButtonArray[mCurrentRadioButton] = new wxRadioButton(
+         this, -1, mDescription,
+         wxDefaultPosition, 
+         wxDefaultSize, 
+         (mCurrentRadioButton==0) ? wxRB_GROUP : 0 );
+
+      mCurrentSizer->Add( mButtonArray[mCurrentRadioButton], 0,
+         wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
+      mButtonArray[mCurrentRadioButton]->SetValue(mCurrentPrefValue<=iValue);
+      if( (mSelectedRadioButton<0) &&(mCurrentPrefValue<=iValue ))
+      {
+         mSelectedRadioButton = mCurrentRadioButton;
+      }
+      else
+      {
+         mButtonArray[mCurrentRadioButton]->SetValue(false);
+      }
+   }
+   else
+   {
+      if((mCurrentRadioButton == 0) || mButtonArray[mCurrentRadioButton]->GetValue())
+         mCurrentPrefValue = iValue;
+   }
+}
+
+
+
+/// This is a condensed list of all the check boxes.
+/// This function is used in two ways :
+///   a) when creating the check boxes.
+///   b) when applying the settings.
+/// Member variables of GUIPrefs are set before calling this function
+/// so that it 'knows what to do'.
+/// This removes repetitive code and guarantees that the same setting 
+/// names are used in saving the parameters as were used in retrieving 
+/// them.
+void GUIPrefs::AllCheckBoxActions()
+{
+
+   // Code duplication warning: this default is repeated in Project.cpp
+   // in the destructor.  -DMM
+   #ifdef __WXMAC__
+      const bool bQuitOnCloseDefault = false;
+   #else
+      const bool bQuitOnCloseDefault = true;
+   #endif
+   // End code duplication warning
+   mCurrentCheckBox=-1;
+   mCheckBoxCounters[0]=-1;
+   mCheckBoxCounters[1]=-1;
+   mCurrentCheckBoxContainer=0;
+
+   CheckBoxAction( _("Autoscroll while playing"),
+      "/GUI/AutoScroll", true);
+   CheckBoxAction( _("Always allow pausing"),
+      "/GUI/AlwaysEnablePause", true);
+   CheckBoxAction( _("Update spectrogram while playing"),
+      "/GUI/UpdateSpectrogram", true);
+   CheckBoxAction( _("Quit Audacity upon closing last window"),
+      "/GUI/QuitOnClose", bQuitOnCloseDefault );
+   CheckBoxAction(
+      _("Enable dragging of left and right selection edges"),
+      "/GUI/AdjustSelectionEdges", true);
+   CheckBoxAction(
+      _("Enable ergonomic order of audio I/O buttons"),
+      "/GUI/ErgonomicTransportButtons", true);
+
+   mCurrentCheckBoxContainer=1;
+
+   CheckBoxAction( _("Enable Edit Toolbar"),
+      "/GUI/EnableEditToolBar", true, EditToolBarID );
+   CheckBoxAction( _("Enable Mixer Toolbar"),
+      "/GUI/EnableMixerToolBar",true, MixerToolBarID );
+   CheckBoxAction( _("Enable Meter Toolbar"),
+      "/GUI/EnableMeterToolBar",true, MeterToolBarID );
+   CheckBoxAction( _("Enable Transcription Toolbar"),
+      "/GUI/EnableTranscriptionToolBar",false, TranscriptionToolBarID );
+   
+// Don't yet allow normal users to disable the main mix window.
+//   CheckBoxAction(
+//      _("Main Mix"),
+//      "/GUI/MainMix", true,-1);
+#if 0
+   CheckBoxAction(
+      _("Main Mix (as a tree)"),
+      "/GUI/MainMixTree", false,-1);
+   CheckBoxAction(
+      _("Clips"),
+      "/GUI/Clips", false,-1);
+   CheckBoxAction(
+      _("Effects Graph"),
+      "/GUI/EffectsGraph", false,-1);
+   CheckBoxAction(
+      _("Nyquist Debugger"),
+      "/GUI/NyquistDebugger", false,-1);
+   CheckBoxAction(
+      _("Audacity Tester"), 
+      "/GUI/AudacityTester", false,-1);
+#endif
+};
+
+/// This is a condensed list of all the RadioButtons.
+/// This function is used in two ways :
+///   a) when creating the buttons.
+///   b) when applying the settings.
+/// Member variables of GUIPrefs are set before calling this function
+/// so that it 'knows what to do'.
+void GUIPrefs::AllRadioButtonActions()
+{
+   mCurrentRadioButton=-1;
+
+   mCurrentPrefName = "/GUI/EnvdBRange";
+   mCurrentPrefValue = -1;
+   mSelectedRadioButton=-1;
+
+   if( mbCreating) 
+      gPrefs->Read(mCurrentPrefName, &mCurrentPrefValue, ENV_DB_RANGE);
+
+   RadioButtonAction( 
+      _("-36 dB (shallow range for high-amplitude editing)"),36);
+   RadioButtonAction( 
+      _("-48 dB (PCM range of 8 bit samples)"),48);
+   RadioButtonAction( 
+      _("-96 dB (PCM range of 16 bit samples)"),96);
+   RadioButtonAction( 
+      _("-120 dB (approximate limit of human hearing)"),120);
+   RadioButtonAction( 
+      _("-145 dB (PCM range of 24 bit samples)"),145);
+
+   if( mbCreating )
+      mButtonArray[mSelectedRadioButton]->SetValue(true);
+   else
+      gPrefs->Write(mCurrentPrefName, mCurrentPrefValue);
+}
+
 bool GUIPrefs::Apply()
 {
-   gPrefs->Write("/GUI/AutoScroll", mAutoscroll->GetValue());
-   gPrefs->Write("/GUI/UpdateSpectrogram", mSpectrogram->GetValue());
-   gPrefs->Write("/GUI/AlwaysEnablePause", mAlwaysEnablePause->GetValue());
-
-   gPrefs->Write("/GUI/QuitOnClose", mQuitOnClose->GetValue());
-   gPrefs->Write("/GUI/AdjustSelectionEdges",
-                 mAdjustSelectionEdges->GetValue());
-   gPrefs->Write("/GUI/ErgonomicTransportButtons",
-                 mErgonomicTransportButtons->GetValue());
-
-   //-------------------------------------------------------------
-   //---------------------- Edit toolbar loading/unloading
-   gPrefs->Write("/GUI/EnableEditToolBar", mEditToolBar->GetValue());
-   bool enable = mEditToolBar->GetValue();
- 
-   if(gEditToolBarStub && !enable) {
-      gEditToolBarStub->UnloadAll();    //Unload all docked EDIT toolbars
-      delete gEditToolBarStub;
-      gEditToolBarStub = NULL;
-   }
-   else if(!gEditToolBarStub && enable)
-      {  
-         gEditToolBarStub =  new ToolBarStub(gParentWindow, EditToolBarID);
-         gEditToolBarStub->LoadAll();
-      }
-   //----------------------End of Edit toolbar loading/unloading
-   //---------------------------------------------------------------
-
-
-   //-------------------------------------------------------------
-   //---------------------- Mixer toolbar loading/unloading
-   gPrefs->Write("/GUI/EnableMixerToolBar", mMixerToolBar->GetValue());
-   enable = mMixerToolBar->GetValue();
-   
-   if(gMixerToolBarStub && !enable) {
-      gMixerToolBarStub->UnloadAll();    //Unload all docked MIXER toolbars
-      delete gMixerToolBarStub;
-      gMixerToolBarStub = NULL;
-   }
-   else if(!gMixerToolBarStub && enable) {
-      gMixerToolBarStub =  new ToolBarStub(gParentWindow, MixerToolBarID);
-      gMixerToolBarStub->LoadAll();
-   }
-   //----------------------End of Mixer toolbar loading/unloading
-   //---------------------------------------------------------------
-
-
-   //-------------------------------------------------------------
-   //---------------------- Meter toolbar loading/unloading
-   gPrefs->Write("/GUI/EnableMeterToolBar", mMeterToolBar->GetValue());
-   enable = mMeterToolBar->GetValue();
-   
-   if(gMeterToolBarStub && !enable) {
-      gMeterToolBarStub->UnloadAll();    //Unload all docked METER toolbars
-      delete gMeterToolBarStub;
-      gMeterToolBarStub = NULL;
-   }
-   else if(!gMeterToolBarStub && enable) {
-      gMeterToolBarStub =  new ToolBarStub(gParentWindow, MeterToolBarID);
-      gMeterToolBarStub->LoadAll();
-   }
-   //----------------------End of Meter toolbar loading/unloading
-   //---------------------------------------------------------------
-
- //-------------------------------------------------------------
-   //---------------------- Transcription toolbar loading/unloading
-   gPrefs->Write("/GUI/EnableTranscriptionToolBar", 
-                 mTranscriptionToolBar->GetValue());
-   enable = mTranscriptionToolBar->GetValue();
-   
-   if(gTranscriptionToolBarStub && !enable) {
-      gTranscriptionToolBarStub->UnloadAll();    //Unload all docked METER toolbars
-      delete gTranscriptionToolBarStub;
-      gTranscriptionToolBarStub = NULL;
-   }
-   else if(!gTranscriptionToolBarStub && enable) {
-      gTranscriptionToolBarStub =  new ToolBarStub(gParentWindow, TranscriptionToolBarID);
-      gTranscriptionToolBarStub->LoadAll();
-   }
-   //----------------------End of Meter toolbar loading/unloading
-   //---------------------------------------------------------------
-
-
-
-
-
-
-
+   mbCreating = false;
+   AllCheckBoxActions();
    int localeIndex = mLocale->GetSelection();
    if (localeIndex >= 0 && (unsigned) localeIndex < mLangCodes.GetCount())
       gPrefs->Write("/Locale/Language", mLangCodes[localeIndex]);
 
-   int envdBRange=36;
-   if(mdBArray[1]->GetValue())envdBRange=48;
-   if(mdBArray[2]->GetValue())envdBRange=96;
-   if(mdBArray[3]->GetValue())envdBRange=120;
-   if(mdBArray[4]->GetValue())envdBRange=145;
-   gPrefs->Write("/GUI/EnvdBRange", envdBRange);
-
+   AllRadioButtonActions();
    return true;
 }
 
 GUIPrefs::~GUIPrefs()
 {
-
-//    if(mAutoscroll)                delete mAutoscroll;
-//    if(mAlwaysEnablePause)         delete mAlwaysEnablePause;
-//    if(mSpectrogram)               delete mSpectrogram;
-//    if(mEditToolBar)               delete mEditToolBar;
-//    if(mMixerToolBar)              delete mMixerToolBar;
-//    if(mMeterToolBar)              delete mMeterToolBar;
-//    if(mTranscriptionToolBar)      delete mTranscriptionToolBar;
-//    if(mQuitOnClose)               delete mQuitOnClose;
-//    if(mAdjustSelectionEdges)      delete mAdjustSelectionEdges;
-//    if(mErgonomicTransportButtons) delete mErgonomicTransportButtons;
-//    if(mdBArray)                   delete []  mdBArray;
-//    if(mLocale)                    delete mLocale;
-//    if(mLocaleLabel)               delete mLocaleLabel;
-
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
