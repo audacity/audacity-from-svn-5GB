@@ -1,4 +1,4 @@
-Mtodo.txt
+todo.txt
 
 This is the file where we keep track of all feature
 requests and plans, and organize them by which
@@ -93,6 +93,7 @@ Audio::
   - input device
   - input volume
   - playthrough
+  - stereo balance
 - Support portaudio multiple driver models
 - Play to End button (from selection, to end)
 
