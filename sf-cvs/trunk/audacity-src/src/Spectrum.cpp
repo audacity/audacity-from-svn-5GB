@@ -57,7 +57,7 @@ bool ComputeSpectrum(float * data, int width, int height,
          // of the power, instead of the square root
 
          for (i = 0; i < windowSize; i++)
-            in[i] = pow(in[i], 1.0 / 3.0);
+            in[i] = pow(in[i], 1.0f / 3.0f);
 
          // Take FFT
          FFT(windowSize, false, in, NULL, out, out2);
