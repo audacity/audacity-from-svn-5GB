@@ -83,6 +83,10 @@ TrackList *AudacityProject::msClipboard = new TrackList();
 double AudacityProject::msClipLen = 0.0;
 AudacityProject *AudacityProject::msClipProject = NULL;
 
+enum {
+   RedrawProjectID = 17000
+};
+
 #ifdef __WXMAC__
 # ifndef __UNIX__
 #  include <Files.h>
@@ -466,6 +470,12 @@ void AudacityProject::RedrawProject()
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::PostRedrawMessage()
+{
+   wxCommandEvent event(RedrawProjectID);
+   this->AddPendingEvent(event);
+}
+
 DirManager *AudacityProject::GetDirManager()
 {
    return &mDirManager;
@@ -772,6 +782,11 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
 {
    int numEffects = Effect::GetNumEffects();
    Effect *f = NULL;
+
+   if (event.GetEventType() == RedrawProjectID) {
+      RedrawProject();
+      return true;
+   }
 
    if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED) {
       if (event.GetId() >= FirstEffectID &&

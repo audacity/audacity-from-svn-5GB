@@ -147,6 +147,7 @@ class AudacityProject:public wxFrame,
 
    void UpdatePrefs();
    void RedrawProject();
+   void PostRedrawMessage();
    void SelectNone();
    void Rewind(bool shift);
    void SkipEnd(bool shift);
