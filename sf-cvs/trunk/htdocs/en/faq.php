@@ -70,10 +70,10 @@ The source code to this program is freely available on the
 web, and you are free to modify it for your own use, however
 any changes you make must also be distributed under the GPL.
 <p>
-Audacity was build using wxWindows, a software library which
+Audacity was build using wxWidgets, a software library which
 is released under the less-restrictive LGPL.  
 For more information, please visit 
-<a href="http://www.wxwindows.org">wxwindows.org</a>.
+<a href="http://wxwidgets.org/">wxwidgets.org</a>.
 <p>
 The authors of Audacity decided to release it under the GPL
 for many reasons.  Some of us do it out of generosity.
@@ -233,7 +233,7 @@ using the flag --nodeps.</font>
 <br>- If you installed the wxWindows RPM, be sure to run "ldconfig" (as
 root) so your system knows about the new library.
 
-<br><br>- If you installed wxWindows
+<br><br>- If you installed wxWidgets
 from source, it may have been installed in /usr/local, but /usr/local/lib may
 not be in your library path. Add /usr/local/lib to the file "/etc/ld.so.conf"
 and then run "ldconfig". You may also want to add "/usr/local/bin" to your path,

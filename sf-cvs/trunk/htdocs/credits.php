@@ -257,7 +257,7 @@ simply produced tools which have made this whole thing possible.
 
 <li>The Ogg Vorbis Team
 
-<li>The wxWindows Team
+<li>The wxWidgets Team
 
 <li>Verilogix, Inc.
 
