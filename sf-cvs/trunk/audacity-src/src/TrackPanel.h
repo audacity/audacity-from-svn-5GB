@@ -14,6 +14,9 @@
 #include <wx/timer.h>
 #include <wx/window.h>
 
+//Stm:  The following included because of the sampleCount struct.
+#include "Sequence.h"  
+  
 class wxMenu;
 class wxRect;
 class wxStatusBar;
@@ -24,6 +27,7 @@ class TrackPanel;
 class TrackArtist;
 class Ruler;
 struct ViewInfo;
+
 
 class TrackPanelListener {
  public:
@@ -239,9 +243,13 @@ class TrackPanel:public wxWindow {
    int mZoomStart;
    int mZoomEnd;
    
-   Track * mDrawingTrack;       //Keeps track of which track you are drawing on between events cf. HandleDraw()
-   int mDrawingTrackTop;         //Keeps track of the top position of the drawing track.
-
+   Track * mDrawingTrack;          // Keeps track of which track you are drawing on between events cf. HandleDraw()
+   int mDrawingTrackTop;           // Keeps track of the top position of the drawing track.
+   sampleCount mDrawingStartSample;   // sample of last click-down
+   float mDrawingStartSampleValue;    // value of last click-down
+   sampleCount mDrawingLastDragSample; // sample of last drag-over
+   float mDrawingLastDragSampleValue;  // value of last drag-over
+ 
    double PositionToTime(int mouseXCoordinate,
                          int trackLeftEdge) const;
    int TimeToPosition(double time,

@@ -1084,6 +1084,16 @@ void TrackPanel::DoZoomInOut(wxMouseEvent & event, int trackLeftEdge)
 
 
 // BG: This handles drawing
+//  Stm:
+// There are several member data structure for handling drawing:
+//   mDrawingTrack:               keeps track of which track you clicked down on, so drawing doesn't 
+//                                jump to a new track
+//   mDrawingTrackTop:            The top position of the drawing track--makes drawing easier.
+//   mDrawingStartSample:         The sample you clicked down on, so that you can hold it steady
+//   mDrawingStartSampleValue:    The original value of the initial sample
+//   mDrawingLastDragSample:      When drag-drawing, this keeps track of the last sample you dragged over,
+//                                so it can smoothly redraw samples that got skipped over
+//   mDrawingLastDragSampleValue: The value of the last 
 void TrackPanel::HandleDraw(wxMouseEvent & event)
 {
    
@@ -1117,7 +1127,7 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
             wxMessageBox("Draw currently only works with waveforms.", "Notice");
             return;
          }
-
+      
       //Get rate in order to calculate the critical zoom threshold
       rate = ((WaveTrack *)mDrawingTrack)->GetRate();
       //Find out the zoom level
@@ -1129,12 +1139,44 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
             wxMessageBox("You are not zoomed in enough. Zoom in until you can see the individual samples.", "Notice");
             return;
          }
+      
+      //If we are still around, we are drawing in earnest.  Set some member data structures up:
+      //First, calculate the starting sample.  To get this, we need the time
+      double t0 = PositionToTime(event.m_x, GetLeftOffset());
+      
+      //convert this to samples
+      mDrawingStartSample = (sampleCount) (double)(t0 * rate + 0.5);;
+      
+      //Now, figure out what the value of that sample is.      
+      //First, get the sequence of samples so you can mess with it
+      Sequence *seq = ((WaveTrack *)mDrawingTrack)->GetSequence();
 
+      //Get the sample and put it in the member variable
+      seq->Get((char*)&mDrawingStartSampleValue, floatSample, (int)mDrawingStartSample, 1);
+      
+
+      // Calculate where the mouse is located vertically (between +/- 1)
+      float newLevel =  -2 * (float)(event.m_y - mDrawingTrackTop) / mDrawingTrack->GetHeight() + 1;
+      
+      //Make sure the new level is between +/-1
+      newLevel = newLevel >  1.0 ?  1.0: newLevel;
+      newLevel = newLevel < -1.0 ? -1.0: newLevel;
+      
+
+      //Set the sample to the point of the mouse event
+      seq->Set((samplePtr)&newLevel, floatSample, mDrawingStartSample, 1);
+      
+      //Set the member data structures for drawing
+      mDrawingLastDragSample=mDrawingStartSample;
+      mDrawingLastDragSampleValue = newLevel;
+
+      //Redraw the region of the selected track
+      Refresh(false);
    }
 
    //The following will happen on a drag or a down-click.
    // The point should get re-drawn at the location of the mouse.
-   if (event.Dragging() || event.ButtonDown())
+  else if (event.Dragging() )
       {
          //Exit if the mDrawingTrack is null.
          if( mDrawingTrack == NULL)
@@ -1158,12 +1200,43 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
 
          //Get the sequence of samples so you can mess with it
          Sequence *seq = ((WaveTrack *)mDrawingTrack)->GetSequence();
-         //Set the sample to the point of the mouse event
-         seq->Set((samplePtr)&newLevel, floatSample, s0, 1);
+
+         //Now, redraw all samples between current and last redrawn sample
          
+         //Handle cases of 0 or 1 special, to improve speed
+         if(abs(s0 - mDrawingLastDragSample) <= 1){
+            seq->Set((samplePtr)&newLevel,  floatSample, s0, 1);         
+         }
+         //Go from the smaller to larger sample. 
+         else if(s0 < mDrawingLastDragSample) {
+            float tmpvalue;
+            for(sampleCount i= s0+1; i<= mDrawingLastDragSample; i++) {
+
+               //This interpolates each sample linearly:
+               tmpvalue=mDrawingLastDragSampleValue + (newLevel - mDrawingLastDragSampleValue)  * 
+                  (float)(i-mDrawingLastDragSample)/(s0-mDrawingLastDragSample );
+               seq->Set((samplePtr)&tmpvalue, floatSample, i, 1);
+            }
+         }
+
+         else {
+            float tmpvalue;
+            for(sampleCount i= mDrawingLastDragSample+1; i<= s0; i++) {
+               //This interpolates each sample linearly:
+              
+               tmpvalue=mDrawingLastDragSampleValue + (newLevel - mDrawingLastDragSampleValue)  * 
+                  (float)(i-mDrawingLastDragSample)/(s0 - mDrawingLastDragSample);
+               seq->Set((samplePtr)&tmpvalue, floatSample, i, 1);
+            }
+         }
+         
+       
+         //Update the member data structures.
+         mDrawingLastDragSample=s0;
+         mDrawingLastDragSampleValue = newLevel;
+
          //Redraw the region of the selected track
          Refresh(false);
-
       }
    
    //On up-click, send the state to the undo stack
