@@ -266,6 +266,10 @@ Changes in 1.2.0-pre3:
 
   * Support for the VST Enabler on Windows added
 
+  * Support for LADSPA plug-ins on Windows added, and 
+    three open source LADSPA plug-ins ported to Windows
+    (GVerb reverb, SC4 compressor, and Hard Limiter)
+
 Changes in 1.2.0-pre2:
 
   * Online help completed.  The full manual is nearly complete
