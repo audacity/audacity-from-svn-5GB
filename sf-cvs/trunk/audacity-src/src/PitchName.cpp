@@ -18,94 +18,113 @@
 #include "PitchName.h"
 
 
+// Freq2Pitch takes a frequency in Hz (exponential scale relative to 
+// alphabetic pitch names) and returns a pitch ID number (linear 
+// scale), such that A440 (A4) is 57, middle C is 48, etc.
+// The offset to 57 is used to determine the register. 
+// Each register starts with C (e.g., for middle C and A440, 
+// it's register 4).
 float Freq2Pitch(float freq)
 {
-   return float (69.0 + (12.0 * (log(freq / 440.0) / log(2.0))));
+   return float (57.0 + (12.0 * (log(freq / 440.0) / log(2.0))));
 }
 
 
 char gPitchName[10];
+char * p_PitchName;
 
-char * PitchName_Absolute(int pitch, bool flats)
+// PitchName takes an integer version of a pitch ID (result from 
+// Freq2Pitch) and returns a standard pitch/note name [C, C#, etc.). 
+// Sharps are the default, unless, b_Wantb_WantFlats is true.
+char * PitchName(int pitchID, bool b_WantFlats)
 {
-   char *p = gPitchName;
+   p_PitchName = gPitchName;
 
-   switch (pitch % 12) {
+   switch (pitchID % 12) {
    case 0:
-      *p++ = 'C';
+      *p_PitchName++ = 'C';
       break;
    case 1:
-      if (flats) {
-         *p++ = 'D';
-         *p++ = 'b';
+      if (b_WantFlats) {
+         *p_PitchName++ = 'D';
+         *p_PitchName++ = 'b';
       } else {
-         *p++ = 'C';
-         *p++ = '#';
+         *p_PitchName++ = 'C';
+         *p_PitchName++ = '#';
       }
       break;
    case 2:
-      *p++ = 'D';
+      *p_PitchName++ = 'D';
       break;
    case 3:
-      if (flats) {
-         *p++ = 'E';
-         *p++ = 'b';
+      if (b_WantFlats) {
+         *p_PitchName++ = 'E';
+         *p_PitchName++ = 'b';
       } else {
-         *p++ = 'D';
-         *p++ = '#';
+         *p_PitchName++ = 'D';
+         *p_PitchName++ = '#';
       }
       break;
    case 4:
-      *p++ = 'E';
+      *p_PitchName++ = 'E';
       break;
    case 5:
-      *p++ = 'F';
+      *p_PitchName++ = 'F';
       break;
    case 6:
-      if (flats) {
-         *p++ = 'G';
-         *p++ = 'b';
+      if (b_WantFlats) {
+         *p_PitchName++ = 'G';
+         *p_PitchName++ = 'b';
       } else {
-         *p++ = 'F';
-         *p++ = '#';
+         *p_PitchName++ = 'F';
+         *p_PitchName++ = '#';
       }
       break;
    case 7:
-      *p++ = 'G';
+      *p_PitchName++ = 'G';
       break;
    case 8:
-      if (flats) {
-         *p++ = 'A';
-         *p++ = 'b';
+      if (b_WantFlats) {
+         *p_PitchName++ = 'A';
+         *p_PitchName++ = 'b';
       } else {
-         *p++ = 'G';
-         *p++ = '#';
+         *p_PitchName++ = 'G';
+         *p_PitchName++ = '#';
       }
       break;
    case 9:
-      *p++ = 'A';
+      *p_PitchName++ = 'A';
       break;
    case 10:
-      if (flats) {
-         *p++ = 'B';
-         *p++ = 'b';
+      if (b_WantFlats) {
+         *p_PitchName++ = 'B';
+         *p_PitchName++ = 'b';
       } else {
-         *p++ = 'A';
-         *p++ = '#';
+         *p_PitchName++ = 'A';
+         *p_PitchName++ = '#';
       }
       break;
    case 11:
-      *p++ = 'B';
+      *p_PitchName++ = 'B';
       break;
    }
 
-   sprintf(p, "%d", ((pitch + 3) / 12) - 2);
+	*p_PitchName = '\0';
 
    return gPitchName;
 }
 
-char * PitchName(int pitch, bool flats)
+// PitchName_Absolute does the same thing as PitchName, but appends 
+// the register number, e.g., instead of "C" it will return "C4" 
+// if the pitchID corresonds to middle C.
+char * PitchName_Absolute(int pitchID, bool b_WantFlats)
 {
-	return PitchName_Absolute(pitch, flats); //v
+   PitchName(pitchID, b_WantFlats); 
+
+	// PitchName sets p_PitchName to the next char in gPitchName, 
+	// so it's ready to append the register number.
+   sprintf(p_PitchName, "%d", (pitchID / 12));
+
+   return gPitchName;
 }
 
