@@ -102,6 +102,7 @@ OBJS = \
 	$(OBJDIR)/export/ExportPCM.o \
 	$(OBJDIR)/export/ExportCL.o \
 	$(OBJDIR)/import/Import.o \
+	$(OBJDIR)/import/ImportMIDI.o \
 	$(OBJDIR)/import/ImportMP3.o \
 	$(OBJDIR)/import/ImportOGG.o \
 	$(OBJDIR)/import/ImportPCM.o \
