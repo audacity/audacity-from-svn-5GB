@@ -29,7 +29,7 @@ AC_HEADER_STDC
 
 AC_ARG_ENABLE(justsrc,  
 		[  --enable-justsrc             only compile library sources ],
-		ac_arg_justsrc="Y", ac_arg_justsrc="N")
+		ac_arg_justsrc=$enableval, ac_arg_justsrc="yes")
 
 
 AC_ARG_ENABLE(force-broken-float,
@@ -248,7 +248,7 @@ if test x"$ac_cv_prog_autogen" = "xno" ; then
 # Now use the information from the checking stage.
 
 subdirs="man doc Win32 MacOS Octave src"    # Do not add src/GSM610 or src/G72x here.
-if test $ac_arg_justsrc = "N" ; then
+if test $ac_arg_justsrc = "no" ; then
 	subdirs="$subdirs examples tests"
 	fi
 
