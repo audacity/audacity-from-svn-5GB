@@ -61,6 +61,8 @@ class LWSlider
  private:
 
    void FormatPopWin();
+   void SetPopWinPosition();
+   void CreatePopWin();
 
    wxWindow *mParent;
 
