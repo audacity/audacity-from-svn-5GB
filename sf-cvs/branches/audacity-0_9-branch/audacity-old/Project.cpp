@@ -50,6 +50,7 @@
 #include "effects/Effect.h"
 
 TrackList *AudacityProject::msClipboard = new TrackList();
+AudacityProject *AudacityProject::msClipProject = NULL;
 double AudacityProject::msClipLen = 0.0;
 
 #ifdef __WXMAC__
@@ -1314,7 +1315,7 @@ void AudacityProject::ClearClipboard()
    }
 
    msClipLen = 0.0;
-
+   msClipProject = NULL;
    msClipboard->Clear();
 }
 

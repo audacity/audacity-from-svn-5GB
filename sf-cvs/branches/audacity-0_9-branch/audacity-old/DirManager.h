@@ -55,6 +55,9 @@ class DirManager {
    // Create new unique track name
    wxString NewTrackName();
 
+   void MakeBlockFileName(wxString inProjDir,
+                          wxString &outFileName, wxString &outPathName);
+
    BlockFile *NewTempBlockFile();
    BlockFile *NewBlockFile();
 
@@ -66,6 +69,11 @@ class DirManager {
                                 wxString fullPath,
                                 sampleCount start,
                                 sampleCount len, int channel);
+
+   // Adds one to the reference count of the block file,
+   // UNLESS it is "locked", then it makes a new copy of
+   // the BlockFile.
+   BlockFile *CopyBlockFile(BlockFile *b);
 
    BlockFile *LoadBlockFile(wxTextFile * in);
    void SaveBlockFile(BlockFile * f, wxTextFile * out);
