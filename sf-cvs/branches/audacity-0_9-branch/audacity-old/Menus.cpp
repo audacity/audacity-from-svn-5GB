@@ -52,6 +52,8 @@ void AudacityProject::CreateMenuBar()
 {
    mMenusDirtyCheck = gMenusDirty;
 
+   mFirstTimeUpdateMenus = true;
+
    mMenuBar = new wxMenuBar();
 
    // Note: if you change the titles of any of the menus here,
@@ -245,6 +247,31 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
       t = iter.Next();
    }
 
+   // Return from this function if nothing's changed since
+   // the last time we were here.
+
+   if (!mFirstTimeUpdateMenus &&
+       mLastNonZeroRegionSelected==nonZeroRegionSelected &&
+       mLastNumTracks==numTracks &&
+       mLastNumTracksSelected==numTracksSelected &&
+       mLastNumWaveTracks==numWaveTracks &&
+       mLastNumWaveTracksSelected==numWaveTracksSelected &&
+       mLastNumLabelTracks==numLabelTracks)
+      return;
+
+   mEditMenu->Enable(mEditMenu->FindItem("Paste"),
+                     numTracksSelected > 0 && msClipLen > 0.0);
+
+   // Otherwise, save state and then update all of the menus
+
+   mFirstTimeUpdateMenus = false;
+   mLastNonZeroRegionSelected = nonZeroRegionSelected;
+   mLastNumTracks = numTracks;
+   mLastNumTracksSelected = numTracksSelected;
+   mLastNumWaveTracks = numWaveTracks;
+   mLastNumWaveTracksSelected = numWaveTracksSelected;
+   mLastNumLabelTracks = numLabelTracks;
+
    mFileMenu->Enable(mFileMenu->FindItem(mExportString), numTracks > 0);
    mFileMenu->Enable(mFileMenu->FindItem(mExportSelectionString),
                      numTracksSelected > 0 && nonZeroRegionSelected);
@@ -258,8 +285,6 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
                      numTracksSelected > 0 && nonZeroRegionSelected);
    mEditMenu->Enable(mEditMenu->FindItem("Copy"),
                      numTracksSelected > 0 && nonZeroRegionSelected);
-   mEditMenu->Enable(mEditMenu->FindItem("Paste"),
-                     numTracksSelected > 0 && msClipLen > 0.0);
    mEditMenu->Enable(mEditMenu->FindItem("Delete"),
                      numTracksSelected > 0 && nonZeroRegionSelected);
    mEditMenu->Enable(mEditMenu->FindItem("Silence"),
@@ -528,7 +553,7 @@ void AudacityProject::Copy(wxCommandEvent & event)
    msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
    msClipProject = this;
 
-   mViewInfo.sel1 = mViewInfo.sel0;
+   //mViewInfo.sel1 = mViewInfo.sel0;
    //UpdateMenus();
 
    //  PushState();
