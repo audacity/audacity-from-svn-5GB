@@ -343,6 +343,7 @@ AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
    // xoff          x-offset to place icon pixmaps at, with respect to background image
    // yoff          y-offset to place icon pixmaps at, with respect to background image
 
+#if wxVERSION_NUMBER < 233
    wxImage * color = new wxImage(wxBitmap(foreground));
    wxImage * color_disabled = new wxImage(wxBitmap(disabledfg));
    wxImage * mask = new wxImage(wxBitmap(alpha));
@@ -352,6 +353,16 @@ AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
    wxImage * down2 = OverlayImage(down, color, mask, xoff + 1, yoff + 1);
    wxImage * disable2 =
       OverlayImage(up, color_disabled, mask, xoff, yoff);
+#else
+   wxImage * color 			= new wxImage(wxBitmap(foreground).ConvertToImage());
+   wxImage * color_disabled = new wxImage(wxBitmap(disabledfg).ConvertToImage());
+   wxImage * mask 			= new wxImage(wxBitmap(alpha).ConvertToImage());
+
+   wxImage * up2 			= OverlayImage(up, color, mask, xoff, yoff);
+   wxImage * hilite2 		= OverlayImage(hilite, color, mask, xoff, yoff);
+   wxImage * down2 			= OverlayImage(down, color, mask, xoff + 1, yoff + 1);
+   wxImage * disable2 		= OverlayImage(up, color_disabled, mask, xoff, yoff);
+#endif
 
    AButton * button =
       new AButton(this, id, placement, size, up2, hilite2, down2,
