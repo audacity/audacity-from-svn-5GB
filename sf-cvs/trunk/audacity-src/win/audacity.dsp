@@ -615,6 +615,14 @@ SOURCE=..\src\prefs\GUIPrefs.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\prefs\KeyConfigPrefs.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\prefs\KeyConfigPrefs.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\prefs\PrefsDialog.cpp
 # End Source File
 # Begin Source File
