@@ -120,7 +120,9 @@ IMPLEMENT_APP(AudacityApp)
 BEGIN_EVENT_TABLE(AudacityApp, wxApp)
 EVT_MENU(AboutID, AudacityApp::OnMenuAbout)
 EVT_MENU(NewID, AudacityApp::OnMenuNew)
+#ifdef __WXMAC__
 EVT_MENU(OpenID, AudacityApp::OnMenuOpen)
+#endif
 EVT_MENU(PreferencesID, AudacityApp::OnMenuPreferences)
 EVT_MENU(ExitID, AudacityApp::OnMenuExit)
 END_EVENT_TABLE()
