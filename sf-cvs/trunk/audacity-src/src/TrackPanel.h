@@ -45,6 +45,7 @@ WX_DEFINE_ARRAY(LWSlider *, LWSliderArray);
 
 class TrackPanelListener {
  public:
+   virtual void TP_DisplaySelection() = 0;
    virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum) = 0;
    virtual int TP_GetCurrentTool() = 0;
    virtual ControlToolBar * TP_GetControlToolBar() = 0;
@@ -140,6 +141,9 @@ class TrackPanel:public wxWindow {
                         const wxRect *rect = (const wxRect *) NULL);
    void DisplaySelection();
 
+   void SetSelectionFormat(int iformat);
+   void SetSnapTo(int snapto);
+
  private:
 
    void TrackSpecificMouseEvent(wxMouseEvent & event);
@@ -227,10 +231,6 @@ class TrackPanel:public wxWindow {
 
    void OnFormatChange(wxEvent &event);
 
-   void OnSelectionChange(wxEvent &event);
-
-   void OnSnapToChange(wxEvent &event);
-
    void OnSplitStereo(wxEvent &event);
    void OnMergeStereo(wxEvent &event);
 
@@ -267,14 +267,8 @@ class TrackPanel:public wxWindow {
 
    wxString TrackSubText(Track *t);
 
-   // Maybe we should have the m prefix on iformat and iSnapTo?
-   // Maybe the menus that these are related to should be moved to the main menu.
-   // It depends whether we want to allow choice per-track or make it per project.
-   int iformat;
-   int iSnapTo;
-
-
    TrackLabel mTrackLabel;
+
    TrackPanelListener *mListener;
 
    TrackList *mTracks;
@@ -382,8 +376,6 @@ class TrackPanel:public wxWindow {
    wxMenu *mLabelTrackMenu;
    wxMenu *mRateMenu;
    wxMenu *mFormatMenu;
-   wxMenu *mSelectionMenu;
-   wxMenu *mSnapToMenu;
 
    Track *mPopupMenuTarget;
 

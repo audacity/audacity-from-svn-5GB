@@ -65,6 +65,7 @@
 #include "AudioIO.h"
 #include "ControlToolBar.h"
 #include "EditToolBar.h"
+#include "FormatSelection.h"
 #include "FreqWindow.h"
 #include "HistoryWindow.h"
 #include "import/Import.h"
@@ -339,7 +340,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mActive(true),
      mHistoryWindow(NULL),
      mTotalToolBarHeight(0),
-     mDraggingToolBar(NoneID)
+     mDraggingToolBar(NoneID),
+     mSelectionFormat(SELECTION_FORMAT_RULER_MIN_SEC),
+     mSnapTo(0)
 {
    #ifndef __WXMAC__
    mDrag = NULL;
@@ -386,19 +389,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mViewInfo.bIsPlaying = false;
    mViewInfo.bRedrawWaveform = false;
 
-   //Initialize Commands
-   if(!GetCommands()->Initialize())
-   {
-      wxMessageBox("Error: Failed to initialize Audacity's commands!");
-   }
-
-   wxMenuBar * MainMenuBar = GetCommands()->GetMenuBar("appmenu");
-   if(!MainMenuBar)
-   {
-      wxMessageBox("Error: Failed to clone the 'appmenu' menubar!");
-   }
-
-   SetMenuBar(MainMenuBar);
+   CreateMenusAndCommands();
 
    int left = 0, top = 0, width, height;
    GetClientSize(&width, &height);
@@ -986,71 +977,25 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
    }
 }
 
+bool AudacityProject::HandleKeyEvent(wxKeyEvent & event)
+{
+   return mCommandManager.HandleKey(event);
+}
+
 bool AudacityProject::ProcessEvent(wxEvent & event)
 {
    if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED) {
-      if(GetCommands()->HandleMenuEvent(event))
+      if (mCommandManager.HandleMenuID(event.GetId()))
          return true;
    }
 
    return wxFrame::ProcessEvent(event);
 }
 
-bool AudacityProject::ProcessEffectEvent(int nEffectIndex)
-{
-   Effect *f = NULL;
-
-   f = Effect::GetEffect(nEffectIndex);
-
-   if (f) {
-      TrackListIterator iter(mTracks);
-      Track *t = iter.First();
-      double prevEndTime = mTracks->GetEndTime();
-      int count = 0;
-
-      while (t) {
-         if (t->GetSelected() && t->GetKind() == (Track::Wave))
-            count++;
-         t = iter.Next();
-      }
-
-      if (count == 0) {
-         // No tracks were selected...
-         if (f->GetEffectFlags() & INSERT_EFFECT) {
-            // Create a new track for the generated audio...
-            WaveTrack *newTrack = mTrackFactory->NewWaveTrack();
-            mTracks->Add(newTrack);
-            newTrack->SetSelected(true);
-         }
-         else {
-            wxMessageBox(_("You must select a track first."),
-                         _("Error applying effect"),
-                         wxOK | wxCENTRE, this);
-            return true;
-         }
-      }
-
-      if (f->DoEffect(this, mTracks, mTrackFactory,
-                      &mViewInfo.sel0, &mViewInfo.sel1)) {
-         PushState(f->GetEffectDescription()); 
-         if (mTracks->GetEndTime() > prevEndTime)
-            OnZoomFit();
-         FixScrollbars();
-
-         mTrackPanel->Refresh(false);
-      } else {
-         // TODO: undo the effect if necessary?
-      }
-
-      // This indicates we handled the event.
-      return true;
-   }
-
-   return false;
-}
-
 void AudacityProject::UpdateMenus()
 {
+   #if 0
+
    if (!gControlToolBarStub)
       return;
 
@@ -1277,6 +1222,8 @@ void AudacityProject::UpdateMenus()
                           numWaveTracksSelected > 0
                            && nonZeroRegionSelected);
    delete effs;
+
+   #endif
 
    //Now, go through each toolbar, and and call EnableDisableButtons()
    unsigned int i;
@@ -1559,7 +1506,7 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
           new ControlToolBar(this, -1, wxPoint(10, tbheight),
                              wxSize(width - 10, h));
       #ifndef __WXMAC__
-      GetCommands()->ChangeText("appmenu", "OnFloatControlToolBar", _("Float Control Toolbar"));
+      mCommandManager.Modify("FloatControlTB", _("Float Control Toolbar"));
       #endif
       mToolBarArray.Insert(toolbar, 0);
       break;
@@ -1631,7 +1578,7 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
 #ifndef __WXMAC__
             //If the ControlToolBar is being unloaded from this project, you
             //should change the menu entry of this project
-            GetCommands()->ChangeText("appmenu", "OnFloatControlToolBar", _("Dock Control Toolbar"));
+            mCommandManager.Modify("FloatControlTB", _("Dock Control Toolbar"));
 #endif
             break;
             
@@ -2628,6 +2575,13 @@ void AudacityProject::TP_DisplayStatusMessage(const char *msg,
    mStatus->SetField(msg, fieldNum);
    if (fieldNum == 0)
       mLastStatusUpdateTime = ::wxGetUTCTime();
+}
+
+void AudacityProject::TP_DisplaySelection()
+{
+   wxString formatting = FormatSelection(mSelectionFormat, mSnapTo,
+                                         mRate, &mViewInfo);
+   TP_DisplayStatusMessage(formatting, 1);   
 }
 
 // TrackPanel callback method

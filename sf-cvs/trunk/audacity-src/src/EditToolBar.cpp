@@ -194,25 +194,25 @@ void EditToolBar::OnButton(wxCommandEvent &event)
 
    switch (id) {
       case ETBCutID:
-         if (!busy) p->Cut();
+         if (!busy) p->OnCut();
          break;
       case ETBCopyID:
-         if (!busy) p->Copy();
+         if (!busy) p->OnCopy();
          break;
       case ETBPasteID:
-         if (!busy) p->Paste();
+         if (!busy) p->OnPaste();
          break;
       case ETBTrimID:
-         if (!busy) p->Trim();
+         if (!busy) p->OnTrim();
          break;
       case ETBSilenceID:
          if (!busy) p->OnSilence();
          break;
       case ETBUndoID:
-         if (!busy) p->Undo();
+         if (!busy) p->OnUndo();
          break;
       case ETBRedoID:
-         if (!busy) p->Redo();
+         if (!busy) p->OnRedo();
          break;
       case ETBZoomInID:
          p->OnZoomIn();

@@ -333,19 +333,12 @@ bool FileFormatPrefs::Apply()
    gPrefs->Write("/FileFormats/LossyExportFormat", lossyFormat);
    gPrefs->Write("/FileFormats/OggExportQuality", (long)(oggQuality * 10));
 
-   wxString pcmFmt = (sf_header_shortname(mFormat & SF_FORMAT_TYPEMASK)).c_str();
-
-   // should do for all open projects, right???
-   // BG: Probably, lets try it
+   // Tell all open projects to modify their menu bar to reflect
+   // the new export formats.
    for(unsigned int i = 0; i < gAudacityProjects.GetCount(); i++)
    {
       if(gAudacityProjects[i])
-      {
-         gAudacityProjects[i]->GetCommands()->ChangeText("appmenu", "OnExportMix", wxString::Format(_("&Export as %s..."), (const char *)pcmFmt));
-         gAudacityProjects[i]->GetCommands()->ChangeText("appmenu", "OnExportSelection", wxString::Format(_("Export Selection as %s..."), (const char *)pcmFmt));
-         gAudacityProjects[i]->GetCommands()->ChangeText("appmenu", "OnExportLossyMix", wxString::Format(_("Export as %s..."), lossyFormat.c_str()));
-         gAudacityProjects[i]->GetCommands()->ChangeText("appmenu", "OnExportLossySelection", wxString::Format(_("Export Selection as %s..."), lossyFormat.c_str()));
-      }
+         gAudacityProjects[i]->ModifyExportMenus();
    }
 
    return true;

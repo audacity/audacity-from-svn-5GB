@@ -45,6 +45,7 @@ OBJS = \
 	$(OBJDIR)/Envelope.o \
 	$(OBJDIR)/EditToolBar.o \
 	$(OBJDIR)/FFT.o \
+	$(OBJDIR)/FormatSelection.o \
 	$(OBJDIR)/FreqWindow.o \
 	$(OBJDIR)/Help.o \
 	$(OBJDIR)/HistoryWindow.o \
@@ -53,6 +54,7 @@ OBJS = \
 	$(OBJDIR)/Languages.o \
 	$(OBJDIR)/LangChoice.o \
 	$(OBJDIR)/Legacy.o \
+	$(OBJDIR)/Menus.o \
 	$(OBJDIR)/Mix.o \
 	$(OBJDIR)/MixerToolBar.o \
 	$(OBJDIR)/NoteTrack.o \
@@ -70,11 +72,8 @@ OBJS = \
 	$(OBJDIR)/UndoManager.o \
 	$(OBJDIR)/WaveTrack.o \
 	$(OBJDIR)/TimeTrack.o \
-	$(OBJDIR)/commands/Commands.o \
-	$(OBJDIR)/commands/CommandsCallback.o \
-	$(OBJDIR)/commands/CommandsMenu.o \
-	$(OBJDIR)/commands/CommandsReader.o \
-	$(OBJDIR)/commands/CommandsWriter.o \
+	$(OBJDIR)/commands/CommandManager.o \
+	$(OBJDIR)/commands/Keyboard.o \
 	$(OBJDIR)/effects/Effect.o \
 	$(OBJDIR)/effects/SimpleMono.o \
 	$(OBJDIR)/effects/SimplePairedTwoTrack.o \
