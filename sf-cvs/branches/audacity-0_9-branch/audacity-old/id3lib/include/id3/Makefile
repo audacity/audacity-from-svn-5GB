@@ -1,4 +1,3 @@
-# Generated automatically from Makefile.in by configure.
 # Makefile.in generated automatically by automake 1.4 from Makefile.am
 
 # Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
@@ -26,6 +25,7 @@ SHELL = /bin/sh
 
 srcdir = .
 top_srcdir = ../..
+
 prefix = /usr/local
 exec_prefix = ${prefix}
 
@@ -50,15 +50,15 @@ pkgincludedir = $(includedir)/id3lib
 
 top_builddir = ../..
 
-ACLOCAL = aclocal
-AUTOCONF = autoconf
-AUTOMAKE = automake
-AUTOHEADER = autoheader
+ACLOCAL = ${SHELL} /home/dmazzoni/audacity-old/id3lib/missing --run aclocal
+AUTOCONF = ${SHELL} /home/dmazzoni/audacity-old/id3lib/missing --run autoconf
+AUTOMAKE = ${SHELL} /home/dmazzoni/audacity-old/id3lib/missing --run automake
+AUTOHEADER = ${SHELL} /home/dmazzoni/audacity-old/id3lib/missing --run autoheader
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL} $(AM_INSTALL_PROGRAM_FLAGS)
 INSTALL_DATA = ${INSTALL} -m 644
-INSTALL_SCRIPT = ${INSTALL_PROGRAM}
+INSTALL_SCRIPT = ${INSTALL}
 transform = s,x,x,
 
 NORMAL_INSTALL = :
@@ -67,12 +67,12 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-host_alias = i686-pc-linux-gnu
+host_alias = 
 host_triplet = i686-pc-linux-gnu
 AS = @AS@
 CC = gcc
-CXX = c++
-CXXCPP = c++ -E
+CXX = g++
+CXXCPP = g++ -E
 DLLTOOL = @DLLTOOL@
 DOX_DIR_HTML = api
 DOX_DIR_LATEX = latex
@@ -81,13 +81,13 @@ DOX_DIR_RTF = rtf
 EXEEXT = 
 ID3LIB_BINARY_AGE = 0
 ID3LIB_DEBUG_FLAGS = 
-ID3LIB_FULLNAME = id3lib-3.8.0pre1
+ID3LIB_FULLNAME = id3lib-3.8.0pre2.1
 ID3LIB_INTERFACE_AGE = 0
 ID3LIB_MAJOR_VERSION = 3
 ID3LIB_MINOR_VERSION = 8
 ID3LIB_NAME = id3lib
 ID3LIB_PATCH_VERSION = 0
-ID3LIB_VERSION = 3.8.0pre1
+ID3LIB_VERSION = 3.8.0pre2.1
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LN_S = ln -s
 LT_AGE = 0
@@ -95,11 +95,11 @@ LT_CURRENT = 0
 LT_RELEASE = 3.8
 LT_REVISION = 0
 MAINT = #
-MAKEINFO = makeinfo
+MAKEINFO = ${SHELL} /home/dmazzoni/audacity-old/id3lib/missing --run makeinfo
 OBJDUMP = @OBJDUMP@
 PACKAGE = id3lib
 RANLIB = ranlib
-VERSION = 3.8.0pre1
+VERSION = 3.8.0pre2.1
 cxxflags_set = yes
 
 the_headers =    field.h                         frame.h                         globals.h                       misc_support.h                  reader.h                        readers.h                       sized_types.h                   tag.h                           writer.h                        writers.h                       utils.h                       
