@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: PCM data envelope analysis 
- last mod: $Id: envelope.c,v 1.5 2004-03-21 17:23:34 mbrubeck Exp $
+ last mod: $Id: envelope.c,v 1.6 2004-11-13 17:44:40 mbrubeck Exp $
 
  ********************************************************************/
 

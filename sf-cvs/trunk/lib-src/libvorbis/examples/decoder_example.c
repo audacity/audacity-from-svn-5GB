@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: simple example decoder
- last mod: $Id: decoder_example.c,v 1.4 2002-10-31 07:00:45 dmazzoni Exp $
+ last mod: $Id: decoder_example.c,v 1.5 2004-11-13 17:44:40 mbrubeck Exp $
 
  ********************************************************************/
 

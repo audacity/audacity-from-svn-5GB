@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: floor backend 1 implementation
- last mod: $Id: floor1.c,v 1.5 2004-03-21 17:23:34 mbrubeck Exp $
+ last mod: $Id: floor1.c,v 1.6 2004-11-13 17:44:40 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -755,7 +755,8 @@ int *floor1_interpolate_fit(vorbis_block *vb,vorbis_look_floor1 *look,
 }
 
 
-int floor1_encode(vorbis_block *vb,vorbis_look_floor1 *look,
+int floor1_encode(oggpack_buffer *opb,vorbis_block *vb,
+		  vorbis_look_floor1 *look,
 		  int *post,int *ilogmask){
 
   long i,j;
@@ -838,13 +839,13 @@ int floor1_encode(vorbis_block *vb,vorbis_look_floor1 *look,
     
     /* we have everything we need. pack it out */
     /* mark nontrivial floor */
-    oggpack_write(&vb->opb,1,1);
+    oggpack_write(opb,1,1);
       
     /* beginning/end post */
     look->frames++;
     look->postbits+=ilog(look->quant_q-1)*2;
-    oggpack_write(&vb->opb,out[0],ilog(look->quant_q-1));
-    oggpack_write(&vb->opb,out[1],ilog(look->quant_q-1));
+    oggpack_write(opb,out[0],ilog(look->quant_q-1));
+    oggpack_write(opb,out[1],ilog(look->quant_q-1));
       
       
     /* partition by partition */
@@ -882,7 +883,7 @@ int floor1_encode(vorbis_block *vb,vorbis_look_floor1 *look,
 	}
 	/* write it */
 	look->phrasebits+=
-	  vorbis_book_encode(books+info->class_book[class],cval,&vb->opb);
+	  vorbis_book_encode(books+info->class_book[class],cval,opb);
 	
 #ifdef TRAIN_FLOOR1
 	{
@@ -904,7 +905,7 @@ int floor1_encode(vorbis_block *vb,vorbis_look_floor1 *look,
 	  /* hack to allow training with 'bad' books */
 	  if(out[j+k]<(books+book)->entries)
 	    look->postbits+=vorbis_book_encode(books+book,
-					       out[j+k],&vb->opb);
+					       out[j+k],opb);
 	  /*else
 	    fprintf(stderr,"+!");*/
 	  
@@ -949,7 +950,7 @@ int floor1_encode(vorbis_block *vb,vorbis_look_floor1 *look,
       return(1);
     }
   }else{
-    oggpack_write(&vb->opb,0,1);
+    oggpack_write(opb,0,1);
     memset(ilogmask,0,vb->pcmend/2*sizeof(*ilogmask));
     seq++;
     return(0);

@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: *unnormalized* fft transform
- last mod: $Id: smallft.c,v 1.4 2002-10-31 07:00:46 dmazzoni Exp $
+ last mod: $Id: smallft.c,v 1.5 2004-11-13 17:44:40 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -32,6 +32,7 @@
 #include <string.h>
 #include <math.h>
 #include "smallft.h"
+#include "os.h"
 #include "misc.h"
 
 static void drfti1(int n, float *wa, int *ifac){
