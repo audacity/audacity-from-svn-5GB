@@ -329,7 +329,7 @@ class TrackPanel:public wxWindow {
 
    int mZoomStart;
    int mZoomEnd;
-   
+
    Track * mDrawingTrack;          // Keeps track of which track you are drawing on between events cf. HandleDraw()
    int mDrawingTrackTop;           // Keeps track of the top position of the drawing track.
    sampleCount mDrawingStartSample;   // sample of last click-down
@@ -358,6 +358,8 @@ class TrackPanel:public wxWindow {
    bool mIsSoloing;
    bool mIsGainSliding;
    bool mIsPanSliding;   
+
+   bool mAdjustSelectionEdges;
 
    // JH: if the user is dragging a track, at what y
    //   coordinate should the dragging track move up or down?

@@ -343,7 +343,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mActive(true),
      mHistoryWindow(NULL),
      mTotalToolBarHeight(0),
-     mDraggingToolBar(NoneID)
+     mDraggingToolBar(NoneID),
+     mIsDeleting(false)
 {
    #ifndef __WXMAC__
    mDrag = NULL;
@@ -389,6 +390,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    // Some extra information
    mViewInfo.bIsPlaying = false;
    mViewInfo.bRedrawWaveform = false;
+
+   mLastUpdateUITime = ::wxGetUTCTime();
 
    CreateMenusAndCommands();
 
@@ -503,8 +506,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                               height - sbarSpaceWidth - voffset +
                               sbarExtraLen), wxSB_VERTICAL);
 
-   mLastUpdateUITime = ::wxGetUTCTime();
-
    InitialState();
    FixScrollbars();
 
@@ -541,6 +542,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
 AudacityProject::~AudacityProject()
 {
+   mIsDeleting = true;
+
    delete mTimer;
    mTimer=NULL;
 
@@ -599,22 +602,35 @@ AudacityProject::~AudacityProject()
 
    gAudacityProjects.Remove(this);
 
-   #ifdef __WXMAC__
-   if (gAudacityProjects.IsEmpty())
-      wxGetApp().SetTopWindow(gParentFrame);
-   #else
-   if (gAudacityProjects.IsEmpty())
-      QuitAudacity();
-   #endif
-
    if (gActiveProject == this) {
       // Find a new active project
       if (gAudacityProjects.Count() > 0) {
          gActiveProject = gAudacityProjects[0];
-         wxGetApp().SetTopWindow(gParentFrame);
       }
-      else
+      else {
          gActiveProject = NULL;
+      }
+   }
+
+   if (gAudacityProjects.IsEmpty() && !gIsQuitting) {
+      bool quitOnClose;
+      #ifdef __WXMAC__
+      bool defaultQuitOnClose = false;
+      #else
+      bool defaultQuitOnClose = true;
+      #endif
+
+      gPrefs->Read("/GUI/QuitOnClose", &quitOnClose, defaultQuitOnClose);
+
+      if (quitOnClose)
+         QuitAudacity();
+      else {
+         #ifdef __WXMAC__
+         wxGetApp().SetTopWindow(gParentFrame);
+         #else
+         CreateNewAudacityProject(gParentWindow);
+         #endif
+      }
    }
 }
 
@@ -1098,6 +1114,11 @@ void AudacityProject::DecorateToolBar( wxPaintDC & dc, int iToolBar )
 
 void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
 {
+   // Unfortunately some of the code called in our destructor
+   // can trigger evens like Paint events...
+   if (mIsDeleting)
+      return;
+
    wxPaintDC dc(this);
 
    int top = 0;

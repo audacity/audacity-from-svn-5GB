@@ -31,13 +31,26 @@ GUIPrefs::GUIPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
    // Scrolling
-   bool autoscroll, spectrogram, editToolBar,mixerToolBar, alwaysEnablePause;
+   bool autoscroll, spectrogram, editToolBar,mixerToolBar, alwaysEnablePause,
+      quitOnClose, adjustSelectionEdges;
    gPrefs->Read("/GUI/AutoScroll", &autoscroll, true);
    gPrefs->Read("/GUI/UpdateSpectrogram", &spectrogram, true);
 
    gPrefs->Read("/GUI/EnableEditToolBar", &editToolBar, true);
    gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, true);
    gPrefs->Read("/GUI/AlwaysEnablePause", &alwaysEnablePause, false);
+
+   // Code duplication warning: this default is repeated in Project.cpp
+   // in the destructor.  -DMM
+   #ifdef __WXMAC__
+   bool defaultQuitOnClose = false;
+   #else
+   bool defaultQuitOnClose = true;
+   #endif
+   // End code duplication warning
+
+   gPrefs->Read("/GUI/QuitOnClose", &quitOnClose, defaultQuitOnClose);
+   gPrefs->Read("/GUI/AdjustSelectionEdges", &adjustSelectionEdges, true);
 
    topSizer = new wxBoxSizer( wxVERTICAL );
    
@@ -71,10 +84,17 @@ PrefsPanel(parent)
 
 
    // Quit Audacity when last window closes?
-
+   mQuitOnClose = new wxCheckBox(this, -1,
+                                 _("Quit Audacity upon closing last window"));
+   mQuitOnClose->SetValue(quitOnClose);
+   topSizer->Add(mQuitOnClose, 0, wxGROW|wxALL, 2);
 
    // Enable/disable adjust selection edges
-
+   mAdjustSelectionEdges =
+      new wxCheckBox(this, -1,
+                     _("Enable dragging of left and right selection edges"));
+   mAdjustSelectionEdges->SetValue(adjustSelectionEdges);
+   topSizer->Add(mAdjustSelectionEdges, 0, wxGROW|wxALL, 2);
 
    // Locale
    GetLanguages(mLangCodes, mLangNames);
@@ -115,6 +135,10 @@ bool GUIPrefs::Apply()
    gPrefs->Write("/GUI/AutoScroll", mAutoscroll->GetValue());
    gPrefs->Write("/GUI/UpdateSpectrogram", mSpectrogram->GetValue());
    gPrefs->Write("/GUI/AlwaysEnablePause", mAlwaysEnablePause->GetValue());
+
+   gPrefs->Write("/GUI/QuitOnClose", mQuitOnClose->GetValue());
+   gPrefs->Write("/GUI/AdjustSelectionEdges",
+                 mAdjustSelectionEdges->GetValue());
 
    //-------------------------------------------------------------
    //---------------------- Edit toolbar loading/unloading
