@@ -662,8 +662,10 @@ void TrackPanel::OnTimer()
    // BG: Update the screen while playing
    if((gAudioIO->IsStreamActive(p->GetAudioIOToken()) &&
        !gAudioIO->IsPaused())) {
-      if (gAudioIO->GetNumCaptureChannels())
-         p->RedrawProject();
+      if (gAudioIO->GetNumCaptureChannels()) {
+         if ((mTimeCount % 5) == 0)
+            p->RedrawProject();
+      }
       else if ((mTimeCount % 20) == 0)
          p->RedrawProject();
    }
