@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.1.1 (November 10, 2002)
+Version 1.1.2 (December 10, 2002)
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -169,6 +169,16 @@ Known issues/problems:
   just keep the tool palette docked with the project window.
 
 -------------------------------------------------------------
+
+New features in Audacity 1.1.2:
+  * User Interface
+    - Fixed bug in Windows version, for track menu commands 
+	  "Name..." and "Split Stereo Track"/"Make Stereo Track".
+  * Effects
+    - Nyquist support on Windows (supports plug-ins written 
+	  in Nyquist, an interpreted functional language based 
+	  on Lisp).
+
 
 New features in Audacity 1.1.1:
 
