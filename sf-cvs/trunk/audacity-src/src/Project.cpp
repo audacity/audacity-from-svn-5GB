@@ -1364,20 +1364,22 @@ void AudacityProject::SelectNone()
    mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::Rewind()
+void AudacityProject::Rewind(bool shift)
 {
    mViewInfo.sel0 = 0;
-   mViewInfo.sel1 = 0;
+   if (!shift || mViewInfo.sel1 < mViewInfo.sel0)
+      mViewInfo.sel1 = 0;
 
    mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::SkipEnd()
+void AudacityProject::SkipEnd(bool shift)
 {
    double len = mTracks->GetMaxLen();
 
-   mViewInfo.sel0 = len;
    mViewInfo.sel1 = len;
+   if (!shift || mViewInfo.sel0 > mViewInfo.sel1)
+      mViewInfo.sel0 = len;
 
    mTrackPanel->Refresh(false);
 }

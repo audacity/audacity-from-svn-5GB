@@ -50,6 +50,9 @@ class AButton:public wxWindow {
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnMouseEvent(wxMouseEvent & event);
 
+   virtual bool WasShiftDown(); // returns true if shift was held down
+                                // the last time the button was clicked
+
  private:
 
    enum AButtonState {
@@ -61,6 +64,8 @@ class AButton:public wxWindow {
 
    int mWidth;
    int mHeight;
+
+   bool mWasShiftDown;
 
    bool mButtonIsDown;
    bool mIsClicking;

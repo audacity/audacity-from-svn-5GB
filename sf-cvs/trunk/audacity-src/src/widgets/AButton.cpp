@@ -35,6 +35,7 @@ AButton::AButton(wxWindow * parent, wxWindowID id,
                  char **disXPM):
    wxWindow(parent, id, pos, size)
 {
+   mWasShiftDown = false;
    mButtonIsDown = false;
    mButtonState = AButtonUp;
    mIsClicking = false;
@@ -57,6 +58,7 @@ AButton::AButton(wxWindow * parent, wxWindowID id,
                 wxImage *dis):
    wxWindow(parent, id, pos, size)
 {
+   mWasShiftDown = false;
    mButtonIsDown = false;
    mButtonState = AButtonUp;
    mIsClicking = false;
@@ -105,6 +107,8 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
          mButtonState = AButtonDown;
          mButtonIsDown = true;
 
+         mWasShiftDown = event.ShiftDown();
+
          wxCommandEvent *e =
              new wxCommandEvent(wxEVT_COMMAND_BUTTON_CLICKED, GetId());
          GetParent()->ProcessEvent(*e);
@@ -138,6 +142,11 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
          this->Refresh(false);
       }
    }
+}
+
+bool AButton::WasShiftDown()
+{
+   return mWasShiftDown;
 }
 
 void AButton::Enable()
