@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacity\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2003-09-30 21:22+0200\n"
+"PO-Revision-Date: 2003-11-01 03:13+0100\n"
 "Last-Translator: Heiko Abler <dj@audacity.de>\n"
 "Language-Team: Deutsch <dj@audacity.de>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.0\n"
 
@@ -92,7 +92,7 @@ msgstr "&Effekte"
 #: ../src/Menus.cpp:391 ../src/Menus.cpp:397
 #, c-format
 msgid "&Export Selection as %s..."
-msgstr "Auswahl exportieren als %s..."
+msgstr "Auswahl e&xportieren als %s..."
 
 #: ../src/Menus.cpp:388 ../src/Menus.cpp:394
 #, c-format
@@ -105,7 +105,7 @@ msgstr "&Datei"
 
 #: ../src/Menus.cpp:209
 msgid "&Fit in Window\tCtrl+F"
-msgstr "In &Fenster einpassen"
+msgstr "In &Fenster einpassen\tCtrl+F"
 
 #: ../src/Menus.cpp:271
 msgid "&Generate"
@@ -117,7 +117,7 @@ msgstr "&Hilfe"
 
 #: ../src/Menus.cpp:219
 msgid "&History..."
-msgstr "Verlauf"
+msgstr "&Verlauf..."
 
 #: ../src/Menus.cpp:230
 msgid "&Import Audio...\tCtrl+I"
@@ -178,7 +178,7 @@ msgstr "&Stille...\tCtrl+L"
 
 #: ../src/Menus.cpp:159
 msgid "&Trim\tCtrl+T"
-msgstr "&Trimmen\tCtrl+T"
+msgstr "Tri&mmen\tCtrl+T"
 
 #: ../src/Menus.cpp:141
 msgid "&Undo\tCtrl+Z"
@@ -609,7 +609,7 @@ msgid ""
 msgstr ""
 "Audacity exportiert MP3-Dateien nicht direkt, sondern benutzt dafür\n"
 "die frei verfügbare LAME MP3-Bibliothek. sie müssen sich die Datei "
-"\"lame_enc.dll\" separat besorgen,\n"
+"lame_enc.dll separat besorgen,\n"
 "indem sie den LAME MP3-Encoder herunterladen und Audacity danach "
 "mitteilen, wo sich die Datei befindet.\n"
 "Diese Einstellung müssen sie nur einmalig vornehmen.\n"
@@ -629,7 +629,7 @@ msgid ""
 msgstr ""
 "Audacity exportiert MP3-Dateien nicht direkt, sondern benutzt\n"
 "die frei verfügbare LAME MP3-Bibliothek. sie müssen sich die \n"
-"Datei \"lame_enc.dll\" separat besorgen, entweder, indem sie \n"
+"Datei lame_enc.dll separat besorgen, entweder, indem sie \n"
 "die Datei herunterladen, oder indem sie LAME selbst compilieren.\n"
 "Danach müssen sie Audacity nur noch mitteilen, wo sich die Datei\n"
 "befindet. Diese Einstellung müssen sie nur einmalig vornehmen.\n"
@@ -900,7 +900,7 @@ msgid ""
 "Changes to temporary directory will not take effect until Audacity is "
 "restarted"
 msgstr ""
-"Änderungen am Temporärverzeichnis werden erst nach dem Neustart von "
+"Änderungen am temporären Verzeichnis werden erst nach dem Neustart von "
 "Audacity wirksam."
 
 #: ../src/effects/ChangePitch.h:47
@@ -946,7 +946,7 @@ msgstr "Auswählen..."
 
 #: ../src/DirManager.cpp:198
 msgid "Cleaning up temporary files..."
-msgstr "Temporärdateien aufräumen..."
+msgstr "Temporäre Dateien aufräumen..."
 
 #: ../src/effects/Equalization.cpp:667 ../src/effects/Filter.cpp:463
 #: ../src/prefs/KeyConfigPrefs.cpp:98
@@ -1369,7 +1369,7 @@ msgstr "Bearbeitungwerkzeuge andocken"
 
 #: ../src/Menus.cpp:593
 msgid "Dock Mixer Toolbar"
-msgstr "Mixer Toolbar andocken"
+msgstr "Mixer andocken"
 
 #: ../src/AboutDialog.cpp:203
 msgid "Documentation Writer"
@@ -1449,7 +1449,7 @@ msgstr "Bearbeitungswerkzeugleiste aktivieren"
 
 #: ../src/prefs/GUIPrefs.cpp:81
 msgid "Enable Mixer Toolbar"
-msgstr "Mixer Toolbar einschalten"
+msgstr "Mixer Toolbar aktivieren"
 
 #: ../src/prefs/GUIPrefs.cpp:95
 msgid "Enable dragging of left and right selection edges"
@@ -1473,11 +1473,11 @@ msgstr "Nyquist Kommando: "
 
 #: ../src/AStatus.cpp:341
 msgid "Enter a rate in Hz (samples per second):"
-msgstr "Samplefrequenz in Hz eingeben (Samples/Sek):"
+msgstr "Samplefrequenz in Hz (Samples/Sek):"
 
 #: ../src/TrackPanel.cpp:3941
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
-msgstr "Samplefrequenz (1 Hz bis 100000 Hz) eingeben:"
+msgstr "Samplefrequenz (1 Hz bis 100000 Hz):"
 
 #: ../src/effects/Echo.cpp:49
 msgid "Enter the decay factor: "
@@ -1747,7 +1747,7 @@ msgstr "Freier Platz:"
 
 #: ../src/FreqWindow.cpp:1010
 msgid "Frequency (Hz)\tLevel (dB)"
-msgstr "Frequenz (Hz)\tAmplitude (dB)"
+msgstr "Frequenz (Hz)\tPegel (dB)"
 
 #: ../src/effects/BassBoost.cpp:287
 msgid "Frequency (Hz):"
@@ -1812,7 +1812,7 @@ msgstr "High Quality Dither:"
 
 #: ../src/prefs/QualityPrefs.cpp:156
 msgid "High-quality sample rate converter:"
-msgstr "High Quality Samplekonvertierung:"
+msgstr "High Quality Samplekonverter:"
 
 #. i18n-hint: This is the abbreviation for "Hertz", or
 #. cycles per second.
@@ -2302,7 +2302,7 @@ msgstr "Neue &Stereotonspur"
 
 #: ../src/Menus.cpp:242
 msgid "New &Time Track"
-msgstr "Neue Zei&tleiste"
+msgstr "Neue &Zeitleiste"
 
 #: ../src/Menus.cpp:241
 msgid "New La&bel Track"
@@ -2382,7 +2382,7 @@ msgstr "Normalisiere..."
 
 #: ../src/export/ExportMP3.cpp:1271
 msgid "Not a valid or supported MP3 encoding library!"
-msgstr "Ungültige oder nicht unterstützte MP3-Bibliothek!"
+msgstr "Ungültige Bibliothek od. nicht unterstützter MP3-Encoder!"
 
 #: ../src/import/ImportOGG.cpp:126
 msgid "Not an Ogg Vorbis file"
@@ -2429,12 +2429,12 @@ msgstr "Nyquist gab keine Audiodaten zurück.\n"
 #: ../src/effects/nyquist/Nyquist.cpp:460
 #, c-format
 msgid "Nyquist returned the value: %d"
-msgstr "Nyquist gab den Wert %d zurück"
+msgstr "Nyquist gab den Wert \"%d\" zurück"
 
 #: ../src/effects/nyquist/Nyquist.cpp:451
 #, c-format
 msgid "Nyquist returned the value: %f"
-msgstr "Nyquist gab den Wert %f zurück"
+msgstr "Nyquist gab den Wert \"%f\" zurück"
 
 #: ../src/effects/nyquist/Nyquist.cpp:509
 msgid "Nyquist returned too many audio channels.\n"
@@ -2530,7 +2530,7 @@ msgstr "Ausgangslautstärke"
 #. i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:32
 msgid "PAL frames 25 fps"
-msgstr "PAL Frames (25 Fps)"
+msgstr "PAL Frames (25 Bilder/Sek)"
 
 #. i18n-hint: fps is "frames per second",
 #. and the other letters are for hours, minutes, seconds, frames
@@ -3212,7 +3212,7 @@ msgstr "Bereich einstellen..."
 
 #: ../src/AStatus.cpp:342 ../src/TrackPanel.cpp:572 ../src/TrackPanel.cpp:3943
 msgid "Set Rate"
-msgstr "Samplefrequenz einstellen"
+msgstr "Samplerate einstellen"
 
 #: ../src/TrackPanel.cpp:570
 msgid "Set Sample Format"
@@ -3233,7 +3233,7 @@ msgstr "Auswahlbereich einstellen"
 #: ../src/TrackPanel.cpp:3990
 #, c-format
 msgid "Set range to '%d' - '%d'"
-msgstr "Bereich einstellShapeden von '%d' bis '%d'"
+msgstr "Bereich einstellen von '%d' bis '%d'"
 
 #: ../src/prefs/QualityPrefs.cpp:173
 msgid "Shaped"
@@ -3245,7 +3245,7 @@ msgstr "Shift+Linksklick"
 
 #: ../src/Menus.cpp:1402 ../src/effects/Silence.h:27
 msgid "Silence"
-msgstr "Stille..."
+msgstr "Stille"
 
 #: ../src/EditToolBar.cpp:152
 msgid "Silence selection"
@@ -3254,7 +3254,7 @@ msgstr "Auswahl in Stille umwandeln"
 #: ../src/Menus.cpp:1400
 #, c-format
 msgid "Silenced selected tracks for %.2f seconds at %.2f"
-msgstr "Ausgewählte Tonspuren in Stille verwandelt (%.2f Sekunden bei %.2f)"
+msgstr "Ausgewählte Tonspuren in Stille verwandelt (%.2f Sekunden an %.2f)"
 
 #: ../src/effects/ToneGen.cpp:44
 msgid "Sine"
@@ -3296,7 +3296,7 @@ msgstr "Einrasten aktiviert"
 
 #: ../src/Menus.cpp:189
 msgid "Snap-To..."
-msgstr "Einrasten..."
+msgstr "Einrasten an..."
 
 #: ../src/TrackPanel.cpp:4314
 msgid "Solo"
@@ -3352,7 +3352,7 @@ msgstr "Spektrum"
 
 #: ../src/Menus.cpp:164
 msgid "Spl&it"
-msgstr "Aufte&ilen"
+msgstr "Au&fteilen"
 
 #: ../src/Menus.cpp:1481 ../src/TrackPanel.cpp:3760
 msgid "Split"
@@ -3385,7 +3385,7 @@ msgstr "Standard Autokorrelation"
 
 #: ../src/effects/ChangeSpeed.cpp:389
 msgid "Standard Vinyl RPM:   from"
-msgstr "Standard Vinyl (in UPM)   von"
+msgstr "Standard Vinyl (UPM)   von"
 
 #: ../src/import/ImportRaw.cpp:348
 msgid "Start offset:"
@@ -3417,7 +3417,7 @@ msgstr "Stop\tS"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:51
 msgid "Temp. Directory"
-msgstr "Temporärverzeichnis"
+msgstr "Temporäres Verzeichnis"
 
 #: ../src/Menus.cpp:2013
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
@@ -3436,7 +3436,7 @@ msgid ""
 "Are you sure you want to launch Audacity now?"
 msgstr ""
 "Audacity ist bereits auf Ihrem System gestartet.\n"
-"Wird Audacity mehrfach gestartet, kann dies zu Datenverlusten\n"
+"Audacity mehrfach zu starten kann zu Datenverlusten\n"
 "oder Systemabstürzen führen.\n"
 "\n"
 "Wollen sie Audacity wirklich ein zusätzliches Mal starten?"
@@ -3449,11 +3449,11 @@ msgstr ""
 
 #: ../src/Menus.cpp:1106
 msgid "There are no label tracks to export."
-msgstr "Es gibt keine Textspuren zum Exportieren."
+msgstr "Es sind keine Textspuren zu exportieren."
 
 #: ../src/AudioIO.cpp:163
 msgid "There was an error initializing the audio i/o layer.\n"
-msgstr "Fehler beim Initialisieren der Audio(E/A)-Layer.\n"
+msgstr "Fehler beim Initialisieren der Audio-E/A-Layer.\n"
 
 #: ../src/AboutDialog.cpp:123
 msgid ""
@@ -3511,7 +3511,7 @@ msgstr "Zeitverschiebungsabfolge"
 #: ../src/TrackPanel.cpp:1701
 #, c-format
 msgid "Time shifted track '%s' %s %.02f seconds"
-msgstr "Spur wurde verschoben: '%s' %s %.02f Sekunden"
+msgstr "Spur wurde um '%s' %s %.02f Sekunden verschoben"
 
 #: ../src/prefs/MousePrefs.cpp:97
 msgid "Time-Shift"
@@ -3686,12 +3686,12 @@ msgid ""
 "WARNING: You may be prompted to save your work. Clicking cancel will have "
 "the same effect as clicking no."
 msgstr ""
-"Sie sollten Ihre Arbeit jetzt speichern. ACHTUNG: Anklicken "
-"auf Abbruch hat die gleiche Wirkung wie Nein!"
+"Sie sollten Ihre Arbeit jetzt speichern. ACHTUNG: Klicken "
+"auf \"Abbruch\" hat die gleiche Wirkung wie \"Nein\"!"
 
 #: ../src/effects/Phaser.cpp:449
 msgid "WET"
-msgstr "Wet (Nass)"
+msgstr "Nass (Wet)"
 
 #: ../src/effects/Wahwah.cpp:502
 msgid "Wah Frequency Offset (%):"
@@ -3756,7 +3756,7 @@ msgstr "Wo befindet sich die Datei \"audacity-help.htb\"?"
 
 #: ../src/effects/Noise.h:27
 msgid "White Noise"
-msgstr "Weißes Rauschen..."
+msgstr "Weißes Rauschen"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:189
 msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*"
@@ -3803,7 +3803,7 @@ msgid ""
 "You will not be able to play or record audio.\n"
 "\n"
 msgstr ""
-"Eine Audio-Aufnahme/Wiedergabe ist deshalb nicht möglich.\n"
+"Aufnahme/Wiedergabe ist deshalb nicht möglich.\n"
 "\n"
 
 #: ../src/export/Export.cpp:130
@@ -3890,7 +3890,7 @@ msgstr "Bytes"
 #. cdda is "Compact Disc Digital Audio - don't translate
 #: ../src/FormatSelection.cpp:44
 msgid "cdda min:sec:frames 75 fps"
-msgstr "CDDA Min:Sek:Frames 75 Fps"
+msgstr "CDDA Min:Sek:Frames 75 Bilder/Sek"
 
 #. i18n-hint: cdda is "Compact Disc Digital Audio - don't translate.
 #. A "sector" is a technical term - don't translate unless you're sure
@@ -3906,13 +3906,13 @@ msgstr "herunter"
 #. i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:27
 msgid "film frames 24 fps"
-msgstr "Film Frames 24 Fps"
+msgstr "Film Frames 24 Bilder/Sek"
 
 #. i18n-hint: fps is "frames per second",
 #. and the other letters are for hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:30
 msgid "film h:mm:ss:ff 24 fps"
-msgstr "Film Std:Min:Sek:Frames 24 Fps"
+msgstr "Film Std:Min:Sek:Frames 24 Bilder/Sek"
 
 #: ../src/FormatSelection.cpp:25
 msgid "hr:min:sec"
