@@ -1,3 +1,8 @@
+/* This code shows (I think) how to play audio on an RS6K. 
+   It is not used for anything, but might be a nice reference
+   in case anyone wants to support AIX under the snd library.
+   -RBD
+ */
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>

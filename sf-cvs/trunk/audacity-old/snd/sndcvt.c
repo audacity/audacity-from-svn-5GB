@@ -9,7 +9,6 @@
 #endif
 #include "snd.h"
 #include "stdio.h"
-
 #ifdef LINUX
 #include "sys/file.h"
 #else

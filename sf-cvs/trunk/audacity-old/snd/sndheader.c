@@ -244,7 +244,7 @@ static int fail(snd_type snd, char *str)
 
 void snd_open_fail(snd_type snd)
 {
-    char msg[250];
+    /* char msg[250]; */
     snd->device = SND_DEVICE_NONE;
     snd->dictionary = &snd_none_dictionary;
     /* It's not fatal if the file does not exist...

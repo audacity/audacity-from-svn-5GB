@@ -6,14 +6,14 @@
 #include "snd.h"
 #include "sndfileio.h"
 
-#define PERMISSION 0644
+#define PERMISSION 0x0644
 
 int snd_file_open(char *fname, int mode)
 {
     int file;
     if (mode == SND_RDONLY) mode = _O_RDONLY;
     else mode = _O_RDWR;
-    file = _open(fname, mode | _O_BINARY, PERMISSION);
+    file = _open(fname, mode | _O_BINARY);
     return file;
 }
 
@@ -21,7 +21,7 @@ int snd_file_open(char *fname, int mode)
 int snd_file_creat(char *fname)
 {
     int file = _open(fname, _O_TRUNC | _O_WRONLY | 
-                            _O_CREAT | _O_BINARY, PERMISSION);
+                            _O_CREAT | _O_BINARY, _S_IREAD | _S_IWRITE);
     return file;
 }
 

@@ -114,6 +114,7 @@ long audio_poll(snd_type snd)
     }
 }
 
+
 long audio_read(snd_type snd, void *buffer, long length)
 {
     long i = 0, processed = 0, n;       
@@ -123,7 +124,6 @@ long audio_read(snd_type snd, void *buffer, long length)
     MMRESULT er;
     byte *in;
     byte *out;
-    length *= snd_bytes_per_frame(snd);
     
     in = (byte *) (cur->whdr[cur->pollee].lpData + cur->posinbuffer);
     out = (byte *) buffer;
@@ -190,7 +190,6 @@ long audio_write(snd_type snd, void *buffer, long length)
     MMRESULT er;
     byte *in;
     byte *out;
-    length *= snd_bytes_per_frame(snd);
     
     in = (byte *) buffer;
     out = (byte *) (cur->whdr[cur->pollee].lpData + cur->posinbuffer);
@@ -542,7 +541,7 @@ int audio_formatmatch(format_node *demanded, DWORD avail, long *flags)
             else if (test_44(avail))
                 demanded->srate = 44100.0;
             else {
-                snd_fail("No available sample-rate, it's impossible, btw");
+                snd_fail("No available sample-rate (internal error)");
                 return(!SND_SUCCESS);
             }
         }
@@ -559,7 +558,7 @@ int audio_formatmatch(format_node *demanded, DWORD avail, long *flags)
             else if (test_11(avail))
                 demanded->srate = 11025.0;
             else {
-                snd_fail("No available sample-rate, it's impossible, btw");
+                snd_fail("No available sample-rate (internal error)");
                 return(!SND_SUCCESS);
             }
         }
@@ -576,7 +575,7 @@ int audio_formatmatch(format_node *demanded, DWORD avail, long *flags)
             else if (test_11(avail))
                 demanded->srate = 11025.0;
             else {
-                snd_fail("No available sample-rate, it's impossible, btw");
+                snd_fail("No available sample-rate (internal error)");
                 return(!SND_SUCCESS);
             }
         }
@@ -589,7 +588,7 @@ int audio_formatmatch(format_node *demanded, DWORD avail, long *flags)
         else if (test_11(avail))
             demanded->srate = 11025.0;
         else {
-            snd_fail("No available sample-rate, it's impossible, btw");
+            snd_fail("No available sample-rate (internal error)");
             return(!SND_SUCCESS);
         }
     }
@@ -605,7 +604,7 @@ int audio_formatmatch(format_node *demanded, DWORD avail, long *flags)
             if (test_16bit(avail))
                 demanded->bits = 16;
             else {
-                snd_fail("No available bit number, it's impossible, btw");
+                snd_fail("No available bit number (internal error)");
                 return(!SND_SUCCESS);
             }
         }
@@ -620,7 +619,7 @@ int audio_formatmatch(format_node *demanded, DWORD avail, long *flags)
             if (test_8bit(avail))
                 demanded->bits = 8;
             else {
-                snd_fail("No available bit number, it's impossible, btw");
+                snd_fail("No available bit number (internal error)");
                 return(!SND_SUCCESS);
             }
         }
@@ -632,22 +631,22 @@ int audio_formatmatch(format_node *demanded, DWORD avail, long *flags)
             if (test_stereo(avail))
                 demanded->channels = 2;
             else {
-                snd_fail("No available channels number, it's impossible, btw");
+                snd_fail("No available channels number (internal error)");
                 return(!SND_SUCCESS);
             }
         }
-    }else { /* otherwise, use stereo (for channels >= 2, or for invalid number, that is <1) */
+    } else { /* otherwise, use stereo (for channels >= 2, or for invalid number, that is <1) */
         if (test_stereo(avail)){
             if (demanded->channels != 2){
                 *flags = *flags | SND_HEAD_CHANNELS;
                 demanded->channels = 2;
             }
-        }else {
+        } else {
             *flags = *flags | SND_HEAD_CHANNELS;
             if (test_mono(avail))
                 demanded->channels = 1;
             else {
-                snd_fail("No available channels number, it's impossible, btw");
+                snd_fail("No available channels number (internal error)");
                 return(!SND_SUCCESS);
             }
         }

@@ -53,14 +53,13 @@ void snd_fail(char *msg);
 void *snd_alloc(size_t s);
 void snd_free(void *a);
 
-#if defined(__linux__) || defined(__WXGTK__)
+#if defined(__linux__)
   #include "sndlinux.h"
 
 #elif defined(IRIX)
   #include "sndirix.h"
 
 #elif defined(_WIN32)
-
   #ifndef WIN32
     #define WIN32
   #endif

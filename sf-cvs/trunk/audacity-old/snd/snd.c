@@ -106,6 +106,20 @@ static long none_poll(snd_type snd)
     return 0;
 }
 
+#if !defined(WIN32) && !defined(IRIX) && !defined(SGI)
+static void _swab(char *to, char *from, long length)
+{
+    short *to16 = (short *) to;
+    short *from16 = (short *) from;
+    int i = 1;
+    while (i < length) {
+	short data = *from16++;
+	*to16++ = (data << 8) | ((data >> 8) & 0xFF);
+	i += 2;
+    }
+}
+#endif
+
 
 static void change_byte_order(snd_type snd, void *buffer, long length)
 {

@@ -46,6 +46,9 @@ error here
 /* LISP-SRC: (setf snd-head-dur 16) */
 
 #define SND_HEAD_LATENCY (1<<5)
+/* LISP-SRC: (setf snd-head-latency 32) */
+#define SND_HEAD_TYPE (1<<6)
+/* LISP-SRC: (setf snd-head-type 64) */
 
 /* modes */
 #define SND_MODE_ADPCM 0
@@ -134,12 +137,8 @@ regardless of how big the buffers are.
  informed as soon as all the data is available....".   -eub]
 
 */
-
-
 /* these do not use snd_type because it is not defined yet... */
-
-struct snd_struct;
-
+typedef int (*snd_reset_fn)(struct snd_struct *snd);
 typedef long (*snd_poll_fn)(struct snd_struct *snd);
 typedef long (*snd_read_fn)(struct snd_struct *snd, void *buffer, long length);
 typedef long (*snd_write_fn)(struct snd_struct *snd, void *buffer, long length);
@@ -147,9 +146,6 @@ typedef int (*snd_open_fn)(struct snd_struct *snd, long *flags);
 typedef int (*snd_close_fn)(struct snd_struct *snd);
 typedef int (*snd_reset_fn)(struct snd_struct *snd);
 typedef int (*snd_flush_fn)(struct snd_struct *snd);
-
-typedef long (*cvtfn_type)(void *buf1, void *buf2, long len2, 
-	       float scale, float *peak);
 
 typedef struct {
     snd_poll_fn poll;
@@ -170,6 +166,7 @@ typedef struct snd_struct {
     union {
       struct {
 	char filename[snd_string_max];	/* file name */
+        char filetype[snd_string_max];  /* file type/format description */
 	int file;		/* OS file number */
 	long header; /* None, AIFF, IRCAM, NEXT, WAVE */
 	long byte_offset;	/* file offset of first sample */
@@ -204,6 +201,9 @@ typedef struct snd_struct {
       } mem;
     } u;
 } snd_node, *snd_type;
+
+typedef long (*cvtfn_type)(void *buf1, void *buf2, long len2, 
+	       float scale, float *peak);
 
 /* when open fails, the dictionary gets this set of functions: */
 extern snd_fns_node snd_none_dictionary;

@@ -1,3 +1,10 @@
+/* this code is obsolete, and should be converted to be compatible
+   with the current snd library. Maybe we should rename it to 
+   audionone.c (I never did get direct audio output from RS6K)
+   This code should be used for any system that does not have audio
+   I/O devices -RBD
+ */
+
 #include "snd.h"
 
 int audio_open()

@@ -24,6 +24,7 @@
 #include <stat.h>
 #endif
 #endif
+#include "audio.h"
 
 /* was "#ifndef WIN32" */
 #if !defined(WIN32) && !defined(IRIX) && !defined(SGI)
