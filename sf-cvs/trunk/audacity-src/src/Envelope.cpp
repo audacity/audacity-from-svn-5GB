@@ -215,7 +215,7 @@ void Envelope::WriteXML(int depth, FILE *fp)
 
    for (i = 0; i < depth; i++)
       fprintf(fp, "\t");
-   fprintf(fp, "<envelope numpoints='%ld'>\n", mEnv.GetCount());
+   fprintf(fp, "<envelope numpoints='%ld'>\n", (long)mEnv.GetCount());
 
    for (ctrlPt = 0; ctrlPt < mEnv.GetCount(); ctrlPt++) {
       for(i = 0; i < depth+1; i++)

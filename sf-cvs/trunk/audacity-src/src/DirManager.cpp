@@ -19,6 +19,8 @@
 #include <wx/intl.h>
 #include <wx/file.h>
 
+#include "Audacity.h"
+#include "AudacityApp.h"
 #include "BlockFile.h"
 #include "DirManager.h"
 #include "DiskFunctions.h"
@@ -31,24 +33,10 @@
 int DirManager::numDirManagers = 0;
 int DirManager::fileIndex = 0;
 bool DirManager::firstCtor = true;
-wxString DirManager::tempDirName = ".audacity_1_1_temp";
 
 unsigned int DirManager::defaultHashTableSize = 10000;
 
-// The character which separates directories differs from platform
-// to platform.  On Unix, it's a "/", on Windows it's "/" or "\"
-// (with "\" preferred), and on the Mac it's a ":".
-
-wxString DirManager::pathChar = wxFILE_SEP_PATH;
-
-#ifdef __WXGTK__
-wxString DirManager::home = wxGetHomeDir();
-#else
-wxString DirManager::home = wxGetCwd();
-#endif
-wxString DirManager::temp = (DirManager::home +
-                             DirManager::pathChar +
-                             DirManager::tempDirName);
+wxString DirManager::temp;
 
 // Methods
 
@@ -61,7 +49,7 @@ DirManager::DirManager()
       firstCtor = false;
 
       wxString tempFromPrefs = gPrefs->Read("/Directories/TempDir", "");
-      wxString tempDefaultLoc = temp;
+      wxString tempDefaultLoc = wxGetApp().defaultTempDir;
 
       temp = "";
 
@@ -155,7 +143,7 @@ void DirManager::CleanTempDir()
    wxStringList fnameList;
    int count = 0;
 
-   fname = wxFindFirstFile((const char *) (temp + pathChar + "*.auf"));
+   fname = wxFindFirstFile((const char *) (temp + wxFILE_SEP_PATH + "*.auf"));
    while (fname != "") {
       if (fname.Length() >= 5 && fname.Right(3) == "auf") {
          count++;
@@ -207,7 +195,7 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
 
    this->projPath = projPath;
    this->projName = projName;
-   this->projFull = projPath + pathChar + projName;
+   this->projFull = projPath + wxFILE_SEP_PATH + projName;
 
    if (create) {
       if (!wxPathExists(projFull))
@@ -278,7 +266,7 @@ void DirManager::MakeBlockFileName(wxString inProjDir,
 {
    do {
       outFileName.Printf("b%05d.auf", fileIndex++);
-      outPathName = inProjDir + pathChar + outFileName;
+      outPathName = inProjDir + wxFILE_SEP_PATH + outFileName;
    } while (wxFileExists(outPathName));
 }
 
@@ -373,7 +361,7 @@ BlockFile *DirManager::LoadBlockFile(const char **attrs, sampleFormat format)
          aliasFullPath = value;
    } // while
 
-   wxString pathName = projFull + pathChar + blockName;
+   wxString pathName = projFull + wxFILE_SEP_PATH + blockName;
 
    BlockFile *retrieved = (BlockFile *) blockFileHash->Get(blockName);
    if (retrieved) {
@@ -466,7 +454,7 @@ BlockFile *DirManager::LoadBlockFile(wxTextFile * in, sampleFormat format)
       blockName = in->GetNextLine();
    }
 
-   wxString pathName = projFull + pathChar + blockName;
+   wxString pathName = projFull + wxFILE_SEP_PATH + blockName;
    BlockFile *retrieved = (BlockFile *) blockFileHash->Get(blockName);
    if (retrieved) {
       wxASSERT(retrieved->IsAlias() == alias);
@@ -496,7 +484,7 @@ BlockFile *DirManager::LoadBlockFile(wxTextFile * in, sampleFormat format)
 
 bool DirManager::MoveToNewProjectDirectory(BlockFile *f)
 {
-   wxString newFullPath = projFull + pathChar + f->mName;
+   wxString newFullPath = projFull + wxFILE_SEP_PATH + f->mName;
    if (newFullPath != f->mFullPath) {
       bool ok = wxRenameFile(f->mFullPath, newFullPath);
       if (ok)
@@ -517,7 +505,7 @@ bool DirManager::MoveToNewProjectDirectory(BlockFile *f)
 
 bool DirManager::CopyToNewProjectDirectory(BlockFile *f)
 {
-   wxString newFullPath = projFull + pathChar + f->mName;
+   wxString newFullPath = projFull + wxFILE_SEP_PATH + f->mName;
    if (newFullPath != f->mFullPath) {
       bool ok = wxCopyFile(f->mFullPath, newFullPath);
       if (ok) {
@@ -604,14 +592,14 @@ bool DirManager::EnsureSafeFilename(wxString fName)
       if (extension != "")
          renamedFile.Printf("%s%s%s-old%d.%s",
                             (const char *)pathOnly,
-                            (const char *)pathChar,
+                            (const char *)wxFILE_SEP_PATH,
                             (const char *)nameOnly,
                             i,
                             (const char *)extension);
       else
          renamedFile.Printf("%s%s%s-old%d",
                             (const char *)pathOnly,
-                            (const char *)pathChar,
+                            (const char *)wxFILE_SEP_PATH,
                             (const char *)nameOnly,
                             i);
 

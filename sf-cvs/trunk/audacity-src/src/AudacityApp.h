@@ -34,7 +34,29 @@ class AudacityApp:public wxApp {
    void OnMenuOpen(wxCommandEvent & event);
    void OnMenuPreferences(wxCommandEvent & event);
    void OnMenuExit(wxCommandEvent & event);
-   
+
+   // A list of directories that should be searched
+   // for Audacity files (plug-ins, help files, etc.).  On Unix
+   // this will include the directory Audacity was installed into,
+   // plus the current user's .audacity-files directory.  Additional
+   // directories can be specified using the AUDACITY_PATH environment
+   // variable.  On Windows or Mac OS, this will include the directory
+   // which contains the Audacity program.  
+   wxArrayString audacityPathList;
+
+   // Default temp dir
+   wxString defaultTempDir;
+
+   // Useful functions for working with search paths
+   static void AddUniquePathToPathList(wxString path,
+                                       wxArrayString &pathList);
+   static void AddMultiPathsToPathList(wxString multiPathString,
+                                       wxArrayString &pathList);
+   static void FindFilesInPathList(wxString pattern,
+                                   wxArrayString pathList,
+                                   int flags, // wxFILE, wxDIR, or 0
+                                   wxArrayString &results);
+
  private:
    wxLocale *mLocale;
 //   wxSingleInstanceChecker *mChecker;

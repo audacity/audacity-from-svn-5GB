@@ -60,6 +60,8 @@ void QuitHelp()
 #include <wx/html/helpctrl.h>
 #include <wx/intl.h>
 
+#include "Audacity.h"
+#include "AudacityApp.h"
 #include "Help.h"
 #include "Prefs.h"
 
@@ -68,7 +70,18 @@ wxHtmlHelpController *gHelp = NULL;
 void InitHelp(wxWindow * parent)
 {
    if (!gHelp) {
-      wxString defaultLoc = wxGetCwd() + wxFILE_SEP_PATH + "audacity-help.htb";
+      wxString defaultLoc;
+      wxArrayString helpFiles;
+
+      wxGetApp().FindFilesInPathList("audacity-help.htb",
+                                     wxGetApp().audacityPathList,
+                                     wxFILE,
+                                     helpFiles);
+
+      if (helpFiles.GetCount() > 0)
+         defaultLoc = helpFiles[0];
+      else
+         defaultLoc = INSTALL_PREFIX "/share/doc/audacity/audacity-help.htb";
 
       wxString helpFilePath =
           gPrefs->Read("/Help/HelpFilePath", defaultLoc);
