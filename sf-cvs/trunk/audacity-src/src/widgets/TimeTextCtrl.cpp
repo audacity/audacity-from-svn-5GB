@@ -618,7 +618,7 @@ void TimeTextCtrl::ComputeTextExtents()
    int xBorder = 2;
    int yBorder = 2;
    #elif defined(__WXMSW__)
-   int xBorder = 2;
+   int xBorder = 6;
    int yBorder = 2;
    #elif defined(__WXMAC__)
    int xBorder = 2;
