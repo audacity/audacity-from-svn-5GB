@@ -534,7 +534,7 @@ APalette::~APalette()
 
 void APalette::OnKeyEvent(wxKeyEvent & event)
 {
-   if (event.ControlDown()) {
+   if (event.ControlDown() || event.AltDown()) {
       event.Skip();
       return;
    }

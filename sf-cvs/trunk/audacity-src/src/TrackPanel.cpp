@@ -1245,7 +1245,7 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
 //  user presses the spacebar.  Also, LabelTracks can be typed into.
 void TrackPanel::OnKeyEvent(wxKeyEvent & event)
 {
-   if (event.ControlDown()) {
+   if (event.ControlDown() || event.AltDown()) {
       event.Skip();
       return;
    }
