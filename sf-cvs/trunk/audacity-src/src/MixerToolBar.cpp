@@ -40,7 +40,7 @@
 #include "Project.h"
 
 #if USE_PORTMIXER
-#include "portmixer.h"
+#include "AudioIO.h"
 #endif
 
 #include "../images/MixerImages.h"
@@ -59,8 +59,19 @@ MixerToolBar *GetCurrentMixerToolBar()
 /// Methods for MixerToolBar
 ////////////////////////////////////////////////////////////
 
+enum {
+   FirstID = 2000,
+   OutputVolumeID,
+   InputVolumeID,
+   InputSourceID
+};
+
+
 BEGIN_EVENT_TABLE(MixerToolBar, wxWindow)
    EVT_PAINT(MixerToolBar::OnPaint)
+   EVT_SLIDER(OutputVolumeID, MixerToolBar::SetMixer)
+   EVT_SLIDER(InputVolumeID, MixerToolBar::SetMixer)
+   EVT_CHOICE(InputSourceID, MixerToolBar::SetMixer)
 END_EVENT_TABLE()
 
 //Standard contructor
@@ -79,14 +90,6 @@ MixerToolBar::MixerToolBar(wxWindow * parent, wxWindowID id,
    InitializeMixerToolBar();
 }
 
-#if USE_PORTMIXER
-static int DummyCallbackFunc(void *inputBuffer, void *outputBuffer,
-                             unsigned long framesPerBuffer,
-                             PaTimestamp outTime, void *userData)
-{
-   return 0;
-}
-#endif
 
 // This sets up the MixerToolBar, initializing all the important values
 // and creating the buttons.
@@ -120,76 +123,26 @@ void MixerToolBar::InitializeMixerToolBar()
    delete micAlpha;
    delete micFinal;
 
-   mOutputSlider = new ASlider(this, 0, "Output Volume",
+   mOutputSlider = new ASlider(this, OutputVolumeID, "Output Volume",
                                wxPoint(30, 1), wxSize(130, 25));
 
-   mInputSlider = new ASlider(this, 0, "Input Volume",
+   mInputSlider = new ASlider(this, InputVolumeID, "Input Volume",
                               wxPoint(210, 1), wxSize(130, 25));
 
    mInputSourceChoice = NULL;
 
    #if USE_PORTMIXER
-   PaError          error;
-   PortAudioStream *stream;
-   PxMixer         *mixer;
-   wxString        recDevice;
-   wxString        playDevice;
-   int             recDeviceNum;
-   int             playDeviceNum;
-   int             inputChannels = 2;
-   int             j;
+   unsigned int    j;
 
-   recDeviceNum = Pa_GetDefaultInputDeviceID();
-   playDeviceNum = Pa_GetDefaultOutputDeviceID();
-   recDevice = gPrefs->Read("/AudioIO/RecordingDevice", "");
-   playDevice = gPrefs->Read("/AudioIO/PlaybackDevice", "");
+   wxArrayString inputSources = gAudioIO->GetInputSourceNames();
 
-   for(j=0; j<Pa_CountDevices(); j++) {
-      const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
-      if (info->name == playDevice && info->maxOutputChannels > 0)
-         playDeviceNum = j;
-      if (info->name == recDevice && info->maxInputChannels > 0)
-         recDeviceNum = j;
-   }
+   mInputSourceChoice = new wxChoice(this, InputSourceID,
+                                     wxPoint(355, 2),
+                                     wxSize(-1, 23));
+   for(j = 0; j < inputSources.GetCount(); j++)
+      mInputSourceChoice->Append(inputSources[j]);
 
-   // TODO: open two streams (one after another), for playback
-   // and recording separately
-   error = Pa_OpenStream(&stream, recDeviceNum, inputChannels, paFloat32, NULL,
-                         paNoDevice, 0, paFloat32, NULL,
-                         44100, 512, 1, paClipOff | paDitherOff,
-                         DummyCallbackFunc, NULL);
-   if (!error) {
-      mixer = Px_OpenMixer(stream, 0);
-      if (mixer) {
-         //
-         // Input sources choice
-         //
-
-         int numSources = Px_GetNumInputSources(mixer);
-         if (numSources > 0) {
-            wxString *sourceStrs = new wxString[numSources];
-            for(j=0; j<numSources; j++)
-               sourceStrs[j] = Px_GetInputSourceName(mixer, j);
-            mInputSourceChoice = new wxChoice(this, 0,
-                                              wxPoint(355, 2),
-                                              wxSize(-1, 23),
-                                              numSources, sourceStrs);
-            delete[] sourceStrs;
-            mInputSourceChoice->SetSelection(Px_GetCurrentInputSource(mixer));
-         }
-         
-         //
-         // Initial input/output volumes
-         //
-
-         mOutputSlider->Set(Px_GetPCMOutputVolume(mixer));
-         mInputSlider->Set(Px_GetInputVolume(mixer));
-         
-         Px_CloseMixer(mixer);
-      }
-      Pa_CloseStream(stream);
-   }
-
+   UpdateControls();
    #endif
 }
 
@@ -210,22 +163,26 @@ void MixerToolBar::RecreateTipWindows()
    mOutputSlider->RecreateTipWin();
 }
 
-float MixerToolBar::GetInputVol()
+void MixerToolBar::UpdateControls()
 {
-   return mInputSlider->Get();
+   float inputVolume;
+   float playbackVolume;
+   int inputSource;
+
+   gAudioIO->GetMixer(&inputSource, &inputVolume, &playbackVolume);
+
+   mInputSourceChoice->SetSelection(inputSource);
+   mOutputSlider->Set(playbackVolume);
+   mInputSlider->Set(inputVolume);
 }
 
-float MixerToolBar::GetOutputVol()
+void MixerToolBar::SetMixer(wxCommandEvent &event)
 {
-   return mOutputSlider->Get();
-}
+   float inputVolume = mInputSlider->Get();
+   float outputVolume = mOutputSlider->Get();
+   int inputSource = mInputSourceChoice->GetSelection();
 
-int MixerToolBar::GetInputSource()
-{
-   if (mInputSourceChoice)
-      return mInputSourceChoice->GetSelection();
-   else
-      return 0;
+   gAudioIO->SetMixer(inputSource, inputVolume, outputVolume);
 }
 
 void MixerToolBar::OnPaint(wxPaintEvent & evt)

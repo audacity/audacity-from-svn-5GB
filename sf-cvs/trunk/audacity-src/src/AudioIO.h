@@ -69,6 +69,19 @@ class AudioIO {
    void SetPaused(bool state);
    bool IsPaused();
 
+   /* Mixer services are always available.  If no stream is running, these
+    * methods use whatever device is specified by the preferences.  If a
+    * stream *is* running, naturally they manipulate the mixer associated
+    * with that stream.  If no mixer is available for whatever reason, the
+    * set method does nothing and the get method returns zeros (which is
+    * about the sanest thing they can do from a GUI perspective. */
+   void SetMixer(int inputSource, float inputVolume,
+                 float playbackVolume);
+   void GetMixer(int *inputSource, float *inputVolume,
+                 float *playbackVolume);
+   wxArrayString GetInputSourceNames();
+   void HandleDeviceChange();
+
    // This is given in seconds based on starting at t0
    double GetStreamTime();
    sampleFormat GetCaptureFormat() { return mCaptureFormat; }
@@ -76,7 +89,6 @@ class AudioIO {
 
  private:
 
-   void AdjustMixer();
    void FillBuffers();
 
    AudioThread        *mThread;

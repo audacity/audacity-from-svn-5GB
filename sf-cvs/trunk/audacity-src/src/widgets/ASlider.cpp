@@ -503,6 +503,9 @@ float LWSlider::Get()
 
 void LWSlider::Set(float value)
 {
+   if(mIsDragging)
+      return;
+
    switch(mStyle) {
    default:
    case FRAC_SLIDER:

@@ -31,6 +31,9 @@
 #include <wx/window.h>
 
 #include "../Prefs.h"
+#include "../AudioIO.h"
+#include "../Project.h"
+#include "../MixerToolBar.h"
 #include "AudioIOPrefs.h"
 
 #include "portaudio.h"
@@ -218,6 +221,11 @@ bool AudioIOPrefs::Apply()
    gPrefs->SetPath("/");
 
    /* Step 3: Make audio sub-system re-read preferences */
+
+   gAudioIO->HandleDeviceChange();
+
+   for( unsigned int i = 0; i < gAudacityProjects.GetCount(); i++ )
+       gAudacityProjects[i]->GetMixerToolBar()->UpdateControls();
 
    return true;
 }

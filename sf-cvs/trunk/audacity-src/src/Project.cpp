@@ -457,7 +457,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    mLastStatusUpdateTime = ::wxGetUTCTime();
    mTimer = new wxTimer(this, AudacityProjectTimerID);
-   mTimer->Start(1000);
+   mTimer->Start(200);
 
    //
    // Create the TrackPanel and the scrollbars
@@ -2364,6 +2364,10 @@ void AudacityProject::SetStop(bool bStopped)
 
 void AudacityProject::OnTimer(wxTimerEvent& event)
 {
+   MixerToolBar *mixerToolBar = GetMixerToolBar();
+   if( mixerToolBar )
+      mixerToolBar->UpdateControls();
+
    if (::wxGetUTCTime() - mLastStatusUpdateTime < 3)
       return;
 
