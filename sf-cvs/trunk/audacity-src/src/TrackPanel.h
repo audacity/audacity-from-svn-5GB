@@ -207,9 +207,6 @@ class TrackPanel:public wxWindow {
    int mCapturedNum;
 
    bool mIndicatorShowing;
-   bool mTrackIndicator;
-
-   bool mUpdateSpectrogram;
 
    int mMouseClickX;
    int mMouseClickY;

@@ -70,8 +70,6 @@ class TrackInfoCache:public wxObject {
 
 TrackArtist::TrackArtist()
 {
-   gPrefs->Read("/GUI/UpdateSpectrogram", &mUpdateSpectrogram, true);
-
    AColor::Init();
 
    mTrackHash = NULL;
@@ -114,11 +112,6 @@ TrackArtist::~TrackArtist()
       }
       delete mTrackHash;
    }
-}
-
-void TrackArtist::ReReadSettings()
-{
-   gPrefs->Read("/GUI/UpdateSpectrogram", &mUpdateSpectrogram, true);
 }
 
 void TrackArtist::SetInset(int left, int top, int right, int bottom)
@@ -1047,8 +1040,13 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
                                wxDC & dc, wxRect & r,
                                ViewInfo * viewInfo, bool autocorrelation)
 {
-   if(!mUpdateSpectrogram)
+   if(!viewInfo->bUpdateSpectrogram && viewInfo->bIsPlaying)
+   {
+      dc.SetBrush(unselectedBrush);
+      dc.SetPen(unselectedPen);
+      dc.DrawRectangle(r);
       return;
+   }
 
    double h = viewInfo->h;
    double pps = viewInfo->zoom;

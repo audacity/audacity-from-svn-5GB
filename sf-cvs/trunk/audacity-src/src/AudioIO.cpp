@@ -238,6 +238,9 @@ bool AudioIO::Start()
 
    PaError error = Pa_StartStream(mPortStream);
 
+   mProject->ReReadSettings();
+   mProject->HandleResize();
+
    return (error == paNoError);
 }
 
@@ -258,8 +261,6 @@ bool AudioIO::StartPlay(AudacityProject * project, TrackList * tracks,
 
    mNumOutChannels = 2;
    mNumOutBuffers = mInitialNumOutBuffers;
-   
-   project->ReReadSettings();
 
    return Start();
 }
@@ -303,9 +304,6 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
       
       mTracks->Add(mInTracks[i]);
    }
-
-   project->ReReadSettings();
-   mProject->HandleResize();
 
    return Start();
 }
@@ -515,6 +513,9 @@ void AudioIO::Stop()
       if (!mHardStop)
          mProject->TP_PushState("Recorded Audio");
    }
+
+   mProject->ReReadSettings();
+   mProject->HandleResize();
 
    mProject = NULL;
    mHardStop = false;

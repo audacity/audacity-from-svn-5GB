@@ -43,8 +43,6 @@ class TrackArtist {
 
    void SetInset(int left, int top, int right, int bottom);
 
-   void ReReadSettings();
-
  private:
     wxHashTable * mTrackHash;
 
@@ -52,8 +50,6 @@ class TrackArtist {
    int mInsetTop;
    int mInsetRight;
    int mInsetBottom;
-
-   bool mUpdateSpectrogram;
 
    wxBrush blankBrush;
    wxBrush unselectedBrush;

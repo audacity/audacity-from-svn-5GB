@@ -31,7 +31,7 @@ PrefsPanel(parent)
    mAutoscroll->SetValue(autoscroll);
    topSizer->Add(mAutoscroll, 0, wxGROW|wxALL, 2);
 
-   mSpectrogram = new wxCheckBox(this, -1, _("Update spectrogram while playing (LEAVE CHECKED FOR NOW)"));
+   mSpectrogram = new wxCheckBox(this, -1, _("Update spectrogram while playing"));
    mSpectrogram->SetValue(spectrogram);
    topSizer->Add(mSpectrogram, 0, wxGROW|wxALL, 2);
 
