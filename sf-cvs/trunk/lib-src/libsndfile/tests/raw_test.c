@@ -1,36 +1,40 @@
 /*
-** Copyright (C) 2002 Erik de Castro Lopo <erikd@zip.com.au>
-**  
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+**
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
-** 
+**
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software 
+** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
+#include "config.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
 
-#include	<stdio.h>
-#include	<string.h>
-#include	<unistd.h>
-#include	<math.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
-#include	<sndfile.h>
+#include <sndfile.h>
 
-#include	"utils.h"
+#include "utils.h"
 
 #define	BUFFER_LEN		(1<<10)
 #define LOG_BUFFER_SIZE	1024
 
-static	void	raw_offset_test (char *filename, int typeminor) ;
+static	void	raw_offset_test (const char *filename, int typeminor) ;
 static	void	bad_raw_test (void) ;
 
 /* Force the start of this buffer to be double aligned. Sparc-solaris will
@@ -38,21 +42,21 @@ static	void	bad_raw_test (void) ;
 */
 static	short	data [BUFFER_LEN] ;
 
-int		
+int
 main (void)
-{	
+{
 	raw_offset_test ("offset.raw", SF_FORMAT_PCM_16) ;
 	bad_raw_test () ;
 
-	return 0;
+	return 0 ;
 } /* main */
 
 /*============================================================================================
 **	Here are the test functions.
-*/ 
+*/
 
-static void	
-raw_offset_test (char *filename, int typeminor)
+static void
+raw_offset_test (const char *filename, int typeminor)
 {	SNDFILE		*sndfile ;
 	SF_INFO		sfinfo ;
 	sf_count_t	start ;
@@ -60,16 +64,16 @@ raw_offset_test (char *filename, int typeminor)
 
 	print_test_name ("raw_offset_test", filename) ;
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.format 	   = SF_FORMAT_RAW | typeminor ;
-	sfinfo.channels    = 1 ;
-	sfinfo.frames      = 0 ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.format		= SF_FORMAT_RAW | typeminor ;
+	sfinfo.channels		= 1 ;
+	sfinfo.frames		= 0 ;
 
 	frames = BUFFER_LEN / sfinfo.channels ;
 
 	sndfile = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
-	start = 0 ;	
+	start = 0 ;
 	sf_command (sndfile, SFC_FILE_TRUNCATE, &start, sizeof (start)) ;
 
 	for (k = 0 ; k < BUFFER_LEN ; k++)
@@ -79,7 +83,7 @@ raw_offset_test (char *filename, int typeminor)
 	sf_close (sndfile) ;
 
 	sndfile = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
-	check_log_buffer_or_die (sndfile) ;
+	check_log_buffer_or_die (sndfile, __LINE__) ;
 
 	if (abs (BUFFER_LEN - sfinfo.frames) > 1)
 	{	printf ("\n\nLine %d : Incorrect sample count (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), BUFFER_LEN) ;
@@ -92,11 +96,11 @@ raw_offset_test (char *filename, int typeminor)
 	for (k = 0 ; k < BUFFER_LEN ; k++)
 		if (data [k] != k)
 			printf ("Error : line %d\n", __LINE__) ;
-			
+
 	/* Set dataoffset to 2 bytes from beginning of file. */
 	start = 2 ;
 	sf_command (sndfile, SFC_SET_RAW_START_OFFSET, &start, sizeof (start)) ;
-	
+
 	/* Seek to new start */
 	test_seek_or_die (sndfile, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
 
@@ -107,11 +111,11 @@ raw_offset_test (char *filename, int typeminor)
 		{	printf ("Error : line %d\n", __LINE__) ;
 			exit (1) ;
 			} ;
-			
+
 	/* Set dataoffset to 4 bytes from beginning of file. */
 	start = 4 ;
 	sf_command (sndfile, SFC_SET_RAW_START_OFFSET, &start, sizeof (start)) ;
-	
+
 	/* Seek to new start */
 	test_seek_or_die (sndfile, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
 
@@ -126,7 +130,7 @@ raw_offset_test (char *filename, int typeminor)
 	/* Set dataoffset back to 0 bytes from beginning of file. */
 	start = 0 ;
 	sf_command (sndfile, SFC_SET_RAW_START_OFFSET, &start, sizeof (start)) ;
-	
+
 	/* Seek to new start */
 	test_seek_or_die (sndfile, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
 
@@ -137,14 +141,14 @@ raw_offset_test (char *filename, int typeminor)
 		{	printf ("Error : line %d\n", __LINE__) ;
 			exit (1) ;
 			} ;
-			
+
 	sf_close (sndfile) ;
 	unlink (filename) ;
 
 	puts ("ok") ;
 } /* raw_offset_test */
 
-static void	
+static void
 bad_raw_test (void)
 {	FILE		*textfile ;
 	SNDFILE		*file ;
@@ -152,24 +156,24 @@ bad_raw_test (void)
 	const char	*errorstr, *filename = "bad.raw" ;
 
 	print_test_name ("bad_raw_test", filename) ;
-	
+
 	if ((textfile = fopen (filename, "w")) == NULL)
 	{	printf ("\n\nLine %d : not able to open text file for write.\n", __LINE__) ;
 		exit (1) ;
 		} ;
-	
+
 	fprintf (textfile, "This is not a valid file.\n") ;
 	fclose (textfile) ;
-	
-	sfinfo.samplerate = 44100 ;
-	sfinfo.format 	  = SF_FORMAT_RAW | 0xABCD ;
-	sfinfo.channels   = 1 ;
+
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.format		= SF_FORMAT_RAW | 0xABCD ;
+	sfinfo.channels		= 1 ;
 
 	if ((file = sf_open (filename, SFM_READ, &sfinfo)) != NULL)
 	{	printf ("\n\nLine %d : Error, file should not have opened.\n", __LINE__ - 1) ;
 		exit (1) ;
 		} ;
-		
+
 	errorstr = sf_strerror (file) ;
 
 	if (strstr (errorstr, "Bad format field in SF_INFO struct") == NULL)
@@ -178,7 +182,14 @@ bad_raw_test (void)
 		} ;
 
 	unlink (filename) ;
-	
+
 	puts ("ok") ;
 } /* bad_raw_test */
 
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 3dccee22-b0bc-4a1f-966c-8ae96f0921ae
+*/
