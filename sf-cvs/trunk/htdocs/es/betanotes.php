@@ -1,4 +1,4 @@
-<?php BoxTop("$releaseNotesStr $betaVersion"); ?>
+<?php BoxTop("$releaseNotesStr 1.1.3"); ?>
 
 <pre>
 Problemas conocidos en Audacity 1.1.3:
