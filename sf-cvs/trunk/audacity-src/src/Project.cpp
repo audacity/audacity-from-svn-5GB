@@ -152,9 +152,9 @@ enum {
    TrackPanelID
 };
 
-#define AUDACITY_MENUS_ENUM
+#define AUDACITY_MENUS_GLOBALS
 #include "Menus.h"
-#undef AUDACITY_MENUS_ENUM
+#undef AUDACITY_MENUS_GLOBALS
 
 BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)

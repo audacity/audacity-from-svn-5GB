@@ -12,11 +12,11 @@
 
 **********************************************************************/
 
-#ifdef AUDACITY_MENUS_ENUM
+#ifdef AUDACITY_MENUS_GLOBALS
 
-#define AUDACITY_MENUS_COMMANDS_ENUM
+#define AUDACITY_MENUS_COMMANDS_GLOBALS
 #include "commands.h"
-#undef AUDACITY_MENUS_COMMANDS_ENUM
+#undef AUDACITY_MENUS_COMMANDS_GLOBALS
 
 #endif
 
