@@ -1,6 +1,6 @@
-# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
+# Makefile.in generated automatically by automake 1.4 from Makefile.am
 
-# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
+# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -66,22 +66,18 @@ target_triplet = @target@
 AS = @AS@
 CC = @CC@
 DLLTOOL = @DLLTOOL@
-ECHO = @ECHO@
 ENABLE_EXPERIMENTAL_CODE = @ENABLE_EXPERIMENTAL_CODE@
-EXEEXT = @EXEEXT@
 GETCONF = @GETCONF@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
-OBJEXT = @OBJEXT@
 OS_SPECIFIC_INCLUDES = @OS_SPECIFIC_INCLUDES@
 OS_SPECIFIC_LINKS = @OS_SPECIFIC_LINKS@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SHARED_VERSION_INFO = @SHARED_VERSION_INFO@
 SIZEOF_SF_COUNT_T = @SIZEOF_SF_COUNT_T@
-STRIP = @STRIP@
 TYPEOF_SF_COUNT_T = @TYPEOF_SF_COUNT_T@
 VERSION = @VERSION@
 autogen = @autogen@
@@ -160,13 +156,6 @@ update_header_test_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../src/config.h
 CONFIG_CLEAN_FILES = 
-noinst_PROGRAMS =  sfversion$(EXEEXT) floating_point_test$(EXEEXT) \
-write_read_test$(EXEEXT) lossy_comp_test$(EXEEXT) error_test$(EXEEXT) \
-ulaw_test$(EXEEXT) alaw_test$(EXEEXT) dwvw_test$(EXEEXT) \
-peak_chunk_test$(EXEEXT) command_test$(EXEEXT) stdin_test$(EXEEXT) \
-stdout_test$(EXEEXT) stdio_test$(EXEEXT) pcm_test$(EXEEXT) \
-headerless_test$(EXEEXT) pipe_test$(EXEEXT) benchmark$(EXEEXT) \
-update_header_test$(EXEEXT) fix_this$(EXEEXT)
 PROGRAMS =  $(noinst_PROGRAMS)
 
 
@@ -174,63 +163,61 @@ DEFS = @DEFS@ -I. -I$(srcdir) -I../src
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
-sfversion_OBJECTS =  sfversion.$(OBJEXT)
+sfversion_OBJECTS =  sfversion.o
 sfversion_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 sfversion_LDFLAGS = 
-floating_point_test_OBJECTS =  utils.$(OBJEXT) dft_cmp.$(OBJEXT) \
-floating_point_test.$(OBJEXT)
+floating_point_test_OBJECTS =  utils.o dft_cmp.o floating_point_test.o
 floating_point_test_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 floating_point_test_LDFLAGS = 
-write_read_test_OBJECTS =  utils.$(OBJEXT) write_read_test.$(OBJEXT)
+write_read_test_OBJECTS =  utils.o write_read_test.o
 write_read_test_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 write_read_test_LDFLAGS = 
-lossy_comp_test_OBJECTS =  utils.$(OBJEXT) lossy_comp_test.$(OBJEXT)
+lossy_comp_test_OBJECTS =  utils.o lossy_comp_test.o
 lossy_comp_test_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 lossy_comp_test_LDFLAGS = 
-error_test_OBJECTS =  error_test.$(OBJEXT)
+error_test_OBJECTS =  error_test.o
 error_test_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 error_test_LDFLAGS = 
-ulaw_test_OBJECTS =  utils.$(OBJEXT) ulaw_test.$(OBJEXT)
+ulaw_test_OBJECTS =  utils.o ulaw_test.o
 ulaw_test_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 ulaw_test_LDFLAGS = 
-alaw_test_OBJECTS =  utils.$(OBJEXT) alaw_test.$(OBJEXT)
+alaw_test_OBJECTS =  utils.o alaw_test.o
 alaw_test_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 alaw_test_LDFLAGS = 
-dwvw_test_OBJECTS =  utils.$(OBJEXT) dwvw_test.$(OBJEXT)
+dwvw_test_OBJECTS =  utils.o dwvw_test.o
 dwvw_test_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 dwvw_test_LDFLAGS = 
-peak_chunk_test_OBJECTS =  peak_chunk_test.$(OBJEXT)
+peak_chunk_test_OBJECTS =  peak_chunk_test.o
 peak_chunk_test_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 peak_chunk_test_LDFLAGS = 
-command_test_OBJECTS =  command_test.$(OBJEXT) utils.$(OBJEXT)
+command_test_OBJECTS =  command_test.o utils.o
 command_test_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 command_test_LDFLAGS = 
-stdin_test_OBJECTS =  stdin_test.$(OBJEXT)
+stdin_test_OBJECTS =  stdin_test.o
 stdin_test_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 stdin_test_LDFLAGS = 
-stdout_test_OBJECTS =  stdout_test.$(OBJEXT)
+stdout_test_OBJECTS =  stdout_test.o
 stdout_test_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 stdout_test_LDFLAGS = 
-stdio_test_OBJECTS =  stdio_test.$(OBJEXT)
+stdio_test_OBJECTS =  stdio_test.o
 stdio_test_DEPENDENCIES = 
 stdio_test_LDFLAGS = 
-pcm_test_OBJECTS =  utils.$(OBJEXT) pcm_test.$(OBJEXT)
+pcm_test_OBJECTS =  utils.o pcm_test.o
 pcm_test_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 pcm_test_LDFLAGS = 
-headerless_test_OBJECTS =  utils.$(OBJEXT) headerless_test.$(OBJEXT)
+headerless_test_OBJECTS =  utils.o headerless_test.o
 headerless_test_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 headerless_test_LDFLAGS = 
-pipe_test_OBJECTS =  pipe_test.$(OBJEXT)
+pipe_test_OBJECTS =  pipe_test.o
 pipe_test_DEPENDENCIES = 
 pipe_test_LDFLAGS = 
-benchmark_OBJECTS =  benchmark.$(OBJEXT)
+benchmark_OBJECTS =  benchmark.o
 benchmark_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 benchmark_LDFLAGS = 
-update_header_test_OBJECTS =  update_header_test.$(OBJEXT) \
-utils.$(OBJEXT)
+update_header_test_OBJECTS =  update_header_test.o utils.o
 update_header_test_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 update_header_test_LDFLAGS = 
-fix_this_OBJECTS =  utils.$(OBJEXT) fix_this.$(OBJEXT)
+fix_this_OBJECTS =  utils.o fix_this.o
 fix_this_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 fix_this_LDFLAGS = 
 CFLAGS = @CFLAGS@
@@ -245,14 +232,16 @@ DIST_COMMON =  Makefile.am Makefile.in
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = tar
+TAR = gtar
 GZIP_ENV = --best
 SOURCES = $(sfversion_SOURCES) $(floating_point_test_SOURCES) $(write_read_test_SOURCES) $(lossy_comp_test_SOURCES) $(error_test_SOURCES) $(ulaw_test_SOURCES) $(alaw_test_SOURCES) $(dwvw_test_SOURCES) $(peak_chunk_test_SOURCES) $(command_test_SOURCES) $(stdin_test_SOURCES) $(stdout_test_SOURCES) $(stdio_test_SOURCES) $(pcm_test_SOURCES) $(headerless_test_SOURCES) $(pipe_test_SOURCES) $(benchmark_SOURCES) $(update_header_test_SOURCES) $(fix_this_SOURCES)
 OBJECTS = $(sfversion_OBJECTS) $(floating_point_test_OBJECTS) $(write_read_test_OBJECTS) $(lossy_comp_test_OBJECTS) $(error_test_OBJECTS) $(ulaw_test_OBJECTS) $(alaw_test_OBJECTS) $(dwvw_test_OBJECTS) $(peak_chunk_test_OBJECTS) $(command_test_OBJECTS) $(stdin_test_OBJECTS) $(stdout_test_OBJECTS) $(stdio_test_OBJECTS) $(pcm_test_OBJECTS) $(headerless_test_OBJECTS) $(pipe_test_OBJECTS) $(benchmark_OBJECTS) $(update_header_test_OBJECTS) $(fix_this_OBJECTS)
 
-all: all-redirect
+all:
+
+all-disabled: all-redirect
 .SUFFIXES:
-.SUFFIXES: .S .c .lo .o .obj .s
+.SUFFIXES: .S .c .lo .o .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --foreign --include-deps tests/Makefile
 
@@ -273,11 +262,6 @@ maintainer-clean-noinstPROGRAMS:
 .c.o:
 	$(COMPILE) -c $<
 
-# FIXME: We should only use cygpath when building on Windows,
-# and only if it is available.
-.c.obj:
-	$(COMPILE) -c `cygpath -w $<`
-
 .s.o:
 	$(COMPILE) -c $<
 
@@ -286,7 +270,6 @@ maintainer-clean-noinstPROGRAMS:
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
-	-rm -f *.$(OBJEXT)
 
 clean-compile:
 
@@ -314,80 +297,80 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
-sfversion$(EXEEXT): $(sfversion_OBJECTS) $(sfversion_DEPENDENCIES)
-	@rm -f sfversion$(EXEEXT)
+sfversion: $(sfversion_OBJECTS) $(sfversion_DEPENDENCIES)
+	@rm -f sfversion
 	$(LINK) $(sfversion_LDFLAGS) $(sfversion_OBJECTS) $(sfversion_LDADD) $(LIBS)
 
-floating_point_test$(EXEEXT): $(floating_point_test_OBJECTS) $(floating_point_test_DEPENDENCIES)
-	@rm -f floating_point_test$(EXEEXT)
+floating_point_test: $(floating_point_test_OBJECTS) $(floating_point_test_DEPENDENCIES)
+	@rm -f floating_point_test
 	$(LINK) $(floating_point_test_LDFLAGS) $(floating_point_test_OBJECTS) $(floating_point_test_LDADD) $(LIBS)
 
-write_read_test$(EXEEXT): $(write_read_test_OBJECTS) $(write_read_test_DEPENDENCIES)
-	@rm -f write_read_test$(EXEEXT)
+write_read_test: $(write_read_test_OBJECTS) $(write_read_test_DEPENDENCIES)
+	@rm -f write_read_test
 	$(LINK) $(write_read_test_LDFLAGS) $(write_read_test_OBJECTS) $(write_read_test_LDADD) $(LIBS)
 
-lossy_comp_test$(EXEEXT): $(lossy_comp_test_OBJECTS) $(lossy_comp_test_DEPENDENCIES)
-	@rm -f lossy_comp_test$(EXEEXT)
+lossy_comp_test: $(lossy_comp_test_OBJECTS) $(lossy_comp_test_DEPENDENCIES)
+	@rm -f lossy_comp_test
 	$(LINK) $(lossy_comp_test_LDFLAGS) $(lossy_comp_test_OBJECTS) $(lossy_comp_test_LDADD) $(LIBS)
 
-error_test$(EXEEXT): $(error_test_OBJECTS) $(error_test_DEPENDENCIES)
-	@rm -f error_test$(EXEEXT)
+error_test: $(error_test_OBJECTS) $(error_test_DEPENDENCIES)
+	@rm -f error_test
 	$(LINK) $(error_test_LDFLAGS) $(error_test_OBJECTS) $(error_test_LDADD) $(LIBS)
 
-ulaw_test$(EXEEXT): $(ulaw_test_OBJECTS) $(ulaw_test_DEPENDENCIES)
-	@rm -f ulaw_test$(EXEEXT)
+ulaw_test: $(ulaw_test_OBJECTS) $(ulaw_test_DEPENDENCIES)
+	@rm -f ulaw_test
 	$(LINK) $(ulaw_test_LDFLAGS) $(ulaw_test_OBJECTS) $(ulaw_test_LDADD) $(LIBS)
 
-alaw_test$(EXEEXT): $(alaw_test_OBJECTS) $(alaw_test_DEPENDENCIES)
-	@rm -f alaw_test$(EXEEXT)
+alaw_test: $(alaw_test_OBJECTS) $(alaw_test_DEPENDENCIES)
+	@rm -f alaw_test
 	$(LINK) $(alaw_test_LDFLAGS) $(alaw_test_OBJECTS) $(alaw_test_LDADD) $(LIBS)
 
-dwvw_test$(EXEEXT): $(dwvw_test_OBJECTS) $(dwvw_test_DEPENDENCIES)
-	@rm -f dwvw_test$(EXEEXT)
+dwvw_test: $(dwvw_test_OBJECTS) $(dwvw_test_DEPENDENCIES)
+	@rm -f dwvw_test
 	$(LINK) $(dwvw_test_LDFLAGS) $(dwvw_test_OBJECTS) $(dwvw_test_LDADD) $(LIBS)
 
-peak_chunk_test$(EXEEXT): $(peak_chunk_test_OBJECTS) $(peak_chunk_test_DEPENDENCIES)
-	@rm -f peak_chunk_test$(EXEEXT)
+peak_chunk_test: $(peak_chunk_test_OBJECTS) $(peak_chunk_test_DEPENDENCIES)
+	@rm -f peak_chunk_test
 	$(LINK) $(peak_chunk_test_LDFLAGS) $(peak_chunk_test_OBJECTS) $(peak_chunk_test_LDADD) $(LIBS)
 
-command_test$(EXEEXT): $(command_test_OBJECTS) $(command_test_DEPENDENCIES)
-	@rm -f command_test$(EXEEXT)
+command_test: $(command_test_OBJECTS) $(command_test_DEPENDENCIES)
+	@rm -f command_test
 	$(LINK) $(command_test_LDFLAGS) $(command_test_OBJECTS) $(command_test_LDADD) $(LIBS)
 
-stdin_test$(EXEEXT): $(stdin_test_OBJECTS) $(stdin_test_DEPENDENCIES)
-	@rm -f stdin_test$(EXEEXT)
+stdin_test: $(stdin_test_OBJECTS) $(stdin_test_DEPENDENCIES)
+	@rm -f stdin_test
 	$(LINK) $(stdin_test_LDFLAGS) $(stdin_test_OBJECTS) $(stdin_test_LDADD) $(LIBS)
 
-stdout_test$(EXEEXT): $(stdout_test_OBJECTS) $(stdout_test_DEPENDENCIES)
-	@rm -f stdout_test$(EXEEXT)
+stdout_test: $(stdout_test_OBJECTS) $(stdout_test_DEPENDENCIES)
+	@rm -f stdout_test
 	$(LINK) $(stdout_test_LDFLAGS) $(stdout_test_OBJECTS) $(stdout_test_LDADD) $(LIBS)
 
-stdio_test$(EXEEXT): $(stdio_test_OBJECTS) $(stdio_test_DEPENDENCIES)
-	@rm -f stdio_test$(EXEEXT)
+stdio_test: $(stdio_test_OBJECTS) $(stdio_test_DEPENDENCIES)
+	@rm -f stdio_test
 	$(LINK) $(stdio_test_LDFLAGS) $(stdio_test_OBJECTS) $(stdio_test_LDADD) $(LIBS)
 
-pcm_test$(EXEEXT): $(pcm_test_OBJECTS) $(pcm_test_DEPENDENCIES)
-	@rm -f pcm_test$(EXEEXT)
+pcm_test: $(pcm_test_OBJECTS) $(pcm_test_DEPENDENCIES)
+	@rm -f pcm_test
 	$(LINK) $(pcm_test_LDFLAGS) $(pcm_test_OBJECTS) $(pcm_test_LDADD) $(LIBS)
 
-headerless_test$(EXEEXT): $(headerless_test_OBJECTS) $(headerless_test_DEPENDENCIES)
-	@rm -f headerless_test$(EXEEXT)
+headerless_test: $(headerless_test_OBJECTS) $(headerless_test_DEPENDENCIES)
+	@rm -f headerless_test
 	$(LINK) $(headerless_test_LDFLAGS) $(headerless_test_OBJECTS) $(headerless_test_LDADD) $(LIBS)
 
-pipe_test$(EXEEXT): $(pipe_test_OBJECTS) $(pipe_test_DEPENDENCIES)
-	@rm -f pipe_test$(EXEEXT)
+pipe_test: $(pipe_test_OBJECTS) $(pipe_test_DEPENDENCIES)
+	@rm -f pipe_test
 	$(LINK) $(pipe_test_LDFLAGS) $(pipe_test_OBJECTS) $(pipe_test_LDADD) $(LIBS)
 
-benchmark$(EXEEXT): $(benchmark_OBJECTS) $(benchmark_DEPENDENCIES)
-	@rm -f benchmark$(EXEEXT)
+benchmark: $(benchmark_OBJECTS) $(benchmark_DEPENDENCIES)
+	@rm -f benchmark
 	$(LINK) $(benchmark_LDFLAGS) $(benchmark_OBJECTS) $(benchmark_LDADD) $(LIBS)
 
-update_header_test$(EXEEXT): $(update_header_test_OBJECTS) $(update_header_test_DEPENDENCIES)
-	@rm -f update_header_test$(EXEEXT)
+update_header_test: $(update_header_test_OBJECTS) $(update_header_test_DEPENDENCIES)
+	@rm -f update_header_test
 	$(LINK) $(update_header_test_LDFLAGS) $(update_header_test_OBJECTS) $(update_header_test_LDADD) $(LIBS)
 
-fix_this$(EXEEXT): $(fix_this_OBJECTS) $(fix_this_DEPENDENCIES)
-	@rm -f fix_this$(EXEEXT)
+fix_this: $(fix_this_OBJECTS) $(fix_this_DEPENDENCIES)
+	@rm -f fix_this
 	$(LINK) $(fix_this_LDFLAGS) $(fix_this_OBJECTS) $(fix_this_LDADD) $(LIBS)
 
 tags: TAGS
@@ -408,7 +391,7 @@ TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
 	  awk '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
 	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
-	  || (cd $(srcdir) && etags -o $$here/TAGS $(ETAGS_ARGS) $$tags  $$unique $(LISP))
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
 
 mostlyclean-tags:
 
