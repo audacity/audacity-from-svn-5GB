@@ -55,6 +55,11 @@ void CommandManager::PurgeData()
 {
    size_t i;
 
+   //FIXME: Why is this #ifdeffed out?
+   //deleting the callbacks crashes,
+   //but shouldn't we delete the other stuff?
+   //If we don't delete the command list it grows 
+   //each time we go through KeyboardPrefs.
    #if 0
 
    //delete the menubars
@@ -70,6 +75,7 @@ void CommandManager::PurgeData()
 
    for(i=0; i<mCommandList.GetCount(); i++)
       delete mCommandList[i]->callback;
+   #endif
 
    WX_CLEAR_ARRAY(mCommandList);
    mCommandList.Clear();
@@ -78,7 +84,7 @@ void CommandManager::PurgeData()
    mCurrentMenu = NULL;
    mCurrentID = 0;
 
-   #endif
+//   #endif
 }
 
 
