@@ -50,7 +50,7 @@ libsndfile.a:
 
 soundtouch.a:
 	$(MAKE) -C soundtouch
-	ln -s soundtouch/soundtouch.a soundtouch.a
+	ln -sf soundtouch/source/SoundTouch/.libs/libSoundTouch.a libSoundTouch.a
 
 portaudio/pa_unix_oss/portaudio.a:
 	cd portaudio/pa_unix_oss && $(MAKE)

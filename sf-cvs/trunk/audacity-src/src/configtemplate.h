@@ -40,9 +40,6 @@
 /* define as prefix where Audacity is installed */
 #undef INSTALL_PREFIX
 
-/* Define if mp3 support is implemented */
-#undef MP3SUPPORT
-
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
 
