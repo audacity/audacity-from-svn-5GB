@@ -22,60 +22,64 @@
 ** Generic functions for performing endian swapping on integer arrays.
 */
 
-void
-endswap_short_array (short *ptr, int len)
-{
+#ifndef WIN32 //vvv for compatibility with MSVC++ 6 compiler
+   void
+   endswap_short_array (short *ptr, int len)
+   {
 
-#if 0
-	unsigned char *ucptr, temp ;
+   #if 0
+	   unsigned char *ucptr, temp ;
 
-	ucptr = ((unsigned char *) ptr) + 2 * len ;
-	while (len > 0)
-	{	len -- ;
-		ucptr -= 2 ;
-		temp = ucptr [0] ;
-		ucptr [0] = ucptr [1] ;
-		ucptr [1] = temp ;
-		} ;
-#else
-	short	temp ;
-	while (len > 0)
-	{	len -- ;
-		temp = ptr [len] ;
-		ptr [len] = ENDSWAP_SHORT (temp) ;
-		}
-#endif
-} /* endswap_short_array */
+	   ucptr = ((unsigned char *) ptr) + 2 * len ;
+	   while (len > 0)
+	   {	len -- ;
+		   ucptr -= 2 ;
+		   temp = ucptr [0] ;
+		   ucptr [0] = ucptr [1] ;
+		   ucptr [1] = temp ;
+		   } ;
+   #else
+	   short	temp ;
+	   while (len > 0)
+	   {	len -- ;
+		   temp = ptr [len] ;
+		   ptr [len] = ENDSWAP_SHORT (temp) ;
+		   }
+   #endif
+   } /* endswap_short_array */
 
-void
-endswap_int_array (int *ptr, int len)
-{
-#if 0
-	unsigned char *ucptr, temp ;
 
-	ucptr = ((unsigned char *) ptr) + 4 * len ;
-	while (len > 0)
-	{	len -- ;
-		ucptr -= 4 ;
+   void
+   endswap_int_array (int *ptr, int len)
+   {
+   #if 0
+	   unsigned char *ucptr, temp ;
 
-		temp = ucptr [0] ;
-		ucptr [0] = ucptr [3] ;
-		ucptr [3] = temp ;
+	   ucptr = ((unsigned char *) ptr) + 4 * len ;
+	   while (len > 0)
+	   {	len -- ;
+		   ucptr -= 4 ;
 
-		temp = ucptr [1] ;
-		ucptr [1] = ucptr [2] ;
-		ucptr [2] = temp ;
-		} ;
-#else
-	int temp ;
+		   temp = ucptr [0] ;
+		   ucptr [0] = ucptr [3] ;
+		   ucptr [3] = temp ;
 
-	while (len > 0)
-	{	len -- ;
-		temp = ptr [len] ;
-		ptr [len] = ENDSWAP_INT (temp) ;
-		} ;
-#endif
-} /* endswap_int_array */
+		   temp = ucptr [1] ;
+		   ucptr [1] = ucptr [2] ;
+		   ucptr [2] = temp ;
+		   } ;
+   #else
+	   int temp ;
+
+	   while (len > 0)
+	   {	len -- ;
+		   temp = ptr [len] ;
+		   ptr [len] = ENDSWAP_INT (temp) ;
+		   } ;
+   #endif
+   } /* endswap_int_array */
+#endif //vvv for compatibility with MSVC++ 6 compiler
+
 
 /*	This function assumes that sizeof (long) == 8, but works correctly even
 **	is sizeof (long) == 4.
@@ -110,55 +114,57 @@ endswap_long_array (long *ptr, int len)
 /*========================================================================================
 */
 
-void
-endswap_short_copy (short *dest, short *src, int len)
-{
-#if	0
-	char *psrc, *pdest ;
+#ifndef WIN32 //vvv for compatibility with MSVC++ 6 compiler
+   void
+   endswap_short_copy (short *dest, short *src, int len)
+   {
+   #if	0
+	   char *psrc, *pdest ;
 
-	psrc = ((char *) src) + 2 * len ;
-	pdest = ((char *) dest) + 2 * len ;
-	while (len > 0)
-	{	len -- ;
-		psrc -= 2 ;
-		pdest -= 2 ;
+	   psrc = ((char *) src) + 2 * len ;
+	   pdest = ((char *) dest) + 2 * len ;
+	   while (len > 0)
+	   {	len -- ;
+		   psrc -= 2 ;
+		   pdest -= 2 ;
 
-		pdest [0] = psrc [1] ;
-		pdest [1] = psrc [0] ;
-		} ;
-#else
-	while (len > 0)
-	{	len -- ;
-		dest [len] = ENDSWAP_SHORT (src [len]) ;
-		} ;
-#endif
-} /* endswap_short_copy */
+		   pdest [0] = psrc [1] ;
+		   pdest [1] = psrc [0] ;
+		   } ;
+   #else
+	   while (len > 0)
+	   {	len -- ;
+		   dest [len] = ENDSWAP_SHORT (src [len]) ;
+		   } ;
+   #endif
+   } /* endswap_short_copy */
 
-void
-endswap_int_copy (int *dest, int *src, int len)
-{
-#if	0
-	char *psrc, *pdest ;
+   void
+   endswap_int_copy (int *dest, int *src, int len)
+   {
+   #if	0
+	   char *psrc, *pdest ;
 
-	psrc = ((char *) src) + 4 * len ;
-	pdest = ((char *) dest) + 4 * len ;
-	while (len > 0)
-	{	len -- ;
-		psrc -= 4 ;
-		pdest -= 4 ;
+	   psrc = ((char *) src) + 4 * len ;
+	   pdest = ((char *) dest) + 4 * len ;
+	   while (len > 0)
+	   {	len -- ;
+		   psrc -= 4 ;
+		   pdest -= 4 ;
 
-		pdest [0] = psrc [3] ;
-		pdest [1] = psrc [2] ;
-		pdest [2] = psrc [1] ;
-		pdest [3] = psrc [0] ;
-		} ;
-#else
-	while (len > 0)
-	{	len -- ;
-		dest [len] = ENDSWAP_INT (src [len]) ;
-		} ;
-#endif
-} /* endswap_int_copy */
+		   pdest [0] = psrc [3] ;
+		   pdest [1] = psrc [2] ;
+		   pdest [2] = psrc [1] ;
+		   pdest [3] = psrc [0] ;
+		   } ;
+   #else
+	   while (len > 0)
+	   {	len -- ;
+		   dest [len] = ENDSWAP_INT (src [len]) ;
+		   } ;
+   #endif
+   } /* endswap_int_copy */
+#endif //vvv for compatibility with MSVC++ 6 compiler
 
 /*	This function assumes that sizeof (long) == 8, but works correctly even
 **	is sizeof (long) == 4.

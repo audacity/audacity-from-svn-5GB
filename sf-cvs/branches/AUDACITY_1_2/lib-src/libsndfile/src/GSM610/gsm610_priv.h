@@ -56,6 +56,10 @@ typedef struct gsm_state GSM_STATE ;
 #define	MIN_LONGWORD	(-2147483647 - 1)
 #define	MAX_LONGWORD	  2147483647
 
+#ifdef WIN32 //vvv for compatibility with MSVC++ 6 compiler
+   #define inline  
+#endif
+
 /* Signed arithmetic shift right. */
 static inline word
 SASR_W (word x, word by)
