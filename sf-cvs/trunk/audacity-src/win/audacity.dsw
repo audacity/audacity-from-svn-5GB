@@ -44,6 +44,9 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name portmixer
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsamplerate
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -109,6 +112,18 @@ Package=<4>
 ###############################################################################
 
 Project: "libnyquist"="..\lib-src\libnyquist\win\libnyquist.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libsamplerate"="..\LIB-SRC\LIBSAMPLERATE\WIN32\libsamplerate\libsamplerate.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
