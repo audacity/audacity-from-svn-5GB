@@ -39,15 +39,12 @@ dnl extra variables
 AC_SUBST(BUILDLIBS)
 AC_SUBST(EXTRAOBJS)
 AC_SUBST(CDEPEND)
+AC_SUBST(AFTERBUILD)
 
 dnl Required sublibraries
 SUBDIRS="$SUBDIRS lib-src/libsndfile"
 BUILDLIBS="$BUILDLIBS libsndfile/src/.libs/libsndfile.a"
 EXTRAOBJS="$EXTRAOBJS ../lib-src/libsndfile/src/.libs/libsndfile.a"
-
-SUBDIRS="$SUBDIRS lib-src/portaudio/pa_unix_oss"
-BUILDLIBS="$BUILDLIBS portaudio/pa_unix_oss/portaudio.a"
-EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
 
 SUBDIRS="$SUBDIRS wave++/source"
 BUILDLIBS="$BUILDLIBS wave++/source/libw.a"
@@ -168,6 +165,29 @@ fi
 LIBS="$LIBS `$WX_CONFIG --libs`"
 CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cflags`"
 
+if [[ "$host_os" = "darwin5.3" ]] ; then
+	dnl Mac OS X CoreAudio configuration
+
+	SUBDIRS="$SUBDIRS lib-src/portaudio/pa_mac_core"
+	BUILDLIBS="$BUILDLIBS portaudio/pa_mac_core/portaudio.a"
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_mac_core/portaudio.a"
+
+	LIBS="-framework CoreAudio $LIBS"
+
+	AFTERBUILD="cp audacity Audacity.app
+`$WX_CONFIG --rezflags` Audacity.App audacity.r -c auDy
+/Developer/Tools/SetFile -a avBstClinmed Audacity.app"
+
+else
+	dnl Unix OSS configuration
+
+	SUBDIRS="$SUBDIRS lib-src/portaudio/pa_unix_oss"
+	BUILDLIBS="$BUILDLIBS portaudio/pa_unix_oss/portaudio.a"
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
+
+	AFTERBUILD=""
+
+fi
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
