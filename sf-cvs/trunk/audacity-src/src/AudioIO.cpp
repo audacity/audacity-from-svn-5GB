@@ -29,6 +29,8 @@
 #include "Prefs.h"
 #include "TimeTrack.h"
 
+#define AUDIOIO_DEADLOCK_THRESHOLD 100
+
 wxMutex gNoCallbackMutex;
 
 AudioIO *gAudioIO;
@@ -110,15 +112,21 @@ int audacityAudioCallback(
    // BG: I would have used wxCriticalSectionLocker, but I was not sure
    // if I could block in the callback
 
+   wxLogDebug("audacityAudioCallback Locking...");
+
    if(gAudioIO->GetPaused() || (gNoCallbackMutex.TryLock() != wxMUTEX_NO_ERROR)) {
       if (outputBuffer && numOutChannels > 0) {
          ClearSamples((samplePtr)outputBuffer, gAudioIO->GetFormat(),
                       0, framesPerBuffer * numOutChannels);
       }
-      
+
+      wxLogDebug("audacityAudioCallback Not locked");
+
       gAudioIO->AddDroppedSamples(framesPerBuffer);
       return 0;
    }
+
+   wxLogDebug("audacityAudioCallback Locked");
 
    gAudioIO->AdjustMixer();
 
@@ -215,7 +223,11 @@ int audacityAudioCallback(
       }
    }
 
+   wxLogDebug("audacityAudioCallback Unlocking");
+
    gNoCallbackMutex.Unlock();
+
+   wxLogDebug("audacityAudioCallback Unlocked");
 
    return 0;
 }
@@ -582,9 +594,6 @@ void AudioIO::FillBuffers()
 
 void AudioIO::Stop()
 {
-   //BG: Prevent port audio callback from doing anything
-   wxMutexLocker Callbacklocker(gNoCallbackMutex);
-
    if (mStopping)
       return;
 
@@ -592,6 +601,28 @@ void AudioIO::Stop()
 
    if (!project)
       return;
+
+   int deadlock_counter = 0;
+
+   wxLogDebug("Stop Locking");
+
+   while(gNoCallbackMutex.TryLock() != wxMUTEX_NO_ERROR)
+   {
+      deadlock_counter++;
+
+      if(deadlock_counter > AUDIOIO_DEADLOCK_THRESHOLD)
+      {
+         wxMessageBox(_("Deadlock detected in AudioIO::Stop, Audacity must close. Please report this to the Audacity developers."));
+         QuitAudacity(true);
+         return;
+      }
+
+      wxLogDebug("Stop giving up timeslice");
+      wxSafeYield();
+      wxLogDebug("Stop woke up");
+   }
+
+   wxLogDebug("Stop Locked");
 
    if (!mHardStop) {
       project->GetControlToolBar()->SetPlay(false);
@@ -623,6 +654,10 @@ void AudioIO::Stop()
    mPortStream = NULL;
 
    mStopping = true;
+
+   wxLogDebug("Stop Unlocking");
+   gNoCallbackMutex.Unlock();
+   wxLogDebug("Stop Unlocked");
 }
 
 void AudioIO::HardStop()
@@ -698,14 +733,33 @@ void AudioIO::SetAlwaysEnablePause(bool bEnable)
 
 void AudioIO::Finish()
 {
-   //BG: Prevent port audio callback from doing anything
-   wxMutexLocker Callbacklocker(gNoCallbackMutex);
-
    //If portaudio is still active, return
    if(mPortStream)
       return;
 
    AudacityProject *project = mProject;
+
+   int deadlock_counter = 0;
+
+   wxLogDebug("Finish Locking");
+
+   while(gNoCallbackMutex.TryLock() != wxMUTEX_NO_ERROR)
+   {
+      deadlock_counter++;
+
+      if(deadlock_counter > AUDIOIO_DEADLOCK_THRESHOLD)
+      {
+         wxMessageBox(_("Deadlock detected in AudioIO::Finish, Audacity must close. Please report this to the Audacity developers."));
+         QuitAudacity(true);
+         return;
+      }
+
+      wxLogDebug("Finish giving up timeslice");
+      mThread->Yield();
+      wxLogDebug("Finish woke up");
+   }
+
+   wxLogDebug("Finish Locked");
 
    // Note that this should only be called from the AudioThread,
    // after it has received the Stop message
@@ -756,6 +810,10 @@ void AudioIO::Finish()
    mPaused = false;
    mHardStop = false;   
    mReachedEnd = false;
+
+   wxLogDebug("Finish Unlocking");
+   gNoCallbackMutex.Unlock();
+   wxLogDebug("Finish Unlocked");
 }
 
 AudioThread::AudioThread():
@@ -765,6 +823,8 @@ AudioThread::AudioThread():
 
 wxThread::ExitCode AudioThread::Entry()
 {
+   wxLogDebug("AudioThread entry");
+
    while(!TestDestroy()) {
       if (gAudioIO->mProject && gAudioIO->mStarted)   
          gAudioIO->FillBuffers();
@@ -773,12 +833,16 @@ wxThread::ExitCode AudioThread::Entry()
          gAudioIO->Stop();
 
       if (gAudioIO->mStopping) {
+         wxLogDebug("mStopping true in AudioThread");
+
          gAudioIO->FillBuffers();
          gAudioIO->Finish();
       }
 
       Sleep(10);
    }
+
+   wxLogDebug("AudioThread exit");
 
    return 0;
 }
