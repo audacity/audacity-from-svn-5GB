@@ -139,6 +139,19 @@ AboutDialog::AboutDialog(wxWindow * parent)
      "Audacity.  For more information, visit our website.");
    #endif
 
+   wxString translatorCredits;
+   /* i18n-hint: The translation of "translator_credits" will appear
+      in the credits in the About Audacity window.  Use this to add
+      your own name(s) to the credits.
+
+      For example:  "English translation by Dominic Mazzoni."
+      */
+   if (_("translator_credits") != wxString("translator_credits")) {
+      translatorCredits += "<p><center>";
+      translatorCredits += _("translator_credits");
+      translatorCredits += "</center>";
+   }
+
    wxString creditStr = 
       "<html>"
       "<body bgcolor=\"#ffffff\">"
@@ -159,6 +172,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
       + informationStr +
       "<p>"
       "<center><b>" + _("Credits") + "</b></center>"
+      + translatorCredits +
       "<p>"
       "<table border=0>"
       "<tr>"
@@ -221,7 +235,6 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "<td>Roger Dannenberg</td>"
       "<td>" + _("Algorithms, MIDI & Audio I/O programming") + "</td>"
       "</tr>"
-
       "</table>"
       "<p>"
       "<center>"
