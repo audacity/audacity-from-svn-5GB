@@ -254,7 +254,24 @@ void CommandManager::AddItem(wxString name, wxString label,
    wxString dummy, newLabel;
    dummy.Printf("%s%08d", (const char *)label, mHiddenID);
    newLabel = label;
-   if (mCommandIDHash[ID]->key) {
+
+   bool shortcut = false;
+
+   if (mCommandIDHash[ID]->key.Length() > 0)
+      shortcut = true;
+   
+   // Mac OS X fixes
+  #ifdef __WXMAC__
+   if (newLabel.Length() > 0 && newLabel[0] == '&')
+      newLabel = newLabel.Right(newLabel.Length()-1);
+
+   if (shortcut == true &&
+       (mCommandIDHash[ID]->key.Length() < 5 ||
+        mCommandIDHash[ID]->key.Left(5) != "Ctrl+"))
+      shortcut = false;
+  #endif
+   
+   if (shortcut) {
       dummy = dummy + "\t" + mCommandIDHash[ID]->key;
       newLabel = newLabel + "\t" + mCommandIDHash[ID]->key;
    }
