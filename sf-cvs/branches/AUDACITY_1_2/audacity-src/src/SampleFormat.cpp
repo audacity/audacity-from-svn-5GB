@@ -106,3 +106,12 @@ void CopySamples(samplePtr src, sampleFormat srcFormat,
       src, srcFormat, dst, dstFormat, len, stride);
 }
 
+void CopySamplesNoDither(samplePtr src, sampleFormat srcFormat,
+                 samplePtr dst, sampleFormat dstFormat,
+                 unsigned int len,
+                 unsigned int stride /* = 1 */)
+{
+   gDitherAlgorithm.Apply(
+      Dither::none,
+      src, srcFormat, dst, dstFormat, len, stride);
+}
