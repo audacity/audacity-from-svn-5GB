@@ -255,7 +255,7 @@ if test $ac_cv_sizeof_double != 8 ; then
 
 if test x"$ac_cv_prog_autogen" = "xno" ; then
 	AC_MSG_WARN([[Touching files in directory tests/.]])
-	touch tests/*.[ch]
+	touch tests/*.{c,h}
 	fi
 
 #====================================================================================
