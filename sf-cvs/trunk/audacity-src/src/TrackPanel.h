@@ -172,6 +172,7 @@ class TrackPanel:public wxWindow {
    void OnSetTimeTrackRange ();
    void OnSetTimeTrackConverter();
 
+   void SetMenuCheck( wxMenu & menu, int newId );
    void SetRate(Track *pTrack, double rate);
    void OnRateChange(wxEvent &event);
    void OnRateOther(wxEvent &event);
@@ -235,7 +236,18 @@ class TrackPanel:public wxWindow {
    void FillInLabel           (Track *t, wxDC* dc, const wxRect r, const int labelw);
    void DrawOutsideOfTrack    (Track *t, wxDC* dc, const wxRect r);
 
+   int IdOfRate( int rate );
+   int IdOfFormat( int format );
+
+
    wxString TrackSubText(Track *t);
+
+   // Maybe we should have the m prefix on iformat and iSnapTo?
+   // Maybe the menus that these are related to should be moved to the main menu.
+   // It depends whether we want to allow choice per-track or make it per project.
+   int iformat;
+   int iSnapTo;
+
 
    TrackPanelListener *mListener;
 

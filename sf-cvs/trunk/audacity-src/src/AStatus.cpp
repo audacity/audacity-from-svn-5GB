@@ -61,13 +61,13 @@ mListener(listener), mBitmap(NULL), mRate(rate)
    GetSize(&mWidth, &mHeight);
 
    mRateMenu = new wxMenu();
-   mRateMenu->Append(OnRate8ID, "8000 Hz");
-   mRateMenu->Append(OnRate11ID, "11025 Hz");
-   mRateMenu->Append(OnRate16ID, "16000 Hz");
-   mRateMenu->Append(OnRate22ID, "22050 Hz");
-   mRateMenu->Append(OnRate44ID, "44100 Hz");
-   mRateMenu->Append(OnRate48ID, "48000 Hz");
-   mRateMenu->Append(OnRateOtherID, _("Other..."));
+   mRateMenu->AppendCheckItem(OnRate8ID, "8000 Hz");
+   mRateMenu->AppendCheckItem(OnRate11ID, "11025 Hz");
+   mRateMenu->AppendCheckItem(OnRate16ID, "16000 Hz");
+   mRateMenu->AppendCheckItem(OnRate22ID, "22050 Hz");
+   mRateMenu->AppendCheckItem(OnRate44ID, "44100 Hz");
+   mRateMenu->AppendCheckItem(OnRate48ID, "48000 Hz");
+   mRateMenu->AppendCheckItem(OnRateOtherID, _("Other..."));
 
    mRateField.x = 0;
    mRateField.y = 0;
