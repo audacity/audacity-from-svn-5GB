@@ -328,6 +328,11 @@ enum mad_flow output_cb(void *_data,
       }
       data->numChannels = channels;
    }
+   else {  
+      // This is not the first run, protect us from libmad glitching
+      // on the number of channels
+      channels = data->numChannels;
+   }
 
    /* TODO: get rid of this by adding fixed-point support to SampleFormat.
     * For now, we allocate temporary float buffers to convert the fixed
