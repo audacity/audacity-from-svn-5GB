@@ -34,7 +34,8 @@
  *
  *****************************************************************************/
 
-#include <soundtouch/mmx.h>
+//v #include <soundtouch/mmx.h>
+#include <mmx.h>
 
 #ifndef WIN32
 #error wrong platform - this source code file is exclusively for Win32 platform
@@ -106,14 +107,15 @@ bool mmxDetect(void)
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include <soundtouch/TDStretch.h>
+//v #include <soundtouch/TDStretch.h>
+#include <TDStretch.h>
 #include <limits.h>
 
 // these are declared in 'TDStretch.cpp'
 extern int scanOffsets[4][24];
 
 // Calculates cross correlation of two buffers
-_inline int TDStretch::mmxCalculateCrossCorrelation(const short *mixingPos, const short *compare) const
+_inline int TDStretch::mmxCalculateCrossCorrelation(const Sample *mixingPos, const Sample *compare) const
 {
     int corr;
     uint local_overlapLength = overlapLength;
@@ -245,7 +247,7 @@ _inline void _clearEMMS()
 
 
 // MMX-optimized version of the function "seekBestOverlapPositionStereo"
-uint TDStretch::mmxSeekBestOverlapPositionStereo(const short *other)
+uint TDStretch::mmxSeekBestOverlapPositionStereo(const Sample *other)
 {
     uint bestoffs;
     int bestcorr, corr;
@@ -282,9 +284,8 @@ uint TDStretch::mmxSeekBestOverlapPositionStereo(const short *other)
 
 
 // MMX-optimized version of the function "seekBestOverlapPositionStereoQuick"
-uint TDStretch::mmxSeekBestOverlapPositionStereoQuick(const short *other)
+uint TDStretch::mmxSeekBestOverlapPositionStereoQuick(const Sample *other)
 {
-    short *local_refMidBuffer = pRefMidBuffer;
     uint bestpos, scancount, i;
     int bestcorr,corr;
     uint corrPos, tempPos;
@@ -332,9 +333,9 @@ uint TDStretch::mmxSeekBestOverlapPositionStereoQuick(const short *other)
 
 
 // MMX-optimized version of the function overlapStereo
-void TDStretch::mmxOverlapStereo(short *output, const short *input) const
+void TDStretch::mmxOverlapStereo(Sample *output, const Sample *input) const
 {
-    short *local_midBuffer = pMidBuffer;
+    float *local_midBuffer = pMidBuffer;
     uint local_overlapLength = overlapLength;
     uint local_overlapDividerBits = overlapDividerBits;
 
@@ -473,7 +474,7 @@ void FIRFilter::mmxCalculateCoeffs()
 
 
 // mmx-optimized version of the filter routine for stereo sound
-uint FIRFilter::mmxEvaluateFilterStereo(short *dest, const short *src, const uint numSamples) const
+uint FIRFilter::mmxEvaluateFilterStereo(Sample *dest, const Sample *src, const uint numSamples) const
 {
     // Create stack copies of the needed member variables for asm routines :
     uint local_length = length;
