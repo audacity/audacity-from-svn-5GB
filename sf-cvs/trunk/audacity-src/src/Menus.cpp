@@ -16,6 +16,8 @@
 
 #include "../Audacity.h"
 
+#include <math.h>
+
 #include <wx/defs.h>
 #include <wx/msgdlg.h>
 #include <wx/filedlg.h>
@@ -306,6 +308,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand("SelExtRight", _("Selection Extend Right\tShift+Right"),   FN(OnSelExtendRight));
    c->AddCommand("SelCntrLeft", _("Selection Contract Left\tCtrl+Shift+Right"),   FN(OnSelContractLeft));
    c->AddCommand("SelCntrRight",_("Selection Contract Right\tCtrl+Shift+Left"), FN(OnSelContractRight));
+   c->AddCommand("ZeroCross",   _("Selection to Nearest Zero Crossings\tZ"), FN(OnZeroCrossing));
 
    mSel0save = 0;
    mSel1save = 0;
@@ -745,6 +748,80 @@ void AudacityProject::OnSelContractRight()
    mViewInfo.sel1 -= 1/mViewInfo.zoom;
    if (mViewInfo.sel1 < mViewInfo.sel0)
       mViewInfo.sel1 = mViewInfo.sel0;
+   mTrackPanel->Refresh(false);
+}
+
+double AudacityProject::NearestZeroCrossing(double t0)
+{
+   int windowSize = (int)(GetRate() / 100);
+   float *dist = new float[windowSize];
+   int i, j;
+
+   for(i=0; i<windowSize; i++)
+      dist[i] = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *track = iter.First();
+   while (track) {
+      if (!track->GetSelected() || track->GetKind() != (Track::Wave)) {
+         track = iter.Next();
+         continue;
+      }
+      WaveTrack *one = (WaveTrack *)track;
+      int oneWindowSize = (int)(one->GetRate() / 100);
+      float *oneDist = new float[oneWindowSize];
+      longSampleCount s = one->TimeToLongSamples(t0);
+      one->Get((samplePtr)oneDist, floatSample,
+               s - oneWindowSize/2, oneWindowSize);
+
+      // Start by penalizing downward motion.  We prefer upward
+      // zero crossings.
+      if (oneDist[1] - oneDist[0] < 0)
+         oneDist[0] = oneDist[0]*6 + 0.3;
+      for(i=1; i<oneWindowSize; i++)
+         if (oneDist[i] - oneDist[i-1] < 0)
+            oneDist[i] = oneDist[i]*6 + 0.3;
+
+      for(i=0; i<oneWindowSize; i++)
+         oneDist[i] = fabs(oneDist[i]);
+
+      for(i=0; i<windowSize; i++) {
+         if (windowSize != oneWindowSize)
+            j = i * (oneWindowSize-1) / (windowSize-1);
+         else
+            j = i;
+
+         dist[i] += oneDist[j];
+      }
+         
+      track = iter.Next();
+   }
+
+   int argmin = windowSize/2; // Start at default pos in center
+   float min = dist[argmin];
+   for(i=0; i<windowSize; i++) {
+      if (dist[i] < min) {
+         argmin = i;
+         min = dist[i];
+      }
+   }
+
+   return t0 + (argmin - windowSize/2)/GetRate();
+}
+
+void AudacityProject::OnZeroCrossing()
+{
+   if (mViewInfo.sel0 == mViewInfo.sel1)
+      mViewInfo.sel0 = mViewInfo.sel1 =
+         NearestZeroCrossing(mViewInfo.sel0);
+   else {
+      mViewInfo.sel0 = NearestZeroCrossing(mViewInfo.sel0);
+      mViewInfo.sel1 = NearestZeroCrossing(mViewInfo.sel1);
+
+      if (mViewInfo.sel1 < mViewInfo.sel0)
+         mViewInfo.sel1 = mViewInfo.sel0;
+   }
+
    mTrackPanel->Refresh(false);
 }
 

@@ -20,6 +20,8 @@ void CreateMenusAndCommands();
 void ModifyExportMenus();
 void ModifyUndoMenus();
 
+double NearestZeroCrossing(double t0);
+
 // used in routines OnSelectionSave
 // and OnSelectionRestore
 double mSel0save;
@@ -49,6 +51,8 @@ void OnSelContractLeft();
 void OnSelContractRight();
 void OnSelToStart();
 void OnSelToEnd();
+
+void OnZeroCrossing();
 
         // File Menu
 
