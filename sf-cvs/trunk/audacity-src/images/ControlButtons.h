@@ -1,15 +1,19 @@
-//#include "ControlButtons/Disabled.xpm"
-
 #ifdef __WXMAC__
 #include "Aqua/UpButtonSquare.xpm"
 #include "Aqua/DownButtonSquare.xpm"
 #include "Aqua/HiliteButtonSquare.xpm"
+#include "Aqua/Up.xpm"
+#include "Aqua/Down.xpm"
+#include "Aqua/Hilite.xpm"
 #include "Aqua/SliderThumb.xpm"
 #include "Aqua/Slider.xpm"
 #else
 #include "ControlButtons/UpButton.xpm"
 #include "ControlButtons/DownButton.xpm"
 #include "ControlButtons/HiliteButton.xpm"
+#include "ControlButtons/Up.xpm"
+#include "ControlButtons/Down.xpm"
+#include "ControlButtons/Hilite.xpm"
 #include "ControlButtons/SliderThumb.xpm"
 #include "ControlButtons/Slider.xpm"
 #endif
