@@ -43,6 +43,14 @@ bool VTrack::Load(wxTextFile * in, DirManager * dirManager)
 
    name = in->GetNextLine();
    wxString line = in->GetNextLine();
+   if (line == "left") {
+      channel = LeftChannel;
+      line = in->GetNextLine();
+   }
+   if (line == "right") {
+      channel = RightChannel;
+      line = in->GetNextLine();
+   }
    if (line == "linked") {
       linked = true;
       line = in->GetNextLine();
@@ -58,6 +66,10 @@ bool VTrack::Load(wxTextFile * in, DirManager * dirManager)
 bool VTrack::Save(wxTextFile * out, bool overwrite)
 {
    out->AddLine(name);
+   if (channel == LeftChannel)
+      out->AddLine("left");
+   if (channel == RightChannel)
+      out->AddLine("right");
    if (linked)
       out->AddLine("linked");
    out->AddLine("offset");

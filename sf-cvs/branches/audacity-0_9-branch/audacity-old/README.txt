@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.97
+Version 0.98 (under development)
 
 http://audacity.sourceforge.net/
 
@@ -107,6 +107,16 @@ Known issues/problems:
   channels are not yet supported.
 
 -------------------------------------------------------------
+
+Changes in 0.98:
+
+* Bug fixes
+
+  - Projects now save the channel of each track, it's no longer
+    forgotten
+
+  - Better handling of case when temp directory is invalid at
+    start of program
 
 Changes in 0.97:
 
