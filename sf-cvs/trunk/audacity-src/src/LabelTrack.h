@@ -154,7 +154,7 @@ class LabelTrack:public Track {
    int AddLabel(double t, double t1, const wxString &title = "");
 
    //get current cursor position
-   int getCurrentCursorPosition() const { mCurrentCursorPos; };
+   int getCurrentCursorPosition() const { return mCurrentCursorPos; };
 
  public:
 	 void SortLabels();
