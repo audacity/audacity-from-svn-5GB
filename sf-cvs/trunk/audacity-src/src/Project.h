@@ -194,8 +194,9 @@ class AudacityProject:public wxFrame,
    virtual void TP_DisplaySelection();
    virtual int TP_GetCurrentTool();
    virtual void TP_OnPlayKey();
-   virtual void TP_PushState(wxString desc =
-                             wxString(_("Not SPECIFIED YET!")));
+   virtual void TP_PushState(wxString longDesc, wxString shortDesc,
+                             bool consolidate);
+   virtual void TP_ModifyState();
    virtual void TP_RedrawScrollbars();
    virtual void TP_ScrollLeft();
    virtual void TP_ScrollRight();
@@ -242,7 +243,9 @@ class AudacityProject:public wxFrame,
 
    void ClearClipboard();
    void InitialState();
-   void PushState(wxString desc, bool makeDirty = true);
+   void PushState(wxString desc, wxString shortDesc,
+                  bool consolidate = false);
+   void ModifyState();
    void PopState(TrackList * l);
 
    // Callbacks for backend operations

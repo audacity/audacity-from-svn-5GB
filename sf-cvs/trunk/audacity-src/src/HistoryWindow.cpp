@@ -120,7 +120,7 @@ void HistoryWindow::UpdateDisplay()
       wxString desc, size;
       wxListItem item;
       
-      mManager->GetDescription(i + 1, &desc, &size);
+      mManager->GetLongDescription(i + 1, &desc, &size);
       mList->InsertItem(i, desc, i == mManager->GetCurrentState() - 1 ? 1 : 0);
       mList->SetItem(i, 1, size);
 
@@ -156,7 +156,7 @@ void HistoryWindow::UpdateDisplay()
 
 void HistoryWindow::OnLabelChanged(wxListEvent &event)
 {
-   mManager->SetDescription(event.GetIndex() + 1, event.GetItem().m_text);
+   mManager->SetLongDescription(event.GetIndex() + 1, event.GetItem().m_text);
    UpdateDisplay();
 }
 

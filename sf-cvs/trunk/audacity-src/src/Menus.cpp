@@ -361,11 +361,10 @@ void AudacityProject::ModifyExportMenus()
 void AudacityProject::ModifyUndoMenus()
 {
    wxString desc;
-   wxString size;
    int cur = mUndoManager.GetCurrentState();
 
    if (mUndoManager.UndoAvailable()) {
-      mUndoManager.GetDescription(cur, &desc, &size);
+      mUndoManager.GetShortDescription(cur, &desc);
       mCommandManager.Modify("Undo",
                              wxString::Format(_("&Undo %s"),
                                               (const char *)desc));
@@ -378,7 +377,7 @@ void AudacityProject::ModifyUndoMenus()
    }
 
    if (mUndoManager.RedoAvailable()) {
-      mUndoManager.GetDescription(cur+1, &desc, &size);
+      mUndoManager.GetShortDescription(cur+1, &desc);
       mCommandManager.Modify("Redo",
                              wxString::Format(_("&Redo %s"),
                                               (const char *)desc));
@@ -937,7 +936,13 @@ void AudacityProject::OnEffect(int type, int index)
    
    if (f->DoEffect(this, mTracks, mTrackFactory,
                    &mViewInfo.sel0, &mViewInfo.sel1)) {
-      PushState(f->GetEffectDescription()); 
+      wxString longDesc = f->GetEffectDescription();
+      wxString shortDesc = f->GetEffectName();
+
+      if (shortDesc.Length() > 3 && shortDesc.Right(3)=="...")
+         shortDesc = shortDesc.Left(shortDesc.Length()-3);
+
+      PushState(longDesc, shortDesc);
       if (mTracks->GetEndTime() > prevEndTime)
          OnZoomFit();
       FixScrollbars();
@@ -1176,7 +1181,7 @@ void AudacityProject::OnCut()
 
    mViewInfo.sel1 = mViewInfo.sel0;
 
-   PushState(_("Cut to the clipboard"));
+   PushState(_("Cut to the clipboard"), _("Cut"));
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
@@ -1245,7 +1250,7 @@ void AudacityProject::OnPaste()
    mViewInfo.sel0 = tsel;
    mViewInfo.sel1 = tsel + msClipLen;
 
-   PushState(_("Pasted from the clipboard"));
+   PushState(_("Pasted from the clipboard"), _("Paste"));
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
@@ -1285,7 +1290,7 @@ void AudacityProject::OnTrim()
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
-   PushState(_("Trim file to selection"));
+   PushState(_("Trim file to selection"), _("Trim"));
 }
 
 
@@ -1310,7 +1315,8 @@ void AudacityProject::OnSilence()
 
    PushState(wxString::
              Format(_("Silenced selected tracks for %.2f seconds at %.2f"),
-                    mViewInfo.sel1 - mViewInfo.sel0, mViewInfo.sel0));
+                    mViewInfo.sel1 - mViewInfo.sel0, mViewInfo.sel0),
+             _("Silence"));
 
    mTrackPanel->Refresh(false);
 }
@@ -1343,7 +1349,7 @@ void AudacityProject::OnDuplicate()
       n = nIter.Next();
    }
 
-   PushState(_("Duplicated"));
+   PushState(_("Duplicated"), _("Duplicate"));
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
@@ -1389,7 +1395,7 @@ void AudacityProject::OnSplit()
       n = nIter.Next();
    }
 
-   PushState(_("Split"));
+   PushState(_("Split"), _("Split"));
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
@@ -1472,7 +1478,7 @@ void AudacityProject::OnSplitLabels()
       }
    }
 
-   PushState(_("Split at labels"));
+   PushState(_("Split at labels"), _("Split at labels"));
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
@@ -1877,7 +1883,8 @@ void AudacityProject::OnImportLabels()
       newTrack->SetSelected(true);
 
       PushState(wxString::
-                Format(_("Imported labels from '%s'"), fileName.c_str()));
+                Format(_("Imported labels from '%s'"), fileName.c_str()),
+                _("Import Labels"));
 
       FixScrollbars();
       mTrackPanel->Refresh(false);
@@ -1911,7 +1918,8 @@ void AudacityProject::OnImportMIDI()
          newTrack->SetSelected(true);
 
          PushState(wxString::Format(_("Imported MIDI from '%s'"),
-                                    fileName.c_str()));
+                                    fileName.c_str()),
+                   _("Import MIDI"));
 
          FixScrollbars();
          mTrackPanel->Refresh(false);
@@ -1995,7 +2003,7 @@ void AudacityProject::OnQuickMix()
       if (newRight)
          mTracks->Add(newRight);
 
-      PushState(_("Quick mix"));
+      PushState(_("Quick mix"), _("Quick mix"));
 
       FixScrollbars();
       mTrackPanel->Refresh(false);
@@ -2165,7 +2173,7 @@ void AudacityProject::HandleAlign(int index, bool moveSel)
       mViewInfo.sel1 += delta;
    }
 
-   PushState(action);
+   PushState(action, _("Align"));
 
    mTrackPanel->Refresh(false);
 }
@@ -2189,7 +2197,7 @@ void AudacityProject::OnNewWaveTrack()
    mTracks->Add(t);
    t->SetSelected(true);
 
-   PushState(_("Created new audio track"));
+   PushState(_("Created new audio track"), _("New Track"));
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
@@ -2211,7 +2219,7 @@ void AudacityProject::OnNewStereoTrack()
    mTracks->Add(t);
    t->SetSelected (true);
    
-   PushState(_("Created new stereo audio track"));
+   PushState(_("Created new stereo audio track"), _("New Track"));
    
    FixScrollbars();
    mTrackPanel->Refresh(false);
@@ -2226,7 +2234,7 @@ void AudacityProject::OnNewLabelTrack()
    mTracks->Add(t);
    t->SetSelected(true);
 
-   PushState(_("Created new label track"));
+   PushState(_("Created new label track"), _("New Track"));
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
@@ -2270,7 +2278,7 @@ void AudacityProject::OnNewTimeTrack()
          mTracks->AddToHead(t);
          t->SetSelected(true);
          
-         PushState(_("Created new time track"));
+         PushState(_("Created new time track"), _("New Track"));
 
          /*
          TrackListIterator iter(mTracks);
@@ -2308,7 +2316,7 @@ void AudacityProject::OnAddLabel()
 
    lt->Add(mViewInfo.sel0, "");
 
-   PushState(_("Added label"));
+   PushState(_("Added label"), _("Label"));
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
@@ -2326,7 +2334,7 @@ void AudacityProject::OnRemoveTracks()
          t = iter.Next();
    }
 
-   PushState(_("Removed audio track(s)"));
+   PushState(_("Removed audio track(s)"), _("Remove Track"));
 
    mTrackPanel->Refresh(false);
 }

@@ -19,6 +19,7 @@ UndoManager::UndoManager()
 {
    current = -1;
    saved = -1;
+   consolidationCount = 0;
 }
 
 UndoManager::~UndoManager()
@@ -27,7 +28,8 @@ UndoManager::~UndoManager()
 }
 
 
-void UndoManager::GetDescription(unsigned int n, wxString *desc, wxString *size)
+void UndoManager::GetLongDescription(unsigned int n, wxString *desc,
+                                     wxString *size)
 {
    n -= 1; // 1 based to zero based
 
@@ -43,7 +45,16 @@ void UndoManager::GetDescription(unsigned int n, wxString *desc, wxString *size)
    }
 }
 
-void UndoManager::SetDescription(unsigned int n, wxString desc)
+void UndoManager::GetShortDescription(unsigned int n, wxString *desc)
+{
+   n -= 1; // 1 based to zero based
+
+   wxASSERT(n < stack.Count());
+
+   *desc = stack[n]->shortDescription;
+}
+
+void UndoManager::SetLongDescription(unsigned int n, wxString desc)
 {
    n -= 1;
 
@@ -104,10 +115,51 @@ bool UndoManager::RedoAvailable()
    return (current < (int)stack.Count() - 1);
 }
 
+void UndoManager::ModifyState(TrackList * l, double sel0, double sel1)
+{
+   // Delete current
+
+   TrackListIterator iter(stack[current]->tracks);
+   Track *t = iter.First();
+   while (t) {
+      delete t;
+      t = iter.Next();
+   }
+
+   // Duplicate
+
+   TrackList *tracksCopy = new TrackList();
+   TrackListIterator iter2(l);
+   t = iter2.First();
+   while (t) {
+      tracksCopy->Add(t->Duplicate());
+      t = iter2.Next();
+   }
+
+   // Replace
+
+   stack[current]->tracks = tracksCopy;
+   stack[current]->sel0 = sel0;
+   stack[current]->sel1 = sel1;
+}
+
 void UndoManager::PushState(TrackList * l, double sel0, double sel1,
-                            wxString desc)
+                            wxString longDescription,
+                            wxString shortDescription,
+                            bool consolidate)
 {
    unsigned int i;
+
+   // If consolidate is set to true
+
+   if (consolidate && lastAction == longDescription &&
+       consolidationCount < 2) {
+      consolidationCount++;
+      ModifyState(l, sel0, sel1);
+      return;
+   }
+
+   consolidationCount = 0;
 
    for (i = current + 1; i < stack.Count(); i++) {
       TrackListIterator iter(stack[i]->tracks);
@@ -134,13 +186,16 @@ void UndoManager::PushState(TrackList * l, double sel0, double sel1,
    push->tracks = tracksCopy;
    push->sel0 = sel0;
    push->sel1 = sel1;
-   push->description = desc;
+   push->description = longDescription;
+   push->shortDescription = shortDescription;
 
    stack.Add(push);
    current++;
 
    if (saved >= current)
       saved = -1;
+
+   lastAction = longDescription;
 }
 
 TrackList *UndoManager::SetStateTo(unsigned int n, double *sel0, double *sel1)
@@ -162,6 +217,9 @@ TrackList *UndoManager::SetStateTo(unsigned int n, double *sel0, double *sel1)
       current--;
    }
 
+   lastAction = "";
+   consolidationCount = 0;
+
    return stack[current]->tracks;
 }
 
@@ -169,10 +227,13 @@ TrackList *UndoManager::Undo(double *sel0, double *sel1)
 {
    wxASSERT(UndoAvailable());
 
+   current--;
+
    *sel0 = stack[current]->sel0;
    *sel1 = stack[current]->sel1;
 
-   current--;
+   lastAction = "";
+   consolidationCount = 0;
 
    return stack[current]->tracks;
 }
@@ -182,7 +243,11 @@ TrackList *UndoManager::Redo(double *sel0, double *sel1)
    wxASSERT(RedoAvailable());
 
    current++;
+   
+   *sel0 = stack[current]->sel0;
+   *sel1 = stack[current]->sel1;
 
+   /*
    if (!RedoAvailable()) {
       *sel0 = stack[current]->sel0;
       *sel1 = stack[current]->sel1;
@@ -193,6 +258,10 @@ TrackList *UndoManager::Redo(double *sel0, double *sel1)
       *sel1 = stack[current]->sel1;
       current--;
    }
+   */
+
+   lastAction = "";
+   consolidationCount = 0;
 
    return stack[current]->tracks;
 }
