@@ -2,23 +2,13 @@
 
 <p>
 Audacity er en fri og gratis lydeditor.
-Du kan indspille lyd, afspille lyd, importere og eksportere filer i WAV, AIFF, mp3 med mere.
+Du kan indspille lyd, afspille lyd, importere og eksportere filer i WAV, AIFF, Ogg Vorbis, mp3 med mere.
 Brug Audacity til at redigere lyd med Klip, Kopiér og Indsæt (og ubegrænset fortrydelse), 
 mixe spor sammen, eller tilføje effekter til dine indspilninger.
-Det har også en indbygget styrke-konvoluttering, en justerbar spektogramfremstilling,
+Det har også en indbygget styrke-konvolutering, en justerbar spektogramfremstilling,
 og et frekvensanalysevindue til brug for egentlig lydanalyse. 
-Indbyggede effekter omfatter blandt andet Bas boost, Wahwah, støjfjernelse, og programmet kan bruge VST-udvidelser.
-</p>
-
-<p>
-Audacity 1.0.0 er den mest stabile udgave vi har lavet til dato,
-og mange mennesker har fundet at dens fremragende faciliteter og
-intuitive brugerflade gør den nemmere og sjovere at bruge end
-mange andre lydeditorer, deriblandt kommercielle programmer.
-</p>
-
-<p>Audacity-udviklerne har også udgivet version 1.2.0-pre2, som er en betaudgave
-med en stribe nye faciliteter under udvikling. Der er rigtig mange nye muligheder, men er ikke så finpudset og stabilt som version 1.0.0.
+Indbyggede effekter omfatter blandt andet Ekko, temposkift og støjfjerning,
+og programmet kan bruge VST- og LADSPA udvidelser.
 </p>
 
 <center>
