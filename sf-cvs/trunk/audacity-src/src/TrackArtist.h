@@ -60,6 +60,7 @@ class TrackArtist {
    wxPen unselectedPen;
    wxPen selectedPen;
    wxPen samplePen;
+   wxPen rmsPen;
    wxPen selsamplePen;
    wxPen shadowPen;
 
