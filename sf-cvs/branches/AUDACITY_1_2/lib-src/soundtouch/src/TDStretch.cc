@@ -94,12 +94,7 @@ TDStretch::TDStretch() : FIFOProcessor(&outputBuffer)
 
     pRefMidBuffer = new Sample[2*overlapLength];
 
-    // setTempo(1.0f);
-    // JKC 21-July-04; Added setTempo() here to calculate sampleReq.
-    // This removes an order dependency between calling setTempo and
-    // setParameters which could lead to an input buffer under-run
-    // when changing tempo at 96000Hz.
-    setTempo(tempo);
+    setTempo(1.0f);
 }
 
 
