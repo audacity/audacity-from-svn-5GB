@@ -594,7 +594,7 @@ void AudacityProject::HandleResize()
       GetClientSize(&width, &height);
       //Deal with the ToolBars 
       int toolbartop, toolbarbottom, toolbarheight;
-      int i;
+      unsigned int i;
       int h = 0;
       int ptop = 0;
 
@@ -741,7 +741,7 @@ void AudacityProject::OnPaint(wxPaintEvent & event)
 
    int top = 0;
    int h = 0;
-   int i, j;
+   unsigned int i, j;
    int toolbartop, toolbarbottom, toolbarheight;
    wxRect r;
 
@@ -780,8 +780,8 @@ void AudacityProject::OnPaint(wxPaintEvent & event)
       // make it a "grab-bar".
 
       //adjust min and max so that they aren't too close to the edges
-      int minbump = (toolbarheight % 2 == 0) ? 3 : 4;
-      int maxbump =
+      unsigned int minbump = (toolbarheight % 2 == 0) ? 3 : 4;
+      unsigned int maxbump =
           (toolbarheight % 2 == 0) ? toolbarheight - 3 : toolbarheight - 4;
 
       AColor::Light(&dc, false);
@@ -829,7 +829,6 @@ void AudacityProject::OnPaint(wxPaintEvent & event)
    AColor::Medium(&dc, false);
    dc.DrawRectangle(f);
    AColor::Bevel(dc, true, f);
-
 }
 
 void AudacityProject::OnActivate(wxActivateEvent & event)
@@ -1013,7 +1012,7 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 
       //Now, see which toolbar we need to drag
       int h = 0;
-      int i = 0;
+      unsigned int i = 0;
       while (i < mToolBarArray.GetCount()) {
          h += mToolBarArray[i]->GetHeight() + 1;
 
