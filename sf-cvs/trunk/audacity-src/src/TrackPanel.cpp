@@ -1995,8 +1995,7 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
       
       //If we are still around, we are drawing in earnest.  Set some member data structures up:
       //First, calculate the starting sample.  To get this, we need the time
-      double tOffset = mDrawingTrack->GetOffset();
-      double t0 = PositionToTime(event.m_x, GetLeftOffset()) - tOffset;
+      double t0 = PositionToTime(event.m_x, GetLeftOffset());
    
       float newLevel;   //Declare this for use later
 
@@ -2151,8 +2150,7 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
          sampleCount s0;     //declare this for use below.  It designates the sample number which to draw.
 
          // Figure out what time the click was at
-         double tOffset = mDrawingTrack->GetOffset();
-         double t0 = PositionToTime(event.m_x, GetLeftOffset()) - tOffset;
+         double t0 = PositionToTime(event.m_x, GetLeftOffset());
 
 
          float newLevel;
@@ -3338,16 +3336,13 @@ bool TrackPanel::HitTestSamples(Track *track, wxRect &r, wxMouseEvent & event)
    if ( displayType > 1) 
       return false;  // Not a wave, so return.
 
-   //Get the sequence of samples from the actual track structure
-   Sequence *seq = wavetrack->GetSequence();
-
    float oneSample;
    double pps = mViewInfo->zoom;
-   double tt = (event.m_x - r.x) / pps + mViewInfo->h - wavetrack->GetOffset();
+   double tt = (event.m_x - r.x) / pps + mViewInfo->h;
    int    s0 = (int)(tt * rate + 0.5);
 
    // Just get one sample.
-   seq->Get((samplePtr)&oneSample, floatSample, s0, 1);
+   wavetrack->Get((samplePtr)&oneSample, floatSample, s0, 1);
    
    // Get y distance of envelope point from center line (in pixels).
    bool dB = (displayType == 1);

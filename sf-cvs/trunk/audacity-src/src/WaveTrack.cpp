@@ -732,19 +732,22 @@ bool WaveTrack::GetMinMax(float *min, float *max,
 
 //
 // Getting/setting samples.  The sample counts here are expressed
-// relative to beginning of track at the track's sample rate.
+// relative to t=0.0 at the track's sample rate.
 //
 
 bool WaveTrack::Get(samplePtr buffer, sampleFormat format,
                     longSampleCount start, sampleCount len) const
 {
 
-   if (start+len < 0 || start>=mSequence->GetNumSamples()) {
+   longSampleCount startTime = (longSampleCount)floor(mOffset*mRate + 0.5);
+   longSampleCount endTime = startTime + mSequence->GetNumSamples();
+
+   if (start+len < startTime || start>=endTime) {
       ClearSamples(buffer, format, 0, len);
       return true;
    }
 
-   sampleCount s0 = (sampleCount)start;
+   sampleCount s0 = (sampleCount)(start - startTime);
    sampleCount soffset = 0;
    sampleCount getlen = len;
 
@@ -771,7 +774,8 @@ bool WaveTrack::Set(samplePtr buffer, sampleFormat format,
                     longSampleCount start, sampleCount len)
 {
 
-   sampleCount s0 = (sampleCount)start;
+   longSampleCount startTime = (longSampleCount)floor(mOffset*mRate + 0.5);
+   sampleCount s0 = (sampleCount)(start - startTime);
 
    if (s0 < 0) {
       len += s0;
