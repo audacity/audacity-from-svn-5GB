@@ -402,11 +402,11 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
    hSizer->Add(button, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
    */
 
-   mOK = new wxButton(this, wxID_OK, _("Import"));
-   hSizer->Add(mOK, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
    button = new wxButton(this, wxID_CANCEL, _("Cancel"));
    hSizer->Add(button, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+   mOK = new wxButton(this, wxID_OK, _("Import"));
+   hSizer->Add(mOK, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
    mainSizer->Add(hSizer, 0, wxALIGN_CENTER | wxALL, 5);
 

@@ -728,7 +728,6 @@ wxSizer * MakeEqualizationDialog(
 
    pBoxSizer_OK->Add(80, 4); // horizontal spacer
 
-	//vvv Try OK on right so Cancel in middle.
    wxButton * pButton_Cancel =
        new wxButton(parent, wxID_CANCEL, _("Cancel"), 
 							wxDefaultPosition, wxDefaultSize, 0);
