@@ -173,31 +173,6 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks)
    gPrefs->Read("/AudioIO/RecordStereo", &mRecordStereo, false);
    gPrefs->Read("/AudioIO/Duplex", &mDuplex, false);
 
-   mRecordLeft = new WaveTrack(project->GetDirManager());
-   mRecordLeft->selected = true;
-   mRecordLeft->channel = (mRecordStereo ?
-                           VTrack::LeftChannel : VTrack::MonoChannel);
-
-   if (mRecordStereo) {
-      mRecordLeft->linked = true;
-      mRecordRight = new WaveTrack(project->GetDirManager());
-      mRecordRight->selected = true;
-      mRecordRight->channel = VTrack::RightChannel;
-   }
-
-   project->SelectNone();
-
-   tracks->Add(mRecordLeft);
-   if (mRecordStereo)
-      tracks->Add(mRecordRight);
-
-   mRecording = true;
-   mTracks = tracks;
-   mT0 = 0.0;
-   mT1 = 0.0;
-   mT = 0.0;
-   mRecT = 0.0;
-
    mRecordNode.device = SND_DEVICE_AUDIO;
    mRecordNode.write_flag = SND_READ;
    mRecordNode.format.channels = mRecordStereo ? 2 : 1;
@@ -246,6 +221,32 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks)
          return false;
       }
    }
+
+   mRecordLeft = new WaveTrack(project->GetDirManager());
+   mRecordLeft->selected = true;
+   mRecordLeft->channel = (mRecordStereo ?
+                           VTrack::LeftChannel : VTrack::MonoChannel);
+
+   if (mRecordStereo) {
+      mRecordLeft->linked = true;
+      mRecordRight = new WaveTrack(project->GetDirManager());
+      mRecordRight->selected = true;
+      mRecordRight->channel = VTrack::RightChannel;
+   }
+
+   project->SelectNone();
+
+   tracks->Add(mRecordLeft);
+   if (mRecordStereo)
+      tracks->Add(mRecordRight);
+
+   mRecording = true;
+   mTracks = tracks;
+   mT0 = 0.0;
+   mT1 = 0.0;
+   mT = 0.0;
+   mRecT = 0.0;
+
 
    mStopWatch.Start(0);
 
