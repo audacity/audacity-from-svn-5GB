@@ -151,6 +151,7 @@ long audio_read(snd_type snd, void *buffer, long length)
             processed += n;
             cur->posinbuffer += n;
             length -= n;
+			out += n;
 
             if (cur->posinbuffer >= 
                 (int) cur->whdr[cur->pollee].dwBufferLength) {
@@ -190,7 +191,7 @@ long audio_write(snd_type snd, void *buffer, long length)
     MMRESULT er;
     byte *in;
     byte *out;
-    
+
     in = (byte *) buffer;
     out = (byte *) (cur->whdr[cur->pollee].lpData + cur->posinbuffer);
     
@@ -217,6 +218,7 @@ long audio_write(snd_type snd, void *buffer, long length)
             processed += n;
             cur->posinbuffer += n;
             length -= n;
+			in += n;
 
             if (cur->posinbuffer >= 
                 (int) cur->whdr[cur->pollee].dwBufferLength) {

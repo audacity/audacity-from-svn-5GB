@@ -63,6 +63,7 @@ bool SoundPlayer::Begin(WaveTrack *track, double t0, double t1)
   out.format.bits = 16;
   out.format.srate = track->rate;
   strcpy(out.u.audio.devicename,"");
+  strcpy(out.u.audio.interfacename,""); //RBD 15jun00
   out.u.audio.descriptor = 0;
   out.u.audio.protocol = SND_COMPUTEAHEAD;
   out.u.audio.latency = 1.0;  // use defaults
