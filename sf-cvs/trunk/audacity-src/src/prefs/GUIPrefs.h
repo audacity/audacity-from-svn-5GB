@@ -22,6 +22,7 @@ class wxCheckBox;
 class wxChoice;
 class wxTextCtrl;
 class wxStaticText;
+class wxRadioButton;
 
 class GUIPrefs : public PrefsPanel {
 
@@ -38,6 +39,7 @@ class GUIPrefs : public PrefsPanel {
     wxCheckBox *mMixerToolBar;
     wxCheckBox *mQuitOnClose;
     wxCheckBox *mAdjustSelectionEdges;
+    wxRadioButton *mdBArray[5];
 
     wxChoice *mLocale;
     wxStaticText *mLocaleLabel;

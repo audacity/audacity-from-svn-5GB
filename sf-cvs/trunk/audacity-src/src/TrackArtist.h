@@ -50,10 +50,10 @@ class TrackArtist {
                    bool drawEnvelope,bool drawSamples,bool drawSliders);
 
    void DrawVRuler(Track * t, wxDC * dc, wxRect & r);
-   int GetWaveYPos(float value, int height, bool dB);
-   int GetWaveYPosUnclipped(float value, int height, bool dB);
+   int GetWaveYPos(float value, int height, bool dB, float dBr);
+   int GetWaveYPosUnclipped(float value, int height, bool dB, float dBr);
    int GetWaveYPosNew(float value, float min, float max,
-                      int height, bool dB, bool clip);
+                      int height, bool dB, float dBr, bool clip);
 
 
    void SetInset(int left, int top, int right, int bottom);
