@@ -944,6 +944,14 @@ SOURCE=..\src\commands\CommandsWriter.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\src\blockfile\LegacyBlockFile.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\blockfile\LegacyBlockFile.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\blockfile\PCMAliasBlockFile.cpp
 # End Source File
 # Begin Source File
