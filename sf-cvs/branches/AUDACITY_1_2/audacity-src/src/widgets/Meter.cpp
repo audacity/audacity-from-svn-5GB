@@ -14,6 +14,7 @@
 **********************************************************************/
 
 #include "../Audacity.h"
+#include "../Prefs.h" // for gPrefs
 
 #include <wx/defs.h>
 #include <wx/dcmemory.h>
