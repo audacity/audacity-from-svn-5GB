@@ -7,6 +7,7 @@ in Audacity.
 Known bugs to fix:
 -----------------------------------------------------------
 
+- Sign error in Ruler (see track vertical ruler)
 - Hitting the spacebar causes Audacity to start playing
   (Mac OS only?)
 - Double-clicking a track selects all in the ruler, but
