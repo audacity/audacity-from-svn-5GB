@@ -35,8 +35,6 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
    WaveTrack **waveArray;
    Track *t;
    int numWaves = 0;
-   int numLeft = 0;
-   int numRight = 0;
    int numMono = 0;
    bool mono = false;
    int w;
@@ -47,24 +45,14 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
    while (t) {
       if (t->GetSelected() && t->GetKind() == Track::Wave) {
          numWaves++;
-         switch (t->GetChannel()) {
-         case Track::MonoChannel:
-            numLeft++;
-            numRight++;
+         float pan = ((WaveTrack*)t)->GetPan();
+         if (t->GetChannel() == Track::MonoChannel && pan == 0)
             numMono++;
-            break;
-         case Track::LeftChannel:
-            numLeft++;
-            break;
-         case Track::RightChannel:
-            numRight++;
-            break;
-         }
       }
       t = iter.Next();
    }
 
-   if (numMono == numWaves || numLeft == numWaves || numRight == numWaves)
+   if (numMono == numWaves)
       mono = true;
 
    double totalTime = 0.0;
@@ -83,10 +71,12 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
 
    WaveTrack *mixLeft = trackFactory->NewWaveTrack(format);
    mixLeft->SetRate(rate);
-   mixLeft->SetChannel(Track::MonoChannel);
    mixLeft->SetName(_("Mix"));
    WaveTrack *mixRight = 0;
-   if (!mono) {
+   if (mono) {
+      mixLeft->SetChannel(Track::MonoChannel);
+   }
+   else {
       mixRight = trackFactory->NewWaveTrack(format);
       mixRight->SetRate(rate);
       mixRight->SetName(_("Mix"));
