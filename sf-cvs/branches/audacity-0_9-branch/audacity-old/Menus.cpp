@@ -63,10 +63,6 @@ void AudacityProject::CreateMenuBar()
        gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");
    mExportString.Printf("&Export as %s...", pcmFormat.c_str());
    mExportSelectionString.Printf("Export &Selection as %s...", pcmFormat.c_str());
-   wxString lossyFormat =
-       "MP3";
-   mExportLossyString.Printf("Export as %s...", lossyFormat.c_str());
-   mExportSelectionLossyString.Printf("Export Selection as %s...", lossyFormat.c_str());
 
    mFileMenu = new wxMenu();
    mFileMenu->Append(NewID, "&New\tCtrl+N");
@@ -78,8 +74,11 @@ void AudacityProject::CreateMenuBar()
    mFileMenu->Append(ExportMixID, mExportString);
    mFileMenu->Append(ExportSelectionID, mExportSelectionString);
    mFileMenu->AppendSeparator();
-   mFileMenu->Append(ExportLossyMixID, mExportLossyString);
-   mFileMenu->Append(ExportLossySelectionID, mExportSelectionLossyString);
+   mFileMenu->Append(ExportMP3MixID, "Export as MP3...");
+   mFileMenu->Append(ExportMP3SelectionID, "Export selection as MP3...");
+   mFileMenu->AppendSeparator();
+   mFileMenu->Append(ExportOGGMixID, "Export as OGG...");
+   mFileMenu->Append(ExportOGGSelectionID, "Export selection as OGG...");
    mFileMenu->AppendSeparator();
    mFileMenu->Append(ExportLabelsID, "Export &Labels...");
    mFileMenu->AppendSeparator();
@@ -194,26 +193,17 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
       
       wxString pcmFormat =
        gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");
-      wxString lossyFormat = "MP3";
 
 #ifdef __WXMSW__
       mFileMenu->FindItem(ExportMixID)->SetText(
 		      "Export as " + pcmFormat + "...");
       mFileMenu->FindItem(ExportSelectionID)->SetText(
 		      "Export Selection as " + pcmFormat + "...");
-      mFileMenu->FindItem(ExportLossyMixID)->SetText(
-		      "Export as " + lossyFormat + "...");
-      mFileMenu->FindItem(ExportLossySelectionID)->SetText(
-		      "Export as " + lossyFormat + "...");
 #else     
       mFileMenu->FindItem(ExportMixID)->SetName(
 		      "Export as " + pcmFormat + "...");
       mFileMenu->FindItem(ExportSelectionID)->SetName(
 		      "Export Selection as " + pcmFormat + "...");
-      mFileMenu->FindItem(ExportLossyMixID)->SetName(
-		      "Export as " + lossyFormat + "...");
-      mFileMenu->FindItem(ExportLossySelectionID)->SetName(
-		      "Export as " + lossyFormat + "...");
 #endif
    }
 
@@ -278,8 +268,11 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    mFileMenu->Enable(mFileMenu->FindItem(mExportString), numTracks > 0);
    mFileMenu->Enable(mFileMenu->FindItem(mExportSelectionString),
                      numTracksSelected > 0 && nonZeroRegionSelected);
-   mFileMenu->Enable(mFileMenu->FindItem(mExportLossyString), numTracks > 0);
-   mFileMenu->Enable(mFileMenu->FindItem(mExportSelectionLossyString),
+   mFileMenu->Enable(ExportMP3MixID, numTracks > 0);
+   mFileMenu->Enable(ExportMP3SelectionID,
+                     numTracksSelected > 0 && nonZeroRegionSelected);
+   mFileMenu->Enable(ExportOGGMixID, numTracks > 0);
+   mFileMenu->Enable(ExportOGGSelectionID,
                      numTracksSelected > 0 && nonZeroRegionSelected);
    mFileMenu->Enable(mFileMenu->FindItem("Export Labels..."),
                      numLabelTracks > 0);
@@ -463,16 +456,25 @@ void AudacityProject::OnExportSelection(wxCommandEvent & event)
    ::Export(this, format, true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
-void AudacityProject::OnExportLossyMix(wxCommandEvent & event)
+void AudacityProject::OnExportMP3Mix(wxCommandEvent & event)
 {
    // Until Ogg Vorbis is supported, this is hard-coded to MP3
    ::Export(this, "MP3", false, 0.0, mTracks->GetMaxLen());
 }
 
-void AudacityProject::OnExportLossySelection(wxCommandEvent & event)
+void AudacityProject::OnExportMP3Selection(wxCommandEvent & event)
 {
-   // Until Ogg Vorbis is supported, this is hard-coded to MP3
    ::Export(this, "MP3", true, mViewInfo.sel0, mViewInfo.sel1);
+}
+
+void AudacityProject::OnExportOGGMix(wxCommandEvent & event)
+{
+   ::Export(this, "OGG", false, 0.0, mTracks->GetMaxLen());
+}
+
+void AudacityProject::OnExportOGGSelection(wxCommandEvent & event)
+{
+   ::Export(this, "OGG", true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
 void AudacityProject::OnPreferences(wxCommandEvent & event)

@@ -24,6 +24,7 @@
 #include "Export.h"
 #include "ExportPCM.h"
 #include "ExportMP3.h"
+#include "ExportOGG.h"
 
 #include "Audacity.h"
 #include "DirManager.h"
@@ -48,6 +49,9 @@ bool Export(AudacityProject *project,
        format != "AIFF" && format != "IRCAM" && format != "AU" &&
 #ifdef __WXMAC__
        format != "AIFF with track markers" &&
+#endif
+#ifdef USE_LIBVORBIS
+       format != "OGG" &&
 #endif
        format != "MP3") {
       wxMessageBox(wxString::Format("Sorry, cannot export %s data (yet)."
@@ -261,6 +265,9 @@ bool Export(AudacityProject *project,
                        selectionOnly, t0, t1);
    else if (format == "MP3")
       return ExportMP3(project, stereo, fName,
+                       selectionOnly, t0, t1);
+   else if (format == "OGG")
+      return ExportOGG(project, stereo, fName,
                        selectionOnly, t0, t1);
 
    /* Execution should never reach this point...!
