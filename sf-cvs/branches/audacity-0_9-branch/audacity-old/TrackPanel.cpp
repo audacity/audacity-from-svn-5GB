@@ -1132,6 +1132,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
          ::InsertMenu((MenuHandle)mRateMenu->GetHMenu(), -1);
 #endif
 
+         ReleaseMouse();
          PopupMenu(theMenu, titleRect.x + 1,
                    titleRect.y + titleRect.height + 1);
 
