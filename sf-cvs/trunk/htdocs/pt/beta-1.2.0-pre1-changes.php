@@ -1,6 +1,6 @@
 <h2>O que há de novo desde o Audacity 1.0</h2>
 
-Esta seção lista todas as alterações da versão 1.2 em relação à última versão estável do programa, a versão 1.0.
+Esta seção lista as principais alterações da versão mais recente em relação à última versão estável do programa.
 Usuários das versões beta devem visitar a <a href="<?php print "betanotes.php?$langLinkStr"; ?>">página de versões beta</a> para saber as alterações desde a versão 1.1.3.
 
 
