@@ -31,6 +31,7 @@ bool ExportOGG(AudacityProject *project,
                bool stereo, wxString fName,
                bool selectionOnly, double t0, double t1)
 {
+   int       i;
    double    rate    = project->GetRate();
    wxWindow  *parent = project;
    TrackList *tracks = project->GetTracks();
@@ -136,14 +137,16 @@ bool ExportOGG(AudacityProject *project,
          tr = iter.Next();
       }
       
-      float **vorbis_buffer = vorbis_analysis_buffer(&dsp, SAMPLES_PER_RUN);
+      float **vorbis_buffer = vorbis_analysis_buffer(&dsp, samplesThisRun);
       
-      float *left = (float *)mixer->GetBuffer(0);
-      memcpy(vorbis_buffer[0], left, sizeof(float)*SAMPLES_PER_RUN);
+      sampleType *left = mixer->GetBuffer(0);
+      for( i = 0; i < samplesThisRun; i++ )
+         vorbis_buffer[0][i] = left[i] / 32768.0;
 
       if(stereo) {
-         float *right = (float *)mixer->GetBuffer(1);
-         memcpy(vorbis_buffer[1], right, sizeof(float)*SAMPLES_PER_RUN);
+         sampleType *right = mixer->GetBuffer(1);
+         for( i = 0; i < samplesThisRun; i++ )
+            vorbis_buffer[1][i] = right[i] / 32768.0;
       }
 
       // tell the encoder how many samples we have
