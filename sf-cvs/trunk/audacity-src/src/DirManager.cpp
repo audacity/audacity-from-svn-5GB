@@ -286,9 +286,12 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
    if (oldLoc == "")
       oldLoc = mytemp;
 
+   if (projPath == "")
+      projPath = FROMFILENAME(::wxGetCwd());
+
    this->projPath = projPath;
    this->projName = projName;
-   projFull = projPath + wxFILE_SEP_PATH + projName;
+   this->projFull = projPath + wxFILE_SEP_PATH + projName;
 
    wxString cleanupLoc1=oldLoc;
    wxString cleanupLoc2=projFull;
@@ -368,7 +371,7 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
          count--;
       }
 
-      projFull = oldFull;
+      this->projFull = oldFull;
       this->projPath = oldPath;
       this->projName = oldName;
 
