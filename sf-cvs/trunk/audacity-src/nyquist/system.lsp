@@ -9,7 +9,7 @@
     (setf *default-sf-format* snd-head-wave))
 
 (if (not (boundp '*default-sound-file*))
-    (compute-default-sound-file))
+    (setf *default-sound-file* NIL))
 
 (if (not (boundp '*default-sf-dir*))
     (setf *default-sf-dir* "./"))
