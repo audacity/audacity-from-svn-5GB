@@ -267,21 +267,25 @@ void AudioIO::HandleDeviceChange()
    // input or output, we emulate them (by multiplying this value
    // by all incoming/outgoing samples)
 
+   mMixerOutputVol = Px_GetPCMOutputVolume(mPortMixer);
    mEmulateMixerOutputVol = false;
-   Px_SetPCMOutputVolume(mPortMixer, 1.0);
-   if (Px_GetPCMOutputVolume(mPortMixer) < 0.95)
-      mEmulateMixerOutputVol = true;
    Px_SetPCMOutputVolume(mPortMixer, 0.0);
    if (Px_GetPCMOutputVolume(mPortMixer) > 0.05)
       mEmulateMixerOutputVol = true;
+   Px_SetPCMOutputVolume(mPortMixer, 1.0);
+   if (Px_GetPCMOutputVolume(mPortMixer) < 0.95)
+      mEmulateMixerOutputVol = true;
+   Px_SetPCMOutputVolume(mPortMixer, mMixerOutputVol);
 
+   mMixerInputVol = Px_GetInputVolume(mPortMixer);
    mEmulateMixerInputVol = false;
-   Px_SetInputVolume(mPortMixer, 1.0);
-   if (Px_GetInputVolume(mPortMixer) < 0.95)
-      mEmulateMixerInputVol = true;
    Px_SetInputVolume(mPortMixer, 0.0);
    if (Px_GetInputVolume(mPortMixer) > 0.05)
       mEmulateMixerInputVol = true;
+   Px_SetInputVolume(mPortMixer, 1.0);
+   if (Px_GetInputVolume(mPortMixer) < 0.95)
+      mEmulateMixerInputVol = true;
+   Px_SetInputVolume(mPortMixer, mMixerInputVol);
 
    #if 1
    printf("PortMixer: Output: %s Input: %s\n",

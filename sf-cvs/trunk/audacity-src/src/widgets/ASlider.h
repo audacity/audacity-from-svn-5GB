@@ -43,7 +43,8 @@ class LWSlider
             wxString name,
             const wxPoint &pos,
             const wxSize &size,
-            int style);
+            int style,
+            bool heavyweight=false);
 
    virtual ~LWSlider();
 
