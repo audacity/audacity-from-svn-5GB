@@ -968,30 +968,33 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
    //Go through all of the toolbars (from the bottom up)
    //And delete it if it is type T
 
-   for (size_t i = mToolBarArray.GetCount() - 1; i >= 0; i--) {
-
+   size_t i = mToolBarArray.GetCount();
+   while (i > 0) {
+      i--;   //decrement i right away, because toolbararray is 0-based.
+      
+      //Remove a toolbar if it is of the correct type.
       if (mToolBarArray[i]->GetType() == t) {
-
+         
          mTotalToolBarHeight -= mToolBarArray[i]->GetHeight();
          delete mToolBarArray[i];
          mToolBarArray.RemoveAt(i);
-
+         
          //Now, do any changes specific to different toolbar types
          switch (t) {
          case ControlToolBarID:
-
-          #ifndef __WXMAC__
+            
+#ifndef __WXMAC__
             //If the ControlToolBar is being unloaded from this project, you
             //should change the menu entry of this project
             ((wxMenuItemBase *) mViewMenu->
              FindItem(FloatControlToolBarID))->
                SetName(_("Dock Control Toolbar"));
-          #endif
+#endif
             break;
-
+            
          case EditToolBarID:
             break;
-
+            
          case NoneID:
          default:
             break;
