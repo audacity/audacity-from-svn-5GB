@@ -97,7 +97,7 @@ OBJS = \
 ########################################
 # DEPENDENCIES
 
-DEPS = $(OBJS:$(OBJDIR)/%.o=%)
+DEPS = $(OBJS:$(OBJDIR)/%.o=%.cpp)
 
 ########################################
 
@@ -106,16 +106,12 @@ all: dirs ../audacity
 ../audacity: $(OBJS) $(EXTRAOBJS) Makefile
 	$(CCC) -o ../audacity $(OBJS) $(EXTRAOBJS) $(LIBS)
 
-#
 # You can optionally "make dep" to make dependencies.
-# voodoo magic in the form of a perl script turns
-# Foo.o: Foo.cpp into obj/Foo.o: Foo.cpp
-#
-# I'm not brave enough to try and translate that regex to sed
+# The sed script turns "Foo.o:" into "obj/Foo.o:".
 
 dep:
-	$(CCC) -M $(CXXFLAGS) $(CPPFLAGS) $(DEPS) | \
-		perl -pe 's/^(.*)\.o: ([^\/]*\/)??([^ \/]+\.(\w+))/$(OBJDIR)\/$$2$$1.$$4.o: $$2$$3/;' \
+	$(CCC) -MM $(CXXFLAGS) $(CPPFLAGS) $(DEPS) | \
+		sed -e 's/^\(.*\): /$(OBJDIR)\/\1: /' \
 		> .depend
 
 clean:
