@@ -46,53 +46,50 @@ PrefsPanel(parent)
    topSizer = new wxStaticBoxSizer(
       new wxStaticBox(this, -1, _("Directories")), wxVERTICAL );
 
-   {
-      wxStaticBoxSizer *tempDirSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("Temp. Directory")), wxVERTICAL );
+   wxStaticBoxSizer *tempDirSizer = new wxStaticBoxSizer(
+      new wxStaticBox(this, -1, _("Temp. Directory")), wxVERTICAL );
 
-      wxFlexGridSizer *tempDirGridSizer = new wxFlexGridSizer( 0, 3, 0, 0 );
+   wxFlexGridSizer *tempDirGridSizer = new wxFlexGridSizer( 0, 3, 0, 0 );
 
-      mTempDirLabel = new wxStaticText(
-         this, -1, _("Location:"), wxDefaultPosition,
-         wxDefaultSize, wxALIGN_RIGHT );
+   mTempDirLabel = new wxStaticText(
+      this, -1, _("Location:"), wxDefaultPosition,
+      wxDefaultSize, wxALIGN_RIGHT );
 
-      /* Order is important here: mFreeSpace must be allocated before
-         mTempDirText, so that the handler doesn't try to operate on
-         mFreeSpace before it exists! */
-      mFreeSpace = new wxStaticText(
-         this, -1, FormatSize(GetFreeDiskSpace((char *) (const char *) mTempDir)),
-         wxDefaultPosition, wxDefaultSize, 0 );
+   /* Order is important here: mFreeSpace must be allocated before
+      mTempDirText, so that the handler doesn't try to operate on
+      mFreeSpace before it exists! */
+   mFreeSpace = new wxStaticText(
+      this, -1, FormatSize(GetFreeDiskSpace((char *) (const char *) mTempDir)),
+      wxDefaultPosition, wxDefaultSize, 0 );
 
-      mTempDirText = NULL;
-      mTempDirText = new wxTextCtrl(
-         this, TempDirID, mTempDir,
-         wxDefaultPosition, wxSize(160, -1), 0 );
+   mTempDirText = NULL;
+   mTempDirText = new wxTextCtrl(
+      this, TempDirID, mTempDir,
+      wxDefaultPosition, wxSize(160, -1), 0 );
 
-      mFreeSpaceLabel = new wxStaticText(
-         this, -1, _("Free Space:"),
-         wxDefaultPosition, wxDefaultSize, 0 );
+   mFreeSpaceLabel = new wxStaticText(
+      this, -1, _("Free Space:"),
+      wxDefaultPosition, wxDefaultSize, 0 );
 
-      wxButton *chooseButton =
-         new wxButton(this, ChooseButtonID, _("Choose..."));
-        
-      tempDirGridSizer->Add( mTempDirLabel, 0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
-      tempDirGridSizer->Add( mTempDirText, 1, wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
-      tempDirGridSizer->Add( chooseButton, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2 );
+   wxButton *chooseButton =
+      new wxButton(this, ChooseButtonID, _("Choose..."));
+     
+   tempDirGridSizer->Add( mTempDirLabel, 0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
+   tempDirGridSizer->Add( mTempDirText, 1, wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
+   tempDirGridSizer->Add( chooseButton, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2 );
 
-      tempDirGridSizer->Add( mFreeSpaceLabel, 0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
-      tempDirGridSizer->Add( mFreeSpace, 0, wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
-      tempDirGridSizer->AddGrowableCol(1);
-      tempDirSizer->Add( tempDirGridSizer, 0, wxGROW|wxALL, 2 );
+   tempDirGridSizer->Add( mFreeSpaceLabel, 0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
+   tempDirGridSizer->Add( mFreeSpace, 0, wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
+   tempDirGridSizer->AddGrowableCol(1);
+   tempDirSizer->Add( tempDirGridSizer, 0, wxGROW|wxALL, 2 );
 
-      topSizer->Add( tempDirSizer, 0, wxGROW|wxALL, 5 );
-   }
+   topSizer->Add( tempDirSizer, 0, wxGROW|wxALL, 5 );
 
    SetAutoLayout(true);
    SetSizer(topSizer);
 
    topSizer->Fit(this);
    topSizer->SetSizeHints(this);
-
 }
 
 wxString DirectoriesPrefs::FormatSize(wxLongLong size)
@@ -142,9 +139,10 @@ void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent &event)
    static wxString tempDir;
    static char tmp[200];
 
-   if (mTempDirText)
-      tempDir = mTempDirText->GetValue();
-   else return;
+   if (!mTempDirText)
+      return;
+
+   tempDir = mTempDirText->GetValue();
 
 #ifndef __WXMAC__  // the mac GetFreeDiskSpace routine does this automatically
    /* Try to be smart: if the directory doesn't exist, go up the
