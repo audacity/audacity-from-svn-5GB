@@ -284,13 +284,11 @@ Changes in 1.2.0-pre4:
     changes if you close the project or exit while recording.
 
   * Mac OS X: Supports Playthrough (listen to what you're recording
-    while recording it)
+    while recording it) if your hardware device supports it.
 
   * Mac OS X: Audacity is now a package (you can right-click on
     Audacity.app and select 'Show Package Contents').  Launch time
     has improved significantly.
-
-  * Mac OS X: Supports playthrough if your hardware device supports it.
 
   * MS Windows: Fixed problem that caused Windows XP to use 
     the short name of a file ("TESTFI~1.AUP"), which led to 
