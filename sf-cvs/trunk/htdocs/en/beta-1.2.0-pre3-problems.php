@@ -1,7 +1,7 @@
 <h2>Known Problems</h2>
 
 <p>
-The following are known bugs in Audacity 1.2.2:
+The following are known bugs in Audacity 1.2.3:
 </p>
 
 <ul>
@@ -9,8 +9,9 @@ The following are known bugs in Audacity 1.2.2:
     or edited.
     </p></li>
   <li><p>Linux:  Recording in full duplex (play existing tracks while
-    recording) on some systems causes mono recordings to sound
-    slowed-down.</p></li>
+    recording) on some systems causes mono recordings to sound distorted.  To
+    work around this problem, set Audacity to record in stereo.
+    </p></li>
   <li><p>MacOS X: Audacity cannot work with files or folders that
     are contained inside folders with international characters
     (accent marks, etc.) in their names.  Note that files with
