@@ -201,11 +201,10 @@ TrackPanel::~TrackPanel()
    delete mZoomInCursor;
    delete mZoomOutCursor;
 
-   // These are all deleted by their parent menu
-   //delete mChannelMenu;
-   //delete mRateMenu;
+   // Note that the submenus (mChannelMenu and mRateMenu) are deleted by their parent
    delete mWaveTrackMenu;
    delete mNoteTrackMenu;
+   delete mLabelTrackMenu;
 }
 
 void TrackPanel::SelectNone()
