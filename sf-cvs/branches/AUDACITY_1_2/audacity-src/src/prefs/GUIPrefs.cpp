@@ -55,7 +55,7 @@ PrefsPanel(parent)
 
    gPrefs->Read("/GUI/QuitOnClose", &quitOnClose, defaultQuitOnClose);
    gPrefs->Read("/GUI/AdjustSelectionEdges", &adjustSelectionEdges, true);
-   gPrefs->Read("/GUI/ErgonomicTransportButtons", &ergonomicTransportButtons, true);
+   gPrefs->Read("/GUI/ErgonomicTransportButtons", &ergonomicTransportButtons, false);
    gPrefs->Read("/GUI/EnvdBRange", &envdBRange, ENV_DB_RANGE);
 
    topSizer = new wxBoxSizer( wxVERTICAL );
@@ -105,7 +105,7 @@ PrefsPanel(parent)
    // Enable/disable ergonomic order of transport buttons
    mErgonomicTransportButtons =
       new wxCheckBox(this, -1,
-                     _("Enable ergonomic order of transport buttons"));
+                     _("Enable ergonomic order of Audio I/O buttons"));
    mErgonomicTransportButtons->SetValue(ergonomicTransportButtons);
    topSizer->Add(mErgonomicTransportButtons, 0, wxGROW|wxALL, 2);
 
