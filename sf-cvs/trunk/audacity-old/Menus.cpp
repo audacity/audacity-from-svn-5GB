@@ -63,8 +63,8 @@ void AudacityProject::CreateMenuBar()
    mExportSelectionString.Printf("Export &Selection as %s...", pcmFormat);
    wxString lossyFormat =
        "MP3";
-   mExportLossyString.Printf("&Export as %s...", lossyFormat);
-   mExportSelectionLossyString.Printf("Export &Selection as %s...", lossyFormat);
+   mExportLossyString.Printf("Export as %s...", lossyFormat);
+   mExportSelectionLossyString.Printf("Export Selection as %s...", lossyFormat);
 
    mFileMenu = new wxMenu();
    mFileMenu->Append(NewID, "&New...\tCtrl+N");
@@ -195,8 +195,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
       mExportSelectionString.Printf("Export &Selection as %s...", pcmFormat);
       wxString lossyFormat =
           "MP3";
-      mExportLossyString.Printf("&Export as %s...", lossyFormat);
-      mExportSelectionLossyString.Printf("Export &Selection as %s...", lossyFormat);
+      mExportLossyString.Printf("Export as %s...", lossyFormat);
+      mExportSelectionLossyString.Printf("Export Selection as %s...", lossyFormat);
    
       wxMenuItem *item = mFileMenu->Remove(7);
       item->SetName(mExportString);
