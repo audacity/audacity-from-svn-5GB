@@ -86,7 +86,22 @@ template < class CLIPPEE, class CLIPVAL >
       clippee = val;
 }
 
-int iformat = 1;
+enum {
+   SELECTION_FORMAT_ZERO,
+   SELECTION_FORMAT_RULER_MIN_SEC,
+   SELECTION_FORMAT_RULER_SEC,
+   SELECTION_FORMAT_SAMPLES,
+   SELECTION_FORMAT_MIN_SEC,
+   SELECTION_FORMAT_SEC,
+   SELECTION_FORMAT_MIN_SEC_SAMPLES,
+   SELECTION_FORMAT_SEC_SAMPLES,
+   SELECTION_FORMAT_CDDA_SECTORS_BYTES
+};
+
+// rate is hardwired here to 44100, it really needs to read in the
+// default project rate
+double rate = 44100.0;
+int iformat = SELECTION_FORMAT_RULER_MIN_SEC;
 
 enum {
    TrackPanelFirstID = 2000,
@@ -115,14 +130,14 @@ enum {
    On24BitID,
    OnFloatID,
 
-   OnFormat1ID,
-   OnFormat2ID,
-   OnFormat3ID,
-   OnFormat4ID,
-   OnFormat5ID,
-   OnFormat6ID,
-   OnFormat7ID,
-   OnFormat8ID,
+   OnFormatRulerMinSecID,
+   OnFormatRulerSecID,
+   OnFormatSamplesID,
+   OnFormatMinSecID,
+   OnFormatSecID,
+   OnFormatMinSecSamplesID,
+   OnFormatSecSamplesID,
+   OnFormatCDDASectorsBytesID,
 
    OnWaveformID,
    OnWaveformDBID,
@@ -146,7 +161,7 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU_RANGE(OnWaveformID, OnPitchID, TrackPanel::OnSetDisplay)
     EVT_MENU_RANGE(OnRate8ID, OnRate48ID, TrackPanel::OnRateChange)
     EVT_MENU_RANGE(On16BitID, OnFloatID, TrackPanel::OnFormatChange)
-    EVT_MENU_RANGE(OnFormat1ID, OnFormat8ID, TrackPanel::OnSelectionChange)
+    EVT_MENU_RANGE(OnFormatRulerMinSecID, OnFormatCDDASectorsBytesID, TrackPanel::OnSelectionChange)
     EVT_MENU(OnRateOtherID, TrackPanel::OnRateOther)
     EVT_MENU(OnSplitStereoID, TrackPanel::OnSplitStereo)
     EVT_MENU(OnMergeStereoID, TrackPanel::OnMergeStereo)
@@ -201,14 +216,14 @@ mAutoScrolling(false)
    mFormatMenu->Append(OnFloatID, GetSampleFormatStr(floatSample));
 
    mSelectionMenu = new wxMenu();
-   mSelectionMenu->Append(OnFormat1ID, "min:sec (from ruler)");
-   mSelectionMenu->Append(OnFormat2ID, "sec (from ruler)");
-   mSelectionMenu->Append(OnFormat3ID, "samples (44100 hardwired)");
-   mSelectionMenu->Append(OnFormat4ID, "min:sec (44100 hardwired)");
-   mSelectionMenu->Append(OnFormat5ID, "sec (44100 hardwired)");
-   mSelectionMenu->Append(OnFormat6ID, "min:sec+samples (44100 hardwired)");
-   mSelectionMenu->Append(OnFormat7ID, "sec+samples (44100 hardwired)");
-   mSelectionMenu->Append(OnFormat8ID, "cdda sectors+bytes (44100 only)");
+   mSelectionMenu->Append(OnFormatRulerMinSecID, "min:sec (from ruler)");
+   mSelectionMenu->Append(OnFormatRulerSecID, "sec (from ruler)");
+   mSelectionMenu->Append(OnFormatSamplesID, "samples");
+   mSelectionMenu->Append(OnFormatMinSecID, "min:sec");
+   mSelectionMenu->Append(OnFormatSecID, "sec");
+   mSelectionMenu->Append(OnFormatMinSecSamplesID, "min:sec+samples");
+   mSelectionMenu->Append(OnFormatSecSamplesID, "sec+samples");
+   mSelectionMenu->Append(OnFormatCDDASectorsBytesID, "cdda sectors+bytes (44100 only)");
 
    mWaveTrackMenu = new wxMenu();
    mWaveTrackMenu->Append(OnSetNameID, _("Name..."));
@@ -2670,29 +2685,29 @@ void TrackPanel::OnSelectionChange(wxEvent & event)
 {
    int id = event.GetId();
    switch (id) {
-   case OnFormat1ID:
-      iformat = 1;
+   case OnFormatRulerMinSecID:
+      iformat = SELECTION_FORMAT_RULER_MIN_SEC;
       break;
-   case OnFormat2ID:
-      iformat = 2;
+   case OnFormatRulerSecID:
+      iformat = SELECTION_FORMAT_RULER_SEC;
       break;
-   case OnFormat3ID:
-      iformat = 3;
+   case OnFormatSamplesID:
+      iformat = SELECTION_FORMAT_SAMPLES;
       break;
-   case OnFormat4ID:
-      iformat = 4;
+   case OnFormatMinSecID:
+      iformat = SELECTION_FORMAT_MIN_SEC;
       break;
-   case OnFormat5ID:
-      iformat = 5;
+   case OnFormatSecID:
+      iformat = SELECTION_FORMAT_SEC;
       break;
-   case OnFormat6ID:
-      iformat = 6;
+   case OnFormatMinSecSamplesID:
+      iformat = SELECTION_FORMAT_MIN_SEC_SAMPLES;
       break;
-   case OnFormat7ID:
-      iformat = 7;
+   case OnFormatSecSamplesID:
+      iformat = SELECTION_FORMAT_SEC_SAMPLES;
       break;
-   case OnFormat8ID:
-      iformat = 8;
+   case OnFormatCDDASectorsBytesID:
+      iformat = SELECTION_FORMAT_CDDA_SECTORS_BYTES;
       break;
    }
    DisplaySelection();
@@ -2756,6 +2771,8 @@ void TrackPanel::OnRateChange(wxEvent & event)
    mPopupMenuTarget = NULL;
    MakeParentRedrawScrollbars();
 
+   rate = double(gRates[id - OnRate8ID]);
+
    Refresh(false);
 }
 
@@ -2791,6 +2808,8 @@ void TrackPanel::OnRateOther()
          wxMessageBox(_("Invalid rate."));
 
    } while (1);
+
+   rate = theRate;
 
    SetRate(mPopupMenuTarget, theRate);
 
@@ -2909,28 +2928,23 @@ void TrackPanel::DisplaySelection()
    float end = mViewInfo->sel1;
    float length = end-start;
 
-   //Do more complex stuff here to support user-based configuration
-   //of timescales (m/s/ms/samples/etc.).
-
    // use interger iformat to control selection output format
    //
    // formats that allow selection to be smoothly adjustable
-   //   iformat = 1 --> use min:sec.xxxxxx
-   //   iformat = 2 --> use sec.xxxxxx
+   //   iformat = 1 = SELECTION_FORMAT_RULER_MIN_SEC --> use min:sec.xxxxxx
+   //   iformat = 2 = SELECTION_FORMAT_RULER_SEC --> use sec.xxxxxx
    // formats that adjust only in increments of single sample duration
-   //   iformat = 3 --> use samples
-   //   iformat = 4 --> use min:sec.xxxxxx
-   //   iformat = 5 --> use sec.xxxxxx
-   //   iformat = 6 --> use min:sec+samples
-   //   iformat = 7 --> use sec+samples
-   //   iformat = 8 --> use cdda sectors+bytes (2352 byte blocks)
+   //   iformat = 3 = SELECTION_FORMAT_SAMPLES --> use samples
+   //   iformat = 4 = SELECTION_FORMAT_MIN_SEC --> use min:sec.xxxxxx
+   //   iformat = 5 = SELECTION_FORMAT_SEC --> use sec.xxxxxx
+   //   iformat = 6 = SELECTION_FORMAT_MIN_SEC_SAMPLES --> use min:sec+samples
+   //   iformat = 7 = SELECTION_FORMAT_SEC_SAMPLES --> use sec+samples
+   //   iformat = 8 = SELECTION_FORMAT_CDDA_SECTORS_BYTES --> use cdda sectors+bytes (2352 byte blocks)
    //                   (only applicable for projects with rate = 44100)
 
    // iformat is a global variable defined near the top of
    // TrackPanel.cpp to a default value of 1.  When event handler
    // TrackPanel::OnSelectionChange is called, iformat is changed.
-   // The following line was previously used when iformat was hardwired.
-// int iformat = 4;
 
    //
    // CAUTION: iformat >= 3 are a little touchy as far as
@@ -2977,244 +2991,294 @@ void TrackPanel::DisplaySelection()
    // Since everything I tried did not work, it is hardwired to 44100.
    // Help - someone bail me out on this!!
 // double rate = ???? ;
+// The following line does not work:
+// double rate = ((WaveTrack *)mPopupMenuTarget)->GetRate();
    // When this gets fixed, remove "(44100 hardwired)" from Set Selection Format
    // menu items.  The menu item cdda sectors+bytes will always be for 44100 only.
-   double rate = 44100.0;
+// double rate = 44100.0;
+   // For now, rate is set as a global double near the top of TrackPanel.cpp
+   // It is initialized there to 44100, which is the default project rate,
+   // unless it is changed in preferences.  Logic added to OnRateChange
+   // and OnRateOther resets this rate value.
 
-   // Variables needed for the various iformat values.
-   // (general form: i1xxx is an integer for format1, f1xxx is a float for format 1)
-   //
-   // Probably best to leave them all together prior to iformat if-then-else test
-   // rather than trying to calculate just the ones needed since some depend on
-   // variables from other iformat variables.  Four depends on three for example.
+   // variables used
+   int imin1, imin2, imintot;
+   int isec1, isec2, isectot;
+   int isamp1, isamp2, isamptot;
+   int isector1, isector2, isectortot;
+   int ibyte1, ibyte2, ibytetot;
+   int imin1pos, isec1pos, isamp1pos, isector1pos, ibyte1pos;
+   long int isamples1, isamples2, isamplestot, isamples1pos;
+   float fsec1, fsec2, fsectot;
+   double dsec1, dsec2, dsectot, dsec1pos;
 
-   // iformat = 1 --> use min:sec.xxxxxx
-   int i1min1 = int(start/60);
-   int i1min2 = int(end/60);
-   int i1mintot = int(length/60);
-   float f1sec1 = start - float(i1min1*60);
-   float f1sec2 = end - float(i1min2*60);
-   float f1sectot = length - float(i1mintot*60);
-
-   // iformat = 2 --> use sec.xxxxxx
-   float f2sec1 = start;
-   float f2sec2 = end;
-   float f2sectot = length;
-
-   // iformat = 3 --> use samples (in single sample time increments)
-   long int i3samp1 = (long)rint(rate*double(start)) + 1; 
-   long int i3samp2 = (long)rint(rate*double(end));
-   long int i3samptot = i3samp2 - i3samp1 + 1;
-   // for cursor position do not round
-   long int i3samp1pos = (long int)(rate*double(start)) + 1;
-
-   // iformat = 4 --> use min:sec.xxxxxx (in single sample time increments)
-   int i4min1 = int((double(i3samp1-1)/rate)/60);
-   int i4min2 = int((double(i3samp2)/rate)/60);
-   int i4mintot = int((double(i3samptot)/rate)/60);
-   double f4sec1 = double(i3samp1-1)/rate - double(i4min1*60);
-   double f4sec2 = double(i3samp2)/rate - double(i4min2*60);
-   double f4sectot = double(i3samptot)/rate - double(i4mintot*60);
-   int i4min1pos = int(i3samp1pos/rate/60);
-   double f4sec1pos = double(i3samp1pos)/rate - double(i4min1pos)*60;
-
-   // iformat = 5 --> use sec.xxxxxx (in sample time increments)
-   double f5sec1 = double(i3samp1-1)/rate;
-   double f5sec2 = double(i3samp2)/rate;
-   double f5sectot = double(i3samptot)/rate;
-   // for position do not round
-   double f5sec1pos = double(i3samp1pos)/rate;
-
-   // iformat = 6 --> use min:sec+samples (in single sample time increments)
-   int i6min1 = int((double(i3samp1)/rate)/60);
-   int i6min2 = int((double(i3samp2)/rate)/60);
-   int i6mintot = int((double(i3samptot)/rate)/60);
-   int i6sec1 = int(double(i3samp1)/rate - double(i6min1*60));
-   int i6sec2 = int(double(i3samp2)/rate - double(i6min2*60));
-   int i6sectot = int(double(i3samptot)/rate - double(i6mintot*60));
-   int i6samp1 = int(i3samp1-(long int)(i6min1*60*rint(rate))-(long int)(i6sec1*rint(rate)));
-   int i6samp2 = int(i3samp2-(long int)(i6min2*60*rint(rate))-(long int)(i6sec2*rint(rate)));
-   int i6samptot = int(i3samptot-(long int)(i6mintot*60*rint(rate))-(long int)(i6sectot*rint(rate)));
-   // for cursor position do not round
-   int i6min1pos = int((double(int(rate*double(start))+1)/rate)/60);
-   int i6sec1pos = int(double(int(rate*double(start))+1)/rate - double(i6min1pos*60));
-   int i6samp1pos = int(i3samp1pos-(long int)(i6min1pos*60*rint(rate))-(long int)(i6sec1pos*rint(rate)));
-
-   // iformat = 7 --> use sec+samples (in single sample time increments)
-   int i7sec1 = int(double(i3samp1)/rate);
-   int i7sec2 = int(double(i3samp2)/rate);
-   int i7sectot = int(double(i3samptot)/rate);
-   int i7samp1 = int(i3samp1-(long int)(i7sec1*rint(rate)));
-   int i7samp2 = int(i3samp2-(long int)(i7sec2*rint(rate)));
-   int i7samptot = int(i3samptot-(long int)(i7sectot*rint(rate)));
-   // for cursor position do not round
-   int i7sec1pos = int(double(int(rate*double(start))+1)/rate);
-   int i7samp1pos = int(i3samp1pos-(long int)(i7sec1*rint(rate)));
-
-   // iformat = 8 --> use cdda sectors + bytes (2352 byte blocks)
-   //
-   // Audio CDs use 2352 byte blocks as sector size.  At 16 bit stereo each sample = 4 bytes
-   // and each sector = 2352 / 4 = 588 samples.  As a sanity check, a 74 minute audio cd
-   // contains 333000 sectors:
-   // 
-   // 588 samples   333000 sectors       1 sec        1 min
-   // ----------- * -------------- * ------------- * ------ = 74.0 minutes per cd (Checks out)
-   //   1 sector         1 cd        44100 samples   60 sec
-   //
-   int i8sector1 = int(double(i3samp1)/588);
-   int i8sector2 = int(double(i3samp2)/588);
-   int i8sectortot = int(double(i3samptot)/588);
-   int i8byte1 = int(i3samp1-(long int)(i8sector1*588))*4;
-   if((i8byte1 == 0) && (i8sector1 > 0))
-      {
-         i8byte1 = 2349;
-         i8sector1 = i8sector1 - 1;
-      }
-   else
-      {
-         i8byte1 = i8byte1 - 3;
-      }
-   int i8byte2 = int(i3samp2-(long int)(i8sector2*588))*4;
-   int i8bytetot = int(i3samptot-(long int)(i8sectortot*588))*4;
-   // for cursor position do not round
-   int i8sector1pos = int(double(int(rate*double(start))+1)/588);
-   int i8byte1pos = int(i3samp1pos-(i8sector1pos*588))*4;
-
-   //Display a message about the selection in the status message window
-   if(start == end)
-      if(iformat == 1)
+   switch (iformat) {
+   case SELECTION_FORMAT_RULER_MIN_SEC:
+      // use min:sec.xxxxxx (from ruler)
+      imin1 = int(start/60);
+      imin2 = int(end/60);
+      imintot = int(length/60);
+      fsec1 = start - float(imin1*60);
+      fsec2 = end - float(imin2*60);
+      fsectot = length - float(imintot*60);
+      // display a message about the selection in the status message window
+      if(start == end)
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %i:%09.6f min:sec"), i1min1, f1sec1),
-                                        1);
-         }
-      else if(iformat == 2)
-         {
-           mListener->
-                TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %lf sec"), f2sec1),
-                                        1);
-         }
-      else if(iformat == 3)
-         {
-           mListener->
-                TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %li samples"), i3samp1pos),
-                                        1);
-         }
-      else if(iformat == 4)
-         {
-           mListener->
-                TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %i:%09.6lf min:sec"), i4min1pos, f4sec1pos),
-                                        1);
-         }
-      else if(iformat == 5)
-         {
-           mListener->
-                TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %lf sec"), f5sec1pos),
-                                        1);
-         }
-      else if(iformat == 6)
-         {
-           mListener->
-                TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %i:%02i+%i min:sec+samples"), i6min1pos, i6sec1pos, i6samp1pos),
-                                        1);
-         }
-      else if(iformat == 7)
-         {
-           mListener->
-                TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %i+%i sec+samples"), i7sec1pos, i7samp1pos),
-                                        1);
-         }
-      else if(iformat == 8)
-         {
-           mListener->
-                TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)"), i8sector1pos, i8byte1pos),
+                                        Format(_("Cursor: %i:%09.6f min:sec"), imin1, fsec1),
                                         1);
          }
       else
-         {
-           mListener->
-                TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: invalid iformat value (%i) in TrackPanel.cpp"),iformat),
-                                        1);
-         }
-   else
-      if(iformat == 1)
          {
             mListener->
                TP_DisplayStatusMessage(wxString::
                                        Format(_("Selection: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)"),
-                        i1min1, f1sec1, i1min2, f1sec2, i1mintot, f1sectot),
+                        imin1, fsec1, imin2, fsec2, imintot, fsectot),
                                        1);
          }
-      else if(iformat == 2)
+      break; 
+   case SELECTION_FORMAT_RULER_SEC:
+      // use sec.xxxxxx (from ruler)
+      fsec1 = start;
+      fsec2 = end;
+      fsectot = length;
+      // display a message about the selection in the status message window
+      if(start == end)
          {
-            mListener->
-               TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %lf - %lf (%lf sec)"),
-                                              f2sec1, f2sec2, f2sectot),
-                                       1);
-         }
-      else if(iformat == 3)
-         {
-            mListener->
-               TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %li - %li (%li samples)"),
-                                              i3samp1, i3samp2, i3samptot),
-                                       1);
-         }
-      else if(iformat == 4)
-         {
-            mListener->
-               TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)"),
-                        i4min1, f4sec1, i4min2, f4sec2, i4mintot, f4sectot),
-                                       1);
-         }
-      else if(iformat == 5)
-         {
-            mListener->
-               TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %lf - %lf (%lf sec)"),
-                                              f5sec1, f5sec2, f5sectot),
-                                       1);
-         }
-      else if(iformat == 6)
-         {
-            mListener->
-               TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sec+samples)"),
-                                         i6min1, i6sec1, i6samp1, i6min2, i6sec2, i6samp2, i6mintot, i6sectot, i6samptot),
-                                       1);
-         }
-      else if(iformat == 7)
-         {
-            mListener->
-               TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %i+%i - %i+%i (%i+%i sec+samples)"),
-                                         i7sec1, i7samp1, i7sec2, i7samp2, i7sectot, i7samptot),
-                                       1);
-         }
-      else if(iformat == 8)
-         {
-            mListener->
-               TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)"),
-                                         i8sector1, i8byte1, i8sector2, i8byte2, i8sectortot, i8bytetot),
-                                       1);
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: %lf sec"), fsec1),
+                                        1);
          }
       else
          {
             mListener->
-                TP_DisplayStatusMessage(wxString::
-                          Format(_("Selection: invalid iformat value (%i) in TrackPanel.cpp"),iformat),
-                             1);
+               TP_DisplayStatusMessage(wxString::
+                                       Format(_("Selection: %lf - %lf (%lf sec)"),
+                                              fsec1, fsec2, fsectot),
+                                       1);
          }
+      break;
+   case SELECTION_FORMAT_SAMPLES:
+      // use samples (in single sample time increments)
+      isamples1 = (long)rint(rate*double(start)) + 1; 
+      isamples2 = (long)rint(rate*double(end));
+      isamplestot = isamples2 - isamples1 + 1;
+      // for cursor position do not round
+      isamples1pos = (long int)(rate*double(start)) + 1;
+      // display a message about the selection in the status message window
+      if(start == end)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: %li samples"), isamples1pos),
+                                        1);
+         }
+      else
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+                                       Format(_("Selection: %li - %li (%li samples)"),
+                                              isamples1, isamples2, isamplestot),
+                                       1);
+         }
+      break;
+   case SELECTION_FORMAT_MIN_SEC:
+      // use min:sec.xxxxxx (in single sample time increments)
+      isamples1 = (long)rint(rate*double(start)) + 1; 
+      isamples2 = (long)rint(rate*double(end));
+      isamplestot = isamples2 - isamples1 + 1;
+      // for cursor position do not round
+      isamples1pos = (long int)(rate*double(start)) + 1;
+      // based on samples get min and sec
+      imin1 = int((double(isamples1-1)/rate)/60);
+      imin2 = int((double(isamples2)/rate)/60);
+      imintot = int((double(isamplestot)/rate)/60);
+      dsec1 = double(isamples1-1)/rate - double(imin1*60);
+      dsec2 = double(isamples2)/rate - double(imin2*60);
+      dsectot = double(isamplestot)/rate - double(imintot*60);
+      imin1pos = int(isamples1pos/rate/60);
+      dsec1pos = double(isamples1pos)/rate - double(imin1pos)*60;
+      // display a message about the selection in the status message window
+      if(start == end)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: %i:%09.6lf min:sec"), imin1pos, dsec1pos),
+                                        1);
+         }
+      else
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+                                       Format(_("Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)"),
+                        imin1, dsec1, imin2, dsec2, imintot, dsectot),
+                                       1);
+         }
+      break;
+   case SELECTION_FORMAT_SEC:
+      // use sec.xxxxxx (in sample time increments)
+      isamples1 = (long)rint(rate*double(start)) + 1; 
+      isamples2 = (long)rint(rate*double(end));
+      isamplestot = isamples2 - isamples1 + 1;
+      // for cursor position do not round
+      isamples1pos = (long int)(rate*double(start)) + 1;
+      // based on samples get sec
+      dsec1 = double(isamples1-1)/rate;
+      dsec2 = double(isamples2)/rate;
+      dsectot = double(isamplestot)/rate;
+      // for position do not round
+      dsec1pos = double(isamples1pos)/rate;
+      // display a message about the selection in the status message window
+      if(start == end)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: %lf sec"), dsec1pos),
+                                        1);
+         }
+      else
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+                                       Format(_("Selection: %lf - %lf (%lf sec)"),
+                                              dsec1, dsec2, dsectot),
+                                       1);
+         }
+      break;
+   case SELECTION_FORMAT_MIN_SEC_SAMPLES:
+      // use min:sec+samples (in single sample time increments)
+      isamples1 = (long)rint(rate*double(start)) + 1; 
+      isamples2 = (long)rint(rate*double(end));
+      isamplestot = isamples2 - isamples1 + 1;
+      // for cursor position do not round
+      isamples1pos = (long int)(rate*double(start)) + 1;
+      // based on samples get min sec samp
+      imin1 = int((double(isamples1)/rate)/60);
+      imin2 = int((double(isamples2)/rate)/60);
+      imintot = int((double(isamplestot)/rate)/60);
+      isec1 = int(double(isamples1)/rate - double(imin1*60));
+      isec2 = int(double(isamples2)/rate - double(imin2*60));
+      isectot = int(double(isamplestot)/rate - double(imintot*60));
+      isamp1 = int(isamples1-(long int)(imin1*60*rint(rate))-(long int)(isec1*rint(rate)));
+      isamp2 = int(isamples2-(long int)(imin2*60*rint(rate))-(long int)(isec2*rint(rate)));
+      isamptot = int(isamplestot-(long int)(imintot*60*rint(rate))-(long int)(isectot*rint(rate)));
+      // for cursor position do not round
+      imin1pos = int((double(int(rate*double(start))+1)/rate)/60);
+      isec1pos = int(double(int(rate*double(start))+1)/rate - double(imin1pos*60));
+      isamp1pos = int(isamples1pos-(long int)(imin1pos*60*rint(rate))-(long int)(isec1pos*rint(rate)));
+      // display a message about the selection in the status message window
+      if(start == end)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: %i:%02i+%i min:sec+samples"), imin1pos, isec1pos, isamp1pos),
+                                        1);
+         }
+      else
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+                                       Format(_("Selection: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sec+samples)"),
+                                         imin1, isec1, isamp1, imin2, isec2, isamp2, imintot, isectot, isamptot),
+                                       1);
+         }
+      break;
+   case SELECTION_FORMAT_SEC_SAMPLES:
+      // use sec+samples (in single sample time increments)
+      isamples1 = (long)rint(rate*double(start)) + 1; 
+      isamples2 = (long)rint(rate*double(end));
+      isamplestot = isamples2 - isamples1 + 1;
+      // for cursor position do not round
+      isamples1pos = (long int)(rate*double(start)) + 1;
+      // based on samples get sec samp
+      isec1 = int(double(isamples1)/rate);
+      isec2 = int(double(isamples2)/rate);
+      isectot = int(double(isamplestot)/rate);
+      isamp1 = int(isamples1-(long int)(isec1*rint(rate)));
+      isamp2 = int(isamples2-(long int)(isec2*rint(rate)));
+      isamptot = int(isamplestot-(long int)(isectot*rint(rate)));
+      // for cursor position do not round
+      isec1pos = int(double(int(rate*double(start))+1)/rate);
+      isamp1pos = int(isamples1pos-(long int)(isec1*rint(rate)));
+      // display a message about the selection in the status message window
+      if(start == end)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: %i+%i sec+samples"), isec1pos, isamp1pos),
+                                        1);
+         }
+      else
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+                                       Format(_("Selection: %i+%i - %i+%i (%i+%i sec+samples)"),
+                                         isec1, isamp1, isec2, isamp2, isectot, isamptot),
+                                       1);
+         }
+      break;
+   case SELECTION_FORMAT_CDDA_SECTORS_BYTES:
+      // use cdda sectors + bytes (2352 byte blocks)
+      isamples1 = (long)rint(rate*double(start)) + 1; 
+      isamples2 = (long)rint(rate*double(end));
+      isamplestot = isamples2 - isamples1 + 1;
+      // for cursor position do not round
+      isamples1pos = (long int)(rate*double(start)) + 1;
+      // based on samples get cdda sectors bytes
+      //
+      // Audio CDs use 2352 byte blocks as sector size.  At 16 bit stereo each sample = 4 bytes
+      // and each sector = 2352 / 4 = 588 samples.  As a sanity check, a 74 minute audio cd
+      // contains 333000 sectors:
+      // 
+      // 588 samples   333000 sectors       1 sec        1 min
+      // ----------- * -------------- * ------------- * ------ = 74.0 minutes per cd (Checks out)
+      //   1 sector         1 cd        44100 samples   60 sec
+      //
+      isector1 = int(double(isamples1)/588);
+      isector2 = int(double(isamples2)/588);
+      isectortot = int(double(isamplestot)/588);
+      ibyte1 = int(isamples1-(long int)(isector1*588))*4;
+      if((ibyte1 == 0) && (isector1 > 0))
+         {
+            ibyte1 = 2349;
+            isector1 = isector1 - 1;
+         }
+      else
+         {
+            ibyte1 = ibyte1 - 3;
+         }
+      ibyte2 = int(isamples2-(long int)(isector2*588))*4;
+      ibytetot = int(isamplestot-(long int)(isectortot*588))*4;
+      // for cursor position do not round
+      isector1pos = int(double(int(rate*double(start))+1)/588);
+      ibyte1pos = int(isamples1pos-(isector1pos*588))*4;
+      // display a message about the selection in the status message window
+      if(start == end)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                                        Format(_("Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)"),
+                                               isector1pos, ibyte1pos),
+                                        1);
+         }
+      else
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+                                       Format(_("Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)"),
+                                         isector1, ibyte1, isector2, ibyte2, isectortot, ibytetot),
+                                       1);
+         }
+      break;
+   default:
+      {
+         mListener->
+             TP_DisplayStatusMessage(wxString::
+                       Format(_("Selection: invalid iformat value (%i) in TrackPanel.cpp"),iformat),
+                          1);
+      }
+      break;
+   }
 }
