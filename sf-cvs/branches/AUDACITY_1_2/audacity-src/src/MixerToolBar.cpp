@@ -161,7 +161,10 @@ void MixerToolBar::InitializeMixerToolBar()
    float playbackVolume;
    int inputSource;
    gAudioIO->GetMixer(&inputSource, &inputVolume, &playbackVolume);
-   mInputSourceChoice->SetSelection(inputSource);
+   if (inputSource >= 0)
+     mInputSourceChoice->SetSelection(inputSource);
+   else if (inputSources.GetCount() > 0)
+     mInputSourceChoice->SetSelection(0);
 
    UpdateControls();
    #endif
