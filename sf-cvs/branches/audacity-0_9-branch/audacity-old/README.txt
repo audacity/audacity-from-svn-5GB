@@ -19,6 +19,7 @@ Authors:
   Nasca Octavian Paul <paulnasca@email.ro> or <paulnasca@yahoo.com>
   Logan Lewis <proxima@proxc.com>
   Matt Brubeck <mbrubeck@hmc.edu>
+  Mark Phillips <mitb@totaldeath.com>
 
 Icons and logo:
 
@@ -104,6 +105,8 @@ Changes in 0.98:
 
 * Bug fixes
 
+  - You can now safely copy and paste between projects.
+
   - You're not allowed to open the same project in two different
     windows anymore (it just would have caused data loss).
 
@@ -136,6 +139,8 @@ Changes in 0.98:
   - If recording fails, a phantom track is no longer created.
 
   - Changing the export format now changes the menu bar.
+
+  - More minor bug fixes...
 
 * Unix:
 

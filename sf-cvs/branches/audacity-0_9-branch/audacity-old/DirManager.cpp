@@ -266,14 +266,21 @@ wxString DirManager::GetProjectName()
    return projName;
 }
 
+void DirManager::MakeBlockFileName(wxString inProjDir,
+                                   wxString &outFileName,
+                                   wxString &outPathName)
+{
+   do {
+      outFileName.Printf("b%05d.auf", fileIndex++);
+      outPathName = inProjDir + pathChar + outFileName;
+   } while (wxFileExists(outPathName));
+}
+
 BlockFile *DirManager::NewTempBlockFile()
 {
    wxString theFileName;
    wxString thePathName;
-   do {
-      theFileName.Printf("b%05d.auf", fileIndex++);
-      thePathName = temp + pathChar + theFileName;
-   } while (wxFileExists(thePathName));
+   MakeBlockFileName(temp, theFileName, thePathName);
 
    BlockFile *newBlockFile = new BlockFile(theFileName, thePathName);
 
@@ -291,10 +298,7 @@ BlockFile *DirManager::NewBlockFile()
 
    wxString theFileName;
    wxString thePathName;
-   do {
-      theFileName.Printf("b%05d.auf", fileIndex++);
-      thePathName = projFull + pathChar + theFileName;
-   } while (wxFileExists(thePathName));
+   MakeBlockFileName(projFull, theFileName, thePathName);
 
    BlockFile *newBlockFile = new BlockFile(theFileName, thePathName);
 
@@ -312,10 +316,7 @@ BlockFile *DirManager::NewTempAliasBlockFile(int localLen,
 {
    wxString theFileName;
    wxString thePathName;
-   do {
-      theFileName.Printf("b%05d.auf", fileIndex++);
-      thePathName = temp + pathChar + theFileName;
-   } while (wxFileExists(thePathName));
+   MakeBlockFileName(temp, theFileName, thePathName);
 
    BlockFile *newBlockFile = new BlockFile(theFileName, thePathName,
                                            localLen,
@@ -341,10 +342,7 @@ BlockFile *DirManager::NewAliasBlockFile(int localLen,
 
    wxString theFileName;
    wxString thePathName;
-   do {
-      theFileName.Printf("b%05d.auf", fileIndex++);
-      thePathName = projFull + pathChar + theFileName;
-   } while (wxFileExists(thePathName));
+   MakeBlockFileName(projFull, theFileName, thePathName);
 
    BlockFile *newBlockFile = new BlockFile(theFileName, thePathName,
                                            localLen,
@@ -357,6 +355,45 @@ BlockFile *DirManager::NewAliasBlockFile(int localLen,
    CheckHashTableSize();
 
    return newBlockFile;
+}
+
+// Adds one to the reference count of the block file,
+// UNLESS it is "locked", then it makes a new copy of
+// the BlockFile.
+BlockFile *DirManager::CopyBlockFile(BlockFile *b)
+{
+   if (!b->IsLocked()) {
+      b->Ref();
+      return b;
+   }
+
+   wxString theFileName;
+   wxString thePathName;
+   wxString dir = (projFull != ""? projFull: temp);
+   MakeBlockFileName(dir, theFileName, thePathName);
+
+   bool ok = wxCopyFile(b->mFullPath, thePathName);
+   if (!ok)
+      return NULL;
+
+   BlockFile *b2;
+   if (b->IsAlias()) {
+      b2 = new BlockFile(theFileName, thePathName,
+                         b->mLocalLen,
+                         b->mAliasFullPath,
+                         b->mStart, b->mLen,
+                         b->mChannel);
+   }
+   else {
+      b2 = new BlockFile(theFileName, thePathName);
+   }
+
+   blockFileHash->Put(theFileName, (wxObject *) b2);
+   aliasList.Add(thePathName);
+
+   CheckHashTableSize();
+
+   return b2;
 }
 
 void DirManager::SaveBlockFile(BlockFile * f, wxTextFile * out)

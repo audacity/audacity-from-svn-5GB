@@ -464,10 +464,12 @@ void WaveTrack::Paste(double t, VTrack * src)
          WaveBlock *insertBlock = new WaveBlock();
          insertBlock->start = srcBlock->Item(i)->start + s;
          insertBlock->len = srcBlock->Item(i)->len;
-         insertBlock->f = srcBlock->Item(i)->f;
          insertBlock->min = srcBlock->Item(i)->min;
          insertBlock->max = srcBlock->Item(i)->max;
-         dirManager->Ref(insertBlock->f);
+         insertBlock->f = dirManager->CopyBlockFile(srcBlock->Item(i)->f);
+         if (!insertBlock->f) {
+            wxMessageBox("Could not paste!  (Out of disk space?)");
+         }
 
          newBlock->Add(insertBlock);
          newNumBlocks++;
@@ -740,8 +742,10 @@ void WaveTrack::InsertSilence(double t, double lenSecs)
          wxASSERT(inited);
          FirstWrite(buffer, w, l);
       } else {
-         w->f = firstBlockFile;
-         dirManager->Ref(w->f);
+         w->f = dirManager->CopyBlockFile(firstBlockFile);
+         if (!w->f) {
+            wxMessageBox("Could not paste!  (Out of disk space?)");
+         }            
       }
 
       sTrack->block->Add(w);
@@ -796,10 +800,12 @@ void WaveTrack::AppendBlock(WaveBlock * b)
    WaveBlock *newBlock = new WaveBlock();
    newBlock->start = numSamples;
    newBlock->len = b->len;
-   newBlock->f = b->f;
+   newBlock->f = dirManager->CopyBlockFile(b->f);
+   if (!newBlock->f) {
+      wxMessageBox("Could not paste!  (Out of disk space?)");
+   }            
    newBlock->min = b->min;
    newBlock->max = b->max;
-   dirManager->Ref(newBlock->f);
    block->Add(newBlock);
    numSamples += newBlock->len;
 
