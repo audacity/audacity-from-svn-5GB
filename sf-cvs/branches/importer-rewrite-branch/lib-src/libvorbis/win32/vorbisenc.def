@@ -1,0 +1,9 @@
+;
+; $Id: vorbisenc.def,v 1.1.1.2 2002-04-21 23:36:52 habes Exp $
+;
+LIBRARY
+
+EXPORTS
+vorbis_encode_init
+vorbis_encode_init_vbr
+vorbis_encode_ctl
