@@ -125,6 +125,45 @@
 // color of saturated red was used.  (middle grey 
 
 /* XPM */
+static const char * DisabledCursorXpm[] = {
+"32 32 3 1",
+".	c #FF0000", // mask color = RGB:255,0,0
+"#	c #000000",
+"+	c #FFFFFF",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+".............######.............",
+"...........##++++++##...........",
+"..........#++++++++++#..........",
+".........#++++####++++#.........",
+".........#+++#...#++++#.........",
+"........#+++#...#++++++#........",
+"........#++#...#+++##++#........",
+"........#++#..#+++#.#++#........",
+"........#++#.#+++#..#++#........",
+"........#++##+++#...#++#........",
+"........#++++++#...#+++#........",
+".........#++++#...#+++#.........",
+".........#++++####++++#.........",
+"..........#++++++++++#..........",
+"...........##++++++##...........",
+".............######.............",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................"};
+
+/* XPM */
 static const char * EnvCursorXpm[] = {
 "32 32 3 1",
 ".	c #FF0000", // mask color = RGB:255,0,0
@@ -358,6 +397,29 @@ static const char * ZoomOutCursorXpm[] = {
 
 #else
 // cursors size 16.
+
+/* XPM */
+static const char * DisabledCursorXpm[] = {
+"16 16 3 1",
+".	c #FF0000", // mask color = RGB:255,0,0
+"#	c #000000",
+"+	c #FFFFFF",
+".....######.....",
+"...##++++++##...",
+"..#++++++++++#..",
+".#++++####++++#.",
+".#+++#...#++++#.",
+"#+++#...#++++++#",
+"#++#...#+++##++#",
+"#++#..#+++#.#++#",
+"#++#.#+++#..#++#",
+"#++##+++#...#++#",
+"#++++++#...#+++#",
+".#++++#...#+++#.",
+".#++++####++++#.",
+"..#++++++++++#..",
+"...##++++++##...",
+".....######....."};
 
 /* XPM */
 static const char * EnvCursorXpm[] = {
@@ -731,10 +793,10 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mPencilCursor  = MakeCursor( wxCURSOR_PENCIL,    DrawCursorXpm,    12, 22);
    mSelectCursor  = MakeCursor( wxCURSOR_IBEAM,     IBeamCursorXpm,   17, 16);
    mEnvelopeCursor= MakeCursor( wxCURSOR_ARROW,     EnvCursorXpm,     16, 16);
+   mDisabledCursor= MakeCursor( wxCURSOR_NO_ENTRY,  DisabledCursorXpm,16, 16);
    mSlideCursor   = MakeCursor( wxCURSOR_SIZEWE,    TimeCursorXpm,    16, 16);
    mZoomInCursor  = MakeCursor( wxCURSOR_MAGNIFIER, ZoomInCursorXpm,  19, 15);
    mZoomOutCursor = MakeCursor( wxCURSOR_MAGNIFIER, ZoomOutCursorXpm, 19, 15);
-
 
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
    mSmoothCursor = new wxCursor(wxCURSOR_SPRAYCAN);
@@ -1396,8 +1458,16 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 {
    mLastMouseEvent = event;
 
+   AudacityProject *p = (AudacityProject*)GetParent();
+   bool unsafe = (p->GetAudioIOToken()>0 &&
+                  gAudioIO->IsStreamActive(p->GetAudioIOToken()));
+
    // (1), If possible, set the cursor based on the current activity
    //      ( leave the StatusBar alone ).
+   if (unsafe && (mIsSliding || mIsEnveloping || mIsRearranging)) {
+      SetCursor(*mDisabledCursor);
+      return;
+   }
    if (mIsSelecting) {
       SetCursor(*mSelectCursor);
       return;
@@ -1507,16 +1577,25 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 
       case envelopeTool:
 //         SetCursor(*mArrowCursor);
-         SetCursor(*mEnvelopeCursor);
+         if (unsafe)
+            SetCursor(*mDisabledCursor);
+         else
+            SetCursor(*mEnvelopeCursor);
          break;
       case slideTool:
-         SetCursor(*mSlideCursor);
+         if (unsafe)
+            SetCursor(*mDisabledCursor);
+         else
+            SetCursor(*mSlideCursor);
          break;
       case zoomTool:
          SetCursor(event.ShiftDown()? *mZoomOutCursor : *mZoomInCursor);
          break;
       case drawTool:
-         SetCursor(event.AltDown()? *mSmoothCursor : *mPencilCursor);
+         if (unsafe)
+            SetCursor(*mDisabledCursor);
+         else
+            SetCursor(event.AltDown()? *mSmoothCursor : *mPencilCursor);
          break;
       }
    }
@@ -2774,6 +2853,10 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    if (!(event.ButtonDown(1) || event.ButtonDClick(1)))
       return;
 
+   AudacityProject *p = (AudacityProject*)GetParent();
+   bool unsafe = (p->GetAudioIOToken()>0 &&
+                  gAudioIO->IsStreamActive(p->GetAudioIOToken()));
+
    wxRect r;
    int num;
 
@@ -2850,9 +2933,11 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 
    // JH: also, capture the current track for rearranging, so the user
    //  can drag the track up or down to swap it with others
-   mCapturedTrack = t;
-   mIsRearranging = true;
-   TrackPanel::CalculateRearrangingThresholds(event);
+   if (!unsafe) {
+      mCapturedTrack = t;
+      mIsRearranging = true;
+      TrackPanel::CalculateRearrangingThresholds(event);
+   }
 
    // AS: If the shift botton is being held down, then just invert 
    //  the selection on this track.
@@ -2868,7 +2953,8 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    mViewInfo->sel1 = t->GetEndTime();
 
    Refresh(false);  
-   MakeParentModifyState();
+   if (!unsafe)
+      MakeParentModifyState();
 }
 
 
@@ -3308,6 +3394,10 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
    wxRect rLabel;
    int dummy;
 
+   AudacityProject *p = (AudacityProject*)GetParent();
+   bool unsafe = (p->GetAudioIOToken()>0 &&
+                  gAudioIO->IsStreamActive(p->GetAudioIOToken()));
+
    FindTrack(event.m_x, event.m_y, false, false, &r, &dummy);
    FindTrack(event.m_x, event.m_y, true, true, &rLabel, &dummy);
 
@@ -3344,16 +3434,19 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
       HandleSelect(event);
       break;
    case envelopeTool:
-      HandleEnvelope(event);
+      if (!unsafe)
+         HandleEnvelope(event);
       break;
    case slideTool:
-      HandleSlide(event);
+      if (!unsafe)
+         HandleSlide(event);
       break;
    case zoomTool:
       HandleZoom(event);
       break;
    case drawTool:
-      HandleDraw(event);
+      if (!unsafe)
+         HandleDraw(event);
       break;
    }
 
