@@ -2702,24 +2702,24 @@ else
   default_libsamplerate="system"
 fi
 
-echo "$as_me:2705: checking for lib-src/libresample/include/resample.h" >&5
-echo $ECHO_N "checking for lib-src/libresample/include/resample.h... $ECHO_C" >&6
-if test "${ac_cv_file_lib_src_libresample_include_resample_h+set}" = set; then
+echo "$as_me:2705: checking for lib-src/libresample/include/libresample.h" >&5
+echo $ECHO_N "checking for lib-src/libresample/include/libresample.h... $ECHO_C" >&6
+if test "${ac_cv_file_lib_src_libresample_include_libresample_h+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   test "$cross_compiling" = yes &&
   { { echo "$as_me:2711: error: cannot check for file existence when cross compiling" >&5
 echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
    { (exit 1); exit 1; }; }
-if test -r "lib-src/libresample/include/resample.h"; then
-  ac_cv_file_lib_src_libresample_include_resample_h=yes
+if test -r "lib-src/libresample/include/libresample.h"; then
+  ac_cv_file_lib_src_libresample_include_libresample_h=yes
 else
-  ac_cv_file_lib_src_libresample_include_resample_h=no
+  ac_cv_file_lib_src_libresample_include_libresample_h=no
 fi
 fi
-echo "$as_me:2720: result: $ac_cv_file_lib_src_libresample_include_resample_h" >&5
-echo "${ECHO_T}$ac_cv_file_lib_src_libresample_include_resample_h" >&6
-if test $ac_cv_file_lib_src_libresample_include_resample_h = yes; then
+echo "$as_me:2720: result: $ac_cv_file_lib_src_libresample_include_libresample_h" >&5
+echo "${ECHO_T}$ac_cv_file_lib_src_libresample_include_libresample_h" >&6
+if test $ac_cv_file_lib_src_libresample_include_libresample_h = yes; then
   default_libresample="yes"
 else
   default_libresample="no"
