@@ -12,6 +12,10 @@
 #ifndef __AUDACITY_FILE_FORMAT_PREFS__
 #define __AUDACITY_FILE_FORMAT_PREFS__
 
+#define AUDACITY_MENUS_ENUM
+#include "../Menus.h"
+#undef AUDACITY_MENUS_ENUM
+#include "../Project.h"
 #include "PrefsPanel.h"
 
 class wxButton;
@@ -44,6 +48,8 @@ class FileFormatPrefs:public PrefsPanel {
    wxChoice *mDefaultExportFormat;
    wxButton *mExportOptionsButton;
    wxStaticText *mFormatText;
+
+   AudacityProject *mAudacity;
 
    int mFormat;
    int mFormatBits;

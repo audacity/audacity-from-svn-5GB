@@ -199,6 +199,14 @@ int AudacityProject::GetCommandState(int nIndex)
    return mCommandMenuItem[nIndex]->state;
 }
 
+void AudacityProject::SetCommandValue(int nID, wxString sName)
+{
+   int idz = (nID - MenuBaseID);
+   if ((idz >= 0) && (idz < GetNumCommands())) {
+      mCommandMenuItem[idz]->commandString = sName;
+   }
+}
+
 
 void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 {

@@ -73,6 +73,8 @@ void SetMenuState(wxMenu *menu, int id, bool enable);
 void SetCommandState(int nID, int iVal);
 int GetCommandState(int nIndex);
 
+void SetCommandValue(int nID, wxString sName);
+
 void OnUpdateMenus(wxUpdateUIEvent & event);
 
 // Generic menu handler
