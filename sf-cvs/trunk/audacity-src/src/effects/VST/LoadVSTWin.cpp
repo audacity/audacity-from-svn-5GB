@@ -9,13 +9,13 @@
 
 **********************************************************************/
 
-#include <windows.h>
-
 #include "AudioEffect.hpp"      // VST API
 
 #include "VSTEffect.h"
 #include "../../AudacityApp.h"
 #include "LoadVSTWin.h"
+
+#include <windows.h>
 
 int audacityVSTID = 1;
 
