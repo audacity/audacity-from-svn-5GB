@@ -27,6 +27,14 @@ wxString EffectNyquist::mXlispPath;
 
 char global_xlisp_path[1000];
 
+extern "C" {
+/* dmazzoni */
+void get_xlisp_path(char *paths, int paths_max)
+{
+   strcpy(paths, global_xlisp_path);
+}
+}
+
 #define UNINITIALIZED_CONTROL ((double)99999999.99)
 
 wxString EffectNyquist::UnQuote(wxString s)
@@ -393,6 +401,7 @@ bool EffectNyquist::ProcessOne()
                                  (const char *)mControls[j].var,
                                  mControls[j].val);
    cmd += mCmd;
+
    rval = nyx_eval_expression(cmd);
 
    if (rval == nyx_string) {
