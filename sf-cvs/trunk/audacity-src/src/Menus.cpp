@@ -25,7 +25,7 @@
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
 
-#endif
+#endif // WX_PRECOMP
 
 #include "sndfile.h"
 

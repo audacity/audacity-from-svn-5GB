@@ -544,8 +544,8 @@ bool WaveTrack::GetSpectrogram(float *freq, sampleCount *where,
 bool WaveTrack::GetMinMax(float *min, float *max,
                           double t0, double t1)
 {
-   *min = 0.0;
-   *max = 0.0;
+   *min = float(0.0);
+   *max = float(0.0);
 
    if (t0 > t1)
       return false;

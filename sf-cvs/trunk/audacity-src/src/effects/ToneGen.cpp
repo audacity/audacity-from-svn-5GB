@@ -20,9 +20,9 @@
 
 EffectToneGen::EffectToneGen()
 {
-   frequency = 1000.0;          //Hz
+   frequency = float(1000.0);          //Hz
    waveform = 0;                //sine
-   amplitude = 1.0;
+   amplitude = float(1.0);
    mix = false;
 }
 

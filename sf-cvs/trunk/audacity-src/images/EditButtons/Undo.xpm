@@ -1,5 +1,5 @@
 /* XPM */
-static char * Undo[] = {
+static const char * Undo[] = {
 "20 18 4 1",
 " 	c None",
 ".	c #CCCCCC",

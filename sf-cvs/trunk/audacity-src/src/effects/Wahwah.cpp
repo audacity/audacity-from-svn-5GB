@@ -28,11 +28,11 @@
 
 EffectWahwah::EffectWahwah()
 {
-   freq = 1.5;
+   freq = float(1.5);
    startphase = 0;
    depth = (float)0.7;
    freqofs = (float)0.3;
-   res = 2.5;
+   res = float(2.5);
 }
 
 bool EffectWahwah::PromptUser()
@@ -114,9 +114,9 @@ bool EffectWahwah::ProcessSimpleMono(float *buffer, sampleCount len)
       
       // Prevents clipping
       if (out < -1.0)
-         out = -1.0;
+         out = float(-1.0);
       else if (out > 1.0)
-         out = 1.0;
+         out = float(1.0);
       
       buffer[i] = (float) out;
    }

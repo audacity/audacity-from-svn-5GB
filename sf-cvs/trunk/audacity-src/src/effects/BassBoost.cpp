@@ -43,7 +43,7 @@ bool EffectBassBoost::NewTrackSimpleMono()
    sn = sin(omega);
    cs = cos(omega);
    a = exp(log(10) * dB_boost / 40);
-   shape = 1.0;           /*Low Shelf filter's shape, if this is too large
+   shape = float(1.0);           /*Low Shelf filter's shape, if this is too large
                             or too small it will result an unstable filter */
    beta = sqrt((a * a + 1) / shape - (pow((a - 1), 2)));
    /*  Coefficients  */
@@ -90,9 +90,9 @@ bool EffectBassBoost::ProcessSimpleMono(float *buffer, sampleCount len)
       yn1 = out;
 
       if (out < -1.0)
-         out = -1.0;
+         out = float(-1.0);
       else if (out > 1.0)
-         out = 1.0;        //Prevents clipping
+         out = float(1.0);        //Prevents clipping
 
       buffer[i] = out;
    }

@@ -724,7 +724,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
 
    // Find the peak nearest the cursor and plot it
 
-   float bestpeak = 0.0;
+   float bestpeak = float(0.0);
    if (r.Inside(mMouseX, mMouseY)) {
       if (mLogAxis)
          xPos = xMin * pow(xStep, mMouseX - (r.x + 1));
@@ -888,7 +888,7 @@ void FreqWindow::Recalc()
 
    int i;
    for (i = 0; i < mWindowSize; i++)
-      mProcessed[i] = 0.0;
+      mProcessed[i] = float(0.0);
    int half = mWindowSize / 2;
 
    float *in = new float[mWindowSize];
@@ -1003,7 +1003,7 @@ void FreqWindow::Recalc()
       // Clip at zero, copy to temp array
       for (i = 0; i < half; i++) {
          if (mProcessed[i] < 0.0)
-            mProcessed[i] = 0.0;
+            mProcessed[i] = float(0.0);
          out[i] = mProcessed[i];
       }
 

@@ -97,7 +97,7 @@ void EditToolBar::InitializeEditToolBar()
 // This is a convenience function that allows for button creation in
 // MakeButtons() with fewer arguments
 
-void EditToolBar::AddButton(char **fg, char **disabled, char **alpha,
+void EditToolBar::AddButton(const char **fg, const char **disabled, const char **alpha,
                             int id, const char *tooltip)
 {
 

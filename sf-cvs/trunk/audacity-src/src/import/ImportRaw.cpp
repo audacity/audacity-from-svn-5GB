@@ -65,12 +65,12 @@ float AmpStat(float *data, int len)
    int i;
 
    if (len == 0)
-      return 1.0;
+      return float(1.0);
 
    // Calculate standard deviation of the amplitudes
 
-   float sum = 0.0;
-   float sumofsquares = 0.0;
+   float sum = float(0.0);
+   float sumofsquares = float(0.0);
 
    for (i = 0; i < len; i++) {
       float x = fabs(data[i]);
@@ -93,7 +93,7 @@ float JumpStat(float *data, int len)
    // Calculate 1.0 - avg jump
    // A score near 1.0 means avg jump is pretty small
 
-   float avg = 0.0;
+   float avg = float(0.0);
    for (i = 0; i < len - 1; i++)
       avg += fabs(data[i + 1] - data[i]);
    avg = 1.0 - (avg / (len - 1) / 2.0);
@@ -113,6 +113,7 @@ float RedundantStereo(float *data, int len)
    return ((c * 2.0) / (len - 2));
 }
 
+#if NOT_NEEDED_FOR_LINK
 float PredictStat(float *data, int len)
 {
    int i;
@@ -153,6 +154,7 @@ float FreqStat(float *data, int len)
 
    return freq;
 }
+#endif 
 
 void Extract(bool bits16,
              bool sign,

@@ -1,5 +1,5 @@
 /* XPM */
-static char * Cut[] = {
+static const char *Cut[] = {
 "20 18 8 1",
 " 	c None",
 ".	c #CCCCCC",

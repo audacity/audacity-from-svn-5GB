@@ -24,12 +24,12 @@
 
 EffectAmplify::EffectAmplify()
 {
-   ratio = 1.0;
+   ratio = float(1.0);
 }
 
 bool EffectAmplify::Init()
 {
-   peak = 0.0;
+   peak = float(0.0);
 
    TrackListIterator iter(mWaveTracks);
    Track *t = iter.First();
@@ -96,8 +96,8 @@ END_EVENT_TABLE()
 AmplifyDialog::AmplifyDialog(wxWindow * parent, wxWindowID id, const wxString & title, const wxPoint & position, const wxSize & size, long style):
 wxDialog(parent, id, title, position, size, style)
 {
-   ratio = 1.0;
-   peak = 0.0;
+   ratio = float(1.0);
+   peak = float(0.0);
    mLoopDetect = false;
 
    MakeAmplifyDialog(this, TRUE, TRUE);

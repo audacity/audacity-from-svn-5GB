@@ -115,9 +115,9 @@ void CopySamples(samplePtr src, sampleFormat srcFormat,
       return;
    }
 
-   float fHalf = 0.5;
-   float fDiv16 = 32767.5;
-   float fDiv24 = 8388607.5;
+   float fHalf = float(0.5);
+   float fDiv16 = float(32767.5);
+   float fDiv24 = float(8388607.5);
 
    switch(dstFormat) {
    case floatSample:

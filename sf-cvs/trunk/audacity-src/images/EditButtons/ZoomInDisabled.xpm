@@ -1,5 +1,5 @@
 /* XPM */
-static char * ZoomInDisabled[] = {
+static const char * ZoomInDisabled[] = {
 "20 18 8 1",
 " 	c None",
 ".	c #A8A8A8",
