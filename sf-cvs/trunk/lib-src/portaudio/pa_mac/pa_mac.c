@@ -1063,7 +1063,7 @@ PaError PaHost_OpenStream( internalPortAudioStream   *past )
 			DBUG(("PaHost_OpenStream: setting siActiveChannels returned 0x%x. Error ignored.\n", err ));
 		}
 		
-		tempS = 2;
+		tempS = past->past_NumInputChannels; /* dmazzoni (was hardcoded to "2") */
 		err = SPBSetDeviceInfo(mRefNum, siNumberChannels, (Ptr) &tempS);
 		if (err)
 		{
