@@ -195,11 +195,19 @@ libaudacity.a: $(DIRS) $(LIBAUDACITY_OBJS)
 # You can optionally "make dep" to make dependencies.
 # The sed script turns "Foo.o: bar/Foo.cpp" into "obj/bar/Foo.o:".
 #
+# The second command makes the dependencies for the gcc precompiled
+# header file; if you modify a header file it will rebuild the .gch
+# file.
+#
 
 dep:
 	$(CCC) -MM $(CXXFLAGS) $(CPPFLAGS) $(DEPS) | \
 		sed -e 's/^.*: \([^ ]*\)\.cpp/$(OBJDIR)\/\1.o: /' \
 		> .depend
+	$(CCC) -MM $(CXXFLAGS) $(CPPFLAGS) AudacityHeaders.h | \
+		sed -e 's/^.*: \([^ ]*\)\.cpp/$(OBJDIR)\/\1.o: /' | \
+		sed 's/AudacityHeaders.o/AudacityHeaders.h.gch/' \
+		> .gchdepend
 
 clean:
 	rm -rf obj/
@@ -236,5 +244,9 @@ Audacity.coff:
 
 ifeq (.depend,$(wildcard .depend))
 include .depend
+endif
+
+ifeq (.gchdepend,$(wildcard .gchdepend))
+include .gchdepend
 endif
 
