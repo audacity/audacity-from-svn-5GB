@@ -535,7 +535,7 @@ aiff_read_header (SF_PRIVATE *psf, COMM_CHUNK *comm_fmt)
 			break ;
 			} ;
 
-		if (psf_ftell (psf->filedes) >= (sf_count_t) (psf->filelength - (2 * sizeof (dword))))
+		if (psf_ftell (psf->filedes) >= psf->filelength - (2 * sizeof (dword)))
 			break ;
 
 		if (psf->logindex >= sizeof (psf->logbuffer) - 2)

@@ -18,7 +18,6 @@
 
 #include	<stdio.h>
 #include	<unistd.h>
-#include	<string.h>
 
 #include	"sndfile.h"
 #include	"config.h"
@@ -273,6 +272,62 @@ float32_read (unsigned char *cptr)
 
 	return fvalue ;
 } /* float32_read */
+
+float
+float32_be_read (unsigned char *cptr)
+{	int		exponent, mantissa, negative ;
+	float	fvalue ;
+
+	negative = cptr [0] & 0x80 ;
+	exponent = ((cptr [0] & 0x7F) << 1) | ((cptr [1] & 0x80) ? 1 : 0);
+	mantissa = ((cptr [1] & 0x7F) << 16) | (cptr [2] << 8) | (cptr [3]) ;
+
+	if (! (exponent || mantissa))
+		return 0.0 ;
+
+	mantissa |= 0x800000 ;
+	exponent = exponent ? exponent - 127 : 0 ;
+
+	fvalue = mantissa ? ((float) mantissa) / ((float) 0x800000) : 0.0 ;
+
+	if (negative)
+		fvalue *= -1 ;
+
+	if (exponent > 0)
+		fvalue *= (1 << exponent) ;
+	else if (exponent < 0)
+		fvalue /= (1 << abs (exponent)) ;
+
+	return fvalue ;
+} /* float32_be_read */
+
+float
+float32_le_read (unsigned char *cptr)
+{	int		exponent, mantissa, negative ;
+	float	fvalue ;
+
+	negative = cptr [3] & 0x80 ;
+	exponent = ((cptr [3] & 0x7F) << 1) | ((cptr [2] & 0x80) ? 1 : 0);
+	mantissa = ((cptr [2] & 0x7F) << 16) | (cptr [1] << 8) | (cptr [0]) ;
+
+	if (! (exponent || mantissa))
+		return 0.0 ;
+
+	mantissa |= 0x800000 ;
+	exponent = exponent ? exponent - 127 : 0 ;
+
+	fvalue = mantissa ? ((float) mantissa) / ((float) 0x800000) : 0.0 ;
+
+	if (negative)
+		fvalue *= -1 ;
+
+	if (exponent > 0)
+		fvalue *= (1 << exponent) ;
+	else if (exponent < 0)
+		fvalue /= (1 << abs (exponent)) ;
+
+	return fvalue ;
+} /* float32_le_read */
 
 void
 float32_write (float in, unsigned char *out)

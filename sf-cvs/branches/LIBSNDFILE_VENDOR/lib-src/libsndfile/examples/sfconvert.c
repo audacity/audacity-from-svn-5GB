@@ -60,7 +60,7 @@ guess_output_file_type (char *str, int format)
 	
 	for (k = 0 ; buffer [k] ; k++)
 		buffer [k] = tolower ((buffer [k])) ;
-		
+
 	if (! strncmp (buffer, "aif", 3))
 		return	(SF_FORMAT_AIFF | format) ;
 	if (! strcmp (buffer, "wav"))
@@ -83,6 +83,10 @@ guess_output_file_type (char *str, int format)
 		return	(SF_FORMAT_W64 | format) ;
 	if (! strcmp (buffer, "raw"))
 		return	(SF_FORMAT_RAW | format) ;
+	if (! strcmp (buffer, "mat4"))
+		return	(SF_FORMAT_MAT4 | format) ;
+	if (! strcmp (buffer, "mat5"))
+		return	(SF_FORMAT_MAT5 | format) ;
 
 	return	0 ;
 } /* guess_output_file_type */
@@ -184,7 +188,6 @@ main (int argc, char *argv[])
 			} ;
 		} ;
 
-	
 	if (! (infile = sf_open (infilename, SFM_READ, &sfinfo)))
 	{	printf ("Not able to open input file %s.\n", infilename) ;
 		sf_perror (NULL) ;
