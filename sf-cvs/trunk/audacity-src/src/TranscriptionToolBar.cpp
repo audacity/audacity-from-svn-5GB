@@ -302,7 +302,7 @@ void TranscriptionToolBar::OnKeyEvent(wxKeyEvent & event)
       return;
    }
   
-   if (event.KeyCode() == WXK_SPACE)
+   if (event.GetKeyCode() == WXK_SPACE)
       {
          if (gAudioIO->IsBusy()) {
             /*Do Stuff Here*/
