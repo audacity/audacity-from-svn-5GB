@@ -74,6 +74,8 @@ class AudacityApp:public wxApp {
 
    wxSingleInstanceChecker *mChecker;
 
+   bool InitTempDir();
+
  public:
     DECLARE_EVENT_TABLE()
 };

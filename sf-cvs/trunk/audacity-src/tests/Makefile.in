@@ -18,6 +18,7 @@ LIBS = @LIBS@ ../src/libaudacity.a
 
 TESTS = \
 	SimpleBlockFileTest \
+	SequenceTest \
 
 $(TESTS): %: %.cpp ../src/libaudacity.a
 	$(CXX) -o $@ $< $(CXXFLAGS) $(CPPFLAGS) $(LIBS)

@@ -40,7 +40,6 @@ OBJS = \
 	$(OBJDIR)/AudioIO.o \
 	$(OBJDIR)/Benchmark.o \
 	$(OBJDIR)/ControlToolBar.o \
-	$(OBJDIR)/DirManager.o \
 	$(OBJDIR)/Envelope.o \
 	$(OBJDIR)/EditToolBar.o \
 	$(OBJDIR)/FFT.o \
@@ -49,7 +48,6 @@ OBJS = \
 	$(OBJDIR)/Help.o \
 	$(OBJDIR)/HistoryWindow.o \
 	$(OBJDIR)/ImageManipulation.o \
-	$(OBJDIR)/Internat.o \
 	$(OBJDIR)/LabelTrack.o \
 	$(OBJDIR)/Languages.o \
 	$(OBJDIR)/LangChoice.o \
@@ -62,7 +60,6 @@ OBJS = \
 	$(OBJDIR)/Project.o \
 	$(OBJDIR)/Resample.o \
 	$(OBJDIR)/RingBuffer.o \
-	$(OBJDIR)/Sequence.o \
 	$(OBJDIR)/Spectrum.o \
 	$(OBJDIR)/Tags.o \
 	$(OBJDIR)/Track.o \
@@ -126,7 +123,6 @@ OBJS = \
 	$(OBJDIR)/widgets/Ruler.o \
 	$(OBJDIR)/widgets/Warning.o \
 	$(OBJDIR)/xml/XMLFileReader.o \
-	$(OBJDIR)/xml/XMLTagHandler.o \
 
 TEMPORARILY_DISABLED_IMPORTER_OBJS = \
 	$(OBJDIR)/import/ImportMIDI.o \
@@ -136,14 +132,18 @@ TEMPORARILY_DISABLED_IMPORTER_OBJS = \
 LIBAUDACITY_OBJS = \
 	$(OBJDIR)/BlockFile.o \
 	$(OBJDIR)/Dither.o \
+	$(OBJDIR)/DirManager.o \
 	$(OBJDIR)/FileFormats.o \
 	$(OBJDIR)/Prefs.o \
 	$(OBJDIR)/SampleFormat.o \
+	$(OBJDIR)/Sequence.o \
+	$(OBJDIR)/Internat.o \
 	$(OBJDIR)/blockfile/LegacyBlockFile.o \
 	$(OBJDIR)/blockfile/LegacyAliasBlockFile.o \
 	$(OBJDIR)/blockfile/SilentBlockFile.o \
 	$(OBJDIR)/blockfile/SimpleBlockFile.o \
 	$(OBJDIR)/blockfile/PCMAliasBlockFile.o \
+	$(OBJDIR)/xml/XMLTagHandler.o \
 
 #
 # We stick object files in separate directories for convenience

@@ -28,6 +28,12 @@
 #include <unistd.h>
 #endif
 
+// chmod
+#ifdef __UNIX__
+#include <sys/types.h>
+#include <sys/stat.h>
+#endif
+
 #ifdef __MACOS9__
 #include <AEDataModel.h>
 #include <AppleEvents.h>
@@ -418,7 +424,7 @@ bool AudacityApp::OnInit()
    // Init DirManager, which initializes the temp directory
    // If this fails, we must exit the program.
 
-   if (!DirManager::InitDirManager()) {
+   if (!InitTempDir()) {
       FinishPreferences();
       return false;
    }
@@ -569,6 +575,72 @@ bool AudacityApp::OnInit()
 
    return TRUE;
 }
+
+bool AudacityApp::InitTempDir()
+{
+   // We need to find a temp directory location.
+
+   wxString tempFromPrefs = gPrefs->Read("/Directories/TempDir", "");
+   wxString tempDefaultLoc = wxGetApp().defaultTempDir;
+
+   wxString temp = "";
+
+   #ifdef __WXGTK__
+   if (tempFromPrefs.GetChar(0) != '/')
+      tempFromPrefs = "";
+   #endif
+
+   // Stop wxWindows from printing its own error messages
+
+   wxLogNull logNo;
+
+   // Try temp dir that was stored in prefs first
+
+   if (tempFromPrefs != "") {
+      if (wxPathExists(FILENAME(tempFromPrefs)))
+         temp = tempFromPrefs;
+      else if (wxMkdir(FILENAME(tempFromPrefs)))
+         temp = tempFromPrefs;
+   }
+
+   // If that didn't work, try the default location
+
+   if (temp=="" && tempDefaultLoc != "") {
+      if (wxPathExists(FILENAME(tempDefaultLoc)))
+         temp = tempDefaultLoc;
+      else if (wxMkdir(FILENAME(tempDefaultLoc)))
+         temp = tempDefaultLoc;
+   }
+
+   if (temp != "") {
+      // Success
+
+      // The permissions don't always seem to be set on
+      // some platforms.  Hopefully this fixes it...
+      #ifdef __UNIX__
+      chmod(FILENAME(temp), 0755);
+      #endif
+
+      gPrefs->Write("/Directories/TempDir", temp);
+      DirManager::SetTempDir(temp);
+      return true;
+   }
+   else {
+      wxMessageBox(_("Audacity could not find a place to store "
+                     "temporary files.\n"
+                     "Please enter an appropriate "
+                     "directory in the preferences dialog."));
+
+      PrefsDialog dialog(NULL);
+      dialog.ShowTempDirPage();
+      dialog.ShowModal();
+
+      wxMessageBox(_("Audacity is now going to exit.  Please launch "
+                     "Audacity again to use the new temporary directory."));
+      return false;
+   }
+}
+
 
 // static
 void AudacityApp::AddUniquePathToPathList(wxString path,

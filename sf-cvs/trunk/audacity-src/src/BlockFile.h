@@ -18,7 +18,7 @@
 
 #include "WaveTrack.h"
 
-#include "../xml/XMLTagHandler.h"
+#include "xml/XMLTagHandler.h"
 
 class wxFFile;
 

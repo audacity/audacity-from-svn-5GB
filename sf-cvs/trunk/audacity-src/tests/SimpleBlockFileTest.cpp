@@ -33,14 +33,16 @@ public:
       floatData = new float[dataLen];
 
       int i;
+      int sign = 1;
 
       for(i = 0; i < dataLen; i++)
       {
+         sign *= -1;
          // These have no significance, it's just random data
-         int16Data[i] = (i*i);
-         int24Data[i] = (i*i*i) & 0x00FFFFFF;
+         int16Data[i] = sign*(i*i);
+         int24Data[i] = sign*((i*i*i)%0x000FFFFF);
          float j = (float) i;
-         floatData[i] = j/((j*j)+1);
+         floatData[i] = sign*j/((j*j)+1);
       }
 
       int16BlockFile = new SimpleBlockFile(wxFileName("/tmp/int16"),
@@ -132,7 +134,7 @@ public:
       // for the 24-bit buffer, libsndfile gives the 24 bits to us in the 3 most significant
       // byts of a 32-bit int.  So we need to shift them right 8 to get back our 24-bit data.
       for( int i = 0; i < dataLen; i++ )
-          int24buf[i] = ((unsigned int)int24buf[i] >> 8);
+          int24buf[i] = int24buf[i] >> 8;
       AssertBuffersEqual(int24buf, int24Data, dataLen);
 
       sf_close(int16sf);

@@ -39,6 +39,7 @@
 
 class wxHashTable;
 class BlockFile;
+class SequenceTest;
 
 class DirManager: public XMLTagHandler {
  public:
@@ -49,11 +50,11 @@ class DirManager: public XMLTagHandler {
    // MM: Only called by Deref() when refcount reaches zero.
    virtual ~DirManager();
 
+   static void SetTempDir(wxString _temp) { temp = _temp; }
+
    // MM: Ref count mechanism for the DirManager itself
    void Ref();
    void Deref();
-
-   static bool InitDirManager();
 
    // Returns true on success.
    // If SetProject is told NOT to create the directory
@@ -140,6 +141,8 @@ class DirManager: public XMLTagHandler {
    static int numDirManagers;
    static int fileIndex;
    static wxString tempDirName;
+
+   friend class SequenceTest;
 };
 
 #endif
