@@ -165,9 +165,17 @@ typedef struct PaHostSoundControl
     struct timeval   pahsc_EntryTime;
     double           pahsc_InverseMicrosPerBuffer; /* 1/Microseconds of real-time audio per user buffer. */
 
-   /* For calculating stream time */
+    /* For calculating stream time using SNDCTL_DSP_GETOPTR */
     int              pahsc_LastPosPtr;
     double           pahsc_LastStreamBytes;
+
+    /* For calculating stream time using the system clock */
+    int              pahsc_UseSystemClock;
+    double           pahsc_StartTime;
+    double           pahsc_CheckpointTime;
+    double           pahsc_LastTime;
+    double           pahsc_SampleRateEstimate;
+    PaTimestamp      pahsc_LastFrameCount;
 }
 PaHostSoundControl;
 
@@ -514,14 +522,24 @@ PaError PaHost_Init( void )
     return Pa_MaybeQueryDevices();
 }
 
+PaTimestamp Pa_GetRealTime( internalPortAudioStream *past )
+{
+   struct timeval now;
+   gettimeofday( &now, NULL );
+   return (double)now.tv_sec + (now.tv_usec * 0.000001);
+}
+
 /*******************************************************************************************/
 static PaError Pa_AudioThreadProc( internalPortAudioStream   *past )
 {
     PaError    result = 0;
     PaHostSoundControl             *pahsc;
-    short    bytes_read = 0;
+    short      bytes_read = 0;
     count_info info;
+    audio_buf_info buf_info;
+    int        numBufferedSamples = 0;
     int        delta;
+    int        err;
 
 #ifdef GNUSTEP
     GSRegisterCurrentThread(); /* SB20010904 */
@@ -549,6 +567,37 @@ static PaError Pa_AudioThreadProc( internalPortAudioStream   *past )
 
     pahsc = (PaHostSoundControl *) past->past_DeviceData;
     if( pahsc == NULL ) return paInternalError;
+
+    pahsc->pahsc_UseSystemClock = 0;
+    pahsc->pahsc_LastFrameCount = 0;
+    numBufferedSamples = 0;
+
+    /* Determine whether we can use SNDCTL_DSP_GET[I/O]PTR or not */
+    if( pahsc->pahsc_NativeOutputBuffer )
+       err = ioctl(pahsc->pahsc_OutputHandle, SNDCTL_DSP_GETOPTR, &info);
+    else
+       err = ioctl(pahsc->pahsc_InputHandle, SNDCTL_DSP_GETIPTR, &info);    
+
+    if (err == -1) {
+       /* SNDCTL_DSP_GET[I/O]PTR failed, so we must use the system clock */
+       pahsc->pahsc_UseSystemClock = 1;
+       pahsc->pahsc_SampleRateEstimate = past->past_SampleRate;
+       if( pahsc->pahsc_NativeOutputBuffer )
+          err = ioctl(pahsc->pahsc_OutputHandle, SNDCTL_DSP_GETOSPACE, &buf_info);
+       else
+          err = ioctl(pahsc->pahsc_OutputHandle, SNDCTL_DSP_GETISPACE, &buf_info);
+       if (err == 0) {
+          if( pahsc->pahsc_NativeOutputBuffer )
+             numBufferedSamples = (buf_info.fragsize * (buf_info.fragstotal - 1)) /
+                (past->past_NumOutputChannels * sizeof(short));
+          else
+             numBufferedSamples = (buf_info.fragsize * (buf_info.fragstotal - 1)) /
+                (past->past_NumInputChannels * sizeof(short));
+       }
+       pahsc->pahsc_StartTime = Pa_GetRealTime(past);
+       pahsc->pahsc_CheckpointTime = pahsc->pahsc_StartTime;
+       pahsc->pahsc_LastTime = pahsc->pahsc_StartTime;
+    }
 
     past->past_IsActive = 1;
     DBUG(("entering thread.\n"));
@@ -590,16 +639,49 @@ static PaError Pa_AudioThreadProc( internalPortAudioStream   *past )
                   pahsc->pahsc_BytesPerOutputBuffer);
         }
 
+        
+        /* Update current stream time */
+        if (pahsc->pahsc_UseSystemClock) {
+           if (numBufferedSamples > 0 && past->past_FrameCount > numBufferedSamples) {
+              PaTimestamp now = Pa_GetRealTime(past);
+              int elapsedSamples = (now - pahsc->pahsc_LastTime)*
+                 pahsc->pahsc_SampleRateEstimate;
 
-        /* Update current stream time (using a double so that
-           we don't wrap around like info.bytes does) */
-        if( pahsc->pahsc_NativeOutputBuffer )
-           ioctl(pahsc->pahsc_OutputHandle, SNDCTL_DSP_GETOPTR, &info);
-        else
-           ioctl(pahsc->pahsc_InputHandle, SNDCTL_DSP_GETIPTR, &info);
-        delta = (info.bytes - pahsc->pahsc_LastPosPtr) & 0x000FFFFF;
-        pahsc->pahsc_LastStreamBytes += delta;
-        pahsc->pahsc_LastPosPtr = info.bytes;
+              if (elapsedSamples >= (past->past_FramesPerUserBuffer * 3/4)) {
+                 /* make a correction */
+                 PaTimestamp oldCheckpointTime = pahsc->pahsc_CheckpointTime;
+                 double rateEstimate = pahsc->pahsc_SampleRateEstimate;
+                 double recentSampleRate =
+                    (past->past_FrameCount - pahsc->pahsc_LastFrameCount) /
+                    (now - pahsc->pahsc_LastTime);
+
+                 if (fabs(recentSampleRate - rateEstimate) < rateEstimate*0.1)
+                    rateEstimate = 0.9 * rateEstimate + 0.1 * recentSampleRate;
+
+                 pahsc->pahsc_CheckpointTime = now - 
+                    (past->past_FrameCount - numBufferedSamples) / rateEstimate;
+                 pahsc->pahsc_SampleRateEstimate = rateEstimate;
+
+                 printf("Correction: %.0lf  sample rate: %.0lf\n",
+                        pahsc->pahsc_CheckpointTime - oldCheckpointTime,
+                        pahsc->pahsc_SampleRateEstimate);
+              }
+
+              pahsc->pahsc_LastTime = now;
+              pahsc->pahsc_LastFrameCount = past->past_FrameCount;
+           }
+        }
+        else {
+           /* Update using SNDCTL_DSP_GET[I/O]PTR (using a double so that
+              we don't wrap around like info.bytes does) */
+           if( pahsc->pahsc_NativeOutputBuffer )
+              ioctl(pahsc->pahsc_OutputHandle, SNDCTL_DSP_GETOPTR, &info);
+           else
+              ioctl(pahsc->pahsc_InputHandle, SNDCTL_DSP_GETIPTR, &info);
+           delta = (info.bytes - pahsc->pahsc_LastPosPtr) & 0x000FFFFF;
+           pahsc->pahsc_LastStreamBytes += delta;
+           pahsc->pahsc_LastPosPtr = info.bytes;
+        }
     }
 
     past->past_IsActive = 0;
@@ -1121,16 +1203,23 @@ PaTimestamp Pa_StreamTime( PortAudioStream *stream )
 
     if( past == NULL ) return paBadStreamPtr;
 
+    if (pahsc->pahsc_UseSystemClock) {
+       return (Pa_GetRealTime(past) - pahsc->pahsc_CheckpointTime) *
+          pahsc->pahsc_SampleRateEstimate;
+    }
+
     if( pahsc->pahsc_NativeOutputBuffer ) {
        ioctl(pahsc->pahsc_OutputHandle, SNDCTL_DSP_GETOPTR, &info);
        delta = (info.bytes - pahsc->pahsc_LastPosPtr) & 0x000FFFFF;
-       return (pahsc->pahsc_LastStreamBytes + delta) / (past->past_NumOutputChannels * sizeof(short));
+       return (pahsc->pahsc_LastStreamBytes + delta) /
+          (past->past_NumOutputChannels * sizeof(short));
     }
     else {
        ioctl(pahsc->pahsc_InputHandle, SNDCTL_DSP_GETIPTR, &info);
        delta = (info.bytes - pahsc->pahsc_LastPosPtr) & 0x000FFFFF;
-       return (pahsc->pahsc_LastStreamBytes + delta) / (past->past_NumInputChannels * sizeof(short));
-
+       return (pahsc->pahsc_LastStreamBytes + delta) /
+          (past->past_NumInputChannels * sizeof(short));
+       
     }
 }
 
