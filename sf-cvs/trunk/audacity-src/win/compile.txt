@@ -96,7 +96,7 @@ environment variable WXWIN, set to the top-level directory
 where you installed wxWindows. For example, 
 in your "autoexec.bat" file, you might have a line:
 
-   set WXWIN="C:\wxWindows-2.4.1"
+   set WXWIN=C:\wxWindows-2.4.1
 
 Note that you don't want a trailing backslash on that. In the 
 Audacity project file, there are declarations like 
