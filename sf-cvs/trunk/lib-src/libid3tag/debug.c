@@ -1,6 +1,6 @@
 /*
  * libid3tag - ID3 tag manipulation library
- * Copyright (C) 2000-2001 Robert Leslie
+ * Copyright (C) 2000-2003 Underbit Technologies, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: debug.c,v 1.1.1.1 2002-04-14 08:52:44 dmazzoni Exp $
+ * $Id: debug.c,v 1.2 2003-09-07 01:21:44 dmazzoni Exp $
  */
 
 # ifdef HAVE_CONFIG_H
@@ -63,7 +63,7 @@ void check(void)
       break;
     }
 
-    fprintf(stderr, "%s:%u: leaked %u bytes\n",
+    fprintf(stderr, "%s:%u: leaked %lu bytes\n",
 	    debug->file, debug->line, debug->size);
   }
 }
@@ -82,7 +82,7 @@ void *id3_debug_malloc(size_t size, char const *file, unsigned int line)
 
   debug = malloc(sizeof(*debug) + size);
   if (debug == 0) {
-    fprintf(stderr, "%s:%u: malloc(%u) failed\n", file, line, size);
+    fprintf(stderr, "%s:%u: malloc(%lu) failed\n", file, line, size);
     return 0;
   }
 
@@ -132,14 +132,14 @@ void *id3_debug_realloc(void *ptr, size_t size,
   --debug;
 
   if (debug->magic != DEBUG_MAGIC) {
-    fprintf(stderr, "%s:%u: realloc(%p, %u) memory not allocated\n",
+    fprintf(stderr, "%s:%u: realloc(%p, %lu) memory not allocated\n",
 	    file, line, ptr, size);
     return 0;
   }
 
   new = realloc(debug, sizeof(*debug) + size);
   if (new == 0) {
-    fprintf(stderr, "%s:%u: realloc(%p, %u) failed\n", file, line, ptr, size);
+    fprintf(stderr, "%s:%u: realloc(%p, %lu) failed\n", file, line, ptr, size);
     return 0;
   }
 

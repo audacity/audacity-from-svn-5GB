@@ -1,6 +1,6 @@
 /*
  * libid3tag - ID3 tag manipulation library
- * Copyright (C) 2000-2001 Robert Leslie
+ * Copyright (C) 2000-2003 Underbit Technologies, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: tag.c,v 1.1.1.1 2002-04-14 08:52:43 dmazzoni Exp $
+ * $Id: tag.c,v 1.2 2003-09-07 01:21:44 dmazzoni Exp $
  */
 
 # ifdef HAVE_CONFIG_H
@@ -40,6 +40,7 @@
 # include "render.h"
 # include "latin1.h"
 # include "ucs4.h"
+# include "genre.h"
 # include "crc.h"
 # include "field.h"
 # include "util.h"
@@ -75,6 +76,8 @@ struct id3_tag *id3_tag_new(void)
  */
 void id3_tag_delete(struct id3_tag *tag)
 {
+  assert(tag);
+
   if (tag->refcount == 0) {
     id3_tag_clearframes(tag);
 
@@ -91,6 +94,8 @@ void id3_tag_delete(struct id3_tag *tag)
  */
 void id3_tag_addref(struct id3_tag *tag)
 {
+  assert(tag);
+
   ++tag->refcount;
 }
 
@@ -100,9 +105,45 @@ void id3_tag_addref(struct id3_tag *tag)
  */
 void id3_tag_delref(struct id3_tag *tag)
 {
-  assert(tag->refcount > 0);
+  assert(tag && tag->refcount > 0);
 
   --tag->refcount;
+}
+
+/*
+ * NAME:	tag->version()
+ * DESCRIPTION:	return the tag's original ID3 version number
+ */
+unsigned int id3_tag_version(struct id3_tag const *tag)
+{
+  assert(tag);
+
+  return tag->version;
+}
+
+/*
+ * NAME:	tag->options()
+ * DESCRIPTION:	get or set tag options
+ */
+int id3_tag_options(struct id3_tag *tag, int mask, int values)
+{
+  assert(tag);
+
+  if (mask)
+    tag->options = (tag->options & ~mask) | (values & mask);
+
+  return tag->options;
+}
+
+/*
+ * NAME:	tag->setlength()
+ * DESCRIPTION:	set the minimum rendered tag size
+ */
+void id3_tag_setlength(struct id3_tag *tag, id3_length_t length)
+{
+  assert(tag);
+
+  tag->paddedsize = length;
 }
 
 /*
@@ -112,6 +153,8 @@ void id3_tag_delref(struct id3_tag *tag)
 void id3_tag_clearframes(struct id3_tag *tag)
 {
   unsigned int i;
+
+  assert(tag);
 
   for (i = 0; i < tag->nframes; ++i) {
     id3_frame_delref(tag->frames[i]);
@@ -128,6 +171,8 @@ void id3_tag_clearframes(struct id3_tag *tag)
 int id3_tag_attachframe(struct id3_tag *tag, struct id3_frame *frame)
 {
   struct id3_frame **frames;
+
+  assert(tag && frame);
 
   frames = realloc(tag->frames, (tag->nframes + 1) * sizeof(*frames));
   if (frames == 0)
@@ -148,6 +193,8 @@ int id3_tag_attachframe(struct id3_tag *tag, struct id3_frame *frame)
 int id3_tag_detachframe(struct id3_tag *tag, struct id3_frame *frame)
 {
   unsigned int i;
+
+  assert(tag && frame);
 
   for (i = 0; i < tag->nframes; ++i) {
     if (tag->frames[i] == frame)
@@ -174,6 +221,8 @@ struct id3_frame *id3_tag_findframe(struct id3_tag const *tag,
 				    char const *id, unsigned int index)
 {
   unsigned int len, i;
+
+  assert(tag);
 
   if (id == 0 || *id == 0)
     return (index < tag->nframes) ? tag->frames[index] : 0;
@@ -242,6 +291,8 @@ signed long id3_tag_query(id3_byte_t const *data, id3_length_t length)
   unsigned int version;
   int flags;
   id3_length_t size;
+
+  assert(data);
 
   switch (tagtype(data, length)) {
   case TAGTYPE_ID3V1:
@@ -372,7 +423,7 @@ struct id3_tag *v1_parse(id3_byte_t const *data)
 	(genre < 0xff && v1_attachstr(tag, ID3_FRAME_GENRE, 0, genre) == -1) ||
 	v1_attachstr(tag, ID3_FRAME_COMMENT, comment, 0) == -1) {
       id3_tag_delete(tag);
-      return 0;
+      tag = 0;
     }
   }
 
@@ -563,18 +614,16 @@ struct id3_tag *v2_parse(id3_byte_t const *ptr)
       goto fail;
   }
 
+  if (0) {
+  fail:
+    id3_tag_delete(tag);
+    tag = 0;
+  }
+
   if (mem)
     free(mem);
 
   return tag;
-
- fail:
-  if (mem)
-    free(mem);
-
-  id3_tag_delete(tag);
-
-  return 0;
 }
 
 /*
@@ -587,6 +636,8 @@ struct id3_tag *id3_tag_parse(id3_byte_t const *data, id3_length_t length)
   unsigned int version;
   int flags;
   id3_length_t size;
+
+  assert(data);
 
   switch (tagtype(data, length)) {
   case TAGTYPE_ID3V1:
@@ -644,43 +695,219 @@ void v1_renderstr(struct id3_tag const *tag, char const *frameid,
 static
 id3_length_t v1_render(struct id3_tag const *tag, id3_byte_t *buffer)
 {
+  id3_byte_t data[128], *ptr;
   struct id3_frame *frame;
-  unsigned int number, i;
+  unsigned int i;
+  int genre = -1;
 
-  if (buffer == 0)
-    return 128;
+  ptr = data;
 
-  id3_render_immediate(&buffer, "TAG", 3);
+  id3_render_immediate(&ptr, "TAG", 3);
 
-  v1_renderstr(tag, ID3_FRAME_TITLE,   &buffer, 30);
-  v1_renderstr(tag, ID3_FRAME_ARTIST,  &buffer, 30);
-  v1_renderstr(tag, ID3_FRAME_ALBUM,   &buffer, 30);
-  v1_renderstr(tag, ID3_FRAME_YEAR,    &buffer,  4);
-  v1_renderstr(tag, ID3_FRAME_COMMENT, &buffer, 30);
+  v1_renderstr(tag, ID3_FRAME_TITLE,   &ptr, 30);
+  v1_renderstr(tag, ID3_FRAME_ARTIST,  &ptr, 30);
+  v1_renderstr(tag, ID3_FRAME_ALBUM,   &ptr, 30);
+  v1_renderstr(tag, ID3_FRAME_YEAR,    &ptr,  4);
+  v1_renderstr(tag, ID3_FRAME_COMMENT, &ptr, 30);
+
+  /* ID3v1.1 track number */
 
   frame = id3_tag_findframe(tag, ID3_FRAME_TRACK, 0);
   if (frame) {
-    number = id3_ucs4_getnumber(id3_field_getstrings(&frame->fields[1], 0));
-    if (number & 0xff) {
-      buffer[-2] = 0;
-      buffer[-1] = number;
+    unsigned int track;
+
+    track = id3_ucs4_getnumber(id3_field_getstrings(&frame->fields[1], 0));
+    if (track > 0 && track <= 0xff) {
+      ptr[-2] = 0;
+      ptr[-1] = track;
     }
   }
 
+  /* ID3v1 genre number */
+
   frame = id3_tag_findframe(tag, ID3_FRAME_GENRE, 0);
-  number = frame ?
-    id3_ucs4_getnumber(id3_field_getstrings(&frame->fields[1], 0)) : 0xff;
-  id3_render_int(&buffer, number, 1);
+  if (frame) {
+    unsigned int nstrings;
+
+    nstrings = id3_field_getnstrings(&frame->fields[1]);
+
+    for (i = 0; i < nstrings; ++i) {
+      genre = id3_genre_number(id3_field_getstrings(&frame->fields[1], i));
+      if (genre != -1)
+	break;
+    }
+
+    if (i == nstrings && nstrings > 0)
+      genre = ID3_GENRE_OTHER;
+  }
+
+  id3_render_int(&ptr, genre, 1);
 
   /* make sure the tag is not empty */
 
-  buffer -= 128;
-  for (i = 3; i < 127; ++i) {
-    if (buffer[i] != ' ')
+  if (genre == -1) {
+    for (i = 3; i < 127; ++i) {
+      if (data[i] != ' ')
+	break;
+    }
+
+    if (i == 127)
+      return 0;
+  }
+
+  if (buffer)
+    memcpy(buffer, data, 128);
+
+  return 128;
+}
+
+/*
+ * NAME:	v2_3_render()
+ * DESCRIPTION:	render a v2.3 ID3 tag for compatibility
+ * AUTHOR: Dominic Mazzoni
+ */
+
+#define ID3V2_3_TAG_VERSION 0x0300
+#define ID3V2_3_TAG_FLAG_KNOWNFLAGS 0xc0
+
+id3_length_t v2_3_render(struct id3_tag const *tag, id3_byte_t *buffer)
+{
+  id3_length_t size = 0;
+  id3_byte_t **ptr,
+    *header_ptr = 0, *tagsize_ptr = 0, *crc_ptr = 0, *frames_ptr = 0;
+  int flags, extendedflags;
+  unsigned int i;
+
+  assert(tag);
+
+  /* a tag must contain at least one (renderable) frame */
+
+  for (i = 0; i < tag->nframes; ++i) {
+    if (id3_frame_render(tag->frames[i], 0, 0) > 0)
       break;
   }
 
-  return (i == 127 && buffer[127] == 0xff) ? 0 : 128;
+  if (i == tag->nframes)
+    return 0;
+
+  ptr = buffer ? &buffer : 0;
+
+  /* get flags */
+
+  flags         = tag->flags         & ID3V2_3_TAG_FLAG_KNOWNFLAGS;
+  extendedflags = tag->extendedflags & ID3_TAG_EXTENDEDFLAG_KNOWNFLAGS;
+
+  extendedflags &= ~ID3_TAG_EXTENDEDFLAG_CRCDATAPRESENT;
+  if (tag->options & ID3_TAG_OPTION_CRC)
+    extendedflags |= ID3_TAG_EXTENDEDFLAG_CRCDATAPRESENT;
+
+  extendedflags &= ~ID3_TAG_EXTENDEDFLAG_TAGRESTRICTIONS;
+  if (tag->restrictions)
+    extendedflags |= ID3_TAG_EXTENDEDFLAG_TAGRESTRICTIONS;
+
+
+  extendedflags = 0;
+
+
+  flags &= ~ID3_TAG_FLAG_UNSYNCHRONISATION;
+  if (tag->options & ID3_TAG_OPTION_UNSYNCHRONISATION)
+    flags |= ID3_TAG_FLAG_UNSYNCHRONISATION;
+
+  flags &= ~ID3_TAG_FLAG_EXTENDEDHEADER;
+  if (extendedflags)
+    flags |= ID3_TAG_FLAG_EXTENDEDHEADER;
+
+  /* header */
+
+  if (ptr)
+    header_ptr = *ptr;
+
+  size += id3_render_immediate(ptr, "ID3", 3);
+  size += id3_render_int(ptr, ID3V2_3_TAG_VERSION, 2);
+  size += id3_render_int(ptr, flags, 1);
+
+  if (ptr)
+    tagsize_ptr = *ptr;
+
+  size += id3_render_syncsafe(ptr, 0, 4);
+
+  /* extended header */
+
+  if (flags & ID3_TAG_FLAG_EXTENDEDHEADER) {
+    id3_length_t ehsize = 0;
+    id3_byte_t *ehsize_ptr = 0;
+
+    if (ptr)
+      ehsize_ptr = *ptr;
+
+    ehsize += id3_render_syncsafe(ptr, 0, 4);
+    ehsize += id3_render_int(ptr, 1, 1);
+    ehsize += id3_render_int(ptr, extendedflags, 1);
+
+    if (extendedflags & ID3_TAG_EXTENDEDFLAG_TAGISANUPDATE)
+      ehsize += id3_render_int(ptr, 0, 1);
+
+    if (extendedflags & ID3_TAG_EXTENDEDFLAG_CRCDATAPRESENT) {
+      ehsize += id3_render_int(ptr, 5, 1);
+
+      if (ptr)
+        crc_ptr = *ptr;
+
+      ehsize += id3_render_syncsafe(ptr, 0, 5);
+    }
+
+    if (extendedflags & ID3_TAG_EXTENDEDFLAG_TAGRESTRICTIONS) {
+      ehsize += id3_render_int(ptr, 1, 1);
+      ehsize += id3_render_int(ptr, tag->restrictions, 1);
+    }
+
+    if (ehsize_ptr)
+      id3_render_syncsafe(&ehsize_ptr, ehsize, 4);
+
+    size += ehsize;
+  }
+
+  /* frames */
+
+  if (ptr)
+    frames_ptr = *ptr;
+
+  for (i = 0; i < tag->nframes; ++i)
+    size += id3_frame_render(tag->frames[i], ptr, tag->options);
+
+  /* padding */
+
+  if (!(flags & ID3_TAG_FLAG_FOOTERPRESENT)) {
+    if (size < tag->paddedsize)
+      size += id3_render_padding(ptr, 0, tag->paddedsize - size);
+    else if (tag->options & ID3_TAG_OPTION_UNSYNCHRONISATION) {
+      if (ptr == 0)
+	size += 1;
+      else {
+	if ((*ptr)[-1] == 0xff)
+	  size += id3_render_padding(ptr, 0, 1);
+      }
+    }
+  }
+
+  /* patch tag size and CRC */
+
+  if (tagsize_ptr)
+    id3_render_syncsafe(&tagsize_ptr, size - 10, 4);
+
+  if (crc_ptr) {
+    id3_render_syncsafe(&crc_ptr,
+			id3_crc_calculate(frames_ptr, *ptr - frames_ptr), 5);
+  }
+
+  /* footer */
+
+  if (flags & ID3_TAG_FLAG_FOOTERPRESENT) {
+    size += id3_render_immediate(ptr, "3DI", 3);
+    size += id3_render_binary(ptr, header_ptr + 3, 7);
+  }
+
+  return size;
 }
 
 /*
@@ -695,8 +922,13 @@ id3_length_t id3_tag_render(struct id3_tag const *tag, id3_byte_t *buffer)
   int flags, extendedflags;
   unsigned int i;
 
+  assert(tag);
+
   if (tag->options & ID3_TAG_OPTION_ID3V1)
     return v1_render(tag, buffer);
+
+  if (tag->options & ID3_TAG_OPTION_ID3V2_3)
+    return v2_3_render(tag, buffer);
 
   /* a tag must contain at least one (renderable) frame */
 
@@ -769,7 +1001,7 @@ id3_length_t id3_tag_render(struct id3_tag const *tag, id3_byte_t *buffer)
       ehsize += id3_render_int(ptr, 5, 1);
 
       if (ptr)
-	crc_ptr = *ptr;
+        crc_ptr = *ptr;
 
       ehsize += id3_render_syncsafe(ptr, 0, 5);
     }

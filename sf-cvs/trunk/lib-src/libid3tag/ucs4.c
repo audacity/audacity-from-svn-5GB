@@ -1,6 +1,6 @@
 /*
  * libid3tag - ID3 tag manipulation library
- * Copyright (C) 2000-2001 Robert Leslie
+ * Copyright (C) 2000-2003 Underbit Technologies, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: ucs4.c,v 1.1.1.1 2002-04-14 08:52:41 dmazzoni Exp $
+ * $Id: ucs4.c,v 1.2 2003-09-07 01:21:44 dmazzoni Exp $
  */
 
 # ifdef HAVE_CONFIG_H
@@ -109,7 +109,7 @@ id3_length_t id3_ucs4_utf8size(id3_ucs4_t const *ucs4)
     else if (*ucs4 <= 0x7fffffffL)
       size += 6;
     else
-      size += 2;  /* based on 0x000000b7 replacement char */
+      size += 2;  /* based on U+00B7 replacement char */
 
     ++ucs4;
   }
