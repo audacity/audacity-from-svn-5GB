@@ -281,6 +281,7 @@ void Px_CloseMixer(PxMixer *mixer)
       mixerClose((HMIXER)info->hInputMixer);
    if (info->hOutputMixer)
       mixerClose((HMIXER)info->hOutputMixer);
+   free( mixer );
 }
 
 /*
