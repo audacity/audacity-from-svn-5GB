@@ -57,7 +57,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSOUNDTOUCH], [
 
    dnl see if libresample is available locally
 
-   AC_CHECK_FILE(${srcdir}/lib-src/soundtouch/src/SoundTouch.h,
+   AC_CHECK_FILE(${srcdir}/lib-src/soundtouch/include/SoundTouch.h,
                  soundtouch_h_found="yes",
                  soundtouch_h_found="no")
 
