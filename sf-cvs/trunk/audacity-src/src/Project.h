@@ -74,8 +74,8 @@ class AudacityProject:public wxFrame,
 
    void OpenFile(wxString fileName);
    void Import(wxString fileName);
-   void Save(bool overwrite = true, bool fromSaveAs = false);
-   void SaveAs();
+   bool Save(bool overwrite = true, bool fromSaveAs = false);
+   bool SaveAs();
    void Clear();
 
    // Methods associated with menu items are in Menus.h
