@@ -38,7 +38,7 @@ bool EffectAmplify::Init()
       sampleType min, max;
       GetSamples((WaveTrack *)t, &start, &len);
       ((WaveTrack *)t)->GetMinMax(start, len, &min, &max);
-      float newpeak = (abs(min) > abs(max) ? abs(min) : abs(max)) / 32768.0;
+      float newpeak = (abs(min) > abs(max) ? abs(min) : abs(max)) / 32767.0;
       
       if (newpeak > peak)
          peak = newpeak;
