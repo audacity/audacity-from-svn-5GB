@@ -279,7 +279,8 @@ void ToolBar::SetButton(bool down, AButton * button)
 /// This draws the background of a toolbar
 void ToolBar::DrawBackground(wxDC &dc, int width, int height)
 {
-   #if defined(__WXMAC__)
+
+#if defined(__WXMAC__)
 
    if (mBackgroundWidth < width) {
       if (mBackgroundBitmap)
@@ -297,6 +298,8 @@ void ToolBar::DrawBackground(wxDC &dc, int width, int height)
 
    dc.SetPen(*wxBLACK_PEN);
 
+   height = mIdealSize.GetHeight();
+
    dc.DrawLine(27, 0, 27, height - 1);
    dc.DrawLine(55, 0, 55, height - 1);
    dc.DrawLine(83, 0, 83, 27);
@@ -306,10 +309,18 @@ void ToolBar::DrawBackground(wxDC &dc, int width, int height)
 
    dc.SetBrush(mBackgroundBrush);
    dc.SetPen(mBackgroundPen);
+
+   height = mIdealSize.GetHeight();
+
+   // JKC: This code draws a grid of lines around the first few
+   // buttons on the toolbar.
+   // This should be moved to ControlToolbar.
+   // Having it here means that it is also drawn in EditToolBar,
+   // which we probably don't want.  (same for the Mac 
+   // version in other half of #ifdef).
+
    dc.DrawRectangle(0, 0, width, height);
-
    dc.SetPen(*wxBLACK_PEN);
-
    dc.DrawLine(27, 0, 27, height - 1);
    dc.DrawLine(55, 0, 55, height - 1);
    dc.DrawLine(83, 0, 83, height - 1);

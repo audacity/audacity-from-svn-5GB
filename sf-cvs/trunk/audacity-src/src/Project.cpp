@@ -46,6 +46,7 @@
 #include <wx/mac/private.h>
 #else
 #include <wx/dragimag.h>
+#include <wx/generic/dragimgg.h>
 #endif
 
 #include <wx/event.h>
@@ -87,6 +88,9 @@
 TrackList *AudacityProject::msClipboard = new TrackList();
 double AudacityProject::msClipLen = 0.0;
 AudacityProject *AudacityProject::msClipProject = NULL;
+
+
+const int grabberWidth=10;
 
 #ifdef __WXMAC__
 # ifndef __UNIX__
@@ -410,9 +414,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                        wxSize(width - 10 - sbarSpaceWidth, h));
       mToolBarArray.Add((ToolBar *) tb);
 
-      top += h + 1;
-      height -= h + 1;
-      mTotalToolBarHeight += h;
+//      top += h + 1;
+//      height -= h + 1;
+//      mTotalToolBarHeight += h;
    }
 
 #if USE_PORTMIXER
@@ -424,9 +428,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                          wxSize(width - 10 - sbarSpaceWidth, h));
          mToolBarArray.Add((ToolBar *) etb);
 
-         top += h + 1;
-         height -= h + 1;
-         mTotalToolBarHeight += h;
+//         top += h + 1;
+//         height -= h + 1;
+//         mTotalToolBarHeight += h;
       }
    }
 #endif
@@ -439,11 +443,15 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                         wxSize(width - 10 - sbarSpaceWidth, h));
          mToolBarArray.Add((ToolBar *) etb);
 
-         top += h + 1;
-         height -= h + 1;
-         mTotalToolBarHeight += h;
+//         top += h + 1;
+//         height -= h + 1;
+//         mTotalToolBarHeight += h;
       }
    }
+
+   LayoutToolBars();
+   height -= mTotalToolBarHeight;
+   top     = mTotalToolBarHeight;
 
    // Fix the sliders on the mixer toolbar so that the tip windows
    // actually pop-up on top of everything else.  Sorry for the hack -
@@ -851,59 +859,41 @@ void AudacityProject::FixScrollbars()
 
 void AudacityProject::HandleResize()
 {
-   if (mTrackPanel) {
-      int left = 0, top = 0;
-      int width, height;
-      GetClientSize(&width, &height);
-      //Deal with the ToolBars 
-      int toolbartop, toolbarbottom, toolbarheight;
-      unsigned int i;
+   if (!mTrackPanel) 
+      return;
 
-      
-      //This adjust the initial toolbar offset, allowing
-      //the horizontal lines between toolbars and menus to show up.
-#if defined __WXMSW__
-	int h = 1;
-#else
-	int h = 0;
-#endif
-	  
-	  int ptop = 0;
+   int h;
+   int left = 0, top = 0;
+   int width, height;
+   GetClientSize(&width, &height);
+     
+	int ptop = 0;
 
-      for (i = 0; i < mToolBarArray.GetCount(); i++) {
-         toolbartop = h;
-         toolbarheight = mToolBarArray[i]->GetHeight();
-         toolbarbottom = toolbartop + toolbarheight;
-         h = toolbarbottom;
+   LayoutToolBars();
+   h = mTotalToolBarHeight;
 
-         mToolBarArray[i]->SetSize(10, toolbartop, width - 10,
-                                   toolbarheight);
-         h += 1;
-      }
+   top += h + ptop;
+   height -= h + ptop;
+   int sh = GetStatusHeight();
 
-      top += h + ptop;
-      height -= h + ptop;
-      int sh = GetStatusHeight();
+   mStatus->SetSize(0, top + height - sh, width, sh);
+   height -= sh;
 
-      mStatus->SetSize(0, top + height - sh, width, sh);
-      height -= sh;
+   mTrackPanel->SetSize(left, top,
+                        width - sbarSpaceWidth,
+                        height - sbarSpaceWidth);
 
-      mTrackPanel->SetSize(left, top,
-                           width - sbarSpaceWidth,
-                           height - sbarSpaceWidth);
+   int hoffset = mTrackPanel->GetLeftOffset() - 1;
+   int voffset = mTrackPanel->GetRulerHeight();
 
-      int hoffset = mTrackPanel->GetLeftOffset() - 1;
-      int voffset = mTrackPanel->GetRulerHeight();
-
-      mHsbar->SetSize(hoffset, top + height - sbarSpaceWidth,
-                      width - hoffset - sbarSpaceWidth + sbarExtraLen,
-                      sbarControlWidth);
-      mVsbar->SetSize(width - sbarSpaceWidth, top + voffset - sbarExtraLen,
-                      sbarControlWidth,
-                      height - sbarSpaceWidth - voffset +
-                      2 * sbarExtraLen);
-      FixScrollbars();
-   }
+   mHsbar->SetSize(hoffset, top + height - sbarSpaceWidth,
+                   width - hoffset - sbarSpaceWidth + sbarExtraLen,
+                   sbarControlWidth);
+   mVsbar->SetSize(width - sbarSpaceWidth, top + voffset - sbarExtraLen,
+                   sbarControlWidth,
+                   height - sbarSpaceWidth - voffset +
+                   2 * sbarExtraLen);
+   FixScrollbars();
 }
 
 
@@ -1314,6 +1304,61 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    UpdateMenus();
 }
 
+/// DecorateToolBar draws the grabber handle to the left of the toolbar.
+/// It also draws a line under each toolbar.
+/// @param dc - the device context to draw to
+/// @param iToolBar - index in toolbar array of toolbar to decorate.
+void AudacityProject::DecorateToolBar( wxPaintDC & dc, int iToolBar )
+{
+   AColor::Medium(&dc, false);
+   unsigned int j;
+
+   int toolbarwidth;
+   int toolbarheight;
+   int toolbarleft;
+   int toolbartop;
+   int toolbarbottom;
+
+   mToolBarArray[iToolBar]->GetSize(&toolbarwidth, &toolbarheight);
+   mToolBarArray[iToolBar]->GetPosition(&toolbarleft, &toolbartop );
+   toolbarbottom = toolbartop + toolbarheight;
+
+   //Draw a rectangle around the "grab-bar"
+   wxRect r;
+   r.x = toolbarleft-grabberWidth;
+   r.y = toolbartop;
+   r.width = grabberWidth;
+   r.height = toolbarheight;
+   dc.DrawRectangle(r);
+
+   // Draw little bumps to the left of the toolbar to
+   // make it a "grab-bar".
+
+   //adjust min and max so that they aren't too close to the edges
+   unsigned int minbump = (toolbarheight % 2 == 0) ? 3 : 4;
+   unsigned int maxbump =
+       (toolbarheight % 2 == 0) ? toolbarheight - 3 : toolbarheight - 4;
+
+   AColor::Light(&dc, false);
+   for (j = minbump; j < maxbump; j += 4)
+      dc.DrawLine(r.x+3, toolbartop + j, r.x+6, toolbartop + j);
+
+   AColor::Dark(&dc, false);
+   for (j = minbump + 1; j < maxbump + 1; j += 4)
+      dc.DrawLine(r.x+3, toolbartop + j, r.x+6, toolbartop + j);
+
+   //Draw a black line to the right of the grab-bar
+   dc.SetPen(*wxBLACK_PEN);
+   dc.DrawLine(r.x+9, toolbartop, r.x+9, toolbarbottom);
+
+   //Draw some more lines for Windows (tm), along the top and left side 
+   //of the grab-bar
+#ifdef __WXMSW__
+   dc.DrawLine(r.x, toolbartop, r.x+grabberWidth, toolbartop);
+   dc.DrawLine(r.x, toolbartop, r.x, toolbarbottom);
+#endif
+   dc.DrawLine(r.x, toolbarbottom, r.x+toolbarwidth+grabberWidth, toolbarbottom);
+}
 
 void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
 {
@@ -1321,60 +1366,19 @@ void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
 
    int top = 0;
    int h = 0;
-   unsigned int i, j;
-   int toolbartop, toolbarbottom, toolbarheight;
-   wxRect r;
+   unsigned int i;
+
+   //wxRect r;
 
    int width, height;
    GetClientSize(&width, &height);
 
    //Deal with the ToolBars 
    for (i = 0; i < mToolBarArray.GetCount(); i++) {
-
-   
-	  AColor::Medium(&dc, false);
-      toolbartop = h;
-	  toolbarheight = mToolBarArray[i]->GetHeight();
-      h += toolbarheight;
-      toolbarbottom = h;
-
-      //Draw a rectangle beneath the "grab-bar"
-      r.x = 0;
-      r.y = toolbartop;
-      r.width = 10;
-      r.height = toolbarheight;
-      dc.DrawRectangle(r);
-
-      // Draw little bumps to the left of the toolbar to
-      // make it a "grab-bar".
-
-      //adjust min and max so that they aren't too close to the edges
-      unsigned int minbump = (toolbarheight % 2 == 0) ? 3 : 4;
-      unsigned int maxbump =
-          (toolbarheight % 2 == 0) ? toolbarheight - 3 : toolbarheight - 4;
-
-      AColor::Light(&dc, false);
-      for (j = minbump; j < maxbump; j += 4)
-         dc.DrawLine(3, toolbartop + j, 6, toolbartop + j);
-
-      AColor::Dark(&dc, false);
-      for (j = minbump + 1; j < maxbump + 1; j += 4)
-         dc.DrawLine(3, toolbartop + j, 6, toolbartop + j);
-
-      //Draw a black line to the right of the grab-bar
-      dc.SetPen(*wxBLACK_PEN);
-      dc.DrawLine(9, toolbartop, 9, toolbarbottom);
-	
-	  //Draw some more lines for Windows (tm), along the top and left side 
-	  //of the grab-bar
-#ifdef __WXMSW__
-	  dc.DrawLine(0, toolbartop, 10, toolbartop);
-	  dc.DrawLine(0, toolbartop, 0, toolbarbottom);
-#endif
-      dc.DrawLine(0, toolbarbottom, width, toolbarbottom);
-      h++;
+      DecorateToolBar( dc, i );
    }
 
+   h=mTotalToolBarHeight; 
    //Now, h is equal to the total height of all the toolbars
    top += h;
    height -= h;
@@ -1418,7 +1422,119 @@ bool AudacityProject::IsActive()
    return mActive;
 }
 
-//This creates a toolbar of type t in the ToolBars array
+
+
+#if defined __WXMSW__
+	const int extraSpace = 1;
+#else
+	const int extraSpace = 0;
+#endif
+
+/// FlowLayout places toolbars and returns the number of the first unplaced toolbar.
+/// This function calls itself recursively to fill-in space if possible.
+///  @param i - the index of the first toolbar to place.
+///  @param x - top left x of region to place toolbars in.
+///  @param y - top left y of region to place toolbars in.
+///  @param width  - width  of region to palce toolbars in.
+///  @param height - height of region to palce toolbars in.
+int AudacityProject::FlowLayout( int i, int x, int y, int width, int height )
+{
+   int lastToolBarInRow;
+   while( true) {
+
+      wxSize s;
+      bool bFinishedSection;
+      // IF no more toolbars, THEN finished.
+      if( i >= (int)mToolBarArray.GetCount() )
+         bFinishedSection=true;
+      // ELSE IF not enough space, THEN finished.
+      else {
+         s = mToolBarArray[i]->GetIdealSize();
+         bFinishedSection = ( (s.GetWidth()+ grabberWidth) > width) || ( s.GetHeight() > height);
+      }
+
+      //IF finished, THEN (may adjust last toolbar size) and return.
+      if( bFinishedSection ) {
+         // ---- Start-height-adjustment
+         // JKC: All this logic does is to sometimes increase the height of 
+         // a toolbar so that the darker grey background doesn't show through.
+         // This works for two column layouts such as any Audacity will generate.
+         if((x>0) && ( i>0 )){
+            int barX, barY;
+            mToolBarArray[i-1]->GetPosition( &barX, &barY );
+            if( (barX - grabberWidth) == x )
+            {
+               int barWidth, barHeight;
+               mToolBarArray[i-1]->GetSize( &barWidth, &barHeight );
+               mToolBarArray[i-1]->SetSize( barWidth,  barHeight + height);
+//             wxLogDebug("Toolbar %i has extra height %i", i-1, barHeight + height );
+            }
+         }
+         // ---- End-height-adjustment
+         return i; //return the index of the first unplaced toolbar.
+      }
+
+      // Thank goodness, there is room for the toolbar!
+      // So, place this tool bar.
+      mToolBarArray[i]->SetSize(x+grabberWidth,y,s.GetWidth(),s.GetHeight());
+      // Move on to next toolbar and attempt to place it in the space to the right 
+      // of the one just placed.
+      lastToolBarInRow = i;
+      i++;
+      // Here comes a recursive call, doing layout in a smaller region.
+      i = FlowLayout( i, x+grabberWidth+s.GetWidth(), y, 
+            width - (grabberWidth+s.GetWidth()), s.GetHeight());
+      // Adjust the width of the last toolbar in each row to take up the remaining area.
+      if( i==(lastToolBarInRow+1)){
+         mToolBarArray[lastToolBarInRow]->SetSize(x+grabberWidth,y,width-grabberWidth, s.GetHeight());
+      }
+
+      y+=s.GetHeight()+extraSpace;
+      height-=s.GetHeight()+extraSpace;
+      // mTotalToolBarHeight will end up with the next free y position.
+      mTotalToolBarHeight = y;
+   }
+   return i;
+}
+
+/// BoxLayout for the toolbars is simpler code than FlowLayout.
+/// This is the 'classic' style where the toolbars are one above the other.
+void AudacityProject::BoxLayout( int width )
+{
+   int i=0;
+   int x = 0;
+   int y = extraSpace;
+   while(i < (int)mToolBarArray.GetCount() ){
+      wxSize s = mToolBarArray[i]->GetIdealSize();
+      // Place this tool bar.
+      mToolBarArray[i]->SetSize(x+grabberWidth, y, width-grabberWidth,s.GetHeight());
+      i++;
+      y+=s.GetHeight()+extraSpace;
+   }
+   mTotalToolBarHeight = y;
+}
+
+/// LayoutToolBars decides where to put the toolbars.
+void AudacityProject::LayoutToolBars()
+{
+   //Get the size of the current project window
+   int width, height;
+   GetSize(&width, &height);
+   mTotalToolBarHeight = extraSpace;
+
+   // Start from coordinate (0,extraspace) to avoid drawing over the 
+   // extra line under the menu bar in windoze.
+   int nPlaced=FlowLayout( 0, 0, extraSpace, width, height );
+
+   // FlowLayout will fail if any of the toolbars is too wide 
+   // for the window.
+   // IF we couldn't place all toolbars using flow layout, 
+   // THEN use BoxLayout.
+   if( nPlaced < (int)mToolBarArray.GetCount())
+      BoxLayout( width );
+}
+
+///LoadToolBar creates a toolbar of type t in the ToolBars array
 void AudacityProject::LoadToolBar(enum ToolBarType t)
 {
    //First, go through ToolBarArray and determine the current 
@@ -1548,6 +1664,25 @@ bool AudacityProject::IsToolBarLoaded(enum ToolBarType t)
    return false;
 }
 
+
+/// GetGrabberFromEvent converts an x,y coordinate into
+/// a toolbar/toolbar-grabber number or -1 if hit-test fails.
+int AudacityProject::GetGrabberFromEvent(wxMouseEvent & event)
+{
+   if( event.m_y > mTotalToolBarHeight )
+      return -1;
+
+   for(int i=0;i<(int)mToolBarArray.GetCount();i++)
+   {
+      wxRect r = mToolBarArray[i]->GetRect();
+      if(( r.y < event.m_y )  && ( event.m_y < (r.y+r.height) ) &&
+         ( (r.x- grabberWidth) < event.m_x) && (event.m_x < r.x ))
+         return i;
+   }
+   return -1;
+}
+
+
 void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 {
    if (event.ButtonDown())
@@ -1563,82 +1698,57 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
    //mouse is relative to the screen
    wxPoint mouse = ClientToScreen(hotspot);
 
+   int i;
    //See if we need to drag a toolbar off the window
-   if (event.ButtonDown()
-       && !mDrag && event.m_x < 10 && event.m_y < mTotalToolBarHeight) {
-
-      //Now, see which toolbar we need to drag
-      int h = 0;
-      unsigned int i = 0;
-      while (i < mToolBarArray.GetCount()) {
-         h += mToolBarArray[i]->GetHeight() + 1;
-
-         if (event.m_y < h)
-            break;
-         i++;
-      }
-
+   if (event.ButtonDown() && !mDrag && ((i=GetGrabberFromEvent( event )) >=0 ))
+      {
       //You want the hotspot to be relative to the toolbar being clicked.
-      //So, subtract from the y coordinate the height of the toolbars above it.
-      //But, to do this you need to subtract the height of the last toolbar
-      //you looked at in the above loop
+      int x,y;
+      mToolBarArray[i]->GetPosition( &x, &y );
+     
+      int width, height;
+      wxSize s = mToolBarArray[i]->GetIdealSize();
 
-      hotspot.y -= (h - mToolBarArray[i]->GetHeight() -1);
-      
-      if (i >= mToolBarArray.GetCount()) {
-         //This shouldn't really happen, except if the click is on
-         //the border--which might occur for some platform-specific formatting
-      } 
-      else 
-	{
+      mToolBarArray[i]->GetSize(&width, &height);
 
-         int width, height;
-         wxSize s = mToolBarArray[i]->GetIdealSize();
+      //To enhance performance, these toolbar bitmaps could be pre-loaded
+      //Right now, they are not.
 
-         mToolBarArray[i]->GetSize(&width, &height);
+      //Only get as much of the toolbar image as the ideal size is
+      width = (width > s.x) ? s.x : width;
+      height = (height > s.y ) ? s.y : height;
 
+      wxClientDC dc(this);
+      //Make the new bitmap a bit bigger
+      wxBitmap *bitmap = new wxBitmap((width + 2), (height + 2));
 
-         //To enhance performance, these toolbar bitmaps could be pre-loaded
-         //Right now, they are not.
+      wxMemoryDC *memDC = new wxMemoryDC();
+      memDC->SelectObject(*bitmap);
 
-         //Only get as much of the toolbar image as the ideal size is
-         width = (width > s.x) ? s.x : width;
+      //Draw a black box on perimeter
+      memDC->SetPen(*wxBLACK_PEN);
+      memDC->DrawRectangle(0, 0, width + 2, height + 2);
 
-         wxClientDC dc(this);
-         //Make the new bitmap a bit bigger
-         wxBitmap *bitmap = new wxBitmap((width + 2), (height + 2));
+      //copy an image of the toolbar into the box
+      memDC->Blit(1, 1, width, height, &dc, x, y - 1);
+      delete memDC;
 
-         wxMemoryDC *memDC = new wxMemoryDC();
-         memDC->SelectObject(*bitmap);
+      mDrag = new wxGenericDragImage(*bitmap);
+      delete bitmap;
 
-         //Draw a black box on perimeter
-         memDC->SetPen(*wxBLACK_PEN);
-         memDC->DrawRectangle(0, 0, width + 2, height + 2);
+      hotspot = hotspot - wxPoint(x,y);
 
-         //copy an image of the toolbar into the box
-         memDC->Blit(1, 1, width, height, &dc, 0, h - height - 1);
-         delete memDC;
+	   mDrag->BeginDrag(hotspot, this, true);
+      mDrag->Move(hotspot);
+      mDrag->Show();
+      mToolBarHotspot = hotspot;
 
-         mDrag = new wxDragImage(*bitmap);
-         delete bitmap;
-
-
-         hotspot = hotspot - wxPoint(1,1-h+height);
-
-	 mDrag->BeginDrag(mouse - hotspot, this, true);
-         //Adjust a little because the bitmap is bigger than the toolbar
-
-         mDrag->Move(mouse);
-         mDrag->Show();
-         mToolBarHotspot = hotspot;
-
-         mDraggingToolBar = mToolBarArray[i]->GetType();
-      }
+      mDraggingToolBar = mToolBarArray[i]->GetType();
    }
 
    else if (event.Dragging() && mDrag) {
 
-     mDrag->Move(mouse - wxPoint(1, 1) );//+ mToolBarHotspot);
+     mDrag->Move(hotspot - wxPoint(1, 1) );//+ mToolBarHotspot);
 
    } else if (event.ButtonUp() && mDrag) {
 
@@ -1663,8 +1773,6 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
          gMixerToolBarStub->ShowWindowedToolBar(&mouse);
          gMixerToolBarStub->UnloadAll();
          break;
-
-
 
       case NoneID:
       default:

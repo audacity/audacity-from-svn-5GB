@@ -241,8 +241,8 @@ void EditToolBar::OnPaint(wxPaintEvent & evt)
    DrawBackground(dc, width, height);
 
    dc.SetPen(*wxBLACK_PEN);
-   for(int i=0; i<mNumDividers; i++)
-      dc.DrawLine(mDividers[i], 0, mDividers[i], height);
+//   for(int i=0; i<mNumDividers; i++)
+//      dc.DrawLine(mDividers[i], 0, mDividers[i], mIdealSize.GetHeight());
 }
 
 void EditToolBar::EnableDisableButtons()
