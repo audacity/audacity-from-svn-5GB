@@ -257,7 +257,7 @@ void LWSlider::Init(wxWindow * parent,
    wxColour selBkgnd = dc->GetPen().GetColour();
 
    wxImage *backgroundImage =
-      CreateSysBackground(mWidth, mHeight, 3, bkgnd);
+      CreateSysBackground(mWidth, mHeight, 0, bkgnd);
    wxBitmap backgroundBitmap =
       backgroundImage->ConvertToBitmap();
    wxImage *thumbImage = new wxImage(wxBitmap(SliderThumb).ConvertToImage());
