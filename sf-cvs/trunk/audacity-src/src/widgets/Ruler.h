@@ -98,6 +98,10 @@ class Ruler {
    // labeled (which may or may not be the edge).
    void SetLabelEdges(bool labelEdges);
 
+   // Makes a vertical ruler hug the left side (instead of right)
+   // and a horizontal ruler hug the top (instead of bottom)
+   void SetFlip(bool flip);
+
    // Good defaults are provided, but you can override here
    void SetFonts(wxFont& minorFont, wxFont& majorFont);
 
@@ -151,6 +155,7 @@ class Ruler {
    bool         mLabelEdges;
    RulerFormat  mFormat;
    bool         mLog;
+   bool         mFlip;
    wxString     mUnits;
 };
 

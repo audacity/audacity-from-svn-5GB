@@ -38,6 +38,8 @@ class Envelope {
 
    virtual ~ Envelope();
 
+   void SetInterpolateDB(bool db);
+
    void Flatten(double value);
 
    void Mirror(bool mirror);
@@ -96,6 +98,8 @@ class Envelope {
    double mInitialVal;
    bool mUpper;
    bool mIsDeleting;
+
+   bool mDB;
 
    bool mDirty;
 };

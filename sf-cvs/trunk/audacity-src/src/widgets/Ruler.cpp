@@ -29,6 +29,7 @@ Ruler::Ruler()
    mSpacing = 6;
    mHasSetSpacing = false;
    mFormat = RealFormat;
+   mFlip = false;
    mLog = false;
    mUnits = "";
 
@@ -135,6 +136,19 @@ void Ruler::SetLabelEdges(bool labelEdges)
 
    if (mLabelEdges != labelEdges) {
       mLabelEdges = labelEdges;
+      
+      Invalidate();
+   }
+}
+
+void Ruler::SetFlip(bool flip)
+{
+   // If this is true, the edges of the ruler will always
+   // receive a label.  If not, the nearest round number is
+   // labeled (which may or may not be the edge).
+
+   if (mFlip != flip) {
+      mFlip = flip;
       
       Invalidate();
    }
@@ -423,7 +437,10 @@ void Ruler::Tick(int pos, double d, bool major)
       if (strPos + strW >= mLength)
          strPos = mLength - strW;
       strLeft = mLeft + strPos;
-      strTop = mBottom - strH - 6;
+      if (mFlip)
+         strTop = mTop + 4;
+      else
+         strTop = mBottom - strH - 6;
    }
    else {
       strLen = strH;
@@ -433,7 +450,10 @@ void Ruler::Tick(int pos, double d, bool major)
       if (strPos + strH >= mLength)
          strPos = mLength - strH;
       strTop = mTop + strPos;
-      strLeft = mRight - strW - 6;
+      if (mFlip)
+         strLeft = mLeft + 4;
+      else
+         strLeft = mRight - strW - 6;
    }
 
    // See if any of the pixels we need to draw this
@@ -566,12 +586,22 @@ void Ruler::Draw(wxDC& dc)
    for(i=0; i<mNumMajor; i++) {
       int pos = mMajorLabels[i].pos;
 
-      if (mOrientation == wxHORIZONTAL)
-         mDC->DrawLine(mLeft + pos, mBottom - 4,
-                       mLeft + pos, mBottom);
-      else
-         mDC->DrawLine(mRight - 4, mTop + pos,
-                       mRight, mTop + pos);
+      if (mOrientation == wxHORIZONTAL) {
+         if (mFlip)
+            mDC->DrawLine(mLeft + pos, mTop,
+                          mLeft + pos, mTop + 4);
+         else
+            mDC->DrawLine(mLeft + pos, mBottom - 4,
+                          mLeft + pos, mBottom);
+      }
+      else {
+         if (mFlip)
+            mDC->DrawLine(mLeft, mTop + pos,
+                          mLeft + 4, mTop + pos);
+         else
+            mDC->DrawLine(mRight - 4, mTop + pos,
+                          mRight, mTop + pos);
+      }
 
       if (mMajorLabels[i].text)
          mDC->DrawText(mMajorLabels[i].text,
@@ -584,12 +614,22 @@ void Ruler::Draw(wxDC& dc)
    for(i=0; i<mNumMinor; i++) {
       int pos = mMinorLabels[i].pos;
 
-      if (mOrientation == wxHORIZONTAL)
-         mDC->DrawLine(mLeft + pos, mBottom - 2,
-                       mLeft + pos, mBottom);
-      else
-         mDC->DrawLine(mRight - 2, mTop + pos,
-                       mRight, mTop + pos);
+      if (mOrientation == wxHORIZONTAL) {
+         if (mFlip)
+            mDC->DrawLine(mLeft + pos, mTop,
+                          mLeft + pos, mTop + 2);
+         else
+            mDC->DrawLine(mLeft + pos, mBottom - 2,
+                          mLeft + pos, mBottom);
+      }
+      else {
+         if (mFlip)
+            mDC->DrawLine(mLeft, mTop + pos,
+                          mLeft + 2, mTop + pos);
+         else
+            mDC->DrawLine(mRight - 2, mTop + pos,
+                          mRight, mTop + pos);
+      }
 
       if (mMinorLabels[i].text)
          mDC->DrawText(mMinorLabels[i].text,

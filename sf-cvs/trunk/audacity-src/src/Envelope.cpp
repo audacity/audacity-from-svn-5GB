@@ -25,6 +25,8 @@ Envelope::Envelope()
    mOffset = 0.0;
    mTrackLen = 1000000000.0;
 
+   mDB = true;
+
    Insert(0.0, 1.0);
    Insert(1000000000.0, 1.0);
 
@@ -39,6 +41,11 @@ Envelope::Envelope()
 Envelope::~Envelope()
 {
    WX_CLEAR_ARRAY(mEnv)
+}
+
+void Envelope::SetInterpolateDB(bool db)
+{
+   mDB = db;
 }
 
 void Envelope::Mirror(bool mirror)
@@ -510,53 +517,10 @@ void Envelope::SetTrackLen(double trackLen)
 // Accessors
 double Envelope::GetValue(double t) const
 {
-   t -= mOffset;
+   double temp;
 
-   int len = mEnv.Count();
-
-   if (len <= 0 || t < mEnv[0]->t || t > mEnv[len - 1]->t)
-      return 1.0;
-
-   // binary search
-   int lo = 0;
-   int hi = len - 1;
-   while (hi > (lo + 1)) {
-      int mid = (lo + hi) / 2;
-      if (t < mEnv[mid]->t)
-         hi = mid;
-      else
-         lo = mid;
-   }
-
-   double t0 = mEnv[lo]->t;
-   double v0 = log10(mEnv[lo]->val);
-   double t1 = mEnv[hi]->t;
-   double v1 = log10(mEnv[hi]->val);
-
-   // Special case for the log of zero
-   if (mEnv[lo]->val <= 0.0)
-      v0 = -4.6;                // This corresponds to the log10 of 1/32768
-   if (mEnv[hi]->val <= 0.0)
-      v1 = -4.6;
-
-   if (t == t0) return pow(10.0, v0);
-   if (t == t1) return pow(10.0, v1);
-
-   // Interpolate in logspace
-
-   double dt = (t1 - t0);
-
-   // This should never happen, but we certainly
-   // don't want to divide by zero...
-   if (dt <= 0.0) {
-      wxASSERT(0);
-      return 1.0;
-   }
-
-   double to = t - t0;
-   double v = (v0 * (dt - to) + v1 * to) / dt;
-
-   return pow(10.0, v);
+   GetValues(&temp, 1, t, 1.0);
+   return temp;
 }
 
 void Envelope::GetValues(double *buffer, int bufferLen,
@@ -592,17 +556,24 @@ void Envelope::GetValues(double *buffer, int bufferLen,
          }
 
          tprev = mEnv[lo]->t;
-         vprev = log10(mEnv[lo]->val);
          tnext = mEnv[hi]->t;
-         vnext = log10(mEnv[hi]->val);
 
-         // Special case for the log of zero
-         if (mEnv[lo]->val <= 0.0)
-            vprev = -4.6;       // This corresponds to the log10 of 1/32768
-         if (mEnv[hi]->val <= 0.0)
-            vnext = -4.6;
+         if (mDB) {
+            vprev = log10(mEnv[lo]->val);
+            vnext = log10(mEnv[hi]->val);
 
-         // Interpolate in logspace
+            // Special case for the log of zero
+            if (mEnv[lo]->val <= 0.0)
+               vprev = -4.6;       // This corresponds to the log10 of 1/32768
+            if (mEnv[hi]->val <= 0.0)
+               vnext = -4.6;
+         }
+         else {
+            vprev = mEnv[lo]->val;
+            vnext = mEnv[hi]->val;
+         }
+
+         // Interpolate
 
          double dt = (tnext - tprev);
 
@@ -613,14 +584,25 @@ void Envelope::GetValues(double *buffer, int bufferLen,
          else
             v = tnext;
 
-         buffer[b] = pow(10.0, v);
-
-         if (dt > 0.0)
-            vstep = pow(10.0, (vnext - vprev) * tstep / dt);
-         else
-            vstep = 1.0;
+         if (mDB) {
+            buffer[b] = pow(10.0, v);
+            if (dt > 0.0)
+               vstep = pow(10.0, (vnext - vprev) * tstep / dt);
+            else
+               vstep = 1.0;
+         }
+         else {
+            buffer[b] = v;
+            if (dt > 0.0)
+               vstep = (vnext - vprev) * tstep / dt;
+            else
+               vstep = 0.0;
+         }
       } else {
-         buffer[b] = buffer[b - 1] * vstep;
+         if (mDB)
+            buffer[b] = buffer[b - 1] * vstep;
+         else
+            buffer[b] = buffer[b - 1] + vstep;
       }
 
       t += tstep;
