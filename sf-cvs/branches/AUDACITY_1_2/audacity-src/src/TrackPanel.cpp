@@ -4305,7 +4305,7 @@ void TrackPanel::OnRateOther(wxEvent &event)
    Refresh(false);
 }
 
-void TrackPanel::OnSetTimeTrackRange()
+void TrackPanel::OnSetTimeTrackRange(wxEvent &event)
 {
    TimeTrack *t = (TimeTrack*)mPopupMenuTarget;
 
