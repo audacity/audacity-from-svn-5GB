@@ -1503,7 +1503,7 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
 			wxSize(width - 10, h));
      
      
-     mToolBarArray.Insert(toolbar, 1);
+     mToolBarArray.Add(toolbar);
      break;
      
      
