@@ -210,10 +210,8 @@ class TrackPanel:public wxWindow {
    int mZoomStart;
    int mZoomEnd;
 
-   double TrackPanel::ZoomBorder(int pos, int x) const
-   {
-     return mViewInfo->h + ((pos - x) / mViewInfo->zoom);  
-   }
+   double PositionToTime(int mouseXCoordinate,
+                         int trackLeftEdge) const;
 
    int mInitialTrackHeight;
 
