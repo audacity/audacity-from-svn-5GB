@@ -59,7 +59,8 @@ LabelTrack *TrackFactory::NewLabelTrack()
 LabelTrack::LabelTrack(DirManager * projDirManager):
    Track(projDirManager),
    mIsAdjustingLabel(false),
-   mAdjustingEdge(0)
+   mMouseOverLabelLeft(0),
+   mMouseOverLabelRight(0)
 {
    InitColours();
    SetName(_("Label Track"));
@@ -75,8 +76,8 @@ LabelTrack::LabelTrack(DirManager * projDirManager):
 LabelTrack::LabelTrack(const LabelTrack &orig) :
    Track(orig),
    mIsAdjustingLabel(false),
-   mAdjustingEdge(0)
-   
+   mMouseOverLabelLeft(0),
+   mMouseOverLabelRight(0)
 {
    InitColours();
 
@@ -344,7 +345,7 @@ void LabelStruct::DrawLines( wxDC & dc, wxRect & r)
 /// DrawGlyphs draws the wxIcons at the start and end of a label.
 ///   @param  dc the device context
 ///   @param  r  the LabelTrack rectangle.
-void LabelStruct::DrawGlyphs( wxDC & dc, wxRect & r)
+void LabelStruct::DrawGlyphs( wxDC & dc, wxRect & r, int GlyphLeft, int GlyphRight)
 {
    if (y<0) 
       return;
@@ -352,11 +353,11 @@ void LabelStruct::DrawGlyphs( wxDC & dc, wxRect & r)
    const int yStart=y-LabelTrack::mIconHeight/2;
 
    if((x  >= r.x) && (x  <= (r.x+r.width)))
-      dc.DrawIcon( LabelTrack::mBoundaryGlyphs[0], x-xHalfWidth,yStart );
+      dc.DrawIcon( LabelTrack::mBoundaryGlyphs[GlyphLeft], x-xHalfWidth,yStart );
    // The extra test here suppresses right hand markers when they overlap
    // the left hand marker (e.g. zoomed out) or are to the left.
    if((x1 >= r.x) && (x1 <= (r.x+r.width)) && (x1>x+LabelTrack::mIconWidth))
-      dc.DrawIcon( LabelTrack::mBoundaryGlyphs[1], x1-xHalfWidth,yStart );
+      dc.DrawIcon( LabelTrack::mBoundaryGlyphs[GlyphRight], x1-xHalfWidth,yStart );
 }
 
 
@@ -491,21 +492,33 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
 
    dc.SetTextForeground(wxColour(0, 0, 0));
    dc.SetBackgroundMode(wxTRANSPARENT);
-   dc.SetBrush(mSelectedBrush);
+   dc.SetBrush(mTextNormalBrush);
    dc.SetPen(mLabelSurroundPen);
 
    const int nLabels = (int)mLabels.Count();
+   int GlyphLeft;
+   int GlyphRight;
    // Now we draw the various items in this order,
    // so that the correct things overpaint each other.
    for (i = 0; i < nLabels; i++) 
+   {
       mLabels[i]->DrawLines( dc, r );
+   }
    for (i = 0; i < nLabels; i++) 
-      mLabels[i]->DrawGlyphs( dc, r );
+   {
+      GlyphLeft=0;
+      GlyphRight=1;
+      if( i==mMouseOverLabelLeft )
+         GlyphLeft = mbHitCenter ? 6:9;
+      if( i==mMouseOverLabelRight )
+         GlyphRight = mbHitCenter ? 7:4;
+      mLabels[i]->DrawGlyphs( dc, r, GlyphLeft, GlyphRight );
+   }
    for (i = 0; i < nLabels; i++)
    {
       if( mSelIndex==i) dc.SetBrush(mTextEditBrush);
       mLabels[i]->DrawText( dc, r );
-      if( mSelIndex==i) dc.SetBrush(mSelectedBrush);
+      if( mSelIndex==i) dc.SetBrush(mTextNormalBrush);
    }
 }
 
@@ -535,136 +548,131 @@ double LabelTrack::GetEndTime()
 // 2 if over the right-hand glyph on a label.
 int LabelTrack::OverGlyph(int x, int y)
 {
-
    //Determine the new selection.
    LabelStruct * pLabel;
+   int result=0;
+   const int d1=10; //distance in pixels.
+   const int d2=5;  //distance in pixels.
    
+   //If not over a label, reset it
+   mMouseOverLabelLeft  = -1;
+   mMouseOverLabelRight = -1;
+   mbHitCenter = false;
    for (int i = 0; i < (int)mLabels.Count(); i++) {
       pLabel = mLabels[i];
       
-      //over left selection bound
-      if(abs(pLabel->y - y) < 5 &&
-         abs(pLabel->x - x) < 5
-         )
-         {
-            mMouseOverLabel = i;
-            return 1;
-         }
-      
-      //click on right selection bound
-      if(abs(pLabel->y-y ) < 5 &&
-         abs(pLabel->x1-x) < 5)
-         {
-            mMouseOverLabel = i;
-            return 2;
-         }
+      //over left or right selection bound
+      if(   abs(pLabel->y - y) < d1 &&
+            abs(pLabel->x + d2 - x) < d1 )
+      {
+         mMouseOverLabelLeft = i;
+         if(abs(pLabel->x - x) < d2 )
+            mbHitCenter = true;
+         result |= 1;
+      }
+      // use else if so that we don't detect left and right of same label.
+      else if( abs(pLabel->y-y ) < d1 &&
+               abs(pLabel->x1 - d2 -x) < d1)
+      {
+         mMouseOverLabelRight = i;
+         if(abs(pLabel->x1 - x) < d2 )
+            mbHitCenter = true;
+         result |= 2;
+      }
    }
-
-   //If not over a label, reset it
-   mMouseOverLabel = -1;
-   return 0;
+   return result;
 }
 
 void LabelTrack::HandleMouse(const wxMouseEvent & evt,
                              wxRect & r, double h, double pps,
                              double *newSel0, double *newSel1)
 {
-
+   
    if(evt.ButtonUp(1) )
-      {
-         
-         mIsAdjustingLabel = false;
-         mMouseOverLabel = -1;
-         return;
-      }
-
+   {
+      mIsAdjustingLabel = false;
+      mMouseOverLabelLeft  = -1;
+      mMouseOverLabelRight = -1;
+      return;
+   }
    
    if(evt.Dragging())
+   {
+      
+      //If we are currently adjusting a label, 
+      //just reset its value and redraw.
+      if(mIsAdjustingLabel )  // This guard is necessary but hides another bug.  && mSelIndex != -1)
       {
-         
-         //If we are currently adjusting a label, 
-         //just reset its value and redraw.
-         
-         if(mIsAdjustingLabel )  // This guard is necessary but hides another bug.  && mSelIndex != -1)
+         //Adjust boundary and make sure that t < t1 on any dragged labels.
+         //This code pushes both of them in one direction, instead of swapping
+         //bounds like happens for the selection region.
+         if(mMouseOverLabelLeft>=0)
+         {
+            mLabels[mMouseOverLabelLeft]->t  = h + (evt.m_x - r.x)/pps;
+            if( mLabels[mMouseOverLabelLeft]->t > mLabels[mMouseOverLabelLeft]->t1)
             {
-
-               //1 is left edge, 2 is right edge, 0 is nothing.
-               if(mAdjustingEdge == 1) 
-                  mLabels[mSelIndex]->t  = h + (evt.m_x - r.x)/pps;
-
-               else if (mAdjustingEdge == 2)
-                  mLabels[mSelIndex]->t1 = h + (evt.m_x - r.x)/pps;
-               
-                              
-
-               //Now, make sure that t < t1
-               //If not, set both of them equal to the adjusting label location.
-               //This pushes both of them in one direction, instead of swapping
-               //bounds like happens for the selection region.
-               if( mLabels[mSelIndex]->t > mLabels[mSelIndex]->t1)
-                  {
-
-                     //1 is left edge, 2 is right edge, 0 is nothing.
-                     if(mAdjustingEdge == 1) 
-                        mLabels[mSelIndex]->t1  = mLabels[mSelIndex]->t;
-                     else 
-                        mLabels[mSelIndex]->t  = mLabels[mSelIndex]->t1;
-                     
-                  }
-
-               //Set the selection region to be equal to
-               //the new size of the label.
-               *newSel0 = mLabels[mSelIndex]->t;
-               *newSel1 = mLabels[mSelIndex]->t1;
-
-             
+               mLabels[mMouseOverLabelLeft]->t1  = mLabels[mMouseOverLabelLeft]->t;
             }
-         return;
-      }
-
-   
-   if( evt.ButtonDown())
-      {
-         //OverGlyph sets mMouseOverLabel to be the chosen label.         
-         mAdjustingEdge = OverGlyph(evt.m_x, evt.m_y);   
-
-         if(mMouseOverLabel != -1)
+         }
+         if (mMouseOverLabelRight>=0)
+         {
+            mLabels[mMouseOverLabelRight]->t1 = h + (evt.m_x - r.x)/pps;
+            
+            if( mLabels[mMouseOverLabelRight]->t > mLabels[mMouseOverLabelRight]->t1)
             {
-
-               //The mouse was clicked on the label adjuster.
-               mSelIndex = mMouseOverLabel;
-               if(mAdjustingEdge == 1)
-                  {
-                     mIsAdjustingLabel = true;
-                     mLabels[mSelIndex]->t = h + (evt.m_x-r.x)/pps;
-                     return;
-                  }
-               else if (mAdjustingEdge == 2)
-                  {
-                     mIsAdjustingLabel = true;
-                     mLabels[mSelIndex]->t1 = h + (evt.m_x-r.x)/pps;
-                     return;
-                  }
+               mLabels[mMouseOverLabelRight]->t  = mLabels[mMouseOverLabelRight]->t1;
             }
+         }
 
-
-         
-         LabelStruct * pLabel;
-         
-         //OK, they aren't dragging or clicking on an edge.
-         for (int i = 0; i < (int)mLabels.Count(); i++) {
-            pLabel = mLabels[i];
-            if( (pLabel->xText-(mIconWidth/2) < evt.m_x) && 
-                (evt.m_x<pLabel->xText+pLabel->width+(mIconWidth/2)) &&
-                (abs(pLabel->y-evt.m_y)<mIconHeight/2))
-               {
-                  mSelIndex = i;
-                  *newSel0 = mLabels[i]->t;
-                  *newSel1 = mLabels[i]->t1;
-                  return;
-               }
+         if( mSelIndex >=0 )
+         {
+            //Set the selection region to be equal to
+            //the new size of the label.
+            *newSel0 = mLabels[mSelIndex]->t;
+            *newSel1 = mLabels[mSelIndex]->t1;
          }
       }
+      return;
+   }
+   
+   
+   if( evt.ButtonDown())
+   {
+      //OverGlyph sets mMouseOverLabel to be the chosen label.         
+      mIsAdjustingLabel = OverGlyph(evt.m_x, evt.m_y) != 0;   
+      
+      if(mIsAdjustingLabel )
+      {
+         //The mouse was clicked on the label adjuster.
+         if(mMouseOverLabelRight >=0)
+         {
+            mLabels[mMouseOverLabelRight]->t1 = h + (evt.m_x-r.x)/pps;
+//          mSelIndex = mMouseOverLabelRight;
+         }
+         if(mMouseOverLabelLeft >=0)
+         {
+            mLabels[mMouseOverLabelLeft]->t = h + (evt.m_x-r.x)/pps;
+//          mSelIndex = mMouseOverLabelLeft;
+         }
+         return;
+      }
+      
+      LabelStruct * pLabel;
+      
+      //OK, they aren't dragging or clicking on an edge.
+      for (int i = 0; i < (int)mLabels.Count(); i++) {
+         pLabel = mLabels[i];
+         if( (pLabel->xText-(mIconWidth/2) < evt.m_x) && 
+            (evt.m_x<pLabel->xText+pLabel->width+(mIconWidth/2)) &&
+            (abs(pLabel->y-evt.m_y)<mIconHeight/2))
+         {
+            mSelIndex = i;
+            *newSel0 = mLabels[i]->t;
+            *newSel1 = mLabels[i]->t1;
+            return;
+         }
+      }
+   }
 }
 
 
@@ -734,7 +742,15 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
          mLabels[mSelIndex]->title += keyCode;
          break;
       }
-   } else {
+   } 
+   else if( !IsGoodLabelFirstCharacter( keyCode ))
+   {
+      // Don't automatically start a label unless its one of the accepted 
+      // characters.
+      // We can always create the label and then 
+   }
+   else
+   {
       // Create new label
 
       LabelStruct *l = new LabelStruct();
@@ -1172,6 +1188,7 @@ void LabelTrack::InitColours()
 //   Green - Playback.
    mLabelSurroundPen.SetColour( 0, 0, 0);
    mTextEditBrush.SetColour( 255,255,255);
+   mTextNormalBrush.SetColour( 190,190,240 );// BEBEF0
 
    mUnselectedBrush.SetColour(192, 192, 192);
    mSelectedBrush.SetColour(148, 148, 170);
@@ -1192,9 +1209,9 @@ static char *GlyphXpmRegionSpec[] = {
 "2 c black",
 "3 c black",
 "4 c black",
-"5 c #D0D0D0",
-"6 c #D0D0D0",
-"7 c #D0D0D0",
+"5 c #BEBEF0",
+"6 c #BEBEF0",
+"7 c #BEBEF0",
 /* pixels */
 "...............",
 "...............",
@@ -1286,6 +1303,26 @@ void LabelTrack::CreateCustomGlyphs()
    mbGlyphsReady=true;
 }
 
+bool LabelTrack::IsGoodLabelFirstCharacter(long keyCode)
+{
+   if(( 'a' <= keyCode ) && (keyCode <='z' ))
+      return true;
+   if(( 'A' <= keyCode ) && (keyCode <='Z' ))
+      return true;
+   if(( '0' <= keyCode ) && (keyCode <='9' ))
+      return true;
+   return false;
+}
+
+bool LabelTrack::IsGoodLabelCharacter(long keyCode)
+{
+// if( IsGoodLabelFirstCharacter( keyCode ))
+//    return true;
+   if( keyCode >= WXK_START )
+      return false;
+   return true;
+}
+
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //
@@ -1296,4 +1333,3 @@ void LabelTrack::CreateCustomGlyphs()
 //
 // vim: et sts=3 sw=3
 // arch-tag: f321cf69-6f22-4a1b-a44b-b70d533227e3
-
