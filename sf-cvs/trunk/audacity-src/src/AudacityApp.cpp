@@ -78,14 +78,25 @@ ToolBarStub *gControlToolBarStub = NULL;
 ToolBarStub *gMixerToolBarStub = NULL;
 ToolBarStub *gEditToolBarStub = NULL;
 
-void QuitAudacity()
+void QuitAudacity(bool bForce)
 {
+   if(bForce)
+   {
+      wxMessageBox(_("WARNING: You may be prompted to save your work. Clicking cancel will have the same effect as clicking no."));
+   }
+
    // Try to close each open window.  If the user hits Cancel
    // in a Save Changes dialog, don't continue.
+   // BG: unless force is true
    size_t len = gAudacityProjects.Count();
    for (size_t i = 0; i < len; i++) {
       if (!gAudacityProjects[i]->Close())
-         return;
+      {
+         if(!bForce)
+         {
+            return;
+         }
+      }
    }
 
    if (gFreqWindow)
@@ -117,6 +128,16 @@ void QuitAudacity()
 
 
    QuitHelp();
+
+   if(bForce)
+   {
+      wxExit();
+   }
+}
+
+void QuitAudacity()
+{
+   QuitAudacity(false);
 }
 
 IMPLEMENT_APP(AudacityApp)

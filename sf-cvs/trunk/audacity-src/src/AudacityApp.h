@@ -15,6 +15,7 @@
 
 class wxLocale;
 
+void QuitAudacity(bool bForce);
 void QuitAudacity();
 
 extern wxFrame *gParentFrame;

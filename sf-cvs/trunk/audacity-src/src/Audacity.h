@@ -33,6 +33,7 @@ extern ToolBarStub *gControlToolBarStub;
 extern ToolBarStub *gMixerToolBarStub;
 extern ToolBarStub *gEditToolBarStub;
 
+void QuitAudacity(bool bForce);
 void QuitAudacity();
 
 #ifdef __WXMAC__
