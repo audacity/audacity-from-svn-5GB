@@ -138,7 +138,7 @@ bool Tags::HandleXMLTag(const char *tag, const char **attrs)
       else if (!strcmp(attr, "comments"))
          mComments = value;
       else if (!strcmp(attr, "id3v2"))
-         mID3V2 = atoi(value);         
+         mID3V2 = atoi(value)?true:false;         
    } // while
 
    
@@ -581,7 +581,7 @@ bool TagsDialog::TransferDataFromWindow()
    
    wxRadioBox *format = GetFormatRadioBox();
    if (format) {
-      mTags->mID3V2 = (bool)format->GetSelection();
+      mTags->mID3V2 = (format->GetSelection())?true:false;
    }
 
    return TRUE;

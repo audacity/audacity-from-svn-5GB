@@ -309,6 +309,8 @@ wxCursor * MakeCursor( int CursorId, const char * pXpm[36],  int HotX, int HotY 
    return pCursor;
 }
 
+// Don't warn us about using 'this' in the base member initializer list.
+#pragma warning( disable: 4355 )
 TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
                        const wxPoint & pos,
                        const wxSize & size,
@@ -322,6 +324,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
      mViewInfo(viewInfo),
      mBitmap(NULL),
      mAutoScrolling(false)
+#pragma warning( default: 4355 )
 {
    mIsVZooming = false;
    mIsClosing = false;
@@ -1827,7 +1830,7 @@ void TrackPanel::HandleVZoom(wxMouseEvent & event)
 
                // Enforce maximum vertical zoom
                if (l < 0.1)
-                  l = 0.1;
+                  l = 0.1f;
 
                p1 = (mZoomStart - ypos) / (float)height;
                c = (max * (1.0-p1) + min * p1);

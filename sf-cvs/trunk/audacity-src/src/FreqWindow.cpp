@@ -284,7 +284,7 @@ void FreqWindow::OnAlgChoice(wxCommandEvent & event)
    // Log-frequency axis works for spectrum plots only.
    if (mAlgChoice->GetSelection() == 0) {
       mAxisChoice->Enable(true);
-      mLogAxis = (bool)(mAxisChoice->GetSelection());
+      mLogAxis = (mAxisChoice->GetSelection())?true:false;
    }
    else {
       mAxisChoice->Disable();
@@ -305,7 +305,7 @@ void FreqWindow::OnFuncChoice(wxCommandEvent & event)
 
 void FreqWindow::OnAxisChoice(wxCommandEvent & event)
 {
-   mLogAxis = (bool)(mAxisChoice->GetSelection());
+   mLogAxis = (mAxisChoice->GetSelection())?true:false;
 
    mFreqPlot->Refresh(false);
 }
