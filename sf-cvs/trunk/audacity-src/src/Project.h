@@ -277,22 +277,10 @@ class AudacityProject:public wxFrame,
 
    CommandManager mCommandManager;
 
-   bool mFirstTimeUpdateMenus;
-   bool mLastNonZeroRegionSelected;
-
-   bool mLastHasLastEffect;
-   int mLastNumTracks;
-   int mLastNumTracksSelected;
-   int mLastNumWaveTracks;
-   int mLastNumWaveTracksSelected;
-   int mLastNumLabelTracks;
-   double mLastZoomLevel;
+   wxUint32 mLastFlags;
    int mLastToolBarCheckSum;   //This finds the state of the toolbars:
-                               //Base three for ControlToolBar, EditToolBar, etc
-                               // 0: unloaded, 1: docked, 2: floating (* 3 for EditToolBar)
-   bool mLastUndoState;
-   bool mLastRedoState;
-   bool mLastClipboardState;   // true: clipboard full; false: clipboard empty.
+                               //Base three for each toolbar
+                               //0: unloaded, 1: docked, 2: floating
 
    // Window elements
 

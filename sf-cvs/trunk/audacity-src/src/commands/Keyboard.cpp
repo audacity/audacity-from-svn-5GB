@@ -31,8 +31,6 @@ wxString KeyEventToKeyString(wxKeyEvent &event)
    if(event.MetaDown()) {
       #ifdef __WXMAC__
       newStr += "Cmd+";
-      #else
-      newStr += "Meta+";
       #endif
    }
 
