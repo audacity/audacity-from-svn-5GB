@@ -520,8 +520,8 @@ void AudioIO::FillBuffers()
       }
       
       // Don't empty recording buffers unless we have at least
-      // 1 second recorded (or the user has pressed 'stop')
-      if (len >= mRate || (mStopping && !mHardStop && len>0)) {
+      // 1 second recorded (or the user has pressed 'pause' or 'stop')
+      if (len >= mRate || (mPaused && len>0) || (mStopping && !mHardStop && len>0)) {
          samplePtr temp = NewSamples(len, floatSample);
          for(i=0; i<(int)mNumInChannels; i++) {
             mInBuffers[i]->Get(temp, floatSample, len);

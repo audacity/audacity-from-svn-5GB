@@ -655,6 +655,8 @@ bool WaveTrack::Set(samplePtr buffer, sampleFormat format,
 bool WaveTrack::Append(samplePtr buffer, sampleFormat format,
                        sampleCount len, unsigned int stride /* = 1 */)
 {
+   wxCriticalSectionLocker locker(mAppendCriticalSection);
+
    sampleCount maxBlockSize = mSequence->GetMaxBlockSize();
    sampleCount blockSize = mSequence->GetIdealAppendLen();
    sampleFormat seqFormat = mSequence->GetSampleFormat();
@@ -732,6 +734,8 @@ sampleCount WaveTrack::GetIdealBlockSize() const
 
 bool WaveTrack::Flush()
 {
+   wxCriticalSectionLocker locker(mFlushCriticalSection);
+
    bool success = true;
    sampleFormat seqFormat = mSequence->GetSampleFormat();
 

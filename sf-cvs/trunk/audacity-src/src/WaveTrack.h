@@ -16,6 +16,7 @@
 #include "Sequence.h"
 
 #include <wx/longlong.h>
+#include <wx/thread.h>
 
 typedef wxLongLong_t longSampleCount; /* 64-bit int */
 
@@ -191,6 +192,15 @@ class WaveTrack: public Track {
    void TimeToSamplesClip(double t0, sampleCount *s0);
 
    bool Flush();
+
+ private:
+
+   //
+   // Private variables
+   //
+
+   wxCriticalSection mFlushCriticalSection;
+   wxCriticalSection mAppendCriticalSection;
 
 };
 
