@@ -110,7 +110,7 @@ bool ExportOGG(AudacityProject *project,
    Mixer *mixer = new Mixer(numWaveTracks, waveTracks,
                             tracks->GetTimeTrack(),
                             t0, t1,
-                            stereo? 2: 1, SAMPLES_PER_RUN, true,
+                            stereo? 2: 1, SAMPLES_PER_RUN, false,
                             rate, floatSample);
 
    while(!cancelling) {
