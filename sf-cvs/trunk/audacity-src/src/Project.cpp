@@ -34,6 +34,7 @@
 #include <wx/log.h>
 #include <wx/timer.h>
 #include <wx/sizer.h>
+#include <wx/statusbr.h>
 #include <wx/notebook.h>
 
 #ifdef __MACOSX__
@@ -64,13 +65,12 @@
 
 #include "AudacityApp.h"
 #include "AColor.h"
-#include "AStatus.h"
+#include "SelectionBar.h"
 #include "AudioIO.h"
 #include "ControlToolBar.h"
 #include "EditToolBar.h"
 #include "MeterToolBar.h"
 #include "TranscriptionToolBar.h"
-#include "FormatSelection.h"
 #include "FreqWindow.h"
 #include "HistoryWindow.h"
 #include "Internat.h"
@@ -356,7 +356,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mRate((double) gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"), AudioIO::GetOptimalSupportedSampleRate())),
      mDefaultFormat((sampleFormat) gPrefs->
            Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample)),
-     mSelectionFormat(SELECTION_FORMAT_RULER_MIN_SEC),
      mSnapTo(0),
      mDirty(false),
      mTrackPanel(NULL),
@@ -371,6 +370,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mAudioIOToken(-1),
      mIsDeleting(false)
 {
+   mStatusBar = CreateStatusBar();
+
    // These consts are used to make the function call more readable.
    const bool ONLY_IF_STUB_EXISTS=false;
    const bool CREATE_STUB_IF_REQUIRED=true;
@@ -453,15 +454,16 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    // Create the status bar
    //
 
-   int sh = GetStatusHeight();
+   mSelectionBar = new SelectionBar(this, 0,  wxDefaultPosition, wxDefaultSize,
+                         mRate, this);
+   int statusWidth, statusHeight;
+   mSelectionBar->GetSize(&statusWidth, &statusHeight);
+   mSelectionBar->Move(0, top + height - statusHeight);
+   height -= statusHeight;
 
-   mStatus = new AStatus(this, 0,
-                         wxPoint(0, height - sh),
-                         wxSize(width, sh), mRate, this);
-   height -= sh;
-
-   mStatus->SetField(wxString::Format(wxT("Welcome to Audacity version %s"),
-                                      wxT(AUDACITY_VERSION_STRING)), 0);
+   wxString msg = wxString::Format(wxT("Welcome to Audacity version %s"),
+                                   wxT(AUDACITY_VERSION_STRING));
+   mStatusBar->SetStatusText(msg);
 
    mLastStatusUpdateTime = ::wxGetUTCTime();
    mTimer = new wxTimer(this, AudacityProjectTimerID);
@@ -514,18 +516,24 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    height++;
 #endif
 
-   mHsbar =
-       new wxScrollBar(pPage, HSBarID,
-                       wxPoint(hoffset, height - sbarSpaceWidth),
-                       wxSize(width - hoffset - sbarSpaceWidth +
-                              sbarExtraLen, sbarControlWidth),
-                       wxSB_HORIZONTAL);
-   mVsbar =
-       new wxScrollBar(pPage, VSBarID,
-                       wxPoint(width - sbarSpaceWidth, voffset),
-                       wxSize(sbarControlWidth,
-                              height - sbarSpaceWidth - voffset +
-                              sbarExtraLen), wxSB_VERTICAL);
+   // To work around a wxGTK/GTK2 bug, we need to create the scrollbars
+   // kinda small and then resize them to the size we want
+
+   mHsbar = new wxScrollBar(pPage, HSBarID,
+                            wxPoint(0, 0), wxSize(40, sbarControlWidth),
+                            wxSB_HORIZONTAL);
+   mVsbar = new wxScrollBar(pPage, VSBarID,
+                            wxPoint(0, 0), wxSize(sbarControlWidth, 40),
+                            wxSB_VERTICAL);
+
+   mHsbar->SetSize(hoffset,
+                   height - sbarSpaceWidth,
+                   width - hoffset - sbarSpaceWidth + sbarExtraLen,
+                   sbarControlWidth);
+   mVsbar->SetSize(width - sbarSpaceWidth,
+                   voffset,
+                   sbarControlWidth,
+                   height - sbarSpaceWidth - voffset + sbarExtraLen);
 
 #ifdef EXPERIMENTAL_NOTEBOOK
    AddPages(this, Factory, pNotebook);
@@ -688,7 +696,7 @@ AudacityProject::~AudacityProject()
 void AudacityProject::UpdatePrefs()
 {
    mTrackPanel->UpdatePrefs();
-   mStatus->UpdateRates();
+   mSelectionBar->UpdateRates();
 }
 
 void AudacityProject::RedrawProject()
@@ -754,6 +762,14 @@ wxString AudacityProject::GetName()
 void AudacityProject::AS_SetRate(double rate)
 {
    mRate = rate;
+}
+
+void AudacityProject::AS_ModifySelection(double &start, double &end)
+{
+   mViewInfo.sel0 = start;
+   mViewInfo.sel1 = end;
+   mTrackPanel->Refresh(false);
+   ModifyState();
 }
 
 void AudacityProject::FinishAutoScroll()
@@ -975,10 +991,11 @@ void AudacityProject::HandleResize()
 
    top += h + ptop;
    height -= h + ptop;
-   int sh = GetStatusHeight();
 
-   mStatus->SetSize(0, top + height - sh, width, sh);
-   height -= sh;
+   int statusWidth, statusHeight;
+   mSelectionBar->GetSize(&statusWidth, &statusHeight);
+   mSelectionBar->Move(0, top + height - statusHeight);
+   height -= statusHeight;
 
    mMainPanel->SetSize( left,top, width,height);
    mMainPanel->Layout();
@@ -1107,6 +1124,26 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
 
 bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
 {
+   // Let text controls in the SelectionBar bar (selection bar)
+   // have dibs on the key, if they have the focus...
+
+   if (mSelectionBar->HasAnyFocus()) {
+      if (event.GetKeyCode() == WXK_TAB ||
+          event.GetKeyCode() == WXK_BACK ||
+          event.GetKeyCode() == WXK_DELETE ||
+          (event.GetKeyCode() >= '0' &&
+           event.GetKeyCode() <= '9') ||
+          (event.GetKeyCode() >= WXK_NUMPAD0 &&
+           event.GetKeyCode() <= WXK_NUMPAD9) ||
+          (event.GetKeyCode() >= WXK_LEFT &&
+           event.GetKeyCode() <= WXK_DOWN)) {
+         // Letting SelectionBar handle it
+         return false;
+      }
+
+      // SelectionBar has focus, but doesn't need this particular key
+   }
+
    // Allow the Play button to change to a Loop button,
    // and the zoom cursor to change to a zoom out cursor
    if (event.GetKeyCode() == WXK_SHIFT) {
@@ -1255,8 +1292,9 @@ void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
    top += h;
    height -= h;
 
-   int sh = GetStatusHeight();
-   height -= sh;
+   int statusWidth, statusHeight;
+   mSelectionBar->GetSize(&statusWidth, &statusHeight);
+   height -= statusHeight;
 
    // Fill in space on sides of scrollbars
 
@@ -1431,7 +1469,9 @@ void AudacityProject::LayoutProject()
    GetClientSize(&width, &height);
    LayoutToolBars();
    height -= mTotalToolBarHeight;
-   height -= GetStatusHeight();
+   int statusWidth, statusHeight;
+   mSelectionBar->GetSize(&statusWidth, &statusHeight);
+   height -= statusHeight;
    mMainPanel->SetSize( 0, mTotalToolBarHeight, width, height);
    mMainPanel->Layout();
 }
@@ -1974,7 +2014,7 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 
       if (!wxStrcmp(attr, wxT("rate"))) {
          Internat::CompatibleToDouble(value, &mRate);
-         mStatus->SetRate(mRate);
+         mSelectionBar->SetRate(mRate);
       }
    } // while
 
@@ -2179,9 +2219,9 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       t = iter.Next();
    }
 
-   mStatus->SetField(wxString::Format(_("Saved %s"),
-                                      mFileName.c_str()), 0);
-
+   mStatusBar->SetStatusText(wxString::Format(_("Saved %s"),
+                                              mFileName.c_str()));
+   
    mUndoManager.StateSaved();
    return true;
 }
@@ -2257,7 +2297,7 @@ void AudacityProject::AddImportedTracks(wxString fileName,
       if (AudioIO::GetSupportedSampleRates().Index((int)newRate) != wxNOT_FOUND)
       {
          mRate = newRate;
-         mStatus->SetRate(mRate);
+         mSelectionBar->SetRate(mRate);
       }
    }
 
@@ -2687,25 +2727,28 @@ void AudacityProject::OnTimer(wxTimerEvent& event)
          else
             msg.Printf(_("Out of disk space"));
 
-         mStatus->SetField(msg, 0);
+         mStatusBar->SetStatusText(msg);
       }
    }
 }
 
 // TrackPanel callback method
-void AudacityProject::TP_DisplayStatusMessage(const wxChar *msg,
-                                              int fieldNum)
+void AudacityProject::TP_DisplayStatusMessage(wxString msg)
 {
-   mStatus->SetField(msg, fieldNum);
-   if (fieldNum == 0)
-      mLastStatusUpdateTime = ::wxGetUTCTime();
+   mStatusBar->SetStatusText(msg);
+   mLastStatusUpdateTime = ::wxGetUTCTime();
 }
 
 void AudacityProject::TP_DisplaySelection()
 {
-   wxString formatting = FormatSelection(mSelectionFormat, mSnapTo,
-                                         mRate, &mViewInfo);
-   TP_DisplayStatusMessage(formatting, 1);   
+   double audioTime;
+
+   if (gAudioIO->IsBusy())
+      audioTime = gAudioIO->GetStreamTime();
+   else
+      audioTime = 0;
+
+   mSelectionBar->SetTimes(mViewInfo.sel0, mViewInfo.sel1, audioTime);
 }
 
 // TrackPanel callback method

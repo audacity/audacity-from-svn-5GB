@@ -156,7 +156,6 @@ void OnZoomSel();
 void OnExpandAllTracks();
 void OnCollapseAllTracks();
 
-void OnSelectionFormat(int index);
 void OnSnapOn();
 void OnSnapOff();
 

@@ -158,7 +158,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
    }
 
    if (event.Leaving()){
-      GetActiveProject()->TP_DisplayStatusMessage(wxT(""),0);
+      GetActiveProject()->TP_DisplayStatusMessage(wxT(""));
    }
    
 
@@ -179,7 +179,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
          wxString tipText = pTip->GetTip();
          if (!mEnabled)
             tipText += _(" (disabled)");
-         GetActiveProject()->TP_DisplayStatusMessage(tipText, 0);
+         GetActiveProject()->TP_DisplayStatusMessage(tipText);
       }
       #endif
    }

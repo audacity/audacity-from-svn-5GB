@@ -20,7 +20,7 @@
 
 #include "Audacity.h"
 
-#include "AStatus.h"
+#include "SelectionBar.h"
 #include "DirManager.h"
 #include "UndoManager.h"
 #include "ViewInfo.h"
@@ -96,7 +96,7 @@ class AudacityDropTarget : public wxFileDropTarget
 
 class AudacityProject:public wxFrame,
                       public TrackPanelListener,
-                      public AStatusListener,
+                      public SelectionBarListener,
                       public XMLTagHandler
 {
  public:
@@ -203,7 +203,7 @@ class AudacityProject:public wxFrame,
 
    // TrackPanel callback methods
 
-   virtual void TP_DisplayStatusMessage(const wxChar *msg, int fieldNum);
+   virtual void TP_DisplayStatusMessage(wxString msg);
    virtual void TP_DisplaySelection();
    virtual int TP_GetCurrentTool();
    virtual void TP_OnPlayKey();
@@ -238,9 +238,10 @@ class AudacityProject:public wxFrame,
  public:
 
 
-   // AStatus callback methods
+   // SelectionBar callback methods
 
    virtual void AS_SetRate(double rate);
+   virtual void AS_ModifySelection(double &start, double &end);
 
    void SetStateTo(unsigned int n);
 
@@ -287,7 +288,6 @@ class AudacityProject:public wxFrame,
    TrackList *mTracks;
    ViewInfo mViewInfo;
 
-   int mSelectionFormat;
    int mSnapTo;
 
    TrackList *mLastSavedTracks;
@@ -318,7 +318,8 @@ class AudacityProject:public wxFrame,
    long mLastStatusUpdateTime;
    long mLastUpdateUITime;
 
-   AStatus *mStatus;
+   SelectionBar *mSelectionBar;
+   wxStatusBar *mStatusBar;
    wxPoint mToolBarHotspot;
 
    wxGenericDragImage *mDrag;

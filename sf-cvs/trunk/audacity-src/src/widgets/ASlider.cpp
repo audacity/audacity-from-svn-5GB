@@ -672,13 +672,13 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
       // Display the tooltip in the status bar
       if (mParent->GetToolTip()) {
          wxString tip = mParent->GetToolTip()->GetTip();
-         GetActiveProject()->TP_DisplayStatusMessage(tip, 0);
+         GetActiveProject()->TP_DisplayStatusMessage(tip);
          Refresh();
       }
       #endif
    }
    else if (event.Leaving()) {
-      GetActiveProject()->TP_DisplayStatusMessage(wxT(""),0);
+      GetActiveProject()->TP_DisplayStatusMessage(wxT(""));
       Refresh();
    }
    

@@ -21,7 +21,6 @@
   
 class wxMenu;
 class wxRect;
-class wxStatusBar;
 
 class TrackList;
 class Track;
@@ -50,7 +49,7 @@ WX_DEFINE_ARRAY(LWSlider *, LWSliderArray);
 class TrackPanelListener {
  public:
    virtual void TP_DisplaySelection() = 0;
-   virtual void TP_DisplayStatusMessage(const wxChar *msg, int fieldNum) = 0;
+   virtual void TP_DisplayStatusMessage(wxString msg) = 0;
    virtual int TP_GetCurrentTool() = 0;
    virtual ControlToolBar * TP_GetControlToolBar() = 0;
    virtual void TP_OnPlayKey() = 0;
@@ -356,7 +355,6 @@ private:
 
    TrackList *mTracks;
    ViewInfo *mViewInfo;
-   wxStatusBar *mStatusBar;
 
    AdornedRulerPanel *mRuler;
 
