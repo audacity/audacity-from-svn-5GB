@@ -16,6 +16,7 @@
 class wxString;
 class wxTextFile;
 class DirManager;
+class UndoStack;
 
 class VTrack: public XMLTagHandler {
  protected:
@@ -211,6 +212,8 @@ class TrackList {
   virtual bool Save(wxTextFile * out, bool overwrite);
 #endif
   
+  unsigned int GetSpaceUsage();
+  unsigned int GetAdditionalSpaceUsage(UndoStack *stack);
  private:
   void Swap(TrackListNode * s1, TrackListNode * s2);
   

@@ -580,3 +580,87 @@ bool TrackList::IsEmpty() const
 {
    return (head == NULL);
 }
+
+#include <map>
+#include "BlockFile.h"
+// get the sum of the sizes of all blocks this track list
+// references.  However, if a block is referred to multiple
+// times it is only counted once.  Return value is in bytes
+unsigned int TrackList::GetSpaceUsage()
+{
+   // the map guarantees that I only count each block once
+   std::map<BlockFile*,unsigned int> blockFiles;
+   for (TrackListNode *p = head; p; p = p->next) {
+      if (p->t->GetKind() == VTrack::Wave) {
+         BlockArray *blocks = ((WaveTrack*)p->t)->GetBlockArray();
+         for (unsigned int i = 0; i < blocks->GetCount(); i++)
+            if (blocks->Item(i)->f->mType == BlockFile::BLOCK_TYPE_UNCOMPRESSED)
+               blockFiles[blocks->Item(i)->f] = blocks->Item(i)->len *
+                     SAMPLE_SIZE(blocks->Item(i)->f->mSampleFormat);
+      }
+   }
+
+   std::map<BlockFile*,unsigned int>::const_iterator bfIter;
+   unsigned int bytes = 0;
+   for (bfIter = blockFiles.begin(); bfIter != blockFiles.end(); bfIter++)
+      bytes += bfIter->second;
+
+   return bytes;
+}
+
+
+#include <set>
+#include "UndoManager.h"
+// Find out how much additional space was used to execute
+// this operation.
+//
+// Computed by getting a list of all blocks referenced by
+// *this* TrackList and removing all blocks referenced by
+// any previous TrackList.
+unsigned int TrackList::GetAdditionalSpaceUsage(UndoStack *stack)
+{
+   TrackListNode *p;
+   // get a map of all blocks referenced in this TrackList
+   std::map<BlockFile*,unsigned int> curBlockFiles;
+   for (p = head; p; p = p->next) {
+      if (p->t->GetKind() == VTrack::Wave) {
+         BlockArray *blocks = ((WaveTrack*)p->t)->GetBlockArray();
+         for (unsigned int i = 0; i < blocks->GetCount(); i++)
+            if (blocks->Item(i)->f->mType == BlockFile::BLOCK_TYPE_UNCOMPRESSED)
+               curBlockFiles[blocks->Item(i)->f] = blocks->Item(i)->len *
+                     SAMPLE_SIZE(blocks->Item(i)->f->mSampleFormat);
+      }
+   }
+
+   // get a set of all blocks referenced in all prev TrackList
+   std::set<BlockFile*> prevBlockFiles;
+   unsigned int undoStackIdx = 0;
+   for (; undoStackIdx < stack->GetCount(); undoStackIdx++) {
+      UndoStackElem *stackElem = stack->Item(undoStackIdx);
+      if (stackElem->tracks == this)
+         break;
+      for (p = stackElem->tracks->head; p; p = p->next) {
+         if (p->t->GetKind() == VTrack::Wave) {
+            BlockArray *blocks = ((WaveTrack*)p->t)->GetBlockArray();
+            for (unsigned int i = 0; i < blocks->GetCount(); i++)
+               if (blocks->Item(i)->f->mType == BlockFile::BLOCK_TYPE_UNCOMPRESSED)
+                  prevBlockFiles.insert(blocks->Item(i)->f);
+         }
+      }
+   }
+
+   // remove all blocks in prevBlockFiles from curBlockFiles
+   std::set<BlockFile*>::const_iterator prevIter = prevBlockFiles.begin();
+   for (; prevIter != prevBlockFiles.end(); prevIter++)
+      curBlockFiles.erase(*prevIter);
+
+   // sum the sizes of the blocks remaining in curBlockFiles;
+   std::map<BlockFile*,unsigned int>::const_iterator curBfIter =
+      curBlockFiles.begin();
+   unsigned int bytes = 0;
+   for (;curBfIter != curBlockFiles.end(); curBfIter++)
+      bytes += curBfIter->second;
+
+   return bytes;
+}
+

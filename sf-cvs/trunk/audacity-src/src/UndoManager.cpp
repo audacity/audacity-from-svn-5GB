@@ -34,7 +34,13 @@ void UndoManager::GetDescription(unsigned int n, wxString *desc, wxString *size)
    wxASSERT(n < stack.Count());
 
    *desc = stack[n]->description;
-   *size = "X MB";
+
+   if (n == 0)
+      size->Printf("%d MB", stack[n]->tracks->GetSpaceUsage() / 1048576);
+   else {
+      int bytes = stack[n]->tracks->GetAdditionalSpaceUsage(&stack);
+      size->Printf("%d MB", bytes / 1048576);
+   }
 }
 
 void UndoManager::SetDescription(unsigned int n, wxString desc)
