@@ -189,7 +189,7 @@ void AudacityProject::BuildMenuBar()
       }
 
 
-      TokenizeCommandStrings(-1);
+      TokenizeCommandStrings(i);
    }
 
 
