@@ -155,6 +155,8 @@ Changes in 1.0:
     - Label tracks can now be used to mark selection regions.
       Adding labels uses a new command -- see the user's manual.
 
+    - Ogg Vorbis export support (importing was already supported)
+
   * Unix:
 
     - Fixed bug which caused audio to playback too quickly
