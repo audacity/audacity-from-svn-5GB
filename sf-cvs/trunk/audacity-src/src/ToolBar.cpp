@@ -27,6 +27,7 @@
 #include <wx/dcmemory.h>
 #include <wx/intl.h>
 #include <wx/settings.h>
+#include <wx/button.h>
 #endif  /*  */
 
 
@@ -43,6 +44,7 @@
 #include "TranscriptionToolBar.h"
 #include "Project.h"
 
+#define TOOLBAR_CLOSE_BUTTON 10001
 
 ////////////////////////////////////////////////////////////
 /// class ToolBarFrame
@@ -58,22 +60,28 @@ class ToolBarFrame {
 
    virtual void DoShow(bool visible = true) = 0;
    virtual void DoMove(wxPoint where) = 0;
-   
+
+
  protected:
    ToolBar *mToolBar;
+   
 };
 
 class ToolBarMiniFrame:public wxMiniFrame, public ToolBarFrame {
- public:
+public:
    ToolBarMiniFrame(wxWindow * parent, enum ToolBarType tbt);
    virtual ~ToolBarMiniFrame();
    
    void OnCloseWindow(wxCloseEvent & event);
    virtual void DoShow(bool visible);
    virtual void DoMove(wxPoint where);
-   
- public:
+   virtual void OnMouseEvent(wxMouseEvent& evt);
+public:
    DECLARE_EVENT_TABLE()
+      ;
+private:
+   wxButton * mDockButton;
+   
 };
 
 class ToolBarFullFrame:public wxFrame, public ToolBarFrame {
@@ -231,7 +239,9 @@ ToolBar * ToolBarStub::GetToolBar()
 /// Constructor for ToolBar. Should be used by children toolbars
 /// to instantiate the initial parameters of the toolbar.
 ToolBar::ToolBar(wxWindow * parent, wxWindowID id, const wxPoint & pos, const
-      wxSize & size) : wxWindow(parent, id, pos, size)
+      wxSize & size, ToolBarStub * tbs) : 
+   wxWindow(parent, id, pos, size),
+   mToolBarStub(tbs)
 {
    //Set some default values that should be overridden
    mTitle = "Audacity Toolbar";
@@ -252,8 +262,9 @@ ToolBar::ToolBar(wxWindow * parent, wxWindowID id, const wxPoint & pos, const
 
 //  Alternate constructor for Toolbar.  Should probably not be used,  
 //  except to create a dummy ToolBar.
+/*
 ToolBar::ToolBar(wxWindow * parent):wxWindow(parent, -1, wxPoint(1, 1),
-              wxSize(300, 20)) 
+              wxSize(300, 20),ToolBarStub * tbs) 
 {
    //Set some default values that should be overridden
    mTitle = "Audacity Toolbar";
@@ -266,6 +277,7 @@ ToolBar::ToolBar(wxWindow * parent):wxWindow(parent, -1, wxPoint(1, 1),
    mIdealSize = wxSize(300, 20);
 } 
 
+*/
 
 ToolBar::~ToolBar()
 {
@@ -454,6 +466,8 @@ void ToolBar::PlaceButton(int i, wxWindow *pWind)
     
 BEGIN_EVENT_TABLE(ToolBarMiniFrame, wxMiniFrame) 
    EVT_CLOSE(ToolBarMiniFrame::OnCloseWindow)
+   EVT_MOUSE_EVENTS(ToolBarMiniFrame::OnMouseEvent)
+   EVT_BUTTON(TOOLBAR_CLOSE_BUTTON, ToolBarMiniFrame::OnCloseWindow)
 END_EVENT_TABLE()  
 
 ///Constructor for a ToolBarMiniFrame. You give it a type and
@@ -464,21 +478,51 @@ ToolBarMiniFrame::ToolBarMiniFrame(wxWindow * parent, enum ToolBarType tbt)
                  wxSTAY_ON_TOP | wxMINIMIZE_BOX | wxCAPTION
                  | ((parent == NULL)?0x0:wxFRAME_FLOAT_ON_PARENT))
 {
+
+
    mToolBar = ToolBar::MakeToolBar(this, tbt);
+   mToolBar->Move(20,0);
+   mDockButton = new wxButton(this,TOOLBAR_CLOSE_BUTTON,">|<",wxPoint(0,0),wxSize(15,mToolBar->GetHeight()));
+   mDockButton->SetToolTip(_("Dock Toolbar"));
+
    SetTitle(mToolBar->GetTitle());
-   SetSize(wxSize(mToolBar->GetSize().x,
+   SetSize(wxSize(mToolBar->GetSize().x + 20,
                   mToolBar->GetSize().y + TOOLBAR_HEIGHT_OFFSET));
 }
 
 ToolBarMiniFrame::~ToolBarMiniFrame() 
 {
    delete mToolBar;
+   delete mDockButton;
 }
+
+
+void ToolBarMiniFrame::OnMouseEvent(wxMouseEvent& evt)
+{
+
+   //The following is prototype code for allowing a double-click
+   //close the toolbar.  Commented out in lieu of a close button
+   //that is being tested.
+
+#if 0
+     if(evt.ButtonDClick(1))
+      {
+         AudacityProject * p  = GetActiveProject();
+         ToolBar* tb = ToolBarFrame::GetToolBar();
+         ToolBarStub *tbs= tb->GetToolBarStub();
+         p->FloatToolBar(tbs);
+      }
+#endif
+}
+
+
 
 /// This hides the floating toolbar, effectively 'hiding' the window
 void ToolBarMiniFrame::OnCloseWindow(wxCloseEvent & WXUNUSED(event)) 
 {
-   this->Hide();
+   AudacityProject * p = GetActiveProject();
+   ToolBarStub * tbs = ToolBarFrame::GetToolBar()->GetToolBarStub();
+   p->FloatToolBar(tbs);
 } 
 
 void ToolBarMiniFrame::DoShow(bool visible)

@@ -42,6 +42,7 @@ class ToolBarFrame;
 class wxImage;
 class wxSize;
 class wxPoint;
+class wxButton;
 
 class AButton;
 class AudacityProject;
@@ -72,33 +73,29 @@ class ToolBar:public wxWindow {
    ToolBar() {};
    ToolBar(wxWindow * parent);
    ToolBar(wxWindow * parent, wxWindowID id,
-           const wxPoint & pos, const wxSize & size);
+           const wxPoint & pos, const wxSize & size, ToolBarStub * tbs);
    
    // This function makes a toolbar of a specific type.
    static ToolBar * MakeToolBar( wxWindow *parent, enum ToolBarType tbt );
 
    virtual ~ToolBar();
-   virtual int GetHeight() {
-      return GetSize().y;
-   };
-   virtual wxString GetTitle() {
-      return mTitle;
-   };
-   enum ToolBarType GetType() {
-      return mType;
-   };
+   virtual int GetHeight() {return GetSize().y;};
+   virtual wxString GetTitle(){return mTitle;  };
+   enum ToolBarType GetType() {return mType;};
    virtual void OnKeyEvent(wxKeyEvent & event) = 0;
    virtual void OnPaint(wxPaintEvent & event) = 0;
    wxSize GetIdealSize() {
       return mIdealSize;
    };
-   void GetIdealSize(int *width, int *height) {
-      *width = mIdealSize.x;
-      *height = mIdealSize.y;
-   }
-	virtual void PlaceButton( int i, wxWindow * pWind);
-   virtual void EnableDisableButtons() = 0;
+   void GetIdealSize(int *width, int *height) 
+      {
+         *width = mIdealSize.x;
+         *height = mIdealSize.y;
+      }
 
+   virtual void PlaceButton( int i, wxWindow * pWind);
+   virtual void EnableDisableButtons() = 0;
+   ToolBarStub * GetToolBarStub(){return mToolBarStub;};
 
  protected:
 
@@ -110,7 +107,7 @@ class ToolBar:public wxWindow {
                                 const char **alpha,
                                 wxWindowID id,
                                 wxPoint placement, 
-                                bool processdownevents,                               
+                                bool processdownevents,
                                 wxSize size,
                                 int xoff, int yoff);
 
@@ -125,6 +122,7 @@ class ToolBar:public wxWindow {
    int mBackgroundHeight;
 
    enum ToolBarType mType;
+   ToolBarStub * mToolBarStub;
    wxString mTitle;
 
    //These keep track of how big the tool bar "should" be.

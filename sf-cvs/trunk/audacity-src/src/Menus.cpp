@@ -147,10 +147,10 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("SaveAs",         _("Save Project &As..."),            FN(OnSaveAs));
    c->AddSeparator();
 
-   // These 'export' strings are modified later in ModifyExportMenus(),
-   //but also appear in the preferences, so need to be translated.
-   c->AddItem("Export",         _("Export As..."),                   FN(OnExportMix));
-   c->AddItem("ExportSel",      _("Export Selection As..."),         FN(OnExportSelection));
+   // These 'export' strings are modified later in ModifyExportMenus(), so don't put them
+   // up for i18n as it just makes more work for the translators.
+   c->AddItem("Export",         "Export As...",                   FN(OnExportMix));
+   c->AddItem("ExportSel",      "Export Selection As...",         FN(OnExportSelection));
    c->AddSeparator();
    c->AddItem("ExportMP3",      _("Export As MP3..."),               FN(OnExportMP3Mix));
    c->AddItem("ExportMP3Sel",   _("Export Selection As MP3..."),     FN(OnExportMP3Selection));
@@ -351,12 +351,7 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
                       AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);
    c->AddSeparator();
-   c->AddItem("FloatControlTB", _("Float Control Toolbar"),          FN(OnFloatControlToolBar));
-   c->AddItem("FloatEditTB",    _("Float Edit Toolbar"),             FN(OnFloatEditToolBar));
-   c->AddItem("FloatMixerTB",   _("Float Mixer Toolbar"),            FN(OnFloatMixerToolBar));
    c->AddItem("FloatMeterTB",   _("Float Meter Toolbar"),            FN(OnFloatMeterToolBar));
-   c->AddItem("FloatTranscriptionTB",   _("Float Transcription Toolbar"),            FN(OnFloatTranscriptionToolBar));
-
    c->SetCommandFlags("FloatMeterTB", AudioIONotBusyFlag, AudioIONotBusyFlag);
 
    c->EndMenu();
@@ -700,6 +695,7 @@ wxUint32 AudacityProject::GetUpdateFlags()
    return flags;
 }
 
+#if 0
 int AudacityProject::GetToolBarChecksum()
 {
    //Calculate the ToolBarCheckSum (uniquely specifies state of all toolbars):
@@ -757,6 +753,8 @@ ModifyMenuData[] =
    &gTranscriptionToolBarStub}
 };
 
+
+
 void AudacityProject::ModifyToolbarMenus()
 {
    const int nItems = sizeof(ModifyMenuData)/sizeof(ModifyMenuData[0]);
@@ -783,12 +781,14 @@ void AudacityProject::ModifyToolbarMenus()
    }
 
 }
+#endif
 
 void AudacityProject::UpdateMenus()
 {
    if (this != GetActiveProject())
       return;
 
+#if 0
    if (gControlToolBarStub) {
       int toolBarCheckSum = GetToolBarChecksum();
 
@@ -798,6 +798,7 @@ void AudacityProject::UpdateMenus()
       }
    }
 
+#endif
    // Return from this function if nothing's changed since
    // the last time we were here.
    wxUint32 flags = GetUpdateFlags();
@@ -1415,8 +1416,14 @@ void AudacityProject::OnEffect(int type, int index)
          shortDesc = shortDesc.Left(shortDesc.Length()-3);
 
       PushState(longDesc, shortDesc);
-      if (mTracks->GetEndTime() > prevEndTime)
-         OnZoomFit();
+      
+      //STM:
+      //The following automatically re-zooms after sound was generated.
+      // IMO, it was disorienting, removing to try out without re-fitting
+      //if (mTracks->GetEndTime() > prevEndTime)
+      //      OnZoomFit();
+
+
       FixScrollbars();
 
       // Only remember a successful effect, don't rmemeber insert,

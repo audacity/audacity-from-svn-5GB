@@ -17,7 +17,7 @@
 #include <wx/event.h>
 
 #include "MeterToolBar.h"
-
+#include "Audacity.h"
 #include "widgets/Meter.h"
 
 ////////////////////////////////////////////////////////////
@@ -32,15 +32,15 @@ END_EVENT_TABLE()
 
 //Standard contructor
 MeterToolBar::MeterToolBar(wxWindow * parent)
-   : ToolBar(parent, -1, wxPoint(1, 1), wxSize(200, 55))
+   : ToolBar(parent, -1, wxPoint(1, 1), wxSize(200, 55),gMeterToolBarStub)
 {
    InitializeMeterToolBar();
 }
 
 //Another constructor
 MeterToolBar::MeterToolBar(wxWindow * parent, wxWindowID id,
-                           const wxPoint & pos, const wxSize & size)
-   : ToolBar(parent, id, pos, size)
+                           const wxPoint & pos, const wxSize & size):
+  ToolBar(parent, id, pos, size,gMeterToolBarStub)
 {
    InitializeMeterToolBar();
 }
