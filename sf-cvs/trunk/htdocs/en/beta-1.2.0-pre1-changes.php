@@ -91,8 +91,8 @@ plugins.
 
 <li>
 Audacity 1.2 features a digital signal processing language called
-Nyquist, which allows users to program new effects in a LISP-like
-language.
+<a href="nyquist.php">Nyquist</a>, which allows users to program new effects
+in a LISP-like language.
 </li>
 </ul>
 
