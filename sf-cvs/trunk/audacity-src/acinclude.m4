@@ -197,15 +197,15 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBID3TAG], [
    # I don't know if any released id3tag is sufficient, so disabling
    # system use for now...
 
-   #if test $libid3tag_found = yes && test $id3tag_h_found = yes ; then
-   #   LIBID3TAG_SYSTEM_AVAILABLE="yes"
-   #   LIBID3TAG_SYSTEM_LIBS=-lid3tag
-   #   LIBID3TAG_SYSTEM_CPPSYMBOLS="USE_LIBID3TAG"
-   #   AC_MSG_NOTICE([Libid3tag libraries are available as system libraries])
-   #else
+   if test $libid3tag_found = yes && test $id3tag_h_found = yes ; then
+      LIBID3TAG_SYSTEM_AVAILABLE="yes"
+      LIBID3TAG_SYSTEM_LIBS=-lid3tag
+      LIBID3TAG_SYSTEM_CPPSYMBOLS="USE_LIBID3TAG"
+      AC_MSG_NOTICE([Libid3tag libraries are available as system libraries])
+   else
       LIBID3TAG_SYSTEM_AVAILABLE="no"
-   #   AC_MSG_NOTICE([Libid3tag libraries are NOT available as system libraries])
-   #fi
+      AC_MSG_NOTICE([Libid3tag libraries are NOT available as system libraries])
+   fi
 
    dnl see if libid3tag is available in the local tree
 
@@ -445,7 +445,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBFLAC], [
       AC_MSG_NOTICE([FLAC libraries are available as system libraries])
    else
       LIBFLAC_SYSTEM_AVAILABLE="no"
-      AC_MSG_NOTICE([FLAC libraries are NOT available as system libraries])
+      AC_MSG_NOTICE([FLAC/FLAC++ libraries are NOT available as system libraries])
    fi
 
    dnl see if FLAC is available in the source dir
