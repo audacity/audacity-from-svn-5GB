@@ -173,13 +173,12 @@ void DirManager::CleanTempDir(bool startup)
 bool DirManager::SetProject(wxString & projPath, wxString & projName,
                             bool create)
 {
-   wxString oldPath = projPath;
-   wxString oldName = projName;
-   wxString oldFull = projFull;
-   wxString oldLoc = projFull;
+   wxString oldPath = this->projPath;
+   wxString oldName = this->projName;
+   wxString oldFull = this->projFull;
+   wxString oldLoc = this->projFull;
    if (oldLoc == "")
       oldLoc = temp;
-   lastProject = projPath;
    
    if (projPath == "")
       projPath = FROMFILENAME(::wxGetCwd());
