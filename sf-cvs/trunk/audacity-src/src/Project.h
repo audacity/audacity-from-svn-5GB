@@ -31,6 +31,7 @@
 class wxRect;
 class wxMemoryDC;
 class wxDC;
+class wxTimer;
 #include <wx/defs.h>
 #include <wx/log.h>
 #include <wx/dragimag.h>
@@ -49,6 +50,8 @@ class wxDC;
 #include "xml/XMLTagHandler.h"
 
 #include "commands/Commands.h"
+
+const int AudacityProjectTimerID = 5200;
 
 class wxWindow;
 class wxBoxSizer;
@@ -144,6 +147,7 @@ class AudacityProject:public wxFrame,
    void OnSize(wxSizeEvent & event);
    void OnScroll(wxScrollEvent & event);
    void OnCloseWindow(wxCloseEvent & event);
+   void OnTimer(wxTimerEvent & event);
 
    void HandleResize();
 
@@ -271,6 +275,8 @@ class AudacityProject:public wxFrame,
 
    // Window elements
 
+   wxTimer *mTimer;
+   long mLastStatusUpdateTime;
 
    AStatus *mStatus;
    wxPoint mToolBarHotspot;

@@ -27,6 +27,7 @@
 #include <wx/string.h>
 #include <wx/ffile.h>
 #include <wx/log.h>
+#include <wx/timer.h>
 
 #ifdef __MACOSX__
 #include <CoreServices/CoreServices.h>
@@ -306,6 +307,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
     EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
     EVT_DROP_FILES(AudacityProject::OnDropFiles)
+    EVT_TIMER(AudacityProjectTimerID, AudacityProject::OnTimer)
     // Update menu method
     EVT_UPDATE_UI(1, AudacityProject::OnUpdateMenus)
 END_EVENT_TABLE()
@@ -453,6 +455,10 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mStatus->SetField(wxString::Format("Welcome to Audacity version %s",
                                       AUDACITY_VERSION_STRING), 0);
 
+   mLastStatusUpdateTime = ::wxGetUTCTime();
+   mTimer = new wxTimer(this, AudacityProjectTimerID);
+   mTimer->Start(1000);
+
    //
    // Create the TrackPanel and the scrollbars
    //
@@ -517,6 +523,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
 AudacityProject::~AudacityProject()
 {
+   delete mTimer;
+
    //the commands code is responsible for deleting the menu bar, not Audacity's frame
    SetMenuBar(NULL);
 
@@ -2304,11 +2312,52 @@ void AudacityProject::SetStop(bool bStopped)
    mTrackPanel->SetStop(bStopped);
 }
 
+void AudacityProject::OnTimer(wxTimerEvent& event)
+{
+   if (::wxGetUTCTime() - mLastStatusUpdateTime < 3)
+      return;
+
+   if (gAudioIO->IsRecording() &&
+       gAudioIO->GetProject() == this) {
+      wxLongLong freeSpace = mDirManager.GetFreeDiskSpace();
+      if (freeSpace >= 0) {
+         wxString msg;
+         double recTime;
+         int recMins;
+
+         recTime = freeSpace.GetHi() * 4294967296.0 + freeSpace.GetLo();
+         recTime /= SAMPLE_SIZE(gAudioIO->GetFormat());
+         recTime /= gAudioIO->GetNumRecordingChannels();
+         recTime /= GetRate();
+         recMins = (int)(recTime / 60.0);
+
+         if (recMins >= 120)
+            msg.Printf(_("Recording time remaining: %d hours and %d minutes"),
+                       recMins/60, recMins%60);
+         else if (recMins >= 60)
+            msg.Printf(_("Recording time remaining: 1 hour and %d minutes"),
+                       recMins-60);
+         else if (recMins > 3)
+            msg.Printf(_("Recording time remaining: %d minutes"),
+                       recMins);
+         else if (recTime >= 2)
+            msg.Printf(_("Recording time remaining: %d seconds"),
+                       (int)recTime);
+         else
+            msg.Printf(_("Out of disk space"));
+
+         mStatus->SetField(msg, 0);
+      }
+   }
+}
+
 // TrackPanel callback method
 void AudacityProject::TP_DisplayStatusMessage(const char *msg,
                                               int fieldNum)
 {
    mStatus->SetField(msg, fieldNum);
+   if (fieldNum == 0)
+      mLastStatusUpdateTime = ::wxGetUTCTime();
 }
 
 // TrackPanel callback method

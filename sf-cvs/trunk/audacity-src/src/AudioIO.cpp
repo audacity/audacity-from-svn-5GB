@@ -702,6 +702,14 @@ AudacityProject *AudioIO::GetProject()
    return mProject;
 }
 
+int AudioIO::GetNumRecordingChannels()
+{
+   if (!mProject)
+      return 0;
+
+   return mNumInChannels;
+}
+
 double AudioIO::GetIndicator()
 {
    PortAudioStream *stream = mPortStream;

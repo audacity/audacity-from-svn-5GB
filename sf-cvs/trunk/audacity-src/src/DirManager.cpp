@@ -268,6 +268,20 @@ wxString DirManager::GetProjectName()
    return projName;
 }
 
+wxLongLong DirManager::GetFreeDiskSpace()
+{
+   wxLongLong freeSpace = -1;
+   wxString path = projPath;
+
+   if (projPath == "")
+      path = temp;
+
+   if (!wxGetDiskSpace(path, NULL, &freeSpace))
+      freeSpace = -1;
+
+   return freeSpace;
+}
+
 wxFileName DirManager::MakeBlockFileName(wxString projDir)
 {
    wxString baseFileName;
