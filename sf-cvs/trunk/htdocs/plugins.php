@@ -23,7 +23,7 @@ plug-ins (contributed by users)</b>:
 -->
 
 <ul>
-<li><a href="nyquist/all.html">All Nyquist Plug-in Descriptions</a>
+<li><a href="nyquistplugins.php">All Nyquist Plug-in Descriptions</a>
     <p>
 
 <li><b>Generators</b>
