@@ -489,8 +489,6 @@ void AudioIO::Stop()
       mProject->GetAPalette()->SetRecord(false);
    }
 
-   mHardStop = false;
-
    Pa_AbortStream(mPortStream);
    Pa_CloseStream(mPortStream);
 
@@ -519,6 +517,7 @@ void AudioIO::Stop()
    }
 
    mProject = NULL;
+   mHardStop = false;
    
    if (mInUnderruns) {
       wxString str;
@@ -576,9 +575,8 @@ AudacityProject *AudioIO::GetProject()
 
 double AudioIO::GetIndicator()
 {
-   if (mProject && mPortStream) {
+   if (mProject && mPortStream)
       return mT0 + (Pa_StreamTime(mPortStream)/ mRate);
-   }
    else
       return -1000000000.0;
 }
