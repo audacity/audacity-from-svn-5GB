@@ -126,6 +126,7 @@ class AudacityProject:public wxFrame,
    virtual void TP_ScrollRight();
    virtual void TP_HasMouse();
    virtual void TP_ScrollIndicator(double indicator);
+   virtual void TP_HandleResize();
 
    // APalette
 

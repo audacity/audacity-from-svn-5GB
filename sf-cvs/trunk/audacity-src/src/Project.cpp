@@ -570,7 +570,13 @@ void AudacityProject::HandleResize()
                            height - sbarSpaceWidth);
 
       int hoffset = mTrackPanel->GetLeftOffset() - 1;
-      int voffset = mTrackPanel->GetRulerHeight();
+      int voffset;
+
+      // BG: Hide ruler if no tracks
+      if(mTracks->IsEmpty())
+         voffset = 0;
+      else
+         voffset = mTrackPanel->GetRulerHeight();
 
       mHsbar->SetSize(hoffset, top + height - sbarSpaceWidth,
                       width - hoffset - sbarSpaceWidth + sbarExtraLen,
@@ -1036,7 +1042,7 @@ void AudacityProject::OpenFile(wxString fileName)
    f.Close();
 
    InitialState();
-   FixScrollbars();
+   HandleResize();
    mTrackPanel->Refresh(false);
 
    return;
@@ -1093,6 +1099,8 @@ void AudacityProject::Import(wxString fileName)
       mFileName =::wxPathOnly(fileName) + wxFILE_SEP_PATH + name + ".aup";
       SetTitle(GetName());
    }
+
+   HandleResize();
 }
 
 bool AudacityProject::Save(bool overwrite /* = true */ ,
@@ -1325,6 +1333,8 @@ void AudacityProject::PopState(TrackList * l)
       mTracks->Add(t->Duplicate());
       t = iter.Next();
    }
+
+   HandleResize();
 }
 
 void AudacityProject::SetStateTo(unsigned int n)
@@ -1332,7 +1342,7 @@ void AudacityProject::SetStateTo(unsigned int n)
    TrackList *l = mUndoManager.SetStateTo(n, &mViewInfo.sel0, &mViewInfo.sel1);
    PopState(l);
 
-   FixScrollbars();
+   HandleResize();
    mTrackPanel->Refresh(false);
 }
 
@@ -1471,4 +1481,9 @@ void AudacityProject::TP_HasMouse()
    // This is unneccesary, I think, because it already gets done in our own ::OnMouseEvent
    //SetActiveProject(this);
    //mTrackPanel->SetFocus();
+}
+
+void AudacityProject::TP_HandleResize()
+{
+   HandleResize();
 }
