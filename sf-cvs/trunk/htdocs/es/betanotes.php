@@ -27,7 +27,7 @@ Nuevas características en Audacity 1.1.1:
     - Mejor funcionalidad de Zoom (centra la región)
     - Múltiples formas de mostrar la posición del cursor y
       selección.
-    - Modo de selección *Snap-to*
+    - Modo de selección Saltar-Hacia
     - Arrastrar pistas hacia arriba y abajo
     - Funciones alinear y alinear grupo
     - Guardar/restaurar cursor
