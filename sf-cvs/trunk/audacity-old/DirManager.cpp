@@ -13,6 +13,7 @@
 #include <wx/msgdlg.h>
 #include <wx/progdlg.h>
 #include <wx/timer.h>
+#include <wx/textfile.h>
 
 #include "DirManager.h"
 #include "DiskFunctions.h"
@@ -162,7 +163,7 @@ BlockFile *DirManager::NewTempBlockFile()
   wxString theFileName;
   wxString thePathName;
   do {
-    theFileName.Printf("b%05d.vaf",fileIndex++);
+    theFileName.Printf("b%05d.auf",fileIndex++);
     thePathName = temp + pathChar + theFileName;
   } while (wxFileExists(thePathName));
 
@@ -183,7 +184,7 @@ BlockFile *DirManager::NewBlockFile()
   wxString theFileName;
   wxString thePathName;
   do {
-    theFileName.Printf("b%05d.vaf",fileIndex++);
+    theFileName.Printf("b%05d.auf",fileIndex++);
     thePathName = projFull + pathChar + theFileName;
   } while (wxFileExists(thePathName));
 
@@ -196,9 +197,32 @@ BlockFile *DirManager::NewBlockFile()
   return newBlockFile;
 }
 
-BlockFile *DirManager::GetBlockFile(wxString &blockName)
+void DirManager::SaveBlockFile(BlockFile *f, wxTextFile *out)
+{
+  if (f->isLightweightFile) {
+	out->AddLine("LW");
+	out->AddLine(f->name);
+	out->AddLine(wxString::Format("%d", f->start));
+	out->AddLine(wxString::Format("%d", f->len));
+  }
+  out->AddLine(f->name);
+}
+
+BlockFile *DirManager::LoadBlockFile(wxTextFile *in)
 {
   wxASSERT(projFull != "");
+
+  wxString blockName = in->GetNextLine();
+
+  if (blockName == "LW") {
+	wxString fullPath = in->GetNextLine();
+	long start;
+	if (!(in->GetNextLine().ToLong(&start))) return NULL;
+	long len;
+	if (!(in->GetNextLine().ToLong(&len))) return NULL;
+	BlockFile *newBlockFile = new BlockFile(fullPath, start, len);
+	return newBlockFile;
+  }
 
   wxString pathName = projFull + pathChar + blockName;
   BlockFile *retrieved = (BlockFile *)blockFileHash->Get(blockName);

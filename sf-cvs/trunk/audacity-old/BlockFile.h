@@ -31,7 +31,12 @@
 class BlockFile
 {
 public:
+  // Normal block file
   BlockFile(wxString name, wxString fullPath);
+
+  // Lightweight block file
+  BlockFile(wxString fullPath, int start, int len);
+
   ~BlockFile();  
 
   bool Open(bool write);
@@ -42,11 +47,8 @@ public:
   bool Seek(int where, wxSeekMode mode = wxFromStart);
   int Tell();
 
-  // Eventually these should be put behind accessors
-
-  int refCount;
-  wxString name;
-  wxString fullPath;  
+  // this accessor should be used for debugging only
+  wxString GetName();
 
 private:
   
@@ -55,8 +57,20 @@ private:
   void Ref();
   bool Deref();
 
-  wxFFile *theFile;
+  // General variables
+  int refCount;
+  wxString fullPath;
 
+  bool isLightweightFile;
+
+  // Lightweight BlockFile variables
+  int start;
+  int len;
+  int pos;
+  
+  // Normal BlockFile variables
+  wxString name;
+  wxFFile *theFile;
 };
 
 #endif

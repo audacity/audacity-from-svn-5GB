@@ -36,6 +36,8 @@
 
 #include "BlockFile.h"
 
+class wxTextFile;
+
 class DirManager
 {
 public:
@@ -54,13 +56,15 @@ public:
 
   BlockFile *NewTempBlockFile();
   BlockFile *NewBlockFile();
-  BlockFile *GetBlockFile(wxString &blockName);
+
+  BlockFile *LoadBlockFile(wxTextFile *in);
+  void SaveBlockFile(BlockFile *f, wxTextFile *out);
 
   void MakePartOfProject(BlockFile *f);
 
   void Ref(BlockFile *f);
   void Deref(BlockFile *f);
-  
+
   static wxString GetHomeDir() {return home;}
   static wxString GetPathChar() {return pathChar;}
   

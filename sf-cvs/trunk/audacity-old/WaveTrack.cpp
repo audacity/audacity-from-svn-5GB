@@ -1445,10 +1445,9 @@ bool WaveTrack::Load(wxTextFile *in, DirManager *dirManager)
   	if (!(in->GetNextLine().ToLong(&longBlockLen))) goto readWaveTrackError;
   	w->len = longBlockLen;
   	
-  	if (in->GetNextLine() != "Block name") goto readWaveTrackError;
-  	wxString name = in->GetNextLine();
+  	if (in->GetNextLine() != "Block info") goto readWaveTrackError;
   	
-  	w->f = dirManager->GetBlockFile(name);
+  	w->f = dirManager->LoadBlockFile(in);
   	
   	if (!w->f) {
   	  
@@ -1459,7 +1458,7 @@ bool WaveTrack::Load(wxTextFile *in, DirManager *dirManager)
 
   	  wxString msg;
   	  msg.Printf("The file named \"%s\" is missing from the project.",
-  				 (const char *)name);
+  				 (const char *)in->GetCurrentLine());
   	  wxMessageBox(msg);
   	  
   	  return false;
@@ -1506,8 +1505,8 @@ bool WaveTrack::Save(wxTextFile *out, bool overwrite)
 	out->AddLine(wxString::Format("%d", bb->start));
 	out->AddLine("Block len");
 	out->AddLine(wxString::Format("%d", bb->len));
-	out->AddLine("Block name");
-	out->AddLine(bb->f->name);
+	out->AddLine("Block info");
+	dirManager->SaveBlockFile(bb->f, out);
   }
 
   return true;
@@ -2225,7 +2224,7 @@ void WaveTrack::Debug()
 		   i,
 		   block->Item(i)->start,
 		   block->Item(i)->len,
-		   (const char *)(block->Item(i)->f->name));
+		   (const char *)(block->Item(i)->f->GetName()));
 	if (pos != block->Item(i)->start)
 	  printf("  ERROR\n");
 	else
