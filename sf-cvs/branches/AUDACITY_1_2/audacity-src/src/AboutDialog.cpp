@@ -29,39 +29,14 @@
 #endif
 
 
-class Eraser:public wxWindow {
- public:
-
-   Eraser(wxWindow * parent, wxWindowID id,
-          const wxPoint & pos,
-          const wxSize & size):wxWindow(parent, id, pos, size) {
-   }
-  
-   virtual void OnPaint(wxPaintEvent & /* event */) {
-      wxPaintDC dc(this);
-      dc.SetPen(*wxWHITE_PEN);
-      dc.SetBrush(*wxWHITE_BRUSH);
-      int x, y;
-      GetClientSize(&x, &y);
-      dc.DrawRectangle(0, 0, x, y);
-   }
- public:
-
-   DECLARE_EVENT_TABLE()
-};
-
-BEGIN_EVENT_TABLE(Eraser, wxWindow)
-    EVT_PAINT(Eraser::OnPaint)
-    END_EVENT_TABLE()
-
 // ----------------------------------------------------------------------------
 // icons
 // ----------------------------------------------------------------------------
-    BEGIN_EVENT_TABLE(AboutDialog, wxDialog)
-    EVT_BUTTON(wxID_OK, AboutDialog::OnOK)
-    END_EVENT_TABLE()
+BEGIN_EVENT_TABLE(AboutDialog, wxDialog)
+   EVT_BUTTON(wxID_OK, AboutDialog::OnOK)
+END_EVENT_TABLE()
 
-    IMPLEMENT_CLASS(AboutDialog, wxDialog)
+IMPLEMENT_CLASS(AboutDialog, wxDialog)
 
 AboutDialog::AboutDialog(wxWindow * parent)
 :  wxDialog(parent, -1, _("About Audacity..."),
