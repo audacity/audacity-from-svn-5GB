@@ -64,14 +64,17 @@
 </ul>
 
 
-<a name="rateset"></a>
-<p class=qy>Sample Rates</p>
+<a name="quality"></a>
+<p class=qy>Quality</p>
 
-<p class=a>This panel sets the default sample rate for new projects.
-   It does not
-   affect any existing project - to change the sample rate of an existing
+<p class=a>This panel sets the default sample rate and bit depth for new projects.
+   It does not affect any existing project - to change the sample rate of an existing
    project, just click on the rate at the bottom of the window and select
    a new rate from the pop-up menu.</p>
+<p class=a>The bit depth affects imported material, if it's copied, as well as newly recorded
+   material. The advantage of the 32-bit float resolution is that effects return material at
+   a this resolution, which improves the final mix, because the computer has more precise material
+   to work with.</p>
 
 
 <a name="fileform"></a>
@@ -99,7 +102,20 @@
 
 <li><b>Uncompressed Export Format</b>: This lets you select the
     format that Audacity will use when you export uncompressed
-    files, i.e. anything other than MP3.
+    files, i.e. anything other than lossy formats, such as OGG and MP3.
+    Audacity can output a huge amount of different formats with the
+    <i>Other</i> option, which lets you define any aspect of the
+    multitude of different formats.
+
+<li><b>Ogg Export Setup</b>: Use this control to set the
+    quality of Ogg Vorbis exporting.  Ogg Vorbis is a compressed
+    audio format similar to MP3, but free of patents and
+    licensing fees.  A normal quality Ogg Vorbis file is
+    encoded with a quality setting of "5".  Note that unlike
+    MP3 encoding, Ogg Vorbis does not let you set a bitrate,
+    because some audio clips are easier to compress than
+    others.  Increasing the quality will always increase the
+    file size, however.
 
 <li><b>MP3 Export Setup</b>: Use these controls to locate your
     MP3 encoder and set the quality of MP3 encoding.  Higher
@@ -108,15 +124,6 @@
     For more information, see
     <a href="exportmp3.html">Exporting MP3 Files</a>.
 
-<li><b>Ogg Export Setup</b>: Use this control to set the
-    quality of Ogg Vorbis exporting.  Ogg Vorbis is a compressed
-	 audio format similar to MP3, but free of patents and
-	 licensing fees.  A normal quality Ogg Vorbis file is
-	 encoded with a quality setting of "5".  Note that unlike
-	 MP3 encoding, Ogg Vorbis does not let you set a bitrate,
-	 because some audio clips are easier to compress than
-	 others.  Increasing the quality will always increase the
-	 file size, however.
 </ul>
 
 
@@ -160,7 +167,46 @@
    changes to the temporary directory to take effect.
 </p>
 
+<a name="interface"></a>
+
+<p class=qy>Interface</p>
+   <ul>
+     <li><B>Autoscroll while playing</B><br>
+       Pageflips to the right when the cursor travels to the right end of the wave display, either during playback or recording.
+     <li><B>Update Spectrogram while playing</B><br>
+       Tries to keep the spectrogram updated while playing. This requires a lot of CPU power, and realy isn't a good idea unless you're
+       playing a realy small piece. In combination with <i>Autoscroll while playing</i> this can cause pauses during playback.
+     <li><B>Enable Edit Toolbar</B><br>
+       Gives you a toolbar of a few useful functions. Check out the page on the <a href="toolbar_edit.html">Edit Toolbar</a> for more information.
+     <li><B>Language</B><br>
+       Lets you change the language of the menus and other onscreen text to the language of your choice, if you realy
+       have to change it again after picking your language when Audacity started the first time. Simply enter the right
+       language code, close and restart Audacity. Check the language directory in the installation direcory to see what
+       languages are available to you.
+   </ul>
+
+<a name="keyboard"></a>
+
+<p class=qy>Keyboard</p>
+   <ul>
+     <li><B>Commands</B> box<br>
+       All commands in Audacity that can be triggered by a keyboard shortcut is listed here. Click on the shortcut and the
+       assigned shortcuts are displayed in the right hand box.
+     <li><B>Keys</B> box<br>
+       Displays the shortcuts assigned to the function selected in the Commands box. Click on a shortcut and click on the "Remove" button to
+       erase that particular shortcut. Click on the "Clear" button to erase all shortcuts assigned to the function selected in the
+       Commands box.
+     <li><B>Adding new shortcuts</B><br>
+       Click in to the empty field next to the "Add" button and press any key or combination of command key(Shift,CTRL,ALT) and alphanumeric key(everything else).
+       The description of that key or key combo will appear in the field. By clicking on the "Add" button, you can add this key or key combo
+       as a shortcut to the function selected in the Commands box.
+       <BR>
+       <B><I>Note:</I></B> If the key or key combo is already in use, it will not be added to the function.
+   </ul>
+
+
 <br>
+
 
 <center>
 <table width="100%" border=0 cellspacing=0 cellpadding=0>

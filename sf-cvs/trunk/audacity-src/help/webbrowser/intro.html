@@ -14,10 +14,13 @@
 <br><span class=ss>Experienced users should head down to <a class=ss href="#experiencedusers">this section</a> in this document.</span>
 </center>
 
-<p class=qr>Introducing ...</p>
+<!-- intro text confined to 60% width START -->
+<center>
+<table width="60%"><tr><td>
+<p class=qr>Audacity ...</p>
 
 <p class=a>
-<font color="#000099">Audacity</font>, a free cross platform audio editor.
+ a free cross platform audio editor.
 </p>
 <p class=a>
   For new users to Audacity,
@@ -38,6 +41,11 @@ so there are lots of opportunities for you to get involved if you're interested!
 <center><a class=sf href="http://audacity.sourceforge.net/">http://audacity.sourceforge.net/</a></center>
 </p>
 
+</td></tr></table>
+</center>
+<!-- intro text confined to 60% width END -->
+
+
 <table width="100%">
 	<tr>
 	  <td width="48%" valign=top>
@@ -52,15 +60,25 @@ so there are lots of opportunities for you to get involved if you're interested!
   <a href="fileformats.html#au">AU</a>,
   <a href="fileformats.html#ircam">IRCAM</a>,
   <a href="fileformats.html#mp3">MP3</a>, and
-  <a href="fileformats.html#ogg">Ogg Vorbis</a>.</p>
+  <a href="fileformats.html#ogg">Ogg Vorbis</a>. PCM formats of 8,16,24 and 32-bits can be imported and exported.</p>
 <p class=a>
-  It supports all common editing
-  operations such as Cut, Copy, and Paste, plus it will mix tracks and
-  apply plug-in effects to any part of a sound. It also has a
-  built-in amplitude envelope editor, a customizable spectrogram mode
-  and a frequency analysis window for audio analysis applications.
+
+<ul>
+  <li><a href="menu_edit.html#cut">Cut</a>, <a href="menu_edit.html#copy">Copy, <a href="menu_edit.html#paste">Paste</a>,
+  <a href="menu_edit.html#delete">Delete</a>, <a href="menu_edit.html#silence">Silence</a>,
+  <a href="menu_edit.html#duplicate">Duplicate</a>, <a href="menu_edit.html#split">Split</a></li></li>
+  <li>apply <a href="menu_effects.html">plug-in effects</a> to any part of a sound</li>
+  <li>built-in <a href="toolbar.html#envelope">volume envelope editor</a></li>
+  <li>customizable <a href="track_popdown.html">spectrogram track view mode</a></li>
+  <li><a href="menu_view.html#spectrum">frequency analysis window</a> for audio analysis applications</li>
+  <li>custom playback <a href="track_popdown.html">rate</a> for every track, which is live-resampled to the project sample rate</li>
+  <li>simple to complex <a href="menu_project.html#align">align operations</a> for tracks and groups of tracks</li>
+  <li></li>
 </p>
 
+<p class=a>
+  
+</p>
 
 	  </td>
 	  <td width="52%" valign=top>
@@ -80,15 +98,10 @@ What can't <font color="#000099">Audacity</font> do?
 	not support any special hardware, but just works with the system's
 	default audio device.
 
-	<li>Resample audio to different sample rates (this is available in version 1.1 and later).
-
 	<li><font color="#000099">Audacity</font> opens MIDI files,
 	but it is not a MIDI editor, and its
 	MIDI features are extremely limited.
 
-	<li><font color="#000099">Audacity</font> currently only
-	works with 16-bit quality audio
-   (version 1.1 supports 32-bit audio).
 </ul>
 </p>
 
@@ -106,7 +119,7 @@ What can't <font color="#000099">Audacity</font> do?
 This file is editable and all actions are undoable.  Undo's are instantaneous.</p>
 <p class=a>Almost anything is undoable, including importing and deleting tracks!
 <p class=a>There are no inserts, auxes or buses yet.</p>
-<p class=a>The Windows and Mac versions can use VST plugins, but
+<p class=a>The Windows and Mac versions can use VST plugins, the Linux version LADSPA plugins, but
 there is no preview function available yet.</a>
 	  </td>
 	  <td width="50%" valign=top>
@@ -114,7 +127,8 @@ there is no preview function available yet.</a>
 <p class=a>There is one master gain control in the <a href="toolbar.html">toolbar</a>.</p>
 <p class=a>There is volume automation via the <a href="toobar.html#envelope">envelope tool</a>.</p>
 <p class=a><B>Solo</b> does not switch off <b>Mute</b></p>
-<p class=a>Editing functions include <a href="menu_edit.html">Cut, Copy, Paste</a>,<a href="menu_edit.html#duplicate">Duplicate</a>(to new track at same timecode), <a href="menu_edit.html#split">Split</a>(to new track at same timecode), <a href="menu_edit.html#silence">Silence</a> and <a href="menu_edit.html#insertsilence">Insert Silence</a>.</p>
+<p class=a>Editing functions include <a href="menu_edit.html">Cut, Copy, Paste</a>,<a href="menu_edit.html#duplicate">Duplicate</a>(to new track at same timecode), <a href="menu_edit.html#split">Split</a>(to new track at same timecode), <a href="menu_edit.html#silence">Silence</a> and <a href="menu_generate.html#silence">Generate Silence</a>.</p>
+<p class=a>A grid can be activated for each track, and snapping can be switched on as well, both via the drop-down menu in the track panel of each track.</p>
 
 	  </td>
 	</tr>
