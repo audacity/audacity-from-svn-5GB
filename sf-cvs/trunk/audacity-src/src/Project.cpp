@@ -400,9 +400,9 @@ AudacityProject::~AudacityProject()
    //Do this from the bottom, to avoid too much popping forward in the array
    // that would be obtained if you keep deleting the 0th item from the front
 
-   size_t i;
-   for (i = mToolBarArray.GetCount() - 1; i >= 0; i--) {
-      delete mToolBarArray[i];
+   size_t i = mToolBarArray.GetCount();
+   while (i > 0) {
+      delete mToolBarArray[--i];
       mToolBarArray.RemoveAt(i);
    }
    mToolBarArray.Clear();
