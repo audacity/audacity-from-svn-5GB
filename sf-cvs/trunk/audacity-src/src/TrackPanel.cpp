@@ -2415,6 +2415,39 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
    }
 }
 
+// MM: Handle mouse wheel rotation (for zoom in/out and vertical scrolling)
+void TrackPanel::HandleWheelRotation(wxMouseEvent & event)
+{
+   int steps = event.m_wheelRotation / event.m_wheelDelta;
+
+   if (event.ControlDown())
+   {
+      // MM: Scroll left/right when used with CTRL key down
+      mListener->TP_ScrollWindow(
+         mViewInfo->h +
+         steps * (mViewInfo->screen  * 0.1));
+   } else
+   {
+      // MM: Zoom in/out
+      // MM: I don't understand what trackLeftEdge does
+      int trackLeftEdge = GetLabelWidth()+1;
+      
+      double center_h = PositionToTime(event.m_x, trackLeftEdge);
+
+      if (steps < 0)
+         mViewInfo->zoom = wxMax(mViewInfo->zoom / (2.0 * -steps), gMinZoom);
+      else
+         mViewInfo->zoom = wxMin(mViewInfo->zoom * (2.0 * steps), gMaxZoom);
+
+      double new_center_h = PositionToTime(event.m_x, trackLeftEdge);
+      
+      mViewInfo->h += (center_h - new_center_h);
+      
+      MakeParentRedrawScrollbars();
+      Refresh(false);
+   }
+}
+
 // AS: Handle key presses by the user.  Notably, play and stop when the
 //  user presses the spacebar.  Also, LabelTracks can be typed into.
 void TrackPanel::OnKeyEvent(wxKeyEvent & event)
@@ -2508,6 +2541,9 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
 void TrackPanel::OnMouseEvent(wxMouseEvent & event)
 {
    mListener->TP_HasMouse();
+
+   if (event.m_wheelRotation != 0)
+      HandleWheelRotation(event);
 
    if (!mAutoScrolling) {
       mMouseMostRecentX = event.m_x;

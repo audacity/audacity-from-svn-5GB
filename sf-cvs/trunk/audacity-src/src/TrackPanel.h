@@ -134,6 +134,9 @@ class TrackPanel:public wxWindow {
    // BG: Handle drawing
    void HandleDraw(wxMouseEvent & event);
 
+   // MM: Handle mouse wheel rotation
+   void HandleWheelRotation(wxMouseEvent & event);
+
    void DoPopupMenu(wxMouseEvent &event, wxRect& titleRect, 
 		    Track* t, wxRect &r, int num);
 
