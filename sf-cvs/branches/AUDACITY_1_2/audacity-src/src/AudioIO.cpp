@@ -940,14 +940,30 @@ bool AudioIO::IsAudioTokenActive(int token)
 
 double AudioIO::NormalizeStreamTime(double absoluteTime) const
 {
+   // dmazzoni: This function is needed for two reasons:
+   // One is for looped-play mode - this function makes sure that the
+   // position indicator keeps wrapping around.  The other reason is
+   // more subtle - it's because PortAudio can query the hardware for
+   // the current stream time, and this query is not always accurate.
+   // Sometimes it's a little behind or ahead, and so this function
+   // makes sure that at least we clip it to the selection.
+
    // msmeyer: Just to be sure, the returned stream time should
    //          never be smaller than the actual start time.
    if (absoluteTime < mT0)
       absoluteTime = mT0;
-   
-   // msmeyer: This can happen if we are playing in looped mode.
-   while (absoluteTime > mT1)
-      absoluteTime -= mT1 - mT0;
+
+   // dmazzoni: If we're looping, we should wrap around when the
+   // stream time is past the end.  Otherwise the returned stream
+   // time is clipped to the end time.
+   if (mPlayLooped) {
+      while (absoluteTime > mT1)
+         absoluteTime -= mT1 - mT0;
+   }
+   else {
+      if (absoluteTime > mT1)
+         absoluteTime = mT1;
+   }
       
    return absoluteTime;
 }
