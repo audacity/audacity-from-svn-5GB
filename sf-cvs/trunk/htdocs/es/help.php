@@ -1,7 +1,16 @@
 <?php BoxTop($helpStr); ?>
 
 <p>
-<a href="audacity-manual-1.0.0-es.zip">Descarga - Guía del Usuario / Documentación</a>
+<a href="docs/contents.html">Lee la documentación Online</a>
+</p>
+
+<p>
+<?php print $docsStr; ?>:
+<ul>
+<li><a href="audacity-manual-1.0.0-A.zip">Inglés</a>
+<li><a href="audacity-manual-1.0.0-bg.zip">Búlgaro</a>
+<li><a href="audacity-manual-1.0.0-es.zip">Español</a>
+</ul>
 </p>
 
 <p>
@@ -16,7 +25,7 @@
 
 <p>
 <a href="http://sourceforge.net/mailarchive/forum.php?forum_id=828"
->Archivos de la Audacity-Help Mailing List</a>
+>Archivos de la lista de correos en cadena Audacity-Help</a>
 </p>
 
 <p>
@@ -25,11 +34,11 @@
 </p>
 
 <p>
-Nota: A pesar de que este sitio Web esté en español, la versión 1.0 de
-Audacity sólo está disponible en inglés. En cambio Audacity 1.1 está en
-español y en varios otros idiomas. Por lo tanto si deseas una versión de
-Audacity en tu idioma descarga la versión Beta. Si no deberás utilizar
-una versión únicamente en inglés.
+<hr>
+</p>
+
+<p>
+<a href="docs1.1">(Sin Terminar) documentación para Audacity 1.1</a>
 </p>
 
 <?php BoxBottom(); ?>
