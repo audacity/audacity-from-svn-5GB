@@ -183,11 +183,16 @@ pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent,
 
 BEGIN_EVENT_TABLE(AudacityApp, wxApp)
   EVT_CHAR(AudacityApp::OnKey)
+
+   //These appear to cause trouble on non-mac platforms:
+#ifdef __WXMAC__
 	EVT_MENU(AboutID, AudacityApp::OnMenuAbout)
 	EVT_MENU(NewID, AudacityApp::OnMenuNew)
 	EVT_MENU(OpenID, AudacityApp::OnMenuOpen)
 	EVT_MENU(PreferencesID, AudacityApp::OnMenuPreferences)
 	EVT_MENU(ExitID, AudacityApp::OnMenuExit)
+#endif
+
 END_EVENT_TABLE()
 
 // The `main program' equivalent, creating the windows and returning the
@@ -430,6 +435,12 @@ int AudacityApp::OnExit()
 // where it's possible to have a menu bar but no windows open.
 // It doesn't hurt any other platforms, though.
 
+//STM:  BUT...they are getting used on other platforms, 
+// hiding the  OnOpen etc.
+//
+// Conditional compilation should fix this:
+
+#ifdef __WXMAC__
 void AudacityApp::OnMenuAbout(wxCommandEvent & event)
 {
    AboutDialog dlog(NULL);
@@ -441,8 +452,10 @@ void AudacityApp::OnMenuNew(wxCommandEvent & event)
    CreateNewAudacityProject(gParentWindow);
 }
 
+
 void AudacityApp::OnMenuOpen(wxCommandEvent & event)
 {
+
    AudacityProject::ShowOpenDialog(NULL);
 }
 
@@ -456,3 +469,5 @@ void AudacityApp::OnMenuExit(wxCommandEvent & event)
 {
    QuitAudacity();
 }
+
+#endif

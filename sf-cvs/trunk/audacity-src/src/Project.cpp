@@ -1133,17 +1133,21 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
       for (int i = 0; i < numProjects; i++)
          if (gAudacityProjects[i]->mFileName == fileName) {
             wxMessageBox
-                ("That project is already open in another window.");
+                (_("That project is already open in another window."));
             return;
          }
 
-      // Open in a new window if this one is in use
-      if (!proj || proj->mDirty || !proj->mTracks->IsEmpty()) {
+
+      // STM: Removing check of IsDirty(): as long as it's empty, why should we care?
+      // (alternately, if its dirty and empty, we should clean it)
+      if (!proj ||  !proj->mTracks->IsEmpty()) {
+         // Open in a new window if this one is in use or doesn't exist (on a Mac when no window is open).
          AudacityProject *newProject =
-             CreateNewAudacityProject(gParentWindow);
+            CreateNewAudacityProject(gParentWindow);
          newProject->OpenFile(fileName);
-      } else
+      } else {
          proj->OpenFile(fileName);
+      }
    }
 }
 
