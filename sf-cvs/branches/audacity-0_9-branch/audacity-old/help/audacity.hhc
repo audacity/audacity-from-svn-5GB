@@ -8,16 +8,12 @@ Contents
 
 <ul>
 	<li><object>
-		<param name="Name" value="Main">
+		<param name="Name" value="Contents">
 		<param name="Local" value="contents.htm">
 		</object>
 	<li><object>
 		<param name="Name" value="Introduction">
 		<param name="Local" value="intro.htm">
-		</object>
-	<li><object>
-		<param name="Name" value="What makes Audacity unique?">
-		<param name="Local" value="unique.htm">
 		</object>
 
 	<li><object>
@@ -27,23 +23,54 @@ Contents
 		<ul>
 			<li><object>
 				<param name="Name" value="1. Digital Audio">
-				<param name="Local" value="tutorial_audio.htm">
+				<param name="Local" value="tutorial_basics_1.htm">
 				</object>
 			<li><object>
 				<param name="Name" value="2. Rules of Audacity">
-				<param name="Local" value="tutorial_rules.htm">
+				<param name="Local" value="tutorial_basics_2.htm">
 				</object>
 			<li><object>
 				<param name="Name" value="3. Setup, Audio Import and Playback">
-				<param name="Local" value="tutorial_setup.htm">
+				<param name="Local" value="tutorial_basics_3.htm">
 				</object>
 			<li><object>
 				<param name="Name" value="4. Recording with Audacity">
-				<param name="Local" value="tutorial_recording.htm">
+				<param name="Local" value="tutorial_basics_4.htm">
 				</object>
 			<li><object>
-				<param name="Name" value="5. Common Editing Tasks">
-				<param name="Local" value="tutorial_tasks.htm">
+				<param name="Name" value="Common Editing Tasks 1">
+				<param name="Local" value="tutorial_common_ed_1.htm">
+				</object>
+			<li><object>
+				<param name="Name" value="Common Editing Tasks 2">
+				<param name="Local" value="tutorial_common_ed_2.htm">
+				</object>
+
+			<li><object>
+				<param name="Name" value="Editing for Beginners 1">
+				<param name="Local" value="tutorial_ed_beginner1.htm">
+				</object>
+			<li><object>
+				<param name="Name" value="Editing for Beginners 2">
+				<param name="Local" value="tutorial_ed_beginner2.htm">
+				</object>
+			<li><object>
+				<param name="Name" value="Editing for Beginners 3">
+				<param name="Local" value="tutorial_ed_beginner3.htm">
+				</object>
+			<li><object>
+				<param name="Name" value="Editing for Beginners 4">
+				<param name="Local" value="tutorial_ed_beginner4.htm">
+				</object>
+
+
+			<li><object>
+				<param name="Name" value="Effects Tutorial 1">
+				<param name="Local" value="tutorial_effects_1.htm">
+				</object>
+			<li><object>
+				<param name="Name" value="Effects Tutorial 2">
+				<param name="Local" value="tutorial_effects_2.htm">
 				</object>
 		</ul>
 
@@ -54,9 +81,35 @@ Contents
 		<ul>
 
 		<li><object>
+			<param name="Name" value="Stuff On Screen">
+			<param name="Local" value="screen.htm">
+			</object>
+
+		<li><object>
 			<param name="Name" value="The Audacity Toolbar">
 			<param name="Local" value="toolbar.htm">
 			</object>
+
+		<li><object>
+			<param name="Name" value="Track Delete Button">
+			<param name="Local" value="track_delete.htm">
+			</object>
+
+		<li><object>
+			<param name="Name" value="Track Mute Button">
+			<param name="Local" value="track_mute.htm">
+			</object>
+
+		<li><object>
+			<param name="Name" value="Track Solo Button">
+			<param name="Local" value="track_solo.htm">
+			</object>
+
+		<li><object>
+			<param name="Name" value="Track Resize Button">
+			<param name="Local" value="track_resize.htm">
+			</object>
+
 		<li><object>
 			<param name="Name" value="Tracks in Audacity">
 			<param name="Local" value="tracks.htm">
@@ -74,8 +127,8 @@ Contents
 			<param name="Local" value="exportmp3.htm">
 			</object>
 		<li><object>
-			<param name="Name" value="Keyboard Command Reference">
-			<param name="Local" value="keyboard.htm">
+			<param name="Name" value="Keyboard Shortcuts">
+			<param name="Local" value="keyboard_shortcuts.htm">
 			</object>
 		</ul>
 
@@ -86,23 +139,23 @@ Contents
 		<ul>
 			<li><object>
 				<param name="Name" value="File menu">
-				<param name="Local" value="menu1.htm">
+				<param name="Local" value="menu_file.htm">
 				</object>
 			<li><object>
 				<param name="Name" value="Edit menu">
-				<param name="Local" value="menu2.htm">
+				<param name="Local" value="menu_edit.htm">
 				</object>
 			<li><object>
 				<param name="Name" value="View menu">
-				<param name="Local" value="menu3.htm">
+				<param name="Local" value="menu_view.htm">
 				</object>
 			<li><object>
 				<param name="Name" value="Project menu">
-				<param name="Local" value="menu4.htm">
+				<param name="Local" value="menu_project.htm">
 				</object>
 			<li><object>
 				<param name="Name" value="Effect menu">
-				<param name="Local" value="menu5.htm">
+				<param name="Local" value="menu_effects.htm">
 				</object>
 		</ul>
 
