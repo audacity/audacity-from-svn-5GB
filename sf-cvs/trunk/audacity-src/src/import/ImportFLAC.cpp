@@ -130,7 +130,7 @@ void MyFLACFile::metadata_callback(const FLAC__StreamMetadata *metadata)
 
 void MyFLACFile::error_callback(FLAC__StreamDecoderErrorStatus status)
 {
-   wxASSERT(0);
+   //wxASSERT(0);
 }
 
 
