@@ -30,6 +30,7 @@
 #include <wx/stattext.h>
 #include <wx/button.h>
 #include <wx/intl.h>
+#include <wx/msgdlg.h>
 
 #include "Audacity.h"
 
@@ -362,6 +363,59 @@ TagsDialog::TagsDialog(wxWindow * parent, wxWindowID id, const wxString & title,
 
 bool TagsDialog::Validate()
 {
+   if(!mTags->mID3V2)
+   {
+      if(mTags->mTitle.Length() > 30)
+      {
+         wxMessageBox(_("Maximum length of attribute 'Title' is 30 characters. Data was truncated."));
+
+         mTags->mTitle = mTags->mTitle.Left(30);
+         TransferDataToWindow();
+
+         return FALSE;
+      }
+
+      if(mTags->mArtist.Length() > 30)
+      {
+         wxMessageBox(_("Maximum length of attribute 'Artist' is 30 characters. Data was truncated."));
+
+         mTags->mArtist = mTags->mArtist.Left(30);
+         TransferDataToWindow();
+
+         return FALSE;
+      }
+
+      if(mTags->mAlbum.Length() > 30)
+      {
+         wxMessageBox(_("Maximum length of attribute 'Album' is 30 characters. Data was truncated."));
+
+         mTags->mAlbum = mTags->mAlbum.Left(30);
+         TransferDataToWindow();
+
+         return FALSE;
+      }
+
+      if(mTags->mYear.Length() > 4)
+      {
+         wxMessageBox(_("Maximum length of attribute 'Year' is 4 characters. Data was truncated."));
+
+         mTags->mYear = mTags->mYear.Left(4);
+         TransferDataToWindow();
+
+         return FALSE;
+      }
+
+      if(mTags->mComments.Length() > 30)
+      {
+         wxMessageBox(_("Maximum length of attribute 'Comments' is 30 characters. Data was truncated."));
+
+         mTags->mComments = mTags->mComments.Left(30);
+         TransferDataToWindow();
+
+         return FALSE;
+      }
+   }
+
    return TRUE;
 }
 
@@ -470,9 +524,6 @@ void TagsDialog::OnOk(wxCommandEvent & event)
 
    if (Validate())
       EndModal(true);
-   else {
-      event.Skip();
-   }
 }
 
 void TagsDialog::OnCancel(wxCommandEvent & event)
