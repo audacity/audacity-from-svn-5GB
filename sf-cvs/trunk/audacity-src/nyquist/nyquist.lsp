@@ -1532,3 +1532,4 @@ loop
 (defun osc-pulse (hz bias &optional (compare-shape *step-shape*))
   (compare bias (osc-tri hz) compare-shape))
 
+(setf NY:ALL 1000000000)
