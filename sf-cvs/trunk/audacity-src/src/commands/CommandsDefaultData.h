@@ -125,6 +125,8 @@ static const char *CommandsDefaultXML[] = {
 "\t\t\t\t<item translation=\"Align Group End with Selection Start\" functions=\"OnAlignGroupEndSelStart\"/>",
 "\t\t\t\t<item translation=\"Align Group End with Selection End\" functions=\"OnAlignGroupEndSelEnd\"/>",
 "\t\t\t</submenu>",
+"\t\t<itemseparator/>",
+"\t\t<item translation=\"Add Label At Selection\" keys=\"Ctrl+B\" functions=\"OnAddLabel\"/>",
 "\t\t</menu>",
 "\t\t<!-- Generate Menu -->",
 "\t\t<menu translation=\"Generate\">",
@@ -269,6 +271,8 @@ static const char *CommandsDefaultXML[] = {
    COMMANDS_ADDTRANSLATIONSTRING(_("Align Group End with Cursor"), "Align Group End with Cursor");
    COMMANDS_ADDTRANSLATIONSTRING(_("Align Group End with Selection Start"), "Align Group End with Selection Start");
    COMMANDS_ADDTRANSLATIONSTRING(_("Align Group End with Selection End"), "Align Group End with Selection End");
+
+   COMMANDS_ADDTRANSLATIONSTRING(_("Add Label At Selection"), "Add Label At Selection");
 
    // Generate menu
    COMMANDS_ADDTRANSLATIONSTRING(_("&Generate"), "Generate");

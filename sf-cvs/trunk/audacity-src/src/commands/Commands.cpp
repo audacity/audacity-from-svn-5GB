@@ -185,8 +185,12 @@ bool Commands::ExecuteFunctionsList(wxString sFunctions)
       audEventFunction token_callback = LookupCallbackByName(token);
       //good 'ol MSVC++ gave me an internal compiler error, maybe it was something I did?
       void *tokenICE = &token_callback;
+      void **YATtoken = (void **)tokenICE;
 
       if(!tokenICE)
+         return false;
+
+      if(!*YATtoken)
          return false;
 
       (audacityPrj->*((audEventFunction) (token_callback))) ();

@@ -23,7 +23,7 @@
 
 #ifdef AUDACITY_COMMANDS_CALLBACK_POINTERS
 
-#define NUM_CALLBACK_FUNCTIONS 68
+#define NUM_CALLBACK_FUNCTIONS 69
 
 audEventFunction callback_function_pointers[] = {&AudacityProject::OnNew,&AudacityProject::OnOpen,&AudacityProject::OnClose,
 &AudacityProject::OnSave,&AudacityProject::OnSaveAs,&AudacityProject::OnExportMix,&AudacityProject::OnExportSelection,
@@ -44,7 +44,7 @@ audEventFunction callback_function_pointers[] = {&AudacityProject::OnNew,&Audaci
 &AudacityProject::OnAlignGroupSelEnd,&AudacityProject::OnAlignGroupEndSelStart,&AudacityProject::OnAlignGroupEndSelEnd,
 &AudacityProject::OnNewWaveTrack,&AudacityProject::OnNewLabelTrack,&AudacityProject::OnRemoveTracks,
 &AudacityProject::OnAbout,&AudacityProject::OnHelp,&AudacityProject::OnHelpIndex,&AudacityProject::OnHelpSearch,
-&AudacityProject::OnBenchmark,&AudacityProject::OnSeparator};
+&AudacityProject::OnBenchmark,&AudacityProject::OnSeparator,&AudacityProject::OnAddLabel};
 
 const char *callback_function_strings[] = {"OnNew","OnOpen","OnClose","OnSave","OnSaveAs","OnExportMix","OnExportSelection",
 "OnExportLossyMix","OnExportLossySelection","OnExportLabels","OnPreferences","OnExit","Undo","Redo","UndoHistory","Cut",
@@ -54,7 +54,7 @@ const char *callback_function_strings[] = {"OnNew","OnOpen","OnClose","OnSave","
 "OnEditID3","OnQuickMix","OnSelectionSave","OnSelectionRestore","OnCursorTrackStart","OnCursorTrackEnd","OnCursorSelStart",
 "OnCursorSelEnd","OnAlignZero","OnAlign","OnAlignSelStart","OnAlignSelEnd","OnAlignEndSelStart","OnAlignEndSelEnd",
 "OnAlignGroupSelStart","OnAlignGroupSelEnd","OnAlignGroupEndSelStart","OnAlignGroupEndSelEnd","OnNewWaveTrack",
-"OnNewLabelTrack","OnRemoveTracks","OnAbout","OnHelp","OnHelpIndex","OnHelpSearch","OnBenchmark","OnSeparator"};
+"OnNewLabelTrack","OnRemoveTracks","OnAbout","OnHelp","OnHelpIndex","OnHelpSearch","OnBenchmark","OnSeparator","OnAddLabel"};
 
 #endif
 
@@ -151,6 +151,7 @@ void OnAlignGroupEndSelEnd();
 void OnNewWaveTrack();
 void OnNewLabelTrack();
 void OnRemoveTracks();
+void OnAddLabel();
 
         // Help Menu
 
