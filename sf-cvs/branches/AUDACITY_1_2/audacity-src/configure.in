@@ -576,11 +576,12 @@ else
  	BUILDLIBS="$BUILDLIBS portaudio/pa_win_wmme/portaudio.a"
  	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_win_wmme/portaudio.a"
  	LIBS="$LIBS -lkernel32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lodbc32 -lodbccp32 -lwsock32 -lwinmm"
+	LIBS="$LIBS -Wl,--subsystem,windows"
  	CONFIGHEADER="configwin.h"
  
     if [[ "$use_portmixer" = "yes" ]] ; then
  		BUILDLIBS="$BUILDLIBS portmixer/px_win_wmme/portmixer.a"
- 		EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_win_wmme/portmixer.a"
+ 		EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_win_wmme/portmixer.a Audacity.coff"
     fi
  
  	if [[ "$use_ladspa" = "default" ]] ; then

@@ -231,6 +231,8 @@ compare your installed packages to the list of packages needed.
 									 us know which ones, so they can be added to this list)
     Autoconf
 	Autoconf-devel (Autoconf 2.53 is required if you need to rebuild 'configure')
+	gettext-devel (for building the translation files.  If you don't want to build these,
+	               you don't need this package)
 	Automake
 	Automake-devel
 	binutils
@@ -254,6 +256,10 @@ to work with MS Visual C++.
 tar -xzvf (wxwindows).
 
 3.  From the top-level of the wxWindows source tree, type './configure --disable-shared'.
+** For some reason, I haven't been able to get Audacity to link to wxWindows statically
+under Cygwin.  Since there are bigger fish to fry right now, I haven't dealt with it.  I
+would appreciate if someone gets it to work if you let me know what you did.
+
 When complete, type "make".  When that's complete, "make install".  If all goes well,
 you will have wxWindows installed in your Cygwin installation!  Note: If you wish to
 link dynamically to wxWindows later, you should leave out the --disable-shared switch.
@@ -281,7 +287,7 @@ This is the tricky part.  :)
 
 If you were able to download a version with experimental support, follow these steps:
 
-1.  ./configure --without-nyquist --without-libid3tag --without-libvorbis --without-ladspa
+1.  ./configure --without-nyquist --without-id3tag --without-vorbis
 2.  make
 3.  ./audacity
 4.  If you have any problems or errors, read the next section.
@@ -311,17 +317,17 @@ Cygwin that is directly compatible with Audacity's build system under Cygwin.  T
 Makefile for PortAudio that works with Cygwin, but will either require tweaking or will
 require tweaking Audacity's configure script.  This makefile will compile PortAudio as a shared
 library, and will require additional arguments to gcc for proper linking.  A binary compiled
-with it will require the PortAudio shared library to be distributed with it.  However, there
-is a Makefile for PortAudio that works directly with Audacity's build system that was pending
-acceptance at the time of this writing.  If you do not have this Makefile, you can create it
+with it will require the PortAudio shared library to be distributed with it.  Luckily, there is
+a Makefile distributed with the PortAudio in Audacity's lib-src directory.  It should work.
+If it doesn't work, or you do not have this Makefile, you can create it
 yourself with these instructions:
 
 1.  Copy the Makefile from pa_unix_oss into pa_win_wmme.
 2.  Edit the Makefile in pa_win_wmme.  Remove object files that are in the pa_unix_oss directory.
 Add as an object the only .c file in pa_win_wmme.
 
-PortMixer is not required, but is recommended.  If you have the Makefile submitted for acceptance
-for PortAudio already, then chances are you have the Makefile for PortMixer.  If not, then you can
+PortMixer is not required, but is recommended.  This Makefile is the same story as the one for
+PortAudio.  If, for some reason, you do not have it, or the one you have doesn't work, then you can
 create this makefile by following the instructions for PortAudio, replacing pa with px.  Since
 you will either already have the PortMixer makefile for Cygwin or you will have had to create
 one for PortAudio, there's really no excuse for not taking a few extra minutes to get PortMixer
@@ -334,7 +340,8 @@ Libresample may require tweaking some #define statements in a fashion that is no
 
 Expat should compile out of the box.  If not, you might be better off trying to install the version
 of expat that ships with Cygwin.  If configure fails to detect a system installed expat, this
-is probably a bug and should be submitted to the Audacity developers.
+is probably a bug and should be submitted to the Audacity developers.  You can use the system-installed
+expat by passing --with-expat=system to ./configure.
 
 Any other libraries are probably not required, and if they fail to compile you should be able
 to --disable them with configure.
