@@ -116,6 +116,7 @@ public:
   // Project Menu
 
   void OnImport(wxCommandEvent& event);
+  void OnImportLabels(wxCommandEvent& event);
   void OnImportMIDI(wxCommandEvent& event);
   void OnImportMP3(wxCommandEvent& event);
   void OnImportRaw(wxCommandEvent& event);

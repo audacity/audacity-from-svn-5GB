@@ -244,10 +244,43 @@ void LabelTrack::Unselect()
 void LabelTrack::Export(wxTextFile& f)
 {
   for(int i=0; i<mLabels.Count(); i++) {
-	f.AddLine(wxString::Format("%lf\t%d\t%s",
+	f.AddLine(wxString::Format("%lf\t%s",
 							   mLabels[i]->t,
-							   (int(44100*mLabels[i]->t+0.5)),
 							   (const char *)(mLabels[i]->title)));
+  }
+}
+
+void LabelTrack::Import(wxTextFile& in)
+{
+  wxString currentLine;
+  int i, len;
+  wxString s;
+  wxString title;
+  double t;
+
+  for(;;) {
+	currentLine = in.GetNextLine();
+	len = currentLine.Length();
+	if (len==0)
+	  return;
+	
+	i = 0;
+	while(i<len && currentLine[i]!=' ' && currentLine[i]!='\t')
+	  i++;
+	
+	s = currentLine.Left(i);
+	if (!s.ToDouble(&t))
+	  return;
+	
+	while(i<len && (currentLine[i]==' ' || currentLine[i]=='\t'))
+	  i++;
+	
+	title = currentLine.Right(len-i);
+
+	LabelStruct *l = new LabelStruct();
+	l->t = t;
+	l->title = title;
+	mLabels.Add(l);
   }
 }
 

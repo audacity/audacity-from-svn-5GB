@@ -169,9 +169,10 @@ enum {
   // Project Menu
   
   ImportID,
-  ImportRawID,
+  ImportLabelsID,
   ImportMIDIID,
   ImportMP3ID,
+  ImportRawID,
   
   // Track Menu
 
@@ -229,6 +230,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
   EVT_MENU(FloatPaletteID, AudacityProject::OnFloatPalette)
   // Project menu
   EVT_MENU(ImportID, AudacityProject::OnImport)
+  EVT_MENU(ImportLabelsID, AudacityProject::OnImportLabels)
   EVT_MENU(ImportMIDIID, AudacityProject::OnImportMIDI)
   EVT_MENU(ImportRawID, AudacityProject::OnImportRaw)
   EVT_MENU(ImportMP3ID, AudacityProject::OnImportMP3)
@@ -324,9 +326,10 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
 
   mProjectMenu = new wxMenu();
   mProjectMenu->Append(ImportID, "&Import Audio...\tCtrl+I");
-  mProjectMenu->Append(ImportRawID, "Import Raw Data...");
+  mProjectMenu->Append(ImportLabelsID, "Import Labels...");
   mProjectMenu->Append(ImportMIDIID, "Import &MIDI...");
-  mProjectMenu->Append(ImportMP3ID, "Import MP3...");
+  mProjectMenu->Append(ImportMP3ID, "Import MP&3...");
+  mProjectMenu->Append(ImportRawID, "Import Raw Data...");
   mProjectMenu->AppendSeparator();
   mProjectMenu->Append(QuickMixID, "&Quick Mix");
   mProjectMenu->AppendSeparator();
@@ -1645,6 +1648,42 @@ void AudacityProject::OnRemoveTracks(wxCommandEvent& event)
 
   mTrackPanel->Refresh(false);
   UpdateMenus();
+}
+
+void AudacityProject::OnImportLabels(wxCommandEvent& event)
+{
+  wxString fileName =
+	wxFileSelector("Select a text file containing labels...",
+				   "", // Path
+				   "", // Name
+				   ".txt", // Extension
+				   "*.txt", // Wildcard
+				   0, // Flags
+				   this); // Parent
+
+  if (fileName == "")
+    return;
+
+  wxTextFile f;
+
+  f.Open(fileName);
+  if (!f.IsOpened()) {
+	wxMessageBox("Couldn't open "+fileName);
+	return;
+  }
+
+  LabelTrack *newTrack = new LabelTrack(&mDirManager);
+
+  newTrack->Import(f);
+
+  SelectNone();
+  mTracks->Add(newTrack);
+  newTrack->selected = true;
+    
+  PushState();
+  
+  FixScrollbars();
+  mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnImportMIDI(wxCommandEvent& event)

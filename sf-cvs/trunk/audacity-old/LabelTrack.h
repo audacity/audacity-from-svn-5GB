@@ -59,6 +59,7 @@ public:
 
   void KeyEvent(double sel0, double sel1, wxKeyEvent& event);
 
+  void Import(wxTextFile& f);
   void Export(wxTextFile& f);
 
   void Unselect();
