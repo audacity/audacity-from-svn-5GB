@@ -221,6 +221,8 @@ mAutoScrolling(false)
 
 TrackPanel::~TrackPanel()
 {
+   mTimer.Stop();
+
    if (mBitmap)
       delete mBitmap;
 
