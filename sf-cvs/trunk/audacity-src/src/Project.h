@@ -104,6 +104,8 @@ class AudacityProject:public wxFrame,
 #include "Menus.h"
 #undef AUDACITY_MENUS_METHODS
 
+ public:
+
    // Message Handlers
 
    virtual bool ProcessEvent(wxEvent & event);

@@ -58,17 +58,16 @@
 // ToolBarStub Constructer. Requires a ToolBarType.
 // Whenever a ToolBarStub is around, there will be a floating
 // ToolBarFrame.  It may be hidden or unhidden.
-    ToolBarStub::ToolBarStub(wxWindow * Parent, enum ToolBarType tbt) 
+ToolBarStub::ToolBarStub(wxWindow * Parent, enum ToolBarType tbt) 
 {
-   
-       //Create a frame with a toolbar of type tbt inside it
-       mToolBarFrame = new ToolBarFrame(Parent, tbt);
-   
+   //Create a frame with a toolbar of type tbt inside it
+   mToolBarFrame = new ToolBarFrame(Parent, tbt);
 
-       //Get the newly-created toolbar to get some info from it.
-       ToolBar * tempTB = mToolBarFrame->GetToolBar();
-   
-mType = tbt;
+
+   //Get the newly-created toolbar to get some info from it.
+   ToolBar * tempTB = mToolBarFrame->GetToolBar();
+
+   mType = tbt;
    mTitle = tempTB->GetTitle();
    mSize = tempTB->GetSize();
    mWindowedStatus = false;
@@ -77,15 +76,13 @@ mType = tbt;
 
 
 //ToolBarStub destructer
-    ToolBarStub::~ToolBarStub() 
+ToolBarStub::~ToolBarStub() 
 {
-   
-if (mToolBarFrame) {
+   if (mToolBarFrame) {
       delete mToolBarFrame;
       mToolBarFrame = NULL;
    }
 }
-
 
 
 // This will add a new toolbar to all project windows, 
@@ -118,7 +115,6 @@ void ToolBarStub::UnloadAll()
 } 
 
 
-
 // This will make the floating ToolBarFrame appear at the specified location
 void ToolBarStub::ShowWindowedToolBar(wxPoint * where /* = NULL */ ) 
 {
@@ -135,7 +131,6 @@ void ToolBarStub::ShowWindowedToolBar(wxPoint * where /* = NULL */ )
 }
 
 
-
 // This will make the floating ToolBarFrame disappear (but it will still exist).
 void ToolBarStub::HideWindowedToolBar() 
 {
@@ -146,14 +141,12 @@ void ToolBarStub::HideWindowedToolBar()
 }
 
 
-
 // This finds out if a ToolBar of this type is loaded in
 // a given project window
 bool ToolBarStub::IsToolBarLoaded(AudacityProject * p) 
 {
    return p->IsToolBarLoaded(mType);
 }
-
 
 
 // This will return a pointer to the ToolBar inside the member ToolBarFrame
@@ -206,7 +199,7 @@ ToolBar::ToolBar(wxWindow * parent):wxWindow(parent, -1, wxPoint(1, 1),
 
 
 // Destructor
-    ToolBar::~ToolBar() 
+ToolBar::~ToolBar() 
 {
 
 } 
