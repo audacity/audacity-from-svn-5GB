@@ -699,11 +699,7 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
       else
          mSelStart = mViewInfo->sel0;
 
-      mListener->
-          TP_DisplayStatusMessage(wxString::
-                                  Format(_("Selection: %lf - %lf s"),
-                                         mViewInfo->sel0, mViewInfo->sel1),
-                                  1);
+      DisplaySelection();
    } else {
 
       //Make sure you are within the selected track
@@ -733,10 +729,7 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
          SelectNone();
          StartSelection(event.m_x, r.x);
          mTracks->Select(pTrack);
-         mListener->
-             TP_DisplayStatusMessage(wxString::
-                                     Format(_("Cursor: %lf s"), mSelStart),
-                                     1);
+         DisplaySelection();
       }
 
       if (pTrack->GetKind() == Track::Label)
@@ -782,12 +775,7 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
          int y = mAutoScrolling ? mMouseMostRecentY : event.m_y;
 
          ExtendSelection(x, r.x);
-
-         mListener->
-             TP_DisplayStatusMessage(wxString::
-                                     Format(_("Selection: %lf - %lf s"),
-                                            mViewInfo->sel0,
-                                            mViewInfo->sel1), 1);
+         DisplaySelection();
 
          // Handle which tracks are selected
          int num2;
@@ -2567,4 +2555,36 @@ Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
       *trackNum = n - 1;
 
    return NULL;
+}
+
+//This method displays the bounds of the selection
+//in the status bar.
+void TrackPanel::DisplaySelection()
+{
+
+   float start = mViewInfo->sel0;
+   float end = mViewInfo->sel1;
+   float length = end-start;
+
+   //Do more complex stuff here to support user-based configuration
+   //of timescales (m/s/ms/samples/etc.).
+   float scale = 1.0;
+
+
+   //Display a message about the selection in the status message window
+   if(start == end)
+      {
+        mListener->
+             TP_DisplayStatusMessage(wxString::
+                                     Format(_("Cursor: %lf sec"), start * scale),
+                                     1);
+      }
+   else
+      {
+         mListener->
+            TP_DisplayStatusMessage(wxString::
+                                    Format(_("Selection: %lf sec - %lf sec: (%lf sec)"),
+                                           start *scale, end* scale, length*scale),
+                                    1);
+      }
 }
