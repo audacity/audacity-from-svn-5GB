@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 mad.lib sndfile.lib PAStaticWMME.lib wx.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib xpm.lib png.lib zlib.lib jpeg.lib tiff.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib libci.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"LIBCMT.lib" /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\libogg\win32\static_release" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_release" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_release" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro"
+# ADD LINK32 mad.lib sndfile.lib PAStaticWMME.lib wx.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib xpm.lib png.lib zlib.lib jpeg.lib tiff.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib libci.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"LIBCMT.lib" /nodefaultlib:"libcpmt.lib" /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\libogg\win32\static_release" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_release" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_release" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro"
 # SUBTRACT LINK32 /pdb:none /nodefaultlib
 
 !ELSEIF  "$(CFG)" == "Audacity - Win32 Debug"
@@ -652,6 +652,14 @@ SOURCE=..\src\widgets\ASlider.cpp
 # Begin Source File
 
 SOURCE=..\src\widgets\ASlider.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\widgets\Ruler.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\widgets\Ruler.h
 # End Source File
 # End Group
 # Begin Group "Resources"
