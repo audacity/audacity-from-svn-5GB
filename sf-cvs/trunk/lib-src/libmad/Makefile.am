@@ -19,7 +19,7 @@
 ## If you would like to negotiate alternate licensing terms, you may do
 ## so by contacting the author: Robert Leslie <rob@mars.org>
 ##
-## $Id: Makefile.am,v 1.1.1.2 2001-10-20 21:43:08 dmazzoni Exp $
+## $Id: Makefile.am,v 1.2 2001-10-21 22:26:32 dmazzoni Exp $
 ##
 
 ## Process this file with automake to produce Makefile.in
