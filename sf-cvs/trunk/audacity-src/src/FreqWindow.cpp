@@ -345,7 +345,7 @@ float CubicMaximize(float y0, float y1, float y2, float y3)
 
    float discriminant = db * db - 4 * da * dc;
    if (discriminant < 0.0)
-      return -1.0;              // error
+      return float(-1.0);              // error
 
    float x1 = (-db + sqrt(discriminant)) / (2 * da);
    float x2 = (-db - sqrt(discriminant)) / (2 * da);
@@ -463,7 +463,7 @@ float FreqWindow::GetProcessedValue(float freq0, float freq1)
    }
    binwidth = bin1 - bin0;
 
-   float value = 0.0;
+   float value = float(0.0);
 
    if (binwidth < 1.0) {
       float binmid = (bin0 + bin1) / 2.0;
@@ -1018,7 +1018,7 @@ void FreqWindow::Recalc()
       // Clip at zero again
       for (i = 0; i < half; i++)
          if (mProcessed[i] < 0.0)
-            mProcessed[i] = 0.0;
+            mProcessed[i] = float(0.0);
 
       // Find new min/max
       mYMin = mProcessed[0];

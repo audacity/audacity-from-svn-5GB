@@ -58,12 +58,15 @@
 #include "../WaveTrack.h"
 
 #ifdef __WXMAC__
+#define __MOVIES__            /* Apple's Movies.h not compatible with Audacity */
+#define __MACHELP__           /* Apple's Movies.h not compatible with Audacity */
+
+#include <wx/mac/private.h>
 # ifdef __UNIX__
 #  include <CoreServices/CoreServices.h>
 # else
 #  include <Files.h>
 # endif
- void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 #endif
 
 MP3Exporter::MP3Exporter()

@@ -10,6 +10,11 @@
 
 #include "../../Audacity.h"
 
+#define __MOVIES__            /* Apple's Movies.h not compatible with Audacity */
+#define __MACHELP__           /* Apple's Movies.h not compatible with Audacity */
+
+#include <wx/mac/private.h>
+
 #ifdef __MACOS9__
 #include <Resources.h>
 #include <Files.h>
@@ -20,8 +25,6 @@
 #ifdef __MACOSX__
 #include <CoreServices/CoreServices.h>
 #endif
-
-void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 
 #include "AEffect.h"
 #include "AudioEffect.hpp"        // VST API
@@ -77,13 +80,12 @@ extern "C" {
       while (fname != "") {
          short   resFileID;
          FSSpec  spec;
-         int     count;
 
          wxMacFilename2FSSpec(fname, &spec);
          resFileID = FSpOpenResFile(&spec, fsRdPerm);
-         count = Count1Resources('aEff');
+         short cResCB = Count1Resources('aEff');
 
-         for (int i = 0; i < count; i++) {
+         for (int i = 0; i < cResCB; i++) {
             Handle             codeH;
             CFragConnectionID  connID;
             Ptr                mainAddr;
@@ -94,7 +96,7 @@ extern "C" {
             OSType             resType;
             OSErr              err;
 
-            codeH = Get1IndResource('aEff', i+1);
+            codeH = Get1IndResource('aEff', short(i+1));
             if (!codeH)
                continue;
 

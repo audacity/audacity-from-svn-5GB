@@ -58,7 +58,8 @@ wxString ExportCommon(AudacityProject *project,
       least one track is selected (if selectionOnly==true) */
 
    int numSelected = 0, numLeft = 0, numRight = 0, numMono = 0;
-   float earliestBegin = *t1, latestEnd = *t0;
+   float earliestBegin = *t1;
+   float latestEnd = *t0;
 
    TrackListIterator iter1(tracks);
    Track *tr = iter1.First();
