@@ -22,12 +22,15 @@
 #include "APalette.h"
 #include "AColor.h"
 #include "Track.h"
+#include "Play.h"
 #include "WaveTrack.h"
-
-#include "snd/snd.h"
+#include "LabelTrack.h"
 
 BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
   EVT_MOUSE_EVENTS(TrackPanel::OnMouseEvent)
+
+  EVT_CHAR(TrackPanel::OnKeyEvent)
+
   EVT_PAINT(TrackPanel::OnPaint)
 
   EVT_MENU(OnChannelLeftID, TrackPanel::OnChannelLeft)
@@ -118,6 +121,10 @@ void TrackPanel::SelectNone()
   VTrack *t = mTracks->First();
   while(t) {
 	t->selected = false;
+
+	if (t->GetKind() == VTrack::Label)
+	  ((LabelTrack *)t)->Unselect();
+
 	t = mTracks->Next();
   }
 }
@@ -381,6 +388,12 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 		  wxString::Format("Cursor: %lf s", mSelStart), 1);
 
 		mIsSelecting = true;
+
+		if (t->GetKind() == VTrack::Label)
+		  ((LabelTrack *)t)->MouseDown(mMouseClickX, mMouseClickY,
+									   mCapturedRect,
+									   mViewInfo->h,
+									   mViewInfo->zoom);
 	  }
 
 	  Refresh(false);
@@ -816,6 +829,45 @@ void TrackPanel::HandleResize(wxMouseEvent& event)
   }
 }
 
+void TrackPanel::OnKeyEvent(wxKeyEvent& event)
+{
+  if (event.ControlDown()) {
+	event.Skip();
+	return;
+  }
+
+  long key = event.KeyCode();
+
+  switch(event.KeyCode()) {
+  case WXK_SPACE:
+	if (gSoundPlayer->IsBusy()) {
+	  gAPalette->OnStop();
+	  gAPalette->SetPlay(false);
+	  gAPalette->SetStop(true);
+	}
+	else {
+	  gAPalette->OnPlay();
+	  gAPalette->SetPlay(true);
+	  gAPalette->SetStop(false);
+	}
+	break;
+
+  default:
+	VTrack *t = mTracks->First();
+	while(t) {
+	  if (/* t->selected && */ t->GetKind() == VTrack::Label) {
+		((LabelTrack *)t)->KeyEvent(mViewInfo->sel0, mViewInfo->sel1, event);
+		Refresh(false);
+		MakeParentPushState();
+		return;
+	  }
+
+	  t = mTracks->Next();
+	}
+
+  }
+}
+
 void TrackPanel::OnMouseEvent(wxMouseEvent& event)
 {
   if (!mAutoScrolling) {
@@ -1084,6 +1136,7 @@ void TrackPanel::DrawTracks(wxDC& dc)
 
 	wxFont labelFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
 	dc.SetFont(labelFont);
+	dc.SetTextForeground(wxColour(0, 0, 0));
 
 	wxRect labelRect = r;
 	labelRect.width = GetLabelWidth();

@@ -89,6 +89,8 @@ bool Envelope::Load(wxTextFile *in, DirManager *dirManager)
   long len;
   if (!(in->GetNextLine().ToLong(&len))) return false;
 
+  for(int i=0; i<mEnv.Count(); i++)
+	delete mEnv[i];
   mEnv.Clear();
   mEnv.Alloc(len);
 

@@ -66,7 +66,9 @@ public:
   void OnSave(bool overwrite = true);
   void OnSaveAs();
 
-  void OnExport();
+  void OnExportLabels();
+  void OnExportMix();
+  void OnExportSelection();
 
   // Edit Menu
 
@@ -99,6 +101,7 @@ public:
   void OnQuickMix();
 
   void OnNewWaveTrack();
+  void OnNewLabelTrack();
   void OnRemoveTracks();
 
   // Help Menu

@@ -14,14 +14,8 @@
 #include "Track.h"
 #include "WaveTrack.h"
 #include "NoteTrack.h"
+#include "LabelTrack.h"
 #include "DirManager.h"
-
-#if wxUSE_APPLE_IEEE
-extern "C" void ConvertToIeeeExtended(double num, unsigned char *bytes);
-extern "C" double ConvertFromIeeeExtended(const unsigned char *bytes);
-#else
-#error Requires Apple IEEE Extended conversion routines
-#endif
 
 VTrack::VTrack(DirManager *projDirManager)
 {
@@ -112,6 +106,9 @@ bool TrackList::Save(wxTextFile *out, bool overwrite)
 	case VTrack::Note:
 	  out->AddLine("NoteTrack");
 	  break;
+	case VTrack::Label:
+	  out->AddLine("LabelTrack");
+	  break;
 	case VTrack::Beat:
 	  out->AddLine("BeatTrack");
 	  break;
@@ -149,6 +146,10 @@ bool TrackList::Load(wxTextFile *in, DirManager *dirManager)
 
 	if (cmd == "NoteTrack") {
 	  newt = new NoteTrack(dirManager);	  
+	}
+
+	if (cmd == "LabelTrack") {
+	  newt = new LabelTrack(dirManager);	  
 	}
 
 	if (newt) {

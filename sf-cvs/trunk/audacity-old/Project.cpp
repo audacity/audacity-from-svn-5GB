@@ -40,6 +40,7 @@
 #include "Track.h"
 #include "WaveTrack.h"
 #include "NoteTrack.h"
+#include "LabelTrack.h"
 #include "TrackPanel.h"
 #include "FreqWindow.h"
 #include "effects/Effect.h"
@@ -117,7 +118,9 @@ enum {
   CloseID,
   SaveID,
   SaveAsID,
-  ExportID,
+  ExportLabelsID,
+  ExportMixID,
+  ExportSelectionID,
   ExitID,
 
   // Edit Menu
@@ -185,7 +188,9 @@ BEGIN_EVENT_TABLE(AudacityProject, wxWindow)
   EVT_MENU(CloseID, AudacityProject::OnCloseWindow)
   EVT_MENU(SaveID, AudacityProject::OnSave)
   EVT_MENU(SaveAsID, AudacityProject::OnSaveAs)
-  EVT_MENU(ExportID, AudacityProject::OnExport)
+  EVT_MENU(ExportLabelsID, AudacityProject::OnExportLabels)
+  EVT_MENU(ExportMixID, AudacityProject::OnExportMix)
+  EVT_MENU(ExportSelectionID, AudacityProject::OnExportSelection)
   EVT_MENU(ExitID, AudacityProject::OnExit)
   // Edit menu
   EVT_MENU(UndoID, AudacityProject::Undo)
@@ -208,6 +213,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxWindow)
   EVT_MENU(ImportMP3ID, AudacityProject::OnImportMP3)
   EVT_MENU(QuickMixID, AudacityProject::OnQuickMix)
   EVT_MENU(NewWaveTrackID, AudacityProject::OnNewWaveTrack)
+  EVT_MENU(NewLabelTrackID, AudacityProject::OnNewLabelTrack)
   EVT_MENU(RemoveTracksID, AudacityProject::OnRemoveTracks)
   // Help menu
   EVT_MENU(AboutID, AudacityProject::OnAbout)
@@ -271,8 +277,11 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   mFileMenu->Append(OpenID, "&Open...\tCtrl+O");
   mFileMenu->Append(CloseID, "&Close\tCtrl+W");
   mFileMenu->Append(SaveID, "&Save\tCtrl+S");
-  mFileMenu->Append(SaveAsID, "Save As...");
-  mFileMenu->Append(ExportID, "&Export...");
+  mFileMenu->Append(SaveAsID, "Save &As...");
+  mFileMenu->AppendSeparator();
+  mFileMenu->Append(ExportSelectionID, "Export &Selection...");
+  mFileMenu->Append(ExportMixID, "&Export Mix...");
+  mFileMenu->Append(ExportLabelsID, "Export &Labels...");
   mFileMenu->AppendSeparator();
   mFileMenu->Append(ExitID, "E&xit");
 
@@ -285,7 +294,7 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   mEditMenu->Append(PasteID, "Paste\tCtrl+V");
   mEditMenu->Append(ClearID, "Clear\tCtrl+B");
   mEditMenu->AppendSeparator();
-  mEditMenu->Append(SelectAllID, "Select All\tCtrl+A");
+  mEditMenu->Append(SelectAllID, "&Select All\tCtrl+A");
 
   mViewMenu = new wxMenu();
   mViewMenu->Append(ZoomInID, "Zoom &In\tCtrl+1");
@@ -301,10 +310,10 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   mProjectMenu->Append(ImportMIDIID, "Import &MIDI...");
   mProjectMenu->Append(ImportMP3ID, "Import MP3...");
   mProjectMenu->AppendSeparator();
-  mProjectMenu->Append(QuickMixID, "Quick Mix");
+  mProjectMenu->Append(QuickMixID, "&Quick Mix");
   mProjectMenu->AppendSeparator();
-  mProjectMenu->Append(NewWaveTrackID, "New Audio Track");
-  //  mProjectMenu->Append(NewLabelTrackID, "New Label Track");
+  mProjectMenu->Append(NewWaveTrackID, "New &Audio Track");
+  mProjectMenu->Append(NewLabelTrackID, "New &Label Track");
   mProjectMenu->AppendSeparator();
   mProjectMenu->Append(RemoveTracksID, "&Remove Track(s)");
 
@@ -996,7 +1005,72 @@ void AudacityProject::OnImport()
 	ImportFile(fileName);
 }
 
-void AudacityProject::OnExport()
+void AudacityProject::OnExportLabels()
+{
+  VTrack *t;
+  int numLabelTracks = 0;
+
+  t = mTracks->First();
+  while(t) {
+	if (t->GetKind() == VTrack::Label)
+	  numLabelTracks++;
+	t = mTracks->Next();
+  }
+
+  if (numLabelTracks == 0) {
+	wxMessageBox("There are no label tracks to export.");
+	return;
+  }
+
+  wxString fName = "labels.txt";
+
+  fName = wxFileSelector("Export Labels As:",
+                         NULL,
+                         fName,
+                         "txt",
+                         "*.txt",
+                         wxSAVE,
+                         this);
+
+  if (fName == "")
+	return;
+  
+  wxTextFile f(fName);
+  #ifdef __WXMAC__
+  wxFile *temp = new wxFile();
+  temp->Create(fName);
+  delete temp;
+  #else
+  f.Create();
+  #endif
+  f.Open();
+  if (!f.IsOpened()) {
+	wxMessageBox("Couldn't write to "+fName);
+	return;
+  }
+  
+  t = mTracks->First();
+  while(t) {
+	if (t->GetKind() == VTrack::Label)
+	  ((LabelTrack *)t)->Export(f);
+
+	t = mTracks->Next();
+  }
+  
+  #ifdef __WXMAC__
+  f.Write(wxTextFileType_Mac);
+  #else
+  f.Write();
+  #endif
+  f.Close();
+}
+
+void AudacityProject::OnExportMix()
+{
+  wxMessageBox("Not implemented");
+}
+
+void AudacityProject::OnExportSelection()
 {
   VTrack *left = 0;
   VTrack *right = 0;
@@ -1087,6 +1161,21 @@ void AudacityProject::OnQuickMix()
 void AudacityProject::OnNewWaveTrack()
 {
   WaveTrack *t = new WaveTrack(&mDirManager);
+
+  SelectNone();
+
+  mTracks->Add(t);
+  t->selected = true;
+
+  PushState();
+
+  FixScrollbars();
+  mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnNewLabelTrack()
+{
+  LabelTrack *t = new LabelTrack(&mDirManager);
 
   SelectNone();
 

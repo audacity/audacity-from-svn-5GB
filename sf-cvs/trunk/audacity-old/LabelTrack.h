@@ -18,12 +18,15 @@
 
 #include "Track.h"
 
+class wxKeyEvent;
+class wxTextFile;
+
 class DirManager;
 
 struct LabelStruct {
-	double start;
-	double len;
-	wxString title;
+  double t;
+  wxString title;
+  int width;
 };
 
 WX_DEFINE_ARRAY(LabelStruct *, LabelArray);
@@ -31,22 +34,51 @@ WX_DEFINE_ARRAY(LabelStruct *, LabelArray);
 class LabelTrack: public VTrack
 {
 public:
-  LabelArray labels;
-
   LabelTrack(DirManager *projDirManager);
 
+  virtual ~LabelTrack();
+
   virtual void Draw(wxDC &dc, wxRect &r, double h, double pps,
-					double sel0, double sel1);
+					double sel0, double sel1, bool drawEnvelope);
 
   virtual int GetKind() {return Label;}
   virtual double GetMaxLen();
+
+  virtual VTrack *Duplicate();
+
+  virtual bool Load(wxTextFile *in, DirManager *dirManager);
+  virtual bool Save(wxTextFile *out, bool overwrite);
+
+  virtual void Cut(double t0, double t1, VTrack **dest);
+  virtual void Copy(double t0, double t1, VTrack **dest);
+  virtual void Paste(double t, VTrack *src);
+  virtual void Clear(double t0, double t1);
+
+  void MouseDown(int x, int y, wxRect &r,
+				 double h, double pps);
+
+  void KeyEvent(double sel0, double sel1, wxKeyEvent& event);
+
+  void Export(wxTextFile& f);
+
+  void Unselect();
   
 private:
 
-  wxBrush labelBrush;
-  wxBrush backgroundBrush;
-  wxPen   labelPen;
-  wxPen   backgroundPen;
+  int mSelIndex;
+  
+  LabelArray mLabels;
+
+  wxBrush mFlagBrush;
+  wxBrush mUnselectedBrush;
+  wxBrush mSelectedBrush;
+
+  wxPen   mFlagPen;
+  wxPen   mUnselectedPen;
+  wxPen   mSelectedPen;
+
+  // Used only for a LabelTrack on the clipboard
+  double  mClipLen;
 
 };
 

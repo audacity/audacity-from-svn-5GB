@@ -91,7 +91,8 @@ public:
   virtual ~TrackPanel();
 
   void OnPaint(wxPaintEvent& event);
-  void OnMouseEvent(wxMouseEvent& event);  
+  void OnMouseEvent(wxMouseEvent& event); 
+  void OnKeyEvent(wxKeyEvent& event);
 
   void OnTimer();
   
