@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.2.0-pre2
+Version 1.3.0 (beta)
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -257,6 +257,64 @@ Known issues/problems:
 
 -------------------------------------------------------------
 
+Changes in 1.3.0:
+
+Changes in 1.2.0-pre3:
+
+  * Fixed bug where Export is grayed out when nothing is
+    selected.
+
+  * Fixed crash caused by opening Audacity on a computer with
+    a high-end sound card with no mixer support.
+
+  * Fixed crash in Import Raw.
+
+  * Fixed New Stereo Track.
+
+  * Cosmetic fixes for Mac OS X.
+
+  * Support for the VST Enabler on Windows added.
+
+  * Fixed crash if you close Audacity while the Preferences
+    dialog is open.
+
+  * Fixed duplicate-character bug in Mac OS X Label Tracks.
+
+  * The recording level control on Linux now adjusts the IGAIN,
+    rather than the playthrough level of the recording source.
+
+  * Fixed bug that caused corruption to 16-bit stereo recordings.
+
+  * Fixed bug that caused data loss if you deleted all tracks in
+    a saved project and then open a new file into the same window.
+
+  * Added support for alternate audio button order (in Interface
+    preferences)
+
+  * Added preliminary support for wxX11
+
+  * Added fully transparent Windows XP icon
+
+  * Fixed crash if you try to record (or play) and no audio
+    devices exist, or if the audio device doesn't support the
+    mode you selected.
+
+  * Audacity no longer sets the process priority to high while
+    recording on Windows.  Users can still do this manually
+    using the Task Manager.
+
+  * Fixed bug that caused last ~100 ms of the selection to get
+    cut off on Windows.
+
+  * Fixed FFT Filter and Equalization effects dialogs.
+
+  * Fixed bugs in Unix build system (DESTDIR in locale directory,
+    choosing libsamplerate instead of libresample)
+
+  * Support for LADSPA plug-ins on Windows added, and 
+    three open source LADSPA plug-ins ported to Windows
+    (GVerb reverb, SC4 compressor, and Hard Limiter)
+
 Changes in 1.2.0-pre2:
 
   * Online help completed.  The full manual is nearly complete
@@ -296,6 +354,9 @@ Changes in 1.2.0-pre2:
 
   * Audacity now handles filenames with international characters
     correctly.
+
+  * Now outputs ID3v2.3 tags (instead of ID3v2.4), to be
+    compatible with more MP3 players.
 
   * Minor improvements to build system on Unix systems.
 
