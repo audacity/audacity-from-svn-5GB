@@ -27,7 +27,7 @@ install: audacity
 	$(INSTALL) -d $(PREFIX)/share/audacity/nyquist
 	$(INSTALL) -m 644 nyquist/*.lsp $(PREFIX)/share/audacity/nyquist
 	$(INSTALL) -d $(PREFIX)/share/audacity/plug-ins
-	$(INSTALL) -m 644 plug-ins/*.lsp $(PREFIX)/share/audacity/plug-ins
+	$(INSTALL) -m 644 plug-ins/*.ny $(PREFIX)/share/audacity/plug-ins
 	$(INSTALL) -d $(PREFIX)/share/locale/bg/LC_MESSAGES
 	$(INSTALL) -m 644 bg/audacity.mo $(PREFIX)/share/locale/bg/LC_MESSAGES
 	$(INSTALL) -d $(PREFIX)/share/locale/da/LC_MESSAGES
