@@ -354,11 +354,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 
    SetMenuState(mEditMenu, PasteID, numTracksSelected > 0 && msClipLen > 0.0);
 
-
-   
-
    //Calculate the ToolBarCheckSum (uniquely specifies state of all toolbars):
-   unsigned int toolBarCheckSum =0;
+   int toolBarCheckSum = 0;
    toolBarCheckSum += gControlToolBarStub->GetWindowedStatus() ? 2 : 1;
    if (gEditToolBarStub->GetLoadedStatus()) {
       if(gEditToolBarStub->GetWindowedStatus())
@@ -447,9 +444,6 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    }
 #endif
 
-
-
-
    SetMenuState(mProjectMenu, QuickMixID, numWaveTracksSelected > 1);
    SetMenuState(mProjectMenu, AlignID, numTracksSelected > 1);
    SetMenuState(mProjectMenu, AlignZeroID, numTracksSelected > 0);
@@ -468,9 +462,6 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
                           && nonZeroRegionSelected);
    }
 
-
-
-
    /////////////////////////////////////////////////////////////
    //  This handles specific enabling of buttons on toolbars
    //
@@ -482,8 +473,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    sumFlags += numTracks ? 2: 0;
    sumFlags += mUndoManager.UndoAvailable()? 4: 0;
    sumFlags += mUndoManager.RedoAvailable()? 8: 0;
-   sumFlags += (mViewInfo.zoom > 5999999) ? 16: 0;   //zoom-in limit is 6000000
-   sumFlags += (mViewInfo.zoom < 1.001) ? 32: 0;     //zoom-out limit is 1.0
+   sumFlags += (mViewInfo.zoom > gMaxZoom) ? 16: 0;
+   sumFlags += (mViewInfo.zoom < gMinZoom) ? 32: 0;
 
    //Now, go through each toolbar, and and call EnableDisableButtons()
    unsigned int i;
@@ -1003,8 +994,8 @@ void AudacityProject::OnSelectAll(wxEvent & event)
 void AudacityProject::OnZoomIn(wxEvent & event)
 {
    mViewInfo.zoom *= 2.0;
-   if (mViewInfo.zoom > 6000000)
-      mViewInfo.zoom = 6000000;
+   if (mViewInfo.zoom > gMaxZoom)
+      mViewInfo.zoom = gMaxZoom;
    FixScrollbars();
    mTrackPanel->Refresh(false);
 }
@@ -1120,7 +1111,8 @@ void AudacityProject::OnLoadEditToolBar(wxEvent & event)
    if (gEditToolBarStub) {
       if (gEditToolBarStub->GetLoadedStatus()) {
 
-         //the toolbar is "loaded", meaning its visible either in the window or floating
+         //the toolbar is "loaded", meaning its visible either in the window
+         //or floating
 
          gEditToolBarStub->SetLoadedStatus(false);
          gEditToolBarStub->HideWindowedToolBar();
@@ -1140,7 +1132,6 @@ void AudacityProject::OnLoadEditToolBar(wxEvent & event)
             //Make it appear in all the windows
             gEditToolBarStub->LoadAll();
          }
-
 
       }
    } else {

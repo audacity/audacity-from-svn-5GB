@@ -414,31 +414,10 @@ wxString AudacityProject::GetName()
    return name;
 }
 
-double AudacityProject::GetRate()
-{
-   return mRate;
-}
-
 void AudacityProject::AS_SetRate(double rate)
 {
    mRate = rate;
 }
-
-double AudacityProject::GetSel0()
-{
-   return mViewInfo.sel0;
-}
-
-double AudacityProject::GetSel1()
-{
-   return mViewInfo.sel1;
-}
-
-TrackList *AudacityProject::GetTracks()
-{
-   return mTracks;
-}
-
 
 void AudacityProject::FinishAutoScroll()
 {

@@ -83,10 +83,13 @@ class AudacityProject:public wxFrame,
 
    // Accessors
 
-   double GetRate();
-   TrackList *GetTracks();
-   double GetSel0();
-   double GetSel1();
+   TrackList *GetTracks() { return mTracks; };
+   UndoManager *GetUndoManager() { return &mUndoManager; }
+
+   double GetRate() { return mRate; }
+   double GetZoom() { return mViewInfo.zoom; }
+   double GetSel0() { return mViewInfo.sel0; }
+   double GetSel1() { return mViewInfo.sel1; }
 
    wxString GetName();
    DirManager *GetDirManager();
