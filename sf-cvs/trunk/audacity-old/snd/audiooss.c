@@ -70,15 +70,19 @@ int audio_open(snd_type snd, long *flags)
   int channels;
   int rate;
   oss_info dp;
+  const char *device = "/dev/dsp";
 
   snd->u.audio.descriptor = (oss_info) malloc(sizeof(oss_info_struct));
   dp = get_oss_info(snd);
+
+  if (snd->u.audio.devicename[0] != 0)
+	device = snd->u.audio.devicename;
 
   if (snd->write_flag == SND_READ) {
 	/* open audio input */
 
 	/* Open /dev/dspW */
-	dp->audio_fd = open("/dev/dspW", O_RDONLY, 0);
+	dp->audio_fd = open(device, O_RDONLY, 0);
 	
 	if (dp->audio_fd == -1)
 	  return !SND_SUCCESS;
@@ -87,7 +91,7 @@ int audio_open(snd_type snd, long *flags)
 	/* open audio output */
 
 	/* Open /dev/dspW */
-	dp->audio_fd = open("/dev/dspW", O_WRONLY, 0);
+	dp->audio_fd = open(device, O_WRONLY, 0);
 	
 	if (dp->audio_fd == -1)
 	  return !SND_SUCCESS;

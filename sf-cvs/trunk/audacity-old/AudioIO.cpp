@@ -11,6 +11,8 @@
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
+#include <wx/textdlg.h>
+
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
@@ -27,6 +29,11 @@
 #include "APalette.h"
 
 AudioIO *gAudioIO;
+
+#ifdef __WXGTK__
+bool gLinuxFirstTime = true;
+char gLinuxDevice[256] = "/dev/dsp";
+#endif
 
 void InitAudioIO()
 {
@@ -56,6 +63,21 @@ bool AudioIO::StartPlay(AudacityProject *project,
   if (mProject)
 	return false;
 
+#ifdef __WXGTK__
+  if (gLinuxFirstTime) {
+	wxString newDev = wxGetTextFromUser("Enter audio device to use:",
+										"Audio I/O",
+										gLinuxDevice,
+										project,
+										-1, -1, TRUE);
+	if (newDev == "")
+	  return false;
+
+	strcpy(gLinuxDevice, (const char *)newDev);
+	gLinuxFirstTime = false;
+  }
+#endif
+
   mRecording = false;
   mTracks = tracks;
   mT0 = t0;
@@ -68,7 +90,11 @@ bool AudioIO::StartPlay(AudacityProject *project,
   mSndNode.format.mode = SND_MODE_PCM;
   mSndNode.format.bits = 16;
   mSndNode.format.srate = project->GetRate();
+#ifdef __WXGTK__
+  strcpy(mSndNode.u.audio.devicename,gLinuxDevice);
+#else
   strcpy(mSndNode.u.audio.devicename,"");
+#endif
   strcpy(mSndNode.u.audio.interfacename,"");
   mSndNode.u.audio.descriptor = 0;
   mSndNode.u.audio.protocol = SND_COMPUTEAHEAD;
@@ -94,6 +120,10 @@ bool AudioIO::StartPlay(AudacityProject *project,
   // Do this last because this is what signals the timer to go
   mProject = project;
 
+#ifdef __WXGTK__
+  gLinuxFirstTime = false;
+#endif
+
   return true;
 }
 
@@ -114,6 +144,7 @@ void AudioIO::Finish()
   mProject = NULL;
   mRecordLeft = NULL;
   mRecordRight = NULL;
+
 }
 
 bool AudioIO::StartRecord(AudacityProject *project,
@@ -121,6 +152,21 @@ bool AudioIO::StartRecord(AudacityProject *project,
 {
   if (mProject)
 	return false;
+
+#ifdef __WXGTK__
+  if (gLinuxFirstTime) {
+	wxString newDev = wxGetTextFromUser("Enter audio device to use:",
+										"Audio I/O",
+										gLinuxDevice,
+										project,
+										-1, -1, TRUE);
+	if (newDev == "")
+	  return false;
+
+	strcpy(gLinuxDevice, (const char *)newDev);
+	gLinuxFirstTime = false;
+  }
+#endif
 
   mRecordLeft = new WaveTrack(project->GetDirManager());
   mRecordLeft->selected = true;
@@ -147,7 +193,11 @@ bool AudioIO::StartRecord(AudacityProject *project,
   mSndNode.format.mode = SND_MODE_PCM;
   mSndNode.format.bits = 16;
   mSndNode.format.srate = project->GetRate();
+#ifdef __WXGTK__
+  strcpy(mSndNode.u.audio.devicename,gLinuxDevice);
+#else
   strcpy(mSndNode.u.audio.devicename,"");
+#endif
   strcpy(mSndNode.u.audio.interfacename,"");
   mSndNode.u.audio.descriptor = 0;
   mSndNode.u.audio.protocol = SND_COMPUTEAHEAD;
@@ -161,7 +211,7 @@ bool AudioIO::StartRecord(AudacityProject *project,
 	wxMessageBox(wxString::Format("Error opening audio device: %d",err));
 	return false;
   }
-  
+
   mStopWatch.Start(0);
 
   #ifdef __WXMAC__
@@ -174,6 +224,10 @@ bool AudioIO::StartRecord(AudacityProject *project,
   mProject = project;
 
   mProject->RedrawProject();
+
+#ifdef __WXGTK__
+  gLinuxFirstTime = false;
+#endif
 
   return true;
 }

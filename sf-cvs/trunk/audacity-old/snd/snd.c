@@ -319,10 +319,12 @@ int snd_open(snd_type snd, long *flags)
                and device, where empty string matches anything: */
             if ((snd->u.audio.interfacename[0] == 0 ||
                  strcmp(snd->u.audio.interfacename, 
-                        descriptors[i].interf) == 0) &&
+                        descriptors[i].interf) == 0)
+				/*&& commented out by dmazzoni - don't want to compare dev
                 (snd->u.audio.devicename[0] == 0 ||
                  strcmp(snd->u.audio.devicename, 
-                        descriptors[i].device) == 0)) {
+				 descriptors[i].device) == 0)*/
+				) {
                 snd->dictionary = descriptors[i].dictionary;
                 break;
             }
