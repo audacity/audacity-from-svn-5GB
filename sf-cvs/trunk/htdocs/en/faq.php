@@ -13,7 +13,9 @@ General:<br>
 <a href="#g2">Who developed Audacity?</a><br>
 <a href="#g3">How can I help to improve Audacity?</a><br>
 <a href="#g4">I found a bug!  Now what?</a><br>
+
 <p>
+
 Installation:<br>
 
 <a href="#i1">Windows: What do I do with the .exe file?</a><br>
@@ -23,8 +25,11 @@ Installation:<br>
               the RPM?</a><br>
 <a href="#i5">Unix: Why do I get an error while loading
               the shared library libwx_gtk.so?</a><br>
+
 <p>
+
 Using Audacity:<br>
+
 <a href="#a1">How do I mix two tracks together?</a><br>
 <a href="#a2">Can I remove the vocals from a recording?</a><br>
 
