@@ -96,7 +96,7 @@ class DirManager {
    wxHashTable *blockFileHash;
 
    static unsigned int defaultHashTableSize;
-   int hashTableSize;
+   unsigned int hashTableSize;
    void CheckHashTableSize();
 
    wxString projName;

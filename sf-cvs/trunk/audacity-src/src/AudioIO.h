@@ -87,8 +87,8 @@ class AudioIO {
    
    PortAudioStream    *mPortStream;
 
-   int                 mNumInChannels;
-   int                 mNumOutChannels;
+   unsigned int        mNumInChannels;
+   unsigned int        mNumOutChannels;
 
    sampleFormat        mFormat;
    

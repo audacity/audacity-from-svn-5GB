@@ -66,7 +66,7 @@ int audacityAudioCallback(
    int numOutChannels = gAudioIO->mNumOutChannels;
    int numInChannels = gAudioIO->mNumInChannels;
    int minIndex = 0, minID = 0;
-   int i;
+   unsigned int i;
    
    //
    // Copy from our pool of output buffers to PortAudio's output buffer
@@ -89,7 +89,7 @@ int audacityAudioCallback(
                 len * numOutChannels * SAMPLE_SIZE(gAudioIO->GetFormat()));
 
          // Fill rest of buffer with silence
-         if (len < framesPerBuffer)
+         if (len < (sampleCount) framesPerBuffer)
             ClearSamples((samplePtr)outputBuffer, gAudioIO->GetFormat(),
                          len*numOutChannels,
                          (framesPerBuffer-len)*numOutChannels);
@@ -225,7 +225,7 @@ bool AudioIO::Start()
    mInUnderruns = 0;
    mRepeats = 0;
 
-   int i;
+   unsigned int i;
 
    if (mNumInChannels > 0) {
       mInBuffer = new AudioIOBuffer[mMaxBuffers];
@@ -316,7 +316,7 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
    mProject->SelectNone();
 
    mInTracks = new WaveTrack*[mNumInChannels];
-   for(int i=0; i<mNumInChannels; i++) {
+   for(unsigned int i=0; i<mNumInChannels; i++) {
       mInTracks[i] = new WaveTrack(project->GetDirManager());
       mInTracks[i]->SetSelected(true);
       mInTracks[i]->SetOffset(mT0);
@@ -338,7 +338,7 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
 void AudioIO::FillBuffers()
 {
    unsigned int numEmpty = 0;
-   int i;
+   unsigned int i;
    
    // Playback buffers
 
@@ -445,8 +445,8 @@ void AudioIO::FillBuffers()
    
    // Recording buffers
    
-   int numFull = 0;
-   int j, f, c;
+   unsigned int numFull = 0;
+   unsigned int j, f, c; // loop counters
    sampleCount flatLen;
       
    for(i=0; i<mNumInBuffers; i++) {

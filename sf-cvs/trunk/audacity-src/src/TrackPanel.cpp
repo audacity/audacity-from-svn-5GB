@@ -877,7 +877,6 @@ void TrackPanel::HandleZoom(wxMouseEvent &event)
          std::swap(mZoomEnd, mZoomStart);
 
       wxRect r;
-      int num;
 
       if (IsDragZooming())
          DragZoom(r.x);
@@ -1943,7 +1942,7 @@ void TrackPanel::OnFormatChange(wxEvent &event)
    wxASSERT(id >= On16BitID && id <= OnFloatID); 
    wxASSERT (mPopupMenuTarget && mPopupMenuTarget->GetKind() == VTrack::Wave);
 
-   sampleFormat newFormat;
+   sampleFormat newFormat = int16Sample;
 
    switch(id) {
    case On16BitID:
