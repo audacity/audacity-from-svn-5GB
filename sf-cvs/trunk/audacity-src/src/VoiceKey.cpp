@@ -61,7 +61,6 @@ VoiceKey::~VoiceKey(){
 //Move forward to find an ON region.
 sampleCount VoiceKey::OnForward (const WaveTrack & t, sampleCount start, sampleCount len) {
 
-
    if((mWindowSize) >= len+10){
 
       wxMessageBox(_("Selection is too small to use voice key."));
@@ -648,6 +647,8 @@ void VoiceKey::CalibrateNoise(const WaveTrack & t, sampleCount start, sampleCoun
    //calculate the mean and standard deviation of the test statistics.
    //Then, we set the BaselineThreshold to be one 
 
+   wxBusyCursor busy;
+
    //initialize some sample statistics: sums of X and X^2
 
    double sumerg, sumerg2;
@@ -775,6 +776,8 @@ double VoiceKey::TestEnergy (const WaveTrack & t, sampleCount start, sampleCount
    sampleCount blockSize = t.GetMaxBlockSize();         //Determine size of sampling buffer
 
 
+   if( blockSize > len)
+      blockSize = len;
    float *buffer = new float[blockSize];       //Get a sampling buffer
 
    while(len > 0) 
@@ -819,6 +822,8 @@ double VoiceKey::TestSignChanges(const WaveTrack & t, sampleCount start, sampleC
    int currentsign=0;
 	
 
+   if( blockSize > len)
+      blockSize = len;
    sampleFormat *buffer = new sampleFormat[blockSize];       //Get a sampling buffer
 
    while(len > 0) {
@@ -876,6 +881,8 @@ double VoiceKey::TestDirectionChanges(const WaveTrack & t, sampleCount start, sa
    sampleFormat lastval=sampleFormat(0);
    int lastdirection=1;
 
+   if( blockSize > len)
+      blockSize = len;
    sampleFormat *buffer = new sampleFormat[blockSize];       //Get a sampling buffer
 
    while(len > 0) {

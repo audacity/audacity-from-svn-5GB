@@ -502,6 +502,9 @@ void TranscriptionToolBar::OnAutomateSelection(wxCommandEvent &event)
          SetButton(false,mButtons[TTB_EndOff]);
          return;
       }
+
+   wxBusyCursor busy;
+
    vk->AdjustThreshold(GetSensitivity());
    AudacityProject *p = GetActiveProject();
    TrackList *tl = p->GetTracks();
@@ -533,6 +536,10 @@ void TranscriptionToolBar::OnAutomateSelection(wxCommandEvent &event)
                lastlen = len;
                
                newStart = vk->OnForward(*(WaveTrack*)t,start,len);
+
+               //JKC: If no start found then don't add any labels.
+               if( newStart==start)
+                  break;
                
                //Adjust len by the new start position
                len -= (newStart - start);
@@ -560,12 +567,9 @@ void TranscriptionToolBar::OnAutomateSelection(wxCommandEvent &event)
                
                p->DoAddLabel(newStartPos, newEndPos);
                p->RedrawProject();
-               
-               SetButton(false, mButtons[TTB_AutomateSelection]);
             }
-         
+         SetButton(false, mButtons[TTB_AutomateSelection]);
       }
-
 }
 
 
