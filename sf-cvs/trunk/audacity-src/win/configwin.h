@@ -6,6 +6,7 @@
 #define USE_LIBID3TAG 1
 #define USE_NYQUIST 1
 #define USE_PORTMIXER 1
+#define USE_LIBSAMPLERATE 1
 
 #define INSTALL_PREFIX "."
 
