@@ -1578,7 +1578,8 @@ void AudacityProject::OnAlign(wxEvent & event)
 void AudacityProject::OnNewWaveTrack(wxEvent & event)
 {
    WaveTrack *t = new WaveTrack(&mDirManager);
-
+   t->SetSampleFormat(mDefaultFormat);
+   t->SetRate(mRate);
    SelectNone();
 
    mTracks->Add(t);
