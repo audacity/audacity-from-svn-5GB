@@ -74,7 +74,7 @@ wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
    mCategories->AddPage(new SpectrumPrefs(mCategories), _("Spectrograms"));
    mCategories->AddPage(new DirectoriesPrefs(mCategories), _("Directories"));
    mCategories->AddPage(new GUIPrefs(mCategories), _("Interface"));
-   mCategories->AddPage(new KeyConfigPrefs(mCategories), _("Configure Keyboard"));
+   mCategories->AddPage(new KeyConfigPrefs(mCategories), _("Keyboard"));
 
    long selected = gPrefs->Read("/Prefs/PrefsCategory", 0L);
    if (selected < 0 || selected >= mCategories->GetPageCount())
