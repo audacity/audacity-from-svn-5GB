@@ -41,6 +41,11 @@ void InitAudioIO()
    gAudioIO->mThread->Run();
 }
 
+void DeinitAudioIO()
+{
+   delete gAudioIO;
+}
+
 AudioIO::AudioIO()
 {
    mProject = NULL;
@@ -93,7 +98,24 @@ AudioIO::~AudioIO()
 {
    Pa_Terminate();
 
-   mThread->Wait();
+   mThread->Delete();
+   int deadlock_counter = 0;
+   while(mThread->IsRunning())
+   {
+      deadlock_counter++;
+
+      if(deadlock_counter > AUDIOIO_DEADLOCK_THRESHOLD)
+      {
+         wxLogDebug("Deadlock detected, terminating thread");
+         mThread->Kill();
+         break;
+      }
+
+      wxSafeYield();
+   }
+
+   delete [] mTempFloats;
+   delete mThread;
 }
 
 int audacityAudioCallback(
@@ -109,18 +131,12 @@ int audacityAudioCallback(
    int t;
 
    // WARNING: BG: If you return after the next block of code, remember to unlock the mutex
-   // BG: I would have used wxCriticalSectionLocker, but I was not sure
-   // if I could block in the callback
-
-   wxLogDebug("audacityAudioCallback Locking...");
 
    if(gAudioIO->GetPaused() || (gNoCallbackMutex.TryLock() != wxMUTEX_NO_ERROR)) {
       if (outputBuffer && numOutChannels > 0) {
          ClearSamples((samplePtr)outputBuffer, gAudioIO->GetFormat(),
                       0, framesPerBuffer * numOutChannels);
       }
-
-      wxLogDebug("audacityAudioCallback Not locked");
 
       gAudioIO->AddDroppedSamples(framesPerBuffer);
       return 0;
@@ -222,8 +238,6 @@ int audacityAudioCallback(
          }
       }
    }
-
-   wxLogDebug("audacityAudioCallback Unlocking");
 
    gNoCallbackMutex.Unlock();
 
@@ -600,8 +614,6 @@ void AudioIO::Stop()
 
    int deadlock_counter = 0;
 
-   wxLogDebug("Stop Locking");
-
    while(gNoCallbackMutex.TryLock() != wxMUTEX_NO_ERROR)
    {
       deadlock_counter++;
@@ -613,9 +625,7 @@ void AudioIO::Stop()
          return;
       }
 
-      wxLogDebug("Stop giving up timeslice");
       wxSafeYield();
-      wxLogDebug("Stop woke up");
    }
 
    wxLogDebug("Stop Locked");
@@ -651,7 +661,6 @@ void AudioIO::Stop()
 
    mStopping = true;
 
-   wxLogDebug("Stop Unlocking");
    gNoCallbackMutex.Unlock();
    wxLogDebug("Stop Unlocked");
 }
@@ -737,8 +746,6 @@ void AudioIO::Finish()
 
    int deadlock_counter = 0;
 
-   wxLogDebug("Finish Locking");
-
    while(gNoCallbackMutex.TryLock() != wxMUTEX_NO_ERROR)
    {
       deadlock_counter++;
@@ -750,9 +757,7 @@ void AudioIO::Finish()
          return;
       }
 
-      wxLogDebug("Finish giving up timeslice");
       mThread->Yield();
-      wxLogDebug("Finish woke up");
    }
 
    wxLogDebug("Finish Locked");
@@ -807,7 +812,6 @@ void AudioIO::Finish()
    mHardStop = false;   
    mReachedEnd = false;
 
-   wxLogDebug("Finish Unlocking");
    gNoCallbackMutex.Unlock();
    wxLogDebug("Finish Unlocked");
 }

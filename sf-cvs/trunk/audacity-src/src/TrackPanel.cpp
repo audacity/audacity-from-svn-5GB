@@ -616,7 +616,7 @@ void TrackPanel::UpdateIndicator(wxDC * dc)
 
    // BG: Scroll screen if option is set
    if (mViewInfo->bUpdateTrackIndicator && gAudioIO->IsBusy()
-       && gAudioIO->GetProject() && indicator>=0 && !onScreen)
+       && gAudioIO->GetProject() && indicator>=0 && !onScreen && !gAudioIO->GetPaused())
       mListener->TP_ScrollWindow(indicator);
 
    if (mIndicatorShowing || onScreen) {
@@ -1601,15 +1601,17 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
    else if (event.ButtonUp(1)) {
       DrawCloseBox(&dc, r, false);
       if (closeRect.Inside(event.m_x, event.m_y)) {
-         if (!gAudioIO->IsRecording(t))
+         //BG: We may want to check if we are busy in just this project
+         if (!gAudioIO->IsBusy())
             RemoveTrack(t);
          mCapturedTrack = 0;
       }
 
       mIsClosing = false;
    }
-   // BG: There are no more tracks on screen, so set zoom to normal
+   // BG: There are no more tracks on screen
    if (mTracks->IsEmpty()) {
+      //BG: Set zoom to normal
       mViewInfo->zoom = 44100.0 / 512.0;
 
       //STM: Set selection to 0,0

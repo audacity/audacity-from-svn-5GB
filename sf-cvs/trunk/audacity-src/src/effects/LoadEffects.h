@@ -14,5 +14,6 @@
 #include <wx/string.h>
 
 void LoadEffects();
+void UnloadEffects();
 
 #endif // define __AUDACITY_LOAD_EFFECTS__
