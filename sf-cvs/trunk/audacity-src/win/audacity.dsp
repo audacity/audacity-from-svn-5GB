@@ -123,8 +123,6 @@ SOURCE=..\src\AudacityApp.cpp
 
 !IF  "$(CFG)" == "Audacity - Win32 Release"
 
-# ADD CPP /MT /FAcs
-
 !ELSEIF  "$(CFG)" == "Audacity - Win32 Debug"
 
 !ENDIF 
