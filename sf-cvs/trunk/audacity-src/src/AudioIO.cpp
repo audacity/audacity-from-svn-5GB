@@ -143,8 +143,6 @@ int audacityAudioCallback(
       return 0;
    }
 
-   wxLogDebug("audacityAudioCallback Locked");
-
    gAudioIO->AdjustMixer();
 
    //
@@ -241,8 +239,6 @@ int audacityAudioCallback(
    }
 
    gNoCallbackMutex.Unlock();
-
-   wxLogDebug("audacityAudioCallback Unlocked");
 
    return 0;
 }
@@ -629,8 +625,6 @@ void AudioIO::Stop()
       wxSafeYield();
    }
 
-   wxLogDebug("Stop Locked");
-
    if (!mHardStop) {
       project->GetControlToolBar()->SetPlay(false);
       project->GetControlToolBar()->SetStop(false);
@@ -663,7 +657,6 @@ void AudioIO::Stop()
    mStopping = true;
 
    gNoCallbackMutex.Unlock();
-   wxLogDebug("Stop Unlocked");
 }
 
 void AudioIO::HardStop()
@@ -761,8 +754,6 @@ void AudioIO::Finish()
       mThread->Yield();
    }
 
-   wxLogDebug("Finish Locked");
-
    // Note that this should only be called from the AudioThread,
    // after it has received the Stop message
 
@@ -814,7 +805,6 @@ void AudioIO::Finish()
    mReachedEnd = false;
 
    gNoCallbackMutex.Unlock();
-   wxLogDebug("Finish Unlocked");
 }
 
 AudioThread::AudioThread():

@@ -143,6 +143,8 @@ void QuitAudacity(bool bForce)
       gEditToolBarStub = NULL;
    }
 
+   //Delete the clipboard
+   AudacityProject::DeleteClipboard();
 
    QuitHelp();
 

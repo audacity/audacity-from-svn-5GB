@@ -31,7 +31,8 @@ class EffectNoiseRemoval: public Effect {
 public:
    
    EffectNoiseRemoval();
-   
+   virtual ~EffectNoiseRemoval();
+
    virtual wxString GetEffectName() {
       return wxString(_("Noise Removal..."));
    }

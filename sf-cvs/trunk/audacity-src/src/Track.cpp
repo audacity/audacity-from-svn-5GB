@@ -19,6 +19,9 @@
 #include "TimeTrack.h"
 #include "DirManager.h"
 
+//Disable truncation warnings
+#pragma warning( disable : 4786 )
+
 Track::Track(DirManager * projDirManager) 
   : mDirManager(projDirManager)
 {
