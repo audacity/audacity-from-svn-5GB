@@ -64,7 +64,7 @@ class FreqWindow:public wxFrame {
    void OnSizeChoice(wxCommandEvent & event);
    void OnFuncChoice(wxCommandEvent & event);
    void OnAxisChoice(wxCommandEvent & event);
-   void OnExport();
+   void OnExport(wxCommandEvent & event);
 
    void Recalc();
 
