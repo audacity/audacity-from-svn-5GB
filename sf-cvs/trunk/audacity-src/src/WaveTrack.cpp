@@ -635,7 +635,9 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
 
 void WaveTrack::HandleXMLEndTag(const char *tag)
 {
-   // nothing to do here
+   // In case we opened a pre-multiclip project, we need to
+   // simulate closing the waveclip tag.
+   GetLastOrCreateClip()->HandleXMLEndTag( "waveclip" );
 }
 
 XMLTagHandler *WaveTrack::HandleXMLChild(const char *tag)
