@@ -232,6 +232,14 @@ SOURCE=..\src\HistoryWindow.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\ImageManipulation.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\ImageManipulation.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\LabelTrack.cpp
 # End Source File
 # Begin Source File
