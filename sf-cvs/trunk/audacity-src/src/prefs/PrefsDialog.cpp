@@ -126,7 +126,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 
    #ifdef __MACOSX__
    // Until sizing works properly on the Mac
-   SetSize(600, 350);
+   SetSize(620, 350);
    #endif
 
    #ifdef __WXMSW__
@@ -134,7 +134,19 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    SetSize(525, 363);
    #endif
 
-   CentreOnParent(); // Center after all that resizing.
+   // Center after all that resizing, but make sure it doesn't end up
+   // off-screen
+   CentreOnParent();
+
+   #ifdef __WXMAC__
+   wxPoint where = GetPosition();
+   if (where.x < 2)
+      where.x = 2;
+   if (where.y < 44)
+      where.y = 44;
+   if (where != GetPosition())
+      Move(where);
+   #endif
 }
 
 void PrefsDialog::OnCancel(wxCommandEvent & event)
