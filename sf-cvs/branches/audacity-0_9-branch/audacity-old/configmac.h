@@ -8,8 +8,8 @@
 #define USE_XAUDIO
 #define MP3SUPPORT
 
-// No Ogg Vorbis support (yet)
-// #define USE_LIBVORBIS
+// Ogg Vorbis support
+#define USE_LIBVORBIS
 
 // ID3 support
 #define USE_ID3LIB
