@@ -23,6 +23,7 @@
 #include <wx/msgdlg.h>
 #include <wx/panel.h>
 #include <wx/tooltip.h>
+#include <wx/debug.h>
 
 #ifdef __WXMSW__
 #define USE_POPUPWIN 1
@@ -159,22 +160,84 @@ void TipPanel::OnPaint(wxPaintEvent& event)
 // LWSlider
 //
 
+// Construct customizable slider
+LWSlider::LWSlider(wxWindow * parent,
+         wxString name,
+         const wxPoint &pos,
+         const wxSize &size,
+         float minValue,
+         float maxValue,
+         float stepValue,
+         bool canUseShift,
+         int style,
+         bool heavyweight /* = false */
+         )
+{
+   Init(parent, name, pos, size, minValue, maxValue,
+      stepValue, canUseShift, style, heavyweight);
+}
+
+// Construct predefined slider
 LWSlider::LWSlider(wxWindow *parent,
                    wxString name,
                    const wxPoint &pos,
                    const wxSize &size,
                    int style,
-                   bool heavyweight)
+                   bool heavyweight /* = false */)
+{
+   wxString leftLabel, rightLabel;
+   float minValue, maxValue, stepValue;
+
+   switch(style)
+   {
+   case PAN_SLIDER:
+      minValue = -1.0f;
+      maxValue = +1.0f;
+      stepValue = 0.1f;
+      break;
+   case DB_SLIDER:
+      minValue = -36.0f;
+      maxValue = 36.0f;
+      stepValue = 3.0f;
+      break;
+   case FRAC_SLIDER:
+      minValue = 0.0f;
+      maxValue = 1.0f;
+      stepValue = STEP_CONTINUOUS;
+      break;
+   default:
+      wxASSERT(false); // undefined style
+   }
+
+   Init(parent, name, pos, size, minValue, maxValue, stepValue,
+        true, style, heavyweight);
+}
+
+LWSlider::Init(wxWindow * parent,
+     wxString name,
+     const wxPoint &pos,
+     const wxSize &size,
+     float minValue,
+     float maxValue,
+     float stepValue,
+     bool canUseShift,
+     int style,
+     bool heavyweight /* = false */
+     )
 {
    mName = name;
-   mValue = 0;
+   mStyle = style;
    mIsDragging = false;
    mWidth = size.x;
    mHeight = size.y;
    mParent = parent;
-   mStyle = style;
    mHW = heavyweight;
    mID = -1;
+   mMinValue = minValue;
+   mMaxValue = maxValue;
+   mStepValue = stepValue;
+   mCanUseShift = canUseShift;
+   mCurrentValue = 0.0f;
 
    if (!(mWidth & 0))
       mWidth--;
@@ -250,19 +313,18 @@ LWSlider::LWSlider(wxWindow *parent,
          d += upp;
       }
 
-      switch(mStyle) {
-      case FRAC_SLIDER:
-      case DB_SLIDER:
+      if (style == PAN_SLIDER)
+      {
+         wxFont labelFont(sliderFontSize, wxSWISS, wxNORMAL, wxNORMAL);
+         dc->SetFont(labelFont);
+         dc->DrawText(_T("L"), mLeftX, 1);
+         dc->DrawText(_T("R"), mRightX-7, 1);
+      } else
+      {
          dc->SetPen(*wxBLACK_PEN);
          dc->DrawLine(mLeftX, mCenterY-10, mLeftX+5, mCenterY-10);
          dc->DrawLine(mRightX-7, mCenterY-10, mRightX-2, mCenterY-10);
          dc->DrawLine(mRightX-5, mCenterY-12, mRightX-5, mCenterY-7);
-         break;
-      case PAN_SLIDER:
-         wxFont labelFont(sliderFontSize, wxSWISS, wxNORMAL, wxNORMAL);
-         dc->SetFont(labelFont);
-         dc->DrawText(_("L"), mLeftX, 1);
-         dc->DrawText(_("R"), mRightX-7, 1);
       }
       
       delete dc;
@@ -356,7 +418,7 @@ void LWSlider::RecreateTipWin()
 void LWSlider::OnPaint(wxDC &dc, bool selected)
 {
    //thumbPos should be in pixels
-   int thumbPos = mValue;
+   int thumbPos = ValueToPosition(mCurrentValue);
    int thumbY = mCenterY - (mThumbHeight/2);
    wxBitmap *bitmap;
    wxBitmap *thumbBitmap;
@@ -389,32 +451,33 @@ void LWSlider::OnPaint(wxDC &dc, bool selected)
 void LWSlider::FormatPopWin()
 {
    wxString label;
-   float val = (mValue / (float)mWidthX);
+   wxString valstr;
 
    switch(mStyle) {
    case FRAC_SLIDER:
-      label.Printf("%s: %.1f", (const char *)mName, val);
+      label.Printf("%s: %.1f", (const char *)mName, mCurrentValue);
       break;
    case DB_SLIDER:
-      val = (((int)(val*24.0))-12)*3.0;
-      if (val == 0.0)
-         label.Printf("%s: 0 dB", (const char *)mName);
-      else if (val < 0)
-         label.Printf("%s: %.0f dB", (const char *)mName, val);
-      else if (val > 0)
-         label.Printf("%s: +%.0f dB", (const char *)mName, val);
+      valstr.Printf("%.1f", mCurrentValue);
+      if (valstr.Right(1) == "0")
+         valstr = valstr.Left(valstr.Length() - 2);
+      if (mCurrentValue > 0)
+         valstr = "+" + valstr;
+      
+      label.Printf("%s: %s dB", (const char*)mName, valstr);
       break;
    case PAN_SLIDER:
-      val = (val * 2.0) - 1.0;
-      if (val >= -0.05 && val <= 0.05)
+      if (mCurrentValue == 0.0)
          label.Printf("%s: %s", (const char *)mName,
                       _("Center"));
-      else if (val < 0.0)
-         label.Printf("%s: %.1f %s", (const char *)mName,
-                      -val, _("Left"));
-      else if (val > 0.0)
-         label.Printf("%s: %.1f %s", (const char *)mName,
-                      val, _("Right"));
+      else {
+         if (mCurrentValue < 0.0)
+            label.Printf("%s: %.0f%% %s", (const char *)mName,
+                      -mCurrentValue * 100.0f, _("Left"));
+         else /* if (val > 0.0) */
+            label.Printf("%s: %.0f%% %s", (const char *)mName,
+                      mCurrentValue * 100.0f, _("Right"));
+      }
          
       break;
    }
@@ -437,29 +500,13 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
       Refresh();
    }
    
-   int oldValue = mValue;
+   float prevValue = mCurrentValue;
 
    if (event.ButtonDown()) {
 
       //This jumps the thumb to clicked position
       if (!mIsDragging) {
-
-         //First, figure out where the thumb should go:
-         //The thumb should go at event.m_x - thumbwidth/2,
-         //BUT, shouldn't be less than 0 or greater than width - thumbwidth
-
-         int newValue = (event.m_x - mLeft) - mLeftX;
-         if (newValue < 0)
-            newValue = 0;
-         if (newValue > mWidthX)
-            newValue = mWidthX;
-
-         if (abs(newValue - mValue) > mThumbWidth/2) {
-            mValue = newValue;
-         }
-
-         mClickValue = mValue;
-         mClickX = (event.m_x - mLeft);
+         mCurrentValue = PositionToValue(event.m_x, event.ShiftDown());
 
          mIsDragging = true;
          mParent->CaptureMouse();
@@ -469,6 +516,7 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
          mPopWin->Show();
       }
 
+      // Don't generate notification yet
       return;
 
    } else if (event.ButtonUp() && mIsDragging) {
@@ -477,49 +525,61 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
       mPopWin->Hide();
       ((TipPanel *)mPopWin)->SetPos(wxPoint(-1000, -1000));
    } else if (event.Dragging() && mIsDragging) {
-      //If we're dragging, figure out where the thumb should go
-      int delta = (event.m_x - mLeft) - mClickX;
-      mValue = mClickValue + delta;
-
-      if (mValue < 0)
-         mValue = 0;
-      if (mValue > mWidthX)
-         mValue = mWidthX;
+      mCurrentValue = PositionToValue(event.m_x, event.ShiftDown());
    }
 
-   if (oldValue != mValue) {
+   if (prevValue != mCurrentValue) {
       FormatPopWin();
       mPopWin->Refresh();
       Refresh();
 
       wxCommandEvent *e =
          new wxCommandEvent(wxEVT_COMMAND_SLIDER_UPDATED, mID);
-      e->SetInt( mValue * 1000 / mWidthX );
+      int intValue =
+         (int)((mCurrentValue - mMinValue) * 1000.0f
+         / (mMaxValue - mMinValue));
+      e->SetInt( intValue );
       mParent->ProcessEvent(*e);
       delete e;
    }
 }
 
-float LWSlider::Get()
+int LWSlider::ValueToPosition(float val)
 {
-   float val = (mValue / (float)mWidthX);
-   float rval;
+   return (int)((val - mMinValue) * mWidthX / (mMaxValue - mMinValue));
+}
 
-   switch(mStyle) {
-   default:
-   case FRAC_SLIDER:
-      rval = val;
-      break;
-   case PAN_SLIDER:
-      rval = (val*2.0)-1.0;
-      break;
-   case DB_SLIDER:
-      val = (val*72.0)-36.0;
-      rval = pow(10, val/20);
-      break;
+float LWSlider::PositionToValue(int xPos, bool shiftDown)
+{
+   int pos = (xPos - mLeft) - mLeftX + 1;
+
+   // MM: Special cases: If position is at the very left or the
+   // very right, set minimum/maximum value without other checks
+   if (pos <= 0)
+      return mMinValue;
+   if (pos >= mWidthX)
+      return mMaxValue;
+   
+   float val = ((float)pos/(float)mWidthX) 
+      * (mMaxValue - mMinValue) + mMinValue;
+
+   if (!(mCanUseShift && shiftDown) && mStepValue != STEP_CONTINUOUS)
+   {
+      // MM: If shift is not down, or we don't allow usage
+      // of shift key at all, trim value to steps of
+      // provided size.
+      val = (int)(val / mStepValue + 0.5) * mStepValue;
    }
 
-   return rval;
+   return val;
+}
+
+float LWSlider::Get()
+{
+   if (mStyle == DB_SLIDER)
+      return pow(10.0f, mCurrentValue / 20.0f);
+   else
+      return mCurrentValue;
 }
 
 void LWSlider::Set(float value)
@@ -527,24 +587,15 @@ void LWSlider::Set(float value)
    if(mIsDragging)
       return;
 
-   switch(mStyle) {
-   default:
-   case FRAC_SLIDER:
-      break;
-   case PAN_SLIDER:
-      value = (value + 1.0) / 2.0;
-      break;
-   case DB_SLIDER:
-      value = 20*log10(value);
-      value = (value + 36.0) / 72.0;
-      break;
-   }
+   if (mStyle == DB_SLIDER)
+      mCurrentValue = 20.0f*log10(value);
+   else
+      mCurrentValue = value;
 
-   mValue = (int)(value * mWidthX + 0.5);
-   if (mValue < 0)
-      mValue = 0;
-   if (mValue > mWidthX)
-      mValue = mWidthX;
+   if (mCurrentValue < mMinValue)
+      mCurrentValue = mMinValue;
+   if (mCurrentValue > mMaxValue)
+      mCurrentValue = mMaxValue;
 
    Refresh();
 }
