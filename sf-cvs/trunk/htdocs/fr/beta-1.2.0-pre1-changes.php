@@ -86,74 +86,62 @@ Audacity 1.2 comprend un language de traitement du signal numérique appelé
 
 <ul>
 <li>
-Audacity 1.2 project files use a new XML file format.  Audacity 1.2 will
-automatically open and convert project files from earlier releases.
+Les fichiers de projets Audacity 1.2 utilisent un nouveau format XML. Audacity 1.2 ouvrira automatiquement un projet d'une version précédente et le convertira.
 </li>
 
 <li>
-Audacity 1.2 uses <a href="http://www.underbit.com/products/mad/">libmad</a>
-for much faster decoding of MP3 files.  Erik de Castro Lopo's
-<a href="http://www.zip.com.au/~erikd/libsndfile/">libsndfile</a> provides
-improved compatibility with many uncompressed audio file formats.
+Audacity 1.2 utilise <a href="http://www.underbit.com/products/mad/">libmad</a>
+pour un décodage plus rapide des fichiers MP3.  Les fichiers<a href="http://www.zip.com.au/~erikd/libsndfile/">libsndfile</a> d'Erik de Castro Lopo offre une meilleure compatibilité avec plusieurs format de fichiers non compressés.
 </li>
 
 <li>
-The latest version of the <a href="http://www.vorbis.com/">Vorbis</a>
-libraries are used, for higher-quality Ogg Vorbis encoding.
+La dernière version des librairies <a href="http://www.vorbis.com/">Vorbis</a>
+est utilisée, pour une meilleure qualité d'encodage Ogg Vorbis.
 </li>
 
 <li>
-The import and open dialogs now allow Audacity users to select several
-audio files at once, and open them into a single project.  A new "LOF"
-file format provides a way for Audacity to open a group of files with
-offsets listed in a text file.
+Le dialogue "Importer et Ouvrir" permet maintenant aux utilisateurs d'Audacity d'utiliser plusieurs fichiers son à la fois et de les ouvrir dans un seul projet. Un nouveau format de fichier "LOF" permet à Audacity d'ouvrir un groupe de fichiers avec les offsets listés dans un fichier texte.
 </li>
 </ul>
 
 
-<h3>Improved User Interface</h3>
+<h3>Interface utilisateur améliorée</h3>
 
 <ul>
 <li>
-New Edit and Mixer toolbars for fast access to common functions.
+Nouvelles barres d'outils Edition et Mixage pour un accès rapide au fonctions communes.
 </li>
 
 <li>
-The new Drawing tool allows adjustment of individual samples, when fully
-zoomed in.  The new Multi-Tool mode gives quick access to different editing
-functions without needing to switch tools.
+Le nouvel outil de dessin permet l'ajustement d'échantillons individuels quand le zoom est au maximum. Le nouveau mode Multi-Outil donne un accès rapide aux différentes fonctions d'édition sans avoir à changer d'outil.
 </li>
 
 <li>
-Many new keyboard commands have been added, and keyboard shortcuts can
-now be customized.
+Plusieurs nouvelles commandes clavier on été ajoutées, et les raccourcis clavier peuvent maintenant être personnalisés.
 </li>
 
 <li>
-New commands:
+Nouvelles commandes:
  <ul>
-  <li>Looped play.  Type "L", or hold down shift when clicking Play.</li>
-  <li>Type "1" to play a 1-second preview of the audio around the cursor.</li>
+  <li>Lecture en boucle.  Pressez "L", ou maintenez la touche majuscule enfoncée en cliquant sur Lecture.</li>
+  <li>Pressez "1" pour lire une prévisualisation d'une seconde autour du curseur.</li>
  </ul>
 </li>
 
 <li>
-The mouse wheel can be used to zoom in and out.
+La roulette de la souris peut être utilisée pour zoomer en avant ou en arrière.
 </li>
 
 <li>
-Tracks can now be zoomed vertically by clicking or dragging in the
-vertical rulers.  Shift-click or right-click to zoom out.  
+Les pistes peuvent maintenant être zoomées verticalement en cliquant ou en déplacent les règles verticales.  Shift-click or click-droit pour zoomer en arrière.  
 </li>
 
 <li>
-The ruler and status bar can now display time in several different
-formats, including seconds, samples, or video frames.
+La règle et la barre de statut peuvent maintenant afficher le temps dans plusieurs formats différents, incluant les secondes, échantillons ou images vidéo.
 </li>
 
 <li>
-Audacity's interface can now be translated into languages other than
-English.  You can volunteer to help <a href="translation/">translate
-Audacity</a> into your native language.
+L'interface d'Audacity peut maintenant être traduite en d'autres langues que l'anglais. Vous pouvez contribuer pour <a href="translation/">traduire
+Audacity</a> dans votre propre langue.
 </li>
 </ul>
