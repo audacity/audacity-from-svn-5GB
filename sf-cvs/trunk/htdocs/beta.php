@@ -12,9 +12,6 @@
   $linux="$betaDownloadDir/audacity-linux-i386.php/audacity-linux-i386.tar.bz2";
   $rpm = "$betaDownloadDir/audacity-rpm.php/audacity-i386.rpm";
 
-  include GetTranslation("news-1.2.0-pre4");
-  print "<p>\n";
-
   BoxTop($betaVersionsStr);
 ?>
 
