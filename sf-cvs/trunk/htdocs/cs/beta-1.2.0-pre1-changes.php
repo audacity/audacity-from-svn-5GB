@@ -25,7 +25,7 @@ Vstup a výstup zvuku v Audacity byl vylepšen. Audacity nyní mùže nahrávat více n
 <li>
 Tøi nové efekty na zmìnu ladìní a rychlosti stopy:
  <ul>
-<li>"Zmìna ladìní" zvýší nebo sníží zvuk výbrané èásti bez vlivu na rychlost.</li>
+<li>"Zmìna ladìní" zvýší nebo sníží zvuk vybrané èásti bez vlivu na rychlost.</li>
 <li>"Zmìna tempa" zrychlí nebo zpomalí vybranou èást bez vlivu na výšku ladìní.</li>
 <li>"Zmìna rychlosti" zmìní rychlost pøehrávání i výšku ladìní, jako když zmìníte rychlost gramofonu nebo magnetofonu.</li>
  </ul>
