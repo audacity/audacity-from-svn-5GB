@@ -89,6 +89,7 @@ void Px_SetMasterVolume( PxMixer *mixer, PxVolume volume );
 
 PxVolume Px_GetPCMOutputVolume( PxMixer *mixer );
 void Px_SetPCMOutputVolume( PxMixer *mixer, PxVolume volume );
+int Px_SupportsPCMOutputVolume( PxMixer* mixer ) ;
 
 /*
  All output volumes

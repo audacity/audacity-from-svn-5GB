@@ -69,6 +69,7 @@ typedef struct PxInfo
    PxSrcInfo   src[32];
    DWORD       muxID;
    DWORD       speakerID;
+   DWORD       waveID;
 } PxInfo;
 
 int Px_GetNumMixers( void *pa_stream )
@@ -123,6 +124,9 @@ PxMixer *Px_OpenMixer( void *pa_stream, int index )
 
    mixer->numInputs = 0;
    mixer->muxID = 0;
+
+	/* ??? win32 default for wave control seems to be 0 ??? */
+	mixer->waveID = 0 ; 
 
    /*
     * Find the input source selector (mux or mixer) and
@@ -309,6 +313,12 @@ void Px_SetMasterVolume( PxMixer *mixer, PxVolume volume )
  PCM output volume
 */
 
+int Px_SupportsPCMOutputVolume( PxMixer* mixer ) 
+{
+	PxInfo* info = ( PxInfo* )( mixer ) ;
+	return ( info->waveID == -1 ) ? 0 : 1 ;
+}
+
 PxVolume Px_GetPCMOutputVolume( PxMixer *mixer )
 {
   MMRESULT result;
@@ -316,10 +326,19 @@ PxVolume Px_GetPCMOutputVolume( PxMixer *mixer )
   unsigned short mono_vol = 0;
   PxInfo *info = (PxInfo *)mixer;
 
-  result = waveOutGetVolume(info->muxID, &vol);
+	/* invalid waveID, return zero */
+	if ( info->waveID == -1 )
+		return 0.0 ;
 
-  if (result != MMSYSERR_NOERROR)
-     return 0.0;
+	/* get the wave output volume */
+	result = waveOutGetVolume( (HWAVEOUT)( info->waveID ), &vol);
+
+	/* on failure, mark waveID as invalid and return zero */
+	if ( result != MMSYSERR_NOERROR )
+	{
+		info->waveID = -1 ;
+		return 0.0 ;
+	}
 
   mono_vol = (unsigned short)vol;
   return (PxVolume)mono_vol/65535.0;
@@ -327,13 +346,23 @@ PxVolume Px_GetPCMOutputVolume( PxMixer *mixer )
 
 void Px_SetPCMOutputVolume( PxMixer *mixer, PxVolume volume )
 {
-  MMRESULT result;
-  PxInfo *info = (PxInfo *)mixer;
+	MMRESULT result;
+	PxInfo *info = (PxInfo *)mixer;
 
-  result = waveOutSetVolume(info->muxID, MAKELONG(volume*0xFFFF, volume*0xFFFF));
+	/* invalid waveID */
+	if ( info->waveID == -1 )
+		return ;
 
-  if (result != MMSYSERR_NOERROR)
-      return;
+	/* set the wave output volume */
+	result = waveOutSetVolume( (HWAVEOUT)( info->waveID ), MAKELONG(volume*0xFFFF, volume*0xFFFF));
+
+	/* on failure, mark waveID as invalid  */
+	if ( result != MMSYSERR_NOERROR )
+	{
+		info->waveID = -1 ;
+	}
+
+	return ;
 }
 
 /*
