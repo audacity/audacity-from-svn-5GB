@@ -138,6 +138,24 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
    wxWindow *wDescLabel = FindWindow(DescriptionTextID);
    mCommandSelected = event.GetIndex();
 
+   gPrefs->SetPath("/Keyboard/" + wxString::Format("%i", mCommandSelected));
+
+   long keyIndex;
+   wxString keyString;
+
+   mKeysList->DeleteAllItems();
+
+   if(gPrefs->GetFirstEntry(keyString, keyIndex))
+   {
+      mKeysList->InsertItem(0, keyString);
+      while(gPrefs->GetNextEntry(keyString, keyIndex))
+      {
+         mKeysList->InsertItem(mKeysList->GetItemCount(), keyString);
+      }
+   }
+
+   gPrefs->SetPath("/");
+
    if(wDescLabel)
    {
       // BG: Set the description
@@ -162,12 +180,15 @@ void KeyConfigPrefs::RemoveComboFromList(wxCommandEvent& event)
       if ( item == -1 )
          break;
 
+      gPrefs->DeleteEntry("/Keyboard/" + wxString::Format("%i", mCommandSelected) + "/" + mKeysList->GetItemText(item), true);
+
       mKeysList->DeleteItem(item);
    }
 }
 
 void KeyConfigPrefs::ClearComboList(wxCommandEvent& event)
 {
+   gPrefs->DeleteGroup("/Keyboard/" + wxString::Format("%i", mCommandSelected));
    mKeysList->DeleteAllItems();
 }
 
@@ -182,6 +203,8 @@ void KeyConfigPrefs::AddComboToList(wxCommandEvent& event)
    }
 
    mKeysList->InsertItem(mKeysList->GetItemCount(), comboString);
+
+   gPrefs->Write("/Keyboard/" + wxString::Format("%i", mCommandSelected) + "/" + comboString, (long)0);
 }
 
 bool KeyConfigPrefs::Apply()
