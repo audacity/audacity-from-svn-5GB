@@ -117,6 +117,7 @@ OBJS = \
 	$(OBJDIR)/prefs/DirectoriesPrefs.o \
 	$(OBJDIR)/prefs/GUIPrefs.o \
 	$(OBJDIR)/prefs/KeyConfigPrefs.o \
+	$(OBJDIR)/prefs/MousePrefs.o \
 	$(OBJDIR)/prefs/SpectrumPrefs.o \
 	$(OBJDIR)/widgets/AButton.o \
 	$(OBJDIR)/widgets/ASlider.o \
