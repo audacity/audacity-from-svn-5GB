@@ -49,10 +49,11 @@ int Effect::GetNumEffects()
 
 Effect *Effect::GetEffect(int ID)
 {
-   if (ID >= 0 && ID < sNumEffects)
-      return mEffects[ID];
-   else
-      return NULL;
+   for(int i=0; i<sNumEffects; i++)
+      if (mEffects[i]->mID == ID)
+         return mEffects[i];
+   
+   return NULL;
 }
 
 EffectArray *Effect::GetEffects(int flags /* = ALL_EFFECTS */)
