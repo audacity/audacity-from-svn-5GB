@@ -28,4 +28,8 @@ This release will support VST plug-ins if you download a VST Enabler
 separately.  It will be available soon.
 </p>
 
+<p>
+<b>(Windows installer fixed Oct 1, 2003)</b>
+</p>
+
 <?php BoxBottom(); ?>
