@@ -412,15 +412,11 @@ sf_open	(const char *path, int mode, SF_INFO *sfinfo)
 				break ;
 
 		case	SF_FORMAT_MAT4 :
-#ifndef WIN32
 				error = mat4_open (psf) ;
-#endif
 				break ;
 
 		case	SF_FORMAT_MAT5 :
-#ifndef WIN32
 				error = mat5_open (psf) ;
-#endif
 				break ;
 
 		case	SF_FORMAT_SD2 :

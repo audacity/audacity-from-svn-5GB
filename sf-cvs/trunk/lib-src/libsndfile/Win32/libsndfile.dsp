@@ -141,6 +141,14 @@ SOURCE=..\src\ircam.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\mat4.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\mat5.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\ms_adpcm.c
 # End Source File
 # Begin Source File
