@@ -125,10 +125,10 @@ void MixerToolBar::InitializeMixerToolBar()
    delete micAlpha;
    delete micFinal;
 
-   mOutputSlider = new ASlider(this, OutputVolumeID, "Output Volume",
+   mOutputSlider = new ASlider(this, OutputVolumeID, _("Output Volume"),
                                wxPoint(30, 1), wxSize(130, 25));
 
-   mInputSlider = new ASlider(this, InputVolumeID, "Input Volume",
+   mInputSlider = new ASlider(this, InputVolumeID, _("Input Volume"),
                               wxPoint(210, 1), wxSize(130, 25));
 
    mInputSourceChoice = NULL;
