@@ -277,7 +277,7 @@ Changes in 1.2.0-pre4:
     time-shift tool in conjunction with high zoom factors.
     
   * Dithering is now only applied on export when it is really
-    necessary (i.e. when downsampling).
+    necessary (e.g. when converting float samples to 16-bit).
     
   * Files that only contain mono tracks are now automatically
     exported to stereo files when they contain tracks which are
