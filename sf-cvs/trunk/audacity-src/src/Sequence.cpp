@@ -1046,6 +1046,9 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,
 
    }
 
+   if (pixel == 0)
+      pixel++;
+
    while (pixel <= len) {
       min[pixel - 1] = theMin;
       max[pixel - 1] = theMax;

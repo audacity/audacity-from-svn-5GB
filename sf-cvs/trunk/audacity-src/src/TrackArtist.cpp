@@ -635,8 +635,8 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
    dc.SetPen(samplePen);
    
    for (s = 0; s < slen; s++) {
-      double tt = double (s0 + s) / rate + tOffset;
-      double xx = ((tt - h) * pps + 0.5);
+      double tt = double (s) / rate;
+      double xx = (tt * pps + 0.5);
       
       if (xx < -10000)
          xx = -10000;
