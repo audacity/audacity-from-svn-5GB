@@ -21,4 +21,8 @@ Nápovìda</a>.
 Tato verze bude podporovat VST plug-iny, pokud stáhnete samostatný VST Enabler. Ten bude k dispozici v nejbližší dobì.
 </p>
 
+<p>
+<b>(Windowsový instalátor byl opraven 1. øíjna 2003)</b>
+</p>
+
 <?php BoxBottom(); ?>
