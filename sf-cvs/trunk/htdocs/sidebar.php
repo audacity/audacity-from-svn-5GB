@@ -117,19 +117,21 @@ value="http://audacity.sourceforge.net/list/invalid.php">
 
 <tr><td bgcolor="#ffffff">
 
-<a href=http://lists.sourceforge.net/lists/listinfo/audacity-users>
+<a href="http://audacityteam.org/">AudacityTeam.org</a>
+<br>
+<a href="http://lists.sourceforge.net/lists/listinfo/audacity-users>
 <?php print $usersListStr; ?>
 </a>
 <br>
-<a href=http://audacity.sourceforge.net/translation/>
+<a href="translation/">
 <?php print $translationStr; ?>
 </a>
 <br>
-<?php print "<a href=donatetime.php$langQueryStr>"; ?>
+<?php print "<a href=\"donatetime.php$langQueryStr\">"; ?>
 <?php print $donateTimeStr; ?>
 </a>
 <br>
-<?php print "<a href=donatemoney.php$langQueryStr>"; ?>
+<?php print "<a href=\"donatemoney.php$langQueryStr\">"; ?>
 <?php print $donateMoneyStr; ?>
 </a>
 
