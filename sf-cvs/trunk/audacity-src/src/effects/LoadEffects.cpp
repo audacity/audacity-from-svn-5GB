@@ -44,9 +44,10 @@
 void LoadEffects(wxString searchDir)
 {
    Effect::RegisterEffect(new EffectInvert(), false);
+   Effect::RegisterEffect(new EffectAmplify(), false);
+   Effect::RegisterEffect(new EffectToneGen(), false);
 
 #if 0
-   Effect::RegisterEffect(new EffectAmplify(), false);
    Effect::RegisterEffect(new EffectBassBoost(), false);
    Effect::RegisterEffect(new EffectCompressor(), false);
    Effect::RegisterEffect(new EffectEcho(), false);
@@ -57,7 +58,6 @@ void LoadEffects(wxString searchDir)
    Effect::RegisterEffect(new EffectNoiseRemoval(), false);
    Effect::RegisterEffect(new EffectPhaser(), false);
    Effect::RegisterEffect(new EffectReverse(), false);
-   Effect::RegisterEffect(new EffectToneGen(), false);
    Effect::RegisterEffect(new EffectWahwah(), false);
 
 #ifdef USE_WAVELET
