@@ -442,7 +442,10 @@ const char *pMessages[] = {_("Click and drag to select audio"),
 //  Also, it sets a message in the status bar.
 void TrackPanel::HandleCursor(wxMouseEvent & event)
 {
-  if (SetCursor1()) return;
+   // First, try to set the cursor based on the current action
+   if      (mIsSelecting ) { SetCursor(*mSelectCursor); return; }
+   else if (mIsSliding   ) { SetCursor(*mSlideCursor ); return; }
+   else if (mIsEnveloping) { SetCursor(*mArrowCursor ); return; }
 
    wxRect r;
    int num;
@@ -463,42 +466,24 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
          SetCursor(*mResizeCursor);
       }
       else {
-	int operation = mListener->TP_GetCurrentTool();
-	mListener->TP_DisplayStatusMessage(
-		     pMessages[operation], 0);
+         int operation = mListener->TP_GetCurrentTool();
+         mListener->TP_DisplayStatusMessage(
+               pMessages[operation], 0);
 
-	// AS: Change the cursor based on what tool the
-	//  user has selected.  These cases are a little whacked
-	//  because of zoom, which requires special handling.
-	assert(operation >= 0 && operation <= 3);
-	const wxCursor *pCursors[] = {mSelectCursor, mArrowCursor, mSlideCursor };
-	if (operation < 3) // in other words, if !zoom
-	  SetCursor(*pCursors[operation]);
-	else if (operation == 3) {
-	  if (event.ShiftDown())
-	    SetCursor(*mZoomInCursor);
-	  else
-	    SetCursor(*mZoomOutCursor);
-	}
+         // Change the cursor based on the selected tool.
+         switch (operation) {
+            case selectTool:   SetCursor(*mSelectCursor); break;
+            case envelopeTool: SetCursor(*mArrowCursor);  break;
+            case slideTool:    SetCursor(*mSlideCursor);  break;
+            case zoomTool:
+               SetCursor(event.ShiftDown() ? *mZoomOutCursor : *mZoomInCursor);
+            break;
+         }
       }
    } else {
       // Not over a track
       SetCursor(*mArrowCursor);
    }
-}
-
-// AS: If we set the cursor here, we return true.
-//  Looking at HandleCursor, I'm not sure why HandleCursor
-//  bails if this function returns true... ?
-// AS: Could still use a better name for this function.
-bool TrackPanel::SetCursor1()
-{
-   if     (mIsSelecting ) SetCursor(*mSelectCursor);
-   else if(mIsSliding   ) SetCursor(*mSlideCursor );
-   else if(mIsEnveloping) SetCursor(*mArrowCursor );
-   else return false;
-
-   return true;
 }
 
 // AS: This function handles various ways of starting and extending
@@ -657,16 +642,10 @@ void TrackPanel::ExtendSelection(int mouseXCoordinate,
                                  int trackLeftEdge)
 {
    double selend = PositionToTime(mouseXCoordinate, trackLeftEdge);
-
    clip_bottom(selend, 0.0);
 
-   if (selend >= mSelStart) {
-      mViewInfo->sel0 = mSelStart;
-      mViewInfo->sel1 = selend;
-   } else {
-      mViewInfo->sel0 = selend;
-      mViewInfo->sel1 = mSelStart;
-   }
+   mViewInfo->sel0 = wxMin(mSelStart, selend);
+   mViewInfo->sel1 = wxMax(mSelStart, selend);
 }
 
 // DM: Converts a position (mouse X coordinate) to 
@@ -1013,20 +992,18 @@ void TrackPanel::DoPopupMenu(wxMouseEvent &event, wxRect& titleRect,
                && next->GetKind() == VTrack::Wave)
          canMakeStereo = true;
 
-      theMenu->Enable(theMenu->FindItem
-            (_("Make Stereo Track")), canMakeStereo);
-      theMenu->Enable(theMenu->FindItem
-            (_("Split Stereo Track")), t->GetLinked());
-      theMenu->Enable(theMenu->FindItem(_("Mono")), !t->GetLinked());
-      theMenu->Enable(theMenu->FindItem(_("Left Channel")), !t->GetLinked());
-      theMenu->Enable(theMenu->FindItem(_("Right Channel")), !t->GetLinked());
+      theMenu->Enable(OnMergeStereoID, canMakeStereo);
+      theMenu->Enable(OnSplitStereoID, t->GetLinked());
+      theMenu->Enable(OnChannelMonoID, !t->GetLinked());
+      theMenu->Enable(OnChannelLeftID, !t->GetLinked());
+      theMenu->Enable(OnChannelRightID, !t->GetLinked());
 
       int display = ((WaveTrack *) t)->GetDisplay();
 
-      theMenu->Enable(theMenu->FindItem(_("Waveform")), display != 0);
-      theMenu->Enable(theMenu->FindItem(_("Waveform (dB)")), display != 1);
-      theMenu->Enable(theMenu->FindItem(_("Spectrum")), display != 2);
-      theMenu->Enable(theMenu->FindItem(_("Pitch (EAC)")), display != 3);
+      theMenu->Enable(OnWaveformID, display != WaveTrack::WaveformDisplay);
+      theMenu->Enable(OnWaveformDBID, display != WaveTrack::WaveformDBDisplay);
+      theMenu->Enable(OnSpectrumID, display != WaveTrack::SpectrumDisplay);
+      theMenu->Enable(OnPitchID, display != WaveTrack::PitchDisplay);
    }
 
    if (t->GetKind() == VTrack::Note)
@@ -1037,10 +1014,8 @@ void TrackPanel::DoPopupMenu(wxMouseEvent &event, wxRect& titleRect,
 
    if (theMenu) {
 
-      theMenu->Enable(theMenu->FindItem
-            (_("Move Track Up")), mTracks->CanMoveUp(t));
-      theMenu->Enable(theMenu->FindItem
-            (_("Move Track Down")), mTracks->CanMoveDown(t));
+      theMenu->Enable(OnMoveUpID, mTracks->CanMoveUp(t));
+      theMenu->Enable(OnMoveDownID, mTracks->CanMoveDown(t));
 
 #ifdef __WXMAC__
       ::InsertMenu(mRateMenu->GetHMenu(), -1);
@@ -1054,13 +1029,11 @@ void TrackPanel::DoPopupMenu(wxMouseEvent &event, wxRect& titleRect,
 #endif
    }
 
-   {
-      VTrack *t2 = FindTrack(event.m_x, event.m_y, true, &r, &num);
-      if (t2 == t) {
-         wxClientDC dc(this);
-         SetLabelFont(&dc);
-         DrawTitleBar(&dc, r, t, false);
-      }
+   VTrack *t2 = FindTrack(event.m_x, event.m_y, true, &r, &num);
+   if (t2 == t) {
+      wxClientDC dc(this);
+      SetLabelFont(&dc);
+      DrawTitleBar(&dc, r, t, false);
    }
 }
 
@@ -1334,10 +1307,10 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
    }
 
    switch (mListener->TP_GetCurrentTool()) {
-      case 0: HandleSelect  (event); break;
-      case 1: HandleEnvelope(event); break;
-      case 2: HandleSlide   (event); break;
-      case 3: HandleZoom    (event); break;
+      case selectTool:   HandleSelect  (event); break;
+      case envelopeTool: HandleEnvelope(event); break;
+      case slideTool:    HandleSlide   (event); break;
+      case zoomTool:     HandleZoom    (event); break;
    }
 
    if ((event.Moving() || event.ButtonUp(1)) &&

@@ -80,7 +80,6 @@ class TrackPanel:public wxWindow {
 
    // AS: Cursor handling
    void HandleCursor(wxMouseEvent & event);
-   bool SetCursor1();
 
    // AS: Amplitude Envelope editing handlers
    void HandleEnvelope(wxMouseEvent & event);

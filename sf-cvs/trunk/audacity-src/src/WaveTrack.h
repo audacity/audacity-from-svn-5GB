@@ -43,8 +43,11 @@ class WaveTrack:public VTrack {
    static void SetMaxDiskBlockSize(int bytes);
    static int  GetMaxDiskBlockSize();
 
-   enum { WaveDisplay,
-      SpectrumDisplay
+   enum {
+      WaveformDisplay,
+      WaveformDBDisplay,
+      SpectrumDisplay,
+      PitchDisplay
    };
 
    WaveTrack(DirManager * projDirManager);

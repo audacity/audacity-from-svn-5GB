@@ -41,6 +41,14 @@ int GetAPaletteHeight();
 void ShowWindowedPalette(wxPoint * where = NULL);
 void HideWindowedPalette();
 
+enum {
+   selectTool,
+   envelopeTool,
+   slideTool,
+   zoomTool,
+   numTools
+};
+
 class APalette:public wxWindow {
  public:
    APalette(wxWindow * parent, wxWindowID id,

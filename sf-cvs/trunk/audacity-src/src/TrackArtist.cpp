@@ -178,16 +178,16 @@ void TrackArtist::DrawTracks(TrackList * tracks,
          switch (t->GetKind()) {
          case VTrack::Wave:
             switch (((WaveTrack *) t)->GetDisplay()) {
-            case 0:            // Std waveform
+            case WaveTrack::WaveformDisplay:
                DrawWaveform(info, dc, rr, viewInfo, drawEnvelope, false);
                break;
-            case 1:            // Waveform (dB)
+            case WaveTrack::WaveformDBDisplay:
                DrawWaveform(info, dc, rr, viewInfo, drawEnvelope, true);
                break;
-            case 2:            // Spectrum
+            case WaveTrack::SpectrumDisplay:
                DrawSpectrum(info, dc, rr, viewInfo, false);
                break;
-            case 3:            // Pitch (enhanced autocorrelation)
+            case WaveTrack::PitchDisplay:
                DrawSpectrum(info, dc, rr, viewInfo, true);
                break;
             }
