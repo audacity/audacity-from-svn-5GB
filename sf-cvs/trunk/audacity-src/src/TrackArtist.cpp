@@ -655,7 +655,6 @@ void TrackArtist::DrawIndividualClipSamples(wxDC &dc, wxRect r,
                                         bool drawSamples,
                                         bool showPoints, bool muted)
 {
-   double tOffset = clip->GetOffset();
    double rate = clip->GetRate();
    sampleCount s0 = (sampleCount) (t0 * rate + 0.5);
    sampleCount slen = (sampleCount) (r.width * rate / pps + 0.5);
@@ -895,11 +894,11 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
          if (x >= 0 && x < r.width)
          {
             dc.SetPen(*wxGREY_PEN);
-            dc.DrawLine(r.x + x-1, r.y, r.x + x-1, r.y+r.height);
+            dc.DrawLine((int) (r.x + x-1), r.y, (int) (r.x + x-1), r.y+r.height);
             dc.SetPen(*wxRED_PEN);
-            dc.DrawLine(r.x + x, r.y, r.x + x, r.y+r.height);
+            dc.DrawLine((int) (r.x + x), r.y, (int) (r.x + x), r.y+r.height);
             dc.SetPen(*wxGREY_PEN);
-            dc.DrawLine(r.x + x+1, r.y, r.x + x+1, r.y+r.height);
+            dc.DrawLine((int) (r.x + x+1), r.y, (int) (r.x + x+1), r.y+r.height);
          }
       }
    }
@@ -1090,7 +1089,8 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
       {
          float height = (trackmax/(trackmax-trackmin))*mid.height;
          dc.SetPen(*wxBLACK_PEN);
-         dc.DrawLine(mid.x, mid.y+height, mid.x+mid.width, mid.y+height);
+         dc.DrawLine(mid.x, (int) (mid.y+height), mid.x+mid.width,
+               (int) (mid.y+height));
       }
 
 

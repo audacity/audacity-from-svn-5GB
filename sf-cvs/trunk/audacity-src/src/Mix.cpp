@@ -70,7 +70,7 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
    }
 
    WaveTrack *mixLeft = trackFactory->NewWaveTrack(format);
-   mixLeft->SetRate(rate);
+   mixLeft->SetRate((int) rate);
    mixLeft->SetName(_("Mix"));
    WaveTrack *mixRight = 0;
    if (mono) {
@@ -78,7 +78,7 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
    }
    else {
       mixRight = trackFactory->NewWaveTrack(format);
-      mixRight->SetRate(rate);
+      mixRight->SetRate((int) rate);
       mixRight->SetName(_("Mix"));
       mixLeft->SetChannel(Track::LeftChannel);
       mixRight->SetChannel(Track::RightChannel);
