@@ -56,6 +56,7 @@ $phpLang_languages = array(
  "de([-_][[:alpha:]]{2})?|german"  => array('de', 'german'),
  "fi|finnish"  => array('fi', 'finnish'),
  "mk|macedonian" => array('mk', 'macedonian'),
+ "hu|hungarian"  => array('hu', 'hungarian'),
  "is|icelandic"  => array('is', 'icelandic'),
  "it|italian"  => array('it', 'italian'),
  "ja|japanese"  => array('ja', 'japanese'),
