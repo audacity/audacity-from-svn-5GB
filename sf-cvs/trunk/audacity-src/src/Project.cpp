@@ -322,9 +322,11 @@ AudacityProject::~AudacityProject()
       gAudioIO->HardStop();
 
    delete mTags;
+   mTags = NULL;
 
    mTracks->Clear(true);
    delete mTracks;
+   mTracks = NULL;
 
    gAudacityProjects.Remove(this);
 
