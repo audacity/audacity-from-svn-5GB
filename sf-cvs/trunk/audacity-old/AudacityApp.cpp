@@ -8,9 +8,15 @@
 
 **********************************************************************/
 
+#include <wx/wxprec.h>
+
+#ifndef WX_PRECOMP
+#include <wx/defs.h>
 #include <wx/app.h>
-#include <wx/image.h>
 #include <wx/window.h>
+#endif
+
+#include <wx/image.h>
 
 #include "AudacityApp.h"
 #include "AButton.h"

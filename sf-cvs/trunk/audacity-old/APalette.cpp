@@ -39,8 +39,14 @@ APalette *gAPalette = NULL;
 
 #ifdef __WXMAC__
 #define APALETTE_HEIGHT 55
-#else
+#endif
+
+#ifdef __WXGTK__
 #define APALETTE_HEIGHT 75
+#endif
+
+#ifdef __WXMSW__
+#define APALETTE_HEIGHT 80
 #endif
 
 void InitAPalette(wxFrame *parent)

@@ -27,7 +27,8 @@ END_EVENT_TABLE()
 IMPLEMENT_CLASS(AboutDialog, wxDialog)
 
 AboutDialog::AboutDialog()
-  : wxDialog( (wxFrame *)NULL, -1, "About Audacity...")
+  : wxDialog( (wxFrame *)NULL, -1, "About Audacity...",
+  wxDefaultPosition, wxDefaultSize)
 {
   wxString fullMessage("Audacity:\n"
 					   "A New Digital Audio Editor\n"

@@ -25,6 +25,12 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
   EVT_PAINT(TrackPanel::OnPaint)
 END_EVENT_TABLE()
 
+#ifdef __WXMSW__
+#define SMALLFONTSIZE 8
+#else
+#define SMALLFONTSIZE 10
+#endif
+
 TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
 					   const wxPoint& pos,
 					   const wxSize& size,
@@ -609,7 +615,7 @@ void TrackPanel::DrawRuler(wxDC& dc)
 
   dc.SetPen(*wxBLACK_PEN);
 
-  wxFont rulerFont(10, wxSWISS, wxNORMAL, wxNORMAL);
+  wxFont rulerFont(SMALLFONTSIZE, wxSWISS, wxNORMAL, wxNORMAL);
   dc.SetFont(rulerFont);
 
   int minSpace = 60;  // min pixels between labels
@@ -721,7 +727,7 @@ void TrackPanel::DrawTracks(wxDC& dc)
 
 	// Draw label area
 
-	wxFont labelFont(10, wxSWISS, wxNORMAL, wxNORMAL);
+	wxFont labelFont(SMALLFONTSIZE, wxSWISS, wxNORMAL, wxNORMAL);
 	dc.SetFont(labelFont);
 
 	wxRect labelRect = r;
