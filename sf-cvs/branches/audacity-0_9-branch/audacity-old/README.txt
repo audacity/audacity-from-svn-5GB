@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.98 (January 21, 2002)
+Version 0.98b (February 14, 2002)
 
 http://audacity.sourceforge.net/
 
@@ -90,9 +90,6 @@ audacity-devel@lists.sourceforge.net
 
 Known issues/problems:
 
-* All platforms: There is no warning asking you if you want
-  to save changes when you quit or close a window.
-
 * Windows: The floating tool palette does not minimize when
   minimizing a project window.  As a workaround, you can
   just keep the tool palette docked with the project window.
@@ -105,6 +102,16 @@ Known issues/problems:
   channels are not yet supported.
 
 -------------------------------------------------------------
+
+Changes in 0.98b:
+
+  - Fixed "Noise Removal" crash
+
+  - Added "Save Changes" dialog
+
+  - Reintroduced support for ID3 tags on Windows
+
+  - More bug fixes
 
 Changes in 0.98:
 
