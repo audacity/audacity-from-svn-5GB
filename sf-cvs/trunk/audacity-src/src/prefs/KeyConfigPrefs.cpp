@@ -27,7 +27,6 @@
 #define CurrentComboID    7004
 
 BEGIN_EVENT_TABLE(KeyConfigPrefs, wxPanel)
-   EVT_CUSTOM(wxEVT_CHAR, CurrentComboID, KeyConfigPrefs::OnKeyEvent)
    EVT_LIST_ITEM_SELECTED(CommandsListID, KeyConfigPrefs::OnItemSelected)
 END_EVENT_TABLE()
 
@@ -130,10 +129,6 @@ bool KeyConfigPrefs::Apply()
    return true;
 }
 
-void KeyConfigPrefs::OnKeyEvent(wxCharEvent & event)
-{
-}
-
 KeyConfigPrefs::~KeyConfigPrefs()
 {
 }
@@ -158,7 +153,23 @@ SysKeyTextCtrl::~SysKeyTextCtrl()
 {
 }
 
+//BG: Still Not working yet
 void SysKeyTextCtrl::OnChar(wxKeyEvent& event)
 {
-   event.Skip();
+   SetValue("");
+
+   if(event.ControlDown())
+   {
+      AppendText(wxString::Format("Ctrl+"));
+   }
+   if(event.AltDown())
+   {
+      AppendText(wxString::Format("Alt+"));
+   }
+   if(event.ShiftDown())
+   {
+      AppendText(wxString::Format("Shift+"));
+   }
+
+   AppendText(wxString::Format("%c", event.GetKeyCode()));
 }
