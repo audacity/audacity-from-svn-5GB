@@ -615,7 +615,7 @@ void WaveTrack::PrepareCacheSpectrum(double start, double pps,
 	  oldcache.where[0] < cache.where[cache.len] &&
 	  oldcache.where[oldcache.len] > cache.where[0]) {
 
-	for(x=0; x<cache.len+1; x++)
+	for(x=0; x<cache.len; x++)
 
 	  if (cache.where[x] >= oldcache.where[0] &&
 		  cache.where[x] <= oldcache.where[oldcache.len-1]) {
