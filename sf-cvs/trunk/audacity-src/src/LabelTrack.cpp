@@ -46,7 +46,8 @@ int LabelTrack::mTextHeight;
 int LabelTrack::mFontHeight=-1;
 
 
-// TODO: Surely there is a header file which already defines max and min?
+// Aug-04: TODO: Surely there is a header file which already defines max and min?
+// Oct-04: Should we use wxMin and wxMax which exist, but appear to be undocumented???
 int max(int a,int b)
 {
    return((a>b)?a:b);
@@ -997,7 +998,6 @@ int LabelTrack::OverGlyph(int x, int y)
    return result;
 }
 
-
 // return true if the mouse is over text box, false otherwise
 bool LabelTrack::OverTextBox(const LabelStruct *pLabel, int x, int y) 
 {
@@ -1009,7 +1009,6 @@ bool LabelTrack::OverTextBox(const LabelStruct *pLabel, int x, int y)
    }
    return false;
 }
-
 
 /// HandleMouse gets called with every mouse move or click.
 /// 
@@ -1050,7 +1049,7 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
          //bounds like happens for the selection region.
          if(mMouseOverLabelLeft>=0)
          {
-            mLabels[mMouseOverLabelLeft]->t  = h + (evt.m_x - r.x)/pps;
+            mLabels[mMouseOverLabelLeft]->t  = h + (evt.m_x+mxMouseDisplacement - r.x)/pps;
             if( mLabels[mMouseOverLabelLeft]->t > mLabels[mMouseOverLabelLeft]->t1)
             {
                mLabels[mMouseOverLabelLeft]->t1  = mLabels[mMouseOverLabelLeft]->t;
@@ -1058,7 +1057,7 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
          }
          if (mMouseOverLabelRight>=0)
          {
-            mLabels[mMouseOverLabelRight]->t1 = h + (evt.m_x - r.x)/pps;
+            mLabels[mMouseOverLabelRight]->t1 = h + (evt.m_x+mxMouseDisplacement - r.x)/pps;
             if( mLabels[mMouseOverLabelRight]->t > mLabels[mMouseOverLabelRight]->t1)
             {
                mLabels[mMouseOverLabelRight]->t  = mLabels[mMouseOverLabelRight]->t1;
@@ -1116,38 +1115,49 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
 
       if(mIsAdjustingLabel )
       {
-         //The mouse was clicked on the label adjuster.
-         if(mMouseOverLabelRight >=0)
+         float t;
+         // When we start dragging the label(s) we don't want them to jump.
+         // so we calculate the displacement of the mouse from the drag center
+         // and use that in subsequent dragging calculations.  The mouse stays 
+         // at the same relative displacement throughout dragging.
+
+         // However, if two labels are being dragged, then the displacement 
+         // is relative to the initial average position of them, and in that 
+         // case there can be a jump of at most a few pixels to bring the 
+         // two label boundaries to exactly the same position when we start
+         // dragging.
+         if((mMouseOverLabelRight >=0) && (mMouseOverLabelLeft >=0))
          {
-            mLabels[mMouseOverLabelRight]->t1 = h + (evt.m_x-r.x)/pps;
-//          mSelIndex = mMouseOverLabelRight;
+            t = (mLabels[mMouseOverLabelRight]->t1+mLabels[mMouseOverLabelLeft]->t)/2.0f;
          }
-         if(mMouseOverLabelLeft >=0)
+         else if(mMouseOverLabelRight >=0)
          {
-            mLabels[mMouseOverLabelLeft]->t = h + (evt.m_x-r.x)/pps;
-//          mSelIndex = mMouseOverLabelLeft;
+            t = mLabels[mMouseOverLabelRight]->t1;
          }
+         else if(mMouseOverLabelLeft >=0)
+         {
+            t = mLabels[mMouseOverLabelLeft]->t;
+         }
+         mxMouseDisplacement = (int)((((t-h) * pps) + r.x )-evt.m_x);
          return;
       } 
-      else 
+
+      // disable displaying if left button is down
+      if (evt.LeftDown())
+         mDragXPos = -1;
+         
+      // disable displaying if right button is down outside text box
+      if( mSelIndex >0)
       {
-         // disable displaying if left button is down
-         if (evt.LeftDown())
-            mDragXPos = -1;
-            
-         // disable displaying if right button is down outside text box
-         if( mSelIndex >0)
+         if (evt.RightDown())
          {
-            if (evt.RightDown())
+            if (!highlightedRect.Inside(evt.m_x, evt.m_y))
             {
-               if (!highlightedRect.Inside(evt.m_x, evt.m_y))
-               {
-                  mDragXPos = -1;
-               }
-               else
-                  // if it's in text box, don't need to reset the current cursor position
-                  changeCursor = false;
+               mDragXPos = -1;
             }
+            else
+               // if it's in text box, don't need to reset the current cursor position
+               changeCursor = false;
          }
       }
       
@@ -1169,7 +1179,6 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
       }
    }
 }
-
 
 #ifdef __WXMAC__
  #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
