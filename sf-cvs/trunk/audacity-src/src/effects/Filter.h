@@ -90,11 +90,6 @@ private:
 
 // Declare window functions
 
-#define ID_TEXT 10000
-#define ID_FILTERPANEL 10001
-#define ID_CLEAR 10002
-#define ID_PREVIEW 10003
-
 class FilterDialog: public wxDialog
 {
 public:

@@ -233,12 +233,14 @@ RepeatDialog::RepeatDialog(wxWindow *parent, wxWindowID id,
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE | wxALL, 5);
 
    hSizer = new wxBoxSizer(wxHORIZONTAL);
-   wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
-   ok->SetDefault();
-   hSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
 
    wxButton *cancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
    hSizer->Add(cancel, 0, wxALIGN_CENTRE|wxALL, 5);
+
+   wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
+   ok->SetDefault();
+   ok->SetFocus();
+   hSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
 
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 

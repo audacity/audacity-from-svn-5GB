@@ -25,12 +25,11 @@
 
 // Declare window functions
 
-#define ID_TEXT         10000
 #define ID_FREQ_TEXT    10001
 #define ID_FREQ_SLIDER  10002
 #define ID_BOOST_TEXT   10003
 #define ID_BOOST_SLIDER 10004
-#define ID_PREVIEW      10005
+#define ID_BUTTON_PREVIEW      10005
 
 #include "SimpleMono.h"
 

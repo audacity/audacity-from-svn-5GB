@@ -9,6 +9,7 @@
 
   UI programming:
   Dominic Mazzoni (with the help of wxDesigner)
+  Vaughan Johnson (Preview)
 
 **********************************************************************/
 
@@ -83,11 +84,13 @@ class EffectPhaser:public EffectSimpleMono {
    float fbout;
    float lfoskip;
    float phase;
+
+friend class PhaserDialog;
 };
 
 // Declare window functions
 
-#define ID_TEXT 10000
+#define ID_BUTTON_PREVIEW 10000
 #define ID_STAGES 10001
 #define ID_DRYWET 10002
 #define ID_FREQTEXT 10003
@@ -101,8 +104,6 @@ class EffectPhaser:public EffectSimpleMono {
 wxSizer *CreatePhaserDialog(wxWindow * parent, bool call_fit =
                             TRUE, bool set_sizer = TRUE);
 
-// WDR: class declarations
-
 //----------------------------------------------------------------------------
 // PhaserDialog
 //----------------------------------------------------------------------------
@@ -110,12 +111,12 @@ wxSizer *CreatePhaserDialog(wxWindow * parent, bool call_fit =
 class PhaserDialog:public wxDialog {
  public:
    // constructors and destructors
-   PhaserDialog(wxWindow * parent, wxWindowID id, const wxString & title,
-                const wxPoint & pos = wxDefaultPosition,
-                const wxSize & size = wxDefaultSize,
-                long style = wxDEFAULT_DIALOG_STYLE);
+   PhaserDialog(EffectPhaser * effect, 
+						wxWindow * parent, wxWindowID id, const wxString & title,
+						const wxPoint & pos = wxDefaultPosition,
+						const wxSize & size = wxDefaultSize,
+						long style = wxDEFAULT_DIALOG_STYLE);
 
-   // WDR: method declarations for PhaserDialog
    wxSlider *GetFeedbackSlider() {
       return (wxSlider *) FindWindow(ID_FEEDBACKSLIDER);
    } wxSlider *GetDepthSlider() {
@@ -150,9 +151,6 @@ class PhaserDialog:public wxDialog {
    virtual bool TransferDataFromWindow();
 
  private:
-   // WDR: member variable declarations for PhaserDialog
-
- private:
    // WDR: handler declarations for PhaserDialog
    void OnFeedbackSlider(wxCommandEvent & event);
    void OnDepthSlider(wxCommandEvent & event);
@@ -162,11 +160,12 @@ class PhaserDialog:public wxDialog {
    void OnDepthText(wxCommandEvent & event);
    void OnPhaseText(wxCommandEvent & event);
    void OnFreqText(wxCommandEvent & event);
+   void OnPreview(wxCommandEvent &event);
    void OnOk(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
 
  private:
-   DECLARE_EVENT_TABLE()
+	EffectPhaser * m_pEffect;
 
  public:
    float freq;
@@ -176,6 +175,9 @@ class PhaserDialog:public wxDialog {
    int depth;
    int stages;
    int drywet;
+
+ private:
+   DECLARE_EVENT_TABLE()
 };
 
 #endif
