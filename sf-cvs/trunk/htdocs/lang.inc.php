@@ -49,6 +49,7 @@ if(!defined('phpLang_urlParam'))
 $phpLang_languages = array(
  "en([-_][[:alpha:]]{2})?|english"  => array('en', 'english'),
  "fr([-_][[:alpha:]]{2})?|french"  => array('fr', 'french'),
+ "ca|catalan"   => array('ca', 'catalan'),
  "cs|czech"   => array('cs', 'czech'),
  "da|danish"   => array('da', 'danish'),
  "nl([-_][[:alpha:]]{2})?|dutch"   => array('nl', 'dutch'),
