@@ -16,7 +16,10 @@
 **********************************************************************/
 
 // For temporary dlopen() fix.
+#ifdef __WXMAC__
+#else
 #include <dlfcn.h>
+#endif  //  __WXMAC__
 
 #include <wx/dynlib.h>
 #include <wx/list.h>

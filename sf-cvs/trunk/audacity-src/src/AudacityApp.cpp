@@ -26,6 +26,7 @@
 #ifdef __MACOS9__
 #include <AEDataModel.h>
 #include <AppleEvents.h>
+#include <Files.h>
 #endif
 
 #ifdef __MACOSX__
