@@ -52,7 +52,7 @@
 
 #endif
 
-#ifdef MAC
+#if defined(MAC) && !defined(__MACOSX__)
 typedef long int32_t;
 #endif
 
