@@ -25,6 +25,10 @@
 #include <wx/tooltip.h>
 
 #ifdef __WXMSW__
+#define USE_POPUPWIN 1
+#endif
+
+#if USE_POPUPWIN
 #include <wx/popupwin.h>
 #endif
 
@@ -47,7 +51,7 @@ const int sliderFontSize = 12;
 // TipPanel
 //
 
-#ifdef __WXMSW__
+#if USE_POPUPWIN
 class TipPanel : public wxPopupWindow
 #else
 class TipPanel : public wxPanel
@@ -70,7 +74,7 @@ class TipPanel : public wxPanel
    DECLARE_EVENT_TABLE()
 };
 
-#ifdef __WXMSW__
+#if USE_POPUPWIN
 
 BEGIN_EVENT_TABLE(TipPanel, wxPopupWindow)
    EVT_PAINT(TipPanel::OnPaint)
@@ -128,7 +132,10 @@ void TipPanel::SetPos(const wxPoint& pos)
    dc.GetTextExtent(origLabel, &width, &height);
    width += 4;
    height += 4;
-   SetSize(pos.x - width/2, pos.y, width, height);   
+   int left = pos.x - width/2;
+   if (left < 0)
+      left = 0;
+   SetSize(left, pos.y, width, height);   
 }
 
 #endif
@@ -455,6 +462,7 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
       mIsDragging = false;
       mParent->ReleaseMouse();
       mPopWin->Hide();
+      ((TipPanel *)mPopWin)->SetPos(wxPoint(-1000, -1000));
    } else if (event.Dragging() && mIsDragging) {
       //If we're dragging, figure out where the thumb should go
       int delta = (event.m_x - mLeft) - mClickX;
