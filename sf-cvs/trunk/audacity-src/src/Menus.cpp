@@ -327,8 +327,6 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 */
 
    SetMenuState(mFileMenu, SaveID, mUndoManager.UnsavedChanges());
-   SetMenuState(mEditMenu, UndoID, mUndoManager.UndoAvailable());
-   SetMenuState(mEditMenu, RedoID, mUndoManager.RedoAvailable());
 
    bool nonZeroRegionSelected = (mViewInfo.sel1 > mViewInfo.sel0);
 
@@ -359,7 +357,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 
    
 
-   //Calculate the ToolBarCheckSum:
+   //Calculate the ToolBarCheckSum (uniquely specifies state of all toolbars):
    unsigned int toolBarCheckSum =0;
    toolBarCheckSum += gControlToolBarStub->GetWindowedStatus() ? 2 : 1;
    if (gEditToolBarStub->GetLoadedStatus()) {
@@ -371,9 +369,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    
    // Return from this function if nothing's changed since
    // the last time we were here.
-   //STM: None of these appear to be initialized, which may cause random trouble
-
-    if (!mFirstTimeUpdateMenus &&
+ 
+   if (!mFirstTimeUpdateMenus &&
        mLastNonZeroRegionSelected == nonZeroRegionSelected &&
        mLastNumTracks == numTracks &&
        mLastNumTracksSelected == numTracksSelected &&
@@ -381,7 +378,10 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
        mLastNumWaveTracksSelected == numWaveTracksSelected &&
        mLastNumLabelTracks == numLabelTracks &&
        mLastZoomLevel == mViewInfo.zoom &&
-       mLastToolBarCheckSum == toolBarCheckSum)
+       mLastToolBarCheckSum == toolBarCheckSum &&
+       mLastUndoState == mUndoManager.UndoAvailable() &&
+       mLastRedoState == mUndoManager.RedoAvailable()  
+       )
       return;
    
    // Otherwise, save state and then update all of the menus
@@ -395,6 +395,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    mLastNumLabelTracks = numLabelTracks;
    mLastZoomLevel = mViewInfo.zoom;
    mLastToolBarCheckSum = toolBarCheckSum;
+   mLastUndoState = mUndoManager.UndoAvailable();
+   mLastRedoState = mUndoManager.RedoAvailable();  
 
    bool anySelection = numTracksSelected > 0 && nonZeroRegionSelected;
 
@@ -414,27 +416,12 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    SetMenuState(mEditMenu, DuplicateID, anySelection);
    SetMenuState(mEditMenu, SelectAllID, numTracks > 0);
 
+   SetMenuState(mEditMenu, UndoID, mUndoManager.UndoAvailable());
+   SetMenuState(mEditMenu, RedoID, mUndoManager.RedoAvailable());
+
+
    SetMenuState(mViewMenu, PlotSpectrumID, numWaveTracksSelected > 0
                      && nonZeroRegionSelected);
-
-   SetMenuState(mProjectMenu, QuickMixID, numWaveTracksSelected > 1);
-   SetMenuState(mProjectMenu, AlignID, numTracksSelected > 1);
-   SetMenuState(mProjectMenu, AlignZeroID, numTracksSelected > 0);
-   SetMenuState(mProjectMenu, RemoveTracksID, numTracksSelected > 0);
-
-   int e;
-   for (e = 0; e < Effect::GetNumEffects(false); e++) {
-      mEffectMenu->Enable(FirstEffectID + e,
-                          numWaveTracksSelected > 0
-                          && nonZeroRegionSelected);
-   }
-
-   for (e = 0; e < Effect::GetNumEffects(true); e++) {
-      mPluginMenu->Enable(FirstPluginID + e,
-                          numWaveTracksSelected > 0
-                          && nonZeroRegionSelected);
-   }
-
 
 #ifndef __WXMAC__
    //Modify toolbar-specific Menus
@@ -462,8 +449,32 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 
 
 
-   //****************************************************
-   //Intructions for what these flags are can be found in
+
+   SetMenuState(mProjectMenu, QuickMixID, numWaveTracksSelected > 1);
+   SetMenuState(mProjectMenu, AlignID, numTracksSelected > 1);
+   SetMenuState(mProjectMenu, AlignZeroID, numTracksSelected > 0);
+   SetMenuState(mProjectMenu, RemoveTracksID, numTracksSelected > 0);
+
+   int e;
+   for (e = 0; e < Effect::GetNumEffects(false); e++) {
+      mEffectMenu->Enable(FirstEffectID + e,
+                          numWaveTracksSelected > 0
+                          && nonZeroRegionSelected);
+   }
+
+   for (e = 0; e < Effect::GetNumEffects(true); e++) {
+      mPluginMenu->Enable(FirstPluginID + e,
+                          numWaveTracksSelected > 0
+                          && nonZeroRegionSelected);
+   }
+
+
+
+
+   /////////////////////////////////////////////////////////////
+   //  This handles specific enabling of buttons on toolbars
+   //
+   //Instructions for what these flags are can be found in
    // ToolBar.cpp ToolBar::EnableDisableButtons()
    //Calculate the sum of flags to send to each toolbar.
    int sumFlags=0;
