@@ -17,6 +17,10 @@ Known bugs to fix:
   other than the ones in the last saved version.  (Implement
   this in conjunction with save changes dialogs.)
 - Save As... for a project should work.
+- Record at other than 44100 Hz (on Mac only?)
+- Stereo "linked" track that's really two mono tracks
+  Check upon opening project
+- Find VST folder on startup
 
 -----------------------------------------------------------
 Unit tests:
@@ -33,50 +37,27 @@ Unit tests:
 
 UI::
 - Save changes? dialog
-- Finish history window
-- Import... should be able to import Audacity projects.
+- Import... should be able to import Audacity projects
+  and Audacity project files
 - Crash recovery
 - Clean up a project directory upon open
 - Make Alt-F select the File menu on Windows
 - Make "Exit program upon closing last window" an option
   in the Preferences.  (The alternative would be to create
   a new empty project when you close the last window.)
-- When the user exports, for example, a WAV file, but
-  they don't type the WAV extension, it should add it
-  for them.  (If they type a DIFFERENT extension, it
-  should leave it alone.)
 - better ruler, both for time (horizontally) and magnitude/pitch (vertical)
-- add "trim" (= opposite of delete -- delete all but selection)
-- invert selection (for now, until we allow discontiguous selections,
-                    this should mean two options: select up to selection,
-                    and select after selection)
-- legend for pitch and spectrum
-- resampling
 - Out of disk space checks
-- History window, with ability to throw away undo information to
-  save disk space
-- Autoscrolling during playback (and recording?)
-
-Audio I/O::
-- import/export ogg vorbis everywhere
-- move to portaudio (www.portaudio.com)
-
-Effects::
-- Smart Mix (like Quick Mix but guarantees no clipping)
-- Cross-fade (smooth between two tracks)
-- Compressor/Limiter/Expander
-- Native port of Freeverb (ideally optimized)
-
-Low level issues:
-- Automatic approximate resampling, if two tracks are at
-  different sample rates but are supposed to be played
-  together
 
 -----------------------------------------------------------
-1.0 (desired):
+1.2:
 -----------------------------------------------------------
+
+Meta::
+- Move to new repository with src/ directory
 
 UI::
+- Roger's Allegro stuff
+- Finish history window
 - ability to drag tracks instead of move down, move down, move down
 - "Fit in window" also works vertically
 - auto-fit on open (configurable?)
@@ -85,20 +66,31 @@ UI::
 - better adaptation to different font sizes (sizers)
 - move to lossless compression (FLAC?) for internal representation
 - Pan control for each track
+- Volume control for each track
+- add "trim" (= opposite of delete -- delete all but selection)
+- invert selection (for now, until we allow discontiguous selections,
+                    this should mean two options: select up to selection,
+                    and select after selection)
+- legend for pitch and spectrum
+- resampling
+- History window, with ability to throw away undo information to
+  save disk space
+- Autoscrolling during playback (and recording?)
+- Rewritten Import Raw Data...
 
 Audio I/O::
-- move to libsndfile (or something like it)?
-  ideally support many more sound file formats
-
-Effects::
-- Noise reduction (this is the most requested effect)
+- move to portaudio
+- move to libsndfile
+- import/export ogg vorbis everywhere
 
 Low level issues::
 - Make projects one big file
 
------------------------------------------------------------
-1.2 (planned):
------------------------------------------------------------
+Effects::
+- Smart Mix (like Quick Mix but guarantees no clipping)
+- Cross-fade (smooth between two tracks)
+- Compressor/Limiter/Expander
+- Native port of Freeverb (ideally optimized)
 
 UI::
 - make colors configurable
@@ -115,4 +107,19 @@ Low level issues::
 - support multi-track I/O
 - support an arbitrary number of channels
 - Make projects one big file
+
+-----------------------------------------------------------
+Already done:
+-----------------------------------------------------------
+
+- When the user exports, for example, a WAV file, but
+  they don't type the WAV extension, it should add it
+  for them.  (If they type a DIFFERENT extension, it
+  should leave it alone.)
+
+- Automatic approximate resampling, if two tracks are at
+  different sample rates but are supposed to be played
+  together
+
+- Noise reduction (this is the most requested effect)
 
