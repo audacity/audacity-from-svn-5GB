@@ -5,6 +5,10 @@ MO_FILES := $(PO_FILES:%.po=%.mo)
 
 all: $(MO_FILES)
 
+clean:
+	rm -f $(MO_FILES) $(PO_FILES) $(POT_FILE)
+	rm -f $(PO_FILES:%=%~)
+
 # Build the POT file (message catalog template).
 SOURCES := $(wildcard *.php */*.php)
 XGETTEXT=xgettext
