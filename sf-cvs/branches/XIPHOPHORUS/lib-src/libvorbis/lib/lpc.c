@@ -7,11 +7,11 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
   function: LPC low level routines
-  last mod: $Id: lpc.c,v 1.1.1.1 2001-08-14 19:04:27 habes Exp $
+  last mod: $Id: lpc.c,v 1.1.1.2 2002-04-21 23:36:45 habes Exp $
 
  ********************************************************************/
 
@@ -59,7 +59,7 @@ Carsten Bormann
    Output: m lpc coefficients, excitation energy */
 
 float vorbis_lpc_from_data(float *data,float *lpc,int n,int m){
-  float *aut=alloca(sizeof(float)*(m+1));
+  float *aut=alloca(sizeof(*aut)*(m+1));
   float error;
   int i,j;
 
@@ -67,7 +67,7 @@ float vorbis_lpc_from_data(float *data,float *lpc,int n,int m){
 
   j=m+1;
   while(j--){
-    float d=0;
+    double d=0; /* double needed for accumulator depth */
     for(i=j;i<n;i++)d+=data[i]*data[i-j];
     aut[j]=d;
   }
@@ -77,10 +77,10 @@ float vorbis_lpc_from_data(float *data,float *lpc,int n,int m){
   error=aut[0];
   
   for(i=0;i<m;i++){
-    float r=-aut[i+1];
+    float r= -aut[i+1];
 
     if(error==0){
-      memset(lpc,0,m*sizeof(float));
+      memset(lpc,0,m*sizeof(*lpc));
       return 0;
     }
 
@@ -117,7 +117,7 @@ float vorbis_lpc_from_data(float *data,float *lpc,int n,int m){
 float vorbis_lpc_from_curve(float *curve,float *lpc,lpc_lookup *l){
   int n=l->ln;
   int m=l->m;
-  float *work=alloca(sizeof(float)*(n+n));
+  float *work=alloca(sizeof(*work)*(n+n));
   float fscale=.5f/n;
   int i,j;
   
@@ -149,7 +149,7 @@ float vorbis_lpc_from_curve(float *curve,float *lpc,lpc_lookup *l){
 }
 
 void lpc_init(lpc_lookup *l,long mapped, int m){
-  memset(l,0,sizeof(lpc_lookup));
+  memset(l,0,sizeof(*l));
 
   l->ln=mapped;
   l->m=m;
@@ -174,7 +174,7 @@ void vorbis_lpc_predict(float *coeff,float *prime,int m,
 
   long i,j,o,p;
   float y;
-  float *work=alloca(sizeof(float)*(m+n));
+  float *work=alloca(sizeof(*work)*(m+n));
 
   if(!prime)
     for(i=0;i<m;i++)

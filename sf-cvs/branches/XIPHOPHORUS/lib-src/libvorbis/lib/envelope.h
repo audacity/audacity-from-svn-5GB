@@ -7,11 +7,11 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: PCM data envelope analysis and manipulation
- last mod: $Id: envelope.h,v 1.1.1.1 2001-08-14 19:04:28 habes Exp $
+ last mod: $Id: envelope.h,v 1.1.1.2 2002-04-21 23:36:46 habes Exp $
 
  ********************************************************************/
 
@@ -32,13 +32,16 @@ typedef struct {
 
   long storage;
   long current;
-  long lastmark;
+  long mark;
+  long prevmark;
+  long cursor;
 } envelope_lookup;
 
 extern void _ve_envelope_init(envelope_lookup *e,vorbis_info *vi);
 extern void _ve_envelope_clear(envelope_lookup *e);
-extern long _ve_envelope_search(vorbis_dsp_state *v,long searchpoint);
+extern long _ve_envelope_search(vorbis_dsp_state *v);
 extern void _ve_envelope_shift(envelope_lookup *e,long shift);
+extern int  _ve_envelope_mark(vorbis_dsp_state *v);
 
 
 #endif
