@@ -1,0 +1,533 @@
+<HTML>
+<HEAD>
+<TITLE>Xaudio ASYNC API</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#51188E" ALINK="#FF0000">
+<CENTER><IMG SRC="xaudio.gif"><H1>Xaudio ASYNC API</H1></CENTER><HR>The Xaudio ASYNC API is a high-level API that is used when the client software wants to start a 'player' and control it with VCR-like commands to open, play pause, stop, etc...<BR>The Xaudio ASYNC API is very useful for programs that include a GUI (Graphical User Interface) because it does all the work of running the decoder in a separate thread or process, accepting commands in the form of messages, and notifying the client of events by sending back messages.<BR>Since the decoder runs in its own thread or process, the GUI or controlling application can perform all the other functions independently without having to "baby-sit" the decoder.<BR>There are two classes of messages:<BR><UL><LI>Command Messages</LI></UL><BLOCKQUOTE>Command Messages are send from the controlling application to the player. Sending a message to the player is asynchronous. This means that when the function that sends the message returns, the message has been POSTED to the player's incoming message queue, but might not have processed it yet. When the player processes the message, it will send back an aknowledgement (positive or negative) to notify of the success or failure of the command (<A HREF="notification-messages.html#XA_MSG_NOTIFY_ACK">XA_MSG_NOTIFY_ACK</A>, <A HREF="notification-messages.html#XA_MSG_NOTIFY_NACK">XA_MSG_NOTIFY_NACK</A>).<BR>See the section about <A HREF="command-messages.html">Command Messages</A> for a complete list of command messages.</BLOCKQUOTE><UL><LI>Notification Messages</LI></UL><BLOCKQUOTE>As a result of a command message, or when an event occurs, the player will send back notification messages with other types of information. See the section about <A HREF="notification-messages.html">Notification Messages"</A> for a complete list of notification messages.</BLOCKQUOTE>
+<HR>
+<H2>Function Index</H2>
+<UL>
+<LI><A HREF="#player_new">player_new</A></LI>
+<LI><A HREF="#player_delete">player_delete</A></LI>
+<LI><A HREF="#control_message_send">control_message_send</A></LI>
+<LI><A HREF="#control_message_send_N">control_message_send_N</A></LI>
+<LI><A HREF="#control_message_send_P">control_message_send_P</A></LI>
+<LI><A HREF="#control_message_send_S">control_message_send_S</A></LI>
+<LI><A HREF="#control_message_send_SS">control_message_send_SS</A></LI>
+<LI><A HREF="#control_message_send_SI">control_message_send_SI</A></LI>
+<LI><A HREF="#control_message_send_I">control_message_send_I</A></LI>
+<LI><A HREF="#control_message_send_II">control_message_send_II</A></LI>
+<LI><A HREF="#control_message_send_III">control_message_send_III</A></LI>
+<LI><A HREF="#control_message_send_IIII">control_message_send_IIII</A></LI>
+<LI><A HREF="#control_message_send_IPI">control_message_send_IPI</A></LI>
+<LI><A HREF="#control_message_get">control_message_get</A></LI>
+<LI><A HREF="#control_message_wait">control_message_wait</A></LI>
+<LI><A HREF="#control_message_sprint">control_message_sprint</A></LI>
+</UL>
+<HR>
+<H2><A NAME="player_new">player_new</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Creates a new asynchronous player (starts a decoding thread or process).This call takes as a parameter a pointer to a platform specific argument block. On UNIX platforms, no argument is needed, so the caller should pass NULL. On Windows platform, the argument block can be used to pass the handle of a window that is to receive the notification messages. See section about the <A HREF="platforms.html#windows">Windows Platform Specifics</A> for more details regarding the argument block on Windows.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int player_new(void **control, void *args);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::XA_Player(void *args);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>control</I></B></TD><TD> pointer to a (void*) pointer where the handle to the created player should be stored.</TD>
+</TR>
+<TR>
+<TD><B><I>args</I></B></TD><TD> pointer to an argument block, or NULL if there are no arguments.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the player has been created, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#player_delete">player_delete()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="player_delete">player_delete</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Deletes an instantiated asynchronous player object (and releases the resources allocated to it). The caller should send an exit message (<TT>XA_MSG_CMD_EXIT</TT>)  to the player and wait for a notification that the player's thread or process has terminated (<TT>XA_MSG_NOTIFY_EXITED</TT>) before deleting a player.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT player_delete(void *control);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::~XA_Player();</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>control</I></B></TD><TD> pointer to an instantiated player (returned by <TT>player_new()</TT> or <TT>control_procedure_new()</TT>.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the player has been deleted, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#player_new">player_new()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="control_message_send">control_message_send</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sends a message to an asynchronous player object.<BR>Sending is a message is asynchronous. This means that the function posts the message to the player's message queue, and return immediately. So it is possible that the function will return before the player has processed the message. The return value of this call only indicates if the message has been successfully posted, but does not indicate whether the command to be performed by the player upon receipt of this message has been successful.<BR>After the player has received and processed the message, it will send back an positive acknowledge notification message (<TT>XA_MSG_NOTIFY_ACK</TT>), or a negative acknowledge notification message (<TT>XA_MSG_NOTIFY_NACK</TT>) with the error code explaining the reason of the failure.<BR>This call takes a variable number of arguments (the arguments depend on the type of message being sent), so it has the standard C calling conventions (<TT>__cdecl</TT> under Windows).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int control_message_send(void *control, int code, ...);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>control</I></B></TD><TD> pointer to an instantiated player (returned by <TT>player_new()</TT> or <TT>control_procedure_new()</TT>.</TD>
+</TR>
+<TR>
+<TD><B><I>code</I></B></TD><TD> the type of message to send (See section about <A HREF="asyncapi.html#messages">messages</A> for a list of message codes).</TD>
+</TR>
+<TR>
+<TD><B><I></I></B></TD><TD></TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the message has been posted to the player's message queue, or a <A HREF="error-codes.html">negative error code</A> if the call failed. </BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>control.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#control_message_send_0">control_message_send_0()</A></TT>, <TT><A HREF="#control_message_send_1_string">control_message_send_1_string()</A></TT>,<TT><A HREF="#control_message_send_1_int">control_message_send_1_int()</A></TT>, <TT><A HREF="#control_message_send_1_generic">control_message_send_1_generic()</A></TT>, <TT><A HREF="#control_message_send_2_ints">control_message_send_2_ints()</A></TT>, <TT><A HREF="#control_message_send_3_ints">control_message_send_3_ints()</A></TT>, <TT><A HREF="#control_message_send_4_ints">control_message_send_4_ints()</A></TT>, <TT><A HREF="#control_message_get">control_message_get()</A></TT>, <TT><A HREF="#control_message_wait">control_message_wait()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="control_message_send_N">control_message_send_N</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sends a message that requires no argument.<BR>(only use this call when calling the library from a development language that cannot use functions with a variable number of arguments, other wise, use <TT><A HREF="#control_message_send">control_message_send()</A></TT>).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT control_message_send_N(void *control, int code);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>control</I></B></TD><TD> pointer to an instantiated asynchronous player.</TD>
+</TR>
+<TR>
+<TD><B><I>code</I></B></TD><TD> type of the message to send.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the message has been posted to the player's message queue, or a <A HREF="error-codes.html">negative error code</A> if the call failed. </BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>control.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#control_message_send">control_message_send()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="control_message_send_P">control_message_send_P</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sends a message that requires one argument of type 'pointer' (<TT>const void *</TT>).<BR>(only use this call when calling the library from a development language that cannot use functions with a variable number of arguments, other wise, use <TT><A HREF="#control_message_send">control_message_send()</A></TT>).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT control_message_send_P(void *control, int code, const void *ptr1);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>control</I></B></TD><TD> pointer to an instantiated asynchronous player.</TD>
+</TR>
+<TR>
+<TD><B><I>code</I></B></TD><TD> type of the message to send.</TD>
+</TR>
+<TR>
+<TD><B><I>ptr1</I></B></TD><TD> a generic pointer.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the message has been posted to the player's message queue, or a <A HREF="error-codes.html">negative error code</A> if the call failed. </BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>control.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#control_message_send">control_message_send()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="control_message_send_S">control_message_send_S</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sends a message that requires one argument of type 'string' (<TT>const char *</TT>).<BR>(only use this call when calling the library from a development language that cannot use functions with a variable number of arguments, other wise, use <TT><A HREF="#control_message_send">control_message_send()</A></TT>).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT control_message_send_S(void *control, int code, const char *str1);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>control</I></B></TD><TD> pointer to an instantiated asynchronous player.@code: type of the message to send.</TD>
+</TR>
+<TR>
+<TD><B><I>str1</I></B></TD><TD> a NULL-terminated character string.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the message has been posted to the player's message queue, or a <A HREF="error-codes.html">negative error code</A> if the call failed. </BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>control.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#control_message_send">control_message_send()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="control_message_send_SS">control_message_send_SS</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sends a message that requires 2 arguments of type 'string' (<TT>const char *</TT>).<BR>(only use this call when calling the library from a development language that cannot use functions with a variable number of arguments, other wise, use <TT><A HREF="#control_message_send">control_message_send()</A></TT>).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT control_message_send_SI(void *control, int code, const char *str1, const char *str2);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>control</I></B></TD><TD> pointer to an instantiated asynchronous player.@code: type of the message to send.</TD>
+</TR>
+<TR>
+<TD><B><I>str1</I></B></TD><TD> a NULL-terminated character string.</TD>
+</TR>
+<TR>
+<TD><B><I>str2</I></B></TD><TD> a NULL-terminated character string.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the message has been posted to the player's message queue, or a <A HREF="error-codes.html">negative error code</A> if the call failed. </BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>control.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#control_message_send">control_message_send()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="control_message_send_SI">control_message_send_SI</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sends a message that requires 1 argument of type 'string' (<TT>const char *</TT>) and one argument of type 'integer'.<BR>(only use this call when calling the library from a development language that cannot use functions with a variable number of arguments, other wise, use <TT><A HREF="#control_message_send">control_message_send()</A></TT>).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT control_message_send_SI(void *control, int code, const char *str1, int int1);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>control</I></B></TD><TD> pointer to an instantiated asynchronous player.@code: type of the message to send.</TD>
+</TR>
+<TR>
+<TD><B><I>str1</I></B></TD><TD> a NULL-terminated character string.</TD>
+</TR>
+<TR>
+<TD><B><I>int1</I></B></TD><TD> integer argument.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the message has been posted to the player's message queue, or a <A HREF="error-codes.html">negative error code</A> if the call failed. </BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>control.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#control_message_send">control_message_send()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="control_message_send_I">control_message_send_I</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sends a message that requires one argument of type 'integer'.<BR>(only use this call when calling the library from a development language that cannot use functions with a variable number of arguments, other wise, use <TT><A HREF="#control_message_send">control_message_send()</A></TT>).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT control_message_send_1_generic(void *control, int code, void *arg);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>control</I></B></TD><TD> pointer to an instantiated asynchronous player.</TD>
+</TR>
+<TR>
+<TD><B><I>code</I></B></TD><TD> type of the message to send.</TD>
+</TR>
+<TR>
+<TD><B><I>int1</I></B></TD><TD> integer argument.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the message has been posted to the player's message queue, or a <A HREF="error-codes.html">negative error code</A> if the call failed. </BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>control.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#control_message_send">control_message_send()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="control_message_send_II">control_message_send_II</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sends a message that requires 2 arguments of type 'integer'.<BR>(only use this call when calling the library from a development language that cannot use functions with a variable number of arguments, other wise, use <TT><A HREF="#control_message_send">control_message_send()</A></TT>).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT control_message_send_II(void *control, int code, int int1, int int2);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>control</I></B></TD><TD> pointer to an instantiated asynchronous player.</TD>
+</TR>
+<TR>
+<TD><B><I>code</I></B></TD><TD> type of the message to send.</TD>
+</TR>
+<TR>
+<TD><B><I>int1</I></B></TD><TD> first integer argument.</TD>
+</TR>
+<TR>
+<TD><B><I>int2</I></B></TD><TD> second integer argument.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the message has been posted to the player's message queue, or a <A HREF="error-codes.html">negative error code</A> if the call failed. </BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>control.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#control_message_send">control_message_send()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="control_message_send_III">control_message_send_III</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sends a message that requires 3 arguments of type 'integer'.<BR>(only use this call when calling the library from a development language that cannot use functions with a variable number of arguments, other wise, use <TT><A HREF="#control_message_send">control_message_send()</A></TT>).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT control_message_send_III(void *control, int code, int int1, int int2, int int3);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>control</I></B></TD><TD> pointer to an instantiated asynchronous player.</TD>
+</TR>
+<TR>
+<TD><B><I>code</I></B></TD><TD> type of the message to send.</TD>
+</TR>
+<TR>
+<TD><B><I>int1</I></B></TD><TD> first integer argument.</TD>
+</TR>
+<TR>
+<TD><B><I>int2</I></B></TD><TD> second integer argument.</TD>
+</TR>
+<TR>
+<TD><B><I>int3</I></B></TD><TD> third integer argument.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the message has been posted to the player's message queue, or a <A HREF="error-codes.html">negative error code</A> if the call failed. </BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>control.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#control_message_send">control_message_send()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="control_message_send_IIII">control_message_send_IIII</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sends a message that requires 4 arguments of type 'integer'.<BR>(only use this call when calling the library from a development language that cannot use functions with a variable number of arguments, other wise, use <TT><A HREF="#control_message_send">control_message_send()</A></TT>).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT control_message_send_IIII(void *control, int code, int int1, int int2, int int3, int int4);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>control</I></B></TD><TD> pointer to an instantiated asynchronous player.</TD>
+</TR>
+<TR>
+<TD><B><I>code</I></B></TD><TD> type of the message to send.</TD>
+</TR>
+<TR>
+<TD><B><I>int1</I></B></TD><TD> first integer argument.</TD>
+</TR>
+<TR>
+<TD><B><I>int2</I></B></TD><TD> second integer argument.</TD>
+</TR>
+<TR>
+<TD><B><I>int3</I></B></TD><TD> third integer argument.</TD>
+</TR>
+<TR>
+<TD><B><I>int4</I></B></TD><TD> fourth integer argument.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the message has been posted to the player's message queue, or a <A HREF="error-codes.html">negative error code</A> if the call failed. </BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>control.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#control_message_send">control_message_send()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="control_message_send_IPI">control_message_send_IPI</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sends a message that requires 1 argument of type 'integer', one argument of type 'pointer' (<TT>const void *</TT>) and 1 argument of type 'integer'.<BR>(only use this call when calling the library from a development language that cannot use functions with a variable number of arguments, other wise, use <TT><A HREF="#control_message_send">control_message_send()</A></TT>).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT control_message_send_IPI(void *control, int code, int int1, const void *ptr1, int int2);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>control</I></B></TD><TD> pointer to an instantiated asynchronous player.</TD>
+</TR>
+<TR>
+<TD><B><I>code</I></B></TD><TD> type of the message to send.</TD>
+</TR>
+<TR>
+<TD><B><I>int1</I></B></TD><TD> first integer argument.</TD>
+</TR>
+<TR>
+<TD><B><I>ptr1</I></B></TD><TD> generic pointer argument.</TD>
+</TR>
+<TR>
+<TD><B><I>int2</I></B></TD><TD> second integer argument.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the message has been posted to the player's message queue, or a <A HREF="error-codes.html">negative error code</A> if the call failed. </BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>control.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#control_message_send">control_message_send()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="control_message_get">control_message_get</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves a message from the notification message queue. This function does not wait for a message, it returns immediately, even if no message is available.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int  XA_EXPORT control_message_get(void *control, XA_Message *message);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>control</I></B></TD><TD> pointer to an instantiated asynchronous player.</TD>
+</TR>
+<TR>
+<TD><B><I>message</I></B></TD><TD> pointer to an <TT><A HREF="data-structures.html#XA_Message">XA_Message</A></TT> structure where the retrieved message will be stored.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns 1 of a message was available, 0 if no message was available, or a <A HREF="error-codes.html">negative error code</A> if the call failed. </BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>control.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#control_message_wait">control_message_wait()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="control_message_wait">control_message_wait</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Wait for a message to be available on the notification message queue, and retrieves it. If no message is available, this function blocks until a message is received, or the timeout expires. If the timeout is set to <TT>XA_TIMEOUT_INFINITE</TT>, the timeout never expires, and the function will just wait for a message.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int  XA_EXPORT control_message_wait(void *control, XA_Message *message, int timeout);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>control</I></B></TD><TD> pointer to an instantiated asynchronous player.</TD>
+</TR>
+<TR>
+<TD><B><I>message</I></B></TD><TD> pointer to an <TT><A HREF="data-structures.html#XA_Message">XA_Message</A></TT> structure where the retrieved message will be stored.</TD>
+</TR>
+<TR>
+<TD><B><I>timeout</I></B></TD><TD> number of microseconds to wait before giving up, or <TT>XA_TIMEOUT_INFINITE</TT> to wait indefinitely.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if a message has been received, <TT>XA_ERROR_TIMEOUT</TT> if the timeout expired before any message was received, or a <A HREF="error-codes.html">negative error code</A> if the call failed. </BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>control.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#control_message_get">control_message_get()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="control_message_sprint">control_message_sprint</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Converts a message into a human-readable string describing the message and its parameters.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int  XA_EXPORT control_message_sprint(char *string, XA_Message *message);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>string</I></B></TD><TD> string buffer where the message string should be stored.</TD>
+</TR>
+<TR>
+<TD><B><I>message</I></B></TD><TD> pointer to an <TT><A HREF="data-structures.html#XA_Message">XA_Message</A></TT> structure containing the message.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the call succeeded,  or a <A HREF="error-codes.html">negative error code</A> if the call failed. </BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>control.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT></TT></BLOCKQUOTE>
+</BODY>
+</HTML>

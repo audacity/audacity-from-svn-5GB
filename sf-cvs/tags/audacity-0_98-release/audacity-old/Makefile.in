@@ -1,0 +1,189 @@
+########################################
+#
+# Audacity Makefile
+#
+# Dominic Mazzoni
+#
+# Run configure to generate Makefile
+# from Makefile.in
+#
+
+LIBS = @LIBS@
+CFLAGS = @CFLAGS@ @CPPFLAGS@ -Iallegro
+CCC = @CXX@
+CC = @CC@
+
+INSTALL = @INSTALL@
+PREFIX = @prefix@
+
+########################################
+# ALL OBJECT FILES
+
+OBJDIR = obj
+
+OBJS = \
+	$(OBJDIR)/AButton.cpp.o \
+	$(OBJDIR)/AColor.cpp.o \
+	$(OBJDIR)/APalette.cpp.o \
+	$(OBJDIR)/ASlider.cpp.o \
+	$(OBJDIR)/AStatus.cpp.o \
+	$(OBJDIR)/AboutDialog.cpp.o \
+	$(OBJDIR)/AudacityApp.cpp.o \
+	$(OBJDIR)/AudioIO.cpp.o \
+	$(OBJDIR)/BlockFile.cpp.o \
+	$(OBJDIR)/DirManager.cpp.o \
+	$(OBJDIR)/DiskFunctions.cpp.o \
+	$(OBJDIR)/Envelope.cpp.o \
+	$(OBJDIR)/Export.cpp.o \
+	$(OBJDIR)/ExportMP3.cpp.o \
+	$(OBJDIR)/ExportPCM.cpp.o \
+	$(OBJDIR)/FFT.cpp.o \
+	$(OBJDIR)/FreqWindow.cpp.o \
+	$(OBJDIR)/Help.cpp.o \
+	$(OBJDIR)/Import.cpp.o \
+	$(OBJDIR)/ImportMIDI.cpp.o \
+	$(OBJDIR)/ImportMP3.cpp.o \
+	$(OBJDIR)/ImportOGG.cpp.o \
+	$(OBJDIR)/ImportPCM.cpp.o \
+	$(OBJDIR)/ImportRaw.cpp.o \
+	$(OBJDIR)/LabelTrack.cpp.o \
+	$(OBJDIR)/Menus.cpp.o \
+	$(OBJDIR)/Mix.cpp.o \
+	$(OBJDIR)/NoteTrack.cpp.o \
+	$(OBJDIR)/Prefs.cpp.o \
+	$(OBJDIR)/Project.cpp.o \
+	$(OBJDIR)/Spectrum.cpp.o \
+	$(OBJDIR)/Tags.cpp.o \
+	$(OBJDIR)/Track.cpp.o \
+	$(OBJDIR)/TrackArtist.cpp.o \
+	$(OBJDIR)/TrackPanel.cpp.o \
+	$(OBJDIR)/UndoManager.cpp.o \
+	$(OBJDIR)/WaveTrack.cpp.o \
+	$(OBJDIR)/allegro/allegro.cpp.o \
+	$(OBJDIR)/allegro/allegrowr.cpp.o \
+	$(OBJDIR)/allegro/mfallegro.cpp.o \
+	$(OBJDIR)/allegro/mfmidi.cpp.o \
+	$(OBJDIR)/allegro/strparse.cpp.o \
+	$(OBJDIR)/allegro/stimelinux.c.o \
+	$(OBJDIR)/effects/Effect.cpp.o \
+	$(OBJDIR)/effects/Amplify.cpp.o \
+	$(OBJDIR)/effects/BassBoost.cpp.o \
+	$(OBJDIR)/effects/Echo.cpp.o \
+	$(OBJDIR)/effects/Fade.cpp.o \
+	$(OBJDIR)/effects/Filter.cpp.o \
+	$(OBJDIR)/effects/Invert.cpp.o \
+	$(OBJDIR)/effects/NoiseRemoval.cpp.o \
+	$(OBJDIR)/effects/Phaser.cpp.o \
+	$(OBJDIR)/effects/Reverse.cpp.o \
+	$(OBJDIR)/effects/Wahwah.cpp.o \
+	$(OBJDIR)/snd/ieeecvt.c.o \
+	$(OBJDIR)/snd/snd.c.o \
+	$(OBJDIR)/snd/sndheader.c.o \
+	$(OBJDIR)/snd/sndlinux.c.o \
+	$(OBJDIR)/snd/sndcvt.c.o \
+	$(OBJDIR)/snd/sndio.c.o \
+	$(OBJDIR)/prefs/PrefsDialog.cpp.o \
+	$(OBJDIR)/prefs/AudioIOPrefs.cpp.o \
+	$(OBJDIR)/prefs/SampleRatePrefs.cpp.o \
+	$(OBJDIR)/prefs/FileFormatPrefs.cpp.o \
+	$(OBJDIR)/prefs/DirectoriesPrefs.cpp.o \
+	$(OBJDIR)/prefs/SpectrumPrefs.cpp.o \
+	@EXTRAOBJS@
+
+########################################
+# DEPENDENCIES
+
+DEPS = $(OBJS:$(OBJDIR)/%.o=%)
+
+########################################
+
+all: dirs @MAKEALL@ audacity
+
+audacity: $(OBJS) Makefile
+	$(CCC) -o audacity $(OBJS) $(LIBS)
+
+#
+#
+install:
+	-test -d $(PREFIX)/share/doc/audacity || \
+		mkdir -m 755 -p $(PREFIX)/share/doc/audacity
+	-test -f audacity-help.htb || $(INSTALL) -m 644 audacity-help.htb \
+		$(PREFIX)/share/doc/audacity/audacity-help.htb
+	$(INSTALL) -m 644 README.txt $(PREFIX)/share/doc/audacity/README.txt
+	$(INSTALL) -m 644 LICENSE.txt $(PREFIX)/share/doc/audacity/LICENSE.txt
+	-test -d $(PREFIX)/bin || \
+		mkdir -m 755 -p $(PREFIX)/bin
+	$(INSTALL) -m 755 audacity $(PREFIX)/bin/audacity
+
+#
+# make help file from the help directory
+audacity-help.htb: help/* help/images/*
+	rm -f audacity-help.htb
+	cd help && zip ../audacity-help.htb *.htm images/*.png *.hhc *.hhk *.hhp
+
+#
+# build id3lib from included source -- only if selected in configure script
+id3lib/src/.libs/libid3.a:
+	-test -f id3lib/Makefile || \
+		(cd id3lib && chmod u+x configure && ./configure)
+	cd id3lib && $(MAKE)
+
+#
+# rule for building libmpeg3 -- however, it's only built if selected in
+# the configure script
+mpeg3/libmpeg3.a:
+	$(MAKE) -C mpeg3
+
+#
+# You can optionally "make dep" to make dependencies.
+# voodoo magic in the form of a perl script turns
+# Foo.o: Foo.cpp into obj/Foo.cpp.o: Foo.cpp
+#
+# I'm not brave enough to try and translate that regex to sed
+
+dep:
+	$(CCC) -M $(CFLAGS) $(DEPS) | \
+		perl -pe 's/^(.*)\.o: ([^\/]*\/)??([^ \/]+\.(\w+))/$(OBJDIR)\/$$2$$1.$$4.o: $$2$$3/;' \
+		> .depend
+
+#
+# clean: Get rid of executable, dependencies, and all object files
+#
+
+clean:
+	rm -f audacity audacity-help.htb .depend
+	rm -rf obj/
+	rm -f mpeg3/libmpeg3.a:
+	cd id3lib && $(MAKE) clean
+
+#
+# We stick object files in separate directories for convenience
+#
+
+DIRS = \
+	$(OBJDIR) $(OBJDIR)/effects $(OBJDIR)/snd \
+	$(OBJDIR)/prefs $(OBJDIR)/allegro
+
+dirs: $(DIRS)
+
+$(DIRS): %: 
+	mkdir $@
+
+#
+# Rules for compiling C/C++ files
+#
+
+$(OBJDIR)/%.cpp.o: %.cpp
+	$(CCC) -c $(CFLAGS) $< -o $@
+
+$(OBJDIR)/%.c.o: %.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
+#
+# Include ".depend" if it exists (run "make dep" to generate it)
+#
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif
+

@@ -1,0 +1,11 @@
+Ogg Vorbis Decoding Library
+===========================
+
+This directory contains the headers and Linux x86 static libraries for
+libvorbis and libogg, libraries that allow Audacity to open and decode Ogg
+Vorbis files. They are distributed under the terms of the LGPL, included in
+this directory under the filename LICENSE. The source code for these
+libraries can be downloaded from http://www.vorbis.com.
+
+The configure script is set to use these libraries and headers only if
+libvorbis and libogg are not already installed.
