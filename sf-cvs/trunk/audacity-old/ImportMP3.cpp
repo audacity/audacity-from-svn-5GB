@@ -335,6 +335,7 @@ bool ImportMP3(wxWindow * parent,
       *right = NULL;
 
       (*left)->channel = VTrack::MonoChannel;
+      (*left)->linked = false;
    }
 
    if (progress)
