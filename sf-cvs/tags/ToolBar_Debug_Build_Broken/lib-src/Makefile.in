@@ -1,0 +1,36 @@
+all: @BUILDLIBS@
+
+allegro/allegro.a:
+	cd allegro && $(MAKE)
+
+libogg/src/.libs/libogg.a:
+	cd libogg && $(MAKE)
+
+libvorbis/lib/.libs/libvorbis.a:
+	cd libvorbis && $(MAKE)
+
+libvorbis/lib/.libs/libvorbisfile.a:
+	cd libvorbis && $(MAKE)
+
+libmad/.libs/libmad.a:
+	cd libmad && $(MAKE)
+
+libmad/mad.h: libmad/.libs/libmad.a
+
+libsndfile/src/.libs/libsndfile.a:
+	cd libsndfile && $(MAKE)
+
+portaudio/pa_unix_oss/portaudio.a:
+	cd portaudio/pa_unix_oss && $(MAKE)
+
+wave++/source/libw.a:
+	cd wave++/source && $(MAKE)
+
+clean:
+	cd allegro && $(MAKE) clean
+	cd libmad && $(MAKE) clean
+	cd libogg && $(MAKE) clean
+	cd libsndfile && $(MAKE) clean
+	cd libvorbis && $(MAKE) clean
+	cd portaudio/pa_unix_oss && $(MAKE) clean
+	cd wave++/source && $(MAKE) clean
