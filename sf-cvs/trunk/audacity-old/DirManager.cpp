@@ -71,7 +71,7 @@ DirManager::DirManager()
   if (freeSpace>=0) {
     if (freeSpace < 1048576) {
       // TODO: allow user to select different temporary volume.
-      wxMessageBox("Warning: there is very little free disk space left on thie volume.");
+      wxMessageBox("Warning: there is very little free disk space left on this volume.");
     }
   }
 }
@@ -84,6 +84,7 @@ DirManager::~DirManager()
   numDirManagers--;
   if (numDirManagers==0) {
     CleanTempDir();
+    ::wxRmdir(temp);
   }
 }
 
