@@ -20,6 +20,12 @@
 #include <wx/file.h>
 #include <wx/filename.h>
 
+// chmod
+#ifdef __UNIX__
+#include <sys/types.h>
+#include <sys/stat.h>
+#endif
+
 #include "Audacity.h"
 #include "AudacityApp.h"
 #include "BlockFile.h"
@@ -79,6 +85,13 @@ bool DirManager::InitDirManager()
 
    if (temp != "") {
       // Success
+
+      // The permissions don't always seem to be set on
+      // some platforms.  Hopefully this fixes it...
+      #ifdef __UNIX__
+      chmod(temp, 0777);
+      #endif
+
       gPrefs->Write("/Directories/TempDir", temp);
       return true;
    }
@@ -209,6 +222,11 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
       if (!wxPathExists(projFull))
          if (!wxMkdir(projFull))
             return false;
+
+      #ifdef __UNIX__
+      chmod(projFull, 0775);
+      #endif
+
    } else {
       #ifndef __WXMAC__
       if (!wxPathExists(projFull))
