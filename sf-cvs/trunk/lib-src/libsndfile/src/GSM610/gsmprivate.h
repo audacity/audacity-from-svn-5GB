@@ -4,7 +4,7 @@
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
  */
 
-/*$Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/private.h,v 1.1.1.1 2001-10-15 04:39:21 dmazzoni Exp $*/
+/*$Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/gsmprivate.h,v 1.1 2002-04-17 01:57:33 bmg300 Exp $*/
 
 #ifndef	PRIVATE_H
 #define	PRIVATE_H
