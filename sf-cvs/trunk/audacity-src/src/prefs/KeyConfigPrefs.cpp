@@ -150,7 +150,7 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
    if(mAudacity->GetMenuType(mCommandSelected) == typeSeparator)
    {
       if(wDescLabel)
-         wDescLabel->SetLabel(_(""));
+         wDescLabel->SetLabel("");
 
       return;
    }

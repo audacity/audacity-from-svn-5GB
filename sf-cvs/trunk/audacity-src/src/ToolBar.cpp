@@ -500,7 +500,7 @@ ToolBarFrame::ToolBarFrame(wxWindow * parent, ToolBar * TB)
 
 
 ToolBarFrame::ToolBarFrame(wxWindow * parent, enum ToolBarType tbt)
-   : wxMiniFrame(gParentWindow, -1, _(""), wxPoint(1, 1),
+   : wxMiniFrame(gParentWindow, -1, "", wxPoint(1, 1),
          wxSize(20, 20),
          wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP | wxMINIMIZE_BOX
          | ((parent == NULL)?0x0:wxFRAME_FLOAT_ON_PARENT))
