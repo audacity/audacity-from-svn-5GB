@@ -24,24 +24,27 @@ EffectToneGen::EffectToneGen()
    frequency = float(440.0);          //Hz
    waveform = 0;                //sine
    amplitude = float(1.0);
-   mix = false;
+   length = sDefaultGenerateLen;
 }
 
 wxString EffectToneGen::GetEffectDescription() { 
    // Note: This is useful only after values have been set. 
    const char* waveformNames[] = {"sine", "square", "sawtooth"};
-   return wxString::Format(_("Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f"), 
+   return wxString::Format(_("Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f, length = %.6lf"), 
                            (const char *)(this->GetEffectName()), 
-                           waveformNames[waveform], frequency, amplitude); 
+                           waveformNames[waveform], frequency, amplitude, length); 
 } 
 
 bool EffectToneGen::PromptUser()
 {
+   if (mT1 > mT0)
+      length = mT1 - mT0;
+
    ToneGenDialog dlog(mParent, -1, _("Tone Generator"));
    dlog.frequency = frequency;
    dlog.waveform = waveform;
    dlog.amplitude = amplitude;
-   dlog.mix = mix;
+   dlog.length = length;
    dlog.GetWaveformChoice()->Append(_("Sine"));
    dlog.GetWaveformChoice()->Append(_("Square"));
    dlog.GetWaveformChoice()->Append(_("Sawtooth"));
@@ -55,7 +58,7 @@ bool EffectToneGen::PromptUser()
    frequency = dlog.frequency;
    waveform = dlog.waveform;
    amplitude = dlog.amplitude;
-   mix = dlog.mix;
+   length = dlog.length;
 
    return true;
 }
@@ -67,42 +70,25 @@ bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
 
    switch (waveform) {
    case 0:                     //sine
-      if (mix)
-         for (i = 0; i < len; i++)
-            buffer[i] =
-                (buffer[i] +
-                 amplitude * (float) sin(2 * M_PI * (i + mSample) * frequency / mCurRate)) / 2;
-      else
-         for (i = 0; i < len; i++)
-            buffer[i] =
-                amplitude * (float) sin(2 * M_PI * (i + mSample) * frequency / mCurRate);
+      for (i = 0; i < len; i++)
+         buffer[i] =
+             amplitude * (float) sin(2 * M_PI * (i + mSample) * frequency / mCurRate);
       mSample += len;
       break;
 
    case 1:                     //square
-      if (mix)
-         for (i = 0; i < len; i++) {
-            if (modf(((i + mSample) * frequency / mCurRate), &throwaway) < 0.5)
-               buffer[i] = (buffer[i] + amplitude) / 2;
-            else
-               buffer[i] = (buffer[i] - amplitude) / 2;
-      } else
-         for (i = 0; i < len; i++) {
-            if (modf(((i + mSample) * frequency / mCurRate), &throwaway) < 0.5)
-               buffer[i] = amplitude;
-            else
-               buffer[i] = -amplitude;
-         }
+      for (i = 0; i < len; i++) {
+         if (modf(((i + mSample) * frequency / mCurRate), &throwaway) < 0.5)
+            buffer[i] = amplitude;
+         else
+            buffer[i] = -amplitude;
+      }
       mSample += len;
       break;
 
    case 2:                     //sawtooth
-      if (mix)
-         for (i = 0; i < len; i++)
-            buffer[i] = amplitude * ((((i + mSample) % (int) (mCurRate / frequency)) / (mCurRate / frequency)) - 0.5) + buffer[i] / 2;      //hmm
-      else
-         for (i = 0; i < len; i++)
-            buffer[i] = 2 * amplitude * ((((i + mSample) % (int) (mCurRate / frequency)) / (mCurRate / frequency)) - 0.5);
+      for (i = 0; i < len; i++)
+         buffer[i] = 2 * amplitude * ((((i + mSample) % (int) (mCurRate / frequency)) / (mCurRate / frequency)) - 0.5);
       mSample += len;
       break;
 
@@ -114,8 +100,6 @@ bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
 
 bool EffectToneGen::Process()
 {
-   double length = mT1 - mT0;
-
    if (length <= 0.0)
       length = sDefaultGenerateLen;
 
@@ -144,12 +128,15 @@ bool EffectToneGen::Process()
       delete[] data;
 
       tmp->Flush();
+      track->Clear(mT0, mT1);
       track->Paste(mT0, tmp);
       delete tmp;
       
       //Iterate to the next track
       track = (WaveTrack *)iter.Next();
    }
+
+	mT1 = mT0 + length; // Update selection.
 
    return true;
 }
@@ -192,7 +179,6 @@ bool ToneGenDialog::TransferDataToWindow()
 {
    wxChoice *choice;
    wxTextCtrl *text;
-   wxCheckBox *checkbox;
 
    choice = GetWaveformChoice();
    if (choice)
@@ -212,9 +198,12 @@ bool ToneGenDialog::TransferDataToWindow()
       text->SetValue(str);
    }
 
-   checkbox = GetMixChoice();
-   if (checkbox)
-      checkbox->SetValue(mix);
+   text = GetLengthText();
+   if (text) {
+      wxString str;
+      str.Printf("%.6lf", length);
+      text->SetValue(str);
+   }
 
    return TRUE;
 }
@@ -222,6 +211,11 @@ bool ToneGenDialog::TransferDataToWindow()
 bool ToneGenDialog::TransferDataFromWindow()
 {
    wxTextCtrl *t;
+
+   t = GetLengthText();
+   if (t) {
+      t->GetValue().ToDouble(&length);
+   }
 
    t = GetAmpText();
    if (t) {
@@ -240,10 +234,6 @@ bool ToneGenDialog::TransferDataFromWindow()
    wxChoice *c = GetWaveformChoice();
    if (c)
       waveform = TrapLong(c->GetSelection(), WAVEFORM_MIN, WAVEFORM_MAX);
-
-   wxCheckBox *cb = GetMixChoice();
-   if (cb)
-      mix = cb->GetValue();
 
    return TRUE;
 }
@@ -317,24 +307,17 @@ wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
 
    item0->Add(item8, 1, wxALIGN_CENTRE | wxALL, 5);
 
-#if 0 // dmazzoni: Mix not necessary anymore with the Generate semantics
-
-   wxBoxSizer *item14 = new wxBoxSizer(wxHORIZONTAL);
-
-   wxStaticText *item15 =
-       new wxStaticText(parent, ID_TEXT, _("Mix Output"),
+   item8 = new wxBoxSizer(wxHORIZONTAL);
+   item9 = new wxStaticText(parent, ID_TEXT, _("Length (seconds)"),
                         wxDefaultPosition,
                         wxDefaultSize, 0);
-   item14->Add(item15, 0, wxALIGN_CENTRE | wxALL, 5);
+   item8->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   wxCheckBox *item16 =
-       new wxCheckBox(parent, ID_MIX, "", wxDefaultPosition,
-                      wxDefaultSize, 0);
-   item14->Add(item16, 0, wxALIGN_CENTRE | wxALL, 5);
+   item10 = new wxTextCtrl(parent, ID_LENGTHTEXT, "", wxDefaultPosition,
+                      wxSize(120, -1), 0);
+   item8->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   item0->Add(item14, 0, wxALIGN_CENTRE | wxALL, 5);
-
-#endif
+   item0->Add(item8, 1, wxALIGN_CENTRE | wxALL, 5);
 
    wxBoxSizer *item11 = new wxBoxSizer(wxHORIZONTAL);
 
