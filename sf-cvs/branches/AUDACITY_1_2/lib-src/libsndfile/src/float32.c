@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -17,9 +17,8 @@
 */
 
 #include	<stdio.h>
+#include	<stdlib.h>
 #include	<string.h>
-#include	<unistd.h>
-#include    <string.h>
 
 #include	"sndfile.h"
 #include	"config.h"
@@ -52,15 +51,15 @@ enum
 **	Prototypes for private functions.
 */
 
-static sf_count_t	host_read_f2s   (SF_PRIVATE *psf, short *ptr, sf_count_t len) ;
-static sf_count_t	host_read_f2i   (SF_PRIVATE *psf, int *ptr, sf_count_t len) ;
-static sf_count_t	host_read_f     (SF_PRIVATE *psf, float *ptr, sf_count_t len) ;
-static sf_count_t	host_read_f2d   (SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
+static sf_count_t	host_read_f2s	(SF_PRIVATE *psf, short *ptr, sf_count_t len) ;
+static sf_count_t	host_read_f2i	(SF_PRIVATE *psf, int *ptr, sf_count_t len) ;
+static sf_count_t	host_read_f	(SF_PRIVATE *psf, float *ptr, sf_count_t len) ;
+static sf_count_t	host_read_f2d	(SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
 
-static sf_count_t	host_write_s2f   (SF_PRIVATE *psf, short *ptr, sf_count_t len) ;
-static sf_count_t	host_write_i2f   (SF_PRIVATE *psf, int *ptr, sf_count_t len) ;
-static sf_count_t	host_write_f     (SF_PRIVATE *psf, float *ptr, sf_count_t len) ;
-static sf_count_t	host_write_d2f   (SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
+static sf_count_t	host_write_s2f	(SF_PRIVATE *psf, short *ptr, sf_count_t len) ;
+static sf_count_t	host_write_i2f	(SF_PRIVATE *psf, int *ptr, sf_count_t len) ;
+static sf_count_t	host_write_f	(SF_PRIVATE *psf, float *ptr, sf_count_t len) ;
+static sf_count_t	host_write_d2f	(SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
 
 static	void	f2s_array 	(float *src, int count, short *dest) ;
 static	void	f2i_array 	(float *src, int count, int *dest) ;
@@ -70,29 +69,29 @@ static 	void	s2f_array 	(short *src, float *dest, int count) ;
 static 	void	i2f_array 	(int *src, float *dest, int count) ;
 static 	void	d2f_array 	(double *src, float *dest, int count) ;
 
-static void		float32_peak_update (SF_PRIVATE *psf, float *buffer, int count, int indx) ;
+static void		float32_peak_update	(SF_PRIVATE *psf, float *buffer, int count, int indx) ;
 
-static sf_count_t	replace_read_f2s (SF_PRIVATE *psf, short *ptr, sf_count_t len) ;
-static sf_count_t	replace_read_f2i (SF_PRIVATE *psf, int *ptr, sf_count_t len) ;
-static sf_count_t	replace_read_f   (SF_PRIVATE *psf, float *ptr, sf_count_t len) ;
-static sf_count_t	replace_read_f2d (SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
+static sf_count_t	replace_read_f2s	(SF_PRIVATE *psf, short *ptr, sf_count_t len) ;
+static sf_count_t	replace_read_f2i	(SF_PRIVATE *psf, int *ptr, sf_count_t len) ;
+static sf_count_t	replace_read_f	(SF_PRIVATE *psf, float *ptr, sf_count_t len) ;
+static sf_count_t	replace_read_f2d	(SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
 
-static sf_count_t	replace_write_s2f (SF_PRIVATE *psf, short *ptr, sf_count_t len) ;
-static sf_count_t	replace_write_i2f (SF_PRIVATE *psf, int *ptr, sf_count_t len) ;
-static sf_count_t	replace_write_f   (SF_PRIVATE *psf, float *ptr, sf_count_t len) ;
-static sf_count_t	replace_write_d2f (SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
+static sf_count_t	replace_write_s2f	(SF_PRIVATE *psf, short *ptr, sf_count_t len) ;
+static sf_count_t	replace_write_i2f	(SF_PRIVATE *psf, int *ptr, sf_count_t len) ;
+static sf_count_t	replace_write_f	(SF_PRIVATE *psf, float *ptr, sf_count_t len) ;
+static sf_count_t	replace_write_d2f	(SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
 
 static	void	bf2f_array (float *buffer, int count) ;
 static	void	f2bf_array (float *buffer, int count) ;
 
-static int		float32_get_capability (SF_PRIVATE *psf) ;
+static int		float32_get_capability	(SF_PRIVATE *psf) ;
 
 /*--------------------------------------------------------------------------------------------
 **	Exported functions.
 */
 
 int
-float32_init (SF_PRIVATE *psf)
+float32_init	(SF_PRIVATE *psf)
 {	static int float_caps ;
 
 	float_caps = float32_get_capability (psf) ;
@@ -103,67 +102,67 @@ float32_init (SF_PRIVATE *psf)
 	{	switch (psf->endian + float_caps)
 		{	case (SF_ENDIAN_BIG + FLOAT_CAN_RW_BE) :
 					psf->float_endswap = SF_FALSE ;
-					psf->read_short  = host_read_f2s ;
-					psf->read_int    = host_read_f2i ;
-					psf->read_float  = host_read_f ;
-					psf->read_double = host_read_f2d ;
+					psf->read_short		= host_read_f2s ;
+					psf->read_int		= host_read_f2i ;
+					psf->read_float		= host_read_f ;
+					psf->read_double	= host_read_f2d ;
 					break ;
 
 			case (SF_ENDIAN_LITTLE + FLOAT_CAN_RW_LE) :
 					psf->float_endswap = SF_FALSE ;
-					psf->read_short  = host_read_f2s ;
-					psf->read_int    = host_read_f2i ;
-					psf->read_float  = host_read_f ;
-					psf->read_double = host_read_f2d ;
+					psf->read_short		= host_read_f2s ;
+					psf->read_int		= host_read_f2i ;
+					psf->read_float		= host_read_f ;
+					psf->read_double	= host_read_f2d ;
 					break ;
 
 			case (SF_ENDIAN_BIG + FLOAT_CAN_RW_LE) :
 					psf->float_endswap = SF_TRUE ;
-					psf->read_short  = host_read_f2s ;
-					psf->read_int    = host_read_f2i ;
-					psf->read_float  = host_read_f ;
-					psf->read_double = host_read_f2d ;
+					psf->read_short		= host_read_f2s ;
+					psf->read_int		= host_read_f2i ;
+					psf->read_float		= host_read_f ;
+					psf->read_double	= host_read_f2d ;
 					break ;
 
 			case (SF_ENDIAN_LITTLE + FLOAT_CAN_RW_BE) :
 					psf->float_endswap = SF_TRUE ;
-					psf->read_short  = host_read_f2s ;
-					psf->read_int    = host_read_f2i ;
-					psf->read_float  = host_read_f ;
-					psf->read_double = host_read_f2d ;
+					psf->read_short		= host_read_f2s ;
+					psf->read_int		= host_read_f2i ;
+					psf->read_float		= host_read_f ;
+					psf->read_double	= host_read_f2d ;
 					break ;
 
-			/* When the CPU is not IEEE compatible. */					
+			/* When the CPU is not IEEE compatible. */
 			case (SF_ENDIAN_BIG + FLOAT_BROKEN_LE) :
 					psf->float_endswap = SF_TRUE ;
-					psf->read_short  = replace_read_f2s ;
-					psf->read_int    = replace_read_f2i ;
-					psf->read_float  = replace_read_f ;
-					psf->read_double = replace_read_f2d ;
+					psf->read_short		= replace_read_f2s ;
+					psf->read_int		= replace_read_f2i ;
+					psf->read_float		= replace_read_f ;
+					psf->read_double	= replace_read_f2d ;
 					break ;
 
 			case (SF_ENDIAN_LITTLE + FLOAT_BROKEN_LE) :
 					psf->float_endswap = SF_FALSE ;
-					psf->read_short  = replace_read_f2s ;
-					psf->read_int    = replace_read_f2i ;
-					psf->read_float  = replace_read_f ;
-					psf->read_double = replace_read_f2d ;
+					psf->read_short		= replace_read_f2s ;
+					psf->read_int		= replace_read_f2i ;
+					psf->read_float		= replace_read_f ;
+					psf->read_double	= replace_read_f2d ;
 					break ;
 
 			case (SF_ENDIAN_BIG + FLOAT_BROKEN_BE) :
 					psf->float_endswap = SF_FALSE ;
-					psf->read_short  = replace_read_f2s ;
-					psf->read_int    = replace_read_f2i ;
-					psf->read_float  = replace_read_f ;
-					psf->read_double = replace_read_f2d ;
+					psf->read_short		= replace_read_f2s ;
+					psf->read_int		= replace_read_f2i ;
+					psf->read_float		= replace_read_f ;
+					psf->read_double	= replace_read_f2d ;
 					break ;
 
 			case (SF_ENDIAN_LITTLE + FLOAT_BROKEN_BE) :
 					psf->float_endswap = SF_TRUE ;
-					psf->read_short  = replace_read_f2s ;
-					psf->read_int    = replace_read_f2i ;
-					psf->read_float  = replace_read_f ;
-					psf->read_double = replace_read_f2d ;
+					psf->read_short		= replace_read_f2s ;
+					psf->read_int		= replace_read_f2i ;
+					psf->read_float		= replace_read_f ;
+					psf->read_double	= replace_read_f2d ;
 					break ;
 
 			default : break ;
@@ -174,77 +173,81 @@ float32_init (SF_PRIVATE *psf)
 	{	switch (psf->endian + float_caps)
 		{	case (SF_ENDIAN_LITTLE + FLOAT_CAN_RW_LE) :
 					psf->float_endswap = SF_FALSE ;
-					psf->write_short  = host_write_s2f ;
-					psf->write_int    = host_write_i2f ;
-					psf->write_float  = host_write_f ;
-					psf->write_double = host_write_d2f ;
+					psf->write_short	= host_write_s2f ;
+					psf->write_int		= host_write_i2f ;
+					psf->write_float	= host_write_f ;
+					psf->write_double	= host_write_d2f ;
 					break ;
 
 			case (SF_ENDIAN_BIG + FLOAT_CAN_RW_BE) :
 					psf->float_endswap = SF_FALSE ;
-					psf->write_short  = host_write_s2f ;
-					psf->write_int    = host_write_i2f ;
-					psf->write_float  = host_write_f ;
-					psf->write_double = host_write_d2f ;
+					psf->write_short	= host_write_s2f ;
+					psf->write_int		= host_write_i2f ;
+					psf->write_float	= host_write_f ;
+					psf->write_double	= host_write_d2f ;
 					break ;
 
 			case (SF_ENDIAN_BIG + FLOAT_CAN_RW_LE) :
 					psf->float_endswap = SF_TRUE ;
-					psf->write_short  = host_write_s2f ;
-					psf->write_int    = host_write_i2f ;
-					psf->write_float  = host_write_f ;
-					psf->write_double = host_write_d2f ;
+					psf->write_short	= host_write_s2f ;
+					psf->write_int		= host_write_i2f ;
+					psf->write_float	= host_write_f ;
+					psf->write_double	= host_write_d2f ;
 					break ;
 
 			case (SF_ENDIAN_LITTLE + FLOAT_CAN_RW_BE) :
 					psf->float_endswap = SF_TRUE ;
-					psf->write_short  = host_write_s2f ;
-					psf->write_int    = host_write_i2f ;
-					psf->write_float  = host_write_f ;
-					psf->write_double = host_write_d2f ;
+					psf->write_short	= host_write_s2f ;
+					psf->write_int		= host_write_i2f ;
+					psf->write_float	= host_write_f ;
+					psf->write_double	= host_write_d2f ;
 					break ;
 
-			/* When the CPU is not IEEE compatible. */					
+			/* When the CPU is not IEEE compatible. */
 			case (SF_ENDIAN_BIG + FLOAT_BROKEN_LE) :
 					psf->float_endswap = SF_TRUE ;
-					psf->write_short  = replace_write_s2f ;
-					psf->write_int    = replace_write_i2f ;
-					psf->write_float  = replace_write_f ;
-					psf->write_double = replace_write_d2f ;
+					psf->write_short	= replace_write_s2f ;
+					psf->write_int		= replace_write_i2f ;
+					psf->write_float	= replace_write_f ;
+					psf->write_double	= replace_write_d2f ;
 					break ;
 
 			case (SF_ENDIAN_LITTLE + FLOAT_BROKEN_LE) :
 					psf->float_endswap = SF_FALSE ;
-					psf->write_short  = replace_write_s2f ;
-					psf->write_int    = replace_write_i2f ;
-					psf->write_float  = replace_write_f ;
-					psf->write_double = replace_write_d2f ;
+					psf->write_short	= replace_write_s2f ;
+					psf->write_int		= replace_write_i2f ;
+					psf->write_float	= replace_write_f ;
+					psf->write_double	= replace_write_d2f ;
 					break ;
 
 			case (SF_ENDIAN_BIG + FLOAT_BROKEN_BE) :
 					psf->float_endswap = SF_FALSE ;
-					psf->write_short  = replace_write_s2f ;
-					psf->write_int    = replace_write_i2f ;
-					psf->write_float  = replace_write_f ;
-					psf->write_double = replace_write_d2f ;
+					psf->write_short	= replace_write_s2f ;
+					psf->write_int		= replace_write_i2f ;
+					psf->write_float	= replace_write_f ;
+					psf->write_double	= replace_write_d2f ;
 					break ;
 
 			case (SF_ENDIAN_LITTLE + FLOAT_BROKEN_BE) :
 					psf->float_endswap = SF_TRUE ;
-					psf->write_short  = replace_write_s2f ;
-					psf->write_int    = replace_write_i2f ;
-					psf->write_float  = replace_write_f ;
-					psf->write_double = replace_write_d2f ;
+					psf->write_short	= replace_write_s2f ;
+					psf->write_int		= replace_write_i2f ;
+					psf->write_float	= replace_write_f ;
+					psf->write_double	= replace_write_d2f ;
 					break ;
 
 			default : break ;
 			} ;
 		} ;
 
-	psf->filelength = psf_get_filelen (psf) ;
-	psf->datalength = (psf->dataend) ? psf->dataend - psf->dataoffset :
+	if (psf->filelength > psf->dataoffset)
+	{	psf->datalength = (psf->dataend > 0) ? psf->dataend - psf->dataoffset :
 							psf->filelength - psf->dataoffset ;
-	psf->sf.frames = psf->datalength / (psf->sf.channels * sizeof (float)) ;
+		}
+	else
+		psf->datalength = 0 ;
+
+	psf->sf.frames = psf->datalength / psf->blockwidth ;
 
 	return 0 ;
 } /* float32_init */
@@ -255,7 +258,7 @@ float32_be_read (unsigned char *cptr)
 	float	fvalue ;
 
 	negative = cptr [0] & 0x80 ;
-	exponent = ((cptr [0] & 0x7F) << 1) | ((cptr [1] & 0x80) ? 1 : 0);
+	exponent = ((cptr [0] & 0x7F) << 1) | ((cptr [1] & 0x80) ? 1 : 0) ;
 	mantissa = ((cptr [1] & 0x7F) << 16) | (cptr [2] << 8) | (cptr [3]) ;
 
 	if (! (exponent || mantissa))
@@ -283,7 +286,7 @@ float32_le_read (unsigned char *cptr)
 	float	fvalue ;
 
 	negative = cptr [3] & 0x80 ;
-	exponent = ((cptr [3] & 0x7F) << 1) | ((cptr [2] & 0x80) ? 1 : 0);
+	exponent = ((cptr [3] & 0x7F) << 1) | ((cptr [2] & 0x80) ? 1 : 0) ;
 	mantissa = ((cptr [2] & 0x7F) << 16) | (cptr [1] << 8) | (cptr [0]) ;
 
 	if (! (exponent || mantissa))
@@ -309,7 +312,7 @@ void
 float32_le_write (float in, unsigned char *out)
 {	int		exponent, mantissa, negative = 0 ;
 
-	*((int*) out) = 0 ;
+	memset (out, 0, sizeof (int)) ;
 
 	if (in == 0.0)
 		return ;
@@ -332,8 +335,8 @@ float32_le_write (float in, unsigned char *out)
 	if (exponent & 0x01)
 		out [2] |= 0x80 ;
 
-	out [0]  = mantissa & 0xFF ;
-	out [1]  = (mantissa >> 8) & 0xFF ;
+	out [0] = mantissa & 0xFF ;
+	out [1] = (mantissa >> 8) & 0xFF ;
 	out [2] |= (mantissa >> 16) & 0x7F ;
 	out [3] |= (exponent >> 1) & 0x7F ;
 
@@ -344,7 +347,7 @@ void
 float32_be_write (float in, unsigned char *out)
 {	int		exponent, mantissa, negative = 0 ;
 
-	*((int*) out) = 0 ;
+	memset (out, 0, sizeof (int)) ;
 
 	if (in == 0.0)
 		return ;
@@ -367,8 +370,8 @@ float32_be_write (float in, unsigned char *out)
 	if (exponent & 0x01)
 		out [1] |= 0x80 ;
 
-	out [3]  = mantissa & 0xFF ;
-	out [2]  = (mantissa >> 8) & 0xFF ;
+	out [3] = mantissa & 0xFF ;
+	out [2] = (mantissa >> 8) & 0xFF ;
 	out [1] |= (mantissa >> 16) & 0x7F ;
 	out [0] |= (exponent >> 1) & 0x7F ;
 
@@ -380,10 +383,10 @@ float32_be_write (float in, unsigned char *out)
 */
 
 static void
-float32_peak_update (SF_PRIVATE *psf, float *buffer, int count, int indx)
+float32_peak_update	(SF_PRIVATE *psf, float *buffer, int count, int indx)
 {	int 	chan ;
 	int		k, position ;
-	float	fmaxval;
+	float	fmaxval ;
 
 	for (chan = 0 ; chan < psf->sf.channels ; chan++)
 	{	fmaxval = fabs (buffer [chan]) ;
@@ -394,9 +397,9 @@ float32_peak_update (SF_PRIVATE *psf, float *buffer, int count, int indx)
 				position = k ;
 				} ;
 
-		if (fmaxval > psf->peak.peak[chan].value)
-		{	psf->peak.peak[chan].value = fmaxval ;
-			psf->peak.peak[chan].position = psf->write_current + indx + (position / psf->sf.channels) ;
+		if (fmaxval > psf->pchunk->peaks [chan].value)
+		{	psf->pchunk->peaks [chan].value = fmaxval ;
+			psf->pchunk->peaks [chan].position = psf->write_current + indx + (position / psf->sf.channels) ;
 			} ;
 		} ;
 
@@ -404,7 +407,7 @@ float32_peak_update (SF_PRIVATE *psf, float *buffer, int count, int indx)
 } /* float32_peak_update */
 
 static int
-float32_get_capability (SF_PRIVATE *psf)
+float32_get_capability	(SF_PRIVATE *psf)
 {	union
 	{	float			f ;
 		int				i ;
@@ -433,7 +436,7 @@ float32_get_capability (SF_PRIVATE *psf)
 */
 
 static sf_count_t
-host_read_f2s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
+host_read_f2s	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 {	int			bufferlen, readcount, thisread ;
 	sf_count_t	total = 0 ;
 
@@ -454,14 +457,11 @@ host_read_f2s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 		len -= thisread ;
 		} ;
 
-	if (len)
-		psf->error = SFE_SHORT_READ ;
-
 	return total ;
 } /* host_read_f2s */
 
 static sf_count_t
-host_read_f2i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
+host_read_f2i	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 {	int			bufferlen, readcount, thisread ;
 	sf_count_t	total = 0 ;
 
@@ -481,14 +481,11 @@ host_read_f2i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 		len -= thisread ;
 		} ;
 
-	if (len)
-		psf->error = SFE_SHORT_READ ;
-
 	return total ;
 } /* host_read_f2i */
 
 static sf_count_t
-host_read_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
+host_read_f	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 {	int			bufferlen, readcount, thisread ;
 	sf_count_t	total = 0 ;
 
@@ -509,14 +506,11 @@ host_read_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 		len -= thisread ;
 		} ;
 
-	if (len)
-		psf->error = SFE_SHORT_READ ;
-
 	return total ;
 } /* host_read_f */
 
 static sf_count_t
-host_read_f2d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
+host_read_f2d	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 {	int			bufferlen, readcount, thisread ;
 	sf_count_t	total = 0 ;
 
@@ -536,9 +530,6 @@ host_read_f2d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 			break ;
 		len -= thisread ;
 		} ;
-
-	if (len)
-		psf->error = SFE_SHORT_READ ;
 
 	return total ;
 } /* host_read_f2d */
@@ -567,9 +558,6 @@ host_write_s2f	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 		len -= thiswrite ;
 		} ;
 
-	if (len)
-		psf->error = SFE_SHORT_WRITE ;
-
 	return total ;
 } /* host_write_s2f */
 
@@ -597,14 +585,11 @@ host_write_i2f	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 		len -= thiswrite ;
 		} ;
 
-	if (len)
-		psf->error = SFE_SHORT_WRITE ;
-
 	return total ;
 } /* host_write_i2f */
 
 static sf_count_t
-host_write_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
+host_write_f	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 {	int			bufferlen, writecount, thiswrite ;
 	sf_count_t	total = 0 ;
 
@@ -627,9 +612,6 @@ host_write_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 			break ;
 		len -= thiswrite ;
 		} ;
-
-	if (len)
-		psf->error = SFE_SHORT_WRITE ;
 
 	return total ;
 } /* host_write_f */
@@ -658,9 +640,6 @@ host_write_d2f	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 			break ;
 		len -= thiswrite ;
 		} ;
-
-	if (len)
-		psf->error = SFE_SHORT_WRITE ;
 
 	return total ;
 } /* host_write_d2f */
@@ -692,7 +671,7 @@ f2d_array (float *src, int count, double *dest)
 		} ;
 } /* f2d_array */
 
-static  void
+static void
 s2f_array (short *src, float *dest, int count)
 {	while (count)
 	{	count -- ;
@@ -721,7 +700,7 @@ d2f_array (double *src, float *dest, int count)
 */
 
 static sf_count_t
-replace_read_f2s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
+replace_read_f2s	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 {	int			bufferlen, readcount, thisread ;
 	sf_count_t	total = 0 ;
 
@@ -743,14 +722,11 @@ replace_read_f2s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 		len -= thisread ;
 		} ;
 
-	if (len)
-		psf->error = SFE_SHORT_READ ;
-
 	return total ;
 } /* replace_read_f2s */
 
 static sf_count_t
-replace_read_f2i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
+replace_read_f2i	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 {	int			bufferlen, readcount, thisread ;
 	sf_count_t	total = 0 ;
 
@@ -772,14 +748,11 @@ replace_read_f2i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 		len -= thisread ;
 		} ;
 
-	if (len)
-		psf->error = SFE_SHORT_READ ;
-
 	return total ;
 } /* replace_read_f2i */
 
 static sf_count_t
-replace_read_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
+replace_read_f	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 {	int			bufferlen, readcount, thisread ;
 	sf_count_t	total = 0 ;
 
@@ -804,14 +777,11 @@ replace_read_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 		len -= thisread ;
 		} ;
 
-	if (len)
-		psf->error = SFE_SHORT_READ ;
-
 	return total ;
 } /* replace_read_f */
 
 static sf_count_t
-replace_read_f2d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
+replace_read_f2d	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 {	int			bufferlen, readcount, thisread ;
 	sf_count_t	total = 0 ;
 
@@ -833,14 +803,11 @@ replace_read_f2d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 		len -= thisread ;
 		} ;
 
-	if (len)
-		psf->error = SFE_SHORT_READ ;
-
 	return total ;
 } /* replace_read_f2d */
 
 static sf_count_t
-replace_write_s2f (SF_PRIVATE *psf, short *ptr, sf_count_t len)
+replace_write_s2f	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 {	int			writecount, bufferlen, thiswrite ;
 	sf_count_t	total = 0 ;
 
@@ -865,14 +832,11 @@ replace_write_s2f (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 		len -= thiswrite ;
 		} ;
 
-	if (len)
-		psf->error = SFE_SHORT_WRITE ;
-
 	return total ;
 } /* replace_write_s2f */
 
 static sf_count_t
-replace_write_i2f (SF_PRIVATE *psf, int *ptr, sf_count_t len)
+replace_write_i2f	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 {	int			writecount, bufferlen, thiswrite ;
 	sf_count_t	total = 0 ;
 
@@ -897,14 +861,11 @@ replace_write_i2f (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 		len -= thiswrite ;
 		} ;
 
-	if (len)
-		psf->error = SFE_SHORT_WRITE ;
-
 	return total ;
 } /* replace_write_i2f */
 
 static sf_count_t
-replace_write_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
+replace_write_f	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 {	int			writecount, bufferlen, thiswrite ;
 	sf_count_t	total = 0 ;
 
@@ -931,14 +892,11 @@ replace_write_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 		len -= thiswrite ;
 		} ;
 
-	if (len)
-		psf->error = SFE_SHORT_WRITE ;
-
 	return total ;
 } /* replace_write_f */
 
 static sf_count_t
-replace_write_d2f (SF_PRIVATE *psf, double *ptr, sf_count_t len)
+replace_write_d2f	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 {	int			writecount, bufferlen, thiswrite ;
 	sf_count_t	total = 0 ;
 
@@ -963,9 +921,6 @@ replace_write_d2f (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 		len -= thiswrite ;
 		} ;
 
-	if (len)
-		psf->error = SFE_SHORT_WRITE ;
-
 	return total ;
 } /* replace_write_d2f */
 
@@ -988,3 +943,10 @@ f2bf_array (float *buffer, int count)
 		} ;
 } /* f2bf_array */
 
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch
+** revision control system.
+**
+** arch-tag: b6c34917-488c-4145-9648-f4371fc4c889
+*/

@@ -1,6 +1,6 @@
 [+ AutoGen5 template c +]
 /*
-** Copyright (C) 2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -17,15 +17,26 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-#include	<stdio.h>
-#include	<unistd.h>
-#include	<string.h>
-#include	<math.h>
-#include	<time.h>
-#include	<fcntl.h>
-#include	<sys/stat.h>
+#include "config.h"
 
-#include	<sndfile.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#if (HAVE_DECL_S_IRGRP == 0)
+#include <sf_unistd.h>
+#endif
+
+#include <string.h>
+#include <math.h>
+#include <time.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+
+#include <sndfile.h>
 
 #ifndef		M_PI
 #define		M_PI		3.14159265358979323846264338
@@ -54,12 +65,12 @@ static void	*data = NULL ;
 
 static void calc_raw_performance (PERF_STATS *stats) ;
 
-[+ FOR data_type 
+[+ FOR data_type
 +]static void	calc_[+ (get "type_name") +]_performance (int format, double read_rate, double write_rate) ;
-[+ ENDFOR data_type 
+[+ ENDFOR data_type
 +]
 
-static int  cpu_is_big_endian (void) ;
+static int cpu_is_big_endian (void) ;
 
 static const char* get_subtype_str (int subtype) ;
 
@@ -73,7 +84,7 @@ main (int argc, char *argv [])
 	{	perror ("Error : malloc failed") ;
 		exit (1) ;
 		} ;
-		
+
 	sf_command (NULL, SFC_GET_LIB_VERSION, buffer + strlen (buffer), sizeof (buffer) - strlen (buffer)) ;
 
 	puts (buffer) ;
@@ -87,33 +98,33 @@ main (int argc, char *argv [])
 	{	puts ("\nNative endian I/O :") ;
 		format_major = cpu_is_big_endian () ? SF_FORMAT_AIFF : SF_FORMAT_WAV ;
 
-		calc_short_performance (format_major | SF_FORMAT_PCM_16, stats.read_rate, stats.write_rate) ;
-		calc_int_performance   (format_major | SF_FORMAT_PCM_24, stats.read_rate, stats.write_rate) ;
-		calc_int_performance   (format_major | SF_FORMAT_PCM_32, stats.read_rate, stats.write_rate) ;
-		calc_float_performance (format_major | SF_FORMAT_PCM_16, stats.read_rate, stats.write_rate) ;
-		calc_float_performance (format_major | SF_FORMAT_PCM_24, stats.read_rate, stats.write_rate) ;
-		calc_float_performance (format_major | SF_FORMAT_PCM_32, stats.read_rate, stats.write_rate) ;
-		calc_float_performance (format_major | SF_FORMAT_FLOAT , stats.read_rate, stats.write_rate) ;
+		calc_short_performance	(format_major | SF_FORMAT_PCM_16, stats.read_rate, stats.write_rate) ;
+		calc_int_performance	(format_major | SF_FORMAT_PCM_24, stats.read_rate, stats.write_rate) ;
+		calc_int_performance	(format_major | SF_FORMAT_PCM_32, stats.read_rate, stats.write_rate) ;
+		calc_float_performance	(format_major | SF_FORMAT_PCM_16, stats.read_rate, stats.write_rate) ;
+		calc_float_performance	(format_major | SF_FORMAT_PCM_24, stats.read_rate, stats.write_rate) ;
+		calc_float_performance	(format_major | SF_FORMAT_PCM_32, stats.read_rate, stats.write_rate) ;
+		calc_float_performance	(format_major | SF_FORMAT_FLOAT , stats.read_rate, stats.write_rate) ;
 		} ;
 
 	if (argc < 2 || strcmp ("--swap-only", argv [1]) == 0)
 	{	puts ("\nEndian swapped I/O :") ;
 		format_major = cpu_is_big_endian () ? SF_FORMAT_WAV : SF_FORMAT_AIFF ;
-	
-		calc_short_performance (format_major | SF_FORMAT_PCM_16, stats.read_rate, stats.write_rate) ;
-		calc_int_performance   (format_major | SF_FORMAT_PCM_24, stats.read_rate, stats.write_rate) ;
-		calc_int_performance   (format_major | SF_FORMAT_PCM_32, stats.read_rate, stats.write_rate) ;
-		calc_float_performance (format_major | SF_FORMAT_PCM_16, stats.read_rate, stats.write_rate) ;
-		calc_float_performance (format_major | SF_FORMAT_PCM_24, stats.read_rate, stats.write_rate) ;
-		calc_float_performance (format_major | SF_FORMAT_PCM_32, stats.read_rate, stats.write_rate) ;
-		calc_float_performance (format_major | SF_FORMAT_FLOAT , stats.read_rate, stats.write_rate) ;
+
+		calc_short_performance	(format_major | SF_FORMAT_PCM_16, stats.read_rate, stats.write_rate) ;
+		calc_int_performance	(format_major | SF_FORMAT_PCM_24, stats.read_rate, stats.write_rate) ;
+		calc_int_performance	(format_major | SF_FORMAT_PCM_32, stats.read_rate, stats.write_rate) ;
+		calc_float_performance	(format_major | SF_FORMAT_PCM_16, stats.read_rate, stats.write_rate) ;
+		calc_float_performance	(format_major | SF_FORMAT_PCM_24, stats.read_rate, stats.write_rate) ;
+		calc_float_performance	(format_major | SF_FORMAT_PCM_32, stats.read_rate, stats.write_rate) ;
+		calc_float_performance	(format_major | SF_FORMAT_FLOAT , stats.read_rate, stats.write_rate) ;
 		} ;
 
 	puts ("") ;
 
 	free (data) ;
 
-	return 0;
+	return 0 ;
 } /* main */
 
 /*==============================================================================
@@ -123,7 +134,7 @@ static void
 calc_raw_performance (PERF_STATS *stats)
 {	clock_t start_clock, clock_time ;
 	int fd, k, byte_count, retval, op_count ;
-	char *filename ;
+	const char *filename ;
 
 	filename = "benchmark.dat" ;
 
@@ -158,7 +169,7 @@ calc_raw_performance (PERF_STATS *stats)
 		} ;
 
 	stats->write_rate = (1.0 * BUFFER_SIZE) * BLOCK_COUNT * op_count ;
-	stats->write_rate *= (1.0 * CLOCKS_PER_SEC) / clock_time  ;
+	stats->write_rate *= (1.0 * CLOCKS_PER_SEC) / clock_time ;
 	printf ("%10.0f samples per sec\n", stats->write_rate) ;
 
 	/* Collect read stats */
@@ -190,7 +201,7 @@ calc_raw_performance (PERF_STATS *stats)
 		} ;
 
 	stats->read_rate = (1.0 * BUFFER_SIZE) * BLOCK_COUNT * op_count ;
-	stats->read_rate *= (1.0 * CLOCKS_PER_SEC) / clock_time  ;
+	stats->read_rate *= (1.0 * CLOCKS_PER_SEC) / clock_time ;
 	printf ("%10.0f samples per sec\n", stats->read_rate) ;
 
 	unlink (filename) ;
@@ -199,7 +210,7 @@ calc_raw_performance (PERF_STATS *stats)
 /*------------------------------------------------------------------------------
 */
 
-[+ FOR data_type 
+[+ FOR data_type
 +]static void
 calc_[+ (get "type_name") +]_performance (int format, double read_rate, double write_rate)
 {	SNDFILE *file ;
@@ -209,7 +220,7 @@ calc_[+ (get "type_name") +]_performance (int format, double read_rate, double w
 	int k, item_count, retval, op_count ;
 	const char* subtype ;
 	[+ (get "type_name") +] *[+ (get "type_name") +]_data ;
-	char *filename ;
+	const char *filename ;
 
 	filename = "benchmark.dat" ;
 	subtype = get_subtype_str (format & SF_FORMAT_SUBMASK) ;
@@ -225,7 +236,7 @@ calc_[+ (get "type_name") +]_performance (int format, double read_rate, double w
 
 	sfinfo.channels = 1 ;
 	sfinfo.format = format ;
-	sfinfo.samples = 1 ;
+	sfinfo.frames = 1 ;
 	sfinfo.samplerate = 32000 ;
 
 	clock_time = 0 ;
@@ -256,7 +267,7 @@ calc_[+ (get "type_name") +]_performance (int format, double read_rate, double w
 		} ;
 
 	performance = (1.0 * BUFFER_SIZE) * BLOCK_COUNT * op_count ;
-	performance *= (1.0 * CLOCKS_PER_SEC) / clock_time  ;
+	performance *= (1.0 * CLOCKS_PER_SEC) / clock_time ;
 	printf ("%6.2f%% of raw write\n", 100.0 * performance / write_rate) ;
 
 	/* Collect read stats */
@@ -288,13 +299,13 @@ calc_[+ (get "type_name") +]_performance (int format, double read_rate, double w
 		} ;
 
 	performance = (1.0 * item_count) * BLOCK_COUNT * op_count ;
-	performance *= (1.0 * CLOCKS_PER_SEC) / clock_time  ;
+	performance *= (1.0 * CLOCKS_PER_SEC) / clock_time ;
 	printf ("%6.2f%% of raw read\n", 100.0 * performance / read_rate) ;
 
 	unlink (filename) ;
 
 } /* calc_[+ (get "type_name") +]_performance */
-[+ ENDFOR data_type 
+[+ ENDFOR data_type
 +]
 
 /*==============================================================================
@@ -339,3 +350,12 @@ get_subtype_str (int subtype)
 	return "UNKNOWN" ;
 } /* get_subtype_str */
 
+[+ COMMENT
+
+ Do not edit or modify anything in this comment block.
+ The following line is a file identity tag for the GNU Arch 
+ revision control system.
+
+ arch-tag: 64ccb3fb-c61d-42d7-b14f-0ec3ba303f88
+
++]

@@ -1,4 +1,1473 @@
-2002-12-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2004-06-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/avr.c src/ircam.c src/nist.c src/paf.c src/xi.c
+    Add cast to size_t for some parameters passed to psf_binheader_writef. This
+    is Debian bug number 253490. Thanks to Anand Kumria and Andreas Jochens.
+
+    * src/w64.c
+    Found and fixed a bug resulting from use of size_t when writing W64 'fmt '
+    chunk.
+
+2004-06-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Bump version to 1.0.10 ready for release.
+
+    * Makefile.am
+    Remove redundant files (check_libsndfile.py libsndfile_version_convert.py)
+    from distribution tarball.
+
+    * tests/header_test.tpl
+    Fix uninitialised variable.
+
+    * src/GSM610/short_term.c
+    Fix compiler warning on MSVC++.
+
+2004-05-23  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/wav.c
+    Improve record keeping of chunks seen and return an error if a file with
+    unusual chunks is opened in mode SFM_RDWR.
+
+    * src/mmreg.h
+    This file not needed so remove it.
+
+2004-05-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/header_test.tpl
+    Add extra_header_test().
+
+    * src/common.h src/sndfile.c
+    Add SFE_RDWR_BAD_HEADER error number and string.
+
+2004-05-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/utils.tpl tests/*.c tests/*.tpl
+    Add a line number argument to check_log_buffer_or_die() and update all
+    files that use that function.
+
+    * tests/header_test.tpl
+    Modify/update tests for files opened SFM_RDWR and SFC_UPDATE_HEADER_AUTO.
+
+    * src/aiff.c src/wav.c
+    Fix another bug in AIFF and WAV files opened in SFM_RDWR and using
+    SFC_UPDATE_HEADER_AUTO.
+
+    * src/test_file_io.c
+    Add a test for psf_ftruncate() function.
+
+2004-05-19  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.c
+    Fix another  weird corner case bug found by Martin Rumori. Thanks.
+
+    * tests/header_test.(tpl|def)
+    Two new files to test for the absence of the above bug and include tests
+    moved from tests/misc_test.c.
+
+    * tests/Makefile.am
+    Hook new tests into build/test system.
+
+    * tests/misc_test.c
+    Remove update_header_test() which has been moved to the new files above.
+
+2004-05-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/aiff.c
+    Fixed a bug reported by Martin Rumori on the LAD list. If a file created
+    with a format of SF_FORMAT_FLOAT and then closed before any data is written
+    to it, the header can get screwed up (PEAK chunk gets overwritten).
+
+    * tests/write_read_test.tpl
+    Add a test (empty_file_test) for the above bug.
+
+2004-05-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * Win32/Makefile.mingw.in
+    Added a Makefile for MinGW (needs to be processed by configure).
+
+    * src/mmsystem.h src/mmreg.h
+    Add files from the Wine project (under the LGPL) to allow build of
+    sndfile-play.exe under MinGW.
+
+2004-05-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/GSM610/gsm610_priv.h
+    Replace ugly macros with inline functions.
+
+    * src/GSM610/*.c
+    Remove temporary variables used by macros and other minor fixes required by
+    above change.
+
+2004-05-10  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/pipe_test.tpl tests/stdio_test.c Win32/Makefile.msvc
+    Make sure these programs compile (even though they do nothing) on Win32
+    and add them to the "make check" target.
+
+    * src/sfendian.h
+    Fix warning on Sparc CPU and code cleanup.
+
+2004-05-09  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c
+    Fix warning messages when compiling under MinGW.
+
+2004-05-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Set HAVE_FLEXIBLE_ARRAY in src/config.h depending on whether the compiler
+    accepts the flexible array struct member as per 1999 ISO C standard.
+
+    * src/common.h src/ima_adpcm.c src/paf.c src/ms_adpcm.c
+    Added ugly #if HAVE_FLEXIBLE_ARRAY and provided a non-standards compliant
+    hack for non 1999 ISO C compliant compilers.
+
+2004-04-26  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/strings.c
+    If adding an SF_STR_SOFTWARE string, only append libsndfile-X.Y.Z if the
+    string does not already have libsndfile in the string. Thanks to Conrad
+    Parker.
+
+    * tests/string_test.c
+    Add test to verify the above.
+
+    * examples/sndfile-convert.c
+    Add ability to transcode meta data as well (Conrad Parker).
+
+2004-04-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/command.html
+    Fix minor error. Thanks to Simon Burton.
+
+    * doc/win32.html
+    Started adding instructions for compiling libsndfile under MinGW.
+
+    * configure.ac
+    Add --enable-bow-docs to enable black text on a white background HTML docs.
+
+    * doc/libsndfile.css.in
+    This is now a template file for configure which sets the foreground and
+    background colours.
+
+2004-04-20  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Do some MinGW fixes.
+
+    * configure.ac doc/Makefile.am
+    Install HTML docs when doing make install.
+
+2004-04-19  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-info.c
+    Print out the dB level with the signal max.
+
+2004-04-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c
+    Define S_ISSOCK in src/file_io.c if required.
+
+2004-04-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Improve printout configuration summary (as suggested by Axel Röbel).
+
+    * doc/index.html
+    Add link to pre-release location.
+
+    * src/sndfile.h.in
+    Remove comma after last element of enum.
+
+    * src/float32.c src/double64.c
+    Fix read/write of float/double encoded raw files to/from pipes.
+
+    * tests/pipe_test.c tests/pipe_test.tpl tests/pipe_test.def
+    Turn pipe_test.c into an autogenerated file and add tests for reading/
+    writing floats and doubles.
+
+    * tests/Makefile.am
+    Hook tests/pipe_test.* into build system.
+
+2004-04-02  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac acinclude.m4
+    Rename AC_C_STRUCT_HACK macro to AC_C99_FLEXIBLE_ARRAY.
+
+2004-03-31  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/misc_test.c
+    Perform update_header_test in RDWR mode as well.
+
+    * src/aiff.c
+    Fix problems when updating header in RDWR mode.
+
+2004-03-30  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/wav.c src/w64.c src/wav_w64.c
+    Integrate code supplied by David Viens for supporting microsoft's
+    WAVEFORMATEXTENSIBLE stuff. Thanks David for supplying this.
+
+    * configure.ac doc/*.html
+    Bump version to 1.0.9.
+
+2004-03-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/command.c src/sndfile.c src/sndfile.h.in src/wav.c
+    Started work on supporting microsoft's WAVEFORMATEXTENSIBLE gunk.
+
+2004-03-26  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/avr.c
+    New file to handle Audio Visual Resaerch files.
+
+    * src/sndfile.h.in src/common.h src/sndfile.c src/command.c
+    Hook AVR into everything else.
+
+    * tests/Makefile.am tests/write_read_test.tpl tests/misc_test.c
+    Add testing for AVR files.
+
+2004-03-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c
+    Fix psf_set_file() for win32. Thanks to Vincent Trussart (Plogue Art et
+    Technologie) for coming up with the solution.
+
+2004-03-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/write_read_test.tpl
+    Fixed a bug that was causing valgrind to report a memory leak. The bug was
+    in the test code itself, not the library.
+
+2004-03-20  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/generate.cs
+    An example showing how to use libsndfile from C#. Thanks to James Robson
+    for providing this.
+
+2004-03-19  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/common.c
+    Fix problems with WAV files containing large chunks after the 'data'
+    chunk. Thanks to Koen Tanghe for providing a sample file.
+
+2004-03-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Detect presense of ALSA (Advanced Linux Sound Architecture).
+
+    * examples/sndfile-play.c
+    Add ALSA output support.
+
+    * examples/Makefile.am
+    Add ALSA_LIBS to link line of sndfile-play.c.
+
+2004-03-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * acinclude.m4
+    Add new macro (AC_C_STRUCT_HACK) to detect whether the C compiler allows
+    the use of the what is known as the struct hack introduced by the 1999 ISO
+    C Standard.
+
+    * configure.ac
+    The last release would not compile with gcc-2.95 due to the use of features
+    (ie struct hack) introduced by the 1999 ISO C Standard.
+    Add check to make sure compiler handles this and bomb out if it doesn't.
+
+2004-03-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/write_read_test.tpl
+    Fix compiler warning on Win32.
+
+    * src/file_io.c
+    Fix use of an un-initialised variable in Win32 stuff.
+
+    * Win32/config.h examples/sndfile-play.c
+    Win32 fixes.
+
+2004-03-10  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Fix bug which occurres when configuring for MinGW.
+    If compiler is gcc and cross compiling use -nostdinc.
+
+2004-03-09  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/common.h src/aiff.c src/wav.c src/float32.c src/double64.c
+      src/sndfile.c
+    Fix a bug with PEAK chunk handling for files with more than 16 channels.
+    Thanks to Remy Bruno for finding this.
+
+2004-03-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/common.c
+    Fix a bug which was preventing WAV files being openned correctly if the
+    file had a very large header. Thanks to Eldad Zack for finding this.
+
+2004-03-04  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac src/file_io.c
+    Fix cross-compiling from Linux to Win32 using the MinGW tools.
+
+2004-03-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/create_symbols_file.sh
+    Christian Weisgerber pointed out that the shell script did not run on a
+    real Bourne shell although it did run under Bash in Bourne shell mode.
+
+    * src/create_symbols_file.py
+    Rewrite of above in Python. Also add support for writing Win32 .def files.
+    The Python script generates Symbols.linux, Symbols.darwin and
+    libsndfile.def (Win32 version). These files get shipped with the tarball
+    so there should not be necessary to run the Python script when building
+    the code from the tarball.
+
+    * configure.ac src/Makefile.am Win32/Makefile.am
+    Hook new Python script into the build system.
+
+2004-02-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/configure.ac
+    Add --enable-gcc-werror option and move GCC specific stuff down.
+
+2004-02-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * acinclude.m4 configure.ac
+    Fix clip mode detection (tested in one of HP's testdrive Itanium II boxes).
+
+    * src/file_io.c
+    Added check for sizeof (off_t) != sizeof (sf_count_t) to prevent recurrence
+    of missing large file support on Linux and Solaris.
+
+2004-02-19  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-play.c
+    Fix a MacOSX specific bug which was caused by a space being inserted in
+    the middle of a file name.
+
+    * configure.ac src/Makefile.am examples/Makefile.am
+    Fix a couple of MacOSX build issues.
+
+2004-02-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/command.html
+    Document SFC_SET_CLIPPING and SFC_GET_CLIPPING.
+
+2004-02-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/*.html
+    Applied patch from Frank Neumann (author of lakai) which fixes many minor
+    typos in documentation. Thanks Frank.
+
+2004-02-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * ChangeLog
+    Changed my email address throughout source and docs.
+
+2004-02-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c
+    Make sure config.h is included before stdio.h to make sure large file
+    support is enabled on Linux (and Solaris).
+
+    * tests/misc_test.c
+    Disable update_header test on Win32. This should work but doesn't and
+    I'm not sure why.
+
+    * Make.bat Win32/Makefile.msvc
+    Updates.
+
+2004-01-07  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/common.h
+    Changed logindex, headindex and headend files of SF_PRIVATE from unsigned
+    int to int to prevent weird arithmetic bugs.
+
+    * src/common.c src/aiff.c src/wav.c src/w64.c
+    Fixed compiler warnings resulting from above change.
+
+2004-01-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/common.c
+    Fixed a bug in header reader for some files with data after the sample data.
+
+2003-12-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/lossy_comp_test.c tests/Makefile.am
+    Add tests for AIFF/IMA files.
+
+2003-12-26  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/macbinary3.c src/macos.c
+    Two new files required for handling SD2 files.
+
+    * src/common.h
+    Add prototypes for functions in above two files.
+
+    * src/Makefile.am
+    Hook new files into build system.
+
+2003-12-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Add checks for mmap() and getpagesize() which might be used at some time
+    for faster file reads.
+    Add detection of MacOSX.
+
+2003-12-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/FAQ.html
+    Minor mods to pkg-config section.
+
+2003-12-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/create_symbols_file.sh
+    Andre Pang (also known as Ozone) pointed out that on MacOSX, all non
+    static symbols are exported causing troubles when trying to link
+    libsndfile with another library which has any of the same symbols.
+    He fixed this by supplying the MacOSX linker with a file containing
+    all the public symbols so that only they would be exported and then
+    supplied a patch for libsndfile.
+    This wasn't quite ideal, because I would have to maintain two (3 if
+    you include Win32) separate files containing the exported symbols.
+    A better solution was to create this script which can generate a
+    Symbols file for Linux, MacoSX and any other OS that supports
+    minimising the number of exported symbols.
+
+    * configure.ac src/Makefile.am
+    Hook the new script into the build process.
+
+2003-12-10  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/index.html
+    Added comments about Steve Dekorte's SoundConverter scam.
+
+2003-12-07  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c
+    Axel Roebel pointed out that on Mac OSX a pipe is not considered a fifo
+    (S_ISFIFO (st.st_mode) is false) but a socket (S_ISSOCK (st.st_mode) is
+    true). The test has therefore been changed to is S_ISREG and anything
+    which which does not return true for S_ISREG is considered a pipe.
+
+2003-11-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/misc_test.c
+    Fix update_header_test to pass SDS.
+
+    * src/sds.c
+    More minor fixes.
+
+    * tests/floating_point_test.c
+    Add test for SDS files.
+
+    * src/command.c
+    Add SDS to major_formats array.
+
+2003-11-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/write_read_test.tpl tests/misc_test.c
+    Add tests for SDS files.
+
+    * src/sds.c
+    Fix a bug in header update code.
+
+2003-11-23  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sds.c
+    Get file write working.
+
+    * src/paf.c
+    Fix a potential bug in paf24_seek().
+
+2003-11-04  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/FAQ.html
+    Add Q/A about u-law encoded WAV files.
+
+    * Win32/*.h
+    Updated so it compiles on Win32.
+
+2003-11-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-convert.c
+    Add -alaw and -ulaw command line arguments.
+
+    * configure.ac
+    Add library versioning comments.
+    Add arguments to AC_INIT.
+
+2003-10-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c
+    Ross Bencina has contributed code to replace all of the (mostly broken)
+    Win32 POSIX emulation calls with calls the native Win32 file I/O API.
+    This code still needs testing but is likely to be a huge improvemnt
+    of support for Win32. Thanks Ross.
+
+2003-10-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/dwvw.c
+    Removed filedes field from the DWVW_PRIVATE struct.
+
+    * src/file_io.c
+    Change psf_fopen() so it returns psf->error instead of the file descriptor.
+    Add new functions psf_set_stdio() and psf_set_file().
+
+    * src/sndfile.c
+    Change these to work with changed psf_fopen() return value.
+    Remove all uses of psf->filedes from sndfile, making it easier to slot native
+    Win32 API file handling functions.
+
+    * src/test_file_io.c
+    Minor changes to make it compile with new file_io.c stuff.
+
+2003-10-26  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/gsm610.h
+    Rename a variable from true to true_flag. As Ross Bencina points out,
+    true is defined in the C99 header <stdbool.h>.
+
+    * src/file_io.c
+    If fstat() fails, return SF_TRUE instead of -1 (Ross Bencina).
+
+2003-10-09  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/common.h
+    Increase the size of SF_BUFFER_LEN and SF_HEADER_LEN.
+
+    * src/sndfile.c
+    Fix sf_read/write_raw which were dividing by psf->bytwidth and
+    psf->blockwidth which can both be zero.
+
+    * examples/sndfile-info.c
+    Increase size of BUFFER_LEN.
+
+2003-09-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Add checks for <sys/wait.h> and ssize_t.
+    Other Win32/MinGW checks.
+
+    * src/aiff.c src/au_g72x.c src/file_io.c src/gsm610.c src/interleave.c
+      src/paf.c src/sds.c src/svx.c src/voc.c src/w64.c src/wav.c src/xi.c
+    Fix compiler warnings.
+
+2003-09-20  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/scale_clip_test.tpl
+    Add definition of M_PI if needed.
+
+2003-09-19  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Detect if S_IRGRP is declared in <unistd.h>.
+
+    * src/file_io.c tests/*.tpl tests/*.c
+    More fixes for Win32/MSVC++ and MinGW. MinGW does have <unistd.h> but that
+    file doesn't declare S_IRGRP.
+
+2003-10-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/config.h.in
+    Add comment stating that the sf_count_t typedef is determined when
+    libsndfile is being compiled.
+
+    * tests/utils.tpl
+    Modified so that utils.c gets one copy of the GPL and not two.
+
+
+2003-09-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * Win32/unistd.h src/sf_unistd.h
+    Move first file to the second. This will help for Win32/MSVC++ and MinGW.
+
+    * Win32/Makefile.am src/Makefile.am
+    Changed in line with above.
+
+    * Win32/Makefile.msvc
+    Removed "/I Win32" which is no longer required.
+
+    * src/file_io.c src/test_file_io.c tests/*.tpl tests/*.c
+    If HAVE_UNISTD_H include <unistd.h> else include <sf_unistd.h>. This should
+    work for Win32, MinGW and other fakes Unix-like OSes.
+
+    * src/*.c
+    Removed #include <unistd.h> from files which didn't need it.
+
+2003-09-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * libsndfile.spec.in
+    Apply fix from Andrew Schultz.
+
+2003-09-07  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/vox_adpcm.c
+    Only set psf->sf.samplerate if the existing value is invalid.
+
+2003-09-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-play.c
+    Started adding support for ALSA output.
+
+2003-09-04  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.h.in
+    Removed <stdlib.h> from sndfile.h.
+
+    * src/*.c examples/*.c tests/*.c tests/*.tpl
+    Added <stdlib.h> where needed.
+
+2003-09-02  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/common.h
+    Added ARRAY_LEN, SF_MAX and SF_MIN macros.
+
+2003-08-19  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/index.html
+    Remove statements about alternative licensing arrangements.
+
+2003-08-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * MacOS MacOS9 Makefile.am configure.ac
+    Change directory name from MacOS to MacOS9
+
+    * MacOS9/MacOS9-readme.txt
+    Change name to make it really obvious, add text to top of file to make it
+    still more obvious again.
+
+2003-08-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/test_log_printf.c
+    Add tests for %u conversions.
+
+    * src/common.c
+    Fix psf_log_printf() %u conversions.
+
+2003-08-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/aiff.c
+    Fixed a bug where opening a file with a non-trival header in SFM_RDWR mode
+    would over-write part of the header. Thanks to Axel Roebel for pointing
+    this out. Axel also provided a patch to fix this but I came up with a
+    neater and more general solution.
+    Return error when openning an AIFF file with data after the SSND chunk
+    (Thanks Axel Roebel).
+
+    * tests/aiff_rw_test.c
+    Improvements to test program which will later allow it to be generalised to
+    test WAV, SVX and others as required.
+
+2003-08-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/pipe_test.c
+    Add useek_pipe_rw_test() submitted by Russell Francis.
+
+    * src/sndfile.c
+    In sf_open_fd(), check if input file descriptor is a pipe.
+
+    * src/sndfile.[ch]
+    Fix typo in variable name do_not_close_descriptor.
+
+2003-08-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/test_log_printf.c
+    Improve the tests for %d and %s conversions.
+
+    * src/common.c
+    Fixed a few problems in psf_log_printf() found using new tests.
+
+2003-08-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Add -Wwrite-strings warning to CFLAGS if the compiler is GCC. Thanks to
+    Peter Miller (Aegis author) for suggesting this and supplying a patch.
+
+    * src/*.c examples/*.c tests/*.c
+    Fix all compiler warnings arising from the above.
+
+2003-08-02
+
+    * tests/aiff_rw_test.c tests/Makefile.am
+    New test program to check for errors re-writing the headers of AIFC files
+    opened in mode SFM_RDWR.
+
+2003-07-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-play.c
+    Applied a patch from Tero Pelander to allow this program to run on systems
+    using devfs which used /dev/sound/dsp instead of /dev/dsp.
+
+2003-07-11  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/new_file_type.HOWTO
+    Updated document. Still incomplete.
+
+2003-06-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.c
+    Fix VALIDATE_SNDFILE_AND_ASSIGN_PSF which was returning an error rather
+    than saving it and returning zero.
+
+2003-06-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c
+    Two fixes for Mac OS9.
+    Fix all casts from sf_count_t to ssize_t (not size_t).
+
+2003-06-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/wav.c
+    Fix for reading files with RIFF length of 8 and data length of 0.
+
+2003-06-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/*.c tests/*.c tests/*.tpl
+    Added comments to mark code for removal when make Lite version of
+    libsndfile.
+
+2003-06-09  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-convert.c
+    Add extra error checking for unrecognised arguments.
+
+2003-06-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/ima_adpcm.c
+    Started adding code to write IMA ADPCM encoded AIFF files.
+
+    * src/test_log_printf.c src/Makefile.am
+    New file to test psf_log_printf() function and add hooks into build system.
+
+    * src/common.c
+    Move psf_log_printf() function to top of the file and only compile the rest
+    of the file if if PSF_LOG_PRINTF_ONLY is not defined.
+
+2003-06-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * Win32/config.h Win32/sndfile.h
+    Updated with new config variables.
+
+    * Win32/unistd.h src/file_io.c
+    Added implementation of S_ISFIFO macro which Win32 seems to lack and is
+    used in src/file_io.c.
+
+    * tests/utils.tpl
+    Added #include <unitstd.h> to pull in Win32/unistd.h so it compiles for
+    Win32.
+
+    * src/Makefile.msvc
+    Added src\test_file_io.exe build target and run this as the very first
+    test.
+
+    * tests/win32_test.c
+    Add support for testing Cygwin32.
+
+    * configure.ac
+    Detect POSIX fsync() and fdatasync() functions.
+
+    * src/file_io.c
+    If compiling for Cygwin, call fsync() before calling fstat() to retrieve
+    file length.
+
+    * tests/pcm_test.tpl
+    Add a test for lrintf() function. This was required to detect a really
+    broken lrint() and lrintf() on Cygwin.
+
+    * tests/misc_test.c
+    Don't run permission test when compiling under Cygwin.
+
+    * src/float_cast.h
+    Fix fallback macro for lrint() and lrintf() to cast to long instead of int
+    to match official function prototypes.
+
+2003-06-02  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-convert.c
+    Modifications to improve accuracy of conversions; use double data for
+    floating point and int for everything else.
+
+    * src/ima_apdcm.c
+    Completed work on decoding IMA ADPCM encoded AIFF files. Still need to
+    get encoding working.
+
+2003-05-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/aiff.c src/ima_adpcm.c
+    Start working on getting IMA ADPCM encoded AIFF files working.
+
+2003-05-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Fixed the touch command for when the autogen program is not found (Matt
+    Flax).
+
+    * src/ulaw.c src/alaw.c
+    Made these pipe-able.
+
+2003-05-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/paf.c src/ircam.c
+    Fixed writing to pipe.
+
+    * src/wav.c src/aiff.c src/nist.c src/mat*.c src/svx.c src/w64.c
+    Return SFE_NO_PIPE_WRITE if an attempt is made to write to a pipe.
+
+2003-05-23  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-info.c
+    Modified to detect unknown file lengths.
+
+    * src/mat4.c
+    Fix reading from a pipe.
+
+2003-05-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/pipe_test.c
+    Add more file types to tests.
+
+    * src/mat4.c
+    Removed explicit setting of psf->sf.seekable to SF_TRUE.
+
+    * tests/utils.tpl
+    Add macro for generating and check data in the stdio and pipe tests.
+
+    * tests/stdout_test.c tests/stdin_test.c
+    Use the above macro to generate known data on output and check data on
+    input.
+
+    * src/voc.c src/htk.c common.h sndfile.c
+    Disallow reading/writing VOC and HTK files from/to pipes be returning new
+    error values.
+
+    * src/w64.c
+    Fixes to allow reading from a pipe.
+
+2003-05-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac src/sndfile.h.in
+    When the configure script determines the sizeof (sf_count_t), also set the
+    value of SF_COUNT_MAX in sndfile.h.
+
+    * configure.ac
+    Remove -pedantic flag from default GCC compiler flags.
+
+    * tests/pipe_test.c
+    Add a pipe_read_test() before doing pipe_write_test().
+
+    * tests/scale_clip_test.c
+    Add test to make sure non-normalized values also clip in the right way.
+
+2003-05-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Add test to detect processor clipping capabilities.
+
+    * tests/stdin_test.c tests/stdout_test.c
+    Fix a pair of compiler warnings.
+
+    * src/common.h
+    Add new pipeoffset field to SF_PRIVATE. This will contain the current file
+    offset when operating on a pipe.
+
+    * src/common.c
+    Removed direct calls to psf_fread()/psf_fseek()/psf_fgets() etc from
+    psf_binheader_readf and redirect them to new buffered versions
+    header_read(), header_seek() and header_gets().
+    Add "G" format specifier to emulate fgets() functionality with buffering.
+    This will allow reading some file types from pipes.
+
+    * src/file_io.c
+    When the file descriptor is a pipe, manintain psf->pipeoffset.
+
+    * src/pvf.c
+    Change use of psf_fgets() to psf_binheader_readf() as required but changes to header re
+
+    * src/au.c
+    Fix reading from a pipe.
+
+2003-05-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/pcm.c
+    Add clipping versions of the f2XXX_array() functions to allow option of
+    clipping data that would otherwise overflow.
+
+    * tests/scale_clip_test.tpl tests/scale_clip_test.def
+    New files test that clipping option does actually work.
+
+2003-05-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/index.html
+    Fixed a typo ("OS(" instead of "OS9").
+
+2003-05-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/open_fail_test.c
+    Include <string.h> to prevent warning message of missing declaration of
+    memset().
+
+2003-05-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/common.h
+    Add new "add_clipping" field to SF_PRIVATE.
+
+    * src/sndfile.h.in src/sndfile.c
+    Add command SFC_SET_CLIPPING which sets/resets add_clipping field.
+
+2003-05-11  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/api.html
+    Add docs for sf_set_string() and sf_get_string().
+
+    * src/common.h src/sndfile.c
+    Add new SFE_STR_BAD_STRING error.
+
+    * tests/stdin_test.c tests/stdout_test.c
+    Removed all non-error print statements.
+
+    * tests/stdio_test.c tests/pipe_test.c tests/Makefile.am
+    Add print statements removed from two files above.
+
+2003-05-10  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * libsndfile.spec.in
+    Fixed a coulpe of minor errors discovered by someone calling themselves
+    Agent Smith.
+
+    * src/common.c src/common.h src/file_io.h
+    Added is_pipe field to SF_PRIVATE and declaration of psf_is_pipe()
+    function. (Axel Roebel)
+
+    * src/sndfile.c
+    Fixed determination of whether the file is a pipe. (Axel Roebel)
+
+    * src/paf.c
+    Force paf24 to start with undefined mode. (Axel Roebel)
+
+    * tests/pipe_test.c
+    Mods to make this test work and actually do the test on RAW files. (Axel
+    Roebel).
+
+2003-05-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.c
+    Fixed a potential bug where psf->sf.seekable was being set to FALSE when
+    operating on stdin or stdout but then the default initialiser was reseting
+    it to TRUE. Thanks to Axel Roebel.
+
+    * src/aiff.c
+    Fixed a bug in the header parser where it was not handling an odd length
+    COMM chunk correctly. Thanks to Axel Roebel.
+
+    * src/test_file_io.c
+    Add more tests.
+
+    * tests/win32_test.c
+    New file for showing the bugs in the Win32 implementation of the POSIX API.
+    It also runs on Linux for sanity checking.
+
+    * tests/Makefile.am Win32/Makefile.msvc
+    Hook the new test program into the build system.
+
+2003-05-04  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/test_file_io.c
+    New test program to test operation of functions defined in file_io.c. This
+    should make supporting win32 significantly easier.
+
+    * src/Makefile.am
+    Hook new test program into the build system.
+
+    * src/file_io.c
+    Add compile/run time check that sizeof statbuf.st_size and sf_count_t are
+    the same.
+
+    * src/common.h src/sndfile.c
+    Added new error code and error message for new check.
+
+    * tests/benchmark.tpl
+    Fix to use frames instead of samples in SF_INFO.
+
+2003-05-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c
+    More stuffing about working around PLAIN OLD-FASHIONED **BUGS** in Win32.
+
+    * examples/sndfile-info.c
+    Applied patch from Conrad Parker to add "--help" and "-h" options as
+    well as an improved usage message.
+
+2003-05-02  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/au.c
+    Added embedded file support.
+
+    * tests/multi_file_test.c
+    Added tests for embedded AU files.
+    Added verbose testing mode.
+
+    * src/common.h src/sndfile.c
+    Added an embedded AU specific error code and message.
+
+    * src/wav.c
+    Added patch from Conrad Parker which filled in a little more information
+    about ACIDized WAV files.
+
+2003-04-30  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c
+    Fixed Win32 version of psf_fseek() which was calling psf_get_filelen()
+    which was in turn calling psf_fseek() which in the end blew the stack.
+    Now of course this would have been easy to find on Linux, but this blow
+    up was happening in kernel32.dll and the fscking MSVC++ debugger couldn't
+    figure out what call caused this (it couldn't even tell me the stack had
+    overflowed) and was absolutley useless for this debugging exercise.
+    On top of that, the reason I got into this mess was that windoze doesn't
+    have a working fstat() function which can return file lengths > 2 Gig. It
+    HAS a fscking _fstati64() but the file length value is only updated AFTER
+    the bloody file is closed. That makes it completely useless.
+    How the hell do people stand working on this crap excuse of an OS?
+
+2003-04-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * Win32/unistd.h src/file_io.c
+    Moved definitions of S_IGRP etc from file_io.c to unistd.h so that these
+    can be used in the test programs.
+
+    * Win32/libsndfile.def
+    Added sf_open_fd.
+
+    * Win32/sndfile.h
+    Updated to match src/sndfile.h.in.
+
+    * Win32/Makefile.msvc
+    Added dither.c and htk.c to libsndfile.dll target.
+
+2003-04-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c
+    First attempt at getting the Win32 versions of the these functions working.
+    They still need to be tested.
+
+2003-04-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/strings.c
+    Found and fixed a bug which was causing psf_store_string() to fail on
+    Motorola 68k processors. Many thanks fo Joshua Haberman (Debian maintainer
+    of libsndfile) for compiling and running debug code to help me debug the
+    problem.
+
+2003-04-26  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.c src/file_io.c src/wav.c src/aiff.c
+    Much hacking to get reading and writing of embedded files working (ie sound
+    files at a non-zero files offset).
+
+    * doc/embedded_files.html
+    First pass atempt at documenting reading/writing embedded files.
+
+2003-04-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/FAQ.html
+    Updated answer to "Why doesn't libsndfile do interleaving/de-interleaving?"
+
+2003-04-19  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/wav.c src/aiff.c
+    Fix retrieving and storing of string data from files. Need to be careful
+    about using psf->buffer for strings.
+
+2003-04-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c
+    Fix psf_fseek() for seeks withing embedded files.
+
+2003-04-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.h.in
+    Changed the definition of SNDFILE slightly to produce warnings when it isn't
+    used correctly. This should have zero affect in code which uses the SNDFILE
+    type correctly.
+
+    * src/sndfile.c
+    Fixed a few compiler warnings cause by the changes to the SNDFILE type.
+
+2003-04-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/FAQ.html
+    Added question and answer to the question "How about adding the ability
+    to write/read sound files to/from memory buffers?".
+
+2003-04-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/write_read_test.tpl
+    Removed un-needed enums declaring TRUE and FALSE and replaced usage of
+    these with SF_TRUE and SF_FALSE.
+
+    * tests/multi_file_test.c
+    New test program to test sf_open_fd() on files containing data other than
+    a single sound file.
+
+2003-04-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/file_io.c
+    When creating files, set the readable by others flag. This still allows
+    further restrictions to be enforced by use of the user's umask. Fix
+    suggested by Eric Lyon.
+
+2003-04-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.h.in src/sndfile.c
+    Changed sf_open_fd(). Dropped offset parameter and added a close_desc
+    parameter. If close desc is TRUE, the file descritpor passed into the
+    library will be closed when sf_close() is called.
+
+    * tests/utils.tpl
+    Modified call to sf_open_fd() to set close_desc parameter to SF_TRUE.
+
+2003-04-04  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/write_read_test.tpl
+    Add a string (using sf_set_string() function) before and after data section
+    of all files. This will make sure that if string data can be added, it
+    doesn't overwrite real audio data.
+
+2003-04-02  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.c
+    Started work on supporting a non-zero offset parameter for sf_open_fd ().
+
+    * src/<file header parsers>.c
+    Removed many uses of psf_fseek (SEEK_END) which to allow for future use of
+    sf_open_fd() with non-zero offset.
+    Associated refactoring.
+
+    * src/aiff.c
+    Implemented functionality required to get sf_get_string() and
+    sf_set_string() working for AIFF files.
+
+2003-04-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/utils.tpl
+    Modified test_open_file_or_die() to alternately use sf_open() and
+    sf_open_fd().
+
+    * src/svx.c
+    Fixed a bug which occurred when openning an existing file for read/write
+    using sf_open_fd(). In this case, the existing NAME chunk needs to be
+    read into psf->filename.
+    Fixed printing of sf_count_t types to logbuffer.
+
+2003-03-31  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.h.in
+    Added prototype for new function sf_open_fd().
+
+    * src/sndfile.c
+    Moved most of the code in sf_open() to a new function psf_open_file().
+    Created new function sf_open_fd() which also uses psf_open_file() but
+    does not currently support the offset parameter.
+
+    * doc/api.html
+    Document sf_open_fd().
+
+2003-03-09  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.c
+    Fixed a memory leak reported by Evgeny Karpov. Memory leak only occurred
+    when an attempt was made to read and the open() call fails.
+
+2003-03-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/open_fail_test.c
+    New test program to check for memory leaks when sf_open fails on a valid
+    file. Currently this must be run manually under valgrid.
+
+    * tests/Makefile.am
+    Hook new test program into build.
+
+2003-03-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * Octave/sndfile_save.m Octave/sndfile_play.m
+    Added a -mat-binary option to the octave save command to force the output
+    to binary mode even if the user has set ascii data as the default. Found
+    by Christopher Moore.
+
+2003-02-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/dither.html
+    New file which will document the interface which allows the addition of
+    audio dither when sample word sizes are being reduced.
+
+    * src/dither.c
+    More work.
+
+2003-02-26  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/misc_test.c
+    In update_header_test(), make HTK files a special case.
+
+    * doc/index.html
+    Added HTK to the feature matrix.
+
+2003-02-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/htk.c
+    New file for reading/writing HMM Tool Kit files.
+
+    * src/sndfile.h.in src/sndfile.c src/command.c src/Makefile.am
+    Hook in htk.c
+
+    * tests/write_read_test.tpl tests/misc_test.c tests/Makefile.am
+    Add tests for HTK files.
+
+2003-02-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/wav.c
+    Fixed a bug where the LIST chunk length was being written incorrectly.
+
+    * tests/string_test.c
+    Added call to check_log_buffer().
+    Minor cleanups.
+
+2003-02-10  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/wav_w64.h
+    Applied patch from Antoine Mathys to add extra WAV format definitions and
+    a G72x_ADPCM_WAV_FMT struct definition.
+
+    * src/wav_w64.c
+    Applied patch from Antoine Mathys which converts wav_w64_format_str() from
+    one huge inefficient switch statement to a binary search.
+
+    * tests/string_test.c
+    Dump log buffer if tests fail.
+
+2003-02-07  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/string_test.c
+    David Viens supplied some modifications to this file which showed up a bug
+    when using sf_set_string() and the sf_writef_float() functions.
+
+    * src/sndfile.c
+    Fixed the above bug.
+
+2003-02-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/FAQ.html
+    Added Q and A on how to detect libsndfile in configure.in (at the suggestion
+    of Davy Durham).
+
+2003-02-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.h.in
+    Add enums and typedefs for dither.
+    Deprecate SFC_SET_ADD_DITHER_ON_WRITE and SFC_SET_ADD_DITHER_ON_READ, to be
+    replaced with SFC_SET_DITHER_ON_WRITE and SFC_SET_DITHER_ON_READ which will
+    allow different dither algorithms to be enabled.
+    Added SFC_GET_DITHER_INFO_COUNT and SFC_GET_DITHER_INFO.
+
+    * src/sndfile.h.in src/Version_script.in Win32/libsndfile.def.
+    Added public sf_dither_*() functions.
+
+    * src/sndfile.c
+    Implement commands above.
+
+    * src/dither.c
+    More work. Framework and external hooks into dither algorithms complete.
+
+2003-02-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/version-1.html libsndfile_version_convert.py
+    Remove redundant files.
+
+    * doc/index.html doc/api.html
+    Remove links to version-1.html.
+
+    * src/dither.c
+    New file to allow the addition of audio dither on input and output.
+
+    * src/common.h
+    Add prototype for dither_init() function.
+
+    * Makefile.am doc/Makefile.am
+    Changes for added and removed files.
+
+2003-02-02  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * Win32/Makefile.msvc
+    Changes to force example binaries to be placed in the top level directory
+    instead of the examples/ directory.
+    Add src/strings.c and src/xi.c to the build.
+    Add string_test to build and to tests on WAV files.
+
+    * doc/index.html
+    Added XI to support matrix.
+
+2003-01-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.h.in
+    Added prototypes for sf_get_string() and sf_set_string() and SF_STR_*
+    enum values.
+
+    * src/sndfile.c
+    Added public interface to sf_get_string() and sf_set_string().
+
+    * src/wav.c
+    Added code for setting and getting strings in WAV files.
+
+    * tests/string_test.c
+    New test program for sf_get_string() and sf_set_string() functionality.
+
+    * tests/Makefile.am
+    Hook new test program into build and test framework.
+
+2003-01-26  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/common.h
+    Added fields to SF_PRIVATE for string data needed to implement
+    sf_get_string() and sf_set_string().
+
+    * src/strings.c
+    New file for storing and retrieving strings to/from files.
+
+    * src/Makefile.am
+    Added strings.c to build.
+
+2003-01-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/xi.c
+    Read seems to be working so looking at write.
+
+    * src/sndfile.h.in
+    Added SF_FORMAT_XI, SF_FORMAT_DPCM_8 and SF_FORMAT_DPCM_16 enum values.
+
+    * tests/floating_point_test.c tests/lossy_comp_test.c tests/Makefile.am
+    Added test for 8 and 16 bit XI format files.
+
+2003-01-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/index.html
+    Added a non-lawyer readable summary of the licensing provisions as
+    suggested by Steve Dekorte.
+
+2003-01-23  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/wav.c
+    Fixed a compiler warning found by Alexander Lerch.
+
+2003-01-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Fixed the multiple linking of libm.
+
+2003-01-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * Win32/Makefile.mcvs
+    Added comments on the correct way to set up the MSVCDir environment
+    variable.
+
+    * doc/win32.html
+    Add on how to set up the MSVCDir environment variable.
+
+2003-01-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-play.c examples/sndfile-info.c
+    When run on Win32 without any command line parameters print a message and
+    then sleep for 5 seconds. This means the when somebody double clicks on
+    these programs in explorer the user will actually see the message.
+
+2003-01-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/misc_test.c
+    Bypass permission test if running as root because root is allowed to open
+    a readonly file for write.
+
+2003-01-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * Win32/Makefile.msvc
+    Added pvf.c and xi.c source files to project.
+
+    * src/sndfile.h
+    Updated for PVF files.
+
+2003-01-07  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.c
+    Modified validate_sfinfo() to force samplerate, channels and sections
+    to be >= 1.
+    In format_from_extension() replaced calls to does_extension_match()
+    with strcmp().
+
+    * src/xi.c
+    More work.
+
+2003-01-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/Makefile.am
+    Added octave.html which had been left out. Found by Jan Weil.
+
+2003-01-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/pvf.c src/common.h src/sndfile.c
+    Fixed error handling for PVF files.
+
+    * src/xi.c
+    New file for handling Fasttracker 2 Extended Instrument files. Not working
+    yet and included when configured with --enable-experimental.
+
+    * src/sndfile.c src/common.h
+    Hooked in new file xi.c.
+
+2002-12-30  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/rx2.c
+    Added a patch from Marek Peteraj which sheds a little more light on the
+    slices within an RX2 file. Still need to find out data encoding.
+
+2002-12-20  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/wav.c
+    Started work on decoding 'acid' and 'strc' chunks.
+
+2002-12-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/peak_check_test.c
+    Minor cleanup.
+
+2002-12-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/write_read_test.tpl
+    Added check to make sure no error was generated when an attempt was made to
+    read past the end of the file.
+
+2002-12-11  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/lists.html
+    Added "mailto" links for all three lists.
+
+    * src/pvf.c
+    New file for Portable Voice Format files.
+
+    * src/sndfile.h.in src/sndfile.c src/common.h src/command.c src/Makefile.am
+    Added hooks for SF_FORMAT_PVF format files.
+
+    * tests/write_read_test.tpl tests/std*.c
+    Add tests for SF_FORMAT_PVF.
+
+    * doc/index.html
+    Add PVF to the compatibility matrix.
+
+    * src/pcm.c src/alaw.c src/ulaw.c src/float32.c src/double64.c
+    Previously, attempts to read beyond the end of a file would set psf->error
+    to SFE_SHORT_ERROR. This behaviour diverged from the behaviour of the POSIX
+    read() call but has now been fixed.
+    Attempts to read beyond the end of the file will return a short read count
+    but will not longer set any error.
+
+2002-12-09  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Add more sanity checking when opening a RAW file for read. When format is
@@ -11,17 +1480,27 @@
     Set the format field of the SF_INFO struct to zero before calling
     sf_open().
 
+    * doc/api.html
+    Add information about the need to set the format field of the SF_INFO struct
+    to zero when opening non-RAW files for read.
+
     * configure.ac
     Removed use of conversion script on Solaris. Not all Solaris versions
     support it.
 
-2002-12-04  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+    * doc/lists.html
+    New file containg details of the mailing lists.
+
+    * doc/index.html
+    Add a link to the above new file.
+
+2002-12-04  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/dft_cmp.c
     Fixed a SIGFPE on Alpha caused by a log10 (0.0). Thanks to Joshua Haberman
     for providing the gdb traceback.
 
-2002-11-28  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-11-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Added more capabilities to 'smpl' chunk parser.
@@ -29,7 +1508,7 @@
     * src/sndfile.c
     Fixed some (not all) possible problems found with Flawfinder.
 
-2002-11-24  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-11-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Fixed a bug in sf_seek(). This bug could only occur when an attempt was
@@ -49,7 +1528,7 @@
     * src/file_io.c
     Fixes for windows (what a f**ked OS).
 
-2002-11-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-11-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.ac
     Disable use of native lrint()/lrintf() on Mac OSX. These functions exist on
@@ -57,7 +1536,7 @@
     src/float_cast.h means that a library compiled on 10.2 will still work on
     10.1.
 
-2002-11-06  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-11-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in configure.ac
     Renamed configure.in to configure.ac as expected by later versions of
@@ -69,14 +1548,14 @@
     * src/G72x/Makefile.am
     Slight hacking required for operation with automake 1.6.3.
 
-2002-11-05  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-11-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.c
     In psf_binheader_readf() changed type parameter type "b" type from size_t
     to int to prevent errors on IA64 CPU where sizeof (size_t) != sizeof (int).
     Thanks to Enrique Robledo Arnuncio for debugging this.
 
-2002-11-04  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-11-04  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * test/command_test.tpl
     Changed test value so test would pass on Solaris.
@@ -88,13 +1567,13 @@
     * src/vox_adpcm.c
     Fixed bug causing short reads.
 
-2002-11-03  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-11-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * test/floating_point_test.c
     Code cleanup using functions from util.c.
     Add test for IEEE replacement floats and doubles.
 
-2002-11-01  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-11-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Fixed a possible divide by zero error when read the 'smpl' chunk. Thanks to
@@ -121,7 +1600,7 @@
     Removed --enable-force-broken-float option. IEEE replacement code is now
     always tested.
 
-2002-10-31  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-31  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/double64.c
     Implement code for read/writing IEEE doubles on platforms where the native
@@ -144,19 +1623,19 @@
     * src/sndfile.c
     In sf_command() set/reset psf->ieee_replace.
 
-2002-10-26  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-26  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/pcm_test.tpl
     Fixed a problem when testing with --enable-force-broken-float. The test was
     generating a value of negative zero and the broken float code is not able
     to write negative zero. Removing the negative zero fixed the test.
 
-2002-10-25  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/file_io.c
     Added fix for Cygwin (suggested by Maros Michalik).
 
-2002-10-23  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-23  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/file_io.c
     Improved error detection and handling.
@@ -176,7 +1655,7 @@
     Added test to make sure the correct error message is returned with an
     existing read-only file is openned for write.
 
-2002-10-21  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/index.html doc/api.html
     Updated for OKI Dialogic ADPCM files.
@@ -184,7 +1663,7 @@
     * src/command.c
     Added VOX ADPCM to sub_fomats.
 
-2002-10-20  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-20  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/vox_adpcm.c src/Makefile.am
     New file for handling OKI Dialogic ADPCM files.
@@ -208,7 +1687,7 @@
     * tests/Makefile.am tests/lossy_comp_test.c tests/floating_point_test.c
     Add tests for SF_FORMAT_VOX_ADPCM.
 
-2002-10-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/misc_test.c
     Add test which attempts to write to /dev/full (on Linux anyway) to check
@@ -225,7 +1704,7 @@
     Fixed a bug where a MAT5 file written by libsndfile could not be opened by
     Octave 2.1.36.
 
-2002-10-13  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.h src/file_io.c
     All low level file I/O have been modified to be better able to report
@@ -242,12 +1721,12 @@
     * examples/Makefile.am
     Hooked cooledit-fixer into the build system.
 
-2002-10-10  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-10  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/command.html
     Document SFC_GET_FORMAT_INFO.
 
-2002-10-09  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-09  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * examples/wav32_aiff24.c examples/sndfile2oct.c examples/sfhexdump.c
         examples/sfdump.c
@@ -273,28 +1752,28 @@
     * tests/command_test.c
     Added tests form SFC_GET_FORMAT_INFO.
 
-2002-10-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     In sf_format_check() return error if samplerate < 0.
 
-2002-10-07  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-07  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/aiff.c
     Fixed bug in handling of COMM chunks with a 4 byte encoding byte but no
     encoding string.
 
-2002-10-06  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Fixed repeated word in an error message.
 
-2002-10-05  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/index.html
     Improved advertising in Features section.
 
-2002-10-04  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-04  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Added decoding of 'labl' chunks within 'LIST' chunks.
@@ -316,7 +1795,7 @@
     a block alignment of 4 times the numbers of channels but are in fact 32 bit
     floating point.
 
-2002-10-02  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-02  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in
     Modified option --enable-experimental to set ENABLE_EXPERIMENTAL_CODE in
@@ -326,7 +1805,7 @@
     Modify sf_command (SFC_GET_LIB_VERSION) to append "-exp" to the version
     string if experimental code has been enabled.
 
-2002-10-01  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-10-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/Makefile.am
     Added -lm to libsndfile_la_LIBADD. This means that -lm is not longer needed
@@ -338,7 +1817,7 @@
     * sndfile.pc.in
     Removed -lm from Libs line.
 
-2002-09-24  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/file_io.c
     Removed all perror() calls.
@@ -348,7 +1827,7 @@
     Added check to detect NIST files dammaged from Unix CR -> Win32 CRLF
     conversion process.
 
-2002-09-24  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.h.in src/sndfile.c
     New function sf_strerror() which will eventually replace functions
@@ -362,18 +1841,18 @@
     * tests/*.c examples/*.c
     Changed to new error functions.
 
-2002-09-22  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in
     Detect GCC version, and print a warning message about writeable strings
     it GCC major version number is less than 3.
 
-2002-09-21  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.h.in doc/api.html
     Documentation fixes.
 
-2002-09-19  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-19  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/Version_script.in src/Makefile.am configure.in
     Use the version script to prevent the exporting of all non public symbols.
@@ -388,7 +1867,7 @@
     Fix benign compiler warnings arising from previously added compiler
     flags.
 
-2002-09-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Fixed a bug in sf_error_str() where errnum was used as the index instead
@@ -398,7 +1877,7 @@
     Fixed a compiler warning resulting from a variable shadowing a previously
     defined local.
 
-2002-09-17  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.h.in src/sndfile.c
     Added command SFC_SET_RAW_START_OFFSET.
@@ -412,7 +1891,7 @@
     * tests/dwvw_test.c
     Updates.
 
-2002-09-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Modified reading of 'smpl' chunk to take account of the sampler data field.
@@ -424,7 +1903,7 @@
         tests/pcm_test.tpl tests/command_test.tpl tests/floating_point_test.c
     Convert to use function print_test_name().
 
-2002-09-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/octave.html
     Added a link to some other Octave scripts for reading and writing sound
@@ -438,7 +1917,7 @@
     * src/rx2.c
     More hacking.
 
-2002-09-14  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/mat5.c src/common.c
     Changed usage of snprintf() to LSF_SNPRINTF().
@@ -453,7 +1932,7 @@
     Added note about the possibility of "missing" features actually being
     implemented as an sf_command().
 
-2002-09-13  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/misc_test.c
     Added previously missing update_header_test and zero_data_tests for PAF,
@@ -474,7 +1953,7 @@
     * doc/index.html
     Added unsigned 8 bit PCM MAT5 to capabilities matrix.
 
-2002-09-12  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * test/update_header_test.c tests/misc_test.c
     Renamed update_header_test.c to misc_test.c.
@@ -507,12 +1986,12 @@
     * doc/octave.html
     Document explaining the use of the above three Octave scripts.
 
-2002-09-10  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-10  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Fixed bug in RDWR mode.
 
-2002-09-09  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-09  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.c
     Fixed psf_get_date_str() for systems which don't have gmtime_r() or
@@ -521,7 +2000,7 @@
     * src/file_io.c
     Added #include <io.h> for Win32. Reported by Koen Tanghe.
 
-2002-09-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.c
     Added 'S' format specifier for psf_binheader_writef() which writes a C
@@ -536,7 +2015,7 @@
     * doc/index.html
     Added entries for MAT4 and MAT5 in capabilities matrix.
 
-2002-09-06  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/mat4.c
     Completed read and write support.
@@ -550,7 +2029,7 @@
     * tests/stdio_test.c tests/stdout_test.c tests/stdin_test.c
     Added tests for MAT4 and MAT5 files.
 
-2002-09-05  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/command.c
     Added elements for SF_FORMAT_MAT4 and SF_FORMAT_MAT5 to major_formats
@@ -559,7 +2038,7 @@
     * examples/sfconvert.c
     Added mat4 and mat5 output targets.
 
-2002-09-04  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-04  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Added check to prevent errors openning read only formats for read/write.
@@ -571,7 +2050,7 @@
     * src/Makefile.am
     Added src/interleave.c to build.
 
-2002-09-03  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/double64.c src/common.h
     Added double64_be_read(), double64_le_read(), double64_be_write() and
@@ -583,7 +2062,7 @@
     Add ability for psf_binheader_writef() to write doubles to sound file
     headers.
 
-2002-09-01  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-09-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/mat5.c
     New file for reading Matlab (tm) version 5 data files. This is also the
@@ -605,18 +2084,18 @@
     remembered across calls to sf_binheader_readf().
     Fixed bug in width_specifier behaviour for printing hex values.
 
-2002-08-31  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-31  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/file_io.c
     Check return value of close() call in psf_fclose().
 
-2002-08-24  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/ms_adpcm.c
     Commented out some code where 0x10000 was being subtracted from a short
     and the result assigned to a short again. Andrew Zaja found this.
 
-2002-08-23  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-23  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/command.html
     Fixed typo found by Tommi Ilmonen.
@@ -625,7 +2104,7 @@
     Changed type of diff from short to int to prevent errors which can occur
     during very rare circumstances. Thanks to FUWAFUWA.
 
-2002-08-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/floating_point_test.c
     Disable testing on machines without lrintf().
@@ -636,7 +2115,7 @@
     * configure.in
     Bumped version to 1.0.0.
 
-2002-08-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/file_io.c
     Add a #include for Mac OS 9. Thanks to Stephane Letz.
@@ -647,7 +2126,7 @@
     * doc/Makefile.am
     Added version-1.html.
 
-2002-08-14  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in
     Bumped version to 1.0.rc6.
@@ -668,7 +2147,7 @@
     Removed file hash checking because new float scaling procedure introduced
     above prevented the ability to crate a has on both x86 and PowerPC systems.
 
-2002-08-13  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/txw.c
     Completed reading of TXW files. Seek doesn't work yet.
@@ -680,7 +2159,7 @@
     Added MacOS 9 header file. This should be copied into src/ to compile
     libsndfile for MacOS9.
 
-2002-08-12  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Fixed commands SF_SET_NORM_DOUBLE and SFC_SET_NORM_FLOAT to return their
@@ -699,7 +2178,7 @@
     Removed redundant field chars from SF_PRIVATE struct and modified
     pcm_init() to do without it.
 
-2002-08-11  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-11  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wve.c
     New file implementing read of Psion Alaw files. This will be a read only
@@ -725,7 +2204,7 @@
     Read only of 16 bit samples is working. Need to build a test harness for
     this and other read only formats.
 
-2002-08-10  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-10  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in
     Added --enable-experimental configure option.
@@ -753,7 +2232,7 @@
     Batch file to make compiling on Wi32 a little easier. Implements "make" and
     "make check".
 
-2002-08-09  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-09  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/file_io.c
     Add place holder for ftruncate() on Win32 which doesn't have ftruncate().
@@ -772,7 +2251,7 @@
     * src/common.c
     Set read values to zero before performing read.
 
-2002-08-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/command.html
     Fixed some HTML tags which were not allowing jumps to links within the
@@ -784,7 +2263,7 @@
     * src/wav.c
     Added recognition of 'clm ' tag.
 
-2002-08-07  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-07  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/index.html
     Added beginning of a capabilities list beyond simple file formats which
@@ -816,7 +2295,7 @@
     * examples/sndfile-info.c
     Changed from using sf_perror() to using sf_error_str().
 
-2002-08-06  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/api.html
     Added explanation of mode parameter for sf_open().
@@ -844,7 +2323,7 @@
     * tests/write_read_test.tpl
     Added tests of internal error state.
 
-2002-08-05  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/GSM610/private.h src/GSM610/*.c src/GSM610/Makefile.am
     Renamed private.h to gsm610_priv.h to prevent clash with other headers
@@ -863,7 +2342,7 @@
     had caused too much confusion and it simply had to be changed. There will
     be at least one more pre-release.
 
-2002-08-04  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-04  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/index.html
     Updated formats matrix to include RAW (header-less) GSM 6.10.
@@ -882,7 +2361,7 @@
     * sfendian.h
     Removed inclusion of un-necessary header.
 
-2002-08-03  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/aiff.c
     Minor fixes of info written to log buffer.
@@ -903,7 +2382,7 @@
     Fixed error where last parameter of sf_error_str() was sf_count_t instead
     of size_t.
 
-2002-08-02  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-02  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/FAQ.html
     Why doesn't libsndfile do interleaving/de-interleaving.
@@ -911,7 +2390,7 @@
     * tests/pcm_test.tpl
     On Win32 do not perform hash check on files containing doubles.
 
-2002-08-01  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-08-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.h
     Defined SF_COUNT_MAX_POSITIVE() macro, a portable way of setting variables
@@ -920,7 +2399,7 @@
     * src/dwvw.c src/w64.c
     Used SF_COUNT_MAX_POSITIVE().
 
-2002-07-31  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-31  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/paf.c
     Fixed bug in reading/writing of 24 bit PCM PAF files on big endian systems.
@@ -932,7 +2411,7 @@
     Decreased level of signal from a peak of 1.0 to a value of 0.95 to prevent
     problems on platforms without lrintf() ie Solaris.
 
-2002-07-30  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-30  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Fixed a problem with two different kinds of mal-formed WAV file header. The
@@ -955,7 +2434,7 @@
     * tests/sfconvert.c
     Fixed bug where .paf files were being written as Sphere NIST.
 
-2002-07-29  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/voc.c
     Fix for reading headers generated using SFC_UPDATE_HEADER_NOW.
@@ -963,7 +2442,7 @@
     * doc/command.html
     Add docs for SFC_UPDATE_HEADER_NOW and SFC_SET_UPDATE_HEADER_AUTO.
 
-2002-07-28  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * man/sndfile-info.1 man/sndfile-play.1
     Added manpages supplied by Joshua Haberman the Debian maintainer for
@@ -981,7 +2460,7 @@
     * src/*.c
     Fixed problem with *_write_header() functions.
 
-2002-07-27  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/*.html
     Updates to documentation to fix problems found by wdg-html-validator.
@@ -997,19 +2476,19 @@
     * doc/command.html
     Added entry for SFC_CALC_NORM_SIGNAL_MAX and SFC_CALC_NORM_MAX_ALL_CHANNELS.
 
-2002-07-26  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-26  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * examples/sndfile-play.c Win32/Makefile.msvc
     Get sndfile-play program working on Win32. The Win32 PCM sample I/O API
     sucks. The sndfile-play program now works on Linux, MacOSX, Solaris and
     Win32.
 
-2002-07-25  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/FAQ.html
     New file for frequently asked questsions.
 
-2002-07-22  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/api.html
     Documentation fixes.
@@ -1023,7 +2502,7 @@
     * doc/index.html
     Update support matrix.
 
-2002-07-21  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/command.html
     Documented SFC_GET_SIMPLE_FORMAT_COUNT, SFC_GET_SIMPLE_FORMAT,
@@ -1040,7 +2519,7 @@
     * doc/command.html
     Docs for SFC_CALC_MAX_ALL_CHANNELS (assisted by Maurizio Umberto Puxeddu).
 
-2002-07-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c src/gsm610.c
     Finalised support for GSM 6.10 AIFF files and added support for GSM 6.10
@@ -1052,14 +2531,14 @@
     * src/api.html
     Fixed more documentation bugs.
 
-2002-07-17  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.h src/common.h
     Moved some yet-to-be-implelmented values for SF_FORMAT_* from the public
     header file sndfile.h to the private header file common.h to avoid
     confusion about the actual capabilities of libsndfile.
 
-2002-07-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/aiff.c src/wav.c
     Fixed file parsing for WAV and AIFF files containing non-audio data after
@@ -1074,7 +2553,7 @@
     * src/*.c
     Fix compiler warnings.
 
-2002-07-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/command_test.c
     For SFC_SET_NORM_* tests, change the file format from SF_FORMAT_WAV to
@@ -1096,7 +2575,7 @@
     Added sf_command (SFC_TEST_ADD_TRAILING_DATA) to ensure above new code was
     working.
 
-2002-07-13  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/update_header_test.c
     Allow read sample count == write sample count - 1 to fix problems with VOC
@@ -1105,7 +2584,7 @@
     * tests/write_read_test.tpl tests/pcm_test.tpl
     Fixed some problems in the test suite discovered by using Valgrind.
 
-2002-07-12  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/utils.[ch] tests/*.c
     Renamed check_log_buffer() to check_log_buffer_or_die().
@@ -1114,7 +2593,7 @@
     SFC_UPDATE_HEADER_NOW and SFC_SETUPDATE_HEADER_AUTO almost finished. Works
     for all file formats other than VOC.
 
-2002-07-11  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-11  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.[ch] src/common.h
     Started adding functionality to allow the file header to be updated before
@@ -1127,7 +2606,7 @@
     * tests/peak_chunk_test.c tests/floating_point_test.c
     Cleanups.
 
-2002-07-10  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-10  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sfendian.[ch]
     Changed length count parameters for all endswap_XXX() functions from
@@ -1139,7 +2618,7 @@
     * examples/sndfile-play.c
     More playback hacking for Win32.
 
-2002-07-09  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-09  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.c
     In psf_log_printf(), changed %D format conversion specifier to %M (marker) and
@@ -1155,7 +2634,7 @@
     * src/pcm.c
     Fixed bug in scaling floats and doubles to 24 bit PCM and vice versa.
 
-2002-07-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in
     Fix setup of $ac_cv_sys_largefile_CFLAGS so that sndfile.pc gets valid
@@ -1164,7 +2643,7 @@
     * examples/sndfile-play.c
     Start adding playback support for Win32.
 
-2002-07-07  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-07  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/*.c
     Worked to removed compiler warnings.
@@ -1177,7 +2656,7 @@
     * src/sndfile.c
     Replaced calls to memset(0 with calls to psf_memset() as required.
 
-2002-07-06  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Added "libsndfile : " to the start of all error messages. This was suggested
@@ -1190,7 +2669,7 @@
     Use endswap_XXXX_copy() functions and removed dead code.
     Cleanups and optimisations.
 
-2002-07-05  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c src/sndfile.h
     Gave values to all the SFC_* enum values to allow better control of the
@@ -1209,7 +2688,7 @@
     Changed tribyte typedef to something more sensible.
     Further conversion speed ups.
 
-2002-07-03  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/command.c
     In major_formats rename "Sphere NIST" to "NIST Sphere".
@@ -1226,13 +2705,13 @@
     * src/Makefile.am
     Add sfendian.c to build targets.
 
-2002-07-01  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-07-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/pcm.c src/sfendian.h
     Re-coded PCM encoders and decoders to match or better the speed of
     libsndfile version 0.0.28.
 
-2002-06-30  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-30  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Add checking for WAVPACK data in standard PCM WAV file. Return error if
@@ -1242,7 +2721,7 @@
     * tests/benchmark.tpl
     Added more tests.
 
-2002-06-29  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/benchmark.tpl
     Added conditional definition of M_PI.
@@ -1264,7 +2743,7 @@
     1.0.0rc2 is faster than version 0.0.28 on most conversions but slower on
     some. The slow ones need to be fixed before final release.
 
-2002-06-28  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/benchmark.def tests/benchmark.tpl
     New files which generate tests/benchmark.c using Autogen. Added int ->
@@ -1276,7 +2755,7 @@
     * tests/Makefile.am
     Updated for above changes.
 
-2002-06-27  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/benchmark.c
     Basic benchmark program complete. Need to convert it to Autogen.
@@ -1284,7 +2763,7 @@
     * Win32/Makefile.msvc
     Added benchmark.exe target.
 
-2002-06-26  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-26  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * examples/generate.c
     New program to generate a number of different output file formats from a
@@ -1296,7 +2775,7 @@
     * examples/Makefile.am tests/Makefile.am
     New make rules for the two new programs.
 
-2002-06-25  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * Win32/libsndfile.def
     Removed definition for sf_signal_max().
@@ -1320,7 +2799,7 @@
     * doc/index.html
     A number of documentation bugs were fixed. Thanks to Anand Kumria.
 
-2002-06-24  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.h
     Test for Win32 before testing SIZEOF_OFF_T so that it works correctly
@@ -1335,7 +2814,7 @@
     * doc/*.html
     Updating of documentation.
 
-2002-06-23  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-23  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/pcm_test.c
     Minor changes to allow easier determination of test file name.
@@ -1346,7 +2825,7 @@
     * examples/sndfile-play.c
     Changed call to sf_signal_max() to a call to sf_command().
 
-2002-06-22  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/format.c src/command.c
     Renamed format.c to command.c which will now include code for sf_command()
@@ -1362,7 +2841,7 @@
     * doc/command.html
     Documented SFC_CALC_SIGNAL_MAX.
 
-2002-06-21  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * examples/sndfile-play.c
     Mods to make sndfile-play work on Solaris. The program sndfile-play now
@@ -1375,7 +2854,7 @@
     Added support for 8 bit NIST Sphere files. Example file supplied by Anand
     Kumria.
 
-2002-06-20  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-20  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * examples/sndfile-info.c
     Tidy up of output format.
@@ -1392,7 +2871,7 @@
     Use OS_SPOECIFIC_INCLUDES and OS_SPECIFIC_LINKS to build commands for
     sndfile-play.
 
-2002-06-19  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-19  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/nist.c
     Added ability to read/write new NIST Sphere file types (A-law, u-law).
@@ -1405,12 +2884,12 @@
     * tests/Makefile.am tests/lossy_comp_test.c
     Tests for A-law and u-law NIST files.
 
-2002-06-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/utils.c
     Fixed an error in error string.
 
-2002-06-17  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * acinclude.m4
     Removed exit command to allow cross-compiling.
@@ -1423,13 +2902,13 @@
     * src/sd2.c, src/sndfile.c:
     Fixes for Sound Designer II files on big endian systems.
 
-2002-06-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in
     Modified to work around problems with crappy MacOSX version of sed.
     Added sanity check for proper values for CFLAGS.
 
-2002-06-14  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Code clean up in sf_open ().
@@ -1449,7 +2928,7 @@
     * src/wav.c src/w64.c
     Fixed bug casuing incorrect header generation when opening file read/write.
 
-2002-06-12  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/api.html
     Improved the documentation to make it clearer that the file read method
@@ -1469,7 +2948,7 @@
     combined before transfer. The combined file will be read on both Mac and
     other OSes like any other file.
 
-2002-06-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * ltmain.sh
     Applied a patch from http://fink.sourceforge.net/doc/porting/libtool.php
@@ -1482,20 +2961,20 @@
     * src/float_cast.h
     Added MacOSX replacements for lrint() and lrintf().
 
-2002-06-05  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Replaced the code to print the filename to the log buffer when a file is
     opened. This code seems to have been left out during the merge of
     sf_open_read() and sf_open_write() to make a single  functions sf_open().
 
-2002-06-01  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-06-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Fixed a bug where the WAV header parser was going into an infinite loop
     on a badly formed LIST chunk. File supplied by David Viens.
 
-2002-05-25  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-05-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in
     Added a message at the end of the configuration process to warn about the
@@ -1507,26 +2986,26 @@
     retrieve settings for CFLAGS and library locations for linking files
     against version 1 of libsndfile.
 
-2002-05-17  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-05-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Fixed minor bug in handling of so-called ACIDized WAV files.
 
-2002-05-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-05-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * Win32/libsndfile.def Win32/Makefile.msvc
     Two new files contributed by Michael Fink (from the winLAME project)
     which allows libsndfile to be built on windows in a MSDOS box by doing
     "nmake -f Makefile.msvc". Way cool!
 
-2002-05-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-05-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in
     MacOSX is SSSOOOOOOO screwed up!!! I can't believe how hard it is to
     generate a tarball which will configure and compile on that platform.
     Joined the libtool mailing list to try and get some answers.
 
-2002-05-13  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-05-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in
     Changed to autoconf version 2.50. MacOSX uses autoconf version 2.53 which
@@ -1538,7 +3017,7 @@
     Changed to automake version 1.5 to try and make a tarball which will
     work on MacOSX.
 
-2002-05-12  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-05-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav_gsm610.c
     Changed name to gsm610.c. Added reading/writing of headerless files.
@@ -1546,7 +3025,7 @@
     * src/sndfile.c src/raw.c
     Added ability to read/write headerless (SF_FORMAT_RAW) GSM 6.10 files.
 
-2002-05-11  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-05-11  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/lossy_comp_test.c
     Clean up in preparation for Autogen-ing this file.
@@ -1558,18 +3037,18 @@
     * sndfile.pc.in
     Testing complete. Is sndfile.m4 still needed?
 
-2002-05-09  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-05-09  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/write_read_test.tpl tests/rdwr_test.tpl
     Merged tests from these two programs into write_read_test.tpl and deleted
     rdwr_test.tpl.
 
-2002-05-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-05-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/w64.c src/svx.c src/paf.c
     Fixed bugs in read/write mode.
 
-2002-05-07  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-05-07  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * examples/Makefile.am
     Renamed sfplay.c to sndfile-play.c and sndfile_info.c to sndfile-info.c for
@@ -1583,7 +3062,7 @@
     * src/sndfile.c
     Cleanup of code in sf_open().
 
-2002-05-06  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-05-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/utils.tpl tests/write_read_test.tpl
     More conversion to Autogen fixes and enchancements.
@@ -1598,7 +3077,7 @@
     * Win32/Makefile.am MacOS/Makefile.am
     Added DISTCLEANFILES target to remove Makefile.
 
-2002-05-05  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-05-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/*.[ch] tests/rdwr_test.c
     More verifying workings of read/write mode. Fixing bugs found.
@@ -1610,7 +3089,7 @@
     New Autogen files to generate utils.[ch]. Moved some generic test functions
     into this file. Autogen is such a great tool!
 
-2002-05-03  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-05-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/pcm.c src/float_cast.h Win32/config.h
     Fixed a couple of Win32 specific bugs pointed out by Michael Fink
@@ -1619,7 +3098,7 @@
     * tests/check_log_buffer.[ch] tests/utils.[ch]
     Moved check_log_buffer() to utils.[ch] and deleted old file.
 
-2002-05-02  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-05-02  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.[ch] src/sndfile.c
     New function psf_default_seek() which will be the default seek function
@@ -1627,7 +3106,7 @@
     both read and write in sf_open() but can be over-ridden by any codec
     during it's initialisation.
 
-2002-05-01  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-05-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/au.c
     AU files use a data size value of -1 to mean unknown. Fixed au_open_read()
@@ -1640,12 +3119,12 @@
     Fixed bugs in read/write mode found due to improvements in the test
     program.
 
-2002-04-30  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-04-30  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/rdwr_test .c
     New file for testing read/write mode.
 
-2002-04-29  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-04-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * m4/*
     Removed all m4 macros from this directory as they get concatenated to form
@@ -1655,7 +3134,7 @@
     Moved this from the m4 directory to the root directory asn this is part of
     the distribution and is installed during "make install".
 
-2002-04-29  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-04-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/float32.c
     Removed logging of peaks for all file formats other than AIFF and WAV.
@@ -1668,7 +3147,7 @@
     * src/*.c
     Fixed a few bugs found when testing on Sparc (bug endian) Solaris.
 
-2002-04-28  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-04-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * doc/*.html
     Fixed documention versioning.
@@ -1677,7 +3156,7 @@
     Fixed a bug in the routines which search for Large File Support on systems
     which have large file support by defualt.
 
-2002-04-27  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-04-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/*.[ch]
     Found and fixed an issue which can cause a bug in other software (I was
@@ -1688,7 +3167,7 @@
     * tests/write_read_test.c
     Added tests to detect the above problem.
 
-2002-04-25  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-04-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/*.[ch]
     Finished base implementation of read/write mode. Much more testing still
@@ -1707,7 +3186,7 @@
     A Python script which attempts to autoconvert code written to use version 0
     to version 1.
 
-2002-04-24  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-04-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/*.[ch]
     Finished base implementation of read/write mode. Much more testing still
@@ -1716,7 +3195,7 @@
     * tests/write_read_test.c
     Preliminary tests for read/write mode added. More needed.
 
-2002-04-20  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-04-20  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.[ch]
     Removed sf_open_read() and sf_open_write() functions,replacting them with
@@ -1724,19 +3203,19 @@
     or SF_OPEN_RDWR). This new function sf_open can now be modified to allow
     opening a file formodification (RDWR).
 
-2002-04-19  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-04-19  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/*.c
     Completed merging of separate xxx_open_read() and xxx_open_write()
     functions. All tests pass.
 
-2002-04-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-04-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/au.c
     Massive refactoring required to merge au_open_read() with au_open_write()
     to create au_open().
 
-2002-04-17  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-04-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/*.c
     Started changes required to allow a sound file to be opened in read/write
@@ -1746,7 +3225,7 @@
     the file type specific functions ie aiff_open_read() and aiff_open_write()
     were merged to make the function aiff_open().
 
-2002-04-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-04-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/file_io.c
     New file containing psf_fopen(), psf_fread(), psf_fwrite(), psf_fseek() and
@@ -1758,7 +3237,7 @@
     Replaced all instances of fopen with psf_open, fread with psd_read, fwrite
     with psf_write and so on.
 
-2002-03-11  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-03-11  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/dwvw.c
     Finally fixed all known problems with 12, 16 and 24 bit DWVW encoding.
@@ -1766,7 +3245,7 @@
     * tests/floating_point_test.c
     Added tests for 12, 16 and 24 bit DWVW encoding.
 
-2002-03-03  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-03-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * m4/endian.m4
     Defines a new m4 macro AC_C_FIND_ENDIAN, for determining the endian-ness of
@@ -1782,13 +3261,13 @@
     * src/sfendian.h
     Simplified.
 
-2002-02-23  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-02-23  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/floating_point_test.c
     Tests completely rewritten using the dft_cmp function. Now able to
     calculate a quick guesstimate of the Signal to Noise Ratio of the encoder.
 
-2002-02-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-02-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/dft_cmp.[ch]
     New files containing functions for comparing pre and post lossily
@@ -1798,24 +3277,24 @@
     New files containing functions for saving pre and post encoded data in a
     file readable by the GNU Octave package.
 
-2002-02-13  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-02-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * m4/lrint.m4 m4/lrintf.m4
     Fixed m4 macros to define HAVE_LRINT and HAVE_LRINTF even when the test
     is cached.
 
-2002-02-12  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-02-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/floating_point_test.c
     Fixed improper use of strncat ().
 
-2002-02-11  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-02-11  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/headerless_test.c
     New test program to test the ability to open and read a known file type as a
     RAW header-less file.
 
-2002-02-07  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-02-07  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/losy_comp_test.c
     Added a test to ensure that the data read from a file is not all zeros.
@@ -1823,7 +3302,7 @@
     * examples/sfconvert.c
     Added "-gsm610" encoding types.
 
-2002-01-29  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-01-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * examples/sfconvert.c
     Added "-dwvw12", "-dwvw16" and "-dwvw24" encoding types.
@@ -1831,7 +3310,7 @@
     * tests/dwvw_test.c
     New file for testing DWVW encoder/decoder.
 
-2002-01-28  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-01-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/dwvw.c
     Implemented writing of DWVW. 12 bit seems to work, 16 and 24 bit still broken.
@@ -1842,7 +3321,7 @@
     * src/voc.c
     Clean up.
 
-2002-01-27  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-01-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/dwvw.c
     New file implementing lossless Delta Word Variable Width (DWVW) encoding.
@@ -1851,7 +3330,7 @@
     * src/aiff.c common.h sndfile.c
     Added hooks for DWVW encoded AIFF and RAW files.
 
-2002-01-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-01-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/w64.c
     Robustify header parsing.
@@ -1865,7 +3344,7 @@
     Modified and moved functions with a high degree of similarity between
     wav.c and w64.c to wav_w64.c.
 
-2002-01-14  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-01-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/w64.c
     Completed work on getting read and write working.
@@ -1876,7 +3355,7 @@
     * tests/Makefile.am tests/write_read_test.c
     Added tests for W64 files.
 
-2002-01-13  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-01-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/*.c
     Modded all code in file header writing routines to use
@@ -1884,7 +3363,7 @@
     Removed psf_binheader_writef() from src/common.c.
     Globally replaced psf_new_binheader_writef with psf_binheader_writef.
 
-2002-01-12  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-01-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/*.c
     Modded all code in file parsing routines to use psf_new_binheader_readf().
@@ -1898,7 +3377,7 @@
     allows the writing of 64 bit integer values for files contains 64 bit file
     offsets.
 
-2002-01-11  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-01-11  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/formats.c src/sndfile.c src/sndfile.h
     Added code allowing full enumeration of supported file formats via the
@@ -1914,27 +3393,27 @@
     interface. This program lists all the major formats and for each major
     format the supported subformats.
 
-2002-01-10  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2002-01-10  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/*.[ch] tests/*.c
     Changed command parameter of sf_command () function from a test string to
     an int. The valid values for the command parameter begin with SFC_ and are
     listed in src/sndfile.h.
 
-2001-12-20  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-12-20  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/formats.c src/sndfile.c
     Added an way of enumerating a set of common file formats using the
     sf_command () interface. This interface was suggested by Dominic Mazzoni,
     one of the main authors of Audacity (http://audacity.sourceforge.net/).
 
-2001-12-26  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-12-26  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Added checking of filename parameter in sf_open_read (). Previousy, if a
     NULL pointer was passed the library would segfault.
 
-2001-12-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-12-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.c src/common.h
     Changed the len parameter of the endswap_*_array () functions from type
@@ -1943,7 +3422,7 @@
     * src/pcm.c
     Fixed a problem which
 
-2001-12-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-12-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Added conditional #include <sys/types.h> for EMX/gcc on OS/2. Thanks to
@@ -1952,7 +3431,7 @@
     * tests/lossy_comp_test.c tests/floating_point_test.c
     Added definitions for M_PI for when it isn't defined in <math.h>.
 
-2001-11-30  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-30  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/ircam.c
     Re-implemented the header reader. Old version was making incorrect
@@ -1960,13 +3439,13 @@
     start of the file. The new code looks at the integer which holds the
     number of channels and determines the endian-ness from that.
 
-2001-11-30  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-30  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/aiff.c
     Added support for other AIFC types ('raw ', 'in32', '23ni').
     Further work on IMA ADPCM encoding.
 
-2001-11-29  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/ima_adpcm.c
     Renamed from wav_ima_adpcm.c. This file will soon handle IMA ADPCM
@@ -1975,7 +3454,7 @@
     * src/aiff.c
     Started adding IMA ADPCM support.
 
-2001-11-28  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/double.c
     New file for handling double precision floating point (SF_FORMAT_DOUBLE)
@@ -1995,7 +3474,7 @@
     calculated value. This will work whatever the endian-ness of the host
     machine.
 
-2001-11-27  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/aiff.c
     Added handling of u-law, A-law encoded AIFF files. Thanks to Tom Erbe for
@@ -2017,7 +3496,7 @@
     the reading of 64 bit integer values for files contains 64 bit file
     offsets.
 
-2001-11-26  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-26  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/voc.c
     Completed implementation of VOC file handling. Can now handle 8 and 16 bit
@@ -2026,7 +3505,7 @@
     * src/write_read_test.c tests/lossy_comp_test.c
     Added tests for VOC files.
 
-2001-11-22  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/float_cast.h
     Added inline asm version of lrint/lrintf for MacOS. Solution provided by
@@ -2036,7 +3515,7 @@
     More work on this braindamaged format. The VOC files produced by SoX also
     have a number of inconsistencies.
 
-2001-11-19  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-19  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/paf.c
     Added support for 8 bit PCM PAF files.
@@ -2044,7 +3523,7 @@
     * tests/write_read_test.c
     Added tests for 8 bit PAF files.
 
-2001-11-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/pcm_test.c
     New test program to test for correct scaling of integer values between
@@ -2059,7 +3538,7 @@
     * tests/write_read_test.c tests/lossy_comp_test.c
     Modified to work with the new scaling rules.
 
-2001-11-17  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/raw.c tests/write_read_test.c tests/write_read_test.c
     Added ability to do raw reads/writes of float, u-law and A-law files.
@@ -2068,7 +3547,7 @@
     Removed dependance on pcmbitwidth field of SF_INFO struct and moved to new
     SF_FORMAT_* types and use of SF_ENDIAN_BIG/LITTLE/CPU.
 
-2001-11-12  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/*.[ch]
     Started implmentation of major changes documented in doc/version1.html.
@@ -2083,28 +3562,28 @@
 This is the boundary between version 1 of the library above and version 0 below.
 --------------------------------------------------------------------------------
 
-2001-11-11  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-11  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * examples/sfplay_beos.cpp
     Added BeOS version of sfplay.c. This needs to be compiled using a C++
     compiler so is therefore not built by default. Thanks to Marcus Overhagen
     for providing this.
 
-2001-11-10  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-10  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * examples/sfplay.c
     New example file showing how libsndfile can be used to read and play a
     sound file.
     At the moment on Linux is supported. Others will follow in the near future.
 
-2001-11-09  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-09  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/pcm.c
     Fixed problem with normalisation code where a value of 1.0 could map to
     a value greater than MAX_SHORT or MAX_INT. Thanks to Roger Dannenberg for
     pointing this out.
 
-2001-11-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/pcm.c
     Fixed scaling issue when reading/writing 8 bit files using
@@ -2114,7 +3593,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     scaled so that most significant bit in the short ends up as the most
     significant bit in the char.
 
-2001-11-07  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-07  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/au.c src/sndfile.c
     Added support for 32 bit float data in big and little endian AU files.
@@ -2122,23 +3601,23 @@ This is the boundary between version 1 of the library above and version 0 below.
     * tests/write_read_test.c
     Added tests for 32 bit float data in AU files.
 
-2001-11-06  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/lossy_comp_test.c
     Finalised testing of stereo files where possible.
 
-2001-11-05  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-11-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav_ms_adpcm.c
     Fixed bug in writing stereo MS ADPCM WAV files. Thanks to Xu Xin for
     pointing out this problem.
 
-2001-10-24  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-10-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav_ms_adpcm.c
     Modified function srate2blocksize () to handle 44k1Hz stereo files.
 
-2001-10-21  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-10-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/w64.c
     Added support for Sonic Foundry 64 bit WAV format. As Linux (my main
@@ -2149,7 +3628,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/sndfile.[hc] src/common.h src/Makefile.am
     Added hooks for W64 support.
 
-2001-10-21  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-10-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in
     Added more warnings options to CFLAGS when the gcc compiler is detected.
@@ -2171,7 +3650,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     Added a section for Win32 to define lrint () and lrintf () in the header
     and implement it in the pcm.c
 
-2001-10-20  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-10-20  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * sndfile-config.in m4/sndfile.m4
     These files were donated by Conrad Parker who also provided instructions
@@ -2188,7 +3667,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * configure.in m4/lrint.m4 m4/lrintf.m4
     Add detection of these functions.
 
-2001-10-17  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-10-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/voc.c
     Completed code for reading VOC files containing a single audio data
@@ -2198,7 +3677,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     have different sample rates for different sections and other nasties like
     silence and repeat segments.
 
-2001-10-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-10-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.h src/*.c
     Removed SF_PRIVATE struct field fdata and replaced it with extra_data.
@@ -2206,7 +3685,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/voc.c
     Further development of the read part of this woefult file format.
 
-2001-10-04  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-10-04  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/float_cast.h
     Implemented gcc and i386 floating point to int cast macros. Standard cast
@@ -2216,7 +3695,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     Modified all uses of FLOAT/DOUBLE_TO_INT and FLOAT/DOUBLE_TO_SHORT casts to
     comply with macros in float_cast.h.
 
-2001-10-04  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-10-04  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/voc.c
     Changed the TYPE_xxx enum names to VOC_TYPE_xxx to prevent name clashes
@@ -2226,7 +3705,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     Updated the compile instructions. Probably still need work as I don't have
     access to a Mac.
 
-2001-10-01  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-10-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c src/aiff.c common.c
     Changed all references to snprintf to LSF_SNPRINTF and all vsnprintf to
@@ -2242,7 +3721,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     are only compliled into the binary if snprintf and/or vsnprintf are not
     available.
 
-2001-09-29  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-09-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/ircam.c
     New file to handle Berkeley/IRCAM/CARL files.
@@ -2253,7 +3732,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * tests/*.c
     Added tests for IRCAM files.
 
-2001-09-27  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-09-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Apparently microsoft windows (tm) doesn't like ulaw and Alaw WAV files with
@@ -2261,13 +3740,13 @@ This is the boundary between version 1 of the library above and version 0 below.
     header writing code to generate smaller ms compliant ulaw and Alaw WAV
     files.
 
-2001-09-17  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-09-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/stdio_test.sh tests/stdio_test.c
     Shell script was rewritten as a C program due to incompatibilities of the
     sh shell on Linux and Solaris.
 
-2001-09-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-09-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/stdio_test.sh tests/stdout_test.c tests/stdin_test.c
     New test programs to verify the correct operation of reading from stdin and
@@ -2276,12 +3755,12 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/sndfile.c wav.c au.c nist.c paf.c
     Fixed a bugs uncovered by the new test programs above.
 
-2001-09-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-09-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c wav.c
     Fixed a bug preventing reading a file from stdin. Found by T. Narita.
 
-2001-09-12  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-09-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.h
     Fixed a problem on OpenBSD 2.9 which was causing sf_seek() to fail on IMA
@@ -2290,7 +3769,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     sizeof (off_t) != sizeof (int). Thanks to Heikki Korpela for allowing me
     to log into his OpenBSD machine to debug this problem.
 
-2001-09-03  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-09-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Implemented sf_command ("norm float").
@@ -2315,7 +3794,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     Added code for parsing '(c) ' and 'ANNO' chunks. Will be used for extract
     text annotations from WAV files.
 
-2001-09-02  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-09-02  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * examples/sf_info.c example/Makefile.am
     Renamed to sndfile_info.c. The program sndfile_info will now be installed
@@ -2331,7 +3810,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     defined in floatcast.h. At the moment these casts do nothing. They will be
     replaced with faster float to int cast operations in the near future.
 
-2001-08-31  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-08-31  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/command_test.c
     New file for testing sf_command () functionality.
@@ -2350,7 +3829,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * doc/command.html
     New documentation file explaining new sf_command () function.
 
-2001-08-11  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-08-11  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Fixed error return values from sf_read*() and sf_write*(). There were
@@ -2358,18 +3837,18 @@ This is the boundary between version 1 of the library above and version 0 below.
     error int the SF_PRIVATE struct and return 0. Thanks to David Viens for
     spotting this.
 
-2001-08-01  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-08-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.c
     Fixed use of va_arg() calls that were causing warning messages with the
     latest version of gcc (thanks Maurizio Umberto Puxeddu).
 
-2001-07-25  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-07-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/*.c src/sfendian.h
     Moved definition of MAKE_MARKER macro to sfendian.h
 
-2001-07-23  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-07-23  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Modified sf_get_lib_version () so that version string will be visible using
@@ -2379,7 +3858,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     Renamed sfinfo program and source code to sf_info. This prevents a name
     clash with the program included with libaudiofile.
 
-2001-07-22  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-07-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/read_seek_test.c tests/lossy_comp_test.c
     Added tests for sf_read_float () and sf_readf_float ().
@@ -2390,7 +3869,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/samplitude.c
     New files for handling Samplitude files (not complete).
 
-2001-07-21  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-07-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/aiff.c src/au.c src/paf.c src/svx.c src/wav.c
     Converted these files to using psf_binheader_readf() function. Will soon be
@@ -2400,39 +3879,39 @@ This is the boundary between version 1 of the library above and version 0 below.
     Added code for sf_read_float () and sf_readf_float () methods of accessing
     file data.
 
-2001-07-20  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-07-20  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/paf.c src/wav_gsm610.c
     Removed two printf()s which had escaped notice for some time (thanks
     Sigbjørn Skjæret).
 
-2001-07-19  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-07-19  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav_gsm610.c
     Fixed a bug which prevented GSM 6.10 encoded WAV files generated by
     libsndfile from being played in Windoze (thanks klay).
 
-2001-07-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-07-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.[ch]
     Implemented psf_binheader_readf() which will do for file header reading what
     psf_binheader_writef() did for writing headers. Will eventually allow
     libsndfile to read and write from pipes, including named pipes.
 
-2001-07-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-07-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * MacOS/config.h Win32/config.h
     Attempted to bring these two files uptodate with src/config.h. As I don't
     have access to either of these systems support for them may be completely
     broken.
 
-2001-06-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-06-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/float32.c
     Fixed bug for big endian processors that can't read 32 bit IEEE floats. Now
     tested on Intel x86 and UltraSparc processors.
 
-2001-06-13  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-06-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/aiff.c
     Modified to allow REX files (from Propellorhead's Recycle and Reason
@@ -2443,7 +3922,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     Not yet able to write a REX file as the details of the application specific
     data is unknown.
 
-2001-06-12  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-06-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Fixed endian bug when reading PEAK chunk on big endian machines.
@@ -2453,7 +3932,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     --enable-force-broken-float configure option.
     Fix psf_binheader_writef for (FORCE_BROKEN_FLOAT ||______)
 
-2001-06-07  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-06-07  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in src/config.h.in
     Removed old CAN_READ_WRITE_x86_IEEE configure variable now that float
@@ -2467,7 +3946,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * m4/
     Removed this directory and all its files as they are no longer needed.
 
-2001-06-05  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-06-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/peak_chunk_test.c
     New test to validate reading and writing of peak chunk.
@@ -2482,7 +3961,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/sndfile.c tests/error_test.c
     Modified to take account of the previous change.
 
-2001-06-04  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-06-04  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/float32.c
     File renamed from wav_float.c and renamed function to something more
@@ -2499,7 +3978,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/sndfile.c
     Modified sf_signal_max () to use PEAK values if present.
 
-2001-06-03  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-06-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/*.c
     Added pcm_read_init () and pcm_write_init () to src/pcm.c and removed all
@@ -2521,7 +4000,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     Fixed a bug in paf24_seek () found due to added seeks tests in
     tests/write_read_test.c
 
-2001-06-01  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-06-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/read_seek_test.c
     Fixed a couple of broken binary files.
@@ -2529,7 +4008,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/aiff.c src/wav.c
     Added handling of PEAK chunks on file read.
 
-2001-05-31  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-05-31  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * check_libsndfile.py
     New file for the regression testing of libsndfile.
@@ -2546,7 +4025,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     This fixed validation test failures on MetroWerks compilers. Thanks to Lord
     Praetor Satanus of Acheron for bringing this to my attention.
 
-2001-05-30  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-05-30  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.[ch]
     Removed psf_header_setf () which was no longer required after refactoring
@@ -2562,17 +4041,17 @@ This is the boundary between version 1 of the library above and version 0 below.
     * tests/*.c
     Added calls to check_log_buffer () after each call to sf_open_XXX ().
 
-2001-05-29  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-05-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c src/wav_ms_adpcm.c src/wav_gsm610.c
     Major rehack of header writing using psf_binheader_writef ().
 
-2001-05-28  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-05-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c src/wav_ima_adpcm.c
     Major rehack of header writing using psf_binheader_writef ().
 
-2001-05-27  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-05-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Changed return type of get_encoding_str () to prevent compiler warnings on
@@ -2581,7 +4060,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/aiff.c src/au.c
     Major rehack of header writing using psf_binheader_writef ().
 
-2001-05-25  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-05-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.h src/common.c
     Added comments.
@@ -2597,7 +4076,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     Changed name of internal header manipulation function psf_hsetf () to
     psf_header_setf ().
 
-2001-05-24  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-05-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/nist.c
     Fixed reading and writing of sample_byte_format header. "01" means little
@@ -2615,7 +4094,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * doc/new_file_type.HOWTO
     New file to document the addition of new file types to libsndfile.
 
-2001-05-23  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-05-23  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/nist.c
     New file for reading/writing Sphere NIST audio file format.
@@ -2635,7 +4114,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * tests/write_read_test.c
     Added tests for supported NIST files.
 
-2001-05-22  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-05-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/write_read_test.c
     Added tests for little endian AIFC files.
@@ -2644,7 +4123,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     Minor re-working of aiff_open_write ().
     Added write support for little endian PCM encoded AIFC files.
 
-2001-05-13  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-05-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/aiff.c
     Minor re-working of aiff_open_read ().
@@ -2653,43 +4132,43 @@ This is the boundary between version 1 of the library above and version 0 below.
     and a working patch.
     The patch was not used as is but gave a good guide as to what to do.
 
-2001-05-11  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-05-11  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.h
     Fixed comments about endian-ness of WAV and AIFF files. Guillaume Lessard
     pointed out the error.
 
-2001-04-23  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-04-23  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * examples/make_sine.c
     Re-write of this example using sample rate and required frequency in Hz.
 
-2001-02-11  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2001-02-11  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Fixed bug that prevented known file types from being read as RAW PCM data.
 
-2000-12-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-12-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/aiff.c
     Added handing of COMT chunk.
 
-2000-11-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-11-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * examples/sfconvert.c
     Fixed bug in normalisatio code. Pointed out by Johnny Wu.
 
-2000-11-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-11-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * Win32/config.h
     Fixed the incorrect setting of HAVE_ENDIAN_H parameter. Win32 only issue.
 
-2000-10-27  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-10-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/Makefile.am
     Added -lm for write_read_test_LDADD.
 
-2000-10-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-10-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c src/au.c
     Fixed bug which prevented writing of G723 24kbps AU files.
@@ -2701,12 +4180,12 @@ This is the boundary between version 1 of the library above and version 0 below.
     Added --disable-gcc-pipe option for DJGPP compiler (gcc on MS-DOS) which
     doesn't allow gcc -pipe option.
 
-2000-09-03  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-09-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/ulaw.c src/alaw.c src/wav_imaadpcm.c src/msadpcm.c src/wav_gsm610.c
     Fixed normailsation bugs shown up by new double_test program.
 
-2000-08-31  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-08-31  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/pcm.c
     Fixed bug in normalisation code (spotted by Steve Lhomme).
@@ -2715,29 +4194,29 @@ This is the boundary between version 1 of the library above and version 0 below.
     New file to test scaled and unscaled sf_read_double() and sf_write_double()
     functions.
 
-2000-08-28  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-08-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * COPYING
     Changed to the LGPL COPYING file (spotted by H. S. Teoh).
 
-2000-08-21  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-08-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.h
     Removed prototype of unimplemented function sf_get_info(). Added prototype
     for sf_error_number() Thanks to Sigbjørn Skjæret for spotting these.
 
-2000-08-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-08-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/newpcm.h
     New file to contain a complete rewrite of the PCM data handling.
 
-2000-08-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-08-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Fixed a leak of FILE* pointers in sf_open_write(). Thanks to Sigbjørn
     Skjæret for spotting this one.
 
-2000-08-13  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-08-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/au_g72x.c src/G72x/g72x.c
     Added G723 encoded AU file support.
@@ -2745,15 +4224,15 @@ This is the boundary between version 1 of the library above and version 0 below.
     * tests/lossy_comp_test.c
     Added tests for G721 and G723 encoded AU files.
 
-2000-08-06  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-08-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * all files
     Changed the license to LGPL. Albert Faber who had copyright on
     Win32/unistd.h gave his permission to change the license on that file. All
-    other files were either copyright erikd AT zipworld DOT com DOT au or copyright
+    other files were either copyright erikd AT mega-nerd DOT com or copyright
     under a GPL/LGPL compatible license.
 
-2000-08-06  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-08-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/lossy_comp_test.c
     Fixed incorrect error message.
@@ -2765,7 +4244,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     Replaced this file with a new one which gives a full explanation
     of how to build libsndfile under Win32. Thanks to Mike Ricos.
 
-2000-08-05  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-08-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/*.[ch]
     Removed double leading underscores from the start of all variable and
@@ -2775,7 +4254,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/au_g72x.c src/G72x/*
     Continued work on G721 encoded AU files.
 
-2000-07-12  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-07-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/G72x/*
     New files for reading/writing G721 and G723 ADPCM audio. These files
@@ -2787,12 +4266,12 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/au_g72x.c
     New file for G721 encoded AU files.
 
-2000-07-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-07-08  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * libsndfile.spec.in
     Added a spec file for making RPMs. Thanks to Josh Green for supplying this.
 
-2000-06-28  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-06-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c src/sndfile.h
     Add checking for and handling of header-less u-law encoded AU/SND files.
@@ -2802,17 +4281,17 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/au.h
     New function for opening a headerless u-law encoded file for read.
 
-2000-06-04  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-06-04  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/paf.c
     Add checking for files shorter than minimal PAF file header length.
 
-2000-06-02  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-06-02  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/write_read_test.c
     Added extra sf_perror() calls when sf_write_XXXX fails.
 
-2000-05-29  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-05-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.c
     Modified usage of va_arg() macro to work correctly on PowerPC
@@ -2825,13 +4304,13 @@ This is the boundary between version 1 of the library above and version 0 below.
     * tests/read_seek_test.c
     Added extra debugging for when tests fail.
 
-2000-05-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-05-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Fixed bug in GSM 6.10 handling for big-endian machines. Thanks
     to Sigbjørn Skjæret for reporting this.
 
-2000-04-25  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-04-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c src/wav.c src/wav_gsm610.c
     Finallised writing of GSM 6.10 WAV files.
@@ -2842,63 +4321,63 @@ This is the boundary between version 1 of the library above and version 0 below.
     * examples/sfinfo.c
     Fixed incorrect format in printf() statement.
 
-2000-04-06  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-04-06  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.h.in
     Fixed comments about sf_perror () and sf_error_str ().
 
-2000-03-14  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-03-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in
     Fixed --enable-justsrc option.
 
-2000-03-07  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-03-07  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * wav.c
     Fixed checking of bytespersec field of header. Still some weirdness
     with some files.
 
-2000-03-05  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-03-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/lossy_comp_test.c
     Added option to test PCM WAV files (sanity check).
     Fixed bug in sf_seek() tests.
 
-2000-02-29  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-02-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c src/wav.c
     Minor changes to allow writing of GSM 6.10 WAV files.
 
-2000-02-28  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-02-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in Makefile.am src/Makefile.am
     Finally got around to figuring out how to build a single library from
     multiple source directories.
     Reading GSM 6.10 files now seems to work.
 
-2000-01-03  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+2000-01-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Added more error reporting in read_fmt_chunk().
 
-1999-12-21  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-12-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * examples/sfinfo.c
     Modified program to accept multiple filenames from the command line.
 
-1999-11-27  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-11-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav_ima_adpcm.c
     Moved code around in preparation to adding ability to read/write IMA ADPCM
     encoded AIFF files.
 
-1999-11-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-11-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.c
     Fixed put_int() and put_short() macros used by _psf_hprintf() which were
     causing seg. faults on Sparc Solaris.
 
-1999-11-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-11-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.c
     Added string.h to includes. Thanks to Sigbjxrn Skjfret.
@@ -2907,27 +4386,27 @@ This is the boundary between version 1 of the library above and version 0 below.
     Fixed __svx_close() function to ensure FORM and BODY chunks are correctly
     set.
 
-1999-10-01  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-10-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/au.c
     Fixed handling of incorrect size field in AU header on read. Thanks to
     Christoph Lauer for finding this problem.
 
-1999-09-28  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-09-28  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/aiff.c
     Fixed a bug with incorrect SSND chunk length being written. This also lead
     to finding an minor error in AIFF header parsing. Thanks to Dan Timis for
     pointing this out.
 
-1999-09-24  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-09-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/paf.c
     Fixed a bug with reading and writing 24 bit stereo PAF files. This problem
     came to light when implementing tests for the new functions which operate
     in terms of frames rather than items.
 
-1999-09-23  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-09-23  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Modified file type detection to use first 12 bytes of file rather than
@@ -2939,12 +4418,12 @@ This is the boundary between version 1 of the library above and version 0 below.
     rather than items. This was originally suggested by Maurizio Umberto
     Puxeddu.
 
-1999-09-22  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-09-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/svx.c
     Finished off implementation of write using __psf_hprintf().
 
-1999-09-21  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-09-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/common.h
     Added a buffer to SF_PRIVATE for writing the header. This is required
@@ -2956,7 +4435,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     Implemented __psf_hprintf() function. This is an internal function
     which is documented briefly just above the code.
 
-1999-09-05  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-09-05  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Fixed a bug in sf_write_raw() where it was returning incorrect values
@@ -2975,7 +4454,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/svx.c
     Started implementing writing of files.
 
-1999-08-04  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-08-04  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/svx.c
     New file for reading/writing 8SVX and 16SVX files.
@@ -2986,7 +4465,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/aiff.c
     Fixed header parsing when unknown chunk is found.
 
-1999-08-01  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-08-01  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/paf.c
     New file for reading/writing Ensoniq PARIS audio file format.
@@ -2998,12 +4477,12 @@ This is the boundary between version 1 of the library above and version 0 below.
     Added stuff for sf_get_lib_version() function.
 
 
-1999-07-31  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-07-31  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.h MacOS/config.h
     Fixed minor MacOS configuration issues.
 
-1999-07-30  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-07-30  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * MacOS/
     Added a new directory for the MacOS config.h file and the
@@ -3013,12 +4492,12 @@ This is the boundary between version 1 of the library above and version 0 below.
     Fixed calculation of datalength when reading SSND chunk. Thanks to
     Sigbjørn Skjæret for pointing out this error.
 
-1999-07-29  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-07-29  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c src/sndfile.h src/raw.c
     Further fixing of #includes for MacOS.
 
-1999-07-25  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-07-25  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c src/aiff.c
     Added call to ferror () in main header parsing loop of __XXX_open_read
@@ -3053,7 +4532,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     New file with instructions for building libsndfile under MacOS. Thanks
     to Ben "Jacobs" for supplying these instructions.
 
-1999-07-24  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-07-24  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in
     Removed sndfile.h from generated file list as there were no longer
@@ -3067,12 +4546,12 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/sndfile.c
     Added support for raw header-less PCM files.
 
-1999-07-22  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-07-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * examples/sfinfo.c
     Removed options so the sfinfo program always prints out all the information.
 
-1999-07-19  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-07-19  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/alaw.c
     New file for A-law encoding (similar to u-law).
@@ -3083,18 +4562,18 @@ This is the boundary between version 1 of the library above and version 0 below.
     * tests/lossy_comp_test.c
     Added tests for a-law encoded WAV, AU and AULE files.
 
-1999-07-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-07-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c src/au.c
     Removed second "#include <unistd.h>". Thanks to Ben "Jacobs" for pointing
     this out.
 
-1999-07-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-07-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/ulaw_test.c
     New test program to test the u-law encode/decode lookup tables.
 
-1999-07-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-07-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.h
     Made corrections to comments on the return values from sf_seek ().
@@ -3102,7 +4581,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/sndfile.c
     Fixed boundary condition checking bug and accounting bug in sf_read_raw ().
 
-1999-07-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-07-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/au.c src/ulaw.c
     Finished implementation of u-law encoded AU files.
@@ -3115,12 +4594,12 @@ This is the boundary between version 1 of the library above and version 0 below.
     will now be used to test Ulaw and Alaw encoding as well as APDCM.
     Added tests for Ulaw encoded WAV files.
 
-1999-07-14  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-07-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/adpcm_test.c
     Initialised amp variable in gen_signal() to remove compiler warning.
 
-1999-07-12  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-07-12  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/aiff.c
     In __aiff_open_read () prevented fseek()ing beyond end of file which
@@ -3130,7 +4609,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     *src/wav.c
     Fixed as above in __wav_open_read ().
 
-1999-07-01    Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-07-01    Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav_ms_adpcm.c
     Implemented MS ADPCM encoding. Code cleanup of decoder.
@@ -3142,12 +4621,12 @@ This is the boundary between version 1 of the library above and version 0 below.
     Fixed incorrect parameter in call to srate2blocksize () from
     __ima_writer_init ().
 
-1999-06-23  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-06-23  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/read_seek_test.c
     Added test for 8 bit AIFF files.
 
-1999-06-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-06-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/write_read_test.c
     Removed test for IMA ADPCM WAV files which is now done in adpcm_test.c
@@ -3158,7 +4637,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/*.c tests/*.c examples/*.c
     Fixed all warnings resulting from use of -Wconversion.
 
-1999-06-17  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-06-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Added fact chunk handling on read and write for all non WAVE_FORMAT_PCM
@@ -3174,13 +4653,13 @@ This is the boundary between version 1 of the library above and version 0 below.
     adpcm_test_double.
     Now have full testing of IMA ADPCM WAV file read, write and seek.
 
-1999-06-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-06-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav_float.c
     Fixed function prototype for x86f2d_array () which was causing ocassional
     seg. faults on Sparc Solaris machines.
 
-1999-06-14  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-06-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/aiff.c
     Fixed bug in __aiff_close where the length fields in the header were
@@ -3189,14 +4668,14 @@ This is the boundary between version 1 of the library above and version 0 below.
     * tests/write_read_test.c
     Modified to detect the above bug in WAV, AIFF and AU files.
 
-1999-06-12    Erik de Castro Lopo     <erikd AT zipworld DOT com DOT au>
+1999-06-12    Erik de Castro Lopo     <erikd AT mega-nerd DOT com>
 
     * Win32/*
     Added a contribution from Albert Faber to allow libsndfile to compile
     under Win32 systems. libsndfile will now be used as part of LAME the
     the MPEG 1 Layer 3 encoder (http://internet.roadrunner.com/~mt/mp3/).
 
-1999-06-11    Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-06-11    Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in
     Changed to reflect previous changes.
@@ -3210,7 +4689,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     Fixed bug in __ima_write () whereby the length of the current block was
     calculated incorrectly. Thanks to Jongcheon Park for pointing this out.
 
-1999-03-27  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-03-27  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/*.c
     Changed all read/write/lseek function calls to fread/fwrite/
@@ -3224,19 +4703,19 @@ This is the boundary between version 1 of the library above and version 0 below.
     Add new test to check all error values have an associated error
     string. This will avoid embarrassing real world core dumps.
 
-1999-03-23  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-03-23  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c src/aiff.c
     Added handling for unknown chunk markers in the file.
 
-1999-03-22  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-03-22  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Filled in missing error strings in SndfileErrors array. Missing entries
     can cause core dumps when calling sf_error-str (). Thanks to Sam
     <mrsam at-sign geocities.com> for finding this problem.
 
-1999-03-21  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-03-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav_ima_adpcm.c
     Work on wav_ms_adpcm.c uncovered a bug in __ima_read () when reading
@@ -3247,7 +4726,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/wav_ms_adpcm.c
     Decoder working correctly.
 
-1999-03-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-03-18  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * configure.in Makefile.am
     Added --enable-justsrc configuration variable sent by Sam
@@ -3259,7 +4738,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     This uncovered __ima_seek () bug due to pima->blockcount being set
     before calling __ima_init_block ().
 
-1999-03-17  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-03-17  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Started implementing MS ADPCM decoder.
@@ -3267,14 +4746,14 @@ This is the boundary between version 1 of the library above and version 0 below.
     encoder seems to add an extra byte. Why not just give an even data
     length?
 
-1999-03-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-03-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Split code out of wav.c to create wav_float.c and wav_ima_adpcm.c.
     This will make it easier to add and debug other kinds of WAV files
     in future.
 
-1999-03-14  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-03-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/
     Added adpcm_test.c which implements test functions for
@@ -3283,17 +4762,17 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/wav.c
     Fixed many bugs in IMA ADPCM encoder and decoder.
 
-1999-03-11  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-03-11  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Finished implementing IMA ADPCM encoder and decoder (what a bitch!).
 
-1999-03-03  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-03-03  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/wav.c
     Started implementing IMA ADPCM decoder.
 
-1999-03-02  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-03-02  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/sndfile.c
     Fixed bug where the sf_read_XXX functions were returning a
@@ -3306,7 +4785,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     Added extra chunk to all test WAV files to test that reading
     stops at end of 'data' chunk.
 
-1999-02-21  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-02-21  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/write_read_test.c
     Added tests for little DEC endian AU files.
@@ -3314,7 +4793,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/au.c
     Add handling for DEC format little endian AU files.
 
-1999-02-20  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-02-20  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/aiff.c src/au.c src/wav.c
     Add __psf_sprintf calls during header parsing.
@@ -3331,7 +4810,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * src/aiff.c
     On write, set blocksize in SSND chunk to zero like everybody else.
 
-1999-02-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-02-16  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/pcm.c:
     Fixed bug in let2s_array (cptr was not being initialised).
@@ -3340,13 +4819,13 @@ This is the boundary between version 1 of the library above and version 0 below.
     Fixed bug in sf_read_raw and sf_write_raw. sf_seek should
     now work when using these functions.
 
-1999-02-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-02-15  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/write_read_test.c:
     Force test_buffer array to be double aligned. Sparc Solaris
     requires this.
 
-1999-02-14  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-02-14  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/pcm.c:
     Fixed a bug which was causing errors in the reading
@@ -3355,7 +4834,7 @@ This is the boundary between version 1 of the library above and version 0 below.
     * doc/api.html
     Finished of preliminary documentaion.
 
-1999-02-13  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+1999-02-13  Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * src/aiff.c:
     Changed reading of 'COMM' chunk to avoid reading an int

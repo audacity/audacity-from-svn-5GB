@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,6 @@
 */
 
 #include	<stdio.h>
-#include	<unistd.h>
 #include	<fcntl.h>
 #include	<string.h>
 #include	<ctype.h>
@@ -71,7 +70,7 @@ static sf_count_t txw_seek (SF_PRIVATE *psf, int mode, sf_count_t offset) ;
 ** Public functions.
 */
 
-/* 
+/*
  * ftp://ftp.t0.or.at/pub/sound/tx16w/samples.yamaha
  * ftp://ftp.t0.or.at/pub/sound/tx16w/faq/tx16w.tec
  * http://www.t0.or.at/~mpakesch/tx16w/
@@ -81,14 +80,14 @@ static sf_count_t txw_seek (SF_PRIVATE *psf, int mode, sf_count_t offset) ;
  *  nulls[10],
  *  dummy_aeg[6]
  *  format 0x49 = looped, 0xC9 = non-looped
- *  sample_rate 1 = 33 kHz, 2 = 50 kHz, 3 = 16 kHz 
- *  atc_length[3] if sample rate 0, [2]&0xfe = 6: 33kHz, 0x10:50, 0xf6: 16, 
+ *  sample_rate 1 = 33 kHz, 2 = 50 kHz, 3 = 16 kHz
+ *  atc_length[3] if sample rate 0, [2]&0xfe = 6: 33kHz, 0x10:50, 0xf6: 16,
  *					depending on [5] but to heck with it
  *  rpt_length[3] (these are for looped samples, attack and loop lengths)
  *  unused[2]
  */
 
-typedef struct 
+typedef struct
 {	unsigned char	format, srate, sr2, sr3 ;
 	unsigned short	srhash ;
 	unsigned int	attacklen, repeatlen ;
@@ -109,12 +108,12 @@ txw_open	(SF_PRIVATE *psf)
  	if (psf_fseek (psf, psf->dataoffset, SEEK_SET) != psf->dataoffset)
 		return SFE_BAD_SEEK ;
 
-	psf->read_short  = txw_read_s ;
-	psf->read_int    = txw_read_i ;
-	psf->read_float  = txw_read_f ;
-	psf->read_double = txw_read_d ;
+	psf->read_short		= txw_read_s ;
+	psf->read_int		= txw_read_i ;
+	psf->read_float		= txw_read_f ;
+	psf->read_double	= txw_read_d ;
 
-	psf->new_seek = txw_seek ;
+	psf->seek = txw_seek ;
 
 	return 0 ;
 } /* txw_open */
@@ -130,7 +129,7 @@ txw_read_header	(SF_PRIVATE *psf)
 	memset (&txwh, 0, sizeof (txwh)) ;
 	memset (psf->buffer, 0, sizeof (psf->buffer)) ;
 	psf_binheader_readf (psf, "pb", 0, psf->buffer, 16) ;
-	
+
 	if (memcmp (psf->buffer, "LM8953\0\0\0\0\0\0\0\0\0\0", 16) != 0)
 		return ERROR_666 ;
 
@@ -207,7 +206,7 @@ txw_read_header	(SF_PRIVATE *psf)
 		psf_log_printf (psf, " Sample Rate : %d (0x%X) => %d\n", txwh.srate, txwh.srhash, psf->sf.samplerate) ;
 	else
 		psf_log_printf (psf, " Sample Rate : %d => %d\n", txwh.srate, psf->sf.samplerate) ;
-	
+
 	if (txwh.format == TXW_LOOPED)
 	{	psf_log_printf (psf, " Attack Len  : %d\n", txwh.attacklen) ;
 		psf_log_printf (psf, " Repeat Len  : %d\n", txwh.repeatlen) ;
@@ -215,16 +214,16 @@ txw_read_header	(SF_PRIVATE *psf)
 
 	psf->dataoffset = TXW_DATA_OFFSET ;
 	psf->datalength = psf->filelength - TXW_DATA_OFFSET ;
-	psf->sf.frames  = 2 * psf->datalength / 3 ;
+	psf->sf.frames	= 2 * psf->datalength / 3 ;
 
 
 	if (psf->datalength % 3 == 1)
-		psf_log_printf (psf, "*** File seems to be truncated, %d extra bytes.\n", 
+		psf_log_printf (psf, "*** File seems to be truncated, %d extra bytes.\n",
 			(int) (psf->datalength % 3)) ;
 
 	if (txwh.attacklen + txwh.repeatlen > psf->sf.frames)
-		psf_log_printf (psf, "*** File has been truncated.\n") ; 
-	
+		psf_log_printf (psf, "*** File has been truncated.\n") ;
+
 	psf->sf.format = SF_FORMAT_TXW | SF_FORMAT_PCM_16 ;
 	psf->sf.channels = 1 ;
 	psf->sf.sections = 1 ;
@@ -233,7 +232,7 @@ txw_read_header	(SF_PRIVATE *psf)
 	return 0 ;
 } /* txw_read_header */
 
-static sf_count_t 
+static sf_count_t
 txw_read_s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 {	unsigned char	*ucptr ;
 	short			sample ;
@@ -262,7 +261,7 @@ txw_read_s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 	return total ;
 } /* txw_read_s */
 
-static sf_count_t 
+static sf_count_t
 txw_read_i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 {	unsigned char	*ucptr ;
 	short			sample ;
@@ -291,7 +290,7 @@ txw_read_i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 	return total ;
 } /* txw_read_i */
 
-static sf_count_t 
+static sf_count_t
 txw_read_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 {	unsigned char	*ucptr ;
 	short			sample ;
@@ -301,7 +300,7 @@ txw_read_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 
 	if (psf->norm_float == SF_TRUE)
 		normfact = 1.0 / 0x8000 ;
-	else 
+	else
 		normfact = 1.0 / 0x10 ;
 
 	bufferlen = sizeof (psf->buffer) / 3 ;
@@ -326,7 +325,7 @@ txw_read_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	return total ;
 } /* txw_read_f */
 
-static sf_count_t 
+static sf_count_t
 txw_read_d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 {	unsigned char	*ucptr ;
 	short			sample ;
@@ -336,7 +335,7 @@ txw_read_d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 
 	if (psf->norm_double == SF_TRUE)
 		normfact = 1.0 / 0x8000 ;
-	else 
+	else
 		normfact = 1.0 / 0x10 ;
 
 	bufferlen = sizeof (psf->buffer) / 3 ;
@@ -370,3 +369,10 @@ txw_seek (SF_PRIVATE *psf, int mode, sf_count_t offset)
 } /* txw_seek */
 
 #endif
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 4d0ba7af-b1c5-46b4-a900-7c6f59fd9a89
+*/
