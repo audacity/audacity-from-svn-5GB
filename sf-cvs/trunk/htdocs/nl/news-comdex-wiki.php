@@ -1,40 +1,43 @@
-<?php BoxTop(28 oktober 2003: COMDEX, Screenshots, Wiki, T-Shirts'); ?>
+<?php BoxTop('28 october 2003: COMDEX, Screenshots, Wiki, T-Shirts'); ?>
 
-We hebben een aantal fouten uit de laatste publieke testvrijgave kunnen herstellen en binnekort zullen we versie Audacity 1.2.0-pre3 vrijgeven, samen met de, eindelijk, VST Enabler.  In de tussentijd, hier wat ander nieuws:
+We hebben een aantal fouten uit the laatste publieke testvrijgave hersteld en over enkele dagen zullen we Audacity 1.2.0-pre3 vrijgeven waarin, eindelijk, de
+VST Enabler, is verwerkt. Tot aan dat moment, hier wat ander nieuws:
 
 <p>
-Audacity was genomineerd als een van de mogelijke open-source
-programma's die <a href="http://www.oreilly.com/">O'Reilly</a> naar de 
-<a href="http://www.comdex.com/">COMDEX</a> in Las Vegas gestuurd kon worden tussen 17-20 november.  <a href="http://www.oreillynet.com/contest/comdex/"
->Klik hier</a> voor meer informatie en het stemmen op
-Audacity (gratis registratie bij O'Reilly benodigd om te kunnen stemmen).
-het stemmen eindigt op 31 oktober.
+Audacity was genomineerd als een van de open-source
+programmas welke <a href="http://www.oreilly.com/">O'Reilly</a> zou
+sturen naar de <a href="http://www.comdex.com/">COMDEX</a> in Las Vegas,
+de 17-20 van november.  <a href="http://www.oreillynet.com/contest/comdex/"
+>Klik hier</a> voor meer informatie en voor het stemmen op
+Audacity (gratis registratie bij O'Reilly benodigd voor het stemmen).
+De verkiezing eindigt op 31 october 2003.
 </p>
 
 <p>
-De <a href="http://audacityteam.org/wiki/">Audacity Wiki</a> is een publiekelijk bewerkbare website over allerlei aan Audacity gerelateerde
-zaken. Momenteel bevat het tips, documentatie en links, plus een plaats waar toekomstige nieuwtjes aangevraagd kunnen worden.  Het leuke is, dat iedereen makkelijk mee kan doen - je hoeft alleen maar een link onderop de pagina aan
-te klikken om je eigen opmerking te plaatsen of te bewerken.  We hopen dat
-je dit een leuke en behulpzame bron zult vinden.
+De <a href="http://audacityteam.org/wiki/">Audacity Wiki</a> is een
+publiekelijk bewerkbare website over Audacity gerelateerde zaken. Momenteel
+bevat het tips, documentatie, links en aanvragen van toekomstige functies. Het leukste is, dat het voor iedereen gemakkelijk is om mee te doen - je hoeft alleen maar op een link onderaan de pagina te klikken om je eigen bijdrage te
+plaatsen of te bewerken. We hopen dat je dit een leuke en waardevolle
+bron zult vinden.
 </p>
 
 <p>
-Er zijn nu <a href="http://audacityteam.org/tshirt.php">Audacity T-Shirts</a> verkrijgbaar als dank voor een ieder die heeft meegewerkt.
+Er zijn nu <a href="http://audacityteam.org/tshirt.php">Audacity T-Shirts</a> beschikbaar als dank voor alle mensen die hebben bijgedragen aan Audacity.
 </p>
 
 <p>
 Zowel de <a href="http://audacityteam.org/wiki/">Wiki</a> en de
-<a href="http://audacityteam.org/tshirt.php">T-Shirt aanbieding</a>
-zijn op een nieuwe website te vinden,
+<a href="http://audacityteam.org/tshirt.php">T-Shirt Offer</a>
+zijn bereikbaar op een nieuwe website,
 <a href="http://audacityteam.org/">AudacityTeam.org</a>,
-welke we opgezet hebben voor extra inhoud betreffende Audacity en onderwerpen die gerelateerd zijn aan het Audacity ontwikkelteam, en zowel over Audacity in het algemeen.
+die door ons is opgezet voor extra inhoud betreffende Audacity en onderwerpen
+gerelateerd aan het Audacity development team in tegenstelling tot Audacity in het algemeen.
 </p>
 
 <p>
-Kom snel terug voor Audacity 1.2.0-pre3. Als je de laatste tijd, of nooit,
-een beta-versie of pre-uitgave van Audacity hebt uitgeprobeerd, neem dan
-eens een kijkje bij onze nieuwe en
-geupdate <a href="http://audacity.sourceforge.net/screenshots.php"
+Kom snel terug voor Audacity 1.2.0-pre3.  Als je nog nooit een
+beta of prerelease versie van Audacity hebt gebruikt, bekijk dan eens onze
+ge-update <a href="http://audacity.sourceforge.net/screenshots.php"
 >Screenshots</a>. 
 </p>
 
