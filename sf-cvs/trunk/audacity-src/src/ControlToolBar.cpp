@@ -118,7 +118,7 @@ void ControlToolBar::InitializeControlToolBar()
 
    MakeButtons();
 
-#if wxVERSION_NUMBER < 233
+#if wxVERSION_NUMBER < 2303
    wxImage *sliderOriginal = new wxImage(wxBitmap(Slider));
    wxImage *thumbOriginal = new wxImage(wxBitmap(SliderThumb));
 #else
@@ -283,7 +283,7 @@ wxImage *ControlToolBar::MakeToolImage(wxImage * tool,
 AButton *ControlToolBar::MakeTool(const char **tool, const char **alpha,
                                   wxWindowID id, int left, int top)
 {
-#if wxVERSION_NUMBER < 233
+#if wxVERSION_NUMBER < 2303
    wxImage *ctr = new wxImage(wxBitmap(tool));
    wxImage *mask = new wxImage(wxBitmap(alpha));
 #else
@@ -335,7 +335,7 @@ AButton *ControlToolBar::MakeButton(char const **foreground,
 
 void ControlToolBar::MakeButtons()
 {
-#if wxVERSION_NUMBER < 233
+#if wxVERSION_NUMBER < 2303
    wxImage *upOriginal = new wxImage(wxBitmap(UpButton));
    wxImage *downOriginal = new wxImage(wxBitmap(DownButton));
    wxImage *hiliteOriginal = new wxImage(wxBitmap(HiliteButton));

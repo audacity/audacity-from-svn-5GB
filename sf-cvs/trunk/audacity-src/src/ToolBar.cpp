@@ -343,7 +343,7 @@ AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
    // xoff          x-offset to place icon pixmaps at, with respect to background image
    // yoff          y-offset to place icon pixmaps at, with respect to background image
 
-#if wxVERSION_NUMBER < 233
+#if wxVERSION_NUMBER < 2303
    wxImage * color = new wxImage(wxBitmap(foreground));
    wxImage * color_disabled = new wxImage(wxBitmap(disabledfg));
    wxImage * mask = new wxImage(wxBitmap(alpha));
