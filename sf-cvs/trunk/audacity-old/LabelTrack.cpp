@@ -91,8 +91,8 @@ void LabelTrack::Draw(wxDC &dc, wxRect &r, double h, double pps,
 	int x = r.x + (int)((mLabels[i]->t - h)*pps);
 	int y = r.y;
 	int height = r.height;
-    
-    if (x > r.x && x < r.x + r.width) {
+
+    if (x >= r.x && x < r.x + r.width) {
 
 	  if (x < nextx && i != mSelIndex) {
 		// Draw flag obscured by the previous label
@@ -254,16 +254,23 @@ void LabelTrack::Import(wxTextFile& in)
 {
   wxString currentLine;
   int i, len;
+  int index, lines;
   wxString s;
   wxString title;
   double t;
 
-  for(;;) {
-	currentLine = in.GetNextLine();
+  lines = in.GetLineCount();
+
+  mLabels.Clear();
+  mLabels.Alloc(lines);
+
+  for(index=0; index<lines; index++) {
+	currentLine = in.GetLine(index);
+
 	len = currentLine.Length();
 	if (len==0)
 	  return;
-	
+
 	i = 0;
 	while(i<len && currentLine[i]!=' ' && currentLine[i]!='\t')
 	  i++;
