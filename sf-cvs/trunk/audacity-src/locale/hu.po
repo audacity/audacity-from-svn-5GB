@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacity Hungarian v1.0\n"
-"POT-Creation-Date: 2002-11-06 00:01-0800\n"
+"POT-Creation-Date: 2002-11-09 15:20-0800\n"
 "PO-Revision-Date: 2002-06-22 16:08+0100\n"
 "Last-Translator: Jozsef Tamas Herczeg <info@soft-trans.hu>\n"
 "Language-Team: Soft-Trans Bt. <info@soft-trans.hu>\n"
@@ -632,7 +632,7 @@ msgstr ""
 "Az Audacity nem ismerte fel ennek a fájlnak a típusát.\n"
 "Szeretné megpróbálni az importálást nyers PCM audió adatként?"
 
-#: ../src/export/ExportMP3.cpp:496
+#: ../src/export/ExportMP3.cpp:510 ../src/export/ExportMP3.cpp:797
 msgid ""
 "Audacity does not export MP3 files directly, but instead uses LAME, an MP3 "
 "exporting library available separately.  See the documentation for more "
@@ -646,7 +646,7 @@ msgstr ""
 "\n"
 "Szeretné most megadni a LameLib helyét?"
 
-#: ../src/export/ExportMP3.cpp:726
+#: ../src/export/ExportMP3.cpp:1027
 msgid ""
 "Audacity does not export MP3 files directly, but instead uses the\n"
 "freely available LAME library to handle MP3 file encoding.  You must\n"
@@ -788,7 +788,7 @@ msgstr "Mély frekvenciák erõsítése"
 
 #: ../src/Tags.cpp:606 ../src/effects/Amplify.cpp:356
 #: ../src/effects/AvcCompressor.cpp:704 ../src/effects/BassBoost.cpp:315
-#: ../src/effects/Filter.cpp:443 ../src/effects/Phaser.cpp:537
+#: ../src/effects/Filter.cpp:444 ../src/effects/Phaser.cpp:537
 #: ../src/effects/ToneGen.cpp:346 ../src/effects/Wahwah.cpp:528
 #: ../src/effects/ladspa/LadspaEffect.cpp:448
 #: ../src/effects/nyquist/Nyquist.cpp:568 ../src/import/ImportRaw.cpp:907
@@ -869,7 +869,7 @@ msgstr "Tallózás..."
 msgid "Cleaning up temporary files..."
 msgstr "Ideiglenes fájlok rendbetétele..."
 
-#: ../src/Benchmark.cpp:213 ../src/effects/Filter.cpp:434
+#: ../src/Benchmark.cpp:213 ../src/effects/Filter.cpp:435
 #: ../src/prefs/KeyConfigPrefs.cpp:99
 msgid "Clear"
 msgstr "Törlés"
@@ -916,7 +916,7 @@ msgid "Click to Zoom In, Shift-Click to Zoom Out"
 msgstr "Kattintás: nagyítás, Shift+kattintás: kicsinyítés"
 
 #: ../src/Benchmark.cpp:218 ../src/FreqWindow.cpp:120 ../src/commands.h:215
-#: ../src/effects/NoiseRemoval.cpp:408
+#: ../src/effects/NoiseRemoval.cpp:409
 msgid "Close"
 msgstr "Bezárás"
 
@@ -965,7 +965,7 @@ msgstr "Tömörítõ..."
 msgid "Copy"
 msgstr "Másolás"
 
-#: ../src/export/ExportMP3.cpp:894
+#: ../src/export/ExportMP3.cpp:1195
 msgid "Could not open MP3 encoding library!"
 msgstr "Nem lehet megnyitni az MP3 kódoló könyvtárat!"
 
@@ -1288,7 +1288,7 @@ msgstr "ID3 Tag szerkesztése (MP3 exportáláshoz)"
 msgid "Edit ID3 Tags..."
 msgstr "ID3 Tag szerkesztése..."
 
-#: ../src/export/ExportMP3.cpp:918
+#: ../src/export/ExportMP3.cpp:1219
 msgid "Edit the ID3 tags for the MP3 file"
 msgstr "Az MP3 fájl ID3 Tagjének szerkesztése"
 
@@ -1362,7 +1362,7 @@ msgstr "Hiba"
 msgid "Error (file may not have been written): %s"
 msgstr "Hiba (lehet, hogy a fájl írásvédett): %s"
 
-#: ../src/AudioIO.cpp:278
+#: ../src/AudioIO.cpp:281
 msgid ""
 "Error opening audio device.\n"
 "(Change the device in the Preferences dialog.)"
@@ -1407,7 +1407,7 @@ msgstr "Várt hossz %d, sávhossz %d.\n"
 msgid "Expected to read %d samples, got %d samples.\n"
 msgstr "%d minta olvasásának várása, kapva %d minta.\n"
 
-#: ../src/export/ExportMP3.cpp:1007 ../src/export/ExportOGG.cpp:186
+#: ../src/export/ExportMP3.cpp:1308 ../src/export/ExportOGG.cpp:186
 #: ../src/export/ExportPCM.cpp:153
 msgid "Export"
 msgstr "Exportálás"
@@ -1476,7 +1476,7 @@ msgstr "A teljes projekt exportálása mint Ogg Vorbis"
 msgid "Exporting the entire project as a %s file"
 msgstr "A teljes projekt exportálása %s fájlként"
 
-#: ../src/export/ExportMP3.cpp:1004
+#: ../src/export/ExportMP3.cpp:1305
 msgid "Exporting the entire project as an mp3"
 msgstr "A teljes projekt exportálása mp3 fájlként"
 
@@ -1489,7 +1489,7 @@ msgstr "A kijelölt audió exportálása Ogg Vorbis fájlként"
 msgid "Exporting the selected audio as a %s file"
 msgstr "A kiválasztott audió exportálása %s fájlként"
 
-#: ../src/export/ExportMP3.cpp:1001
+#: ../src/export/ExportMP3.cpp:1302
 msgid "Exporting the selected audio as an mp3"
 msgstr "A kiválasztott audió exportálása MP3 fájlként"
 
@@ -1497,7 +1497,7 @@ msgstr "A kiválasztott audió exportálása MP3 fájlként"
 msgid "FFT Filter"
 msgstr "FFT szûrõ"
 
-#: ../src/effects/Filter.cpp:424
+#: ../src/effects/Filter.cpp:425
 msgid "FFT Filter by Dominic Mazzoni"
 msgstr "FFT szûrõ, készítette: Dominic Mazzoni"
 
@@ -1615,7 +1615,7 @@ msgstr ""
 msgid "Genre:"
 msgstr "Mûfaj:"
 
-#: ../src/effects/NoiseRemoval.cpp:371
+#: ../src/effects/NoiseRemoval.cpp:372
 msgid "Get Noise Profile"
 msgstr "Zajprofil készítése"
 
@@ -1803,7 +1803,7 @@ msgstr "Nagyítás bal kattintással, kicsinyítés jobb kattintással"
 msgid "Left=Zoom In, Right=Zoom Out, Middle=Normal"
 msgstr "Bal=Nagyítás, Jobb=Kicsinyítés, Középsõ=Normál"
 
-#: ../src/effects/NoiseRemoval.cpp:393
+#: ../src/effects/NoiseRemoval.cpp:394
 msgid "Less"
 msgstr "Kevés"
 
@@ -1910,7 +1910,7 @@ msgstr "Monó"
 msgid "Mono, "
 msgstr "Monó,"
 
-#: ../src/effects/NoiseRemoval.cpp:396
+#: ../src/effects/NoiseRemoval.cpp:397
 msgid "More"
 msgstr "Sok"
 
@@ -1990,7 +1990,7 @@ msgstr ""
 msgid "Noise Removal"
 msgstr "Zajszûrés"
 
-#: ../src/effects/NoiseRemoval.cpp:355
+#: ../src/effects/NoiseRemoval.cpp:356
 msgid "Noise Removal by Dominic Mazzoni"
 msgstr "Zajszûrõ, készítette Dominic Mazzoni"
 
@@ -2006,7 +2006,7 @@ msgstr "Nincs"
 msgid "Not SPECIFIED YET!"
 msgstr "MÉG nincs MEGADVA!"
 
-#: ../src/export/ExportMP3.cpp:901
+#: ../src/export/ExportMP3.cpp:1202
 msgid "Not a valid or supported MP3 encoding library!"
 msgstr "Érvénytelen vagy nem támogatott MP3 kódolási könyvtár!"
 
@@ -2080,7 +2080,7 @@ msgstr "Minõség"
 
 #: ../src/LangChoice.cpp:91 ../src/Tags.cpp:599 ../src/effects/Amplify.cpp:349
 #: ../src/effects/AvcCompressor.cpp:696 ../src/effects/BassBoost.cpp:308
-#: ../src/effects/Filter.cpp:439 ../src/effects/Phaser.cpp:531
+#: ../src/effects/Filter.cpp:440 ../src/effects/Phaser.cpp:531
 #: ../src/effects/Wahwah.cpp:522 ../src/effects/ladspa/LadspaEffect.cpp:443
 #: ../src/effects/nyquist/Nyquist.cpp:563 ../src/prefs/FileFormatPrefs.cpp:456
 #: ../src/prefs/PrefsDialog.cpp:88
@@ -2115,11 +2115,15 @@ msgstr "Tárgymutató..."
 msgid "Online Help..."
 msgstr "Online súgó..."
 
-#: ../src/export/ExportMP3.cpp:490
+#: ../src/export/ExportMP3.cpp:791
 msgid "Only LAMELib|LAMELib|Shared Libraries (*)|*"
 msgstr ""
 
-#: ../src/export/ExportMP3.cpp:721
+#: ../src/export/ExportMP3.cpp:504
+msgid "Only LameLib|LameLib|All Files (*)|*"
+msgstr ""
+
+#: ../src/export/ExportMP3.cpp:1022
 #, fuzzy
 msgid ""
 "Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries "
@@ -2328,7 +2332,7 @@ msgstr "Ismét"
 msgid "Remove"
 msgstr "Zaj eltávolítása"
 
-#: ../src/effects/NoiseRemoval.cpp:401
+#: ../src/effects/NoiseRemoval.cpp:402
 msgid "Remove Noise"
 msgstr "Zaj eltávolítása"
 
@@ -2479,7 +2483,7 @@ msgstr ""
 msgid "Select a MIDI file..."
 msgstr "MIDI fájl kijelölése..."
 
-#: ../src/effects/NoiseRemoval.cpp:365
+#: ../src/effects/NoiseRemoval.cpp:366
 msgid ""
 "Select a few seconds of just noise\n"
 "so Audacity knows what to filter out, then\n"
@@ -2493,7 +2497,7 @@ msgstr ""
 msgid "Select a text file containing labels..."
 msgstr "Címkéket tartalmazó szövegfájl kijelölése..."
 
-#: ../src/effects/NoiseRemoval.cpp:382
+#: ../src/effects/NoiseRemoval.cpp:383
 msgid ""
 "Select all of the audio you want filtered,\n"
 "choose how much noise you want filtered out,\n"
@@ -2662,7 +2666,7 @@ msgstr "'%s' %s sáv elcsúsztatva, %.02f másodperc"
 msgid "Solo"
 msgstr "Szóló"
 
-#: ../src/Prefs.cpp:102
+#: ../src/Prefs.cpp:103
 msgid ""
 "Some of your preferences were from an earlier version of Audacity and have "
 "been reset."
@@ -2731,11 +2735,11 @@ msgstr "Szakaszok:"
 msgid "Standard Autocorrelation"
 msgstr "Szokásos autokorreláció"
 
-#: ../src/effects/NoiseRemoval.cpp:362
+#: ../src/effects/NoiseRemoval.cpp:363
 msgid "Step 1"
 msgstr "1. lépés"
 
-#: ../src/effects/NoiseRemoval.cpp:379
+#: ../src/effects/NoiseRemoval.cpp:380
 msgid "Step 2"
 msgstr "2. lépés"
 
@@ -2783,12 +2787,12 @@ msgstr "A maximális frekvenciának egész számnak kell lennie"
 msgid "There are no label tracks to export."
 msgstr "Nincs exportálandó címke sáv"
 
-#: ../src/AudioIO.cpp:605
+#: ../src/AudioIO.cpp:609
 #, c-format
 msgid "There were %d buffer underruns, data was lost."
 msgstr "%d puffer aláfutás volt, az adatok elvesztek."
 
-#: ../src/AudioIO.cpp:611
+#: ../src/AudioIO.cpp:615
 #, c-format
 msgid "There were %d possibly repeated frames, last near %lf seconds."
 msgstr "%d ismételt keret volt, az utolsó %lf másodperc körül."
@@ -2897,7 +2901,7 @@ msgstr "Fájl levágása a kijelölésig"
 msgid "Unable to determine"
 msgstr "Megállapíthatatlan"
 
-#: ../src/export/ExportMP3.cpp:911 ../src/export/ExportOGG.cpp:45
+#: ../src/export/ExportMP3.cpp:1212 ../src/export/ExportOGG.cpp:45
 msgid "Unable to open target file for writing"
 msgstr "A célfájlt nem lehet megnyitni írásra"
 

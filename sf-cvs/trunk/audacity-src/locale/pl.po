@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.1\n"
-"POT-Creation-Date: 2002-11-06 00:01-0800\n"
+"POT-Creation-Date: 2002-11-09 15:20-0800\n"
 "PO-Revision-Date: 2002-09-18 11:37GMT\n"
 "Last-Translator: Sebastian Pacholski <inward@poczta.onet.pl>\n"
 "Language-Team: polish\n"
@@ -614,7 +614,7 @@ msgstr ""
 "Audacity nie rozpozna³o formatu tego pliku.\n"
 "Chcesz spróbowaæ importowaæ go jako PCM audio?"
 
-#: ../src/export/ExportMP3.cpp:496
+#: ../src/export/ExportMP3.cpp:510 ../src/export/ExportMP3.cpp:797
 msgid ""
 "Audacity does not export MP3 files directly, but instead uses LAME, an MP3 "
 "exporting library available separately.  See the documentation for more "
@@ -628,7 +628,7 @@ msgstr ""
 "\n"
 "Czy chcia³by¶ teraz okre¶liæ po³o¿enie LameLib?"
 
-#: ../src/export/ExportMP3.cpp:726
+#: ../src/export/ExportMP3.cpp:1027
 msgid ""
 "Audacity does not export MP3 files directly, but instead uses the\n"
 "freely available LAME library to handle MP3 file encoding.  You must\n"
@@ -766,7 +766,7 @@ msgstr "Wzmacnianie Niskich Czêstotliwo¶ci "
 
 #: ../src/Tags.cpp:606 ../src/effects/Amplify.cpp:356
 #: ../src/effects/AvcCompressor.cpp:704 ../src/effects/BassBoost.cpp:315
-#: ../src/effects/Filter.cpp:443 ../src/effects/Phaser.cpp:537
+#: ../src/effects/Filter.cpp:444 ../src/effects/Phaser.cpp:537
 #: ../src/effects/ToneGen.cpp:346 ../src/effects/Wahwah.cpp:528
 #: ../src/effects/ladspa/LadspaEffect.cpp:448
 #: ../src/effects/nyquist/Nyquist.cpp:568 ../src/import/ImportRaw.cpp:907
@@ -848,7 +848,7 @@ msgstr "Wybierz..."
 msgid "Cleaning up temporary files..."
 msgstr "Czyszczenie katalogu tymczasowego..."
 
-#: ../src/Benchmark.cpp:213 ../src/effects/Filter.cpp:434
+#: ../src/Benchmark.cpp:213 ../src/effects/Filter.cpp:435
 #: ../src/prefs/KeyConfigPrefs.cpp:99
 msgid "Clear"
 msgstr "Wyczy¶æ"
@@ -891,7 +891,7 @@ msgstr ""
 "Kliknij aby zwiêkszyæ podgl±d, Kliknij z klawiszem shift aby zmniejszyæ"
 
 #: ../src/Benchmark.cpp:218 ../src/FreqWindow.cpp:120 ../src/commands.h:215
-#: ../src/effects/NoiseRemoval.cpp:408
+#: ../src/effects/NoiseRemoval.cpp:409
 msgid "Close"
 msgstr "Zamknij"
 
@@ -940,7 +940,7 @@ msgstr "Kompresor..."
 msgid "Copy"
 msgstr "Kopiuj"
 
-#: ../src/export/ExportMP3.cpp:894
+#: ../src/export/ExportMP3.cpp:1195
 msgid "Could not open MP3 encoding library!"
 msgstr "Nie mo¿na otworzyæ biblioteki kodeka MP3!"
 
@@ -1259,7 +1259,7 @@ msgstr "Edytuj znaczniki ID3 (dla eksportu MP3)"
 msgid "Edit ID3 Tags..."
 msgstr "Edytuj znaczniki ID3..."
 
-#: ../src/export/ExportMP3.cpp:918
+#: ../src/export/ExportMP3.cpp:1219
 msgid "Edit the ID3 tags for the MP3 file"
 msgstr "Edytuj znaczniki ID3 dla pliku MP3"
 
@@ -1330,7 +1330,7 @@ msgstr "B³±d"
 msgid "Error (file may not have been written): %s"
 msgstr "B³±d (mo¿liwe ¿e plik nie zosta³ zapisany): %s"
 
-#: ../src/AudioIO.cpp:278
+#: ../src/AudioIO.cpp:281
 msgid ""
 "Error opening audio device.\n"
 "(Change the device in the Preferences dialog.)"
@@ -1375,7 +1375,7 @@ msgstr "Spodziewana d³. %d, d³. ¶cie¿ki %d.\n"
 msgid "Expected to read %d samples, got %d samples.\n"
 msgstr "Spodziewane %d próbek, uzyskano %d próbek.\n"
 
-#: ../src/export/ExportMP3.cpp:1007 ../src/export/ExportOGG.cpp:186
+#: ../src/export/ExportMP3.cpp:1308 ../src/export/ExportOGG.cpp:186
 #: ../src/export/ExportPCM.cpp:153
 msgid "Export"
 msgstr "Eksportuj"
@@ -1444,7 +1444,7 @@ msgstr "Eksportuj ca³y projekt jako Ogg Vorbis"
 msgid "Exporting the entire project as a %s file"
 msgstr "Eksportuj ca³y projekt jako plik %s"
 
-#: ../src/export/ExportMP3.cpp:1004
+#: ../src/export/ExportMP3.cpp:1305
 msgid "Exporting the entire project as an mp3"
 msgstr "Eksportuj ca³y projekt jako mp3"
 
@@ -1457,7 +1457,7 @@ msgstr "Eksportuj zaznaczenie jako Ogg Vorbis"
 msgid "Exporting the selected audio as a %s file"
 msgstr "Eksportuj zaznaczenie jako plik %s"
 
-#: ../src/export/ExportMP3.cpp:1001
+#: ../src/export/ExportMP3.cpp:1302
 msgid "Exporting the selected audio as an mp3"
 msgstr "Eksportuj zaznaczenie jako plik mp3"
 
@@ -1465,7 +1465,7 @@ msgstr "Eksportuj zaznaczenie jako plik mp3"
 msgid "FFT Filter"
 msgstr "Filtr FFT"
 
-#: ../src/effects/Filter.cpp:424
+#: ../src/effects/Filter.cpp:425
 msgid "FFT Filter by Dominic Mazzoni"
 msgstr ""
 
@@ -1584,7 +1584,7 @@ msgstr "Generowanie Tonu"
 msgid "Genre:"
 msgstr ""
 
-#: ../src/effects/NoiseRemoval.cpp:371
+#: ../src/effects/NoiseRemoval.cpp:372
 msgid "Get Noise Profile"
 msgstr "Pobierz próbkê szumu"
 
@@ -1772,7 +1772,7 @@ msgstr "Lewy klawisz myszki zwiêksza, Prawy klawisz myszki zmniejsza"
 msgid "Left=Zoom In, Right=Zoom Out, Middle=Normal"
 msgstr "Lewy=Zwiêksz, Prawy=Zmniejsz, ¦rodek=Widok normalny"
 
-#: ../src/effects/NoiseRemoval.cpp:393
+#: ../src/effects/NoiseRemoval.cpp:394
 msgid "Less"
 msgstr "Mniej"
 
@@ -1878,7 +1878,7 @@ msgstr ""
 msgid "Mono, "
 msgstr ""
 
-#: ../src/effects/NoiseRemoval.cpp:396
+#: ../src/effects/NoiseRemoval.cpp:397
 msgid "More"
 msgstr "Wiêcej"
 
@@ -1958,7 +1958,7 @@ msgstr ""
 msgid "Noise Removal"
 msgstr "Odszumiacz"
 
-#: ../src/effects/NoiseRemoval.cpp:355
+#: ../src/effects/NoiseRemoval.cpp:356
 msgid "Noise Removal by Dominic Mazzoni"
 msgstr ""
 
@@ -1974,7 +1974,7 @@ msgstr "¯aden"
 msgid "Not SPECIFIED YET!"
 msgstr "Jeszcze NIE OKRE¦LONY!"
 
-#: ../src/export/ExportMP3.cpp:901
+#: ../src/export/ExportMP3.cpp:1202
 msgid "Not a valid or supported MP3 encoding library!"
 msgstr "Nie ma aktualnej lub wspieranej biblioteki MP3!"
 
@@ -2046,7 +2046,7 @@ msgstr "Jako¶æ OGG:"
 
 #: ../src/LangChoice.cpp:91 ../src/Tags.cpp:599 ../src/effects/Amplify.cpp:349
 #: ../src/effects/AvcCompressor.cpp:696 ../src/effects/BassBoost.cpp:308
-#: ../src/effects/Filter.cpp:439 ../src/effects/Phaser.cpp:531
+#: ../src/effects/Filter.cpp:440 ../src/effects/Phaser.cpp:531
 #: ../src/effects/Wahwah.cpp:522 ../src/effects/ladspa/LadspaEffect.cpp:443
 #: ../src/effects/nyquist/Nyquist.cpp:563 ../src/prefs/FileFormatPrefs.cpp:456
 #: ../src/prefs/PrefsDialog.cpp:88
@@ -2081,11 +2081,16 @@ msgstr "Indeks pomocy w sieci..."
 msgid "Online Help..."
 msgstr "Pomoc w sieci..."
 
-#: ../src/export/ExportMP3.cpp:490
+#: ../src/export/ExportMP3.cpp:791
 msgid "Only LAMELib|LAMELib|Shared Libraries (*)|*"
 msgstr "Tylko LAMELib|LAMELib|Wspó³dzielone biblioteki (*)|*"
 
-#: ../src/export/ExportMP3.cpp:721
+#: ../src/export/ExportMP3.cpp:504
+#, fuzzy
+msgid "Only LameLib|LameLib|All Files (*)|*"
+msgstr "Tylko LAMELib|LAMELib|Wspó³dzielone biblioteki (*)|*"
+
+#: ../src/export/ExportMP3.cpp:1022
 msgid ""
 "Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries "
 "(*.dll)|*.dll|All Files (*.*)|*"
@@ -2295,7 +2300,7 @@ msgstr "Przywróæ"
 msgid "Remove"
 msgstr "Usuñ"
 
-#: ../src/effects/NoiseRemoval.cpp:401
+#: ../src/effects/NoiseRemoval.cpp:402
 msgid "Remove Noise"
 msgstr "Usuñ Szum"
 
@@ -2444,7 +2449,7 @@ msgstr ""
 msgid "Select a MIDI file..."
 msgstr "Zaznacz plik MIDI..."
 
-#: ../src/effects/NoiseRemoval.cpp:365
+#: ../src/effects/NoiseRemoval.cpp:366
 msgid ""
 "Select a few seconds of just noise\n"
 "so Audacity knows what to filter out, then\n"
@@ -2458,7 +2463,7 @@ msgstr ""
 msgid "Select a text file containing labels..."
 msgstr "Zaznacz plik tekstowy zawieraj±cy etykiety..."
 
-#: ../src/effects/NoiseRemoval.cpp:382
+#: ../src/effects/NoiseRemoval.cpp:383
 msgid ""
 "Select all of the audio you want filtered,\n"
 "choose how much noise you want filtered out,\n"
@@ -2626,7 +2631,7 @@ msgstr ""
 msgid "Solo"
 msgstr ""
 
-#: ../src/Prefs.cpp:102
+#: ../src/Prefs.cpp:103
 msgid ""
 "Some of your preferences were from an earlier version of Audacity and have "
 "been reset."
@@ -2696,11 +2701,11 @@ msgstr "Plany:"
 msgid "Standard Autocorrelation"
 msgstr ""
 
-#: ../src/effects/NoiseRemoval.cpp:362
+#: ../src/effects/NoiseRemoval.cpp:363
 msgid "Step 1"
 msgstr "Krok 1"
 
-#: ../src/effects/NoiseRemoval.cpp:379
+#: ../src/effects/NoiseRemoval.cpp:380
 msgid "Step 2"
 msgstr "Krok 2"
 
@@ -2748,12 +2753,12 @@ msgstr "Maksymalna czêstotliwo¶æ musi byæ liczb± sta³±"
 msgid "There are no label tracks to export."
 msgstr "Nie ma ¶cie¿ek z etykiet± do eksportu."
 
-#: ../src/AudioIO.cpp:605
+#: ../src/AudioIO.cpp:609
 #, c-format
 msgid "There were %d buffer underruns, data was lost."
 msgstr ""
 
-#: ../src/AudioIO.cpp:611
+#: ../src/AudioIO.cpp:615
 #, c-format
 msgid "There were %d possibly repeated frames, last near %lf seconds."
 msgstr ""
@@ -2858,7 +2863,7 @@ msgstr "Przytnij plik do zaznaczenia"
 msgid "Unable to determine"
 msgstr "Niezdolny do okre¶lenia"
 
-#: ../src/export/ExportMP3.cpp:911 ../src/export/ExportOGG.cpp:45
+#: ../src/export/ExportMP3.cpp:1212 ../src/export/ExportOGG.cpp:45
 msgid "Unable to open target file for writing"
 msgstr "Nie mo¿na otworzyæ pliku do zapisu"
 
