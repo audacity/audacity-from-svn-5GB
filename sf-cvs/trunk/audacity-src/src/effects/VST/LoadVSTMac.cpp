@@ -52,7 +52,7 @@ extern "C" {
 
    typedef AEffect *(*vstPluginMain)(audioMasterCallback audioMaster);
 
-   void LoadVSTPlugins(wxString fname)
+   void LoadVSTPlugins()
    {
 #ifdef __MACOSX__
       audioMasterCallback audioMasterFPtr =

@@ -1571,15 +1571,9 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
       theMenu->Enable(OnMoveDownID, mTracks->CanMoveDown(t));
 
 #ifdef __WXMAC__
-# ifdef __UNIX__
-      ::InsertMenu((OpaqueMenuHandle *) mRateMenu->GetHMenu(), -1);
-      ::InsertMenu((OpaqueMenuHandle *) mFormatMenu->GetHMenu(), -1);
-      ::InsertMenu((OpaqueMenuHandle *) mSelectionMenu->GetHMenu(), -1);
-# else
       ::InsertMenu((MenuRef) mRateMenu->GetHMenu(), -1);
       ::InsertMenu((MenuRef) mFormatMenu->GetHMenu(), -1);
       ::InsertMenu((MenuRef) mSelectionMenu->GetHMenu(), -1);
-# endif
 #endif
 
       PopupMenu(theMenu, titleRect.x + 1,
