@@ -83,8 +83,21 @@ wxString ExportCommon(AudacityProject *project,
                numLeft++;
             else if (tr->GetChannel() == Track::RightChannel)
                numRight++;
-            else if (tr->GetChannel() == Track::MonoChannel)
-               numMono++;
+            else if (tr->GetChannel() == Track::MonoChannel) {
+               // It's a mono channel, but it may be panned
+               float pan = ((WaveTrack*)tr)->GetPan();
+               
+               if (pan == -1.0)
+                  numLeft++;
+               else if (pan == 1.0)
+                  numRight++;
+               else if (pan == 0)
+                  numMono++;
+               else {
+                  numLeft++;
+                  numRight++;
+               }
+            }
             
             if(tr->GetOffset() < earliestBegin)
                earliestBegin = tr->GetOffset();
