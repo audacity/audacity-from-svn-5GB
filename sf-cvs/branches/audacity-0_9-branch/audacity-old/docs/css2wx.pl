@@ -177,7 +177,9 @@ foreach $filename (@list) {
 	 }
     open ( TARGET, ">$targetdir" . "$filename" );
     for ($i=0;$i<=$#file;$i++){
-      print TARGET $file[$i] . "\n";
+		  $line = $file[$i];
+		  $line =~ s/html/htm;
+		  print TARGET $line . "\n";
     }
     close (TARGET)
 } # end of foreach file loop
