@@ -47,8 +47,10 @@ AudioIOPrefs::AudioIOPrefs(wxWindow *parent):
 	gPrefs->SetPath("/AudioIO");
 	wxString playDevice = gPrefs->Read("PlaybackDevice", "/dev/dsp");
 	wxString recDevice  = gPrefs->Read("RecordingDevice", "/dev/dsp");
-	bool recordStereo = gPrefs->Read("RecordStereo", false);
-	bool duplex = gPrefs->Read("Duplex", false);
+	bool recordStereo;
+	gPrefs->Read("RecordStereo", &recordStereo, false);
+	bool duplex;
+	gPrefs->Read("Duplex", &duplex, false);
 	gPrefs->SetPath("/");
 
 	

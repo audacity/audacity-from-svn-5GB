@@ -167,9 +167,8 @@ bool AudioIO::StartRecord(AudacityProject *project,
   if (mProject)
     return false;
 
-  mRecordStereo = gPrefs->Read("/AudioIO/RecordStereo", false);
-
-  mDuplex = gPrefs->Read("/AudioIO/Duplex", false);
+  gPrefs->Read("/AudioIO/RecordStereo", &mRecordStereo, false);
+  gPrefs->Read("/AudioIO/Duplex", &mDuplex, false);
 
   mRecordLeft = new WaveTrack(project->GetDirManager());
   mRecordLeft->selected = true;
