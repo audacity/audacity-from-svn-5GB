@@ -6,10 +6,10 @@
  * Author e-mail : oparviai @ iki.fi
  * File created  : 13-Jan-2002
  *
- * Last changed  : $Date: 2004-12-09 21:41:35 $
- * File revision : $Revision: 1.5 $
+ * Last changed  : $Date: 2005-02-12 21:01:19 $
+ * File revision : $Revision: 1.6 $
  *
- * $Id: STTypes.h,v 1.5 2004-12-09 21:41:35 vjohnson Exp $
+ * $Id: STTypes.h,v 1.6 2005-02-12 21:01:19 vjohnson Exp $
  *
  * License :
  * 
@@ -41,7 +41,11 @@ typedef unsigned long   ulong;
 #ifndef _WINDEF_
     // if these aren't defined already by Windows headers, define now
 
-    typedef unsigned int    BOOL;
+    // Make Soundtouch's redefinition match that in "Windef.h".
+    // There are some include paths in Audacity that get "Windef.h" and 
+    // some that don't, and with MSVC 7, the differing types yield a fatal error.
+    // typedef unsigned int    BOOL;
+    typedef int    BOOL;
 
     #define FALSE   0
     #define TRUE    1
