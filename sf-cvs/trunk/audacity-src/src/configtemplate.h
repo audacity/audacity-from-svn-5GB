@@ -76,6 +76,9 @@
 /* Define if libsamplerate support should be enabled */
 #undef USE_LIBSAMPLERATE
 
+/* Define if soundtouch support should be enabled */
+#undef USE_SOUNDTOUCH
+
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 
