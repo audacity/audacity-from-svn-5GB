@@ -2757,8 +2757,8 @@ void TrackPanel::DisplaySelection()
    float f2sectot = length;
 
    // iformat = 3 --> use samples (in single sample time increments)
-   long int i3samp1 = lrint(rate*double(start)) + 1;
-   long int i3samp2 = lrint(rate*double(end));
+   long int i3samp1 = (long)rint(rate*double(start)) + 1;
+   long int i3samp2 = (long)rint(rate*double(end));
    long int i3samptot = i3samp2 - i3samp1 + 1;
    // for cursor position do not round
    long int i3samp1pos = (long int)(rate*double(start)) + 1;
@@ -2787,24 +2787,24 @@ void TrackPanel::DisplaySelection()
    int i6sec1 = int(double(i3samp1)/rate - double(i6min1*60));
    int i6sec2 = int(double(i3samp2)/rate - double(i6min2*60));
    int i6sectot = int(double(i3samptot)/rate - double(i6mintot*60));
-   int i6samp1 = int(i3samp1-(long int)(i6min1*60*lrint(rate))-(long int)(i6sec1*lrint(rate)));
-   int i6samp2 = int(i3samp2-(long int)(i6min2*60*lrint(rate))-(long int)(i6sec2*lrint(rate)));
-   int i6samptot = int(i3samptot-(long int)(i6mintot*60*lrint(rate))-(long int)(i6sectot*lrint(rate)));
+   int i6samp1 = int(i3samp1-(long int)(i6min1*60*rint(rate))-(long int)(i6sec1*rint(rate)));
+   int i6samp2 = int(i3samp2-(long int)(i6min2*60*rint(rate))-(long int)(i6sec2*rint(rate)));
+   int i6samptot = int(i3samptot-(long int)(i6mintot*60*rint(rate))-(long int)(i6sectot*rint(rate)));
    // for cursor position do not round
    int i6min1pos = int((double(int(rate*double(start))+1)/rate)/60);
    int i6sec1pos = int(double(int(rate*double(start))+1)/rate - double(i6min1pos*60));
-   int i6samp1pos = int(i3samp1pos-(long int)(i6min1pos*60*lrint(rate))-(long int)(i6sec1pos*lrint(rate)));
+   int i6samp1pos = int(i3samp1pos-(long int)(i6min1pos*60*rint(rate))-(long int)(i6sec1pos*rint(rate)));
 
    // iformat = 7 --> use sec+samples (in single sample time increments)
    int i7sec1 = int(double(i3samp1)/rate);
    int i7sec2 = int(double(i3samp2)/rate);
    int i7sectot = int(double(i3samptot)/rate);
-   int i7samp1 = int(i3samp1-(long int)(i7sec1*lrint(rate)));
-   int i7samp2 = int(i3samp2-(long int)(i7sec2*lrint(rate)));
-   int i7samptot = int(i3samptot-(long int)(i7sectot*lrint(rate)));
+   int i7samp1 = int(i3samp1-(long int)(i7sec1*rint(rate)));
+   int i7samp2 = int(i3samp2-(long int)(i7sec2*rint(rate)));
+   int i7samptot = int(i3samptot-(long int)(i7sectot*rint(rate)));
    // for cursor position do not round
    int i7sec1pos = int(double(int(rate*double(start))+1)/rate);
-   int i7samp1pos = int(i3samp1pos-(long int)(i7sec1*lrint(rate)));
+   int i7samp1pos = int(i3samp1pos-(long int)(i7sec1*rint(rate)));
 
    // iformat = 8 --> use cdda sectors + bytes (2352 byte blocks)
    //
