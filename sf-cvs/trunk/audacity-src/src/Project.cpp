@@ -177,7 +177,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_COMMAND_SCROLL_LINEDOWN(HSBarID, AudacityProject::OnScrollRightButton)
     EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
     EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
-    EVT_DROP_FILES(AudacityProject::OnDropFiles)
+EVT_DROP_FILES(AudacityProject::OnDropFiles)
     // Update menu method
     EVT_UPDATE_UI(UndoID, AudacityProject::OnUpdateMenus)
 END_EVENT_TABLE()
@@ -246,9 +246,8 @@ mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
 
    if (!gControlToolBarStub->GetWindowedStatus()) {
       int h = gControlToolBarStub->GetHeight();
-      ToolBar *tb =
-          new ControlToolBar(this, 0, wxPoint(10, top),
-                             wxSize(width - 10, h));
+      ToolBar *tb = new ControlToolBar(this, 0, wxPoint(10, top),
+                                       wxSize(width - 10, h));
       mToolBarArray.Add((ToolBar *) tb);
 
       top += h + 1;
@@ -260,9 +259,8 @@ mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
       if (gEditToolBarStub->GetLoadedStatus()
           && !gEditToolBarStub->GetWindowedStatus()) {
          int h = gEditToolBarStub->GetHeight();
-         ToolBar *etb =
-             new EditToolBar(this, 0, wxPoint(10, top),
-                             wxSize(width - 10, h));
+         ToolBar *etb = new EditToolBar(this, 0, wxPoint(10, top),
+                                        wxSize(width - 10, h));
          mToolBarArray.Add((ToolBar *) etb);
 
          top += h + 1;
@@ -270,7 +268,6 @@ mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
          mTotalToolBarHeight += h;
       }
    }
-
    //
    // Create the status bar
    //
@@ -452,7 +449,7 @@ void AudacityProject::OnScrollLeft()
    pos = (pos > 0) ? pos : 0;   //Set to larger of pos and 0
 
    if (pos > 0) {
-      mHsbar->SetThumbPosition(pos - sbarHjump);  //Jump 30 pixels to the left
+      mHsbar->SetThumbPosition(pos - sbarHjump);        //Jump 30 pixels to the left
       FinishAutoScroll();
    }
 }
@@ -464,7 +461,7 @@ void AudacityProject::OnScrollRight()
    pos = (pos < max) ? pos : max;       //Set to smaller of pos and max
 
    if (pos < max) {
-      mHsbar->SetThumbPosition(pos + sbarHjump);  //Jump 30 pixels to the right
+      mHsbar->SetThumbPosition(pos + sbarHjump);        //Jump 30 pixels to the right
       FinishAutoScroll();
    }
 }
@@ -475,7 +472,7 @@ void AudacityProject::OnScrollLeftButton(wxScrollEvent & event)
    pos = (pos > 0) ? pos : 0;   //Set to larger of pos and 0
 
    if (pos > 0) {
-      mHsbar->SetThumbPosition(pos - sbarHjump);  //Jump 30 pixels to the left
+      mHsbar->SetThumbPosition(pos - sbarHjump);        //Jump 30 pixels to the left
       OnScroll(event);
    }
 }
@@ -488,7 +485,7 @@ void AudacityProject::OnScrollRightButton(wxScrollEvent & event)
    pos = (pos < max) ? pos : max;       //Set to smaller of pos and max
 
    if (pos < max) {
-      mHsbar->SetThumbPosition(pos + sbarHjump);  //Jump 30 pixels to the right
+      mHsbar->SetThumbPosition(pos + sbarHjump);        //Jump 30 pixels to the right
       OnScroll(event);
    }
 }
@@ -695,12 +692,10 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
       if (event.GetId() >= FirstEffectID &&
           event.GetId() < FirstEffectID + numEffects) {
          f = Effect::GetEffect(event.GetId() - FirstEffectID, false);
-      }
-      else if (event.GetId() >= FirstPluginID &&
+      } else if (event.GetId() >= FirstPluginID &&
                  event.GetId() < FirstPluginID + numPlugins) {
          f = Effect::GetEffect(event.GetId() - FirstPluginID, true);
-      }
-      else if (HandleMenuEvent(event))
+      } else if (HandleMenuEvent(event))
          return true;
    }
 
@@ -892,60 +887,6 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
    HandleResize();
 }
 
-//
-// To make menu items consistent with the state of 
-// audacity, put code here and call this function at appropriate times..
-void AudacityProject::MakeToolBarMenuEntriesCorrect()
-{
-   if (gEditToolBarStub) {
-
-      if (gEditToolBarStub->GetLoadedStatus()) {
-
-         if (gEditToolBarStub->GetWindowedStatus()) {
-
-            //Loaded/windowed
-            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
-                SetName(_("Unload Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                SetName(_("Unfloat Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                Enable(true);
-         } else {
-
-            //Loaded/unwindowed
-            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
-                SetName(_("Unload Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                SetName(_("Float Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                Enable(true);
-         }
-      } else {
-
-         if (gEditToolBarStub->GetWindowedStatus()) {
-
-            //Unloaded/windowed
-            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
-                SetName(_("Load Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                SetName(_("Unfloat Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                Enable(false);
-         } else {
-
-            //Unloaded/unwindowed
-            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
-                SetName(_("Load Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                SetName(_("Float Edit Toolbar"));
-            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
-                Enable(false);
-
-         }
-      }
-   }
-}
-
 void AudacityProject::UnloadToolBar(enum ToolBarType t)
 {
    //Go through all of the toolbars (from the bottom up)
@@ -967,7 +908,7 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
             //should change the menu entry of this project
             ((wxMenuItemBase *) mViewMenu->
              FindItem(FloatControlToolBarID))->
-               SetName(_("Unfloat Control Toolbar"));
+SetName(_("Unfloat Control Toolbar"));
             break;
 
          case EditToolBarID:

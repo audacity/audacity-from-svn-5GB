@@ -133,7 +133,6 @@ class AudacityProject:public wxFrame,
    void OnScrollRight();
 
    void OnScrollLeftButton(wxScrollEvent & event);
-
    void OnScrollRightButton(wxScrollEvent & event);
 
 
@@ -158,7 +157,6 @@ class AudacityProject:public wxFrame,
 
    void LoadToolBar(enum ToolBarType);
    void UnloadToolBar(enum ToolBarType);
-   void MakeToolBarMenuEntriesCorrect();
    ControlToolBar *GetControlToolBar();
    bool IsToolBarLoaded(enum ToolBarType);
 
@@ -180,10 +178,10 @@ class AudacityProject:public wxFrame,
 
    // The project's name and file info
 
-   wxString      mFileName;
-   DirManager    mDirManager;
-   double        mRate;
-   sampleFormat  mDefaultFormat;
+   wxString mFileName;
+   DirManager mDirManager;
+   double mRate;
+   sampleFormat mDefaultFormat;
 
    // Tags (artist name, song properties, MP3 ID3 info, etc.)
 

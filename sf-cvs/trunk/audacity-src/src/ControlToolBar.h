@@ -86,6 +86,8 @@ class ControlToolBar:public ToolBar {
 
    float GetSoundVol();
 
+   virtual void EnableDisableButtons(bool anySelection, bool anyTracks);
+
  private:
 
    void InitializeControlToolBar();
@@ -94,8 +96,9 @@ class ControlToolBar:public ToolBar {
    AButton *MakeTool(const char **tool, const char **alpha,
                      wxWindowID id, int left, int top);
    AButton *MakeButton(wxImage * up, wxImage * down, wxImage * hilite,
-                       char const **foreground, char const **alpha,
-                       int ID, int left);
+                       char const **foreground,
+                       char const **disabled,
+                       char const **alpha, int ID, int left);
    void MakeButtons();
 
    AButton *mTool[4];
