@@ -48,12 +48,9 @@ Ruler::Ruler()
 
    mMajorLabels = 0;
    mMinorLabels = 0;
-   
-   mLabelEdges = true;
-
-   mValid = false;
-
    mBits = NULL;
+   
+   mValid = false;
 }
 
 Ruler::~Ruler()
@@ -153,9 +150,9 @@ void Ruler::SetLabelEdges(bool labelEdges)
 
 void Ruler::SetFlip(bool flip)
 {
-   // If this is true, the edges of the ruler will always
-   // receive a label.  If not, the nearest round number is
-   // labeled (which may or may not be the edge).
+   // If this is true, the orientation of the tick marks
+   // is reversed from the default; eg. above the line
+   // instead of below
 
    if (mFlip != flip) {
       mFlip = flip;
@@ -197,9 +194,14 @@ void Ruler::Invalidate()
       delete [] mMinorLabels;
       mMinorLabels = NULL;
    }
+   if (mBits) {
+      delete [] mBits;
+      mBits = NULL;
+   }
+
 }
 
-void Ruler::FindTickSizes()
+void Ruler::FindLinearTickSizes(double UPP)
 {
    // Given the dimensions of the ruler, the range of values it
    // has to display, and the format (i.e. Int, Real, Time),
@@ -214,7 +216,7 @@ void Ruler::FindTickSizes()
 
    // As a heuristic, we want at least 16 pixels
    // between each minor tick
-   double units = 16 * fabs(mUPP);
+   double units = 16 * fabs(UPP);
 
    mDigits = 0;
 
@@ -515,65 +517,118 @@ void Ruler::Update()
    else
       mLength = mBottom-mTop;
 
-   mUPP = (mMax-mMin)/mLength;
-
    int i;
+   int j;
+
+   mNumMajor = 0;
+   mMajorLabels = new Label[mLength+1];
+   mNumMinor = 0;
+   mMinorLabels = new Label[mLength+1];
+   
    if (mBits)
       delete[] mBits;
    mBits = new int[mLength+1];
    for(i=0; i<=mLength; i++)
       mBits[i] = 0;
 
-   mNumMajor = 0;
-   mMajorLabels = new Label[mLength+1];
-   mNumMinor = 0;
-   mMinorLabels = new Label[mLength+1];
+   if(mLog==false) {
 
-   FindTickSizes();
+      double UPP = (mMax-mMin)/mLength;  // Units per pixel
 
-   // Left and Right Edges
-   if (mLabelEdges) {
-      Tick(0, mMin, true);
-      Tick(mLength, mMax, true);
-   }
+      FindLinearTickSizes(UPP);
 
-   // Zero (if it's in the middle somewhere)
-   if (mMin * mMax < 0.0) {
-      int mid = (int)(mLength*(mMin/(mMin-mMax)) + 0.5);
-      Tick(mid, 0.0, true);
-   }
+      // Left and Right Edges
+      if (mLabelEdges) {
+	 Tick(0, mMin, true);
+	 Tick(mLength, mMax, true);
+      }
+
+      // Zero (if it's in the middle somewhere)
+      if (mMin * mMax < 0.0) {
+	 int mid = (int)(mLength*(mMin/(mMin-mMax)) + 0.5);
+	 Tick(mid, 0.0, true);
+      }
    
-   double sg = mUPP > 0.0? 1.0: -1.0;
+      double sg = UPP > 0.0? 1.0: -1.0;
 
-   // Major ticks
-   double d = mMin - mUPP/2;
-   int majorInt = (int)floor(sg * d / mMajor);
-   i = -1;
-   while(i <= mLength) {
-      i++;
-      d += mUPP;
-
-      if ((int)floor(sg * d / mMajor) > majorInt) {
-         majorInt = (int)floor(sg * d / mMajor);
-         Tick(i, sg * majorInt * mMajor, true);
+      // Major ticks
+      double d = mMin - UPP/2;
+      int majorInt = (int)floor(sg * d / mMajor);
+      i = -1;
+      while(i <= mLength) {
+	 i++;
+	 d += UPP;
+	
+	 if ((int)floor(sg * d / mMajor) > majorInt) {
+	   majorInt = (int)floor(sg * d / mMajor);
+	   Tick(i, sg * majorInt * mMajor, true);
+	 }
       }
+
+      // Minor ticks
+      d = mMin - UPP/2;
+      int minorInt = (int)floor(sg * d / mMinor);
+      i = -1;
+      while(i <= mLength) {
+	 i++;
+	 d += UPP;
+
+	 if ((int)floor(sg * d / mMinor) > minorInt) {
+	    minorInt = (int)floor(sg * d / mMinor);
+	    Tick(i, sg * minorInt * mMinor, false);
+	 }
+      }
+
    }
+   else {
+      // log case
 
-   // Minor ticks
-   d = mMin - mUPP/2;
-   int minorInt = (int)floor(sg * d / mMinor);
-   i = -1;
-   while(i <= mLength) {
-      i++;
-      d += mUPP;
+      double loLog = log10(mMin);
+      double hiLog = log10(mMax);
+      double scale = mLength/(hiLog - loLog);
+      int loDecade = (int) floor(loLog);
+      int hiDecade = (int) ceil(hiLog);
 
-      if ((int)floor(sg * d / mMinor) > minorInt) {
-         minorInt = (int)floor(sg * d / mMinor);
-         Tick(i, sg * minorInt * mMinor, false);
+      int pos;
+      double val;
+      double startDecade = pow(10., (double)loDecade);
+
+      // Major ticks are the decades
+      double decade = startDecade;
+      for(i=loDecade; i<hiDecade; i++) {
+	 if(i!=loDecade) {
+	    val = decade;
+	    if(val > mMin && val < mMax) {
+	      pos = (int)(((log10(val) - loLog)*scale)+0.5);
+	      Tick(pos, val, true);
+	    }
+	 }
+	 decade *= 10.;
       }
+
+      // Left and Right Edges
+      if (mLabelEdges) {
+	 Tick(0, mMin, true);
+	 Tick(mLength, mMax, true);
+      }
+      
+      // Minor ticks are multiples of decades
+      decade = startDecade;
+      for(i=loDecade; i<hiDecade; i++) {
+	 for(j=2; j<=9; j++) {
+	    val = decade * j;
+	    if(val > mMin && val < mMax) {
+	      pos = (int)(((log10(val) - loLog)*scale)+0.5);
+	      Tick(pos, val, false);
+	    }
+	 }
+	 decade *= 10.;
+      }
+	
    }
 
    mValid = true;
+
 }
 
 void Ruler::Draw(wxDC& dc)

@@ -120,11 +120,21 @@ class Envelope : public XMLTagHandler {
 
    bool IsDirty() const;
 
+   // Add a point at a particular spot
+   int Insert(double when, double value);
+
+   // Move a point at when to value
+   // Returns 0 if point moved, -1 if not found.
+   int Move(double when, double value);
+
+   // Returns the sets of when and value pairs
+   void GetPoints(double *bufferWhen,
+                  double *bufferValue,
+                  int bufferLen) const;
+
  private:
    
    bool mMirror;
-
-   int Insert(double when, double value);
 
    double fromDB(double x) const;
    double toDB(double x);

@@ -534,7 +534,38 @@ void Envelope::InsertSpace(double t0, double tlen)
    mTrackLen += tlen;
 }
 
+int Envelope::Move(double when, double value)
+{
+   int len = mEnv.Count();
+   if (len == 0)
+      return -1;
+
+   int i = 0;
+   while (i < len && when > mEnv[i]->t)
+      i++;
+
+   if (i >= len || when < mEnv[i]->t)
+      return -1;
+
+   mEnv[i]->val = value;
+   return 0;
+}
+
 // Private methods
+
+void Envelope::GetPoints(double *bufferWhen,
+                         double *bufferValue,
+                         int bufferLen) const
+{
+   int n = mEnv.Count();
+   if (n > bufferLen)
+      n = bufferLen;
+   int i;
+   for (i = 0; i < n; i++) {
+      bufferWhen[i] = mEnv[i]->t;
+      bufferValue[i] = mEnv[i]->val;
+   }
+}
 
 int Envelope::Insert(double when, double value)
 {
