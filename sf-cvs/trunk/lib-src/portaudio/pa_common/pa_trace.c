@@ -1,4 +1,5 @@
 /*
+ * $Id: pa_trace.c,v 1.2 2002-02-11 00:25:48 dmazzoni Exp $
  * Portable Audio I/O Library Trace Facility
  * Store trace information in real-time for later printing.
  *
@@ -44,39 +45,39 @@ static int traceBlock = 0;
 /*********************************************************************/
 void ResetTraceMessages()
 {
-	traceIndex = 0;
+    traceIndex = 0;
 }
 
 /*********************************************************************/
 void DumpTraceMessages()
 {
-	int i;
-	int numDump = (traceIndex < MAX_TRACE_RECORDS) ? traceIndex : MAX_TRACE_RECORDS;
+    int i;
+    int numDump = (traceIndex < MAX_TRACE_RECORDS) ? traceIndex : MAX_TRACE_RECORDS;
 
-	printf("DumpTraceMessages: traceIndex = %d\n", traceIndex );
-	for( i=0; i<numDump; i++ )
-	{
-		printf("%3d: %s = 0x%08X\n",
-			i, traceTextArray[i], traceIntArray[i] );
-	}
-	ResetTraceMessages();
-	fflush(stdout);
+    printf("DumpTraceMessages: traceIndex = %d\n", traceIndex );
+    for( i=0; i<numDump; i++ )
+    {
+        printf("%3d: %s = 0x%08X\n",
+               i, traceTextArray[i], traceIntArray[i] );
+    }
+    ResetTraceMessages();
+    fflush(stdout);
 }
 
 /*********************************************************************/
 void AddTraceMessage( char *msg, int data )
 {
-	if( (traceIndex == MAX_TRACE_RECORDS) && (traceBlock == 0) )
-	{
-		traceBlock = 1;
-/*		DumpTraceMessages(); */
-	}
-	else if( traceIndex < MAX_TRACE_RECORDS )
-	{
-		traceTextArray[traceIndex] = msg;
-		traceIntArray[traceIndex] = data;
-		traceIndex++;
-	}
+    if( (traceIndex == MAX_TRACE_RECORDS) && (traceBlock == 0) )
+    {
+        traceBlock = 1;
+        /*  DumpTraceMessages(); */
+    }
+    else if( traceIndex < MAX_TRACE_RECORDS )
+    {
+        traceTextArray[traceIndex] = msg;
+        traceIntArray[traceIndex] = data;
+        traceIndex++;
+    }
 }
 
 #endif

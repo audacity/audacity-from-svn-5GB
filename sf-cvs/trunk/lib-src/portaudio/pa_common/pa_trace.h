@@ -1,6 +1,7 @@
 #ifndef PA_TRACE_H
 #define PA_TRACE_H
 /*
+ * $Id: pa_trace.h,v 1.2 2002-02-11 00:25:48 dmazzoni Exp $
  * Portable Audio I/O Library Trace Facility
  * Store trace information in real-time for later printing.
  *
@@ -36,19 +37,20 @@
 #define MAX_TRACE_RECORDS      (2048)
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif /* __cplusplus */
 
 
-/************************************************************************************/
-/****************** Prototypes ******************************************************/
-/************************************************************************************/
+    /************************************************************************************/
+    /****************** Prototypes ******************************************************/
+    /************************************************************************************/
 
 #if TRACE_REALTIME_EVENTS
 
-void DumpTraceMessages();
-void ResetTraceMessages();
-void AddTraceMessage( char *msg, int data );
+    void DumpTraceMessages();
+    void ResetTraceMessages();
+    void AddTraceMessage( char *msg, int data );
 
 #else
 
