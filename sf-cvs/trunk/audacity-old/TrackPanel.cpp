@@ -582,7 +582,8 @@ void TrackPanel::HandleEnvelope(wxMouseEvent& event)
 	if (t) {
 	  mCapturedTrack = t;
 	  mCapturedRect = r;
-	  mCapturedRect.height -=12;
+	  mCapturedRect.y += kTopInset;
+	  mCapturedRect.height -=kTopInset;
 	  mCapturedNum = num;
 	}
   }
@@ -1394,27 +1395,30 @@ void TrackPanel::DrawVRuler(wxDC *dc, wxRect &r, VTrack *t)
   wxRect bev = r;
   bev.Inflate(-1, -1);
   AColor::Bevel(*dc, true, bev);
+
+  if (t->GetKind()==VTrack::Wave && ((WaveTrack *)t)->GetDisplay()==0) {
   
-  dc->SetPen(*wxBLACK_PEN);
-  int ctr = r.height / 2;
-  
-  wxString num;
-  long textWidth, textHeight;
-
-  num = "1.0";
-  dc->GetTextExtent(num, &textWidth, &textHeight);
-  dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + 2);
-
-  num = "0";
-  dc->GetTextExtent(num, &textWidth, &textHeight);
-  dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + ctr - textHeight/2);
-
-  dc->DrawLine(r.x + 1, r.y + ctr, r.x + r.width - 4 - textWidth, r.y + ctr);
-  dc->DrawLine(r.x + r.width - 3, r.y + ctr, r.x + r.width - 2, r.y + ctr);
-
-  num = "-1.0";
-  dc->GetTextExtent(num, &textWidth, &textHeight);
-  dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + r.height - 2 - textHeight);
+	dc->SetPen(*wxBLACK_PEN);
+	int ctr = r.height / 2;
+	
+	wxString num;
+	long textWidth, textHeight;
+	
+	num = "1.0";
+	dc->GetTextExtent(num, &textWidth, &textHeight);
+	dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + 2);
+	
+	num = "0";
+	dc->GetTextExtent(num, &textWidth, &textHeight);
+	dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + ctr - textHeight/2);
+	
+	dc->DrawLine(r.x + 1, r.y + ctr, r.x + r.width - 4 - textWidth, r.y + ctr);
+	dc->DrawLine(r.x + r.width - 3, r.y + ctr, r.x + r.width - 2, r.y + ctr);
+	
+	num = "-1.0";
+	dc->GetTextExtent(num, &textWidth, &textHeight);
+	dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + r.height - 2 - textHeight);
+  }
 }
 
 void TrackPanel::DrawTracks(wxDC *dc)
@@ -1472,7 +1476,7 @@ void TrackPanel::DrawTracks(wxDC *dc)
     if (!skipBorder) {
     
       // Fill in area outside of the track
-      AColor::Light(dc, false);
+      AColor::Medium(dc, false);
       wxRect side = r;
       side.width = kLeftInset;
       dc->DrawRectangle(side);
@@ -1586,7 +1590,7 @@ void TrackPanel::DrawTracks(wxDC *dc)
   // Paint over the part below the tracks
 
   GetSize(&trackRect.width, &trackRect.height);
-  AColor::Light(dc, false);
+  AColor::Medium(dc, false);
   dc->DrawRectangle(trackRect);
 }
 

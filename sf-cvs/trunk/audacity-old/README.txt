@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.95: targeting April 1, 2001
+Version 0.95: targeting April 14, 2001
 
 http://www.cs.cmu.edu/~music/audacity/
 
@@ -92,6 +92,18 @@ Changes in 0.95:
   import files of almost any arbitrary format
 
 * Lazy import added, speeding up importing by 2x
+
+* New track labels with a single integrated pop-up menu
+  to handle all track options
+
+* Vertical ruler added, along with preliminary support for
+  vertical zooming
+
+* Stereo tracks can be linked together so changes affect
+  both tracks
+
+* Envelopes are now interpolated using decibels, making
+  cross-fades sound much better
 
 * Menus are disabled when unavailable
 

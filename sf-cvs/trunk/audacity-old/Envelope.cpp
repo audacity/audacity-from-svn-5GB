@@ -362,6 +362,11 @@ bool Envelope::IsLinearInRegion(double t0, double t1)
   // interpolate instead of calling GetValue() at every
   // sample...
 
+  // currently returns false because interpolation is now
+  // done in db
+  return false;
+
+  /*
   t0 -= mOffset;
   t1 -= mOffset;
 
@@ -374,7 +379,61 @@ bool Envelope::IsLinearInRegion(double t0, double t1)
   }
 
   return true;
+  */
 }
+
+double Envelope::GetValue(double t)
+{
+  t -= mOffset;
+
+  int len = mEnv.Count();
+  int i=0;
+
+  if (len <= 0 || t < mEnv[0]->t || t > mEnv[len-1]->t)
+	return 1.0;
+
+  // binary search
+  int lo = 0;
+  int hi = len-1;
+  while(hi>(lo+1)) {
+	int mid = (lo+hi)/2;
+	if (t < mEnv[mid]->t)
+	  hi = mid;
+	else
+	  lo = mid;
+  }
+
+  double t0 = mEnv[lo]->t;
+  double v0 = log(mEnv[lo]->val);
+  double t1 = mEnv[hi]->t;
+  double v1 = log(mEnv[hi]->val);
+
+  // Special case for the log of zero
+  if (mEnv[lo]->val <= 0.0)
+	v0 = -10.4; // This corresponds to the log of 1/32768
+  if (mEnv[hi]->val <= 0.0)
+	v1 = -10.4;
+  
+  // Interpolate in logspace
+  
+  double dt = (t1 - t0);
+  
+  // This should never happen, but we certainly
+  // don't want to divide by zero...
+  if (dt <= 0.0) {
+	wxASSERT(0);
+	return 1.0;
+  }
+  
+  double to = t - t0;
+  double v = (v0*(dt-to) + v1*to) / dt;
+
+  return exp(v);
+}
+
+/*
+
+Old code: didn't do binary search, and didn't interpolate using decibels
 
 double Envelope::GetValue(double t)
 {
@@ -410,3 +469,5 @@ double Envelope::GetValue(double t)
   
   return 1.0;
 }
+
+*/

@@ -240,7 +240,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent& event)
   mProjectMenu->Enable(mProjectMenu->FindItem("Align Tracks Together"),
 					   numTracksSelected>1);
   mProjectMenu->Enable(mProjectMenu->FindItem("Align with Zero"),
-					   numTracksSelected>1);
+					   numTracksSelected>0);
   mProjectMenu->Enable(mProjectMenu->FindItem("Remove Track(s)"),
 					   numTracksSelected>0);
 
