@@ -80,6 +80,7 @@ int Import(AudacityProject *project,
       if (finfo.fdType == 'MP3 ' ||
           finfo.fdType == 'mp3 ' ||
           finfo.fdType == 'MPG ' ||
+          finfo.fdType == 'MPG3' ||
           finfo.fdType == 'MPEG')
          isMP3 = true;
    }
