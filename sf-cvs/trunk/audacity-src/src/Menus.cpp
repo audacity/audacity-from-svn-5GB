@@ -286,7 +286,7 @@ void AudacityProject::CreateMenusAndCommands()
    delete effects;
    c->EndMenu();
 
-   c->BeginMenu(_("E&ffect"));
+   c->BeginMenu(_("Effe&ct"));
    c->AddItem("RepeatLastEffect",     _("Repeat Last Effect\tCtrl+R"),    FN(OnRepeatLastEffect));
    c->AddSeparator();
 
