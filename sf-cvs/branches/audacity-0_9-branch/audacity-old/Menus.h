@@ -25,8 +25,10 @@ enum {
    SaveAsID,
    ExportMixID,
    ExportSelectionID,
-   ExportLossyMixID,
-   ExportLossySelectionID,
+   ExportMP3MixID,
+   ExportMP3SelectionID,
+   ExportOGGMixID,
+   ExportOGGSelectionID,
    ExportLabelsID,
    PreferencesID,
    ExitID,
@@ -106,8 +108,10 @@ EVT_MENU(NewID, AudacityProject::OnNew)
     EVT_MENU(SaveAsID, AudacityProject::OnSaveAs)
     EVT_MENU(ExportMixID, AudacityProject::OnExportMix)
     EVT_MENU(ExportSelectionID, AudacityProject::OnExportSelection)
-    EVT_MENU(ExportLossyMixID, AudacityProject::OnExportLossyMix)
-    EVT_MENU(ExportLossySelectionID, AudacityProject::OnExportLossySelection)
+    EVT_MENU(ExportMP3MixID, AudacityProject::OnExportMP3Mix)
+    EVT_MENU(ExportMP3SelectionID, AudacityProject::OnExportMP3Selection)
+    EVT_MENU(ExportOGGMixID, AudacityProject::OnExportOGGMix)
+    EVT_MENU(ExportOGGSelectionID, AudacityProject::OnExportOGGSelection)
     EVT_MENU(ExportLabelsID, AudacityProject::OnExportLabels)
     EVT_MENU(PreferencesID, AudacityProject::OnPreferences)
     EVT_MENU(ExitID, AudacityProject::OnExit)
@@ -159,8 +163,6 @@ double mInsertSilenceAmount;
 
 wxString mExportString;
 wxString mExportSelectionString;
-wxString mExportLossyString;
-wxString mExportSelectionLossyString;
 
 int      mMenusDirtyCheck;
 
@@ -189,8 +191,10 @@ void OnSaveAs(wxCommandEvent & event);
 
 void OnExportMix(wxCommandEvent & event);
 void OnExportSelection(wxCommandEvent & event);
-void OnExportLossyMix(wxCommandEvent & event);
-void OnExportLossySelection(wxCommandEvent & event);
+void OnExportMP3Mix(wxCommandEvent & event);
+void OnExportMP3Selection(wxCommandEvent & event);
+void OnExportOGGMix(wxCommandEvent & event);
+void OnExportOGGSelection(wxCommandEvent & event);
 
 void OnExportLabels(wxCommandEvent & event);
 
