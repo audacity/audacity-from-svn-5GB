@@ -355,9 +355,14 @@ Tags *AudacityProject::GetTags()
 
 wxString AudacityProject::GetName()
 {
-   wxString n = mName;
+   wxString name = wxFileNameFromPath(mFileName);
 
-   return n;
+   // Chop off the extension
+   int len = name.Len();
+   if (len > 4 && name.Mid(len - 4) == ".aup")
+      name = name.Mid(0, len - 4);
+
+   return name;
 }
 
 double AudacityProject::GetRate()
@@ -924,9 +929,7 @@ void AudacityProject::OpenFile(wxString fileName)
    }
 
    mFileName = fileName;
-   mName = wxFileNameFromPath(mFileName);
-
-   SetTitle(mName);
+   SetTitle(GetName());
 
    ///
    /// Parse project file
@@ -1062,9 +1065,9 @@ void AudacityProject::Import(wxString fileName)
    mTrackPanel->Refresh(false);
 
    if (initiallyEmpty) {
-      mName =::TrackNameFromFileName(fileName);
-      mFileName =::wxPathOnly(fileName) + wxFILE_SEP_PATH + mName;
-      SetTitle(mName);
+      wxString name =::TrackNameFromFileName(fileName);
+      mFileName =::wxPathOnly(fileName) + wxFILE_SEP_PATH + name + ".aup";
+      SetTitle(GetName());
    }
 }
 
@@ -1220,7 +1223,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
 bool AudacityProject::SaveAs()
 {
    wxString path = wxPathOnly(mFileName);
-   wxString fName = mName + ".aup";
+   wxString fName = GetName().Len() ? GetName() + ".aup" : wxString("");
 
    fName = wxFileSelector(_("Save Project As:"),
                           path,
@@ -1231,14 +1234,12 @@ bool AudacityProject::SaveAs()
    if (fName == "")
       return false;
 
-   if (fName == ".aup") {
-      wxMessageBox(_("You must name the file!"));
-      return false;
-   }
+   int len = fName.Len();
+   if (len > 4 && fName.Mid(len - 4) == ".aup")
+      fName = fName.Mid(0, len - 4);
 
-   mFileName = fName;
-   mName =::TrackNameFromFileName(fName);
-   SetTitle(mName);
+   mFileName = fName + ".aup";
+   SetTitle(GetName());
 
    return Save(false, true);
 }
