@@ -65,34 +65,6 @@
 <tr>
 <td colspan=2>
 <center><b>
-<?php print "Mac OS 9 ($macOS9BetaVersion)" ?>
-</b></center>
-</td>
-</tr>
-
-<tr>
-<td valign=center
-><?php print "<a href=\"$os9\">";
-?><img src=images/DownloadIcon.gif width=32 height=32 border=0></a>
-</td>
-<td valign=center
-><?php print "<a href=\"$os9\">audacity-mac.sit";
-?></a>
-<?php print "($sitStr, $macOS9BetaSize)"; ?>
-</td>
-</tr>
-
-<tr>
-<td></td>
-<td>
-<a href="http://spaghetticode.org/lame/">
-<?php print "$lameStr</a>"; ?>
-</td>
-</tr>
-
-<tr>
-<td colspan=2>
-<center><b>
 <?php print "Mac OS X ($macOSXBetaVersion)" ?>
 </b></center>
 </td>
@@ -166,6 +138,41 @@ Source code dependencies:
 </tr>
 
 -->
+
+<tr>
+<td colspan=2>
+<center><b>
+<?php print "Mac OS 9 ($macOS9BetaVersion)" ?>
+</b></center>
+</td>
+</tr>
+
+<tr>
+<td valign=center
+><?php print "<a href=\"$os9\">";
+?><img src=images/DownloadIcon.gif width=32 height=32 border=0></a>
+</td>
+<td valign=center
+><?php print "<a href=\"$os9\">audacity-mac.sit";
+?></a>
+<?php print "($sitStr, $macOS9BetaSize)"; ?>
+</td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<?php include GetTranslation("macos9note"); ?>
+</td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<a href="http://spaghetticode.org/lame/">
+<?php print "$lameStr</a>"; ?>
+</td>
+</tr>
 
 </table>
 
