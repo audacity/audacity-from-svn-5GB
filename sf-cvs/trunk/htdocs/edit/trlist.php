@@ -147,11 +147,11 @@ if ($dir = @opendir("../en/")) {
 	     $langfile = "../$lang/$file";
         if (is_file($langfile)) {
           $new = filemtime($langfile);
-          if ($new > $old + 60)
+          if ($new > $old - 60)
             $s = "up to date";
           else {
             $when = date("Y-m-d", $old);
-            $s = "modified $when (old=$old new=$new)";
+            $s = "modified $when";
             $bg = " bgcolor=#eeeeee";
             $b1 = "<b>";
             $b2 = "</b>";
