@@ -78,7 +78,11 @@ PrefsPanel(parent)
    int numDevices = 0;
 
    // Count the number of devices which do output
+#if USE_PORTAUDIO_V19
+   for(j=0; j<Pa_GetDeviceCount(); j++) {
+#else
    for(j=0; j<Pa_CountDevices(); j++) {
+#endif
       const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
       if (info->maxOutputChannels > 0)
          numDevices++;
@@ -86,7 +90,11 @@ PrefsPanel(parent)
 
    wxString *playNames = new wxString[numDevices];
    k = 0;
+#if USE_PORTAUDIO_V19
+   for(j=0; j<Pa_GetDeviceCount(); j++) {
+#else
    for(j=0; j<Pa_CountDevices(); j++) {
+#endif
       const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
       if (info->maxOutputChannels > 0) {
          playNames[k] = info->name;
@@ -128,7 +136,11 @@ PrefsPanel(parent)
    numDevices = 0;
 
    // Count the number of devices which do input
+#if USE_PORTAUDIO_V19
+   for(j=0; j<Pa_GetDeviceCount(); j++) {
+#else
    for(j=0; j<Pa_CountDevices(); j++) {
+#endif
       const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
       if (info->maxInputChannels > 0)
          numDevices++;
@@ -136,7 +148,11 @@ PrefsPanel(parent)
 
    wxString *recNames = new wxString[numDevices];
    k = 0;
+#if USE_PORTAUDIO_V19
+   for(j=0; j<Pa_GetDeviceCount(); j++) {
+#else
    for(j=0; j<Pa_CountDevices(); j++) {
+#endif
       const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
       if (info->maxInputChannels > 0) {
          recNames[k] = info->name;
