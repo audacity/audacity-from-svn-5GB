@@ -96,12 +96,10 @@ enum {
    UndoHistoryID,
    PlotSpectrumID,
 
-#ifndef __WXMAC__
    SeparatorIDplotspectrum,
    FloatControlToolBarID, 
    LoadEditToolBarID,
    FloatEditToolBarID,
-#endif
 
    // Project Menu
 

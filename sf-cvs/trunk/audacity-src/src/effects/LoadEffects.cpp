@@ -24,7 +24,9 @@
 
 //WaveletDenoise does not work on windows
 #ifndef __WXMSW__
+#ifndef __WXMAC__
 #include "WaveletDenoise.h"
+#endif
 #endif
 
 #ifdef __WXMAC__
@@ -56,7 +58,9 @@ void LoadEffects()
 
    //WaveletDenoise does not work on windows
 #ifndef __WXMSW__
+#ifndef __WXMAC__
    Effect::RegisterEffect(new EffectWaveletDenoise(), false);
+#endif
 #endif
 
 #if defined(__WXMAC__) || defined(__WXMSW__)
