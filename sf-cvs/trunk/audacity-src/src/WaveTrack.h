@@ -47,9 +47,6 @@ class WaveTrack:public VTrack {
       SpectrumDisplay
    };
 
-   sampleCount numSamples;
-   double rate;
-
    WaveTrack(DirManager * projDirManager);
    virtual ~ WaveTrack();
 
@@ -82,6 +79,9 @@ class WaveTrack:public VTrack {
    double GetRate() const;
    void SetRate(double newRate);
 
+   sampleCount GetNumSamples() const { return numSamples; }
+   void SetNumSamples(sampleCount sc) { numSamples = sc; }
+
    Envelope *GetEnvelope() { return &envelope; }
    const Envelope *GetEnvelope() const { return &envelope; }
 
@@ -107,6 +107,9 @@ class WaveTrack:public VTrack {
    int display;                 // wave/spectrum
 
    BlockArray *block;
+
+   sampleCount numSamples;
+   double rate;
 
 #if wxUSE_THREADS
    wxMutex *blockMutex;

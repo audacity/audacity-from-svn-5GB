@@ -819,9 +819,9 @@ void AudacityProject::OnPlotSpectrum(wxCommandEvent & event)
 
 
    sampleCount s0 = (sampleCount) ((mViewInfo.sel0 - selt->GetOffset())
-                                   * selt->rate);
+                                   * selt->GetRate());
    sampleCount s1 = (sampleCount) ((mViewInfo.sel1 - selt->GetOffset())
-                                   * selt->rate);
+                                   * selt->GetRate());
    sampleCount slen = s1 - s0;
 
    if (slen > 1048576)
@@ -830,7 +830,7 @@ void AudacityProject::OnPlotSpectrum(wxCommandEvent & event)
    float *data = new float[slen];
    sampleType *data_sample = new sampleType[slen];
 
-   if (s0 >= selt->numSamples || s0 + slen > selt->numSamples) {
+   if (s0 >= selt->GetNumSamples() || s0 + slen > selt->GetNumSamples()) {
       wxMessageBox("Not enough samples selected.\n");
       delete[]data;
       delete[]data_sample;
@@ -842,7 +842,7 @@ void AudacityProject::OnPlotSpectrum(wxCommandEvent & event)
    for (sampleCount i = 0; i < slen; i++)
       data[i] = data_sample[i] / 32767.;
 
-   gFreqWindow->Plot(slen, data, selt->rate);
+   gFreqWindow->Plot(slen, data, selt->GetRate());
    gFreqWindow->Show(true);
    gFreqWindow->Raise();
 

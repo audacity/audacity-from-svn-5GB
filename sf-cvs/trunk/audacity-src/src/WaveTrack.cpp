@@ -106,9 +106,9 @@ WaveTrack::~WaveTrack()
 
 void WaveTrack::DeleteButDontDereference()
 {
-   for (unsigned int i = 0; i < block->Count(); i++) {
+   for (unsigned int i = 0; i < block->Count(); i++)
       delete block->Item(i);
-   }
+
    block->Clear();
 
    delete this;
@@ -220,7 +220,6 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
       sampleType *buffer = new sampleType[l0];
 
       // TODO: optimize this to use Read256 and Read64K
-
       Read(buffer, block->Item(block1), s0, l0);
       for (i = 0; i < l0; i++) {
          if (buffer[i] < min)
@@ -1066,7 +1065,6 @@ void WaveTrack::UpdateSummaries(sampleType * buffer,
                                 WaveBlock * b, sampleCount len)
 {
    // This method assumes that b->f is already opened
-
    BlockFile *f = b->f;
 
    sampleType *summary64K = new sampleType[summary64KLen];
@@ -1078,7 +1076,6 @@ void WaveTrack::UpdateSummaries(sampleType * buffer,
    sampleType min, max;
 
    // Recalc 256 summaries
-
    sumLen = (len + 255) / 256;
 
    for (i = 0; i < sumLen; i++) {
@@ -1102,7 +1099,6 @@ void WaveTrack::UpdateSummaries(sampleType * buffer,
    }
 
    // Recalc 64K summaries
-
    sumLen = (len + 65535) / 65536;
 
    for (i = 0; i < sumLen; i++) {
@@ -1314,7 +1310,6 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
    // Special case: if the samples to delete are all within a single
    // block and the resulting length is not too small, perform the
    // deletion within this block:
-
    if (b0 == b1 && block->Item(b0)->len - len >= minSamples) {
       WaveBlock *b = block->Item(b0);
       sampleCount pos = start - b->start;
@@ -1345,14 +1340,13 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
 
       return;
    }
-   // Create a new array of blocks
 
+   // Create a new array of blocks
    BlockArray *newBlock = new BlockArray();
    newBlock->Alloc(numBlocks - (b1 - b0) + 2);
 
    // Copy the blocks before the deletion point over to
    // the new array
-
    unsigned int i;
    for (i = 0; i < b0; i++) {
       newBlock->Add(block->Item(i));
@@ -1364,7 +1358,6 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
    // or if this would be the first block in the array, write it out.
    // Otherwise combine it with the previous block (splitting them
    // 50/50 if necessary).
-
    WaveBlock *preBlock = block->Item(b0);
    sampleCount preBufferLen = start - preBlock->start;
    if (preBufferLen) {
@@ -1418,7 +1411,6 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
    } else {
       // The sample where we begin deletion happens to fall
       // right on the beginning of a block.
-
       if (b0 != b1) {
          GetDirManager()->Deref(block->Item(b0)->f);
          delete block->Item(b0);
@@ -1426,7 +1418,6 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
    }
 
    // Next, delete blocks strictly between b0 and b1
-
    for (i = b0 + 1; i < b1; i++) {
       GetDirManager()->Deref(block->Item(i)->f);
       delete block->Item(i);
@@ -1437,7 +1428,6 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
    // for its own block, or if this would be the last block in
    // the array, write it out.  Otherwise combine it with the
    // subsequent block (splitting them 50/50 if necessary).
-
    WaveBlock *postBlock = block->Item(b1);
    sampleCount postBufferLen =
        (postBlock->start + postBlock->len) - (start + len);
@@ -1488,7 +1478,6 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
    } else {
       // The sample where we begin deletion happens to fall
       // right on the end of a block.
-
       if (b0 != b1) {
          GetDirManager()->Deref(block->Item(b1)->f);
          delete block->Item(b1);

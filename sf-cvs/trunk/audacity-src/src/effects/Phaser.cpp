@@ -105,7 +105,7 @@ bool EffectPhaser::ProcessOne(int count, WaveTrack * t,
                               sampleCount start, sampleCount len,
                               float startphase)
 {
-   float samplerate = (float) (t->rate);
+   float samplerate = (float) (t->GetRate());
 
    /*Phaser initialisation */
    float *old = new float[stages];

@@ -172,6 +172,6 @@ void UndoManager::Debug()
       TrackListIterator iter(stack[i]->tracks);
       WaveTrack *t = (WaveTrack *) (iter.First());
       printf("*%d* %s %d\n", i, (i == (unsigned int)current) ? "-->" : "   ",
-             t ? t->numSamples : 0);
+             t ? t->GetNumSamples() : 0);
    }
 }

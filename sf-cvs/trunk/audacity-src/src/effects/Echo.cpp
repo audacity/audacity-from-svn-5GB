@@ -79,7 +79,7 @@ bool EffectEcho::ProcessOne(int count, WaveTrack * t,
                             sampleCount start, sampleCount len)
 {
    sampleCount s = start;
-   sampleCount blockSize = (sampleCount) (t->rate * delay);
+   sampleCount blockSize = (sampleCount) (t->GetRate() * delay);
    
    sampleCount originalLen = len;
 

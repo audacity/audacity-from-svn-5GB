@@ -96,7 +96,7 @@ bool EffectWahwah::ProcessOne(int count, WaveTrack * t,
                               sampleCount start, sampleCount len,
                               float startphase)
 {
-   float samplerate = (float) (t->rate);
+   float samplerate = (float) (t->GetRate());
 
    /*Wahwah initialisation */
    float lfoskip = freq * 2 * 3.141592653589 / samplerate;

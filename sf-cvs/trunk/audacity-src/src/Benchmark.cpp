@@ -318,7 +318,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    WaveTrack *t = new WaveTrack(d);
    VTrack *tmp = NULL;
 
-   t->rate = 1.0;
+   t->SetRate(1.0);
 
    srand(randSeed);
 
@@ -361,9 +361,9 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
       t->Append(block, scale);
    }
 
-   if (t->numSamples != (sampleCount)len * scale) {
+   if (t->GetNumSamples() != (sampleCount)len * scale) {
       Printf("Expected len %d, track len %d.\n", len * scale,
-             t->numSamples);
+             t->GetNumSamples());
       goto fail;
    }
    //t->Debug();
@@ -385,7 +385,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
          Printf("Cut (%d, %d) failed.\n", (x0 * scale),
                 (x0 + xlen) * scale);
          Printf("Expected len %d, track len %d.\n", len * scale,
-                t->numSamples);
+                t->GetNumSamples());
          goto fail;
       }
 
@@ -395,10 +395,10 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
       t->Paste(double (y0 * scale), tmp);
 
-      if (t->numSamples != (sampleCount)len * scale) {
+      if (t->GetNumSamples() != (sampleCount)len * scale) {
          Printf("Trial %d\n", z);
          Printf("Expected len %d, track len %d.\n", len * scale,
-                t->numSamples);
+                t->GetNumSamples());
          goto fail;
       }
       // Copy

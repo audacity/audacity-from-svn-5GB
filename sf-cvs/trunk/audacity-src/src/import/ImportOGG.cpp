@@ -96,7 +96,7 @@ bool ImportOGG(wxWindow * parent,
 
    for (c = 0; c < *numChannels; c++) {
       (*channels)[c] = new WaveTrack(dirManager);
-      (*channels)[c]->rate = vi->rate;
+      (*channels)[c]->SetRate(vi->rate);
 
       switch (c) {
          case 0:

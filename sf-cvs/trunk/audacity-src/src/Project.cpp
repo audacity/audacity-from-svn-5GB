@@ -1002,10 +1002,10 @@ void AudacityProject::Import(wxString fileName)
 
    bool initiallyEmpty = mTracks->IsEmpty();
    bool rateWarning = false;
-   double newRate = newTracks[0]->rate;
+   double newRate = newTracks[0]->GetRate();
 
    for (int i = 0; i < numTracks; i++) {
-      if (newTracks[i]->rate != mRate)
+      if (newTracks[i]->GetRate() != mRate)
          rateWarning = true;
       mTracks->Add(newTracks[i]);
       newTracks[i]->SetSelected(true);

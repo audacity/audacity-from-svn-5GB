@@ -70,7 +70,7 @@ bool EffectBassBoost::Process()
 bool EffectBassBoost::ProcessOne(int count, WaveTrack * t,
                                  sampleCount start, sampleCount len)
 {
-   float samplerate = (float) (t->rate);
+   float samplerate = (float) (t->GetRate());
 
    /* Compute coefficents of the biquand IIR filter */
    float omega = 2 * 3.141592653589 * frequency / samplerate;

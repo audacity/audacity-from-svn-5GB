@@ -59,8 +59,8 @@ bool EffectCompressor::Process()
 bool EffectCompressor::ProcessOne(int count, WaveTrack * t,
                                     sampleCount start, sampleCount len)
 {
-   mDecayMult = exp(log(0.1)/(mDecayTime*t->rate));
-   mCircleSize = int(mAttackTime * t->rate + 0.5);
+   mDecayMult = exp(log(0.1)/(mDecayTime*t->GetRate()));
+   mCircleSize = int(mAttackTime * t->GetRate() + 0.5);
    mCircle = new double[mCircleSize];
    for(int j=0; j<mCircleSize; j++)
       mCircle[j] = 0.0;

@@ -281,7 +281,7 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
          mInTracks[i]->SetChannel(VTrack::MonoChannel);
       if (stereo && i==0)
          mInTracks[i]->SetLinked(true);
-      mInTracks[i]->rate = mRate;
+      mInTracks[i]->SetRate(mRate);
       
       mTracks->Add(mInTracks[i]);
    }

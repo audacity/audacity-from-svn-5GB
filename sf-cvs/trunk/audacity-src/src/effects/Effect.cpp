@@ -92,13 +92,13 @@ void Effect::GetSamples(WaveTrack *t, sampleCount *s0, sampleCount *slen)
    wxASSERT(s0);
    wxASSERT(slen);
 
-   unsigned int ss0 = (int) ((mT0 - t->GetOffset()) * t->rate);
-   unsigned int ss1 = (int) ((mT1 - t->GetOffset()) * t->rate);
+   unsigned int ss0 = (int) ((mT0 - t->GetOffset()) * t->GetRate());
+   unsigned int ss1 = (int) ((mT1 - t->GetOffset()) * t->GetRate());
 
    if (ss0 < 0)
       ss0 = 0;
-   if (ss1 >= t->numSamples)
-      ss1 = t->numSamples;
+   if (ss1 >= t->GetNumSamples())
+      ss1 = t->GetNumSamples();
    
    if (ss1 < ss0)
       ss1 = ss0;

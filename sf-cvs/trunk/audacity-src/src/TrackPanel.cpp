@@ -1883,7 +1883,7 @@ void TrackPanel::OnRateOther()
   assert (mPopupMenuTarget && mPopupMenuTarget->GetKind() == VTrack::Wave);
 
   wxString defaultStr;
-  defaultStr.Printf("%d",(int)(((WaveTrack *) mPopupMenuTarget)->rate+0.5));
+  defaultStr.Printf("%d",(int)(((WaveTrack *) mPopupMenuTarget)->GetRate()+0.5));
 
   // AS: TODO: REMOVE ARTIFICIAL CONSTANTS!!
   // AS: Make a real dialog box out of this!!

@@ -77,7 +77,7 @@ bool ImportPCM(wxWindow * parent,
    int c;
    for(c=0; c<*numChannels; c++) {
       (*channels)[c] = new WaveTrack(dirManager);
-      (*channels)[c]->rate = info.samplerate;
+      (*channels)[c]->SetRate(info.samplerate);
       (*channels)[c]->SetName(TrackNameFromFileName(fName));
       (*channels)[c]->SetChannel(VTrack::MonoChannel);
    }
