@@ -9,6 +9,7 @@
 **********************************************************************/
 
 #include <wx/generic/textdlgg.h>
+#include <math.h>
 
 #include "Fade.h"
 #include "../WaveTrack.h"
@@ -16,48 +17,54 @@
 bool EffectFadeIn::Process()
 {
    TrackListIterator iter(mWaveTracks);
-   Track *t = iter.First();
+   WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
-   while(t) {
-      sampleCount start, len;
-      GetSamples((WaveTrack *)t, &start, &len);
-      bool success = ProcessOne(count, (WaveTrack *)t, start, len);
-      
-      if (!success)
-         return false;
-   
-      t = iter.Next();
+   while (track) {
+      double starttime = mT0;
+      double endtime = mT1;
+
+      if (starttime < track->GetEndTime()) {    //make sure part of track is within selection
+         if (endtime > track->GetEndTime())
+            endtime = track->GetEndTime();      //make sure all of track is within selection
+         sampleCount len =
+             (sampleCount) floor((endtime - starttime) * track->GetRate() + 0.5);
+
+         if (!ProcessOne(count, track, starttime, len))
+            return false;
+      }
+
+      track = (WaveTrack *) iter.Next();
       count++;
    }
-   
+
    return true;
 }
 
-bool EffectFadeIn::ProcessOne(int count, WaveTrack * t,
-                              sampleCount start, sampleCount len)
+bool EffectFadeIn::ProcessOne(int count, WaveTrack * track,
+                              double start, sampleCount len)
 {
-   sampleCount s = start;
-   sampleCount blockSize = t->GetMaxBlockSize();
+   double t=start;
+   sampleCount s = 0;
+   sampleCount blockSize = track->GetMaxBlockSize();
 
    float *buffer = new float[blockSize];
    
-   sampleCount originalLen = len;
+   while (s < len) {
+      sampleCount block = track->GetBestBlockSize(t);
+      if (s + block > len)
+         block = len - s;
 
-   while ((s - start) < len) {
-      sampleCount block = t->GetBestBlockSize(s);
-      if (s - start + block > len)
-         block = start + len - s;
-
-      t->Get(buffer, s, block);
+      track->Get((samplePtr) buffer, floatSample, t, block);
       for (sampleCount i = 0; i < block; i++)
          buffer[i] = (float) (buffer[i]
-                                   * (float) (s + i - start)
+                                   * (float) (s + i)
                                    / (float) (len));
-      t->Set(buffer, s, block);
+      track->Set((samplePtr) buffer, floatSample, t, block);
 
       s += block;
+      t += (block / track->GetRate());
       
-      TrackProgress(count, (s-start)/(double)originalLen);
+      TrackProgress(count, s / (double) len);
    }
 
    delete[]buffer;
@@ -68,48 +75,54 @@ bool EffectFadeIn::ProcessOne(int count, WaveTrack * t,
 bool EffectFadeOut::Process()
 {
    TrackListIterator iter(mWaveTracks);
-   Track *t = iter.First();
+   WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
-   while(t) {
-      sampleCount start, len;
-      GetSamples((WaveTrack *)t, &start, &len);
-      bool success = ProcessOne(count, (WaveTrack *)t, start, len);
-      
-      if (!success)
-         return false;
-   
-      t = iter.Next();
+   while (track) {
+      double starttime = mT0;
+      double endtime = mT1;
+
+      if (starttime < track->GetEndTime()) {    //make sure part of track is within selection
+         if (endtime > track->GetEndTime())
+            endtime = track->GetEndTime();      //make sure all of track is within selection
+         sampleCount len =
+             (sampleCount) floor((endtime - starttime) * track->GetRate() + 0.5);
+
+         if (!ProcessOne(count, track, starttime, len))
+            return false;
+      }
+
+      track = (WaveTrack *) iter.Next();
       count++;
    }
-   
+
    return true;
 }
 
-bool EffectFadeOut::ProcessOne(int count, WaveTrack * t,
-                               sampleCount start, sampleCount len)
+bool EffectFadeOut::ProcessOne(int count, WaveTrack * track,
+                              double start, sampleCount len)
 {
-   sampleCount s = start;
-   sampleCount blockSize = t->GetMaxBlockSize();
+   double t=start;
+   sampleCount s = 0;
+   sampleCount blockSize = track->GetMaxBlockSize();
 
    float *buffer = new float[blockSize];
    
-   sampleCount originalLen = len;
+   while (s < len) {
+      sampleCount block = track->GetBestBlockSize(t);
+      if (s + block > len)
+         block = len - s;
 
-   while ((s - start) < len) {
-      sampleCount block = t->GetBestBlockSize(s);
-      if (s - start + block > len)
-         block = start + len - s;
-
-      t->Get(buffer, s, block);
+      track->Get((samplePtr) buffer, floatSample, t, block);
       for (sampleCount i = 0; i < block; i++)
          buffer[i] = (float) (buffer[i]
                                    * (float) (len - 1 - (s + i - start))
                                    / (float) (len));
-      t->Set(buffer, s, block);
+      track->Set((samplePtr) buffer, floatSample, t, block);
 
       s += block;
+      t += (block / track->GetRate());
       
-      TrackProgress(count, (s-start)/(double)originalLen);
+      TrackProgress(count, s / (double) len);
    }
 
    delete[]buffer;

@@ -61,8 +61,8 @@ class EffectPhaser:public Effect {
 */
 
  private:
-   bool ProcessOne(int count, WaveTrack * t,
-                   sampleCount start, sampleCount len,
+   bool ProcessOne(int count, WaveTrack * track ,
+                   double start, sampleCount len,
                    float startphase);
  
    float freq;

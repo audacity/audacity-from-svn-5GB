@@ -32,8 +32,8 @@ class EffectFadeIn:public Effect {
    virtual bool Process();
 
  private:
-   bool ProcessOne(int count, WaveTrack * t,
-                   sampleCount start, sampleCount len);
+   bool ProcessOne(int count, WaveTrack * track,
+                   double start, sampleCount len);
 };
 
 class EffectFadeOut:public Effect {
@@ -50,8 +50,8 @@ class EffectFadeOut:public Effect {
    virtual bool Process();
 
  private:
-   bool ProcessOne(int count, WaveTrack * t,
-                   sampleCount start, sampleCount len);
+   bool ProcessOne(int count, WaveTrack * track,
+                   double start, sampleCount len);
 };
 
 #endif

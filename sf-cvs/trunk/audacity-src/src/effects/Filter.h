@@ -26,7 +26,7 @@ class Envelope;
 class WaveTrack;
 
 class EffectFilter: public Effect {
-   
+
 public:
    
    EffectFilter();
@@ -44,8 +44,8 @@ public:
    virtual bool Process();
    
 private:
-   bool ProcessOne(int count, WaveTrack * t,
-                   sampleCount start, sampleCount len);
+   bool ProcessOne(int count, WaveTrack * track,
+                   double start, sampleCount len);
 
    void Filter(sampleCount len,
                float *buffer);
