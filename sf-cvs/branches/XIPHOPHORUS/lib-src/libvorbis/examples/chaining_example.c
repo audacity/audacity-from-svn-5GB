@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: illustrate simple use of chained bitstream and vorbisfile.a
- last mod: $Id: chaining_example.c,v 1.1.1.3 2002-10-26 19:40:06 dmazzoni Exp $
+ last mod: $Id: chaining_example.c,v 1.1.1.4 2004-03-21 16:53:02 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -45,6 +45,8 @@ int main(){
   if(ov_seekable(&ov)){
     printf("Input bitstream contained %ld logical bitstream section(s).\n",
 	   ov_streams(&ov));
+    printf("Total bitstream samples: %ld\n\n",
+	   (long)ov_pcm_total(&ov,-1));
     printf("Total bitstream playing time: %ld seconds\n\n",
 	   (long)ov_time_total(&ov,-1));
 

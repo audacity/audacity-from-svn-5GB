@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
+# Makefile.in generated automatically by automake 1.4-p6 from Makefile.am
 
 # Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
@@ -59,24 +59,37 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 host_alias = @host_alias@
 host_triplet = @host@
+AR = @AR@
 AS = @AS@
 CC = @CC@
 CPP = @CPP@
+CXX = @CXX@
+CXXCPP = @CXXCPP@
 DEBUG = @DEBUG@
 DLLTOOL = @DLLTOOL@
 ECHO = @ECHO@
+EGREP = @EGREP@
 EXEEXT = @EXEEXT@
+F77 = @F77@
+GCJ = @GCJ@
+GCJFLAGS = @GCJFLAGS@
+HAVE_LIB = @HAVE_LIB@
+LIB = @LIB@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
+LTLIB = @LTLIB@
+MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 OGG_CFLAGS = @OGG_CFLAGS@
 OGG_LIBS = @OGG_LIBS@
 PACKAGE = @PACKAGE@
+PDFXMLTEX = @PDFXMLTEX@
 PROFILE = @PROFILE@
 RANLIB = @RANLIB@
+RC = @RC@
 STRIP = @STRIP@
 VERSION = @VERSION@
 VE_LIB_AGE = @VE_LIB_AGE@
@@ -88,6 +101,7 @@ VF_LIB_REVISION = @VF_LIB_REVISION@
 V_LIB_AGE = @V_LIB_AGE@
 V_LIB_CURRENT = @V_LIB_CURRENT@
 V_LIB_REVISION = @V_LIB_REVISION@
+XSLTPROC = @XSLTPROC@
 pthread_lib = @pthread_lib@
 
 AUTOMAKE_OPTIONS = foreign
@@ -100,13 +114,15 @@ lib_LTLIBRARIES = libvorbis.la libvorbisfile.la libvorbisenc.la
 
 libvorbis_la_SOURCES = mdct.c smallft.c block.c envelope.c window.c lsp.c 			lpc.c analysis.c synthesis.c psy.c info.c 			floor1.c floor0.c 			res0.c mapping0.c registry.c codebook.c sharedbook.c 			lookup.c bitrate.c 			envelope.h lpc.h lsp.h codebook.h misc.h psy.h 			masking.h os.h mdct.h smallft.h highlevel.h 			registry.h scales.h window.h lookup.h lookup_data.h 			codec_internal.h backends.h bitrate.h 
 
-libvorbis_la_LDFLAGS = -version-info @V_LIB_CURRENT@:@V_LIB_REVISION@:@V_LIB_AGE@
+libvorbis_la_LDFLAGS = -no-undefined -version-info @V_LIB_CURRENT@:@V_LIB_REVISION@:@V_LIB_AGE@
 
 libvorbisfile_la_SOURCES = vorbisfile.c
-libvorbisfile_la_LDFLAGS = -version-info @VF_LIB_CURRENT@:@VF_LIB_REVISION@:@VF_LIB_AGE@
+libvorbisfile_la_LDFLAGS = -no-undefined -version-info @VF_LIB_CURRENT@:@VF_LIB_REVISION@:@VF_LIB_AGE@
+libvorbisfile_la_LIBADD = libvorbis.la
 
 libvorbisenc_la_SOURCES = vorbisenc.c 
-libvorbisenc_la_LDFLAGS = -version-info @VE_LIB_CURRENT@:@VE_LIB_REVISION@:@VE_LIB_AGE@
+libvorbisenc_la_LDFLAGS = -no-undefined -version-info @VE_LIB_CURRENT@:@VE_LIB_REVISION@:@VE_LIB_AGE@
+libvorbisenc_la_LIBADD = libvorbis.la
 
 EXTRA_PROGRAMS = barkmel tone psytune
 CLEANFILES = $(EXTRA_PROGRAMS)
@@ -131,9 +147,9 @@ libvorbis_la_OBJECTS =  mdct.lo smallft.lo block.lo envelope.lo \
 window.lo lsp.lo lpc.lo analysis.lo synthesis.lo psy.lo info.lo \
 floor1.lo floor0.lo res0.lo mapping0.lo registry.lo codebook.lo \
 sharedbook.lo lookup.lo bitrate.lo
-libvorbisfile_la_LIBADD = 
+libvorbisfile_la_DEPENDENCIES =  libvorbis.la
 libvorbisfile_la_OBJECTS =  vorbisfile.lo
-libvorbisenc_la_LIBADD = 
+libvorbisenc_la_DEPENDENCIES =  libvorbis.la
 libvorbisenc_la_OBJECTS =  vorbisenc.lo
 barkmel_OBJECTS =  barkmel.$(OBJEXT)
 barkmel_LDADD = $(LDADD)
@@ -163,7 +179,7 @@ OBJECTS = $(libvorbis_la_OBJECTS) $(libvorbisfile_la_OBJECTS) $(libvorbisenc_la_
 all: all-redirect
 .SUFFIXES:
 .SUFFIXES: .S .c .lo .o .obj .s
-$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --foreign --include-deps lib/Makefile
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
@@ -375,6 +391,73 @@ distdir: $(DISTFILES)
 	      || exit 1; \
 	  fi; \
 	done
+analysis.lo analysis.o : analysis.c ../include/vorbis/codec.h \
+	codec_internal.h envelope.h mdct.h codebook.h psy.h smallft.h \
+	backends.h bitrate.h os.h misc.h highlevel.h registry.h \
+	scales.h
+bitrate.lo bitrate.o : bitrate.c ../include/vorbis/codec.h \
+	codec_internal.h envelope.h mdct.h codebook.h psy.h smallft.h \
+	backends.h bitrate.h os.h misc.h highlevel.h
+block.lo block.o : block.c ../include/vorbis/codec.h codec_internal.h \
+	envelope.h mdct.h codebook.h psy.h smallft.h backends.h \
+	bitrate.h os.h misc.h highlevel.h window.h lpc.h registry.h
+codebook.lo codebook.o : codebook.c ../include/vorbis/codec.h codebook.h \
+	scales.h os.h misc.h
+envelope.lo envelope.o : envelope.c ../include/vorbis/codec.h \
+	codec_internal.h envelope.h mdct.h codebook.h psy.h smallft.h \
+	backends.h bitrate.h os.h misc.h highlevel.h scales.h
+floor0.lo floor0.o : floor0.c ../include/vorbis/codec.h codec_internal.h \
+	envelope.h mdct.h codebook.h psy.h smallft.h backends.h \
+	bitrate.h os.h misc.h highlevel.h registry.h lpc.h lsp.h \
+	scales.h
+floor1.lo floor1.o : floor1.c ../include/vorbis/codec.h codec_internal.h \
+	envelope.h mdct.h codebook.h psy.h smallft.h backends.h \
+	bitrate.h os.h misc.h highlevel.h registry.h scales.h
+info.lo info.o : info.c ../include/vorbis/codec.h codec_internal.h \
+	envelope.h mdct.h codebook.h psy.h smallft.h backends.h \
+	bitrate.h os.h misc.h highlevel.h registry.h window.h
+lookup.lo lookup.o : lookup.c lookup.h lookup_data.h os.h misc.h \
+	../include/vorbis/codec.h
+lpc.lo lpc.o : lpc.c os.h misc.h ../include/vorbis/codec.h smallft.h \
+	lpc.h scales.h
+lsp.lo lsp.o : lsp.c lsp.h os.h misc.h ../include/vorbis/codec.h \
+	lookup.h scales.h lookup.c lookup_data.h
+mapping0.lo mapping0.o : mapping0.c ../include/vorbis/codec.h \
+	codec_internal.h envelope.h mdct.h codebook.h psy.h smallft.h \
+	backends.h bitrate.h os.h misc.h highlevel.h window.h \
+	registry.h lpc.h lsp.h scales.h
+mdct.lo mdct.o : mdct.c ../include/vorbis/codec.h mdct.h os.h misc.h
+psy.lo psy.o : psy.c ../include/vorbis/codec.h codec_internal.h \
+	envelope.h mdct.h codebook.h psy.h smallft.h backends.h \
+	bitrate.h os.h misc.h highlevel.h masking.h lpc.h scales.h
+registry.lo registry.o : registry.c ../include/vorbis/codec.h \
+	codec_internal.h envelope.h mdct.h codebook.h psy.h smallft.h \
+	backends.h bitrate.h os.h misc.h highlevel.h registry.h
+res0.lo res0.o : res0.c ../include/vorbis/codec.h codec_internal.h \
+	envelope.h mdct.h codebook.h psy.h smallft.h backends.h \
+	bitrate.h os.h misc.h highlevel.h registry.h
+sharedbook.lo sharedbook.o : sharedbook.c os.h misc.h \
+	../include/vorbis/codec.h codebook.h scales.h
+smallft.lo smallft.o : smallft.c smallft.h ../include/vorbis/codec.h \
+	misc.h
+synthesis.lo synthesis.o : synthesis.c ../include/vorbis/codec.h \
+	codec_internal.h envelope.h mdct.h codebook.h psy.h smallft.h \
+	backends.h bitrate.h os.h misc.h highlevel.h registry.h
+vorbisenc.lo vorbisenc.o : vorbisenc.c ../include/vorbis/codec.h \
+	../include/vorbis/vorbisenc.h codec_internal.h envelope.h \
+	mdct.h codebook.h psy.h smallft.h backends.h bitrate.h os.h \
+	misc.h highlevel.h modes/setup_44.h modes/floor_all.h \
+	books/floor/floor_books.h modes/residue_44.h \
+	books/coupled/res_books_stereo.h modes/psych_44.h \
+	modes/setup_44u.h modes/residue_44u.h \
+	books/uncoupled/res_books_uncoupled.h modes/setup_32.h \
+	modes/setup_8.h modes/psych_8.h modes/residue_8.h \
+	modes/setup_11.h modes/psych_11.h modes/setup_16.h \
+	modes/psych_16.h modes/residue_16.h modes/setup_22.h \
+	modes/setup_X.h
+vorbisfile.lo vorbisfile.o : vorbisfile.c ../include/vorbis/codec.h \
+	../include/vorbis/vorbisfile.h os.h misc.h
+window.lo window.o : window.c os.h misc.h ../include/vorbis/codec.h
 
 info-am:
 info: info-recursive

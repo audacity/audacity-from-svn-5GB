@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: 16kHz settings 
- last mod: $Id: psych_16.h,v 1.1.1.1 2002-10-26 19:39:40 dmazzoni Exp $
+ last mod: $Id: psych_16.h,v 1.1.1.2 2004-03-21 16:52:59 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -114,7 +114,6 @@ static noise3 _psy_noisebias_16[4]={
 
 static double _noise_thresh_16[4]={ .3,.5,.5,.5 };
 
-static int _noise_start_16_short[3]={ 256,128,9999 };
 static int _noise_start_16[3]={ 256,256,9999 };
 static int _noise_part_16[4]={ 8,8,8,8 };
 
@@ -123,7 +122,7 @@ static int _psy_ath_floater_16[4]={
 };
 
 static int _psy_ath_abs_16[4]={
-  -110,-110,-120,-140,
+  -130,-130,-130,-140,
 };
 
 
