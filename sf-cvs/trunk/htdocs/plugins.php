@@ -13,7 +13,7 @@
 <ul>
 
   <li>
-  <a href="http://www.bath.ac.uk/~masrwd/pvplugs.html"
+  <a href="http://www.cs.bath.ac.uk/~rwd/"
   >Richard Dobson's Plug-ins</a> - includes a good
   Pitch Shifter.
 
@@ -48,7 +48,7 @@
 <ul>
 
   <li>
-  <a href="http://www.bath.ac.uk/~masrwd/pvplugs.html"
+  <a href="http://www.cs.bath.ac.uk/~rwd/"
   >Richard Dobson's Plug-ins</a> - includes a good
   Pitch Shifter.
 
