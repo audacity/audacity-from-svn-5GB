@@ -360,7 +360,9 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();   
    c->AddItem("AddLabel",       _("Add Label At Selection\tCtrl+B"), FN(OnAddLabel));
+   c->AddItem("AddLabelPlaying",       _("Add Label At Playback Position\tCtrl+M"), FN(OnAddLabelPlaying));
    c->SetCommandFlags("AddLabel", 0, 0);
+   c->SetCommandFlags("AddLabelPlaying", 0, AudioIONotBusyFlag);
    c->EndMenu();
 
    //
@@ -2782,7 +2784,7 @@ void AudacityProject::OnNewTimeTrack()
       }
 }
 
-void AudacityProject::OnAddLabel()
+void AudacityProject::DoAddLabel(double left, double right)
 {
    TrackListIterator iter(mTracks);
    LabelTrack *lt = NULL;
@@ -2803,12 +2805,26 @@ void AudacityProject::OnAddLabel()
    SelectNone();
    lt->SetSelected(true);
 
-   lt->AddLabel(mViewInfo.sel0, mViewInfo.sel1);
+   lt->AddLabel(left, right);
 
    PushState(_("Added label"), _("Label"));
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnAddLabel()
+{
+   DoAddLabel(mViewInfo.sel0, mViewInfo.sel1);
+}
+
+void AudacityProject::OnAddLabelPlaying()
+{
+   if (GetAudioIOToken()>0 &&
+       gAudioIO->IsStreamActive(GetAudioIOToken())) {
+      double indicator = gAudioIO->GetStreamTime();
+      DoAddLabel(indicator, indicator);
+   }
 }
 
 void AudacityProject::OnRemoveTracks()
