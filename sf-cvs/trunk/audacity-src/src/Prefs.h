@@ -36,4 +36,4 @@ extern wxConfig *gPrefs;
 extern int gMenusDirty;
 
 int ReadExportFormatPref();
-void WriteExportFormatPref(unsigned int format);
+void WriteExportFormatPref(int format);

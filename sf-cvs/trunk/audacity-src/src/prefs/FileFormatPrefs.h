@@ -48,7 +48,7 @@ class FileFormatPrefs:public PrefsPanel {
 
    AudacityProject *mAudacity;
 
-   unsigned int mFormat;
+   int mFormat;
 
    void SetMP3VersionText();
    void SetFormatText();
