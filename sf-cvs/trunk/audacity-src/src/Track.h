@@ -121,6 +121,10 @@ class Track: public XMLTagHandler {
    virtual XMLTagHandler *HandleXMLChild(const char *tag) = 0;
    virtual void WriteXML(int depth, FILE *fp) = 0;
 
+   // Returns true if an error was encountered while trying to
+   // open the track from XML
+   virtual bool GetErrorOpening() { return false; }
+
    virtual double GetStartTime() { return 0.0; }
    virtual double GetEndTime() { return 0.0; }
 };

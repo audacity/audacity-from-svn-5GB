@@ -33,6 +33,7 @@
 #include "blockfile/LegacyBlockFile.h"
 #include "blockfile/LegacyAliasBlockFile.h"
 #include "blockfile/SimpleBlockFile.h"
+#include "blockfile/SilentBlockFile.h"
 #include "blockfile/PCMAliasBlockFile.h"
 #include "DirManager.h"
 #include "Prefs.h"
@@ -398,6 +399,8 @@ bool DirManager::HandleXMLTag(const char *tag, const char **attrs)
       *mLoadingTarget = SimpleBlockFile::BuildFromXML(projFull, attrs);
    else if( !wxStricmp(tag, "pcmaliasblockfile") )
       *mLoadingTarget = PCMAliasBlockFile::BuildFromXML(projFull, attrs);
+   else if( !wxStricmp(tag, "silentblockfile") )
+      *mLoadingTarget = SilentBlockFile::BuildFromXML(projFull, attrs);
    else if( !wxStricmp(tag, "blockfile") ||
             !wxStricmp(tag, "legacyblockfile") ) {
       // Support Audacity version 1.1.1 project files

@@ -914,6 +914,11 @@ void WaveTrack::WriteXML(int depth, FILE *fp)
    fprintf(fp, "</wavetrack>\n");
 }
 
+bool WaveTrack::GetErrorOpening()
+{
+   return mSequence->GetErrorOpening();
+}
+
 bool WaveTrack::Lock()
 {
    return mSequence->Lock();
