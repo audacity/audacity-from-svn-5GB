@@ -3,7 +3,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.#: ../src/ToolBar.cpp:419 ../src/prefs/KeyConfigPrefs.cpp:151
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Audacity 1.1\n"
 "POT-Creation-Date: 2002-07-04 10:38-0700\n"
 "PO-Revision-Date: 2002-09-18 11:37GMT\n"
 "Last-Translator: Sebastian Pacholski <inward@poczta.onet.pl>\n"
