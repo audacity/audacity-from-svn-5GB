@@ -23,14 +23,10 @@
 
 <h2><?php print $downloadSectionStr; ?></h2>
 
-<table border="0">
 
-<tr>
-<td colspan=2>
 <h3><?php print "Windows ($winBetaVersion)" ?></h3>
-</td>
-</tr>
 
+<table border="0">
 <tr>
 <td valign=center
 ><?php print "<a href=\"$exe\">";
@@ -62,13 +58,11 @@
 <?php print "$lameStr</a>"; ?>
 </td>
 </tr>
+</table>
 
-<tr>
-<td colspan=2>
 <h3><?php print "Mac OS X ($macOSXBetaVersion)" ?></h3>
-</td>
-</tr>
 
+<table border="0">
 <tr>
 <td valign=center
 ><?php print "<a href=\"$osx\">";
@@ -88,13 +82,11 @@
 <?php print "$lameStr</a>"; ?>
 </td>
 </tr>
+</table>
 
-<tr>
-<td colspan=2>
 <h3><?php print "Source Code ($srcBetaVersion)" ?></h3>
-</td>
-</tr>
 
+<table border="0">
 <tr>
 <td valign=center
 ><?php print "<a href=\"$src\">";
@@ -119,20 +111,17 @@ Source code dependencies:
 </ul>
 </td>
 </tr>
+</table>
 
-<tr>
-<td colspan=2>
 <h3><?php print "Mac OS 9 ($macOS9BetaVersion)" ?></h3>
-</td>
-</tr>
 
+<table border="0">
 <tr>
 <td></td>
 <td>
 <?php include GetTranslation("macos9note"); ?>
 </td>
 </tr>
-
 </table>
 
 <center><hr width=50%></center>
