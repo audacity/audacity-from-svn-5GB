@@ -38,7 +38,12 @@ class Track: public XMLTagHandler {
    bool       mMinimized;
 
  public:
-   int GetHeight() const { if (mMinimized) return 20; else return mHeight; }
+ 
+   // This just returns a constant and can be overriden by subclasses
+   // to specify a different height for the case that the track is minimized.
+   virtual int GetMinimizedHeight() const;
+ 
+   int GetHeight() const;
    void SetHeight( int h ) { mHeight = h; }
    bool GetMinimized() const { return mMinimized; }
    void SetMinimized(bool isMinimized) { mMinimized = isMinimized; }
