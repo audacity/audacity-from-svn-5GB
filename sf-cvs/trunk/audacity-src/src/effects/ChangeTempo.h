@@ -36,7 +36,6 @@
 #define ID_TEXT_TOLENGTH 10006
 
 
-class WaveTrack;
 class wxString;
 
 
