@@ -16,6 +16,7 @@
 #include <wx/window.h>
 #include <wx/intl.h>
 #include <wx/menu.h>
+#include <wx/msgdlg.h>
 
 #include <wx/fs_zip.h>
 #include <wx/image.h>
