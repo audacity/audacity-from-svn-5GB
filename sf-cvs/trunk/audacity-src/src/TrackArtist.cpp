@@ -698,10 +698,11 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
    unsigned int ssel0 = (unsigned int) ((sel0 - tOffset) * rate + 0.5);
    unsigned int ssel1 = (unsigned int) ((sel1 - tOffset) * rate + 0.5);
 
-   if (sel1 < tOffset) {
-      ssel0 = 0;
+   if (sel0 < tOffset)
+       ssel0 = 0;
+
+   if (sel1 < tOffset)
       ssel1 = 0;
-   }
 
    if (ssel0 != ssel1) {
       if (ssel0 < 0)
