@@ -52,7 +52,7 @@ wxDialog(parent, -1, _("Undo History"), wxDefaultPosition,
    mList->SetSizeHints(350, 180);
 
    wxImageList *imageList = new wxImageList(24, 24); //TODO: free
-   imageList->Add(wxIcon(empty_24x24_xpm));
+   imageList->Add(wxIcon(empty_24x17_xpm));
    imageList->Add(wxIcon(arrow_xpm));
    mList->SetImageList(imageList, wxIMAGE_LIST_SMALL);
    mList->InsertColumn(0, _("Action"), wxLIST_FORMAT_LEFT, 280);
