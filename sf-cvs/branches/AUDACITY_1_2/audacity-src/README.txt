@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.2.3
+Version 1.2.4
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -261,6 +261,17 @@ Known issues/problems:
     with accented characters in their names will cause problems.
 
 -------------------------------------------------------------
+
+Changes in 1.2.4:
+
+  * Audacity is now built with Vorbis 1.1, which features better encoding
+    quality and file compression.
+
+  * Dragging sound files into the Audacity window now works on Mac OS X
+    and Linux, as well as Windows.  (Before, it worked only on Windows.)
+
+  * New or updated translations: Czech (cs), Hungarian (hu),
+    Traditional Chinese (zh_TW).
 
 Changes in 1.2.3:
 
