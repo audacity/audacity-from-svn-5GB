@@ -304,6 +304,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("FloatEditTB",    _("Float Edit Toolbar"),             FN(OnFloatEditToolBar));
    c->AddItem("FloatMixerTB",   _("Float Mixer Toolbar"),            FN(OnFloatMixerToolBar));
    c->AddItem("FloatMeterTB",   _("Float Meter Toolbar"),            FN(OnFloatMeterToolBar));
+   c->AddItem("FloatTranscriptionTB",   _("Float Transcription Toolbar"),            FN(OnFloatTranscriptionToolBar));
 
    c->SetCommandFlags("FloatMeterTB", AudioIONotBusyFlag, AudioIONotBusyFlag);
 
@@ -643,6 +644,13 @@ int AudacityProject::GetToolBarChecksum()
             toolBarCheckSum += 8;
       }
    }
+   if (gTranscriptionToolBarStub) {
+      if (gTranscriptionToolBarStub->GetLoadedStatus()) {
+         if(gTranscriptionToolBarStub->GetWindowedStatus())
+            toolBarCheckSum += 16;
+      }
+   }
+
 
    return toolBarCheckSum;
 }
@@ -692,6 +700,21 @@ void AudacityProject::ModifyToolbarMenus()
    }
    else {
       mCommandManager.Enable("FloatMeterTB", false);
+   }   
+
+   if (gTranscriptionToolBarStub) {
+     
+     // Loaded or unloaded?
+     mCommandManager.Enable("FloatTranscriptionTB", gTranscriptionToolBarStub->GetLoadedStatus());
+     
+     // Floating or docked?
+     if (gTranscriptionToolBarStub->GetWindowedStatus())
+        mCommandManager.Modify("FloatTranscriptionTB", _("Dock Transcription Toolbar"));
+     else
+        mCommandManager.Modify("FloatTranscriptionTB", _("Float Transcription Toolbar"));
+   }
+   else {
+      mCommandManager.Enable("FloatTranscriptionTB", false);
    }   
 }
 
@@ -2322,6 +2345,22 @@ void AudacityProject::OnFloatMeterToolBar()
    }
 }
 
+void AudacityProject::OnFloatTranscriptionToolBar()
+{
+   if (gTranscriptionToolBarStub) {
+
+      if (gTranscriptionToolBarStub->GetWindowedStatus()) {
+
+         gTranscriptionToolBarStub->HideWindowedToolBar();
+         gTranscriptionToolBarStub->LoadAll();
+
+      } else {
+
+         gTranscriptionToolBarStub->ShowWindowedToolBar();
+         gTranscriptionToolBarStub->UnloadAll();
+      }
+   }
+}
 
 
 //
