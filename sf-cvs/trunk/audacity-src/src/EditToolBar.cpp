@@ -66,10 +66,10 @@ IMPLEMENT_DYNAMIC_CLASS(EditToolBar, ToolBar)
     BEGIN_EVENT_TABLE(EditToolBar, wxWindow)
     EVT_PAINT(EditToolBar::OnPaint)
     EVT_CHAR(EditToolBar::OnKeyEvent)
-    EVT_COMMAND(ETBCopyID,
-            wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnCopy)
     EVT_COMMAND(ETBCutID,
             wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnCut)
+    EVT_COMMAND(ETBCopyID,
+            wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnCopy)
     EVT_COMMAND(ETBPasteID,
             wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnPaste)
     EVT_COMMAND(ETBTrimID,
@@ -185,18 +185,20 @@ void EditToolBar::MakeButtons()
 
    /* Buttons */
 
-   //Copy Button
-   mCopy = MakeButton(upPattern, downPattern, hilitePattern,
-                      (char const **) Copy,
-                      (char const **) CopyAlpha, ETBCopyID, 1);
-   mCopy->SetToolTip(_("Copy selection to clipboard"));
-
-   //Cut Button
+  //Cut Button
    mCut = MakeButton(upPattern, downPattern, hilitePattern,
                      (char const **) Cut,
-                     (char const **) CutAlpha, ETBCutID, 28);
+                     (char const **) CutAlpha, ETBCutID, 1);
    mCut->SetToolTip(_("Cut selection (to clipboard)"));
+ 
 
+  //Copy Button
+   mCopy = MakeButton(upPattern, downPattern, hilitePattern,
+                      (char const **) Copy,
+                      (char const **) CopyAlpha, ETBCopyID, 28);
+   mCopy->SetToolTip(_("Copy selection to clipboard"));
+
+ 
    //Paste Button
    mPaste = MakeButton(upPattern, downPattern, hilitePattern,
                       (char const **) Paste,
@@ -215,7 +217,6 @@ void EditToolBar::MakeButtons()
                          (char const **) SilenceAlpha, ETBSilenceID, 109);
    mSilence->SetToolTip(_("Insert Silence"));
    
-
 
 
    //Undo Button
@@ -268,8 +269,8 @@ void EditToolBar::MakeButtons()
 
 EditToolBar::~EditToolBar()
 {
-   delete mCopy;
    delete mCut;
+   delete mCopy;
    delete mPaste;
    delete mTrim;
    delete mSilence;
@@ -300,6 +301,20 @@ void EditToolBar::OnKeyEvent(wxKeyEvent & event)
 
 
 
+void EditToolBar::OnCut()
+{
+   if (!gAudioIO->IsBusy())
+      {
+         wxCommandEvent event;
+         AudacityProject *p = GetActiveProject();
+         if (p) {
+            p->Cut(event);
+         }
+      }
+   SetButton(false, mCut);
+}
+
+
 void EditToolBar::OnCopy()
 { 
   if (!gAudioIO->IsBusy())
@@ -313,18 +328,6 @@ void EditToolBar::OnCopy()
   SetButton(false, mCopy);
 }   
 
-void EditToolBar::OnCut()
-{
-   if (!gAudioIO->IsBusy())
-      {
-         wxCommandEvent event;
-         AudacityProject *p = GetActiveProject();
-         if (p) {
-            p->Cut(event);
-         }
-      }
-   SetButton(false, mCut);
-}
 
 
 void EditToolBar::OnPaste()
@@ -435,14 +438,14 @@ void EditToolBar::OnZoomSel()
 
 void EditToolBar::OnZoomFit()
 {
-   if (!gAudioIO->IsBusy())
-      {
+   // if (!gAudioIO->IsBusy())
+   //    {
          wxCommandEvent event;
          AudacityProject *p = GetActiveProject();
          if (p) {
             p->OnZoomFit(event);
          }
-      }
+         //     }
    SetButton(false, mZoomFit);
 }
 
