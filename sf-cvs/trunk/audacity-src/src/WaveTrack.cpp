@@ -319,7 +319,7 @@ void WaveTrack::Paste(double t, const VTrack * src)
 {
    wxASSERT(src->GetKind() == WaveTrack::Wave);
 
-   envelope.ExpandRegion(t, src->GetMaxLen());
+   envelope.Paste(t, &((WaveTrack *) src)->envelope);
 
 #if wxUSE_THREADS
    wxMutexLocker lock(*blockMutex);

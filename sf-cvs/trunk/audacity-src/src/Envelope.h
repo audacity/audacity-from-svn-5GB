@@ -59,7 +59,7 @@ class Envelope {
 
    // Handling Cut/Copy/Paste events
    void CollapseRegion(double t0, double t1);
-   void ExpandRegion(double t0, double deltat);
+   void Paste(double t0, Envelope *e);
 
    // Control
 

@@ -38,9 +38,7 @@ Envelope::Envelope()
 
 Envelope::~Envelope()
 {
-   int len = mEnv.Count();
-   for (int i = 0; i < len; i++)
-      delete mEnv[i];
+   WX_CLEAR_ARRAY(mEnv)
 }
 
 void Envelope::Mirror(bool mirror)
@@ -50,7 +48,7 @@ void Envelope::Mirror(bool mirror)
 
 void Envelope::Flatten(double value)
 {
-   mEnv.Clear();
+   WX_CLEAR_ARRAY(mEnv)
    Insert(0.0, value);
    Insert(1000000000.0, value);
 }
@@ -60,10 +58,7 @@ void Envelope::CopyFrom(const Envelope * e, double t0, double t1)
    mOffset = wxMax(t0, e->mOffset);
    mTrackLen = wxMin(t1, e->mOffset + e->mTrackLen) - mOffset;
 
-   int i;
-   for (i = 0; i < mEnv.Count(); i++)
-      delete mEnv[i];
-   mEnv.Clear();
+   WX_CLEAR_ARRAY(mEnv)
    
    int len = e->mEnv.Count();
 
@@ -74,12 +69,12 @@ void Envelope::CopyFrom(const Envelope * e, double t0, double t1)
    mEnv.Add(pt);
 
    // Skip the points that come before the copied region
-   i = 0;
+   int i = 0;
    while (i < len && e->mOffset + e->mEnv[i]->t <= t0)
       i++;
 
    // Copy points from inside the copied region
-   while (i < len && e->mOffset + e->mEnv[i]->t < t1) {
+   while (i < len && e->mOffset + e->mEnv[i]->t < mOffset + mTrackLen) {
       EnvPoint *pt = new EnvPoint();
       pt->t = e->mEnv[i]->t + e->mOffset - mOffset;
       pt->val = e->mEnv[i]->val;
@@ -88,10 +83,10 @@ void Envelope::CopyFrom(const Envelope * e, double t0, double t1)
    }
 
    // Create the final point
-   if (mTrackLen != 0) {
+   if (mTrackLen > 0) {
       EnvPoint *pt = new EnvPoint();
       pt->t = mTrackLen;
-      pt->val = e->GetValue(t1);
+      pt->val = e->GetValue(mOffset + mTrackLen);
       mEnv.Add(pt);
    }
 }
@@ -182,13 +177,10 @@ bool Envelope::Load(wxTextFile * in, DirManager * dirManager)
    if (!(in->GetNextLine().ToULong(&len)))
       return false;
 
-   unsigned int i;
-   for (i = 0; i < mEnv.Count(); i++)
-      delete mEnv[i];
-   mEnv.Clear();
+   WX_CLEAR_ARRAY(mEnv)
    mEnv.Alloc(len);
 
-   for (i = 0; i < len; i++) {
+   for (int i = 0; i < len; i++) {
       EnvPoint *e = new EnvPoint();
       if (!(in->GetNextLine().ToDouble(&e->t)))
          return false;
@@ -412,6 +404,7 @@ void Envelope::CollapseRegion(double t0, double t1)
          delete mEnv[i];
          mEnv.RemoveAt(i);
          len--;
+         i--;
       }
 
    for (i = 0; i < len; i++)
@@ -419,22 +412,51 @@ void Envelope::CollapseRegion(double t0, double t1)
          mEnv[i]->t -= (t1 - t0);
 }
 
-void Envelope::ExpandRegion(double t0, double deltat)
+void Envelope::Paste(double t0, Envelope *e)
 {
    t0 -= mOffset;
+   t0 = wxMin(t0, mTrackLen);
+   double deltat = e->mTrackLen;
 
-   // This gets called when somebody pastes samples.  All of the
-   // control points to the right of the paste get shifted to the
-   // right.  It's not always exactly what you wanted, but it's
-   // at least intuitive how to fix it.  If you think about it, you'll
-   // realize there's no logical way to preserve envelope information
-   // across a cut/paste sequence.
-
+   int i;
    int len = mEnv.Count();
+   if (!len) return;
 
-   for (int i = 0; i < len; i++)
+   // Shift existing points to the right
+   for (i = 0; i < len; i++)
       if (mEnv[i]->t > t0)
          mEnv[i]->t += deltat;
+   mTrackLen += deltat;
+
+   // Start of the selection
+   double endval = GetValue(t0 + mOffset);
+   Insert(t0, endval);
+
+   // Copy points from inside the selection
+   len = e->mEnv.Count();
+   for (i = 0; i < len; i++)
+      Insert(t0 + e->mEnv[i]->t, e->mEnv[i]->val);
+
+   // End of the selection
+   Insert(t0 + deltat, endval);
+
+   // Clean up duplicate points
+   //
+   // Worst-case, this is O(nm) when we are removing m of the n total points.
+   // I don't think this will be an issue, but if so then we could test just
+   // the points we generate at the selection boundaries.
+
+   for (i = 2; i < mEnv.Count(); i++) {
+      double v0 = mEnv[i-2]->val,
+             v1 = mEnv[i-1]->val,
+             v2 = mEnv[i]->val;
+
+      if (v0 == v1 && v1 == v2) {
+         delete mEnv[i-1];
+         mEnv.RemoveAt(i-1);
+         --i;
+      }
+   }
 }
 
 // Private methods
@@ -451,7 +473,7 @@ int Envelope::Insert(double when, double value)
       return 0;
    } else {
       int i = 0;
-      while (i < len && when > mEnv[i]->t)
+      while (i < len && when >= mEnv[i]->t)
          i++;
 
       if (i < len) {
@@ -516,6 +538,9 @@ double Envelope::GetValue(double t) const
       v0 = -4.6;                // This corresponds to the log10 of 1/32768
    if (mEnv[hi]->val <= 0.0)
       v1 = -4.6;
+
+   if (t == t0) return pow(10.0, v0);
+   if (t == t1) return pow(10.0, v1);
 
    // Interpolate in logspace
 
