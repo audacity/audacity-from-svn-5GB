@@ -397,6 +397,7 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
   if (event.ButtonUp()) {
 	mCapturedTrack = NULL;
 	mIsSliding = false;
+	MakeParentRedrawScrollbars();
   }
   
 }
