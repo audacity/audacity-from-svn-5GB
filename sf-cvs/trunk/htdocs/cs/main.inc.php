@@ -54,6 +54,6 @@ $latestBetaStr = "Poslední Beta-verze:";
 $releaseNotesStr = "Poznámky k vydání";
 $releaseNotesStr2 = "Poznámky k vydání (co je nového v této verzi?)";
 $vstLinksHereStr = "Zde stahujte VST Plug-iny";
-$docsStr = "Stažení nejdovìjší dokumentace";
+$docsStr = "Stažení nejnovìjší dokumentace";
 $clickEnlargeStr = "(Kliknutím na obrázek zobrazíte zvìtšeninu.)";
 ?>
