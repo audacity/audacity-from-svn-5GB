@@ -1148,8 +1148,8 @@ void AudacityProject::OnInsertSilence(wxEvent & event)
       return;
    }
 
-   if (mViewInfo.sel0 != mViewInfo.sel1)
-      Clear();
+   // if (mViewInfo.sel0 != mViewInfo.sel1)
+   //   Clear();
 
    wxASSERT(mViewInfo.sel0 == mViewInfo.sel1);
 
