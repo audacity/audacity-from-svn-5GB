@@ -31,6 +31,7 @@ Ruler::Ruler()
    mFormat = RealFormat;
    mFlip = false;
    mLog = false;
+   mLabelEdges = false;
    mUnits = "";
 
    mLeft = -1;
