@@ -59,12 +59,12 @@ const int sbarExtraLen = 1;
 #ifdef __WXMSW__
 const int sbarSpaceWidth = 16;
 const int sbarControlWidth = 16;
-const int sbarExtraLen = 1;
+const int sbarExtraLen = 0;
 #endif
 #ifdef __WXGTK__
 const int sbarSpaceWidth = 15;
 const int sbarControlWidth = 15;
-const int sbarExtraLen = 1;
+const int sbarExtraLen = 0;
 #endif
 
 int gAudacityDocNum = 0;
@@ -637,8 +637,8 @@ void AudacityProject::HandleResize()
 
     mHsbar->SetSize(hoffset, top+height-sbarSpaceWidth,
 				    width-hoffset-sbarSpaceWidth+sbarExtraLen, sbarControlWidth);
-    mVsbar->SetSize(width-sbarSpaceWidth, top+voffset,
-				    sbarControlWidth, height-sbarSpaceWidth-voffset+sbarExtraLen);
+    mVsbar->SetSize(width-sbarSpaceWidth, top+voffset-sbarExtraLen,
+				    sbarControlWidth, height-sbarSpaceWidth-voffset+2*sbarExtraLen);
 
     FixScrollbars();
   }
@@ -802,6 +802,8 @@ void AudacityProject::OnPaint(wxPaintEvent& event)
   f.y = top+height-sbarSpaceWidth+1;
   f.width = mTrackPanel->GetLabelOffset()-2;
   f.height = sbarSpaceWidth-2;
+  AColor::Medium(&dc, false);
+  dc.DrawRectangle(f);
   AColor::Bevel(dc, true, f);
 }
 

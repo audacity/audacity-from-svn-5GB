@@ -162,6 +162,10 @@ void AStatus::OnPaint(wxPaintEvent& event)
   cursorField.y = 29;
   cursorField.width = mWidth - 144;
   cursorField.height = 17;
+  
+  #ifdef __WXMAC__
+  cursorField.width -= 15;
+  #endif
 
   AColor::Bevel(memDC, false, cursorField);
   msg = mField[1];
@@ -192,11 +196,19 @@ void AStatus::OnMouseEvent(wxMouseEvent& event)
 {
   if (event.ButtonDown() &&
 	  mRateField.Inside(event.m_x, event.m_y)) {
-	wxClientDC dc(this);
-	AColor::Bevel(dc, false, mRateField);
+
+	{
+	    wxClientDC dc(this);
+	    AColor::Bevel(dc, false, mRateField);
+	}
+	
 	PopupMenu(mRateMenu,
 			  mRateField.x, mRateField.y + mRateField.height);
-	AColor::Bevel(dc, true, mRateField);
+
+    {
+        wxClientDC dc(this);
+    	AColor::Bevel(dc, true, mRateField);
+    }
   }
 }
 
