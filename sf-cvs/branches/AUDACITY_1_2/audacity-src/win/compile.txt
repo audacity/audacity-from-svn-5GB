@@ -28,7 +28,7 @@ It is worth noting that Audacity uses VC++'s multithreaded
 statically-linked run-time libraries.
 
 ---------------------------
-STEP 1:  Download wxWindows
+MSVC++ STEP 1:  Download wxWindows
 ---------------------------
 To simplify the implementation of a near-identical user
 interface across platforms, Audacity uses classes and
@@ -45,7 +45,7 @@ available at "http://www.wxwindows.org/".
 
 
 ------------------------
-STEP 2:  Build wxWindows
+MSVC++ STEP 2:  Build wxWindows
 ------------------------
 When you have downloaded and installed wxWindows, you must
 build it.  First though, to be compatible with Audacity, you
@@ -74,7 +74,7 @@ This will build both Debug and Release versions of the
 wxWindows library.
 
 --------------------------
-STEP 3:  Download Audacity
+MSVC++ STEP 3:  Download Audacity
 --------------------------
 Now you can compile Audacity.  If you want to checkout a
 copy of the latest source code from CVS (assuming you
@@ -84,7 +84,7 @@ load the Audacity workspace: it's "audacity.dsw" in the
 "win" directory of the Audacity source tree.
 
 --------------------------------------------
-STEP 4:  Set wxWindows location for Audacity
+MSVC++ STEP 4:  Set wxWindows location for Audacity
 --------------------------------------------
 Before you can start the build process, you must update the
 project settings to tell Visual C++ where to find wxWindows.
@@ -113,7 +113,7 @@ Once you have set the WXWIN environment variable correctly,
 the Audacity project file's declarations will do the rest.
 
 ---------------------------
-STEP 5:  Ignore lib setting
+MSVC++ STEP 5:  Ignore lib setting
 ---------------------------
 Some people previously reported error messages linking
 Audacity.  You may not have this problem.  However, if you
@@ -125,12 +125,16 @@ Go to the "Project"->"Settings" menu item in Visual Studio.
 Ignore lib. Select "Win32 Debug" or "Win32 Release" as
 appropriate for the build you were doing from the "Settings For"
 combo. Select only "Audacity" in the tree, the Link tab, and
-"Input" in the combo box. Enter "libcmtd.lib" in the
-"Ignore Libraries" box if you were attempting to perform a
-Release build, or "libcmt.lib" for a Debug build.
+"Input" in the combo box. Enter "libcmt.lib" in the
+"Ignore libraries" box if you were attempting to perform a
+Release build, or "libcmtd.lib" for a Debug build.
+
+On some systems, it seems you need to ignore "msvcrt.lib" 
+or "msvcrtd.lib" instead of "libcmtd.lib" or "libcmtd.lib", and on 
+some, you don't need to explicitly any.
 
 -----------------------
-STEP 6:  Build Audacity
+MSVC++ STEP 6:  Build Audacity
 -----------------------
 Select the configuration that you wish to build
 ("Audacity - Win32 Release" for general use, "Audacity -
@@ -147,7 +151,7 @@ CVS" though, so if that's not what you just attempted, you
 might want to try that first... 
 
 -----------------------
-(OPTIONAL) STEP 7:  Add VST support
+MSVC++ (OPTIONAL) STEP 7:  Add VST support
 -----------------------
 Audacity does not support VST plug-ins by default, but 
 here is how to enable it.
@@ -195,6 +199,7 @@ here is how to enable it.
 8. Run Audacity and the plug-ins should appear in the 
 	Generate, Effect, &/or Analyze menus.
 
+================================================================
 -------------------------------
 Compiling Audacity under Cygwin
 -------------------------------
@@ -211,7 +216,7 @@ Make sure to read the instructions in their entirety before beginning, because n
 which source tree you wind up using, all of these instructions are likely to assist you.
 
 --------------------------
-STEP 1:  Installing Cygwin
+Cygwin STEP 1:  Installing Cygwin
 --------------------------
 
 1.  If you have not already installed Cygwin, download it from http://www.cygwin.com .  If
@@ -237,7 +242,7 @@ compare your installed packages to the list of packages needed.
 	w32api
 
 ---------------------------------------
-STEP 2:  Download and install wxWindows
+Cygwin STEP 2:  Download and install wxWindows
 ---------------------------------------
 
 1.  Go to http://www.wxwindows.org/ and download wxWindows v2.4.1 or greater.  Make
@@ -255,7 +260,7 @@ link dynamically to wxWindows later, you should leave out the --disable-shared s
 This is not the recommended practice.
 
 --------------------------
-STEP 3:  Download Audacity
+Cygwin STEP 3:  Download Audacity
 --------------------------
 
 1.  Go to http://audacity.sourceforge.net/ and download the Audacity source distribution.
@@ -269,7 +274,7 @@ and it is assumed that future versions after that date will pick up support for 
 'tar -xzvf (audacity tarball)' to open it.
 
 -----------------------
-STEP 4:  Build Audacity
+Cygwin STEP 4:  Build Audacity
 -----------------------
 
 This is the tricky part.  :)
