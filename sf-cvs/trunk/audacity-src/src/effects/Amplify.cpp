@@ -69,6 +69,8 @@ bool EffectAmplify::PromptUser()
       return false;
 
    ratio = dlog.ratio;
+   if (dlog.noclip && ratio*peak > 1.0)
+      ratio = 1.0 / peak;
 
    return true;
 }
@@ -153,6 +155,8 @@ bool AmplifyDialog::TransferDataFromWindow()
       val.ToDouble(&r);
       ratio = pow(10,TrapDouble(r*10, AMP_MIN, AMP_MAX)/200.0);
    }
+
+   noclip = GetClipCheckBox()->GetValue();
 
    return TRUE;
 }

@@ -441,7 +441,7 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
    dbRuler.SetBounds(0, 0, 40, mHeight-21);
    dbRuler.SetOrientation(wxVERTICAL);
    dbRuler.SetRange(30, -30);
-   dbRuler.SetFormat(Ruler::RealFormat);
+   dbRuler.SetFormat(Ruler::LinearDBFormat);
    dbRuler.SetUnits("dB");
    dbRuler.Draw(memDC);
 
