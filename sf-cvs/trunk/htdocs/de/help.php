@@ -1,7 +1,7 @@
 <?php BoxTop($helpStr); ?>
 
 <p>
-<a href="docs/contents.html">User's Guide / Documentation</a>
+<a href="docs/contents.html">Benutzeranleitung / Dokumentation</a>
 </p>
 
 <p>
