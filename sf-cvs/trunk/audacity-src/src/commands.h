@@ -235,7 +235,7 @@ enum {
 
 #endif
 
-#ifdef AUDACITY_MENUS_COMMANDS_ACCELL_TABLE
+#ifdef AUDACITY_MENUS_COMMANDS_REBU
 
    #define MNU_UPDATE_ACCELL(menuClass, ID) {  if(GetCommandKeyText(ID, &mnuText)) { (menuClass->FindItem(ID))->SetText(mnuText); } }
 
