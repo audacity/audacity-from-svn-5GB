@@ -231,6 +231,11 @@ wxString AudacityProject::GetCommandDesc(int nIndex)
    return mCommandMenuItem[nIndex]->descriptionString;
 }
 
+menuType AudacityProject::GetMenuType(int nIndex)
+{
+   return mCommandMenuItem[nIndex]->type;
+}
+
 audEventFunction AudacityProject::GetCommandFunc(int nIndex)
 {
    if((nIndex < 0) || (nIndex >= GetNumCommands())) return NULL;
