@@ -56,18 +56,18 @@ class EffectSilence:public Effect {
    double length;
 };
 
-wxSizer *CreateSilenceDialog(wxWindow * parent, bool call_fit =
+wxSizer *CreateGenerateDialog(const wxString &action, wxWindow * parent, bool call_fit =
                              TRUE, bool set_sizer = TRUE);
 
-class SilenceDialog:public wxDialog {
+class GenerateDialog:public wxDialog {
  public:
    // constructors and destructors
-   SilenceDialog(wxWindow * parent, wxWindowID id, const wxString & title,
+   GenerateDialog(wxWindow * parent, wxWindowID id, const wxString & action,
                  const wxPoint & pos = wxDefaultPosition,
                  const wxSize & size = wxDefaultSize,
                  long style = wxDEFAULT_DIALOG_STYLE);
 
-   wxSizer *MakeSilenceDialog(wxWindow * parent, bool call_fit = TRUE,
+   wxSizer *MakeGenerateDialog(wxWindow * parent, bool call_fit = TRUE,
                               bool set_sizer = TRUE);
    virtual bool Validate();
    virtual bool TransferDataToWindow();

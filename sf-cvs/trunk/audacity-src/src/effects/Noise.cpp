@@ -10,12 +10,13 @@
 
 **********************************************************************/
 
-#include <stdlib.h>
+#include "Noise.h"
+
+#include "Silence.h"
+#include "../WaveTrack.h"
 
 #include <wx/defs.h> 
-
-#include "Noise.h"
-#include "../WaveTrack.h"
+#include <stdlib.h>
 
 void MakeNoise(float *buffer, sampleCount len)
 {
@@ -26,10 +27,26 @@ void MakeNoise(float *buffer, sampleCount len)
       buffer[i] = (rand() / div) - 1.0;
 }
 
+bool EffectNoise::PromptUser()
+{
+   if (mT1 > mT0)
+      length = mT1 - mT0;
+
+   GenerateDialog dlog(mParent, -1, _("Generate Noise"));
+   dlog.length = length;
+   dlog.TransferDataToWindow();
+   dlog.CentreOnParent();
+   dlog.ShowModal();
+
+   if (dlog.GetReturnCode() == 0)
+      return false;
+
+   length = dlog.length;
+   return true;
+}
+
 bool EffectNoise::Process()
 {
-   double length = mT1 - mT0;
-
    if (length <= 0.0)
       length = sDefaultGenerateLen;
 
@@ -56,6 +73,7 @@ bool EffectNoise::Process()
       delete[] data;
 
       tmp->Flush();
+      track->Clear(mT0, mT1);
       track->Paste(mT0, tmp);
       delete tmp;
       
@@ -63,6 +81,7 @@ bool EffectNoise::Process()
       track = (WaveTrack *)iter.Next();
    }
 
+	mT1 = mT0 + length; // Update selection.
    return true;
 }
 
