@@ -5,6 +5,7 @@
   EffectEqualization.cpp
 
   Mitch Golden
+  Vaughan Johnson (Preview)
 
   Applies an FFT of certain specific equalization curves, suitable
   for old recordings.
@@ -151,7 +152,7 @@ bool EffectEqualization::PromptUser()
    WaveTrack *t = (WaveTrack *) iter.First();
    float hiFreq = ((float)(t->GetRate())/2.);
 
-   EqualizationDialog dlog(((double)loFreqI), hiFreq, mFilterFunc, windowSize,
+   EqualizationDialog dlog(this, ((double)loFreqI), hiFreq, mFilterFunc, windowSize,
 			   mParent, -1, _("Equalization"));
 
    dlog.CentreOnParent();
@@ -487,9 +488,11 @@ BEGIN_EVENT_TABLE(EqualizationDialog,wxDialog)
    EVT_SIZE( EqualizationDialog::OnSize )
    EVT_BUTTON( ID_CLEAR, EqualizationDialog::OnClear )
    EVT_BUTTON( ID_LOADCURVE, EqualizationDialog::OnLoadCurve )
+	EVT_BUTTON(ID_BUTTON_PREVIEW, EqualizationDialog::OnPreview)
 END_EVENT_TABLE()
 
-EqualizationDialog::EqualizationDialog( double loFreq, double hiFreq,
+EqualizationDialog::EqualizationDialog(EffectEqualization * effect, 
+					double loFreq, double hiFreq,
 					float *filterFunc,
 					long windowSize,
 					wxWindow *parent, wxWindowID id,
@@ -499,6 +502,8 @@ EqualizationDialog::EqualizationDialog( double loFreq, double hiFreq,
 					long style):
    wxDialog( parent, id, title, position, size, style )
 {
+	m_pEffect = effect;
+
    mEnvelope = new Envelope();
    mEnvelope->SetInterpolateDB(false);
    mEnvelope->Mirror(false);
@@ -578,6 +583,13 @@ void EqualizationDialog::OnSize(wxSizeEvent &event)
    event.Skip();
 }
 
+void EqualizationDialog::OnPreview(wxCommandEvent &event)
+{
+   TransferDataFromWindow();
+	m_pEffect->Preview();
+	//v Restore previous values?
+}
+
 void EqualizationDialog::OnOk(wxCommandEvent &event)
 {
    TransferDataFromWindow();
@@ -649,10 +661,13 @@ wxSizer * MakeEqualizationDialog(
 {
    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-   wxStaticText *item1 = new wxStaticText( parent, ID_TEXT,
-                       _("Equalization"), wxDefaultPosition,
-                       wxDefaultSize, wxALIGN_CENTRE );
-   item0->Add( item1, 0, wxALIGN_CENTRE|wxALL, 5 );
+	/* //v After 1.2.0 -- so we postpone extra translation burdens.
+		wxStaticText *item1 = 
+			new wxStaticText(parent, -1,
+								  _("Equalization, by Mitch Golden && Vaughan Johnson"), 
+								  wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER);
+		item0->Add( item1, 0, wxALIGN_CENTRE|wxALL, 4 );
+		*/ 
 
    (*pan) = new EqualizationPanel( loFreq, hiFreq, 
 				   env,
@@ -660,32 +675,26 @@ wxSizer * MakeEqualizationDialog(
 				   wxDefaultPosition, wxDefaultSize );
    wxWindow *item2 = (*pan);
    wxASSERT( item2 );
-   item0->Add( item2, 1, wxGROW|wxALIGN_CENTRE|wxALL, 5 );
+   item0->Add( item2, 1, wxGROW|wxALIGN_CENTRE|wxALL, 4);
+
 
    wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
 
-   wxButton *item4 = new wxButton( parent, ID_CLEAR, _("Clear"),
+   wxButton *item4a = new wxButton( parent, ID_LOADCURVE, _("Load Predefined Curve"),
                        wxDefaultPosition, wxDefaultSize, 0 );
-   item3->Add( item4, 0, wxALIGN_CENTRE|wxALL, 5 );
+   item3->Add( item4a, 0, wxALIGN_CENTRE|wxLEFT, 4);
 
-   wxButton *item4a = new wxButton( parent, ID_LOADCURVE, _("Load Curve"),
+   item3->Add(80, 4); // horizontal spacer
+
+   wxButton *item4b = new wxButton( parent, ID_CLEAR, _("Clear"),
                        wxDefaultPosition, wxDefaultSize, 0 );
-   item3->Add( item4a, 0, wxALIGN_CENTRE|wxALL, 5 );
+   item3->Add( item4b, 0, wxALIGN_CENTRE|wxRIGHT, 4);
 
-   item3->Add( 10, 10, 1, wxALIGN_CENTRE|wxALL, 5 );
+   item0->Add( item3, 0, wxALIGN_CENTER | wxALL, 0); 
 
-   wxButton *item5 = new wxButton( parent, wxID_OK, _("OK"),
-                       wxDefaultPosition, wxDefaultSize, 0 );
-   item5->SetDefault();
-   item3->Add( item5, 0, wxALIGN_CENTRE|wxALL, 5 );
 
-   wxButton *item6 = new wxButton( parent, wxID_CANCEL, _("Cancel"),
-                       wxDefaultPosition, wxDefaultSize, 0 );
-   item3->Add( item6, 0, wxALIGN_CENTRE|wxALL, 5 );
-
-   item0->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-   wxBoxSizer *item9 = new wxBoxSizer( wxVERTICAL );
+	// predefined curves
+	wxBoxSizer *item9 = new wxBoxSizer( wxVERTICAL );
 
    wxString formats[EffectEqualization::nCurveTypes];
    int i;
@@ -703,9 +712,35 @@ wxSizer * MakeEqualizationDialog(
 
    ((EqualizationDialog *)parent)->predefined = predefined;
 
-   item9->Add(predefined, 0, wxALIGN_CENTER | wxALL, 5);
+   item9->Add(predefined, 0, wxALIGN_CENTER | wxALL, 4);
 
-   item0->Add( item9, 0, wxGROW|wxALIGN_CENTER, 5 );
+   item0->Add( item9, 0, wxGROW|wxALIGN_CENTER, 4);
+
+
+	// Preview, OK, & Cancel buttons
+   wxBoxSizer * pBoxSizer_OK = new wxBoxSizer(wxHORIZONTAL);
+
+   wxButton * pButton_Preview = 
+		new wxButton(parent, ID_BUTTON_PREVIEW, 
+							_("Preview"), //v Should be m_pEffect->GetPreviewName());
+							wxDefaultPosition, wxDefaultSize, 0);
+   pBoxSizer_OK->Add(pButton_Preview, 0, wxALIGN_LEFT | wxALL, 4);
+
+   pBoxSizer_OK->Add(80, 4); // horizontal spacer
+
+	//vvv Try OK on right so Cancel in middle.
+   wxButton * pButton_Cancel =
+       new wxButton(parent, wxID_CANCEL, _("Cancel"), 
+							wxDefaultPosition, wxDefaultSize, 0);
+   pBoxSizer_OK->Add(pButton_Cancel, 0, wxALIGN_RIGHT | wxALL, 4);
+
+   wxButton * pButton_OK = 
+		new wxButton(parent, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
+   pButton_OK->SetDefault();
+   pButton_OK->SetFocus();
+   pBoxSizer_OK->Add(pButton_OK, 0, wxALIGN_RIGHT | wxALL, 4);
+
+   item0->Add(pBoxSizer_OK, 0, wxALIGN_CENTER | wxALL, 4);
 
 
    if (set_sizer)
