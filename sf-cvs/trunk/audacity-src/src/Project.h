@@ -98,6 +98,8 @@ class AudacityProject:public wxFrame,
    DirManager *GetDirManager();
    Tags *GetTags();
 
+   bool IsActive();
+
    // File I/O
 
    static void ShowOpenDialog(AudacityProject *proj);
@@ -247,6 +249,7 @@ class AudacityProject:public wxFrame,
    wxScrollBar *mHsbar;
    wxScrollBar *mVsbar;
    bool mAutoScrolling;
+   bool mActive;
    HistoryWindow *mHistoryWindow;
 
    ToolBarArray mToolBarArray;

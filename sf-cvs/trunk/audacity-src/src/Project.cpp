@@ -209,7 +209,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mDefaultFormat((sampleFormat) gPrefs->
            Read("/SamplingRate/DefaultProjectSampleFormat", floatSample)),
      mDirty(false),
-     mTrackPanel(NULL), mAutoScrolling(false), mHistoryWindow(NULL),
+     mTrackPanel(NULL), mAutoScrolling(false), mActive(true), mHistoryWindow(NULL),
      mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
 {
    bool alreadyAssigned = false;
@@ -849,7 +849,13 @@ void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
 void AudacityProject::OnActivate(wxActivateEvent & event)
 {
    SetActiveProject(this);
+   mActive = event.GetActive();
    event.Skip();
+}
+
+bool AudacityProject::IsActive()
+{
+   return mActive;
 }
 
 //This creates a toolbar of type t in the ToolBars array
