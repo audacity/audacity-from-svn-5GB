@@ -205,6 +205,12 @@ LWSlider::LWSlider(wxWindow *parent,
       maxValue = 1.0f;
       stepValue = STEP_CONTINUOUS;
       break;
+   case SPEED_SLIDER:
+      minValue = 0.0f;
+      maxValue = 5.0f;
+      stepValue = STEP_CONTINUOUS;
+      break;
+
    default:
       minValue = 0.0f;
       maxValue = 1.0f;
@@ -384,7 +390,7 @@ void LWSlider::CreatePopWin()
 
    wxString maxStr = mName + ": 000000";
 
-   if (mStyle == PAN_SLIDER || mStyle == DB_SLIDER)
+   if (mStyle == PAN_SLIDER || mStyle == DB_SLIDER || mStyle == SPEED_SLIDER)
       maxStr += "000";
 
    wxWindow *top = mParent;
@@ -469,6 +475,7 @@ void LWSlider::FormatPopWin()
    case FRAC_SLIDER:
       label.Printf("%s: %.1f", (const char *)mName, mCurrentValue);
       break;
+     
    case DB_SLIDER:
       valstr.Printf("%.1f", mCurrentValue);
       if (valstr.Right(1) == "0")
@@ -485,12 +492,15 @@ void LWSlider::FormatPopWin()
       else {
          if (mCurrentValue < 0.0)
             label.Printf("%s: %.0f%% %s", (const char *)mName,
-                      -mCurrentValue * 100.0f, _("Left"));
+                         -mCurrentValue * 100.0f, _("Left"));
          else /* if (val > 0.0) */
             label.Printf("%s: %.0f%% %s", (const char *)mName,
-                      mCurrentValue * 100.0f, _("Right"));
+                         mCurrentValue * 100.0f, _("Right"));
       }
-         
+        
+      break;
+   case SPEED_SLIDER:
+      label.Printf("%s: %.2fx", (const char *)mName, mCurrentValue);
       break;
    }
 
@@ -639,6 +649,19 @@ ASlider::ASlider(wxWindow * parent, wxWindowID id,
                             FRAC_SLIDER, true);
    mLWSlider->SetId(id);
 }
+
+
+ASlider::ASlider(wxWindow * parent, wxWindowID id,
+        wxString name, const wxPoint & pos, 
+        const wxSize & size,
+        int style):
+   wxWindow(parent,id,pos,size)
+{
+   mLWSlider = new LWSlider(this, name, wxPoint(0,0),size,
+                            style, true);
+   mLWSlider->SetId(id);
+}
+
 
 ASlider::~ASlider()
 {

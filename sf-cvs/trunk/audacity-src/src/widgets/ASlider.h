@@ -28,6 +28,7 @@ class wxPoint;
 #define FRAC_SLIDER 1    // 0.0...1.0
 #define DB_SLIDER 2      // -36...36 dB
 #define PAN_SLIDER 3     // -1.0...1.0
+#define SPEED_SLIDER 4  // 0.0 .. 4.0
 
 // Customizable slider only: If stepValue is STEP_CONTINUOUS,
 // every value on the slider between minValue and maxValue
@@ -159,7 +160,10 @@ class ASlider :public wxWindow
            wxString name,
            const wxPoint & pos,
            const wxSize & size);
-
+   ASlider(wxWindow * parent, wxWindowID id,
+           wxString name, const wxPoint & pos, 
+           const wxSize & size,
+           int style);
    virtual ~ASlider();
    
    float Get();
