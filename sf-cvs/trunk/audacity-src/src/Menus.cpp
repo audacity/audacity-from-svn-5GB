@@ -254,6 +254,8 @@ void AudacityProject::BuildMenuBar()
    wxApp::s_macAboutMenuItemId = AboutID;
 #endif
 
+   //This sets how much silence will be inserted if no region is selected when the
+   //insert silence menu option is selected
    mInsertSilenceAmount = 1.0;
 
    if (mInsertMenu->GetMenuItemCount() > 0)
@@ -1121,7 +1123,14 @@ void AudacityProject::OnSplitLabels(wxEvent & event)
 }
 
 void AudacityProject::OnInsertSilence(wxEvent & event)
-{
+{ 
+   // Default value should be equal to the selection region if
+   // selected region is greater than 0.  If 0, use the last/default amount
+   double selectedTime = mViewInfo.sel1 - mViewInfo.sel0;
+   if (selectedTime>.000001) 
+      mInsertSilenceAmount = selectedTime;
+
+   
    wxString amountStr =
        wxGetTextFromUser(_("Number of seconds of silence to insert:"),
                          _("Insert Silence"),
