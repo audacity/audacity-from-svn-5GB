@@ -125,7 +125,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
      "newer, Mac OS X, Linux, and other Unix-like operating systems.  "
      "Older versions of Audacity are available for Mac OS 9.");
 
-   #if 0 // Not beta anymore
+   #if 1 // This is a beta version
    wxString par2Str = _(
      "This is a beta version of the program.  It may contain "
      "bugs and unfinished features.  We depend on your feedback, so "

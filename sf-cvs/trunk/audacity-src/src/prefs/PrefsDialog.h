@@ -20,6 +20,8 @@ class wxButton;
 class wxCommandEvent;
 class wxFrame;
 
+extern bool gPrefsDialogVisible;
+
 class PrefsDialog:public wxDialog {
 
  public:

@@ -212,8 +212,20 @@ void LabelTrack::MouseDown(int x, int y, wxRect & r, double h, double pps,
    mSelIndex = -1;
 }
 
+#ifdef __WXMAC__
+// HACK: why does each key event happen twice on wxMac?
+bool gMacRepeat = false;
+#endif
+
 void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
 {
+#ifdef __WXMAC__
+   // HACK: why does each key event happen twice on wxMac?
+   gMacRepeat = !gMacRepeat;
+   if (gMacRepeat)
+      return;
+#endif
+
    long keyCode = event.KeyCode();
 
    if (mSelIndex >= 0) {

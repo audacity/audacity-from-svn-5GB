@@ -80,6 +80,7 @@
 #include "TrackPanel.h"
 #include "WaveTrack.h"
 #include "effects/Effect.h"
+#include "prefs/PrefsDialog.h"
 #include "widgets/Warning.h"
 #include "xml/XMLFileReader.h"
 
@@ -102,21 +103,16 @@ const int sbarSpaceWidth = 15;
 const int sbarControlWidth = 16;
 const int sbarExtraLen = 1;
 const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
-#endif
-#ifdef __WXMSW__
+#elif defined(__WXMSW__)
 const int sbarSpaceWidth = 16;
 const int sbarControlWidth = 16;
 const int sbarExtraLen = 0;
 const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
-#endif
-#ifdef __WXGTK__
+#else // wxGTK, wxMOTIF, wxX11
 const int sbarSpaceWidth = 15;
 const int sbarControlWidth = 15;
 const int sbarExtraLen = 0;
 const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
-#endif
-
-#if defined(__WXGTK__) || defined(__WXMOTIF__)
 #include "../images/AudacityLogo.xpm"
 #endif
 
@@ -512,7 +508,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    //
 
    // loads either the XPM or the windows resource, depending on the platform
-#ifndef __WXMAC__
+#if !defined(__WXMAC__) && !defined(__WXX11__)
    wxIcon ic(wxICON(AudacityLogo));
    SetIcon(ic);
 #endif
@@ -1604,6 +1600,11 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 
 void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 {
+   if (gPrefsDialogVisible) {
+      event.Veto();
+      return;
+   }
+
    if (mUndoManager.UnsavedChanges()) {
       int result = wxMessageBox(_("Save changes before closing?"),
                                 _("Save changes?"),
@@ -1680,15 +1681,25 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
          }
       }
 
-      // STM: Removing check of IsDirty(): as long as it's empty, why should we care?
-      // (alternately, if its dirty and empty, we should clean it)
-      if (!proj ||  !proj->mTracks->IsEmpty()) {
-         // Open in a new window if this one is in use or doesn't exist
-         // (on a Mac when no window is open).
+      // DMM: If the project is dirty, that means it's been touched at
+      // all, and it's not safe to open a new project directly in its
+      // place.  Only if the project is brand-new clean and the user
+      // hasn't done any action at all is it safe for Open to take place
+      // inside the current project.
+      //
+      // If you try to Open a new project inside the current window when
+      // there are no tracks, but there's an Undo history, etc, then
+      // bad things can happen, including data files moving to the new
+      // project directory, etc.
+      if (!proj || proj->mDirty || !proj->mTracks->IsEmpty()) {
+         // Open in a new window
          AudacityProject *newProject =
             CreateNewAudacityProject(gParentWindow);
          newProject->OpenFile(fileName);
       } else {
+         // This project is clean; it's never been touched.  Therefore
+         // all relevant member variables are in their initial state,
+         // and it's okay to open a new project inside this window.
          proj->OpenFile(fileName);
       }
    }

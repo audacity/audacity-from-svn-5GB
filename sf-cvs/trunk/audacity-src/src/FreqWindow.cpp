@@ -183,10 +183,15 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
 
    mLogAxis = false;
 
-   mBackgroundBrush.SetColour(wxColour(204, 204, 204));
-   mBackgroundPen.SetColour(wxColour(204, 204, 204));
-
-   SetBackgroundColour(wxColour(204, 204, 204));
+   #ifdef __WXMAC__
+    mBackgroundBrush.SetColour(wxColour(255, 255, 255));
+    mBackgroundPen.SetColour(wxColour(255, 255, 255));
+    SetBackgroundColour(wxColour(255, 255, 255));
+   #else
+     mBackgroundBrush.SetColour(wxColour(204, 204, 204));
+     mBackgroundPen.SetColour(wxColour(204, 204, 204));
+     SetBackgroundColour(wxColour(204, 204, 204));
+   #endif
 
    // Min size, max size
    SetSizeHints(FREQ_WINDOW_WIDTH, FREQ_WINDOW_HEIGHT, 20000, 20000);

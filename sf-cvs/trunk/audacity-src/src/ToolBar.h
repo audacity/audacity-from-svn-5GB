@@ -49,9 +49,9 @@ class AudacityProject;
 
 #if defined(__WXMAC__)
    #define TOOLBAR_HEIGHT_OFFSET 0
-#elif defined(__WXGTK__)
-   #define TOOLBAR_HEIGHT_OFFSET 22
 #elif defined(__WXMSW__)
+   #define TOOLBAR_HEIGHT_OFFSET 22
+#else // wxGTK, wxX11, wxMOTIF
    #define TOOLBAR_HEIGHT_OFFSET 22
 #endif
 

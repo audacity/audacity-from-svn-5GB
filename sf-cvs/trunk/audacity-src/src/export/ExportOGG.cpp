@@ -103,9 +103,11 @@ bool ExportOGG(AudacityProject *project,
 
    // Flushing these headers now guarentees that audio data will
    // start on a new page, which apparently makes streaming easier
-   ogg_stream_flush(&stream, &page);
-   outFile.Write(page.header, page.header_len);
-   outFile.Write(page.body, page.body_len);
+   while(ogg_stream_flush(&stream, &page))
+   {
+      outFile.Write(page.header, page.header_len);
+      outFile.Write(page.body, page.body_len);
+   }
 
    wxProgressDialog *progress = NULL;
 

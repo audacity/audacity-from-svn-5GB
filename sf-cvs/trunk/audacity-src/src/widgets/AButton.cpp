@@ -172,7 +172,8 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
    else if (event.Entering()) {
 #endif
 
-   // Display the tooltip in the status bar
+      #if wxUSE_TOOLTIPS // Not available in wxX11
+      // Display the tooltip in the status bar
       wxToolTip * pTip = this->GetToolTip();
       if( pTip ) {
          wxString tipText = pTip->GetTip();
@@ -180,6 +181,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
             tipText += _(" (disabled)");
          GetActiveProject()->TP_DisplayStatusMessage(tipText, 0);
       }
+      #endif
    }
 
    //If the graphical button is disabled, or the button is down

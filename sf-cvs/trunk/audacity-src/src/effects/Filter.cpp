@@ -311,7 +311,7 @@ void FilterPanel::OnPaint(wxPaintEvent & evt)
 
    memDC.SetPen(*wxBLACK_PEN);
    mEnvRect.y -= 5;
-   mEnvelope->Draw(memDC, mEnvRect, 0.0, mEnvRect.width, false);
+   mEnvelope->Draw(memDC, mEnvRect, 0.0, mEnvRect.width, false, 0.0, 1.0);
    mEnvRect.y += 5;
 
    // Paint border again
@@ -348,7 +348,8 @@ void FilterPanel::OnMouseEvent(wxMouseEvent & event)
       CaptureMouse();
    }
 
-   if (mEnvelope->MouseEvent(event, mEnvRect, 0.0, mEnvRect.width, false))
+   if (mEnvelope->MouseEvent(event, mEnvRect, 0.0, mEnvRect.width, false,
+                             0.0, 1.0))
       Refresh(false);
 
    if (event.ButtonUp()) {
@@ -382,7 +383,7 @@ FilterDialog::FilterDialog(EffectFilter *effect,
                            const wxString &title,
                            const wxPoint &position, const wxSize& size,
                            long style ) :
-   wxDialog( parent, id, title, position, size, style ),
+   wxDialog( parent, id, title, position, size, style | wxRESIZE_BORDER ),
    mEffect(effect)
 {
    MakeFilterDialog( this, TRUE ); 
