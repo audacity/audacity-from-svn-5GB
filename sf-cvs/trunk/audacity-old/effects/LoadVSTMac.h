@@ -1,1 +1,15 @@
-/**********************************************************************  Audacity: A Digital Audio Editor  LoadVSTMac.h  Dominic Mazzoni**********************************************************************/extern "C" {    void LoadVSTPlugins();};
+/**********************************************************************
+
+  Audacity: A Digital Audio Editor
+
+  LoadVSTMac.h
+
+  Dominic Mazzoni
+
+**********************************************************************/
+
+extern "C" {
+
+    void LoadVSTPlugins();
+
+};
