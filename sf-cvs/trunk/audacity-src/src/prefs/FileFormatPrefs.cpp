@@ -65,18 +65,18 @@ PrefsPanel(parent)
    {
       wxStaticBoxSizer *copyOrEditSizer = new wxStaticBoxSizer(
          new wxStaticBox(this, -1,
-            _("When importing uncompressed audio files")),
+            _("When importing uncompressed audio files into Audacity")),
          wxVERTICAL );
 
       mCopyOrEdit[0] = new wxRadioButton(
-         this, -1, _("Make a copy of the file to edit"),
+         this, -1, _("Make a copy of the file before editing (safer)"),
          wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
           
       copyOrEditSizer->Add( mCopyOrEdit[0], 0,
          wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
 
       mCopyOrEdit[1] = new wxRadioButton(
-         this, -1, _("Edit the original in place"),
+         this, -1, _("Read directly from the original file (faster)"),
          wxDefaultPosition, wxDefaultSize, 0 );
 
 	  mCopyOrEdit[0]->SetValue(false);
