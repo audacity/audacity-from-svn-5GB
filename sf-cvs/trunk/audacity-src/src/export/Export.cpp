@@ -135,10 +135,14 @@ wxString ExportCommon(AudacityProject *project,
    wxString extension;
    wxString defaultName = project->GetName();
    wxString fName;
+   wxString maskString;
 
    if (defaultExtension.Left(1) == ".")
       defaultExtension =
          defaultExtension.Right(defaultExtension.Length()-1);
+
+   maskString.Printf("%s files (*.%s)|*.%s|All files (*.*)|*.*", (const char *)format,
+                     (const char *)defaultExtension, (const char *)defaultExtension);
 
    bool fileOkay;
 
@@ -150,8 +154,8 @@ wxString ExportCommon(AudacityProject *project,
                                               (const char *) format),
                              path,
                              fName,       // default file name
-                             extension,   // extension
-                             "*.*",
+                             defaultExtension,
+                             maskString,
                              wxSAVE | wxOVERWRITE_PROMPT);
       
       if (fName.Length() >= 256) {
