@@ -542,6 +542,7 @@ void AudacityProject::Cut(wxCommandEvent & event)
    }
 
    msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
+   msClipProject = this;
 
    mViewInfo.sel1 = mViewInfo.sel0;
 
@@ -571,6 +572,7 @@ void AudacityProject::Copy(wxCommandEvent & event)
    }
 
    msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
+   msClipProject = this;
 
    mViewInfo.sel1 = mViewInfo.sel0;
    //UpdateMenus();
@@ -596,7 +598,14 @@ void AudacityProject::Paste(wxCommandEvent & event)
 
    while (n && c) {
       if (n->GetSelected()) {
+         if (msClipProject != this && c->GetKind()==VTrack::Wave)
+            ((WaveTrack *)c)->Lock();
+         
          n->Paste(tsel, c);
+         
+         if (msClipProject != this && c->GetKind()==VTrack::Wave)
+            ((WaveTrack *)c)->Unlock();
+         
          c = clipIter.Next();
       }
 

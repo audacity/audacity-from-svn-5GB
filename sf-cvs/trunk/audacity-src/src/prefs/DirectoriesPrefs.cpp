@@ -26,11 +26,13 @@
 #include "DirectoriesPrefs.h"
 
 enum {
-   TempDirID = 1000
+   TempDirID = 1000,
+   ChooseButtonID
 };
 
 BEGIN_EVENT_TABLE(DirectoriesPrefs, wxPanel)
    EVT_TEXT(TempDirID, DirectoriesPrefs::UpdateFreeSpace)
+   EVT_BUTTON(ChooseButtonID, DirectoriesPrefs::OnChooseTempDir)
 END_EVENT_TABLE()
 
 DirectoriesPrefs::DirectoriesPrefs(wxWindow * parent):
@@ -46,7 +48,7 @@ PrefsPanel(parent)
       wxStaticBoxSizer *tempDirSizer = new wxStaticBoxSizer(
          new wxStaticBox(this, -1, "Temp. Directory"), wxVERTICAL );
 
-      wxFlexGridSizer *tempDirGridSizer = new wxFlexGridSizer( 0, 2, 0, 0 );
+      wxFlexGridSizer *tempDirGridSizer = new wxFlexGridSizer( 0, 3, 0, 0 );
 
       mTempDirLabel = new wxStaticText(
          this, -1, "Location:", wxDefaultPosition,
@@ -66,9 +68,14 @@ PrefsPanel(parent)
       mFreeSpaceLabel = new wxStaticText(
          this, -1, "Free Space:",
          wxDefaultPosition, wxDefaultSize, 0 );
+
+      wxButton *chooseButton =
+         new wxButton(this, ChooseButtonID, "Choose...");
         
       tempDirGridSizer->Add( mTempDirLabel, 0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
       tempDirGridSizer->Add( mTempDirText, 1, wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
+      tempDirGridSizer->Add( chooseButton, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2 );
+
       tempDirGridSizer->Add( mFreeSpaceLabel, 0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
       tempDirGridSizer->Add( mFreeSpace, 0, wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
       tempDirGridSizer->AddGrowableCol(1);
@@ -84,7 +91,6 @@ PrefsPanel(parent)
    topSizer->SetSizeHints(this);
 
 }
-
 
 wxString DirectoriesPrefs::FormatSize(wxLongLong size)
 {
@@ -114,6 +120,20 @@ wxString DirectoriesPrefs::FormatSize(wxLongLong size)
    return sizeStr;
 }
 
+void DirectoriesPrefs::OnChooseTempDir(wxCommandEvent &event)
+{
+   wxDirDialog dlog(this,
+                    "Choose a location to place the "
+                    "temporary directory",
+                    "");
+   dlog.ShowModal();
+   if (dlog.GetPath() != "") {
+      mTempDirText->SetValue(dlog.GetPath() +
+                             wxFILE_SEP_PATH +
+                             ".audacity_temp");
+      UpdateFreeSpace(event);
+   }
+}
 
 void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent &event)
 {
@@ -121,7 +141,7 @@ void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent &event)
    static wxString tempDir;
    static char tmp[200];
 
-   tempDir = event.GetString();
+   tempDir = mTempDirText->GetValue();
 
 #ifndef __WXMAC__  // the mac GetFreeDiskSpace routine does this automatically
    /* Try to be smart: if the directory doesn't exist, go up the

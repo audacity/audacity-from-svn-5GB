@@ -50,7 +50,10 @@ class WaveTrack:public VTrack {
    WaveTrack(DirManager * projDirManager);
    virtual ~ WaveTrack();
 
-   virtual void DeleteButDontDereference();
+   // Locks all of this track's BlockFiles, keeping them
+   // from being moved.  See BlockFile.h for details.
+   virtual void Lock();
+   virtual void Unlock();
 
    virtual VTrack *Duplicate() const;
 

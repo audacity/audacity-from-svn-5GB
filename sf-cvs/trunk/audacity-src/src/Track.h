@@ -161,7 +161,7 @@ class TrackList {
   void Remove(VTrack * t);
   
   // Make the list empty
-  void Clear();
+  void Clear(bool deleteTracks = false);
   
   // Select a track, and if it is linked to another track,
   // select it, too.

@@ -120,6 +120,16 @@ wxString ExportCommon(AudacityProject *project,
    if (fName == "")
       return fName;
 
+   /*
+    * Ensure that exporting a file by this name doesn't overwrite
+    * one of the existing files in the project.  (If it would
+    * overwrite an existing file, DirManager tries to rename the
+    * existing file.)
+    */
+
+   if (!project->GetDirManager()->EnsureSafeFilename(fName))
+      return "";
+
    path =::wxPathOnly(fName);
    gPrefs->Write("/DefaultExportPath", path);
 

@@ -31,8 +31,9 @@
 #ifndef _DIRMANAGER_
 #define _DIRMANAGER_
 
-#include <wx/string.h>
 #include <wx/hash.h>
+#include <wx/list.h>
+#include <wx/string.h>
 
 #include "BlockFile.h"
 #include "WaveTrack.h"
@@ -54,20 +55,33 @@ class DirManager {
    // Create new unique track name
    wxString NewTrackName();
 
+   void MakeBlockFileName(wxString inProjDir,
+                          wxString &outFileName, wxString &outPathName);
+
    BlockFile *NewTempBlockFile();
    BlockFile *NewBlockFile();
 
-   BlockFile *NewTempAliasBlockFile(wxString fullPath,
+   BlockFile *NewTempAliasBlockFile(int localLen,
+                                    wxString fullPath,
                                     sampleCount start,
                                     sampleCount len, int channel);
-   BlockFile *NewAliasBlockFile(wxString fullPath,
+   BlockFile *NewAliasBlockFile(int localLen,
+                                wxString fullPath,
                                 sampleCount start,
                                 sampleCount len, int channel);
+
+   // Adds one to the reference count of the block file,
+   // UNLESS it is "locked", then it makes a new copy of
+   // the BlockFile.
+   BlockFile *CopyBlockFile(BlockFile *b);
 
    BlockFile *LoadBlockFile(wxTextFile * in);
    void SaveBlockFile(BlockFile * f, wxTextFile * out);
 
-   void MakePartOfProject(BlockFile * f);
+   bool MoveToNewProjectDirectory(BlockFile *f);
+      bool CopyToNewProjectDirectory(BlockFile *f);
+
+   bool EnsureSafeFilename(wxString fName);
 
    void Ref(BlockFile * f);
    void Deref(BlockFile * f);
@@ -90,12 +104,16 @@ class DirManager {
    wxHashTable *blockFileHash;
 
    static unsigned int defaultHashTableSize;
-   static bool hashWarning;
+   int hashTableSize;
    void CheckHashTableSize();
 
    wxString projName;
    wxString projPath;
    wxString projFull;
+
+   wxString lastProject;
+
+   wxStringList aliasList;
 
    static wxString pathChar;
    static wxString home;
