@@ -1,387 +1,279 @@
-<html xmlns:v="urn:schemas-microsoft-com:vml"
-xmlns:o="urn:schemas-microsoft-com:office:office"
-xmlns:w="urn:schemas-microsoft-com:office:word"
-xmlns="http://www.w3.org/TR/REC-html40">
+<?php BoxTop("Frequently Asked Questions"); ?>
 
-<head>
-<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
-<meta name=ProgId content=Word.Document>
-<meta name=Generator content="Microsoft Word 9">
-<meta name=Originator content="Microsoft Word 9">
-<link rel=File-List href="./faq_archivos/filelist.xml">
-<!--[if gte mso 9]><xml>
- <o:DocumentProperties>
-  <o:Author>Joan Bosch Hugas</o:Author>
-  <o:Template>Normal</o:Template>
-  <o:LastAuthor>Joan Bosch Hugas</o:LastAuthor>
-  <o:Revision>3</o:Revision>
-  <o:TotalTime>4</o:TotalTime>
-  <o:Created>2003-02-14T17:59:00Z</o:Created>
-  <o:LastSaved>2003-02-14T18:03:00Z</o:LastSaved>
-  <o:Pages>3</o:Pages>
-  <o:Words>1534</o:Words>
-  <o:Characters>8747</o:Characters>
-  <o:Lines>72</o:Lines>
-  <o:Paragraphs>17</o:Paragraphs>
-  <o:CharactersWithSpaces>10741</o:CharactersWithSpaces>
-  <o:Version>9.2812</o:Version>
- </o:DocumentProperties>
-</xml><![endif]--><!--[if gte mso 9]><xml>
- <w:WordDocument>
-  <w:HyphenationZone>21</w:HyphenationZone>
- </w:WordDocument>
-</xml><![endif]-->
-<style>
 <!--
- /* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{mso-style-parent:"";
-	margin:0cm;
-	margin-bottom:.0001pt;
-	mso-pagination:widow-orphan;
-	font-size:12.0pt;
-	font-family:"Times New Roman";
-	mso-fareast-font-family:"Times New Roman";}
-p
-	{font-size:12.0pt;
-	font-family:"Times New Roman";
-	mso-fareast-font-family:"Times New Roman";}
-@page Section1
-	{size:595.3pt 841.9pt;
-	margin:72.0pt 90.0pt 72.0pt 90.0pt;
-	mso-header-margin:35.4pt;
-	mso-footer-margin:35.4pt;
-	mso-paper-source:0;}
-div.Section1
-	{page:Section1;}
--->
-</style>
-<!--[if gte mso 9]><xml>
- <o:shapedefaults v:ext="edit" spidmax="1026"/>
-</xml><![endif]--><!--[if gte mso 9]><xml>
- <o:shapelayout v:ext="edit">
-  <o:idmap v:ext="edit" data="1"/>
- </o:shapelayout></xml><![endif]-->
-</head>
-
-<body lang=ES link=blue vlink=blue style='tab-interval:35.4pt'>
-<?php BoxTop("Preguntes Més Freqüents"); ?><!--
 <table width=100% cellpadding=6 width=100%><tr><td bgcolor="#ffd0d0" align="center">
 <font size="+3">Preguntes Més Freqüents</font>
 </td></tr></table>
 -->
 
-<div class=Section1>
+<p>
 
-<p><span lang=CA style='mso-ansi-language:CA'>General:<br>
-<a href="#g1">És l'Audacity gratuït de debò? Per què?</a><br>
-<a href="#g2">Qui crea l'Audacity?</a><br>
-<a href="#g3">Com puc ajudar i millorar l'Audacity?</a><br>
-<a href="#g4">He trobat un error! I ara què faig?</a><o:p></o:p></span></p>
+<b>General:</b><br>
+<a href="#g1">És l'Audacity gratuït de debò?  Per què?</a><br>
+<a href="#g2">Qui ha creat l'Audacity?</a><br>
+<a href="#g3">Com puc ajudar a millorar l'Audacity?</a><br>
+<a href="#g4">He trobat un error! I ara què faig?</a><br>
 
-<p><span lang=CA style='mso-ansi-language:CA'>Instal·lació:<br>
-<a href="#i1">Windows: Què faig amb l'arxiu .exe?</a><br>
+<p>
+
+<b>Instal·lació:</b><br>
+<a href="#i1">Windows: Què faig amb el fitxer .exe?</a><br>
 <a href="#i2">Windows: Com desinstal·lo l'Audacity?</a><br>
 <a href="#i3">Mac: Què faig amb l'arxiu .sit?</a><br>
 <a href="#i4">Unix: Per què rebo el missatge "error en les dependències"
 quan instal·lo des de l'RPM?</a><br>
 <a href="#i5">Unix: Per què apareix un error mentre carrego la llibreria
-compartida libwx_gtk.so?</a><o:p></o:p></span></p>
+compartida libwx_gtk.so?</a><br>
 
-<p><span lang=CA style='mso-ansi-language:CA'>Utilitzant l'Audacity:<br>
+<p>
+
+<b>Utilitzant l'Audacity:</b><br>
 <a href="#a1">Com puc barrejar dues pistes?</a><br>
-<a href="#a2">Com puc extreure la veu d'una gravació?</a><br>
+<a href="#a2">Puc extreure les veus d'un enregistrament?</a><br>
 <a href="#a3">Quant intento gravar harmonies amb la meva pròpia veu, per què
-les dues peces estan desincronitzades?</a><br>
-<a href="#a4">Per què l'Audacity no prové amb un codificador de MP3?</a><br>
-<a href="#a5">Com m'ho puc fer per veure l'Audacity en català?</a><o:p></o:p></span></p>
+les dues pistes surten desincronitzades?</a><br>
+<a href="#a4">Per què l'Audacity no ve amb un codificador d'MP3?</a><br>
+<a href="#a5">Puc enregistrar des de RealAudio o altres fonts d'àudio a raig?</a><br>
+<a href="#a6">Ajuda! Faig clic al botó d'enregistrament, però tot el que obtinc és silenci!</a><br>
+<a href="#a7">Com puc dividir un fitxer en diverses pistes?</a><br>
+<a href="#a8">Com puc obtenir cançons d'un CD d'àudio?</a><br>
+<p>
 
-<table border=0 cellspacing=3 cellpadding=0 width="100%" style='width:100.0%;
- mso-cellspacing:1.5pt;mso-padding-alt:3.6pt 3.6pt 3.6pt 3.6pt'>
- <tr>
-  <td style='background:#FFD0D0;padding:3.6pt 3.6pt 3.6pt 3.6pt'>
-  <p class=MsoNormal align=center style='text-align:center'><span lang=CA
-  style='font-size:13.5pt;mso-ansi-language:CA'>General</span><span lang=CA
-  style='mso-ansi-language:CA'> <o:p></o:p></span></p>
-  </td>
- </tr>
-</table>
+<table cellpadding=6 width=100%><tr><td bgcolor="#ffd0d0" align="center">
+<font size="+1">General</font>
+</td></tr></table>
 
-<p><a name=g1></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
-CA'>1. És l'Audacity gratuït de debó? Why?</span></b><span lang=CA
-style='mso-ansi-language:CA'><o:p></o:p></span></p>
+<p>
 
-<p><span lang=CA style='mso-ansi-language:CA'>Sí, en gairebé tots els sentits.
-L'Audacity no només és distribuït gratuïtament sinó que també sou lliures de
-fer-hi quasi qualsevol cosa que hi vulgueu fer. <o:p></o:p></span></p>
+<a name="g1"></a>
+<font size=+1><b>
+1. És l'Audacity gratuït de debò?  Per què?<br>
 
-<p><span lang=CA style='mso-ansi-language:CA'>L'Audacity és distribuït sota els
-termes de la <a href="http://www.gnu.org/copyleft/gpl.html">General Public
-License (GPL)</a>. Sou lliures d'utilitzar aquest programa per afins personal o
-comercial. Sou totalment lliure de distribuir-lo o vendre'l. el codi font
-d'aquest programa es troba disponible de manera gratuïta a la pàgina web, i sou
-totalment lliure de modificar-lo per al vostre propi ús, tanmateix qualsevol
-canvi que hi feu haurà de ser redistribuït sota la llicència GPL. <o:p></o:p></span></p>
+</b></font>
 
-<p><span lang=CA style='mso-ansi-language:CA'>L'Audacity s'ha construït emprant
-wxWindows, una llibreria de programari que es troba sota la menys restrictiva
-LGPL. Per a menys informació, si us plau, visiteu <a
-href="http://www.wxwindows.org">wxwindows.org</a>. <o:p></o:p></span></p>
+<p>
 
-<p><span lang=CA style='mso-ansi-language:CA'>Els autors de l'Audacity van
-decidir de realitzar-la sota llicència GPL per diverses raons. Alguns de nosaltres
-ho fem per generositat. altres per raons morals, ja que sentim que el
-programari hauria de ser gratuït, mentre que altres d'entre nosaltres creiem
-que hi ha una necessitat de tots dos tipus de programari en el món. <o:p></o:p></span></p>
+Sí, en gairebé tots els sentits. L'Audacity no només es distribueix gratuïtament, sinó que teniu llibertat per a fer-lo servir per a gairebé tot el què vulgueu.
+<p>
+L'Audacity es distribueix sota els termes de la <a href="http://www.gnu.org/copyleft/gpl.html">General Public License (GPL)</a>. Teniu llibertat per a utilitzar aquest programa en usos personals o comercials. Sou totalment lliure de distribuir-lo o vendre'l. El codi font d'aquest programa es troba disponible de manera gratuïta a la pàgina web, i sou totalment lliure de modificar-lo per al vostre propi ús, tot i que qualsevol canvi que hi feu haurà de ser distribuït també sota els termes de la llicència GPL.
+<p>
+L'Audacity s'ha construït emprant wxWindows, una llibreria de programari que es troba sota la menys restrictiva LGPL. Per a més informació visiteu  <a href="http://wxwidgets.org/">wxwidgets.org</a>.
+<p>
+Els autors de l'Audacity hem decidit distribuir-lo sota llicència GPL per diverses raons.  Alguns de nosaltres ho fem per generositat, altres per raons morals, ja que creiem que tot el programari hauria de ser gratuït, mentre que altres creiem que el món necessita tant lliure com comercial.
+<p>
+Una raó per la que l'Audacity és gratuït és que així serà més popular. Molts de nosaltres preferiríem veure un milió de persones utilitzant l'Audacity de manera gratuïta que tenir un miler de persones pagant-nos. La majoria d'usuaris són més amigables quan obtenen alguna cosa de manera gratuïta.
+<p>
+Hi ha encara un altra raó, i és que això encoratja la col·laboració. Si l'Audacity fos de pagament seria poc probable que dotzenes de col·laboradors d'arreu del món haguessin contribuït en el codi, fixant errors, documentació i gràfics.
+<p>
+<a name="g2"></a>
+<font size=+1><b>
+2. Qui ha creat l'Audacity?<br>
+</b></font>
 
-<p><span lang=CA style='mso-ansi-language:CA'>Una raó per la que l'Audacity és
-gratuït és que així serà més popular. Molts de nosaltres preferiríem veure un
-milió de persones utilitzant l'Audacity de manera gratuïta que tenir un miler
-de persones pagant-nos. La majoria d'usuaris són més amigables quan obtenen
-alguna cosa de manera gratuïta. <o:p></o:p></span></p>
+<p>
 
-<p><span lang=CA style='mso-ansi-language:CA'>Encara un altra raó és que això
-encoratja la col·laboració. Si l'Audacity fos de pagament seria poc probable
-que dotzenes de col·laboradors d'arreu del món haguessin contribuït amb el
-codi, fixant errors, documentació i gràfics. <o:p></o:p></span></p>
+El projecte de l'Audacity va ser iniciat a la tardor del 1999 per en Dominic Mazzoni mentre era un estudiant graduat a Carnegie Mellon University a Pittsburgh, PA, USA. Estava treballant en un projecte de recerca amb el seu assessor, el Professor Roger Dannenberg, i necessitava una eina que li permetés visualitzar els algorismes d'anàlisi d'àudio. Amb el temps, aquest programa evolucionà cap a un editor d'àudio general, i altra gent va començar a ajudar-lo.
+<p>
+Avui dia, l'Audacity es desenvolupa a Sourceforge, un portal que permet a gent d'arreu del món col·laborar en projectes de programari lliure. Vegeu <a href="http://www.sourceforge.net">sourceforge.net</a> per a més informació. Dotzenes de persones han contribuït a l'Audacity, i el progrés s'està accelerant contínuament.
+<p>
+<a name="g3"></a>
+<font size=+1><b>
+3. Com puc ajudar a millorar l'Audacity?<br>
+</b></font>
+Trobant errors i notificant-los. Escrivint codi. Traduint-lo al vostre idioma. Dibuixant gràfics. Unint-vos a la llista de correu d'usuaris de l'Audacity. Enviant diners.
+<p>
+Visiteu si us plau la nostra nova pàgina de <?php print "<a href=donatetime.php?$langLinkStr>"; ?>Donacions</a>, on trobareu més detalls sobre com es pot ajudar.
+<p>
 
-<p><a name=g2></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
-CA'>2. Qui crea l'Audacity?</span></b><span lang=CA style='mso-ansi-language:
-CA'><o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>El projecte de l'Audacity va ser
-iniciat a les acaballes del 1999 per en Dominic Mazzoni mentre era un estudiant
-graduat a Carnegie Mellon University a Pittsburgh, PA, USA. Estava treballant
-en un projecte de recerca amb el seu assessor, el Professor Roger Dannenberg, i
-ell necessitava una eina que li permetés visualitzar els algoritmes d’anàlisi
-d'àudio. Amb el temps, aquest programa evolucionà cap a un editor d'àudio
-general, i altra gent va començar a ajudar-lo. <o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>Avui dia, l'Audacity es
-desenvolupa a través de Sourceforge, un lloc en línia que permet a la gent
-d'arreu del món de col·laborar en projectes de programari lliure. Vegeu <a
-href="http://www.sourceforge.net">sourceforge.net</a> per a més informació.
-Dotzenes de persones han contribuït a l'Audacity, i el progrés s'està
-accelerant contínuament. <o:p></o:p></span></p>
-
-<p><a name=g3></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
-CA'>3. Com puc ajudar i millorar l'Audacity?<br>
-</span></b><span lang=CA style='mso-ansi-language:CA'>Trobeu errors i
-doneu-nos-en informació. Escriviu codi. Traduïu-lo al vostre idioma. Dibuixeu
-gràfics. Uniu-vos al llistat d'usuaris de l'Audacity. envieu-nos diners. <o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>Visiteu si us plau la nostra nova
-pàgina de <?php print "<a href=donatetime.php?$langLinkStr>"; ?>donació per a
-més detalls sobre com podeu ajudar. <o:p></o:p></span></p>
-
-<p><a name=g4></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
-CA'>4. He trobat un error! I ara què faig?</span></b><span lang=CA
-style='mso-ansi-language:CA'><o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>El més important a tenir en
-compte quan informeu d'un error és ser tan específics com us sigui possible.
-Doneu-nos prou informació de manera que puguem reproduir l'error nosaltres
-mateixos, d'altra manera serà poc probable que el puguem resoldre. <o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>Assegureu-vos-en d'indicar-nos
-quin sistema operatiu esteu utilitzant (com Windows 98, MacOS 9.1, RedHat Linux
-7.1, etc.) i altra informació sobre el vostre ordinador que penseu que pugui
-ser rellevant. <o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>Podeu reproduir aquest error? si
-passa constantment, expliqueu-nos la seqüència exacta d'esdeveniments que causa
-que hi hagi un error. Si trobeu un missatge d'error, assegureu-vos-en d'enviar
-el text exacte del missatge d'error. <o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>Volem eliminar tots els errors!
-Gràcies per gastar el vostre temps per ajuda-nos a rastrejar-los. <o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'><![if !supportEmptyParas]> <![endif]><o:p></o:p></span></p>
-
-<table border=0 cellspacing=3 cellpadding=0 width="100%" style='width:100.0%;
- mso-cellspacing:1.5pt;mso-padding-alt:3.6pt 3.6pt 3.6pt 3.6pt'>
- <tr>
-  <td style='background:#FFD0D0;padding:3.6pt 3.6pt 3.6pt 3.6pt'>
-  <p class=MsoNormal align=center style='text-align:center'><span lang=CA
-  style='font-size:13.5pt;mso-ansi-language:CA'>Instal·lació</span><span
-  lang=CA style='mso-ansi-language:CA'> <o:p></o:p></span></p>
-  </td>
- </tr>
-</table>
-
-<p><a name=i1></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
-CA'>1. Windows: Què faig amb l'arxiu .exe?</span></b><span lang=CA
-style='mso-ansi-language:CA'><o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>Des del navegador seleccioneu
-l'opció "executa des d'internet". això farà que s’iniciï el programa
-d'instal·lació de l'Audacity, que instal·larà els fitxers del programa i crearà
-una entrada en el menú d'inici. <o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>si ja heu descarregat el fitxer
-només cal que hi cliqueu dos cops per iniciar l'instal·lador. <o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>si preferiu no utilitzar el
-programa instal·lador també us podeu descarregar l'Audacity coma un fitxer ZIP,
-que podreu descomprimir utilitzant l'Izarc. <o:p></o:p></span></p>
-
-<p><a name=i2></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
-CA'>2. Windows: Com desinstal·lo l'Audacity?</span></b><span lang=CA
-style='mso-ansi-language:CA'><o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>L'Audacity pot ser desinstal·lat
-obrint el Afegeix/Elimina Programes del plafó de control. Seleccioneu
-l'"Audacity" del llistat amb el botó "Afegeix/Extreu".
-D'aquesta manera s'inciarà el programa de desinstal·lació. <o:p></o:p></span></p>
-
-<p><a name=i3></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
-CA'>3. Mac: Què faig amb l'arxiu .sit?</span></b><span lang=CA
-style='mso-ansi-language:CA'><o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>Necessiteu una versió més nova de
-StuffIt Expander. StuffIt Expander prové amb tots els Macintoshes i normalment
-està configurat com a predeterminat amb tot els navagadors web del Mac. Si
-l'Audacity no descomprimeix automàticament arrossegueu "audacity.sit"
-a StuffIt Expander per descomprimir-lo. <o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>No hi ha cap necessitat
-d'instal·lar l'Audacity. Simplement arrossegueu la carpeta de l'Audacity a la
-vostra carpeta d'aplicacions, o qualsevol cosa que sigui que hi vulgueu posar.
-Per desinstal·lar-lo, només cal que arrossegueu la carpeta sencera a la
-paperera. <o:p></o:p></span></p>
-
-<p><a name=i4></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
-CA'>4. Unix: Per què rebo el missatge "error en les dependències"
-quan instal·lo des de l'RPM? </span></b><span lang=CA style='mso-ansi-language:
-CA'><o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>Assegureu-vos primer que el wxGTK
-estigui instal·lat; podeu trobar un enllaç a la pàgina del Linux -
-http://audacity.sourceforge.net/linux.html. Si l'RPM encara falla en instal·lar
-això vol dir que no heu resolt el problema. Instal·leu l'RPM emprant l'opció
---nodeps. <o:p></o:p></span></p>
-
-<p><a name=i5></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
-CA'>5. Unix: Per què apareix un error mentre carrego la llibreria compartida
-libwx_gtk.so?br></span></b><span lang=CA style='mso-ansi-language:CA'> <o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>això podria ser degut a dos
-problemes diferents: <br>
-- Si instal·leu l'RPM wxWindows RPM, assegureu-vos-en d'executar
-"ldconfig" (com a arrel) així el vostre sistema coneixerà la
-llibreria nova. <br>
+<a name="g4"></a>
+<font size=+1><b>
+4. He trobat un error! I ara què faig?<br>
+</b></font>
+<p>
+El més important a tenir en compte quan informeu d'un error és ser tan específics com us sigui possible. Doneu-nos prou informació de manera que puguem reproduir l'error nosaltres mateixos, d'altra manera serà poc probable que el puguem resoldre.
+<p>
+Assegureu-vos d'indicar quin sistema operatiu esteu utilitzant (Windows 98, MacOS 9.1, RedHat Linux 7.1, etc.) i altra informació sobre el vostre ordinador que penseu que pugui ser rellevant.
+<p>
+Podeu reproduir aquest error? si passa constantment, expliqueu-nos la seqüència exacta d'esdeveniments que provoquen l'error. Si apareix algun missatge, assegureu-vos d'enviar el seu text exacte.
+<p>
+Volem eliminar tots els errors! Gràcies per gastar el vostre temps per ajudar-nos a rastrejar-los.
+<p>
 <br>
-- Si heu instal·lat el wxWindows del del codi, pot haver estat instal·lat a
-/usr/local, però /usr/local/lib pot no ser a la ruta de la llibreria. Afegiu
-/usr/local/lib al fitxer "/etc/ld.so.conf" i llavors executeu
-"ldconfig". També podeu afegir "/usr/local/bin" a la vostra
-ruta, de manera que aquests programes poden trobar la utilitat
-"wx-config".<o:p></o:p></span></p>
+<p>
 
-<table border=0 cellspacing=3 cellpadding=0 width="100%" style='width:100.0%;
- mso-cellspacing:1.5pt;mso-padding-alt:3.6pt 3.6pt 3.6pt 3.6pt'>
- <tr>
-  <td style='background:#FFD0D0;padding:3.6pt 3.6pt 3.6pt 3.6pt'>
-  <p class=MsoNormal align=center style='text-align:center'><span lang=CA
-  style='font-size:13.5pt;mso-ansi-language:CA'>Utilitzant l'Audacity</span><span
-  lang=CA style='mso-ansi-language:CA'> <o:p></o:p></span></p>
-  </td>
- </tr>
-</table>
+<table cellpadding=6 width=100%><tr><td bgcolor="#ffd0d0" align="center">
+<font size="+1">Instal·lació</font>
+</td></tr></table>
 
-<p><a name=a1></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
-CA'>1. Com puc barrejar dues pistes? </span></b><span lang=CA style='mso-ansi-language:
-CA'><o:p></o:p></span></p>
+<p>
+<a name="i1"></a>
+<font size=+1><b>
+1. Windows: Què faig amb el fitxer .exe?<br>
+</b></font>
 
-<p><span lang=CA style='mso-ansi-language:CA'>L'Audacity barreja
-automàticament. Tot el que heu de fer és importar dues peces en el mateix
-projecte, com ho podeu fer emprant l'ordre "Importa Àudio" en el menú
-"projecte", o simplement arrossegant els dos fitxers d'àudio a
-l'Audacity. quan pitgeu el botó de gravació, l'audacity generarà una peça nova
-també automàticament. <o:p></o:p></span></p>
+<p>Des del navegador seleccioneu l'opció "executa des d'internet". Això farà que s'iniciï el programa d'instal·lació de l'Audacity, que instal·larà els fitxers del programa i crearà una icona en el menú d'inici.
+<p>
+Si ja heu descarregat el fitxer només cal que li feu un doble clic per iniciar l'instal·lador.
+<p>
+Si preferiu no utilitzar el programa instal·lador també us podeu descarregar l'Audacity en un fitxer ZIP, que podreu descomprimir utilitzant el WinZip o l'Izarc.
+<p>
+<a name="i2"></a>
+<font size=+1><b>
+2. Windows: Com desinstal·lo l'Audacity?<br>
+</b></font>
 
-<p><span lang=CA style='mso-ansi-language:CA'>A fi de desar la vostra barreja,
-també podeu exportar el projecte, que automàticament barrejarà totes les
-vostres peces, o podeu seleccionar les vostres peces a través de l'ordre
-"Barreja ràpida" en el menú "Projecte". <o:p></o:p></span></p>
+<p><font size=+0>L'Audacity es pot desinstal·lar obrint la icona Afegeix/Elimina Programes del tauler de control. Seleccioneu l'Audacity al llistat i feu clic al botó "Afegeix/Elimina".  D'aquesta manera s'inciarà el programa de desinstal·lació.
+<p>
+<a name="i3"></a> <font size=+1><b> 3. Mac: Què faig amb l'arxiu .sit?<br> </b></font>
 
-<p><a name=a2></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
-CA'>2. Com puc extreure la veu d'una gravació? </span></b><span lang=CA
-style='mso-ansi-language:CA'><o:p></o:p></span></p>
+<p>
+Necessiteu una versió recent de l'StuffIt Expander. L'StuffIt Expander acostuma a estar instal·lat a tots els Mac i normalment està configurat com a predeterminat amb tots els navegadors web. Si l'Audacity no es descomprimeix automàticament arrossegueu el fitxer "audacity.sit" a l'StuffIt Expander per descomprimir-lo.
+<p>
+No cal instal·lar l'Audacity. Simplement arrossegueu la carpeta de l'Audacity a la vostra carpeta d'aplicacions. Per desinstal·lar-lo només cal arrossegar la carpeta sencera a la paperera.
+<p>
+<a name="i4"></a>
+<font size=+1><b>
+4. Unix: Per què rebo el missatge "error en les dependències" quan instal·lo des de l'RPM?
+<br></b></font>
 
-<p><span lang=CA style='mso-ansi-language:CA'>Amb algunes gravacions estèreo és
-possible d'extreure d'extreure els sons vocals ja que la manera per la manera
-què varen ser gravats a l'estudi. Sovint, els sons vocals, es troben situats en
-el bell mig centre de les gravacions, mentre tots els altres instruments es
-troben un pèl desplaçats cap a les bandes. Si extraieu el canal dret del canal
-esquerra les veus es veuen completament anul·lades deixant només la resta
-d'instruments. <o:p></o:p></span></p>
+<p><font size=+0>Assegureu-vos primer que el wxGTK estigui instal·lat; En la pàgina del Linux s'explica això: http://audacity.sourceforge.net/linux.html. Si l'RPM continua fallant en instal·lar, feu servir l'opció --nodeps. </font>
+<p>
+<a name="i5"></a>
+<font size=+1><b>
 
-<p><b><span lang=CA style='mso-ansi-language:CA'>Això només funciona amb
-algunes gravacions!</span></b><span lang=CA style='mso-ansi-language:CA'> <o:p></o:p></span></p>
+5. Unix: Per què apareix un error mentre carrego la llibreria compartida libwx_gtk.so?<br>
+</b></font>
 
-<p><span lang=CA style='mso-ansi-language:CA'>Per provar-ho amb l'Audacity,
-importeu una gravació en estèreo, després cliqueu el menú de la peça (la petita
-fletxa que al costat del nom de la peça assenyala cap a baix) i seleccioneu
-"Divideix peça estèreo". Ara seleccioneu la peça de sota (el canal
-dret) i utilitzeu l'efecte "Inversió" en el menú d'efectes.
-Finalment, empreu el menú de la peça per convertir els dos canals a mono, i després
-barregeu-los utilitzant el barrejador de peces. si heu tingut sort les veus
-hauran desaparegut. <o:p></o:p></span></p>
+<p><font size=+0>
+Això podria ser degut a dos problemes diferents: <br>
+- Si heu instal·lat l'RPM wxWindows, assegureu-vos d'executar "ldconfig" (com a root) per tal que el vostre sistema sàpiga que hi ha una nova llibreria. <br>
+<br>
+- Si heu instal·lat l'wxWindows des del codi font, segurament s'ha col·locat a /usr/local, però podria ser que /usr/local/lib no es trobi al "library path". Afegiu /usr/local/lib al fitxer "/etc/ld.so.conf" i llavors executeu "ldconfig". També podeu afegir "/usr/local/bin" al path, de manera que els programes puguin trobar directament la utilitat "wx-config".
+<p>
+<table cellpadding=6 width=100%><tr><td bgcolor="#ffd0d0" align="center">
+<font size="+1">Utilitzant l'Audacity</font>
+</td></tr></table>
 
-<p><a name=a3></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
-CA'>3. Quant intento gravar harmonies amb la meva pròpia veu, per què les dues
-peces estan desincronitzades? </span></b><span lang=CA style='mso-ansi-language:
-CA'><o:p></o:p></span></p>
+<p>
+<a name="a1"></a>
+<font size=+1><b>
 
-<p><span lang=CA style='mso-ansi-language:CA'>Això és normal i si passa és per
-què hi ha un petit retard entre que l'audacity comença a reproduir el so i
-aquest surt pels vostres altaveus. L'Audacity no prova de corregir
-automàticament aquest retard i ho heu d'ajustar manualment. <o:p></o:p></span></p>
+1. Com puc barrejar dues pistes?
+</b></font>
+<p>
+L'Audacity barreja automàticament. Tot el que cal fer és importar dues pistes al mateix projecte, ja sigui amb l'ordre "Importa Àudio" del menú "projecte", o simplement arrossegant els dos fitxers d'àudio a l'Audacity. També podeu pitjar el botó d'enregistrament, que fa que l'Audacity generi una nova pista.
+<p>
+Per desar la vostra mescla teniu dues opcions: exportar el projecte, que automàticament barrejarà totes les pistes en un fitxer d'àudio digital, o seleccionar les pistes que vulgueu mesclar i activar l'ordre "Barreja ràpida" del menú "Projecte".
+<p>
+<a name="a2"></a>
+<font size=+1><b>
+2. Es poden extreure les veus d'un enregistrament?
+</b></font>
+<p>
+Si, és possible... però només si es tracta d'un enregistrament estereofònic d'estudi que tingui la veu just al centre dels dos canals estereofònics. Si resteu el canal dret de l'esquerre les veus es veuran totalment anul·lades, deixant només la resta d'instruments.
+<p>
 
-<p><span lang=CA style='mso-ansi-language:CA'>Per corregir aquest retard
-utilitzeu l'eina de trasllat del temps per lliscar una de les peces fins que
-estiguin alineades. Fixeu-vos en què podeu utilitzar aquesta eina mentre
-escolteu la peça. <o:p></o:p></span></p>
+<b>Això només funciona amb alguns enregistraments!</b>
+<p>
+Per provar-ho amb l'Audacity, importeu una pista estèreo i feu clic al menú desplegable que hi ha a l'esquerra (la fletxeta avall que hi ha al costat del nom de la pista). Seleccioneu l'ordre "Divideix la pista estèreo". Un cop fet això, seleccioneu la pista inferior (el canal dret) i feu servir l'ordre "Mirall horitzontal" del menú "Efecte". Finalment, feu servir els menús desplegables de cada pista per convertir-los en canals "Mono" i mescleu-los amb el comandament "Barreja ràpida" del menú "Projecte".  Si esteu de sort, les veus hauran desaparegut.
+<p>
+<a name="a3"></a>
+<font size=+1><b>
+3. Quant intento gravar harmonies amb la meva pròpia veu, per què les dues peces estan desincronitzades? 
+</b></font>
+<p>
+Això és normal, i és degut a que hi ha un petit retard entre el moment en que l'Audacity comença a reproduir el so i aquest surt pels vostres altaveus. L'Audacity no pot corregir automàticament aquest retard: ho heu d'ajustar manualment.
+<p>
+Per corregir aquest retard utilitzeu l'eina de desplaçament en el temps, fent lliscar una de les pistes fins que estigui alineada amb l'altra. Podeu utilitzar aquesta eina mentre s'escolta la peça.
+<p>
 
-<p><a name=a4></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
-CA'>4. Per què l'Audacity no prové amb un codificador de MP3? </span></b><span
-lang=CA style='mso-ansi-language:CA'><o:p></o:p></span></p>
+<a name="a4"></a>
+<font size=+1><b>
+4. Per què l'Audacity no ve amb un codificador d'MP3?
+</b></font>
+<p>
+Per desgràcia, l'algorisme que serveix per a codificar els fitxers MP3 està patentat i l'<b>Audacity</b> no pot incloure un compressor d'MP3 sense o bé deixar de ser gratuït o bé violar les lleis d'alguns països.
+<p>
+Com a compromís, l'Audacity té la possibilitat de fer servir altres codificadors d'MP3, que podeu descarregar separadament. És cosa vostra assegurar-vos que acompliu les restriccions de llicència imposades pel codificador MP3 que hagueu escollit.
+<p>
+Per a més informació visiteu la pàgina d'exportació de fitxers MP3 en l'ajuda en línia.
+<p>
 
-<p><span lang=CA style='mso-ansi-language:CA'>Per degràcia, l'algoritme que
-codifica o crea els fitxers de MP3 està patentat i l'<b>Audacity</b> no pot
-incloure un compressor de MP3 sense o bé deixar de ser gratuït o bé violar la
-llei de diversos països. <o:p></o:p></span></p>
+<a name="a5"></a>
+<font size=+1><b>
+5. Puc enregistrar des de RealAudio o altres fonts d'àudio a raig?
+</b></font>
+</p><p>
+No pas de manera automàtica.  Molts intèrprets d'àudio a raig, incloent el RealOne Player, el Windows Media Player, i el Quicktime, estan específicament dissenyats per evitar que es puguin enregistrar aquest tipus de dades.
+</p><p>
+De totes maneres... sempre és possible enregistrar qualsevol cosa que estigui sonant al vostre ordinador, amb un cable que desviï el so del connector de sortida de la targeta de so a l'entrada de línia o micròfon.
+</p><p>
+Feu servir un cable amb un connector mini-estèreo d'1/8 de polzada a cada extrem. Endolleu-ne un al connector de sortida (que usualment és de color verd) i l'altre a l'entrada de línia o al connector del micròfon (que acostuma a ser de color vermell).
+</p><p>
+Ara l'Audacity pot enregistrar tot el que soni per l'ordinador. Feu clic al botó d'enregistrar de l'Audacity i, tot seguit, cliqueu el botó d'interpretar del programa d'àudio a raig.
+</p><p>
+Nota: En algunes targetes de so modernes hi ha la possibilitat de seleccionar a la barra del mesclador el canal "Wave Out Mix" (que es pot anomenar també "Salida mezclada" o "What 'u hear", o "Lo que se oye"). Aquest canal ofereix el mateix resultat sense que calgui connectar cap cable especial.
+</p><p>
 
-<p><span lang=CA style='mso-ansi-language:CA'>Com a compromís, l'Audacity prové
-amb l'habilitat de fer servir altres codificador de MP3 que us heu de
-descarregar separadament. D'aquesta manera evitem violar la llei imposada pels
-creadors de la codificació de MP3. <o:p></o:p></span></p>
+<a name="a6"></a>
+<font size=+1><b>
+6. Ajuda! He clicat al botó d'enregistrar, però només obtinc silenci!
+</b></font>
+</p><p>
+L'Audacity enregistra des del canal que estigui seleccionat a la barra del mesclador. Si teniu diverses fonts de so (com ara un micròfon integrat, un micròfon extern, un connector de línia externa o àudio CD) cal que seleccioneu la font on realment s'estigui generant el so. Per exemple, si esteu intentant enregistrar des del micròfon però teniu seleccionat el canal "Line in", l'Audacity només enregistrarà silenci.
+</p><p>
+Si feu servir el Windows, podeu seleccionar el canal d'enregistrament fent un doble clic a l'altaveu de la barra d'eines i anant al menú Opcions - Propietats - Enregistrament.
+</p><p>
+Si feu servir un Mac amb OS 9, feu servir el pannell de control de so.  Amb Mac OS X, feu servir el pannell de so a les preferències del sistema (hi ha una pestanya amb el nom "Entrada" en les versions 10.2 o superior).
+</p><p>
+Amb el Linux, feu servir un mesclador com ara el "xmixer" o el "kmix".
+</p><p>
 
-<p><span lang=CA style='mso-ansi-language:CA'>Per amés informació visiteu la
-pàgina d'exportació de fitxer de MP3 a l'ajuda en línia. <o:p></o:p></span></p>
+<a name="a7"></a>
+<font size=+1><b>
+7. Com puc dividir un fitxer en múltiples pistes?
+</b></font>
+</p><p>
+Si teniu diverses cançons que han quedat en un únic fitxer de so i voleu enregistrar-les en un CD d'àudio amb múltiples pistes, necessitareu un fitxer independent per cada cançó.
+</p><p>
+L'Audacity ofereix moltes maneres diferents de dividir un enregistrament en múltiples pistes. Aquests són alguns dels mètodes que podeu provar:
+</p><p>
+Mètode 1: Exportar la selecció
+</p><ul>
+<li>Seleccioneu la regió d'àudio corresponent a la primera pista.
+</li><li>Escolliu "Anomena i exporta la selecció com a WAV" en el menú Fitxer, i enregistreu-la al disc.
+</li><li>Continueu amb la resta de pistes.
+</li></ul>
+<p>
+Mètode 2: Esborrar i Desfer
+</p><ul>
+<li>Esborreu-ho tot <i>excepte</i> el so corresponent a la primera pista.
+</li><li>Escolliu "Exporta com a WAV..." en el menú Fitxer, i enregistreu la primera pista al disc.
+</li><li>Escolliu "Desfés" del menú Edita.  Continueu "desfent" fins que torneu a tenir la resta d'àudio. (l'Audacity té una capacitat il·limitada de desfer)
+</li><li>Continueu amb l aresta de pistes.
+</li></ul>
+<p>
+Mètode 3: Dividir i exportar
+</p><ul>
+<li>Seleccioneu allò que vulgueu que sigui la primera pista.
+</li><li>Escolliu "Divideix" en el menú "Edita", que mourà la selecció a una pista independent dins de l'Audacity.
+</li><li>Continueu fent això amb totes les cançons, fins que aconseguiu tenir totes les cançons en pistes separades. 
+No oblideu que podeu "Desfer" en qualsevol moment si us equivoqueu.
+</li><li>Després feu servir a "Anomena i exporta la selecció com a WAV..." per exportar cada pista en un fitxer separat. Per seleccionar tota una pista de manera ràpida cliqueu a la seva etiqueta (o a qualsevol lloc en la zona que queda a l'esquerra de la pista, sota el títol).
+</li></ul>
+<p>
 
-<p><a name=a5></a><b><span lang=CA style='font-size:13.5pt;mso-ansi-language:
-CA'>4. Com m'ho puc veure per veure l'Audacity en català? </span></b><span
-lang=CA style='mso-ansi-language:CA'><o:p></o:p></span></p>
+<a name="a8"></a>
+<font size=+1><b>
+8. Com puc obtenir cançons d'un CD d'àudio?
+</b></font>
+</p><p>
+L'Audacity no extreu cançons dels CDs d'àudio. Haureu de fer servir un programa de tipus "ripper" per a fer-ho.
+</p><p>
+Per a Windows, us recomanem el <a href="http://cdexos.sourceforge.net/">CDex</a>.
+</p><p>
+Per a Mac OS (9 i X), recomanem l'<a href="http://www.apple.com/itunes/">iTunes</a> d'Apple.
+</p><p>
+Per a Linux, proveu amb el <a href="http://www.xiph.org/paranoia/">Paranoia</a>.
 
-<p><span lang=CA style='mso-ansi-language:CA'>Primer de tot tenir la versió
-1.01 Beta. Les anteriors encara no poden configurar l'idioma. <o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>Si ja la tens i tens l'ordinador
-configurat en català se t'hauria d'obrir automàticament en aquesta llengua. <o:p></o:p></span></p>
-
-<p><span lang=CA style='mso-ansi-language:CA'>Si el teniu en qualsevol altre
-idioma, us pareixerà en aquest altre o per defecte en anglès. En aquest cas
-haureu de seguir la ruta Fitxer\Preferències\Interfície\Idioma
-(File\Preferences\Interfase\language en anglès,
-archivo\Preferencias\Interface\Lenguaje en castellà i
-fichier\Préférences\Interface\Langage en francés) i heu d'esborrar el que hi
-hagi i escriure <b>ca</b> a l'única casella que hi ha. Reinicieu el programa i
-ja ho teniu. <?php BoxBottom(); ?><o:p></o:p></span></p>
-
-</div>
-
-</body>
-
-</html>
+<?php BoxBottom(); ?>
