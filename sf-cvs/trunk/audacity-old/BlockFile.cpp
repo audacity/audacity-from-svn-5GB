@@ -234,6 +234,7 @@ bool BlockFile::SeekTo(int where)
 	double secs = skipSamples / ((snd_node *)mSndNode)->format.srate;
 
 	snd_seek(((snd_node *)mSndNode), secs);
+	return true;
   }
   else {
 	wxASSERT(mFile);	
