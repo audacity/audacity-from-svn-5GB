@@ -14,18 +14,18 @@
 class wxString;
 
 #include <wx/intl.h>
-#include "Effect.h"
+#include "SimpleMono.h"
 
 class WaveTrack;
 
-class EffectCompressor: public Effect {
+class EffectCompressor: public EffectSimpleMono {
    
 public:
    
    EffectCompressor();
    
    virtual wxString GetEffectName() {
-      return wxString(_("Compressor..."));
+      return wxString(_("Compressor"));
    }
    
    virtual wxString GetEffectAction() {
@@ -34,12 +34,11 @@ public:
    
    virtual bool PromptUser();
    
-   virtual bool Process();
-   
 private:
-   bool ProcessOne(int count, WaveTrack * t,
-                   sampleCount start, sampleCount len);
-                   
+   bool ProcessSimpleMono(float *buffer, sampleCount len, double samplerate);
+
+   bool NewTrackSimpleMono(int count, double samplerate);
+
    float DoCompression(float x);
    
    bool      mRMS;

@@ -6,6 +6,13 @@
 
   Dominic Mazzoni
 
+  Rewritten to inherit from EffectSimpleMono by Steve Jolly, who is 
+  very unhappy with the way it sounds and wonders if he's broken
+  something.  Mind you, it pretty much zeroed everything back in 
+  Audacity 1.1, so I guess it's an improvement over that...
+
+  \todo consider implementing a softer start to the effect
+  \todo add a gui!
 **********************************************************************/
 
 #include <math.h>
@@ -19,87 +26,52 @@
 EffectCompressor::EffectCompressor()
 {
    mRMS = true;
-   mAttackTime = 0.1;
-   mDecayTime = 0.1;
-   mThresholdDB = -32;
-   mRatio = 8.0;        // positive number
-   mGainDB = 4.0;
+   mAttackTime = 0.01;    // seconds
+   mDecayTime = 0.5;       // seconds
+   mThresholdDB = -15.0;   // dB
+   mRatio = 2.0;           // positive number
+   mGainDB = 4.0;          // not sure about this value
+   mCircle = NULL;         // prevent access violation in NewTrackSimpleMono
 }
 
 bool EffectCompressor::PromptUser()
 {
-   return true;
-}
-
-bool EffectCompressor::Process()
-{
+   //Only we don't.  But we'd do it here if we did.
    mThreshold = pow(10.0, mThresholdDB/10);
    mGain = pow(10.0, mGainDB/10);
    mInvRatio = 1.0 - 1.0 / mRatio;
 
-   TrackListIterator iter(mWaveTracks);
-   Track *t = iter.First();
-   int count = 0;
-   while(t) {
-      sampleCount start, len;
-      GetSamples((WaveTrack *)t, &start, &len);
-      
-      bool success = ProcessOne(count, (WaveTrack *)t, start, len);
-      
-      if (!success)
-         return false;
-   
-      t = iter.Next();
-      count++;
-   }
-
    return true;
 }
 
-bool EffectCompressor::ProcessOne(int count, WaveTrack * t,
-                                    sampleCount start, sampleCount len)
+bool EffectCompressor::NewTrackSimpleMono(int count, double samplerate)
 {
-   mDecayMult = exp(log(0.1)/(mDecayTime*t->GetRate()));
-   mCircleSize = int(mAttackTime * t->GetRate() + 0.5);
+   if (mCircle) delete mCircle;
+   
+   mDecayMult = exp(log(0.1)/(mDecayTime*samplerate));
+   mCircleSize = int(mAttackTime * samplerate + 0.5);
    mCircle = new double[mCircleSize];
    for(int j=0; j<mCircleSize; j++)
       mCircle[j] = 0.0;
    mCirclePos = 0;
    mRMSSum = 0.0;
    mMult = 1.0;
-   
-   sampleCount s = start;
-   sampleCount originalLen = len;
-   sampleCount blockSize = t->GetMaxBlockSize();
 
-   float *buffer = new float[blockSize];
-   
-   while (len) {
-      sampleCount block = t->GetBestBlockSize(s);
-      if (block > len)
-         block = len;
+   return true;
+}
 
-      t->Get(buffer, s, block);
-      for (int i = 0; i < block; i++) {
-         buffer[i] = DoCompression(buffer[i]);
-      }
-      t->Set(buffer, s, block);
-
-      len -= block;
-      s += block;
-      
-      TrackProgress(count, (s-start)/(double)originalLen);
+bool EffectCompressor::ProcessSimpleMono(float *buffer, sampleCount len, double samplerate)
+{
+   for (int i = 0; i < len; i++) {
+      buffer[i] = DoCompression(buffer[i]);
    }
-
-   delete[] buffer;
-   delete[] mCircle;
 
    return true;
 }
 
 float EffectCompressor::DoCompression(float x)
 {
-   float value = x/32767.0;
+   float value = x; // /32767.0;
    float level;
    float mult;
    
