@@ -14,7 +14,7 @@
 #define __AUDACITY_EFFECT_TONEGEN__
 
 #include <math.h>
-#include "../Fft.h"
+#include "../FFT.h"
 
 #include <wx/checkbox.h>
 #include <wx/button.h>
