@@ -16,7 +16,7 @@
 <h3><?=_("Recommended Download")?></h3>
 
 <ul>
-  <li><p><?php printf('<a href="%s">Audacity %s source tarball</a> (%.1lf MB)', "../latest/".$src_url, src_version, src_size)?></p></li>
+  <li><p><?php printf(_('<a href="%s">Audacity %s source tarball</a> (%.1lf MB)'), "../latest/".$src_url, src_version, src_size)?></p></li>
 </ul>
 
 <h3><?=_("Optional Downloads")?></h3>
