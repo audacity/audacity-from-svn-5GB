@@ -825,6 +825,7 @@ void AudacityProject::HandleResize()
 void AudacityProject::OnSize(wxSizeEvent & event)
 {
    HandleResize();
+   event.Skip();
 }
 
 void AudacityProject::OnScroll(wxScrollEvent & event)
