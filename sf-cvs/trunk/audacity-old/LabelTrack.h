@@ -20,6 +20,8 @@
 
 class wxKeyEvent;
 class wxTextFile;
+class wxWindow;
+class TrackList;
 
 class DirManager;
 
@@ -34,6 +36,9 @@ WX_DEFINE_ARRAY(LabelStruct *, LabelArray);
 class LabelTrack: public VTrack
 {
   friend class BouncePane;
+  friend bool Export(wxWindow *parent,
+			TrackList *tracks, bool selectionOnly,
+			double t0, double t1);
 
 public:
   LabelTrack(DirManager *projDirManager);
@@ -68,6 +73,8 @@ public:
   void Export(wxTextFile& f);
 
   void Unselect();
+  
+  bool IsSelected();
   
 private:
 

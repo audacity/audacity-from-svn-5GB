@@ -243,6 +243,11 @@ void LabelTrack::Unselect()
   mSelIndex = -1;
 }
 
+bool LabelTrack::IsSelected()
+{
+  return (mSelIndex >= 0 && mSelIndex < mLabels.Count());
+}
+
 void LabelTrack::Export(wxTextFile& f)
 {
   for(int i=0; i<mLabels.Count(); i++) {

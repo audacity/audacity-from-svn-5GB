@@ -27,6 +27,7 @@
 #include "WaveTrack.h"
 #include "Track.h"
 #include "DirManager.h"
+#include "LabelTrack.h"
 #include "Prefs.h"
 #include "Mix.h"
 
@@ -49,6 +50,15 @@ bool Export(wxWindow *parent,
     header = SND_HEAD_IRCAM;
   else if (format=="AU")
     header = SND_HEAD_NEXT;
+
+  #ifdef __WXMAC__
+  bool trackMarkers = false;
+  if (format=="AIFF with track markers") {
+    header = SND_HEAD_AIFF;
+    format = "AIFF";
+    trackMarkers = true;
+  }
+  #endif
 
   if (header == SND_HEAD_NONE) {
     wxMessageBox(wxString::Format("Sorry, you cannot export %s files (yet).\n"
@@ -256,6 +266,63 @@ bool Export(wxWindow *parent,
   FSSpec spec ;
 
   wxUnixFilename2FSSpec( fName , &spec ) ;
+  
+  if (trackMarkers) {
+    // Export the label track as "CD Spin Doctor" files
+  
+    LabelTrack *labels = NULL;
+    TrackListIterator iter(tracks);
+    VTrack *t = iter.First();
+    while(t && !labels) {
+      if (t->GetKind() == VTrack::Label)
+        labels = (LabelTrack *)t;
+      t = iter.Next();
+    }
+    if (labels) {
+      FSpCreateResFile(&spec, 'AIFF', AUDACITY_CREATOR, 0);
+      int resFile = FSpOpenResFile(&spec, fsWrPerm);
+      if (resFile == -1) {
+        int x = ResError();
+      }
+      if (resFile != -1) {
+        UseResFile(resFile);
+      
+        int numLabels = labels->mLabels.Count();
+        for(int i=0; i<numLabels; i++) {
+          int startBlock = (int)(labels->mLabels[i]->t * 75);
+          int lenBlock;
+          if (i < numLabels-1)
+            lenBlock = (int)((labels->mLabels[i+1]->t - labels->mLabels[i]->t) * 75);
+          else
+            lenBlock = (int)((tracks->GetMaxLen() - labels->mLabels[i]->t) * 75);
+          int startSample = startBlock*1176 + 54;
+          int lenSample = lenBlock*1176 + 54;
+          
+          Handle theHandle = NewHandle(50);
+          HLock(theHandle);
+          char *data = (char *)(*theHandle);
+          *(int *)&data[0] = startSample;
+          *(int *)&data[4] = lenSample;
+          *(int *)&data[8] = startBlock;
+          *(int *)&data[12] = lenBlock;
+          *(short *)&data[16] = i+1;
+          
+          wxString title = labels->mLabels[i]->title;
+          if (title.Length() > 31)
+            title = title.Left(31);
+          data[18] = title.Length();
+          strcpy(&data[19], (const char *)title);
+          
+          HUnlock(theHandle);        
+          AddResource(theHandle, 'SdCv', 128 + i, "\p");
+        }
+        CloseResFile(resFile);
+        
+        wxMessageBox("Saved track information with file.");
+      }
+    }
+  }
+  
   FInfo finfo ;
   if ( FSpGetFInfo( &spec , &finfo ) == noErr )
   {
@@ -278,6 +345,7 @@ bool Export(wxWindow *parent,
 
     FSpSetFInfo( &spec , &finfo ) ;
   }
+  
 #endif
 
   if (progress)
