@@ -42,7 +42,7 @@ Importer::Importer()
    // order is significant.  If none match, they will all be tried
    // in the order defined here.
    GetOGGImportPlugin(mImportPluginList, mUnusableImportPluginList);
-   //GetMP3ImportPlugin(mImportPluginList, mUnusableImportPluginList);
+   GetMP3ImportPlugin(mImportPluginList, mUnusableImportPluginList);
    GetPCMImportPlugin(mImportPluginList, mUnusableImportPluginList);
 
    // TODO: others

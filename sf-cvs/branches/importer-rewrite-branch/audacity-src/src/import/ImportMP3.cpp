@@ -18,9 +18,13 @@
 #include <wx/defs.h>
 #include "../Audacity.h"
 
+#include "Import.h"
+#include "ImportMP3.h"
+#include "ImportPlugin.h"
+
 #ifndef USE_LIBMAD
 
-void GetOGGImportPlugin(ImportPluginList *importPluginList,
+void GetMP3ImportPlugin(ImportPluginList *importPluginList,
                         UnusableImportPluginList *unusableImportPluginList)
 {
    UnusableImportPlugin* mp3IsUnsupported =
@@ -45,10 +49,6 @@ extern "C" {
 #include "mad.h"
 }
 
-#include "Import.h"
-#include "ImportMP3.h"
-#include "ImportPlugin.h"
-
 #include "../WaveTrack.h"
 //#include "../Tags.h"
 
@@ -63,10 +63,7 @@ struct private_data {
    unsigned char *inputBuffer;
    TrackFactory *trackFactory;
    WaveTrack **channels;
-   float **buffers;
    int numChannels;
-   sampleCount bufferSize;  /* how big each of the above buffers is */
-   sampleCount numDecoded;  /* how many decoded samples are sitting in each buffer */
    progress_callback_t *progressCallback;
    void *userData;
    bool cancelled;
@@ -183,9 +180,6 @@ bool MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    mPrivateData.file        = mFile;
    mPrivateData.inputBuffer = new unsigned char [INPUT_BUFFER_SIZE];
    mPrivateData.channels   = NULL;
-   mPrivateData.buffers    = NULL;
-   mPrivateData.bufferSize  = 1048576;
-   mPrivateData.numDecoded  = 0;
    mPrivateData.cancelled   = false;
    mPrivateData.numChannels = 0;
    mPrivateData.trackFactory= trackFactory;
@@ -208,12 +202,6 @@ bool MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
 
       mad_decoder_finish(&mDecoder);
 
-      /* write any samples left in the buffers */
-      for(chn = 0; chn < mPrivateData.numChannels; chn++)
-         mPrivateData.channels[chn]->Append((samplePtr)mPrivateData.buffers[chn],
-                                             floatSample,
-                                             mPrivateData.numDecoded);
-
       /* copy the WaveTrack pointers into the Track pointer list that
        * we are expected to fill */
       *outTracks = new Track* [mPrivateData.numChannels];
@@ -221,13 +209,8 @@ bool MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
          (*outTracks)[chn] = mPrivateData.channels[chn];
       *outNumTracks = mPrivateData.numChannels;
 
-      /* clean up */
-      for(chn = 0; chn < mPrivateData.numChannels; chn++)
-         delete mPrivateData.buffers[chn];
-
       delete mPrivateData.inputBuffer;
       delete[] mPrivateData.channels;
-      delete[] mPrivateData.buffers;
 
       return true;
    }
@@ -240,13 +223,9 @@ bool MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
 
       /* delete everything */
       for(chn = 0; chn < mPrivateData.numChannels; chn++)
-      {
          delete mPrivateData.channels[chn];
-         delete mPrivateData.buffers[chn];
-      }
 
       delete[] mPrivateData.channels;
-      delete[] mPrivateData.buffers;
       delete mPrivateData.inputBuffer;
 
       return false;
@@ -302,8 +281,8 @@ enum mad_flow input_cb(void *_data, struct mad_stream *stream)
       unconsumedBytes = 0;
 
 
-   size_t read = data->file->Read(data->inputBuffer + unconsumedBytes,
-                                  INPUT_BUFFER_SIZE - unconsumedBytes);
+   off_t read = data->file->Read(data->inputBuffer + unconsumedBytes,
+                                 INPUT_BUFFER_SIZE - unconsumedBytes);
 
    mad_stream_buffer(stream, data->inputBuffer, read + unconsumedBytes);
 
@@ -331,12 +310,10 @@ enum mad_flow output_cb(void *_data,
     * will hold the data.  We do this now because now is the first
     * moment when we know how many channels there are. */
 
-   if(!data->buffers) {
-      data->buffers = new float* [channels];
+   if(!data->channels) {
       data->channels = new WaveTrack* [channels];
 
       for(chn = 0; chn < channels; chn++) {
-         data->buffers[chn] = new float[data->bufferSize];
          data->channels[chn] = data->trackFactory->NewWaveTrack(floatSample);
          data->channels[chn]->SetRate(samplerate);
          data->channels[chn]->SetChannel(Track::MonoChannel);
@@ -351,23 +328,23 @@ enum mad_flow output_cb(void *_data,
       data->numChannels = channels;
    }
 
-   /* If the samples we have just received will overflow the channels'
-    * input buffers, then flush the buffers to WaveTracks */
+   /* TODO: get rid of this by adding fixed-point support to SampleFormat.
+    * For now, we allocate temporary float buffers to convert the fixed
+    * point samples into something we can feed to the WaveTrack.  Allocating
+    * big blocks of data like this isn't a great idea, but it's temporary.
+    */
+   float **channelBuffers = new float* [channels];
+   for(chn = 0; chn < channels; chn++)
+      channelBuffers[chn] = new float [samples];
 
-   if(data->numDecoded + samples > data->bufferSize) {
-      for(chn = 0; chn < channels; chn++)
-         data->channels[chn]->Append((samplePtr)data->buffers[chn],
-                                     floatSample,
-                                     data->numDecoded);
-      data->numDecoded = 0;
-   }
-
-   /* copy from MAD's buffers to our input buffers */
    for(smpl = 0; smpl < samples; smpl++)
       for(chn = 0; chn < channels; chn++)
-         data->buffers[chn][data->numDecoded+smpl] = scale(pcm->samples[chn][smpl]);
+         channelBuffers[chn][smpl] = scale(pcm->samples[chn][smpl]);
 
-   data->numDecoded += samples;
+   for(chn = 0; chn < channels; chn++)
+      data->channels[chn]->Append((samplePtr)channelBuffers[chn],
+                                  int16Sample,
+                                  samples);
 
    return MAD_FLOW_CONTINUE;
 }
