@@ -1611,41 +1611,51 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
 {
    wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
 
-   wxString fileName = wxFileSelector(_("Select an audio file..."),
-                                      path,     // Path
-                                      "",       // Name
-                                      "",       // Extension
-                                      _("All files (*.*)|*.*|"
-                                        "Audacity projects (*.aup)|*.aup|"
-                                        "WAV files (*.wav)|*.wav|"
-                                        "AIFF files (*.aif)|*.aif|"
-                                        "AU files (*.au)|*.au|"
-                                        "MP3 files (*.mp3)|*.mp3|"
-                                        "Ogg Vorbis files (*.ogg)|*.ogg|"
-                                        "List of Files (*.lof)|*.lof"),
-                                      0,        // Flags
-                                      proj);    // Parent
+   wxFileDialog dlog(proj, _("Select one or more audio files..."),
+                     path, "",
+                     _("All files (*.*)|*.*|"
+                       "Audacity projects (*.aup)|*.aup|"
+                       "WAV files (*.wav)|*.wav|"
+                       "AIFF files (*.aif)|*.aif|"
+                       "AU files (*.au)|*.au|"
+                       "MP3 files (*.mp3)|*.mp3|"
+                       "Ogg Vorbis files (*.ogg)|*.ogg|"
+                       "List of Files (*.lof)|*.lof"),
+                     wxOPEN | wxMULTIPLE);
 
-   if (fileName != "") {
-      gPrefs->Write("/DefaultOpenPath", wxPathOnly(fileName));
+   int result = dlog.ShowModal();
 
+   if (result != wxID_OK)
+      return;
+
+   wxArrayString selectedFiles;
+   unsigned int ff;
+
+   dlog.GetPaths(selectedFiles);
+
+   for(ff=0; ff<selectedFiles.GetCount(); ff++) {
+      wxString fileName = selectedFiles[ff];
       wxFileName newFileName(fileName);
 
+      gPrefs->Write("/DefaultOpenPath", wxPathOnly(fileName));
+      
       // Make sure it isn't already open
       size_t numProjects = gAudacityProjects.Count();
       for (size_t i = 0; i < numProjects; i++) {
          if (newFileName.SameAs(gAudacityProjects[i]->mFileName)) {
-            wxMessageBox(_("That project is already open in another window."),
+            wxMessageBox(wxString::Format(_("%s is already open in another window."),
+                                          (const char *)newFileName.GetName()),
                          _("Error opening project"),
                          wxOK | wxCENTRE);
-            return;
+            continue;
          }
       }
 
       // STM: Removing check of IsDirty(): as long as it's empty, why should we care?
       // (alternately, if its dirty and empty, we should clean it)
       if (!proj ||  !proj->mTracks->IsEmpty()) {
-         // Open in a new window if this one is in use or doesn't exist (on a Mac when no window is open).
+         // Open in a new window if this one is in use or doesn't exist
+         // (on a Mac when no window is open).
          AudacityProject *newProject =
             CreateNewAudacityProject(gParentWindow);
          newProject->OpenFile(fileName);

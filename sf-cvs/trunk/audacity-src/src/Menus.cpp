@@ -1895,24 +1895,34 @@ void AudacityProject::OnImport()
    wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
 
    // TODO: Build the list of file types dynamically
-   wxString fileName = wxFileSelector(_("Select an audio file..."),
-                                      path,     // Path
-                                      "",       // Name
-                                      "",       // Extension
-                                      _("All files (*.*)|*.*|"
-                                        "WAV files (*.wav)|*.wav|"
-                                        "AIFF files (*.aif)|*.aif|"
-                                        "AU files (*.au)|*.au|"
-                                        "MP3 files (*.mp3)|*.mp3|"
-                                        "Ogg Vorbis files (*.ogg)|*.ogg|"
-                                        "List of Files (*.lof)|*.lof"),
-                                      0,        // Flags
-                                      this);    // Parent
+   
+   wxFileDialog dlog(this, _("Select one or more audio files..."),
+                     path, "",
+                     _("All files (*.*)|*.*|"
+                       "WAV files (*.wav)|*.wav|"
+                       "AIFF files (*.aif)|*.aif|"
+                       "AU files (*.au)|*.au|"
+                       "MP3 files (*.mp3)|*.mp3|"
+                       "Ogg Vorbis files (*.ogg)|*.ogg|"
+                       "List of Files (*.lof)|*.lof"),
+                     wxOPEN | wxMULTIPLE);
 
-   if (fileName != "") {
+   int result = dlog.ShowModal();
+
+   if (result != wxID_OK)
+      return;
+
+   wxArrayString selectedFiles;
+   unsigned int ff;
+
+   dlog.GetPaths(selectedFiles);
+
+   for(ff=0; ff<selectedFiles.GetCount(); ff++) {
+      wxString fileName = selectedFiles[ff];
+
       path =::wxPathOnly(fileName);
       gPrefs->Write("/DefaultOpenPath", path);
-
+      
       Import(fileName);
    }
 }
