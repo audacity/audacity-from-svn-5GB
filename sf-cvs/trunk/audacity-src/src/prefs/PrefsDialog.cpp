@@ -111,7 +111,7 @@ wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
 
    #ifdef __WXMSW__
    // Because it looks nice (tm)   (you can see all the tabs at once)
-   SetSize(355, 363);
+   SetSize(425, 363);
    #endif
 
 }
