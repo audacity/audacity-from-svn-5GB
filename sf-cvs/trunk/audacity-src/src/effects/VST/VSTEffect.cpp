@@ -17,10 +17,14 @@
 #include "../../Audacity.h"
 
 #include "AEffect.h"            // VST API
+#include "AEffEditor.hpp"
 
 #include <wx/defs.h>
 #include <wx/button.h>
+#include <wx/dialog.h>
+#include <wx/frame.h>
 #include <wx/slider.h>
+#include <wx/sizer.h>
 #include <wx/msgdlg.h>
 
 #include "../Effect.h"          // Audacity Effect base class
@@ -29,6 +33,84 @@
 #ifdef __MACOSX__
 #include <Carbon/Carbon.h>
 #endif
+
+class VSTEffectGUIDialog : public wxDialog
+{
+public:
+   VSTEffectGUIDialog(wxWindow * parent, wxWindowID id,
+                      const wxString & title,
+                      VSTEffect *effect, AEffect *aEffect);
+
+   void OnOk(wxCommandEvent &event);
+   void OnCancel(wxCommandEvent &event);
+
+   void OnIdle(wxIdleEvent &event);
+
+private:
+   VSTEffect *mEffect;
+   AEffect   *mAEffect;
+
+   DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(VSTEffectGUIDialog,wxDialog)
+   EVT_BUTTON( wxID_OK, VSTEffectGUIDialog::OnOk )
+   EVT_BUTTON( wxID_CANCEL, VSTEffectGUIDialog::OnCancel )
+   EVT_IDLE( VSTEffectGUIDialog::OnIdle )
+END_EVENT_TABLE()
+
+VSTEffectGUIDialog::VSTEffectGUIDialog(wxWindow *parent, wxWindowID id,
+                                       const wxString & title,
+                                       VSTEffect *effect,
+                                       AEffect *aEffect):
+   wxDialog(parent, id, title, wxDefaultPosition, wxDefaultSize,
+            wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION),
+   mEffect(effect),
+   mAEffect(aEffect)
+{
+   ERect *rect;
+
+   mEffect->callDispatcher(mAEffect, effEditGetRect, 0, 0, &rect, 0.0);
+   mEffect->callDispatcher(mAEffect, effEditOpen, 0, 0, (void *)GetHWND(), 0.0);
+
+   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+
+   mainSizer->Add(rect->right-rect->left, rect->bottom-rect->top);
+
+   wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
+
+   wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
+   ok->SetDefault();
+   hSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
+
+   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
+   hSizer->Add(cancel, 0, wxALIGN_CENTRE|wxALL, 5);
+
+   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+
+   SetAutoLayout(true);
+   SetSizer(mainSizer);
+   mainSizer->Fit(this);
+   mainSizer->SetSizeHints(this);
+}
+
+void VSTEffectGUIDialog::OnIdle(wxIdleEvent &event)
+{
+   mEffect->callDispatcher(mAEffect, effEditIdle, 0, 0, NULL, 0.0);
+}
+
+void VSTEffectGUIDialog::OnOk(wxCommandEvent &event)
+{
+   mEffect->callDispatcher(mAEffect, effEditClose, 0, 0, NULL, 0.0);
+   EndModal(true);
+}
+
+void VSTEffectGUIDialog::OnCancel(wxCommandEvent &event)
+{
+   mEffect->callDispatcher(mAEffect, effEditClose, 0, 0, NULL, 0.0);
+   EndModal(false);
+}
+
 
 VSTEffect::VSTEffect(wxString pluginName, AEffect * aEffect)
 {
@@ -91,6 +173,20 @@ bool VSTEffect::Init()
 
 bool VSTEffect::PromptUser()
 {
+   if (!(aEffect->flags & effFlagsCanReplacing)) {
+      wxMessageBox("Can't process replacing");
+      return false;
+   }
+
+   if (aEffect->flags & effFlagsHasEditor) {
+      // Show native GUI
+      VSTEffectGUIDialog dlog(mParent, -1, pluginName, this, aEffect);
+      dlog.CentreOnParent();
+      dlog.ShowModal();
+
+      return dlog.GetReturnCode();
+   }
+
    // Try to figure out how many parameters it takes by seeing how
    // many parameters have names
    char temp[8][256];
@@ -114,10 +210,11 @@ bool VSTEffect::PromptUser()
    } while (temp[0] != 0 && numParameters < 8);
 
    if (numParameters > 0) {
-      VSTEffectDialog d(mParent, pluginName, numParameters, this, aEffect);
-      d.ShowModal();
+      VSTEffectDialog dlog(mParent, pluginName, numParameters, this, aEffect);
+      dlog.CentreOnParent();
+      dlog.ShowModal();
 
-      if (!d.GetReturnCode())
+      if (!dlog.GetReturnCode())
          return false;
    }
 
