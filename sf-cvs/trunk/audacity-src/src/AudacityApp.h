@@ -46,8 +46,16 @@ class AudacityApp:public wxApp {
    void OnMenuPreferences(wxCommandEvent & event);
    void OnMenuExit(wxCommandEvent & event);
 
+   #ifdef __WXMAC__
+    // In response to Apple Events
+    virtual void MacOpenFile(const wxString &fileName) ;
+    virtual void MacPrintFile(const wxString &fileName) ;
+    virtual void MacNewFile() ;
+    virtual void MacReopenApp() ;
+   #endif
+
 	#if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
-		void AssociateFileTypes(); 
+   void AssociateFileTypes(); 
 	#endif
 
    // A list of directories that should be searched

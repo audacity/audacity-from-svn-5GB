@@ -27,6 +27,7 @@
 
 #include "Project.h"
 
+#include "AudacityApp.h"
 #include "AudioIO.h"
 #include "LabelTrack.h"
 #include "import/ImportMIDI.h"
@@ -169,10 +170,13 @@ void AudacityProject::CreateMenusAndCommands()
    c->SetCommandFlags("ExportMultiple",
                       AudioIONotBusyFlag | TracksExistFlag,
                       AudioIONotBusyFlag | TracksExistFlag);                      
-   // On Mac OS X, Preferences and Quit are in the application menu,
-   // not the File menu.
-  #ifndef __WXMAC__
+
+  #ifdef __WXMAC__
+   /* i18n-hint: Mac OS X shortcut should be Ctrl+, */
+   c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
+  #else
    c->AddSeparator();
+   /* i18n-hint: On Windows and Linux, the Preferences shortcut should be Ctrl+P or something like that */
    c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
    c->AddSeparator();
    c->AddItem("Exit",           _("E&xit"),                          FN(OnExit));
@@ -455,13 +459,17 @@ void AudacityProject::CreateMenusAndCommands()
    delete effects;
    c->EndMenu();
 
+   #ifdef __WXMAC__
+   wxGetApp().s_macHelpMenuTitleName = _("&Help");
+   #endif
+
    c->BeginMenu(_("&Help"));
    c->SetDefaultFlags(0, 0);
    c->AddItem("Help",           _("&Online Help..."),             FN(OnHelp));
    c->AddSeparator();   
    c->AddItem("About",          _("&About Audacity..."),          FN(OnAbout));
 
-#if 0 // No Benchmark in stable release
+#if 1 // Benchmark is enabled in unstable builds
    c->AddSeparator();   
    c->AddItem("Benchmark",      _("&Run Benchmark..."),           FN(OnBenchmark));
 #endif 

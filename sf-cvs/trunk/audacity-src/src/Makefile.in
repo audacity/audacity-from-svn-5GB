@@ -12,7 +12,12 @@ CC = @CC@
 CCC = @CXX@
 
 # Files that must exist in order to compile a C/C++ files
-CDEPEND = @CDEPEND@
+CDEPEND = @CDEPEND@ AudacityHeaders.h.gch
+
+# For precompiled header support
+PRECOMP_CFLAGS =
+# (Mac OS X only)
+# PRECOMP_CFLAGS = -include AudacityHeaders.h
 
 LOCAL_LIBS = @LOCAL_LIBS@
 EXTRAOBJS = @EXTRAOBJS@
@@ -187,6 +192,10 @@ dep:
 	$(CCC) -MM $(CXXFLAGS) $(CPPFLAGS) $(SOURCES) $(LIBAUDACITY_SOURCES) | \
 		sed -e 's/^.*\.o: \([^ ]*\)\.cpp/\1.o: \1.cpp/' \
 		> .depend
+	$(CCC) -MM $(CXXFLAGS) $(CPPFLAGS) AudacityHeaders.h | \
+		sed -e 's/^.*: \([^ ]*\)\.cpp/$(OBJDIR)\/\1.o: /' | \
+		sed 's/AudacityHeaders.o/AudacityHeaders.h.gch/' \
+		> .gchdepend
 
 clean:
 	rm -rf $(OBJS) $(LIBAUDACITY_OBJS)
@@ -197,7 +206,15 @@ clean:
 #
 
 $(OBJS) $(LIBAUDACITY_OBJS): %.o: $(srcdir)/%.cpp configunix.h $(CDEPEND)
-	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
+	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) $(PRECOMP_CFLAGS) $< -o $@
+
+#
+# Precompiled headers:
+#
+
+AudacityHeaders.h.gch:
+	echo "Rebuilding Precompiled Headers"
+	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) AudacityHeaders.h -o AudacityHeaders.h.gch
 
 #
 # Include ".depend" if it exists (run "make dep" to generate it)
