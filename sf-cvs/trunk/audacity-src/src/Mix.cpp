@@ -26,7 +26,9 @@
 #include "ControlToolBar.h"
 #include "Prefs.h"
 
-#include <samplerate.h>
+#ifdef USE_LIBSAMPLERATE 
+	#include <samplerate.h>
+#endif
 
 bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
               double rate, sampleFormat format)
