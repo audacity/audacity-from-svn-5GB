@@ -56,6 +56,11 @@ void MeterToolBar::InitializeMeterToolBar()
    mRecordMeter = new Meter(this, -1, true,
                             wxPoint(100, 0),
                             wxSize(99, 55));
+
+   #if wxUSE_TOOLTIPS
+   mPlayMeter->SetToolTip(_("Output level meter"));
+   mRecordMeter->SetToolTip(_("Input level meter - click to monitor input"));
+   #endif
 }
 
 MeterToolBar::~MeterToolBar()
