@@ -295,9 +295,15 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
          
          
       }
+
+   // If the button is disabled, make sure it doesn't accidentally get
+   // set to the "up" state by the above logic:
+   if (mButtonState == AButtonUp && !mEnabled)
+      mButtonState = AButtonDis;
+
    //Do a final Refresh() event
    this->Refresh(false);
-   }
+}
 
 bool AButton::WasShiftDown()
 {
@@ -334,7 +340,11 @@ void AButton::PopUp()
 {
 
    mButtonIsDown = false;
-   mButtonState = AButtonUp;
+   if (mEnabled)
+      mButtonState = AButtonUp;
+   else
+      mButtonState = AButtonDis;
+
    if (GetCapture()==this)
       ReleaseMouse();
 
