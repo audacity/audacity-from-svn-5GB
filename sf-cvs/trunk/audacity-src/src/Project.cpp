@@ -1891,53 +1891,56 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       wxRename(mFileName, safetyFileName);
    }
 
-   // This block of code is duplicated in WriteXML, for now...
-   wxString project = mFileName;
-   if (project.Len() > 4 && project.Mid(project.Len() - 4) == ".aup")
-      project = project.Mid(0, project.Len() - 4);
-   wxString projName = wxFileNameFromPath(project) + "_data";
-   wxString projPath = wxPathOnly(project);
+   if (fromSaveAs || mDirManager.GetProjectName() == "") {
 
-   // We are about to move files from the current directory to
-   // the new directory.  We need to make sure files that belonged
-   // to the last saved project don't get erased, so we "lock" them.
-   // (Otherwise the new project would be fine, but the old one would
-   // be empty of all of its files.)
-
-   // Lock all blocks in all tracks of the last saved version
-   if (mLastSavedTracks && !overwrite) {
-      TrackListIterator iter(mLastSavedTracks);
-      Track *t = iter.First();
-      while (t) {
-         if (t->GetKind() == Track::Wave)
-            ((WaveTrack *) t)->Lock();
-         t = iter.Next();
+      // This block of code is duplicated in WriteXML, for now...
+      wxString project = mFileName;
+      if (project.Len() > 4 && project.Mid(project.Len() - 4) == ".aup")
+         project = project.Mid(0, project.Len() - 4);
+      wxString projName = wxFileNameFromPath(project) + "_data";
+      wxString projPath = wxPathOnly(project);
+      
+      // We are about to move files from the current directory to
+      // the new directory.  We need to make sure files that belonged
+      // to the last saved project don't get erased, so we "lock" them.
+      // (Otherwise the new project would be fine, but the old one would
+      // be empty of all of its files.)
+      
+      // Lock all blocks in all tracks of the last saved version
+      if (mLastSavedTracks && !overwrite) {
+         TrackListIterator iter(mLastSavedTracks);
+         Track *t = iter.First();
+         while (t) {
+            if (t->GetKind() == Track::Wave)
+               ((WaveTrack *) t)->Lock();
+            t = iter.Next();
+         }
       }
-   }
-   // This renames the project directory, and moves or copies
-   // all of our block files over
-   bool success = mDirManager.SetProject(projPath, projName, !overwrite);
-
-   // Unlock all blocks in all tracks of the last saved version
-   if (mLastSavedTracks && !overwrite) {
-      TrackListIterator iter(mLastSavedTracks);
-      Track *t = iter.First();
-      while (t) {
-         if (t->GetKind() == Track::Wave)
-            ((WaveTrack *) t)->Unlock();
-         t = iter.Next();
+      // This renames the project directory, and moves or copies
+      // all of our block files over
+      bool success = mDirManager.SetProject(projPath, projName, !overwrite);
+      
+      // Unlock all blocks in all tracks of the last saved version
+      if (mLastSavedTracks && !overwrite) {
+         TrackListIterator iter(mLastSavedTracks);
+         Track *t = iter.First();
+         while (t) {
+            if (t->GetKind() == Track::Wave)
+               ((WaveTrack *) t)->Unlock();
+            t = iter.Next();
+         }
       }
-   }
-
-   if (!success) {
-      wxMessageBox(wxString::Format(_("Could not save project.  "
-                                      "Perhaps %s is not writeable,\n"
-                                      "or the disk is full."),
-                                    (const char *) project));
-      if (safetyFileName)
-         wxRename(safetyFileName, mFileName);
-
-      return false;
+      
+      if (!success) {
+         wxMessageBox(wxString::Format(_("Could not save project.  "
+                                         "Perhaps %s is not writeable,\n"
+                                         "or the disk is full."),
+                                       (const char *) project));
+         if (safetyFileName)
+            wxRename(safetyFileName, mFileName);
+         
+         return false;
+      }
    }
 
    FILE *fp = fopen(mFileName, "wb");
@@ -2065,7 +2068,7 @@ void AudacityProject::Import(wxString fileName)
 
    mTrackPanel->Refresh(false);
 
-   if (initiallyEmpty) {
+   if (initiallyEmpty && mDirManager.GetProjectName() == "") {
       wxString name = fileName.AfterLast(wxFILE_SEP_PATH).BeforeLast('.');
       mFileName =::wxPathOnly(fileName) + wxFILE_SEP_PATH + name + ".aup";
       SetTitle(GetName());
