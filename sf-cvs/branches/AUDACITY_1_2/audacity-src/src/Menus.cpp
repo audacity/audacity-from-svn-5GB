@@ -2584,6 +2584,7 @@ void AudacityProject::OnNewWaveTrack()
 void AudacityProject::OnNewStereoTrack()
 {
    WaveTrack *t = mTrackFactory->NewWaveTrack(mDefaultFormat);
+   t->SetChannel(Track::LeftChannel);
    t->SetRate(mRate);
    SelectNone();
    
@@ -2592,6 +2593,7 @@ void AudacityProject::OnNewStereoTrack()
    t->SetLinked (true);
    
    t = mTrackFactory->NewWaveTrack(mDefaultFormat);
+   t->SetChannel(Track::RightChannel);
    t->SetRate(mRate);
    
    mTracks->Add(t);
