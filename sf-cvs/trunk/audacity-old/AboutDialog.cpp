@@ -11,7 +11,7 @@
 #include "wx/dialog.h"
 
 #include "AboutDialog.h"
-#include "AudacityApp.h"
+#include "Audacity.h"
 
 #include "xpm/AudacityLogo.xpm"
 

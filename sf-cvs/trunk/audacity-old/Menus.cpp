@@ -23,8 +23,8 @@
 
 #include <wx/textfile.h>
 
+#include "Audacity.h"
 #include "AboutDialog.h"
-#include "AudacityApp.h"
 #include "APalette.h"
 #include "Export.h"
 #include "FreqWindow.h"

@@ -24,6 +24,8 @@
   
 **********************************************************************/
 
+#include "Audacity.h"
+
 #ifdef MP3SUPPORT
 
 #include <wx/file.h>

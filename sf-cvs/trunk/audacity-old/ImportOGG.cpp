@@ -17,6 +17,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #ifdef USE_LIBVORBIS
 
 #include <wx/string.h>

@@ -32,7 +32,7 @@
 #include <wx/msgdlg.h>
 #include <wx/textfile.h>
 
-#include "AudacityApp.h"
+#include "Audacity.h"
 #include "AColor.h"
 #include "APalette.h"
 #include "AudioIO.h"

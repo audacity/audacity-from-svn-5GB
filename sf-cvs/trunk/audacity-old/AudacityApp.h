@@ -11,23 +11,7 @@
 
 **********************************************************************/
 
-// Increment this every time you release a new version
-#define AUDACITY_VERSION_STRING "0.95"
-
-// Don't change this unless the file format changes
-// in an irrevocable way
-#define AUDACITY_FILE_FORMAT_VERSION "0.95"
-
 #include <wx/app.h>
-
-class wxWindow;
-
-// Macintosh-specific: Audacity's four-character "creator" code
-// and project type code
-#define AUDACITY_CREATOR      'auDy'
-#define AUDACITY_PROJECT_TYPE 'auDp'
-
-extern wxWindow *gParentWindow;
 
 void QuitAudacity();
 

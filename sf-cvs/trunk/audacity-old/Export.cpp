@@ -23,7 +23,7 @@
 
 #include "snd/snd.h"
 
-#include "AudacityApp.h"
+#include "Audacity.h"
 #include "WaveTrack.h"
 #include "Track.h"
 #include "DirManager.h"

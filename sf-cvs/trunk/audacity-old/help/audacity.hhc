@@ -2,6 +2,7 @@
 <html>
 <head>
 Contents
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body>
 
@@ -9,6 +10,10 @@ Contents
 	<li><object>
 		<param name="Name" value="Introduction">
 		<param name="Local" value="intro.htm">
+		</object>
+	<li><object>
+		<param name="Name" value="Audacity Tour">
+		<param name="Local" value="tour.htm">
 		</object>
 	<li><object>
 		<param name="Name" value="What makes Audacity unique?">

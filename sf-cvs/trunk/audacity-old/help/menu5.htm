@@ -1,55 +1,29 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
 <head>
-<title>Tracks</title>
+<title>Effect Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body>
 
-<h1>
-Tracks
-</h1>
+<font size=+3>
+Effect Menu
+</font>
 
-<a name="audio"></a>
-<h2>
-Audio tracks
-</h2>
-
-Audio tracks contain digitally sampled sounds.  In Audacity, two
-stereo channels are represented by two stereo tracks.
-Each audio track has a <i>sample rate</i>: common values include
-8000 (telephone), 16000 (speech), 44100 (CD Audio), and 48000 (DAT).
-
-<a name="note"></a>
-<h2>
-Note tracks
-</h2>
-
-Note tracks display data loaded from a MIDI file.  They are currently
-not editable or playable.
-
-<a name="label"></a>
-<h2>
-Label tracks
-</h2>
-
-Label tracks can be used to annotate a document and later save these
-annotations in a text file.
-To create a Label track, select 
-<a href="menu4.htm#newlabeltrack">New Label Track</a> from the
-Project menu.  To add a new label, select some region of your audio
-using the <a href="toolbar.htm#selection">Selection Tool</a>, and
-then hit an alphanumeric key on the keyboard.  Anything you type
-will go into the current label.  You can use the backspace key to
-edit the current label.
+The commands in this menu apply effects to your audio tracks.
+A small number of built-in effects come with Audacity, however on
+Windows and Macintosh systems, you can expand Audacity's capabilities
+using VST plug-ins.  (On Linux, LADSPA support is coming soon...)
 <p>
-Press Enter or Return to finish editing a label.<br>
-Use the left and right arrow keys to move from one label to another.<br>
-To select a label, click on it in the Label track.
-To remove a label, select it, then use backspace to get rid of it,
-then press Enter or Return.  Alternatively, you can select a range of
-labels using the <a href="toolbar.htm#selection">Selection Tool</a>
-and then select <a href="menu2.htm#silence">Silence</a> from the
-Edit menu.
+To apply an effect, simply select part or all of the tracks you want
+to modify, and select the effect from the menu.  Titles which end in
+an ellipsis (...) will bring up a dialog asking you for more parameters.
+<p>
+To use a VST plug-in effect, put the effect in the directory (folder)
+called "VST", which should be in the same directory where Audacity
+resides.  If there is no directory called VST, create one.  The next
+time you launch Audacity, any plug-ins you added will appear in the
+Effect menu.
 
 </body>
 </html>
