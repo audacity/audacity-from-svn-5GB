@@ -120,6 +120,10 @@ AC_CHECK_FILE(lib-src/libsndfile/src/sndfile.h,
               default_libsndfile="local",
               default_libsndfile="system")
 
+AC_CHECK_FILE(lib-src/libsamplerate/src/samplerate.h,
+              default_libsamplerate="local",
+              default_libsamplerate="system")
+
 dnl If any of the optional sublibraries was not found in lib-src,
 dnl we assume the user wants to use a system library.  If the
 dnl library isn't installed, though, disable this library by
@@ -162,6 +166,12 @@ AC_ARG_WITH(libsndfile,
 		[which libsndfile to use: [local or system]])],
 	use_libsndfile=$withval,
 	use_libsndfile=$default_libsndfile)
+
+AC_ARG_WITH(libsamplerate,
+	[AC_HELP_STRING([--with-libsamplerate],
+		[which libsamplerate to use: [local, system, or none]])],
+	use_libsamplerate=$withval,
+	use_libsamplerate=$default_libsamplerate)
 
 AC_ARG_WITH(ladspa,
 	[AC_HELP_STRING([--with-ladspa],
@@ -222,6 +232,21 @@ if [[ "$use_libsndfile" = "system" ]] ; then
 	dnl LIBS="$LIBS $SNDFILE_LIBS" CPPFLAGS="$CPPFLAGS $SNDFILE_CFLAGS",
 
 	LIBS="$LIBS -lsndfile"	
+fi
+
+if [[ "$use_libsamplerate" = "local" ]] ; then
+	SUBDIRS="$SUBDIRS lib-src/libsamplerate"
+	BUILDLIBS="$BUILDLIBS libsamplerate/src/.libs/libsamplerate.a"
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/libsamplerate/src/.libs/libsamplerate.a"
+	CXXFLAGS="$CXXFLAGS -I../lib-src/libsamplerate/src"
+	AC_DEFINE(USE_LIBSAMPLERATE, 1,
+		[Define if libsamplerate support should be enabled])
+fi
+
+if [[ "$use_libsamplerate" = "system" ]] ; then
+	LIBS="$LIBS -lsamplerate"	
+	AC_DEFINE(USE_LIBSAMPLERATE, 1,
+		[Define if libsamplerate support should be enabled])
 fi
 
 if [[ "$use_libmad" = "yes" ]] ; then
@@ -433,6 +458,14 @@ echo "Finished configure:"
 
 if [[ $use_libsndfile = "system" ]] ; then
 	echo "  with    libsndfile=system";
+fi
+
+if [[ $use_libsamplerate = "system" ]] ; then
+	echo "  with    libsamplerate=system";
+elif [[ $use_libsamplerate = "local" ]] ; then
+	echo "  with    libsamplerate";
+else
+	echo "  without libsamplerate";
 fi
 
 if [[ $use_libid3tag = "yes" ]] ; then
