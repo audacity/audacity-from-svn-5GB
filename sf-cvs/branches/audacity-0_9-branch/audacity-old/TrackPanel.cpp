@@ -956,6 +956,7 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
       DrawCloseBox(&dc, r, false);
       if (closeRect.Inside(event.m_x, event.m_y)) {
          RemoveTrack(t);
+         mCapturedTrack = 0;
       }
       mIsClosing = false;
    }
