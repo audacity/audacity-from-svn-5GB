@@ -207,9 +207,9 @@ AC_ARG_WITH(portmixer,
 
 AC_ARG_WITH(help,
 	[AC_HELP_STRING([--with-help],
-		[Make the help file "audacity-help.htb" [default=yes]])],
+		[Make the help file "audacity-help.htb" [default=no]])],
 	use_help=$withval,
-	use_help="yes")
+	use_help="no")
 
 if [[ "$use_portmixer" = "yes" ]] ; then
 	AC_DEFINE(USE_PORTMIXER, 1,	
