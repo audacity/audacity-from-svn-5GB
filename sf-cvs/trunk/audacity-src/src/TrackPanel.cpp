@@ -239,12 +239,12 @@ mAutoScrolling(false)
    mSelectionMenu->Append(OnFormatRulerPALFramesID, "PAL frames 25 fps (from ruler)");
    mSelectionMenu->Append(OnFormatRulerNTSCFramesID, "NTSC frames 29.97 fps (from ruler)");
    mSelectionMenu->Append(OnFormatRulerCddaMinSecFramesID, "cdda min:sec:frames 75 fps (from ruler)");
-   mSelectionMenu->Append(OnFormatSamplesID, "samples");
-   mSelectionMenu->Append(OnFormatMinSecID, "min:sec");
-   mSelectionMenu->Append(OnFormatSecID, "sec");
-   mSelectionMenu->Append(OnFormatMinSecSamplesID, "min:sec+samples");
-   mSelectionMenu->Append(OnFormatSecSamplesID, "sec+samples");
-   mSelectionMenu->Append(OnFormatCDDASectorsBytesID, "cdda sectors+bytes (44100 only)");
+   mSelectionMenu->Append(OnFormatSamplesID, "samples (snap to samples)");
+   mSelectionMenu->Append(OnFormatMinSecID, "min:sec (snap to samples)");
+   mSelectionMenu->Append(OnFormatSecID, "sec (snap to samples)");
+   mSelectionMenu->Append(OnFormatMinSecSamplesID, "min:sec+samples (snap to samples)");
+   mSelectionMenu->Append(OnFormatSecSamplesID, "sec+samples (snap to samples)");
+   mSelectionMenu->Append(OnFormatCDDASectorsBytesID, "cdda sectors+bytes (snap to samples)");
 
    mSnapToMenu = new wxMenu();
    mSnapToMenu->Append(OnSnapToOffID, "Off (for ruler based formats)");
@@ -2996,7 +2996,7 @@ void TrackPanel::DisplaySelection()
    //   iformat = SELECTION_FORMAT_RULER_PAL_FRAMES --> use PAL frames 25 fps
    //   iformat = SELECTION_FORMAT_RULER_NTSC_FRAMES --> use NTSC frames 29.97 fps
    //   iformat = SELECTION_FORMAT_RULER_CDDA_MIN_SEC_FRAMES --> use cdda min:sec:frames 75 fps
-   // formats that are based on rate and samples
+   // formats that are based on rate and samples and snap to samples irregardless of iSnapTo
    //   iformat = SELECTION_FORMAT_SAMPLES --> use samples
    //   iformat = SELECTION_FORMAT_MIN_SEC --> use min:sec.xxxxxx
    //   iformat = SELECTION_FORMAT_SEC --> use sec.xxxxxx
@@ -3010,44 +3010,17 @@ void TrackPanel::DisplaySelection()
    // TrackPanel::OnSelectionChange is called, iformat is changed.
 
    //
-   // CAUTION: iformat values based on rate and samples instead
-   //          of ruler time are a little touchy as far as
-   //          selection information, but cursor position is
-   //          accurate.  Make sure that selection range is
-   //          confirmed with cursor position information.
-   //          There is a small range of movement when zoomed
-   //          way in on the individual samples where selection
-   //          information increments to the next position but
-   //          the actual samples selected have not quite yet
-   //          switched to reflect this change.  Most of the
-   //          potential movement range gives the right answer,
-   //          but a small section of it does not.  This seems
-   //          to be increasingly an issue as you go father away
-   //          from time = 0, where it works very well.  The issue 
-   //          seems to lie in the uncoupling of the highlighted
-   //          or selected samples in the track and the infinitely
-   //          variable highlighted part of the ruler time scale.
-   //          Those two things should in some cases be directly coupled.
-   //          The iformat values of 3+ are an attempt to get
-   //          the selection information to reflect the highlighted
-   //          audio samples in the track itself.
+   // CAUTION: time shifting is not set up with snap-to, and this can
+   //          cause confusion since a snapped-to cursor position
+   //          can end up not aligned on a sample.  The project menu
+   //          align functions can be used to take care of this.
+   //          Also different tracks with different rates can cause
+   //          this same confusion.
    //
    // NOTE: best to zoom in to about the first 16 or so samples of a
    //       project and observe for yourself the behavior of using
-   //       iformat>=3.  When a cursor location is given in samples,
-   //       it tells you how many samples are to the left of the
-   //       current cursor position.  For example, click between
-   //       the sixth and seventh sample and the cursor location
-   //       says 6 since there are 6 pixels left of the selection
-   //       point.  Now drag the selection boundary down to zero.
-   //       You see that you now have selected samples 1 to 6,
-   //       for a total of 6 samples.  If thinking in terms of time,
-   //       it would be expected that this should be samples 0 to 5.
-   //       This is because the first sample actually spans the first
-   //       1/rate seconds of sound, it is not a point in time 
-   //       located at time = 0.  The same thing applies to iformat=8.
-   //       The lowest the selection will go is 0+0004 for a cursor
-   //       position and 0+0001 for a selection range.
+   //       iformat values based on rate and samples.
+   //
 
    // samplerate is set as a global double near the top of TrackPanel.cpp
    // It is initialized there to 44100, which is the default project rate,
@@ -3061,10 +3034,9 @@ void TrackPanel::DisplaySelection()
    int isamp1, isamp2, isamptot;
    int isector1, isector2, isectortot;
    int ibyte1, ibyte2, ibytetot;
-   int imin1pos, isec1pos, isamp1pos, isector1pos, ibyte1pos;
-   long int isamples1, isamples2, isamplestot, isamples1pos;
+   long int isamples1, isamples2, isamplestot;
    float fsec1, fsec2, fsectot;
-   double dsec1, dsec2, dsectot, dsec1pos;
+   double dsec1, dsec2, dsectot;
    double dframes1, dframes2, dframestot;
 
    switch (iformat) {
@@ -3304,18 +3276,19 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_SAMPLES:
       // use samples (in single sample time increments)
-      isamples1 = (long)rint(samplerate*double(start)) + 1; 
+      isamples1 = (long)rint(samplerate*double(start)); 
       isamples2 = (long)rint(samplerate*double(end));
-      isamplestot = isamples2 - isamples1 + 1;
-      // for cursor position do not round
-      isamples1pos = (long int)(samplerate*double(start)) + 1;
+      isamplestot = isamples2 - isamples1;
+      // snap to samples irregardless of snap-to mode
+      mViewInfo->sel0 = float(double(isamples1)/samplerate);
+      mViewInfo->sel1 = float(double(isamples2)/samplerate);
       // display a message about the selection in the status message window
       if(start == end)
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
                 Format(_("Cursor: %li samples   [based on rate = %7.1f - use Set Rate to reset/set]"),
-                            isamples1pos, samplerate),
+                            isamples1, samplerate),
                                         1);
          }
       else
@@ -3330,27 +3303,26 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_MIN_SEC:
       // use min:sec.xxxxxx (in single sample time increments)
-      isamples1 = (long)rint(samplerate*double(start)) + 1; 
+      isamples1 = (long)rint(samplerate*double(start)); 
       isamples2 = (long)rint(samplerate*double(end));
-      isamplestot = isamples2 - isamples1 + 1;
-      // for cursor position do not round
-      isamples1pos = (long int)(samplerate*double(start)) + 1;
+      isamplestot = isamples2 - isamples1;
       // based on samples get min and sec
-      imin1 = int((double(isamples1-1)/samplerate)/60);
+      imin1 = int((double(isamples1)/samplerate)/60);
       imin2 = int((double(isamples2)/samplerate)/60);
       imintot = int((double(isamplestot)/samplerate)/60);
-      dsec1 = double(isamples1-1)/samplerate - double(imin1*60);
+      dsec1 = double(isamples1)/samplerate - double(imin1*60);
       dsec2 = double(isamples2)/samplerate - double(imin2*60);
       dsectot = double(isamplestot)/samplerate - double(imintot*60);
-      imin1pos = int(isamples1pos/samplerate/60);
-      dsec1pos = double(isamples1pos)/samplerate - double(imin1pos)*60;
+      // snap to samples irregardless of snap-to mode
+      mViewInfo->sel0 = float(double(isamples1)/samplerate);
+      mViewInfo->sel1 = float(double(isamples2)/samplerate);
       // display a message about the selection in the status message window
       if(start == end)
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
                 Format(_("Cursor: %i:%09.6lf min:sec   [based on rate = %7.1f - use Set Rate to reset/set]"),
-                                 imin1pos, dsec1pos, samplerate),
+                                 imin1, dsec1, samplerate),
                                         1);
          }
       else
@@ -3365,24 +3337,23 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_SEC:
       // use sec.xxxxxx (in sample time increments)
-      isamples1 = (long)rint(samplerate*double(start)) + 1; 
+      isamples1 = (long)rint(samplerate*double(start)); 
       isamples2 = (long)rint(samplerate*double(end));
-      isamplestot = isamples2 - isamples1 + 1;
-      // for cursor position do not round
-      isamples1pos = (long int)(samplerate*double(start)) + 1;
+      isamplestot = isamples2 - isamples1;
       // based on samples get sec
-      dsec1 = double(isamples1-1)/samplerate;
+      dsec1 = double(isamples1)/samplerate;
       dsec2 = double(isamples2)/samplerate;
       dsectot = double(isamplestot)/samplerate;
-      // for position do not round
-      dsec1pos = double(isamples1pos)/samplerate;
+      // snap to samples irregardless of snap-to mode
+      mViewInfo->sel0 = float(double(isamples1)/samplerate);
+      mViewInfo->sel1 = float(double(isamples2)/samplerate);
       // display a message about the selection in the status message window
       if(start == end)
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
                      Format(_("Cursor: %lf sec   [based on rate = %7.1f - use Set Rate to reset/set]"),
-                                   dsec1pos, samplerate),
+                                   dsec1, samplerate),
                                         1);
          }
       else
@@ -3397,11 +3368,9 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_MIN_SEC_SAMPLES:
       // use min:sec+samples (in single sample time increments)
-      isamples1 = (long)rint(samplerate*double(start)) + 1; 
+      isamples1 = (long)rint(samplerate*double(start)); 
       isamples2 = (long)rint(samplerate*double(end));
-      isamplestot = isamples2 - isamples1 + 1;
-      // for cursor position do not round
-      isamples1pos = (long int)(samplerate*double(start)) + 1;
+      isamplestot = isamples2 - isamples1;
       // based on samples get min sec samp
       imin1 = int((double(isamples1)/samplerate)/60);
       imin2 = int((double(isamples2)/samplerate)/60);
@@ -3412,17 +3381,16 @@ void TrackPanel::DisplaySelection()
       isamp1 = int(isamples1-(long int)(imin1*60*rint(samplerate))-(long int)(isec1*rint(samplerate)));
       isamp2 = int(isamples2-(long int)(imin2*60*rint(samplerate))-(long int)(isec2*rint(samplerate)));
       isamptot = int(isamplestot-(long int)(imintot*60*rint(samplerate))-(long int)(isectot*rint(samplerate)));
-      // for cursor position do not round
-      imin1pos = int((double(int(samplerate*double(start))+1)/samplerate)/60);
-      isec1pos = int(double(int(samplerate*double(start))+1)/samplerate - double(imin1pos*60));
-      isamp1pos = int(isamples1pos-(long int)(imin1pos*60*rint(samplerate))-(long int)(isec1pos*rint(samplerate)));
+      // snap to samples irregardless of snap-to mode
+      mViewInfo->sel0 = float(double(isamples1)/samplerate);
+      mViewInfo->sel1 = float(double(isamples2)/samplerate);
       // display a message about the selection in the status message window
       if(start == end)
          {
            mListener->
              TP_DisplayStatusMessage(wxString::
                 Format(_("Cursor: %i:%02i+%i min:sec+samples   [based on rate = %7.1f - use Set Rate to reset/set]"),
-                           imin1pos, isec1pos, isamp1pos, samplerate),
+                           imin1, isec1, isamp1, samplerate),
                                         1);
          }
       else
@@ -3437,11 +3405,9 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_SEC_SAMPLES:
       // use sec+samples (in single sample time increments)
-      isamples1 = (long)rint(samplerate*double(start)) + 1; 
+      isamples1 = (long)rint(samplerate*double(start)); 
       isamples2 = (long)rint(samplerate*double(end));
-      isamplestot = isamples2 - isamples1 + 1;
-      // for cursor position do not round
-      isamples1pos = (long int)(samplerate*double(start)) + 1;
+      isamplestot = isamples2 - isamples1;
       // based on samples get sec samp
       isec1 = int(double(isamples1)/samplerate);
       isec2 = int(double(isamples2)/samplerate);
@@ -3449,16 +3415,16 @@ void TrackPanel::DisplaySelection()
       isamp1 = int(isamples1-(long int)(isec1*rint(samplerate)));
       isamp2 = int(isamples2-(long int)(isec2*rint(samplerate)));
       isamptot = int(isamplestot-(long int)(isectot*rint(samplerate)));
-      // for cursor position do not round
-      isec1pos = int(double(int(samplerate*double(start))+1)/samplerate);
-      isamp1pos = int(isamples1pos-(long int)(isec1*rint(samplerate)));
+      // snap to samples irregardless of snap-to mode
+      mViewInfo->sel0 = float(double(isamples1)/samplerate);
+      mViewInfo->sel1 = float(double(isamples2)/samplerate);
       // display a message about the selection in the status message window
       if(start == end)
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
                    Format(_("Cursor: %i+%i sec+samples   [based on rate = %7.1f - use Set Rate to reset/set]"),
-                            isec1pos, isamp1pos, samplerate),
+                            isec1, isamp1, samplerate),
                                         1);
          }
       else
@@ -3473,11 +3439,10 @@ void TrackPanel::DisplaySelection()
 
    case SELECTION_FORMAT_CDDA_SECTORS_BYTES:
       // use cdda sectors + bytes (2352 byte blocks)
-      isamples1 = (long)rint(samplerate*double(start)) + 1; 
+      isamples1 = (long)rint(samplerate*double(start)); 
       isamples2 = (long)rint(samplerate*double(end));
-      isamplestot = isamples2 - isamples1 + 1;
-      // for cursor position do not round
-      isamples1pos = (long int)(samplerate*double(start)) + 1;
+      isamplestot = isamples2 - isamples1;
+      //
       // based on samples get cdda sectors bytes
       //
       // Audio CDs use 2352 byte blocks as sector size.  At 16 bit stereo each sample = 4 bytes
@@ -3492,27 +3457,18 @@ void TrackPanel::DisplaySelection()
       isector2 = int(double(isamples2)/588);
       isectortot = int(double(isamplestot)/588);
       ibyte1 = int(isamples1-(long int)(isector1*588))*4;
-      if((ibyte1 == 0) && (isector1 > 0))
-         {
-            ibyte1 = 2349;
-            isector1 = isector1 - 1;
-         }
-      else
-         {
-            ibyte1 = ibyte1 - 3;
-         }
       ibyte2 = int(isamples2-(long int)(isector2*588))*4;
       ibytetot = int(isamplestot-(long int)(isectortot*588))*4;
-      // for cursor position do not round
-      isector1pos = int(double(int(samplerate*double(start))+1)/588);
-      ibyte1pos = int(isamples1pos-(isector1pos*588))*4;
+      // snap to samples irregardless of snap-to mode
+      mViewInfo->sel0 = float(double(isamples1)/samplerate);
+      mViewInfo->sel1 = float(double(isamples2)/samplerate);
       // display a message about the selection in the status message window
       if(start == end)
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
                     Format(_("Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [based on rate = %7.1f - for use with 44100 only]"),
-                          isector1pos, ibyte1pos, samplerate),
+                          isector1, ibyte1, samplerate),
                                         1);
          }
       else
