@@ -93,7 +93,7 @@ AC_ARG_WITH(lib-preference,
             [AC_HELP_STRING([--with-lib-preference],
                             [use local and/or system libraries, in preferred order [system,local]])],
             lib_preference=$withval,
-            lib_preference="local system")
+            lib_preference="system local")
 
 LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST"
 
@@ -166,11 +166,9 @@ if test "$LIBSNDFILE_USE_LOCAL" != "yes" && test "$LIBSNDFILE_USE_SYSTEM" != "ye
    AC_MSG_ERROR([Audacity requires libsndfile to be enabled])
 fi
 
-if test "$LIBRESAMPLE_USE_LOCAL" != "yes" && test "$LIBRESAMPLE_USE_SYSTEM" != "yes" && \
-   test "$LIBSAMPLERATE_USE_LOCAL" != "yes" && test "$LIBSAMPLERATE_USE_SYSTEM" != "yes" ; then
-   # which to favor?  I'll say libsamplerate
-   LIBRESAMPLE_USE_LOCAL="no"
-   LIBRESAMPLE_USE_SYSTEM="no"
+if test "$LIBRESAMPLE_USE_LOCAL" = "yes" || test "$LIBRESAMPLE_USE_SYSTEM" = "yes" ; then
+   LIBSAMPLERATE_USE_LOCAL="no"
+   LIBSAMPLERATE_USE_SYSTEM="no"
 fi
 
 #

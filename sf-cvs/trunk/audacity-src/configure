@@ -3315,7 +3315,7 @@ if test "${with_lib_preference+set}" = set; then
   withval="$with_lib_preference"
   lib_preference=$withval
 else
-  lib_preference="local system"
+  lib_preference="system local"
 fi;
 
 LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST"
@@ -5109,11 +5109,9 @@ echo "$as_me: error: Audacity requires libsndfile to be enabled" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
-if test "$LIBRESAMPLE_USE_LOCAL" != "yes" && test "$LIBRESAMPLE_USE_SYSTEM" != "yes" && \
-   test "$LIBSAMPLERATE_USE_LOCAL" != "yes" && test "$LIBSAMPLERATE_USE_SYSTEM" != "yes" ; then
-   # which to favor?  I'll say libsamplerate
-   LIBRESAMPLE_USE_LOCAL="no"
-   LIBRESAMPLE_USE_SYSTEM="no"
+if test "$LIBRESAMPLE_USE_LOCAL" = "yes" || test "$LIBRESAMPLE_USE_SYSTEM" = "yes" ; then
+   LIBSAMPLERATE_USE_LOCAL="no"
+   LIBSAMPLERATE_USE_SYSTEM="no"
 fi
 
 #
