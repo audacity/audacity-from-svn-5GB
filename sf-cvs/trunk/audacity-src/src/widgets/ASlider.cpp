@@ -448,7 +448,8 @@ void LWSlider::Set(float value)
    if (mValue > mWidthX)
       mValue = mWidthX;
 
-   mParent->Refresh(false);
+   if (mHW)
+      mParent->Refresh(false);
 }
 
 void LWSlider::Refresh()
