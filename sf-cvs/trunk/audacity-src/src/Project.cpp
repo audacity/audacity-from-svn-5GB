@@ -165,9 +165,8 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
     EVT_DROP_FILES(AudacityProject::OnDropFiles)
 EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
-#define AUDACITY_MENUS_EVENT_TABLE
-#include "Menus.h"
-#undef AUDACITY_MENUS_EVENT_TABLE
+    // Update menu method
+    EVT_UPDATE_UI(UndoID, AudacityProject::OnUpdateMenus)
 END_EVENT_TABLE()
 
 AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
@@ -336,12 +335,15 @@ AudacityProject::~AudacityProject()
    mTracks = NULL;
 
    WX_CLEAR_ARRAY(mCommandDesc)
+   mCommandDesc.Clear();
    WX_CLEAR_ARRAY(mCommandNames)
+   mCommandNames.Clear();
    for(int i = 1; i <= mCommandFunctions.GetCount(); i++)
    {
       free(mCommandFunctions[i-1]);
    }
    mCommandFunctions.Clear();
+   mCommandIDs.Clear();
 
    gAudacityProjects.Remove(this);
 
@@ -661,16 +663,22 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
    int numPlugins = Effect::GetNumEffects(true);
    Effect *f = NULL;
 
-   if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED &&
-       event.GetId() >= FirstEffectID &&
-       event.GetId() < FirstEffectID + numEffects)
-      f = Effect::GetEffect(event.GetId() - FirstEffectID, false);
+   if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED)
+   {
+      // Builtin Effects
+      if(event.GetId() >= FirstEffectID &&
+      event.GetId() < FirstEffectID + numEffects) {
+         f = Effect::GetEffect(event.GetId() - FirstEffectID, false);
+      }
+      else if(event.GetId() >= FirstPluginID &&
+      event.GetId() < FirstPluginID + numPlugins) {
+         f = Effect::GetEffect(event.GetId() - FirstPluginID, true);
+      }
+      else {
+         if(HandleMenuEvent(event)) return true;
+      }
+   }
    
-   if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED &&
-       event.GetId() >= FirstPluginID &&
-       event.GetId() < FirstPluginID + numPlugins)
-      f = Effect::GetEffect(event.GetId() - FirstPluginID, true);
-
    if (f) {
       TrackListIterator iter(mTracks);
       VTrack *t = iter.First();

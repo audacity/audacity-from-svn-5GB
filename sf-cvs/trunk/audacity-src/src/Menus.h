@@ -13,152 +13,13 @@
 **********************************************************************/
 
 #ifdef AUDACITY_MENUS_ENUM
-enum {
-   MenusFirstID = 1100,
 
-   // File Menu
+#define AUDACITY_MENUS_COMMANDS_ENUM
+#include "commands.h"
+#undef AUDACITY_MENUS_COMMANDS_ENUM
 
-   NewID,
-   OpenID,
-   CloseID,
-   SaveID,
-   SaveAsID,
-   ExportMixID,
-   ExportSelectionID,
-   ExportLossyMixID,
-   ExportLossySelectionID,
-   ExportLabelsID,
-   PreferencesID,
-   ExitID,
-
-   // Edit Menu
-
-   UndoID,
-   RedoID,
-   UndoHistoryID,
-
-   CutID,
-   CopyID,
-   PasteID,
-
-   DeleteID,
-   SilenceID,
-
-   InsertSilenceID,
-   SplitID,
-   DuplicateID,
-
-   SelectAllID,
-
-   // View Menu
-
-   ZoomInID,
-   ZoomOutID,
-   ZoomNormalID,
-   ZoomFitID,
-   ZoomSelID,
-
-   PlotSpectrumID,
-
-   FloatPaletteID,
-
-   // Project Menu
-
-   ImportID,
-   ImportLabelsID,
-   ImportMIDIID,
-   ImportRawID,
-   
-   EditID3ID,
-
-   AlignZeroID,
-   AlignID,
-
-   NewWaveTrackID,
-   NewLabelTrackID,
-   RemoveTracksID,
-
-   WaveDisplayID,
-   SpectrumDisplayID,
-   AutoCorrelateID,
-   PitchID,
-   QuickMixID,
-
-   // Help Menu
-
-   AboutID,
-   HelpID,
-   HelpIndexID,
-   HelpSearchID,
-   BenchmarkID,
-
-   // Effect Menu
-
-   FirstEffectID = 2000,
-
-   // Plugin Menu
-
-   FirstPluginID = 3000,
-};
 #endif
 
-#ifdef AUDACITY_MENUS_EVENT_TABLE
-  // File menu
-    EVT_MENU(NewID, AudacityProject::OnNew)
-    EVT_MENU(OpenID, AudacityProject::OnOpen)
-    EVT_MENU(CloseID, AudacityProject::OnClose)
-    EVT_MENU(SaveID, AudacityProject::OnSave)
-    EVT_MENU(SaveAsID, AudacityProject::OnSaveAs)
-    EVT_MENU(ExportMixID, AudacityProject::OnExportMix)
-    EVT_MENU(ExportSelectionID, AudacityProject::OnExportSelection)
-    EVT_MENU(ExportLossyMixID, AudacityProject::OnExportLossyMix)
-    EVT_MENU(ExportLossySelectionID, AudacityProject::OnExportLossySelection)
-    EVT_MENU(ExportLabelsID, AudacityProject::OnExportLabels)
-    EVT_MENU(PreferencesID, AudacityProject::OnPreferences)
-    EVT_MENU(ExitID, AudacityProject::OnExit)
-    // Edit menu
-    EVT_MENU(UndoID, AudacityProject::Undo)
-    EVT_MENU(RedoID, AudacityProject::Redo)
-    EVT_MENU(UndoHistoryID, AudacityProject::UndoHistory)
-
-    EVT_MENU(CutID, AudacityProject::Cut)
-    EVT_MENU(CopyID, AudacityProject::Copy)
-    EVT_MENU(PasteID, AudacityProject::Paste)
-    EVT_MENU(DeleteID, AudacityProject::OnDelete)
-    EVT_MENU(SilenceID, AudacityProject::OnSilence)
-    EVT_MENU(SplitID, AudacityProject::OnSplit)
-    EVT_MENU(DuplicateID, AudacityProject::OnDuplicate)
-    EVT_MENU(InsertSilenceID, AudacityProject::OnInsertSilence)
-    EVT_MENU(SelectAllID, AudacityProject::OnSelectAll)
-    // View menu
-    EVT_MENU(ZoomInID, AudacityProject::OnZoomIn)
-    EVT_MENU(ZoomOutID, AudacityProject::OnZoomOut)
-    EVT_MENU(ZoomNormalID, AudacityProject::OnZoomNormal)
-    EVT_MENU(ZoomFitID, AudacityProject::OnZoomFit)
-    EVT_MENU(ZoomSelID, AudacityProject::OnZoomSel)
-    EVT_MENU(PlotSpectrumID, AudacityProject::OnPlotSpectrum)
-    EVT_MENU(FloatPaletteID, AudacityProject::OnFloatPalette)
-    // Project menu
-    EVT_MENU(ImportID, AudacityProject::OnImport)
-    EVT_MENU(ImportLabelsID, AudacityProject::OnImportLabels)
-    EVT_MENU(ImportMIDIID, AudacityProject::OnImportMIDI)
-    EVT_MENU(ImportRawID, AudacityProject::OnImportRaw)
-    EVT_MENU(EditID3ID, AudacityProject::OnEditID3)
-    EVT_MENU(AlignID, AudacityProject::OnAlign)
-    EVT_MENU(AlignZeroID, AudacityProject::OnAlignZero)
-    EVT_MENU(QuickMixID, AudacityProject::OnQuickMix)
-    EVT_MENU(NewWaveTrackID, AudacityProject::OnNewWaveTrack)
-    EVT_MENU(NewLabelTrackID, AudacityProject::OnNewLabelTrack)
-    EVT_MENU(RemoveTracksID, AudacityProject::OnRemoveTracks)
-    // Help menu
-    EVT_MENU(AboutID, AudacityProject::OnAbout)
-    EVT_MENU(HelpID, AudacityProject::OnHelp)
-    EVT_MENU(HelpIndexID, AudacityProject::OnHelpIndex)
-    EVT_MENU(HelpSearchID, AudacityProject::OnHelpSearch)
-    EVT_MENU(BenchmarkID, AudacityProject::OnBenchmark)
-    // Update menu method
-    EVT_UPDATE_UI(UndoID, AudacityProject::OnUpdateMenus)
-#endif
 #ifdef AUDACITY_MENUS_METHODS
 private:
 double mInsertSilenceAmount;
@@ -193,6 +54,9 @@ wxObjectEventFunction &GetCommandFunc(int nIndex);
 int GetNumCommands();
 
 void OnUpdateMenus(wxUpdateUIEvent & event);
+
+// Generic menu handler
+bool HandleMenuEvent(wxEvent & event);
 
         // File Menu
 
