@@ -1,5 +1,6 @@
 POT_FILE=locale/audacity_website.pot
-PO_FILES := $(wildcard locale/*/LC_MESSAGES/audacity_website.po)
+PO_FILES_ORIG := $(wildcard locale/*.po)
+PO_FILES := $(PO_FILES_ORIG:%.po=%/LC_MESSAGES/audacity_website.po)
 MO_FILES := $(PO_FILES:%.po=%.mo)
 
 all: $(MO_FILES)
@@ -15,7 +16,8 @@ $(POT_FILE): $(SOURCES)
 # Update the PO files (translated message catalogs).
 MSGMERGE=msgmerge
 MSGMERGE_ARGS=-U
-%.po: $(POT_FILE)
+%/LC_MESSAGES/audacity_website.po: %.po $(POT_FILE)
+	cp -f $< $@
 	$(MSGMERGE) $(MSGMERGE_ARGS) $@ $<
 	touch $@
 
