@@ -440,6 +440,14 @@ SOURCE=..\src\effects\BassBoost.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\effects\ChangePitch.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\ChangePitch.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\effects\ChangeSpeed.cpp
 # End Source File
 # Begin Source File
@@ -961,7 +969,35 @@ SOURCE=.\wx\msw\bullseye.cur
 # End Source File
 # Begin Source File
 
+SOURCE=.\wx\msw\cdrom.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\wx\msw\computer.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\wx\msw\drive.ico
+# End Source File
+# Begin Source File
+
 SOURCE=.\wx\msw\error.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\wx\msw\file1.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\wx\msw\floppy.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\wx\msw\folder1.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\wx\msw\folder2.ico
 # End Source File
 # Begin Source File
 
@@ -1002,6 +1038,14 @@ SOURCE=.\wx\msw\query.cur
 # Begin Source File
 
 SOURCE=.\wx\msw\question.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\wx\msw\removble.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\wx\msw\rightarr.cur
 # End Source File
 # Begin Source File
 
