@@ -50,13 +50,13 @@ if (!($fp)) {
 if ($dir = @opendir("../en/")) {
   $n = 0;
   while (($file = readdir($dir)) !== false) {
-    if (ereg(".php$", $file, $matches)) {
+    if (ereg(".php$", $file, $matches) && $file != "main.inc.php") {
       $n++;
       $v = "e$n";
       if ($$v) {
-	$srcfile = "../en/$file";
-	$dstfile = "../$lang/$file";
-	$filename = "$file";
+			$srcfile = "../en/$file";
+			$dstfile = "../$lang/$file";
+			$filename = "$file";
       }
     }
   }  
