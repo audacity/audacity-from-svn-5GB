@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: metrics and quantization code for LSP VQ codebooks
- last mod: $Id: lspdata.c,v 1.1.1.2 2002-04-21 23:36:52 habes Exp $
+ last mod: $Id: lspdata.c,v 1.2 2002-10-26 20:28:19 dmazzoni Exp $
 
  ********************************************************************/
 
