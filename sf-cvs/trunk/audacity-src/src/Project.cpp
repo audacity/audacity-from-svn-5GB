@@ -2130,6 +2130,13 @@ void AudacityProject::Import(wxString fileName)
                                  AudacityProject::ImportProgressCallback,
                                  this);
 
+   // If the project is empty, import ID3 tags from the file.
+   // Yes, these are normally only in MP3 files, but they could
+   // be in another file, why not?
+   if (mTracks->IsEmpty()) {
+      mTags->ImportID3(fileName);
+   }
+
    // for LOF ("list of files") files, do not import the file as if it
    // were an audio file itself
    if (fileName.AfterLast('.').IsSameAs("lof", false))
