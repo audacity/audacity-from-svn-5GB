@@ -26,7 +26,8 @@ bool EffectSilence::Process()
    TrackListIterator iter(mTracks);
    Track *track = iter.First();
    while (track) {
-      track->InsertSilence(mT0, length);
+      if (track->GetSelected())
+         track->InsertSilence(mT0, length);
       
       //Iterate to the next track
       track = iter.Next();
