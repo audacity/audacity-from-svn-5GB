@@ -40,10 +40,10 @@ AButton::AButton(wxWindow *parent, wxWindowID id,
   mIsClicking = false;
   mEnabled = true;
 
-  mBitmap[0] = new wxBitmap(upXPM);
-  mBitmap[1] = new wxBitmap(overXPM);
-  mBitmap[2] = new wxBitmap(downXPM);
-  mBitmap[3] = new wxBitmap(disXPM);
+  mBitmap[0] = new wxBitmap((const char **)upXPM);
+  mBitmap[1] = new wxBitmap((const char **)overXPM);
+  mBitmap[2] = new wxBitmap((const char **)downXPM);
+  mBitmap[3] = new wxBitmap((const char **)disXPM);
 
   GetSize(&mWidth, &mHeight);
 }
