@@ -112,7 +112,7 @@ bool AudioIO::Start()
 {
    mT = mT0;
    mID = 1;
-   mNumBuffers = 2;
+   mNumBuffers = 3;
    mBufferSize = 4096;
    mInBuffer = NULL;
    mOutBuffer = new AudioIOBuffer[mNumBuffers];
@@ -451,6 +451,9 @@ void AudioIO::Stop()
 
    Pa_AbortStream(mPortStream);
    Pa_CloseStream(mPortStream);
+
+   for(int i=0; i<mNumBuffers; i++)
+      mOutBuffer[i].ID = 0;
    
 /*
    if (mRecording) {
