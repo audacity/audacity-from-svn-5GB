@@ -8,7 +8,7 @@ Audacity 1.2 Complete Manual:
 
 <p>
 Audacity 1.2 Online Help:
-[<a href="onlinehelp-1.2">Browse Online</a>]
+[<a href="onlinehelp-1.2/contents.htm">Browse Online</a>]
 </p>
 
 <p>
