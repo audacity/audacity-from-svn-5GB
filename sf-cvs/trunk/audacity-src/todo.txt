@@ -37,9 +37,6 @@ UI::
 1.2:
 -----------------------------------------------------------
 
-Meta::
-- Move to new repository with src/ directory
-
 UI::
 - Undo shouldn't change the selection, but two Undos should...
 - Edit markers
@@ -70,9 +67,6 @@ Audio I/O::
 - move to portaudio
 - move to libsndfile
 - import/export ogg vorbis everywhere
-
-Low level issues::
-- Make projects one big file
 
 Effects::
 - Smart Mix (like Quick Mix but guarantees no clipping)
