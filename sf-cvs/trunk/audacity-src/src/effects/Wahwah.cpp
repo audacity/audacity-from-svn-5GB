@@ -286,7 +286,7 @@ void WahwahDialog::OnDepthSlider(wxCommandEvent & event)
 {
    wxString str;
    long depth = GetDepthSlider()->GetValue();
-   str.Printf("%d", depth);
+   str.Printf("%ld", depth);
    GetDepthText()->SetValue(str);
 }
 
@@ -295,7 +295,7 @@ void WahwahDialog::OnPhaseSlider(wxCommandEvent & event)
    wxString str;
    long phase = GetPhaseSlider()->GetValue();
    phase = ((phase + 5) / 10) * 10;     // round to nearest multiple of 10
-   str.Printf("%d", phase);
+   str.Printf("%ld", phase);
    GetPhaseText()->SetValue(str);
 }
 

@@ -160,11 +160,11 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
 
    delete progress;
 
+#ifdef __WXGTK__
    int elapsedMS = wxGetElapsedTime();
    double elapsedTime = elapsedMS * 0.001;
    double maxTracks = totalTime / (elapsedTime / numWaves);
 
-#ifdef __WXGTK__
    printf(_("      Tracks: %d\n"), numWaves);
    printf(_("  Mix length: %f sec\n"), totalTime);
    printf(_("Elapsed time: %f sec\n"), elapsedTime);

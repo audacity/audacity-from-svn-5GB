@@ -1102,7 +1102,7 @@ void AudacityProject::OnInsertSilence(wxEvent & event)
    wxString amountStr =
        wxGetTextFromUser(_("Number of seconds of silence to insert:"),
                          _("Insert Silence"),
-                         wxString::Format("%lf", mInsertSilenceAmount),
+                         wxString::Format("%f", (double)mInsertSilenceAmount),
                          this, -1, -1, TRUE);
 
    if (amountStr == "")
