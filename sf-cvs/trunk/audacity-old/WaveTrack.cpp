@@ -167,9 +167,9 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len, sampleType *outMin
   if (block->Item(block0)->min < min || block->Item(block0)->max > max) {
     int s0 = start - block->Item(block0)->start;
     int l0 = len;
-    int max = block->Item(block0)->len - start;
-    if (l0 > max)
-      l0 = max;
+    int maxl0 = block->Item(block0)->len - start;
+    if (l0 > maxl0)
+      l0 = maxl0;
     sampleType *buffer = new sampleType[l0];
     
     // TODO: optimize this to use Read256 and Read64K
