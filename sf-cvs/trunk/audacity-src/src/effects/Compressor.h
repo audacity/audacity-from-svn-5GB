@@ -13,6 +13,14 @@
 
 class wxString;
 
+#include <wx/defs.h>
+#include <wx/bitmap.h>
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/slider.h>
+#include <wx/panel.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
 #include <wx/intl.h>
 #include "SimpleMono.h"
 
@@ -25,11 +33,11 @@ public:
    EffectCompressor();
    
    virtual wxString GetEffectName() {
-      return wxString(_("Compressor"));
+      return wxString(_("Compressor..."));
    }
    
    virtual wxString GetEffectAction() {
-      return wxString(_("Compressing"));
+      return wxString(_("Applying Dynamic Range Compression..."));
    }
    
    virtual bool PromptUser();
@@ -41,24 +49,92 @@ public:
 
    bool NewTrackSimpleMono();
 
-   float DoCompression(float x);
+   float AvgCircle(float x);
+   void Follow(float x, double *outEnv, int maxBack);
+   float DoCompression(float x, double env);
    
-   bool      mRMS;
    double    mAttackTime;
-   double    mDecayTime;
    double    mThresholdDB;
    double    mRatio;
-   double    mGainDB;
+   bool      mUseGain;
    
-   double    mMult;
+   double    mDecayTime;
+   double    mGainDB;
+   double    mAttackFactor;
+   double    mDecayFactor;
+   double    mFloor;
    double    mThreshold;
-   double    mDecayMult;
    double    mGain;
-   double    mInvRatio;
    double    mRMSSum;
    int       mCircleSize;
    int       mCirclePos;
    double   *mCircle;
+   double   *mLevelCircle;
+   double    mLastLevel;
+};
+
+class CompressorPanel: public wxPanel
+{
+public:
+   CompressorPanel( wxWindow *parent, wxWindowID id, 
+                    const wxPoint& pos = wxDefaultPosition,
+                    const wxSize& size = wxDefaultSize);
+
+   void OnPaint(wxPaintEvent & event);
+
+   double threshold;
+   double ratio;
+
+private:
+
+   wxBitmap *mBitmap;
+   wxRect mEnvRect;
+   int mWidth;
+   int mHeight;
+
+   DECLARE_EVENT_TABLE()
+};
+
+// WDR: class declarations
+
+//----------------------------------------------------------------------------
+// CompressorDialog
+//----------------------------------------------------------------------------
+
+class CompressorDialog: public wxDialog
+{
+public:
+   // constructors and destructors
+   CompressorDialog( wxWindow *parent, wxWindowID id, const wxString &title,
+                     const wxPoint& pos = wxDefaultPosition,
+                     const wxSize& size = wxDefaultSize,
+                     long style = wxDEFAULT_DIALOG_STYLE );
+
+   double threshold;
+   double ratio;
+   double attack;
+   bool useGain;
+   
+   virtual bool TransferDataToWindow();
+   virtual bool TransferDataFromWindow();
+   
+private:
+   void OnOk( wxCommandEvent &event );
+   void OnCancel( wxCommandEvent &event );
+   void OnSize( wxSizeEvent &event );
+   void OnSlider( wxCommandEvent &event );
+
+   CompressorPanel *mPanel;
+   wxSlider *mThresholdSlider;
+   wxSlider *mRatioSlider;
+   wxSlider *mAttackSlider;
+   wxCheckBox *mGainCheckBox;
+   wxStaticText *mThresholdText;
+   wxStaticText *mRatioText;
+   wxStaticText *mAttackText;
+   
+private:
+   DECLARE_EVENT_TABLE()
 };
 
 #endif

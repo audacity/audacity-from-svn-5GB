@@ -55,7 +55,8 @@ class Ruler {
    enum RulerFormat {
       IntFormat,
       RealFormat,
-      TimeFormat
+      TimeFormat,
+      LinearDBFormat,
    };
 
    //

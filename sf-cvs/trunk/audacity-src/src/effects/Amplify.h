@@ -122,6 +122,7 @@ class AmplifyDialog:public wxDialog {
  public:
    float ratio;
    float peak;
+   bool noclip;
 };
 
 

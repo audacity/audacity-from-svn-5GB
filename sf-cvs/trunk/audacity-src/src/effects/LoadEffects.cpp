@@ -65,7 +65,10 @@ void LoadEffects()
 
    // Effect menu
    Effect::RegisterEffect(new EffectAmplify());
-   Effect::RegisterEffect(new EffectAvcCompressor());
+
+   //Commented out now that the Compressor effect works better
+   //Effect::RegisterEffect(new EffectAvcCompressor());
+
    Effect::RegisterEffect(new EffectBassBoost());
    Effect::RegisterEffect(new EffectChangeSpeed());
    Effect::RegisterEffect(new EffectCompressor());

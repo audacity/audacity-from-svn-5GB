@@ -66,7 +66,7 @@ Ruler::~Ruler()
 
 void Ruler::SetFormat(RulerFormat format)
 {
-   // IntFormat, RealFormat, or TimeFormat
+   // IntFormat, RealFormat, TimeFormat, or LinearDBFormat
 
    if (mFormat != format) {
       mFormat = format;
@@ -223,6 +223,21 @@ void Ruler::FindLinearTickSizes(double UPP)
    mDigits = 0;
 
    switch(mFormat) {
+   case LinearDBFormat:
+      if (units < 0.1) {
+         mMinor = 0.1;
+         mMajor = 0.5;
+         return;
+      }
+      if (units < 1.0) {
+         mMinor = 1.0;
+         mMajor = 6.0;
+         return;
+      }
+      mMinor = 3.0;
+      mMajor = 12.0;
+      return;
+
    case IntFormat:
       d = 1.0;
       for(;;) {
@@ -315,7 +330,7 @@ void Ruler::FindLinearTickSizes(double UPP)
 
       // Otherwise fall through to RealFormat
       // (fractions of a second should be dealt with
-      // like 
+      // the same way as for RealFormat)
 
    case RealFormat:
       d = 0.000001;
@@ -357,6 +372,13 @@ wxString Ruler::LabelString(double d, bool major)
    switch(mFormat) {
    case IntFormat:
       s.Printf("%d", (int)floor(d+0.5));
+      break;
+   case LinearDBFormat:
+      if (mMinor >= 1.0)
+         s.Printf("%d", (int)floor(d+0.5));
+      else {
+         s.Printf("%.1f", d);
+      }
       break;
    case RealFormat:
       if (mMinor >= 1.0)
