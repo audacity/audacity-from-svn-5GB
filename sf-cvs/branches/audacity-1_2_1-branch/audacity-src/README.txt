@@ -289,6 +289,8 @@ Changes in 1.2.1:
 
   * Updated translations.
 
+  * Two new Nyquist plug-ins: crossfadein.ny and crossfadeout.ny.
+
 Changes in 1.2.0:
 
   * New cross-fade effects.
