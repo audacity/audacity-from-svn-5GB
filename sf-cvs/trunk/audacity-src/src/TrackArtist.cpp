@@ -62,6 +62,7 @@ class TrackInfoCache:public wxObject {
    // WaveTrack minmax only
    short *min;
    short *max;
+   short *rms;
 
    // WaveTrack Spectrum only
    float *freq;
@@ -90,6 +91,7 @@ TrackArtist::TrackArtist()
    selectedPen  .SetColour(148, 148, 170);
    samplePen    .SetColour( 50,  50, 200);
    selsamplePen .SetColour( 50,  50, 200);
+   rmsPen       .SetColour(100, 100, 220);
    shadowPen    .SetColour(148, 148, 148);
 }
 
@@ -159,6 +161,7 @@ void TrackArtist::DrawTracks(TrackList * tracks,
          info->pps = 1.0;
          info->min = NULL;
          info->max = NULL;
+         info->rms = NULL;
          info->where = NULL;
          info->freq = NULL;
          info->fheight = 0;
@@ -432,6 +435,8 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
    wxASSERT(cache->min);
    cache->max = new short[cache->len];
    wxASSERT(cache->max);
+   cache->rms = new short[cache->len];
+   wxASSERT(cache->rms);
    cache->where = new sampleCount[cache->len + 1];
    wxASSERT(cache->where);
 
@@ -477,6 +482,7 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
 
             cache->min[x] = oldcache.min[ox];
             cache->max[x] = oldcache.max[ox];
+            cache->rms[x] = oldcache.rms[ox];
 
             // Unfortunately we can't make this check due to
             // floating-point roundoff errors
@@ -521,7 +527,9 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
 
    short theMin = 0;
    short theMax = 0;
+   float sumsq = 0.0;
    unsigned int b = block0;
+   int jcount = 0;
 
    while (srcX < s1) {
       // Get more samples
@@ -561,6 +569,8 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
 
       theMin = temp[x];
       theMax = temp[x];
+      sumsq = 0.0;
+      jcount = 0;
 
       while (x < num) {
 
@@ -569,11 +579,19 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
             if (pixel > p0) {
                cache->min[pixel - 1] = theMin;
                cache->max[pixel - 1] = theMax;
+               if (jcount > 0) {
+                  float rms = (float)sqrt(sumsq / jcount);
+                  cache->rms[pixel - 1] = (short)(rms + 0.5);
+               }
+               else
+                  cache->rms[pixel - 1] = 0;
             }
             pixel++;
             if (cache->where[pixel] != cache->where[pixel - 1]) {
                theMin = 32767;
                theMax = -32768;
+               sumsq = 0.0;
+               jcount = 0;
             }
          }
 
@@ -590,19 +608,21 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
                   theMin = temp[x];
                if (temp[x] > theMax)
                   theMax = temp[x];
+               sumsq += ((float)temp[x]) * ((float)temp[x]);
                x++;
+               jcount++;
             }
             break;
          case 256:
          case 65536:
-            // In summaries, mins and maxes are stored in alternating
-            // samples
             while (x < stop) {
-               if (temp[2 * x] < theMin)
-                  theMin = temp[2 * x];
-               if (temp[2 * x + 1] > theMax)
-                  theMax = temp[2 * x + 1];
+               if (temp[3 * x] < theMin)
+                  theMin = temp[3 * x];
+               if (temp[3 * x + 1] > theMax)
+                  theMax = temp[3 * x + 1];
+               sumsq += ((float)temp[3*x+2]) * ((float)temp[3*x+2]);
                x++;
+               jcount++;
             }
 
             break;
@@ -626,6 +646,12 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
    while (pixel <= p1) {
       cache->min[pixel - 1] = theMin;
       cache->max[pixel - 1] = theMax;
+      if (jcount > 0) {
+         float rms = (float)sqrt(sumsq / jcount);
+         cache->rms[pixel - 1] = (short)(rms + 0.5);
+      }
+      else
+         cache->rms[pixel - 1] = 0;
       pixel++;
    }
 
@@ -635,6 +661,8 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
       delete[]oldcache.min;
    if (oldcache.max)
       delete[]oldcache.max;
+   if (oldcache.rms)
+      delete[]oldcache.rms;
    if (oldcache.where)
       delete[]oldcache.where;
    if (oldcache.freq)
@@ -851,24 +879,58 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
          delete[]ypos;
       }
    } else {
-      // The more typical view - we display a line representing the
+      // Fisplay a line representing the
       // min and max of the samples in this region
       t = t0;
+      short *h1 = new short[mid.width];
+      short *h2 = new short[mid.width];
+
       for (x = 0; x < mid.width; x++) {
 
-         int h1 = ctr - GetWaveYPos(cache->min[x] / 32768.0 *
-                                    track->mEnvelope.GetValue(t + tOffset),
-                                    mid.height / 2,
-                                    dB);
-         int h2 = ctr - GetWaveYPos(cache->max[x] / 32768.0 *
-                                    track->mEnvelope.GetValue(t + tOffset),
-                                    mid.height / 2,
-                                    dB);
+         h1[x] = ctr - GetWaveYPos(cache->min[x] / 32768.0 *
+                                   track->mEnvelope.GetValue(t + tOffset),
+                                   mid.height / 2,
+                                   dB);
+         h2[x] = ctr - GetWaveYPos(cache->max[x] / 32768.0 *
+                                   track->mEnvelope.GetValue(t + tOffset),
+                                   mid.height / 2,
+                                   dB);
 
-         dc.DrawLine(mid.x + x, h2, mid.x + x, h1 + 1);
+         dc.DrawLine(mid.x + x, h2[x], mid.x + x, h1[x] + 1);
 
          t += tstep;
       }
+
+      dc.SetPen(rmsPen);
+
+      // Draw the RMS (root-mean-squared) of the samples within the
+      // region
+      t = t0;
+      for (x = 0; x < mid.width; x++) {
+
+         int r1 = ctr - GetWaveYPos(cache->rms[x] / -32768.0 *
+                                    track->mEnvelope.GetValue(t + tOffset),
+                                    mid.height / 2,
+                                    dB);
+         int r2 = ctr - GetWaveYPos(cache->rms[x] / 32768.0 *
+                                    track->mEnvelope.GetValue(t + tOffset),
+                                    mid.height / 2,
+                                    dB);
+
+         if (r1 > h1[x]-1)
+            r1 = h1[x]-1;
+         if (r2 < h2[x]+1)
+            r2 = h2[x]+1;
+
+         dc.DrawLine(mid.x + x, r2, mid.x + x, r1 + 1);
+
+         t += tstep;
+      }
+
+      delete[] h1;
+      delete[] h2;
+
+
    }
 
    if (drawEnvelope) {
