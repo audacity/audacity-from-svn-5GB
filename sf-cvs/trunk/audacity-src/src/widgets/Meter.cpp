@@ -23,6 +23,7 @@
 #include <wx/intl.h>
 #include <wx/menu.h>
 #include <wx/settings.h>
+#include <wx/textdlg.h>
 
 #include <math.h>
 
@@ -34,9 +35,11 @@
 #include "../../images/MixerImages.h"
 #include "../Project.h"
 #include "../MeterToolBar.h"
+#include "../Prefs.h"
 
 enum {
    MeterEventID = 6000,
+	OnDisableMeterID,
    OnHorizontalID,
    OnVerticalID,
    OnMultiID,
@@ -46,7 +49,8 @@ enum {
    OnDBID,
    OnClipID,
    OnMonitorID,
-   OnFloatID
+   OnFloatID,
+   OnPreferencesID
 };
 
 class MeterUpdateEvent: public wxCommandEvent
@@ -82,6 +86,7 @@ BEGIN_EVENT_TABLE(Meter, wxPanel)
    EVT_MOUSE_EVENTS(Meter::OnMouse)
    EVT_PAINT(Meter::OnPaint)
    EVT_SIZE(Meter::OnSize)
+   EVT_MENU(OnDisableMeterID, Meter::OnDisableMeter)
    EVT_MENU(OnHorizontalID, Meter::OnHorizontal)
    EVT_MENU(OnVerticalID, Meter::OnVertical)
    EVT_MENU(OnMultiID, Meter::OnMulti)
@@ -92,6 +97,7 @@ BEGIN_EVENT_TABLE(Meter, wxPanel)
    EVT_MENU(OnClipID, Meter::OnClip)
    EVT_MENU(OnMonitorID, Meter::OnMonitor)
    EVT_MENU(OnFloatID, Meter::OnFloat)
+   EVT_MENU(OnPreferencesID, Meter::OnPreferences)
 END_EVENT_TABLE()
 
 IMPLEMENT_CLASS(Meter, wxPanel)
@@ -119,11 +125,21 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    mIcon(NULL)
 {
    int i;
-   
+
+   mMeterRefreshRate = gPrefs->Read("/Meter/MeterRefreshRate", 30);
+   if (mIsInput) {
+      mMeterDisabled = gPrefs->Read("/Meter/MeterInputDisabled", (long)0);
+   }
+   else {
+      mMeterDisabled = gPrefs->Read("/Meter/MeterOutputDisabled", (long)0);
+   }
+
    wxColour backgroundColour =
       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
    mBkgndBrush = wxBrush(backgroundColour, wxSOLID);
    wxColour origColour(204, 204, 204);
+   mPeakPeakPen = wxPen(wxColour(0, 0, 255), 1, wxSOLID);
+   mDisabledPen = wxPen(wxColour(192, 192, 192), 1, wxSOLID);
    wxImage *image;
    wxImage *alpha;
 
@@ -154,6 +170,17 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       mClipBrush = wxBrush(wxColour(255, 53, 53), wxSOLID);
       mLightPen = wxPen(wxColour(153, 255, 153), 1, wxSOLID);
       mDarkPen = wxPen(wxColour(61, 164, 61), 1, wxSOLID);
+   }
+
+   mDisabledBkgndBrush = wxBrush(wxColour(160, 160, 160), wxSOLID);
+   if (mMeterDisabled) {
+      mSavedBkgndBrush = mBkgndBrush;
+      mSavedBrush = mBrush;
+      mSavedRMSBrush = mRMSBrush;
+
+      mBkgndBrush = mDisabledBkgndBrush;
+      mBrush = mDisabledBkgndBrush;
+      mRMSBrush = mDisabledBkgndBrush;
    }
    wxImage *bkgnd = CreateSysBackground(25, 25, 1,
                                         backgroundColour);
@@ -216,13 +243,21 @@ void Meter::OnMouse(wxMouseEvent &evt)
        (evt.ButtonDown() && mMenuRect.Inside(evt.m_x, evt.m_y))) {
       wxMenu *menu = new wxMenu();
       // Note: these should be kept in the same order as the enum
+      if (mMeterDisabled)
+         menu->Append(OnDisableMeterID, _("Enable Meter"));
+      else
+         menu->Append(OnDisableMeterID, _("Disable Meter"));
+      menu->AppendSeparator();
+
       menu->Append(OnHorizontalID, _("Horizontal Stereo"));
       menu->Append(OnVerticalID, _("Vertical Stereo"));
       //menu->Append(OnMultiID, _("Vertical Multichannel"));
       //menu->Append(OnEqualizerID, _("Equalizer"));
       //menu->Append(OnWaveformID, _("Waveform"));
-      menu->Enable(OnHorizontalID + mStyle, false);
+      //menu->Enable(OnHorizontalID + mStyle, false);
+      menu->Enable(mStyle==VerticalStereo? OnVerticalID: OnHorizontalID, false);
       menu->AppendSeparator();
+
       menu->Append(OnLinearID, _("Linear"));
       menu->Append(OnDBID, _("dB"));
       menu->Enable(mDB? OnDBID: OnLinearID, false);
@@ -234,6 +269,10 @@ void Meter::OnMouse(wxMouseEvent &evt)
       }
       //menu->AppendSeparator();
       //menu->Append(OnFloatID, _("Float Window"));
+
+      menu->AppendSeparator();
+      menu->Append(OnPreferencesID, _("Preferences..."));
+
 
       if (evt.RightDown())
          PopupMenu(menu, evt.m_x, evt.m_y);
@@ -361,6 +400,9 @@ void Meter::OnMeterUpdate(MeterUpdateEvent &evt)
    double deltaT = evt.numFrames / mRate;
    int j;
 
+   if (mMeterDisabled)
+      return;
+
    mT += deltaT;
    for(j=0; j<mNumBars; j++) {
       if (mDecay) {
@@ -388,6 +430,9 @@ void Meter::OnMeterUpdate(MeterUpdateEvent &evt)
          mBar[j].peakHoldTime = mT;
       }
 
+      if (mBar[j].peak > mBar[j].peakPeakHold )
+         mBar[j].peakPeakHold = mBar[j].peak;
+
       if (evt.clipping[j] ||
           mBar[j].tailPeakCount+evt.headPeakCount[j] >= mNumPeakSamplesToClip)
          mBar[j].clipping = true;
@@ -413,7 +458,10 @@ void Meter::ResetBar(MeterBar *b, bool resetClipping)
    b->peakHold = 0.0;
    b->peakHoldTime = 0.0;
    if (resetClipping)
+      {
       b->clipping = false;
+      b->peakPeakHold =0.0;
+      }
    b->tailPeakCount = 0;
 }
 
@@ -436,6 +484,8 @@ void Meter::HandleLayout()
    switch(mStyle) {
    default:
       printf("Style not handled yet!\n");
+   case Disable:
+      break;
    case VerticalStereo:
       mMenuRect = wxRect(mWidth - menuWidth - 5, mHeight - menuHeight - 2,
                          menuWidth, menuHeight);
@@ -610,16 +660,16 @@ void Meter::RepaintBarsNow()
    if (!mLayoutValid)
       return;
 
-   wxClientDC dc(this);
-   int i;
-
    // to limit repaint at <=30 mS intervals, by ChackoN
    static wxLongLong lastTime = ::wxGetLocalTimeMillis();
    wxLongLong now = ::wxGetLocalTimeMillis();
    long delta = (now - lastTime).ToLong();
-   if (delta < 30)
+   if (delta < 1000.0/mMeterRefreshRate)
        return;
    lastTime = now;
+
+   wxClientDC dc(this);
+   int i;
 
   #ifdef __WXMAC__
    // Mac OS X automatically double-buffers the screen for you,
@@ -668,18 +718,36 @@ void Meter::DrawMeterBar(wxDC &dc, MeterBar *meterBar)
       if (ht > 1)
          dc.DrawLine(r.x+1, r.y + r.height - ht + 1,
                      r.x+r.width, r.y + r.height - ht + 1);
+      dc.SetPen(mPeakPeakPen);
+      ht = (int)(meterBar->peakPeakHold * r.height + 0.5);
+      dc.DrawLine(r.x+1, r.y + r.height - ht,
+                  r.x+r.width, r.y + r.height - ht);
+      if (ht > 1)
+         dc.DrawLine(r.x+1, r.y + r.height - ht + 1,
+                     r.x+r.width, r.y + r.height - ht + 1);
+
+      dc.SetPen(mPen);
       ht = (int)(meterBar->peak * r.height + 0.5);
       r = wxRect(r.x, r.y + r.height - ht,
                  r.width, ht);
       ht = (int)(meterBar->rms * r.height + 0.5);
       rRMS = wxRect(r.x, r.y + r.height - ht,
                     r.width, ht);
+
    }
    else {
       int wd = (int)(meterBar->peakHold * r.width + 0.5);
       dc.DrawLine(r.x + wd, r.y + 1, r.x + wd, r.y + r.height);
       if (wd > 1)
          dc.DrawLine(r.x + wd - 1, r.y + 1, r.x + wd - 1, r.y + r.height);
+
+      dc.SetPen(mPeakPeakPen);
+      wd = (int)(meterBar->peakPeakHold * r.width + 0.5);
+      dc.DrawLine(r.x + wd, r.y + 1, r.x + wd, r.y + r.height);
+      if (wd > 1)
+         dc.DrawLine(r.x + wd - 1, r.y + 1, r.x + wd - 1, r.y + r.height);
+      
+      dc.SetPen(mPen);
       wd = (int)(meterBar->peak * r.width + 0.5);
       r = wxRect(r.x, r.y,
                  wd, r.height);
@@ -736,6 +804,55 @@ void Meter::StartMonitoring()
 // Pop-up menu handlers
 //
 
+void Meter::OnDisableMeter(wxCommandEvent &evt)
+{
+   if (mMeterDisabled) //Enable
+      {
+      mLightPen = mSavedLightPen;
+      mDarkPen = mSavedDarkPen;
+      mBkgndBrush = mSavedBkgndBrush;
+      mBrush = mSavedBrush;
+      mRMSBrush = mSavedRMSBrush;
+
+      mBkgndBrush = mSavedBkgndBrush;
+      mLightPen = mSavedLightPen;
+
+      SetStyle(mSavedStyle);
+      mMeterDisabled = false;
+      }
+   else
+      {
+      mSavedLightPen = mLightPen;
+      mSavedDarkPen = mDarkPen;
+      mSavedBkgndBrush = mBkgndBrush;
+      mSavedBrush = mBrush;
+      mSavedRMSBrush = mRMSBrush;
+
+      mLightPen = mDisabledPen;
+      mDarkPen = mDisabledPen;
+      mBkgndBrush = mDisabledBkgndBrush;
+      mBrush = mDisabledBkgndBrush;
+      mRMSBrush = mDisabledBkgndBrush;
+      mLayoutValid = false;
+      Refresh(false);
+
+
+      mSavedStyle = mStyle;
+      SetStyle(Disable);
+      mMeterDisabled = true;
+      }
+   if (mIsInput)
+      {
+      gPrefs->Write("/Meter/MeterInputDisabled", mMeterDisabled);
+      }
+   else
+      {
+      gPrefs->Write("/Meter/MeterOutputDisabled", mMeterDisabled);
+      }
+
+
+}
+
 void Meter::OnHorizontal(wxCommandEvent &evt)
 {
    SetStyle(HorizontalStereo);
@@ -787,4 +904,20 @@ void Meter::OnMonitor(wxCommandEvent &evt)
 void Meter::OnFloat(wxCommandEvent &evt)
 {
 }
+
+void Meter::OnPreferences(wxCommandEvent &evt)
+{
+long refreshRate = 0;
+if (-1 <  (refreshRate = ::wxGetNumberFromUser (_(
+                                    "This determines how often the meter is refreshed.\n"
+                                    "If you have a slower PC you may want to select a\n"
+                                    "lower refresh rate (30 per second or lower), so that\n"
+                                    "audio qualtiy is not affected by the meter display."),
+                                   _("Meter refresh rate per second [1-100]: "),
+                                   _("Meter Perferences"),
+                                   mMeterRefreshRate, 1, 100)))
+      mMeterRefreshRate = refreshRate;
+      gPrefs->Write("/Meter/MeterRefreshRate", mMeterRefreshRate);
+}
+
 
