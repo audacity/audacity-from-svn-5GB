@@ -662,9 +662,9 @@ static PaError Pa_AudioThreadProc( internalPortAudioStream   *past )
                     (past->past_FrameCount - numBufferedSamples) / rateEstimate;
                  pahsc->pahsc_SampleRateEstimate = rateEstimate;
 
-                 printf("Correction: %.0lf  sample rate: %.0lf\n",
+                 /*printf("Correction: %.0lf  sample rate: %.0lf\n",
                         pahsc->pahsc_CheckpointTime - oldCheckpointTime,
-                        pahsc->pahsc_SampleRateEstimate);
+                        pahsc->pahsc_SampleRateEstimate);*/
               }
 
               pahsc->pahsc_LastTime = now;
