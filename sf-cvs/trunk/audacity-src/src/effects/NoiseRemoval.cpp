@@ -66,12 +66,13 @@ EffectNoiseRemoval::~EffectNoiseRemoval()
 
 bool EffectNoiseRemoval::PromptUser()
 {
-   NoiseRemovalDialog dlog(mParent, -1, _("Noise Removal"));
+   NoiseRemovalDialog dlog(this, mParent, -1, _("Noise Removal"));
    if (hasProfile)
-      dlog.mSlider->SetValue(level);
+      dlog.m_pSlider->SetValue(level);
    else {
-      dlog.mRemoveNoiseButton->Enable(false);
-      dlog.mSlider->Enable(false);
+      dlog.m_pButton_Preview->Enable(false);
+      dlog.m_pButton_RemoveNoise->Enable(false);
+      dlog.m_pSlider->Enable(false);
    }
    dlog.CentreOnParent();
    dlog.ShowModal();
@@ -79,7 +80,8 @@ bool EffectNoiseRemoval::PromptUser()
    if (dlog.GetReturnCode() == 0)
       return false;
 
-   level = dlog.mSlider->GetValue();
+   level = dlog.m_pSlider->GetValue();
+
 
    if (dlog.GetReturnCode() == 1)
       doProfile = true;
@@ -324,19 +326,34 @@ void EffectNoiseRemoval::RemoveNoise(sampleCount len,
 
 // WDR: event table for NoiseRemovalDialog
 
+enum {
+   ID_BUTTON_GETPROFILE = 10001,
+	ID_BUTTON_PREVIEW
+};
+
 BEGIN_EVENT_TABLE(NoiseRemovalDialog,wxDialog)
-   EVT_BUTTON( 1000, NoiseRemovalDialog::OnGetProfile )
-   EVT_BUTTON( 1001, NoiseRemovalDialog::OnRemoveNoise )
-   EVT_BUTTON( 1002, NoiseRemovalDialog::OnCancel )
+	EVT_BUTTON(wxID_OK, NoiseRemovalDialog::OnRemoveNoise)
+	EVT_BUTTON(wxID_CANCEL, NoiseRemovalDialog::OnCancel)
+	EVT_BUTTON(ID_BUTTON_GETPROFILE, NoiseRemovalDialog::OnGetProfile)
+	EVT_BUTTON(ID_BUTTON_PREVIEW, NoiseRemovalDialog::OnPreview)
 END_EVENT_TABLE()
 
-NoiseRemovalDialog::NoiseRemovalDialog(wxWindow *parent, wxWindowID id,
-                           const wxString &title,
-                           const wxPoint &position, const wxSize& size,
-                           long style ) :
+NoiseRemovalDialog::NoiseRemovalDialog(EffectNoiseRemoval * effect, 
+													wxWindow *parent, wxWindowID id,
+													const wxString &title,
+													const wxPoint &position, 
+													const wxSize& size,
+													long style ) :
    wxDialog( parent, id, title, position, size, style )
 {
-   MakeNoiseRemovalDialog( this, TRUE ); 
+	m_pEffect = effect;
+   
+	// NULL out the control members until the controls are created.
+	m_pSlider = NULL;
+	m_pButton_Preview = NULL;
+	m_pButton_RemoveNoise = NULL;
+
+   this->MakeNoiseRemovalDialog(true); 
 }
 
 
@@ -345,6 +362,21 @@ NoiseRemovalDialog::NoiseRemovalDialog(wxWindow *parent, wxWindowID id,
 void NoiseRemovalDialog::OnGetProfile( wxCommandEvent &event )
 {
    EndModal(1);
+}
+
+void NoiseRemovalDialog::OnPreview(wxCommandEvent &event)
+{
+	// Save & restore parameters around Preview, because we didn't do OK.
+   bool oldDoProfile = m_pEffect->doProfile;
+	int oldLevel = m_pEffect->level;
+
+	m_pEffect->doProfile = false;
+	m_pEffect->level = m_pSlider->GetValue();
+   
+	m_pEffect->Preview();
+   
+	m_pEffect->doProfile = oldDoProfile;
+	m_pEffect->level = oldLevel; 
 }
 
 void NoiseRemovalDialog::OnRemoveNoise( wxCommandEvent &event )
@@ -357,75 +389,83 @@ void NoiseRemovalDialog::OnCancel(wxCommandEvent &event)
    EndModal(0);
 }
 
-wxSizer *NoiseRemovalDialog::MakeNoiseRemovalDialog( wxWindow *parent, bool call_fit, bool set_sizer )
+wxSizer *NoiseRemovalDialog::MakeNoiseRemovalDialog(bool call_fit /* = true */, 
+																	 bool set_sizer /* = true */)
 {
    wxBoxSizer *mainSizer = new wxBoxSizer( wxVERTICAL );
    wxStaticBoxSizer *group;
    wxControl *item;
    
-   item = new wxStaticText(parent, ID_TEXT,
+   item = new wxStaticText(this, -1,
                    _("Noise Removal by Dominic Mazzoni"), wxDefaultPosition,
                    wxDefaultSize, wxALIGN_CENTRE );
    mainSizer->Add(item, 0, wxALIGN_CENTRE|wxALL, 5);
 
    // Step 1
    
-   group = new wxStaticBoxSizer(new wxStaticBox(parent, -1,
+   group = new wxStaticBoxSizer(new wxStaticBox(this, -1,
                                                 _("Step 1")), wxVERTICAL);
 
-   item = new wxStaticText(parent, ID_TEXT,
+   item = new wxStaticText(this, -1,
                            _("Select a few seconds of just noise\n"
                              "so Audacity knows what to filter out, then\n"
                              "click Get Noise Profile:"),
                            wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
    group->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
 
-   item = new wxButton(parent, 1000, _("Get Noise Profile"), wxDefaultPosition, wxDefaultSize, 0 );
+   item = new wxButton(this, ID_BUTTON_GETPROFILE, _("Get Noise Profile"), wxDefaultPosition, wxDefaultSize, 0 );
    group->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
 
    mainSizer->Add( group, 0, wxALIGN_CENTRE|wxALL, 5 );
    
    // Step 2
    
-   group = new wxStaticBoxSizer(new wxStaticBox(parent, -1,
+   group = new wxStaticBoxSizer(new wxStaticBox(this, -1,
                                                 _("Step 2")), wxVERTICAL);
 
-   item = new wxStaticText(parent, ID_TEXT,
+   item = new wxStaticText(this, -1,
                            _("Select all of the audio you want filtered,\n"
                              "choose how much noise you want filtered out,\n"
                              "and then click Remove Noise.\n"),
                            wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
    group->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
 
-   mSlider = new wxSlider(parent, -1, 8, 1, 15,
-                       wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL);
-   group->Add(mSlider, 1, wxEXPAND|wxALIGN_CENTRE|wxLEFT | wxRIGHT | wxTOP, 5 );
+   m_pSlider = new wxSlider(this, -1, 8, 1, 15,
+										wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL);
+   group->Add(m_pSlider, 1, wxEXPAND|wxALIGN_CENTRE|wxLEFT | wxRIGHT | wxTOP, 5 );
 
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
-   item = new wxStaticText(parent, ID_TEXT, _("Less"));
+   item = new wxStaticText(this, -1, _("Less"));
    hSizer->Add(item, 0, wxALIGN_CENTRE|wxLEFT | wxRIGHT | wxBOTTOM, 5 );   
    hSizer->Add(10, 10, 1, wxALIGN_CENTRE | wxLEFT | wxRIGHT | wxBOTTOM, 5);
-   item = new wxStaticText(parent, ID_TEXT, _("More"));
+   item = new wxStaticText(this, -1, _("More"));
    hSizer->Add(item, 0, wxALIGN_CENTRE|wxLEFT | wxRIGHT | wxBOTTOM, 5 );
-
    group->Add(hSizer, 1, wxEXPAND|wxALIGN_CENTRE|wxALL, 5 );
    
-   mRemoveNoiseButton = new wxButton(parent, 1001, _("Remove Noise"), wxDefaultPosition, wxDefaultSize, 0 );
-   group->Add(mRemoveNoiseButton, 0, wxALIGN_CENTRE|wxALL, 5 );
+   hSizer = new wxBoxSizer(wxHORIZONTAL);
+
+   m_pButton_Preview = new wxButton(this, ID_BUTTON_PREVIEW, m_pEffect->GetPreviewName());
+   hSizer->Add(m_pButton_Preview, 0, wxALIGN_LEFT | wxALL, 5);
+   
+   hSizer->Add(25, 5); // horizontal spacer
+
+	m_pButton_RemoveNoise = new wxButton(this, wxID_OK, _("Remove Noise"), wxDefaultPosition, wxDefaultSize, 0 );
+   hSizer->Add(m_pButton_RemoveNoise, 0, wxALIGN_RIGHT | wxALL, 5 );
+   
+	group->Add(hSizer, 0, wxALIGN_CENTER | wxALL, 5 );
 
    mainSizer->Add( group, 0, wxALIGN_CENTRE|wxALL, 5 );
    
-   // Cancel button
 
-   item = new wxButton( parent, 1002, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
+   item = new wxButton( this, wxID_CANCEL, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
    mainSizer->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
 
    if (set_sizer) {
-      parent->SetAutoLayout( TRUE );
-      parent->SetSizer( mainSizer );
+      this->SetAutoLayout( TRUE );
+      this->SetSizer( mainSizer );
       if (call_fit) {
-         mainSizer->Fit( parent );
-         mainSizer->SetSizeHints( parent );
+         mainSizer->Fit( this );
+         mainSizer->SetSizeHints( this );
       }
    }
     
