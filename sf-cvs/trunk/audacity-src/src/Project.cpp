@@ -795,7 +795,7 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
 
       if (f->DoEffect(this, mTracks, mTrackFactory,
                       &mViewInfo.sel0, &mViewInfo.sel1)) {
-         PushState(f->GetEffectDescription()); //v
+         PushState(f->GetEffectDescription()); 
          if (mTracks->GetEndTime() > prevEndTime)
             OnZoomFit(dummyEvent);
          FixScrollbars();
