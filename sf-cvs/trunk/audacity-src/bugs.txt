@@ -36,6 +36,11 @@ Known bugs to fix:
 Possible bugs to investigate:
 -----------------------------------------------------------
 
+- Exporting tracks with envelopes and an offset can result
+  in different WAV output than what you see on the screen in
+  the editor.  (See email from Mike Tyson).
+- Linux: hit Undo lots of times in a row crashes.
+  (Email from Daniel James)  Can't reproduce.
 - Audacity is unstable when working with very large files
 - Possible memory leak in Windows 98 (???)
   See emails from degarb@softhome.net
