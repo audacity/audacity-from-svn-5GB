@@ -157,9 +157,14 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    mNumBars(0),
    mLayoutValid(false),
    mBitmap(NULL),
+   mBackgroundBitmap(NULL),
    mIcon(NULL)
 {
    int i;
+
+    wxColour backgroundColour =
+      wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+    mBkgndBrush = wxBrush(backgroundColour, wxSOLID);
 
    mMeterRefreshRate = gPrefs->Read("/Meter/MeterRefreshRate", 30);
    if (mIsInput) {
@@ -169,14 +174,11 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       mMeterDisabled = gPrefs->Read("/Meter/MeterOutputDisabled", (long)0);
    }
 
-   wxColour backgroundColour =
-      wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
-   mBkgndBrush = wxBrush(backgroundColour, wxSOLID);
+   CreateIcon(2);
+
    wxColour origColour(204, 204, 204);
    mPeakPeakPen = wxPen(wxColour(0, 0, 255), 1, wxSOLID);
    mDisabledPen = wxPen(wxColour(192, 192, 192), 1, wxSOLID);
-   wxImage *image;
-   wxImage *alpha;
 
    /* i18n-hint: One-letter abbreviation for Left, in VU Meter */
    mLeftText = _("L");
@@ -187,8 +189,6 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    mRightSize = wxSize(0, 0);
 
    if (mIsInput) {
-      image = new wxImage(wxBitmap(Mic).ConvertToImage());
-      alpha = new wxImage(wxBitmap(MicAlpha).ConvertToImage());
       mPen = wxPen(wxColour(204, 70, 70), 1, wxSOLID);
       mBrush = wxBrush(wxColour(204, 70, 70), wxSOLID);
       mRMSBrush = wxBrush(wxColour(255, 102, 102), wxSOLID);
@@ -197,8 +197,6 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       mDarkPen = wxPen(wxColour(153, 61, 61), 1, wxSOLID);
    }
    else {
-      image = new wxImage(wxBitmap(Speaker).ConvertToImage());
-      alpha = new wxImage(wxBitmap(SpeakerAlpha).ConvertToImage());
       mPen = wxPen(wxColour(70, 204, 70), 1, wxSOLID);
       mBrush = wxBrush(wxColour(70, 204, 70), wxSOLID);
       mRMSBrush = wxBrush(wxColour(102, 255, 102), wxSOLID);
@@ -217,24 +215,45 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       mBrush = mDisabledBkgndBrush;
       mRMSBrush = mDisabledBkgndBrush;
    }
-   wxImage *bkgnd = CreateSysBackground(25, 25, 1,
-                                        backgroundColour);
-   wxImage *final = OverlayImage(bkgnd, image, alpha, 0, 0);
-   mIcon = new wxBitmap(final);
 
    mRuler.SetFonts(GetFont(), GetFont());
 
+   mTimer.SetOwner(this, OnMeterUpdateID);
    Reset(44100.0, true);
    for(i=0; i<kMaxMeterBars; i++)
       mBar[i].clipping = false;
+}
+
+void Meter::CreateIcon(int aquaOffset)
+{
+   wxColour backgroundColour =
+      wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+   mBkgndBrush = wxBrush(backgroundColour, wxSOLID);
+   wxImage *image, *alpha;
+
+   if (mIcon) {
+      delete mIcon;
+      mIcon = NULL;
+   }
+
+   if (mIsInput) {
+      image = new wxImage(wxBitmap(Mic).ConvertToImage());
+      alpha = new wxImage(wxBitmap(MicAlpha).ConvertToImage());
+   }
+   else {
+      image = new wxImage(wxBitmap(Speaker).ConvertToImage());
+      alpha = new wxImage(wxBitmap(SpeakerAlpha).ConvertToImage());
+   }
+
+   wxImage *bkgnd = CreateSysBackground(25, 25, aquaOffset,
+					backgroundColour);
+   wxImage *final = OverlayImage(bkgnd, image, alpha, 0, 0);
+   mIcon = new wxBitmap(final);
 
    delete image;
    delete alpha;
    delete bkgnd;
    delete final;
-
-   mTimer.SetOwner(this, OnMeterUpdateID);
-   mTimer.Start(1000/mMeterRefreshRate);
 }
 
 Meter::~Meter()
@@ -242,6 +261,8 @@ Meter::~Meter()
    delete mIcon;
    if (mBitmap)
       delete mBitmap;
+   if (mBackgroundBitmap)
+     delete mBackgroundBitmap;
 }
 
 void Meter::OnPaint(wxPaintEvent &evt)
@@ -250,18 +271,12 @@ void Meter::OnPaint(wxPaintEvent &evt)
   #ifdef __WXMAC__
    // Mac OS X automatically double-buffers the screen for you,
    // so our bitmap is unneccessary
-   dc.SetPen(*wxTRANSPARENT_PEN);
-   dc.SetBrush(mBkgndBrush);
-   dc.DrawRectangle(0, 0, mWidth, mHeight);
    HandlePaint(dc);
   #else
    if (!mBitmap)
       mBitmap = new wxBitmap(mWidth, mHeight);
    wxMemoryDC memDC;
    memDC.SelectObject(*mBitmap);
-   memDC.SetPen(*wxTRANSPARENT_PEN);
-   memDC.SetBrush(mBkgndBrush);
-   memDC.DrawRectangle(0, 0, mWidth, mHeight);
    HandlePaint(memDC);
    dc.Blit(0, 0, mWidth, mHeight, &memDC, 0, 0, wxCOPY, FALSE);
   #endif 
@@ -339,6 +354,11 @@ void Meter::Reset(double sampleRate, bool resetClipping)
    mRate = sampleRate;
    for(j=0; j<mNumBars; j++)
       ResetBar(&mBar[j], resetClipping);
+
+   // wxTimers seem to be a little unreliable - sometimes they stop for
+   // no good reason, so this "primes" it every now and then...
+   mTimer.Stop();
+   mTimer.Start(25); // every 25 ms -> ~40 updates per second
 
    mLayoutValid = false;
    Refresh(false);
@@ -528,6 +548,19 @@ void Meter::HandleLayout()
    int barw, barh;
    int i;
 
+#ifdef __WXMAC__
+   if (!mBackgroundBitmap ||
+       mBackgroundBitmap->GetWidth() != mWidth ||
+       mBackgroundBitmap->GetWidth() != mHeight) {
+     if (mBackgroundBitmap)
+       delete mBackgroundBitmap;
+
+     wxImage *image = CreateAquaBackground(mWidth, mHeight, 0);
+     mBackgroundBitmap = new wxBitmap(image);
+     delete image;
+   }
+#endif
+
    mRuler.SetFlip(true);
    mRuler.SetLabelEdges(true);
 
@@ -664,6 +697,8 @@ void Meter::HandleLayout()
       mAllBarsRect = wxRect(left, top, right-left+1, bottom-top+1);
    }
 
+   CreateIcon(mIconPos.y % 4);
+
    mLayoutValid = true;
 }
 
@@ -679,6 +714,14 @@ void Meter::HandlePaint(wxDC &dc)
 
    if (!mLayoutValid)
       HandleLayout();
+
+#ifdef __WXMAC__
+   dc.DrawBitmap(*mBackgroundBitmap, 0, 0);
+#else
+   dc.SetPen(*wxTRANSPARENT_PEN);
+   dc.SetBrush(mBkgndBrush);
+   dc.DrawRectangle(0, 0, mWidth, mHeight);
+#endif
 
    dc.DrawBitmap(*mIcon, mIconPos.x, mIconPos.y);
 
@@ -706,7 +749,7 @@ void Meter::HandlePaint(wxDC &dc)
 }
 
 void Meter::RepaintBarsNow()
-{
+{ 
    if (!mLayoutValid)
       return;
 
