@@ -360,7 +360,7 @@ void ControlToolBar::MakeButtons()
                       (char const **) PlayDisabled,
                       (char const **) PlayAlpha, ID_PLAY_BUTTON,
                       false);
-   mPlay->SetToolTip(_("Play"));
+   mPlay->SetToolTip(_("Play (with shift for loop-play)"));
 
    mRecord = MakeButton((char const **) Record,
                         (char const **) RecordDisabled,
