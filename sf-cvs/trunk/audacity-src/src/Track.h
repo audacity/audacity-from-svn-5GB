@@ -12,6 +12,7 @@
 #define __AUDACITY_TRACK__
 
 #include <wx/string.h>
+#include <wx/dynarray.h>
 
 #include "SampleFormat.h"
 #include "xml/XMLTagHandler.h"
@@ -21,6 +22,8 @@ class DirManager;
 class UndoStack;
 class TimeTrack;
 class WaveTrack;
+
+WX_DEFINE_ARRAY(WaveTrack*, WaveTrackArray);
 
 class Track: public XMLTagHandler {
 
@@ -194,6 +197,8 @@ class TrackList {
 
   TimeTrack *GetTimeTrack();
 
+  WaveTrackArray GetWaveTrackArray(bool selectionOnly);
+  /* Consider this function depricated in favor of the above function */
   void GetWaveTracks(bool selectionOnly, int *num, WaveTrack ***tracks);
   
   // Test

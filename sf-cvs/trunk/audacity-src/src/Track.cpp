@@ -489,6 +489,21 @@ void TrackList::GetWaveTracks(bool selectionOnly,
    }
 }
 
+WaveTrackArray TrackList::GetWaveTrackArray(bool selectionOnly)
+{
+   WaveTrackArray waveTrackArray;
+
+   TrackListNode *p = head;
+   while (p) {
+      if (p->t->GetKind() == Track::Wave &&
+          (p->t->GetSelected() || !selectionOnly))
+         waveTrackArray.Add((WaveTrack*)p->t);
+
+      p = p->next;
+   }
+   return waveTrackArray;
+}
+
 #ifdef new
 #undef new
 #endif

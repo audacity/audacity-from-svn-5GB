@@ -568,12 +568,23 @@ void TrackPanel::OnTimer()
    if (mIsSelecting && mCapturedTrack) {
       ScrollDuringDrag();
    }
+
+   // JH: each time through this loop we poll to see if the audio i/o
+   // is still playing.  If not, stop it and update the GUI
+   wxCommandEvent dummyEvent;
+   AudacityProject *p = (AudacityProject*)GetParent();
+   if( p->GetAudioIOToken() != 0 &&
+      !gAudioIO->IsStreamActive(p->GetAudioIOToken()))
+   {
+      p->GetControlToolBar()->OnStop(dummyEvent);
+   }
+
    // AS: The "indicator" is the little graphical mark shown in the ruler
    //  that indicates where the current play/record position is.  IsBusy
    //  is basically IsPlaying || IsRecording.
-   if ((mIndicatorShowing ||
-       (gAudioIO->IsBusy() &&
-        gAudioIO->GetProject() == (AudacityProject *) GetParent())) && !gAudioIO->GetPaused()) {
+   if (!gAudioIO->IsPaused() &&
+        (mIndicatorShowing || gAudioIO->IsStreamActive(p->GetAudioIOToken())))
+   {
       UpdateIndicator();
    }
    // AS: Um, I get the feeling we want to redraw the cursors
@@ -584,10 +595,10 @@ void TrackPanel::OnTimer()
    }
    // BG: Update the screen while playing
    if((mTimeCount % 20) == 0 &&
-      (gAudioIO->IsBusy() &&
-       gAudioIO->GetProject() == (AudacityProject *) GetParent()) && !gAudioIO->GetPaused(true))
+      (gAudioIO->IsStreamActive(p->GetAudioIOToken()) &&
+       !gAudioIO->IsPaused()))
    {
-      gAudioIO->GetProject()->RedrawProject();
+      p->RedrawProject();
    }
    if(mTimeCount > 1000)
       mTimeCount = 0;
@@ -633,20 +644,20 @@ void TrackPanel::ScrollDuringDrag()
 //  and then just blit that to the screen.
 void TrackPanel::UpdateIndicator(wxDC * dc)
 {
-   double indicator = gAudioIO->GetIndicator();
+   double indicator = gAudioIO->GetStreamTime();
    bool onScreen = between_inclusive(mViewInfo->h, indicator,
                                      mViewInfo->h + mViewInfo->screen);
 
    // BG: Scroll screen if option is set
-   if (mViewInfo->bUpdateTrackIndicator && gAudioIO->IsBusy()
-       && gAudioIO->GetProject() && indicator>=0 && !onScreen && !gAudioIO->GetPaused())
+   AudacityProject *p = (AudacityProject*)GetParent();
+   if (mViewInfo->bUpdateTrackIndicator &&
+       gAudioIO->IsStreamActive(p->GetAudioIOToken()) &&
+       indicator>=0 && !onScreen && !gAudioIO->IsPaused())
       mListener->TP_ScrollWindow(indicator);
 
    if (mIndicatorShowing || onScreen) {
       mIndicatorShowing = (onScreen &&
-                           gAudioIO->IsBusy() &&
-                           gAudioIO->GetProject() ==
-                           (AudacityProject *) GetParent());
+                           gAudioIO->IsStreamActive(p->GetAudioIOToken()));
 
 
 
@@ -1625,7 +1636,7 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
       DrawCloseBox(&dc, r, false);
       if (closeRect.Inside(event.m_x, event.m_y)) {
          //BG: We may want to check if we are busy in just this project
-         if (!gAudioIO->IsBusy())
+         if (!gAudioIO->IsStreamActive())
             RemoveTrack(t);
          mCapturedTrack = 0;
       }
@@ -2398,8 +2409,8 @@ void TrackPanel::DrawRuler(wxDC * dc, bool text)
 
    DrawRulerMarks(dc, r, text);
 
-   if (gAudioIO->IsBusy() &&
-       gAudioIO->GetProject() == (AudacityProject *) GetParent())
+   AudacityProject *p = (AudacityProject*)GetParent();
+   if (gAudioIO->IsStreamActive(p->GetAudioIOToken()))
       DrawRulerIndicator(dc);
 }
 
@@ -2466,7 +2477,7 @@ void TrackPanel::DrawRulerMarks(wxDC * dc, const wxRect r, bool /*text */ )
 void TrackPanel::DrawRulerIndicator(wxDC * dc)
 {
    // Draw indicator
-   double ind = gAudioIO->GetIndicator();
+   double ind = gAudioIO->GetStreamTime();
 
    if (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen)) {
       int indp =
@@ -2496,7 +2507,7 @@ void TrackPanel::DrawRulerIndicator(wxDC * dc)
 void TrackPanel::DrawTrackIndicator(wxDC * dc)
 {
    // Draw indicator
-   double ind = gAudioIO->GetIndicator();
+   double ind = gAudioIO->GetStreamTime();
    int indp = 0;
    wxMemoryDC tmpDrawDC;
 

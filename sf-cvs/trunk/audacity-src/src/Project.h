@@ -115,7 +115,10 @@ class AudacityProject:public wxFrame,
 
    wxString GetName();
    DirManager *GetDirManager();
+   TrackFactory *GetTrackFactory();
    Tags *GetTags();
+   int GetAudioIOToken();
+   void SetAudioIOToken(int token);
 
    bool IsActive();
 
@@ -300,6 +303,7 @@ class AudacityProject:public wxFrame,
    ToolBarArray mToolBarArray;
    int mTotalToolBarHeight;
    enum ToolBarType mDraggingToolBar;
+   int  mAudioIOToken;
 
  public:
 
