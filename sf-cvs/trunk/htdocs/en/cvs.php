@@ -81,12 +81,20 @@ variable does not contain any white space at the end--which
 can happen if you copied the variables directly from this web page.
 
 <p>
-<b>To get the latest unstable branch (1.1.0):</b><br>
+<b>To get the latest unstable branch (1.3.0):</b><br>
 Under the "Checkout Settings" dialog, enter
 <tt>audacity</tt> as the module name. Hit "OK" and the
 branch will be automatically downloaded onto your computer.
 <p>
-<b>To get the stable (0.9-1.0) branch: </b><br>
+<b>To get the stable (1.2.0) branch: </b><br>
+Under the "Checkout Settings" dialog, enter
+<tt>audacity</tt> as the module name.  Then, under the
+"Sticky options" tab, check the "Retrieve rev./tag/branch
+(-r)" box and enter <tt>AUDACITY_1_2</tt> into the
+box beside it. Hit "OK" and the branch will be automatically
+downloaded onto your computer.
+<p>
+<b>To get the old version 1.0 branch: </b><br>
 Under the "Checkout Settings" dialog, enter
 <tt>audacity-old</tt> as the module name.  Then, under the
 "Sticky options" tab, check the "Retrieve rev./tag/branch
