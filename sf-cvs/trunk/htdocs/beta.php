@@ -14,7 +14,7 @@
   BoxTop($betaVersionsStr);
 ?>
 
-<?php include GetTranslation("beta-1.2.0-pre2"); ?>
+<?php include GetTranslation("beta-1.2.0-pre3"); ?>
 
 <p align="center">
 <a href="<?php print "screenshots.php?$langLinkStr"; ?>">
@@ -58,6 +58,15 @@
 <?php print "$lameStr</a>"; ?>
 </td>
 </tr>
+
+<tr>
+<td></td>
+<td>
+<a href="http://audacityteam.org/vst/">
+<?php print "VST Enabler</a>"; ?>
+</td>
+</tr>
+
 </table>
 
 <h3><?php print "Mac OS X ($macOSXBetaVersion)" ?></h3>
@@ -80,6 +89,31 @@
 <td>
 <a href="http://spaghetticode.org/lame/">
 <?php print "$lameStr</a>"; ?>
+</td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<a href="http://audacityteam.org/vst/">
+<?php print "VST Enabler</a>"; ?>
+</td>
+</tr>
+
+</table>
+
+<h3><?php print "Linux ($linuxBetaVersion)" ?></h3>
+
+<table border="0">
+<tr>
+<td valign=center
+><?php print "<a href=\"$src\">";
+?><img src=images/DownloadIcon.gif width=32 height=32 border=0></a>
+</td>
+<td valign=center
+><?php print "<a href=\"$src\">audacity-src.tar.bz2";
+?></a>
+<?php print "($tarballStr, $srcBetaSize)"; ?>
 </td>
 </tr>
 </table>
@@ -126,7 +160,7 @@ Source code dependencies:
 
 <center><hr width=50%></center>
 
-<?php include GetTranslation("beta-1.2.0-pre2-problems"); ?>
+<?php include GetTranslation("beta-1.2.0-pre3-problems"); ?>
 <?php include GetTranslation("beta-1.2.0-pre1-changes"); ?>
 
 <?php print "<a href=betanotes.php?$langLinkStr>$releaseNotesStr2</a>"; ?>

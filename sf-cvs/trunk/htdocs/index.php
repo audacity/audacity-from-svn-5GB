@@ -4,15 +4,14 @@ require_once 'main.inc.php';
 $title = "Audacity";
 include 'top.inc.php';
 
+include GetTranslation("news-1.2.0-pre3");
+print "<p>\n";
 include GetTranslation("news-comdex-wiki");
 print "<p>\n";
 include GetTranslation("news-1.2.0-pre2");
 print "<p>\n";
 include GetTranslation("news-1.2.0-pre1");
 print "<p>\n";
-include GetTranslation("news5");
-print "<p>\n";
-
 
 include 'bottom.inc.php';
 
