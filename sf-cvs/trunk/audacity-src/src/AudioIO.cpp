@@ -314,12 +314,6 @@ void AudioIO::FillBuffers()
    unsigned int numEmpty = 0;
    int i;
    
-   // BG: Attempt to fix bug
-   if(mTracks->IsEmpty()) {
-      Stop();
-      return;
-   }
-
    // Playback buffers
 
    for(i=0; i<mNumOutBuffers; i++) {
@@ -557,9 +551,16 @@ bool AudioIO::IsPlaying()
    return (mProject != NULL && mNumOutChannels > 0);
 }
 
-bool AudioIO::IsRecording()
+bool AudioIO::IsRecording(VTrack *t)
 {
-   return (mProject != NULL && mNumInChannels > 0);
+   bool recording = (mProject != NULL && mNumInChannels > 0);
+
+   if (t && recording)
+      for (int i = 0; i < mNumInChannels; i++)
+         if (mInTracks[i] == t)
+            return true;
+
+   return recording;
 }
 
 void AudioIOTimer::Notify()
