@@ -51,16 +51,16 @@ bool ImportOGG(wxWindow * parent,
 {
    int c;
    wxLogNull logNo;   /* disable automatic dialog generation */
-   wxFFile file(Filename, "rb");
+   FILE *file = fopen((const char *)Filename, "rb");
 
-   if (!file.IsOpened()) {
+   if (!file || ferror(file)) {
       wxMessageBox("Unable to open file " + Filename, "Error",
                    wxICON_ERROR|wxOK|wxCENTRE);
       return false;
    }
 
    OggVorbis_File vf;
-   int err = ov_open(file.fp(), &vf, NULL, 0);
+   int err = ov_open(file, &vf, NULL, 0);
 
    if (err < 0) {
       wxString message;
@@ -84,7 +84,7 @@ bool ImportOGG(wxWindow * parent,
       }
 
       wxMessageBox(message);
-      file.Close();
+      fclose(file);
       return false;
    }
 
@@ -186,8 +186,6 @@ bool ImportOGG(wxWindow * parent,
 
    /* ...the rest is de-allocation */
    ov_clear(&vf);
-   file.Detach();    // so that it doesn't try to close the file (ov_clear()
-                     // did that already)
 
    delete[]mainBuffer;
 
