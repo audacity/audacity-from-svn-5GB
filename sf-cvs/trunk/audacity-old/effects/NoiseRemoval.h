@@ -62,12 +62,15 @@ private:
    float    *sumsq;
    int      *profileCount;
    bool      doProfile;
+   bool      hasProfile;
+   
+   int       level;
 };
 
 // WDR: class declarations
 
 //----------------------------------------------------------------------------
-// FilterDialog
+// NoiseRemovalDialog
 //----------------------------------------------------------------------------
 
 // Declare window functions
@@ -75,9 +78,6 @@ private:
 #define ID_TEXT 10000
 #define ID_FILTERPANEL 10001
 #define ID_CLEAR 10002
-
-wxSizer *MakeNoiseRemovalDialog( wxPanel *parent, bool call_fit = TRUE,
-                           bool set_sizer = TRUE );
 
 class NoiseRemovalDialog: public wxDialog
 {
@@ -87,6 +87,12 @@ public:
                        const wxPoint& pos = wxDefaultPosition,
                        const wxSize& size = wxDefaultSize,
                        long style = wxDEFAULT_DIALOG_STYLE );
+
+   wxSizer *MakeNoiseRemovalDialog( wxPanel *parent, bool call_fit = TRUE,
+                           bool set_sizer = TRUE );
+   
+   wxButton *mRemoveNoiseButton;
+   wxSlider *mSlider;
    
 private:
    // WDR: handler declarations for FilterDialog
