@@ -1532,10 +1532,3 @@ loop
 (defun osc-pulse (hz bias &optional (compare-shape *step-shape*))
   (compare bias (osc-tri hz) compare-shape))
 
-;;; tapped delays
-
-;(tapv snd offset vardelay maxdelay)
-(setfn tapv snd-tapv) ;; linear interpolation
-(setfn tapf snd-tapf) ;; no interpolation
-
-
