@@ -1,0 +1,6 @@
+Nyquist is in the process of being relicensed.  The new license will
+be the BSD license, plus a non-binding request that the original
+authors (David Michael Betz for xlisp and Roger Dannenberg for Nyquist)
+be notified of any changes.  The authors have all agreed to this
+relicensing; Roger Dannenberg is working on the wording now.
+
