@@ -183,9 +183,10 @@ void *playback_thread(void *param)
 
 int audio_open(snd_type snd, long *flags)
 {
-   int format;
+   int format, desired_format;
    int channels;
    int rate;
+   int endiantest_var;
    oss_info dp;
    const char *device = "/dev/dsp";
    pthread_t thread;
@@ -204,11 +205,17 @@ int audio_open(snd_type snd, long *flags)
    close(dp->audio_fd);
    dp->audio_fd = open(device, O_RDWR, 0);
 	
-   /* Set format to signed 16-bit little-endian */
-   format = AFMT_S16_LE;
+   /* Set format to signed 16-bit, and use the endianness of the host */
+   
+   endiantest_var = 1;
+   if(*(char *)&endiantest_var)
+      format = desired_format = AFMT_S16_LE;
+   else
+      format = desired_format = AFMT_S16_BE;
+
    if (ioctl(dp->audio_fd, SNDCTL_DSP_SETFMT, &format) == -1)
       return !SND_SUCCESS;
-   if (format != AFMT_S16_LE) /* this format is not supported */
+   if (format != desired_format) /* this format is not supported */
       return !SND_SUCCESS;
   
    /* Set number of channels */
