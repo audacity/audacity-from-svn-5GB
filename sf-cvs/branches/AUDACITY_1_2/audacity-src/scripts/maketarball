@@ -22,6 +22,7 @@ chdir "../audacity-src-$version";
 
 print "removing CVS directories...\n";
 `find . -name "CVS" -exec rm -rf '{}' \\; 2> /dev/null`;
+`find . -name ".cvsignore" -exec rm -rf '{}' \\; 2> /dev/null`;
 
 print "removing emacs temp files...\n";
 `find . -name "*~" -exec rm -rf '{}' \\; 2> /dev/null`;
