@@ -102,9 +102,9 @@ class DirManager: public XMLTagHandler {
    void WriteXML(int depth, FILE *fp) { }
    void AssignFile(wxFileName &filename,wxString value);
 
- private:
-   void CleanTempDir(bool startup);
+   static void CleanTempDir(bool startup);
 
+ private:
    // Create new unique track name
    wxString NewTrackName();
 

@@ -63,9 +63,6 @@ DirManager::DirManager()
    mRef = 1; // MM: Initial refcount is 1 by convention
 
    numDirManagers++;
-   if (numDirManagers == 1) {
-      CleanTempDir(true);
-   }
 
    projPath = "";
    projName = "";
