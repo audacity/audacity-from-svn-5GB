@@ -1917,12 +1917,12 @@ void AudacityProject::WriteXML(int depth, FILE *fp)
    fprintf(fp, "projname=\"%s\" ", (const char *)XMLEsc(projName));
    fprintf(fp, "version=\"%s\" ", AUDACITY_FILE_FORMAT_VERSION);
    fprintf(fp, "audacityversion=\"%s\" ", AUDACITY_VERSION_STRING);
-   fprintf(fp, "sel0=\"%.10g\" ", mViewInfo.sel0);
-   fprintf(fp, "sel1=\"%.10g\" ", mViewInfo.sel1);
+   fprintf(fp, "sel0=\"%s\" ", Internat::ToString(mViewInfo.sel0, 10).c_str());
+   fprintf(fp, "sel1=\"%s\" ", Internat::ToString(mViewInfo.sel1, 10).c_str());
    fprintf(fp, "vpos=\"%d\" ", mViewInfo.vpos);
-   fprintf(fp, "h=\"%.10g\" ", mViewInfo.h);
-   fprintf(fp, "zoom=\"%.10g\" ", mViewInfo.zoom);
-   fprintf(fp, "rate=\"%g\" ", mRate);
+   fprintf(fp, "h=\"%s\" ", Internat::ToString(mViewInfo.h, 10).c_str());
+   fprintf(fp, "zoom=\"%s\" ", Internat::ToString(mViewInfo.zoom, 10).c_str());
+   fprintf(fp, "rate=\"%s\" ", Internat::ToString(mRate).c_str());
    fprintf(fp, ">\n");
 
    mTags->WriteXML(depth+1, fp);

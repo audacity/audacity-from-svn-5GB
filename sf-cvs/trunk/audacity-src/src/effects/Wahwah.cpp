@@ -16,7 +16,6 @@
 #include "Wahwah.h"
 #include "../WaveTrack.h"
 #include "../FFT.h"
-#include "../Internat.h"
 
 #include <math.h>
 
@@ -261,13 +260,15 @@ bool WahwahDialog::TransferDataFromWindow()
 
    c = GetFreqText();
    if (c) {
-      double d = Internat::ToDouble(c->GetValue());
+      double d;
+      c->GetValue().ToDouble(&d);
       freq = TrapDouble(d * 10, FREQ_MIN, FREQ_MAX) / 10;
    }
 
    c = GetFreqOffText();
    if (c) {
-      double d = Internat::ToDouble(c->GetValue());
+      double d;
+      c->GetValue().ToDouble(&d);
       freqoff = TrapDouble(d, FREQOFF_MIN, FREQOFF_MAX);
    }
 
@@ -285,7 +286,8 @@ bool WahwahDialog::TransferDataFromWindow()
 
    c = GetResonanceText();
    if (c) {
-      double d = Internat::ToDouble(c->GetValue());
+      double d;
+      c->GetValue().ToDouble(&d);
       res = TrapDouble(d * 10, RES_MIN, RES_MAX) / 10;
    }
 
@@ -339,7 +341,8 @@ void WahwahDialog::OnResonanceText(wxCommandEvent & event)
 {
    wxTextCtrl *c = GetResonanceText();
    if (c) {
-      double resd = Internat::ToDouble(c->GetValue());
+      double resd;
+      c->GetValue().ToDouble(&resd);
 
       res = resd;
       res = TrapDouble(resd * 10, RES_MIN, RES_MAX) / 10.0;
@@ -385,7 +388,8 @@ void WahwahDialog::OnFreqText(wxCommandEvent & event)
    wxTextCtrl *c = GetFreqText();
    if (c) {
       long freql;
-      double freqd = Internat::ToDouble(c->GetValue());
+      double freqd;
+      c->GetValue().ToDouble(&freqd);
 
       freq = freqd;
       freql = TrapLong(((long) (freq * 10)), FREQ_MIN, FREQ_MAX);
@@ -401,8 +405,7 @@ void WahwahDialog::OnFreqOffText(wxCommandEvent & event)
    wxTextCtrl *c = GetFreqOffText();
    if (c) {
       double freqoff;
-
-      freqoff = Internat::ToDouble(c->GetValue());
+      c->GetValue().ToDouble(&freqoff);
       freqoff = TrapDouble(freqoff, FREQOFF_MIN, FREQOFF_MAX);
 
       wxSlider *slider = GetFreqOffSlider();

@@ -11,7 +11,6 @@
 **********************************************************************/
 
 #include "ToneGen.h"
-#include "../Internat.h"
 #include "../WaveTrack.h"
 
 #include <wx/button.h>
@@ -233,13 +232,15 @@ bool ToneGenDialog::TransferDataFromWindow()
 
    t = GetAmpText();
    if (t) {
-      double d = Internat::ToDouble(t->GetValue());
+      double d;
+      t->GetValue().ToDouble(&d);
       amplitude = TrapDouble(d, AMP_MIN, AMP_MAX);
    }
 
    t = GetFreqText();
    if (t) {
-      double d = Internat::ToDouble(t->GetValue());
+      double d;
+      t->GetValue().ToDouble(&d);
       frequency = TrapDouble(d, FREQ_MIN, FREQ_MAX);
    }
 

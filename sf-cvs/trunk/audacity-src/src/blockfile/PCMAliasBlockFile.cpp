@@ -117,9 +117,12 @@ void PCMAliasBlockFile::SaveXML(int depth, wxFFile &xmlFile)
    xmlFile.Write(wxString::Format("aliasstart='%d' ", mAliasStart));
    xmlFile.Write(wxString::Format("aliaslen='%d' ", mLen));
    xmlFile.Write(wxString::Format("aliaschannel='%d' ", mAliasChannel));
-   xmlFile.Write(wxString::Format("min='%f' ", mMin));
-   xmlFile.Write(wxString::Format("max='%f' ", mMax));
-   xmlFile.Write(wxString::Format("rms='%f'", mRMS));
+   xmlFile.Write(wxString::Format("min='%s' ",
+            Internat::ToString(mMin).c_str()));
+   xmlFile.Write(wxString::Format("max='%s' ",
+            Internat::ToString(mMax).c_str()));
+   xmlFile.Write(wxString::Format("rms='%s'",
+            Internat::ToString(mRMS).c_str()));
    xmlFile.Write("/>\n");
 }
 

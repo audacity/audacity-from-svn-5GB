@@ -22,7 +22,6 @@
 #include <wx/textctrl.h>
 #include <wx/intl.h>
 
-#include "../../Internat.h"
 #include "../Effect.h"          // Audacity Effect base class
 #include "LadspaEffect.h"       // This class's header file
 
@@ -592,7 +591,7 @@ void LadspaEffectDialog::HandleText()
       float upper = float(10.0);
       float range;
 
-      Internat::ToDouble(fields[p]->GetValue(), &dval);
+      fields[p]->GetValue().ToDouble(&dval);
       val = dval;
 
       LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];

@@ -65,7 +65,9 @@ struct EnvPoint : public XMLTagHandler {
       int i;
       for (i=0; i<depth; i++)
          fprintf(fp, "\t");
-      fprintf(fp, "<controlpoint t='%f' val='%f'/>\n", t, val);
+      fprintf(fp, "<controlpoint t='%s' val='%s'/>\n",
+            Internat::ToString(t,8).c_str(),
+            Internat::ToString(val).c_str());
    }
 };
 

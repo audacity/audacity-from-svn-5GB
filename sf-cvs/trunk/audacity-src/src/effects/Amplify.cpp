@@ -16,7 +16,6 @@
 #include "Amplify.h"
 
 #include "../WaveTrack.h"
-#include "../Internat.h"
 
 #include <math.h>
 #include <wx/button.h>
@@ -252,10 +251,10 @@ bool AmplifyDialog::TransferDataFromWindow()
 {
    wxTextCtrl *c = GetAmpText();
    if (c) {
-      double r;
+      double r = 0;
 
       wxString val = c->GetValue();
-      r = Internat::ToDouble(val);
+      val.ToDouble(&r);
       ratio = pow(10,TrapDouble(r*10, AMP_MIN, AMP_MAX)/200.0);
    }
 
@@ -278,7 +277,7 @@ void AmplifyDialog::OnAmpText(wxCommandEvent & event)
       mLoopDetect = true;
 
       wxString val = c->GetValue();
-      r = Internat::ToDouble(val);
+      val.ToDouble(&r);
       ratio = pow(10,TrapDouble(r*10, AMP_MIN, AMP_MAX)/200.0);
 
       wxSlider *slider = GetAmpSlider();
@@ -307,7 +306,7 @@ void AmplifyDialog::OnPeakText(wxCommandEvent & event)
       mLoopDetect = true;
 
       wxString val = c->GetValue();
-      r = Internat::ToDouble(val);
+      val.ToDouble(&r);
 
       ratio = pow(10, r/20.0) / peak;
       
