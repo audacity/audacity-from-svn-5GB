@@ -226,6 +226,7 @@ void AudacityProject::SetCommandState(int nID, int iVal)
 
 int AudacityProject::GetCommandState(int nIndex)
 {
+   if((nIndex < 0) || (nIndex >= GetNumCommands())) return disabledMenu;
    return mCommandMenuItem[nIndex]->state;
 }
 
