@@ -581,8 +581,8 @@ void AudioIO::FillBuffers()
 
 void AudioIO::Stop()
 {
-   // Only allow one thread to access this code at a time
-   wxCriticalSectionLocker locker(mStopSection);
+   //BG: Prevent port audio callback from doing anything
+   wxMutexLocker Callbacklocker(gNoCallbackMutex);
 
    if (mStopping)
       return;
@@ -697,12 +697,6 @@ void AudioIO::SetAlwaysEnablePause(bool bEnable)
 
 void AudioIO::Finish()
 {
-   // Only allow one thread to access this code at a time
-   wxCriticalSectionLocker locker(mFinishSection);
-
-   //BG: Do not allow this to execute at the same time as the stop function
-   wxCriticalSectionLocker Stoplocker(mStopSection);
-
    //BG: Prevent port audio callback from doing anything
    wxMutexLocker Callbacklocker(gNoCallbackMutex);
 
