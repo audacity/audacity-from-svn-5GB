@@ -275,7 +275,16 @@ void Effect::Preview()
    if (mixRight)
       mWaveTracks->Add(mixRight);
 
+   t0 = 0.0;
+   t1 = mixLeft->GetEndTime();
+
+   double t0save = mT0;
+   double t1save = mT1;
+   mT0 = t0;
+   mT1 = t1;
    Process();
+   mT0 = t0save;
+   mT1 = t1save;
 
    // Start audio playing
    
