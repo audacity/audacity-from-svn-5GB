@@ -267,6 +267,13 @@ Known issues/problems:
 
 -------------------------------------------------------------
 
+Changes in 1.2.1:
+
+  * Fix a crash when resizing the Equalization window.
+  * Linux: Fix endianness problems in playback on PowerPC.
+  * Linux: Fix compilation problem in Nyquist on MIPS.
+  * Updated translations.
+
 Changes in 1.2.0:
 
   * New cross-fade effects.
