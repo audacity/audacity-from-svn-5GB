@@ -123,9 +123,7 @@ void EditToolBar::InitializeEditToolBar()
    mBackgroundBitmap = NULL;
    mBackgroundHeight = 0;
    mBackgroundWidth = 0;
-
 }
-
 
 
 // This is a convenience function that allows for button creation in
@@ -420,7 +418,6 @@ void EditToolBar::OnZoomSel()
 
 void EditToolBar::OnZoomFit()
 {
-
    wxCommandEvent event;
    AudacityProject *p = GetActiveProject();
    if (p) {
@@ -443,17 +440,11 @@ void EditToolBar::OnPaint(wxPaintEvent & evt)
    dc.DrawRectangle(0, 0, width, height);
 
    dc.SetPen(*wxBLACK_PEN);
-
-
-
 }
 
 
 void EditToolBar::EnableDisableButtons(bool anySelection, bool anyTracks)
 {
-
-
-
    //Enable/disable based on presence of a wavetrack
    if (anyTracks) {
       mCut->Enable();
@@ -477,9 +468,7 @@ void EditToolBar::EnableDisableButtons(bool anySelection, bool anyTracks)
       mZoomOut->Disable();
       mZoomSel->Disable();
       mZoomFit->Disable();
-
    }
-
 
    //Enable/disable based on selection
    if (anySelection) {
@@ -500,5 +489,4 @@ void EditToolBar::EnableDisableButtons(bool anySelection, bool anyTracks)
       mSilence->Disable();
       mZoomSel->Disable();
    }
-
 }
