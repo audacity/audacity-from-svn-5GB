@@ -50,11 +50,11 @@ that's currently in beta.
 </tr>
 <tr>
 <td bgcolor="#ccccff"
-><a href="http://www.wxwindows.org">wxWindows</a>
+><a href="http://wxwidgets.org/">wxWidgets</a>
 <td bgcolor="#ccccff"
 >This is a cross-platform library which allows our GUI (menus, buttons,
     windows, drawing, etc.) to run natively on Mac, Windows, and Unix
-    systems.  wxWindows also provides other useful C++ classes, and
+    systems.  wxWidgets also provides other useful C++ classes, and
     Audacity is 100% dependent on this library.  We highly recommend
     using this library if you want to do cross-platform development.
 </tr>

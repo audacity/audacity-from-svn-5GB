@@ -29,14 +29,14 @@ polished and stable.
 </p>
 
 <center>
-<a href="http://wxwindows.org/"><img src="images/wxwindows.gif" border="0"></a>
+<a href="http://wxwidgets.org/"><img src="images/wxwindows.gif" border="0"></a>
 </center>
 
 <p>
 Audacity is being developed by a team of volunteers under the
 open-source model.
 It is written in C and C++, using the
-<a href="http://www.wxwindows.org/">wxWindows</a> cross-platform toolkit.
+<a href="http://wxwidgets.org/">wxWidgets</a> cross-platform toolkit.
 All of the source code to the program
 is made available under the
 <a href="http://www.gnu.org/copyleft/gpl.html"
