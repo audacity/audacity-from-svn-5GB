@@ -115,7 +115,7 @@ void AColor::Init()
   inited = true;
 }
 
-  const char AColor_midicolors[16][3] = {
+const int AColor_midicolors[16][3] = {
     {255, 102, 102}, // 1=salmon
     {204, 0, 0},     // 2=red
     {255, 117, 23},  // 3=orange
@@ -137,7 +137,7 @@ void AColor::Init()
 void AColor::MIDIChannel(wxDC *dc, int channel /* 1 - 16 */)
 {
   if (channel >= 1 && channel <= 16) {
-    const char *colors = AColor_midicolors[channel-1];
+    const int *colors = AColor_midicolors[channel-1];
   
     dc->SetPen(wxPen(wxColour(colors[0],
                               colors[1],
@@ -156,7 +156,7 @@ void AColor::MIDIChannel(wxDC *dc, int channel /* 1 - 16 */)
 void AColor::LightMIDIChannel(wxDC *dc, int channel /* 1 - 16 */)
 {
   if (channel >= 1 && channel <= 16) {
-    const char *colors = AColor_midicolors[channel-1];
+    const int *colors = AColor_midicolors[channel-1];
   
     dc->SetPen(wxPen(wxColour(127+colors[0]/2,
                               127+colors[1]/2,
@@ -175,7 +175,7 @@ void AColor::LightMIDIChannel(wxDC *dc, int channel /* 1 - 16 */)
 void AColor::DarkMIDIChannel(wxDC *dc, int channel /* 1 - 16 */)
 {
   if (channel >= 1 && channel <= 16) {
-    const char *colors = AColor_midicolors[channel-1];
+    const int *colors = AColor_midicolors[channel-1];
   
     dc->SetPen(wxPen(wxColour(colors[0]/2,
                               colors[1]/2,
