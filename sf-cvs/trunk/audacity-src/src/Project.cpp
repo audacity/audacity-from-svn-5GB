@@ -1003,6 +1003,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    GetCommands()->EnableItemsByFunction("appmenu", "OnCursorSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlign", numWaveTracksSelected > 1);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignZero", numWaveTracksSelected > 0);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupZero", numWaveTracksSelected > 1);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignCursor", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignSelStart", numWaveTracksSelected > 0 && nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
