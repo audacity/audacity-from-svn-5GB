@@ -292,6 +292,11 @@ Changes in 1.2.2:
   * Mac OS X: Improved support for the Griffin iMic by fixing a bug
     that was causing it to always record in mono instead of stereo.
 
+  * Added support for Software Playthrough (listen to what you're
+    recording while recording it, or while monitoring using a VU
+    meter) - this makes it possible, for example, to record using one
+    audio device while listening to it play through a separate device.
+
   * Unix/Linux: Fixed freeze caused by captured mouse when audio
     device hangs.  (Audacity may not respond, but it will no longer
     freeze all of X.)
