@@ -61,7 +61,7 @@ print "removing wxstd locale files (since they should come with wxWindows\n";
 
 print "removing Nyquist plug-ins that are just for show\n";
 `rm -f plug-ins/analyze.ny plug-ins/fadein.ny plug-ins/fadeout.ny`;
-`rm -f plug-ins/beat.ny`;
+`rm -f plug-ins/beat.ny plug-ins/undcbias.ny`;
 
 print "removing out-of-date translations: fr hu ja pl sl\n";
 `rm -f locale/fr.po`;
