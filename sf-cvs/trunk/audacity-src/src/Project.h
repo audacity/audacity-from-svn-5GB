@@ -22,7 +22,7 @@
 
 #if defined(__MACOS9__)
 #include <Files.h>
-#elseif defined(__MACOSX__)
+#elif defined(__MACOSX__)
 
 #else
 // Work around bugs in <wx/dragimag.h>, wxGTK 2.2.9.2
