@@ -35,6 +35,7 @@ class WaveTrack: public Track {
    WaveTrack(WaveTrack &orig);
    virtual ~WaveTrack();
 
+   void Init(const WaveTrack &orig);
    virtual Track *Duplicate();
 
    //
