@@ -1,4 +1,4 @@
-<?php BoxTop('November 2004: Audacity 1.2.3 released'); ?>
+<?php BoxTop('2004 november: Megjelent az Audacity 1.2.3-as verziója'); ?>
 
 <p>
 Az Audacity 1.2.3 az ingyenes Audacity hangszerkeszt&#245; újabb stabil verziója.
