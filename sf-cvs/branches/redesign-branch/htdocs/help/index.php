@@ -21,6 +21,13 @@
   <li><a href="tutorials">Tutorials</a> - Step by step articles teach you how to use Audacity.</li>
 </ul>
 <p>If your question isn’t answered here, please <a href="../contact/">contact us</a>.</p>');
+?>
 
+<h3><?=_('Other Resources')?></h3>
+<ul>
+	<li><?=_('<a href="http://audacityteam.org/wiki/">The Audacity Wiki</a> contains tips, tricks, and documentation that anyone can edit.')?></li>
+</ul>
+
+<?php
   include "../include/footer.inc.php";
 ?>

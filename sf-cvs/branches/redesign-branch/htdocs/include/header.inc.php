@@ -21,7 +21,7 @@
   <input type="hidden" name="sitesearch" value="audacity.sourceforge.net">
   <input type="hidden" name="cof" value="S:http://audacity.sourceforge.net/;AH:center;LH:100;L:http://audacity.sourceforge.net/images/audacity.jpg;LW:253;AWFID:a42d5b7b681df0fd;">
   <input type="hidden" name="domains" value="audacity.sourceforge.net">
-  <input type="submit" value="<?=_("Search")?>">
+  <input type="submit" value="<?=_("Search this site")?>">
 </p></form>
 
 <?php

@@ -15,6 +15,8 @@
 
 <p><?=_('Audacity is developed by volunteers, working in our spare time. It is not shareware, and we do not expect to make any money from it.  However, by donating money you can help us pay for bandwidth and web hosting, development tools, and audio hardware&mdash;things that help us provide Audacity for free and continue to make it better.')?></p>
 
+<p><?=_('For a special gift if you donate US$20 or more, see our <a href="http://audacityteam.org/tshirt.php">Audacity T-shirt offer</a>.')?></p>
+
 <p><?=_('We currently accept money via the Amazon Honor System. Use your credit card and make a payment as small as US$1.00, or up to US$50.00:')?></p>
 
 <!-- Begin Amazon Honor System Paybox -->
@@ -33,7 +35,7 @@
 
 <p><?=_('If you prefer to send a personal check or another form of payment, please visit the <a href="../about/credits">credits</a> page and contact one of the lead developers.')?></p>
 
-<!-- TODO: Sponsorship <audacityteam.org>. -->
+<p><?=_('We would also like to hear from any companies or groups interested in <a href="http://audacityteam.org/sponsor.php">sponsoring Audacity development</a>.')?></p>
 
 <?php
   include "../include/footer.inc.php";
