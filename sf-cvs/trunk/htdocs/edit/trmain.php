@@ -29,7 +29,10 @@ if ($fp) {
   }
 
   if ($update == "true") {
-    mkdir("../updates/$lang", 0777);
+	 if (!dir_exists("../updates/$lang")) {
+      mkdir("../updates/$lang", 0777);
+    }
+
     $fp = fopen($updatefile, "w");
     if (!($fp)) {
       $update = "Could not write temp file.";
