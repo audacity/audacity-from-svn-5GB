@@ -171,7 +171,7 @@ bool LadspaEffect::Process()
 
       bool success = false;
 
-      if (inputs == 1 && right) {
+      if (inputs < 2 && right) {
          // If the effect is mono, apply to each channel separately
 
          success = ProcessStereo(count, (WaveTrack *)left, NULL,
@@ -203,7 +203,7 @@ bool LadspaEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
 
       buffer = new float[mBlockSize];
       fInBuffer = new float *[inputs];
-      int i;
+      unsigned long i;
       for (i = 0; i < inputs; i++)
          fInBuffer[i] = new float[mBlockSize];
       fOutBuffer = new float *[outputs];
@@ -216,14 +216,14 @@ bool LadspaEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
    unsigned long rate = (unsigned long)(left->GetRate() + 0.5);
    LADSPA_Handle handle = mData->instantiate(mData, rate);
 
-   mData->connect_port(handle, inputPorts[0], fInBuffer[0]);
-   mData->connect_port(handle, outputPorts[0], fOutBuffer[0]);
-   if (inputs>1 && outputs>1 && right) {
-      mData->connect_port(handle, inputPorts[1], fInBuffer[1]);
-      mData->connect_port(handle, outputPorts[1], fOutBuffer[1]);
+   unsigned long p;
+   for(p=0; p<inputs; p++) {
+      mData->connect_port(handle, inputPorts[p], fInBuffer[p]);
+   }
+   for(p=0; p<outputs; p++) {
+      mData->connect_port(handle, outputPorts[p], fOutBuffer[p]);
    }
 
-   unsigned long p;
    for(p=0; p<mData->PortCount; p++) {
       LADSPA_PortDescriptor d = mData->PortDescriptors[p];
       if (LADSPA_IS_PORT_CONTROL(d)) {
@@ -249,10 +249,12 @@ bool LadspaEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
       if (block > len)
          block = len;
 
-      left->Get(buffer, ls, block);
-      for (i = 0; i < block; i++)
-         fInBuffer[0][i] = buffer[i];
-      if (right) {
+      if (left && inputs > 0) {
+         left->Get(buffer, ls, block);
+         for (i = 0; i < block; i++)
+            fInBuffer[0][i] = buffer[i];
+      }
+      if (right && inputs > 1) {
          right->Get(buffer, rs, block);
          for (i = 0; i < block; i++)
             fInBuffer[1][i] = buffer[i];
@@ -260,11 +262,13 @@ bool LadspaEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
 
       mData->run(handle, block);
 
-      for (i = 0; i < block; i++)
-         buffer[i] = fOutBuffer[0][i];
-      left->Set(buffer, ls, block);
+      if (left && outputs > 0) {
+         for (i = 0; i < block; i++)
+            buffer[i] = fOutBuffer[0][i];
+         left->Set(buffer, ls, block);
+      }      
       
-      if (right) {
+      if (right && outputs > 1) {
          for (i = 0; i < block; i++)
             buffer[i] = fOutBuffer[1][i];
          right->Set(buffer, rs, block);
@@ -292,7 +296,7 @@ bool LadspaEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
 void LadspaEffect::End()
 {
    if (buffer) {
-      int i;
+      unsigned long i;
 
       delete[]buffer;
       for (i = 0; i < inputs; i++) {
@@ -383,7 +387,7 @@ IMPLEMENT_CLASS(LadspaEffectDialog, wxDialog)
       gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
       wxString fieldText;
-      LADSPA_PortRangeHint hint = mData->PortRangeHints[p];
+      LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];
       if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
          fieldText.Printf("%d", (int)(inputControls[ports[p]] + 0.5));
       else
@@ -465,7 +469,7 @@ void LadspaEffectDialog::HandleSlider()
       float upper = 10.0;
       float range;
 
-      LADSPA_PortRangeHint hint = mData->PortRangeHints[p];      
+      LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];
       if (LADSPA_IS_HINT_BOUNDED_BELOW(hint.HintDescriptor))
          lower = hint.LowerBound;
       if (LADSPA_IS_HINT_BOUNDED_ABOVE(hint.HintDescriptor))
@@ -513,7 +517,7 @@ void LadspaEffectDialog::HandleText()
       fields[p]->GetValue().ToDouble(&dval);
       val = dval;
 
-      LADSPA_PortRangeHint hint = mData->PortRangeHints[p];
+      LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];
       if (LADSPA_IS_HINT_BOUNDED_BELOW(hint.HintDescriptor))
          lower = hint.LowerBound;
       if (LADSPA_IS_HINT_BOUNDED_ABOVE(hint.HintDescriptor))

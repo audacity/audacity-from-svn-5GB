@@ -47,9 +47,9 @@ class LadspaEffect:public Effect {
    float *buffer;
    float **fInBuffer;
    float **fOutBuffer;
-   int inputs;
-   int outputs;
-   int numInputControls;
+   unsigned long inputs;
+   unsigned long outputs;
+   unsigned long numInputControls;
    unsigned long *inputPorts;
    unsigned long *outputPorts;
    float *inputControls;
