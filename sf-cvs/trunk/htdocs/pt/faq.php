@@ -407,14 +407,14 @@ se deseje gravar, criando assim um arquivo para cada faixa.
 </p><p>
 No Audacity há várias maneiras de se executar esta tarefa, por exemplo:
 </p><p>
-Metodo 1: Exportando a seleção
+Método 1: Exportando a seleção
 </p><ul>
 <li>Selecione a área correspondente à primeira faixa. 
 </li><li>Selecione "Exportar seleção como..." no menu "Arquivo" e salve.
 </li><li>Repita o procedimento para cada faixa restante.
 </li></ul>
 <p>
-Metodo 2: Apagar e Desfazer
+Método 2: Apagar e Desfazer
 </p><ul>
 <li>Selecione e apague tudo <i>exceto</i> o conteúdo da primeira faixa a ser 
 
@@ -426,7 +426,7 @@ exportada.
 </li><li>Repita o procedimento para cada faixa restante.
 </li></ul>
 <p>
-Method 3: Separar e Exportar
+Método 3: Separar e Exportar
 </p><ul>
 <li>Selecione a área correspondente à primeira faixa.
 </li><li>Selecione no menu "Editar" - "Cortar em nova faixa" 
