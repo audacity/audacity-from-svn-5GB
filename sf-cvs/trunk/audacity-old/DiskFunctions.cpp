@@ -105,7 +105,7 @@ void my_c2pstr(char *str)
 long GetFreeDiskSpace( const char *path )
 {
 	char *str = new char[strlen(path)+1];
-	strcpy(str, wxUnix2MacFilename(path));
+	strcpy(str, path);
 	char *p = str;
 	
 	/* We expect something like ":Macintosh HD:Audacity:"
