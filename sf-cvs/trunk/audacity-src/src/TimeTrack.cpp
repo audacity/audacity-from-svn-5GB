@@ -33,9 +33,9 @@ TimeTrack::TimeTrack(DirManager *projDirManager):
    mRangeUpper = 110;
 
    mEnvelope = new Envelope();
+   mEnvelope->SetTrackLen(1000000000.0);
    mEnvelope->SetInterpolateDB(false);
    mEnvelope->Flatten(0.5);
-   mEnvelope->SetDefaultValue(0.5);
    mEnvelope->Mirror(false);
    SetName(_("Time Track"));
 
@@ -56,9 +56,9 @@ TimeTrack::TimeTrack(TimeTrack &orig):
    Init(orig);
 
    mEnvelope = new Envelope();
+   mEnvelope->SetTrackLen(1000000000.0);
    mEnvelope->SetInterpolateDB(false);
    mEnvelope->Flatten(0.5);
-   mEnvelope->SetDefaultValue(0.5);
    mEnvelope->Mirror(false);
    mEnvelope->Paste(0.0, orig.mEnvelope);
    mEnvelope->SetOffset(0);
@@ -115,10 +115,13 @@ bool TimeTrack::HandleXMLTag(const char *tag, const char **attrs)
          if (!value)
             break;
          
-         else if (!strcmp(attr, "offset"))
+         else if (!strcmp(attr, "offset")) {
             wxString(value).ToDouble(&mOffset);
-         else if (!strcmp(attr, "name"))
+            mEnvelope->SetOffset(mOffset);
+         }else if (!strcmp(attr, "name"))
             mName = value;
+         else if (!strcmp(attr, "channel"))
+            mChannel = atoi(value);
          
       } // while
       return true;
@@ -129,6 +132,9 @@ bool TimeTrack::HandleXMLTag(const char *tag, const char **attrs)
 
 XMLTagHandler *TimeTrack::HandleXMLChild(const char *tag)
 {
+   if (!strcmp(tag, "envelope"))
+      return mEnvelope;
+
   return NULL;
 }
 
@@ -141,6 +147,7 @@ void TimeTrack::WriteXML(int depth, FILE *fp)
    fprintf(fp, "<timetrack ");
    fprintf(fp, "name=\"%s\" ", mName.c_str());
    fprintf(fp, "channel=\"%d\" ", mChannel);
+   fprintf(fp, "offset=\"%f\" ", mOffset);
    fprintf(fp, ">\n");
 
    mEnvelope->WriteXML(depth+1, fp);
