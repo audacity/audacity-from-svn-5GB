@@ -168,7 +168,7 @@ bool LadspaEffect::Process()
          GetSamples((WaveTrack *)right, &rstart, &len);
       }
 
-      bool success;
+      bool success = false;
 
       if (inputs == 1 && right) {
          // If the effect is mono, apply to each channel separately
@@ -179,12 +179,9 @@ bool LadspaEffect::Process()
             success = ProcessStereo(count, (WaveTrack *)right, NULL,
                                     rstart, 0, len);
       }
-      else {
-         bool success = ProcessStereo(count,
-                                      (WaveTrack *)left, (WaveTrack *)right,
-                                      lstart, rstart, len);
-      }
-         
+      else success = ProcessStereo(count,
+                                   (WaveTrack *)left, (WaveTrack *)right,
+                                   lstart, rstart, len);
       if (!success)
          return false;
    
