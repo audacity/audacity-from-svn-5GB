@@ -4329,12 +4329,14 @@ void TrackLabel::MakeMoreSliders()
    GetGainRect(r, gainRect);
    GetPanRect(r, panRect);
 
+   /* i18n-hint: Title of the Gain slider, used to adjust the volume */
    LWSlider *slider = new LWSlider(pParent, _("Gain"),
                                    wxPoint(gainRect.x, gainRect.y),
                                    wxSize(gainRect.width, gainRect.height),
                                    DB_SLIDER);
    mGains.Add(slider);
    
+   /* i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically */
    slider = new LWSlider(pParent, _("Pan"),
                          wxPoint(panRect.x, panRect.y),
                          wxSize(panRect.width, panRect.height),
