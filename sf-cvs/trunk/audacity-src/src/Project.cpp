@@ -15,6 +15,8 @@
 
 **********************************************************************/
 
+#include "Project.h"
+
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
@@ -47,7 +49,6 @@
 #include "Mix.h"
 #include "NoteTrack.h"
 #include "Prefs.h"
-#include "Project.h"
 #include "Tags.h"
 #include "ToolBar.h"
 #include "Track.h"
@@ -131,13 +132,11 @@ AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
    gAudacityDocNum = (gAudacityDocNum + 1) % 10;
 
    SetActiveProject(p);
-
    return p;
 }
 
 void RedrawAllProjects()
 {
-
    int len = gAudacityProjects.GetCount();
    for (int i = 0; i < len; i++)
       gAudacityProjects[i]->RedrawProject();
@@ -176,10 +175,9 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_ACTIVATE(AudacityProject::OnActivate)
     EVT_COMMAND_SCROLL_LINEUP(HSBarID, AudacityProject::OnScrollLeftButton)
     EVT_COMMAND_SCROLL_LINEDOWN(HSBarID, AudacityProject::OnScrollRightButton)
-EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
-
+    EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
+    EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
     EVT_DROP_FILES(AudacityProject::OnDropFiles)
-EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
     // Update menu method
     EVT_UPDATE_UI(UndoID, AudacityProject::OnUpdateMenus)
 END_EVENT_TABLE()
@@ -199,11 +197,7 @@ mDefaultFormat((sampleFormat) gPrefs->
 mTrackPanel(NULL), mHistoryWindow(NULL), mAutoScrolling(false),
 mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
 {
-
-   //
    // Create track list
-   //
-
    mTracks = new TrackList();
    mLastSavedTracks = NULL;
 
@@ -246,11 +240,9 @@ mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
    int left = 0, top = 0, width, height;
    GetClientSize(&width, &height);
 
-   //
    // Create the Control Toolbar (if we're not using a windowed toolbar)
-   // The control toolbar should be automatically loaded--other toolbars are optional.
-
-
+   // The control toolbar should be automatically loaded--other toolbars
+   // are optional.
 
    if (!gControlToolBarStub->GetWindowedStatus()) {
       int h = gControlToolBarStub->GetHeight();
@@ -354,54 +346,36 @@ mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
 
 AudacityProject::~AudacityProject()
 {
-   int i;
    if (gAudioIO->IsBusy() && gAudioIO->GetProject() == this)
       gAudioIO->HardStop();
-
 
    //Go through the toolbar array and delete all the toolbars
    //Do this from the bottom, to avoid too much popping forward in the array
    // that would be obtained if you keep deleting the 0th item from the front
 
-
-
+   int i;
    for (i = mToolBarArray.GetCount() - 1; i >= 0; i--) {
-
       delete mToolBarArray[i];
       mToolBarArray.RemoveAt(i);
    }
    mToolBarArray.Clear();
    WX_CLEAR_ARRAY(mToolBarArray)
 
-
-
    delete mTags;
    mTags = NULL;
-
 
    mTracks->Clear(true);
    delete mTracks;
    mTracks = NULL;
 
-
    mCommandMenuItem.Clear();
-
 
    gAudacityProjects.Remove(this);
 
-   if (gAudacityProjects.IsEmpty()) {
+   if (gAudacityProjects.IsEmpty())
       QuitAudacity();
-   } else {
-
-      if (gActiveProject == this) {
-         // Find a new active project
-         if (gAudacityProjects.GetCount() > 0)
-            gActiveProject = gAudacityProjects[0];
-         else
-            gActiveProject = NULL;
-      }
-
-   }
+   else if (gActiveProject == this)
+      gActiveProject = gAudacityProjects[0];
 }
 
 void AudacityProject::RedrawProject()
@@ -474,39 +448,34 @@ void AudacityProject::FinishAutoScroll()
 
 void AudacityProject::OnScrollLeft()
 {
-
-
    int pos = mHsbar->GetThumbPosition();
    pos = (pos > 0) ? pos : 0;   //Set to larger of pos and 0
 
    if (pos > 0) {
-      mHsbar->SetThumbPosition(pos - sbarHjump);        //Jump 30 pixels to the left
+      mHsbar->SetThumbPosition(pos - sbarHjump);  //Jump 30 pixels to the left
       FinishAutoScroll();
    }
 }
 
 void AudacityProject::OnScrollRight()
 {
-
    int pos = mHsbar->GetThumbPosition();
    int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
    pos = (pos < max) ? pos : max;       //Set to smaller of pos and max
 
    if (pos < max) {
-      mHsbar->SetThumbPosition(pos + sbarHjump);        //Jump 30 pixels to the right
+      mHsbar->SetThumbPosition(pos + sbarHjump);  //Jump 30 pixels to the right
       FinishAutoScroll();
    }
 }
 
 void AudacityProject::OnScrollLeftButton(wxScrollEvent & event)
 {
-
-
    int pos = mHsbar->GetThumbPosition();
    pos = (pos > 0) ? pos : 0;   //Set to larger of pos and 0
 
    if (pos > 0) {
-      mHsbar->SetThumbPosition(pos - sbarHjump);        //Jump 30 pixels to the left
+      mHsbar->SetThumbPosition(pos - sbarHjump);  //Jump 30 pixels to the left
       OnScroll(event);
    }
 }
@@ -514,14 +483,12 @@ void AudacityProject::OnScrollLeftButton(wxScrollEvent & event)
 
 void AudacityProject::OnScrollRightButton(wxScrollEvent & event)
 {
-
    int pos = mHsbar->GetThumbPosition();
    int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
    pos = (pos < max) ? pos : max;       //Set to smaller of pos and max
 
    if (pos < max) {
-      mHsbar->SetThumbPosition(pos + sbarHjump);        //Jump 30 pixels to the right
-
+      mHsbar->SetThumbPosition(pos + sbarHjump);  //Jump 30 pixels to the right
       OnScroll(event);
    }
 }
@@ -531,10 +498,7 @@ void AudacityProject::OnScrollRightButton(wxScrollEvent & event)
 void AudacityProject::TP_ScrollWindow(double scrollto)
 {
    int pos = (int) (scrollto * mViewInfo.zoom);
-
    int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
-
-
 
    if (pos > max)
       pos = max;
@@ -559,9 +523,9 @@ void AudacityProject::FixScrollbars()
    int panelWidth, panelHeight;
    mTrackPanel->GetTracksUsableArea(&panelWidth, &panelHeight);
 
-
+   // Add 1/4 of a screen of blank space to the end of the longest track
    mViewInfo.screen = ((double) panelWidth) / mViewInfo.zoom;
-   mViewInfo.total = mTracks->GetMaxLen() + mViewInfo.screen / 4;       //Add 1/4 of a screen of blank space to the end of the longest track
+   mViewInfo.total = mTracks->GetMaxLen() + mViewInfo.screen / 4;
 
    if (mViewInfo.h > mViewInfo.total - mViewInfo.screen) {
       mViewInfo.h = mViewInfo.total - mViewInfo.screen;
@@ -573,9 +537,7 @@ void AudacityProject::FixScrollbars()
    }
 
    mViewInfo.sbarTotal = (int) (mViewInfo.total * mViewInfo.zoom);
-
    mViewInfo.sbarScreen = (int) (mViewInfo.screen * mViewInfo.zoom);
-
    mViewInfo.sbarH = (int) (mViewInfo.h * mViewInfo.zoom);
 
    mViewInfo.vpos = mVsbar->GetThumbPosition() * mViewInfo.scrollStep;
@@ -627,7 +589,6 @@ void AudacityProject::FixScrollbars()
 void AudacityProject::HandleResize()
 {
    if (mTrackPanel) {
-
       int left = 0, top = 0;
       int width, height;
       GetClientSize(&width, &height);
@@ -636,7 +597,6 @@ void AudacityProject::HandleResize()
       int i;
       int h = 0;
       int ptop = 0;
-
 
       for (i = 0; i < mToolBarArray.GetCount(); i++) {
          toolbartop = h;
@@ -672,8 +632,6 @@ void AudacityProject::HandleResize()
                       2 * sbarExtraLen);
 
       FixScrollbars();
-
-
    }
 }
 
@@ -689,14 +647,10 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
    int hoffset = 0;
    int voffset = 0;
 
-
-
    mViewInfo.sbarH = mHsbar->GetThumbPosition();
-
 
    if (mViewInfo.sbarH != hlast) {
       mViewInfo.h = mViewInfo.sbarH / mViewInfo.zoom;
-
 
       if (mViewInfo.h > mViewInfo.total - mViewInfo.screen)
          mViewInfo.h = mViewInfo.total - mViewInfo.screen;
@@ -707,7 +661,6 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
 
    mViewInfo.vpos = mVsbar->GetThumbPosition() * mViewInfo.scrollStep;
    voffset = mViewInfo.vpos - vlast;
-
 
    /*   TODO: add back fast scrolling code
 
@@ -721,7 +674,6 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
       }
     */
 
-
    SetActiveProject(this);
 
    if (!mAutoScrolling) {
@@ -734,7 +686,6 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
 
 bool AudacityProject::ProcessEvent(wxEvent & event)
 {
-
    int numEffects = Effect::GetNumEffects(false);
    int numPlugins = Effect::GetNumEffects(true);
    Effect *f = NULL;
@@ -744,13 +695,13 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
       if (event.GetId() >= FirstEffectID &&
           event.GetId() < FirstEffectID + numEffects) {
          f = Effect::GetEffect(event.GetId() - FirstEffectID, false);
-      } else if (event.GetId() >= FirstPluginID &&
+      }
+      else if (event.GetId() >= FirstPluginID &&
                  event.GetId() < FirstPluginID + numPlugins) {
          f = Effect::GetEffect(event.GetId() - FirstPluginID, true);
-      } else {
-         if (HandleMenuEvent(event))
-            return true;
       }
+      else if (HandleMenuEvent(event))
+         return true;
    }
 
    if (f) {
@@ -818,15 +769,12 @@ void AudacityProject::OnPaint(wxPaintEvent & event)
       r.height = toolbarheight;
       dc.DrawRectangle(r);
 
-
-
       //Draw a rectangle around the "grab-bar"
       r.x = 0;
       r.y = toolbartop;
       r.width = 10;
       r.height = toolbarheight;
       dc.DrawRectangle(r);
-
 
       // Draw little bumps to the left of the toolbar to
       // make it a "grab-bar".
@@ -854,11 +802,9 @@ void AudacityProject::OnPaint(wxPaintEvent & event)
       dc.DrawLine(0, toolbartop, 0, toolbarbottom);
 #endif
 
-
       dc.DrawLine(0, toolbarbottom, width, toolbarbottom);
       h++;
    }
-
 
    //Now, h is equal to the total height of all the toolbars
    top += h;
@@ -867,8 +813,6 @@ void AudacityProject::OnPaint(wxPaintEvent & event)
    int sh = GetStatusHeight();
    height -= sh;
 
-
-
    // Fill in space on sides of scrollbars
 
    dc.SetPen(*wxBLACK_PEN);
@@ -876,7 +820,6 @@ void AudacityProject::OnPaint(wxPaintEvent & event)
                width - sbarSpaceWidth, top + height - sbarSpaceWidth + 1);
    dc.DrawLine(0, top + height - sbarSpaceWidth,
                width - sbarSpaceWidth, top + height - sbarSpaceWidth);
-
 
    wxRect f;
    f.x = 0;
@@ -892,22 +835,18 @@ void AudacityProject::OnPaint(wxPaintEvent & event)
 void AudacityProject::OnActivate(wxActivateEvent & event)
 {
    SetActiveProject(this);
-
    event.Skip();
 }
-
 
 //This creates a toolbar of type t in the ToolBars array
 void AudacityProject::LoadToolBar(enum ToolBarType t)
 {
-
    //First, go through ToolBarArray and determine the current 
    //combined height of all toolbars.
    int tbheight = 0;
    int len = mToolBarArray.GetCount();
    for (int i = 0; i < len; i++)
       tbheight += mToolBarArray[i]->GetHeight();
-
 
    //Get the size of the current project window
    int width, height;
@@ -959,7 +898,6 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
 // audacity, put code here and call this function at appropriate times..
 void AudacityProject::MakeToolBarMenuEntriesCorrect()
 {
-
    if (gEditToolBarStub) {
 
       if (gEditToolBarStub->GetLoadedStatus()) {
@@ -1022,7 +960,6 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
          delete mToolBarArray[i];
          mToolBarArray.RemoveAt(i);
 
-
          //Now, do any changes specific to different toolbar types
          switch (t) {
          case ControlToolBarID:
@@ -1031,28 +968,23 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
             //should change the menu entry of this project
             ((wxMenuItemBase *) mViewMenu->
              FindItem(FloatControlToolBarID))->
-SetName(_("Unfloat Control Toolbar"));
+               SetName(_("Unfloat Control Toolbar"));
             break;
 
          case EditToolBarID:
-
-
             break;
 
          case NoneID:
          default:
             break;
          }
-
       }
    }
-
    HandleResize();
 }
 
 bool AudacityProject::IsToolBarLoaded(enum ToolBarType t)
 {
-
    int len = mToolBarArray.GetCount();
    for (int i = 0; i < len; i++) {
 
@@ -1066,7 +998,6 @@ bool AudacityProject::IsToolBarLoaded(enum ToolBarType t)
 
 void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 {
-
    if (event.ButtonDown())
       SetActiveProject(this);
 
@@ -1075,7 +1006,6 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
    hotspot.y = event.m_y;
 
    wxPoint mouse = ClientToScreen(hotspot);
-
 
    //See if we need to drag a toolbar off the window
    if (event.ButtonDown()
@@ -1127,16 +1057,15 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
          delete memDC;
 
          mDrag = new wxDragImage(*bitmap);
-
          delete bitmap;
 
+         //Adjust a little because the bitmap is bigger than the toolbar
          mDrag->BeginDrag(hotspot, this, true);
-         mDrag->Move(mouse - wxPoint(1, 2));    //Adjust a little because the bitmap is bigger than the toolbar
+         mDrag->Move(mouse - wxPoint(1, 2));
          mDrag->Show();
          mToolBarHotspot = hotspot;
 
          mDraggingToolBar = mToolBarArray[i]->GetType();
-
       }
    }
 
@@ -1168,15 +1097,10 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
          break;
       }
 
-
       mDraggingToolBar = NoneID;
       HandleResize();
-
    }
-
 }
-
-
 
 void AudacityProject::OnClose(wxEvent & event)
 {
@@ -1314,7 +1238,6 @@ void AudacityProject::OpenFile(wxString fileName)
    }
 
    mTracks->Clear();
-
    mTracks->Load(&f, &mDirManager);
 
    // By making a duplicate set of pointers to the existing blocks
@@ -1339,7 +1262,6 @@ void AudacityProject::OpenFile(wxString fileName)
    InitialState();
    HandleResize();
    mTrackPanel->Refresh(false);
-
    return;
 
  openFileError:
@@ -1457,7 +1379,6 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
                                       "Perhaps %s is not writeable,\n"
                                       "or the disk is full."),
                                     (const char *) project));
-
       if (safetyFileName)
          wxRename(safetyFileName, mFileName);
 
