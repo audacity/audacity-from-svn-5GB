@@ -18,7 +18,6 @@
 #include "TrackArtist.h"
 
 #include <math.h>
-#include <iostream>
 
 #include <wx/brush.h>
 #include <wx/colour.h>
@@ -41,6 +40,12 @@
 #include "Spectrum.h"
 #include "ViewInfo.h"
 #include "widgets/Ruler.h"
+
+#ifdef new
+#undef new
+#endif
+
+#include <iostream>
 
 const int octaveHeight = 62;
 const int blackPos[5] = { 6, 16, 32, 42, 52 };
