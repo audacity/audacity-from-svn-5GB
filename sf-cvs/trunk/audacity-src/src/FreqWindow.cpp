@@ -35,6 +35,8 @@
 
 #include "AColor.h"
 #include "FFT.h"
+#include "PitchName.h"
+
 
 enum {
    FirstID = 7000,
@@ -270,7 +272,7 @@ void FreqWindow::OnAlgChoice(wxCommandEvent & event)
    // Log-frequency axis works for spectrum plots only.
    if (mAlgChoice->GetSelection() == 0) {
       mAxisChoice->Enable(true);
-      mLogAxis = mAxisChoice->GetSelection();
+      mLogAxis = (bool)(mAxisChoice->GetSelection());
    }
    else {
       mAxisChoice->Disable();
@@ -291,7 +293,7 @@ void FreqWindow::OnFuncChoice(wxCommandEvent & event)
 
 void FreqWindow::OnAxisChoice(wxCommandEvent & event)
 {
-   mLogAxis = mAxisChoice->GetSelection();
+   mLogAxis = (bool)(mAxisChoice->GetSelection());
 
    mFreqPlot->Refresh(false);
 }
@@ -304,8 +306,6 @@ void FreqWindow::OnAxisChoice(wxCommandEvent & event)
 /* Declare Static functions */
 static float CubicInterpolate(float y0, float y1, float y2, float y3, float x);
 static float CubicMaximize(float y0, float y1, float y2, float y3);
-static float Freq2Pitch(float freq);
-static char *PitchName(int pitch, bool flats);
 
 float CubicInterpolate(float y0, float y1, float y2, float y3, float x)
 {
@@ -361,91 +361,6 @@ float CubicMaximize(float y0, float y1, float y2, float y3)
       return x1;
    else
       return x2;
-}
-
-float Freq2Pitch(float freq)
-{
-   return float (69.0 + 12.0 * (log(freq / 440.0) / log(2.0)));
-}
-
-char gPitchName[10];
-
-char *PitchName(int pitch, bool flats)
-{
-   char *p = gPitchName;
-
-   switch (pitch % 12) {
-   case 0:
-      *p++ = 'C';
-      break;
-   case 1:
-      if (flats) {
-         *p++ = 'D';
-         *p++ = 'b';
-      } else {
-         *p++ = 'C';
-         *p++ = '#';
-      }
-      break;
-   case 2:
-      *p++ = 'D';
-      break;
-   case 3:
-      if (flats) {
-         *p++ = 'E';
-         *p++ = 'b';
-      } else {
-         *p++ = 'D';
-         *p++ = '#';
-      }
-      break;
-   case 4:
-      *p++ = 'E';
-      break;
-   case 5:
-      *p++ = 'F';
-      break;
-   case 6:
-      if (flats) {
-         *p++ = 'G';
-         *p++ = 'b';
-      } else {
-         *p++ = 'F';
-         *p++ = '#';
-      }
-      break;
-   case 7:
-      *p++ = 'G';
-      break;
-   case 8:
-      if (flats) {
-         *p++ = 'A';
-         *p++ = 'b';
-      } else {
-         *p++ = 'G';
-         *p++ = '#';
-      }
-      break;
-   case 9:
-      *p++ = 'A';
-      break;
-   case 10:
-      if (flats) {
-         *p++ = 'B';
-         *p++ = 'b';
-      } else {
-         *p++ = 'A';
-         *p++ = '#';
-      }
-      break;
-   case 11:
-      *p++ = 'B';
-      break;
-   }
-
-   sprintf(p, "%d", ((pitch + 3) / 12) - 2);
-
-   return gPitchName;
 }
 
 float FreqWindow::GetProcessedValue(float freq0, float freq1)
