@@ -13,6 +13,7 @@
 **********************************************************************/
 
 #include <math.h>
+#include <wx/intl.h>
 
 #include "Amplify.h"
 #include "../WaveTrack.h"
@@ -38,7 +39,7 @@ bool EffectAmplify::Init()
       sampleType min, max;
       GetSamples((WaveTrack *)t, &start, &len);
       ((WaveTrack *)t)->GetMinMax(start, len, &min, &max);
-      float newpeak = (abs(min) > abs(max) ? abs(min) : abs(max)) / 32768.0;
+      float newpeak = (abs(min) > abs(max) ? abs(min) : abs(max)) / 32767.0;
       
       if (newpeak > peak)
          peak = newpeak;
@@ -53,7 +54,7 @@ bool EffectAmplify::Init()
 
 bool EffectAmplify::PromptUser()
 {
-   AmplifyDialog dlog(mParent, -1, "Amplify");
+   AmplifyDialog dlog(mParent, -1, _("Amplify"));
    dlog.peak = peak;
    dlog.ratio = 1.0 / peak;
    dlog.TransferDataToWindow();
@@ -331,7 +332,7 @@ wxSizer *MakeAmplifyDialog(wxPanel * parent, bool call_fit,
 
    wxStaticText *item1 =
        new wxStaticText(parent, ID_TEXT,
-                        "Amplify by Dominic Mazzoni",
+                        _("Amplify by Dominic Mazzoni"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item0->Add(item1, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -341,7 +342,7 @@ wxSizer *MakeAmplifyDialog(wxPanel * parent, bool call_fit,
    
    wxStaticText *item3 =
        new wxStaticText(parent, ID_TEXT,
-                        "Amplification (dB):",
+                        _("Amplification (dB):"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item2->Add(item3, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
 
@@ -363,7 +364,7 @@ wxSizer *MakeAmplifyDialog(wxPanel * parent, bool call_fit,
    
    wxStaticText *item7 =
        new wxStaticText(parent, ID_TEXT,
-                        "New Peak Amplitude (dB):",
+                        _("New Peak Amplitude (dB):"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item6->Add(item7, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
 
@@ -375,7 +376,7 @@ wxSizer *MakeAmplifyDialog(wxPanel * parent, bool call_fit,
    item0->Add(item6, 0, wxGROW | wxALIGN_CENTRE | wxALL, 5);
 
    wxCheckBox *item8b = new wxCheckBox(parent, ID_CLIP_CHECKBOX,
-                        "Don't allow clipping",
+                        _("Don't allow clipping"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item8b->SetValue(true);
 
@@ -384,14 +385,14 @@ wxSizer *MakeAmplifyDialog(wxPanel * parent, bool call_fit,
    wxBoxSizer *item9 = new wxBoxSizer(wxHORIZONTAL);
 
    wxButton *item10 =
-       new wxButton(parent, wxID_OK, "OK", wxDefaultPosition,
+       new wxButton(parent, wxID_OK, _("OK"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item10->SetDefault();
    item10->SetFocus();
    item9->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxButton *item11 =
-       new wxButton(parent, wxID_CANCEL, "Cancel", wxDefaultPosition,
+       new wxButton(parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item9->Add(item11, 0, wxALIGN_CENTRE | wxALL, 5);
 

@@ -17,6 +17,7 @@
 #include <wx/sizer.h>
 #include <wx/slider.h>
 #include <wx/stattext.h>
+#include <wx/intl.h>
 
 class wxString;
 
@@ -32,14 +33,14 @@ public:
    EffectNoiseRemoval();
    
    virtual wxString GetEffectName() {
-      return wxString("Noise Removal...");
+      return wxString(_("Noise Removal..."));
    }
    
    virtual wxString GetEffectAction() {
       if (doProfile)
-         return wxString("Creating Noise Profile");
+         return wxString(_("Creating Noise Profile"));
       else
-         return wxString("Removing Noise");
+         return wxString(_("Removing Noise"));
    }
    
    virtual bool PromptUser();

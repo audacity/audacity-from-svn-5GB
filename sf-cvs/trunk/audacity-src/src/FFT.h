@@ -80,7 +80,7 @@ void WindowFunc(int whichFunction, int NumSamples, float *data);
  * Returns the name of the windowing function (for UI display)
  */
 
-char *WindowFuncName(int whichFunction);
+const char *WindowFuncName(int whichFunction);
 
 /*
  * Returns the number of windowing functions supported

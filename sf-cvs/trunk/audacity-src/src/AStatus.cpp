@@ -14,6 +14,7 @@
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
+#include <wx/intl.h>
 
 #include "AColor.h"
 #include "AStatus.h"
@@ -65,7 +66,7 @@ mListener(listener), mBitmap(NULL), mRate(rate)
    mRateMenu->Append(OnRate22ID, "22050 Hz");
    mRateMenu->Append(OnRate44ID, "44100 Hz");
    mRateMenu->Append(OnRate48ID, "48000 Hz");
-   mRateMenu->Append(OnRateOtherID, "Other...");
+   mRateMenu->Append(OnRateOtherID, _("Other..."));
 
    mRateField.x = 0;
    mRateField.y = 0;
@@ -183,7 +184,7 @@ void AStatus::OnPaint(wxPaintEvent & event)
    mRateField.height = 17;
    AColor::Bevel(memDC, true, mRateField);
 
-   memDC.DrawText("Project rate:", 3, mRateField.y + 2);
+   memDC.DrawText(_("Project rate:"), 3, mRateField.y + 2);
 
    memDC.DrawText(wxString::Format("%d", int (mRate + 0.5)),
                   mRateField.x + 3, mRateField.y + 2);
@@ -257,8 +258,8 @@ void AStatus::OnRateOther()
    wxString defaultStr;
    defaultStr.Printf("%d", (int) (mRate + 0.5));
    wxString rateStr =
-       wxGetTextFromUser("Enter a rate in Hz (samples per second):",
-                         "Set Rate",
+       wxGetTextFromUser(_("Enter a rate in Hz (samples per second):"),
+                         _("Set Rate"),
                          defaultStr);
 
    if (rateStr != "") {
@@ -268,6 +269,6 @@ void AStatus::OnRateOther()
          mListener->AS_SetRate(mRate);
          Refresh(false);
       } else
-         wxMessageBox("Invalid rate.");
+         wxMessageBox(_("Invalid rate."));
    }
 }

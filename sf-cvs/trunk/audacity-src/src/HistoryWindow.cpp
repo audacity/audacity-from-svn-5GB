@@ -13,6 +13,7 @@
 #include <wx/textctrl.h>
 #include <wx/statbox.h>
 #include <wx/stattext.h>
+#include <wx/intl.h>
 
 #include "../images/Arrow.xpm"
 #include "HistoryWindow.h"
@@ -31,7 +32,7 @@ BEGIN_EVENT_TABLE(HistoryWindow, wxDialog)
 END_EVENT_TABLE()
 
 HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
-wxDialog(parent, -1, "Undo History", wxDefaultPosition,
+wxDialog(parent, -1, _("Undo History"), wxDefaultPosition,
          wxDefaultSize, wxDIALOG_MODELESS | wxCAPTION | wxTHICK_FRAME)
 {
    mTopSizer = new wxBoxSizer(wxVERTICAL);
@@ -44,27 +45,31 @@ wxDialog(parent, -1, "Undo History", wxDefaultPosition,
    imageList->Add(wxIcon(empty_24x24_xpm));
    imageList->Add(wxIcon(arrow_xpm));
    mList->SetImageList(imageList, wxIMAGE_LIST_SMALL);
-   mList->InsertColumn(0, "Action", wxLIST_FORMAT_LEFT, 280);
-   mList->InsertColumn(1, "Size", wxLIST_FORMAT_LEFT);
+   mList->InsertColumn(0, _("Action"), wxLIST_FORMAT_LEFT, 280);
+   mList->InsertColumn(1, _("Size"), wxLIST_FORMAT_LEFT);
 
 
    mTopSizer->Add(mList, 1, wxGROW|wxALL, 2);
    
    {
-      wxStaticBoxSizer *purgeSizer = new wxStaticBoxSizer(new wxStaticBox(this, -1, "Discard undo data"), wxVERTICAL);
+      wxStaticBoxSizer *purgeSizer = new wxStaticBoxSizer(
+              new wxStaticBox(this, -1, _("Discard undo data")),
+              wxVERTICAL);
 
       wxBoxSizer *firstLine = new wxBoxSizer(wxHORIZONTAL);
 
       purgeSizer->Add(
-         mLevelsAvailable = new wxStaticText(this, -1, "Undo Levels Available (lots and lots)",
-                          wxDefaultPosition, wxDefaultSize, 0),
-         0, wxALIGN_LEFT|wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL, 2 );
+         mLevelsAvailable = new wxStaticText(this, -1,
+            _("Undo Levels Available (lots and lots)"),
+            wxDefaultPosition, wxDefaultSize, 0),
+            0, wxALIGN_LEFT|wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL, 2);
 
       purgeSizer->Add(firstLine);
 
       wxBoxSizer *secondLine = new wxBoxSizer(wxHORIZONTAL);
 
-      secondLine->Add(new wxStaticText(this, -1, "Levels to discard: "), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 3);
+      secondLine->Add(new wxStaticText(this, -1, _("Levels to discard: ")),
+                            0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 3);
 
       secondLine->Add(
          mDiscardNum = new wxSpinCtrl(this, -1, "1", wxDefaultPosition, wxDefaultSize,
@@ -72,7 +77,7 @@ wxDialog(parent, -1, "Undo History", wxDefaultPosition,
          0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
 
       secondLine->Add(
-         mDiscard = new wxButton(this, DiscardID, "Discard"),
+         mDiscard = new wxButton(this, DiscardID, _("Discard")),
          0, wxALIGN_RIGHT|wxALL, 2 );
 
       purgeSizer->Add(secondLine, 0, wxGROW);
@@ -123,7 +128,7 @@ void HistoryWindow::UpdateDisplay()
    
    mList->Show();
 
-   mLevelsAvailable->SetLabel(wxString::Format("Undo Levels Available: %d",
+   mLevelsAvailable->SetLabel(wxString::Format(_("Undo Levels Available: %d"),
                                               mManager->GetCurrentState() - 1));
 
    mDiscardNum->SetRange(1, mManager->GetCurrentState() - 1);

@@ -74,8 +74,8 @@ wxString ExportCommon(AudacityProject *project,
    }
 
    if (numSelected == 0 && selectionOnly) {
-      wxMessageBox("No tracks are selected!\n"
-                   "Choose Export... to export all tracks.");
+      wxMessageBox(_("No tracks are selected!\n"
+                     "Choose Export... to export all tracks."));
       return "";
    }
 
@@ -92,18 +92,18 @@ wxString ExportCommon(AudacityProject *project,
    if (numLeft > 1 || numRight > 1)
       if (stereo)
          wxMessageBox
-             ("Your tracks will be mixed down to two stereo channels "
-              "in the exported file.");
+             (_("Your tracks will be mixed down to two stereo channels "
+                "in the exported file."));
       else
          wxMessageBox
-             ("Your tracks will be mixed down to a single mono channel "
-              "in the exported file.");
+             (_("Your tracks will be mixed down to a single mono channel "
+                "in the exported file."));
 
    /* Prepare and display the filename selection dialog */
 
    wxString path = gPrefs->Read("/DefaultExportPath",::wxGetCwd());
 
-   wxString fName = wxFileSelector(wxString::Format("Save %s File As:",
+   wxString fName = wxFileSelector(wxString::Format(_("Save %s File As:"),
                                                     (const char *) format),
                                    path,
                                    extension,   // default file name
@@ -113,7 +113,7 @@ wxString ExportCommon(AudacityProject *project,
 
    if (fName.Length() >= 256) {
       wxMessageBox
-          ("Sorry, pathnames longer than 256 characters not supported.");
+          (_("Sorry, pathnames longer than 256 characters not supported."));
       return "";
    }
 

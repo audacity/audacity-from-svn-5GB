@@ -14,6 +14,7 @@
 #include <wx/msgdlg.h>
 #include <wx/progdlg.h>
 #include <wx/timer.h>
+#include <wx/intl.h>
 
 #include "sndfile.h"
 
@@ -60,13 +61,13 @@ bool ExportPCM(AudacityProject *project,
    if (!sf_format_check(&info))
       info.pcmbitwidth = 16;
    if (!sf_format_check(&info)) {
-      wxMessageBox("Cannot export audio in this format.");
+      wxMessageBox(_("Cannot export audio in this format."));
       return false;
    }
 
    sf = sf_open_write((const char *)fName, &info);
    if (!sf) {
-      wxMessageBox(wxString::Format("Cannot export audio to %s",
+      wxMessageBox(wxString::Format(_("Cannot export audio to %s"),
                                     (const char *)fName));
       return false;
    }
@@ -122,16 +123,16 @@ bool ExportPCM(AudacityProject *project,
          if (selectionOnly)
             message =
                 wxString::
-                Format("Exporting the selected audio as a %s file",
+                Format(_("Exporting the selected audio as a %s file"),
                        (const char *) formatStr);
          else
             message =
                 wxString::
-                Format("Exporting the entire project as a %s file",
+                Format(_("Exporting the entire project as a %s file"),
                        (const char *) formatStr);
 
          progress =
-             new wxProgressDialog("Export",
+             new wxProgressDialog(_("Export"),
                                   message,
                                   1000,
                                   parent,
@@ -152,7 +153,7 @@ bool ExportPCM(AudacityProject *project,
       char buffer[1000];
       sf_error_str(sf, buffer, 1000);
       wxMessageBox(wxString::Format
-                   ("Error (file may not have been written): %s",
+                   (_("Error (file may not have been written): %s"),
                     buffer));
    }
 

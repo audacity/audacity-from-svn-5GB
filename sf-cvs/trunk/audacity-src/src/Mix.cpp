@@ -12,6 +12,7 @@
 #include <wx/msgdlg.h>
 #include <wx/progdlg.h>
 #include <wx/timer.h>
+#include <wx/intl.h>
 
 #include "Mix.h"
 
@@ -55,15 +56,15 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
    }
 
    if (numWaves < 2) {
-      wxMessageBox("First select two or more tracks to mix together");
+      wxMessageBox(_("First select two or more tracks to mix together"));
       return false;
    }
 
    if (numLeft == 1 && numRight == 1 && numWaves == 2) {
-      wxMessageBox
-          ("Mix would have no effect.  If you want to mix a left and "
-           "a right channel together, turn them both into mono "
-           "channels first.");
+      wxMessageBox(
+          _("Mix would have no effect.  If you want to mix a left and "
+            "a right channel together, turn them both into mono "
+            "channels first."));
       return false;
    }
 
@@ -87,12 +88,12 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
    WaveTrack *mixLeft = new WaveTrack(dirManager);
    mixLeft->SetRate(rate);
    mixLeft->SetChannel(VTrack::MonoChannel);
-   mixLeft->SetName("Mix");
+   mixLeft->SetName(_("Mix"));
    WaveTrack *mixRight = 0;
    if (!mono) {
       mixRight = new WaveTrack(dirManager);
       mixRight->SetRate(rate);
-      mixRight->SetName("Mix");
+      mixRight->SetName(_("Mix"));
       mixLeft->SetChannel(VTrack::LeftChannel);
       mixRight->SetChannel(VTrack::RightChannel);
       mixLeft->SetLinked(true);
@@ -151,7 +152,7 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
 
       if (!progress && wxGetElapsedTime(false) > 500) {
          progress =
-             new wxProgressDialog("Quick Mix", "Mixing tracks", 1000);
+             new wxProgressDialog(_("Quick Mix"), _("Mixing tracks"), 1000);
       }
       if (progress) {
          int progressvalue = int (1000 * (tt / totalTime));
@@ -170,10 +171,10 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
    double maxTracks = totalTime / (elapsedTime / numWaves);
 
 #ifdef __WXGTK__
-   printf("      Tracks: %d\n", numWaves);
-   printf("  Mix length: %f sec\n", totalTime);
-   printf("Elapsed time: %f sec\n", elapsedTime);
-   printf("Max number of tracks to mix in real time: %f\n", maxTracks);
+   printf(_("      Tracks: %d\n"), numWaves);
+   printf(_("  Mix length: %f sec\n"), totalTime);
+   printf(_("Elapsed time: %f sec\n"), elapsedTime);
+   printf(_("Max number of tracks to mix in real time: %f\n"), maxTracks);
 #endif
 
    delete waveArray;

@@ -14,6 +14,7 @@
 #include <wx/defs.h>
 #include <wx/app.h>
 #include <wx/window.h>
+#include <wx/intl.h>
 #endif
 
 #include <wx/fs_zip.h>
@@ -152,7 +153,7 @@ pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent, AppleEvent * theReply
 // main frame
 bool AudacityApp::OnInit()
 {
- //  mChecker = new wxSingleInstanceChecker(GetAppName());
+   // mChecker = new wxSingleInstanceChecker(GetAppName());
    ::wxInitAllImageHandlers();
 
    wxFileSystem::AddHandler(new wxZipFSHandler);
@@ -187,16 +188,15 @@ bool AudacityApp::OnInit()
          bool handled = false;
 
          if (!wxString("-help").CmpNoCase(argv[option])) {
-            printf("Command-line options supported:\n");
-            printf("  -help (this message)\n");
-            printf("  -test (run self diagnostics)\n");
-            printf
-                ("  -blocksize ### (set max disk block size in bytes)\n");
-            printf("\n");
-            printf("In addition, specify the name of an audio file or "
-                   "Audacity project\n");
-            printf("to open it.\n");
-            printf("\n");
+            printf(_("Command-line options supported:\n"
+                     "  -help (this message)\n"
+                     "  -test (run self diagnostics)\n"
+                     "  -blocksize ### (set max disk block size in bytes)\n"
+                     "\n"
+                     "In addition, specify the name of an audio file or "
+                     "Audacity project\n"
+                     "to open it.\n"
+                     "\n"));
             exit(0);
          }
 
@@ -206,7 +206,7 @@ bool AudacityApp::OnInit()
             long theBlockSize;
             if (wxString(argv[option + 1]).ToLong(&theBlockSize)) {
                if (theBlockSize >= 256 && theBlockSize < 100000000) {
-                  fprintf(stderr, "Using block size of %ld\n",
+                  fprintf(stderr, _("Using block size of %ld\n"),
                           theBlockSize);
                   WaveTrack::SetMaxDiskBlockSize(theBlockSize);
                }
@@ -221,7 +221,7 @@ bool AudacityApp::OnInit()
          }
 
          if (argv[option][0] == '-' && !handled) {
-            printf("Unknown command line option: %s\n", argv[option]);
+            printf(_("Unknown command line option: %s\n"), argv[option]);
             exit(0);
          }
 

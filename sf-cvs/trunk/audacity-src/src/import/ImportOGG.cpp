@@ -26,6 +26,7 @@
 #include <wx/utils.h>
 #include <wx/msgdlg.h>
 #include <wx/progdlg.h>
+#include <wx/intl.h>
 /* ffile.h must be included AFTER at least one other wx header that includes
  * wx/setup.h, otherwise #ifdefs erronously collapse it to nothing. This is
  * a bug in wxWindows (ffile.h should itself include wx/setup.h), and it 
@@ -59,19 +60,19 @@ bool ImportOGG(wxWindow * parent,
 
       switch (err) {
          case OV_EREAD:
-            message = "Media read error";
+            message = _("Media read error");
             break;
          case OV_ENOTVORBIS:
-            message = "Not an Ogg Vorbis file";
+            message = _("Not an Ogg Vorbis file");
             break;
          case OV_EVERSION:
-            message = "Vorbis version mismatch";
+            message = _("Vorbis version mismatch");
             break;
          case OV_EBADHEADER:
-            message = "Invalid Vorbis bitstream header";
+            message = _("Invalid Vorbis bitstream header");
             break;
          case OV_EFAULT:
-            message = "Internal logic fault";
+            message = _("Internal logic fault");
             break;
       }
 
@@ -168,8 +169,8 @@ bool ImportOGG(wxWindow * parent,
 
 
       if (!progress && wxGetElapsedTime(false) > 500)
-         progress = new wxProgressDialog("Import",
-                                         "Importing Ogg Vorbis File...",
+         progress = new wxProgressDialog(_("Import"),
+                                         _("Importing Ogg Vorbis File..."),
                                          1000,
                                          parent,
                                          wxPD_CAN_ABORT |

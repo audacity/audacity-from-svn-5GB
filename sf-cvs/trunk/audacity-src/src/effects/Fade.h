@@ -13,6 +13,7 @@
 
 class wxString;
 
+#include <wx/intl.h>
 #include "Effect.h"
 
 class WaveTrack;
@@ -21,11 +22,11 @@ class EffectFadeIn:public Effect {
 
  public:
    virtual wxString GetEffectName() {
-      return wxString("Fade In");
+      return wxString(_("Fade In"));
    }
    
    virtual wxString GetEffectAction() {
-      return wxString("Fading In");
+      return wxString(_("Fading In"));
    }
    
    virtual bool Process();
@@ -39,11 +40,11 @@ class EffectFadeOut:public Effect {
 
  public:
    virtual wxString GetEffectName() {
-      return wxString("Fade Out");
+      return wxString(_("Fade Out"));
    }
    
    virtual wxString GetEffectAction() {
-      return wxString("Fading Out");
+      return wxString(_("Fading Out"));
    }
    
    virtual bool Process();
