@@ -253,9 +253,9 @@ PrefsPanel(parent)
       wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
 
    // find out the biggest minimum size of labels
-   int maxIndex = 0;
+   int maxIndex = 0,r;
    wxSize maxMinSize = textSizer[0]->GetMinSize();
-   for (int r = 1; r < 3; r++) {
+   for (r = 1; r < 3; r++) {
       if (textSizer[r]->GetMinSize().GetWidth() > maxMinSize.GetWidth()) {
          maxMinSize = textSizer[r]->GetMinSize();
          maxIndex = r;
