@@ -151,12 +151,17 @@ void UndoManager::PushState(TrackList * l, double sel0, double sel1,
 {
    unsigned int i;
 
-   // If consolidate is set to true
+   // If consolidate is set to true, group up to 3 identical operations.
 
    if (consolidate && lastAction == longDescription &&
        consolidationCount < 2) {
       consolidationCount++;
       ModifyState(l, sel0, sel1);
+      // MB: If the "saved" state was modified by ModifyState, reset
+      //  it so that UnsavedChanges returns true.
+      if (current == saved) {
+         saved = -1;
+      }
       return;
    }
 
