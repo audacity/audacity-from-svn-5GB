@@ -118,6 +118,10 @@ FreqWindow::FreqWindow(wxWindow* parent, wxWindowID id, const wxString& title,
 							  "Close",
 							  wxPoint(350, 290),
 							  wxSize(70, 20));
+  #ifndef TARGET_CARBON
+  mCloseButton->SetDefault();
+  mCloseButton->SetFocus();							  
+  #endif
 
   wxString algChoiceStrings[2] = {"Spectrum",
 								  "Cepstrum"};
@@ -188,6 +192,8 @@ FreqWindow::~FreqWindow()
   delete mAlgChoice;
   delete mSizeChoice;
   delete mFuncChoice;
+  delete mArrowCursor;
+  delete mCrossCursor;
   if (mData)
 	delete[] mData;
 }
