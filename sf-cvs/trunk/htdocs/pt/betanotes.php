@@ -4,7 +4,7 @@
 Problemas encontrados na versão 1.1.3:
   - O programa insere um arquivo chamado "Audacity-Commands.xml" em alguma pasta no computador onde está instalado. Este arquivo é necessário para executar o Audacity. Na próxima versão, este arquivo será salvo na pasta do próprio programa. 
 
-New features in Audacity 1.1.3:
+New features in Audacity 1.1.3: (Em inglês, apenas para referência)
   * User Interface
     - New Mixer toolbar allows you to control the output
       volume, input volume, and input source directly

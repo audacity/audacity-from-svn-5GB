@@ -1,11 +1,11 @@
 <p>
-Aviso: As versões a seguir são apenas para testes!
-Enquanto estas versões contém novos recursos, inluindo uma nova barra de ferramentas, amostragem automática e suporte a amostragens de 32 bits, há também novos problemas a ser descobertos.
+Aviso: As versões a seguir são para teste apenas!
+Estas versões contém novos recursos - como uma nova barra de ferramentas, amostragem automática e suporte a amostragens de 32 bits - e também novas falhas a serem corrigidas.
 </p>
 <p>
-Se você estiver interessado em experimentar estes novos recursos, aconselhamos que seja feito o download da nova versão.
-Caso opte pela versão de testes, envie-nos suas sugestões, experiências e problemas encontrados. 
-É possível ter a versão 1.0 junto com a mais nova no mesmo computador.
+Se você estiver interessado em experimentar os novos recursos, copie a nova versão.
+Ao copiar a versão de testes, envie-nos suas sugestões, críticas e falhas encontradas. 
+É possível ter ambas as versões no mesmo computador.
 </p>
 <p>
 Nota: A versão 1.1.3 não pode abrir ou salvar projetos feitos no Audacity 1.1.2 ou anterior. </p>
