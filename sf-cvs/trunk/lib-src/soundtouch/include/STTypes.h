@@ -6,10 +6,10 @@
  * Author e-mail : oparviai @ iki.fi
  * File created  : 13-Jan-2002
  *
- * Last changed  : $Date: 2004-10-26 19:09:39 $
- * File revision : $Revision: 1.4 $
+ * Last changed  : $Date: 2004-12-09 21:41:35 $
+ * File revision : $Revision: 1.5 $
  *
- * $Id: STTypes.h,v 1.4 2004-10-26 19:09:39 vjohnson Exp $
+ * $Id: STTypes.h,v 1.5 2004-12-09 21:41:35 vjohnson Exp $
  *
  * License :
  * 
@@ -94,11 +94,11 @@ namespace soundtouch
 
         #ifdef ALLOW_OPTIMIZATIONS
             #ifdef WIN32
-               /* //v Disable 3DNow! and SSE for Audacity, for maximum build portability.
+
                 // Allow 3DNow! and SSE optimizations
                 #define ALLOW_3DNOW     1
                 #define ALLOW_SSE       1
-               */
+
             #endif // WIN32
         #endif
 
