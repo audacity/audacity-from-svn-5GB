@@ -1,0 +1,10 @@
+all:
+	cd src && make
+
+clean:
+	rm -f *~ *.a config.cache config.log config.status core*
+	cd src && make clean
+
+distclean: clean
+	rm -f Makefile
+	cd src && make dist
