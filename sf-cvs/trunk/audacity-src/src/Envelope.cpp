@@ -58,8 +58,17 @@ void Envelope::CopyFrom(const Envelope * e)
    mOffset = e->mOffset;
    int len = e->mEnv.Count();
    mTrackLen = e->mEnv[len - 1]->t;
-   for (int i = len - 2; i >= 1; i--)
-      Insert(e->mEnv[i]->t, e->mEnv[i]->val);
+   int i;
+   for (i = 0; i < mEnv.Count(); i++)
+      delete mEnv[i];
+   mEnv.Clear();
+   mEnv.Alloc(len);
+   for (i = 0; i < len; i++) {
+      EnvPoint *pt = new EnvPoint();
+      pt->t = e->mEnv[i]->t;
+      pt->val = e->mEnv[i]->val;
+      mEnv.Add(pt);
+   }
 }
 
 double Envelope::toDB(double value)
@@ -164,6 +173,8 @@ bool Envelope::Load(wxTextFile * in, DirManager * dirManager)
          return false;
       mEnv.Add(e);
    }
+
+   mTrackLen = mEnv[len-1]->t;
 
    if (in->GetNextLine() != "EnvEnd")
       return false;
