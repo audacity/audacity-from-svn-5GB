@@ -1166,7 +1166,20 @@ void AudacityProject::OnZoomIn(wxEvent & event)
    double origLeft = mViewInfo.h;
    double origWidth = mViewInfo.screen;
    Zoom(mViewInfo.zoom *= 2.0);
-   TP_ScrollWindow(origLeft + (origWidth - mViewInfo.screen) / 2 );
+   
+   double newh = origLeft + (origWidth - mViewInfo.screen) / 2;
+   
+   // make sure that the *right-hand* end of the selection is
+   // no further *left* than 1/3 of the way across the screen
+   if (mViewInfo.sel1 < newh + mViewInfo.screen / 3)
+      newh = mViewInfo.sel1 - mViewInfo.screen / 3;
+
+   // make sure that the *left-hand* end of the selection is
+   // no further *right* than 2/3 of the way across the screen
+   if (mViewInfo.sel0 > newh + mViewInfo.screen * 2 / 3)
+      newh = mViewInfo.sel0 - mViewInfo.screen * 2 / 3;
+
+   TP_ScrollWindow(newh);
 }
 
 void AudacityProject::OnZoomOut(wxEvent & event)
