@@ -91,9 +91,11 @@ int Importer::Import(wxString fName,
             mInFile->SetProgressCallback(progressCallback, userData);
             if( mInFile->Import(trackFactory, tracks, &numTracks) == true )
             {
-               // success!
-               delete mInFile;
-               return numTracks;
+               if (numTracks > 0) {
+                  // success!
+                  delete mInFile;
+                  return numTracks;
+               }
             }
             delete mInFile;
          }
@@ -114,9 +116,11 @@ int Importer::Import(wxString fName,
          mInFile->SetProgressCallback(progressCallback, userData);
          if( mInFile->Import(trackFactory, tracks, &numTracks) == true )
          {
-            // success!
-            delete mInFile;
-            return numTracks;
+            if (numTracks > 0) {
+               // success!
+               delete mInFile;
+               return numTracks;
+            }
          }
          delete mInFile;
       }
