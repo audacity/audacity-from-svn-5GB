@@ -8,14 +8,11 @@
 
 **********************************************************************/
 
-#include <wx/wxprec.h>
-
-#ifndef WX_PRECOMP
 #include <wx/defs.h>
 #include <wx/app.h>
 #include <wx/window.h>
 #include <wx/intl.h>
-#endif
+#include <wx/menu.h>
 
 #include <wx/fs_zip.h>
 #include <wx/image.h>

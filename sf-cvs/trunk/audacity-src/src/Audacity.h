@@ -31,6 +31,7 @@ void QuitAudacity();
 
 #ifdef __WXMAC__
 # include "configmac.h"
+# include <wx/defs.h>
 # ifdef __UNIX__
 #  include "configunix.h"
 # endif
