@@ -13,7 +13,7 @@
 
 struct ViewInfo {
 
-   // Current selection
+   // Current selection (in seconds)
 
    double sel0;
    double sel1;
