@@ -41,11 +41,6 @@ static int error_function (double data, double orig, double margin) ;
 
 static int	oct_save_short	(short *a, short *b, int len) ;
 
-static double	orig_buffer [BUFFER_SIZE] ;
-static short 	orig [BUFFER_SIZE] ;
-static short 	data [BUFFER_SIZE] ;
-
-
 int
 main (int argc, char *argv [])
 {	int		bDoAll = 0 ;
@@ -90,7 +85,11 @@ g721_test	(void)
 
 static void 
 g723_test	(double margin)
-{	G72x_STATE encoder_state, decoder_state ;
+{	static double	orig_buffer [BUFFER_SIZE] ;
+	static short 	orig [BUFFER_SIZE] ;
+	static short 	data [BUFFER_SIZE] ;
+
+	G72x_STATE encoder_state, decoder_state ;
 	
 	long	k ;
 	int 	code, position, max_err ;
@@ -146,19 +145,19 @@ g723_test	(double margin)
 #define		DECAY_COUNT		1000
 
 static void	
-gen_signal_double (double *data, double scale, int datalen)
+gen_signal_double (double *gendata, double scale, int gendatalen)
 {	int		k, ramplen ;
 	double	amp = 0.0 ;
 	
 	ramplen = DECAY_COUNT ;
 	
-	for (k = 0 ; k < datalen ; k++)
+	for (k = 0 ; k < gendatalen ; k++)
 	{	if (k <= ramplen)
 			amp = scale * k / ((double) ramplen) ;
-		else if (k > datalen - ramplen)
-			amp = scale * (datalen - k) / ((double) ramplen) ;
+		else if (k > gendatalen - ramplen)
+			amp = scale * (gendatalen - k) / ((double) ramplen) ;
 
-		data [k] = amp * (0.4 * sin (33.3 * 2.0 * M_PI * ((double) (k+1)) / ((double) SAMPLE_RATE))
+		gendata [k] = amp * (0.4 * sin (33.3 * 2.0 * M_PI * ((double) (k+1)) / ((double) SAMPLE_RATE))
 						+ 0.3 * cos (201.1 * 2.0 * M_PI * ((double) (k+1)) / ((double) SAMPLE_RATE))) ;
 		} ;
 	

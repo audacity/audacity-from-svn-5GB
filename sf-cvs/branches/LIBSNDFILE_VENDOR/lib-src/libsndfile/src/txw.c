@@ -106,7 +106,7 @@ txw_open	(SF_PRIVATE *psf)
 	if ((error = txw_read_header (psf)))
 			return error ;
 
- 	if (psf_fseek (psf->filedes, psf->dataoffset, SEEK_SET) != psf->dataoffset)
+ 	if (psf_fseek (psf, psf->dataoffset, SEEK_SET) != psf->dataoffset)
 		return SFE_BAD_SEEK ;
 
 	psf->read_short  = txw_read_s ;
@@ -244,7 +244,7 @@ txw_read_s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 	bufferlen -= (bufferlen & 1) ;
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : len ;
-		count = psf_fread (psf->buffer, 3, readcount, psf->filedes) ;
+		count = psf_fread (psf->buffer, 3, readcount, psf) ;
 
 		ucptr = (unsigned char *) psf->buffer ;
 		for (k = 0 ; k < readcount ; k += 2)
@@ -273,7 +273,7 @@ txw_read_i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 	bufferlen -= (bufferlen & 1) ;
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : len ;
-		count = psf_fread (psf->buffer, 3, readcount, psf->filedes) ;
+		count = psf_fread (psf->buffer, 3, readcount, psf) ;
 
 		ucptr = (unsigned char *) psf->buffer ;
 		for (k = 0 ; k < readcount ; k += 2)
@@ -308,7 +308,7 @@ txw_read_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	bufferlen -= (bufferlen & 1) ;
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : len ;
-		count = psf_fread (psf->buffer, 3, readcount, psf->filedes) ;
+		count = psf_fread (psf->buffer, 3, readcount, psf) ;
 
 		ucptr = (unsigned char *) psf->buffer ;
 		for (k = 0 ; k < readcount ; k += 2)
@@ -343,7 +343,7 @@ txw_read_d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	bufferlen -= (bufferlen & 1) ;
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : len ;
-		count = psf_fread (psf->buffer, 3, readcount, psf->filedes) ;
+		count = psf_fread (psf->buffer, 3, readcount, psf) ;
 
 		ucptr = (unsigned char *) psf->buffer ;
 		for (k = 0 ; k < readcount ; k += 2)

@@ -267,7 +267,7 @@ w64_read_header	(SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 					
 					psf_binheader_readf (psf, "e8", &chunk_size) ;
 
-					psf->dataoffset = psf_ftell (psf->filedes) ;
+					psf->dataoffset = psf_ftell (psf) ;
 					
 					psf->datalength = chunk_size - 24 ;
 
@@ -282,11 +282,11 @@ w64_read_header	(SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 						break ;
 					
 					/* Seek past data and continue reading header. */
-					psf_fseek (psf->filedes, chunk_size, SEEK_CUR) ;
+					psf_fseek (psf, chunk_size, SEEK_CUR) ;
 					break ;
 
 			default : 
-					if (psf_ftell (psf->filedes) & 0x0F)
+					if (psf_ftell (psf) & 0x0F)
 					{	psf_log_printf (psf, "  Unknown chunk marker at position %d. Resynching.\n", dword - 4) ;
 						psf_binheader_readf (psf, "j", -3) ;
 						break ;
@@ -299,13 +299,7 @@ w64_read_header	(SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 		if (! psf->sf.seekable && (parsestage & HAVE_data))
 			break ;
 
-		if (psf_ferror (psf->filedes))
-		{	psf_log_printf (psf, "*** Error on file handle. ***\n", marker) ;
-			psf_fclearerr (psf->filedes) ;
-			break ;
-			} ;
-
-		if (psf_ftell (psf->filedes) >= (int) (psf->filelength - (2 * sizeof (dword))))
+		if (psf_ftell (psf) >= (int) (psf->filelength - (2 * sizeof (dword))))
 			break ;
 
 		if (psf->logindex >= sizeof (psf->logbuffer) - 2)
@@ -317,7 +311,7 @@ w64_read_header	(SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 
 	psf->endian = SF_ENDIAN_LITTLE ;		/* All WAV files are little endian. */
 	
-	psf_fseek (psf->filedes, psf->dataoffset, SEEK_SET) ;
+	psf_fseek (psf, psf->dataoffset, SEEK_SET) ;
 	
 	psf->close = w64_close ;
 
@@ -374,12 +368,12 @@ w64_write_header (SF_PRIVATE *psf, int calc_length)
 {	sf_count_t 	fmt_size, current ;
 	int 		subformat, add_fact_chunk = SF_FALSE ;
 	
-	current = psf_ftell (psf->filedes) ;
+	current = psf_ftell (psf) ;
 
 	if (calc_length)
-	{	psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf->filedes) ;
-		psf_fseek (psf->filedes, 0, SEEK_SET) ;
+	{	psf_fseek (psf, 0, SEEK_END) ;
+		psf->filelength = psf_ftell (psf) ;
+		psf_fseek (psf, 0, SEEK_SET) ;
 
 		psf->datalength = psf->filelength - psf->dataoffset ;
 		if (psf->dataend)
@@ -391,7 +385,7 @@ w64_write_header (SF_PRIVATE *psf, int calc_length)
 	/* Reset the current header length to zero. */
 	psf->header [0] = 0 ;
 	psf->headindex = 0 ;
-	psf_fseek (psf->filedes, 0, SEEK_SET) ;
+	psf_fseek (psf, 0, SEEK_SET) ;
 
 	/* riff marker, length, wave and 'fmt ' markers. */		
 	psf_binheader_writef (psf, "eh8hh", riff_MARKER16, psf->filelength - 8, wave_MARKER16, fmt_MARKER16) ;
@@ -534,14 +528,17 @@ w64_write_header (SF_PRIVATE *psf, int calc_length)
 		psf_binheader_writef (psf, "eh88", fact_MARKER16, 16 + 8 + 8, psf->sf.frames) ;
 
 	psf_binheader_writef (psf, "eh8", data_MARKER16, psf->datalength + 24) ;
-	psf_fwrite (psf->header, psf->headindex, 1, psf->filedes) ;
+	psf_fwrite (psf->header, psf->headindex, 1, psf) ;
+
+	if (psf->error)
+		return psf->error ;
 
 	psf->dataoffset = psf->headindex ;
 
 	if (current > 0)
-		psf_fseek (psf->filedes, current, SEEK_SET) ;
+		psf_fseek (psf, current, SEEK_SET) ;
 		
-	return 0 ;
+	return psf->error ;
 } /* w64_write_header */
 
 static int	
@@ -552,12 +549,12 @@ w64_close	(SF_PRIVATE  *psf)
 		 *  re-write correct values for the riff and data chunks.
 		 */
 
-		psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->dataend = psf_ftell (psf->filedes) ;
+		psf_fseek (psf, 0, SEEK_END) ;
+		psf->dataend = psf_ftell (psf) ;
 
-		psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf->filedes) ;
-		psf_fseek (psf->filedes, 0, SEEK_SET) ;
+		psf_fseek (psf, 0, SEEK_END) ;
+		psf->filelength = psf_ftell (psf) ;
+		psf_fseek (psf, 0, SEEK_SET) ;
 		
 		psf->datalength = psf->filelength - psf->dataoffset - (psf->filelength - psf->dataend) ;
  		psf->sf.frames = psf->datalength / (psf->bytewidth * psf->sf.channels) ;

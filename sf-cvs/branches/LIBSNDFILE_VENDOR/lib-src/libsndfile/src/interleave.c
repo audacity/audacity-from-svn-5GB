@@ -106,7 +106,7 @@ interleave_read_short  (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 
 		offset = psf->dataoffset + chan * psf->bytewidth * psf->read_current ;
 
-		if (psf_fseek (psf->filedes, offset, SEEK_SET) != offset)
+		if (psf_fseek (psf, offset, SEEK_SET) != offset)
 		{	psf->error = SFE_INTERLEAVE_SEEK ;
 			return 0 ;
 			} ;
@@ -153,7 +153,7 @@ interleave_read_int    (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 
 		offset = psf->dataoffset + chan * psf->bytewidth * psf->read_current ;
 
-		if (psf_fseek (psf->filedes, offset, SEEK_SET) != offset)
+		if (psf_fseek (psf, offset, SEEK_SET) != offset)
 		{	psf->error = SFE_INTERLEAVE_SEEK ;
 			return 0 ;
 			} ;
@@ -202,7 +202,7 @@ interleave_read_float  (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 
 /*-printf ("chan : %d     read_current : %6lld    offset : %6lld\n", chan, psf->read_current, offset) ;-*/
 	
-		if (psf_fseek (psf->filedes, offset, SEEK_SET) != offset)
+		if (psf_fseek (psf, offset, SEEK_SET) != offset)
 		{	psf->error = SFE_INTERLEAVE_SEEK ;
 /*-puts ("interleave_seek error") ; exit (1) ;-*/
 			return 0 ;
@@ -251,7 +251,7 @@ interleave_read_double (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 
 		offset = psf->dataoffset + chan * psf->bytewidth * psf->read_current ;
 
-		if (psf_fseek (psf->filedes, offset, SEEK_SET) != offset)
+		if (psf_fseek (psf, offset, SEEK_SET) != offset)
 		{	psf->error = SFE_INTERLEAVE_SEEK ;
 			return 0 ;
 			} ;

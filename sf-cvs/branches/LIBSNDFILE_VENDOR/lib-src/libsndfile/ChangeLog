@@ -1,3 +1,443 @@
+2002-12-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/sndfile.c
+    Add more sanity checking when opening a RAW file for read. When format is
+    not RAW, zero out all members of the SF_INFO struct.
+
+    * tests/raw_test.c
+    Add bad_raw_test() to check for above problem.
+
+    * tests/stdin_test.c examples/sndfile-info.c
+    Set the format field of the SF_INFO struct to zero before calling
+    sf_open().
+
+    * configure.ac
+    Removed use of conversion script on Solaris. Not all Solaris versions
+    support it.
+
+2002-12-04  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * tests/dft_cmp.c
+    Fixed a SIGFPE on Alpha caused by a log10 (0.0). Thanks to Joshua Haberman
+    for providing the gdb traceback.
+
+2002-11-28  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/wav.c
+    Added more capabilities to 'smpl' chunk parser.
+
+    * src/sndfile.c
+    Fixed some (not all) possible problems found with Flawfinder.
+
+2002-11-24  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/sndfile.c
+    Fixed a bug in sf_seek(). This bug could only occur when an attempt was
+    made to read beyond the end and then sf_seek() was called with a whence
+    parameter of SEEK_CUR.
+
+    * src/file_io.c
+    Win32's _fstati64() does not work, it returns BS. Re-implemented
+    psf_get_filelen() in terms of psf_fseek().
+
+    * tests/write_read_test.tpl
+    Add a test to detect above bug.
+
+    * src/float_cast.h
+    Modification to prevent compiler warnings on Mac OS X.
+
+    * src/file_io.c
+    Fixes for windows (what a f**ked OS).
+
+2002-11-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * configure.ac
+    Disable use of native lrint()/lrintf() on Mac OSX. These functions exist on
+    Mac OSX 10.2 but not on 10.1. Forcing the use of the versions in
+    src/float_cast.h means that a library compiled on 10.2 will still work on
+    10.1.
+
+2002-11-06  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * configure.in configure.ac
+    Renamed configure.in to configure.ac as expected by later versions of
+    autoconf.
+    Slight hacking of configure.ac to work with version 2.54 of autoconf.
+    Changed to using -dumpversion instead of --version for determining GCC
+    version numer as suggested by Anand Kumria.
+
+    * src/G72x/Makefile.am
+    Slight hacking required for operation with automake 1.6.3.
+
+2002-11-05  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/common.c
+    In psf_binheader_readf() changed type parameter type "b" type from size_t
+    to int to prevent errors on IA64 CPU where sizeof (size_t) != sizeof (int).
+    Thanks to Enrique Robledo Arnuncio for debugging this.
+
+2002-11-04  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * test/command_test.tpl
+    Changed test value so test would pass on Solaris.
+
+    * src/Version_script.in
+    Modified version numbering so that later versions of 1.0.X can replace
+    earlier versions without recompilation.
+
+    * src/vox_adpcm.c
+    Fixed bug causing short reads.
+
+2002-11-03  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * test/floating_point_test.c
+    Code cleanup using functions from util.c.
+    Add test for IEEE replacement floats and doubles.
+
+2002-11-01  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/wav.c
+    Fixed a possible divide by zero error when read the 'smpl' chunk. Thanks to
+    Serg Repalov for the example file.
+
+    * tests/pcm_test.tpl
+    Used sf_command (SFC_TEST_IEEE_FLOAT_REPLACE) to test IEEE replacement code.
+    Clean up pcm_double_test().
+
+    * src/float32.c src/double64.c
+    Force use of IEEE replacement code using psf->ieee_replace is TRUE,
+    Print message to log_buffer as well.
+    Rename all broken_read_* and broken_write* functions to replace_read_* and
+    replace_write_*.
+
+    * tests/util.tpl
+    Added string_in_log_buffer().
+
+    * tests/pcm_test.tpl
+    Use string_in_log_buffer() to ensure that IEEE replacement code has been
+    used.
+
+    * configure.in
+    Removed --enable-force-broken-float option. IEEE replacement code is now
+    always tested.
+
+2002-10-31  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/double64.c
+    Implement code for read/writing IEEE doubles on platforms where the native
+    double format is not IEEE.
+
+    * src/float32.c src/common.h
+    Remove float32_read() and float32_write(). Replace with float32_le_read(),
+    float32_be_read(), float32_le_write() and float32_be_write() to match stuff
+    in src/double64.c.
+
+    * src/common.c
+    Fix all usage of float32_write().
+
+    * src/sndfile.h.in
+    Added SFC_TEST_IEEE_FLOAT_REPLACE command (testing only).
+
+    * src/common.h
+    Added SF_PRIVATE field ieee_replace.
+
+    * src/sndfile.c
+    In sf_command() set/reset psf->ieee_replace.
+
+2002-10-26  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * tests/pcm_test.tpl
+    Fixed a problem when testing with --enable-force-broken-float. The test was
+    generating a value of negative zero and the broken float code is not able
+    to write negative zero. Removing the negative zero fixed the test.
+
+2002-10-25  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/file_io.c
+    Added fix for Cygwin (suggested by Maros Michalik).
+
+2002-10-23  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/file_io.c
+    Improved error detection and handling.
+
+    * src/file_io.c src/common.h
+    Removed functions psf_ferror() and psf_clearerr() which were redundant
+    after above improvements.
+
+    * src/aiff.c src/svx.c src/w64.c src/wav.c
+    Removed all use of psf_ferror() and psf_clearerr().
+
+    * src/sndfile.c
+    Removed #include of <stdio.h>, <unistd.h>, <fcntl.h> and <math.h> which
+    are no longer needed.
+
+    * tests/misc_test.c
+    Added test to make sure the correct error message is returned with an
+    existing read-only file is openned for write.
+
+2002-10-21  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * doc/index.html doc/api.html
+    Updated for OKI Dialogic ADPCM files.
+
+    * src/command.c
+    Added VOX ADPCM to sub_fomats.
+
+2002-10-20  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/vox_adpcm.c src/Makefile.am
+    New file for handling OKI Dialogic ADPCM files.
+
+    * src/sndfile.h
+    Add new subtype SF_FORMAT_VOX_ADPCM.
+
+    * src/sndfile.c
+    Renamed function is_au_snd_file () to format_from_extenstion () and expanded
+    its functionality to detect headerless VOX files.
+
+    * src/raw.c
+    Added hooks for SF_FORMAT_VOX_ADPCM.
+
+    * examples/sndfile-info.c
+    Print out file duration (suggested by Conrad Parker).
+
+    * libsndfile.spec.in
+    Force installation of sndfile.pc file (found by John Thompson).
+
+    * tests/Makefile.am tests/lossy_comp_test.c tests/floating_point_test.c
+    Add tests for SF_FORMAT_VOX_ADPCM.
+
+2002-10-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * tests/misc_test.c
+    Add test which attempts to write to /dev/full (on Linux anyway) to check
+    for correct handling of writing to a full filesystem.
+
+    * src/sndfile.c
+    Return correct error message if the header cannot be written because the
+    filesystem is full.
+
+    * tests/util.tpl
+    Corrected printing of file mode in error reporting.
+
+    * src/mat5.c
+    Fixed a bug where a MAT5 file written by libsndfile could not be opened by
+    Octave 2.1.36.
+
+2002-10-13  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/common.h src/file_io.c
+    All low level file I/O have been modified to be better able to report
+    system errors resulting from calling system level open/read/write etc.
+
+    * src/*.c
+    Updated for compatibility with above changes.
+
+    * examples/cooledit-fixer.c
+    New example program which fixes badly broken file created by Syntrillium's
+    Cooledit which are marked as containing PCM samples but actually contain
+    floating point data.
+
+    * examples/Makefile.am
+    Hooked cooledit-fixer into the build system.
+
+2002-10-10  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * doc/command.html
+    Document SFC_GET_FORMAT_INFO.
+
+2002-10-09  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * examples/wav32_aiff24.c examples/sndfile2oct.c examples/sfhexdump.c
+        examples/sfdump.c
+    Removed these files because they weren't interesting.
+
+    * examples/sfconvert.c examples/sndfile-convert.c
+    Renamed the first to the latter.
+
+    * examples/Makefile.am
+    Added sndfile-convert to the bin_PROGRAMS, so it is installed when the lib
+    is installed.
+    Removed old programs wav32_aiff24 and sndfile2oct.
+
+    * man/sndfile-convert.1
+    New man page.
+
+    * examples/sndfile-convert.c
+    Added some gloss now that sndfile-convert.c is an installed program.
+
+    * src/sndfile.h.in src/sndfile.c src/common.h src/command.h
+    Added command SFC_GET_FORMAT_INFO.
+
+    * tests/command_test.c
+    Added tests form SFC_GET_FORMAT_INFO.
+
+2002-10-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/sndfile.c
+    In sf_format_check() return error if samplerate < 0.
+
+2002-10-07  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/aiff.c
+    Fixed bug in handling of COMM chunks with a 4 byte encoding byte but no
+    encoding string.
+
+2002-10-06  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/sndfile.c
+    Fixed repeated word in an error message.
+
+2002-10-05  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * doc/index.html
+    Improved advertising in Features section.
+
+2002-10-04  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/wav.c
+    Added decoding of 'labl' chunks within 'LIST' chunks.
+
+    * src/common.h
+    Added (experimental only) SF_FORMAT_OGG and SF_FORMAT_VORBIS and definition
+    of ogg_open(). This is nowhere near working yet.
+
+    * src/sndfile.c
+    Added detection of 'OggS' file marker and added call to ogg_open() to
+    switch statement.
+
+    * src/ogg.c
+    New file. Very early start of Ogg Vorbis support.
+
+    * src/wav.c
+    Added handling of brain-damaged and broken Cooledit "32 bit 24.0 float
+    type 1" files. These files are marked as being 24 bit WAVE_FORMAT_PCM with
+    a block alignment of 4 times the numbers of channels but are in fact 32 bit
+    floating point.
+
+2002-10-02  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * configure.in
+    Modified option --enable-experimental to set ENABLE_EXPERIMENTAL_CODE in
+    config.h to either 0 or 1.
+
+    * src/sndfile.c
+    Modify sf_command (SFC_GET_LIB_VERSION) to append "-exp" to the version
+    string if experimental code has been enabled.
+
+2002-10-01  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/Makefile.am
+    Added -lm to libsndfile_la_LIBADD. This means that -lm is not longer needed
+    in the link line when linking something to libsndfile.
+
+    * tests/Makefile.am examples/Makefile.am
+    Removed -lm from all link lines.
+
+    * sndfile.pc.in
+    Removed -lm from Libs line.
+
+2002-09-24  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/file_io.c
+    Removed all perror() calls.
+
+    * src/nist.c
+    Removed calls to exit() function.
+    Added check to detect NIST files dammaged from Unix CR -> Win32 CRLF
+    conversion process.
+
+2002-09-24  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/sndfile.h.in src/sndfile.c
+    New function sf_strerror() which will eventually replace functions
+    sf_perror() and sf_error_str().
+    Function sf_error_number() has also been changed, but this was documented
+    as being for testing only.
+
+    * doc/api.html
+    Documented above changes.
+
+    * tests/*.c examples/*.c
+    Changed to new error functions.
+
+2002-09-22  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * configure.in
+    Detect GCC version, and print a warning message about writeable strings
+    it GCC major version number is less than 3.
+
+2002-09-21  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/sndfile.h.in doc/api.html
+    Documentation fixes.
+
+2002-09-19  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/Version_script.in src/Makefile.am configure.in
+    Use the version script to prevent the exporting of all non public symbols.
+    This currently only works with Linux. Will test on Solaris as well.
+
+    * src/float_cast.h
+    Added #ifndef to prevent the #warning directives killing the SGI MIPSpro
+    compiler.
+
+    * src/au_g72x.c src/double64.c src/float32.c src/gsm610.c src/ima_adpcm.c
+        src/ms_adpcm.c
+    Fix benign compiler warnings arising from previously added compiler
+    flags.
+
+2002-09-18  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/sndfile.c
+    Fixed a bug in sf_error_str() where errnum was used as the index instead
+    of k. Found by Tim Hockin.
+
+    * examples/sndfile-play.c
+    Fixed a compiler warning resulting from a variable shadowing a previously
+    defined local.
+
+2002-09-17  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/sndfile.h.in src/sndfile.c
+    Added command SFC_SET_RAW_START_OFFSET.
+
+    * doc/command.html
+    Document SFC_SET_RAW_START_OFFSET.
+
+    * tests/raw_test.c tests/Makefile.am
+    Add new file for for testing SF_FORMAT_RAW specific functionality.
+
+    * tests/dwvw_test.c
+    Updates.
+
+2002-09-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/wav.c
+    Modified reading of 'smpl' chunk to take account of the sampler data field.
+
+    * tests/utils.tpl tests/utils.h
+    Added function print_test_name().
+
+    * tests/misc_test.c tests/write_read_test.tpl tests/lossy_comp_test.c
+        tests/pcm_test.tpl tests/command_test.tpl tests/floating_point_test.c
+    Convert to use function print_test_name().
+
+2002-09-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * doc/octave.html
+    Added a link to some other Octave scripts for reading and writing sound
+    files.
+
+    * src/paf.c
+    Change type of dummy data field to int. This should fix a benign compiler
+    warning on some CPUs.
+    Removed superfluous casts resulting from the above change.
+
+    * src/rx2.c
+    More hacking.
+
 2002-09-14  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
 
     * src/mat5.c src/common.c
@@ -10,7 +450,7 @@
     Updated.
 
     * doc/api.html
-    Added note about the possibility of "missing" features actually being 
+    Added note about the possibility of "missing" features actually being
     implemented as an sf_command().
 
 2002-09-13  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
@@ -51,7 +491,7 @@
     Removed superfluous cast.
 
     * src/sndfile.c
-    Fixed error on ia64 platform caused by incorrect termination of
+    Fixed error on IA64 platform caused by incorrect termination of
     SndfileErrors struct array. This problem was found in the Debian buildd
     logs (http://buildd.debian.org/).
 

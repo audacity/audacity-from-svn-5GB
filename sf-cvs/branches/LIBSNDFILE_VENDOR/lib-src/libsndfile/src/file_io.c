@@ -34,6 +34,8 @@
 
 #define	SENSIBLE_SIZE	(0x40000000)
 
+static void psf_log_syserr (SF_PRIVATE *psf, int error) ;
+
 #if (! (defined (WIN32) || defined (_WIN32)))
 
 /*------------------------------------------------------------------------------
@@ -41,46 +43,62 @@
 */
 
 int
-psf_open (const char *pathname, int mode)
-{	int fd = -1 ;
+psf_open (SF_PRIVATE *psf, const char *pathname, int open_mode)
+{	int oflag, mode ;
 
-	switch (mode)
+	switch (open_mode)
 	{	case SFM_READ :
-				fd = open (pathname, O_RDONLY) ;
+				oflag = O_RDONLY ;
+				mode = 0 ;
 				break ;
 
 		case SFM_WRITE :
-				fd = open (pathname, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP) ;
+				oflag = O_WRONLY | O_CREAT | O_TRUNC ;
+				mode = S_IRUSR | S_IWUSR | S_IRGRP ;
 				break ;
 
 		case SFM_RDWR :
-				fd = open (pathname, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP) ;
+				oflag = O_RDWR | O_CREAT ;
+				mode = S_IRUSR | S_IWUSR | S_IRGRP ;
 				break ;
 
 		default :
-				/* psf_log_printf (psf, "ad open mode.\n") ; */
+				psf->error = SFE_BAD_OPEN_MODE ;
 				return -1 ;
+				break ;
 		} ;
 
-	if (fd < 0)
-		perror ("psf_open") ;
+#if defined (__CYGWIN__)
+	oflag |= O_BINARY ;
+#endif
 
-	return fd ;
+	if (mode == 0)
+		psf->filedes = open (pathname, oflag) ;
+	else
+		psf->filedes = open (pathname, oflag, mode) ;
+
+	if (psf->filedes == -1)
+		psf_log_syserr (psf, errno) ;
+
+	return psf->filedes ;
 } /* psf_open */
 
 sf_count_t
-psf_fseek (int fd, sf_count_t offset, int whence)
+psf_fseek (SF_PRIVATE *psf, sf_count_t offset, int whence)
 {	sf_count_t	new_position ;
 
-	new_position = lseek (fd, offset, whence) ;
+	new_position = lseek (psf->filedes, offset, whence) ;
+
+	if (new_position == ((sf_count_t)-1))
+		psf_log_syserr (psf, errno) ;
 
 	return new_position ;
 } /* psf_fseek */
 
 sf_count_t
-psf_fread (void *ptr, sf_count_t bytes, sf_count_t items, int fd)
+psf_fread (void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
 {	sf_count_t total = 0 ;
-	size_t	 count ;
+	ssize_t	count ;
 
 	items *= bytes ;
 
@@ -92,12 +110,17 @@ psf_fread (void *ptr, sf_count_t bytes, sf_count_t items, int fd)
 	{	/* Break the writes down to a sensible size. */
 		count = (items > SENSIBLE_SIZE) ? SENSIBLE_SIZE : (size_t) items ;
 
-		count = read (fd, ((char*) ptr) + total, count) ;
+		count = read (psf->filedes, ((char*) ptr) + total, count) ;
 
-		if (count == ((size_t) -1) && errno == EINTR)
-			continue ;
+		if (count == -1)
+		{	if (errno == EINTR)
+				continue ;
 
-		if (count <= 0)
+			psf_log_syserr (psf, errno) ;
+			break ;
+			} ;
+
+		if (count == 0)
 			break ;
 
 		total += count ;
@@ -108,9 +131,9 @@ psf_fread (void *ptr, sf_count_t bytes, sf_count_t items, int fd)
 } /* psf_fread */
 
 sf_count_t
-psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t items, int fd)
+psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
 {	sf_count_t total = 0 ;
-	size_t	 count ;
+	ssize_t	count ;
 
 	items *= bytes ;
 
@@ -122,12 +145,17 @@ psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t items, int fd)
 	{	/* Break the writes down to a sensible size. */
 		count = (items > SENSIBLE_SIZE) ? SENSIBLE_SIZE : items ;
 
-		count = write (fd, ((char*) ptr) + total, count) ;
+		count = write (psf->filedes, ((char*) ptr) + total, count) ;
 
-		if (count == ((size_t) -1) && errno == EINTR)
-			continue ;
+		if (count == -1)
+		{	if (errno == EINTR)
+				continue ;
 
-		if (count <= 0)
+			psf_log_syserr (psf, errno) ;
+			break ;
+			} ;
+
+		if (count == 0)
 			break ;
 
 		total += count ;
@@ -138,43 +166,55 @@ psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t items, int fd)
 } /* psf_fwrite */
 
 sf_count_t
-psf_ftell (int fd)
+psf_ftell (SF_PRIVATE *psf)
 {	sf_count_t pos ;
 
-	pos = lseek (fd, 0, SEEK_CUR) ;
-	/*
-	if (pos < 0)
-		psf_log_printf (psf, "psf_ftell error %s\n", strerror (errno)) ;
-	*/
+	pos = lseek (psf->filedes, 0, SEEK_CUR) ;
+
+	if (pos == ((sf_count_t) -1))
+		psf_log_syserr (psf, errno) ;
 
 	return pos ;
 } /* psf_ftell */
 
 int
-psf_fclose (int fd)
-{	if (fsync (fd) < 0 && errno == EBADF)
+psf_fclose (SF_PRIVATE *psf)
+{	int retval ;
+
+#if ((defined(__MWERKS__) && defined (macintosh)) == 0)
+	/* Must be MacOS9 which doesn't have fsync(). */
+	if (fsync (psf->filedes) == -1 && errno == EBADF)
 		return 0 ;
+#endif
 
-	while (close (fd) < 0 && errno == EINTR)
-		errno = 0 ;
+	while ((retval = close (psf->filedes)) == -1 && errno == EINTR)
+		/* Do nothing. */ ;
 
-	return 0 ;
+	if (retval == -1)
+		psf_log_syserr (psf, errno) ;
+
+	psf->filedes = -1 ;
+
+	return retval ;
 } /* psf_fclose */
 
 sf_count_t
-psf_fgets (char *buffer, sf_count_t bufsize, int fd)
+psf_fgets (char *buffer, sf_count_t bufsize, SF_PRIVATE *psf)
 {	sf_count_t	k = 0 ;
 	sf_count_t		count ;
 
 	while (k < bufsize - 1)
-	{	count = read (fd, &(buffer [k]), 1) ;
+	{	count = read (psf->filedes, &(buffer [k]), 1) ;
 
-	    if (count == -1 && errno == EINTR)
-			continue ;
-		if (count <= 0)
+		if (count == -1)
+		{	if (errno == EINTR)
+				continue ;
+
+			psf_log_syserr (psf, errno) ;
 			break ;
+			} ;
 
-		if (buffer [k++] == '\n')
+		if (count == 0 || buffer [k++] == '\n')
 			break ;
 		}
 
@@ -183,52 +223,40 @@ psf_fgets (char *buffer, sf_count_t bufsize, int fd)
 	return k ;
 } /* psf_fgets */
 
-int
-psf_ferror (int fd)
-{
-	/* Need to look at this more closely. How to separate errors
-	** I'm interested in from ones I'm not?
-	*/
-	if (fd > 0)
-		return errno * 0 ;
-
-	return 0 ;
-} /* psf_ferror */
-
-void
-psf_fclearerr (int fd)
-{	errno = (fd >= 0) ? 0 : errno ;
-} /* psf_fclearerr */
-
 sf_count_t
-psf_get_filelen (int fd)
+psf_get_filelen (SF_PRIVATE *psf)
 {	struct stat statbuf ;
 
-	if (fstat (fd, &statbuf))
-	{	perror ("fstat") ;
-		return -1 ;
+	if (fstat (psf->filedes, &statbuf) == -1)
+	{	psf_log_syserr (psf, errno) ;
+		return (sf_count_t) -1 ;
 		} ;
 
 	return statbuf.st_size ;
-} /* psf_fclose */
+} /* psf_get_filelen */
 
-int 
-psf_ftruncate (int fd, sf_count_t len)
-{
+int
+psf_ftruncate (SF_PRIVATE *psf, sf_count_t len)
+{	int retval ;
+
 	/* Returns 0 on success, non-zero on failure. */
 	if (len < 0)
-		return 1 ;
-		
-	if ((sizeof (off_t) < sizeof (sf_count_t)) && len > 0x7FFFFFFF)
-		return 1 ;
-		
-#if (defined(__MWERKS__) && defined (macintosh))
-	return FSSetForkSize (fd, fsFromStart, len) ;
-#else
-	return ftruncate (fd, len) ;
-#endif
-} /* psf_ftruncate */
+		return -1 ;
 
+	if ((sizeof (off_t) < sizeof (sf_count_t)) && len > 0x7FFFFFFF)
+		return -1 ;
+
+#if (defined(__MWERKS__) && defined (macintosh))
+	retval = FSSetForkSize (psf->filedes, fsFromStart, len) ;
+#else
+	retval = ftruncate (psf->filedes, len) ;
+#endif
+
+	if (retval == -1)
+		psf_log_syserr (psf, errno) ;
+
+	return retval ;
+} /* psf_ftruncate */
 
 #else
 
@@ -260,38 +288,44 @@ psf_ftruncate (int fd, sf_count_t len)
 #define		S_IXOTH	0000001	/* execute/search permission, other */
 
 /* Win32 */ int
-psf_open (const char *pathname, int mode)
-{	int fd = -1, flags ;
+psf_open (SF_PRIVATE *psf, const char *pathname, int open_mode)
+{	int oflag, mode ;
 
-	switch (mode)
+	switch (open_mode)
 	{	case SFM_READ :
-				flags = O_RDONLY | O_BINARY ;
-				fd = open (pathname, flags) ;
+				oflag = O_RDONLY | O_BINARY ;
+				mode = 0 ;
 				break ;
 
 		case SFM_WRITE :
-				flags = O_WRONLY | O_CREAT | O_TRUNC | O_BINARY ;
-				fd = open (pathname, flags, S_IRUSR | S_IWUSR | S_IRGRP) ;
+				oflag = O_WRONLY | O_CREAT | O_TRUNC | O_BINARY ;
+				mode = S_IRUSR | S_IWUSR | S_IRGRP ;
 				break ;
 
 		case SFM_RDWR :
-				flags = O_RDWR | O_CREAT | O_BINARY ;
-				fd = open (pathname, flags, S_IRUSR | S_IWUSR | S_IRGRP) ;
+				oflag = O_RDWR | O_CREAT | O_BINARY ;
+				mode = S_IRUSR | S_IWUSR | S_IRGRP ;
 				break ;
 
 		default :
-				/* psf_log_printf (psf, "ad open mode.\n") ; */
+				psf->error = SFE_BAD_OPEN_MODE ;
 				return -1 ;
+				break ;
 		} ;
 
-	if (fd < 0)
-		perror ("psf_open") ;
+	if (mode == 0)
+		psf->filedes = open (pathname, oflag) ;
+	else
+		psf->filedes = open (pathname, oflag, mode) ;
 
-	return fd ;
+	if (psf->filedes == -1)
+		psf_log_syserr (psf, errno) ;
+
+	return psf->filedes ;
 } /* psf_open */
 
 /* Win32 */ sf_count_t
-psf_fseek (int fd, sf_count_t offset, int whence)
+psf_fseek (SF_PRIVATE *psf, sf_count_t offset, int whence)
 {	sf_count_t	new_position ;
 
 	/* Bypass weird Win32-ism if necessary.
@@ -299,16 +333,19 @@ psf_fseek (int fd, sf_count_t offset, int whence)
 	** following offset and whence parameter. Instead, use the _telli64()
 	** function.
 	*/
-	if (OS_IS_WIN32 && offset == 0 && whence == SEEK_CUR)
-		return _telli64 (fd) ;
+	if (offset == 0 && whence == SEEK_CUR)
+		new_position = _telli64 (psf->filedes) ;
+	else
+		new_position = _lseeki64 (psf->filedes, offset, whence) ;
 
-	new_position = _lseeki64 (fd, offset, whence) ;
+	if (new_position < 0)
+		psf_log_syserr (psf, errno) ;
 
 	return new_position ;
 } /* psf_fseek */
 
 /* Win32 */ sf_count_t
-psf_fread (void *ptr, sf_count_t bytes, sf_count_t items, int fd)
+psf_fread (void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
 {	sf_count_t total = 0 ;
 	size_t	 count ;
 
@@ -322,12 +359,17 @@ psf_fread (void *ptr, sf_count_t bytes, sf_count_t items, int fd)
 	{	/* Break the writes down to a sensible size. */
 		count = (items > SENSIBLE_SIZE) ? SENSIBLE_SIZE : (size_t) items ;
 
-		count = read (fd, ((char*) ptr) + total, count) ;
+		count = read (psf->filedes, ((char*) ptr) + total, count) ;
 
-		if (count == ((size_t) -1) && errno == EINTR)
-			continue ;
+		if (count == -1)
+		{	if (errno == EINTR)
+				continue ;
 
-		if (count <= 0)
+			psf_log_syserr (psf, errno) ;
+			break ;
+			} ;
+
+		if (count == 0)
 			break ;
 
 		total += count ;
@@ -338,7 +380,7 @@ psf_fread (void *ptr, sf_count_t bytes, sf_count_t items, int fd)
 } /* psf_fread */
 
 /* Win32 */ sf_count_t
-psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t items, int fd)
+psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
 {	sf_count_t total = 0 ;
 	size_t	 count ;
 
@@ -352,12 +394,17 @@ psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t items, int fd)
 	{	/* Break the writes down to a sensible size. */
 		count = (items > SENSIBLE_SIZE) ? SENSIBLE_SIZE : items ;
 
-		count = write (fd, ((char*) ptr) + total, count) ;
+		count = write (psf->filedes, ((char*) ptr) + total, count) ;
 
-		if (count == ((size_t) -1) && errno == EINTR)
-			continue ;
+		if (count == -1)
+		{	if (errno == EINTR)
+				continue ;
 
-		if (count <= 0)
+			psf_log_syserr (psf, errno) ;
+			break ;
+			} ;
+
+		if (count == 0)
 			break ;
 
 		total += count ;
@@ -368,38 +415,49 @@ psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t items, int fd)
 } /* psf_fwrite */
 
 /* Win32 */ sf_count_t
-psf_ftell (int fd)
+psf_ftell (SF_PRIVATE *psf)
 {	sf_count_t pos ;
 
-	pos = _telli64 (fd) ;
+	pos = _telli64 (psf->filedes) ;
 
-	/*
-	if (pos < 0)
-		psf_log_printf (psf, "psf_ftell error %s\n", strerror (errno)) ;
-	*/
+	if (pos == ((sf_count_t) -1))
+		psf_log_syserr (psf, errno) ;
 
 	return pos ;
 } /* psf_ftell */
 
 /* Win32 */ int
-psf_fclose (int fd)
-{	return close (fd) ;
+psf_fclose (SF_PRIVATE *psf)
+{	int retval ;
+
+	while ((retval = close (psf->filedes)) == -1 && errno == EINTR)
+		/* Do nothing. */ ;
+
+	if (retval == -1)
+		psf_log_syserr (psf, errno) ;
+	
+	psf->filedes = -1 ;
+
+	return retval ;
 } /* psf_fclose */
 
 /* Win32 */ sf_count_t
-psf_fgets (char *buffer, sf_count_t bufsize, int fd)
+psf_fgets (char *buffer, sf_count_t bufsize, SF_PRIVATE *psf)
 {	sf_count_t	k = 0 ;
-	sf_count_t		count ;
+	sf_count_t	count ;
 
 	while (k < bufsize - 1)
-	{	count = read (fd, &(buffer [k]), 1) ;
+	{	count = read (psf->filedes, &(buffer [k]), 1) ;
 
-	    if (count == -1 && errno == EINTR)
-			continue ;
-		if (count <= 0)
+		if (count == -1)
+		{	if (errno == EINTR)
+				continue ;
+
+			psf_log_syserr (psf, errno) ;
 			break ;
+			} ;
 
-		if (buffer [k++] == '\n')
+		if (count == 0 || buffer [k++] == '\n')
 			break ;
 		}
 
@@ -408,42 +466,41 @@ psf_fgets (char *buffer, sf_count_t bufsize, int fd)
 	return k ;
 } /* psf_fgets */
 
-/* Win32 */ int
-psf_ferror (int fd)
-{
-	/* Need to look at this more closely. How to separate errors
-	** I'm interested in from ones I'm not?
-	*/
-	if (fd > 0)
-		return errno * 0 ;
-
-	return 0 ;
-} /* psf_ferror */
-
-/* Win32 */ void
-psf_fclearerr (int fd)
-{	errno = (fd >= 0) ? 0 : errno ;
-} /* psf_fclearerr */
-
 /* Win32 */ sf_count_t
-psf_get_filelen (int fd)
-{	struct _stati64 statbuf ;
+psf_get_filelen (SF_PRIVATE *psf)
+{
+#if 0
+	/* 
+	** Windoze is SOOOOO FUCKED!!!!!!!
+	** This code should work but doesn't. Why?
+	** Code below does work.
+	*/
+	struct _stati64 statbuf ;
 
-	if (_fstati64 (fd, &statbuf))
-	{	perror ("fstat") ;
-		return -1 ;
+	if (_fstati64 (psf->filedes, &statbuf))
+	{	psf_log_syserr (psf, errno) ;
+		return (sf_count_t) -1 ;
 		} ;
 
 	return statbuf.st_size ;
-} /* psf_fclose */
+#else
+	sf_count_t  current, len ;
+	
+	current = psf_fseek (psf, 0, SEEK_CUR) ;
+	len = psf_fseek (psf, 0, SEEK_END) ;
+	psf_fseek (psf, current, SEEK_SET) ;
+	
+	return len ;
+#endif
+} /* psf_get_filelen */
 
-/* Win32 */ int 
-psf_ftruncate (int fd, sf_count_t len)
-{
+/* Win32 */ int
+psf_ftruncate (SF_PRIVATE *psf, sf_count_t len)
+{	int retval ;
 	/* Returns 0 on success, non-zero on failure. */
 	if (len < 0)
 		return 1 ;
-		
+
 	/* The global village idiots at micorsoft decided to implement
 	** nearly all the required 64 bit file offset functions except
 	** for one, truncate. The fscking morons!
@@ -452,9 +509,32 @@ psf_ftruncate (int fd, sf_count_t len)
 	** this up.
 	*/
 	if (len > 0x7FFFFFFF)
-		return 1 ;
-	return chsize (fd, len) ;
+		return -1 ;
+
+	retval = chsize (psf->filedes, len) ;
+	
+	if (retval == -1)
+		psf_log_syserr (psf, errno) ;
+
+	return retval ;
 } /* psf_ftruncate */
 
 
 #endif
+
+/*==============================================================================
+*/
+
+static void
+psf_log_syserr (SF_PRIVATE *psf, int error)
+{
+	/* Only log an error if no error has been set yet. */
+	if (psf->error == 0)
+	{	psf->error = SFE_SYSTEM ;
+		LSF_SNPRINTF (psf->syserr, sizeof (psf->syserr), "System error : %s", strerror (error)) ;
+		} ;
+
+	return ;
+} /* psf_log_syserr */
+
+

@@ -17,6 +17,7 @@
 */
 
 #include	<stdio.h>
+#include	<string.h>
 #include	<unistd.h>
 #include	<math.h>
 
@@ -24,7 +25,7 @@
 #include	"config.h"
 #include	"common.h"
 
-static SF_FORMAT_INFO simple_formats [] =
+static SF_FORMAT_INFO const simple_formats [] =
 {
 	{	SF_FORMAT_AIFF | SF_FORMAT_PCM_16,
 		"AIFF (Apple/SGI 16 bit PCM)", "aiff" 
@@ -46,6 +47,10 @@ static SF_FORMAT_INFO simple_formats [] =
 		"AU (Sun/Next 8-bit u-law)", "au"
 		},
 		
+	{	SF_FORMAT_RAW | SF_FORMAT_VOX_ADPCM,
+		"OKI Dialogic VOX ADPCM)", "vox"
+		},
+
 	{	SF_FORMAT_WAV | SF_FORMAT_PCM_16,
 		"WAV (Microsoft 16 bit PCM)", "wav"
 		},
@@ -75,13 +80,13 @@ psf_get_format_simple_count	(void)
 
 int
 psf_get_format_simple (SF_FORMAT_INFO *data) 
-{	int index ;
+{	int indx ;
 
 	if (data->format < 0 || data->format >= (SIGNED_SIZEOF (simple_formats) / SIGNED_SIZEOF (SF_FORMAT_INFO)))
 		return SFE_BAD_CONTROL_CMD ;
 
-	index = data->format ;
-	memcpy (data, &(simple_formats [index]), SIGNED_SIZEOF (SF_FORMAT_INFO)) ;
+	indx = data->format ;
+	memcpy (data, &(simple_formats [indx]), SIGNED_SIZEOF (SF_FORMAT_INFO)) ;
 	
 	return 0 ;
 } /* psf_get_format_simple */
@@ -90,7 +95,7 @@ psf_get_format_simple (SF_FORMAT_INFO *data)
 ** Major format info.
 */
 
-static SF_FORMAT_INFO major_formats [] =
+static SF_FORMAT_INFO const major_formats [] =
 {
 	{	SF_FORMAT_AIFF,		"AIFF (Apple/SGI)",						"aiff" 	},
 	{	SF_FORMAT_AU,		"AU (Sun/NeXT)", 						"au"	},
@@ -117,13 +122,13 @@ psf_get_format_major_count	(void)
 
 int
 psf_get_format_major (SF_FORMAT_INFO *data) 
-{	int index ;
+{	int indx ;
 
 	if (data->format < 0 || data->format >= (SIGNED_SIZEOF (major_formats) / SIGNED_SIZEOF (SF_FORMAT_INFO)))
 		return SFE_BAD_CONTROL_CMD ;
 
-	index = data->format ;
-	memcpy (data, &(major_formats [index]), SIGNED_SIZEOF (SF_FORMAT_INFO)) ;
+	indx = data->format ;
+	memcpy (data, &(major_formats [indx]), SIGNED_SIZEOF (SF_FORMAT_INFO)) ;
 	
 	return 0 ;
 } /* psf_get_format_major */
@@ -134,29 +139,30 @@ psf_get_format_major (SF_FORMAT_INFO *data)
 
 static SF_FORMAT_INFO subtype_formats [] =
 {
-	{	SF_FORMAT_PCM_S8,		"Signed 8 bit PCM",		NULL },
-	{	SF_FORMAT_PCM_16,		"Signed 16 bit PCM",	NULL },
-	{	SF_FORMAT_PCM_24,		"Signed 24 bit PCM",	NULL },
-	{	SF_FORMAT_PCM_32,		"Signed 32 bit PCM",	NULL },
+	{	SF_FORMAT_PCM_S8,		"Signed 8 bit PCM",		NULL 	},
+	{	SF_FORMAT_PCM_16,		"Signed 16 bit PCM",	NULL 	},
+	{	SF_FORMAT_PCM_24,		"Signed 24 bit PCM",	NULL 	},
+	{	SF_FORMAT_PCM_32,		"Signed 32 bit PCM",	NULL 	},
 
-	{	SF_FORMAT_PCM_U8,		"Unsigned 8 bit PCM",	NULL },
+	{	SF_FORMAT_PCM_U8,		"Unsigned 8 bit PCM",	NULL 	},
 	
-	{	SF_FORMAT_FLOAT,		"32 bit float",			NULL },
-	{	SF_FORMAT_DOUBLE,		"64 bit float",			NULL },
+	{	SF_FORMAT_FLOAT,		"32 bit float",			NULL 	},
+	{	SF_FORMAT_DOUBLE,		"64 bit float",			NULL 	},
 	
-	{	SF_FORMAT_ULAW,			"U-Law",				NULL },
-	{	SF_FORMAT_ALAW,			"A-Law",				NULL },
-	{	SF_FORMAT_IMA_ADPCM,	"IMA ADPCM",			NULL },
-	{	SF_FORMAT_MS_ADPCM,		"Microsoft ADPCM",		NULL },
+	{	SF_FORMAT_ULAW,			"U-Law",				NULL 	},
+	{	SF_FORMAT_ALAW,			"A-Law",				NULL 	},
+	{	SF_FORMAT_IMA_ADPCM,	"IMA ADPCM",			NULL 	},
+	{	SF_FORMAT_MS_ADPCM,		"Microsoft ADPCM",		NULL 	},
 
-	{	SF_FORMAT_GSM610,		"GSM 6.10",				NULL },
+	{	SF_FORMAT_GSM610,		"GSM 6.10",				NULL 	},
 
-	{	SF_FORMAT_G721_32,		"32kbs G721 ADPCM",		NULL },
-	{	SF_FORMAT_G723_24,		"24kbs G723 ADPCM",		NULL },
+	{	SF_FORMAT_G721_32,		"32kbs G721 ADPCM",		NULL 	},
+	{	SF_FORMAT_G723_24,		"24kbs G723 ADPCM",		NULL 	},
 
-	{	SF_FORMAT_DWVW_12,		"12 bit DWVW",			NULL },
-	{	SF_FORMAT_DWVW_16,		"16 bit DWVW",			NULL },
-	{	SF_FORMAT_DWVW_24,		"24 bit DWVW",			NULL },
+	{	SF_FORMAT_DWVW_12,		"12 bit DWVW",			NULL 	},
+	{	SF_FORMAT_DWVW_16,		"16 bit DWVW",			NULL 	},
+	{	SF_FORMAT_DWVW_24,		"24 bit DWVW",			NULL 	},
+	{	SF_FORMAT_VOX_ADPCM,	"VOX ADPCM",			"vox" 	},
 
 } ; /* subtype_formats */
 
@@ -167,16 +173,49 @@ psf_get_format_subtype_count	(void)
 
 int
 psf_get_format_subtype (SF_FORMAT_INFO *data) 
-{	int index ;
+{	int indx ;
 
 	if (data->format < 0 || data->format >= (SIGNED_SIZEOF (subtype_formats) / SIGNED_SIZEOF (SF_FORMAT_INFO)))
 		return SFE_BAD_CONTROL_CMD ;
 
-	index = data->format ;
-	memcpy (data, &(subtype_formats [index]), sizeof (SF_FORMAT_INFO)) ;
+	indx = data->format ;
+	memcpy (data, &(subtype_formats [indx]), sizeof (SF_FORMAT_INFO)) ;
 	
 	return 0 ;
 } /* psf_get_format_subtype */
+
+/*==============================================================================
+*/
+
+int
+psf_get_format_info (SF_FORMAT_INFO *data) 
+{	int k, format ;
+
+	if (data->format & SF_FORMAT_TYPEMASK)
+	{	format = data->format & SF_FORMAT_TYPEMASK ;
+	
+		for (k = 0 ; k < (SIGNED_SIZEOF (major_formats) / SIGNED_SIZEOF (SF_FORMAT_INFO)) ; k++)
+		{	if (format == major_formats [k].format)
+			{	memcpy (data, &(major_formats [k]), sizeof (SF_FORMAT_INFO)) ;
+				return 0 ;
+				} ;
+			} ;
+		}
+	else if (data->format & SF_FORMAT_SUBMASK)
+	{	format = data->format & SF_FORMAT_SUBMASK ;
+	
+		for (k = 0 ; k < (SIGNED_SIZEOF (subtype_formats) / SIGNED_SIZEOF (SF_FORMAT_INFO)) ; k++)
+		{	if (format == subtype_formats [k].format)
+			{	memcpy (data, &(subtype_formats [k]), sizeof (SF_FORMAT_INFO)) ;
+				return 0 ;
+				} ;
+			} ;
+		} ;
+		
+	memset (data, 0, sizeof (SF_FORMAT_INFO)) ;
+
+	return SFE_BAD_CONTROL_CMD ;
+} /* psf_get_format_info */
 
 /*==============================================================================
 */

@@ -1,19 +1,19 @@
 [+ AutoGen5 template c +]
 /*
 ** Copyright (C) 2001-2002 Erik de Castro Lopo <erikd@zip.com.au>
-**  
+**
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
-** 
+**
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software 
+** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
@@ -33,7 +33,7 @@
 
 static	void	float_norm_test		(char *filename) ;
 static	void	double_norm_test	(char *filename) ;
-static	void	format_tests	(void) ;
+static	void	format_tests		(void) ;
 static	void	calc_peak_test		(int filetype, char *filename) ;
 static	void	truncate_test		(char *filename, int filetype) ;
 
@@ -44,7 +44,7 @@ static	void	truncate_test		(char *filename, int filetype) ;
 static	float	float_data  [BUFFER_LEN] ;
 static	double	double_data [BUFFER_LEN] ;
 
-int		
+int
 main (int argc, char *argv[])
 {	/*-char	*filename ;-*/
 	int		bDoAll = 0 ;
@@ -64,7 +64,7 @@ main (int argc, char *argv[])
 		} ;
 
 	bDoAll =! strcmp (argv [1], "all");
-		
+
 	if (bDoAll || ! strcmp (argv [1], "ver"))
 	{	char buffer [128] ;
 		buffer [0] = 0 ;
@@ -77,7 +77,7 @@ main (int argc, char *argv[])
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "norm"))
-	{	/*	Preliminary float/double normalisation tests. More testing 
+	{	/*	Preliminary float/double normalisation tests. More testing
 		**	is done in the program 'floating_point_test'.
 		*/
 		float_norm_test  ("float.wav") ;
@@ -114,17 +114,16 @@ main (int argc, char *argv[])
 
 /*============================================================================================
 **	Here are the test functions.
-*/ 
+*/
 
-static void	
+static void
 float_norm_test (char *filename)
 {	SNDFILE			*file ;
 	SF_INFO			sfinfo ;
 	unsigned int	k ;
 
-	printf ("    float_norm_test   : %s ", filename) ;
-	fflush (stdout) ;
-	
+	print_test_name ("float_norm_test", filename) ;
+
 	sfinfo.samplerate  = 44100 ;
 	sfinfo.format 	   = (SF_FORMAT_RAW | SF_FORMAT_PCM_16) ;
 	sfinfo.channels    = 1 ;
@@ -135,11 +134,11 @@ float_norm_test (char *filename)
 		float_data [k] = (k + 5) / (2.0 * BUFFER_LEN) ;
 	for (k = BUFFER_LEN / 2 ; k < BUFFER_LEN ; k++)
 		float_data [k] = (k + 5) ;
-		
+
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("Line %d: sf_open_write failed with error : ", __LINE__) ;
 		fflush (stdout) ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 
@@ -149,7 +148,7 @@ float_norm_test (char *filename)
 	{	printf ("Line %d: sf_write_float failed with short write (%d ->%d)\n", __LINE__, BUFFER_LEN, k) ;
 		exit (1) ;
 		} ;
-	
+
 	/* Turn normalisation off. */
 	sf_command (file, SFC_SET_NORM_FLOAT, NULL, SF_FALSE) ;
 
@@ -157,27 +156,27 @@ float_norm_test (char *filename)
 	{	printf ("Line %d: sf_write_float failed with short write (%d ->%d)\n", __LINE__, BUFFER_LEN, k) ;
 		exit (1) ;
 		} ;
-	
+
 	sf_close (file) ;
-	
+
 	/* sfinfo struct should still contain correct data. */
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("Line %d: sf_open_read failed with error : ", __LINE__) ;
 		fflush (stdout) ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.format != (SF_FORMAT_RAW | SF_FORMAT_PCM_16))
 	{	printf ("Line %d: Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, (SF_FORMAT_RAW | SF_FORMAT_PCM_16), sfinfo.format) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.frames != BUFFER_LEN)
 	{	printf ("\n\nLine %d: Incorrect number of.frames in file. (%d => %ld)\n", __LINE__, BUFFER_LEN, SF_COUNT_TO_LONG (sfinfo.frames)) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.channels != 1)
 	{	printf ("Line %d: Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
@@ -194,11 +193,11 @@ float_norm_test (char *filename)
 		{	printf ("\n\nLine %d: float_data [%d] == %f which is greater than 1.0\n", __LINE__, k, float_data [k]) ;
 			exit (1) ;
 			} ;
-			
+
 	/* Seek to start of file, turn normalisation off, read float_data and check again. */
 	sf_seek (file, 0, SEEK_SET) ;
 	sf_command (file, SFC_SET_NORM_FLOAT, NULL, SF_FALSE) ;
-	
+
 	if ((k = sf_read_float (file, float_data, BUFFER_LEN)) != BUFFER_LEN)
 	{	printf ("\n\nLine %d: sf_read_float failed with short read (%d ->%d)\n", __LINE__, BUFFER_LEN, k) ;
 		exit (1) ;
@@ -213,7 +212,7 @@ float_norm_test (char *filename)
 	/* Seek to start of file, turn normalisation on, read float_data and do final check. */
 	sf_seek (file, 0, SEEK_SET) ;
 	sf_command (file, SFC_SET_NORM_FLOAT, NULL, SF_TRUE) ;
-	
+
 	if ((k = sf_read_float (file, float_data, BUFFER_LEN)) != BUFFER_LEN)
 	{	printf ("\n\nLine %d: sf_read_float failed with short read (%d ->%d)\n", __LINE__, BUFFER_LEN, k) ;
 		exit (1) ;
@@ -224,24 +223,23 @@ float_norm_test (char *filename)
 		{	printf ("\n\nLine %d: float_data [%d] == %f which is greater than 1.0\n", __LINE__, k, float_data [k]) ;
 			exit (1) ;
 			} ;
-			
+
 
 	sf_close (file) ;
 
 	unlink (filename) ;
-	
-	printf (".... ok\n") ;
+
+	printf ("ok\n") ;
 } /* float_norm_test */
 
-static void	
+static void
 double_norm_test (char *filename)
 {	SNDFILE			*file ;
 	SF_INFO			sfinfo ;
 	unsigned int	k ;
 
-	printf ("    double_norm_test  : %s ", filename) ;
-	fflush (stdout) ;
-	
+	print_test_name ("double_norm_test", filename) ;
+
 	sfinfo.samplerate  = 44100 ;
 	sfinfo.format 	   = (SF_FORMAT_RAW | SF_FORMAT_PCM_16) ;
 	sfinfo.channels    = 1 ;
@@ -252,11 +250,11 @@ double_norm_test (char *filename)
 		double_data [k] = (k + 5) / (2.0 * BUFFER_LEN) ;
 	for (k = BUFFER_LEN / 2 ; k < BUFFER_LEN ; k++)
 		double_data [k] = (k + 5) ;
-		
+
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("Line %d: sf_open_write failed with error : ", __LINE__) ;
 		fflush (stdout) ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 
@@ -267,7 +265,7 @@ double_norm_test (char *filename)
 	{	printf ("Line %d: sf_write_double failed with short write (%d ->%d)\n", __LINE__, BUFFER_LEN, k) ;
 		exit (1) ;
 		} ;
-	
+
 	/* Turn normalisation off. */
 	sf_command (file, SFC_SET_NORM_DOUBLE, NULL, SF_FALSE) ;
 
@@ -275,26 +273,26 @@ double_norm_test (char *filename)
 	{	printf ("Line %d: sf_write_double failed with short write (%d ->%d)\n", __LINE__, BUFFER_LEN, k) ;
 		exit (1) ;
 		} ;
-	
+
 	sf_close (file) ;
-	
+
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("Line %d: sf_open_read failed with error : ", __LINE__) ;
 		fflush (stdout) ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.format != (SF_FORMAT_RAW | SF_FORMAT_PCM_16))
 	{	printf ("Line %d: Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, (SF_FORMAT_RAW | SF_FORMAT_PCM_16), sfinfo.format) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.frames != BUFFER_LEN)
 	{	printf ("\n\nLine %d: Incorrect number of.frames in file. (%d => %ld)\n", __LINE__, BUFFER_LEN, SF_COUNT_TO_LONG (sfinfo.frames)) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.channels != 1)
 	{	printf ("Line %d: Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
@@ -311,11 +309,11 @@ double_norm_test (char *filename)
 		{	printf ("\n\nLine %d: double_data [%d] == %f which is greater than 1.0\n", __LINE__, k, double_data [k]) ;
 			exit (1) ;
 			} ;
-			
+
 	/* Seek to start of file, turn normalisation off, read double_data and check again. */
 	sf_seek (file, 0, SEEK_SET) ;
 	sf_command (file, SFC_SET_NORM_DOUBLE, NULL, SF_FALSE) ;
-	
+
 	if ((k = sf_read_double (file, double_data, BUFFER_LEN)) != BUFFER_LEN)
 	{	printf ("\n\nLine %d: sf_read_double failed with short read (%d ->%d)\n", __LINE__, BUFFER_LEN, k) ;
 		exit (1) ;
@@ -330,7 +328,7 @@ double_norm_test (char *filename)
 	/* Seek to start of file, turn normalisation on, read double_data and do final check. */
 	sf_seek (file, 0, SEEK_SET) ;
 	sf_command (file, SFC_SET_NORM_DOUBLE, NULL, SF_TRUE) ;
-	
+
 	if ((k = sf_read_double (file, double_data, BUFFER_LEN)) != BUFFER_LEN)
 	{	printf ("\n\nLine %d: sf_read_double failed with short read (%d ->%d)\n", __LINE__, BUFFER_LEN, k) ;
 		exit (1) ;
@@ -341,27 +339,29 @@ double_norm_test (char *filename)
 		{	printf ("\n\nLine %d: double_data [%d] == %f which is greater than 1.0\n", __LINE__, k, double_data [k]) ;
 			exit (1) ;
 			} ;
-			
+
 
 	sf_close (file) ;
 
 	unlink (filename) ;
-	
-	printf ("... ok\n") ;
+
+	printf ("ok\n") ;
 } /* double_norm_test */
 
-static	void	
+static	void
 format_tests	(void)
 {	SF_FORMAT_INFO format_info ;
 	SF_INFO		sfinfo ;
 	const char	*last_name ;
 	int 		k, count ;
 
-	printf ("    format_tests : ") ;
-	fflush (stdout) ;
-	
-	/* First test simple formats. */
+	print_test_name ("format_tests", "(null)") ;
+
+	/* Clear out SF_INFO struct and set channels > 0. */
+	memset (&sfinfo, 0, sizeof (sfinfo)) ;
 	sfinfo.channels = 1 ;
+
+	/* First test simple formats. */
 
 	sf_command (NULL, SFC_GET_SIMPLE_FORMAT_COUNT, &count, sizeof (int)) ;
 
@@ -385,7 +385,10 @@ format_tests	(void)
 
 		if (! sf_format_check (&sfinfo))
 		{	printf ("\n\nLine %d: sf_format_check failed.\n", __LINE__) ;
-			printf ("         Name : %s\n", format_info.name) ;
+			printf ("        Name : %s\n", format_info.name) ;
+			printf ("        Format      : 0x%X\n", sfinfo.format) ;
+			printf ("        Channels    : 0x%X\n", sfinfo.channels) ;
+			printf ("        Sample Rate : 0x%X\n", sfinfo.samplerate) ;
 			exit (1) ;
 			} ;
 		last_name = format_info.name ;
@@ -436,16 +439,10 @@ format_tests	(void)
 		} ;
 	format_info.format = 666 ;
 	sf_command (NULL, SFC_GET_FORMAT_SUBTYPE, &format_info, sizeof (format_info)) ;
-		
+
 
 	printf ("ok\n") ;
 } /* format_tests */
-
-#define PUT_DOTS(k)					\
-			{	while (k--)			\
-					putchar ('.') ;	\
-				putchar (' ') ;		\
-				}
 
 static	void
 calc_peak_test (int filetype, char *filename)
@@ -454,10 +451,7 @@ calc_peak_test (int filetype, char *filename)
 	int			k, format ;
 	double		peak ;
 
-	printf ("    calc_peak_test    : %s ", filename) ;
-	k = abs (16 - strlen (filename)) ;
-	PUT_DOTS (k) ;
-	fflush (stdout) ;
+	print_test_name ("calc_peak_test", filename) ;
 
 	format = (filetype | SF_FORMAT_PCM_16) ;
 
@@ -500,7 +494,7 @@ calc_peak_test (int filetype, char *filename)
 		} ;
 
 	sf_command (file, SFC_CALC_NORM_SIGNAL_MAX, &peak, sizeof (peak)) ;
-	if (fabs (peak - 0.5) > 1e-5)
+	if (fabs (peak - 0.5) > 4e-5)
 	{	printf ("Line %d : Peak value should be %f (is %f).\n", __LINE__, 0.5, peak) ;
 		exit (1) ;
 		} ;
@@ -553,7 +547,7 @@ calc_peak_test (int filetype, char *filename)
 		} ;
 
 	sf_close (file) ;
-	
+
 	unlink (filename) ;
 
 	printf ("ok\n") ;
@@ -564,32 +558,28 @@ truncate_test (char *filename, int filetype)
 {	SNDFILE 	*file ;
 	SF_INFO		sfinfo ;
 	sf_count_t	len ;
-	int			k ;
-	
-	printf ("    truncate_test     : %s ", filename) ;
-	k = abs (16 - strlen (filename)) ;
-	PUT_DOTS (k) ;
-	fflush (stdout) ;
+
+	print_test_name ("truncate_test", filename) ;
 
 	sfinfo.samplerate = 11025 ;
 	sfinfo.format 	  = filetype ;
 	sfinfo.channels   = 2 ;
 
 	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
-	
+
 	test_write_double_or_die (file, 0, double_data, BUFFER_LEN, __LINE__) ;
-	
+
 	len = 100 ;
 	if (sf_command (file, SFC_FILE_TRUNCATE, &len, sizeof (len)))
 	{	printf ("Line %d: sf_command (SFC_FILE_TRUNCATE) returned error.\n", __LINE__) ;
 		exit (1) ;
 		} ;
-	
+
 	test_seek_or_die (file, 0, SEEK_CUR, len, 2, __LINE__) ;
 	test_seek_or_die (file, 0, SEEK_END, len, 2, __LINE__) ;
-	
+
 	sf_close (file) ;
 
 	unlink (filename) ;
-	puts (" ok") ;
+	puts ("ok") ;
 } /* truncate_test */

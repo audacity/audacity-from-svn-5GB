@@ -92,7 +92,7 @@ lcomp_test_int (char *str, char *filename, int filetype, double margin)
 
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	
@@ -109,7 +109,7 @@ lcomp_test_int (char *str, char *filename, int filetype, double margin)
 
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	

@@ -1,5 +1,10 @@
 2002-06-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
 
+    * long_term.c
+	Changes tp removed compiler warnings about shadowed parameters.
+
+2002-06-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
     * private.h
 	Made declarations of gsm_A, gsm_B, gsm_MIC etc extern. This fixed a compile
 	problem on MacOSX.

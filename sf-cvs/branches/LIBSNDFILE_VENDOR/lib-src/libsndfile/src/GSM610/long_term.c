@@ -466,7 +466,7 @@ static void Cut_Calculation_of_the_LTP_parameters (
 #endif /* LTP_CUT */
 
 static void Calculation_of_the_LTP_parameters (
-	register word	* d,		/* [0..39]	IN	*/
+	register word	* din,		/* [0..39]	IN	*/
 	register word	* dp,		/* [-120..-1]	IN	*/
 	word		* bc_out,	/* 		OUT	*/
 	word		* Nc_out	/* 		OUT	*/
@@ -487,8 +487,8 @@ static void Calculation_of_the_LTP_parameters (
 	dmax = 0;
 
 	for (k = 0; k <= 39; k++) {
-		temp = d[k];
-		temp = GSM_ABS( temp );
+		temp = din [k] ;
+		temp = GSM_ABS (temp) ;
 		if (temp > dmax) dmax = temp;
 	}
 
@@ -507,7 +507,7 @@ static void Calculation_of_the_LTP_parameters (
 	/*  Initialization of a working array wt
 	 */
 
-	for (k =    0; k < 40; k++) wt_float[k] =  SASR( d[k], scal );
+	for (k =    0; k < 40; k++) wt_float[k] =  SASR (din [k], scal) ;
 	for (k = -120; k <  0; k++) dp_float[k] =  dp[k];
 
 	/* Search for the maximum cross-correlation and coding of the LTP lag
@@ -706,7 +706,7 @@ static void Cut_Fast_Calculation_of_the_LTP_parameters (
 #endif /* LTP_CUT */
 
 static void Fast_Calculation_of_the_LTP_parameters (
-	register word	* d,		/* [0..39]	IN	*/
+	register word	* din,		/* [0..39]	IN	*/
 	register word	* dp,		/* [-120..-1]	IN	*/
 	word		* bc_out,	/* 		OUT	*/
 	word		* Nc_out	/* 		OUT	*/
@@ -720,8 +720,8 @@ static void Fast_Calculation_of_the_LTP_parameters (
 
 	register float	L_max, L_power;
 
-	for (k = 0; k < 40; ++k) wt_float[k] = (float)d[k];
-	for (k = -120; k < 0; ++k) dp_float[k] = (float)dp[k];
+	for (k = 0; k < 40; ++k) wt_float[k] = (float) din [k] ;
+	for (k = -120; k < 0; ++k) dp_float[k] = (float) dp [k] ;
 
 	/* Search for the maximum cross-correlation and coding of the LTP lag
 	 */

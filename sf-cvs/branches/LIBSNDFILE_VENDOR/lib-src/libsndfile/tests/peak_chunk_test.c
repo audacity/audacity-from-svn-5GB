@@ -105,7 +105,7 @@ test_float_peak (char *str, char *filename, int typemajor)
 		
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("Line %d: sf_open_write failed with error : ", __LINE__) ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 
@@ -123,7 +123,7 @@ test_float_peak (char *str, char *filename, int typemajor)
 	
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("Line %d: sf_open_read failed with error : ", __LINE__) ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 	

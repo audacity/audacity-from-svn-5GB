@@ -24,27 +24,25 @@
 
 #include	<sndfile.h>
 
-extern int	sf_error_number	(int errnum, char *str, size_t maxlen) ;
-
 #define	BUFFER_SIZE		(1<<15)
 #define	SHORT_BUFFER	(256)
 
-static	char	strbuffer [BUFFER_SIZE] ;
-static	char	noerror   [SHORT_BUFFER] ;
-
 int		main (void)
-{	int		k ;
-
-	sf_error_number (0, noerror, SHORT_BUFFER) ;
+{	const char 	*noerror, *errstr ;
+	int			k ;
+	
+	noerror = sf_error_number (0) ;
 		
 	printf ("Testing to see if all internal error numbers have corresponding error messages :\n") ;
 
 	for (k = 1 ; k < 1000 ; k++)
-	{	sf_error_number (-k, strbuffer, BUFFER_SIZE) ;
-		printf ("%6d : %s\n", k, strbuffer) ;
-		if (! strcmp (strbuffer, noerror))
+	{	errstr = sf_error_number (k) ;
+	
+		printf ("%6d : %s\n", k, errstr) ;
+
+		if (errstr == noerror)
 			break ;
-		if (strstr (strbuffer, "This is a bug in libsndfile."))
+		if (strstr (errstr, "This is a bug in libsndfile."))
 			return 1 ;
 		} ;
 

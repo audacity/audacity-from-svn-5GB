@@ -150,8 +150,14 @@
 	#define  HAVE_LRINT_REPLACEMENT 1
 	#include   <math.h>
 
+	#undef lrint
+	#undef lrintf
+
+	#define lrint	double2int
+	#define lrintf	float2int
+
 	inline static long int 
-	lrintf (register float in) 
+	float2int (register float in) 
 	{	int res [2] ;
 	
 		__asm__ __volatile__
@@ -166,7 +172,7 @@
 	} /* lrintf */
 	
 	inline static long int 
-	lrint (register double in) 
+	double2int (register double in) 
 	{	int res [2] ;
 	
 		__asm__ __volatile__
@@ -181,8 +187,10 @@
 	} /* lrint */
 
 #else
+	#ifndef __sgi
 	#warning "Don't have the functions lrint() and lrintf()."
 	#warning "Replacing these functions with a standard C cast."
+	#endif
 
 	#include	<math.h>
 
