@@ -2733,10 +2733,33 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
    else if (event.ButtonUp(1) ) {
 
       if (buttonRect.Inside(event.m_x, event.m_y)) {
-         if (solo)
-            t->SetSolo(!t->GetSolo());
-         else
-            t->SetMute(!t->GetMute());
+         if (event.ShiftDown()) {
+            // Shift-click mutes/solos this track and unmutes/unsolos other tracks.
+            TrackListIterator iter(mTracks);
+            Track *i = iter.First();
+            while (i) {
+               if (i == t) {
+                  if (solo)
+                     i->SetSolo(true);
+                  else
+                     i->SetMute(true);
+               }
+               else {
+                  if (solo)
+                     i->SetSolo(false);
+                  else
+                     i->SetMute(false);
+               }
+               i = iter.Next();
+            }
+         }
+         else {
+            // Normal click just toggles this track.
+            if (solo)
+               t->SetSolo(!t->GetSolo());
+            else
+               t->SetMute(!t->GetMute());
+         }
       }
       if (solo) {
          mIsSoloing = false;
