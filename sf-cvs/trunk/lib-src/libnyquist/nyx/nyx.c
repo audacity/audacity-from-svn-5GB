@@ -38,6 +38,9 @@ extern LVAL a_sound;
 extern snd_list_type zero_snd_list;
 
 /* globals */
+int                 nyx_output_pos;
+int                 nyx_output_len;
+char               *nyx_output_string;
 int                 nyx_expr_pos;
 int                 nyx_expr_len;
 const char         *nyx_expr_string;
@@ -92,6 +95,10 @@ void nyx_init()
       char *argv[1];
       argv[0] = "nyquist";
       xlisp_main_init(1, argv);
+
+      nyx_output_len = 0;
+      nyx_output_pos = 0;
+      nyx_output_string = NULL;
       
       nyx_first_time = 0;
    }
@@ -104,6 +111,13 @@ void nyx_init()
 
 void nyx_cleanup()
 {
+   if (nyx_output_string) {
+      free(nyx_output_string);
+      nyx_output_string = NULL;
+      nyx_output_pos = 0;
+      nyx_output_len = 0;
+   }
+
    xlpop(); /* garbage-collect nyx_result */
    gc(); /* run the garbage-collector now */
 }
@@ -153,6 +167,24 @@ void nyx_susp_print_tree(nyx_susp_type susp, int n)
 {
 }
 
+void nyx_capture_output(int max_len)
+{
+   if (nyx_output_string)
+      free(nyx_output_string);
+
+   nyx_output_string = (char *)malloc(max_len);
+   nyx_output_len = max_len;
+   nyx_output_pos = 0;
+}
+
+void nyx_get_captured_output(int *out_len,
+                             const char **out_chars)
+{
+   *out_len = nyx_output_pos;
+   *out_chars = (const char *)nyx_output_string;
+   nyx_output_pos = 0;
+}
+
 void nyx_set_input_audio(nyx_audio_callback callback,
                          void *userdata,
                          int num_channels,
@@ -193,6 +225,9 @@ void nyx_set_input_audio(nyx_audio_callback callback,
 
    /* Bind the sample rate to the "*sound-srate*" global */
    setvalue(xlenter("*SOUND-SRATE*"), cvflonum(rate));
+
+   /* Bind selection len to "len" global */
+   setvalue(xlenter("LEN"), cvflonum(len));
 
    if (len > 0)
       stretch_len = len / rate;
@@ -598,7 +633,10 @@ void ostputc(int ch)
 {     
    oscheck();		/* check for control characters */
    
-   putchar(((char) ch));
+   if (nyx_output_pos < nyx_output_len)
+      nyx_output_string[nyx_output_pos++] = (char)ch;
+   else
+      putchar(((char) ch));
 }
 
 /* osflush - flush the terminal input buffer */
