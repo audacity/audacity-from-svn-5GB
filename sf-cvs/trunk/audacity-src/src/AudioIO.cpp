@@ -151,6 +151,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mCaptureTracks  = captureTracks;
    mTotalSamplesPlayed = 0;
    mPausedSeconds = 0;
+   mCaptureFormat = captureFormat;
 
    //
    // Attempt to open the device using the given parameters.  If we can't, it's
@@ -332,7 +333,6 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    if( err != paNoError )
    {
       // we'll need a more complete way to indicate error
-      printf("failed here\n");
       printf("%s\n", Pa_GetErrorText(err));
       return 0;
    }
