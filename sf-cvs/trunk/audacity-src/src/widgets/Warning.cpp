@@ -42,7 +42,7 @@ BEGIN_EVENT_TABLE(WarningDialog, wxDialog)
 END_EVENT_TABLE()
 
 WarningDialog::WarningDialog(wxWindow *parent, wxString message):
-   wxDialog(parent, -1, _("Warning"))
+   wxDialog(parent, (wxWindowID)-1, (wxString)_("Warning"))
 {
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
