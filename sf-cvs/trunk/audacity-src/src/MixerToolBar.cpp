@@ -34,6 +34,7 @@
 #include <wx/tooltip.h>
 
 #include "Audacity.h"
+#include "ImageManipulation.h"
 #include "widgets/ASlider.h"
 #include "Prefs.h"
 
@@ -88,8 +89,24 @@ void MixerToolBar::InitializeMixerToolBar()
        wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
    wxColour origColour(204, 204, 204);
 
-   mPlayBitmap = new wxBitmap(Speaker);
-   mRecordBitmap = new wxBitmap(Mic);
+   wxImage *speaker = new wxImage(Speaker);
+   wxImage *speakerAlpha = new wxImage(SpeakerAlpha);
+   wxImage *bkgnd = CreateSysBackground(25, 25, backgroundColour);
+   wxImage *speakerFinal = OverlayImage(bkgnd, speaker, speakerAlpha, 0, 0);
+   wxImage *mic = new wxImage(Mic);
+   wxImage *micAlpha = new wxImage(MicAlpha);
+   wxImage *micFinal = OverlayImage(bkgnd, mic, micAlpha, 0, 0);
+
+   mPlayBitmap = new wxBitmap(speakerFinal);
+   mRecordBitmap = new wxBitmap(micFinal);
+
+   delete speaker;
+   delete speakerAlpha;
+   delete bkgnd;
+   delete speakerFinal;
+   delete mic;
+   delete micAlpha;
+   delete micFinal;
 
    mOutputSlider = new ASlider(this, 0, "Output Volume",
                                wxPoint(30, 1), wxSize(130, 25));
