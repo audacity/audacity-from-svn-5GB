@@ -247,6 +247,9 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
       t = iter.Next();
    }
 
+   mEditMenu->Enable(mEditMenu->FindItem("Paste"),
+                     numTracksSelected > 0 && msClipLen > 0.0);
+
    // Return from this function if nothing's changed since
    // the last time we were here.
 
@@ -258,9 +261,6 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
        mLastNumWaveTracksSelected==numWaveTracksSelected &&
        mLastNumLabelTracks==numLabelTracks)
       return;
-
-   mEditMenu->Enable(mEditMenu->FindItem("Paste"),
-                     numTracksSelected > 0 && msClipLen > 0.0);
 
    // Otherwise, save state and then update all of the menus
 
