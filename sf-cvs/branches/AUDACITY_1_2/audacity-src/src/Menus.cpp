@@ -1440,7 +1440,7 @@ bool AudacityPrintout::OnPrintPage(int page)
    int width, height;
    dc->GetSize(&width, &height);
 
-   int rulerScreenHeight = 20;
+   int rulerScreenHeight = 40;
    int screenTotalHeight = mTracks->GetHeight() + rulerScreenHeight;
 
    double scale = height / (double)screenTotalHeight;
@@ -1455,6 +1455,8 @@ bool AudacityPrintout::OnPrintPage(int page)
    ruler.Draw(*dc);
 
    TrackArtist artist;
+   artist.SetBackgroundBrushes(*wxWHITE_BRUSH, *wxWHITE_BRUSH,
+			       *wxWHITE_PEN, *wxWHITE_PEN);
    ViewInfo viewInfo;
    viewInfo.sel0 = viewInfo.sel1 = 0;
    viewInfo.vpos = 0;
@@ -1502,6 +1504,10 @@ bool AudacityPrintout::OnPrintPage(int page)
          artist.DrawTimeTrack((TimeTrack *)n, *dc, r, &viewInfo);
          break;
       }
+
+      dc->SetPen(*wxBLACK_PEN);
+      dc->DrawLine(0, r.y, width, r.y);
+
       n = iter.Next();
       y += r.height;
    };

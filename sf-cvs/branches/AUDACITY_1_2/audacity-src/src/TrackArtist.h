@@ -82,6 +82,14 @@ class TrackArtist {
                        wxDC & dc, wxRect & r, ViewInfo * viewInfo,
                        bool rightwards);
 
+   void SetBackgroundBrushes(wxBrush unselectedBrush, wxBrush selectedBrush,
+			     wxPen unselectedPen, wxPen selectedPen) {
+     this->unselectedBrush = unselectedBrush;
+     this->selectedBrush = selectedBrush;
+     this->unselectedPen = unselectedPen;
+     this->selectedPen = selectedPen;
+   }
+
  private:
 
    int mInsetLeft;
