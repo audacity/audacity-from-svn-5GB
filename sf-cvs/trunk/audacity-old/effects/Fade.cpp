@@ -24,8 +24,8 @@ bool EffectFadeIn::DoIt(WaveTrack *t,
     
   while((s-start)<len) {
     sampleCount block = blockSize;
-    if (block > (len-s))
-      block = (len-s);
+    if (s-start+block > len)
+      block = start+len-s;
     
     t->Get(buffer, s, block);
     for(sampleCount i=0; i<block; i++)
@@ -53,8 +53,8 @@ bool EffectFadeOut::DoIt(WaveTrack *t,
 
   while((s-start)<len) {
     sampleCount block = blockSize;
-    if (block > (len-s))
-      block = (len-s);
+    if (s-start+block > len)
+      block = start+len-s;
     
     t->Get(buffer, s, block);
     for(sampleCount i=0; i<block; i++)
