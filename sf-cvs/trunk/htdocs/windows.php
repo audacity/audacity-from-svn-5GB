@@ -15,7 +15,7 @@
   <?php print "$winReqStr"; ?>
 
   <br>
-  (Windows 98, ME, NT4, 2000, & XP)
+  (Windows 98, ME, 2000, & XP)
 
 </center>
 
@@ -82,7 +82,7 @@ Known incompatibilities:
 <ul>
 <li>Audacity has been reported to not work with
     Norton Protected Recycle Bin.
-<li>Audacity does not run on Windows 95.  Windows 98 or higher is required.
+<li>Audacity does not run on Windows 95 or NT4.  Windows 98 or higher is required.
 </ul>
 
 <p>
