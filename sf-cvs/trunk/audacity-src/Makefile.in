@@ -17,7 +17,7 @@ audacity:
 	$(MAKE) -C locale
 
 .PHONY: install
-install: audacity
+install: audacity audacity-help.htb
 	# install the binary
 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
 	$(INSTALL) -m 755 audacity $(DESTDIR)$(BINDIR)/audacity
@@ -51,7 +51,8 @@ uninstall:
 	$(MAKE) -C locale uninstall
 
 help/audacity.1.gz:
-	gzip help/audacity.1
+	# gzipping the file this way prevents audacity.1 from getting deleted
+	cat help/audacity.1 | gzip -9 > help/audacity.1.gz
 
 audacity-help.htb: help/wxhelp/*
 	rm -f audacity-help.htb
@@ -68,6 +69,7 @@ clean:
 	$(MAKE) -C src clean
 	rm -f audacity-help.htb
 	rm -f audacity
+	rm -f help/audacity.1.gz
 
 veryclean: clean
 	rm -f Makefile src/Makefile lib-src/Makefile
@@ -81,4 +83,5 @@ distclean: clean
 
 	rm -f Makefile src/Makefile lib-src/Makefile lib-src/allegro/Makefile
 	rm -f lib-src/expat/Makefile locale/Makefile src/configunix.h
+	rm -f config.log config.status
 
