@@ -126,7 +126,8 @@ enum mad_flow output_cb(void *_data,
                         struct mad_header const *header,
                         struct mad_pcm *pcm)
 {
-   unsigned int channels, samples, samplerate;
+   unsigned int channels, samplerate;
+   sampleCount samples;
    mad_fixed_t const *left, *right;
    struct priv_data *data = (struct priv_data *)_data;
 
