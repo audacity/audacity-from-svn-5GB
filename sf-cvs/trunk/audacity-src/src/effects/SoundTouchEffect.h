@@ -40,6 +40,7 @@ class EffectSoundTouch:public Effect {
    double mCurT1;
    int    mCurChannel;
 
+	double m_maxNewLength;
 };
 
 #endif
