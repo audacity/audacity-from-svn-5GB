@@ -17,38 +17,32 @@ Changements dans la version 1.2.0-pre3:
 
   * Résolution d'un bogue de double affichage sous Mac OS X dans les pistes d'index.
 
-  * The recording level control on Linux now adjusts the IGAIN,
-    rather than the playthrough level of the recording source.
+  * Le contrôle du niveau d'enregistrement sous Linux ajuste maintenant l'IGAIN,
+    plutôt que le niveau de passage de la source d'enregistrement.
 
-  * Résolution d'un bogue provoquant une corruption de l'enregistrement en 16-bit stéeréos.
+  * Résolution d'un bogue provoquant une corruption de l'enregistrement en 16-bit stéréo.
 
   * Résolution d'un bogue causant une perte de données lors de l'effacement de toutes les pistes d'un projet enregistré et de l'ouverture d'un nouveau fichier dans la même fenêtre .
 
   * Ajout d'une possibilité de disposition ergonomique des boutons (dans Préférences > Interface)
 
-  * Added preliminary support for wxX11
+  * Ajout d'un support préliminaire pour wxX11
 
-  * Added fully transparent Windows XP icon
+  * Ajout d'icône Windows XP totalement transparente
 
-  * Fixed crash if you try to record (or play) and no audio
-    devices exist, or if the audio device doesn't support the
-    mode you selected.
+  * Résolution d'un crash lors de l'enregistrement (ou de la lecture) losqu'il n'existe aucun périphérique audio, ou que celui-ci ne supporte pas le mode choisi.
 
-  * Audacity no longer sets the process priority to high while
-    recording on Windows.  Users can still do this manually
-    using the Task Manager.
+  * Audacity ne donne plus une priorité de tâche haute lors de l'enregistrement sous Windows.  Les utilisateurs peuvent toutefois le faire manuellement depuis le manager de tâches.
 
-  * Fixed bug that caused last ~100 ms of the selection to get
-    cut off on Windows.
+  * Résolution d'un bogue provoquant la coupure de ~100 ms de la fin de la sélection.
 
-  * Fixed FFT Filter and Equalization effects dialogs.
+  * Dialogues d'effets pour filtres FFT et Egalisation.
 
-  * Fixed bugs in Unix build system (DESTDIR in locale directory,
-    choosing libsamplerate instead of libresample)
+  * Résolution de bogues sous sytèmes Unix (DESTDIR en répertoire local,
+    sélectionnant libsamplerate au lieu de libresample)
 
-  * Support for LADSPA plug-ins on Windows added, and 
-    three open source LADSPA plug-ins ported to Windows
-    (GVerb reverb, SC4 compressor, and Hard Limiter)
+  * Ajout de support pour modules LADSPA sous Windows, et trois modules LADSPA libres porté sous Windows
+    (réverbération GVerb,compresseur SC4, et Hard Limiter)
 
 Changements dans la version 1.2.0-pre2:
 
