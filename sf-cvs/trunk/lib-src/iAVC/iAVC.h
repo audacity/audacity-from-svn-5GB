@@ -101,7 +101,9 @@
 
 #ifndef _WINDOWS
   #include <stdio.h>
-  #define NULL 0
+  #ifndef NULL
+  #define NULL 0L
+  #endif
   #define AfxMessageBox( pText ) { fprintf(stderr,"MESSAGE: %s\n",pText); };
   #define max(a,b)  ( (a<b)?b:a )
   #define abs(a)    ( (a<0)?-a:a )
