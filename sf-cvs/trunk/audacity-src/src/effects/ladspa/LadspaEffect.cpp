@@ -173,7 +173,7 @@ bool LadspaEffect::Init()
 bool LadspaEffect::PromptUser()
 {
    if (numInputControls > 0) {
-      LadspaEffectDialog dlog(mParent, mData, inputControls, mainRate);
+      LadspaEffectDialog dlog(this, mParent, mData, inputControls, mainRate);
       dlog.CentreOnParent();
       dlog.ShowModal();
       
@@ -373,23 +373,27 @@ void LadspaEffect::End()
 
 const int LADSPA_SLIDER_ID = 13100;
 const int LADSPA_TEXTCTRL_ID = 13101;
+const int LADSPA_PREVIEW_ID = 13102;
 
 BEGIN_EVENT_TABLE(LadspaEffectDialog, wxDialog)
     EVT_BUTTON(wxID_OK, LadspaEffectDialog::OnOK)
     EVT_BUTTON(wxID_CANCEL, LadspaEffectDialog::OnCancel)
+    EVT_BUTTON(LADSPA_PREVIEW_ID, LadspaEffectDialog::OnPreview)
     EVT_SLIDER(LADSPA_SLIDER_ID, LadspaEffectDialog::OnSlider)
     EVT_TEXT(LADSPA_TEXTCTRL_ID, LadspaEffectDialog::OnTextCtrl)
 END_EVENT_TABLE()
 
 IMPLEMENT_CLASS(LadspaEffectDialog, wxDialog)
 
-   LadspaEffectDialog::LadspaEffectDialog(wxWindow * parent,
-                                          const LADSPA_Descriptor *data,
-                                          float *inputControls,
-                                          int sampleRate)
-      :wxDialog(parent, -1, data->Name,
-                wxDefaultPosition, wxDefaultSize,
-                wxDEFAULT_DIALOG_STYLE)
+LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
+                                       wxWindow * parent,
+                                       const LADSPA_Descriptor *data,
+                                       float *inputControls,
+                                       int sampleRate)
+   :wxDialog(parent, -1, data->Name,
+             wxDefaultPosition, wxDefaultSize,
+             wxDEFAULT_DIALOG_STYLE),
+    effect(eff)
 {
    numParams = 0;
    this->mData = data;
@@ -470,6 +474,9 @@ IMPLEMENT_CLASS(LadspaEffectDialog, wxDialog)
    wxBoxSizer *okSizer = new wxBoxSizer(wxHORIZONTAL);
 
    wxButton *button;
+
+   button = new wxButton(this, LADSPA_PREVIEW_ID, effect->GetPreviewName());
+   okSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
    button = new wxButton(this, wxID_OK, _("OK"));
    button->SetDefault();
@@ -607,3 +614,9 @@ void LadspaEffectDialog::OnCancel(wxCommandEvent & WXUNUSED(event))
 {
    EndModal(FALSE);
 }
+
+void LadspaEffectDialog::OnPreview(wxCommandEvent & WXUNUSED(event))
+{
+   effect->Preview();
+}
+

@@ -73,7 +73,8 @@ class LadspaEffectDialog:public wxDialog {
    DECLARE_DYNAMIC_CLASS(LadspaEffectDialog)
 
  public:
-   LadspaEffectDialog(wxWindow * parent,
+   LadspaEffectDialog(LadspaEffect *effect,
+                      wxWindow * parent,
                       const LADSPA_Descriptor *data,
                       float *inputControls,
                       int sampleRate);
@@ -84,6 +85,7 @@ class LadspaEffectDialog:public wxDialog {
    void OnTextCtrl(wxCommandEvent & event);
    void OnOK(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
+   void OnPreview(wxCommandEvent & event);
 
    DECLARE_EVENT_TABLE()
 
@@ -103,4 +105,5 @@ class LadspaEffectDialog:public wxDialog {
    unsigned long *ports;
    unsigned long numParams;
    float *inputControls;
+   LadspaEffect *effect;
 };
