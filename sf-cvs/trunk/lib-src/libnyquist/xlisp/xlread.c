@@ -65,7 +65,7 @@ static int sfn_valid = FALSE;
 
 /* dmazzoni */
 extern char *global_xlisp_path;
-void get_xlisp_path(paths, paths_max)
+void get_xlisp_path(char *paths, int paths_max)
 {
    strcpy(paths, global_xlisp_path);
 }
