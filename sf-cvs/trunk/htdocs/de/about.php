@@ -11,7 +11,12 @@ einzustellen.
 </p>
 
 <p>
-Auffallend an Audacity in der aktuellen Version 1.2.1 ist die au&szlig;ergew&ouml;hnlich 
+<b>NEU! Es gibt nun ein <a href="http://audacity.fuchsi.de/">brandneues deutschsprachiges Forum</a>
+zu Audacity.</b>
+</p>
+
+<p>
+Auffallend an Audacity in der aktuellen Version 1.2 ist die au&szlig;ergew&ouml;hnlich 
 intuitiv zu bediendende Oberfl&auml;che. Wer Audacity gestartet hat kann sofort 
 mit einem einzigen Mausklick die erste Aufnahme starten, die gebr&auml;uchlichsten 
 Arbeitsschritte lehnen sich an g&auml;ngige Computer-Konventionen an. F&uuml;r Audacity 
@@ -42,8 +47,9 @@ Der Quelltext wird von <a href="http://www.sourceforge.net">SourceForge</a> geho
 
 <p>
 Fragen/Kommentare?
-Dann einfach eine eMail an <a href="mailto:audacity-help@lists.sourceforge.net"
->audacity-help@lists.sourceforge.net</a> (in deutsch oder englisch)
+Im neuen <a href="http://audacity.fuchsi.de/">deutschsprachigen Audacity-Forum</a> k&ouml;nnen Sie
+Fragen zu Audacity stellen und Anmerkungen sowie Kritik loswerden. Eine Reihe von kompetenten und
+erfahrenen Benutzern und Entwicklern haben stets ein offenes Ohr f&uuml;r Ihr Anliegen.
 </p>
 
 <?php BoxBottom(); ?>
