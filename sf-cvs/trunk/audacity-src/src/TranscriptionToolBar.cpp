@@ -70,12 +70,16 @@ BEGIN_EVENT_TABLE(TranscriptionToolBar, wxWindow)
                      wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnEndOn)
    EVT_COMMAND_RANGE(TTB_EndOff, TTB_EndOff,
                      wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnEndOff)
-   EVT_COMMAND_RANGE(TTB_Calibrate, TTB_Calibrate,
-                     wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnCalibrate)
+   EVT_COMMAND_RANGE(TTB_SelectSound, TTB_SelectSound,
+                     wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnSelectSound)
+   EVT_COMMAND_RANGE(TTB_SelectSilence, TTB_SelectSilence,
+                     wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnSelectSilence)
    EVT_COMMAND_RANGE(TTB_AutomateSelection, TTB_AutomateSelection,
                      wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnAutomateSelection)
    EVT_COMMAND_RANGE(TTB_MakeLabel, TTB_MakeLabel,
                      wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnMakeLabel)
+   EVT_COMMAND_RANGE(TTB_Calibrate, TTB_Calibrate,
+                     wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnCalibrate)
    EVT_SLIDER(TTB_SensitivitySlider, TranscriptionToolBar::OnSensitivitySlider)
 END_EVENT_TABLE()
    ;   //semicolon enforces  proper automatic indenting in emacs.
@@ -120,6 +124,8 @@ void TranscriptionToolBar::InitializeTranscriptionToolBar()
    mButtons[TTB_StartOff]->Disable();
    mButtons[TTB_EndOn]->Disable();
    mButtons[TTB_EndOff]->Disable();
+   mButtons[TTB_SelectSound]->Disable();
+   mButtons[TTB_SelectSilence]->Disable();
    mButtons[TTB_Calibrate]->Enable();
    mButtons[TTB_AutomateSelection]->Disable();
    mButtons[TTB_MakeLabel]->Enable();
@@ -204,22 +210,28 @@ void TranscriptionToolBar::MakeButtons()
    mPlaySpeedSlider->SetLabel(_("Playback Speed"));
    mxButtonPos +=  SliderWidth;
 
-
+   
    AddButton(StartOn,     StartOnDisabled,   StartOnAlpha,   TTB_StartOn,
-      _("Adjust left selection to  next onset"),
-      _("Left-to-On"));
+             _("Adjust left selection to  next onset"),
+             _("Left-to-On"));
    AddButton(EndOn,       EndOnDisabled,     EndOnAlpha,     TTB_EndOn,
-      _("Adjust right selection to previous offset"),
-      _("Right-to-Off"));
+             _("Adjust right selection to previous offset"),
+             _("Right-to-Off"));
    AddButton(StartOff,    StartOffDisabled,  StartOffAlpha,  TTB_StartOff,
-      _("Adjust left selection to next offset"),
-      _("Left-to-Off"));
+             _("Adjust left selection to next offset"),
+             _("Left-to-Off"));
    AddButton(EndOff,      EndOffDisabled,    EndOffAlpha,    TTB_EndOff,
-      _("Adjust right selection to previous onset"),
-      _("Right-to-On"));
-   AddButton(CalibrateUp, CalibrateDisabled, CalibrateAlpha, TTB_Calibrate,
-      _("Calibrate voicekey"),
-      _("Calibrate"));
+             _("Adjust right selection to previous onset"),
+             _("Right-to-On"));
+
+   AddButton(SelectSound, SelectSoundDisabled, SelectSoundAlpha, TTB_SelectSound,
+             _("Select region of sound around cursor"),
+             _("Select-Sound"));
+
+   AddButton(SelectSilence, SelectSilenceDisabled, SelectSilenceAlpha, TTB_SelectSilence,
+             _("Select region of silence around cursor"),
+             _("Select-Silence"));
+
    AddButton(AutomateSelection,   AutomateSelectionDisabled,   AutomateSelectionAlpha,      TTB_AutomateSelection,
       _("Automatically make labels from words"),
       _("Make Labels"));
@@ -227,6 +239,9 @@ void TranscriptionToolBar::MakeButtons()
       _("Add label at selection"),
       _("Add Label"));
   
+   AddButton(CalibrateUp, CalibrateDisabled, CalibrateAlpha, TTB_Calibrate,
+      _("Calibrate voicekey"),
+      _("Calibrate"));
  
    mSensitivitySlider = new ASlider(this, TTB_SensitivitySlider, _("Adjust Sensitivity"),
                                     wxPoint(mxButtonPos,0),wxSize(SliderWidth,28),SPEED_SLIDER);
@@ -604,6 +619,88 @@ void TranscriptionToolBar::OnEndOff(wxCommandEvent &event)
 
 
 
+void TranscriptionToolBar::OnSelectSound(wxCommandEvent &event)
+{
+
+   //If IO is busy, abort immediately
+   if (gAudioIO->IsBusy()){
+      SetButton(false,mButtons[TTB_SelectSound]);
+      return;
+   }
+	
+
+   vk->AdjustThreshold(GetSensitivity());
+   AudacityProject *p = GetActiveProject();
+   
+   
+   TrackList *tl = p->GetTracks();
+   TrackListIterator iter(tl);
+
+   Track *t = iter.First();   //Make a track
+   if(t) 
+      {		
+         sampleCount start,len;
+         GetSamples((WaveTrack*)t, &start,&len);
+        
+         //Adjust length to end if selection is null
+         //if(len == 0)
+         //len = (WaveTrack*)t->GetSequence()->GetNumSamples()-start;
+        
+         double rate =  ((WaveTrack*)t)->GetRate();
+         sampleCount newstart = vk->OffBackward(*(WaveTrack*)t,start,start);
+         sampleCount newend   = vk->OffForward(*(WaveTrack*)t,start+len,(int)(tl->GetEndTime()*rate));
+
+         //reset the selection bounds.
+         p->SetSel0(newstart / rate);
+         p->SetSel1(newend /  rate);
+         p->RedrawProject();
+
+      }
+   
+   SetButton(false,mButtons[TTB_SelectSound]);
+}
+
+void TranscriptionToolBar::OnSelectSilence(wxCommandEvent &event)
+{
+
+   //If IO is busy, abort immediately
+   if (gAudioIO->IsBusy()){
+      SetButton(false,mButtons[TTB_SelectSilence]);
+      return;
+   }
+
+   vk->AdjustThreshold(GetSensitivity());
+   AudacityProject *p = GetActiveProject();
+   
+   
+   TrackList *tl = p->GetTracks();
+   TrackListIterator iter(tl);
+
+   Track *t = iter.First();   //Make a track
+   if(t) 
+      {		
+         sampleCount start,len;
+         GetSamples((WaveTrack*)t, &start,&len);
+        
+         //Adjust length to end if selection is null
+         //if(len == 0)
+         //len = (WaveTrack*)t->GetSequence()->GetNumSamples()-start;
+         double rate =  ((WaveTrack*)t)->GetRate();
+         sampleCount newstart = vk->OnBackward(*(WaveTrack*)t,start,start);
+         sampleCount newend   = vk->OnForward(*(WaveTrack*)t,start+len,(int)(tl->GetEndTime()*rate));
+
+         //reset the selection bounds.
+         p->SetSel0(newstart /  rate);
+         p->SetSel1(newend / rate);
+         p->RedrawProject();
+
+      }
+   
+   SetButton(false,mButtons[TTB_SelectSilence]);
+
+}
+
+
 
 void TranscriptionToolBar::OnCalibrate(wxCommandEvent &event)
 {
@@ -641,6 +738,8 @@ void TranscriptionToolBar::OnCalibrate(wxCommandEvent &event)
    mButtons[TTB_StartOff]->Enable();
    mButtons[TTB_EndOn]->Enable();
    mButtons[TTB_EndOff]->Enable();
+   mButtons[TTB_SelectSound]->Enable();  
+   mButtons[TTB_SelectSilence]->Enable();  
    mButtons[TTB_AutomateSelection]->Enable();
 
    //Make the sensititivy slider set the sensitivity by processing an event.

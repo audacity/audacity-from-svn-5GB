@@ -35,14 +35,17 @@ enum
       TTB_EndOn,
       TTB_StartOff,
       TTB_EndOff,
-      TTB_Calibrate,
+      TTB_SelectSound,
+      TTB_SelectSilence,
       TTB_AutomateSelection,
       TTB_MakeLabel,
+      TTB_Calibrate,
+
       TTB_SensitivitySlider,
       TTB_PlaySpeedSlider,
    };
 
-#define TTBNumButtons 8
+#define TTBNumButtons 10
 
 class TranscriptionToolBar:public ToolBar {
  public:
@@ -63,6 +66,8 @@ class TranscriptionToolBar:public ToolBar {
    virtual void OnStartOff(wxCommandEvent &event);
    virtual void OnEndOn(wxCommandEvent &event);
    virtual void OnEndOff(wxCommandEvent &event);
+   virtual void OnSelectSound(wxCommandEvent &event);
+   virtual void OnSelectSilence(wxCommandEvent &event);
    virtual void OnCalibrate(wxCommandEvent &event);
    virtual void OnMakeLabel(wxCommandEvent &event);
    virtual void OnAutomateSelection(wxCommandEvent &event);
