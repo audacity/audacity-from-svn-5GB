@@ -49,6 +49,6 @@ class soundtouch_exception : public std::exception {
 	virtual const char *what() const throw() { return "soundtouch library st_assertion failure"; }
 };
 
-#define st_assert(expr) ((expr) ? 0 : throw soundtouch_exception())
+#define st_assert(expr) ((void)0)
 
 #endif
