@@ -580,6 +580,14 @@ SOURCE=..\src\effects\Phaser.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\effects\Repeat.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Repeat.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\effects\Reverse.cpp
 # End Source File
 # Begin Source File
