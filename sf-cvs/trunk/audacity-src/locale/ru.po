@@ -683,7 +683,7 @@ msgstr "Усиление баса..."
 
 #: ../src/Benchmark.cpp:115
 msgid "Benchmark"
-msgstr "Бенчмарк"
+msgstr "Тест производительности"
 
 #: ../src/FileFormats.cpp:38
 msgid "Berkeley/IRCAM/CARL"
@@ -1343,7 +1343,7 @@ msgstr "Экспортировать со сжатием"
 
 #: ../src/Benchmark.cpp:239
 msgid "Export Benchmark Data As:"
-msgstr "Экспортировать результаты бенчмарка как:"
+msgstr "Экспортировать результаты теста производительности как:"
 
 #: ../src/commands.h:210
 msgid "Export Labels"
@@ -2292,11 +2292,11 @@ msgstr "Запустить"
 
 #: ../src/commands.h:327
 msgid "Run Benchmark"
-msgstr "Запустить бенчмарк"
+msgstr "Запустить тест"
 
 #: ../src/commands.h:327
 msgid "Run Benchmark..."
-msgstr "Запустить бенчмарк..."
+msgstr "Запустить тест..."
 
 #: ../src/FileFormats.cpp:45
 msgid "SEK'D Samplitude"
@@ -2657,11 +2657,11 @@ msgstr "Врем. каталог"
 
 #: ../src/Benchmark.cpp:166
 msgid "Test Data Size (MB):"
-msgstr "Размер тестовых данных (Мбайт):"
+msgstr "Размер тестовых данных (МБайт):"
 
-#: ../src/Benchmark.cpp:315
+#: ../src/[CBenchmark.cpp:315
 msgid "Test data size should be in the range 1 - 2000 MB."
-msgstr "Объём данных для теста должен находиться в пределах от 1 до 2000 Мбайт."
+msgstr "Объём данных для теста должен находиться в пределах от 1 до 2000 МБайт."
 
 #: ../src/Menus.cpp:1433
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
