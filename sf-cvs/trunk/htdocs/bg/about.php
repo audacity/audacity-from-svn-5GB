@@ -13,13 +13,13 @@ Audacity е безплатен редактор за звук с отворен код.
 </p>
 
 <center>
- <a target=_top href="http://wxwidgets.org/"><font size=1>[]</font></a>
+<a href="http://wxwidgets.org/"><img src="images/wxwindows.gif" border="0"></a>
 </center>
 
 <p>
 Audacity се разработва от екип от доброволци по модела на отворения код.
 Написана е на C и C++ с използване на многоплатформения развоен комплект
-<a target=_top href="http://www.wxwindows.org/">wxWindows</a>.
+<a target=_top href="http://wxwidgets.org/">wxWidgets</a>.
 Целият изходен код на програмата е достъпен при условията на лиценза 
 <a target=_top href="http://www.gnu.org/copyleft/gpl.html"
 >GNU General Public License</a>, който по същество позволява на всеки
