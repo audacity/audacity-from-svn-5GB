@@ -122,7 +122,7 @@ bool EffectAvcCompressor::PromptUser()
    mAutoVolCtrl.Reset();	// reset control before setting values
 
    // Set parameters for iAVC class
-   unsigned short int nTransform [ MULTIPLY_PCT_ARRAY_SIZE ];
+   unsigned short int *nTransform = new unsigned short int [ MULTIPLY_PCT_ARRAY_SIZE ];
    mnChangeWindow=mpDialog->GetChangeWindow();
    mpDialog->GetTransformArray(nTransform);
 
@@ -137,6 +137,8 @@ bool EffectAvcCompressor::PromptUser()
    mAutoVolCtrl.SetMultipliers(nTransform);
    mAutoVolCtrl.SetNumberTracks(mnTracks);
    mnDelay = mpDialog->GetDelay();
+
+   delete [] nTransform;
 
    return true;
 }
