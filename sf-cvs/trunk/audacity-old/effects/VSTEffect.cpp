@@ -26,25 +26,21 @@ VSTEffect::VSTEffect(wxString pluginName, AEffect *aEffect)
 {
     this->aEffect = aEffect;
     this->pluginName = pluginName;
+
+    buffer = NULL;
+    fInBuffer = NULL;
+    fOutBuffer = NULL;
 }
   
 wxString VSTEffect::GetEffectName()
 {
-    return pluginName;
+    return pluginName+"...";
 }
 
-bool VSTEffect::DoIt(
-        WaveTrack *t,
-	    sampleCount start,
-	    sampleCount len)
+bool VSTEffect::Begin(wxWindow *parent)
 {
     aEffect->dispatcher(aEffect, effOpen, 0, 0, NULL, 0.0);
 
-    sampleCount blockSize = t->GetIdealBlockSize();
-
-    aEffect->dispatcher(aEffect, effSetSampleRate, 0, 0, NULL, (float)t->rate);
-    aEffect->dispatcher(aEffect, effSetBlockSize, 0, blockSize, NULL, 0.0);
-    
     // Try to figure out how many parameters it takes by seeing how
     // many parameters have names
     char temp[8][256];
@@ -64,31 +60,49 @@ bool VSTEffect::DoIt(
     //numParameters = aEffect->numParams;
     
     if (numParameters > 0) {
-        VSTEffectDialog d((wxWindow *)0, pluginName, numParameters, aEffect);
+        VSTEffectDialog d(parent, pluginName, numParameters, aEffect);
         d.ShowModal();
 
         if (!d.GetReturnCode())
             return false;
     }
-    
-    // Do the processing
-    
+
+    inputs = aEffect->numInputs;
+    outputs = aEffect->numOutputs;
+
+    mBlockSize = 0;
+
+    return true;
+}
+
+bool VSTEffect::DoIt(
+        WaveTrack *t,
+        sampleCount start,
+        sampleCount len)
+{
+    if (mBlockSize == 0) {
+        mBlockSize = t->GetIdealBlockSize();
+
+        buffer = new sampleType[mBlockSize];
+        fInBuffer = new float *[inputs];
+        int i;
+        for(i=0; i<inputs; i++)
+            fInBuffer[i] = new float[mBlockSize];
+        fOutBuffer = new float *[outputs];
+        for(i=0; i<outputs; i++)
+            fOutBuffer[i] = new float[mBlockSize];
+
+    }
+
+    aEffect->dispatcher(aEffect, effSetSampleRate, 0, 0, NULL, (float)t->rate);
+    aEffect->dispatcher(aEffect, effSetBlockSize, 0, mBlockSize, NULL, 0.0);
+
     sampleCount s = start;
     
-    int inputs = aEffect->numInputs;
-    int outputs = aEffect->numOutputs;
     int i, j;
 
-    sampleType *buffer = new sampleType[blockSize];
-    float **fInBuffer = new float *[inputs];
-    for(i=0; i<inputs; i++)
-        fInBuffer[i] = new float[blockSize];
-    float **fOutBuffer = new float *[outputs];
-    for(i=0; i<outputs; i++)
-        fOutBuffer[i] = new float[blockSize];
-
     while(len) {
-        int block = blockSize;
+        int block = mBlockSize;
         if (block > len)
             block = len;
 
@@ -108,19 +122,30 @@ bool VSTEffect::DoIt(
         s += block;
     }
 
-    delete[] buffer;
-    for(i=0; i<inputs; i++)
-        delete fInBuffer[i];
-    for(i=0; i<outputs; i++)
-        delete fOutBuffer[i];
-    delete[] fInBuffer;
-    delete[] fOutBuffer; 
-
-    #ifndef __WXMSW__
-    aEffect->dispatcher(aEffect, effClose, 0, 0, NULL, 0.0);
-    #endif
-
     return true;
+}
+
+void VSTEffect::End()
+{
+    if (buffer) {
+        int i;
+
+        delete[] buffer;
+        for(i=0; i<inputs; i++)
+            delete fInBuffer[i];
+        for(i=0; i<outputs; i++)
+            delete fOutBuffer[i];
+        delete[] fInBuffer;
+        delete[] fOutBuffer; 
+
+        #ifndef __WXMSW__
+        aEffect->dispatcher(aEffect, effClose, 0, 0, NULL, 0.0);
+        #endif
+
+    }
+    buffer = NULL;
+    fInBuffer = NULL;
+    fOutBuffer = NULL;
 }
 
 const int VSTEFFECT_SLIDER_ID = 13100;
@@ -139,7 +164,7 @@ VSTEffectDialog::VSTEffectDialog(wxWindow *parent,
                             int numParams,
                             AEffect *aEffect,
 						    const wxPoint& pos)
-  : wxDialog( parent, -1, effectName, pos, wxSize(320, 400), wxDEFAULT_DIALOG_STYLE )
+  : wxDialog( parent, -1, effectName, pos, wxSize(320, 430), wxDEFAULT_DIALOG_STYLE )
 {
   this->aEffect = aEffect;
   this->numParams = numParams;
@@ -156,7 +181,7 @@ VSTEffectDialog::VSTEffectDialog(wxWindow *parent,
 
     char paramName[256];
     aEffect->dispatcher(aEffect, effGetParamName, p, 0, (void *)paramName, 0.0);
-    new wxStaticText(this, 0, wxString(paramName), wxPoint(10, y), wxSize(300, 15));
+    new wxStaticText(this, 0, wxString(paramName), wxPoint(10, y), wxSize(85, 15));
 
     float val =
         aEffect->getParameter(aEffect, p);
@@ -164,18 +189,18 @@ VSTEffectDialog::VSTEffectDialog(wxWindow *parent,
     sliders[p] = 
         new wxSlider(this, VSTEFFECT_SLIDER_ID,
                 1000*val, 0, 1000,
-                wxPoint(10, y+15), wxSize(300,20));
+                wxPoint(100, y+5), wxSize(200,25));
 
     char label[256];
     aEffect->dispatcher(aEffect, effGetParamDisplay, p, 0, (void *)label, 0.0);
-    labels[p] = 
-        new wxStaticText(this, 0, wxString(label), wxPoint(200, y+35), wxSize(45, 15));                
-
     char units[256];
     aEffect->dispatcher(aEffect, effGetParamLabel, p, 0, (void *)units, 0.0);
-    new wxStaticText(this, 0, wxString(units), wxPoint(250, y+35), wxSize(45, 15));                
 
-    y += 55;
+    labels[p] = 
+        new wxStaticText(this, 0, wxString::Format("%s %s",label,units),
+                         wxPoint(10, y+15), wxSize(85, 15));                
+
+    y += 35;
   }
   
   wxButton *ok = new wxButton(this, wxID_OK, "OK", wxPoint(110, y), wxSize(80,30));
@@ -185,6 +210,10 @@ VSTEffectDialog::VSTEffectDialog(wxWindow *parent,
   wxSize size;
   size.x = 320;
   size.y = y;
+
+#ifdef __WXMSW__
+  size.y += 20;
+#endif
 
   Centre(wxBOTH | wxCENTER_FRAME);
 
@@ -209,7 +238,9 @@ void VSTEffectDialog::OnSlider(wxCommandEvent& WXUNUSED(event))
 
     char label[256];
     aEffect->dispatcher(aEffect, effGetParamDisplay, p, 0, (void *)label, 0.0);
-    labels[p]->SetLabel(wxString(label));
+    char units[256];
+    aEffect->dispatcher(aEffect, effGetParamLabel, p, 0, (void *)units, 0.0);
+    labels[p]->SetLabel(wxString::Format("%s %s",label,units));
   }
 }
 

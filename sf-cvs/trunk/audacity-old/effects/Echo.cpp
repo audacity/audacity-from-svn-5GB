@@ -13,17 +13,18 @@
 #include "Echo.h"
 #include "../WaveTrack.h"
 
-bool EffectEcho::DoIt(WaveTrack *t,
-			 sampleCount start,
-			 sampleCount len)
+EffectEcho::EffectEcho()
+{
+  delay = 1.0;
+  decay = 0.5;
+}
+
+bool EffectEcho::Begin(wxWindow *parent)
 {
   wxString temp;
-  wxWindow *parent = NULL;
   wxString title = "Echo";
   wxString caption = "Delay time (seconds): ";
-  wxString default_value = "1.0";
-  float delay;
-  float decay;
+  wxString default_value = wxString::Format("%f", delay);
 
   temp = wxGetTextFromUser(caption, title,
 			   default_value, parent, -1, -1, TRUE);  
@@ -38,7 +39,7 @@ bool EffectEcho::DoIt(WaveTrack *t,
   }
 
   caption = "Enter the decay factor: ";
-  default_value = "0.5";
+  default_value = wxString::Format("%f", decay);
   temp = wxGetTextFromUser(caption, title,
 			   default_value, parent, -1, -1, TRUE);  
   if (temp == "")
@@ -51,6 +52,13 @@ bool EffectEcho::DoIt(WaveTrack *t,
     if (temp == "") return false;
   }
 
+  return true;
+}
+
+bool EffectEcho::DoIt(WaveTrack *t,
+			 sampleCount start,
+			 sampleCount len)
+{
   sampleCount s = start;
   sampleCount blockSize = (sampleCount)(t->rate * delay);
 
@@ -92,8 +100,6 @@ bool EffectEcho::DoIt(WaveTrack *t,
 
   return true;
 }
-
-
 
 
 

@@ -14,6 +14,8 @@
 #include <wx/dynarray.h>
 #include <wx/string.h>
 
+class wxFrame;
+
 #ifdef __WXMAC__
 #include "WaveTrack.h"
 #else
@@ -30,11 +32,16 @@ public:
 
   // override these
   
+  // this will go in the menu bar
+  // append "..." if your effect pops up a dialog
   virtual wxString GetEffectName() = 0;
-  
+
+  virtual bool Begin(wxWindow *parent) // init and pop up your dialog here
+    {return true;} 
   virtual bool DoIt(WaveTrack *t,
 		    sampleCount start,
-		    sampleCount len) = 0;
+		    sampleCount len) = 0; // process some samples
+  virtual void End() {}   // clean up any temporary memory
   
   // call these
   
@@ -42,7 +49,8 @@ public:
   static int GetNumEffects();
   static Effect *GetEffect(int i);
   
-  bool DoInPlaceEffect(WaveTrack *t, double t0, double t1);
+  bool DoInPlaceEffect(WaveTrack *t, double t0, double t1,
+                       int trackIndex = 0, int numTracks = 0);
 
  private:
   static EffectArray *Effects;

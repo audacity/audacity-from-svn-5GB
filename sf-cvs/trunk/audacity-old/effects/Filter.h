@@ -20,8 +20,12 @@ class WaveTrack;
 class EffectFilter: public Effect {
 
 public:
+
+  EffectFilter();
+
   virtual wxString GetEffectName() { return wxString("Filter..."); }
 
+  virtual bool Begin(wxWindow *parent);
   virtual bool DoIt(WaveTrack *t,
 		    sampleCount start,
 		    sampleCount len);

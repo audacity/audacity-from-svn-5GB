@@ -218,7 +218,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
   EVT_MENU(CutID, AudacityProject::Cut)
   EVT_MENU(CopyID, AudacityProject::Copy)
   EVT_MENU(PasteID, AudacityProject::Paste)
-  EVT_MENU(ClearID, AudacityProject::Clear)
+  EVT_MENU(ClearID, AudacityProject::OnClear)
   EVT_MENU(SelectAllID, AudacityProject::SelectAll)
   // View menu
   EVT_MENU(ZoomInID, AudacityProject::OnZoomIn)
@@ -716,17 +716,47 @@ bool AudacityProject::ProcessEvent(wxEvent& event)
   if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED &&
       event.GetId() >= FirstEffectID &&
       event.GetId() < FirstEffectID + numEffects) {
-    Effect *f = Effect::GetEffect(event.GetId() - FirstEffectID);
-	
+
     VTrack *t = mTracks->First();
-    
+    int count = 0;
+
+    while(t) {
+      if (t->selected && t->GetKind() == (VTrack::Wave))
+        count++;      
+      t = mTracks->Next();
+    }
+
+    if (count==0 || mViewInfo.sel0 == mViewInfo.sel1) {
+      wxMessageBox("No audio data is selected.");
+      return true;
+    }
+
+    Effect *f = Effect::GetEffect(event.GetId() - FirstEffectID);
+
+    if (!f->Begin(this))
+        return true;
+
+    int index = 0;
+
+    t = mTracks->First();
+
     while(t) {
       if (t->selected && t->GetKind() == (VTrack::Wave)) {
-		f->DoInPlaceEffect((WaveTrack *)t, mViewInfo.sel0, mViewInfo.sel1);
+
+        bool success = f->DoInPlaceEffect((WaveTrack *)t,
+                            mViewInfo.sel0, mViewInfo.sel1,
+                            index, count);
+
+        if (!success) {
+            wxMessageBox("Effect unsuccessful.");
+            break;
+        }
       }
       
       t = mTracks->Next();
     }
+
+    f->End();
     
     PushState();
     
@@ -802,6 +832,7 @@ void AudacityProject::OnPaint(wxPaintEvent& event)
 
 #ifdef __WXMSW__
 	dc.DrawLine(0, 0, width, 0);
+        dc.DrawLine(0, 0, 0, h);
 #endif
 
   dc.DrawLine(0, h, width, h);

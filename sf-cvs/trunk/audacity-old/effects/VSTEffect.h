@@ -25,13 +25,22 @@ public:
   
   virtual wxString GetEffectName();
   
+  virtual bool Begin(wxWindow *parent);
   virtual bool DoIt(WaveTrack *t,
 		    sampleCount start,
 		    sampleCount len);
+  virtual void End();
 
 private:
   wxString pluginName;
   AEffect *aEffect;
+
+  sampleCount mBlockSize;
+  sampleType *buffer;
+  float **fInBuffer;
+  float **fOutBuffer;
+  int inputs;
+  int outputs;
 };
 
 class VSTEffectDialog: public wxDialog {

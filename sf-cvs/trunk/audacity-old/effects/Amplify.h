@@ -20,11 +20,17 @@ class WaveTrack;
 class EffectAmplify: public Effect {
 
 public:
+  EffectAmplify();
+
   virtual wxString GetEffectName() { return wxString("Amplify..."); }
 
+  virtual bool Begin(wxWindow *parent);
   virtual bool DoIt(WaveTrack *t,
 		    sampleCount start,
 		    sampleCount len);
+
+private:
+  float ratio;
 };
 
 #endif

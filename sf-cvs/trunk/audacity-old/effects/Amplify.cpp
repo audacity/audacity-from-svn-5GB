@@ -13,12 +13,14 @@
 #include "Amplify.h"
 #include "../WaveTrack.h"
 
-bool EffectAmplify::DoIt(WaveTrack *t,
-			 sampleCount start,
-			 sampleCount len)
+EffectAmplify::EffectAmplify()
+{
+  ratio = 1.0;
+}
+
+bool EffectAmplify::Begin(wxWindow *parent)
 {
   wxString temp;
-  wxWindow *parent = NULL;
   wxString caption = "Amplification factor: ";
   wxString title = "Amplify";
   wxString default_value = "1.0";
@@ -39,6 +41,13 @@ bool EffectAmplify::DoIt(WaveTrack *t,
     if (temp == "") return false;
   }
 
+  return true;
+}
+
+bool EffectAmplify::DoIt(WaveTrack *t,
+			 sampleCount start,
+			 sampleCount len)
+{
   sampleCount s = start;
   sampleCount blockSize = t->GetIdealBlockSize();
   
@@ -62,8 +71,6 @@ bool EffectAmplify::DoIt(WaveTrack *t,
 
   return true;
 }
-
-
 
 
 

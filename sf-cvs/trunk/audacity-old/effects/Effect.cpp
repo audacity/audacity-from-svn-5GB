@@ -35,9 +35,14 @@ Effect *Effect::GetEffect(int i)
 
 // methods
 
-bool Effect::DoInPlaceEffect(WaveTrack *t, double t0, double t1)
+bool Effect::DoInPlaceEffect(WaveTrack *t, double t0, double t1,
+                             int trackIndex,
+                             int numTracks)
 {
-  wxASSERT(t0 < t1);
+  wxBusyCursor busy;
+  wxYield();
+
+  wxASSERT(t0 <= t1);
   
   int s0 = (int)((t0 - t->tOffset) * t->rate);
   int s1 = (int)((t1 - t->tOffset) * t->rate);

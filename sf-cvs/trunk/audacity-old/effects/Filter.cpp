@@ -10,11 +10,24 @@
 
 #include <math.h>
 
+#include <wx/msgdlg.h>
 #include <wx/textdlg.h>
 
 #include "Filter.h"
 #include "../WaveTrack.h"
 #include "../FFT.h"
+
+EffectFilter::EffectFilter()
+{
+}
+
+bool EffectFilter::Begin(wxWindow *parent)
+{
+    wxMessageBox("Work in progress: this will be a generic FFT filter.  "
+                 "Right now it just applies one fixed filter.");
+
+    return true;
+}
 
 bool EffectFilter::DoIt(WaveTrack *t,
 			 sampleCount start,
