@@ -141,8 +141,8 @@ BEGIN_EVENT_TABLE(TimeTextCtrl, wxPanel)
 END_EVENT_TABLE()
 
 struct BuiltinFormatString {
-   const char *name;
-   const char *formatStr;
+   const wxChar *name;
+   const wxChar *formatStr;
 };
 
 const int kNumBuiltinFormatStrings = 7;
@@ -375,21 +375,21 @@ void TimeTextCtrl::PrintDebugInfo()
 {
    unsigned int i;
 
-   printf(wxT("%s"), mPrefix.mb_str());
+   printf("%s", (const char *)mPrefix.mb_str());
 
    for(i=0; i<mWholeFields.GetCount(); i++)
-      printf(wxT("(t / %d) %% %d '%s' "),
+      printf("(t / %d) %% %d '%s' ",
              mWholeFields[i].base,
              mWholeFields[i].range,
-             mWholeFields[i].label.mb_str());
+             (const char *)mWholeFields[i].label.mb_str());
 
    for(i=0; i<mFracFields.GetCount(); i++)
-      printf(wxT("(t * %d) %% %d '%s' "),
+      printf("(t * %d) %% %d '%s' ",
              mFracFields[i].base,
              mFracFields[i].range,
-             mFracFields[i].label.mb_str());
+             (const char *)mFracFields[i].label.mb_str());
 
-   printf(wxT("\n"));
+   printf("\n");
 }
 
 wxString TimeTextCtrl::GetTimeString()
@@ -404,14 +404,14 @@ wxString TimeTextCtrl::GetTimeString()
       int value = (t_int / mWholeFields[i].base);
       if (mWholeFields[i].range > 0)
          value = value % mWholeFields[i].range;
-      result += wxString::Format(mWholeFields[i].formatStr.mb_str(), value);
+      result += wxString::Format(mWholeFields[i].formatStr, value);
       result += mWholeFields[i].label;
    }
    for(i=0; i<mFracFields.GetCount(); i++) {
       int value = (int)(t_frac * mFracFields[i].base);
       if (mFracFields[i].range > 0)
          value = value % mFracFields[i].range;
-      result += wxString::Format(mFracFields[i].formatStr.mb_str(), value);
+      result += wxString::Format(mFracFields[i].formatStr, value);
       result += mFracFields[i].label;
    }
 
@@ -521,7 +521,7 @@ void TimeTextCtrl::ValueToControls()
       int value = (t_int / mWholeFields[i].base);
       if (mWholeFields[i].range > 0)
          value = value % mWholeFields[i].range;
-      str.Printf(mWholeFields[i].formatStr.mb_str(), value);
+      str.Printf(mWholeFields[i].formatStr, value);
       if (mWholeFields[i].str != str) {
          mWholeFields[i].str = str;
          mWholeFields[i].textCtrl->GetSelection(&sel0, &sel1);
@@ -533,7 +533,7 @@ void TimeTextCtrl::ValueToControls()
       int value = (int)(t_frac * mFracFields[i].base);
       if (mFracFields[i].range > 0)
          value = value % mFracFields[i].range;
-      str.Printf(mFracFields[i].formatStr.mb_str(), value);
+      str.Printf(mFracFields[i].formatStr, value);
       if (mFracFields[i].str != str) {
          mFracFields[i].str = str;
          mFracFields[i].textCtrl->GetSelection(&sel0, &sel1);
@@ -628,7 +628,7 @@ void TimeTextCtrl::ComputeTextExtents()
    int yBorder = 2;
    #endif
 
-   char str[11];
+   wxChar str[11];
    wxTextCtrl *text;
    wxCoord width=0, height=0;
    unsigned int i;
@@ -644,7 +644,7 @@ void TimeTextCtrl::ComputeTextExtents()
       dc.SetFont(text->GetFont());
 
    for(i=0; i<=10; i++) {
-      str[i] = '0';
+      str[i] = wxT('0');
       str[i+1] = 0;
       dc.GetTextExtent(str, &width, &height);
       sTextWidth[i] = width + xBorder;

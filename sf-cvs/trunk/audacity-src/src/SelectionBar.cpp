@@ -148,7 +148,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    mFormatChoice = NULL;
 
   #if FORMAT_CHOICE_IS_COMBO_BOX
-   wxComboBox *box = new wxComboBox(this, OnFormatChoiceID, "",
+   wxComboBox *box = new wxComboBox(this, OnFormatChoiceID, wxT(""),
                                     wxDefaultPosition, wxSize(250, -1));
    box->SetWindowStyle(wxCB_READONLY);
    for(i=0; i<TimeTextCtrl::GetNumBuiltins(); i++)
@@ -178,15 +178,15 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    hSizer = new wxBoxSizer(wxHORIZONTAL);
 
    wxButton *b;
-   b = new wxButton(this, -1, "Label",
+   b = new wxButton(this, -1, _("Label"),
                     wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
    mainSizer->Add(b, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
    mainSizer->Add(20, 10);
-   b = new wxButton(this, -1, "Label",
+   b = new wxButton(this, -1, _("Label"),
                     wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
    mainSizer->Add(b, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
    mainSizer->Add(20, 10);
-   b = new wxButton(this, -1, "Label",
+   b = new wxButton(this, -1, _("Label"),
                     wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
    mainSizer->Add(b, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
@@ -323,7 +323,7 @@ void SelectionBar::SetRate(double rate)
 {
    if (rate != mRate) {
       mRate = rate;
-      mRateBox->SetValue(wxString::Format("%d", (int)rate));
+      mRateBox->SetValue(wxString::Format(wxT("%d"), (int)rate));
    }
 }
 

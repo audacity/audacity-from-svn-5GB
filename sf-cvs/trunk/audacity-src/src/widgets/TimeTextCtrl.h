@@ -30,7 +30,7 @@ class TimeTextCtrl: public wxPanel
  public:
    TimeTextCtrl(wxWindow *parent,
                 wxWindowID id,
-                wxString formatString = "",
+                wxString formatString = wxT(""),
                 double timeValue = 0.0,
                 double sampleRate = 44100,
                 const wxPoint &pos = wxDefaultPosition,
