@@ -39,21 +39,19 @@ class EffectToneGen:public EffectSimpleMono {
 
    virtual wxString GetEffectName() {
       return wxString(_("Tone Generator..."));
-   }
-   
-   virtual wxString GetEffectAction() {
+   } virtual wxString GetEffectAction() {
       return wxString(_("Generating Tone"));
    }
-   
+
    virtual bool PromptUser();
-   
+
  protected:
-   virtual bool Init();
-   
+   bool NewTrackSimpleMono(int count);
+
    bool ProcessSimpleMono(float *buffer,
-                   sampleCount len, double samplerate);
+                          sampleCount len, double samplerate);
  private:
-   int   waveform;
+   int waveform;
    float frequency;
    float amplitude;
    bool mix;
@@ -68,7 +66,7 @@ class EffectToneGen:public EffectSimpleMono {
 #define ID_FREQTEXT 10003
 #define ID_MIX 10004
 wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit =
-                            TRUE, bool set_sizer = TRUE);
+                             TRUE, bool set_sizer = TRUE);
 
 // WDR: class declarations
 
@@ -76,22 +74,20 @@ wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit =
 // ToneGenDialog
 //----------------------------------------------------------------------------
 
-class ToneGenDialog: public wxDialog
-{
-public:
+class ToneGenDialog:public wxDialog {
+ public:
    // constructors and destructors
-   ToneGenDialog( wxWindow *parent, wxWindowID id, const wxString &title,
-                       const wxPoint& pos = wxDefaultPosition,
-                       const wxSize& size = wxDefaultSize,
-                       long style = wxDEFAULT_DIALOG_STYLE );
+   ToneGenDialog(wxWindow * parent, wxWindowID id, const wxString & title,
+                 const wxPoint & pos = wxDefaultPosition,
+                 const wxSize & size = wxDefaultSize,
+                 long style = wxDEFAULT_DIALOG_STYLE);
 
-   wxSizer *MakeToneGenDialog( wxWindow *parent, bool call_fit = TRUE,
-                           bool set_sizer = TRUE );
-   
+   wxSizer *MakeToneGenDialog(wxWindow * parent, bool call_fit = TRUE,
+                              bool set_sizer = TRUE);
+
    wxTextCtrl *GetFreqText() {
       return (wxTextCtrl *) FindWindow(ID_FREQTEXT);
-   }
-   wxTextCtrl *GetAmpText() {
+   } wxTextCtrl *GetAmpText() {
       return (wxTextCtrl *) FindWindow(ID_AMPTEXT);
    }
    wxChoice *GetWaveformChoice() {
@@ -105,15 +101,15 @@ public:
    virtual bool TransferDataFromWindow();
    wxButton *mCreateToneButton;
 
-private:
+ private:
    // WDR: handler declarations for FilterDialog
-   void OnCreateTone( wxCommandEvent &event );
-   void OnCancel( wxCommandEvent &event );
-   
-private:
+   void OnCreateTone(wxCommandEvent & event);
+   void OnCancel(wxCommandEvent & event);
+
+ private:
    DECLARE_EVENT_TABLE()
 
-public:
+ public:
    int waveform;
    float frequency;
    float amplitude;
