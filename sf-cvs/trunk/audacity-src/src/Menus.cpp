@@ -906,7 +906,7 @@ bool AudacityProject::MakeReadyToPlay()
       toolbar->SetStop(true);         //Pushes stop down
       toolbar->OnStop(evt);
 
-      ::wxUsleep(100);
+      ::wxMilliSleep(100);
    }
 
    // If it didn't stop playing quickly, or if some other
