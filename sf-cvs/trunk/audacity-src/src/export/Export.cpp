@@ -212,5 +212,6 @@ bool ExportLossy(AudacityProject *project,
       wxMessageBox(_("Command-line exporting is only supported on UNIX"));
 #endif
    }
+   return false;
 }
 

@@ -66,6 +66,7 @@ const char *GetSampleFormatStr(sampleFormat format)
    case floatSample:
       return "32-bit float";
    }
+   return ""; // compiler food
 }
 
 samplePtr NewSamples(int count, sampleFormat format)
@@ -94,7 +95,6 @@ void CopySamples(samplePtr src, sampleFormat srcFormat,
       return;
 
    int srcBytes = SAMPLE_SIZE(srcFormat);
-   int dstBytes = SAMPLE_SIZE(dstFormat);
 
    if (srcFormat == dstFormat) {
       memcpy(dst, src, len*srcBytes);
@@ -106,7 +106,7 @@ void CopySamples(samplePtr src, sampleFormat srcFormat,
       return;
    }
 
-   int i;
+   unsigned int i;
    float fHalf = 0.5;
    float fDiv16 = 32767.5;
    float fDiv24 = 8388607.5;

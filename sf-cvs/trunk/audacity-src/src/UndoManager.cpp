@@ -140,7 +140,7 @@ TrackList *UndoManager::SetStateTo(unsigned int n, double *sel0, double *sel1)
 
    current = n;
 
-   if (current == (stack.Count()-1)) {
+   if (current == int(stack.Count()-1)) {
       *sel0 = stack[current]->sel0;
       *sel1 = stack[current]->sel1;
    }
