@@ -76,7 +76,9 @@ void CommandsMenu::PurgeData()
          //Delete submenus
          while(mnuSubArray.GetCount())
          {
-            delete mnuSubArray[0];
+            //dmazzoni: this is an error...
+            //delete mnuSubArray[0];
+
             mnuSubArray.RemoveAt(0);
          }
 
