@@ -12,7 +12,7 @@ Authors:
 
 ================================================================
 This version is currently accurate for Audacity version 1.2.0.
-Last Updated: July 29, 2003
+Last Updated: Oct 29, 2003
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 ================================================================
