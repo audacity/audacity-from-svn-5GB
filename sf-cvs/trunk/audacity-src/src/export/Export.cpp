@@ -96,6 +96,7 @@ wxString ExportCommon(AudacityProject *project,
                else if (pan == 0)
                   numMono++;
                else {
+                  // Panned partially off-center. Mix as stereo.
                   numLeft++;
                   numRight++;
                }
