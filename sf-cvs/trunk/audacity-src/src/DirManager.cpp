@@ -498,7 +498,7 @@ static inline unsigned int hexchar_to_int(unsigned int x)
    return 15U;
 }
 
-void DirManager::BalanceMidAdd(int topnum, int midkey)
+int DirManager::BalanceMidAdd(int topnum, int midkey)
 {
    // enter the midlevel directory if it doesn't exist
 
@@ -513,7 +513,9 @@ void DirManager::BalanceMidAdd(int topnum, int midkey)
          dirTopPool.erase(topnum);
          dirTopFull[topnum]=256;
       }
+      return 1;
    }
+   return 0;
 }
 
 void DirManager::BalanceFileAdd(int midkey)
@@ -651,18 +653,29 @@ wxFileName DirManager::MakeBlockFileName()
             
 
             // search for unused midlevels; linear search adequate
+            // add 32 new topnum/midnum dirs full of  prospective filenames to midpool
             for(midnum=0;midnum<256;midnum++){
                midkey=(topnum<<8)+midnum;
-               if(dirMidPool.find(midkey) == dirMidPool.end()){
-                  BalanceMidAdd(topnum,midkey);
+               if(BalanceMidAdd(topnum,midkey)){
                   newcount++;
                   if(newcount>=32)break;
                }
             }
 
-            // why loop?  minor internal bulletproofing.  Any misfiled
-            // directory entries will get moved to full and we get a
-            // second shot building a subdir
+            if(dirMidPool.empty()){
+               // all the midlevels in this toplevel are in use yet the
+               // toplevel claims some are free; this implies multiple
+               // internal logic faults, but simply giving up and going
+               // into an infinite loop isn't acceptible.  Just in case,
+               // for some reason, we get here, dynamite this toplevel so
+               // we don't just fail.
+               
+               // this is 'wrong', but the best we can do given that
+               // something else is also wrong.  It will contain the
+               // problem so we can keep going without worry.
+               dirTopPool.erase(topnum);
+               dirTopFull[topnum]=256;
+            }
             continue;
          }
       }

@@ -137,7 +137,7 @@ class DirManager: public XMLTagHandler {
    void BalanceInfoDel(wxString);
    void BalanceInfoAdd(wxString);
    void BalanceFileAdd(int);
-   void BalanceMidAdd(int, int);
+   int BalanceMidAdd(int, int);
 
    static bool dontDeleteTempFiles;
 
