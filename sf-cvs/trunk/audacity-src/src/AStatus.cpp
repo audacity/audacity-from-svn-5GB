@@ -4,23 +4,29 @@
 
   AStatus.cpp
 
-  Dominic Mazzoni
+  Copyright 2004 Dominic Mazzoni, Matt Brubeck, James Crook
+  
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
 
 **********************************************************************/
 
 #include "AStatus.h"
 
+#include "AudioIO.h"
+#include "AColor.h"
+
+#include <wx/dc.h>
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
-#include <wx/intl.h>
+#include <wx/frame.h>
 #include <wx/gdicmn.h>
+#include <wx/intl.h>
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
-#include <wx/frame.h>
-
-#include "AudioIO.h"
-#include "AColor.h"
 
 int GetStatusHeight()
 {
@@ -196,6 +202,7 @@ void AStatus::OnPaint(wxPaintEvent & event)
    outline.height = mHeight - 2;
    AColor::Bevel(memDC, true, outline);
 
+   // Display status message.
    wxFont statusFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
    memDC.SetFont(statusFont);
 
@@ -207,9 +214,8 @@ void AStatus::OnPaint(wxPaintEvent & event)
 
    AColor::Bevel(memDC, false, msgField);
 
-
    wxString msg = mField[0];
-   long textWidth, textHeight;
+   wxCoord textWidth, textHeight;
    memDC.GetTextExtent(msg, &textWidth, &textHeight);
    while (msg != "" && textWidth > msgField.width) {
       msg = msg.Left(msg.Length() - 1);
@@ -217,11 +223,27 @@ void AStatus::OnPaint(wxPaintEvent & event)
    }
    memDC.DrawText(msg, msgField.x + 3, msgField.y + 2);
 
+   // Display "Project rate" menu.
+   wxString label = _("Project rate:");
+   memDC.GetTextExtent(label, &textWidth, &textHeight);
+
+   mRateField.x = textWidth + 10;
+   mRateField.y = 29;
+   mRateField.width = 50;
+   mRateField.height = 17;
+
+   memDC.DrawText(label, 3, mRateField.y + 2);
+
+   AColor::Bevel(memDC, true, mRateField);
+   memDC.DrawText(wxString::Format("%d", int (mRate + 0.5)),
+                  mRateField.x + 3, mRateField.y + 2);
+
+   // Display cursor and selection position.
    wxRect cursorField;
-   cursorField.x = 140;
-   cursorField.y = 29;
-   cursorField.width = mWidth - 144;
-   cursorField.height = 17;
+   cursorField.x = mRateField.x + mRateField.width + 10;
+   cursorField.y = mRateField.y;
+   cursorField.width = mWidth - cursorField.x - 4;
+   cursorField.height = mRateField.height;
 
 #ifdef __WXMAC__
    cursorField.width -= 15;
@@ -249,20 +271,9 @@ void AStatus::OnPaint(wxPaintEvent & event)
    }
    memDC.DrawText(msg, cursorField.x + 3, cursorField.y + 2);
 
-   mRateField.x = 80;
-   mRateField.y = 29;
-   mRateField.width = 50;
-   mRateField.height = 17;
-   AColor::Bevel(memDC, true, mRateField);
-
-   memDC.DrawText(_("Project rate:"), 3, mRateField.y + 2);
-
-   memDC.DrawText(wxString::Format("%d", int (mRate + 0.5)),
-                  mRateField.x + 3, mRateField.y + 2);
-
+   // Finish drawing.
    dc.Blit(0, 0, mWidth, mHeight, &memDC, 0, 0, wxCOPY, FALSE);
    memDC.SelectObject(wxNullBitmap);
-
 }
 
 void AStatus::OnMouseEvent(wxMouseEvent & event)
