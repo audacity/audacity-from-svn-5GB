@@ -87,7 +87,7 @@ VERSION = @VERSION@
 autogen = @autogen@
 subdirs = @subdirs@
 
-EXTRA_DIST = config.h MacOS-readme.txt
+EXTRA_DIST = config.h sndfile.h MacOS-readme.txt
 
 DISTCLEANFILES = Makefile
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs

@@ -23,6 +23,11 @@
 #include <errno.h>
 #include <sys/stat.h>
 
+#if (defined (__MWERKS__) && defined (macintosh))
+#include <Files.h>
+#endif
+
+
 #include "sndfile.h"
 #include "config.h"
 #include "common.h"
@@ -211,7 +216,11 @@ psf_ftruncate (int fd, sf_count_t len)
 	if ((sizeof (off_t) < sizeof (sf_count_t)) && len > 0x7FFFFFFF)
 		return 1 ;
 		
+#if (defined(__MWERKS__) && defined (macintosh))
+	return FSSetForkSize (fd, fsFromStart, len) ;
+#else
 	return ftruncate (fd, len) ;
+#endif
 } /* psf_ftruncate */
 
 
