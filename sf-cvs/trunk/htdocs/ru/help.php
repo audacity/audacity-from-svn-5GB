@@ -1,7 +1,7 @@
 <?php BoxTop($helpStr); ?>
 
 <p>
-<a href="docs/contents.html">Руководство пользователя / Документация</a>
+<a href="docs/contents.html">Руководство пользователя</a>
 </p>
 
 <p>
@@ -11,7 +11,7 @@
 
 <p>
 <?php print "<a href=faq.php?$langLinkStr>";
-?>Часто задаваемые вопросы (ЧаВО)</a>
+?>Часто задаваемые вопросы (F.A.Q.)</a>
 </p>
 
 <p>
