@@ -41,7 +41,6 @@ OBJS = \
 	$(OBJDIR)/Benchmark.o \
 	$(OBJDIR)/ControlToolBar.o \
 	$(OBJDIR)/DirManager.o \
-	$(OBJDIR)/Dither.o \
 	$(OBJDIR)/Envelope.o \
 	$(OBJDIR)/EditToolBar.o \
 	$(OBJDIR)/FFT.o \
@@ -59,7 +58,6 @@ OBJS = \
 	$(OBJDIR)/MixerToolBar.o \
 	$(OBJDIR)/NoteTrack.o \
 	$(OBJDIR)/PitchName.o \
-	$(OBJDIR)/Prefs.o \
 	$(OBJDIR)/Project.o \
 	$(OBJDIR)/RingBuffer.o \
 	$(OBJDIR)/Sequence.o \
@@ -133,7 +131,9 @@ TEMPORARILY_DISABLED_IMPORTER_OBJS = \
 
 LIBAUDACITY_OBJS = \
 	$(OBJDIR)/BlockFile.o \
+	$(OBJDIR)/Dither.o \
 	$(OBJDIR)/FileFormats.o \
+	$(OBJDIR)/Prefs.o \
 	$(OBJDIR)/SampleFormat.o \
 	$(OBJDIR)/blockfile/LegacyBlockFile.o \
 	$(OBJDIR)/blockfile/LegacyAliasBlockFile.o \
