@@ -1,0 +1,70 @@
+SoundTouch sound processing library
+===================================
+
+Integrated into Audacity by Dominic Mazzoni, March 2003
+
+Based on Paul Davis's floating-point adaptation
+of Olli Parviainen's original SoundTouch library.
+
+SoundTouch sound processing library v1.01
+=========================================
+Copyright (c) Olli Parviainen 2002
+
+A library for changing tempo, pitch and playback rate of digital sound.
+
+Change History
+==============
+
+   SoundTouch library Change History
+   =================================
+
+   v1.01: 
+   - "mmx_gcc.cpp": Added "using namespace std" and removed "return 0" from a 
+     function with void return value to fix compiler errors when compiling
+     the library in Solaris environment.
+
+   - Moved file "FIFOSampleBuffer.h" to "include" directory to allow accessing
+     the FIFOSampleBuffer class from external files.
+
+   v1.0: Initial release
+
+
+   SoundStretch application Change History
+   =======================================
+
+  v1.1: 
+   - Fixed "Release" settings in Microsoft Visual C++ project file (.dsp) 
+
+   - Added beats-per-minute (BPM) detection routine and command-line switch
+     "-bpm"
+
+  v1.01: Initial release
+
+
+Acknowledgements
+================
+
+Many thanks to Stuart Lamble for translating the MMX optimizations from
+MS Visual C++ syntax into gcc syntax for joy of all Linux users.
+
+Thanks also to Manish Bajpai, whose WAV file reading routines I've used
+as base of the WavInFile & WavOutFile classes, that are being used in 
+the soundstrecth program for accessing WAV audio files.
+
+
+LICENSE:
+========
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2 of the License, or (at your
+option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for more details.\n"
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc., 59
+Temple Place, Suite 330, Boston, MA  02111-1307 USA
