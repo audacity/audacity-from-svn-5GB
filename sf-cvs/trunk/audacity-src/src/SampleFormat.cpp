@@ -35,6 +35,9 @@
    an ideal mapping.  An analogous mapping is used between
    24-bit ints and floats.
 
+   Note: These things are now handled by the Dither class, which
+         also replaces the CopySamples() method (msmeyer)
+
 **********************************************************************/
 
 #include <math.h>
@@ -43,17 +46,23 @@
 #include <string.h>
 
 #include "SampleFormat.h"
+#include "Prefs.h"
+#include "Dither.h"
 
-int gDither = 0;
+Dither::DitherType gLowQualityDither = Dither::none;
+Dither::DitherType gHighQualityDither = Dither::none;
+Dither gDitherAlgorithm;
 
-int GetNumDithers()
+void InitDitherers()
 {
-   return 1;
-}
+   // Read dither preferences
+   // Note: We use 'triangle' dithering for now, because
+   //       the 'shaped' dithering is supposed to be broken.
+   gLowQualityDither = (Dither::DitherType)
+   gPrefs->Read("/Quality/DitherAlgorithm", (long)Dither::none);
 
-int GetCurrentDither()
-{
-   return gDither;
+   gHighQualityDither = (Dither::DitherType)
+   gPrefs->Read("/Quality/HQDitherAlgorithm", (long)Dither::triangle);
 }
 
 const char *GetSampleFormatStr(sampleFormat format)
@@ -92,93 +101,8 @@ void CopySamples(samplePtr src, sampleFormat srcFormat,
                  bool highQuality, /* = true */
                  unsigned int stride /* = 1 */)
 {
-   if (len == 0)
-      return;
-
-   int srcBytes = SAMPLE_SIZE(srcFormat);
-   unsigned int i;
-
-   if (srcFormat == dstFormat) {
-      if (stride == 1)
-         memcpy(dst, src, len*srcBytes);
-      else
-         for(i=0; i<len; i++) {
-            memcpy(dst, src, srcBytes);
-            dst += srcBytes;
-            src += stride * srcBytes;
-         }
-      return;
-   }
-
-   if (src == dst) {
-      printf("TODO: handle conversion in place\n");
-      return;
-   }
-
-   float fHalf = float(0.5);
-   float fDiv16 = float(32767.5);
-   float fDiv24 = float(8388607.5);
-
-   switch(dstFormat) {
-   case floatSample:
-      if (srcFormat == int16Sample) {
-         short *sp = (short *)src;
-         for(i=0; i<len; i++) {
-            ((float *)dst)[i] = (*sp + fHalf) / fDiv16;
-            sp += stride;
-         }
-      }
-      else if (srcFormat == int24Sample) {
-         int *sp = (int *)src;
-         for(i=0; i<len; i++) {
-            ((float *)dst)[i] = (*sp + fHalf) / fDiv24;
-            sp += stride;
-         }
-      }
-      break;
-
-   case int24Sample:
-      if (srcFormat == int16Sample) {
-         short *sp = (short *)src;
-         for(i=0; i<len; i++) {
-            ((int *)dst)[i] = ((int)*sp) << 8;
-            sp += stride;
-         }
-      }
-      else if (srcFormat == floatSample)
-         switch(gDither) {
-         case 0: {
-            float *sp = (float *)src;
-            for(i=0; i<len; i++) {
-               ((int *)dst)[i] = (int)floor(*sp * fDiv24);
-               sp += stride;
-            }
-         } break;
-         }
-      break;
-
-   case int16Sample:
-      if (srcFormat == floatSample)
-         switch(gDither) {
-         case 0: {
-            float *sp = (float *)src;
-            for(i=0; i<len; i++) {
-               ((short *)dst)[i] = (short)floor(*sp * fDiv16);
-               sp += stride;
-            }
-         } break;
-         }
-      else if (srcFormat == int24Sample)
-         switch(gDither) {
-         case 0: {
-            int *sp = (int *)src;
-            for(i=0; i<len; i++) {
-               ((short *)dst)[i] = (short)(*sp >> 8);
-               sp += stride;
-            }
-         } break;
-         }
-      break;
-   }
+   gDitherAlgorithm.Apply(
+      highQuality ? gHighQualityDither : gLowQualityDither,
+      src, srcFormat, dst, dstFormat, len, stride);
 }
 

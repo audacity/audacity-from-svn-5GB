@@ -47,10 +47,10 @@ void      ClearSamples(samplePtr buffer, sampleFormat format,
                        int start, int len);
 
 //
-// 
+// This must be called on startup and everytime new ditherers
+// are set in preferences.
 //
 
-int       GetNumDithers();
-int       GetCurrentDither();
+void      InitDitherers();
 
 #endif

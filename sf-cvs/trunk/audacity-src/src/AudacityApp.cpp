@@ -437,7 +437,7 @@ bool AudacityApp::OnInit()
    }
 
    // More initialization
-
+   InitDitherers();
    InitAudioIO();
 
    LoadEffects();
