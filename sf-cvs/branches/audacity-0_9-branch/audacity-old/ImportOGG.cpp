@@ -21,6 +21,12 @@
 
 #ifdef USE_LIBVORBIS
 
+/* MSVC does not know how to scope for loops */
+#ifdef __WXWIN__
+#define for if(1) for
+#endif
+
+#include <wx/log.h>
 #include <wx/string.h>
 #include <wx/timer.h>
 #include <wx/utils.h>
@@ -44,10 +50,12 @@ bool ImportOGG(wxWindow * parent,
                int *numChannels, DirManager * dirManager)
 {
 
+   wxLogNull logNo;   /* disable automatic dialog generation */
    wxFFile file(Filename, "rb");
 
    if (!file.IsOpened()) {
-      // No need for a message box, it's done automatically (but how?)
+      wxMessageBox("Unable to open file " + Filename, "Error",
+                   wxICON_ERROR|wxOK|wxCENTRE);
       return false;
    }
 
@@ -86,17 +94,14 @@ bool ImportOGG(wxWindow * parent,
    *numChannels = vi->channels;
    *channels = new WaveTrack *[*numChannels];
 
-   /* The Stroustrup book says that variables declared in the
-    * initialization part of a for loop are only in scope until
-    * the end of the loop, but Visual C complains about you
-    * "redefining" the variable if you assume that. So
-    * I'll declare a function-global count variable once,
-    * and use it in all the loops. Grudgingly. */
-   int c;
-
-   for (c = 0; c < *numChannels; c++) {
+   for (int c = 0; c < *numChannels; c++) {
       (*channels)[c] = new WaveTrack(dirManager);
       (*channels)[c]->rate = vi->rate;
+
+      /* link all channels together (so set 'linked' flag on all but the last) */
+
+      if( c < *numChannels - 1 )
+         (*channels)[c]->linked = true;
 
       switch (c) {
          case 0:
@@ -116,7 +121,7 @@ bool ImportOGG(wxWindow * parent,
    wxStartTimer();
 
 /* The number of bytes to get from the codec in each run */
-#define CODEC_TRANSFER_SIZE 4096
+#define CODEC_TRANSFER_SIZE 4196
    
    const int bufferSize = WaveTrack::GetIdealBlockSize();
    sampleType *mainBuffer = new sampleType[CODEC_TRANSFER_SIZE];
@@ -150,14 +155,14 @@ bool ImportOGG(wxWindow * parent,
       samplesRead = bytesRead / *numChannels / sizeof(sampleType);
 
       if (samplesRead + bufferCount > bufferSize) {
-         for (c = 0; c < *numChannels; c++)
+         for (int c = 0; c < *numChannels; c++)
             (*channels)[c]->Append(buffers[c], bufferCount);
          bufferCount = 0;
       }
 
       /* Un-interleave */
       for (int s = 0; s < samplesRead; s++)
-         for (c = 0; c < *numChannels; c++)
+         for (int c = 0; c < *numChannels; c++)
             buffers[c][s + bufferCount] =
                 mainBuffer[s * (*numChannels) + c];
 
@@ -186,7 +191,7 @@ bool ImportOGG(wxWindow * parent,
 
    delete[]mainBuffer;
 
-   for (c = 0; c < *numChannels; c++)
+   for (int c = 0; c < *numChannels; c++)
       delete[]buffers[c];
    delete[]buffers;
 
@@ -194,7 +199,7 @@ bool ImportOGG(wxWindow * parent,
       delete progress;
 
    if (cancelled) {
-      for (c = 0; c < *numChannels; c++)
+      for (int c = 0; c < *numChannels; c++)
          delete(*channels)[c];
       delete[] * channels;
 
