@@ -417,9 +417,8 @@ bool DirManager::HandleXMLTag(const char *tag, const char **attrs)
       }
       */
 
-      printf("DirManager got a Legacy\n");
-
       *mLoadingTarget = LegacyBlockFile::BuildFromXML(projFull, attrs,
+                                                      mLoadingBlockLen,
                                                       mLoadingFormat);
    }
    else
