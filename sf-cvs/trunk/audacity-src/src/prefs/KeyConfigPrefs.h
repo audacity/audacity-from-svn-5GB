@@ -32,6 +32,7 @@ class KeyConfigPrefs:public PrefsPanel {
    void OnItemSelected(wxListEvent &event);
 
    wxListCtrl *mCommandsList;
+   wxListCtrl *mKeysList;
 
    int mCommandSelected;
 

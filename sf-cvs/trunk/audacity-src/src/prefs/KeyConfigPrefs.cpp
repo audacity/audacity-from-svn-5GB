@@ -20,11 +20,12 @@
 #include "../Prefs.h"
 #include "KeyConfigPrefs.h"
 
-#define HistoryListID     7001
+#define CommandsListID     7001
 #define DescriptionTextID 7002
+#define KeysListID         7003
 
 BEGIN_EVENT_TABLE(KeyConfigPrefs, wxPanel)
-   EVT_LIST_ITEM_SELECTED(HistoryListID, KeyConfigPrefs::OnItemSelected)
+   EVT_LIST_ITEM_SELECTED(CommandsListID, KeyConfigPrefs::OnItemSelected)
 END_EVENT_TABLE()
 
 KeyConfigPrefs::KeyConfigPrefs(wxWindow * parent):
@@ -37,31 +38,55 @@ PrefsPanel(parent), mCommandSelected(-1)
       wxVERTICAL );
 
    {
-      wxBoxSizer *vCategorySizer = new wxBoxSizer(wxVERTICAL);
+      wxBoxSizer *vKeyConfigSizer = new wxBoxSizer(wxHORIZONTAL);
+
+      wxBoxSizer *vCommandSizer = new wxBoxSizer(wxVERTICAL);
 
       // BG: Create list control that will hold the commands supported under the selected category
-      mCommandsList = new wxListCtrl(this, HistoryListID, wxDefaultPosition, wxSize(200, 180),
-                                         wxLC_REPORT /* | wxLC_EDIT_LABELS */);
+      mCommandsList = new wxListCtrl(this, CommandsListID, wxDefaultPosition, wxSize(200, 180),
+                                         wxLC_REPORT | wxLC_SINGLE_SEL /* | wxLC_EDIT_LABELS */);
 
       mCommandsList->SetSizeHints(200, 180);
 
       mCommandsList->InsertColumn(0, _("Commands"), wxLIST_FORMAT_LEFT, 200);
 
+      //Insert supported commands into list control
       for(int i = 0; i < mAudacity->GetNumCommands(); i++)
       {
          mCommandsList->InsertItem(i, mAudacity->GetCommandName(i));
       }
 
-      vCategorySizer->Add(mCommandsList, 0,
+      vCommandSizer->Add(mCommandsList, 0,
                           wxALL, GENERIC_CONTROL_BORDER);
 
-      vCategorySizer->Add(
-               new wxStaticText(this, DescriptionTextID, _(/*"Description:\n Nothing selected."*/"THIS CODE IS A WORK IN PROGRESS")), 0,
-               wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+      vCommandSizer->Add(
+               new wxStaticText(this, DescriptionTextID, _(/*"Description:\n Nothing selected."*/"I WILL RESUME WORKING ON THIS SOON")), 0,
+               wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
+
+      vKeyConfigSizer->Add(
+         vCommandSizer, 0, 
+         wxALL, TOP_LEVEL_BORDER );
+
+      wxBoxSizer *vKeySizer = new wxBoxSizer(wxVERTICAL);
+
+      // BG: Create list control that will hold the commands supported under the selected category
+      mKeysList = new wxListCtrl(this, KeysListID, wxDefaultPosition, wxSize(200, 180),
+                                         wxLC_REPORT /* | wxLC_EDIT_LABELS */);
+
+      mKeysList->SetSizeHints(200, 180);
+
+      mKeysList->InsertColumn(0, _("Keys"), wxLIST_FORMAT_LEFT, 200);
+
+      vKeySizer->Add(mKeysList, 0,
+                          wxALL, GENERIC_CONTROL_BORDER);
+
+      vKeyConfigSizer->Add(
+         vKeySizer, 0, 
+         wxALL, TOP_LEVEL_BORDER );
 
       topSizer->Add(
-         vCategorySizer, 0, 
-         wxALIGN_CENTER_VERTICAL|wxALL, TOP_LEVEL_BORDER );
+         vKeyConfigSizer, 0, 
+         wxALIGN_LEFT|wxALL, TOP_LEVEL_BORDER );
    }
 
    SetAutoLayout(true);
