@@ -76,7 +76,7 @@ class LOFImportPlugin : public ImportPlugin
 {
 public:
    LOFImportPlugin():
-      ImportPlugin(wxStringList("lof"))
+      ImportPlugin(wxStringList("lof", NULL))
    {
    }
 
