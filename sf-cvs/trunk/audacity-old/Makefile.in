@@ -41,6 +41,7 @@ OBJS = \
 	$(OBJDIR)/ImportOGG.cpp.o \
 	$(OBJDIR)/ImportRaw.cpp.o \
 	$(OBJDIR)/LabelTrack.cpp.o \
+	$(OBJDIR)/Menus.cpp.o \
 	$(OBJDIR)/Mix.cpp.o \
 	$(OBJDIR)/NoteTrack.cpp.o \
 	$(OBJDIR)/Prefs.cpp.o \
