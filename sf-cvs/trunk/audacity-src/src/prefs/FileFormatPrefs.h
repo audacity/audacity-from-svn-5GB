@@ -15,10 +15,12 @@
 #include "PrefsPanel.h"
 
 class wxButton;
+class wxCheckBox;
 class wxChoice;
 class wxCommandEvent;
 class wxRadioButton;
 class wxStaticText;
+class wxSlider;
 class wxWindow;
 
 class FileFormatPrefs:public PrefsPanel {
@@ -33,9 +35,11 @@ class FileFormatPrefs:public PrefsPanel {
 
  private:
    wxRadioButton *mCopyOrEdit[2];
+   wxCheckBox *mOGGEnabled;
    wxChoice *mMP3Bitrate;
    wxButton *mMP3FindButton;
    wxStaticText *mMP3Version;
+   wxSlider *mOGGQuality;
 
    wxChoice *mDefaultExportFormat;
    wxButton *mExportOptionsButton;

@@ -34,7 +34,7 @@ bool ExportOGG(AudacityProject *project,
    double    rate    = project->GetRate();
    wxWindow  *parent = project;
    TrackList *tracks = project->GetTracks();
-   double    quality = gPrefs->Read("/FileFormats/OggExportQuality", (float).5);
+   double    quality = (gPrefs->Read("/FileFormats/OggExportQuality", 50)/(float)100.0);
 
    wxLogNull logNo;            // temporarily disable wxWindows error messages 
    bool      cancelling = false;
