@@ -30,12 +30,12 @@ unsigned int PitchIndex(float pitchNum);
 
 // PitchName takes pitchNum (as per result from 
 // Freq2Pitch) and returns a standard pitch/note name [C, C#, etc.). 
-// Sharps are the default, unless, b_Wantb_WantFlats is true.
-char * PitchName(float pitchNum, bool b_WantFlats = false);
+// Sharps are the default, unless, bWantFlats is true.
+char * PitchName(float pitchNum, bool bWantFlats = false);
 
 // PitchName_Absolute does the same thing as PitchName, but appends 
 // the register number, e.g., instead of "C" it will return "C4" 
 // if the pitchNum corresonds to middle C.
-char * PitchName_Absolute(float pitchNum, bool b_WantFlats = false);
+char * PitchName_Absolute(float pitchNum, bool bWantFlats = false);
 
 #endif	// __AUDACITY_PITCHNAME__
