@@ -53,7 +53,7 @@ private:
    void GetProfile(sampleCount len,
                    sampleType *buffer);
    void RemoveNoise(sampleCount len,
-                    sampleType *buffer, bool first);   
+                    sampleType *buffer);
    
    Envelope *mEnvelope;
 
