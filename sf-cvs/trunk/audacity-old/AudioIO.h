@@ -46,6 +46,7 @@ class AudioIO {
    void OnTimer();
 
    void Stop();
+   void HardStop();
    bool IsBusy();
    bool IsPlaying();
    bool IsRecording();
@@ -66,6 +67,7 @@ class AudioIO {
    double mT1;
    int mTicks;
    bool mStop;
+   bool mHardStop;
    snd_node mPlayNode;
    snd_node mRecordNode;
 

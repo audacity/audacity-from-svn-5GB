@@ -52,6 +52,7 @@ AudioIO::AudioIO()
    mProject = NULL;
    mTracks = NULL;
    mStop = false;
+   mHardStop = false;
    mRecordLeft = NULL;
    mRecordRight = NULL;
    // Run our timer function once every 100 ms, i.e. 10 times/sec
@@ -134,17 +135,22 @@ bool AudioIO::StartPlay(AudacityProject * project,
 
 void AudioIO::Finish()
 {
-   mProject->GetAPalette()->SetPlay(false);
-   mProject->GetAPalette()->SetStop(false);
-   mProject->GetAPalette()->SetRecord(false);
+   if (!mHardStop) {
+      mProject->GetAPalette()->SetPlay(false);
+      mProject->GetAPalette()->SetStop(false);
+      mProject->GetAPalette()->SetRecord(false);
+   }
+
    mStop = false;
+   mHardStop = false;
 
    if (!mRecording || (mRecording && mDuplex))
       snd_close(&mPlayNode);
 
    if (mRecording) {
       snd_close(&mRecordNode);
-      mProject->TP_PushState();
+      if (!mHardStop)
+         mProject->TP_PushState();
    }
    // TODO mProject->SoundDone();
    mProject = NULL;
@@ -419,6 +425,14 @@ void AudioIO::OnTimer()
 void AudioIO::Stop()
 {
    mStop = true;
+}
+
+void AudioIO::HardStop()
+{
+   mProject = NULL;
+   mStop = true;
+   mHardStop = true;
+   Finish();
 }
 
 bool AudioIO::IsBusy()

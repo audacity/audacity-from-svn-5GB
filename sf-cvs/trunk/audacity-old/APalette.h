@@ -50,6 +50,7 @@ class APalette:public wxWindow {
    int GetCurrentTool();
 
    void OnPaint(wxPaintEvent & event);
+   void OnKeyEvent(wxKeyEvent & event);
    void OnTool(wxCommandEvent & evt);
 
    void OnPlay();

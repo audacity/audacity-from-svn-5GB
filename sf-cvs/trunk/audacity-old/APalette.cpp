@@ -137,6 +137,7 @@ mPalette(this, 0, wxPoint(0, 0), wxSize(300, GetAPaletteHeight()))
 
 BEGIN_EVENT_TABLE(APalette, wxWindow)
     EVT_PAINT(APalette::OnPaint)
+    EVT_CHAR(APalette::OnKeyEvent)
     EVT_COMMAND_RANGE(ID_FIRST_TOOL, ID_LAST_TOOL,
                   wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnTool)
     EVT_COMMAND_RANGE(ID_PLAY_BUTTON, ID_PLAY_BUTTON,
@@ -234,6 +235,28 @@ APalette::~APalette()
    delete mMuteBitmap;
    delete mLoudBitmap;
 #endif
+}
+
+void APalette::OnKeyEvent(wxKeyEvent & event)
+{
+   if (event.ControlDown()) {
+      event.Skip();
+      return;
+   }
+
+   long key = event.KeyCode();
+
+   if (event.KeyCode() == WXK_SPACE) {
+      if (gAudioIO->IsBusy()) {
+         OnStop();
+         SetPlay(false);
+         SetStop(true);
+      } else {
+         OnPlay();
+         SetPlay(true);
+         SetStop(false);
+      }
+   }
 }
 
 int APalette::GetCurrentTool()

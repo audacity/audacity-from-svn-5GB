@@ -299,6 +299,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
 AudacityProject::~AudacityProject()
 {
+   if (gAudioIO->IsBusy() && gAudioIO->GetProject()==this)
+      gAudioIO->HardStop();
+
    delete mTags;
 
    gAudacityProjects.Remove(this);

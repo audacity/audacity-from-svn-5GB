@@ -113,7 +113,8 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
                            ViewInfo * viewInfo,
                            TrackPanelListener * listener):wxWindow(parent,
                                                                    id, pos,
-                                                                   size),
+                                                                   size,
+                                                                   wxWANTS_CHARS),
 mTracks(tracks), mViewInfo(viewInfo), mListener(listener), mBitmap(NULL),
 mAutoScrolling(false)
 {
