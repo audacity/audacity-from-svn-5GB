@@ -26,12 +26,12 @@ int rates[] = { 8000,
    44100
 };
 
-wxString stringRates[] = { "8000",
-   "11025",
-   "16000",
-   "22050",
-   "44100",
-   "48000",
+wxString stringRates[] = { "8000 Hz",
+   "11025 Hz",
+   "16000 Hz",
+   "22050 Hz",
+   "44100 Hz",
+   "48000 Hz",
    "Other"
 };
 
@@ -95,14 +95,7 @@ PrefsPanel(parent)
          this, -1, wxString::Format("%i", rate),
          wxDefaultPosition, wxSize(50, -1), 0 );
 
-      if(pos == NUM_RATES)
-      {
-         mOtherSampleRate->Enable();
-      }
-      else
-      {
-         mOtherSampleRate->Disable();
-      }
+      mOtherSampleRate->Enable(pos == NUM_RATES);
 
       topSizer->Add( mOtherSampleRate, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
    }
@@ -158,14 +151,7 @@ void QualityPrefs::OnSampleRateChoice(wxCommandEvent& evt)
 {
    int sel = mSampleRates->GetSelection();
 
-   if(sel == NUM_RATES)
-   {
-      mOtherSampleRate->Enable();
-   }
-   else
-   {
-      mOtherSampleRate->Disable();
-   }
+   mOtherSampleRate->Enable(sel == NUM_RATES);
 }
 
 
