@@ -107,7 +107,7 @@ bool EffectAvcCompressor::ProcessSimplePairedTwoTrack(short int *bufferLeft,
 {
 	sampleCount i;
 	short int left;
-	short int right;
+	short int right = 0;
 
 	for ( i = 0 ; i < len ; ++i ) {
 		left = bufferLeft[i];
@@ -115,9 +115,9 @@ bool EffectAvcCompressor::ProcessSimplePairedTwoTrack(short int *bufferLeft,
 			right = bufferRight[i];
 		mAutoVolCtrl.SetNextSample(left, right);
 		mAutoVolCtrl.GetNextSample(left, right);
-		bufferLeft[i] = right;
+		bufferLeft[i] = left;
 		if ( bufferRight )
-			bufferRight[i] = left;
+			bufferRight[i] = right;
 	}
 	return true;
 }
@@ -429,7 +429,7 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
 						  "Grid at right determines how much to amplify \neach volume level.\n"
 						  "For more information see: \n"
 						  "http://www.busam.com/skyland/iavc\n"
-						  "7/20/02: WAV files work, not MP3 files."
+						  "7/21/02: WAV and MP3 files both work."
 						 ), 
                         wxDefaultPosition, wxDefaultSize, 0);
 	leftSizer->Add(staticText, 0, wxALIGN_CENTRE | wxALL, 5);
