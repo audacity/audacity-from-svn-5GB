@@ -30,7 +30,7 @@
 int lrsSrcUp(float X[],
              float Y[],
              double factor,
-             double *Time,
+             double *TimePtr,
              UWORD Nx,
              UWORD Nwing,
              float LpScl,
@@ -41,28 +41,34 @@ int lrsSrcUp(float X[],
     float *Xp, *Ystart;
     float v;
     
+    double CurrentTime = *TimePtr;
     double dt;                 /* Step through input signal */ 
     double endTime;            /* When Time reaches EndTime, return to user */
     
     dt = 1.0/factor;           /* Output sampling period */
     
     Ystart = Y;
-    endTime = *Time + Nx;
-    while (*Time < endTime)
+    endTime = CurrentTime + Nx;
+    while (CurrentTime < endTime)
     {
-        Xp = &X[(int)(*Time)]; /* Ptr to current input sample */
+        double LeftPhase = CurrentTime-floor(CurrentTime);
+        double RightPhase = 1.0 - LeftPhase;
+
+        Xp = &X[(int)CurrentTime]; /* Ptr to current input sample */
         /* Perform left-wing inner product */
         v = lrsFilterUp(Imp, ImpD, Nwing, Interp, Xp,
-                        (*Time)-floor(*Time), -1);
+                        LeftPhase, -1);
         /* Perform right-wing inner product */
         v += lrsFilterUp(Imp, ImpD, Nwing, Interp, Xp+1, 
-                         ((-(*Time))-floor(-(*Time))), 1);
+                         RightPhase, 1);
 
         v *= LpScl;   /* Normalize for unity filter gain */
 
         *Y++ = v;               /* Deposit output */
-        *Time += dt;            /* Move to next sample by time increment */
+        CurrentTime += dt;      /* Move to next sample by time increment */
     }
+
+    *TimePtr = CurrentTime;
     return (Y - Ystart);        /* Return the number of output samples */
 }
 
@@ -71,7 +77,7 @@ int lrsSrcUp(float X[],
 int lrsSrcUD(float X[],
              float Y[],
              double factor,
-             double *Time,
+             double *TimePtr,
              UWORD Nx,
              UWORD Nwing,
              float LpScl,
@@ -81,7 +87,8 @@ int lrsSrcUD(float X[],
 {
     float *Xp, *Ystart;
     float v;
-    
+
+    double CurrentTime = (*TimePtr);
     double dh;                 /* Step through filter impulse response */
     double dt;                 /* Step through input signal */
     double endTime;            /* When Time reaches EndTime, return to user */
@@ -91,20 +98,26 @@ int lrsSrcUD(float X[],
     dh = MIN(Npc, factor*Npc);  /* Filter sampling period */
     
     Ystart = Y;
-    endTime = *Time + Nx;
-    while (*Time < endTime)
+    endTime = CurrentTime + Nx;
+    while (CurrentTime < endTime)
     {
-        Xp = &X[(int)(*Time)];     /* Ptr to current input sample */
-        v = lrsFilterUD(Imp, ImpD, Nwing, Interp, Xp,
-                        (*Time)-floor(*Time), -1, dh);
+        double LeftPhase = CurrentTime-floor(CurrentTime);
+        double RightPhase = 1.0 - LeftPhase;
+
+        Xp = &X[(int)CurrentTime];     /* Ptr to current input sample */
         /* Perform left-wing inner product */
+        v = lrsFilterUD(Imp, ImpD, Nwing, Interp, Xp,
+                        LeftPhase, -1, dh);
+        /* Perform right-wing inner product */
         v += lrsFilterUD(Imp, ImpD, Nwing, Interp, Xp+1, 
-                         ((-(*Time))-floor(-(*Time))), 1, dh);
+                         RightPhase, 1, dh);
 
         v *= LpScl;   /* Normalize for unity filter gain */
         *Y++ = v;               /* Deposit output */
         
-        *Time += dt;            /* Move to next sample by time increment */
+        CurrentTime += dt;      /* Move to next sample by time increment */
     }
+
+    *TimePtr = CurrentTime;
     return (Y - Ystart);        /* Return the number of output samples */
 }
