@@ -57,7 +57,7 @@ PrefsPanel(parent)
    mFormatBits = ReadExportFormatBitsPref();
 
    wxString lossyFormat = gPrefs->Read("/FileFormats/LossyExportFormat", "MP3");
-   long oggQuality = gPrefs->Read("/FileFormats/OggExportQuality", 50);
+   long oggQuality = gPrefs->Read("/FileFormats/OggExportQuality", 50)/10;
 
    /* Begin layout code... */
 
@@ -139,27 +139,27 @@ PrefsPanel(parent)
       wxStaticBoxSizer *vOGGFormatSizer = new wxStaticBoxSizer(
          new wxStaticBox(this, -1, _("OGG Export Setup")),
          wxVERTICAL);
-      wxBoxSizer *hOGGFormatSizer = new wxBoxSizer(wxHORIZONTAL);
-      wxBoxSizer *vhOGGFormatSizer = new wxBoxSizer(wxVERTICAL);
 
-      mOGGQuality = new wxSlider(this, -1, oggQuality, 0, 100);
+      wxBoxSizer *hOGGQualitySizer = new wxBoxSizer(wxHORIZONTAL);
+      
+      mOGGQuality = new wxSlider(this, -1, oggQuality, 0, 10,
+                            wxDefaultPosition, wxDefaultSize,
+                            wxSL_LABELS);
 
-      vhOGGFormatSizer->Add(new wxStaticText(this, -1, _("OGG Quality:")), 0, 
-                            wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
-      vhOGGFormatSizer->Add(mOGGQuality, 0,
-                            wxALL, GENERIC_CONTROL_BORDER);
+      hOGGQualitySizer->Add(new wxStaticText(this, -1, _("OGG Quality:")), 0, 
+                            wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL,
+                            GENERIC_CONTROL_BORDER);
+      hOGGQualitySizer->Add(mOGGQuality, 1,
+                            wxALL|wxGROW, GENERIC_CONTROL_BORDER);
 
-      hOGGFormatSizer->Add(vhOGGFormatSizer, 0, 
-                           wxALIGN_CENTER_VERTICAL|wxALL, 0);
+      vOGGFormatSizer->Add(hOGGQualitySizer, 0, 
+                           wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
       mOGGEnabled = new wxCheckBox(this, -1, _("Use OGG instead of MP3"));
       mOGGEnabled->SetValue((lossyFormat == "OGG"));
 
-      hOGGFormatSizer->Add(mOGGEnabled, 0,
-                          wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-      vOGGFormatSizer->Add(hOGGFormatSizer, 0, 
-                           wxALIGN_CENTER_VERTICAL|wxGROW|wxALL, 0);
+      vOGGFormatSizer->Add(mOGGEnabled, 0,
+                           wxALL, GENERIC_CONTROL_BORDER);
 
       topSizer->Add(
          vOGGFormatSizer, 0, 
@@ -337,7 +337,7 @@ bool FileFormatPrefs::Apply()
    long oggQuality = mOGGQuality->GetValue();
 
    gPrefs->Write("/FileFormats/LossyExportFormat", lossyFormat);
-   gPrefs->Write("/FileFormats/OggExportQuality", oggQuality);
+   gPrefs->Write("/FileFormats/OggExportQuality", oggQuality * 10);
 
    const char *pcmFmt = ((wxString)sf_header_name(mFormat & SF_FORMAT_TYPEMASK)).c_str();
 
