@@ -39,6 +39,9 @@ Changes in 1.2.0-pre2:
   * Audacity now handles filenames with international characters
     correctly.
 
+  * Now outputs ID3v2.3 tags (instead of ID3v2.4), to be
+    compatible with more MP3 players.
+
   * Minor improvements to build system on Unix systems.
 
 New features in Audacity 1.2.0-pre1:
