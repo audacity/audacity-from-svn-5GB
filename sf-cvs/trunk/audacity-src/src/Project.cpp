@@ -559,6 +559,12 @@ AudacityProject::~AudacityProject()
    delete mTrackFactory;
    mTrackFactory = NULL;
 
+   if (mLastSavedTracks) {
+      mLastSavedTracks->Clear(true);
+      delete mLastSavedTracks;
+      mLastSavedTracks = NULL;
+   }
+
    delete mTags;
    mTags = NULL;
 
@@ -569,7 +575,7 @@ AudacityProject::~AudacityProject()
    gAudacityProjects.Remove(this);
 
    #ifdef __WXMAC__
-   if (gAudacityProjects.IsEmpty())   
+   if (gAudacityProjects.IsEmpty())
       wxGetApp().SetTopWindow(gParentFrame);
    #else
    if (gAudacityProjects.IsEmpty())
@@ -2286,6 +2292,7 @@ void AudacityProject::SetStateTo(unsigned int n)
 void AudacityProject::DeleteClipboard()
 {
    if (msClipboard) {
+      msClipboard->Clear( true );
       delete msClipboard;
       msClipboard = NULL;
    }
