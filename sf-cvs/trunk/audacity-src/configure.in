@@ -52,6 +52,7 @@ EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
 SUBDIRS="$SUBDIRS wave++/source"
 BUILDLIBS="$BUILDLIBS wave++/source/libw.a"
 EXTRAOBJS="$EXTRAOBJS ../lib-src/wave++/source/libw.a"
+CXXFLAGS="$CXXFLAGS -I../lib-src/wave++/source"
 
 dnl TODO enable/disable allegro
 BUILDLIBS="$BUILDLIBS allegro/allegro.a"
