@@ -10,7 +10,7 @@
 
 #include <sys/ioctl.h>
 #include <sys/soundcard.h>
-
+#include <sys/time.h>
 
 /* snd includes */
 
@@ -116,6 +116,27 @@ int audio_open(snd_type snd, long *flags)
   if (rate - (int)(snd->format.srate + 0.5) > 100 ||
 	  rate - (int)(snd->format.srate + 0.5) < -100)
 	return !SND_SUCCESS;
+
+  if (snd->write_flag == SND_READ) {
+	/* start recording immediately */
+
+	struct timeval timeout;
+	fd_set readfds;
+	fd_set writefds;
+	fd_set exceptfds;
+	int n;
+	
+	timeout.tv_sec = 0;
+	timeout.tv_usec = 0;
+	FD_ZERO(&readfds);
+	FD_ZERO(&writefds);
+	FD_ZERO(&exceptfds);
+	FD_SET(dp->audio_fd, &readfds);
+
+	n = dp->audio_fd + 1;
+
+	select(n, &readfds, &writefds, &exceptfds, &timeout);
+  }
   
   return SND_SUCCESS;
 }

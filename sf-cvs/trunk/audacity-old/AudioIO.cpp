@@ -185,8 +185,12 @@ void AudioIO::OnTimer()
   if (mRecording) {
 	int block = snd_poll(&mSndNode);
 
-	if (block <= 0)
+	if (block <= 0) {
+	  if (mStop)
+		Finish();
+
 	  return;
+	}
 
 	sampleType *in = new sampleType[block*2];
 	sampleType *left = new sampleType[block];
@@ -202,14 +206,14 @@ void AudioIO::OnTimer()
 	mRecordLeft->Append(left, block);
 	mRecordRight->Append(right, block);
 
-        mProject->RedrawProject();
+	mProject->RedrawProject();
 
 	delete[] in;
 	delete[] left;
 	delete[] right;
 
-        if (mStop)
-          Finish();
+	if (mStop)
+	  Finish();
 
 	return;
   }
