@@ -98,15 +98,12 @@ print FP "#undef USE_LIBMAD\n";
 print FP "#undef USE_LIBVORBIS\n";
 close FP;
 
-# MB: This should no longer be necessary, due to changes in the
-# Windows library build process.
-#
-#print "Using the VC++ workspace that doesn't depend on libmad, libid3tag,\n";
-#print "libogg, libvorbis, libsamplerate, or libflac.\n";
-#print "\n";
-#
-#`cp win/audacity-nomp3ogg.dsw win/audacity.dsw`;
-#`rm win/audacity-nomp3ogg.dsw`;
+print "Using the VC++ workspace that doesn't depend on libmad, libid3tag,\n";
+print "libogg, libvorbis, libsamplerate, or libflac.\n";
+print "\n";
+
+`cp win/audacity-nomp3ogg.dsw win/audacity.dsw`;
+`rm win/audacity-nomp3ogg.dsw`;
 
 #print "making tarball audacity-src-$version.tgz...\n";
 chdir "..";
