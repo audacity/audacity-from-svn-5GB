@@ -96,6 +96,13 @@ void WaveTrack::Init(const WaveTrack &orig)
    mDisplayNumCutLinesAllocated = 0;
 }
 
+void WaveTrack::Merge(const Track &orig)
+{
+   if (orig.GetKind() == Wave)
+      mDisplay = ((WaveTrack &)orig).mDisplay;
+   Track::Merge(orig);
+}
+
 WaveTrack::~WaveTrack()
 {
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())

@@ -77,6 +77,13 @@ void Track::Init(const Track &orig)
    mChannel = orig.mChannel;
 }
 
+void Track::Merge(const Track &orig)
+{
+   mSelected = orig.mSelected;
+   mMute = orig.mMute;
+   mSolo = orig.mSolo;
+}
+
 Track::~Track()
 {
    mDirManager->Deref();
