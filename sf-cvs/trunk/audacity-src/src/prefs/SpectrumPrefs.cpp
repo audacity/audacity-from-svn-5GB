@@ -62,9 +62,7 @@ PrefsPanel(parent)
          break;
       }
 
-   topSizer = new wxStaticBoxSizer(
-      new wxStaticBox(this, -1, _("Spectrogram Options")),
-      wxVERTICAL);
+   topSizer = new wxBoxSizer( wxVERTICAL );
 
    {
       wxStaticBoxSizer *fftSizeSizer = new wxStaticBoxSizer(
@@ -113,11 +111,13 @@ PrefsPanel(parent)
       topSizer->Add(freqSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER );
    }
 
+   outSizer = new wxBoxSizer( wxVERTICAL );
+   outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
 
    SetAutoLayout(true);
-   topSizer->Fit(this);
-   topSizer->SetSizeHints(this);
-   SetSizer(topSizer);
+   outSizer->Fit(this);
+   outSizer->SetSizeHints(this);
+   SetSizer(outSizer);
 } 
 
 bool SpectrumPrefs::Apply()

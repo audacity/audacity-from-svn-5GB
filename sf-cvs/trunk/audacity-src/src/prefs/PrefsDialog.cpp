@@ -100,10 +100,13 @@ wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
    
    topSizer->Add(buttonSizer, 0, wxALIGN_RIGHT);
 
+   wxBoxSizer *outSizer = new wxBoxSizer( wxVERTICAL );
+   outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
+
    SetAutoLayout(true);
-   SetSizer(topSizer);
-   topSizer->Fit(this);
-   topSizer->SetSizeHints(this);
+   SetSizer(outSizer);
+   outSizer->Fit(this);
+   outSizer->SetSizeHints(this);
 
    #ifdef __WXMAC__
    // Until sizing works properly on the Mac

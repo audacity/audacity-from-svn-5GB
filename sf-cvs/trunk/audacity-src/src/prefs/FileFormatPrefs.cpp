@@ -53,9 +53,7 @@ PrefsPanel(parent)
 
    /* Begin layout code... */
 
-   topSizer = new wxStaticBoxSizer(
-      new wxStaticBox(this, -1, _("File Format Settings")),
-      wxVERTICAL );
+   topSizer = new wxBoxSizer( wxVERTICAL );
 
    {
       wxStaticBoxSizer *copyOrEditSizer = new wxStaticBoxSizer(
@@ -191,12 +189,14 @@ PrefsPanel(parent)
          wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, TOP_LEVEL_BORDER);
    }
 
+   outSizer = new wxBoxSizer( wxVERTICAL );
+   outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
 
    SetAutoLayout(true);
-   SetSizer(topSizer);
+   SetSizer(outSizer);
 
-   topSizer->Fit(this);
-   topSizer->SetSizeHints(this);
+   outSizer->Fit(this);
+   outSizer->SetSizeHints(this);
 
    /* set controls to match existing configuration... */
 

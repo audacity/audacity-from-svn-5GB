@@ -24,8 +24,7 @@ PrefsPanel(parent)
    gPrefs->Read("/GUI/AutoScroll", &autoscroll, false);
    gPrefs->Read("/GUI/UpdateSpectrogram", &spectrogram, true);
 
-   topSizer = new wxStaticBoxSizer(
-      new wxStaticBox(this, -1, _("Interface")), wxVERTICAL );
+   topSizer = new wxBoxSizer( wxVERTICAL );
 
    mAutoscroll = new wxCheckBox(this, -1, _("Autoscroll while playing"));
    mAutoscroll->SetValue(autoscroll);
@@ -35,11 +34,14 @@ PrefsPanel(parent)
    mSpectrogram->SetValue(spectrogram);
    topSizer->Add(mSpectrogram, 0, wxGROW|wxALL, 2);
 
-   SetAutoLayout(true);
-   SetSizer(topSizer);
+   outSizer = new wxBoxSizer( wxVERTICAL );
+   outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
 
-   topSizer->Fit(this);
-   topSizer->SetSizeHints(this);
+   SetAutoLayout(true);
+   SetSizer(outSizer);
+
+   outSizer->Fit(this);
+   outSizer->SetSizeHints(this);
 
 }
 
