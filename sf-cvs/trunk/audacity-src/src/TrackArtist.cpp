@@ -87,7 +87,9 @@ TrackArtist::TrackArtist()
    selectedPen  .SetColour(148, 148, 170);
    samplePen    .SetColour( 50,  50, 200);
    selsamplePen .SetColour( 50,  50, 200);
+   muteSamplePen.SetColour(136, 136, 144);
    rmsPen       .SetColour(100, 100, 220);
+   muteRmsPen   .SetColour(136, 136, 144);
    shadowPen    .SetColour(148, 148, 148);
 
    vruler = new Ruler();
@@ -117,8 +119,28 @@ void TrackArtist::DrawTracks(TrackList * tracks,
    wxRect trackRect = r;
 
    TrackListIterator iter(tracks);
-   Track *t = iter.First();
+   Track *t;
+
+   bool hasSolo = false;
+   for (t = iter.First(); t; t = iter.Next()) {
+      if (t->GetSolo()) {
+         hasSolo = true;
+         break;
+      }
+   }
+
+   t = iter.First();
+   bool linkFlag = false;
+   bool muted = false;
+
    while (t) {
+      if (linkFlag) // Use the value from the previous (linked) track.
+         linkFlag = false;
+      else {
+         muted = (hasSolo || t->GetMute()) && !t->GetSolo();
+         linkFlag = t->GetLinked();
+      }
+
       trackRect.height = t->GetHeight();
 
       if (trackRect.y < (clip.y + clip.height) &&
@@ -135,11 +157,11 @@ void TrackArtist::DrawTracks(TrackList * tracks,
             switch (((WaveTrack *)t)->GetDisplay()) {
             case WaveTrack::WaveformDisplay:
                DrawWaveform((WaveTrack *)t, dc, rr, viewInfo,
-                            drawEnvelope, drawSamples, drawSliders, false);
+                            drawEnvelope, drawSamples, drawSliders, false, muted);
                break;
             case WaveTrack::WaveformDBDisplay:
                DrawWaveform((WaveTrack *)t, dc, rr, viewInfo,
-                            drawEnvelope,  drawSamples, drawSliders, true);
+                            drawEnvelope,  drawSamples, drawSliders, true, muted);
                break;
             case WaveTrack::SpectrumDisplay:
                DrawSpectrum((WaveTrack *)t, dc, rr, viewInfo, false);
@@ -608,7 +630,7 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
                                         float zoomMin, float zoomMax,
                                         bool dB,
                                         bool drawSamples,
-                                        bool showPoints)
+                                        bool showPoints, bool muted)
 {
    Sequence *seq = track->GetSequence();
    double tOffset = track->GetOffset();
@@ -629,7 +651,7 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
    int *ypos = new int[slen];
    sampleCount s;
    
-   dc.SetPen(samplePen);
+   dc.SetPen(muted ? muteSamplePen : samplePen);
    
    for (s = 0; s < slen; s++) {
       double tt = double (s) / rate;
@@ -686,7 +708,7 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                                 float zoomMin, float zoomMax,
                                 double *envValues,
                                 float *min, float *max, float *rms,
-                                bool dB)
+                                bool dB, bool muted)
 {
    // Display a line representing the
    // min and max of the samples in this region
@@ -744,8 +766,8 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
       uchar rs, gs, bs, rr, gr, br;
       int y;
 
-      GetColour(samplePen, &rs, &gs, &bs);
-      GetColour(rmsPen, &rr, &gr, &br);
+      GetColour(muted ? muteSamplePen : samplePen, &rs, &gs, &bs);
+      GetColour(muted ? muteRmsPen : rmsPen, &rr, &gr, &br);
       for(y=0; y<r.height; y++) {
          for(x=0; x<r.width; x++) {
             if (y >= r2[x] && y < r1[x]) {
@@ -765,7 +787,7 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
    }
    else {
       // Draw the waveform min/max lines
-      dc.SetPen(samplePen);
+      dc.SetPen(muted ? muteSamplePen : samplePen);
       for (x = 0; x < r.width; x++) {
          if (r1[x] != r2[x]) {
             dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + r2[x] );
@@ -781,7 +803,7 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
       }
       
       // Draw the waveform rms lines
-      dc.SetPen(rmsPen);
+      dc.SetPen(muted ? muteRmsPen : rmsPen);
       for (x = 0; x < r.width; x++) {
          if (r1[x] != r2[x])
             dc.DrawLine(r.x + x, r.y + r2[x], r.x + x, r.y + r1[x]);
@@ -822,7 +844,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
                                bool drawEnvelope,
                                bool drawSamples,
                                bool drawSliders,
-                               bool dB)
+                               bool dB, bool muted)
 {
 #if PROFILE_WAVEFORM
    struct timeval tv0, tv1;
@@ -986,7 +1008,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
 
    if (!showIndividualSamples)
       DrawMinMaxRMS(dc, drawRect, imageBuffer, zoomMin, zoomMax,
-                    envValues, min, max, rms, dB);
+                    envValues, min, max, rms, dB, muted);
 
    // Transfer any buffered drawing to the DC.  Everything
    // from now on is drawn using ordinary wxWindows drawing code.
@@ -1005,7 +1027,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    if (showIndividualSamples)
       DrawIndividualSamples(dc, mid, track, t0, pps, h,
                             zoomMin, zoomMax, 
-                            dB, drawSamples, showPoints);
+                            dB, drawSamples, showPoints, muted);
 
    if (drawEnvelope) {
       dc.SetPen(AColor::envelopePen);
@@ -1130,7 +1152,7 @@ void TrackArtist::DrawSpectrum(WaveTrack *track,
    if(!viewInfo->bUpdateSpectrogram && viewInfo->bIsPlaying)
    {
       // BG: Draw (undecorated) waveform instead of spectrum
-      DrawWaveform(track, dc, r, viewInfo, false, false, false, false);
+      DrawWaveform(track, dc, r, viewInfo, false, false, false, false, false);
       /*
       // BG: uncomment to draw grey instead of spectrum
       dc.SetBrush(unselectedBrush);
