@@ -678,8 +678,8 @@ public:
    wxString GetLibraryMessage()
    {
       return "Audacity does not export MP3 files directly, but instead uses the\n"
-             "freely available Blade library to handle MP3 file encoding.  You must\n"
-             "obtain lame_enc.dll separately, by downloading the Blade MP3 encoder,"
+             "freely available LAME library to handle MP3 file encoding.  You must\n"
+             "obtain lame_enc.dll separately, by downloading the LAME MP3 encoder,"
              "and then locate this file for Audacity.  You only need to do this once.\n\n"
              "Would you like to locate lame_enc.dll now?";
    }
