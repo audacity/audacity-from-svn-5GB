@@ -65,13 +65,13 @@ GUIPrefs::GUIPrefs(wxWindow * parent):
             0
            );
       if( mCheckListBoxes[i] )
-         mCheckListSizers[i]->Add(mCheckListBoxes[i], 0, wxGROW|wxALL, 2);
+         mCheckListSizers[i]->Add(mCheckListBoxes[i], 1, wxGROW|wxALL, 2);
 #endif
-      CheckSizer->Add( mCheckListSizers[i], 0, wxGROW | wxALL, TOP_LEVEL_BORDER );
+      CheckSizer->Add( mCheckListSizers[i], 1, wxGROW|wxALL, 1);
    }
 
    // And CheckSizer is itself added in to the topSizer.
-   topSizer->Add( CheckSizer, 0, wxGROW | wxALL, 2 );
+   topSizer->Add( CheckSizer, 0, wxGROW | wxALL, TOP_LEVEL_BORDER );
 
    // Create all the checkboxes.
    mbCreating=true;
@@ -96,10 +96,12 @@ GUIPrefs::GUIPrefs(wxWindow * parent):
 
    mLocaleLabel = new wxStaticText(this, -1, _("Language:"));
 
-   wxFlexGridSizer *localeSizer = new wxFlexGridSizer( 0, 2, 0, 0 );
-   localeSizer->Add(mLocaleLabel, 0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2);
-   localeSizer->Add(mLocale, 1, wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
-   topSizer->Add(localeSizer, 0, wxGROW|wxALL, 2);
+   wxStaticBoxSizer *staticSizer = new wxStaticBoxSizer(new wxStaticBox(this, -1, _("Language")), wxVERTICAL);
+   wxBoxSizer *localeSizer = new wxBoxSizer(wxHORIZONTAL);
+   localeSizer->Add(mLocaleLabel, 0, wxALIGN_LEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL, 2);
+   localeSizer->Add(mLocale, 1, wxGROW|wxLEFT|wxALIGN_CENTER_VERTICAL, 2 );
+   staticSizer->Add(localeSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER); 
+   topSizer->Add(staticSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
    
    // dB range display setup
    mCurrentSizer = new wxStaticBoxSizer(
@@ -140,6 +142,8 @@ void GUIPrefs::ShowOrHideWindow( int ID, bool bShow )
 {
    if( ID==-1 )
       return;
+   //Ooops similar code exists in ppToolBarStubOfToolBarType()
+   //TODO: Use that function instead.
    ToolBarStub ** ppStub = NULL;
    switch( ID )
    {
@@ -255,7 +259,7 @@ void GUIPrefs::RadioButtonAction(
          (mCurrentRadioButton==0) ? wxRB_GROUP : 0 );
 
       mCurrentSizer->Add( mButtonArray[mCurrentRadioButton], 0,
-         wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
+         wxGROW|wxLEFT | wxRIGHT, 2 );
       mButtonArray[mCurrentRadioButton]->SetValue(mCurrentPrefValue<=iValue);
       if( (mSelectedRadioButton<0) &&(mCurrentPrefValue<=iValue ))
       {

@@ -80,7 +80,9 @@ PrefsPanel(parent)
          new wxStaticBox(this, -1, _("Playback")),
             wxVERTICAL);
 
-   wxBoxSizer *pFileSizer = new wxBoxSizer(wxHORIZONTAL);
+   wxFlexGridSizer *fileSizer[2];// = new wxFlexGridSizer *[2];
+   fileSizer[0] = new wxFlexGridSizer(1, 2, GENERIC_CONTROL_BORDER, GENERIC_CONTROL_BORDER);
+   fileSizer[0]->AddGrowableCol(1);
 
    int j, k;
    int playIndex = 0;
@@ -132,17 +134,23 @@ PrefsPanel(parent)
    mPlayChoice->SetSelection(playIndex);
    if(playLabels) delete [] playLabels;
 
-   pFileSizer->Add(
-      new wxStaticText(this, -1, _("Device:")), 0, 
-      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+   // declare three box sizers for static text
+   wxBoxSizer *textSizer[3];
+   
+   // device label and choice box
+   textSizer[0] = new wxBoxSizer(wxHORIZONTAL);
+   
+   textSizer[0]->Add(
+      new wxStaticText(this, -1, _("Device:"), wxPoint(-1,-1), wxDefaultSize, wxALIGN_RIGHT), 1, 
+      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
-   pFileSizer->Add(mPlayChoice, 1, 
+   fileSizer[0]->Add(
+      textSizer[0], 0, 
+      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+   fileSizer[0]->Add(mPlayChoice, 1, 
       wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
 
-   playbackSizer->Add(pFileSizer, 0,
-      wxGROW|wxALL, GENERIC_CONTROL_BORDER);
-
-   topSizer->Add(playbackSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
 
    //
    // Recording
@@ -153,7 +161,8 @@ PrefsPanel(parent)
          new wxStaticBox(this, -1, _("Recording")),
             wxVERTICAL);
 
-   wxBoxSizer *rFileSizer = new wxBoxSizer(wxHORIZONTAL);
+   fileSizer[1] = new wxFlexGridSizer(2, 2, GENERIC_CONTROL_BORDER, GENERIC_CONTROL_BORDER);
+   fileSizer[1]->AddGrowableCol(1);
 
    int recIndex = 0;
    numDevices = 0;
@@ -203,17 +212,20 @@ PrefsPanel(parent)
    mRecChoice->SetSelection(recIndex);
    if(recLabels) delete[] recLabels;
 
-   rFileSizer->Add(
-      new wxStaticText(this, -1, _("Device:")), 0, 
-      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+   // device label and choice box
+   textSizer[1] = new wxBoxSizer(wxHORIZONTAL);
+   
+   textSizer[1]->Add(
+      new wxStaticText(this, -1, _("Device:"), wxPoint(-1,-1), wxDefaultSize, wxALIGN_RIGHT), 1, 
+      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
-   rFileSizer->Add(mRecChoice, 1, 
+   fileSizer[1]->Add(
+      textSizer[1], 0, 
+      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+   fileSizer[1]->Add(mRecChoice, 1, 
       wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
 
-   recordingSizer->Add(rFileSizer, 0,
-      wxGROW|wxALL, GENERIC_CONTROL_BORDER);
-
-   rFileSizer = new wxBoxSizer(wxHORIZONTAL);
 
    const int numChannels = 16;
    wxString channelNames[16];
@@ -226,34 +238,65 @@ PrefsPanel(parent)
                                   numChannels, channelNames);
    mChannelsChoice->SetSelection(recordChannels-1);
 
-   rFileSizer->Add(
-      new wxStaticText(this, -1, _("Channels:")), 0, 
-      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+   // channel label and choice box
+   textSizer[2] = new wxBoxSizer(wxHORIZONTAL);
+   
+   textSizer[2]->Add(
+      new wxStaticText(this, -1, _("Channels:"), wxPoint(-1,-1), wxDefaultSize, wxALIGN_RIGHT), 1, 
+      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
-   rFileSizer->Add(mChannelsChoice, 1, 
+   fileSizer[1]->Add(
+      textSizer[2], 0, 
+      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+   
+   fileSizer[1]->Add(mChannelsChoice, 1, 
       wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
 
-   recordingSizer->Add(rFileSizer, 0,
+   // find out the biggest minimum size of labels
+   int maxIndex = 0;
+   wxSize maxMinSize = textSizer[0]->GetMinSize();
+   for (int r = 1; r < 3; r++) {
+      if (textSizer[r]->GetMinSize().GetWidth() > maxMinSize.GetWidth()) {
+         maxMinSize = textSizer[r]->GetMinSize();
+         maxIndex = r;
+      }
+   }
+
+   // set small minimum sizes to max minumum size
+   for (r = 0; r < 3; r++) {
+      if (r != maxIndex) 
+         textSizer[r]->SetMinSize( maxMinSize );
+   }
+
+   // add flexgrid sizer to static sizer
+   playbackSizer->Add(fileSizer[0], 0,
+      wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+   recordingSizer->Add(fileSizer[1], 0,
       wxGROW|wxALL, GENERIC_CONTROL_BORDER);
 
+   // add static sizer to top sizer
+   topSizer->Add(playbackSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
    topSizer->Add(recordingSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
 
+
+   wxStaticBoxSizer *staticSizer = new wxStaticBoxSizer(new wxStaticBox(this, -1, _("Playthrough")), wxVERTICAL);
    mDuplex = new wxCheckBox(this, -1,
                             _("Play other tracks while recording new one"));
    mDuplex->SetValue(duplex);
-   topSizer->Add(mDuplex, 0, wxGROW|wxALL, 2);
+   staticSizer->Add(mDuplex, 0, wxGROW|wxALL, GENERIC_CONTROL_BORDER);
 
    #ifdef __MACOSX__
    mPlaythrough = new wxCheckBox(this, -1,
                                  _("Hardware Playthrough (Play new track while recording it)"));
    mPlaythrough->SetValue(playthrough);
-   topSizer->Add(mPlaythrough, 0, wxGROW|wxALL, 2);
+   staticSizer->Add(mPlaythrough, 0, wxGROW|wxALL, GENERIC_CONTROL_BORDER);
    #endif
 
    mSWPlaythrough = new wxCheckBox(this, -1,
                                  _("Software Playthrough (Play new track while recording it)"));
    mSWPlaythrough->SetValue(swplaythrough);
-   topSizer->Add(mSWPlaythrough, 0, wxGROW|wxALL, 2);
+   staticSizer->Add(mSWPlaythrough, 0, wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+   topSizer->Add(staticSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
 
    outSizer = new wxBoxSizer( wxVERTICAL );
    outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);

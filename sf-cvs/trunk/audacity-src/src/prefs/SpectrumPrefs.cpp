@@ -95,8 +95,12 @@ PrefsPanel(parent)
    }
 
    {
+      wxStaticBoxSizer *displaySizer = new wxStaticBoxSizer(
+         new wxStaticBox(this, -1, _("Display")),
+         wxVERTICAL);
+
       mGrayscale  = new wxCheckBox(this, -1, _("Grayscale"));
-      topSizer->Add(mGrayscale, 0,
+      displaySizer->Add(mGrayscale, 0,
          wxGROW|wxALL, RADIO_BUTTON_BORDER );
       
       if(isGrayscale)
@@ -106,14 +110,16 @@ PrefsPanel(parent)
 
       freqSizer->Add(
          new wxStaticText(this, -1, _("Maximum Frequency (Hz):")),
-         0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER );
+         0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxRIGHT, GENERIC_CONTROL_BORDER );
 
       mMaxFreqCtrl = new wxTextCtrl( this, -1, maxFreqStr,
          wxDefaultPosition, wxSize(80,-1));
-      freqSizer->Add(mMaxFreqCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL,
+      freqSizer->Add(mMaxFreqCtrl, 0, wxALIGN_CENTER_VERTICAL|wxLEFT,
                      GENERIC_CONTROL_BORDER );
 
-      topSizer->Add(freqSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER );
+      displaySizer->Add(freqSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER );
+
+      topSizer->Add(displaySizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
    }
 
    outSizer = new wxBoxSizer( wxVERTICAL );
