@@ -180,7 +180,7 @@ int BlockFile::ReadData(void *data, sampleFormat format,
       else {
          samplePtr buffer = NewSamples(len, mSampleFormat);
          int srcBytes = len * SAMPLE_SIZE(mSampleFormat);
-         read = (int)file.Read(data, (size_t)srcBytes);
+         read = (int)file.Read(buffer, (size_t)srcBytes);
          read /= SAMPLE_SIZE(mSampleFormat);
          CopySamples(buffer, mSampleFormat,
                      (samplePtr)data, format, read);
