@@ -63,7 +63,7 @@ enum {
    ExportLabelsID,
    SeperatorIDexportlabels,
    PreferencesID,
-   SeperatorIDprefrences,
+   SeperatorIDpreferences,
    ExitID,
 
    // Edit Menu
@@ -181,7 +181,7 @@ enum {
    CMD_ADDMENU("---", "Seperator", OnSeperator, fileMenu, enabledMenu);
    CMD_ADDMENU("Export &Labels...", "Export Labels", OnExportLabels, fileMenu, enabledMenu);
    CMD_ADDMENU("---", "Seperator", OnSeperator, fileMenu, enabledMenu);
-   CMD_ADDMENU("Prefrences...\tCtrl+P", "Prefrences", OnPreferences, fileMenu, enabledMenu);
+   CMD_ADDMENU("Preferences...\tCtrl+P", "Preferences", OnPreferences, fileMenu, enabledMenu);
    CMD_ADDMENU("---", "Seperator", OnSeperator, fileMenu, enabledMenu);
    CMD_ADDMENU("E&xit", "Exit", OnExit, fileMenu, enabledMenu);
 
