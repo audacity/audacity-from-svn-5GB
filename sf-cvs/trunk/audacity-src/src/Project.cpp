@@ -73,6 +73,11 @@ double AudacityProject::msClipLen = 0.0;
 AudacityProject *AudacityProject::msClipProject = NULL;
 
 #ifdef __WXMAC__
+
+#include <Files.h>
+
+void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
+
 const int sbarSpaceWidth = 15;
 const int sbarControlWidth = 16;
 const int sbarExtraLen = 1;

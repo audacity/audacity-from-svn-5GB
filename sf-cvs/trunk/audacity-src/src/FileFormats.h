@@ -18,7 +18,9 @@ wxString sf_header_extension(int format);
 
 #ifdef __WXMAC__
 # ifdef __UNIX__
-# include <CoreServices/CoreServices.h>
+#  include <CoreServices/CoreServices.h>
+# else
+#  include <Types.h>
 # endif
 
 OSType sf_header_mactype(int format);

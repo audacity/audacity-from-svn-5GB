@@ -117,8 +117,8 @@ void ControlToolBar::InitializeControlToolBar()
 
    MakeButtons();
 
-   wxImage *sliderOriginal = new wxImage(Slider);
-   wxImage *thumbOriginal = new wxImage(SliderThumb);
+   wxImage *sliderOriginal = new wxImage(wxBitmap(Slider));
+   wxImage *thumbOriginal = new wxImage(wxBitmap(SliderThumb));
    wxImage *sliderNew = ChangeImageColour(sliderOriginal,
                                           backgroundColour);
    wxImage *thumbNew = ChangeImageColour(thumbOriginal,
@@ -277,8 +277,8 @@ wxImage *ControlToolBar::MakeToolImage(wxImage * tool,
 AButton *ControlToolBar::MakeTool(const char **tool, const char **alpha,
                                   wxWindowID id, int left, int top)
 {
-   wxImage *ctr = new wxImage(tool);
-   wxImage *mask = new wxImage(alpha);
+   wxImage *ctr = new wxImage(wxBitmap(tool));
+   wxImage *mask = new wxImage(wxBitmap(alpha));
    wxImage *up = MakeToolImage(ctr, mask, 0);
    wxImage *hilite = MakeToolImage(ctr, mask, 1);
    wxImage *down = MakeToolImage(ctr, mask, 2);
@@ -315,9 +315,9 @@ AButton *ControlToolBar::MakeButton(char const **foreground,
 
 void ControlToolBar::MakeButtons()
 {
-   wxImage *upOriginal = new wxImage(UpButton);
-   wxImage *downOriginal = new wxImage(DownButton);
-   wxImage *hiliteOriginal = new wxImage(HiliteButton);
+   wxImage *upOriginal = new wxImage(wxBitmap(UpButton));
+   wxImage *downOriginal = new wxImage(wxBitmap(DownButton));
+   wxImage *hiliteOriginal = new wxImage(wxBitmap(HiliteButton));
 
    wxColour newColour =
        wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);

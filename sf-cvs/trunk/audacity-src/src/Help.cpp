@@ -19,7 +19,7 @@
 
 **********************************************************************/
 
-#ifdef foo___WXMAC__
+#ifdef __WXMAC__
 
 void InitHelp(wxWindow * parent)
 {
