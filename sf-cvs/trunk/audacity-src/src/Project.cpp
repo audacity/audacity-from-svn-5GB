@@ -17,6 +17,8 @@
 
 #include "Audacity.h"
 
+#include <stdio.h>
+
 #include <wx/wxprec.h>
 
 #include <wx/defs.h>
@@ -66,6 +68,7 @@
 #include "HistoryWindow.h"
 #include "import/Import.h"
 #include "LabelTrack.h"
+#include "Legacy.h"
 #include "Mix.h"
 #include "MixerToolBar.h"
 #include "NoteTrack.h"
@@ -914,7 +917,7 @@ void AudacityProject::OnIconize(wxIconizeEvent &event)
    // void return?  I don't know.
    mIconized = event.Iconized();
 
-   for(int i=0;i<gAudacityProjects.Count();i++){
+   for(unsigned int i=0;i<gAudacityProjects.Count();i++){
       if(gAudacityProjects[i]){
          if( !gAudacityProjects[i]->mIconized )
             VisibleProjectCount++;
@@ -1760,23 +1763,31 @@ void AudacityProject::OpenFile(wxString fileName)
    char temp[16];
 
    if (!::wxFileExists(fileName)) {
-      wxMessageBox(_("Could not open file: ") + mFileName);
+      wxMessageBox(_("Could not open file: ") + fileName);
       return;
    }
 
-   wxFFile ff(fileName);
-   if (!ff.IsOpened()) {
-      wxMessageBox(_("Could not open file: ") + mFileName);
+   wxFFile *ff = new wxFFile(fileName);
+   if (!ff->IsOpened()) {
+      wxMessageBox(_("Could not open file: ") + fileName);
       return;
    }
-   ff.Read(temp, 15);
+   ff->Read(temp, 15);
    temp[15] = 0;
-   ff.Close();
+   ff->Close();
+   delete ff;
 
    if (!strcmp(temp, "AudacityProject")) {
-      wxMessageBox("Old Audacity project files can't be opened by "
-                   "this newer version of Audacity (yet).");
-      return;
+      // It's an Audacity 1.0 (or earlier) project file.
+      // Convert to the new format.
+      bool success = ConvertLegacyProjectFile(wxFileName(fileName));
+      if (!success) {
+         ::wxMessageBox(_("Audacity was unable to convert an Audacity 1.0 project to the new project format."));
+         return;
+      }
+      else {
+         strcpy(temp, "<?xml ");
+      }
    }
    
    temp[6] = 0;
@@ -1947,102 +1958,6 @@ void AudacityProject::WriteXML(int depth, FILE *fp)
       fprintf(fp, "\t");
    fprintf(fp, "</audacityproject>\n");
 }
-
-#if LEGACY_PROJECT_FILE_SUPPORT
-
-void AudacityProject::OpenLegacyProjectFile()
-{
- TODO: This function is not complete; the old code is
-       just reproduced here as a guide ... -DMM
-
-   wxTextFile f;
-
-   f.Open(fileName);
-   if (!f.IsOpened()) {
-      wxMessageBox(_("Could not open file: ") + mFileName);
-      return;
-   }
-
-   wxString projName;
-   wxString projPath;
-   wxString version;
-   long longVpos;
-
-   f.GetFirstLine();            // This should say "AudacityProject"
-
-   if (f.GetNextLine() != "Version")
-      goto openFileError;
-   version = f.GetNextLine();
-   if (version != AUDACITY_FILE_FORMAT_VERSION) {
-      wxMessageBox(_("This project was saved by a different version of "
-                     "Audacity and is no longer supported."));
-      return;
-   }
-
-   if (f.GetNextLine() != "projName")
-      goto openFileError;
-   projName = f.GetNextLine();
-   projPath = wxPathOnly(mFileName);
-
-   if (!mDirManager->SetProject(projPath, projName, false))
-      return;
-
-   if (f.GetNextLine() != "sel0")
-      goto openFileError;
-   if (!(f.GetNextLine().ToDouble(&mViewInfo.sel0)))
-      goto openFileError;
-   if (f.GetNextLine() != "sel1")
-      goto openFileError;
-   if (!(f.GetNextLine().ToDouble(&mViewInfo.sel1)))
-      goto openFileError;
-   if (f.GetNextLine() != "vpos")
-      goto openFileError;
-   if (!(f.GetNextLine().ToLong(&longVpos)))
-      goto openFileError;
-   mViewInfo.vpos = longVpos;
-   if (f.GetNextLine() != "h")
-      goto openFileError;
-   if (!(f.GetNextLine().ToDouble(&mViewInfo.h)))
-      goto openFileError;
-   if (f.GetNextLine() != "zoom")
-      goto openFileError;
-   if (!(f.GetNextLine().ToDouble(&mViewInfo.zoom)))
-      goto openFileError;
-   if (version != "0.9") {
-      if (f.GetNextLine() != "rate")
-         goto openFileError;
-      if (!(f.GetNextLine().ToDouble(&mRate)))
-         goto openFileError;
-      mStatus->SetRate(mRate);
-   }
-
-   mTracks->Clear();
-   mTracks->Load(&f, mDirManager);
-
-   // By making a duplicate set of pointers to the existing blocks
-   // on disk, we add one to their reference count, guaranteeing
-   // that their reference counts will never reach zero and thus
-   // the version saved on disk will be preserved until the
-   // user selects Save().
-
-   Track *t;
-   TrackListIterator iter(mTracks);
-   mLastSavedTracks = new TrackList();
-   t = iter.First();
-   while (t) {
-      mLastSavedTracks->Add(t->Duplicate());
-      t = iter.Next();
-   }
-
- openFileError:
-   wxMessageBox(wxString::
-                Format(_("Error reading Audacity Project %s in line %d"),
-                       (const char *) mFileName, f.GetCurrentLine()));
-   f.Close();
-   return;
-}
-
-#endif // LEGACY_PROJECT_FILE_SUPPORT
 
 bool AudacityProject::Save(bool overwrite /* = true */ ,
                            bool fromSaveAs /* = false */ )

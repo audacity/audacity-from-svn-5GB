@@ -24,7 +24,9 @@ SummaryInfo::SummaryInfo(sampleCount samples)
 {
    format = floatSample;
 
-   bytesPerFrame = sizeof(float) * 3; /* min, max, rms */
+   fields = 3; /* min, max, rms */
+
+   bytesPerFrame = sizeof(float) * fields;
 
    frames64K = (samples + 65535) / 65536;
    frames256 = frames64K * 256;
@@ -316,7 +318,17 @@ bool BlockFile::Read256(float *buffer,
 
    CopySamples(summary + mSummaryInfo.offset256 + (start * mSummaryInfo.bytesPerFrame),
                mSummaryInfo.format,
-               (samplePtr)buffer, floatSample, len*3);
+               (samplePtr)buffer, floatSample, len * mSummaryInfo.fields);
+
+   if (mSummaryInfo.fields == 2) {
+      // No RMS info
+      int i;
+      for(i=len-1; i>=0; i--) {
+         buffer[3*i+2] = (fabs(buffer[2*i]) + fabs(buffer[2*i+1]))/4.0;
+         buffer[3*i+1] = buffer[2*i+1];
+         buffer[3*i] = buffer[2*i];
+      }
+   }
 
    delete[] summary;
 
@@ -348,7 +360,17 @@ bool BlockFile::Read64K(float *buffer,
 
    CopySamples(summary + mSummaryInfo.offset64K + (start * mSummaryInfo.bytesPerFrame),
                mSummaryInfo.format,
-               (samplePtr)buffer, floatSample, len*3);
+               (samplePtr)buffer, floatSample, len*mSummaryInfo.fields);
+
+   if (mSummaryInfo.fields == 2) {
+      // No RMS info; make guess
+      int i;
+      for(i=len-1; i>=0; i--) {
+         buffer[3*i+2] = (fabs(buffer[2*i]) + fabs(buffer[2*i+1]))/4.0;
+         buffer[3*i+1] = buffer[2*i+1];
+         buffer[3*i] = buffer[2*i];
+      }
+   }
 
    delete[] summary;
 
