@@ -380,7 +380,7 @@ void AudioIO::HandleDeviceChange()
       mEmulateMixerInputVol = true;
    Px_SetInputVolume(mPortMixer, 0.2);
    if (Px_GetInputVolume(mPortMixer) < 0.1 ||
-       Px_GetInputVolume(mPortMixer) < 0.3)
+       Px_GetInputVolume(mPortMixer) > 0.3)
       mEmulateMixerInputVol = true;
    Px_SetInputVolume(mPortMixer, mMixerInputVol);
 
