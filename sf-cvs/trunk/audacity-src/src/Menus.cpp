@@ -110,116 +110,6 @@ void AudacityProject::CreateMenuBar()
 
       menu->Append(i + MenuBaseID, mCommandMenuItem[i]->commandString);
    }
-/*
-   mFileMenu->Append(NewID, _("&New"));
-   mFileMenu->Append(OpenID, _("&Open..."));
-   mFileMenu->Append(CloseID, _("&Close"));
-   mFileMenu->Append(SaveID, _("&Save Project"));
-   mFileMenu->Append(SaveAsID, _("Save Project &As..."));
-   mFileMenu->AppendSeparator();
-   mFileMenu->Append(ExportMixID, mExportString);
-   mFileMenu->Append(ExportSelectionID, mExportSelectionString);
-   mFileMenu->AppendSeparator();
-   mFileMenu->Append(ExportLossyMixID, mExportLossyString);
-   mFileMenu->Append(ExportLossySelectionID, mExportSelectionLossyString);
-   mFileMenu->AppendSeparator();
-   mFileMenu->Append(ExportLabelsID, _("Export &Labels..."));
-   mFileMenu->AppendSeparator();
-   mFileMenu->Append(PreferencesID, _("&Preferences..."));
-   mFileMenu->AppendSeparator();
-   mFileMenu->Append(ExitID, _("E&xit"));
-
-   mEditMenu->Append(UndoID, _("&Undo"));
-   mEditMenu->Append(RedoID, _("&Redo"));
-   mEditMenu->AppendSeparator();
-   mEditMenu->Append(CutID, _("&Cut"));
-   mEditMenu->Append(CopyID, _("Cop&y"));
-   mEditMenu->Append(PasteID, _("&Paste"));
-   mEditMenu->Append(TrimID, _("&Trim"));
-   mEditMenu->AppendSeparator();
-   mEditMenu->Append(DeleteID, _("&Delete"));
-   mEditMenu->Append(SilenceID, _("&Silence"));
-   mEditMenu->AppendSeparator();
-   mEditMenu->Append(InsertSilenceID, _("Insert Silence..."));
-   mEditMenu->Append(SplitID, _("Spl&it"));
-   mEditMenu->Append(DuplicateID, _("Duplicat&e"));
-   mEditMenu->AppendSeparator();
-   mEditMenu->Append(SelectAllID, _("Select &All"));
-
-   mViewMenu->Append(ZoomInID, _("Zoom &In"));
-   mViewMenu->Append(ZoomNormalID, _("Zoom &Normal"));
-   mViewMenu->Append(ZoomOutID, _("Zoom &Out"));
-   mViewMenu->Append(ZoomFitID, _("Fit in &Window"));
-   mViewMenu->Append(ZoomSelID, _("Zoom to &Selection"));
-   mViewMenu->AppendSeparator();
-   mViewMenu->Append(UndoHistoryID, _("History"));
-   mViewMenu->Append(PlotSpectrumID, _("&Plot Spectrum"));
-
-#ifndef __WXMAC__
-   mViewMenu->AppendSeparator();
-
-   if (gControlToolBarStub->GetWindowedStatus()) {
-      mViewMenu->Append(FloatControlToolBarID,
-                        _("Dock Control Toolbar"));
-   } else {
-      mViewMenu->Append(FloatControlToolBarID,
-                        _("Float Control Toolbar"));
-   }
-   
-   if (!gEditToolBarStub) {
-      //If a gEditToolBarStub doesn't exist, make the menu option
-      //enable loading
-
-      mViewMenu->Append(LoadEditToolBarID, _("Load Edit Toolbar"));
-      mViewMenu->Append(FloatEditToolBarID, _("Float Edit Toolbar"));
-      mViewMenu->FindItem(FloatEditToolBarID)->Enable(false);
-
-   } else {
-      if(gEditToolBarStub->GetLoadedStatus()){
-         mViewMenu->Append(LoadEditToolBarID, _("Unload Edit Toolbar"));
-      } else {
-         mViewMenu->Append(LoadEditToolBarID, _("Load Edit Toolbar"));
-         mViewMenu->FindItem(FloatEditToolBarID)->Enable(false);
-      }
-
-
-      if(gEditToolBarStub->GetWindowedStatus()) 
-         mViewMenu->Append(FloatEditToolBarID, _("Dock Edit Toolbar"));
-      else
-         mViewMenu->Append(FloatEditToolBarID,    _("Float Edit Toolbar"));
-
-   }
-#endif
-
-   mProjectMenu = new wxMenu();
-   mProjectMenu->Append(ImportID, _("&Import Audio..."));
-   mProjectMenu->Append(ImportLabelsID, _("Import Labels..."));
-   mProjectMenu->Append(ImportMIDIID, _("Import &MIDI..."));
-   mProjectMenu->Append(ImportRawID, _("Import &Raw Data..."));
-#ifdef USE_ID3LIB
-   mProjectMenu->AppendSeparator();
-   mProjectMenu->Append(EditID3ID, _("Edit ID3 Tags..."));
-#endif
-   mProjectMenu->AppendSeparator();
-   mProjectMenu->Append(QuickMixID, _("&Quick Mix"));
-   mProjectMenu->AppendSeparator();
-   mProjectMenu->Append(AlignID, _("Align Tracks Together"));
-   mProjectMenu->Append(AlignZeroID, _("Align with Zero"));
-   mProjectMenu->AppendSeparator();
-   mProjectMenu->Append(NewWaveTrackID, _("New &Audio Track"));
-   mProjectMenu->Append(NewLabelTrackID, _("New &Label Track"));
-   mProjectMenu->AppendSeparator();
-   mProjectMenu->Append(RemoveTracksID, _("&Remove Track(s)"));
-
-   mTrackMenu = new wxMenu();
-   mTrackMenu->Append(QuickMixID, _("Quick Mix"));
-   mTrackMenu->AppendSeparator();
-   mTrackMenu->Append(WaveDisplayID, _("Waveform Display"));
-   mTrackMenu->Append(SpectrumDisplayID, _("Spectrum Display"));
-   mTrackMenu->AppendSeparator();
-   //  mTrackMenu->Append(AutoCorrelateID, _("AutoCorrelate"));
-   mTrackMenu->Append(PitchID, _("Pitch Extract"));
-*/
 
    mEffectMenu = new wxMenu();
 
@@ -240,28 +130,11 @@ void AudacityProject::CreateMenuBar()
    wxApp::s_macAboutMenuItemId = AboutID;
 #endif
 
-/*
-   mHelpMenu->Append(AboutID, _("About Audacity..."));
-
-#ifndef __WXMAC__
-   mHelpMenu->AppendSeparator();
-#endif
-
-   mHelpMenu->Append(HelpID, _("Online Help..."));
-   mHelpMenu->Append(HelpIndexID, _("Online Help Index..."));
-   mHelpMenu->Append(HelpSearchID, _("Search Online Help..."));
-
-   mHelpMenu->AppendSeparator();
-
-   mHelpMenu->Append(BenchmarkID, _("Run Benchmark..."));
-*/
-
    mMenuBar->Append(mFileMenu, _("&File"));
    mMenuBar->Append(mEditMenu, _("&Edit"));
    mMenuBar->Append(mViewMenu, _("&View"));
    mMenuBar->Append(mProjectMenu, _("&Project"));
-   //  mMenuBar->Append(mTrackMenu, _("&Track"));
-   mMenuBar->Append(mEffectMenu, _("E&ffect"));
+   mMenuBar->Append(mEffectMenu, _("Effec&t"));
    mMenuBar->Append(mPluginMenu, _("Plugin&s"));
    mMenuBar->Append(mHelpMenu, _("&Help"));
 
