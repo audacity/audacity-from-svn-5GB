@@ -307,7 +307,7 @@ case "${host_os}" in
 
 	dnl VST
 	
-	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/LoadVSTMac.cpp.o"
+	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/LoadVSTMac.o"
 	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/VSTEffect.o"
 
 ;;
