@@ -12,11 +12,13 @@ CC = @CC@
 CCC = @CXX@
 
 # Files that must exist in order to compile a C/C++ files
-CDEPEND = @CDEPEND@ AudacityHeaders.h.gch
+CDEPEND = @CDEPEND@
 
 # For precompiled header support
 PRECOMP_CFLAGS =
+
 # (Mac OS X only)
+# CDEPEND = $(CDEPEND) AudacityHeaders.h.gch
 # PRECOMP_CFLAGS = -include AudacityHeaders.h
 
 LOCAL_LIBS = @LOCAL_LIBS@
