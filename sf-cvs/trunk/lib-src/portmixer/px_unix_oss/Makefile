@@ -1,11 +1,11 @@
-# Make PortMixer Library for Mac OS X / CoreAudio
+# Make PortMixer Library for Unix / OSS
 
-CC = cc
+CC = gcc
 
 CFLAGS = -g -I../px_common -I../../portaudio/pa_common
-PASRC = px_mac_core.c
+PASRC = px_unix_oss.c
 PAINC = ../px_common/portmixer.h
-PAOBJ = px_mac_core.o 
+PAOBJ = px_unix_oss.o 
 
 portmixer.a: $(PAOBJ)
 	ar ruv portmixer.a $(PAOBJ)

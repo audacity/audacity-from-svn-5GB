@@ -68,7 +68,7 @@ char PxDevice[20] = "/dev/mixerX";
 int PxNumDevices = 0;
 int PxDevices[10];
 
-int Px_GetNumMixers( PaDeviceID device )
+int Px_GetNumMixers( void *pa_stream )
 {
    int i;
    int fd;
@@ -91,10 +91,10 @@ int Px_GetNumMixers( PaDeviceID device )
    return PxNumDevices;
 }
 
-const char *Px_GetMixerName( PaDeviceID device, int index )
+const char *Px_GetMixerName( void *pa_stream, int index )
 {
    if (PxNumDevices <= 0)
-      Px_GetNumMixers(device);
+      Px_GetNumMixers(pa_stream);
 
    if (index < 0 || index >= PxNumDevices)
       return NULL;
@@ -106,14 +106,14 @@ const char *Px_GetMixerName( PaDeviceID device, int index )
    return PxDevice;
 }
 
-PxMixer *Px_OpenMixer( PaDeviceID device, int index )
+PxMixer *Px_OpenMixer( void *pa_stream, int index )
 {
    PxInfo *info;
    int devmask, recmask, outmask;
    int i;
 
    if (PxNumDevices <= 0)
-      Px_GetNumMixers(device);
+      Px_GetNumMixers(pa_stream);
 
    if (index < 0 || index >= PxNumDevices)
       return NULL;
