@@ -62,6 +62,7 @@ wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
    topSizer->Add(catSizer, 1, wxGROW | wxALL, 0);
 
    /* All panel additions belong here */
+   
    mCategories->AddPage(new AudioIOPrefs(mCategories), "Audio I/O");
    mCategories->AddPage(new SampleRatePrefs(mCategories), "Sample Rates");
    mCategories->AddPage(new FileFormatPrefs(mCategories), "File Formats");
