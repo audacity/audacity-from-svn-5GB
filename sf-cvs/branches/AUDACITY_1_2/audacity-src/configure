@@ -4275,16 +4275,6 @@ else
   use_help="yes"
 fi;
 
-if [ "$use_portmixer" = "yes" ] ; then
-
-cat >>confdefs.h <<\_ACEOF
-#define USE_PORTMIXER 1
-_ACEOF
-
-	CXXFLAGS="-I../lib-src/portmixer/px_common $CXXFLAGS"
-fi
-
-
 if [ "$use_soundtouch" = "yes" ] ; then
 
 cat >>confdefs.h <<\_ACEOF
@@ -4305,9 +4295,17 @@ subdirs="$subdirs lib-src/soundtouch"
 fi
 
 if [ "$use_portmixer" = "yes" ] && [ "$use_portaudio" = "v19" ] ; then
-	{ { echo "$as_me:$LINENO: error: *** PortAudio v19 does not work with PortMixer (at least not yet) " >&5
-echo "$as_me: error: *** PortAudio v19 does not work with PortMixer (at least not yet) " >&2;}
-   { (exit 1); exit 1; }; }
+	echo "*** PortAudio v19 does not work with PortMixer (at least not yet)"
+	use_portmixer="no"
+fi
+
+if [ "$use_portmixer" = "yes" ] ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_PORTMIXER 1
+_ACEOF
+
+	CXXFLAGS="-I../lib-src/portmixer/px_common $CXXFLAGS"
 fi
 
 if [ "$use_nyquist" = "yes" ] ; then
@@ -5729,6 +5727,140 @@ _ACEOF
 	BUILDLIBS="$BUILDLIBS portaudio-v19/lib/libportaudio.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
 	CXXFLAGS="-I../lib-src/portaudio-v19/pa_common $CXXFLAGS"
+
+
+	echo "$as_me:$LINENO: checking for snd_pcm_open in -lasound" >&5
+echo $ECHO_N "checking for snd_pcm_open in -lasound... $ECHO_C" >&6
+if test "${ac_cv_lib_asound_snd_pcm_open+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lasound  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char snd_pcm_open ();
+int
+main ()
+{
+snd_pcm_open ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_asound_snd_pcm_open=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_cv_lib_asound_snd_pcm_open=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_asound_snd_pcm_open" >&5
+echo "${ECHO_T}$ac_cv_lib_asound_snd_pcm_open" >&6
+if test $ac_cv_lib_asound_snd_pcm_open = yes; then
+  have_alsa=yes
+else
+  have_alsa=no
+fi
+
+	echo "$as_me:$LINENO: checking for jack_client_new in -ljack" >&5
+echo $ECHO_N "checking for jack_client_new in -ljack... $ECHO_C" >&6
+if test "${ac_cv_lib_jack_jack_client_new+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-ljack  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char jack_client_new ();
+int
+main ()
+{
+jack_client_new ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_jack_jack_client_new=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_cv_lib_jack_jack_client_new=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_jack_jack_client_new" >&5
+echo "${ECHO_T}$ac_cv_lib_jack_jack_client_new" >&6
+if test $ac_cv_lib_jack_jack_client_new = yes; then
+  have_jack=yes
+else
+  have_jack=no
+fi
+
+
+   if [ $have_alsa = "yes" ] ; then
+		LIBS="$LIBS -lasound"
+	fi
+
+	if [ $have_jack = "yes" ] ; then
+		LIBS="$LIBS -ljack"
+	fi
+
+	if [ "$use_ladspa" = "default" ] ; then
+		use_ladspa="yes";
+	fi
 
 
 
@@ -7472,7 +7604,7 @@ else
 fi
 
 if [ "$use_portaudio" = "v19" ] ; then
-	echo "  with    portaudio v19  (note: if portmixer is enabled it will not work)";
+	echo "  with    portaudio v19  (not yet compatible with portmixer)";
 else
 	echo "  with    portaudio v18";
 fi
