@@ -1238,7 +1238,7 @@ bool ExportMP3(AudacityProject *project,
    if (!tags->ShowEditDialog(project, _("Edit the ID3 tags for the MP3 file")))
       return false;  // used selected "cancel"
 
-   char *id3buffer;
+   char *id3buffer = NULL;
    int id3len;
    bool endOfFile;
    id3len = tags->ExportID3(&id3buffer, &endOfFile);
@@ -1326,7 +1326,7 @@ bool ExportMP3(AudacityProject *project,
    
    if (endOfFile)
       outFile.Write(id3buffer, id3len);
-   delete[] id3buffer;
+   free(id3buffer);
 
    /* Close file */
    
