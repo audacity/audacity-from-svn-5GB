@@ -617,9 +617,6 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
    sampleCount slen = (sampleCount) (r.width * rate / pps + 0.5);
    float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
    
-   if (s0 > 1)
-      s0--;
-
    slen += 4;
 
    if (s0 + slen > seq->GetNumSamples())
@@ -637,7 +634,10 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
    for (s = 0; s < slen; s++) {
       double tt = double (s) / rate;
       double envt = t0 + tOffset + tt;
-      double xx = (tt * pps + 0.5);
+
+      // MB: (s0/rate - t0) is the distance from the left edge of the screen
+      //     to the first sample.
+      double xx = (tt + s0/rate - t0) * pps + 0.5;
       
       if (xx < -10000)
          xx = -10000;
