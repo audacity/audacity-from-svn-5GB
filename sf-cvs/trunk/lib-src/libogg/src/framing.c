@@ -12,7 +12,7 @@
 
  function: code raw [Vorbis] packets into framed OggSquish stream and
            decode Ogg streams back into raw packets
- last mod: $Id: framing.c,v 1.1.1.3 2002-10-26 19:24:05 dmazzoni Exp $
+ last mod: $Id: framing.c,v 1.2 2002-10-26 20:25:13 dmazzoni Exp $
 
  note: The CRC code is directly derived from public domain code by
  Ross Williams (ross@guest.adelaide.edu.au).  See docs/framing.html
