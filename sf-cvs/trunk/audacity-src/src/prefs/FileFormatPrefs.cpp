@@ -337,7 +337,7 @@ bool FileFormatPrefs::Apply()
    long oggQuality = mOGGQuality->GetValue();
 
    gPrefs->Write("/FileFormats/LossyExportFormat", lossyFormat);
-   gPrefs->Write("/FileFormats/OggExportQuality", oggQuality * 10);
+   gPrefs->Write("/FileFormats/OggExportQuality", (long)(oggQuality * 10));
 
    const char *pcmFmt = ((wxString)sf_header_name(mFormat & SF_FORMAT_TYPEMASK)).c_str();
 
