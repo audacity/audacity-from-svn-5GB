@@ -263,6 +263,22 @@ SOURCE=..\src\Landmark.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\LangChoice.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\LangChoice.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\Languages.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\Languages.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\Menus.cpp
 # End Source File
 # Begin Source File
