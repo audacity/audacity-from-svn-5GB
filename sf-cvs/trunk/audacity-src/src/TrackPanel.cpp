@@ -2467,17 +2467,35 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
       break;
    case WXK_HOME:
       // BG: Skip to beginning
-      mViewInfo->sel0 = 0;
-      if (!event.ShiftDown() || mViewInfo->sel1 < mViewInfo->sel0)
-         mViewInfo->sel1 = 0;
-      mListener->TP_ScrollWindow(0);
+      // JS: Changed so that the selection is not changed
+      //     without modifiers
+      if (event.ShiftDown()) {
+         // move first selection edge to start
+         // direction of the selection is preserved
+         // if sel0 == sel1, sel0 comes first
+         if (mViewInfo->sel0 <= mViewInfo->sel1) {
+            mViewInfo->sel0 = mTracks->GetStartTime();
+         } else {
+            mViewInfo->sel1 = mTracks->GetStartTime();
+         }
+      }
+      mListener->TP_ScrollWindow(mTracks->GetStartTime());
       break;
    case WXK_END:
       // BG: Skip to end
-      mViewInfo->sel1 = mTracks->GetEndTime();
-      if (!event.ShiftDown() || mViewInfo->sel0 > mViewInfo->sel1)
-         mViewInfo->sel0 = mViewInfo->sel1;
-      mListener->TP_ScrollWindow(mViewInfo->sel1);
+      // JS: Changed so that the selection is not changed
+      //     without modifiers
+      if (event.ShiftDown()) {
+         // move last selection edge to end
+         // direction of the selection is preserved
+         // if sel0 == sel1, sel0 comes first
+         if (mViewInfo->sel0 <= mViewInfo->sel1) {
+            mViewInfo->sel1 = mTracks->GetEndTime();
+         } else {
+            mViewInfo->sel0 = mTracks->GetEndTime();
+         }
+      }
+      mListener->TP_ScrollWindow(mTracks->GetEndTime());
       break;
    }
 

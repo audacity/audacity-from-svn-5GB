@@ -206,7 +206,9 @@ class TrackList {
   
   bool IsEmpty() const;
   
+  double GetStartTime() const;
   double GetEndTime() const;
+
   double GetMinOffset() const;
   int GetHeight() const;
 

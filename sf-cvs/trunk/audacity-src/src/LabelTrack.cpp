@@ -174,7 +174,12 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
 
 double LabelTrack::GetStartTime()
 {
-   return 0.0;
+   int len = mLabels.Count();
+   
+   if (len == 0)
+      return 0.0;
+   else
+      return mLabels[0]->t;
 }
 
 double LabelTrack::GetEndTime()
