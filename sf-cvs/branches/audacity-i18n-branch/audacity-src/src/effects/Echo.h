@@ -13,6 +13,7 @@
 
 class wxString;
 
+#include <wx/intl.h>
 #include "Effect.h"
 
 class WaveTrack;
@@ -24,11 +25,11 @@ class EffectEcho:public Effect {
    EffectEcho();
 
    virtual wxString GetEffectName() {
-      return wxString("Echo...");
+      return wxString(_("Echo..."));
    }
    
    virtual wxString GetEffectAction() {
-      return wxString("Performing Echo");
+      return wxString(_("Performing Echo"));
    }
    
    virtual bool PromptUser();

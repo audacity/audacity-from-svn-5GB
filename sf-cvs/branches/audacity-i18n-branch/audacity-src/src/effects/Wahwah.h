@@ -23,6 +23,7 @@
 #include <wx/sizer.h>
 #include <wx/spinbutt.h>
 #include <wx/spinctrl.h>
+#include <wx/intl.h>
 
 class wxString;
 
@@ -36,11 +37,11 @@ class EffectWahwah:public Effect {
    EffectWahwah();
 
    virtual wxString GetEffectName() {
-      return wxString("Wahwah...");
+      return wxString(_("Wahwah..."));
    }
    
    virtual wxString GetEffectAction() {
-      return wxString("Applying Wahwah");
+      return wxString(_("Applying Wahwah"));
    }
    
    virtual bool PromptUser();
