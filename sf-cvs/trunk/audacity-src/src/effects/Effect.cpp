@@ -92,10 +92,10 @@ void Effect::GetSamples(WaveTrack *t, sampleCount *s0, sampleCount *slen)
    wxASSERT(s0);
    wxASSERT(slen);
 
-   unsigned int ss0 = (int) ((mT0 - t->GetOffset()) * t->GetRate());
-   unsigned int ss1 = (int) ((mT1 - t->GetOffset()) * t->GetRate());
+   sampleCount ss0 = sampleCount( (mT0 - t->GetOffset()) * t->GetRate() );
+   sampleCount ss1 = sampleCount( (mT1 - t->GetOffset()) * t->GetRate() );
 
-   if (ss0 < 0)
+   if (mT0 < t->GetOffset())
       ss0 = 0;
    if (ss1 >= t->GetNumSamples())
       ss1 = t->GetNumSamples();
@@ -103,8 +103,8 @@ void Effect::GetSamples(WaveTrack *t, sampleCount *s0, sampleCount *slen)
    if (ss1 < ss0)
       ss1 = ss0;
    
-   *s0 = (sampleCount)ss0;
-   *slen = (sampleCount)(ss1 - ss0);
+   *s0 = ss0;
+   *slen = ss1 - ss0;
 }
 
 bool Effect::TotalProgress(double frac)
