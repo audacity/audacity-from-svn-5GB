@@ -102,7 +102,7 @@ void MixerToolBar::InitializeMixerToolBar()
    mType = MixerToolBarID;
    int offset;
 
-   #ifdef __WXMAC__
+   #ifdef USE_AQUA_THEME
    offset = 0;
    #else
    offset = 1;
@@ -219,7 +219,7 @@ void MixerToolBar::OnPaint(wxPaintEvent & evt)
    int width, height;
    GetSize(&width, &height);
 
-#ifdef __WXMAC__
+#ifdef USE_AQUA_THEME
    // Mac has an Aqua background...
    DrawBackground(dc, width, height); 
 #else
