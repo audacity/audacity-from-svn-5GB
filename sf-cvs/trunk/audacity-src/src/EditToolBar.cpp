@@ -273,8 +273,8 @@ void EditToolBar::EnableDisableButtons()
 
    bool tracks = (!p->GetTracks()->IsEmpty());
 
-   mButtons[ETBZoomInID]->SetEnabled(tracks && p->GetZoom() < gMaxZoom);
-   mButtons[ETBZoomOutID]->SetEnabled(tracks && p->GetZoom() > gMinZoom);
+   mButtons[ETBZoomInID]->SetEnabled(p->GetZoom() < gMaxZoom);
+   mButtons[ETBZoomOutID]->SetEnabled(p->GetZoom() > gMinZoom);
 
    mButtons[ETBZoomSelID]->SetEnabled(selection);
    mButtons[ETBZoomFitID]->SetEnabled(tracks);
