@@ -33,6 +33,7 @@
 #include "effects/Amplify.h"
 #include "effects/Echo.h"
 #include "effects/Fade.h"
+#include "effects/Filter.h"
 
 #ifdef __WXMAC__
 #include "effects/LoadVSTMac.h"
@@ -81,6 +82,7 @@ bool AudacityApp::OnInit()
   Effect::RegisterEffect(new EffectEcho());
   Effect::RegisterEffect(new EffectFadeIn());
   Effect::RegisterEffect(new EffectFadeOut());
+  Effect::RegisterEffect(new EffectFilter());
 
   #if defined(__WXMAC__) || defined(__WXMSW__)
   LoadVSTPlugins();
