@@ -29,6 +29,7 @@
 #include "Project.h"
 #include "AudacityApp.h"
 #include "AColor.h"
+#include "APalette.h"
 #include "Import.h"
 #include "ImportRaw.h"
 #include "ImportMIDI.h"
@@ -329,11 +330,7 @@ AudacityProject::~AudacityProject()
   gOpenProjects--;
 
   if (gOpenProjects <= 0) {
-    #ifdef __WXMSW
-    exit(0);
-    #else
-	wxExit();
-    #endif
+	gAPalette->Destroy();
   }
 }
 

@@ -62,9 +62,11 @@ bool AudacityApp::OnInit()
   LoadVSTPlugins();
   #endif
 
+  SetExitOnFrameDelete(true);
+
   InitAPalette(NULL);
   AudacityProject *project = CreateNewAudacityProject();
-  SetTopWindow(project);
+  SetTopWindow(gAPalette);
 
   return TRUE;
 }
