@@ -1126,6 +1126,10 @@ void TrackArtist::DrawNoteTrack(TrackInfoCache *cache,
   Seq_ptr seq = track->mSeq;
   int visibleChannels = track->mVisibleChannels;
 
+  dc.SetBrush(blankBrush);
+  dc.SetPen(blankPen);
+  dc.DrawRectangle(r);
+
   if (!track->selected)
 	sel0 = sel1 = 0.0;
 

@@ -178,7 +178,7 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
   mLabelTrackMenu->Append(OnMoveDownID, "Move Track Down");
 
   mTrackArtist = new TrackArtist();
-  mTrackArtist->SetInset(1, kTopInset+2, kLeftInset+2, 2);
+  mTrackArtist->SetInset(1, kTopInset+1, kLeftInset+2, 2);
 
   mCapturedTrack = NULL;
 
@@ -1125,8 +1125,8 @@ void TrackPanel::OnMouseEvent(wxMouseEvent& event)
   VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
 
   if (event.ButtonDown() &&
-	  event.m_y >= (r.y + r.height - 2) &&
-	  event.m_y <  (r.y + r.height + kTopInset)) {
+	  event.m_y >= (r.y + r.height - 5) &&
+	  event.m_y <  (r.y + r.height + 5)) {
   	HandleResize(event);
   	HandleCursor(event);
   	return;
@@ -1510,8 +1510,8 @@ void TrackPanel::DrawTracks(wxDC *dc)
       
       if (t->linked) {
         side = r;
-        side.y += side.height - kTopInset;
-        side.height = kTopInset;
+        side.y += t->GetHeight()-1;
+        side.height = kTopInset+1;
         dc->DrawRectangle(side);
       }
      

@@ -26,7 +26,7 @@ VTrack::VTrack(DirManager *projDirManager)
   linked = false;
 
   collapsedHeight = 20;
-  expandedHeight = 120;
+  expandedHeight = 121;
 
   tOffset = 0.0;
 
