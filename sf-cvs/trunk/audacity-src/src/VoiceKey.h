@@ -4,7 +4,7 @@
 
    VoiceKey.h: a class implementing a voice key
 
-   (c) 2002-2004  Shane T. Mueller
+   (c) 2002-2005  Shane T. Mueller
    Distributed under the terms of the GPL Version 2 or later.
 
 ***************************************************************************/
@@ -18,6 +18,15 @@
 #define	M_PI		3.14159265358979323846  /* pi */
 #endif
 
+enum VoiceKeyTypes
+  {
+    VKT_NONE = 0,
+    VKT_ENERGY = 1,
+    VKT_SIGN_CHANGES_LOW = 2,
+    VKT_SIGN_CHANGES_HIGH = 4,
+    VKT_DIRECTION_CHANGES_LOW = 8,
+    VKT_DIRECTION_CHANGES_HIGH = 16
+  };
 
 class VoiceKey {
 
@@ -35,6 +44,8 @@ class VoiceKey {
 
 	bool AboveThreshold(WaveTrack & t, sampleCount start,sampleCount len);
 
+	void SetKeyType(bool erg, bool scLow, bool scHigh,
+			bool dcLow, bool dcHigh);
 
  private:
 	
@@ -56,9 +67,12 @@ class VoiceKey {
 	double mThresholdDirectionChangesUpper;   
 
 	//These determine which statistics should be used.
-	bool mUseSignChanges;
-	bool mUseDirectionChanges;
 	bool mUseEnergy;
+	bool mUseSignChangesLow;
+	bool mUseSignChangesHigh;
+	bool mUseDirectionChangesLow;
+	bool mUseDirectionChangesHigh;
+
 
 	double mSilentWindowSize;           //Time in milliseconds of below-threshold windows required for silence
 	double mSignalWindowSize;           //Time in milliseconds of above-threshold windows required for speech
