@@ -141,7 +141,7 @@ pascal OSErr AEOpenFiles (AppleEvent *theAppleEvent, AppleEvent *theReply, long 
       AudacityProject *project = GetActiveProject();
       
       if (project==NULL ||
-          project->GetTracks()->First()!=NULL) {
+          !project->GetTracks()->IsEmpty()) {
         project = CreateNewAudacityProject(gParentWindow);
       }
       project->OpenFile(::wxMac2UnixFilename(str));
@@ -173,7 +173,7 @@ bool AudacityApp::OnInit()
   LoadVSTPlugins();
   #endif
   
-  #ifdef __WXMAC__
+  #if defined(__WXMAC__) && !defined(TARGET_CARBON)
   AEInstallEventHandler(kCoreEventClass,
                         kAEOpenDocuments,
                         NewAEEventHandlerUPP(AEOpenFiles),
