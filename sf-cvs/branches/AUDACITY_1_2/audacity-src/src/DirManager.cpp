@@ -117,6 +117,8 @@ bool DirManager::InitDirManager()
    }
 
    DirManager::CleanTempDir(true);
+
+   return true;
 }
 
 // Methods
