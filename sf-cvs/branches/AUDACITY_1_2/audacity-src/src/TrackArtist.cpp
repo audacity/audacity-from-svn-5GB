@@ -1035,9 +1035,10 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
       dc.SetPen(AColor::envelopePen);
       int x;
 
+      float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
+
       for (x = 0; x < mid.width; x++) {
          int envTop, envBottom;
-         float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
          
          envTop = GetWaveYPosNew(envValues[x], zoomMin, zoomMax,
                                  mid.height, dB, true, dBr, false);
