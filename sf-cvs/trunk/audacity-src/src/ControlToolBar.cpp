@@ -147,8 +147,9 @@ void ControlToolBar::InitializeControlToolBar()
 
    gPrefs->Read("/GUI/AlwaysEnablePause", &mAlwaysEnablePause, false);
 
-#if 0
+
    mPaused=false;             //Turn the paused state to off
+#if 0
    if(!mAlwaysEnablePause)
       mPause->Disable();         //Turn the pause button off.
    gAudioIO->SetAlwaysEnablePause(mAlwaysEnablePause);
@@ -699,11 +700,14 @@ void ControlToolBar::EnableDisableButtons()
    bool tracks = (p && !p->GetTracks()->IsEmpty());
    bool busy = gAudioIO->IsStreamActive();
 
+#if 0
    if (tracks) {
       if (!busy)
          mPlay->Enable();
    } else mPlay->Disable();
+#endif
 
+   mPlay->SetEnabled(tracks && !busy);
    mStop->SetEnabled(busy);
    mRewind->SetEnabled(tracks && !busy);
    mFF->SetEnabled(tracks && !busy);
