@@ -105,6 +105,9 @@ friend class TrackPanel;
 };
 
 
+
+const int DragThreshold = 3;// Anything over 3 pixels is a drag, else a click.
+
 /// The TrackPanel manages multiple tracks and their TrackLabels.
 /// Note that with stereo tracks there will be one TrackLabel
 /// being used by two wavetracks.
@@ -357,8 +360,7 @@ class TrackPanel:public wxWindow {
    int mMoveUpThreshold;
    int mMoveDownThreshold;
    
-   // AS: MAGIC NUMBER: I'm not sure why 3.
-   bool IsDragZooming() const { return abs(mZoomEnd - mZoomStart) > 3;}
+   bool IsDragZooming() const { return abs(mZoomEnd - mZoomStart) > DragThreshold;}
 
    wxCursor *mArrowCursor;
    wxCursor *mPencilCursor;

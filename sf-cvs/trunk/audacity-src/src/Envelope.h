@@ -170,6 +170,7 @@ class Envelope : public XMLTagHandler {
    int mDragPoint;
    int mInitialX;
    int mInitialY;
+   int mContourOffset; // Number of pixels contour is from the true envelope.
    double mInitialWhen;
    double mInitialVal;
    bool mUpper;
@@ -187,6 +188,8 @@ class Envelope : public XMLTagHandler {
    double lastIntegral_result;
    // and this function resets them (call whenever the Envelope changes)
    void resetIntegralMemoizer() { lastIntegral_t0=0; lastIntegral_t1=0; lastIntegral_result=0; }
+
+   int PixelPositionOf( double v, int ctr, int height, bool upper, bool dB );
 };
 
 #endif

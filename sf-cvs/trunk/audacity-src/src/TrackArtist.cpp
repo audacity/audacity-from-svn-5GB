@@ -326,6 +326,24 @@ int TrackArtist::GetWaveYPos(float value, int height, bool dB)
    }
 }
 
+int TrackArtist::GetWaveYPosUnclipped(float value, int height, bool dB)
+{
+   float sign = (value >= 0 ? 1 : -1);
+
+   if (dB) {
+      if (value == 0 || height == 0)
+         return 0;
+      float db = 10 * log10(fabs(value));
+      // The smallest value we will see is -45.15 (10*log10(1/32768))
+      float val = (db + 45.0) / 45.0;
+      if (val < 0.0)
+         val = float(0.0);
+      return (int) (sign * (height * val + 0.5));
+   } else {
+      return (int) (value * height + sign * 0.5);
+   }
+}
+
 void TrackArtist::DrawWaveform(WaveTrack *track,
                                wxDC & dc, wxRect & r,
                                ViewInfo * viewInfo,
@@ -455,7 +473,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    double t = t0;
    int x;
    for (x = 0; x < mid.width; x++) {
-      heights[x] = GetWaveYPos(envValues[x], mid.height / 2, dB);
+      heights[x] = GetWaveYPosUnclipped(envValues[x], mid.height / 2, dB);
       t += tstep;
    }
 
@@ -464,6 +482,12 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    dc.SetPen(unselectedPen);
 
    int quarterHeight = r.height/4;
+   int halfHeight    = r.height/2;
+   
+   // 'fix' to prevent us possibly dividing by zero on very narrow tracks.
+   if (halfHeight <1)
+      halfHeight=1;
+
    int lowerLimit;
    for (x = 0; x < mid.width; x++) {
 
@@ -488,12 +512,26 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
       lowerLimit = heights[x]-quarterHeight;
       if((drawEnvelope) && ( lowerLimit > 0 ))
       {
-         //Draw envelope with an inner envelope boundary.
-         //(Uses the existing track background for central part)
-         dc.DrawLine(mid.x + x, ctr - heights[x], mid.x + x,
-                  ctr - lowerLimit);
-         dc.DrawLine(mid.x + x, ctr + heights[x], mid.x + x,
-                  ctr + lowerLimit);
+         int h1 = heights[x] % halfHeight;
+         int l1 = lowerLimit % halfHeight;
+         if( h1 >= l1 )
+         {
+            //Draw envelope with an inner envelope boundary.
+            //(Uses the existing track background for central part)
+            dc.DrawLine(mid.x + x, ctr - h1, mid.x + x,
+                  ctr - l1);
+            dc.DrawLine(mid.x + x, ctr + h1, mid.x + x,
+                  ctr + l1);
+         }
+         else
+         {
+            dc.DrawLine(mid.x + x, ctr - halfHeight, mid.x + x,
+                  ctr - l1);
+//            dc.DrawLine(mid.x + x, ctr-h1, mid.x + x,
+//                  ctr + h1);
+            dc.DrawLine(mid.x + x, ctr + l1, mid.x + x,
+                  ctr + halfHeight);
+         }
       }
       else
       {
@@ -647,8 +685,17 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
 
    if (drawEnvelope) {
       dc.SetPen(AColor::envelopePen);
+      int MaxHeight = mid.height/2;
 
       for (x = 0; x < mid.width; x++) {
+         // JKC: This 'if' draws the envelope boundary dotted if it goes off screen.
+         if (heights[x] > MaxHeight )
+         {
+            // three dots on, one dot off, three on, etc...
+            if( x%4 == 3 )
+               continue;
+            heights[x]=MaxHeight;
+         }
 
          int z1 = ctr - heights[x] + 3 > ctr ? ctr : ctr - heights[x] + 3;
          int z2 = ctr + heights[x] - 3 < ctr ? ctr : ctr + heights[x] - 3;

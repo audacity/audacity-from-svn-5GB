@@ -2783,7 +2783,7 @@ bool TrackPanel::HitTestEnvelope(Track *track, wxRect &r, wxMouseEvent & event)
    bool dB = (displayType == 1);
    double envValue = envelope->GetValueAtX( 
       event.m_x, r, mViewInfo->h, mViewInfo->zoom );
-   int yValue = mTrackArtist->GetWaveYPos( envValue, r.height/2, dB );
+   int yValue = mTrackArtist->GetWaveYPosUnclipped( envValue, r.height/2, dB );
    yValue = abs(yValue);
 
    // Get y distance of mouse from center line (in pixels).
@@ -2797,7 +2797,22 @@ bool TrackPanel::HitTestEnvelope(Track *track, wxRect &r, wxMouseEvent & event)
    const int yMisalign = 2; 
    // Perhaps yTolerance should be put into preferences?
    const int yTolerance = 5; // how far from envelope we may be and count as a hit.
-   return( abs( yValue - yMisalign - yMouse ) < yTolerance );
+   int distance;
+
+   // For amplification using the envelope we introduced the idea of contours.
+   // The contours have the same shape as the envelope, which may be partially off-screen.
+   // The contours are closer in to the center line.
+   int ContourSpacing = r.height/4;
+   const int MaxContours = 2;
+
+   // Adding ContourSpacing/2 selects a region that size either side of the contour.
+   int yDisplace = yValue - yMisalign - yMouse  + ContourSpacing/2;
+   if (yDisplace > (MaxContours * ContourSpacing))
+      return false;
+   // Subtracting the ContourSpacing/2 we added earlier ensures distance is centred on the contour.
+   distance = abs( ( yDisplace % ContourSpacing ) - ContourSpacing/2);
+//   distance = abs( yValue - yMisalign - yMouse );
+   return( distance < yTolerance );
 }
 
 bool TrackPanel::HitTestSamples(Track *track, wxRect &r, wxMouseEvent & event)
