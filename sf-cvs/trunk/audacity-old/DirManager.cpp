@@ -220,13 +220,7 @@ BlockFile *DirManager::NewTempAliasBlockFile(wxString fullPath,
                                            fullPath,
                                            start, len, channel);
 
-   printf("newBlockFile: %d theFileName: %s\n",
-          (int)newBlockFile,
-          (const char *)theFileName);
-
    blockFileHash->Put(theFileName, (wxObject *) newBlockFile);
-
-   printf("Check size\n");
 
    CheckHashTableSize();
 
