@@ -21,7 +21,6 @@
 
 #include "AudioIO.h"
 #include "AColor.h"
-#include "Internat.h"
 
 int GetStatusHeight()
 {
@@ -344,7 +343,7 @@ void AStatus::OnRateOther(wxCommandEvent & WXUNUSED(event))
 
    if (rateStr != "") {
       double theRate;
-      if (Internat::ToDouble(rateStr, &theRate) && theRate >= 1 && theRate <= 100000) {
+      if (rateStr.ToDouble(&theRate) && theRate >= 1 && theRate <= 100000) {
          mRate = theRate;
          mListener->AS_SetRate(mRate);
          Refresh(false);

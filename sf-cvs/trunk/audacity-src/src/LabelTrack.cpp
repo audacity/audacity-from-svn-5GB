@@ -429,9 +429,10 @@ void LabelTrack::WriteXML(int depth, FILE *fp)
    for (i = 0; i < len; i++) {
       for(j=0; j<depth+1; j++)
          fprintf(fp, "\t");
-      fprintf(fp, "<label t=\"%.8g\" t1=\"%.8g\" title=\"%s\"/>\n",
-              mLabels[i]->t, mLabels[i]->t1,
-              XMLEsc(mLabels[i]->title).c_str());
+      fprintf(fp, "<label t=\"%s\" t1=\"%s\" title=\"%s\"/>\n",
+            Internat::ToString(mLabels[i]->t, 8).c_str(),
+            Internat::ToString(mLabels[i]->t1, 8).c_str(),
+            XMLEsc(mLabels[i]->title).c_str());
    }
    for(j=0; j<depth; j++)
       fprintf(fp, "\t");

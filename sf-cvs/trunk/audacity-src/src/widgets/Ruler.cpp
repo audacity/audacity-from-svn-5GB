@@ -388,14 +388,15 @@ wxString Ruler::LabelString(double d, bool major)
       if (mMinor >= 1.0)
          s.Printf("%d", (int)floor(d+0.5));
       else {
-         s = Internat::ToString(d, 1);
+         s.Printf("%.1f", d);
       }
       break;
    case RealFormat:
       if (mMinor >= 1.0)
          s.Printf("%d", (int)floor(d+0.5));
-      else
-         s = Internat::ToString(d, mDigits);
+      else {
+         s.Printf(wxString::Format("%%.%df", mDigits), d);
+      }
       break;
    case TimeFormat:
       if (major) {

@@ -395,8 +395,7 @@ bool AudacityApp::OnInit()
    // Initialize internationalisation (number formats etc.)
    //
    // This must go _after_ creating the wxLocale instance because
-   // creating the wxLocale instance resets LC_NUMERIC to the choosen
-   // language (we want it to have "C" compatibility mode instead).
+   // creating the wxLocale instance sets the application-wide locale.
    Internat::Init();
 
    // Init DirManager, which initializes the temp directory

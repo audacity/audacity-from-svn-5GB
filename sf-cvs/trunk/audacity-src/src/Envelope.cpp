@@ -250,8 +250,9 @@ void Envelope::WriteXML(int depth, FILE *fp)
    for (ctrlPt = 0; ctrlPt < mEnv.GetCount(); ctrlPt++) {
       for(i = 0; i < depth+1; i++)
          fprintf(fp, "\t");
-      fprintf(fp, "<controlpoint t='%.12f' val='%.12f'/>\n", mEnv[ctrlPt]->t,
-                                                       mEnv[ctrlPt]->val);
+      fprintf(fp, "<controlpoint t='%s' val='%s'/>\n",
+            Internat::ToString(mEnv[ctrlPt]->t, 12).c_str(),
+            Internat::ToString(mEnv[ctrlPt]->val, 12).c_str());
    }
 
    for (i = 0; i < depth; i++)

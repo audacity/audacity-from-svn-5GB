@@ -69,8 +69,11 @@ double EffectNyquist::GetCtrlValue(wxString s)
       TrackListIterator iter(mWaveTracks);
       return ((WaveTrack *)iter.First())->GetRate();
    }
-   else
-      return Internat::ToDouble(s);
+   else {
+      double d;
+      s.ToDouble(&d);
+      return d;
+   }
 }
 
 void EffectNyquist::Parse(wxString line)
@@ -424,6 +427,12 @@ int EffectNyquist::StaticPutCallback(float *buffer, int channel,
 
 bool EffectNyquist::ProcessOne()
 {
+   // libnyquist breaks except in LC_NUMERIC=="C".
+   //
+   // MB: setlocale is not thread-safe.  Should use uselocale()
+   //     if available, or fix libnyquist to be locale-independent.
+   setlocale(LC_NUMERIC, "C");
+
    nyx_rval rval;
 
    nyx_init();
@@ -553,6 +562,9 @@ bool EffectNyquist::ProcessOne()
       delete mOutputTrack[i];
 
    nyx_cleanup();
+
+   // Reset locale
+   setlocale(LC_NUMERIC, "");
    
    return true;
 }
@@ -654,11 +666,11 @@ void NyquistDialog::OnSlider(wxCommandEvent & /* event */)
       wxString valStr;
       if (ctrl->type == 1) {
          if (ctrl->high - ctrl->low < 1)
-	    valStr = Internat::ToString(ctrl->val, 3);
+            valStr.Printf("%.3f", ctrl->val);
          else if (ctrl->high - ctrl->low < 10)
-	    valStr = Internat::ToString(ctrl->val, 2);
+            valStr.Printf("%.2f", ctrl->val);
          else if (ctrl->high - ctrl->low < 100)
-	    valStr = Internat::ToString(ctrl->val, 1);
+            valStr.Printf("%.1f", ctrl->val);
          else
             valStr.Printf("%d", (int)floor(ctrl->val + 0.5));
       }
@@ -684,7 +696,7 @@ void NyquistDialog::OnText(wxCommandEvent & /* event */)
       wxASSERT(slider && text);
 
       wxString valStr = text->GetValue();
-      Internat::ToDouble(valStr, &ctrl->val);
+      valStr.ToDouble(&ctrl->val);
       int pos = (int)floor((ctrl->val - ctrl->low) /
                            (ctrl->high - ctrl->low) * ctrl->ticks + 0.5);
       if (pos < 0)

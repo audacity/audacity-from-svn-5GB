@@ -8,6 +8,17 @@
 
 **********************************************************************/
 
+#include "ImportRaw.h"
+#include "Import.h"
+
+#include "RawAudioGuess.h"
+
+#include "../DirManager.h"
+#include "../FileFormats.h"
+#include "../Internat.h"
+#include "../Prefs.h"
+#include "../WaveTrack.h"
+
 #include <math.h>
 
 #include <wx/defs.h>
@@ -23,18 +34,6 @@
 #include <wx/timer.h>
 
 #include "sndfile.h"
-
-#include "Import.h"
-#include "ImportRaw.h"
-
-#include "RawAudioGuess.h"
-
-#include "../Prefs.h"
-#include "../FileFormats.h"
-
-#include "../WaveTrack.h"
-#include "../DirManager.h"
-#include "../Internat.h"
 
 class ImportRawDialog:public wxDialog {
 
@@ -433,8 +432,8 @@ void ImportRawDialog::OnOK(wxCommandEvent & WXUNUSED(event))
    mChannels = mChannelChoice->GetSelection() + 1;
    mOffsetText->GetValue().ToLong(&l);
    mOffset = l;
-   mPercent = Internat::ToDouble(mPercentText->GetValue());
-   mRate = Internat::ToDouble(mRateText->GetValue());
+   mPercentText->GetValue().ToDouble(&mPercent);
+   mRateText->GetValue().ToDouble(&mRate);
 
    if (mChannels < 1 || mChannels > 16)
       mChannels = 1;
