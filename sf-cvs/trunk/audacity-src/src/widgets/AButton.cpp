@@ -109,7 +109,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
       GetActiveProject()->TP_DisplayStatusMessage("",0);
    }
 
-   if (!mEnabled) {
+   if (mButtonIsDown || !mEnabled) {
       this->Refresh(false);
       return;
    }
@@ -130,12 +130,10 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
          GetParent()->ProcessEvent(*e);
          delete e;
       }
-
       this->Refresh(false);
       return;
    }
-
-   if (event.ButtonDown()) {
+   else if (event.ButtonDown()) {
       mIsClicking = true;
       CaptureMouse();
    }
@@ -146,15 +144,14 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
          mButtonState = AButtonDown;
       } else
          mButtonState = AButtonUp;
-      this->Refresh(false);
    }
    else {
       if (event.Entering())
          mButtonState = AButtonOver;
       else if (event.Leaving())
          mButtonState = AButtonUp;
-      this->Refresh(false);
    }
+   this->Refresh(false);
 }
 
 bool AButton::WasShiftDown()
