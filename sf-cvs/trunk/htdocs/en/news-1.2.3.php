@@ -1,4 +1,4 @@
-<?php BoxTop('November 15, 2004: Audacity 1.2.3 released'); ?>
+<?php BoxTop('November 2004: Audacity 1.2.3 released'); ?>
 
 <p>
 Audacity 1.2.3 is a new stable version of the free Audacity sound editor.
