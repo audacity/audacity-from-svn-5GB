@@ -181,7 +181,10 @@ void AudacityProject::CreateMenusAndCommands()
    c->EndSubMenu();
 
    c->BeginSubMenu(_("Set Snap-to mode"));
+
+   /* i18n-hint: Set snap-to mode on or off */
    c->AddItem("SnapOn",         _("On"),                             FN(OnSnapOn));
+   /* i18n-hint: Set snap-to mode on or off */
    c->AddItem("SnapOff",        _("Off"),                            FN(OnSnapOff));
    c->EndSubMenu();
 

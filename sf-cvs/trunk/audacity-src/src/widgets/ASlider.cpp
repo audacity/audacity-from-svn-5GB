@@ -320,8 +320,12 @@ void LWSlider::Init(wxWindow * parent,
       {
          wxFont labelFont(sliderFontSize, wxSWISS, wxNORMAL, wxNORMAL);
          dc->SetFont(labelFont);
-         dc->DrawText(_T("L"), mLeftX, 1);
-         dc->DrawText(_T("R"), mRightX-7, 1);
+
+         /* i18n-hint: One-letter abbreviation for Left, in the Pan slider */
+         dc->DrawText(_("L"), mLeftX, 1);
+
+         /* i18n-hint: One-letter abbreviation for Right, in the Pan slider */
+         dc->DrawText(_("R"), mRightX-7, 1);
       } else
       {
          // draw the '-' and the '+'
