@@ -2,7 +2,7 @@
 #define PA_HOST_H
 
 /*
- * $Id: pa_host.h,v 1.4 2002-10-26 07:06:16 dmazzoni Exp $
+ * $Id: pa_host.h,v 1.5 2003-03-02 08:01:34 dmazzoni Exp $
  * Host dependant internal API for PortAudio
  *
  * Author: Phil Burk  <philburk@softsynth.com>
@@ -76,7 +76,8 @@ typedef void (PortAudioConverter)(
 typedef struct internalPortAudioStream
 {
     uint32                    past_Magic;  /* ID for struct to catch bugs. */
-    /* User specified information. */
+    
+    /* Begin user specified information. */
     uint32                    past_FramesPerUserBuffer;
     uint32                    past_NumUserBuffers;
     double                    past_SampleRate;     /* Closest supported sample rate. */
@@ -84,21 +85,24 @@ typedef struct internalPortAudioStream
     int                       past_NumOutputChannels;
     PaDeviceID                past_InputDeviceID;
     PaDeviceID                past_OutputDeviceID;
-    PaSampleFormat            past_NativeInputSampleFormat;
     PaSampleFormat            past_InputSampleFormat;
-    PaSampleFormat            past_NativeOutputSampleFormat;
     PaSampleFormat            past_OutputSampleFormat;
-    void                     *past_DeviceData;
     PortAudioCallback        *past_Callback;
     void                     *past_UserData;
     uint32                    past_Flags;
+    /* End user specified information. */
+    
+    void                     *past_DeviceData;
+    PaSampleFormat            past_NativeOutputSampleFormat;
+    PaSampleFormat            past_NativeInputSampleFormat;
+
     /* Flags for communicating between foreground and background. */
     volatile int              past_IsActive;      /* Background is still playing. */
     volatile int              past_StopSoon;      /* Background should keep playing when buffers empty. */
     volatile int              past_StopNow;       /* Background should stop playing now. */
     /* These buffers are used when the native format does not match the user format. */
     void                     *past_InputBuffer;
-    uint32                    past_InputBufferSize;
+    uint32                    past_InputBufferSize; /* Size in bytes of the input buffer. */
     void                     *past_OutputBuffer;
     uint32                    past_OutputBufferSize;
     /* Measurements */

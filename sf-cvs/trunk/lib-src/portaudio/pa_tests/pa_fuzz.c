@@ -1,4 +1,5 @@
 /*
+ * $Id: pa_fuzz.c,v 1.3 2003-03-02 08:01:40 dmazzoni Exp $
  * pa_fuzz.c
  * Distort input like a fuzz boz.
  *
@@ -40,103 +41,116 @@
 ** full duplex audio (simultaneous record and playback).
 ** And some only support full duplex at lower sample rates.
 */
-#define SAMPLE_RATE  (44100)
-#define PA_SAMPLE_TYPE  paFloat32
+#define SAMPLE_RATE         (44100)
+#define PA_SAMPLE_TYPE      paFloat32
+#define FRAMES_PER_BUFFER   (64)
+
 typedef float SAMPLE;
+
 float CubicAmplifier( float input );
-static int fuzzCallback(	void *inputBuffer, void *outputBuffer,
-						unsigned long framesPerBuffer,
-				        PaTimestamp outTime, void *userData );
+static int fuzzCallback( void *inputBuffer, void *outputBuffer,
+                         unsigned long framesPerBuffer,
+                         PaTimestamp outTime, void *userData );
+
 /* Non-linear amplifier with soft distortion curve. */
 float CubicAmplifier( float input )
 {
-	float output, temp;
-	if( input < 0.0 )
-	{
-		temp = input + 1.0f;
-		output = (temp * temp * temp) - 1.0f;
-	}
-	else
-	{
-		temp = input - 1.0f;
-		output = (temp * temp * temp) + 1.0f;
-	}
+    float output, temp;
+    if( input < 0.0 )
+    {
+        temp = input + 1.0f;
+        output = (temp * temp * temp) - 1.0f;
+    }
+    else
+    {
+        temp = input - 1.0f;
+        output = (temp * temp * temp) + 1.0f;
+    }
 
-	return output;
+    return output;
 }
 #define FUZZ(x) CubicAmplifier(CubicAmplifier(CubicAmplifier(CubicAmplifier(x))))
+
 static int gNumNoInputs = 0;
 /* This routine will be called by the PortAudio engine when audio is needed.
 ** It may be called at interrupt level on some machines so don't do anything
 ** that could mess up the system like calling malloc() or free().
 */
-static int fuzzCallback(	void *inputBuffer, void *outputBuffer,
-						unsigned long framesPerBuffer,
-				        PaTimestamp outTime, void *userData )
+static int fuzzCallback( void *inputBuffer, void *outputBuffer,
+                         unsigned long framesPerBuffer,
+                         PaTimestamp outTime, void *userData )
 {
-	SAMPLE *out = (SAMPLE*)outputBuffer;
-	SAMPLE *in = (SAMPLE*)inputBuffer;
-	unsigned int i;
-	(void) outTime; /* Prevent unused variable warnings. */
-	(void) userData;
-	
-	if( inputBuffer == NULL )
-	{
-		for( i=0; i<framesPerBuffer; i++ )
-		{
-			*out++ = 0;	 /* left - silent */
-			*out++ = 0;	 /* right - silent */
-		}
-		gNumNoInputs += 1;
-	}
-	else
-	{
-		for( i=0; i<framesPerBuffer; i++ )
-		{
-			*out++ = FUZZ(*in++);		/* left - distorted */
-			*out++ = *in++;		        /* right - clean */
-		}
-	}
-	return 0;
+    SAMPLE *out = (SAMPLE*)outputBuffer;
+    SAMPLE *in = (SAMPLE*)inputBuffer;
+    unsigned int i;
+    (void) outTime; /* Prevent unused variable warnings. */
+    (void) userData;
+
+    if( inputBuffer == NULL )
+    {
+        for( i=0; i<framesPerBuffer; i++ )
+        {
+            *out++ = 0;  /* left - silent */
+            *out++ = 0;  /* right - silent */
+        }
+        gNumNoInputs += 1;
+    }
+    else
+    {
+        for( i=0; i<framesPerBuffer; i++ )
+        {
+            *out++ = FUZZ(*in++);  /* left - distorted */
+            *out++ = *in++;          /* right - clean */
+        }
+    }
+    return 0;
 }
+
 /*******************************************************************/
 int main(void);
 int main(void)
 {
-	PortAudioStream *stream;
-	PaError err;
-	err = Pa_Initialize();
-	if( err != paNoError ) goto error;
-	err = Pa_OpenStream(
-				&stream,
-				Pa_GetDefaultInputDeviceID(), /* default output device */
-				2,               /* stereo input */
-				PA_SAMPLE_TYPE,	
-				NULL,
-				Pa_GetDefaultOutputDeviceID(), /* default output device */
-				2,               /* stereo output */
-				PA_SAMPLE_TYPE, 
-				NULL,
-				SAMPLE_RATE,
-				64,            /* frames per buffer */
-				0,             /* number of buffers, if zero then use default minimum */
-				paClipOff,     /* we won't output out of range samples so don't bother clipping them */
-				fuzzCallback,
-				NULL );
-	if( err != paNoError ) goto error;
-	err = Pa_StartStream( stream );
-	if( err != paNoError ) goto error;
-	printf("Hit ENTER to stop program.\n");
-	getchar();
-	err = Pa_CloseStream( stream );
-	if( err != paNoError ) goto error;
-	printf("Finished. gNumNoInputs = %d\n", gNumNoInputs );
-	Pa_Terminate();
-	return 0;
+    PortAudioStream *stream;
+    PaError err;
+
+    err = Pa_Initialize();
+    if( err != paNoError ) goto error;
+
+    err = Pa_OpenStream(
+              &stream,
+              Pa_GetDefaultInputDeviceID(), /* default output device */
+              2,               /* stereo input */
+              PA_SAMPLE_TYPE,
+              NULL,
+              Pa_GetDefaultOutputDeviceID(), /* default output device */
+              2,               /* stereo output */
+              PA_SAMPLE_TYPE,
+              NULL,
+              SAMPLE_RATE,
+              FRAMES_PER_BUFFER,
+              0,             /* number of buffers, if zero then use default minimum */
+              0, // paClipOff,     /* we won't output out of range samples so don't bother clipping them */
+              fuzzCallback,
+              NULL );
+    if( err != paNoError ) goto error;
+
+    err = Pa_StartStream( stream );
+    if( err != paNoError ) goto error;
+
+    printf("Hit ENTER to stop program.\n");
+    fflush(stdout);
+    getchar();
+    err = Pa_CloseStream( stream );
+    if( err != paNoError ) goto error;
+
+    printf("Finished. gNumNoInputs = %d\n", gNumNoInputs );
+    Pa_Terminate();
+    return 0;
+
 error:
-	Pa_Terminate();
-	fprintf( stderr, "An error occured while using the portaudio stream\n" ); 
-	fprintf( stderr, "Error number: %d\n", err );
-	fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
-	return -1;
+    Pa_Terminate();
+    fprintf( stderr, "An error occured while using the portaudio stream\n" );
+    fprintf( stderr, "Error number: %d\n", err );
+    fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
+    return -1;
 }

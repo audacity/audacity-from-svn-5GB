@@ -1,4 +1,5 @@
 /*
+ * $Id: patest_sync.c,v 1.2 2003-03-02 08:01:43 dmazzoni Exp $
  * patest_sync.c
  * Test time stamping and synchronization of audio and video.
  * A high latency is used so we can hear the difference in time.
@@ -56,169 +57,171 @@
 #define STATE_BKG_IDLE    (0)
 #define STATE_BKG_PENDING (1)
 #define STATE_BKG_BEEPING (2)
-typedef struct {
-	float        left_phase;
-	float        right_phase;
-	int          state;
-	int          requestBeep;  /* Set by foreground, cleared by background. */
-	PaTimestamp  beepTime;
-	int          beepCount;
-}paTestData;
+typedef struct
+{
+    float        left_phase;
+    float        right_phase;
+    int          state;
+    int          requestBeep;  /* Set by foreground, cleared by background. */
+    PaTimestamp  beepTime;
+    int          beepCount;
+}
+paTestData;
 static unsigned long GenerateRandomNumber( void );
 /************************************************************/
 /* Calculate pseudo-random 32 bit number based on linear congruential method. */
 static unsigned long GenerateRandomNumber( void )
 {
-	static unsigned long randSeed = 22222;  /* Change this for different random sequences. */
-	randSeed = (randSeed * 196314165) + 907633515;
-	return randSeed;
+    static unsigned long randSeed = 22222;  /* Change this for different random sequences. */
+    randSeed = (randSeed * 196314165) + 907633515;
+    return randSeed;
 }
 /* This routine will be called by the PortAudio engine when audio is needed.
 ** It may called at interrupt level on some machines so don't do anything
 ** that could mess up the system like calling malloc() or free().
 */
-static int patestCallback(	void *inputBuffer, void *outputBuffer,
-				unsigned long framesPerBuffer,
-				PaTimestamp outTime, void *userData )
+static int patestCallback( void *inputBuffer, void *outputBuffer,
+                           unsigned long framesPerBuffer,
+                           PaTimestamp outTime, void *userData )
 {
-/* Cast data passed through stream to our structure. */
-	paTestData *data = (paTestData*)userData;
-	float *out = (float*)outputBuffer;
-	unsigned int i;
-	(void) inputBuffer;
-	
-	for( i=0; i<framesPerBuffer; i++ )
-	{
-		switch( data->state )
-		{
-		case STATE_BKG_IDLE:
-			/* Schedule beep at some random time in the future. */
-			if( data->requestBeep )
-			{
-				int random = GenerateRandomNumber() >> 14;
-				data->beepTime = outTime + (i + random + (SAMPLE_RATE/4));
-				data->state = STATE_BKG_PENDING;
-				data->requestBeep = 0;
-				data->left_phase = data->right_phase = 0.0;
-			}
-			*out++ = 0.0;		/* left */
-			*out++ = 0.0;		/* right */
-			break;
-		case STATE_BKG_PENDING:
-			if( (outTime + i) >= data->beepTime )
-			{
-				data->state = STATE_BKG_BEEPING;
-				data->beepCount = BEEP_DURATION;
-			}
-			*out++ = 0.0;		/* left */
-			*out++ = 0.0;		/* right */
-			break;
-		case STATE_BKG_BEEPING:
-			if( data->beepCount <= 0 )
-			{
-				data->state = STATE_BKG_IDLE;
-				*out++ = 0.0;		/* left */
-				*out++ = 0.0;		/* right */
-			}
-			else
-			{
-		/* Play sawtooth wave. */
-				*out++ = data->left_phase;		/* left */
-				*out++ = data->right_phase;		/* right */
-			/* Generate simple sawtooth phaser that ranges between -1.0 and 1.0. */
-				data->left_phase += 0.01f;
-			/* When signal reaches top, drop back down. */
-				if( data->left_phase >= 1.0f ) data->left_phase -= 2.0f;
-			/* higher pitch so we can distinguish left and right. */
-				data->right_phase += 0.03f; 
-				if( data->right_phase >= 1.0f ) data->right_phase -= 2.0f;
-			}
-			data->beepCount -= 1;
-			break;
-		default:
-			data->state = STATE_BKG_IDLE;
-			break;
-		}
-	}
-	return 0;
+    /* Cast data passed through stream to our structure. */
+    paTestData *data = (paTestData*)userData;
+    float *out = (float*)outputBuffer;
+    unsigned int i;
+    (void) inputBuffer;
+
+    for( i=0; i<framesPerBuffer; i++ )
+    {
+        switch( data->state )
+        {
+        case STATE_BKG_IDLE:
+            /* Schedule beep at some random time in the future. */
+            if( data->requestBeep )
+            {
+                int random = GenerateRandomNumber() >> 14;
+                data->beepTime = outTime + (i + random + (SAMPLE_RATE/4));
+                data->state = STATE_BKG_PENDING;
+                data->requestBeep = 0;
+                data->left_phase = data->right_phase = 0.0;
+            }
+            *out++ = 0.0;  /* left */
+            *out++ = 0.0;  /* right */
+            break;
+        case STATE_BKG_PENDING:
+            if( (outTime + i) >= data->beepTime )
+            {
+                data->state = STATE_BKG_BEEPING;
+                data->beepCount = BEEP_DURATION;
+            }
+            *out++ = 0.0;  /* left */
+            *out++ = 0.0;  /* right */
+            break;
+        case STATE_BKG_BEEPING:
+            if( data->beepCount <= 0 )
+            {
+                data->state = STATE_BKG_IDLE;
+                *out++ = 0.0;  /* left */
+                *out++ = 0.0;  /* right */
+            }
+            else
+            {
+                /* Play sawtooth wave. */
+                *out++ = data->left_phase;  /* left */
+                *out++ = data->right_phase;  /* right */
+                /* Generate simple sawtooth phaser that ranges between -1.0 and 1.0. */
+                data->left_phase += 0.01f;
+                /* When signal reaches top, drop back down. */
+                if( data->left_phase >= 1.0f ) data->left_phase -= 2.0f;
+                /* higher pitch so we can distinguish left and right. */
+                data->right_phase += 0.03f;
+                if( data->right_phase >= 1.0f ) data->right_phase -= 2.0f;
+            }
+            data->beepCount -= 1;
+            break;
+        default:
+            data->state = STATE_BKG_IDLE;
+            break;
+        }
+    }
+    return 0;
 }
 /*******************************************************************/
 int main(void);
 int main(void)
 {
-	PortAudioStream *stream;
-	PaError    err;
-	paTestData DATA;
-	int        i, timeout;
-	PaTimestamp  previousTime;
-	printf("PortAudio Test: you should see BEEP at the same time you hear it.\n");
-	printf("Wait for a few seconds random delay between BEEPs.\n");
-	printf("BEEP %d times.\n", NUM_BEEPS );
-/* Initialize our DATA for use by callback. */
-	DATA.left_phase = DATA.right_phase = 0.0;
-	DATA.state = STATE_BKG_IDLE;
-	DATA.requestBeep = 0;
-/* Initialize library before making any other calls. */
-	err = Pa_Initialize();
-	if( err != paNoError ) goto error;
-/* Open an audio I/O stream. */
-	err = Pa_OpenDefaultStream(
-				&stream,
-				0,              /* no input channels */
-				2,              /* stereo output */
-				paFloat32,      /* 32 bit floating point output */
-				SAMPLE_RATE,
-				FRAMES_PER_BUFFER,
-				NUM_BUFFERS,
-				patestCallback,
-				&DATA );
-	if( err != paNoError ) goto error;
-	err = Pa_StartStream( stream );
-	if( err != paNoError ) goto error;
-	previousTime = Pa_StreamTime( stream );
-	for( i=0; i<NUM_BEEPS; i++ )
-	{
-	/* Request a beep from background. */
-		DATA.requestBeep = 1;
-	/* Wait for background to acknowledge request. */
-		timeout = TIMEOUT_MSEC;
-		while( (DATA.requestBeep == 1) && (timeout-- > 0 ) ) Pa_Sleep(SLEEP_MSEC);
-		if( timeout <= 0 )
-		{
-			fprintf( stderr, "Timed out waiting for background to acknowledge request.\n" );
-			goto error;
-		}
-	/* Wait for scheduled beep time. */
-		timeout =  TIMEOUT_MSEC + (10000/SLEEP_MSEC);
-		while( (Pa_StreamTime( stream ) < DATA.beepTime) && (timeout-- > 0 ) )
-		{
-			Pa_Sleep(SLEEP_MSEC);
-		}
-		if( timeout <= 0 )
-		{
-			fprintf( stderr, "Timed out waiting for time. Now = %g, Beep for %g.\n",
-				Pa_StreamTime( stream ), DATA.beepTime );
-			goto error;
-		}
-	/* Beep should be sounding now so print synchronized BEEP. */
-		printf("BEEP");
-		fflush(stdout);
-		printf(" at %d, delta = %d\n",
-			(long) DATA.beepTime, (long) (DATA.beepTime - previousTime) );
-		fflush(stdout);
-		previousTime = DATA.beepTime;
-	}
-	err = Pa_StopStream( stream );
-	if( err != paNoError ) goto error;
-	err = Pa_CloseStream( stream );
-	if( err != paNoError ) goto error;
-	Pa_Terminate();
-	printf("Test finished.\n");
-	return err;
+    PortAudioStream *stream;
+    PaError    err;
+    paTestData DATA;
+    int        i, timeout;
+    PaTimestamp  previousTime;
+    printf("PortAudio Test: you should see BEEP at the same time you hear it.\n");
+    printf("Wait for a few seconds random delay between BEEPs.\n");
+    printf("BEEP %d times.\n", NUM_BEEPS );
+    /* Initialize our DATA for use by callback. */
+    DATA.left_phase = DATA.right_phase = 0.0;
+    DATA.state = STATE_BKG_IDLE;
+    DATA.requestBeep = 0;
+    /* Initialize library before making any other calls. */
+    err = Pa_Initialize();
+    if( err != paNoError ) goto error;
+    /* Open an audio I/O stream. */
+    err = Pa_OpenDefaultStream(
+              &stream,
+              0,              /* no input channels */
+              2,              /* stereo output */
+              paFloat32,      /* 32 bit floating point output */
+              SAMPLE_RATE,
+              FRAMES_PER_BUFFER,
+              NUM_BUFFERS,
+              patestCallback,
+              &DATA );
+    if( err != paNoError ) goto error;
+    err = Pa_StartStream( stream );
+    if( err != paNoError ) goto error;
+    previousTime = Pa_StreamTime( stream );
+    for( i=0; i<NUM_BEEPS; i++ )
+    {
+        /* Request a beep from background. */
+        DATA.requestBeep = 1;
+        /* Wait for background to acknowledge request. */
+        timeout = TIMEOUT_MSEC;
+        while( (DATA.requestBeep == 1) && (timeout-- > 0 ) ) Pa_Sleep(SLEEP_MSEC);
+        if( timeout <= 0 )
+        {
+            fprintf( stderr, "Timed out waiting for background to acknowledge request.\n" );
+            goto error;
+        }
+        /* Wait for scheduled beep time. */
+        timeout =  TIMEOUT_MSEC + (10000/SLEEP_MSEC);
+        while( (Pa_StreamTime( stream ) < DATA.beepTime) && (timeout-- > 0 ) )
+        {
+            Pa_Sleep(SLEEP_MSEC);
+        }
+        if( timeout <= 0 )
+        {
+            fprintf( stderr, "Timed out waiting for time. Now = %g, Beep for %g.\n",
+                     Pa_StreamTime( stream ), DATA.beepTime );
+            goto error;
+        }
+        /* Beep should be sounding now so print synchronized BEEP. */
+        printf("BEEP");
+        fflush(stdout);
+        printf(" at %d, delta = %d\n",
+               (long) DATA.beepTime, (long) (DATA.beepTime - previousTime) );
+        fflush(stdout);
+        previousTime = DATA.beepTime;
+    }
+    err = Pa_StopStream( stream );
+    if( err != paNoError ) goto error;
+    err = Pa_CloseStream( stream );
+    if( err != paNoError ) goto error;
+    Pa_Terminate();
+    printf("Test finished.\n");
+    return err;
 error:
-	Pa_Terminate();
-	fprintf( stderr, "An error occured while using the portaudio stream\n" ); 
-	fprintf( stderr, "Error number: %d\n", err );
-	fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
-	return err;
+    Pa_Terminate();
+    fprintf( stderr, "An error occured while using the portaudio stream\n" );
+    fprintf( stderr, "Error number: %d\n", err );
+    fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
+    return err;
 }

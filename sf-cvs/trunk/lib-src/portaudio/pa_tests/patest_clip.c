@@ -1,6 +1,7 @@
 /*
+ * $Id: patest_clip.c,v 1.2 2003-03-02 08:01:41 dmazzoni Exp $
  * patest_clip.c
- * Play a 441 Hz sine wave using the Portable Audio api for several seconds
+ * Play a sine wave using the Portable Audio api for several seconds
  * at an amplitude that would require clipping.
  *
  * Author: Phil Burk  http://www.softsynth.com
@@ -44,111 +45,112 @@
 #define TABLE_SIZE   (200)
 typedef struct paTestData
 {
-	float sine[TABLE_SIZE];
-	float amplitude;
-	int left_phase;
-	int right_phase;
-} paTestData;
+    float sine[TABLE_SIZE];
+    float amplitude;
+    int left_phase;
+    int right_phase;
+}
+paTestData;
 PaError PlaySine( paTestData *data, unsigned long flags, float amplitude );
 /* This routine will be called by the PortAudio engine when audio is needed.
 ** It may called at interrupt level on some machines so don't do anything
 ** that could mess up the system like calling malloc() or free().
 */
-static int sineCallback(	void *inputBuffer, void *outputBuffer,
-						unsigned long framesPerBuffer,
-				                 	PaTimestamp outTime, void *userData )
+static int sineCallback( void *inputBuffer, void *outputBuffer,
+                         unsigned long framesPerBuffer,
+                         PaTimestamp outTime, void *userData )
 {
-	paTestData *data = (paTestData*)userData;
-	float *out = (float*)outputBuffer;
-	float amplitude = data->amplitude;
-	unsigned int i;
-	(void) inputBuffer; /* Prevent "unused variable" warnings. */
-	(void) outTime;
-	
-	for( i=0; i<framesPerBuffer; i++ )
-	{
-		*out++ = amplitude * data->sine[data->left_phase];		/* left */
-		*out++ = amplitude * data->sine[data->right_phase];		/* right */
-		data->left_phase += 1;
-		if( data->left_phase >= TABLE_SIZE ) data->left_phase -= TABLE_SIZE;
-		data->right_phase += 3; /* higher pitch so we can distinguish left and right. */
-		if( data->right_phase >= TABLE_SIZE ) data->right_phase -= TABLE_SIZE;
-	}
-	return 0;
+    paTestData *data = (paTestData*)userData;
+    float *out = (float*)outputBuffer;
+    float amplitude = data->amplitude;
+    unsigned int i;
+    (void) inputBuffer; /* Prevent "unused variable" warnings. */
+    (void) outTime;
+
+    for( i=0; i<framesPerBuffer; i++ )
+    {
+        *out++ = amplitude * data->sine[data->left_phase];  /* left */
+        *out++ = amplitude * data->sine[data->right_phase];  /* right */
+        data->left_phase += 1;
+        if( data->left_phase >= TABLE_SIZE ) data->left_phase -= TABLE_SIZE;
+        data->right_phase += 3; /* higher pitch so we can distinguish left and right. */
+        if( data->right_phase >= TABLE_SIZE ) data->right_phase -= TABLE_SIZE;
+    }
+    return 0;
 }
 /*******************************************************************/
 int main(void);
 int main(void)
 {
-	PaError err;
-	paTestData DATA;
-	int i;
-	printf("PortAudio Test: output sine wave with and without clipping.\n");
-	/* initialise sinusoidal wavetable */
-	for( i=0; i<TABLE_SIZE; i++ )
-	{
-		DATA.sine[i] = (float) sin( ((double)i/(double)TABLE_SIZE) * M_PI * 2. );
-	}
-	printf("\nHalf amplitude. Should sound like sine wave.\n"); fflush(stdout);
-	err = PlaySine( &DATA, paClipOff | paDitherOff, 0.5f );
-	if( err < 0 ) goto error;
-	printf("\nFull amplitude. Should sound like sine wave.\n"); fflush(stdout);
-	err = PlaySine( &DATA, paClipOff | paDitherOff, 0.999f );
-	if( err < 0 ) goto error;
-	printf("\nOver range with clipping and dithering turned OFF. Should sound very nasty.\n");
-	fflush(stdout);
-	err = PlaySine( &DATA, paClipOff | paDitherOff, 1.1f );
-	if( err < 0 ) goto error;
-	printf("\nOver range with clipping and dithering turned ON.  Should sound smoother than previous.\n");
-	fflush(stdout);
-	err = PlaySine( &DATA, paNoFlag, 1.1f );
-	if( err < 0 ) goto error;
-	printf("\nOver range with paClipOff but dithering ON.\n"
-		"That forces clipping ON so it should sound the same as previous.\n");
-	fflush(stdout);
-	err = PlaySine( &DATA, paClipOff, 1.1f );
-	if( err < 0 ) goto error;
-	return 0;
+    PaError err;
+    paTestData DATA;
+    int i;
+    printf("PortAudio Test: output sine wave with and without clipping.\n");
+    /* initialise sinusoidal wavetable */
+    for( i=0; i<TABLE_SIZE; i++ )
+    {
+        DATA.sine[i] = (float) sin( ((double)i/(double)TABLE_SIZE) * M_PI * 2. );
+    }
+    printf("\nHalf amplitude. Should sound like sine wave.\n"); fflush(stdout);
+    err = PlaySine( &DATA, paClipOff | paDitherOff, 0.5f );
+    if( err < 0 ) goto error;
+    printf("\nFull amplitude. Should sound like sine wave.\n"); fflush(stdout);
+    err = PlaySine( &DATA, paClipOff | paDitherOff, 0.999f );
+    if( err < 0 ) goto error;
+    printf("\nOver range with clipping and dithering turned OFF. Should sound very nasty.\n");
+    fflush(stdout);
+    err = PlaySine( &DATA, paClipOff | paDitherOff, 1.1f );
+    if( err < 0 ) goto error;
+    printf("\nOver range with clipping and dithering turned ON.  Should sound smoother than previous.\n");
+    fflush(stdout);
+    err = PlaySine( &DATA, paNoFlag, 1.1f );
+    if( err < 0 ) goto error;
+    printf("\nOver range with paClipOff but dithering ON.\n"
+           "That forces clipping ON so it should sound the same as previous.\n");
+    fflush(stdout);
+    err = PlaySine( &DATA, paClipOff, 1.1f );
+    if( err < 0 ) goto error;
+    return 0;
 error:
-	fprintf( stderr, "An error occured while using the portaudio stream\n" ); 
-	fprintf( stderr, "Error number: %d\n", err );
-	fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
-	return 1;
+    fprintf( stderr, "An error occured while using the portaudio stream\n" );
+    fprintf( stderr, "Error number: %d\n", err );
+    fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
+    return 1;
 }
 /*****************************************************************************/
 PaError PlaySine( paTestData *data, unsigned long flags, float amplitude )
 {
-	PortAudioStream *stream;
-	PaError err;
-	data->left_phase = data->right_phase = 0;
-	data->amplitude = amplitude;
-	err = Pa_Initialize();
-	if( err != paNoError ) goto error;
-	err = Pa_OpenStream(
-				&stream,
-				paNoDevice,/* default input device */
-				0,              /* no input */
-				paFloat32,		/* 32 bit floating point input */
-				NULL,
-				Pa_GetDefaultOutputDeviceID(), /* default output device */
-				2,              /* stereo output */
-				paFloat32,      /* 32 bit floating point output */
-				NULL,
-				SAMPLE_RATE,
-				1024,
-				0,              /* number of buffers, if zero then use default minimum */
-				flags,      /* we won't output out of range samples so don't bother clipping them */
-				sineCallback,
-				data );
-	if( err != paNoError ) goto error;
-	err = Pa_StartStream( stream );
-	if( err != paNoError ) goto error;
-	Pa_Sleep( NUM_SECONDS * 1000 );
-	printf("CPULoad = %8.6f\n", Pa_GetCPULoad( stream ) );
-	err = Pa_CloseStream( stream );
-	if( err != paNoError ) goto error;
-	Pa_Terminate();
-	return paNoError;
+    PortAudioStream *stream;
+    PaError err;
+    data->left_phase = data->right_phase = 0;
+    data->amplitude = amplitude;
+    err = Pa_Initialize();
+    if( err != paNoError ) goto error;
+    err = Pa_OpenStream(
+              &stream,
+              paNoDevice,/* default input device */
+              0,              /* no input */
+              paFloat32,  /* 32 bit floating point input */
+              NULL,
+              Pa_GetDefaultOutputDeviceID(), /* default output device */
+              2,              /* stereo output */
+              paFloat32,      /* 32 bit floating point output */
+              NULL,
+              SAMPLE_RATE,
+              1024,
+              0,              /* number of buffers, if zero then use default minimum */
+              flags,      /* we won't output out of range samples so don't bother clipping them */
+              sineCallback,
+              data );
+    if( err != paNoError ) goto error;
+    err = Pa_StartStream( stream );
+    if( err != paNoError ) goto error;
+    Pa_Sleep( NUM_SECONDS * 1000 );
+    printf("CPULoad = %8.6f\n", Pa_GetCPULoad( stream ) );
+    err = Pa_CloseStream( stream );
+    if( err != paNoError ) goto error;
+    Pa_Terminate();
+    return paNoError;
 error:
-	return err;
+    return err;
 }

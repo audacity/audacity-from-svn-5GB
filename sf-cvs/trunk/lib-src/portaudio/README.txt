@@ -3,8 +3,8 @@ Implementations for PC DirectSound and Mac SoundManager
 
 /*
  * PortAudio Portable Real-Time Audio Library
- * Latest Version at: http://www.softsynth.com/portaudio/
- * DirectSound Implementation
+ * Latest Version at: http://www.portaudio.com//
+ *
  * Copyright (c) 1999-2000 Phil Burk and Ross Bencina
  *
  * Permission is hereby granted, free of charge, to any person obtaining
@@ -34,28 +34,37 @@ Implementations for PC DirectSound and Mac SoundManager
 
 PortAudio is a portable audio I/O library designed for cross-platform
 support of audio. It uses a callback mechanism to request audio processing.
-Audio can be generated in various formats including 32 bit floating point
+Audio can be generated in various formats, including 32 bit floating point,
 and will be converted to the native format internally.
 
 Documentation:
-	See "pa_common/portaudio.h" for API.
+	See "pa_common/portaudio.h" for API spec.
 	See docs folder for a tutorial.
-	And see "pa_common/patest_sine.c" for an example.
+	Also see http://www.portaudio.com/docs/
+	And see "pa_tests/patest_saw.c" for an example.
 
-Files:
+For information on compiling programs with PortAudio, please see the
+tutorial at:
+
+  http://www.portaudio.com/docs/pa_tutorial.html
+  
+Important Files and Folders:
 	pa_common/              = platform independant code
 	pa_common/portaudio.h   = header file for PortAudio API. Specifies API.
-	pa_common/pa_lib.c      = host independant code for DirectSound and Macintosh.
-	pa_common/pa_rbuf.c     = ring Buffer used by blocking read/write.
-	pa_common/pa_rw.c       = blocking read/write tool.
+	pa_common/pa_lib.c      = host independant code for all implementations.
 
-DirectSound Files:
-	pa_win_ds/pa_dsound.c   = implementation of PA for DirectSound on a PC
-	pa_win_ds/dsound_wrapper.cpp = wrapper for DirectSound C++ calls
-
-Macintosh Files:
-	pa_mac/pa_mac.c         = implementation for Macintosh Soundmanager
-
+    pablio                  = simple blocking read/write interface
+    
+Platform Implementations
+    pa_asio                 = ASIO for Windows and Macintosh
+    pa_beos                 = BeOS
+    pa_mac                  = Macintosh Sound Manager for OS 8,9 and Carbon
+    pa_mac_core             = Macintosh Core Audio for OS X
+    pa_sgi                  = Silicon Graphics AL
+    pa_unix_oss             = OSS implementation for various Unixes
+    pa_win_ds               = Windows Direct Sound
+    pa_win_wmme             = Windows MME (most widely supported)
+    
 Test Programs
 	pa_tests/pa_fuzz.c = guitar fuzz box
 	pa_tests/pa_devs.c = print a list of available devices
@@ -63,16 +72,10 @@ Test Programs
 	pa_tests/paqa_devs.c = self test that opens all devices
 	pa_tests/paqa_errs.c = test error detection and reporting
 	pa_tests/patest_clip.c = hear a sine wave clipped and unclipped
-	pa_tests/patest_dither.c = hear effects of dithering (unlikely)
+	pa_tests/patest_dither.c = hear effects of dithering (extremely subtle)
 	pa_tests/patest_pink.c = fun with pink noise
 	pa_tests/patest_record.c = record and playback some audio
 	pa_tests/patest_maxsines.c = how many sine waves can we play? Tests Pa_GetCPULoad().
 	pa_tests/patest_sine.c = output a sine wave in a simple PA app
-	pa_tests/patest_rw.c = blocking read/write
+	pa_tests/patest_sync.c = test syncronization of audio and video
 	pa_tests/patest_wire.c = pass input to output, wire simulator
-
-For information on compiling programs with PortAudio, please see the
-tutorial at:
-
-  http://www.portaudio.com/docs/pa_tutorial.html
-
