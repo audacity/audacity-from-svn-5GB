@@ -107,19 +107,19 @@ void AudacityProject::CreateMenuBar()
    mEditMenu->Append(UndoID, _("&Undo"));
    mEditMenu->Append(RedoID, _("&Redo"));
    mEditMenu->AppendSeparator();
-   mEditMenu->Append(CutID, _("Cut"));
-   mEditMenu->Append(CopyID, _("Copy"));
-   mEditMenu->Append(PasteID, _("Paste"));
-   mEditMenu->Append(TrimID, _("Trim"));
+   mEditMenu->Append(CutID, _("&Cut"));
+   mEditMenu->Append(CopyID, _("Cop&y"));
+   mEditMenu->Append(PasteID, _("&Paste"));
+   mEditMenu->Append(TrimID, _("&Trim"));
    mEditMenu->AppendSeparator();
    mEditMenu->Append(DeleteID, _("&Delete"));
-   mEditMenu->Append(SilenceID, _("Silence"));
+   mEditMenu->Append(SilenceID, _("&Silence"));
    mEditMenu->AppendSeparator();
    mEditMenu->Append(InsertSilenceID, _("Insert Silence..."));
-   mEditMenu->Append(SplitID, _("Split"));
-   mEditMenu->Append(DuplicateID, _("Duplicate"));
+   mEditMenu->Append(SplitID, _("Spl&it"));
+   mEditMenu->Append(DuplicateID, _("Duplicat&e"));
    mEditMenu->AppendSeparator();
-   mEditMenu->Append(SelectAllID, _("&Select All"));
+   mEditMenu->Append(SelectAllID, _("Select &All"));
 
    mViewMenu = new wxMenu();
    mViewMenu->Append(ZoomInID, _("Zoom &In"));
@@ -142,43 +142,36 @@ void AudacityProject::CreateMenuBar()
                         _("Float Control Toolbar"));
    }
    
- 
-   if (!gEditToolBarStub)
-      {
-         //If a gEditToolBarStub doesn't exist, make the menu option
-         //enable loading
-       
-         mViewMenu->Append(LoadEditToolBarID, _("Load Edit Toolbar"));
-         mViewMenu->Append(FloatEditToolBarID, _("Float Edit Toolbar"));
-         mViewMenu->FindItem(FloatEditToolBarID)->Enable(false);
+   if (!gEditToolBarStub) {
+      //If a gEditToolBarStub doesn't exist, make the menu option
+      //enable loading
 
-     
+      mViewMenu->Append(LoadEditToolBarID, _("Load Edit Toolbar"));
+      mViewMenu->Append(FloatEditToolBarID, _("Float Edit Toolbar"));
+      mViewMenu->FindItem(FloatEditToolBarID)->Enable(false);
+
+   } else {
+      if(gEditToolBarStub->GetLoadedStatus()){
+         mViewMenu->Append(LoadEditToolBarID, _("Unload Edit Toolbar"));
+      } else {
+         mViewMenu->Append(LoadEditToolBarID, _("Load Edit Toolbar"));
+         mViewMenu->FindItem(FloatEditToolBarID)->Enable(false);
       }
-   else
-      {
-   
-         if(gEditToolBarStub->GetLoadedStatus()){
-            mViewMenu->Append(LoadEditToolBarID, _("Unload Edit Toolbar"));
-         } else {
-            mViewMenu->Append(LoadEditToolBarID, _("Load Edit Toolbar"));
-            mViewMenu->FindItem(FloatEditToolBarID)->Enable(false);
-         }
-         
-            
-         if(gEditToolBarStub->GetWindowedStatus()) 
-            mViewMenu->Append(FloatEditToolBarID, _("Unfloat Edit Toolbar"));
-         else
-            mViewMenu->Append(FloatEditToolBarID,    _("Float Edit Toolbar"));
-         
-      }
-   
+
+
+      if(gEditToolBarStub->GetWindowedStatus()) 
+         mViewMenu->Append(FloatEditToolBarID, _("Unfloat Edit Toolbar"));
+      else
+         mViewMenu->Append(FloatEditToolBarID,    _("Float Edit Toolbar"));
+
+   }
 #endif
 
    mProjectMenu = new wxMenu();
    mProjectMenu->Append(ImportID, _("&Import Audio..."));
    mProjectMenu->Append(ImportLabelsID, _("Import Labels..."));
    mProjectMenu->Append(ImportMIDIID, _("Import &MIDI..."));
-   mProjectMenu->Append(ImportRawID, _("Import Raw Data..."));
+   mProjectMenu->Append(ImportRawID, _("Import &Raw Data..."));
 #ifdef USE_ID3LIB
    mProjectMenu->AppendSeparator();
    mProjectMenu->Append(EditID3ID, _("Edit ID3 Tags..."));
@@ -760,7 +753,7 @@ void AudacityProject::Trim(wxEvent & event)
    mTrackPanel->Refresh(false);
    PushState(_("Trim file to selection"));   
 }
-   
+
 
 
 void AudacityProject::OnDelete(wxEvent & event)

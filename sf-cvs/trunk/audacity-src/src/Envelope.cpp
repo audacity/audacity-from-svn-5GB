@@ -421,8 +421,7 @@ void Envelope::CollapseRegion(double t0, double t1)
 
 void Envelope::Paste(double t0, Envelope *e)
 {
-   t0 -= mOffset;
-   t0 = wxMin(t0, mTrackLen);
+   t0 = wxMin(t0 - mOffset, mTrackLen);
    double deltat = e->mTrackLen;
 
    int i;

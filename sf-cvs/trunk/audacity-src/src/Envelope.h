@@ -39,12 +39,9 @@ class Envelope {
    virtual ~ Envelope();
 
    void SetInterpolateDB(bool db);
-
-   void Flatten(double value);
-
    void Mirror(bool mirror);
 
-   void CopyFrom(const Envelope * e, double t0, double t1);
+   void Flatten(double value);
 
    // File I/O
 
@@ -61,6 +58,7 @@ class Envelope {
 
    // Handling Cut/Copy/Paste events
    void CollapseRegion(double t0, double t1);
+   void CopyFrom(const Envelope * e, double t0, double t1);
    void Paste(double t0, Envelope *e);
 
    // Control
@@ -100,7 +98,6 @@ class Envelope {
    bool mIsDeleting;
 
    bool mDB;
-
    bool mDirty;
 };
 
