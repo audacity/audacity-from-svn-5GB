@@ -4461,8 +4461,8 @@ fi
 echo "$as_me: FLAC libraries are available as system libraries" >&6;}
    else
       LIBFLAC_SYSTEM_AVAILABLE="no"
-      { echo "$as_me:$LINENO: FLAC libraries are NOT available as system libraries" >&5
-echo "$as_me: FLAC libraries are NOT available as system libraries" >&6;}
+      { echo "$as_me:$LINENO: FLAC/FLAC++ libraries are NOT available as system libraries" >&5
+echo "$as_me: FLAC/FLAC++ libraries are NOT available as system libraries" >&6;}
    fi
 
 
@@ -4934,18 +4934,17 @@ fi
 
 
 
-   # I don't know if any released id3tag is sufficient, so disabling
-   # system use for now...
-
-   #if test $libid3tag_found = yes && test $id3tag_h_found = yes ; then
-   #   LIBID3TAG_SYSTEM_AVAILABLE="yes"
-   #   LIBID3TAG_SYSTEM_LIBS=-lid3tag
-   #   LIBID3TAG_SYSTEM_CPPSYMBOLS="USE_LIBID3TAG"
-   #   AC_MSG_NOTICE([Libid3tag libraries are available as system libraries])
-   #else
+   if test $libid3tag_found = yes && test $id3tag_h_found = yes ; then
+      LIBID3TAG_SYSTEM_AVAILABLE="yes"
+      LIBID3TAG_SYSTEM_LIBS=-lid3tag
+      LIBID3TAG_SYSTEM_CPPSYMBOLS="USE_LIBID3TAG"
+      { echo "$as_me:$LINENO: Libid3tag libraries are available as system libraries" >&5
+echo "$as_me: Libid3tag libraries are available as system libraries" >&6;}
+   else
       LIBID3TAG_SYSTEM_AVAILABLE="no"
-   #   AC_MSG_NOTICE([Libid3tag libraries are NOT available as system libraries])
-   #fi
+      { echo "$as_me:$LINENO: Libid3tag libraries are NOT available as system libraries" >&5
+echo "$as_me: Libid3tag libraries are NOT available as system libraries" >&6;}
+   fi
 
 
    as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/libid3tag/frame.h" | $as_tr_sh`
