@@ -310,7 +310,16 @@ void AudacityProject::Paste()
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::PasteOver()
+{
+   if(msClipLen>0.0)
+   {
+      mViewInfo.sel1=mViewInfo.sel0+msClipLen;
+      Paste();
+   }
 
+   return;
+}
 
 void AudacityProject::Trim()
 {

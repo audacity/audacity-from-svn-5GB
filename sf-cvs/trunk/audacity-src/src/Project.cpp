@@ -897,6 +897,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    }
 
    GetCommands()->EnableItemsByFunction("appmenu", "Paste", numTracksSelected > 0 && msClipLen > 0.0);
+   GetCommands()->EnableItemsByFunction("appmenu", "PasteOver", numTracksSelected > 0 && msClipLen > 0.0);
 
    //Calculate the ToolBarCheckSum (uniquely specifies state of all toolbars):
    int toolBarCheckSum = 0;
