@@ -16,6 +16,7 @@
 **********************************************************************/
 
 #include <wx/wxprec.h>
+#include <iostream>
 
 #ifndef WX_PRECOMP
 #include <wx/app.h>
@@ -136,7 +137,7 @@ void CloseAllProjects()
 {
    int len = gAudacityProjects.Count();
    for (int i = 0; i < len; i++)
-      gAudacityProjects[i]->Destroy();
+      gAudacityProjects[i]->Close();
 }
 
 enum {
@@ -844,11 +845,22 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 
 void AudacityProject::OnClose(wxCommandEvent & event)
 {
-   Destroy();
+   Close();
 }
 
 void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 {
+   if (mUndoManager.UnsavedChanges()) {
+      int result = wxMessageBox(_("Save changes before closing?"),
+                                _("Save changes?"),
+                                wxYES_NO | wxCANCEL | wxICON_QUESTION);
+
+      if (result == wxCANCEL || (result == wxYES && !Save()) ) {
+         event.Veto();
+         return;
+      }
+   }
+
    Destroy();
 }
 
@@ -1062,13 +1074,12 @@ void AudacityProject::Import(wxString fileName)
    }
 }
 
-void AudacityProject::Save(bool overwrite /* = true */ ,
+bool AudacityProject::Save(bool overwrite /* = true */ ,
                            bool fromSaveAs /* = false */ )
 {
-   if (!fromSaveAs && mDirManager.GetProjectName() == "") {
-      SaveAs();
-      return;
-   }
+   if (!fromSaveAs && mDirManager.GetProjectName() == "")
+      return SaveAs();
+
    //
    // Always save a backup of the original project file
    //
@@ -1136,7 +1147,7 @@ void AudacityProject::Save(bool overwrite /* = true */ ,
       if (safetyFileName)
          wxRename(safetyFileName, mFileName);
 
-      return;
+      return false;
    }
 
    wxTextFile f(mFileName);
@@ -1148,7 +1159,7 @@ void AudacityProject::Save(bool overwrite /* = true */ ,
       if (safetyFileName)
          wxRename(safetyFileName, mFileName);
 
-      return;
+      return false;
    }
 
    f.AddLine("AudacityProject");
@@ -1207,9 +1218,12 @@ void AudacityProject::Save(bool overwrite /* = true */ ,
 
    mStatus->SetField(wxString::Format(_("Saved %s"),
                                       (const char *) mFileName), 0);
+
+   mUndoManager.StateSaved();
+   return true;
 }
 
-void AudacityProject::SaveAs()
+bool AudacityProject::SaveAs()
 {
    wxString fName;
 
@@ -1225,11 +1239,11 @@ void AudacityProject::SaveAs()
                           _("Audacity projects (*.aup)|*.aup"), wxSAVE, this);
 
    if (fName == "")
-      return;
+      return false;
 
    if (fName == ".aup") {
       wxMessageBox(_("You must name the file!"));
-      return;
+      return false;
    }
 
    ::wxSplitPath(fName, &path, &baseName, &extension);
@@ -1239,7 +1253,7 @@ void AudacityProject::SaveAs()
    mFileName = path + wxFILE_SEP_PATH + mName;
    SetTitle(baseName);
 
-   Save(false, true);
+   return Save(false, true);
 }
 
 //
@@ -1270,6 +1284,7 @@ void AudacityProject::InitialState()
 {
    mUndoManager.ClearStates();
    PushState(_("Created new project"), false);
+   mUndoManager.StateSaved();
 }
 
 void AudacityProject::PushState(wxString desc, bool makeDirty /* = true */ )

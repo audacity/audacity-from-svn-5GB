@@ -215,6 +215,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    // Note that the titles of the menus here are dependent on the
    // titles above.
 
+   mFileMenu->Enable(SaveID, mUndoManager.UndoAvailable());
    mEditMenu->Enable(mEditMenu->FindItem(_("Undo")),
                      mUndoManager.UndoAvailable());
    mEditMenu->Enable(mEditMenu->FindItem(_("Redo")),
