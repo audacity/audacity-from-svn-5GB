@@ -87,6 +87,7 @@
 #include <wx/choicdlg.h>
 #include <wx/textctrl.h>
 #include <wx/intl.h>
+#include <wx/image.h>
 
 #include "AColor.h"
 #include "AudioIO.h"
@@ -104,6 +105,53 @@
 
 #include "widgets/ASlider.h"
 #include "widgets/Ruler.h"
+
+
+
+//--FIXME: Move this XPM out into an external file,
+// once the basic idea of custom icons has been validated.
+// Icons MUST be 32x32 (or they will be resized).
+
+/* XPM */
+static const char * EnvCursorXpm[] = {
+"32 32 3 1",
+" 	c #808080",  // background color = RGB:128,128,128
+".	c #000000",
+"+	c #FFFFFF",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"            .........           ",
+"            .+++++++.           ",
+"             .+++++.            ",
+"              .+++.             ",
+"               .+.              ",
+"                .               ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                .               ",
+"               .+.              ",
+"              .+++.             ",
+"             .+++++.            ",
+"            .+++++++.           ",
+"            .........           ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                "};
+
+//-- End of XPM FIXME
 
 //FIXME: the code below is obsolete
 //#if defined(__WXMAC__) && !defined(__UNIX__)
@@ -250,6 +298,14 @@ mAutoScrolling(false), mTrackLabel(this)
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
    mPencilCursor = new wxCursor(wxCURSOR_PENCIL);
    mSelectCursor = new wxCursor(wxCURSOR_IBEAM);
+   {
+      wxImage EnvImage = wxImage(wxBitmap(EnvCursorXpm).ConvertToImage());
+      EnvImage.SetMaskColour(128,128,128);
+      EnvImage.SetMask();// Enable mask.
+      EnvImage.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_X, 16 );
+      EnvImage.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_Y, 16 );
+      mEnvelopeCursor = new wxCursor( EnvImage );
+   }
    mSlideCursor = new wxCursor(wxCURSOR_SIZEWE);
    mSmoothCursor = new wxCursor(wxCURSOR_SPRAYCAN);
    mResizeCursor = new wxCursor(wxCURSOR_SIZENS);
@@ -366,6 +422,7 @@ TrackPanel::~TrackPanel()
    delete mArrowCursor;
    delete mPencilCursor;
    delete mSelectCursor;
+   delete mEnvelopeCursor;
    delete mSlideCursor;
    delete mResizeCursor;
    delete mSmoothCursor;
@@ -906,7 +963,8 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
       SetCursor(*mSlideCursor);
       return;
    } else if (mIsEnveloping) {
-      SetCursor(*mArrowCursor);
+//      SetCursor(*mArrowCursor);
+      SetCursor(*mEnvelopeCursor);
       return;
    } else if (mIsRearranging) {
       SetCursor(*mRearrangeCursor);
@@ -993,7 +1051,8 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
          break;
 
       case envelopeTool:
-         SetCursor(*mArrowCursor);
+//         SetCursor(*mArrowCursor);
+         SetCursor(*mEnvelopeCursor);
          break;
       case slideTool:
          SetCursor(*mSlideCursor);
