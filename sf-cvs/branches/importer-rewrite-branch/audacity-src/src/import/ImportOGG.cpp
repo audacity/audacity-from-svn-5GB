@@ -197,13 +197,11 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
 /* The number of bytes to get from the codec in each run */
 #define CODEC_TRANSFER_SIZE 4096
 
-   const int bufferSize = 1048576;
-   short *mainBuffer = new short[CODEC_TRANSFER_SIZE];
+/* The number of samples to read between calls to the callback.
+ * Balance between responsiveness of the GUI and throughput of import. */
+#define SAMPLES_PER_CALLBACK 100000
 
-   short **buffers = new short *[*outNumTracks];
-   for (int i = 0; i < *outNumTracks; i++) {
-      buffers[i] = new short[bufferSize];
-   }
+   short *mainBuffer = new short[CODEC_TRANSFER_SIZE];
 
    /* determine endianness (clever trick courtesy of Nicholas Devillard,
     * (http://www.eso.org/~ndevilla/endian/) */
@@ -214,13 +212,14 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
       endian = 1;  // big endian
 
    /* number of samples currently in each channel's buffer */
-   int bufferCount = 0;
    bool cancelled = false;
    long bytesRead = 0;
    long samplesRead = 0;
    int bitstream = 0;
+   int samplesSinceLastCallback = 0;
 
    do {
+      /* get data from the decoder */
       bytesRead = ov_read(mVorbisFile, (char *) mainBuffer,
                           CODEC_TRANSFER_SIZE,
                           endian,
@@ -229,35 +228,27 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
                           &bitstream);
       samplesRead = bytesRead / *outNumTracks / sizeof(short);
 
-      if (samplesRead + bufferCount > bufferSize) {
-         for (c = 0; c < *outNumTracks; c++)
-            channels[c]->Append((samplePtr)buffers[c],
-                                   int16Sample,
-                                   bufferCount);
-         bufferCount = 0;
+      /* give the data to the wavetracks */
+      for(c = 0; c < *outNumTracks; c++)
+          channels[c]->Append((char *)(mainBuffer + c),
+                              int16Sample,
+                              samplesRead,
+                              *outNumTracks);
+
+      samplesSinceLastCallback += samplesRead;
+      if( samplesSinceLastCallback > SAMPLES_PER_CALLBACK )
+      {
+          if( mProgressCallback )
+             cancelled = mProgressCallback(mUserData,
+                                           ov_time_tell(mVorbisFile) /
+                                           ov_time_total(mVorbisFile, bitstream));
+          samplesSinceLastCallback -= SAMPLES_PER_CALLBACK;
       }
-
-      /* Un-interleave */
-      for (int s = 0; s < samplesRead; s++)
-         for (c = 0; c < *outNumTracks; c++)
-            buffers[c][s + bufferCount] =
-                mainBuffer[s * (*outNumTracks) + c];
-
-      bufferCount += samplesRead;
-
-      if( mProgressCallback )
-         cancelled = mProgressCallback(mUserData,
-                                       ov_time_tell(mVorbisFile) /
-                                       ov_time_total(mVorbisFile, bitstream));
 
    } while (!cancelled && bytesRead != 0 && bitstream == 0);
 
    /* ...the rest is de-allocation */
    delete[]mainBuffer;
-
-   for (c = 0; c < *outNumTracks; c++)
-      delete[]buffers[c];
-   delete[]buffers;
 
    if (cancelled) {
       for (c = 0; c < *outNumTracks; c++)
