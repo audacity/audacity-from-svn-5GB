@@ -1305,6 +1305,20 @@ void AudacityProject::ZoomFit()
 }
 
 //
+// Zoom methods
+//
+
+void AudacityProject::ZoomSel()
+{
+   // BG: CTRL+E
+   // BG: Zoom to selection
+   mViewInfo.zoom *= mViewInfo.screen/(mViewInfo.sel1-mViewInfo.sel0);
+
+   FixScrollbars();
+   TP_ScrollWindow(mViewInfo.sel0);
+}
+
+//
 // Undo/History methods
 //
 

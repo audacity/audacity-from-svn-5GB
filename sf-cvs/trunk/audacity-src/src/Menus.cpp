@@ -116,6 +116,7 @@ void AudacityProject::CreateMenuBar()
    mViewMenu->Append(ZoomNormalID, _("Zoom &Normal\tCtrl+2"));
    mViewMenu->Append(ZoomOutID, _("Zoom &Out\tCtrl+3"));
    mViewMenu->Append(ZoomFitID, _("Fit in &Window\tCtrl+F"));
+   mViewMenu->Append(ZoomSelID, _("Zoom to &Selection\tCtrl+E"));
    mViewMenu->AppendSeparator();
    mViewMenu->Append(UndoHistoryID, _("History"));
    mViewMenu->Append(PlotSpectrumID, _("&Plot Spectrum\tCtrl+U"));
@@ -793,6 +794,11 @@ void AudacityProject::OnZoomNormal(wxCommandEvent & event)
 void AudacityProject::OnZoomFit(wxCommandEvent & event)
 {
    ZoomFit();
+}
+
+void AudacityProject::OnZoomSel(wxCommandEvent & event)
+{
+   ZoomSel();
 }
 
 void AudacityProject::OnPlotSpectrum(wxCommandEvent & event)
