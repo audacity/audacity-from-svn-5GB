@@ -260,6 +260,10 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
          toolBarCheckSum += 3;
    }
    
+   
+   // Get ahold of the clipboard status
+   bool clipboardStatus = static_cast<bool>(GetActiveProject()->Clipboard());
+
    // Return from this function if nothing's changed since
    // the last time we were here.
  
@@ -273,8 +277,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
        mLastZoomLevel == mViewInfo.zoom &&
        mLastToolBarCheckSum == toolBarCheckSum &&
        mLastUndoState == mUndoManager.UndoAvailable() &&
-       mLastRedoState == mUndoManager.RedoAvailable()  
-       )
+       mLastRedoState == mUndoManager.RedoAvailable() &&
+       mLastClipboardState == clipboardStatus  ) 
       return;
    
    // Otherwise, save state and then update all of the menus
@@ -290,6 +294,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    mLastToolBarCheckSum = toolBarCheckSum;
    mLastUndoState = mUndoManager.UndoAvailable();
    mLastRedoState = mUndoManager.RedoAvailable();  
+   mLastClipboardState = clipboardStatus;
 
    bool anySelection = numTracksSelected > 0 && nonZeroRegionSelected;
 
@@ -632,6 +637,9 @@ void AudacityProject::Copy(wxEvent & event)
 
    msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
    msClipProject = this;
+   
+   //Make sure the menus/toolbar states get updated
+   mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::Paste(wxEvent & event)
