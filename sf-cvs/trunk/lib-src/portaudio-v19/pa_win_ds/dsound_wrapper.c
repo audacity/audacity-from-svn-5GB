@@ -1,5 +1,5 @@
 /*
- * $Id: dsound_wrapper.c,v 1.1 2003-09-18 22:13:25 habes Exp $
+ * $Id: dsound_wrapper.c,v 1.2 2004-04-22 04:19:51 mbrubeck Exp $
  * Simplified DirectSound interface.
  *
  * Author: Phil Burk & Robert Marsanyi

@@ -1,7 +1,7 @@
 #ifndef PA_DITHER_H
 #define PA_DITHER_H
 /*
- * $Id: pa_dither.h,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: pa_dither.h,v 1.2 2004-04-22 04:19:50 mbrubeck Exp $
  * Portable Audio I/O Library triangular dither generator
  *
  * Based on the Open Source API proposed by Ross Bencina
@@ -31,13 +31,18 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/** @file
+ @brief Functions for generating dither noise
+*/
+
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif /* __cplusplus */
 
 
-/** State needed to generate a dither signal */
+/** @brief State needed to generate a dither signal */
 typedef struct PaUtilTriangularDitherGenerator{
     unsigned long previous;
     unsigned long randSeed1;
@@ -45,12 +50,12 @@ typedef struct PaUtilTriangularDitherGenerator{
 } PaUtilTriangularDitherGenerator;
 
 
-/** Initialize dither state */
+/** @brief Initialize dither state */
 void PaUtil_InitializeTriangularDitherState( PaUtilTriangularDitherGenerator *ditherState );
 
 
 /**
- Calculate 2 LSB dither signal with a triangular distribution.
+ @brief Calculate 2 LSB dither signal with a triangular distribution.
  Ranged for adding to a 1 bit right-shifted 32 bit integer
  prior to >>15. eg:
 <pre>
@@ -65,7 +70,7 @@ signed long PaUtil_Generate16BitTriangularDither( PaUtilTriangularDitherGenerato
 
 
 /**
- Calculate 2 LSB dither signal with a triangular distribution.
+ @brief Calculate 2 LSB dither signal with a triangular distribution.
  Ranged for adding to a pre-scaled float.
 <pre>
     float in = *

@@ -1,7 +1,7 @@
 #ifndef PA_CONVERTERS_H
 #define PA_CONVERTERS_H
 /*
- * $Id: pa_converters.h,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: pa_converters.h,v 1.2 2004-04-22 04:19:50 mbrubeck Exp $
  * Portable Audio I/O Library sample conversion mechanism
  *
  * Based on the Open Source API proposed by Ross Bencina
@@ -31,12 +31,19 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/** @file
+ @brief Conversion functions used to convert buffers of samples from one
+ format to another.
+*/
+
+
 #include "portaudio.h"  /* for PaSampleFormat */
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif /* __cplusplus */
+
 
 struct PaUtilTriangularDitherGenerator;
 

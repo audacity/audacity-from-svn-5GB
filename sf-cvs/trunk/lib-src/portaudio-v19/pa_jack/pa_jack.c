@@ -1,5 +1,5 @@
 /*
- * $Id: pa_jack.c,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: pa_jack.c,v 1.2 2004-04-22 04:19:50 mbrubeck Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * JACK Implementation by Joshua Haberman
@@ -365,8 +365,8 @@ PaError PaJack_Initialize( PaUtilHostApiRepresentation **hostApi,
                                       IsStreamStopped, IsStreamActive,
                                       GetStreamTime, GetStreamCpuLoad,
                                       PaUtil_DummyRead, PaUtil_DummyWrite,
-                                      PaUtil_DummyGetAvailable,
-                                      PaUtil_DummyGetAvailable );
+                                      PaUtil_DummyGetReadAvailable,
+                                      PaUtil_DummyGetWriteAvailable );
 
     return result;
 
@@ -457,7 +457,16 @@ static PaError IsFormatSupported( struct PaUtilHostApiRepresentation *hostApi,
     }
 
     /*
-        IMPLEMENT ME:
+        The following check is not necessary for JACK.
+        
+            - if a full duplex stream is requested, check that the combination
+                of input and output parameters is supported
+
+
+        Because the buffer adapter handles conversion between all standard
+        sample formats, the following checks are only required if paCustomFormat
+        is implemented, or under some other unusual conditions.
+        
             - check that input device can support inputSampleFormat, or that
                 we have the capability to convert from outputSampleFormat to
                 a native format
@@ -465,12 +474,10 @@ static PaError IsFormatSupported( struct PaUtilHostApiRepresentation *hostApi,
             - check that output device can support outputSampleFormat, or that
                 we have the capability to convert from outputSampleFormat to
                 a native format
-
-            - if a full duplex stream is requested, check that the combination
-                of input and output parameters is supported
-
-            - check that the device supports sampleRate
     */
+
+    /* check that the device supports sampleRate */
+    
 #define ABS(x) ( (x) > 0 ? (x) : -(x) )
     if( ABS(sampleRate - hostApi->deviceInfos[0]->defaultSampleRate) > 1 )
        return paInvalidSampleRate;

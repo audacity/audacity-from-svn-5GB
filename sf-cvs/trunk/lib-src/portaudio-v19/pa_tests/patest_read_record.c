@@ -5,7 +5,7 @@
     @author Ross Bencina rossb@audiomulch.com
 */
 /*
- * $Id: patest_read_record.c,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: patest_read_record.c,v 1.2 2004-04-22 04:19:51 mbrubeck Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
@@ -40,12 +40,12 @@
 #include <stdlib.h>
 #include "portaudio.h"
 
-/* #define SAMPLE_RATE  (17932) /* Test failure to open with this value. */
+/* #define SAMPLE_RATE  (17932) // Test failure to open with this value. */
 #define SAMPLE_RATE  (44100)
 #define FRAMES_PER_BUFFER (1024)
 #define NUM_SECONDS     (5)
 #define NUM_CHANNELS    (2)
-/* #define DITHER_FLAG     (paDitherOff)  /**/
+/* #define DITHER_FLAG     (paDitherOff)  */
 #define DITHER_FLAG     (0) /**/
 
 /* Select sample format. */
@@ -53,18 +53,22 @@
 #define PA_SAMPLE_TYPE  paFloat32
 typedef float SAMPLE;
 #define SAMPLE_SILENCE  (0.0f)
+#define PRINTF_S_FORMAT "%.8f"
 #elif 1
 #define PA_SAMPLE_TYPE  paInt16
 typedef short SAMPLE;
 #define SAMPLE_SILENCE  (0)
+#define PRINTF_S_FORMAT "%d"
 #elif 0
 #define PA_SAMPLE_TYPE  paInt8
 typedef char SAMPLE;
 #define SAMPLE_SILENCE  (0)
+#define PRINTF_S_FORMAT "%d"
 #else
 #define PA_SAMPLE_TYPE  paUInt8
 typedef unsigned char SAMPLE;
 #define SAMPLE_SILENCE  (128)
+#define PRINTF_S_FORMAT "%d"
 #endif
 
 
@@ -101,7 +105,7 @@ int main(void)
     if( err != paNoError ) goto error;
 
     inputParameters.device = Pa_GetDefaultInputDevice(); /* default input device */
-    inputParameters.channelCount = 2;       /* stereo input */
+    inputParameters.channelCount = NUM_CHANNELS;
     inputParameters.sampleFormat = PA_SAMPLE_TYPE;
     inputParameters.suggestedLatency = Pa_GetDeviceInfo( inputParameters.device )->defaultLowInputLatency;
     inputParameters.hostApiSpecificStreamInfo = NULL;
@@ -110,7 +114,7 @@ int main(void)
     err = Pa_OpenStream(
               &stream,
               &inputParameters,
-              NULL,                  //&outputParameters,
+              NULL,                  /* &outputParameters, */
               SAMPLE_RATE,
               FRAMES_PER_BUFFER,
               paClipOff,      /* we won't output out of range samples so don't bother clipping them */
@@ -144,6 +148,10 @@ int main(void)
 
     average = average / numSamples;
 
+    printf("Sample max amplitude = "PRINTF_S_FORMAT"\n", max );
+    printf("Sample average = "PRINTF_S_FORMAT"\n", average );
+/*  Was as below. Better choose at compile time because this
+    keeps generating compiler-warnings:
     if( PA_SAMPLE_TYPE == paFloat32 )
     {
         printf("sample max amplitude = %f\n", max );
@@ -154,7 +162,7 @@ int main(void)
         printf("sample max amplitude = %d\n", max );
         printf("sample average = %d\n", average );
     }
-
+*/
     /* Write recorded data to a file. */
 #if 0
     {
@@ -176,7 +184,7 @@ int main(void)
     /* Playback recorded data.  -------------------------------------------- */
     
     outputParameters.device = Pa_GetDefaultOutputDevice(); /* default output device */
-    outputParameters.channelCount = 2;       /* stereo output */
+    outputParameters.channelCount = NUM_CHANNELS;
     outputParameters.sampleFormat =  PA_SAMPLE_TYPE;
     outputParameters.suggestedLatency = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;
     outputParameters.hostApiSpecificStreamInfo = NULL;

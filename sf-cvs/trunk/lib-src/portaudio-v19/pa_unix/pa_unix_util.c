@@ -1,5 +1,5 @@
 /*
- * $Id: pa_unix_util.c,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: pa_unix_util.c,v 1.2 2004-04-22 04:19:51 mbrubeck Exp $
  * Portable Audio I/O Library
  * UNIX platform-specific support functions
  *
@@ -33,6 +33,7 @@
  
 #include <unistd.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 #include "pa_util.h"
 
@@ -82,12 +83,18 @@ int PaUtil_CountCurrentlyAllocatedBlocks( void )
 
 void Pa_Sleep( long msec )
 {
+    while( msec > 999 )     /* For OpenBSD and IRIX, argument */
+        {                   /* to usleep must be < 1000000.   */
+        usleep( 999000 );
+        msec -= 999;
+        }
     usleep( msec * 1000 );
 }
 
-
+/*            *** NOT USED YET: ***
 static int usePerformanceCounter_;
 static double microsecondsPerTick_;
+*/
 
 void PaUtil_InitializeClock( void )
 {
@@ -95,7 +102,9 @@ void PaUtil_InitializeClock( void )
 }
 
 
-double PaUtil_GetTime( void )
+PaTime PaUtil_GetTime( void )
 {
-    /* TODO */
+    struct timeval tv;
+    gettimeofday( &tv, NULL );
+    return (PaTime) tv.tv_usec / 1000000 + (PaTime) tv.tv_sec;
 }

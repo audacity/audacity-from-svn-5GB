@@ -1,43 +1,32 @@
 # Make PortAudio for Linux
+#
+# by Phil Burk
+#
+# To compile a test program, make a target with a .app suffix.
+# For example to compile "../pa_tests/pa_devs.c", enter:
+#    gmake pa_devs.app
+#
+# To compile and execute a test program, make a target with a .run suffix.
+# For example to build and run "../pa_tests/pa_devs.c", enter:
+#    gmake pa_devs.run
 
-LIBS =  -lm -lpthread
+VPATH  = ../pa_common ../pa_tests
+CFLAGS = -g -Wall -I../pa_common
+CC     = gcc
 
-CDEFINES = -I../pa_common
-CFLAGS = -g -Wall
-PASRC = ../pa_common/pa_lib.c pa_unix_oss.c
-PAINC = ../pa_common/portaudio.h
+PAOBJS = pa_lib.o pa_unix_oss.o pa_unix.o
+PAINC  = portaudio.h pa_unix.h
+PALIBS =  -lm -lpthread
 
-# Tests that work.
-TESTC   = $(PASRC) ../pa_tests/patest_sine.c
-#TESTC   = $(PASRC) ../pa_tests/patest_longsine.c
-#TESTC   = $(PASRC) ../pa_tests/patest_sine_time.c
-#TESTC   = $(PASRC) ../pa_tests/patest_maxsines.c
-#TESTC   = $(PASRC) ../pa_tests/patest_toomanysines.c
-#TESTC   = $(PASRC) ../pa_tests/patest_underflow.c
-#TESTC   = $(PASRC) ../pa_tests/patest_hang.c
-#TESTC   = $(PASRC) ../pa_tests/patest_sync.c
-#TESTC   = $(PASRC) ../pa_tests/patest_pink.c
-#TESTC   = $(PASRC) ../pa_tests/patest_leftright.c
-#TESTC   = $(PASRC) ../pa_tests/patest_clip.c
-#TESTC   = $(PASRC) ../pa_tests/patest_dither.c
-#TESTC   = $(PASRC) ../pa_tests/pa_devs.c
-#TESTC   = $(PASRC) ../pa_tests/patest_many.c
-#TESTC   = $(PASRC) ../pa_tests/patest_record.c
-#TESTC   = $(PASRC) ../pa_tests/pa_fuzz.c
-#TESTC   = $(PASRC) ../pa_tests/patest_wire.c
-#TESTC   = $(PASRC) ../pa_tests/paqa_devs.c
+all: patest_sine.run
 
-# Tests that do not yet work.
-# OSS doesn't let us make obscenely huge buffers so the test will seem to fail. But its OK.
-#TESTC   = $(PASRC) ../pa_tests/patest_stop.c
+%.app: %.o $(PAOBJS) $(PAINC) Makefile
+	gcc $(CFLAGS) $*.o $(PAOBJS) $(PALIBS) -o $@
 
-TESTH   = $(PAINC)
+%.run: %.app
+	./$*.app
 
-all: patest
-
-patest: $(TESTC) $(TESTH) Makefile
-	gcc $(CFLAGS) $(TESTC) $(CDEFINES) $(LIBS) -o patest
-
-run: patest
-	./patest
+clean:
+	-rm *.app
+	-rm *.o
 
