@@ -222,7 +222,7 @@ AC_ARG_WITH(ladspa,
    [AC_HELP_STRING([--with-ladspa],
       [compile with ladspa plug-in support [default=yes]])],
    use_ladspa=$withval,
-   use_ladspa="default")
+   use_ladspa="yes")
 
 AC_ARG_WITH(portmixer,
    [AC_HELP_STRING([--with-portmixer],
@@ -282,70 +282,20 @@ CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cxxflags`"
 
 AC_CANONICAL_HOST
 
-dnl PortAudio configuration
+dnl OS-specific configuration
 
-if [[ "$use_portaudio" = "v19" ]] ; then
-   AC_DEFINE(USE_PORTAUDIO_V19, 1,
-      [Define if PortAudio v19 is being used (instead of v18)])
-
-   BUILDLIBS="$BUILDLIBS portaudio-v19/lib/libportaudio.a"
-   EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
-   CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio-v19/pa_common $CXXFLAGS"
-
-   AC_CONFIG_SUBDIRS([[lib-src/portaudio-v19]])
-
-else
-
-   CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio/pa_common $CXXFLAGS"
-
-   case "${host_os}" in
-     darwin* | rhapsody*)
+case "${host_os}" in
+   darwin* | rhapsody*)
       dnl Mac OS X configuration
-
       CONFIGHEADER="configunix.h"
-
-      dnl CoreAudio
-
       CXXFLAGS="-I../mac $CXXFLAGS"
-
-      BUILDLIBS="$BUILDLIBS portaudio/pa_mac_core/portaudio.a"
-      EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_mac_core/portaudio.a"
-
-      if [[ "$use_portmixer" = "yes" ]] ; then
-         BUILDLIBS="$BUILDLIBS portmixer/px_mac_core/portmixer.a"
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_mac_core/portmixer.a"     
-      fi
-
-      LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
-      LIBS="-framework CoreAudio $LIBS -lz"
-
       AFTERBUILD="cp ../audacity ../Audacity.app && `$WX_CONFIG --rezflags` ../Audacity.app ../mac/audacity.r -c auDy && /Developer/Tools/SetFile -a avBstClinmed ../Audacity.app"
-
-      if [[ "$use_ladspa" = "default" ]] ; then
-         use_ladspa="yes";
-      fi
-
-      dnl VST - now separate
-      dnl OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/LoadVSTMac.o"
-      dnl OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/VSTEffect.o"
       ;;
 
    cygwin*)
       dnl Windows/CygWin configuration
-      
-      BUILDLIBS="$BUILDLIBS portaudio/pa_win_wmme/portaudio.a"
-      EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_win_wmme/portaudio.a"
       LIBS="$LIBS -lkernel32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lodbc32 -lodbccp32 -lwsock32 -lwinmm"
       CONFIGHEADER="configwin.h"
-    
-      if [[ "$use_portmixer" = "yes" ]] ; then
-         BUILDLIBS="$BUILDLIBS portmixer/px_win_wmme/portmixer.a"
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_win_wmme/portmixer.a"
-      fi
-    
-      if [[ "$use_ladspa" = "default" ]] ; then
-         use_ladspa="yes";
-      fi
     
       AC_DEFINE(__CYGWIN__,1,[We're using cygwin])
       AC_DEFINE(_FILE_OFFSET_BITS,32,[Placeholder for large file support])
@@ -355,25 +305,86 @@ else
 
    *)
       dnl Unix OSS configuration
-
       CONFIGHEADER="configunix.h"
-
-      BUILDLIBS="$BUILDLIBS portaudio/pa_unix_oss/portaudio.a"
-      EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
-
-      if [[ "$use_portmixer" = "yes" ]] ; then
-         BUILDLIBS="$BUILDLIBS portmixer/px_unix_oss/portmixer.a"
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_unix_oss/portmixer.a"     
-      fi
-
-      if [[ "$use_ladspa" = "default" ]] ; then
-         use_ladspa="yes";
-      fi
-
       AFTERBUILD=""
+esac
 
+dnl PortAudio configuration
+
+if [[ "$use_portaudio" = "v19" ]] ; then
+   dnl PortAudio v19
+   AC_DEFINE(USE_PORTAUDIO_V19, 1,
+      [Define if PortAudio v19 is being used (instead of v18)])
+
+   BUILDLIBS="$BUILDLIBS portaudio-v19/lib/libportaudio.a"
+   EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
+   CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio-v19/pa_common $CXXFLAGS"
+
+   AC_CONFIG_SUBDIRS([[lib-src/portaudio-v19]])
+
+   dnl TODO: Use same library selections as PortAudio v19's configure script.
+   case "${host_os}" in
+      darwin* | rhapsody*)
+         LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
+         LIBS="-framework CoreAudio $LIBS -lz"
+         ;;
+      cygwin*)
+         ;;
+      *)
+         dnl Unix
+         AC_CHECK_LIB(asound, snd_pcm_open, have_alsa=yes, have_alsa=no)
+         if [[ $have_alsa = "yes" ]] ; then
+            LIBS="$LIBS -lasound"
+         fi
+         PKG_CHECK_MODULES(JACK, jack, have_jack=yes, have_jack=no)
+         if [[ $have_jack = "yes" ]] ; then
+            LIBS="$LIBS $JACK_LIBS"
+         fi
+         ;;
+   esac
+
+else
+   dnl PortAudio v18
+   CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio/pa_common $CXXFLAGS"
+
+   case "${host_os}" in
+      darwin* | rhapsody*)
+         BUILDLIBS="$BUILDLIBS portaudio/pa_mac_core/portaudio.a"
+         EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_mac_core/portaudio.a"
+
+         LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
+         LIBS="-framework CoreAudio $LIBS -lz"
+         ;;
+      cygwin*)
+         BUILDLIBS="$BUILDLIBS portaudio/pa_win_wmme/portaudio.a"
+         EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_win_wmme/portaudio.a"
+         ;;
+      *)
+         dnl Unix
+         BUILDLIBS="$BUILDLIBS portaudio/pa_unix_oss/portaudio.a"
+         EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
+         ;;
    esac
 fi
+
+if [[ "$use_portmixer" = "yes" ]] ; then
+   case "${host_os}" in
+      darwin* | rhapsody*)
+         BUILDLIBS="$BUILDLIBS portmixer/px_mac_core/portmixer.a"
+         EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_mac_core/portmixer.a"     
+         ;;
+      cygwin*)
+         BUILDLIBS="$BUILDLIBS portmixer/px_win_wmme/portmixer.a"
+         EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_win_wmme/portmixer.a"
+         ;;
+      *)
+         dnl Unix
+         BUILDLIBS="$BUILDLIBS portmixer/px_unix_oss/portmixer.a"
+         EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_unix_oss/portmixer.a"     
+         ;;
+   esac
+fi
+
 
 case "$host_os" in
    darwin* | rhapsody*)
@@ -386,21 +397,20 @@ case "$host_os" in
       ;;
 esac
 
+
 dnl Special configuration for LADSPA on Mac OS X
 if [[ "$use_ladspa" = "yes" ]] ; then
    case "$host_os" in
       darwin* | rhapsody*)
-
-      LOCAL_LIBS="$LOCAL_LIBS libdl.a"
-      CXXFLAGS="$CXXFLAGS -I$(srcdir)/lib-src/dlcompat"
-      if test ! -f "lib-src/dlcompat/Makefile"; then
-         echo "--- Configuring dlcompat";
-         AC_CONFIG_SUBDIRS([[lib-src/dlcompat]])
-      fi    
-
-      ;;
-   *)
-      ;;
+         LOCAL_LIBS="$LOCAL_LIBS libdl.a"
+         CXXFLAGS="$CXXFLAGS -I$(srcdir)/lib-src/dlcompat"
+         if test ! -f "lib-src/dlcompat/Makefile"; then
+            echo "--- Configuring dlcompat";
+            AC_CONFIG_SUBDIRS([[lib-src/dlcompat]])
+         fi    
+         ;;
+      *)
+         ;;
    esac
 fi
 
@@ -415,8 +425,6 @@ fi
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_TYPE_SIZE_T
-
-dnl Checks for library functions.
 
 case "${host_os}" in
    cygwin*)
