@@ -196,6 +196,10 @@ void KeyConfigPrefs::AddComboToList(wxCommandEvent& event)
 {
    wxString comboString = mCurrentComboText->GetValue();
 
+   //BG: Cannot add blank key
+   if(!comboString.length())
+      return;
+
    for(int i = 0; i < mKeysList->GetItemCount(); i++)
    {
       if(comboString == mKeysList->GetItemText(i))
@@ -205,6 +209,8 @@ void KeyConfigPrefs::AddComboToList(wxCommandEvent& event)
    mKeysList->InsertItem(mKeysList->GetItemCount(), comboString);
 
    gPrefs->Write("/Keyboard/" + wxString::Format("%i", mCommandSelected) + "/" + comboString, (long)0);
+
+   mCurrentComboText->SetValue("");
 }
 
 bool KeyConfigPrefs::Apply()
