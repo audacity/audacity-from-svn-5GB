@@ -623,8 +623,13 @@ void AudioIO::StartMonitoring(double sampleRate)
    sampleFormat captureFormat = (sampleFormat)
       gPrefs->Read("/SamplingRate/DefaultProjectSampleFormat", floatSample);
    gPrefs->Read("/AudioIO/RecordChannels", &captureChannels, 1L);
+   gPrefs->Read("/AudioIO/SWPlaythrough", &mSoftwarePlaythrough, false);
+   int playbackChannels = 0;
 
-   success = StartPortAudioStream(sampleRate, 0,
+   if (mSoftwarePlaythrough)
+      playbackChannels = 2;
+
+   success = StartPortAudioStream(sampleRate, (unsigned int)playbackChannels,
                                   (unsigned int)captureChannels,
                                   captureFormat);
 
@@ -673,6 +678,8 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    }
    #endif
 
+   gPrefs->Read("/AudioIO/SWPlaythrough", &mSoftwarePlaythrough, false);
+
    mInputMeter = NULL;
    mOutputMeter = NULL;
    mRate    = sampleRate;
@@ -706,6 +713,9 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    sampleFormat captureFormat = floatSample;
 
    if( playbackTracks.GetCount() > 0 )
+      playbackChannels = 2;
+
+   if (mSoftwarePlaythrough)
       playbackChannels = 2;
 
    if( captureTracks.GetCount() > 0 )
@@ -1442,6 +1452,34 @@ int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
 
 #define paContinue 0
 
+void DoSoftwarePlaythrough(void *inputBuffer,
+                           sampleFormat inputFormat,
+                           int inputChannels,
+                           float *outputBuffer,
+                           int len,
+                           float gain)
+{
+   float *tempBuffer = (float *)alloca(len * sizeof(float));
+   int i, j;
+
+   for(j=0; j<inputChannels; j++) {
+      samplePtr inputPtr = ((samplePtr)inputBuffer) + (j * SAMPLE_SIZE(inputFormat));
+      
+      CopySamples(inputPtr, inputFormat,
+                  (samplePtr)tempBuffer, floatSample,
+                  len, true, inputChannels);
+
+      for(i=0; i<len; i++)
+         outputBuffer[2*i + (j%2)] = tempBuffer[i];
+
+      // One mono input channel goes to both output channels...
+      if (inputChannels == 1)
+         for(i=0; i<len; i++)
+            outputBuffer[2*i + 1] = tempBuffer[i];
+   }
+   
+}
+
 int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                           unsigned long framesPerBuffer,
                           PaTimestamp outTime, void *userData )
@@ -1463,6 +1501,16 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
       {
          ClearSamples((samplePtr)outputBuffer, floatSample,
                       0, framesPerBuffer * numPlaybackChannels);
+
+         if (inputBuffer && gAudioIO->mSoftwarePlaythrough) {
+            float gain = 1.0;
+            if (gAudioIO->mEmulateMixerInputVol)
+               gain = gAudioIO->mMixerInputVol;
+
+            DoSoftwarePlaythrough(inputBuffer, gAudioIO->mCaptureFormat,
+                                  numCaptureChannels,
+                                  (float *)outputBuffer, (int)framesPerBuffer, gain);
+         }
       }
 
 #ifndef USE_PORTAUDIO_V19
@@ -1486,6 +1534,16 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
          float *outputFloats = (float *)outputBuffer;
          for( i = 0; i < framesPerBuffer*numPlaybackChannels; i++)
             outputFloats[i] = 0.0;
+
+         if (inputBuffer && gAudioIO->mSoftwarePlaythrough) {
+            float gain = 1.0;
+            if (gAudioIO->mEmulateMixerInputVol)
+               gain = gAudioIO->mMixerInputVol;
+
+            DoSoftwarePlaythrough(inputBuffer, gAudioIO->mCaptureFormat,
+                                  numCaptureChannels,
+                                  (float *)outputBuffer, (int)framesPerBuffer, gain);
+         }
          
          int numSolo = 0;
          for( t = 0; t < numPlaybackTracks; t++ )
@@ -1673,7 +1731,27 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
      #endif
 
    } // if mStreamToken > 0
-   
+   else {
+      // No tracks to play, but we should clear the output, and
+      // possibly do software playthrough...
+      
+      if( outputBuffer && (numPlaybackChannels > 0) ) {
+         float *outputFloats = (float *)outputBuffer;
+         for( i = 0; i < framesPerBuffer*numPlaybackChannels; i++)
+            outputFloats[i] = 0.0;
+         
+         if (inputBuffer && gAudioIO->mSoftwarePlaythrough) {
+            float gain = 1.0;
+            if (gAudioIO->mEmulateMixerInputVol)
+               gain = gAudioIO->mMixerInputVol;
+            
+            DoSoftwarePlaythrough(inputBuffer, gAudioIO->mCaptureFormat,
+                                  numCaptureChannels,
+                                  (float *)outputBuffer, (int)framesPerBuffer, gain);
+         }
+      }
+   }
+
    // Send data to VU meters
 
    // It's critical that we don't update the meters while
