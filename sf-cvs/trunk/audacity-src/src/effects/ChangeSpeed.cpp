@@ -10,14 +10,19 @@
 
 **********************************************************************/
 
+#include "../Audacity.h" // for USE_LIBSAMPLERATE
+
+#if USE_LIBSAMPLERATE
+
 #include <math.h>
 
 #include <wx/intl.h>
-#include <wx/msgdlg.h> //v for "not yet implemented"
+#include <wx/msgdlg.h> // for wxMessageBox
 #include <wx/valtext.h>
 
+#include "../Envelope.h"
+#include "../Prefs.h"
 #include "ChangeSpeed.h"
-#include "../WaveTrack.h"
 
 //
 // EffectChangeSpeed
@@ -25,6 +30,10 @@
 
 EffectChangeSpeed::EffectChangeSpeed()
 {
+	// libsamplerate related
+	m_pSRC_STATE = NULL;
+
+	// control values
 	m_PercentChange = 0.0;
 	m_FromVinyl = 0; 
 	m_ToVinyl = 0; 
@@ -37,19 +46,16 @@ wxString EffectChangeSpeed::GetEffectDescription() {
 									m_PercentChange); 
 } 
 
-bool EffectChangeSpeed::Init()
-{
-	//v
-	return true;
-}
-
 bool EffectChangeSpeed::PromptUser()
 {
    ChangeSpeedDialog dlog(mParent, -1, _("Change Speed"));
    dlog.m_PercentChange = m_PercentChange;
    dlog.m_FromVinyl = m_FromVinyl;
    dlog.m_ToVinyl = m_ToVinyl;
-   dlog.TransferDataToWindow();
+	//v Don't need to call TransferDataToWindow, although other 
+	//		Audacity dialogs (from which I derived this one) do it, because 
+	//		ShowModal calls stuff that eventually calls wxWindowBase::OnInitDialog, 
+	//		which calls dlog.TransferDataToWindow();
    dlog.CentreOnParent();
    dlog.ShowModal();
 
@@ -63,11 +69,176 @@ bool EffectChangeSpeed::PromptUser()
    return true;
 }
 
-bool EffectChangeSpeed::ProcessSimpleMono(float * buffer, sampleCount len)
+bool EffectChangeSpeed::Process()
 {
-	//v 
+	// initialize for libsamplerate (SRC)
+	//		per examples of Mixer::Mixer() and sndfile-resample.c example
+
+	bool bHighQuality = true; //v This should come from prefs, too!
+   long converterType = SRC_SINC_FASTEST; // Audacity default
+   if (bHighQuality)
+      converterType = gPrefs->Read("/Quality/HQSampleRateConverter",
+													(long)SRC_SINC_FASTEST);
+   else
+      converterType = gPrefs->Read("/Quality/SampleRateConverter",
+													(long)SRC_SINC_FASTEST);
+	
+	int error;
+	m_pSRC_STATE = src_new(converterType, 1, &error);
+	if (m_pSRC_STATE == NULL) {
+		this->ReportLibSampleRateError(error);
+		return false;
+	}
+
+	// The rest is just like EffectSoundTouch::Process(), except deleting m_pSRC_STATE.
+
+   //Iterate over each track
+   TrackListIterator iter(mWaveTracks);
+   WaveTrack *track = (WaveTrack *) iter.First();
+   mCurTrackNum = 0;
+   while (track) {
+      //Get start and end times from track
+      double trackStart = track->GetStartTime();
+      double trackEnd = track->GetEndTime();
+
+      //Set the current bounds to whichever left marker is
+      //greater and whichever right marker is less:
+      mCurT0 = mT0 < trackStart? trackStart: mT0;
+      mCurT1 = mT1 > trackEnd? trackEnd: mT1;
+
+      // Process only if the right marker is to the right of the left marker
+      if (mCurT1 > mCurT0) {
+
+         //Transform the marker timepoints to samples
+         longSampleCount start = track->TimeToLongSamples(mCurT0);
+         longSampleCount end = track->TimeToLongSamples(mCurT1);
+         
+         //Get the track rate and samples
+         mCurRate = track->GetRate();
+         mCurChannel = track->GetChannel();
+
+         //ProcessOne() (implemented below) processes a single track
+         if (!ProcessOne(track, start, end))
+            return false;
+      }
+      
+      //Iterate to the next track
+      track = (WaveTrack *) iter.Next();
+      mCurTrackNum++;
+   }
+
+	m_pSRC_STATE = src_delete(m_pSRC_STATE);
+
    return true;
 }
+
+// ProcessOne() takes a track, transforms it to bunch of buffer-blocks,
+// and calls libsamplerate code on these blocks.
+bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
+												longSampleCount start, longSampleCount end)
+{
+	if ((track == NULL) || (m_pSRC_STATE == NULL))
+		return false;
+
+	// initialization, per examples of Mixer::Mixer and EffectSoundTouch::ProcessOne
+   WaveTrack * outputTrack = mFactory->NewWaveTrack(track->GetSampleFormat());
+
+   //Get the length of the selection (as double). len is
+   //used simple to calculate a progress meter, so it is easier
+   //to make it a double now than it is to do it later 
+   double len = (double)(end - start);
+
+   // Initiate processing buffers, most likely shorter than 
+	//	the length of the selection being processed.
+	//vvv DANGER, WILL ROBINSON! If the speed is slowed, 
+	//		the output buffer needs to be bigger than the input buffer, but 
+	//		then, since bufferSize is a max block size for the track, 
+	//		need to make outBuffer be bufferSize, and inBuffer some fraction of that.
+	//		The blockSize stuff may make this safe, but not sure.
+	sampleCount bufferSize = track->GetMaxBlockSize();
+   float * inBuffer = new float[bufferSize];
+   float * outBuffer = new float[bufferSize];
+
+	// Set up the libsamplerate stuff for this track.
+	SRC_DATA	theSRC_DATA;
+	theSRC_DATA.data_in = inBuffer;
+	theSRC_DATA.data_out = outBuffer;
+	theSRC_DATA.src_ratio = 100.0 / (100.0 + m_PercentChange);
+
+	// Using src_reset, there's no need to create a new SRC_STATE for each track, . 
+	int error;
+   if ((error = src_reset(m_pSRC_STATE)) != 0) {
+		this->ReportLibSampleRateError(error);
+		return false;
+	}
+
+   //Go through the track one buffer at a time. samplePos counts which
+   //sample the current buffer starts at.
+	bool bLoopSuccess = true;
+   sampleCount blockSize;
+  	longSampleCount samplePos = start;
+   while (samplePos < end) {
+      //Get a blockSize of samples (smaller than the size of the buffer)
+      blockSize = track->GetBestBlockSize(samplePos);
+
+      //Adjust the block size if it is the final block in the track
+      if (samplePos + blockSize > end)
+         blockSize = end - samplePos;
+
+      //Get the samples from the track and put them in the buffer
+      track->Get((samplePtr) inBuffer, floatSample, samplePos, blockSize);
+
+		// libsamplerate
+		theSRC_DATA.input_frames = blockSize;
+		theSRC_DATA.output_frames = bufferSize;
+		theSRC_DATA.end_of_input = (int)((samplePos + blockSize) >= end);
+
+		if ((error = src_process(m_pSRC_STATE, &theSRC_DATA)) != 0) {
+			this->ReportLibSampleRateError(error);
+			bLoopSuccess = false;
+			break;
+		}
+      if (theSRC_DATA.output_frames_gen > 0) 
+         outputTrack->Append((samplePtr)outBuffer, floatSample, 
+										theSRC_DATA.output_frames_gen);
+
+      //Increment samplePos one blockfull of samples
+      samplePos += blockSize; //v or use theSRC_DATA.input_frames_used?
+
+      //Update the Progress meter
+      if (TrackProgress(mCurTrackNum, (samplePos - start) / len)) {
+			bLoopSuccess = false;
+			break;
+		}
+   }
+
+	// Flush the output WaveTrack (since it's buffered, too)
+	outputTrack->Flush();
+
+   // Clean up the buffers
+   delete [] inBuffer;
+   delete [] outBuffer;
+
+   // Take the output track and insert it in place of the original
+   // sample data
+	if (bLoopSuccess) {
+		track->Clear(mT0, mT1);
+		track->Paste(mT0, outputTrack);
+	}
+
+   // Delete the outputTrack now that its data is inserted in place
+   delete outputTrack;
+
+   return bLoopSuccess;
+}
+
+void EffectChangeSpeed::ReportLibSampleRateError(int error)
+{
+	wxString str;
+	str.Printf(_("LibSampleRate error: %s"), src_strerror(error));
+	wxMessageBox(str, _("LibSampleRate error"));
+}
+
 
 //----------------------------------------------------------------------------
 // ChangeSpeedDialog
@@ -83,8 +254,6 @@ bool EffectChangeSpeed::ProcessSimpleMono(float * buffer, sampleCount len)
 #define CHOICE_45 1
 #define CHOICE_78 2
 #define CHOICE_NA 3 
-
-#define RATIO_33ANDATHIRD_45 //v
 
 // event table for ChangeSpeedDialog
 
@@ -149,7 +318,7 @@ ChangeSpeedDialog::ChangeSpeedDialog(wxWindow * parent,
 
 	//v Override wxTextValidator to disallow negative values <= -100.0?
    wxTextCtrl * pTextCtrl_PercentChange =
-       new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, _("0.0"), 
+       new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, "0.0", 
 								wxDefaultPosition, wxSize(40, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_PercentChange->Add(pTextCtrl_PercentChange, 0, 
@@ -170,7 +339,7 @@ ChangeSpeedDialog::ChangeSpeedDialog(wxWindow * parent,
 	// from/to Vinyl controls
    wxBoxSizer * pBoxSizer_Vinyl = new wxBoxSizer(wxHORIZONTAL);
 
-	const wxString strArray_VinylRPM[] = {_("33 1/3"), _("45"), _("78"), _("n/a")};
+	const wxString strArray_VinylRPM[] = {"33 1/3", "45", "78", _("n/a")};
 	const int numChoices = 4;
 
    pStaticText =
@@ -355,9 +524,6 @@ void ChangeSpeedDialog::OnOk(wxCommandEvent & event)
 {
    TransferDataFromWindow();
    
-	wxMessageBox(_("Change Speed not yet implemented."),
-                _("Not Yet Implemented"));
-
    if (Validate()) 
       EndModal(true);
    else 
@@ -377,7 +543,7 @@ void ChangeSpeedDialog::Update_Text_PercentChange()
 	wxTextCtrl * pTextCtrl = this->GetTextCtrl_PercentChange();
 	if (pTextCtrl) {
 		wxString str;
-		str.Printf(_("%.1f"), m_PercentChange);
+		str.Printf("%.1f", m_PercentChange);
 		pTextCtrl->SetValue(str);
 	}
 }
@@ -427,3 +593,5 @@ void ChangeSpeedDialog::Update_PercentChange()
 		this->Update_Slider_PercentChange();
 	}
 }
+
+#endif // USE_LIBSAMPLERATE
