@@ -5,16 +5,17 @@ dnl Initialization and Versioning
 dnl ------------------------------------------------
 
 AC_INIT(lib/mdct.c)
-AM_INIT_AUTOMAKE(libvorbis,1.0)
+AM_INIT_AUTOMAKE(libvorbis,1.0.1)
+AM_MAINTAINER_MODE
 
 dnl Library versioning
 
-V_LIB_CURRENT=2
+V_LIB_CURRENT=3
 V_LIB_REVISION=0
-V_LIB_AGE=2
-VF_LIB_CURRENT=3
+V_LIB_AGE=3
+VF_LIB_CURRENT=4
 VF_LIB_REVISION=0
-VF_LIB_AGE=0
+VF_LIB_AGE=1
 VE_LIB_CURRENT=2
 VE_LIB_REVISION=0
 VE_LIB_AGE=0
@@ -40,6 +41,27 @@ AC_PROG_CPP
 CFLAGS="$cflags_save"
 
 AM_PROG_LIBTOOL
+
+dnl docbook xml transform and processing tools
+AC_ARG_ENABLE(docs,
+  [  --enable-docs          build the documentation],
+  [case "${enableval}" in
+    yes) build_docs=true;;
+    no)  build_docs=false;;
+    *)   AC_MSG_ERROR(unknown value ${enableval} for --enable-docs);;
+  esac],[build_docs=false])
+
+dnl ideally we'd look for other tools and support them
+if test x$build_docs = xtrue; then
+  AC_CHECK_PROGS([XSLTPROC], xsltproc, [/bin/false])
+  AC_CHECK_PROGS([PDFXMLTEX], pdfxmltex, [/bin/false])
+  if test "x$XSLTPROC" = "x/bin/false" || test "x$PDFXMLTEX" = "x/bin/false"; then
+    build_docs=false
+    AC_MSG_WARN([Documentation will not be built])
+  fi
+fi
+
+AM_CONDITIONAL(BUILD_DOCS, [test x$build_docs = xtrue])
 
 dnl --------------------------------------------------
 dnl Set build flags based on environment
@@ -164,7 +186,8 @@ AC_CHECK_LIB(m, cos, LIBS="-lm", LIBS="")
 AC_CHECK_LIB(pthread, pthread_create, pthread_lib="-lpthread", :)
 
 XIPH_PATH_OGG(, AC_MSG_ERROR(must have Ogg installed!))
-dnl AC_CHECK_LIB(ogg, oggpack_writealign, , AC_MSG_ERROR(Ogg >= 1.0 required !))
+LIBS="$LIBS $OGG_LIBS"
+AC_CHECK_FUNC(oggpack_writealign, , AC_MSG_ERROR(Ogg >= 1.0 required !))
 
 dnl --------------------------------------------------
 dnl Check for library functions
@@ -173,24 +196,13 @@ dnl --------------------------------------------------
 AC_FUNC_ALLOCA
 AC_FUNC_MEMCMP
 
-AC_CHECK_FUNCS(sqrtf)
-AC_CHECK_FUNCS(logf)
-AC_CHECK_FUNCS(expf)
-AC_CHECK_FUNCS(acosf)
-AC_CHECK_FUNCS(atanf)
-AC_CHECK_FUNCS(frexpf)
-AC_CHECK_FUNCS(rintf)
-AC_CHECK_FUNCS(floorf)
-
 dnl --------------------------------------------------
 dnl Do substitutions
 dnl --------------------------------------------------
-
-LIBS="$LIBS $OGG_LIBS"
 
 AC_SUBST(LIBS)
 AC_SUBST(DEBUG)
 AC_SUBST(PROFILE)
 AC_SUBST(pthread_lib)
 
-AC_OUTPUT(Makefile lib/Makefile lib/modes/Makefile lib/books/Makefile lib/books/coupled/Makefile lib/books/uncoupled/Makefile lib/books/floor/Makefile doc/Makefile doc/vorbisfile/Makefile doc/vorbisenc/Makefile include/Makefile include/vorbis/Makefile examples/Makefile win32/Makefile debian/Makefile vq/Makefile)
+AC_OUTPUT(Makefile lib/Makefile lib/modes/Makefile lib/books/Makefile lib/books/coupled/Makefile lib/books/uncoupled/Makefile lib/books/floor/Makefile doc/Makefile doc/vorbisfile/Makefile doc/vorbisenc/Makefile include/Makefile include/vorbis/Makefile examples/Makefile win32/Makefile debian/Makefile vq/Makefile vorbis.pc vorbisenc.pc vorbisfile.pc)
