@@ -90,14 +90,14 @@ PrefsPanel(parent)
       if (info->maxOutputChannels > 0) {
          playNames[k] = info->name;
          if (playNames[k] == mPlayDevice)
-            playIndex = k-1;
+            playIndex = k;
          k++;
       }
    }
 
    mPlayChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
                               numDevices, playNames);
-   mPlayChoice->SetSelection(playIndex+1);
+   mPlayChoice->SetSelection(playIndex);
 
    pFileSizer->Add(
       new wxStaticText(this, -1, _("Device:")), 0, 
@@ -139,14 +139,14 @@ PrefsPanel(parent)
       if (info->maxInputChannels > 0) {
          recNames[k] = info->name;
          if (recNames[k] == mRecDevice)
-            recIndex = k-1;
+            recIndex = k;
          k++;
       }
    }
 
    mRecChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
                               numDevices, recNames);
-   mRecChoice->SetSelection(recIndex+1);
+   mRecChoice->SetSelection(recIndex);
 
    rFileSizer->Add(
       new wxStaticText(this, -1, _("Device:")), 0, 
