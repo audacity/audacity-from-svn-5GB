@@ -12,6 +12,9 @@ libvorbis/lib/.libs/libvorbis.a:
 libvorbis/lib/.libs/libvorbisfile.a:
 	cd libvorbis && $(MAKE)
 
+libvorbis/lib/.libs/libvorbisenc.a:
+	cd libvorbis && $(MAKE)
+
 libmad/.libs/libmad.a:
 	cd libmad && $(MAKE)
 
