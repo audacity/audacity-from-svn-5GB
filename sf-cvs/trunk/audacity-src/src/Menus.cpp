@@ -203,6 +203,19 @@ void AudacityProject::CreateMenuBar()
    SetMenuBar(mMenuBar);
 
    mInsertSilenceAmount = 1.0;
+
+#include "commands.h" // BG: Generate an array of command names, and their corresponding functions
+#include "commandkeys.h" // BG: Generate an array of keys combos that cannot be used
+}
+
+wxString &AudacityProject::GetCommandName(int nIndex)
+{
+   return *mCommandNames[nIndex];
+}
+
+int AudacityProject::GetNumCommands()
+{
+   return mCommandNames.GetCount();
 }
 
 void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)

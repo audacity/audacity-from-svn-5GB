@@ -167,6 +167,14 @@ SOURCE=..\src\BlockFile.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\commandkeys.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\commands.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\configwin.h
 # End Source File
 # Begin Source File

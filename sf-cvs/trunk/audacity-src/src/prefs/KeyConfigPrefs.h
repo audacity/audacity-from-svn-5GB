@@ -28,11 +28,9 @@ class KeyConfigPrefs:public PrefsPanel {
    bool Apply();
 
  private:
-   void OnFormatChoice(wxCommandEvent& evt);
    void OnItemSelected(wxListEvent &event);
 
-   wxChoice *mSelectedCategory;
-   wxListCtrl *mCategoryCommands;
+   wxListCtrl *mCommandsList;
 
  public:
    DECLARE_EVENT_TABLE();
