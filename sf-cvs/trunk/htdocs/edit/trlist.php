@@ -61,7 +61,7 @@ header("Content-type: text/html; charset=$charset");
 
 if ($newtranslation) {
   if (!is_dir("../updates/$lang")) {
-  mkdir("../updates/$lang");
+  mkdir("../updates/$lang", 0775);
   `chmod 775 ../updates/$lang`;
   }
   $target = "../updates/$lang/$file";
