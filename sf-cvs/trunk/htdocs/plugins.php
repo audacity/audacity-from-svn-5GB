@@ -23,7 +23,7 @@ plug-ins (contributed by users)</b>:
 -->
 
 <ul>
-<li><a href="nyquist/all.html">All Nyquist Plug-ins</a>
+<li><a href="nyquist/all.html">All Nyquist Plug-in Descriptions</a>
     <p>
 
 <li><b>Generators</b>
@@ -39,6 +39,7 @@ plug-ins (contributed by users)</b>:
     <a href="nyquist/touchtone.html">[Info]</a>
 <li><a href="nyquist/varsilence.zip">Variable-length Silence</a>
     <a href="nyquist/varsilence.html">[Info]</a>
+    <p>
 
 <li><b>Effects</b>
     <p>
