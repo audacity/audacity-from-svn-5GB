@@ -797,7 +797,7 @@ void Envelope::GetValues(double *buffer, int bufferLen,
             else
                lo = mid;
          }
-
+         
          tprev = mEnv[lo]->t;
          tnext = mEnv[hi]->t;
 
@@ -810,11 +810,11 @@ void Envelope::GetValues(double *buffer, int bufferLen,
                vprev = -7;       // This corresponds to -140 dB
             if (mEnv[hi]->val <= 0.0)
                vnext = -7;
-       } else {
+         } else {
             vprev = mEnv[lo]->val;
             vnext = mEnv[hi]->val;
          }
-
+         
          // Interpolate
 
          double dt = (tnext - tprev);
@@ -841,11 +841,11 @@ void Envelope::GetValues(double *buffer, int bufferLen,
                vstep = 0.0;
          }
       } else {
-	if (mDB){
+         if (mDB){
             buffer[b] = buffer[b - 1] * vstep;
          }else{
             buffer[b] = buffer[b - 1] + vstep;
-      }
+         }
       }
 
       t += tstep;

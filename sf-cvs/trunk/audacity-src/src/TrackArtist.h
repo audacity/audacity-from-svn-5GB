@@ -113,7 +113,7 @@ class TrackArtist {
                                bool dB, bool drawEnvelope);
 
    void DrawIndividualSamples(wxDC &dc, wxRect r,
-                              WaveTrack *track,
+                              WaveTrack *track,                
                               double t0, double pps, double h,
                               float zoomMin, float zoomMax,
                               bool dB,
