@@ -15,6 +15,9 @@ libvorbis/lib/.libs/libvorbisfile.a:
 libmad/.libs/libmad.a:
 	cd libmad && $(MAKE)
 
+libid3tag/.libs/libid3tag.a:
+	cd libid3tag && $(MAKE)
+
 libmad/mad.h: libmad/.libs/libmad.a
 
 libsndfile/src/.libs/libsndfile.a:
