@@ -37,6 +37,9 @@ public:
 				  wxRect &clip,
 				  ViewInfo *viewInfo,
 				  bool drawEnvelope);
+
+  void DrawVRuler(VTrack *t,
+				  wxDC *dc, wxRect &r);
   
   void SetInset(int left, int top, int right, int bottom);
 

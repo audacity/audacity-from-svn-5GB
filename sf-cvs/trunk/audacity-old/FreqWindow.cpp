@@ -388,7 +388,7 @@ char *PitchName(int pitch, bool flats)
         *p++ = 'B'; break;
     }
 
-    sprintf(p,"%d",(pitch/12)-1);
+    sprintf(p,"%d",((pitch+3)/12)-2);
 
     return gPitchName;
 }
@@ -951,18 +951,7 @@ void FreqWindow::Recalc()
     for(i=0; i<half; i++)
 	  mProcessed[i] = mProcessed[i]/windows;
 
-	// Find min/max
-	mYMin = mProcessed[0];
-	mYMax = mProcessed[0];
-	for(i=1; i<half; i++)
-	  if (mProcessed[i] > mYMax)
-		mYMax = mProcessed[i];
-	  else if (mProcessed[i] < mYMin)
-		mYMin = mProcessed[i];
-
 	// Peak Pruning as described by Tolonen and Karjalainen, 2000
-	// They suggest clipping at zero, but I find this cuts out too
-	// much data.
 
 	// Clip at zero, copy to temp array
 	for(i=0; i<half; i++) {
@@ -972,6 +961,7 @@ void FreqWindow::Recalc()
 	}
 
 	// Subtract a time-doubled signal (linearly interp.) from the original
+	// (clipped) signal
 	for(i=0; i<half; i++)
 	  if ((i%2)==0)
 		mProcessed[i] -= out[i/2];

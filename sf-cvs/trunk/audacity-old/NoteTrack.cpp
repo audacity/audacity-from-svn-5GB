@@ -23,6 +23,8 @@ NoteTrack::NoteTrack(DirManager *projDirManager):
 
   mSeq = NULL;
   mLen = 0.0;
+
+  mBottomNote = 24;
   
   mVisibleChannels = 0xFFFF;
 }

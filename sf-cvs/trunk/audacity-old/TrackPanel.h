@@ -87,6 +87,9 @@ private:
 
   void OnSetName();
 
+  void OnUpOctave();
+  void OnDownOctave();
+
   void OnChannelLeft();
   void OnChannelRight();
   void OnChannelMono();

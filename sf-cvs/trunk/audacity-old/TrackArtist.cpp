@@ -35,6 +35,12 @@
 #include "Spectrum.h"
 #include "ViewInfo.h"
 
+const int octaveHeight = 62;
+const int blackPos[5] = {6, 16, 32, 42, 52};
+const int whitePos[7] = {0, 9, 17, 26, 35, 44, 53};
+const int notePos[12] = {1, 6, 11, 16, 21,
+						 27, 32, 37, 42, 47, 52, 57};
+
 class TrackInfoCache: public wxObject {
 public:
   VTrack *track;
@@ -211,6 +217,120 @@ void TrackArtist::DrawTracks(TrackList *tracks,
     delete mTrackHash;
 
   mTrackHash = newHash;
+}
+
+void TrackArtist::DrawVRuler(VTrack *t,
+							 wxDC *dc, wxRect &r)
+{
+  if (t->GetKind()==VTrack::Wave && ((WaveTrack *)t)->GetDisplay()==0) {
+	wxRect bev = r;
+	bev.Inflate(-1, -1);
+	AColor::Bevel(*dc, true, bev);
+  
+	dc->SetPen(*wxBLACK_PEN);
+	int ctr = r.height / 2;
+	
+	wxString num;
+	long textWidth, textHeight;
+	
+	num = "1.0";
+	dc->GetTextExtent(num, &textWidth, &textHeight);
+	dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + 2);
+	
+	num = "0";
+	dc->GetTextExtent(num, &textWidth, &textHeight);
+	dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + ctr - textHeight/2);
+	
+	dc->DrawLine(r.x + 1, r.y + ctr, r.x + r.width - 4 - textWidth, r.y + ctr);
+	dc->DrawLine(r.x + r.width - 3, r.y + ctr, r.x + r.width - 2, r.y + ctr);
+	
+	num = "-1.0";
+	dc->GetTextExtent(num, &textWidth, &textHeight);
+	dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + r.height - 2 - textHeight);
+  }
+
+  if (t->GetKind()==VTrack::Wave && ((WaveTrack *)t)->GetDisplay()>0) {
+	wxRect bev = r;
+	bev.Inflate(-1, -1);
+	AColor::Bevel(*dc, true, bev);
+  }
+
+  if (t->GetKind()==VTrack::Note) {
+
+	dc->SetPen(*wxTRANSPARENT_PEN);
+	dc->SetBrush(*wxWHITE_BRUSH);
+	wxRect bev = r;
+	bev.x++;
+	bev.y++;
+	bev.width--;
+	bev.height--;
+	dc->DrawRectangle(bev);
+	
+	r.y += 2;
+	r.height -= 2;
+
+	int bottomNote = ((NoteTrack *)t)->mBottomNote;
+	int bottom = r.height +
+	  ((bottomNote/12)*octaveHeight +
+	   notePos[bottomNote%12]);
+
+	wxPen hilitePen;
+	hilitePen.SetColour(120, 120, 120);
+	wxBrush blackKeyBrush;
+	blackKeyBrush.SetColour(70, 70, 70);
+	
+	dc->SetBrush(blackKeyBrush);
+	
+	int fontSize = 10;
+    #ifdef __WXMSW__
+      fontSize = 8;
+    #endif
+  
+	wxFont labelFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
+	dc->SetFont(labelFont);
+
+	for(int octave=0; octave<50; octave++) {
+	  int obottom = bottom - octave*octaveHeight;
+	  if (obottom < 0)
+		break;
+	  
+	  dc->SetPen(*wxBLACK_PEN);
+	  for(int white=0; white<7; white++)
+		if (r.y+obottom-whitePos[white] > r.y &&
+			r.y+obottom-whitePos[white] < r.y+r.height)
+		  dc->DrawLine(r.x, r.y+obottom-whitePos[white],
+					   r.x+r.width, r.y+obottom-whitePos[white]);
+
+	  wxRect br = r;
+	  br.height = 5;
+	  br.x++;
+	  br.width = 17;
+	  for(int black=0; black<5; black++) {
+		br.y = r.y + obottom-blackPos[black]-4;
+		if (br.y > r.y && br.y+br.height < r.y+r.height) {
+		  dc->SetPen(hilitePen);
+		  dc->DrawRectangle(br);
+		  dc->SetPen(*wxBLACK_PEN);
+		  dc->DrawLine(br.x + 1,        br.y + br.height-1,
+					   br.x + br.width, br.y + br.height-1);
+		  dc->DrawLine(br.x + br.width-1, br.y + 1,
+					   br.x + br.width-1, br.y + br.height-1);
+		}
+	  }
+
+	  if (octave>=2 && octave<=9) {
+		wxString s;
+		s.Printf("C%d", octave-2);
+		long width, height;
+		dc->GetTextExtent(s, &width, &height);
+		if (r.y+obottom-height+4 > r.y &&
+			r.y+obottom+4 < r.y+r.height) {
+		  dc->SetTextForeground(wxColour(60, 60, 255));
+		  dc->DrawText(s, r.x+r.width-width, r.y+obottom-height+2);
+		}
+	  }
+	}
+  }
 }
 
 void TrackArtist::PrepareCacheWaveform(TrackInfoCache *cache,
@@ -883,30 +1003,40 @@ void TrackArtist::DrawNoteTrack(TrackInfoCache *cache,
   if (!track->selected)
 	sel0 = sel1 = 0.0;
 
-  int ctrpitch = 60;
-  int pitch0;
-  int pitchht = 4;
-  int n;
+  int bottomNote = track->mBottomNote;
+  int bottom = r.height +
+	((bottomNote/12)*octaveHeight +
+	 notePos[bottomNote%12]);
 
-  int numPitches = r.height / pitchht;
-  pitch0 = (ctrpitch - numPitches/2);
+  wxPen blackStripePen;
+  blackStripePen.SetColour(160, 160, 160);
+  wxBrush blackStripeBrush;
+  blackStripeBrush.SetColour(160, 160, 160);
 
-  wxBrush backBrush;
-  wxPen backPen;
+  dc.SetBrush(blackStripeBrush);
 
-  backBrush.SetColour(214,214,214);
-  backPen.SetColour(214,214,214);
+  for(int octave=0; octave<50; octave++) {
+	int obottom = r.y + bottom - octave*octaveHeight;
 
-  dc.SetBrush(backBrush);
-  dc.SetPen(backPen);
+	if (obottom > r.y && obottom < r.y+r.height) {
+	  dc.SetPen(*wxBLACK_PEN);
+	  dc.DrawLine(r.x, obottom, r.x+r.width, obottom);
+	}
+	if (obottom-26 > r.y && obottom-26 < r.y+r.height) {
+	  dc.SetPen(blackStripePen);
+	  dc.DrawLine(r.x, obottom-26, r.x+r.width, obottom-26);
+	}
 
-  dc.DrawRectangle(r);
-  
-  dc.SetPen(wxPen(wxColour(151,0,255),1,wxSOLID));
-  
-  for(n=pitchht; n<r.height; n+=pitchht)
-    dc.DrawLine(r.x, r.y+r.height-n,
-                r.x + r.width, r.y+r.height-n);
+	wxRect br = r;
+	br.height = 5;
+	for(int black=0; black<5; black++) {
+	  br.y = obottom-blackPos[black]-4;
+	  if (br.y > r.y && br.y+br.height < r.y+r.height) {
+		dc.SetPen(blackStripePen);
+		dc.DrawRectangle(br);
+	  }
+	}
+  }
 
   int numEvents = seq->notes.len;
   int index;
@@ -918,22 +1048,31 @@ void TrackArtist::DrawNoteTrack(TrackInfoCache *cache,
       Note_ptr note = (Note_ptr)(seq->notes[index]);
       
       if (visibleChannels & (1 << (seq->notes[index]->chan & 15))) {
-      
-      	int ypos = int(pitchht * (note->pitch - pitch0) + 0.5);
 
-      	if (ypos >= 0 && ypos < r.height) {
-      	  int ht = pitchht;
-      	  if (ypos + pitchht >= r.height)
-            ht = r.height - ypos;
-      	  
-      	  wxRect nr;
+		int octave = (((int)(note->pitch+0.5)) / 12);
+		int n = ((int)(note->pitch+0.5)) % 12;
+
+		wxRect nr;
+		nr.y = bottom
+		  - octave*octaveHeight
+		  - notePos[n]
+		  - 4;
+		nr.height = 5;
+
+      	if (nr.y + nr.height >= 0 && nr.y < r.height) {
+
+		  if (nr.y + nr.height > r.height)
+			nr.height = r.height - nr.y;
+		  if (nr.y < 0) {
+			nr.height += nr.y;
+			nr.y = 0;
+		  }
+		  nr.y += r.y;
 
       	  nr.x = r.x + (int)((note->time - h) * pps);
       	  nr.width = (int)(note->dur * pps) + 1;
-      	  nr.y = r.y + r.height - ypos - pitchht;
-      	  nr.height = ht;
       	  
-      	  if (nr.x + nr.width >= r.x && nr.x<= r.x + r.width) {
+      	  if (nr.x + nr.width >= r.x && nr.x < r.x + r.width) {
       	    if (nr.x < r.x) {
       	      nr.width -= (r.x - nr.x);
       	      nr.x = r.x;
@@ -946,7 +1085,7 @@ void TrackArtist::DrawNoteTrack(TrackInfoCache *cache,
       	    if (note->time + note->dur >= sel0 &&
       	        note->time <= sel1)
       	      dc.SetBrush(*wxWHITE_BRUSH);
-
+			
       	    dc.DrawRectangle(nr);
       	  }
       	}

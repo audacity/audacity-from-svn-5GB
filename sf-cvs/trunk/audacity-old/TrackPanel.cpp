@@ -43,6 +43,9 @@ enum {
   
   OnSetNameID,
 
+  OnUpOctaveID,
+  OnDownOctaveID,
+
   OnChannelLeftID,
   OnChannelRightID,
   OnChannelMonoID,
@@ -72,6 +75,9 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
   EVT_PAINT(TrackPanel::OnPaint)
 
   EVT_MENU(OnSetNameID, TrackPanel::OnSetName)
+
+  EVT_MENU(OnUpOctaveID, TrackPanel::OnUpOctave)
+  EVT_MENU(OnDownOctaveID, TrackPanel::OnDownOctave)
 
   EVT_MENU(OnChannelLeftID, TrackPanel::OnChannelLeft)
   EVT_MENU(OnChannelRightID, TrackPanel::OnChannelRight)
@@ -149,12 +155,15 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
 
   mNoteTrackMenu = new wxMenu();
   mNoteTrackMenu->Append(OnSetNameID, "Name...");
+  mNoteTrackMenu->AppendSeparator();
+  mNoteTrackMenu->Append(OnUpOctaveID, "Up Octave");
+  mNoteTrackMenu->Append(OnDownOctaveID, "Down Octave");
 
   mLabelTrackMenu = new wxMenu();
   mLabelTrackMenu->Append(OnSetNameID, "Name...");
 
   mTrackArtist = new TrackArtist();
-  mTrackArtist->SetInset(1, kTopInset+2, kLeftInset+3, 2);
+  mTrackArtist->SetInset(1, kTopInset+2, kLeftInset+2, 2);
 
   mCapturedTrack = NULL;
 
@@ -1396,37 +1405,6 @@ void TrackPanel::DrawTitleBar(wxDC *dc, wxRect &r, VTrack *t, bool down)
   AColor::Bevel(*dc, !down, bev);
 }
 
-void TrackPanel::DrawVRuler(wxDC *dc, wxRect &r, VTrack *t)
-{
-  wxRect bev = r;
-  bev.Inflate(-1, -1);
-  AColor::Bevel(*dc, true, bev);
-
-  if (t->GetKind()==VTrack::Wave && ((WaveTrack *)t)->GetDisplay()==0) {
-  
-	dc->SetPen(*wxBLACK_PEN);
-	int ctr = r.height / 2;
-	
-	wxString num;
-	long textWidth, textHeight;
-	
-	num = "1.0";
-	dc->GetTextExtent(num, &textWidth, &textHeight);
-	dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + 2);
-	
-	num = "0";
-	dc->GetTextExtent(num, &textWidth, &textHeight);
-	dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + ctr - textHeight/2);
-	
-	dc->DrawLine(r.x + 1, r.y + ctr, r.x + r.width - 4 - textWidth, r.y + ctr);
-	dc->DrawLine(r.x + r.width - 3, r.y + ctr, r.x + r.width - 2, r.y + ctr);
-	
-	num = "-1.0";
-	dc->GetTextExtent(num, &textWidth, &textHeight);
-	dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + r.height - 2 - textHeight);
-  }
-}
-
 void TrackPanel::DrawTracks(wxDC *dc)
 {
   wxRect clip;
@@ -1577,7 +1555,7 @@ void TrackPanel::DrawTracks(wxDC *dc)
     r.y += kTopInset;
     r.width = GetVRulerWidth();
     r.height -= (kTopInset+2);
-    DrawVRuler(dc, r, t);
+    mTrackArtist->DrawVRuler(t, dc, r);
     
     trackRect.y += t->GetHeight();
     num++;
@@ -2018,6 +1996,28 @@ void TrackPanel::OnRateOther()
     }
 
     mPopupMenuTarget = NULL;
+  }
+}
+
+void TrackPanel::OnUpOctave()
+{
+  VTrack *t = mPopupMenuTarget;
+  if (t->GetKind() == VTrack::Note) {
+	((NoteTrack *)t)->mBottomNote += 12;
+	if (((NoteTrack *)t)->mBottomNote < 0)
+	  ((NoteTrack *)t)->mBottomNote = 0;
+    Refresh(false);
+  }
+}
+
+void TrackPanel::OnDownOctave()
+{
+  VTrack *t = mPopupMenuTarget;
+  if (t->GetKind() == VTrack::Note) {
+	((NoteTrack *)t)->mBottomNote -= 12;
+	if (((NoteTrack *)t)->mBottomNote > 96)
+	  ((NoteTrack *)t)->mBottomNote = 96;
+    Refresh(false);
   }
 }
 

@@ -22,6 +22,8 @@ class DirManager;
 class NoteTrack: public VTrack
 {
 public:
+  int mBottomNote;
+
   friend class TrackArtist;
 
   NoteTrack(DirManager *projDirManager);
@@ -41,7 +43,6 @@ private:
   int mVisibleChannels;
   
   void CalcLen();
-
 };
 
 #endif
