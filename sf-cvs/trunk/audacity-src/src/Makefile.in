@@ -70,6 +70,7 @@ OBJS = \
 	NoteTrack.o \
 	PitchName.o \
 	PlatformCompatibility.o \
+	Printing.o \
 	Project.o \
 	Resample.o \
 	RingBuffer.o \
