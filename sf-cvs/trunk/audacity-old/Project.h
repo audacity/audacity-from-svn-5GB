@@ -75,69 +75,13 @@ public:
   void ImportMP3(wxString fileName);
   void ImportOGG(wxString fileName);
 
-  // File Menu
-
-  void OnNew(wxCommandEvent& event);
-  void OnOpen(wxCommandEvent& event);
-  void OnClose(wxCommandEvent& event);
-  void OnSave(wxCommandEvent& event);
-  void OnSaveAs(wxCommandEvent& event);
-
-  void OnExportLabels(wxCommandEvent& event);
-  void OnExportMix(wxCommandEvent& event);
-  void OnExportSelection(wxCommandEvent& event);
-
-  void OnExit(wxCommandEvent& event);
-
-  // Edit Menu
-
-  void Cut(wxCommandEvent& event);
-  void Copy(wxCommandEvent& event);
-  void Paste(wxCommandEvent& event);
   void Clear();
-  void OnClear(wxCommandEvent& event);  
-  void SelectAll(wxCommandEvent& event);
 
-  void Undo(wxCommandEvent& event);
-  void Redo(wxCommandEvent& event);
+  // Methods associated with menu items are in Menus.h
 
-  // View Menu
-
-  void OnZoomIn(wxCommandEvent& event);
-  void OnZoomOut(wxCommandEvent& event);
-  void OnZoomNormal(wxCommandEvent& event);
-  void OnZoomFit(wxCommandEvent& event);
-
-  void ZoomFit();
-
-  void OnPlotSpectrum(wxCommandEvent& event);
-
-  void OnFloatPalette(wxCommandEvent& event);
-
-  // Project Menu
-
-  void OnPreferences(wxCommandEvent& event);
-  void OnImport(wxCommandEvent& event);
-  void OnImportLabels(wxCommandEvent& event);
-  void OnImportMIDI(wxCommandEvent& event);
-  void OnImportMP3(wxCommandEvent& event);
-  void OnImportOGG(wxCommandEvent& event);
-  void OnImportRaw(wxCommandEvent& event);
-
-  void OnQuickMix(wxCommandEvent& event);
-  
-  void OnAlignZero(wxCommandEvent& event);
-  void OnAlign(wxCommandEvent& event);
-
-  void OnNewWaveTrack(wxCommandEvent& event);
-  void OnNewLabelTrack(wxCommandEvent& event);
-  void OnRemoveTracks(wxCommandEvent& event);
-
-  // Help Menu
-
-  void OnAbout(wxCommandEvent& event);
-
-  void UpdateMenus();
+  #define AUDACITY_MENUS_METHODS
+  #include "Menus.h"
+  #undef AUDACITY_MENUS_METHODS
 
   // Message Handlers
 
