@@ -71,6 +71,7 @@ OBJS = \
 	$(OBJDIR)/effects/Filter.o \
 	$(OBJDIR)/effects/NoiseRemoval.o \
 	$(OBJDIR)/effects/Phaser.o \
+	$(OBJDIR)/effects/Reverse.o \
 	$(OBJDIR)/effects/Wahwah.o \
 	$(OBJDIR)/effects/WaveletDenoise.o \
 	$(OBJDIR)/effects/ladspa/LoadLadspa.o \

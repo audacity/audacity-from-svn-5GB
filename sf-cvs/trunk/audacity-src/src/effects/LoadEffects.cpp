@@ -18,6 +18,7 @@
 #include "Filter.h"
 #include "NoiseRemoval.h"
 #include "Phaser.h"
+#include "Reverse.h"
 #include "Wahwah.h"
 #include "WaveletDenoise.h"
 
@@ -44,6 +45,7 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectFilter(), false);
    Effect::RegisterEffect(new EffectNoiseRemoval(), false);
    Effect::RegisterEffect(new EffectPhaser(), false);
+   Effect::RegisterEffect(new EffectReverse(), false);
    Effect::RegisterEffect(new EffectWahwah(), false);
    Effect::RegisterEffect(new EffectWaveletDenoise(), false);
 
