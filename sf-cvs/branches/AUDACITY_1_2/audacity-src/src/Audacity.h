@@ -13,6 +13,9 @@
 
 **********************************************************************/
 
+#ifndef __AUDACITY_H__
+#define __AUDACITY_H__
+
 // Increment this every time you release a new version
 #define AUDACITY_VERSION_STRING "1.2.0-pre3"
 
@@ -51,3 +54,5 @@ void QuitAudacity();
 #ifdef __WXMSW__
 #include "configwin.h"
 #endif
+
+#endif // __AUDACITY_H__
