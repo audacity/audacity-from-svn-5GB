@@ -154,9 +154,8 @@ LIBAUDACITY_OBJS = \
 ########################################
 # DEPENDENCIES
 
-SOURCES = $(OBJS:%.o=$(srcdir)/%.cpp)
-LIBAUDACITY_SOURCES = $(LIBAUDACITY_OBJS:%.o=$(srcdir)/%.cpp)
-#DEPS = $(SOURCES) $(OPTOBJS) $(LIBAUDACITY_OBJS)
+SOURCES = $(OBJS:%.o=%.cpp)
+LIBAUDACITY_SOURCES = $(LIBAUDACITY_OBJS:%.o=%.cpp)
 
 ########################################
 
@@ -174,11 +173,13 @@ $(DIRS):
 
 #
 # You can optionally "make dep" to make dependencies.
-# The sed script turns "Foo.o: bar/Foo.cpp" into "obj/bar/Foo.o:".
+# The sed script turns "Foo.o: bar/Foo.cpp" into "bar/Foo.o: bar/Foo.cpp".
 #
 
 dep:
-	$(CCC) -MM $(CXXFLAGS) $(CPPFLAGS) $(SOURCES) $(OPTSOURCES) $(LIBAUDACITY_SOURCES) > .depend
+	$(CCC) -MM $(CXXFLAGS) $(CPPFLAGS) $(SOURCES) $(LIBAUDACITY_SOURCES) | \
+		sed -e 's/^.*\.o: \([^ ]*\)\.cpp/\1.o: \1.cpp/' \
+		> .depend
 
 clean:
 	rm -rf $(OBJS) $(LIBAUDACITY_OBJS)
