@@ -390,7 +390,7 @@ void ControlToolBar::MakeButtons()
    mTool[3] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 28, 28);
    mTool[3]->SetToolTip(_("Zoom Tool"));
 
-   wxToolTip::Enable(true);
+   wxToolTip::Enable(true);   // MB: Should make this a pref
    wxToolTip::SetDelay(1000);
 }
 

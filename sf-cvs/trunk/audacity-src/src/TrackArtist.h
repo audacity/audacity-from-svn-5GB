@@ -18,8 +18,12 @@
 #ifndef __AUDACITY_TRACKARTIST__
 #define __AUDACITY_TRACKARTIST__
 
+#include <wx/brush.h>
+#include <wx/pen.h>
+
 class wxDC;
 class wxRect;
+class wxHashTable;
 
 class VTrack;
 class WaveTrack;
