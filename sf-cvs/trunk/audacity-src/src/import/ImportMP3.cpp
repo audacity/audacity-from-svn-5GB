@@ -218,6 +218,9 @@ bool ImportMP3(AudacityProject * project,
    Tags *tags = project->GetTags();
    tags->ImportID3(fName);
 
+   *left = NULL;
+   *right = NULL;
+
    wxBusyCursor wait;
 
    /* Prepare decoder data, initialize decoder */
