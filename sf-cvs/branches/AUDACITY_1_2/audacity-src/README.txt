@@ -270,6 +270,10 @@ Changes in 1.2.2:
   * Export Multiple - new feature that lets you export multiple
     files at once, either by track, or split based on labels.
 
+  * Attempt to automatically correct latency in full-duplex recordings.
+    (This does not work perfectly, and is not yet supported on all
+    systems.  It will improve in future versions.)
+
   * Fixed a serious bug that could cause data loss when you save and
     then reload and re-edit an Audacity project containing repeated
     or duplicate data.
@@ -318,6 +322,9 @@ Changes in 1.2.2:
   * Mac OS X and Windows: Audacity ships with a newer version (1.0.1)
     of the Ogg Vorbis encoder.  Vorbis compression will now have higher
     quality and smaller file sizes.
+
+  * Fix a bug that occasionally caused crashes when applying effects
+    to split tracks.
 
   * Other minor bug fixes and performance improvements.
 
