@@ -259,6 +259,8 @@ bool AudioIO::StartPlay(AudacityProject * project, TrackList * tracks,
    mNumOutChannels = 2;
    mNumOutBuffers = mInitialNumOutBuffers;
    
+   project->ReReadSettings();
+
    return Start();
 }
 
@@ -301,6 +303,8 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
       
       mTracks->Add(mInTracks[i]);
    }
+
+   project->ReReadSettings();
 
    return Start();
 }

@@ -64,6 +64,8 @@ class TrackPanel:public wxWindow {
 
    void SelectNone();
 
+   void ReReadSettings();
+
  private:
 
    void DrawCursors();

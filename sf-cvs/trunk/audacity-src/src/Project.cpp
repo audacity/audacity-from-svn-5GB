@@ -1407,6 +1407,11 @@ void AudacityProject::SkipEnd(bool shift)
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::ReReadSettings()
+{
+   mTrackPanel->ReReadSettings();
+}
+
 // TrackPanel callback method
 void AudacityProject::TP_DisplayStatusMessage(const char *msg,
                                               int fieldNum)
