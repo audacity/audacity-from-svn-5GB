@@ -220,7 +220,7 @@ wxMenu * CommandManager::CurrentMenu()
 void CommandManager::AddItem(wxString name, wxString label,
                              CommandFunctor *callback)
 {
-   int ID = NewIdentifier(name, label, CurrentMenu(), callback, false, 0);
+   int ID = NewIdentifier(name, label, CurrentMenu(), callback, false, 0, 0);
 
    // Replace the accel key with the one from the preferences
    label = label.BeforeFirst('\t');
@@ -234,6 +234,8 @@ void CommandManager::AddItem(wxString name, wxString label,
 /// Add a list of menu items to the current menu.  When the user selects any
 /// one of these, the given function pointer will be called (via the
 /// CommandManagerListener) with its position in the list as the index number.
+/// When you call Enable on this command name, it will enable or disable
+/// all of the items at once.
 void CommandManager::AddItemList(wxString name, wxArrayString labels,
                                  CommandFunctor *callback,
                                  bool plugins /*= false*/)
@@ -249,7 +251,8 @@ void CommandManager::AddItemList(wxString name, wxArrayString labels,
 
    if (!plugins) {
       for(i=0; i<labels.GetCount(); i++) {
-         int ID = NewIdentifier(name, labels[i], CurrentMenu(), callback, true, i);
+         int ID = NewIdentifier(name, labels[i], CurrentMenu(), callback,
+                                true, i, labels.GetCount());
          CurrentMenu()->Append(ID, labels[i]);
       }
       return;
@@ -264,7 +267,9 @@ void CommandManager::AddItemList(wxString name, wxArrayString labels,
    BeginSubMenu(wxString::Format(_("Plugins 1 to %i"), tmpmax));
 
    for(i=0; i<effLen; i++) {
-      int ID = NewIdentifier(name, labels[i], CurrentMenu(), callback, true, i);
+      int ID = NewIdentifier(name, labels[i], CurrentMenu(), callback,
+                             true, i, effLen);
+
       CurrentMenu()->Append(ID, labels[i]);
      
       if(((i+1) % MAX_SUBMENU_LEN) == 0 && i != (effLen - 1)) {
@@ -285,12 +290,23 @@ void CommandManager::AddItemList(wxString name, wxArrayString labels,
 void CommandManager::AddCommand(wxString name, wxString label,
                                 CommandFunctor *callback)
 {
-   NewIdentifier(name, label, NULL, callback, false, 0);
+   NewIdentifier(name, label, NULL, callback, false, 0, 0);
 }
 
 void CommandManager::AddSeparator()
 {
    CurrentMenu()->AppendSeparator();
+}
+
+int CommandManager::NextIdentifier(int ID)
+{
+   ID++;
+
+   //Skip the reserved identifiers used by wxWindows
+   if((ID >= wxID_LOWEST) && (ID <= wxID_HIGHEST))
+      ID = wxID_HIGHEST+1;
+
+   return ID;
 }
 
 ///Given all of the information for a command, comes up with a new unique
@@ -300,13 +316,9 @@ void CommandManager::AddSeparator()
 ///and keep menus above wxID_HIGHEST
 int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
                                   CommandFunctor *callback,
-                                  bool multi, int index)
+                                  bool multi, int index, int count)
 {
-   mCurrentID++;
-
-   //Skip the reserved identifiers used by wxWindows
-   if((mCurrentID >= wxID_LOWEST) && (mCurrentID <= wxID_HIGHEST))
-      mCurrentID = wxID_HIGHEST+1;
+   mCurrentID = NextIdentifier(mCurrentID);
 
    CommandListEntry *tmpEntry = new CommandListEntry;
    
@@ -317,6 +329,7 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    tmpEntry->callback = callback;
    tmpEntry->multi = multi;
    tmpEntry->index = index;
+   tmpEntry->count = count;
    tmpEntry->key = GetKey(label);
    tmpEntry->defaultKey = GetKey(label);
 
@@ -327,9 +340,12 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    gPrefs->SetPath("/");
    
    mCommandList.Add(tmpEntry);
-   mCommandNameHash[name] = tmpEntry;
-   mCommandIDHash[mCurrentID] = tmpEntry;
-   
+
+   mCommandIDHash[mCurrentID] = tmpEntry;   
+
+   if (index==0 || !multi)
+      mCommandNameHash[name] = tmpEntry;
+
    if (tmpEntry->key != "")
       mCommandKeyHash[tmpEntry->key] = tmpEntry;
 
@@ -352,11 +368,26 @@ wxString CommandManager::GetKey(wxString label)
 
 ///Enables or disables a menu item based on its name (not the
 ///label in the menu bar, but the name of the command.)
+///If you give it the name of a multi-item (one that was
+///added using AddItemList(), it will enable or disable all
+///of them at once
 void CommandManager::Enable(wxString name, bool enabled)
 {
    CommandListEntry *entry = mCommandNameHash[name];
-   if (entry && entry->menu)
+   if (entry && entry->menu) {
       entry->menu->Enable(entry->id, enabled);
+      if (entry->multi) {
+         int i;
+         int ID = entry->id;
+         for(i=1; i<entry->count; i++) {
+            ID = NextIdentifier(ID);
+            entry->menu->Enable(ID, enabled);            
+         }
+      }
+   }
+   else {
+      //printf("WARNING: Unknown command enabled: '%s'\n", (const char *)name);
+   }
 }
 
 ///Changes the label text of a menu item

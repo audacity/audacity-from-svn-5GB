@@ -333,7 +333,6 @@ void AudacityProject::ModifyUndoMenus()
    wxString desc;
    wxString size;
    int cur = mUndoManager.GetCurrentState();
-   int num = mUndoManager.GetNumStates();
 
    if (mUndoManager.UndoAvailable()) {
       mUndoManager.GetDescription(cur, &desc, &size);
@@ -358,6 +357,204 @@ void AudacityProject::ModifyUndoMenus()
       mCommandManager.Modify("Redo",
                              wxString::Format(_("Can't Redo")));
       mCommandManager.Enable("Redo", false);
+   }
+}
+
+void AudacityProject::RebuildMenuBar()
+{
+   SetMenuBar(NULL);
+   mCommandManager.PurgeData();
+   CreateMenusAndCommands();
+}
+
+void AudacityProject::UpdateMenus()
+{
+   if (!gControlToolBarStub)
+      return;
+
+   mCommandManager.Enable("Save", mUndoManager.UnsavedChanges());
+
+   bool nonZeroRegionSelected = (mViewInfo.sel1 > mViewInfo.sel0);
+
+   int numTracks = 0;
+   int numTracksSelected = 0;
+   int numWaveTracks = 0;
+   int numWaveTracksSelected = 0;
+   int numLabelTracks = 0;
+   int numLabelTracksSelected = 0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+   while (t) {
+      numTracks++;
+      // JH: logically, we only want to count a stereo pair as one track. Right??
+      // I'm changing it and hoping I don't break anything
+      if (t->GetKind() == Track::Wave && t->GetLinked() == false)
+         numWaveTracks++;
+      if (t->GetKind() == Track::Label)
+         numLabelTracks++;
+      if (t->GetSelected()) {
+         numTracksSelected++;
+         // JH: logically, we only want to count a stereo pair as one track. Right??
+         // I'm changing it and hoping I don't break anything
+         if (t->GetKind() == Track::Wave && t->GetLinked() == false)
+            numWaveTracksSelected++;
+         else if(t->GetKind() == Track::Label)
+            numLabelTracksSelected++;
+
+      }
+      t = iter.Next();
+   }
+
+   mCommandManager.Enable("Paste", numTracksSelected > 0 && msClipLen > 0.0);
+
+   //Calculate the ToolBarCheckSum (uniquely specifies state of all toolbars):
+   int toolBarCheckSum = 0;
+   toolBarCheckSum += gControlToolBarStub->GetWindowedStatus() ? 2 : 1;
+   if (gEditToolBarStub) {
+      if (gEditToolBarStub->GetLoadedStatus()) {
+         if(gEditToolBarStub->GetWindowedStatus())
+            toolBarCheckSum += 6;
+         else
+            toolBarCheckSum += 3;
+      }
+   }
+   if (gMixerToolBarStub) {
+      if (gMixerToolBarStub->GetLoadedStatus()) {
+         if(gMixerToolBarStub->GetWindowedStatus())
+            toolBarCheckSum += 12;
+         else
+            toolBarCheckSum += 24;
+      }
+   }
+   
+   
+   
+   // Get ahold of the clipboard status
+   bool clipboardStatus = static_cast<bool>(GetActiveProject()->Clipboard());
+
+   // Return from this function if nothing's changed since
+   // the last time we were here.
+ 
+   if (!mFirstTimeUpdateMenus &&
+       mLastNonZeroRegionSelected == nonZeroRegionSelected &&
+       mLastNumTracks == numTracks &&
+       mLastNumTracksSelected == numTracksSelected &&
+       mLastNumWaveTracks == numWaveTracks &&
+       mLastNumWaveTracksSelected == numWaveTracksSelected &&
+       mLastNumLabelTracks == numLabelTracks &&
+       mLastZoomLevel == mViewInfo.zoom &&
+       mLastToolBarCheckSum == toolBarCheckSum &&
+       mLastUndoState == mUndoManager.UndoAvailable() &&
+       mLastRedoState == mUndoManager.RedoAvailable() &&
+       mLastClipboardState == clipboardStatus  ) 
+      return;
+   
+   // Otherwise, save state and then update all of the menus
+
+   mFirstTimeUpdateMenus = false;
+   mLastNonZeroRegionSelected = nonZeroRegionSelected;
+   mLastNumTracks = numTracks;
+   mLastNumTracksSelected = numTracksSelected;
+   mLastNumWaveTracks = numWaveTracks;
+   mLastNumWaveTracksSelected = numWaveTracksSelected;
+   mLastNumLabelTracks = numLabelTracks;
+   mLastZoomLevel = mViewInfo.zoom;
+   mLastToolBarCheckSum = toolBarCheckSum;
+   mLastUndoState = mUndoManager.UndoAvailable();
+   mLastRedoState = mUndoManager.RedoAvailable();  
+   mLastClipboardState = clipboardStatus;
+
+   bool anySelection = numTracksSelected > 0 && nonZeroRegionSelected;
+
+   mCommandManager.Enable("Export", numTracks > 0);
+   mCommandManager.Enable("ExportSel", anySelection);
+   mCommandManager.Enable("ExportLossy", numTracks > 0);
+   mCommandManager.Enable("ExportLossySel", anySelection);
+   mCommandManager.Enable("ExportLabels", numLabelTracks > 0);
+
+   mCommandManager.Enable("Cut", anySelection);
+   mCommandManager.Enable("Copy", anySelection);
+   mCommandManager.Enable("Trim", anySelection);
+   mCommandManager.Enable("Delete", anySelection);
+   mCommandManager.Enable("Silence", anySelection);
+   mCommandManager.Enable("Split", anySelection);
+   //mCommandManager.Enable("SplitLabels", numLabelTracksSelected == 1 && numWaveTracksSelected == 1);
+   mCommandManager.Enable("Duplicate", anySelection);
+   mCommandManager.Enable("SelectAll", numTracks > 0);
+   mCommandManager.Enable("SelStartCursor", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
+   mCommandManager.Enable("SelCursorEnd", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
+
+   mCommandManager.Enable("Undo", mUndoManager.UndoAvailable());
+   mCommandManager.Enable("Redo", mUndoManager.RedoAvailable());
+
+   mCommandManager.Enable("PlotSpectrum", numWaveTracksSelected > 0
+                     && nonZeroRegionSelected);
+
+#ifndef __WXMAC__
+   //Modify toolbar-specific Menus
+
+   if (gEditToolBarStub) {
+
+     // Loaded or unloaded?
+     mCommandManager.Enable("FloatEditTB", gEditToolBarStub->GetLoadedStatus());
+
+     // Floating or docked?
+     if (gEditToolBarStub->GetWindowedStatus())
+        mCommandManager.Modify("FloatEditTB", _("Dock Edit Toolbar"));
+     else
+        mCommandManager.Modify("FloatEditTB", _("Float Edit Toolbar"));
+   }
+   else {
+      mCommandManager.Enable("FloatEditTB", false);
+   }   
+
+   if (gMixerToolBarStub) {
+     
+     // Loaded or unloaded?
+     mCommandManager.Enable("FloatMixerTB", gMixerToolBarStub->GetLoadedStatus());
+     
+     // Floating or docked?
+     if (gMixerToolBarStub->GetWindowedStatus())
+        mCommandManager.Modify("FloatMixerTB", _("Dock Mixer Toolbar"));
+     else
+        mCommandManager.Modify("FloatMixerTB", _("Float Mixer Toolbar"));
+   }
+   else {
+      mCommandManager.Enable("FloatMixerTB", false);
+   }
+
+#endif
+
+   mCommandManager.Enable("QuickMix", numWaveTracksSelected > 0);
+   mCommandManager.Enable("SelSave", numWaveTracksSelected > 0);
+   mCommandManager.Enable("SelRestore", numWaveTracksSelected > 0);
+   mCommandManager.Enable("CursTrackStart", numWaveTracksSelected > 0);
+   mCommandManager.Enable("CursTrackEnd", numWaveTracksSelected > 0);
+   mCommandManager.Enable("CursSelStart", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   mCommandManager.Enable("CursSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   mCommandManager.Enable("Align", numWaveTracksSelected > 0);
+   mCommandManager.Enable("RemoveTracks", numTracksSelected > 0);
+
+   // Effects menus
+
+   mCommandManager.Enable("Effect", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   mCommandManager.Enable("EffectPlugin", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   mCommandManager.Enable("Analyze", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   mCommandManager.Enable("AnalyzePlugin", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+
+   //Now, go through each toolbar, and and call EnableDisableButtons()
+   unsigned int i;
+   for (i = 0; i < mToolBarArray.GetCount(); i++) {
+      mToolBarArray[i]->EnableDisableButtons();
+   }
+
+   //Now, do the same thing for the (possibly invisible) floating toolbars
+   gControlToolBarStub->GetToolBar()->EnableDisableButtons();
+
+   //gEditToolBarStub might be null:
+   if(gEditToolBarStub){
+      gEditToolBarStub->GetToolBar()->EnableDisableButtons();
    }
 }
 
