@@ -45,12 +45,29 @@
 </td>
 </tr>
 
+<tr>
+<td></td>
+<td>
+<br>
+<a href="http://spaghetticode.org/lame/">
+<?php print "$lameStr</a> $lameStr2"; ?>
+</td>
+</tr>
+                                                                                
+<tr>
+<td></td>
+<td>
+<a href="http://audacityteam.org/vst/">
+<?php print "$vstEnablerStr</a>"; ?>
+</td>
+</tr>
+
 </table>
 
-<p>
-Having trouble downloading?  Need a previous version?
-<a href="http://sourceforge.net/project/showfiles.php?group_id=6235">Click here for direct download links</a>
-</p>
+<center><hr width=50%></center>
+<?php print "<a href=stablenotes.php$langQueryStr>$releaseNotesStr2</a>"; ?>
+<br>
+<?php print "<a href=help.php$langQueryStr>$docsStr</a>\n<br>\n"; ?>
 
 <p>
 Known incompatibilities:
@@ -60,13 +77,10 @@ Known incompatibilities:
 <li>Audacity does not run on Windows 95.  Windows 98 or higher is required.
 </ul>
 
-<center><hr width=50%></center>
-<a href="http://mitiok.free.fr/">
-<?php print "$lameStr</a> $lameStr2"; ?>
-<br>
-<?php print "<a href=stablenotes.php?$langLinkStr>$releaseNotesStr2</a>"; ?>
-<br>
-<a href="audacity-manual-1.0.0-A.zip"><?php print $docsStr; ?></a>
+<p>
+<?php print "$altDownloadStr"; ?> <a href="http://sourceforge.net/project/showfiles.php?group_id=6235"><?php print "$altDownloadStr2"; ?>
+</a>
+</p>
 
 <?php
 
@@ -75,9 +89,4 @@ Known incompatibilities:
   include 'bottom.inc.php';
 
 ?>
-
-
-
-
-
 

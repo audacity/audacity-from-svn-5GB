@@ -100,11 +100,13 @@ value="http://audacity.sourceforge.net/list/invalid.php">
 </form>
 </p>
 
+<!--
 <p>
 <font size="+1">
 <?php print "<a href=beta.php$langQueryStr>$betaVersionsStr</a>"; ?>
 </font>
 </p>
+-->
 
 </td></tr>
 
