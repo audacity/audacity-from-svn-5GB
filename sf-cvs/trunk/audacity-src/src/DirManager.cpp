@@ -168,7 +168,7 @@ void DirManager::CleanTempDir()
 
    wxProgressDialog *progress = NULL;
 
-   wxYield();
+   //wxYield();
    wxStartTimer();
 
    for (int i = 0; i < count; i++) {
