@@ -1225,10 +1225,7 @@ void AudacityProject::OnZoomSel(wxEvent & event)
 
 void AudacityProject::OnPlotSpectrum(wxEvent & event)
 {
-#if 0
-
-
-   TODO NOW int selcount = 0;
+   int selcount = 0;
    WaveTrack *selt = NULL;
    TrackListIterator iter(mTracks);
    Track *t = iter.First();
@@ -1253,7 +1250,6 @@ void AudacityProject::OnPlotSpectrum(wxEvent & event)
       return;
    }
 
-
    sampleCount s0 = (sampleCount) ((mViewInfo.sel0 - selt->GetOffset())
                                    * selt->GetRate());
    sampleCount s1 = (sampleCount) ((mViewInfo.sel1 - selt->GetOffset())
@@ -1264,28 +1260,21 @@ void AudacityProject::OnPlotSpectrum(wxEvent & event)
       slen = 1048576;
 
    float *data = new float[slen];
-   sampleType *data_sample = new sampleType[slen];
 
-   if (s0 >= selt->GetNumSamples() || s0 + slen > selt->GetNumSamples()) {
+   // CHECKME - I really do not understand this if tom@bfad.de
+   if (s0 >= selt->GetMaxBlockSize() || s0 + slen > selt->GetMaxBlockSize()) {
       wxMessageBox(_("Not enough samples selected.\n"));
       delete[]data;
-      delete[]data_sample;
       return;
    }
 
-   selt->Get(data_sample, s0, slen);
-
-   for (sampleCount i = 0; i < slen; i++)
-      data[i] = data_sample[i] / 32767.;
+   selt->Get((samplePtr)data, floatSample, s0, slen);
 
    gFreqWindow->Plot(slen, data, selt->GetRate());
    gFreqWindow->Show(true);
    gFreqWindow->Raise();
 
    delete[]data;
-   delete[]data_sample;
-
-#endif
 }
 
 
