@@ -33,7 +33,9 @@ class WaveTrack: public Track {
    // Private since only factories are allowed to construct WaveTracks
    //
 
-   WaveTrack(DirManager * projDirManager, sampleFormat format = floatSample);
+   WaveTrack(DirManager * projDirManager, 
+             sampleFormat format = (sampleFormat)0,
+             double rate = 0);
    WaveTrack(WaveTrack &orig);
 
    void Init(const WaveTrack &orig);

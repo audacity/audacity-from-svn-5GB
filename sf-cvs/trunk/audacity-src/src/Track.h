@@ -258,7 +258,8 @@ class TrackFactory
  public:
    // These methods are defined in WaveTrack.cpp, NoteTrack.cpp,
    // and LabelTrack.cpp respectively
-   WaveTrack *NewWaveTrack(sampleFormat format = floatSample);
+   WaveTrack *NewWaveTrack(sampleFormat format = (sampleFormat)0,
+                           double rate = 0);
    NoteTrack *NewNoteTrack();
    LabelTrack *NewLabelTrack();
 };
