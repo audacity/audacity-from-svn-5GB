@@ -1,9 +1,14 @@
 <h2>Changes in Audacity 1.2.3</h2>
 <ul>
 <li><p>
-    Fixed a bug that caused recording to stop or display incorrectly
-    after about 50 minutes on some Windows systems.  (This was partly
+		Windows: Fixed a bug that caused recording to stop or display incorrectly
+		after about 50 minutes, on some Windows systems.  (This was partly
     fixed in Audacity 1.2.2, but still didn't work on some systems.)
+</p></li>
+<li><p>
+		Mac OS X: Fixed a major bug that caused Audacity to crash at
+		seemingly-random times on Mac systems, especially during playback or
+		recording.
 </p></li>
 <li><p>
     The Change Pitch and Change Tempo effects have been upgraded to
@@ -11,7 +16,8 @@
     with better speed and higher quality.
 </p></li>
 <li><p>
-    libsndfile has been upgraded to version 1.0.10
+    libsndfile has been upgraded to version 1.0.11.  Audacity can now
+		import Sound Designer II (SDII) files.
 </p></li>
 <li><p>
     Fixed a bug that caused the program to run slowly when using the
@@ -37,6 +43,6 @@
 <li><p>
     New or updated translations: Italian (it), Hungarian (hu),
     Ukrainian (uk), Spanish (es). Polish (pl), Simplified Chinese (zh),
-    Norsk-Bokmal (nb), French (fr).
+    Norsk-Bokmal (nb), French (fr), Russian (ru).
 </p></li>
 </ul>
