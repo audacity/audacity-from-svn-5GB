@@ -73,17 +73,10 @@ AButton::AButton(wxWindow * parent, wxWindowID id,
    mEnabled = true;
    mProcessDownEvents = processdownevents;
 
-#if wxVERSION_NUMBER < 2303
-   mBitmap[0] = new wxBitmap(up->ConvertToBitmap());
-   mBitmap[1] = new wxBitmap(over->ConvertToBitmap());
-   mBitmap[2] = new wxBitmap(down->ConvertToBitmap());
-   mBitmap[3] = new wxBitmap(dis->ConvertToBitmap());
-#else
    mBitmap[0] = new wxBitmap(up);
    mBitmap[1] = new wxBitmap(over);
    mBitmap[2] = new wxBitmap(down);
    mBitmap[3] = new wxBitmap(dis);
-#endif
 
    GetSize(&mWidth, &mHeight);
 }

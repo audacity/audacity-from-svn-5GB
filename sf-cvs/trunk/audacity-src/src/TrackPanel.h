@@ -28,6 +28,14 @@ class TrackArtist;
 class Ruler;
 struct ViewInfo;
 
+struct tpBitmap
+{
+   wxBitmap *bitmap;
+   wxCoord x;
+   wxCoord y;
+};
+
+WX_DEFINE_ARRAY(tpBitmap *, tpBitmapArray);
 
 class TrackPanelListener {
  public:
@@ -79,10 +87,10 @@ class TrackPanel:public wxWindow {
 
  private:
 
-   void DrawCursors();
+   void DrawCursors(wxDC * dc = NULL);
 
    void ScrollDuringDrag();
-   void UpdateIndicator();
+   void UpdateIndicator(wxDC * dc = NULL);
 
    // AS: Selection handling
    void HandleSelect(wxMouseEvent & event);
@@ -217,13 +225,14 @@ class TrackPanel:public wxWindow {
    } mTimer;
    
 
-   //This keeps track of where the last vertical
-   //play indicator was.
-   int mLastIndicator;
+   //This stores the parts of the screen that get overwritten by the indicator
+   tpBitmapArray mScreenAtIndicator;
    
    // This indicates whether the last indicator drawing
    // existed, so that we can draw over it to erase it
    bool mPlayIndicatorExists;
+
+   tpBitmapArray mPreviousCursorData;
 
    int mTimeCount;
 

@@ -149,7 +149,6 @@ class AudacityProject:public wxFrame,
    void UpdateMenus();
    void UpdatePrefs();
    void RedrawProject();
-   void PostRedrawMessage();
    void SelectNone();
    void Zoom(double level);
    void Rewind(bool shift);
