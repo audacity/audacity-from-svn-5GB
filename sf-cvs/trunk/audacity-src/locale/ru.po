@@ -1135,7 +1135,8 @@ msgid ""
 "Could not save project.  Perhaps %s is not writeable,\n"
 "or the disk is full."
 msgstr ""
-"Не удалось сохранить проект.  Возможно, у вас нет прав на запись %s,\n"
+"Не удалось сохранить проект.  Возможно, у вас нет прав\n"
+"на запись %s,\n"
 "либо недостаточно свободного места на диске."
 
 #: ../src/Project.cpp:1822
@@ -2752,7 +2753,7 @@ msgstr "Готовые настройки:"
 #: ../src/effects/Effect.cpp:247 ../src/effects/Equalization.cpp:725
 #: ../src/effects/Phaser.cpp:567 ../src/effects/Wahwah.cpp:550
 msgid "Preview"
-msgstr "Предпрослушивание"
+msgstr "Прослушать"
 
 #: ../src/Menus.cpp:362
 msgid "Previous Tool\tA"
@@ -2764,7 +2765,7 @@ msgstr "Основной разработчик"
 
 #: ../src/AboutDialog.cpp:117
 msgid "Program build date:"
-msgstr "Дата компиляции программы:"
+msgstr "Дата сборки программы:"
 
 #: ../src/AboutDialog.cpp:178 ../src/AboutDialog.cpp:182
 #: ../src/AboutDialog.cpp:186 ../src/AboutDialog.cpp:190
@@ -2844,11 +2845,11 @@ msgstr "Real-time преобразователь частоты дискретизации:"
 
 #: ../src/ControlToolBar.cpp:397 ../src/TrackPanel.cpp:1142
 msgid "Record"
-msgstr "Записывать"
+msgstr "Записать"
 
 #: ../src/Menus.cpp:367
 msgid "Record\tR"
-msgstr "Записывать\tR"
+msgstr "Записать\tR"
 
 #: ../src/TrackPanel.cpp:1142
 msgid "Recorded Audio"
