@@ -306,9 +306,9 @@ ob Sie deren Lizenzbestimmungen akzepieren wollen.
 </b></font>
 Eigentlich nicht. Die meiste Musik , die gestreamt wird, auch die die für den RealOne Player, Windows Media Player oder Quicktime geliefert wird, soll eigentlich verhindern, dass du diese aufnehmen kannst.
 <p>
-Aber es ist immer noch m&ouml;glich alles, was du auf deinem Computer abspielen kannst, auch aufzunehmen. Verbinde dazu nur deinen Outputkanal an der Soundkarte (in der Regel der grüne Ausgang) mit dem Line In Eingang deiner Soundkarte. Benutzte dazu ein 1/8 Inch Audio Stereo Kabel.
+Aber es ist immer noch möglich alles, was du auf deinem Computer abspielen kannst, auch aufzunehmen. Verbinde dazu nur deinen Outputkanal an der Soundkarte (in der Regel der grüne Ausgang) mit dem Line In Eingang deiner Soundkarte. Benutzte dazu ein 1/8 Inch Audio Stereo Kabel.
 <p>
-Wenn du dies so gemacht hast, kann Audacity alles aufnehmen, was abgespielt wird. Dr&uuml;cke dazu erst den Aufnahmeknopf in Audacity, danach den „Start“ Knopf in deiner Anwendung und Audacity nimmt alles auf ! (vgl. auch die n&auml;chste Frage).
+Wenn du dies so gemacht hast, kann Audacity alles aufnehmen, was abgespielt wird. Drücke dazu erst den Aufnahmeknopf in Audacity, danach den „Start“ Knopf in deiner Anwendung und Audacity nimmt alles auf ! (vgl. auch die nächste Frage).
 
 
 
@@ -318,25 +318,62 @@ Wenn du dies so gemacht hast, kann Audacity alles aufnehmen, was abgespielt wird
 6. Hilfe! Ich drücke Aufnahme, aber alles was ich bekomme ist "Stille"!</b></font>
 <br>
 <p>
-Audacity benutzt zur Aufnahme den Standard Input, der in deinem Betriebssystem festgelegt ist. Wenn man mehrere M&ouml;glichkeiten hat, Aufnahmen zu starten, kann , bei einer falschen Wahl, Audacity nur „Stille“ aufnehmen.
-Ein Beispiel: Du hast ein Mikrofon angeschlossen und hast aber im Input den Line In Eingang gew&auml;hlt. Dann kommt nichts an und Audacity kann auch nichts aufnehmen.
+Audacity benutzt zur Aufnahme den Standard Input, der in deinem Betriebssystem festgelegt ist. Wenn man mehrere Möglichkeiten hat, Aufnahmen zu starten, kann , bei einer falschen Wahl, Audacity nur „Stille“ aufnehmen.
+Ein Beispiel: Du hast ein Mikrofon angeschlossen und hast aber im Input den Line In Eingang gewählt. Dann kommt nichts an und Audacity kann auch nichts aufnehmen.
 <p>
-Wenn du Windows benutzt, kann du mit Rechts-Klick auf das Lautst&auml;rke-Symbol (Rechts unten) den Input-Kanal w&auml;hlen.
+Wenn du Windows benutzt, kann du mit Rechts-Klick auf das Lautstärke-Symbol (Rechts unten) den Input-Kanal wählen.
 <p>
-Wenn du Mac OS9 besitzt, geht dies &uuml;ber die Sound Control. Wenn du Mac OSX benutzt, gehe &uuml;ber die Sound Control in den Systemeinstellungen (Bei 10.2 oder h&ouml;her ist dies ein eigener Reiter).
+Wenn du Mac OS9 besitzt, geht dies über die Sound Control. Wenn du Mac OSX benutzt, gehe über die Sound Control in den Systemeinstellungen (Bei 10.2 oder höher ist dies ein eigener Reiter).
 
 <p>
 <a href="#a7"></a>
 <font size=+1><b>
 7. Wie trenne ich ein Lied (Track) in verschiedene Stücke ?</b></font><br>
 <p>
-in Übersetzung
+Manchmal nimmst du verschiedene Lieder auf, die aber zum Schlu&suml; in einem St&uuml;ck gespeichert sind (zum Beispiel du nimmst eine Seite einer LP in einem "Rutsch" auf).  Wenn du diese Lieder dann auf eine CD brennen willst, aber in verschiedenen Liedern, musst du für jedes Lied eine einzelne Datei speichern.
+</p><p>
+Es gibt verschiedene Wege dies mit Audacity zu tun, hier sind ein paar davon:
+ </p><p>
+<b>Methode 1: Export Auswahl</b>
+</p><ul>
+<li>Markiere das erste Lied in deiner Datei (mit der Maus):
+ </li><li>W&auml;hle im Dateimen&uuml; "Speichere Auswahl als WAV" und speichere das Lied auf der Festplatte. 
+</li><li> Mache dies f&uuml;r alle weiteren Lieder.
+</li></ul>
+<p>
+<b>Methode 2: L&ouml;schen und Wiederherstellen</b>
+</p><ul>
+<li>L&ouml;sche alles <i>mit Ausnahme vont</i> dem ersten Lied.
+</li><li> W&auml;hle im Dateimen&uuml; "Speichere Auswahl als WAV" und speichere das Lied auf der Festplatte.
+</li><li>Nimm "Undo" (Wiederherstellen) aus dem &Auml;ndern Men&uuml;.  Mach dieses bis die komßplette Datei wieder da ist. (Audacity kann unlimitiert wiederherstellen.)
+</li><li> Mache dies f&uuml;r alle weiteren Lieder.
+</li></ul>
+<p>
+<b>Method 3: Trennen und Exportieren</b>
+</p><ul>
+<li>Suche den Teil der Datei, der das erste Lied darstellt
+</li><li>W&auml;hle  "Split (Teilen)" aus dem &Auml;ndern Men&uuml;, dies sorgt daf&uuml;, dass deine Auswahl in eine zus&auml;tzliche Datei innerhalb Audacity verschoben wird.
+ </li><li>Mache dies mit allen weiteren Liedern. Du kannst mit "Wiederherstellen" jederzeit den alten Zustand wiederhertsellen, falls du einen Fehler machst.
+</li><li>gehe nun wieder zur&uuml;ck in die erste separierte Datei und w&auml;hle im Dateimen&uuml; "Speichere Auswahl als WAV" und speichere das Lied auf der Festplatte.
+Dies musst du mit jeder Datei machen.</li>
+<li>  Hinweis: Um eine Datei komplett und schnell zu markieren dr&uuml;cke auf den Label (Linke Seite neben der Waveform, unter dem Titel).
+</li></ul>
+<p>
+
+
 <p>
 <a href="#a8"></a>
 <font size=+1><b>
 8. Wie bekomme ich die Lieder von einer Audio CD ?</b></font><br>
 <p>
-in Übersetzung
+Audacity kann keine Lieder von Audio CD`s extrahieren (Rippen). Du benötigst ein "Ripper" Programm um dieses durchzuführen.
+<p>
+Wenn du Windows benutzt, empfehlen wir <a href="http://cdexos.sourceforge.net/">CDex</a>.
+<p>
+Wenn du Mac OS (9 und X) benutzt, solltest du Apple's <a href="http://www.apple.com/itunes/">iTunes</a> benutzen.
+<p>
+Für Linux, versuche <a href="http://www.xiph.org/paranoia/">Paranoia</a>.
+<p>
 <p>
 <p>
 Für nähere Informationen lesen Sie in unserer Online Hilfe nach.
