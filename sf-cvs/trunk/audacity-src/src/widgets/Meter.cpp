@@ -554,7 +554,7 @@ void Meter::HandleLayout()
    int barw, barh;
    int i;
 
-#ifdef __WXMAC__
+#ifdef USE_AQUA_THEME
    if (!mBackgroundBitmap ||
        mBackgroundBitmap->GetWidth() != mWidth ||
        mBackgroundBitmap->GetWidth() != mHeight) {
@@ -721,7 +721,7 @@ void Meter::HandlePaint(wxDC &dc)
    if (!mLayoutValid)
       HandleLayout();
 
-#ifdef __WXMAC__
+#ifdef USE_AQUA_THEME
    dc.DrawBitmap(*mBackgroundBitmap, 0, 0);
 #else
    dc.SetPen(*wxTRANSPARENT_PEN);
