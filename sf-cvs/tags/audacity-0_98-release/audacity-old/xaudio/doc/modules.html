@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.5b2 [en] (X11; I; Linux 2.0.34 i586) [Netscape]">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#51188E" ALINK="#FF0000">
+
+<H1>
+Built-In Modules</H1>
+
+<BLOCKQUOTE>The Xaudio Library contains a number of built-in input and
+output modules.
+<P>When using the <A HREF="async-api.html">ASYNC API</A> (sending messages
+to an <TT>XA_Player</TT> object), all built-in modules are automatically
+registered&nbsp; when the player is created. If the client software wants
+to get a list of the attached built-in modules, it can do so by sending
+the <TT><A HREF="command-messages.html#XA_MSG_COMMAND_INPUT_MODULES_LIST">XA_MSG_COMMAND_INPUT_MODULES_LIST</A></TT>,
+or <TT><A HREF="command-messages.html#XA_MSG_COMMAND_OUTPUT_MODULES_LIST">XA_MSG_COMMAND_OUTPUT_MODULES_LIST</A></TT>.
+<BR>When using the <A HREF="sync-api.html">SYNC API</A> (managing an <A HREF="data-structures.html#XA_DecoderInfo"><TT>XA_DecoderInfo</TT></A>
+object through direct function calls), if the client software needs to use
+any of the built-in modules, it needs to register them just after creating
+the <A HREF="data-structures.html#XA_DecoderInfo"><TT>XA_DecoderInfo</TT></A> object. It can also register any number of custom
+input or output modules.</BLOCKQUOTE>
+
+<H1>
+
+<HR WIDTH="100%">Input Modules</H1>
+
+<BLOCKQUOTE>
+<H2>
+<FONT COLOR="#CC0000">File Input Module</FONT></H2>
+This is a very simple input module, and any player that runs on&nbsp; a
+platform with a disk drive will probably want to use it.
+<BR>It takes care of doing the input from a regular file on the disk.
+<H3>
+<FONT COLOR="#006600">Input Name Syntax</FONT></H3>
+The syntax for an input name for the file input module is simply the file
+name, using the platform's file naming conventions.
+<H4>
+Examples</H4>
+<TT>control_message_send(player, XA_MSG_COMMAND_INPUT_OPEN, "c:\bits\mp3\miles.mp3");
+</TT>(Windows)
+<BR>or
+<BR><TT>control_message_send(player, XA_MSG_COMMAND_INPUT_OPEN, "/bits/mp3/miles.mp3");</TT>
+(Unix)
+<H3>
+<FONT COLOR="#006600">Registration Function (SYNC API only)</FONT></H3>
+<TT>int XA_EXPORT file_input_module_register(XA_InputModule *module);</TT>
+<BR>When registering the module using the <A HREF="sync-api.html">SYNC
+API</A>, the header file file_input.h should be included to get the prototype
+of the registration function of the file input module.
+<BR>&nbsp;
+<H2>
+<FONT COLOR="#CC0000">Network Stream Input Module</FONT></H2>
+This is an input module that supports streaming from a network connection.
+It supports HTTP, FTP, and raw UDP. This modules does smooth buffering
+to avoid network jitters, etc...
+<H3>
+<FONT COLOR="#006600">Input Name Syntax</FONT></H3>
+For HTTP and FTP, the input name is simply a URL.
+<BR>For UDP, the syntax is: udp://hostname:port, where hostname is the
+host where the UDP packets come from (currently, the module will ignore
+that value, and will accept UDP packets regardless of where they come from),
+and port is the UDP port number for receiving the packets.
+<H4>
+Examples</H4>
+<TT>control_message_send(player, XA_MSG_COMMAND_INPUT_OPEN, "http://my.sever.com/mp3/miles.mp3");</TT>
+<BR>or
+<BR><TT>control_message_send(player, XA_MSG_COMMAND_INPUT_OPEN, "ftp://myname:mypassword@my.server.com/mp3/miles.mp3");</TT>
+<BR>or
+<BR><TT>control_message_send(player, XA_MSG_COMMAND_INPUT_OPEN, "udp://localhost:9000");</TT>
+<BR>&nbsp;
+<H3>
+<FONT COLOR="#006600">Registration Function (SYNC API only)</FONT></H3>
+<TT>int XA_EXPORT stream_input_module_register(XA_InputModule *module);</TT>
+<BR>When registering the module using the <A HREF="sync-api.html">SYNC
+API</A>, the header file <TT>stream_input.h</TT> should be included to
+get the prototype of the registration function of the stream input module.
+<BR>&nbsp;
+<H2>
+<FONT COLOR="#CC0000">Memory Input Module</FONT></H2>
+This is a simple input module that is used when you want to decode a bitstream
+from a memory buffer. It supports 2 modes: reading the stream from a circular
+input buffer (streaming input, never ends), or reading the stream from
+a linear input buffer (ends when all the input bytes have been consumed).
+<BR>When using a circular input buffer, an additional function is provided
+for the client to store data into the circular buffer.
+<BR>This module is only used with the SYNC API.
+<H3>
+<FONT COLOR="#006600">Input Name Syntax</FONT></H3>
+The name syntax for that module is:
+<BR>An NULL or empty string ("") name tells the module to work in circular
+buffer mode.
+<BR>A name in the form "size@addr" tells the module to use a linear buffer
+of 'size' bytes, starting at address 'addr', size and addr are expressed
+as hexadecimal numbers (Example: 2FFD6@8FFCDA23C)
+<H4>
+Examples</H4>
+decoder_input_new(decoder, NULL, XA_DECODER_INPUT_AUTOSELECT);
+<BR>(for a circular input buffer)
+<P>or
+<P>decoder_input_new(decoder, "65536@1576869476", XA_DECODER_INPUT_AUTOSELECT);
+<BR>(for a linear input buffer)
+<P>NOTE: if you use the XA_DECODER_INPUT_AUTOSELECT method, the memory
+input module should probably be the only input module registered at that
+time, otherwise another module might accept the NULL name.
+<BR>&nbsp;
+<H3>
+<FONT COLOR="#006600">Registration Function (SYNC API only)</FONT></H3>
+int XA_EXPORT memory_input_module_register(XA_InputModule *module);
+<BR>When registering the module using the SYNC API, the header file memory_input.h
+should be included to get the prototype of the registration function of
+the memory input module.
+<H3>
+<FONT COLOR="#006600">Support Functions</FONT></H3>
+<TT>int XA_EXPORT memory_input_feed(void *device, unsigned char *data,
+unsigned int bytes);</TT>
+<BLOCKQUOTE>Call this function to store data into the circular input buffer.
+Pass a pointer ('data') to&nbsp; the data you want to store into the buffer,
+and the number of bytes of data ('bytes'). This function returns the number
+of bytes that have been stored into the buffer (it could be less than the
+number of bytes passed as an argument, because there might not have been
+enough space available in the input buffer).</BLOCKQUOTE>
+
+<P><BR><TT>int XA_EXPORT memory_input_flush(void *device);</TT>
+<BLOCKQUOTE>Call this function to flush the contents of the circular input
+buffer (when using the streaming mode).</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<H1>
+
+<HR WIDTH="100%">Output Modules</H1>
+
+<BLOCKQUOTE>
+<H2>
+<FONT COLOR="#CC0000">Audio Sound Card Ouput Module</FONT></H2>
+For each of the supported platforms, a built-in module will implement the
+output to the sound card.
+<H3>
+<FONT COLOR="#006600">Output Name Syntax</FONT></H3>
+To get the output to be played back through the default soundcard, use
+a <TT>NULL</TT> or empty ("") name. In that case, the output module will
+automatically select the first available soundcard.
+<BR>If the platform has several soundcards, and the client software needs
+to specify a specific card, then a non <TT>NULL</TT> can be used to choose
+the card. In that case, the name syntax depends on the platform. (see the
+section about platform specific options for more details).
+<H3>
+<FONT COLOR="#006600">Registration Function (SYNC API only)</FONT></H3>
+<TT>int XA_EXPORT audio_output_module_register(XA_OutputModule *module);</TT>
+<BLOCKQUOTE>When registering the module using the <A HREF="sync-api.html">SYNC
+API</A>, the header file file_input.h should be included to get the prototype
+of the registration function of the file input module.</BLOCKQUOTE>
+
+<H2>
+<FONT COLOR="#CC0000">File Output Module</FONT></H2>
+This is a very simple output module, and any player that runs on&nbsp;
+a platform with a disk drive will probably want to use it.
+<BR>It takes care of doing the output to a regular file on the disk (either
+in RAW or WAVE format).
+<H3>
+<FONT COLOR="#006600">Output Name Syntax</FONT></H3>
+The syntax for an input name for the file output module is simply the file
+name, using the platform's file naming conventions, or the file name preceded
+with the prefix "wav:" to add a WAVE file header at the beginning of the
+file.
+<H4>
+Examples</H4>
+<TT>control_message_send(player, XA_MSG_COMMAND_OUTPUT_OPEN, "wav:c:\bits\wav\miles.wav");
+</TT>(Windows)
+<BR>or
+<BR><TT>control_message_send(player, XA_MSG_COMMAND_OUTPUT_OPEN, "wav:/bits/wav/miles.wav");</TT>
+(Unix)
+<H3>
+<FONT COLOR="#006600">Registration Function (SYNC API only)</FONT></H3>
+<TT>int XA_EXPORT file_output_module_register(XA_OutputModule *module);</TT>
+<BLOCKQUOTE>When registering the module using the <A HREF="sync-api.html">SYNC
+API</A>, the header file file_input.h should be included to get the prototype
+of the registration function of the file input module.</BLOCKQUOTE>
+
+<BR>&nbsp;</BLOCKQUOTE>
+
+</BODY>
+</HTML>

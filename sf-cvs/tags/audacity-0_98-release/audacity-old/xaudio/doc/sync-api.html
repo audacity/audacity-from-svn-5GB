@@ -1,0 +1,1122 @@
+<HTML>
+<HEAD>
+<TITLE>Xaudio SYNC API</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#51188E" ALINK="#FF0000">
+<CENTER><IMG SRC="xaudio.gif"><H1>Xaudio SYNC API</H1></CENTER><HR>The Xaudio SYNC API is a low-level API that is used when the client software needs precise and detailed access to the decoding loop and to the input and output data samples.<BR>In general, this API is not used when writing applications that have a GUI (Graphical User Interface), because the Xaudio <A HREF="async-api.html">ASYNC API</A> is much better suited to this kind of application.<BR>Typical client software applications that will use the SYNC API include, but are not limited to:<UL><LI>Games that use their own sound engine and want precise control over the decoded buffers so as to mix them with other sound buffers coming from different sources in the game.</LI><LI>File conversion programs that do not need to have the decoder run in its own separate thread.</LI><LI>Applications written for a platform for which the ASYNC API is not supported (usually due to the lack of threads or processes on that platform) (ex: DOS).</UL><BR>With the SYNC API, the controlling application first creates a decoder object ( <A HREF="#XA_DecoderInfo">XA_DecoderInfo</A>), then registers the input and output modules it wishes to use (<TT><A HREF="#decoder_input_module_register">decoder_input_module_register()</A></TT>, <TT><A HREF="#decoder_output_module_register">decoder_output_module_register()</A></TT>), possibly adds input or output filters (<TT><A HREF="#decoder_input_add_filter">decoder_input_add_filter()</A></TT>, <TT><A HREF="#decoder_output_add_filter">decoder_output_add_filter()</A></TT>), and is ready to decode and play the input stream.<BR>To start decoding an input stream, the controlling application needs to create an input stream (<TT><A HREF="#decoder_input_new">decoder_input_new()</A></TT>), then open it (<TT><A HREF="#decoder_input_open">decoder_input_open()</A></TT>). Then, if the controlling application wants the decoded audio samples to be sent to an output module like the built-in Audio Sound Card Output Module, it needs to create an output module (<TT><A HREF="#decoder_output_new">decoder_output_new()</A></TT>), and open it (<TT><A HREF="#decoder_output_open">decoder_output_open()</A></TT>), otherwise, if it just needs to decode the input stream and get access to the decoded data, it can work without an output module.<BR>At this point, the controlling application can make calls to decode small chunks of the input stream (called frames), by calling <TT><A HREF="#decoder_play">decoder_play()</A></TT> if it wants the decoded samples to be sent to the output, or <TT><A HREF="#decoder_decode">decoder_decode()</A></TT> it if wants to simple decode the chunk and get access to the decoded buffer.<BR>As the controlling application repeats calls to <TT><A HREF="#decoder_play">decoder_play()</A></TT> or <TT><A HREF="#decoder_decode">decoder_decode()</A></TT>, the library will maintain the <A HREF="#XA_DecoderInfo">XA_DecoderInfo</A> up to date, with information about the current offset in the input stream, the stream information, etc...<BR>If the controlling application needs to change to a different location in the input stream, it can do so by calling one of the seek functions (<TT><A HREF="#decoder_input_seek_to_position">decoder_input_seek_to_position()</A></TT>, <TT><A HREF="#decoder_input_seek_to_time">decoder_input_seek_to_time()</A></TT>, <TT><A HREF="#decoder_input_seek_to_timecode">decoder_input_seek_to_timecode()</A></TT>).<BR>When the end of the input stream is reached, the call to <TT><A HREF="#decoder_play">decoder_play()</A></TT> or <TT><A HREF="#decoder_decode">decoder_decode()</A></TT> will return <A HREF="error-codes.html#XA_ERROR_INPUT_EOF">XA_ERROR_INPUT_EOF</A>. At this point (or at any other point during the decoding), the controlling application can choose to close the input (<TT><A HREF="#decoder_input_close">decoder_input_close()</A></TT>), and open a new one, or any other action it needs to do.<BR>At any point, the controlling application can use the supporting functions to set/get environment variables, set/get the codec equalizer, etc...
+<HR>
+<H2>Function Index</H2>
+<UL>
+<LI><A HREF="#decoder_version">decoder_version</A></LI>
+<LI><A HREF="#decoder_new">decoder_new</A></LI>
+<LI><A HREF="#decoder_delete">decoder_delete</A></LI>
+<LI><A HREF="#decoder_input_module_register">decoder_input_module_register</A></LI>
+<LI><A HREF="#decoder_input_module_query">decoder_input_module_query</A></LI>
+<LI><A HREF="#decoder_input_add_filter">decoder_input_add_filter</A></LI>
+<LI><A HREF="#decoder_input_remove_filter">decoder_input_remove_filter</A></LI>
+<LI><A HREF="#decoder_input_new">decoder_input_new</A></LI>
+<LI><A HREF="#decoder_input_delete">decoder_input_delete</A></LI>
+<LI><A HREF="#decoder_input_open">decoder_input_open</A></LI>
+<LI><A HREF="#decoder_input_close">decoder_input_close</A></LI>
+<LI><A HREF="#decoder_input_seek_to_offset">decoder_input_seek_to_offset</A></LI>
+<LI><A HREF="#decoder_input_seek_to_position">decoder_input_seek_to_position</A></LI>
+<LI><A HREF="#decoder_input_seek_to_time">decoder_input_seek_to_time</A></LI>
+<LI><A HREF="#decoder_input_seek_to_timecode">decoder_input_seek_to_timecode</A></LI>
+<LI><A HREF="#decoder_output_module_register">decoder_output_module_register</A></LI>
+<LI><A HREF="#decoder_output_module_query">decoder_output_module_query</A></LI>
+<LI><A HREF="#decoder_output_add_filter">decoder_output_add_filter</A></LI>
+<LI><A HREF="#decoder_output_remove_filter">decoder_output_remove_filter</A></LI>
+<LI><A HREF="#decoder_output_new">decoder_output_new</A></LI>
+<LI><A HREF="#decoder_output_delete">decoder_output_delete</A></LI>
+<LI><A HREF="#decoder_output_open">decoder_output_open</A></LI>
+<LI><A HREF="#decoder_output_close">decoder_output_close</A></LI>
+<LI><A HREF="#decoder_output_set_control">decoder_output_set_control</A></LI>
+<LI><A HREF="#decoder_output_get_control">decoder_output_get_control</A></LI>
+<LI><A HREF="#decoder_codec_module_register">decoder_codec_module_register</A></LI>
+<LI><A HREF="#decoder_codec_set_channels">decoder_codec_set_channels</A></LI>
+<LI><A HREF="#decoder_codec_get_channels">decoder_codec_get_channels</A></LI>
+<LI><A HREF="#decoder_codec_set_channels">decoder_codec_set_channels</A></LI>
+<LI><A HREF="#decoder_codec_get_channels">decoder_codec_get_channels</A></LI>
+<LI><A HREF="#decoder_codec_set_quality">decoder_codec_set_quality</A></LI>
+<LI><A HREF="#decoder_codec_get_quality">decoder_codec_get_quality</A></LI>
+<LI><A HREF="#decoder_codec_set_equalizer">decoder_codec_set_equalizer</A></LI>
+<LI><A HREF="#decoder_codec_get_equalizer">decoder_codec_get_equalizer</A></LI>
+</UL>
+<HR>
+<H2><A NAME="decoder_version">decoder_version</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Returns information about the version of the Xaudio library.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>char* XA_EXPORT decoder_version(char **major, char **minor, char **state);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>char* XA_Decoder::Version(char **major, char **minor, char **state);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>major</I></B></TD><TD> [returns] A pointer to a read-only string containing the major version name. This parameter can be <TT>NULL</TT> if the caller does not want to receive this information.</TD>
+</TR>
+<TR>
+<TD><B><I>minor</I></B></TD><TD> [returns] A pointer to a read-only string containing the minor version number. This parameter can be <TT>NULL</TT> if the caller does not want to receive this information.</TD>
+</TR>
+<TR>
+<TD><B><I>state</I></B></TD><TD> [returns] A pointer to a read-only string containing the state (alpha, beta, etc...). This parameter can be <TT>NULL</TT> if the caller does not want to receive this information.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+A read-only string with the full version name.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_new">decoder_new</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Creates a new instance of a decoder object. If it succeeds, a pointer to the new object is returned by storing it in the location passed as an argument.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_new(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> **decoder);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Decoder::XA_Decoder();</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to the variable in which the pointer to the new decoder object will be returned.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the decoder has been created, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_delete">decoder_delete()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_delete">decoder_delete</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Deletes a decoder object previously created by a call to <TT><A HREF="#decoder_new">decoder_new()</A></TT>. Resources attached to the decoder object are released. If the decoder still has any instantiated input or output objects, they will be closed and deleted.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_delete(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Decoder:~XA_Decoder();</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to the decoder object to delete.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the decoder has been deleted, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_new">decoder_new()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_input_module_register">decoder_input_module_register</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Registers an <A HREF="modules.html##input_modules">input module</A> in the list of attached input modules. If the call succeeds, a module ID (positive integer) is returned, that can be used subsequently to identify this specific module.<BR>See section on <A HREF="modules.html##input_modules">input modules</A> for more details.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_input_module_register(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, const <TT><A HREF="data-structures.html#XA_InputModule">XA_InputModule</A></TT> *module);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::InputModuleRegister(const <TT><A HREF="data-structures.html#XA_InputModule">XA_InputModule</A></TT> *module);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>module</I></B></TD><TD> Pointer to the input module to register.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns a positive input module ID if the registration succeeds, or a <A HREF="error-codes.html">negative error code</A> if it fails.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_input_open">decoder_input_open()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_input_module_query">decoder_input_module_query</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves information about a registered input module. Information about a given module ID (as returned by <TT><A HREF="#decoder_input_module_register">decoder_input_module_register()</A></TT>) is returned in the fields of an <TT><A HREF="data-structures.html#XA_InputModuleQuery">XA_InputModuleQuery</A></TT> structure. The type of information returned depends on the flags passed as a parameter.<BR>See section on <A HREF="modules.html#module_query">input module queries</A> for details about the query flags and returned information.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_input_module_query(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, int module, <TT><A HREF="data-structures.html#XA_InputModuleQuery">XA_InputModuleQuery</A></TT> *query, unsigned long query_flags);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::InputModuleQuery(int module, <TT><A HREF="data-structures.html#XA_InputModuleQuery">XA_InputModuleQuery</A></TT> *query, unsigned long query_flags);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>module</I></B></TD><TD> Integer ID of a registered input module.</TD>
+</TR>
+<TR>
+<TD><B><I>query</I></B></TD><TD> Pointer to a <TT><A HREF="data-structures.html#XA_InputModuleQuery">XA_InputModuleQuery</A></TT> where information about the module will be returned.</TD>
+</TR>
+<TR>
+<TD><B><I>query_flags</I></B></TD><TD> Flags (combined bitmask) specifying what type of information should be returned.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the information requested can be returned, or a <A HREF="error-codes.html">negative error code</A> if it cannot.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_input_module_register">decoder_input_module_register()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_input_add_filter">decoder_input_add_filter</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Adds an input filter for the decoder. An input filter is a function table that will bridge calls between the decoder and the input module. Several input filters can be inserted between the decoder and the input module. Filters are chained, they are called in order from the first to the last. When inserting a new filter, an ID specifies at which point in the list of current input filters it should be added. The special value <TT>XA_DECODER_INPUT_FILTER_FIRST</TT>CODE(XA_DECODER_INPUT_FILTER_LAST) will insert it as the last in the chain, and any other ID value will insert the filter before the existing filter with that ID.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_input_add_filter(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, const <TT><A HREF="data-structures.html#XA_InputFilter">XA_InputFilter</A></TT> *filter, int where);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::InputAddFilter(const <TT><A HREF="data-structures.html#XA_InputFilter">XA_InputFilter</A></TT> *filter, int where);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder.</TD>
+</TR>
+<TR>
+<TD><B><I>filter</I></B></TD><TD> Pointer to a <TT><A HREF="data-structures.html#XA_InputFilter">XA_InputFilter</A></TT> containing the filter's function table.</TD>
+</TR>
+<TR>
+<TD><B><I>where</I></B></TD><TD> ID of the filter before which the new filter should be inserted, or the special values XA_DECODER_INPUT_FILTER_FIRST or XA_DECODER_INPUT_FILTER_LAST.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns a positive integer filter ID if the call succeeds, or a <A HREF="error-codes.html">negative error code</A> if it fails.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_input_remove_filter">decoder_input_remove_filter()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_input_remove_filter">decoder_input_remove_filter</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Removes a filter from the decoder's input filters chain. The filter to be removed can be identified by name or by ID. If the filter ID parameter has the special value <TT>XA_DECODER_INPUT_FILTER_BY_NAME</TT>, then the filter to be removed will be identified by name, for any other value of that parameter, the filter will be identified by ID, and the 'name' parameter will be ignored. Special value <TT>XA_DECODER_INPUT_FILTER_FIRST</TT>CODE(XA_DECODER_INPUT_FILTER_LAST) will remove the last filter in the chain, and any other ID value will remove the filter with that ID.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_input_remove_filter(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, const char *name, int id);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::InputRemoveFilter(const char *name, int id);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder.</TD>
+</TR>
+<TR>
+<TD><B><I>name</I></B></TD><TD> Name of the filter to remove (this parameter is only valid when the 'id' parameter is <TT>XA_DECODER_INPUT_FILTER_BY_NAME</TT>).</TD>
+</TR>
+<TR>
+<TD><B><I>id</I></B></TD><TD> ID of the filter to remove, or values <TT>XA_DECODER_INPUT_FILTER_FIRST</TT>CODE(XA_DECODER_INPUT_FILTER_LAST).</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the call succeeds, or a <A HREF="error-codes.html">negative error code</A> if it fails.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_input_add_filter">decoder_input_add_filter()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_input_new">decoder_input_new</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Instantiates a new input object for the decoder.<BR>An input is created based on its name and module ID (passed as a parameter to the function). If the module ID is a positive integer of a registered input module (value returned by <TT><A HREF="#decoder_input_module_register">decoder_input_module_register()</A></TT>), an input object of that type will be created. If the module ID has the special value <TT>XA_DECODER_INPUT_AUTOSELECT</TT>, then the library will perform a <A HREF="modules.html#module_selection">probe</A> of the registered input modules to find which one to use.<BR>See section about <A HREF="modules.html#input_modules">input modules</A> for more details about probing and other instantiation details.<BR>When a new input object is instantiated, a handle to the object is stored in the decoder's internal data structure, and its value is not available to the client of the decoder (and it is not needed). If the decoder had already a handle to an instantiated input object, this object will be automatically deleted before the new one is created, because the decoder can only have one active input at any given time.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_input_new(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, const char *name, int module);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::InputNew(const char *name, int module);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>name</I></B></TD><TD> Name (character string) of the input.</TD>
+</TR>
+<TR>
+<TD><B><I>module</I></B></TD><TD> Positive ID of the input module to use, or special value <TT>XA_DECODER_INPUT_AUTOSELECT</TT>.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the input object has been created, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_input_delete">decoder_input_delete()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_input_delete">decoder_input_delete</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Deletes the input object of the decoder. Resources associated with the input are released. If the input was open, it will automatically be closed before being deleted.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_input_delete(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::InputDelete(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the call succeeds, or <A HREF="error-codes.html">negative error code</A> if it fails.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_input_new">decoder_input_new()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_input_open">decoder_input_open</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Opens the input of the decoder.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_input_open(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::InputOpen();</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the input has been successfully opened, or a <A HREF="error-codes.html">negative error code</A> if it has not.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_input_close">decoder_input_close()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_input_close">decoder_input_close</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Closes the input of the decoder.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_input_close(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::InputClose();</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the input has been closed, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_input_open">decoder_input_open()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_input_seek_to_offset">decoder_input_seek_to_offset</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Seeks to a specified position in the input stream. If the current input does not have the ability to seek (flag <TT>XA_DECODER_INPUT_SEEKABLE)</TT> set in the input capabilities flags), nothing is done.<BR>The <TT>offset</TT> parameter to this call is a byte offset from the start of the input stream. </BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_input_seek_to_offset(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, unsigned long offset);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::InputSeekToOffset(unsigned long offset);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>offset</I></B></TD><TD> Integer byte offset from the start of the input stream.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if it succeeds, or a <A HREF="error-codes.html">negative error code</A> if it fails.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_input_seek_to_position">decoder_input_seek_to_position()</A></TT>, <TT><A HREF="#decoder_input_seek_to_time">decoder_input_seek_to_time()</A></TT>, <TT><A HREF="#decoder_input_seek_to_timecode">decoder_input_seek_to_timecode()</A></TT>. </TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_input_seek_to_position">decoder_input_seek_to_position</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Seeks to a specified position in the input stream. If the current input does not have the ability to seek (flag <TT>XA_DECODER_INPUT_SEEKABLE</TT> set in the input capabilities flags), nothing is done.<BR>The <TT>position</TT> parameter to this call is a floating point number between 0.0 and 1.0, where 0.0 is the start of the input stream, and 1.0 the end of the input stream (ex: 0.5 would be the middle of the input stream). </BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_input_seek_to_position(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, float position);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::InputSeekToPosition(float position);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>position</I></B></TD><TD> Floating point position between the start and the end of the input stream.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if it succeeds, or a <A HREF="error-codes.html">negative error code</A> if it fails.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_input_seek_to_offset">decoder_input_seek_to_offset()</A></TT>, <TT><A HREF="#decoder_input_seek_to_time">decoder_input_seek_to_time()</A></TT>, <TT><A HREF="#decoder_input_seek_to_timecode">decoder_input_seek_to_timecode()</A></TT>. </TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_input_seek_to_time">decoder_input_seek_to_time</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Seeks to a specified position in the input stream. If the current input does not have the ability to seek (flag <TT>XA_DECODER_INPUT_SEEKABLE</TT> set in the input capabilities flags), nothing is done.<BR>The <TT>seconds</TT> parameter to this call is the number of seconds from the start of the input stream (floating point).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_input_seek_to_time(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, float seconds);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::InputSeekToTime(float seconds);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>seconds</I></B></TD><TD> Floating point number of seconds from the start of the input stream.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if it succeeds, or a <A HREF="error-codes.html">negative error code</A> if it fails.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_input_seek_to_offset">decoder_input_seek_to_offset()</A></TT>, <TT><A HREF="#decoder_input_seek_to_position">decoder_input_seek_to_position()</A></TT>, <TT><A HREF="#decoder_input_seek_to_timecode">decoder_input_seek_to_timecode()</A></TT>. </TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_input_seek_to_timecode">decoder_input_seek_to_timecode</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Seeks to a specified position in the input stream. If the current input does not have the ability to seek (flag <TT>XA_DECODER_INPUT_SEEKABLE</TT> set in the input capabilities flags), nothing is done.<BR>The <TT>timecode</TT> parameter to this call is a pointer to an absolute timecode structure.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_input_seek_to_timecode(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, const <TT><A HREF="data-structures.html#XA_TimeCode">XA_TimeCode</A></TT> *timecode);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::InputSeekToTimecode(const <TT><A HREF="data-structures.html#XA_TimeCode">XA_TimeCode</A></TT> *timecode);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>timecode</I></B></TD><TD> Pointer to a <TT><A HREF="data-structures.html#XA_TimeCode">XA_TimeCode</A></TT> structure that specifies where to seek.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if it succeeds, or a <A HREF="error-codes.html">negative error code</A> if it fails.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_input_seek_to_offset">decoder_input_seek_to_offset()</A></TT>, <TT><A HREF="#decoder_input_seek_to_position">decoder_input_seek_to_position()</A></TT>, <TT><A HREF="#decoder_input_seek_to_time">decoder_input_seek_to_time()</A></TT>. </TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_output_module_register">decoder_output_module_register</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Registers an <A HREF="modules.html##output_modules">output module</A> in the list of attached output modules. If the call succeeds, a module ID (positive integer) is returned, that can be used subsequently to identify this specific module.<BR>See section on <A HREF="modules.html##output_modules">output modules</A> for more details.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_output_module_register(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, const <TT><A HREF="data-structures.html#XA_OutputModule">XA_OutputModule</A></TT> *module);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::OutputModuleRegister(const <TT><A HREF="data-structures.html#XA_OutputModule">XA_OutputModule</A></TT> *module);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>module</I></B></TD><TD> Pointer to the output module to register.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns a positive output module ID if the registration succeeds, or a <A HREF="error-codes.html">negative error code</A> if it fails.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_output_open">decoder_output_open()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_output_module_query">decoder_output_module_query</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves information about a registered output module. Information about a given module ID (as returned by <TT><A HREF="#decoder_output_module_register">decoder_output_module_register()</A></TT>) is returned in the fields of an <TT><A HREF="data-structures.html#XA_OutputModuleQuery">XA_OutputModuleQuery</A></TT> structure. The type of information returned depends on the flags passed as a parameter.<BR>See section on <A HREF="modules.html#module_query">output module queries</A> for details about the query flags and returned information.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_output_module_query(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, int module, <TT><A HREF="data-structures.html#XA_OutputModuleQuery">XA_OutputModuleQuery</A></TT> *query, unsigned long query_flags);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::OutputModuleQuery(int module, <TT><A HREF="data-structures.html#XA_OutputModuleQuery">XA_OutputModuleQuery</A></TT> *query, unsigned long query_flags);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>module</I></B></TD><TD> Integer ID of a registered output module.</TD>
+</TR>
+<TR>
+<TD><B><I>query</I></B></TD><TD> Pointer to a <TT><A HREF="data-structures.html#XA_OutputModuleQuery">XA_OutputModuleQuery</A></TT> where information about the module will be returned.</TD>
+</TR>
+<TR>
+<TD><B><I>query_flags</I></B></TD><TD> Flags (combined bitmask) specifying what type of information should be returned.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the information requested can be returned, or a <A HREF="error-codes.html">negative error code</A> if it cannot.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_output_module_register">decoder_output_module_register()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_output_add_filter">decoder_output_add_filter</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Adds an output filter for the decoder. An output filter is a function table that will bridge calls between the decoder and the output module. Several output filters can be inserted between the decoder and the output module. Output filters are chained, and called in order from the first to the last. When inserting a new filter, an ID specifies at which point in the list of current output filters it should be added. The special value <TT>XA_DECODER_OUTPUT_FILTER_FIRST</TT>CODE(XA_DECODER_OUTPUT_FILTER_LAST) will insert it as the last filter in the chain, and any other ID value will insert the filter before the existing filter with that ID.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_output_add_filter(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, const <TT><A HREF="data-structures.html#XA_OutputFilter">XA_OutputFilter</A></TT> *filter, int where);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::OutputAddFilter(const <TT><A HREF="data-structures.html#XA_OutputFilter">XA_OutputFilter</A></TT> *filter, int where);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder.</TD>
+</TR>
+<TR>
+<TD><B><I>filter</I></B></TD><TD> Pointer to a <TT><A HREF="data-structures.html#XA_OutputFilter">XA_OutputFilter</A></TT> containing the filter's function table.</TD>
+</TR>
+<TR>
+<TD><B><I>where</I></B></TD><TD> ID of the filter before which the new filter should be inserted, or the special values XA_DECODER_OUTPUT_FILTER_FIRST or XA_DECODER_OUTPUT_FILTER_LAST.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns a positive integer filter id is the call succeeds, or a <A HREF="error-codes.html">negative error code</A> if it fails.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_output_remove_filter">decoder_output_remove_filter()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_output_remove_filter">decoder_output_remove_filter</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Removes a filter from the decoder's output filter chain. The filter to be removed can be identified by name or by ID. If the filter ID parameter has the special value <TT>XA_DECODER_OUTPUT_FILTER_BY_NAME</TT>, then the filter to be removed will be identified by name, for any other value of that parameter, the filter will be identified by ID, and the 'name' parameter will be ignored. Special value <TT>XA_DECODER_OUTPUT_FILTER_FIRST</TT>CODE(XA_DECODER_OUTPUT_FILTER_LAST) will remove the last filter in the chain, and any other ID value will remove the filter with that ID.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_output_remove_filter(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, const char *name, int id);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::OutputRemoveFilter(const char *name,  int id);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder.</TD>
+</TR>
+<TR>
+<TD><B><I>name</I></B></TD><TD> Name of the filter to remove (this parameter is only valid when the 'id' parameter is <TT>XA_DECODER_OUTPUT_FILTER_BY_NAME</TT>).</TD>
+</TR>
+<TR>
+<TD><B><I>id</I></B></TD><TD> ID of the filter to remove, or values <TT>XA_DECODER_OUTPUT_FILTER_FIRST</TT>CODE(XA_DECODER_OUTPUT_FILTER_LAST).</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the call succeeds, or a <A HREF="error-codes.html">negative error code</A> if it fails.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_output_add_filter">decoder_output_add_filter()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_output_new">decoder_output_new</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Instantiates a new output object for the decoder.<BR>An output is created based on its name and module ID (passed as a parameter to the function). If the module ID is a positive integer of a registered output module (value returned by <TT><A HREF="#decoder_output_module_register">decoder_output_module_register()</A></TT>), an output object of that type will be created. If the module ID has the special value <TT>XA_DECODER_OUTPUT_AUTOSELECT</TT>, then the library will perform a <A HREF="modules.html#module_selection">probe</A> of the registered output modules to find which one to use.<BR>See section about <A HREF="modules.html#output_modules">output modules</A> for more details about probing and other instantiation details.<BR>If the name is the <TT>NULL</TT> pointer, or an empty string (""), the default output of the required module will be chosen (typically, the default soundcard for a soundcard driver output module).When a new output object is instantiated, a handle to the object is stored in the decoder's internal data structure, and its value is not available to the client of the decoder (and it is not needed). If the decoder had already a handle to an instantiated output object, this object will be automatically deleted before the new one is created, because the decoder can only have one active output at any given time.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_output_new(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, const char *name, int module);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::OutputNew(const char *name, int module);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>name</I></B></TD><TD> Name (character string) of the output.</TD>
+</TR>
+<TR>
+<TD><B><I>module</I></B></TD><TD> Positive ID of the output module to use, or special value <TT>XA_DECODER_OUTPUT_AUTOSELECT</TT>.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the output object has been created, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_output_delete">decoder_output_delete()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_output_delete">decoder_output_delete</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Deletes the output object of the decoder. Resources associated with the output are released. If the output was open, it will automatically be closed before being deleted.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_output_delete(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::OutputDelete();</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the call succeeds, or <A HREF="error-codes.html">negative error code</A> if it fails.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_output_new">decoder_output_new()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_output_open">decoder_output_open</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Opens the output of the decoder.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_output_open(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::OutputOpen();</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the output has been successfully opened, or a <A HREF="error-codes.html">negative error code</A> if it has not.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_output_close">decoder_output_close()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_output_close">decoder_output_close</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Closes the output of the decoder.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_output_close(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::OutputClose();</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the output has been closed, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_output_open">decoder_output_open()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_output_set_control">decoder_output_set_control</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets device-specific parameters of the output of the decoder, and/or performs device-specific operations on the output of the decoder. The <TT>control_flags</TT> function parameter specifies which operations to perform and which parameters to set. The <TT>control</TT> function parameter points to a structure that contains the values of the parameters to set, or NULL if not parameter is to be set (only operations are to be performed).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_output_set_control(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, <TT><A HREF="data-structures.html#XA_OutputControl">XA_OutputControl</A></TT> *control, unsigned long control_flags);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::OutputSetControl(<TT><A HREF="data-structures.html#XA_OutputControl">XA_OutputControl</A></TT> *control, unsigned long control_flags);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>control</I></B></TD><TD> Pointer to a <A HREF="#XA_OutputControl">XA_OutputControl</A> structure that contains the values of parameters to set, or <TT>NULL</TT> if not parameter values are needed.</TD>
+</TR>
+<TR>
+<TD><B><I>control_flags</I></B></TD><TD> Combination of output operation flags and parameter setting flags. See section on <A HREF="modules.html#output_control"> output control</A> for more details on the operations that can be performed and parameters that can be set.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the call succeeds, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_output_get_control">decoder_output_get_control()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_output_get_control">decoder_output_get_control</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Reads device-specific parameters of the output of the decoder. The <TT>control_flags</TT> function parameter specifies which parameters to read. The <TT>control</TT> function parameter points to a structure where the values of the parameters to read will be returned.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_output_get_control(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, <TT><A HREF="data-structures.html#XA_OutputControl">XA_OutputControl</A></TT> *control, unsigned long control_flags);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::OutputGetControl(<TT><A HREF="data-structures.html#XA_OutputControl">XA_OutputControl</A></TT> *control, unsigned long control_flags);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>control</I></B></TD><TD> Pointer to a <A HREF="#XA_OutputControl">XA_OutputControl</A> structure where the values of parameters to read will be returned.</TD>
+</TR>
+<TR>
+<TD><B><I>control_flags</I></B></TD><TD> Combination of output operation flags and parameter setting flags. See section on <A HREF="modules.html#output_control"> output control</A> for more details on the operations that can be performed and parameters that can be set.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the call succeeds, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_output_set_control">decoder_output_set_control()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_codec_module_register">decoder_codec_module_register</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Registers an <A HREF="modules.html##codec_modules">codec module</A> in the list of attached codec modules. If the call succeeds, a module ID (positive integer) is returned, that can be used subsequently to identify this specific module.<BR>See section on <A HREF="modules.html##codec_modules">codec modules</A> for more details.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_codec_module_register(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, const <TT><A HREF="data-structures.html#XA_CodecModule">XA_CodecModule</A></TT> *module);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::CodecModuleRegister(const <TT><A HREF="data-structures.html#XA_CodecModule">XA_CodecModule</A></TT> *module);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>module</I></B></TD><TD> Pointer to the codec module to register.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns a positive input module ID if the registration succeeds, or a <A HREF="error-codes.html">negative error code</A> if it fails.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_codec_set_channels">decoder_codec_set_channels</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the numbers of channels the codec should decode (<TT>XA_OUTPUT_STEREO</TT>, <TT>XA_OUTPUT_MONO_LEFT</TT>, <TT>XA_OUTPUT_MONO_RIGHT</TT> or <TT>XA_OUTPUT_MONO_MIX</TT>).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_codec_set_channels(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, XA_OutputChannelsMode channels);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::CodecSetChannels(XA_OutputChannelsMode channels);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>channels</I></B></TD><TD> the channel configuration.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the call succeeds, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_codec_get_channels">decoder_codec_get_channels()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_codec_get_channels">decoder_codec_get_channels</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Returns the numbers of channels the codec will decode (<TT>XA_OUTPUT_STEREO</TT>, <TT>XA_OUTPUT_MONO_LEFT</TT>, <TT>XA_OUTPUT_MONO_RIGHT</TT> or <TT>XA_OUTPUT_MONO_MIX</TT>).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_codec_get_channels(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::CodecGetChannels();</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns a channels value the call succeeds, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_codec_set_channels">decoder_codec_set_channels()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_codec_set_channels">decoder_codec_set_channels</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the numbers of channels the codec should decode (<TT>XA_OUTPUT_STEREO</TT>, <TT>XA_OUTPUT_MONO_LEFT</TT>, <TT>XA_OUTPUT_MONO_RIGHT</TT> or <TT>XA_OUTPUT_MONO_MIX</TT>).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_codec_set_channels(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, XA_OutputChannelsMode channels);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::CodecSetChannels(XA_OutputChannelsMode channels);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>channels</I></B></TD><TD> the channel configuration.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the call succeeds, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_codec_get_channels">decoder_codec_get_channels()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_codec_get_channels">decoder_codec_get_channels</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Returns the numbers of channels the codec will decode (<TT>XA_OUTPUT_STEREO</TT>, <TT>XA_OUTPUT_MONO_LEFT</TT>, <TT>XA_OUTPUT_MONO_RIGHT</TT> or <TT>XA_OUTPUT_MONO_MIX</TT>).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_codec_get_channels(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::CodecGetChannels();</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns a channels value the call succeeds, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_codec_set_channels">decoder_codec_set_channels()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_codec_set_quality">decoder_codec_set_quality</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the decoding quality of the codec (if the codec supports different decoding qualities). </BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_codec_set_quality(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, unsigned int quality);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::CodecSetQuality(unsigned int quality);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>quality</I></B></TD><TD> Decoding quality (<TT>XA_DECODER_CODEC_QUALITY_HIGH</TT>, <TT>XA_DECODER_CODEC_QUALITY_MEDIUM</TT>, <TT>XA_DECODER_CODEC_QUALITY_LOW</TT>.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the call succeeds, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_codec_get_quality">decoder_codec_get_quality()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_codec_get_quality">decoder_codec_get_quality</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Returns the decoding quality of the codec (if the codec supports different decoding qualities). </BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_codec_get_quality(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::CodecGetQuality();</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_DECODER_CODEC_QUALITY_HIGH</TT>, <TT>XA_DECODER_CODEC_QUALITY_MEDIUM</TT>, or <TT>XA_DECODER_CODEC_QUALITY_LOW</TT> if the call succeeds, or a <A HREF="error-codes.html">negative error code</A> if the call failed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_codec_set_quality">decoder_codec_set_quality()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_codec_set_equalizer">decoder_codec_set_equalizer</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the values for the codec equalizer of the decoder. The equalizer consists of scaling factors for each of the frequency bands of the codec. See section on <BR><BR>HREF(misc.html#equalizer,Codec Equalizer)<BR><BR> for more details on equalizer values.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_codec_set_equalizer(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, <TT><A HREF="data-structures.html#XA_EqualizerInfo">XA_EqualizerInfo</A></TT> *equalizer);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::CodecSetEqualizer(<TT><A HREF="data-structures.html#XA_EqualizerInfo">XA_EqualizerInfo</A></TT> *equalizer);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>equalizer</I></B></TD><TD> Pointer to a structure that contains the scaling factors for the frequency bands of the codec.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the call succeeds, or a <A HREF="error-codes.html">negative error code</A> if the callfailed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_codec_get_equalizer">decoder_codec_get_equalizer()</A></TT></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="decoder_codec_get_equalizer">decoder_codec_get_equalizer</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Reads the values of the codec equalizer of the decoder. The equalizer consists of scaling factors for each of the frequency bands of the codec. See section on <BR><BR>HREF(misc.html#equalizer,Codec Equalizer)<BR><BR> for more details on equalizer values.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_EXPORT decoder_codec_get_equalizer(<TT><A HREF="data-structures.html#XA_DecoderInfo">XA_DecoderInfo</A></TT> *decoder, <TT><A HREF="data-structures.html#XA_EqualizerInfo">XA_EqualizerInfo</A></TT> *equalizer);</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>int XA_Decoder::CodecGetEqualizer(<TT><A HREF="data-structures.html#XA_EqualizerInfo">XA_EqualizerInfo</A></TT> *equalizer);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>decoder</I></B></TD><TD> Pointer to an instantiated decoder object.</TD>
+</TR>
+<TR>
+<TD><B><I>equalizer</I></B></TD><TD> Pointer to a structure where the scaling factors for the frequency bands of the codec will be returned.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Return Value</B></LI></UL>
+<BLOCKQUOTE>
+Returns <TT>XA_SUCCESS</TT> if the call succeeds, or a <A HREF="error-codes.html">negative error code</A> if the callfailed.</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>decoder.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT><A HREF="#decoder_codec_set_equalizer">decoder_codec_set_equalizer()</A></TT></TT></BLOCKQUOTE>
+<UL><LI><B></B></LI></UL>
+<BLOCKQUOTE>
+ARRAY(0x81033a4)</BLOCKQUOTE>
+<UL><LI><B></B></LI></UL>
+<BLOCKQUOTE>
+ARRAY(0x81035b4)</BLOCKQUOTE>
+<UL><LI><B></B></LI></UL>
+<BLOCKQUOTE>
+ARRAY(0x81054f0)</BLOCKQUOTE>
+<UL><LI><B></B></LI></UL>
+<BLOCKQUOTE>
+ARRAY(0x8105700)</BLOCKQUOTE>
+<UL><LI><B></B></LI></UL>
+<BLOCKQUOTE>
+ARRAY(0x8106d6c)</BLOCKQUOTE>
+<UL><LI><B></B></LI></UL>
+<BLOCKQUOTE>
+ARRAY(0x8106f7c)</BLOCKQUOTE>
+<UL><LI><B></B></LI></UL>
+<BLOCKQUOTE>
+ARRAY(0x8109850)</BLOCKQUOTE>
+<UL><LI><B></B></LI></UL>
+<BLOCKQUOTE>
+ARRAY(0x8109a60)</BLOCKQUOTE>
