@@ -53,7 +53,11 @@ bool gWindowedPalette = false;
 #define APALETTE_HEIGHT_OFFSET 25
 #endif
 
+#if defined(__WXMAC__)     // && defined(TARGET_CARBON)
+#include "xpm/Aqua.xpm"
+#else
 #include "xpm/Palette.xpm"
+#endif
 
 void InitAPaletteFrame(wxWindow *parent)
 {
@@ -141,16 +145,22 @@ APalette::APalette(wxWindow* parent, wxWindowID id,
 				   const wxSize& size) :
   wxWindow(parent, id, pos, size)
 {
+#if defined(__WXMAC__) // && defined(TARGET_CARBON)
+  int off = 1;
+#else
+  int off = 0;
+#endif
+
   mTool[0] =
-    new AButton(this, ID_IBEAM, wxPoint(0, 0), wxSize(27, 27),
+    new AButton(this, ID_IBEAM, wxPoint(off, off), wxSize(27, 27),
 				(char **)IBeamUp, (char **)IBeamOver,
 				(char **)IBeamDown, (char **)IBeamUp);
   mTool[1] = 
-    new AButton(this, ID_SELECT, wxPoint(28, 0), wxSize(27, 27),
+    new AButton(this, ID_SELECT, wxPoint(28, off), wxSize(27, 27),
 				(char **)SelectUp, (char **)SelectOver,
 				(char **)SelectDown, (char **)SelectUp);
   mTool[2] = 
-    new AButton(this, ID_MOVE, wxPoint(0, 28), wxSize(27, 27),
+    new AButton(this, ID_MOVE, wxPoint(off, 28), wxSize(27, 27),
 				(char **)MoveUp, (char **)MoveOver,
 				(char **)MoveDown, (char **)MoveUp);
   mTool[3] = 
@@ -171,9 +181,15 @@ APalette::APalette(wxWindow* parent, wxWindowID id,
 	new AButton(this, ID_RECORD_BUTTON, wxPoint(164, 4), wxSize(48, 48),
 				(char **)RecordUp, (char **)RecordOver,
 				(char **)RecordDown, (char **)RecordDisabled);
+
+  #if defined(__WXMAC__) // && defined(TARGET_CARBON)
+  int sliderX = 262;
+  #else
+  int sliderX = 222;
+  #endif
   
   mVolume =
-	new ASlider(this, 0, wxPoint(222, 14), wxSize(100, 28),
+	new ASlider(this, 0, wxPoint(sliderX, 14), wxSize(100, 28),
 				(char **)Slider, (char **)SliderThumb, 100);
 
   mVolume->Set(80);
@@ -183,6 +199,16 @@ APalette::APalette(wxWindow* parent, wxWindowID id,
 
   mBackgroundBrush.SetColour(wxColour(204, 204, 204));
   mBackgroundPen.SetColour(wxColour(204, 204, 204));
+  
+  mBackgroundBitmap = NULL;
+  mBackgroundHeight = 0;
+  mBackgroundWidth = 0;
+  
+  #if defined(__WXMAC__) // && defined(TARGET_CARBON)
+  mDivBitmap = new wxBitmap((const char **)Div);  
+  mMuteBitmap = new wxBitmap((const char **)Mute);  
+  mLoudBitmap = new wxBitmap((const char **)Loud);  
+  #endif
 }
 
 APalette::~APalette()
@@ -193,6 +219,15 @@ APalette::~APalette()
   delete mStop;
   delete mRecord;
   delete mVolume;
+  
+  if (mBackgroundBitmap)
+    delete mBackgroundBitmap;
+  
+  #if defined(__WXMAC__) // && defined(TARGET_CARBON)
+    delete mDivBitmap;
+    delete mMuteBitmap;
+    delete mLoudBitmap;
+  #endif
 }
 
 int APalette::GetCurrentTool()
@@ -306,7 +341,42 @@ void APalette::OnPaint(wxPaintEvent &evt)
 
   int width, height;
   GetSize(&width, &height);
+
   
+#if defined(__WXMAC__) // && defined(TARGET_CARBON)
+
+  if (mBackgroundWidth < width) {
+    if (mBackgroundBitmap)
+      delete mBackgroundBitmap;
+    
+    mBackgroundBitmap = new wxBitmap(width, height);
+
+    wxMemoryDC memDC;  
+    memDC.SelectObject(*mBackgroundBitmap);
+    
+    int y;
+    memDC.SetPen(wxPen(wxColour(231, 231, 231), 1, wxSOLID));
+    for(y=0; y<height; y+=4)
+      memDC.DrawLine(0, y, width, y);
+    memDC.SetPen(wxPen(wxColour(239, 239, 239), 1, wxSOLID));
+    for(y=1; y<height; y+=2)
+      memDC.DrawLine(0, y, width, y);
+    memDC.SetPen(wxPen(wxColour(255, 255, 255), 1, wxSOLID));
+    for(y=2; y<height; y+=4)
+      memDC.DrawLine(0, y, width, y);
+    
+    memDC.DrawBitmap(*mDivBitmap, 212, 4);
+    memDC.DrawBitmap(*mMuteBitmap, 222, 4);
+    memDC.DrawBitmap(*mLoudBitmap, 376, 4);
+  }
+  
+  wxMemoryDC memDC;
+  memDC.SelectObject(*mBackgroundBitmap);
+    
+  dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
+
+#else
+
   dc.SetBrush(mBackgroundBrush);
   dc.SetPen(mBackgroundPen);
   dc.DrawRectangle(0, 0, width, height);
@@ -316,6 +386,7 @@ void APalette::OnPaint(wxPaintEvent &evt)
   dc.DrawLine(27, 0, 27, height-1);
   dc.DrawLine(55, 0, 55, height-1);
   dc.DrawLine(0, 27, 55, 27);
+#endif
 }
 
 void APaletteFrame::OnCloseWindow(wxCloseEvent& WXUNUSED(event))

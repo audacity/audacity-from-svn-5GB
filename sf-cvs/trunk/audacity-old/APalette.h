@@ -77,6 +77,13 @@ private:
   
   wxBrush mBackgroundBrush;
   wxPen mBackgroundPen;
+  
+  wxBitmap *mBackgroundBitmap;
+  int mBackgroundWidth;
+  int mBackgroundHeight;
+  wxBitmap *mDivBitmap;
+  wxBitmap *mMuteBitmap;
+  wxBitmap *mLoudBitmap;
     
 DECLARE_EVENT_TABLE()
 };
