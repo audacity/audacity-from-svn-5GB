@@ -143,7 +143,6 @@ class AudacityProject:public wxFrame,
 
    // The project's name and file info
 
-   wxString mName;
    wxString mFileName;
    DirManager mDirManager;
    double mRate;
