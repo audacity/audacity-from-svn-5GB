@@ -265,9 +265,6 @@ END_EVENT_TABLE()
 // main frame
 bool AudacityApp::OnInit()
 {
-   // Initialize internationalisation (numbers etc. aspect)
-   Internat::Init();
-
    // Unused strings that we want to be translated, even though
    // we're not using them yet...
    wxString future1 = _("Master Gain Control");
@@ -410,6 +407,13 @@ bool AudacityApp::OnInit()
 #endif
    } else
       mLocale = NULL;
+
+   // Initialize internationalisation (number formats etc.)
+   //
+   // This must go _after_ creating the wxLocale instance because
+   // creating the wxLocale instance resets LC_NUMERIC to the choosen
+   // language (we want it to have "C" compatibility mode instead).
+   Internat::Init();
 
    // Init DirManager, which initializes the temp directory
    // If this fails, we must exit the program.
