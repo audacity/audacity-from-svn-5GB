@@ -135,7 +135,7 @@ wxString LadspaEffect::GetEffectName()
 
 wxString LadspaEffect::GetEffectAction()
 {
-   return wxString::Format(_("Performing Ladspa Effect: %s"), 
+   return wxString::Format(_("Performing Effect: %s"), 
                            (const char *) pluginName);
 }
 
@@ -155,7 +155,7 @@ bool LadspaEffect::Init()
          
          if (((WaveTrack *)left)->GetRate() !=
              ((WaveTrack *)right)->GetRate()) {
-            wxMessageBox(_("Sorry, Ladspa Effects cannot be performed "
+            wxMessageBox(_("Sorry, Plug-in Effects cannot be performed "
                            "on stereo tracks where the individual "
                            "channels of the track do not match."));
             return false;
@@ -422,9 +422,13 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
    wxControl *item;
 
-   item = new wxStaticText(this, 0,
-                           wxString(_("Author: "))+mData->Maker);
-   mainSizer->Add(item, 0, wxALL, 5);
+   if (mData->Maker &&
+       mData->Maker[0] && 
+       mData->Maker != wxString(_("None"))) {       
+      item = new wxStaticText(this, 0,
+                              wxString(_("Author: "))+mData->Maker);
+      mainSizer->Add(item, 0, wxALL, 5);
+   }
    
    if (mData->Copyright &&
        mData->Copyright[0] && 
@@ -437,7 +441,7 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
 
    wxSizer *paramSizer =
       new wxStaticBoxSizer(new wxStaticBox(this, -1,
-                                           _("Ladspa Effect Settings")),
+                                           _("Effect Settings")),
                            wxVERTICAL );
 
    wxFlexGridSizer *gridSizer =
@@ -497,9 +501,8 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
 
 LadspaEffectDialog::~LadspaEffectDialog()
 {
-   // TODO: proper disposal here
-
    delete[]sliders;
+   delete[]fields;
    delete[]labels;
 }
 

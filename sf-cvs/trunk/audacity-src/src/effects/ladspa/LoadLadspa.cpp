@@ -39,11 +39,19 @@ void LoadLadspaEffect(wxString fname)
 {
    wxLogNull logNo;
    LADSPA_Descriptor_Function mainFn = NULL;
-   
+
+   // As a courtesy to some plug-ins that might be bridges to
+   // open other plug-ins, we set the current working
+   // directory to be the plug-in's directory.
+
+   wxString saveOldCWD = ::wxGetCwd();
+   wxString prefix = ::wxPathOnly(fname);
+   ::wxSetWorkingDirectory(prefix);
+
 #if defined(__WXGTK__) || defined(__WXMAC__)
 
    void *libHandle = NULL;
-   
+
    libHandle = dlopen(fname, RTLD_LAZY);
    
    mainFn = (LADSPA_Descriptor_Function)
@@ -59,10 +67,8 @@ void LoadLadspaEffect(wxString fname)
    wxDllType libHandle = NULL;
      
    libHandle = wxDllLoader::LoadLibrary(fname);
-   printf("Loading from %s\n", (const char *)fname);
    mainFn = (LADSPA_Descriptor_Function)
       wxDllLoader::GetSymbol(libHandle, descriptorFnName);
-   printf("mainFn: %d\n", (int)mainFn);
 #endif
 
    if (mainFn) {
@@ -79,6 +85,8 @@ void LoadLadspaEffect(wxString fname)
          data = mainFn(index);            
       }
    }
+
+   ::wxSetWorkingDirectory(saveOldCWD);
 }
 
 void LoadLadspaPlugins()
