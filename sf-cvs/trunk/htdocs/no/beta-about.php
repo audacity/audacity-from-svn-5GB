@@ -8,6 +8,7 @@ Audacity <?php print $betaVersion; ?> er en offentlig testutgave av det kostnads
 Vennligst rapporter feil eller kommentarer til:
 <a href="mailto:audacity-help@lists.sourceforge.net">
 audacity-help@lists.sourceforge.net</a>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font></br>
 </p>
 
 <p>
