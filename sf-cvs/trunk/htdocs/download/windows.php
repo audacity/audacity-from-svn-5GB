@@ -31,8 +31,8 @@
 ?>
 <ul>
   <?php include "common.inc.php"; ?>
-  <li><p><?php printf('<a href="%s">Audacity %s zip file</a> (%.1lf MB)
-  - If you can’t run the installer because you are in a computer lab or other restricted environment, download and unzip this file instead.',
+  <li><p><?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB)
+  - If you can’t run the installer because you are in a computer lab or other restricted environment, download and unzip this file instead.'),
     "../latest/".$win_zip_url, win_zip_version, win_zip_size)?></p></li>
 </ul>
 
