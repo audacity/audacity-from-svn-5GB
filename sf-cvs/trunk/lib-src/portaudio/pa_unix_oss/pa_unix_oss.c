@@ -117,8 +117,8 @@ PaDriverInfo;
 #include "pa_host.h"
 #include "pa_trace.h"
 
-#define PRINT(x)   { printf x; fflush(stdout); }
-#define ERR_RPT(x) PRINT(x)
+#define PRINT(x)   /*{ printf x; fflush(stdout); }*/
+#define ERR_RPT(x) /* PRINT(x)*/
 #define DBUG(x)    /* PRINT(x) */
 #define DBUGX(x)   /* PRINT(x) */
 
