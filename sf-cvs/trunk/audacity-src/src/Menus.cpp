@@ -32,6 +32,7 @@
 #include "import/ImportMIDI.h"
 #include "import/ImportRaw.h"
 #include "export/Export.h"
+#include "export/ExportMultiple.h"
 #include "prefs/PrefsDialog.h"
 #include "HistoryWindow.h"
 #include "Internat.h"
@@ -152,7 +153,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("ExportOggSel",   _("Export Selection As Ogg Vorbis..."), FN(OnExportOggSelection));
    c->AddSeparator();
    c->AddItem("ExportLabels",   _("Export &Labels..."),              FN(OnExportLabels));
-
+   c->AddItem("ExportMultiple",   _("Export &Multiple..."),              FN(OnExportMultiple));
    // Enable Export commands only when there are tracks
    c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
                       AudioIONotBusyFlag | TracksExistFlag,
@@ -1349,6 +1350,11 @@ void AudacityProject::OnExportOggSelection()
 {
    gPrefs->Write("/FileFormats/LossyExportFormat", "OGG");
    ::ExportLossy(this, true, mViewInfo.sel0, mViewInfo.sel1);
+}
+
+void AudacityProject::OnExportMultiple()
+{
+   ::ExportMultiple(this);
 }
 
 void AudacityProject::OnPreferences()

@@ -42,6 +42,8 @@ static wxString ExportCommon(AudacityProject *project,
                              bool selectionOnly, double *t0, double *t1,
                              bool *isStereo,
                              wxString &actualName);
+
+
                       
 /*
  * This first function contains the code common to both
