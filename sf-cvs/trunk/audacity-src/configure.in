@@ -203,7 +203,7 @@ if [[ "$host_os" = "darwin5.3" ]] ; then
 /Developer/Tools/SetFile -a avBstClinmed Audacity.app"
 
 	if [[ "$use_ladspa" = "default" ]] ; then
-		$use_ladspa="no";
+		use_ladspa="no";
 	fi
 
 else
@@ -213,7 +213,7 @@ else
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
 
 	if [[ "$use_ladspa" = "default" ]] ; then
-		$use_ladspa="yes";
+		use_ladspa="yes";
 	fi
 
 	AFTERBUILD=""
