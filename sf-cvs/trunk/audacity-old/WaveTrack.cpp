@@ -642,7 +642,8 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
 
   PrepareCacheSpectrum(t0, pps, r.width, r.height);
 
-  bool isGrayscale = gPrefs->Read("/Spectrum/Grayscale", false);
+  bool isGrayscale = false;
+  gPrefs->Read("/Spectrum/Grayscale", &isGrayscale, false);
 
   int i=0;
   while(x<r.width) {

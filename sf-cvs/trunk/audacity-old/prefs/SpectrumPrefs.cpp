@@ -37,7 +37,8 @@ SpectrumPrefs::SpectrumPrefs(wxWindow *parent):
 	PrefsPanel(parent)
 {
 	int fftSize = gPrefs->Read("/Spectrum/FFTSize", 256);
-	bool isGrayscale = gPrefs->Read("/Spectrum/Grayscale", false);
+	bool isGrayscale = false;
+  gPrefs->Read("/Spectrum/Grayscale", &isGrayscale, false);
 	
 	int pos = 3;   // Fall back to 256 if it doesn't match anything else
 	for(int i = 0; i < numFFTSizes; i++)
