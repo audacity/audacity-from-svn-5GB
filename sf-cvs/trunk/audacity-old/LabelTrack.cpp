@@ -272,14 +272,14 @@ void LabelTrack::Import(wxTextFile& in)
 	  return;
 
 	i = 0;
-	while(i<len && currentLine[i]!=' ' && currentLine[i]!='\t')
+	while(i<len && currentLine.GetChar(i)!=' ' && currentLine.GetChar(i)!='\t')
 	  i++;
 	
 	s = currentLine.Left(i);
 	if (!s.ToDouble(&t))
 	  return;
 	
-	while(i<len && (currentLine[i]==' ' || currentLine[i]=='\t'))
+	while(i<len && (currentLine.GetChar(i)==' ' || currentLine.GetChar(i)=='\t'))
 	  i++;
 	
 	title = currentLine.Right(len-i);
@@ -414,14 +414,38 @@ void LabelTrack::Clear(double t0, double t1)
   int len = mLabels.Count();
   
   for(int i=0; i<len; i++) {
-	if (t0 <= mLabels[i]->t &&
-		mLabels[i]->t <= t1) {
-	  mLabels.RemoveAt(i);
-	  len--;
-	  i--;
-	}
-	if (mLabels[i]->t > t1)
-	  mLabels[i]->t -= (t1 - t0);
+  	if (t0 <= mLabels[i]->t &&
+  		mLabels[i]->t <= t1) {
+  	  mLabels.RemoveAt(i);
+  	  len--;
+  	  i--;
+  	}
+  	if (mLabels[i]->t > t1)
+  	  mLabels[i]->t -= (t1 - t0);
   }
 }
+
+void LabelTrack::Silence(double t0, double t1)
+{
+  int len = mLabels.Count();
+  
+  for(int i=0; i<len; i++) {
+  	if (t0 <= mLabels[i]->t &&
+  		mLabels[i]->t <= t1) {
+  	  mLabels.RemoveAt(i);
+  	  len--;
+  	  i--;
+  	}
+  }  
+}
+
+void LabelTrack::InsertSilence(double t, double len)
+{
+  int numLabels = mLabels.Count();
+  
+  for(int i=0; i<numLabels; i++)
+  	if (mLabels[i]->t >= t)
+  	  mLabels[i]->t += len;
+}
+
 

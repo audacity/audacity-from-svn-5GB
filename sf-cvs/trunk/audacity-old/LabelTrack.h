@@ -33,9 +33,7 @@ WX_DEFINE_ARRAY(LabelStruct *, LabelArray);
 
 class LabelTrack: public VTrack
 {
-#ifdef BOUNCE
   friend class BouncePane;
-#endif
 
 public:
   LabelTrack(DirManager *projDirManager);
@@ -57,6 +55,9 @@ public:
   virtual void Copy(double t0, double t1, VTrack **dest);
   virtual void Paste(double t, VTrack *src);
   virtual void Clear(double t0, double t1);
+
+  virtual void Silence(double t0, double t1);
+  virtual void InsertSilence(double t, double len);
 
   void MouseDown(int x, int y, wxRect &r,
 				 double h, double pps);
