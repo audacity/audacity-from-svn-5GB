@@ -26,6 +26,7 @@ Source: "E:\sfw_dev\audacity\win\Release\audacity.exe"; DestDir: "{app}"; Flags:
 Source: "E:\sfw_dev\audacity\win\Release\audacity-1.2-help.htb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Languages\bg\audacity.mo"; DestDir: "{app}\Languages\bg"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Languages\ca\audacity.mo"; DestDir: "{app}\Languages\ca"; Flags: ignoreversion
+Source: "E:\sfw_dev\audacity\win\Release\Languages\ca\wxstd.mo"; DestDir: "{app}\Languages\ca"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Languages\cs\audacity.mo"; DestDir: "{app}\Languages\cs"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Languages\cs\wxstd.mo"; DestDir: "{app}\Languages\cs"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Languages\da\audacity.mo"; DestDir: "{app}\Languages\da"; Flags: ignoreversion
@@ -42,6 +43,7 @@ Source: "E:\sfw_dev\audacity\win\Release\Languages\it\audacity.mo"; DestDir: "{a
 Source: "E:\sfw_dev\audacity\win\Release\Languages\it\wxstd.mo"; DestDir: "{app}\Languages\it"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Languages\ja\audacity.mo"; DestDir: "{app}\Languages\ja"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Languages\mk\audacity.mo"; DestDir: "{app}\Languages\mk"; Flags: ignoreversion
+Source: "E:\sfw_dev\audacity\win\Release\Languages\nb\audacity.mo"; DestDir: "{app}\Languages\nb"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Languages\nl\audacity.mo"; DestDir: "{app}\Languages\nl"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Languages\nl\wxstd.mo"; DestDir: "{app}\Languages\nl"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Languages\pl\audacity.mo"; DestDir: "{app}\Languages\pl"; Flags: ignoreversion
@@ -52,6 +54,7 @@ Source: "E:\sfw_dev\audacity\win\Release\Languages\ru\wxstd.mo"; DestDir: "{app}
 Source: "E:\sfw_dev\audacity\win\Release\Languages\sl\audacity.mo"; DestDir: "{app}\Languages\sl"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Languages\sl\wxstd.mo"; DestDir: "{app}\Languages\sl"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Languages\sv\audacity.mo"; DestDir: "{app}\Languages\sv"; Flags: ignoreversion
+Source: "E:\sfw_dev\audacity\win\Release\Languages\sv\wxstd.mo"; DestDir: "{app}\Languages\sv"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\README.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Nyquist\bug.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
