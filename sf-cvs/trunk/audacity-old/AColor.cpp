@@ -94,6 +94,26 @@ void AColor::Init()
 
   #else
 
+  #if defined(__WXMAC__) // && defined(TARGET_CARBON)
+
+  // unselected
+  lightBrush[0].SetColour(246,246,255);
+  mediumBrush[0].SetColour(232,232,232);
+  darkBrush[0].SetColour(140,140,160);
+  lightPen[0].SetColour(246,246,255);
+  mediumPen[0].SetColour(232,232,232);
+  darkPen[0].SetColour(140,140,160);
+
+  // selected
+  lightBrush[1].SetColour(204,204,255);
+  mediumBrush[1].SetColour(180,180,192);
+  darkBrush[1].SetColour(148,148,170);
+  lightPen[1].SetColour(204,204,255);
+  mediumPen[1].SetColour(180,180,192);
+  darkPen[1].SetColour(148,148,170);
+
+  #else
+
   // unselected
   lightBrush[0].SetColour(255,255,255);
   mediumBrush[0].SetColour(204,204,204);
@@ -109,6 +129,8 @@ void AColor::Init()
   lightPen[1].SetColour(204,204,255);
   mediumPen[1].SetColour(180,180,192);
   darkPen[1].SetColour(148,148,170);
+
+  #endif
 
   #endif
 
