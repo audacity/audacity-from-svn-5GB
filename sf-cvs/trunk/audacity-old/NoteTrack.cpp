@@ -64,7 +64,7 @@ void NoteTrack::Draw(wxDC &dc, wxRect &r, double h, double pps,
       
       if (mVisibleChannels & (1 << (mSeq->notes[index]->chan & 15))) {
       
-      	int ypos = pitchht * (note->pitch - pitch0);
+      	int ypos = int(pitchht * (note->pitch - pitch0) + 0.5);
 
       	if (ypos >= 0 && ypos < r.height) {
       	  int ht = pitchht;
