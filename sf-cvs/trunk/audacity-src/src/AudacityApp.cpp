@@ -294,6 +294,10 @@ bool AudacityApp::OnInit()
    defaultTempDir.Printf("%s/audacity_1_1_temp", (const char *)progPath);
    #endif
 
+   // BG: Create a temporary window to set as the top window
+   wxFrame *temporarywindow = new wxFrame(NULL, -1, "temporarytopwindow");
+   SetTopWindow(temporarywindow);
+
    // Locale
    // wxWindows 2.3 has a much nicer wxLocale API.  We can make this code much
    // better once we move to wx 2.3/2.4.
@@ -405,6 +409,8 @@ bool AudacityApp::OnInit()
    InitFreqWindow(gParentWindow);
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
    SetTopWindow(project);
+
+   delete temporarywindow;
 
    // Can't handle command-line args on Mac OS X yet...
    #ifndef __MACOSX__
