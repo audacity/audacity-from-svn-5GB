@@ -117,8 +117,11 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("Export",         "Export As...",                      FN(OnExportMix));
    c->AddItem("ExportSel",      "Export Selection As...",            FN(OnExportSelection));
    c->AddSeparator();
-   c->AddItem("ExportLossy",    "Export As Lossy...",                FN(OnExportLossyMix));
-   c->AddItem("ExportLossySel", "Export Selection As Lossy...",      FN(OnExportLossySelection));
+   c->AddItem("ExportMP3",      _("Export As MP3..."),               FN(OnExportMP3Mix));
+   c->AddItem("ExportMP3Sel",   _("Export Selection As MP3..."),     FN(OnExportMP3Selection));
+   c->AddSeparator();
+   c->AddItem("ExportOgg",      _("Export As Ogg Vorbis..."),        FN(OnExportOggMix));
+   c->AddItem("ExportOggSel",   _("Export Selection As Ogg Vorbis..."), FN(OnExportOggSelection));
    c->AddSeparator();
    c->AddItem("ExportLabels",   _("Export &Labels..."),              FN(OnExportLabels));
 
@@ -1149,13 +1152,27 @@ void AudacityProject::OnExportSelection()
    ::Export(this, true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
-void AudacityProject::OnExportLossyMix()
+void AudacityProject::OnExportMP3Mix()
 {
+   gPrefs->Write("/FileFormats/LossyExportFormat", "MP3");
    ::ExportLossy(this, false, 0.0, mTracks->GetEndTime());
 }
 
-void AudacityProject::OnExportLossySelection()
+void AudacityProject::OnExportMP3Selection()
 {
+   gPrefs->Write("/FileFormats/LossyExportFormat", "MP3");
+   ::ExportLossy(this, true, mViewInfo.sel0, mViewInfo.sel1);
+}
+
+void AudacityProject::OnExportOggMix()
+{
+   gPrefs->Write("/FileFormats/LossyExportFormat", "OGG");
+   ::ExportLossy(this, false, 0.0, mTracks->GetEndTime());
+}
+
+void AudacityProject::OnExportOggSelection()
+{
+   gPrefs->Write("/FileFormats/LossyExportFormat", "OGG");
    ::ExportLossy(this, true, mViewInfo.sel0, mViewInfo.sel1);
 }
 

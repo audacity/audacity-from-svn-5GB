@@ -153,12 +153,15 @@ PrefsPanel(parent)
       vOGGFormatSizer->Add(hOGGQualitySizer, 0, 
                            wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
+      // dmazzoni: Ogg is now always in the File menu...
+      #if 0
       mOGGEnabled = new wxCheckBox(this, -1, _("Use OGG instead of MP3"));
       mOGGEnabled->SetValue((lossyFormat == "OGG"));
 
       vOGGFormatSizer->Add(mOGGEnabled, 0,
                            wxALL, GENERIC_CONTROL_BORDER);
-
+      #endif
+      
       topSizer->Add(
          vOGGFormatSizer, 0, 
          wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, TOP_LEVEL_BORDER );
@@ -326,7 +329,10 @@ bool FileFormatPrefs::Apply()
       gMenusDirty++;
 
    wxString lossyFormat = "MP3";
+   
+   #if 0 // dmazzoni
    if(mOGGEnabled->GetValue()) lossyFormat = "OGG";
+   #endif
 
    long oggQuality = mOGGQuality->GetValue();
 

@@ -68,8 +68,10 @@ void OnSaveAs();
 
 void OnExportMix();
 void OnExportSelection();
-void OnExportLossyMix();
-void OnExportLossySelection();
+void OnExportMP3Mix();
+void OnExportMP3Selection();
+void OnExportOggMix();
+void OnExportOggSelection();
 
 void OnExportLabels();
 
