@@ -106,6 +106,7 @@ OBJS = \
 	$(OBJDIR)/effects/ToneGen.o \
 	$(OBJDIR)/effects/Wahwah.o \
 	$(OBJDIR)/export/Export.o \
+	$(OBJDIR)/export/ExportMultiple.o \
 	$(OBJDIR)/export/ExportMP3.o \
 	$(OBJDIR)/export/ExportOGG.o \
 	$(OBJDIR)/export/ExportPCM.o \
