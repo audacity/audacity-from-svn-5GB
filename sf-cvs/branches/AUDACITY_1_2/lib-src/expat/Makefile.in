@@ -11,5 +11,8 @@ expat.a: $(OBJS)
 clean:
 	rm -f expat.a xmlparse/*.o xmltok/*.o
 
+distclean:
+	rm -f Makefile
+
 %.o: %.c Makefile
 	$(CC) -c $(CFLAGS) $< -o $@
