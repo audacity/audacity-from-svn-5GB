@@ -81,6 +81,7 @@
 #include "TrackPanel.h"
 #include "WaveTrack.h"
 #include "effects/Effect.h"
+#include "widgets/Warning.h"
 #include "xml/XMLFileReader.h"
 
 #include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
@@ -2160,6 +2161,15 @@ bool AudacityProject::SaveAs()
 {
    wxString path = wxPathOnly(mFileName);
    wxString fName = GetName().Len()? GetName() + ".aup" : wxString("");
+
+   ShowWarningDialog(this, "FirstProjectSave",
+                     _("Audacity project files (.aup) let you save "
+                       "everything you're working on exactly as it\n"
+                       "appears on the screen, but most other programs "
+                       "can't open Audacity project files.\n\n"
+                       "When you want to save a file that can be opened "
+                       "by other programs, select one of the\n"
+                       "Export commands."));
 
    fName = wxFileSelector(_("Save Project As:"),
                           path,
