@@ -48,7 +48,7 @@ EffectChangePitch::EffectChangePitch()
 
 wxString EffectChangePitch::GetEffectDescription() { 
    // Note: This is useful only after change amount has been set. 
-   return wxString::Format(_("Applied effect: %s %.2f semitones (half-steps)"), 
+   return wxString::Format(_("Applied effect: %s %.2f semitones"), 
                            (const char *)(this->GetEffectName()), 
 									m_SemitonesChange); 
 } 
