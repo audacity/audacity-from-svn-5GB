@@ -48,6 +48,7 @@ OBJS = \
 	$(OBJDIR)/Project.cpp.o \
 	$(OBJDIR)/Spectrum.cpp.o \
 	$(OBJDIR)/Track.cpp.o \
+	$(OBJDIR)/TrackArtist.cpp.o \
 	$(OBJDIR)/TrackPanel.cpp.o \
 	$(OBJDIR)/UndoManager.cpp.o \
 	$(OBJDIR)/WaveTrack.cpp.o \

@@ -99,6 +99,8 @@ Changes in 0.95:
 
 * Added Maximize Amplitude effect
 
+* Improved memory management over long Undo histories
+
 * Many bug fixes
 
 Changes in 0.94:

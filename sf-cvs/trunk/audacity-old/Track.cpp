@@ -28,6 +28,8 @@ VTrack::VTrack(DirManager *projDirManager)
 
   tOffset = 0.0;
 
+  dirty = 0;
+
   channel = MonoChannel;
 
   dirManager = projDirManager;

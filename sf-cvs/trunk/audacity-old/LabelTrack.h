@@ -40,8 +40,8 @@ public:
 
   virtual ~LabelTrack();
 
-  virtual void Draw(wxDC &dc, wxRect &r, double h, double pps,
-					double sel0, double sel1, bool drawEnvelope);
+  void Draw(wxDC &dc, wxRect &r, double h, double pps,
+			double sel0, double sel1);
 
   virtual int GetKind() {return Label;}
   virtual double GetMaxLen();

@@ -22,10 +22,9 @@ class DirManager;
 class NoteTrack: public VTrack
 {
 public:
-  NoteTrack(DirManager *projDirManager);
+  friend class TrackArtist;
 
-  virtual void Draw(wxDC &dc, wxRect &r, double h, double pps,
-					double sel0, double sel1, bool drawEnvelope);
+  NoteTrack(DirManager *projDirManager);
 
   virtual int GetKind() {return Note;}
   virtual double GetMaxLen();

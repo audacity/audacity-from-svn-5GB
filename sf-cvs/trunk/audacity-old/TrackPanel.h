@@ -14,39 +14,16 @@
 #include <wx/timer.h>
 #include <wx/window.h>
 
+#include "ViewInfo.h"
+
 class wxMenu;
 class wxRect;
 class wxStatusBar;
 
 class TrackList;
 class VTrack;
-
-struct ViewInfo {
-
-  // Current selection
-
-  double sel0;
-  double sel1;
-
-  // Scroll info
-
-  int vpos;       // vertical scroll pos
-
-  double h;       // h pos in secs
-  double screen;  // screen width in secs
-  double total;   // total width in secs
-  double zoom;    // pixels per second
-  double lastZoom;
-
-  // Actual scroll bar positions, in pixels
-  int sbarH;
-  int sbarScreen;
-  int sbarTotal;
-
-  int scrollStep;
-};
-
 class TrackPanel;
+class TrackArtist;
 
 class AudacityTimer: public wxTimer
 {
@@ -143,6 +120,8 @@ private:
   TrackList       *mTracks;
   ViewInfo        *mViewInfo;
   wxStatusBar     *mStatusBar;
+
+  TrackArtist     *mTrackArtist;
 
   AudacityTimer   mTimer;
   int             mTimeCount;

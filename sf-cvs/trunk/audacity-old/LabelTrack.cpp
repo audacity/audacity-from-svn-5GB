@@ -43,7 +43,7 @@ LabelTrack::~LabelTrack()
 }
 
 void LabelTrack::Draw(wxDC &dc, wxRect &r, double h, double pps,
-					  double sel0, double sel1, bool /*drawEnvelope*/)
+					  double sel0, double sel1)
 {
   double right = h + r.width / pps;
   double dsel0 = sel0;

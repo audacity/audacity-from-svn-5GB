@@ -11,9 +11,7 @@
 #ifndef __AUDACITY_WAVETRACK__
 #define __AUDACITY_WAVETRACK__
 
-#include <wx/brush.h>
 #include <wx/dynarray.h>
-#include <wx/pen.h>
 #include <wx/string.h>
 #include <wx/thread.h>
 
@@ -39,29 +37,11 @@ public:
 
 WX_DEFINE_ARRAY(WaveBlock *, BlockArray);
 
-class DisplayCache
-{
-public:
-  bool          dirty;  
-  bool          spectrum;
-
-  sampleCount   len;
-  double	start;
-  double        pps;
-  sampleCount   *where;
-
-  // minmax only
-  sampleType    *min;
-  sampleType    *max;
-
-  // spectrum only
-  int           fheight;
-  float         *freq;
-};
-
 class WaveTrack: public VTrack
 {
 public:
+  friend class TrackArtist;
+
   static void SetMaxDiskBlockSize(int bytes);
 
   enum {WaveDisplay,
@@ -84,18 +64,6 @@ public:
   
   virtual void Silence(double t0, double t1);
   virtual void InsertSilence(double t, double len);
-
-  virtual void Draw(wxDC &dc, wxRect &r, double h, double pps,
-					double sel0, double sel1,
-					bool drawEnvelope);
-
-  void DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
-					double sel0, double sel1,
-					bool drawEnvelope);
-
-  void DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
-					double sel0, double sel1,
-					bool drawEnvelope);
 
   virtual void SetDisplay(int d);
   virtual int GetDisplay();
@@ -144,21 +112,6 @@ private:
 
   Envelope envelope;
   
-  DisplayCache cache;
-
-  wxBrush blankBrush;
-  wxBrush unselectedBrush;
-  wxBrush selectedBrush;
-  wxBrush sampleBrush;
-  wxBrush selsampleBrush;
-  wxPen blankPen;
-  wxPen unselectedPen;
-  wxPen selectedPen;
-  wxPen samplePen;
-  wxPen selsamplePen;
-  wxPen shadowPen;
-  wxPen envelopePen;
-
   void Reblockify();
   int FindBlock(sampleCount pos);
   int FindBlock(sampleCount pos, sampleCount lo,
@@ -183,10 +136,6 @@ private:
 					   sampleCount len);
 
   BlockArray *Blockify(sampleType *buffer, sampleCount len);
-
-  void PrepareCacheMinMax(double start, double pps, int screenWidth);
-  void PrepareCacheSpectrum(double start, double pps,
-							int screenWidth, int screenHeight);
 
   static sampleCount summary64KLen;
   static sampleCount summary256Len;

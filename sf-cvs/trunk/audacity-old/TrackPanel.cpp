@@ -26,6 +26,7 @@
 #include "LabelTrack.h"
 #include "NoteTrack.h"
 #include "Track.h"
+#include "TrackArtist.h"
 #include "Project.h"
 #include "WaveTrack.h"
 
@@ -121,6 +122,9 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
   mDisplayMenu->Append(OnWaveformID, "Waveform");
   mDisplayMenu->Append(OnSpectrumID, "Spectrum");
 
+  mTrackArtist = new TrackArtist();
+  mTrackArtist->SetInset(5, 5);
+
   mCapturedTrack = NULL;
 
   mPopupMenuTarget = NULL;
@@ -134,6 +138,8 @@ TrackPanel::~TrackPanel()
 {
   if (mBitmap)
 	delete mBitmap;
+
+  delete mTrackArtist;
 
   delete mArrowCursor;
   delete mSelectCursor;
@@ -1201,6 +1207,12 @@ void TrackPanel::DrawTracks(wxDC *dc)
   int windowHeight;
   GetSize(&windowWidth, &windowHeight);
 
+  wxRect clip;
+  clip.x = 0;
+  clip.y = 0;
+  clip.width = windowWidth;
+  clip.height = windowHeight;
+
   wxRect r;
   r.width = windowWidth;
   r.height = windowHeight;
@@ -1213,6 +1225,10 @@ void TrackPanel::DrawTracks(wxDC *dc)
   
   VTrack *t;
   int num=0;
+
+  wxRect allTracksRect = r;
+  allTracksRect.x += GetLabelWidth();
+  allTracksRect.width -= GetLabelWidth();
 
   bool envelopeFlag = (mListener->TP_GetCurrentTool() == 1);
 
@@ -1331,6 +1347,10 @@ void TrackPanel::DrawTracks(wxDC *dc)
 	wxRect innerRect = trackRect;
 	innerRect.Inflate(-1, -1);
 
+	/*
+
+	Drawing is taken care of by the TrackArtist now
+
 	if (!t->IsCollapsed()) {
 	  if (sel)
 		t->Draw(*dc, innerRect, h,
@@ -1341,14 +1361,7 @@ void TrackPanel::DrawTracks(wxDC *dc)
 				mViewInfo->zoom, 0.0, 0.0,
 				envelopeFlag);
 	}
-	else {
-	  /*
-	  dc->SetBrush(backgroundBrush);
-	  dc->SetPen(backgroundPen);
-	  
-	  dc->DrawRectangle(innerRect);
-	  */
-	}
+	*/
 
 	// Code duplication warning:  If you add anything here
 	// that happens any time in the loop, add it to the top
@@ -1358,6 +1371,16 @@ void TrackPanel::DrawTracks(wxDC *dc)
 	num++;
     t = iter.Next();
   }
+
+  // The track artist actually draws the stuff in the tracks
+
+  mTrackArtist->DrawTracks(mTracks,
+						   *dc, allTracksRect,
+						   clip,
+						   mViewInfo,
+						   envelopeFlag);
+
+  // Paint over the part below the tracks
 
   GetSize(&r.width, &r.height);
   AColor::Medium(dc, false);
