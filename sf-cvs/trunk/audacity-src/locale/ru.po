@@ -1,23 +1,25 @@
+# translation of ru.po to Russian
 # Russian translation of Audacity 1.1.
-# Copyright (C) 2002 Free Software Foundation, Inc.
-# Alexandre Prokoudine <techwriter@tamb.ru>, 2002.#: ../src/ToolBar.cpp:419
+# Copyright (C) 2002,2003 Free Software Foundation, Inc.
+# Alexandre Prokoudine <avp@altlinux.ru>, 2002.#: ../src/ToolBar.cpp:419
+# Alexandre Prokoudine <avp@altlinux.ru>, 2003
 #: ../src/ToolBar.cpp:430 ../src/prefs/KeyConfigPrefs.cpp:151
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacity 1.1 CVS\n"
+"Project-Id-Version: ru\n"
 "POT-Creation-Date: 2002-09-20 23:21-0700\n"
-"PO-Revision-Date: 2002-10-20 02:15+0400\n"
-"Last-Translator:  <alex@Mr.X>\n"
-"Language-Team:  <ru@li.org>\n"
+"PO-Revision-Date: 2003-01-30 13:28+0300\n"
+"Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
+"Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=KOI8-R\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
+"X-Generator: KBabel 1.0\n"
 
 #: ../src/Mix.cpp:168
 #, c-format
 msgid "      Tracks: %d\n"
-msgstr "      Треки: %d\n"
+msgstr "      Дорожки: %d\n"
 
 #: ../src/Mix.cpp:169
 #, c-format
@@ -113,7 +115,7 @@ msgstr "Повторить отменённое"
 
 #: ../src/commands.h:310
 msgid "&Remove Track(s)"
-msgstr "Удалить трек(и)"
+msgstr "Удалить дорожку(и)"
 
 #: ../src/commands.h:198
 msgid "&Save Project"
@@ -141,11 +143,11 @@ msgstr ""
 
 #: ../src/import/ImportRaw.cpp:902
 msgid "0-byte offset"
-msgstr ""
+msgstr "смещение 0 байт"
 
 #: ../src/import/ImportRaw.cpp:904
 msgid "1-byte offset"
-msgstr ""
+msgstr "смещение 1 байт"
 
 #: ../src/FileFormats.cpp:161
 msgid "12-bit DWVW"
@@ -213,15 +215,15 @@ msgstr "8-битный PCM"
 
 #: ../src/FileFormats.cpp:155
 msgid "8-bit a-law"
-msgstr ""
+msgstr "8-битный a-law"
 
 #: ../src/FileFormats.cpp:154
 msgid "8-bit u-law"
-msgstr ""
+msgstr "8-битный u-law"
 
 #: ../src/FileFormats.cpp:151
 msgid "8-bit unsigned PCM"
-msgstr ""
+msgstr "8-битный PCM-файл без заголовка"
 
 #: ../src/AboutDialog.cpp:131
 msgid "A New Digital Audio Editor"
@@ -237,7 +239,6 @@ msgstr "О программе..."
 
 #: ../src/effects/AvcCompressor.cpp:458
 #, c-format
-#, fuzzy
 msgid ""
 "Above values are in samples.\n"
 "Adjustment Window defines number of \n"
@@ -259,11 +260,11 @@ msgstr ""
 "\n"
 "\n"
 "\n"
-" правый\n"
-"\n"
-"\n"
+"Сетка справа определяет, насколько\n"
+"усилить каждый уровень\n"
+"Более подробную информацию можно получить здесь:\n"
 "http://www.busam.com/skyland/iavc\n"
-"."
+"7/21/02: WAV and MP3 files both work."
 
 #: ../src/HistoryWindow.cpp:60
 msgid "Action"
@@ -275,15 +276,15 @@ msgstr "Добавить "
 
 #: ../src/TrackPanel.cpp:922
 msgid "Adjusted envelope."
-msgstr ""
+msgstr "Огибающая скорректированна."
 
 #: ../src/effects/AvcCompressor.cpp:399
 msgid "Adjustment Settings"
-msgstr ""
+msgstr "Установки подстройки"
 
 #: ../src/effects/AvcCompressor.cpp:404
 msgid "Adjustment Window:"
-msgstr ""
+msgstr "Окно подстройки:"
 
 #: ../src/Tags.cpp:525
 msgid "Album:"
@@ -295,47 +296,47 @@ msgstr "Алгоритмы, программирование MIDI и аудио I/O"
 
 #: ../src/commands.h:291
 msgid "Align End with Cursor"
-msgstr ""
+msgstr "Выровнять окончание в позицию курсора"
 
 #: ../src/commands.h:293
 msgid "Align End with Selection End"
-msgstr ""
+msgstr "Выровнять окончание в конец выделения"
 
 #: ../src/commands.h:292
 msgid "Align End with Selection Start"
-msgstr ""
+msgstr "Выровнять окончание в начало выделения"
 
 #: ../src/commands.h:301
 msgid "Align Group End with Cursor"
-msgstr ""
+msgstr "Выровнять окончание группы в позицию курсора"
 
 #: ../src/commands.h:303
 msgid "Align Group End with Selection End"
-msgstr ""
+msgstr "Выровнять окончание группы в конец выделения"
 
 #: ../src/commands.h:302
 msgid "Align Group End with Selection Start"
-msgstr ""
+msgstr "Выровнять окончание группы в начало выделения"
 
 #: ../src/commands.h:296
 msgid "Align Group with Cursor"
-msgstr ""
+msgstr "Выровнять группу с позицией курсора"
 
 #: ../src/commands.h:298
 msgid "Align Group with Selection End"
-msgstr ""
+msgstr "Выровнять группу с концом выделения"
 
 #: ../src/commands.h:297
 msgid "Align Group with Selection Start"
-msgstr ""
+msgstr "Выровнять группу с началом выделения"
 
 #: ../src/commands.h:284
 msgid "Align Tracks &Together"
-msgstr "Свести треки"
+msgstr "Свести дорожки"
 
 #: ../src/commands.h:284
 msgid "Align Tracks Together"
-msgstr "Свести треки"
+msgstr "Свести дорожки"
 
 #: ../src/commands.h:286
 msgid "Align with &Cursor"
@@ -371,27 +372,27 @@ msgstr "Свести по нулю"
 
 #: ../src/Menus.cpp:1745
 msgid "Aligned end with sel0"
-msgstr ""
+msgstr "Выровненное окончание с выдел.0"
 
 #: ../src/Menus.cpp:1765
 msgid "Aligned end with sel1"
-msgstr ""
+msgstr "Выровненное окончание с выдел.1"
 
 #: ../src/Menus.cpp:1881 ../src/Menus.cpp:1921
 msgid "Aligned group end with sel0"
-msgstr ""
+msgstr "Выровненное окончание группы с выдел.0"
 
 #: ../src/Menus.cpp:1803
 msgid "Aligned group with sel0"
-msgstr ""
+msgstr "Выровненная группа с выдел.0"
 
 #: ../src/Menus.cpp:1841
 msgid "Aligned group with sel1"
-msgstr ""
+msgstr "Выровненная группа с выдел.1"
 
 #: ../src/Menus.cpp:1689
 msgid "Aligned tracks"
-msgstr "Сведённые треки"
+msgstr "Дорожки сведены"
 
 #: ../src/Menus.cpp:1707
 msgid "Aligned with sel0"
@@ -515,11 +516,11 @@ msgid ""
 "simultaneous tracks that could be played at once: %.1f\n"
 msgstr ""
 "При 44100 Гц и 16 бит на сэмпл может быть одновременно\n"
-"воспроизведено следующее количество треков: %.1f\n"
+"воспроизведено следующее количество дорожек: %.1f\n"
 
 #: ../src/AboutDialog.cpp:237
 msgid "Audacious!"
-msgstr ""
+msgstr "Оригинально!"
 
 #: ../src/ControlToolBar.cpp:113
 msgid "Audacity Control Toolbar"
@@ -637,7 +638,7 @@ msgstr "Аудио Вход/Выход"
 
 #: ../src/WaveTrack.cpp:99
 msgid "Audio Track"
-msgstr "Аудиотрек"
+msgstr "Звуковая дорожка"
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:390
 msgid "Author: "
@@ -729,7 +730,7 @@ msgstr "Cepstrum"
 
 #: ../src/TrackPanel.cpp:2872
 msgid "Change track name to:"
-msgstr "Изменить имя трека на:"
+msgstr "Изменить имя дорожки на:"
 
 #: ../src/effects/AvcCompressor.cpp:291
 msgid "Change window size must be less than or equal to Adjustment window size."
@@ -769,7 +770,7 @@ msgstr "Уровень звука изменяется"
 
 #: ../src/Benchmark.cpp:441
 msgid "Checking file pointer leaks:\n"
-msgstr ""
+msgstr "Проверка утечек указателя:\n"
 
 #: ../src/LangChoice.cpp:72
 msgid "Choose Language for Audacity to use:"
@@ -794,35 +795,37 @@ msgstr "Очистить"
 
 #: ../src/TrackPanel.cpp:680
 msgid "Click and drag to adjust relative size of stereo tracks."
-msgstr ""
+msgstr "Щёлкните и перетащите для регуляции относительного размера стереодорожек"
 
 #: ../src/TrackPanel.cpp:564
 msgid "Click and drag to edit the amplitude envelope"
-msgstr ""
+msgstr "Щёлкните и перетащите для редактирования огибающей амплитуды"
 
 #: ../src/TrackPanel.cpp:573
 msgid "Click and drag to edit the samples"
-msgstr ""
+msgstr "Щёлкните и перетащите для редактирования сэмплов"
 
 #: ../src/TrackPanel.cpp:565
 msgid "Click and drag to move a track in time"
-msgstr ""
+msgstr "Щёлкните и перетащите для перемещения дорожки во времени"
 
 #: ../src/TrackPanel.cpp:649
+#, fuzzy
 msgid "Click and drag to move left selection boundary."
-msgstr ""
+msgstr "Щёлкните и перетащите для установки левой границы выделения"
 
 #: ../src/TrackPanel.cpp:654
+#, fuzzy
 msgid "Click and drag to move right selection boundary."
-msgstr ""
+msgstr "Щёлкните и перетащите для установки левой границы выделения"
 
 #: ../src/TrackPanel.cpp:685
 msgid "Click and drag to resize the track."
-msgstr ""
+msgstr "Щёлкните и перетащите для изменения размера дорожки"
 
 #: ../src/TrackPanel.cpp:563
 msgid "Click and drag to select audio"
-msgstr ""
+msgstr "Щёлкните и перетащите для выделения звукового фрагмента"
 
 #: ../src/TrackPanel.cpp:567
 msgid "Click to Zoom In, Shift-Click to Zoom Out"
@@ -906,15 +909,15 @@ msgstr "Не удалось произвести запись в файл: "
 
 #: ../src/effects/ToneGen.cpp:297
 msgid "Create Tone"
-msgstr ""
+msgstr "Сгенерировать волну"
 
 #: ../src/Menus.cpp:1935
 msgid "Created new audio track"
-msgstr "Создан новый аудиотрек"
+msgstr "Создана новая звуковая дорожка"
 
 #: ../src/Menus.cpp:1950
 msgid "Created new label track"
-msgstr "Создан новый трек для заметок"
+msgstr "Создан новая дорожка для заметок"
 
 #: ../src/Project.cpp:1746
 msgid "Created new project"
@@ -922,7 +925,7 @@ msgstr "Создан новый проект"
 
 #: ../src/effects/NoiseRemoval.h:41
 msgid "Creating Noise Profile"
-msgstr "Создается модель шума"
+msgstr "Создаётся модель шума"
 
 #: ../src/AboutDialog.cpp:144
 msgid "Credits"
@@ -930,15 +933,15 @@ msgstr "Об авторах"
 
 #: ../src/FreqWindow.cpp:128
 msgid "Cuberoot Autocorrelation"
-msgstr ""
+msgstr "Среднеквадратичная автокорреляция"
 
 #: ../src/commands.h:275
 msgid "Cursor or Selection Restore"
-msgstr ""
+msgstr "Восстановить позицию курсора или выделения"
 
 #: ../src/commands.h:274
 msgid "Cursor or Selection Save"
-msgstr ""
+msgstr "Сохранить позицию курсора или выделения"
 
 #: ../src/commands.h:281
 msgid "Cursor to Selection End"
@@ -950,11 +953,11 @@ msgstr "Переместить курсор к началу выделения"
 
 #: ../src/commands.h:279
 msgid "Cursor to Track End"
-msgstr "Переместить курсор к концу трека"
+msgstr "Переместить курсор к концу дорожки"
 
 #: ../src/commands.h:278
 msgid "Cursor to Track Start"
-msgstr "Переместить курсор к началу трека"
+msgstr "Переместить курсор к началу дорожки"
 
 #: ../src/FreqWindow.cpp:827
 #, c-format
@@ -1100,7 +1103,8 @@ msgstr "Глубина:"
 msgid ""
 "Description:\n"
 " "
-msgstr "Описание:\n"
+msgstr ""
+"Описание:\n"
 " "
 
 #: ../src/prefs/AudioIOPrefs.cpp:100 ../src/prefs/AudioIOPrefs.cpp:149
@@ -1131,7 +1135,7 @@ msgstr "Отказаться"
 
 #: ../src/Benchmark.cpp:443
 msgid "Disk # blocks: \n"
-msgstr ""
+msgstr "Блоков диска #: \n"
 
 #: ../src/Benchmark.cpp:148
 msgid "Disk Block Size (KB):"
@@ -1163,7 +1167,7 @@ msgstr "Октавой ниже"
 
 #: ../src/TrackPanel.cpp:619
 msgid "Drag the label vertically to change the order of the tracks."
-msgstr "Перетащите этот трек вверх/вниз для смены порядка представления треков."
+msgstr "Перетащите эту дорожку вверх/вниз для смены порядка представления дорожек."
 
 #: ../src/ControlToolBar.cpp:407
 msgid "Draw Tool"
@@ -1313,7 +1317,7 @@ msgstr "Ожидалось %d байт, получено %d байт."
 #: ../src/Benchmark.cpp:374 ../src/Benchmark.cpp:396 ../src/Benchmark.cpp:409
 #, c-format
 msgid "Expected len %d, track len %d.\n"
-msgstr "Ожидалась продолжительность %d, трек продолжительностью %d.\n"
+msgstr "Ожидалась продолжительность %d, дорожка продолжительностью %d.\n"
 
 #: ../src/Sequence.cpp:794
 #, c-format
@@ -1508,7 +1512,7 @@ msgstr "Файл с данными GNU Octave"
 
 #: ../src/effects/ToneGen.h:45
 msgid "Generating Tone"
-msgstr ""
+msgstr "Создаётся волна"
 
 #: ../src/Tags.cpp:566
 msgid "Genre:"
@@ -1683,7 +1687,7 @@ msgstr "Начальная фаза LFO (степень):"
 
 #: ../src/LabelTrack.cpp:31
 msgid "Label Track"
-msgstr "Трек с заметками"
+msgstr "Дорожка с заметками"
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:404
 msgid "Ladspa Effect Settings"
@@ -1756,7 +1760,7 @@ msgstr "Импорт MP3 включен"
 #: ../src/TrackPanel.cpp:2644
 #, c-format
 msgid "Made '%s' a stereo track"
-msgstr "Сделать '%s' стереотреком"
+msgstr "Сделать '%s' стереодорожку"
 
 #: ../src/AboutDialog.cpp:181
 msgid "Main Logo"
@@ -1764,7 +1768,7 @@ msgstr "Главный логотип"
 
 #: ../src/TrackPanel.cpp:253
 msgid "Make Stereo Track"
-msgstr "Создать стереотрек"
+msgstr "Создать стереодорожку"
 
 #: ../src/prefs/FileFormatPrefs.cpp:72
 msgid "Make a copy of the file to edit"
@@ -1772,12 +1776,12 @@ msgstr "Скопировать файл для правки"
 
 #: ../src/ControlToolBar.cpp:138
 msgid "Master Gain Control"
-msgstr ""
+msgstr "Регулятор общей громкости"
 
 #: ../src/Mix.cpp:171
 #, c-format
 msgid "Max number of tracks to mix in real time: %f\n"
-msgstr "Макс. число треков для сведения в реальном времени: %f\n"
+msgstr "Макс. число дорожек для сведения в реальном времени: %f\n"
 
 #: ../src/prefs/SpectrumPrefs.cpp:104
 msgid "Maximum Frequency (Hz):"
@@ -1805,11 +1809,11 @@ msgstr "Микс"
 
 #: ../src/effects/ToneGen.cpp:281
 msgid "Mix Output"
-msgstr ""
+msgstr "Вывод микшированного сигнала"
 
 #: ../src/Mix.cpp:149
 msgid "Mixing tracks"
-msgstr "Треки сводятся"
+msgstr "Дорожки сводятся"
 
 #: ../src/TrackPanel.cpp:250
 msgid "Mono"
@@ -1826,12 +1830,12 @@ msgstr "Больше"
 #: ../src/TrackPanel.cpp:243 ../src/TrackPanel.cpp:266
 #: ../src/TrackPanel.cpp:275
 msgid "Move Track Down"
-msgstr "Переместить трек вниз"
+msgstr "Переместить дорожку вниз"
 
 #: ../src/TrackPanel.cpp:242 ../src/TrackPanel.cpp:265
 #: ../src/TrackPanel.cpp:274
 msgid "Move Track Up"
-msgstr "Переместить трек вверх"
+msgstr "Переместить дорожку вверх"
 
 #: ../src/TrackPanel.cpp:2840
 #, c-format
@@ -1861,19 +1865,19 @@ msgstr "Новый"
 
 #: ../src/commands.h:306
 msgid "New &Audio Track"
-msgstr "Новый аудиотрек"
+msgstr "Новая аудиодорожка"
 
 #: ../src/commands.h:307
 msgid "New &Label Track"
-msgstr "Новый трек для заметок"
+msgstr "Новая дорожка для заметок"
 
 #: ../src/commands.h:306
 msgid "New Audio Track"
-msgstr "Новый аудиотрек"
+msgstr "Новая аудиодорожка"
 
 #: ../src/commands.h:307
 msgid "New Label Track"
-msgstr "Новый трек для заметок"
+msgstr "Новая дорожка для заметок"
 
 #: ../src/effects/Amplify.cpp:322
 msgid "New Peak Amplitude (dB):"
@@ -1892,8 +1896,8 @@ msgid ""
 "No tracks are selected!\n"
 "Choose Export... to export all tracks."
 msgstr ""
-"Не выбрано ни одного трека\n"
-"Нажмите \"Экспортировать\" для экспорта всех треков."
+"Не выбрано ни одной дорожки\n"
+"Нажмите \"Экспортировать\" для экспорта всех дорожек."
 
 #: ../src/effects/NoiseRemoval.cpp:60
 msgid "Noise Removal"
@@ -1929,7 +1933,7 @@ msgstr "Выбрано недостаточно данных"
 
 #: ../src/NoteTrack.cpp:30
 msgid "Note Track"
-msgstr "Нотный трек"
+msgstr "Нотная дорожка"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:72
 msgid "Nothing selected."
@@ -1957,15 +1961,15 @@ msgstr "Число секунд тишины для вставки:"
 
 #: ../src/effects/nyquist/Nyquist.cpp:215
 msgid "Nyquist Prompt"
-msgstr ""
+msgstr "Запрос Nyquist"
 
 #: ../src/effects/nyquist/Nyquist.cpp:147
 msgid "Nyquist Prompt..."
-msgstr ""
+msgstr "Запрос Nyquist..."
 
 #: ../src/effects/nyquist/Nyquist.cpp:452
 msgid "Nyquist did not return audio.\n"
-msgstr ""
+msgstr "Nyquist не передал аудиосигнал.\n"
 
 #: ../src/effects/nyquist/Nyquist.cpp:414
 #, c-format
@@ -2121,7 +2125,7 @@ msgstr "Воспроизводить"
 
 #: ../src/prefs/AudioIOPrefs.cpp:165
 msgid "Play other tracks while recording new one"
-msgstr "Воспроизводить другие треки при записи нового"
+msgstr "Воспроизводить другие дорожки при записи новой"
 
 #: ../src/prefs/AudioIOPrefs.cpp:67
 msgid "Playback Device"
@@ -2198,7 +2202,7 @@ msgstr "Быстрое сведение"
 
 #: ../src/Benchmark.cpp:175
 msgid "Random Seed :"
-msgstr ""
+msgstr "Случайная величина :"
 
 #: ../src/FileFormats.cpp:32
 msgid "Raw PCM data"
@@ -2238,16 +2242,16 @@ msgstr "Удалить шум"
 
 #: ../src/commands.h:310
 msgid "Remove Track(s)"
-msgstr "Удалить трек(и)"
+msgstr "Удалить дорожку(и)"
 
 #: ../src/Menus.cpp:1968
 msgid "Removed audio track(s)"
-msgstr "Удален(ы) трек(и)"
+msgstr "Удалена(ы) дорожка(и)"
 
 #: ../src/TrackPanel.cpp:1483
 #, c-format
 msgid "Removed track '%s.'"
-msgstr "Удален трек '%s.'"
+msgstr "Удалена дорожка '%s.'"
 
 #: ../src/effects/NoiseRemoval.h:43
 msgid "Removing Noise"
@@ -2300,7 +2304,7 @@ msgstr "SEK'D Samplitude"
 
 #: ../src/FileFormats.cpp:166
 msgid "SVX Exponential"
-msgstr ""
+msgstr "SVX Показательная функция"
 
 #: ../src/FileFormats.cpp:165
 msgid "SVX Fibonacci"
@@ -2392,7 +2396,7 @@ msgid ""
 "choose how much noise you want filtered out,\n"
 "and then click Remove Noise.\n"
 msgstr ""
-"Выделите ту часть трека, к которой хотите применить фильтр, \n"
+"Выделите ту часть дорожки, к которой хотите применить фильтр, \n"
 "укажите, сколько шума отфильтровать,\n"
 "а затем щёлкните мышкой по кнопке \"Удалить шум\"\n"
 
@@ -2527,7 +2531,7 @@ msgstr "Выделение тишины"
 #: ../src/Menus.cpp:952
 #, c-format
 msgid "Silenced selected tracks for %.2f seconds at %.2f"
-msgstr "В выделенные треки записано %.2f сек с отметки %.2f"
+msgstr "В выделенные дорожкии записано %.2f сек с отметки %.2f"
 
 #: ../src/effects/ToneGen.cpp:44
 msgid "Sine"
@@ -2539,11 +2543,11 @@ msgstr "Размер"
 
 #: ../src/ControlToolBar.cpp:383
 msgid "Skip to End"
-msgstr "Перейти к концу трека"
+msgstr "Перейти к концу дорожки"
 
 #: ../src/ControlToolBar.cpp:363
 msgid "Skip to Start"
-msgstr "Перейти к началу трека"
+msgstr "Перейти к началу дорожки"
 
 #: ../src/TrackPanel.cpp:998
 #, c-format
@@ -2567,7 +2571,7 @@ msgid ""
 "Sorry, Ladspa Effects cannot be performed on stereo tracks where the "
 "individual channels of the track do not match."
 msgstr ""
-"Извините, но LADSPA-эффекты не могут применяться к стереотрекам\n"
+"Извините, но LADSPA-эффекты не могут применяться к стереодорожкам\n"
 "с несовпадающими индивидуальными дорожками"
 
 #: ../src/export/Export.cpp:139
@@ -2600,7 +2604,7 @@ msgstr "Разделить по заметкам"
 
 #: ../src/TrackPanel.cpp:254
 msgid "Split Stereo Track"
-msgstr "Разделить стереотрек"
+msgstr "Разделить стереодорожку"
 
 #: ../src/Menus.cpp:1115
 msgid "Split at labels"
@@ -2609,7 +2613,7 @@ msgstr "Разделить по заметкам"
 #: ../src/TrackPanel.cpp:2628
 #, c-format
 msgid "Split stereo track '%s'"
-msgstr "Разделить стереотрек '%s.'"
+msgstr "Разделить стереодорожку '%s.'"
 
 #: ../src/effects/ToneGen.cpp:45
 msgid "Square"
@@ -2673,7 +2677,7 @@ msgstr "Максимально возможная частота должна быть переменной величиной"
 
 #: ../src/Menus.cpp:683
 msgid "There are no label tracks to export."
-msgstr "Треков с заметками для экспорта нет"
+msgstr "Дорожек с заметками для экспорта нет"
 
 #: ../src/AudioIO.cpp:565
 #, c-format
@@ -2709,7 +2713,7 @@ msgstr "Эта версия Audacity была скомпилирована без поддержки %s."
 
 #: ../src/ControlToolBar.cpp:401
 msgid "Time Shift Tool"
-msgstr "Инструмент для сдвига трека во времени"
+msgstr "Инструмент для сдвига дорожки во времени"
 
 #: ../src/Benchmark.cpp:489
 #, c-format
@@ -2733,16 +2737,16 @@ msgstr "Название:"
 #: ../src/Menus.cpp:1288
 msgid "To plot the spectrum, all selected tracks must be the same sample rate."
 msgstr ""
-"Для построения спектрограммы все выбранные треки\n"
+"Для построения спектрограммы все выбранные дорожки\n"
 "должны иметь одинаковую частоту"
 
 #: ../src/effects/ToneGen.cpp:39
 msgid "Tone Generator"
-msgstr ""
+msgstr "Генератор волны"
 
 #: ../src/effects/ToneGen.h:41
 msgid "Tone Generator..."
-msgstr ""
+msgstr "Генератор волны..."
 
 #: ../src/Menus.cpp:1314
 #, c-format
@@ -2750,6 +2754,8 @@ msgid ""
 "Too much audio was selected.  Only the first %.1f seconds of audio will be "
 "analyzed."
 msgstr ""
+"Выделен слишком большой звуковой фрагмент.\n"
+"Будут проанализированы только первые %.1f секунд."
 
 #: ../src/Benchmark.cpp:442
 #, c-format
@@ -2758,16 +2764,16 @@ msgstr ""
 
 #: ../src/TrackPanel.cpp:2873
 msgid "Track Name"
-msgstr "Имя трека"
+msgstr "Имя дорожки"
 
 #: ../src/Tags.cpp:541
 msgid "Track Number:"
-msgstr "Номер трека:"
+msgstr "Номер дорожки:"
 
 #: ../src/Benchmark.cpp:393 ../src/Benchmark.cpp:408
 #, c-format
 msgid "Trial %d\n"
-msgstr ""
+msgstr "Тест %d\n"
 
 #: ../src/commands.h:228
 msgid "Trim"
@@ -2833,7 +2839,7 @@ msgstr "Обновлять спектрограмму при воспроизведении"
 
 #: ../src/prefs/FileFormatPrefs.cpp:156
 msgid "Use OGG instead of MP3"
-msgstr "Использовать OGG вместо MP3"
+msgstr "Использовать Ogg вместо MP3"
 
 #: ../src/Benchmark.cpp:342
 #, c-format
@@ -2843,7 +2849,7 @@ msgstr "Используется %d блоков каждого из %d сэмплов, всего %.1f MB.\n"
 #: ../src/AudacityApp.cpp:422
 #, c-format
 msgid "Using block size of %ld\n"
-msgstr ""
+msgstr "Используются блоки размером %ld\n"
 
 #: ../src/FileFormats.cpp:36
 msgid "VOC (SoundBlaster)"
@@ -2857,7 +2863,7 @@ msgstr "Ошибка проверки"
 #: ../src/effects/AvcCompressor.cpp:254
 #, c-format
 msgid "Value must be from %d to %d."
-msgstr "Значение должно быть в рамках между %d и %d"
+msgstr "Значение должно быть больше %d и меньше %d."
 
 #: ../src/effects/AvcCompressor.cpp:312 ../src/effects/AvcCompressor.cpp:319
 msgid "Values in columns must be in ascending order."
@@ -2873,7 +2879,7 @@ msgstr ""
 
 #: ../src/effects/Wahwah.cpp:491
 msgid "Wah Frequency Offset (%):"
-msgstr ""
+msgstr "Смещение частоты Wah (%):"
 
 #: ../src/effects/Wahwah.cpp:40
 msgid "Wahwah"
@@ -2938,15 +2944,15 @@ msgstr "Год:"
 
 #: ../src/Project.cpp:786
 msgid "You must select a track first."
-msgstr "Предварительно выделите трек"
+msgstr "Предварительно выделите дорожку."
 
 #: ../src/export/Export.cpp:121
 msgid "Your tracks will be mixed down to a single mono channel in the exported file."
-msgstr "В экспортируемом файле треки будут сведены в один моноканал"
+msgstr "В экспортируемом файле дорожки будут сведены в один моноканал"
 
 #: ../src/export/Export.cpp:117
 msgid "Your tracks will be mixed down to two stereo channels in the exported file."
-msgstr "В экспортируемом файле треки будут сведены в два стереоканала"
+msgstr "В экспортируемом файле дорожки будут сведены в два стереоканала"
 
 #: ../src/commands.h:244
 msgid "Zoom &In"
@@ -2990,12 +2996,11 @@ msgstr "benchmark.txt"
 
 #: ../src/import/ImportRaw.cpp:899
 msgid "big-endian"
-msgstr ""
+msgstr "\"тупоконечник\""
 
 #: ../src/TrackPanel.cpp:2845
-#, fuzzy
 msgid "down"
-msgstr "вниз"
+msgstr " вниз"
 
 #: ../src/Menus.cpp:687
 msgid "labels.txt"
@@ -3007,7 +3012,7 @@ msgstr "левый"
 
 #: ../src/import/ImportRaw.cpp:897
 msgid "little-endian"
-msgstr ""
+msgstr "\"остроконечник\""
 
 #: ../src/import/ImportRaw.cpp:892
 msgid "mono"
@@ -3079,7 +3084,7 @@ msgstr "вверх"
 #~ msgstr "PCM"
 
 #~ msgid "Please select a single track first.\n"
-#~ msgstr "Предварительно выделите одиночный трек.\n"
+#~ msgstr "Предварительно выделите одиночную дорожку.\n"
 
 #~ msgid "Please use the Import MIDI command instead."
 #~ msgstr "Вместо этого используйте команду 'Импортировать MIDI'."
@@ -3139,13 +3144,13 @@ msgstr "вверх"
 #~ msgstr "Дублировать\tCtrl+D"
 
 #~ msgid "Error loading a Track.\n"
-#~ msgstr "Произошла ошибка при загрузке трека.\n"
+#~ msgstr "Произошла ошибка при загрузке дорожки.\n"
 
 #~ msgid "Error reading WaveTrack in line %d"
 #~ msgstr "Ошибка при чтении файла Wave в строке %d"
 
 #~ msgid "Internal error (WaveTrack)"
-#~ msgstr "Внутренняя ошибка (трек Wave)"
+#~ msgstr "Внутренняя ошибка (WaveTrack)"
 
 #~ msgid "Load Edit Toolbar"
 #~ msgstr "Загрузить панель инструментов для редактирования"
