@@ -292,8 +292,8 @@ ToolBar::~ToolBar()
    /// placement     Location on the toolbar
    /// processdownevents      boolean that determine whether the button will process events
    ///                        if it is in the down position (and pop up when clicked in the down position)
-   /// xoff          x-offset to place icon pixmaps at, with respect to background image
-   /// yoff          y-offset to place icon pixmaps at, with respect to background image
+   /// xadjust       x-offset to adjust the icon pixmaps from, wrt a centered icon on background image
+   /// yadjust       y-offset to adjust the icon pixmaps from, wrt a centered icon on background image
 AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
                               wxImage * hilite,
                               const char **foreground,
@@ -301,13 +301,28 @@ AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
                               const char **alpha, wxWindowID id,
                               wxPoint placement,
                               bool processdownevents, wxSize size,
-                              int xoff, int yoff) 
+                              int xadjust, int yadjust) 
 {
+
+
+
+
+
+   
 
    wxImage * color 			= new wxImage(wxBitmap(foreground).ConvertToImage());
    wxImage * color_disabled = new wxImage(wxBitmap(disabledfg).ConvertToImage());
    wxImage * mask 			= new wxImage(wxBitmap(alpha).ConvertToImage());
 
+
+
+
+   //Some images need to be centered on the button.  We calculate the centered values here, and then
+   //adjust by xoff/yoff, for maximum control.
+ 
+   int xoff = (size.GetWidth() - color->GetWidth())/2 + xadjust;
+   int yoff = (size.GetHeight() - color->GetHeight())/2 + yadjust;
+   
    wxImage * up2 			= OverlayImage(up, color, mask, xoff, yoff);
    wxImage * hilite2 		= OverlayImage(hilite, color, mask, xoff, yoff);
    wxImage * down2 			= OverlayImage(down, color, mask, xoff + 1, yoff + 1);

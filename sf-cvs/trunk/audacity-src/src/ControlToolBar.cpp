@@ -298,7 +298,7 @@ AButton *ControlToolBar::MakeButton(char const **foreground,
    AButton *r = ToolBar::MakeButton(upPattern, downPattern, hilitePattern,
                                     foreground, disabled, alpha, wxWindowID(id),
                                     wxPoint(mxButtonPos,buttonTop), processdownevents,
-                                    wxSize(48, 48), 16, 16);
+                                    wxSize(48, 48), 0, 0);
    mxButtonPos += BUTTON_WIDTH;
    return r;
 }
@@ -308,14 +308,14 @@ void ControlToolBar::MakeLoopImage()
    int xoff = 16;
    int yoff = 16;
 
-   wxImage * color 			= new wxImage(wxBitmap(Loop).ConvertToImage());
+   wxImage * color          = new wxImage(wxBitmap(Loop).ConvertToImage());
    wxImage * color_disabled = new wxImage(wxBitmap(LoopDisabled).ConvertToImage());
-   wxImage * mask 			= new wxImage(wxBitmap(LoopAlpha).ConvertToImage());
+   wxImage * mask 	    = new wxImage(wxBitmap(LoopAlpha).ConvertToImage());
    
-   wxImage * up2 			   = OverlayImage(upPattern, color, mask, xoff, yoff);
-   wxImage * hilite2 		= OverlayImage(hilitePattern, color, mask, xoff, yoff);
-   wxImage * down2 			= OverlayImage(downPattern, color, mask, xoff + 1, yoff + 1);
-   wxImage * disable2 		= OverlayImage(upPattern, color_disabled, mask, xoff, yoff);
+   wxImage * up2 	    = OverlayImage(upPattern, color, mask, xoff, yoff);
+   wxImage * hilite2 	    = OverlayImage(hilitePattern, color, mask, xoff, yoff);
+   wxImage * down2          = OverlayImage(downPattern, color, mask, xoff + 1, yoff + 1);
+   wxImage * disable2 	    = OverlayImage(upPattern, color_disabled, mask, xoff, yoff);
 
    mPlay->SetAlternateImages(up2, hilite2, down2, disable2);
 
@@ -680,7 +680,6 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
       double maxofmins,minofmaxs;
       
       // JS: clarified how the final play region is computed;
-      
       if (t1 == t0) {
          // msmeyer: When playing looped, we play the whole file, if
          // no range is selected. Otherwise, we play from t0 to end
