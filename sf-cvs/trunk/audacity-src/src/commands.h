@@ -212,9 +212,9 @@
 
    CMD_ADDMENU_SEP(editMenu);
    CMD_ADDMENU(_("&Insert Silence..."), _("Insert Silence"), OnInsertSilence, editMenu, enabledMenu);
-   CMD_ADDMENU(_("Split"), _("New"), OnSplit, editMenu, enabledMenu);
-   CMD_ADDMENU(_("Split At Labels"), _("New"), OnSplitLabels, editMenu, enabledMenu);
-   CMD_ADDMENU(_("D&uplicate"), _("New"), OnDuplicate, editMenu, enabledMenu);
+   CMD_ADDMENU(_("Split"), _("Split"), OnSplit, editMenu, enabledMenu);
+   CMD_ADDMENU(_("Split At Labels"), _("Split At Labels"), OnSplitLabels, editMenu, enabledMenu);
+   CMD_ADDMENU(_("D&uplicate"), _("Duplicate"), OnDuplicate, editMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(editMenu);
    CMD_ADDMENU(_("Select All"), _("Select All"), OnSelectAll, editMenu, enabledMenu);
