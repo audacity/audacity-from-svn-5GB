@@ -1132,6 +1132,516 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
    delete image;
 }
 
+/*
+Note: recall that Allegro attributes end in a type identifying letter.
+ 
+In addition to standard notes, an Allegro_Note can denote a graphic.
+A graphic is a note with a loud of zero (for quick testing) and an
+attribute named "shapea" set to one of the following atoms:
+    line
+        from (time, pitch) to (time+dur, y1r), where y1r is an
+          attribute
+    rectangle
+        from (time, pitch) to (time+dur, y1r), where y1r is an
+          attribute
+    triangle
+        coordinates are (time, pitch), (x1r, y1r), (x2r, y2r)
+        dur must be the max of x1r-time, x2r-time
+    polygon
+        coordinates are (time, pitch), (x1r, y1r), (x2r, y2r),
+          (x3r, y3r), ... are coordinates (since we cannot represent
+          arrays as attribute values, we just generate as many 
+          attribute names as we need)
+        dur must be the max of xNr-time for all N
+    oval
+        similar to rectangle
+        Note: this oval has horizontal and vertical axes only
+    text
+        drawn at (time, pitch)
+        duration should be zero (text is clipped based on time and duration,
+          NOT based on actual coordinates)
+
+and optional attributes as follows:
+    linecolori is 0x00rrggbb format color for line or text foreground
+    fillcolori is 0x00rrggbb format color for fill or text background
+    linethicki is line thickness in pixels, 0 for no line
+    filll is true to fill rectangle or draw text background (default is false)
+    fonta is one of ['roman', 'swiss', 'modern'] (font, otherwise use default)
+    weighta may be 'bold' (font) (default is normal)
+    sizei is font size (default is 8)
+    justifys is a string containing two letters, a horizontal code and a 
+      vertical code. The horizontal code is as follows:
+        l: the coordinate is to the left of the string (default)
+        c: the coordinate is at the center of the string
+        r: the coordinate is at the right of the string
+      The vertical code is as follows:
+        t: the coordinate is at the top of the string
+        c: the coordinate is at the center of the string
+        b: the coordinate is at the bottom of the string
+        d: the coordinate is at the baseline of the string (default)
+      Thus, -justifys:"lt" places the left top of the string at the point
+        given by (pitch, time). The default value is "ld".
+    
+ */
+
+char *IsShape(Allegro_note_ptr note)
+// returns NULL if note is not a shape,
+// returns atom (string) value of note if note is a shape
+{
+  Parameters_ptr parameters = note->parameters;
+  while (parameters) {
+    if (strcmp(parameters->parm.attr_name(), "shapea") == 0) {
+      return parameters->parm.a;
+    }
+    parameters = parameters->next;
+  }
+  return NULL;
+}
+
+double LookupRealAttribute(Allegro_note_ptr note, Attribute attr, double def)
+// returns value of attr, or default if not found
+{
+  Parameters_ptr parameters = note->parameters;
+  while (parameters) {
+    if (parameters->parm.attr_name() == attr + 1 &&
+        parameters->parm.attr_type() == 'r') {
+      return parameters->parm.r;
+    }
+    parameters = parameters->next;
+  }
+  return def;
+}
+
+long LookupIntAttribute(Allegro_note_ptr note, Attribute attr, long def)
+// returns value of attr, or default if not found
+{
+  Parameters_ptr parameters = note->parameters;
+  while (parameters) {
+    if (parameters->parm.attr_name() == attr + 1 &&
+        parameters->parm.attr_type() == 'i') {
+      return parameters->parm.i;
+    }
+    parameters = parameters->next;
+  }
+  return def;
+}
+
+bool LookupLogicalAttribute(Allegro_note_ptr note, Attribute attr, bool def)
+// returns value of attr, or default if not found
+{
+  Parameters_ptr parameters = note->parameters;
+  while (parameters) {
+    if (parameters->parm.attr_name() == attr + 1 &&
+        parameters->parm.attr_type() == 'l') {
+      return parameters->parm.l;
+    }
+    parameters = parameters->next;
+  }
+  return def;
+}
+
+char *LookupStringAttribute(Allegro_note_ptr note, Attribute attr, char *def)
+// returns value of attr, or default if not found
+{
+  Parameters_ptr parameters = note->parameters;
+  while (parameters) {
+    if (parameters->parm.attr_name() == attr + 1 &&
+        parameters->parm.attr_type() == 's') {
+      return parameters->parm.s;
+    }
+    parameters = parameters->next;
+  }
+  return def;
+}
+
+char *LookupAtomAttribute(Allegro_note_ptr note, Attribute attr, char *def)
+// returns value of attr, or default if not found
+{
+  Parameters_ptr parameters = note->parameters;
+  while (parameters) {
+    if (parameters->parm.attr_name() == attr + 1 &&
+        parameters->parm.attr_type() == 'a') {
+      return parameters->parm.s;
+    }
+    parameters = parameters->next;
+  }
+  return def;
+}
+
+#define TIME_TO_X(t) (r.x + (int) (((t) - h) * pps))
+#define X_TO_TIME(xx) (((xx) - r.x) / pps + h)
+
+// CLIP(x) changes x to lie between +/- CLIP_MAX due to graphics display problems
+//  with very large coordinate values (this happens when you zoom in very far)
+//  This will cause incorrect things to be displayed, but at these levels of zoom
+//  you will only see a small fraction of the overall shape. Note that rectangles
+//  and lines are clipped in a way that preserves correct graphics, so in
+//  particular, line plots will be correct at any zoom (limited by floating point
+//  precision).
+#define CLIP_MAX 16000
+#define CLIP(x) { long c = (x); if (c < -CLIP_MAX) c = -CLIP_MAX; \
+                  if (c > CLIP_MAX) c = CLIP_MAX; (x) = c; }
+
+#define RED(i) (((i) >> 16) & 0xff)
+#define GREEN(i) (((i) >> 8) & 0xff)
+#define BLUE(i) ((i) & 0xff)
+
+//#define PITCH_TO_Y(p) (r.y + r.height - int(pitchht * ((p) + 0.5 - pitch0) + 0.5))
+
+int PITCH_TO_Y(double p, int bottom)
+{
+   int octave = (((int) (p + 0.5)) / 12);
+   int n = ((int) (p + 0.5)) % 12;
+   
+   return bottom - octave * octaveHeight - notePos[n] - 4;
+}
+
+void TrackArtist::DrawNoteTrack(TrackInfoCache *cache,
+								wxDC &dc, wxRect &r,
+								ViewInfo *viewInfo)
+{
+  double h = viewInfo->h;
+  double pps = viewInfo->zoom;
+  double sel0 = viewInfo->sel0;
+  double sel1 = viewInfo->sel1;
+
+  double h1 = X_TO_TIME(r.x + r.width);
+
+  NoteTrack *track = (NoteTrack *)cache->track;
+  Seq_ptr seq = track->mSeq;
+  int visibleChannels = track->mVisibleChannels;
+
+  if (!track->selected)
+	sel0 = sel1 = 0.0;
+
+  int ctrpitch = 60;
+  int pitch0;
+  int pitchht = 4;
+  int n;
+
+  int numPitches = r.height / pitchht;
+  pitch0 = (ctrpitch - numPitches/2);
+
+  int bottomNote = track->mBottomNote;
+  int bottom = r.height +
+     ((bottomNote / 12) * octaveHeight + notePos[bottomNote % 12]);
+
+  dc.SetBrush(blankBrush);
+   dc.SetPen(blankPen);
+   dc.DrawRectangle(r);
+
+  wxPen blackStripePen;
+  blackStripePen.SetColour(190, 190, 190);
+   wxBrush blackStripeBrush;
+   blackStripeBrush.SetColour(190, 190, 190);
+
+   dc.SetBrush(blackStripeBrush);
+
+   for (int octave = 0; octave < 50; octave++) {
+      int obottom = r.y + bottom - octave * octaveHeight;
+
+      if (obottom > r.y && obottom < r.y + r.height) {
+         dc.SetPen(*wxBLACK_PEN);
+         dc.DrawLine(r.x, obottom, r.x + r.width, obottom);
+      }
+      if (obottom - 26 > r.y && obottom - 26 < r.y + r.height) {
+         dc.SetPen(blackStripePen);
+         dc.DrawLine(r.x, obottom - 26, r.x + r.width, obottom - 26);
+      }
+
+      wxRect br = r;
+      br.height = 5;
+      for (int black = 0; black < 5; black++) {
+         br.y = obottom - blackPos[black] - 4;
+         if (br.y > r.y && br.y + br.height < r.y + r.height) {
+            dc.SetPen(blackStripePen);
+            dc.DrawRectangle(br);
+         }
+      }
+   }
+
+  /*
+  wxBrush backBrush;
+  wxPen backPen;
+
+  backBrush.SetColour(214,214,214);
+  backPen.SetColour(214,214,214);
+
+  dc.SetBrush(backBrush);
+  dc.SetPen(backPen);
+
+  dc.DrawRectangle(r);
+  
+  dc.SetPen(wxPen(wxColour(151,0,255),1,wxSOLID));
+
+  for(n=pitchht; n<r.height; n+=pitchht)
+    dc.DrawLine(r.x, r.y+r.height-n,
+                r.x + r.width, r.y+r.height-n);
+  */
+
+  dc.SetClippingRegion(r);
+  int numEvents = seq->notes.len;
+  int index;
+
+  // NOTE: it would be better to put this in some global initialization
+  // function rather than do lookups every time.
+  char *line = symbol_table.insert_string("line");
+  char *rectangle = symbol_table.insert_string("rectangle");
+  char *triangle = symbol_table.insert_string("triangle");
+  char *polygon = symbol_table.insert_string("polygon");
+  char *oval = symbol_table.insert_string("oval");
+  char *text = symbol_table.insert_string("text");
+  char *texts = symbol_table.insert_string("texts");
+  char *x1r = symbol_table.insert_string("x1r");
+  char *x2r = symbol_table.insert_string("x2r");
+  char *y1r = symbol_table.insert_string("y1r");
+  char *y2r = symbol_table.insert_string("y2r");
+  char *linecolori = symbol_table.insert_string("linecolori");
+  char *fillcolori = symbol_table.insert_string("fillcolori");
+  char *linethicki = symbol_table.insert_string("linethicki");
+  char *filll = symbol_table.insert_string("filll");
+  char *fonta = symbol_table.insert_string("fonta");
+  char *roman = symbol_table.insert_string("roman");
+  char *swiss = symbol_table.insert_string("swiss");
+  char *modern = symbol_table.insert_string("modern");
+  char *weighta = symbol_table.insert_string("weighta");
+  char *bold = symbol_table.insert_string("bold");
+  char *sizei = symbol_table.insert_string("sizei");
+  char *justifys = symbol_table.insert_string("justifys");
+
+  for(index=0; index<numEvents; index++) {
+
+    if (seq->notes[index]->type == 'n') {
+    
+      Allegro_note_ptr note = (Allegro_note_ptr)(seq->notes[index]);
+      
+      if (visibleChannels & (1 << (seq->notes[index]->chan & 15))) {
+        double x = note->time;
+        double x1 = note->time + note->dur;
+        if (x < h1 && x1 > h) { // omit if outside box
+          char *shape = NULL;
+          if (note->loud > 0.0 || !(shape = IsShape(note))) {
+
+             int octave = (((int) (note->pitch + 0.5)) / 12);
+             int n = ((int) (note->pitch + 0.5)) % 12;
+             
+             wxRect nr;
+             nr.y = bottom - octave * octaveHeight - notePos[n]
+                - 4;
+             nr.height = 5;
+             
+             if (nr.y + nr.height >= 0 && nr.y < r.height) {
+                
+                if (nr.y + nr.height > r.height)
+                   nr.height = r.height - nr.y;
+                if (nr.y < 0) {
+                   nr.height += nr.y;
+                   nr.y = 0;
+                }
+                nr.y += r.y;
+                
+                nr.x = r.x + (int) ((note->time - h) * pps);
+                nr.width = (int) (note->dur * pps) + 1;
+                
+                if (nr.x + nr.width >= r.x && nr.x < r.x + r.width) {
+                   if (nr.x < r.x) {
+                      nr.width -= (r.x - nr.x);
+                      nr.x = r.x;
+                   }
+                   if (nr.x + nr.width > r.x + r.width)
+                      nr.width = r.x + r.width - nr.x;
+                   
+                   AColor::MIDIChannel(&dc, note->chan + 1);
+                   
+                   if (note->time + note->dur >= sel0 && note->time <= sel1) {
+                      dc.SetBrush(*wxWHITE_BRUSH);
+                      dc.DrawRectangle(nr);
+                   }
+                   else {
+                      dc.DrawRectangle(nr);
+                      AColor::LightMIDIChannel(&dc, note->chan + 1);
+                      dc.DrawLine(nr.x, nr.y, nr.x + nr.width-2, nr.y);
+                      dc.DrawLine(nr.x, nr.y, nr.x, nr.y + nr.height-2);
+                      AColor::DarkMIDIChannel(&dc, note->chan + 1);
+                      dc.DrawLine(nr.x+nr.width-1, nr.y,
+                                  nr.x+nr.width-1, nr.y+nr.height-1);
+                      dc.DrawLine(nr.x, nr.y+nr.height-1,
+                                  nr.x+nr.width-1, nr.y+nr.height-1);
+                   }
+
+                }
+             }
+             
+          } else if (shape) {
+            // draw a shape according to attributes
+            // add 0.5 to pitch because pitches are plotted with height = pitchht,
+            // thus, the center is raised by pitchht * 0.5
+            int y = PITCH_TO_Y(note->pitch, bottom);
+            long linecolor = LookupIntAttribute(note, linecolori, -1);
+            long linethick = LookupIntAttribute(note, linethicki, 1);
+            long fillcolor;
+            long fillflag;
+
+            // set default color to be that of channel
+            AColor::MIDIChannel(&dc, note->chan+1);
+            if (shape != text) {
+              if (linecolor != -1)
+                dc.SetPen(wxPen(wxColour(RED(linecolor), 
+                                         GREEN(linecolor),
+                                         BLUE(linecolor)),
+                                linethick, wxSOLID));
+            }
+            if (shape != line) {
+              fillcolor = LookupIntAttribute(note, fillcolori, -1);
+              fillflag = LookupLogicalAttribute(note, filll, false);
+
+              if (fillcolor != -1) 
+                dc.SetBrush(wxBrush(wxColour(RED(fillcolor),
+                                             GREEN(fillcolor),
+                                             BLUE(fillcolor)),
+                                    wxSOLID));
+              if (!fillflag) dc.SetBrush(*wxTRANSPARENT_BRUSH);
+            }
+            int y1 = PITCH_TO_Y(LookupRealAttribute(note, y1r, note->pitch), bottom);
+            if (shape == line) {
+              // extreme zooms caues problems under windows, so we have to do some
+              // clipping before calling display routine
+              if (x < h) { // clip line on left
+                y = (y + (y1 - y) * (h - x) / (x1 - x)) + 0.5;
+                x = h;
+              }
+              if (x1 > h1) { // clip line on right
+                y1 = (y + (y1 - y) * (h1 - x) / (x1 - x)) + 0.5;
+                x1 = h1;
+              }
+              dc.DrawLine(TIME_TO_X(x), y, TIME_TO_X(x1), y1);
+            } else if (shape == rectangle) {
+              if (x < h) { // clip on left, leave 10 pixels to spare
+                x = h - (linethick + 10) / pps;
+              }
+              if (x1 > h1) { // clip on right, leave 10 pixels to spare
+                x1 = h1 + (linethick + 10) / pps;
+              }
+              dc.DrawRectangle(TIME_TO_X(x), y, int((x1 - x) * pps + 0.5), y1 - y + 1);
+            } else if (shape == triangle) {
+              wxPoint points[3];
+              points[0].x = TIME_TO_X(x);
+              CLIP(points[0].x);
+              points[0].y = y;
+              points[1].x = TIME_TO_X(LookupRealAttribute(note, x1r, note->pitch));
+              CLIP(points[1].x);
+              points[1].y = y1;
+              points[2].x = TIME_TO_X(LookupRealAttribute(note, x2r, note->time));
+              CLIP(points[2].x);
+              points[2].y = PITCH_TO_Y(LookupRealAttribute(note, y2r, note->pitch), bottom);
+              dc.DrawPolygon(3, points);
+            } else if (shape == polygon) {
+              wxPoint points[20]; // upper bound of 20 sides
+              points[0].x = TIME_TO_X(x);
+              CLIP(points[0].x);
+              points[0].y = y;
+              points[1].x = TIME_TO_X(LookupRealAttribute(note, x1r, note->time));
+              CLIP(points[1].x);
+              points[1].y = y1;
+              points[2].x = TIME_TO_X(LookupRealAttribute(note, x2r, note->time));
+              CLIP(points[2].x);
+              points[2].y = PITCH_TO_Y(LookupRealAttribute(note, y2r, note->pitch), bottom);
+              int n = 3;
+              while (n < 20) {
+                char name[8];
+                sprintf(name, "x%dr", n);
+                char *attr = symbol_table.insert_string(name);
+                double xn = LookupRealAttribute(note, attr, -1000000.0);
+                if (xn == -1000000.0) break;
+                points[n].x = TIME_TO_X(xn);
+                CLIP(points[n].x);
+                sprintf(name, "y%dr", n - 1);
+                attr = symbol_table.insert_string(name);
+                double yn = LookupRealAttribute(note, attr, -1000000.0);
+                if (yn == -1000000.0) break;
+                points[n].y = PITCH_TO_Y(yn, bottom);
+                n++;
+              }
+              dc.DrawPolygon(n, points);
+            } else if (shape == oval) {
+              int ix = TIME_TO_X(x);
+              CLIP(ix);
+              int ix1 = int((x1 - x) * pps + 0.5);
+              if (ix1 > CLIP_MAX * 2) ix1 = CLIP_MAX * 2; // CLIP a width
+              dc.DrawEllipse(ix, y, ix1, y1 - y + 1);
+            } else if (shape == text) {
+              if (linecolor != -1)
+                dc.SetTextForeground(wxColour(RED(linecolor), 
+                                              GREEN(linecolor),
+                                              BLUE(linecolor)));
+              // if no color specified, copy color from brush
+              else dc.SetTextForeground(dc.GetBrush().GetColour());
+
+              // This seems to have no effect, so I commented it out. -RBD
+              //if (fillcolor != -1)
+              //  dc.SetTextBackground(wxColour(RED(fillcolor), 
+              //                                GREEN(fillcolor),
+              //                                BLUE(fillcolor)));
+              //// if no color specified, copy color from brush
+              //else dc.SetTextBackground(dc.GetPen().GetColour());
+
+              char *font = LookupAtomAttribute(note, fonta, NULL);
+              char *weight = LookupAtomAttribute(note, weighta, NULL);
+              int size = LookupIntAttribute(note, sizei, 8);
+              char *justify = LookupStringAttribute(note, justifys, "ld");
+              wxFont wxfont;
+              wxfont.SetFamily(font == roman ? wxROMAN : 
+                                (font == swiss ? wxSWISS :
+                                  (font == modern ? wxMODERN : wxDEFAULT)));
+              wxfont.SetStyle(wxNORMAL);
+              wxfont.SetWeight(weight == bold ? wxBOLD : wxNORMAL);
+              wxfont.SetPointSize(size);
+              dc.SetFont(wxfont);
+
+              // now do justification
+              char *s = LookupStringAttribute(note, texts, "");
+              #ifdef __WXMAC__
+		      long textWidth, textHeight;
+              #else
+		      int textWidth, textHeight;
+              #endif
+		      dc.GetTextExtent(s, &textWidth, &textHeight);
+              long hoffset = 0;
+              long voffset = -textHeight; // default should be baseline of text
+
+              if (strlen(justify) != 2) justify = "ld";
+
+              if (justify[0] == 'c') hoffset = -(textWidth/2);
+              else if (justify[0] == 'r') hoffset = -textWidth;
+
+              if (justify[1] == 't') voffset = 0;
+              else if (justify[1] == 'c') voffset = -(textHeight/2);
+              else if (justify[1] == 'b') voffset = -textHeight;
+              if (fillflag) {
+                // It should be possible to do this with background color,
+                // but maybe because of the transfer mode, no background is
+                // drawn. To fix this, just draw a rectangle:
+                dc.SetPen(wxPen(wxColour(RED(fillcolor), 
+                                         GREEN(fillcolor),
+                                         BLUE(fillcolor)),
+                                1, wxSOLID));
+                dc.DrawRectangle(TIME_TO_X(x) + hoffset, y + voffset,
+                                 textWidth, textHeight);
+              }
+              dc.DrawText(s, TIME_TO_X(x) + hoffset, y + voffset);
+            }
+          }
+        }
+      }
+    }
+
+  }
+  dc.DestroyClippingRegion();
+}
+
+/*
+Old code - before Roger's allegro modifications
+
 void TrackArtist::DrawNoteTrack(TrackInfoCache * cache,
                                 wxDC & dc, wxRect & r, ViewInfo * viewInfo)
 {
@@ -1240,6 +1750,7 @@ void TrackArtist::DrawNoteTrack(TrackInfoCache * cache,
    }
 
 }
+*/
 
 void TrackArtist::DrawLabelTrack(TrackInfoCache * cache,
                                  wxDC & dc, wxRect & r,

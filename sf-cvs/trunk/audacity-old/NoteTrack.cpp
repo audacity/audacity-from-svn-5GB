@@ -31,7 +31,7 @@ VTrack(projDirManager)
 
 void NoteTrack::DrawLabelControls(wxDC & dc, wxRect & r)
 {
-   int wid = 20;
+   int wid = 23;
    int ht = 16;
 
    if (r.height < ht * 4)
@@ -122,7 +122,7 @@ void NoteTrack::CalcLen()
             mLen = mSeq->notes[numEvents - 1]->time;
          if (mSeq->notes[numEvents - 1]->type == 'n') {
             double endtime = mSeq->notes[numEvents - 1]->time +
-                ((Note_ptr) mSeq->notes[numEvents - 1])->dur;
+                ((Allegro_note_ptr) mSeq->notes[numEvents - 1])->dur;
             if (endtime > mLen)
                mLen = endtime;
          }
