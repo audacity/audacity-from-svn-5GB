@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_wmme.c,v 1.6 2002-05-07 00:08:52 bmg300 Exp $
+ * $Id: pa_win_wmme.c,v 1.7 2002-10-26 07:06:19 dmazzoni Exp $
  * pa_win_wmme.c
  * Implementation of PortAudio for Windows MultiMedia Extensions (WMME)
  *
@@ -54,6 +54,7 @@
  RDB20020411 - various renaming cleanups, factored streamData alloc and cpu usage init
  RDB20020417 - stopped counting WAVE_MAPPER when there were no real devices
                refactoring, renaming and fixed a few edge case bugs
+ PLB20020612 - added 8000.0 Hz to custom sampling rates array
 */
 
 #include <stdio.h>
@@ -112,11 +113,7 @@ static  gUnderCallbackCounter = 0;
 #define UNDER_SLEEP_FOR      (500)
 #endif
 
-#ifndef WIN32
 #define PRINT(x) { printf x; fflush(stdout); }
-#else
-#define PRINT(x)
-#endif
 #define ERR_RPT(x) PRINT(x)
 #define DBUG(x)  /* PRINT(x) /**/
 #define DBUGX(x) /* PRINT(x) */
@@ -359,10 +356,11 @@ int Pa_CountDevices()
  */
 const PaDeviceInfo* Pa_GetDeviceInfo( PaDeviceID id )
 {
-#define NUM_STANDARDSAMPLINGRATES   3   /* 11.025, 22.05, 44.1 */
-#define NUM_CUSTOMSAMPLINGRATES     5   /* must be the same number of elements as in the array below */
+#define NUM_STANDARDSAMPLINGRATES   3   /* 11025, 22050, 44100 */
+    static DWORD customSamplingRates[] = { 8000, 32000, 48000, 64000, 88200, 96000 };
+#define NUM_CUSTOMSAMPLINGRATES     (sizeof(customSamplingRates)/sizeof(DWORD))
 #define MAX_NUMSAMPLINGRATES        (NUM_STANDARDSAMPLINGRATES+NUM_CUSTOMSAMPLINGRATES)
-    static DWORD customSamplingRates[] = { 32000, 48000, 64000, 88200, 96000 };
+
     PaDeviceInfo *deviceInfo;
     double *sampleRates; /* non-const ptr */
     int i;

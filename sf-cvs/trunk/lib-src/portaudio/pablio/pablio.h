@@ -2,10 +2,12 @@
 #define _PABLIO_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif /* __cplusplus */
 
 /*
+ * $Id: pablio.h,v 1.2 2002-10-26 07:06:19 dmazzoni Exp $
  * PABLIO.h
  * Portable Audio Blocking read/write utility.
  *
@@ -47,13 +49,15 @@ extern "C" {
 #include "ringbuffer.h"
 #include <string.h>
 
-typedef struct {
-	RingBuffer   inFIFO;
-	RingBuffer   outFIFO;
-	PortAudioStream *stream;
-	int          bytesPerFrame;
-	int          samplesPerFrame;
-}PABLIO_Stream;
+typedef struct
+{
+    RingBuffer   inFIFO;
+    RingBuffer   outFIFO;
+    PortAudioStream *stream;
+    int          bytesPerFrame;
+    int          samplesPerFrame;
+}
+PABLIO_Stream;
 
 /* Values for flags for OpenAudioStream(). */
 #define PABLIO_READ     (1<<0)
@@ -95,7 +99,7 @@ long GetAudioStreamReadable( PABLIO_Stream *aStream );
  *    and either PABLIO_MONO or PABLIO_STEREO
  */
 PaError OpenAudioStream( PABLIO_Stream **aStreamPtr, double sampleRate,
-				  PaSampleFormat format, long flags );
+                         PaSampleFormat format, long flags );
 
 PaError CloseAudioStream( PABLIO_Stream *aStream );
 

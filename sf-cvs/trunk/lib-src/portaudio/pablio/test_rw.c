@@ -1,4 +1,5 @@
 /*
+ * $Id: test_rw.c,v 1.2 2002-10-26 07:06:19 dmazzoni Exp $
  * test_rw.c
  * Read input from one stream and write it to another.
  *
@@ -43,9 +44,10 @@
 ** full duplex audio (simultaneous record and playback).
 ** And some only support full duplex at lower sample rates.
 */
-#define SAMPLE_RATE         (22050)
-#define NUM_SECONDS             (15)
-#define SAMPLES_PER_FRAME       (2)
+#define SAMPLE_RATE          (44100)
+#define NUM_SECONDS              (5)
+#define SAMPLES_PER_FRAME        (2)
+#define FRAMES_PER_BLOCK        (64)
 
 /* Select whether we will use floats or shorts. */
 #if 1
@@ -60,39 +62,38 @@ typedef short SAMPLE;
 int main(void);
 int main(void)
 {
-	int      i;
-	SAMPLE   samples[SAMPLES_PER_FRAME];
-	PaError  err;
-	PABLIO_Stream     *aStream;
+    int      i;
+    SAMPLE   samples[SAMPLES_PER_FRAME * FRAMES_PER_BLOCK];
+    PaError  err;
+    PABLIO_Stream     *aStream;
 
-	printf("Full duplex sound test using PortAudio and RingBuffers\n");
-	fflush(stdout);
+    printf("Full duplex sound test using PortAudio and RingBuffers\n");
+    fflush(stdout);
 
-/* Open simplified blocking I/O layer on top of PortAudio. */
-	err = OpenAudioStream( &aStream, SAMPLE_RATE, SAMPLE_TYPE,
-				     (PABLIO_READ_WRITE | PABLIO_STEREO) );
-	if( err != paNoError ) goto error;
+    /* Open simplified blocking I/O layer on top of PortAudio. */
+    err = OpenAudioStream( &aStream, SAMPLE_RATE, SAMPLE_TYPE,
+                           (PABLIO_READ_WRITE | PABLIO_STEREO) );
+    if( err != paNoError ) goto error;
 
-/* Process samples in the foreground. */
-	for( i=0; i<(NUM_SECONDS * SAMPLE_RATE); i++ )
-	{
-	/* Read one frame of data into sample array from audio input. */
-		ReadAudioStream( aStream, samples, 1 );
-	/* Write that same frame of data to output. */
-	/*	samples[1] = (i&256) * (1.0f/256.0f); /* sawtooth */
-		WriteAudioStream( aStream, samples, 1 );
-	}
+    /* Process samples in the foreground. */
+    for( i=0; i<(NUM_SECONDS * SAMPLE_RATE); i += FRAMES_PER_BLOCK )
+    {
+        /* Read one block of data into sample array from audio input. */
+        ReadAudioStream( aStream, samples, FRAMES_PER_BLOCK );
+        /* Write that same block of data to output. */
+        WriteAudioStream( aStream, samples, FRAMES_PER_BLOCK );
+    }
 
-	CloseAudioStream( aStream );
+    CloseAudioStream( aStream );
 
-	printf("Full duplex sound test complete.\n" );
-	fflush(stdout);
-	return 0;
+    printf("Full duplex sound test complete.\n" );
+    fflush(stdout);
+    return 0;
 
 error:
-	Pa_Terminate();
-	fprintf( stderr, "An error occured while using the portaudio stream\n" ); 
-	fprintf( stderr, "Error number: %d\n", err );
-	fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
-	return -1;
+    Pa_Terminate();
+    fprintf( stderr, "An error occured while using the portaudio stream\n" );
+    fprintf( stderr, "Error number: %d\n", err );
+    fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
+    return -1;
 }

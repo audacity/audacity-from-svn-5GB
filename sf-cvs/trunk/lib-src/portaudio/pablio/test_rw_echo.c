@@ -1,4 +1,5 @@
 /*
+ * $Id: test_rw_echo.c,v 1.3 2002-10-26 07:06:19 dmazzoni Exp $
  * test_rw_echo.c
  * Echo delayed input to output.
  *
@@ -70,53 +71,53 @@ SAMPLE   samples[NUM_ECHO_FRAMES][SAMPLES_PER_FRAME] = {0.0};
 int main(void);
 int main(void)
 {
-	int      i;
-	PaError  err;
-	PABLIO_Stream     *aInStream;
-	PABLIO_Stream     *aOutStream;
-	int      index;
+    int      i;
+    PaError  err;
+    PABLIO_Stream     *aInStream;
+    PABLIO_Stream     *aOutStream;
+    int      index;
 
-	printf("Full duplex sound test using PABLIO\n");
-	fflush(stdout);
+    printf("Full duplex sound test using PABLIO\n");
+    fflush(stdout);
 
-/* Open simplified blocking I/O layer on top of PortAudio. */
-/* Open input first so it can start to fill buffers. */
-	err = OpenAudioStream( &aInStream, SAMPLE_RATE, SAMPLE_TYPE,
-				     (PABLIO_READ | PABLIO_STEREO) );
-	if( err != paNoError ) goto error;
-	/* printf("opened input\n");  fflush(stdout); /**/
+    /* Open simplified blocking I/O layer on top of PortAudio. */
+    /* Open input first so it can start to fill buffers. */
+    err = OpenAudioStream( &aInStream, SAMPLE_RATE, SAMPLE_TYPE,
+                           (PABLIO_READ | PABLIO_STEREO) );
+    if( err != paNoError ) goto error;
+    /* printf("opened input\n");  fflush(stdout); /**/
 
-	err = OpenAudioStream( &aOutStream, SAMPLE_RATE, SAMPLE_TYPE,
-				     (PABLIO_WRITE | PABLIO_STEREO) );
-	if( err != paNoError ) goto error;
-	/* printf("opened output\n");  fflush(stdout); /**/
+    err = OpenAudioStream( &aOutStream, SAMPLE_RATE, SAMPLE_TYPE,
+                           (PABLIO_WRITE | PABLIO_STEREO) );
+    if( err != paNoError ) goto error;
+    /* printf("opened output\n");  fflush(stdout); /**/
 
-/* Process samples in the foreground. */
-	index = 0;
-	for( i=0; i<(NUM_SECONDS * SAMPLE_RATE); i++ )
-	{
-	/* Write old frame of data to output. */
-		/* samples[index][1] = (i&256) * (1.0f/256.0f); /* sawtooth */
-		WriteAudioStream( aOutStream, &samples[index][0], 1 );
-		
-	/* Read one frame of data into sample array for later output. */
-		ReadAudioStream( aInStream, &samples[index][0], 1 );
-		index += 1;
-		if( index >= NUM_ECHO_FRAMES ) index = 0;
-		
-		if( (i & 0xFFFF) == 0 ) printf("i = %d\n", i ); fflush(stdout); /**/
-	}
+    /* Process samples in the foreground. */
+    index = 0;
+    for( i=0; i<(NUM_SECONDS * SAMPLE_RATE); i++ )
+    {
+        /* Write old frame of data to output. */
+        /* samples[index][1] = (i&256) * (1.0f/256.0f); /* sawtooth */
+        WriteAudioStream( aOutStream, &samples[index][0], 1 );
 
-	CloseAudioStream( aOutStream );
-	CloseAudioStream( aInStream );
+        /* Read one frame of data into sample array for later output. */
+        ReadAudioStream( aInStream, &samples[index][0], 1 );
+        index += 1;
+        if( index >= NUM_ECHO_FRAMES ) index = 0;
 
-	printf("R/W echo sound test complete.\n" );
-	fflush(stdout);
-	return 0;
+        if( (i & 0xFFFF) == 0 ) printf("i = %d\n", i ); fflush(stdout); /**/
+    }
+
+    CloseAudioStream( aOutStream );
+    CloseAudioStream( aInStream );
+
+    printf("R/W echo sound test complete.\n" );
+    fflush(stdout);
+    return 0;
 
 error:
-	fprintf( stderr, "An error occured while using PortAudio\n" ); 
-	fprintf( stderr, "Error number: %d\n", err );
-	fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
-	return -1;
+    fprintf( stderr, "An error occured while using PortAudio\n" );
+    fprintf( stderr, "Error number: %d\n", err );
+    fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
+    return -1;
 }

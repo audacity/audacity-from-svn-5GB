@@ -1,5 +1,5 @@
 /*
- * $Id: pa_mac.c,v 1.5 2002-05-06 07:08:36 dmazzoni Exp $
+ * $Id: pa_mac.c,v 1.6 2002-10-26 07:06:18 dmazzoni Exp $
  * Portable Audio I/O Library for Macintosh
  *
  * Based on the Open Source API proposed by Ross Bencina
@@ -48,8 +48,9 @@
                  Thanks Kristoffer Jensen and Georgios Marentakis for spotting this bug.
    PLB20020423 - Use new method to calculate CPU load similar to other ports. Based on num frames calculated.
                  Fixed Pa_StreamTime(). Now estimates how many frames have played based on MicroSecond timer.
-                 Added PA_MAX_USAGE_ALLOWED to prevent Mac form hanging when CPU load approaches 100%.
+                 Added PA_MAX_USAGE_ALLOWED to prevent Mac from hanging when CPU load approaches 100%.
    PLB20020424 - Fixed return value in Pa_StreamTime
+   PLB20020612 - Fix allocation error on Mac 8600 by casting *nameH as uchar* so that we get a proper Str255 length.
 */
 
 /*
@@ -117,8 +118,8 @@ O- Determine default devices somehow.
 /* Debugging output macros. */
 #define PRINT(x) { printf x; fflush(stdout); }
 #define ERR_RPT(x) PRINT(x)
-#define DBUG(x)   /* PRINT(x) /**/
-#define DBUGX(x)  /* PRINT(x) /**/
+#define DBUG(x)   /* PRINT(x) */
+#define DBUGX(x)  /* PRINT(x) */
 
 #define MAC_PHYSICAL_FRAMES_PER_BUFFER   (512)  /* Minimum number of stereo frames per SoundManager double buffer. */
 #define MAC_VIRTUAL_FRAMES_PER_BUFFER   (4096) /* Need this many when using Virtual Memory for recording. */
@@ -218,6 +219,7 @@ static PaError PaMac_BackgroundManager( internalPortAudioStream   *past, int ind
 long PaHost_GetTotalBufferFrames( internalPortAudioStream   *past );
 static int     Mac_IsVirtualMemoryOn( void );
 static void    PToCString(unsigned char* inString, char* outString);
+static void    CToPString(char *inString, unsigned char* outString);
 char *MultiBuffer_GetNextWriteBuffer( MultiBuffer *mbuf );
 char *MultiBuffer_GetNextReadBuffer( MultiBuffer *mbuf );
 int   MultiBuffer_GetNextReadIndex( MultiBuffer *mbuf );
@@ -281,6 +283,23 @@ static void PToCString(unsigned char* inString, char* outString)
     for(i=0; i<inString[0]; i++)  /* convert Pascal to C string */
         outString[i] = inString[i+1];
     outString[i]=0;
+}
+
+/*************************************************************************
+** String Utility by Dominic Mazzoni
+*/
+static void CToPString(char* inString, unsigned char* outString)
+{
+    long len = strlen(inString);
+    long i;
+
+    if (len > 255)
+        len = 255;
+
+    /* Length is stored in first char of Pascal string */
+    outString[0] = (unsigned char)len;
+    for(i=0; i<len; i++)
+        outString[i+1] = inString[i];
 }
 
 /*************************************************************************/
@@ -439,7 +458,7 @@ static PaError PaMac_QueryOutputDeviceInfo( Component identifier, internalPortAu
         goto error;
     }
     numRates = srinfo.numRates;
-    DBUG(("PaMac_QueryOutputDeviceInfo: srinfo.numRates = 0x%x\n", srinfo.numRates ));
+    DBUG(("PaMac_QueryOutputDeviceInfo: srinfo.numRates = %d\n", srinfo.numRates ));
     if( numRates == 0 )
     {
         dev->numSampleRates = -1;
@@ -450,23 +469,33 @@ static PaError PaMac_QueryOutputDeviceInfo( Component identifier, internalPortAu
         dev->numSampleRates = numRates;
     }
     dev->sampleRates = PaMac_GetSampleRatesFromHandle( numRates, (Handle) srinfo.rates );
+    if(dev->sampleRates == NULL)
+    {
+    	DBUG(("PaMac_QueryOutputDeviceInfo: PaMac_GetSampleRatesFromHandle alloc failed.\n"));
+    	return paInsufficientMemory;
+    }
+    
     /* SPBGetDeviceInfo created the handle, but it's OUR job to release it. */
     DisposeHandle((Handle) srinfo.rates);
 
     /* Device name */
     /*  we pass an existing handle for the component name;
      we don't care about the info (type, subtype, etc.) or icon, so set them to nil */
+	DBUG(("PaMac_QueryOutputDeviceInfo: get component name.\n"));
     infoH = nil;
     iconH = nil;
     nameH = NewHandle(0);
-    if(nameH == nil)  return paInsufficientMemory;
+    if(nameH == nil) return paInsufficientMemory;
     err = GetComponentInfo(identifier, &tempD, nameH, infoH, iconH);
     if (err)
     {
         ERR_RPT(("Error in PaMac_QueryOutputDeviceInfo: GetComponentInfo returned %d\n", err ));
         goto error;
     }
-    len = (*nameH)[0] + 1;
+    /* Cast as uchar* so that we get a proper pascal string length. */
+	len = ((unsigned char *)(*nameH))[0] + 1;  /* PLB20020612 - fix allocation error on Mac 8600 */
+	DBUG(("PaMac_QueryOutputDeviceInfo: new len = %d\n", len ));
+
     dev->name = (char *) malloc(len);  /* MEM_010 */
     if( dev->name == NULL )
     {
@@ -1118,7 +1147,7 @@ PaError PaHost_OpenStream( internalPortAudioStream   *past )
         long    tempL;
         Fixed   tempF;
         long    mRefNum;
-        unsigned char noname = 0; /* FIXME - use real device names. */
+        Str255 namePString;
 #if TARGET_API_MAC_CARBON
         pahsc->pahsc_InputCompletionProc = NewSICompletionUPP((SICompletionProcPtr)PaMac_InputCompletionProc);
 #else
@@ -1137,8 +1166,10 @@ PaError PaHost_OpenStream( internalPortAudioStream   *past )
         }
         pahsc->pahsc_InputMultiBuffer.numBuffers = pahsc->pahsc_NumHostBuffers;
 
-        err = SPBOpenDevice( (const unsigned char *) &noname, siWritePermission, &mRefNum); /* FIXME - use name so we get selected device */
-        // FIXME err = SPBOpenDevice( (const unsigned char *) sDevices[past->past_InputDeviceID].pad_Info.name, siWritePermission, &mRefNum);
+        // err = SPBOpenDevice( (const unsigned char *) &noname, siWritePermission, &mRefNum);
+        CToPString((char *)sDevices[past->past_InputDeviceID].pad_Info.name, namePString);
+        err = SPBOpenDevice(namePString, siWritePermission, &mRefNum);
+
         if (err) goto error;
         pahsc->pahsc_InputRefNum = mRefNum;
         DBUG(("PaHost_OpenStream: mRefNum = %d\n", mRefNum ));
