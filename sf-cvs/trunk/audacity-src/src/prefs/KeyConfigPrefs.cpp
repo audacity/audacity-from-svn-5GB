@@ -20,6 +20,7 @@
 
 #include "../Prefs.h"
 #include "KeyConfigPrefs.h"
+#include "../commands/CommandsCfg.h"
 
 #define AssignDefaultsButtonID 7001
 #define CurrentComboID         7002
@@ -43,7 +44,7 @@ PrefsPanel(parent), mCommandSelected(-1)
       //Add label
       topSizer->Add(
                new wxStaticText(this, -1,
-                  _("This code has undergone a rewrite. The GUI is not complete.\nYou can still define custom keybindings; edit the './commands.cfg' file.\nIf you need to know what a speciffic key combo is called, type it in the box below.\nClick Assign Defaults to revert the menus back to default.\nClick Rebuild Menus to reparse './commands.cfg' and rebuild the menus.")),
+                  _("This code has undergone a rewrite. The GUI is not complete.\nYou can still define custom keybindings; edit the 'commands.cfg' file.\nIf you need to know what a speciffic key combo is called, type it in the box below.\nClick Assign Defaults to revert the menus back to default.\nClick Rebuild Menus to reparse 'commands.cfg' and rebuild the menus.")),
                0, wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
 
       //Add key combo text box
@@ -62,6 +63,12 @@ PrefsPanel(parent), mCommandSelected(-1)
       //Add rebuild menus button
       topSizer->Add(new wxButton(this, RebuildMenusButtonID, _("Rebuild Menus")), 0,
                           wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+
+      //Add label
+      topSizer->Add(
+               new wxStaticText(this, -1,
+                  gCommandsCfgLocation),
+               0, wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
    }
 
    outSizer = new wxBoxSizer( wxVERTICAL );

@@ -11,6 +11,7 @@
 **********************************************************************/
 
 #include "CommandsWriter.h"
+#include "CommandsCfg.h"
 
 #include <wx/file.h>
 #include <wx/msgdlg.h>
@@ -31,14 +32,14 @@ CommandsWriter::~CommandsWriter()
 bool CommandsWriter::WriteXML()
 {
    //remove existing file
-   if(wxFileExists("commands.cfg"))
-      wxRemoveFile("commands.cfg");
+   if(wxFileExists(gCommandsCfgLocation))
+      wxRemoveFile(gCommandsCfgLocation);
 
    //open file
-   FILE *fp = fopen("commands.cfg", "wb");
+   FILE *fp = fopen(gCommandsCfgLocation, "wb");
    if(!fp || ferror(fp))
    {
-      wxMessageBox("Couldn't write to file: commands.cfg");
+      wxMessageBox("Couldn't write to file: " + gCommandsCfgLocation);
       return false;
    }
 
