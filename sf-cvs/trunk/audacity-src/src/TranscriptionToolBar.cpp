@@ -69,69 +69,70 @@ using std::endl;
  
 
 BEGIN_EVENT_TABLE(TranscriptionToolBar, wxWindow)
-  EVT_PAINT(TranscriptionToolBar::OnPaint)
-  EVT_CHAR(TranscriptionToolBar::OnKeyEvent)
-  EVT_COMMAND_RANGE(TTB_StartOn, TTB_StartOn,
-		    wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnStartOn)
-  EVT_COMMAND_RANGE(TTB_StartOff, TTB_StartOff,
-		    wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnStartOff)
-  EVT_COMMAND_RANGE(TTB_EndOn, TTB_EndOn,
-		    wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnEndOn)
-  EVT_COMMAND_RANGE(TTB_EndOff, TTB_EndOff,
-		    wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnEndOff)
-  EVT_COMMAND_RANGE(TTB_Calibrate, TTB_Calibrate,
-		    wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnCalibrate)
-  EVT_COMMAND_RANGE(TTB_AutomateSelection, TTB_AutomateSelection,
-		    wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnAutomateSelection)
-  EVT_COMMAND_RANGE(TTB_MakeLabel, TTB_MakeLabel,
-		    wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnMakeLabel)
+   EVT_PAINT(TranscriptionToolBar::OnPaint)
+   EVT_CHAR(TranscriptionToolBar::OnKeyEvent)
+   EVT_COMMAND_RANGE(TTB_StartOn, TTB_StartOn,
+                     wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnStartOn)
+   EVT_COMMAND_RANGE(TTB_StartOff, TTB_StartOff,
+                     wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnStartOff)
+   EVT_COMMAND_RANGE(TTB_EndOn, TTB_EndOn,
+                     wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnEndOn)
+   EVT_COMMAND_RANGE(TTB_EndOff, TTB_EndOff,
+                     wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnEndOff)
+   EVT_COMMAND_RANGE(TTB_Calibrate, TTB_Calibrate,
+                     wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnCalibrate)
+   EVT_COMMAND_RANGE(TTB_AutomateSelection, TTB_AutomateSelection,
+                     wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnAutomateSelection)
+   EVT_COMMAND_RANGE(TTB_MakeLabel, TTB_MakeLabel,
+                     wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnMakeLabel)
    EVT_SLIDER(TTB_SensitivitySlider, TranscriptionToolBar::OnSensitivitySlider)
 END_EVENT_TABLE()
- 
-  ////Standard Constructor
-  TranscriptionToolBar::TranscriptionToolBar(wxWindow * parent):
-    ToolBar(parent, -1, wxPoint(1,1), wxSize(377,27))
+   ;   //semicolon enforces  proper automatic indenting in emacs.
+
+////Standard Constructor
+TranscriptionToolBar::TranscriptionToolBar(wxWindow * parent):
+      ToolBar(parent, -1, wxPoint(1,1), wxSize(377,27))
 {
-  InitializeTranscriptionToolBar();
+   InitializeTranscriptionToolBar();
 }
 
 //Full-service Constructor
 TranscriptionToolBar::TranscriptionToolBar(wxWindow * parent, wxWindowID id,
 					   const wxPoint & pos,
 					   const wxSize & size):
-  ToolBar(parent, id, pos, size)
+   ToolBar(parent, id, pos, size)
 {
 
-  InitializeTranscriptionToolBar();
+   InitializeTranscriptionToolBar();
 }
 
 void TranscriptionToolBar::InitializeTranscriptionToolBar()
 {
-  mTitle = _("Audacity Transcription Toolbar");
-  mType = TranscriptionToolBarID;
-
-  mIdealSize = wxSize(550, 27);
-
-
-  vk = new VoiceKey();
-  mBackgroundBrush.SetColour(wxColour(204, 204, 204));
-  mBackgroundPen.SetColour(wxColour(204, 204, 204));
-  
-  mBackgroundBitmap = NULL;
-  mBackgroundHeight = 0;
-  mBackgroundWidth = 0;
+   mTitle = _("Audacity Transcription Toolbar");
+   mType = TranscriptionToolBarID;
+   
+   mIdealSize = wxSize(550, 27);
+   
+   
+   vk = new VoiceKey();
+   mBackgroundBrush.SetColour(wxColour(204, 204, 204));
+   mBackgroundPen.SetColour(wxColour(204, 204, 204));
+   
+   mBackgroundBitmap = NULL;
+   mBackgroundHeight = 0;
+   mBackgroundWidth = 0;
  
-  mNumDividers = 0;
+   mNumDividers = 0;
 
-  MakeButtons();
+   MakeButtons();
  
-  mButtons[TTB_StartOn]->Disable();
-  mButtons[TTB_StartOff]->Disable();
-  mButtons[TTB_EndOn]->Disable();
-  mButtons[TTB_EndOff]->Disable();
-  mButtons[TTB_Calibrate]->Enable();
-  mButtons[TTB_AutomateSelection]->Disable();
-  mButtons[TTB_MakeLabel]->Enable();
+   mButtons[TTB_StartOn]->Disable();
+   mButtons[TTB_StartOff]->Disable();
+   mButtons[TTB_EndOn]->Disable();
+   mButtons[TTB_EndOff]->Disable();
+   mButtons[TTB_Calibrate]->Enable();
+   mButtons[TTB_AutomateSelection]->Disable();
+   mButtons[TTB_MakeLabel]->Enable();
 }
 
 
@@ -143,25 +144,25 @@ void TranscriptionToolBar::AddButton(const char **fg, const char **disabled, con
 				     int id, const char *tooltip)
 {
 
-  // Windows (TM) has a little extra room for some reason, so the top of the
-  // buttons should be a little lower.
-  int buttonTop = 0;
+   // Windows (TM) has a little extra room for some reason, so the top of the
+   // buttons should be a little lower.
+   int buttonTop = 0;
 #ifdef __WXMSW__
-  buttonTop=0;
+   buttonTop=0;
 #endif
 
-  mButtons[id] = ToolBar::MakeButton(
-				     upImage, downImage, hiliteImage, fg,
-				     disabled, alpha,
-				     wxWindowID(id), wxPoint(mButtonPos, buttonTop),
-				     false /*No buttons should process down events.*/,
-				     wxSize(BUTTON_WIDTH, BUTTON_WIDTH), 0, 0);
+   mButtons[id] = ToolBar::MakeButton(
+                                      upImage, downImage, hiliteImage, fg,
+                                      disabled, alpha,
+                                      wxWindowID(id), wxPoint(mButtonPos, buttonTop),
+                                      false /*No buttons should process down events.*/,
+                                      wxSize(BUTTON_WIDTH, BUTTON_WIDTH), 0, 0);
 #if wxUSE_TOOLTIPS // Not available in wxX11
-  mButtons[id]->SetToolTip(tooltip);
+   mButtons[id]->SetToolTip(tooltip);
 #endif
 
-  mButtonPos += BUTTON_WIDTH;
-  mDividers[mNumDividers++] = mButtonPos++;
+   mButtonPos += BUTTON_WIDTH;
+   mDividers[mNumDividers++] = mButtonPos++;
 }
 
 
@@ -169,47 +170,45 @@ void TranscriptionToolBar::AddButton(const char **fg, const char **disabled, con
 
 void TranscriptionToolBar::MakeButtons()
 {
-  wxColour newColour =
-    wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
-  wxColour baseColour = wxColour(204, 204, 204);
-
-  wxImage *upOriginal = new wxImage(wxBitmap(Up).ConvertToImage());
-  wxImage *downOriginal = new wxImage(wxBitmap(Down).ConvertToImage());
-  wxImage *hiliteOriginal = new wxImage(wxBitmap(Hilite).ConvertToImage());
+   wxColour newColour =
+      wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+   wxColour baseColour = wxColour(204, 204, 204);
+   
+   wxImage *upOriginal = new wxImage(wxBitmap(Up).ConvertToImage());
+   wxImage *downOriginal = new wxImage(wxBitmap(Down).ConvertToImage());
+   wxImage *hiliteOriginal = new wxImage(wxBitmap(Hilite).ConvertToImage());
 
 #ifdef __WXGTK__
-  /* dmazzoni: hack to get around XPM color bugs in GTK */
-  unsigned char *data = upOriginal->GetData();
-  baseColour.Set(data[28 * 3], data[28 * 3 + 1], data[28 * 3 + 2]);
+   /* dmazzoni: hack to get around XPM color bugs in GTK */
+   unsigned char *data = upOriginal->GetData();
+   baseColour.Set(data[28 * 3], data[28 * 3 + 1], data[28 * 3 + 2]);
 #endif
 
-  upImage = ChangeImageColour(upOriginal, baseColour, newColour);
-  downImage = ChangeImageColour(downOriginal, baseColour, newColour);
-  hiliteImage = ChangeImageColour(hiliteOriginal, baseColour, newColour);
+   upImage = ChangeImageColour(upOriginal, baseColour, newColour);
+   downImage = ChangeImageColour(downOriginal, baseColour, newColour);
+   hiliteImage = ChangeImageColour(hiliteOriginal, baseColour, newColour);
 
 
-  mButtonPos = 0;
-  AddButton(StartOn,     StartOnDisabled,   StartOnAlpha,   TTB_StartOn,   _("Adjust left selection to  next onset"));
-  AddButton(EndOn,       EndOnDisabled,     EndOnAlpha,     TTB_EndOn,     _("Adjust right selection to previous offset"));
-  AddButton(StartOff,    StartOffDisabled,  StartOffAlpha,  TTB_StartOff,  _("Adjust left selection to next offset"));
-  AddButton(EndOff,      EndOffDisabled,    EndOffAlpha,    TTB_EndOff,    _("Adjust right selection to previous onset"));
-  AddButton(CalibrateUp, CalibrateDisabled, CalibrateAlpha, TTB_Calibrate, _("Calibrate voicekey"));
-  AddButton(AutomateSelection,   AutomateSelectionDisabled,   AutomateSelectionAlpha,   TTB_AutomateSelection,   _("Automatically make labels from words"));
-  AddButton(MakeTag,     MakeTagDisabled,   MakeTagAlpha,   TTB_MakeLabel,  _("Add label at selection"));
+   mButtonPos = 0;
+   AddButton(StartOn,     StartOnDisabled,   StartOnAlpha,   TTB_StartOn,   _("Adjust left selection to  next onset"));
+   AddButton(EndOn,       EndOnDisabled,     EndOnAlpha,     TTB_EndOn,     _("Adjust right selection to previous offset"));
+   AddButton(StartOff,    StartOffDisabled,  StartOffAlpha,  TTB_StartOff,  _("Adjust left selection to next offset"));
+   AddButton(EndOff,      EndOffDisabled,    EndOffAlpha,    TTB_EndOff,    _("Adjust right selection to previous onset"));
+   AddButton(CalibrateUp, CalibrateDisabled, CalibrateAlpha, TTB_Calibrate, _("Calibrate voicekey"));
+   AddButton(AutomateSelection,   AutomateSelectionDisabled,   AutomateSelectionAlpha,   TTB_AutomateSelection,   _("Automatically make labels from words"));
+   AddButton(MakeTag,     MakeTagDisabled,   MakeTagAlpha,   TTB_MakeLabel,  _("Add label at selection"));
   
-  mSensitivitySlider = new ASlider(this, TTB_SensitivitySlider, _("Adjust Sensitivity"),
-                                   wxPoint(mButtonPos,0),wxSize(100,28));
+   mSensitivitySlider = new ASlider(this, TTB_SensitivitySlider, _("Adjust Sensitivity"),
+                                    wxPoint(mButtonPos,0),wxSize(100,28));
   
   
-  mSensitivitySlider->Set(.5);
+   mSensitivitySlider->Set(.5);
 
 }
   
 
 TranscriptionToolBar::~TranscriptionToolBar()
 {
-   
-
    delete vk;	
    
    if (mBackgroundBitmap) delete mBackgroundBitmap;
@@ -217,29 +216,27 @@ TranscriptionToolBar::~TranscriptionToolBar()
    
    for (int i=0; i<TTBNumButtons; i++)
       if(mButtons[i]) delete mButtons[i];
-   
-
 }
 
 
 //This handles key-stroke events????
 void TranscriptionToolBar::OnKeyEvent(wxKeyEvent & event)
 {
-  if (event.ControlDown()) {
-    event.Skip();
-    return;
-  }
+   if (event.ControlDown()) {
+      event.Skip();
+      return;
+   }
   
-  if (event.KeyCode() == WXK_SPACE)
-    {
-      if (gAudioIO->IsBusy()) {
-	/*Do Stuff Here*/
+   if (event.KeyCode() == WXK_SPACE)
+      {
+         if (gAudioIO->IsBusy()) {
+            /*Do Stuff Here*/
 	
-      } else {
+         } else {
 	
-	/*Do other stuff Here*/
+            /*Do other stuff Here*/
+         }
       }
-    }
 }
 
 
@@ -247,80 +244,81 @@ void TranscriptionToolBar::OnKeyEvent(wxKeyEvent & event)
 //This changes the state of the various buttons
 void TranscriptionToolBar::SetButton(bool down, AButton* button)
 {
-  if (down)
-    button->PushDown();
-  else
-    button->PopUp();
+   if (down)
+      button->PushDown();
+   else
+      button->PopUp();
 }
 
 
 
 void TranscriptionToolBar::GetSamples(WaveTrack *t, sampleCount *s0, sampleCount *slen)
 {
-  // GetSamples attempts to translate the start and end selection markers into sample indices 
-  // These selection numbers are doubles.
+   // GetSamples attempts to translate the start and end selection markers into sample indices 
+   // These selection numbers are doubles.
 
 
-  //First, get the current selection. It is part of the mViewInfo, which is
-  //part of the project
+   //First, get the current selection. It is part of the mViewInfo, which is
+   //part of the project
    
-  AudacityProject *p = GetActiveProject();
-  if(p) {
-    double start = p->GetSel0();
-    double end = p->GetSel1();
+   AudacityProject *p = GetActiveProject();
+   if(p) {
+      double start = p->GetSel0();
+      double end = p->GetSel1();
    	   
-    sampleCount ss0 = sampleCount( (start - t->GetOffset()) * t->GetRate() );
-    sampleCount ss1 = sampleCount( (end - t->GetOffset()) * t->GetRate() );
+      sampleCount ss0 = sampleCount( (start - t->GetOffset()) * t->GetRate() );
+      sampleCount ss1 = sampleCount( (end - t->GetOffset()) * t->GetRate() );
 
-    if (start < t->GetOffset())
-      ss0 = 0;
+      if (start < t->GetOffset())
+         ss0 = 0;
 #if 0
-    if (ss1 >= t->GetNumSamples())
-      ss1 = t->GetNumSamples();
+      //This adjusts the right samplecount to the maximum sample.
+      if (ss1 >= t->GetNumSamples())
+         ss1 = t->GetNumSamples();
 #endif
 
-    if (ss1 < ss0)
-      ss1 = ss0;
+      if (ss1 < ss0)
+         ss1 = ss0;
 	    
 
-    *s0 = ss0;
-    *slen = ss1 - ss0;
-  }
+      *s0 = ss0;
+      *slen = ss1 - ss0;
+   }
 }
 
 void TranscriptionToolBar::OnStartOn(wxCommandEvent &event)
 {
-  //If IO is busy, abort immediately
-  if (gAudioIO->IsBusy()){
-    SetButton(false,mButtons[TTB_StartOn]);
-    return;
-  }
+   //If IO is busy, abort immediately
+   if (gAudioIO->IsBusy()){
+      SetButton(false,mButtons[TTB_StartOn]);
+      return;
+   }
 	
-  vk->AdjustThreshold(GetSensitivity());
-  AudacityProject *p = GetActiveProject();
+   vk->AdjustThreshold(GetSensitivity());
+   AudacityProject *p = GetActiveProject();
 	
  
-  TrackList *tl = p->GetTracks();
-  TrackListIterator iter(tl);
+   TrackList *tl = p->GetTracks();
+   TrackListIterator iter(tl);
 
-  Track *t = iter.First();   //Make a track
-  if(t) 
-     {		
-        sampleCount start,len;
-        GetSamples((WaveTrack*)t, &start,&len);
+   Track *t = iter.First();   //Make a track
+   if(t) 
+      {		
+         sampleCount start,len;
+         GetSamples((WaveTrack*)t, &start,&len);
         
-        //Adjust length to end if selection is null
-        //if(len == 0)
-        //len = (WaveTrack*)t->GetSequence()->GetNumSamples()-start;
+         //Adjust length to end if selection is null
+         //if(len == 0)
+         //len = (WaveTrack*)t->GetSequence()->GetNumSamples()-start;
         
-        sampleCount newstart = vk->OnForward(*(WaveTrack*)t,start,len);
-        double newpos = newstart / ((WaveTrack*)t)->GetRate();
+         sampleCount newstart = vk->OnForward(*(WaveTrack*)t,start,len);
+         double newpos = newstart / ((WaveTrack*)t)->GetRate();
         
-        p->SetSel0(newpos);
-        p->RedrawProject();
+         p->SetSel0(newpos);
+         p->RedrawProject();
 
-        SetButton(false, mButtons[TTB_StartOn]); 
-    }
+         SetButton(false, mButtons[TTB_StartOn]); 
+      }
 }
 
 void TranscriptionToolBar::OnStartOff(wxCommandEvent &event)
@@ -362,40 +360,40 @@ void TranscriptionToolBar::OnStartOff(wxCommandEvent &event)
 void TranscriptionToolBar::OnEndOn(wxCommandEvent &event)
 {
 	
-  //If IO is busy, abort immediately
-  if (gAudioIO->IsBusy()){
-    SetButton(false,mButtons[TTB_EndOn]);
-    return;
-  }
+   //If IO is busy, abort immediately
+   if (gAudioIO->IsBusy()){
+      SetButton(false,mButtons[TTB_EndOn]);
+      return;
+   }
   
-  vk->AdjustThreshold(GetSensitivity());
-  AudacityProject *p = GetActiveProject();
-  TrackList *tl = p->GetTracks();
-  TrackListIterator iter(tl);
+   vk->AdjustThreshold(GetSensitivity());
+   AudacityProject *p = GetActiveProject();
+   TrackList *tl = p->GetTracks();
+   TrackListIterator iter(tl);
 
 
 
-  Track *t = iter.First();   //Make a track
-  if(t) 
-     {		
-        sampleCount start,len;
-        GetSamples((WaveTrack*)t, &start,&len);
+   Track *t = iter.First();   //Make a track
+   if(t) 
+      {		
+         sampleCount start,len;
+         GetSamples((WaveTrack*)t, &start,&len);
         
-        //Adjust length to end if selection is null
-        if(len == 0)
-           {
-              len = start;
-              start = 0;
-           }
-        sampleCount newEnd = vk->OnBackward(*(WaveTrack*)t,start+ len,len);
-        double newpos = newEnd / ((WaveTrack*)t)->GetRate();
+         //Adjust length to end if selection is null
+         if(len == 0)
+            {
+               len = start;
+               start = 0;
+            }
+         sampleCount newEnd = vk->OnBackward(*(WaveTrack*)t,start+ len,len);
+         double newpos = newEnd / ((WaveTrack*)t)->GetRate();
         
-        p->SetSel1(newpos);
-        p->RedrawProject();
+         p->SetSel1(newpos);
+         p->RedrawProject();
         
-        SetButton(false, mButtons[TTB_EndOn]);		
+         SetButton(false, mButtons[TTB_EndOn]);		
 
-     }
+      }
 }
 
 
@@ -403,36 +401,36 @@ void TranscriptionToolBar::OnEndOn(wxCommandEvent &event)
 void TranscriptionToolBar::OnEndOff(wxCommandEvent &event)
 {
 	
-  //If IO is busy, abort immediately
-  if (gAudioIO->IsBusy()){
-    SetButton(false,mButtons[TTB_EndOff]);
-    return;
-  }
-  vk->AdjustThreshold(GetSensitivity());
-  AudacityProject *p = GetActiveProject();
-  TrackList *tl = p->GetTracks();
-  TrackListIterator iter(tl);
+   //If IO is busy, abort immediately
+   if (gAudioIO->IsBusy()){
+      SetButton(false,mButtons[TTB_EndOff]);
+      return;
+   }
+   vk->AdjustThreshold(GetSensitivity());
+   AudacityProject *p = GetActiveProject();
+   TrackList *tl = p->GetTracks();
+   TrackListIterator iter(tl);
 
-  Track *t = iter.First();   //Make a track
-  if(t) 
-     {		
-        sampleCount start,len;
-        GetSamples((WaveTrack*)t, &start,&len);
+   Track *t = iter.First();   //Make a track
+   if(t) 
+      {		
+         sampleCount start,len;
+         GetSamples((WaveTrack*)t, &start,&len);
         
-        //Adjust length to end if selection is null
-        if(len == 0)
-           {
-              len = start;
-              start = 0;
-           }
-        sampleCount newEnd = vk->OffBackward(*(WaveTrack*)t,start+ len,len);
-        double newpos = newEnd / ((WaveTrack*)t)->GetRate();
+         //Adjust length to end if selection is null
+         if(len == 0)
+            {
+               len = start;
+               start = 0;
+            }
+         sampleCount newEnd = vk->OffBackward(*(WaveTrack*)t,start+ len,len);
+         double newpos = newEnd / ((WaveTrack*)t)->GetRate();
         
-        p->SetSel1(newpos);
-        p->RedrawProject();
+         p->SetSel1(newpos);
+         p->RedrawProject();
         
-        SetButton(false, mButtons[TTB_EndOff]);
-    }
+         SetButton(false, mButtons[TTB_EndOff]);
+      }
 
 }
 
@@ -441,45 +439,45 @@ void TranscriptionToolBar::OnEndOff(wxCommandEvent &event)
 
 void TranscriptionToolBar::OnCalibrate(wxCommandEvent &event)
 {
-  //If IO is busy, abort immediately
-  if (gAudioIO->IsBusy()){
-    SetButton(false,mButtons[TTB_Calibrate]);
-    return;
-  }
+   //If IO is busy, abort immediately
+   if (gAudioIO->IsBusy()){
+      SetButton(false,mButtons[TTB_Calibrate]);
+      return;
+   }
 
 
-  AudacityProject *p = GetActiveProject();
+   AudacityProject *p = GetActiveProject();
 
-  TrackList *tl = p->GetTracks();
-  TrackListIterator iter(tl);
-  Track *t = iter.First();   //Get a track
+   TrackList *tl = p->GetTracks();
+   TrackListIterator iter(tl);
+   Track *t = iter.First();   //Get a track
   
-  if(t) 
-     {		
-        sampleCount start,len;
-        GetSamples((WaveTrack*)t, &start,&len);
+   if(t) 
+      {		
+         sampleCount start,len;
+         GetSamples((WaveTrack*)t, &start,&len);
         
-        vk->CalibrateNoise(*((WaveTrack*)t),start,len);
-        vk->AdjustThreshold(3);
+         vk->CalibrateNoise(*((WaveTrack*)t),start,len);
+         vk->AdjustThreshold(3);
 		
-     mButtons[TTB_StartOn]->Enable();
-     mButtons[TTB_StartOff]->Enable();
-     mButtons[TTB_EndOn]->Enable();
-     mButtons[TTB_EndOff]->Enable();
-     //mThresholdSensitivity->Set(3);
+         mButtons[TTB_StartOn]->Enable();
+         mButtons[TTB_StartOff]->Enable();
+         mButtons[TTB_EndOn]->Enable();
+         mButtons[TTB_EndOff]->Enable();
+         //mThresholdSensitivity->Set(3);
 
-     SetButton(false,mButtons[TTB_Calibrate]);    
-     }
+         SetButton(false,mButtons[TTB_Calibrate]);    
+      }
   
-  mButtons[TTB_StartOn]->Enable();
-  mButtons[TTB_StartOff]->Enable();
-  mButtons[TTB_EndOn]->Enable();
-  mButtons[TTB_EndOff]->Enable();
-  mButtons[TTB_AutomateSelection]->Enable();
+   mButtons[TTB_StartOn]->Enable();
+   mButtons[TTB_StartOff]->Enable();
+   mButtons[TTB_EndOn]->Enable();
+   mButtons[TTB_EndOff]->Enable();
+   mButtons[TTB_AutomateSelection]->Enable();
 
-  //Make the sensititivy slider set the sensitivity by processing an event.
-  wxCommandEvent dummy;
-  OnSensitivitySlider(dummy);
+   //Make the sensititivy slider set the sensitivity by processing an event.
+   wxCommandEvent dummy;
+   OnSensitivitySlider(dummy);
 }
 
 //This automates selection through a selected region,
@@ -597,48 +595,48 @@ double TranscriptionToolBar::GetSensitivity()
 
 void TranscriptionToolBar::OnPaint(wxPaintEvent & evt)
 {
-  wxPaintDC dc(this);
+   wxPaintDC dc(this);
 
-  int width, height;
-  GetSize(&width, &height);
+   int width, height;
+   GetSize(&width, &height);
 
 
 #if defined(__WXMAC__)          // && defined(TARGET_CARBON)
 
-  if (mBackgroundWidth < width) {
-    if (mBackgroundBitmap)
-      delete mBackgroundBitmap;
+   if (mBackgroundWidth < width) {
+      if (mBackgroundBitmap)
+         delete mBackgroundBitmap;
 
-    mBackgroundBitmap = new wxBitmap(width, height);
+      mBackgroundBitmap = new wxBitmap(width, height);
 
-    wxMemoryDC memDC;
-    memDC.SelectObject(*mBackgroundBitmap);
+      wxMemoryDC memDC;
+      memDC.SelectObject(*mBackgroundBitmap);
 
-    int y;
-    memDC.SetPen(wxPen(wxColour(231, 231, 231), 1, wxSOLID));
-    for (y = 0; y < height; y += 4)
-      memDC.DrawLine(0, y, width, y);
-    memDC.SetPen(wxPen(wxColour(239, 239, 239), 1, wxSOLID));
-    for (y = 1; y < height; y += 2)
-      memDC.DrawLine(0, y, width, y);
-    memDC.SetPen(wxPen(wxColour(255, 255, 255), 1, wxSOLID));
-    for (y = 2; y < height; y += 4)
-      memDC.DrawLine(0, y, width, y);
+      int y;
+      memDC.SetPen(wxPen(wxColour(231, 231, 231), 1, wxSOLID));
+      for (y = 0; y < height; y += 4)
+         memDC.DrawLine(0, y, width, y);
+      memDC.SetPen(wxPen(wxColour(239, 239, 239), 1, wxSOLID));
+      for (y = 1; y < height; y += 2)
+         memDC.DrawLine(0, y, width, y);
+      memDC.SetPen(wxPen(wxColour(255, 255, 255), 1, wxSOLID));
+      for (y = 2; y < height; y += 4)
+         memDC.DrawLine(0, y, width, y);
 
-  }
+   }
 
-  wxMemoryDC memDC;
-  memDC.SelectObject(*mBackgroundBitmap);
+   wxMemoryDC memDC;
+   memDC.SelectObject(*mBackgroundBitmap);
 
-  dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
+   dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
 
 #else
 
-  dc.SetBrush(mBackgroundBrush);
-  dc.SetPen(mBackgroundPen);
-  dc.DrawRectangle(0, 0, width, height);
+   dc.SetBrush(mBackgroundBrush);
+   dc.SetPen(mBackgroundPen);
+   dc.DrawRectangle(0, 0, width, height);
 
-  dc.SetPen(*wxBLACK_PEN);
+   dc.SetPen(*wxBLACK_PEN);
 
 #endif
 }
@@ -652,7 +650,7 @@ void TranscriptionToolBar::EnableDisableButtons()
 {
    AudacityProject *p = GetActiveProject();
    if (!p) return;
-  // Is anything selected?
+   // Is anything selected?
    bool selection = false;
    TrackListIterator iter(p->GetTracks());
    for (Track *t = iter.First(); t; t = iter.Next())
