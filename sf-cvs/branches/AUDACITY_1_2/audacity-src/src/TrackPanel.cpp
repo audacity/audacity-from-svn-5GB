@@ -2726,7 +2726,8 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
       } else{
          mIsMuting = false;
       }
-      mTrackLabel.DrawMuteSolo(&dc, r, t, false, solo);
+      // mTrackLabel.DrawMuteSolo(&dc, r, t, false, solo);
+      Refresh(false);
    }
 }
 
