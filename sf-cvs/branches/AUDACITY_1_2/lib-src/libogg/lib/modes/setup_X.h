@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: catch-all toplevel settings for q modes only
- last mod: $Id: setup_X.h,v 1.1.1.1 2004-11-13 16:51:36 mbrubeck Exp $
+ last mod: $Id: setup_X.h,v 1.1.1.1.2.1 2004-11-25 02:45:46 mbrubeck Exp $
 
  ********************************************************************/
 
