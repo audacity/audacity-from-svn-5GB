@@ -11,15 +11,17 @@
 
 **********************************************************************/
 
+#include "../Audacity.h" // for USE_SOUNDTOUCH
+
+#if USE_SOUNDTOUCH
+
+#include <SoundTouch.h>
+
 #include "ChangePitch.h"
 
-#include "../Audacity.h" // for USE_SOUNDTOUCH
 #include "../PitchName.h"
 #include "../Spectrum.h"
 #include "../WaveTrack.h"
-
-
-#if USE_SOUNDTOUCH
 
 #include <math.h>
 
@@ -32,8 +34,6 @@
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/valtext.h>
-
-#include <SoundTouch.h>
 
 //
 // EffectChangePitch
