@@ -1,104 +1,104 @@
 A,A:Visited,
-A:Active,A:Hover{	font-family : Verdana,Arial,Helvetica,Sanserif;	}
-A:Hover		{	color : Red;	text-decoration : none;
-			background-color : #EEEE80;}
-A:link,A:visited{	color : #EE0000;}
+A:Active,A:Hover       {        font-family : Verdana,Arial,Helvetica,Sanserif;        }
+A:Hover                {        color : Red;        text-decoration : none;
+                        background-color : #EEEE80;}
+A:link,A:visited{        color : #EE0000;}
 
-H1,H2,H3,H4	{	font-family : Verdana,Arial,Helvetica,Sanserif; }
+H1,H2,H3,H4        {        font-family : Verdana,Arial,Helvetica,Sanserif; }
 
-H1		{	font-size : 24pt; font-weight : normal; }
-H2		{	font-size : 18pt; font-weight : normal; }
-H3		{	font-size : 12pt;	}
-H4		{	font-size : 10pt;	}
+H1                {        font-size : 24pt; font-weight : normal; }
+H2                {        font-size : 18pt; font-weight : normal; }
+H3                {        font-size : 12pt;        }
+H4                {        font-size : 10pt;        }
 
 
-BODY,P		{	font-family : Verdana,Arial,Helvetica,Sanserif;
-			font-style : normal;
-			font-weight : normal;
-			color : Black;
+BODY,P                {        font-family : Verdana,Arial,Helvetica,Sanserif;
+                        font-style : normal;
+                        font-weight : normal;
+                        color : Black;
 }
 
-BODY,.linknobg	{	background-color : White;	}
+BODY,.linknobg        {        background-color : White;        }
 
-.linknobg	{	font-size : x-small; text-decoration : none;	}
+.linknobg        {        font-size : x-small; text-decoration : none;        }
 
 P, .sf, UL, LI,
-OL,TD		{	font-size : x-small;	}
+OL,TD                {        font-size : x-small;        }
 
-A.sf		{	font-weight : bold;	}
+A.sf                {        font-weight : bold;        }
 
 
-.negative	{	color : Red;	}
+.negative        {        color : Red;        }
 
 
 .menuref,.menuref_current,.menuref_item
-		{	font-size : 12pt;
-			font-weight : bold;
-			padding : 2px;
-			padding-left : 8px;
-			padding-right : 8px;
-		}
-.menuref		{	background-color : #C0A0A0;	}
-.menuref_current	{	background-color : #FFD0D0;	}
-.menuref_item		{	color : #C00000;	}
+                {        font-size : 12pt;
+                        font-weight : bold;
+                        padding : 2px;
+                        padding-left : 8px;
+                        padding-right : 8px;
+                }
+.menuref                {        background-color : #C0A0A0;        }
+.menuref_current        {        background-color : #FFD0D0;        }
+.menuref_item                {        color : #C00000;        }
 
 
 
 .q,.qr,.qg,.qb,.qy,.qo
-		{	font-size : 16pt;
-			font-weight : normal;
-			padding : 4px;
-			width : 96%;
-		}
+                {        font-size : 16pt;
+                        font-weight : normal;
+                        padding : 4px;
+                        width : 96%;
+                }
 
-.q		{	background-color : #FFECEC;	}
+.q                {        background-color : #FFECEC;        }
 
 
-.agreen,.ayellow,.ablue	{	font-size : x-small; line-height : 16px; margin-left : 16px;}
-.agreen		{	background-color : #ECFFEC;	}
-.ayellow	{	background-color : #FFFFEC;	}
-.ablue		{	background-color : #ECECFF;	}
+.agreen,.ayellow,.ablue        {        font-size : x-small; line-height : 16px; margin-left : 16px;}
+.agreen                {        background-color : #ECFFEC;        }
+.ayellow        {        background-color : #FFFFEC;        }
+.ablue                {        background-color : #ECECFF;        }
 
 
 .a,.title_y,.title_b,.title_r,.title_g,.title_o,.title_0
-		{	width : 92%; margin-left : 16px;	}
+                {        width : 92%; margin-left : 16px;        }
 
 .ss,.top_y,.top_r,.top_b,.top_g,.top_o
-		{	font-size : xx-small;	font-weight : bold;	}
+                {        font-size : xx-small;        font-weight : bold;        }
 
 .title_r,.top_r,.bg_r,
 .title_g,.top_g,.bg_g,
 .title_b,.top_b,.bg_b,
 .title_y,.top_y,.bg_y,
 .title_o,.top_o,.bg_o,
-.title_0		{	padding:2px;	}
+.title_0                {        padding:2px;        }
 
-.title_r,.top_r,.bg_r,.qr	{	background-color : #FFD0D0;	}
-.title_g,.top_g,.bg_g,.qg	{	background-color : #D0FFD0;	}
-.title_b,.top_b,.bg_b,.qb	{	background-color : #D0D0FF;	}
-.title_y,.top_y,.bg_y,.qy	{	background-color : #FFFF80;	}
-.title_o,.top_o,.bg_o,.qo	{	background-color : #FFD060;	}
+.title_r,.top_r,.bg_r,.qr        {        background-color : #FFD0D0;        }
+.title_g,.top_g,.bg_g,.qg        {        background-color : #D0FFD0;        }
+.title_b,.top_b,.bg_b,.qb        {        background-color : #D0D0FF;        }
+.title_y,.top_y,.bg_y,.qy        {        background-color : #FFFF80;        }
+.title_o,.top_o,.bg_o,.qo        {        background-color : #FFD060;        }
 
-.a  {	font-size : x-small;
-	font-weight : normal;
-	}
+.a  {        font-size : x-small;
+        font-weight : normal;
+        }
 
-.pushin	{	margin-left : 16px;	}
+.pushin        {        margin-left : 16px;        }
 
-.sysmenu	{	font-family : Arial,Helvetica,Sanserif;
-			font-size : x-small;
-			background-color : #D4D0C8;
-			padding : 2px;
-		}
-.keybshc_menu	{	text-decoration:none;	}
-.keybshc,.keybshc_menu{	font-family : Verdana, Arial, Helvetica, sans-serif;
-			font-size : 14pt;
-			font-style: normal; font-weight: normal;
-			line-height: 26pt;
-			background-color : #EEDCD5;
-			padding : 3px;
-			padding-left : 6px;
-			padding-right : 6px;
-			border-color: #FF0033 black black;
-			border: thin double
-		}
+.sysmenu        {        font-family : Arial,Helvetica,Sanserif;
+                        font-size : x-small;
+                        background-color : #D4D0C8;
+                        padding : 2px;
+                }
+.keybshc_menu        {        text-decoration:none;        }
+.keybshc,.keybshc_menu{        font-family : Verdana, Arial, Helvetica, sans-serif;
+                        font-size : 14pt;
+                        font-style: normal; font-weight: normal;
+                        line-height: 26pt;
+                        background-color : #EEDCD5;
+                        padding : 3px;
+                        padding-left : 6px;
+                        padding-right : 6px;
+                        border-color: #FF0033 black black;
+                        border: thin double
+                }
