@@ -444,6 +444,7 @@ void CommandManager::Enable(CommandListEntry *entry, bool enabled)
    if (entry->multi) {
       int i;
       int ID = entry->id;
+
       for(i=1; i<entry->count; i++) {
          ID = NextIdentifier(ID);
          entry->menu->Enable(ID, enabled);            
@@ -468,6 +469,9 @@ void CommandManager::EnableUsingFlags(wxUint32 flags, wxUint32 mask)
 
    for(i=0; i<mCommandList.GetCount(); i++) {
       CommandListEntry *entry = mCommandList[i];
+      if (entry->multi && entry->index != 0)
+         continue;
+
       wxUint32 combinedMask = (mask & entry->mask);
       if (combinedMask) {
          bool enable = ((flags & combinedMask) ==
