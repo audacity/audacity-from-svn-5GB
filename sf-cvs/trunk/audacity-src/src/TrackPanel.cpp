@@ -233,6 +233,12 @@ TrackPanel::~TrackPanel()
    delete mLabelTrackMenu;
 }
 
+// BG: For now, just rereads the autoscroll setting
+void TrackPanel::ReReadSettings()
+{
+   gPrefs->Read("/GUI/AutoScroll", &mTrackIndicator, false);
+}
+
 void TrackPanel::SelectNone()
 {
    TrackListIterator iter(mTracks);
