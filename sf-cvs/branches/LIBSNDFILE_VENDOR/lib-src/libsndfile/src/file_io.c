@@ -50,59 +50,22 @@ typedef int ssize_t ;
 
 #define	SENSIBLE_SIZE	(0x40000000)
 
+static int psf_open_fd (const char * path, int mode) ;
+static int psf_close_fd (int fd) ;
 static void psf_log_syserr (SF_PRIVATE *psf, int error) ;
-
-#if ((defined (WIN32) || defined (_WIN32)) == 0)
-
-/*------------------------------------------------------------------------------
-** Win32 stuff at the bottom of the file. Unix and other sensible OSes here.
-*/
+static sf_count_t psf_get_filelen_fd (int fd) ;
 
 int
 psf_fopen (SF_PRIVATE *psf, const char *pathname, int open_mode)
-{	int oflag, mode ;
+{
+	psf->error = 0 ;
+	psf->filedes = psf_open_fd (pathname, open_mode) ;
 
-	/*
-	** Sanity check. If everything is OK, this test and the printfs will
-	** be optimised out. This is meant to catch the problems caused by
-	** "config.h" being included after <stdio.h>.
-	*/
-	if (sizeof (off_t) != sizeof (sf_count_t))
-	{	puts ("\n\n*** Fatal error : sizeof (off_t) != sizeof (sf_count_t)") ;
-		puts ("*** This means that libsndfile was not configured correctly.\n") ;
-		exit (1) ;
+	if (psf->filedes == - SFE_BAD_OPEN_MODE)
+	{	psf->error = SFE_BAD_OPEN_MODE ;
+		psf->filedes = -1 ;
+		return psf->error ;
 		} ;
-
-	switch (open_mode)
-	{	case SFM_READ :
-				oflag = O_RDONLY ;
-				mode = 0 ;
-				break ;
-
-		case SFM_WRITE :
-				oflag = O_WRONLY | O_CREAT | O_TRUNC ;
-				mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH ;
-				break ;
-
-		case SFM_RDWR :
-				oflag = O_RDWR | O_CREAT ;
-				mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH ;
-				break ;
-
-		default :
-				psf->error = SFE_BAD_OPEN_MODE ;
-				return psf->error ;
-				break ;
-		} ;
-
-#if defined (__CYGWIN__)
-	oflag |= O_BINARY ;
-#endif
-
-	if (mode == 0)
-		psf->filedes = open (pathname, oflag) ;
-	else
-		psf->filedes = open (pathname, oflag, mode) ;
 
 	if (psf->filedes == -1)
 		psf_log_syserr (psf, errno) ;
@@ -111,6 +74,135 @@ psf_fopen (SF_PRIVATE *psf, const char *pathname, int open_mode)
 
 	return psf->error ;
 } /* psf_fopen */
+
+int
+psf_fclose (SF_PRIVATE *psf)
+{	int retval ;
+
+	if (psf->do_not_close_descriptor)
+	{	psf->filedes = -1 ;
+		return 0 ;
+		} ;
+
+	if ((retval = psf_close_fd (psf->filedes)) == -1)
+		psf_log_syserr (psf, errno) ;
+
+	psf->filedes = -1 ;
+
+	return retval ;
+} /* psf_fclose */
+
+int
+psf_open_rsrc (SF_PRIVATE *psf, int open_mode)
+{	char *fname ;
+
+	if (psf->rsrcdes > 0)
+		return 0 ;
+
+	/* Test for MacOSX style resource fork on HPFS or HPFS+ filesystems. */
+	LSF_SNPRINTF (psf->rsrcpath, sizeof (psf->rsrcpath), "%s/rsrc", psf->filepath) ;
+
+	psf->error = SFE_NO_ERROR ;
+	if ((psf->rsrcdes = psf_open_fd (psf->rsrcpath, open_mode)) >= 0)
+	{	psf->rsrclength = psf_get_filelen_fd (psf->rsrcdes) ;
+		if (psf->rsrclength < 100)
+		{	psf->error = SFE_SD2_BAD_RSRC ;
+			return psf->error ;
+			} ;
+		return SFE_NO_ERROR ;
+		} ;
+
+	if (psf->rsrcdes == - SFE_BAD_OPEN_MODE)
+	{	psf->error = SFE_BAD_OPEN_MODE ;
+		return psf->error ;
+		} ;
+
+	/*
+	** Now try for a resource fork stored as a separate file.
+	** Grab the un-adulterated filename again.
+	*/
+	LSF_SNPRINTF (psf->rsrcpath, sizeof (psf->rsrcpath), "%s", psf->filepath) ;
+
+	if ((fname = strrchr (psf->rsrcpath, '/')) != NULL)
+		fname ++ ;
+	else if ((fname = strrchr (psf->rsrcpath, '\\')) != NULL)
+		fname ++ ;
+	else
+		fname = psf->rsrcpath ;
+
+	memmove (fname + 2, fname, strlen (fname) + 1) ;
+	fname [0] = '.' ;
+	fname [1] = '_' ;
+
+	psf->error = SFE_NO_ERROR ;
+	if ((psf->rsrcdes = psf_open_fd (psf->rsrcpath, open_mode)) >= 0)
+	{	psf->rsrclength = psf_get_filelen_fd (psf->rsrcdes) ;
+		return SFE_NO_ERROR ;
+		} ;
+
+	if (psf->rsrcdes == -1)
+		psf_log_syserr (psf, errno) ;
+
+	psf->rsrcdes = -1 ;
+
+	return psf->error ;
+} /* psf_open_rsrc */
+
+int
+psf_close_rsrc (SF_PRIVATE *psf)
+{
+	psf_close_fd (psf->rsrcdes) ;
+	psf->rsrcdes = -1 ;
+	return 0 ;
+} /* psf_close_rsrc */
+
+sf_count_t
+psf_get_filelen (SF_PRIVATE *psf)
+{	sf_count_t	filelen ;
+
+	filelen = psf_get_filelen_fd (psf->filedes) ;
+
+	if (filelen == -1)
+	{	psf_log_syserr (psf, errno) ;
+		return (sf_count_t) -1 ;
+		} ;
+
+	if (filelen == -SFE_BAD_STAT_SIZE)
+	{	psf->error = SFE_BAD_STAT_SIZE ;
+		return (sf_count_t) -1 ;
+		} ;
+
+	switch (psf->mode)
+	{	case SFM_WRITE :
+			filelen = filelen - psf->fileoffset ;
+			break ;
+
+		case SFM_READ :
+			if (psf->fileoffset > 0 && psf->filelength > 0)
+				filelen = psf->filelength ;
+			break ;
+
+		case SFM_RDWR :
+			/*
+			** Cannot open embedded files SFM_RDWR so we don't need to
+			** subtract psf->fileoffset. We already have the answer we
+			** need.
+			*/
+			break ;
+
+		default :
+			/* Shouldn't be here, so return error. */
+			filelen = -1 ;
+		} ;
+
+	return filelen ;
+} /* psf_get_filelen */
+
+#if ((defined (WIN32) || defined (_WIN32)) == 0)
+
+/*------------------------------------------------------------------------------
+** Win32 stuff at the bottom of the file. Unix and other sensible OSes here.
+*/
 
 int
 psf_set_stdio (SF_PRIVATE *psf, int mode)
@@ -229,7 +321,7 @@ psf_fread (void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
 } /* psf_fread */
 
 sf_count_t
-psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
+psf_fwrite (const void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
 {	sf_count_t total = 0 ;
 	ssize_t	count ;
 
@@ -243,7 +335,7 @@ psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
 	{	/* Break the writes down to a sensible size. */
 		count = (items > SENSIBLE_SIZE) ? SENSIBLE_SIZE : items ;
 
-		count = write (psf->filedes, ((char*) ptr) + total, count) ;
+		count = write (psf->filedes, ((const char*) ptr) + total, count) ;
 
 		if (count == -1)
 		{	if (errno == EINTR)
@@ -284,30 +376,14 @@ psf_ftell (SF_PRIVATE *psf)
 } /* psf_ftell */
 
 int
-psf_fclose (SF_PRIVATE *psf)
+psf_close_fd (int fd)
 {	int retval ;
 
-#if ((defined (__MWERKS__) && defined (macintosh)) == 0)
-	/* Must be MacOS9 which doesn't have fsync(). */
-	if (fsync (psf->filedes) == -1 && errno == EBADF)
-		return 0 ;
-#endif
-
-	if (psf->do_not_close_descriptor)
-	{	psf->filedes = -1 ;
-		return 0 ;
-		} ;
-
-	while ((retval = close (psf->filedes)) == -1 && errno == EINTR)
+	while ((retval = close (fd)) == -1 && errno == EINTR)
 		/* Do nothing. */ ;
 
-	if (retval == -1)
-		psf_log_syserr (psf, errno) ;
-
-	psf->filedes = -1 ;
-
 	return retval ;
-} /* psf_fclose */
+} /* psf_close_fd */
 
 sf_count_t
 psf_fgets (char *buffer, sf_count_t bufsize, SF_PRIVATE *psf)
@@ -350,56 +426,27 @@ psf_is_pipe (SF_PRIVATE *psf)
 	return SF_FALSE ;
 } /* psf_is_pipe */
 
-sf_count_t
-psf_get_filelen (SF_PRIVATE *psf)
+static sf_count_t
+psf_get_filelen_fd (int fd)
 {	struct stat statbuf ;
-	sf_count_t	filelen ;
 
 	/*
 	** Sanity check.
 	** If everything is OK, this will be optimised out.
 	*/
 	if (sizeof (statbuf.st_size) == 4 && sizeof (sf_count_t) == 8)
-		return SFE_BAD_STAT_SIZE ;
+		return (sf_count_t) -SFE_BAD_STAT_SIZE ;
 
 /* Cygwin seems to need this. */
 #if (defined (__CYGWIN__) && HAVE_FSYNC)
 	fsync (psf->filedes) ;
 #endif
 
-	if (fstat (psf->filedes, &statbuf) == -1)
-	{	psf_log_syserr (psf, errno) ;
+	if (fstat (fd, &statbuf) == -1)
 		return (sf_count_t) -1 ;
-		} ;
 
-	switch (psf->mode)
-	{	case SFM_WRITE :
-			filelen = statbuf.st_size - psf->fileoffset ;
-			break ;
-
-		case SFM_READ :
-			if (psf->fileoffset > 0 && psf->filelength > 0)
-				filelen = psf->filelength ;
-			else
-				filelen = statbuf.st_size ;
-			break ;
-
-		case SFM_RDWR :
-			/*
-			** Cannot open embedded files SFM_RDWR so we don't need to
-			** subtract psf->fileoffset. We already have the answer we
-			** need.
-			*/
-			filelen = statbuf.st_size ;
-			break ;
-
-		default :
-			/* Shouldn't be here, so return error. */
-			filelen = -1 ;
-		} ;
-
-	return filelen ;
-} /* psf_get_filelen */
+	return statbuf.st_size ;
+} /* psf_get_filelen_fd */
 
 int
 psf_ftruncate (SF_PRIVATE *psf, sf_count_t len)
@@ -424,6 +471,53 @@ psf_ftruncate (SF_PRIVATE *psf, sf_count_t len)
 	return retval ;
 } /* psf_ftruncate */
 
+static int
+psf_open_fd (const char * pathname, int open_mode)
+{	int fd, oflag, mode ;
+
+	/*
+	** Sanity check. If everything is OK, this test and the printfs will
+	** be optimised out. This is meant to catch the problems caused by
+	** "config.h" being included after <stdio.h>.
+	*/
+	if (sizeof (off_t) != sizeof (sf_count_t))
+	{	puts ("\n\n*** Fatal error : sizeof (off_t) != sizeof (sf_count_t)") ;
+		puts ("*** This means that libsndfile was not configured correctly.\n") ;
+		exit (1) ;
+		} ;
+
+	switch (open_mode)
+	{	case SFM_READ :
+				oflag = O_RDONLY ;
+				mode = 0 ;
+				break ;
+
+		case SFM_WRITE :
+				oflag = O_WRONLY | O_CREAT | O_TRUNC ;
+				mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH ;
+				break ;
+
+		case SFM_RDWR :
+				oflag = O_RDWR | O_CREAT ;
+				mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH ;
+				break ;
+
+		default :
+				return - SFE_BAD_OPEN_MODE ;
+				break ;
+		} ;
+
+#if defined (__CYGWIN__)
+	oflag |= O_BINARY ;
+#endif
+
+	if (mode == 0)
+		fd = open (pathname, oflag) ;
+	else
+		fd = open (pathname, oflag, mode) ;
+
+	return fd ;
+} /* psf_open_fd */
 
 static void
 psf_log_syserr (SF_PRIVATE *psf, int error)
@@ -447,6 +541,52 @@ psf_log_syserr (SF_PRIVATE *psf, int error)
 #ifndef HAVE_SSIZE_T
 typedef long ssize_t ;
 #endif
+
+/* Win32 */ static int
+psf_open_fd (const char * pathname, int open_mode)
+{	DWORD dwDesiredAccess ;
+	DWORD dwShareMode ;
+	DWORD dwCreationDistribution ;
+	HANDLE handle ;
+
+	switch (open_mode)
+	{	case SFM_READ :
+				dwDesiredAccess = GENERIC_READ ;
+				dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE ;
+				dwCreationDistribution = OPEN_EXISTING ;
+				break ;
+
+		case SFM_WRITE :
+				dwDesiredAccess = GENERIC_WRITE ;
+				dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE ;
+				dwCreationDistribution = CREATE_ALWAYS ;
+				break ;
+
+		case SFM_RDWR :
+				dwDesiredAccess = GENERIC_READ | GENERIC_WRITE ;
+				dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE ;
+				dwCreationDistribution = OPEN_ALWAYS ;
+				break ;
+
+		default :
+				return - SFE_BAD_OPEN_MODE ;
+		} ;
+
+	handle = CreateFile (
+			pathname,					/* pointer to name of the file */
+			dwDesiredAccess,			/* access (read-write) mode */
+			dwShareMode,				/* share mode */
+			0,							/* pointer to security attributes */
+			dwCreationDistribution,		/* how to create */
+			FILE_ATTRIBUTE_NORMAL,		/* file attributes (could use FILE_FLAG_SEQUENTIAL_SCAN) */
+			NULL						/* handle to file with attributes to copy */
+			) ;
+
+	if (handle == INVALID_HANDLE_VALUE)
+		return -1 ;
+
+	return (int) handle ;
+} /* psf_open_fd */
 
 /* Win32 */ static void
 psf_log_syserr (SF_PRIVATE *psf, int error)
@@ -473,58 +613,6 @@ psf_log_syserr (SF_PRIVATE *psf, int error)
 	return ;
 } /* psf_log_syserr */
 
-
-/* Win32 */ int
-psf_fopen (SF_PRIVATE *psf, const char *pathname, int open_mode)
-{	DWORD dwDesiredAccess ;
-	DWORD dwShareMode ;
-	DWORD dwCreationDistribution ;
-	HANDLE handle ;
-
-	switch (open_mode)
-	{	case SFM_READ :
-				dwDesiredAccess = GENERIC_READ ;
-				dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE ;
-				dwCreationDistribution = OPEN_EXISTING ;
-				break ;
-
-		case SFM_WRITE :
-				dwDesiredAccess = GENERIC_WRITE ;
-				dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE ;
-				dwCreationDistribution = CREATE_ALWAYS ;
-				break ;
-
-		case SFM_RDWR :
-				dwDesiredAccess = GENERIC_READ | GENERIC_WRITE ;
-				dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE ;
-				dwCreationDistribution = OPEN_ALWAYS ;
-				break ;
-
-		default :
-				psf->error = SFE_BAD_OPEN_MODE ;
-				return psf->error ;
-		} ;
-
-	handle = CreateFile (
-			pathname,					/* pointer to name of the file */
-			dwDesiredAccess,			/* access (read-write) mode */
-			dwShareMode,				/* share mode */
-			0,							/* pointer to security attributes */
-			dwCreationDistribution,		/* how to create */
-			FILE_ATTRIBUTE_NORMAL,		/* file attributes (could use FILE_FLAG_SEQUENTIAL_SCAN) */
-			NULL						/* handle to file with attributes to copy */
-			) ;
-
-	if (handle == INVALID_HANDLE_VALUE)
-	{	psf_log_syserr (psf, GetLastError ()) ;
-		return psf->error ;
-		} ;
-
-	psf->filedes = (int) handle ;
-	psf->mode = open_mode ;
-
-	return psf->error ;
-} /* psf_fopen */
 
 /* Win32 */ int
 psf_set_stdio (SF_PRIVATE *psf, int mode)
@@ -655,7 +743,7 @@ psf_fread (void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
 } /* psf_fread */
 
 /* Win32 */ sf_count_t
-psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
+psf_fwrite (const void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
 {	sf_count_t total = 0 ;
 	ssize_t	 count ;
 	DWORD dwNumberOfBytesWritten ;
@@ -670,7 +758,7 @@ psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
 	{	/* Break the writes down to a sensible size. */
 		count = (items > SENSIBLE_SIZE) ? SENSIBLE_SIZE : (ssize_t) items ;
 
-		if (WriteFile ((HANDLE) psf->filedes, ((char*) ptr) + total, count, &dwNumberOfBytesWritten, 0) == 0)
+		if (WriteFile ((HANDLE) psf->filedes, ((const char*) ptr) + total, count, &dwNumberOfBytesWritten, 0) == 0)
 		{	psf_log_syserr (psf, GetLastError ()) ;
 			break ;
 			}
@@ -720,23 +808,12 @@ psf_ftell (SF_PRIVATE *psf)
 } /* psf_ftell */
 
 /* Win32 */ int
-psf_fclose (SF_PRIVATE *psf)
-{	int retval = 0 ;
+psf_close_fd (int fd)
+{	if (CloseHandle ((HANDLE) fd) == 0)
+		return -1 ;
 
-	if (psf->do_not_close_descriptor)
-	{	(HANDLE) psf->filedes = INVALID_HANDLE_VALUE ;
-		return 0 ;
-		} ;
-
-	if (CloseHandle ((HANDLE) psf->filedes) == 0)
-	{	retval = -1 ;
-		psf_log_syserr (psf, GetLastError ()) ;
-		} ;
-
-	psf->filedes = (int) INVALID_HANDLE_VALUE ;
-
-	return retval ;
-} /* psf_fclose */
+	return 0 ;
+} /* psf_close_fd */
 
 /* Win32 */ sf_count_t
 psf_fgets (char *buffer, sf_count_t bufsize, SF_PRIVATE *psf)
@@ -757,7 +834,7 @@ psf_fgets (char *buffer, sf_count_t bufsize, SF_PRIVATE *psf)
 			} ;
 		} ;
 
-	buffer [k] = '\0' ;
+	buffer [k] = 0 ;
 
 	return k ;
 } /* psf_fgets */
@@ -772,47 +849,22 @@ psf_is_pipe (SF_PRIVATE *psf)
 } /* psf_is_pipe */
 
 /* Win32 */ sf_count_t
-psf_get_filelen (SF_PRIVATE *psf)
+psf_get_filelen_fd (int fd)
 {	sf_count_t filelen ;
 	DWORD dwFileSizeLow, dwFileSizeHigh, dwError = NO_ERROR ;
 
-	dwFileSizeLow = GetFileSize ((HANDLE) psf->filedes, &dwFileSizeHigh) ;
+	dwFileSizeLow = GetFileSize ((HANDLE) fd, &dwFileSizeHigh) ;
 
 	if (dwFileSizeLow == 0xFFFFFFFF)
 		dwError = GetLastError () ;
 
 	if (dwError != NO_ERROR)
-	{	psf_log_syserr (psf, GetLastError ()) ;
-		return 0 ;
-		}
-	else
-		filelen = dwFileSizeLow + ((__int64) dwFileSizeHigh << 32) ;
+		return (sf_count_t) -1 ;
 
-	switch (psf->mode)
-	{	case SFM_WRITE :
-			filelen = filelen - psf->fileoffset ;
-			break ;
-
-		case SFM_READ :
-			if (psf->fileoffset > 0 && psf->filelength > 0)
-				filelen = psf->filelength ;
-			break ;
-
-		case SFM_RDWR :
-			/*
-			** Cannot open embedded files SFM_RDWR so we don't need to
-			** subtract psf->fileoffset. We already have the answer we
-			** need.
-			*/
-			break ;
-
-		default :
-			/* Shouldn't be here, so return error. */
-			filelen = -1 ;
-		} ;
+	filelen = dwFileSizeLow + ((__int64) dwFileSizeHigh << 32) ;
 
 	return filelen ;
-} /* psf_get_filelen */
+} /* psf_get_filelen_fd */
 
 /* Win32 */ int
 psf_ftruncate (SF_PRIVATE *psf, sf_count_t len)
@@ -1004,7 +1056,7 @@ psf_fread (void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
 } /* psf_fread */
 
 /* Win32 */ sf_count_t
-psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
+psf_fwrite (const void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
 {	sf_count_t total = 0 ;
 	ssize_t	 count ;
 
@@ -1018,7 +1070,7 @@ psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t items, SF_PRIVATE *psf)
 	{	/* Break the writes down to a sensible size. */
 		count = (items > SENSIBLE_SIZE) ? SENSIBLE_SIZE : items ;
 
-		count = write (psf->filedes, ((char*) ptr) + total, count) ;
+		count = write (psf->filedes, ((const char*) ptr) + total, count) ;
 
 		if (count == -1)
 		{	if (errno == EINTR)
@@ -1225,9 +1277,6 @@ psf_log_syserr (SF_PRIVATE *psf, int error)
 } /* psf_log_syserr */
 
 #endif
-
-/*==============================================================================
-*/
 
 /*
 ** Do not edit or modify anything in this comment block.

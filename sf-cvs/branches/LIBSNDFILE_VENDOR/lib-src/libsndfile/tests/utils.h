@@ -30,7 +30,13 @@
 #define	PIPE_INDEX(x)	((x) + 500)
 #define	PIPE_TEST_LEN	12345
 
-void	gen_windowed_sine (double *data, int len, double maximum) ;
+#if (defined (WIN32) || defined (_WIN32))
+#define	snprintf	_snprintf
+#endif
+
+void gen_windowed_sine_float (float *data, int len, double maximum) ;
+void gen_windowed_sine_double (double *data, int len, double maximum) ;
+
 
 void	check_file_hash_or_die	(const char *filename, unsigned int target_hash, int line_num) ;
 
@@ -47,6 +53,12 @@ int	oct_save_float	(float *a, float *b, int len) ;
 int	oct_save_double	(double *a, double *b, int len) ;
 
 
+void	delete_file (int format, const char *filename) ;
+
+void	count_open_files (void) ;
+void	increment_open_file_count (void) ;
+void	check_open_file_count_or_die (int lineno) ;
+
 #ifdef SNDFILE_H
 
 void 	dump_log_buffer (SNDFILE *file) ;
@@ -54,8 +66,9 @@ void 	check_log_buffer_or_die (SNDFILE *file, int line_num) ;
 int 	string_in_log_buffer (SNDFILE *file, const char *s) ;
 void	hexdump_file (const char * filename, sf_count_t offset, sf_count_t length) ;
 
+
 SNDFILE *test_open_file_or_die
-			(const char *filename, int mode, SF_INFO *sfinfo, int line_num) ;
+			(const char *filename, int mode, SF_INFO *sfinfo, int allow_fd, int line_num) ;
 
 void 	test_read_write_position_or_die
 			(SNDFILE *file, int line_num, int pass, sf_count_t read_pos, sf_count_t write_pos) ;

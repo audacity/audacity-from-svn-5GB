@@ -72,7 +72,7 @@ guess_output_file_type (char *str, int format)
 
 	format &= SF_FORMAT_SUBMASK ;
 
-	if (! (cptr = strrchr (str, '.')))
+	if ((cptr = strrchr (str, '.')) == NULL)
 		return 0 ;
 
 	strncpy (buffer, cptr + 1, 15) ;
@@ -152,7 +152,7 @@ main (int argc, char * argv [])
 	infilename = argv [argc-2] ;
 	outfilename = argv [argc-1] ;
 
-	if (! strcmp (infilename, outfilename))
+	if (strcmp (infilename, outfilename) == 0)
 	{	printf ("Error : Input and output filenames are the same.\n\n") ;
 		print_usage (progname) ;
 		return 1 ;
@@ -232,7 +232,7 @@ main (int argc, char * argv [])
 		exit (1) ;
 		} ;
 
-	if (! (infile = sf_open (infilename, SFM_READ, &sfinfo)))
+	if ((infile = sf_open (infilename, SFM_READ, &sfinfo)) == NULL)
 	{	printf ("Not able to open input file %s.\n", infilename) ;
 		puts (sf_strerror (NULL)) ;
 		return 1 ;
@@ -240,7 +240,7 @@ main (int argc, char * argv [])
 
 	infileminor = sfinfo.format & SF_FORMAT_SUBMASK ;
 
-	if (! (sfinfo.format = guess_output_file_type (outfilename, sfinfo.format)))
+	if ((sfinfo.format = guess_output_file_type (outfilename, sfinfo.format)) == 0)
 	{	printf ("Error : Not able to determine output file type for %s.\n", outfilename) ;
 		return 1 ;
 		} ;
@@ -269,14 +269,14 @@ main (int argc, char * argv [])
 		return 1 ;
 		} ;
 
-	/* Copy the metadata */
-	copy_metadata (outfile, infile) ;
-
 	/* Open the output file. */
 	if ((outfile = sf_open (outfilename, SFM_WRITE, &sfinfo)) == NULL)
 	{	printf ("Not able to open output file %s : %s\n", outfilename, sf_strerror (NULL)) ;
 		return 1 ;
 		} ;
+
+	/* Copy the metadata */
+	copy_metadata (outfile, infile) ;
 
 	if ((outfileminor == SF_FORMAT_DOUBLE) || (outfileminor == SF_FORMAT_FLOAT) ||
 				(infileminor == SF_FORMAT_DOUBLE) || (infileminor == SF_FORMAT_FLOAT))
@@ -295,10 +295,12 @@ copy_metadata (SNDFILE *outfile, SNDFILE *infile)
 {	const char *str ;
 	int k, err = 0 ;
 
-	for (k = 1 ; err == 0 ; k++)
+	for (k = SF_STR_FIRST ; k <= SF_STR_LAST ; k++)
 	{	str = sf_get_string (infile, k) ;
-		err = sf_set_string (outfile, k, (str != NULL) ? str : "") ;
-		}
+		if (str != NULL)
+			err = sf_set_string (outfile, k, str) ;
+		} ;
+
 } /* copy_metadata */
 
 static void
@@ -318,9 +320,11 @@ copy_data_fp (SNDFILE *outfile, SNDFILE *infile, int channels)
 			} ;
 		}
 	else
-	{	while (readcount > 0)
+	{	sf_command (infile, SFC_SET_NORM_DOUBLE, NULL, SF_FALSE) ;
+
+		while (readcount > 0)
 		{	readcount = sf_readf_double (infile, data, frames) ;
-			for (k = 0 ; k < readcount ; k++)
+			for (k = 0 ; k < readcount * channels ; k++)
 				data [k] /= max ;
 			sf_writef_double (outfile, data, readcount) ;
 			} ;
