@@ -332,9 +332,12 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("About",          _("&About Audacity..."),          FN(OnAbout));
    c->AddSeparator();   
    c->AddItem("Help",           _("&Online Help..."),             FN(OnHelp));
+
+#if 0 // No Benchmark in stable release
    c->AddSeparator();   
    c->AddItem("Benchmark",      _("&Run Benchmark..."),           FN(OnBenchmark));
- 
+#endif 
+
    c->EndMenu();
 
    ModifyExportMenus();
