@@ -3,9 +3,9 @@
 <p>
 <b>Част 1: Въведение в Nyquist и програмирането на Lisp.</b><br>
 <?php print "<a href=nyquist2.php?$langLinkStr>";
-?>Part 2: Програмиране на Nyquist.</a><br>
+?>Част 2: Програмиране на Nyquist.</a><br>
 <?php print "<a href=nyquist3.php?$langLinkStr>";
-?>Part 3: Създаване на приставки с Nyquist.</a><br>
+?>Част 3: Създаване на приставки с Nyquist.</a><br>
 </p>
 
 <p>
@@ -170,7 +170,7 @@ S-изразът е просто начин на представяне на списък.  В Lisp на практика
 <tr><td><tt>(* a b)</tt></td><td>умножение</td></tr>
 <tr><td><tt>(/ a b)</tt></td><td>деление</td></tr>
 <tr><td><tt>(truncate a b)</tt></td><td>закръгляне надолу до цяло число</td></tr>
-<tr><td><tt>(float a b)</tt></td><td>цяло число --&gt; число с плаваща запетая</td></tr>
+<tr><td><tt>(float a b)</tt></td><td>цяло число --> число с плаваща запетая</td></tr>
 <tr><td><tt>(rem a b c ...)</tt></td><td>остатък</td></tr>
 <tr><td><tt>(min a b c ...)</tt></td><td>минимум</td></tr>
 <tr><td><tt>(max a b c ...)</tt></td><td>максимум</td></tr>
