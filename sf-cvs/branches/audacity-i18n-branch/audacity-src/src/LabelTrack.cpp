@@ -14,6 +14,7 @@
 #include <wx/pen.h>
 #include <wx/string.h>
 #include <wx/textfile.h>
+#include <wx/intl.h>
 
 #include "LabelTrack.h"
 #include "DirManager.h"
@@ -29,7 +30,7 @@ VTrack(projDirManager)
    mUnselectedPen.SetColour(192, 192, 192);
    mSelectedPen.SetColour(148, 148, 170);
 
-   SetName("Label Track");
+   SetName(_("Label Track"));
 
    SetExpandedHeight(30);         // Label tracks are narrow
 

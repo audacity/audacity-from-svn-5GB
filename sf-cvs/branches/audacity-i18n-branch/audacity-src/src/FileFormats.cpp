@@ -8,6 +8,7 @@
 
 **********************************************************************/
 
+#include <wx/intl.h>
 #include "sndfile.h"
 
 #include "FileFormats.h"
@@ -16,6 +17,10 @@ int sf_num_headers()
 {
    return 14;
 }
+
+// MB: Should these be translated?
+// (We would need to use a no-op marker and
+// do translation before display.)
 
 wxString HeaderNames[14] = {
    "Windows Wave",
@@ -91,7 +96,7 @@ wxString sf_header_name(int format)
    else if (format>=0 && format<14)
       return HeaderNames[format];
    else
-      return "Unknown header";
+      return _("Unknown header");
 }
 
 wxString sf_header_extension(int format)
@@ -101,7 +106,7 @@ wxString sf_header_extension(int format)
    else if (format>=0 && format<14)
       return ExtensionNames[format];
    else
-      return "Unknown header";
+      return _("Unknown header");
 }
 
 int sf_num_encodings()
@@ -133,7 +138,7 @@ wxString sf_encoding_name(int subtype)
    if (subtype >= 1 && subtype <= 17)
       return EncodingNames[subtype-1];
    else
-      return "Unknown Subtype";
+      return _("Unknown Subtype");
 }
 
 #define SF_NUM_SIMPLE_FORMATS 10
