@@ -67,6 +67,8 @@ OBJS = \
 	$(OBJDIR)/effects/Echo.cpp.o \
 	$(OBJDIR)/effects/Fade.cpp.o \
 	$(OBJDIR)/effects/Filter.cpp.o \
+	$(OBJDIR)/effects/Phaser.cpp.o \
+	$(OBJDIR)/effects/Wahwah.cpp.o \
 	$(OBJDIR)/snd/audiooss.c.o \
 	$(OBJDIR)/snd/ieeecvt.c.o \
 	$(OBJDIR)/snd/snd.c.o \
