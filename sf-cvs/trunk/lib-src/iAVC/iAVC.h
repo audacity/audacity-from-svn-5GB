@@ -142,6 +142,7 @@
 	#define AVG_TO_MULTIPLIER_SUBSCRIPT(x)	long(x*MAX_INTEGER_SAMPLE_VALUE)
 	#define MULTIPLY_FACTOR_TO_INT_X256(x)	(int(x*256))
 	#define DEFAULT_MAX_SAMPLE_VALUE		1  // values range from -1 to 1 for float
+	#define DEFAULT_MIN_SAMPLE_VALUE		-1 // values range from -1 to 1 for float
 	#define IF_CLIP(x)						( absVal(x) > m_nMaxSampleValue )
 #else
 //#pragma message("iAVC using short int samples")
@@ -153,6 +154,7 @@
 	#define AVG_TO_MULTIPLIER_SUBSCRIPT(x)  (x)
 	#define MULTIPLY_FACTOR_TO_INT_X256(x)	(x)
 	#define DEFAULT_MAX_SAMPLE_VALUE		32767  // for 16 bit samples, -32767 to 32767
+	#define DEFAULT_MIN_SAMPLE_VALUE		-32768 // for 16 bit samples, -32767 to 32767
 	#define IF_CLIP(x)						( x != IAVCSAMPLETYPE ( x ) )
 #endif
 
