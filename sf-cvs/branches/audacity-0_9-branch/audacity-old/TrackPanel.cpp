@@ -1035,6 +1035,7 @@ void TrackPanel::HandleSoloing(wxMouseEvent & event)
       }
       DrawSolo(&dc, r, t, false);
       mIsSoloing = false;
+      DrawMute(&dc, r, t, false);
    }
 }
 
@@ -1655,7 +1656,7 @@ void TrackPanel::DrawMute(wxDC * dc, wxRect & r, VTrack * t, bool down)
    wxRect bev;
    GetMuteRect(r, bev);
    bev.Inflate(-1, -1);
-   AColor::Mute(dc, t->mute, t->selected);
+   AColor::Mute(dc, t->mute, t->selected, t->solo);
    dc->DrawRectangle(bev);
 
    long textWidth, textHeight;
