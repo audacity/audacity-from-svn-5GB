@@ -1,0 +1,1 @@
+Nota: O Audacity versão 1.2.0-pre3 aparentemente é incompatível com o processador G5. Espera-se liberar em breve uma correção para esta falha.
