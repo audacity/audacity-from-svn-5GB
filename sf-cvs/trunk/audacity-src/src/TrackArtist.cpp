@@ -881,6 +881,25 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    for (WaveClipList::Node* it=track->GetClipIterator(); it; it=it->GetNext())
       DrawClipWaveform(track, it->GetData(), dc, r, viewInfo, drawEnvelope, drawSamples,
                        drawSliders, dB, muted);
+
+   if (gPrefs->Read("/GUI/EnableCutLines", (long)0))
+   {
+      track->UpdateCutLinesCache();
+
+      for (int i=0; i<track->GetNumCachedCutLines(); i++)
+      {
+         double x = (track->GetCachedCutLine(i) - viewInfo->h) * viewInfo->zoom;
+         if (x >= 0 && x < r.width)
+         {
+            dc.SetPen(*wxGREY_PEN);
+            dc.DrawLine(r.x + x-1, r.y, r.x + x-1, r.y+r.height);
+            dc.SetPen(*wxRED_PEN);
+            dc.DrawLine(r.x + x, r.y, r.x + x, r.y+r.height);
+            dc.SetPen(*wxGREY_PEN);
+            dc.DrawLine(r.x + x+1, r.y, r.x + x+1, r.y+r.height);
+         }
+      }
+   }
 }
 
 void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
@@ -1123,6 +1142,14 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
       DrawTimeSlider(track,dc, r, viewInfo, true);  // directed right
       DrawTimeSlider(track,dc, r, viewInfo, false); // directed left
    }
+
+   // Draw clip edges
+   dc.SetPen(*wxGREY_PEN);
+   if (tpre < 0)
+      dc.DrawLine(mid.x-1, mid.y, mid.x-1, mid.y+r.height);
+   if (tpost >= t1)
+      dc.DrawLine(mid.x+mid.width, mid.y, mid.x+mid.width, mid.y+r.height);
+
 
 #if PROFILE_WAVEFORM
    gettimeofday(&tv1, NULL);

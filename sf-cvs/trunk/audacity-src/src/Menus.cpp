@@ -259,6 +259,10 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("Silence",        _("&Silence\tCtrl+L"),               FN(OnSilence));
    c->AddSeparator();
    c->AddItem("Split",          _("Spl&it"),                         FN(OnSplit));
+   c->SetCommandFlags("Split",
+      AudioIONotBusyFlag | WaveTracksSelectedFlag,
+      AudioIONotBusyFlag | WaveTracksSelectedFlag);
+   
    c->AddItem("Duplicate",      _("D&uplicate\tCtrl+D"),             FN(OnDuplicate));
 
    c->AddSeparator();
@@ -1531,7 +1535,14 @@ void AudacityProject::OnCut()
    while (n) {
       if (n->GetSelected()) {
          dest = NULL;
-         n->Cut(mViewInfo.sel0, mViewInfo.sel1, &dest);
+         if (n->GetKind() == Track::Wave && 
+             gPrefs->Read("/GUI/EnableCutLines", (long)0))
+         {
+            ((WaveTrack*)n)->CutAndAddCutLine(mViewInfo.sel0, mViewInfo.sel1, &dest);
+         } else
+         {
+            n->Cut(mViewInfo.sel0, mViewInfo.sel1, &dest);
+         }
          if (dest) {
             dest->SetChannel(n->GetChannel());
             dest->SetLinked(n->GetLinked());
@@ -1837,6 +1848,31 @@ void AudacityProject::OnSplit()
 {
    TrackListIterator iter(mTracks);
 
+   double sel0 = mViewInfo.sel0;
+   double sel1 = mViewInfo.sel1;
+
+   for (Track* n=iter.First(); n; n = iter.Next())
+   {
+      if (n->GetKind() == Track::Wave)
+      {
+         WaveTrack* wt = (WaveTrack*)n;
+         if (wt->GetSelected()) {
+            wt->SplitAt(sel0);
+            if (sel0 != sel1)
+               wt->SplitAt(sel1);
+         }
+      }
+   }
+
+   PushState(_("Split"), _("Split"));
+   mTrackPanel->Refresh(false);
+
+   /*
+    * Previous (pre-multiclip) implementation of "Split" command
+    * This does work only when a range is selected!
+    *
+   TrackListIterator iter(mTracks);
+
    Track *n = iter.First();
    Track *dest;
 
@@ -1878,6 +1914,7 @@ void AudacityProject::OnSplit()
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
+   */
 }
 
 void AudacityProject::OnSplitLabels()

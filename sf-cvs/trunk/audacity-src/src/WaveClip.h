@@ -14,6 +14,10 @@ typedef wxLongLong_t longSampleCount; /* 64-bit int */
 class Envelope;
 class WaveCache;
 class SpecCache;
+class WaveClip;
+class WaveClipList;
+
+WX_DECLARE_LIST(WaveClip, WaveClipList);
 
 class WaveClip: public XMLTagHandler
 {
@@ -90,6 +94,26 @@ public:
    bool AppendAlias(wxString fName, sampleCount start,
                     sampleCount len, int channel);
 
+   /// This name is consistent with WaveTrack::Clear. It performs a "Cut"
+   /// operation (but without putting the cutted audio to the clipboard)
+   bool Clear(double t0, double t1);
+
+   // Clear, and add cut line that starts at t0 and contains everything until t1.
+   bool ClearAndAddCutLine(double t0, double t1);
+
+   // Paste data from other clip
+   bool Paste(double t0, WaveClip* other);
+
+   // Get access to cut lines list
+   WaveClipList* GetCutLines() { return &mCutLines; }
+
+   // Expand cut line (that is, re-insert audio, then delete audio saved in cut line)
+   bool ExpandCutLine(double cutLinePosition);
+
+   // Remove cut line, without expanding the audio in it
+   bool RemoveCutLine(double cutLinePosition);
+   void RemoveAllCutLines();
+
    //
    // XMLTagHandler callback methods for loading and saving
    //
@@ -105,6 +129,7 @@ protected:
    double mOffset;
    int mRate;
    int mDirty;
+   bool mIsCutLine;
    Sequence *mSequence;
    Envelope *mEnvelope;
 
@@ -113,8 +138,10 @@ protected:
 
    samplePtr     mAppendBuffer;
    int           mAppendBufferLen;
-};
 
-WX_DECLARE_LIST(WaveClip, WaveClipList);
+   // Cut Lines are nothing more than ordinary wave clips, with the
+   // offset relative to the start of the clip.
+   WaveClipList mCutLines;
+};
 
 #endif

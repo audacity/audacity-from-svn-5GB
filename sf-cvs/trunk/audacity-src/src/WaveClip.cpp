@@ -102,6 +102,10 @@ WaveClip::WaveClip(WaveClip& orig)
    mEnvelope->SetTrackLen(orig.mSequence->GetNumSamples() / orig.mRate);
    mWaveCache = new WaveCache(1);
    mSpecCache = new SpecCache(1, 1, false);
+
+   for (WaveClipList::Node* it=orig.mCutLines.GetFirst(); it; it=it->GetNext())
+      mCutLines.Append(new WaveClip(*it->GetData()));
+
    mAppendBuffer = NULL;
    mAppendBufferLen = 0;
    mDirty = 0;
@@ -116,6 +120,9 @@ WaveClip::~WaveClip()
 
    if (mAppendBuffer)
       DeleteSamples(mAppendBuffer);
+
+   mCutLines.DeleteContents(true);
+   mCutLines.Clear();
 }
 
 void WaveClip::SetOffset(double offset)
@@ -630,7 +637,7 @@ bool WaveClip::HandleXMLTag(const char *tag, const char **attrs)
 
 void WaveClip::HandleXMLEndTag(const char *tag)
 {
-   if (!strcmp(tag, "wavetrack"))
+   if (!strcmp(tag, "waveclip"))
       UpdateEnvelopeTrackLen();
 }
 
@@ -640,7 +647,14 @@ XMLTagHandler *WaveClip::HandleXMLChild(const char *tag)
       return mSequence;
    else if (!strcmp(tag, "envelope"))
       return mEnvelope;
-   else
+   else if (!strcmp(tag, "waveclip"))
+   {
+      // Nested wave clips are cut lines
+      WaveClip *newCutLine = new WaveClip(mSequence->GetDirManager(),
+                                mSequence->GetSampleFormat(), mRate);
+      mCutLines.Append(newCutLine);
+      return newCutLine;
+   } else
       return NULL;
 }
 
@@ -656,6 +670,9 @@ void WaveClip::WriteXML(int depth, FILE *fp)
 
    mSequence->WriteXML(depth+1, fp);
    mEnvelope->WriteXML(depth+1, fp);
+
+   for (WaveClipList::Node* it=mCutLines.GetFirst(); it; it=it->GetNext())
+      it->GetData()->WriteXML(depth+1, fp);
 
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
@@ -678,9 +695,144 @@ bool WaveClip::CreateFromCopy(double t0, double t1, WaveClip* other)
    }
 
    delete oldSequence;
+   delete mEnvelope;
+   mEnvelope = new Envelope();
    mEnvelope->CopyFrom(other->mEnvelope, t0, t1);
 
    MarkChanged();
 
    return true;
+}
+
+bool WaveClip::Paste(double t0, WaveClip* other)
+{
+   longSampleCount s0;
+   TimeToSamplesClip(t0, &s0);
+
+   if (mSequence->Paste(s0, other->mSequence))
+   {
+      MarkChanged();
+      mEnvelope->Paste(t0, other->mEnvelope);
+
+      // Also, paste cut lines
+      for (WaveClipList::Node* it=other->mCutLines.GetFirst(); it; it=it->GetNext())
+      {
+         WaveClip* cutline = it->GetData();
+         WaveClip* newCutLine = new WaveClip(*cutline);
+         newCutLine->Offset(t0);
+         mCutLines.Append(newCutLine);
+      }
+      return true;
+   }
+
+   return false;
+}
+
+bool WaveClip::Clear(double t0, double t1)
+{
+   longSampleCount s0, s1;
+   
+   TimeToSamplesClip(t0, &s0);
+   TimeToSamplesClip(t1, &s1);
+   
+   if (GetSequence()->Delete(s0, s1-s0))
+   {
+      GetEnvelope()->CollapseRegion(t0, t1);
+      if (t0 < GetStartTime())
+         Offset(-(GetStartTime() - t0));
+
+      MarkChanged();
+      return true;
+   }
+
+   return false;
+}
+
+bool WaveClip::ClearAndAddCutLine(double t0, double t1)
+{
+   if (t0 > GetEndTime() || t1 < GetStartTime())
+      return true; // time out of bounds
+
+   WaveClip *newClip = new WaveClip(*this);
+   double clip_t0 = t0;
+   double clip_t1 = t1;
+   if (clip_t0 < GetStartTime())
+      clip_t0 = GetStartTime();
+   if (clip_t1 > GetEndTime())
+      clip_t1 = GetEndTime();
+
+   if (!newClip->CreateFromCopy(clip_t0, clip_t1, this))
+      return false;
+   newClip->Offset(clip_t0-mOffset);
+
+   // Sort out cutlines that belong to the new cutline
+   WaveClipList::Node* nextIt = (WaveClipList::Node*)-1;
+
+   for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=nextIt)
+   {
+      nextIt = it->GetNext();
+      WaveClip* clip = it->GetData();
+      double cutlinePosition = mOffset + clip->GetOffset();
+      if (cutlinePosition >= t0 && cutlinePosition <= t1)
+      {
+         clip->SetOffset(cutlinePosition - newClip->GetOffset());
+         newClip->mCutLines.Append(clip);
+         mCutLines.DeleteNode(it);
+      } else
+      if (cutlinePosition >= t1)
+      {
+         clip->Offset(clip_t0-clip_t1);
+      }
+   }
+
+   if (Clear(t0, t1))
+   {
+      mCutLines.Append(newClip);
+      return true;
+   }
+
+   delete newClip;
+   return false;
+}
+
+bool WaveClip::ExpandCutLine(double cutLinePosition)
+{
+   for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=it->GetNext())
+   {
+      WaveClip* cutline = it->GetData();
+      if (fabs(mOffset + cutline->GetOffset() - cutLinePosition) < 0.0001)
+      {
+         Paste(mOffset+cutline->GetOffset(), cutline);
+         delete cutline;
+         mCutLines.DeleteNode(it);
+         return true;
+      }
+   }
+
+   return false;
+}
+
+bool WaveClip::RemoveCutLine(double cutLinePosition)
+{
+   for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=it->GetNext())
+   {
+      if (fabs(mOffset + it->GetData()->GetOffset() - cutLinePosition) < 0.0001)
+      {
+         delete it->GetData();
+         mCutLines.DeleteNode(it);
+         return true;
+      }
+   }
+
+   return false;
+}
+
+void WaveClip::RemoveAllCutLines()
+{
+   while (!mCutLines.IsEmpty())
+   {
+      WaveClipList::Node* head = mCutLines.GetFirst();
+      delete head->GetData();
+      mCutLines.DeleteNode(head);
+   }
 }

@@ -318,6 +318,9 @@ void GUIPrefs::AllCheckBoxActions()
    CheckBoxAction(
       _("Enable ergonomic order of audio I/O buttons"),
       "/GUI/ErgonomicTransportButtons", true);
+   CheckBoxAction(
+      _("Enable display of cut lines"),
+      "/GUI/EnableCutLines", false);
 
    mCurrentCheckBoxContainer=1;
 

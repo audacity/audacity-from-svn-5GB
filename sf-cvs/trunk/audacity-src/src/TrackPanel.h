@@ -166,6 +166,7 @@ class TrackPanel:public wxPanel {
 
    bool IsUnsafe();
    bool HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMouseEvent & event);
+   bool HandleCutLinesMouseEvent(WaveTrack * track, wxRect &r, wxMouseEvent &event);
    void HandleTrackSpecificMouseEvent(wxMouseEvent & event);
    void DrawCursors(wxDC * dc = NULL);
    void RemoveStaleCursors(wxRegionIterator * upd);
@@ -368,6 +369,8 @@ private:
 
    Track *mCapturedTrack;
    int mCapturedClip; // -1 means none (i.e. the whole track)
+   double mCapturedCutLine;
+   wxRect mCapturedCutLineRect;
    wxRect mCapturedRect;
    int mCapturedNum;
 
@@ -419,7 +422,8 @@ private:
       IsSoloing,
       IsGainSliding,
       IsPanSliding,
-      IsMinimizing
+      IsMinimizing,
+      IsOverCutLine
    };
 
    enum MouseCaptureEnum mMouseCapture;

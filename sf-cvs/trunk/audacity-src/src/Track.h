@@ -23,6 +23,7 @@ class UndoStack;
 class TimeTrack;
 class WaveTrack;
 
+#pragma warning(disable:4284)
 WX_DEFINE_ARRAY(WaveTrack*, WaveTrackArray);
 
 class Track: public XMLTagHandler {
