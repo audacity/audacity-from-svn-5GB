@@ -28,7 +28,7 @@
  * was a bitch to track down. */
 #include <wx/ffile.h>
 
-#include <vorbis/vorbisfile.h>
+#include "vorbis/include/vorbis/vorbisfile.h"
 
 #include "ImportOGG.h"
 
@@ -39,6 +39,12 @@ bool ImportOGG(wxWindow *parent,
 			   wxString Filename, WaveTrack **channels[], int *numChannels,
 			   DirManager *dirManager)
 {
+  #ifndef __WXGTK__
+  // This is only temporary until the OGG Vorbis libraries are linked in on the
+  // Mac and Windows
+  return false;
+  #else
+
 	wxFFile file(Filename);
 	
 	if(!file.IsOpened()) {
@@ -74,7 +80,7 @@ bool ImportOGG(wxWindow *parent,
 	vorbis_info *vi = ov_info(&vf, -1);
 
 	*numChannels = vi->channels;
-	*channels = new (WaveTrack*)[*numChannels];
+	*channels = new WaveTrack *[*numChannels];
 
 	for(int c = 0; c < *numChannels; c++) {
 		(*channels)[c] = new WaveTrack(dirManager);
@@ -175,4 +181,6 @@ bool ImportOGG(wxWindow *parent,
 	}
 
 	return true;
+
+	#endif  // defined __WXGTK__
 }
