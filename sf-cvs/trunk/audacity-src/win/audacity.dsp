@@ -303,6 +303,14 @@ SOURCE=..\src\Project.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\SampleFormat.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\SampleFormat.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\Spectrum.cpp
 # End Source File
 # Begin Source File

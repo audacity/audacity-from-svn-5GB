@@ -23,6 +23,8 @@
 #include "Envelope.h"
 #include "ControlToolBar.h"
 
+#define rint(x)   (floor((x)+0.5f)) 
+
 
 bool QuickMix(TrackList *tracks, DirManager *dirManager,
               double rate, sampleFormat format)
