@@ -8,6 +8,19 @@
 
 **********************************************************************/
 
+#include "DirManager.h"
+
+#include "Audacity.h"
+#include "AudacityApp.h"
+#include "BlockFile.h"
+#include "blockfile/LegacyBlockFile.h"
+#include "blockfile/LegacyAliasBlockFile.h"
+#include "blockfile/SimpleBlockFile.h"
+#include "blockfile/SilentBlockFile.h"
+#include "blockfile/PCMAliasBlockFile.h"
+#include "Internat.h"
+#include "widgets/Warning.h"
+
 #include <wx/defs.h>
 #include <wx/app.h>
 #include <wx/log.h>
@@ -21,18 +34,7 @@
 #include <wx/filename.h>
 #include <wx/dir.h>
 #include <wx/object.h>
-
-#include "Audacity.h"
-#include "AudacityApp.h"
-#include "BlockFile.h"
-#include "blockfile/LegacyBlockFile.h"
-#include "blockfile/LegacyAliasBlockFile.h"
-#include "blockfile/SimpleBlockFile.h"
-#include "blockfile/SilentBlockFile.h"
-#include "blockfile/PCMAliasBlockFile.h"
-#include "DirManager.h"
-#include "Internat.h"
-#include "widgets/Warning.h"
+#include <wx/utils.h>
 
 // chmod
 #ifdef __UNIX__
@@ -74,13 +76,8 @@ DirManager::DirManager()
    blockFileHash = new wxHashTable(wxKEY_STRING, hashTableSize);
 
    // Make sure there is plenty of space for temp files
-
-   //BG: wxWindows 2.3.2 and higher claim to support this,
-   //through a function called wxGetDiskSpace
-
-   wxLongLong freeSpace;
-   wxGetDiskSpace(temp, NULL, &freeSpace);
-   if (freeSpace >= 0) {
+   wxLongLong freeSpace = 0;
+   if (wxGetDiskSpace(temp, NULL, &freeSpace)) {
       if (freeSpace < 1048576) {
          ShowWarningDialog(NULL, "DiskSpaceWarning",
               _("Warning: there is very little free disk space left on this "
