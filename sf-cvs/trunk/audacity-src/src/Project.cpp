@@ -1155,11 +1155,12 @@ bool AudacityProject::IsActive()
 }
 
 
-
+// TODO: remove conditional after checking that dark lines 
+// between toolbars appear on Linux.
 #if defined __WXMSW__
 	const int extraSpace = 1;
 #else
-	const int extraSpace = 0;
+	const int extraSpace = 1;
 #endif
 
 /// FlowLayout places toolbars and returns the number of the first unplaced toolbar.
@@ -1490,7 +1491,6 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 
 	   mDrag->BeginDrag(hotspot, this, true);
       mDrag->Move(hotspot);
-      mDrag->Show();
       mToolBarHotspot = hotspot;
 
       mDraggingToolBar = mToolBarArray[i]->GetType();
@@ -1498,7 +1498,8 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 
    else if (event.Dragging() && mDrag) {
 
-     mDrag->Move(hotspot - wxPoint(1, 1) );//+ mToolBarHotspot);
+      mDrag->Move(hotspot - wxPoint(1, 1) );//+ mToolBarHotspot);
+      mDrag->Show();
 
    } else if (event.ButtonUp() && mDrag) {
 
