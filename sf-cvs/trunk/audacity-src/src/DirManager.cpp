@@ -82,15 +82,21 @@ DirManager::DirManager()
 
    // Make sure there is plenty of space for temp files
    wxLongLong freeSpace = 0;
-   if (wxGetDiskSpace(globaltemp, NULL, &freeSpace)) {
-      if (freeSpace < 1048576) {
-         ShowWarningDialog(NULL, "DiskSpaceWarning",
-              _("Warning: there is very little free disk space left on this "
-                "volume. Please select another temporary directory in your "
-                "preferences."));
+
+   {
+      //create a temporary null log to capture the log dialog
+      //that wxGetDiskSpace creates.  It gets destroyed when
+      //it goes out of context.
+      wxLogNull logNo;
+      if (wxGetDiskSpace(globaltemp, NULL, &freeSpace)) {
+         if (freeSpace < 1048576) {
+            ShowWarningDialog(NULL, "DiskSpaceWarning",
+                              _("Warning: there is very little free disk space left on this "
+                                "volume. Please select another temporary directory in your "
+                                "preferences."));
+         }
       }
    }
-
    // this need not be strictly uniform or random, but it should give
    // unclustered numbers
    srand(time(0));
@@ -417,10 +423,12 @@ wxLongLong DirManager::GetFreeDiskSpace()
 
    if (projPath == "")
       path = mytemp;
+   {
+      wxLogNull logNo;
 
-   if (!wxGetDiskSpace(FILENAME(path), NULL, &freeSpace))
-      freeSpace = -1;
-
+      if (!wxGetDiskSpace(FILENAME(path), NULL, &freeSpace))
+         freeSpace = -1;
+   }
    return freeSpace;
 }
 
