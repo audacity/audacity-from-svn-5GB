@@ -135,7 +135,7 @@ if ($dir = @opendir("../en/")) {
       $b1 = "";
       $b2 = "";
       $n++;
-      if (is_file("../updates/$lang/$file"))
+      if (is_file("../updates/$lang/$file")) {
 	     $s = "update pending...";
         $langfile = "../updates/$lang/$file";
       }
@@ -165,11 +165,11 @@ if ($dir = @opendir("../en/")) {
       print "<td$bg><input type=submit value=\"Edit Translation\" name=\"e$n\"></td>";
 
       if (is_file("../$file")) {
-	print "<td$bg><a href=\"http://audacity.sourceforge.net/";
-	print "$file?lang=$lang\">$b1$file$b2</a></td>";
+	     print "<td$bg><a href=\"http://audacity.sourceforge.net/";
+	     print "$file?lang=$lang\">$b1$file$b2</a></td>";
       }
       else {
-	print "<td$bg>$b1$file$b2</td>";
+	     print "<td$bg>$b1$file$b2</td>";
       }
 
       print "<td$bg>$b1$s$b2</td>";
