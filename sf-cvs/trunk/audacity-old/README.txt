@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.93: December ??, 2000
+Version 0.93: December 3, 2000
 
 http://www.cs.cmu.edu/~music/audacity/
 
@@ -70,17 +70,22 @@ email Dominic Mazzoni <dmazzoni+@cs.cmu.edu>.
 
 Changes in 0.93:
 
-* Keeps track of some preferences
+* Recording (Windows, Linux)
 
-* Displays playback indicator
+* Displays playback/recording position indicator
+
+* Keeps track of some preferences
 
 * Supports arbitrary project sample rate
 
 * Mac: opens documents from the Finder
 
 * Floating tool palette is now dockable
+  (and docked by default)
 
 * Fixed bugs in handling multiple open projects
+
+* Fixed bugs in effects
 
 Changes in 0.92:
 
