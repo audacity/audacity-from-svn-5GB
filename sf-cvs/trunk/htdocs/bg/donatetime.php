@@ -19,7 +19,7 @@ Audacity е написана от доброволци в свободното им време. Ако харесвате
 <li><b>Присъединете се към общността на потребителите</b>
 <p>
 Този пощенски списък служи за разговори и споделяне на идеи между потребителите на Audacity.
-<a href="http://lists.sourceforge.net/lists/listinfo/audacity-users">
+<a target=_top href="http://lists.sourceforge.net/lists/listinfo/audacity-users">
 Присъединяване към пощенския списък Audacity-Users</a>
 <p>
 
@@ -30,10 +30,9 @@ Audacity е написана от доброволци в свободното им време. Ако харесвате
 говорещи вашия език. Нужни са ни хора, които да преведат менютата и диалоговите
 прозорци на програмата, документацията и сайта. Трябват ни и такива, които да
 се присъединят към пощенските списъци и да отговарят на въпроси за Audacity, зададени
-на родния им език или да ги превеждат на английски и да ги препращат в пощенските
-списъци за английско-говорящи.
+на родния им език или да ги превеждат на английски и да ги препращат в англоезичните пощенски списъци.
 <p>
-<a href="http://audacity.sourceforge.net/translation/"
+<a target=_top href="http://audacity.sourceforge.net/translation/"
 >Щракнете тук, за да научите повече за превода.</a>
 <p>
 
@@ -64,7 +63,7 @@ Mac OS 9 и т.н.).
 като CVS, ще се радваме да получим помощта ви в разработването на Audacity.
 Моля, изтеглете си актуалния изходен код от CVS и го компилирайте, а после
 се представете тук:
-<a href=http://lists.sourceforge.net/lists/listinfo/audacity-devel>
+<a target=_top href=http://lists.sourceforge.net/lists/listinfo/audacity-devel>
 <?php print $develListStr; ?></a>.
 <p>
 
