@@ -47,6 +47,12 @@
 #include "Help.h"
 #include "Benchmark.h"
 
+// Printing
+#include <wx/print.h>
+#include <wx/printdlg.h>
+#include "TrackArtist.h"
+#include "widgets/Ruler.h"
+
 #include "Resample.h"
 
 enum {
@@ -170,14 +176,31 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | TracksExistFlag,
                       AudioIONotBusyFlag | TracksExistFlag);
 
+   c->AddSeparator();
+   c->AddItem("PageSetup",   _("Page Setup..."),              FN(OnPageSetup));
+   c->AddItem("Print",       _("Print..."),                   FN(OnPrint));
+   c->SetCommandFlags("PageSetup",
+                      AudioIONotBusyFlag | TracksExistFlag,
+                      AudioIONotBusyFlag | TracksExistFlag);
+   c->SetCommandFlags("Print",
+                      AudioIONotBusyFlag | TracksExistFlag,
+                      AudioIONotBusyFlag | TracksExistFlag);
+
    // On Mac OS X, Preferences and Quit are in the application menu,
    // not the File menu.  In wx 2.4 and lower, we handle this by
    // not including these menus at all.  In wx 2.5 and higher, we
    // include them, but wxMac automatically moves them to the appropriate
    // place.
 
-  #if (!defined(__WXMAC__) || \
-       !((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4)))
+#ifdef __WXMAC__
+ #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
+   // Leave these menus out entirely...
+ #else
+   c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
+   c->AddItem("Exit",           _("E&xit"),                          FN(OnExit));
+   c->SetCommandFlags("Exit", 0, 0);
+ #endif
+#else
    c->AddSeparator();
    c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
    c->AddSeparator();
@@ -1379,6 +1402,171 @@ void AudacityProject::OnPreferences()
 {
    PrefsDialog dialog(this /* parent */ );
    dialog.ShowModal();
+}
+
+//
+// Printing
+//
+
+// Globals, so that we remember settings from session to session
+wxPrintData *gPrintData = NULL;
+wxPageSetupData *gPageSetupData = NULL;
+
+class AudacityPrintout : public wxPrintout
+{
+ public:
+   AudacityPrintout(wxString title,
+                    TrackList *tracks):
+      wxPrintout(title),
+      mTracks(tracks)
+   {
+   }
+   bool OnPrintPage(int page);
+   bool HasPage(int page);
+   bool OnBeginDocument(int startPage, int endPage);
+   void GetPageInfo(int *minPage, int *maxPage,
+                    int *selPageFrom, int *selPageTo);
+
+ private:
+   TrackList *mTracks;
+};
+
+bool AudacityPrintout::OnPrintPage(int page)
+{
+   wxDC *dc = GetDC();
+   if (!dc)
+      return false;
+
+   int width, height;
+   dc->GetSize(&width, &height);
+
+   int rulerScreenHeight = 20;
+   int screenTotalHeight = mTracks->GetHeight() + rulerScreenHeight;
+
+   double scale = height / (double)screenTotalHeight;
+
+   int rulerPageHeight = (int)(rulerScreenHeight * scale);
+   Ruler ruler;
+   ruler.SetBounds(0, 0, width, rulerPageHeight);
+   ruler.SetOrientation(wxHORIZONTAL);
+   ruler.SetRange(0.0, mTracks->GetEndTime());
+   ruler.SetFormat(Ruler::TimeFormat);
+   ruler.SetLabelEdges(true);
+   ruler.Draw(*dc);
+
+   TrackArtist artist;
+   ViewInfo viewInfo;
+   viewInfo.sel0 = viewInfo.sel1 = 0;
+   viewInfo.vpos = 0;
+   viewInfo.h = 0.0;
+   viewInfo.screen = mTracks->GetEndTime() - viewInfo.h;
+   viewInfo.total = viewInfo.screen;
+   viewInfo.zoom = viewInfo.lastZoom = width / viewInfo.screen;
+   int y = rulerPageHeight;
+
+   TrackListIterator iter(mTracks);
+   Track *n = iter.First();
+   while (n) {
+      wxRect r;
+      r.x = 0;
+      r.y = y;
+      r.width = width;
+      r.height = (int)(n->GetHeight() * scale);
+
+      switch(n->GetKind()) {
+      case Track::Wave:
+         switch (((WaveTrack *)n)->GetDisplay()) {
+         case WaveTrack::WaveformDisplay:
+            artist.DrawWaveform((WaveTrack *)n, *dc, r,
+                                &viewInfo, false, false, false, false, false);
+            break;
+         case WaveTrack::WaveformDBDisplay:
+            artist.DrawWaveform((WaveTrack *)n, *dc, r,
+                                &viewInfo, false, false, false, true, false);
+            break;
+         case WaveTrack::SpectrumDisplay:
+            artist.DrawSpectrum((WaveTrack *)n, *dc, r, &viewInfo, false);
+            break;
+         case WaveTrack::PitchDisplay:
+            artist.DrawSpectrum((WaveTrack *)n, *dc, r, &viewInfo, true);
+            break;
+         }
+         break;
+      case Track::Note:
+         artist.DrawNoteTrack((NoteTrack *)n, *dc, r, &viewInfo);
+         break;
+      case Track::Label:
+         artist.DrawLabelTrack((LabelTrack *)n, *dc, r, &viewInfo);
+         break;
+      case Track::Time:
+         artist.DrawTimeTrack((TimeTrack *)n, *dc, r, &viewInfo);
+         break;
+      }
+      n = iter.Next();
+      y += r.height;
+   };
+
+   return true;
+}
+
+bool AudacityPrintout::HasPage(int page)
+{
+   return (page==1);
+}
+
+bool AudacityPrintout::OnBeginDocument(int startPage, int endPage)
+{
+   return wxPrintout::OnBeginDocument(startPage, endPage);
+}
+
+void AudacityPrintout::GetPageInfo(int *minPage, int *maxPage,
+                                   int *selPageFrom, int *selPageTo)
+{
+   *minPage = 1;
+   *maxPage = 1;
+   *selPageFrom = 1;
+   *selPageTo = 1;
+}
+
+void AudacityProject::OnPageSetup()
+{
+   if (gPageSetupData == NULL)
+      gPageSetupData = new wxPageSetupDialogData();
+   if (gPrintData == NULL)
+      gPrintData = new wxPrintData();
+
+   (*gPageSetupData) = *gPrintData;
+
+   wxPageSetupDialog pageSetupDialog(this, gPageSetupData);
+   pageSetupDialog.ShowModal();
+
+   (*gPrintData) = pageSetupDialog.GetPageSetupData().GetPrintData();
+   (*gPageSetupData) = pageSetupDialog.GetPageSetupData();
+}
+
+void AudacityProject::OnPrint()
+{
+   if (gPageSetupData == NULL)
+      gPageSetupData = new wxPageSetupDialogData();
+   if (gPrintData == NULL)
+      gPrintData = new wxPrintData();
+
+   wxPrintDialogData printDialogData(*gPrintData);
+
+   wxPrinter printer(&printDialogData);
+   AudacityPrintout printout(GetName(), mTracks);
+   if (!printer.Print(this, &printout, true)) {
+      if (wxPrinter::GetLastError() == wxPRINTER_ERROR) {
+         wxMessageBox(_("There was a problem printing."),
+                      _("Print"), wxOK);
+      }
+      else {
+         // Do nothing, the user cancelled...
+      }
+   }
+   else {
+      *gPrintData = printer.GetPrintDialogData().GetPrintData();
+   }
 }
 
 //

@@ -96,6 +96,9 @@ void OnExportLabels();
 
 void OnPreferences();
 
+void OnPageSetup();
+void OnPrint();
+
 void OnExit();
 
         // Edit Menu
