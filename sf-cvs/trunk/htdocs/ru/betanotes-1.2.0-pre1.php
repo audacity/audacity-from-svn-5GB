@@ -1,4 +1,63 @@
 <pre>
+Changes in 1.2.0-pre3:
+
+  * Исправлена ошибка деактивации пункта Экспорт в меню, 
+    если никакие данные не выделены.
+
+  * Исправлена ошибка, приводившая к аварийному выходу из программы 
+    при запуске Audacity на компьютере с профессиональной звуковой 
+    картой без поддержки микшера.
+
+  * Исправлена ошибка, приводившая к аварийному выходу из программы 
+    при импорте безаголовочных файлов.
+
+  * Исправлен вызов функции "Создать новую стероедорожку".
+
+  * Косметические исправления для версии к Mac OS X.
+
+  * Добавлен VST Enabler для Windows.
+
+  * Испралвена ошибка аварийного выхода из программы при попытке 
+    закрыть приложение с открытым диалогом настроек.
+
+  * Исправлена ошибка дублирования символов дорожках ля заметок в 
+    версии для Mac OS X.
+
+  * The recording level control on Linux now adjusts the IGAIN,
+    rather than the playthrough level of the recording source.
+
+  * Fixed bug that caused corruption to 16-bit stereo recordings.
+
+  * Fixed bug that caused data loss if you deleted all tracks in
+    a saved project and then open a new file into the same window.
+
+  * Added support for alternate audio button order (in Interface
+    preferences)
+
+  * Added preliminary support for wxX11
+
+  * Added fully transparent Windows XP icon
+
+  * Fixed crash if you try to record (or play) and no audio
+    devices exist, or if the audio device doesn't support the
+    mode you selected.
+
+  * Audacity no longer sets the process priority to high while
+    recording on Windows.  Users can still do this manually
+    using the Task Manager.
+
+  * Fixed bug that caused last ~100 ms of the selection to get
+    cut off on Windows.
+
+  * Fixed FFT Filter and Equalization effects dialogs.
+
+  * Fixed bugs in Unix build system (DESTDIR in locale directory,
+    choosing libsamplerate instead of libresample)
+
+  * Support for LADSPA plug-ins on Windows added, and 
+    three open source LADSPA plug-ins ported to Windows
+    (GVerb reverb, SC4 compressor, and Hard Limiter)
+
 Новое в Audacity 1.2.0-pre2:
 
   * Закончена электронная справочная система. Полное руководство 
