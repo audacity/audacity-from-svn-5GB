@@ -5,9 +5,15 @@ dnl Joshua Haberman
 dnl
 
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT
-AC_CONFIG_SRCDIR([AudacityApp.h])
 
+dnl Require autoconf >= 2.50 (unfortunately 2.13 is standard)
+AC_PREREQ(2.50)
+
+dnl Init autoconf
+AC_INIT
+
+dnl Check for existence of AudacityApp.h
+AC_CONFIG_SRCDIR([AudacityApp.h])
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -18,6 +24,7 @@ AC_PROG_CXXCPP
 
 dnl extra variables
 AC_SUBST(EXTRAOBJS)
+AC_SUBST(MAKEALL)
 
 dnl options
 AC_ARG_WITH(libmpeg3,
@@ -36,11 +43,15 @@ AC_ARG_WITH(vorbis,
 	use_vorbis=$withval,
 	use_vorbis="no")
 AC_ARG_WITH(id3,
-	[AC_HELP_STRING([--with-id3lib],
-		[enable id3lib support (libraries must be installed) [default=no]])],
+	[AC_HELP_STRING([--with-id3],
+		[compile with id3lib (the source is included here) [default=yes]])],
 	use_id3lib=$withval,
-	use_id3lib="no")
-
+	use_id3lib="yes")
+AC_ARG_WITH(help,
+	[AC_HELP_STRING([--with-help],
+		[Make the help file "audacity-help.htb" [default=yes]])],
+	use_help=$withval,
+	use_help="yes")
 
 dnl check to make sure that all the user's options are valid
 AC_CANONICAL_HOST
@@ -118,16 +129,15 @@ if [[ $use_vorbis = "yes" ]] ; then
 fi
 
 if [[ $use_id3lib = "yes" ]] ; then
-   dnl libid3 -- check both headers and libraries
-
-   AC_CHECK_LIB(id3, ID3Tag_New, true, dnl here true is just a nop
-      AC_MSG_ERROR([*** id3lib not found. id3lib must be installed for id3 tag support]))
-
-   AC_CHECK_HEADER(id3.h, ,
-      AC_MSG_ERROR([*** id3lib headers not found. id3lib must be installed for id3 tag support]))
-   LIBS="$LIBS -lid3"
+	EXTRAOBJS="$EXTRAOBJS id3lib/src/.libs/libid3.a"
+	MAKEALL="$MAKEALL id3lib/src/.libs/libid3.a"
+		
 	AC_DEFINE(USE_ID3LIB, 1,
       [Define if id3lib is present])
+fi
+
+if [[ $use_help = "yes" ]] ; then
+	MAKEALL="$MAKEALL audacity-help.htb"
 fi
 
 dnl --- check for required libraries ---
@@ -152,3 +162,39 @@ AC_CONFIG_HEADER(configunix.h:configtemplate.h)
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
 
+echo ""
+echo "Finished configure:"
+
+if [[ $use_id3lib = "yes" ]] ; then
+	echo "  with    id3lib";
+else
+	echo "  without id3lib";
+fi
+
+if [[ $use_xaudio = "yes" ]] ; then
+	echo "  with    xaudio";
+else
+	echo "  without xaudio";
+fi
+
+if [[ $use_libmpeg3 = "yes" ]] ; then
+	echo "  with    libmpeg3";
+else
+	echo "  without libmpeg3";
+fi
+
+if [[ $use_vorbis = "yes" ]] ; then
+	echo "  with    vorbis";
+else
+	echo "  without vorbis";
+fi
+
+if [[ $use_help = "yes" ]] ; then
+	echo "  with    help";
+else
+	echo "  without help";
+fi
+
+echo ""
+echo "Run configure --help for explanation of these options,"
+echo "otherwise type 'make' to build Audacity."

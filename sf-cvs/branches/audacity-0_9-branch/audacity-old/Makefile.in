@@ -92,7 +92,7 @@ DEPS = $(OBJS:$(OBJDIR)/%.o=%)
 
 ########################################
 
-all: dirs audacity audacity-help.htb
+all: dirs @MAKEALL@ audacity
 
 audacity: $(OBJS) Makefile
 	$(CCC) -o audacity $(OBJS) $(LIBS)
@@ -102,6 +102,12 @@ audacity: $(OBJS) Makefile
 audacity-help.htb: help/*
 	rm -f audacity-help.htb
 	cd help && zip ../audacity-help.htb *.htm *.png *.hhc *.hhk *.hhp
+
+#
+# build id3lib from included source -- only if selected in configure script
+id3lib/src/.libs/libid3.a:
+	-test ! -f Makefile || cd id3lib && ./configure
+	cd id3lib && $(MAKE)
 
 #
 # rule for building libmpeg3 -- however, it's only built if selected in
