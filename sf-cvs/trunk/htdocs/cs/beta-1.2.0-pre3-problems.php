@@ -9,7 +9,7 @@ Toto jsou známé problémy v Audacity 1.2.0:
 
 <li><p>Obousmìrné nahrávání (full duplex - pøehrávání existující stopy bìhem nahrávání) mùe na nìkterıch Linuxovıch systémech zpùsobit, e nahranı zvuk je u mono nahrávek zpomalenı.</p></li>
 
-<li><p>Pouze MacOS X: Audacity neumí pracovat se soubory nebo adresáøi, které jsou obsaeny v adresáøích s mezinárodními znaky (èárky, háèky, atd.) v názvu. Pøitom soubory i projekty Audacity s tìmito znaky fungují. Jde jen o ty soubory, které jsou uvnitø adresáøù s tìmi znaky, co zpùsobuje problémy.</p></li>
+<li><p>Pouze MacOS X: Audacity neumí pracovat se soubory nebo adresáøi, které jsou obsaeny v adresáøích s mezinárodními znaky (èárky, háèky, atd.) v názvu. Pøitom soubory i projekty Audacity s tìmito znaky fungují. Problémy zpùsobují jen soubory, které jsou uvnitø adresáøù se zmínìnımi znaky.</p></li>
 
 <li><p>Efekt zmìny vıšky ladìní (Change Pitch) mùe zhavarovat, pokud je pouit na stopu se vzorkovací frekvencí 96 KHz.</p></li>
 
