@@ -28,6 +28,11 @@
 #include "Project.h"
 #include "WaveTrack.h"
 
+#ifdef BOUNCE
+#include "Bounce.h"
+extern Bounce *gBounce;
+#endif
+
 enum {
   TrackPanelFirstID = 2000,
 
@@ -190,6 +195,12 @@ void TrackPanel::OnTimer()
 	  mAutoScrolling = false;
 	}
   }
+
+#ifdef BOUNCE
+  if (gAudioIO->IsBusy() &&
+	  gAudioIO->GetProject() == (AudacityProject *)GetParent())
+	gBounce->SetTime(gAudioIO->GetIndicator());
+#endif
 
   if (mIndicatorShowing ||
       (gAudioIO->IsBusy() &&

@@ -33,6 +33,10 @@ WX_DEFINE_ARRAY(LabelStruct *, LabelArray);
 
 class LabelTrack: public VTrack
 {
+#ifdef BOUNCE
+  friend class BouncePane;
+#endif
+
 public:
   LabelTrack(DirManager *projDirManager);
 

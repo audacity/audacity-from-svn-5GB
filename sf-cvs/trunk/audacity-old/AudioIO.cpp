@@ -35,6 +35,11 @@ bool gLinuxFirstTime = true;
 char gLinuxDevice[256] = "/dev/dsp";
 #endif
 
+#ifdef BOUNCE
+#include "Bounce.h"
+Bounce *gBounce = NULL;
+#endif
+
 void InitAudioIO()
 {
   gAudioIO = new AudioIO();
@@ -124,6 +129,11 @@ bool AudioIO::StartPlay(AudacityProject *project,
   gLinuxFirstTime = false;
 #endif
 
+#ifdef BOUNCE
+  gBounce = new Bounce(project, 0, "Bounce", wxPoint(150,150));
+  gBounce->SetProject(project);
+#endif
+
   return true;
 }
 
@@ -145,6 +155,10 @@ void AudioIO::Finish()
   mRecordLeft = NULL;
   mRecordRight = NULL;
 
+#ifdef BOUNCE
+  delete gBounce;
+  gBounce = NULL;
+#endif
 }
 
 bool AudioIO::StartRecord(AudacityProject *project,
