@@ -38,7 +38,7 @@ resources from wxWidgets, a portable GUI framework for C++
 (and Python).  You must download and build wxWidgets before
 attempting to compile Audacity, or nothing will work!
 
-wxWidgets is available from http://www.wxwindows.org.
+wxWidgets is available from http://www.wxWidgets.org.
 Similar to the Linux kernel, wxWidgets is available as
 stable and development branches.  
 
