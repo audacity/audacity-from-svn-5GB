@@ -9,7 +9,7 @@ Si teniu cap pregunta sobre l'Audacity, hi ha diversos recursos:
 
 <li>
 Llegiu les <?php print "<a href=faq.php?$langLinkStr>$faqStr"; ?>PMF</a><br>
-Si us esteu preguntant què és l'Audacity, o esteu tenint problemes instal·lant-lo i posant-lo en marxa, mireu si us plau aquesta pàgina ja que probablement contindrà els vostres dubtes respostos.
+Si us esteu preguntant què és l'Audacity, o esteu tenint problemes instal·lant-lo i posant-lo en marxa, mireu si us plau aquesta pàgina per comprovar si hi ha respostes al vostres dubtes.
 <p>
 
 <li>
