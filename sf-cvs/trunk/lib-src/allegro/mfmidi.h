@@ -85,5 +85,3 @@ private:
     long Msgsize;
     long Msgindex;
 };
-
-

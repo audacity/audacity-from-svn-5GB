@@ -75,14 +75,14 @@ public:
     // insert/lookup an atttribute
     Attribute insert_attribute(Attribute attr);
     // insert/lookup attribute by name (without prefixed type)
-    Attribute insert_string(char *name);
+    Attribute insert_string(const char *name);
 private:
     long max;
     long len;
     char **atoms;
 
     // insert an Attriubute not in table after moving attr to heap
-    Attribute insert_new(char *name, char attr_type);
+    Attribute insert_new(const char *name, char attr_type);
     void expand(); // make more space
 };
 
