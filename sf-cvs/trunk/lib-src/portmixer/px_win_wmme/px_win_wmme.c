@@ -226,7 +226,7 @@ PxMixer *Px_OpenMixer( void *pa_stream, int index )
 
          control.cbStruct = sizeof(MIXERCONTROL);
 
-         result = mixerGetLineControls(mixer->hInputMixer,
+         result = mixerGetLineControls(mixer->hOutputMixer,
                                        &controls,
                                        MIXER_GETLINECONTROLSF_ONEBYTYPE);
 
