@@ -32,7 +32,7 @@ print_usage (char *progname)
 } /* print_usage */
 
 int     main (int argc, char *argv[])
-{	static	 int	buffer [BUFFER_LEN] ;
+{	static	 float	buffer [BUFFER_LEN] ;
 	char 		*progname, *filename = NULL ;
 	SNDFILE	 	*infile ;
 	SF_INFO	 	sfinfo ;
@@ -72,14 +72,17 @@ int     main (int argc, char *argv[])
 		return  1 ;
 		} ;
 		
-	while ((readcount = sf_read_int (infile, buffer, BUFFER_LEN)))
+	while ((readcount = sf_read_float (infile, buffer, BUFFER_LEN)))
 	{	if (start > readcount)
 		{	start -= readcount ;
 			continue ;
 			}
 	
 		for (k = start ; k < readcount && count > 0 ; k++, count --)
-			printf ("%d\n", buffer [k]) ;
+		{	printf ("% f     ", buffer [k]) ;
+			if ((k % sfinfo.channels) == sfinfo.channels - 1)
+				puts ("") ;
+			} ;
 		
 		if (k == count)
 			break ;

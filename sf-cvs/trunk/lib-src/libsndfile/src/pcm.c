@@ -187,6 +187,10 @@ int
 pcm_init (SF_PRIVATE *psf)
 {	int chars = 0 ;
 
+	if (psf->bytewidth == 0 || psf->sf.channels == 0)
+		return SFE_INTERNAL ;
+
+
 	psf->blockwidth = psf->bytewidth * psf->sf.channels ;
 	
 	if ((psf->sf.format & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM_S8)
@@ -253,7 +257,7 @@ pcm_init (SF_PRIVATE *psf)
 				return SFE_UNIMPLEMENTED ;
 			} ;
 		} ;
-
+		
 	if (psf->mode == SFM_WRITE || psf->mode == SFM_RDWR)
 	{	switch (psf->bytewidth * 0x10000 + psf->endian + chars)
 		{	case (0x10000 + SF_ENDIAN_BIG + SF_CHARS_SIGNED) :

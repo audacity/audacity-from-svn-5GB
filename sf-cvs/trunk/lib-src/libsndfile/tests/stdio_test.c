@@ -38,7 +38,9 @@ static size_t	file_length (char *filename) ;
 static int		file_exists (char *filename) ;
 
 static char *filetypes [] =
-{	"raw", "wav", "aiff", "au", "paf", "svx", "nist", "ircam", "voc", "w64", NULL
+{	"raw", "wav", "aiff", "au", "paf", "svx", "nist", "ircam", 
+	"voc", "w64", "mat4", "mat5", 
+	NULL
 } ; 
 
 int

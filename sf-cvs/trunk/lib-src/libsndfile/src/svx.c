@@ -306,7 +306,7 @@ svx_read_header	(SF_PRIVATE *psf)
 		if (! psf->sf.seekable && (parsestage & HAVE_BODY))
 			break ;
 
-		if (psf_ftell (psf->filedes) >= (sf_count_t) (psf->filelength - (2 * sizeof (dword))))
+		if (psf_ftell (psf->filedes) >= psf->filelength - sizeof (dword))
 			break ;
 		} ; /* while (1) */
 		

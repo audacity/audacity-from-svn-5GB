@@ -1,7 +1,7 @@
 noinst_PROGRAMS = sfversion floating_point_test write_read_test \
 	lossy_comp_test error_test ulaw_test alaw_test dwvw_test \
 	peak_chunk_test command_test stdin_test stdout_test stdio_test \
-	pcm_test headerless_test pipe_test benchmark update_header_test \
+	pcm_test headerless_test pipe_test benchmark misc_test \
 	fix_this
 	
 SNDFILEDIR =../src
@@ -72,8 +72,8 @@ pipe_test_LDADD =
 benchmark_SOURCES = benchmark.c 
 benchmark_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
 
-update_header_test_SOURCES = update_header_test.c utils.c 
-update_header_test_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
+misc_test_SOURCES = misc_test.c utils.c 
+misc_test_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
 
 #===============================================================================
 
@@ -96,7 +96,7 @@ benchmark.c: benchmark.def benchmark.tpl
 
 check: generic-tests ulaw_test alaw_test floating_point_test \
 		wav-tests aiff-tests au-tests raw-tests paf-tests svx-tests nist-tests \
-		ircam-tests voc-tests w64-tests stdio-tests
+		ircam-tests voc-tests w64-tests mat4-tests mat5-tests stdio-tests
 
 generic-tests : error_test ulaw_test alaw_test command_test floating_point_test pcm_test
 	./error_test
@@ -115,7 +115,7 @@ generic-tests : error_test ulaw_test alaw_test command_test floating_point_test 
 	@echo "  `./sfversion` passed common tests."
 	@echo "----------------------------------------------------------------------"
 
-wav-tests: write_read_test lossy_comp_test peak_chunk_test update_header_test
+wav-tests: write_read_test lossy_comp_test peak_chunk_test misc_test
 	./write_read_test wav
 	./lossy_comp_test wav_ima
 	./lossy_comp_test wav_msadpcm
@@ -123,29 +123,29 @@ wav-tests: write_read_test lossy_comp_test peak_chunk_test update_header_test
 	./lossy_comp_test wav_alaw
 	./lossy_comp_test wav_gsm610
 	./peak_chunk_test wav
-	./update_header_test wav
+	./misc_test wav
 	@echo "----------------------------------------------------------------------"
 	@echo "  `./sfversion` passed tests on WAV files."
 	@echo "----------------------------------------------------------------------"
 
-aiff-tests: write_read_test lossy_comp_test peak_chunk_test update_header_test
+aiff-tests: write_read_test lossy_comp_test peak_chunk_test misc_test
 	./write_read_test aiff
 	./lossy_comp_test aiff_ulaw
 	./lossy_comp_test aiff_alaw
 	./lossy_comp_test aiff_gsm610
 	./peak_chunk_test aiff
-	./update_header_test aiff
+	./misc_test aiff
 	@echo "----------------------------------------------------------------------"
 	@echo "  `./sfversion` passed tests on AIFF files."
 	@echo "----------------------------------------------------------------------"
 
-au-tests: write_read_test lossy_comp_test update_header_test
+au-tests: write_read_test lossy_comp_test misc_test
 	./write_read_test au
 	./lossy_comp_test au_ulaw
 	./lossy_comp_test au_alaw
 	./lossy_comp_test au_g721
 	./lossy_comp_test au_g723
-	./update_header_test au
+	./misc_test au
 	@echo "----------------------------------------------------------------------"
 	@echo "  `./sfversion` passed tests on AU files."
 	@echo "----------------------------------------------------------------------"
@@ -160,13 +160,14 @@ raw-tests: write_read_test lossy_comp_test
 
 paf-tests: write_read_test
 	./write_read_test paf
+	./misc_test paf
 	@echo "----------------------------------------------------------------------"
 	@echo "  `./sfversion` passed tests on PAF files."
 	@echo "----------------------------------------------------------------------"
 
-svx-tests: write_read_test update_header_test
+svx-tests: write_read_test misc_test
 	./write_read_test svx
-	./update_header_test svx
+	./misc_test svx
 	@echo "----------------------------------------------------------------------"
 	@echo "  `./sfversion` passed tests on SVX files."
 	@echo "----------------------------------------------------------------------"
@@ -175,7 +176,7 @@ nist-tests: write_read_test lossy_comp_test
 	./write_read_test nist
 	./lossy_comp_test nist_ulaw
 	./lossy_comp_test nist_alaw
-	./update_header_test nist
+	./misc_test nist
 	@echo "----------------------------------------------------------------------"
 	@echo "  `./sfversion` passed tests on NIST files."
 	@echo "----------------------------------------------------------------------"
@@ -184,7 +185,7 @@ ircam-tests: write_read_test lossy_comp_test
 	./write_read_test ircam
 	./lossy_comp_test ircam_ulaw
 	./lossy_comp_test ircam_alaw
-	./update_header_test ircam
+	./misc_test ircam
 	@echo "----------------------------------------------------------------------"
 	@echo "  `./sfversion` passed tests on IRCAM files."
 	@echo "----------------------------------------------------------------------"
@@ -193,7 +194,7 @@ voc-tests: write_read_test lossy_comp_test
 	./write_read_test voc
 	./lossy_comp_test voc_ulaw
 	./lossy_comp_test voc_alaw
-	./update_header_test voc
+	./misc_test voc
 	@echo "----------------------------------------------------------------------"
 	@echo "  `./sfversion` passed tests on VOC files."
 	@echo "----------------------------------------------------------------------"
@@ -205,9 +206,23 @@ w64-tests: write_read_test lossy_comp_test
 	./lossy_comp_test w64_ulaw
 	./lossy_comp_test w64_alaw
 	./lossy_comp_test w64_gsm610
-	./update_header_test w64
+	./misc_test w64
 	@echo "----------------------------------------------------------------------"
 	@echo "  `./sfversion` passed tests on W64 files."
+	@echo "----------------------------------------------------------------------"
+
+mat4-tests: write_read_test
+	./write_read_test mat4
+	./misc_test mat4
+	@echo "----------------------------------------------------------------------"
+	@echo "  `./sfversion` passed tests on MAT4 files."
+	@echo "----------------------------------------------------------------------"
+
+mat5-tests: write_read_test
+	./write_read_test mat5
+	./misc_test mat4
+	@echo "----------------------------------------------------------------------"
+	@echo "  `./sfversion` passed tests on MAT5 files."
 	@echo "----------------------------------------------------------------------"
 
 stdio-tests: stdio_test stdin_test stdout_test pipe_test

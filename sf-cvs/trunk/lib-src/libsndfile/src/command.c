@@ -18,7 +18,6 @@
 
 #include	<stdio.h>
 #include	<unistd.h>
-#include	<string.h>
 #include	<math.h>
 
 #include	"sndfile.h"
@@ -93,19 +92,21 @@ psf_get_format_simple (SF_FORMAT_INFO *data)
 
 static SF_FORMAT_INFO major_formats [] =
 {
-	{	SF_FORMAT_AIFF,		"AIFF (Apple/SGI)", 			"aiff" 	},
-	{	SF_FORMAT_AU,		"AU (Sun/NeXT)", 				"au"	},
-	{	SF_FORMAT_SVX,		"IFF (Amiga IFF/SVX8/SV16)", 	"iff"	},
-	{	SF_FORMAT_PAF,		"PAF (Ensoniq PARIS)", 			"paf"	},
-	{	SF_FORMAT_RAW,		"RAW header-less",		 		"raw"	},
+	{	SF_FORMAT_AIFF,		"AIFF (Apple/SGI)",						"aiff" 	},
+	{	SF_FORMAT_AU,		"AU (Sun/NeXT)", 						"au"	},
+	{	SF_FORMAT_SVX,		"IFF (Amiga IFF/SVX8/SV16)",	 		"iff"	},
+	{	SF_FORMAT_MAT4,		"MAT4 (GNU Octave 2.0 / Matlab 4.2)",	"mat"	},
+	{	SF_FORMAT_MAT5,		"MAT5 (GNU Octave 2.1 / Matlab 5.0)",	"mat"	},
+	{	SF_FORMAT_PAF,		"PAF (Ensoniq PARIS)", 					"paf"	},
+	{	SF_FORMAT_RAW,		"RAW header-less",				 		"raw"	},
 	/* Not ready for mainstream use yet.
-	{	SF_FORMAT_SD2,		"SD2 (Sound Designer II)", 		"sd2"	},
+	{	SF_FORMAT_SD2,		"SD2 (Sound Designer II)", 			"sd2"	},
 	*/
-	{	SF_FORMAT_IRCAM,	"SF (Berkeley/IRCAM/CARL)", 	"sf"	},
-	{	SF_FORMAT_VOC,		"VOC (Creative Labs)",			"voc"	},
-	{	SF_FORMAT_W64,		"W64 (SoundFoundry WAVE 64)",	"w64"	},
-	{	SF_FORMAT_WAV,		"WAV (Microsoft)", 				"wav"	},
-	{	SF_FORMAT_NIST,		"WAV (NIST Sphere)", 			"wav"	},
+	{	SF_FORMAT_IRCAM,	"SF (Berkeley/IRCAM/CARL)",				"sf"	},
+	{	SF_FORMAT_VOC,		"VOC (Creative Labs)",					"voc"	},
+	{	SF_FORMAT_W64,		"W64 (SoundFoundry WAVE 64)",			"w64"	},
+	{	SF_FORMAT_WAV,		"WAV (Microsoft)",						"wav"	},
+	{	SF_FORMAT_NIST,		"WAV (NIST Sphere)",	 				"wav"	},
 
 } ; /* major_formats */
 

@@ -6,7 +6,7 @@
 	The libsndfile API.
 	</TITLE>
 	<META NAME="Author"      CONTENT="Erik de Castro Lopo (erikd AT zip DOT com DOT au)">
-	<META NAME="Version"     CONTENT="Version 1.0.0">
+	<META NAME="Version"     CONTENT="Version 1.0.1">
 	<!-- Another date at bottom of page. -->
 	<META NAME="Description" CONTENT="The libsndfile API.">
 	<META NAME="Keywords"    CONTENT="WAV AIFF AU libsndfile sound audio dsp Linux">
@@ -43,6 +43,13 @@
 	If any errors omissions or ambiguities are found, please notify
 		<A HREF="m&#97;ilt&#111;:&#101;rikd&#64;z&#105;p.&#99;om.au">
 	Erik de Castro Lopo</a>.
+</P>
+
+<P>
+	<B> Finally, if you think there is some feature missing from libsndfile, check that
+	it isn't already implemented (and documented)  
+		<A HREF="command.html">here</A>.
+	</B>
 </P>
 
 <H2><B>SYNOPSIS</B></H2>
@@ -162,6 +169,8 @@ Not all combinations of endian-ness and major and minor file types are valid.
           SF_FORMAT_VOC          = 0x080000,     /* VOC files. */
           SF_FORMAT_IRCAM        = 0x0A0000,     /* Berkeley/IRCAM/CARL */
           SF_FORMAT_W64          = 0x0B0000,     /* Sonic Foundry's 64 bit RIFF/WAV */
+          SF_FORMAT_MAT4         = 0x0C0000,     /* Matlab (tm) V4.2 / GNU Octave 2.0 */
+          SF_FORMAT_MAT5         = 0x0D0000,     /* Matlab (tm) V5.0 / GNU Octave 2.1 */
           
           /* Subtypes from here on. */
       
@@ -496,7 +505,7 @@ values read from the file will be zero.
 		<A HREF="http://www.zip.com.au/~erikd/libsndfile/">here</A>.
 </P>
 <P>
-Version : 1.0.0
+Version : 1.0.1
 </P>
 
 </BODY>

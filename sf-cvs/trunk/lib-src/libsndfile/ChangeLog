@@ -1,3 +1,190 @@
+2002-09-14  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/mat5.c src/common.c
+    Changed usage of snprintf() to LSF_SNPRINTF().
+
+    * Win32/Makefile.msvc
+    Updated to include new files and add new tests.
+
+    * Win32/config.h Win32/sndfile.h
+    Updated.
+
+    * doc/api.html
+    Added note about the possibility of "missing" features actually being 
+    implemented as an sf_command().
+
+2002-09-13  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * tests/misc_test.c
+    Added previously missing update_header_test and zero_data_tests for PAF,
+    MAT4 and MAT5 formats.
+
+    * src/paf.c src/mat4.c src/mat5.c
+    Fixed bugs uncovered by new tests above.
+
+    * src/mat5.c
+    Generalised parsing of name fields of MAT5 files.
+
+    * src/mat5.c src/sndfile.c
+    Added support for unsigned 8 bit PCM MAT5 files.
+
+    * tests/write_read_test.tpl
+    Added test for unsigned 8 bit PCM MAT5 files.
+
+    * doc/index.html
+    Added unsigned 8 bit PCM MAT5 to capabilities matrix.
+
+2002-09-12  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * test/update_header_test.c tests/misc_test.c
+    Renamed update_header_test.c to misc_test.c.
+    Added zero_data_test() to check for case where file is opened for write and
+    closed immediately. The resulting file can be left in a state where
+    libsndfile cannot open it. Problem reported by Werner Schweer, the author
+    of Muse.
+
+    * src/aiff.c
+    Removed superfluous cast.
+
+    * src/wav.c src/svx.c
+    Fixed case of file generated with no data.
+    Removed superfluous cast.
+
+    * src/sndfile.c
+    Fixed error on ia64 platform caused by incorrect termination of
+    SndfileErrors struct array. This problem was found in the Debian buildd
+    logs (http://buildd.debian.org/).
+
+    * configure.in
+    Added Octave directory.
+
+    * Octave/Makefile.ma
+    New Makfile.am for Octave directory.
+
+    * Octave/sndfile_load.m Octave/sndfile_save.m Octave/sndfile_play.m
+    New files for working with Octave.
+
+    * doc/octave.html
+    Document explaining the use of the above three Octave scripts.
+
+2002-09-10  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/sndfile.c
+    Fixed bug in RDWR mode.
+
+2002-09-09  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/common.c
+    Fixed psf_get_date_str() for systems which don't have gmtime_r() or
+    gmtime().
+
+    * src/file_io.c
+    Added #include <io.h> for Win32. Reported by Koen Tanghe.
+
+2002-09-08  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/common.c
+    Added 'S' format specifier for psf_binheader_writef() which writes a C
+    string, including single null terminator to the header.
+    Added 'j' format specifier to allow jumping forwards or backwards in the
+    header.
+    Added function psf_get_date_str().
+
+    * src/mat5.c
+    Complete read and write support.
+
+    * doc/index.html
+    Added entries for MAT4 and MAT5 in capabilities matrix.
+
+2002-09-06  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/mat4.c
+    Completed read and write support.
+
+    * src/common.h src/sndfile.c
+    Added MAT4 and MAT5 specific error messages.
+
+    * tests/write_read_test.tpl tests/Makefile.am
+    Added tests for MAT4 and MAT5 files.
+
+    * tests/stdio_test.c tests/stdout_test.c tests/stdin_test.c
+    Added tests for MAT4 and MAT5 files.
+
+2002-09-05  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/command.c
+    Added elements for SF_FORMAT_MAT4 and SF_FORMAT_MAT5 to major_formats
+    array.
+
+    * examples/sfconvert.c
+    Added mat4 and mat5 output targets.
+
+2002-09-04  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/sndfile.c
+    Added check to prevent errors openning read only formats for read/write.
+
+    * src/interleave.c
+    New file for interleaving non-interleaved data. Non-interleaved data is
+    only supported on read.
+
+    * src/Makefile.am
+    Added src/interleave.c to build.
+
+2002-09-03  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/double64.c src/common.h
+    Added double64_be_read(), double64_le_read(), double64_be_write() and
+    double64_le_write() which replace double64_read() and double64_write().
+
+    * src/common.c
+    Cleanup of psf_binheader_readf() and add ability to read big and little
+    endian doubles (required by mat4.c and mat5.c).
+    Add ability for psf_binheader_writef() to write doubles to sound file
+    headers.
+
+2002-09-01  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/mat5.c
+    New file for reading Matlab (tm) version 5 data files. This is also the
+    native binary file format for version 2.1.X of GNU Octave which will be
+    used for testing.
+    Not complete yet.
+
+    * src/mat4.c
+    New file for reading Matlab (tm) version 4.2 data files. This is also the
+    native binary file format for version 2.0.X of GNU Octave which will be
+    used for testing.
+    Not complete yet.
+
+    * src/sndfile.h.in src/sndfile.c src/common.h src/command.c src/Makefile.am
+    Mods to add Matlab files.
+
+    * src/common.[ch]
+    Added readf_endian field to SF_PRIVATE struct allowing endianness to
+    remembered across calls to sf_binheader_readf().
+    Fixed bug in width_specifier behaviour for printing hex values.
+
+2002-08-31  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/file_io.c
+    Check return value of close() call in psf_fclose().
+
+2002-08-24  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/ms_adpcm.c
+    Commented out some code where 0x10000 was being subtracted from a short
+    and the result assigned to a short again. Andrew Zaja found this.
+
+2002-08-23  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * doc/command.html
+    Fixed typo found by Tommi Ilmonen.
+
+    * src/ima_adpcm.c
+    Changed type of diff from short to int to prevent errors which can occur
+    during very rare circumstances. Thanks to FUWAFUWA.
+
 2002-08-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
 
     * tests/floating_point_test.c

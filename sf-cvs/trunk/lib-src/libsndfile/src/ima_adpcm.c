@@ -18,7 +18,6 @@
 
 #include	<stdio.h>
 #include	<unistd.h>
-#include	<string.h>
 
 #include	"sndfile.h"
 #include	"config.h"
@@ -270,8 +269,8 @@ ima_reader_init (SF_PRIVATE *psf, int blockalign, int samplesperblock)
 
 static int
 ima_decode_block (SF_PRIVATE *psf, IMA_ADPCM_PRIVATE *pima)
-{	int		chan, k, current, blockindex, index, indexstart ;
-	short	step, diff, bytecode, stepindex [2] ;
+{	int		chan, k, current, blockindex, index, indexstart, diff ;
+	short	step, bytecode, stepindex [2] ;
 	
 	pima->blockcount ++ ;
 	pima->samplecount = 0 ;
