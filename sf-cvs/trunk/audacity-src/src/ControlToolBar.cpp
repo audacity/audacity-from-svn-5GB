@@ -51,8 +51,9 @@ enum {
    ID_ZOOM,
    ID_DRAW,
    ID_PLAY_BUTTON,
-   ID_STOP_BUTTON,
    ID_RECORD_BUTTON,
+   ID_PAUSE_BUTTON,
+   ID_STOP_BUTTON,
    ID_FF_BUTTON,
    ID_REW_BUTTON,
 
@@ -81,11 +82,13 @@ BEGIN_EVENT_TABLE(ControlToolBar, wxWindow)
             wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnRewind)
    EVT_COMMAND(ID_FF_BUTTON,
             wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnFF)
+   EVT_COMMAND(ID_PAUSE_BUTTON,
+               wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnPause)
 END_EVENT_TABLE()
 
 //Standard contructor
 ControlToolBar::ControlToolBar(wxWindow * parent):
-ToolBar(parent, -1, wxPoint(1, 1), wxSize(468, 55))
+ToolBar(parent, -1, wxPoint(1, 1), wxSize(520, 55))
 {
    InitializeControlToolBar();
 }
@@ -107,10 +110,10 @@ void ControlToolBar::InitializeControlToolBar()
 #if defined(__WXMAC__)          // && defined(TARGET_CARBON)
    int sliderX = 390;
 #else
-   int sliderX = 350;
+   int sliderX = 400;
 #endif
 
-   mIdealSize = wxSize(468, 55);
+   mIdealSize = wxSize(520, 55);
    mTitle = _("Audacity Control Toolbar");
    mType = ControlToolBarID;
 
@@ -156,6 +159,8 @@ void ControlToolBar::InitializeControlToolBar()
    mCurrentTool = 0;
    mTool[0]->PushDown();
 
+   mPaused=false;             //Turn the paused state to off
+   mPause->Disable();         //Turn the pause button off.
 #if 0
 #if defined(__WXMAC__)          // && defined(TARGET_CARBON)
    mDivBitmap = new wxBitmap((const char **) Div);
@@ -320,15 +325,24 @@ void ControlToolBar::MakeButtons()
                       (char const **) PlayAlpha, ID_PLAY_BUTTON);
    mPlay->SetToolTip(_("Play"));
 
-   mStop = MakeButton((char const **) Stop,
-                      (char const **) StopDisabled,
-                      (char const **) StopAlpha, ID_STOP_BUTTON);
-   mStop->SetToolTip(_("Stop"));
+
 
    mRecord = MakeButton((char const **) Record,
                         (char const **) RecordDisabled,
                         (char const **) RecordAlpha, ID_RECORD_BUTTON);
    mRecord->SetToolTip(_("Record"));
+
+   mPause = MakeButton((char const **)Pause,
+                      (char const **) PauseDisabled,
+                      (char const **) PauseAlpha, ID_PAUSE_BUTTON);
+   mPause->SetToolTip(_("Stop"));
+   
+
+
+   mStop = MakeButton((char const **) Stop,
+                      (char const **) StopDisabled,
+                      (char const **) StopAlpha, ID_STOP_BUTTON);
+   mStop->SetToolTip(_("Stop"));
 
    mFF = MakeButton((char const **) FFwd,
                     (char const **) FFwdDisabled,
@@ -376,6 +390,7 @@ ControlToolBar::~ControlToolBar()
    delete mStop;
    delete mRecord;
    delete mFF;
+   delete mPause;
 
    delete mVolume;
 
@@ -433,8 +448,10 @@ void ControlToolBar::SetStop(bool down)
       mStop->Disable();
       mRecord->Enable();
       mPlay->Enable();
+      mPause->Disable();
       mRewind->Enable();
       mFF->Enable();
+
    }
 }
 
@@ -446,6 +463,7 @@ void ControlToolBar::SetRecord(bool down)
       mRecord->PopUp();
 }
 
+
 void ControlToolBar::OnPlay()
 {
    if (gAudioIO->IsBusy())
@@ -455,6 +473,7 @@ void ControlToolBar::OnPlay()
    mRewind->Disable();
    mRecord->Disable();
    mFF->Disable();
+   mPause->Enable();
 
    AudacityProject *p = GetActiveProject();
    if (p) {
@@ -481,6 +500,7 @@ void ControlToolBar::OnStop()
 {
    gAudioIO->Stop();
    SetStop(false);
+   mPause->Disable();
 }
 
 void ControlToolBar::OnRecord()
@@ -492,6 +512,7 @@ void ControlToolBar::OnRecord()
    mStop->Enable();
    mRewind->Disable();
    mFF->Disable();
+   mPause->Enable();
 
    AudacityProject *p = GetActiveProject();
    if (p) {
@@ -507,6 +528,22 @@ void ControlToolBar::OnRecord()
          SetRecord(false);
       }
    }
+}
+
+void ControlToolBar::OnPause()
+{
+   //Do stuff here
+   mPause->PopUp();
+   if(mPaused)
+      {
+         mPaused=false;
+         
+      }
+   else
+      {
+         mPaused=true;
+
+      }
 }
 
 void ControlToolBar::OnRewind()

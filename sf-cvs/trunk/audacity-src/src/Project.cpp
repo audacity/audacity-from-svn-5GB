@@ -1,3 +1,4 @@
+
 /**********************************************************************
 
   Audacity: A Digital Audio Editor
@@ -1113,6 +1114,7 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
       mDrag = NULL;
 
       mouse -= mToolBarHotspot;
+
       switch (mDraggingToolBar) {
       case ControlToolBarID:
          gControlToolBarStub->ShowWindowedToolBar(&mouse);
@@ -1131,7 +1133,7 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
       mDraggingToolBar = NoneID;
       HandleResize();
    }
-   #endif
+#endif
 }
 
 void AudacityProject::OnClose(wxEvent & event)
@@ -1955,11 +1957,15 @@ void AudacityProject::TP_OnPlayKey()
 {
    ControlToolBar *toolbar = GetControlToolBar();
 
+   //If busy, stop playing, make sure everything is unpaused.
    if (gAudioIO->IsBusy()) {
-      toolbar->SetPlay(false);
-      toolbar->SetStop(true);
+      toolbar->SetPlay(false);        //Pops
+      toolbar->SetStop(true);         //Pushes stop down
       toolbar->OnStop();
+
+
    } else {
+      //Otherwise, start playing
       toolbar->SetPlay(true);
       toolbar->SetStop(false);
       toolbar->OnPlay();

@@ -68,7 +68,9 @@ class ControlToolBar:public ToolBar {
    void OnStop();
    void OnRecord();
    void OnFF();
+   void OnPause();
 
+   //These allow buttons to be controlled externally:
    void SetPlay(bool down);
    void SetStop(bool down);
    void SetRecord(bool down);
@@ -96,6 +98,9 @@ class ControlToolBar:public ToolBar {
    AButton *mStop;
    AButton *mRecord;
    AButton *mFF;
+   AButton *mPause;
+
+   
 
    ASlider *mVolume;
    int mCurrentTool;
@@ -107,6 +112,9 @@ class ControlToolBar:public ToolBar {
    wxImage *upPattern;
    wxImage *downPattern;
    wxImage *hilitePattern;
+
+   bool mPaused;         //Determines which state we are in (paused or not paused)
+   //                      This maybe doesn't belong in the toolbar.
 
    DECLARE_EVENT_TABLE()
 };
