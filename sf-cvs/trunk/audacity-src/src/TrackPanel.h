@@ -70,6 +70,7 @@ class TrackPanel:public wxWindow {
 
    virtual void Refresh(bool eraseBackground = TRUE,
                         const wxRect *rect = (const wxRect *) NULL);
+   void DisplaySelection();
 
  private:
 
@@ -77,9 +78,6 @@ class TrackPanel:public wxWindow {
 
    void ScrollDuringDrag();
    void UpdateIndicator();
-
-   void DisplaySelection();
-
 
    // AS: Selection handling
    void HandleSelect(wxMouseEvent & event);

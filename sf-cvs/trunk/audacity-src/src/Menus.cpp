@@ -1143,6 +1143,7 @@ void AudacityProject::OnSelectAll(wxEvent & event)
    mViewInfo.sel1 = mTracks->GetEndTime();
 
    mTrackPanel->Refresh(false);
+   mTrackPanel->DisplaySelection();
 }
 
 //
