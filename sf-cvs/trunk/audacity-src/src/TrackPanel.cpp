@@ -2506,6 +2506,21 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
          else
             t->SetMute(!t->GetMute());
       }
+
+      // Shift-click unmutes (or unsolos) all other tracks.
+      if (event.ShiftDown()) {
+         TrackListIterator iter(mTracks);
+         Track *i = iter.First();
+         while (i) {
+            if (i != t) {
+               if (solo)
+                  i->SetSolo(false);
+               else
+                  i->SetMute(false);
+            }
+            i = iter.Next();
+         }
+      }
       SetCapturedTrack( NULL );
       // mTrackLabel.DrawMuteSolo(&dc, r, t, false, solo);
       Refresh(false);
