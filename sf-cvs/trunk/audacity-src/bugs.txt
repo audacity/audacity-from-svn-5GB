@@ -100,7 +100,13 @@ Known bugs to fix:
   Wasn't present in 1.0 or 1.1.
 - Spacebar to play and stop only works after clicking an empty part
   of the the control bar in MacOS X. Wasn't in 1.0 or 1.1.
- 
+- When using a Nyquist plugin, default zoom is restored
+  once effect is applied
+- When using a Nyquist plugin on a track whose sample rate
+  differs from the project rate, the selection changes
+  incorrectly, probably reflecting the project rate rather
+  than the track rate.
+
 -----------------------------------------------------------
 Possible bugs to investigate:
 -----------------------------------------------------------
