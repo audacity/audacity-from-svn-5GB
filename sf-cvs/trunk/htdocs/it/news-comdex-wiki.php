@@ -3,7 +3,7 @@
 Abbiamo corretto molti errori nell'utima versione pubblica di test, e rilasceremo Audacity 1.2.0-pre3 nei prossimi giorni, assieme al VST Enabler. Nel frattempo ci sono alcune altre news:
 
 <p>
-Audacity è stato nominato come possibile programma open-source che  a href="http://www.oreilly.com/">O'Reilly</a> potrebbe inviare al  <a href="http://www.comdex.com/">COMDEX</a> a Las Vegas, il 17-20 Novembre.  <a href="http://www.oreillynet.com/contest/comdex/">Clicca qui</a> per maggiori informazioni e per votare per Audacity (è richiesta una registrazione gratuita sul sito di O'Reilly per votare).
+Audacity è stato nominato come possibile programma open-source che  <a href="http://www.oreilly.com/">O'Reilly</a> potrebbe inviare al  <a href="http://www.comdex.com/">COMDEX</a> a Las Vegas, il 17-20 Novembre.  <a href="http://www.oreillynet.com/contest/comdex/">Clicca qui</a> per maggiori informazioni e per votare per Audacity (è richiesta una registrazione gratuita sul sito di O'Reilly per votare).
 Le votazioni scadono il 31 Ottobre.
 </p>
 
