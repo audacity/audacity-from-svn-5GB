@@ -9,10 +9,10 @@ AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
 DefaultDirName={pf}\Audacity
 DefaultGroupName=Audacity
+AllowNoIcons=yes
 AlwaysCreateUninstallIcon=yes
-LicenseFile=C:\proxima\Download\audacity\audacity-win-0.98\LICENSE.txt
-InfoBeforeFile=C:\proxima\Download\audacity\audacity-win-0.98\README.txt
-ChangesAssociations=yes
+LicenseFile=C:\LOCAL_PATH_HERE\audacity-win-0.98b\LICENSE.txt
+InfoBeforeFile=C:\LOCAL_PATH_HERE\audacity-0.98\audacity-win-0.98b\README.txt
 ; uncomment the following line if you want your installation to run on NT 3.51 too.
 ; MinVersion=4,3.51
 
@@ -20,11 +20,12 @@ ChangesAssociations=yes
 Name: "desktopicon"; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; MinVersion: 4,4
 
 [Files]
-Source: "C:\proxima\Download\audacity\audacity-win-0.98\audacity.exe"; DestDir: "{app}"; CopyMode: alwaysoverwrite
-Source: "C:\proxima\Download\audacity\audacity-win-0.98\audacity.exe"; DestDir: "{app}"; CopyMode: alwaysoverwrite
-Source: "C:\proxima\Download\audacity\audacity-win-0.98\audacity-help.htb"; DestDir: "{app}"; CopyMode: alwaysoverwrite
-Source: "C:\proxima\Download\audacity\audacity-win-0.98\LICENSE.txt"; DestDir: "{app}"; CopyMode: alwaysoverwrite
-Source: "C:\proxima\Download\audacity\audacity-win-0.98\README.txt"; DestDir: "{app}"; CopyMode: alwaysoverwrite
+Source: "C:\LOCAL_PATH_HERE\audacity-win-0.98b\audacity.exe"; DestDir: "{app}"; CopyMode: alwaysoverwrite
+Source: "C:\LOCAL_PATH_HERE\audacity-win-0.98b\README.txt"; DestDir: "{app}"; CopyMode: alwaysoverwrite
+Source: "C:\LOCAL_PATH_HERE\audacity-win-0.98b\audacity-help.htb"; DestDir: "{app}"; CopyMode: alwaysoverwrite
+Source: "C:\LOCAL_PATH_HERE\audacity-win-0.98b\LICENSE.txt"; DestDir: "{app}"; CopyMode: alwaysoverwrite
+Source: "C:\LOCAL_PATH_HERE\audacity-win-0.98b\audacity.exe"; DestDir: "{app}"; CopyMode: alwaysoverwrite
+Source: "C:\LOCAL_PATH_HERE\audacity-win-0.98b\vst\*.*"; DestDir: "{app}"; CopyMode: alwaysoverwrite
 
 [Icons]
 Name: "{group}\Audacity"; Filename: "{app}\audacity.exe"
@@ -41,4 +42,5 @@ Root: HKCR; Subkey: "Audacity.Project"; ValueType: string; ValueName: ""; ValueD
 Root: HKCR; Subkey: "Audacity.Project\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\audacity.exe,0"
 
 Root: HKCR; Subkey: "Audacity.Project\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\audacity.exe"" ""%1"""
+
 
