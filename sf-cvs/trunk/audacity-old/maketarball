@@ -47,12 +47,6 @@ if($ARGV[0] eq "debian") {
 	printf "removing the copy of this script...\n";
 	`rm -f maketarball`;
 
-	printf "patching README.txt to remove xaudio copyright notices...\n";
-	`patch < README-debian.diff; rm -f README-debian.diff`;
-
-	printf "patching configure.in and regenerating configure to disallow selecting xaudio...\n";
-	`patch < configure-debian.diff; rm -f configure-debian.diff; autoconf;`;
-	
 	print "making tarball audacity-debian-$version.tar.gz...\n";
 	chdir "..";
 	`tar zcf audacity-debian-$version.tar.gz audacity-$version`;
