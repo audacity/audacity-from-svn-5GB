@@ -19,6 +19,8 @@
 class wxTextFile;
 class DirManager;
 class UndoStack;
+class TimeTrack;
+class WaveTrack;
 
 class Track: public XMLTagHandler {
 
@@ -59,7 +61,8 @@ class Track: public XMLTagHandler {
       None,
       Wave,
       Note,
-      Label
+      Label,
+      Time
    } TrackKindEnum;
 
    Track(DirManager * projDirManager);
@@ -162,6 +165,7 @@ class TrackList {
   
   // Add a this Track or all children of this TrackGroup
   void Add(Track * t);
+  void AddToHead(Track * t);
   
   // Remove this Track or all children of this TrackGroup
   void Remove(Track * t);
@@ -187,6 +191,10 @@ class TrackList {
   bool MoveUp(Track * t);
   bool MoveDown(Track * t);
   bool Move(Track * t, bool up) { return up ? MoveUp(t) : MoveDown(t); }
+
+  TimeTrack *GetTimeTrack();
+
+  void GetWaveTracks(bool selectionOnly, int *num, WaveTrack ***tracks);
   
   // Test
   bool Contains(Track * t) const;
@@ -241,6 +249,7 @@ class ConstTrackListIterator {
 class WaveTrack;
 class NoteTrack;
 class LabelTrack;
+class TimeTrack;
 class DirManager;
 
 class TrackFactory
@@ -257,11 +266,13 @@ class TrackFactory
 
  public:
    // These methods are defined in WaveTrack.cpp, NoteTrack.cpp,
+   // LabelTrack.cpp, and TimeTrack.cpp respectively
    // and LabelTrack.cpp respectively
    WaveTrack *NewWaveTrack(sampleFormat format = (sampleFormat)0,
                            double rate = 0);
    NoteTrack *NewNoteTrack();
    LabelTrack *NewLabelTrack();
+   TimeTrack *NewTimeTrack();
 };
 
 #endif

@@ -99,42 +99,25 @@ bool ExportOGG(AudacityProject *project,
    outFile.Write(page.header, page.header_len);
    outFile.Write(page.body, page.body_len);
 
-   double t = t0;
-   bool   done = false;
    wxProgressDialog *progress = NULL;
 
    wxYield();
    wxStartTimer();
 
-   while(!done && !cancelling){
-      float       deltat = (float)SAMPLES_PER_RUN / rate;
-      sampleCount samplesThisRun = SAMPLES_PER_RUN;
-      Mixer       *mixer = new Mixer(stereo ? 2 : 1, SAMPLES_PER_RUN, 
-            /* interleaved = */ false, rate, floatSample);
+   int numWaveTracks;
+   WaveTrack **waveTracks;
+   tracks->GetWaveTracks(selectionOnly, &numWaveTracks, &waveTracks);
+   Mixer *mixer = new Mixer(numWaveTracks, waveTracks,
+                            tracks->GetTimeTrack(),
+                            0.0, tracks->GetEndTime(),
+                            stereo? 2: 1, SAMPLES_PER_RUN, true,
+                            rate, floatSample);
 
-      if(t + deltat > t1) {
-         done = true;
-         deltat = t1 - t;
-         samplesThisRun = int(deltat * rate + 0.5);
-      }
-      
-      mixer->Clear();
+   while(!cancelling) {
+      sampleCount samplesThisRun = mixer->Process(SAMPLES_PER_RUN);
 
-      TrackListIterator iter(tracks);
-      Track *tr = iter.First();
-      while (tr) {
-         if (tr->GetKind() == Track::Wave) {
-            if (tr->GetSelected() || !selectionOnly) {
-               if (tr->GetChannel() == Track::MonoChannel)
-                  mixer->MixMono((WaveTrack *) tr, t, t + deltat);
-               else if (tr->GetChannel() == Track::LeftChannel)
-                  mixer->MixLeft((WaveTrack *) tr, t, t + deltat);
-               else if (tr->GetChannel() == Track::RightChannel)
-                  mixer->MixRight((WaveTrack *) tr, t, t + deltat);
-            }
-         }
-         tr = iter.Next();
-      }
+      if (samplesThisRun == 0)
+         break;
       
       float **vorbis_buffer = vorbis_analysis_buffer(&dsp, SAMPLES_PER_RUN);
       
@@ -174,8 +157,11 @@ bool ExportOGG(AudacityProject *project,
          }
       }
 
-      if(progress)
-         cancelling = !progress->Update(int (((t - t0) * 1000) / (t1 - t0) + 0.5));
+      if(progress) {
+         int progressvalue = int (1000 * (mixer->GetCurrentTime() /
+                                          tracks->GetEndTime()));
+         cancelling = !progress->Update(progressvalue);
+      }
       else if(wxGetElapsedTime(false) > 500) {
             
          wxString message = selectionOnly ?
@@ -189,10 +175,9 @@ bool ExportOGG(AudacityProject *project,
                parent,
                wxPD_CAN_ABORT | wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
       }
-
-      delete mixer;
-      t += deltat;
    }
+
+   delete mixer;
 
    outFile.Close();
 

@@ -86,7 +86,7 @@ bool ExportPCM(AudacityProject *project,
    else
       format = int16Sample;
 
-   double timeStep = 10.0;      // write in blocks of 10 secs
+   int maxBlockLen = 44100 * 5;
 
    wxProgressDialog *progress = NULL;
    wxYield();
@@ -94,45 +94,27 @@ bool ExportPCM(AudacityProject *project,
    wxBusyCursor busy;
    bool cancelling = false;
 
-   double t = t0;
+   int numWaveTracks;
+   WaveTrack **waveTracks;
+   tracks->GetWaveTracks(selectionOnly, &numWaveTracks, &waveTracks);
+   Mixer *mixer = new Mixer(numWaveTracks, waveTracks,
+                            tracks->GetTimeTrack(),
+                            0.0, tracks->GetEndTime(),
+                            info.channels, maxBlockLen, true,
+                            rate, format);
 
-   while (t < t1 && !cancelling) {
+   while(!cancelling) {
+      sampleCount numSamples = mixer->Process(maxBlockLen);
 
-      double deltat = timeStep;
-      if (t + deltat > t1)
-         deltat = t1 - t;
-
-      sampleCount numSamples = int (deltat * rate + 0.5);
-
-      Mixer *mixer = new Mixer(stereo ? 2 : 1, numSamples, true,
-                               rate, format);
-      wxASSERT(mixer);
-      mixer->Clear();
-
-      TrackListIterator iter(tracks);
-      Track *tr = iter.First();
-      while (tr) {
-         if (tr->GetKind() == Track::Wave) {
-            if (tr->GetSelected() || !selectionOnly) {
-               if (tr->GetChannel() == Track::MonoChannel)
-                  mixer->MixMono((WaveTrack *) tr, t, t + deltat);
-               if (tr->GetChannel() == Track::LeftChannel)
-                  mixer->MixLeft((WaveTrack *) tr, t, t + deltat);
-               if (tr->GetChannel() == Track::RightChannel)
-                  mixer->MixRight((WaveTrack *) tr, t, t + deltat);
-            }
-         }
-         tr = iter.Next();
-      }
-
+      if (numSamples == 0)
+         break;
+      
       samplePtr mixed = mixer->GetBuffer();
 
       if (format == int16Sample)
          sf_writef_short(sf, (short *)mixed, numSamples);
       else
          sf_writef_float(sf, (float *)mixed, numSamples);
-
-      t += deltat;
 
       if (!progress && wxGetElapsedTime(false) > 500) {
 
@@ -158,12 +140,15 @@ bool ExportPCM(AudacityProject *project,
                                   wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
       }
       if (progress) {
-         cancelling =
-             !progress->Update(int (((t - t0) * 1000) / (t1 - t0) + 0.5));
+         int progressvalue = int (1000 * (mixer->GetCurrentTime() /
+                                          tracks->GetEndTime()));
+         cancelling = !progress->Update(progressvalue);
       }
-
-      delete mixer;
    }
+
+   delete mixer;
+
+   delete[] waveTracks;                            
 
    err = sf_close(sf);
 

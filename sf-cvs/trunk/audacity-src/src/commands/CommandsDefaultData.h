@@ -91,6 +91,7 @@ static const char *CommandsDefaultXML[] = {
 "\t\t\t<itemseparator/>",
 "\t\t\t<item translation=\"New Audio Track\" functions=\"OnNewWaveTrack\"/>",
 "\t\t\t<item translation=\"New Label Track\" functions=\"OnNewLabelTrack\"/>",
+"\t\t\t<item translation=\"New Time Track\" functions=\"OnNewTimeTrack\"/>",
 "\t\t\t<itemseparator/>",
 "\t\t\t<item translation=\"Remove Tracks\" functions=\"OnRemoveTracks\"/>",
 "\t\t\t<itemseparator/>",
@@ -267,6 +268,7 @@ static const char *CommandsDefaultXML[] = {
 
    COMMANDS_ADDTRANSLATIONSTRING(_("New &Audio Track"), "New Audio Track");
    COMMANDS_ADDTRANSLATIONSTRING(_("New &Label Track"), "New Label Track");
+   COMMANDS_ADDTRANSLATIONSTRING(_("New &Time Track"), "New Time Track");
 
    COMMANDS_ADDTRANSLATIONSTRING(_("&Remove Track(s)"), "Remove Tracks");
 

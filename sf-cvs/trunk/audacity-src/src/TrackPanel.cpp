@@ -28,6 +28,7 @@
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
+#include <wx/choicdlg.h>
 #include <wx/textctrl.h>
 #include <wx/intl.h>
 
@@ -43,6 +44,7 @@
 #include "Project.h"
 #include "ViewInfo.h"
 #include "WaveTrack.h"
+#include "TimeTrack.h"
 
 #include "widgets/Ruler.h"
 
@@ -162,7 +164,10 @@ enum {
    OnPitchID,
 
    OnSplitStereoID,
-   OnMergeStereoID
+   OnMergeStereoID,
+
+   OnSetTimeTrackRangeID,
+   OnSetTimeTrackConverterID
 };
 
 BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
@@ -170,6 +175,8 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_CHAR(TrackPanel::OnKeyEvent)
     EVT_PAINT(TrackPanel::OnPaint)
     EVT_MENU(OnSetNameID, TrackPanel::OnSetName)
+    EVT_MENU(OnSetTimeTrackRangeID, TrackPanel::OnSetTimeTrackRange)
+    EVT_MENU(OnSetTimeTrackConverterID, TrackPanel::OnSetTimeTrackConverter)
 
     EVT_MENU_RANGE(OnMoveUpID, OnMoveDownID, TrackPanel::OnMoveTrack)
     EVT_MENU_RANGE(OnUpOctaveID, OnDownOctaveID, TrackPanel::OnChangeOctave)
@@ -290,6 +297,16 @@ mAutoScrolling(false)
    mLabelTrackMenu->Append(OnMoveUpID, _("Move Track Up"));
    mLabelTrackMenu->Append(OnMoveDownID, _("Move Track Down"));
 
+   mTimeTrackMenu = new wxMenu();
+   mTimeTrackMenu->Append(OnSetNameID, _("Name..."));
+   mTimeTrackMenu->AppendSeparator();
+   mTimeTrackMenu->Append(OnMoveUpID, _("Move Track Up"));
+   mTimeTrackMenu->Append(OnMoveDownID, _("Move Track Down"));
+   mTimeTrackMenu->AppendSeparator();
+   mTimeTrackMenu->Append(OnSetTimeTrackRangeID, _("Set Range..."));
+   mTimeTrackMenu->AppendSeparator();
+   mTimeTrackMenu->Append(OnSetTimeTrackConverterID, _("Set Converter..."));
+
    mTrackArtist = new TrackArtist();
    mTrackArtist->SetInset(1, kTopInset + 1, kLeftInset + 2, 2);
 
@@ -350,6 +367,7 @@ TrackPanel::~TrackPanel()
    delete mWaveTrackMenu;
    delete mNoteTrackMenu;
    delete mLabelTrackMenu;
+   delete mTimeTrackMenu;
 
    while(!mScreenAtIndicator.IsEmpty())
    {
@@ -478,7 +496,14 @@ void TrackPanel::DrawCursors(wxDC * dc)
       TrackListIterator iter(mTracks);
       for (Track * t = iter.First(); t; t = iter.Next()) {
          int height = t->GetHeight();
-         if (t->GetSelected() && t->GetKind() != Track::Label)
+         if (t->GetSelected() && t->GetKind() == Track::Time)
+            {
+               TimeTrack *tt = (TimeTrack*)t;
+               double t0 = tt->warp( mViewInfo->sel0 - mViewInfo->h );
+               int warpedX = GetLeftOffset() + int (t0 * mViewInfo->zoom);
+               dc->DrawLine(warpedX, y + kTopInset + 1, warpedX, y + height - 2);
+            }
+         else if (t->GetSelected() && t->GetKind() != Track::Label)
          {
             wxCoord top = y + kTopInset + 1;
             wxCoord bottom = y + height - 2;
@@ -1056,46 +1081,56 @@ void TrackPanel::HandleEnvelope(wxMouseEvent & event)
 //  redrawing itself.  ?
 void TrackPanel::ForwardEventToEnvelope(wxMouseEvent & event)
 {
-   if (!mCapturedTrack || mCapturedTrack->GetKind() != Track::Wave)
-      return;
+   if (mCapturedTrack && mCapturedTrack->GetKind() == Track::Time)
+     {
+       TimeTrack *ptimetrack = (TimeTrack *) mCapturedTrack;
+       Envelope *pspeedenvelope = ptimetrack->GetEnvelope();
+       
+       bool needUpdate = pspeedenvelope->MouseEvent(event, mCapturedRect,
+						    mViewInfo->h, mViewInfo->zoom,
+						    false);
+       if( needUpdate )
+	 {
+	   //ptimetrack->Draw();
+	   Refresh(false);
+	 }
+     }
+   else if (mCapturedTrack && mCapturedTrack->GetKind() == Track::Wave)
+     {
+       WaveTrack *pwavetrack = (WaveTrack *) mCapturedTrack;
+       Envelope *penvelope = pwavetrack->GetEnvelope();
 
-   WaveTrack *pwavetrack = (WaveTrack *) mCapturedTrack;
-   Envelope *penvelope = pwavetrack->GetEnvelope();
-
-   // AS: WaveTracks can be displayed in several different formats.
-   //  This asks which one is in use. (ie, Wave, Spectrum, etc)
-   int display = pwavetrack->GetDisplay();
-   bool needUpdate = false;
-
-   // AS: If we're using the right type of display for envelope operations
-   //  ie one of the Wave displays
-   if (display <= 1) {
-      bool dB = (display == 1);
-
-      // AS: Then forward our mouse event to the envelope.  It'll recalculate
-      //  and then tell us wether or not to redraw.
-      needUpdate = penvelope->MouseEvent(event, mCapturedRect,
-                                         mViewInfo->h, mViewInfo->zoom,
-                                         dB);
-
-      // If this track is linked to another track, make the identical
-      // change to the linked envelope:
-      WaveTrack *link = (WaveTrack *) mTracks->GetLink(mCapturedTrack);
-      if (link) {
-         Envelope *e2 = link->GetEnvelope();
-         needUpdate |= e2->MouseEvent(event, mCapturedRect,
-                                      mViewInfo->h, mViewInfo->zoom, dB);
-      }
-   }
-
-   if (needUpdate) {
-
-      Refresh(false);
-   }
+       // AS: WaveTracks can be displayed in several different formats.
+       //  This asks which one is in use. (ie, Wave, Spectrum, etc)
+       int display = pwavetrack->GetDisplay();
+       bool needUpdate = false;
+       
+       // AS: If we're using the right type of display for envelope operations
+       //  ie one of the Wave displays
+       if (display <= 1) {
+	 bool dB = (display == 1);
+	 
+	 // AS: Then forward our mouse event to the envelope.  It'll recalculate
+	 //  and then tell us wether or not to redraw.
+	 needUpdate = penvelope->MouseEvent(event, mCapturedRect,
+					    mViewInfo->h, mViewInfo->zoom,
+					    dB);
+	 
+	 // If this track is linked to another track, make the identical
+	 // change to the linked envelope:
+	 WaveTrack *link = (WaveTrack *) mTracks->GetLink(mCapturedTrack);
+	 if (link) {
+	   Envelope *e2 = link->GetEnvelope();
+	   needUpdate |= e2->MouseEvent(event, mCapturedRect,
+					mViewInfo->h, mViewInfo->zoom, dB);
+	 }
+       }
+       if (needUpdate) {
+	 Refresh(false);
+       }
+     }
 }
 
-// AS: "Sliding" is when the user is moving a wavetrack's offset.
-//  You can use the slide tool and drag around where a track starts. 
 void TrackPanel::HandleSlide(wxMouseEvent & event)
 {
    // AS: Why do we have static variables here?!?
@@ -1664,6 +1699,9 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
 
    wxMenu *theMenu = NULL;
 
+   if (t->GetKind() == Track::Time)
+      theMenu = mTimeTrackMenu;
+
    if (t->GetKind() == Track::Wave) {
       theMenu = mWaveTrackMenu;
       if (next && !t->GetLinked() && !next->GetLinked()
@@ -2185,7 +2223,8 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
    }
 
    if ((event.Moving() || event.ButtonUp(1)) &&
-       !mIsSelecting && !mIsEnveloping && !mIsSliding) {
+       !mIsSelecting && !mIsEnveloping &&
+       !mIsSliding) {
       HandleCursor(event);
    }
    if (event.ButtonUp(1)) {
@@ -2965,8 +3004,6 @@ void TrackPanel::OnRateChange(wxEvent & event)
    Refresh(false);
 }
 
-// AS: This function handles the case when the user selects "Other"
-//  from the Rate submenu on the Track menu.
 void TrackPanel::OnRateOther(wxEvent &event)
 {
    wxASSERT(mPopupMenuTarget
@@ -3005,6 +3042,69 @@ void TrackPanel::OnRateOther(wxEvent &event)
    mPopupMenuTarget = NULL;
    MakeParentRedrawScrollbars();
    Refresh(false);
+}
+
+void TrackPanel::OnSetTimeTrackRange()
+{
+   TimeTrack *t = (TimeTrack*)mPopupMenuTarget;
+
+   if (t) {
+      long lower = t->GetRangeLower();
+      long upper = t->GetRangeUpper();
+      
+      lower = wxGetNumberFromUser(_("Change lower speed limit (%) to:"),
+                                  _("Lower speed limit"),
+                                  _("Lower speed limit"),
+                                  lower,
+                                  10,
+                                  1000);
+
+      upper = wxGetNumberFromUser(_("Change upper speed limit (%) to:"),
+                                  _("Upper speed limit"),
+                                  _("Upper speed limit"),
+                                  upper,
+                                  lower+1,
+                                  1000);
+
+      if( lower >= 10 && upper <= 1000 && lower < upper ) {
+         t->SetRangeLower(lower);
+         t->SetRangeUpper(upper);
+         MakeParentPushState(wxString::Format(_("Set range to '%d' - '%d'"),
+                                              lower,
+                                              upper));
+         Refresh(false);
+      }
+   }
+   mPopupMenuTarget = NULL;
+}
+
+void TrackPanel::OnSetTimeTrackConverter()
+{
+   TimeTrack *t = (TimeTrack*)mPopupMenuTarget;
+   
+   if (t) {
+      ConverterList *lst = t->GetConverterList();
+      
+      int num = 0;
+      for( ConverterList *count = lst; count != NULL; count = count->next )
+         num++;
+      
+      wxString choices[num];
+      int indices[num];
+      int n=0;
+      for( ConverterList *count = lst; count != NULL; count = count->next ) {
+         choices[n] = _(count->name);
+         indices[n++] = count->id;
+      }
+      
+      int choice = wxGetSingleChoiceIndex(_("Sample rate conversion method"),
+                                          _("Sample rate conversion method"),
+                                          num,
+                                          choices);
+      t->setConverter( indices[choice] );
+   }      
+   
+   mPopupMenuTarget = NULL;
 }
 
 // AS: Move a track up or down, depending.

@@ -15,7 +15,12 @@
 
 #include "SampleFormat.h"
 #include "WaveTrack.h"
+#include "TimeTrack.h"
 #include "ControlToolBar.h"
+
+#if USE_LIBSAMPLERATE
+#include <samplerate.h>
+#endif
 
 class ControlToolBar;
 class DirManager;
@@ -23,44 +28,82 @@ class DirManager;
 bool QuickMix(TrackList * tracks, TrackFactory *factory,
               double rate, sampleFormat format);
 
+void MixBuffers(int numChannels, int *channelFlags, sampleFormat format,
+                samplePtr src, samplePtr *dests, int len, bool interleaved);
+
 class Mixer {
  public:
-   Mixer(int numChannels, int bufferSize, bool interleaved,
-         double rate, sampleFormat format);
+   // 
+   // Constructor / Destructor
+   //
+
+   Mixer(int numInputTracks, WaveTrack **inputTracks,
+         TimeTrack *timeTrack,
+         double startTime, double stopTime,
+         int numOutChannels, int outBufferSize, bool outInterleaved,
+         double outRate, sampleFormat outFormat);
    virtual ~ Mixer();
 
-   void UseVolumeSlider(ControlToolBar * c);
-   void Clear();
-   void MixLeft(WaveTrack * src, double t0, double t1);
-   void MixRight(WaveTrack * src, double t0, double t1);
-   void MixMono(WaveTrack * src, double t0, double t1);
-   void Mix(int *channelFlags, WaveTrack * src, double t0, double t1);
+   //
+   // Processing
+   //
 
-   // Interleaved
+   /// Returns number of output samples
+   sampleCount Process(sampleCount maxSamples);
+
+   /// Current time in seconds
+   double GetCurrentTime();
+
+   /// Retrieve the main buffer or the interleaved buffer
    samplePtr GetBuffer();
 
-   // Non-interleaved
+   // Retrieve one of the non-interleaved buffers
    samplePtr GetBuffer(int channel);
 
  private:
-   void MixDiffRates(int *channelFlags, WaveTrack * src, double t0, double t1);
-   void MixSameRate(int *channelFlags, WaveTrack * src, double t0, double t1);
+
+   void Clear();
+   sampleCount MixSameRate(int *channelFlags, WaveTrack *src,
+                           longSampleCount *pos);
+
+#if USE_LIBSAMPLERATE
+   sampleCount MixVariableRates(int *channelFlags, WaveTrack *track,
+                                longSampleCount *pos, float *queue,
+                                int *queueStart, int *queueLen,
+                                SRC_STATE *SRC);
+#endif
 
  private:
-   int             mNumChannels;
-   int             mNumBuffers;
-   int             mBufferSize;
-   int             mInterleavedBufferSize;
-   sampleFormat    mFormat;
-   bool            mInterleaved;
-   bool            mUseVolumeSlider;
-   ControlToolBar *mControlToolBar;
-   samplePtr      *mBuffer;
-   double         *mEnvValues;
-   double          mRate;
+   // Input
+   int              mNumInputTracks;
+   WaveTrack      **mInputTrack;
+   TimeTrack       *mTimeTrack;
+   longSampleCount *mSamplePos;
+   double          *mEnvValues;
+   double           mT;  // Current time
+   double           mT0; // Start time
+   double           mT1; // Stop time (none if mT0==mT1)   
+#if USE_LIBSAMPLERATE
+   SRC_STATE      **mSRC;
+   float          **mSampleQueue;
+   int             *mQueueStart;
+   int             *mQueueLen;
+   int              mQueueMaxLen;
+   int              mProcessLen;
+#endif
 
-   samplePtr      mTemp;
-   int            mTempBufferSize;
+   // Output
+   int              mMaxOut;
+   int              mNumChannels;
+   int              mNumBuffers;
+   int              mBufferSize;
+   int              mInterleavedBufferSize;
+   sampleFormat     mFormat;
+   bool             mInterleaved;
+   samplePtr       *mBuffer;
+   samplePtr        mTemp;
+   float           *mFloatBuffer;
+   double           mRate;
 };
 
 #endif

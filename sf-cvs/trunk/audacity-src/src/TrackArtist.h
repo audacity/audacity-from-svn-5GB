@@ -29,6 +29,7 @@ class Track;
 class WaveTrack;
 class NoteTrack;
 class LabelTrack;
+class TimeTrack;
 class TrackList;
 struct ViewInfo;
 
@@ -80,6 +81,9 @@ class TrackArtist {
 
    void DrawLabelTrack(LabelTrack *track,
                        wxDC & dc, wxRect & r, ViewInfo * viewInfo);
+
+   void DrawTimeTrack(TimeTrack *track,
+		      wxDC & dc, wxRect & r, ViewInfo * viewInfo);
 };
 
 #endif                          // define __AUDACITY_TRACKARTIST__

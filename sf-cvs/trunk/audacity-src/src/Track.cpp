@@ -16,6 +16,7 @@
 #include "WaveTrack.h"
 #include "NoteTrack.h"
 #include "LabelTrack.h"
+#include "TimeTrack.h"
 #include "DirManager.h"
 
 Track::Track(DirManager * projDirManager) 
@@ -191,6 +192,19 @@ void TrackList::Add(Track * t)
    tail = n;
    if (!head)
       head = n;
+}
+
+void TrackList::AddToHead(Track * t)
+{
+   TrackListNode *n = new TrackListNode();
+   n->t = (Track *) t;
+   n->prev = 0;
+   n->next = head;
+   if (head)
+      head->prev = n;
+   head = n;
+   if (!tail)
+      tail = n;
 }
 
 void TrackList::Remove(Track * t)
@@ -434,6 +448,42 @@ bool TrackList::Contains(Track * t) const
 bool TrackList::IsEmpty() const
 {
    return (head == NULL);
+}
+
+TimeTrack *TrackList::GetTimeTrack()
+{
+   TrackListNode *p = head;
+   while (p) {
+      if (p->t->GetKind() == Track::Time)
+         return (TimeTrack *)p->t;
+      p = p->next;
+   }
+   return NULL;
+}
+
+void TrackList::GetWaveTracks(bool selectionOnly,
+                              int *num, WaveTrack ***tracks)
+{
+   int i;
+   *num = 0;
+
+   TrackListNode *p = head;
+   while (p) {
+      if (p->t->GetKind() == Track::Wave &&
+          (p->t->GetSelected() || !selectionOnly))
+         (*num)++;
+      p = p->next;
+   }
+
+   *tracks = new WaveTrack*[*num];
+   p = head;
+   i = 0;
+   while (p) {
+      if (p->t->GetKind() == Track::Wave &&
+          (p->t->GetSelected() || !selectionOnly))
+         (*tracks)[i++] = (WaveTrack *)p->t;
+      p = p->next;
+   }
 }
 
 #ifdef new

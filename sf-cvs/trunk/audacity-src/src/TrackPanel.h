@@ -103,7 +103,7 @@ class TrackPanel:public wxWindow {
    // AS: Cursor handling
    void HandleCursor(wxMouseEvent & event);
 
-   // AS: Amplitude Envelope editing handlers
+   // AS: Envelope editing handlers
    void HandleEnvelope(wxMouseEvent & event);
    void ForwardEventToEnvelope(wxMouseEvent &event);
 
@@ -146,6 +146,8 @@ class TrackPanel:public wxWindow {
    void OnChangeOctave (wxEvent &event);
    void OnChannelChange(wxEvent &event);
    void OnSetDisplay   (wxEvent &event);
+   void OnSetTimeTrackRange ();
+   void OnSetTimeTrackConverter();
 
    void SetRate(Track *pTrack, double rate);
    void OnRateChange(wxEvent &event);
@@ -307,6 +309,7 @@ class TrackPanel:public wxWindow {
 
    wxMenu *mWaveTrackMenu;
    wxMenu *mNoteTrackMenu;
+   wxMenu *mTimeTrackMenu;
    wxMenu *mLabelTrackMenu;
    wxMenu *mRateMenu;
    wxMenu *mFormatMenu;

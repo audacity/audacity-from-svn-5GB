@@ -1251,8 +1251,6 @@ bool ExportMP3(AudacityProject *project,
    GetMP3Exporter()->SetBitrate(bitrate);
 
    sampleCount inSamples = GetMP3Exporter()->InitializeStream(stereo ? 2 : 1, int(rate + 0.5));
-   double timeStep =  (double)inSamples / rate;
-   double t = t0;
 
    wxProgressDialog *progress = NULL;
    wxYield();
@@ -1261,56 +1259,33 @@ bool ExportMP3(AudacityProject *project,
    bool cancelling = false;
    long bytes;
 
-
    int bufferSize = GetMP3Exporter()->GetOutBufferSize();
    unsigned char *buffer = new unsigned char[bufferSize];
    wxASSERT(buffer);
 
-   while (t < t1 && !cancelling) {
+   int numWaveTracks;
+   WaveTrack **waveTracks;
+   tracks->GetWaveTracks(selectionOnly, &numWaveTracks, &waveTracks);
+   Mixer *mixer = new Mixer(numWaveTracks, waveTracks,
+                            tracks->GetTimeTrack(),
+                            0.0, tracks->GetEndTime(),
+                            stereo? 2: 1, inSamples, true,
+                            rate, int16Sample);
 
-      double deltat = timeStep;
-      bool lastFrame = false;
-      sampleCount numSamples = inSamples;
+   while(!cancelling) {
+      sampleCount blockLen = mixer->Process(inSamples);
 
-      if (t + deltat > t1) {
-         lastFrame = true;
-         deltat = t1 - t;
-         numSamples = int(deltat * rate + 0.5);
-      }
-
-
-      Mixer *mixer = new Mixer(stereo ? 2 : 1, numSamples, true,
-                               rate, int16Sample);
-      wxASSERT(mixer);
-      mixer->Clear();
-
-
-      TrackListIterator iter(tracks);
-      Track *tr = iter.First();
-      while (tr) {
-         if (tr->GetKind() == Track::Wave) {
-            if (tr->GetSelected() || !selectionOnly) {
-               if (tr->GetChannel() == Track::MonoChannel)
-                  mixer->MixMono((WaveTrack *) tr, t, t + deltat);
-               else if (tr->GetChannel() == Track::LeftChannel)
-                  mixer->MixLeft((WaveTrack *) tr, t, t + deltat);
-               else if (tr->GetChannel() == Track::RightChannel)
-                  mixer->MixRight((WaveTrack *) tr, t, t + deltat);
-            }
-         }
-         tr = iter.Next();
-      }
+      if (blockLen == 0)
+         break;
       
       short *mixed = (short *)mixer->GetBuffer();
 
-      if(lastFrame)
-         bytes = GetMP3Exporter()->EncodeRemainder(mixed, numSamples, buffer);
+      if(blockLen < inSamples)
+         bytes = GetMP3Exporter()->EncodeRemainder(mixed, blockLen, buffer);
       else
          bytes = GetMP3Exporter()->EncodeBuffer(mixed, buffer);
 
       outFile.Write(buffer, bytes);
-
-      t += deltat;
 
       if (!progress && wxGetElapsedTime(false) > 500) {
 
@@ -1333,13 +1308,14 @@ bool ExportMP3(AudacityProject *project,
       }
 
       if (progress) {
-         cancelling =
-             !progress->Update(int (((t - t0) * 1000) / (t1 - t0) + 0.5));
+         int progressvalue = int (1000 * (mixer->GetCurrentTime() /
+                                          tracks->GetEndTime()));
+         cancelling = !progress->Update(progressvalue);
       }
 
-      delete mixer;
-
    }
+
+   delete mixer;
 
    bytes = GetMP3Exporter()->FinishStream(buffer);
 

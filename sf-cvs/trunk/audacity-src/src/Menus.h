@@ -172,6 +172,7 @@ void OnAlignGroupEndSelEnd(wxEvent & event);
 
 void OnNewWaveTrack(wxEvent & event);
 void OnNewLabelTrack(wxEvent & event);
+void OnNewTimeTrack(wxEvent & event);
 void OnRemoveTracks(wxEvent & event);
 
         // Help Menu

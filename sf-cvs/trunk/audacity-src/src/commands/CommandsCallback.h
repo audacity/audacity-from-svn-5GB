@@ -49,7 +49,7 @@ audEventFunction callback_function_pointers[] = {&AudacityProject::OnNew,&Audaci
 &AudacityProject::OnAlignEndCursorMoveSel,&AudacityProject::OnAlignEndSelStartMoveSel,&AudacityProject::OnAlignEndSelEndMoveSel,
 &AudacityProject::OnAlignGroupCursorMoveSel,&AudacityProject::OnAlignGroupSelStartMoveSel,&AudacityProject::OnAlignGroupSelEndMoveSel,
 &AudacityProject::OnAlignGroupEndCursorMoveSel,&AudacityProject::OnAlignGroupEndSelStartMoveSel,&AudacityProject::OnAlignGroupEndSelEndMoveSel,
-&AudacityProject::OnNewWaveTrack,&AudacityProject::OnNewLabelTrack,&AudacityProject::OnRemoveTracks,
+&AudacityProject::OnNewWaveTrack,&AudacityProject::OnNewLabelTrack,&AudacityProject::OnNewTimeTrack,&AudacityProject::OnRemoveTracks,
 &AudacityProject::OnAbout,&AudacityProject::OnHelp,&AudacityProject::OnHelpIndex,&AudacityProject::OnHelpSearch,
 &AudacityProject::OnBenchmark,&AudacityProject::OnSeparator,&AudacityProject::OnAddLabel};
 
@@ -65,7 +65,7 @@ const char *callback_function_strings[] = {"OnNew","OnOpen","OnClose","OnSave","
 "OnAlignCursorMoveSel","OnAlignSelStartMoveSel","OnAlignSelEndMoveSel","OnAlignEndCursorMoveSel","OnAlignEndSelStartMoveSel",
 "OnAlignEndSelEndMoveSel","OnAlignGroupCursorMoveSel","OnAlignGroupSelStartMoveSel","OnAlignGroupSelEndMoveSel",
 "OnAlignGroupEndCursorMoveSel","OnAlignGroupEndSelStartMoveSel","OnAlignGroupEndSelEndMoveSel",
-"OnNewWaveTrack", "OnNewLabelTrack","OnRemoveTracks","OnAbout","OnHelp","OnHelpIndex","OnHelpSearch","OnBenchmark","OnSeparator","OnAddLabel"};
+"OnNewWaveTrack","OnNewLabelTrack","OnNewTimeTrack","OnRemoveTracks","OnAbout","OnHelp","OnHelpIndex","OnHelpSearch","OnBenchmark","OnSeparator","OnAddLabel"};
 
 #endif
 
@@ -180,6 +180,7 @@ void OnAlignGroupEndSelEndMoveSel();
 
 void OnNewWaveTrack();
 void OnNewLabelTrack();
+void OnNewTimeTrack();
 void OnRemoveTracks();
 void OnAddLabel();
 

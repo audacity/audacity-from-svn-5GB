@@ -19,6 +19,8 @@
 #include <stdlib.h>
 
 #include <wx/dynarray.h>
+#include <wx/brush.h>
+#include <wx/pen.h>
 
 #include "xml/XMLTagHandler.h"
 
@@ -77,6 +79,7 @@ class Envelope : public XMLTagHandler {
    void Mirror(bool mirror);
 
    void Flatten(double value);
+   void SetDefaultValue(double value) {mDefaultValue=value;}
 
 #if LEGACY_PROJECT_FILE_SUPPORT
    // File I/O
@@ -118,6 +121,16 @@ class Envelope : public XMLTagHandler {
    // if you need more than one value in a row.
    void GetValues(double *buffer, int len, double t0, double tstep) const;
 
+   int NumberOfPointsAfter(double t);
+   double NextPointAfter(double t);
+
+   double Average( double t0, double t1 );
+   double Integral( double t0, double t1 );
+   double Integral( double t0, double t1, double minY, double maxY );
+
+   void print();
+   void testMe();
+
    bool IsDirty() const;
 
    // Add a point at a particular spot
@@ -133,7 +146,7 @@ class Envelope : public XMLTagHandler {
                   int bufferLen) const;
 
  private:
-   
+
    bool mMirror;
 
    double fromDB(double x) const;
@@ -142,6 +155,7 @@ class Envelope : public XMLTagHandler {
    EnvArray mEnv;
    double mOffset;
    double mTrackLen;
+   double mDefaultValue;
 
    int mDragPoint;
    int mInitialX;
@@ -153,6 +167,16 @@ class Envelope : public XMLTagHandler {
 
    bool mDB;
    bool mDirty;
+
+   wxPen mPen;
+   wxBrush mBrush;
+
+   // These are memoizing variables for Integral()
+   double lastIntegral_t0;
+   double lastIntegral_t1;
+   double lastIntegral_result;
+   // and this function resets them (call whenever the Envelope changes)
+   void resetIntegralMemoizer() { lastIntegral_t0=0; lastIntegral_t1=0; lastIntegral_result=0; }
 };
 
 #endif

@@ -7,7 +7,7 @@
   Dominic Mazzoni
 
   This class handles the actual rendering of WaveTracks (both
-  waveforms and spectra), NoteTracks, and LabelTracks.
+  waveforms and spectra), NoteTracks, LabelTracks and TimeTracks.
 
   It's actually a little harder than it looks, because for
   waveforms at least it needs to cache the samples that are
@@ -37,6 +37,7 @@
 #include "NoteTrack.h"
 #include "WaveTrack.h"
 #include "LabelTrack.h"
+#include "TimeTrack.h"
 #include "Prefs.h"
 #include "Sequence.h"
 #include "Spectrum.h"
@@ -89,7 +90,8 @@ void TrackArtist::SetInset(int left, int top, int right, int bottom)
 void TrackArtist::DrawTracks(TrackList * tracks,
                              wxDC & dc, wxRect & r,
                              wxRect & clip,
-                             ViewInfo * viewInfo, bool drawEnvelope)
+                             ViewInfo * viewInfo,
+			     bool drawEnvelope)
 {
    wxRect trackRect = r;
 
@@ -132,6 +134,9 @@ void TrackArtist::DrawTracks(TrackList * tracks,
          case Track::Label:
             DrawLabelTrack((LabelTrack *)t, dc, rr, viewInfo);
             break;
+	 case Track::Time:
+	    DrawTimeTrack((TimeTrack *)t, dc, rr, viewInfo);
+	    break;
          }
       }
 
@@ -443,7 +448,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
       envValues = new double[mid.width];
    }
 
-   // Start working on the volume envelope
+   // Start working on the envelope
    track->GetEnvelope()->GetValues(envValues, mid.width, t0 + tOffset, tstep);
 
    double t = t0;
@@ -1259,9 +1264,20 @@ void TrackArtist::DrawLabelTrack(LabelTrack *track,
 {
    double sel0 = viewInfo->sel0;
    double sel1 = viewInfo->sel1;
-
+   
    if (!track->GetSelected())
       sel0 = sel1 = 0.0;
-
+   
    track->Draw(dc, r, viewInfo->h, viewInfo->zoom, sel0, sel1);
 }
+
+void TrackArtist::DrawTimeTrack(TimeTrack *track,
+                                wxDC & dc, wxRect & r,
+                                ViewInfo * viewInfo)
+{
+   track->Draw(dc, r, viewInfo->h, viewInfo->zoom);
+   wxRect envRect = r;
+   envRect.height -= 2;
+   track->GetEnvelope()->Draw(dc, envRect, viewInfo->h, viewInfo->zoom, false);
+}
+

@@ -24,6 +24,7 @@
 #include <wx/string.h>
 #include <wx/thread.h>
 
+#include "Mix.h"
 #include "RingBuffer.h"
 #include "SampleFormat.h"
 #include "WaveTrack.h"
@@ -95,6 +96,7 @@ class AudioIO {
    sampleCount         mOutBufferSize;
    RingBuffer        **mOutBuffers;
    WaveTrack         **mOutTracks;
+   Mixer             **mOutMixers;
    double              mRate;
    double              mT;
    double              mRecT;
@@ -120,7 +122,7 @@ class AudioIO {
    bool                mFirstPause;
 
    #if USE_PORTMIXER
-   PxMixer            *mMixer;
+   PxMixer            *mPortMixer;
    #endif
 
    friend class AudioThread;
