@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AUDACITY 1.2.0-pre4\n"
 "POT-Creation-Date: 2004-02-01 07:48-0800\n"
-"PO-Revision-Date: 2004-08-31 13:31+0100\n"
+"PO-Revision-Date: 2005-01-19 21:11+0100\n"
 "Last-Translator: Kevin Brubeck Unhammer <kiwibird@online.no>\n"
 "Language-Team: Translators-Norway <kiwibird@online.no>\n"
 "MIME-Version: 1.0\n"
@@ -75,7 +75,7 @@ msgstr "&Om Audacity..."
 
 #: ../src/Menus.cpp:258
 msgid "&All\tCtrl+A"
-msgstr "&Alle\tCtrl+A"
+msgstr "&Alt\tCtrl+A"
 
 #: ../src/Menus.cpp:460
 msgid "&Analyze"
@@ -307,7 +307,7 @@ msgstr "Lagt til kommentar"
 
 #: ../src/TrackPanel.cpp:1904
 msgid "Adjusted envelope."
-msgstr "Justert konvolutt"
+msgstr "Justert omhyllingskurve."
 
 #: ../src/effects/AvcCompressor.cpp:581
 msgid "Adjustment Delay:"
@@ -751,7 +751,7 @@ msgstr ""
 "Audacity kunne ikke låse mappen for midlertidige filer.\n"
 "Denne mappen kan være i bruk av en annen kopi av Audacity.\n"
 "Å kjøre to kopier av Audacity samtidig kan gi\n"
-"tap av data eller få systemet ditt til å krasje.\n"
+"tap av data eller få systemet ditt til å kræsje.\n"
 "\n"
 "Do you still want to start Audacity?"
 
@@ -810,7 +810,6 @@ msgstr "Hastighetstest"
 #  i18n-hint: Refers to byte-order.  Don't translate this if you don't
 #  know the correct technical word.
 #. i18n-hint: Refers to byte-order.  Don't translate this if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:305
 msgid "Big-endian"
 msgstr "Big-endian"
@@ -899,8 +898,6 @@ msgstr "Midtstill"
 #  "spectrum".  Do not translate it unless you are sure you
 #  know the correct technical word in your language.
 #. i18n-hint: This is a technical term, derived from the word
-#. "spectrum".  Do not translate it unless you are sure you
-#. know the correct technical word in your language.
 #: ../src/FreqWindow.cpp:136
 msgid "Cepstrum"
 msgstr "Cepstrum"
@@ -908,7 +905,7 @@ msgstr "Cepstrum"
 # juster? endre? forandre? gjør om? still? (not all marked fuzzy)
 #: ../src/prefs/MousePrefs.cpp:98
 msgid "Change Amplification Envelope"
-msgstr "Forandre omhyllingskurve for forsterkning"
+msgstr "Endre omhyllingskurve for forsterkning"
 
 # "datapunkt"? (not all marked fuzzy)
 #: ../src/prefs/MousePrefs.cpp:103
@@ -917,15 +914,15 @@ msgstr "Endre bare ETT datapunkt"
 
 #: ../src/effects/ChangePitch.cpp:115
 msgid "Change Pitch"
-msgstr "Juster tonehøyde"
+msgstr "Endre tonehøyde"
 
 #: ../src/effects/ChangePitch.cpp:240
 msgid "Change Pitch without Changing Tempo"
-msgstr "Juster tonehøyde uten å endre tempo"
+msgstr "Endre tonehøyde uten å endre tempo"
 
 #: ../src/effects/ChangePitch.h:43
 msgid "Change Pitch..."
-msgstr "Juster tonehøyde..."
+msgstr "Endre tonehøyde..."
 
 # need some usage examples...
 #: ../src/prefs/MousePrefs.cpp:100
@@ -938,31 +935,31 @@ msgstr "Endre flere datapunkter"
 
 #: ../src/effects/ChangeSpeed.cpp:47
 msgid "Change Speed"
-msgstr "Juster hastighet"
+msgstr "Endre hastighet"
 
 #: ../src/effects/ChangeSpeed.cpp:283
 msgid "Change Speed, affecting both Tempo and Pitch"
-msgstr "Juster hastighet, med endring av både tempo og tonehøyde"
+msgstr "Endre hastighet, med endring av både tempo og tonehøyde"
 
 #: ../src/effects/ChangeSpeed.h:37
 msgid "Change Speed..."
-msgstr "Juster hastighet..."
+msgstr "Endre hastighet..."
 
 #: ../src/effects/ChangeTempo.cpp:62
 msgid "Change Tempo"
-msgstr "Juster tempo"
+msgstr "Endre tempo"
 
 #: ../src/effects/ChangeTempo.cpp:160
 msgid "Change Tempo without Changing Pitch"
-msgstr "Juster tempo uten å endre tonehøyde"
+msgstr "Endre tempo uten å endre tonehøyde"
 
 #: ../src/effects/ChangeTempo.h:40
 msgid "Change Tempo..."
-msgstr "Juster tempo..."
+msgstr "Endre tempo..."
 
 #: ../src/TrackPanel.cpp:4323
 msgid "Change lower speed limit (%) to:"
-msgstr "Juster nedre hastighetsgrense (%) til:"
+msgstr "Endre nedre hastighetsgrense (%) til:"
 
 #: ../src/TrackPanel.cpp:4388
 msgid "Change track name to:"
@@ -970,7 +967,7 @@ msgstr "Endre navn på spor til:"
 
 #: ../src/TrackPanel.cpp:4330
 msgid "Change upper speed limit (%) to:"
-msgstr "Juster øvre hastighetsgrense (%) til:"
+msgstr "Endre øvre hastighetsgrense (%) til:"
 
 #: ../src/effects/AvcCompressor.cpp:398
 msgid "Change window size must be less than or equal to Adjustment window size."
@@ -993,7 +990,7 @@ msgstr "Endringer til den midlertidige mappen trer først i kraft når Audacity st
 
 #: ../src/effects/ChangePitch.h:47
 msgid "Changing Pitch"
-msgstr "Justerer tonehøyde"
+msgstr "Endrer tonehøyde"
 
 #: ../src/effects/ChangeSpeed.h:40
 msgid "Changing Speed"
@@ -1007,7 +1004,7 @@ msgstr "Endrer tempo"
 #: ../src/DirManager.cpp:660
 #, c-format
 msgid "Changing block %s\n"
-msgstr "Forandrer blokk %s\n"
+msgstr "Endrer blokk %s\n"
 
 #: ../src/effects/AvcCompressor.h:70
 msgid "Changing volume"
@@ -1113,7 +1110,6 @@ msgstr "Eksport via kommandolinjen er bare tilgjengelig i UNIX"
 #  i18n-hint: '-help', '-test' and
 #  '-blocksize' need to stay in English.
 #. i18n-hint: '-help', '-test' and
-#. '-blocksize' need to stay in English.
 #: ../src/AudacityApp.cpp:531
 #: ../src/AudacityApp.cpp:601
 #, c-format
@@ -1689,14 +1685,13 @@ msgstr "Feil ved åpning av fil"
 msgid "Error opening project"
 msgstr "Feil ved åpning av prosjekt"
 
-# "tyding"?
 #: ../src/import/ImportMIDI.cpp:46
 msgid "Error parsing Allegro file."
-msgstr "Feil ved tyding av Allegro-fil"
+msgstr "Feil ved tolking av Allegro-fil"
 
 #: ../src/import/ImportMIDI.cpp:76
 msgid "Error parsing MIDI file."
-msgstr "Feil ved tyding av MIDI-fil"
+msgstr "Feil ved tolking av MIDI-fil"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:174
 msgid "Error saving keyboard shortcuts"
@@ -1774,7 +1769,7 @@ msgstr "Eksporter MP3"
 #: ../src/export/ExportMultiple.cpp:466
 #: ../src/export/ExportMultiple.cpp:554
 msgid "Export Multiple"
-msgstr "Eksporter Flere filer..."
+msgstr "Eksporter flere filer..."
 
 #: ../src/Menus.cpp:156
 msgid "Export Selection As MP3..."
@@ -2023,7 +2018,7 @@ msgstr "Høykvalitets Sinc interpolasjon"
 
 #: ../src/prefs/QualityPrefs.cpp:186
 msgid "High-quality dither:"
-msgstr "Høykvalitets dither:"
+msgstr "Høykvalitetsdither:"
 
 #: ../src/prefs/QualityPrefs.cpp:147
 msgid "High-quality sample rate converter:"
@@ -2036,7 +2031,6 @@ msgstr "Horisontal stereo"
 #  i18n-hint: This is the abbreviation for "Hertz", or
 #  cycles per second.
 #. i18n-hint: This is the abbreviation for "Hertz", or
-#. cycles per second.
 #: ../src/import/ImportRaw.cpp:378
 msgid "Hz"
 msgstr "Hz"
@@ -2201,7 +2195,6 @@ msgstr "Tastatur"
 
 #  i18n-hint: One-letter abbreviation for Left, in the Pan slider
 #. i18n-hint: One-letter abbreviation for Left, in the Pan slider
-#. i18n-hint: One-letter abbreviation for Left, in VU Meter
 #: ../src/widgets/ASlider.cpp:329
 #: ../src/widgets/Meter.cpp:165
 msgid "L"
@@ -2349,7 +2342,6 @@ msgstr "Liste av Filer i rent tekstformat"
 #  i18n-hint: Refers to byte-order.  Don't translate this if you don't
 #  know the correct technical word.
 #. i18n-hint: Refers to byte-order.  Don't translate this if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:302
 msgid "Little-endian"
 msgstr "Little-endian"
@@ -2567,7 +2559,7 @@ msgstr "Multi-verktøysmodus: Ctrl-P for muse- og tastaturinnstillinger"
 
 #: ../src/TrackPanel.cpp:4673
 msgid "Mute"
-msgstr "Lyd av"
+msgstr "Demp"
 
 #  i18n-hint: hours, minutes, seconds, frames
 # (translate all those to "t:mm:ss:bb"? is "bps" too much like bits per second?)
@@ -2650,14 +2642,13 @@ msgstr "Neste verktøy\tD"
 #  i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
 #  know the correct technical word.
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:299
 msgid "No endianness"
 msgstr "Ingen endianness"
 
 #: ../src/AboutDialog.cpp:86
 msgid "No resampling support enabled"
-msgstr "Støtte til resampling er slått av"
+msgstr "Støtte til omsampling er slått av"
 
 #: ../src/export/Export.cpp:124
 msgid ""
@@ -2877,7 +2868,6 @@ msgstr "PAL frames 25 fps"
 #  i18n-hint: fps is "frames per second",
 #  and the other letters are for hours, minutes, seconds, frames
 #. i18n-hint: fps is "frames per second",
-#. and the other letters are for hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:35
 msgid "PAL h:mm:ss:ff 25 fps"
 msgstr "PAL h:mm:ss:ff 25 fps"
@@ -3081,7 +3071,6 @@ msgstr "Lukk Audacity ved lukking av det siste vinduet"
 
 #  i18n-hint: One-letter abbreviation for Right, in the Pan slider
 #. i18n-hint: One-letter abbreviation for Right, in the Pan slider
-#. i18n-hint: One-letter abbreviation for Right, in VU Meter
 #: ../src/widgets/ASlider.cpp:332
 #: ../src/widgets/Meter.cpp:167
 msgid "R"
@@ -3108,7 +3097,6 @@ msgstr "Forhold: %.1f:1"
 #  i18n-hint: This refers to files that are opened directly
 #  without looking at the file header.  Same as "Import Raw"
 #. i18n-hint: This refers to files that are opened directly
-#. without looking at the file header.  Same as "Import Raw"
 #: ../src/Project.cpp:2190
 msgid "Raw"
 msgstr "Rå"
@@ -3119,11 +3107,11 @@ msgstr "Les direkte fra originalfilen (raskere)"
 
 #: ../src/prefs/QualityPrefs.cpp:171
 msgid "Real-time dither:"
-msgstr "Real-time dither:"
+msgstr "Sanntidsdither:"
 
 #: ../src/prefs/QualityPrefs.cpp:136
 msgid "Real-time sample rate converter:"
-msgstr "Real-time konverterer for datapunktrate:"
+msgstr "Sanntidskonverterer for datapunktrate:"
 
 # "ta opp"?
 #: ../src/ControlToolBar.cpp:469
@@ -3143,7 +3131,7 @@ msgstr "Innspillt lyd"
 
 #: ../src/prefs/AudioIOPrefs.cpp:148
 msgid "Recording"
-msgstr "Spiller inn"
+msgstr "Opptak"
 
 #: ../src/Project.cpp:2631
 #, c-format
@@ -3250,7 +3238,7 @@ msgstr "Repetert %d ganger"
 #: ../src/Resample.cpp:233
 #: ../src/Resample.cpp:243
 msgid "Resampling disabled."
-msgstr "Resampling slått av."
+msgstr "Omsampling slått av."
 
 #: ../src/effects/Wahwah.cpp:516
 msgid "Resonance:"
@@ -3333,7 +3321,7 @@ msgstr "Lagre prosjekt som:"
 
 #: ../src/Project.cpp:1700
 msgid "Save changes before closing?"
-msgstr "Lagre forandringer før lukking?"
+msgstr "Lagre endringer før lukking?"
 
 #: ../src/Project.cpp:1701
 msgid "Save changes?"
@@ -3981,7 +3969,7 @@ msgstr "Angre"
 
 #: ../src/HistoryWindow.cpp:49
 msgid "Undo History"
-msgstr "Angre-historie"
+msgstr "Angrehistorie"
 
 #: ../src/HistoryWindow.cpp:77
 msgid "Undo Levels Available (lots and lots)"
@@ -4110,8 +4098,6 @@ msgstr "Ved import av ukomprimerte lydfiler til Audacity"
 #  example, "Where is lame_enc.dll?" - you could translate
 #  "Where would I find the file %s" instead if you want.
 #. i18n-hint: It's asking for the location of a file, for
-#. example, "Where is lame_enc.dll?" - you could translate
-#. "Where would I find the file %s" instead if you want.
 #: ../src/export/ExportMP3.cpp:113
 #, c-format
 msgid "Where is %s?"
@@ -4256,7 +4242,6 @@ msgstr "bytes"
 #  i18n-hint: fps is "frames per second",
 #  cdda is "Compact Disc Digital Audio - don't translate
 #. i18n-hint: fps is "frames per second",
-#. cdda is "Compact Disc Digital Audio - don't translate
 #: ../src/FormatSelection.cpp:44
 msgid "cdda min:sec:frames 75 fps"
 msgstr "cdda min:sec:frames 75 fps"
@@ -4265,8 +4250,6 @@ msgstr "cdda min:sec:frames 75 fps"
 #  A "sector" is a technical term - don't translate unless you're sure
 #  you know the correct term.
 #. i18n-hint: cdda is "Compact Disc Digital Audio - don't translate.
-#. A "sector" is a technical term - don't translate unless you're sure
-#. you know the correct term.
 #: ../src/FormatSelection.cpp:54
 msgid "cdda sectors+bytes (snap to samples)"
 msgstr "cdda sektorer+bytes (smett-på-plass til datapunkter)"
@@ -4289,7 +4272,6 @@ msgstr "film frames 24 fps"
 #  i18n-hint: fps is "frames per second",
 #  and the other letters are for hours, minutes, seconds, frames
 #. i18n-hint: fps is "frames per second",
-#. and the other letters are for hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:30
 msgid "film h:mm:ss:ff 24 fps"
 msgstr "film h:mm:ss:ff 24 fps"
@@ -4325,9 +4307,6 @@ msgstr "min:sek+datapunkter (smett-på-plass til datapunkter)"
 #  applicable" (in other words,
 #  unimportant, not relevant).
 #. i18n-hint: n/a is an English
-#. abbreviation meaning "not
-#. applicable" (in other words,
-#. unimportant, not relevant).
 #: ../src/effects/ChangeSpeed.cpp:339
 msgid "n/a"
 msgstr "(ingen)"
@@ -4385,11 +4364,6 @@ msgstr "til start av spor"
 #  your own name(s) to the credits.
 #  For example:  "English translation by Dominic Mazzoni."
 #. i18n-hint: The translation of "translator_credits" will appear
-#. in the credits in the About Audacity window.  Use this to add
-#. your own name(s) to the credits.
-#.
-#. For example:  "English translation by Dominic Mazzoni."
-#.
 #: ../src/AboutDialog.cpp:127
 #: ../src/AboutDialog.cpp:129
 msgid "translator_credits"
