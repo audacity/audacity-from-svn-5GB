@@ -19,12 +19,14 @@
 #include <wx/statusbr.h>
 
 #include "TrackPanel.h"
+
 #include "APalette.h"
 #include "AColor.h"
+#include "LabelTrack.h"
 #include "Track.h"
+#include "Play.h"
 #include "Project.h"
 #include "WaveTrack.h"
-#include "LabelTrack.h"
 
 enum {
   TrackPanelFirstID = 2000,
@@ -83,6 +85,8 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
   mIsResizing = false;
   mIsSliding = false;
   mIsEnveloping = false;
+  
+  mIndicatorShowing = false;
 
   mArrowCursor = new wxCursor(wxCURSOR_ARROW);
   mSelectCursor = new wxCursor(wxCURSOR_IBEAM);
@@ -186,6 +190,39 @@ void TrackPanel::OnTimer()
 	}
   }
   
+  if (mIndicatorShowing ||
+      (gSoundPlayer->IsBusy() &&
+       gSoundPlayer->GetProject() == (AudacityProject *)GetParent())) {
+
+    double ind = gSoundPlayer->GetIndicator();
+    bool onScreen = (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen));
+    
+    if (mIndicatorShowing || onScreen) {
+      mIndicatorShowing = (onScreen &&
+                           gSoundPlayer->IsBusy() &&
+                           gSoundPlayer->GetProject() == (AudacityProject *)GetParent());
+
+      wxClientDC dc(this);
+
+      int width, height;
+      GetSize(&width, &height);
+      height = GetRulerHeight();
+      
+      wxMemoryDC *memDC = new wxMemoryDC();
+      wxBitmap *rulerBitmap = new wxBitmap();
+      rulerBitmap->Create(width, height);
+
+      memDC->SelectObject(*rulerBitmap);
+      
+      DrawRuler(*memDC, true);
+      
+      dc.Blit(0, 0, width, height, memDC, 0, 0, wxCOPY, FALSE);
+      
+      delete memDC;
+      delete rulerBitmap;      
+    }
+  }
+   
   mTimeCount = (mTimeCount+1)%10;
   if (mTimeCount == 0) {
 	if (mTracks->First() != NULL &&
@@ -203,8 +240,10 @@ void TrackPanel::OnTimer()
 
 	  int y = -mViewInfo->vpos + GetRulerHeight();
 	  
-	  // Draw cursor in ruler
-	  dc.DrawLine(x,1,x,GetRulerHeight()-2);
+	  if (!mIndicatorShowing) {
+        // Draw cursor in ruler
+        dc.DrawLine(x,1,x,GetRulerHeight()-2);
+      }
 
 	  if (x >= GetLabelOffset()) {
 		// Draw cursor in all selected tracks
@@ -240,12 +279,6 @@ void TrackPanel::OnPaint(wxPaintEvent& event)
   wxMemoryDC memDC;
 
   memDC.SelectObject(*mBitmap);
-
-  /*
-  memDC.SetBrush(*wxWHITE_BRUSH);
-  memDC.SetPen(*wxWHITE_PEN);
-  memDC.DrawRectangle(0, 0, width, height);
-  */
 
   DrawTracks(memDC);
   DrawRuler(memDC);
@@ -840,8 +873,8 @@ void TrackPanel::HandleResize(wxMouseEvent& event)
 void TrackPanel::OnKeyEvent(wxKeyEvent& event)
 {
   if (event.ControlDown()) {
-	event.Skip();
-	return;
+    event.Skip();
+    return;
   }
 
   long key = event.KeyCode();
@@ -935,7 +968,7 @@ void TrackPanel::OnMouseEvent(wxMouseEvent& event)
   }
 }
 
-void TrackPanel::DrawRuler(wxDC& dc)
+void TrackPanel::DrawRuler(wxDC& dc, bool text)
 {
   wxRect r;
   
@@ -982,7 +1015,7 @@ void TrackPanel::DrawRuler(wxDC& dc)
 	selectedPen.SetColour(148,148,170);
 	dc.SetBrush(selectedBrush);
 	dc.SetPen(selectedPen);
-	
+
 	wxRect sr;
 	sr.x = p0;
 	sr.y = 1;
@@ -1003,7 +1036,8 @@ void TrackPanel::DrawRuler(wxDC& dc)
   #endif
 
   wxFont rulerFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
-  dc.SetFont(rulerFont);
+  if (text)
+    dc.SetFont(rulerFont);
 
   int minSpace = 60;  // min pixels between labels
 
@@ -1061,35 +1095,69 @@ void TrackPanel::DrawRuler(wxDC& dc)
 
   for(int pixel=0; pixel<r.width; pixel++) {
 
-	if (((int)(floor(pos / unit))) > unitcount) {
-	  unitcount = (int)(floor(pos/unit));
+    if (((int)(floor(pos / unit))) > unitcount) {
+      unitcount = (int)(floor(pos/unit));
 
-	  switch((unitcount)%4) {
-	  case 0:
-		dc.DrawLine(r.x+pixel,r.y+8,r.x+pixel,r.y+r.height);
-				
-		char str[100];
-		sprintf(str,"%.1f%s",unitcount*unit/base, (const char *)unitStr);
-		long textWidth, textHeight;
-		dc.GetTextExtent(str, &textWidth, &textHeight);
-		if (pixel >= nextxpos && pixel+2+textWidth < r.width) {
-		  dc.DrawText(str, r.x+pixel+3, r.y+2);
-		  
-		  nextxpos = pixel + textWidth + 12;
-		}
-		break;
+      switch((unitcount)%4) {
+      case 0:
+    	dc.DrawLine(r.x+pixel,r.y+8,r.x+pixel,r.y+r.height);
 
-	  case 1:
-	  case 3:
-		dc.DrawLine(r.x+pixel,r.y+r.height-4,r.x+pixel,r.y+r.height);
-		break;
+          if (text) {
+      		char str[100];
+      		sprintf(str,"%.1f%s",unitcount*unit/base, (const char *)unitStr);
+              /*
+      		long textWidth, textHeight;
+      		dc.GetTextExtent(str, &textWidth, &textHeight);
+      		
+      		if (pixel >= nextxpos && pixel+2+textWidth < r.width) {*/
+      		  dc.DrawText(str, r.x+pixel+3, r.y+2);
+      		  /*
+      		  nextxpos = pixel + textWidth + 12;
+      		}*/
+          }
 
-	  case 2:
-		dc.DrawLine(r.x+pixel,r.y+r.height-6,r.x+pixel,r.y+r.height);
-		break;
-	  }
-	}
-	pos += 1.0 / mViewInfo->zoom;
+    	break;
+
+      case 1:
+      case 3:
+    	dc.DrawLine(r.x+pixel,r.y+r.height-4,r.x+pixel,r.y+r.height);
+    	break;
+
+      case 2:
+    	dc.DrawLine(r.x+pixel,r.y+r.height-6,r.x+pixel,r.y+r.height);
+    	break;
+      }
+    }
+    pos += 1.0 / mViewInfo->zoom;
+  }
+  
+  //
+  // Draw indicator
+  //
+
+  if (gSoundPlayer->IsBusy() &&
+      gSoundPlayer->GetProject() == (AudacityProject *)GetParent()) {
+  
+    double ind = gSoundPlayer->GetIndicator();
+  
+    if (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen)) {
+      int indp = GetLabelOffset() + int((ind - mViewInfo->h)*mViewInfo->zoom);
+
+      dc.SetPen(*wxTRANSPARENT_PEN);
+      dc.SetBrush(*wxBLACK_BRUSH);
+
+      int indsize = 6;
+    
+      wxPoint tri[3];
+	  tri[0].x = indp;
+	  tri[0].y = indsize+1;
+	  tri[1].x = indp - indsize;
+	  tri[1].y = 1;
+	  tri[2].x = indp + indsize;
+	  tri[2].y = 1;
+
+	  dc.DrawPolygon(3, tri);
+    }
   }
 }
 
