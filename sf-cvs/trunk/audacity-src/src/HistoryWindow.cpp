@@ -52,11 +52,11 @@ HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
    mTopSizer = new wxBoxSizer(wxVERTICAL);
 
    mList = new wxListCtrl(this, HistoryListID, wxDefaultPosition, wxSize(350, 180),
-                          wxLC_REPORT /* | wxLC_EDIT_LABELS */);
+                          wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxSUNKEN_BORDER  /* | wxLC_EDIT_LABELS */);
    mList->SetSizeHints(350, 180);
 
-   wxImageList *imageList = new wxImageList(24, 24);
-   imageList->Add(wxIcon(empty_24x17_xpm));
+   wxImageList *imageList = new wxImageList(9, 16);
+   imageList->Add(wxIcon(empty_9x16_xpm));
    imageList->Add(wxIcon(arrow_xpm));
    mList->SetImageList(imageList, wxIMAGE_LIST_SMALL);
    mList->InsertColumn(0, _("Action"), wxLIST_FORMAT_LEFT, 280);

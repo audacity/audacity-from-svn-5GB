@@ -45,6 +45,7 @@
 #include "Project.h"
 #include "Track.h"
 
+#include "../AColor.h"
 #include "../images/ControlButtons.h"
 
 enum {
@@ -890,7 +891,6 @@ void ControlToolBar::OnTool(wxCommandEvent & evt)
    RedrawAllProjects();
 }
 
-
 void ControlToolBar::OnPaint(wxPaintEvent & evt)
 {
    wxPaintDC dc(this);
@@ -898,8 +898,17 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
    int width, height;
    GetSize(&width, &height);
 
-   DrawBackground(dc, width, height);
+#if defined __WXMAC__
+   // Mac has an Aqua background...
+   DrawBackground(dc, width, height); 
+#else
+   // On other platforms put the big buttons on a beveled platform.
+   DrawBackground(dc, 84, height);
+   AColor::Bevel( dc, true, wxRect( 83, 0, width-84, height-1 ) );
+#endif
 
+#if 0
+   //TODO: These dividers between the six buttons aren't needed?
    dc.SetPen(*wxBLACK_PEN);
    dc.DrawLine(27, 0, 27, height);
    dc.DrawLine(55, 0, 55, height);
@@ -908,6 +917,7 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
    dc.DrawLine(83, 0, 83, 27);
 #else
    dc.DrawLine(83, 0, 83, height);
+#endif
 #endif
 
 }

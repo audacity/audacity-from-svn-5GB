@@ -483,12 +483,12 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
 
    mIndicatorShowing = false;
 
-   mPencilCursor  = MakeCursor( wxCURSOR_PENCIL,    DrawCursorXpm, 16, 16);
-   mSelectCursor  = MakeCursor( wxCURSOR_IBEAM,     IBeamCursorXpm,16, 16);
+   mPencilCursor  = MakeCursor( wxCURSOR_PENCIL,    DrawCursorXpm, 12, 25);
+   mSelectCursor  = MakeCursor( wxCURSOR_IBEAM,     IBeamCursorXpm,17, 16);
    mEnvelopeCursor= MakeCursor( wxCURSOR_ARROW,     EnvCursorXpm,  16, 16);
    mSlideCursor   = MakeCursor( wxCURSOR_SIZEWE,    TimeCursorXpm, 16, 16);
-   mZoomInCursor  = MakeCursor( wxCURSOR_MAGNIFIER, ZoomCursorXpm, 16, 16);
-   mZoomOutCursor = MakeCursor( wxCURSOR_MAGNIFIER, ZoomCursorXpm, 16, 16);
+   mZoomInCursor  = MakeCursor( wxCURSOR_MAGNIFIER, ZoomCursorXpm, 19, 16);
+   mZoomOutCursor = MakeCursor( wxCURSOR_MAGNIFIER, ZoomCursorXpm, 19, 16);
 
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
    mSmoothCursor = new wxCursor(wxCURSOR_SPRAYCAN);
@@ -3346,9 +3346,9 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    r = trackRect;
 
    if (t->GetKind() == Track::Wave) {
-      dc->DrawText(TrackSubText(t), r.x + 6, r.y + 22);
+      dc->DrawText(TrackSubText(t), r.x + 16, r.y + 22);
       dc->DrawText(GetSampleFormatStr
-                   (((WaveTrack *) t)->GetSampleFormat()), r.x + 6,
+                   (((WaveTrack *) t)->GetSampleFormat()), r.x + 16,
                    r.y + 38);
    } else if (t->GetKind() == Track::Note) {
       wxRect midiRect;
