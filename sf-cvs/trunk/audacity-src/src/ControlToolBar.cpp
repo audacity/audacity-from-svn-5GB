@@ -45,7 +45,7 @@
 #include "Project.h"
 #include "Track.h"
 
-#include "../AColor.h"
+#include "AColor.h"
 #include "../images/ControlButtons.h"
 
 // Code duplication warning: these apparently need to be in the

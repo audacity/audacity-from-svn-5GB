@@ -1,52 +1,56 @@
 
-all: @BUILDLIBS@
+all: @LOCAL_LIBS@ @BUILDLIBS@
 
-allegro/allegro.a:
-	cd allegro && $(MAKE)
+allegro.a:
+	$(MAKE) -C allegro
+	ln -s allegro/allegro.a allegro.a
 
 dlcompat/libdl.a:
 	cd dlcompat && $(MAKE)
 
-expat/expat.a:
-	cd expat && $(MAKE)
+expat.a:
+	$(MAKE) -C expat
+	ln -s expat/expat.a expat.a
 
-libogg/src/.libs/libogg.a:
-	cd libogg && $(MAKE)
+libogg.a:
+	$(MAKE) -C libogg
+	ln -s libogg/src/.libs/libogg.a libogg.a
 
-libvorbis/lib/.libs/libvorbis.a:
-	cd libvorbis && $(MAKE)
+libvorbis.a libvorbisfile.a libvorbisenc.a:
+	$(MAKE) -C libvorbis
+	ln -s libvorbis/lib/.libs/libvorbis.a libvorbis.a
+	ln -s libvorbis/lib/.libs/libvorbisfile.a libvorbisfile.a
+	ln -s libvorbis/lib/.libs/libvorbisenc.a libvorbisenc.a
 
-libvorbis/lib/.libs/libvorbisfile.a:
-	cd libvorbis && $(MAKE)
+libnyquist.a:
+	$(MAKE) -C libnyquist
+	ln -s libnyquist/libnyquist.a libnyquist.a
 
-libvorbis/lib/.libs/libvorbisenc.a:
-	cd libvorbis && $(MAKE)
+libmad.a:
+	$(MAKE) -C libmad
+	ln -s libmad/.libs/libmad.a libmad.a
 
-libnyquist/libnyquist.a:
-	cd libnyquist && $(MAKE)
-
-libmad/.libs/libmad.a:
-	cd libmad && $(MAKE)
-
-libid3tag/.libs/libid3tag.a:
-	cd libid3tag && $(MAKE)
+libid3tag.a:
+	$(MAKE) -C libid3tag
+	ln -s libid3tag/.libs/libid3tag.a libid3tag.a
 
 libmad/mad.h: libmad/.libs/libmad.a
 
-libsamplerate/src/.libs/libsamplerate.a:
-	cd libsamplerate && $(MAKE)
+libsamplerate.a:
+	$(MAKE) -C libsamplerate
+	ln -s libsamplerate/src/.libs/libsamplerate.a libsamplerate.a
 
-libresample/libresample.a:
-	cd libresample && $(MAKE)
+libresample.a:
+	$(MAKE) -C libresample
+	ln -s libresample/libresample.a libresample.a
 
-libflac/src/libFLAC/.libs/libFLAC.a:
-	cd libflac && $(MAKE)
+libsndfile.a:
+	$(MAKE) -C libsndfile
+	ln -s libsndfile/src/.libs/libsndfile.a libsndfile.a
 
-libflac/src/libFLAC++/.libs/libFLAC++.a:
-	cd libflac && $(MAKE)
-
-libsndfile/src/.libs/libsndfile.a:
-	cd libsndfile && $(MAKE)
+soundtouch.a:
+	$(MAKE) -C soundtouch
+	ln -s soundtouch/soundtouch.a soundtouch.a
 
 portaudio/pa_unix_oss/portaudio.a:
 	cd portaudio/pa_unix_oss && $(MAKE)
@@ -63,8 +67,6 @@ portmixer/px_unix_oss/portmixer.a:
 portmixer/px_mac_core/portmixer.a:
 	cd portmixer/px_mac_core && $(MAKE)
 
-soundtouch/soundtouch.a:
-	cd soundtouch && $(MAKE)
 
 clean:
 	-$(MAKE) -C allegro clean

@@ -1,8 +1,10 @@
 CC = gcc
+srcdir=.
 
 override CFLAGS += -g -O2 -Ixmlparse -Ixmltok
 
 OBJS = xmlparse/xmlparse.o xmltok/xmlrole.o xmltok/xmltok.o
+DIRS=xmlparse xmltok
 
 expat.a: $(OBJS)
 	ar ruv expat.a $(OBJS)
@@ -11,5 +13,8 @@ expat.a: $(OBJS)
 clean:
 	rm -f expat.a xmlparse/*.o xmltok/*.o
 
-%.o: %.c Makefile
-	$(CC) -c $(CFLAGS) $< -o $@
+$(OBJS): %.o: $(srcdir)/%.c Makefile $(DIRS)
+	$(CC) -I$(srcdir)/xmlparse -I$(srcdir)/xmltok -c $(CFLAGS) $< -o $@
+
+$(DIRS):
+	mkdir $(DIRS)

@@ -5,6 +5,7 @@ LIBS = @LIBS@
 
 AR = @AR@
 RANLIB = @RANLIB@
+srcdir=@srcdir@
 
 OBJS = \
 	AAFilter.cc.o \
@@ -25,5 +26,5 @@ clean:
 distclean: clean
 	rm -f Makefile
 
-%.cc.o: %.cc Makefile
+$(OBJS): %.cc.o: $(srcdir)/%.cc Makefile
 	$(CCC) -c $(CXXFLAGS) $< -o $@

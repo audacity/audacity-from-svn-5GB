@@ -72,7 +72,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
 
    wxString informationStr;
 
-   #ifdef MP3SUPPORT
+   #ifdef USE_LIBMAD
    informationStr += _("MP3 importing enabled");
    #else
    informationStr += _("MP3 importing disabled");
