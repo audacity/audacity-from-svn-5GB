@@ -521,7 +521,7 @@ void AudioIO::StopStream()
 
    while( mAudioThreadShouldCallFillBuffersOnce == true )
    {
-      wxYield();
+      wxSafeYield();
       wxUsleep( 50 );
    }
 
