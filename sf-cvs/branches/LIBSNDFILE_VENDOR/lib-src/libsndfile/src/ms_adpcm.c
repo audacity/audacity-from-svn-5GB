@@ -18,7 +18,6 @@
 
 #include	<stdio.h>
 #include	<unistd.h>
-#include	<string.h>
 
 #include	"sndfile.h"
 #include	"config.h"
@@ -243,10 +242,16 @@ msadpcm_decode_block (SF_PRIVATE *psf, MSADPCM_PRIVATE *pms)
 		blockindex = 14 ;
 		} ;
 
+	/*--------------------------------------------------------
+	This was left over from a time when calculations were done
+	as ints rather than shorts. Keep this around as a reminder 
+	in case I ever find a file which decodes incorrectly.
+	
     if (chan_idelta [0] & 0x8000) 
 		chan_idelta [0] -= 0x10000 ;
     if (chan_idelta [1] & 0x8000) 
 		chan_idelta [1] -= 0x10000 ;
+	--------------------------------------------------------*/
 		
 	/* Pull apart the packed 4 bit samples and store them in their
 	** correct sample positions.

@@ -6,7 +6,7 @@
 	libsndfile
 	</TITLE>
 	<META NAME="Author"      CONTENT="Erik de Castro Lopo (erikd AT zip DOT com DOT au)">
-    <META NAME="Version"     CONTENT="libsndfile-1.0.0">
+    <META NAME="Version"     CONTENT="libsndfile-1.0.1">
 	<META NAME="Description" CONTENT="The libsndfile Home Page">
 	<META NAME="Keywords"    CONTENT="WAV AIFF AU SVX PAF NIST W64 libsndfile sound audio dsp Linux">
 	<META NAME="ROBOTS" 	 CONTENT="NOFOLLOW">
@@ -43,10 +43,10 @@
 </P>
 <P>
 	The library was written to compile and run on a Linux system but should compile
-	and run on just about any Unix. It can also be compiled and run on Win32 systems
-	using the Microsoft compiler and MacOS using the Metrowerks compiler (thanks to 
-	Ben "Jacobs"). There are directions for compiling libsndfile on these platforms
-	in the Win32 and MacOS directories of the source code distribution.
+	and run on just about any Unix (including MacOSX). It can also be compiled and 
+	run on Win32 systems using the Microsoft compiler and MacOS using the Metrowerks 
+	compiler. There are directions for compiling libsndfile on these platforms in the 
+	Win32 and MacOS directories of the source code distribution.
 </P>
 <P>
 	It was designed to handle both little-endian (such as WAV) and big-endian 
@@ -61,7 +61,8 @@
 <UL>
 	<LI>i586-pc-linux-gnu (Redhat 5.2 glibc)
  	<LI>powerpc-unknown-linux-gnu (Linux PPC)
-	<LI>powerpc-apple-darwin5.5 (Mac OS X)
+	<LI>powerpc-apple-darwin5.5 (Mac OS X 10.1)
+	<!-- <LI>powerpc-apple-darwin6.0 (Mac OS X 10.2) -->
 	<LI>sparc-sun-solaris2.8 (gcc)
  	<LI>mips-sgi-irix5.3 (Native IRIX toolset)
 	<LI>sparc-sun-solaris2.5.1 (gcc)
@@ -90,115 +91,118 @@
 
 <TABLE BORDER="1" cellpadding="2">
 	<TR><TD>&nbsp;</TD>
-	<TD ALIGN="center">Microsoft<BR>WAV</TD>
+	<TD ALIGN="center">M'soft<BR>WAV</TD>
 	<TD ALIGN="center">SGI / Apple<BR>AIFF / AIFC</TD>
 	<TD ALIGN="center">Sun / DEC /<BR>NeXT<BR>AU / SND</TD>
-	<TD ALIGN="center">Header-less<BR>RAW</TD>
+	<TD ALIGN="center">Header- less<BR>RAW</TD>
 	<TD ALIGN="center">Paris Audio<BR>File<BR>PAF</TD>
-	<TD ALIGN="center">Commodore<BR>Amiga<BR>IFF / SVX</TD>
-	<TD ALIGN="center">Sphere<BR>Nist<BR>SF</TD>
+	<TD ALIGN="center">Commo- dore<BR>Amiga<BR>IFF / SVX</TD>
+	<TD ALIGN="center">Sphere<BR>Nist<BR>WAV</TD>
 	<TD ALIGN="center">IRCAM<BR>SF</TD>
 	<TD ALIGN="center">Creative<BR>VOC</TD>
-	<TD ALIGN="center">Soundforge<BR>W64</TD>
+	<TD ALIGN="center">Sound forge<BR>W64</TD>
+	<TD ALIGN="center"><A HREF="octave.html">GNU Octave 2.0</A><BR>MAT4</TD>
+	<TD ALIGN="center"><A HREF="octave.html">GNU Octave 2.1</A><BR>MAT5</TD>
 	<!-- TD ALIGN="center">Sound<BR>Designer II<BR>SD2</TD -->
 	</TR>
 <TR><TD>Unsigned 8 bit PCM</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD>
-	<TD ALIGN="center">R/W</TD><!-- TD>&nbsp;</TD -->
+	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD>
 </TR>
 
 <TR><TD>Signed 8 bit PCM</TD>
 	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD>
-	<TD>&nbsp;</TD><TD>&nbsp;</TD><!-- TD>&nbsp;</TD -->
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>Signed 16 bit PCM</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
-	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><!-- TD ALIGN="center">R</TD -->
+	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	
 </TR>
 
 <TR><TD>Signed 24 bit PCM</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
-	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><!-- TD>&nbsp;</TD -->
+	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>Signed 32 bit PCM</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD>
-	<TD ALIGN="center">R/W</TD><!-- TD>&nbsp;</TD -->
+	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 </TR>
 
 <TR><TD>32 bit float</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD>
-	<TD ALIGN="center">R/W</TD><!-- TD>&nbsp;</TD -->
+	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 </TR>
 
 <TR><TD>64 bit double</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
-	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><!-- TD>&nbsp;</TD -->
+	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 </TR>
 
 <TR><TD>u-law encoding</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
-	<TD ALIGN="center">R/W</TD><!-- TD>&nbsp;</TD -->
+	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 <TR><TD>A-law encoding</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
-	<TD ALIGN="center">R/W</TD><!-- TD>&nbsp;</TD -->
+	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>IMA ADPCM</TD>
 	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
-	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><!-- TD>&nbsp;</TD -->
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>MS ADPCM</TD>
 	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
-	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><!-- TD>&nbsp;</TD -->
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>GSM 6.10</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
-	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><!-- TD>&nbsp;</TD -->
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>G721 ADPCM 32kbps</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
-	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><!-- TD>&nbsp;</TD -->
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>G723 ADPCM 24kbps</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
-	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><!-- TD>&nbsp;</TD -->
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>G723 ADPCM 40kbps</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
-	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><!-- TD>&nbsp;</TD -->
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>12 bit DWVW</TD>
 	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
-	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><!-- TD>&nbsp;</TD -->
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>16 bit DWVW</TD>
 	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
-	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><!-- TD>&nbsp;</TD -->
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>24 bit DWVW</TD>
 	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
-	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><!-- TD>&nbsp;</TD -->
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 </TABLE>
 
@@ -259,12 +263,9 @@
 	<LI>Version 0.0.8 (Feb 15 1999) First official release.
 	<LI>Version 0.0.28 (Apr 26 2002) Final release of version 0 of libsndfile.
 	<LI>Version 1.0.0rc1 (Jun 24 2002) Release candidate 1 of version 1 of libsndfile.
-	<LI>Version 1.0.0rc2 (Jun 25 2002) Release candidate 2 of version 1 of libsndfile.
-		Fix compile problem on Win32.
-	<LI>Version 1.0.0rc4 (Aug 3 2002) Minor bug and documentation fixes.
-	<LI>Version 1.0.0rc5 (Aug 10 2002) Minor bug and documentation fixes.
 	<LI>Version 1.0.0rc6 (Aug 14 2002) MacOS 9 fixes.
-	<LI>Version 1.0.0rc6 (Aug 16 2002) First 1.0.X release.
+	<LI>Version 1.0.0 (Aug 16 2002) First 1.0.X release.
+	<LI>Version 1.0.1 (Sep 14 2002) Added MAT4 and MAT5 file formats.
 	</UL>
 <P>
 	<A HREF="version-1.html">This document</A> details the changes in the API between 
@@ -312,7 +313,7 @@ for other licensing arrangements.
 </P>
 	<UL>
 	<LI>Source code as a .tar.gz : 
-			<A HREF="libsndfile-1.0.0.tar.gz">libsndfile-1.0.0.tar.gz</A>
+			<A HREF="libsndfile-1.0.1.tar.gz">libsndfile-1.0.1.tar.gz</A>
 	<LI>Last version 0 release (for compatibility with older software) as a .tar.gz : 
 			<A HREF="libsndfile-0.0.28.tar.gz">libsndfile-0.0.28.tar.gz</A>
 

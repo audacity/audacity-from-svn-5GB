@@ -125,10 +125,8 @@ typedef struct sf_private_tag
 	*/
 	char			logbuffer	[SF_BUFFER_LEN] ;
 	unsigned char	header		[SF_HEADER_LEN] ; /* Must be unsigned */
+	int				rwf_endian ;
 
-	/* For storing text from header. */
-	char			headertext	[SF_TEXT_LEN] ;
-	
 	/* Guard value. If this changes the buffers above have overflowed. */ 
 	int				Magick ;
 	
@@ -157,6 +155,8 @@ typedef struct sf_private_tag
 
 	int				blockwidth ;	/* Size in bytes of one set of interleaved samples. */
 	int				bytewidth ;		/* Size in bytes of one sample (one channel). */
+	
+	void			*interleave ;
 
 	sf_count_t		filelength ;
 
@@ -220,6 +220,11 @@ enum
 	SFE_BAD_CONTROL_CMD,
 	SFE_BAD_ENDIAN,
 	SFE_CHANNEL_COUNT,
+	SFE_BAD_RDWR_FORMAT,
+
+	SFE_INTERLEAVE_MODE,
+	SFE_INTERLEAVE_SEEK,
+	SFE_INTERLEAVE_READ,
 	
 	SFE_BAD_SEEK, 
 	SFE_NOT_SEEKABLE,
@@ -304,6 +309,15 @@ enum
 	SFE_W64_ADPCM_CHANNELS,
 	SFE_W64_GSM610_FORMAT,
 
+	SFE_MAT4_BAD_NAME,
+	SFE_MAT4_NO_SAMPLERATE,
+	SFE_MAT4_ZERO_CHANNELS,
+ 
+	SFE_MAT5_BAD_ENDIAN,
+	SFE_MAT5_NO_BLOCK,
+	SFE_MAT5_SAMPLE_RATE,
+	SFE_MAT5_ZERO_CHANNELS,
+
 	SFE_DWVW_BAD_BITWIDTH,
 	SFE_G72X_NOT_MONO,
 	
@@ -318,10 +332,14 @@ int u_bitwidth_to_subformat (int bits) ;
 **	with non-IEEE floats/doubles.
 */
 float	float32_read  (unsigned char *cptr) ;
+float	float32_be_read  (unsigned char *cptr) ;
+float	float32_le_read  (unsigned char *cptr) ;
 void	float32_write (float in, unsigned char *out) ;
 
-double	double64_read  (unsigned char *cptr) ;
-void	double64_write (double in, unsigned char *out) ;
+double	double64_be_read  (unsigned char *cptr) ;
+double	double64_le_read  (unsigned char *cptr) ;
+void	double64_be_write (double in, unsigned char *out) ;
+void	double64_le_write (double in, unsigned char *out) ;
 
 /* Functions for writing to the internal logging buffer. */
 
@@ -360,6 +378,9 @@ int		psf_calc_max_all_channels	(SF_PRIVATE *psf, double *peaks, int normalize) ;
 /* Default seek function. Use for PCM and float encoded data. */
 sf_count_t  psf_default_seek (SF_PRIVATE *psf, int mode, sf_count_t samples_from_start) ;
 
+/* Generate the currebt date as a string. */
+void  psf_get_date_str (char *str, int maxlen) ;
+
 /*------------------------------------------------------------------------------------ 
 **	File I/O functions which will allow access to large files (> 2 Gig) on
 **	some 32 bit OSes. Implementation in file_io.c.
@@ -388,6 +409,8 @@ int		aiff_open	(SF_PRIVATE *psf) ;
 int		au_open		(SF_PRIVATE *psf) ;
 int		au_nh_open	(SF_PRIVATE *psf) ;	/* Headerless version of AU. */
 int		ircam_open	(SF_PRIVATE *psf) ;
+int		mat4_open	(SF_PRIVATE *psf) ;
+int		mat5_open	(SF_PRIVATE *psf) ;
 int		nist_open	(SF_PRIVATE *psf) ;
 int		paf_open	(SF_PRIVATE *psf) ;
 int		raw_open	(SF_PRIVATE *psf) ;
@@ -421,6 +444,8 @@ int		wav_w64_ima_init (SF_PRIVATE *psf, int blockalign, int samplesperblock) ;
 int		wav_w64_msadpcm_init (SF_PRIVATE *psf, int blockalign, int samplesperblock) ;
 
 int		aiff_ima_init (SF_PRIVATE *psf, int blockalign, int samplesperblock) ;
+
+int		interleave_init (SF_PRIVATE *psf) ;
 
 /*------------------------------------------------------------------------------------ 
 ** Other helper functions.

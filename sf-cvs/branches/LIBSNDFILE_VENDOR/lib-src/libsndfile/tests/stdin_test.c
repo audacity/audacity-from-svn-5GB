@@ -91,6 +91,16 @@ main (int argc, char *argv [])
 		nTests++ ;
 		} ;
 
+	if (bDoAll || ! strcmp (argv [1], "mat4"))
+	{	stdin_test	("mat4", SF_FORMAT_MAT4, count) ;
+		nTests++ ;
+		} ;
+
+	if (bDoAll || ! strcmp (argv [1], "mat5"))
+	{	stdin_test	("mat5", SF_FORMAT_MAT5, count) ;
+		nTests++ ;
+		} ;
+
 	if (nTests == 0)
 	{	printf ("************************************\n") ;
 		printf ("*  No '%s' test defined.\n", argv [1]) ;

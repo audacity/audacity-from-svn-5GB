@@ -89,6 +89,16 @@ main (int argc, char *argv [])
 		nTests++ ;
 		} ;
 
+	if (bDoAll || ! strcmp (argv [1], "mat4"))
+	{	stdout_test	("mat4", SF_FORMAT_MAT4, count) ;
+		nTests++ ;
+		} ;
+
+	if (bDoAll || ! strcmp (argv [1], "mat5"))
+	{	stdout_test	("mat5", SF_FORMAT_MAT5, count) ;
+		nTests++ ;
+		} ;
+
 	if (nTests == 0)
 	{	fprintf (stderr, "************************************\n") ;
 		fprintf (stderr, "*  No '%s' test defined.\n", argv [1]) ;

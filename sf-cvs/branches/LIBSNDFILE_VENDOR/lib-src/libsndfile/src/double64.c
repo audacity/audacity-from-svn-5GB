@@ -19,7 +19,6 @@
 
 #include	<stdio.h>
 #include	<unistd.h>
-#include	<string.h>
 
 #include	"sndfile.h"
 #include	"config.h"
@@ -163,89 +162,175 @@ double64_init (SF_PRIVATE *psf)
 	return 0 ;
 } /* double64_init */	
 
+/*----------------------------------------------------------------------------
+** From : http://www.hpcf.cam.ac.uk/fp_formats.html
+**
+** 64 bit double precision layout (big endian)
+** 	  Sign				bit 0
+** 	  Exponent			bits 1-11
+** 	  Mantissa			bits 12-63
+** 	  Exponent Offset	1023
+**
+**            double             single
+** 
+** +INF     7FF0000000000000     7F800000
+** -INF     FFF0000000000000     FF800000
+**  NaN     7FF0000000000001     7F800001
+**                to               to
+**          7FFFFFFFFFFFFFFF     7FFFFFFF
+**                and              and
+**          FFF0000000000001     FF800001
+**                to               to
+**          FFFFFFFFFFFFFFFF     FFFFFFFF
+** +OVER    7FEFFFFFFFFFFFFF     7F7FFFFF
+** -OVER    FFEFFFFFFFFFFFFF     FF7FFFFF
+** +UNDER   0010000000000000     00800000
+** -UNDER   8010000000000000     80800000
+*/
+
 double
-double64_read (unsigned char *cptr)
-{	int		exponent, mantissa, negative ;
-	double	fvalue ;
+double64_be_read (unsigned char *cptr)
+{	int		exponent, negative ;
+	double	dvalue ;
 
-	if (CPU_IS_LITTLE_ENDIAN)
-	{	negative = cptr [3] & 0x80 ;
-		exponent = ((cptr [3] & 0x7F) << 1) | ((cptr [2] & 0x80) ? 1 : 0);
-		mantissa = ((cptr [2] & 0x7F) << 16) | (cptr [1] << 8) | (cptr [0]) ;
-		}
-	else
-	{	negative = cptr [0] & 0x80 ;
-		exponent = ((cptr [0] & 0x7F) << 1) | ((cptr [1] & 0x80) ? 1 : 0);
-		mantissa = ((cptr [1] & 0x7F) << 16) | (cptr [2] << 8) | (cptr [3]) ;
-		} ;
+	negative = (cptr [0] & 0x80) ? 1 : 0 ;
+	exponent = ((cptr [0] & 0x7F) << 4) | ((cptr [1] >> 4) & 0xF);
 
-	if (! (exponent || mantissa))
+	/* Might not have a 64 bit long, so load the mantissa into a double. */
+	dvalue = (((cptr [1] & 0xF) << 24) | (cptr [2] << 16) | (cptr [3] << 8) | cptr [4]) ;
+	dvalue += ((cptr [5] << 16) | (cptr [6] << 8) | cptr [7]) / ((double) 0x1000000) ;
+
+	if (! (exponent || dvalue == 0.0))
 		return 0.0 ;
 
-	mantissa |= 0x800000 ;
-	exponent = exponent ? exponent - 127 : 0 ;
+	dvalue += 0x10000000 ;
+
+	exponent = exponent - 0x3FF ;
                 
-	fvalue = mantissa ? ((float) mantissa) / ((float) 0x800000) : 0.0 ;
+	dvalue = dvalue / ((double) 0x10000000) ;
                 
 	if (negative)
-		fvalue *= -1 ;
+		dvalue *= -1 ;
                 
 	if (exponent > 0)
-		fvalue *= (1 << exponent) ;
+		dvalue *= (1 << exponent) ;
 	else if (exponent < 0)
-		fvalue /= (1 << abs (exponent)) ;
+		dvalue /= (1 << abs (exponent)) ;
 
-	return fvalue ;
-} /* double64_read */
+	return dvalue ;
+} /* double64_be_read */
+
+double
+double64_le_read (unsigned char *cptr)
+{	int		exponent, negative ;
+	double	dvalue ;
+
+	negative = (cptr [7] & 0x80) ? 1 : 0 ;
+	exponent = ((cptr [7] & 0x7F) << 4) | ((cptr [6] >> 4) & 0xF);
+
+	/* Might not have a 64 bit long, so load the mantissa into a double. */
+	dvalue = (((cptr [6] & 0xF) << 24) | (cptr [5] << 16) | (cptr [4] << 8) | cptr [3]) ;
+	dvalue += ((cptr [2] << 16) | (cptr [1] << 8) | cptr [0]) / ((double) 0x1000000) ;
+
+	if (! (exponent || dvalue == 0.0))
+		return 0.0 ;
+
+	dvalue += 0x10000000 ;
+
+	exponent = exponent - 0x3FF ;
+                
+	dvalue = dvalue / ((double) 0x10000000) ;
+                
+	if (negative)
+		dvalue *= -1 ;
+                
+	if (exponent > 0)
+		dvalue *= (1 << exponent) ;
+	else if (exponent < 0)
+		dvalue /= (1 << abs (exponent)) ;
+
+	return dvalue ;
+} /* double64_le_read */
 
 void	
-double64_write (double in, unsigned char *out)
-{	int		exponent, mantissa, negative = 0 ;
+double64_be_write (double in, unsigned char *out)
+{	int		exponent, mantissa ;
 
-	*((int*) out) = 0 ;
+	memset (out, 0, sizeof (double)) ;
 	
 	if (in == 0.0)
 		return ;
 	
 	if (in < 0.0)
 	{	in *= -1.0 ;
-		negative = 1 ;
+		out [0] |= 0x80 ;
 		} ;
 		
 	in = frexp (in, &exponent) ;
 	
-	exponent += 126 ;
-	
-	in *= (float) 0x1000000 ;
-	mantissa = (((int) in) & 0x7FFFFF) ;
+	exponent += 1022 ;
 
-	if (CPU_IS_LITTLE_ENDIAN)	
-	{	if (negative)
-			out [3] |= 0x80 ;
-			
-		if (exponent & 0x01)
-			out [2] |= 0x80 ;
+	out [0] |= (exponent >> 4) & 0x7F ;
+	out [1] |= (exponent << 4) & 0xF0 ;
 	
-		out [0]  = mantissa & 0xFF ;
-		out [1]  = (mantissa >> 8) & 0xFF ;
-		out [2] |= (mantissa >> 16) & 0x7F ;
-		out [3] |= (exponent >> 1) & 0x7F ;
-		}
-	else
-	{	if (negative)
-			out [0] |= 0x80 ;
-			
-		if (exponent & 0x01)
-			out [1] |= 0x80 ;
+	in *= 0x20000000 ;
+	mantissa = (int) in ;
+
+	out [1] |= (mantissa >> 24) & 0xF ;
+	out [2] = (mantissa >> 16) & 0xFF ;
+	out [3] = (mantissa >> 8) & 0xFF ;
+	out [4] = mantissa & 0xFF ;
 	
-		out [3]  = mantissa & 0xFF ;
-		out [2]  = (mantissa >> 8) & 0xFF ;
-		out [1] |= (mantissa >> 16) & 0x7F ;
-		out [0] |= (exponent >> 1) & 0x7F ;
-		}
+	in = fmod (in, 1.0) ;
+	in *= 0x1000000 ;
+	mantissa = (int) in ;
 	
+	out [5] = (mantissa >> 16) & 0xFF ;
+	out [6] = (mantissa >> 8) & 0xFF ;
+	out [7] = mantissa & 0xFF ;
+
 	return ;
-} /* double64_write */
+} /* double64_be_write */
+
+void	
+double64_le_write (double in, unsigned char *out)
+{	int		exponent, mantissa ;
+
+	memset (out, 0, sizeof (double)) ;
+	
+	if (in == 0.0)
+		return ;
+	
+	if (in < 0.0)
+	{	in *= -1.0 ;
+		out [7] |= 0x80 ;
+		} ;
+		
+	in = frexp (in, &exponent) ;
+	
+	exponent += 1022 ;
+
+	out [7] |= (exponent >> 4) & 0x7F ;
+	out [6] |= (exponent << 4) & 0xF0 ;
+	
+	in *= 0x20000000 ;
+	mantissa = (int) in ;
+
+	out [6] |= (mantissa >> 24) & 0xF ;
+	out [5] = (mantissa >> 16) & 0xFF ;
+	out [4] = (mantissa >> 8) & 0xFF ;
+	out [3] = mantissa & 0xFF ;
+	
+	in = fmod (in, 1.0) ;
+	in *= 0x1000000 ;
+	mantissa = (int) in ;
+	
+	out [2] = (mantissa >> 16) & 0xFF ;
+	out [1] = (mantissa >> 8) & 0xFF ;
+	out [0] = mantissa & 0xFF ;
+
+	return ;
+} /* double64_le_write */
 
 /*==============================================================================================
 **	Private functions.
