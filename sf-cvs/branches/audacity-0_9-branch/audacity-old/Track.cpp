@@ -305,11 +305,11 @@ TrackList::~TrackList()
 
 double TrackList::GetMaxLen()
 {
-   double len = DBL_MIN;
-
+   double len = 0.0;
    TrackListIterator iter(this);
 
    VTrack *t = iter.First();
+
    while (t) {
       double l = t->GetMaxLen();
       if (l > len)
