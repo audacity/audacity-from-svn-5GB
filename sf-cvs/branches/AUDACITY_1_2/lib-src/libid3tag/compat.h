@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: compat.h,v 1.2 2003-09-07 01:21:44 dmazzoni Exp $
+ * $Id: compat.h,v 1.2.2.1 2003-09-29 17:03:19 dmazzoni Exp $
  */
 
 # ifndef LIBID3TAG_COMPAT_H
