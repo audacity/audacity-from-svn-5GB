@@ -64,23 +64,22 @@ Ja, in bijna alle hoedanigheden.  Audacity wordt niet alleen gratis gedistribuee
 Audacity wordt gedistribueerd overeenkomstig de
 <a href="http://www.gnu.org/copyleft/gpl.html"
 >General Public License (GPL)</a>.
-Het is toegestaan om dit programma voor persoonslijke en commercieele doeleinden te gebruiken.  Je mag het zelfs weggeven of verkopen.
+Het is toegestaan om dit programma voor persoonlijke en commercieele doeleinden te gebruiken.  Je mag het zelfs weggeven of verkopen.
 De broncode van het programma is vrijelijk verkrijgbaar via internet en het staat je vrij om het voor eigen gebruik te modificeren, echter elke verandering die je aanbrengt moet, overeenkomstig de GPL, gedistribueerd worden.
 <p>
-Audacity is gebouwd met gebruik van wxWindows, een software bibliotheek welke is vrijgegeven via de minder beperkende LGPL.  
+Audacity is gebouwd met gebruik van wxWidgets, een software bibliotheek welke is vrijgegeven via de minder beperkende LGPL.  
 Voor meer informatie, bezoek dan a.u.b.
-<a href="http://www.wxwindows.org">wxwindows.org</a>.
+<a href="http://www.wxwidgets.org">wxwidgets.org</a>.
 <p>
 De auteurs van Audacity hebben besloten het onder de GPL vrij te geven in verband met diverse redenen.  Sommigen van ons doen het uit vrijgevigheid.
 Sommige van ons doen het om morele redenen omdat wij van mening zijn dat alle software gratis zou moeten zijn, terwijl anderen onder ons vinden dat er op de wereld behoefte is aan zowel gratis als commercieele software.
 <p>
-Een van de redenen waarom Audacity gratis is, is dat ik dan populairder wordt.
-Velen van ons hebben liever dat miljoenen mensen plezier hebben aan het gratis gebruik van Audacity dan dat duizenden mensen ons zouden moeten betalen.
+Een van de redenen waarom Audacity gratis is, is dat het daardoor populairder wordt. Velen van ons hebben liever dat miljoenen mensen plezier hebben aan het gratis gebruik van Audacity dan dat duizenden mensen ons zouden moeten betalen.
 De meeste gebruikers zijn vriendelijker als iets gratis is.
 
 <p>
 Wat ook een reden is, is dat dit samenwerking bevorderd.  Als Audacity
-shareware zou zijn geweest, zou het ondenkbaar zijn dat vele mensen over de hele wereld zouden helpen met de code, fouten te herstellen, opzetten van documentatie en het grafische gedeelte.
+shareware zou zijn geweest, zou het ondenkbaar zijn dat vele mensen over de hele wereld zouden helpen met de code, fouten te herstellen, opzetten van documentatie,vertalingen en het grafische gedeelte.
 
 <p>
 <a name="g2"></a>
@@ -168,7 +167,7 @@ Je hebt een recente versie van StuffIt Expander nodig.  StuffIt Expander
 wordt geleverd met alle Macintoshes en is normaal gesproken als standaard geconfigureerd in alle Mac web browsers.  Als Audacity niet automatisch wordt uitgepakt, sleep dan "audacity.sit" naar StuffIt Expander om het uitpakken te laten beginnen.
 <p>
 Installeren van Audacity is niet nodig.  Je hoeft alleen maar de Audacity
-Map naar je Programma's map te slepen, of waar je het dan ook wilt plaatsen.  Voor het deïnstalleren: Sleep de gehele folder naar de prullenbak.
+Map naar je Programma's map te slepen of waar je het dan ook wilt plaatsen.  Voor het deïnstalleren: Sleep de gehele folder naar de prullenbak.
 
 <p>
 <a name="i4"></a>
