@@ -204,7 +204,9 @@ void AudacityProject::CreateMenuBar()
 
    mInsertSilenceAmount = 1.0;
 
+#define AUDACITY_MENUS_COMMANDS_EVENT_TABLE
 #include "commands.h" // BG: Generate an array of command names, and their corresponding functions
+#undef AUDACITY_MENUS_COMMANDS_EVENT_TABLE
 #include "commandkeys.h" // BG: Generate an array of keys combos that cannot be used
 }
 
@@ -329,6 +331,23 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
                           numWaveTracksSelected > 0
                           && nonZeroRegionSelected);
    }
+}
+
+//
+// Generic menu event handler
+//
+
+bool AudacityProject::HandleMenuEvent(wxEvent & event)
+{
+   for(int i = 0; i < mCommandIDs.GetCount(); i++)
+   {
+      if(mCommandIDs[i] == (int *)event.GetId())
+      {
+         (this->*((wxEventFunction) (this->GetCommandFunc(i))))(event);
+      }
+   }
+
+   return true; //handled message
 }
 
 //
