@@ -395,6 +395,14 @@ SOURCE=..\src\effects\Amplify.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\effects\AvcCompressor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\AvcCompressor.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\effects\BassBoost.cpp
 # End Source File
 # Begin Source File
@@ -488,6 +496,14 @@ SOURCE=..\src\effects\SimpleMono.cpp
 # Begin Source File
 
 SOURCE=..\src\effects\SimpleMono.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\SimplePairedTwoTrack.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\SimplePairedTwoTrack.h
 # End Source File
 # Begin Source File
 
