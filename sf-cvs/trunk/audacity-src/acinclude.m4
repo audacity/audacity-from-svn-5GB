@@ -468,7 +468,10 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBFLAC], [
 
       LIBFLAC_LOCAL_CPPSYMBOLS="USE_LIBFLAC"
 
-      LIBFLAC_LOCAL_CONFIG_SUBDIRS="lib-src/libflac"
+      if test ! -f lib-src/libflac/Makefile ; then
+         LIBFLAC_LOCAL_CONFIG_SUBDIRS="lib-src/libflac"
+      fi
+	
       AC_MSG_NOTICE([FLAC libraries are available in this source tree])
    else
       AC_MSG_NOTICE([FLAC libraries are NOT available in this source tree])
