@@ -1,5 +1,5 @@
 /* XPM */
-static char * arrow_xpm[] = {
+static const char * arrow_xpm[] = {
 "24 24 3 1",
 " 	c None",
 ".	c #FFFFFF",
@@ -29,7 +29,7 @@ static char * arrow_xpm[] = {
 "........................",
 "........................"};
 
-static char * empty_24x24_xpm[] = {
+static const char * empty_24x24_xpm[] = {
 "24 24 3 1",
 " 	c None",
 ".	c #FFFFFF",
