@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Generator" CONTENT="Microsoft Word 97">
+   <META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.5b2 [en] (X11; I; Linux 2.0.34 i586) [Netscape]">
+   <TITLE>Xaudio SDK Overview</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#800080" ALINK="#FF0000">
+
+<CENTER><IMG SRC="xaudio.gif" HEIGHT=112 WIDTH=276></CENTER>
+
+<CENTER>
+<H1>Xaudio SDK Overview</H1></CENTER>
+
+<HR WIDTH="100%">
+<BR>The Xaudio SDK is a set of library routines that will let you add MPEG
+Audio playback support to any of your applications.
+<P>The SDK provides two different programming interfaces (API).
+<BR>&nbsp;
+<H1>The Xaudio SYNC API</H1>
+A set of low-level routines that allow full control over the input and
+output, and access to the decoded audio samples in a memory buffer. All
+calls are synchronous, so the decoding happens in the same thread as the
+caller.
+<P>See the <A HREF="sync-api.html">SYNC API Documentation</A> for details.
+<BR>&nbsp;
+<H1>The Xaudio ASYNC API</H1>
+A set of high-level routines that let you automatically start a player
+in its own thread (or process on UNIX platforms) and control that player
+by sending messages to it. The player also returns information to the client
+application using messages.
+<P>This is the easiest way to use the library when writing a player that
+has a GUI (Graphical User Interface), because it lets the GUI run in its
+own thread/process, while the decoding happens independently without blocking
+anything.
+<P>The decoding thread/process of the ASYNC API is implemented internally
+using a synchronous decoder object and calls to the SYNC API, so all features
+of the SYNC API are available to the ASYNC API.
+<P>See the <A HREF="async-api.html">ASYNC API Documentation</A> for details.
+<BR>&nbsp;
+<H1>
+
+<HR WIDTH="100%"></H1>
+
+<H1>Xaudio Building Blocks</H1>
+A complete Xaudio-based application is built by assembling software components.
+<P>Whether they are accessed through the SYNC API or the ASYNC API, these
+components and their functionality are the same.
+<P>The Xaudio architecture is modular. This means that the input, decoding
+and output are separate functional blocks that perform their individual
+tasks. Also, these modules can be added or replaced at runtime.
+<BR>This means that it is very easy to write a small set of routines to
+use as new input or output modules very easily, and attach these modules
+at runtime so that the decoding engine can use them.
+<BR>&nbsp;
+<H3><FONT COLOR="#000099">Decoder</FONT></H3>
+
+<BLOCKQUOTE>At the core of the system is the decoder (XA_DecoderInfo).
+Before you can start decoding an input stream into output samples, an input
+and an output module must be specified (the output module can be omitted
+if the library is used to only decode to a memory buffer). The decoder
+object will process data by reading bytes from the input module, parse
+it, decode it, and pass the resulting output sample buffer to the output
+module. Also, input filters can be inserted between the input module and
+the decoder for pre-processing of data, and output filters can be inserted
+between the decoder and the output module to post-process the samples.</BLOCKQUOTE>
+
+<H3><FONT COLOR="#000099">Modules</FONT></H3>
+
+<BLOCKQUOTE>Modules can be implemented as routines linked with the main
+program, or separated in a DLL (dynamically linked library), and attached
+at runtime.
+<P>Input and Output modules and filters are registered with the decoder
+object, and it is when instantiating a new input or a new output that the
+decoder object will choose which module to use, based on the parameters
+provided by the caller.
+<P>Each module must implement a minimum set of functions that allow to
+query information about the module (its name, version, etc?) and participate
+in the module selection process. In addition, a module implements functions
+to perform the input of data or the output of audio samples.
+<BLOCKQUOTE>
+<H4>Input Modules</H4>
+An input module object (XA_InputModule) implements several entry points
+that perform basic data input functions (open and close an input, read
+bytes, seek to a position, get input specific flags, etc?)
+<H4>Output Modules</H4>
+An output module (XA_OutputModule) implements several entry points that
+perform basic output functions (open and close an output, write audio samples,
+set sampling frequency and channel configuration, get device specific flags,
+etc?)</BLOCKQUOTE>
+See the <A HREF="modules.html">Xaudio Modules Documentation</A> for details</BLOCKQUOTE>
+
+<H3><FONT COLOR="#000099">Filters</FONT></H3>
+
+<BLOCKQUOTE>Filters are similar to input and output modules, but instead
+of actually reading from an input, or writing to an output, they are inserted
+between the input source and the decoder, or between the decoder and the
+output, and are used to pre-process input data (to perform decryption of
+encrypted data for instance), or post-process output data (to perform sound
+effects or other operations).</BLOCKQUOTE>
+
+<H3><FONT COLOR="#000099">Built-in Modules</FONT></H3>
+
+<BLOCKQUOTE>The Xaudio SDK comes with a set of built-in input and output
+modules (to support the standard methods of input from a file or an HTTP,
+FTP or UDP network stream, and standard methods of output to a soundcard
+or a file in WAV or RAW format), and sample code is included that shows
+how to write external input/output modules.
+<BR>See the <A HREF="modules.html">Xaudio Modules Documentation</A> for
+details</BLOCKQUOTE>
+
+<H3>
+<FONT COLOR="#000099">External Modules</FONT></H3>
+
+<BLOCKQUOTE>External modules are modules that are not implemented as built-in
+modules. They can be implemented by the application developer or by third
+parties, and be packaged as dynamic libraries (DLL), or static libraries.
+<P>An example of an external input module could be to input data from a
+network stream with a non-standard protocol.
+<BR>An example of an external output module could be to output to a proprietary
+file format.
+<P>In the same way, the decoding engine supports external input and output
+filters.</BLOCKQUOTE>
+
+</BODY>
+</HTML>

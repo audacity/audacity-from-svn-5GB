@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Generator" CONTENT="Microsoft Word 97">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.5b2 [en] (X11; I; Linux 2.0.34 i586) [Netscape]">
+   <META NAME="Author" CONTENT="MpegTV, LLC">
+   <TITLE>Xaudio Software Developer's Kit</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#51188E" ALINK="#FF0000">
+
+<CENTER>
+<H1>
+<IMG SRC="xaudio.gif" HEIGHT=112 WIDTH=276></H1></CENTER>
+
+<CENTER>
+<H1>
+<B>Xaudio Software Developer's Kit</B></H1></CENTER>
+
+<CENTER>
+<H1>
+<B>Release 3.0</B></H1></CENTER>
+
+<H2>
+
+<HR WIDTH="100%"><B>License</B></H2>
+<B><U><FONT COLOR="#009900">All files in this SDK are &copy; 1996-1998
+MpegTV, LLC.</FONT></U></B>
+<P>This SDK comes with an evaluation copy of the libraries. MpegTV grants
+the right to use the documentation and libraries for evaluation and development
+purposes, but these cannot be used in a released product or redistributed
+in any way. Redistribution or use in a product requires a separate license.
+<P><B>Read the <A HREF="license.txt">LICENSE AGREEMENT</A> before you use
+the SDK.</B>
+<BR>&nbsp;
+<H2>
+
+<HR WIDTH="100%"><B>Software Distribution</B></H2>
+
+<P><BR>The Xaudio SDK distribution contains 4 directories
+<UL>
+<LI>
+<B><TT><FONT COLOR="#FF0000"><FONT SIZE=+1>doc</FONT></FONT></TT></B></LI>
+
+<BR>Contains the HTML documentation and illustrations.
+<BR>See the <A HREF="#documentation">Documentation section</A> for more
+details.</UL>
+
+<UL>
+<LI>
+<B><TT><FONT COLOR="#FF0000"><FONT SIZE=+1>include</FONT></FONT></TT></B></LI>
+
+<BR>Contains the C/C++ include files for C/C++ developers.</UL>
+
+<UL>
+<LI>
+<B><TT><FONT COLOR="#FF0000"><FONT SIZE=+1>lib</FONT></FONT></TT></B></LI>
+
+<BR>Contains the libraries that implement the decoding engine and other
+features.</UL>
+
+<UL><I>UNIX platforms:</I>
+<BLOCKQUOTE>There is one library file:
+<BR><B><TT>libxaudio.a</TT></B></BLOCKQUOTE>
+<I>WINDOWS platforms:</I>
+<BLOCKQUOTE>For C/C++ there are 5 versions of the library:
+<P><B><TT>dynamic</TT></B>:
+<BLOCKQUOTE>This directory contains 2 files:
+<P><TT><B>xaudio.lib</B>:</TT> the small 'stub' library that you need to
+link with when you want to use the DLL from a C/C++ project
+<P><TT><B>xaudio.dll</B>:</TT> the dynamic library itself.</BLOCKQUOTE>
+<B><TT>static:</TT></B>
+<UL>This directory contains 4 subdirectories. Each of these 4 subdirectories
+contains a different version the library file, <B><TT>xaudio.lib</TT></B>.
+These 4 versions have all the same features. The only difference is which
+C runtime libraries they use. This is for Visual C++ projects where an
+option of a project is the choice of the C runtime library (Project->Settings->C/C++->Code-Generation).
+<BR>&nbsp;
+<LI>
+<B><TT>MT</TT></B>: contains the file for the MULTITHREADED C-Runtime library.</LI>
+
+<LI>
+<B><TT>MTD</TT></B>: contains the file for the DEBUG MULTITHREADED C-Runtime
+library.</LI>
+
+<LI>
+<B><TT>MTDLL</TT></B>: contains the file for the MULTITHREADED DLL C-Runtime
+library.</LI>
+
+<LI>
+<B><TT>MTDLLD</TT></B>: contains the file for the DEBUG MULTITHREADED DLL
+C-Runtime library.</LI>
+</UL>
+
+<P><BR>For Delphi, there are 3 files needed:
+<P><B>delphi</B>:
+<UL>&nbsp;This directory contains a Delphi component that you can add to
+your Delphi packages. See the <A HREF="platforms.html#delphi">Platform
+Specific section </A>about Delphi for details on how to use the component.
+<BR>&nbsp;
+<LI>
+XaudioPlayer.pas: the component</LI>
+
+<LI>
+XaudioPlayer.dcr: the resource file for the component.</LI>
+</UL>
+
+<BR>&nbsp;</BLOCKQUOTE>
+
+<LI>
+<B><TT><FONT COLOR="#FF0000"><FONT SIZE=+1>samples</FONT></FONT></TT></B></LI>
+
+<BR>This directory contains several sample code files, to show how to use
+the different features of the SDK, from different programming languages.
+The samples are divided into to categories: the samples for the <A HREF="sync-api.html">SYNC
+API </A>(sync directory) and the samples for the <A HREF="async-api.html">ASYNC
+API</A> (async directory).
+<BR>&nbsp;
+<BR>&nbsp;
+<UL>
+<LI>
+<B><TT>async/MFC</TT></B> (WINDOWS only)</LI>
+
+<BR>Shows how to use the Xaudio <A HREF="async-api.html">ASYNC API</A>
+in simple GUI program written as an MFC application in Visual C++</UL>
+
+<UL>
+<LI>
+<B><TT>async/delphi</TT></B> (WINDOWS only)</LI>
+
+<BR>Shows how to use the Xaudio <A HREF="async-api.html">ASYNC API</A>
+from a GUI program written as a Delphi application.
+<BR>&nbsp;
+<LI>
+<B><TT>async/motif</TT></B> (UNIX only)</LI>
+
+<BR>Shows how to use the Xaudio <A HREF="async-api.html">ASYNC API</A>
+in a simple GUI program written as an X-Windows/Motif application.
+<BR>&nbsp;
+<LI>
+<B><TT>async/perl</TT></B> (UNIX only)</LI>
+
+<BR>Shows how to use the <A HREF="http://www.perl.org">PERL</A> language
+to remote control the 'rxaudio' binary.
+<BR>&nbsp;
+<LI>
+<B><TT>sync/cmdline</TT></B> (WINDOWS and UNIX)</LI>
+
+<BR>Shows how to use the Xaudio <A HREF="sync-api.html">SYNC API,</A> in
+a simple command line program</UL>
+
+<UL>
+<LI>
+<B><TT>sync/memory</TT></B> (WINDOWS and UNIX)</LI>
+
+<BR>Shows how to use the Xaudio <A HREF="sync-api.html">SYNC API</A> with
+a memory based input source (instead of a file), and output to a memory
+buffer.</UL>
+
+<UL>
+<LI>
+<B><TT>sync/rawout</TT></B> (WINDOWS and UNIX)</LI>
+
+<BR>Shows how to use the Xaudio <A HREF="sync-api.html">SYNC API,</A> reading
+from a normal file or URL, and storing the output samples in a memory buffer
+instead of sending them directly to the sound card.</UL>
+</UL>
+
+<HR WIDTH="100%">
+<H2>
+<A NAME="documentation"></A>Documentation</H2>
+
+<UL>
+<LI>
+<A HREF="sdk-overview.html">SDK Overview</A></LI>
+
+<LI>
+<A HREF="async-api.html">ASYNC API</A></LI>
+
+<UL>
+<LI>
+<A HREF="command-messages.html">Command Messages</A></LI>
+
+<LI>
+<A HREF="notification-messages.html">Notification Messages</A></LI>
+</UL>
+
+<LI>
+<A HREF="sync-api.html">SYNC API</A></LI>
+
+<LI>
+<A HREF="modules.html">Input/Output Modules</A></LI>
+
+<LI>
+<A HREF="data-structures.html">Data Structures</A></LI>
+
+<LI>
+<A HREF="error-codes.html">Error Codes</A></LI>
+
+<LI>
+<A HREF="misc.html">Misc</A></LI>
+
+<LI>
+<A HREF="platforms.html">Platform Specific Notes (Windows/Unix/MacOS/DOS)</A></LI>
+
+<BR>&nbsp;</UL>
+
+</BODY>
+</HTML>
