@@ -83,6 +83,34 @@ elsif($ARGV[0] eq "src") {
 	`rm -rf audacity-src-$version`;
 	
 	print "done.\n";
+}
+elsif($ARGV[0] eq "rpm") {
+	print "target set to rpm...\n";
+
+	print "making copy of source directory...\n";
+	`cp -r . ../audacity-$version`;
+	chdir "../audacity-$version";
+
+	printf "removing CVS directories...\n";
+	`find . -name "CVS" -exec rm -rf '{}' \\; 2> /dev/null`;
+
+	printf "removing emacs temp files...\n";
+	`find . -name "*~" -exec rm -rf '{}' \\; 2> /dev/null`;
+
+	printf "removing executable and other intermediate files...\n";
+	`rm -rf audacity .depend obj config.cache config.status config.log Makefile`;
+
+	printf "removing the copy of this script...\n";
+	`rm -f maketarball`;
+
+	print "making tarball audacity-src-$version.tgz...\n";
+	chdir "..";
+	`tar zcf audacity-src-$version.tgz audacity-src-$version`;
+	
+	print "deleting temporary copy...\n";
+	`rm -rf audacity-src-$version`;
+	
+	print "done.\n";
 } else {
 	print "target $ARGV[0] not recognized.\n";
 	display_usage();
@@ -97,5 +125,6 @@ sub display_usage() {
 	print "  debian - Debian GNU/Linux source tarball:\n";
 	print "           removes xaudio and non-Linux files\n";
 	print "  src    - The full compilable source distribution\n";
+	print "  rpm    - Tarball ready to make an RPM\n";
 	print "\n";
 }
