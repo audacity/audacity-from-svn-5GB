@@ -5,6 +5,22 @@
   ImportMP3.cpp
 
   Dominic Mazzoni
+  Joshua Haberman
+
+  Note: Audacity can be compiled to use one of two mp3 importing
+  libraries:
+
+  xaudio: a commercial mp3 decoder that we have obtained a free
+  unlimited license to.  The library is available in binary form
+  only from www.xaudio.com.  It is very fast, robust, and stable.
+
+  mpg123: this is the free version of a library which has since
+  been put under a more restrictive license.  It works, but its
+  error checking is not very good, it's not super fast, and
+  it sometimes fails on MP3 files with certain ID3 tags.  But...
+  it's totally Free.
+
+  Choose which library to compile using the USE_MPG123 macro.
 
 **********************************************************************/
 
@@ -20,38 +36,157 @@
 #include "WaveTrack.h"
 #include "DirManager.h"
 
-#ifndef USE_name_of_mp3_lib
-#ifdef __WXGTK__
-#include "xaudio/linux/include/decoder.h"
-#include "xaudio/linux/include/mpeg_codec.h"
-#include "xaudio/linux/include/file_input.h"
-#endif
-
-#ifdef __WXMSW__
-#include "xaudio/win/include/decoder.h"
-#include "xaudio/win/include/file_input.h"
-#endif
-
-#ifdef __WXMAC__
-#include "xaudio/mac/include/decoder.h"
-#include "xaudio/mac/include/mpeg_codec.h"
-#include "xaudio/mac/include/file_input.h"
-#endif
+#ifdef USE_MPG123
+  #include "mp3/mpg123.h"
+  #include "mp3/mpglib.h"
+#else
+  #ifdef __WXGTK__
+    #include "xaudio/linux/include/decoder.h"
+    #include "xaudio/linux/include/mpeg_codec.h"
+    #include "xaudio/linux/include/file_input.h"
+  #endif
+  #ifdef __WXMSW__
+    #include "xaudio/win/include/decoder.h"
+    #include "xaudio/win/include/file_input.h"
+  #endif
+  #ifdef __WXMAC__
+    #include "xaudio/mac/include/decoder.h"
+    #include "xaudio/mac/include/mpeg_codec.h"
+    #include "xaudio/mac/include/file_input.h"
+  #endif
 #endif
 
 bool ImportMP3(wxWindow *parent,
 			   wxString fName, WaveTrack **left, WaveTrack **right, 
 			   DirManager *dirManager)
 {
-// XXX: This is very hackish.
-#ifdef __FreeBSD__
-  return false;
+#ifdef USE_MPG123
+
+  wxBusyCursor wait;
+
+  wxFile inf;
+  inf.Open(fName, wxFile::read);
+  if (!inf.IsOpened()) {
+    wxMessageBox("Could not open "+fName);
+    return false;
+  }
+
+  int len = inf.Length();
+
+  *left = new WaveTrack(dirManager);
+  *right = new WaveTrack(dirManager);
+
+  (*left)->channel = VTrack::LeftChannel;
+  (*right)->channel = VTrack::RightChannel;
+
+  wxProgressDialog *progress = NULL;
+
+  wxYield();
+  wxStartTimer();
+
+  struct mpstr mpinfo;
+
+  InitMP3(&mpinfo);
+
+  int inBufferSize = 32768;
+  char *inBuffer = new char[inBufferSize];
+  int outBufferSize = (*left)->GetIdealBlockSize() * sizeof(sampleType);
+  char *outBuffer = new char[outBufferSize];
+  int leftBufferSize = outBufferSize / 2;
+  char *leftBuffer = new char[leftBufferSize];
+  int rightBufferSize = outBufferSize / 2;
+  char *rightBuffer = new char[rightBufferSize];
+
+  wxASSERT(inBuffer);
+  wxASSERT(outBuffer);
+  wxASSERT(leftBuffer);
+  wxASSERT(rightBuffer);
+
+  int count = 0;
+
+  bool cancelled = false;
+
+  while(count < len && !cancelled) {
+    int block = inf.Read((void *)inBuffer, inBufferSize);
+    int decodedBytes;
+	int pos=0;
+    if (block > 0) {
+      int rval = decodeMP3(&mpinfo,
+			   inBuffer, block,
+			   &outBuffer[pos], (outBufferSize-pos),
+			   &decodedBytes);
+
+      while(rval == MP3_OK) {
+		pos += decodedBytes;
+		if (pos > (outBufferSize / 2)) {
+		  int frames = pos/4;
+		  for(int i=0; i<frames; i++){
+			((sampleType *)leftBuffer)[i] =
+			  ((sampleType *)outBuffer)[2*i];
+			((sampleType *)rightBuffer)[i] =
+			  ((sampleType *)outBuffer)[2*i+1];
+		  }
+		  (*left)->Append((sampleType *)leftBuffer, frames);
+		  (*right)->Append((sampleType *)rightBuffer, frames);
+		  pos = 0;
+		}
+		
+		rval = decodeMP3(&mpinfo,
+						 NULL, 0,
+						 &outBuffer[pos], (outBufferSize-pos),
+						 &decodedBytes);
+      }
+    }
+	
+	
+	count += block;
+	
+    if (block==0)
+      break;
+	
+	if (!progress && wxGetElapsedTime(false) > 500) {
+	  progress =
+		new wxProgressDialog("Import",
+							 "Importing MP3 file...",
+							 1000,
+							 parent,
+							 wxPD_CAN_ABORT |
+							 wxPD_REMAINING_TIME |
+							 wxPD_AUTO_HIDE);
+    
+	}
+
+	if (progress) {
+	  cancelled = !progress->Update((int)(count*1000.0/len));
+	}
+  }
+
+  ExitMP3(&mpinfo);
+
+  delete[] inBuffer;
+  delete[] outBuffer;
+  delete[] leftBuffer;
+  delete[] rightBuffer;
+
+  delete progress;
+
+  if (cancelled) {
+	if (*left) {
+	  delete *left;
+	  *left = NULL;
+	}
+	if (*right) {
+	  delete *right;
+	  *right = NULL;
+	}
+
+	return false;
+  }
+
+  return true;
+
 #else
 
-#ifdef USE_name_of_mp3_lib
-  /* Dominic: put your free-mp3-library code here
-   * also, s/name_of_mp3_lib/LIBWHATEVER/g for the defines */
-#else
   /* Use XAUDIO */
   wxBusyCursor wait;
 
@@ -169,8 +304,8 @@ bool ImportMP3(wxWindow *parent,
 
           bufferCount += samples;                
 
-	  (*left)->rate = double(decoder->output_buffer->sample_rate);
-	  (*right)->rate = double(decoder->output_buffer->sample_rate);
+		  (*left)->rate = double(decoder->output_buffer->sample_rate);
+		  (*right)->rate = double(decoder->output_buffer->sample_rate);
 	}
 
 	if (!progress && wxGetElapsedTime(false) > 500)
@@ -225,8 +360,7 @@ bool ImportMP3(wxWindow *parent,
   }
 
   return true;
-#else /* USE_FREE_MP3_LIB */	
 
-#endif /* __FREEBSD__
+#endif
 }
 
