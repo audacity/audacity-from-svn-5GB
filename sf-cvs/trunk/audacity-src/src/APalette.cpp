@@ -573,9 +573,13 @@ void APalette::OnPlay()
       TrackList *t = p->GetTracks();
       double t0 = p->GetSel0();
       double t1 = p->GetSel1();
-      if (t1 == t0)
+
+      if (t1 == t0 || t1 > t->GetMaxLen())
          t1 = t->GetMaxLen();
-      bool success = gAudioIO->StartPlay(p, t, t0, t1);
+      if (t0 > t->GetMaxLen())
+         t0 = t->GetMaxLen();
+
+      bool success = (t1 > t0) && gAudioIO->StartPlay(p, t, t0, t1);
 
       if (!success) {
          SetPlay(false);
