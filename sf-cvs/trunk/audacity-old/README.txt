@@ -16,6 +16,7 @@ Authors:
   Robert Leidle <rfl+@andrew.cmu.edu>
   Mark Tomlinson <marktoml@hotmail.com>
   Joshua Haberman <joshua@haberman.com>
+  Nasca Octavian Paul <paulnasca@email.ro> or <paulnasca@yahoo.com>
 
 Icons and logo:
 
@@ -168,6 +169,8 @@ Changes in 0.95:
   - Fixed a bug that caused incompatibility with many VST plug-ins.
 
   - Added Maximize Amplitude effect
+
+  - Added Bass Boost effect (Paul)
 
 * Other:
 

@@ -38,6 +38,7 @@
 #include "Project.h"
 #include "WaveTrack.h"
 #include "effects/Amplify.h"
+#include "effects/BassBoost.h"
 #include "effects/Echo.h"
 #include "effects/Fade.h"
 #include "effects/Filter.h"
@@ -170,6 +171,7 @@ bool AudacityApp::OnInit()
   InitAudioIO();
   
   Effect::RegisterEffect(new EffectAmplify());
+  Effect::RegisterEffect(new EffectBassBoost());
   Effect::RegisterEffect(new EffectEcho());
   Effect::RegisterEffect(new EffectFadeIn());
   Effect::RegisterEffect(new EffectFadeOut());

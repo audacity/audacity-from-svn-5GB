@@ -61,6 +61,7 @@ OBJS = \
 	$(OBJDIR)/allegro/stimelinux.c.o \
 	$(OBJDIR)/effects/Effect.cpp.o \
 	$(OBJDIR)/effects/Amplify.cpp.o \
+	$(OBJDIR)/effects/BassBoost.cpp.o \
 	$(OBJDIR)/effects/Echo.cpp.o \
 	$(OBJDIR)/effects/Fade.cpp.o \
 	$(OBJDIR)/effects/Filter.cpp.o \
