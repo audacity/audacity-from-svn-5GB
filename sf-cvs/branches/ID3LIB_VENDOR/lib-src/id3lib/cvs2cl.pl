@@ -8,8 +8,8 @@ exec perl -w -x $0 ${1+"$@"} # -*- mode: perl; perl-indent-level: 2; -*-
 ###                                                        ###
 ##############################################################
 
-## $Revision: 1.1 $
-## $Date: 2001-08-27 00:12:12 $
+## $Revision: 1.1.1.1 $
+## $Date: 2001-09-02 05:11:39 $
 ## $Author: dmazzoni $
 ##
 ##   (C) 1999 Karl Fogel <kfogel@red-bean.com>, under the GNU GPL.
@@ -78,7 +78,7 @@ use File::Basename;
 my $Log_Source_Command = "cvs log";
 
 # In case we have to print it out:
-my $VERSION = '$Revision: 1.1 $';
+my $VERSION = '$Revision: 1.1.1.1 $';
 $VERSION =~ s/\S+\s+(\S+)\s+\S+/$1/;
 
 ## Vars set by options:

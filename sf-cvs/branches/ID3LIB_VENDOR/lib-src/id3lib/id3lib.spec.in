@@ -1,4 +1,4 @@
-# $Id: id3lib.spec.in,v 1.1 2001-08-27 00:12:27 dmazzoni Exp $
+# $Id: id3lib.spec.in,v 1.1.1.1 2001-09-02 05:11:39 dmazzoni Exp $
 
 %define name    @PACKAGE@
 %define	version	@VERSION@
