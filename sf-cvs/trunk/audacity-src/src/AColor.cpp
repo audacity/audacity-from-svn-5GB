@@ -141,7 +141,7 @@ void AColor::Init()
    darkBrush[1].SetColour(148, 148, 170);
    lightPen[1].SetColour(204, 204, 255);
    mediumPen[1].SetColour(200, 200, 214);
-   darkPen[1].SetColour(148, 148, 170);
+   darkPen[1].SetColour(0, 0, 0);
 
 #else
 
@@ -161,7 +161,7 @@ void AColor::Init()
    darkBrush[1].SetColour(148, 148, 170);
    lightPen[1].SetColour(204, 204, 255);
    mediumPen[1].SetColour(180, 180, 192);
-   darkPen[1].SetColour(148, 148, 170);
+   darkPen[1].SetColour(0, 0, 0);
 
 #else
 
@@ -179,7 +179,7 @@ void AColor::Init()
    darkBrush[1].SetColour(148, 148, 170);
    lightPen[1].SetColour(204, 204, 255);
    mediumPen[1].SetColour(180, 180, 192);
-   darkPen[1].SetColour(148, 148, 170);
+   darkPen[1].SetColour(0, 0, 0);
 
 #endif
 
