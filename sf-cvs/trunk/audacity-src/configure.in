@@ -171,13 +171,13 @@ AC_ARG_WITH(id3tag,
 
 AC_ARG_WITH(libsndfile,
 	[AC_HELP_STRING([--with-libsndfile],
-		[which libsndfile to use: [local or system]])],
+		[which libsndfile to use: [local system]])],
 	use_libsndfile=$withval,
 	use_libsndfile=$default_libsndfile)
 
 AC_ARG_WITH(libsamplerate,
 	[AC_HELP_STRING([--with-libsamplerate],
-		[which libsamplerate to use: [local, system, or none]])],
+		[which libsamplerate to use: [local system none]])],
 	use_libsamplerate=$withval,
 	use_libsamplerate=$default_libsamplerate)
 
