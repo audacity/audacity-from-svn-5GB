@@ -92,6 +92,14 @@
 <tr>
 <td></td>
 <td>
+Note: Audacity 1.2.0-pre3 is apparently not compatible with the G5.
+We hope to release an update soon...
+</td>
+</tr>
+
+<tr>
+<td></td>
+<td>
 <a href="http://spaghetticode.org/lame/">
 <?php print "$lameStr</a>"; ?>
 </td>
