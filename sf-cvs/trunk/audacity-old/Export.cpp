@@ -108,7 +108,9 @@ bool Export(wxWindow *parent,
 		   "in the exported file.");    
   
   wxString extension = "." + format;
-  
+
+  wxString path = gPrefs->Read("/DefaultExportPath", ::wxGetCwd());
+
   wxString fName =
     wxFileSelector(wxString::Format("Save %s File As:",
 				    (const char *)format),
@@ -116,8 +118,8 @@ bool Export(wxWindow *parent,
 		   extension,  // default file name
 		   extension,  // extension
 		   "*.*",
-		   wxSAVE);
-  
+		   wxSAVE | wxOVERWRITE_PROMPT);
+
   if (fName.Length() >= 256) {
     wxMessageBox("Sorry, pathnames longer than 256 characters not supported.");
     return false;
@@ -125,6 +127,9 @@ bool Export(wxWindow *parent,
   
   if (fName == "")
     return false;
+
+  path = ::wxPathOnly(fName);
+  gPrefs->Write("/DefaultExportPath", path);
 
   // Use snd library to export file
 

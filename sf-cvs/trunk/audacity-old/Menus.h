@@ -139,6 +139,8 @@ enum {
   EVT_MENU(RemoveTracksID, AudacityProject::OnRemoveTracks)
   // Help menu
   EVT_MENU(AboutID, AudacityProject::OnAbout)
+  // Update menu method
+  EVT_UPDATE_UI(UndoID, AudacityProject::OnUpdateMenus)
 #endif
 
 #ifdef AUDACITY_MENUS_METHODS
@@ -149,7 +151,7 @@ private:
 public:
   void CreateMenuBar();
 
-	void UpdateMenus();
+	void OnUpdateMenus(wxUpdateUIEvent& event);
 
 	// File Menu
 
@@ -163,7 +165,7 @@ public:
 	void OnExportMix(wxCommandEvent& event);
 	void OnExportSelection(wxCommandEvent& event);
 
-  void OnPreferences(wxCommandEvent& event);
+    void OnPreferences(wxCommandEvent& event);
 
 	void OnExit(wxCommandEvent& event);
 

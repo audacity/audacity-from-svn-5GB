@@ -18,7 +18,8 @@ class wxRadioButton;
 class WaveTrack;
 class DirManager;
 
-bool ImportRaw(wxString fName, WaveTrack **dest1, WaveTrack **dest2,
+bool ImportRaw(wxWindow *parent,
+			   wxString fName, WaveTrack **dest1, WaveTrack **dest2,
                DirManager *dirManager);
 
 bool GuessPCMFormat(wxString fName,

@@ -149,9 +149,10 @@ void Extract(bool bits16,
   *len1 = 0;
   *len2 = 0;
 
-  dataSize-=2; // So the size is the same whether we offset one byte or not
-  if (offset)
+  if (offset && bits16) {
 	rawData++;
+	dataSize--;
+  }
 			 
   int rawCount = 0;
   int dataCount1 = 0;
@@ -168,31 +169,31 @@ void Extract(bool bits16,
       data1[dataCount1++] = (*(unsigned char *)&rawData[rawCount++])/128.0 - 1.0;
     }
   if (!bits16 && sign && stereo)
-    while(rawCount < dataSize) {            
+    while(rawCount+1 < dataSize) {            
       // 8-bit signed stereo
       data1[dataCount1++] = (*(signed char *)&rawData[rawCount++])/128.0;
       data2[dataCount2++] = (*(signed char *)&rawData[rawCount++])/128.0;
     }
   if (!bits16 && !sign && stereo)
-    while(rawCount < dataSize) {
+    while(rawCount+1 < dataSize) {
       // 8-bit unsigned stereo
       data1[dataCount1++] = (*(unsigned char *)&rawData[rawCount++])/128.0 - 1.0;
       data2[dataCount2++] = (*(unsigned char *)&rawData[rawCount++])/128.0 - 1.0;
     }
   if (bits16 && sign && !stereo && bigendian)
-    while(rawCount < dataSize) {
+    while(rawCount+1 < dataSize) {
       // 16-bit signed BE
       data1[dataCount1++] = wxINT16_SWAP_ON_LE(*((signed short *)&rawData[rawCount+=2]))
 		/32768.0;
     }
   if (bits16 && !sign && !stereo && bigendian)
-    while(rawCount < dataSize) {
+    while(rawCount+1 < dataSize) {
       // 16-bit unsigned BE
       data1[dataCount1++] = wxUINT16_SWAP_ON_LE(*((unsigned short *)&rawData[rawCount+=2]))
 		/32768.0 - 1.0;
     }
   if (bits16 && sign && stereo && bigendian)
-    while(rawCount < dataSize) {
+    while(rawCount+3 < dataSize) {
       // 16-bit signed stereo BE
       data1[dataCount1++] = wxINT16_SWAP_ON_LE(*((signed short *)&rawData[rawCount+=2]))
 		/32768.0;
@@ -200,7 +201,7 @@ void Extract(bool bits16,
 		/32768.0;
     }
   if (bits16 && sign && stereo && bigendian)
-    while(rawCount < dataSize) {
+    while(rawCount+3 < dataSize) {
       // 16-bit unsigned stereo BE
       data1[dataCount1++] = wxUINT16_SWAP_ON_LE(*((unsigned short *)&rawData[rawCount+=2]))
 		/32768.0 - 1.0;
@@ -208,19 +209,19 @@ void Extract(bool bits16,
 		/32768.0 - 1.0;
     }
   if (bits16 && sign && !stereo && !bigendian)
-    while(rawCount < dataSize) {
+    while(rawCount+1 < dataSize) {
       // 16-bit signed LE
       data1[dataCount1++] = wxINT16_SWAP_ON_BE(*((signed short *)&rawData[rawCount+=2]))
 		/32768.0;
     }
   if (bits16 && !sign && !stereo && !bigendian)
-    while(rawCount < dataSize) {
+    while(rawCount+1 < dataSize) {
       // 16-bit unsigned LE
       data1[dataCount1++] = wxUINT16_SWAP_ON_BE(*((unsigned short *)&rawData[rawCount+=2]))
 		/32768.0 - 1.0;
     }
   if (bits16 && sign && stereo && !bigendian)
-    while(rawCount < dataSize) {
+    while(rawCount+3 < dataSize) {
       // 16-bit signed stereo LE
       data1[dataCount1++] = wxINT16_SWAP_ON_BE(*((signed short *)&rawData[rawCount+=2]))
 		/32768.0;
@@ -228,7 +229,7 @@ void Extract(bool bits16,
 		/32768.0;
     }
   if (bits16 && !sign && stereo && !bigendian)
-    while(rawCount < dataSize) {
+    while(rawCount+3 < dataSize) {
       // 16-bit unsigned stereo LE
       data1[dataCount1++] = wxUINT16_SWAP_ON_BE(*((unsigned short *)&rawData[rawCount+=2]))
 		/32768.0 - 1.0;
@@ -236,13 +237,6 @@ void Extract(bool bits16,
 		/32768.0 - 1.0;
     }
     
-  if (rawCount > dataSize) {
-	if (dataCount1 > 0)
-	  dataCount1--;
-	if (dataCount2 > 0)
-	  dataCount2--;
-  }
-
   *len1 = dataCount1;
   *len2 = dataCount2;
 }
@@ -673,7 +667,9 @@ bool GuessPCMFormat(wxString fName,
   return true;
 }
 
-bool ImportRaw(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager *dirManager)
+bool ImportRaw(wxWindow *parent,
+			   wxString fName,
+			   WaveTrack **dest1, WaveTrack **dest2, DirManager *dirManager)
 {
   *dest1 = 0;
   *dest2 = 0;
@@ -687,9 +683,9 @@ bool ImportRaw(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager 
   char *data;
   int dataLen;
 
-  ImportDialog dlg(data, dataLen, (wxWindow *)0);
-
   GuessPCMFormat(fName, b16, sign, stereo, big, offset, &data, &dataLen);
+
+  ImportDialog dlg(data, dataLen, parent);
 
   dlg.bits[b16]->SetValue(true);
   dlg.sign[!sign]->SetValue(true);
@@ -724,6 +720,8 @@ bool ImportRaw(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager 
   wxStartTimer();
   wxBusyCursor busy;
 
+  bool cancelling = false;
+
   wxFile inf;
   inf.Open(fName, wxFile::read);
   if (!inf.IsOpened()) {
@@ -752,7 +750,7 @@ bool ImportRaw(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager 
   wxASSERT(samples2);
   int numBytes = len;
   int block;
-  while(numBytes) {
+  while(numBytes && !cancelling) {
 	int block = (numBytes < blockSize? numBytes : blockSize);
 	int actual = inf.Read((void *)buffer, block);
 	int len1, len2, i;
@@ -777,14 +775,20 @@ bool ImportRaw(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager 
 
 	if (!progress && wxGetElapsedTime(false) > 500) {
 	  progress =
-		new wxProgressDialog("Import","Importing raw audio data",
-							 len);
+		new wxProgressDialog("Import",
+							 "Importing raw audio data",
+							 1000,
+							 parent,
+							 wxPD_CAN_ABORT |
+							 wxPD_REMAINING_TIME |
+							 wxPD_AUTO_HIDE);
 	}
 
 	if (progress) {
 	  int progressvalue =
 		(bytescompleted > len)? len : bytescompleted;
-	  progress->Update(progressvalue);
+	  cancelling = 
+		!progress->Update(progressvalue * 1000.0 / len);
 	}
 
   }
@@ -927,14 +931,31 @@ void PreviewPanel::OnPaint(wxPaintEvent& event)
   memDC.SetBrush(wxBrush(wxColour(153,153,255),wxSOLID));
   memDC.DrawRectangle(r);
 
-  memDC.SetPen(wxPen(wxColour(255,255,255),1,wxSOLID));
+  memDC.SetPen(wxPen(wxColour(0, 0, 0),1,wxSOLID));
 
   Extract(param[0], param[1], param[2], param[3], param[4],
 		  rawData, dataLen, data1, data2, &len1, &len2);
 
-  for(int i=0; i<r.width-1 && i<len1-1; i++) {
-    int ctr = r.height/2;
-    memDC.DrawLine(i,ctr-(ctr*data1[i]),i+1,ctr-(ctr*data1[i+1]));
+  if (param[2]) {
+	// stereo
+
+	int ctr = r.height/2;
+	memDC.DrawLine(1, ctr, r.width-1, ctr);
+	ctr /= 2;
+
+	int i;
+	for(i=0; i<(r.width-2)/2 && i<len1-1; i++)
+	  memDC.DrawLine(i*2+1,ctr-(ctr*data1[i]),i*2+3,ctr-(ctr*data1[i+1]));
+
+	for(i=0; i<(r.width-2)/2 && i<len1-1; i++)
+	  memDC.DrawLine(i*2+1,3*ctr-(ctr*data2[i]),i*2+3,3*ctr-(ctr*data2[i+1]));
+
+  }
+  else {
+	int ctr = r.height/2;
+
+	for(int i=0; i<(r.width-2)/2 && i<len1-1; i++)
+	  memDC.DrawLine(i*2+1,ctr-(ctr*data1[i]),i*2+3,ctr-(ctr*data1[i+1]));
   }
 
   //  view->DrawTracks(&memDC, &r);

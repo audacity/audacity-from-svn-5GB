@@ -1373,7 +1373,6 @@ void AudacityProject::Clear()
   PushState();
   FixScrollbars();
   mTrackPanel->Refresh(false);
-  UpdateMenus();
 }
 
 void AudacityProject::SelectNone()

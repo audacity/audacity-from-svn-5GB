@@ -56,6 +56,9 @@ void AudacityProject::CreateMenuBar()
 {
   mMenuBar = new wxMenuBar();
 
+  // Note: if you change the titles of any of the menus here,
+  // you must also change the title in OnUpdateMenus, below:
+
   mFileMenu = new wxMenu();
   mFileMenu->Append(NewID, "&New...\tCtrl+N");
   mFileMenu->Append(OpenID, "&Open...\tCtrl+O");
@@ -159,9 +162,85 @@ void AudacityProject::CreateMenuBar()
   mInsertSilenceAmount = 1.0;
 }
 
-void AudacityProject::UpdateMenus()
+void AudacityProject::OnUpdateMenus(wxUpdateUIEvent& event)
 {
+  // Note that the titles of the menus here are dependent on the
+  // titles above.
+
+  mEditMenu->Enable(mEditMenu->FindItem("Undo"),
+					mUndoManager.UndoAvailable());
+  mEditMenu->Enable(mEditMenu->FindItem("Redo"),
+					mUndoManager.RedoAvailable());
+
+  bool nonZeroRegionSelected =
+	(mViewInfo.sel1 > mViewInfo.sel0);
+
+  int numTracks = 0;
+  int numTracksSelected = 0;
+  int numWaveTracks = 0;
+  int numWaveTracksSelected = 0;
+  int numLabelTracks = 0;
+
+  TrackListIterator iter(mTracks);
+  VTrack *t = iter.First();
+  while(t) {
+	numTracks++;
+	if (t->GetKind() == VTrack::Wave)
+	  numWaveTracks++;
+	if (t->GetKind() == VTrack::Label)
+	  numLabelTracks++;
+	if (t->selected) {
+	  numTracksSelected++;
+	  if (t->GetKind() == VTrack::Wave)
+		numWaveTracksSelected++;
+	}
+	t = iter.Next();
+  }
+
+  mFileMenu->Enable(mFileMenu->FindItem("Export..."),
+					numTracks > 0);
+  mFileMenu->Enable(mFileMenu->FindItem("Export Selected Audio..."),
+					numTracksSelected>0 && nonZeroRegionSelected);
+  mFileMenu->Enable(mFileMenu->FindItem("Export Labels..."),
+					numLabelTracks > 0);
+
+  mEditMenu->Enable(mEditMenu->FindItem("Cut"),
+					numTracksSelected>0 && nonZeroRegionSelected);
+  mEditMenu->Enable(mEditMenu->FindItem("Copy"),
+					numTracksSelected>0 && nonZeroRegionSelected);
+  mEditMenu->Enable(mEditMenu->FindItem("Paste"),
+					numTracksSelected>0 && msClipLen > 0.0);
+  mEditMenu->Enable(mEditMenu->FindItem("Delete"),
+					numTracksSelected>0 && nonZeroRegionSelected);
+  mEditMenu->Enable(mEditMenu->FindItem("Silence"),
+					numTracksSelected>0 && nonZeroRegionSelected);
+  mEditMenu->Enable(mEditMenu->FindItem("Insert Silence..."),
+					numTracksSelected>0);
+  mEditMenu->Enable(mEditMenu->FindItem("Split"),
+					numTracksSelected>0 && nonZeroRegionSelected);
+  mEditMenu->Enable(mEditMenu->FindItem("Duplicate"),
+					numTracksSelected>0 && nonZeroRegionSelected);
+  mEditMenu->Enable(mEditMenu->FindItem("Select All"),
+					numTracks > 0);
   
+  mViewMenu->Enable(mViewMenu->FindItem("Plot Spectrum"),
+					numWaveTracksSelected>0 && nonZeroRegionSelected);
+
+  mProjectMenu->Enable(mProjectMenu->FindItem("Quick Mix"),
+					   numWaveTracksSelected>1);
+
+  mProjectMenu->Enable(mProjectMenu->FindItem("Align Tracks Together"),
+					   numTracksSelected>1);
+  mProjectMenu->Enable(mProjectMenu->FindItem("Align with Zero"),
+					   numTracksSelected>1);
+  mProjectMenu->Enable(mProjectMenu->FindItem("Remove Track(s)"),
+					   numTracksSelected>0);
+
+  for(int e=0; e<Effect::GetNumEffects(); e++) {
+	Effect *f = Effect::GetEffect(e);
+	mEffectMenu->Enable(mEffectMenu->FindItem(f->GetEffectName()),
+						numWaveTracksSelected>0 && nonZeroRegionSelected);
+  }
 }
 
 //
@@ -182,7 +261,13 @@ void AudacityProject::OnOpen(wxCommandEvent& event)
 				   path, // Path
 				   "", // Name
 				   "", // Extension
-				   "", // Wildcard
+				   "All files (*.*)|*.*|"
+				   "Audacity projects (*.aup)|*.aup|"
+				   "WAV files (*.wav)|*.wav|"
+				   "AIFF files (*.aif)|*.aif|"
+				   "AU files (*.au)|*.au|"
+				   "IRCAM files (*.snd)|*.snd|"
+				   "MP3 files (*.mp3)|*.mp3",
 				   0, // Flags
 				   this); // Parent
   
@@ -241,7 +326,7 @@ void AudacityProject::OnExportLabels(wxCommandEvent& event)
                          fName,
                          "txt",
                          "*.txt",
-                         wxSAVE,
+                         wxSAVE | wxOVERWRITE_PROMPT,
                          this);
 
   if (fName == "")
@@ -308,7 +393,7 @@ void AudacityProject::Undo(wxCommandEvent& event)
   PopState(l);
 
   FixScrollbars();
-  UpdateMenus();
+  //UpdateMenus();
   mTrackPanel->Refresh(false);
 }
 
@@ -323,7 +408,7 @@ void AudacityProject::Redo(wxCommandEvent& event)
   PopState(l);
 
   FixScrollbars();
-  UpdateMenus();
+  //UpdateMenus();
   mTrackPanel->Refresh(false);
 }
 
@@ -353,7 +438,7 @@ void AudacityProject::Cut(wxCommandEvent& event)
 
   FixScrollbars();
   mTrackPanel->Refresh(false);
-  UpdateMenus();
+  //UpdateMenus();
 }
 
 void AudacityProject::Copy(wxCommandEvent& event)
@@ -377,7 +462,7 @@ void AudacityProject::Copy(wxCommandEvent& event)
   msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
 
   mViewInfo.sel1 = mViewInfo.sel0;
-  UpdateMenus();
+  //UpdateMenus();
 
   //  PushState();
   //  Not an undoable operation
@@ -416,7 +501,7 @@ void AudacityProject::Paste(wxCommandEvent& event)
 
   FixScrollbars();
   mTrackPanel->Refresh(false);
-  UpdateMenus();
+  //UpdateMenus();
 }
 
 void AudacityProject::OnDelete(wxCommandEvent& event)
@@ -570,7 +655,7 @@ void AudacityProject::OnSelectAll(wxCommandEvent& event)
   mViewInfo.sel1 = mTracks->GetMaxLen();
   
   mTrackPanel->Refresh(false);
-  UpdateMenus();
+  //UpdateMenus();
 }
 
 //
@@ -674,7 +759,11 @@ void AudacityProject::OnImport(wxCommandEvent& event)
 				   path, // Path
 				   "", // Name
 				   "", // Extension
-				   "", // Wildcard
+				   "All files (*.*)|*.*|"
+				   "WAV files (*.wav)|*.wav|"
+				   "AIFF files (*.aif)|*.aif|"
+				   "AU files (*.au)|*.au|"
+				   "IRCAM files (*.snd)|*.snd|",
 				   0, // Flags
 				   this); // Parent
 
@@ -688,138 +777,165 @@ void AudacityProject::OnImport(wxCommandEvent& event)
 
 void AudacityProject::OnImportLabels(wxCommandEvent& event)
 {
+  wxString path = gPrefs->Read("/DefaultOpenPath", ::wxGetCwd());
+  
   wxString fileName =
 	wxFileSelector("Select a text file containing labels...",
-				   "", // Path
+				   path, // Path
 				   "", // Name
 				   ".txt", // Extension
-				   "*.txt", // Wildcard
+				   "Text files (*.txt)|*.txt|"
+				   "All files (*.*)|*.*",
 				   0, // Flags
 				   this); // Parent
 
-  if (fileName == "")
-    return;
+  if (fileName != "") {
+    path = ::wxPathOnly(fileName);
+    gPrefs->Write("/DefaultOpenPath", path);
 
-  wxTextFile f;
-
-  f.Open(fileName);
-  if (!f.IsOpened()) {
-	wxMessageBox("Couldn't open "+fileName);
-	return;
-  }
-
-  LabelTrack *newTrack = new LabelTrack(&mDirManager);
-
-  newTrack->Import(f);
-
-  SelectNone();
-  mTracks->Add(newTrack);
-  newTrack->selected = true;
+	wxTextFile f;
+	
+	f.Open(fileName);
+	if (!f.IsOpened()) {
+	  wxMessageBox("Couldn't open "+fileName);
+	  return;
+	}
+	
+	LabelTrack *newTrack = new LabelTrack(&mDirManager);
+	
+	newTrack->Import(f);
+	
+	SelectNone();
+	mTracks->Add(newTrack);
+	newTrack->selected = true;
     
-  PushState();
-  
-  FixScrollbars();
-  mTrackPanel->Refresh(false);
+	PushState();
+	
+	FixScrollbars();
+	mTrackPanel->Refresh(false);
+  }
 }
 
 void AudacityProject::OnImportMIDI(wxCommandEvent& event)
 {
+  wxString path = gPrefs->Read("/DefaultOpenPath", ::wxGetCwd());
+  
   wxString fileName =
-	wxFileSelector("Select a MIDI File...",
-				   "", // Path
+	wxFileSelector("Select a MIDI file...",
+				   path, // Path
 				   "", // Name
 				   ".mid", // Extension
-				   "*.mid", // Wildcard
+				   "MIDI files (*.mid)|*.mid|"
+				   "All files (*.*)|*.*",
 				   0, // Flags
 				   this); // Parent
 
-  if (fileName == "")
-    return;
+  if (fileName != "") {
+    path = ::wxPathOnly(fileName);
+    gPrefs->Write("/DefaultOpenPath", path);
 
-  NoteTrack *newTrack =	new NoteTrack(&mDirManager);
-  
-  if (::ImportMIDI(fileName, newTrack)) {
-
-    SelectNone();
-    mTracks->Add(newTrack);
-	newTrack->selected = true;
-    
-    PushState();
-
-    FixScrollbars();
-	mTrackPanel->Refresh(false);
+	NoteTrack *newTrack =	new NoteTrack(&mDirManager);
+	
+	if (::ImportMIDI(fileName, newTrack)) {
+	  
+	  SelectNone();
+	  mTracks->Add(newTrack);
+	  newTrack->selected = true;
+	  
+	  PushState();
+	  
+	  FixScrollbars();
+	  mTrackPanel->Refresh(false);
+	}
   }
 }
 
 void AudacityProject::OnImportMP3(wxCommandEvent& event)
 {
+  wxString path = gPrefs->Read("/DefaultOpenPath", ::wxGetCwd());
+  
   wxString fileName =
 	wxFileSelector("Select an MP3 file...",
-				   "", // Path
+				   path, // Path
 				   "", // Name
 				   ".mp3", // Extension
-				   "*.mp3", // Wildcard
+				   "MP3 files (*.mp3)|*.mp3|"
+				   "All files (*.*)|*.*",
 				   0, // Flags
 				   this); // Parent
 
-  if (fileName != "")
-	  ImportMP3(fileName);
+  if (fileName != "") {
+    path = ::wxPathOnly(fileName);
+    gPrefs->Write("/DefaultOpenPath", path);
+
+	ImportMP3(fileName);
+  }
 }
 
 #ifdef HAVE_LIBVORBISFILE
 void AudacityProject::OnImportOGG(wxCommandEvent& event)
 {
-	wxString fileName =
-		wxFileSelector("Select an OGG file...",
-			"", //Path
-			"", //Name
-			".ogg", //Extension
-			"*.ogg", //Wildcard
-			0, //Flags
-			this); //Parent
-	
-	if(fileName != "")
-		ImportOGG(fileName);
+  wxString path = gPrefs->Read("/DefaultOpenPath", ::wxGetCwd());
+  
+  wxString fileName =
+	wxFileSelector("Select an OGG file...",
+				   path, // Path
+				   "", // Name
+				   ".ogg", // Extension
+				   "MP3 files (*.ogg)|*.ogg|"
+				   "All files (*.*)|*.*",
+				   0, // Flags
+				   this); // Parent
+
+  if (fileName != "") {
+    path = ::wxPathOnly(fileName);
+    gPrefs->Write("/DefaultOpenPath", path);
+
+	ImportOGG(fileName);
+  }
 }
 #endif /* HAVE_LIBVORBISFILE */
 
 void AudacityProject::OnImportRaw(wxCommandEvent& event)
 {
+  wxString path = gPrefs->Read("/DefaultOpenPath", ::wxGetCwd());
+  
   wxString fileName =
-	wxFileSelector("Select a PCM File...",
-				   "", // Path
+	wxFileSelector("Select any uncompressed audio file...",
+				   path, // Path
 				   "", // Name
 				   "", // Extension
-				   "", // Wildcard
+				   "All files (*.*)|*.*",
 				   0, // Flags
 				   this); // Parent
 
-  if (fileName == "")
-    return;
+  if (fileName != "") {
+    path = ::wxPathOnly(fileName);
+    gPrefs->Write("/DefaultOpenPath", path);
 
-  WaveTrack *left = 0;
-  WaveTrack *right = 0;
-  
-  if (::ImportRaw(fileName, &left, &right, &mDirManager)) {
-
-	SelectNone();
-
-    if (left) {
-      mTracks->Add(left);
-	  left->selected = true;
-    }
-
-    if (right) {
-      mTracks->Add(right);
-	  right->selected = true;
-    }
-
-    PushState();
-
-    FixScrollbars();
-	mTrackPanel->Refresh(false);
+	WaveTrack *left = 0;
+	WaveTrack *right = 0;
+	
+	if (::ImportRaw(this, fileName, &left, &right, &mDirManager)) {
+	  
+	  SelectNone();
+	  
+	  if (left) {
+		mTracks->Add(left);
+		left->selected = true;
+	  }
+	  
+	  if (right) {
+		mTracks->Add(right);
+		right->selected = true;
+	  }
+	  
+	  PushState();
+	  
+	  FixScrollbars();
+	  mTrackPanel->Refresh(false);
+	}
   }
-  
 }
 
 void AudacityProject::OnQuickMix(wxCommandEvent& event)
@@ -847,7 +963,7 @@ void AudacityProject::OnAlignZero(wxCommandEvent& event)
   PushState();
 
   mTrackPanel->Refresh(false);
-  UpdateMenus();
+  //UpdateMenus();
 }
 
 void AudacityProject::OnAlign(wxCommandEvent& event)
@@ -884,7 +1000,7 @@ void AudacityProject::OnAlign(wxCommandEvent& event)
   PushState();
 
   mTrackPanel->Refresh(false);
-  UpdateMenus();
+  //UpdateMenus();
   
 }
 
@@ -933,7 +1049,7 @@ void AudacityProject::OnRemoveTracks(wxCommandEvent& event)
   PushState();
 
   mTrackPanel->Refresh(false);
-  UpdateMenus();
+  //UpdateMenus();
 }
 
 //
