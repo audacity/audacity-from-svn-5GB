@@ -965,7 +965,7 @@ void AudioIO::StopStream()
             {
                delete mCaptureBuffers[i];
                mCaptureTracks[i]->Flush();
-               mCaptureTracks[i]->SetOffset(mLastRecordingOffset);
+               mCaptureTracks[i]->Offset(mLastRecordingOffset);
             }
          
          delete[] mCaptureBuffers;
