@@ -102,7 +102,6 @@
 #include "ViewInfo.h"
 #include "WaveTrack.h"
 #include "TimeTrack.h"
-#include "Internat.h"
 
 #include "widgets/ASlider.h"
 #include "widgets/Ruler.h"
@@ -4275,9 +4274,7 @@ void TrackPanel::OnRateOther(wxEvent &event)
       if ("" == rateStr)
          return;
 
-      theRate = Internat::ToDouble(rateStr);
-
-      if (theRate >= 1 && theRate <= 100000)
+      if (rateStr.ToDouble(&theRate) && theRate >= 1 && theRate <= 100000)
          break;
       else
          wxMessageBox(_("Invalid rate."));

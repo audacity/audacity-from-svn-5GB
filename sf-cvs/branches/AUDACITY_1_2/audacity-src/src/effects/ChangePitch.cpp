@@ -466,7 +466,7 @@ bool ChangePitchDialog::TransferDataFromWindow()
 	// semitones change control
    if (m_pTextCtrl_SemitonesChange) {
       str = m_pTextCtrl_SemitonesChange->GetValue();
-      newDouble = Internat::ToDouble(str);
+      str.ToDouble(&newDouble);
 		m_SemitonesChange = newDouble;
 	}
 
@@ -474,13 +474,13 @@ bool ChangePitchDialog::TransferDataFromWindow()
 	// from/to frequency controls
    if (m_pTextCtrl_FromFrequency) {
       str = m_pTextCtrl_FromFrequency->GetValue();
-      newDouble = Internat::ToDouble(str);
+      str.ToDouble(&newDouble);
 		m_FromFrequency = newDouble;
 	}
 
    if (m_pTextCtrl_ToFrequency) {
       str = m_pTextCtrl_ToFrequency->GetValue();
-      newDouble = Internat::ToDouble(str);
+      str.ToDouble(&newDouble);
 		m_ToFrequency = newDouble;
 	}
 
@@ -488,7 +488,7 @@ bool ChangePitchDialog::TransferDataFromWindow()
 	// percent change controls
    if (m_pTextCtrl_PercentChange) {
       str = m_pTextCtrl_PercentChange->GetValue();
-      newDouble = Internat::ToDouble(str);
+      str.ToDouble(&newDouble);
 		m_PercentChange = newDouble;
 	}
 
@@ -602,7 +602,8 @@ void ChangePitchDialog::OnText_SemitonesChange(wxCommandEvent & event)
 
 	if (m_pTextCtrl_SemitonesChange) {
 		wxString str = m_pTextCtrl_SemitonesChange->GetValue();
-                double newValue = Internat::ToDouble(str);
+      double newValue = 0;
+      str.ToDouble(&newValue);
 		m_SemitonesChange = newValue;
 
 		this->Calc_PercentChange();
@@ -631,7 +632,7 @@ void ChangePitchDialog::OnText_FromFrequency(wxCommandEvent & event)
 	if (m_pTextCtrl_FromFrequency) {
 		wxString str = m_pTextCtrl_FromFrequency->GetValue();
 		double newDouble;
-      newDouble = Internat::ToDouble(str);
+      str.ToDouble(&newDouble);
 		m_FromFrequency = newDouble;
 
 		m_FromPitchIndex = PitchIndex(Freq2Pitch(m_FromFrequency));
@@ -658,7 +659,7 @@ void ChangePitchDialog::OnText_ToFrequency(wxCommandEvent & event)
    if (m_pTextCtrl_ToFrequency) {
       wxString str = m_pTextCtrl_ToFrequency->GetValue();
 		double newDouble;
-      newDouble = Internat::ToDouble(str);
+      str.ToDouble(&newDouble);
 		m_ToFrequency = newDouble;
 
 		m_PercentChange = (((double)(m_ToFrequency) * 100.0) / 
@@ -688,7 +689,8 @@ void ChangePitchDialog::OnText_PercentChange(wxCommandEvent & event)
 
    if (m_pTextCtrl_PercentChange) {
       wxString str = m_pTextCtrl_PercentChange->GetValue();
-      double newValue = Internat::ToDouble(str);
+      double newValue = 0;
+      str.ToDouble(&newValue);
 		m_PercentChange = newValue;
 
 		this->Calc_SemitonesChange_fromPercentChange();

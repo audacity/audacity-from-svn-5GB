@@ -933,10 +933,10 @@ void WaveTrack::WriteXML(int depth, FILE *fp)
    fprintf(fp, "name=\"%s\" ", XMLEsc(mName).c_str());
    fprintf(fp, "channel=\"%d\" ", mChannel);
    fprintf(fp, "linked=\"%d\" ", mLinked);
-   fprintf(fp, "offset=\"%.8g\" ", mOffset);
-   fprintf(fp, "rate=\"%g\" ", mRate);
-   fprintf(fp, "gain=\"%g\" ", (double)mGain);
-   fprintf(fp, "pan=\"%g\" ", (double)mPan);
+   fprintf(fp, "offset=\"%s\" ", Internat::ToString(mOffset, 8).c_str());
+   fprintf(fp, "rate=\"%s\" ", Internat::ToString(mRate).c_str());
+   fprintf(fp, "gain=\"%s\" ", Internat::ToString((double)mGain).c_str());
+   fprintf(fp, "pan=\"%s\" ", Internat::ToString((double)mPan).c_str());
    fprintf(fp, ">\n");
 
    mSequence->WriteXML(depth+1, fp);

@@ -30,20 +30,6 @@ void *Internat::mTECFromUTF = NULL;
 
 void Internat::Init()
 {
-   #ifndef __WXMAC__
-   // Set up character-set conversion for UTF-8 input and output.
-   mConvLocal = new wxCSConv(wxLocale::GetSystemEncodingName());
-   #endif
-
-   // There is no way to check the 'default' (rather than the current
-   // decimal separator character), so we set the 'default' number locale
-   // explicitely, then reset it to "C", because Nyquist and other
-   // parts of Audacity expect printf() etc. expect the "C" locale for
-   // numbers.
-
-   // Set default numeric locale
-   setlocale(LC_NUMERIC, "");
-
    // Save decimal point character
    struct lconv * localeInfo = localeconv();
    if (localeInfo)
@@ -51,10 +37,10 @@ void Internat::Init()
 
    wxLogDebug("Decimal separator set to '%c'", mDecimalSeparator);
 
-   // Reset to C numeric locale
-   setlocale(LC_NUMERIC, "C");
-
-   #ifdef __WXMAC__
+   #ifndef __WXMAC__
+   // Set up character-set conversion for UTF-8 input and output.
+   mConvLocal = new wxCSConv(wxLocale::GetSystemEncodingName());
+   #else
    // Set up a special converter to/from the Mac-specific local
    // encoding (usually MacRoman)
    OSStatus status = noErr;
@@ -84,31 +70,12 @@ wxChar Internat::GetDecimalSeparator()
    return mDecimalSeparator;
 }
 
-bool Internat::ToDouble(const wxString& stringToConvert, double* result)
-{
-   wxString s = stringToConvert;
-
-   wxChar decimalSeparator = GetDecimalSeparator();
-
-   if (decimalSeparator != '.')
-      s.Replace(wxString(decimalSeparator), ".");
-
-   return s.ToDouble(result);
-}
-
-double Internat::ToDouble(const wxString& stringToConvert)
-{
-   double result;
-   Internat::ToDouble(stringToConvert, &result);
-   return result;
-}
-
 bool Internat::CompatibleToDouble(const wxString& stringToConvert, double* result)
 {
    // Regardless of the locale, always respect comma _and_ point
    wxString s = stringToConvert;
-   s.Replace(",", ".");
-
+   s.Replace(",", wxString(GetDecimalSeparator()));
+   s.Replace(".", wxString(GetDecimalSeparator()));
    return s.ToDouble(result);
 }
 
@@ -120,8 +87,7 @@ double Internat::CompatibleToDouble(const wxString& stringToConvert)
 }
 
 wxString Internat::ToString(double numberToConvert,
-                     int digitsAfterDecimalPoint /* = -1 */,
-		     wxChar decimalSeparatorChar /* = 0 */)
+                     int digitsAfterDecimalPoint /* = -1 */)
 {
    wxString format, result;
 
@@ -131,12 +97,7 @@ wxString Internat::ToString(double numberToConvert,
       format.Printf("%%.%if", digitsAfterDecimalPoint);
 
    result.Printf(format, numberToConvert);
-
-   if (decimalSeparatorChar == 0)
-      decimalSeparatorChar = GetDecimalSeparator();
-
-   if (decimalSeparatorChar != '.')
-      result.Replace(".", wxString(decimalSeparatorChar));
+   result.Replace(wxString(GetDecimalSeparator()), ".");
 
    return result;
 }
