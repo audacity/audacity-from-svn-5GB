@@ -1,18 +1,40 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# translation of audacity.po to italiano
+# translation of audacity.po to 
+# translation of audacity.po to
+# translation of audacity.po to
+# translation of audacity.po to
+# Copyright (C) 2003 Free Software Foundation, Inc.
+# , 2003
+# , 2003
+# , 2003
+# , 2003
+# , 2003
+# , 2003
+# , 2003
+# , 2003
+# , 2003
+# , 2003
+# , 2003
+# , 2003
+# , 2003
+# , 2003
+# , 2003
+# , 2003
+# , 2003
+# , 2003
+# Aldo Boccacci <zorba_@tin.it>, 2003
 #: ../src/ToolBar.cpp:503 ../src/prefs/KeyConfigPrefs.cpp:153
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0\n"
+"Project-Id-Version: audacity\n"
 "POT-Creation-Date: 2002-11-09 15:20-0800\n"
-"PO-Revision-Date: 2002-10-31 21:28GMT+1\n"
+"PO-Revision-Date: 2003-02-17 21:16+0000\n"
 "Last-Translator: Aldo Boccacci <zorba_@tin.it>\n"
-"Language-Team: Italiano <audacity-translation@lists.sourceforge.net>\n"
+"Language-Team: italiano <audacity-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.5\n"
+"X-Generator: KBabel 1.0\n"
 
 #: ../src/Mix.cpp:168
 #, c-format
@@ -40,7 +62,7 @@ msgstr ".Enorme!"
 
 #: ../src/FreqWindow.cpp:159
 msgid " window"
-msgstr ". finestra"
+msgstr " finestra"
 
 #: ../src/Menus.cpp:108
 msgid "&Analyze"
@@ -72,9 +94,8 @@ msgid "&Fit in Window"
 msgstr "Adatta alla &finestra"
 
 #: ../src/Menus.cpp:106
-#, fuzzy
 msgid "&Generate"
-msgstr "Sto generando il tono"
+msgstr "&Genera"
 
 #: ../src/Menus.cpp:109 ../src/Menus.cpp:130
 msgid "&Help"
@@ -82,7 +103,7 @@ msgstr "Aiuto"
 
 #: ../src/commands.h:280
 msgid "&Import Audio..."
-msgstr "&Importa audio"
+msgstr "&Importa audio..."
 
 #: ../src/commands.h:213
 msgid "&New"
@@ -94,7 +115,7 @@ msgstr "Apri..."
 
 #: ../src/commands.h:232
 msgid "&Preferences..."
-msgstr "&Preferenze"
+msgstr "&Preferenze..."
 
 #: ../src/Menus.cpp:105 ../src/Menus.cpp:129
 msgid "&Project"
@@ -274,9 +295,8 @@ msgid "Adjusted envelope."
 msgstr "Inviluppo aggiustato."
 
 #: ../src/effects/AvcCompressor.cpp:571
-#, fuzzy
 msgid "Adjustment Delay:"
-msgstr "Aggiusta la finestra:"
+msgstr "Aggiusta il ritardo:"
 
 #: ../src/effects/AvcCompressor.cpp:554
 msgid "Adjustment Settings"
@@ -296,7 +316,7 @@ msgstr "Algorithms, MIDI & Audio I/O programming"
 
 #: ../src/commands.h:332
 msgid "Align"
-msgstr ""
+msgstr "Allinea"
 
 #: ../src/commands.h:318
 msgid "Align End with Cursor"
@@ -340,7 +360,7 @@ msgstr "Allinea sempre le &tracce"
 
 #: ../src/commands.h:311
 msgid "Align Tracks Together"
-msgstr "Allinea tutte le tracce "
+msgstr "Allinea tutte le tracce"
 
 #: ../src/commands.h:313
 msgid "Align with &Cursor"
@@ -375,9 +395,8 @@ msgid "Align with Zero"
 msgstr "Allinea con Zero"
 
 #: ../src/commands.h:332
-#, fuzzy
 msgid "Align..."
-msgstr "Amplifica..."
+msgstr "Allinea..."
 
 #: ../src/Menus.cpp:1793
 msgid "Aligned end with sel0"
@@ -430,10 +449,8 @@ msgstr ""
 "(*.snd)|*.snd|File MP3  (*.mp3)|*.mp3"
 
 #: ../src/Menus.cpp:1521
-msgid ""
-"All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
-msgstr ""
-"Tutti i file (*.*)|*.*|File MIDI (*.mid)|*.mid|File Allegro (*.gro)|*.gro"
+msgid "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
+msgstr "Tutti i file (*.*)|*.*|File MIDI (*.mid)|*.mid|File Allegro (*.gro)|*.gro"
 
 #: ../src/Menus.cpp:1454
 msgid ""
@@ -471,7 +488,7 @@ msgstr "Amplifica..."
 
 #: ../src/effects/Amplify.h:51
 msgid "Amplifying"
-msgstr "Sto mplificando"
+msgstr "Sto amplificando"
 
 #: ../src/effects/ToneGen.cpp:306
 msgid "Amplitude (0-1)"
@@ -482,55 +499,58 @@ msgid "Apple/SGI AIFF"
 msgstr "Apple/SGI AIFF"
 
 #: ../src/effects/Effect.h:84
-#, fuzzy, c-format
+#, c-format
 msgid "Applied effect: %s"
-msgstr "Un effetto è stato applicato."
+msgstr "Effetto applicato: %s"
 
 #: ../src/effects/Amplify.cpp:32
-#, fuzzy, c-format
+#, c-format
 msgid "Applied effect: %s %.1f dB"
-msgstr "Un effetto è stato applicato."
+msgstr "Effetto applicato: %s %.1f dB"
 
 #: ../src/effects/Phaser.cpp:46
 msgid ""
 "Applied effect: %s %d stages, %.0f%% wet, frequency = %.1f Hz, start phase = "
 "%.0f deg, depth = %d, feedback = %.0f%%"
 msgstr ""
+"Effetto applicato: %s %d, %.0f%% wet, frequency = %.1f Hz, start phase = "
+"%.0f deg, depth = %d, feedback = %.0f%%"
 
 #: ../src/effects/AvcCompressor.cpp:86
 #, c-format
 msgid "Applied effect: %s change window = %d samples"
-msgstr ""
+msgstr "Effetto applicato: %s change window = %d campioni"
 
 #: ../src/effects/Echo.cpp:26
 #, c-format
 msgid "Applied effect: %s delay = %f seconds, decay factor = %f"
-msgstr ""
+msgstr "Effetto applicato: %s ritardo = %f secondi, fattore di decadimento = %f"
 
 #: ../src/effects/BassBoost.cpp:35
 #, c-format
 msgid "Applied effect: %s frequency = %.0f Hz, boost = %.0f dB"
-msgstr ""
+msgstr "Effetto applicato: %s frequenza = %.0f, incremento = %.0f dB"
 
 #: ../src/effects/Wahwah.cpp:40
 msgid ""
 "Applied effect: %s frequency = %.1f Hz, start phase = %.0f deg, depth = "
 "%.0f%%, resonance = %.1f, frequency offset = %.0f%%"
 msgstr ""
+"Effetto applicato: %s frequenza = %.1f, start phase = %.0f deg, depth = "
+"%.0f%%, risonanza = %.1f, frequency offset = %.0f%%"
 
 #: ../src/effects/ToneGen.cpp:32
 #, c-format
-msgid ""
-"Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f"
-msgstr ""
+msgid "Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f"
+msgstr "Effetto applicato: Genera %s %s onda, frequenza = %.2f Hz, ampiezza = %.2f"
 
 #: ../src/effects/Silence.h:36
 msgid "Applied effect: Generate Silence"
-msgstr ""
+msgstr "Effetto applicato: Genera silenzio"
 
 #: ../src/effects/Noise.h:31
 msgid "Applied effect: Generate White Noise"
-msgstr ""
+msgstr "Effetto applicato: Genera rumore bianco"
 
 #: ../src/effects/nyquist/Nyquist.cpp:142
 msgid "Appling Nyquist Effect..."
@@ -737,8 +757,7 @@ msgstr "Bit Rate:"
 
 #: ../src/Benchmark.cpp:305
 msgid "Block size should be in the range 1 - 1024 KB."
-msgstr ""
-"La dimensione dei blocchi deve essere compresa nell'intervallo 1 - 1024 KB."
+msgstr "La dimensione dei blocchi deve essere compresa nell'intervallo 1 - 1024 KB."
 
 #: ../src/effects/BassBoost.cpp:288
 msgid "Boost (dB):"
@@ -776,10 +795,8 @@ msgid "Change track name to:"
 msgstr "Cambia il nome della traccia in:"
 
 #: ../src/effects/AvcCompressor.cpp:388
-msgid ""
-"Change window size must be less than or equal to Adjustment window size."
-msgstr ""
-"Change window size must be less than or equal to Adjustment window size."
+msgid "Change window size must be less than or equal to Adjustment window size."
+msgstr "Change window size must be less than or equal to Adjustment window size."
 
 #: ../src/TrackPanel.cpp:2701
 #, c-format
@@ -840,8 +857,7 @@ msgstr "Elimina"
 
 #: ../src/TrackPanel.cpp:695
 msgid "Click and drag to adjust relative size of stereo tracks."
-msgstr ""
-"Clicca e trascina per aggiustare la dimensione relativa delle tracce stereo."
+msgstr "Clicca e trascina per aggiustare la dimensione relativa delle tracce stereo."
 
 #: ../src/TrackPanel.cpp:579
 msgid "Click and drag to edit the amplitude envelope"
@@ -1001,19 +1017,19 @@ msgid "Cursor to Track Start"
 msgstr "Cursore all'inizio della traccia"
 
 #: ../src/TrackPanel.cpp:3222
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %.3lf NTSC frames (29.97 fps)   %s"
-msgstr "Cursore: %lf fotogrammi NTSC (29.97 fps)"
+msgstr "Cursore: %.3lf fotogrammi NTSC (29.97 fps)... %s"
 
 #: ../src/TrackPanel.cpp:3187
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %.3lf PAL frames (25 fps)   %s"
-msgstr "Cursore: %lf fotogrammi PAL (25 fps)"
+msgstr "Cursore: %.3lf PAL frames (25 fps)   %s"
 
 #: ../src/TrackPanel.cpp:3152
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %.3lf film frames (24 fps)   %s"
-msgstr "Cursore: %lf fotogrammi film (24 fps)"
+msgstr "Cursore: %.3lf film frames (24 fps)   %s"
 
 #: ../src/FreqWindow.cpp:827
 #, c-format
@@ -1021,9 +1037,9 @@ msgid "Cursor: %.4f sec (%d Hz) (%s) = %f,    Peak: %.4f sec (%d Hz) (%s)"
 msgstr "Cursore: %.4f sec (%d Hz) (%s)= %f,    Picco: % 4f sec (%d Hz) (%s)"
 
 #: ../src/TrackPanel.cpp:3274
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %02i:%02i:%06.3lf cdda min:sec:frames (75 fps)   %s"
-msgstr "Cursore: %lf fotogrammi PAL (25 fps)"
+msgstr "Cursore: %02i:%02i:%06.3lf cdda min:sec:frames (75 fps)   %s"
 
 #: ../src/FreqWindow.cpp:816
 #, c-format
@@ -1058,9 +1074,9 @@ msgstr ""
 "Imposta Frequenza per resettare/impostare]"
 
 #: ../src/TrackPanel.cpp:3084
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %i:%09.6f min:sec   %s"
-msgstr "Cursore: %i:%09.6f min:sec"
+msgstr "Cursore: %i:%09.6f min:sec   %s"
 
 #: ../src/TrackPanel.cpp:3335
 #, c-format
@@ -1072,9 +1088,9 @@ msgstr ""
 "Frequenza per resettare/impostare]"
 
 #: ../src/TrackPanel.cpp:3118
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %lf sec   %s"
-msgstr "Cursore: %lf sec"
+msgstr "Cursore: %lf sec   %s"
 
 #: ../src/TrackPanel.cpp:3366
 #, c-format
@@ -1085,8 +1101,7 @@ msgstr ""
 
 #: ../src/TrackPanel.cpp:3301
 #, c-format
-msgid ""
-"Cursor: %li samples   [based on rate = %7.1f - use Set Rate to reset/set]"
+msgid "Cursor: %li samples   [based on rate = %7.1f - use Set Rate to reset/set]"
 msgstr ""
 "Cursore: %li campioni   [basato sulla frequenza = %7.1f - usa Imposta "
 "Frequenza per resettare/impostare]"
@@ -1554,23 +1569,20 @@ msgid "GNU Octave data file"
 msgstr "GNU Octave data file"
 
 #: ../src/effects/ToneGen.cpp:340
-#, fuzzy
 msgid "Generate Tone"
-msgstr "Sto generando il tono"
+msgstr "Genera tono"
 
 #: ../src/effects/Silence.h:31
-#, fuzzy
 msgid "Generating Silence"
-msgstr "Sto generando il tono"
+msgstr "Sto generando il silenzio"
 
 #: ../src/effects/ToneGen.h:44
 msgid "Generating Tone"
 msgstr "Sto generando il tono"
 
 #: ../src/effects/Noise.h:35
-#, fuzzy
 msgid "Generating White Noise"
-msgstr "Sto generando il tono"
+msgstr "Sto generando rumore bianco"
 
 #: ../src/Tags.cpp:566
 msgid "Genre:"
@@ -1998,8 +2010,7 @@ msgstr "Numero di operazioni:"
 
 #: ../src/Benchmark.cpp:310
 msgid "Number of edits should be in the range 1 - 10000."
-msgstr ""
-"Il numero delle operazioni di modifica deve essere compreso tra 1 e 10000"
+msgstr "Il numero delle operazioni di modifica deve essere compreso tra 1 e 10000"
 
 #: ../src/effects/nyquist/Nyquist.cpp:217
 msgid "Nyquist Prompt"
@@ -2077,9 +2088,8 @@ msgid "Only LAMELib|LAMELib|Shared Libraries (*)|*"
 msgstr "Solo LAMELib|LAMELib|Librerie condivise (*)|*"
 
 #: ../src/export/ExportMP3.cpp:504
-#, fuzzy
 msgid "Only LameLib|LameLib|All Files (*)|*"
-msgstr "Solo LAMELib|LAMELib|Librerie condivise (*)|*"
+msgstr "Solo LAMELib|LAMELib|Tutti i file (*)|*"
 
 #: ../src/export/ExportMP3.cpp:1022
 msgid ""
@@ -2132,9 +2142,8 @@ msgid "Pasted from the clipboard"
 msgstr "Incollato dagli appunti"
 
 #: ../src/ControlToolBar.cpp:343
-#, fuzzy
 msgid "Pause"
-msgstr "Incolla"
+msgstr "Pausa"
 
 #: ../src/Benchmark.cpp:380
 #, c-format
@@ -2426,13 +2435,12 @@ msgid "Select All"
 msgstr "Seleziona Tutto"
 
 #: ../src/commands.h:260
-#, fuzzy
 msgid "Select Cursor to End"
-msgstr "Cursore alla fine della traccia"
+msgstr "Seleziona dal cursore alla fine"
 
 #: ../src/commands.h:259
 msgid "Select Start to Cursor"
-msgstr ""
+msgstr "Seleziona dall'inizio al cursore"
 
 #: ../src/Menus.cpp:1517
 msgid "Select a MIDI file..."
@@ -2472,29 +2480,31 @@ msgstr "Seleziona un qualsiasi file audio non compresso..."
 
 #: ../src/ControlToolBar.cpp:372
 msgid "Selection Tool"
-msgstr "Strumento Seleziona"
+msgstr "Strumento Selezione"
 
 #: ../src/TrackPanel.cpp:3230
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %.3lf - %.3lf (%.3lf NTSC frames)   %s"
-msgstr "Selezione: %lf - %lf (%lf fotogrammi NTSC)"
+msgstr "Selezione: %.3lf - %.3lf (%.3lf NTSC frames)   %s"
 
 #: ../src/TrackPanel.cpp:3195
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %.3lf - %.3lf (%.3lf PAL frames)   %s"
-msgstr "Selezione: %lf - %lf (%lf fotogrammi PAL)"
+msgstr "Selezione: %.3lf - %.3lf (%.3lf PAL frames)   %s"
 
 #: ../src/TrackPanel.cpp:3160
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %.3lf - %.3lf (%.3lf film frames)   %s"
-msgstr "Selezione: %lf - %lf (%lf fotogrammi film)"
+msgstr "Selezione: %.3lf - %.3lf (%.3lf film frames)   %s"
 
 #: ../src/TrackPanel.cpp:3282
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Selection: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda "
 "min:sec:frames)   %s"
-msgstr "Selezione: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)"
+msgstr ""
+"Selezione: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda "
+"min:sec:frames)   %s"
 
 #: ../src/TrackPanel.cpp:3489
 #, c-format
@@ -2524,9 +2534,9 @@ msgstr ""
 "sulla frequenza = %7.1f - usa Imposta Frequenza per resettare/impostare]"
 
 #: ../src/TrackPanel.cpp:3091
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)   %s"
-msgstr "Selezione: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)"
+msgstr "Selezione: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)   %s"
 
 #: ../src/TrackPanel.cpp:3343
 #, c-format
@@ -2538,9 +2548,9 @@ msgstr ""
 "frequenza  = %7.1f - usa Imposta Frequenza per resettare/impostare]"
 
 #: ../src/TrackPanel.cpp:3125
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %lf - %lf (%lf sec)   %s"
-msgstr "Selezione: %lf - %lf (%lf sec)"
+msgstr "Selezione: %lf - %lf (%lf sec)   %s"
 
 #: ../src/TrackPanel.cpp:3374
 #, c-format
@@ -2579,7 +2589,7 @@ msgstr "Imposta il formato della selezione"
 
 #: ../src/TrackPanel.cpp:275
 msgid "Set Snap-To Mode"
-msgstr ""
+msgstr "Set Snap-To Mode"
 
 #: ../src/FileFormats.cpp:47
 msgid "Shorten (lossless compression)"
@@ -2649,8 +2659,7 @@ msgstr ""
 
 #: ../src/export/Export.cpp:139
 msgid "Sorry, pathnames longer than 256 characters not supported."
-msgstr ""
-"Spiacente, i nomi di file più lunghi di 256 caratteri non sono supportati."
+msgstr "Spiacente, i nomi di file più lunghi di 256 caratteri non sono supportati."
 
 #: ../src/FileFormats.cpp:40
 msgid "Sound Designer 2"
@@ -2823,9 +2832,8 @@ msgid "Tone Generator"
 msgstr "Generatore di toni"
 
 #: ../src/effects/ToneGen.h:40
-#, fuzzy
 msgid "Tone..."
-msgstr "Scegli..."
+msgstr "Tono..."
 
 #: ../src/Menus.cpp:1362
 #, c-format
@@ -2923,8 +2931,7 @@ msgstr "Usa OGG al posto di MP3"
 #: ../src/Benchmark.cpp:342
 #, c-format
 msgid "Using %d blocks of %d samples each, for a total of %.1f MB.\n"
-msgstr ""
-"Sto usando %d blocchi di %d campioni ciascuno, per un totale di % 1f MB.\n"
+msgstr "Sto usando %d blocchi di %d campioni ciascuno, per un totale di % 1f MB.\n"
 
 #: ../src/AudacityApp.cpp:443
 #, c-format
@@ -3007,9 +3014,8 @@ msgid "Where is audacity-help.htb?"
 msgstr "Dove si trova audacity-help.htb?"
 
 #: ../src/effects/Noise.h:27
-#, fuzzy
 msgid "White Noise"
-msgstr "Rimuovi il rumore"
+msgstr "Rumore bianco"
 
 #: ../src/FileFormats.cpp:46
 msgid "Windows Media Audio"
@@ -3032,16 +3038,12 @@ msgid "You must select a track first."
 msgstr "Devi prima selezionare una traccia."
 
 #: ../src/export/Export.cpp:121
-msgid ""
-"Your tracks will be mixed down to a single mono channel in the exported file."
-msgstr ""
-"Nel file esportato le vostre tracce saranno mixate in un singolo canale mono."
+msgid "Your tracks will be mixed down to a single mono channel in the exported file."
+msgstr "Nel file esportato le vostre tracce saranno mixate in un singolo canale mono."
 
 #: ../src/export/Export.cpp:117
-msgid ""
-"Your tracks will be mixed down to two stereo channels in the exported file."
-msgstr ""
-"Nel file esportato le vostre tracce saranno mixate in due canali stereo."
+msgid "Your tracks will be mixed down to two stereo channels in the exported file."
+msgstr "Nel file esportato le vostre tracce saranno mixate in due canali stereo."
 
 #: ../src/commands.h:263
 msgid "Zoom &In"
@@ -3164,3 +3166,4 @@ msgstr "su"
 
 #~ msgid "Tone Generator..."
 #~ msgstr "Generatore di toni..."
+
