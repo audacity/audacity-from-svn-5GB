@@ -136,12 +136,16 @@ bool EffectChangePitch::PromptUser()
    m_FromFrequency = dlog.m_FromFrequency;
    m_ToFrequency = dlog.m_ToFrequency;
    m_PercentChange = dlog.m_PercentChange;
+   return true;
+}
 
+bool EffectChangePitch::Process()
+{
    mSoundTouch = new SoundTouch();
    mSoundTouch->setChannels(1);
    mSoundTouch->setPitchSemiTones((float)(m_SemitonesChange));
 
-   return true;
+   return this->EffectSoundTouch::Process();
 }
 
 //----------------------------------------------------------------------------

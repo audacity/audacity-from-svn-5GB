@@ -78,12 +78,16 @@ bool EffectChangeTempo::PromptUser()
    m_FromBPM = dlog.m_FromBPM;
    m_ToBPM = dlog.m_ToBPM;
    m_ToLength = dlog.m_ToLength;
+   return true;
+}
 
+
+bool EffectChangeTempo::Process()
+{
    mSoundTouch = new SoundTouch();
    mSoundTouch->setChannels(1);
    mSoundTouch->setTempoChange(m_PercentChange);
-
-   return true;
+   return this->EffectSoundTouch::Process();
 }
 
 //----------------------------------------------------------------------------

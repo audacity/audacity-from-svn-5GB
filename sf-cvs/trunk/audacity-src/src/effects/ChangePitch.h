@@ -58,6 +58,7 @@ class EffectChangePitch:public EffectSoundTouch {
 	virtual void DeduceFrequencies(); 
 
    virtual bool PromptUser();
+   virtual bool Process();
    
  private:
    int				m_FromPitchIndex;		// pitch index, per PitchIndex
