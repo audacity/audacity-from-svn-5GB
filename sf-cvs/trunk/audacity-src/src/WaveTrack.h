@@ -73,7 +73,7 @@ class WaveTrack:public VTrack {
    virtual bool Save(wxTextFile * out, bool overwrite);
 
    virtual int GetKind() const { return Wave; } 
-   virtual void Offset(double t);
+   virtual void SetOffset(double t);
 
    virtual double GetMaxLen() const;
 
