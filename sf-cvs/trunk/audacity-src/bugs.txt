@@ -23,8 +23,6 @@ Known bugs to fix:
 - ID3 genre list doesn't fit in the window on Linux/GTK
 - Fix underflow problems when recording (as much as
   possible) and try to report them if not
-- When importing a filename with a period in it,
-  it gets truncated early.
 - "New..." should be "New"
 - Menu bar does not function when Prefs dialog is
   in front on MacOS
@@ -100,3 +98,4 @@ Fixed:
 - Bug fixed: Duplicate track doesn't work if track is shifted
   past zero.  Track selection and copying are now more aware
   of offsets.
+- Filenames with a period outside the extension are truncated.
