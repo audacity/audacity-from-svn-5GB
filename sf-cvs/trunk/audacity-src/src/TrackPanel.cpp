@@ -684,7 +684,7 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
 
          int leftSel = TimeToPosition(mViewInfo->sel0, r.x);
          int rightSel = TimeToPosition(mViewInfo->sel1, r.x);
-         wxASSERT(leftSel < rightSel);
+         wxASSERT(leftSel <= rightSel);
 
          // Check to see if the cursor is on top 
          // of the left selection boundary
