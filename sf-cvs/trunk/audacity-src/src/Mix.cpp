@@ -376,7 +376,7 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
                                     SRC_STATE *SRC)
 {
    double initialWarp = mRate / track->GetRate();
-   double t = mT;
+   double t = *pos / track->GetRate();
    int sampleSize = SAMPLE_SIZE(floatSample);
    int i, c;
 
@@ -472,9 +472,10 @@ sampleCount Mixer::MixSameRate(int *channelFlags, WaveTrack *track,
 {
    int slen = mMaxOut;
    int c;
+   double t = *pos / track->GetRate();
 
-   if (mT1 != mT0 && mT + slen/track->GetRate() > mT1)
-      slen = (int)((mT1 - mT) * track->GetRate() + 0.5);
+   if (t + slen/track->GetRate() > mT1)
+      slen = (int)((mT1 - t) * track->GetRate() + 0.5);
    
    if (slen <= 0)
       return 0;
@@ -484,7 +485,7 @@ sampleCount Mixer::MixSameRate(int *channelFlags, WaveTrack *track,
 
    track->Get((samplePtr)mFloatBuffer, floatSample, *pos, slen);
    Envelope *e = track->GetEnvelope();
-   e->GetValues(mEnvValues, slen, mT, 1.0 / mRate);
+   e->GetValues(mEnvValues, slen, t, 1.0 / mRate);
    for(int i=0; i<slen; i++)
       mFloatBuffer[i] *= mEnvValues[i]; // Track gain control will go here?
    CopySamples((samplePtr)mFloatBuffer, floatSample,
@@ -514,7 +515,6 @@ sampleCount Mixer::Process(int maxToProcess)
    sampleCount out;
    sampleCount maxOut = 0;
    int *channelFlags = new int[mNumChannels];
-   double avg = 0.0;
 
    mMaxOut = maxToProcess;
 
@@ -553,12 +553,9 @@ sampleCount Mixer::Process(int maxToProcess)
 
       if (out > maxOut)
          maxOut = out;
-
-      avg += mSamplePos[i] / track->GetRate();
    }
 
-   avg /= mNumInputTracks;
-   mT = avg;
+   mT += (maxOut / mRate);
 
    delete [] channelFlags; 
 
