@@ -307,7 +307,7 @@ void AudioIO::HandleDeviceChange()
    wxString recDevice = gPrefs->Read("/AudioIO/RecordingDevice", "");
    wxString playDevice = gPrefs->Read("/AudioIO/PlaybackDevice", "");
    int j;
-   
+
    // msmeyer: This tries to open the device with the highest samplerate
    // available on this device, using 44.1kHz as the default, if the info
    // cannot be fetched.
@@ -672,6 +672,19 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mPortMixer = NULL;
    if (mPortStreamV18 != NULL && err == paNoError) {
       mPortMixer = Px_OpenMixer(mPortStreamV18, 0);
+
+      #ifdef __MACOSX__
+      if (mPortMixer) {
+         if (Px_SupportsPlaythrough(mPortMixer)) {
+            bool playthrough;
+            gPrefs->Read("/AudioIO/Playthrough", &playthrough, false);
+            if (playthrough)
+               Px_SetPlaythrough(mPortMixer, 1.0);
+            else
+               Px_SetPlaythrough(mPortMixer, 0.0);
+         }
+      }
+      #endif
    }
 
 #endif
