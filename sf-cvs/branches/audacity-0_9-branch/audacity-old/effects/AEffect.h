@@ -15,6 +15,8 @@
 		long value, void *ptr, float opt));
 */
 
+#if 0
+
 /* dmazzoni: PRAGMA_ALIGN_SUPPORTED is obsolete in mwerks */
 #ifdef __MWERKS__
 #undef PRAGMA_ALIGN_SUPPORTED
@@ -27,6 +29,8 @@
 #elif defined(WIN32) || defined(__FLAT__)
 #pragma pack(push)
 #pragma pack(8)
+#endif
+
 #endif
 
 #if defined(WIN32) || defined(__FLAT__) || defined CBUILDER
@@ -169,12 +173,16 @@ enum {
        // will always return true.
 };
 
+#if 0
+
 #if PRAGMA_ALIGN_SUPPORTED || __MWERKS__
 #pragma options align=reset
 #elif defined(WIN32) || defined(__FLAT__)
 #pragma pack(pop)
 #elif defined CBUILDER
 #pragma -a-
+#endif
+
 #endif
 
 #endif                          // __AEffect__
