@@ -10,6 +10,7 @@
 
 #include "Audacity.h" // This should always be included first
 
+#include <wx/defs.h>
 #include <wx/app.h>
 #include <wx/window.h>
 #include <wx/intl.h>
