@@ -113,6 +113,7 @@ PrefsPanel(parent)
       langArray[i] = mLangNames[i];
    mLocale = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
                           numLangs, langArray);
+   mLocale->SetSelection(0); // in case nothing else matches
    delete[] langArray;
    for(i=0; i<numLangs; i++)
       if (mLangCodes[i] == currentLang)

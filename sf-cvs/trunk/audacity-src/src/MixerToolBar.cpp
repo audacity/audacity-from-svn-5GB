@@ -149,6 +149,13 @@ void MixerToolBar::InitializeMixerToolBar()
    for(j = 0; j < inputSources.GetCount(); j++)
       mInputSourceChoice->Append(inputSources[j]);
 
+   // Set choice control to default value
+   float inputVolume;
+   float playbackVolume;
+   int inputSource;
+   gAudioIO->GetMixer(&inputSource, &inputVolume, &playbackVolume);
+   mInputSourceChoice->SetSelection(inputSource);
+
    UpdateControls();
    #endif
 }
