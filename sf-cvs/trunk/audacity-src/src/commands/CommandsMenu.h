@@ -16,6 +16,8 @@
 
 #include "../effects/Effect.h"
 
+class wxListCtrl;
+
 struct MenuBarListEntry
 {
    wxString name;
@@ -84,6 +86,9 @@ public:
    wxString GetFirstKey(wxString sKeys);
 
    wxString AppendComboString(wxString tName, wxString sKeys);
+
+   void FillKeyBindingsList(wxListCtrl * pList);
+
 
 private:
    MenuBarList mMenuBarList;
