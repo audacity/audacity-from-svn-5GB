@@ -20,6 +20,7 @@
 #include <wx/string.h>
 
 class wxKeyEvent;
+class wxMouseEvent;
 class wxTextFile;
 class wxWindow;
 class wxIcon;
