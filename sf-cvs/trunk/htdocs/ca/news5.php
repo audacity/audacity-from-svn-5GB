@@ -16,4 +16,6 @@ Exporteu primer el vostre àudio com a WAV o AIFF si el voleu obrir en aquesta no
 El pla és que la nostra propera versió sigui estable independentment del grau de l'usuari.
 </p>
 
+<p>
+NOTA: Si voleu disposar de l'audacity en català haureu de teclejar "ca" en el menú de preferències.
 <?php BoxBottom(); ?>
