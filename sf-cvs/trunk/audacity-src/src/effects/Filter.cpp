@@ -28,10 +28,12 @@
 #include "../Envelope.h"
 #include "../FFT.h"
 #include "../WaveTrack.h"
+#include "../widgets/Ruler.h"
 
 EffectFilter::EffectFilter()
 {
    mEnvelope = new Envelope();
+   mEnvelope->SetInterpolateDB(false);
    mEnvelope->Flatten(0.5);
    mEnvelope->SetTrackLen(1.0);
    mEnvelope->Mirror(false);
@@ -225,30 +227,47 @@ void FilterPanel::OnPaint(wxPaintEvent & evt)
       mHeight = height;
       mBitmap = new wxBitmap(mWidth, mHeight);
    }
+
+   wxColour bkgnd = GetBackgroundColour();
+   wxBrush bkgndBrush(bkgnd, wxSOLID);
   
    wxMemoryDC memDC;
    memDC.SelectObject(*mBitmap);
 
+   wxRect bkgndRect;
+   bkgndRect.x = 0;
+   bkgndRect.y = 0;
+   bkgndRect.width = 40;
+   bkgndRect.height = mHeight;
+   memDC.SetBrush(bkgndBrush);
+   memDC.SetPen(*wxTRANSPARENT_PEN);
+   memDC.DrawRectangle(bkgndRect);
+
+   bkgndRect.y = mHeight - 20;
+   bkgndRect.width = mWidth;
+   bkgndRect.height = 20;
+   memDC.DrawRectangle(bkgndRect);
+
    wxRect border;
-   border.x = 0;
+   border.x = 40;
    border.y = 0;
    border.width = mWidth;
-   border.height = mHeight;
+   border.height = mHeight - 20;
 
    memDC.SetBrush(*wxWHITE_BRUSH);
    memDC.SetPen(*wxBLACK_PEN);
    memDC.DrawRectangle(border);
 
-   mEnvRect = border;
-   mEnvRect.x += 4;
-   mEnvRect.width -= 10;
-   mEnvRect.y += 3;
-   mEnvRect.height -= 6;
+   mEnvRect.x = 44;
+   mEnvRect.width = mWidth - 50;
+   mEnvRect.y = 3;
+   mEnvRect.height = mHeight - 26;
 
    // Pure blue x-axis line
    memDC.SetPen(wxPen(wxColour(0, 0, 255), 1, wxSOLID));
    int center = mEnvRect.height/2;
-   memDC.DrawLine(0, center, mEnvRect.width, center);
+   memDC.DrawLine(mEnvRect.x, mEnvRect.y + center,
+                  mEnvRect.x + mEnvRect.width, mEnvRect.y + center);
 
    // Med-blue envelope line
    memDC.SetPen(wxPen(wxColour(110, 110, 220), 3, wxSOLID));
@@ -262,7 +281,7 @@ void FilterPanel::OnPaint(wxPaintEvent & evt)
       y = (int)(mEnvRect.height-mEnvRect.height*values[i]);
       if (i != 0) {
          memDC.DrawLine(xlast, ylast,
-                        x, y);
+                        x, mEnvRect.y + y);
       }
       xlast = x;
       ylast = y;      
@@ -279,6 +298,25 @@ void FilterPanel::OnPaint(wxPaintEvent & evt)
    memDC.SetPen(*wxBLACK_PEN);
    memDC.DrawRectangle(border);
 
+   // Ruler
+
+   Ruler dbRuler;
+   dbRuler.SetBounds(0, 0, 40, mHeight-21);
+   dbRuler.SetOrientation(wxVERTICAL);
+   dbRuler.SetRange(12, -12);
+   dbRuler.SetFormat(Ruler::RealFormat);
+   dbRuler.SetUnits("dB");
+   dbRuler.Draw(memDC);
+
+   Ruler freqRuler;
+   freqRuler.SetBounds(41, mHeight-20, mWidth, mHeight);
+   freqRuler.SetOrientation(wxHORIZONTAL);
+   freqRuler.SetRange(0.0, 22050.0);
+   freqRuler.SetFormat(Ruler::IntFormat);
+   freqRuler.SetUnits("Hz");
+   freqRuler.SetFlip(true);
+   freqRuler.Draw(memDC);
+
    dc.Blit(0, 0, mWidth, mHeight,
            &memDC, 0, 0, wxCOPY, FALSE);
 }
@@ -289,7 +327,7 @@ void FilterPanel::OnMouseEvent(wxMouseEvent & event)
       CaptureMouse();
    }
 
-   if (mEnvelope->MouseEvent(event, mEnvRect, 0.0, mWidth, false))
+   if (mEnvelope->MouseEvent(event, mEnvRect, 0.0, mEnvRect.width, false))
       Refresh(false);
 
    if (event.ButtonUp()) {
