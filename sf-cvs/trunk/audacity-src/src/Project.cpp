@@ -445,6 +445,24 @@ void AudacityProject::OnScrollRight()
    }
 }
 
+void AudacityProject::TP_ScrollIndicator(double indicator)
+{
+   int pos = (int) (indicator * mViewInfo.zoom)
+       / mViewInfo.scrollStep;
+   int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
+
+   if (pos > max) pos = max;
+   else if (pos < 0) pos = 0;
+
+   mHsbar->SetThumbPosition(pos);
+
+   // Call our Scroll method which updates our ViewInfo variables
+   // to reflect the positions of the scrollbars
+   wxScrollEvent *dummy = new wxScrollEvent();
+   OnScroll(*dummy);
+   delete dummy;
+}
+
 void AudacityProject::FixScrollbars()
 {
    bool rescroll = false;
