@@ -92,7 +92,7 @@ if (mToolBarFrame) {
 // even if one of that type already exists.
 void ToolBarStub::LoadAll() 
 {
-   wxUpdateUIEvent evt = (wxUpdateUIEvent) NULL;
+   wxUpdateUIEvent evt;
    
    //Add the toolbar to each Window 
    int len = gAudacityProjects.GetCount();
@@ -108,7 +108,7 @@ void ToolBarStub::LoadAll()
 // will unload them all
 void ToolBarStub::UnloadAll() 
 {
-   wxUpdateUIEvent evt = (wxUpdateUIEvent) NULL;
+   wxUpdateUIEvent evt;
    int len = gAudacityProjects.GetCount();
    for (int i = 0; i < len; i++)
    {
