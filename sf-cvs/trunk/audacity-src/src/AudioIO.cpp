@@ -561,8 +561,7 @@ AudacityProject *AudioIO::GetProject()
 double AudioIO::GetIndicator()
 {
    if (mProject && mPortStream) {
-      return mT0 + ((Pa_StreamTime(mPortStream) -
-                     mNumOutBuffers * mBufferSize)/ mRate);
+      return mT0 + (Pa_StreamTime(mPortStream)/ mRate);
    }
    else
       return -1000000000.0;
