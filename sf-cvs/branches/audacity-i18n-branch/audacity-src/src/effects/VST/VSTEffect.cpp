@@ -94,7 +94,7 @@ bool VSTEffect::PromptUser()
       aEffect->dispatcher(aEffect, effGetParamName, numParameters, 0,
                           (void *) temp[numParameters], 0.0);
 
-      if (strstr(temp[numParameters], _("ABOUT")))
+      if (strstr(temp[numParameters], "ABOUT"))
          break;
       if (numParameters > 0
           && !strcmp(temp[numParameters], temp[numParameters - 1]))
