@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "Effect.h"
 
 #include "Amplify.h"
@@ -22,11 +24,8 @@
 #include "Reverse.h"
 #include "Wahwah.h"
 
-//WaveletDenoise does not work on windows
-#ifndef __WXMSW__
-#ifndef __WXMAC__
+#ifdef USE_WAVELET
 #include "WaveletDenoise.h"
-#endif
 #endif
 
 #ifdef __WXMAC__
@@ -37,7 +36,7 @@
 #include "VST/LoadVSTWin.h"
 #endif
 
-#ifdef __WXGTK__
+#ifdef USE_LADSPA
 #include "ladspa/LoadLadspa.h"
 #endif
 
@@ -56,18 +55,15 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectReverse(), false);
    Effect::RegisterEffect(new EffectWahwah(), false);
 
-   //WaveletDenoise does not work on windows
-#ifndef __WXMSW__
-#ifndef __WXMAC__
+#ifdef USE_WAVELET
    Effect::RegisterEffect(new EffectWaveletDenoise(), false);
-#endif
 #endif
 
 #if defined(__WXMAC__) || defined(__WXMSW__)
    LoadVSTPlugins();
 #endif
 
-#if defined(__WXGTK__)
+#ifdef USE_LADSPA
    LoadLadspaPlugins();
 #endif
 

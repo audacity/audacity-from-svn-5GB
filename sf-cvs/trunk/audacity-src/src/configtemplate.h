@@ -50,3 +50,10 @@
 
 /* Define if mp3 support is implemented with the libmad library */
 #undef USE_LIBMAD
+
+/* Define if wavelet support is implemented with the wave++ library */
+#undef USE_WAVELET
+
+/* Define if LADSPA plug-in support is enabled */
+#undef USE_LADSPA
+
