@@ -51,10 +51,9 @@
 #define kTopInset 4
 
 // Is the distance between A and B less than D?
-template < class A, class B, class DIST >
-    bool within(A a, B b, DIST d)
+template < class A, class B, class DIST > bool within(A a, B b, DIST d)
 {
-   return (a > b-d) && (a < b+d);
+   return (a > b - d) && (a < b + d);
 }
 
 template < class LOW, class MID, class HIGH >
@@ -128,24 +127,24 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU_RANGE(OnMoveUpID, OnMoveDownID, TrackPanel::OnMoveTrack)
     EVT_MENU_RANGE(OnUpOctaveID, OnDownOctaveID, TrackPanel::OnChangeOctave)
     EVT_MENU_RANGE(OnChannelLeftID, OnChannelMonoID,
-                   TrackPanel::OnChannelChange)
+               TrackPanel::OnChannelChange)
     EVT_MENU_RANGE(OnWaveformID, OnPitchID, TrackPanel::OnSetDisplay)
     EVT_MENU_RANGE(OnRate8ID, OnRate48ID, TrackPanel::OnRateChange)
     EVT_MENU_RANGE(On16BitID, OnFloatID, TrackPanel::OnFormatChange)
     EVT_MENU(OnRateOtherID, TrackPanel::OnRateOther)
     EVT_MENU(OnSplitStereoID, TrackPanel::OnSplitStereo)
     EVT_MENU(OnMergeStereoID, TrackPanel::OnMergeStereo)
-END_EVENT_TABLE()
+    END_EVENT_TABLE()
 
-TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
-                       const wxPoint & pos,
-                       const wxSize & size,
-                       TrackList * tracks,
-                       ViewInfo * viewInfo,
-                       TrackPanelListener * listener)
-    : wxWindow(parent, id, pos, size, wxWANTS_CHARS),
-      mListener(listener), mTracks(tracks), mViewInfo(viewInfo), mBitmap(NULL),
-      mAutoScrolling(false)
+    TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
+                           const wxPoint & pos,
+                           const wxSize & size,
+                           TrackList * tracks,
+                           ViewInfo * viewInfo,
+                           TrackPanelListener * listener)
+:wxWindow(parent, id, pos, size, wxWANTS_CHARS),
+mListener(listener), mTracks(tracks), mViewInfo(viewInfo), mBitmap(NULL),
+mAutoScrolling(false)
 {
    mIsClosing = false;
    mIsSelecting = false;
@@ -437,9 +436,9 @@ void TrackPanel::UpdateIndicator()
    }
 }
 
-// AS: This is what gets called during the normal course of needing
-//  to repaint.
-void TrackPanel::OnPaint(wxPaintEvent & event)
+// AS: OnPaint( ) is called during the normal course of 
+//  completing a repaint operation.
+void TrackPanel::OnPaint(wxPaintEvent & /* event */ )
 {
    wxPaintDC dc(this);
    int width, height;
@@ -496,11 +495,13 @@ const char *pMessages[] = { _("Click and drag to select audio"),
 };
 
 
-// AS: This function is setting what icon your cursor is using
-//  Also, it sets a message in the status bar.
+// AS: THandleCursor( ) sets the cursor drawn at the mouse location.
+//  As this procedure checks which region the mouse is over, it is
+//  appropriate to establish the message in the status bar.
 void TrackPanel::HandleCursor(wxMouseEvent & event)
 {
-   // First, try to set the cursor based on the current action
+   // (1), If possible, set the cursor based on the current activity
+   //      ( leave the StatusBar alone ).
    if (mIsSelecting) {
       SetCursor(*mSelectCursor);
       return;
@@ -513,8 +514,13 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
    } else if (mIsRearranging) {
       SetCursor(*mRearrangeCursor);
       return;
+   } else {
+      // none of the above
+
    }
 
+   // (2) If we are not over a track at all, set the cursor to Arrow and 
+   //     clear the StatusBar, 
    wxRect r;
    int num;
    VTrack *label = FindTrack(event.m_x, event.m_y, true, &r, &num);
@@ -522,7 +528,6 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
    VTrack *t = label ? label : nonlabel;
 
    if (!t) {
-      // The cursor is not over any track
       SetCursor(*mArrowCursor);
       mListener->TP_DisplayStatusMessage("", 0);
       return;
@@ -530,11 +535,11 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 
    const char *tip = 0;
 
-   // See if we are over the label, which can be used to drag the track
+   // (3) Set a status message if over a label 
    if (label) {
-      tip = _("Drag this track up or down to change the "
+      tip = _("Drag the label vertically to change the "
               "order of the tracks.");
-      SetCursor(*mArrowCursor);
+        SetCursor(*mArrowCursor);
    }
    // Otherwise, we must be over the wave window 
    else {
@@ -546,27 +551,33 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
       case selectTool:
          SetCursor(*mSelectCursor);
 
-         //Make sure you are within the selected track
+         //Make sure we are within the selected track
          if (t && t->GetSelected()) {
-            
+
             int leftSel = TimeToPosition(mViewInfo->sel0, r.x);
             int rightSel = TimeToPosition(mViewInfo->sel1, r.x);
 
-            wxASSERT(leftSel < rightSel);
-            
-            // Is the cursor over the left seltion boundary?
+            if (leftSel < rightSel) {
+
+            } else {
+
+               // Something is wrong if right edge comes before left edge
+               wxASSERT(!(rightSel < leftSel));
+            }
+
+            // Is the cursor over the left selection boundary?
             if (within(event.m_x, leftSel, SELECTION_RESIZE_REGION)) {
                tip = _("Click and drag to move left selection boundary.");
                SetCursor(*mAdjustLeftSelectionCursor);
             }
-            // Is the cursor over the right seltion boundary?
+            // Is the cursor over the right selection boundary?
             else if (within(event.m_x, rightSel, SELECTION_RESIZE_REGION)) {
                tip = _("Click and drag to move right selection boundary.");
                SetCursor(*mAdjustRightSelectionCursor);
             }
          }
          break;
-      
+
       case envelopeTool:
          SetCursor(*mArrowCursor);
          break;
@@ -574,22 +585,21 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
          SetCursor(*mSlideCursor);
          break;
       case zoomTool:
-         SetCursor(event.ShiftDown() ? *mZoomOutCursor : *mZoomInCursor);
+         SetCursor(event.ShiftDown()? *mZoomOutCursor : *mZoomInCursor);
          break;
       }
    }
 
    // Are we within the vertical resize area?
    if (within(event.m_y, r.y + r.height, TRACK_RESIZE_REGION)) {
-      //Check to see if it is the first channel of a stereo track
+      //Check to see whether it is the first channel of a stereo track
       if (t->GetLinked()) {
          if (!label) {
             tip = _("Click and drag to adjust relative size "
                     "of stereo tracks.");
-            SetCursor(*mResizeCursor);     
+            SetCursor(*mResizeCursor);
          }
-      }
-      else {
+      } else {
          tip = _("Click and drag to resize the track.");
          SetCursor(*mResizeCursor);
       }
@@ -621,12 +631,10 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       else
          SelectNone();
       Refresh(false);
-   }
-   else if (event.ButtonUp(1) || event.ButtonUp(3)) {
+   } else if (event.ButtonUp(1) || event.ButtonUp(3)) {
       mCapturedTrack = NULL;
       mIsSelecting = false;
-   }
-   else if (event.ButtonDClick(1) && !event.ShiftDown()) {
+   } else if (event.ButtonDClick(1) && !event.ShiftDown()) {
       // Deselect all other tracks and select this one.
       SelectNone();
       mViewInfo->sel0 = mTracks->GetMinOffset();
@@ -635,8 +643,8 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       Refresh(false);
       mCapturedTrack = NULL;
       mIsSelecting = false;
-   }
-   else SelectionHandleDrag(event);
+   } else
+      SelectionHandleDrag(event);
 }
 
 // AS: This function gets called when we're handling selection
@@ -662,9 +670,11 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
       else
          mSelStart = mViewInfo->sel0;
 
-      mListener->TP_DisplayStatusMessage(
-                     wxString::Format(_("Selection: %lf - %lf s"),
-                     mViewInfo->sel0, mViewInfo->sel1), 1);
+      mListener->
+          TP_DisplayStatusMessage(wxString::
+                                  Format(_("Selection: %lf - %lf s"),
+                                         mViewInfo->sel0, mViewInfo->sel1),
+                                  1);
    } else {
 
       //Make sure you are within the selected track
@@ -681,8 +691,7 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
             mSelStart = mViewInfo->sel1;
             mIsSelecting = true;
             startNewSelection = false;
-         } 
-         else if (within(event.m_x, rightSel, SELECTION_RESIZE_REGION)) {
+         } else if (within(event.m_x, rightSel, SELECTION_RESIZE_REGION)) {
             // Pin the left selection boundary
             mSelStart = mViewInfo->sel0;
             mIsSelecting = true;
@@ -695,10 +704,12 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
          SelectNone();
          StartSelection(event.m_x, r.x);
          mTracks->Select(pTrack);
-         mListener->TP_DisplayStatusMessage(
-                  wxString::Format(_("Cursor: %lf s"), mSelStart), 1);
+         mListener->
+             TP_DisplayStatusMessage(wxString::
+                                     Format(_("Cursor: %lf s"), mSelStart),
+                                     1);
       }
-      
+
       if (pTrack->GetKind() == VTrack::Label)
          ((LabelTrack *) pTrack)->MouseDown(mMouseClickX, mMouseClickY,
                                             mCapturedRect,
@@ -743,9 +754,11 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
 
          ExtendSelection(x, r.x);
 
-         mListener->TP_DisplayStatusMessage(
-                     wxString::Format(_("Selection: %lf - %lf s"),
-                                      mViewInfo->sel0, mViewInfo->sel1), 1);
+         mListener->
+             TP_DisplayStatusMessage(wxString::
+                                     Format(_("Selection: %lf - %lf s"),
+                                            mViewInfo->sel0,
+                                            mViewInfo->sel1), 1);
 
          // Handle which tracks are selected
          int num2;
@@ -1185,8 +1198,8 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
       ::InsertMenu((OpaqueMenuHandle *) mRateMenu->GetHMenu(), -1);
       ::InsertMenu((OpaqueMenuHandle *) mFormatMenu->GetHMenu(), -1);
 # else
-      ::InsertMenu((MenuRef)mRateMenu->GetHMenu(), -1);
-      ::InsertMenu((MenuRef)mFormatMenu->GetHMenu(), -1);
+      ::InsertMenu((MenuRef) mRateMenu->GetHMenu(), -1);
+      ::InsertMenu((MenuRef) mFormatMenu->GetHMenu(), -1);
 # endif
 #endif
 
@@ -1423,81 +1436,78 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
             // mCapturedTrack is the lower track
             mInitialTrackHeight = t->GetHeight();
             mInitialUpperTrackHeight = prev->GetHeight();
-            mIsResizingBelowLinkedTracks=true;  
-         }
-         else if (next && mTracks ->GetLink(t) == next) { 
+            mIsResizingBelowLinkedTracks = true;
+         } else if (next && mTracks->GetLink(t) == next) {
             // mCapturedTrack is the upper track
             mInitialTrackHeight = next->GetHeight();
             mInitialUpperTrackHeight = t->GetHeight();
-            mIsResizingBetweenLinkedTracks=true;  
-         }
-         else {
+            mIsResizingBetweenLinkedTracks = true;
+         } else {
             // DM: Save the initial mouse location and the initial height
             mInitialTrackHeight = t->GetHeight();
          }
       }
-   }
-   else if (mIsResizing) {
+   } else if (mIsResizing) {
 
       // DM: Dragging means that the mouse button IS down and has moved
       //  from its initial location.  By the time we get here, we
       //  have already received a ButtonDown() event and saved the
       //  track being resized in mCapturedTrack.
       if (event.Dragging()) {
-         
+
          int delta = (event.m_y - mMouseClickY);
-         
+
          //STM: We may be dragging one or two (stereo) tracks.  
          // If two, resize proportionally if we are dragging the lower track, and
          // adjust compensatively if we are dragging the upper track.
-         if(mIsResizingBelowLinkedTracks) {
+         if (mIsResizingBelowLinkedTracks) {
             VTrack *prev = mTracks->GetPrev(mCapturedTrack);
 
-            double proportion = static_cast <double>
-               (mInitialTrackHeight)
-               / (mInitialTrackHeight + mInitialUpperTrackHeight);
+            double proportion = static_cast < double >(mInitialTrackHeight)
+                / (mInitialTrackHeight + mInitialUpperTrackHeight);
 
-            int newTrackHeight = static_cast <int>
-               (mInitialTrackHeight + delta * proportion); 
+            int newTrackHeight = static_cast < int >
+                (mInitialTrackHeight + delta * proportion);
 
-            int newUpperTrackHeight = static_cast <int>
-               ( mInitialUpperTrackHeight + delta * (1.0 - proportion));
+            int newUpperTrackHeight = static_cast < int >
+                (mInitialUpperTrackHeight + delta * (1.0 - proportion));
 
             //make sure neither track is smaller than 20;
-            if (newTrackHeight < 20) newTrackHeight = 20;
-            if (newUpperTrackHeight < 20) newUpperTrackHeight = 20;
-            
+            if (newTrackHeight < 20)
+               newTrackHeight = 20;
+            if (newUpperTrackHeight < 20)
+               newUpperTrackHeight = 20;
+
             mCapturedTrack->SetHeight(newTrackHeight);
             prev->SetHeight(newUpperTrackHeight);
-         }
-         else if (mIsResizingBetweenLinkedTracks) {
+         } else if (mIsResizingBetweenLinkedTracks) {
 
             VTrack *next = mTracks->GetNext(mCapturedTrack);
-            int newUpperTrackHeight = mInitialUpperTrackHeight + delta;      
-            int newTrackHeight = mInitialTrackHeight - delta ;
-       
+            int newUpperTrackHeight = mInitialUpperTrackHeight + delta;
+            int newTrackHeight = mInitialTrackHeight - delta;
+
             // make sure neither track is smaller than 20;
             if (newTrackHeight < 20) {
                newTrackHeight = 20;
-               newUpperTrackHeight = mInitialUpperTrackHeight + mInitialTrackHeight - 20;
+               newUpperTrackHeight =
+                   mInitialUpperTrackHeight + mInitialTrackHeight - 20;
             }
             if (newUpperTrackHeight < 20) {
                newUpperTrackHeight = 20;
-               newTrackHeight = mInitialUpperTrackHeight + mInitialTrackHeight - 20;
+               newTrackHeight =
+                   mInitialUpperTrackHeight + mInitialTrackHeight - 20;
             }
-            
+
             mCapturedTrack->SetHeight(newUpperTrackHeight);
             next->SetHeight(newTrackHeight);
-         }
-         else {
-            int newTrackHeight = mInitialTrackHeight + delta ;          
+         } else {
+            int newTrackHeight = mInitialTrackHeight + delta;
             if (newTrackHeight < 20)
-               newTrackHeight = 20;   
+               newTrackHeight = 20;
             mCapturedTrack->SetHeight(newTrackHeight);
          }
          Refresh(false);
       }
-
       // DM: This happens when the button is released from a drag.
       //  Since we actually took care of resizing the track when
       //  we got drag events, all we have to do here is clean up.
@@ -1633,9 +1643,9 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
 
    //call HandleResize if I'm over the border area 
    if (event.ButtonDown(1) &&
-         (within(event.m_y, r.y + r.height, TRACK_RESIZE_REGION)
-         || within(event.m_y, rLabel.y + rLabel.height, TRACK_RESIZE_REGION)))
-   {
+       (within(event.m_y, r.y + r.height, TRACK_RESIZE_REGION)
+        || within(event.m_y, rLabel.y + rLabel.height,
+                  TRACK_RESIZE_REGION))) {
       HandleResize(event);
       HandleCursor(event);
       return;
@@ -1674,7 +1684,7 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
 void TrackPanel::SetLabelFont(wxDC * dc)
 {
    int fontSize = 10;
-#if defined __WXMSW__ 
+#if defined __WXMSW__
    fontSize = 8;
 #endif
 
@@ -1749,7 +1759,7 @@ void TrackPanel::DrawRulerSelection(wxDC * dc, const wxRect r)
    dc->DrawRectangle(sr);
 }
 
-void TrackPanel::DrawRulerMarks(wxDC * dc, const wxRect r, bool text)
+void TrackPanel::DrawRulerMarks(wxDC * dc, const wxRect r, bool /*text */ )
 {
    mRuler->SetBounds(r.x, r.y, r.x + r.width - 1, r.y + r.height - 1);
    double min = mViewInfo->h - GetLeftOffset() / mViewInfo->zoom;
@@ -2089,7 +2099,7 @@ void TrackPanel::DrawBordersAroundTrack(VTrack * t, wxDC * dc,
    dc->DrawLine(r.x + 16, r.y, r.x + 16, r.y + 16);     // close box
 }
 
-void TrackPanel::DrawShadow(VTrack * t, wxDC * dc, const wxRect r)
+void TrackPanel::DrawShadow(VTrack * /* t */ , wxDC * dc, const wxRect r)
 {
    // shadow
    AColor::Dark(dc, true);
@@ -2242,8 +2252,9 @@ void TrackPanel::OnFormatChange(wxEvent & event)
       ((WaveTrack *) partner)->ConvertToSampleFormat(newFormat);
 
    MakeParentPushState(wxString::Format(_("Changed '%s' to %s"),
-                          mPopupMenuTarget->GetName().c_str(),
-                          GetSampleFormatStr(newFormat)));
+                                        mPopupMenuTarget->GetName().
+                                        c_str(),
+                                        GetSampleFormatStr(newFormat)));
 
    mPopupMenuTarget = NULL;
    MakeParentRedrawScrollbars();
@@ -2278,7 +2289,8 @@ void TrackPanel::OnRateOther()
 
    wxString defaultStr;
    defaultStr.Printf("%d",
-         (int) (((WaveTrack *) mPopupMenuTarget)->GetRate() + 0.5));
+                     (int) (((WaveTrack *) mPopupMenuTarget)->GetRate() +
+                            0.5));
 
    // AS: TODO: REMOVE ARTIFICIAL CONSTANTS!!
    // AS: Make a real dialog box out of this!!
@@ -2314,8 +2326,11 @@ void TrackPanel::OnMoveTrack(wxEvent & event)
    wxASSERT(event.GetId() == OnMoveUpID || event.GetId() == OnMoveDownID);
    if (mTracks->Move(mPopupMenuTarget, OnMoveUpID == event.GetId())) {
       MakeParentPushState(wxString::Format(_("Moved '%s' %s"),
-               mPopupMenuTarget->GetName().c_str(),
-               event.GetId() == OnMoveUpID ? _("up") : _("down")));
+                                           mPopupMenuTarget->GetName().
+                                           c_str(),
+                                           event.GetId() ==
+                                           OnMoveUpID ? _("up") :
+                                           _("down")));
       Refresh(false);
    }
 }
@@ -2347,7 +2362,8 @@ void TrackPanel::OnSetName()
       if (newName != "")
          t->SetName(newName);
       MakeParentPushState(wxString::Format(_("Renamed '%s' to '%s'"),
-                          defaultStr.c_str(), newName.c_str()));
+                                           defaultStr.c_str(),
+                                           newName.c_str()));
       Refresh(false);
    }
 }
