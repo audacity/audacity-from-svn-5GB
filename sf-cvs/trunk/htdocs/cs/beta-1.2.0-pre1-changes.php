@@ -19,29 +19,24 @@ Vstup a výstup zvuku v Audacity byl vylepšen. Audacity nyní mùže nahrávat více n
 
 <ul>
 <li>
-Three new effects change the pitch and tempo of a track:
+Tøi nové efekty na zmìnu ladìní a rychlosti stopy:
  <ul>
-  <li>Change Pitch raises or lowers the tone of a selection, without
-  affecting the speed.</li>
-  <li>Change Tempo makes the selection play faster or slower, without
-  altering the pitch.</li>
-  <li>Change Speed alters both the playback speed and the pitch, just
-  like changing the speed of a turntable or tape player.</li>
+  <li>"Zmìna ladìní" zvýší nebo sníží zvuk výbrané èásti bez vlivu na rychlost.</li>
+  <li>"Zmìna tempa" zrychlí nebo zpomalí vybranou èást bez vlivu na výšku ladìní.</li>
+  <li>"Zmìna rychlosti" zmìní rychlost pøehrávání i výšku ladìní, jako když zmìníte rychlost gramofonu nebo magnetofonu.</li>
  </ul>
 </li>
 
 <li>
-Most effects now include a "Preview" button, which allows you to try
-different settings without closing the effect window.  A new command
-allows you to repeat the last effect without re-opening the window.
+Vìtšina efektù nyní obsahuje tlaèítko "Preview", které umožòuje vyzkoušet rùzná nastavení pøed zavøením efektového okna. Nový pøíkaz vám umožní zopakovat poslednì použitý efekt bez opìtovného otevírání okna.
 </li>
 
 <li>
-Other new effects include:
+Další nové efekty obsahují:
  <ul>
-  <li>Compressor, for dynamic range compression.</li>
-  <li>Repeat, to loop samples.</li>
-  <li>Normalize, to adjust volume and correct DC bias.</li>
+  <li>Kompresor, pro dynamic range kompresi.</li>
+  <li>Opakování, pro vytváøení smyèek ze vzorkù.</li>
+  <li>Normalizace, pro úpravu hlasitosti a opravu DC bias.</li>
  </ul>
 </li>
 </ul>
