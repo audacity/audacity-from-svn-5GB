@@ -206,7 +206,7 @@ void Mixer::UseVolumeSlider(bool yes)
 
 void Mixer::Clear()
 {
-  for(int c=0; c<mNumChannels; c++)
+  for(int c=0; c<mNumBuffers; c++)
 	memset(mBuffer[c], 0, mInterleavedBufferSize * sizeof(sampleType));
 }
 
