@@ -50,7 +50,7 @@ int Import(AudacityProject *project,
    }
 
    if (!fName.Right(3).CmpNoCase("mp3")) {
-#ifdef MP3SUPPORT
+#ifdef USE_LIBMAD
       *tracks = new WaveTrack *[2];
       success =::ImportMP3(project, fName,
                            &(*tracks)[0], &(*tracks)[1]);

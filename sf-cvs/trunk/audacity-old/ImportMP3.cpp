@@ -52,7 +52,7 @@ struct mad_pcm {
 } pcm;
 
 
-#define INPUT_BUFFER_SIZE 3000000
+#define INPUT_BUFFER_SIZE 65535
 #define PROGRESS_SCALING_FACTOR 100000
 
 /* this is a private structure we can use for whatever we like, and it will get
@@ -103,7 +103,17 @@ enum mad_flow input_cb(void *_data, struct mad_stream *stream)
       return MAD_FLOW_STOP;
    }
 
-   size_t read = data->file->Read(data->inputBuffer, INPUT_BUFFER_SIZE);
+   unsigned int unconsumedBytes;
+   if(stream->next_frame) {
+      unconsumedBytes = data->inputBuffer + INPUT_BUFFER_SIZE - stream->next_frame;
+      memmove(data->inputBuffer, stream->next_frame, unconsumedBytes);
+   }
+   else
+      unconsumedBytes = 0;
+
+   
+   size_t read = data->file->Read(data->inputBuffer + unconsumedBytes,
+                                  INPUT_BUFFER_SIZE - unconsumedBytes);
 
    mad_stream_buffer(stream, data->inputBuffer, read);
 
