@@ -58,6 +58,7 @@ $phpLang_languages = array(
  "mk|macedonian" => array('mk', 'macedonian'),
  "is|icelandic"  => array('is', 'icelandic'),
  "it|italian"  => array('it', 'italian'),
+ "ja|japanese"  => array('ja', 'japanese'),
  "no|norwegian"  => array('no', 'norwegian'),
  "pl|polish"   => array('pl', 'polish'),
  "ru|russian"  => array('ru', 'russian'),
