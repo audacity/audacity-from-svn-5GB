@@ -12,8 +12,6 @@
 #ifndef __AUDACITY_GUI_PREFS__
 #define __AUDACITY_GUI_PREFS__
 
-#include <wx/string.h>
-
 #include "PrefsPanel.h"
 
 class wxWindow;
