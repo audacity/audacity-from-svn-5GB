@@ -348,17 +348,17 @@ void AvcCompressorDialog::OnRestoreDefaults(wxCommandEvent &event)
 {
 	static int* naSampleChoicesHoriz[5] = {iHoriz_1K_1K,iHoriz_1K_3HK,iHoriz_E75_5K,iHoriz_75_3500,iHoriz_AE75_3HK};
 	static int* naSampleChoicesVert[5]  = {iVert_1K_1K, iVert_1K_3HK, iVert_E75_5K, iVert_75_3500, iVert_AE75_3HK};
-	mstrAdjWin.Printf(_("%d"), ADJWIN_DEFAULT);
-	mstrDelay.Printf(_("%d"), DELAY_DEFAULT);
-	mstrChangeWin.Printf(_("%d"), CHANGE_DEFAULT);
-	mstrMinPct.Printf(_("%d"), MINPCT_DEFAULT);
+	mstrAdjWin.Printf("%d", ADJWIN_DEFAULT);
+	mstrDelay.Printf("%d", DELAY_DEFAULT);
+	mstrChangeWin.Printf("%d", CHANGE_DEFAULT);
+	mstrMinPct.Printf("%d", MINPCT_DEFAULT);
 
 	for ( int i = 0 ; i < NUM_CURVE_POINTS ; ++ i ) {
 		mctlCheckBoxes[i]->SetValue(true);
 		mctlXAxis[i]->Show ( true );
 		mctlYAxis[i]->Show ( true );
-		mstrXAxis[i].Printf( _("%d"), naSampleChoicesHoriz[4][i] );
-		mstrYAxis[i].Printf( _("%d"), naSampleChoicesVert[4][i] );
+		mstrXAxis[i].Printf( "%d", naSampleChoicesHoriz[4][i] );
+		mstrYAxis[i].Printf( "%d", naSampleChoicesVert[4][i] );
 	}
 	TransferDataToWindow();
 }
