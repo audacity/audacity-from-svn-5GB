@@ -2418,7 +2418,8 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
 // MM: Handle mouse wheel rotation (for zoom in/out and vertical scrolling)
 void TrackPanel::HandleWheelRotation(wxMouseEvent & event)
 {
-   int steps = event.m_wheelRotation / event.m_wheelDelta;
+   int steps = event.m_wheelRotation /
+      (event.m_wheelDelta > 0 ? event.m_wheelDelta : 120);
 
    if (event.ControlDown())
    {
