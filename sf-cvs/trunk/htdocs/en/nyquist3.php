@@ -5,8 +5,7 @@
 ?>Part 1: Introduction to Nyquist and Lisp programming.</a><br>
 <?php print "<a href=nyquist2.php?$langLinkStr>";
 ?>Part 2: Programming in Nyquist.</a><br>
-<?php print "<a href=nyquist3.php?$langLinkStr>";
-?>Part 3: Creating Nyquist plug-ins.</a><br>
+<b>Part 3: Creating Nyquist plug-ins.</b><br>
 </p>
 
 <p>
