@@ -31,11 +31,11 @@
 #define ID_BOOST_TEXT 10003
 #define ID_BOOST_SLIDER 10004
 
-#include "Effect.h"
+#include "SimpleMono.h"
 
 class WaveTrack;
 
-class EffectBassBoost:public Effect {
+class EffectBassBoost:public EffectSimpleMono {
 
  public:
    EffectBassBoost();
@@ -50,13 +50,15 @@ class EffectBassBoost:public Effect {
    
    virtual bool PromptUser();
    
-   virtual bool Process();
-
  private:
-   bool ProcessOne(int count, WaveTrack * t,
-                   sampleCount start, sampleCount len);
- 
+   bool ProcessSimpleMono(float *buffer, sampleCount len, double samplerate);
+
+   bool NewTrackSimpleMono(int count, double samplerate);
+   
    float frequency, dB_boost;
+   //filter parameters
+   float xn1,xn2,yn1,yn2;
+   float omega, sn, cs, a, shape, beta, b0, b1, b2, a0, a1, a2;
 };
 
 // WDR: class declarations
