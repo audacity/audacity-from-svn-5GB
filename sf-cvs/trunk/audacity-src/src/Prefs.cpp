@@ -144,7 +144,7 @@ int ReadExportFormatPref()
                        (long int)(SF_FORMAT_WAV | SF_FORMAT_PCM_16));
 }
 
-void WriteExportFormatPref(unsigned int format)
+void WriteExportFormatPref(int format)
 {
    gPrefs->Write("/FileFormats/ExportFormat_SF1", (long int)format);
 }

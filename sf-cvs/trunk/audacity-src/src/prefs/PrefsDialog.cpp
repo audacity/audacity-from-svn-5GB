@@ -139,12 +139,12 @@ void PrefsDialog::OnCancel(wxCommandEvent & event)
 void PrefsDialog::OnOK(wxCommandEvent & event)
 {
    int i;
-   PrefsPanel *panel;
+   unsigned int j;
 
    gPrefs->Write("/Prefs/PrefsCategory", (long)mCategories->GetSelection());
 
    for (i = 0; i < mCategories->GetPageCount(); i++) {
-      panel = (PrefsPanel *) mCategories->GetPage(i);
+      PrefsPanel *panel = (PrefsPanel *) mCategories->GetPage(i);
 
       /* The dialog doesn't end until all the input is valid */
       if (!panel->Apply()) {
@@ -155,9 +155,9 @@ void PrefsDialog::OnOK(wxCommandEvent & event)
    }
 
    // BG: Send all Audacity projects a prefrence update notification
-   for(i = 0; i < gAudacityProjects.GetCount(); i++)
+   for(j = 0; j < gAudacityProjects.GetCount(); j++)
    {
-      gAudacityProjects[i]->UpdatePrefs();
+      gAudacityProjects[j]->UpdatePrefs();
    }
 
    EndModal(0);

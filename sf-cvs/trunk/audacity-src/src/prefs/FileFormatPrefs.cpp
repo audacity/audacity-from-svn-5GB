@@ -304,7 +304,7 @@ void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
 
 bool FileFormatPrefs::Apply()
 {
-   unsigned int originalExportFormat = ReadExportFormatPref();
+   int originalExportFormat = ReadExportFormatPref();
 
    WriteExportFormatPref(mFormat);
    
