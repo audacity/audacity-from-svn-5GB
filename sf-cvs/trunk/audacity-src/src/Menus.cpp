@@ -991,14 +991,24 @@ void AudacityProject::Zoom(double level)
 
 void AudacityProject::OnZoomIn(wxEvent & event)
 {
+   double origLeft = mViewInfo.h;
+   double origWidth = mViewInfo.screen;
    Zoom(mViewInfo.zoom *= 2.0);
-   mTrackPanel->Refresh(false);
+   TP_ScrollWindow(origLeft + (origWidth - mViewInfo.screen) / 2 );
 }
 
 void AudacityProject::OnZoomOut(wxEvent & event)
-{
+{  
+   //Zoom() may change these, so record original values:
+   double origLeft = mViewInfo.h;
+   double origWidth = mViewInfo.screen;
+
    Zoom(mViewInfo.zoom /= 2.0);
-   mTrackPanel->Refresh(false);
+
+   double newh = origLeft + (origWidth - mViewInfo.screen) / 2;
+   // newh = (newh > 0) ? newh : 0;
+   TP_ScrollWindow(newh);
+
 }
 
 void AudacityProject::OnZoomNormal(wxEvent & event)
