@@ -521,8 +521,14 @@ void ControlToolBar::SetCurrentTool(int tool, bool show)
 {
    //In multi-mode the current tool is shown by the 
    //cursor icon.  The buttons are not updated.
-   wxASSERT( show == false );
-   mCurrentTool=tool;
+
+   if (tool != mCurrentTool) {
+      if (show)
+         mTool[mCurrentTool]->PopUp();
+      mCurrentTool=tool;
+      if (show)
+         mTool[mCurrentTool]->PushDown();
+   }
 }
 
 void ControlToolBar::SetPlay(bool down)
