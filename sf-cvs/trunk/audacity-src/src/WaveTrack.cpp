@@ -403,6 +403,7 @@ bool WaveTrack::GetWaveDisplay(float *min, float *max, float *rms,
        mWaveCache->start == t0 &&
        mWaveCache->len >= numPixels &&
        mWaveCache->pps == pixelsPerSecond) {
+
       memcpy(min, mWaveCache->min, numPixels*sizeof(float));
       memcpy(max, mWaveCache->max, numPixels*sizeof(float));
       memcpy(rms, mWaveCache->rms, numPixels*sizeof(float));
@@ -488,7 +489,7 @@ bool WaveTrack::GetWaveDisplay(float *min, float *max, float *rms,
             sampleCount left = mWaveCache->where[i] - numSamples;
             sampleCount right = mWaveCache->where[i+1] - numSamples;
 
-            wxCriticalSectionLocker locker(mAppendCriticalSection);
+            //wxCriticalSectionLocker locker(mAppendCriticalSection);
 
             if (left < 0)
                left = 0;
@@ -745,7 +746,7 @@ bool WaveTrack::Set(samplePtr buffer, sampleFormat format,
 bool WaveTrack::Append(samplePtr buffer, sampleFormat format,
                        sampleCount len, unsigned int stride /* = 1 */)
 {
-   wxCriticalSectionLocker locker(mAppendCriticalSection);
+   //wxCriticalSectionLocker locker(mAppendCriticalSection);
 
    sampleCount maxBlockSize = mSequence->GetMaxBlockSize();
    sampleCount blockSize = mSequence->GetIdealAppendLen();
@@ -823,7 +824,7 @@ sampleCount WaveTrack::GetIdealBlockSize() const
 
 bool WaveTrack::Flush()
 {
-   wxCriticalSectionLocker locker(mFlushCriticalSection);
+   //wxCriticalSectionLocker locker(mFlushCriticalSection);
 
    bool success = true;
    sampleFormat seqFormat = mSequence->GetSampleFormat();
