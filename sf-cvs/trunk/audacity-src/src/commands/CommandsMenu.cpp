@@ -34,84 +34,14 @@ CommandsMenu::~CommandsMenu()
 
 void CommandsMenu::PurgeData()
 {
-   unsigned int i;
-
-   //remove all menu items, one by one
-   //hopefully this fixes memory leaks on non-windows platforms
-   //walk through the menu bar list
-   for(i = 0; i < mMenuBarList.GetCount(); i++)
-   {
-      CommandsMenuMenuArray mnuMainArray;
-      //remove individual menus
-      for(unsigned int c = 0; c < mMenuBarList[i]->menubar->GetMenuCount(); c++)
-      {
-         CommandsMenuMenuArray mnuSubArray;
-         wxMenu *mnuTmp = mMenuBarList[i]->menubar->GetMenu(c);
-
-         if(!mnuTmp)
-            continue;
-
-         mnuMainArray.Add(mnuTmp);
-
-         //Remove all items, store submenus for deletion, and delete all other items
-         //WARNING: I doubt separators are deleted using this method.
-         //Do they need to be deleted?
-         for(int j = 1; j <= mCurrentID; j++)
-         {
-            wxMenu *mnuTmpParent;
-
-            wxMenuItem *mnuItem = mnuTmp->FindItem(j, &mnuTmpParent);
-
-            if(!mnuItem)
-               continue;
-
-            wxMenu *mnuSubMenu = mnuItem->GetSubMenu();
-
-            if(mnuSubMenu)
-               mnuSubArray.Add(mnuSubMenu);
-
-            mnuTmpParent->Delete(mnuItem);
-         }
-
-         //Delete submenus
-         while(mnuSubArray.GetCount())
-         {
-            wxMenu *tmpSubMenu = mnuSubArray[0];
-            mnuSubArray.RemoveAt(0);
-
-            #if 0 // This appears to be a double-delete --dmazzoni
-            delete tmpSubMenu;
-            #endif
-         }
-
-         //clear the menu array
-         WX_CLEAR_ARRAY(mnuSubArray);
-         mnuSubArray.Clear();
-      }
-
-      //Delete menus
-      while(mnuMainArray.GetCount())
-      {
-         //bgunlogson: Possibly rewrite so that the item wxMenuBar::Remove removes is the item that is removed from the array.
-         //bgunlogson: in other words, don't depend on the array order matching the menu order
-         wxMenu *tmpDelMenu = mMenuBarList[i]->menubar->Remove(0);
-         wxASSERT_MSG(mnuMainArray[0] == tmpDelMenu, "Menu array location did not match menu location");
-         mnuMainArray.RemoveAt(0);
-         delete tmpDelMenu;
-      }
-
-      //clear the menu array
-      WX_CLEAR_ARRAY(mnuMainArray);
-      mnuMainArray.Clear();
-   }
-
-   //clear the menu bar list
-   for(i = 0; i < mMenuBarList.GetCount(); i++)
+   //delete the menubars
+   for(size_t i = 0; i < mMenuBarList.GetCount(); i++)
       delete mMenuBarList[i]->menubar;
+
+   //clear the arrays
    WX_CLEAR_ARRAY(mMenuBarList);
    mMenuBarList.Clear();
 
-   //clear the other arrays
    WX_CLEAR_ARRAY(mSubMenuList);
    mSubMenuList.Clear();
 
