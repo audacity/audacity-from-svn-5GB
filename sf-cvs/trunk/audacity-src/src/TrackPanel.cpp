@@ -1113,9 +1113,14 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
 
       } else if (event.Dragging()) {
 
-         //BG: FIXME: NEED TO MAKE MOUSE POSITION REALITIVE TO THE TOP OF THE TRACK, NOT THE TOP OF THE DISPLAY
-         float yval = -event.m_y + (selectedTrack->GetHeight()/2);
+         float yoffset = -mViewInfo->vpos;
+         yoffset += GetRulerHeight();
+         yoffset += selectedTrack->GetHeight() * (int)((mViewInfo->vpos + (event.m_y - GetRulerHeight())) / selectedTrack->GetHeight());
+
+         float yval = -(event.m_y-yoffset) + (selectedTrack->GetHeight()/2);
+
          float sign = (event.m_y >= 0 ? 1 : -1);
+
          mDrawEnd = ((float)(yval - (sign * 0.5)) / (float)(selectedTrack->GetHeight()/2));
 
          mDrawMouseEnd = event.m_y;
