@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audicity Spanish Translation.\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2003-08-18 13:13--300\n"
+"PO-Revision-Date: 2003-09-05 14:09--300\n"
 "Last-Translator: Ezequiel Plaza <ezequielplaza_audacity@yahoo.com.ar>\n"
 "Language-Team: Spanish. <sp@sp.org>\n"
 "MIME-Version: 1.0\n"
@@ -360,18 +360,16 @@ msgid "All files (*)|*"
 msgstr "Todos los archivos (*)|*"
 
 #: ../src/Project.cpp:1624
-#, fuzzy
 msgid "All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|List of Files (*.lof)|*.lof"
-msgstr "Todos loas archivos (*.*)|*.*|Proyectos Audacity (*.aup)|*.aup|Archivos WAV (*.wav)|*.wav|Archivos AIFF (*.aif)|*.aif|Archivos AU (*.au)|*.au|Archivos IRCAM (*.snd)|*.snd|Archivos MP3 (*.mp3)|*.mp3"
+msgstr "Todos los archivos (*.*)|*.*|Proyectos Audacity (*.aup)|*.aup|Archivos WAV (*.wav)|*.wav|Archivos AIFF (*.aif)|*.aif|Archivos AU (*.au)|*.au|Archivos MP3 (*.mp3)|*.mp3|Archivos Ogg Vorbis (*.ogg)|*.ogg|Lista de Archivos (*.lof)|*.lof"
 
 #: ../src/Menus.cpp:2054
 msgid "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
 msgstr "Todos los archivos (*.*)|*.*|Archivos MIDI (*.mid)|*.mid|Archivos Allegro (*.gro)|*.gro"
 
 #: ../src/Menus.cpp:1975
-#, fuzzy
 msgid "All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|List of Files (*.lof)|*.lof"
-msgstr "Todos los archivos (*.*)|*.*|Archivos WAV (*.wav)|*.wav|Archivos AIFF (*.aif)|*.aif|Archivos AU (*.au)|*.au|Archivos IRCAM (*.snd)|*.snd|Archivos MP3 (*.mp3)|*.mp3|Archivos Ogg Vorbis (*.ogg)|*.ogg"
+msgstr "Todos los Archivos (*.*)|*.*|Archivos WAV (*.wav)|*.wav|Archivos AIFF (*.aif)|*.aif|Archivos AU (*.au)|*.au|Archivos MP3 (*.mp3)|*.mp3|Archivos Ogg Vorbis (*.ogg)|*.ogg|Lista de Archivos (*.lof)|*.lof"
 
 #: ../src/prefs/MousePrefs.cpp:101
 msgid "Alt-Left-Click"
@@ -760,7 +758,7 @@ msgstr "No se puede exportar audio a %s"
 
 #: ../src/widgets/ASlider.cpp:480
 msgid "Center"
-msgstr ""
+msgstr "Centro"
 
 #. i18n-hint: This is a technical term, derived from the word
 #. "spectrum".  Do not translate it unless you are sure you
@@ -1127,29 +1125,29 @@ msgid "Cursor: %02i:%02i:%06.3lf cdda min:sec:frames (75 fps)   %s"
 msgstr "Cursor: %02i:%02i:%06.3lf cdda min:seg:cuadros (75 cps)   %s"
 
 #: ../src/FormatSelection.cpp:532
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %1i:%02i:%02i:%06.3lf NTSC drop-frame h:mm:ss:ff (%.3lf NTSC frames)   %s"
-msgstr "Cursor: %02i:%02i:%06.3lf cdda min:seg:cuadros (75 cps)   %s"
+msgstr "Cursor: %1i:%02i:%02i:%06.3lf NTSC drop-frame h:mm:ss:cc (%.3lf cuadros NTSC)   %s"
 
 #: ../src/FormatSelection.cpp:590
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %1i:%02i:%02i:%06.3lf NTSC non-drop-frame h:mm:ss:ff (%.3lf NTSC frames)   %s"
-msgstr "Cursor: %02i:%02i:%06.3lf cdda min:seg:cuadros (75 cps)   %s"
+msgstr "Cursor: %1i:%02i:%02i:%06.3lf NTSC non-drop-frame h:mm:ss:cc (%.3lf cuadros NTSC)   %s"
 
 #: ../src/FormatSelection.cpp:387
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL frames)   %s"
-msgstr "Cursor: %02i:%02i:%06.3lf cdda min:seg:cuadros (75 cps)   %s"
+msgstr "Cursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:cc 25 cps (%.3lf cuadros PAL)   %s"
 
 #: ../src/FormatSelection.cpp:309
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 fps (%.3lf film frames)   %s"
-msgstr "Cursor: %02i:%02i:%06.3lf cdda min:seg:cuadros (75 cps)   %s"
+msgstr "Cursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:cc 24 cps (%.3lf cuadros de film)   %s"
 
 #: ../src/FormatSelection.cpp:232
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %1i:%02i:%09.6f hr:min:sec   %s"
-msgstr "Cursor: %i:%09.6f min:seg   #s"
+msgstr "Cursor: %1i:%02i:%09.6f hr:min:seg   %s"
 
 #: ../src/FreqWindow.cpp:733
 #, c-format
@@ -1157,24 +1155,24 @@ msgid "Cursor: %d Hz (%s) = %d dB    Peak: %d Hz (%s)"
 msgstr "Cursor: %d Hz (%s) = %d dB    Pico: %d Hz (%s)"
 
 #: ../src/FormatSelection.cpp:780
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [Snap-To Samples]"
-msgstr "Cursor: %i+%04i sectores cdda+bytes (2352 bytes por sector)   [basado en frecuencia = %7.1f - para usar solamente con 44100]"
+msgstr "Cursor: %i+%04i sectors+bytes cdda (2352 bytes per sector)   [Snap-To Samples]"
 
 #: ../src/FormatSelection.cpp:783
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [Snap-To Samples]   Change Project Rate to 44100 for cdda"
-msgstr "Cursor: %i+%04i sectores cdda+bytes (2352 bytes por sector)   [basado en frecuencia = %7.1f - para usar solamente con 44100]"
+msgstr "Cursor: %i+%04i sectores+bytes cdda (2352 bytes por sector)   [Saltar-A muestreos]   Cambiar Frecuencia del Proyecto a 44100 para cdda"
 
 #: ../src/FormatSelection.cpp:745
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %i+%i sec+samples   [Snap-To Samples]"
-msgstr "Cursor: %i+%i seg+muestreos   [basado en frecuencia = %7.1f - utiliza Elegir Frecuencia para elegir/reponer]"
+msgstr "Cursor: %i+%i sec+samples   [Snap-To Samples]"
 
 #: ../src/FormatSelection.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %i:%02i+%i min:sec+samples   [Snap-To Samples]"
-msgstr "Cursor: %i:%02i+%i min:seg+muestreos   [basado en frecuencia = %7.1f - utiliza Elegir Frecuencia para elegir/reponer]"
+msgstr "Cursor: %i:%02i+%i min:seg+muestreos   [Saltar-A Muestreos]"
 
 #: ../src/FormatSelection.cpp:161
 #, c-format
@@ -1182,9 +1180,9 @@ msgid "Cursor: %i:%09.6f min:sec   %s"
 msgstr "Cursor: %i:%09.6f min:seg   #s"
 
 #: ../src/FormatSelection.cpp:673
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %i:%09.6lf min:sec   [Snap-To Samples]"
-msgstr "Cursor: %i:%09.6f min:seg   #s"
+msgstr "Cursor: %i:%09.6lf min:seg   [Saltar-A Muestreos]"
 
 #: ../src/FormatSelection.cpp:185
 #, c-format
@@ -1192,14 +1190,14 @@ msgid "Cursor: %lf sec   %s"
 msgstr "Cursor: %lf seg   %s"
 
 #: ../src/FormatSelection.cpp:694
-#, fuzzy, c-format
+#, c-format
 msgid "Cursor: %lf sec   [Snap-To Samples]"
-msgstr "Cursor: %lf seg   %s"
+msgstr "Cursor: %lf seg   [Saltar-A Muestreos]"
 
 #: ../src/FormatSelection.cpp:649
 #, c-format
 msgid "Cursor: %li samples   [Snap-To Samples]"
-msgstr ""
+msgstr "Cursor: %li muestreos [Saltar-A Muestreos]"
 
 #: ../src/EditToolBar.cpp:144
 #: ../src/Menus.cpp:1267
@@ -1746,7 +1744,7 @@ msgstr "Encabezado:"
 
 #: ../src/prefs/QualityPrefs.cpp:196
 msgid "High-quality dither:"
-msgstr ""
+msgstr "Fusión de Alta calidad:"
 
 #: ../src/prefs/QualityPrefs.cpp:156
 msgid "High-quality sample rate converter:"
@@ -2060,7 +2058,7 @@ msgstr "Límite inferior de velocidad"
 
 #: ../src/import/ImportLOF.cpp:361
 msgid "MIDI tracks cannot be offset individually, only audio files may be."
-msgstr ""
+msgstr "Pistas MIDI no pueden ser transladadas en tiempo individualmente, sólo archivos de audio pueden."
 
 #: ../src/prefs/FileFormatPrefs.cpp:172
 msgid "MP3 Export Setup"
@@ -2167,7 +2165,7 @@ msgstr "Mouse"
 
 #: ../src/prefs/MousePrefs.cpp:71
 msgid "Mouse Bindings (default values, not configurable)"
-msgstr ""
+msgstr "Acciones de Mouse (valores predeterminados, no configurables)"
 
 #: ../src/Menus.cpp:181
 msgid "Move Cursor..."
@@ -2222,7 +2220,7 @@ msgstr "Mudo"
 #. i18n-hint: hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:39
 msgid "NTSC drop-frame h:mm:ss:ff"
-msgstr ""
+msgstr "NTSC drop-frame h:mm:ss:cc"
 
 #. i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:37
@@ -2232,7 +2230,7 @@ msgstr "Cuadros NTSC 29.97 cps"
 #. i18n-hint: hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:41
 msgid "NTSC non-drop-frame h:mm:ss:ff"
-msgstr ""
+msgstr "NTSC non-drop-frame h:mm:ss:cc"
 
 #: ../src/TrackPanel.cpp:4078
 msgid "Name Change"
@@ -2289,7 +2287,7 @@ msgstr "Nueva longitud de selección:"
 #. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:299
 msgid "No endianness"
-msgstr ""
+msgstr "Sin endianness"
 
 #: ../src/export/Export.cpp:107
 msgid "No tracks are selected!\n"
@@ -2679,9 +2677,8 @@ msgid "R"
 msgstr "D"
 
 #: ../src/TrackPanel.cpp:3812
-#, fuzzy
 msgid "Rate Change"
-msgstr "¿Guardar Cambios?"
+msgstr "Cambio de Frecuencia"
 
 #: ../src/effects/Compressor.cpp:435
 #, fuzzy
@@ -2691,12 +2688,12 @@ msgstr "Ubicación"
 #: ../src/effects/Compressor.cpp:511
 #, c-format
 msgid "Ratio: %.0f:1"
-msgstr ""
+msgstr "Fracción: %.0f:1"
 
 #: ../src/effects/Compressor.cpp:513
 #, c-format
 msgid "Ratio: %.1f:1"
-msgstr ""
+msgstr "Fracción: %.1f:1"
 
 #. i18n-hint: This refers to files that are opened directly
 #. without looking at the file header.  Same as "Import Raw"
@@ -2710,7 +2707,7 @@ msgstr "Leer directamente desde el archivo original (más rápido)"
 
 #: ../src/prefs/QualityPrefs.cpp:181
 msgid "Real-time dither:"
-msgstr ""
+msgstr "Fusionado en Tiempo-Real:"
 
 #: ../src/prefs/QualityPrefs.cpp:145
 msgid "Real-time sample rate converter:"
@@ -2779,7 +2776,7 @@ msgstr "Remover Pista"
 
 #: ../src/effects/Normalize.cpp:233
 msgid "Remove any DC offset (center on 0 vertically)"
-msgstr ""
+msgstr "Remover cualquier desalineación vertical (centrar en cero)"
 
 #: ../src/Menus.cpp:2489
 msgid "Removed audio track(s)"
@@ -3056,49 +3053,49 @@ msgid "Selection: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda 
 msgstr "Selección: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda min:seg:cuadros)   %s"
 
 #: ../src/FormatSelection.cpp:535
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf NTSC drop-frame h:mm:ss:ff) (%.3lf NTSC frames)   %s"
-msgstr "Selección: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda min:seg:cuadros)   %s"
+msgstr "Selección: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf NTSC drop-frame h:mm:ss:cc) (%.3lf cuadros NTSC)   %s"
 
 #: ../src/FormatSelection.cpp:593
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf NTSC non-drop-frame h:mm:ss:ff) (%.3lf NTSC frames)   %s"
-msgstr "Selección: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda min:seg:cuadros)   %s"
+msgstr "Selección: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf NTSC non-drop-frame h:mm:ss:cc) (%.3lf cuadros NTSC)   %s"
 
 #: ../src/FormatSelection.cpp:390
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff) (%.3lf PAL frames)   %s"
-msgstr "Selección: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda min:seg:cuadros)   %s"
+msgstr "Selección: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf PAL h:mm:ss:cc) (%.3lf cuadros PAL)   %s"
 
 #: ../src/FormatSelection.cpp:312
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf film h:mm:ss:ff) (%.3lf film frames)   %s"
-msgstr "Selección: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda min:seg:cuadros)   %s"
+msgstr "Selección: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf film h:mm:ss:cc) (%.3lf cuadros de film)   %s"
 
 #: ../src/FormatSelection.cpp:235
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f hr:min:sec)   %s"
-msgstr "Selección: %i:%09.6f - %i:%09.6f (%i:%09.6f min:seg)   %s"
+msgstr "Selección: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f hr:min:seg)   %s"
 
 #: ../src/FormatSelection.cpp:787
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]"
-msgstr "Selección: %i+%04i - %i+%04i (%i+%04i sectores cdda+bytes)   [basado en frecuencia = %7.1f - para usar solamente con 44100]"
+msgstr "Selección: %i+%04i - %i+%04i (%i+%04i sectores+bytes cdda)   [Saltar-A Muestreos]"
 
 #: ../src/FormatSelection.cpp:790
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]   Change Project Rate to 44100 for cdda"
-msgstr "Selección: %i+%04i - %i+%04i (%i+%04i sectores cdda+bytes)   [basado en frecuencia = %7.1f - para usar solamente con 44100]"
+msgstr "Selección: %i+%04i - %i+%04i (%i+%04i sectores+bytes cdda)   [Saltar-A Muestreos]   Cambiar Frecuencia de Proyecto a 44100 para cdda"
 
 #: ../src/FormatSelection.cpp:748
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %i+%i - %i+%i (%i+%i sec+samples)   [Snap-To Samples]"
-msgstr "Selección: %i+%i - %i+%i (%i+%i seg+muestreos)   [basado en frecuencia = %7.1f - utiliza Elegir Frecuencia para elegir/reponer]"
+msgstr "Selección: %i+%i - %i+%i (%i+%i seg+muestreos)   [Saltar-A Muestreos]"
 
 #: ../src/FormatSelection.cpp:724
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sec+samples)   [Snap-To Samples]"
-msgstr "Selección: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:seg+muestreos)   [basado en frecuencia = %7.1f - utiliza Elegir Frecuencia para elegir/reponer]"
+msgstr "Selección: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:seg+muestreos)   [Saltar-A Muestreos]"
 
 #: ../src/FormatSelection.cpp:164
 #, c-format
@@ -3106,9 +3103,9 @@ msgid "Selection: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)   %s"
 msgstr "Selección: %i:%09.6f - %i:%09.6f (%i:%09.6f min:seg)   %s"
 
 #: ../src/FormatSelection.cpp:676
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)   [Snap-To Samples]"
-msgstr "Selección: %i:%09.6f - %i:%09.6f (%i:%09.6f min:seg)   %s"
+msgstr "Selección: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:seg)   [Saltar-A Muestreos]"
 
 #: ../src/FormatSelection.cpp:188
 #, c-format
@@ -3116,14 +3113,14 @@ msgid "Selection: %lf - %lf (%lf sec)   %s"
 msgstr "Selección: %lf - %lf (%lf seg)   %s"
 
 #: ../src/FormatSelection.cpp:697
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %lf - %lf (%lf sec)   [Snap-To Samples]"
-msgstr "Selección: %lf - %lf (%lf seg)   %s"
+msgstr "Selección: %lf - %lf (%lf seg)   [Saltar-A Muestreos]"
 
 #: ../src/FormatSelection.cpp:652
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %li - %li (%li samples)   [Snap-To Samples]"
-msgstr "Selección: %lf - %lf (%lf seg)   %s"
+msgstr "Selección: %li - %li (%li muestreos)   [Saltar-A Muestreos]"
 
 #: ../src/effects/ChangePitch.cpp:300
 msgid "Semitones (half-steps):"
@@ -3376,7 +3373,7 @@ msgstr "No hay pistas de rótulos para exportar."
 
 #: ../src/AudioIO.cpp:163
 msgid "There was an error initializing the audio i/o layer.\n"
-msgstr ""
+msgstr "Hubo un error al inicializar la capa de e/s de audio.\n"
 
 #: ../src/AboutDialog.cpp:123
 msgid "This is a beta version of the program.  It may contain bugs and unfinished features.  We depend on your feedback, so please visit our website and give us your bug reports and feature requests."
@@ -3729,9 +3726,8 @@ msgid "Zoom Out"
 msgstr "Zoom Alejar"
 
 #: ../src/EditToolBar.cpp:164
-#, fuzzy
 msgid "Zoom Toggle"
-msgstr "Herramienta de Zoom"
+msgstr "Zoom anterior"
 
 #: ../src/ControlToolBar.cpp:345
 msgid "Zoom Tool"
@@ -3784,7 +3780,7 @@ msgstr "cdda min:seg:cuadros 75 cps"
 #. you know the correct term.
 #: ../src/FormatSelection.cpp:54
 msgid "cdda sectors+bytes (snap to samples)"
-msgstr ""
+msgstr "cdda sectores+bytes (saltar a muestreos)"
 
 #: ../src/TrackPanel.cpp:4043
 #: ../src/effects/ChangePitch.cpp:278
@@ -3824,7 +3820,7 @@ msgstr "min:seg "
 
 #: ../src/FormatSelection.cpp:48
 msgid "min:sec+samples (snap to samples)"
-msgstr ""
+msgstr "min:seg+muestreos (saltar a muestreos)"
 
 #. i18n-hint: n/a is an English
 #. abbreviation meaning "not
@@ -3840,7 +3836,7 @@ msgstr "derecho"
 
 #: ../src/FormatSelection.cpp:45
 msgid "samples (snap to samples)"
-msgstr ""
+msgstr "muestreos (saltar a muestreos)"
 
 #: ../src/FormatSelection.cpp:24
 msgid "sec"
@@ -3848,11 +3844,11 @@ msgstr "seg"
 
 #: ../src/FormatSelection.cpp:47
 msgid "sec (snap to samples)"
-msgstr ""
+msgstr "seg (saltar a muestreos)"
 
 #: ../src/FormatSelection.cpp:49
 msgid "sec+samples (snap to samples)"
-msgstr ""
+msgstr "seg+muestreos (saltar a muestreos)"
 
 #: ../src/FreqWindow.cpp:987
 msgid "spectrum.txt"
