@@ -59,17 +59,62 @@ Tags::~Tags()
 {
 }
 
-bool Tags::Load(wxTextFile * in, DirManager * dirManager)
+bool Tags::HandleXMLTag(const char *tag, const char **attrs)
 {
-/*   Oddly enough, MSVC doesn't understand #warning  */
-/*   #warning TODO */
+   if (!strcmp(tag, "tags"))
+      return false;
 
+   // loop through attrs, which is a null-terminated list of
+   // attribute-value pairs
+   while(*attrs) {
+      const char *attr = *attrs++;
+      const char *value = *attrs++;
+
+      if (!value)
+         break;
+
+      if (!strcmp(attr, "title"))
+         mTitle = value;
+      else if (!strcmp(attr, "artist"))
+         mArtist = value;
+      else if (!strcmp(attr, "album"))
+         mAlbum = value;
+      else if (!strcmp(attr, "track"))
+         mTrackNum = atoi(value);
+      else if (!strcmp(attr, "year"))
+         mYear = value;
+      else if (!strcmp(attr, "genre"))
+         mGenre = atoi(value);
+      else if (!strcmp(attr, "comments"))
+         mComments = value;
+      else if (!strcmp(attr, "id3v2"))
+         mID3V2 = atoi(value);         
+   } // while
+   
    return true;
 }
 
-bool Tags::Save(wxTextFile * out, bool overwrite)
+XMLTagHandler *Tags::HandleXMLChild(const char *)
 {
-   return true;
+   return NULL;
+}
+
+void Tags::WriteXML(int depth, FILE *fp)
+{
+   int i;
+
+   for(i=0; i<depth; i++)
+      fprintf(fp, "\t");
+   fprintf(fp, "<tags ");
+   fprintf(fp, "title=\"%s\" ", (const char *)mTitle);
+   fprintf(fp, "artist=\"%s\" ", (const char *)mArtist);
+   fprintf(fp, "album=\"%s\" ", (const char *)mAlbum);
+   fprintf(fp, "track=\"%d\" ", mTrackNum);
+   fprintf(fp, "year=\"%s\" ", (const char *)mYear);
+   fprintf(fp, "genre=\"%d\" ", mGenre);
+   fprintf(fp, "comments=\"%s\" ", (const char *)mComments);
+   fprintf(fp, "id3v2=\"%d\" ", (int)mID3V2);
+   fprintf(fp, "/>\n"); // XML shorthand for childless tag
 }
 
 bool Tags::ShowEditDialog(wxWindow *parent, wxString title)

@@ -37,6 +37,7 @@ class wxDC;
 #include "ViewInfo.h"
 #include "ToolBar.h"
 #include "TrackPanel.h"
+#include "xml/XMLTagHandler.h"
 
 #define AUDACITY_MENUS_GLOBALS
 #include "Menus.h"
@@ -68,7 +69,10 @@ extern AProjectArray gAudacityProjects;
 WX_DEFINE_ARRAY(ToolBar *, ToolBarArray);
 
 class AudacityProject:public wxFrame,
-    public TrackPanelListener, public AStatusListener {
+                      public TrackPanelListener,
+                      public AStatusListener,
+                      public XMLTagHandler
+{
  public:
 
    // Constructor and Destructor
@@ -170,6 +174,12 @@ class AudacityProject:public wxFrame,
    virtual void AS_SetRate(double rate);
 
    void SetStateTo(unsigned int n);
+
+   // XMLTagHandler callback methods
+
+   virtual bool HandleXMLTag(const char *tag, const char **attrs);
+   virtual XMLTagHandler *HandleXMLChild(const char *tag);
+   virtual void WriteXML(int depth, FILE *fp);
 
  private:
 

@@ -86,8 +86,16 @@ class WaveTrack:public VTrack {
    virtual void SetDisplay(int d);
    virtual int GetDisplay() const;
 
+   // XMLTagHandler callback methods
+
+   virtual bool HandleXMLTag(const char *tag, const char **attrs);
+   virtual XMLTagHandler *HandleXMLChild(const char *tag);
+   virtual void WriteXML(int depth, FILE *fp);
+
+#if LEGACY_PROJECT_FILE_SUPPORT
    virtual bool Load(wxTextFile * in, DirManager * dirManager);
    virtual bool Save(wxTextFile * out, bool overwrite);
+#endif
 
    virtual int GetKind() const { return Wave; } 
    virtual void SetOffset(double t);   

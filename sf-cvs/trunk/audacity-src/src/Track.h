@@ -11,11 +11,14 @@
 #ifndef __AUDACITY_TRACK__
 #define __AUDACITY_TRACK__
 
+#include "xml/XMLTagHandler.h"
+
 class wxString;
 class wxTextFile;
 class DirManager;
 
-class VTrack {
+class VTrack: public XMLTagHandler {
+ protected:
    int collapsedHeight;
    int expandedHeight;
 
@@ -52,7 +55,7 @@ class VTrack {
    virtual ~ VTrack() { }
    
    virtual void Init(const VTrack &orig);
-   virtual VTrack *Duplicate() const { return new VTrack(*this); }
+   virtual VTrack *Duplicate() const = 0;
 
    int GetCollapsedHeight() const { return collapsedHeight; }
    int GetExpandedHeight () const { return expandedHeight;  }
@@ -106,8 +109,16 @@ class VTrack {
 
    virtual int GetKind() const { return None; }
 
+   // XMLTagHandler callback methods
+
+   virtual bool HandleXMLTag(const char *tag, const char **attrs) = 0;
+   virtual XMLTagHandler *HandleXMLChild(const char *tag) = 0;
+   virtual void WriteXML(int depth, FILE *fp) = 0;
+
+#if LEGACY_PROJECT_FILE_SUPPORT
    virtual bool Load(wxTextFile * in, DirManager * dirManager);
    virtual bool Save(wxTextFile * out, bool overwrite);
+#endif
 
    virtual int GetHeight() const {
       return (collapsed ? collapsedHeight : expandedHeight);
@@ -193,10 +204,12 @@ class TrackList {
   double GetMaxLen() const;
   double GetMinOffset() const;
   int GetHeight() const;
-  
+
+#if LEGACY_PROJECT_FILE_SUPPORT  
   // File I/O
   virtual bool Load(wxTextFile * in, DirManager * dirManager);
   virtual bool Save(wxTextFile * out, bool overwrite);
+#endif
   
  private:
   void Swap(TrackListNode * s1, TrackListNode * s2);

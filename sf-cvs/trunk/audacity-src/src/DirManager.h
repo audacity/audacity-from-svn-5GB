@@ -36,7 +36,6 @@
 
 #include "WaveTrack.h"
 
-class wxTextFile;
 class wxHashTable;
 
 class BlockFile;
@@ -60,8 +59,13 @@ class DirManager {
    // the BlockFile.
    BlockFile *CopyBlockFile(BlockFile *b);
 
+   BlockFile *LoadBlockFile(const char **attrs, sampleFormat format);
+   void SaveBlockFile(BlockFile *f, int depth, FILE *fp);
+
+#if LEGACY_PROJECT_FILE_SUPPORT
    BlockFile *LoadBlockFile(wxTextFile * in, sampleFormat format);
    void SaveBlockFile(BlockFile * f, wxTextFile * out);
+#endif
 
    bool MoveToNewProjectDirectory(BlockFile *f);
    bool CopyToNewProjectDirectory(BlockFile *f);

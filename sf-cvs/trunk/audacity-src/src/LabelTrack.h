@@ -54,8 +54,14 @@ class LabelTrack:public VTrack {
 
    virtual VTrack *Duplicate() const { return new LabelTrack(*this); }
 
+   virtual bool HandleXMLTag(const char *tag, const char **attrs);
+   virtual XMLTagHandler *HandleXMLChild(const char *tag);
+   virtual void WriteXML(int depth, FILE *fp);
+
+#if LEGACY_PROJECT_FILE_SUPPORT
    virtual bool Load(wxTextFile * in, DirManager * dirManager);
    virtual bool Save(wxTextFile * out, bool overwrite);
+#endif
 
    virtual void Cut  (double t0, double t1, VTrack ** dest);
    virtual void Copy (double t0, double t1, VTrack ** dest) const;

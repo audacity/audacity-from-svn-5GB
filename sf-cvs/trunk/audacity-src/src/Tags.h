@@ -38,22 +38,21 @@
 #include <wx/panel.h>
 #include <wx/dialog.h>
 
-class wxTextFile;
+#include "xml/XMLTagHandler.h"
 
-class DirManager;
-
-class Tags {
+class Tags: public XMLTagHandler {
 
    friend class TagsDialog;
 
 public:
    Tags();  // constructor
-   ~Tags();
+   virtual ~Tags();
    
    bool ShowEditDialog(wxWindow *parent, wxString title);
    
-   bool Load(wxTextFile * in, DirManager * dirManager);
-   bool Save(wxTextFile * out, bool overwrite);
+   virtual bool HandleXMLTag(const char *tag, const char **attrs);
+   virtual XMLTagHandler *HandleXMLChild(const char *tag);
+   virtual void WriteXML(int depth, FILE *fp);
 
    // Import any ID3 tags from this file   
    void ImportID3(wxString fileName);

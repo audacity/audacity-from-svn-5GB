@@ -28,6 +28,8 @@ class NoteTrack:public VTrack {
 
    NoteTrack(DirManager * projDirManager);
 
+   virtual VTrack *Duplicate() const;
+   
    virtual int GetKind() const { return Note; } 
    virtual double GetMaxLen() const { return mLen; }
 
@@ -47,9 +49,15 @@ class NoteTrack:public VTrack {
       mBottomNote = note; 
    }
 
+   virtual bool HandleXMLTag(const char *tag, const char **attrs);
+   virtual XMLTagHandler *HandleXMLChild(const char *tag);
+   virtual void WriteXML(int depth, FILE *fp);
+
  private:
    Seq *mSeq;
    double mLen;
+
+   DirManager *mDirManager;
 
    int mBottomNote;
 

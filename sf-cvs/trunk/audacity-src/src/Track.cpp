@@ -62,6 +62,8 @@ void VTrack::Init(const VTrack &orig)
    channel = orig.channel;
 }
 
+#if LEGACY_PROJECT_FILE_SUPPORT
+
 bool VTrack::Load(wxTextFile * in, DirManager * dirManager)
 {
    this->dirManager = dirManager;
@@ -102,6 +104,8 @@ bool VTrack::Save(wxTextFile * out, bool overwrite)
 
    return true;
 }
+
+#endif
 
 void VTrack::SetHeight(int h)
 {
@@ -182,6 +186,7 @@ VTrack *TrackListIterator::RemoveCurrent()
       return NULL;
 }
 
+#if LEGACY_PROJECT_FILE_SUPPORT
 // TrackList
 bool TrackList::Save(wxTextFile * out, bool overwrite)
 {
@@ -247,6 +252,7 @@ bool TrackList::Load(wxTextFile * in, DirManager * dirManager)
 
    return true;
 }
+#endif
 
 TrackList::TrackList()
 {

@@ -27,9 +27,16 @@ VTrack(projDirManager)
    mSeq = NULL;
    mLen = 0.0;
 
+   mDirManager = projDirManager;
+
    mBottomNote = 24;
 
    mVisibleChannels = 0xFFFF;
+}
+
+VTrack *NoteTrack::Duplicate() const
+{
+   return new NoteTrack(mDirManager);
 }
 
 void NoteTrack::DrawLabelControls(wxDC & dc, wxRect & r)
@@ -136,4 +143,18 @@ void NoteTrack::SetSequence(Seq *seq)
    mSeq = seq;
 
    CalcLen();
+}
+
+bool NoteTrack::HandleXMLTag(const char *tag, const char **attrs)
+{
+   return false;
+}
+
+XMLTagHandler *NoteTrack::HandleXMLChild(const char *tag)
+{
+   return NULL;
+}
+
+void NoteTrack::WriteXML(int depth, FILE *fp)
+{
 }

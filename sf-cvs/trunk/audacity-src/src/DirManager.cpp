@@ -16,7 +16,6 @@
 #include <wx/msgdlg.h>
 #include <wx/progdlg.h>
 #include <wx/timer.h>
-#include <wx/textfile.h>
 #include <wx/intl.h>
 
 #include "BlockFile.h"
@@ -336,6 +335,88 @@ BlockFile *DirManager::CopyBlockFile(BlockFile *b)
    return b2;
 }
 
+BlockFile *DirManager::LoadBlockFile(const char **attrs, sampleFormat format)
+{
+   wxASSERT(projFull != "");
+
+   // New Load routine - attrs come from XML tag
+
+   wxString blockName;
+   long summaryLen = 0;
+   bool alias = false;
+   wxString aliasFullPath;
+   long start=0, len=0, channel=0;
+
+   // loop through attrs, which is a null-terminated list of
+   // attribute-value pairs
+   while(*attrs) {
+      const char *attr = *attrs++;
+      const char *value = *attrs++;
+      
+      if (!value)
+         break;
+      
+      if (!strcmp(attr, "summarylen"))
+         summaryLen = atoi(value);
+      else if (!strcmp(attr, "name"))
+         blockName = value;
+      else if (!strcmp(attr, "alias"))
+         alias = atoi(value)>0;
+      else if (!strcmp(attr, "summarystart"))
+         start = atoi(value);
+      else if (!strcmp(attr, "summarylen"))
+         len = atoi(value);
+      else if (!strcmp(attr, "summarychannel"))
+         channel = atoi(value);
+   } // while
+
+   wxString pathName = projFull + pathChar + blockName;
+   BlockFile *retrieved = (BlockFile *) blockFileHash->Get(blockName);
+   if (retrieved) {
+      wxASSERT(retrieved->IsAlias() == alias);
+      retrieved->Ref();
+      return retrieved;
+   } else {
+      BlockFile *newBlockFile =
+         new BlockFile(blockName, pathName, summaryLen);
+
+      if (alias) {
+         newBlockFile->SetAliasedData(aliasFullPath, start, len, channel);
+         aliasList.Add(aliasFullPath);
+      }
+
+      newBlockFile->mSampleFormat = format;
+
+      blockFileHash->Put(blockName, (wxObject *) newBlockFile);
+
+      CheckHashTableSize();
+
+      if (!wxFileExists(pathName))
+         return 0;
+      return newBlockFile;
+   }
+}
+
+void DirManager::SaveBlockFile(BlockFile *f, int depth, FILE *fp)
+{
+   int i;
+
+   for(i=0; i<depth; i++)
+      fprintf(fp, "\t");
+   fprintf(fp, "<blockfile ");
+   fprintf(fp, "summarylen=\"%d\" ", f->mSummaryLen);
+   fprintf(fp, "name=\"%s\" ", (const char *)f->mName);
+   fprintf(fp, "alias=\"%d\" ", f->IsAlias());
+   if (f->IsAlias()) {
+      fprintf(fp, "aliaspath=\"%s\" ", (const char *)f->mAliasFullPath);
+      fprintf(fp, "aliasstart=\"%d\" ", f->mStart);
+      fprintf(fp, "aliaslen=\"%d\" ", f->mLen);
+      fprintf(fp, "aliaschannel=\"%d\" ", f->mChannel);
+   }
+   fprintf(fp, "/>\n"); // XML shorthand for childless tag
+}
+
+#if LEGACY_PROJECT_FILE_SUPPORT
 void DirManager::SaveBlockFile(BlockFile * f, wxTextFile * out)
 {
    out->AddLine(wxString::Format("%d", f->mSummaryLen));
@@ -367,8 +448,10 @@ BlockFile *DirManager::LoadBlockFile(wxTextFile * in, sampleFormat format)
    if (blockName == "Alias") {
       alias = true;
       aliasFullPath = in->GetNextLine();
-      if (!(in->GetNextLine().ToLong(&localLen)))
-         return NULL;
+      
+      //if (!(in->GetNextLine().ToLong(&localLen)))
+      //   return NULL;
+
       if (!(in->GetNextLine().ToLong(&start)))
          return NULL;
       if (!(in->GetNextLine().ToLong(&len)))
@@ -405,6 +488,7 @@ BlockFile *DirManager::LoadBlockFile(wxTextFile * in, sampleFormat format)
       return newBlockFile;
    }
 }
+#endif // if LEGACY_PROJECT_FILE_SUPPORT
 
 bool DirManager::MoveToNewProjectDirectory(BlockFile *f)
 {

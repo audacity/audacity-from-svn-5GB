@@ -64,6 +64,7 @@ void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 #include "TrackPanel.h"
 #include "WaveTrack.h"
 #include "effects/Effect.h"
+#include "xml/XMLFileReader.h"
 
 
 #include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
@@ -1073,7 +1074,6 @@ void AudacityProject::OpenFile(wxString fileName)
    // for a long time searching for line breaks.  So, we look for our
    // signature at the beginning of the file first:
 
-   bool isProjectFile;
    wxString firstLine = "AudacityProject";
    char temp[16];
 
@@ -1089,14 +1089,189 @@ void AudacityProject::OpenFile(wxString fileName)
    }
    ff.Read(temp, 15);
    temp[15] = 0;
-   isProjectFile = (firstLine == temp);
    ff.Close();
 
-   if (!isProjectFile) {
-      // Try opening it as any other form of audio
+   if (!strcmp(temp, "AudacityProject")) {
+      wxMessageBox("Old Audacity project files can't be opened by "
+                   "this newer version of Audacity (yet).");
+      return;
+   }
+   
+   temp[6] = 0;
+   if (strcmp(temp, "<?xml ")) {
+      // If it's not XML, try opening it as any other form of audio
       Import(fileName);
       return;
    }
+
+   ///
+   /// Parse project file
+   ///
+
+   mFileName = fileName;
+   SetTitle(GetName());
+
+   XMLFileReader xmlFile;
+
+   if (xmlFile.Parse(this, fileName)) {
+      // By making a duplicate set of pointers to the existing blocks
+      // on disk, we add one to their reference count, guaranteeing
+      // that their reference counts will never reach zero and thus
+      // the version saved on disk will be preserved until the
+      // user selects Save().
+      
+      VTrack *t;
+      TrackListIterator iter(mTracks);
+      mLastSavedTracks = new TrackList();
+      t = iter.First();
+      while (t) {
+         mLastSavedTracks->Add(t->Duplicate());
+         t = iter.Next();
+      }
+
+      InitialState();
+      HandleResize();
+      mTrackPanel->Refresh(false);
+   }
+   else {
+      mTracks->Clear(true);
+
+      mFileName = "";
+      SetTitle("Audacity");
+
+      wxMessageBox(xmlFile.GetErrorStr());
+   }
+}
+
+bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
+{
+   if (strcmp(tag, "audacityproject"))
+      return false;
+
+   int requiredTags = 0;
+
+   // loop through attrs, which is a null-terminated list of
+   // attribute-value pairs
+   while(*attrs) {
+      const char *attr = *attrs++;
+      const char *value = *attrs++;
+
+      if (!value)
+         break;
+
+      if (!strcmp(attr, "projname")) {
+         wxString projName = value;
+         wxString projPath = wxPathOnly(mFileName);
+         
+         if (!mDirManager.SetProject(projPath, projName, false)) {
+            return false;
+         }
+
+         requiredTags++;
+      }
+
+      if (!strcmp(attr, "sel0"))
+         wxString(value).ToDouble(&mViewInfo.sel0);
+
+      if (!strcmp(attr, "sel1"))
+         wxString(value).ToDouble(&mViewInfo.sel1);
+
+      long longVpos;
+      if (!strcmp(attr, "vpos"))
+         wxString(value).ToLong(&longVpos);
+      mViewInfo.vpos = longVpos;
+
+      if (!strcmp(attr, "h"))
+         wxString(value).ToDouble(&mViewInfo.h);
+
+      if (!strcmp(attr, "zoom"))
+         wxString(value).ToDouble(&mViewInfo.zoom);
+
+      if (!strcmp(attr, "rate")) {
+         wxString(value).ToDouble(&mRate);
+         mStatus->SetRate(mRate);
+      }
+   } // while
+
+   if (requiredTags >= 1)
+      return true;
+   else
+      return false;
+}
+
+XMLTagHandler *AudacityProject::HandleXMLChild(const char *tag)
+{
+   if (!strcmp(tag, "tags")) {
+      return mTags;
+   }
+
+   if (!strcmp(tag, "wavetrack")) {
+      WaveTrack *newTrack = new WaveTrack(&mDirManager);
+      mTracks->Add(newTrack);
+      return newTrack;
+   }
+
+   if (!strcmp(tag, "notetrack")) {
+      NoteTrack *newTrack = new NoteTrack(&mDirManager);
+      mTracks->Add(newTrack);
+      return newTrack;
+   }
+
+   if (!strcmp(tag, "labeltrack")) {
+      LabelTrack *newTrack = new LabelTrack(&mDirManager);
+      mTracks->Add(newTrack);
+      return newTrack;
+   }
+
+   return NULL;
+}
+
+void AudacityProject::WriteXML(int depth, FILE *fp)
+{
+   int i;
+
+   // Warning: This block of code is duplicated in Save, for now...
+   wxString project = mFileName;
+   if (project.Len() > 4 && project.Mid(project.Len() - 4) == ".aup")
+      project = project.Mid(0, project.Len() - 4);
+   wxString projName = wxFileNameFromPath(project) + "_data";
+   // End Warning -DMM
+
+   for(i=0; i<depth; i++)
+      fprintf(fp, "\t");
+   fprintf(fp, "<audacityproject ");
+   fprintf(fp, "projname=\"%s\" ", (const char *)projName);
+   fprintf(fp, "version=\"%s\" ", AUDACITY_FILE_FORMAT_VERSION);
+   fprintf(fp, "audacityversion=\"%s\" ", AUDACITY_VERSION_STRING);
+   fprintf(fp, "sel0=\"%.10g\" ", mViewInfo.sel0);
+   fprintf(fp, "sel1=\"%.10g\" ", mViewInfo.sel1);
+   fprintf(fp, "vpos=\"%d\" ", mViewInfo.vpos);
+   fprintf(fp, "h=\"%.10g\" ", mViewInfo.h);
+   fprintf(fp, "zoom=\"%.10g\" ", mViewInfo.zoom);
+   fprintf(fp, "rate=\"%g\" ", mRate);
+   fprintf(fp, ">\n");
+
+   mTags->WriteXML(depth+1, fp);
+
+   VTrack *t;
+   TrackListIterator iter(mTracks);
+   t = iter.First();
+   while (t) {
+      t->WriteXML(depth+1, fp);
+      t = iter.Next();
+   }
+
+   for(i=0; i<depth; i++)
+      fprintf(fp, "\t");
+   fprintf(fp, "</audacityproject>\n");
+}
+
+#if LEGACY_PROJECT_FILE_SUPPORT
+
+void AudacityProject::OpenLegacyProjectFile()
+{
+ TODO: This function is not complete; the old code is
+       just reproduced here as a guide ... -DMM
 
    wxTextFile f;
 
@@ -1105,13 +1280,6 @@ void AudacityProject::OpenFile(wxString fileName)
       wxMessageBox(_("Could not open file: ") + mFileName);
       return;
    }
-
-   mFileName = fileName;
-   SetTitle(GetName());
-
-   ///
-   /// Parse project file
-   ///
 
    wxString projName;
    wxString projPath;
@@ -1175,23 +1343,14 @@ void AudacityProject::OpenFile(wxString fileName)
    // the version saved on disk will be preserved until the
    // user selects Save().
 
-   if (1) {
-      VTrack *t;
-      TrackListIterator iter(mTracks);
-      mLastSavedTracks = new TrackList();
-      t = iter.First();
-      while (t) {
-         mLastSavedTracks->Add(t->Duplicate());
-         t = iter.Next();
-      }
+   VTrack *t;
+   TrackListIterator iter(mTracks);
+   mLastSavedTracks = new TrackList();
+   t = iter.First();
+   while (t) {
+      mLastSavedTracks->Add(t->Duplicate());
+      t = iter.Next();
    }
-
-   f.Close();
-
-   InitialState();
-   HandleResize();
-   mTrackPanel->Refresh(false);
-   return;
 
  openFileError:
    wxMessageBox(wxString::
@@ -1201,46 +1360,7 @@ void AudacityProject::OpenFile(wxString fileName)
    return;
 }
 
-void AudacityProject::Import(wxString fileName)
-{
-   WaveTrack **newTracks;
-   int numTracks;
-
-   numTracks =::Import(this, fileName, &newTracks);
-
-   if (numTracks <= 0)
-      return;
-
-   SelectNone();
-
-   bool initiallyEmpty = mTracks->IsEmpty();
-   double newRate = newTracks[0]->GetRate();
-
-   for (int i = 0; i < numTracks; i++) {
-      mTracks->Add(newTracks[i]);
-      newTracks[i]->SetSelected(true);
-   }
-
-   delete[]newTracks;
-
-   if (initiallyEmpty) {
-      mRate = newRate;
-      mStatus->SetRate(mRate);
-   }
-
-   PushState(wxString::Format(_("Imported '%s'"), fileName.c_str()));
-   wxEvent e;
-   OnZoomFit(e);
-   mTrackPanel->Refresh(false);
-
-   if (initiallyEmpty) {
-      wxString name =::TrackNameFromFileName(fileName);
-      mFileName =::wxPathOnly(fileName) + wxFILE_SEP_PATH + name + ".aup";
-      SetTitle(GetName());
-   }
-
-   HandleResize();
-}
+#endif // LEGACY_PROJECT_FILE_SUPPORT
 
 bool AudacityProject::Save(bool overwrite /* = true */ ,
                            bool fromSaveAs /* = false */ )
@@ -1267,6 +1387,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       wxRename(mFileName, safetyFileName);
    }
 
+   // This block of code is duplicated in WriteXML, for now...
    wxString project = mFileName;
    if (project.Len() > 4 && project.Mid(project.Len() - 4) == ".aup")
       project = project.Mid(0, project.Len() - 4);
@@ -1315,46 +1436,20 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       return false;
    }
 
-   wxTextFile f(mFileName);
-   f.Create();
-   f.Open();
-   if (!f.IsOpened()) {
+   FILE *fp = fopen(mFileName, "wb");
+   if (!fp || ferror(fp)) {
       wxMessageBox(_("Couldn't write to file: ") + mFileName);
 
       if (safetyFileName)
          wxRename(safetyFileName, mFileName);
-
+      
       return false;
    }
 
-   f.AddLine("AudacityProject");
-   f.AddLine("Version");
-   f.AddLine(AUDACITY_FILE_FORMAT_VERSION);
-   f.AddLine("projName");
-   f.AddLine(projName);
-   f.AddLine("sel0");
-   f.AddLine(wxString::Format("%g", mViewInfo.sel0));
-   f.AddLine("sel1");
-   f.AddLine(wxString::Format("%g", mViewInfo.sel1));
-   f.AddLine("vpos");
-   f.AddLine(wxString::Format("%d", mViewInfo.vpos));
-   f.AddLine("h");
-   f.AddLine(wxString::Format("%g", mViewInfo.h));
-   f.AddLine("zoom");
-   f.AddLine(wxString::Format("%g", mViewInfo.zoom));
-   f.AddLine("rate");
-   f.AddLine(wxString::Format("%g", mRate));
+   fprintf(fp, "<?xml version=\"1.0\"?>\n");
+   WriteXML(0, fp);
 
-   f.AddLine("BeginTracks");
-
-   mTracks->Save(&f, overwrite);
-
-#ifdef __WXMAC__
-   f.Write(wxTextFileType_Mac);
-#else
-   f.Write();
-#endif
-   f.Close();
+   fclose(fp);
 
 #ifdef __WXMAC__
    FSSpec spec;
@@ -1386,6 +1481,47 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
 
    mUndoManager.StateSaved();
    return true;
+}
+
+void AudacityProject::Import(wxString fileName)
+{
+   WaveTrack **newTracks;
+   int numTracks;
+
+   numTracks =::Import(this, fileName, &newTracks);
+
+   if (numTracks <= 0)
+      return;
+
+   SelectNone();
+
+   bool initiallyEmpty = mTracks->IsEmpty();
+   double newRate = newTracks[0]->GetRate();
+
+   for (int i = 0; i < numTracks; i++) {
+      mTracks->Add(newTracks[i]);
+      newTracks[i]->SetSelected(true);
+   }
+
+   delete[]newTracks;
+
+   if (initiallyEmpty) {
+      mRate = newRate;
+      mStatus->SetRate(mRate);
+   }
+
+   PushState(wxString::Format(_("Imported '%s'"), fileName.c_str()));
+   wxEvent e;
+   OnZoomFit(e);
+   mTrackPanel->Refresh(false);
+
+   if (initiallyEmpty) {
+      wxString name =::TrackNameFromFileName(fileName);
+      mFileName =::wxPathOnly(fileName) + wxFILE_SEP_PATH + name + ".aup";
+      SetTitle(GetName());
+   }
+
+   HandleResize();
 }
 
 bool AudacityProject::SaveAs()
