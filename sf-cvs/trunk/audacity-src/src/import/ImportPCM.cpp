@@ -168,7 +168,7 @@ bool ImportPCM(wxWindow * parent,
                                     format);
    samplePtr buffer = NewSamples(maxBlockSize, format);
 
-   unsigned long framescompleted = 0;
+   sampleCount framescompleted = 0;
 
    wxProgressDialog *progress = NULL;
    wxYield();
