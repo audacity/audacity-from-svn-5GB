@@ -67,9 +67,7 @@ CONTENTS:
 
    To add a new translation:
 
-   - Create a subdirectory of "locale" named with the locale code.
-   - Copy the translated po file to LC_MESSAGES/audacity_website.po in that
-     directory.
+   - Copy the translated po file to locale/X.po where "X" is the locale code.
    - Run "make" to compile the PO file.
    - Add a new item to the available_locales array in include/lang.inc.php.
 
