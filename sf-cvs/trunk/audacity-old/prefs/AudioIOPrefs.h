@@ -17,6 +17,7 @@
 #include <wx/statbox.h>
 #include <wx/event.h>
 #include <wx/button.h>
+#include <wx/checkbox.h>
 
 #include "PrefsPanel.h"
 
@@ -42,6 +43,9 @@ private:
 	wxTextCtrl   *mRecordingDeviceCtrl;
 	wxButton     *mRecordingDeviceTest;
 	wxButton     *mRecordingDeviceDefault;
+
+	wxCheckBox   *mRecordStereo;
+	wxCheckBox   *mDuplex;
 	
 	wxStaticBox  *mEnclosingBox;
 

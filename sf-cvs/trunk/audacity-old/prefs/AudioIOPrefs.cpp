@@ -47,6 +47,8 @@ AudioIOPrefs::AudioIOPrefs(wxWindow *parent):
 	gPrefs->SetPath("/AudioIO");
 	wxString playDevice = gPrefs->Read("PlaybackDevice", "/dev/dsp");
 	wxString recDevice  = gPrefs->Read("RecordingDevice", "/dev/dsp");
+	bool recordStereo = gPrefs->Read("RecordStereo", false);
+	bool duplex = gPrefs->Read("Duplex", false);
 	gPrefs->SetPath("/");
 
 	
@@ -101,6 +103,24 @@ AudioIOPrefs::AudioIOPrefs(wxWindow *parent):
 											wxPoint(255, LINE_TWO_TOP),
 											wxSize (60, 20));
 
+	mRecordStereo = new wxCheckBox(this, -1,
+				       "Record in Stereo",
+				       wxPoint(PREFS_SIDE_MARGINS,
+					       PREFS_TOP_MARGIN + 65),
+				       wxSize(GetSize().GetWidth() -
+					      PREFS_SIDE_MARGINS * 2,
+					      15));
+
+	mRecordStereo->SetValue(recordStereo);
+
+	mDuplex = new wxCheckBox(this, -1,
+				 "Play While Recording",
+				 wxPoint(PREFS_SIDE_MARGINS,
+					 PREFS_TOP_MARGIN + 85),
+				 wxSize(GetSize().GetWidth() -
+					PREFS_SIDE_MARGINS * 2,
+					15));
+	mDuplex->SetValue(duplex);
 }
 
 
@@ -121,10 +141,15 @@ bool AudioIOPrefs::Apply()
 		return false;
 	}
 
+	bool recordStereo = mRecordStereo->GetValue();
+	bool duplex = mDuplex->GetValue();
+
 	/* Step 2: Write to gPrefs */
 	gPrefs->SetPath("/AudioIO");
 	gPrefs->Write("PlaybackDevice", playDevice);
 	gPrefs->Write("RecordingDevice", recDevice);
+	gPrefs->Write("RecordStereo", recordStereo);
+	gPrefs->Write("Duplex", duplex);
 	gPrefs->SetPath("/");
 	
 	/* Step 3: Make audio sub-system re-read preferences */
@@ -163,4 +188,7 @@ AudioIOPrefs::~AudioIOPrefs()
 	delete mRecordingDeviceCtrl;
 	delete mRecordingDeviceTest;
 	delete mRecordingDeviceDefault;
+
+	delete mRecordStereo;
+	delete mDuplex;
 }

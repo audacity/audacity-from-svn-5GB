@@ -59,15 +59,21 @@ public:
 private:
 
   void Finish();
+  bool OpenPlaybackDevice(AudacityProject *project);
   
   AudacityProject *mProject;
   TrackList       *mTracks;
   double          mT;
+  double          mRecT;
   double          mT0;
   double          mT1;
   int             mTicks;
   bool            mStop;
-  snd_node        mSndNode;
+  snd_node        mPlayNode;
+  snd_node        mRecordNode;
+
+  bool            mRecordStereo;
+  bool            mDuplex; // play and record at same time
 
   bool            mRecording;
   WaveTrack       *mRecordLeft;

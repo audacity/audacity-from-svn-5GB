@@ -62,12 +62,44 @@ AudioIO::~AudioIO()
 {
 }
 
+bool AudioIO::OpenPlaybackDevice(AudacityProject *project)
+{
+  mPlayNode.device = SND_DEVICE_AUDIO;
+  mPlayNode.write_flag = SND_WRITE;
+  mPlayNode.format.channels = 2;
+  mPlayNode.format.mode = SND_MODE_PCM;
+  mPlayNode.format.bits = 16;
+  mPlayNode.format.srate = project->GetRate();
+#ifdef __WXGTK__
+  wxString linuxDevice = gPrefs->Read("/AudioIO/PlaybackDevice", "/dev/dsp");
+  strcpy(mPlayNode.u.audio.devicename,linuxDevice.c_str());
+#else
+  strcpy(mPlayNode.u.audio.devicename,"");
+#endif
+  strcpy(mPlayNode.u.audio.interfacename,"");
+  mPlayNode.u.audio.descriptor = 0;
+  mPlayNode.u.audio.protocol = SND_COMPUTEAHEAD;
+  if (mDuplex)
+    mPlayNode.u.audio.latency = 3.0;
+  else
+    mPlayNode.u.audio.latency = 1.0;
+  mPlayNode.u.audio.granularity = 0.0;
+
+  long flags = 0;
+  int err = snd_open(&mPlayNode, &flags);
+
+  if (err)
+    return false;
+
+  return true;
+}
+
 bool AudioIO::StartPlay(AudacityProject *project,
                         TrackList *tracks,
                         double t0, double t1)
 {
   if (mProject)
-	return false;
+    return false;
 
   mRecording = false;
   mTracks = tracks;
@@ -75,31 +107,11 @@ bool AudioIO::StartPlay(AudacityProject *project,
   mT1 = t1;
   mT = mT0;
 
-  mSndNode.device = SND_DEVICE_AUDIO;
-  mSndNode.write_flag = SND_WRITE;
-  mSndNode.format.channels = 2;
-  mSndNode.format.mode = SND_MODE_PCM;
-  mSndNode.format.bits = 16;
-  mSndNode.format.srate = project->GetRate();
-#ifdef __WXGTK__
-  wxString linuxDevice = gPrefs->Read("/AudioIO/PlaybackDevice", "/dev/dsp");
-  strcpy(mSndNode.u.audio.devicename,linuxDevice.c_str());
-#else
-  strcpy(mSndNode.u.audio.devicename,"");
-#endif
-  strcpy(mSndNode.u.audio.interfacename,"");
-  mSndNode.u.audio.descriptor = 0;
-  mSndNode.u.audio.protocol = SND_COMPUTEAHEAD;
-  mSndNode.u.audio.latency = 1.0;
-  mSndNode.u.audio.granularity = 0.0;
+  if (!OpenPlaybackDevice(project)) {
+    wxMessageBox("Error opening audio device.\n"
+		 "(Change the device in the Preferences dialog.)");
 
-  long flags = 0;
-  int err = snd_open(&mSndNode, &flags);
-
-  if (err) {
-	wxMessageBox(wxString::Format(
-		"Error opening audio device--adjust it in your preferences: %d",err));
-	return false;
+    return false;
   }
   
   mStopWatch.Start(0);
@@ -123,14 +135,16 @@ bool AudioIO::StartPlay(AudacityProject *project,
 
 void AudioIO::Finish()
 {
-  snd_close(&mSndNode);
-
   mProject->GetAPalette()->SetPlay(false);
   mProject->GetAPalette()->SetStop(false);
   mProject->GetAPalette()->SetRecord(false);
   mStop = false;
 
+  if (!mRecording || (mRecording && mDuplex))
+    snd_close(&mPlayNode);
+
   if (mRecording) {
+    snd_close(&mRecordNode);
     mProject->TP_PushState();
   }
 
@@ -151,56 +165,84 @@ bool AudioIO::StartRecord(AudacityProject *project,
                           TrackList *tracks)
 {
   if (mProject)
-	return false;
+    return false;
+
+  mRecordStereo = gPrefs->Read("/AudioIO/RecordStereo", false);
+
+  mDuplex = gPrefs->Read("/AudioIO/Duplex", false);
 
   mRecordLeft = new WaveTrack(project->GetDirManager());
   mRecordLeft->selected = true;
-  mRecordLeft->channel = VTrack::LeftChannel;
+  mRecordLeft->channel = (mRecordStereo?
+			  VTrack::LeftChannel:
+			  VTrack::MonoChannel);
 
-  mRecordRight = new WaveTrack(project->GetDirManager());
-  mRecordRight->selected = true;
-  mRecordRight->channel = VTrack::RightChannel;
+  if (mRecordStereo) {
+    mRecordRight = new WaveTrack(project->GetDirManager());
+    mRecordRight->selected = true;
+    mRecordRight->channel = VTrack::RightChannel;
+  }
 
   project->SelectNone();
 
   tracks->Add(mRecordLeft);
-  tracks->Add(mRecordRight);
+  if (mRecordStereo)
+    tracks->Add(mRecordRight);
 
   mRecording = true;
   mTracks = tracks;
   mT0 = 0.0;
   mT1 = 0.0;
   mT = 0.0;
+  mRecT = 0.0;
 
-  mSndNode.device = SND_DEVICE_AUDIO;
-  mSndNode.write_flag = SND_READ;
-  mSndNode.format.channels = 2;
-  mSndNode.format.mode = SND_MODE_PCM;
-  mSndNode.format.bits = 16;
-  mSndNode.format.srate = project->GetRate();
+  mRecordNode.device = SND_DEVICE_AUDIO;
+  mRecordNode.write_flag = SND_READ;
+  mRecordNode.format.channels = mRecordStereo? 2: 1;
+  mRecordNode.format.mode = SND_MODE_PCM;
+  mRecordNode.format.bits = 16;
+  mRecordNode.format.srate = project->GetRate();
 #ifdef __WXGTK__
   wxString linuxDevice = gPrefs->Read("/AudioIO/RecordingDevice", "/dev/dsp");
-  strcpy(mSndNode.u.audio.devicename,linuxDevice.c_str());
+  strcpy(mRecordNode.u.audio.devicename,linuxDevice.c_str());
 #else
-  strcpy(mSndNode.u.audio.devicename,"");
+  strcpy(mRecordNode.u.audio.devicename,"");
 #endif
-  strcpy(mSndNode.u.audio.interfacename,"");
-  mSndNode.u.audio.descriptor = 0;
-  mSndNode.u.audio.protocol = SND_COMPUTEAHEAD;
-  #ifdef __WXMAC__
-  mSndNode.u.audio.latency = 1.0;
-  #else
-  mSndNode.u.audio.latency = 0.25;
-  #endif
-  mSndNode.u.audio.granularity = 0.0;
+  strcpy(mRecordNode.u.audio.interfacename,"");
+  mRecordNode.u.audio.descriptor = 0;
+  mRecordNode.u.audio.protocol = SND_COMPUTEAHEAD;
+  if (mDuplex)
+    mRecordNode.u.audio.latency = 6.0;
+  else {
+    #ifdef __WXMAC__
+    mRecordNode.u.audio.latency = 1.0;
+    #else
+    mRecordNode.u.audio.latency = 0.25;
+    #endif
+  }
+  mRecordNode.u.audio.granularity = mRecordNode.u.audio.latency;
 
   long flags = 0;
-  int err = snd_open(&mSndNode, &flags);
+  int err = snd_open(&mRecordNode, &flags);
 
   if (err) {
-  	wxMessageBox(wxString::Format(
-  		"Error opening audio device--adjust it in your preferences: %d",err));
-  	return false;
+    wxMessageBox("Error opening audio device.\n"
+		 "(Change the device in the Preferences dialog.)");
+
+    return false;
+  }
+
+  if (mDuplex) {
+    if (!OpenPlaybackDevice(project)) {
+      wxMessageBox("Error opening audio device.\n"
+		   "Perhaps your sound card does not support\n"
+		   "simultaneous playing and recording.\n"
+		   "(Change the settings in the Preferences dialog.)");
+
+      snd_close(&mRecordNode);
+
+      return false;
+    }
   }
 
   mStopWatch.Start(0);
@@ -224,44 +266,47 @@ void AudioIO::OnTimer()
   if (!mProject) return;
 
   if (mRecording) {
-    int block = snd_poll(&mSndNode);
-
-    if (block <= 0) {
-      if (mStop)
-    	Finish();
-
-      return;
-    }
+    int block = snd_poll(&mRecordNode);
 
     #ifdef __WXMAC__
-    if (block < 22050)
-      return;
+    if (block > 22050) {
+    #else
+    if (block > 0) {
     #endif
 
-    sampleType *in = new sampleType[block*2];
-    sampleType *left = new sampleType[block];
-    sampleType *right = new sampleType[block];
-
-    snd_read(&mSndNode, in, block);
-
-    for(int i=0; i<block; i++) {
-      left[i] = in[2*i];
-      right[i] = in[2*i+1];
+      sampleType *in = new sampleType[block*2];
+      
+      snd_read(&mRecordNode, in, block);
+      
+      if (mRecordStereo) {
+	sampleType *left = new sampleType[block];
+	sampleType *right = new sampleType[block];
+	for(int i=0; i<block; i++) {
+	  left[i] = in[2*i];
+	  right[i] = in[2*i+1];
+	}
+	
+	mRecordLeft->Append(left, block);
+	mRecordRight->Append(right, block);
+	delete[] left;
+	delete[] right;
+      }
+      else {
+	mRecordLeft->Append(in, block);
+      }
+      
+      mProject->RedrawProject();
+      
+      delete[] in;
     }
 
-    mRecordLeft->Append(left, block);
-    mRecordRight->Append(right, block);
+    if (mStop) {
+      Finish();
+      return;
+    }
 
-    mProject->RedrawProject();
-
-    delete[] in;
-    delete[] left;
-    delete[] right;
-
-    if (mStop)
-  	  Finish();
-
-  	return;
+    if (!mDuplex)
+      return;
   }
 
   if (mStop) {
@@ -269,15 +314,15 @@ void AudioIO::OnTimer()
     return;
   }
 
-  if (mT>=mT1) {
+  if (!mRecording && mT>=mT1) {
     if (GetIndicator() >= mT1) {
-	    #ifdef BOUNCE
-			  if (gBounce) {
-				  delete gBounce;
-				  gBounce = NULL;
-			  }
-			#endif
-      if (snd_flush(&mSndNode) == SND_SUCCESS) {
+      #ifdef BOUNCE
+      if (gBounce) {
+	delete gBounce;
+	gBounce = NULL;
+      }
+      #endif
+      if (snd_flush(&mPlayNode) == SND_SUCCESS) {
         Finish();
         return;
       }
@@ -286,12 +331,12 @@ void AudioIO::OnTimer()
       return;
   }
 
-  double deltat = mSndNode.u.audio.latency;
-  if (mT + deltat > mT1)
-	deltat = mT1 - mT;
+  double deltat = mPlayNode.u.audio.latency;
+  if (!mRecording && mT + deltat > mT1)
+    deltat = mT1 - mT;
   
   int maxFrames = int(mProject->GetRate() * deltat);
-  int block = snd_poll(&mSndNode);
+  int block = snd_poll(&mPlayNode);
   
   if (block == 0)
 	return;
@@ -331,12 +376,12 @@ void AudioIO::OnTimer()
   }
   
   sampleType *outbytes = mixer->GetBuffer();
-  snd_write(&mSndNode, outbytes, block);
+  snd_write(&mPlayNode, outbytes, block);
   
-  // TODO: Make sure that calling "snd_flush" is not necessary
-  // to start playback on any platform.
-  //if (mT + deltat >= mT1)
-  //  snd_flush(&mSndNode);
+  #ifndef __WXMAC__
+  if (mT + deltat >= mT1)
+    snd_flush(&mPlayNode);
+  #endif
   
   delete mixer;
   
@@ -355,7 +400,13 @@ bool AudioIO::IsBusy()
 
 bool AudioIO::IsPlaying()
 {
-  return (mProject != NULL && !mRecording);
+  if (mProject != NULL) {
+    if (!mRecording ||
+	(mRecording && mDuplex))
+      return true;
+  }
+
+  return false;
 }
 
 bool AudioIO::IsRecording()
