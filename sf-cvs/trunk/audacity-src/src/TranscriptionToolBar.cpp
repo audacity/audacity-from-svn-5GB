@@ -114,6 +114,8 @@ TranscriptionToolBar::TranscriptionToolBar(wxWindow * parent, wxWindowID id,
 
 void TranscriptionToolBar::InitializeTranscriptionToolBar()
 {
+  mTitle = _("Audacity Transcription Toolbar");
+  mType = TranscriptionToolBarID;
 
   mIdealSize = wxSize(550, 27);
 

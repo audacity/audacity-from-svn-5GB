@@ -1490,7 +1490,22 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
      
      mToolBarArray.Insert(toolbar, 1);
      break;
-      
+
+   case TranscriptionToolBarID:
+
+     if (!gTranscriptionToolBarStub) {
+       gTranscriptionToolBarStub = new ToolBarStub(gParentWindow, TranscriptionToolBarID);
+     }
+     
+     h = gTranscriptionToolBarStub->GetHeight();
+     toolbar =
+       new TranscriptionToolBar(this, -1, wxPoint(10, tbheight),
+			wxSize(width - 10, h));
+     
+     
+     mToolBarArray.Insert(toolbar, 1);
+     break;
+     
      
    case NoneID:
    default:
@@ -1675,6 +1690,10 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
       case MeterToolBarID:
          gMeterToolBarStub->ShowWindowedToolBar(&mouse);
          gMeterToolBarStub->UnloadAll();
+         break;
+      case TranscriptionToolBarID:
+         gTranscriptionToolBarStub->ShowWindowedToolBar(&mouse);
+         gTranscriptionToolBarStub->UnloadAll();
          break;
 
       case NoneID:
