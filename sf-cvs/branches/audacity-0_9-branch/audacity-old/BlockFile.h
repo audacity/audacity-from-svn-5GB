@@ -61,6 +61,16 @@ class BlockFile {
    wxString GetAliasedFile();
    void ChangeAliasedFile(wxString newFile);
 
+   // If a BlockFile is locked, it cannot be moved - just
+   // copied.  When performing a Save As, the project
+   // locks all of the blocks which belonged to the old
+   // project, keeping them from being removed.  It doesn't
+   // lock blocks which belong to the new project only; they
+   // get moved to the new location.
+   void Lock();
+   void Unlock();
+   bool IsLocked();
+
  private:
 
     friend class DirManager;
@@ -72,6 +82,8 @@ class BlockFile {
    int mRefCount;
 
    bool mAlias;                 // Does this file alias another file
+
+   bool mLocked;
 
    int mPos;
 

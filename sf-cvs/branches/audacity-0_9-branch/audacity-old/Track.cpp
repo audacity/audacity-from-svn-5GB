@@ -360,9 +360,11 @@ void TrackList::Remove(VTrack * t)
    }
 }
 
-void TrackList::Clear()
+void TrackList::Clear(bool deleteTracks /* = false */)
 {
    while (head) {
+      if (deleteTracks)
+         delete head->t;
       TrackListNode *temp = head;
       head = head->next;
       delete temp;
