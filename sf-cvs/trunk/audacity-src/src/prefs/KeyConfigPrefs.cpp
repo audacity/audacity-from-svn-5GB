@@ -196,8 +196,8 @@ void KeyConfigPrefs::AddComboToList(wxCommandEvent& event)
 {
    wxString comboString = mCurrentComboText->GetValue();
 
-   //BG: Cannot add blank key
-   if(!comboString.length())
+   //BG: Cannot add blank key or empty category
+   if((!comboString.length()) || (mCommandSelected < 0))
       return;
 
    for(int i = 0; i < mKeysList->GetItemCount(); i++)
