@@ -913,6 +913,8 @@ void AudacityProject::OpenFile(wxString fileName)
 
    mFileName = fileName;
    mName = wxFileNameFromPath(mFileName);
+   if (mName.Len() > 4 && mName.Mid(mName.Len() - 4) == ".aup")
+      mName = mName.Mid(0, mName.Len() - 4);
 
    SetTitle(mName);
 
@@ -1052,7 +1054,7 @@ void AudacityProject::Import(wxString fileName)
 
    if (initiallyEmpty) {
       mName =::TrackNameFromFileName(fileName);
-      mFileName =::wxPathOnly(fileName) + wxFILE_SEP_PATH + mName;
+      mFileName =::wxPathOnly(fileName) + wxFILE_SEP_PATH + mName + ".aup";
       SetTitle(mName);
    }
 }
@@ -1230,8 +1232,11 @@ void AudacityProject::SaveAs()
       return;
    }
 
-   mFileName = fName;
-   mName =::TrackNameFromFileName(fName);
+   if (fName.Len() > 4 && fName.Mid(fName.Len() - 4) == ".aup")
+      fName = fName.Mid(0, fName.Len() - 4);
+
+   mFileName = fName + ".aup";
+   mName = wxFileNameFromPath(fName);
    SetTitle(mName);
 
    Save(false, true);
