@@ -30,7 +30,7 @@ Links to Other Audio Editors
       >ASIA - a digital audio editor</a>
   <li><a href="http://audioedit.mystikmedia.com/"
       >AudioEdit Deluxe</a> from Mystik Media
-
+  <li><a href="http://www.fleximusic.com/">FlexiMusic Wave Editor</a>
  </ul>
 
 <li>Audio Editors (Phonograph / Cassette Tape specialty)
