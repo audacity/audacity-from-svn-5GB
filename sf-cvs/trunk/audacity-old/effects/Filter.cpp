@@ -39,9 +39,9 @@ EffectFilter::EffectFilter()
    filterFunc = new float[windowSize];
 }
 
-bool EffectFilter::Begin(wxWindow *parent)
+bool EffectFilter::PromptUser()
 {
-   FilterDialog dlog(parent, -1, "FFT Filter");
+   FilterDialog dlog(mParent, -1, "FFT Filter");
    dlog.SetEnvelope(mEnvelope);
 
    dlog.CentreOnParent();
@@ -58,12 +58,34 @@ bool EffectFilter::Begin(wxWindow *parent)
    return true;
 }
 
-bool EffectFilter::DoIt(WaveTrack *t,
-                        sampleCount start,
-                        sampleCount len)
+bool EffectFilter::Process()
+{
+   TrackListIterator iter(mWaveTracks);
+   VTrack *t = iter.First();
+   int count = 0;
+   while(t) {
+      sampleCount start, len;
+      GetSamples((WaveTrack *)t, &start, &len);
+      bool success = ProcessOne(count, (WaveTrack *)t, start, len);
+      
+      if (!success)
+         return false;
+   
+      t = iter.Next();
+      count++;
+   }
+   
+   return true;
+}
+
+bool EffectFilter::ProcessOne(int count, WaveTrack * t,
+                                 sampleCount start, sampleCount len)
 {
    sampleCount s = start;
-   sampleCount idealBlockLen = 65536;
+   sampleCount idealBlockLen = t->GetMaxBlockSize() * 4;
+   
+   if (idealBlockLen % windowSize != 0)
+      idealBlockLen += (windowSize - (idealBlockLen % windowSize));
    
    sampleType *buffer = new sampleType[idealBlockLen];
    
@@ -71,6 +93,8 @@ bool EffectFilter::DoIt(WaveTrack *t,
    sampleType *window2 = new sampleType[windowSize];
    sampleType *thisWindow = window1;
    sampleType *lastWindow = window2;
+   
+   sampleCount originalLen = len;
    
    int i;
    
@@ -113,6 +137,8 @@ bool EffectFilter::DoIt(WaveTrack *t,
       
       len -= block;
       s += block;
+      
+      TrackProgress(count, (s-start)/(double)originalLen);
    }
    
    delete[] buffer;

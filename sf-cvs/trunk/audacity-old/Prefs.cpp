@@ -69,8 +69,25 @@ void InitPreferences()
    wxConfigBase::Set(gPrefs);
 
 #ifdef __WXMAC__
-   if (gPrefs->Read("/Version", "") != AUDACITY_VERSION_STRING) {
-      gPrefs->DeleteAll();
+   // This fixes changes in Mac filenames under wxWindows between versions
+   // 0.95 and 0.96 of Audacity.
+   wxString path;
+   bool fix = false;   
+   path = gPrefs->Read("/DefaultOpenPath", "");
+   if (path.Length() > 0 && path.Left(1)=="/")
+      fix = true;
+   path = gPrefs->Read("/DefaultExportPath", "");
+   if (path.Length() > 0 && path.Left(1)=="/")
+      fix = true;
+   path = gPrefs->Read("/Directories/TempDir", "");
+   if (path.Length() > 0 && path.Left(1)=="/")
+      fix = true;
+   if (fix) {
+      gPrefs->Write("/DefaultOpenPath", ::wxGetCwd());
+      gPrefs->Write("/DefaultExportPath", ::wxGetCwd());
+      gPrefs->Write("/Directories/TempDir", "");
+      wxMessageBox("Some of your preferences were from an earlier version of Audacity "
+                   "and have been reset.");
    }
 #endif
 

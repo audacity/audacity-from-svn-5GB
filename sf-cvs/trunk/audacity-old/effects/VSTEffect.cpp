@@ -39,12 +39,50 @@ wxString VSTEffect::GetEffectName()
    return pluginName + "...";
 }
 
-bool VSTEffect::Begin(wxWindow * parent)
+wxString VSTEffect::GetEffectAction()
+{
+   return pluginName + "Performing VST Effect: \""+pluginName+"\"";
+}
+
+bool VSTEffect::Init()
 {
    if (!isOpened) {
       aEffect->dispatcher(aEffect, effOpen, 0, 0, NULL, 0.0);
       isOpened = true;
    }
+   
+   inputs = aEffect->numInputs;
+   outputs = aEffect->numOutputs;
+
+   mBlockSize = 0;
+
+   if (inputs > 1) {
+      TrackListIterator iter(mWaveTracks);
+      VTrack *left = iter.First();
+      while(left) {
+         sampleCount lstart, rstart, llen, rlen;
+         GetSamples((WaveTrack *)left, &lstart, &llen);
+         
+         if (left->linked) {
+            VTrack *right = iter.Next();
+            GetSamples((WaveTrack *)right, &rstart, &rlen);
+            
+            if (llen != rlen || ((WaveTrack *)left)->rate != ((WaveTrack *)right)->rate) {
+               wxMessageBox("Sorry, VST Effects cannot be performed on stereo tracks where "
+                            "the individual channels of the track do not match.");
+               return false;
+            }
+         }
+         
+         left = iter.Next();
+      }
+   }
+
+   return true;
+}
+
+bool VSTEffect::PromptUser()
+{
    // Try to figure out how many parameters it takes by seeing how
    // many parameters have names
    char temp[8][256];
@@ -65,25 +103,50 @@ bool VSTEffect::Begin(wxWindow * parent)
    //numParameters = aEffect->numParams;
 
    if (numParameters > 0) {
-      VSTEffectDialog d(parent, pluginName, numParameters, aEffect);
+      VSTEffectDialog d(mParent, pluginName, numParameters, aEffect);
       d.ShowModal();
 
       if (!d.GetReturnCode())
          return false;
    }
 
-   inputs = aEffect->numInputs;
-   outputs = aEffect->numOutputs;
-
-   mBlockSize = 0;
-
    return true;
 }
 
-bool VSTEffect::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
+bool VSTEffect::Process()
+{
+   TrackListIterator iter(mWaveTracks);
+   int count = 0;
+   VTrack *left = iter.First();
+   VTrack *right;
+   while(left) {
+      sampleCount lstart, rstart, len;
+      GetSamples((WaveTrack *)left, &lstart, &len);
+      
+      right = NULL;
+      if (left->linked && inputs>1) {
+         right = iter.Next();         
+         GetSamples((WaveTrack *)right, &rstart, &len);
+      }
+      
+      bool success = ProcessStereo(count, (WaveTrack *)left, (WaveTrack *)right,
+                                   lstart, rstart, len);
+      
+      if (!success)
+         return false;
+   
+      left = iter.Next();
+      count++;
+   }
+   
+   return true;
+}
+
+bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
+                              sampleCount lstart, sampleCount rstart, sampleCount len)
 {
    if (mBlockSize == 0) {
-      mBlockSize = t->GetIdealBlockSize();
+      mBlockSize = left->GetMaxBlockSize() * 2;
 
       buffer = new sampleType[mBlockSize];
       fInBuffer = new float *[inputs];
@@ -97,43 +160,62 @@ bool VSTEffect::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
    }
 
    aEffect->dispatcher(aEffect, effSetSampleRate, 0, 0, NULL,
-                       (float) t->rate);
-   aEffect->dispatcher(aEffect, effSetBlockSize, 0, mBlockSize, NULL, 0.0);
+                       (float) left->rate);
+   aEffect->dispatcher(aEffect, effSetBlockSize, 0, mBlockSize * 2, NULL, 0.0);
 
+   // HACK:
+   //
    // Some plug-ins save a lot of state.  We attempt to flush that
-   // here by feeding it five seconds of zeroes before each track.
+   // here by feeding it two seconds of zeroes before each track.
 
    int i, j, c;
    for (i = 0; i < inputs; i++) {
       for (j = 0; j < mBlockSize; j++)
          fInBuffer[i][j] = 0.0;
    }
-   for (c = 0; c < 5; c++)
+   for (c = 0; c < 2; c++)
       aEffect->processReplacing(aEffect, fInBuffer, fOutBuffer,
                                 mBlockSize);
 
    // Actually perform the effect here
 
-   sampleCount s = start;
+   sampleCount originalLen = len;
+   sampleCount ls = lstart;
+   sampleCount rs = rstart;
    while (len) {
       int block = mBlockSize;
       if (block > len)
          block = len;
 
-      t->Get(buffer, s, block);
-      for (j = 0; j < inputs; j++)
+      left->Get(buffer, ls, block);
+      for (i = 0; i < block; i++)
+         fInBuffer[0][i] = float (buffer[i] / 32767.);
+      if (right) {
+         right->Get(buffer, rs, block);
          for (i = 0; i < block; i++)
-            fInBuffer[j][i] = float (buffer[i] / 32767.);
+            fInBuffer[1][i] = float (buffer[i] / 32767.);
+      }
 
       aEffect->processReplacing(aEffect, fInBuffer, fOutBuffer, block);
 
       for (i = 0; i < block; i++)
          buffer[i] = (sampleType) (fOutBuffer[0][i] * 32767.);
-
-      t->Set(buffer, s, block);
+      left->Set(buffer, ls, block);
+      
+      if (right) {
+         for (i = 0; i < block; i++)
+            buffer[i] = (sampleType) (fOutBuffer[1][i] * 32767.);
+         right->Set(buffer, rs, block);
+      }      
 
       len -= block;
-      s += block;
+      ls += block;
+      rs += block;
+      
+      if (inputs > 1)
+         TrackGroupProgress(count, (ls-lstart)/(double)originalLen);
+      else
+         TrackProgress(count, (ls-lstart)/(double)originalLen);
    }
 
    return true;

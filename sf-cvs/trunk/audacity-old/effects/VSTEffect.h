@@ -24,13 +24,22 @@ class VSTEffect:public Effect {
    VSTEffect(wxString pluginName, AEffect * aEffect);
 
    virtual wxString GetEffectName();
+   
+   virtual wxString GetEffectAction();
+   
+   virtual bool Init();
 
-   virtual bool Begin(wxWindow * parent);
-   virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
+   virtual bool PromptUser();
+   
+   virtual bool Process();
+   
    virtual void End();
 
  private:
-    bool isOpened;
+   bool ProcessStereo(int count, WaveTrack * left, WaveTrack *right,
+                      sampleCount lstart, sampleCount rstart, sampleCount len);
+ 
+   bool isOpened;
    wxString pluginName;
    AEffect *aEffect;
 

@@ -37,8 +37,15 @@ class EffectPhaser:public Effect {
 
    virtual wxString GetEffectName() {
       return wxString("Phaser...");
-   } virtual bool Begin(wxWindow * parent);
-   virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
+   }
+   
+   virtual wxString GetEffectAction() {
+      return wxString("Applying Phaser");
+   }
+   
+   virtual bool PromptUser();
+   
+   virtual bool Process();
 
 /*
     Phaser Parameters        
@@ -53,6 +60,10 @@ class EffectPhaser:public Effect {
 */
 
  private:
+   bool ProcessOne(int count, WaveTrack * t,
+                   sampleCount start, sampleCount len,
+                   float startphase);
+ 
    float freq;
    float startphase;
    float fb;

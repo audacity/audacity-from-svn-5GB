@@ -13,15 +13,38 @@
 #include "Fade.h"
 #include "../WaveTrack.h"
 
-bool EffectFadeIn::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
+bool EffectFadeIn::Process()
+{
+   TrackListIterator iter(mWaveTracks);
+   VTrack *t = iter.First();
+   int count = 0;
+   while(t) {
+      sampleCount start, len;
+      GetSamples((WaveTrack *)t, &start, &len);
+      bool success = ProcessOne(count, (WaveTrack *)t, start, len);
+      
+      if (!success)
+         return false;
+   
+      t = iter.Next();
+      count++;
+   }
+   
+   return true;
+}
+
+bool EffectFadeIn::ProcessOne(int count, WaveTrack * t,
+                              sampleCount start, sampleCount len)
 {
    sampleCount s = start;
-   sampleCount blockSize = t->GetIdealBlockSize();
+   sampleCount blockSize = t->GetMaxBlockSize();
 
    sampleType *buffer = new sampleType[blockSize];
+   
+   sampleCount originalLen = len;
 
    while ((s - start) < len) {
-      sampleCount block = blockSize;
+      sampleCount block = t->GetBestBlockSize(s);
       if (s - start + block > len)
          block = start + len - s;
 
@@ -33,6 +56,8 @@ bool EffectFadeIn::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
       t->Set(buffer, s, block);
 
       s += block;
+      
+      TrackProgress(count, (s-start)/(double)originalLen);
    }
 
    delete[]buffer;
@@ -40,15 +65,38 @@ bool EffectFadeIn::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
    return true;
 }
 
-bool EffectFadeOut::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
+bool EffectFadeOut::Process()
+{
+   TrackListIterator iter(mWaveTracks);
+   VTrack *t = iter.First();
+   int count = 0;
+   while(t) {
+      sampleCount start, len;
+      GetSamples((WaveTrack *)t, &start, &len);
+      bool success = ProcessOne(count, (WaveTrack *)t, start, len);
+      
+      if (!success)
+         return false;
+   
+      t = iter.Next();
+      count++;
+   }
+   
+   return true;
+}
+
+bool EffectFadeOut::ProcessOne(int count, WaveTrack * t,
+                               sampleCount start, sampleCount len)
 {
    sampleCount s = start;
-   sampleCount blockSize = t->GetIdealBlockSize();
+   sampleCount blockSize = t->GetMaxBlockSize();
 
    sampleType *buffer = new sampleType[blockSize];
+   
+   sampleCount originalLen = len;
 
    while ((s - start) < len) {
-      sampleCount block = blockSize;
+      sampleCount block = t->GetBestBlockSize(s);
       if (s - start + block > len)
          block = start + len - s;
 
@@ -60,6 +108,8 @@ bool EffectFadeOut::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
       t->Set(buffer, s, block);
 
       s += block;
+      
+      TrackProgress(count, (s-start)/(double)originalLen);
    }
 
    delete[]buffer;

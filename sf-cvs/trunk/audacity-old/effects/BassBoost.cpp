@@ -29,9 +29,9 @@ EffectBassBoost::EffectBassBoost()
    dB_boost = 12;
 }
 
-bool EffectBassBoost::Begin(wxWindow * parent)
+bool EffectBassBoost::PromptUser()
 {
-   BassBoostDialog dlog(parent, -1, "BassBoost");
+   BassBoostDialog dlog(mParent, -1, "BassBoost");
    dlog.freq = frequency;
    dlog.boost = dB_boost;
    dlog.TransferDataToWindow();
@@ -47,8 +47,28 @@ bool EffectBassBoost::Begin(wxWindow * parent)
    return true;
 }
 
-bool EffectBassBoost::DoIt(WaveTrack * t,
-                           sampleCount start, sampleCount len)
+bool EffectBassBoost::Process()
+{
+   TrackListIterator iter(mWaveTracks);
+   VTrack *t = iter.First();
+   int count = 0;
+   while(t) {
+      sampleCount start, len;
+      GetSamples((WaveTrack *)t, &start, &len);
+      bool success = ProcessOne(count, (WaveTrack *)t, start, len);
+      
+      if (!success)
+         return false;
+   
+      t = iter.Next();
+      count++;
+   }
+   
+   return true;
+}
+
+bool EffectBassBoost::ProcessOne(int count, WaveTrack * t,
+                                 sampleCount start, sampleCount len)
 {
    float samplerate = (float) (t->rate);
 
@@ -73,12 +93,13 @@ bool EffectBassBoost::DoIt(WaveTrack * t,
    float out, in = 0;
 
    sampleCount s = start;
-   sampleCount blockSize = t->GetIdealBlockSize();
+   sampleCount originalLen = len;
+   sampleCount blockSize = t->GetMaxBlockSize();
 
    sampleType *buffer = new sampleType[blockSize];
 
    while (len) {
-      int block = blockSize;
+      int block = t->GetBestBlockSize(s);
       if (block > len)
          block = len;
 
@@ -101,9 +122,11 @@ bool EffectBassBoost::DoIt(WaveTrack * t,
       }
 
       t->Set(buffer, s, block);
-
+      
       len -= block;
       s += block;
+      
+      TrackProgress(count, (s-start)/(double)originalLen);
    }
 
    delete[]buffer;

@@ -35,10 +35,20 @@ sampleCount WaveTrack::minSamples = maxSamples / 2;
 
 // Static methods
 
+sampleCount WaveTrack::GetMaxBlockSize()
+{
+   return maxSamples;
+}
 
 sampleCount WaveTrack::GetIdealBlockSize()
 {
-   return (minSamples + maxSamples) / 2;
+   return maxSamples;
+   
+   // Originally we split the difference between the minimum and maximum
+   // size.  Now I believe that always making blocks as big as possible
+   // is actually optimal more often.  -dmazzoni
+   //
+   //return (minSamples + maxSamples) / 2;
 }
 
 void WaveTrack::SetMaxDiskBlockSize(int bytes)
@@ -785,6 +795,29 @@ void WaveTrack::AppendBlock(WaveBlock * b)
 
    // Don't do a consistency check here because this
    // function gets called in an inner loop
+}
+
+sampleCount WaveTrack::GetBestBlockSize(sampleCount start)
+{
+   // This method returns a nice number of samples you should try to grab in
+   // one big chunk in order to land on a block boundary, based on the starting
+   // sample.  The value returned will always be nonzero and will be no larger
+   // than the value of GetMaxBlockSize();
+
+   int b = FindBlock(start);
+   int numBlocks = block->Count();
+   
+   sampleCount result = (block->Item(b)->start + block->Item(b)->len - start);
+   
+   while(result < minSamples && b+1<numBlocks &&
+         (block->Item(b)->len+result) <= maxSamples) {
+      b++;
+      result += block->Item(b)->len;
+   }
+   
+   wxASSERT(result > 0 && result <= maxSamples);
+   
+   return result;
 }
 
 bool WaveTrack::Load(wxTextFile * in, DirManager * dirManager)

@@ -583,31 +583,9 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
 
       Effect *f = Effect::GetEffect(event.GetId() - FirstEffectID);
 
-      if (!f->Begin(this))
-         return true;
-
-      int index = 0;
-
-      t = iter.First();
-
-      while (t) {
-         if (t->selected && t->GetKind() == (VTrack::Wave)) {
-
-            bool success = f->DoInPlaceEffect((WaveTrack *) t,
-                                              mViewInfo.sel0,
-                                              mViewInfo.sel1,
-                                              index, count);
-
-            if (!success) {
-               wxMessageBox("Effect unsuccessful.");
-               break;
-            }
-         }
-
-         t = iter.Next();
+      if (!f->DoEffect(this, mTracks, mViewInfo.sel0, mViewInfo.sel1)) {
+         wxMessageBox("Effect unsuccessful.  Select Undo to revert back to the previous state.");
       }
-
-      f->End();
 
       PushState();
 

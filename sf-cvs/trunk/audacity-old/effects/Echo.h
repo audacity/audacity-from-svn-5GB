@@ -25,9 +25,20 @@ class EffectEcho:public Effect {
 
    virtual wxString GetEffectName() {
       return wxString("Echo...");
-   } virtual bool Begin(wxWindow * parent);
-   virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
+   }
+   
+   virtual wxString GetEffectAction() {
+      return wxString("Performing Echo");
+   }
+   
+   virtual bool PromptUser();
+   
+   virtual bool Process();
+
  private:
+   bool ProcessOne(int count, WaveTrack * t,
+                   sampleCount start, sampleCount len);
+ 
    float delay;
    float decay;
 };

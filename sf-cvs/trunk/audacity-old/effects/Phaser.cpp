@@ -40,9 +40,9 @@ EffectPhaser::EffectPhaser()
    fb = 0;
 }
 
-bool EffectPhaser::Begin(wxWindow * parent)
+bool EffectPhaser::PromptUser()
 {
-   PhaserDialog dlog(parent, -1, "Phaser");
+   PhaserDialog dlog(mParent, -1, "Phaser");
 
    dlog.freq = freq;
    dlog.startphase = startphase * 180 / M_PI;
@@ -68,7 +68,42 @@ bool EffectPhaser::Begin(wxWindow * parent)
    return true;
 }
 
-bool EffectPhaser::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
+bool EffectPhaser::Process()
+{
+   TrackListIterator iter(mWaveTracks);
+   VTrack *t = iter.First();
+   int count = 0;
+   while(t) {
+      sampleCount start, len;
+      GetSamples((WaveTrack *)t, &start, &len);
+      bool success = ProcessOne(count, (WaveTrack *)t, start, len, startphase);
+      
+      if (!success)
+         return false;
+      
+      if (t->linked) {
+         // In a stereo pair, the "other" half should be 180 degrees out of phase
+         
+         t = iter.Next();
+         count++;
+         
+         GetSamples((WaveTrack *)t, &start, &len);
+         success = ProcessOne(count, (WaveTrack *)t, start, len, startphase + M_PI);
+         
+         if (!success)
+         return false;
+      }
+   
+      t = iter.Next();
+      count++;
+   }
+   
+   return true;
+}
+
+bool EffectPhaser::ProcessOne(int count, WaveTrack * t,
+                              sampleCount start, sampleCount len,
+                              float startphase)
 {
    float samplerate = (float) (t->rate);
 
@@ -82,12 +117,13 @@ bool EffectPhaser::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
    float lfoskip = freq * 2 * 3.141592653589 / samplerate;
 
    sampleCount s = start;
-   sampleCount blockSize = t->GetIdealBlockSize();
+   sampleCount originalLen = len;
+   sampleCount blockSize = t->GetMaxBlockSize();
 
    sampleType *buffer = new sampleType[blockSize];
 
    while (len) {
-      int block = blockSize;
+      int block = t->GetBestBlockSize(s);
       if (block > len)
          block = len;
 
@@ -130,6 +166,8 @@ bool EffectPhaser::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
 
       len -= block;
       s += block;
+      
+      TrackProgress(count, (s-start)/(double)originalLen);
    }
 
    delete[]buffer;

@@ -41,10 +41,20 @@ class EffectBassBoost:public Effect {
 
    virtual wxString GetEffectName() {
       return wxString("BassBoost...");
-   } virtual bool Begin(wxWindow * parent);
-   virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
+   }
+   
+   virtual wxString GetEffectAction() {
+      return wxString("Boosting Bass Frequencies");
+   }
+   
+   virtual bool PromptUser();
+   
+   virtual bool Process();
 
  private:
+   bool ProcessOne(int count, WaveTrack * t,
+                   sampleCount start, sampleCount len);
+ 
    float frequency, dB_boost;
 };
 

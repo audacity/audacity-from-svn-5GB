@@ -33,9 +33,9 @@ EffectWahwah::EffectWahwah()
    res = 2.5;
 }
 
-bool EffectWahwah::Begin(wxWindow * parent)
+bool EffectWahwah::PromptUser()
 {
-   WahwahDialog dlog(parent, -1, "Wahwah");
+   WahwahDialog dlog(mParent, -1, "Wahwah");
 
    dlog.freq = freq;
    dlog.freqoff = freqofs * 100;
@@ -59,7 +59,42 @@ bool EffectWahwah::Begin(wxWindow * parent)
    return true;
 }
 
-bool EffectWahwah::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
+bool EffectWahwah::Process()
+{
+   TrackListIterator iter(mWaveTracks);
+   VTrack *t = iter.First();
+   int count = 0;
+   while(t) {
+      sampleCount start, len;
+      GetSamples((WaveTrack *)t, &start, &len);
+      bool success = ProcessOne(count, (WaveTrack *)t, start, len, startphase);
+      
+      if (!success)
+         return false;
+      
+      if (t->linked) {
+         // In a stereo pair, the "other" half should be 180 degrees out of phase
+         
+         t = iter.Next();
+         count++;
+         
+         GetSamples((WaveTrack *)t, &start, &len);
+         success = ProcessOne(count, (WaveTrack *)t, start, len, startphase + M_PI);
+         
+         if (!success)
+         return false;
+      }
+   
+      t = iter.Next();
+      count++;
+   }
+   
+   return true;
+}
+
+bool EffectWahwah::ProcessOne(int count, WaveTrack * t,
+                              sampleCount start, sampleCount len,
+                              float startphase)
 {
    float samplerate = (float) (t->rate);
 
@@ -71,12 +106,13 @@ bool EffectWahwah::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
    float in, out;
 
    sampleCount s = start;
-   sampleCount blockSize = t->GetIdealBlockSize();
+   sampleCount originalLen = len;
+   sampleCount blockSize = t->GetMaxBlockSize();
 
    sampleType *buffer = new sampleType[blockSize];
 
    while (len) {
-      int block = blockSize;
+      int block = t->GetBestBlockSize(s);
       if (block > len)
          block = len;
 
@@ -119,6 +155,8 @@ bool EffectWahwah::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
 
       len -= block;
       s += block;
+      
+      TrackProgress(count, (s-start)/(double)originalLen);
    }
 
    delete[]buffer;

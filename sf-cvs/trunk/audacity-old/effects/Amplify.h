@@ -24,8 +24,19 @@ class EffectAmplify:public Effect {
 
    virtual wxString GetEffectName() {
       return wxString("Amplify...");
-   } virtual bool Begin(wxWindow * parent);
-   virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
+   }
+   
+   virtual wxString GetEffectAction() {
+      return wxString("Amplifying");
+   }
+   
+   virtual bool PromptUser();
+   
+   virtual bool Process();
+
+ private:
+   bool ProcessOne(int count, WaveTrack * t,
+                   sampleCount start, sampleCount len);
 
  private:
    float ratio;
@@ -38,8 +49,17 @@ class EffectMaxAmplify:public Effect {
 
    virtual wxString GetEffectName() {
       return wxString("Maximize Amplitude");
-   } virtual bool Begin(wxWindow * parent);
-   virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
+   }
+   
+   virtual wxString GetEffectAction() {
+      return wxString("Maximizing Amplitude");
+   }
+   
+   virtual bool Process();
+
+private:
+   bool ProcessOne(int count, WaveTrack * t,
+                   sampleCount start, sampleCount len);
 };
 
 #endif

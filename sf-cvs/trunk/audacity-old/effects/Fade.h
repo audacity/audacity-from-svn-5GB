@@ -22,7 +22,17 @@ class EffectFadeIn:public Effect {
  public:
    virtual wxString GetEffectName() {
       return wxString("Fade In");
-   } virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
+   }
+   
+   virtual wxString GetEffectAction() {
+      return wxString("Fading In");
+   }
+   
+   virtual bool Process();
+
+ private:
+   bool ProcessOne(int count, WaveTrack * t,
+                   sampleCount start, sampleCount len);
 };
 
 class EffectFadeOut:public Effect {
@@ -30,7 +40,17 @@ class EffectFadeOut:public Effect {
  public:
    virtual wxString GetEffectName() {
       return wxString("Fade Out");
-   } virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
+   }
+   
+   virtual wxString GetEffectAction() {
+      return wxString("Fading Out");
+   }
+   
+   virtual bool Process();
+
+ private:
+   bool ProcessOne(int count, WaveTrack * t,
+                   sampleCount start, sampleCount len);
 };
 
 #endif

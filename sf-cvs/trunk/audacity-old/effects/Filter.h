@@ -30,22 +30,30 @@ public:
    
    EffectFilter();
    
-   virtual wxString GetEffectName() { return wxString("Filter..."); }
+   virtual wxString GetEffectName() {
+      return wxString("FFT Filter...");
+   }
    
-   virtual bool Begin(wxWindow *parent);
-   virtual bool DoIt(WaveTrack *t,
-                     sampleCount start,
-                     sampleCount len);
+   virtual wxString GetEffectAction() {
+      return wxString("Performing FFT Filter");
+   }
+   
+   virtual bool PromptUser();
+   
+   virtual bool Process();
    
 private:
+   bool ProcessOne(int count, WaveTrack * t,
+                   sampleCount start, sampleCount len);
+
+   void Filter(sampleCount len,
+               sampleType *buffer);
    
    Envelope *mEnvelope;
 
    int windowSize;
    float *filterFunc;
    
-   void Filter(sampleCount len,
-               sampleType *buffer);
 };
 
 class FilterPanel: public wxPanel

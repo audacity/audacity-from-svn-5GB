@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.95: April 27, 2001
+Version 0.96
 
 http://www.cs.cmu.edu/~music/audacity/
 
@@ -109,6 +109,36 @@ Known issues/problems:
   channels are not yet supported.
 
 -------------------------------------------------------------
+
+Changes in 0.96:
+
+* Importing Audio:
+
+  - Fixed regression bug in 0.95 which caused stereo files to be imported as
+    two mono tracks
+
+* Exporting Audio:
+
+  - Exporting MP3 now works, if the appropriate version of the LAME DLL is
+    installed (Joshua)
+
+* Effects:
+
+  - Added progress dialog support to all effects (which also allows
+    effects to be cancelled)
+  
+  - Added support for stereo effects and effects that add or
+    remove tracks, or require multiple passes.
+  
+  - Improved Amplify effect (Dominic)
+  
+  - Improved Bass Boost effect
+  
+  - Added Filter effect (Dominic)
+  
+  - Added Phaser effect (Paul)
+  
+  - Added Wahwah effect (Paul)
 
 Changes in 0.95:
 

@@ -37,8 +37,15 @@ class EffectWahwah:public Effect {
 
    virtual wxString GetEffectName() {
       return wxString("Wahwah...");
-   } virtual bool Begin(wxWindow * parent);
-   virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
+   }
+   
+   virtual wxString GetEffectAction() {
+      return wxString("Applying Wahwah");
+   }
+   
+   virtual bool PromptUser();
+   
+   virtual bool Process();
 
 /* Parameters:
    freq - LFO frequency 
@@ -52,6 +59,10 @@ class EffectWahwah:public Effect {
    res should be greater than 0 !  */
 
  private:
+   bool ProcessOne(int count, WaveTrack * t,
+                   sampleCount start, sampleCount len,
+                   float startphase);
+
    float freq, startphase;
    float depth, freqofs, res;
 };

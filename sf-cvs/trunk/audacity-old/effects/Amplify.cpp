@@ -23,7 +23,7 @@ EffectAmplify::EffectAmplify()
    ratio = 1.0;
 }
 
-bool EffectAmplify::Begin(wxWindow * parent)
+bool EffectAmplify::PromptUser()
 {
    wxString temp;
    wxString caption = "Amplification factor: ";
@@ -31,7 +31,7 @@ bool EffectAmplify::Begin(wxWindow * parent)
    wxString default_value = "1.0";
 
    temp = wxGetTextFromUser(caption,
-                            title, default_value, parent, -1, -1, TRUE);
+                            title, default_value, mParent, -1, -1, TRUE);
 
    if (temp == "")
       return false;
@@ -39,7 +39,7 @@ bool EffectAmplify::Begin(wxWindow * parent)
    while (sscanf((const char *) temp, "%f", &ratio) < 0) {
       caption = "Please enter a value greater than zero: ";
       temp = wxGetTextFromUser("Amplify current selection by:",
-                               caption, default_value, parent, -1, -1,
+                               caption, default_value, mParent, -1, -1,
                                TRUE);
       if (temp == "")
          return false;
@@ -48,15 +48,37 @@ bool EffectAmplify::Begin(wxWindow * parent)
    return true;
 }
 
-bool EffectAmplify::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
+bool EffectAmplify::Process()
+{
+   TrackListIterator iter(mWaveTracks);
+   VTrack *t = iter.First();
+   int count = 0;
+   while(t) {
+      sampleCount start, len;
+      GetSamples((WaveTrack *)t, &start, &len);
+      bool success = ProcessOne(count, (WaveTrack *)t, start, len);
+      
+      if (!success)
+         return false;
+   
+      t = iter.Next();
+      count++;
+   }
+   
+   return true;
+}
+
+bool EffectAmplify::ProcessOne(int count, WaveTrack *t,
+                               sampleCount start, sampleCount len)
 {
    sampleCount s = start;
-   sampleCount blockSize = t->GetIdealBlockSize();
+   sampleCount originalLen = len;
+   sampleCount blockSize = t->GetMaxBlockSize();
 
    sampleType *buffer = new sampleType[blockSize];
 
    while (len) {
-      int block = blockSize;
+      int block = t->GetBestBlockSize(s);
       if (block > len)
          block = len;
 
@@ -67,9 +89,11 @@ bool EffectAmplify::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
 
       len -= block;
       s += block;
+      
+      TrackProgress(count, (s-start)/(double)originalLen);
    }
 
-   delete[]buffer;
+   delete[] buffer;
 
    return true;
 }
@@ -82,16 +106,30 @@ EffectMaxAmplify::EffectMaxAmplify()
 {
 }
 
-bool EffectMaxAmplify::Begin(wxWindow * parent)
+bool EffectMaxAmplify::Process()
 {
+   TrackListIterator iter(mWaveTracks);
+   VTrack *t = iter.First();
+   int count = 0;
+   while(t) {
+      sampleCount start, len;
+      GetSamples((WaveTrack *)t, &start, &len);
+      bool success = ProcessOne(count, (WaveTrack *)t, start, len);
+      
+      if (!success)
+         return false;
+   
+      t = iter.Next();
+      count++;
+   }
+   
    return true;
 }
 
-bool EffectMaxAmplify::DoIt(WaveTrack * t,
-                            sampleCount start, sampleCount len)
+bool EffectMaxAmplify::ProcessOne(int count, WaveTrack *t,
+                                  sampleCount start, sampleCount len)
 {
-   sampleType min;
-   sampleType max;
+   sampleType min, max;
 
    t->GetMinMax(start, len, &min, &max);
 
@@ -101,7 +139,8 @@ bool EffectMaxAmplify::DoIt(WaveTrack * t,
       return true;
 
    sampleCount s = start;
-   sampleCount blockSize = t->GetIdealBlockSize();
+   sampleCount originalLen = len;
+   sampleCount blockSize = t->GetMaxBlockSize();
 
    sampleType *buffer = new sampleType[blockSize];
 
@@ -117,6 +156,8 @@ bool EffectMaxAmplify::DoIt(WaveTrack * t,
 
       len -= block;
       s += block;
+      
+      TrackProgress(count, (s-start)/(double)originalLen);
    }
 
    delete[]buffer;

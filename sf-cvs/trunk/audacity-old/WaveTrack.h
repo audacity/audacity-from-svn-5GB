@@ -97,7 +97,9 @@ class WaveTrack:public VTrack {
    void AppendAlias(wxString fullPath,
                     sampleCount start, sampleCount len, int channel);
 
+   static sampleCount GetMaxBlockSize();
    static sampleCount GetIdealBlockSize();
+   sampleCount GetBestBlockSize(sampleCount start);
 
    BlockArray *GetBlockArray() {
       return block;

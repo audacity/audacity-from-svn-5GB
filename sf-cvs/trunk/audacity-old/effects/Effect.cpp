@@ -8,53 +8,155 @@
 
 **********************************************************************/
 
-#include "wx/string.h"
+#include <wx/string.h>
+#include <wx/progdlg.h>
+#include <wx/timer.h>
 
 #include "Effect.h"
 #include "../WaveTrack.h"
 
-// static
+//
+// public static methods
+//
 
-EffectArray *Effect::Effects = new EffectArray();
+EffectArray *Effect::mEffects = new EffectArray();
 
 int Effect::RegisterEffect(Effect * f)
 {
-   Effects->Add(f);
-   return Effects->Count();
+   mEffects->Add(f);
+   return mEffects->Count();
 }
 
 int Effect::GetNumEffects()
 {
-   return Effects->Count();
+   return mEffects->Count();
 }
 
 Effect *Effect::GetEffect(int i)
 {
-   return (*Effects)[i];
+   return (*mEffects)[i];
 }
 
-// methods
+//
+// public methods
+//
 
-bool Effect::DoInPlaceEffect(WaveTrack * t, double t0, double t1,
-                             int trackIndex, int numTracks)
+Effect::Effect()
 {
-   wxBusyCursor busy;
-   wxYield();
+   mWaveTracks = NULL;
+   mProgress = NULL;
+}
 
+bool Effect::DoEffect(wxWindow *parent, TrackList *list, double t0, double t1)
+{
    wxASSERT(t0 <= t1);
 
-   int s0 = (int) ((t0 - t->tOffset) * t->rate);
-   int s1 = (int) ((t1 - t->tOffset) * t->rate);
+   if (mWaveTracks) {
+      delete mWaveTracks;
+      mWaveTracks = NULL;
+   }
 
-   if (s0 < 0)
-      s0 = 0;
-   if (s1 >= t->numSamples)
-      s1 = t->numSamples;
+   mParent = parent;
+   mTracks = list;
+   mT0 = t0;
+   mT1 = t1;
+   CountWaveTracks();
 
-   if (s0 >= s1 || s0 >= t->numSamples || s1 < 0)
+   if (!Init())
       return false;
+   
+   if (!PromptUser())
+      return false;
+      
+   wxBusyCursor busy;
+   wxYield();
+   wxStartTimer();
 
-   return DoIt(t, s0, s1 - s0);
+   bool returnVal = Process();
+
+   End();
+   
+   if (mProgress) {
+      delete mProgress;
+      mProgress = NULL;
+   }
+   
+   delete mWaveTracks;
+   mWaveTracks = NULL;
+   
+   return returnVal;
+}
+
+void Effect::GetSamples(WaveTrack *t, sampleCount *s0, sampleCount *slen)
+{
+   wxASSERT(s0);
+   wxASSERT(slen);
+
+   int ss0 = (int) ((mT0 - t->tOffset) * t->rate);
+   int ss1 = (int) ((mT1 - t->tOffset) * t->rate);
+
+   if (ss0 < 0)
+      ss0 = 0;
+   if (ss1 >= t->numSamples)
+      ss1 = t->numSamples;
+   
+   if (ss1 < ss0)
+      ss1 = ss0;
+   
+   *s0 = (sampleCount)ss0;
+   *slen = (sampleCount)(ss1 - ss0);
+}
+
+bool Effect::TotalProgress(double frac)
+{
+   if (!mProgress && wxGetElapsedTime(false) > 500) {
+      mProgress =
+         new wxProgressDialog(GetEffectName(),
+                              GetEffectAction(),
+                              1000,
+                              mParent,
+                              wxPD_CAN_ABORT |
+                              wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
+   }
+   
+   bool cancelling = false;
+
+   if (mProgress) {
+      cancelling =
+         !mProgress->Update((int)(frac*1000 + 0.5));
+   }
+   
+   return cancelling;
+}
+
+bool Effect::TrackProgress(int whichTrack, double frac)
+{
+   return TotalProgress((whichTrack+frac)/mNumTracks);
+}
+
+bool Effect::TrackGroupProgress(int whichGroup, double frac)
+{
+   return TotalProgress((whichGroup+frac)/mNumGroups);
+}
+
+void Effect::CountWaveTracks()
+{
+   mNumTracks = 0;
+   mNumGroups = 0;
+   mWaveTracks = new TrackList();
+   
+   TrackListIterator iter(mTracks);
+   VTrack *t = iter.First();
+   
+   while(t) {
+      if (t->GetKind() == VTrack::Wave) {
+         mWaveTracks->Add(t);
+         mNumTracks++;
+         if (!t->linked)
+            mNumGroups++;
+      }
+      t = iter.Next();
+   }
 }
 
 float TrapFloat(float x, float min, float max)

@@ -19,7 +19,7 @@ EffectEcho::EffectEcho()
    decay = 0.5;
 }
 
-bool EffectEcho::Begin(wxWindow * parent)
+bool EffectEcho::PromptUser()
 {
    wxString temp;
    wxString title = "Echo";
@@ -27,13 +27,13 @@ bool EffectEcho::Begin(wxWindow * parent)
    wxString default_value = wxString::Format("%f", delay);
 
    temp = wxGetTextFromUser(caption, title,
-                            default_value, parent, -1, -1, TRUE);
+                            default_value, mParent, -1, -1, TRUE);
    if (temp == "")
       return false;
    while (sscanf((const char *) temp, "%f", &delay) < 0) {
       caption = "Please enter a positive number for the delay time: ";
       temp = wxGetTextFromUser(caption, title,
-                               default_value, parent, -1, -1, TRUE);
+                               default_value, mParent, -1, -1, TRUE);
       if (temp == "")
          return false;
    }
@@ -41,13 +41,13 @@ bool EffectEcho::Begin(wxWindow * parent)
    caption = "Enter the decay factor: ";
    default_value = wxString::Format("%f", decay);
    temp = wxGetTextFromUser(caption, title,
-                            default_value, parent, -1, -1, TRUE);
+                            default_value, mParent, -1, -1, TRUE);
    if (temp == "")
       return false;
    while (sscanf((const char *) temp, "%f", &decay) < 0) {
       caption = "Please enter a positive number for the decay factor: ";
       temp = wxGetTextFromUser(caption, title,
-                               default_value, parent, -1, -1, TRUE);
+                               default_value, mParent, -1, -1, TRUE);
       if (temp == "")
          return false;
    }
@@ -55,10 +55,33 @@ bool EffectEcho::Begin(wxWindow * parent)
    return true;
 }
 
-bool EffectEcho::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
+bool EffectEcho::Process()
+{
+   TrackListIterator iter(mWaveTracks);
+   VTrack *t = iter.First();
+   int count = 0;
+   while(t) {
+      sampleCount start, len;
+      GetSamples((WaveTrack *)t, &start, &len);
+      bool success = ProcessOne(count, (WaveTrack *)t, start, len);
+      
+      if (!success)
+         return false;
+   
+      t = iter.Next();
+      count++;
+   }
+   
+   return true;
+}
+
+bool EffectEcho::ProcessOne(int count, WaveTrack * t,
+                            sampleCount start, sampleCount len)
 {
    sampleCount s = start;
    sampleCount blockSize = (sampleCount) (t->rate * delay);
+   
+   sampleCount originalLen = len;
 
    if (blockSize < 1 || blockSize > len)
       return true;
@@ -91,6 +114,8 @@ bool EffectEcho::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
 
       len -= block;
       s += block;
+      
+      TrackProgress(count, (s-start)/(double)originalLen);
    }
 
    delete[]buffer0;
