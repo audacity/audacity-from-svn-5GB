@@ -1,5 +1,5 @@
 /*
- * $Id: pa_lib.c,v 1.6 2003-03-02 08:01:34 dmazzoni Exp $
+ * $Id: pa_lib.c,v 1.6.4.1 2003-10-27 02:08:27 msmeyer Exp $
  * Portable Audio I/O Library
  * Host Independant Layer
  *
@@ -562,6 +562,18 @@ long Pa_CallConvertInt16( internalPortAudioStream   *past,
                 for( i=0; i<samplesPerBuffer; i++ )
                 {
                     inBufPtr[i] = nativeInputBuffer[i] << 16;
+                }
+                break;
+            }
+
+        case paInt24:
+            {
+                /* Convert 16 bit data to 24 bit integers */
+                int *inBufPtr = (int *) past->past_InputBuffer;
+                inputBuffer = past->past_InputBuffer;
+                for( i=0; i<samplesPerBuffer; i++ )
+                {
+                    inBufPtr[i] = nativeInputBuffer[i] << 8;
                 }
                 break;
             }
