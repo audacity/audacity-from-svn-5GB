@@ -173,6 +173,28 @@ bool WahwahDialog::Validate()
 
 bool WahwahDialog::TransferDataToWindow()
 {
+   wxSlider *slider;
+
+   slider = GetFreqSlider();
+   if (slider)
+      slider->SetValue(freq * 10);
+
+   slider = GetFreqOffSlider();
+   if (slider)
+      slider->SetValue(freqoff);
+
+   slider = GetDepthSlider();
+   if (slider)
+      slider->SetValue(depth);
+
+   slider = GetPhaseSlider();
+   if (slider)
+      slider->SetValue(startphase);
+
+   slider = GetResonanceSlider();
+   if (slider)
+      slider->SetValue(res * 10);
+
    wxTextCtrl *text = GetFreqText();
    if (text) {
       wxString str;
