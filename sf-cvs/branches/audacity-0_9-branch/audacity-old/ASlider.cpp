@@ -24,7 +24,7 @@
 BEGIN_EVENT_TABLE(ASlider, wxWindow)
     EVT_MOUSE_EVENTS(ASlider::OnMouseEvent)
     EVT_PAINT(ASlider::OnPaint)
-    END_EVENT_TABLE()
+END_EVENT_TABLE()
 
 ASlider::ASlider(wxWindow * parent, wxWindowID id,
                      const wxPoint & pos,
