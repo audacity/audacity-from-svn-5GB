@@ -101,21 +101,21 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
    if (event.Entering()) {
       // Display the tooltip in the status bar
       wxString tip = this->GetToolTip()->GetTip();
-
       if (!mEnabled)
          tip += _(" (disabled)");
-
       GetActiveProject()->TP_DisplayStatusMessage(tip, 0);
-      this->Refresh(false);
    }
    else if (event.Leaving()) {
       GetActiveProject()->TP_DisplayStatusMessage("",0);
+   }
+
+   if (!mEnabled) {
       this->Refresh(false);
+      return;
    }
 
    if (event.ButtonUp()) {
       mIsClicking = false;
-
       ReleaseMouse();
 
       if (event.m_x >= 0 && event.m_y >= 0 &&
@@ -145,6 +145,13 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
           event.m_x < mWidth && event.m_y < mHeight) {
          mButtonState = AButtonDown;
       } else
+         mButtonState = AButtonUp;
+      this->Refresh(false);
+   }
+   else {
+      if (event.Entering())
+         mButtonState = AButtonOver;
+      else if (event.Leaving())
          mButtonState = AButtonUp;
       this->Refresh(false);
    }
