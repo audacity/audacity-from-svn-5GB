@@ -29,10 +29,10 @@ Os caminhos para conseguir ajuda são:
 <blockquote>
   <p>As páginas online do Manual e de Referência estão disponíveis para
   busca. Utilize o campo abaixo, lembrando-se de inserir termos em inglês:
-  <form method="post" action="/isearch/index.php" target="_self">
+  <form method="post" action="http://audacityteam.org/isearch/index.php" target="_self">
   <input maxLength="255" name="s" size="26" value=''>
   <input type="submit" value="Buscar">
-  <font size="1"><a TARGET="_blank" HREF="/isearch/help.php">Ajuda para a 
+  <font size="-1"><a TARGET="_blank" HREF="http://audacityteam.org/isearch/help.php">Ajuda para a 
   busca</a> </font>
 <input type="hidden" name="action" value="search">
 </form>
@@ -65,9 +65,7 @@ de maneira simples e objetiva: <p><a href="onlinehelp-1.2/contents.htm">Clique a
    
 </ul>
 
-  <p>O manual completo para a versão <b> 1.2</b> já está disponível em inglês e sua
-  tradução para o português brasileiro está em andamento. A versão em
-  inglês pode ser acessada:</p>
+  <p>O manual completo para a versão <b> 1.2</b> já está disponível em inglês e sua tradução para o português brasileiro está em andamento. A versão em inglês pode ser acessada:</p>
   <ul>
     <li><a href="audacity-manual-1.2.zip">Clicando aqui</a> para copiar (450kb, em formato ZIP) </li>
     <li>Acesso online: <a href="manual-1.2">clique aqui</a></li>
@@ -95,7 +93,7 @@ por novos recursos. <p>
 <a href="http://www.audacityteam.org/wiki">Clique aqui</a>
  e abra o site do Audacity Wiki.<p> 
 </blockquote>
- <p><b>8. Inscreva-se nas listas</b>
+<p><b>8. Inscreva-se nas listas</b>
 <blockquote>
   <p>O Audacity é um projeto mantido por pessoas como eu ou você com um
   objetivo em comum, que é o de criar um editor de áudio simples, fácil de

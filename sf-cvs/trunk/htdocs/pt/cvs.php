@@ -64,7 +64,7 @@ CVSROOT=:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt><b
 <h4>Anonymous CVS access with a graphical client</h4>
 
 For a graphical client like wincvs, maccvs, or gcvs,
-(available at <a href="http://cvsgui.org">cvsgui.org</a>) you must set
+(available at <a href="http://www.wincvs.org">wincvs.org</a>) you must set
 the 
 <tt>CVSROOT</tt> variable (in the Admin|Preferences submenu) to be 
 <tt>:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt>
