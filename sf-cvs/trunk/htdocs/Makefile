@@ -11,13 +11,13 @@ clean:
 
 # Make all files world-readable, and upload to SourceForge.
 RSYNC=rsync
-RSYNC_ARGS=-Cavz --exclude download_stats.txt
-UPLOAD_PATH=shell.sf.net:/home/groups/a/au/audacity/htdocs/
+RSYNC_ARGS=-Crlvz
+UPLOAD_PATH=shell.sf.net:/home/groups/a/au/audacity/htdocs
 
 publish:
 	chmod --quiet -R g+rwX .
 	chmod --quiet -R o+rX .
-	$(RSYNC) $(RSYNC_ARGS) ./ $(UPLOAD_PATH)
+	$(RSYNC) $(RSYNC_ARGS) ./ $(UPLOAD_PATH)/
 
 # Build the POT file (message catalog template).
 SOURCES := $(wildcard *.php */*.php)
@@ -25,7 +25,7 @@ XGETTEXT=xgettext
 XGETTEXT_ARGS=-L php --add-comments="i18n-hint" --from-code="UTF-8"
 
 $(POT_FILE): $(SOURCES)
-	find . -name '*.php' ! -path './_darcs/*' \
+	find . -name '*.php' ! -path './old/*' \
 	  | xargs $(XGETTEXT) $(XGETTEXT_ARGS) -o $@
 	chmod go+r $@
 
