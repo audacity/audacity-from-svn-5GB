@@ -123,7 +123,7 @@ BoxTop("Edit Translations");
 <tr>
 <td bgcolor=#ddddff></td>
 <td bgcolor=#ddddff><b>File</b></td>
-<td bgcolor=#ddddff width=30%><b>Status</b></td>
+<td bgcolor=#ddddff width=30%><b><?php print "Status of $lang"; ?></b></td>
 <td bgcolor=#ddddff width=50%></td>
 </tr>
 
