@@ -29,6 +29,7 @@
 #include "FileFormatPrefs.h"
 #include "SpectrumPrefs.h"
 #include "DirectoriesPrefs.h"
+#include "GUIPrefs.h"
 
 
 enum {
@@ -71,6 +72,7 @@ wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
    mCategories->AddPage(new FileFormatPrefs(mCategories), _("File Formats"));
    mCategories->AddPage(new SpectrumPrefs(mCategories), _("Spectrograms"));
    mCategories->AddPage(new DirectoriesPrefs(mCategories), _("Directories"));
+   mCategories->AddPage(new GUIPrefs(mCategories), _("GUI"));
 
    long selected = gPrefs->Read("/Prefs/PrefsCategory", 0L);
    if (selected < 0 || selected >= mCategories->GetPageCount())
