@@ -1,7 +1,7 @@
 <?php BoxTop("Gentoo Linux"); ?>
 
 <p>
-Um pacote do Audacity está disponível para <a href="http://www.gentoo.org/">Gentoo Linux</a>.  Para instá-lo, execute
+Um pacote do Audacity está disponível para o <a href="http://www.gentoo.org/">Gentoo Linux</a>.  Para instalá-lo, execute
 <p>
 <xmp>$ emerge audacity</xmp>
 </p>

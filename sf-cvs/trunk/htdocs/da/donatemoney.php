@@ -8,7 +8,7 @@ os med at betale for båndbredde, webserveree, udviklingsværktøjer og
 lydudstyr - ting vi har brug for for at kunne lave Audacity gratis
 og fortsætte med at forbedre det. Hvis du vil bruge dit kreditkort,
 kan du læse instruktioner nederst på denne side. Du kan give helt ned til 
-en dollar (ca. 8 kr).
+en dollar (ca. 7 kr).
 </p>
 
 <p>
