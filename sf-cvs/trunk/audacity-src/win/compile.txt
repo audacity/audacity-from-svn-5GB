@@ -1,29 +1,39 @@
-Compiling Audacity under Microsoft Windows (TM) using Microsoft Visual C++ 6.0
+Compiling Audacity for Microsoft Windows (TM) using Microsoft Visual C++ (TM)
 
 (For instructions on compiling Audacity under the Cygwin UNIX Emulation Layer,
-scroll down to the bottom)
+scroll down to the bottom.)
 
 Authors:
+  Asger Ottar Alstrup
   Vince Busam
-  Steve Jolly
-  Shane Mueller
-  Vaughan Johnson
   Dave Fancella
+  Vaughan Johnson
+  Steve Jolly
   Markus Meyer
+  Shane Mueller
 
 ================================================================
 This version is currently accurate for Audacity version 1.2.2.
-Last Updated: June 8, 2004
+Last Updated: July 19, 2004
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 ================================================================
 
-Before trying to compile Audacity, please make sure that
-your copy of Visual C++ 6.0 has been upgraded to Service
-Pack 5.  If you require it, this patch is available from
+Audacity releases to date have been built with Visual C++ 6.0, 
+with Service Pack 5.  If you require it, this patch is available from
 Microsoft at
 
   http://msdn.microsoft.com/vstudio/downloads/updates/sp/vs6/sp5/default.asp
+
+Audacity can be built with Visual C++ .NET 7.1. Let Visual Studio 
+automatically upgrade the .dsp project files. Then manually fix the 
+soundtouch project file: Remove all the .cc files from the project, then 
+re-add them (except for mmx_gcc.cc, which for some reason is not 
+converted correctly). You might also have trouble with the 
+precompiled headers in the Audacity project itself - you can fix that 
+by turning off the precompiled headers for that project. Finally, in the 
+release build configuration, you have to remove "libci.lib" from the 
+input linker setting. 
 
 It is worth noting that Audacity uses VC++'s multithreaded
 statically-linked run-time libraries.
