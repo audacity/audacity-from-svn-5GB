@@ -58,6 +58,7 @@ private:
   double          mT;
   double          mT0;
   double          mT1;
+  int             mTicks;
   bool            mStop;
   snd_node        mAudioOut;
   SoundTimer      mTimer;

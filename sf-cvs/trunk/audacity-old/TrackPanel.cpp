@@ -495,6 +495,12 @@ void TrackPanel::HandleResize(wxMouseEvent& event)
 
 void TrackPanel::OnMouseEvent(wxMouseEvent& event)
 {
+  if (event.ButtonDown()) {
+	wxActivateEvent *e = new wxActivateEvent();
+	GetParent()->ProcessEvent(*e);      
+	delete e;
+  }
+
   if (mIsResizing) {
 	HandleResize(event);
 	HandleCursor(event);

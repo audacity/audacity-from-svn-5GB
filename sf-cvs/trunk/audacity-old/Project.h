@@ -33,6 +33,8 @@ class AudacityProject;
 
 AudacityProject *CreateNewAudacityProject();
 
+AudacityProject *GetActiveProject();
+
 class AudacityProject: public wxFrame
 {
 public:
@@ -44,7 +46,12 @@ public:
 
   virtual ~AudacityProject();
 
-  double GetRate();
+  // Accessors
+
+  double      GetRate();
+  TrackList  *GetTracks();
+  double      GetSel0();
+  double      GetSel1();
 
   // File I/O
 
@@ -94,6 +101,7 @@ public:
 
   virtual bool ProcessEvent(wxEvent& event);
 
+  void OnActivate(wxActivateEvent& event);
   void OnPaint(wxPaintEvent& event);
   void OnMouseEvent(wxMouseEvent& event);  
   void OnSize(wxSizeEvent &event);

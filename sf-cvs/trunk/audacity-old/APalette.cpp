@@ -32,6 +32,7 @@
 #include "AButton.h"
 #include "ASlider.h"
 #include "APalette.h"
+#include "Project.h"
 #include "Play.h"
 
 APalette *gAPalette = NULL;
@@ -93,11 +94,11 @@ APalette::APalette(wxFrame* parent, wxWindowID id, const wxString& title,
 				"ZoomDown", "ZoomUp");
 
   mPlay =
-	new AButton(this, 0, wxPoint(64, 4), wxSize(48, 48),
+	new AButton(this, ID_PLAY_BUTTON, wxPoint(64, 4), wxSize(48, 48),
 				"PlayUp", "PlayOver",
 				"PlayDown", "PlayDisabled");
   mStop =
-	new AButton(this, 0, wxPoint(114, 4), wxSize(48, 48),
+	new AButton(this, ID_STOP_BUTTON, wxPoint(114, 4), wxSize(48, 48),
 				"StopUp", "StopOver",
 				"StopDown", "StopDisabled");
   
@@ -146,9 +147,15 @@ void APalette::SetStop(bool down)
 
 void APalette::OnPlay()
 {
-  // Need to get current project
-
-  //gSoundPlayer->Begin();
+  AudacityProject *p = GetActiveProject();
+  if (p) {
+	TrackList *t = p->GetTracks();
+	double t0 = p->GetSel0();
+	double t1 = p->GetSel1();
+	if (t1 == t0)
+	  t1 = t->GetMaxLen();
+	gSoundPlayer->Begin(p, t, t0, t1);
+  }
 }
 
 void APalette::OnStop()

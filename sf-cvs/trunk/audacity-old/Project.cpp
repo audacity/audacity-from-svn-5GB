@@ -42,6 +42,7 @@ double     AudacityProject::msClipLen = 0.0;
 
 const int sbarWidth = 15;
 int gAudacityDocNum = 0;
+AudacityProject *gActiveProject;
 
 AudacityProject *CreateNewAudacityProject()
 {
@@ -64,7 +65,14 @@ AudacityProject *CreateNewAudacityProject()
 
   gAudacityDocNum = (gAudacityDocNum+1)%10;
 
+  gActiveProject = p;
+
   return p;
+}
+
+AudacityProject *GetActiveProject()
+{
+  return gActiveProject;
 }
 
 enum {
@@ -129,6 +137,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxWindow)
   EVT_PAINT(AudacityProject::OnPaint)
   EVT_CLOSE(AudacityProject::OnCloseWindow)
   EVT_SIZE (AudacityProject::OnSize)
+  EVT_ACTIVATE (AudacityProject::OnActivate)
   EVT_COMMAND_SCROLL  (HSBarID,   AudacityProject::OnScroll)
   EVT_COMMAND_SCROLL  (VSBarID,   AudacityProject::OnScroll)
   EVT_COMMAND_SCROLL  (TrackPanelID,   AudacityProject::OnScrollUpdate)
@@ -322,6 +331,21 @@ double AudacityProject::GetRate()
   return mRate;
 }
 
+double AudacityProject::GetSel0()
+{
+  return mViewInfo.sel0;
+}
+
+double AudacityProject::GetSel1()
+{
+  return mViewInfo.sel1;
+}
+
+TrackList *AudacityProject::GetTracks()
+{
+  return mTracks;
+}
+
 void AudacityProject::FixScrollbars()
 {
   bool rescroll = false;
@@ -424,6 +448,7 @@ void AudacityProject::OnScrollUpdate(wxScrollEvent &event)
   // to recalculate our scrollbars
 
   FixScrollbars();
+  gActiveProject = this;
 }
 
 void AudacityProject::OnScroll(wxScrollEvent &event)
@@ -460,6 +485,7 @@ void AudacityProject::OnScroll(wxScrollEvent &event)
 	}
   */
 
+  gActiveProject = this;
   mTrackPanel->Refresh(false);
   #ifdef __WXMAC__
   mTrackPanel->MacUpdateImmediately();
@@ -468,6 +494,8 @@ void AudacityProject::OnScroll(wxScrollEvent &event)
 
 bool AudacityProject::ProcessEvent(wxEvent& event)
 {
+  gActiveProject = this;
+
   int numEffects = Effect::GetNumEffects();
 
   if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED &&
@@ -521,6 +549,11 @@ void AudacityProject::OnPaint(wxPaintEvent& event)
   r.width = width;
   r.height = sbarWidth;
   dc.DrawRectangle(r);
+}
+
+void AudacityProject::OnActivate(wxActivateEvent& event)
+{
+  gActiveProject = this;
 }
 
 void AudacityProject::OnMouseEvent(wxMouseEvent& event)
