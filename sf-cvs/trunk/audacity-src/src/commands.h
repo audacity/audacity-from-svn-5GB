@@ -22,7 +22,8 @@ typedef void (AudacityProject::*audEventFunction)(wxEvent&);
 
 enum menuState {disabledMenu = 0, enabledMenu};
 
-enum menuCategory {fileMenu = 0, editMenu, viewMenu, projectMenu, effectMenu, pluginsMenu, helpMenu};
+enum menuCategory {fileMenu = 0, editMenu, viewMenu, projectMenu, effectMenu,
+                   pluginMenu, helpMenu, numMenus};
 
 // BG: This is the structure that holds information about individual command items.
 
