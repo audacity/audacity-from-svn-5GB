@@ -13,19 +13,18 @@
 #ifndef __AUDACITY_EFFECT_TONEGEN__
 #define __AUDACITY_EFFECT_TONEGEN__
 
-#include <math.h>
+#include "SimpleMono.h"
 #include "../FFT.h"
 
-#include <wx/checkbox.h>
-#include <wx/button.h>
 #include <wx/dialog.h>
-#include <wx/stattext.h>
-#include <wx/choice.h>
-#include <wx/textctrl.h>
-#include <wx/sizer.h>
-#include <wx/intl.h>
+#include <math.h>
 
-#include "SimpleMono.h"
+class wxString;
+class wxButton;
+class wxCheckBox;
+class wxChoice;
+class wxSizer;
+class wxTextCtrl;
 
 #define __UNINITIALIZED__ (-1)
 

@@ -10,10 +10,18 @@
 
 **********************************************************************/
 
-#include <wx/wxprec.h> 
 #include "ToneGen.h"
-#include "../WaveTrack.h"
 #include "../Internat.h"
+#include "../WaveTrack.h"
+
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/choice.h>
+#include <wx/intl.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
+#include <wx/wxprec.h> 
 
 //
 // EffectToneGen

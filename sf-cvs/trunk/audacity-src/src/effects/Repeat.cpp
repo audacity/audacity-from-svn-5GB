@@ -9,17 +9,22 @@
 
 **********************************************************************/
 
+#include "Repeat.h"
 #include "../Audacity.h"
+#include "../WaveTrack.h"
 
-#include <wx/wx.h>
+#include <wx/button.h>
 #include <wx/defs.h>
+#include <wx/intl.h>
+#include <wx/msgdlg.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
 #include <wx/validate.h>
 #include <wx/valtext.h>
-#include <wx/intl.h>
+
 #include <math.h>
 
-#include "Repeat.h"
-#include "../WaveTrack.h"
 
 EffectRepeat::EffectRepeat()
 {

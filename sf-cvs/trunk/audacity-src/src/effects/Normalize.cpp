@@ -9,14 +9,20 @@
 
 **********************************************************************/
 
-#include <math.h>
-
-#include <wx/msgdlg.h>
-#include <wx/textdlg.h>
-
 #include "Normalize.h"
 #include "../Audacity.h" // for rint from configwin.h
 #include "../WaveTrack.h"
+
+#include <math.h>
+
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/defs.h>
+#include <wx/intl.h>
+#include <wx/msgdlg.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/textdlg.h>
 
 EffectNormalize::EffectNormalize()
 {

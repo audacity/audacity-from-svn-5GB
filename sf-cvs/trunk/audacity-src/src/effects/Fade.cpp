@@ -8,11 +8,11 @@
 
 **********************************************************************/
 
-#include <wx/generic/textdlgg.h>
-#include <math.h>
-
 #include "Fade.h"
 #include "../WaveTrack.h"
+
+#include <wx/generic/textdlgg.h>
+#include <math.h>
 
 bool EffectFadeIn::NewTrackSimpleMono()
 {

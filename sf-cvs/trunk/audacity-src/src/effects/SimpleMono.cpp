@@ -14,10 +14,10 @@
 
 **********************************************************************/
 
-#include <math.h>
-
 #include "SimpleMono.h"
 #include "../WaveTrack.h"
+
+#include <math.h>
 
 bool EffectSimpleMono::Process()
 {

@@ -8,6 +8,7 @@
 
 **********************************************************************/
 
+#include "LoadEffects.h"
 #include "../Audacity.h"
 
 #include "Effect.h"
@@ -31,7 +32,6 @@
 #include "Silence.h"
 #include "ToneGen.h"
 #include "Wahwah.h"
-#include "LoadEffects.h"
 
 #ifdef USE_SOUNDTOUCH
 #include "ChangePitch.h"

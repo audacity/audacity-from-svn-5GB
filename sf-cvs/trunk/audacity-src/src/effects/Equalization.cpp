@@ -20,14 +20,18 @@
 #include "../WaveTrack.h"
 #include "../widgets/Ruler.h"
 
+#include <wx/bitmap.h>
+#include <wx/button.h>
 #include <wx/msgdlg.h>
-#include <wx/textdlg.h>
 #include <wx/brush.h>
-#include <wx/image.h>
 #include <wx/dcmemory.h>
+#include <wx/image.h>
 #include <wx/intl.h>
-#include <wx/string.h>
 #include <wx/radiobox.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/string.h>
+#include <wx/textdlg.h>
 
 #include <math.h>
 

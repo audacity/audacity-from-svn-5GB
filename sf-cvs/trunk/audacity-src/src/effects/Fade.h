@@ -11,10 +11,11 @@
 #ifndef __AUDACITY_EFFECT_FADE__
 #define __AUDACITY_EFFECT_FADE__
 
-class wxString;
+#include "SimpleMono.h"
 
 #include <wx/intl.h>
-#include "SimpleMono.h"
+
+class wxString;
 
 class EffectFadeIn: public EffectSimpleMono {
 

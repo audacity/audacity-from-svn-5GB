@@ -12,17 +12,15 @@
 #ifndef __AUDACITY_EFFECT_NOISE_REMOVAL__
 #define __AUDACITY_EFFECT_NOISE_REMOVAL__
 
-#include <wx/bitmap.h>
-#include <wx/button.h>
-#include <wx/panel.h>
-#include <wx/sizer.h>
-#include <wx/slider.h>
-#include <wx/stattext.h>
-#include <wx/intl.h>
+#include "Effect.h"
+
+#include <wx/dialog.h>
 
 class wxString;
-
-#include "Effect.h"
+class wxButton;
+class wxSizer;
+class wxSlider;
+class wxString;
 
 class Envelope;
 class WaveTrack;
