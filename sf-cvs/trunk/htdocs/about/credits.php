@@ -21,13 +21,13 @@
   <p><?=_("Dominic is the project leader and original author of Audacity.")?></p></li>
   <li><a href="http://advogato.org/person/mbrubeck/">Matt Brubeck</a> - (mbrubeck (at) audacityteam.org)</li>
   <li>James Crook - (james (at) audacityteam.org)</li>
-  <li><a href="http://www.reverberate.org/">Joshua Haberman</a> - (joshua (at) audacityteam.org)</li>
   <li>Vaughan Johnson - (vaughan (at) audacityteam.org)</li>
   <li>Markus Meyer - (markus (at) audacityteam.org)</li>
 </ul>
 
 <h3><?=_("Active Developers")?></h3>
 <ul>
+  <li><a href="http://www.reverberate.org/">Joshua Haberman</a> - (joshua (at) audacityteam.org)</li>
   <li>Monty Montgomery</li>
   <li>Shane Mueller</li>
 </ul>
