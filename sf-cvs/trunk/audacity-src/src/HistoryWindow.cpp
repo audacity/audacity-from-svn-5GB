@@ -25,6 +25,11 @@
 #include "UndoManager.h"
 #include "Project.h"
 
+#ifdef __WXMSW__
+//Fix the way the history window is displayed on Windows
+#define __FIXME_HISTORY_WINDOW__
+#endif
+
 enum {
    HistoryListID = 1000,
    DiscardID
@@ -51,11 +56,12 @@ wxDialog(parent, -1, _("Undo History"), wxDefaultPosition,
    imageList->Add(wxIcon(arrow_xpm));
    mList->SetImageList(imageList, wxIMAGE_LIST_SMALL);
    mList->InsertColumn(0, _("Action"), wxLIST_FORMAT_LEFT, 280);
-   mList->InsertColumn(1, _("Size"), wxLIST_FORMAT_LEFT);
+   mList->InsertColumn(1, _("Size"), wxLIST_FORMAT_LEFT, 66);
 
 
    mTopSizer->Add(mList, 1, wxGROW|wxALL, 2);
-   
+
+#ifndef __FIXME_HISTORY_WINDOW__
    {
       wxStaticBoxSizer *purgeSizer = new wxStaticBoxSizer(
               new wxStaticBox(this, -1, _("Discard undo data")),
@@ -89,6 +95,7 @@ wxDialog(parent, -1, _("Undo History"), wxDefaultPosition,
 
       mTopSizer->Add(purgeSizer, 0, wxGROW|wxALL, 3);
    }
+#endif
 
    mManager = manager;
    mProject = parent;
@@ -133,12 +140,14 @@ void HistoryWindow::UpdateDisplay()
    
    mList->Show();
 
+#ifndef __FIXME_HISTORY_WINDOW__
    mLevelsAvailable->SetLabel(wxString::Format(_("Undo Levels Available: %d"),
                                               mManager->GetCurrentState() - 1));
 
    mDiscardNum->SetRange(1, mManager->GetCurrentState() - 1);
 
    mDiscard->Enable(mManager->GetCurrentState() > 1 ? true : false);
+#endif
 
 }
 
