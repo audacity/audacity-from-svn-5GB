@@ -29,6 +29,20 @@ void WaveTrack::SetMaxDiskBlockSize(int bytes)
    sMaxDiskBlockSize = bytes;
 }
 
+void WaveTrack::CalcSummaryInfo()
+{
+   SummaryInfo *s = &mSummary;
+
+   s->bytesPerFrame = 6;
+
+   s->frames64K = (mMaxSamples + 65535) / 65536;
+   s->frames256 = s->frames64K * 256;
+
+   s->offset64K = headerTagLen;
+   s->offset256 = s->offset64K + (s->frames64K * s->bytesPerFrame);
+   s->totalSummaryBytes = s->offset256 + (s->frames256 * s->bytesPerFrame);  
+}
+
 // WaveTrack methods
 WaveTrack::WaveTrack(DirManager * projDirManager):
 VTrack(projDirManager)
@@ -45,16 +59,7 @@ VTrack(projDirManager)
    mMinSamples = sMaxDiskBlockSize / SAMPLE_SIZE(mSampleFormat) / 2;
    mMaxSamples = mMinSamples * 2;
 
-   SummaryInfo *s = &mSummary;
-
-   s->bytesPerFrame = 6;
-
-   s->frames64K = (mMaxSamples + 65535) / 65536;
-   s->frames256 = s->frames64K * 256;
-
-   s->offset64K = headerTagLen;
-   s->offset256 = s->offset64K + (s->frames64K * s->bytesPerFrame);
-   s->totalSummaryBytes = s->offset256 + (s->frames256 * s->bytesPerFrame);
+   CalcSummaryInfo();
 }
 
 WaveTrack::WaveTrack(const WaveTrack &orig) :
@@ -159,6 +164,9 @@ void WaveTrack::ConvertToSampleFormat(sampleFormat format)
    wxBusyCursor busy;
    wxYield();
 
+   sampleFormat oldFormat = mSampleFormat;
+   mSampleFormat = format;
+
    for (unsigned int i = 0; i < mBlock->Count(); i++) {
       BlockFile *oldBlock = mBlock->Item(i)->f;
       sampleCount len = mBlock->Item(i)->len;
@@ -167,23 +175,23 @@ void WaveTrack::ConvertToSampleFormat(sampleFormat format)
          BlockFile *newBlock =
             GetDirManager()->NewBlockFile(mSummary.totalSummaryBytes);
 
-         samplePtr buffer1 = NewSamples(len, mSampleFormat);
-         samplePtr buffer2 = NewSamples(len, format);
+         samplePtr buffer1 = NewSamples(len, oldFormat);
+         samplePtr buffer2 = NewSamples(len, mSampleFormat);
 
-         oldBlock->ReadData(buffer1, mSampleFormat, 0, len);
-         CopySamples(buffer1, mSampleFormat,
-                     buffer2, format, len);
-         newBlock->WriteData(buffer2, format, len);
-         
+         oldBlock->ReadData(buffer1, oldFormat, 0, len);
+         CopySamples(buffer1, oldFormat,
+                     buffer2, mSampleFormat, len);
+         newBlock->WriteData(buffer2, mSampleFormat, len);
+
          mBlock->Item(i)->f = newBlock;
          GetDirManager()->Deref(oldBlock);
+
+         UpdateSummaries(buffer2, mBlock->Item(i), len);
 
          DeleteSamples(buffer2);
          DeleteSamples(buffer1);
       }
    }
-
-   mSampleFormat = format;
 }
 
 void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
@@ -735,7 +743,23 @@ bool WaveTrack::Load(wxTextFile * in, DirManager * dirManager)
    long numBlocks;
    long longBlockStart;
    long longBlockLen;
+   long longSampleFormat;
+   long longMaxSamples;
    WaveBlock *w;
+
+   if (in->GetNextLine() != "maxSamples")
+      goto readWaveTrackError;
+   if (!(in->GetNextLine().ToLong(&longMaxSamples)))
+      goto readWaveTrackError;
+   mMaxSamples = longMaxSamples;
+   mMinSamples = mMaxSamples / 2;
+   CalcSummaryInfo();
+
+   if (in->GetNextLine() != "sampleFormat")
+      goto readWaveTrackError;
+   if (!(in->GetNextLine().ToLong(&longSampleFormat)))
+      goto readWaveTrackError;
+   mSampleFormat = (sampleFormat)longSampleFormat;
 
    if (in->GetNextLine() != "numSamples")
       goto readWaveTrackError;
@@ -773,7 +797,7 @@ bool WaveTrack::Load(wxTextFile * in, DirManager * dirManager)
       if (in->GetNextLine() != "Block info")
          goto readWaveTrackError;
 
-      w->f = dirManager->LoadBlockFile(in);
+      w->f = dirManager->LoadBlockFile(in, mSampleFormat);
 
       if (!w->f) {
 
@@ -806,6 +830,12 @@ bool WaveTrack::Save(wxTextFile * out, bool overwrite)
    mEnvelope.Save(out, overwrite);
 
    unsigned int b;
+
+   out->AddLine("maxSamples");
+   out->AddLine(wxString::Format("%d", (int)mMaxSamples));
+
+   out->AddLine("sampleFormat");
+   out->AddLine(wxString::Format("%d", (int)mSampleFormat));
 
    out->AddLine("numSamples");
    out->AddLine(wxString::Format("%d", mNumSamples));

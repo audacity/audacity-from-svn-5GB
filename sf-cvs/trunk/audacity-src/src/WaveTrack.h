@@ -149,6 +149,8 @@ class WaveTrack:public VTrack {
    int mDisplay; // wave/spectrum
 
  private:
+   void CalcSummaryInfo();
+
    int FindBlock(sampleCount pos) const;
    int FindBlock(sampleCount pos, sampleCount lo,
                  sampleCount guess, sampleCount hi) const;

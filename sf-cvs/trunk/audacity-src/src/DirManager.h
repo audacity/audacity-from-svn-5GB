@@ -60,7 +60,7 @@ class DirManager {
    // the BlockFile.
    BlockFile *CopyBlockFile(BlockFile *b);
 
-   BlockFile *LoadBlockFile(wxTextFile * in);
+   BlockFile *LoadBlockFile(wxTextFile * in, sampleFormat format);
    void SaveBlockFile(BlockFile * f, wxTextFile * out);
 
    bool MoveToNewProjectDirectory(BlockFile *f);

@@ -2062,6 +2062,9 @@ void TrackPanel::OnFormatChange(wxEvent &event)
    }
 
    ((WaveTrack *)mPopupMenuTarget)->ConvertToSampleFormat(newFormat);
+   VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
+   if (partner)
+      ((WaveTrack *) partner)->ConvertToSampleFormat(newFormat);
 
    MakeParentPushState(
          wxString::Format(_("Changed '%s' to %s"), 
