@@ -265,7 +265,7 @@ void FreqWindow::OnAlgChoice(wxCommandEvent & event)
 {
    int alg = mAlgChoice->GetSelection();
    if (alg == 0) { // Spectrum
-      mAxisChoice->Enable();
+      mAxisChoice->Enable(true);
       mLogAxis = mAxisChoice->GetSelection();
    }
    else {
