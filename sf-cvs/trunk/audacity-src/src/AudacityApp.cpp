@@ -361,10 +361,15 @@ void AudacityApp::OnKey(wxKeyEvent& event)
       return; // Don't change it if we don't recognize the key
    }
 
-   audEventFunction audFunc = audacityPrj->GetCommandFunc(audacityPrj->FindCommandByCombos(newStr));
+   int commandIndex = audacityPrj->FindCommandByCombos(newStr);
 
-   if(audFunc)
-      (audacityPrj->*((wxEventFunction) audFunc))(event);
+   if(audacityPrj->GetCommandState(commandIndex) == enabledMenu)
+   {
+      audEventFunction audFunc = audacityPrj->GetCommandFunc(commandIndex);
+
+      if(audFunc)
+         (audacityPrj->*((wxEventFunction) audFunc))(event);
+   }
 
    event.Skip();
 }
