@@ -28,11 +28,6 @@
 #include "UndoManager.h"
 #include "Project.h"
 
-#ifdef __WXMSW__
-//Fix the way the history window is displayed on Windows
-#define __FIXME_HISTORY_WINDOW__
-#endif
-
 enum {
    HistoryListID = 1000,
    DiscardID
@@ -64,41 +59,40 @@ HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
 
    mTopSizer->Add(mList, 1, wxGROW|wxALL, 2);
 
-#ifndef __FIXME_HISTORY_WINDOW__
-   {
-      wxStaticBoxSizer *purgeSizer = new wxStaticBoxSizer(
-              new wxStaticBox(this, -1, _("Discard undo data")),
-              wxVERTICAL);
 
-      wxBoxSizer *firstLine = new wxBoxSizer(wxHORIZONTAL);
+   // "Discard" cluster
+   wxStaticBoxSizer *purgeSizer = new wxStaticBoxSizer(
+            new wxStaticBox(this, -1, _("Discard undo data")),
+            wxVERTICAL);
 
-      purgeSizer->Add(
-         mLevelsAvailable = new wxStaticText(this, -1,
-            _("Undo Levels Available (lots and lots)"),
-            wxDefaultPosition, wxDefaultSize, 0),
-            0, wxALIGN_LEFT|wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL, 2);
+   wxBoxSizer *firstLine = new wxBoxSizer(wxHORIZONTAL);
 
-      purgeSizer->Add(firstLine);
+   purgeSizer->Add(
+      mLevelsAvailable = new wxStaticText(this, -1,
+         _("Undo Levels Available (lots and lots)"),
+         wxDefaultPosition, wxDefaultSize, 0),
+         0, wxALIGN_LEFT|wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL, 2);
 
-      wxBoxSizer *secondLine = new wxBoxSizer(wxHORIZONTAL);
+   purgeSizer->Add(firstLine);
 
-      secondLine->Add(new wxStaticText(this, -1, _("Levels to discard: ")),
-                            0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 3);
+   wxBoxSizer *secondLine = new wxBoxSizer(wxHORIZONTAL);
 
-      secondLine->Add(
-         mDiscardNum = new wxSpinCtrl(this, -1, "1", wxDefaultPosition, wxDefaultSize,
-                        wxSP_ARROW_KEYS, 1, manager->GetCurrentState() - 1),
-         0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
+   secondLine->Add(new wxStaticText(this, -1, _("Levels to discard: ")),
+                           0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 3);
 
-      secondLine->Add(
-         mDiscard = new wxButton(this, DiscardID, _("Discard")),
-         0, wxALIGN_RIGHT|wxALL, 2 );
+   secondLine->Add(
+      mDiscardNum = new wxSpinCtrl(this, -1, "1", wxDefaultPosition, wxDefaultSize,
+                     wxSP_ARROW_KEYS, 1, manager->GetCurrentState() - 1),
+                     0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
 
-      purgeSizer->Add(secondLine, 0, wxGROW);
+   secondLine->Add(
+      mDiscard = new wxButton(this, DiscardID, _("Discard")),
+      0, wxALIGN_RIGHT|wxALL, 2 );
 
-      mTopSizer->Add(purgeSizer, 0, wxGROW|wxALL, 3);
-   }
-#endif
+   purgeSizer->Add(secondLine, 0, wxGROW);
+
+   mTopSizer->Add(purgeSizer, 0, wxGROW|wxALL, 3);
+
 
    mManager = manager;
    mProject = parent;
@@ -143,14 +137,14 @@ void HistoryWindow::UpdateDisplay()
    
    mList->Show();
 
-#ifndef __FIXME_HISTORY_WINDOW__
    mLevelsAvailable->SetLabel(wxString::Format(_("Undo Levels Available: %d"),
                                               mManager->GetCurrentState() - 1));
 
    mDiscardNum->SetRange(1, mManager->GetCurrentState() - 1);
+   if ((mManager->GetCurrentState() - 1) < mDiscardNum->GetValue()) 
+      mDiscardNum->SetValue(mManager->GetCurrentState() - 1);
 
-   mDiscard->Enable(mManager->GetCurrentState() > 1 ? true : false);
-#endif
+   mDiscard->Enable(mManager->GetCurrentState() > 1);
 
 }
 
