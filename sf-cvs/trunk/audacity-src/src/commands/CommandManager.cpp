@@ -9,7 +9,12 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
+#include <wx/defs.h>
 #include <wx/hash.h>
+#include <wx/intl.h>
+#include <wx/msgdlg.h>
 
 #include "../Prefs.h"
 
@@ -51,8 +56,6 @@ CommandManager::~CommandManager()
 
 void CommandManager::PurgeData()
 {
-   size_t i;
-
    mMenuBarList.Clear();
    mSubMenuList.Clear();
    mCommandList.Clear();
@@ -64,6 +67,8 @@ void CommandManager::PurgeData()
 
    // TODO: Does this crash on Windows???
    #if 0
+   size_t i;
+
    for(i=0; i<mCommandList.GetCount(); i++)
       delete mCommandList[i]->callback;
    #endif
@@ -481,3 +486,77 @@ wxString CommandManager::GetDefaultKeyFromName(wxString name)
    return entry->defaultKey;
 }
 
+bool CommandManager::HandleXMLTag(const char *tag, const char **attrs)
+{
+   if (!strcmp(tag, "audacitykeyboard")) {
+      mXMLKeysRead = 0;
+   }
+
+   if (!strcmp(tag, "command")) {
+      wxString name;
+      wxString key;
+
+      while(*attrs) {
+         const char *attr = *attrs++;
+         const char *value = *attrs++;
+         
+         if (!value)
+            break;
+         
+         if (!strcmp(attr, "name"))
+            name = value;
+         if (!strcmp(attr, "key"))
+            key = value;
+      }
+
+      if (mCommandNameHash[name]) {
+         mCommandNameHash[name]->key = key;
+         mXMLKeysRead++;
+      }
+   }
+
+   return true;
+}
+
+void CommandManager::HandleXMLEndTag(const char *tag)
+{
+   if (!strcmp(tag, "audacitykeyboard")) {
+      wxMessageBox(wxString::Format(_("Loaded %d "
+                                      "keyboard shortcuts\n"),
+                                    mXMLKeysRead),
+                   _("Loading keyboard shortcuts"),
+                   wxOK | wxCENTRE);
+   }
+}
+
+XMLTagHandler *CommandManager::HandleXMLChild(const char *tag)
+{
+   return this;
+}
+
+void CommandManager::WriteXML(int depth, FILE *fp)
+{
+   int i;
+   unsigned int j;
+
+   for(i=0; i<depth; i++)
+      fprintf(fp, "\t");
+   fprintf(fp, "<audacitykeyboard audacityversion=\"%s\">\n",
+           AUDACITY_VERSION_STRING);
+   for(j=0; j<mCommandList.GetCount(); j++)
+      if (!mCommandList[j]->multi) {
+         for(i=0; i<depth+1; i++)
+            fprintf(fp, "\t");
+         
+         wxString label = mCommandList[j]->label;
+         label = wxMenuItem::GetLabelFromText(label.BeforeFirst('\t'));
+         
+         fprintf(fp, "<command name=\"%s\" label=\"%s\" key=\"%s\" />\n",
+                 (const char *)mCommandList[j]->name,
+                 (const char *)label,
+                 (const char *)mCommandList[j]->key);
+      }
+   for(i=0; i<depth; i++)
+      fprintf(fp, "\t");
+   fprintf(fp, "</audacitykeyboard>\n");
+}

@@ -17,7 +17,7 @@
 #include <wx/menu.h>
 #include <wx/hashmap.h>
 
-#include "../effects/Effect.h"
+#include "../xml/XMLTagHandler.h"
 
 class CommandFunctor
 {
@@ -58,7 +58,7 @@ WX_DEFINE_ARRAY(CommandListEntry *, CommandList);
 WX_DECLARE_STRING_HASH_MAP(CommandListEntry *, CommandNameHash);
 WX_DECLARE_HASH_MAP(int, CommandListEntry *, wxIntegerHash, wxIntegerEqual, CommandIDHash);
 
-class CommandManager
+class CommandManager: public XMLTagHandler
 {
  public:
 
@@ -67,7 +67,7 @@ class CommandManager
    //
 
    CommandManager();
-   ~CommandManager();
+   virtual ~CommandManager();
 
    void PurgeData();
 
@@ -118,6 +118,15 @@ class CommandManager
    wxString GetKeyFromName(wxString name);
    wxString GetDefaultKeyFromName(wxString name);
 
+   //
+   // Loading/Saving
+   //
+
+   virtual bool HandleXMLTag(const char *tag, const char **attrs);
+   virtual void HandleXMLEndTag(const char *tag);
+   virtual XMLTagHandler *HandleXMLChild(const char *tag);
+   virtual void WriteXML(int depth, FILE *fp);
+
  protected:
 
    wxMenuBar * CurrentMenuBar();
@@ -141,6 +150,7 @@ private:
    CommandIDHash  mCommandIDHash;
    int mCurrentID;
    int mHiddenID;
+   int mXMLKeysRead;
    wxMenu * mCurrentMenu;
 };
 

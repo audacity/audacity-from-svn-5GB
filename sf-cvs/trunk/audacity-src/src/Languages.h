@@ -16,4 +16,6 @@
 
 void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames);
 
+wxString GetSystemLanguageCode();
+
 #endif // __AUDACITY_LANGUAGES__

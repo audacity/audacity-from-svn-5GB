@@ -64,6 +64,8 @@ LangChoiceDialog::LangChoiceDialog(wxWindow * parent,
    GetLanguages(mLangCodes, mLangNames);
    mNumLangs = mLangNames.GetCount();
 
+   wxString sysLang = GetSystemLanguageCode();
+
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
    wxBoxSizer *hSizer;
 
@@ -80,7 +82,7 @@ LangChoiceDialog::LangChoiceDialog(wxWindow * parent,
                           mNumLangs, langArray);
    delete[] langArray;
    for(i=0; i<mNumLangs; i++)
-      if (mLangCodes[i] == "en")
+      if (mLangCodes[i] == sysLang)
          mChoice->SetSelection(i);
    hSizer->Add(mChoice,
                0, wxALIGN_CENTRE | wxALIGN_CENTER_VERTICAL | wxALL, 8);
