@@ -15,6 +15,7 @@ class wxTextCtrl;
 #include <wx/dialog.h>
 
 #include "../Effect.h"
+#include "ladspa.h"
 
 class LadspaEffect:public Effect {
 

@@ -15,6 +15,9 @@
 
 **********************************************************************/
 
+// For temporary dlopen() fix.
+#include <dlfcn.h>
+
 #include <wx/dynlib.h>
 #include <wx/list.h>
 #include <wx/log.h>
@@ -23,6 +26,8 @@
 #include "ladspa.h"
 
 #include "LadspaEffect.h"
+
+const LADSPA_Descriptor *mb_test;
 
 void SearchLadspaInDir(wxString dir)
 {
@@ -33,14 +38,30 @@ void SearchLadspaInDir(wxString dir)
 
    while (fname != "") {
       wxLogNull logNo;
-      wxDllType libHandle = NULL;
-      LADSPA_Descriptor_Function mainFn;
+      LADSPA_Descriptor_Function mainFn = NULL;
+
+      // XXX: The following code uses the wxWindows DLL class, which does
+      //      not allow us to control the flags passed to dlopen().  This
+      //      leads to potential segfault bugs when plugins have conflicting
+      //      symbols, so until wxWindows adds this capability we are calling
+      //      dlopen() by hand.
+      //
+      // wxDllType libHandle = NULL;
+      //  
+      // libHandle = wxDllLoader::LoadLibrary(fname);
+      //
+      // mainFn = (LADSPA_Descriptor_Function)
+      //    wxDllLoader::GetSymbol(libHandle,
+      //                           "ladspa_descriptor");
       
-      libHandle = wxDllLoader::LoadLibrary(fname);
-      
+      void *libHandle = NULL;
+
+#ifdef __WXGTK__
+      libHandle = dlopen(fname, RTLD_LAZY);
+
       mainFn = (LADSPA_Descriptor_Function)
-         wxDllLoader::GetSymbol(libHandle,
-                                "ladspa_descriptor");
+                  dlsym(libHandle, "ladspa_descriptor");
+#endif
 
       if (mainFn) {
          int index = 0;
