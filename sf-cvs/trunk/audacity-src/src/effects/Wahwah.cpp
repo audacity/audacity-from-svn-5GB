@@ -61,118 +61,65 @@ bool EffectWahwah::PromptUser()
    return true;
 }
 
-bool EffectWahwah::Process()
+bool EffectWahwah::NewTrackSimpleMono()
 {
-   TrackListIterator iter(mWaveTracks);
-   WaveTrack *track = (WaveTrack *) iter.First();
-   int count = 0;
+   lfoskip = freq * 2 * M_PI / mCurRate;
+   skipcount = 0;
+   xn1 = 0;
+   xn2 = 0;
+   yn1 = 0;
+   yn2 = 0;
+   b0 = 0;
+   b1 = 0;
+   b2 = 0;
+   a0 = 0;
+   a1 = 0;
+   a2 = 0;
 
-   /// \todo: find some way to make this less messy!
-   while(track) {
-      double starttime = mT0;
-      double endtime = mT1;
-      double trackend = track->GetEndTime();
+   phase = startphase;
+   if (mCurChannel == Track::RightChannel)
+      phase += M_PI;
 
-      if (starttime < trackend) {    //make sure part of track is within selection
-         if (endtime > trackend)
-            endtime = trackend;      //make sure all of track is within selection
-         sampleCount len =
-             (sampleCount) floor((endtime - starttime) * track->GetRate() + 0.5);
-
-         if (!ProcessOne(count, (WaveTrack *)track, starttime, len, startphase))
-            return false;
-         
-         if (track->GetLinked()) {
-            // In a stereo pair, the "other" half should be 180 degrees out of phase
-               
-            track = (WaveTrack *) iter.Next();
-            count++;
-               
-            if (!ProcessOne(count, (WaveTrack *)track, starttime, len, startphase + M_PI))
-               return false;
-            
-         }
-      } else if (track->GetLinked()) { //skip the other half of the stereo pair too
-         track = (WaveTrack *) iter.Next();
-         count++;
-      }
-
-      track = (WaveTrack *) iter.Next();
-      count++;
-   }
-   
    return true;
 }
 
-bool EffectWahwah::ProcessOne(int count, WaveTrack * track,
-                              double start, sampleCount len,
-                              float startphase)
+bool EffectWahwah::ProcessSimpleMono(float *buffer, sampleCount len)
 {
-   double t = start;
-   sampleCount s = 0;
-   float samplerate = (float) (track->GetRate());
-
-   /*Wahwah initialisation */
-   float lfoskip = freq * 2 * 3.141592653589 / samplerate;
-   unsigned long skipcount = 0;
-   float xn1 = 0, xn2 = 0, yn1 = 0, yn2 = 0;
    float frequency, omega, sn, cs, alpha;
-   float b0 = 0, b1 = 0, b2 = 0, a0 = 0, a1 = 0, a2 = 0;
    float in, out;
 
-   sampleCount blockSize = track->GetMaxBlockSize();
-
-   float *buffer = new float[blockSize];
-
-   while (s < len) {
-      sampleCount block = track->GetBestBlockSize(t);
-      if (s + block > len)
-         block = len - s;
-
-      track->Get((samplePtr) buffer, floatSample, t, block);
-
-      for (int i = 0; i < block; i++) {
-         in = buffer[i];
-
-         if ((skipcount++) % lfoskipsamples == 0) {
-            frequency = (1 + cos(skipcount * lfoskip + startphase)) / 2;
-            frequency = frequency * depth * (1 - freqofs) + freqofs;
-            frequency = exp((frequency - 1) * 6);
-            omega = 3.141592653589 * frequency;
-            sn = sin(omega);
-            cs = cos(omega);
-            alpha = sn / (2 * res);
-            b0 = (1 - cs) / 2;
-            b1 = 1 - cs;
-            b2 = (1 - cs) / 2;
-            a0 = 1 + alpha;
-            a1 = -2 * cs;
-            a2 = 1 - alpha;
-         };
-         out = (b0 * in + b1 * xn1 + b2 * xn2 - a1 * yn1 - a2 * yn2) / a0;
-         xn2 = xn1;
-         xn1 = in;
-         yn2 = yn1;
-         yn1 = out;
-
-         // Prevents clipping
-         if (out < -1.0)
-            out = -1.0;
-         else if (out > 1.0)
-            out = 1.0;
-
-         buffer[i] = (float) out;
-      }
-
-      track->Set((samplePtr) buffer, floatSample, t, block);
-
-      s += block;
-      t += (block / track->GetRate());
-
-      TrackProgress(count, s / (double) len);
+   for (int i = 0; i < len; i++) {
+      in = buffer[i];
+      
+      if ((skipcount++) % lfoskipsamples == 0) {
+         frequency = (1 + cos(skipcount * lfoskip + phase)) / 2;
+         frequency = frequency * depth * (1 - freqofs) + freqofs;
+         frequency = exp((frequency - 1) * 6);
+         omega = M_PI * frequency;
+         sn = sin(omega);
+         cs = cos(omega);
+         alpha = sn / (2 * res);
+         b0 = (1 - cs) / 2;
+         b1 = 1 - cs;
+         b2 = (1 - cs) / 2;
+         a0 = 1 + alpha;
+         a1 = -2 * cs;
+         a2 = 1 - alpha;
+      };
+      out = (b0 * in + b1 * xn1 + b2 * xn2 - a1 * yn1 - a2 * yn2) / a0;
+      xn2 = xn1;
+      xn1 = in;
+      yn2 = yn1;
+      yn1 = out;
+      
+      // Prevents clipping
+      if (out < -1.0)
+         out = -1.0;
+      else if (out > 1.0)
+         out = 1.0;
+      
+      buffer[i] = (float) out;
    }
-
-   delete[]buffer;
 
    return true;
 }
@@ -228,23 +175,23 @@ bool WahwahDialog::TransferDataToWindow()
 
    slider = GetFreqSlider();
    if (slider)
-      slider->SetValue(freq * 10);
+      slider->SetValue((int)(freq * 10));
 
    slider = GetFreqOffSlider();
    if (slider)
-      slider->SetValue(freqoff);
+      slider->SetValue((int)freqoff);
 
    slider = GetDepthSlider();
    if (slider)
-      slider->SetValue(depth);
+      slider->SetValue((int)depth);
 
    slider = GetPhaseSlider();
    if (slider)
-      slider->SetValue(startphase);
+      slider->SetValue((int)startphase);
 
    slider = GetResonanceSlider();
    if (slider)
-      slider->SetValue(res * 10);
+      slider->SetValue((int)(res * 10));
 
    wxTextCtrl *text = GetFreqText();
    if (text) {
@@ -380,7 +327,7 @@ void WahwahDialog::OnResonanceText(wxCommandEvent & event)
 
       wxSlider *slider = GetResonanceSlider();
       if (slider)
-         slider->SetValue(res * 10);
+         slider->SetValue((int)(res * 10));
    }
 }
 
@@ -442,7 +389,7 @@ void WahwahDialog::OnFreqOffText(wxCommandEvent & event)
 
       wxSlider *slider = GetFreqOffSlider();
       if (slider)
-         slider->SetValue(freqoff);
+         slider->SetValue((int)freqoff);
    }
 }
 

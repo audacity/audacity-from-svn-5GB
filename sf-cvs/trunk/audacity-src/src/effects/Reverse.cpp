@@ -29,16 +29,17 @@ bool EffectReverse::Process()
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
    while (track) {
-      double starttime = mT0;
-      double endtime = mT1;
+      double trackStart = track->GetStartTime();
+      double trackEnd = track->GetEndTime();
+      double t0 = mT0 < trackStart? trackStart: mT0;
+      double t1 = mT1 > trackEnd? trackEnd: mT1;
 
-      if (starttime < track->GetEndTime()) {    //make sure part of track is within selection
-         if (endtime > track->GetEndTime())
-            endtime = track->GetEndTime();      //make sure all of track is within selection
-         sampleCount len =
-             (sampleCount) floor((endtime - starttime) * track->GetRate() + 0.5);
+      if (t1 > t0) {
+         longSampleCount start = track->TimeToLongSamples(t0);
+         longSampleCount end = track->TimeToLongSamples(t1);
+         sampleCount len = (sampleCount)(end - start);
 
-         if (!ProcessOne(count, track, starttime, len))
+         if (!ProcessOne(count, track, start, len))
             return false;
       }
 
@@ -50,10 +51,11 @@ bool EffectReverse::Process()
 }
 
 bool EffectReverse::ProcessOne(int count, WaveTrack *track,
-                               double start, sampleCount len)
+                               longSampleCount start, sampleCount len)
 {
    // keep track of two blocks whose data we will swap
-   double first = start, second;
+   longSampleCount first = start;
+   longSampleCount second;
 
    sampleCount blockSize = track->GetMaxBlockSize();
    float tmp;
@@ -66,7 +68,7 @@ bool EffectReverse::ProcessOne(int count, WaveTrack *track,
       sampleCount block = track->GetBestBlockSize(first);
       if (block > len / 2)
          block = len / 2;
-      second = first + (len - block)/track->GetRate();
+      second = first + (len - block);
 
       track->Get((samplePtr)buffer1, floatSample, first, block);
       track->Get((samplePtr)buffer2, floatSample, second, block);
@@ -79,7 +81,7 @@ bool EffectReverse::ProcessOne(int count, WaveTrack *track,
       track->Set((samplePtr)buffer2, floatSample, second, block);
 
       len -= 2 * block;
-      first += block/track->GetRate();
+      first += block;
       
       TrackProgress(count, 2*(first-start) / (double) originalLen);
    }

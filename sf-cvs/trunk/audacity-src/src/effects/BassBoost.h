@@ -50,10 +50,11 @@ class EffectBassBoost:public EffectSimpleMono {
    
    virtual bool PromptUser();
    
- private:
-   bool ProcessSimpleMono(float *buffer, sampleCount len, double samplerate);
+ protected:
 
-   bool NewTrackSimpleMono(int count, double samplerate);
+   virtual bool NewTrackSimpleMono();
+
+   virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
    
    float frequency, dB_boost;
    //filter parameters

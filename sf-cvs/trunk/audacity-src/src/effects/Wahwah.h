@@ -27,11 +27,9 @@
 
 class wxString;
 
-#include "Effect.h"
+#include "SimpleMono.h"
 
-class WaveTrack;
-
-class EffectWahwah:public Effect {
+class EffectWahwah:public EffectSimpleMono {
 
  public:
    EffectWahwah();
@@ -46,7 +44,16 @@ class EffectWahwah:public Effect {
    
    virtual bool PromptUser();
    
-   virtual bool Process();
+ protected:
+   virtual bool NewTrackSimpleMono();
+
+   virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
+
+   float phase;
+   float lfoskip;
+   unsigned long skipcount;
+   float xn1, xn2, yn1, yn2;
+   float b0, b1, b2, a0, a1, a2;
 
 /* Parameters:
    freq - LFO frequency 
@@ -60,10 +67,6 @@ class EffectWahwah:public Effect {
    res should be greater than 0 !  */
 
  private:
-   bool ProcessOne(int count, WaveTrack * track,
-                   double start, sampleCount len,
-                   float startphase);
-
    float freq, startphase;
    float depth, freqofs, res;
 };

@@ -67,7 +67,7 @@ bool EffectAmplify::PromptUser()
    return true;
 }
 
-bool EffectAmplify::ProcessSimpleMono(float *buffer, sampleCount len, double samplerate)
+bool EffectAmplify::ProcessSimpleMono(float *buffer, sampleCount len)
 {
    sampleCount i;
    for (i = 0; i < len; i++)

@@ -27,16 +27,24 @@ class EffectSimpleMono:public Effect {
    virtual bool Process();
 
  private:
-   bool ProcessOne(int count, WaveTrack * t,
-                   double start, sampleCount len);
+   bool ProcessOne(WaveTrack * t,
+                   longSampleCount start, longSampleCount end);
 
  protected:  
-   // Override this method
-   virtual bool ProcessSimpleMono(float *buffer, sampleCount len, double samplerate) = 0;
 
-   // Optionally override this method if you need to do things
+   // Override this method if you need to do things
    // before every track (including the first one)
-   virtual bool NewTrackSimpleMono(int count, double samplerate);
+   virtual bool NewTrackSimpleMono();
+
+   // Override this method to actually process audio
+   virtual bool ProcessSimpleMono(float *buffer, sampleCount len) = 0;
+
+   // Other useful information
+   int    mCurTrackNum;
+   double mCurRate;
+   double mCurT0;
+   double mCurT1;
+   int    mCurChannel;
 
 };
 

@@ -93,24 +93,25 @@ bool EffectNoiseRemoval::Process()
    TrackListIterator iter(mWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
-   while(track) {
-      double starttime = mT0;
-      double endtime = mT1;
-      
-      if (starttime < track->GetEndTime()) {    //make sure part of track is within selection
-         if (endtime > track->GetEndTime())
-            endtime = track->GetEndTime();      //make sure all of track is within selection
-         sampleCount len =
-             (sampleCount) floor((endtime - starttime) * track->GetRate() + 0.5);
+   while (track) {
+      double trackStart = track->GetStartTime();
+      double trackEnd = track->GetEndTime();
+      double t0 = mT0 < trackStart? trackStart: mT0;
+      double t1 = mT1 > trackEnd? trackEnd: mT1;
 
-         if (!ProcessOne(count, track, starttime, len))
+      if (t1 > t0) {
+         longSampleCount start = track->TimeToLongSamples(t0);
+         longSampleCount end = track->TimeToLongSamples(t1);
+         sampleCount len = (sampleCount)(end - start);
+
+         if (!ProcessOne(count, track, start, len))
             return false;
       }
-         
+
       track = (WaveTrack *) iter.Next();
       count++;
    }
-   
+
    if (doProfile) {
       for(int i=0; i<=windowSize/2; i++) {
          //float stddev = sqrt(sumsq[i] - (sum[i]*sum[i])/profileCount[i])
@@ -120,13 +121,13 @@ bool EffectNoiseRemoval::Process()
       
       hasProfile = true;
    }
+
    return true;
 }
 
 bool EffectNoiseRemoval::ProcessOne(int count, WaveTrack * track,
-                                    double start, sampleCount len)
+                                    longSampleCount start, sampleCount len)
 {
-   double t = start;
    sampleCount s = 0;
    sampleCount idealBlockLen = track->GetMaxBlockSize() * 4;
    
@@ -152,7 +153,7 @@ bool EffectNoiseRemoval::ProcessOne(int count, WaveTrack * track,
       if (s + block > len)
          block = len - s;
       
-      track->Get((samplePtr) buffer, floatSample, t, block);
+      track->Get((samplePtr) buffer, floatSample, start + s, block);
       
       for(i=0; i<block; i+=windowSize/2) {
          int wcopy = windowSize;
@@ -182,10 +183,9 @@ bool EffectNoiseRemoval::ProcessOne(int count, WaveTrack * track,
          block -= windowSize/2;  //we want to shift by half a window at a time
       
       if (!doProfile)
-      track->Set((samplePtr) buffer, floatSample, t, block);
+      track->Set((samplePtr) buffer, floatSample, start + s, block);
       
       s += block;
-      t += (block / track->GetRate());
       
       TrackProgress(count, s / (double) len);
    }

@@ -63,16 +63,17 @@ bool EffectEcho::Process()
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
    while (track) {
-      double starttime = mT0;
-      double endtime = mT1;
+      double trackStart = track->GetStartTime();
+      double trackEnd = track->GetEndTime();
+      double t0 = mT0 < trackStart? trackStart: mT0;
+      double t1 = mT1 > trackEnd? trackEnd: mT1;
 
-      if (starttime < track->GetEndTime()) {    //make sure part of track is within selection
-         if (endtime > track->GetEndTime())
-            endtime = track->GetEndTime();      //make sure all of track is within selection
-         sampleCount len =
-             (sampleCount) floor((endtime - starttime) * track->GetRate() + 0.5);
+      if (t1 > t0) {
+         longSampleCount start = track->TimeToLongSamples(t0);
+         longSampleCount end = track->TimeToLongSamples(t1);
+         sampleCount len = (sampleCount)(end - start);
 
-         if (!ProcessOne(count, track, starttime, len))
+         if (!ProcessOne(count, track, start, len))
             return false;
       }
 
@@ -84,9 +85,8 @@ bool EffectEcho::Process()
 }
 
 bool EffectEcho::ProcessOne(int count, WaveTrack * track,
-                            double start, sampleCount len)
+                            longSampleCount start, sampleCount len)
 {
-   double t=start;
    sampleCount s = 0;
    sampleCount blockSize = (sampleCount) (track->GetRate() * delay);
    
@@ -108,11 +108,11 @@ bool EffectEcho::ProcessOne(int count, WaveTrack * track,
       if (s + block > len)
          block = len - s;
 
-      track->Get((samplePtr)ptr0, floatSample, t, block);
+      track->Get((samplePtr)ptr0, floatSample, start + s, block);
       if (!first) {
          for (sampleCount i = 0; i < block; i++)
             ptr0[i] += ptr1[i] * decay;
-         track->Set((samplePtr)ptr0, floatSample, t, block);
+         track->Set((samplePtr)ptr0, floatSample, start + s, block);
       }
 
       float *ptrtemp = ptr0;
@@ -122,7 +122,6 @@ bool EffectEcho::ProcessOne(int count, WaveTrack * track,
       first = false;
 
       s += block;
-      t += (block / track->GetRate());
       
       TrackProgress(count, s / (double) len);
    }

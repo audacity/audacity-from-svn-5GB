@@ -14,11 +14,9 @@
 class wxString;
 
 #include <wx/intl.h>
-#include "Effect.h"
+#include "SimpleMono.h"
 
-class WaveTrack;
-
-class EffectFadeIn:public Effect {
+class EffectFadeIn: public EffectSimpleMono {
 
  public:
    virtual wxString GetEffectName() {
@@ -28,15 +26,17 @@ class EffectFadeIn:public Effect {
    virtual wxString GetEffectAction() {
       return wxString(_("Fading In"));
    }
-   
-   virtual bool Process();
 
- private:
-   bool ProcessOne(int count, WaveTrack * track,
-                   double start, sampleCount len);
+ protected:
+   sampleCount mSample;
+   sampleCount mLen;
+
+   virtual bool NewTrackSimpleMono();
+   
+   virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
 };
 
-class EffectFadeOut:public Effect {
+class EffectFadeOut:public EffectSimpleMono {
 
  public:
    virtual wxString GetEffectName() {
@@ -46,12 +46,14 @@ class EffectFadeOut:public Effect {
    virtual wxString GetEffectAction() {
       return wxString(_("Fading Out"));
    }
-   
-   virtual bool Process();
 
- private:
-   bool ProcessOne(int count, WaveTrack * track,
-                   double start, sampleCount len);
+ protected:
+   sampleCount mSample;
+   sampleCount mLen;
+
+   virtual bool NewTrackSimpleMono();
+
+   virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
 };
 
 #endif

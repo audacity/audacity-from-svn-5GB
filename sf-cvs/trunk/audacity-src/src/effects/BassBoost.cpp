@@ -30,7 +30,7 @@ EffectBassBoost::EffectBassBoost()
    dB_boost = 12;
 }
 
-bool EffectBassBoost::NewTrackSimpleMono(int count, double samplerate)
+bool EffectBassBoost::NewTrackSimpleMono()
 {
 //(re)initialise filter parameters
    xn1=0;
@@ -39,7 +39,7 @@ bool EffectBassBoost::NewTrackSimpleMono(int count, double samplerate)
    yn2=0;
 
    /* Compute coefficents of the biquand IIR filter */
-   omega = 2 * 3.141592653589 * frequency / samplerate;
+   omega = 2 * 3.141592653589 * frequency / mCurRate;
    sn = sin(omega);
    cs = cos(omega);
    a = exp(log(10) * dB_boost / 40);
@@ -75,14 +75,11 @@ bool EffectBassBoost::PromptUser()
    return true;
 }
 
-bool EffectBassBoost::ProcessSimpleMono(float *buffer, sampleCount len, double samplerate)
+bool EffectBassBoost::ProcessSimpleMono(float *buffer, sampleCount len)
 {
-   
    /* initialise the filter */
 
    float out, in = 0;
-
-   sampleCount originalLen = len;
 
    for (int i = 0; i < len; i++) {
       in = buffer[i];
@@ -142,11 +139,11 @@ bool BassBoostDialog::TransferDataToWindow()
 
    slider = GetBoostSlider();
    if (slider)
-      slider->SetValue(boost);
+      slider->SetValue((int)boost);
 
    slider = GetFreqSlider();
    if (slider)
-      slider->SetValue(freq);
+      slider->SetValue((int)freq);
 
    wxTextCtrl *text = GetBoostText();
    if (text) {

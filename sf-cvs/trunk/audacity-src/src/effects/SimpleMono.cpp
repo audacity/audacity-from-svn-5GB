@@ -23,54 +23,57 @@ bool EffectSimpleMono::Process()
 {
    TrackListIterator iter(mWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
-   int count = 0;
+   mCurTrackNum = 0;
    while (track) {
-      double starttime = mT0;
-      double endtime = mT1;
+      double trackStart = track->GetStartTime();
+      double trackEnd = track->GetEndTime();
+      mCurT0 = mT0 < trackStart? trackStart: mT0;
+      mCurT1 = mT1 > trackEnd? trackEnd: mT1;
 
-      if (starttime < track->GetEndTime()) {    //make sure part of track is within selection
-         if (endtime > track->GetEndTime())
-            endtime = track->GetEndTime();      //make sure all of track is within selection
-         sampleCount len =
-             (sampleCount) floor((endtime - starttime) * track->GetRate() + 0.5);
+      if (mCurT1 > mCurT0) {
+         longSampleCount start = track->TimeToLongSamples(mCurT0);
+         longSampleCount end = track->TimeToLongSamples(mCurT1);
 
-         if (!NewTrackSimpleMono(count, track->GetRate()))
+         mCurRate = track->GetRate();
+         mCurChannel = track->GetChannel();
+
+         if (!NewTrackSimpleMono())
             return false;
-         if (!ProcessOne(count, track, starttime, len))
+         if (!ProcessOne(track, start, end))
             return false;
       }
 
       track = (WaveTrack *) iter.Next();
-      count++;
+      mCurTrackNum++;
    }
 
    return true;
 }
 
-bool EffectSimpleMono::ProcessOne(int count, WaveTrack * track,
-                                  double start, sampleCount len)
+bool EffectSimpleMono::ProcessOne(WaveTrack * track,
+                                  longSampleCount start, longSampleCount end)
 {
-   double t = start;
-   sampleCount s = 0;
+   longSampleCount s;
+   double len = (double)(start - end);
 
    float *buffer = new float[track->GetMaxBlockSize()];
 
-   while (s < len) {
-      sampleCount block = track->GetBestBlockSize(t);
-      if (s + block > len)
-         block = len - s;
+   s = start;
+   while (s < end) {
+      sampleCount block = track->GetBestBlockSize(s);
+      if (s + block > end)
+         block = end - s;
 
-      track->Get((samplePtr) buffer, floatSample, t, block);
-      if (!ProcessSimpleMono(buffer, block, track->GetRate())) {
+      track->Get((samplePtr) buffer, floatSample, s, block);
+      if (!ProcessSimpleMono(buffer, block)) {
          delete[]buffer;
          return false;
       }
-      track->Set((samplePtr) buffer, floatSample, t, block);
+      track->Set((samplePtr) buffer, floatSample, s, block);
 
       s += block;
-      t += (block / track->GetRate());
 
-      TrackProgress(count, s / (double) len);
+      TrackProgress(mCurTrackNum, s / len);
    }
 
    delete[]buffer;
@@ -79,7 +82,7 @@ bool EffectSimpleMono::ProcessOne(int count, WaveTrack * track,
 }
 
 //null implementation of NewTrackSimpleMono
-bool EffectSimpleMono::NewTrackSimpleMono(int count, double samplerate)
+bool EffectSimpleMono::NewTrackSimpleMono()
 {
    return true;
 }

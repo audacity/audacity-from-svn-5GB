@@ -15,6 +15,10 @@
 #include "SampleFormat.h"
 #include "Sequence.h"
 
+#include <wx/longlong.h>
+
+typedef wxLongLong_t longSampleCount; /* 64-bit int */
+
 class Envelope;
 class WaveCache;
 class SpecCache;
@@ -78,14 +82,10 @@ class WaveTrack: public Track {
    virtual bool InsertSilence(double t, double len);
 
    //
-   // Accessing samples directly
-   //
-   // The Get methods here will pad the buffer with zeros
-   // if you ask for samples out of range.
+   // Getting high-level data from the track for screen display and
+   // clipping calculations
    //
 
-   bool Get(samplePtr buffer, sampleFormat format,
-            double t0, sampleCount len);
    bool GetWaveDisplay(float *min, float *max, float *rms, sampleCount *where,
                        int numPixels, double t0, double pixelsPerSecond);
    bool GetSpectrogram(float *buffer, sampleCount *where,
@@ -94,8 +94,16 @@ class WaveTrack: public Track {
                        bool autocorrelation);
    bool GetMinMax(float *min, float *max, double t0, double t1);
 
+   //
+   // Getting/setting samples.  The sample counts here are
+   // expressed relative to t=0.0 at the track's sample rate.
+   //
+
+   bool Get(samplePtr buffer, sampleFormat format,
+            longSampleCount start, sampleCount len);
    bool Set(samplePtr buffer, sampleFormat format,
-            double t0, sampleCount len);
+            longSampleCount start, sampleCount len);
+
    bool Append(samplePtr buffer, sampleFormat format, sampleCount len);
    bool AppendAlias(wxString fName, sampleCount start,
                     sampleCount len, int channel);
@@ -105,7 +113,7 @@ class WaveTrack: public Track {
    // for efficiency
    //
 
-   sampleCount GetBestBlockSize(double t0);
+   sampleCount GetBestBlockSize(longSampleCount t);
    sampleCount GetMaxBlockSize() const;
    sampleCount GetIdealBlockSize() const;
 
@@ -130,6 +138,11 @@ class WaveTrack: public Track {
    //
 
    Envelope *GetEnvelope() { return mEnvelope; }
+
+   // Utility function to convert between times in seconds
+   // and sample positions
+
+   longSampleCount TimeToLongSamples(double t0);
 
    //
    // Temporary - to be removed after TrackArtist is deleted:

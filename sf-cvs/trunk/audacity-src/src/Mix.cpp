@@ -259,9 +259,10 @@ void Mixer::MixDiffRates(int *channelFlags, WaveTrack * src,
       return;
 
    // get a couple more samples than we need
+   longSampleCount s0 = src->TimeToLongSamples(t0);
    int slen = int ((t1 - t0) * src->GetRate()) + 2;
 
-   src->Get(mTemp, mFormat, t0, slen);
+   src->Get(mTemp, mFormat, s0, slen);
 
    int destlen = (int)floor((t1 - t0) * mRate + 0.5);
 
@@ -361,13 +362,14 @@ void Mixer::MixSameRate(int *channelFlags, WaveTrack * src,
    if (t0 > t1 || t0 > src->GetEndTime() || t1 < src->GetStartTime())
       return;
 
+   longSampleCount s0 = src->TimeToLongSamples(t0);
    int slen = (int)floor((t1 - t0) * src->GetRate());
    if (slen <= 0)
       return;
    if (slen > mBufferSize)
       slen = mBufferSize;
 
-   src->Get(mTemp, mFormat, t0, slen);
+   src->Get(mTemp, mFormat, s0, slen);
 
    double volume;
    if (mUseVolumeSlider)

@@ -56,7 +56,7 @@ class EffectAmplify:public EffectSimpleMono {
    virtual bool PromptUser();
    
  protected:
-   virtual bool ProcessSimpleMono(float *buffer, sampleCount len, double samplerate);
+   virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
 
  private:
    float ratio;

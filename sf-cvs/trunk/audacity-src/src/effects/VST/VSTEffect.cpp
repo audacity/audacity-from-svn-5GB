@@ -123,6 +123,26 @@ bool VSTEffect::PromptUser()
    return true;
 }
 
+void VSTEffect::GetSamples(WaveTrack *track,
+                           longSampleCount *start,
+                           sampleCount *len)
+{
+   double trackStart = track->GetStartTime();
+   double trackEnd = track->GetEndTime();
+   double t0 = mT0 < trackStart? trackStart: mT0;
+   double t1 = mT1 > trackEnd? trackEnd: mT1;
+   
+   if (t1 > t0) {
+      *start = track->TimeToLongSamples(t0);
+      longSampleCount end = track->TimeToLongSamples(t1);
+      *len = (sampleCount)(end - *start);
+   }
+   else {
+      *start = 0;
+      *len  = 0;
+   }
+}
+
 bool VSTEffect::Process()
 {
    TrackListIterator iter(mWaveTracks);
@@ -130,7 +150,8 @@ bool VSTEffect::Process()
    Track *left = iter.First();
    Track *right;
    while(left) {
-      sampleCount lstart, rstart, len;
+      longSampleCount lstart, rstart;
+      sampleCount len;
       GetSamples((WaveTrack *)left, &lstart, &len);
 
       right = NULL;
@@ -157,7 +178,8 @@ bool VSTEffect::Process()
 }
 
 bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
-                              sampleCount lstart, sampleCount rstart, sampleCount len)
+                              longSampleCount lstart,
+                              longSampleCount rstart, sampleCount len)
 {
    if (mBlockSize == 0) {
       mBlockSize = left->GetMaxBlockSize() * 2;
@@ -180,19 +202,19 @@ bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
    // Actually perform the effect here
 
    sampleCount originalLen = len;
-   sampleCount ls = lstart;
-   sampleCount rs = rstart;
+   longSampleCount ls = lstart;
+   longSampleCount rs = rstart;
    while (len) {
       int i;
       int block = mBlockSize;
       if (block > len)
          block = len;
 
-      left->Get(buffer, ls, block);
+      left->Get((samplePtr)buffer, floatSample, ls, block);
       for (i = 0; i < block; i++)
          fInBuffer[0][i] = buffer[i];
       if (right) {
-         right->Get(buffer, rs, block);
+         right->Get((samplePtr)buffer, floatSample, rs, block);
          for (i = 0; i < block; i++)
             fInBuffer[1][i] = buffer[i];
       }
@@ -201,12 +223,12 @@ bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
 
       for (i = 0; i < block; i++)
          buffer[i] = fOutBuffer[0][i];
-      left->Set(buffer, ls, block);
+      left->Set((samplePtr)buffer, floatSample, ls, block);
       
       if (right) {
          for (i = 0; i < block; i++)
             buffer[i] = fOutBuffer[1][i];
-         right->Set(buffer, rs, block);
+         right->Set((samplePtr)buffer, floatSample, rs, block);
       }      
 
       len -= block;

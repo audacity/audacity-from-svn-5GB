@@ -69,9 +69,18 @@ OBJS = \
 	$(OBJDIR)/effects/Effect.o \
 	$(OBJDIR)/effects/LoadEffects.o \
 	$(OBJDIR)/effects/Amplify.o \
+	$(OBJDIR)/effects/BassBoost.o \
+	$(OBJDIR)/effects/Compressor.o \
+	$(OBJDIR)/effects/Echo.o \
+	$(OBJDIR)/effects/Fade.o \
+	$(OBJDIR)/effects/Filter.o \
 	$(OBJDIR)/effects/Invert.o \
+	$(OBJDIR)/effects/NoiseRemoval.o \
+	$(OBJDIR)/effects/Phaser.o \
+	$(OBJDIR)/effects/Reverse.o \
 	$(OBJDIR)/effects/SimpleMono.o \
 	$(OBJDIR)/effects/ToneGen.o \
+	$(OBJDIR)/effects/Wahwah.o \
 	$(OBJDIR)/export/Export.o \
 	$(OBJDIR)/export/ExportMP3.o \
 	$(OBJDIR)/export/ExportOGG.o \
@@ -95,18 +104,6 @@ OBJS = \
 	$(OBJDIR)/widgets/ASlider.o \
 	$(OBJDIR)/widgets/Ruler.o \
 	$(OBJDIR)/xml/XMLFileReader.o \
-
-
-TEMP_DISABLED_EFFECTS = \
-	$(OBJDIR)/effects/BassBoost.o \
-	$(OBJDIR)/effects/Compressor.o \
-	$(OBJDIR)/effects/Echo.o \
-	$(OBJDIR)/effects/Fade.o \
-	$(OBJDIR)/effects/Filter.o \
-	$(OBJDIR)/effects/NoiseRemoval.o \
-	$(OBJDIR)/effects/Phaser.o \
-	$(OBJDIR)/effects/Reverse.o \
-	$(OBJDIR)/effects/Wahwah.o \
 
 
 ########################################
