@@ -1,7 +1,7 @@
 # Make allegro library
 
-CCC = g++
-CC = gcc
+CC = @CC@
+CCC = @CXX@
 
 CFLAGS = -g -O
 OBJ = \
