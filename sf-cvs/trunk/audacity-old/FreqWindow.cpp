@@ -65,7 +65,6 @@ BEGIN_EVENT_TABLE(FreqWindow, wxFrame)
   EVT_CLOSE  (                      FreqWindow::OnCloseWindow)
   EVT_SIZE   (                      FreqWindow::OnSize)
   EVT_PAINT  (                      FreqWindow::OnPaint)
-  EVT_MOUSE_EVENTS(                 FreqWindow::OnMouseEvent)
   EVT_BUTTON (FreqCloseButtonID,    FreqWindow::OnCloseWindow)
   EVT_BUTTON (FreqExportButtonID,   FreqWindow::OnExport)
   EVT_CHOICE (FreqAlgChoiceID,      FreqWindow::OnAlgChoice)
@@ -238,7 +237,7 @@ void FreqWindow::OnSize(wxSizeEvent &event)
   #endif
 }
 
-void FreqWindow::OnMouseEvent(wxMouseEvent& event)
+void FreqWindow::PlotMouseEvent(wxMouseEvent& event)
 {
   if (event.Moving() && event.m_x != mMouseX) {
       mMouseX = event.m_x;
@@ -340,6 +339,49 @@ float CubicMaximize(float y0, float y1, float y2, float y3)
     return x2;
 }
 
+float Freq2Pitch(float freq)
+{
+  return float(69.0 + 12.0 * (log(freq/440.0)/log(2.0)));
+}
+
+char gPitchName[10];
+
+char *PitchName(int pitch, bool flats)
+{
+    char *p = gPitchName;
+
+    switch(pitch%12) {
+    case 0:
+        *p++ = 'C'; break;
+    case 1:
+        if (flats) {*p++='D'; *p++='b';} else {*p++='C'; *p++='#';} break;
+    case 2:
+        *p++ = 'D'; break;
+    case 3:
+        if (flats) {*p++='E'; *p++='b';} else {*p++='D'; *p++='#';} break;
+    case 4:
+        *p++ = 'E'; break;
+    case 5:
+        *p++ = 'F'; break;
+    case 6:
+        if (flats) {*p++='G'; *p++='b';} else {*p++='F'; *p++='#';} break;
+    case 7:
+        *p++ = 'G'; break;
+    case 8:
+        if (flats) {*p++='A'; *p++='b';} else {*p++='G'; *p++='#';} break;
+    case 9:
+        *p++ = 'A'; break;
+    case 10:
+        if (flats) {*p++='B'; *p++='b';} else {*p++='A'; *p++='#';} break;
+    case 11:
+        *p++ = 'B'; break;
+    }
+
+    sprintf(p,"%d",(pitch/12)-1);
+
+    return gPitchName;
+}
+
 float FreqWindow::GetProcessedValue(float freq0, float freq1)
 {
     float bin0 = freq0 * mWindowSize / mRate;
@@ -382,20 +424,17 @@ void FreqWindow::OnPaint(wxPaintEvent &evt)
   int width, height;
   GetSize(&width, &height);
 
-  wxPaintDC frameDC(this);
+  wxPaintDC dc(this);
 
-  frameDC.SetBrush(mBackgroundBrush);
-  frameDC.SetPen(mBackgroundPen);
-  frameDC.DrawRectangle(0, mUpdateRect.height,
-						width, height - mUpdateRect.height);
-
-  wxPaintDC dc(mFreqPlot);
-  
-  height -= mUpdateRect.height;
-  
   dc.SetBrush(mBackgroundBrush);
   dc.SetPen(mBackgroundPen);
-  dc.DrawRectangle(0, mUpdateRect.height, width, height);
+  dc.DrawRectangle(0, mUpdateRect.height,
+                   width, height - mUpdateRect.height);
+}
+
+void FreqWindow::PlotPaint(wxPaintEvent &evt)
+{
+  wxPaintDC dc(mFreqPlot);
   
   if (!mBitmap)
 	mBitmap = new wxBitmap(mUpdateRect.width, mUpdateRect.height);
@@ -464,7 +503,7 @@ void FreqWindow::OnPaint(wxPaintEvent &evt)
   
   // Draw x axis and gridlines
   
-  width = r.width-2;
+  int width = r.width-2;
   
   float min_freq = mRate/mWindowSize;
   float max_freq = mRate/2;
@@ -627,9 +666,10 @@ void FreqWindow::OnPaint(wxPaintEvent &evt)
       value = GetProcessedValue(freq, freq + freq_step);
     }
     
-    wxString info = wxString::Format("%d Hz: %d dB    Peak: %d Hz",
+    wxString info = wxString::Format("%d Hz: %d dB    Peak: %d Hz (%s)",
                                       int(freq+0.5), int(value+0.5),
-                                      int(bestpeak+0.5));
+                                      int(bestpeak+0.5),
+                                      PitchName(Freq2Pitch(bestpeak), false));
     memDC.DrawText(info,
   			    mInfoRect.x + 2, mInfoRect.y + 2);
   }  
@@ -825,11 +865,11 @@ FreqPlot::FreqPlot(wxWindow *parent, wxWindowID id,
 
 void FreqPlot::OnPaint(wxPaintEvent &evt)
 {
-  freqWindow->OnPaint(evt);
+  freqWindow->PlotPaint(evt);
 }
 
 void FreqPlot::OnMouseEvent(wxMouseEvent& event)
 {
-  freqWindow->OnMouseEvent(event);
+  freqWindow->PlotMouseEvent(event);
 }
 

@@ -56,7 +56,9 @@ public:
 
   void Plot(int len, float *data, double rate);
   
-  void OnMouseEvent(wxMouseEvent& event); 
+  void PlotMouseEvent(wxMouseEvent& event); 
+  void PlotPaint(wxPaintEvent& event);
+  
   void OnPaint(wxPaintEvent& event);
 
   void OnCloseWindow(wxCloseEvent& event);
