@@ -8,6 +8,7 @@
 
 **********************************************************************/
 
+#include <wx/textctrl.h>
 #include <wx/file.h>
 #include <wx/timer.h>
 #include <wx/filedlg.h>

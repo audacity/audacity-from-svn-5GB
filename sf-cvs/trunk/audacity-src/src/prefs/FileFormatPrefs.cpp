@@ -343,7 +343,8 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
                                      unsigned int format,
                                      unsigned int formatBits):
    wxDialog(parent, id,
-            "File Format")
+            "File Format",
+            wxDefaultPosition, wxDefaultSize)
 {
    mFormat = format;
    mFormatBits = formatBits;
@@ -369,7 +370,8 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
                   wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
    wxString *headerStrings = new wxString[sf_num_headers()];
-   for(int i=0; i<sf_num_headers(); i++)
+   int i;
+   for(i=0; i<sf_num_headers(); i++)
       headerStrings[i] = sf_header_name(i);
    mHeaderChoice = 
       new wxChoice(this, ID_HEADER_CHOICE,
@@ -403,7 +405,7 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
    gridSizer->Add(item, 0,
                   wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
    wxString *encodingStrings = new wxString[sf_num_encodings()];
-   for(int i=0; i<sf_num_encodings(); i++)
+   for(i=0; i<sf_num_encodings(); i++)
       encodingStrings[i] = sf_encoding_name(i+1);
    mEncodingChoice = 
       new wxChoice(this, ID_ENCODING_CHOICE,

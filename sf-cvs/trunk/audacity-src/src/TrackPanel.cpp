@@ -21,6 +21,7 @@
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
+#include <wx/textctrl.h>
 #include <wx/statusbr.h>
 
 #include "TrackPanel.h"

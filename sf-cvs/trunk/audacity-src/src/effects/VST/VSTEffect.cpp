@@ -20,7 +20,7 @@
 #include <wx/slider.h>
 #include <wx/msgdlg.h>
 
-#include "Effect.h"             // Audacity Effect base class
+#include "../Effect.h"          // Audacity Effect base class
 #include "VSTEffect.h"          // This class's header file
 
 VSTEffect::VSTEffect(wxString pluginName, AEffect * aEffect)
@@ -64,11 +64,11 @@ bool VSTEffect::Init()
          sampleCount lstart, rstart, llen, rlen;
          GetSamples((WaveTrack *)left, &lstart, &llen);
          
-         if (left->linked) {
+         if (left->GetLinked()) {
             VTrack *right = iter.Next();
             GetSamples((WaveTrack *)right, &rstart, &rlen);
             
-            if (llen != rlen || ((WaveTrack *)left)->rate != ((WaveTrack *)right)->rate) {
+            if (llen != rlen || ((WaveTrack *)left)->GetRate() != ((WaveTrack *)right)->GetRate()) {
                wxMessageBox("Sorry, VST Effects cannot be performed on stereo tracks where "
                             "the individual channels of the track do not match.");
                return false;
@@ -125,7 +125,7 @@ bool VSTEffect::Process()
       GetSamples((WaveTrack *)left, &lstart, &len);
       
       right = NULL;
-      if (left->linked && inputs>1) {
+      if (left->GetLinked() && inputs>1) {
          right = iter.Next();         
          GetSamples((WaveTrack *)right, &rstart, &len);
       }
@@ -161,7 +161,7 @@ bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
    }
 
    aEffect->dispatcher(aEffect, effSetSampleRate, 0, 0, NULL,
-                       (float) left->rate);
+                       (float) left->GetRate());
    aEffect->dispatcher(aEffect, effSetBlockSize, 0, mBlockSize * 2, NULL, 0.0);
 
    // HACK:
