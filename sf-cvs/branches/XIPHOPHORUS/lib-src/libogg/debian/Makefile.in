@@ -1,6 +1,6 @@
-# Makefile.in generated automatically by automake 1.4-p4 from Makefile.am
+# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
 
-# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -89,7 +89,7 @@ VERSION = @VERSION@
 
 AUTOMAKE_OPTIONS = foreign
 
-EXTRA_DIST = changelog control copyright libogg-dev.docs libogg-dev.files 	libogg0.README.Debian libogg0.files rules
+EXTRA_DIST = changelog control copyright libogg-dev.docs libogg-dev.install 	libogg0.README.Debian libogg0.install rules
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_CLEAN_FILES = 
