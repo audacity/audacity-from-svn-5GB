@@ -179,9 +179,8 @@ AudioIO::AudioIO()
    mThread = new AudioThread();
    mThread->Create();
 
+#if defined(USE_PORTMIXER)
    mPortMixer = NULL;
-
-#if defined(USE_PORTMIXER) && !defined(USE_PORTAUDIO_V19)
    HandleDeviceChange();
 #else
    mEmulateMixerOutputVol = true;
@@ -193,7 +192,7 @@ AudioIO::AudioIO()
 
 AudioIO::~AudioIO()
 {
-#if defined(USE_PORTMIXER) && !defined(USE_PORTAUDIO_V19)
+#if defined(USE_PORTMIXER)
    if( mPortMixer )
       Px_CloseMixer(mPortMixer);
    mPortMixer = NULL;
@@ -215,7 +214,7 @@ void AudioIO::SetMixer(int recordDevice, float recordVolume,
    mMixerOutputVol = playbackVolume;
    mMixerInputVol = recordVolume;
 
-#if defined(USE_PORTMIXER) && !defined(USE_PORTAUDIO_V19)
+#if defined(USE_PORTMIXER)
 
    PxMixer *mixer = mPortMixer;
 
@@ -240,7 +239,7 @@ void AudioIO::SetMixer(int recordDevice, float recordVolume,
 void AudioIO::GetMixer(int *recordDevice, float *recordVolume,
                        float *playbackVolume)
 {
-#if defined(USE_PORTMIXER) && !defined(USE_PORTAUDIO_V19)
+#if defined(USE_PORTMIXER)
 
    PxMixer *mixer = mPortMixer;
 
@@ -270,7 +269,7 @@ void AudioIO::GetMixer(int *recordDevice, float *recordVolume,
 
 wxArrayString AudioIO::GetInputSourceNames()
 {
-#if defined(USE_PORTMIXER) && !defined(USE_PORTAUDIO_V19)
+#if defined(USE_PORTMIXER)
 
    wxArrayString deviceNames;
 
@@ -298,8 +297,7 @@ void AudioIO::HandleDeviceChange()
    if( IsBusy() )
       return;
 
-#if defined(USE_PORTMIXER) && !defined(USE_PORTAUDIO_V19)
-
+#if defined(USE_PORTMIXER)
    if( mPortMixer )
       Px_CloseMixer(mPortMixer);
    mPortMixer = NULL;
