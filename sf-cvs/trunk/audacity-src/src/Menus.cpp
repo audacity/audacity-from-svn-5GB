@@ -619,6 +619,12 @@ void AudacityProject::RebuildMenuBar()
    DetachMenuBar();
    delete menuBar;
    mCommandManager.PurgeData();
+
+   delete mRecentFiles;
+   mRecentFiles = NULL;
+   delete mRecentProjects;
+   mRecentProjects = NULL;
+
    CreateMenusAndCommands();
 }
 
