@@ -30,19 +30,19 @@ only then consider using an IDE.  That way you have a working
 Makefile as a guide.
 
 ---------------------------
-STEP 1:  Download wxWindows
+STEP 1:  Download wxWidgets
 ---------------------------
 To simplify the implementation of a near-identical user
 interface across platforms, Audacity uses classes and
-resources from wxWindows, a portable GUI framework for C++
-(and Python).  You must download and build wxWindows before
+resources from wxWidgets, a portable GUI framework for C++
+(and Python).  You must download and build wxWidgets before
 attempting to compile Audacity, or nothing will work!
 
-wxWindows is available from http://www.wxwindows.org.
-Similar to the Linux kernel, wxWindows is available as
+wxWidgets is available from http://www.wxwindows.org.
+Similar to the Linux kernel, wxWidgets is available as
 stable and development branches.  
 
-The Mac version of wxWindows is still a little bit unstable,
+The Mac version of wxWidgets is still a little bit unstable,
 and none of the releases support 100% of the features that
 Audacity needs.  In particular, version 2.4.1 breaks some
 features that were working in version 2.4.0.
@@ -51,7 +51,7 @@ The best way to compile Audacity is to download wxMac 2.4.0
 and apply a patch which adds a couple of the features that
 Audacity needs.  More instructions are below.
 
-For step 1, just download wxMac 2.4.0 from http://www.wxwindows.org/
+For step 1, just download wxMac 2.4.0 from http://www.wxWidgets.org/
 Click on the "Download" link on the left, then click on the link
 to the main download site "http" (or ftp, if you prefer), click on
 the 2.4.0 directory, and download:
@@ -68,7 +68,7 @@ Uncompress wxMac from the command line by typing:
 
   tar xvzf wxMac-2.4.0.tar.gz
 
-Do not compile wxWindows yet - you need to patch it in step 3.
+Do not compile wxWidgets yet - you need to patch it in step 3.
 
 --------------------------
 STEP 2:  Download Audacity
