@@ -46,9 +46,10 @@ void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 
 #include "Audacity.h"
 #include "AColor.h"
-#include "ToolBar.h"
 #include "AStatus.h"
 #include "AudioIO.h"
+#include "ControlToolBar.h"
+#include "EditToolBar.h"
 #include "FreqWindow.h"
 #include "HistoryWindow.h"
 #include "import/Import.h"

@@ -37,8 +37,6 @@ class wxDC;
 #include "UndoManager.h"
 #include "ViewInfo.h"
 #include "ToolBar.h"
-#include "ControlToolBar.h"
-#include "EditToolBar.h"
 
 #define AUDACITY_MENUS_GLOBALS
 #include "Menus.h"

@@ -10,6 +10,8 @@
   See ToolBar.h for details.
 
 **********************************************************************/  
+
+#include "ToolBar.h"
     
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
@@ -30,7 +32,8 @@
 
 #include "widgets/AButton.h"
 #include "widgets/ASlider.h"
-#include "ToolBar.h"
+#include "ControlToolBar.h"
+#include "EditToolBar.h"
 #include "Project.h"
 #include "Audacity.h"
     
