@@ -308,7 +308,7 @@ bool FileFormatPrefs::Apply()
 
 
    long oggQuality = mOGGQuality->GetValue();
-   gPrefs->Write("/FileFormats/OggExportQuality", oggQuality * 10);
+   gPrefs->Write("/FileFormats/OggExportQuality", (long)(oggQuality * 10));
    
    if (originalExportFormat != defaultExportFormat) {
       // Force the menu bar to get recreated
