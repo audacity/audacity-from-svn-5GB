@@ -1302,14 +1302,16 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
       case WXK_HOME:
          // BG: Skip to beginning
          mViewInfo->sel0 = 0;
-         mViewInfo->sel1 = 0;
+         if (!event.ShiftDown() || mViewInfo->sel1 < mViewInfo->sel0)
+            mViewInfo->sel1 = 0;
          mListener->TP_ScrollWindow(0);
          break;
       case WXK_END:
          // BG: Skip to end
          mViewInfo->sel1 = mTracks->GetMaxLen();
-         mViewInfo->sel0 = mViewInfo->sel1;
-         mListener->TP_ScrollWindow(mViewInfo->sel0);
+         if (!event.ShiftDown() || mViewInfo->sel0 > mViewInfo->sel1)
+            mViewInfo->sel0 = mViewInfo->sel1;
+         mListener->TP_ScrollWindow(mViewInfo->sel1);
          break;
       default:
          event.Skip();
