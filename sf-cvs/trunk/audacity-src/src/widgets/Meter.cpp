@@ -546,7 +546,7 @@ void Meter::HandleLayout()
    int iconWidth = mIcon->GetWidth();
    int iconHeight = mIcon->GetHeight();
    int menuWidth = 17;
-   int menuHeight = 11;
+   int menuHeight = 14;
    int width = mWidth;
    int height = mHeight;
    int left = 0, top = 0;
@@ -633,7 +633,7 @@ void Meter::HandleLayout()
       }         
       else {
          mIconPos = wxPoint(2, mHeight - iconHeight);
-         mMenuRect = wxRect(iconWidth + 2, mHeight - menuHeight - 3,
+         mMenuRect = wxRect(iconWidth + 2, mHeight - menuHeight - 5,
                             menuWidth, menuHeight);
       }
       height = intmin(height-(menuHeight+3), height-iconHeight) - 2;
@@ -731,17 +731,20 @@ void Meter::HandlePaint(wxDC &dc)
 
    dc.DrawBitmap(*mIcon, mIconPos.x, mIconPos.y);
 
-   dc.SetPen(*wxBLACK_PEN);
-   dc.SetBrush(*wxTRANSPARENT_BRUSH);
-   wxRect r = mMenuRect;
-   dc.DrawRectangle(r);
-   for(i=2; i<r.height-2; i++)   // Menu triangle
-      dc.DrawLine(r.x + i, r.y + i,
-                  r.x + r.width - i, r.y + i);
-   dc.DrawLine(r.x + r.width, r.y + 1,
-               r.x + r.width, r.y + r.height);
-   dc.DrawLine(r.x + 1, r.y + r.height,
-               r.x + r.width, r.y + r.height);
+   // Draws a beveled button and a down pointing triangle.
+   // The style and sizing matches the ones in the title 
+   // bar of the waveform left-hand-side panels.
+   {
+      wxRect r = mMenuRect;
+      AColor::Bevel(dc, true, r);
+      dc.SetPen(*wxBLACK_PEN);
+      int triWid = 11;
+      int xStart = r.x+3;
+      int yStart = r.y+4;
+      for(i=0;i<=triWid/2;i++){
+         dc.DrawLine(xStart+i, yStart+i, xStart + triWid - i,yStart+i);
+      }
+   }
 
    if (mNumBars>0)
       mRuler.Draw(dc);
