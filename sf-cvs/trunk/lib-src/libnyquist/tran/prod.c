@@ -48,11 +48,11 @@ void prod_nn_fetch(register prod_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* don't run past the s2 input sample block: */
 	susp_check_term_log_samples(s2, s2_ptr, s2_cnt);
-	togo = min(togo, susp->s2_cnt);
+	togo = MIN(togo, susp->s2_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -181,8 +181,8 @@ void prod_print_tree(prod_susp_type susp, int n)
 sound_type snd_make_prod(sound_type s1, sound_type s2)
 {
     register prod_susp_type susp;
-    rate_type sr = max(s1->sr, s2->sr);
-    time_type t0 = max(s1->t0, s2->t0);
+    rate_type sr = MAX(s1->sr, s2->sr);
+    time_type t0 = MAX(s1->t0, s2->t0);
     int interp_desc = 0;
     sample_type scale_factor = 1.0F;
     time_type t0_min = t0;
@@ -207,7 +207,7 @@ sound_type snd_make_prod(sound_type s1, sound_type s2)
     if (t0 < s1->t0) sound_prepend_zeros(s1, t0);
     if (t0 < s2->t0) sound_prepend_zeros(s2, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(s1->t0, min(s2->t0, t0));
+    t0_min = MIN(s1->t0, min(s2->t0, t0));
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

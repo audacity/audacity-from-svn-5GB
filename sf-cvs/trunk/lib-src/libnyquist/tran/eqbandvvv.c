@@ -122,19 +122,19 @@ void eqbandvvv_ssss_fetch(register eqbandvvv_susp_type susp, snd_list_type snd_l
 
 	/* don't run past the input input sample block: */
 	susp_check_term_log_samples(input, input_ptr, input_cnt);
-	togo = min(togo, susp->input_cnt);
+	togo = MIN(togo, susp->input_cnt);
 
 	/* don't run past the hz input sample block: */
 	susp_check_term_log_samples(hz, hz_ptr, hz_cnt);
-	togo = min(togo, susp->hz_cnt);
+	togo = MIN(togo, susp->hz_cnt);
 
 	/* don't run past the gain input sample block: */
 	susp_check_term_log_samples(gain, gain_ptr, gain_cnt);
-	togo = min(togo, susp->gain_cnt);
+	togo = MIN(togo, susp->gain_cnt);
 
 	/* don't run past the width input sample block: */
 	susp_check_term_log_samples(width, width_ptr, width_cnt);
-	togo = min(togo, susp->width_cnt);
+	togo = MIN(togo, susp->width_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -318,7 +318,7 @@ void eqbandvvv_siii_fetch(register eqbandvvv_susp_type susp, snd_list_type snd_l
 
 	/* don't run past the input input sample block: */
 	susp_check_term_log_samples(input, input_ptr, input_cnt);
-	togo = min(togo, susp->input_cnt);
+	togo = MIN(togo, susp->input_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -516,7 +516,7 @@ void eqbandvvv_srrr_fetch(register eqbandvvv_susp_type susp, snd_list_type snd_l
 
 	/* don't run past the input input sample block: */
 	susp_check_term_log_samples(input, input_ptr, input_cnt);
-	togo = min(togo, susp->input_cnt);
+	togo = MIN(togo, susp->input_cnt);
 
 	/* grab next hz_x1_sample when phase goes past 1.0; */
 	/* use hz_n (computed below) to avoid roundoff errors: */
@@ -534,7 +534,7 @@ void eqbandvvv_srrr_fetch(register eqbandvvv_susp_type susp, snd_list_type snd_l
 	    susp->a1 = -susp->b1;
 	    susp->recompute = true;
 	}
-	togo = min(togo, susp->hz_n);
+	togo = MIN(togo, susp->hz_n);
 	hz_val = susp->hz_x1_sample;
 	/* grab next gain_x1_sample when phase goes past 1.0; */
 	/* use gain_n (computed below) to avoid roundoff errors: */
@@ -548,7 +548,7 @@ void eqbandvvv_srrr_fetch(register eqbandvvv_susp_type susp, snd_list_type snd_l
 	    susp->J = sqrt(susp->gain_x1_sample);
 	    susp->recompute = true;
 	}
-	togo = min(togo, susp->gain_n);
+	togo = MIN(togo, susp->gain_n);
 	gain_val = susp->gain_x1_sample;
 	/* grab next width_x1_sample when phase goes past 1.0; */
 	/* use width_n (computed below) to avoid roundoff errors: */
@@ -561,7 +561,7 @@ void eqbandvvv_srrr_fetch(register eqbandvvv_susp_type susp, snd_list_type snd_l
 					susp->output_per_width);
 	    susp->recompute = true;
 	}
-	togo = min(togo, susp->width_n);
+	togo = MIN(togo, susp->width_n);
 	width_val = susp->width_x1_sample;
 	if (susp->recompute) {
 	    /* susp->a0 = 1.0 + susp->gg / susp->J; */
@@ -748,7 +748,7 @@ sound_type snd_make_eqbandvvv(sound_type input, sound_type hz, sound_type gain, 
 {
     register eqbandvvv_susp_type susp;
     rate_type sr = input->sr;
-    time_type t0 = min(min(min(input->t0, hz->t0), gain->t0), width->t0);
+    time_type t0 = MIN(min(min(input->t0, hz->t0), gain->t0), width->t0);
     int interp_desc = 0;
     sample_type scale_factor = 1.0F;
     time_type t0_min = t0;
@@ -807,7 +807,7 @@ sound_type snd_make_eqbandvvv(sound_type input, sound_type hz, sound_type gain, 
     if (t0 < gain->t0) sound_prepend_zeros(gain, t0);
     if (t0 < width->t0) sound_prepend_zeros(width, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(input->t0, min(hz->t0, min(gain->t0, min(width->t0, t0))));
+    t0_min = MIN(input->t0, min(hz->t0, min(gain->t0, min(width->t0, t0))));
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

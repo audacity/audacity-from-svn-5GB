@@ -59,7 +59,7 @@ void biquad_n_fetch(register biquad_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the s input sample block: */
 	susp_check_term_log_samples(s, s_ptr, s_cnt);
-	togo = min(togo, susp->s_cnt);
+	togo = MIN(togo, susp->s_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -164,7 +164,7 @@ void biquad_s_fetch(register biquad_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the s input sample block: */
 	susp_check_term_log_samples(s, s_ptr, s_cnt);
-	togo = min(togo, susp->s_cnt);
+	togo = MIN(togo, susp->s_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -312,7 +312,7 @@ sound_type snd_make_biquad(sound_type s, double b0, double b1, double b2, double
     /* handle unequal start times, if any */
     if (t0 < s->t0) sound_prepend_zeros(s, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(s->t0, t0);
+    t0_min = MIN(s->t0, t0);
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

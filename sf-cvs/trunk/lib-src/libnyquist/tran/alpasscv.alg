@@ -2,7 +2,7 @@
 (NAME "alpasscv")
 (ARGUMENTS ("sound_type" "input") ("time_type" "delay") ("sound_type" "feedback"))
 (START (MAX input feedback))
-(STATE ("long" "delaylen" "max(1, round(input->sr * delay))")
+(STATE ("long" "delaylen" "MAX(1, round(input->sr * delay))")
        ("sample_type *" "delaybuf"
                "(sample_type *) calloc (susp->delaylen, sizeof(sample_type))")
        ("sample_type *" "delayptr" "susp->delaybuf")

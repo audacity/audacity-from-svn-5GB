@@ -65,7 +65,7 @@ void fmosc_s_fetch(register fmosc_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the s_fm input sample block: */
 	susp_check_term_log_samples(s_fm, s_fm_ptr, s_fm_cnt);
-	togo = min(togo, susp->s_fm_cnt);
+	togo = MIN(togo, susp->s_fm_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -305,7 +305,7 @@ void fmosc_r_fetch(register fmosc_susp_type susp, snd_list_type snd_list)
 	    susp->s_fm_n = (long) ((1.0 - susp->s_fm_pHaSe) *
 					susp->output_per_s_fm);
 	}
-	togo = min(togo, susp->s_fm_n);
+	togo = MIN(togo, susp->s_fm_n);
 	s_fm_val = susp->s_fm_x1_sample;
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -458,7 +458,7 @@ sound_type snd_make_fmosc(sound_type s, double step, rate_type sr, double hz, ti
     /* handle unequal start times, if any */
     if (t0 < s_fm->t0) sound_prepend_zeros(s_fm, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(s_fm->t0, t0);
+    t0_min = MIN(s_fm->t0, t0);
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

@@ -93,7 +93,7 @@ out:	    togo = 0;	/* indicate termination */
             }
             susp->array = NULL; /* free the array */
         }
-        togo = min(togo, susp->length - susp->index);
+        togo = MIN(togo, susp->length - susp->index);
 
 	n = togo;
 	index_reg = susp->index;

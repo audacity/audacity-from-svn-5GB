@@ -64,11 +64,11 @@ void atonev_ns_fetch(register atonev_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* don't run past the hz input sample block: */
 	susp_check_term_samples(hz, hz_ptr, hz_cnt);
-	togo = min(togo, susp->hz_cnt);
+	togo = MIN(togo, susp->hz_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -183,7 +183,7 @@ void atonev_ni_fetch(register atonev_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -305,7 +305,7 @@ void atonev_nr_fetch(register atonev_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* grab next hz_x1_sample when phase goes past 1.0; */
 	/* use hz_n (computed below) to avoid roundoff errors: */
@@ -320,7 +320,7 @@ void atonev_nr_fetch(register atonev_susp_type susp, snd_list_type snd_list)
 	    bb = 2.0 - cos(susp->hz_x1_sample);
 	    susp->cc = bb - sqrt((bb * bb) - 1.0);
 	}
-	togo = min(togo, susp->hz_n);
+	togo = MIN(togo, susp->hz_n);
 	hz_val = susp->hz_x1_sample;
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -455,7 +455,7 @@ sound_type snd_make_atonev(sound_type s1, sound_type hz)
 {
     register atonev_susp_type susp;
     rate_type sr = s1->sr;
-    time_type t0 = max(s1->t0, hz->t0);
+    time_type t0 = MAX(s1->t0, hz->t0);
     int interp_desc = 0;
     sample_type scale_factor = 1.0F;
     time_type t0_min = t0;
@@ -487,7 +487,7 @@ sound_type snd_make_atonev(sound_type s1, sound_type hz)
     if (t0 < s1->t0) sound_prepend_zeros(s1, t0);
     if (t0 < hz->t0) sound_prepend_zeros(hz, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(s1->t0, min(hz->t0, t0));
+    t0_min = MIN(s1->t0, min(hz->t0, t0));
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

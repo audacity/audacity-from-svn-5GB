@@ -12,7 +12,7 @@
 (STATE ("double" "offset" "offset * s1->sr")
        ("double" "vdscale" "vardelay->scale * s1->sr")
        ("long" "maxdelay" "(long)(maxdelay * s1->sr)")
-       ("long" "bufflen" "max(2, (long) (susp->maxdelay + 0.5))")
+       ("long" "bufflen" "MAX(2, (long) (susp->maxdelay + 0.5))")
        ("long" "index" "susp->bufflen")
        ("sample_type *" "buffer" 
         "(sample_type *) calloc(susp->bufflen + 1, sizeof(sample_type))"))

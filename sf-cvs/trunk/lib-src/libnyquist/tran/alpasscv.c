@@ -54,11 +54,11 @@ void alpasscv_nn_fetch(register alpasscv_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the input input sample block: */
 	susp_check_term_samples(input, input_ptr, input_cnt);
-	togo = min(togo, susp->input_cnt);
+	togo = MIN(togo, susp->input_cnt);
 
 	/* don't run past the feedback input sample block: */
 	susp_check_samples(feedback, feedback_ptr, feedback_cnt);
-	togo = min(togo, susp->feedback_cnt);
+	togo = MIN(togo, susp->feedback_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -128,11 +128,11 @@ void alpasscv_ns_fetch(register alpasscv_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the input input sample block: */
 	susp_check_term_samples(input, input_ptr, input_cnt);
-	togo = min(togo, susp->input_cnt);
+	togo = MIN(togo, susp->input_cnt);
 
 	/* don't run past the feedback input sample block: */
 	susp_check_samples(feedback, feedback_ptr, feedback_cnt);
-	togo = min(togo, susp->feedback_cnt);
+	togo = MIN(togo, susp->feedback_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -237,8 +237,8 @@ void alpasscv_print_tree(alpasscv_susp_type susp, int n)
 sound_type snd_make_alpasscv(sound_type input, time_type delay, sound_type feedback)
 {
     register alpasscv_susp_type susp;
-    rate_type sr = max(input->sr, feedback->sr);
-    time_type t0 = max(input->t0, feedback->t0);
+    rate_type sr = MAX(input->sr, feedback->sr);
+    time_type t0 = MAX(input->t0, feedback->t0);
     int interp_desc = 0;
     sample_type scale_factor = 1.0F;
     time_type t0_min = t0;
@@ -250,7 +250,7 @@ sound_type snd_make_alpasscv(sound_type input, time_type delay, sound_type feedb
     if (input->sr < sr) { input->scale = scale_factor; scale_factor = 1.0F; }
 
     falloc_generic(susp, alpasscv_susp_node, "snd_make_alpasscv");
-    susp->delaylen = max(1, round(input->sr * delay));
+    susp->delaylen = MAX(1, round(input->sr * delay));
     susp->delaybuf = (sample_type *) calloc (susp->delaylen, sizeof(sample_type));
     susp->delayptr = susp->delaybuf;
     susp->endptr = susp->delaybuf + susp->delaylen;
@@ -269,7 +269,7 @@ sound_type snd_make_alpasscv(sound_type input, time_type delay, sound_type feedb
     if (t0 < input->t0) sound_prepend_zeros(input, t0);
     if (t0 < feedback->t0) sound_prepend_zeros(feedback, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(input->t0, min(feedback->t0, t0));
+    t0_min = MIN(input->t0, min(feedback->t0, t0));
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

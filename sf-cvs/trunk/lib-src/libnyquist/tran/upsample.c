@@ -54,7 +54,7 @@ void up_n_fetch(register up_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the input input sample block: */
 	susp_check_term_log_samples(input, input_ptr, input_cnt);
-	togo = min(togo, susp->input_cnt);
+	togo = MIN(togo, susp->input_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -268,7 +268,7 @@ void up_r_fetch(register up_susp_type susp, snd_list_type snd_list)
 	    susp->input_n = (long) ((1.0 - susp->input_pHaSe) *
 					susp->output_per_input);
 	}
-	togo = min(togo, susp->input_n);
+	togo = MIN(togo, susp->input_n);
 	input_DeLtA = (sample_type) ((input_x2_sample - susp->input_x1_sample) * susp->input_pHaSe_iNcR);
 	input_val = (sample_type) (susp->input_x1_sample * (1.0 - susp->input_pHaSe) +
 		 input_x2_sample * susp->input_pHaSe);
@@ -412,7 +412,7 @@ sound_type snd_make_up(rate_type sr, sound_type input)
     /* handle unequal start times, if any */
     if (t0 < input->t0) sound_prepend_zeros(input, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(input->t0, t0);
+    t0_min = MIN(input->t0, t0);
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {
