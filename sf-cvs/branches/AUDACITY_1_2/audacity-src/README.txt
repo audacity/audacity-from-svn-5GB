@@ -257,6 +257,11 @@ Known issues/problems:
 
 -------------------------------------------------------------
 
+Changes in 1.2.0-pre3:
+
+  * Fixed bug where Export is grayed out when nothing is
+    selected.
+
 Changes in 1.2.0-pre2:
 
   * Online help completed.  The full manual is nearly complete
