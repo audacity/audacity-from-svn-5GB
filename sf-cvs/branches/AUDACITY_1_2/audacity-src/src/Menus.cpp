@@ -1867,17 +1867,30 @@ void AudacityProject::OnZoomIn()
    // when there's a selection that's currently at least
    // partially on-screen
 
-   if (mViewInfo.sel1 > mViewInfo.sel0 &&
-       mViewInfo.sel0 < mViewInfo.h + mViewInfo.screen &&
-       mViewInfo.sel1 > mViewInfo.h) {
+   bool nonzeroSelection =
+      (mViewInfo.sel1 > mViewInfo.sel0);
+
+   bool selectionIsOnscreen =
+      (mViewInfo.sel0 < mViewInfo.h + mViewInfo.screen) &&
+      (mViewInfo.sel1 > mViewInfo.h);
+
+   bool selectionFillsScreen =
+      (mViewInfo.sel0 < mViewInfo.h) &&
+      (mViewInfo.sel1 > mViewInfo.h + mViewInfo.screen);
+   
+   if (nonzeroSelection &&
+       selectionIsOnscreen &&
+       !selectionFillsScreen) {
       // Start with the center of the selection
       double selCenter = (mViewInfo.sel0 + mViewInfo.sel1) / 2;
 
-      // Clip it to the screen
+      // If the selection center is off-screen, pick the
+      // center of the part that is on-screen.
       if (selCenter < mViewInfo.h)
-         selCenter = mViewInfo.h;
+         selCenter = mViewInfo.h + (mViewInfo.sel1 - mViewInfo.h) / 2;
       if (selCenter > mViewInfo.h + mViewInfo.screen)
-         selCenter = mViewInfo.h + mViewInfo.screen;
+         selCenter = mViewInfo.h + mViewInfo.screen -
+            (mViewInfo.h + mViewInfo.screen - mViewInfo.sel0) / 2;
          
       // Zoom in
       Zoom(mViewInfo.zoom *= 2.0);
