@@ -50,7 +50,6 @@ extern "C" {
 }
 
 #include "../WaveTrack.h"
-//#include "../Tags.h"
 
 #define INPUT_BUFFER_SIZE 65535
 #define PROGRESS_SCALING_FACTOR 100000
@@ -171,7 +170,7 @@ int MP3ImportFileHandle::GetFileUncompressedBytes()
 }
 
 bool MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
-                             int *outNumTracks)
+                                 int *outNumTracks)
 {
    int chn;
 
@@ -185,13 +184,6 @@ bool MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    mPrivateData.trackFactory= trackFactory;
 
    mad_decoder_init(&mDecoder, &mPrivateData, input_cb, 0, 0, output_cb, error_cb, 0);
-
-   /*
-    TODO: where should this go?
-   Tags *tags = project->GetTags();
-   tags->ImportID3(fName);
-
-    */
 
    /* and send the decoder on its way! */
 
