@@ -17,6 +17,8 @@
 #include <wx/intl.h>
 #include <wx/icon.h>
 
+#include <wx/log.h>
+
 #include "LabelTrack.h"
 #include "DirManager.h"
 #include "Internat.h"
@@ -26,13 +28,24 @@ bool LabelTrack::mbGlyphsReady=false;
 // TODO: Currently we're only using three of these icons, since we
 // don't yet support highlighting of the icons.
 // The plan is to make the icons draggable, and can drag one boundary
-// or all boundaries at the sime timecode depending on whether you 
+// or all boundaries at the same timecode depending on whether you 
 // click the centre (for all) or the arrow part (for one).
 wxIcon LabelTrack::mBoundaryGlyphs[ NUM_GLYPH_CONFIGS * NUM_GLYPH_HIGHLIGHTS ];
 int LabelTrack::mIconHeight;
 int LabelTrack::mIconWidth;
 int LabelTrack::mTextHeight;
 
+
+// TODO: Surely there is a header file which already defines max and min?
+int max(int a,int b)
+{
+   return((a>b)?a:b);
+}
+
+int min(int a,int b)
+{
+   return((a<b)?a:b);
+}
 
 LabelTrack *TrackFactory::NewLabelTrack()
 {
@@ -119,7 +132,7 @@ void LabelTrack::ComputeTextPosition(wxRect & r, int index)
    // Complex centering positions the text proportionally
    // to how far we are through the label.
    //
-   // If we add preferences for this, want to be able to
+   // If we add preferences for this, we want to be able to
    // choose separately whether:
    //   a) Wide text labels centered simple/complex.
    //   b) Other text labels centered simple/complex.
@@ -164,7 +177,16 @@ void LabelTrack::ComputeTextPosition(wxRect & r, int index)
       if( rx1 > rx0 ) // Avoid divide by zero case.
       {
          // Compute the blend between left and right aligned.
-         xText = xText0 + ((xText1-xText0)*(r.x-rx0))/(rx1-rx0);
+
+         // Don't use:
+         //
+         // xText = xText0 + ((xText1-xText0)*(r.x-rx0))/(rx1-rx0);
+         //
+         // The problem with the above is that it integer-oveflows at 
+         // high zoom.
+
+         // Instead use:
+         xText = xText0 + (int)((xText1-xText0)*(((float)(r.x-rx0))/(rx1-rx0)));
       }
       else
       {
@@ -232,9 +254,7 @@ void LabelTrack::ComputeLayout( wxRect & r, double h, double pps)
    int iRow;
    // Rows are the 'same' height as icons or as the text,
    // whichever is taller.
-   const int yRowHeight = ((mTextHeight>mIconHeight) ?
-        mTextHeight : 
-        mIconHeight)+3; // pixels.
+   const int yRowHeight = max(mTextHeight,mIconHeight)+3;// pixels.
    // Extra space at end of rows.
    // We allow space for one half icon at the start and two
    // half icon widths for extra x for the text frame.
@@ -242,9 +262,7 @@ void LabelTrack::ComputeLayout( wxRect & r, double h, double pps)
    // allowed to be obscured by the text].
    const int xExtra= (3 * mIconWidth)/2;
 
-   int nRows = (r.height / yRowHeight) + 1;
-   if( nRows > MAX_NUM_ROWS )
-      nRows = MAX_NUM_ROWS;
+   const int nRows = min((r.height / yRowHeight) + 1, MAX_NUM_ROWS);
    // Initially none of the rows have been used.
    // So set a value that is less than any valid value.
    const int xStart = r.x -(int)(h*pps) -100;
@@ -306,7 +324,7 @@ void LabelStruct::DrawLines( wxDC & dc, wxRect & r)
    if((x1 >= r.x) && (x1 <= (r.x+r.width)))
    {
       // Draw line above and below right dragging widget.
-      dc.DrawLine(x1, r.y,  x1, y -yIconStart);
+      dc.DrawLine(x1, r.y,  x1, yIconStart);
       dc.DrawLine(x1, yIconEnd, x1, r.y + r.height);
    }
 }
@@ -329,6 +347,8 @@ void LabelStruct::DrawGlyphs( wxDC & dc, wxRect & r)
       dc.DrawIcon( LabelTrack::mBoundaryGlyphs[1], x1-xHalfWidth,yStart );
 }
 
+
+
 /// Draw the text of the label and also draw
 /// a long thin rectangle for its full extent 
 /// from x to x1 and a rectangular frame 
@@ -345,20 +365,46 @@ void LabelStruct::DrawText( wxDC & dc, wxRect & r)
    const int yFrameHeight = LabelTrack::mTextHeight+3;
    const int xBarShorten  = LabelTrack::mIconWidth+4;
 
+
+   // In drawing the bar and the frame, we compute the clipping
+   // to the viewport ourselves.  Under Win98 the GDI does its 
+   // calculations in 16 bit arithmetic, and so gets it completely 
+   // wrong at higher zooms where the bar can easily be 
+   // more than 65536 pixels wide.
+
    // Draw bar for label extent...
    // We don't quite draw from x to x1 because we allow 
    // half an icon width at each end.
-   wxRect bar( x+xBarShorten/2,y-yBarHeight/2, 
-      x1-(x+xBarShorten),yBarHeight);
-   if( x1 > x+xBarShorten )
-      dc.DrawRectangle(bar);
+   {
+      const int xStart=max(r.x,x+xBarShorten/2);
+      const int xEnd=min(r.x+r.width,x1-xBarShorten/2);
+      const int xWidth = xEnd-xStart;
+
+      if( (xStart < (r.x+r.width)) && (xEnd > r.x) && (xWidth>0))
+      {
+         wxRect bar( xStart,y-yBarHeight/2, 
+            xWidth,yBarHeight);
+         if( x1 > x+xBarShorten )
+            dc.DrawRectangle(bar);
+      }
+   }
    // Draw frame for the text...
    // We draw it half an icon width left of the text itself.
-   wxRect frame(xText-LabelTrack::mIconWidth/2,y-yFrameHeight/2,
-      width+LabelTrack::mIconWidth,yFrameHeight );
-   dc.DrawRectangle(frame);
-   // Now draw the text itself.
-   dc.DrawText(title, xText, y-LabelTrack::mTextHeight/2);
+   {
+      const int xStart=max(r.x,xText-LabelTrack::mIconWidth/2);
+      const int xEnd=min(r.x+r.width,xText+width+LabelTrack::mIconWidth/2);
+      const int xWidth = xEnd-xStart;
+
+      if( (xStart < (r.x+r.width)) && (xEnd > r.x) && (xWidth>0))
+      {
+         wxRect frame(
+            xStart,y-yFrameHeight/2,
+            xWidth,yFrameHeight );
+         dc.DrawRectangle(frame);
+         // Now draw the text itself.
+         dc.DrawText(title, xText, y-LabelTrack::mTextHeight/2);
+      }
+   }
 }
 
 /// Draw calls other functions to draw the LabelTrack.
@@ -981,7 +1027,7 @@ static char *GlyphXpmRegionSpec[] = {
 /// Schematically the glyphs we want will 'look like':
 ///   <O,  O>   and   <O>
 /// for a left boundary to a label, a right boundary and both.
-/// we're create all three glyphs using the one Xpm Spec.
+/// we're creating all three glyphs using the one Xpm Spec.
 ///
 /// When we hover over a glyph we highlight the
 /// inside of either the '<', the 'O' or the '>' or none,
@@ -1001,9 +1047,6 @@ void LabelTrack::CreateCustomGlyphs()
 
    // The glyphs are declared static wxIcon; so we only need
    // to create them once, no matter how many LabelTracks.
-   // July 2004 - Audacity doesn't really support multiple
-   // LabelTracks yet.  TODO: fix it so that can have more
-   // than one.
    if( mbGlyphsReady )
       return;
 
