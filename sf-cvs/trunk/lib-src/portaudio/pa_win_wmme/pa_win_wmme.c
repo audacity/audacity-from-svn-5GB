@@ -92,10 +92,17 @@ static  gUnderCallbackCounter = 0;
 #define UNDER_SLEEP_AT       (40)
 #define UNDER_SLEEP_FOR      (500)
 #endif
+#ifndef WIN32
 #define PRINT(x) { printf x; fflush(stdout); }
 #define ERR_RPT(x) PRINT(x)
 #define DBUG(x)  /* PRINT(x) */
 #define DBUGX(x) /* PRINT(x) */
+#else
+#define PRINT(x)
+#define ERR_RPT(x)
+#define DBUG(x)
+#define DBUGX(x)
+#endif
 /************************************************* Definitions ********/
 /**************************************************************
  * Structure for internal host specific stream data.
