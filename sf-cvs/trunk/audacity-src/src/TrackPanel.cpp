@@ -422,7 +422,6 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mTrackArtist->SetInset(1, kTopInset + 1, kLeftInset + 2, 1);
 
    mCapturedTrack = NULL;
-
    mPopupMenuTarget = NULL;
 
    mRuler = new AdornedRulerPanel();
@@ -445,8 +444,6 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mZoomEnd = -1;
    mPrevWidth = -1;
    mPrevHeight = -1;
-
-
 }
 
 TrackPanel::~TrackPanel()
@@ -464,6 +461,7 @@ TrackPanel::~TrackPanel()
    delete mPencilCursor;
    delete mSelectCursor;
    delete mEnvelopeCursor;
+   delete mDisabledCursor; // JKC
    delete mSlideCursor;
    delete mResizeCursor;
    delete mSmoothCursor;
