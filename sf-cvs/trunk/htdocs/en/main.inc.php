@@ -34,6 +34,7 @@ $develListStr = "Audacity-Devel List";
 $develNewsStr = "Development News";
 $sourceForgeStr = "SourceForge Project";
 $browseSourceStr = "Browse Source Code";
+$browseDoxygenStr = "Browse Doxygen Documentation";
 $creditsStr = "Credits";
 $sourceStr = "Source Code";
 $macOS9ReqStr = "Requires Mac OS 8.6 or higher";
@@ -54,4 +55,5 @@ $releaseNotesStr = "Release Notes";
 $releaseNotesStr2 = "Release Notes (what's new in this version?)";
 $vstLinksHereStr = "Download VST Plug-ins here:";
 $docsStr = "Download latest documentation";
+$clickEnlargeStr = "(Click on any image to enlarge.)";
 ?>
