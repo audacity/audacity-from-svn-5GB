@@ -4346,7 +4346,10 @@ fi
 
       LIBFLAC_LOCAL_CPPSYMBOLS="USE_LIBFLAC"
 
-      LIBFLAC_LOCAL_CONFIG_SUBDIRS="lib-src/libflac"
+      if test ! -f lib-src/libflac/Makefile ; then
+         LIBFLAC_LOCAL_CONFIG_SUBDIRS="lib-src/libflac"
+      fi
+
       { echo "$as_me:$LINENO: FLAC libraries are available in this source tree" >&5
 echo "$as_me: FLAC libraries are available in this source tree" >&6;}
    else
