@@ -57,6 +57,7 @@
 #include "effects/Effect.h"
 #include "prefs/PrefsDialog.h"
 
+#include <iostream.h>
 
 #define AUDACITY_MENUS_GLOBALS
 #include "Menus.h"
@@ -108,7 +109,8 @@ void AudacityProject::RebuildMenuBar()
    mEffectMenu = new wxMenu();
    mPluginMenu = new wxMenu();
    mHelpMenu = new wxMenu();
-
+   
+ 
    delete mMenuBar->Replace(fileMenu, mFileMenu, _("&File"));
    delete mMenuBar->Replace(editMenu, mEditMenu, _("&Edit"));
    delete mMenuBar->Replace(viewMenu, mViewMenu, _("&View"));
@@ -210,7 +212,9 @@ void AudacityProject::BuildMenuBar()
                           (Effect::GetEffect(fi, false))->GetEffectName());
 
 
-   
+ #if defined __WXGTK__
+
+
    //STM: only put MAX_NUMBER_OF_PLUGINS_IN_MENU in the menu.  If
    //there are more, split into multiple submenus.
 
@@ -253,6 +257,16 @@ void AudacityProject::BuildMenuBar()
 
       }
    }
+
+
+#else
+
+  int numPlugins = Effect::GetNumEffects(true);
+   for (fi = 0; fi < numPlugins; fi++)
+      mPluginMenu->Append(FirstPluginID + fi,
+                          (Effect::GetEffect(fi, true))->GetEffectName());
+#endif
+  
 
 #ifdef __WXMAC__
    wxApp::s_macAboutMenuItemId = AboutID;
@@ -498,8 +512,12 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
                           && nonZeroRegionSelected);
    }
    
+//STM: This makes sub-menus for the plugin menu.  It might only work well
+//on wxGTK, so I'm doing conditional compilation.  
 
-   //Enable/disable the Plugins menu options.
+#if defined __WXGTK__
+
+	//Enable/disable the Plugins menu options.
    int numPlugins = Effect::GetNumEffects(true);
    int numPluginSubMenus = (numPlugins) / MAX_NUMBER_OF_PLUGINS_IN_MENU + 1;
 
@@ -509,8 +527,15 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
                           numWaveTracksSelected > 0
                           && nonZeroRegionSelected);
    }
+#else
+   
+   for (e = 0; e < Effect::GetNumEffects(true); e++) {
+      mPluginMenu->Enable(FirstPluginID + e,
+                          numWaveTracksSelected > 0
+                          && nonZeroRegionSelected);
+   }
 
-
+#endif
 
    //Now, go through each toolbar, and and call EnableDisableButtons()
    unsigned int i;
