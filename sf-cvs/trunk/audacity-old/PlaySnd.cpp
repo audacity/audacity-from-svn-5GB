@@ -86,18 +86,17 @@ bool SoundPlayer::Begin(WaveTrack *track, double t0, double t1)
 	track->Get(buffer, s0, len);
 
 	int rslt;
-	int buflen = (int)len*sizeof(sampleType);
-	void *buf = (void *)buffer;
-	while (buflen) {
+	int p=0;
+	while (p < len) {
 		/* this loop is a busy-wait loop! */
 		rslt = snd_poll(&out); /* wait for buffer space */
-		rslt = min(rslt, buflen);
+		rslt = min(rslt, len - p);
 		if (rslt) {
-			snd_write(&out, buf, rslt);
-			buf = (void *) ((char *) buf + rslt);
-			buflen -= rslt;
+			snd_write(&out, &buffer[p], rslt);
+			p += rslt;
 		}
     }
+	
 	while(snd_flush(&out) != SND_SUCCESS)
 	{
 		// wait until it finishes...

@@ -302,6 +302,14 @@ SOURCE=.\res\audacity.rc
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\AudacityLogo.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\AudacitySmall.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\AudioApp.cpp
 # End Source File
 # Begin Source File
@@ -342,11 +350,23 @@ SOURCE=.\AutoCorrelate.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\blank.cur
+# End Source File
+# Begin Source File
+
 SOURCE=.\BlockFile.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\BlockFile.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\bullseye.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\cross.bmp
 # End Source File
 # Begin Source File
 
@@ -363,6 +383,14 @@ SOURCE=.\DirManager.cpp
 # Begin Source File
 
 SOURCE=.\DirManager.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\disable.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\error.ico
 # End Source File
 # Begin Source File
 
@@ -398,6 +426,10 @@ SOURCE=.\GenericStream.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\hand.cur
+# End Source File
+# Begin Source File
+
 SOURCE=.\Import.cpp
 # End Source File
 # Begin Source File
@@ -430,6 +462,10 @@ SOURCE=.\ImportRaw.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\info.ico
+# End Source File
+# Begin Source File
+
 SOURCE=.\LabelTrack.cpp
 # End Source File
 # Begin Source File
@@ -454,6 +490,10 @@ SOURCE=.\Mix.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\noentry.cur
+# End Source File
+# Begin Source File
+
 SOURCE=.\NoteTrack.cpp
 # End Source File
 # Begin Source File
@@ -462,11 +502,19 @@ SOURCE=.\NoteTrack.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\pbrush.cur
+# End Source File
+# Begin Source File
+
 SOURCE=.\Peak.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\Peak.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\pencil.cur
 # End Source File
 # Begin Source File
 
@@ -490,11 +538,51 @@ SOURCE=.\PlaySnd.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\plot_dwn.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\plot_zot.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\pntleft.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\pntright.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\query.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\question.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\roller.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\size.cur
+# End Source File
+# Begin Source File
+
 SOURCE=.\Spectrum.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\Spectrum.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\tick.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\tip.ico
 # End Source File
 # Begin Source File
 
@@ -511,6 +599,14 @@ SOURCE=.\UndoManager.cpp
 # Begin Source File
 
 SOURCE=.\UndoManager.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\warning.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\watch1.cur
 # End Source File
 # Begin Source File
 
