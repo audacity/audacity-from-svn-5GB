@@ -107,8 +107,8 @@ PrefsPanel(parent)
    AddItem( _("Right Click"),      _("Multi"),     _("Same as zoom tool") );
    AddItem( _("Right Drag"),       _("Multi"),     _("Same as zoom tool") );
 
-   AddItem( _("Wheel-Rotate"),     _("Any"),       _("Zoom in or out") );
-   AddItem( _("Ctrl-Wheel-Rotate"),_("Any"),       _("Scroll Left or Right") );
+   AddItem( _("Wheel-Rotate"),     _("Any"),       _("Scroll up or down") );
+   AddItem( _("Ctrl-Wheel-Rotate"),_("Any"),       _("Zoom in or out") );
 
    mList->SetColumnWidth( BlankColumn,  0 ); // First column width is zero, to hide it.
    mList->SetColumnWidth( ToolColumn,   wxLIST_AUTOSIZE );
