@@ -39,7 +39,8 @@ public:
          // These have no significance, it's just random data
          int16Data[i] = (i*i);
          int24Data[i] = (i*i*i) & 0x00FFFFFF;
-         floatData[i] = (float)i/((i*i)+1);
+         float j = (float) i;
+         floatData[i] = j/((j*j)+1);
       }
 
       int16BlockFile = new SimpleBlockFile(wxFileName("/tmp/int16"),
@@ -97,7 +98,7 @@ public:
       for( int i = 0; i < len; i++ )
           if( b1[i] != b2[i] )
           {
-              std::cout << b1[i] << " != " << b2[i] << "(i=" << i << ")" << std::endl;
+              std::cout << b1[i] << " != " << b2[i] << " (i=" << i << ")" << std::endl;
               assert(false);
           }
    }
