@@ -91,7 +91,7 @@ void AudacityProject::CreateMenuBar()
    mEditMenu = new wxMenu();
    mViewMenu = new wxMenu();
    mProjectMenu = new wxMenu();
-   mInsertMenu = new wxMenu();
+   mGenerateMenu = new wxMenu();
    mEffectMenu = new wxMenu();
    mAnalyzeMenu = new wxMenu();
    mHelpMenu = new wxMenu();
@@ -100,7 +100,7 @@ void AudacityProject::CreateMenuBar()
    mMenuBar->Append(mEditMenu, _("&Edit"));
    mMenuBar->Append(mViewMenu, _("&View"));
    mMenuBar->Append(mProjectMenu, _("&Project"));
-   mMenuBar->Append(mInsertMenu, _("&Insert"));
+   mMenuBar->Append(mGenerateMenu, _("&Generate"));
    mMenuBar->Append(mEffectMenu, _("Effec&t"));
    mMenuBar->Append(mAnalyzeMenu, _("&Analyze"));
    mMenuBar->Append(mHelpMenu, _("&Help"));
@@ -258,19 +258,19 @@ void AudacityProject::BuildMenuBar()
    //insert silence menu option is selected
    mInsertSilenceAmount = 1.0;
 
-   if (mInsertMenu->GetMenuItemCount() > 0)
+   if (mGenerateMenu->GetMenuItemCount() > 0)
       return;
 
    EffectArray *effs;
 
    effs = Effect::GetEffects(BUILTIN_EFFECT | INSERT_EFFECT);
-   AppendEffects(effs, mInsertMenu, false);
+   AppendEffects(effs, mGenerateMenu, false);
    delete effs;
 
    effs = Effect::GetEffects(PLUGIN_EFFECT | INSERT_EFFECT);
    if (effs->GetCount() > 0) {
-      mInsertMenu->AppendSeparator();
-      AppendEffects(effs, mInsertMenu, true);
+      mGenerateMenu->AppendSeparator();
+      AppendEffects(effs, mGenerateMenu, true);
    }
    delete effs;
 
@@ -593,8 +593,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 
    effs = Effect::GetEffects(BUILTIN_EFFECT | PLUGIN_EFFECT | INSERT_EFFECT);
    for(e=0; e<effs->GetCount(); e++)
-      mInsertMenu->Enable(FirstEffectID + (*effs)[e]->GetID(),
-                          numWaveTracksSelected > 0);
+      mGenerateMenu->Enable(FirstEffectID + (*effs)[e]->GetID(),
+                            numWaveTracksSelected > 0);
    delete effs;
 
    effs = Effect::GetEffects(BUILTIN_EFFECT | PLUGIN_EFFECT | PROCESS_EFFECT);

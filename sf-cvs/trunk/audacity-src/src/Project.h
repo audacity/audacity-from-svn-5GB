@@ -249,7 +249,7 @@ class AudacityProject:public wxFrame,
    wxMenu *mViewMenu;
    wxMenu *mProjectMenu;
    wxMenu *mTrackMenu;
-   wxMenu *mInsertMenu;
+   wxMenu *mGenerateMenu;
    wxMenu *mEffectMenu;
    wxMenu *mAnalyzeMenu;
    wxMenu *mHelpMenu;
