@@ -25,6 +25,7 @@
 #include <wx/button.h>
 #include <wx/utils.h>
 #include <wx/sizer.h>
+#include <wx/intl.h>
 
 #include "../Prefs.h"
 #include "AudioIOPrefs.h"
@@ -55,7 +56,7 @@ PrefsPanel(parent)
    topSizer = new wxStaticBoxSizer(
       new wxStaticBox(this,
                       -1,
-                     "Audio I/O Settings"),
+                     _("Audio I/O Settings")),
       wxVERTICAL);
 
    //
@@ -64,7 +65,7 @@ PrefsPanel(parent)
 
    wxStaticBoxSizer *playbackSizer =
       new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, "Playback Device"),
+         new wxStaticBox(this, -1, _("Playback Device")),
             wxVERTICAL);
 
    wxBoxSizer *pFileSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -97,7 +98,7 @@ PrefsPanel(parent)
    mPlayChoice->SetSelection(playIndex+1);
 
    pFileSizer->Add(
-      new wxStaticText(this, -1, "Device:"), 0, 
+      new wxStaticText(this, -1, _("Device:")), 0, 
       wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
    pFileSizer->Add(mPlayChoice, 1, 
@@ -114,7 +115,7 @@ PrefsPanel(parent)
 
    wxStaticBoxSizer *recordingSizer =
       new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, "Recording Device"),
+         new wxStaticBox(this, -1, _("Recording Device")),
             wxVERTICAL);
 
    wxBoxSizer *rFileSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -146,7 +147,7 @@ PrefsPanel(parent)
    mRecChoice->SetSelection(recIndex+1);
 
    rFileSizer->Add(
-      new wxStaticText(this, -1, "Device:"), 0, 
+      new wxStaticText(this, -1, _("Device:")), 0, 
       wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
    rFileSizer->Add(mRecChoice, 1, 
@@ -157,12 +158,12 @@ PrefsPanel(parent)
 
    topSizer->Add(recordingSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
 
-   mRecordStereo = new wxCheckBox(this, -1, "Record in Stereo");
+   mRecordStereo = new wxCheckBox(this, -1, _("Record in Stereo"));
    mRecordStereo->SetValue(recordStereo);
    topSizer->Add(mRecordStereo, 0, wxGROW|wxALL, 2);
 
    mDuplex = new wxCheckBox(this, -1,
-                            "Play other tracks while recording new one");
+                            _("Play other tracks while recording new one"));
    mDuplex->SetValue(duplex);
    topSizer->Add(mDuplex, 0, wxGROW|wxALL, 2);
 

@@ -40,14 +40,15 @@ $(POTFILE):
 	find ../src -name "*.cpp" \
 		| $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o $(POTFILE)
 
-allpo: force-update
+allpo: update
 	@for t in $(WX_LINGUAS); do $(MAKE) $$t.po; done
 
 allmo:
 	@for t in $(WX_LINGUAS); do $(MAKE) $$t.mo; done
 
-force-update:
+update:
 	$(RM) $(POTFILE)
+	$(MAKE) $(POTFILE)
 
 # targets depending on this one will be always remade
 FORCE:

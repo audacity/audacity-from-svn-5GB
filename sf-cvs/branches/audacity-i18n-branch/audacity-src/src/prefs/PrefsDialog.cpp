@@ -14,6 +14,7 @@
 #include <wx/listbox.h>
 #include <wx/font.h>
 #include <wx/msgdlg.h>
+#include <wx/intl.h>
 
 #include "../Prefs.h"
 
@@ -39,7 +40,7 @@ END_EVENT_TABLE()
 
 
 PrefsDialog::PrefsDialog(wxWindow * parent):
-wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
+wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
          wxDefaultSize, wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
 {
    CentreOnParent();
@@ -62,11 +63,11 @@ wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
    topSizer->Add(catSizer, 1, wxGROW | wxALL, 0);
 
    /* All panel additions belong here */
-   mCategories->AddPage(new AudioIOPrefs(mCategories), "Audio I/O");
-   mCategories->AddPage(new SampleRatePrefs(mCategories), "Sample Rates");
-   mCategories->AddPage(new FileFormatPrefs(mCategories), "File Formats");
-   mCategories->AddPage(new SpectrumPrefs(mCategories), "Spectrograms");
-   mCategories->AddPage(new DirectoriesPrefs(mCategories), "Directories");
+   mCategories->AddPage(new AudioIOPrefs(mCategories), _("Audio I/O"));
+   mCategories->AddPage(new SampleRatePrefs(mCategories), _("Sample Rates"));
+   mCategories->AddPage(new FileFormatPrefs(mCategories), _("File Formats"));
+   mCategories->AddPage(new SpectrumPrefs(mCategories), _("Spectrograms"));
+   mCategories->AddPage(new DirectoriesPrefs(mCategories), _("Directories"));
 
    long selected = gPrefs->Read("/Prefs/PrefsCategory", 0L);
    if (selected < 0 || selected >= mCategories->GetPageCount())
@@ -75,7 +76,7 @@ wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
    mCategories->SetSelection(selected);
 
    mOK = new wxButton(this,
-                      wxID_OK, "OK");
+                      wxID_OK, _("OK"));
 
 #ifndef TARGET_CARBON
    mOK->SetDefault();
@@ -84,7 +85,7 @@ wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
 
    mCancel = new wxButton(this,
                           wxID_CANCEL,
-                          "Cancel");
+                          _("Cancel"));
 
    wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -157,6 +158,6 @@ void PrefsDialog::SelectPageByName(wxString pageName)
 
 void PrefsDialog::ShowTempDirPage()
 {
-   SelectPageByName("Directories");   
+   SelectPageByName(_("Directories"));   
 }
 
