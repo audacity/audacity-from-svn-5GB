@@ -108,104 +108,108 @@ void SoundPlayer::OnTimer()
 	return;
   }
 
-  if (mTicks == 0 && mT<mT1) {
-
-	// Fill buffer with data just once a second
-
-	double deltat = 1.0;
-	if (mT + deltat > mT1)
-	  deltat = mT1 - mT;
-
-	int maxFrames = int(mProject->GetRate() * deltat);
-	int block = snd_poll(&mAudioOut);
-
-	#ifdef __WXGTK__
-	// snd for Linux is not written yet...
-	block = 44100;
-	#endif
-
-	if (block > maxFrames)
-	  block = maxFrames;
-
-	if (block == 0) {
-	  if (mT >= mT1)
-		Finish();
-	  mTicks = (mTicks+1)%10;
-	  return;
-	}
-	
-	int i;
-
-	sampleType *stereo = new sampleType[2*block];
-	for(i=0; i<2*block; i++)
-	  stereo[i] = 0;
-
-	sampleType *temp = new sampleType[block];
-
-	//printf("Block: %d samples\n", block);
-
-	VTrack *vt = mTracks->First();
-	while(vt) {
-	  if (vt->GetKind() == VTrack::Wave) {
-		WaveTrack *t = (WaveTrack *)vt;
-
-		//printf("Track: numSamples %d\n", t->numSamples);
-
-		double t0 = mT - t->tOffset;
-		double t1 = (mT + deltat) - t->tOffset;
-
-		if (t0 < t->numSamples*t->rate && t1 > 0) {
-		  int s0 = int(t0*t->rate);
-		  int s1 = int(t1*t->rate);
-		  int slen = s1 - s0;
-		  int soffset = 0;
-		  if (s0 < 0) {
-			soffset = -s0;
-			slen -= soffset;
-			s0 = 0;
-		  }
-		  if (s1 > t->numSamples) {
-			slen -= (s1 - t->numSamples);
-			s1 = t->numSamples;
-		  }
-
-		  //printf("soffset %d, s0 %d, slen %d\n",
-		  //		 soffset, s0, slen);
-		  t->Get(&temp[soffset], (sampleCount)s0, (sampleCount)slen);
-
-		  if (t->channel == VTrack::LeftChannel ||
-			  t->channel == VTrack::MonoChannel) {
-			for(i=0; i<slen; i++)
-			  stereo[2*(i+soffset)] += temp[(i+soffset)];
-		  }
-
-		  if (t->channel == VTrack::RightChannel ||
-			  t->channel == VTrack::MonoChannel) {
-			for(i=0; i<slen; i++)
-			  stereo[2*(i+soffset)+1] += temp[(i+soffset)];
-		  }
-
-		}
-	  }
-
-	  vt = mTracks->Next();
-	}
-
-	snd_write(&mAudioOut, stereo, block);
-	//printf("Wrote %d bytes\n", block);
-
-	delete[] temp;
-	delete[] stereo;
-
-	mT += deltat;
+  if (mT>=mT1) {
+      if (snd_flush(&mAudioOut) == SND_SUCCESS) {
+        Finish();
+        return;
+      }
   }
 
-  printf("mT %lf mT1 %lf\n", mT, mT1);
+  // TODO: Don't fill the buffer with more data every time
+  // timer is called
 
-  if (mT >= mT1)
-	Finish();
+    double deltat = 1.0;
+    if (mT + deltat > mT1)
+      deltat = mT1 - mT;
 
-  mTicks = (mTicks+1)%10;
+    int maxFrames = int(mProject->GetRate() * deltat);
+    int block = snd_poll(&mAudioOut);
+
+    #ifdef __WXGTK__
+    // snd for Linux is not written yet...
+    block = 44100;
+    #endif
+
+    if (block > maxFrames)
+      block = maxFrames;
+
+    if (block == 0) {
+      return;
+    }
+
+    float vol = gAPalette->GetSoundVol();
+
+    int i;
+
+    // TODO: we have a buffer overrun somewhere, and if you
+    // don't double the size of both of these buffers, it
+    // crashes.  The "*2" at the end of both of these shouldn't
+    // be there.
+
+    sampleType *stereo = new sampleType[2*block  *2]; // temp
+    for(i=0; i<2*block; i++)
+      stereo[i] = 0;
+
+    sampleType *temp = new sampleType[block  *2]; // temp
+
+    //printf("Block: %d samples\n", block);
+
+    VTrack *vt = mTracks->First();
+    while(vt) {
+      if (vt->GetKind() == VTrack::Wave) {
+	    WaveTrack *t = (WaveTrack *)vt;
+
+	    //printf("Track: numSamples %d\n", t->numSamples);
+
+	    double t0 = mT - t->tOffset;
+	    double t1 = (mT + deltat) - t->tOffset;
+
+	    if (t0 < t->numSamples/t->rate && t1 > 0) {
+	      int s0 = int(t0*t->rate);
+	      int s1 = int(t1*t->rate);
+	      int slen = s1 - s0;
+	      int soffset = 0;
+	      if (s0 < 0) {
+		    soffset = -s0;
+		    slen -= soffset;
+		    s0 = 0;
+	      }
+	      if (s1 > (int)t->numSamples) {
+		    slen -= (s1 - t->numSamples);
+		    s1 = t->numSamples;
+	      }
+
+          if (slen > 0) {
+	          //printf("soffset %d, s0 %d, slen %d\n",
+	          //		 soffset, s0, slen);
+	          t->Get(&temp[soffset], (sampleCount)s0, (sampleCount)slen);
+
+	          if (t->channel == VTrack::LeftChannel ||
+		          t->channel == VTrack::MonoChannel) {
+		        for(i=0; i<slen; i++)
+		          stereo[2*(i+soffset)] += sampleType(vol * temp[(i+soffset)]);
+	          }
+
+	          if (t->channel == VTrack::RightChannel ||
+		          t->channel == VTrack::MonoChannel) {
+		        for(i=0; i<slen; i++)
+		          stereo[2*(i+soffset)+1] += sampleType(vol * temp[(i+soffset)]);
+	          }
+          }
+
+	    }
+      }
+
+      vt = mTracks->Next();
+    }
+
+    snd_write(&mAudioOut, stereo, block);
+    //printf("Wrote %d bytes\n", block);
+
+    delete[] temp;
+    delete[] stereo;
+
+    mT += deltat;
 }
 
 void SoundPlayer::Stop()
