@@ -114,14 +114,14 @@ bool EffectFilter::ProcessOne(int count, WaveTrack * track,
    for(i=0; i<windowSize; i++)
       lastWindow[i] = 0;
    
-   while(s < len&&((len-s)!=(windowSize/2))) {
+   while((s < len) && ((len-s)>(windowSize/2))) {
       sampleCount block = idealBlockLen;
       if (s + block > len)
          block = len - s;
       
       track->Get((samplePtr) buffer, floatSample, start + s, block);
       
-      for(i=0; i<block; i+=windowSize/2) {
+      for(i=0; i<(block-windowSize/2); i+=windowSize/2) {
          int wcopy = windowSize;
          if (i + wcopy > block)
             wcopy = block - i;
@@ -142,8 +142,9 @@ bool EffectFilter::ProcessOne(int count, WaveTrack * track,
          lastWindow = tempP;
       }
       
-      if (len > block && len > windowSize/2)
-         block -= windowSize/2;
+      // Shift by half-a-window less than the block size we loaded
+      // (so that the blocks properly overlap)
+      block -= windowSize/2;
       
       track->Set((samplePtr) buffer, floatSample, start + s, block);
       
@@ -173,7 +174,7 @@ void EffectFilter::Filter(sampleCount len,
       inr[i] = buffer[i];
 
    // Apply window and FFT
-   WindowFunc(3, len, inr); // Hanning window
+   /* WindowFunc(3, len, inr); // Hanning window */
    FFT(len, false, inr, NULL, outr, outi);
    
    // Apply filter
@@ -192,6 +193,7 @@ void EffectFilter::Filter(sampleCount len,
 
    // Inverse FFT and normalization
    FFT(len, true, outr, outi, inr, ini);
+   WindowFunc(3, len, inr); // Hanning window */
    
    for(i=0; i<len; i++)
       buffer[i] = float(inr[i]);
