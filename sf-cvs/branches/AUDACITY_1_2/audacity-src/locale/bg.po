@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Bulgarian langiage file for the Audacity sound editor
+# Copyright (C) 2001-2004 Free Software Foundation, Inc.
+# Maintainer: Mikhail Balabanov <mishob@abv.bg>
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacity 1.1\n"
+"Project-Id-Version: Audacity 1.2\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2004-02-14 15:52+0200\n"
-"Last-Translator: Mikhail Balabanov <mishob@hotmail.com>\n"
-"Language-Team: Bulgarian <mishob@hotmail.com>\n"
+"PO-Revision-Date: 2004-02-20 20:30+0200\n"
+"Last-Translator: Mikhail Balabanov <mishob@abv.bg>\n"
+"Language-Team: Bulgarian <mishob@abv.bg>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=windows-1251\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -36,7 +36,7 @@ msgstr " прозорец"
 #: ../src/import/ImportRaw.cpp:336
 #, c-format
 msgid "%d Channels"
-msgstr "% канала"
+msgstr "%d канала"
 
 #: ../src/effects/Repeat.cpp:282
 #, c-format
@@ -1272,7 +1272,7 @@ msgstr "Курсор: %i:%09.6f мин:с  %s"
 #: ../src/FormatSelection.cpp:673
 #, c-format
 msgid "Cursor: %i:%09.6lf min:sec   [Snap-To Samples]"
-msgstr "Курсор: %i:%09.6f мин:с   [точност до отчет]"
+msgstr "Курсор: %i:%09.6lf мин:с   [точност до отчет]"
 
 #: ../src/FormatSelection.cpp:185
 #, c-format
@@ -2775,12 +2775,12 @@ msgstr "Възпроизвеждане на писта, която се записва в момента"
 #: ../src/commands/CommandManager.cpp:335
 #, c-format
 msgid "Plugins %i to %i"
-msgstr "Приставки %d - %d"
+msgstr "Приставки %i - %i"
 
 #: ../src/commands/CommandManager.cpp:321
 #, c-format
 msgid "Plugins 1 to %i"
-msgstr "Приставки 1 - %d"
+msgstr "Приставки 1 - %i"
 
 #: ../src/effects/Equalization.cpp:706
 msgid "Predefined:"
