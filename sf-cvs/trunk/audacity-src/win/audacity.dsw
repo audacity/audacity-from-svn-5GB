@@ -204,7 +204,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "soundtouch"="..\LIB-SRC\SOUNDTOUCH\WIN\soundtouch\soundtouch.dsp" - Package Owner=<4>
+Project: "soundtouch"="..\LIB-SRC\SOUNDTOUCH\WIN\soundtouch.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
