@@ -54,16 +54,28 @@ Package=<4>
     Project_Dep_Name libflac
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name soundtouch
+    Project_Dep_Name libresample
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name libresample
+    Project_Dep_Name SoundTouch
     End Project Dependency
 }}}
 
 ###############################################################################
 
 Project: "PAStaticWMME"="..\lib-src\portaudio\winproj\PAStaticWMME\PAStaticWMME.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SoundTouch"="..\lib-src\soundtouch\source\SoundTouch\SoundTouch.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -159,7 +171,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "libresample"="..\lib-src\libresample\win\libresample\libresample.dsp" - Package Owner=<4>
+Project: "libresample"="..\lib-src\libresample\win\libresample.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -208,18 +220,6 @@ Package=<4>
 ###############################################################################
 
 Project: "portmixer"="..\lib-src\portmixer\winproj\portmixer.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "soundtouch"="..\LIB-SRC\SOUNDTOUCH\WIN\soundtouch.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
