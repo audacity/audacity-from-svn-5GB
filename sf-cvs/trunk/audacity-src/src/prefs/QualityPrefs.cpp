@@ -107,6 +107,7 @@ PrefsPanel(parent)
       mOtherSampleRate->Enable(pos == (int)sampleRates.GetCount() + 1);
 
       topSizer->Add( mOtherSampleRate, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
+      delete[] stringRates;
    }
 
     wxBoxSizer *top2Sizer = new wxBoxSizer( wxHORIZONTAL );
@@ -217,6 +218,7 @@ PrefsPanel(parent)
    outSizer->Fit(this);
    outSizer->SetSizeHints(this);
    SetSizer(outSizer);
+
 }
 
 bool QualityPrefs::Apply()

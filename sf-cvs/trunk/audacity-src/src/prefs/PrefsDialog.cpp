@@ -77,7 +77,6 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    topSizer->Add(catSizer, 1, wxGROW | wxALL, 0);
 
    /* All panel additions belong here */
-   // April/2003:  Of these, the Audio IO and FileFormat pages leak memory.
    mCategories->AddPage(new AudioIOPrefs(mCategories), _("Audio I/O"));
    mCategories->AddPage(new QualityPrefs(mCategories), _("Quality"));
    mCategories->AddPage(new FileFormatPrefs(mCategories), _("File Formats"));
