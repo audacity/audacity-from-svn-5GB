@@ -1068,9 +1068,6 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
 
    double t0 = (tpre >= 0.0 ? tpre : 0.0);
 
-   if (tpre >= (double) numSamples / (double) rate)
-      return;
-
    int ssel0 = (int) ((sel0 - tOffset) * rate + 0.5);
    int ssel1 = (int) ((sel1 - tOffset) * rate + 0.5);
 
