@@ -250,6 +250,10 @@ RepeatDialog::RepeatDialog(wxWindow *parent, wxWindowID id,
 
 void RepeatDialog::OnRepeatTextChange(wxCommandEvent & event)
 {
+   // We may even get called during the constructor.
+   // This test saves us from calling unsafe functions.
+   if( !IsShown() )
+      return;
    TransferDataFromWindow();
 
    DisplayNewTime();
