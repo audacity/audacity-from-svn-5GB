@@ -32,6 +32,7 @@
 #ifdef __WXMSW__
 #endif
 
+#include "AboutDialog.h"
 #include "AudacityApp.h"
 #include "AButton.h"
 #include "ASlider.h"
@@ -52,6 +53,11 @@
 #include "effects/Phaser.h"
 #include "effects/Reverse.h"
 #include "effects/Wahwah.h"
+#include "prefs/PrefsDialog.h"
+
+#define AUDACITY_MENUS_ENUM
+#include "Menus.h"
+#undef AUDACITY_MENUS_ENUM
 
 #ifdef __WXMAC__
 #include "effects/LoadVSTMac.h"
@@ -106,6 +112,15 @@ void QuitAudacity()
 }
 
 IMPLEMENT_APP(AudacityApp)
+
+BEGIN_EVENT_TABLE(AudacityApp, wxApp)
+EVT_MENU(AboutID, AudacityApp::OnMenuAbout)
+EVT_MENU(NewID, AudacityApp::OnMenuNew)
+EVT_MENU(OpenID, AudacityApp::OnMenuOpen)
+EVT_MENU(PreferencesID, AudacityApp::OnMenuPreferences)
+EVT_MENU(ExitID, AudacityApp::OnMenuExit)
+END_EVENT_TABLE()
+
 #if defined(__WXMAC__)
 
 wxString wxMacFSSpec2MacFilename( const FSSpec *spec ) ;
@@ -200,6 +215,29 @@ bool AudacityApp::OnInit()
 
    InitPreferences();
    InitAudioIO();
+
+#ifdef __WXMAC__
+   gParentFrame = new wxFrame(NULL, -1, "invisible", wxPoint(5000, 5000), wxSize(100, 100));
+   wxMenu *fileMenu = new wxMenu();
+   fileMenu->Append(NewID, "&New\tCtrl+N");
+   fileMenu->Append(OpenID, "&Open...\tCtrl+O");
+   fileMenu->AppendSeparator();
+   fileMenu->Append(PreferencesID, "&Preferences...\tCtrl+P");
+   fileMenu->AppendSeparator();
+   fileMenu->Append(ExitID, "Quit\tCtrl+Q");
+   wxMenu *helpMenu = new wxMenu();
+   helpMenu->Append(AboutID, "About Audacity...");
+   wxApp::s_macAboutMenuItemId = AboutID;
+   
+   wxMenuBar *menuBar = new wxMenuBar();
+   menuBar->Append(fileMenu, "&File");
+   menuBar->Append(helpMenu, "&Help");
+   
+   gParentFrame->SetMenuBar(menuBar);
+   gParentFrame->Show();
+   
+   SetTopWindow(gParentFrame);
+#endif
 
    Effect::RegisterEffect(new EffectAmplify());
    Effect::RegisterEffect(new EffectBassBoost());
@@ -310,6 +348,63 @@ bool AudacityApp::OnInit()
    return TRUE;
 }
 
+void AudacityApp::OnMenuAbout(wxCommandEvent & event)
+{
+   AboutDialog dlog(NULL);
+   dlog.ShowModal();
+}
+
+void AudacityApp::OnMenuNew(wxCommandEvent & event)
+{
+   CreateNewAudacityProject(gParentWindow);
+}
+
+void AudacityApp::OnMenuOpen(wxCommandEvent & event)
+{
+   wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
+
+   wxString fileName = wxFileSelector("Select an audio file...",
+                                      path,     // Path
+                                      "",       // Name
+                                      "",       // Extension
+                                      "All files (*.*)|*.*|"
+                                      "Audacity projects (*.aup)|*.aup|"
+                                      "WAV files (*.wav)|*.wav|"
+                                      "AIFF files (*.aif)|*.aif|"
+                                      "AU files (*.au)|*.au|"
+                                      "IRCAM files (*.snd)|*.snd|"
+                                      "MP3 files (*.mp3)|*.mp3",
+                                      0,        // Flags
+                                      NULL);    // Parent
+
+   if (fileName != "") {
+
+      path =::wxPathOnly(fileName);
+      gPrefs->Write("/DefaultOpenPath", path);
+
+      // Make sure it isn't already open
+      int numProjects = gAudacityProjects.Count();
+      for (int i = 0; i < numProjects; i++)
+         if (gAudacityProjects[i]->mFileName == fileName) {
+            wxMessageBox("That project is already open in another window.");
+            return;
+         }
+
+      AudacityProject *project = CreateNewAudacityProject(gParentWindow);
+      project->OpenFile(fileName);
+   }
+}
+
+void AudacityApp::OnMenuPreferences(wxCommandEvent & event)
+{
+   PrefsDialog dialog(NULL /* parent */ );
+   dialog.ShowModal();
+}
+
+void AudacityApp::OnMenuExit(wxCommandEvent & event)
+{
+   QuitAudacity();
+}
 
 int AudacityApp::OnExit() {
    while (Pending())
