@@ -427,16 +427,13 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    float *min=NULL, *max=NULL, *rms=NULL;
    sampleCount *where = NULL;
 
-   //STM:  Not sure what this does. Something gets drawn in red, but I don't see it.
    if (mid.width > 0) {
-      dc.SetPen(*wxRED_PEN);
-      dc.DrawLine(mid.x, ctr, mid.x + mid.width, ctr);
 
       min = new float[mid.width];
       max = new float[mid.width];
       rms = new float[mid.width];
       where = new sampleCount[mid.width+1];
-      
+
       //If there is nothing within these regions, clean up and bail out.  Otherwise, my
       //variables should be filled up with the appropriate numbers.
       if (!track->GetWaveDisplay(min, max, rms, where,
@@ -465,6 +462,8 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    bool usingSelPen = false;
    dc.SetPen(unselectedPen);
 
+   int quarterHeight = r.height/4;
+   int lowerLimit;
    for (x = 0; x < mid.width; x++) {
 
       bool sel = false;
@@ -477,9 +476,43 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
          dc.SetPen(unselectedPen);
       usingSelPen = sel;
 
-      dc.DrawLine(mid.x + x, ctr - heights[x], mid.x + x,
+      //JKC: Now draw the envelope background (for this x)
+      //The lower limit gives us a second 'envelope'
+      //boundary inside the first one.  
+      //The visual of a second boundary means we still know 
+      //how wide the envelope is even when it is being used
+      //to amplify and it is wider than the panel is.
+      //If people like this visual cue we can perhaps build
+      //drag-to-amplify functionality on to it.
+      lowerLimit = heights[x]-quarterHeight;
+      if((drawEnvelope) && ( lowerLimit > 0 ))
+      {
+         //Draw envelope with an inner envelope boundary.
+         //(Uses the existing track background for central part)
+         dc.DrawLine(mid.x + x, ctr - heights[x], mid.x + x,
+                  ctr - lowerLimit);
+         dc.DrawLine(mid.x + x, ctr + heights[x], mid.x + x,
+                  ctr + lowerLimit);
+      }
+      else
+      {
+         //Original draw envelope code for when no inner 
+         //boundary is visible.
+         dc.DrawLine(mid.x + x, ctr - heights[x], mid.x + x,
                   ctr + heights[x]);
+      }
    }
+
+   //Draw the center line in red.
+   //Disabled until someone
+   // a) makes center line an option and 
+   // b) gives configurable color for it.
+#if 0
+   if (mid.width > 0) {
+      dc.SetPen(*wxRED_PEN);
+      dc.DrawLine(mid.x, ctr, mid.x + mid.width, ctr);
+   }
+#endif
 
    // Draw samples
    dc.SetPen(samplePen);
