@@ -4340,9 +4340,9 @@ echo "$as_me: Libsndfile libraries are NOT available as system libraries" >&6;}
    fi
 
 
-   as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/libsndfile/src/sndfile.h" | $as_tr_sh`
-echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libsndfile/src/sndfile.h" >&5
-echo $ECHO_N "checking for ${srcdir}/lib-src/libsndfile/src/sndfile.h... $ECHO_C" >&6
+   as_ac_File=`echo "ac_cv_file_${srcdir}/lib-src/libsndfile/src/sndfile.h.in" | $as_tr_sh`
+echo "$as_me:$LINENO: checking for ${srcdir}/lib-src/libsndfile/src/sndfile.h.in" >&5
+echo $ECHO_N "checking for ${srcdir}/lib-src/libsndfile/src/sndfile.h.in... $ECHO_C" >&6
 if eval "test \"\${$as_ac_File+set}\" = set"; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
@@ -4350,7 +4350,7 @@ else
   { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
 echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
    { (exit 1); exit 1; }; }
-if test -r "${srcdir}/lib-src/libsndfile/src/sndfile.h"; then
+if test -r "${srcdir}/lib-src/libsndfile/src/sndfile.h.in"; then
   eval "$as_ac_File=yes"
 else
   eval "$as_ac_File=no"
@@ -4359,13 +4359,13 @@ fi
 echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_File'}'`" >&5
 echo "${ECHO_T}`eval echo '${'$as_ac_File'}'`" >&6
 if test `eval echo '${'$as_ac_File'}'` = yes; then
-  libsndfile_h_found="yes"
+  libsndfile_found="yes"
 else
-  libsndfile_h_found="no"
+  libsndfile_found="no"
 fi
 
 
-   if test $libsndfile_h_found = yes ; then
+   if test $libsndfile_found = yes ; then
       LIBSNDFILE_LOCAL_AVAILABLE="yes"
       LIBSNDFILE_LOCAL_LIBS="libsndfile.a"
       LIBSNDFILE_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libsndfile/src'
