@@ -127,6 +127,17 @@ Future:
 - discontiguous selection
 - visualization window: VU meters, equalizer, continuous waveform, oscilloscope
 - Scrubbing
+- Mouse scroller should vertically scroll project
+- Delete key should be permanently mapped on to the delete operation
+- User-adjustable fonts so I don't have to recompile just to get the
+  ruler looking decent and the track label fitting.
+- Export menu options changed to generic "Export as..." and   "Export selection as..." leading to a format selection dialog.
+  (ogg/mp3/flac/wav/etc.)
+- A way to use the envelope tool to amplify (I have no clue
+  how this would work).
+- a way to manually manipulate individual samples (e.g., a new tool mode
+  or a keyboard modifier that allows you to grab a sample and drag it to
+  the spot you really want it at)
 
 Low level issues::
 - support multi-track I/O
