@@ -14,8 +14,9 @@
 
   BoxTop($betaVersionsStr);
 ?>
-<?php /* include GetTranslation("beta-redirect"); */ ?>
+<?php include GetTranslation("beta-redirect"); ?>
 
+<?php /*
 <?php include GetTranslation("beta-about"); ?>
 
 <h3><?php print $downloadSectionStr; ?></h3>
