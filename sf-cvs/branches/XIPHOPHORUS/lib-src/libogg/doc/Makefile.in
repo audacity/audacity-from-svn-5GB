@@ -38,8 +38,7 @@ host_triplet = @host@
 subdir = doc
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+am__aclocal_m4_deps = $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(mkdir_p)
@@ -61,7 +60,6 @@ CTAGS = ctags
 DIST_SUBDIRS = $(SUBDIRS)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
-ALLOCA = @ALLOCA@
 AMDEP_FALSE = @AMDEP_FALSE@
 AMDEP_TRUE = @AMDEP_TRUE@
 AMTAR = @AMTAR@
@@ -70,8 +68,6 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
-BUILD_DOCS_FALSE = @BUILD_DOCS_FALSE@
-BUILD_DOCS_TRUE = @BUILD_DOCS_TRUE@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -93,7 +89,6 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 F77 = @F77@
 FFLAGS = @FFLAGS@
-HAVE_PKG_CONFIG = @HAVE_PKG_CONFIG@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
@@ -102,6 +97,10 @@ LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
+LIBTOOL_DEPS = @LIBTOOL_DEPS@
+LIB_AGE = @LIB_AGE@
+LIB_CURRENT = @LIB_CURRENT@
+LIB_REVISION = @LIB_REVISION@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAINT = @MAINT@
@@ -109,8 +108,7 @@ MAINTAINER_MODE_FALSE = @MAINTAINER_MODE_FALSE@
 MAINTAINER_MODE_TRUE = @MAINTAINER_MODE_TRUE@
 MAKEINFO = @MAKEINFO@
 OBJEXT = @OBJEXT@
-OGG_CFLAGS = @OGG_CFLAGS@
-OGG_LIBS = @OGG_LIBS@
+OPT = @OPT@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -118,25 +116,17 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
-PDFXMLTEX = @PDFXMLTEX@
-PKG_CONFIG = @PKG_CONFIG@
 PROFILE = @PROFILE@
 RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
+SIZE16 = @SIZE16@
+SIZE32 = @SIZE32@
+SIZE64 = @SIZE64@
 STRIP = @STRIP@
+USIZE16 = @USIZE16@
+USIZE32 = @USIZE32@
 VERSION = @VERSION@
-VE_LIB_AGE = @VE_LIB_AGE@
-VE_LIB_CURRENT = @VE_LIB_CURRENT@
-VE_LIB_REVISION = @VE_LIB_REVISION@
-VF_LIB_AGE = @VF_LIB_AGE@
-VF_LIB_CURRENT = @VF_LIB_CURRENT@
-VF_LIB_REVISION = @VF_LIB_REVISION@
-VORBIS_LIBS = @VORBIS_LIBS@
-V_LIB_AGE = @V_LIB_AGE@
-V_LIB_CURRENT = @V_LIB_CURRENT@
-V_LIB_REVISION = @V_LIB_REVISION@
-XSLTPROC = @XSLTPROC@
 ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
@@ -174,102 +164,14 @@ mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
-pthread_lib = @pthread_lib@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
-target = @target@
 target_alias = @target_alias@
-target_cpu = @target_cpu@
-target_os = @target_os@
-target_vendor = @target_vendor@
-SUBDIRS = vorbisfile vorbisenc
+SUBDIRS = ogg
 docdir = $(datadir)/doc/$(PACKAGE)-$(VERSION)
-
-### all of the static docs, commited to SVN and included as is
-static_docs = \
-	draft-kerr-avt-vorbis-rtp-03.txt \
-	eightphase.png \
-	evenlsp.png \
-	floor1_inverse_dB_table.html \
-	floorval.png \
-	fourphase.png \
-	framing.html \
-	helper.html \
-	index.html \
-	lspmap.png \
-	oddlsp.png \
-	oggstream.html \
-	programming.html \
-	squarepolar.png \
-	stereo.html \
-	stream.png \
-	v-comment.html \
-	vorbis-clip.txt \
-	vorbis-errors.txt \
-	vorbis-fidelity.html \
-	vorbis.html \
-	vorbisword2.png \
-	wait.png \
-	white-ogg.png \
-	white-xifish.png
-
-
-### FIXME: bits needed by the spec which lives in xml
-SPEC_PNG = \
-	components.png \
-	floor1-1.png \
-	floor1-2.png \
-	floor1-3.png \
-	floor1-4.png \
-	hufftree.png \
-	hufftree-under.png \
-	residue-pack.png \
-	residue2.png \
-	white-xifish.png \
-	window1.png \
-	window2.png
-
-SPEC_PDF = xifish.pdf
-
-# FIXME: also needed here
-#	white-xifish.png 
-built_docs = Vorbis_I_spec.html Vorbis_I_spec.pdf
-@BUILD_DOCS_FALSE@doc_DATA = $(static_docs) $(SPEC_PNG)
-
-# conditionally make the generated documentation
-@BUILD_DOCS_TRUE@doc_DATA = $(static_docs) $(SPEC_PNG) $(built_docs)
-EXTRA_DIST = $(static_docs) $(doc_sources) \
-	$(SPEC_PNG) $(SPEC_PDF) $(built_docs)
-
-doc_sources = xml/Vorbis_I_spec.xml \
-	xml/01-introduction.xml \
-	xml/02-bitpacking.xml \
-	xml/03-codebook.xml \
-	xml/04-codec.xml \
-	xml/05-comment.xml \
-	xml/06-floor0.xml \
-	xml/07-floor1.xml \
-	xml/08-residue.xml \
-	xml/09-helper.xml \
-	xml/10-tables.xml \
-	xml/a1-encapsulation_ogg.xml \
-	xml/a2-encapsulation_rtp.xml \
-	xml/footer.xml \
-	xml/spec-common.xsl \
-	xml/spec-fo.xsl \
-	xml/spec-html.xsl
-
-
-# these are expensive; only remove if we have to
-DISTCLEANFILES = $(built_docs)
-CLEANFILES = Vorbis_I_spec.fo spec.aux spec.log spec.out
-
-# rules for temporary build dir for spec
-BUILDDIR = build
-# how to copy images to build dir
-SPEC_PNG_BUILD = $(foreach file, $(SPEC_PNG), $(BUILDDIR)/$(file))
-SPEC_PDF_BUILD = $(foreach file, $(SPEC_PDF), $(BUILDDIR)/$(file))
+doc_DATA = framing.html index.html oggstream.html rfc3533.txt rfc3534.txt stream.png vorbisword2.png white-ogg.png white-xifish.png
+EXTRA_DIST = $(doc_DATA)
 all: all-recursive
 
 .SUFFIXES:
@@ -451,7 +353,6 @@ distclean-tags:
 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 
 distdir: $(DISTFILES)
-	$(mkdir_p) $(distdir)/xml
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -516,18 +417,16 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
-	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-rm -f $(CONFIG_CLEAN_FILES)
-	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-recursive
 
-clean-am: clean-generic clean-libtool clean-local mostlyclean-am
+clean-am: clean-generic clean-libtool mostlyclean-am
 
 distclean: distclean-recursive
 	-rm -f Makefile
@@ -575,57 +474,19 @@ uninstall-am: uninstall-docDATA uninstall-info-am
 uninstall-info: uninstall-info-recursive
 
 .PHONY: $(RECURSIVE_TARGETS) CTAGS GTAGS all all-am check check-am \
-	clean clean-generic clean-libtool clean-local clean-recursive \
-	ctags ctags-recursive distclean distclean-generic \
-	distclean-libtool distclean-recursive distclean-tags distdir \
-	dvi dvi-am html html-am info info-am install install-am \
-	install-data install-data-am install-docDATA install-exec \
-	install-exec-am install-info install-info-am install-man \
-	install-strip installcheck installcheck-am installdirs \
-	installdirs-am maintainer-clean maintainer-clean-generic \
+	clean clean-generic clean-libtool clean-recursive ctags \
+	ctags-recursive distclean distclean-generic distclean-libtool \
+	distclean-recursive distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-docDATA install-exec install-exec-am \
+	install-info install-info-am install-man install-strip \
+	installcheck installcheck-am installdirs installdirs-am \
+	maintainer-clean maintainer-clean-generic \
 	maintainer-clean-recursive mostlyclean mostlyclean-generic \
 	mostlyclean-libtool mostlyclean-recursive pdf pdf-am ps ps-am \
 	tags tags-recursive uninstall uninstall-am uninstall-docDATA \
 	uninstall-info-am
 
-$(BUILDDIR)/%: $(srcdir)/%
-	@echo "Copying $< to $@"
-	@mkdir -p $(BUILDDIR)
-	@cp $< $@
-
-# how to copy the xml to build dir; cheat by only targeting the main one
-$(BUILDDIR)/Vorbis_I_spec.xml: $(doc_sources)
-	@mkdir -p $(BUILDDIR)
-	@for file in $(doc_sources); do cp $(srcdir)/$$file $(BUILDDIR); done
-# translate the draft rtp.txt to .xml in the BUILDDIR
-$(BUILDDIR)/draft-rtp.xml: draft-kerr-avt-vorbis-rtp-03.txt
-	cat $< | sed 's///g' > $@
-# cat $< | sed 's///g' | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' > $@
-
-# explicit rules for generating docs
-@BUILD_DOCS_TRUE@Vorbis_I_spec.html: $(SPEC_PNG_BUILD) $(BUILDDIR)/Vorbis_I_spec.xml
-@BUILD_DOCS_TRUE@	cd build; xsltproc --xinclude --output Vorbis_I_spec.html spec-html.xsl Vorbis_I_spec.xml && mv $@ ..
-
-@BUILD_DOCS_TRUE@Vorbis_I_spec.fo: $(BUILDDIR)/Vorbis_I_spec.xml
-@BUILD_DOCS_TRUE@	cd build; xsltproc --xinclude --output $@ spec-fo.xsl Vorbis_I_spec.xml && mv $@ ..
-
-@BUILD_DOCS_TRUE@Vorbis_I_spec.pdf: Vorbis_I_spec.fo $(SPEC_PNG_BUILD) $(SPEC_PDF_BUILD)
-@BUILD_DOCS_TRUE@	cp $< build/spec.fo # work around a passivetex bug
-@BUILD_DOCS_TRUE@	cd build; pdfxmltex --interaction nonstopmode spec.fo
-@BUILD_DOCS_TRUE@	cd build; pdfxmltex --interaction nonstopmode spec.fo
-@BUILD_DOCS_TRUE@	rm build/spec.fo
-@BUILD_DOCS_TRUE@	mv build/spec.pdf $@
-@BUILD_DOCS_FALSE@Vorbis_I_spec.html: NO_DOCS_ERROR
-@BUILD_DOCS_FALSE@Vorbis_I_spec.pdf: NO_DOCS_ERROR
-@BUILD_DOCS_FALSE@NO_DOCS_ERROR:
-@BUILD_DOCS_FALSE@	@echo
-@BUILD_DOCS_FALSE@	@echo "*** Documentation has not been built! ***"
-@BUILD_DOCS_FALSE@	@echo "Try re-running after passing --enable-docs to configure."
-@BUILD_DOCS_FALSE@	@echo
-
-# clean up build dir
-clean-local:
-	-$(RM) -r $(BUILDDIR)
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

@@ -37,26 +37,20 @@ POST_UNINSTALL = :
 host_triplet = @host@
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
-	$(srcdir)/libvorbis.spec.in $(srcdir)/vorbis-uninstalled.pc.in \
-	$(srcdir)/vorbis.pc.in $(srcdir)/vorbisenc-uninstalled.pc.in \
-	$(srcdir)/vorbisenc.pc.in \
-	$(srcdir)/vorbisfile-uninstalled.pc.in \
-	$(srcdir)/vorbisfile.pc.in $(top_srcdir)/configure AUTHORS \
-	COPYING config.guess config.sub depcomp install-sh ltmain.sh \
+	$(srcdir)/libogg.spec.in $(srcdir)/ogg-uninstalled.pc.in \
+	$(srcdir)/ogg.pc.in $(top_srcdir)/configure AUTHORS COPYING \
+	compile config.guess config.sub depcomp install-sh ltmain.sh \
 	missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+am__aclocal_m4_deps = $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno configure.status.lineno
 mkinstalldirs = $(mkdir_p)
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = libvorbis.spec vorbis.pc vorbisenc.pc \
-	vorbisfile.pc vorbis-uninstalled.pc vorbisenc-uninstalled.pc \
-	vorbisfile-uninstalled.pc
+CONFIG_CLEAN_FILES = libogg.spec ogg.pc ogg-uninstalled.pc
 SOURCES =
 DIST_SOURCES =
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
@@ -84,7 +78,6 @@ GZIP_ENV = --best
 distuninstallcheck_listfiles = find . -type f -print
 distcleancheck_listfiles = find . -type f -print
 ACLOCAL = @ACLOCAL@
-ALLOCA = @ALLOCA@
 AMDEP_FALSE = @AMDEP_FALSE@
 AMDEP_TRUE = @AMDEP_TRUE@
 AMTAR = @AMTAR@
@@ -93,8 +86,6 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
-BUILD_DOCS_FALSE = @BUILD_DOCS_FALSE@
-BUILD_DOCS_TRUE = @BUILD_DOCS_TRUE@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -116,7 +107,6 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 F77 = @F77@
 FFLAGS = @FFLAGS@
-HAVE_PKG_CONFIG = @HAVE_PKG_CONFIG@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
@@ -125,6 +115,10 @@ LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
+LIBTOOL_DEPS = @LIBTOOL_DEPS@
+LIB_AGE = @LIB_AGE@
+LIB_CURRENT = @LIB_CURRENT@
+LIB_REVISION = @LIB_REVISION@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAINT = @MAINT@
@@ -132,8 +126,7 @@ MAINTAINER_MODE_FALSE = @MAINTAINER_MODE_FALSE@
 MAINTAINER_MODE_TRUE = @MAINTAINER_MODE_TRUE@
 MAKEINFO = @MAKEINFO@
 OBJEXT = @OBJEXT@
-OGG_CFLAGS = @OGG_CFLAGS@
-OGG_LIBS = @OGG_LIBS@
+OPT = @OPT@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -141,25 +134,17 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
-PDFXMLTEX = @PDFXMLTEX@
-PKG_CONFIG = @PKG_CONFIG@
 PROFILE = @PROFILE@
 RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
+SIZE16 = @SIZE16@
+SIZE32 = @SIZE32@
+SIZE64 = @SIZE64@
 STRIP = @STRIP@
+USIZE16 = @USIZE16@
+USIZE32 = @USIZE32@
 VERSION = @VERSION@
-VE_LIB_AGE = @VE_LIB_AGE@
-VE_LIB_CURRENT = @VE_LIB_CURRENT@
-VE_LIB_REVISION = @VE_LIB_REVISION@
-VF_LIB_AGE = @VF_LIB_AGE@
-VF_LIB_CURRENT = @VF_LIB_CURRENT@
-VF_LIB_REVISION = @VF_LIB_REVISION@
-VORBIS_LIBS = @VORBIS_LIBS@
-V_LIB_AGE = @V_LIB_AGE@
-V_LIB_CURRENT = @V_LIB_CURRENT@
-V_LIB_REVISION = @V_LIB_REVISION@
-XSLTPROC = @XSLTPROC@
 ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
@@ -197,29 +182,21 @@ mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
-pthread_lib = @pthread_lib@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
-target = @target@
 target_alias = @target_alias@
-target_cpu = @target_cpu@
-target_os = @target_os@
-target_vendor = @target_vendor@
-AUTOMAKE_OPTIONS = foreign dist-zip
-SUBDIRS = lib include doc examples win32 debian vq
+AUTOMAKE_OPTIONS = foreign 1.6 dist-zip
+SUBDIRS = src include doc win32 debian
 m4datadir = $(datadir)/aclocal
-m4data_DATA = vorbis.m4
+m4data_DATA = ogg.m4
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = vorbis.pc vorbisenc.pc vorbisfile.pc
-EXTRA_DIST = todo.txt macos macosx autogen.sh \
-	libvorbis.spec libvorbis.spec.in \
-	vorbis.m4 vorbis.pc.in vorbisenc.pc.in vorbisfile.pc.in \
-       vorbis-uninstalled.pc.in \
-       vorbisenc-uninstalled.pc.in \
-       vorbisfile-uninstalled.pc.in
+pkgconfig_DATA = ogg.pc
+EXTRA_DIST = README AUTHORS CHANGES COPYING \
+	libogg.spec libogg.spec.in \
+	ogg.m4 ogg.pc.in ogg-uninstalled.pc.in \
+	macos macosx
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-docs
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -274,19 +251,11 @@ $(srcdir)/config.h.in: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 
 distclean-hdr:
 	-rm -f config.h stamp-h1
-libvorbis.spec: $(top_builddir)/config.status $(srcdir)/libvorbis.spec.in
+libogg.spec: $(top_builddir)/config.status $(srcdir)/libogg.spec.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
-vorbis.pc: $(top_builddir)/config.status $(srcdir)/vorbis.pc.in
+ogg.pc: $(top_builddir)/config.status $(srcdir)/ogg.pc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
-vorbisenc.pc: $(top_builddir)/config.status $(srcdir)/vorbisenc.pc.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-vorbisfile.pc: $(top_builddir)/config.status $(srcdir)/vorbisfile.pc.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-vorbis-uninstalled.pc: $(top_builddir)/config.status $(srcdir)/vorbis-uninstalled.pc.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-vorbisenc-uninstalled.pc: $(top_builddir)/config.status $(srcdir)/vorbisenc-uninstalled.pc.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-vorbisfile-uninstalled.pc: $(top_builddir)/config.status $(srcdir)/vorbisfile-uninstalled.pc.in
+ogg-uninstalled.pc: $(top_builddir)/config.status $(srcdir)/ogg-uninstalled.pc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 mostlyclean-libtool:
@@ -456,7 +425,7 @@ distclean-tags:
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkdir_p) $(distdir)/.
+	$(mkdir_p) $(distdir)/. $(distdir)/include/ogg
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -702,9 +671,7 @@ uninstall-info: uninstall-info-recursive
 
 dist-hook:
 	rm -rf `find $(distdir)/macos -name CVS`
-	rm -rf `find $(distdir)/macos -name .svn`
 	rm -rf `find $(distdir)/macosx -name CVS`
-	rm -rf `find $(distdir)/macosx -name .svn`
 
 debug:
 	$(MAKE) all CFLAGS="@DEBUG@"
