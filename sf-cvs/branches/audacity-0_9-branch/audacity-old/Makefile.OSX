@@ -5,8 +5,8 @@
 # Dominic Mazzoni
 #
 
-LIBS = ../wxWindows/macbuildstatic/lib/libwx_mac-2.3.a \
-	-framework Carbon -framework System \
+LIBS = ../wxWindows/macbuild/lib/libwx_mac-2.3.a \
+	-framework Carbon -framework System -framework CoreAudio \
        ../libmad/.libs/libmad.a \
        ../libogg/src/.libs/libogg.a \
        ../libvorbis/lib/.libs/libvorbis.a \
@@ -15,13 +15,14 @@ LIBS = ../wxWindows/macbuildstatic/lib/libwx_mac-2.3.a \
 
 CFLAGS = -g -O2 \
 	-I. \
+        -Iportaudio \
 	-I/Developer/Headers/FlatCarbon \
-	-I../wxWindows/macbuildstatic/lib/wx/include/mac-2.3 \
+	-I../wxWindows/macbuild/lib/wx/include/mac-2.3 \
 	-I../wxWindows/include \
         -I../libmad \
         -I../libogg/include \
         -I../libvorbis/include \
-	-D__WXMAC__   -fno-rtti -fno-exceptions -MMD \
+	-D__WXMAC__ -D__MACOSX__  -fno-rtti -fno-exceptions -MMD \
 	-fpascal-strings \
 	-Iallegro
 
@@ -43,7 +44,7 @@ OBJS = \
 	$(OBJDIR)/AStatus.cpp.o \
 	$(OBJDIR)/AboutDialog.cpp.o \
 	$(OBJDIR)/AudacityApp.cpp.o \
-	$(OBJDIR)/AudioIO.cpp.o \
+	$(OBJDIR)/AudioIO-OSX.cpp.o \
 	$(OBJDIR)/BlockFile.cpp.o \
 	$(OBJDIR)/DirManager.cpp.o \
 	$(OBJDIR)/DiskFunctions.cpp.o \
@@ -79,6 +80,10 @@ OBJS = \
 	$(OBJDIR)/allegro/mfmidi.cpp.o \
 	$(OBJDIR)/allegro/strparse.cpp.o \
 	$(OBJDIR)/allegro/stimelinux.c.o \
+	$(OBJDIR)/effects/LoadVSTMac.cpp.o \
+	$(OBJDIR)/effects/AudioEffect.cpp.o \
+	$(OBJDIR)/effects/audioeffectx.cpp.o \
+	$(OBJDIR)/effects/VSTEffect.cpp.o \
 	$(OBJDIR)/effects/Effect.cpp.o \
 	$(OBJDIR)/effects/Amplify.cpp.o \
 	$(OBJDIR)/effects/BassBoost.cpp.o \
@@ -96,13 +101,16 @@ OBJS = \
 	$(OBJDIR)/snd/sndmac.c.o \
 	$(OBJDIR)/snd/sndcvt.c.o \
 	$(OBJDIR)/snd/sndio.c.o \
-	$(OBJDIR)/snd/audiomac.c.o \
+	$(OBJDIR)/snd/audionone.c.o \
 	$(OBJDIR)/prefs/PrefsDialog.cpp.o \
-	$(OBJDIR)/prefs/AudioIOPrefs.cpp.o \
+	$(OBJDIR)/prefs/AudioIOPrefs-OSX.cpp.o \
 	$(OBJDIR)/prefs/SampleRatePrefs.cpp.o \
 	$(OBJDIR)/prefs/FileFormatPrefs.cpp.o \
 	$(OBJDIR)/prefs/DirectoriesPrefs.cpp.o \
 	$(OBJDIR)/prefs/SpectrumPrefs.cpp.o \
+	$(OBJDIR)/portaudio/pa_convert.c.o \
+	$(OBJDIR)/portaudio/pa_lib.c.o \
+	$(OBJDIR)/portaudio/pa_mac_core.c.o
 
 ########################################
 # DEPENDENCIES
@@ -110,11 +118,14 @@ DEPS = $(OBJS:$(OBJDIR)/%.o=%)
 ########################################
 all: dirs Audacity.app
 Audacity.app: $(OBJS) Makefile
-	$(CCC) -o Audacity.app $(OBJS) $(LIBS)
+	$(CCC) -o audacity $(OBJS) $(LIBS)
+	cp audacity Audacity.app
 	/Developer/Tools/Rez audacity.r Carbon.r -t APPL -c auDy \
-		../wxWindows/macbuildstatic/lib/libwx_mac-2.3.r \
+		../wxWindows/macbuild/lib/libwx_mac-2.3.r \
 		-o Audacity.app
 	/Developer/Tools/SetFile -a avBstClinmed Audacity.app
+
+#	strip Audacity.app
 
 #
 # build id3lib from included source -- only if selected in configure script
@@ -149,7 +160,7 @@ clean:
 #
 DIRS = \
 	$(OBJDIR) $(OBJDIR)/effects $(OBJDIR)/snd \
-	$(OBJDIR)/prefs $(OBJDIR)/allegro
+	$(OBJDIR)/prefs $(OBJDIR)/allegro $(OBJDIR)/portaudio
 dirs: $(DIRS)
 $(DIRS): %: 
 	mkdir $@
