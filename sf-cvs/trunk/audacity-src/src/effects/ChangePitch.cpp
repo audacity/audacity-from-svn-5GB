@@ -741,14 +741,11 @@ void ChangePitchDialog::OnPreview(wxCommandEvent &event)
 {
    TransferDataFromWindow();
 
-   m_pEffect->mSoundTouch = new SoundTouch();
-   m_pEffect->mSoundTouch->setChannels(1);
-   m_pEffect->mSoundTouch->setPitchSemiTones((float)(m_SemitonesChange));
-
+	// Save & restore parameters around Preview, because we didn't do OK.
+	double oldSemitonesChange = m_SemitonesChange;
+	m_pEffect->m_SemitonesChange = m_SemitonesChange;
 	m_pEffect->Preview();
-
-	delete m_pEffect->mSoundTouch;
-	m_pEffect->mSoundTouch = NULL;
+	m_pEffect->m_SemitonesChange = oldSemitonesChange;
 }
 
 void ChangePitchDialog::OnOk(wxCommandEvent & event)
