@@ -7,7 +7,6 @@ in Audacity.
 Known bugs to fix:
 -----------------------------------------------------------
 
-- NoiseRemoval crashes (Windows only?)
 - Problems recording at other than 44100 Hz on Mac
 - Recording at a rate other than 44100 works, but the
   track created has the wrong rate in its label
@@ -23,7 +22,6 @@ Known bugs to fix:
 - ID3 genre list doesn't fit in the window on Linux/GTK
 - Fix underflow problems when recording (as much as
   possible) and try to report them if not
-- "New..." should be "New"
 - Menu bar does not function when Prefs dialog is
   in front on MacOS
 - Get rid of any "exit()" calls in snd/ or other
@@ -44,6 +42,8 @@ Possible bugs to investigate:
 	AIFF file worked fine under Linux)
 - Does "make install" create all of the directories
   it wants to installs into
+- Audacity won't start under (some versions of?) MacOS 8.5,
+  complains about InterfaceLib and SetAntiAliasedTextEnabled
 
 -----------------------------------------------------------
 Fixed, need to port:
@@ -99,3 +99,5 @@ Fixed:
   past zero.  Track selection and copying are now more aware
   of offsets.
 - Filenames with a period outside the extension are truncated.
+- "New..." menu item should be "New"
+- Crash in NoiseRemoval effect on Windows.

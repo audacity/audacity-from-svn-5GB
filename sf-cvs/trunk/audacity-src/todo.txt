@@ -22,7 +22,6 @@ Website / Sourceforge
 
 - Address all bugs in "bugs.txt"
 - Add more keyboard shortcuts and "nudge" commands
-- Backport "Save Changes?" dialog
 - Make Audacity compile on Unix even if dlopen is
   not supported (work around wxGTK 2.2.9 bug where
   it can't be found)
