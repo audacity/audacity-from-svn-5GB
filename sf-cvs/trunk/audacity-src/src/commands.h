@@ -34,13 +34,16 @@
       audEventFunction callbackFunction;
       menuCategory     category;
       menuState        state;
-      bool             separatorPrev;
       menuType         type;
       wxString         comboStrings;
    };
 
    WX_DEFINE_ARRAY(CommandMenuItem *, CommandMenuItemArray);
 
+
+// STM: Separators are numbered elements of menus, creating a slight complication.
+// So, for each menu item that follows a separator, skip and index.
+//
    enum {
       MenuBaseID = 1100,
 
@@ -51,29 +54,38 @@
       CloseID,
       SaveID,
       SaveAsID,
-      ExportMixID,
+      /*DUMMY SEPARATOR*/
+      ExportMixID=SaveAsID + 2,
       ExportSelectionID,
-      ExportLossyMixID,
+      /*DUMMY SEPARATOR*/
+      ExportLossyMixID=ExportSelectionID + 2,
       ExportLossySelectionID,
-      ExportLabelsID,
-      PreferencesID,
-      ExitID,
+      /*DUMMY SEPARATOR*/
+      ExportLabelsID = ExportLossySelectionID + 2,
+      /*DUMMY SEPARATOR*/
+      PreferencesID = ExportLabelsID + 2,
+      /*DUMMY SEPARATOR*/
+      ExitID = PreferencesID + 2,
 
       // Edit Menu
 
       UndoID,
       RedoID,
-      CutID,
+      /*DUMMY SEPARATOR*/
+      CutID = RedoID + 2,
       CopyID,
       PasteID,
       TrimID,
-      DeleteID,
+      /*DUMMY SEPARATOR*/
+      DeleteID = TrimID + 2,
       SilenceID,
-      InsertSilenceID,
+      /*DUMMY SEPARATOR*/
+      InsertSilenceID = SilenceID + 2,
       SplitID,
       SplitLabelsID,
       DuplicateID,
-      SelectAllID,
+      /*DUMMY SEPARATOR*/
+      SelectAllID = DuplicateID + 2,
 
       // View Menu
 
@@ -82,11 +94,16 @@
       ZoomOutID,
       ZoomFitID,
       ZoomSelID,
-      UndoHistoryID,
+
+      /*DUMMY SEPARATOR*/
+      UndoHistoryID = ZoomSelID + 2,
       PlotSpectrumID,
 
-      FloatControlToolBarID, 
+#ifndef __WXMAC__
+      /*DUMMY SEPARATOR*/
+      FloatControlToolBarID = PlotSpectrumID + 2, 
       FloatEditToolBarID,
+#endif
 
       // Project Menu
 
@@ -94,23 +111,31 @@
       ImportLabelsID,
       ImportMIDIID,
       ImportRawID,
-   #ifdef USE_LIBID3TAG
-      EditID3ID,
-   #endif
+
+#ifdef USE_LIBID3TAG
+       /*DUMMY SEPARATOR*/
+      EditID3ID = ImportRawID + 2,
+#endif
+
+      SeparatorDummy1,  ///*DUMMY SEPARATOR: necessary because of above conditional compilation*/
       QuickMixID,
-      AlignID,
+      /*DUMMY SEPARATOR*/
+      AlignID = QuickMixID + 2,
       AlignZeroID,
-      NewWaveTrackID,
+      //*DUMMY SEPARATOR*/
+      NewWaveTrackID = AlignZeroID + 2,
       NewLabelTrackID,
-      RemoveTracksID,
+      /*DUMMY SEPARATOR*/
+      RemoveTracksID = NewLabelTrackID + 2,
 
       // Help Menu
-
-      AboutID,
-      HelpID,
+      AboutID ,
+      /*DUMMY SEPARATOR*/
+      HelpID = AboutID + 2,
       HelpIndexID,
       HelpSearchID,
-      BenchmarkID,
+      //*DUMMY SEPARATOR*/
+      BenchmarkID = HelpSearchID + 2,
 
       // Effect Menu
 
@@ -129,9 +154,9 @@
 
 {
    #define CMD_ADDFUNCTION(a) {fp = &AudacityProject::a; tmpCmd->callbackFunction = fp;}
-   #define CMD_ADDMENU(commandName, commandDesc, callback, nCategory, nState)         { CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; tmpCmd->state = nState; tmpCmd->separatorPrev = false; tmpCmd->type=typeNormal;    CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( tmpCmd ); }
-   #define CMD_ADDMENU_CHECKED(commandName, commandDesc, callback, nCategory, nState) { CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; tmpCmd->state = nState; tmpCmd->separatorPrev = false; tmpCmd->type=typeCheckItem; CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( tmpCmd ); }
-   #define CMD_ADDMENUSEP(commandName, commandDesc, callback, nCategory, nState)      { CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; tmpCmd->state = nState; tmpCmd->separatorPrev = true;  tmpCmd->type=typeNormal;    CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( tmpCmd ); }
+   #define CMD_ADDMENU(commandName, commandDesc, callback, nCategory, nState)         { CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; tmpCmd->state = nState; tmpCmd->type=typeNormal;    CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( tmpCmd ); }
+   #define CMD_ADDMENU_CHECKED(commandName, commandDesc, callback, nCategory, nState) { CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; tmpCmd->state = nState; tmpCmd->type=typeCheckItem; CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( tmpCmd ); }
+   #define CMD_ADDMENU_SEP(nCategory){ CommandMenuItem *tmpCmd = new CommandMenuItem;  tmpCmd->type=typeSeparator;  tmpCmd->category = nCategory;  mCommandMenuItem.Add( tmpCmd ); }
 
    audEventFunction fp;  //Set up temporary function pointer to use for assigning keybindings
 
@@ -153,36 +178,45 @@
    CMD_ADDMENU(_("&Save Project\tCtrl+S"), _("Save Project"), OnSave, fileMenu, enabledMenu);
    CMD_ADDMENU(_("Save Project &As..."), _("Save Project As"), OnSaveAs, fileMenu, enabledMenu);
 
-   CMD_ADDMENUSEP(mExportString, _("Export As"), OnExportMix, fileMenu, enabledMenu);
+   CMD_ADDMENU_SEP(fileMenu);
+   CMD_ADDMENU(mExportString, _("Export As"), OnExportMix, fileMenu, enabledMenu);
    CMD_ADDMENU(mExportSelectionString, _("Export Selection As"), OnExportSelection, fileMenu, enabledMenu);
 
-   CMD_ADDMENUSEP(mExportLossyString, _("Export As (lossy)"), OnExportLossyMix, fileMenu, enabledMenu);
+   CMD_ADDMENU_SEP(fileMenu);
+   CMD_ADDMENU(mExportLossyString, _("Export As (lossy)"), OnExportLossyMix, fileMenu, enabledMenu);
    CMD_ADDMENU(mExportSelectionLossyString, _("Export Selection As (lossy)"), OnExportLossySelection, fileMenu, enabledMenu);
 
-   CMD_ADDMENUSEP(_("Export &Labels..."), _("Export Labels"), OnExportLabels, fileMenu, enabledMenu);
+   CMD_ADDMENU_SEP(fileMenu);
+   CMD_ADDMENU(_("Export &Labels..."), _("Export Labels"), OnExportLabels, fileMenu, enabledMenu);
 
-   CMD_ADDMENUSEP(_("&Preferences...\tCtrl+P"), _("Preferences"), OnPreferences, fileMenu, enabledMenu);
+   CMD_ADDMENU_SEP(fileMenu);
+   CMD_ADDMENU(_("&Preferences...\tCtrl+P"), _("Preferences"), OnPreferences, fileMenu, enabledMenu);
 
-   CMD_ADDMENUSEP(_("E&xit"), _("Exit"), OnExit, fileMenu, enabledMenu);
+   CMD_ADDMENU_SEP(fileMenu);
+   CMD_ADDMENU(_("E&xit"), _("Exit"), OnExit, fileMenu, enabledMenu);
 
    // Edit menu
    CMD_ADDMENU(_("Undo\tCtrl+Z"), _("Undo"), Undo, editMenu, enabledMenu);
    CMD_ADDMENU(_("&Redo\tCtrl+R"), _("Redo"), Redo, editMenu, enabledMenu);
 
-   CMD_ADDMENUSEP(_("Cut\tCtrl+X"), _("Cut"), Cut, editMenu, enabledMenu);
+   CMD_ADDMENU_SEP(editMenu);
+   CMD_ADDMENU(_("Cut\tCtrl+X"), _("Cut"), Cut, editMenu, enabledMenu);
    CMD_ADDMENU(_("Copy\tCtrl+C"), _("Copy"), Copy, editMenu, enabledMenu);
    CMD_ADDMENU(_("Paste\tCtrl+V"), _("Paste"), Paste, editMenu, enabledMenu);
    CMD_ADDMENU(_("&Trim\tCtrl+T"), _("Trim"), Trim, editMenu, enabledMenu);
 
-   CMD_ADDMENUSEP(_("&Delete\tCtrl+K"), _("Delete"), OnDelete, editMenu, enabledMenu);
+   CMD_ADDMENU_SEP(editMenu);
+   CMD_ADDMENU(_("&Delete\tCtrl+K"), _("Delete"), OnDelete, editMenu, enabledMenu);
    CMD_ADDMENU(_("&Silence\tCtrl+L"), _("Silence"), OnSilence, editMenu, enabledMenu);
 
-   CMD_ADDMENUSEP(_("&Insert Silence..."), _("Insert Silence"), OnInsertSilence, editMenu, enabledMenu);
+   CMD_ADDMENU_SEP(editMenu);
+   CMD_ADDMENU(_("&Insert Silence..."), _("Insert Silence"), OnInsertSilence, editMenu, enabledMenu);
    CMD_ADDMENU(_("Split\tCtrl+Y"), _("New"), OnSplit, editMenu, enabledMenu);
    CMD_ADDMENU(_("Split At Labels"), _("New"), OnSplitLabels, editMenu, enabledMenu);
    CMD_ADDMENU(_("D&uplicate\tCtrl+D"), _("New"), OnDuplicate, editMenu, enabledMenu);
 
-   CMD_ADDMENUSEP(_("Select All\tCtrl+A"), _("Select All"), OnSelectAll, editMenu, enabledMenu);
+   CMD_ADDMENU_SEP(editMenu);
+   CMD_ADDMENU(_("Select All\tCtrl+A"), _("Select All"), OnSelectAll, editMenu, enabledMenu);
 
    // View menu
    CMD_ADDMENU(_("Zoom &In\tCtrl+1"), _("Zoom In"), OnZoomIn, viewMenu, enabledMenu);
@@ -191,11 +225,13 @@
    CMD_ADDMENU(_("&Fit in Window\tCtrl+F"), _("Fit in Window"), OnZoomFit, viewMenu, enabledMenu);
    CMD_ADDMENU(_("Zoom to &Selection\tCtrl+E"), _("Zoom to Selection"), OnZoomSel, viewMenu, enabledMenu);
 
-   CMD_ADDMENUSEP(_("History"), _("Undo History"), UndoHistory, viewMenu, enabledMenu);
+   CMD_ADDMENU_SEP(viewMenu);
+   CMD_ADDMENU(_("History"), _("Undo History"), UndoHistory, viewMenu, enabledMenu);
    CMD_ADDMENU(_("Plot Spectrum\tCtrl+U"), _("Plot Spectrum"), OnPlotSpectrum, viewMenu, enabledMenu);
 
 #ifndef __WXMAC__
-   CMD_ADDMENUSEP(_("Float Control Toolbar"), _("Float Control Toolbar"), OnFloatControlToolBar, viewMenu, enabledMenu);
+   CMD_ADDMENU_SEP(viewMenu);
+   CMD_ADDMENU(_("Float Control Toolbar"), _("Float Control Toolbar"), OnFloatControlToolBar, viewMenu, enabledMenu);
    CMD_ADDMENU(_("Float Edit Toolbar"), _("Float Edit Toolbar"), OnFloatEditToolBar, viewMenu, enabledMenu);
 #endif
 
@@ -206,31 +242,39 @@
    CMD_ADDMENU(_("Import Raw &Data..."), _("Import Raw Data"), OnImportRaw, projectMenu, enabledMenu);
 
 #ifdef USE_LIBID3TAG
-   CMD_ADDMENUSEP(_("Edit ID3 Tags..."), _("Edit ID3 Tags"), OnEditID3, projectMenu, enabledMenu);
+   CMD_ADDMENU_SEP(projectMenu);
+   CMD_ADDMENU(_("Edit ID3 Tags..."), _("Edit ID3 Tags"), OnEditID3, projectMenu, enabledMenu);
 #endif
+   CMD_ADDMENU_SEP(projectMenu);
+   CMD_ADDMENU(_("&Quick Mix"), _("Quick Mix"), OnQuickMix, projectMenu, enabledMenu);
 
-   CMD_ADDMENUSEP(_("&Quick Mix"), _("Quick Mix"), OnQuickMix, projectMenu, enabledMenu);
-
-   CMD_ADDMENUSEP(_("Align Tracks &Together"), _("Align Tracks Together"), OnAlign, projectMenu, enabledMenu);
+   CMD_ADDMENU_SEP(projectMenu);
+   CMD_ADDMENU(_("Align Tracks &Together"), _("Align Tracks Together"), OnAlign, projectMenu, enabledMenu);
    CMD_ADDMENU(_("Align with &Zero"), _("Align with Zero"), OnAlignZero, projectMenu, enabledMenu);
 
-   CMD_ADDMENUSEP(_("New &Audio Track"), _("New Audio Track"), OnNewWaveTrack, projectMenu, enabledMenu);
+   CMD_ADDMENU_SEP(projectMenu);
+   CMD_ADDMENU(_("New &Audio Track"), _("New Audio Track"), OnNewWaveTrack, projectMenu, enabledMenu);
    CMD_ADDMENU(_("New &Label Track"), _("New Label Track"), OnNewLabelTrack, projectMenu, enabledMenu);
 
-   CMD_ADDMENUSEP(_("&Remove Track(s)"), _("Remove Track(s)"), OnRemoveTracks, projectMenu, enabledMenu);
+   CMD_ADDMENU_SEP(projectMenu);
+   CMD_ADDMENU(_("&Remove Track(s)"), _("Remove Track(s)"), OnRemoveTracks, projectMenu, enabledMenu);
 
    // Help menu
    CMD_ADDMENU(_("About Audacity..."), _("About Audacity"), OnAbout, helpMenu, enabledMenu);
+   CMD_ADDMENU_SEP(helpMenu);
 
+   //STM: There may be an error here: This platform distinction may not be needed.
 #ifndef __WXMAC__
-   CMD_ADDMENUSEP(_("Online Help..."), _("Online Help"), OnHelp, helpMenu, enabledMenu);
+   CMD_ADDMENU(_("Online Help..."), _("Online Help"), OnHelp, helpMenu, enabledMenu);
 #else
    CMD_ADDMENU(_("Online Help..."), _("Online Help"), OnHelp, helpMenu, enabledMenu);
 #endif
+
    CMD_ADDMENU(_("Online Help Index..."), _("Online Help Index"), OnHelpIndex, helpMenu, enabledMenu);
    CMD_ADDMENU(_("Search Online Help..."), _("Search Online Help"), OnHelpSearch, helpMenu, enabledMenu);
 
-   CMD_ADDMENUSEP(_("Run Benchmark..."), _("Run Benchmark"), OnBenchmark, helpMenu, enabledMenu);
+   CMD_ADDMENU_SEP(helpMenu);
+   CMD_ADDMENU(_("Run Benchmark..."), _("Run Benchmark"), OnBenchmark, helpMenu, enabledMenu);
 }
 
 #endif
