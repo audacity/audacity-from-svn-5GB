@@ -881,7 +881,8 @@ void Meter::StartMonitoring()
       gAudioIO->StopStream();
    else {
       if (mMeterDisabled){
-         OnDisableMeter((wxCommandEvent)0 );
+         wxCommandEvent dummy;
+         OnDisableMeter(dummy);
       }
       
       gAudioIO->StartMonitoring(44100.0);
