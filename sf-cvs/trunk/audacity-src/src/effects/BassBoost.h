@@ -25,11 +25,12 @@
 
 // Declare window functions
 
-#define ID_TEXT 10000
-#define ID_FREQ_TEXT 10001
-#define ID_FREQ_SLIDER 10002
-#define ID_BOOST_TEXT 10003
+#define ID_TEXT         10000
+#define ID_FREQ_TEXT    10001
+#define ID_FREQ_SLIDER  10002
+#define ID_BOOST_TEXT   10003
 #define ID_BOOST_SLIDER 10004
+#define ID_PREVIEW      10005
 
 #include "SimpleMono.h"
 
@@ -63,6 +64,8 @@ class EffectBassBoost:public EffectSimpleMono {
    //filter parameters
    float xn1,xn2,yn1,yn2;
    float omega, sn, cs, a, shape, beta, b0, b1, b2, a0, a1, a2;
+
+   friend class BassBoostDialog;
 };
 
 // WDR: class declarations
@@ -71,13 +74,11 @@ class EffectBassBoost:public EffectSimpleMono {
 // BassBoostDialog
 //----------------------------------------------------------------------------
 
-wxSizer *MakeBassBoostDialog(wxWindow * parent, bool call_fit,
-                             bool set_sizer);
-
 class BassBoostDialog:public wxDialog {
  public:
    // constructors and destructors
-   BassBoostDialog(wxWindow * parent, wxWindowID id,
+   BassBoostDialog(EffectBassBoost *effect,
+                   wxWindow * parent, wxWindowID id,
                    const wxString & title, const wxPoint & pos =
                    wxDefaultPosition, const wxSize & size =
                    wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
@@ -99,7 +100,8 @@ class BassBoostDialog:public wxDialog {
    virtual bool TransferDataFromWindow();
 
  private:
-   // WDR: member variable declarations for BassBoostDialog
+   wxSizer *MakeBassBoostDialog(wxWindow * parent, bool call_fit,
+                             bool set_sizer);
 
  private:
    // WDR: handler declarations for BassBoostDialog
@@ -107,6 +109,7 @@ class BassBoostDialog:public wxDialog {
    void OnFreqText(wxCommandEvent & event);
    void OnBoostSlider(wxCommandEvent & event);
    void OnFreqSlider(wxCommandEvent & event);
+   void OnPreview(wxCommandEvent & event);
    void OnOk(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
 
@@ -114,6 +117,8 @@ class BassBoostDialog:public wxDialog {
    DECLARE_EVENT_TABLE()
 
  public:
+   EffectBassBoost *mEffect;
+
    float freq;
    float boost;
 
