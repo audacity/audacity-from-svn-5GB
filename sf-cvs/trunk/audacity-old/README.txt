@@ -1,16 +1,16 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.96
+Version 1.1.1 (under development)
 
 http://audacity.sourceforge.net/
 
 Primary author:
 
-  Dominic Mazzoni <dmazzoni+@cs.cmu.edu>
+  Dominic Mazzoni <dominic@minorninth.com>
 
 Authors:
 
-  Dominic Mazzoni <dmazzoni+@cs.cmu.edu>
+  Dominic Mazzoni <dominic@minorninth.com>
   Roger Dannenberg <rbd+@cs.cmu.edu>
   Jason Cohen <cohen3+@andrew.cmu.edu>
   Robert Leidle <rfl+@andrew.cmu.edu>
@@ -32,15 +32,10 @@ For changelog, see the bottom of this document
 
 -------------------------------------------------------------
 
-With the exception of the Xaudio library for importing MP3 files,
-this program is free software; you can redistribute it and/or
+This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public
 License as published by the Free Software Foundation; either
 version 2 of the License, or (at your option) any later version.
-
-The Xaudio library is commercial software and has been licensed
-for use in this program.  For more information, see their
-website at http://www.xaudio.com/
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -57,21 +52,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
 Source code to this program is always available; for more
 information visit our website at:
 
-  http://www.cs.cmu.edu/~music/audacity/
+  http://audacity.sourceforge.net/
 
 This program uses wxWindows, a cross-platform GUI toolkit.  To
 compile this program, you will need to download wxWindows from:
 
   http://www.wxwindows.org/
 
-To compile under Linux, simply run:
+To compile on Linux and other Unix systems, simply run:
 
   ./configure
   make
+  make install
   
-(There is no make install, so just copy the executable
- "audacity" whereever you want it.)
-
 If you want to do any development, you might want to generate
 dependencies:
 
@@ -79,7 +72,7 @@ dependencies:
 
 For more information on compilation on other platforms (VC++
 for Windows and CodeWarrior for Mac are supported) please
-email Dominic Mazzoni <dmazzoni+@cs.cmu.edu>.
+email audacity-devel@lists.sourceforge.net
 
 -------------------------------------------------------------
 
@@ -110,206 +103,15 @@ Known issues/problems:
 
 -------------------------------------------------------------
 
-Changes in 0.96:
+Changes in 1.1.1:
 
-* General User Interface:
+  * Automatic real-time resampling (using linear
+    interpolation)
 
-  - Added mute/solo buttons
+New sublibraries:
 
-* Importing Audio:
+  * Uses libmad for MP3 importing
 
-  - Fixed regression bug in 0.95 which caused stereo files to be imported as
-    two mono tracks
-    
-  - Imports MP3 ID3 tags
+  * Uses libsndfile for sound file I/O
 
-* Exporting Audio:
-
-  - Exporting MP3 now works, if the appropriate version of the LAME DLL is
-    installed (Joshua)
-  
-  - Allows editing of MP3 ID3 tags with export.
-
-* Preferences:
-
-  - Added Audio I/O selectors on Mac (Dominic) and Windows (Joshua)
-
-* Effects:
-
-  - Added progress dialog support to all effects (which also allows
-    effects to be cancelled)
-  
-  - Added support for stereo effects and effects that add or
-    remove tracks, or require multiple passes.
-  
-  - Improved Amplify effect and fixed all known bugs (Dominic)
-  
-  - Improved Bass Boost effect
-  
-  - Added Filter effect (Dominic)
-  
-  - Added Phaser effect (Paul)
-  
-  - Added Wahwah effect (Paul)
-
-Changes in 0.95:
-
-* Installation/Compilation:
-
-  - Improved configure script on unix systems (Joshua)
-
-* General User Interface:
-
-  - Menu items are now disabled when unavailable
-
-  - Online help added (Dominic and Logan)
-
-* Importing Audio:
-
-  - Lazy import added, speeding up importing of PCM files by 2x
-
-  - Added support for the Free libmpeg3 library on unix 
-    to replace the proprietary xaudio (Joshua)
-
-  - Importing MP3 and Ogg Vorbis files is now handled automatically
-    by the Open and Import commands.
-
-  - Fixed the Import Raw Data feature, so now you can
-    import files of almost any arbitrary format (as long
-    as it's uncompressed).
-
-* Main window:
-
-  - New track labels with a single integrated pop-up menu
-    to handle all track options
-
-  - Vertical ruler added, along with preliminary support for
-    vertical zooming
-
-  - Stereo tracks can be linked together so changes affect
-    both tracks
-
-  - Point-sample display takes over when you zoom very far in
-
-  - Two new wave displays: a dB (logarithmic) wave display and
-    a spectral pitch display (using enhanced autocorrelation)
-
-* Preferences:
-
-  - New spectral display preferences
-
-  - Temp directory can be set in preferences
-
-* Frequency display:
-
-  - Many new frequency window enhancements, including support for
-    cepstrum, autocorrelation, and enhanced autocorrelation.
-
-* Envelope editor:
-
-  - Envelopes are now interpolated using decibels, making
-    cross-fades sound much better
-
-* Effects:
-
-  - Fixed a bug that caused incompatibility with many VST plug-ins.
-
-  - Added Maximize Amplitude effect
-
-  - Added Bass Boost effect (Paul)
-
-* Other:
-
-  - Improved memory management over long Undo histories
-
-  - Many more bug fixes
-
-Changes in 0.94:
-
-* Preferences dialog (Joshua Haberman)
-
-* OGG Vorbis import (Joshua Haberman)
-
-* Silence, Insert Silence commands
-
-* Split and Duplicate commands
-
-* Mac OS X support
-
-* Supports recording on Mac OS 8 and 9
-
-* Many bug fixes
-
-Changes in 0.93:
-
-* Displays playback/recording position indicator
-
-* Keeps track of some preferences
-
-* Supports arbitrary project sample rate
-
-* Mac: opens documents from the Finder
-
-* Floating tool palette is now dockable
-  (and docked by default)
-
-* Fixed bugs in handling multiple open projects
-
-* Supports recording (Windows, Linux)
-
-* Frequency Window displays note names (i.e. C4, G#5)
-
-* Many bug fixes for effects, including VST plug-in effects
-
-Changes in 0.92:
-
-* Added Frequency Plot window and improved Spectrum display
-
-* Fixed bug in File:Open when the file to be opened was
-  actually a large WAV file
-
-Changes in 0.91:
-
-* Uses xaudio library to import mp3 files
-
-* Zoom menu
-
-Changes in 0.9:
-
-* New floating tool palette with four tools (selection,
-  sliding, zooming, and envelope editing) plus play and
-  stop buttons
-
-* Playback now mixes tracks, and you can work with the
-  document while listening.  The stop button works.
-
-* Rewritten file handling functions.  The main view
-  is no longer dependent on the wxWindows DocView
-  classes, so we can handle files ourselves.  The
-  project file format is now text-based for easy
-  debugging.  Eventually it will probably move to XML.
-
-* Improved handling of wave tracks: as before, the data
-  is stored in blocks, but now, the blocks are correctly
-  limited to betweek n and 2n bytes each (for some n),
-  which guarantees editing operations always take the
-  same amount of time, while also ensuring that projects
-  don't get more fragmented over time.
-
-* Rewritten user interface code.  The shades of gray
-  are taken from the OS, and the project window has been
-  redesigned to have more consistent layout across all
-  platforms.
-
-* Selecting "Open" now does the smart thing, opening a
-  project if you give it a project, or importing a WAV
-  file if you give it that.
-
-* Flashing cursor indicates the current editing position
-
-* Much improved ruler - besides looking nicer, the ruler
-  now displays the selection and the cursor.
-
-* The zoom tool centers on the cursor so you can zoom
-  into wherever you are.
-
+  * Uses PortAudio for audio I/O
