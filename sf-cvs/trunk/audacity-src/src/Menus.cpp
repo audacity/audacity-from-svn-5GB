@@ -157,6 +157,18 @@ void AudacityProject::BuildMenuBar()
             break;
       }
 
+      //BG: Tokenize menu shortcuts
+      TokenizeCommandStrings(i);
+
+      wxString menuString = mCommandMenuItem[i]->commandString;
+
+      //BG: Pick first shortcut
+      wxStringTokenizer tName(mCommandMenuItem[i]->comboStrings, ":");
+      if(tName.HasMoreTokens())
+      {
+          wxString token = tName.GetNextToken();
+          menuString += "\t" + token;
+      }
 
       const wxString dummy = "";
 
@@ -170,10 +182,10 @@ void AudacityProject::BuildMenuBar()
       
       case typeNormal:
 
-         menu->Append(i + MenuBaseID, mCommandMenuItem[i]->commandString);
+         menu->Append(i + MenuBaseID, menuString);
          break;
       case typeCheckItem:
-         menu->Append(i + MenuBaseID,(const wxString &) mCommandMenuItem[i]->commandString, dummy,true);
+         menu->Append(i + MenuBaseID,(const wxString &) menuString, dummy,true);
          //menu->AppendCheckItem() can be used with wxWindows 2.3
          //menu->AppendCheckItem(i + MenuBaseID,(const wxString &) mCommandMenuItem[i]->commandString, dummy);
          break;
@@ -181,15 +193,12 @@ void AudacityProject::BuildMenuBar()
          //This can't be done until wxWindows 2.3
          //menu->AppendRadioItem(i + MenuBaseID,(const wxString &) mCommandMenuItem[i]->commandString, dummy);
          //Put in a normal item instead.
-         menu->Append(i + MenuBaseID, mCommandMenuItem[i]->commandString);
+         menu->Append(i + MenuBaseID, menuString);
          break;
       default:
          //Error--this shouldn't happen
          break;
       }
-
-
-      TokenizeCommandStrings(i);
    }
 
 
