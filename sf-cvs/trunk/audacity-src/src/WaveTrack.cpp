@@ -371,6 +371,7 @@ void WaveTrack::Paste(double t, const VTrack * src)
    BlockArray *srcBlock = ((WaveTrack *) src)->GetBlockArray();
    int addedLen = ((WaveTrack *) src)->mNumSamples;
    unsigned int srcNumBlocks = srcBlock->Count();
+   int sampleSize = SAMPLE_SIZE(mSampleFormat);
 
    if (addedLen == 0 || srcNumBlocks == 0)
       return;
@@ -400,9 +401,10 @@ void WaveTrack::Paste(double t, const VTrack * src)
 
       int splitPoint = s - mBlock->Item(b)->start;
       Read(buffer, mSampleFormat, mBlock->Item(b), 0, splitPoint);
-      ((WaveTrack *) src)->Get(&buffer[splitPoint], mSampleFormat,
-                               0, addedLen);
-      Read(&buffer[splitPoint + addedLen], mSampleFormat, mBlock->Item(b),
+      ((WaveTrack *) src)->Get(buffer + splitPoint*sampleSize,
+                               mSampleFormat, 0, addedLen);
+      Read(buffer + (splitPoint + addedLen)*sampleSize,
+           mSampleFormat, mBlock->Item(b),
            splitPoint, mBlock->Item(b)->len - splitPoint);
 
       WaveBlock *largerBlock = new WaveBlock();
@@ -455,7 +457,6 @@ void WaveTrack::Paste(double t, const VTrack * src)
       sampleCount sum = splitLen + addedLen;
 
       samplePtr sumBuffer = NewSamples(sum, mSampleFormat);
-      int sampleSize = SAMPLE_SIZE(mSampleFormat);
       Read(sumBuffer, mSampleFormat, splitBlock, 0, splitPoint);
       ((WaveTrack *) src)->Get(sumBuffer + splitPoint * sampleSize,
                                mSampleFormat,
@@ -485,7 +486,6 @@ void WaveTrack::Paste(double t, const VTrack * src)
       sampleCount leftLen = splitPoint + srcFirstTwoLen;
 
       samplePtr leftBuffer = NewSamples(leftLen, mSampleFormat);
-      int sampleSize = SAMPLE_SIZE(mSampleFormat);
       Read(leftBuffer, mSampleFormat, splitBlock, 0, splitPoint);
       ((WaveTrack *) src)->Get(leftBuffer + splitPoint*sampleSize,
                                mSampleFormat,
