@@ -52,6 +52,7 @@ int mLastToolBarCheckSum;   //This finds the state of the toolbars:
                             // 0: unloaded, 1: docked, 2: floating (* 3 for EditToolBar)
 bool mLastUndoState;
 bool mLastRedoState;
+bool mLastClipboardState;   // true: clipboard full; false: clipboard empty.
 
 bool mFirstTimeUpdateMenus;
 
