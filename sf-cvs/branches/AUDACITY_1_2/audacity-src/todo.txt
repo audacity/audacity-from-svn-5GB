@@ -37,7 +37,7 @@ only about every 2-3 months.
   Compressor".  It would not bring up a dialog, but use the last
   values.  It would have a keyboard shortcut.
 
-* Open multiple files (it's supported by wxWindows; we should
+* Open multiple files (it's supported by wxWidgets; we should
   enable and use this feature.)  Both Open and Import.
 
 * VU meters, if at all possible, with a "monitor" mode for recording.
@@ -439,7 +439,7 @@ Done. Remove these items from this list once 1.2.0 is released:
 * Fine tuning of colours/bitmaps
 
   - Should the gain tooltips be the same shade as other
-    tooltips?  Where does wxWindows come up with the shade
+    tooltips?  Where does wxWidgets come up with the shade
     for tooltip backgrounds?  Can we copy it?
 
   - What's the consensus on the new magnifying glass image?

@@ -54,7 +54,7 @@ The Audacity Logo:
 
 Special Thanks:
 
-  The wxWindows Team
+  The wxWidgets Team
   The Ogg Vorbis Team
   Rob Leslie (libmad)
   Ross Bencina and Phil Burk (PortAudio)
@@ -96,7 +96,7 @@ of these libraries are not distributed under the terms
 of the GPL, but rather some other free, GPL-compatible
 license.  Specifically:
 
-  wxWindows: LGPL
+  wxWidgets: LGPL
     Cross-platform GUI library - must be downloaded and
     compiled separately.
 
@@ -201,9 +201,9 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Compilation instructions:
 
-First you must download wxWindows from:
+First you must download wxWidgets from:
 
-  http://www.wxwindows.org/
+  http://www.wxWidgets.org/
 
 If you install the RPM, make sure you install the devel RPM
 as well, otherwise, you won't be able to compile Audacity

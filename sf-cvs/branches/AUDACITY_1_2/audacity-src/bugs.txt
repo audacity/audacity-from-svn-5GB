@@ -300,7 +300,7 @@ find that shows the bug, the better.
     </TD>
     <TD>In debug builds the progress indicator (for example with the normalize effect
 	and a selection of 2mins 30 secs) may report an assert error from 
-	wxWindows v2.4.0 progdlgg.cpp line 323: 'value <= m_maximum'.
+	wxWindows (now wxWidgets) v2.4.0 progdlgg.cpp line 323: 'value <= m_maximum'.
 	</TD></TR>
 </TBODY></TABLE>
 
