@@ -7,6 +7,10 @@ in Audacity.
 Known bugs to fix:
 -----------------------------------------------------------
 
+- Opening 21 windows crashes (Mac OS X, repeatable - don't
+  open all at once, rather close, then open repeatedly...)
+- Open... shouldn't create a new project window, in
+  Audacity 1.1.
 - Crash on zooming in (email from Rui Batista)
 - Crash on exit when help window is left open
   (1.0 and maybe 1.1, probably on Windows - see
