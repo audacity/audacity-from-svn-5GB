@@ -12,6 +12,8 @@
 
 **********************************************************************/
 
+// These are all member functions of class AudacityProject.
+
 void CommandManagerCallback(void *fptr);
 void CommandManagerListCallback(void *fptr, int index);
 
@@ -155,6 +157,7 @@ void OnAddLabel();
 void OnEffect(int type, int index);
 void OnGenerateEffect(int index);
 void OnGeneratePlugin(int index);
+void OnRepeatLastEffect(int index);
 void OnProcessEffect(int index);
 void OnProcessPlugin(int index);
 void OnAnalyzeEffect(int index);

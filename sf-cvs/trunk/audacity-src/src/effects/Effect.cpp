@@ -30,6 +30,11 @@ EffectArray Effect::mEffects;
 int Effect::sNumEffects = 0;
 double Effect::sDefaultGenerateLen = 30.0;
 
+// Some static variables used for Repeat Last Effect.
+int Effect::LastType=0;
+int Effect::LastIndex=0;
+Effect * Effect::pLastEffect=NULL;
+
 void Effect::RegisterEffect(Effect *f)
 {
    f->mID = sNumEffects;
@@ -96,7 +101,7 @@ Effect::Effect()
    mProgress = NULL;
 }
 
-bool Effect::DoEffect(wxWindow *parent, TrackList *list,
+bool Effect::DoEffect(wxWindow *parent, int flags, TrackList *list,
                       TrackFactory *factory,
                       double *t0, double *t1)
 {
@@ -116,9 +121,15 @@ bool Effect::DoEffect(wxWindow *parent, TrackList *list,
 
    if (!Init())
       return false;
-   
-   if (!PromptUser())
-      return false;
+
+   // Don't prompt user if we are dealing with a 
+   // effect that is already configured, e.g. repeating
+   // the last effect on a different selection.
+   if( (flags & CONFIGURED_EFFECT) == 0)
+   {
+      if (!PromptUser())
+         return false;
+   }
       
    wxBusyCursor busy;
    wxYield();

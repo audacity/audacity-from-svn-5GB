@@ -254,6 +254,9 @@ void AudacityProject::CreateMenusAndCommands()
    c->EndMenu();
 
    c->BeginMenu(_("&Effect"));
+   c->AddItem("RepeatLastEffect",     _("Repeat Last Effect\tCtrl+G"),    FN(OnRepeatLastEffect));
+   c->AddSeparator();
+
    effects = Effect::GetEffects(PROCESS_EFFECT | BUILTIN_EFFECT);
    if(effects->GetCount()){
       names.Clear();
@@ -568,6 +571,8 @@ void AudacityProject::UpdateMenus()
 
    // Effects menus
 
+   mCommandManager.Enable("RepeatLastEffect", numWaveTracksSelected > 0 && nonZeroRegionSelected
+      && (Effect::GetLastEffect() != NULL));
    mCommandManager.Enable("Effect", numWaveTracksSelected > 0 && nonZeroRegionSelected);
    mCommandManager.Enable("EffectPlugin", numWaveTracksSelected > 0 && nonZeroRegionSelected);
    mCommandManager.Enable("Analyze", numWaveTracksSelected > 0 && nonZeroRegionSelected);
@@ -934,7 +939,7 @@ void AudacityProject::OnEffect(int type, int index)
       }
    }
    
-   if (f->DoEffect(this, mTracks, mTrackFactory,
+   if (f->DoEffect(this, type, mTracks, mTrackFactory,
                    &mViewInfo.sel0, &mViewInfo.sel1)) {
       wxString longDesc = f->GetEffectDescription();
       wxString shortDesc = f->GetEffectName();
@@ -946,11 +951,21 @@ void AudacityProject::OnEffect(int type, int index)
       if (mTracks->GetEndTime() > prevEndTime)
          OnZoomFit();
       FixScrollbars();
+
+      // Only remember a successful effect, don't rmemeber insert,
+      // or analyze effects.
+      if ((f->GetEffectFlags() & (INSERT_EFFECT | ANALYZE_EFFECT))==0) {
+         Effect::SetLastEffect( type, index, f );
+         mCommandManager.Modify("RepeatLastEffect",
+            wxString::Format(_("Another %s\tCtrl+G"),
+            (const char *)shortDesc));
+      }
       
       mTrackPanel->Refresh(false);
    } else {
       // TODO: undo the effect if necessary?
    }
+
    
    return;
 }
@@ -963,6 +978,18 @@ void AudacityProject::OnGenerateEffect(int index)
 void AudacityProject::OnGeneratePlugin(int index)
 {
    OnEffect(PLUGIN_EFFECT | INSERT_EFFECT, index);
+}
+
+void AudacityProject::OnRepeatLastEffect(int index)
+{
+   if( Effect::GetLastEffect()  != NULL )
+   {
+      // Setting the CONFIGURED_EFFECT bit prevents
+      // prompting for parameters.
+      OnEffect( 
+         Effect::GetLastEffectType() | CONFIGURED_EFFECT,
+         Effect::GetLastEffectIndex());
+   }
 }
 
 void AudacityProject::OnProcessEffect(int index)
