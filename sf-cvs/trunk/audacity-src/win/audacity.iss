@@ -3,20 +3,22 @@
 
 [Setup]
 AppName=Audacity 1.2
+AppId=Audacity
 AppVerName=Audacity 1.2.0
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
-DefaultDirName={pf}\Audacity 1.2
-DefaultGroupName=Audacity 1.2
-AlwaysCreateUninstallIcon=yes
+DefaultDirName={pf}\Audacity
+DefaultGroupName=Audacity
+; AlwaysCreateUninstallIcon=yes
 LicenseFile=E:\sfw_dev\audacity\LICENSE.txt
 InfoBeforeFile=E:\sfw_dev\audacity\README.txt
 ; uncomment the following line if you want your installation to run on NT 3.51 too.
 ; MinVersion=4,3.51
 
 [Tasks]
-Name: "desktopicon"; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; MinVersion: 4,4
+Name: desktopicon; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; MinVersion: 4,4
+Name: associate; Description: "&Associate files"; GroupDescription: "Other tasks:"; Flags: checkedonce; MinVersion: 4,4
 
 [Files]
 Source: "E:\sfw_dev\audacity\win\Release\audacity.exe"; DestDir: "{app}"; CopyMode: alwaysoverwrite
@@ -84,8 +86,22 @@ Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\tremolo.ny"; DestDir: "{app}\P
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\undcbias.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 
 [Icons]
-Name: "{group}\Audacity 1.2"; Filename: "{app}\audacity.exe"
-Name: "{userdesktop}\Audacity 1.2"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
+Name: "{commonstartup}\Audacity"; Filename: "{app}\audacity.exe"
+Name: "{userdesktop}\Audacity"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
+
+[Registry]
+Root: HKCR; Subkey: ".AUP"; ValueType: string; ValueData: "Audacity.Project"; Flags: createvalueifdoesntexist uninsdeletekey 
+Root: HKCR; Subkey: "Audacity.Project"; ValueType: string; ValueData: "Audacity Project File"; Flags: createvalueifdoesntexist uninsdeletekey 
+Root: HKCR; Subkey: "Audacity.Project\\shell"; ValueType: string; ValueData: ""; Flags: createvalueifdoesntexist uninsdeletekey 
+Root: HKCR; Subkey: "Audacity.Project\\shell\\open"; Flags: createvalueifdoesntexist uninsdeletekey 
+
+; Brian's code in AudacityApp::OnInit() made this depend 
+; on whether the existing value contains "audacity.exe", but I don't know how to do that with InnoSetup
+;	Root: HKCR; Subkey: "Audacity.Project\\shell\\open\\command"; ValueType: string; ValueData: "data"; Flags: createvalueifdoesntexist uninsdeletekey 
+
+
+Root: HKCR; Subkey: "subkey"; ValueType: string; ValueData: "data"; Flags: createvalueifdoesntexist uninsdeletekey 
+
 
 [Run]
 Filename: "{app}\audacity.exe"; Description: "Launch Audacity"; Flags: nowait postinstall skipifsilent
