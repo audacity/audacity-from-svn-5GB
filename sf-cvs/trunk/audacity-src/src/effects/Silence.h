@@ -16,12 +16,20 @@
 #include "Effect.h"
 
 #include <wx/defs.h>
+#include <wx/dialog.h>
 #include <wx/intl.h>
+
+#include "Effect.h"
+
+class wxSizer;
+class wxTextCtrl;
 
 class EffectSilence:public Effect {
 
  public:
-   EffectSilence() {}
+   EffectSilence() {
+      length = sDefaultGenerateLen;
+   }
 
    virtual wxString GetEffectName() {
       return wxString(_("Silence"));
@@ -33,15 +41,48 @@ class EffectSilence:public Effect {
 
    // Useful only after PromptUser values have been set. 
    virtual wxString GetEffectDescription() { 
-      return wxString(_("Applied effect: Generate Silence")); 
+      return wxString::Format(_("Applied effect: Generate Silence, %.6lf seconds"), length); 
    } 
 
    virtual int GetEffectFlags() {
       return BUILTIN_EFFECT | INSERT_EFFECT;
    }
 
+   virtual bool PromptUser();
+
    virtual bool Process();
 
+ private:
+   double length;
+};
+
+wxSizer *CreateSilenceDialog(wxWindow * parent, bool call_fit =
+                             TRUE, bool set_sizer = TRUE);
+
+class SilenceDialog:public wxDialog {
+ public:
+   // constructors and destructors
+   SilenceDialog(wxWindow * parent, wxWindowID id, const wxString & title,
+                 const wxPoint & pos = wxDefaultPosition,
+                 const wxSize & size = wxDefaultSize,
+                 long style = wxDEFAULT_DIALOG_STYLE);
+
+   wxSizer *MakeSilenceDialog(wxWindow * parent, bool call_fit = TRUE,
+                              bool set_sizer = TRUE);
+   virtual bool Validate();
+   virtual bool TransferDataToWindow();
+   virtual bool TransferDataFromWindow();
+
+ private:
+   // WDR: handler declarations for FilterDialog
+   void OnCreateSilence(wxCommandEvent & event);
+   void OnCancel(wxCommandEvent & event);
+
+ private:
+   DECLARE_EVENT_TABLE()
+
+ public:
+   double length;
 };
 
 #endif

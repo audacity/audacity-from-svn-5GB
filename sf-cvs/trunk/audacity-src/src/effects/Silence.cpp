@@ -12,13 +12,37 @@
 
 #include <wx/defs.h> 
 
+#include <wx/button.h> 
+#include <wx/sizer.h> 
+#include <wx/stattext.h> 
+#include <wx/textctrl.h> 
+
 #include "Silence.h"
 #include "../WaveTrack.h"
 
+#define ID_TEXT 10000
+#define ID_LENGTHTEXT 10001
+
+bool EffectSilence::PromptUser()
+{
+   if (mT1 > mT0)
+      length = mT1 - mT0;
+
+   SilenceDialog dlog(mParent, -1, _("Generate Silence"));
+   dlog.length = length;
+   dlog.TransferDataToWindow();
+   dlog.CentreOnParent();
+   dlog.ShowModal();
+
+   if (dlog.GetReturnCode() == 0)
+      return false;
+
+   length = dlog.length;
+   return true;
+}
+
 bool EffectSilence::Process()
 {
-   double length = mT1 - mT0;
-
    if (length <= 0.0)
       length = sDefaultGenerateLen;
 
@@ -27,13 +51,115 @@ bool EffectSilence::Process()
    Track *track = iter.First();
    while (track) {
       if (track->GetSelected())
+         track->Clear(mT0, mT1);
          track->InsertSilence(mT0, length);
       
       //Iterate to the next track
       track = iter.Next();
    }
 
+	mT1 = mT0 + length; // Update selection.
    return true;
+}
+
+BEGIN_EVENT_TABLE(SilenceDialog, wxDialog)
+   EVT_BUTTON(wxID_OK, SilenceDialog::OnCreateSilence)
+   EVT_BUTTON(wxID_CANCEL, SilenceDialog::OnCancel)
+END_EVENT_TABLE()
+
+SilenceDialog::SilenceDialog(wxWindow * parent, wxWindowID id, const wxString & title, const wxPoint & position, const wxSize & size, long style):
+wxDialog(parent, id, title, position, size, style)
+{
+   CreateSilenceDialog(this, TRUE);
+}
+
+bool SilenceDialog::Validate()
+{
+   return TRUE;
+}
+
+bool SilenceDialog::TransferDataToWindow()
+{
+   wxTextCtrl *text = (wxTextCtrl *) FindWindow(ID_LENGTHTEXT);
+   if (text) {
+      wxString str;
+      str.Printf("%.6lf", length);
+      text->SetValue(str);
+      text->SetSelection(-1, -1);
+      text->SetFocus();
+   }
+   return TRUE;
+}
+
+bool SilenceDialog::TransferDataFromWindow()
+{
+   wxTextCtrl *t = (wxTextCtrl *) FindWindow(ID_LENGTHTEXT);
+   if (t) {
+      t->GetValue().ToDouble(&length);
+   }
+   return TRUE;
+}
+
+// WDR: handler implementations for SilenceDialog
+
+void SilenceDialog::OnCreateSilence(wxCommandEvent & event)
+{
+   TransferDataFromWindow();
+
+   if (Validate())
+      EndModal(true);
+   else {
+      event.Skip();
+   }
+}
+
+void SilenceDialog::OnCancel(wxCommandEvent & event)
+{
+   EndModal(false);
+}
+
+wxSizer *CreateSilenceDialog(wxWindow * parent, bool call_fit,
+                             bool set_sizer)
+{
+   wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
+   wxBoxSizer *item2 = new wxBoxSizer(wxHORIZONTAL);
+
+   wxStaticText *item9 = new wxStaticText(parent, ID_TEXT, _("Length (seconds)"),
+         wxDefaultPosition, wxDefaultSize, 0);
+   item2->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxTextCtrl *item10 = new wxTextCtrl(parent, ID_LENGTHTEXT, "",
+         wxDefaultPosition, wxSize(120, -1), 0);
+   item2->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   item0->Add(item2, 1, wxALIGN_CENTRE | wxALL, 5);
+
+   wxBoxSizer *item11 = new wxBoxSizer(wxHORIZONTAL);
+
+   wxButton *item13 =
+       new wxButton(parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
+                    wxDefaultSize, 0);
+   item11->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxButton *item12 =
+       new wxButton(parent, wxID_OK, _("Generate Silence"), wxDefaultPosition,
+                    wxDefaultSize, 0);
+   item12->SetDefault();
+   item12->SetFocus();
+   item11->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   item0->Add(item11, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   if (set_sizer) {
+      parent->SetAutoLayout(TRUE);
+      parent->SetSizer(item0);
+      if (call_fit) {
+         item0->Fit(parent);
+         item0->SetSizeHints(parent);
+      }
+   }
+
+   return item0;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
@@ -46,4 +172,3 @@ bool EffectSilence::Process()
 //
 // vim: et sts=3 sw=3
 // arch-tag: 78c8d521-815a-4fdb-830a-f9655cd4f529
-
