@@ -235,7 +235,8 @@ CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cxxflags`"
 
 AC_CANONICAL_HOST
 
-if [[ "$host_os" = "darwin5.3" ]] ; then
+case "${host_os}" in
+  darwin* )
 	dnl Mac OS X configuration
 
 	dnl CoreAudio
@@ -258,7 +259,8 @@ if [[ "$host_os" = "darwin5.3" ]] ; then
 	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/LoadVSTMac.cpp.o"
 	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/VSTEffect.o"
 
-else
+;;
+  *)
 	dnl Unix OSS configuration
 
 	BUILDLIBS="$BUILDLIBS portaudio/pa_unix_oss/portaudio.a"
@@ -270,7 +272,7 @@ else
 
 	AFTERBUILD=""
 
-fi
+esac
 
 if [[ "$use_ladspa" = "yes" ]] ; then
 	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/ladspa/LoadLadspa.o"
