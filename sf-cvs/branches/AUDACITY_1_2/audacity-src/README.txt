@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.2.0-pre4
+Version 1.2.0
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -252,7 +252,37 @@ Known issues/problems:
     will replace 1.0.0 installations, but not the 1.1.x beta 
     installations.
 
+  * The About window does not display correctly in locales with
+    non-Western character sets.
+
+  * The Change Pitch effect crashes when used with tracks that
+    have 96 KHz sample rates.
+
 -------------------------------------------------------------
+
+Changes in 1.2.0:
+
+  * New cross-fade effects.
+
+  * Fix problem where samples were drawn in the wrong position
+    when zoomed all the way in.  This caused the drawing tool
+    to move a different sample than the one under the cursor.
+
+  * Don't use id3v2.4 tags, which are not yet supported by
+    most players.  (This was fixed in 1.2.0-pre2, but appeared
+    again by accident in 1.2.0-pre3.)
+
+  * Correctly display translated messages in the status bar.
+
+  * Mac OS X: Fixed audio problems on the Apple PowerMac G5.
+
+  * Linux/ALSA: Work around a bug in ALSA's OSS emulation that
+    caused Audacity's playback cursor to move too quickly.
+
+  * Microsoft Windows: The Audacity source code should now
+    compile out of the box on Windows.
+
+  * Many new/updated translations.
 
 Changes in 1.2.0-pre4:
 
@@ -309,8 +339,8 @@ Changes in 1.2.0-pre4:
   * Make sure the "Save" command is enabled after changing
     gain and pan sliders.
 
-  * Updated translations.  Added translator credits to localized
-    versions of Audacity.
+  * Updated translations.  Added translator credits to the
+    "About" window in localized versions.
 
 Changes in 1.2.0-pre3:
 
