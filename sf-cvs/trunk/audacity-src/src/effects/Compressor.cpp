@@ -34,6 +34,7 @@ EffectCompressor::EffectCompressor()
    mThresholdDB = -12.0;
    mGainDB = 0.0;
    mCircle = NULL;
+	mLevelCircle = NULL;
 }
 
 bool EffectCompressor::PromptUser()
