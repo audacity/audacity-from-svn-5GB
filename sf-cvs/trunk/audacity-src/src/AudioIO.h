@@ -76,6 +76,8 @@ class AudioIO {
    void SetPaused(bool state);
    bool GetPaused();
 
+   void SetAlwaysEnablePause(bool bEnable);
+
  private:
 
    bool Start();
@@ -92,6 +94,7 @@ class AudioIO {
    double              mT1;
    bool                mHardStop;
    bool                mPaused;
+   bool                mAlwaysEnablePause;
 
    sampleCount         mDroppedSamples;
    double              mPausePosition;

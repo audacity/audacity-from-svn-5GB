@@ -45,6 +45,7 @@ AudioIO::AudioIO()
    mPaused = false;
    mDroppedSamples = 0;
    mPausePosition = 0;
+   mAlwaysEnablePause = false;
 
    PaError err = Pa_Initialize();
 
@@ -246,7 +247,8 @@ bool AudioIO::Start()
    mInUnderruns = 0;
    mRepeats = 0;
    mDroppedSamples = 0;
-   mPaused = false;
+   if(!mAlwaysEnablePause)
+      mPaused = false;
    mPausePosition = 0;
 
    unsigned int i;
@@ -605,6 +607,7 @@ void AudioIO::Stop()
 
    mProject = NULL;
    mHardStop = false;
+   mPaused = false;
    
    if (mInUnderruns) {
       wxString str;
@@ -676,4 +679,9 @@ double AudioIO::GetIndicator()
          return mT0 + ((Pa_StreamTime(mPortStream)-mDroppedSamples)/ mRate);
    else
       return -1000000000.0;
+}
+
+void AudioIO::SetAlwaysEnablePause(bool bEnable)
+{
+   mAlwaysEnablePause = bEnable;
 }

@@ -57,6 +57,8 @@ class ControlToolBar:public ToolBar {
    ControlToolBar(wxWindow * parent);
    virtual ~ ControlToolBar();
 
+   void UpdatePrefs();
+
    int GetCurrentTool();
 
    virtual void OnPaint(wxPaintEvent & event);
@@ -114,6 +116,7 @@ class ControlToolBar:public ToolBar {
 
    bool mPaused;         //Determines which state we are in (paused or not paused)
    //                      This maybe doesn't belong in the toolbar.
+   bool mAlwaysEnablePause;
 
    DECLARE_EVENT_TABLE()
 };

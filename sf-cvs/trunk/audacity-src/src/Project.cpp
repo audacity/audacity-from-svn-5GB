@@ -456,6 +456,8 @@ AudacityProject::~AudacityProject()
 void AudacityProject::UpdatePrefs()
 {
    mTrackPanel->UpdatePrefs();
+   ControlToolBar *controltoolbar = (ControlToolBar *)mToolBarArray[0];
+   controltoolbar->UpdatePrefs();
 }
 
 void AudacityProject::RedrawProject()
