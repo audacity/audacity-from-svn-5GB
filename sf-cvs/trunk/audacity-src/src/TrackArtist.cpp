@@ -421,13 +421,13 @@ int GetWaveYPosNew(float value, float min, float max,
      if (height == 0) return 0;
 
      if(value != 0.){
-      float db = 20 * log10(fabs(value));
-       value = (db + dBr) / dBr;
-       if(!outer)value -= .5;
-       if (value < 0.0)
-         value = float(0.0);
-      value *= sign;
-   }
+        float db = 20 * log10(fabs(value));
+        value = (db + dBr) / dBr;
+        if(!outer)value -= .5;
+        if (value < 0.0)
+           value = float(0.0);
+        value *= sign;
+     }
    }else
      if(!outer) 
        if( value >= 0.0)
@@ -633,9 +633,8 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
                                         bool showPoints, bool muted)
 {
    Sequence *seq = track->GetSequence();
-   double tOffset = track->GetOffset();
    double rate = track->GetRate();
-   sampleCount s0 = (sampleCount) (t0 * rate + 0.5);
+   sampleCount s0 = (sampleCount) (t0 * rate);
    sampleCount slen = (sampleCount) (r.width * rate / pps + 0.5);
    float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
    
@@ -655,25 +654,25 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
    
    for (s = 0; s < slen; s++) {
       double tt = (s / rate);
-      double envt = t0 + tOffset + tt;
 
       // MB: (s0/rate - t0) is the distance from the left edge of the screen
       //     to the first sample.
-      double xx = (tt + s0/rate - t0) * pps + 0.5;
+      int xx = (int)rint((tt + s0/rate - t0) * pps);
       
       if (xx < -10000)
          xx = -10000;
       if (xx > 10000)
          xx = 10000;
       
-      xpos[s] = (int) xx;
+      xpos[s] = xx;
 
-      ypos[s] = GetWaveYPosNew(buffer[s] * track->GetEnvelope()->GetValue(envt),
+      ypos[s] = GetWaveYPosNew(buffer[s] * track->GetEnvelope()->GetValueAtX(xx+r.x, r, h, pps),
                                zoomMin, zoomMax, r.height, dB, true, dBr, false);
       if (ypos[s] < -1)
          ypos[s] = -1;
       if (ypos[s] > r.height)
          ypos[s] = r.height;
+
    }
    
    // Draw lines
