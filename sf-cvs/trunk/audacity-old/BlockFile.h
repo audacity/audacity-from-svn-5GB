@@ -30,64 +30,61 @@
 
 #include "WaveTrack.h"
 
-class BlockFile
-{
-public:
-  // Normal block file
-  BlockFile(wxString name, wxString fullPath);
+class BlockFile {
+ public:
+   // Normal block file
+   BlockFile(wxString name, wxString fullPath);
 
-  // Alias block file
-  BlockFile(wxString name, wxString fullPath,
-			int localLen,
-			wxString aliasFullPath,
-			sampleCount aliasStart, sampleCount aliasLen,
-			int aliasChannel);
-  
-  ~BlockFile();  
+   // Alias block file
+   BlockFile(wxString name, wxString fullPath,
+             int localLen,
+             wxString aliasFullPath,
+             sampleCount aliasStart, sampleCount aliasLen,
+             int aliasChannel);
 
-  bool OpenReadHeader();
-  bool OpenReadData();
-  bool OpenWriting();
+   ~BlockFile();
 
-  void Close();
+   bool OpenReadHeader();
+   bool OpenReadData();
+   bool OpenWriting();
 
-  int Read(void *data, int len);
-  int Write(void *data, int len);
-  bool SeekTo(int where);
+   void Close();
 
-  // this accessor should be used for debugging only
-  wxString GetName();
+   int Read(void *data, int len);
+   int Write(void *data, int len);
+   bool SeekTo(int where);
 
-  bool IsAlias();
+   // this accessor should be used for debugging only
+   wxString GetName();
 
-private:
-  
-  friend class DirManager;
-  
-  void Ref();
-  bool Deref();
+   bool IsAlias();
 
-  // General variables
-  int          mRefCount;
+ private:
 
-  bool         mAlias; // Does this file alias another file
+    friend class DirManager;
 
-  int          mPos;  
+   void Ref();
+   bool Deref();
 
-  // Information about local data
-  wxString     mName;
-  wxString     mFullPath;
-  wxFFile     *mFile;
+   // General variables
+   int mRefCount;
 
-  // Information about aliased sound data
-  wxString     mAliasFullPath;
-  int          mLocalLen;
-  sampleCount  mStart;
-  sampleCount  mLen;
-  int          mChannel;
-  void         *mSndNode;
+   bool mAlias;                 // Does this file alias another file
+
+   int mPos;
+
+   // Information about local data
+   wxString mName;
+   wxString mFullPath;
+   wxFFile *mFile;
+
+   // Information about aliased sound data
+   wxString mAliasFullPath;
+   int mLocalLen;
+   sampleCount mStart;
+   sampleCount mLen;
+   int mChannel;
+   void *mSndNode;
 };
 
 #endif
-
-

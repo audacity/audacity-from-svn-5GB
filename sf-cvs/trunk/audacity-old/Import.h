@@ -23,9 +23,7 @@ class DirManager;
 wxString TrackNameFromFileName(wxString fName);
 
 // returns number of tracks imported
-int Import(wxWindow *parent,
-		   wxString fName,
-		   WaveTrack ***tracks,
-		   DirManager *dirManager);
+int Import(wxWindow * parent,
+           wxString fName, WaveTrack *** tracks, DirManager * dirManager);
 
 #endif

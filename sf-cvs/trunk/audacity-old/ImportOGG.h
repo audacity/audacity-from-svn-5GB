@@ -18,9 +18,9 @@
 #include "DirManager.h"
 #include "WaveTrack.h"
 
-bool ImportOGG(wxWindow *parent,
-			   wxString Filename, WaveTrack ***channels, int *numChannels,
-			   DirManager *dirManager);
+bool ImportOGG(wxWindow * parent,
+               wxString Filename, WaveTrack *** channels, int *numChannels,
+               DirManager * dirManager);
 
 
 #endif

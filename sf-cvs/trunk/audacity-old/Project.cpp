@@ -49,7 +49,7 @@
 #include "effects/Effect.h"
 
 TrackList *AudacityProject::msClipboard = new TrackList();
-double     AudacityProject::msClipLen = 0.0;
+double AudacityProject::msClipLen = 0.0;
 
 #ifdef __WXMAC__
 const int sbarSpaceWidth = 15;
@@ -77,68 +77,66 @@ AudacityProject *gActiveProject;
 
 AudacityProject *GetActiveProject()
 {
-  return gActiveProject;
+   return gActiveProject;
 }
 
-void SetActiveProject(AudacityProject *project)
+void SetActiveProject(AudacityProject * project)
 {
-  gActiveProject = project;
-  wxTheApp->SetTopWindow(project);
+   gActiveProject = project;
+   wxTheApp->SetTopWindow(project);
 }
 
-AudacityProject *CreateNewAudacityProject(wxWindow *parentWindow)
+AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
 {
-  wxPoint where;
-  where.x = 10;
-  where.y = 10;
+   wxPoint where;
+   where.x = 10;
+   where.y = 10;
 
-  int width = 600;
-  int height = 400;
+   int width = 600;
+   int height = 400;
 
-  if (gWindowedPalette) {
-	where.y += 75;
-	height -= 75;
-  }
+   if (gWindowedPalette) {
+      where.y += 75;
+      height -= 75;
+   }
+#ifdef __WXMAC__
+   where.y += 50;
+#endif
 
-  #ifdef __WXMAC__
-  where.y += 50;
-  #endif
+#ifdef __WXGTK__
+   height += 20;
+#endif
 
-  #ifdef __WXGTK__
-  height += 20;
-  #endif
+   where.x += gAudacityDocNum * 25;
+   where.y += gAudacityDocNum * 25;
 
-  where.x += gAudacityDocNum*25;
-  where.y += gAudacityDocNum*25;
+   AudacityProject *p = new AudacityProject(parentWindow, -1,
+                                            where, wxSize(width, height));
 
-  AudacityProject *p =
-	new AudacityProject(parentWindow, -1, 
-						where, wxSize(width, height));
+   p->Show(true);
 
-  p->Show(true);
+   gAudacityDocNum = (gAudacityDocNum + 1) % 10;
 
-  gAudacityDocNum = (gAudacityDocNum+1)%10;
+   SetActiveProject(p);
 
-  SetActiveProject(p);
-
-  return p;
+   return p;
 }
 
 void RedrawAllProjects()
 {
-  int len = gAudacityProjects.Count();
-  for(int i=0; i<len; i++)
-	gAudacityProjects[i]->RedrawProject();
+   int len = gAudacityProjects.Count();
+   for (int i = 0; i < len; i++)
+      gAudacityProjects[i]->RedrawProject();
 }
 
 enum {
-  FirstID = 1000,
+   FirstID = 1000,
 
-  // Window controls
+   // Window controls
 
-  HSBarID,
-  VSBarID,
-  TrackPanelID
+   HSBarID,
+   VSBarID,
+   TrackPanelID
 };
 
 #define AUDACITY_MENUS_ENUM
@@ -146,1029 +144,1036 @@ enum {
 #undef AUDACITY_MENUS_ENUM
 
 BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
-  EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
-  EVT_PAINT(AudacityProject::OnPaint)
-  EVT_CLOSE(AudacityProject::OnCloseWindow)
-  EVT_SIZE (AudacityProject::OnSize)
-  EVT_ACTIVATE (AudacityProject::OnActivate)
-  EVT_COMMAND_SCROLL  (HSBarID,   AudacityProject::OnScroll)
-  EVT_COMMAND_SCROLL  (VSBarID,   AudacityProject::OnScroll)
-
-  #define AUDACITY_MENUS_EVENT_TABLE
-  #include "Menus.h"
-  #undef AUDACITY_MENUS_EVENT_TABLE
-  
+    EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
+    EVT_PAINT(AudacityProject::OnPaint)
+    EVT_CLOSE(AudacityProject::OnCloseWindow)
+    EVT_SIZE(AudacityProject::OnSize)
+    EVT_ACTIVATE(AudacityProject::OnActivate)
+    EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
+EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
+#define AUDACITY_MENUS_EVENT_TABLE
+#include "Menus.h"
+#undef AUDACITY_MENUS_EVENT_TABLE
 END_EVENT_TABLE()
 
-AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
-								 const wxPoint& pos, const wxSize& size) :
-  wxFrame(parent, id, "Audacity", pos, size),
-  mDirty(false),
-  mTrackPanel(NULL),
-  mAPalette(NULL),
-  mRate((double)gPrefs->Read("/SamplingRate/DefaultProjectSampleRate", 44100)),
-  mDrag(NULL),
-  mAutoScrolling(false)
+AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
+                                     const wxPoint & pos,
+                                     const wxSize & size):wxFrame(parent,
+                                                                  id,
+                                                                  "Audacity",
+                                                                  pos,
+                                                                  size),
+mDirty(false), mTrackPanel(NULL), mAPalette(NULL),
+mRate((double) gPrefs->
+      Read("/SamplingRate/DefaultProjectSampleRate", 44100)), mDrag(NULL),
+mAutoScrolling(false)
 {
 
-  //
-  // Create track list
-  //
-  
-  mTracks = new TrackList();
-  mLastSavedTracks = NULL;
+   //
+   // Create track list
+   //
 
-  //
-  // Initialize view info (shared with TrackPanel)
-  //
+   mTracks = new TrackList();
+   mLastSavedTracks = NULL;
 
-  // Selection
-  mViewInfo.sel0 = 0.0;
-  mViewInfo.sel1 = 0.0;
+   //
+   // Initialize view info (shared with TrackPanel)
+   //
 
-  // Horizontal scrollbar
-  mViewInfo.total = 1.0;
-  mViewInfo.screen = 1.0;
-  mViewInfo.h = 0.0;
-  mViewInfo.zoom = 44100.0 / 512.0;
-  mViewInfo.lastZoom = mViewInfo.zoom;
+   // Selection
+   mViewInfo.sel0 = 0.0;
+   mViewInfo.sel1 = 0.0;
 
-  // Vertical scrollbar
-  mViewInfo.vpos = 0;
+   // Horizontal scrollbar
+   mViewInfo.total = 1.0;
+   mViewInfo.screen = 1.0;
+   mViewInfo.h = 0.0;
+   mViewInfo.zoom = 44100.0 / 512.0;
+   mViewInfo.lastZoom = mViewInfo.zoom;
 
-  mViewInfo.scrollStep = 16;
+   // Vertical scrollbar
+   mViewInfo.vpos = 0;
 
-  mViewInfo.sbarH = 0;
-  mViewInfo.sbarScreen = 1;
-  mViewInfo.sbarTotal = 1;
+   mViewInfo.scrollStep = 16;
 
-  CreateMenuBar();
+   mViewInfo.sbarH = 0;
+   mViewInfo.sbarScreen = 1;
+   mViewInfo.sbarTotal = 1;
 
-  int left=0, top=0, width, height;
-  GetClientSize(&width, &height);
+   CreateMenuBar();
 
-  //
-  // Create the Palette (if we're not using a windowed palette)
-  // 
+   int left = 0, top = 0, width, height;
+   GetClientSize(&width, &height);
 
-  if (!gWindowedPalette) {
-	int h = GetAPaletteHeight();
+   //
+   // Create the Palette (if we're not using a windowed palette)
+   // 
 
-  int ptop = 0;
-  #ifdef __WXMSW__
-    ptop++;
-  #endif
+   if (!gWindowedPalette) {
+      int h = GetAPaletteHeight();
 
-	mAPalette = new APalette(this, 0,
-							 wxPoint(10, ptop),
-							 wxSize(width-10, h));
-	
-	top += h+1+ptop;
-	height -= h+1+ptop;
-  }
+      int ptop = 0;
+#ifdef __WXMSW__
+      ptop++;
+#endif
 
-  //
-  // Create the status bar
-  //
+      mAPalette = new APalette(this, 0,
+                               wxPoint(10, ptop), wxSize(width - 10, h));
 
-  int sh = GetStatusHeight();
+      top += h + 1 + ptop;
+      height -= h + 1 + ptop;
+   }
+   //
+   // Create the status bar
+   //
 
-  mStatus = new AStatus(this, 0,
-						wxPoint(0, height-sh),
-						wxSize(width, sh),
-						mRate,
-						this);
-  height -= sh;
+   int sh = GetStatusHeight();
 
-  mStatus->SetField("Welcome to Audacity version " 
-					AUDACITY_VERSION_STRING, 0);
+   mStatus = new AStatus(this, 0,
+                         wxPoint(0, height - sh),
+                         wxSize(width, sh), mRate, this);
+   height -= sh;
 
-  //
-  // Create the TrackPanel and the scrollbars
-  //
+   mStatus->SetField("Welcome to Audacity version "
+                     AUDACITY_VERSION_STRING, 0);
 
-  mTrackPanel = new TrackPanel(this, TrackPanelID,
-							   wxPoint(left, top),
-							   wxSize(width-sbarSpaceWidth, height-sbarSpaceWidth),
-							   mTracks, &mViewInfo,
-							   this);
+   //
+   // Create the TrackPanel and the scrollbars
+   //
 
-  int hoffset = mTrackPanel->GetLeftOffset()-1;
-  int voffset = mTrackPanel->GetRulerHeight();
-  
-  #ifdef __WXMAC__
-  width++;
-  height++;
-  #endif
-  
-  mHsbar =
-	new wxScrollBar(this, HSBarID, 
-					wxPoint(hoffset, top+height-sbarSpaceWidth),
-					wxSize(width-hoffset-sbarSpaceWidth+sbarExtraLen, sbarControlWidth),
-					wxSB_HORIZONTAL);
+   mTrackPanel = new TrackPanel(this, TrackPanelID,
+                                wxPoint(left, top),
+                                wxSize(width - sbarSpaceWidth,
+                                       height - sbarSpaceWidth), mTracks,
+                                &mViewInfo, this);
 
-  mVsbar =
-	new wxScrollBar(this, VSBarID,
-					wxPoint(width-sbarSpaceWidth, top+voffset),
-					wxSize(sbarControlWidth, height-sbarSpaceWidth-voffset+sbarExtraLen),
-					wxSB_VERTICAL);
+   int hoffset = mTrackPanel->GetLeftOffset() - 1;
+   int voffset = mTrackPanel->GetRulerHeight();
 
-  InitialState();
-  FixScrollbars();
+#ifdef __WXMAC__
+   width++;
+   height++;
+#endif
 
-  //
-  // Set the Icon
-  //
+   mHsbar =
+       new wxScrollBar(this, HSBarID,
+                       wxPoint(hoffset, top + height - sbarSpaceWidth),
+                       wxSize(width - hoffset - sbarSpaceWidth +
+                              sbarExtraLen, sbarControlWidth),
+                       wxSB_HORIZONTAL);
 
-  // loads either the XPM or the windows resource, depending on the platform
-  wxIcon ic(wxICON(AudacityLogo)); 
-  SetIcon(ic);
+   mVsbar =
+       new wxScrollBar(this, VSBarID,
+                       wxPoint(width - sbarSpaceWidth, top + voffset),
+                       wxSize(sbarControlWidth,
+                              height - sbarSpaceWidth - voffset +
+                              sbarExtraLen), wxSB_VERTICAL);
 
-  // Min size, max size
-  SetSizeHints(250,200,20000,20000);
+   InitialState();
+   FixScrollbars();
 
-  gAudacityProjects.Add(this);
+   //
+   // Set the Icon
+   //
+
+   // loads either the XPM or the windows resource, depending on the platform
+   wxIcon ic(wxICON(AudacityLogo));
+   SetIcon(ic);
+
+   // Min size, max size
+   SetSizeHints(250, 200, 20000, 20000);
+
+   gAudacityProjects.Add(this);
 }
 
 AudacityProject::~AudacityProject()
 {
-  // TODO delete mTracks;
+   // TODO delete mTracks;
 
-  gAudacityProjects.Remove(this);
+   gAudacityProjects.Remove(this);
 
-  if (gAudacityProjects.IsEmpty())
-	QuitAudacity();
+   if (gAudacityProjects.IsEmpty())
+      QuitAudacity();
 }
 
 void AudacityProject::RedrawProject()
 {
-  FixScrollbars();
-  mTrackPanel->Refresh(false);
+   FixScrollbars();
+   mTrackPanel->Refresh(false);
 }
 
 DirManager *AudacityProject::GetDirManager()
 {
-  return &mDirManager;
+   return &mDirManager;
 }
 
 wxString AudacityProject::GetName()
 {
-  wxString n = mName;
+   wxString n = mName;
 
-  return n;
+   return n;
 }
 
 double AudacityProject::GetRate()
 {
-  return mRate;
+   return mRate;
 }
 
 void AudacityProject::AS_SetRate(double rate)
 {
-  mRate = rate;
+   mRate = rate;
 }
 
 double AudacityProject::GetSel0()
 {
-  return mViewInfo.sel0;
+   return mViewInfo.sel0;
 }
 
 double AudacityProject::GetSel1()
 {
-  return mViewInfo.sel1;
+   return mViewInfo.sel1;
 }
 
 TrackList *AudacityProject::GetTracks()
 {
-  return mTracks;
+   return mTracks;
 }
 
 APalette *AudacityProject::GetAPalette()
 {
-  if (mAPalette)
-	return mAPalette;
-  else
-	return &(gAPaletteFrame->mPalette);
+   if (mAPalette)
+      return mAPalette;
+   else
+      return &(gAPaletteFrame->mPalette);
 }
 
 void AudacityProject::FinishAutoScroll()
 {
-  // Set a flag so we don't have to generate two update events
-  mAutoScrolling = true;
+   // Set a flag so we don't have to generate two update events
+   mAutoScrolling = true;
 
-  // Call our Scroll method which updates our ViewInfo variables
-  // to reflect the positions of the scrollbars
-  wxScrollEvent *dummy = new wxScrollEvent();
-  OnScroll(*dummy);
-  delete dummy;
+   // Call our Scroll method which updates our ViewInfo variables
+   // to reflect the positions of the scrollbars
+   wxScrollEvent *dummy = new wxScrollEvent();
+   OnScroll(*dummy);
+   delete dummy;
 
-  mAutoScrolling = false;
+   mAutoScrolling = false;
 }
 
 void AudacityProject::OnScrollLeft()
 {
-  int pos = mHsbar->GetThumbPosition();
-  int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
+   int pos = mHsbar->GetThumbPosition();
+   int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
 
-  if (pos > 0) {
-	mHsbar->SetThumbPosition(pos-1);
-	FinishAutoScroll();
-  }
+   if (pos > 0) {
+      mHsbar->SetThumbPosition(pos - 1);
+      FinishAutoScroll();
+   }
 }
 
 void AudacityProject::OnScrollRight()
 {
-  int pos = mHsbar->GetThumbPosition();
-  int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
+   int pos = mHsbar->GetThumbPosition();
+   int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
 
-  if (pos < max) {
-	mHsbar->SetThumbPosition(pos+1);
-	FinishAutoScroll();
-  }
+   if (pos < max) {
+      mHsbar->SetThumbPosition(pos + 1);
+      FinishAutoScroll();
+   }
 }
 
 void AudacityProject::FixScrollbars()
 {
-  bool rescroll = false;
+   bool rescroll = false;
 
-  int totalHeight = (mTracks->GetHeight() + 32);
+   int totalHeight = (mTracks->GetHeight() + 32);
 
-  int panelWidth, panelHeight;
-  mTrackPanel->GetTracksUsableArea(&panelWidth, &panelHeight);
+   int panelWidth, panelHeight;
+   mTrackPanel->GetTracksUsableArea(&panelWidth, &panelHeight);
 
-  mViewInfo.total = mTracks->GetMaxLen() + 1.0;
-  mViewInfo.screen = ((double)panelWidth) / mViewInfo.zoom;
+   mViewInfo.total = mTracks->GetMaxLen() + 1.0;
+   mViewInfo.screen = ((double) panelWidth) / mViewInfo.zoom;
 
-  if (mViewInfo.h > mViewInfo.total - mViewInfo.screen) {
-  	mViewInfo.h = mViewInfo.total - mViewInfo.screen;
-  	rescroll = true;
-  }
-  if (mViewInfo.h < 0.0) {
-  	mViewInfo.h = 0.0;
-  	rescroll = true;
-  }
+   if (mViewInfo.h > mViewInfo.total - mViewInfo.screen) {
+      mViewInfo.h = mViewInfo.total - mViewInfo.screen;
+      rescroll = true;
+   }
+   if (mViewInfo.h < 0.0) {
+      mViewInfo.h = 0.0;
+      rescroll = true;
+   }
 
-  mViewInfo.sbarTotal = (int)(mViewInfo.total * mViewInfo.zoom)
-	/ mViewInfo.scrollStep;
-  mViewInfo.sbarScreen = (int)(mViewInfo.screen * mViewInfo.zoom)
-	/ mViewInfo.scrollStep;
+   mViewInfo.sbarTotal = (int) (mViewInfo.total * mViewInfo.zoom)
+       / mViewInfo.scrollStep;
+   mViewInfo.sbarScreen = (int) (mViewInfo.screen * mViewInfo.zoom)
+       / mViewInfo.scrollStep;
 
-  mViewInfo.sbarH = (int)(mViewInfo.h * mViewInfo.zoom)
-	/ mViewInfo.scrollStep;
+   mViewInfo.sbarH = (int) (mViewInfo.h * mViewInfo.zoom)
+       / mViewInfo.scrollStep;
 
-  mViewInfo.vpos =
-	mVsbar->GetThumbPosition() * mViewInfo.scrollStep;
+   mViewInfo.vpos = mVsbar->GetThumbPosition() * mViewInfo.scrollStep;
 
-  if (mViewInfo.vpos >= totalHeight)
-	mViewInfo.vpos = totalHeight-1;
-  if (mViewInfo.vpos < 0)
-	mViewInfo.vpos = 0;
+   if (mViewInfo.vpos >= totalHeight)
+      mViewInfo.vpos = totalHeight - 1;
+   if (mViewInfo.vpos < 0)
+      mViewInfo.vpos = 0;
 
-  #ifdef __WXGTK__
-  mHsbar->Show(mViewInfo.screen < mViewInfo.total);
-  mVsbar->Show(panelHeight < totalHeight);
-  #else
-  mHsbar->Enable(mViewInfo.screen < mViewInfo.total);
-  mVsbar->Enable(panelHeight < totalHeight);
-  #endif
+#ifdef __WXGTK__
+   mHsbar->Show(mViewInfo.screen < mViewInfo.total);
+   mVsbar->Show(panelHeight < totalHeight);
+#else
+   mHsbar->Enable(mViewInfo.screen < mViewInfo.total);
+   mVsbar->Enable(panelHeight < totalHeight);
+#endif
 
-  if (panelHeight >= totalHeight && mViewInfo.vpos != 0) {
-	mViewInfo.vpos = 0;
-	mTrackPanel->Refresh();
-	//REDRAW(trackPanel);
-	//REDRAW(rulerPanel);
-	rescroll = false;
-  }
-  if (mViewInfo.screen >= mViewInfo.total && mViewInfo.sbarH != 0) {
-	mViewInfo.sbarH = 0;
-	mTrackPanel->Refresh();
-	//REDRAW(trackPanel);
-	//REDRAW(rulerPanel);
-	rescroll = false;
-  }
+   if (panelHeight >= totalHeight && mViewInfo.vpos != 0) {
+      mViewInfo.vpos = 0;
+      mTrackPanel->Refresh();
+      //REDRAW(trackPanel);
+      //REDRAW(rulerPanel);
+      rescroll = false;
+   }
+   if (mViewInfo.screen >= mViewInfo.total && mViewInfo.sbarH != 0) {
+      mViewInfo.sbarH = 0;
+      mTrackPanel->Refresh();
+      //REDRAW(trackPanel);
+      //REDRAW(rulerPanel);
+      rescroll = false;
+   }
 
-  mHsbar->SetScrollbar(mViewInfo.sbarH, mViewInfo.sbarScreen,
-					   mViewInfo.sbarTotal, mViewInfo.sbarScreen, TRUE);
-  mVsbar->SetScrollbar(mViewInfo.vpos / mViewInfo.scrollStep,
-					   panelHeight / mViewInfo.scrollStep,
-					   totalHeight / mViewInfo.scrollStep,
-					   panelHeight / mViewInfo.scrollStep,
-					   TRUE);
+   mHsbar->SetScrollbar(mViewInfo.sbarH, mViewInfo.sbarScreen,
+                        mViewInfo.sbarTotal, mViewInfo.sbarScreen, TRUE);
+   mVsbar->SetScrollbar(mViewInfo.vpos / mViewInfo.scrollStep,
+                        panelHeight / mViewInfo.scrollStep,
+                        totalHeight / mViewInfo.scrollStep,
+                        panelHeight / mViewInfo.scrollStep, TRUE);
 
-  mViewInfo.lastZoom = mViewInfo.zoom;
-  
-  if (rescroll && mViewInfo.screen < mViewInfo.total) {
-	mTrackPanel->Refresh();
-	//REDRAW(trackPanel);
-	//REDRAW(rulerPanel);
-  }
+   mViewInfo.lastZoom = mViewInfo.zoom;
+
+   if (rescroll && mViewInfo.screen < mViewInfo.total) {
+      mTrackPanel->Refresh();
+      //REDRAW(trackPanel);
+      //REDRAW(rulerPanel);
+   }
 }
 
 void AudacityProject::HandleResize()
 {
-  if (mTrackPanel) {
-	
-	int left=0, top=0;
-    int width, height;
-    GetClientSize(&width, &height);
+   if (mTrackPanel) {
 
-	if (!gWindowedPalette) {
-	  int h = GetAPaletteHeight();
+      int left = 0, top = 0;
+      int width, height;
+      GetClientSize(&width, &height);
 
-    int ptop = 0;
-    #ifdef __WXMSW__
-        ptop++;
-    #endif
-	  
-	  mAPalette->SetSize(10, ptop, width-10, h);
-	  
-	  top += h+1+ptop;
-	  height -= h+1+ptop;
-	}
+      if (!gWindowedPalette) {
+         int h = GetAPaletteHeight();
 
-	int sh = GetStatusHeight();
+         int ptop = 0;
+#ifdef __WXMSW__
+         ptop++;
+#endif
 
-	mStatus->SetSize(0, top+height-sh,
-					 width, sh);
-	height -= sh;
+         mAPalette->SetSize(10, ptop, width - 10, h);
 
-    mTrackPanel->SetSize(left, top,
-  					     width-sbarSpaceWidth, height-sbarSpaceWidth);
-
-    int hoffset = mTrackPanel->GetLeftOffset()-1;
-    int voffset = mTrackPanel->GetRulerHeight();
-
-    mHsbar->SetSize(hoffset, top+height-sbarSpaceWidth,
-				    width-hoffset-sbarSpaceWidth+sbarExtraLen, sbarControlWidth);
-    mVsbar->SetSize(width-sbarSpaceWidth, top+voffset-sbarExtraLen,
-				    sbarControlWidth, height-sbarSpaceWidth-voffset+2*sbarExtraLen);
-
-    FixScrollbars();
-  }
-}
-
-void AudacityProject::OnSize(wxSizeEvent &event)
-{
-  HandleResize();
-}
-
-void AudacityProject::OnScroll(wxScrollEvent &event)
-{
-  int  hlast = mViewInfo.sbarH;
-  int  vlast = mViewInfo.vpos;
-  int  hoffset = 0;
-  int  voffset = 0;
-
-  mViewInfo.sbarH = mHsbar->GetThumbPosition();
-
-  if (mViewInfo.sbarH != hlast) {
-	  mViewInfo.h = (mViewInfo.sbarH * mViewInfo.scrollStep) / mViewInfo.zoom;
-	  if (mViewInfo.h > mViewInfo.total - mViewInfo.screen)
-		  mViewInfo.h = mViewInfo.total - mViewInfo.screen;
-	  if (mViewInfo.h < 0.0)
-		  mViewInfo.h = 0.0;
-		hoffset = (mViewInfo.sbarH - hlast) * mViewInfo.scrollStep;
-  }
-
-  mViewInfo.vpos = mVsbar->GetThumbPosition() * mViewInfo.scrollStep;
-  voffset = mViewInfo.vpos - vlast;
-
-  /*
-	TODO: add back fast scrolling code
-
-	// Track panel is updated either way, but it is smart and only redraws
-	// what is needed
-	trackPanel->FastScroll(-hoffset, -voffset);
-	
-	// Ruler panel updated if we scroll horizontally
-	if (hoffset) {
-      REDRAW(rulerPanel);
-	}
-  */
-
-  SetActiveProject(this);
-
-  if (!mAutoScrolling) {
-	mTrackPanel->Refresh(false);
-    #ifdef __WXMAC__
-	  mTrackPanel->MacUpdateImmediately();
-    #endif
-  }
-}
-
-bool AudacityProject::ProcessEvent(wxEvent& event)
-{
-  int numEffects = Effect::GetNumEffects();
-
-  if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED &&
-      event.GetId() >= FirstEffectID &&
-      event.GetId() < FirstEffectID + numEffects) {
-
-	TrackListIterator iter(mTracks);
-    VTrack *t = iter.First();
-    int count = 0;
-
-    while(t) {
-      if (t->selected && t->GetKind() == (VTrack::Wave))
-        count++;      
-      t = iter.Next();
-    }
-
-    if (count==0 || mViewInfo.sel0 == mViewInfo.sel1) {
-      wxMessageBox("No audio data is selected.");
-      return true;
-    }
-
-    Effect *f = Effect::GetEffect(event.GetId() - FirstEffectID);
-
-    if (!f->Begin(this))
-        return true;
-
-    int index = 0;
-
-    t = iter.First();
-
-    while(t) {
-      if (t->selected && t->GetKind() == (VTrack::Wave)) {
-
-        bool success = f->DoInPlaceEffect((WaveTrack *)t,
-                            mViewInfo.sel0, mViewInfo.sel1,
-                            index, count);
-
-        if (!success) {
-            wxMessageBox("Effect unsuccessful.");
-            break;
-        }
+         top += h + 1 + ptop;
+         height -= h + 1 + ptop;
       }
-      
-      t = iter.Next();
-    }
 
-    f->End();
-    
-    PushState();
-    
-    FixScrollbars();
+      int sh = GetStatusHeight();
 
-	mTrackPanel->Refresh(false);
-    
-    // This indicates we handled the event.
-    return true;
-  }
+      mStatus->SetSize(0, top + height - sh, width, sh);
+      height -= sh;
 
-  return wxFrame::ProcessEvent(event);
+      mTrackPanel->SetSize(left, top,
+                           width - sbarSpaceWidth,
+                           height - sbarSpaceWidth);
+
+      int hoffset = mTrackPanel->GetLeftOffset() - 1;
+      int voffset = mTrackPanel->GetRulerHeight();
+
+      mHsbar->SetSize(hoffset, top + height - sbarSpaceWidth,
+                      width - hoffset - sbarSpaceWidth + sbarExtraLen,
+                      sbarControlWidth);
+      mVsbar->SetSize(width - sbarSpaceWidth, top + voffset - sbarExtraLen,
+                      sbarControlWidth,
+                      height - sbarSpaceWidth - voffset +
+                      2 * sbarExtraLen);
+
+      FixScrollbars();
+   }
 }
 
-void AudacityProject::OnPaint(wxPaintEvent& event)
+void AudacityProject::OnSize(wxSizeEvent & event)
 {
-  // Draw a colored strip on the right and bottom edges of
-  // the window to fill in the small area not covered by
-  // the TrackPanel or the scrollbars.
-
-  wxPaintDC dc(this);
-  int width, height;
-  GetClientSize(&width, &height);
-    
-  AColor::Medium(&dc, false);
-
-  int top = 0;
-
-  if (!gWindowedPalette) {
-	int h = GetAPaletteHeight();
-
-#ifdef __WXMSW__
-  h++;
-#endif
-	
-	top += h+1;
-	height -= h+1;
-  }
-
-  int sh = GetStatusHeight();
-  height -= sh;  
-  
-  wxRect r;
-  r.x = width-sbarSpaceWidth;
-  r.y = 0;
-  r.width = sbarSpaceWidth;
-  r.height = height;
-  dc.DrawRectangle(r);
-  
-  // If we're displaying the palette inside the window,
-  // draw little bumps to the left of the palette to
-  // indicate it's grabable
-
-  if (!gWindowedPalette) {
-	int h = GetAPaletteHeight();
-
-	r.x = 0;
-	r.y = 0;
-	r.width = 10;
-	r.height = h;
-	dc.DrawRectangle(r);
-
-	int i;
-
-	AColor::Light(&dc, false);
-	for(i=h/2-20; i<h/2+20; i+=4)
-	  dc.DrawLine(3,i,6,i);
-	AColor::Dark(&dc, false);
-	for(i=h/2-19; i<h/2+21; i+=4)
-	  dc.DrawLine(3,i,6,i);
-
-	dc.SetPen(*wxBLACK_PEN);
-	dc.DrawLine(9, 0, 9, h);
-
-#ifdef __WXMSW__
-	dc.DrawLine(0, 0, width, 0);
-        dc.DrawLine(0, 0, 0, h);
-#endif
-
-  dc.DrawLine(0, h, width, h);
-  }
-
-  // Fill in space on sides of scrollbars
-
-  dc.SetPen(*wxBLACK_PEN);
-  dc.DrawLine(width-sbarSpaceWidth, top,
-			  width-sbarSpaceWidth, top+height-sbarSpaceWidth+1);
-  dc.DrawLine(0, top+height-sbarSpaceWidth,
-			  width-sbarSpaceWidth, top+height-sbarSpaceWidth);
-
-  wxRect f;
-  f.x = 0;
-  f.y = top+height-sbarSpaceWidth+1;
-  f.width = mTrackPanel->GetLeftOffset()-2;
-  f.height = sbarSpaceWidth-2;
-  AColor::Medium(&dc, false);
-  dc.DrawRectangle(f);
-  AColor::Bevel(dc, true, f);
+   HandleResize();
 }
 
-void AudacityProject::OnActivate(wxActivateEvent& event)
+void AudacityProject::OnScroll(wxScrollEvent & event)
 {
-  SetActiveProject(this);
-  
-  event.Skip();
+   int hlast = mViewInfo.sbarH;
+   int vlast = mViewInfo.vpos;
+   int hoffset = 0;
+   int voffset = 0;
+
+   mViewInfo.sbarH = mHsbar->GetThumbPosition();
+
+   if (mViewInfo.sbarH != hlast) {
+      mViewInfo.h =
+          (mViewInfo.sbarH * mViewInfo.scrollStep) / mViewInfo.zoom;
+      if (mViewInfo.h > mViewInfo.total - mViewInfo.screen)
+         mViewInfo.h = mViewInfo.total - mViewInfo.screen;
+      if (mViewInfo.h < 0.0)
+         mViewInfo.h = 0.0;
+      hoffset = (mViewInfo.sbarH - hlast) * mViewInfo.scrollStep;
+   }
+
+   mViewInfo.vpos = mVsbar->GetThumbPosition() * mViewInfo.scrollStep;
+   voffset = mViewInfo.vpos - vlast;
+
+   /*
+      TODO: add back fast scrolling code
+
+      // Track panel is updated either way, but it is smart and only redraws
+      // what is needed
+      trackPanel->FastScroll(-hoffset, -voffset);
+
+      // Ruler panel updated if we scroll horizontally
+      if (hoffset) {
+      REDRAW(rulerPanel);
+      }
+    */
+
+   SetActiveProject(this);
+
+   if (!mAutoScrolling) {
+      mTrackPanel->Refresh(false);
+#ifdef __WXMAC__
+      mTrackPanel->MacUpdateImmediately();
+#endif
+   }
+}
+
+bool AudacityProject::ProcessEvent(wxEvent & event)
+{
+   int numEffects = Effect::GetNumEffects();
+
+   if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED &&
+       event.GetId() >= FirstEffectID &&
+       event.GetId() < FirstEffectID + numEffects) {
+
+      TrackListIterator iter(mTracks);
+      VTrack *t = iter.First();
+      int count = 0;
+
+      while (t) {
+         if (t->selected && t->GetKind() == (VTrack::Wave))
+            count++;
+         t = iter.Next();
+      }
+
+      if (count == 0 || mViewInfo.sel0 == mViewInfo.sel1) {
+         wxMessageBox("No audio data is selected.");
+         return true;
+      }
+
+      Effect *f = Effect::GetEffect(event.GetId() - FirstEffectID);
+
+      if (!f->Begin(this))
+         return true;
+
+      int index = 0;
+
+      t = iter.First();
+
+      while (t) {
+         if (t->selected && t->GetKind() == (VTrack::Wave)) {
+
+            bool success = f->DoInPlaceEffect((WaveTrack *) t,
+                                              mViewInfo.sel0,
+                                              mViewInfo.sel1,
+                                              index, count);
+
+            if (!success) {
+               wxMessageBox("Effect unsuccessful.");
+               break;
+            }
+         }
+
+         t = iter.Next();
+      }
+
+      f->End();
+
+      PushState();
+
+      FixScrollbars();
+
+      mTrackPanel->Refresh(false);
+
+      // This indicates we handled the event.
+      return true;
+   }
+
+   return wxFrame::ProcessEvent(event);
+}
+
+void AudacityProject::OnPaint(wxPaintEvent & event)
+{
+   // Draw a colored strip on the right and bottom edges of
+   // the window to fill in the small area not covered by
+   // the TrackPanel or the scrollbars.
+
+   wxPaintDC dc(this);
+   int width, height;
+   GetClientSize(&width, &height);
+
+   AColor::Medium(&dc, false);
+
+   int top = 0;
+
+   if (!gWindowedPalette) {
+      int h = GetAPaletteHeight();
+
+#ifdef __WXMSW__
+      h++;
+#endif
+
+      top += h + 1;
+      height -= h + 1;
+   }
+
+   int sh = GetStatusHeight();
+   height -= sh;
+
+   wxRect r;
+   r.x = width - sbarSpaceWidth;
+   r.y = 0;
+   r.width = sbarSpaceWidth;
+   r.height = height;
+   dc.DrawRectangle(r);
+
+   // If we're displaying the palette inside the window,
+   // draw little bumps to the left of the palette to
+   // indicate it's grabable
+
+   if (!gWindowedPalette) {
+      int h = GetAPaletteHeight();
+
+      r.x = 0;
+      r.y = 0;
+      r.width = 10;
+      r.height = h;
+      dc.DrawRectangle(r);
+
+      int i;
+
+      AColor::Light(&dc, false);
+      for (i = h / 2 - 20; i < h / 2 + 20; i += 4)
+         dc.DrawLine(3, i, 6, i);
+      AColor::Dark(&dc, false);
+      for (i = h / 2 - 19; i < h / 2 + 21; i += 4)
+         dc.DrawLine(3, i, 6, i);
+
+      dc.SetPen(*wxBLACK_PEN);
+      dc.DrawLine(9, 0, 9, h);
+
+#ifdef __WXMSW__
+      dc.DrawLine(0, 0, width, 0);
+      dc.DrawLine(0, 0, 0, h);
+#endif
+
+      dc.DrawLine(0, h, width, h);
+   }
+   // Fill in space on sides of scrollbars
+
+   dc.SetPen(*wxBLACK_PEN);
+   dc.DrawLine(width - sbarSpaceWidth, top,
+               width - sbarSpaceWidth, top + height - sbarSpaceWidth + 1);
+   dc.DrawLine(0, top + height - sbarSpaceWidth,
+               width - sbarSpaceWidth, top + height - sbarSpaceWidth);
+
+   wxRect f;
+   f.x = 0;
+   f.y = top + height - sbarSpaceWidth + 1;
+   f.width = mTrackPanel->GetLeftOffset() - 2;
+   f.height = sbarSpaceWidth - 2;
+   AColor::Medium(&dc, false);
+   dc.DrawRectangle(f);
+   AColor::Bevel(dc, true, f);
+}
+
+void AudacityProject::OnActivate(wxActivateEvent & event)
+{
+   SetActiveProject(this);
+
+   event.Skip();
 }
 
 void AudacityProject::ShowPalette()
 {
-  if (!mAPalette) {
-	int h = GetAPaletteHeight();
+   if (!mAPalette) {
+      int h = GetAPaletteHeight();
 
-	int width, height;
-	GetSize(&width, &height);
-	
-	mAPalette = new APalette(this, 52,
-							 wxPoint(10, 0),
-							 wxSize(width-10, h));
-  }
-  HandleResize();
+      int width, height;
+      GetSize(&width, &height);
+
+      mAPalette = new APalette(this, 52,
+                               wxPoint(10, 0), wxSize(width - 10, h));
+   }
+   HandleResize();
 }
 
 void AudacityProject::HidePalette()
 {
-  if (mAPalette) {
-	delete mAPalette;
-	mAPalette = NULL;
-  }
-  HandleResize();
+   if (mAPalette) {
+      delete mAPalette;
+      mAPalette = NULL;
+   }
+   HandleResize();
 }
 
-void AudacityProject::OnMouseEvent(wxMouseEvent& event)
+void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 {
-  SetActiveProject(this);
+   SetActiveProject(this);
 
-  wxPoint hotspot;
-  hotspot.x = event.m_x;
-  hotspot.y = event.m_y;
+   wxPoint hotspot;
+   hotspot.x = event.m_x;
+   hotspot.y = event.m_y;
 
-  wxPoint mouse = ClientToScreen(hotspot);
+   wxPoint mouse = ClientToScreen(hotspot);
 
-  if (event.ButtonDown() && !mDrag &&
-	  !gWindowedPalette &&
-	  event.m_x<10 && event.m_y < GetAPaletteHeight()) {
+   if (event.ButtonDown() && !mDrag &&
+       !gWindowedPalette &&
+       event.m_x < 10 && event.m_y < GetAPaletteHeight()) {
 
-	int width, height;
-	mAPalette->GetSize(&width, &height);
+      int width, height;
+      mAPalette->GetSize(&width, &height);
 
-    #ifdef __WXMAC__
-    /*
-    Point startPt;
-    startPt.h = hotspot.x;
-    startPt.v = hotspot.y;
-    Rect limitRect, slopRect, r;
-    SetRect(&limitRect, -32767,-32767,32767,32767);
-    SetRect(&slopRect, -32767,-32767,32767,32767);
-    SetRect(&r, 10, 0, 10+width, height);
-    int axis = noConstraint;
-    RgnHandle theRgn = NewRgn();
-    RectRgn(theRgn, &r);
+#ifdef __WXMAC__
+      /*
+         Point startPt;
+         startPt.h = hotspot.x;
+         startPt.v = hotspot.y;
+         Rect limitRect, slopRect, r;
+         SetRect(&limitRect, -32767,-32767,32767,32767);
+         SetRect(&slopRect, -32767,-32767,32767,32767);
+         SetRect(&r, 10, 0, 10+width, height);
+         int axis = noConstraint;
+         RgnHandle theRgn = NewRgn();
+         RectRgn(theRgn, &r);
 
-    int result = DragGrayRgn(theRgn, startPt, &limitRect, &slopRect, axis, NULL);
-    
-    if (result == 0x80008000)
-      return;
-    
-    mouse -= hotspot;
-    mouse.x += (short)(result & 0xFFFF);
-    mouse.y += (short)((result & 0xFFFF0000)>>16);
-    
-    ShowWindowedPalette(&mouse);
-    */
-    #else
+         int result = DragGrayRgn(theRgn, startPt, &limitRect, &slopRect, axis, NULL);
 
-	wxClientDC dc(this);
+         if (result == 0x80008000)
+         return;
 
-	wxBitmap *bitmap = new wxBitmap(width, height);
-	wxMemoryDC *memDC = new wxMemoryDC();
-	memDC->SelectObject(*bitmap);
-	memDC->Blit(0, 0, width, height, &dc, 10, 0);
-    delete memDC;
+         mouse -= hotspot;
+         mouse.x += (short)(result & 0xFFFF);
+         mouse.y += (short)((result & 0xFFFF0000)>>16);
 
-	mDrag = new wxDragImage(*bitmap);
+         ShowWindowedPalette(&mouse);
+       */
+#else
 
-    delete bitmap;
+      wxClientDC dc(this);
 
-	mDrag->BeginDrag(hotspot, this, true);
-	mDrag->Move(mouse);
-	mDrag->Show();
-	mPaletteHotspot = hotspot;
-	
-	#endif
-  }
+      wxBitmap *bitmap = new wxBitmap(width, height);
+      wxMemoryDC *memDC = new wxMemoryDC();
+      memDC->SelectObject(*bitmap);
+      memDC->Blit(0, 0, width, height, &dc, 10, 0);
+      delete memDC;
 
-  #ifndef __WXMAC__
-  if (event.Dragging() && mDrag) {
-	mDrag->Move(mouse);
-  }
-  
-  if (event.ButtonUp() && mDrag) {
-	mDrag->Hide();
-	mDrag->EndDrag();
-	delete mDrag;
-	mDrag = NULL;
+      mDrag = new wxDragImage(*bitmap);
 
-	mouse -= mPaletteHotspot;
-	ShowWindowedPalette(&mouse);
-  }
-  #endif
+      delete bitmap;
+
+      mDrag->BeginDrag(hotspot, this, true);
+      mDrag->Move(mouse);
+      mDrag->Show();
+      mPaletteHotspot = hotspot;
+
+#endif
+   }
+#ifndef __WXMAC__
+   if (event.Dragging() && mDrag) {
+      mDrag->Move(mouse);
+   }
+
+   if (event.ButtonUp() && mDrag) {
+      mDrag->Hide();
+      mDrag->EndDrag();
+      delete mDrag;
+      mDrag = NULL;
+
+      mouse -= mPaletteHotspot;
+      ShowWindowedPalette(&mouse);
+   }
+#endif
 }
 
-void AudacityProject::OnClose(wxCommandEvent& event)
+void AudacityProject::OnClose(wxCommandEvent & event)
 {
-  Destroy();
+   Destroy();
 }
 
-void AudacityProject::OnCloseWindow(wxCloseEvent& event)
+void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 {
-  Destroy();
+   Destroy();
 }
 
 void AudacityProject::OpenFile(wxString fileName)
 {
-  if (mDirty || !mTracks->IsEmpty()) {
-	AudacityProject *project = CreateNewAudacityProject(gParentWindow);
-	project->OpenFile(fileName);
-  }
+   if (mDirty || !mTracks->IsEmpty()) {
+      AudacityProject *project = CreateNewAudacityProject(gParentWindow);
+      project->OpenFile(fileName);
+   }
+   // We want to open projects using wxTextFile, but if it's NOT a project
+   // file (but actually a WAV file, for example), then wxTextFile will spin
+   // for a long time searching for line breaks.  So, we look for our
+   // signature at the beginning of the file first:
 
-  // We want to open projects using wxTextFile, but if it's NOT a project
-  // file (but actually a WAV file, for example), then wxTextFile will spin
-  // for a long time searching for line breaks.  So, we look for our
-  // signature at the beginning of the file first:
+   bool isProjectFile;
+   wxString firstLine = "AudacityProject";
+   char temp[16];
 
-  bool isProjectFile;
-  wxString firstLine = "AudacityProject";
-  char temp[16];
+   if (!::wxFileExists(fileName)) {
+      wxMessageBox("Couldn't open " + mFileName);
+      return;
+   }
 
-  if (!::wxFileExists(fileName)) {
-	wxMessageBox("Couldn't open "+mFileName);
-    return;
-  }
+   wxFile ff(fileName);
+   if (!ff.IsOpened()) {
+      wxMessageBox("Couldn't open " + mFileName);
+      return;
+   }
+   ff.Read(temp, 15);
+   temp[15] = 0;
+   isProjectFile = (firstLine == temp);
+   ff.Close();
 
-  wxFile ff(fileName);
-  if (!ff.IsOpened()) {
-    wxMessageBox("Couldn't open "+mFileName);
-    return;
-  }
-  ff.Read(temp, 15);
-  temp[15] = 0;
-  isProjectFile = (firstLine == temp);
-  ff.Close();
+   if (!isProjectFile) {
+      // Try opening it as any other form of audio
+      Import(fileName);
+      return;
+   }
 
-  if (!isProjectFile) {
-	// Try opening it as any other form of audio
-	Import(fileName);
-	return;
-  }
+   wxTextFile f;
 
-  wxTextFile f;
+   f.Open(fileName);
+   if (!f.IsOpened()) {
+      wxMessageBox("Couldn't open " + mFileName);
+      return;
+   }
 
-  f.Open(fileName);
-  if (!f.IsOpened()) {
-	wxMessageBox("Couldn't open "+mFileName);
-	return;
-  }
+   mFileName = fileName;
+   mName = wxFileNameFromPath(mFileName);
 
-  mFileName = fileName;
-  mName = wxFileNameFromPath(mFileName);
+   SetTitle(mName);
 
-  SetTitle(mName);
+   ///
+   /// Parse project file
+   ///
 
-  ///
-  /// Parse project file
-  ///
+   wxString projName;
+   wxString projPath;
+   wxString version;
+   long longVpos;
 
-  wxString projName;
-  wxString projPath;
-  wxString version;
-  long longVpos;
+   f.GetFirstLine();            // This should say "AudacityProject"
 
-  f.GetFirstLine(); // This should say "AudacityProject"
+   if (f.GetNextLine() != "Version")
+      goto openFileError;
+   version = f.GetNextLine();
+   if (version != AUDACITY_FILE_FORMAT_VERSION) {
+      wxMessageBox("This project was saved by a different version of "
+                   "Audacity and is no longer supported.");
+      return;
+   }
 
-  if (f.GetNextLine() != "Version") goto openFileError;
-  version = f.GetNextLine();
-  if (version != AUDACITY_FILE_FORMAT_VERSION) {
-	wxMessageBox("This project was saved by a different version of "
-				 "Audacity and is no longer supported.");
-	return;
-  }
+   if (f.GetNextLine() != "projName")
+      goto openFileError;
+   projName = f.GetNextLine();
+   projPath = wxPathOnly(mFileName);
 
-  if (f.GetNextLine() != "projName") goto openFileError;
-  projName = f.GetNextLine();
-  projPath = wxPathOnly(mFileName);
+   if (!mDirManager.SetProject(projPath, projName, false))
+      return;
 
-  if (!mDirManager.SetProject(projPath, projName, false)) return;
+   if (f.GetNextLine() != "sel0")
+      goto openFileError;
+   if (!(f.GetNextLine().ToDouble(&mViewInfo.sel0)))
+      goto openFileError;
+   if (f.GetNextLine() != "sel1")
+      goto openFileError;
+   if (!(f.GetNextLine().ToDouble(&mViewInfo.sel1)))
+      goto openFileError;
+   if (f.GetNextLine() != "vpos")
+      goto openFileError;
+   if (!(f.GetNextLine().ToLong(&longVpos)))
+      goto openFileError;
+   mViewInfo.vpos = longVpos;
+   if (f.GetNextLine() != "h")
+      goto openFileError;
+   if (!(f.GetNextLine().ToDouble(&mViewInfo.h)))
+      goto openFileError;
+   if (f.GetNextLine() != "zoom")
+      goto openFileError;
+   if (!(f.GetNextLine().ToDouble(&mViewInfo.zoom)))
+      goto openFileError;
+   if (version != "0.9") {
+      if (f.GetNextLine() != "rate")
+         goto openFileError;
+      if (!(f.GetNextLine().ToDouble(&mRate)))
+         goto openFileError;
+      mStatus->SetRate(mRate);
+   }
 
-  if (f.GetNextLine() != "sel0") goto openFileError;
-  if (!(f.GetNextLine().ToDouble(&mViewInfo.sel0))) goto openFileError;
-  if (f.GetNextLine() != "sel1") goto openFileError;
-  if (!(f.GetNextLine().ToDouble(&mViewInfo.sel1))) goto openFileError;
-  if (f.GetNextLine() != "vpos") goto openFileError;
-  if (!(f.GetNextLine().ToLong(&longVpos))) goto openFileError;
-  mViewInfo.vpos = longVpos;
-  if (f.GetNextLine() != "h") goto openFileError;
-  if (!(f.GetNextLine().ToDouble(&mViewInfo.h))) goto openFileError;
-  if (f.GetNextLine() != "zoom") goto openFileError;
-  if (!(f.GetNextLine().ToDouble(&mViewInfo.zoom))) goto openFileError;
-  if (version != "0.9") {
-	if (f.GetNextLine() != "rate") goto openFileError;
-	if (!(f.GetNextLine().ToDouble(&mRate))) goto openFileError;
-	mStatus->SetRate(mRate);
-  }
+   mTracks->Clear();
+   InitialState();
 
-  mTracks->Clear();
-  InitialState();
+   mTracks->Load(&f, &mDirManager);
 
-  mTracks->Load(&f, &mDirManager);
+   // By making a duplicate set of pointers to the existing blocks
+   // on disk, we add one to their reference count, guaranteeing
+   // that their reference counts will never reach zero and thus
+   // the version saved on disk will be preserved until the
+   // user selects Save().
 
-  // By making a duplicate set of pointers to the existing blocks
-  // on disk, we add one to their reference count, guaranteeing
-  // that their reference counts will never reach zero and thus
-  // the version saved on disk will be preserved until the
-  // user selects Save().
+   if (1) {
+      VTrack *t;
+      TrackListIterator iter(mTracks);
+      mLastSavedTracks = new TrackList();
+      t = iter.First();
+      while (t) {
+         mLastSavedTracks->Add(t->Duplicate());
+         t = iter.Next();
+      }
+   }
 
-  if (1) {
-	VTrack *t;
-	TrackListIterator iter(mTracks);
-	mLastSavedTracks = new TrackList();
-	t = iter.First();
-	while(t) {
-	  mLastSavedTracks->Add(t->Duplicate());
-	  t = iter.Next();
-	}
-  }
+   f.Close();
 
-  f.Close();
+   FixScrollbars();
+   mTrackPanel->Refresh(false);
 
-  FixScrollbars();
-  mTrackPanel->Refresh(false);
+   return;
 
-  return;
-
-openFileError:
-  wxMessageBox(wxString::Format(
-    "Error reading Audacity Project %s in line %d",
-	(const char *)mFileName,
-	f.GetCurrentLine()));
-  f.Close();
-  return;
+ openFileError:
+   wxMessageBox(wxString::
+                Format("Error reading Audacity Project %s in line %d",
+                       (const char *) mFileName, f.GetCurrentLine()));
+   f.Close();
+   return;
 }
 
 void AudacityProject::Import(wxString fileName)
 {
-  WaveTrack       **newTracks;
-  int             numTracks;
+   WaveTrack **newTracks;
+   int numTracks;
 
-  numTracks = ::Import(this, fileName, &newTracks, &mDirManager);
+   numTracks =::Import(this, fileName, &newTracks, &mDirManager);
 
-  if (numTracks <= 0)
-	return;
+   if (numTracks <= 0)
+      return;
 
-  SelectNone();
-  
-  bool initiallyEmpty = mTracks->IsEmpty();
-  bool rateWarning = false;
-  double newRate;
-  
-  for(int i=0; i<numTracks; i++) {
-	if (i==0)
-	  newRate = newTracks[i]->rate;
-	if (newTracks[i]->rate != mRate)
-	  rateWarning = true;
-	mTracks->Add(newTracks[i]);
-	newTracks[i]->selected = true;
-  }
+   SelectNone();
 
-  delete[] newTracks;
-  
-  if (initiallyEmpty) {
-	mRate = newRate;
-	mStatus->SetRate(mRate);
-  }
-  else if (rateWarning) {
-	wxMessageBox("Warning: your file has multiple sampling rates.  "
-				 "Audacity will ignore any track which is not at "
-				 "the same sampling rate as the project.");
-  }
+   bool initiallyEmpty = mTracks->IsEmpty();
+   bool rateWarning = false;
+   double newRate;
 
-  PushState();    
-  ZoomFit();
-  mTrackPanel->Refresh(false);
+   for (int i = 0; i < numTracks; i++) {
+      if (i == 0)
+         newRate = newTracks[i]->rate;
+      if (newTracks[i]->rate != mRate)
+         rateWarning = true;
+      mTracks->Add(newTracks[i]);
+      newTracks[i]->selected = true;
+   }
 
-  if (initiallyEmpty) {
-	mName = ::TrackNameFromFileName(fileName);
-	mFileName = ::wxPathOnly(fileName) + "/" + mName;
-	SetTitle(mName);
-  }
+   delete[]newTracks;
+
+   if (initiallyEmpty) {
+      mRate = newRate;
+      mStatus->SetRate(mRate);
+   } else if (rateWarning) {
+      wxMessageBox("Warning: your file has multiple sampling rates.  "
+                   "Audacity will ignore any track which is not at "
+                   "the same sampling rate as the project.");
+   }
+
+   PushState();
+   ZoomFit();
+   mTrackPanel->Refresh(false);
+
+   if (initiallyEmpty) {
+      mName =::TrackNameFromFileName(fileName);
+      mFileName =::wxPathOnly(fileName) + "/" + mName;
+      SetTitle(mName);
+   }
 }
 
-void AudacityProject::Save(bool overwrite /* = true */,
-						   bool fromSaveAs /* = false */)
+void AudacityProject::Save(bool overwrite /* = true */ ,
+                           bool fromSaveAs /* = false */ )
 {
-  if (!fromSaveAs && mDirManager.GetProjectName() == "") {
-	SaveAs();
-	return;
-  }
+   if (!fromSaveAs && mDirManager.GetProjectName() == "") {
+      SaveAs();
+      return;
+   }
+   //
+   // Always save a backup of the original project file
+   //
 
-  //
-  // Always save a backup of the original project file
-  //
+   wxString safetyFileName = "";
+   if (wxFileExists(mFileName)) {
 
-  wxString safetyFileName = "";
-  if (wxFileExists(mFileName)) {
-
-	#ifdef __WXGTK__
-	safetyFileName = mFileName+"~";
-	#else
-	safetyFileName = mFileName+".bak";
-	#endif
-
-	if (wxFileExists(safetyFileName))
-	  wxRemoveFile(safetyFileName);
-
-	wxRename(mFileName, safetyFileName);
-  }
-
-  wxString project = mFileName;
-  if (project.Len() > 4 && project.Mid(project.Len()-4)==".aup")
-	project = project.Mid(0, project.Len()-4);
-  wxString projName = wxFileNameFromPath(project) + "_data";
-  wxString projPath = wxPathOnly(project);
-  bool success = mDirManager.SetProject(projPath, projName, !overwrite);
-
-  if (!success) {
-	wxMessageBox(wxString::Format(
-	  "Could not save project because the directory %s could not be created.",
-      (const char *)project));
-
-	if (safetyFileName)
-	  wxRename(safetyFileName, mFileName);
-
-	return;
-  }
-
-  wxTextFile f(mFileName);
-  #ifdef __WXMAC__
-  wxFile *temp = new wxFile();
-  temp->Create(mFileName);
-  delete temp;
-  #else
-  f.Create();
-  #endif
-  f.Open();
-  if (!f.IsOpened()) {
-	wxMessageBox("Couldn't write to "+mFileName);
-
-	if (safetyFileName)
-	  wxRename(safetyFileName, mFileName);
-
-	return;
-  }
-
-  f.AddLine("AudacityProject");
-  f.AddLine("Version");
-  f.AddLine(AUDACITY_FILE_FORMAT_VERSION);
-  f.AddLine("projName");
-  f.AddLine(projName);
-  f.AddLine("sel0");
-  f.AddLine(wxString::Format("%g", mViewInfo.sel0));
-  f.AddLine("sel1");
-  f.AddLine(wxString::Format("%g", mViewInfo.sel1));
-  f.AddLine("vpos");
-  f.AddLine(wxString::Format("%d", mViewInfo.vpos));
-  f.AddLine("h");
-  f.AddLine(wxString::Format("%g", mViewInfo.h));
-  f.AddLine("zoom");
-  f.AddLine(wxString::Format("%g", mViewInfo.zoom));
-  f.AddLine("rate");
-  f.AddLine(wxString::Format("%g", mRate));
-
-  f.AddLine("BeginTracks");
-
-  mTracks->Save(&f, overwrite);
-
-#ifdef __WXMAC__
-  f.Write(wxTextFileType_Mac);
+#ifdef __WXGTK__
+      safetyFileName = mFileName + "~";
 #else
-  f.Write();
+      safetyFileName = mFileName + ".bak";
 #endif
-  f.Close();
-  
+
+      if (wxFileExists(safetyFileName))
+         wxRemoveFile(safetyFileName);
+
+      wxRename(mFileName, safetyFileName);
+   }
+
+   wxString project = mFileName;
+   if (project.Len() > 4 && project.Mid(project.Len() - 4) == ".aup")
+      project = project.Mid(0, project.Len() - 4);
+   wxString projName = wxFileNameFromPath(project) + "_data";
+   wxString projPath = wxPathOnly(project);
+   bool success = mDirManager.SetProject(projPath, projName, !overwrite);
+
+   if (!success) {
+      wxMessageBox(wxString::
+                   Format
+                   ("Could not save project because the directory %s could not be created.",
+                    (const char *) project));
+
+      if (safetyFileName)
+         wxRename(safetyFileName, mFileName);
+
+      return;
+   }
+
+   wxTextFile f(mFileName);
 #ifdef __WXMAC__
-  FSSpec spec ;
+   wxFile *temp = new wxFile();
+   temp->Create(mFileName);
+   delete temp;
+#else
+   f.Create();
+#endif
+   f.Open();
+   if (!f.IsOpened()) {
+      wxMessageBox("Couldn't write to " + mFileName);
 
-	wxMacFilename2FSSpec( mFileName , &spec ) ;
-	FInfo finfo ;
-	if ( FSpGetFInfo( &spec , &finfo ) == noErr )
-	{
-		finfo.fdType = AUDACITY_PROJECT_TYPE;
-		finfo.fdCreator = AUDACITY_CREATOR;
-		FSpSetFInfo( &spec , &finfo ) ;
-	}
+      if (safetyFileName)
+         wxRename(safetyFileName, mFileName);
+
+      return;
+   }
+
+   f.AddLine("AudacityProject");
+   f.AddLine("Version");
+   f.AddLine(AUDACITY_FILE_FORMAT_VERSION);
+   f.AddLine("projName");
+   f.AddLine(projName);
+   f.AddLine("sel0");
+   f.AddLine(wxString::Format("%g", mViewInfo.sel0));
+   f.AddLine("sel1");
+   f.AddLine(wxString::Format("%g", mViewInfo.sel1));
+   f.AddLine("vpos");
+   f.AddLine(wxString::Format("%d", mViewInfo.vpos));
+   f.AddLine("h");
+   f.AddLine(wxString::Format("%g", mViewInfo.h));
+   f.AddLine("zoom");
+   f.AddLine(wxString::Format("%g", mViewInfo.zoom));
+   f.AddLine("rate");
+   f.AddLine(wxString::Format("%g", mRate));
+
+   f.AddLine("BeginTracks");
+
+   mTracks->Save(&f, overwrite);
+
+#ifdef __WXMAC__
+   f.Write(wxTextFileType_Mac);
+#else
+   f.Write();
+#endif
+   f.Close();
+
+#ifdef __WXMAC__
+   FSSpec spec;
+
+   wxMacFilename2FSSpec(mFileName, &spec);
+   FInfo finfo;
+   if (FSpGetFInfo(&spec, &finfo) == noErr) {
+      finfo.fdType = AUDACITY_PROJECT_TYPE;
+      finfo.fdCreator = AUDACITY_CREATOR;
+      FSpSetFInfo(&spec, &finfo);
+   }
 #endif
 
-  if (mLastSavedTracks) {
+   if (mLastSavedTracks) {
 
-	TrackListIterator iter(mLastSavedTracks);
-	VTrack *t = iter.First();
-	while(t) {
-	  if (t->GetKind() == VTrack::Wave && !overwrite)
-		((WaveTrack *)t)->DeleteButDontDereference();
-	  else
-		delete t;
-	  t = iter.Next();
-	}
+      TrackListIterator iter(mLastSavedTracks);
+      VTrack *t = iter.First();
+      while (t) {
+         if (t->GetKind() == VTrack::Wave && !overwrite)
+            ((WaveTrack *) t)->DeleteButDontDereference();
+         else
+            delete t;
+         t = iter.Next();
+      }
 
-	delete mLastSavedTracks;
-  }
+      delete mLastSavedTracks;
+   }
 
-  mLastSavedTracks = new TrackList();
-  TrackListIterator iter(mTracks);
-  VTrack *t = iter.First();
-  while(t) {
-    mLastSavedTracks->Add(t->Duplicate());
-    t = iter.Next();
-  }
+   mLastSavedTracks = new TrackList();
+   TrackListIterator iter(mTracks);
+   VTrack *t = iter.First();
+   while (t) {
+      mLastSavedTracks->Add(t->Duplicate());
+      t = iter.Next();
+   }
 
-  mStatus->SetField(wxString::Format("Saved %s",
-									 (const char *)mFileName), 0);
+   mStatus->SetField(wxString::Format("Saved %s",
+                                      (const char *) mFileName), 0);
 }
 
 void AudacityProject::SaveAs()
 {
-  wxString fName;
+   wxString fName;
 
-  wxString path, baseName, extension;
-  ::wxSplitPath(mFileName, &path, &baseName, &extension);
-  extension = "aup";
-  fName = baseName + "." + extension;
+   wxString path, baseName, extension;
+   ::wxSplitPath(mFileName, &path, &baseName, &extension);
+   extension = "aup";
+   fName = baseName + "." + extension;
 
-  fName = wxFileSelector("Save Project As:",
-                         path,
-                         fName,
-                         "",
-                         "Audacity projects (*.aup)|*.aup",
-                         wxSAVE,
-                         this);
+   fName = wxFileSelector("Save Project As:",
+                          path,
+                          fName,
+                          "",
+                          "Audacity projects (*.aup)|*.aup", wxSAVE, this);
 
-  if (fName == "")
-	return;
+   if (fName == "")
+      return;
 
-  if (fName == ".aup") {
-	wxMessageBox("You must name the file!");
-	return;
-  }
+   if (fName == ".aup") {
+      wxMessageBox("You must name the file!");
+      return;
+   }
 
-  ::wxSplitPath(fName, &path, &baseName, &extension);
-  extension = "aup";
+   ::wxSplitPath(fName, &path, &baseName, &extension);
+   extension = "aup";
 
-  mName = baseName + "." + extension;
-  mFileName = path + "/" + mName;
-  SetTitle(baseName);
+   mName = baseName + "." + extension;
+   mFileName = path + "/" + mName;
+   SetTitle(baseName);
 
-  Save(false, true);
+   Save(false, true);
 }
 
 //
@@ -1177,18 +1182,18 @@ void AudacityProject::SaveAs()
 
 void AudacityProject::ZoomFit()
 {
-  double len = mTracks->GetMaxLen();
-  
-  if (len <= 0.0)
-    return;
-  
-  int w, h;
-  mTrackPanel->GetTracksUsableArea(&w, &h);
-  w -= 10;
-  
-  mViewInfo.zoom = w / len;
-  FixScrollbars();
-  mTrackPanel->Refresh(false);
+   double len = mTracks->GetMaxLen();
+
+   if (len <= 0.0)
+      return;
+
+   int w, h;
+   mTrackPanel->GetTracksUsableArea(&w, &h);
+   w -= 10;
+
+   mViewInfo.zoom = w / len;
+   FixScrollbars();
+   mTrackPanel->Refresh(false);
 }
 
 //
@@ -1197,33 +1202,33 @@ void AudacityProject::ZoomFit()
 
 void AudacityProject::InitialState()
 {
-  mUndoManager.ClearStates();
-  PushState(false);
+   mUndoManager.ClearStates();
+   PushState(false);
 }
 
-void AudacityProject::PushState(bool makeDirty /* = true */)
+void AudacityProject::PushState(bool makeDirty /* = true */ )
 {
-  TrackList *l = new TrackList(mTracks);
+   TrackList *l = new TrackList(mTracks);
 
-  mUndoManager.PushState(l, mViewInfo.sel0, mViewInfo.sel1);
-  delete l;
+   mUndoManager.PushState(l, mViewInfo.sel0, mViewInfo.sel1);
+   delete l;
 
-  if (makeDirty)
-	mDirty = true;
+   if (makeDirty)
+      mDirty = true;
 }
 
-void AudacityProject::PopState(TrackList *l)
+void AudacityProject::PopState(TrackList * l)
 {
-  mTracks->Clear();
-  TrackListIterator iter(l);
-  VTrack *t = iter.First();
-  while(t) {
-	//    printf("Popping track with %d samples\n",
-	//           ((WaveTrack *)t)->numSamples);
-    //	((WaveTrack *)t)->Debug();
-    mTracks->Add(t->Duplicate());
-    t = iter.Next();
-  }
+   mTracks->Clear();
+   TrackListIterator iter(l);
+   VTrack *t = iter.First();
+   while (t) {
+      //    printf("Popping track with %d samples\n",
+      //           ((WaveTrack *)t)->numSamples);
+      //  ((WaveTrack *)t)->Debug();
+      mTracks->Add(t->Duplicate());
+      t = iter.Next();
+   }
 }
 
 //
@@ -1232,107 +1237,105 @@ void AudacityProject::PopState(TrackList *l)
 
 void AudacityProject::ClearClipboard()
 {
-  TrackListIterator iter(msClipboard);
-  VTrack *n = iter.First();
-  while(n) {
-    delete n;
-    n = iter.Next();
-  }
-  
-  msClipLen = 0.0;
-  
-  msClipboard->Clear();
+   TrackListIterator iter(msClipboard);
+   VTrack *n = iter.First();
+   while (n) {
+      delete n;
+      n = iter.Next();
+   }
+
+   msClipLen = 0.0;
+
+   msClipboard->Clear();
 }
 
 void AudacityProject::Clear()
 {
-  TrackListIterator iter(mTracks);
+   TrackListIterator iter(mTracks);
 
-  VTrack *n = iter.First();
+   VTrack *n = iter.First();
 
-  while(n) {
-	if (n->selected)
-	  n->Clear(mViewInfo.sel0, mViewInfo.sel1);
-	n = iter.Next();
-  }
+   while (n) {
+      if (n->selected)
+         n->Clear(mViewInfo.sel0, mViewInfo.sel1);
+      n = iter.Next();
+   }
 
-  mViewInfo.sel1 = mViewInfo.sel0;
+   mViewInfo.sel1 = mViewInfo.sel0;
 
-  PushState();
-  FixScrollbars();
-  mTrackPanel->Refresh(false);
+   PushState();
+   FixScrollbars();
+   mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::SelectNone()
 {
-  TrackListIterator iter(mTracks);
+   TrackListIterator iter(mTracks);
 
-  VTrack *t = iter.First();
-  while(t) {
-	t->selected = false;
-	t = iter.Next();
-  }
-  mTrackPanel->Refresh(false);
+   VTrack *t = iter.First();
+   while (t) {
+      t->selected = false;
+      t = iter.Next();
+   }
+   mTrackPanel->Refresh(false);
 }
 
 // TrackPanel callback method
-void AudacityProject::TP_DisplayStatusMessage(const char *msg, int fieldNum)
+void AudacityProject::TP_DisplayStatusMessage(const char *msg,
+                                              int fieldNum)
 {
-  mStatus->SetField(msg, fieldNum);
+   mStatus->SetField(msg, fieldNum);
 }
 
 // TrackPanel callback method
-int  AudacityProject::TP_GetCurrentTool()
+int AudacityProject::TP_GetCurrentTool()
 {
-  return GetAPalette()->GetCurrentTool();
+   return GetAPalette()->GetCurrentTool();
 }
 
 // TrackPanel callback method
 void AudacityProject::TP_OnPlayKey()
-{ 
-  APalette *palette = GetAPalette();
+{
+   APalette *palette = GetAPalette();
 
-  if (gAudioIO->IsBusy()) {
-	palette->OnStop();
-	palette->SetPlay(false);
-	palette->SetStop(true);
-  }
-  else {
-	palette->OnPlay();
-	palette->SetPlay(true);
-	palette->SetStop(false);
-  }
+   if (gAudioIO->IsBusy()) {
+      palette->OnStop();
+      palette->SetPlay(false);
+      palette->SetStop(true);
+   } else {
+      palette->OnPlay();
+      palette->SetPlay(true);
+      palette->SetStop(false);
+   }
 }
 
 // TrackPanel callback method
 void AudacityProject::TP_PushState()
 {
-  PushState();
+   PushState();
 }
 
 // TrackPanel callback method
 void AudacityProject::TP_ScrollLeft()
 {
-  OnScrollLeft();
+   OnScrollLeft();
 }
 
 // TrackPanel callback method
 void AudacityProject::TP_ScrollRight()
 {
-  OnScrollRight();
+   OnScrollRight();
 }
 
 // TrackPanel callback method
 void AudacityProject::TP_RedrawScrollbars()
 {
-  FixScrollbars();
+   FixScrollbars();
 }
 
 // TrackPanel callback method
 void AudacityProject::TP_HasMouse()
 {
-  SetActiveProject(this);
-  mTrackPanel->SetFocus();
+   SetActiveProject(this);
+   mTrackPanel->SetFocus();
 }
-
-

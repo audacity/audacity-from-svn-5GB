@@ -19,33 +19,30 @@
 
 class DirManager;
 
-class NoteTrack: public VTrack
-{
-public:
-  int mBottomNote;
+class NoteTrack:public VTrack {
+ public:
+   int mBottomNote;
 
-  friend class TrackArtist;
+   friend class TrackArtist;
 
-  NoteTrack(DirManager *projDirManager);
+   NoteTrack(DirManager * projDirManager);
 
-  virtual int GetKind() {return Note;}
-  virtual double GetMaxLen();
+   virtual int GetKind() {
+      return Note;
+   } virtual double GetMaxLen();
 
-  void DrawLabelControls(wxDC &dc, wxRect &r);
-  bool LabelClick(wxRect &r, int x, int y, bool right);
+   void DrawLabelControls(wxDC & dc, wxRect & r);
+   bool LabelClick(wxRect & r, int x, int y, bool right);
 
-  void SetSequence(Seq_ptr seq);
+   void SetSequence(Seq_ptr seq);
 
-private:
-  Seq_ptr mSeq;
-  double mLen;
-  
-  int mVisibleChannels;
-  
-  void CalcLen();
+ private:
+   Seq_ptr mSeq;
+   double mLen;
+
+   int mVisibleChannels;
+
+   void CalcLen();
 };
 
 #endif
-
-
-

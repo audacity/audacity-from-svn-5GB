@@ -30,17 +30,15 @@ class wxString;
 
 class WaveTrack;
 
-class EffectWahwah: public Effect {
+class EffectWahwah:public Effect {
 
-public:
-  EffectWahwah();
+ public:
+   EffectWahwah();
 
-  virtual wxString GetEffectName() { return wxString("Wahwah..."); }
-
-  virtual bool Begin(wxWindow *parent);
-  virtual bool DoIt(WaveTrack *t,
-					sampleCount start,
-					sampleCount len);
+   virtual wxString GetEffectName() {
+      return wxString("Wahwah...");
+   } virtual bool Begin(wxWindow * parent);
+   virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
 
 /* Parameters:
    freq - LFO frequency 
@@ -53,9 +51,9 @@ public:
    depth and freqofs should be from 0(min) to 1(max) !
    res should be greater than 0 !  */
 
-private:
-	float freq, startphase;
-	float depth, freqofs, res;
+ private:
+   float freq, startphase;
+   float depth, freqofs, res;
 };
 
 // Declare window functions
@@ -74,7 +72,8 @@ private:
 #define ID_FREQOFFTEXT 10011
 #define ID_FREQOFFSLIDER 10012
 
-wxSizer *CreateWahwahDialog( wxPanel *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
+wxSizer *CreateWahwahDialog(wxPanel * parent, bool call_fit =
+                            TRUE, bool set_sizer = TRUE);
 
 // WDR: class declarations
 
@@ -82,59 +81,81 @@ wxSizer *CreateWahwahDialog( wxPanel *parent, bool call_fit = TRUE, bool set_siz
 // WahwahDialog
 //----------------------------------------------------------------------------
 
-class WahwahDialog: public wxDialog
-{
-public:
-    // constructors and destructors
-    WahwahDialog( wxWindow *parent, wxWindowID id, const wxString &title,
-        const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxDefaultSize,
-        long style = wxDEFAULT_DIALOG_STYLE );
-    
-    // WDR: method declarations for WahwahDialog
-    wxSlider* GetResonanceSlider()  { return (wxSlider*) FindWindow( ID_RESONANCESLIDER ); }
-    wxSlider* GetDepthSlider()  { return (wxSlider*) FindWindow( ID_DEPTHSLIDER ); }
-    wxSlider* GetPhaseSlider()  { return (wxSlider*) FindWindow( ID_PHASESLIDER ); }
-    wxSlider* GetFreqSlider()  { return (wxSlider*) FindWindow( ID_FREQSLIDER ); }
-    wxSlider* GetFreqOffSlider()  { return (wxSlider*) FindWindow( ID_FREQOFFSLIDER ); }
-    wxTextCtrl* GetResonanceText()  { return (wxTextCtrl*) FindWindow( ID_RESONANCETEXT ); }
-    wxTextCtrl* GetDepthText()  { return (wxTextCtrl*) FindWindow( ID_DEPTHTEXT ); }
-    wxTextCtrl* GetPhaseText()  { return (wxTextCtrl*) FindWindow( ID_PHASETEXT ); }
-    wxTextCtrl* GetFreqText()  { return (wxTextCtrl*) FindWindow( ID_FREQTEXT ); }
-    wxTextCtrl* GetFreqOffText()  { return (wxTextCtrl*) FindWindow( ID_FREQOFFTEXT ); }
-    wxSlider* GetDryWet()  { return (wxSlider*) FindWindow( ID_DRYWET ); }
-    wxSpinCtrl* GetStages()  { return (wxSpinCtrl*) FindWindow( ID_STAGES ); }
-    virtual bool Validate();
-    virtual bool TransferDataToWindow();
-    virtual bool TransferDataFromWindow();
-    
-private:
-    // WDR: member variable declarations for WahwahDialog
-    
-private:
-    // WDR: handler declarations for WahwahDialog
-    void OnResonanceSlider( wxCommandEvent &event );
-    void OnDepthSlider( wxCommandEvent &event );
-    void OnPhaseSlider( wxCommandEvent &event );
-    void OnFreqSlider( wxCommandEvent &event );
-    void OnFreqOffSlider( wxCommandEvent &event );
-    void OnResonanceText( wxCommandEvent &event );
-    void OnDepthText( wxCommandEvent &event );
-    void OnPhaseText( wxCommandEvent &event );
-    void OnFreqText( wxCommandEvent &event );
-    void OnFreqOffText( wxCommandEvent &event );
-    void OnOk( wxCommandEvent &event );
-    void OnCancel( wxCommandEvent &event );
+class WahwahDialog:public wxDialog {
+ public:
+   // constructors and destructors
+   WahwahDialog(wxWindow * parent, wxWindowID id, const wxString & title,
+                const wxPoint & pos = wxDefaultPosition,
+                const wxSize & size = wxDefaultSize,
+                long style = wxDEFAULT_DIALOG_STYLE);
 
-private:
-    DECLARE_EVENT_TABLE()
+   // WDR: method declarations for WahwahDialog
+   wxSlider *GetResonanceSlider() {
+      return (wxSlider *) FindWindow(ID_RESONANCESLIDER);
+   } wxSlider *GetDepthSlider() {
+      return (wxSlider *) FindWindow(ID_DEPTHSLIDER);
+   }
+   wxSlider *GetPhaseSlider() {
+      return (wxSlider *) FindWindow(ID_PHASESLIDER);
+   }
+   wxSlider *GetFreqSlider() {
+      return (wxSlider *) FindWindow(ID_FREQSLIDER);
+   }
+   wxSlider *GetFreqOffSlider() {
+      return (wxSlider *) FindWindow(ID_FREQOFFSLIDER);
+   }
+   wxTextCtrl *GetResonanceText() {
+      return (wxTextCtrl *) FindWindow(ID_RESONANCETEXT);
+   }
+   wxTextCtrl *GetDepthText() {
+      return (wxTextCtrl *) FindWindow(ID_DEPTHTEXT);
+   }
+   wxTextCtrl *GetPhaseText() {
+      return (wxTextCtrl *) FindWindow(ID_PHASETEXT);
+   }
+   wxTextCtrl *GetFreqText() {
+      return (wxTextCtrl *) FindWindow(ID_FREQTEXT);
+   }
+   wxTextCtrl *GetFreqOffText() {
+      return (wxTextCtrl *) FindWindow(ID_FREQOFFTEXT);
+   }
+   wxSlider *GetDryWet() {
+      return (wxSlider *) FindWindow(ID_DRYWET);
+   }
+   wxSpinCtrl *GetStages() {
+      return (wxSpinCtrl *) FindWindow(ID_STAGES);
+   }
+   virtual bool Validate();
+   virtual bool TransferDataToWindow();
+   virtual bool TransferDataFromWindow();
 
-public:
-  float freq;
-  float freqoff;
-  float startphase;
-  float res;
-  float depth;
+ private:
+   // WDR: member variable declarations for WahwahDialog
+
+ private:
+   // WDR: handler declarations for WahwahDialog
+   void OnResonanceSlider(wxCommandEvent & event);
+   void OnDepthSlider(wxCommandEvent & event);
+   void OnPhaseSlider(wxCommandEvent & event);
+   void OnFreqSlider(wxCommandEvent & event);
+   void OnFreqOffSlider(wxCommandEvent & event);
+   void OnResonanceText(wxCommandEvent & event);
+   void OnDepthText(wxCommandEvent & event);
+   void OnPhaseText(wxCommandEvent & event);
+   void OnFreqText(wxCommandEvent & event);
+   void OnFreqOffText(wxCommandEvent & event);
+   void OnOk(wxCommandEvent & event);
+   void OnCancel(wxCommandEvent & event);
+
+ private:
+   DECLARE_EVENT_TABLE()
+
+ public:
+   float freq;
+   float freqoff;
+   float startphase;
+   float res;
+   float depth;
 };
 
 #endif

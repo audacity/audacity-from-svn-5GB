@@ -22,131 +22,128 @@
 #include "AButton.h"
 
 BEGIN_EVENT_TABLE(AButton, wxWindow)
-  EVT_MOUSE_EVENTS(AButton::OnMouseEvent)
-  EVT_PAINT(AButton::OnPaint)
-END_EVENT_TABLE()
+    EVT_MOUSE_EVENTS(AButton::OnMouseEvent)
+    EVT_PAINT(AButton::OnPaint)
+    END_EVENT_TABLE()
 
-AButton::AButton(wxWindow *parent, wxWindowID id,
-				 const wxPoint& pos,
-				 const wxSize& size,
-				 char **upXPM,
-				 char **overXPM,
-				 char **downXPM,
-				 char **disXPM):
-  wxWindow(parent, id, pos, size)
+AButton::AButton(wxWindow * parent, wxWindowID id,
+                     const wxPoint & pos,
+                     const wxSize & size,
+                     char **upXPM,
+                     char **overXPM,
+                     char **downXPM,
+                     char **disXPM):wxWindow(parent, id, pos, size)
 {
-  mButtonIsDown = false;
-  mButtonState = AButtonUp;
-  mIsClicking = false;
-  mEnabled = true;
+   mButtonIsDown = false;
+   mButtonState = AButtonUp;
+   mIsClicking = false;
+   mEnabled = true;
 
-  mBitmap[0] = new wxBitmap((const char **)upXPM);
-  mBitmap[1] = new wxBitmap((const char **)overXPM);
-  mBitmap[2] = new wxBitmap((const char **)downXPM);
-  mBitmap[3] = new wxBitmap((const char **)disXPM);
+   mBitmap[0] = new wxBitmap((const char **) upXPM);
+   mBitmap[1] = new wxBitmap((const char **) overXPM);
+   mBitmap[2] = new wxBitmap((const char **) downXPM);
+   mBitmap[3] = new wxBitmap((const char **) disXPM);
 
-  GetSize(&mWidth, &mHeight);
+   GetSize(&mWidth, &mHeight);
 }
 
 AButton::~AButton()
 {
-  delete mBitmap[0];
-  delete mBitmap[1];
-  delete mBitmap[2];
-  delete mBitmap[3];
+   delete mBitmap[0];
+   delete mBitmap[1];
+   delete mBitmap[2];
+   delete mBitmap[3];
 }
 
-void AButton::OnPaint(wxPaintEvent& event)
+void AButton::OnPaint(wxPaintEvent & event)
 {
-  wxPaintDC dc(this);
-  #ifdef __WXMAC__
-  dc.DrawBitmap(*mBitmap[mButtonState], 0, 0);
-  #else
-  wxMemoryDC memDC;
-  memDC.SelectObject(*mBitmap[mButtonState]);
-  dc.Blit(0, 0, mWidth, mHeight, &memDC, 0, 0, wxCOPY, FALSE);
-  #endif
+   wxPaintDC dc(this);
+#ifdef __WXMAC__
+   dc.DrawBitmap(*mBitmap[mButtonState], 0, 0);
+#else
+   wxMemoryDC memDC;
+   memDC.SelectObject(*mBitmap[mButtonState]);
+   dc.Blit(0, 0, mWidth, mHeight, &memDC, 0, 0, wxCOPY, FALSE);
+#endif
 }
 
-void AButton::OnMouseEvent(wxMouseEvent& event)
+void AButton::OnMouseEvent(wxMouseEvent & event)
 {
-  if (mButtonIsDown || !mEnabled)
-    return;
+   if (mButtonIsDown || !mEnabled)
+      return;
 
-  if (event.ButtonUp()) {
-    mIsClicking = false;
+   if (event.ButtonUp()) {
+      mIsClicking = false;
 
-    ReleaseMouse();
+      ReleaseMouse();
 
-    if (event.m_x >= 0 && event.m_y >= 0 &&
-	event.m_x < mWidth && event.m_y < mHeight) {
-      mButtonState = AButtonDown;
-      mButtonIsDown = true;
+      if (event.m_x >= 0 && event.m_y >= 0 &&
+          event.m_x < mWidth && event.m_y < mHeight) {
+         mButtonState = AButtonDown;
+         mButtonIsDown = true;
 
-      wxCommandEvent *e =
-		new wxCommandEvent(wxEVT_COMMAND_BUTTON_CLICKED, GetId());      
-      GetParent()->ProcessEvent(*e);      
-      delete e;
-    }
-    
-    this->Refresh(false);
-    return;
-  }
+         wxCommandEvent *e =
+             new wxCommandEvent(wxEVT_COMMAND_BUTTON_CLICKED, GetId());
+         GetParent()->ProcessEvent(*e);
+         delete e;
+      }
 
-  if (event.ButtonDown()) {
-    mIsClicking = true;
-    CaptureMouse();
-  }
-
-  if (mIsClicking) {
-    if (event.m_x >= 0 && event.m_y >= 0 &&
-	event.m_x < mWidth && event.m_y < mHeight) {
-      mButtonState = AButtonDown;
-    }
-    else
-      mButtonState = AButtonUp;
-    this->Refresh(false);
-  }
-  else {
-    if (event.Entering()) {
-      mButtonState = AButtonOver;
       this->Refresh(false);
-    }
+      return;
+   }
 
-    if (event.Leaving()) {
-      mButtonState = AButtonUp;
+   if (event.ButtonDown()) {
+      mIsClicking = true;
+      CaptureMouse();
+   }
+
+   if (mIsClicking) {
+      if (event.m_x >= 0 && event.m_y >= 0 &&
+          event.m_x < mWidth && event.m_y < mHeight) {
+         mButtonState = AButtonDown;
+      } else
+         mButtonState = AButtonUp;
       this->Refresh(false);
-    }
-  }
+   } else {
+      if (event.Entering()) {
+         mButtonState = AButtonOver;
+         this->Refresh(false);
+      }
+
+      if (event.Leaving()) {
+         mButtonState = AButtonUp;
+         this->Refresh(false);
+      }
+   }
 }
 
 void AButton::Enable()
 {
-  mEnabled = true;
-  if (mButtonIsDown)
-	mButtonState = AButtonDown;
-  else
-	mButtonState = AButtonUp;
-  this->Refresh(false);
+   mEnabled = true;
+   if (mButtonIsDown)
+      mButtonState = AButtonDown;
+   else
+      mButtonState = AButtonUp;
+   this->Refresh(false);
 }
 
 void AButton::Disable()
 {
-  mEnabled = false;
-  mButtonState = AButtonDis;
-  this->Refresh(false);
+   mEnabled = false;
+   mButtonState = AButtonDis;
+   this->Refresh(false);
 }
 
 void AButton::PushDown()
 {
-  mButtonIsDown = true;  
-  mButtonState = AButtonDown;
-  this->Refresh(false);
+   mButtonIsDown = true;
+   mButtonState = AButtonDown;
+   this->Refresh(false);
 }
 
 void AButton::PopUp()
 {
-  mButtonIsDown = false;
-  mButtonState = AButtonUp;
-  this->Refresh(false);
+   mButtonIsDown = false;
+   mButtonState = AButtonUp;
+   this->Refresh(false);
 }

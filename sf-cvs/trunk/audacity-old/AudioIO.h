@@ -27,68 +27,61 @@ extern AudioIO *gAudioIO;
 
 void InitAudioIO();
 
-class AudioIOTimer: public wxTimer
-{
-public:
-  virtual void Notify();
+class AudioIOTimer:public wxTimer {
+ public:
+   virtual void Notify();
 };
 
 class AudioIO {
 
-public:
-  AudioIO();
-  ~AudioIO();
+ public:
+   AudioIO();
+   ~AudioIO();
 
-  bool StartPlay(AudacityProject *project,
-				 TrackList *tracks,
-				 double t0, double t1);
+   bool StartPlay(AudacityProject * project,
+                  TrackList * tracks, double t0, double t1);
 
-  bool StartRecord(AudacityProject *project,
-				   TrackList *tracks);			  
+   bool StartRecord(AudacityProject * project, TrackList * tracks);
 
-  void OnTimer();
+   void OnTimer();
 
-  void Stop();
-  bool IsBusy();
-  bool IsPlaying();
-  bool IsRecording();
+   void Stop();
+   bool IsBusy();
+   bool IsPlaying();
+   bool IsRecording();
 
-  AudacityProject *GetProject();
-  double GetIndicator();
+   AudacityProject *GetProject();
+   double GetIndicator();
 
-private:
+ private:
 
-  void Finish();
-  bool OpenPlaybackDevice(AudacityProject *project);
-  
-  AudacityProject *mProject;
-  TrackList       *mTracks;
-  double          mT;
-  double          mRecT;
-  double          mT0;
-  double          mT1;
-  int             mTicks;
-  bool            mStop;
-  snd_node        mPlayNode;
-  snd_node        mRecordNode;
+   void Finish();
+   bool OpenPlaybackDevice(AudacityProject * project);
 
-  bool            mRecordStereo;
-  bool            mDuplex; // play and record at same time
+   AudacityProject *mProject;
+   TrackList *mTracks;
+   double mT;
+   double mRecT;
+   double mT0;
+   double mT1;
+   int mTicks;
+   bool mStop;
+   snd_node mPlayNode;
+   snd_node mRecordNode;
 
-  bool            mRecording;
-  WaveTrack       *mRecordLeft;
-  WaveTrack       *mRecordRight;
+   bool mRecordStereo;
+   bool mDuplex;                // play and record at same time
 
-  AudioIOTimer    mTimer;
-  wxStopWatch     mStopWatch;
-  
-  #ifdef __WXMAC__
-  int             mStartTicks;
-  #endif
+   bool mRecording;
+   WaveTrack *mRecordLeft;
+   WaveTrack *mRecordRight;
+
+   AudioIOTimer mTimer;
+   wxStopWatch mStopWatch;
+
+#ifdef __WXMAC__
+   int mStartTicks;
+#endif
 };
 
 #endif
-
-
-
-

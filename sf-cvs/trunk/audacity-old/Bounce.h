@@ -23,71 +23,67 @@ class AudacityProject;
 class LabelArray;
 
 struct BounceLabel {
-  double t;
-  wxString title;
-  int spacing;
+   double t;
+   wxString title;
+   int spacing;
 };
 
 WX_DEFINE_ARRAY(BounceLabel *, BounceLabelArray);
 
-class BouncePane: public wxWindow
-{
-public:
-  BouncePane(wxWindow *parent, wxWindowID id,
-			 const wxPoint& pos,
-			 const wxSize& size);
+class BouncePane:public wxWindow {
+ public:
+   BouncePane(wxWindow * parent, wxWindowID id,
+              const wxPoint & pos, const wxSize & size);
 
-  ~BouncePane();
+   ~BouncePane();
 
-  void OnMouseEvent(wxMouseEvent& event); 
-  void OnPaint(wxPaintEvent& event);
+   void OnMouseEvent(wxMouseEvent & event);
+   void OnPaint(wxPaintEvent & event);
 
-  void Resize();
+   void Resize();
 
-  void SetProject(AudacityProject *project);
-  void SetTime(double t);
+   void SetProject(AudacityProject * project);
+   void SetTime(double t);
 
-private:
+ private:
 
-  void CreateLabels(LabelArray *l);
-  void DestroyLabels();
+   void CreateLabels(LabelArray * l);
+   void DestroyLabels();
 
-  AudacityProject *project;
-  double t;
+   AudacityProject *project;
+   double t;
 
-  BounceLabelArray *labels;
-  
-  wxBrush   mBackgroundBrush;
-  wxPen     mBackgroundPen;
+   BounceLabelArray *labels;
 
-  wxRect    mBounds;
-  wxBitmap  *mBitmap;
-    
-  DECLARE_EVENT_TABLE()
+   wxBrush mBackgroundBrush;
+   wxPen mBackgroundPen;
+
+   wxRect mBounds;
+   wxBitmap *mBitmap;
+
+    DECLARE_EVENT_TABLE()
 };
 
-class Bounce: public wxFrame
-{
-public:
-  Bounce(wxWindow *parent, wxWindowID id,
-		 const wxString& title,
-		 const wxPoint& pos);
+class Bounce:public wxFrame {
+ public:
+   Bounce(wxWindow * parent, wxWindowID id,
+          const wxString & title, const wxPoint & pos);
 
-  virtual ~Bounce();
+   virtual ~ Bounce();
 
-  void OnPaint(wxPaintEvent& event);
+   void OnPaint(wxPaintEvent & event);
 
-  void OnCloseWindow(wxCloseEvent& event);
-  void OnSize(wxSizeEvent &event);
+   void OnCloseWindow(wxCloseEvent & event);
+   void OnSize(wxSizeEvent & event);
 
-  void SetProject(AudacityProject *project);
-  void SetTime(double t);
+   void SetProject(AudacityProject * project);
+   void SetTime(double t);
 
-private:
+ private:
 
-  BouncePane *mBouncePane;
-  
-DECLARE_EVENT_TABLE()
+    BouncePane * mBouncePane;
+
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

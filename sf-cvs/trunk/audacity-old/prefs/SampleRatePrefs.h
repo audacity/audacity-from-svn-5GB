@@ -17,16 +17,16 @@
 
 #include "PrefsPanel.h"
 
-class SampleRatePrefs: public PrefsPanel {
+class SampleRatePrefs:public PrefsPanel {
 
-public:
-	SampleRatePrefs(wxWindow *parent);
-	~SampleRatePrefs();
-	bool Apply();
+ public:
+   SampleRatePrefs(wxWindow * parent);
+   ~SampleRatePrefs();
+   bool Apply();
 
-private:
-	wxStaticBox *mEnclosingBox;
-	wxRadioBox  *mDefaultSamplingRate;
+ private:
+    wxStaticBox * mEnclosingBox;
+   wxRadioBox *mDefaultSamplingRate;
 
 };
 

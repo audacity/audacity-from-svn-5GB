@@ -10,6 +10,6 @@
 
 extern "C" {
 
-    void LoadVSTPlugins();
+   void LoadVSTPlugins();
 
 };

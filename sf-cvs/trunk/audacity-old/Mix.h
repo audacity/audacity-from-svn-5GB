@@ -18,41 +18,38 @@
 class APalette;
 class DirManager;
 
-bool QuickMix(TrackList *tracks, DirManager *dirManager);
+bool QuickMix(TrackList * tracks, DirManager * dirManager);
 
 class Mixer {
-public:
-  Mixer(int numChannels, int bufferSize, bool interleaved);
-  virtual ~Mixer();
+ public:
+   Mixer(int numChannels, int bufferSize, bool interleaved);
+   virtual ~ Mixer();
 
-  void UseVolumeSlider(APalette *palette);
+   void UseVolumeSlider(APalette * palette);
 
-  void Clear();
-  void MixLeft(WaveTrack *src, double t0, double t1);
-  void MixRight(WaveTrack *src, double t0, double t1);
-  void MixMono(WaveTrack *src, double t0, double t1);
-  void Mix(int *channelFlags, WaveTrack *src, double t0, double t1);
+   void Clear();
+   void MixLeft(WaveTrack * src, double t0, double t1);
+   void MixRight(WaveTrack * src, double t0, double t1);
+   void MixMono(WaveTrack * src, double t0, double t1);
+   void Mix(int *channelFlags, WaveTrack * src, double t0, double t1);
 
-  // Interleaved
-  sampleType *GetBuffer();
+   // Interleaved
+   sampleType *GetBuffer();
 
-  // Non-interleaved
-  sampleType *GetBuffer(int channel);
+   // Non-interleaved
+   sampleType *GetBuffer(int channel);
 
-private:
-  int        mNumChannels;
-  int        mNumBuffers;
-  int        mBufferSize;
-  int        mInterleavedBufferSize;
-  bool       mInterleaved;
-  bool       mUseVolumeSlider;
-  APalette   *mAPalette;
-  sampleType **mBuffer;
-  sampleType *mTemp;
-  double     *mEnvValues;
+ private:
+   int mNumChannels;
+   int mNumBuffers;
+   int mBufferSize;
+   int mInterleavedBufferSize;
+   bool mInterleaved;
+   bool mUseVolumeSlider;
+   APalette *mAPalette;
+   sampleType **mBuffer;
+   sampleType *mTemp;
+   double *mEnvValues;
 };
 
 #endif
-
-
-

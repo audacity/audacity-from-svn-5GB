@@ -28,70 +28,61 @@ struct TrackInfoCache;
 
 class TrackArtist {
 
-public:
-  TrackArtist();
-  ~TrackArtist();
+ public:
+   TrackArtist();
+   ~TrackArtist();
 
-  void DrawTracks(TrackList *tracks,
-				  wxDC &dc, wxRect &r,
-				  wxRect &clip,
-				  ViewInfo *viewInfo,
-				  bool drawEnvelope);
+   void DrawTracks(TrackList * tracks,
+                   wxDC & dc, wxRect & r,
+                   wxRect & clip, ViewInfo * viewInfo, bool drawEnvelope);
 
-  void DrawVRuler(VTrack *t,
-				  wxDC *dc, wxRect &r);
-  
-  void SetInset(int left, int top, int right, int bottom);
+   void DrawVRuler(VTrack * t, wxDC * dc, wxRect & r);
 
-private:
-  wxHashTable     *mTrackHash;
+   void SetInset(int left, int top, int right, int bottom);
 
-  int mInsetLeft;
-  int mInsetTop;
-  int mInsetRight;
-  int mInsetBottom;
+ private:
+    wxHashTable * mTrackHash;
 
-  wxBrush blankBrush;
-  wxBrush unselectedBrush;
-  wxBrush selectedBrush;
-  wxBrush sampleBrush;
-  wxBrush selsampleBrush;
-  wxPen blankPen;
-  wxPen unselectedPen;
-  wxPen selectedPen;
-  wxPen samplePen;
-  wxPen selsamplePen;
-  wxPen shadowPen;
+   int mInsetLeft;
+   int mInsetTop;
+   int mInsetRight;
+   int mInsetBottom;
 
-  void PrepareCacheWaveform(TrackInfoCache *cache,
-							double start, double pps,
-							int screenWidth);
+   wxBrush blankBrush;
+   wxBrush unselectedBrush;
+   wxBrush selectedBrush;
+   wxBrush sampleBrush;
+   wxBrush selsampleBrush;
+   wxPen blankPen;
+   wxPen unselectedPen;
+   wxPen selectedPen;
+   wxPen samplePen;
+   wxPen selsamplePen;
+   wxPen shadowPen;
 
-  int GetWaveYPos(float value, int height, bool dB);
+   void PrepareCacheWaveform(TrackInfoCache * cache,
+                             double start, double pps, int screenWidth);
 
-  void DrawWaveform(TrackInfoCache *cache,
-					wxDC &dc, wxRect &r,
-					ViewInfo *viewInfo,
-					bool drawEnvelope,
-					bool dB);
+   int GetWaveYPos(float value, int height, bool dB);
 
-  void PrepareCacheSpectrum(TrackInfoCache *cache,
-							double start, double pps,
-							int screenWidth, int screenHeight,
-							bool autocorrelation);
+   void DrawWaveform(TrackInfoCache * cache,
+                     wxDC & dc, wxRect & r,
+                     ViewInfo * viewInfo, bool drawEnvelope, bool dB);
 
-  void DrawSpectrum(TrackInfoCache *cache,
-					wxDC &dc, wxRect &r,
-					ViewInfo *viewInfo,
-					bool autocorrelation);
+   void PrepareCacheSpectrum(TrackInfoCache * cache,
+                             double start, double pps,
+                             int screenWidth, int screenHeight,
+                             bool autocorrelation);
 
-  void DrawNoteTrack(TrackInfoCache *cache,
-					 wxDC &dc, wxRect &r,
-					 ViewInfo *viewInfo);
+   void DrawSpectrum(TrackInfoCache * cache,
+                     wxDC & dc, wxRect & r,
+                     ViewInfo * viewInfo, bool autocorrelation);
 
-  void DrawLabelTrack(TrackInfoCache *cache,
-					  wxDC &dc, wxRect &r,
-					  ViewInfo *viewInfo);
+   void DrawNoteTrack(TrackInfoCache * cache,
+                      wxDC & dc, wxRect & r, ViewInfo * viewInfo);
+
+   void DrawLabelTrack(TrackInfoCache * cache,
+                       wxDC & dc, wxRect & r, ViewInfo * viewInfo);
 };
 
-#endif // define __AUDACITY_TRACKARTIST__
+#endif                          // define __AUDACITY_TRACKARTIST__

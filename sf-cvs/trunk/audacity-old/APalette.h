@@ -34,72 +34,68 @@ class APaletteFrame;
 extern APaletteFrame *gAPaletteFrame;
 extern bool gWindowedPalette;
 
-void InitAPaletteFrame(wxWindow *parent);
+void InitAPaletteFrame(wxWindow * parent);
 int GetAPaletteHeight();
 
-void ShowWindowedPalette(wxPoint *where = NULL);
+void ShowWindowedPalette(wxPoint * where = NULL);
 void HideWindowedPalette();
 
-class APalette: public wxWindow
-{
-public:
-  APalette(wxWindow *parent, wxWindowID id,
-		   const wxPoint& pos,
-		   const wxSize& size);
+class APalette:public wxWindow {
+ public:
+   APalette(wxWindow * parent, wxWindowID id,
+            const wxPoint & pos, const wxSize & size);
 
-  virtual ~APalette();
+   virtual ~ APalette();
 
-  int GetCurrentTool();
-  
-  void OnPaint(wxPaintEvent& event);
-  void OnTool(wxCommandEvent& evt);
+   int GetCurrentTool();
 
-  void OnPlay();
-  void OnStop();
-  void OnRecord();
+   void OnPaint(wxPaintEvent & event);
+   void OnTool(wxCommandEvent & evt);
 
-  void SetPlay(bool down);
-  void SetStop(bool down);
-  void SetRecord(bool down);
+   void OnPlay();
+   void OnStop();
+   void OnRecord();
 
-  float GetSoundVol();
-  
-private:
-  AButton *mTool[4];
-  
-  AButton *mPlay;
-  AButton *mStop;
-  AButton *mRecord;
+   void SetPlay(bool down);
+   void SetStop(bool down);
+   void SetRecord(bool down);
 
-  ASlider *mVolume;
+   float GetSoundVol();
 
-  int mCurrentTool;
-  
-  wxBrush mBackgroundBrush;
-  wxPen mBackgroundPen;
-  
-  wxBitmap *mBackgroundBitmap;
-  int mBackgroundWidth;
-  int mBackgroundHeight;
-  wxBitmap *mDivBitmap;
-  wxBitmap *mMuteBitmap;
-  wxBitmap *mLoudBitmap;
-    
-DECLARE_EVENT_TABLE()
+ private:
+    AButton * mTool[4];
+
+   AButton *mPlay;
+   AButton *mStop;
+   AButton *mRecord;
+
+   ASlider *mVolume;
+
+   int mCurrentTool;
+
+   wxBrush mBackgroundBrush;
+   wxPen mBackgroundPen;
+
+   wxBitmap *mBackgroundBitmap;
+   int mBackgroundWidth;
+   int mBackgroundHeight;
+   wxBitmap *mDivBitmap;
+   wxBitmap *mMuteBitmap;
+   wxBitmap *mLoudBitmap;
+
+    DECLARE_EVENT_TABLE()
 };
 
-class APaletteFrame: public wxMiniFrame
-{
-public:
-  APaletteFrame(wxWindow *parent, wxWindowID id,
-				const wxString& title,
-				const wxPoint& pos);
+class APaletteFrame:public wxMiniFrame {
+ public:
+   APaletteFrame(wxWindow * parent, wxWindowID id,
+                 const wxString & title, const wxPoint & pos);
 
-  void OnCloseWindow(wxCloseEvent& event);
+   void OnCloseWindow(wxCloseEvent & event);
 
-  APalette     mPalette;
+   APalette mPalette;
 
-DECLARE_EVENT_TABLE()
+   DECLARE_EVENT_TABLE()
 };
 
 

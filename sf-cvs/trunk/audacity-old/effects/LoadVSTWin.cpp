@@ -10,79 +10,73 @@
 
 #include <windows.h>
 
-#include "AudioEffect.hpp"  // VST API
+#include "AudioEffect.hpp"      // VST API
 
-#include "VSTEffect.h"      // This class's header
-#include "../DirManager.h"     // Audacity class which handles data structures
+#include "VSTEffect.h"          // This class's header
+#include "../DirManager.h"      // Audacity class which handles data structures
 
 int audacityVSTID = 1;
 
 extern "C" {
 
-long audioMaster(AEffect *effect, long opcode, long index,
-		          long value, void *ptr, float opt)
-{
-    switch(opcode) {
-        case audioMasterVersion:
-           return 2;
-        case audioMasterCurrentId:
-           return audacityVSTID;
-        default:
-           return 0;
-    }
-}
+   long audioMaster(AEffect * effect, long opcode, long index,
+                    long value, void *ptr, float opt) {
+      switch (opcode) {
+      case audioMasterVersion:
+         return 2;
+         case audioMasterCurrentId:return audacityVSTID;
+         default:return 0;
+   }} typedef AEffect *(*vstPluginMain) (audioMasterCallback audioMaster);
 
-typedef	AEffect *(*vstPluginMain)(audioMasterCallback audioMaster);
+   void LoadVSTPlugins() {
+      wxString home = DirManager::GetHomeDir();
+      wxString pathChar = DirManager::GetPathChar();
+      wxString vstDirPath = home + pathChar + "vst";
+      wxString fname;
 
-void LoadVSTPlugins()
-{
-    wxString home = DirManager::GetHomeDir();
-    wxString pathChar = DirManager::GetPathChar();
-    wxString vstDirPath = home + pathChar + "vst";
-    wxString fname;
-        
-    fname = wxFindFirstFile((const char *)(vstDirPath + pathChar + "*.DLL"));
+      fname =
+          wxFindFirstFile((const char *) (vstDirPath + pathChar +
+                                          "*.DLL"));
 
-    while (fname != "") {
-        HANDLE hLib = LoadLibrary(fname);
+      while (fname != "") {
+         HANDLE hLib = LoadLibrary(fname);
 
-        if(hLib != NULL) {
+         if (hLib != NULL) {
 
             // get the address of the main() function
 
             vstPluginMain pDllMain =
-                (vstPluginMain) GetProcAddress((HINSTANCE)hLib, "main");
+                (vstPluginMain) GetProcAddress((HINSTANCE) hLib, "main");
 
-            if(pDllMain != NULL) {
+            if (pDllMain != NULL) {
 
-                AEffect *theEffect;
-                
-                theEffect = (pDllMain)(audioMaster);
-                
-                if (theEffect->magic == kEffectMagic) {
-                    wxString title = wxFileNameFromPath(fname);
-                    int len = title.Len();
-                    if (len>4 && (title.Mid(len-4)==".DLL"
-                                  || title.Mid(len-4)==".dll"))
-                      title = title.Mid(0, len-4);
+               AEffect *theEffect;
 
-                    VSTEffect *vst = new VSTEffect(title, theEffect);
-                    Effect::RegisterEffect(vst);
-                }
+               theEffect = (pDllMain) (audioMaster);
+
+               if (theEffect->magic == kEffectMagic) {
+                  wxString title = wxFileNameFromPath(fname);
+                  int len = title.Len();
+                  if (len > 4 && (title.Mid(len - 4) == ".DLL"
+                                  || title.Mid(len - 4) == ".dll"))
+                     title = title.Mid(0, len - 4);
+
+                  VSTEffect *vst = new VSTEffect(title, theEffect);
+                  Effect::RegisterEffect(vst);
+               }
             }
-            
+
             audacityVSTID++;
-        }
-        else {
-            FreeLibrary((HINSTANCE)hLib);
-        }
+         } else {
+            FreeLibrary((HINSTANCE) hLib);
+         }
 
-        fname = wxFindNextFile();
-    }
-}
+         fname = wxFindNextFile();
+      }
+   }
 
 
-}; // extern "C"
+};                              // extern "C"
 
 /*
 

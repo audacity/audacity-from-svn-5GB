@@ -39,76 +39,74 @@
 
 class wxTextFile;
 
-class DirManager
-{
-public:
-  DirManager();
-  ~DirManager();
+class DirManager {
+ public:
+   DirManager();
+   ~DirManager();
 
-  // Returns true on success.
-  // If SetProject is told NOT to create the directory
-  // but it doesn't already exist, SetProject fails and returns false.
-  bool SetProject(wxString &projPath, wxString &projName, bool create);
+   // Returns true on success.
+   // If SetProject is told NOT to create the directory
+   // but it doesn't already exist, SetProject fails and returns false.
+   bool SetProject(wxString & projPath, wxString & projName, bool create);
 
-  wxString GetProjectName();
+   wxString GetProjectName();
 
-  // Create new unique track name
-  wxString NewTrackName();
+   // Create new unique track name
+   wxString NewTrackName();
 
-  BlockFile *NewTempBlockFile();
-  BlockFile *NewBlockFile();
+   BlockFile *NewTempBlockFile();
+   BlockFile *NewBlockFile();
 
-  BlockFile *NewTempAliasBlockFile(int localLen,
-								   wxString fullPath,
-								   sampleCount start,
-								   sampleCount len,
-								   int channel);
-  BlockFile *NewAliasBlockFile(int localLen,
-							   wxString fullPath,
-							   sampleCount start,
-							   sampleCount len,
-							   int channel);
+   BlockFile *NewTempAliasBlockFile(int localLen,
+                                    wxString fullPath,
+                                    sampleCount start,
+                                    sampleCount len, int channel);
+   BlockFile *NewAliasBlockFile(int localLen,
+                                wxString fullPath,
+                                sampleCount start,
+                                sampleCount len, int channel);
 
-  BlockFile *LoadBlockFile(wxTextFile *in);
-  void SaveBlockFile(BlockFile *f, wxTextFile *out);
+   BlockFile *LoadBlockFile(wxTextFile * in);
+   void SaveBlockFile(BlockFile * f, wxTextFile * out);
 
-  void MakePartOfProject(BlockFile *f);
+   void MakePartOfProject(BlockFile * f);
 
-  void Ref(BlockFile *f);
-  void Deref(BlockFile *f);
+   void Ref(BlockFile * f);
+   void Deref(BlockFile * f);
 
-  static wxString GetHomeDir() {return home;}
-  static wxString GetPathChar() {return pathChar;}
-  
-private:
-  void CleanTempDir();
+   static wxString GetHomeDir() {
+      return home;
+   } static wxString GetPathChar() {
+      return pathChar;
+   }
 
-  // Create new unique names
-  wxString NewTempBlockName();
-  wxString NewBlockName();
+ private:
+   void CleanTempDir();
 
-  //////////////////////////
+   // Create new unique names
+   wxString NewTempBlockName();
+   wxString NewBlockName();
 
-  wxHashTable *blockFileHash;
+   //////////////////////////
 
-  static int defaultHashTableSize;
-  static bool hashWarning;
-  void CheckHashTableSize();
+   wxHashTable *blockFileHash;
 
-  wxString projName;
-  wxString projPath;
-  wxString projFull;
+   static int defaultHashTableSize;
+   static bool hashWarning;
+   void CheckHashTableSize();
 
-  static wxString pathChar;
-  static wxString home;
-  static wxString temp;	
-	
-  static bool firstCtor;
-  static int numDirManagers;
-  static int fileIndex;
-  static wxString tempDirName;
+   wxString projName;
+   wxString projPath;
+   wxString projFull;
+
+   static wxString pathChar;
+   static wxString home;
+   static wxString temp;
+
+   static bool firstCtor;
+   static int numDirManagers;
+   static int fileIndex;
+   static wxString tempDirName;
 };
 
 #endif
-
-

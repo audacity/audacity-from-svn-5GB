@@ -27,100 +27,110 @@
 #include "Help.h"
 #include "Prefs.h"
 
-wxHtmlHelpController     *gHelp = NULL;
+wxHtmlHelpController *gHelp = NULL;
 
 #ifdef __WXMAC__
 
-void InitHelp(wxWindow *parent) {}
-
-void ShowHelp(wxWindow *parent) {}
-
-void ShowHelpIndex(wxWindow *parent) {}
-
-void ShowHelp(wxWindow *parent, wxString topic) {}
-
-void SearchHelp(wxWindow *parent) {}
-
-void QuitHelp() {}
-
-
-#else
-
-void InitHelp(wxWindow *parent)
+void InitHelp(wxWindow * parent)
 {
-  if (!gHelp) {
-	wxString defaultLoc = wxGetCwd() + "/audacity-help.htb";
-
-	wxString helpFilePath = gPrefs->Read("/Help/HelpFilePath", defaultLoc);
-
-	if (!::wxFileExists(helpFilePath)) {
-	  helpFilePath = wxFileSelector("Where is audacity-help.htb?",
-									NULL,
-									"audacity-help.htb", // Name
-									"",           // Extension
-									"HTML Help Books (*.htb)|*.htb",
-									wxOPEN,
-									parent);
-	  if (helpFilePath == "")
-		return;
-	}
-
-	gHelp = new wxHtmlHelpController();
-	if (!gHelp->AddBook(helpFilePath)) {
-	  wxMessageBox("Couldn't open the Audacity Help file.");
-	  delete gHelp;
-	  gHelp = NULL;
-	}
-
-	gPrefs->Write("/Help/HelpFilePath", helpFilePath);
-  }
 }
 
-void ShowHelp(wxWindow *parent)
+void ShowHelp(wxWindow * parent)
 {
-  InitHelp(parent);
-
-  if (gHelp)
-	gHelp->Display("Introduction");
 }
 
-void ShowHelpIndex(wxWindow *parent)
+void ShowHelpIndex(wxWindow * parent)
 {
-  InitHelp(parent);
-
-  if (gHelp)
-	gHelp->DisplayIndex();
 }
 
-void ShowHelp(wxWindow *parent, wxString topic)
+void ShowHelp(wxWindow * parent, wxString topic)
 {
-  InitHelp(parent);
-
-  if (gHelp)
-	gHelp->KeywordSearch(topic);
 }
 
-void SearchHelp(wxWindow *parent)
+void SearchHelp(wxWindow * parent)
 {
-  InitHelp(parent);
-
-  if (gHelp) {
-	wxString key = wxGetTextFromUser("Search for?",
-									 "Search help for keyword",
-									 "",
-									 parent);
-	
-	if(!key.IsEmpty())
-	  gHelp->KeywordSearch(key);
-  }
 }
 
 void QuitHelp()
 {
-  if (gHelp) {
-	delete gHelp;
-	gHelp = NULL;
-  }
+}
+
+
+#else
+
+void InitHelp(wxWindow * parent)
+{
+   if (!gHelp) {
+      wxString defaultLoc = wxGetCwd() + "/audacity-help.htb";
+
+      wxString helpFilePath =
+          gPrefs->Read("/Help/HelpFilePath", defaultLoc);
+
+      if (!::wxFileExists(helpFilePath)) {
+         helpFilePath = wxFileSelector("Where is audacity-help.htb?", NULL, "audacity-help.htb",        // Name
+                                       "",      // Extension
+                                       "HTML Help Books (*.htb)|*.htb",
+                                       wxOPEN, parent);
+         if (helpFilePath == "")
+            return;
+      }
+
+      gHelp = new wxHtmlHelpController();
+      if (!gHelp->AddBook(helpFilePath)) {
+         wxMessageBox("Couldn't open the Audacity Help file.");
+         delete gHelp;
+         gHelp = NULL;
+      }
+
+      gPrefs->Write("/Help/HelpFilePath", helpFilePath);
+   }
+}
+
+void ShowHelp(wxWindow * parent)
+{
+   InitHelp(parent);
+
+   if (gHelp)
+      gHelp->Display("Introduction");
+}
+
+void ShowHelpIndex(wxWindow * parent)
+{
+   InitHelp(parent);
+
+   if (gHelp)
+      gHelp->DisplayIndex();
+}
+
+void ShowHelp(wxWindow * parent, wxString topic)
+{
+   InitHelp(parent);
+
+   if (gHelp)
+      gHelp->KeywordSearch(topic);
+}
+
+void SearchHelp(wxWindow * parent)
+{
+   InitHelp(parent);
+
+   if (gHelp) {
+      wxString key = wxGetTextFromUser("Search for?",
+                                       "Search help for keyword",
+                                       "",
+                                       parent);
+
+      if (!key.IsEmpty())
+         gHelp->KeywordSearch(key);
+   }
+}
+
+void QuitHelp()
+{
+   if (gHelp) {
+      delete gHelp;
+      gHelp = NULL;
+   }
 }
 
 #endif

@@ -21,36 +21,36 @@
 
 #include "PrefsPanel.h"
 
-class AudioIOPrefs: public PrefsPanel {
+class AudioIOPrefs:public PrefsPanel {
 
-public:
-	AudioIOPrefs(wxWindow *parent);
-	~AudioIOPrefs();
-	bool Apply();
+ public:
+   AudioIOPrefs(wxWindow * parent);
+   ~AudioIOPrefs();
+   bool Apply();
 
-	void TestPlaybackDevice(wxCommandEvent& event);
-	void SetPlaybackDeviceDefault(wxCommandEvent& event);
-	void TestRecordingDevice(wxCommandEvent& event);
-	void SetRecordingDeviceDefault(wxCommandEvent& event);
+   void TestPlaybackDevice(wxCommandEvent & event);
+   void SetPlaybackDeviceDefault(wxCommandEvent & event);
+   void TestRecordingDevice(wxCommandEvent & event);
+   void SetRecordingDeviceDefault(wxCommandEvent & event);
 
-private:
-	wxStaticText *mPlaybackDeviceLabel;
-	wxTextCtrl   *mPlaybackDeviceCtrl;
-	wxButton     *mPlaybackDeviceTest;
-	wxButton     *mPlaybackDeviceDefault;
-	
-	wxStaticText *mRecordingDeviceLabel;
-	wxTextCtrl   *mRecordingDeviceCtrl;
-	wxButton     *mRecordingDeviceTest;
-	wxButton     *mRecordingDeviceDefault;
+ private:
+    wxStaticText * mPlaybackDeviceLabel;
+   wxTextCtrl *mPlaybackDeviceCtrl;
+   wxButton *mPlaybackDeviceTest;
+   wxButton *mPlaybackDeviceDefault;
 
-	wxCheckBox   *mRecordStereo;
-	wxCheckBox   *mDuplex;
-	
-	wxStaticBox  *mEnclosingBox;
+   wxStaticText *mRecordingDeviceLabel;
+   wxTextCtrl *mRecordingDeviceCtrl;
+   wxButton *mRecordingDeviceTest;
+   wxButton *mRecordingDeviceDefault;
 
-public:
-	DECLARE_EVENT_TABLE()
+   wxCheckBox *mRecordStereo;
+   wxCheckBox *mDuplex;
+
+   wxStaticBox *mEnclosingBox;
+
+ public:
+    DECLARE_EVENT_TABLE()
 
 };
 

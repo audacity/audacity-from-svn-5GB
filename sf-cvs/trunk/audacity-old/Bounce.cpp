@@ -35,9 +35,9 @@
 #include "Track.h"
 
 enum {
-  FirstID = 7900,
-  
-  BounceCloseButtonID,
+   FirstID = 7900,
+
+   BounceCloseButtonID,
 };
 
 #define BOUNCE_WINDOW_WIDTH 300
@@ -46,285 +46,273 @@ enum {
 // Bounce
 
 BEGIN_EVENT_TABLE(Bounce, wxFrame)
-  EVT_CLOSE  (                      Bounce::OnCloseWindow)
-  EVT_SIZE   (                      Bounce::OnSize)
-  EVT_PAINT  (                      Bounce::OnPaint)
-END_EVENT_TABLE()
+    EVT_CLOSE(Bounce::OnCloseWindow)
+    EVT_SIZE(Bounce::OnSize)
+    EVT_PAINT(Bounce::OnPaint)
+    END_EVENT_TABLE()
 
-Bounce::Bounce(wxWindow* parent, wxWindowID id, const wxString& title,
-			   const wxPoint& pos) :
-  wxFrame(parent, id, title, pos,
-	      wxSize(BOUNCE_WINDOW_WIDTH, BOUNCE_WINDOW_HEIGHT))
+Bounce::Bounce(wxWindow * parent, wxWindowID id,
+                   const wxString & title,
+                   const wxPoint & pos):wxFrame(parent, id, title, pos,
+                                                wxSize(BOUNCE_WINDOW_WIDTH,
+                                                       BOUNCE_WINDOW_HEIGHT))
 {
-  mBouncePane = new BouncePane(this, 0,
-						   wxPoint(0, 0),
-						   wxSize(BOUNCE_WINDOW_WIDTH, 330));
-  
-  // Min size, max size
-  SetSizeHints(100, 100,
-			   20000, 20000);
+   mBouncePane = new BouncePane(this, 0,
+                                wxPoint(0, 0),
+                                wxSize(BOUNCE_WINDOW_WIDTH, 330));
+
+   // Min size, max size
+   SetSizeHints(100, 100, 20000, 20000);
 }
 
 Bounce::~Bounce()
 {
-  delete mBouncePane;
+   delete mBouncePane;
 }
 
-void Bounce::OnSize(wxSizeEvent &event)
+void Bounce::OnSize(wxSizeEvent & event)
 {
-  mBouncePane->Resize();
+   mBouncePane->Resize();
 }
 
-void Bounce::OnPaint(wxPaintEvent &evt)
+void Bounce::OnPaint(wxPaintEvent & evt)
 {
 }
 
-void Bounce::SetProject(AudacityProject *project)
+void Bounce::SetProject(AudacityProject * project)
 {
-  mBouncePane->SetProject(project);
+   mBouncePane->SetProject(project);
 }
 
 void Bounce::SetTime(double t)
 {
-  mBouncePane->SetTime(t);
+   mBouncePane->SetTime(t);
 }
 
-void Bounce::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
+void Bounce::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
 {
-  this->Show(FALSE);
+   this->Show(FALSE);
 }
 
 BEGIN_EVENT_TABLE(BouncePane, wxWindow)
-  EVT_PAINT  (                      BouncePane::OnPaint)
-  EVT_MOUSE_EVENTS(                 BouncePane::OnMouseEvent)
+    EVT_PAINT(BouncePane::OnPaint)
+    EVT_MOUSE_EVENTS(BouncePane::OnMouseEvent)
 END_EVENT_TABLE()
 
-BouncePane::BouncePane(wxWindow *parent, wxWindowID id,
-				   const wxPoint& pos,
-				   const wxSize& size):
-  wxWindow(parent, id, pos, size),
-  mBitmap(NULL)
+BouncePane::BouncePane(wxWindow * parent, wxWindowID id,
+                           const wxPoint & pos,
+                           const wxSize & size):wxWindow(parent, id, pos,
+                                                         size),
+mBitmap(NULL)
 {
-  mBackgroundBrush.SetColour(wxColour(204, 204, 204));
-  mBackgroundPen.SetColour(wxColour(204, 204, 204));
+   mBackgroundBrush.SetColour(wxColour(204, 204, 204));
+   mBackgroundPen.SetColour(wxColour(204, 204, 204));
 
-  project = NULL;
-  labels = NULL;
-  t = 0.0;
+   project = NULL;
+   labels = NULL;
+   t = 0.0;
 }
 
 BouncePane::~BouncePane()
 {
-  if (mBitmap)
-	delete mBitmap;
+   if (mBitmap)
+      delete mBitmap;
 
-  DestroyLabels();
+   DestroyLabels();
 }
 
 void BouncePane::Resize()
 {
-  int width, height;
-  GetParent()->GetClientSize(&width, &height);
+   int width, height;
+   GetParent()->GetClientSize(&width, &height);
 
-  SetSize(0, 0, width, height);
+   SetSize(0, 0, width, height);
 
-  if (mBitmap)
-	delete mBitmap;
-  mBitmap = NULL;
-  
-  #ifdef __WXMAC__
-  Refresh(true);
-  #endif
+   if (mBitmap)
+      delete mBitmap;
+   mBitmap = NULL;
+
+#ifdef __WXMAC__
+   Refresh(true);
+#endif
 }
 
 void BouncePane::SetTime(double t)
 {
-  this->t = t;
-  Refresh(false);
+   this->t = t;
+   Refresh(false);
 }
 
-void BouncePane::CreateLabels(LabelArray *l)
+void BouncePane::CreateLabels(LabelArray * l)
 {
-  DestroyLabels();
+   DestroyLabels();
 
-  labels = new BounceLabelArray();
-  int len = 0;
+   labels = new BounceLabelArray();
+   int len = 0;
 
-  for(int i=0; i<l->Count(); i++) {
-	wxString s = l->Item(i)->title;
-	if (s != "" && s[0] != '$' && s[1] != '*') {
-	  BounceLabel *b = new BounceLabel();
-	  b->t = l->Item(i)->t;
-	  b->title = l->Item(i)->title;
-	  if (b->title.Find('('))
-		b->title = b->title.Left(b->title.Find('('));
-	  b->spacing = 10;
-	  labels->Add(b);
-	  len++;
-	}
-	else if (len>0 && i>0 && (l->Item(i)->t - l->Item(i-1)->t) >= 0.5)
-	  labels->Item(len-1)->spacing = 30;
-  }
-  
-  if (len == 0)
-	return;
+   for (int i = 0; i < l->Count(); i++) {
+      wxString s = l->Item(i)->title;
+      if (s != "" && s[0] != '$' && s[1] != '*') {
+         BounceLabel *b = new BounceLabel();
+         b->t = l->Item(i)->t;
+         b->title = l->Item(i)->title;
+         if (b->title.Find('('))
+            b->title = b->title.Left(b->title.Find('('));
+         b->spacing = 10;
+         labels->Add(b);
+         len++;
+      } else if (len > 0 && i > 0
+                 && (l->Item(i)->t - l->Item(i - 1)->t) >= 0.5)
+         labels->Item(len - 1)->spacing = 30;
+   }
 
-  BounceLabel *b = new BounceLabel();
-  b->t = labels->Item(len-1)->t + 10;
-  b->title = "";
-  b->spacing = 0;
-  labels->Add(b);
+   if (len == 0)
+      return;
+
+   BounceLabel *b = new BounceLabel();
+   b->t = labels->Item(len - 1)->t + 10;
+   b->title = "";
+   b->spacing = 0;
+   labels->Add(b);
 }
 
 void BouncePane::DestroyLabels()
 {
-  if (labels) {
-	for(int i=0; i<labels->Count(); i++)
-	  delete labels->Item(i);
-	delete labels;
-	labels = NULL;
-  }
+   if (labels) {
+      for (int i = 0; i < labels->Count(); i++)
+         delete labels->Item(i);
+      delete labels;
+      labels = NULL;
+   }
 }
 
-void BouncePane::SetProject(AudacityProject *project)
+void BouncePane::SetProject(AudacityProject * project)
 {
-  if (project == NULL) {	
-	GetParent()->Show(false);
-	return;
-  }
+   if (project == NULL) {
+      GetParent()->Show(false);
+      return;
+   }
 
-  TrackListIterator iter(project->GetTracks());
-  VTrack *t = iter.First();
-  while(t) {
-	if (t->GetKind() == VTrack::Label) {
-	  this->project = project;
-	  CreateLabels(&((LabelTrack *)t)->mLabels);
+   TrackListIterator iter(project->GetTracks());
+   VTrack *t = iter.First();
+   while (t) {
+      if (t->GetKind() == VTrack::Label) {
+         this->project = project;
+         CreateLabels(&((LabelTrack *) t)->mLabels);
 
-	  GetParent()->Show(true);
+         GetParent()->Show(true);
 
-	  return;
-	}
-	t = iter.Next();
-  }
- 
-  this->project = NULL;
-  this->labels = NULL;
+         return;
+      }
+      t = iter.Next();
+   }
+
+   this->project = NULL;
+   this->labels = NULL;
 }
 
-void BouncePane::OnMouseEvent(wxMouseEvent& event)
+void BouncePane::OnMouseEvent(wxMouseEvent & event)
 {
 }
 
-void BouncePane::OnPaint(wxPaintEvent &evt)
+void BouncePane::OnPaint(wxPaintEvent & evt)
 {
-  if (project == NULL || labels==NULL)
-	return;
+   if (project == NULL || labels == NULL)
+      return;
 
-  wxPaintDC dc(this);
+   wxPaintDC dc(this);
 
-  int width, height;
-  GetSize(&width, &height);
-  
-  if (!mBitmap)
-	mBitmap = new wxBitmap(width, height);
+   int width, height;
+   GetSize(&width, &height);
 
-  wxMemoryDC memDC;
-  
-  memDC.SelectObject(*mBitmap);
+   if (!mBitmap)
+      mBitmap = new wxBitmap(width, height);
 
-  memDC.SetBrush(mBackgroundBrush);
-  memDC.SetPen(mBackgroundPen);
-  memDC.DrawRectangle(0, 0, width, height);
+   wxMemoryDC memDC;
 
-  wxFont font(18, wxROMAN, wxBOLD, wxNORMAL);
-  memDC.SetFont(font);
+   memDC.SelectObject(*mBitmap);
 
-  long preWidth = 0;
-  long curWidth = 0;
+   memDC.SetBrush(mBackgroundBrush);
+   memDC.SetPen(mBackgroundPen);
+   memDC.DrawRectangle(0, 0, width, height);
 
-  double deltat = 0.0;
+   wxFont font(18, wxROMAN, wxBOLD, wxNORMAL);
+   memDC.SetFont(font);
 
-  int bx = width/2;
-  int by = height-22;
+   long preWidth = 0;
+   long curWidth = 0;
 
-  long sw, sh;
-  int len = labels->Count();
+   double deltat = 0.0;
 
-  int i=0;
+   int bx = width / 2;
+   int by = height - 22;
 
-  while(i < len-1 && labels->Item(i+1)->t < t) {
-	memDC.GetTextExtent(labels->Item(i)->title, &sw, &sh);
-	preWidth += sw + labels->Item(i)->spacing;
-	i++;
-  }
+   long sw, sh;
+   int len = labels->Count();
 
-  if (i < len-1) {
-	curWidth = 0;
-	memDC.GetTextExtent(labels->Item(i)->title, &sw, &sh);
-	preWidth += sw/2;
-	curWidth += sw/2 + labels->Item(i)->spacing;
-	memDC.GetTextExtent(labels->Item(i+1)->title, &sw, &sh);
-	curWidth += sw/2;
+   int i = 0;
 
-	deltat = labels->Item(i+1)->t - labels->Item(i)->t;
-	if (deltat > 0.0) {
-	  double frac = (t - labels->Item(i)->t) / deltat;
-	  preWidth += long(curWidth * frac);
-	  double ht = deltat * height/2;
-	  if (ht > (height-25))
-		ht = height-25;
-	  by -= int(ht * 4.0 * (-frac*frac + frac));
-	}
-  }
+   while (i < len - 1 && labels->Item(i + 1)->t < t) {
+      memDC.GetTextExtent(labels->Item(i)->title, &sw, &sh);
+      preWidth += sw + labels->Item(i)->spacing;
+      i++;
+   }
 
-  int pos = width/2 - preWidth;
+   if (i < len - 1) {
+      curWidth = 0;
+      memDC.GetTextExtent(labels->Item(i)->title, &sw, &sh);
+      preWidth += sw / 2;
+      curWidth += sw / 2 + labels->Item(i)->spacing;
+      memDC.GetTextExtent(labels->Item(i + 1)->title, &sw, &sh);
+      curWidth += sw / 2;
 
-  memDC.SetTextForeground(*wxBLACK);
+      deltat = labels->Item(i + 1)->t - labels->Item(i)->t;
+      if (deltat > 0.0) {
+         double frac = (t - labels->Item(i)->t) / deltat;
+         preWidth += long (curWidth * frac);
+         double ht = deltat * height / 2;
+         if (ht > (height - 25))
+            ht = height - 25;
+         by -= int (ht * 4.0 * (-frac * frac + frac));
+      }
+   }
 
-  for(int j=0; j<i; j++) {
-	memDC.GetTextExtent(labels->Item(j)->title, &sw, &sh);
-	if (pos + sw >= 0 && pos < width &&
-		labels->Item(j)->title != "*") {
-	  memDC.DrawText(labels->Item(j)->title,
-					 pos,
-					 height-20);
-	}
-	pos += sw + labels->Item(j)->spacing;
-  }
+   int pos = width / 2 - preWidth;
 
-  if (i>=0 && i<len) {
+   memDC.SetTextForeground(*wxBLACK);
 
-	memDC.SetTextForeground(*wxRED);
-	memDC.GetTextExtent(labels->Item(i)->title, &sw, &sh);
+   for (int j = 0; j < i; j++) {
+      memDC.GetTextExtent(labels->Item(j)->title, &sw, &sh);
+      if (pos + sw >= 0 && pos < width && labels->Item(j)->title != "*") {
+         memDC.DrawText(labels->Item(j)->title, pos, height - 20);
+      }
+      pos += sw + labels->Item(j)->spacing;
+   }
 
-	if (labels->Item(i)->title != "*")
-	  memDC.DrawText(labels->Item(i)->title,
-					 pos,
-					 height-20);
+   if (i >= 0 && i < len) {
 
-	pos += sw + labels->Item(i)->spacing;
+      memDC.SetTextForeground(*wxRED);
+      memDC.GetTextExtent(labels->Item(i)->title, &sw, &sh);
 
-	memDC.SetTextForeground(*wxBLACK);
-  }
+      if (labels->Item(i)->title != "*")
+         memDC.DrawText(labels->Item(i)->title, pos, height - 20);
 
-  for(int j=i+1; j<len; j++) {
-	memDC.GetTextExtent(labels->Item(j)->title, &sw, &sh);
-	if (pos + sw >= 0 && pos < width &&
-		labels->Item(j)->title != "*") {
-	  memDC.DrawText(labels->Item(j)->title,
-					 pos,
-					 height-20);
-	}
-	pos += sw + labels->Item(j)->spacing;
-  }
+      pos += sw + labels->Item(i)->spacing;
 
-  memDC.SetPen(*wxRED_PEN);
-  memDC.SetBrush(*wxRED_BRUSH);
-  memDC.DrawEllipse(bx-3, by-3, 6, 6);
+      memDC.SetTextForeground(*wxBLACK);
+   }
 
-  dc.Blit(0, 0, width, height,
-		  &memDC, 0, 0, wxCOPY, FALSE);
+   for (int j = i + 1; j < len; j++) {
+      memDC.GetTextExtent(labels->Item(j)->title, &sw, &sh);
+      if (pos + sw >= 0 && pos < width && labels->Item(j)->title != "*") {
+         memDC.DrawText(labels->Item(j)->title, pos, height - 20);
+      }
+      pos += sw + labels->Item(j)->spacing;
+   }
+
+   memDC.SetPen(*wxRED_PEN);
+   memDC.SetBrush(*wxRED_BRUSH);
+   memDC.DrawEllipse(bx - 3, by - 3, 6, 6);
+
+   dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
 }
-
-
-

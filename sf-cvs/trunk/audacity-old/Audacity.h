@@ -37,4 +37,3 @@ void QuitAudacity();
 #ifdef __WXMSW__
 #include "configwin.h"
 #endif
-

@@ -22,51 +22,47 @@
 
 class wxBitmap;
 
-class AButton: public wxWindow
-{
-public:
+class AButton:public wxWindow {
+ public:
 
-  AButton(wxWindow *parent, wxWindowID id,
-		  const wxPoint& pos,
-		  const wxSize& size,
-		  char **upXPM,
-		  char **overXPM,
-		  char **downXPM,
-		  char **disXPM);
-  
-  virtual ~AButton();
+   AButton(wxWindow * parent, wxWindowID id,
+           const wxPoint & pos,
+           const wxSize & size,
+           char **upXPM, char **overXPM, char **downXPM, char **disXPM);
 
-  virtual void Disable();
-  virtual void Enable();
+   virtual ~ AButton();
 
-  virtual void PushDown();
-  virtual void PopUp();
+   virtual void Disable();
+   virtual void Enable();
 
-  virtual void OnPaint(wxPaintEvent& event);
-  virtual void OnMouseEvent(wxMouseEvent& event);  
+   virtual void PushDown();
+   virtual void PopUp();
 
-private:
+   virtual void OnPaint(wxPaintEvent & event);
+   virtual void OnMouseEvent(wxMouseEvent & event);
 
-  enum AButtonState {
-    AButtonUp,
-    AButtonOver,
-    AButtonDown,
-	AButtonDis
-  };
+ private:
 
-  int             mWidth;
-  int             mHeight;
+   enum AButtonState {
+      AButtonUp,
+      AButtonOver,
+      AButtonDown,
+      AButtonDis
+   };
 
-  bool            mButtonIsDown;
-  bool            mIsClicking;
-  bool            mEnabled;
-  AButtonState    mButtonState;
+   int mWidth;
+   int mHeight;
 
-  wxBitmap        *mBitmap[4];
+   bool mButtonIsDown;
+   bool mIsClicking;
+   bool mEnabled;
+   AButtonState mButtonState;
 
-public:
+   wxBitmap *mBitmap[4];
 
-  DECLARE_EVENT_TABLE()
+ public:
+
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

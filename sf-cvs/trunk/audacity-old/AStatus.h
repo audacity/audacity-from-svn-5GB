@@ -20,51 +20,48 @@ class wxMenu;
 int GetStatusHeight();
 
 class AStatusListener {
-public:
-  virtual void AS_SetRate(double rate) = 0;
+ public:
+   virtual void AS_SetRate(double rate) = 0;
 };
 
-class AStatus: public wxWindow
-{
-public:
+class AStatus:public wxWindow {
+ public:
 
-  AStatus(wxWindow *parent, wxWindowID id,
-		  const wxPoint& pos,
-		  const wxSize& size,
-		  double rate,
-		  AStatusListener *listener);
-  
-  virtual ~AStatus();
+   AStatus(wxWindow * parent, wxWindowID id,
+           const wxPoint & pos,
+           const wxSize & size, double rate, AStatusListener * listener);
 
-  virtual void OnPaint(wxPaintEvent& event);
-  virtual void OnMouseEvent(wxMouseEvent& event);  
+   virtual ~ AStatus();
 
-  void SetField(const char *msg, int fieldNum);
+   virtual void OnPaint(wxPaintEvent & event);
+   virtual void OnMouseEvent(wxMouseEvent & event);
 
-  void SetRate(double rate);
+   void SetField(const char *msg, int fieldNum);
 
-  void OnRate8();
-  void OnRate11();
-  void OnRate16();
-  void OnRate22();
-  void OnRate44();
-  void OnRate48();
-  void OnRateOther();
+   void SetRate(double rate);
 
-private:
+   void OnRate8();
+   void OnRate11();
+   void OnRate16();
+   void OnRate22();
+   void OnRate44();
+   void OnRate48();
+   void OnRateOther();
 
-  AStatusListener *mListener;
-  wxBitmap        *mBitmap;
-  int              mWidth;
-  int              mHeight;
-  wxRect           mRateField;
-  wxMenu          *mRateMenu;
-  double           mRate;
-  wxString         mField[10];
+ private:
 
-public:
+   AStatusListener * mListener;
+   wxBitmap *mBitmap;
+   int mWidth;
+   int mHeight;
+   wxRect mRateField;
+   wxMenu *mRateMenu;
+   double mRate;
+   wxString mField[10];
 
-  DECLARE_EVENT_TABLE()
+ public:
+
+   DECLARE_EVENT_TABLE()
 };
 
 #endif

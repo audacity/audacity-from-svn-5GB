@@ -14,8 +14,7 @@
 class WaveTrack;
 class DirManager;
 
-bool Export(wxWindow *parent,
-			TrackList *tracks,
-			bool selectionOnly, double t0, double t1);
+bool Export(wxWindow * parent,
+            TrackList * tracks, bool selectionOnly, double t0, double t1);
 
 #endif

@@ -28,131 +28,125 @@
 
 
 enum {
-	CategoriesID = 1000
+   CategoriesID = 1000
 };
 
 BEGIN_EVENT_TABLE(PrefsDialog, wxDialog)
-	EVT_LISTBOX(CategoriesID, PrefsDialog::OnCategoryChange)
-	EVT_BUTTON(wxID_OK, PrefsDialog::OnOK)
-	EVT_BUTTON(wxID_CANCEL, PrefsDialog::OnCancel)
-END_EVENT_TABLE()
+    EVT_LISTBOX(CategoriesID, PrefsDialog::OnCategoryChange)
+    EVT_BUTTON(wxID_OK, PrefsDialog::OnOK)
+    EVT_BUTTON(wxID_CANCEL, PrefsDialog::OnCancel)
+    END_EVENT_TABLE()
 
 
 
-PrefsDialog::PrefsDialog(wxWindow *parent):
-	wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
-			 wxSize(500, 440),
-			 wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
+PrefsDialog::PrefsDialog(wxWindow * parent):
+wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
+         wxSize(500, 440), wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
 {
-    CentreOnParent();
+   CentreOnParent();
 
-	mCategories = new wxListBox(this,
-	                            CategoriesID, 
-								wxPoint(20, 20),
-								wxSize(120, 350));
+   mCategories = new wxListBox(this,
+                               CategoriesID,
+                               wxPoint(20, 20), wxSize(120, 350));
 
-	mOK         = new wxButton (this, 
-	                            wxID_OK,
-								"OK",
-								wxPoint(400, 385),
-								wxSize(80, 20));
+   mOK = new wxButton(this,
+                      wxID_OK, "OK", wxPoint(400, 385), wxSize(80, 20));
 
-    #ifndef TARGET_CARBON
-    mOK->SetDefault();
-    mOK->SetFocus();							  
-    #endif
+#ifndef TARGET_CARBON
+   mOK->SetDefault();
+   mOK->SetFocus();
+#endif
 
-	mCancel      = new wxButton(this, 
-	                            wxID_CANCEL,
-								"Cancel",
-								wxPoint(300, 385),
-								wxSize(90, 20));
+   mCancel = new wxButton(this,
+                          wxID_CANCEL,
+                          "Cancel", wxPoint(300, 385), wxSize(90, 20));
 
-	/* All panel additions belong here */
-	mCategories->Append("Audio I/O",    new AudioIOPrefs(this));
-	mCategories->Append("Sample Rates", new SampleRatePrefs(this));
-	mCategories->Append("File Formats", new FileFormatPrefs(this));
-	mCategories->Append("Spectrograms", new SpectrumPrefs(this));
-	mCategories->Append("Directories",  new DirectoriesPrefs(this));
+   /* All panel additions belong here */
+   mCategories->Append("Audio I/O", new AudioIOPrefs(this));
+   mCategories->Append("Sample Rates", new SampleRatePrefs(this));
+   mCategories->Append("File Formats", new FileFormatPrefs(this));
+   mCategories->Append("Spectrograms", new SpectrumPrefs(this));
+   mCategories->Append("Directories", new DirectoriesPrefs(this));
 
-  PrefsPanel *panel;
+   PrefsPanel *panel;
 
-	for(int i = 0; i < mCategories->Number(); i++) {
-		panel = (PrefsPanel *)mCategories->GetClientData(i);
-		panel->HidePrefsPanel();
-  }
+   for (int i = 0; i < mCategories->Number(); i++) {
+      panel = (PrefsPanel *) mCategories->GetClientData(i);
+      panel->HidePrefsPanel();
+   }
 
-	mSelected = gPrefs->Read("/Prefs/PrefsCategory", 0L);
-	if (mSelected < 0 || mSelected>=mCategories->Number())
-	  mSelected = 0;
+   mSelected = gPrefs->Read("/Prefs/PrefsCategory", 0L);
+   if (mSelected < 0 || mSelected >= mCategories->Number())
+      mSelected = 0;
 
-	mCategories->SetSelection(mSelected);
-	panel = (PrefsPanel *)mCategories->GetClientData(mSelected);
-	panel->ShowPrefsPanel();
+   mCategories->SetSelection(mSelected);
+   panel = (PrefsPanel *) mCategories->GetClientData(mSelected);
+   panel->ShowPrefsPanel();
 }
 
 
-void PrefsDialog::OnCategoryChange(wxCommandEvent& event)
+void PrefsDialog::OnCategoryChange(wxCommandEvent & event)
 {
-  int newSelection = mCategories->GetSelection();
-  
-  if (newSelection>=0 && newSelection<mCategories->Number()
-      && newSelection != mSelected) {
+   int newSelection = mCategories->GetSelection();
 
-  	/* hide the old panel */
-  	PrefsPanel *panel = (PrefsPanel *)mCategories->GetClientData(mSelected);
-  	panel->HidePrefsPanel();
-  	
-  	/* show the new one */
-  	panel=(PrefsPanel*)mCategories->GetClientData(newSelection);
-  	panel->ShowPrefsPanel();
+   if (newSelection >= 0 && newSelection < mCategories->Number()
+       && newSelection != mSelected) {
 
-  	mSelected = newSelection;
-  }
+      /* hide the old panel */
+      PrefsPanel *panel =
+          (PrefsPanel *) mCategories->GetClientData(mSelected);
+      panel->HidePrefsPanel();
+
+      /* show the new one */
+      panel = (PrefsPanel *) mCategories->GetClientData(newSelection);
+      panel->ShowPrefsPanel();
+
+      mSelected = newSelection;
+   }
 }
 
 
-void PrefsDialog::OnCancel(wxCommandEvent& event)
+void PrefsDialog::OnCancel(wxCommandEvent & event)
 {
-	EndModal(0);
+   EndModal(0);
 }
 
 
-void PrefsDialog::OnOK(wxCommandEvent& event)
+void PrefsDialog::OnOK(wxCommandEvent & event)
 {
-	PrefsPanel *panel;
+   PrefsPanel *panel;
 
-	gPrefs->Write("/Prefs/PrefsCategory", (long)mSelected);
+   gPrefs->Write("/Prefs/PrefsCategory", (long) mSelected);
 
-	for(int i = 0; i < mCategories->Number(); i++) {
-		panel = (PrefsPanel *)mCategories->GetClientData(i);
+   for (int i = 0; i < mCategories->Number(); i++) {
+      panel = (PrefsPanel *) mCategories->GetClientData(i);
 
-		/* The dialog doesn't end until all the input is valid */
-		if(!panel->Apply()) {
-			PrefsPanel *tmp = 
-				(PrefsPanel*)mCategories->GetClientData(mSelected);
-			tmp->HidePrefsPanel();
-			panel->ShowPrefsPanel();
+      /* The dialog doesn't end until all the input is valid */
+      if (!panel->Apply()) {
+         PrefsPanel *tmp =
+             (PrefsPanel *) mCategories->GetClientData(mSelected);
+         tmp->HidePrefsPanel();
+         panel->ShowPrefsPanel();
 
-			mCategories->SetSelection(i);
-			mSelected = i;
-			return;
-		}
-	}
+         mCategories->SetSelection(i);
+         mSelected = i;
+         return;
+      }
+   }
 
-	EndModal(0);
+   EndModal(0);
 }
 
 
 PrefsDialog::~PrefsDialog()
 {
-	PrefsPanel *panel;
-	for(int i = 0; i < mCategories->Number(); i++) {
-		panel = (PrefsPanel *)mCategories->GetClientData(i);
-		delete panel;
-	}
-	
-	delete mCategories;
-	delete mOK;
-	delete mCancel;
+   PrefsPanel *panel;
+   for (int i = 0; i < mCategories->Number(); i++) {
+      panel = (PrefsPanel *) mCategories->GetClientData(i);
+      delete panel;
+   }
+
+   delete mCategories;
+   delete mOK;
+   delete mCancel;
 }

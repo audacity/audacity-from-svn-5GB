@@ -15,8 +15,9 @@ class WaveTrack;
 class DirManager;
 class wxString;
 
-bool ExportPCM(wxString format, bool stereo, double rate, wxString fName, 
-        wxWindow *parent, TrackList *tracks, bool selectionOnly, double t0, double t1);
+bool ExportPCM(wxString format, bool stereo, double rate, wxString fName,
+               wxWindow * parent, TrackList * tracks, bool selectionOnly,
+               double t0, double t1);
 
 
 #endif

@@ -17,33 +17,29 @@ class wxString;
 
 class WaveTrack;
 
-class EffectAmplify: public Effect {
+class EffectAmplify:public Effect {
 
-public:
-  EffectAmplify();
+ public:
+   EffectAmplify();
 
-  virtual wxString GetEffectName() { return wxString("Amplify..."); }
+   virtual wxString GetEffectName() {
+      return wxString("Amplify...");
+   } virtual bool Begin(wxWindow * parent);
+   virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
 
-  virtual bool Begin(wxWindow *parent);
-  virtual bool DoIt(WaveTrack *t,
-		    sampleCount start,
-		    sampleCount len);
-
-private:
-  float ratio;
+ private:
+   float ratio;
 };
 
-class EffectMaxAmplify: public Effect {
+class EffectMaxAmplify:public Effect {
 
-public:
-  EffectMaxAmplify();
+ public:
+   EffectMaxAmplify();
 
-  virtual wxString GetEffectName() { return wxString("Maximize Amplitude"); }
-
-  virtual bool Begin(wxWindow *parent);
-  virtual bool DoIt(WaveTrack *t,
-		    sampleCount start,
-		    sampleCount len);
+   virtual wxString GetEffectName() {
+      return wxString("Maximize Amplitude");
+   } virtual bool Begin(wxWindow * parent);
+   virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
 };
 
 #endif

@@ -17,23 +17,20 @@ class wxString;
 
 class WaveTrack;
 
-class EffectFilter: public Effect {
+class EffectFilter:public Effect {
 
-public:
+ public:
 
-  EffectFilter();
+   EffectFilter();
 
-  virtual wxString GetEffectName() { return wxString("Filter..."); }
+   virtual wxString GetEffectName() {
+      return wxString("Filter...");
+   } virtual bool Begin(wxWindow * parent);
+   virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
 
-  virtual bool Begin(wxWindow *parent);
-  virtual bool DoIt(WaveTrack *t,
-		    sampleCount start,
-		    sampleCount len);
+ private:
 
-private:
-
-  void Filter(sampleCount len,
-              sampleType *buffer);
+   void Filter(sampleCount len, sampleType * buffer);
 };
 
 #endif

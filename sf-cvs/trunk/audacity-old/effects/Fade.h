@@ -17,24 +17,20 @@ class wxString;
 
 class WaveTrack;
 
-class EffectFadeIn: public Effect {
+class EffectFadeIn:public Effect {
 
-public:
-  virtual wxString GetEffectName() { return wxString("Fade In"); }
-
-  virtual bool DoIt(WaveTrack *t,
-		    sampleCount start,
-		    sampleCount len);
+ public:
+   virtual wxString GetEffectName() {
+      return wxString("Fade In");
+   } virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
 };
 
-class EffectFadeOut: public Effect {
+class EffectFadeOut:public Effect {
 
-public:
-  virtual wxString GetEffectName() { return wxString("Fade Out"); }
-
-  virtual bool DoIt(WaveTrack *t,
-		    sampleCount start,
-		    sampleCount len);
+ public:
+   virtual wxString GetEffectName() {
+      return wxString("Fade Out");
+   } virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
 };
 
 #endif

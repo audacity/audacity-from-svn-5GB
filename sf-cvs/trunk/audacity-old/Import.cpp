@@ -27,107 +27,93 @@
 // General purpose function used by importers
 wxString TrackNameFromFileName(wxString fName)
 {
-  return fName.AfterLast('/').AfterLast('\\').BeforeFirst('.');
+   return fName.AfterLast('/').AfterLast('\\').BeforeFirst('.');
 }
 
 // returns number of tracks imported
-int Import(wxWindow *parent,
-		   wxString fName,
-		   WaveTrack ***tracks,
-		   DirManager *dirManager)
+int Import(wxWindow * parent,
+           wxString fName, WaveTrack *** tracks, DirManager * dirManager)
 {
-  bool success;
-  int numTracks = 0;
+   bool success;
+   int numTracks = 0;
 
-  if (!fName.Right(3).CmpNoCase("mid") ||
-	  !fName.Right(3).CmpNoCase("midi")) {
-	wxMessageBox("Please use the Import MIDI command instead.",
-				 "Import audio file",
-				 wxOK | wxCENTRE,
-				 parent);
-	return 0;
-  }
+   if (!fName.Right(3).CmpNoCase("mid") ||
+       !fName.Right(3).CmpNoCase("midi")) {
+      wxMessageBox("Please use the Import MIDI command instead.",
+                   "Import audio file", wxOK | wxCENTRE, parent);
+      return 0;
+   }
 
-  if (!fName.Right(3).CmpNoCase("mp3")) {
-    #ifdef MP3SUPPORT
-	*tracks = new WaveTrack *[2];
-	success = ::ImportMP3(parent, fName,
-						  &(*tracks)[0],
-						  &(*tracks)[1],
-						  dirManager);
-	if (!success)
-	  return 0;
+   if (!fName.Right(3).CmpNoCase("mp3")) {
+#ifdef MP3SUPPORT
+      *tracks = new WaveTrack *[2];
+      success =::ImportMP3(parent, fName,
+                           &(*tracks)[0], &(*tracks)[1], dirManager);
+      if (!success)
+         return 0;
 
-	numTracks = 1;
-	if ((*tracks)[1] != NULL)
-	  numTracks = 2;
+      numTracks = 1;
+      if ((*tracks)[1] != NULL)
+         numTracks = 2;
 
-	return numTracks;
-	#else
-	wxMessageBox("This version of Audacity was not compiled "
-				 "with MP3 support.");
-	return 0;
-	#endif
-  }
+      return numTracks;
+#else
+      wxMessageBox("This version of Audacity was not compiled "
+                   "with MP3 support.");
+      return 0;
+#endif
+   }
 
-  if (!fName.Right(3).CmpNoCase("ogg")) {
-    #ifdef USE_LIBVORBIS
-	success = ::ImportOGG(parent, fName,
-						  tracks,
-						  &numTracks,
-						  dirManager);
-	if (!success)
-	  return 0;
+   if (!fName.Right(3).CmpNoCase("ogg")) {
+#ifdef USE_LIBVORBIS
+      success =::ImportOGG(parent, fName, tracks, &numTracks, dirManager);
+      if (!success)
+         return 0;
 
-	return numTracks;
-	#else
-	wxMessageBox("This version of Audacity was not compiled "
-				 "with Ogg Vorbis support.", "Import Ogg Vorbis",
-				 wxOK | wxCENTRE,
-				 parent);
-	return 0;
-	#endif
-  }
+      return numTracks;
+#else
+      wxMessageBox("This version of Audacity was not compiled "
+                   "with Ogg Vorbis support.", "Import Ogg Vorbis",
+                   wxOK | wxCENTRE, parent);
+      return 0;
+#endif
+   }
 
-  if (::IsPCM(fName)) {
-	*tracks = new WaveTrack *[2];
-	success = ::ImportPCM(parent, fName,
-						  &(*tracks)[0],
-						  &(*tracks)[1],
-						  dirManager);
-	if (!success)
-	  return 0;
-	
-	numTracks = 1;
-	if ((*tracks)[1] != NULL)
-	  numTracks = 2;
-	
-	return numTracks;
-  }
+   if (::IsPCM(fName)) {
+      *tracks = new WaveTrack *[2];
+      success =::ImportPCM(parent, fName,
+                           &(*tracks)[0], &(*tracks)[1], dirManager);
+      if (!success)
+         return 0;
 
-  int action = wxMessageBox("Audacity did not recognize the type "
-							"of this file.\n"
-							"Would you like to try to import it as "
-							"raw PCM audio data?",
-							"Unknown file type",
-							wxYES_NO | wxICON_EXCLAMATION,
-							parent);
+      numTracks = 1;
+      if ((*tracks)[1] != NULL)
+         numTracks = 2;
 
-  if (action == wxYES) {
-	*tracks = new WaveTrack *[2];
-	success = ::ImportRaw(parent, fName,
-						  &(*tracks)[0],
-						  &(*tracks)[1],
-						  dirManager);
-	if (!success)
-	  return 0;
-	
-	numTracks = 1;
-	if ((*tracks)[1] != NULL)
-	  numTracks = 2;
-	
-	return numTracks;
-  }
+      return numTracks;
+   }
 
-  return 0;
+   int action = wxMessageBox("Audacity did not recognize the type "
+                             "of this file.\n"
+                             "Would you like to try to import it as "
+                             "raw PCM audio data?",
+                             "Unknown file type",
+                             wxYES_NO | wxICON_EXCLAMATION,
+                             parent);
+
+   if (action == wxYES) {
+      *tracks = new WaveTrack *[2];
+      success =::ImportRaw(parent, fName,
+                           &(*tracks)[0], &(*tracks)[1], dirManager);
+      if (!success)
+         return 0;
+
+      numTracks = 1;
+      if ((*tracks)[1] != NULL)
+         numTracks = 2;
+
+      return numTracks;
+   }
+
+   return 0;
 }

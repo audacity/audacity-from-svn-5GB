@@ -30,17 +30,15 @@ class wxString;
 
 class WaveTrack;
 
-class EffectPhaser: public Effect {
+class EffectPhaser:public Effect {
 
-public:
-  EffectPhaser();
+ public:
+   EffectPhaser();
 
-  virtual wxString GetEffectName() { return wxString("Phaser..."); }
-
-  virtual bool Begin(wxWindow *parent);
-  virtual bool DoIt(WaveTrack *t,
-                    sampleCount start,
-                    sampleCount len);
+   virtual wxString GetEffectName() {
+      return wxString("Phaser...");
+   } virtual bool Begin(wxWindow * parent);
+   virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
 
 /*
     Phaser Parameters        
@@ -54,14 +52,14 @@ public:
                                -100 = -100% FeedBack)
 */
 
-private:
-  float freq;
-  float startphase;
-  float fb;
+ private:
+   float freq;
+   float startphase;
+   float fb;
 
-  int depth;
-  int stages;
-  int drywet;
+   int depth;
+   int stages;
+   int drywet;
 };
 
 // Declare window functions
@@ -77,7 +75,8 @@ private:
 #define ID_DEPTHSLIDER 10008
 #define ID_FEEDBACKTEXT 10009
 #define ID_FEEDBACKSLIDER 10010
-wxSizer *CreatePhaserDialog( wxPanel *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
+wxSizer *CreatePhaserDialog(wxPanel * parent, bool call_fit =
+                            TRUE, bool set_sizer = TRUE);
 
 // WDR: class declarations
 
@@ -85,57 +84,75 @@ wxSizer *CreatePhaserDialog( wxPanel *parent, bool call_fit = TRUE, bool set_siz
 // PhaserDialog
 //----------------------------------------------------------------------------
 
-class PhaserDialog: public wxDialog
-{
-public:
-    // constructors and destructors
-    PhaserDialog( wxWindow *parent, wxWindowID id, const wxString &title,
-        const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxDefaultSize,
-        long style = wxDEFAULT_DIALOG_STYLE );
-    
-    // WDR: method declarations for PhaserDialog
-    wxSlider* GetFeedbackSlider()  { return (wxSlider*) FindWindow( ID_FEEDBACKSLIDER ); }
-    wxSlider* GetDepthSlider()  { return (wxSlider*) FindWindow( ID_DEPTHSLIDER ); }
-    wxSlider* GetPhaseSlider()  { return (wxSlider*) FindWindow( ID_PHASESLIDER ); }
-    wxSlider* GetFreqSlider()  { return (wxSlider*) FindWindow( ID_FREQSLIDER ); }
-    wxTextCtrl* GetFeedbackText()  { return (wxTextCtrl*) FindWindow( ID_FEEDBACKTEXT ); }
-    wxTextCtrl* GetDepthText()  { return (wxTextCtrl*) FindWindow( ID_DEPTHTEXT ); }
-    wxTextCtrl* GetPhaseText()  { return (wxTextCtrl*) FindWindow( ID_PHASETEXT ); }
-    wxTextCtrl* GetFreqText()  { return (wxTextCtrl*) FindWindow( ID_FREQTEXT ); }
-    wxSlider* GetDryWet()  { return (wxSlider*) FindWindow( ID_DRYWET ); }
-    wxSpinCtrl* GetStages()  { return (wxSpinCtrl*) FindWindow( ID_STAGES ); }
-    virtual bool Validate();
-    virtual bool TransferDataToWindow();
-    virtual bool TransferDataFromWindow();
-    
-private:
-    // WDR: member variable declarations for PhaserDialog
-    
-private:
-    // WDR: handler declarations for PhaserDialog
-    void OnFeedbackSlider( wxCommandEvent &event );
-    void OnDepthSlider( wxCommandEvent &event );
-    void OnPhaseSlider( wxCommandEvent &event );
-    void OnFreqSlider( wxCommandEvent &event );
-    void OnFeedbackText( wxCommandEvent &event );
-    void OnDepthText( wxCommandEvent &event );
-    void OnPhaseText( wxCommandEvent &event );
-    void OnFreqText( wxCommandEvent &event );
-    void OnOk( wxCommandEvent &event );
-    void OnCancel( wxCommandEvent &event );
+class PhaserDialog:public wxDialog {
+ public:
+   // constructors and destructors
+   PhaserDialog(wxWindow * parent, wxWindowID id, const wxString & title,
+                const wxPoint & pos = wxDefaultPosition,
+                const wxSize & size = wxDefaultSize,
+                long style = wxDEFAULT_DIALOG_STYLE);
 
-private:
-    DECLARE_EVENT_TABLE()
+   // WDR: method declarations for PhaserDialog
+   wxSlider *GetFeedbackSlider() {
+      return (wxSlider *) FindWindow(ID_FEEDBACKSLIDER);
+   } wxSlider *GetDepthSlider() {
+      return (wxSlider *) FindWindow(ID_DEPTHSLIDER);
+   }
+   wxSlider *GetPhaseSlider() {
+      return (wxSlider *) FindWindow(ID_PHASESLIDER);
+   }
+   wxSlider *GetFreqSlider() {
+      return (wxSlider *) FindWindow(ID_FREQSLIDER);
+   }
+   wxTextCtrl *GetFeedbackText() {
+      return (wxTextCtrl *) FindWindow(ID_FEEDBACKTEXT);
+   }
+   wxTextCtrl *GetDepthText() {
+      return (wxTextCtrl *) FindWindow(ID_DEPTHTEXT);
+   }
+   wxTextCtrl *GetPhaseText() {
+      return (wxTextCtrl *) FindWindow(ID_PHASETEXT);
+   }
+   wxTextCtrl *GetFreqText() {
+      return (wxTextCtrl *) FindWindow(ID_FREQTEXT);
+   }
+   wxSlider *GetDryWet() {
+      return (wxSlider *) FindWindow(ID_DRYWET);
+   }
+   wxSpinCtrl *GetStages() {
+      return (wxSpinCtrl *) FindWindow(ID_STAGES);
+   }
+   virtual bool Validate();
+   virtual bool TransferDataToWindow();
+   virtual bool TransferDataFromWindow();
 
-public:
-  float freq;
-  float startphase;
-  float fb;
+ private:
+   // WDR: member variable declarations for PhaserDialog
 
-  int depth;
-  int stages;
-  int drywet;
+ private:
+   // WDR: handler declarations for PhaserDialog
+   void OnFeedbackSlider(wxCommandEvent & event);
+   void OnDepthSlider(wxCommandEvent & event);
+   void OnPhaseSlider(wxCommandEvent & event);
+   void OnFreqSlider(wxCommandEvent & event);
+   void OnFeedbackText(wxCommandEvent & event);
+   void OnDepthText(wxCommandEvent & event);
+   void OnPhaseText(wxCommandEvent & event);
+   void OnFreqText(wxCommandEvent & event);
+   void OnOk(wxCommandEvent & event);
+   void OnCancel(wxCommandEvent & event);
+
+ private:
+   DECLARE_EVENT_TABLE()
+
+ public:
+   float freq;
+   float startphase;
+   float fb;
+
+   int depth;
+   int stages;
+   int drywet;
 };
 
 #endif

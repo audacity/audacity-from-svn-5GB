@@ -20,330 +20,332 @@
 #include "Envelope.h"
 #include "APalette.h"
 
-bool QuickMix(TrackList *tracks, DirManager *dirManager)
+bool QuickMix(TrackList * tracks, DirManager * dirManager)
 {
-  WaveTrack **waveArray;
-  VTrack *t;
-  int numWaves = 0;
-  int numLeft = 0;
-  int numRight = 0;
-  int numMono = 0;
-  bool mono = false;
-  int w;
+   WaveTrack **waveArray;
+   VTrack *t;
+   int numWaves = 0;
+   int numLeft = 0;
+   int numRight = 0;
+   int numMono = 0;
+   bool mono = false;
+   int w;
 
-  TrackListIterator iter(tracks);
+   TrackListIterator iter(tracks);
 
-  t = iter.First();
-  while(t) {
-    if (t->selected && t->GetKind() == VTrack::Wave) {
-      numWaves++;
-	  switch(t->channel) {
-	  case VTrack::MonoChannel: numLeft++; numRight++; numMono++; break;
-	  case VTrack::LeftChannel: numLeft++; break;
-	  case VTrack::RightChannel: numRight++; break;
-	  }
-	}
-    t = iter.Next();
-  }
-  
-  if (numWaves < 2) {
-	wxMessageBox("First select two or more tracks to mix together");
-	return false;
-  }
-  
-  if (numLeft == 1 && numRight == 1 && numWaves==2) {
-	wxMessageBox("Mix would have no effect.  If you want to mix a left and "
-                 "a right channel together, turn them both into mono "
-				 "channels first.");
-	return false;
-  }
+   t = iter.First();
+   while (t) {
+      if (t->selected && t->GetKind() == VTrack::Wave) {
+         numWaves++;
+         switch (t->channel) {
+         case VTrack::MonoChannel:
+            numLeft++;
+            numRight++;
+            numMono++;
+            break;
+         case VTrack::LeftChannel:
+            numLeft++;
+            break;
+         case VTrack::RightChannel:
+            numRight++;
+            break;
+         }
+      }
+      t = iter.Next();
+   }
 
-  if (numMono == numWaves || numLeft == numWaves || numRight == numWaves)
-	mono = true;
+   if (numWaves < 2) {
+      wxMessageBox("First select two or more tracks to mix together");
+      return false;
+   }
 
-  double totalTime = 0.0;
+   if (numLeft == 1 && numRight == 1 && numWaves == 2) {
+      wxMessageBox
+          ("Mix would have no effect.  If you want to mix a left and "
+           "a right channel together, turn them both into mono "
+           "channels first.");
+      return false;
+   }
 
-  waveArray = new WaveTrack*[numWaves];
-  w = 0;
-  t = iter.First();
-  while(t) {
-    if (t->selected && t->GetKind() == VTrack::Wave) {
-      waveArray[w++] = (WaveTrack *)t;
-	  if (t->GetMaxLen() > totalTime)
-		totalTime = t->GetMaxLen();
-	}
-    t = iter.Next();
-  }
+   if (numMono == numWaves || numLeft == numWaves || numRight == numWaves)
+      mono = true;
 
-  WaveTrack *mixLeft = new WaveTrack(dirManager);
-  mixLeft->rate = waveArray[0]->rate;
-  mixLeft->channel = VTrack::MonoChannel;
-  mixLeft->name = "Mix";
-  WaveTrack *mixRight = 0;
-  if (!mono) {
-	mixRight = new WaveTrack(dirManager);
-	mixRight->rate = waveArray[0]->rate;
-	mixRight->name = "Mix";
-	mixLeft->channel = VTrack::LeftChannel;
-	mixRight->channel = VTrack::RightChannel;
-	mixLeft->linked = true;
-  }
+   double totalTime = 0.0;
 
-  int maxBlockLen = mixLeft->GetIdealBlockSize();
-  double maxBlockTime = maxBlockLen / mixLeft->rate;
+   waveArray = new WaveTrack *[numWaves];
+   w = 0;
+   t = iter.First();
+   while (t) {
+      if (t->selected && t->GetKind() == VTrack::Wave) {
+         waveArray[w++] = (WaveTrack *) t;
+         if (t->GetMaxLen() > totalTime)
+            totalTime = t->GetMaxLen();
+      }
+      t = iter.Next();
+   }
 
-  Mixer *mixer = new Mixer(mono? 1: 2, maxBlockLen, false);
+   WaveTrack *mixLeft = new WaveTrack(dirManager);
+   mixLeft->rate = waveArray[0]->rate;
+   mixLeft->channel = VTrack::MonoChannel;
+   mixLeft->name = "Mix";
+   WaveTrack *mixRight = 0;
+   if (!mono) {
+      mixRight = new WaveTrack(dirManager);
+      mixRight->rate = waveArray[0]->rate;
+      mixRight->name = "Mix";
+      mixLeft->channel = VTrack::LeftChannel;
+      mixRight->channel = VTrack::RightChannel;
+      mixLeft->linked = true;
+   }
 
-  wxProgressDialog *progress = NULL;  
-  wxYield();
-  wxStartTimer();
-  wxBusyCursor busy;
+   int maxBlockLen = mixLeft->GetIdealBlockSize();
+   double maxBlockTime = maxBlockLen / mixLeft->rate;
 
-  double tt = 0.0;
-  while(tt < totalTime) {
+   Mixer *mixer = new Mixer(mono ? 1 : 2, maxBlockLen, false);
 
-	double blockTime = maxBlockTime;
-	if (tt+blockTime > totalTime)
-	  blockTime = totalTime - tt;
-	int blockLen = int(blockTime * mixLeft->rate);
+   wxProgressDialog *progress = NULL;
+   wxYield();
+   wxStartTimer();
+   wxBusyCursor busy;
 
-	mixer->Clear();
+   double tt = 0.0;
+   while (tt < totalTime) {
 
-    for(int i=0; i<numWaves; i++) {
-	  if (mono)
-		mixer->MixMono(waveArray[i], tt, tt+blockTime);
-	  else {
-		switch(waveArray[i]->channel) {
-		case VTrack::LeftChannel:
-		  mixer->MixLeft(waveArray[i], tt, tt+blockTime);
-		  break;
-		case VTrack::RightChannel:
-		  mixer->MixRight(waveArray[i], tt, tt+blockTime);
-		  break;
-		case VTrack::MonoChannel:
-		  mixer->MixMono(waveArray[i], tt, tt+blockTime);
-		  break;
-	    }
-	  }
-    }
+      double blockTime = maxBlockTime;
+      if (tt + blockTime > totalTime)
+         blockTime = totalTime - tt;
+      int blockLen = int (blockTime * mixLeft->rate);
 
-	if (mono) {
-	  sampleType *buffer = mixer->GetBuffer();
-	  mixLeft->Append(buffer, blockLen);
-	}
-	else {
-	  sampleType *buffer;
-	  buffer = mixer->GetBuffer(0);
-	  mixLeft->Append(buffer, blockLen);
-	  buffer = mixer->GetBuffer(1);
-	  mixRight->Append(buffer, blockLen);
-	}
+      mixer->Clear();
 
-	tt += blockTime;
+      for (int i = 0; i < numWaves; i++) {
+         if (mono)
+            mixer->MixMono(waveArray[i], tt, tt + blockTime);
+         else {
+            switch (waveArray[i]->channel) {
+            case VTrack::LeftChannel:
+               mixer->MixLeft(waveArray[i], tt, tt + blockTime);
+               break;
+            case VTrack::RightChannel:
+               mixer->MixRight(waveArray[i], tt, tt + blockTime);
+               break;
+            case VTrack::MonoChannel:
+               mixer->MixMono(waveArray[i], tt, tt + blockTime);
+               break;
+            }
+         }
+      }
 
-	if (!progress && wxGetElapsedTime(false) > 500) {
-	  progress =
-		new wxProgressDialog("Quick Mix","Mixing tracks",
-							 1000);
-	}	
-	if (progress) {
-	  int progressvalue = int(1000*(tt/totalTime));
-	  progress->Update(progressvalue);
-	}
-  }
+      if (mono) {
+         sampleType *buffer = mixer->GetBuffer();
+         mixLeft->Append(buffer, blockLen);
+      } else {
+         sampleType *buffer;
+         buffer = mixer->GetBuffer(0);
+         mixLeft->Append(buffer, blockLen);
+         buffer = mixer->GetBuffer(1);
+         mixRight->Append(buffer, blockLen);
+      }
 
-  tracks->Add(mixLeft);
-  if (!mono)
-	tracks->Add(mixRight);
+      tt += blockTime;
 
-  delete progress;
+      if (!progress && wxGetElapsedTime(false) > 500) {
+         progress =
+             new wxProgressDialog("Quick Mix", "Mixing tracks", 1000);
+      }
+      if (progress) {
+         int progressvalue = int (1000 * (tt / totalTime));
+         progress->Update(progressvalue);
+      }
+   }
 
-  int elapsedMS = wxGetElapsedTime();
-  double elapsedTime = elapsedMS * 0.001;
-  double maxTracks = totalTime / (elapsedTime/numWaves);
+   tracks->Add(mixLeft);
+   if (!mono)
+      tracks->Add(mixRight);
 
-  #ifdef __WXGTK__
-  printf("      Tracks: %d\n",numWaves);
-  printf("  Mix length: %lf sec\n",totalTime);
-  printf("Elapsed time: %lf sec\n",elapsedTime);
-  printf("Max number of tracks to mix in real time: %lf\n",maxTracks);
-  #endif
+   delete progress;
 
-  delete waveArray;
-  delete mixer;
+   int elapsedMS = wxGetElapsedTime();
+   double elapsedTime = elapsedMS * 0.001;
+   double maxTracks = totalTime / (elapsedTime / numWaves);
 
-  return true;
+#ifdef __WXGTK__
+   printf("      Tracks: %d\n", numWaves);
+   printf("  Mix length: %lf sec\n", totalTime);
+   printf("Elapsed time: %lf sec\n", elapsedTime);
+   printf("Max number of tracks to mix in real time: %lf\n", maxTracks);
+#endif
+
+   delete waveArray;
+   delete mixer;
+
+   return true;
 }
 
 Mixer::Mixer(int numChannels, int bufferSize, bool interleaved)
 {
-  mNumChannels = numChannels;
-  mBufferSize = bufferSize;
-  mInterleaved = interleaved;
-  mUseVolumeSlider = false;
-  mAPalette = NULL;
+   mNumChannels = numChannels;
+   mBufferSize = bufferSize;
+   mInterleaved = interleaved;
+   mUseVolumeSlider = false;
+   mAPalette = NULL;
 
-  if (mInterleaved) {
-	mNumBuffers = 1;
-	mInterleavedBufferSize = mBufferSize * mNumChannels;
-  }
-  else {
-	mNumBuffers = mNumChannels;
-	mInterleavedBufferSize = mBufferSize;
-  }
+   if (mInterleaved) {
+      mNumBuffers = 1;
+      mInterleavedBufferSize = mBufferSize * mNumChannels;
+   } else {
+      mNumBuffers = mNumChannels;
+      mInterleavedBufferSize = mBufferSize;
+   }
 
-  mBuffer = new sampleType*[mNumBuffers];
-  for(int c=0; c<mNumBuffers; c++)
-	mBuffer[c] = new sampleType[mInterleavedBufferSize];
-  mTemp = new sampleType[mBufferSize];
-  mEnvValues = new double[mBufferSize];
+   mBuffer = new sampleType *[mNumBuffers];
+   for (int c = 0; c < mNumBuffers; c++)
+      mBuffer[c] = new sampleType[mInterleavedBufferSize];
+   mTemp = new sampleType[mBufferSize];
+   mEnvValues = new double[mBufferSize];
 }
 
 Mixer::~Mixer()
 {
-  for(int c=0; c<mNumBuffers; c++)
-	delete[] mBuffer[c];
-  delete[] mBuffer;
-  delete[] mTemp;
-  delete[] mEnvValues;
+   for (int c = 0; c < mNumBuffers; c++)
+      delete[]mBuffer[c];
+   delete[]mBuffer;
+   delete[]mTemp;
+   delete[]mEnvValues;
 }
 
-void Mixer::UseVolumeSlider(APalette* palette)
+void Mixer::UseVolumeSlider(APalette * palette)
 {
-  mUseVolumeSlider = true;
-  mAPalette = palette;
+   mUseVolumeSlider = true;
+   mAPalette = palette;
 }
 
 void Mixer::Clear()
 {
-  for(int c=0; c<mNumBuffers; c++)
-	memset(mBuffer[c], 0, mInterleavedBufferSize * sizeof(sampleType));
+   for (int c = 0; c < mNumBuffers; c++)
+      memset(mBuffer[c], 0, mInterleavedBufferSize * sizeof(sampleType));
 }
 
-void Mixer::MixLeft(WaveTrack *src, double t0, double t1)
+void Mixer::MixLeft(WaveTrack * src, double t0, double t1)
 {
-  int *flags = new int[mNumChannels];
-  for(int c=0; c<mNumChannels; c++)
-	  flags[c] = (c==0);
-  Mix(flags, src, t0, t1);
-  delete flags;
+   int *flags = new int[mNumChannels];
+   for (int c = 0; c < mNumChannels; c++)
+      flags[c] = (c == 0);
+   Mix(flags, src, t0, t1);
+   delete flags;
 }
 
-void Mixer::MixRight(WaveTrack *src, double t0, double t1)
+void Mixer::MixRight(WaveTrack * src, double t0, double t1)
 {
-  int *flags = new int[mNumChannels];
-  for(int c=0; c<mNumChannels; c++)
-	  flags[c] = (c==1);
-  Mix(flags, src, t0, t1);
-  delete flags;
+   int *flags = new int[mNumChannels];
+   for (int c = 0; c < mNumChannels; c++)
+      flags[c] = (c == 1);
+   Mix(flags, src, t0, t1);
+   delete flags;
 }
 
-void Mixer::MixMono(WaveTrack *src, double t0, double t1)
+void Mixer::MixMono(WaveTrack * src, double t0, double t1)
 {
-  int *flags = new int[mNumChannels];
-  for(int c=0; c<mNumChannels; c++)
-	  flags[c] = 1;
-  Mix(flags, src, t0, t1);
-  delete flags;
+   int *flags = new int[mNumChannels];
+   for (int c = 0; c < mNumChannels; c++)
+      flags[c] = 1;
+   Mix(flags, src, t0, t1);
+   delete flags;
 }
 
-void Mixer::Mix(int *channelFlags, WaveTrack *src, double t0, double t1)
+void Mixer::Mix(int *channelFlags, WaveTrack * src, double t0, double t1)
 {
-  // First get the samples
+   // First get the samples
 
-  if ((t0-src->tOffset) >= src->numSamples/src->rate ||
-	  (t1-src->tOffset) <= 0)
-	return;
-  
-  int s0 = int((t0-src->tOffset)*src->rate + 0.5);
-  int s1 = int((t1-src->tOffset)*src->rate + 0.5);
+   if ((t0 - src->tOffset) >= src->numSamples / src->rate ||
+       (t1 - src->tOffset) <= 0)
+      return;
 
-  int slen = s1 - s0;
-  int soffset = 0;
+   int s0 = int ((t0 - src->tOffset) * src->rate + 0.5);
+   int s1 = int ((t1 - src->tOffset) * src->rate + 0.5);
 
-  if (s0 < 0) {
-    soffset = -s0;
-    slen -= soffset;
-    s0 = 0;
-  }
-  if (s1 > (int)src->numSamples) {
-		slen -= (s1 - src->numSamples);
-		s1 = src->numSamples;
-  }
+   int slen = s1 - s0;
+   int soffset = 0;
 
-  // Sometimes the length of the data we want to grab
-  // ends up one sample too big, so we truncate it
-  if (soffset+slen >= mBufferSize) {
-    slen = (mBufferSize - soffset);
-    s1 = s0 + slen;
-  }
+   if (s0 < 0) {
+      soffset = -s0;
+      slen -= soffset;
+      s0 = 0;
+   }
+   if (s1 > (int) src->numSamples) {
+      slen -= (s1 - src->numSamples);
+      s1 = src->numSamples;
+   }
+   // Sometimes the length of the data we want to grab
+   // ends up one sample too big, so we truncate it
+   if (soffset + slen >= mBufferSize) {
+      slen = (mBufferSize - soffset);
+      s1 = s0 + slen;
+   }
 
-  if (slen <= 0)
-    return;
-  
-  int i;
-  
-  // Get the samples from the track
-  src->Get(mTemp, (sampleCount)s0, (sampleCount)slen);
+   if (slen <= 0)
+      return;
 
-  // Apply the envelope and volume
+   int i;
 
-  t0 = s0/src->rate + src->tOffset;
-  t1 = s1/src->rate + src->tOffset;
-	
-  double volume;
-  if (mUseVolumeSlider)
-    volume = mAPalette->GetSoundVol();
-  else
-    volume = 1.0;
-  
-  Envelope *e = src->GetEnvelope();
+   // Get the samples from the track
+   src->Get(mTemp, (sampleCount) s0, (sampleCount) slen);
 
-  e->GetValues(mEnvValues, slen, t0, 1.0 / src->rate);
+   // Apply the envelope and volume
 
-  for(i=0; i<slen; i++) {
-	mTemp[soffset+i] =
-	  sampleType(mTemp[soffset+i] * volume * mEnvValues[i]);
-  }
-  
-  // Then mix it down to the appropriate tracks
-  
-  for(int c=0; c<mNumChannels; c++) {
-    if (!channelFlags[c])
-      continue;
-    
-    sampleType *src = mTemp;
-    sampleType *dest;
-    int skip;
-    
-    if (mInterleaved) {
-      dest = &mBuffer[0][(mNumChannels*soffset) + c];
-      skip = mNumChannels;
-    }
-    else {
-      dest = &mBuffer[c][soffset];
-      skip = 1;
-    }
-    
-    // This is the mixing inner loop, which we want
-    // as optimized as possible
-    
-    for(int j=0; j<slen; j++) {
-      *dest += mTemp[j];
-      dest += skip;
-    }
-  }
+   t0 = s0 / src->rate + src->tOffset;
+   t1 = s1 / src->rate + src->tOffset;
+
+   double volume;
+   if (mUseVolumeSlider)
+      volume = mAPalette->GetSoundVol();
+   else
+      volume = 1.0;
+
+   Envelope *e = src->GetEnvelope();
+
+   e->GetValues(mEnvValues, slen, t0, 1.0 / src->rate);
+
+   for (i = 0; i < slen; i++) {
+      mTemp[soffset + i] =
+          sampleType(mTemp[soffset + i] * volume * mEnvValues[i]);
+   }
+
+   // Then mix it down to the appropriate tracks
+
+   for (int c = 0; c < mNumChannels; c++) {
+      if (!channelFlags[c])
+         continue;
+
+      sampleType *src = mTemp;
+      sampleType *dest;
+      int skip;
+
+      if (mInterleaved) {
+         dest = &mBuffer[0][(mNumChannels * soffset) + c];
+         skip = mNumChannels;
+      } else {
+         dest = &mBuffer[c][soffset];
+         skip = 1;
+      }
+
+      // This is the mixing inner loop, which we want
+      // as optimized as possible
+
+      for (int j = 0; j < slen; j++) {
+         *dest += mTemp[j];
+         dest += skip;
+      }
+   }
 }
-  
-  
+
+
 sampleType *Mixer::GetBuffer()
 {
-  return mBuffer[0];
+   return mBuffer[0];
 }
 
 sampleType *Mixer::GetBuffer(int channel)
 {
-  return mBuffer[channel];
+   return mBuffer[channel];
 }
-
-

@@ -18,26 +18,26 @@
 
 #include "PrefsPanel.h"
 
-class DirectoriesPrefs: public PrefsPanel {
+class DirectoriesPrefs:public PrefsPanel {
 
-public:
-	DirectoriesPrefs(wxWindow *parent);
-	~DirectoriesPrefs();
-	bool Apply();
-	void SetTempDir(wxCommandEvent& event);
+ public:
+   DirectoriesPrefs(wxWindow * parent);
+   ~DirectoriesPrefs();
+   bool Apply();
+   void SetTempDir(wxCommandEvent & event);
 
-private:
-	wxString FormatSize(long size);
-	wxStaticBox *mEnclosingBox;
+ private:
+    wxString FormatSize(long size);
+   wxStaticBox *mEnclosingBox;
 
-	wxStaticText *mTempDirLabel;
-	wxStaticText *mTempDir;
-	wxButton     *mSet;
-	wxStaticText *mFreeSpaceLabel;
-	wxStaticText *mFreeSpace;
+   wxStaticText *mTempDirLabel;
+   wxStaticText *mTempDir;
+   wxButton *mSet;
+   wxStaticText *mFreeSpaceLabel;
+   wxStaticText *mFreeSpace;
 
-public:
-	DECLARE_EVENT_TABLE()
+ public:
+    DECLARE_EVENT_TABLE()
 
 };
 

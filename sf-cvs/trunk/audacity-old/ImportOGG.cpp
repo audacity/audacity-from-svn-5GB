@@ -39,156 +39,161 @@
 #include "WaveTrack.h"
 #include "DirManager.h"
 
-bool ImportOGG(wxWindow *parent,
-			   wxString Filename, WaveTrack **channels[], int *numChannels,
-			   DirManager *dirManager)
+bool ImportOGG(wxWindow * parent,
+               wxString Filename, WaveTrack ** channels[],
+               int *numChannels, DirManager * dirManager)
 {
 
-	wxFFile file(Filename);
-	
-	if(!file.IsOpened()) {
-		// No need for a message box, it's done automatically (but how?)
-		return false;
-	}
+   wxFFile file(Filename);
 
-	OggVorbis_File vf;
-	int err = ov_open(file.fp(), &vf, NULL, 0);
+   if (!file.IsOpened()) {
+      // No need for a message box, it's done automatically (but how?)
+      return false;
+   }
 
-	if(err < 0) {
-		wxString message;
-		
-		switch(err) {
-			case OV_EREAD:      
-				message = "Media read error"; break;
-			case OV_ENOTVORBIS: 
-				message = "Not an Ogg Vorbis file"; break;
-			case OV_EVERSION:
-				message = "Vorbis version mismatch"; break;
-			case OV_EBADHEADER:
-				message = "Invalid Vorbis bitstream header"; break;
-			case OV_EFAULT:
-				message = "Internal logic fault"; break;
-		}
+   OggVorbis_File vf;
+   int err = ov_open(file.fp(), &vf, NULL, 0);
 
-		wxMessageBox(message);
-		file.Close();
-		return false;
-	}
+   if (err < 0) {
+      wxString message;
 
-	/* -1 is for the current logical bitstream */
-	vorbis_info *vi = ov_info(&vf, -1);
+      switch (err) {
+      case OV_EREAD:
+         message = "Media read error";
+         break;
+      case OV_ENOTVORBIS:
+         message = "Not an Ogg Vorbis file";
+         break;
+      case OV_EVERSION:
+         message = "Vorbis version mismatch";
+         break;
+      case OV_EBADHEADER:
+         message = "Invalid Vorbis bitstream header";
+         break;
+      case OV_EFAULT:
+         message = "Internal logic fault";
+         break;
+      }
 
-	*numChannels = vi->channels;
-	*channels = new WaveTrack *[*numChannels];
+      wxMessageBox(message);
+      file.Close();
+      return false;
+   }
 
-	/* The Stroustrup book says that variables declared in the
-	 * initialization part of a for loop are only in scope until
-	 * the end of the loop, but Visual C complains about you
-	 * "redefining" the variable if you assume that. So
-	 * I'll declare a function-global count variable once,
-	 * and use it in all the loops. Grudgingly. */
-	int c;
+   /* -1 is for the current logical bitstream */
+   vorbis_info *vi = ov_info(&vf, -1);
 
-	for(c = 0; c < *numChannels; c++) {
-		(*channels)[c] = new WaveTrack(dirManager);
-		(*channels)[c]->rate = vi->rate;
+   *numChannels = vi->channels;
+   *channels = new WaveTrack *[*numChannels];
 
-		switch(c) {
-			case 0: 
-				(*channels)[c]->channel = VTrack::LeftChannel;
-				break;
-			case 1:
-				(*channels)[c]->channel = VTrack::RightChannel;
-				break;
-			default:
-				(*channels)[c]->channel = VTrack::MonoChannel;
-		}
-	}
-	
-	wxProgressDialog *progress = NULL;
+   /* The Stroustrup book says that variables declared in the
+    * initialization part of a for loop are only in scope until
+    * the end of the loop, but Visual C complains about you
+    * "redefining" the variable if you assume that. So
+    * I'll declare a function-global count variable once,
+    * and use it in all the loops. Grudgingly. */
+   int c;
 
-	wxYield();
-	wxStartTimer();
+   for (c = 0; c < *numChannels; c++) {
+      (*channels)[c] = new WaveTrack(dirManager);
+      (*channels)[c]->rate = vi->rate;
+
+      switch (c) {
+      case 0:
+         (*channels)[c]->channel = VTrack::LeftChannel;
+         break;
+      case 1:
+         (*channels)[c]->channel = VTrack::RightChannel;
+         break;
+      default:
+         (*channels)[c]->channel = VTrack::MonoChannel;
+      }
+   }
+
+   wxProgressDialog *progress = NULL;
+
+   wxYield();
+   wxStartTimer();
 
 /* The number of bytes to get from the codec in each run */
 #define CODEC_TRANSFER_SIZE 4096
-	const int bufferSize =  WaveTrack::GetIdealBlockSize();
-	sampleType *mainBuffer = new sampleType[CODEC_TRANSFER_SIZE];
-	
-	sampleType **buffers = new sampleType*[*numChannels];
-	for(int i = 0; i < *numChannels; i++) {
-		buffers[i] = new sampleType[bufferSize];
-	}
+   const int bufferSize = WaveTrack::GetIdealBlockSize();
+   sampleType *mainBuffer = new sampleType[CODEC_TRANSFER_SIZE];
 
-	/* number of samples currently in each channel's buffer */
-	int bufferCount = 0;
-	bool cancelled = false;
-	long bytesRead = 0;
-	long samplesRead = 0;
-	int bitstream = 0;
+   sampleType **buffers = new sampleType *[*numChannels];
+   for (int i = 0; i < *numChannels; i++) {
+      buffers[i] = new sampleType[bufferSize];
+   }
 
-	do {
-		bytesRead = ov_read(&vf, (char *)mainBuffer,
-			CODEC_TRANSFER_SIZE,
-			0, // little endian
-			2, // word length (2 for 16 bit samples)
-			1, // signed
-			&bitstream);
-		samplesRead = bytesRead / *numChannels / sizeof(sampleType);
+   /* number of samples currently in each channel's buffer */
+   int bufferCount = 0;
+   bool cancelled = false;
+   long bytesRead = 0;
+   long samplesRead = 0;
+   int bitstream = 0;
 
-		if(samplesRead + bufferCount > bufferSize) {
-			for(c = 0; c < *numChannels; c++)
-				(*channels)[c]->Append(buffers[c], bufferCount);
-			bufferCount = 0;
-		}
+   do {
+      bytesRead = ov_read(&vf, (char *) mainBuffer, CODEC_TRANSFER_SIZE,
+                          0,    // little endian
+                          2,    // word length (2 for 16 bit samples)
+                          1,    // signed
+                          &bitstream);
+      samplesRead = bytesRead / *numChannels / sizeof(sampleType);
 
-		/* Un-interleave */
-		for(int s = 0; s < samplesRead; s++)
-			for(c = 0; c < *numChannels; c++)
-				buffers[c][s+bufferCount] = mainBuffer[s*(*numChannels)+c];
+      if (samplesRead + bufferCount > bufferSize) {
+         for (c = 0; c < *numChannels; c++)
+            (*channels)[c]->Append(buffers[c], bufferCount);
+         bufferCount = 0;
+      }
 
-		bufferCount += samplesRead;
+      /* Un-interleave */
+      for (int s = 0; s < samplesRead; s++)
+         for (c = 0; c < *numChannels; c++)
+            buffers[c][s + bufferCount] =
+                mainBuffer[s * (*numChannels) + c];
+
+      bufferCount += samplesRead;
 
 
-		if(!progress && wxGetElapsedTime(false) > 500)
-			progress = new wxProgressDialog("Import",
-				"Importing Ogg Vorbis File...",
-				1000,
-				parent,
-				wxPD_CAN_ABORT |
-				wxPD_REMAINING_TIME |
-				wxPD_AUTO_HIDE);
+      if (!progress && wxGetElapsedTime(false) > 500)
+         progress = new wxProgressDialog("Import",
+                                         "Importing Ogg Vorbis File...",
+                                         1000,
+                                         parent,
+                                         wxPD_CAN_ABORT |
+                                         wxPD_REMAINING_TIME |
+                                         wxPD_AUTO_HIDE);
 
-		if(progress)
-			cancelled = !progress->Update(ov_time_tell(&vf) * 1000 / 
-					ov_time_total(&vf, bitstream));
+      if (progress)
+         cancelled = !progress->Update(ov_time_tell(&vf) * 1000 /
+                                       ov_time_total(&vf, bitstream));
 
-	} while(!cancelled && bytesRead != 0 && bitstream == 0);
+   } while (!cancelled && bytesRead != 0 && bitstream == 0);
 
-	/* ...the rest is de-allocation */
-	ov_clear(&vf);
-	file.Detach();  // so that it doesn't try to close the file (ov_clear()
-	                // did that already)
+   /* ...the rest is de-allocation */
+   ov_clear(&vf);
+   file.Detach();    // so that it doesn't try to close the file (ov_clear()
+                     // did that already)
 
-	delete[] mainBuffer;
-	
-	for(c = 0; c < *numChannels; c++)
-		delete[] buffers[c];
-	delete[] buffers;
-	
-	if(progress)
-		delete progress;
-	
-	if(cancelled) {
-		for(c = 0; c < *numChannels; c++)
-			delete (*channels)[c];
-		delete[] *channels;
+   delete[]mainBuffer;
 
-		return false;
-	}
+   for (c = 0; c < *numChannels; c++)
+      delete[]buffers[c];
+   delete[]buffers;
 
-	return true;
+   if (progress)
+      delete progress;
+
+   if (cancelled) {
+      for (c = 0; c < *numChannels; c++)
+         delete(*channels)[c];
+      delete[] * channels;
+
+      return false;
+   }
+
+   return true;
 
 }
 
-#endif /* USE_LIBVORBIS */
+#endif                          /* USE_LIBVORBIS */

@@ -20,41 +20,39 @@
 class wxDC;
 class wxRect;
 
-class AColor
-{
-public:
-  static void Init();
+class AColor {
+ public:
+   static void Init();
 
-  static void Bevel(wxDC& dc, bool up, wxRect& r);
+   static void Bevel(wxDC & dc, bool up, wxRect & r);
 
-  static void Light(wxDC *dc, bool selected);
-  static void Medium(wxDC *dc, bool selected);
-  static void Dark(wxDC *dc, bool selected);
-  
-  static void MIDIChannel(wxDC *dc, int channel /* 1 - 16 */);
-  static void LightMIDIChannel(wxDC *dc, int channel /* 1 - 16 */);
-  static void DarkMIDIChannel(wxDC *dc, int channel /* 1 - 16 */);
+   static void Light(wxDC * dc, bool selected);
+   static void Medium(wxDC * dc, bool selected);
+   static void Dark(wxDC * dc, bool selected);
 
-  static wxBrush lightBrush[2];
-  static wxBrush mediumBrush[2];
-  static wxBrush darkBrush[2];
-  static wxPen lightPen[2];
-  static wxPen mediumPen[2];
-  static wxPen darkPen[2];
+   static void MIDIChannel(wxDC * dc, int channel /* 1 - 16 */ );
+   static void LightMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ );
+   static void DarkMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ );
 
-  static wxPen envelopePen;
-  static wxBrush envelopeBrush;
+   static wxBrush lightBrush[2];
+   static wxBrush mediumBrush[2];
+   static wxBrush darkBrush[2];
+   static wxPen lightPen[2];
+   static wxPen mediumPen[2];
+   static wxPen darkPen[2];
 
-private:
-  static bool inited;
+   static wxPen envelopePen;
+   static wxBrush envelopeBrush;
+
+ private:
+   static bool inited;
 
 };
 
 void GetColorGradient(float value,
-					  bool selected,
-					  bool grayscale,
+                      bool selected,
+                      bool grayscale,
                       unsigned char *red,
-                      unsigned char *green,
-                      unsigned char *blue);
+                      unsigned char *green, unsigned char *blue);
 
 #endif

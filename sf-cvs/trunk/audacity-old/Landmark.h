@@ -14,7 +14,3 @@
 **********************************************************************/
 
 int GetLandmarkPeriod(int numSamples, double *sample);
-
-
-
-

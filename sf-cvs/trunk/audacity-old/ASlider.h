@@ -21,48 +21,45 @@
 
 class wxBitmap;
 
-class ASlider: public wxWindow
-{
-public:
+class ASlider:public wxWindow {
+ public:
 
-  ASlider(wxWindow *parent, wxWindowID id,
-		  const wxPoint& pos,
-		  const wxSize& size,
-		  char **sliderXPM,
-		  char **thumbXPM,
-		  int max);
+   ASlider(wxWindow * parent, wxWindowID id,
+           const wxPoint & pos,
+           const wxSize & size,
+           char **sliderXPM, char **thumbXPM, int max);
 
-  virtual ~ASlider();
+    virtual ~ ASlider();
 
-  virtual int Get();
-  virtual void Set(int value);
+   virtual int Get();
+   virtual void Set(int value);
 
-  virtual void OnPaint(wxPaintEvent& event);
-  virtual void OnMouseEvent(wxMouseEvent& event);  
+   virtual void OnPaint(wxPaintEvent & event);
+   virtual void OnMouseEvent(wxMouseEvent & event);
 
-private:
+ private:
 
-  int             mWidth;
-  int             mHeight;
+   int mWidth;
+   int mHeight;
 
-  int             mThumbWidth;
-  int             mThumbHeight;
+   int mThumbWidth;
+   int mThumbHeight;
 
-  int             mValue;
-  int             mMax;
+   int mValue;
+   int mMax;
 
-  int             mInitialX;
-  int             mInitialY;
-  int             mInitialPos;
+   int mInitialX;
+   int mInitialY;
+   int mInitialPos;
 
-  bool            mIsDragging;
+   bool mIsDragging;
 
-  wxBitmap        *mBitmap;
-  wxBitmap        *mThumbBitmap;
+   wxBitmap *mBitmap;
+   wxBitmap *mThumbBitmap;
 
-public:
+ public:
 
-  DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

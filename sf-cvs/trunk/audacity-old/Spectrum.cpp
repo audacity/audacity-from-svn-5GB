@@ -18,162 +18,162 @@
 
 int GetSpectrumWindowSize()
 {
-  return gPrefs->Read("/Spectrum/FFTSize", 256);
+   return gPrefs->Read("/Spectrum/FFTSize", 256);
 }
 
-bool ComputeSpectrum(sampleType *data, int width, int height,
-					 double rate, float *grayscaleOut,
-					 bool autocorrelation)
+bool ComputeSpectrum(sampleType * data, int width, int height,
+                     double rate, float *grayscaleOut,
+                     bool autocorrelation)
 {
-  int windowSize = GetSpectrumWindowSize();
-  int windowFunc = 3;
+   int windowSize = GetSpectrumWindowSize();
+   int windowFunc = 3;
 
-  if (width < windowSize)
-    return false;
-  
-  if (!data || !grayscaleOut)
-    return true;
-    
-  float *processed = new float[windowSize];
+   if (width < windowSize)
+      return false;
 
-  int i;
-  for(i=0; i<windowSize; i++)
-	processed[i] = 0.0;
-  int half = windowSize/2;
+   if (!data || !grayscaleOut)
+      return true;
 
-  float *in = new float[windowSize];
-  float *out = new float[windowSize];
-  float *out2 = new float[windowSize];
+   float *processed = new float[windowSize];
 
-  int start = 0;
-  int windows = 0;
-  while(start + windowSize <= width) {
-	for(i=0; i<windowSize; i++)
-	  in[i] = data[start+i]/32767.;
-	
-	WindowFunc(windowFunc, windowSize, in);
+   int i;
+   for (i = 0; i < windowSize; i++)
+      processed[i] = 0.0;
+   int half = windowSize / 2;
 
-	if (autocorrelation) {
-	  // Take FFT
-	  FFT(windowSize, false, in, NULL, out, out2);
+   float *in = new float[windowSize];
+   float *out = new float[windowSize];
+   float *out2 = new float[windowSize];
 
-	  // Compute power
-	  for(i=0; i<windowSize; i++)
-		in[i] = (out[i]*out[i]) + (out2[i]*out2[i]);
+   int start = 0;
+   int windows = 0;
+   while (start + windowSize <= width) {
+      for (i = 0; i < windowSize; i++)
+         in[i] = data[start + i] / 32767.;
 
-	  // Tolonen and Karjalainen recommend taking the cube root
-	  // of the power, instead of the square root
+      WindowFunc(windowFunc, windowSize, in);
 
-	  for(i=0; i<windowSize; i++)
-		in[i] = pow(in[i], 1.0/3.0);
+      if (autocorrelation) {
+         // Take FFT
+         FFT(windowSize, false, in, NULL, out, out2);
 
-	  // Take FFT
-	  FFT(windowSize, false, in, NULL, out, out2);
+         // Compute power
+         for (i = 0; i < windowSize; i++)
+            in[i] = (out[i] * out[i]) + (out2[i] * out2[i]);
 
-	  // Take real part of result
-	  for(i=0; i<half; i++)
-		processed[i] += out[i];
-	}
-	else {
-	  PowerSpectrum(windowSize, in, out);
+         // Tolonen and Karjalainen recommend taking the cube root
+         // of the power, instead of the square root
 
-	  for(i=0; i<half; i++)
-		processed[i] += out[i];
-	}
+         for (i = 0; i < windowSize; i++)
+            in[i] = pow(in[i], 1.0 / 3.0);
 
-	start += half;
-	windows++;
-  }
+         // Take FFT
+         FFT(windowSize, false, in, NULL, out, out2);
 
-  int maxFreq = gPrefs->Read("/Spectrum/MaxFreq", 8000);
-  int maxSamples = int(maxFreq * windowSize / rate + 0.5);
-  if (maxSamples > half)
-	maxSamples = half;
+         // Take real part of result
+         for (i = 0; i < half; i++)
+            processed[i] += out[i];
+      } else {
+         PowerSpectrum(windowSize, in, out);
 
-  if (autocorrelation) {
-	maxSamples = half;
+         for (i = 0; i < half; i++)
+            processed[i] += out[i];
+      }
 
-	// Peak Pruning as described by Tolonen and Karjalainen, 2000
+      start += half;
+      windows++;
+   }
 
-	// Clip at zero, copy to temp array
-	for(i=0; i<maxSamples; i++) {
-	  if (processed[i] < 0.0)
-		processed[i] = 0.0;
-	  out[i] = processed[i];
-	}
+   int maxFreq = gPrefs->Read("/Spectrum/MaxFreq", 8000);
+   int maxSamples = int (maxFreq * windowSize / rate + 0.5);
+   if (maxSamples > half)
+      maxSamples = half;
 
-	// Subtract a time-doubled signal (linearly interp.) from the original
-	// (clipped) signal
-	for(i=0; i<maxSamples; i++)
-	  if ((i%2)==0)
-		processed[i] -= out[i/2];
-	  else
-		processed[i] -= ((out[i/2] + out[i/2+1]) / 2);
+   if (autocorrelation) {
+      maxSamples = half;
 
-	// Clip at zero again
-	for(i=0; i<maxSamples; i++)
-	  if (processed[i] < 0.0)
-		processed[i] = 0.0;
+      // Peak Pruning as described by Tolonen and Karjalainen, 2000
 
-	// Find new max
-	float max = 0;
-	for(i=1; i<maxSamples; i++)
-	  if (processed[i] > max)
-		max = processed[i];
+      // Clip at zero, copy to temp array
+      for (i = 0; i < maxSamples; i++) {
+         if (processed[i] < 0.0)
+            processed[i] = 0.0;
+         out[i] = processed[i];
+      }
 
-	// Reverse and scale
-	for(i=0; i<maxSamples; i++)
-	  in[i] = processed[i] / (windowSize/4);
-	for(i=0; i<maxSamples; i++)
-	  processed[maxSamples-1-i] = in[i];
-  }
-  else {
-	// Convert to decibels
-	for(i=0; i<maxSamples; i++)
-	  processed[i] = 10*log10(processed[i]/windowSize/windows);
-  }
+      // Subtract a time-doubled signal (linearly interp.) from the original
+      // (clipped) signal
+      for (i = 0; i < maxSamples; i++)
+         if ((i % 2) == 0)
+            processed[i] -= out[i / 2];
+         else
+            processed[i] -= ((out[i / 2] + out[i / 2 + 1]) / 2);
 
-  // Finally, put it into bins in grayscaleOut[], normalized to a 0.0-1.0 scale
-  
-  for(i=0; i<height; i++) {
-    float bin0 = float(i)*maxSamples/height;
-    float bin1 = float(i+1)*maxSamples/height;
-    
-    float binwidth = bin1-bin0;
+      // Clip at zero again
+      for (i = 0; i < maxSamples; i++)
+         if (processed[i] < 0.0)
+            processed[i] = 0.0;
 
-    float value = 0.0;
+      // Find new max
+      float max = 0;
+      for (i = 1; i < maxSamples; i++)
+         if (processed[i] > max)
+            max = processed[i];
 
-	if (int(bin1) == int(bin0))
-	  value = processed[int(bin0)];
-	else {
-	  value += processed[int(bin0)]*(int(bin0)+1-bin0);
-	  bin0 = 1+int(bin0);
-	  while(bin0 < int(bin1)) {
-		value += processed[int(bin0)];
-		bin0 += 1.0;
-	  }
-	  value += processed[int(bin1)]*(bin1-int(bin1));
+      // Reverse and scale
+      for (i = 0; i < maxSamples; i++)
+         in[i] = processed[i] / (windowSize / 4);
+      for (i = 0; i < maxSamples; i++)
+         processed[maxSamples - 1 - i] = in[i];
+   } else {
+      // Convert to decibels
+      for (i = 0; i < maxSamples; i++)
+         processed[i] = 10 * log10(processed[i] / windowSize / windows);
+   }
 
-	  value /= binwidth;
-    }
+   // Finally, put it into bins in grayscaleOut[], normalized to a 0.0-1.0 scale
 
-	if (!autocorrelation) {
-	  // Last step converts dB to a 0.0-1.0 range	  
-	  value = (value+80.0)/80.0;
-	}
-	
-	if (value > 1.0) value = 1.0;
-	if (value < 0.0) value = 0.0;
-    
-    grayscaleOut[i] = value;
-  }
+   for (i = 0; i < height; i++) {
+      float bin0 = float (i) * maxSamples / height;
+      float bin1 = float (i + 1) * maxSamples / height;
 
-  delete[] in;
-  delete[] out;
-  delete[] out2;
-  delete[] processed;
-  
-  return true;
+      float binwidth = bin1 - bin0;
+
+      float value = 0.0;
+
+      if (int (bin1) == int (bin0))
+         value = processed[int (bin0)];
+      else {
+         value += processed[int (bin0)] * (int (bin0) + 1 - bin0);
+         bin0 = 1 + int (bin0);
+         while (bin0 < int (bin1)) {
+            value += processed[int (bin0)];
+            bin0 += 1.0;
+         }
+         value += processed[int (bin1)] * (bin1 - int (bin1));
+
+         value /= binwidth;
+      }
+
+      if (!autocorrelation) {
+         // Last step converts dB to a 0.0-1.0 range     
+         value = (value + 80.0) / 80.0;
+      }
+
+      if (value > 1.0)
+         value = 1.0;
+      if (value < 0.0)
+         value = 0.0;
+
+      grayscaleOut[i] = value;
+   }
+
+   delete[]in;
+   delete[]out;
+   delete[]out2;
+   delete[]processed;
+
+   return true;
 }
 
 /*
@@ -353,4 +353,3 @@ bool ComputeSpectrum(sampleType *data, int width, int height,
 }
 
 */
-

@@ -17,21 +17,19 @@ class wxString;
 
 class WaveTrack;
 
-class EffectEcho: public Effect {
+class EffectEcho:public Effect {
 
-public:
+ public:
 
-  EffectEcho();
+   EffectEcho();
 
-  virtual wxString GetEffectName() { return wxString("Echo..."); }
-
-  virtual bool Begin(wxWindow *parent);
-  virtual bool DoIt(WaveTrack *t,
-		    sampleCount start,
-		    sampleCount len);
-private:
-  float delay;
-  float decay;
+   virtual wxString GetEffectName() {
+      return wxString("Echo...");
+   } virtual bool Begin(wxWindow * parent);
+   virtual bool DoIt(WaveTrack * t, sampleCount start, sampleCount len);
+ private:
+   float delay;
+   float decay;
 };
 
 #endif

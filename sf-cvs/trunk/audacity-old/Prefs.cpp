@@ -47,9 +47,8 @@
 #include <Folders.h>
 
 /* prototype of MoreFiles fn, included in wxMac already */
-pascal	OSErr	FSpGetFullPath(const FSSpec *spec,
-							               short *fullPathLength,
-							               Handle *fullPath);
+pascal OSErr FSpGetFullPath(const FSSpec * spec,
+                            short *fullPathLength, Handle * fullPath);
 
 #endif
 
@@ -60,29 +59,29 @@ wxConfig *gPrefs = NULL;
 
 void InitPreferences()
 {
-  wxString vendorName = "Audacity";
-  wxString appName = "Audacity";
+   wxString vendorName = "Audacity";
+   wxString appName = "Audacity";
 
-  wxTheApp->SetVendorName(vendorName);
-  wxTheApp->SetAppName(appName);
-  
-  gPrefs = new wxConfig(appName);
-  wxConfigBase::Set(gPrefs);
-  
-  #ifdef __WXMAC__
-  if (gPrefs->Read("/Version", "") != AUDACITY_VERSION_STRING) {
-    gPrefs->DeleteAll();
-  }
-  #endif
+   wxTheApp->SetVendorName(vendorName);
+   wxTheApp->SetAppName(appName);
 
-  gPrefs->Write("/Version", AUDACITY_VERSION_STRING);
+   gPrefs = new wxConfig(appName);
+   wxConfigBase::Set(gPrefs);
+
+#ifdef __WXMAC__
+   if (gPrefs->Read("/Version", "") != AUDACITY_VERSION_STRING) {
+      gPrefs->DeleteAll();
+   }
+#endif
+
+   gPrefs->Write("/Version", AUDACITY_VERSION_STRING);
 }
 
 void FinishPreferences()
 {
-  if (gPrefs) {
-		wxConfigBase::Set(NULL);
-		delete gPrefs;
-		gPrefs = NULL;
-  }
+   if (gPrefs) {
+      wxConfigBase::Set(NULL);
+      delete gPrefs;
+      gPrefs = NULL;
+   }
 }

@@ -26,75 +26,73 @@ class TrackList;
 class DirManager;
 
 struct LabelStruct {
-  double t;
-  wxString title;
-  int width;
+   double t;
+   wxString title;
+   int width;
 };
 
 WX_DEFINE_ARRAY(LabelStruct *, LabelArray);
 
-class LabelTrack: public VTrack
-{
-  friend class BouncePane;
-  friend bool ExportPCM(wxString format, bool stereo, double rate, wxString fName, 
-        wxWindow *parent, TrackList *tracks, bool selectionOnly, double t0, double t1);
+class LabelTrack:public VTrack {
+   friend class BouncePane;
+   friend bool ExportPCM(wxString format, bool stereo, double rate,
+                         wxString fName, wxWindow * parent,
+                         TrackList * tracks, bool selectionOnly, double t0,
+                         double t1);
 
-public:
-  LabelTrack(DirManager *projDirManager);
+ public:
+    LabelTrack(DirManager * projDirManager);
 
-  virtual ~LabelTrack();
+    virtual ~ LabelTrack();
 
-  void Draw(wxDC &dc, wxRect &r, double h, double pps,
-			double sel0, double sel1);
+   void Draw(wxDC & dc, wxRect & r, double h, double pps,
+             double sel0, double sel1);
 
-  virtual int GetKind() {return Label;}
-  virtual double GetMaxLen();
+   virtual int GetKind() {
+      return Label;
+   } virtual double GetMaxLen();
 
-  virtual VTrack *Duplicate();
+   virtual VTrack *Duplicate();
 
-  virtual bool Load(wxTextFile *in, DirManager *dirManager);
-  virtual bool Save(wxTextFile *out, bool overwrite);
+   virtual bool Load(wxTextFile * in, DirManager * dirManager);
+   virtual bool Save(wxTextFile * out, bool overwrite);
 
-  virtual void Cut(double t0, double t1, VTrack **dest);
-  virtual void Copy(double t0, double t1, VTrack **dest);
-  virtual void Paste(double t, VTrack *src);
-  virtual void Clear(double t0, double t1);
+   virtual void Cut(double t0, double t1, VTrack ** dest);
+   virtual void Copy(double t0, double t1, VTrack ** dest);
+   virtual void Paste(double t, VTrack * src);
+   virtual void Clear(double t0, double t1);
 
-  virtual void Silence(double t0, double t1);
-  virtual void InsertSilence(double t, double len);
+   virtual void Silence(double t0, double t1);
+   virtual void InsertSilence(double t, double len);
 
-  void MouseDown(int x, int y, wxRect &r,
-				 double h, double pps);
+   void MouseDown(int x, int y, wxRect & r, double h, double pps);
 
-  void KeyEvent(double sel0, double sel1, wxKeyEvent& event);
+   void KeyEvent(double sel0, double sel1, wxKeyEvent & event);
 
-  void Import(wxTextFile& f);
-  void Export(wxTextFile& f);
+   void Import(wxTextFile & f);
+   void Export(wxTextFile & f);
 
-  void Unselect();
-  
-  bool IsSelected();
-  
-private:
+   void Unselect();
 
-  int mSelIndex;
-  
-  LabelArray mLabels;
+   bool IsSelected();
 
-  wxBrush mFlagBrush;
-  wxBrush mUnselectedBrush;
-  wxBrush mSelectedBrush;
+ private:
 
-  wxPen   mFlagPen;
-  wxPen   mUnselectedPen;
-  wxPen   mSelectedPen;
+   int mSelIndex;
 
-  // Used only for a LabelTrack on the clipboard
-  double  mClipLen;
+   LabelArray mLabels;
+
+   wxBrush mFlagBrush;
+   wxBrush mUnselectedBrush;
+   wxBrush mSelectedBrush;
+
+   wxPen mFlagPen;
+   wxPen mUnselectedPen;
+   wxPen mSelectedPen;
+
+   // Used only for a LabelTrack on the clipboard
+   double mClipLen;
 
 };
 
 #endif
-
-
-

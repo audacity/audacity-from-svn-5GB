@@ -17,25 +17,25 @@
 #include <wx/listbox.h>
 #include <wx/button.h>
 
-class PrefsDialog: public wxDialog {
+class PrefsDialog:public wxDialog {
 
-public:
-	PrefsDialog(wxWindow *parent);
-	~PrefsDialog();
+ public:
+   PrefsDialog(wxWindow * parent);
+   ~PrefsDialog();
 
-	void OnCategoryChange(wxCommandEvent& event);
-	void OnOK(wxCommandEvent& event);
-	void OnCancel(wxCommandEvent& event);
+   void OnCategoryChange(wxCommandEvent & event);
+   void OnOK(wxCommandEvent & event);
+   void OnCancel(wxCommandEvent & event);
 
-private:
-	wxListBox *mCategories;
-	wxButton  *mOK;
-	wxButton  *mCancel;
+ private:
+    wxListBox * mCategories;
+   wxButton *mOK;
+   wxButton *mCancel;
 
-	int mSelected;
+   int mSelected;
 
-public:
-	DECLARE_EVENT_TABLE()
+ public:
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

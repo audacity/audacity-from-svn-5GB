@@ -17,76 +17,72 @@
 
 EffectArray *Effect::Effects = new EffectArray();
 
-int Effect::RegisterEffect(Effect *f)
+int Effect::RegisterEffect(Effect * f)
 {
-  Effects->Add(f);
-  return Effects->Count();
+   Effects->Add(f);
+   return Effects->Count();
 }
 
 int Effect::GetNumEffects()
 {
-  return Effects->Count();
+   return Effects->Count();
 }
 
 Effect *Effect::GetEffect(int i)
 {
-  return (*Effects)[i];
+   return (*Effects)[i];
 }
 
 // methods
 
-bool Effect::DoInPlaceEffect(WaveTrack *t, double t0, double t1,
-                             int trackIndex,
-                             int numTracks)
+bool Effect::DoInPlaceEffect(WaveTrack * t, double t0, double t1,
+                             int trackIndex, int numTracks)
 {
-  wxBusyCursor busy;
-  wxYield();
+   wxBusyCursor busy;
+   wxYield();
 
-  wxASSERT(t0 <= t1);
-  
-  int s0 = (int)((t0 - t->tOffset) * t->rate);
-  int s1 = (int)((t1 - t->tOffset) * t->rate);
-  
-  if (s0 < 0)
-    s0 = 0;
-  if (s1 >= t->numSamples)
-    s1 = t->numSamples;
-  
-  if (s0 >= s1 || s0>=t->numSamples || s1<0)
-    return false;
+   wxASSERT(t0 <= t1);
 
-  return DoIt(t, s0, s1-s0);
+   int s0 = (int) ((t0 - t->tOffset) * t->rate);
+   int s1 = (int) ((t1 - t->tOffset) * t->rate);
+
+   if (s0 < 0)
+      s0 = 0;
+   if (s1 >= t->numSamples)
+      s1 = t->numSamples;
+
+   if (s0 >= s1 || s0 >= t->numSamples || s1 < 0)
+      return false;
+
+   return DoIt(t, s0, s1 - s0);
 }
 
 float TrapFloat(float x, float min, float max)
 {
-  if (x<=min)
-	return min;
-  else if (x>=max)
-	return max;
-  else
-	return x;
+   if (x <= min)
+      return min;
+   else if (x >= max)
+      return max;
+   else
+      return x;
 }
 
 double TrapDouble(double x, double min, double max)
 {
-  if (x<=min)
-	return min;
-  else if (x>=max)
-	return max;
-  else
-	return x;
+   if (x <= min)
+      return min;
+   else if (x >= max)
+      return max;
+   else
+      return x;
 }
 
 long TrapLong(long x, long min, long max)
 {
-  if (x<=min)
-	return min;
-  else if (x>=max)
-	return max;
-  else
-	return x;
+   if (x <= min)
+      return min;
+   else if (x >= max)
+      return max;
+   else
+      return x;
 }
-
-
-

@@ -20,20 +20,20 @@
 
 #include "PrefsPanel.h"
 
-class SpectrumPrefs: public PrefsPanel {
+class SpectrumPrefs:public PrefsPanel {
 
-public:
-	SpectrumPrefs(wxWindow *parent);
-	~SpectrumPrefs();
-	bool Apply();
+ public:
+   SpectrumPrefs(wxWindow * parent);
+   ~SpectrumPrefs();
+   bool Apply();
 
-private:
-	wxStaticBox  *mEnclosingBox;
-	wxRadioBox   *mFFTSize;
-    wxCheckBox   *mGrayscale;
+ private:
+    wxStaticBox * mEnclosingBox;
+   wxRadioBox *mFFTSize;
+   wxCheckBox *mGrayscale;
 
-    wxStaticText *mMaxFreqLabel;
-    wxTextCtrl   *mMaxFreqCtrl;
+   wxStaticText *mMaxFreqLabel;
+   wxTextCtrl *mMaxFreqCtrl;
 };
 
 #endif

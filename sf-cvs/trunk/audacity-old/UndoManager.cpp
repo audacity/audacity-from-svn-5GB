@@ -11,110 +11,109 @@
 #include "UndoManager.h"
 #include "Track.h"
 
-#include "WaveTrack.h" // temp
+#include "WaveTrack.h"          // temp
 
 UndoManager::UndoManager()
 {
-  current = -1;
+   current = -1;
 }
 
 UndoManager::~UndoManager()
 {
-  ClearStates();
+   ClearStates();
 }
 
 void UndoManager::ClearStates()
 {
-  for(int i=stack.Count()-1; i>=0; i--) {
-	TrackListIterator iter(stack[i]->tracks);
+   for (int i = stack.Count() - 1; i >= 0; i--) {
+      TrackListIterator iter(stack[i]->tracks);
 
-    VTrack *t = iter.First();
-    while(t) {
-      delete t;
-      t = iter.Next();
-    }
-    stack.Remove(i);
-  }
+      VTrack *t = iter.First();
+      while (t) {
+         delete t;
+         t = iter.Next();
+      }
+      stack.Remove(i);
+   }
 
-  current = -1;
+   current = -1;
 }
 
 bool UndoManager::UndoAvailable()
 {
-  return (current > 0);
+   return (current > 0);
 }
 
 bool UndoManager::RedoAvailable()
 {
-  return (current < stack.Count()-1);
+   return (current < stack.Count() - 1);
 }
 
-void UndoManager::PushState(TrackList *l, double sel0, double sel1)
+void UndoManager::PushState(TrackList * l, double sel0, double sel1)
 {
-  int i;
+   int i;
 
-  for(i=current+1; i<stack.Count(); i++) {
-	TrackListIterator iter(stack[i]->tracks);
-    VTrack *t = iter.First();
-    while(t) {
-      delete t;
+   for (i = current + 1; i < stack.Count(); i++) {
+      TrackListIterator iter(stack[i]->tracks);
+      VTrack *t = iter.First();
+      while (t) {
+         delete t;
+         t = iter.Next();
+      }
+   }
+
+   i = stack.Count() - 1;
+   while (i > current)
+      stack.Remove(i--);
+
+   TrackList *tracksCopy = new TrackList();
+   TrackListIterator iter(l);
+   VTrack *t = iter.First();
+   while (t) {
+      tracksCopy->Add(t->Duplicate());
       t = iter.Next();
-    }
-  }
+   }
 
-  i = stack.Count()-1;
-  while(i > current)
-    stack.Remove(i--);
+   UndoStackElem *push = new UndoStackElem();
+   push->tracks = tracksCopy;
+   push->sel0 = sel0;
+   push->sel1 = sel1;
 
-  TrackList *tracksCopy = new TrackList();
-  TrackListIterator iter(l);
-  VTrack *t = iter.First();
-  while(t) {
-    tracksCopy->Add(t->Duplicate());
-    t = iter.Next();
-  }
-
-  UndoStackElem *push = new UndoStackElem();
-  push->tracks = tracksCopy;
-  push->sel0 = sel0;
-  push->sel1 = sel1;
-
-  stack.Add(push);
-  current++;
+   stack.Add(push);
+   current++;
 }
 
 TrackList *UndoManager::Undo(double *sel0, double *sel1)
 {
-  wxASSERT(UndoAvailable());
+   wxASSERT(UndoAvailable());
 
-  current--;
+   current--;
 
-  *sel0 = stack[current]->sel0;
-  *sel1 = stack[current]->sel1;
+   *sel0 = stack[current]->sel0;
+   *sel1 = stack[current]->sel1;
 
-  return stack[current]->tracks;
+   return stack[current]->tracks;
 }
 
 TrackList *UndoManager::Redo(double *sel0, double *sel1)
 {
-  wxASSERT(RedoAvailable());
-  
-  current++;
+   wxASSERT(RedoAvailable());
 
-  *sel0 = stack[current]->sel0;
-  *sel1 = stack[current]->sel1;
+   current++;
 
-  return stack[current]->tracks;
+   *sel0 = stack[current]->sel0;
+   *sel1 = stack[current]->sel1;
+
+   return stack[current]->tracks;
 }
 
 void UndoManager::Debug()
 {
-  for(int i=0; i<stack.Count(); i++) {
+   for (int i = 0; i < stack.Count(); i++) {
 
-	TrackListIterator iter(stack[i]->tracks);
-    WaveTrack *t = (WaveTrack *)(iter.First());
-    printf("*%d* %s %d\n",i, (i==current)?"-->":"   ",
-	   t? t->numSamples: 0);
-  }
+      TrackListIterator iter(stack[i]->tracks);
+      WaveTrack *t = (WaveTrack *) (iter.First());
+      printf("*%d* %s %d\n", i, (i == current) ? "-->" : "   ",
+             t ? t->numSamples : 0);
+   }
 }
-

@@ -35,38 +35,36 @@
 #define PREFS_TOP_MARGIN    17
 #define PREFS_BOTTOM_MARGIN 10
 
-class PrefsPanel: public wxPanel {
+class PrefsPanel:public wxPanel {
 
-public:
-	PrefsPanel(wxWindow *parent):
-		wxPanel(parent, -1, wxPoint(1160, 20), wxSize(320, 350)) {
-		SetFont(wxFont(PREFS_FONT_SIZE, wxDEFAULT, wxNORMAL, wxNORMAL));
-		Show(false);
-		mPrefsHidden = true;
-	}
-	virtual ~PrefsPanel() {}
-	virtual bool Apply() = 0;
-
-  virtual void HidePrefsPanel()
-  {
-    if (!mPrefsHidden) {
+ public:
+   PrefsPanel(wxWindow * parent):wxPanel(parent, -1, wxPoint(1160, 20),
+                                         wxSize(320, 350)) {
+      SetFont(wxFont(PREFS_FONT_SIZE, wxDEFAULT, wxNORMAL, wxNORMAL));
       Show(false);
-      Move(1160, 20);
       mPrefsHidden = true;
-    }
-  }
-  
-  virtual void ShowPrefsPanel()
-  {
-    if (mPrefsHidden) {
-      Move(160, 20);
-      Show(true);
-      mPrefsHidden = false;
-    }
-  }
+   } virtual ~ PrefsPanel() {
+   }
+   virtual bool Apply() = 0;
 
-private:
-  bool mPrefsHidden;
+   virtual void HidePrefsPanel() {
+      if (!mPrefsHidden) {
+         Show(false);
+         Move(1160, 20);
+         mPrefsHidden = true;
+      }
+   }
+
+   virtual void ShowPrefsPanel() {
+      if (mPrefsHidden) {
+         Move(160, 20);
+         Show(true);
+         mPrefsHidden = false;
+      }
+   }
+
+ private:
+   bool mPrefsHidden;
 
 };
 

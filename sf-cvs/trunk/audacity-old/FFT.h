@@ -31,7 +31,7 @@
 **********************************************************************/
 
 #ifndef M_PI
-#define	M_PI		3.14159265358979323846	/* pi */
+#define	M_PI		3.14159265358979323846  /* pi */
 #endif
 
 /*
@@ -43,9 +43,7 @@
  * input array, and that NumSamples must be a power of two.
  */
 
-void PowerSpectrum(int       NumSamples,
-				  float    *In,
-				  float    *Out );
+void PowerSpectrum(int NumSamples, float *In, float *Out);
 
 /*
  * Computes an FFT when the input data is real but you still
@@ -54,10 +52,8 @@ void PowerSpectrum(int       NumSamples,
  * two.
  */
 
-void RealFFT(int       NumSamples,
-			 float    *RealIn,
-			 float    *RealOut,
-			 float    *ImagOut );
+void RealFFT(int NumSamples,
+             float *RealIn, float *RealOut, float *ImagOut);
 
 /*
  * Computes a FFT of complex input and returns complex output.
@@ -65,12 +61,9 @@ void RealFFT(int       NumSamples,
  * inverse transform as well.
  */
 
-void FFT (int       NumSamples,
-		  bool      InverseTransform,
-		  float    *RealIn,
-		  float    *ImagIn,
-		  float    *RealOut,
-		  float    *ImagOut );
+void FFT(int NumSamples,
+         bool InverseTransform,
+         float *RealIn, float *ImagIn, float *RealOut, float *ImagOut);
 
 /*
  * Applies a windowing function to the data in place
@@ -81,9 +74,7 @@ void FFT (int       NumSamples,
  * 3: Hanning
  */
 
-void WindowFunc (int     whichFunction,
-                 int     NumSamples,
-                 float   *data);
+void WindowFunc(int whichFunction, int NumSamples, float *data);
 
 /*
  * Returns the name of the windowing function (for UI display)

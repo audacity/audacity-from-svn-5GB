@@ -17,18 +17,18 @@
 
 #include "PrefsPanel.h"
 
-class FileFormatPrefs: public PrefsPanel {
+class FileFormatPrefs:public PrefsPanel {
 
-public:
-	FileFormatPrefs(wxWindow *parent);
-	~FileFormatPrefs();
-	bool Apply();
+ public:
+   FileFormatPrefs(wxWindow * parent);
+   ~FileFormatPrefs();
+   bool Apply();
 
-private:
-	wxStaticBox *mEnclosingBox;
+ private:
+    wxStaticBox * mEnclosingBox;
 
-	wxRadioBox  *mCopyOrEdit;
-	wxRadioBox  *mDefaultExportFormat;
+   wxRadioBox *mCopyOrEdit;
+   wxRadioBox *mDefaultExportFormat;
 
 };
 

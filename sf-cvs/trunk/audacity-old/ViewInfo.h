@@ -13,28 +13,27 @@
 
 struct ViewInfo {
 
-  // Current selection
+   // Current selection
 
-  double sel0;
-  double sel1;
+   double sel0;
+   double sel1;
 
-  // Scroll info
+   // Scroll info
 
-  int vpos;       // vertical scroll pos
+   int vpos;                    // vertical scroll pos
 
-  double h;       // h pos in secs
-  double screen;  // screen width in secs
-  double total;   // total width in secs
-  double zoom;    // pixels per second
-  double lastZoom;
+   double h;                    // h pos in secs
+   double screen;               // screen width in secs
+   double total;                // total width in secs
+   double zoom;                 // pixels per second
+   double lastZoom;
 
-  // Actual scroll bar positions, in pixels
-  int sbarH;
-  int sbarScreen;
-  int sbarTotal;
+   // Actual scroll bar positions, in pixels
+   int sbarH;
+   int sbarScreen;
+   int sbarTotal;
 
-  int scrollStep;
+   int scrollStep;
 };
 
 #endif
-

@@ -23,76 +23,72 @@
 class DirManager;
 
 struct EnvPoint {
-  double t;
-  double val;
+   double t;
+   double val;
 };
 
 WX_DEFINE_ARRAY(EnvPoint *, EnvArray);
 
-class Envelope
-{
-public:
-  Envelope();
+class Envelope {
+ public:
+   Envelope();
 
-  virtual ~Envelope();
+   virtual ~ Envelope();
 
-  void CopyFrom(Envelope *e);
+   void CopyFrom(Envelope * e);
 
-  // File I/O
+   // File I/O
 
-  virtual bool Load(wxTextFile *in, DirManager *dirManager);
-  virtual bool Save(wxTextFile *out, bool overwrite);
+   virtual bool Load(wxTextFile * in, DirManager * dirManager);
+   virtual bool Save(wxTextFile * out, bool overwrite);
 
-  // Event Handlers
+   // Event Handlers
 
-  void Draw(wxDC &dc, wxRect &r, double h, double pps, bool dB);
+   void Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB);
 
-  // Returns true if parents needs to be redrawn
-  bool MouseEvent(wxMouseEvent &event, wxRect &r,
-				  double h, double pps, bool dB);
+   // Returns true if parents needs to be redrawn
+   bool MouseEvent(wxMouseEvent & event, wxRect & r,
+                   double h, double pps, bool dB);
 
-  // Handling Cut/Copy/Paste events
-  void CollapseRegion(double t0, double t1);
-  void ExpandRegion(double t0, double deltat);
+   // Handling Cut/Copy/Paste events
+   void CollapseRegion(double t0, double t1);
+   void ExpandRegion(double t0, double deltat);
 
-  // Control
+   // Control
 
-  void SetOffset(double newOffset);
-  void SetTrackLen(double trackLen);
+   void SetOffset(double newOffset);
+   void SetTrackLen(double trackLen);
 
-  // Accessors
+   // Accessors
 
-  double GetValue(double t);
+   double GetValue(double t);
 
-  // This is much faster than calling GetValue() multiple times
-  // if you need more than one value in a row.
-  void GetValues(double *buffer, int len, double t0, double tstep);
+   // This is much faster than calling GetValue() multiple times
+   // if you need more than one value in a row.
+   void GetValues(double *buffer, int len, double t0, double tstep);
 
-  bool IsDirty();
+   bool IsDirty();
 
-private:
+ private:
 
-  int Insert(double when, double value);
+   int Insert(double when, double value);
 
-  double fromDB(double x);
-  double toDB(double x);
+   double fromDB(double x);
+   double toDB(double x);
 
-  EnvArray   mEnv;
-  double     mOffset;
-  double     mTrackLen;
+   EnvArray mEnv;
+   double mOffset;
+   double mTrackLen;
 
-  int        mDragPoint;
-  int        mInitialX;
-  int        mInitialY;
-  double     mInitialWhen;
-  double     mInitialVal;
-  bool       mUpper;
-  bool       mIsDeleting;
+   int mDragPoint;
+   int mInitialX;
+   int mInitialY;
+   double mInitialWhen;
+   double mInitialVal;
+   bool mUpper;
+   bool mIsDeleting;
 
-  bool       mDirty;
+   bool mDirty;
 };
 
 #endif
-
-
-

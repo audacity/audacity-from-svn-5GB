@@ -13,5 +13,4 @@
 void InitPreferences();
 void FinishPreferences();
 
-extern wxConfig* gPrefs;
-
+extern wxConfig *gPrefs;

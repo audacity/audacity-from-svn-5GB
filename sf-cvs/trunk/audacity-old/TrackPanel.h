@@ -25,176 +25,173 @@ class VTrack;
 class TrackPanel;
 class TrackArtist;
 
-class AudacityTimer: public wxTimer
-{
-public:
-  virtual void Notify();
-  TrackPanel *parent;
+class AudacityTimer:public wxTimer {
+ public:
+   virtual void Notify();
+   TrackPanel *parent;
 };
 
 class TrackPanelListener {
-public:
-  virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum) = 0;
-  virtual int  TP_GetCurrentTool() = 0;
-  virtual void TP_OnPlayKey() = 0;
-  virtual void TP_PushState() = 0;
-  virtual void TP_RedrawScrollbars() = 0;
-  virtual void TP_ScrollLeft() = 0;
-  virtual void TP_ScrollRight() = 0;
-  virtual void TP_HasMouse() = 0;
+ public:
+   virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum) = 0;
+   virtual int TP_GetCurrentTool() = 0;
+   virtual void TP_OnPlayKey() = 0;
+   virtual void TP_PushState() = 0;
+   virtual void TP_RedrawScrollbars() = 0;
+   virtual void TP_ScrollLeft() = 0;
+   virtual void TP_ScrollRight() = 0;
+   virtual void TP_HasMouse() = 0;
 };
 
-class TrackPanel: public wxWindow
-{
-public:
+class TrackPanel:public wxWindow {
+ public:
 
-  TrackPanel(wxWindow *parent,
-			 wxWindowID id,
-			 const wxPoint& pos,
-			 const wxSize& size,
-			 TrackList *tracks,
-			 ViewInfo *viewInfo,
-			 TrackPanelListener *listener);
+   TrackPanel(wxWindow * parent,
+              wxWindowID id,
+              const wxPoint & pos,
+              const wxSize & size,
+              TrackList * tracks,
+              ViewInfo * viewInfo, TrackPanelListener * listener);
 
-  virtual ~TrackPanel();
+   virtual ~ TrackPanel();
 
-  void OnPaint(wxPaintEvent& event);
-  void OnMouseEvent(wxMouseEvent& event); 
-  void OnKeyEvent(wxKeyEvent& event);
+   void OnPaint(wxPaintEvent & event);
+   void OnMouseEvent(wxMouseEvent & event);
+   void OnKeyEvent(wxKeyEvent & event);
 
-  void OnTimer();
-  
-  int GetRulerHeight();
-  int GetLeftOffset();
+   void OnTimer();
 
-  void GetTracksUsableArea(int *width, int *height);
+   int GetRulerHeight();
+   int GetLeftOffset();
 
-  void SelectNone();
+   void GetTracksUsableArea(int *width, int *height);
 
-private:
+   void SelectNone();
 
-  void HandleCursor(wxMouseEvent& event);
-  void HandleResize(wxMouseEvent& event);
-  void HandleSelect(wxMouseEvent& event);
-  void HandleEnvelope(wxMouseEvent& event);
-  void HandleSlide(wxMouseEvent& event);
-  void HandleZoom(wxMouseEvent& event);
-  void HandleLabelClick(wxMouseEvent& event);
-  void HandleClosing(wxMouseEvent& event);
+ private:
 
-  void MakeParentRedrawScrollbars();
-  void MakeParentPushState();
+   void HandleCursor(wxMouseEvent & event);
+   void HandleResize(wxMouseEvent & event);
+   void HandleSelect(wxMouseEvent & event);
+   void HandleEnvelope(wxMouseEvent & event);
+   void HandleSlide(wxMouseEvent & event);
+   void HandleZoom(wxMouseEvent & event);
+   void HandleLabelClick(wxMouseEvent & event);
+   void HandleClosing(wxMouseEvent & event);
 
-  void OnSetName();
+   void MakeParentRedrawScrollbars();
+   void MakeParentPushState();
 
-  void OnMoveUp();
-  void OnMoveDown();
+   void OnSetName();
 
-  void OnUpOctave();
-  void OnDownOctave();
+   void OnMoveUp();
+   void OnMoveDown();
 
-  void OnChannelLeft();
-  void OnChannelRight();
-  void OnChannelMono();
+   void OnUpOctave();
+   void OnDownOctave();
 
-  void OnWaveform();
-  void OnWaveformDB();
-  void OnSpectrum();
-  void OnPitch();
+   void OnChannelLeft();
+   void OnChannelRight();
+   void OnChannelMono();
 
-  void OnRate8();
-  void OnRate11();
-  void OnRate16();
-  void OnRate22();
-  void OnRate44();
-  void OnRate48();
-  void OnRateOther();
-  
-  void OnSplitStereo();
-  void OnMergeStereo();
-  
-  void RemoveTrack(VTrack *toRemove);
+   void OnWaveform();
+   void OnWaveformDB();
+   void OnSpectrum();
+   void OnPitch();
 
-  // Find track info by coordinate
-  VTrack *FindTrack(int mouseX, int mouseY, bool label,
-					wxRect *trackRect = NULL, int *trackNum = NULL);
+   void OnRate8();
+   void OnRate11();
+   void OnRate16();
+   void OnRate22();
+   void OnRate44();
+   void OnRate48();
+   void OnRateOther();
 
-  int GetTitleWidth();
-  int GetTitleOffset();
-  int GetVRulerWidth();  
-  int GetVRulerOffset();
-  int GetLabelWidth();
+   void OnSplitStereo();
+   void OnMergeStereo();
 
-  void SetLabelFont(wxDC *dc);
+   void RemoveTrack(VTrack * toRemove);
 
-  void DrawRuler(wxDC *dc, bool text = true);
-  void DrawTracks(wxDC *dc);
-  
-  void GetTrackControlsRect(wxRect &trackRect, wxRect &r);
-  void GetCloseBoxRect(wxRect &trackRect, wxRect &r);
-  void GetTitleBarRect(wxRect &trackRect, wxRect &r);
+   // Find track info by coordinate
+   VTrack *FindTrack(int mouseX, int mouseY, bool label,
+                     wxRect * trackRect = NULL, int *trackNum = NULL);
 
-  void DrawCloseBox(wxDC *dc, wxRect &r, bool down);
-  void DrawTitleBar(wxDC *dc, wxRect &r, VTrack *t, bool down);
-  
-  void DrawVRuler(wxDC *dc, wxRect &r, VTrack *t);
+   int GetTitleWidth();
+   int GetTitleOffset();
+   int GetVRulerWidth();
+   int GetVRulerOffset();
+   int GetLabelWidth();
 
-  TrackPanelListener *mListener;
+   void SetLabelFont(wxDC * dc);
 
-  TrackList       *mTracks;
-  ViewInfo        *mViewInfo;
-  wxStatusBar     *mStatusBar;
+   void DrawRuler(wxDC * dc, bool text = true);
+   void DrawTracks(wxDC * dc);
 
-  TrackArtist     *mTrackArtist;
+   void GetTrackControlsRect(wxRect & trackRect, wxRect & r);
+   void GetCloseBoxRect(wxRect & trackRect, wxRect & r);
+   void GetTitleBarRect(wxRect & trackRect, wxRect & r);
 
-  AudacityTimer   mTimer;
-  int             mTimeCount;
-  
-  wxBitmap        *mBitmap;
-  int             mPrevWidth;
-  int             mPrevHeight;
+   void DrawCloseBox(wxDC * dc, wxRect & r, bool down);
+   void DrawTitleBar(wxDC * dc, wxRect & r, VTrack * t, bool down);
 
-  double          mSelStart;
+   void DrawVRuler(wxDC * dc, wxRect & r, VTrack * t);
 
-  VTrack          *mCapturedTrack;
-  wxRect          mCapturedRect;
-  int             mCapturedNum;
-  
-  bool            mIndicatorShowing;
-	
-  int             mMouseClickX;
-  int             mMouseClickY;
+   TrackPanelListener *mListener;
 
-  int             mMouseMostRecentX;
-  int             mMouseMostRecentY;
+   TrackList *mTracks;
+   ViewInfo *mViewInfo;
+   wxStatusBar *mStatusBar;
 
-  int             mInitialTrackHeight;
+   TrackArtist *mTrackArtist;
 
-  bool            mAutoScrolling;
+   AudacityTimer mTimer;
+   int mTimeCount;
 
-  bool            mIsClosing;
-  bool            mIsSelecting;
-  bool            mIsResizing;
-  bool            mIsSliding;
-  bool            mIsEnveloping;
+   wxBitmap *mBitmap;
+   int mPrevWidth;
+   int mPrevHeight;
 
-  wxCursor        *mArrowCursor;
-  wxCursor        *mSelectCursor;
-  wxCursor        *mResizeCursor;
-  wxCursor        *mSlideCursor;
-  wxCursor        *mZoomInCursor;
-  wxCursor        *mZoomOutCursor;
+   double mSelStart;
 
-  wxMenu          *mWaveTrackMenu;
-  wxMenu          *mNoteTrackMenu;
-  wxMenu          *mLabelTrackMenu;
-  wxMenu          *mRateMenu;
+   VTrack *mCapturedTrack;
+   wxRect mCapturedRect;
+   int mCapturedNum;
 
-  VTrack          *mPopupMenuTarget;
+   bool mIndicatorShowing;
 
-public:
+   int mMouseClickX;
+   int mMouseClickY;
 
-  DECLARE_EVENT_TABLE()
+   int mMouseMostRecentX;
+   int mMouseMostRecentY;
+
+   int mInitialTrackHeight;
+
+   bool mAutoScrolling;
+
+   bool mIsClosing;
+   bool mIsSelecting;
+   bool mIsResizing;
+   bool mIsSliding;
+   bool mIsEnveloping;
+
+   wxCursor *mArrowCursor;
+   wxCursor *mSelectCursor;
+   wxCursor *mResizeCursor;
+   wxCursor *mSlideCursor;
+   wxCursor *mZoomInCursor;
+   wxCursor *mZoomOutCursor;
+
+   wxMenu *mWaveTrackMenu;
+   wxMenu *mNoteTrackMenu;
+   wxMenu *mLabelTrackMenu;
+   wxMenu *mRateMenu;
+
+   VTrack *mPopupMenuTarget;
+
+ public:
+
+   DECLARE_EVENT_TABLE()
 };
 
 #endif

@@ -15,11 +15,10 @@
 
 void QuitAudacity();
 
-class AudacityApp: public wxApp
-{
-public:
-  bool OnInit(void);
+class AudacityApp:public wxApp {
+ public:
+   bool OnInit(void);
 
-private:
-  void RunTest();
+ private:
+   void RunTest();
 };

@@ -21,115 +21,112 @@ EffectFilter::EffectFilter()
 {
 }
 
-bool EffectFilter::Begin(wxWindow *parent)
+bool EffectFilter::Begin(wxWindow * parent)
 {
-    wxMessageBox("Work in progress: this will be a generic FFT filter.  "
-                 "Right now it just applies one fixed filter.");
+   wxMessageBox("Work in progress: this will be a generic FFT filter.  "
+                "Right now it just applies one fixed filter.");
 
-    return true;
+   return true;
 }
 
-bool EffectFilter::DoIt(WaveTrack *t,
-			 sampleCount start,
-			 sampleCount len)
+bool EffectFilter::DoIt(WaveTrack * t, sampleCount start, sampleCount len)
 {
-  sampleCount s = start;
-  sampleCount idealBlockLen = 65536;
-  int windowSize = 256;
-  
-  sampleType *buffer = new sampleType[idealBlockLen];
+   sampleCount s = start;
+   sampleCount idealBlockLen = 65536;
+   int windowSize = 256;
 
-  sampleType *window1 = new sampleType[windowSize];
-  sampleType *window2 = new sampleType[windowSize];
-  sampleType *thisWindow = window1;
-  sampleType *lastWindow = window2;
+   sampleType *buffer = new sampleType[idealBlockLen];
 
-  int i;
-  
-  for(i=0; i<windowSize; i++)
-    lastWindow[i] = 0;
+   sampleType *window1 = new sampleType[windowSize];
+   sampleType *window2 = new sampleType[windowSize];
+   sampleType *thisWindow = window1;
+   sampleType *lastWindow = window2;
 
-  while(len) {
-    int block = idealBlockLen;
-    if (block > len)
-      block = len;
-    
-    t->Get(buffer, s, block);
-    
-    for(i=0; i<block; i+=windowSize/2) {
-      int wlen = i + windowSize;
-      int wcopy = windowSize;
-      if (i + wcopy > block)
-        wcopy = block - i;
-      
-      int j;
-      for(j=0; j<wcopy; j++)
-        thisWindow[j] = buffer[i+j];
-      for(j=wcopy; j<windowSize; j++)
-        thisWindow[j] = 0;
-      
-      Filter(windowSize, thisWindow);
-      
-      for(j=0; j<windowSize/2; j++)
-        buffer[i+j] = thisWindow[j] + lastWindow[windowSize/2 + j];
-      
-      sampleType *tempP = thisWindow;
-      thisWindow = lastWindow;
-      lastWindow = tempP;
-    }
-    
-    if (len > block && len > windowSize/2)
-      block -= windowSize/2;
-    
-    t->Set(buffer, s, block);
-    
-    len -= block;
-    s += block;
-  }
+   int i;
 
-  delete[] buffer;
-  delete[] window1;
-  delete[] window2;
+   for (i = 0; i < windowSize; i++)
+      lastWindow[i] = 0;
 
-  return true;
+   while (len) {
+      int block = idealBlockLen;
+      if (block > len)
+         block = len;
+
+      t->Get(buffer, s, block);
+
+      for (i = 0; i < block; i += windowSize / 2) {
+         int wlen = i + windowSize;
+         int wcopy = windowSize;
+         if (i + wcopy > block)
+            wcopy = block - i;
+
+         int j;
+         for (j = 0; j < wcopy; j++)
+            thisWindow[j] = buffer[i + j];
+         for (j = wcopy; j < windowSize; j++)
+            thisWindow[j] = 0;
+
+         Filter(windowSize, thisWindow);
+
+         for (j = 0; j < windowSize / 2; j++)
+            buffer[i + j] = thisWindow[j] + lastWindow[windowSize / 2 + j];
+
+         sampleType *tempP = thisWindow;
+         thisWindow = lastWindow;
+         lastWindow = tempP;
+      }
+
+      if (len > block && len > windowSize / 2)
+         block -= windowSize / 2;
+
+      t->Set(buffer, s, block);
+
+      len -= block;
+      s += block;
+   }
+
+   delete[]buffer;
+   delete[]window1;
+   delete[]window2;
+
+   return true;
 }
 
-void EffectFilter::Filter(sampleCount len,
-                    sampleType *buffer)
+void EffectFilter::Filter(sampleCount len, sampleType * buffer)
 {
-  float *inr = new float[len];
-  float *ini = new float[len];
-  float *outr = new float[len];
-  float *outi = new float[len];
+   float *inr = new float[len];
+   float *ini = new float[len];
+   float *outr = new float[len];
+   float *outi = new float[len];
 
-  int i;
-  
-  for(i=0; i<len; i++)
-    inr[i] = buffer[i]/32767.;
-  
-  WindowFunc(2, len, inr);
+   int i;
 
-  FFT(len, false, inr, NULL, outr, outi);
+   for (i = 0; i < len; i++)
+      inr[i] = buffer[i] / 32767.;
 
-  //  RealFFT(len, inr, outr, outi);
+   WindowFunc(2, len, inr);
 
-  // Apply filter
+   FFT(len, false, inr, NULL, outr, outi);
 
-  int half = len/2;
-  for(i=0; i<=half; i++) {
-	int j = len - i;
+   //  RealFFT(len, inr, outr, outi);
 
-    outr[i] = outr[i]*sin(float(i)/half);
-    outi[i] = outi[i]*sin(float(i)/half);
+   // Apply filter
 
-	if (i!=0 && i!=len/2) {
-	  outr[j] = outr[j]*sin(float(i)/half);
-	  outi[j] = outi[j]*sin(float(i)/half);
-	}
-  }
-  
-  FFT(len, true, outr, outi, inr, ini);
+   int half = len / 2;
+   for (i = 0; i <= half; i++) {
+      int j = len - i;
 
-  for(i=0; i<len; i++)
-    buffer[i] = sampleType(inr[i]*32767);
+      outr[i] = outr[i] * sin(float (i) / half);
+      outi[i] = outi[i] * sin(float (i) / half);
+
+      if (i != 0 && i != len / 2) {
+         outr[j] = outr[j] * sin(float (i) / half);
+         outi[j] = outi[j] * sin(float (i) / half);
+      }
+   }
+
+   FFT(len, true, outr, outi, inr, ini);
+
+   for (i = 0; i < len; i++)
+      buffer[i] = sampleType(inr[i] * 32767);
 }

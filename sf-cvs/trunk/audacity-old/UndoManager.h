@@ -34,34 +34,31 @@ class VTrack;
 class TrackList;
 
 struct UndoStackElem {
-  TrackList *tracks;
-  double sel0;
-  double sel1;
+   TrackList *tracks;
+   double sel0;
+   double sel1;
 };
 
 WX_DEFINE_ARRAY(UndoStackElem *, UndoStack);
 
-class UndoManager
-{
-public:
-  UndoManager();
-  ~UndoManager();
+class UndoManager {
+ public:
+   UndoManager();
+   ~UndoManager();
 
-  void PushState(TrackList *l, double sel0, double sel1);
-  void ClearStates();
-  TrackList *Undo(double *sel0, double *sel1);
-  TrackList *Redo(double *sel0, double *sel1);
+   void PushState(TrackList * l, double sel0, double sel1);
+   void ClearStates();
+   TrackList *Undo(double *sel0, double *sel1);
+   TrackList *Redo(double *sel0, double *sel1);
 
-  bool UndoAvailable();
-  bool RedoAvailable();
+   bool UndoAvailable();
+   bool RedoAvailable();
 
-  void Debug();
+   void Debug();
 
-private:
-  int current;
-  UndoStack stack;
+ private:
+   int current;
+   UndoStack stack;
 };
 
 #endif
-
-
