@@ -151,4 +151,8 @@ void OnHelpIndex(wxEvent & event);
 void OnHelpSearch(wxEvent & event);
 void OnBenchmark(wxEvent & event);
 
+       //
+
+void OnSeperator(wxEvent & event);
+
 #endif
