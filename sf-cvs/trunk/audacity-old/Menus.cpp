@@ -28,6 +28,7 @@
 #include "APalette.h"
 #include "Export.h"
 #include "FreqWindow.h"
+#include "Help.h"
 #include "Import.h"
 #include "ImportRaw.h"
 #include "ImportMIDI.h"
@@ -148,6 +149,10 @@ void AudacityProject::CreateMenuBar()
   
   mHelpMenu = new wxMenu();
   mHelpMenu->Append(AboutID, "About Audacity...");
+  mHelpMenu->AppendSeparator();
+  mHelpMenu->Append(HelpID, "Online Help...");
+  mHelpMenu->Append(HelpIndexID, "Online Help Index...");
+  mHelpMenu->Append(HelpSearchID, "Search Online Help...");
 
   mMenuBar->Append(mFileMenu, "&File");
   mMenuBar->Append(mEditMenu, "&Edit");
@@ -1073,6 +1078,21 @@ void AudacityProject::OnAbout(wxCommandEvent& event)
 {
   AboutDialog dlog(this);
   dlog.ShowModal();
+}
+
+void AudacityProject::OnHelp(wxCommandEvent& event)
+{
+  ::ShowHelp();
+}
+
+void AudacityProject::OnHelpIndex(wxCommandEvent& event)
+{
+  ::ShowHelpIndex();
+}
+
+void AudacityProject::OnHelpSearch(wxCommandEvent& event)
+{
+  ::SearchHelp(this);
 }
 
 

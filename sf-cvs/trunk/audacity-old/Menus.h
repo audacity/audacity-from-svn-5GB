@@ -82,6 +82,9 @@ enum {
   // Help Menu
 
   AboutID,
+  HelpID,
+  HelpIndexID,
+  HelpSearchID,
 
   // Effect Menu
   
@@ -139,6 +142,9 @@ enum {
   EVT_MENU(RemoveTracksID, AudacityProject::OnRemoveTracks)
   // Help menu
   EVT_MENU(AboutID, AudacityProject::OnAbout)
+  EVT_MENU(HelpID, AudacityProject::OnHelp)
+  EVT_MENU(HelpIndexID, AudacityProject::OnHelpIndex)
+  EVT_MENU(HelpSearchID, AudacityProject::OnHelpSearch)
   // Update menu method
   EVT_UPDATE_UI(UndoID, AudacityProject::OnUpdateMenus)
 #endif
@@ -223,6 +229,9 @@ public:
 	// Help Menu
 
 	void OnAbout(wxCommandEvent& event);
+	void OnHelp(wxCommandEvent& event);
+	void OnHelpIndex(wxCommandEvent& event);
+	void OnHelpSearch(wxCommandEvent& event);
 
 #endif
 

@@ -32,6 +32,7 @@
 #include "APalette.h"
 #include "AudioIO.h"
 #include "FreqWindow.h"
+#include "Help.h"
 #include "Prefs.h"
 #include "Project.h"
 #include "WaveTrack.h"
@@ -80,6 +81,8 @@ void QuitAudacity()
   gAPaletteFrame = NULL;
   gFreqWindow = NULL;
   gParentFrame = NULL;
+
+  QuitHelp();
 
   FinishPreferences();
 
