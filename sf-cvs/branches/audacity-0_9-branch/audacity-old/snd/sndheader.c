@@ -280,7 +280,11 @@ int snd_open_file(snd_type snd, long *flags)
 	snd->u.file.loop_info = FALSE;
 	file = snd_file_open(snd->u.file.filename, SND_RDONLY);
 	snd->u.file.file = file;
-	if (file < 0) {
+#ifdef __WXMAC__
+	if (file == 0) {
+#else
+        if (file < 0) {
+#endif
 	    snd_open_fail(snd);
 	    return file;
 	}
@@ -294,7 +298,11 @@ int snd_open_file(snd_type snd, long *flags)
 	}
 	file = snd_file_creat(snd->u.file.filename);
 	snd->u.file.file = file;
-	if (file < 0) {
+#ifdef __WXMAC__
+	if (file == 0) {
+#else
+        if (file < 0) {
+#endif
 	    snd_open_fail(snd);
 	    return file;
 	}
@@ -308,7 +316,11 @@ int snd_open_file(snd_type snd, long *flags)
     } else if (snd->write_flag == SND_OVERWRITE) {
 	file = snd_file_open(snd->u.file.filename, SND_RDWR);
 	snd->u.file.file = file;
-	if (file < 0) {
+#ifdef __WXMAC__
+	if (file == 0) {
+#else
+        if (file < 0) {
+#endif
 	    snd_open_fail(snd);
 	    return file;
 	}
