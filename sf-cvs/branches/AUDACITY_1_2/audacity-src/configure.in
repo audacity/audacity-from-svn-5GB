@@ -540,12 +540,12 @@ if [[ "$use_portaudio" = "v19" ]] ; then
 	AC_CHECK_LIB(asound, snd_pcm_open, have_alsa=yes, have_alsa=no)
 	AC_CHECK_LIB(jack, jack_client_new, have_jack=yes, have_jack=no)
 
-   if [[ $have_alsa = "yes" ]] ; then
-		LIBS="$LIBS -lasound"
-	fi
-
 	if [[ $have_jack = "yes" ]] ; then
 		LIBS="$LIBS -ljack"
+	fi
+
+   if [[ $have_alsa = "yes" ]] ; then
+		LIBS="$LIBS -lasound"
 	fi
 
 	if [[ "$use_ladspa" = "default" ]] ; then
