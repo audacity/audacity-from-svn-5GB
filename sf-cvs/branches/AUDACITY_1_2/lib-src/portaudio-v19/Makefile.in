@@ -125,7 +125,7 @@ ALL_TESTS = \
 
 OBJS = $(COMMON_OBJS) $(OTHER_OBJS)
 
-all: lib/$(PALIB) lib/$(PADLLV) tests
+all: lib/$(PALIB) lib/$(PADLLV) # tests (dmazzoni - don't build tests)
 
 tests: bin/ $(TESTS)
 
