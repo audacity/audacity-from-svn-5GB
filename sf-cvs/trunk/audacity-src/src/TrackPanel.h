@@ -102,9 +102,9 @@ class TrackPanel:public wxWindow {
 
    // Working out where to dispatch the event to.
    int DetermineToolToUse( ControlToolBar * pCtb, wxMouseEvent & event);
-   bool HitTestEnvelope(ControlToolBar * pCtb, Track *track, wxRect &r, wxMouseEvent & event);
-   bool HitTestSamples(ControlToolBar * pCtb, Track *track, wxRect &r, wxMouseEvent & event);
-   bool HitTestSlide(ControlToolBar * pCtb, Track *track, wxRect &r, wxMouseEvent & event);
+   bool HitTestEnvelope(Track *track, wxRect &r, wxMouseEvent & event);
+   bool HitTestSamples(Track *track, wxRect &r, wxMouseEvent & event);
+   bool HitTestSlide(Track *track, wxRect &r, wxMouseEvent & event);
 
    // AS: Selection handling
    void HandleSelect(wxMouseEvent & event);

@@ -46,6 +46,7 @@ enum {
    envelopeTool,
    slideTool,
    drawTool,
+   multiTool,
    numTools
 };
 
@@ -65,7 +66,6 @@ class ControlToolBar:public ToolBar {
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnKeyEvent(wxKeyEvent & event);
    void OnTool(wxCommandEvent & evt);
-   void OnMultiTool(wxCommandEvent & evt);
 
    void OnRewind(wxCommandEvent &evt);
    void OnPlay(wxCommandEvent &evt);
@@ -108,7 +108,6 @@ class ControlToolBar:public ToolBar {
    int mButtonPos;
 
    AButton *mTool[numTools];
-   AButton *mMultiTool;
 
    AButton *mRewind;
    AButton *mPlay;
@@ -121,7 +120,6 @@ class ControlToolBar:public ToolBar {
 
    ASlider *mVolume;
    int mCurrentTool;
-   int mPreviousTool;
 
    wxBitmap *mDivBitmap;
    wxBitmap *mMuteBitmap;
@@ -132,7 +130,6 @@ class ControlToolBar:public ToolBar {
    wxImage *hilitePattern;
 
    //Maybe button state values shouldn't be duplicated in this toolbar?
-   bool mInMultiMode;    //If true, tool to apply is determined by mouse x,y.
    bool mPaused;         //Play or record is paused or not paused?
    bool mAlwaysEnablePause;
 
