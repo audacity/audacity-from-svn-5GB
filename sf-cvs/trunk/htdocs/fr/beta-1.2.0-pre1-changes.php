@@ -1,4 +1,4 @@
-<h2>Changes Since Audacity 1.0</h2>
+<h2>Changements depuis Audacity 1.0</h2>
 
 Cette section liste les changements majeurs depuis notre dernière version stable, Audacity 
 1.0.0.  Les utilisateurs de notre version bêta devraient consulter les notes
