@@ -71,7 +71,7 @@
 #define PACKAGE "libsndfile"
 
 /* Version number of package */
-#define VERSION "1.0.0rc5"
+#define VERSION "1.0.0"
 
 /* Set to 1 to force the use of code for processors with broken floats */
 #define FORCE_BROKEN_FLOAT 0

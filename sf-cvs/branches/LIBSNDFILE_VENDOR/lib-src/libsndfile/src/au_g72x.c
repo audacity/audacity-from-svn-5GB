@@ -546,7 +546,7 @@ au_g72x_write_f  (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 		return 0 ;
 	pg72x = (G72x_DATA*) psf->fdata ;
 	
-	normfact = (psf->norm_float == SF_TRUE) ? ((float) 0x8000) : 1.0 ;
+	normfact = (psf->norm_float == SF_TRUE) ? (1.0 * 0x8000) : 1.0 ;
 
 	sptr = (short*) psf->buffer ;
 	bufferlen = ((SF_BUFFER_LEN / psf->blockwidth) * psf->blockwidth) / sizeof (short) ;
@@ -577,7 +577,7 @@ au_g72x_write_d  (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 		return 0 ;
 	pg72x = (G72x_DATA*) psf->fdata ;
 	
-	normfact = (psf->norm_double == SF_TRUE) ? ((float) 0x8000) : 1.0 ;
+	normfact = (psf->norm_double == SF_TRUE) ? (1.0 * 0x8000) : 1.0 ;
 
 	sptr = (short*) psf->buffer ;
 	bufferlen = ((SF_BUFFER_LEN / psf->blockwidth) * psf->blockwidth) / sizeof (short) ;

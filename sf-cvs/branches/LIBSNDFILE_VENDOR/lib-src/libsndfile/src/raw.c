@@ -22,8 +22,6 @@
 #include	"config.h"
 #include	"common.h"
 
-/*-static sf_count_t	raw_seek   (SF_PRIVATE *psf, sf_count_t offset, int whence) ;-*/
-
 /*------------------------------------------------------------------------------
 ** Public function.
 */
@@ -47,12 +45,10 @@ raw_open	(SF_PRIVATE *psf)
 
 	switch (subformat)
 	{	case SF_FORMAT_PCM_S8 :
-				psf->chars = SF_CHARS_SIGNED ;
 				error = pcm_init (psf) ;
 				break ;
 
 		case SF_FORMAT_PCM_U8 :
-				psf->chars = SF_CHARS_UNSIGNED ;
 				error = pcm_init (psf) ;
 				break ;
 				

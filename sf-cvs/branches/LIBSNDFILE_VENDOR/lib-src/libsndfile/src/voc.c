@@ -254,7 +254,6 @@ voc_read_header	(SF_PRIVATE *psf)
 		psf->bytewidth = 1 ;
 
 		psf->sf.format = SF_FORMAT_VOC | SF_FORMAT_PCM_U8 ;
-		psf->chars = SF_CHARS_UNSIGNED ;
 		
 		return 0 ;
 		} ;
@@ -318,7 +317,6 @@ voc_read_header	(SF_PRIVATE *psf)
 		psf->bytewidth = 1 ;
 
 		psf->sf.format = SF_FORMAT_VOC | SF_FORMAT_PCM_U8 ;						
-		psf->chars = SF_CHARS_UNSIGNED ;
 		
 		return 0 ;
 		}
@@ -445,18 +443,14 @@ voc_write_header (SF_PRIVATE *psf, int calc_length)
 	*/
 
 	if (subformat == SF_FORMAT_PCM_U8 && psf->sf.channels == 1)
-	{	psf->chars = SF_CHARS_UNSIGNED ;
-	
-		/* samplerate = 1000000 / (256 - rate_const) ; */
+	{	/* samplerate = 1000000 / (256 - rate_const) ; */
 		rate_const = 256 - 1000000 / psf->sf.samplerate ;
 
 		/* First type marker, length, rate_const and compression */
 		psf_binheader_writef (psf, "e1311", VOC_SOUND_DATA, (int) (psf->datalength + 1), rate_const, 0) ;
 		}
 	else if (subformat == SF_FORMAT_PCM_U8 && psf->sf.channels == 2)
-	{	psf->chars = SF_CHARS_UNSIGNED ;
-	
-		/* sample_rate = 128000000 / (65536 - rate_short) ; */
+	{	/* sample_rate = 128000000 / (65536 - rate_short) ; */
 		rate_const = 65536 - 128000000 / psf->sf.samplerate ;
 	
 		/* First write the VOC_EXTENDED section

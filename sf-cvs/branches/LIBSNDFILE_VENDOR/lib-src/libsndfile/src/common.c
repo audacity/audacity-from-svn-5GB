@@ -18,6 +18,7 @@
 
 #include	<stdarg.h>
 #include	<string.h>
+#include	<ctype.h>
 #include	<math.h>
 
 #include	"sndfile.h"
@@ -93,12 +94,10 @@ void
 psf_log_printf (SF_PRIVATE *psf, char *format, ...)
 {	va_list			ap ;
 	unsigned int	u ;
-	int     		d, tens, shift ;
-	char    		c, *strptr, istr [5] ;
+	int     		d, tens, shift, width, width_specifier ;
+	char    		c, *strptr, istr [5], lead_char ;
 
 	va_start(ap, format);
-	
-	/* printf ("psf_log_printf : %s\n", format) ; */
 	
 	while ((c = *format++))
 	{	if (c != '%')
@@ -106,8 +105,22 @@ psf_log_printf (SF_PRIVATE *psf, char *format, ...)
 			continue ;
 			} ;
 		
-		switch((c = *format++)) 
-		{	case 's': /* string */
+		if (format [1] == '%') /* Handle %% */
+		{ 	LOG_PUTCHAR (psf, '%') ;
+			format ++ ;
+			} ;
+
+		lead_char = (format [0] == '0') ? '0' : ' ' ;	
+		width_specifier = 0 ;
+		while ((c = *format++) && isdigit (c))
+			width_specifier = width_specifier * 10 + (c - '0') ;
+
+		switch (c) 
+		{	case 0 : /* NULL character. */
+					va_end (ap) ;
+					return ;
+
+			case 's': /* string */
 					strptr = va_arg (ap, char *) ;
 					while (*strptr)
 						LOG_PUTCHAR (psf, *strptr++) ;
@@ -117,7 +130,9 @@ psf_log_printf (SF_PRIVATE *psf, char *format, ...)
 					d = va_arg (ap, int) ;
 
 					if (d == 0)
-					{	LOG_PUTCHAR (psf, '0') ;
+					{	while (-- width_specifier > 0)
+							LOG_PUTCHAR (psf, lead_char) ;
+						LOG_PUTCHAR (psf, '0') ;
 						break ;
 						} 
 					if (d < 0)
@@ -125,8 +140,17 @@ psf_log_printf (SF_PRIVATE *psf, char *format, ...)
 						d = -d ;
 						} ;
 					tens = 1 ;
+					width = 1 ;
 					while (d / tens >= 10) 
-						tens *= 10 ;
+					{	tens *= 10 ;
+						width ++ ;
+						} ;
+
+					while (width_specifier > width)
+					{	LOG_PUTCHAR (psf, lead_char) ;
+						width_specifier-- ;
+						} ;
+
 					while (tens > 0)
 					{	LOG_PUTCHAR (psf, '0' + d / tens) ;
 						d %= tens ;
@@ -140,7 +164,9 @@ psf_log_printf (SF_PRIVATE *psf, char *format, ...)
 						D = va_arg (ap, sf_count_t) ;
 
 						if (D == 0)
-						{	LOG_PUTCHAR (psf, '0') ;
+						{	while (-- width_specifier > 0)
+								LOG_PUTCHAR (psf, lead_char) ;
+							LOG_PUTCHAR (psf, '0') ;
 							break ;
 							} 
 						if (D < 0)
@@ -148,8 +174,17 @@ psf_log_printf (SF_PRIVATE *psf, char *format, ...)
 							D = -D ;
 							} ;
 						Tens = 1 ;
+						width = 1 ;
 						while (D / Tens >= 10) 
-							Tens *= 10 ;
+						{	Tens *= 10 ;
+							width ++ ;
+							} ;
+
+						while (width_specifier > width)
+						{	LOG_PUTCHAR (psf, lead_char) ;
+							width_specifier-- ;
+							} ;
+
 						while (Tens > 0)
 						{	LOG_PUTCHAR (psf, '0' + D / Tens) ;
 							D %= Tens ;
@@ -162,12 +197,23 @@ psf_log_printf (SF_PRIVATE *psf, char *format, ...)
 					u = va_arg (ap, unsigned int) ;
 
 					if (u == 0)
-					{	LOG_PUTCHAR (psf, '0') ;
+					{	while (-- width_specifier > 0)
+							LOG_PUTCHAR (psf, lead_char) ;
+						LOG_PUTCHAR (psf, '0') ;
 						break ;
 						} 
 					tens = 1 ;
+					width = 1 ;
 					while (u / tens >= 10) 
-						tens *= 10 ;
+					{	tens *= 10 ;
+						width ++ ;
+						} ;
+
+					while (width_specifier > width)
+					{	LOG_PUTCHAR (psf, lead_char) ;
+						width_specifier-- ;
+						} ;
+
 					while (tens > 0)
 					{	LOG_PUTCHAR (psf, '0' + u / tens) ;
 						u %= tens ;
@@ -188,8 +234,17 @@ psf_log_printf (SF_PRIVATE *psf, char *format, ...)
 						break ;
 						} ;
 					shift = 28 ;
+					width = width_specifier ;
 					while (! ((0xF << shift) & d))
-						shift -= 4 ;
+					{	shift -= 4 ;
+						width -- ;
+						} ;
+
+					while (width > 0 && width_specifier > width)
+					{	LOG_PUTCHAR (psf, lead_char) ;
+						width_specifier-- ;
+						} ;
+
 					while (shift >= 0)
 					{	c = (d >> shift) & 0xF ;
 						LOG_PUTCHAR (psf, (c > 9) ? c + 'A' - 10 : c + '0') ;
@@ -253,7 +308,7 @@ psf_log_printf (SF_PRIVATE *psf, char *format, ...)
 			} /* switch */
 		} /* while */
 
-	va_end(ap);
+	va_end (ap);
 	return ;
 } /* psf_log_printf */
 

@@ -128,7 +128,6 @@ paf_open	(SF_PRIVATE *psf)
 
 	switch (subformat)
 	{	case  SF_FORMAT_PCM_S8 : 	
-					psf->chars = SF_CHARS_SIGNED ;
 					psf->bytewidth = 1 ;
 					error = pcm_init (psf) ;
 					break ;
@@ -215,7 +214,6 @@ paf_read_header	(SF_PRIVATE *psf)
 					psf->bytewidth = 1 ;
 
 					psf->sf.format |= SF_FORMAT_PCM_S8 ;
-					psf->chars = SF_CHARS_SIGNED ;
 					
 					psf->blockwidth = psf->bytewidth * psf->sf.channels ;
 					psf->sf.frames = psf->datalength / psf->blockwidth ;
@@ -595,7 +593,7 @@ paf24_read_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 		return 0 ;
 	ppaf24 = (PAF24_PRIVATE*) psf->fdata ;
 
-	normfact = (psf->norm_float == SF_TRUE) ? (1.0 / 0x80000000) : 1.0 ;
+	normfact = (psf->norm_float == SF_TRUE) ? (1.0 / 0x80000000) : (1.0 / 0x100) ;
 
 	iptr = (int*) psf->buffer ;
 	bufferlen = sizeof (psf->buffer) / sizeof (int) ;
@@ -622,7 +620,7 @@ paf24_read_d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 		return 0 ;
 	ppaf24 = (PAF24_PRIVATE*) psf->fdata ;
 
-	normfact = (psf->norm_double == SF_TRUE) ? (1.0 / 0x80000000) : 1.0 ;
+	normfact = (psf->norm_double == SF_TRUE) ? (1.0 / 0x80000000) : (1.0 / 0x100) ;
 
 	iptr = (int*) psf->buffer ;
 	bufferlen = sizeof (psf->buffer) / sizeof (int) ;
@@ -773,7 +771,7 @@ paf24_write_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 		return 0 ;
 	ppaf24 = (PAF24_PRIVATE*) psf->fdata ;
 
-	normfact = (psf->norm_float == SF_TRUE) ? ((float) 0x80000000) : 1.0 ;
+	normfact = (psf->norm_float == SF_TRUE) ? (1.0 * 0x7FFFFFFF) : (1.0 / 0x100) ;
 
 	iptr = (int*) psf->buffer ;
 	bufferlen = sizeof (psf->buffer) / sizeof (int) ;
@@ -803,7 +801,7 @@ paf24_write_d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 		return 0 ;
 	ppaf24 = (PAF24_PRIVATE*) psf->fdata ;
 
-	normfact = (psf->norm_double == SF_TRUE) ? ((double) 0x80000000) : 1.0 ;
+	normfact = (psf->norm_double == SF_TRUE) ? (1.0 * 0x7FFFFFFF) : (1.0 / 0x100) ;
 
 	iptr = (int*) psf->buffer ;
 	bufferlen = sizeof (psf->buffer) / sizeof (int) ;

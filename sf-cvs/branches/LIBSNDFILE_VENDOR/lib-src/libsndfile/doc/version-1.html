@@ -1,0 +1,514 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN//3.0">
+<HTML>
+
+<HEAD>
+    <TITLE>
+    libsndfile : API Changes in Version 1.0.
+    </TITLE>
+    <META NAME="Author"      CONTENT="Erik de Castro Lopo (erikd AT zip DOT com DOT au)">
+    <META NAME="Version"     CONTENT="Version 1.0">
+    <META NAME="Description" CONTENT="libsndfile API changes in version 1.0">
+</HEAD>
+
+<BODY TEXT="#FFFFFF" BGCOLOR="#000000" LINK="#5050FF" VLINK="#5050FF" ALINK="#FF00FF">
+
+<FONT SIZE=3>
+
+<CENTER>
+<TABLE BORDER="0" WIDTH="94%"><TR><TD>
+<FONT SIZE=+20 COLOR="#5050FF"><BR><B>libsndfile : API Changes in Version 1.0.</B></FONT>
+<BR><BR>
+Document Version 1.0 (2001/11/14)
+<BR>
+Document Version 1.1 (2001/11/14)
+<BR>
+Document Version 1.2 (2001/11/15)
+<BR>
+<FONT COLOR="#20F020">Document Version 1.3 (2002/01/15) (Changes in green)</FONT>
+<BR>
+<FONT COLOR="#20F0F0">Document Version 1.4 (2002/04/16) (Changes in cyan)</FONT>
+<BR>
+<FONT COLOR="#D0D000">Document Version 1.5 (2002/04/21) (Changes in yellow)</FONT>
+<BR>
+<FONT COLOR="#D000D0">Document Version 1.6 (2002/04/30) (Changes in magenta)</FONT>
+<BR>
+<FONT COLOR="#F02020">Document Version 1.7 (2002/06/24) (Changes in red)</FONT>
+<BR><BR>
+
+<B>
+This document is now (Aug, 2002) out of date.
+It does however document the majority of the changes between version 0 and version 1.
+</B>
+
+Some minor changes to the libsndfile API have been made and the changes are listed below.
+The full version 1 API can be found <A HREF="api.html">here</A>.
+<BR><BR>
+
+<UL>
+    <LI> <A HREF="#D0000">File Open Functions</A>
+    <LI> <A HREF="#D0001">64 Bit File Offsets</A>
+    <LI> <A HREF="#D0002">Command Interface (sf_command)</A>
+    <LI> <A HREF="#D0003">File Open Functions</A>
+    <LI> <A HREF="#D0004">Read and Write Functions</A>
+    <LI> <A HREF="#D0005">Read/Write double Functions</A>
+    <LI> <A HREF="#D0006">PCM -> PCM Sample Scaling</A>
+    <LI> <A HREF="#D0007">Faster float to int Conversions</A>
+    <LI> <A HREF="#D0008">Simple Format Enumeration Interface</A>
+    <!-- <LI> <A HREF="#D0007">PCM -> float normalisation</A> -->
+	<LI> <A HREF="#D0009">Format Enumeration Interface</A>
+    <LI> <A HREF="#D0010">Obsoleted Functions</A>
+</UL>
+
+<HR>
+
+<A NAME="D0000">
+<FONT SIZE=+2 COLOR="#5050FF"><BR><B>File Open Functions</B></FONT>
+<BR><BR>
+
+<FONT COLOR="#D0D000">
+Version 0 of libsndfile supplied two functions for opening files; one for
+opening a file for read and one for write.
+Since it would also be desirable to allow opening a file for modification
+(ie read and write) it was decided to merge the two existing open functions
+and add the new read/write mode functionality to that.
+The new file open function which replaces sf_open_read and sf_open_write looks
+like this:
+<PRE>
+	SNDFILE*    sf_open    (const char *path, int mode, SF_INFO *sfinfo) ;
+</PRE>
+where the mode parameter can be one of SFM_READ, SFM_WRITE and SFM_RDWR, for
+read, write and modification.
+<BR><BR>
+It is also desirable to allow completely independent read and write operations 
+ie if the application programmer reads N frames followed by a write 
+and then does a read of M frames, the application will retrieve the
+M frames immediately following the N read earlier.
+<BR><BR>
+Internally, libsndfile keeps track of the read and write locations using separate 
+read and write pointers. 
+In order to allow seeking to be specified on either the read pointer, the write 
+pointer or both, the usage of the <B>sf_seek</B> function has been modified 
+slightly.
+<BR><BR>
+The <B>sf_seek</B> function is defined as follows:
+<PRE>
+    sf_count_t sf_seek (SNDFILE *sndfile, sf_count_t offset, int whence) ;
+</PRE>
+where the whence parameter is SEEK_SET, SEEK_CUR or SEEK_END.
+On files opened for read only or write only, this operation is unchanged.
+On files opened for modification, the standard seek operation will change both the 
+read and the write location. 
+To limit this the only read, the whence parameter should be logical ORed with
+SFM_READ, while to change only the write pointer, the whence parameter should
+be ORed with SFM_WRITE.
+<BR><BR>
+</FONT>
+<BR><BR>
+
+<A NAME="D0001">
+<FONT SIZE=+2 COLOR="#5050FF"><BR><B>64 Bit File Offsets</B></FONT>
+<BR><BR>
+
+Sonic Foundry's 64 bit riff/WAV is one of the new file formats which will be 
+supported in version 1 of the library.
+This format allows for audio files with 64 bit file offsets.
+The AU file format, since it is simply a header followed by data should also
+support 64 bit file offsets.
+<FONT COLOR="#20F0F0">
+In addition, WAV and AIFF files use unsigned file offsets so they too can be 
+larger than 2 gigabytes (although limited to 4 gigabytes) and it would be nice 
+to support these as well.
+<BR><BR>
+
+After a bit of hacking and experimenting libsndfile now reads, writes and
+seeks files larger than 2 gigabytes :
+
+<UL>
+    <LI> Wherever the library is compiled as a 64 bit library on a 64 bit processor.
+    <LI> Linux (2.4 and later kernels).
+    <LI> Win32.
+    <LI> MacOSX (not sure about earlier MacOS).
+</UL>
+
+This was achieved by dumping the ISO Standard C fopen/fread/fwrite/fseek/fclose
+functions and replacing them with wrapper functions around the POSIX open/read/
+write/lseek/close functions.
+The big win here is that the POSIX definition of lseek() is :
+<PRE>
+    off_t lseek(int fildes, off_t offset, int whence);
+</PRE>
+and on most BSD based systems (including MacOSX) <B>off_t</B> is a 64 bit value.
+On 32 bit Linux and Solaris, <B>off_t</B> is a 32 bit value but this can be 
+overridden with some compiler flags resulting in a 64 bit <B>off_t</B> type.
+<BR><BR>
+To get around the problem of Win32 having a 32 bit <B>off_t</B> type and defining
+its 64 bit lseek function like this:
+<PRE>
+    __int64 _lseeki64 (int handle, __int64 offset, int origin);
+</PRE>
+the sndfile header defines a type <B>sf_count_t</B> which will be set as needed.
+
+
+<BR><BR>
+Some systems like AmigaOS will still be limited to 2 gigabyte maximum file sizes.
+<BR><BR>
+As part of this shake out, the sf_seek () function call will now be defined as
+
+<PRE>
+    sf_count_t sf_seek (SNDFILE *sndfile, sf_count_t offset, int whence) ;
+</PRE>
+
+Other changes in this area will be covered later in this document.
+</FONT>
+<BR><BR>
+
+<A NAME="D0002">
+<FONT SIZE=+2 COLOR="#5050FF"><BR><B>Command Interface (sf_command)</B></FONT>
+<BR><BR>
+
+The sf_command () interface was previewed in version 0 of the library as the
+only way to turn normalisation on and off for the functions which read
+and wrote float data. This interface was modeled after the ioctl () system 
+call in Unix.
+<BR><BR>
+
+<FONT COLOR="#20F020">
+In version 0 of the library, the prototype looked like this:
+<PRE>
+    int  sf_command  (SNDFILE *sndfile, const char *cmd, void *data, size_t datasize) ;
+</PRE>
+For version 1 of the library, the command will not longer be encoded as a string
+but rather as an integer as follows:
+<PRE>
+    int  sf_command  (SNDFILE *sndfile, int command, void *data, int datasize) ;
+</PRE>
+The valid values for command will have symbolic names beginning with <B>SFC_</B>
+and will be listed in the header file &lt;sndfile.h&gt;.
+<BR><BR>
+Most of the commands (other than things like retrieving the library version) will work 
+on a per file basis, allowing float normalisation to be turned on for some files and
+off for others. 
+<BR><BR>
+When an integer values needs to be passed to the library via the sf_command interface,
+the data parameter should be a NULL pointer and the value passed in the datasize
+argument (see example below).
+<BR><BR>
+Here are some examples of its uses:
+<PRE>
+        char buffer [1024] ;
+        int	 value ;
+
+        /* Retrieve a string containing the library version. No SNDFILE* 
+        ** pointer needed 
+        */
+        sf_command  (NULL, SFC_GET_LIB_VERSION, buffer, sizeof (buffer)) ;
+
+        /* Retrieve the log generated by the file header parser. */
+        sf_command  (file, SFC_GET_LOG_INFO, buffer, sizeof (buffer)) ;
+
+        /* Turn on normalisation of data read/written as float. */
+        sf_command  (file, SFC_SET_NORM_FLOAT, NULL, SF_TRUE) ;
+
+        /* Turn off normalisation of data read/written as float. */
+        sf_command  (file, SFC_SET_NORM_FLOAT, NULL, SF_FALSE) ;
+
+        /* Turn on normalisation of data read/written as double. */
+        sf_command  (file, SFC_SET_NORM_DOUBLE, NULL, SF_TRUE) ;
+
+		
+        /* Retrieve current normalisation settings for doubles. */
+        sf_command  (file, SFC_GET_NORM_DOUBLE, &amp;value, sizeof (value)) ;
+
+</FONT>
+</PRE>
+
+This function returns zero on success.
+<BR><BR>
+This interface will be put to other uses in the future.
+<BR><BR>
+
+<A NAME="D0003">
+<FONT SIZE=+2 COLOR="#5050FF"><BR><B>File Open Functions</B></FONT>
+<BR><BR>
+
+There are a number of minor changes here. 
+
+Firstly the pcmbitwith field of the SF_INFO struct has been dropped, 
+
+<PRE>
+          typedef struct
+          {   <FONT COLOR="#20F0F0">sf_count_t</FONT>    frames ;
+              int           samplerate ;
+              int           channels ;
+              int           format ;
+              int           sections ;
+              int           seekable ;
+          } SF_INFO ;
+</PRE>
+
+and the types of these fields have been changed to signed types. 
+The sample count is now an <FONT COLOR="#20F0F0">sf_count_t</FONT> so that on 
+machines <FONT COLOR="#20F0F0">where this is a 64 bit type, </FONT> the sample 
+count can contain a frame count of more than 2 giga samples.
+<BR><BR>
+
+The major format types will remain pretty much as they are.
+
+<PRE>
+        SF_FORMAT_WAV           /* Microsoft WAV format (little endian). */
+        SF_FORMAT_AIFF          /* Apple/SGI AIFF format (big endian). */
+        SF_FORMAT_AU            /* Sun/NeXT AU format (big endian). */
+        SF_FORMAT_RAW           /* RAW PCM data. */
+        SF_FORMAT_PAF           /* Ensoniq PARIS file format. */
+        SF_FORMAT_SVX           /* Amiga IFF / SVX8 / SV16 format. */
+        SF_FORMAT_NIST          /* Sphere NIST format. */
+        SF_FORMAT_SMPLTD        /* Sekd Samplitude. */
+        SF_FORMAT_VOC           /* VOC files. */
+        SF_FORMAT_SD2           /* Sound Designer 2 */
+        SF_FORMAT_IRCAM         /* Berkeley/IRCAM/CARL */
+        SF_FORMAT_W64           /* Sonic Foundry's 64 bit RIFF/WAV */
+</PRE>
+        
+The really astute reader may notice that SF_FORMAT_AULE has disappeared.
+The reason for this will be dealt with below.
+<BR><BR>
+
+The following minor format types will be provided. Note that the bit width of
+PCM data is now encoded in the minor format.
+
+<PRE>
+        SF_FORMAT_PCM_U8        /* Unsigned 8 bit data (WAV and RAW only) */
+        SF_FORMAT_PCM_S8        /* Signed 8 bit data */
+        SF_FORMAT_PCM_16        /* Signed 16 bit data */
+        SF_FORMAT_PCM_24        /* Signed 24 bit data */
+        SF_FORMAT_PCM_32        /* Signed 32 bit data */
+        
+        SF_FORMAT_FLOAT         /* 32 bit float data */
+        SF_FORMAT_DOUBLE        /* 64 bit float data */
+        
+        SF_FORMAT_ULAW          /* U-Law encoded. */
+        SF_FORMAT_ALAW          /* A-Law encoded. */
+        SF_FORMAT_IMA_ADPCM     /* IMA ADPCM. */
+        SF_FORMAT_MS_ADPCM      /* Microsoft ADPCM. */
+
+        SF_FORMAT_GSM610        /* GSM 6.10 encoding. */
+
+        SF_FORMAT_G721_32       /* 32kbs G721 ADPCM encoding. */
+        SF_FORMAT_G723_24       /* 24kbs G723 ADPCM encoding. */
+</PRE>
+<BR>
+    
+As with version 0 of the library, the major and minor format types are combined using 
+the binary or operator. 
+For instance, a 16 bit WAV file has a format obtained using
+(SF_FORMAT_WAV | SF_FORMAT_PCM_16).
+The constants SF_FORMAT_SUBMASK and SF_FORMAT_TYPEMASK behave as they do in
+version 0 of the library to mask out the major and minor types of the file
+format.
+<BR><BR>
+
+A number of file formats such as AU, PAF and IRCAM have both a big and
+a little endian version. 
+For these files there are four new constants:
+
+<PRE>
+        SF_ENDIAN_FILE          = 0x00000000,    /* file native */
+        SF_ENDIAN_LITTLE        = 0x10000000,    /* forced little endian */
+        SF_ENDIAN_BIG           = 0x20000000,    /* forced big endian */
+        SF_ENDIAN_CPU           = 0x30000000,    /* forced CPU endian */
+
+        SF_ENDIAN_MASK          = 0x30000000,    /* mask out the endian portion of format */
+</PRE>
+
+which are binary or-ed with the rest of the format.
+A format of (SF_FORMAT_AU | SF_FORMAT_FLOAT) would therefore create a big
+endian AU (AU is big endian by default) file, with 32 bit float data.
+By using the other three SF_ENDIAN_xxx constants, the default can be 
+overridden.
+Of these three overrides, SF_FORMAT_CPU is the most interesting as data
+is stored in the native CPU endian-ness which is the endian-ness which 
+will allow the fastest reads and writes of that data type regardless of
+the host processor type.
+<BR><BR>
+
+<A NAME="D0004">
+<FONT SIZE=+2 COLOR="#5050FF"><BR><B>Read and Write Functions</B></FONT>
+<BR><BR>
+
+To tie in with with 64 bit file offsets, sample and frame counts used with the
+read and write functions have been changed from type size_t to type 
+<FONT COLOR="#20F0F0">sf_count_t</FONT>.
+Wherever a function was defined in version 0 as :
+
+<PRE>
+    size_t sf_read_type  (SNDFILE *sndfile, type *ptr, size_t items) ;
+    size_t sf_readf_type (SNDFILE *sndfile, type *ptr, size_t frames) ;
+</PRE>
+
+this will now be defined as :
+
+<PRE>
+    <FONT COLOR="#20F0F0">sf_count_t</FONT> sf_read_type   (SNDFILE *sndfile, type *ptr, <FONT COLOR="#20F0F0">sf_count_t</FONT> items) ;
+    <FONT COLOR="#20F0F0">sf_count_t</FONT> sf_readf_type  (SNDFILE *sndfile, type *ptr, <FONT COLOR="#20F0F0">sf_count_t</FONT> frames) ;
+</PRE>
+
+These function will continue to return the number of items read or written.
+On error or end of file, a value of zero will be returned. 
+A call to sf_error () will allow differentiation between error and end of file.
+<BR><BR>
+
+
+<A NAME="D0005">
+<FONT SIZE=+2 COLOR="#5050FF"><BR><B>Read/Write double Functions</B></FONT>
+<BR><BR>
+
+In version 0, the prototypes looked like this:
+
+<PRE>
+    size_t  sf_read_double   (SNDFILE *sndfile, double *ptr, size_t items, int normalize) ;
+    size_t  sf_readf_double  (SNDFILE *sndfile, double *ptr, size_t frames, int normalize) ;
+    size_t  sf_write_double  (SNDFILE *sndfile, double *ptr, size_t items, int normalize) ;
+    size_t  sf_writef_double (SNDFILE *sndfile, double *ptr, size_t frames, int normalize) ;
+</PRE>
+    
+while in version 1 it will looks like this:
+<BR><BR>
+
+<PRE>
+    <FONT COLOR="#20F0F0">sf_count_t</FONT>    sf_read_double   (SNDFILE *sndfile, double *ptr, <FONT COLOR="#20F0F0">sf_count_t</FONT> items) ;
+    <FONT COLOR="#20F0F0">sf_count_t</FONT>    sf_readf_double  (SNDFILE *sndfile, double *ptr, <FONT COLOR="#20F0F0">sf_count_t</FONT> frames) ;
+    <FONT COLOR="#20F0F0">sf_count_t</FONT>    sf_write_double  (SNDFILE *sndfile, double *ptr, <FONT COLOR="#20F0F0">sf_count_t</FONT> items) ;
+    <FONT COLOR="#20F0F0">sf_count_t</FONT>    sf_writef_double (SNDFILE *sndfile, double *ptr, <FONT COLOR="#20F0F0">sf_count_t</FONT> frames) ;
+</PRE>
+    
+These have been changed to match the prototypes for sf_read/write_float () functions
+which do not have a normalize flag.
+Switching normalisation on and off can still be done using the sf_command () interface 
+as is currently done for floats.
+Normalisation will be on by default.
+<BR><BR>
+
+
+<A NAME="D0006">
+<FONT SIZE=+2 COLOR="#5050FF"><BR><B>PCM -> PCM Sample Scaling</B></FONT>
+<BR><BR>
+
+There is currently an inconsistency in the way version 0 if the library handles
+conversion of PCM data from one sized container to another sized container.
+<BR><BR>
+
+Version 1 of the library will obey the following rule : whenever integer data
+is moved from one sized container to another sized container, the most significant
+bit in the source container will become the most significant bit in the
+destination container.
+<BR><BR>
+
+<A NAME="D0007">
+<FONT SIZE=+2 COLOR="#5050FF"><BR><B>Faster float to int Conversions</B></FONT>
+<BR><BR>
+
+Version 1 of the library uses the fast float to integer conversion techniques 
+detailed 
+	<A HREF="http://www.mega-nerd.com/FPcast/">here</A>.
+This should work for Linux on all CPUs, Win3232 and MacOS (old and new).
+<BR><BR>
+
+<A NAME="D0008">
+<FONT SIZE=+2 COLOR="#5050FF"><BR><B>Simple Format Enumeration Interface</B></FONT>
+<BR><BR>
+
+
+During a discussion with Dominic Mazzoni it was decided that libsndfile needed an easy 
+way for an application to present a choice of a small set of standard file formats to 
+the user.
+This will be done using the sf_command () interface and a new typedef in &lt;sndfile.h&gt;:
+
+<PRE>
+    typedef struct
+    {   int              format;
+        const char       *name;
+        const char       *extension;
+    } SF_FORMAT_INFO ;
+</PRE>
+
+There are two new commands which are used as follows:
+
+<PRE>
+    SF_FORMAT_INFO  format_info ;
+    int             format_count ;
+
+    /* Retrieve the simple format count */
+    sf_command (NULL, SFC_GET_SIMPLE_FORMAT_COUNT, &amp;format_count, sizeof (format_count)) ;
+
+    /* Retrieve format count 3 */
+    format_info.format = 3 ;
+    sf_command (NULL, SFC_GET_SIMPLE_FORMAT, &amp;format_info, sizeof (format_info)) ;
+</PRE>
+
+The SF_FORMAT_INFO struct would then be filled with information like:
+
+<PRE>
+    {   SF_FORMAT_AIFF | SF_FORMAT_PCM_S8, 
+        "AIFF (Apple/SGI 8 bit)", 
+        "aiff" 
+        },
+</PRE>
+
+or
+
+<PRE>
+    {   SF_FORMAT_WAV | SF_FORMAT_IMA_ADPCM, 
+        "WAV (Microsoft 4 bit IMA ADPCM)", 
+        "wav" 
+        },
+</PRE>
+The SF_FORMAT_INFO structs retrieved from number 0 through the value obtained with 
+SFC_GET_SIMPLE_FORMAT_COUNT, will be alphabetically sorted 
+on the name field.
+<BR><BR>
+
+
+<A NAME="D0009">
+<FONT SIZE=+2 COLOR="#5050FF"><BR><B>Format Enumeration Interface</B></FONT>
+<BR><BR>
+
+<FONT COLOR="#20F020">
+After the above Simple Format Enumeration Interface was developed the need for a more
+extensive interface became apparent.
+Discussion with Dominic Mazzoni resulted in four new commands for the sf_command()
+interface; SFC_GET_FORMAT_MAJOR_COUNT, SFC_GET_FORMAT_MAJOR, SFC_GET_FORMAT_SUBTYPE_COUNT
+and SFC_GET_FORMAT_SUBTYPE.
+<BR><BR>
+These commands work very much like the Simple Format Enumeration Interface and use the
+same SF_FORMAT_INFO typedef.
+When combined with the sf_format_check () function, these new commands will allow an 
+application program to build up a complete list of formats supported by the current
+version of libsndfile even if new formats have been added after the application was
+compiled.
+<BR><BR>
+The examples/ directory of the libsndfile-1.0.X source code distribution contains an
+example program <B>list_formats.c</B> which prints out a list of all the supported
+subtypes for all of the supported major formats.
+
+</FONT>
+<BR><BR>
+
+
+<A NAME="D0010">
+<FONT SIZE=+2 COLOR="#5050FF"><BR><B>Obsoleted Functions</B></FONT>
+<BR><BR>
+
+The functions 
+<PRE>
+    size_t sf_get_header_info (SNDFILE *sndfile, char* buffer, size_t bufferlen, size_t offset) ;
+    size_t sf_get_lib_version (char* buffer, size_t bufferlen) ;
+    <FONT COLOR="#F02020">double sf_signal_max (SNDFILE *sndfile) ;</FONT>
+</PRE>
+
+will be dropped and replaced with calls to sf_command which is documented
+	<A HREF="command.html">here</A>.
+
+<BR><BR>
+</TD></TR>
+</TABLE>
+</CENTER>

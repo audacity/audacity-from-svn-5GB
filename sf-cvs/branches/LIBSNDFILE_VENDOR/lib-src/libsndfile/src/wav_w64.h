@@ -85,6 +85,9 @@ enum
 	WAVE_FORMAT_OLISBC				= 0x1003,		/* Ing C. Olivetti & C., S.p.A. */
 	WAVE_FORMAT_OLIOPR				= 0x1004,		/* Ing C. Olivetti & C., S.p.A. */
 
+	WAVE_FORMAT_VOXWARE				= 0x181C,		/* ????? */
+	WAVE_FORMAT_INTERWAV_VSC112		= 0x7150,		/* ????? */
+
 	WAVE_FORMAT_EXTENSIBLE			= 0xFFFE
 
 	/*	

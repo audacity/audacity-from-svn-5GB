@@ -5,7 +5,7 @@ AC_PREREQ(2.13)
 
 AC_INIT(src/sndfile.c)
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE(libsndfile,1.0.0rc5)
+AM_INIT_AUTOMAKE(libsndfile,1.0.0)
 AM_CONFIG_HEADER(src/config.h)
 
 #------------------------------------------------------------------------------------
@@ -95,6 +95,8 @@ AC_CHECK_SIZEOF(void*,8)
 # On systems supporting files larger than 2 Gig, sf_count_t must be a 64 bit value.
 # Unfortunately there is more than one way of ensuring this so need to do some
 # pretty rigourous testing here.
+
+unset ac_cv_sizeof_off_t
 
 AC_CHECK_SIZEOF(off_t,1)	# Fake default value.
 
@@ -232,6 +234,10 @@ if test $ac_cv_sizeof_double != 8 ; then
 	AC_MSG_WARN([[******************************************************************]])
 	AC_MSG_WARN([[*** sizeof (double) != 8.                                         ]])
 	AC_MSG_WARN([[******************************************************************]])
+	fi
+
+if test x"$ac_cv_prog_autogen" = "xno" ; then
+	touch tests/*.[ch]
 	fi
 
 #====================================================================================

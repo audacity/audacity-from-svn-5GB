@@ -81,7 +81,6 @@ nist_open	(SF_PRIVATE *psf)
 	
 	switch (psf->sf.format & SF_FORMAT_SUBMASK)
 	{	case SF_FORMAT_PCM_S8 :
-				psf->chars = SF_CHARS_SIGNED ;
 				error = pcm_init (psf) ;
 				break ;
 				
@@ -222,7 +221,6 @@ nist_read_header (SF_PRIVATE *psf)
 	if (encoding == SF_FORMAT_PCM_U8)
 	{	switch (psf->bytewidth)
 		{	case 1 :
-					psf->chars = SF_CHARS_SIGNED ;
 					psf->sf.format |= SF_FORMAT_PCM_S8 ;
 					break ;
 

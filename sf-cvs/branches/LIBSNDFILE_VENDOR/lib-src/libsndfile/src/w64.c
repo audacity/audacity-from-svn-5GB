@@ -142,7 +142,6 @@ w64_open	(SF_PRIVATE *psf)
 
 	switch (subformat)
 	{	case SF_FORMAT_PCM_U8 :
-					psf->chars = SF_CHARS_UNSIGNED ;
 					error = pcm_init (psf) ;
 					break ;
 
