@@ -58,6 +58,7 @@ void UndoManager::RemoveStateAt(int n)
    stack.RemoveAt(n);
 
    current -= 1;
+   saved -= 1;
 }
 
 
