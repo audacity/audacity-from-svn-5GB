@@ -219,6 +219,7 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   //
   
   mTracks = new TrackList();
+  mLastSavedTracks = NULL;
 
   //
   // Initialize view info (shared with TrackPanel)
@@ -669,6 +670,7 @@ void AudacityProject::OnCloseWindow()
 
 void AudacityProject::OpenFile(wxString fileName)
 {
+  VTrack *t;
   wxTextFile f(fileName);
   f.Open();
   if (!f.IsOpened()) {
@@ -729,6 +731,19 @@ void AudacityProject::OpenFile(wxString fileName)
 
   mTracks->Load(&f, &mDirManager);
 
+  // By making a duplicate set of pointers to the existing blocks
+  // on disk, we add one to their reference count, guaranteeing
+  // that their reference counts will never reach zero and thus
+  // the version saved on disk will be preserved until the
+  // user selects Save().
+
+  mLastSavedTracks = new TrackList();
+  t = mTracks->First();
+  while(t) {
+    mLastSavedTracks->Add(t->Duplicate());
+    t = mTracks->Next();
+  }
+
   f.Close();
 
   FixScrollbars();
@@ -778,11 +793,22 @@ void AudacityProject::OnSave(bool overwrite /* = true */)
 	return;
   }
 
+  //
+  // Always save a backup of the original project file
+  //
+
+  wxString safetyFileName = "";
   if (wxFileExists(mFileName)) {
-	// TODO: Should do this safely, by renaming the old
-	// file and then removing it only once the new one
-	// is closed and flushed.
-	wxRemoveFile(mFileName);
+
+	#ifdef __WXGTK__
+	safetyFileName = "~"+mFileName;
+	#else
+	safetyFileName = mFileName+".bak";
+	#endif
+
+	if (wxFileExists(safetyFileName))
+	  wxRemoveFile(safetyFileName);
+	wxRename(mFileName, safetyFileName);
   }
 
   wxString project = mFileName;
@@ -796,6 +822,10 @@ void AudacityProject::OnSave(bool overwrite /* = true */)
 	wxMessageBox(wxString::Format(
 	  "Could not save project because the directory %s could not be created.",
       (const char *)project));
+
+	if (safetyFileName)
+	  wxRename(safetyFileName, mFileName);
+
 	return;
   }
 
@@ -804,6 +834,10 @@ void AudacityProject::OnSave(bool overwrite /* = true */)
   f.Open();
   if (!f.IsOpened()) {
 	wxMessageBox("Couldn't write to "+mFileName);
+
+	if (safetyFileName)
+	  wxRename(safetyFileName, mFileName);
+
 	return;
   }
 
@@ -829,6 +863,27 @@ void AudacityProject::OnSave(bool overwrite /* = true */)
 
   f.Write();
   f.Close();
+
+  if (mLastSavedTracks) {
+
+	VTrack *t = mLastSavedTracks->First();
+	while(t) {
+	  if (t->GetKind() == VTrack::Wave && !overwrite)
+		((WaveTrack *)t)->DeleteButDontDereference();
+	  else
+		delete t;
+	  t = mLastSavedTracks->Next();
+	}
+
+	delete mLastSavedTracks;
+  }
+
+  mLastSavedTracks = new TrackList();
+  VTrack *t = mTracks->First();
+  while(t) {
+    mLastSavedTracks->Add(t->Duplicate());
+    t = mTracks->Next();
+  }
 }
 
 void AudacityProject::OnSaveAs()

@@ -150,6 +150,8 @@ private:
   TrackList   *mTracks;
   ViewInfo    mViewInfo;
 
+  TrackList   *mLastSavedTracks;
+
   // Clipboard (static because it is shared by all projects)
 
   static TrackList *msClipboard;

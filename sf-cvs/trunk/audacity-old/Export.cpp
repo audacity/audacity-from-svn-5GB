@@ -19,6 +19,7 @@
 #include <wx/filedlg.h>
 #include <wx/msgdlg.h>
 #include <wx/progdlg.h>
+#include <wx/textfile.h>
 
 #include "snd/snd.h"
 
@@ -46,13 +47,14 @@ ExportDialog::ExportDialog(wxWindow *parent,
   wxBoxSizer *sizer3 = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer *sizer4 = new wxBoxSizer(wxHORIZONTAL);
   
-  wxString headerStrings[4] = {"AIFF (Audio Interchange File Format)",
+  wxString headerStrings[5] = {"AIFF (Audio Interchange File Format)",
 							   "SF (IRCAM Format)",
 							   "AU (Sun AU / NeXT Audio Format)",
-							   "WAV (Windows Wave)"};
+							   "WAV (Windows Wave)",
+                               "TXT"};
   
   headerChoice = new wxChoice(this, 0, wxDefaultPosition, wxDefaultSize,
-							  4, headerStrings);
+							  5, headerStrings);
   
   bitsButton[0] = new wxRadioButton(this, EXPORT_RADIO_ID, "8-bit", 
 										wxDefaultPosition, wxDefaultSize,
@@ -149,8 +151,11 @@ bool Export(WaveTrack *left, WaveTrack *right)
 	extension = ".AU";
 	break;
   case SND_HEAD_WAVE:
-  default:
 	extension = ".WAV";
+	break;
+  case SND_HEAD_WAVE+1:
+  default:
+	extension = ".TXT";
 	break;
   }
 
@@ -164,6 +169,38 @@ bool Export(WaveTrack *left, WaveTrack *right)
   
   if (fName == "")
     return false;
+
+  if (header == SND_HEAD_WAVE+1) {
+	// Export as text
+
+	// HACK!!!!!
+
+	wxTextFile f(fName);
+	f.Create();
+	f.Open();
+	if (!f.IsOpened()) {
+	  wxMessageBox("Couldn't write to "+fName);
+	  return false;
+	}
+
+	int len = left->numSamples;
+
+	if (len > 1000000) {
+	  wxMessageBox("Sorry, can't export text files more than 1MB");
+	  return false;
+	}
+
+	sampleType *buffer = new sampleType[len];
+	left->Get(buffer, 0, len);
+
+	for(int i=0; i<len; i++)
+	  f.AddLine(wxString::Format("%g", buffer[i]/32767.0));
+
+	f.Write();
+	f.Close();
+
+	return true;
+  }
 
   // Use snd library to export file
 

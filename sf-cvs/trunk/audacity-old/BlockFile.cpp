@@ -75,6 +75,7 @@ int BlockFile::Read(void *data, int len)
 
   if (rval != len) {
     printf("Expected %d bytes, got %d\n", len, rval);
+	wxASSERT(0);
   }
 
   return rval;

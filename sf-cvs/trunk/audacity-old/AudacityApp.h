@@ -20,6 +20,9 @@
 
 class AudacityApp: public wxApp
 {
-  public:
-    bool OnInit(void);
+public:
+  bool OnInit(void);
+
+private:
+  void RunTest();
 };

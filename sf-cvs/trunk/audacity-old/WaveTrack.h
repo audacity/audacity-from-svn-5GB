@@ -59,6 +59,8 @@ public:
 class WaveTrack: public VTrack
 {
 public:
+  static void SetMaxDiskBlockSize(int bytes);
+
   enum {WaveDisplay,
 		SpectrumDisplay};
 
@@ -67,6 +69,8 @@ public:
 
   WaveTrack(DirManager *projDirManager);
   virtual ~WaveTrack();
+
+  virtual void DeleteButDontDereference();
 
   virtual VTrack *Duplicate();
 
@@ -146,6 +150,7 @@ private:
   int FindBlock(sampleCount pos);
   int FindBlock(sampleCount pos, sampleCount lo,
 				sampleCount guess, sampleCount hi);
+  WaveBlock *NewInitedWaveBlock();
   bool InitBlock(WaveBlock *b);
   void Read(sampleType *buffer, WaveBlock *b,
 	    sampleCount start, sampleCount len);
@@ -157,7 +162,15 @@ private:
 	     sampleCount start, sampleCount len,
 	     bool makeCopy = true);
 
+  BlockArray *Blockify(sampleType *buffer, sampleCount len);
+
   void PrepareCache(double start, double pps, int screenWidth);
+
+  static sampleCount summary64KLen;
+  static sampleCount summary256Len;
+  static sampleCount totalHeaderLen;
+  static sampleCount maxSamples;
+  static sampleCount minSamples;
 
 public:
 
