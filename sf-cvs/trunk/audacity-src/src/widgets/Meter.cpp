@@ -102,6 +102,7 @@ bool MeterUpdateQueue::Get(MeterUpdateMsg &msg)
 enum {
    OnMeterUpdateID = 6000,
    OnDisableMeterID,
+   OnMonitorID,
    OnHorizontalID,
    OnVerticalID,
    OnMultiID,
@@ -110,7 +111,6 @@ enum {
    OnLinearID,
    OnDBID,
    OnClipID,
-   OnMonitorID,
    OnFloatID,
    OnPreferencesID
 };
@@ -174,10 +174,10 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       mMeterDisabled = gPrefs->Read("/Meter/MeterOutputDisabled", (long)0);
    }
 
-   CreateIcon(2);
+//   CreateIcon(2);
 
    wxColour origColour(204, 204, 204);
-   mPeakPeakPen = wxPen(wxColour(0, 0, 255), 1, wxSOLID);
+   mPeakPeakPen = wxPen(wxColour(102, 102, 255), 1, wxSOLID);
    mDisabledPen = wxPen(wxColour(192, 192, 192), 1, wxSOLID);
 
    /* i18n-hint: One-letter abbreviation for Left, in VU Meter */
@@ -205,7 +205,10 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       mDarkPen = wxPen(wxColour(61, 164, 61), 1, wxSOLID);
    }
 
-   mDisabledBkgndBrush = wxBrush(wxColour(160, 160, 160), wxSOLID);
+      mDisabledBkgndBrush = wxBrush(wxColour(160, 160, 160), wxSOLID);
+//   mDisabledBkgndBrush = wxBrush(
+//            wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW), wxSOLID);
+//            wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DLIGHT), wxSOLID);
    if (mMeterDisabled) {
       mSavedBkgndBrush = mBkgndBrush;
       mSavedBrush = mBrush;
@@ -216,6 +219,7 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       mRMSBrush = mDisabledBkgndBrush;
    }
 
+   CreateIcon(2);
    mRuler.SetFonts(GetFont(), GetFont());
 
    mTimer.SetOwner(this, OnMeterUpdateID);
@@ -226,9 +230,9 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
 
 void Meter::CreateIcon(int aquaOffset)
 {
-   wxColour backgroundColour =
-      wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
-   mBkgndBrush = wxBrush(backgroundColour, wxSOLID);
+   wxColour backgroundColour =  mBkgndBrush.GetColour();
+//      wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+//   mBkgndBrush = wxBrush(backgroundColour, wxSOLID);
    wxImage *image, *alpha;
 
    if (mIcon) {
@@ -300,6 +304,12 @@ void Meter::OnMouse(wxMouseEvent &evt)
          menu->Append(OnDisableMeterID, _("Enable Meter"));
       else
          menu->Append(OnDisableMeterID, _("Disable Meter"));
+      if (mIsInput) {
+         if (gAudioIO->IsMonitoring())
+            menu->Append(OnMonitorID, _("Stop Monitoring"));
+         else
+            menu->Append(OnMonitorID, _("Start Monitoring"));
+      }
       menu->AppendSeparator();
 
       menu->Append(OnHorizontalID, _("Horizontal Stereo"));
@@ -316,10 +326,6 @@ void Meter::OnMouse(wxMouseEvent &evt)
       menu->Enable(mDB? OnDBID: OnLinearID, false);
       //menu->AppendSeparator();
       //menu->Append(OnClipID, _("Turn on clipping"));
-      if (mIsInput) {
-         menu->AppendSeparator();
-         menu->Append(OnMonitorID, _("Monitor input"));
-      }
       //menu->AppendSeparator();
       //menu->Append(OnFloatID, _("Float Window"));
 
@@ -866,11 +872,18 @@ void Meter::DrawMeterBar(wxDC &dc, MeterBar *meterBar)
    }
 }
 
+bool Meter::IsMeterDisabled() {return mMeterDisabled!=0;}
+
 void Meter::StartMonitoring()
 {
+
    if (gAudioIO->IsMonitoring())
       gAudioIO->StopStream();
    else {
+      if (mMeterDisabled){
+         OnDisableMeter((wxCommandEvent)0 );
+      }
+      
       gAudioIO->StartMonitoring(44100.0);
       AudacityProject *p = GetActiveProject();
       if (p) {
@@ -883,6 +896,7 @@ void Meter::StartMonitoring()
          }
       }
    }
+
 }
 
 //
@@ -907,6 +921,10 @@ void Meter::OnDisableMeter(wxCommandEvent &evt)
       }
    else
       {
+      if (mIsInput) {
+         if (gAudioIO->IsMonitoring())
+            gAudioIO->StopStream();
+      }
       mSavedLightPen = mLightPen;
       mSavedDarkPen = mDarkPen;
       mSavedBkgndBrush = mBkgndBrush;
@@ -934,7 +952,6 @@ void Meter::OnDisableMeter(wxCommandEvent &evt)
       {
       gPrefs->Write("/Meter/MeterOutputDisabled", mMeterDisabled);
       }
-
 
 }
 

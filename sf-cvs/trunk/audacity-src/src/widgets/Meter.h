@@ -101,6 +101,7 @@ class Meter : public wxPanel
    void Reset(double sampleRate, bool resetClipping);
    void UpdateDisplay(int numChannels,
                       int numFrames, float *sampleData);
+   bool IsMeterDisabled();
    // End thread-safe methods
    //
 
@@ -133,6 +134,7 @@ class Meter : public wxPanel
    void OnMonitor(wxCommandEvent &evt);
    void OnFloat(wxCommandEvent &evt);
    void OnPreferences(wxCommandEvent &evt);
+
    
  private:
    void DrawMeterBar(wxDC &dc, MeterBar *meterBar);
@@ -160,8 +162,8 @@ class Meter : public wxPanel
    double    mPeakHoldDuration;
    double    mT;
    double    mRate;
-   long      mMeterDisabled; //is used as a bool, needs long for easy gPrefs...
    long      mMeterRefreshRate;
+   long      mMeterDisabled; //is used as a bool, needs long for easy gPrefs...
 
    int       mNumBars;
    MeterBar  mBar[kMaxMeterBars];

@@ -36,6 +36,7 @@
 #include <wx/timer.h>
 #include <wx/intl.h>
 
+
 #include "AudioIO.h"
 #include "WaveTrack.h"
 #include "Mix.h"
@@ -1683,14 +1684,14 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
    gAudioIO->mUpdatingMeters = true;
    if (gAudioIO->mUpdateMeters) {
 
-      long outputMeterDisabled = gPrefs->Read("/Meter/MeteroutputDisabled", (long)0);
-      if (!outputMeterDisabled && gAudioIO->mOutputMeter && outputBuffer)
+      if (!gAudioIO->mOutputMeter->IsMeterDisabled()
+            && gAudioIO->mOutputMeter && outputBuffer)
          gAudioIO->mOutputMeter->UpdateDisplay(numPlaybackChannels,
                                                framesPerBuffer,
                                                (float *)outputBuffer);
 
-      long inputMeterDisabled = gPrefs->Read("/Meter/MeterInputDisabled", (long)0);
-      if (!inputMeterDisabled && gAudioIO->mInputMeter && inputBuffer) {
+      if (!gAudioIO->mInputMeter->IsMeterDisabled()
+            && gAudioIO->mInputMeter && inputBuffer) {
          if (gAudioIO->mCaptureFormat == floatSample)
             gAudioIO->mInputMeter->UpdateDisplay(numCaptureChannels,
                                                  framesPerBuffer,
