@@ -72,6 +72,8 @@ enum {
 // Strings to convert a tool number into a status message
 // These MUST be in the same order as the ids above.
 const char * MessageOfTool[numTools] = { _("Click and drag to select audio"),
+   _("Click and drag to edit the amplitude envelope"),
+   _("Click and drag to edit the samples"),
 #if defined( __WXMAC__ )
    _("Click to Zoom In, Shift-Click to Zoom Out"),
 #elif defined( __WXMSW__ )
@@ -79,9 +81,8 @@ const char * MessageOfTool[numTools] = { _("Click and drag to select audio"),
 #elif defined( __WXGTK__ )
    _("Left=Zoom In, Right=Zoom Out, Middle=Normal"),
 #endif
-   _("Click and drag to edit the amplitude envelope"),
    _("Click and drag to move a track in time"),
-   _("Click and drag to edit the samples")
+   "" // multi-mode tool
 };
 
 
