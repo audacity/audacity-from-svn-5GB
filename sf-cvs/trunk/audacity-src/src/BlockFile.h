@@ -18,6 +18,8 @@
 
 #include "WaveTrack.h"
 
+#include "../xml/XMLTagHandler.h"
+
 class wxFFile;
 
 class SummaryInfo {
