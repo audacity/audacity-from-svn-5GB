@@ -108,7 +108,7 @@ typedef __int64 int64_t ;
 ** Generic functions for performing endian swapping on integer arrays.
 */
 
-#ifdef WIN32 //vvv for compatibility with MSVC++ 6 compiler
+#ifdef WIN32 //v for compatibility with MSVC++ 6, 7, & 8beta compilers
    #define inline  
 #endif
 

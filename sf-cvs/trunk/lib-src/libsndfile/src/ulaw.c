@@ -787,7 +787,7 @@ unsigned char ulaw_encode [8193] =
 	0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x00
 } ;
 
-#ifdef WIN32 //vvv for compatibility with MSVC++ 6 compiler
+#ifdef WIN32 //vvv for compatibility with MSVC++ 6, 7, & 8beta compilers
    #define inline  
 #endif
 
