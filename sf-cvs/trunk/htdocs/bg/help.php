@@ -19,7 +19,7 @@
 <p>
 Търсене в документацията на Audacity:
 
-<form method="post" action="/isearch/index.php" target="_self">
+<form method="post" action="http://audacityteam.org/isearch/index.php" target="_self">
 
 <table border="0" cellpadding="3" cellspacing="1">
   <tr>
@@ -27,7 +27,7 @@
 
       <input maxLength="255" name="s" size="20" value=''>
       <input type="submit" value="Търсене">
-      <a TARGET="_blank" HREF="/isearch/help.php">Помощ</a>
+      <a TARGET="_blank" HREF="http://audacityteam.org/isearch/help.php"><font size="-1">Помощ</font></a>
     </td>
   </tr>
 </table>

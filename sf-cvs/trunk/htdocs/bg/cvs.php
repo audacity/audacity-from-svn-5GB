@@ -57,7 +57,7 @@ CVSROOT=:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt><b
 
 <h4>Анонимен достъп до CVS чрез графичен клиент</h4>
 За графичен клиент като wincvs, maccvs или gcvs (достъпни от
-<a target=_top href="http://cvsgui.org">cvsgui.org</a>), трябва да присвоите на променливата
+<a target=_top href="http://wincvs.org">wincvs.org</a>), трябва да присвоите на променливата
 <tt>CVSROOT</tt> (в подменюто Admin|Preferences) стойност
 <tt>:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt>
 и за режим на достъп (authentication) да изберете "pserver" или "Password".
