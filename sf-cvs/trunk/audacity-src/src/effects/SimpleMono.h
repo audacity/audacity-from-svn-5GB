@@ -30,9 +30,9 @@ class EffectSimpleMono:public Effect {
    bool ProcessOne(int count, WaveTrack * t,
                    double start, sampleCount len);
 
- protected:
+ protected:  
    // Override this method
-   virtual bool ProcessSimpleMono(float *buffer, sampleCount len) = 0;
+   virtual bool ProcessSimpleMono(float *buffer, sampleCount len, double samplerate) = 0;
 
 };
 
