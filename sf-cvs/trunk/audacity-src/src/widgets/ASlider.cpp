@@ -22,25 +22,25 @@
 #include "ASlider.h"
 
 BEGIN_EVENT_TABLE(ASlider, wxWindow)
-    EVT_MOUSE_EVENTS(ASlider::OnMouseEvent)
-    EVT_PAINT(ASlider::OnPaint)
-    END_EVENT_TABLE()
+   EVT_MOUSE_EVENTS(ASlider::OnMouseEvent)
+   EVT_PAINT(ASlider::OnPaint)
+END_EVENT_TABLE()
 
 ASlider::ASlider(wxWindow * parent, wxWindowID id,
-                     const wxPoint & pos,
-                     const wxSize & size,
-                     char **sliderXPM,
-                     char **thumbXPM,
-                     int max):wxWindow(parent, id, pos, size)
+                 const wxPoint & pos,
+                 const wxSize & size,
+                 wxImage *slider,
+                 wxImage *thumb,
+                 int max):wxWindow(parent, id, pos, size)
 {
    mMax = max;
    mValue = 0;
 
    mIsDragging = false;
 
-   mBitmap = new wxBitmap((const char **) sliderXPM);
+   mBitmap = new wxBitmap(slider->ConvertToBitmap());
 
-   mThumbBitmap = new wxBitmap((const char **) thumbXPM);
+   mThumbBitmap = new wxBitmap(thumb->ConvertToBitmap());
 
    mThumbWidth = mThumbBitmap->GetWidth();
    mThumbHeight = mThumbBitmap->GetHeight();

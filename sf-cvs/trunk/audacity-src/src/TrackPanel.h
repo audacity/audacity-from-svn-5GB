@@ -24,6 +24,7 @@ class TrackList;
 class VTrack;
 class TrackPanel;
 class TrackArtist;
+class Ruler;
 
 class TrackPanelListener {
  public:
@@ -56,7 +57,7 @@ class TrackPanel:public wxWindow {
 
    void OnTimer();
 
-   int GetRulerHeight() const { return 20;}
+   int GetRulerHeight() const { return 22;}
    int GetLeftOffset() const { return GetLabelWidth() + 1;}
 
    void GetTracksUsableArea(int *width, int *height) const;
@@ -178,6 +179,8 @@ class TrackPanel:public wxWindow {
    TrackList *mTracks;
    ViewInfo *mViewInfo;
    wxStatusBar *mStatusBar;
+
+   Ruler *mRuler;
 
    TrackArtist *mTrackArtist;
 

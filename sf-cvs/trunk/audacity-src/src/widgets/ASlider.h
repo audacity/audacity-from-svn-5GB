@@ -27,7 +27,8 @@ class ASlider:public wxWindow {
    ASlider(wxWindow * parent, wxWindowID id,
            const wxPoint & pos,
            const wxSize & size,
-           char **sliderXPM, char **thumbXPM, int max);
+           wxImage *slider, wxImage *thumb,
+           int max);
 
     virtual ~ ASlider();
 

@@ -114,22 +114,14 @@ BEGIN_EVENT_TABLE(APaletteFrame, wxMiniFrame)
     END_EVENT_TABLE()
 
 APaletteFrame::APaletteFrame(wxWindow * parent,
-                                 wxWindowID id,
-                                 const wxString & title,
-                                 const wxPoint & pos):wxMiniFrame(parent,
-                                                                  id,
-                                                                  title,
-                                                                  pos,
-                                                                  wxSize
-                                                                  (360,
-                                                                   GetAPaletteHeight
-                                                                   () +
-                                                                   APALETTE_HEIGHT_OFFSET),
-                                                                  wxTINY_CAPTION_HORIZ |
-                                                                  wxSTAY_ON_TOP |
-                                                                  wxMINIMIZE_BOX |
-                                                                  wxFRAME_FLOAT_ON_PARENT),
-mPalette(this, 0, wxPoint(0, 0), wxSize(300, GetAPaletteHeight()))
+                             wxWindowID id,
+                             const wxString & title,
+                             const wxPoint & pos):
+   wxMiniFrame(parent, id, title, pos,
+               wxSize(360, GetAPaletteHeight() + APALETTE_HEIGHT_OFFSET),
+               wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP |
+               wxMINIMIZE_BOX | wxFRAME_FLOAT_ON_PARENT),
+   mPalette(this, 0, wxPoint(0, 0), wxSize(300, GetAPaletteHeight()))
 {
 
 }
@@ -137,17 +129,205 @@ mPalette(this, 0, wxPoint(0, 0), wxSize(300, GetAPaletteHeight()))
 // APalette
 
 BEGIN_EVENT_TABLE(APalette, wxWindow)
-    EVT_PAINT(APalette::OnPaint)
-    EVT_CHAR(APalette::OnKeyEvent)
-    EVT_COMMAND_RANGE(ID_FIRST_TOOL, ID_LAST_TOOL,
-                  wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnTool)
-    EVT_COMMAND_RANGE(ID_PLAY_BUTTON, ID_PLAY_BUTTON,
-                  wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnPlay)
-    EVT_COMMAND_RANGE(ID_STOP_BUTTON, ID_STOP_BUTTON,
-                  wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnStop)
-    EVT_COMMAND_RANGE(ID_RECORD_BUTTON, ID_RECORD_BUTTON,
-                  wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnRecord)
-    END_EVENT_TABLE()
+   EVT_PAINT(APalette::OnPaint)
+   EVT_CHAR(APalette::OnKeyEvent)
+   EVT_COMMAND_RANGE(ID_FIRST_TOOL, ID_LAST_TOOL,
+                     wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnTool)
+   EVT_COMMAND(ID_PLAY_BUTTON,
+               wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnPlay)
+   EVT_COMMAND(ID_STOP_BUTTON,
+               wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnStop)
+   EVT_COMMAND(ID_RECORD_BUTTON,
+               wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnRecord)
+   EVT_COMMAND(ID_REW_BUTTON,
+               wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnRewind)
+   EVT_COMMAND(ID_FF_BUTTON,
+               wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnFF)
+END_EVENT_TABLE()
+   
+wxImage *ChangeImageColour(wxImage *srcImage,
+                           wxColour &srcColour,
+                           wxColour &dstColour)
+{
+   unsigned char *src = srcImage->GetData();
+   int width = srcImage->GetWidth();
+   int height = srcImage->GetHeight();
+
+   wxImage *dstImage = new wxImage(width, height);
+   unsigned char *dst = dstImage->GetData();
+
+   int srcVal[3], srcOpp[3];
+   srcVal[0] = srcColour.Red();
+   srcVal[1] = srcColour.Green();
+   srcVal[2] = srcColour.Blue();
+
+   int dstVal[3], dstOpp[3];
+   dstVal[0] = dstColour.Red();
+   dstVal[1] = dstColour.Green();
+   dstVal[2] = dstColour.Blue();
+
+   int i;
+   for(i=0; i<3; i++) {
+      srcOpp[i] = 255 - srcVal[i];
+      dstOpp[i] = 255 - dstVal[i];
+   }
+
+   int c = 0;
+   for(i=0; i<width*height*3; i++) {
+      int s = (int)*src;
+      if (s > srcVal[c])
+         *dst++ = dstVal[c] + dstOpp[c] * (s - srcVal[c]) / srcOpp[c];
+      else
+         *dst++ = dstVal[c] * s / srcVal[c];
+      src++;
+      c = (c+1)%3;
+   }
+
+   return dstImage;
+}
+
+wxImage *MakeButton(wxImage *background,
+                    wxImage *foreground,
+                    wxImage *mask,
+                    int xoff, int yoff)
+{
+   unsigned char *bk = background->GetData();
+   unsigned char *fg = foreground->GetData();
+   unsigned char *m = mask->GetData();
+   int width = background->GetWidth();
+   int height = background->GetHeight();
+   int w2 = foreground->GetWidth();
+   int h2 = foreground->GetHeight();
+
+   wxImage *dstImage = new wxImage(width, height);
+   unsigned char *dst = dstImage->GetData();
+
+   int x, y;
+   
+   memcpy(dst, bk, width*height*3);
+
+   for(y=0; y<h2; y++) {
+      unsigned char *bkp = bk + 3*((y+yoff)*width+xoff);
+      unsigned char *dstp = dst + 3*((y+yoff)*width+xoff);
+      for(x=0; x<w2; x++) {
+         int value = m[3*(y*w2+x)];
+         int opp = 255 - value;
+         for(int c=0; c<3; c++)
+            dstp[x*3+c] =
+               ((bkp[x*3+c] * opp) + (fg[3*(y*w2+x)+c] * value)) / 255;
+      }
+   }
+
+   return dstImage;
+}
+
+void APalette::MakeButtons()
+{
+   wxImage *upOriginal = new wxImage(UpButton);
+   wxImage *downOriginal = new wxImage(DownButton);
+   wxImage *hiliteOriginal = new wxImage(HiliteButton);
+
+   wxColour origColour(204, 204, 204);
+   wxColour newColour = 
+      wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+
+   wxImage *upPattern = ChangeImageColour(upOriginal,
+                                          origColour, newColour);
+   wxImage *downPattern = ChangeImageColour(downOriginal,
+                                            origColour, newColour);
+   wxImage *hilitePattern = ChangeImageColour(hiliteOriginal,
+                                              origColour, newColour);
+
+   wxImage *up, *down, *hilite;
+   wxImage *ctr, *mask;
+
+   /* Rewind */
+
+   ctr = new wxImage(Rewind);
+   mask = new wxImage(RewindAlpha);
+   up = MakeButton(upPattern, ctr, mask, 16, 16);
+   hilite = MakeButton(hilitePattern, ctr, mask, 16, 16);
+   down = MakeButton(downPattern, ctr, mask, 17, 17);
+   mRewind = new AButton(this, ID_REW_BUTTON,
+                         wxPoint(64, 4), wxSize(48, 48),
+                         up, hilite, down, up);
+   delete ctr;
+   delete mask;
+   delete up;
+   delete down;
+   delete hilite;
+
+   /* Play */
+
+   ctr = new wxImage(Play);
+   mask = new wxImage(PlayAlpha);
+   up = MakeButton(upPattern, ctr, mask, 16, 16);
+   hilite = MakeButton(hilitePattern, ctr, mask, 16, 16);
+   down = MakeButton(downPattern, ctr, mask, 17, 17);
+   mPlay = new AButton(this, ID_PLAY_BUTTON,
+                       wxPoint(114, 4), wxSize(48, 48),
+                       up, hilite, down, up);
+   delete ctr;
+   delete mask;
+   delete up;
+   delete down;
+   delete hilite;
+
+   /* Stop */
+
+   ctr = new wxImage(Stop);
+   mask = new wxImage(StopAlpha);
+   up = MakeButton(upPattern, ctr, mask, 16, 16);
+   hilite = MakeButton(hilitePattern, ctr, mask, 16, 16);
+   down = MakeButton(downPattern, ctr, mask, 17, 17);
+   mStop = new AButton(this, ID_STOP_BUTTON,
+                       wxPoint(164, 4), wxSize(48, 48),
+                       up, hilite, down, up);
+   delete ctr;
+   delete mask;
+   delete up;
+   delete down;
+   delete hilite;
+
+   /* Record */
+
+   ctr = new wxImage(Record);
+   mask = new wxImage(RecordAlpha);
+   up = MakeButton(upPattern, ctr, mask, 16, 16);
+   hilite = MakeButton(hilitePattern, ctr, mask, 16, 16);
+   down = MakeButton(downPattern, ctr, mask, 17, 17);
+   mRecord = new AButton(this, ID_RECORD_BUTTON,
+                         wxPoint(214, 4), wxSize(48, 48),
+                         up, hilite, down, up);
+   delete ctr;
+   delete mask;
+   delete up;
+   delete down;
+   delete hilite;
+
+   /* Fast Forward */
+
+   ctr = new wxImage(FFwd);
+   mask = new wxImage(FFwdAlpha);
+   up = MakeButton(upPattern, ctr, mask, 16, 16);
+   hilite = MakeButton(hilitePattern, ctr, mask, 16, 16);
+   down = MakeButton(downPattern, ctr, mask, 17, 17);
+   mFF = new AButton(this, ID_FF_BUTTON,
+                     wxPoint(264, 4), wxSize(48, 48),
+                     up, hilite, down, up);
+   delete ctr;
+   delete mask;
+   delete up;
+   delete down;
+   delete hilite;
+
+   delete upPattern;
+   delete downPattern;
+   delete hilitePattern;
+   delete upOriginal;
+   delete downOriginal;
+   delete hiliteOriginal;
+}
 
 APalette::APalette(wxWindow * parent, wxWindowID id,
                        const wxPoint & pos,
@@ -176,37 +356,43 @@ APalette::APalette(wxWindow * parent, wxWindowID id,
                    (char **) ZoomUp, (char **) ZoomOver,
                    (char **) ZoomDown, (char **) ZoomUp);
 
-   mPlay =
-       new AButton(this, ID_PLAY_BUTTON, wxPoint(64, 4), wxSize(48, 48),
-                   (char **) PlayUp, (char **) PlayOver,
-                   (char **) PlayDown, (char **) PlayDisabled);
-   mStop =
-       new AButton(this, ID_STOP_BUTTON, wxPoint(114, 4), wxSize(48, 48),
-                   (char **) StopUp, (char **) StopOver,
-                   (char **) StopDown, (char **) StopDisabled);
-
-   mRecord =
-       new AButton(this, ID_RECORD_BUTTON, wxPoint(164, 4), wxSize(48, 48),
-                   (char **) RecordUp, (char **) RecordOver,
-                   (char **) RecordDown, (char **) RecordDisabled);
+   MakeButtons();
 
 #if defined(__WXMAC__)          // && defined(TARGET_CARBON)
-   int sliderX = 262;
+   int sliderX = 362;
 #else
-   int sliderX = 222;
+   int sliderX = 322;
 #endif
+
+   wxColour backgroundColour = 
+      wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+   wxColour origColour(204, 204, 204);
+
+   wxImage *sliderOriginal = new wxImage(Slider);
+   wxImage *thumbOriginal = new wxImage(SliderThumb);
+   wxImage *sliderNew = ChangeImageColour(sliderOriginal,
+                                          origColour,
+                                          backgroundColour);
+   wxImage *thumbNew = ChangeImageColour(thumbOriginal,
+                                         origColour,
+                                         backgroundColour);
 
    mVolume =
        new ASlider(this, 0, wxPoint(sliderX, 14), wxSize(100, 28),
-                   (char **) Slider, (char **) SliderThumb, 100);
+                   sliderNew, thumbNew, 100);
+
+   delete sliderOriginal;
+   delete thumbOriginal;
+   delete sliderNew;
+   delete thumbNew;
 
    mVolume->Set(80);
 
    mCurrentTool = 0;
    mTool[0]->PushDown();
 
-   mBackgroundBrush.SetColour(wxColour(204, 204, 204));
-   mBackgroundPen.SetColour(wxColour(204, 204, 204));
+   mBackgroundBrush.SetColour(backgroundColour);
+   mBackgroundPen.SetColour(backgroundColour);
 
    mBackgroundBitmap = NULL;
    mBackgroundHeight = 0;
@@ -223,9 +409,13 @@ APalette::~APalette()
 {
    for (int i = 0; i < 4; i++)
       delete mTool[i];
+
+   delete mRewind;
    delete mPlay;
    delete mStop;
    delete mRecord;
+   delete mFF;
+
    delete mVolume;
 
    if (mBackgroundBitmap)
@@ -335,6 +525,30 @@ void APalette::OnRecord()
          SetRecord(false);
       }
    }
+}
+
+void APalette::OnRewind()
+{
+   mRewind->PopUp();
+
+   if (gAudioIO->IsBusy())
+      OnStop();
+
+   AudacityProject *p = GetActiveProject();
+   if (p)
+      p->Rewind();
+}
+
+void APalette::OnFF()
+{
+   mFF->PopUp();   
+   
+   if (gAudioIO->IsBusy())
+      OnStop();
+
+   AudacityProject *p = GetActiveProject();
+   if (p)
+      p->SkipEnd();
 }
 
 float APalette::GetSoundVol()

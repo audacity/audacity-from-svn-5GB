@@ -53,9 +53,11 @@ class APalette:public wxWindow {
    void OnKeyEvent(wxKeyEvent & event);
    void OnTool(wxCommandEvent & evt);
 
+   void OnRewind();
    void OnPlay();
    void OnStop();
    void OnRecord();
+   void OnFF();
 
    void SetPlay(bool down);
    void SetStop(bool down);
@@ -64,11 +66,15 @@ class APalette:public wxWindow {
    float GetSoundVol();
 
  private:
-    AButton * mTool[4];
+   void MakeButtons();
 
+   AButton * mTool[4];
+
+   AButton *mRewind;
    AButton *mPlay;
    AButton *mStop;
    AButton *mRecord;
+   AButton *mFF;
 
    ASlider *mVolume;
 
@@ -109,5 +115,7 @@ class APaletteFrame:public wxMiniFrame {
 #define ID_PLAY_BUTTON     504
 #define ID_STOP_BUTTON     505
 #define ID_RECORD_BUTTON   506
+#define ID_FF_BUTTON       507
+#define ID_REW_BUTTON      508
 
 #endif

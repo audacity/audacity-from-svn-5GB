@@ -21,9 +21,18 @@
 #include <wx/window.h>
 
 class wxBitmap;
+class wxImage;
 
 class AButton:public wxWindow {
  public:
+
+   AButton(wxWindow * parent, wxWindowID id,
+           const wxPoint & pos,
+           const wxSize & size,
+           wxImage *up,
+           wxImage *over,
+           wxImage *down,
+           wxImage *dis);
 
    AButton(wxWindow * parent, wxWindowID id,
            const wxPoint & pos,
