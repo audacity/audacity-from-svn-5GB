@@ -290,6 +290,9 @@ Changes in 1.2.3:
 
   * VU Meters will now always reset when audio I/O has stopped.
 
+  * Fixed a major Mac-only bug that was causing Audacity to crash at seemingly
+    random times, but especially during audio playback and recording.
+
   * New or updated translations: Italian (it), Hungarian (hu),
     Ukrainian (uk), Spanish (es). Polish (pl), Simplified Chinese (zh),
     Norsk-Bokmal (nb), French (fr).
