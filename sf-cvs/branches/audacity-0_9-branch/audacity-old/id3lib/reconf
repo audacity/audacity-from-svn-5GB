@@ -21,4 +21,7 @@ echo "- autoheader."
 autoheader
 echo "- automake."
 automake -a
+echo "- Cleaning up after automake."
+rm -rf autom4te.cache
+rm -rf zlib/autom4te.cache
 exit

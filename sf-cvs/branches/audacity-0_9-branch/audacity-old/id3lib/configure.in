@@ -1,4 +1,4 @@
-# $Id: configure.in,v 1.2 2001-07-29 00:18:11 habes Exp $
+# $Id: configure.in,v 1.2.2.1 2002-01-04 06:42:56 dmazzoni Exp $
 
 # Copyright 1999, 2000 Scott Thomas Haug <eldamitri@users.sourceforge.net>
 #  
@@ -22,7 +22,9 @@ dnl The following has been adapted from glib (http://www.gtk.org)
 dnl
 dnl we need to AC_DIVERT_PUSH/AC_DIVERT_POP these variable definitions so they
 dnl are available for $ac_help expansion (don't we all *love* autoconf?)
-AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
+#AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
+ifdef([AC_DIVERSION_NOTICE], [AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)],
+			      [AC_DIVERT_PUSH(NOTICE)])
 
 # Making releases:
 #   ID3LIB_PATCH_VERSION += 1;
@@ -36,7 +38,7 @@ AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
 ID3LIB_MAJOR_VERSION=3
 ID3LIB_MINOR_VERSION=8
 ID3LIB_PATCH_VERSION=0
-ID3LIB_ADDED_VERSION=pre1
+ID3LIB_ADDED_VERSION=pre2.1
 ID3LIB_VERSION=$ID3LIB_MAJOR_VERSION.$ID3LIB_MINOR_VERSION.$ID3LIB_PATCH_VERSION$ID3LIB_ADDED_VERSION
 
 ID3LIB_INTERFACE_AGE=0
@@ -80,21 +82,24 @@ ID3LIB_FULLNAME=$ID3LIB_NAME-$ID3LIB_VERSION
 
 AC_SUBST(ID3LIB_FULLNAME)
 
-AM_CONFIG_HEADER(config.h.unix:config.h.in)
+AM_CONFIG_HEADER(config.h)
 
 AM_INIT_AUTOMAKE($PACKAGE,$VERSION)
 
+AC_ISC_POSIX
+
 dnl Initialize libtool
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 
 dnl Initialize maintainer mode
 AM_MAINTAINER_MODE
 
-AC_CANONICAL_HOST
+#AC_CANONICAL_HOST
 
 dnl figure debugging default, prior to $ac_help setup
 dnl
-AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
+ifdef([AC_DIVERSION_NOTICE], [AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)],
+			      [AC_DIVERT_PUSH(NOTICE)])
 if test `expr $ID3LIB_MINOR_VERSION \% 2` = 1 ; then
         debug_default=yes
 else
@@ -110,7 +115,6 @@ AC_SUBST(ID3LIB_DEBUG_FLAGS)
 dnl Checks for programs
 AC_PROG_CC
 AC_PROG_CXX
-AC_ISC_POSIX
 AC_PROG_CXXCPP
 AC_PROG_INSTALL
 
@@ -223,4 +227,6 @@ AC_OUTPUT(                      \
   include/id3/Makefile          \
   src/Makefile                  \
   examples/Makefile             \
+  prj/Makefile			\
+  libprj/Makefile
 )
