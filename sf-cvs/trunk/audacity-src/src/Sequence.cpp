@@ -28,9 +28,6 @@ class SeqBlock {
 
    sampleCount start;
    sampleCount len;
-   float       min;
-   float       max;
-   float       rms;
 };
 
 WX_DEFINE_ARRAY(SeqBlock *, BlockArray);
@@ -415,9 +412,6 @@ bool Sequence::Paste(sampleCount s, const Sequence *src)
          SeqBlock *insertBlock = new SeqBlock();
          insertBlock->start = srcBlock->Item(i)->start + s;
          insertBlock->len = srcBlock->Item(i)->len;
-         insertBlock->min = srcBlock->Item(i)->min;
-         insertBlock->max = srcBlock->Item(i)->max;
-         insertBlock->rms = srcBlock->Item(i)->rms;
 
          insertBlock->f = mDirManager->CopyBlockFile(srcBlock->Item(i)->f);
          if (!insertBlock->f) {
@@ -499,9 +493,6 @@ bool Sequence::InsertSilence(sampleCount s0, sampleCount len)
       SeqBlock *w = new SeqBlock();
       w->start = pos;
       w->len = l;
-      w->min = float(0.0);
-      w->max = float(0.0);
-      w->rms = float(0.0);
       if (pos == 0 || len == l) {
          w->f = mDirManager->NewSimpleBlockFile(buffer, l, mSampleFormat);
          firstBlockFile = w->f;
@@ -556,9 +547,6 @@ bool Sequence::AppendBlock(SeqBlock * b)
       // TODO error Could not paste!  (Out of disk space?)
       return false;
    }
-   newBlock->min = b->min;
-   newBlock->max = b->max;
-   newBlock->rms = b->rms;
 
    //Don't need to Ref because it was done by CopyBlockFile, above...
    //mDirManager->Ref(newBlock->f);
