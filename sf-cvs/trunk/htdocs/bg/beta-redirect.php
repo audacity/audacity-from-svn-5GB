@@ -1,3 +1,3 @@
 <h2>Audacity 1.2 вече не е в режим на бета-тестване!</h2>
 
-<p>—валете си новата стабилна верси€: <a href="index.php<?php print $langQueryStr; ?>">Audacity 1.2.0</a>.
+<p>—валете си новата стабилна верси€: <a href="index.php<?php print $langQueryStr; ?>">Audacity <?php print $stableVersion; ?></a>.
