@@ -229,6 +229,16 @@ bool Export(AudacityProject *project,
 
    } while (!fileOkay);
 
+   /*
+    * Ensure that exporting a file by this name doesn't overwrite
+    * one of the existing files in the project.  (If it would
+    * overwrite an existing file, DirManager tries to rename the
+    * existing file.)
+    */
+
+   if (!project->GetDirManager()->EnsureSafeFilename(fName))
+      return false;
+
    /* Finally, dispatch to the correct procedure... 
     * These functions take too many parameters, almost to the point where I
     * am tempted to create a structure to contain this data... */

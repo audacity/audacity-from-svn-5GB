@@ -70,6 +70,24 @@ bool BlockFile::IsAlias()
    return mAlias;
 }
 
+wxString BlockFile::GetAliasedFile()
+{
+   wxASSERT(mAlias);
+
+   return mAliasFullPath;
+}
+
+void BlockFile::ChangeAliasedFile(wxString newFile)
+{
+   // This method is only called with the DirManager is moving
+   // a file we depend on out of the way, so that a new file
+   // with the same name can be exported.
+
+   wxASSERT(mAlias);
+
+   mAliasFullPath = newFile;
+}
+
 void BlockFile::Ref()
 {
    mRefCount++;

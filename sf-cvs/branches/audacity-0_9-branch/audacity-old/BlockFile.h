@@ -58,6 +58,8 @@ class BlockFile {
    wxString GetName();
 
    bool IsAlias();
+   wxString GetAliasedFile();
+   void ChangeAliasedFile(wxString newFile);
 
  private:
 

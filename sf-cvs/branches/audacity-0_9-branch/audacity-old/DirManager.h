@@ -33,6 +33,7 @@
 
 #include <wx/string.h>
 #include <wx/hash.h>
+#include <wx/list.h>
 
 #include "BlockFile.h"
 #include "WaveTrack.h"
@@ -71,6 +72,10 @@ class DirManager {
 
    void MakePartOfProject(BlockFile * f);
 
+   // If this filename is one we depend on, tries to rename
+   // the existing file so that we can save a new file by this name.
+   bool EnsureSafeFilename(wxString fName);
+
    void Ref(BlockFile * f);
    void Deref(BlockFile * f);
 
@@ -92,12 +97,16 @@ class DirManager {
    wxHashTable *blockFileHash;
 
    static int defaultHashTableSize;
-   static bool hashWarning;
+   int hashTableSize;
    void CheckHashTableSize();
+
+   wxStringList aliasList;
 
    wxString projName;
    wxString projPath;
    wxString projFull;
+
+   wxString lastProject;
 
    static wxString pathChar;
    static wxString home;
