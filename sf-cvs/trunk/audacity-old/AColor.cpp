@@ -115,6 +115,82 @@ void AColor::Init()
   inited = true;
 }
 
+  const char AColor_midicolors[16][3] = {
+    {255, 102, 102}, // 1=salmon
+    {204, 0, 0},     // 2=red
+    {255, 117, 23},  // 3=orange
+    {255, 255, 0},   // 4=yellow    
+    {0, 204, 0},     // 5=green
+    {0, 204, 204},   // 6=turquoise
+    {0, 0, 204},     // 7=blue
+    {153, 0, 255},   // 8=blue-violet
+
+    {140, 97, 54},   // 9=brown
+    {120, 120, 120},    // 10=gray (drums)
+    {255, 175, 40},  // 11=lt orange
+    {102, 255, 102}, // 12=lt green
+    {153, 255, 255}, // 13=lt turquoise
+    {153, 153, 255}, // 14=lt blue
+    {204, 102, 255}, // 15=lt blue-violet
+    {255, 51, 204}}; // 16=lt red-violet
+
+void AColor::MIDIChannel(wxDC *dc, int channel /* 1 - 16 */)
+{
+  if (channel >= 1 && channel <= 16) {
+    const char *colors = AColor_midicolors[channel-1];
+  
+    dc->SetPen(wxPen(wxColour(colors[0],
+                              colors[1],
+                              colors[2]), 1, wxSOLID));
+    dc->SetBrush(wxBrush(wxColour(colors[0],
+                                  colors[1],
+                                  colors[2]), wxSOLID));
+  }
+  else {
+    dc->SetPen(wxPen(wxColour(153, 153, 153), 1, wxSOLID));
+    dc->SetBrush(wxBrush(wxColour(153, 153, 153), wxSOLID));
+  }
+
+}
+
+void AColor::LightMIDIChannel(wxDC *dc, int channel /* 1 - 16 */)
+{
+  if (channel >= 1 && channel <= 16) {
+    const char *colors = AColor_midicolors[channel-1];
+  
+    dc->SetPen(wxPen(wxColour(127+colors[0]/2,
+                              127+colors[1]/2,
+                              127+colors[2]/2), 1, wxSOLID));
+    dc->SetBrush(wxBrush(wxColour(127+colors[0]/2,
+                                  127+colors[1]/2,
+                                  127+colors[2]/2), wxSOLID));
+  }
+  else {
+    dc->SetPen(wxPen(wxColour(204, 204, 204), 1, wxSOLID));
+    dc->SetBrush(wxBrush(wxColour(204, 204, 204), wxSOLID));
+  }
+
+}
+
+void AColor::DarkMIDIChannel(wxDC *dc, int channel /* 1 - 16 */)
+{
+  if (channel >= 1 && channel <= 16) {
+    const char *colors = AColor_midicolors[channel-1];
+  
+    dc->SetPen(wxPen(wxColour(colors[0]/2,
+                              colors[1]/2,
+                              colors[2]/2), 1, wxSOLID));
+    dc->SetBrush(wxBrush(wxColour(colors[0]/2,
+                                  colors[1]/2,
+                                  colors[2]/2), wxSOLID));
+  }
+  else {
+    dc->SetPen(wxPen(wxColour(102, 102, 102), 1, wxSOLID));
+    dc->SetBrush(wxBrush(wxColour(102, 102, 102), wxSOLID));
+  }
+
+}
+
 void GetColorGradient(float value,
 					  bool selected,
                       unsigned char *red,
