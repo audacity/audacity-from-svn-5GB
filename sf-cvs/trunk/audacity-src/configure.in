@@ -205,6 +205,12 @@ AC_ARG_WITH(portmixer,
 	use_portmixer=$withval,
 	use_portmixer="yes")
 
+AC_ARG_WITH(soundtouch,
+	[AC_HELP_STRING([--with-soundtouch],
+		[compile with SoundTouch [default=yes]])],
+	use_soundtouch=$withval,
+	use_soundtouch="yes")
+
 AC_ARG_WITH(help,
 	[AC_HELP_STRING([--with-help],
 		[Make the help file "audacity-help.htb" [default=no]])],
@@ -215,6 +221,15 @@ if [[ "$use_portmixer" = "yes" ]] ; then
 	AC_DEFINE(USE_PORTMIXER, 1,	
 	[Define if PortMixer support should be enabled])
 	CXXFLAGS="-I../lib-src/portmixer/px_common $CXXFLAGS"
+fi
+
+if [[ "$use_soundtouch" = "yes" ]] ; then
+	AC_DEFINE(USE_SOUNDTOUCH, 1,	
+	[Define if SoundTouch support should be enabled])
+	CXXFLAGS="-I../lib-src/soundtouch/src $CXXFLAGS"
+	BUILDLIBS="$BUILDLIBS soundtouch/soundtouch.a"
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/soundtouch/soundtouch.a"		
+   SUBDIRS="$SUBDIRS lib-src/soundtouch"
 fi
 
 if [[ "$use_nyquist" = "yes" ]] ; then
@@ -563,6 +578,12 @@ if [[ "$use_portmixer" = "yes" ]] ; then
 	echo "  with    portmixer";
 else
 	echo "  without portmixer";
+fi
+
+if [[ "$use_soundtouch" = "yes" ]] ; then
+	echo "  with    soundtouch";
+else
+	echo "  without soundtouch";
 fi
 
 if [[ $use_help = "yes" ]] ; then
