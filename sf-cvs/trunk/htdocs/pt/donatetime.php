@@ -8,10 +8,10 @@ O Audacity é desenvolvido por uma equipe de voluntários em seu tempo livre. Se v
 
 <li><b>Diga oi!</b>
 <p>
-Se voê gostou do Audacity, diga-nos!  Envie seu email para
+Se você gostou do Audacity, diga-nos!  Envie seu email para
 <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>
-e nos diga o que você gostou. É sempre bom ouvir elogios dos usuários. Fique à vontade também para nos enviar suas críticas e sugestões. O Audacity é um programa livre e está sempre em evolução.
+e nos conte o que você mais lhe agradou. É sempre bom ouvir elogios dos usuários. Fique à vontade também para nos enviar suas críticas e sugestões. O Audacity é um programa livre e está sempre em evolução.
 <p>
 
 <li><b>Ingresse na comunidade de usuários do Audacity</b>
@@ -22,14 +22,17 @@ A lista de mensagens é o lugar onde os usuários do Audacity se encontram e troca
 
 <li><b>Traduza</b>
 <p>
-Se você é fluente em inglês, você pode ajudar a traduzir alguma parte do Auidacity para português do Brasil. Se você for de Portugal, Angola, ou qualquer outro lugar onde se fale português, pode utilizar estas páginas como base para a regionalização do programa.<p>
+Se você é fluente em inglês, pode ajudar a traduzir alguma parte do Audacity para português do Brasil.<p>
+<i>No momento há a necessidade urgente de um tradutor do manual do programa para o português. Se estiver interessado, entre em contato conosco!</I><P>
+
+Se você for de Portugal, Angola, ou qualquer outro lugar onde se fale português, pode utilizar estas páginas como base para a regionalização do programa.<p>
 É possível ainda traduzir e responder mensagens do fórum inglês e ajudar outros usuários a encontrar respostas em sua própria língua. 
 <p>
 <a href="http://audacity.sourceforge.net/translation/"
 >Veja mais sobre os projetos de tradução </a>- em inglês.
 <p>
 
-<li><b>Reporte problemas "bugs"</b>
+<li><b>Reporte falhas</b>
 <p>
 Se você achou um problema com o Audacity,
 <a href="mailto:audacity-help@lists.sourceforge.net"
@@ -38,9 +41,9 @@ Lembre-se sempre de dizer a maior quantidade possível de informações sobre o seu
 <p>
 
 
-<li><b>Teste versões beta - <i>"beta-tester"</i></b>
+<li><b>Teste versões beta</b>
 <p>
-Junto com a versão estável do Audacity, sempre há uma versão beta, que traz novos recursos que estão sendo testados e serão adicionados em versões futuras do programa.
+Junto a versão final do Audacity, sempre há uma versão beta, que traz novos recursos que estão sendo testados e serão adicionados em versões futuras do programa.
 Teste esta versão e diga-nos o que pareceu interessante, o que funcionou, o que ainda precisa ser ajustado, etc.
 <p>
 
@@ -53,7 +56,7 @@ Se você conhece ferramentas de programação C++ e está acostumado com o CVS, gost
 
 <li><b>Doe dinheiro</b>
 <p>
-Ademais destas opções, é possível doar dinheiro para ajudar no desenvolvimento do programa. Visite a página <?php print "<a href=donatemoney.php?$langLinkStr>"; ?>doe dinheiro</a> para maiores detalhes.
+Além destas opções, é possível doar dinheiro para ajudar no desenvolvimento do programa. Visite a página <?php print "<a href=donatemoney.php?$langLinkStr>"; ?>doe dinheiro</a> para maiores detalhes.
 </p>
 
 </ul>
