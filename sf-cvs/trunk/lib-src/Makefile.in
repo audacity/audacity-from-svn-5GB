@@ -26,6 +26,9 @@ libsndfile/src/.libs/libsndfile.a:
 portaudio/pa_unix_oss/portaudio.a:
 	cd portaudio/pa_unix_oss && $(MAKE)
 
+portaudio/pa_mac_core/portaudio.a:
+	cd portaudio/pa_mac_core && $(MAKE)
+
 wave++/source/libw.a:
 	cd wave++/source && $(MAKE)
 
