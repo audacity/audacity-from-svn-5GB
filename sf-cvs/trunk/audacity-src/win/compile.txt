@@ -7,8 +7,8 @@ Authors:
   Vaughan Johnson
 
 ================================================================
-This version is currently accurate for Audacity version 1.1.1.
-Last Updated: November 10, 2002
+This version is currently accurate for Audacity version 1.1.2.
+Last Updated: February 1, 2003
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 ================================================================
@@ -36,7 +36,7 @@ wxWindows is available from http://www.wxwindows.org.
 Similar to the Linux kernel, wxWindows is available as
 stable and development branches.  
 
-Audacity 1.1.1 uses wxWindows 2.3.3, the unstable development 
+Audacity 1.1.2 uses wxWindows 2.3.3, the unstable development 
 branch, available at
 
   http://www.wxwindows.org/dl_msw2.htm#dev
@@ -130,11 +130,7 @@ Release build, or "libcmt.lib" for a Debug build.
 -----------------------
 STEP 6:  Build Audacity
 -----------------------
-To build libsndfile on Windows, you'll need to copy both 
-"config.h" and "sndfile.h" from "audacity\lib-src\libsndfile\Win32" 
-to "audacity\lib-src\libsndfile\Win32" before you compile. 
-
-Now select the configuration that you wish to build
+Select the configuration that you wish to build
 ("Audacity - Win32 Release" for general use, "Audacity -
 Win32 Debug" for a slower but debuggable executable) from
 the "Build"->"Set Active Configuration" dialog and choose
