@@ -72,30 +72,21 @@ Source: "E:\sfw_dev\audacity\win\Release\Nyquist\sndfnint.lsp"; DestDir: "{app}\
 Source: "E:\sfw_dev\audacity\win\Release\Nyquist\system.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Nyquist\test.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Nyquist\xlinit.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\analyze.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+; doesn't work:     Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\analyze.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\beat.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\clicktrack.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\delay.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\fadein.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\fadeout.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-
-; Freeverb2 requires VST Enabler.
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\Freeverb2.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\Freeverb-readme.txt"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-
-; GVerb requires VST Enabler.
+; redundant:     Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\fadein.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+; redundant:     Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\fadeout.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\Hard Limiter.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\GVerb.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\highpass.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\highpass.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\lowpass.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\pluck.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-
-; sc4 requires VST Enabler.
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\sc4.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\tremolo.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\undcbias.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+; redundant:     Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\undcbias.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 
 
 [Icons]
@@ -105,7 +96,7 @@ Name: "{userdesktop}\Audacity"; Filename: "{app}\audacity.exe"; MinVersion: 4,4;
 [InstallDelete]
 ; Get rid of Audacity 1.0.0 stuff that's no longer used.
 Type: files; Name: "{app}\audacity-help.htb"
-; Not sure we want to do this because user may have stored their own.
+; Don't think we want to do this because user may have stored their own.
 ;   Type: filesandordirs; Name: "{app}\vst"
 
 ; We've switched from a folder in the start menu to just the Audacity.exe at the top level.
