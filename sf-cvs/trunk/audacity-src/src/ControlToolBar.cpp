@@ -71,17 +71,17 @@ enum {
 
 // Strings to convert a tool number into a status message
 // These MUST be in the same order as the ids above.
-const char * MessageOfTool[numTools] = { _("Click and drag to select audio"),
-   _("Click and drag to edit the amplitude envelope"),
-   _("Click and drag to edit the samples"),
+const char * MessageOfTool[numTools] = { wxTRANSLATE("Click and drag to select audio"),
+   wxTRANSLATE("Click and drag to edit the amplitude envelope"),
+   wxTRANSLATE("Click and drag to edit the samples"),
 #if defined( __WXMAC__ )
-   _("Click to Zoom In, Shift-Click to Zoom Out"),
+   wxTRANSLATE("Click to Zoom In, Shift-Click to Zoom Out"),
 #elif defined( __WXMSW__ )
-   _("Drag to Zoom Into Region, Right-Click to Zoom Out"),
+   wxTRANSLATE("Drag to Zoom Into Region, Right-Click to Zoom Out"),
 #elif defined( __WXGTK__ )
-   _("Left=Zoom In, Right=Zoom Out, Middle=Normal"),
+   wxTRANSLATE("Left=Zoom In, Right=Zoom Out, Middle=Normal"),
 #endif
-   _("Click and drag to move a track in time"),
+   wxTRANSLATE("Click and drag to move a track in time"),
    "" // multi-mode tool
 };
 
@@ -956,7 +956,7 @@ const char * ControlToolBar::GetMessageForTool( int ToolNumber )
 {
    wxASSERT( ToolNumber >= 0 );
    wxASSERT( ToolNumber < numTools );
-   return MessageOfTool[ ToolNumber ];
+   return _(MessageOfTool[ ToolNumber ]);
 }
 
 
