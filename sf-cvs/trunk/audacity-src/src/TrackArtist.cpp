@@ -738,11 +738,7 @@ void TrackArtist::DrawSpectrum(WaveTrack *track,
       x++;
    }
 
-#if wxVERSION_NUMBER < 2303
-   wxBitmap converted = image->ConvertToBitmap();
-#else
    wxBitmap converted = wxBitmap(image);
-#endif
 
    //wxBitmap converted;
    //converted.Create(r.width, r.height);

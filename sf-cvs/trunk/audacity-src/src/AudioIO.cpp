@@ -65,6 +65,7 @@ AudioIO::AudioIO()
    mTempFloats = new float[65536]; // TODO: out channels * PortAudio buffer size
    mLostSamples = 0;
    mDroppedSamples = 0;
+   mFirstPause = true;
 
    PaError err = Pa_Initialize();
 
@@ -449,12 +450,21 @@ double AudioIO::GetPauseIndicator()
 void AudioIO::SetPaused(bool state)
 {
    if(state)
+   {
+      mFirstPause = true;
       mPausePosition = GetIndicator();
+   }
 
    mPaused = state;
 }
 
-bool AudioIO::GetPaused(){
+bool AudioIO::GetPaused(bool bIgnoreFirstPause){
+   if(mFirstPause && bIgnoreFirstPause && mPaused)
+   {
+      mFirstPause = false;
+      return false;
+   }
+
    return mPaused;
 }
 
@@ -511,7 +521,6 @@ void AudioIO::FillBuffers()
    // Recording buffers
 
    if (mNumInChannels > 0) {
-
       unsigned int len = mInBufferSize;
       for(i=0; i<(int)mNumInChannels; i++) {
          unsigned int avail = (unsigned int)mInBuffers[i]->AvailForGet();
@@ -528,11 +537,6 @@ void AudioIO::FillBuffers()
             mInTracks[i]->Append(temp, floatSample, len);
          }
          DeleteSamples(temp);
-         
-         // We can't redraw from this thread, so post a message
-         // telling the project to redraw itself next time through
-         // its main event loop.
-         project->PostRedrawMessage();
       }
    }
 }
@@ -576,6 +580,9 @@ void AudioIO::Stop()
 
       Pa_CloseStream(stream);
    }
+
+   while(Pa_StreamActive(stream))
+      wxSleep(1);
 
    mPortStream = NULL;
 
@@ -655,13 +662,20 @@ void AudioIO::SetAlwaysEnablePause(bool bEnable)
 
 void AudioIO::Finish()
 {
+   // Only allow one thread to access this code at a time
+   wxCriticalSectionLocker locker(mFinishSection);
+
+   //If portaudio is still active, return
+   if(mPortStream)
+      return;
+
    AudacityProject *project = mProject;
 
    // Note that this should only be called from the AudioThread,
    // after it has received the Stop message
 
    int i;
-   if (gAudioIO->mNumOutChannels > 0) {
+   if (mNumOutChannels > 0) {
       for(i=0; i<mNumOutTracks; i++)
          delete mOutBuffers[i];
       delete[] mOutBuffers;

@@ -1,4 +1,3 @@
-
 /**********************************************************************
 
   Audacity: A Digital Audio Editor
@@ -83,10 +82,6 @@
 TrackList *AudacityProject::msClipboard = new TrackList();
 double AudacityProject::msClipLen = 0.0;
 AudacityProject *AudacityProject::msClipProject = NULL;
-
-enum {
-   RedrawProjectID = 17000
-};
 
 #ifdef __WXMAC__
 # ifndef __UNIX__
@@ -483,12 +478,6 @@ void AudacityProject::RedrawProject()
    mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::PostRedrawMessage()
-{
-   wxCommandEvent event(RedrawProjectID);
-   this->AddPendingEvent(event);
-}
-
 DirManager *AudacityProject::GetDirManager()
 {
    return &mDirManager;
@@ -796,11 +785,6 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
 
 bool AudacityProject::ProcessEvent(wxEvent & event)
 {
-   if (event.GetEventType() == RedrawProjectID) {
-      RedrawProject();
-      return true;
-   }
-
    if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED) {
       if(GetCommands()->HandleMenuEvent(event))
          return true;

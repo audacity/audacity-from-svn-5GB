@@ -56,7 +56,7 @@ class AudioIO {
    void Stop();
    void HardStop();
    void SetPaused(bool state);
-   bool GetPaused();
+   bool GetPaused(bool bIgnoreFirstPause = false);
    void SetAlwaysEnablePause(bool bEnable);
 
    bool IsBusy();
@@ -83,6 +83,7 @@ class AudioIO {
    double GetPauseIndicator();
    void Finish();
 
+   wxCriticalSection   mFinishSection;
    wxCriticalSection   mStopSection;
    AudioThread        *mThread;
    AudacityProject    *mProject;
@@ -116,6 +117,7 @@ class AudioIO {
    float              *mTempFloats;
    int                 mDroppedSamples;
    int                 mLostSamples;
+   bool                mFirstPause;
 
    #if USE_PORTMIXER
    PxMixer            *mMixer;

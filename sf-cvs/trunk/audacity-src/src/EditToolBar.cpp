@@ -121,15 +121,9 @@ void EditToolBar::MakeButtons()
        wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
    wxColour baseColour = wxColour(204, 204, 204);
 
-#if wxVERSION_NUMBER < 2303
-   wxImage *upOriginal = new wxImage(wxBitmap(Up));
-   wxImage *downOriginal = new wxImage(wxBitmap(Down));
-   wxImage *hiliteOriginal = new wxImage(wxBitmap(Hilite));
-#else
    wxImage *upOriginal = new wxImage(wxBitmap(Up).ConvertToImage());
    wxImage *downOriginal = new wxImage(wxBitmap(Down).ConvertToImage());
    wxImage *hiliteOriginal = new wxImage(wxBitmap(Hilite).ConvertToImage());
-#endif
 
 #ifdef __WXGTK__
    /* dmazzoni: hack to get around XPM color bugs in GTK */

@@ -124,13 +124,8 @@ void ControlToolBar::InitializeControlToolBar()
 
    MakeButtons();
 
-#if wxVERSION_NUMBER < 2303
-   wxImage *sliderOriginal = new wxImage(wxBitmap(Slider));
-   wxImage *thumbOriginal = new wxImage(wxBitmap(SliderThumb));
-#else
    wxImage *sliderOriginal = new wxImage(wxBitmap(Slider).ConvertToImage());
    wxImage *thumbOriginal = new wxImage(wxBitmap(SliderThumb).ConvertToImage());
-#endif
 
 #ifdef __WXMAC__
    wxImage *sliderNew = sliderOriginal;
@@ -201,13 +196,8 @@ wxImage *ControlToolBar::MakeToolImage(wxImage * tool,
       break;
    }
 
-#if wxVERSION_NUMBER < 2303
-   wxImage *bkgndOriginal = new wxImage(wxBitmap(src));
-   wxImage *upOriginal = new wxImage(wxBitmap(Up));
-#else
    wxImage *bkgndOriginal = new wxImage(wxBitmap(src).ConvertToImage());
    wxImage *upOriginal = new wxImage(wxBitmap(Up).ConvertToImage());
-#endif
 
 #ifdef __WXMAC__
    wxImage *background = bkgndOriginal;
@@ -244,13 +234,8 @@ wxImage *ControlToolBar::MakeToolImage(wxImage * tool,
 AButton *ControlToolBar::MakeTool(const char **tool, const char **alpha,
                                   wxWindowID id, int left, int top)
 {
-#if wxVERSION_NUMBER < 2303
-   wxImage *ctr = new wxImage(wxBitmap(tool));
-   wxImage *mask = new wxImage(wxBitmap(alpha));
-#else
    wxImage *ctr = new wxImage(wxBitmap(tool).ConvertToImage());
    wxImage *mask = new wxImage(wxBitmap(alpha).ConvertToImage());
-#endif
    wxImage *up = MakeToolImage(ctr, mask, 0);
    wxImage *hilite = MakeToolImage(ctr, mask, 1);
    wxImage *down = MakeToolImage(ctr, mask, 2);
@@ -297,15 +282,9 @@ AButton *ControlToolBar::MakeButton(char const **foreground,
 
 void ControlToolBar::MakeButtons()
 {
-#if wxVERSION_NUMBER < 2303
-   wxImage *upOriginal = new wxImage(wxBitmap(UpButton));
-   wxImage *downOriginal = new wxImage(wxBitmap(DownButton));
-   wxImage *hiliteOriginal = new wxImage(wxBitmap(HiliteButton));
-#else
    wxImage *upOriginal = new wxImage(wxBitmap(UpButton).ConvertToImage());
    wxImage *downOriginal = new wxImage(wxBitmap(DownButton).ConvertToImage());
    wxImage *hiliteOriginal = new wxImage(wxBitmap(HiliteButton).ConvertToImage());
-#endif
 
    wxColour newColour =
        wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);

@@ -350,6 +350,24 @@ TrackPanel::~TrackPanel()
    delete mWaveTrackMenu;
    delete mNoteTrackMenu;
    delete mLabelTrackMenu;
+
+   while(!mScreenAtIndicator.IsEmpty())
+   {
+      delete mScreenAtIndicator[0]->bitmap;
+      tpBitmap *tmpDeletedTpBitmap = mScreenAtIndicator[0];
+      mScreenAtIndicator.RemoveAt(0);
+      delete tmpDeletedTpBitmap;
+   }
+   mScreenAtIndicator.Clear();
+
+   while(!mPreviousCursorData.IsEmpty())
+   {
+      delete mPreviousCursorData[0]->bitmap;
+      tpBitmap *tmpDeletedTpBitmap = mPreviousCursorData[0];
+      mPreviousCursorData.RemoveAt(0);
+      delete tmpDeletedTpBitmap;
+   }
+   mPreviousCursorData.Clear();
 }
 
 void TrackPanel::UpdatePrefs()
@@ -392,18 +410,38 @@ void TrackPanel::GetTracksUsableArea(int *width, int *height) const
    *width -= 2 + kLeftInset;
 }
 
-// AS: This function draws the blinky cursor things, both in the
+// AS: This function draws the cursor things, both in the
 //  ruler as seen at the top of the screen, but also in each of the
 //  selected tracks.
-void TrackPanel::DrawCursors()
+void TrackPanel::DrawCursors(wxDC * dc)
 {
    // The difference between a wxClientDC and a wxPaintDC
    // is that the wxClientDC is used outside of a paint loop,
    // whereas the wxPaintDC is used inside a paint loop
-   wxClientDC dc(this);
-   dc.SetLogicalFunction(wxINVERT);
-   dc.SetPen(*wxBLACK_PEN);
-   dc.SetBrush(*wxBLACK_BRUSH);
+   bool bIsClientDC = false;
+   if(!dc)
+   {
+      bIsClientDC = true;
+      dc = new wxClientDC(this);
+   }
+
+   wxMemoryDC tmpDrawDC;
+   dc->SetLogicalFunction(wxINVERT);
+   dc->SetPen(*wxBLACK_PEN);
+   dc->SetBrush(*wxBLACK_BRUSH);
+
+   //Erase old cursor
+   while(!mPreviousCursorData.IsEmpty())
+   {
+      tmpDrawDC.SelectObject(*mPreviousCursorData[0]->bitmap);
+      dc->Blit(mPreviousCursorData[0]->x, mPreviousCursorData[0]->y, mPreviousCursorData[0]->bitmap->GetWidth(), mPreviousCursorData[0]->bitmap->GetHeight(), &tmpDrawDC, 0, 0);
+      tmpDrawDC.SelectObject(wxNullBitmap);
+      delete mPreviousCursorData[0]->bitmap;
+      tpBitmap *tmpDeletedTpBitmap = mPreviousCursorData[0];
+      mPreviousCursorData.RemoveAt(0);
+      delete tmpDeletedTpBitmap;
+   }
+   mPreviousCursorData.Clear();
 
    int x = GetLeftOffset() +
        int ((mViewInfo->sel0 - mViewInfo->h) * mViewInfo->zoom);
@@ -412,9 +450,27 @@ void TrackPanel::DrawCursors()
 
 
    // AS: Ah, no, this is where we draw the blinky thing in the ruler.
-   if (!mIndicatorShowing) {
+   {
+      wxCoord top = 1;
+      wxCoord bottom = GetRulerHeight() - 2;
+
+      //Save bitmaps of the areas that we are going to overwrite
+      wxBitmap *tmpBitmap = new wxBitmap(1, bottom-top);
+      tmpDrawDC.SelectObject(*tmpBitmap);
+
+      //Copy the part of the screen into the bitmap, using the memory DC
+      tmpDrawDC.Blit(0, 0, tmpBitmap->GetWidth(), tmpBitmap->GetHeight(), dc, x, top);
+      tmpDrawDC.SelectObject(wxNullBitmap);
+
+      //Add the bitmap to the array
+      tpBitmap *tmpTpBitmap = new tpBitmap;
+      tmpTpBitmap->x = x;
+      tmpTpBitmap->y = top;
+      tmpTpBitmap->bitmap = tmpBitmap;
+      mPreviousCursorData.Add(tmpTpBitmap);
+
       // Draw cursor in ruler
-      dc.DrawLine(x, 1, x, GetRulerHeight() - 2);
+      dc->DrawLine(x, top, x, bottom);
    }
 
    if (x >= GetLeftOffset()) {
@@ -423,15 +479,42 @@ void TrackPanel::DrawCursors()
       for (Track * t = iter.First(); t; t = iter.Next()) {
          int height = t->GetHeight();
          if (t->GetSelected() && t->GetKind() != Track::Label)
-            dc.DrawLine(x, y + kTopInset + 1, x, y + height - 2);
+         {
+            wxCoord top = y + kTopInset + 1;
+            wxCoord bottom = y + height - 2;
+
+            //Save bitmaps of the areas that we are going to overwrite
+            wxBitmap *tmpBitmap = new wxBitmap(1, bottom-top);
+            tmpDrawDC.SelectObject(*tmpBitmap);
+
+            //Copy the part of the screen into the bitmap, using the memory DC
+            tmpDrawDC.Blit(0, 0, tmpBitmap->GetWidth(), tmpBitmap->GetHeight(), dc, x, top);
+            tmpDrawDC.SelectObject(wxNullBitmap);
+
+            //Add the bitmap to the array
+            tpBitmap *tmpTpBitmap = new tpBitmap;
+            tmpTpBitmap->x = x;
+            tmpTpBitmap->y = top;
+            tmpTpBitmap->bitmap = tmpBitmap;
+            mPreviousCursorData.Add(tmpTpBitmap);
+
+            dc->DrawLine(x, top, x, bottom);
+         }
          y += height;
       }
+   }
+
+   if(bIsClientDC)
+   {
+      delete dc;
+      dc = NULL;
    }
 }
 
 // AS: This gets called on our wx timer events.
 void TrackPanel::OnTimer()
 {
+   mTimeCount++;
    // AS: If the user is dragging the mouse and there is a track that
    //  has captured the mouse, then scroll the screen, as necessary.
    if (mIsSelecting && mCapturedTrack) {
@@ -440,18 +523,26 @@ void TrackPanel::OnTimer()
    // AS: The "indicator" is the little graphical mark shown in the ruler
    //  that indicates where the current play/record position is.  IsBusy
    //  is basically IsPlaying || IsRecording.
-   if (mIndicatorShowing ||
+   if ((mIndicatorShowing ||
        (gAudioIO->IsBusy() &&
-        gAudioIO->GetProject() == (AudacityProject *) GetParent())) {
+        gAudioIO->GetProject() == (AudacityProject *) GetParent())) && !gAudioIO->GetPaused()) {
       UpdateIndicator();
    }
    // AS: Um, I get the feeling we want to redraw the cursors
    //  every 10 timer ticks or something...
-   mTimeCount = (mTimeCount + 1) % 10;
-   if (mTimeCount == 0 &&
-       !mTracks->IsEmpty() && mViewInfo->sel0 == mViewInfo->sel1) {
+   if ((mTimeCount % 10) == 0 &&
+       !mTracks->IsEmpty() && mViewInfo->sel0 == mViewInfo->sel1 && !mIsSelecting) {
       DrawCursors();
    }
+   // BG: Update the screen while playing
+   if((mTimeCount % 20) == 0 &&
+      (gAudioIO->IsBusy() &&
+       gAudioIO->GetProject() == (AudacityProject *) GetParent()) && !gAudioIO->GetPaused(true))
+   {
+      gAudioIO->GetProject()->RedrawProject();
+   }
+   if(mTimeCount > 1000)
+      mTimeCount = 0;
 }
 
 // AS: We check on each timer tick to see if we need to scroll.
@@ -492,7 +583,7 @@ void TrackPanel::ScrollDuringDrag()
 //  drawing process (that should probably change, but...), so
 //  we create a memory DC and tell the ruler to draw itself there,
 //  and then just blit that to the screen.
-void TrackPanel::UpdateIndicator()
+void TrackPanel::UpdateIndicator(wxDC * dc)
 {
    double indicator = gAudioIO->GetIndicator();
    bool onScreen = between_inclusive(mViewInfo->h, indicator,
@@ -515,10 +606,15 @@ void TrackPanel::UpdateIndicator()
       GetSize(&width, &height);
       height = GetRulerHeight();
 
-      wxClientDC dc(this);
+      bool bIsClientDC = false;
+      if(!dc)
+      {
+         bIsClientDC = true;
+         dc = new wxClientDC(this);
+      }
     
       //Draw the line across all tracks specifying where play is
-      DrawTrackIndicator(&dc);
+      DrawTrackIndicator(dc);
 
 
       wxMemoryDC memDC;
@@ -530,7 +626,13 @@ void TrackPanel::UpdateIndicator()
       DrawRuler(&memDC, true);
     
       
-      dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
+      dc->Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
+
+      if(bIsClientDC)
+      {
+         delete dc;
+         dc = NULL;
+      }
    }
 }
 
@@ -556,11 +658,12 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    memDC.SelectObject(*mBitmap);
 
    DrawTracks(&memDC);
-   DrawRuler(&memDC);
+   UpdateIndicator(&memDC);
+
+   if(!mIsSelecting && mViewInfo->sel0 == mViewInfo->sel1)
+      DrawCursors(&memDC);
 
    dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
-
-
 }
 
 // AS: Make our Parent (well, whoever is listening to us) push their state.
@@ -2216,20 +2319,38 @@ void TrackPanel::DrawTrackIndicator(wxDC * dc)
    // Draw indicator
    double ind = gAudioIO->GetIndicator();
    int indp = 0;
+   wxMemoryDC tmpDrawDC;
+
+   //If you are supposed to erase the indicator, do so:
+   if(mPlayIndicatorExists) {
+      while(!mScreenAtIndicator.IsEmpty())
+      {
+         tmpDrawDC.SelectObject(*mScreenAtIndicator[0]->bitmap);
+         dc->Blit(mScreenAtIndicator[0]->x, mScreenAtIndicator[0]->y, mScreenAtIndicator[0]->bitmap->GetWidth(), mScreenAtIndicator[0]->bitmap->GetHeight(), &tmpDrawDC, 0, 0);
+         tmpDrawDC.SelectObject(wxNullBitmap);
+         delete mScreenAtIndicator[0]->bitmap;
+         tpBitmap *tmpDeletedTpBitmap = mScreenAtIndicator[0];
+         mScreenAtIndicator.RemoveAt(0);
+         delete tmpDeletedTpBitmap;
+      }
+      mScreenAtIndicator.Clear();
+   }
+
    if (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen)) {
       indp = GetLeftOffset() + int ((ind - mViewInfo->h) * mViewInfo->zoom);
- 
+
+#ifdef OLD_INDICATOR_BEHAVIOR
          dc->SetPen(*wxBLACK_PEN);
          dc->SetLogicalFunction(wxINVERT);
-
+#else
+         dc->SetPen(*wxGREEN_PEN);
+#endif
          
          //Get the size of the trackpanel region, so we know where to redraw
          int width, height;
          GetSize(&width, &height);   
          
          
-
-       
          int x = indp;
          int y = -mViewInfo->vpos + GetRulerHeight();
         
@@ -2237,20 +2358,31 @@ void TrackPanel::DrawTrackIndicator(wxDC * dc)
            if (x >= GetLeftOffset()) {
             // Draw cursor in all selected tracks
             TrackListIterator iter(mTracks);
-   
-            
+
             // Iterate through each track
             for (Track * t = iter.First(); t; t = iter.Next()) {
                int height = t->GetHeight();
                if ( t->GetKind() != Track::Label) {
-               
-                  //If you are supposed to redraw the indicator, do so:
-                  if(mPlayIndicatorExists) {
-                     dc->DrawLine(mLastIndicator, y + kTopInset + 1, mLastIndicator, y + height - 2);
-                  }
+                  wxCoord top = y + kTopInset + 1;
+                  wxCoord bottom = y + height - 2;
+
+                  //Save bitmaps of the areas that we are going to overwrite
+                  wxBitmap *tmpBitmap = new wxBitmap(1, bottom-top);
+                  tmpDrawDC.SelectObject(*tmpBitmap);
+
+                  //Copy the part of the screen into the bitmap, using the memory DC
+                  tmpDrawDC.Blit(0, 0, tmpBitmap->GetWidth(), tmpBitmap->GetHeight(), dc, x, top);
+                  tmpDrawDC.SelectObject(wxNullBitmap);
+
+                  //Add the bitmap to the array
+                  tpBitmap *tmpTpBitmap = new tpBitmap;
+                  tmpTpBitmap->x = x;
+                  tmpTpBitmap->y = top;
+                  tmpTpBitmap->bitmap = tmpBitmap;
+                  mScreenAtIndicator.Add(tmpTpBitmap);
 
                   //Draw the new indicator in its correct location
-                  dc->DrawLine(x, y + kTopInset + 1, x, y + height - 2);
+                  dc->DrawLine(x, top, x, bottom);
                
                }
                //Increment y so you draw on the proper track
@@ -2260,10 +2392,7 @@ void TrackPanel::DrawTrackIndicator(wxDC * dc)
            }
            //Set the boolean to true so that things get redrawn next time.
            mPlayIndicatorExists=true;
-           mLastIndicator=indp;               // This updates the old indicator value to the new indicator position
-      
    }
-  
 }
 
 void TrackPanel::GetCloseBoxRect(const wxRect r, wxRect & dest) const
