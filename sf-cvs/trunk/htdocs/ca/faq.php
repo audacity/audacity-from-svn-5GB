@@ -22,7 +22,7 @@
 <a href="#i3">Mac: Què faig amb l'arxiu .sit?</a><br>
 <a href="#i4">Unix: Per què rebo el missatge "error en les dependències"
 quan instal·lo des de l'RPM?</a><br>
-<a href="#i5">Unix: Per què apareix un error mentre carrego la llibreria
+<a href="#i5">Unix: Per què apareix un error mentre carrego la biblioteca
 compartida libwx_gtk.so?</a><br>
 
 <p>
@@ -141,7 +141,7 @@ No cal instal·lar l'Audacity. Simplement arrossegueu la carpeta de l'Audacity a 
 <a name="i5"></a>
 <font size=+1><b>
 
-5. Unix: Per què apareix un error mentre carrego la llibreria compartida libwx_gtk.so?<br>
+5. Unix: Per què apareix un error mentre carrego la biblioteca compartida libwx_gtk.so?<br>
 </b></font>
 
 <p><font size=+0>
