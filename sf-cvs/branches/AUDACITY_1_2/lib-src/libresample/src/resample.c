@@ -46,6 +46,37 @@ typedef struct {
    double  Time;
 } rsdata;
 
+void *resample_dup(const void *	handle)
+{
+   const rsdata *cpy = (const rsdata *)handle;
+   rsdata *hp = (rsdata *)malloc(sizeof(rsdata));
+
+   hp->minFactor = cpy->minFactor;
+   hp->maxFactor = cpy->maxFactor;
+   hp->Nmult = cpy->Nmult;
+   hp->LpScl = cpy->LpScl;
+   hp->Nwing = cpy->Nwing;
+
+   hp->Imp = (float *)malloc(hp->Nwing * sizeof(float));
+   memcpy(hp->Imp, cpy->Imp, hp->Nwing * sizeof(float));
+   hp->ImpD = (float *)malloc(hp->Nwing * sizeof(float));
+   memcpy(hp->ImpD, cpy->ImpD, hp->Nwing * sizeof(float));
+
+   hp->Xoff = cpy->Xoff;
+   hp->XSize = cpy->XSize;
+   hp->X = (float *)malloc((hp->XSize + hp->Xoff) * sizeof(float));
+   memcpy(hp->X, cpy->X, (hp->XSize + hp->Xoff) * sizeof(float));
+   hp->Xp = cpy->Xp;
+   hp->Xread = cpy->Xread;
+   hp->YSize = cpy->YSize;
+   hp->Y = (float *)malloc(hp->YSize * sizeof(float));
+   memcpy(hp->Y, cpy->Y, hp->YSize * sizeof(float));
+   hp->Yp = cpy->Yp;
+   hp->Time = cpy->Time;
+   
+   return (void *)hp;
+}
+
 void *resample_open(int highQuality, double minFactor, double maxFactor)
 {
    double *Imp64;
@@ -130,9 +161,9 @@ void *resample_open(int highQuality, double minFactor, double maxFactor)
    return (void *)hp;
 }
 
-int resample_get_filter_width(void   *handle)
+int resample_get_filter_width(const void   *handle)
 {
-   rsdata *hp = (rsdata *)handle;
+   const rsdata *hp = (const rsdata *)handle;
    return hp->Xoff;
 }
 
