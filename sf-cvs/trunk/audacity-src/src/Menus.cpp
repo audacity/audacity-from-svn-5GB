@@ -84,23 +84,24 @@ void AudacityProject::CreateMenuBar()
    wxMenu *menu = 0;
    for (i = 0; i < mCommandMenuItem.Count(); i++) {
       switch (mCommandMenuItem[i]->category) {
-      case fileMenu:
-         menu = mFileMenu;
-         break;
-      case editMenu:
-         menu = mEditMenu;
-         break;
-      case viewMenu:
-         menu = mViewMenu;
-         break;
-      case projectMenu:
-         menu = mProjectMenu;
-         break;
-      case helpMenu:
-         menu = mHelpMenu;
-         break;
-      default:
-         break;                 // ERROR -- should not happen
+         case fileMenu:
+            menu = mFileMenu;
+            break;
+         case editMenu:
+            menu = mEditMenu;
+            break;
+         case viewMenu:
+            menu = mViewMenu;
+            break;
+         case projectMenu:
+            menu = mProjectMenu;
+            break;
+         case helpMenu:
+            menu = mHelpMenu;
+            break;
+         default:
+            // ERROR -- should not happen
+            break;
       }
 
       if (mCommandMenuItem[i]->commandString == "---")
@@ -290,6 +291,12 @@ int AudacityProject::GetNumCommands()
    return mCommandMenuItem.GetCount();
 }
 
+void AudacityProject::SetMenuState(wxMenu *menu, int id, bool enable)
+{
+   menu->Enable(id, enable);
+   SetCommandState(id, enable);
+}
+
 void AudacityProject::SetCommandState(int nID, int iVal)
 {
    int idz = (nID - MenuBaseID);
@@ -317,17 +324,9 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 #undef AUDACITY_MENUS_COMMANDS_ACCELL_TABLE
 */
 
-   // Note that the titles of the menus here are dependent on the
-   // titles above.
-
-   mFileMenu->Enable(SaveID, mUndoManager.UnsavedChanges());
-   SetCommandState(SaveID, mUndoManager.UnsavedChanges());
-
-   mEditMenu->Enable(UndoID, mUndoManager.UndoAvailable());
-   SetCommandState(UndoID, mUndoManager.UndoAvailable());
-
-   mEditMenu->Enable(RedoID, mUndoManager.RedoAvailable());
-   SetCommandState(RedoID, mUndoManager.RedoAvailable());
+   SetMenuState(mFileMenu, SaveID, mUndoManager.UnsavedChanges());
+   SetMenuState(mEditMenu, UndoID, mUndoManager.UndoAvailable());
+   SetMenuState(mEditMenu, RedoID, mUndoManager.RedoAvailable());
 
    bool nonZeroRegionSelected = (mViewInfo.sel1 > mViewInfo.sel0);
 
@@ -353,8 +352,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
       t = iter.Next();
    }
 
-   mEditMenu->Enable(PasteID, numTracksSelected > 0 && msClipLen > 0.0);
-   SetCommandState(PasteID, numTracksSelected > 0 && msClipLen > 0.0);
+   SetMenuState(mEditMenu, PasteID, numTracksSelected > 0 && msClipLen > 0.0);
 
    //Modify toolbar-specific Menus
 
@@ -402,50 +400,29 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 
    bool anySelection = numTracksSelected > 0 && nonZeroRegionSelected;
 
-   mFileMenu->Enable(ExportMixID, numTracks > 0);
-   SetCommandState(ExportMixID, numTracks > 0);
-   mFileMenu->Enable(ExportSelectionID, anySelection);
-   SetCommandState(ExportSelectionID, anySelection);
-   mFileMenu->Enable(ExportLossyMixID, numTracks > 0);
-   SetCommandState(ExportLossyMixID, numTracks > 0);
-   mFileMenu->Enable(ExportLossySelectionID, anySelection);
-   SetCommandState(ExportLossySelectionID, anySelection);
-   mFileMenu->Enable(ExportLabelsID, numLabelTracks > 0);
-   SetCommandState(ExportLabelsID, numLabelTracks > 0);
+   SetMenuState(mFileMenu, ExportMixID, numTracks > 0);
+   SetMenuState(mFileMenu, ExportSelectionID, anySelection);
+   SetMenuState(mFileMenu, ExportLossyMixID, numTracks > 0);
+   SetMenuState(mFileMenu, ExportLossySelectionID, anySelection);
+   SetMenuState(mFileMenu, ExportLabelsID, numLabelTracks > 0);
 
-   mEditMenu->Enable(CutID, anySelection);
-   SetCommandState(CutID, anySelection);
-   mEditMenu->Enable(CopyID, anySelection);
-   SetCommandState(CopyID, anySelection);
-   mEditMenu->Enable(TrimID, anySelection);
-   SetCommandState(TrimID, anySelection);
-   mEditMenu->Enable(DeleteID, anySelection);
-   SetCommandState(DeleteID, anySelection);
-   mEditMenu->Enable(SilenceID, anySelection);
-   SetCommandState(SilenceID, anySelection);
-   mEditMenu->Enable(InsertSilenceID, numTracksSelected > 0);
-   SetCommandState(InsertSilenceID, numTracksSelected > 0);
-   mEditMenu->Enable(SplitID, anySelection);
-   SetCommandState(SplitID, anySelection);
-   mEditMenu->Enable(DuplicateID, anySelection);
-   SetCommandState(DuplicateID, anySelection);
-   mEditMenu->Enable(SelectAllID, numTracks > 0);
-   SetCommandState(SelectAllID, numTracks > 0);
+   SetMenuState(mEditMenu, CutID, anySelection);
+   SetMenuState(mEditMenu, CopyID, anySelection);
+   SetMenuState(mEditMenu, TrimID, anySelection);
+   SetMenuState(mEditMenu, DeleteID, anySelection);
+   SetMenuState(mEditMenu, SilenceID, anySelection);
+   SetMenuState(mEditMenu, InsertSilenceID, numTracksSelected > 0);
+   SetMenuState(mEditMenu, SplitID, anySelection);
+   SetMenuState(mEditMenu, DuplicateID, anySelection);
+   SetMenuState(mEditMenu, SelectAllID, numTracks > 0);
 
-   mViewMenu->Enable(PlotSpectrumID, numWaveTracksSelected > 0
+   SetMenuState(mViewMenu, PlotSpectrumID, numWaveTracksSelected > 0
                      && nonZeroRegionSelected);
-   SetCommandState(PlotSpectrumID, numWaveTracksSelected > 0
-                   && nonZeroRegionSelected);
 
-   mProjectMenu->Enable(QuickMixID, numWaveTracksSelected > 1);
-   SetCommandState(QuickMixID, numWaveTracksSelected > 1);
-
-   mProjectMenu->Enable(AlignID, numTracksSelected > 1);
-   SetCommandState(AlignID, numTracksSelected > 1);
-   mProjectMenu->Enable(AlignZeroID, numTracksSelected > 0);
-   SetCommandState(AlignZeroID, numTracksSelected > 0);
-   mProjectMenu->Enable(RemoveTracksID, numTracksSelected > 0);
-   SetCommandState(RemoveTracksID, numTracksSelected > 0);
+   SetMenuState(mProjectMenu, QuickMixID, numWaveTracksSelected > 1);
+   SetMenuState(mProjectMenu, AlignID, numTracksSelected > 1);
+   SetMenuState(mProjectMenu, AlignZeroID, numTracksSelected > 0);
+   SetMenuState(mProjectMenu, RemoveTracksID, numTracksSelected > 0);
 
    int e;
    for (e = 0; e < Effect::GetNumEffects(false); e++) {

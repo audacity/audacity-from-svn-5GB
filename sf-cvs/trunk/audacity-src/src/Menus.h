@@ -61,6 +61,7 @@ wxString GetCommandDesc(int nIndex);
 audEventFunction GetCommandFunc(int nIndex);
 int GetNumCommands();
 
+void SetMenuState(wxMenu *menu, int id, bool enable);
 void SetCommandState(int nID, int iVal);
 int GetCommandState(int nIndex);
 
