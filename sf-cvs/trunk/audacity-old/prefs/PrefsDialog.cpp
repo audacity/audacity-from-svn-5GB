@@ -44,6 +44,11 @@ wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
 {
    CentreOnParent();
 
+   wxRect rect = GetRect();
+   if(rect.x < 0) rect.x = 0;
+   if(rect.y < 0) rect.y = 0;
+   SetSize(rect);
+
    wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
 
    mCategories = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize
@@ -97,6 +102,12 @@ wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
    // Until sizing works properly on the Mac
    SetSize(500, 350);
    #endif
+
+   #ifdef __WXMSW__
+   // Because it looks nice (tm)   (you can see all the tabs at once)
+   SetSize(355, 363);
+   #endif
+
 }
 
 
@@ -129,7 +140,4 @@ void PrefsDialog::OnOK(wxCommandEvent & event)
 
 PrefsDialog::~PrefsDialog()
 {
-   //delete mCategories;
-   //delete mOK;
-   //delete mCancel;
 }

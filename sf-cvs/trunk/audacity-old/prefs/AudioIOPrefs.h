@@ -18,6 +18,7 @@
 #include <wx/event.h>
 #include <wx/button.h>
 #include <wx/checkbox.h>
+#include <wx/choice.h>
 
 #include "PrefsPanel.h"
 
@@ -52,6 +53,16 @@ class AudioIOPrefs:public PrefsPanel {
    wxButton *mRecordingDeviceDefault;
    #endif
    
+   #ifdef __WXMSW__   
+   wxChoice *mPlaybackDeviceCtrl;
+   wxButton *mPlaybackDeviceTest;
+   wxButton *mPlaybackDeviceVol;
+
+   wxChoice *mRecordingDeviceCtrl;
+   wxButton *mRecordingDeviceTest;
+   wxButton *mRecordingDeviceVol;
+   #endif
+
    #ifdef __WXMAC__
    wxChoice *mRecordingDeviceChoice;
    wxChoice *mRecordingInputChoice;

@@ -15,6 +15,7 @@
 #include <wx/stattext.h>
 #include <wx/button.h>
 #include <wx/string.h>
+#include <wx/textctrl.h>
 
 #include "PrefsPanel.h"
 
@@ -31,8 +32,7 @@ class DirectoriesPrefs:public PrefsPanel {
    wxStaticBox *mEnclosingBox;
 
    wxStaticText *mTempDirLabel;
-   wxStaticText *mTempDirText;
-   wxButton *mChange;
+   wxTextCtrl   *mTempDirText;
    wxStaticText *mFreeSpaceLabel;
    wxStaticText *mFreeSpace;
    

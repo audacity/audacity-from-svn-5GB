@@ -456,6 +456,7 @@ private:
    BECLOSESTREAM beCloseStream;
    BEVERSION beVersion;
 
+
 public:
    BladeEncExporter() {
       mLibraryLoaded = false;
@@ -464,14 +465,14 @@ public:
       /* Set all the config defaults to sane values */
 
       memset(&mConf, 0, sizeof(BE_CONFIG));
-      mConf.dwConfig = BE_CONFIG_LAME;
-      mConf.format.LHV1.dwStructVersion = 1;
-      mConf.format.LHV1.dwStructSize = sizeof(BE_CONFIG);
-      mConf.format.LHV1.dwReSampleRate = 0;
-      mConf.format.LHV1.dwBitrate = 128;
+//      mConf.dwConfig = BE_CONFIG_LAME;
+//      mConf.format.LHV1.dwStructVersion = 1;
+//      mConf.format.LHV1.dwStructSize = sizeof(BE_CONFIG);
+//      mConf.format.LHV1.dwReSampleRate = 0;
+//      mConf.format.LHV1.dwBitrate = 128;
       //mConf.format.LHV1.dwMaxBitrate = 128;
-      mConf.format.LHV1.nPreset = LQP_HIGH_QUALITY;
-	  mConf.format.LHV1.dwMpegVersion = MPEG1;
+//      mConf.format.LHV1.nPreset = LQP_HIGH_QUALITY;
+//	  mConf.format.LHV1.dwMpegVersion = MPEG1;
 //      mConf.format.LHV1.bCopyright = false;
 //      mConf.format.LHV1.bCRC = true;
 //      mConf.format.LHV1.bOriginal = false;
@@ -481,6 +482,12 @@ public:
 //      mConf.format.LHV1.nVBRQuality = 2;
 //      mConf.format.LHV1.dwVbrAbr_bps = -1;
 //      mConf.format.LHV1.bNoRes = true;
+      mConf.dwConfig = BE_CONFIG_MP3;
+      mConf.format.mp3.wBitrate = 128;
+      mConf.format.mp3.bCopyright = false;
+      mConf.format.mp3.bCRC = true;
+      mConf.format.mp3.bOriginal = false;
+      mConf.format.mp3.bPrivate = false;
    }
 
    bool LoadLibrary(wxString fileName) {
@@ -522,30 +529,30 @@ public:
       if(!mLibraryLoaded)
          return -1;
 
-	  int modes[] = { 0, BE_MP3_MODE_MONO, BE_MP3_MODE_STEREO };
-	  mConf.format.LHV1.dwSampleRate = sampleRate;
-	  mConf.format.LHV1.nMode = modes[channels];
+	  //int modes[] = { 0, BE_MP3_MODE_MONO, BE_MP3_MODE_STEREO };
+	  //mConf.format.LHV1.dwSampleRate = sampleRate;
+	  //mConf.format.LHV1.nMode = modes[channels];
+      int modes[] = { 0, BE_MP3_MODE_MONO, BE_MP3_MODE_STEREO };
+      mConf.format.mp3.byMode = modes[channels];
+      mConf.format.mp3.dwSampleRate = sampleRate;
 
       beInitStream(&mConf, &mInSampleNum, &mOutBufferSize, &mStreamHandle);
 
-	  if(channels == 2)
+      if(channels == 2)
 		  mStereo = true;
-	  else
+      else
 		  mStereo = false;
 
       mEncoding = true;
 
-      return mInSampleNum;
+      return(mInSampleNum / 2); /* convert samples_total into samples_per_channel */
    }
 
    int GetOutBufferSize() {
       if (!mEncoding)
          return -1;
 
-	  if(mStereo)
-		 return mOutBufferSize * 2;
-	  else
-		 return mOutBufferSize;
+      return mOutBufferSize;
    }
 
    int EncodeBuffer(short int inbuffer[], unsigned char outbuffer[]) {
@@ -610,7 +617,7 @@ bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
       return false;
    }
 
-   wxFFile outFile(fName, "w");
+   wxFFile outFile(fName, "wb");
    if (!outFile.IsOpened()) {
       wxMessageBox("Unable to open target file for writing");
       return false;

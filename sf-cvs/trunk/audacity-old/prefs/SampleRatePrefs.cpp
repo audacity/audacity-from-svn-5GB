@@ -102,11 +102,6 @@ bool SampleRatePrefs::Apply()
 
 SampleRatePrefs::~SampleRatePrefs()
 {
-   // These don't need to be deleted since they're part of the
-   // sizer hierarchy
-   //
-   //for(int i = 0; i < NUM_RATES; i++)
-   //   delete mSampleRates[i];
 }
 
 

@@ -20,7 +20,7 @@ class MP3Exporter {
       virtual bool ValidLibraryLoaded() = 0;
       virtual const char *GetLibraryVersion() = 0;
 
-      /* returns the number of samples to send for each call to EncodeBuffer */
+      /* returns the number of samples PER CHANNEL to send for each call to EncodeBuffer */
       virtual int InitializeStream(int channels, int sampleRate) = 0;
       /* In bytes. must be called AFTER InitializeStream */
       virtual int GetOutBufferSize() = 0;

@@ -18,6 +18,13 @@
 #include <wx/utils.h>
 #include <wx/sizer.h>
 
+#ifdef __WXMSW__
+extern "C" {
+#include <windows.h>
+#include <mmsystem.h>
+}
+#endif
+
 #include "../Prefs.h"
 #include "AudioIOPrefs.h"
 
@@ -29,6 +36,8 @@ enum {
    RecordingDeviceChoiceID,
    RecordingInputChoiceID,
    PlaybackDeviceChoiceID,
+   RecordingVolumeID,
+   PlaybackVolumeID
 };
 
 BEGIN_EVENT_TABLE(AudioIOPrefs, wxPanel)
@@ -48,8 +57,8 @@ PrefsPanel(parent)
 #endif // __WXGTK__
 
 #ifdef __WXMSW__
-   wxString defaultPlaybackDevice = "/dev/dsp";
-   wxString defaultRecordingDevice = "/dev/dsp";
+   wxString defaultPlaybackDevice = "";
+   wxString defaultRecordingDevice = "";
 #endif // __WXMSW__
 
 #ifdef __WXMAC__
@@ -280,16 +289,146 @@ PrefsPanel(parent)
 
 #endif                          // __WXMAC__
 
+#ifdef __WXMSW__
+
+   {
+      wxStaticBoxSizer *playbackSizer =
+          new wxStaticBoxSizer(
+            new wxStaticBox(this, -1, "Playback Device"),
+            wxVERTICAL);
+
+      {
+         wxBoxSizer *pFileSizer = new wxBoxSizer(wxHORIZONTAL);
+
+		 int numDevices = waveInGetNumDevs();
+		 wxString *deviceNames = new wxString[numDevices];
+		 WAVEINCAPS caps;
+
+		 for(int j = 0; j < numDevices; j++) {
+			 waveInGetDevCaps(j, &caps, sizeof(WAVEINCAPS));
+			 deviceNames[j] = caps.szPname;
+		 }
+
+         mPlaybackDeviceCtrl = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
+			 numDevices, deviceNames);
+		 mPlaybackDeviceCtrl->SetStringSelection(mPlayDevice);
+		 if(mPlaybackDeviceCtrl->GetSelection() == -1)
+			 mPlaybackDeviceCtrl->SetSelection(0);
+
+         pFileSizer->Add(
+            new wxStaticText(this, -1, "Device:"), 0, 
+            wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+         pFileSizer->Add(mPlaybackDeviceCtrl, 1, 
+            wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
+
+         playbackSizer->Add(pFileSizer, 0,
+            wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+      }
+
+
+      {
+         wxBoxSizer *pButtonsSizer = new wxBoxSizer(wxHORIZONTAL);
+
+         mPlaybackDeviceTest = new wxButton(this, PlaybackTestID, "Test");
+         mPlaybackDeviceVol = new wxButton(this,
+                                               PlaybackVolumeID,
+                                               "Volume");
+
+         pButtonsSizer->Add(
+            mPlaybackDeviceTest, 0,
+            wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT,
+            GENERIC_CONTROL_BORDER);
+
+         pButtonsSizer->Add(
+            mPlaybackDeviceVol, 0,
+            wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT,
+            GENERIC_CONTROL_BORDER);
+
+         playbackSizer->Add(pButtonsSizer, 0,
+            wxALIGN_RIGHT|wxLEFT|wxRIGHT, GENERIC_CONTROL_BORDER);
+      }
+
+      topSizer->Add(playbackSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
+   }
+
+
+
+   {
+      wxStaticBoxSizer *recordingSizer =
+          new wxStaticBoxSizer(
+            new wxStaticBox(this, -1, "Recording Device"),
+            wxVERTICAL);
+
+      {
+
+         wxBoxSizer *rFileSizer = new wxBoxSizer(wxHORIZONTAL);
+
+		 
+		 int numDevices = waveOutGetNumDevs();
+		 wxString *deviceNames = new wxString[numDevices];
+		 WAVEOUTCAPS caps;
+
+		 for(int j = 0; j < numDevices; j++) {
+			 waveOutGetDevCaps(j, &caps, sizeof(WAVEOUTCAPS));
+			 deviceNames[j] = caps.szPname;
+		 }
+
+         mRecordingDeviceCtrl = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
+			 numDevices, deviceNames);
+		 mRecordingDeviceCtrl->SetStringSelection(mRecDevice);
+		 if(mRecordingDeviceCtrl->GetSelection() == -1)
+			 mRecordingDeviceCtrl->SetSelection(0);
+
+
+         rFileSizer->Add(
+            new wxStaticText(this, -1, "Device:"), 0,
+            wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+         rFileSizer->Add(mRecordingDeviceCtrl, 1,
+            wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+         recordingSizer->Add(rFileSizer, 0,
+            wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+      }
+
+      {
+         wxBoxSizer *rButtonsSizer = new wxBoxSizer(wxHORIZONTAL);
+
+         mRecordingDeviceTest = new wxButton(this,
+                                             RecordingTestID, "Test");
+         mRecordingDeviceVol = new wxButton(this,
+                                                RecordingVolumeID,
+                                                "Volume");
+
+         rButtonsSizer->Add(
+            mRecordingDeviceTest, 0,
+            wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT,
+            GENERIC_CONTROL_BORDER);
+
+         rButtonsSizer->Add(mRecordingDeviceVol, 0,
+            wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT,
+            GENERIC_CONTROL_BORDER);
+
+         recordingSizer->Add(rButtonsSizer, 0,
+            wxALIGN_RIGHT|wxLEFT|wxRIGHT, GENERIC_CONTROL_BORDER);
+      }
+
+      topSizer->Add(recordingSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
+   }
+
+#endif                          // __WXMSW__
+
 
    mRecordStereo = new wxCheckBox(this, -1, "Record in Stereo");
    mRecordStereo->SetValue(recordStereo);
-   topSizer->Add(mRecordStereo, 0, wxGROW);
+   topSizer->Add(mRecordStereo, 0, wxGROW|wxALL, RADIO_BUTTON_BORDER);
 
 
 
    mDuplex = new wxCheckBox(this, -1, "Play While Recording");
    mDuplex->SetValue(duplex);
-   topSizer->Add(mDuplex, 0, wxGROW);
+   topSizer->Add(mDuplex, 0, wxGROW|wxALL, RADIO_BUTTON_BORDER);
 
    SetAutoLayout(true);
    topSizer->Fit(this);
@@ -325,8 +464,8 @@ bool AudioIOPrefs::Apply()
 #endif                          // __WXMAC__
 
 #ifdef __WXMSW__
-   mPlayDevice = "";
-   mPecDevice = "";   
+   mPlayDevice = mPlaybackDeviceCtrl->GetStringSelection();
+   mRecDevice = mRecordingDeviceCtrl->GetStringSelection();   
 #endif                          // __WXMSW__
 
    bool recordStereo = mRecordStereo->GetValue();
@@ -388,19 +527,6 @@ void AudioIOPrefs::SetRecordingDeviceDefault(wxCommandEvent & event)
 
 AudioIOPrefs::~AudioIOPrefs()
 {
-/*
-#ifdef __WXGTK__
-   delete mPlaybackDeviceCtrl;
-   delete mPlaybackDeviceTest;
-   delete mPlaybackDeviceDefault;
-   delete mRecordingDeviceCtrl;
-   delete mRecordingDeviceTest;
-   delete mRecordingDeviceDefault;
-#endif                          // __WXGTK__
-
-   delete mRecordStereo;
-   delete mDuplex;
-*/
 }
 
 #ifdef __WXMAC__

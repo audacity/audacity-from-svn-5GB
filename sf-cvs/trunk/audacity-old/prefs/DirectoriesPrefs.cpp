@@ -48,9 +48,9 @@ PrefsPanel(parent)
          this, -1, "Location:", wxDefaultPosition,
          wxDefaultSize, wxALIGN_RIGHT );
 
-      mTempDirText = new wxStaticText(
+      mTempDirText = new wxTextCtrl(
          this, -1, mTempDir,
-         wxDefaultPosition, wxDefaultSize, 0 );
+         wxDefaultPosition, wxSize(160, -1), 0 );
 
       mFreeSpaceLabel = new wxStaticText(
          this, -1, "Free Space:",
@@ -59,17 +59,13 @@ PrefsPanel(parent)
       mFreeSpace = new wxStaticText(
          this, -1, FormatSize(GetFreeDiskSpace((char *) (const char *) mTempDir)),
          wxDefaultPosition, wxDefaultSize, 0 );
-
-      mChange = new wxButton(
-         this, SetID, "Change",
-         wxDefaultPosition, wxDefaultSize, 0 );
         
-      tempDirGridSizer->Add( mTempDirLabel, 0, wxALIGN_LEFT|wxALL, 2 );
-      tempDirGridSizer->Add( mTempDirText, 0, wxGROW|wxALL, 2 );
-      tempDirGridSizer->Add( mFreeSpaceLabel, 0, wxALIGN_LEFT|wxALL, 2 );
-      tempDirGridSizer->Add( mFreeSpace, 0, wxGROW|wxALL, 2 );
+      tempDirGridSizer->Add( mTempDirLabel, 0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
+      tempDirGridSizer->Add( mTempDirText, 1, wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
+      tempDirGridSizer->Add( mFreeSpaceLabel, 0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
+      tempDirGridSizer->Add( mFreeSpace, 0, wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
+      tempDirGridSizer->AddGrowableCol(1);
       tempDirSizer->Add( tempDirGridSizer, 0, wxGROW|wxALL, 2 );
-      tempDirSizer->Add( mChange, 0, wxALIGN_LEFT|wxALL, 2 );
 
       topSizer->Add( tempDirSizer, 0, wxGROW|wxALL, 5 );
    }
@@ -135,11 +131,4 @@ bool DirectoriesPrefs::Apply()
 
 DirectoriesPrefs::~DirectoriesPrefs()
 {
-/*
-   delete mTempDirLabel;
-   delete mTempDir;
-   delete mChange;
-   delete mFreeSpaceLabel;
-   delete mFreeSpace;
-*/
 }

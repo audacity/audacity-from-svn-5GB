@@ -155,10 +155,4 @@ bool SpectrumPrefs::Apply()
 
 SpectrumPrefs::~SpectrumPrefs()
 {
-/*
-   for(int i = 0; i < numFFTSizes; i++)
-      delete mFFTSize[i];
-   delete mGrayscale;
-   delete mMaxFreqCtrl;
-*/
 }
