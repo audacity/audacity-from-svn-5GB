@@ -343,7 +343,7 @@ enum mad_flow output_cb(void *_data,
 
    for(chn = 0; chn < channels; chn++)
       data->channels[chn]->Append((samplePtr)channelBuffers[chn],
-                                  int16Sample,
+                                  floatSample,
                                   samples);
 
    return MAD_FLOW_CONTINUE;
