@@ -201,7 +201,7 @@ void TranscriptionToolBar::MakeButtons()
                                   wxPoint(mxButtonPos,0),wxSize(SliderWidth,28),
                                   SPEED_SLIDER);
    mPlaySpeedSlider->Set(1.0);
-   mPlaySpeedSlider->SetLabel(_("Playback Speed (Unimplimented)"));
+   mPlaySpeedSlider->SetLabel(_("Playback Speed"));
    mxButtonPos +=  SliderWidth;
 
 
