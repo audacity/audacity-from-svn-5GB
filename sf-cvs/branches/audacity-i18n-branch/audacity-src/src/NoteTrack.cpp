@@ -11,6 +11,7 @@
 #include <wx/dc.h>
 #include <wx/brush.h>
 #include <wx/pen.h>
+#include <wx/intl.h>
 
 #include "AColor.h"
 #include "NoteTrack.h"
@@ -19,7 +20,7 @@
 NoteTrack::NoteTrack(DirManager * projDirManager):
 VTrack(projDirManager)
 {
-   SetName("Note Track");
+   SetName(_("Note Track"));
 
    mSeq = NULL;
    mLen = 0.0;

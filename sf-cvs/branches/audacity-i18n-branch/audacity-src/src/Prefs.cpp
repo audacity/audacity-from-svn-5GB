@@ -45,6 +45,7 @@
 #ifndef WX_PRECOMP
 #include <wx/app.h>
 #include <wx/config.h>
+#include <wx/intl.h>
 #endif
 
 #include "sndfile.h"
@@ -94,8 +95,8 @@ void InitPreferences()
       gPrefs->Write("/DefaultOpenPath", ::wxGetCwd());
       gPrefs->Write("/DefaultExportPath", ::wxGetCwd());
       gPrefs->Write("/Directories/TempDir", "");
-      wxMessageBox("Some of your preferences were from an earlier version of Audacity "
-                   "and have been reset.");
+      wxMessageBox(_("Some of your preferences were from an earlier version "
+                     "of Audacity and have been reset."));
    }
 #endif
 
