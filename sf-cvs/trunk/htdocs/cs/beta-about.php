@@ -1,7 +1,7 @@
 <h1>Audacity <?php print $betaVersion; ?></h1>
 
 <p>
-Audacity <?php print $betaVersion; ?> je veøejná testovací verze svobodného zvukového editoru. Úèelem této verze je, umožnit uživatelùm seznámit se a otestovat nové vlastnosti, které se objeví v naší pøíští stabilní verzi 1.2.0.
+Audacity <?php print $betaVersion; ?> je veøejná testovací verze svobodného zvukového editoru. Úèelem této verze je, umožnit uživatelùm seznámit se a otestovat nové vlastnosti, které se objeví v naší pøíští stabilní verzi.
 </p>
 
 <p>

@@ -12,6 +12,7 @@ Si us agrada l'Audacity, digueu-nos-ho!  Envieu-nos un missatge a
 <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>
 i feu-nos saber què és el que us agrada. Ens fa feliços saber què li agrada a la gent.  Sentiu-vos també lliures d'enviar-nos els vostres comentaris i suggeriments - millorem constantment l'Audacity, i valorem la vostra implicació.
+<br><?php print "$listPrivacyStr"; ?>
 <p>
 
 <li><b>Uniu-vos al a comunitat d'usuaris</b>
@@ -43,11 +44,11 @@ Windows 2000, Mac OS 9, etc.).
 a més de l'última versió estable de l'Audacity, sempre tenim disponible una versió beta.  Aquesta versió normalment conté diverses noves característiques que encara no han estat provades. Si voleu ajudar descarregueu-vos aquesta versió de l'Audacity i empreu-la. Feu-nos saber què us agrada i què no i què creieu que ha de ser millorat. Estigueu atents pe a les <i>regressions</i> - coses que haurien de funcionar però que no rutllen més.
 <p>
 
-<li><b>Sigueu un desenvolupador</b>
+<li><b>Sigueu un desenvolupador</a/b>
 <p>
-Si ja sou un programador experimentat en C++ i us trobeu còmodes utilitzant les eines com CVS, ens encantaria rebre ajuda en el desenvolupament de l'Audacity.
-Descarregueu-vos l'últim codi font des del CVS i compileu-lo, i llavors introduïu-lo en el <a href=http://lists.sourceforge.net/lists/listinfo/audacity-devel>
-<?php print $develListStr; ?>llistat</a>.
+Si ja sou un programador/a experimentat en C++ i us trobeu còmodes utilitzant les eines com CVS, ens encantaria rebre ajuda en el desenvolupament de l'Audacity.
+Descarregueu-vos l'últim codi font des del CVS i compileu-lo, i llavors presenteu-lo a la <a href=http://lists.sourceforge.net/lists/listinfo/audacity-devel>
+<?php print $develListStr; ?>llista de desenvolupadors</a>.
 <p>
 
 <li><b>Doneu diners</b>

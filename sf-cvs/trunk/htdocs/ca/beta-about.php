@@ -8,6 +8,7 @@ L'Audacity <?php print $betaVersion; ?> és una edició pública de proves de l'edi
 Si us plau, informeu-nos de qualsevol problema que trobeu o envieu-nos comentaris a :
 <a href="mailto:audacity-help@lists.sourceforge.net">
 audacity-help@lists.sourceforge.net</a>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font></br>
 </p>
 
 <p>

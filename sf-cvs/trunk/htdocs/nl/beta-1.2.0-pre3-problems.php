@@ -23,8 +23,8 @@ Het volgende zijn bekende problemen in Audacity 1.2.1:
     die geplaatst zijn in mappen met internationale characters
     (geaccentueerde markeringen e.d.) in de naam.  Bestanden met geaccentueerde
     characters werken wel en Audacity projecten met geaccentueerde
-    characters werken ook. Dit geldt alleen voor mappen met geaccentueerde
-    characters
+    characters werken ook. Het probleem ontstaat alleen bij bestanden in mappen 
+    met geaccentueerde characters
     <p></li>
   <li><p>Het Over Audacity venster wordt niet correct weergegeven in talen met 
     niet-westerse karaktersets.</p></li>

@@ -63,5 +63,4 @@ $altDownloadStr = "Máte problémy se stahováním? Potøebujete pøedchozí verzi?";
 $altDownloadStr2 = "Další odkazy na stažení najdete, když kliknete sem.";
 $docsStr = "Stažení nejnovìjší dokumentace";
 $clickEnlargeStr = "(Kliknutím na obrázek zobrazíte zvìtšeninu.)";
-$listPrivacyStr = ">ochrana soukromí.)";
 ?>

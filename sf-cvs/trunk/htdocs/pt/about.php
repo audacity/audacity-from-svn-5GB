@@ -1,11 +1,11 @@
 <?php BoxTop($aboutStr); ?>
 
 <p>
-Audacity é um editor livre de áudio.
-Você pode gravar, reproduzir, importar e exportar sons em formato WAV, AIFF, MP3, OGG e muito mais.
-Use-o para editar sons usando recursos simples como Cortar e Colar, misture faixas diferentes e aplique efeitos especiais. 
+Audacity é um editor livre de áudio.<br>
+Você pode gravar, reproduzir, importar e exportar sons em formato WAV, AIFF, MP3, OGG e muito mais.<br>
+Use-o para editar sons usando recursos simples como Cortar e Colar, misture faixas diferentes e aplique efeitos especiais. <br>
 Não se preocupe em errar, o Audacity não tem limites para o comando Desfazer. 
-Há também recursos avançados como um amplificador em envelope, um espectrograma personalizável e um analisador de freqüências.
+Há também recursos avançados como um amplificador em envelope, um espectrograma personalizável e um analisador de freqüências.<br>
 É possível também utilizar efeitos sonoros com plugins VST e LADSPA e os incluídos no próprio programa, como Reforço de Graves, Eco e Remoção de ruídos.
 </p>
 <center>
@@ -26,6 +26,8 @@ O código está disponível no serviço<a href="http://www.sourceforge.net">SourceFo
 <b>Perguntas - Comentários?<p></b>
 Envie seu email para <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font></br>
+</p>
 </p>
 
 <p><p>

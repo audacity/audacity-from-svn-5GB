@@ -1,6 +1,11 @@
 <?php BoxTop("CVS"); ?>
 
-Abychom mohli na vývoji Audacity pracovat spoleènì, používáme <a href="http://www.cvshome.org">CVS</a>, the Concurrent Versions System. Kód v naší CVS repository mùžete procházet, když kliknete <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/audacity/audacity-src/">sem</a>.
+We use <a href="http://www.cvshome.org">CVS</a>, the Concurrent Versions
+System, to help the us
+develop Audacity collaboratively. Click
+<a
+href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/audacity/audacity-src/"
+>here</a> to browse the source code in our CVS repository.
 
 <p>
 <h3>Note: Version 1.2 is now branched:</h3>
@@ -21,22 +26,22 @@ now as we start working on version 1.3.0.
 <h4>Anonymous CVS access with a command-line cvs client:</h4>
 <p>Enter the following on the command line (note that it
 is a single line with no carriage returns):<br>
-<ul><tt>cvs -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity
+<ul><tt>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity
 login </tt><br></ul>
 and hit the enter key when it asks for a password.
 
 <p>Then, <b>to get the latest cutting-edge code (1.3.0)</b> (as a single line):
 <br>
-   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co
+   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity co
 audacity</tt></ul>
 or <b>for the stable branch (1.2.0)</b> (as a single line):<br>
-   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co -r AUDACITY_1_2 audacity</tt></ul>
+   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity co -r AUDACITY_1_2 audacity</tt></ul>
 or <b>for the old 1.0 branch (1.0.0)</b> (as a single line):<br>
-   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co -r audacity-0_9-branch audacity-old</tt></ul>
+   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity co -r audacity-0_9-branch audacity-old</tt></ul>
 
 <p> Alternately, you can set your <tt>CVSROOT</tt> environment
 variable to
-<tt>:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt>
+<tt>:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity</tt>
 (see below).<br>
 Then, <b>to get the latest unstable branch (1.3.0)</b>, enter<br> 
    <ul><tt>cvs checkout audacity</tt></ul>
@@ -50,10 +55,10 @@ can use your command shell's resource file, or one of the following
 commands:
 <h5>In bash or bourne shell, as one line:</h5>
 <ul><tt>export
-CVSROOT=:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt><br></ul>
+CVSROOT=:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity</tt><br></ul>
 <h5>In csh or its descendents, as one line:</h5>
 <ul><tt>setenv CVSROOT
-:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt><br></ul>
+:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity</tt><br></ul>
 
 <hr width="80%">
 
@@ -63,7 +68,7 @@ For a graphical client like wincvs, maccvs, or gcvs,
 (available at <a href="http://www.wincvs.org">wincvs.org</a>) you must set
 the 
 <tt>CVSROOT</tt> variable (in the Admin|Preferences submenu) to be 
-<tt>:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt>
+<tt>:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity</tt>
 and select "pserver" or "Password" authentication. Then,
 under the Globals tab of the Preferences dialog, make sure
 you have unchecked "Checkout read-only (CVSREAD)".  Next,
@@ -152,4 +157,3 @@ grab the lib-src repository as a subdirectory of 'audacity'.
 </p>
 
 <?php BoxBottom(); ?>
-

@@ -1,7 +1,7 @@
-<h2>Wijzigingen sinds Audacity 1.2</h2>
+<h2>Wijzigingen in Audacity 1.2</h2>
 
-In deze sectie, een lijst van wijzigingen na de vrijgave van onze laatste stabiele versie, Audacity 1.0.0. Gebruikers van onze beta versies zouden de vrijgave notities moeten lezen i.v.m. wijzigingen
-<a href="<?php print "betanotes.php$langQueryStr"; ?>"> sinds Audacity 1.1.0</a>.
+Grote wijzigingen sinds de vrijgave van onze vorige stabiele versie,
+Audacity 1.0.0:
 
 <h3>Professional-Quality Audio</h3>
 
@@ -37,7 +37,7 @@ De meeste effecten bevatten nu een "Preview" knop waardoor je de verschillende i
 </li>
 
 <li>
-Andere nieuwe effecten bevatten:
+Andere nieuwe effecten zijn:
  <ul>
   <li>Compressor, voor dynamische range compression.</li>
   <li>Herhaal, om samples in de loop te plaatsen.</li>
@@ -115,7 +115,7 @@ Nieuwe Bewerkings- en Mixer knoppenbalk voor snelle toegang tot veel voorkomende
 </li>
 
 <li>
-Het nieuwe Drawing tool staat aanpassingen van individuele smaples toe indien volledig is ingezoomd.  De nieuwe Multi-Tool mode geeft snelle toegang tot verschillende bewerkingsfuncties zonder te hoeven switchen tussen tools.
+Het nieuwe Drawing tool staat aanpassingen van individuele samples toe indien volledig is ingezoomd.  De nieuwe Multi-Tool mode geeft snelle toegang tot verschillende bewerkingsfuncties zonder te hoeven switchen tussen tools.
 </li>
 
 <li>

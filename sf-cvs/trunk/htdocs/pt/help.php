@@ -32,7 +32,7 @@ Os caminhos para conseguir ajuda são:
   <form method="post" action="http://audacityteam.org/isearch/index.php" target="_self">
   <input maxLength="255" name="s" size="26" value=''>
   <input type="submit" value="Buscar">
-  <font size="-1"><a TARGET="_blank" HREF="http://audacityteam.org/isearch/help.php">Ajuda para a 
+  <font size="-1"><a TARGET="_blank" HREF="http://audacityteam.org/isearch/help.php">Ajuda para a 
   busca</a> </font>
 <input type="hidden" name="action" value="search">
 </form>
@@ -47,8 +47,8 @@ Os caminhos para conseguir ajuda são:
   </blockquote><p></p><p><br>
   <b>4. Ler a Guia de Referência Rápida do Audacity 1.2:</b>
 <blockquote>
-<p> A Guia de Referência Rápida explica os recursos do programa um a um,
-de maneira simples e objetiva: <p><a href="onlinehelp-1.2/contents.htm">Clique aqui e leia a Guia.</a>
+<p> A Guia de Referência Rápida explica os recursos do programa um a um,
+de maneira simples e objetiva: <p><a href="onlinehelp-1.2/contents.htm">Clique aqui e leia a Guia.</a>
 
 </blockquote>
   <p><p><br><b>5. Copiar o manual do usuário</b>
@@ -67,12 +67,12 @@ de maneira simples e objetiva: <p><a href="onlinehelp-1.2/contents.htm">Clique a
 
   <p>O manual completo para a versão <b> 1.2</b> já está disponível em inglês e sua tradução para o português brasileiro está em andamento. A versão em inglês pode ser acessada:</p>
   <ul>
-    <li><a href="audacity-manual-1.2.zip">Clicando aqui</a> para copiar (450kb, em formato ZIP) </li>
+    <li><a href="audacity-manual-1.2.zip">Clicando aqui</a> para copiar (450kb, em formato ZIP) </li>
     <li>Acesso online: <a href="manual-1.2">clique aqui</a></li>
   </ul>
 
 </blockquote>
-<p>  
+<p>  
 <p><b>6. Conhecer os tutoriais</b>
 <blockquote>
   <p>O Audacity é utilizado por uma larga gama de usuários, inclusive por profissionais. Nesta página são colocados os tutoriais criados por estes
@@ -81,7 +81,7 @@ de maneira simples e objetiva: <p><a href="onlinehelp-1.2/contents.htm">Clique a
 <?php print "<a href=tutorials.php?$langLinkStr>";?>
  Clique aqui</a>
  e conheça a página de tutoriais. <p>
- 
+ 
 </blockquote>
 <p><b>7. Conheça o Audacity Wiki</b>
 <blockquote>
@@ -89,9 +89,9 @@ de maneira simples e objetiva: <p><a href="onlinehelp-1.2/contents.htm">Clique a
 postar e editar textos de outros usuários. Cada página tem em seu rodapé um
 link para a edição, é só clicar e inserir ou editar os textos.<p>Lá é
 possível encontrar dicas de usuários, documentação e um espaço para pedir
-por novos recursos. <p>
+por novos recursos. <p>
 <a href="http://www.audacityteam.org/wiki">Clique aqui</a>
- e abra o site do Audacity Wiki.<p> 
+ e abra o site do Audacity Wiki.<p> 
 </blockquote>
 <p><b>8. Inscreva-se nas listas</b>
 <blockquote>
@@ -111,6 +111,7 @@ por novos recursos. <p>
   antes.<p>Caso não encontre referências anteriores, sinta-se a vontade para
   escrever para <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>. 
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font></br>
 </blockquote>
 
 <?php BoxBottom(); ?>
