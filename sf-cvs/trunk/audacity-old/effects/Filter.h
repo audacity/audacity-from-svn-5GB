@@ -63,6 +63,7 @@ public:
 private:
 
    wxBitmap *mBitmap;
+   wxRect mEnvRect;
    int mWidth;
    int mHeight;
 

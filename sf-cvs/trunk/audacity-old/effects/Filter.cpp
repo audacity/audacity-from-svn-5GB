@@ -6,6 +6,13 @@
 
   Dominic Mazzoni
 
+  This effect performs an FFT filter - it lets the user draw an
+  arbitrary envelope (using the same envelope editing code that
+  is used to edit the track's amplitude envelope) specifying how much
+  to boost or reduce each frequency.
+
+  The filter is applied using overlap/add of Hanning windows.
+
 **********************************************************************/
 
 #include <math.h>
@@ -45,7 +52,7 @@ bool EffectFilter::Begin(wxWindow *parent)
 
    for(int i=0; i<=windowSize/2; i++) {
       double envVal = mEnvelope->GetValue(((double)i)/(windowSize/2));
-      filterFunc[i] = (float)(pow(10.0, envVal*2.0 - 1.0));
+      filterFunc[i] = (float)(pow(4.0, envVal*2.0 - 1.0));
    }
    
    return true;
@@ -127,15 +134,12 @@ void EffectFilter::Filter(sampleCount len,
    
    for(i=0; i<len; i++)
       inr[i] = buffer[i]/32767.;
-   
-   WindowFunc(2, len, inr);
-   
+
+   // Apply window and FFT
+   WindowFunc(3, len, inr); // Hanning window
    FFT(len, false, inr, NULL, outr, outi);
    
-   //  RealFFT(len, inr, outr, outi);
-   
    // Apply filter
-   
    int half = len/2;
    for(i=0; i<=half; i++) {
       int j = len - i;
@@ -148,11 +152,17 @@ void EffectFilter::Filter(sampleCount len,
          outi[j] = outi[j]*filterFunc[i];
       }
    }
-   
+
+   // Inverse FFT and normalization
    FFT(len, true, outr, outi, inr, ini);
    
    for(i=0; i<len; i++)
       buffer[i] = sampleType(inr[i]*32767);
+
+   delete[] inr;
+   delete[] ini;
+   delete[] outr;
+   delete[] outi;
 }
 
 //----------------------------------------------------------------------------
@@ -203,31 +213,40 @@ void FilterPanel::OnPaint(wxPaintEvent & evt)
    memDC.SetPen(*wxBLACK_PEN);
    memDC.DrawRectangle(border);
 
-   wxRect r = border;
-   r.x += 2;
-   r.width -= 8;
-   r.y += 3;
-   r.height -= 6;
+   mEnvRect = border;
+   mEnvRect.x += 4;
+   mEnvRect.width -= 10;
+   mEnvRect.y += 3;
+   mEnvRect.height -= 6;
 
    // Pure blue x-axis line
    memDC.SetPen(wxPen(wxColour(0, 0, 255), 1, wxSOLID));
-   int center = r.height/2;
-   memDC.DrawLine(0, center, r.width, center);
+   int center = mEnvRect.height/2;
+   memDC.DrawLine(0, center, mEnvRect.width, center);
 
    // Med-blue envelope line
-   memDC.SetPen(wxPen(wxColour(128, 128, 255), 1, wxSOLID));
+   memDC.SetPen(wxPen(wxColour(110, 110, 220), 3, wxSOLID));
 
    // Draw envelope
-   double *values = new double[r.width];
-   mEnvelope->GetValues(values, r.width, 0.0, 1.0/r.width);
-   for(int x=0; x<r.width; x++) {
-      memDC.DrawLine(x, r.height-r.height*values[x]-2,
-                     x, r.height-r.height*values[x]+2);
+   double *values = new double[mEnvRect.width];
+   mEnvelope->GetValues(values, mEnvRect.width, 0.0, 1.0/mEnvRect.width);
+   int x, y, xlast, ylast;
+   for(int i=0; i<mEnvRect.width; i++) {
+      x = mEnvRect.x + i;
+      y = (int)(mEnvRect.height-mEnvRect.height*values[i]);
+      if (i != 0) {
+         memDC.DrawLine(xlast, ylast,
+                        x, y);
+      }
+      xlast = x;
+      ylast = y;      
    }
    delete[] values;
-   r.y -= 3;
-   mEnvelope->Draw(memDC, r, 0.0, r.width, false);
-   r.y += 3;
+
+   memDC.SetPen(*wxBLACK_PEN);
+   mEnvRect.y -= 5;
+   mEnvelope->Draw(memDC, mEnvRect, 0.0, mEnvRect.width, false);
+   mEnvRect.y += 5;
 
    // Paint border again
    memDC.SetBrush(*wxTRANSPARENT_BRUSH);
@@ -240,14 +259,16 @@ void FilterPanel::OnPaint(wxPaintEvent & evt)
 
 void FilterPanel::OnMouseEvent(wxMouseEvent & event)
 {
-   wxRect r;
-   r.x = 0;
-   r.y = 0;
-   r.width = mWidth;
-   r.height = mHeight;
+   if (event.ButtonDown()) {
+      CaptureMouse();
+   }
 
-   if (mEnvelope->MouseEvent(event, r, 0.0, mWidth, false))
+   if (mEnvelope->MouseEvent(event, mEnvRect, 0.0, mWidth, false))
       Refresh(false);
+
+   if (event.ButtonUp()) {
+      ReleaseMouse();
+   }
 }
 
 // WDR: class implementations
@@ -274,6 +295,8 @@ FilterDialog::FilterDialog(wxWindow *parent, wxWindowID id,
    MakeFilterDialog( this, TRUE ); 
    
    SetSizeHints(300, 200, 20000, 20000);
+
+   SetSize(400, 300);
 }
 
 void FilterDialog::SetEnvelope(Envelope *env)
@@ -300,7 +323,10 @@ bool FilterDialog::TransferDataFromWindow()
 
 void FilterDialog::OnClear( wxCommandEvent &event )
 {
-    
+   FilterPanel *panel = ((FilterPanel *) FindWindow(ID_FILTERPANEL));
+   panel->mEnvelope->Flatten(0.5);
+   panel->mEnvelope->SetTrackLen(1.0);
+   panel->Refresh(false);
 }
 
 void FilterDialog::OnSize(wxSizeEvent &event)
