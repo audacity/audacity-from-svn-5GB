@@ -140,7 +140,7 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
             
             cont = dir.GetNext(&name);
             
-            if (prompt && !*progress && wxGetElapsedTime(false) > 500)
+            if (prompt && progress && !*progress && wxGetElapsedTime(false) > 500)
                *progress =
                   new wxProgressDialog(_("Progress"),
                                        _(prompt),
@@ -148,7 +148,7 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
                                        NULL,
                                        wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
 
-            if (*progress)
+            if (progress && *progress)
                (*progress)->Update(int ((count+progress_bias * 1000.0) / 
                                         progress_count));
 
