@@ -527,9 +527,9 @@ void APalette::OnKeyEvent(wxKeyEvent & event)
          SetStop(true);
          OnStop();
       } else {
-         OnPlay();
          SetPlay(true);
          SetStop(false);
+         OnPlay();
       }
    }
 }
@@ -586,7 +586,6 @@ void APalette::OnPlay()
          SetStop(false);
          SetRecord(false);
       }
-
    }
 }
 
