@@ -118,6 +118,12 @@ WaveClip::~WaveClip()
       DeleteSamples(mAppendBuffer);
 }
 
+void WaveClip::SetOffset(double offset)
+{
+    mOffset = offset;
+    mEnvelope->SetOffset(mOffset);
+}
+
 bool WaveClip::GetSamples(samplePtr buffer, sampleFormat format,
                    longSampleCount start, sampleCount len) const
 {
@@ -486,7 +492,7 @@ void WaveClip::ConvertToSampleFormat(sampleFormat format)
 
 void WaveClip::UpdateEnvelopeTrackLen()
 {
-   mEnvelope->SetTrackLen(mSequence->GetNumSamples() / mRate);
+   mEnvelope->SetTrackLen(((double)mSequence->GetNumSamples()) / mRate);
 }
 
 void WaveClip::TimeToSamplesClip(double t0, longSampleCount *s0) const
