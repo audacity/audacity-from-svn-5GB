@@ -35,7 +35,7 @@ void Internat::Init()
    if (localeInfo)
       mDecimalSeparator = localeInfo->decimal_point[0];
 
-   wxLogDebug("Decimal separator set to '%c'", mDecimalSeparator);
+//   wxLogDebug("Decimal separator set to '%c'", mDecimalSeparator);
 
    #ifndef __WXMAC__
    // Set up character-set conversion for UTF-8 input and output.
