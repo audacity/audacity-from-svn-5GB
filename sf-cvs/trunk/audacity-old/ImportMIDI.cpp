@@ -14,9 +14,9 @@
 #include "NoteTrack.h"
 #include "ImportMIDI.h"
 
-#include "allegro.h"
-#include "mfmidi.h"
-#include "mfallegro.h"
+#include "allegro/allegro.h"
+#include "allegro/mfmidi.h"
+#include "allegro/mfallegro.h"
 
 bool ImportMIDI(wxString fName, NoteTrack *dest)
 {

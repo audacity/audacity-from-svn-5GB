@@ -15,7 +15,7 @@
 
 #include "Track.h"
 
-#include "allegro.h"
+#include "allegro/allegro.h"
 
 class DirManager;
 
