@@ -22,6 +22,7 @@
 #include "NoiseRemoval.h"
 #include "Phaser.h"
 #include "Reverse.h"
+#include "ToneGen.h"
 #include "Wahwah.h"
 
 #ifdef USE_WAVELET
@@ -53,6 +54,7 @@ void LoadEffects(wxString searchDir)
    Effect::RegisterEffect(new EffectNoiseRemoval(), false);
    Effect::RegisterEffect(new EffectPhaser(), false);
    Effect::RegisterEffect(new EffectReverse(), false);
+   Effect::RegisterEffect(new EffectToneGen(), false);
    Effect::RegisterEffect(new EffectWahwah(), false);
 
 #ifdef USE_WAVELET
