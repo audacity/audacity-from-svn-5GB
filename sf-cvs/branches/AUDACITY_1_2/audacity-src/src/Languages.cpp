@@ -96,6 +96,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    localLanguageName["es"] = "Español";
    localLanguageName["fr"] = "Français";
    localLanguageName["it"] = "Italiano";
+   localLanguageName["ja"] = "Nihongo";
    localLanguageName["hu"] = "Magyar";
    localLanguageName["mk"] = "Makedonski";
    localLanguageName["nl"] = "Nederlands";
