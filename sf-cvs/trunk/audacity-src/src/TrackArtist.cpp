@@ -698,9 +698,14 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
          if (r1[x] != r2[x]) {
             dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + r2[x] );
             dc.DrawLine(r.x + x, r.y + r1[x], r.x + x, r.y + h1[x]+1 );
+         } else {
+            // MM: DrawLine will not draw anything if startpoint == endpoint,
+            //     so in this case explicitely draw single point.
+            if (h1[x]+1 == h2[x])
+                dc.DrawPoint(r.x + x, r.y + h2[x]);
+            else
+                dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + h1[x]+1 );
          }
-         else
-            dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + h1[x]+1 );
       }
       
       // Draw the waveform rms lines
