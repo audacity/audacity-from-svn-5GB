@@ -48,6 +48,8 @@ class UndoManager {
 
    void PushState(TrackList * l, double sel0, double sel1);
    void ClearStates();
+   void ClearStates(int num);
+   unsigned int  GetNumUndoableStates();
    TrackList *Undo(double *sel0, double *sel1);
    TrackList *Redo(double *sel0, double *sel1);
 

@@ -23,20 +23,30 @@ UndoManager::~UndoManager()
    ClearStates();
 }
 
-void UndoManager::ClearStates()
+void UndoManager::ClearStates(int num)
 {
-   for (int i = stack.Count() - 1; i >= 0; i--) {
-      TrackListIterator iter(stack[i]->tracks);
+   for (int i = 0; i < num; i++) {
+      TrackListIterator iter(stack[0]->tracks);
 
       VTrack *t = iter.First();
       while (t) {
          delete t;
          t = iter.Next();
       }
-      stack.RemoveAt(i);
+      stack.RemoveAt(0);
    }
 
-   current = -1;
+   current -= num;
+}
+   
+void UndoManager::ClearStates()
+{
+   ClearStates(stack.Count());
+}
+
+unsigned int UndoManager::GetNumUndoableStates()
+{
+   return current;
 }
 
 bool UndoManager::UndoAvailable()

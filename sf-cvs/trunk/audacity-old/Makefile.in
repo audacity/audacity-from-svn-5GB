@@ -42,6 +42,7 @@ OBJS = \
 	$(OBJDIR)/FFT.cpp.o \
 	$(OBJDIR)/FreqWindow.cpp.o \
 	$(OBJDIR)/Help.cpp.o \
+	$(OBJDIR)/HistoryWindow.cpp.o \
 	$(OBJDIR)/Import.cpp.o \
 	$(OBJDIR)/ImportMIDI.cpp.o \
 	$(OBJDIR)/ImportMP3.cpp.o \

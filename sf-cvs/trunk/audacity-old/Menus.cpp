@@ -41,6 +41,7 @@
 #include "Track.h"
 #include "TrackPanel.h"
 #include "WaveTrack.h"
+#include "HistoryWindow.h"
 #include "effects/Effect.h"
 #include "prefs/PrefsDialog.h"
 
@@ -88,6 +89,7 @@ void AudacityProject::CreateMenuBar()
    mEditMenu = new wxMenu();
    mEditMenu->Append(UndoID, "&Undo\tCtrl+Z");
    mEditMenu->Append(RedoID, "&Redo\tCtrl+R");
+   mEditMenu->Append(UndoHistoryID, "Undo History");
    mEditMenu->AppendSeparator();
    mEditMenu->Append(CutID, "Cut\tCtrl+X");
    mEditMenu->Append(CopyID, "Copy\tCtrl+C");
@@ -225,6 +227,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
                      mUndoManager.UndoAvailable());
    mEditMenu->Enable(mEditMenu->FindItem("Redo"),
                      mUndoManager.RedoAvailable());
+   mEditMenu->Enable(UndoHistoryID,
+                     mUndoManager.GetNumUndoableStates() > 0);
 
    bool nonZeroRegionSelected = (mViewInfo.sel1 > mViewInfo.sel0);
 
@@ -481,6 +485,13 @@ void AudacityProject::Redo(wxCommandEvent & event)
    //UpdateMenus();
    mTrackPanel->Refresh(false);
 }
+
+void AudacityProject::UndoHistory(wxCommandEvent & event)
+{
+   HistoryWindow history(this, &mUndoManager);
+   history.ShowModal();
+}
+
 
 void AudacityProject::Cut(wxCommandEvent & event)
 {

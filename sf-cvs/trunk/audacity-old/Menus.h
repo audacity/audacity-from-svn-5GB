@@ -35,6 +35,8 @@ enum {
 
    UndoID,
    RedoID,
+   UndoHistoryID,
+
    CutID,
    CopyID,
    PasteID,
@@ -111,6 +113,7 @@ EVT_MENU(NewID, AudacityProject::OnNew)
     // Edit menu
     EVT_MENU(UndoID, AudacityProject::Undo)
     EVT_MENU(RedoID, AudacityProject::Redo)
+    EVT_MENU(UndoHistoryID, AudacityProject::UndoHistory)
 
     EVT_MENU(CutID, AudacityProject::Cut)
     EVT_MENU(CopyID, AudacityProject::Copy)
@@ -187,6 +190,7 @@ void OnExit(wxCommandEvent & event);
 
 void Undo(wxCommandEvent & event);
 void Redo(wxCommandEvent & event);
+void UndoHistory(wxCommandEvent & event);
 
 void Cut(wxCommandEvent & event);
 void Copy(wxCommandEvent & event);
