@@ -314,7 +314,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
                         numTracksSelected > 0);
 
    mProjectMenu->Enable(mProjectMenu->FindItem("Add Label At Selection"),
-                        nonZeroRegionSelected);
+                        numTracksSelected > 0);
 
    for (int e = 0; e < Effect::GetNumEffects(); e++) {
       Effect *f = Effect::GetEffect(e);
