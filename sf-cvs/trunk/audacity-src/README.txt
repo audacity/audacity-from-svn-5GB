@@ -236,8 +236,6 @@ Known issues/problems:
   * (MacOS X only?) If you select Quit, but then cancel the Quit operation,
     then the Quit and Preferences commands stop working.
 
-  * Some imported MP3 files may have pops or clicks caused by clipping.
-
   * The volume sliders in the mixer toolbar may reset the volume whenever
     the program starts, on some systems.
 
