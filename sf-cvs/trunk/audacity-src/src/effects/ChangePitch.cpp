@@ -156,41 +156,37 @@ bool EffectChangePitch::Process()
 #define PERCENTCHANGE_MAX 100 // warped above zero to actually go up to 400%
 #define PERCENTCHANGE_SLIDER_WARP 1.30105 // warp power takes max from 100 to 400.
 
-
-#define ID_TEXT_PERCENTCHANGE 10001
-#define ID_SLIDER_PERCENTCHANGE 10002
-
-#define ID_CHOICE_FROMPITCH 10003
-#define ID_RADIOBOX_PITCHUPDOWN 10004
-#define ID_CHOICE_TOPITCH 10005
-
-#define ID_TEXT_SEMITONESCHANGE 10006
-
-#define ID_TEXT_FROMFREQUENCY 10007
-#define ID_TEXT_TOFREQUENCY 10008
-
-#define ID_BUTTON_PREVIEW 10009
-
+enum {
+   ID_TEXT_PERCENTCHANGE = 10001,
+   ID_SLIDER_PERCENTCHANGE,
+   ID_CHOICE_FROMPITCH,
+   ID_RADIOBOX_PITCHUPDOWN,
+   ID_CHOICE_TOPITCH,
+   ID_TEXT_SEMITONESCHANGE,
+   ID_TEXT_FROMFREQUENCY,
+   ID_TEXT_TOFREQUENCY,
+	ID_BUTTON_PREVIEW
+};
 
 // event table for ChangePitchDialog
 
 BEGIN_EVENT_TABLE(ChangePitchDialog, wxDialog)
-    EVT_BUTTON(wxID_OK, ChangePitchDialog::OnOk)
-    EVT_BUTTON(wxID_CANCEL, ChangePitchDialog::OnCancel)
+	EVT_BUTTON(wxID_OK, ChangePitchDialog::OnOk)
+	EVT_BUTTON(wxID_CANCEL, ChangePitchDialog::OnCancel)
 
-    EVT_CHOICE(ID_CHOICE_FROMPITCH, ChangePitchDialog::OnChoice_FromPitch)
-	 EVT_RADIOBOX(ID_RADIOBOX_PITCHUPDOWN, ChangePitchDialog::OnRadioBox_PitchUpDown)
-    EVT_CHOICE(ID_CHOICE_TOPITCH, ChangePitchDialog::OnChoice_ToPitch)
+	EVT_CHOICE(ID_CHOICE_FROMPITCH, ChangePitchDialog::OnChoice_FromPitch)
+	EVT_RADIOBOX(ID_RADIOBOX_PITCHUPDOWN, ChangePitchDialog::OnRadioBox_PitchUpDown)
+	EVT_CHOICE(ID_CHOICE_TOPITCH, ChangePitchDialog::OnChoice_ToPitch)
 
-    EVT_TEXT(ID_TEXT_SEMITONESCHANGE, ChangePitchDialog::OnText_SemitonesChange)
+	EVT_TEXT(ID_TEXT_SEMITONESCHANGE, ChangePitchDialog::OnText_SemitonesChange)
 
-    EVT_TEXT(ID_TEXT_FROMFREQUENCY, ChangePitchDialog::OnText_FromFrequency)
-    EVT_TEXT(ID_TEXT_TOFREQUENCY, ChangePitchDialog::OnText_ToFrequency)
+	EVT_TEXT(ID_TEXT_FROMFREQUENCY, ChangePitchDialog::OnText_FromFrequency)
+	EVT_TEXT(ID_TEXT_TOFREQUENCY, ChangePitchDialog::OnText_ToFrequency)
 
-    EVT_TEXT(ID_TEXT_PERCENTCHANGE, ChangePitchDialog::OnText_PercentChange)
-    EVT_SLIDER(ID_SLIDER_PERCENTCHANGE, ChangePitchDialog::OnSlider_PercentChange)
+	EVT_TEXT(ID_TEXT_PERCENTCHANGE, ChangePitchDialog::OnText_PercentChange)
+	EVT_SLIDER(ID_SLIDER_PERCENTCHANGE, ChangePitchDialog::OnSlider_PercentChange)
 
-    EVT_BUTTON(ID_BUTTON_PREVIEW, ChangePitchDialog::OnPreview)
+	EVT_BUTTON(ID_BUTTON_PREVIEW, ChangePitchDialog::OnPreview)
 END_EVENT_TABLE()
 
 
@@ -362,7 +358,7 @@ ChangePitchDialog::ChangePitchDialog(EffectChangePitch * effect,
 							wxDefaultPosition, wxSize(40, -1), 0,
 							wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_PercentChange->Add(m_pTextCtrl_PercentChange, 0, 
-											wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
+											wxALIGN_CENTER_VERTICAL | wxALL, 4);
 
    pBoxSizer_Dialog->Add(pBoxSizer_PercentChange, 0, wxALIGN_CENTER | wxALL, 4);
 
