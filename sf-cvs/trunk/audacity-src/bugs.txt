@@ -32,7 +32,24 @@ Known bugs to fix:
   See email from TC Baker
 - Link against libwx_gtk.so in RPM, and add instructions
   to ln -s /usr/lib/libwx_gtk-2.2.so /usr/lib/libwx_gtk.so
-
+- 'amplify' effect can change -1 amplitude to +1
+-  when the top track of a stereo track is shrunk so that
+  the 'solo' and 'mute' fields appear beside the lower track, these   buttons no longer work
+- layout of Edit toolbar buttons sucks in Windows(tm) (my fault)
+- drag-floating toolbars produces wierd ghosting of other previous
+  images in Windows(tm).
+- Skip-to-beginning/skip-to-end go to the absolute beginning or the
+  absolute end of all tracks, rather than the beginning/end of the
+  current track.
+- The ruler selection coloring responds strangely when you click or
+  double-click on the ruler.
+- Clicking on the track label selects the entire track, but is also used
+  for dragging the track vertically.  These can be conflicting
+  operations. Maybe the label needs a dragging 'affordance' on the left
+  edge or top (little graphical bumps or something) that can be used to
+  grab drag the track, with the rest of the label offering the 'select
+  all' behavior. This would make the ability to drag tracks around more
+  obvious as well.
 -----------------------------------------------------------
 Possible bugs to investigate:
 -----------------------------------------------------------
