@@ -47,6 +47,6 @@ dist: clean
 	rm -f config.status config.cache config.log src/config.h
 	rm -f *~ src/*~ tests/*~ include/*~
 
-%.c.o: %.c Makefile include/resample.h \
+%.c.o: %.c Makefile include/libresample.h \
 	src/resample_defs.h src/filterkit.h src/config.h
 	$(CC) -c $(CFLAGS) $< -o $@
