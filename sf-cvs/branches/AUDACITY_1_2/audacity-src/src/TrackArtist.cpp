@@ -721,11 +721,13 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
          // shrink to nothing.  This scenario is handled differently
          // if we use wx to draw, instead of the image buffer - see
          // MM comment below.
-         if( h1[x] == h2[x]) {
-            if (h1[x] < r.height-1)
-               h1[x]++;
-            else
+         if( h1[x] <= h2[x]) {
+            if (h2[x] < r.height-1)
+               h1[x] = h2[x] + 1;
+            else {
+               h1[x] = h2[x];
                h2[x]--;
+            }
          }
       }
 
