@@ -144,6 +144,8 @@ class TrackPanel:public wxWindow {
 
    void OnFormatChange(wxEvent &event);
 
+   void OnSelectionChange(wxEvent &event);
+
    void OnSplitStereo();
    void OnMergeStereo();
 
@@ -296,6 +298,7 @@ class TrackPanel:public wxWindow {
    wxMenu *mLabelTrackMenu;
    wxMenu *mRateMenu;
    wxMenu *mFormatMenu;
+   wxMenu *mSelectionMenu;
 
    Track *mPopupMenuTarget;
 
