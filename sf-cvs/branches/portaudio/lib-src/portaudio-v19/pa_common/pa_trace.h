@@ -1,7 +1,7 @@
 #ifndef PA_TRACE_H
 #define PA_TRACE_H
 /*
- * $Id: pa_trace.h,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: pa_trace.h,v 1.1.1.1 2004-04-22 04:08:19 mbrubeck Exp $
  * Portable Audio I/O Library Trace Facility
  * Store trace information in real-time for later printing.
  *
@@ -33,9 +33,11 @@
  */
 
 /** @file
- Event trace mechanism for debugging. Allows data to be written to the buffer
- at interrupt time and dumped later.
+ @brief Event trace mechanism for debugging.
+
+ Allows data to be written to the buffer at interrupt time and dumped later.
 */
+
 
 #define PA_TRACE_REALTIME_EVENTS     (0)   /* Keep log of various real-time events. */
 #define PA_MAX_TRACE_RECORDS      (2048)

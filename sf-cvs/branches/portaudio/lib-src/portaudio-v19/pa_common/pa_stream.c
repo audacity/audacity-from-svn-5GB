@@ -1,5 +1,5 @@
 /*
- * $Id: pa_stream.c,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: pa_stream.c,v 1.1.1.1 2004-04-22 04:08:21 mbrubeck Exp $
  * Portable Audio I/O Library
  * 
  *
@@ -31,12 +31,13 @@
  */
 
 /** @file
-
-    @todo create a new error code such as paCantReadWriteToCallbackStream
-    and return it from the dummy read, write and get available methods.
+ @brief Interface used by pa_front to virtualize functions which operate on
+ streams.
 */
 
+
 #include "pa_stream.h"
+
 
 void PaUtil_InitializeStreamInterface( PaUtilStreamInterface *streamInterface,
                                        PaError (*Close)( PaStream* ),
@@ -100,7 +101,7 @@ PaError PaUtil_DummyRead( PaStream* stream,
     (void)buffer; /* unused parameter */
     (void)frames; /* unused parameter */
 
-    return paNoError; /** @todo FIXME: need new error code paCantReadWriteToCallbackStream or something */
+    return paCanNotReadFromACallbackStream;
 }
 
 
@@ -112,15 +113,23 @@ PaError PaUtil_DummyWrite( PaStream* stream,
     (void)buffer; /* unused parameter */
     (void)frames; /* unused parameter */
 
-    return paNoError; /** @todo FIXME: need new error code paCantReadWriteToCallbackStream or something */
+    return paCanNotWriteToACallbackStream;
 }
 
 
-signed long PaUtil_DummyGetAvailable( PaStream* stream )
+signed long PaUtil_DummyGetReadAvailable( PaStream* stream )
 {
     (void)stream; /* unused parameter */
 
-    return 0; /** @todo FIXME: need new error code paCantReadWriteToCallbackStream or something */
+    return paCanNotReadFromACallbackStream;
+}
+
+
+signed long PaUtil_DummyGetWriteAvailable( PaStream* stream )
+{
+    (void)stream; /* unused parameter */
+
+    return paCanNotWriteToACallbackStream;
 }
 
 

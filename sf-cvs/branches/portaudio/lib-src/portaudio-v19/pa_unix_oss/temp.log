@@ -1,0 +1,39 @@
+
+RCS file: /home/cvs/portaudio/pa_unix_oss/pa_unix_oss.c,v
+Working file: pa_unix_oss.c
+head: 1.6
+branch:
+locks: strict
+access list:
+symbolic names:
+	AudioMulch_09b10patch1: 1.6
+	AudioMulch_09b10: 1.6
+	V18-patch: 1.6.0.4
+	v19-devel: 1.6.0.2
+	V18: 1.6
+	initial: 1.1.1.1
+	pateam: 1.1.1
+keyword substitution: kv
+total revisions: 18;	selected revisions: 4
+description:
+----------------------------
+revision 1.6.4.4
+date: 2003/06/30 18:05:49;  author: philburk;  state: Exp;  lines: +2 -1
+Eliminate unused variable warnings, by Thomas Richter.
+----------------------------
+revision 1.6.4.3
+date: 2002/10/18 17:54:03;  author: philburk;  state: Exp;  lines: +36 -15
+Fill device info table with actual sample rates instead of wished for rates.
+Allow stream to open if sample rate within 10% of desired rate.
+----------------------------
+revision 1.6.4.2
+date: 2002/06/26 00:49:47;  author: philburk;  state: Exp;  lines: +8 -2
+Add prototypes to prevent warning.
+Fix indentation by converting tabs to spaces.
+----------------------------
+revision 1.6.4.1
+date: 2002/06/25 23:56:29;  author: philburk;  state: Exp;  lines: +52 -1072
+Add nods from Sam Bayer and Augustus Saunders for Solaris compatibility.
+Split unix common code to pa_unix.c
+Host code to pa_unix_oss.c or pa_solaris.c
+=============================================================================
