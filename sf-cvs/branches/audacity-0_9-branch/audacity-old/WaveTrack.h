@@ -75,7 +75,8 @@ class WaveTrack:public VTrack {
 
    virtual int GetKind() {
       return Wave;
-   } virtual void Offset(double t);
+   }
+   virtual void SetOffset(double t);
 
    virtual double GetMaxLen();
 

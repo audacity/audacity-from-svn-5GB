@@ -651,13 +651,7 @@ void AudacityProject::OnDuplicate(wxCommandEvent & event)
          if (dest) {
             dest->name = n->name;
             dest->linked = n->linked;
-
-            // Matt Brubeck's fix
-            // Use max( offset, sel0 ) as new offset
-            double newOffset = n->tOffset;
-            if (mViewInfo.sel0 > newOffset)
-               newOffset = mViewInfo.sel0;
-            dest->tOffset = newOffset;
+            dest->SetOffset( wxMax(n->tOffset, mViewInfo.sel0) );
 
             newTracks.Add(dest);
          }
@@ -695,13 +689,13 @@ void AudacityProject::OnSplit(wxCommandEvent & event)
          n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          if (dest) {
             dest->linked = n->linked;
-            dest->tOffset = wxMax(sel0, n->tOffset);
+            dest->SetOffset(wxMax(sel0, n->tOffset));
 
             if (sel1 >= n->GetMaxLen())
                n->Clear(sel0, sel1);
             else if (sel0 <= n->tOffset) {
                n->Clear(sel0, sel1);
-               n->tOffset = sel1;
+               n->SetOffset(sel1);
             }
             else
                n->Silence(sel0, sel1);
@@ -1053,7 +1047,7 @@ void AudacityProject::OnAlignZero(wxCommandEvent & event)
 
    while (t) {
       if (t->selected)
-         t->tOffset = 0.0;
+         t->SetOffset(0.0);
 
       t = iter.Next();
    }
@@ -1089,7 +1083,7 @@ void AudacityProject::OnAlign(wxCommandEvent & event)
 
       while (t) {
          if (t->selected)
-            t->tOffset = avg;
+            t->SetOffset(avg);
 
          t = iter2.Next();
       }
