@@ -48,8 +48,13 @@ public:
                      int digitsAfterDecimalPoint = -1,
 		     wxChar decimalSeparatorChar = 0);
 
+   // Convert strings to and from UTF-8 (used for XML files).
+   static wxString UTF8ToLocal(const wxString &s);
+   static wxString LocalToUTF8(const wxString &s);
+
 private:
    static wxChar mDecimalSeparator;
+   static wxMBConv *mConvLocal;
 };
 
 #endif

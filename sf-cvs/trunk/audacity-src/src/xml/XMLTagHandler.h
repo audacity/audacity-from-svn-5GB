@@ -12,6 +12,7 @@
 
 **********************************************************************/
 
+#include <wx/string.h>
 #include <stdio.h>
 
 #ifndef __AUDACITY_XML_TAG_HANDLER__
@@ -55,6 +56,12 @@ class XMLTagHandler {
    // Escape a string, replacing certain characters with their
    // XML encoding, i.e. '<' becomes '&lt;'
    static wxString XMLEsc(wxString s);
+
+   // These functions recieve data from expat.  They do charset
+   // conversion and then pass the data to the handlers above.
+   bool ReadXMLTag(const char *tag, const char **attrs);
+   void ReadXMLEndTag(const char *tag);
+   XMLTagHandler *ReadXMLChild(const char *tag);
 };
 
 #endif // define __AUDACITY_XML_TAG_HANDLER__

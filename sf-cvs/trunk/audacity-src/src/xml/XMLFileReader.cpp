@@ -114,13 +114,13 @@ void XMLFileReader::startElement(void *userData, const char *name,
    else {
       if (This->mHandler[This->mDepth-1])
          This->mHandler[This->mDepth] =
-            This->mHandler[This->mDepth-1]->HandleXMLChild(name);
+            This->mHandler[This->mDepth-1]->ReadXMLChild(name);
       else
          This->mHandler[This->mDepth] = NULL;
    }
 
    if (This->mHandler[This->mDepth]) {
-      if (!This->mHandler[This->mDepth]->HandleXMLTag(name, atts))
+      if (!This->mHandler[This->mDepth]->ReadXMLTag(name, atts))
          This->mHandler[This->mDepth] = 0;
    }
 }
@@ -131,7 +131,7 @@ void XMLFileReader::endElement(void *userData, const char *name)
    XMLFileReader *This = (XMLFileReader *)userData;
 
    if (This->mHandler[This->mDepth])
-      This->mHandler[This->mDepth]->HandleXMLEndTag(name);
+      This->mHandler[This->mDepth]->ReadXMLEndTag(name);
 
    This->mDepth--;
 }
