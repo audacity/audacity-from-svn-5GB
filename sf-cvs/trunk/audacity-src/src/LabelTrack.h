@@ -15,6 +15,7 @@
 
 #include <wx/brush.h>
 #include <wx/event.h>
+#include <wx/font.h>
 #include <wx/pen.h>
 #include <wx/dynarray.h>
 #include <wx/string.h>
@@ -70,6 +71,8 @@ class LabelTrack:public Track {
    LabelTrack(const LabelTrack &orig);
 
    virtual ~ LabelTrack();
+
+   static void ResetFont();
 
    void Draw(wxDC & dc, wxRect & r, double h, double pps,
              double sel0, double sel1);
@@ -157,6 +160,8 @@ class LabelTrack:public Track {
    void ComputeTextPosition(wxRect & r, int index);
 
    bool mIsAdjustingLabel;
+
+   static wxFont msFont;
 };
 
 #endif

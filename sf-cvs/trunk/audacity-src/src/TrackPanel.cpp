@@ -80,6 +80,8 @@
 
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
+#include <wx/font.h>
+#include <wx/fontenum.h>
 #include <wx/log.h>
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
@@ -172,6 +174,8 @@ enum {
 
    OnSetNameID,
 
+   OnSetFontID,
+
    OnMoveUpID,
    OnMoveDownID,
 
@@ -211,6 +215,7 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_CHAR(TrackPanel::OnKeyEvent)
     EVT_PAINT(TrackPanel::OnPaint)
     EVT_MENU(OnSetNameID, TrackPanel::OnSetName)
+    EVT_MENU(OnSetFontID, TrackPanel::OnSetFont)
     EVT_MENU(OnSetTimeTrackRangeID, TrackPanel::OnSetTimeTrackRange)
 
     EVT_MENU_RANGE(OnMoveUpID, OnMoveDownID, TrackPanel::OnMoveTrack)
@@ -406,6 +411,8 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
 
    mLabelTrackMenu = new wxMenu();
    mLabelTrackMenu->Append(OnSetNameID, _("Name..."));
+   mLabelTrackMenu->AppendSeparator();
+   mLabelTrackMenu->Append(OnSetFontID, _("Font..."));
    mLabelTrackMenu->AppendSeparator();
    mLabelTrackMenu->Append(OnMoveUpID, _("Move Track Up"));
    mLabelTrackMenu->Append(OnMoveDownID, _("Move Track Down"));
@@ -4110,6 +4117,48 @@ void TrackPanel::OnSetName(wxCommandEvent &event)
 
       Refresh(false);
    }
+}
+
+class MyFontEnumerator : public wxFontEnumerator
+{
+  public:
+   wxArrayString facenames;
+   
+  protected:
+   virtual bool OnFacename(const wxString& facename)
+   {
+      facenames.Add(facename);
+      return true;
+   }
+};
+
+void TrackPanel::OnSetFont(wxCommandEvent &event)
+{
+   MyFontEnumerator fontEnumerator;
+   
+   fontEnumerator.EnumerateFacenames(wxFONTENCODING_SYSTEM, false);
+   int nFacenames = fontEnumerator.facenames.GetCount();
+   wxString *facenames = new wxString[nFacenames];
+   int i;
+   for (i = 0; i < nFacenames; i++)
+      facenames[i] = fontEnumerator.facenames[i];
+   
+   i = wxGetSingleChoiceIndex(_("Choose a font for Label Tracks"),
+                              _("Label Track Font"),
+                              nFacenames, facenames, this);
+
+   delete [] facenames;
+   
+   if ( i == -1 )
+      return;
+
+   wxString facename = fontEnumerator.facenames[i];
+
+   gPrefs->Write("/GUI/LabelFontFacename", facename);
+
+   LabelTrack::ResetFont();
+
+   Refresh(false);
 }
 
 /// Determines which track is under the mouse 

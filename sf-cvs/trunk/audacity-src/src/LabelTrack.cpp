@@ -22,10 +22,9 @@
 #include "LabelTrack.h"
 #include "DirManager.h"
 #include "Internat.h"
+#include "Prefs.h"
 
-#include <iostream>
-using std::cout;
-using std::endl;
+wxFont LabelTrack::msFont;
 
 // static member variables.
 bool LabelTrack::mbGlyphsReady=false;
@@ -65,6 +64,8 @@ LabelTrack::LabelTrack(DirManager * projDirManager):
    InitColours();
    SetName(_("Label Track"));
 
+   ResetFont();
+
    // Label tracks are narrow
    // Default is to allow two rows so that new users get the
    // idea that labels can 'stack' when they would overlap.
@@ -102,6 +103,15 @@ LabelTrack::~LabelTrack()
       delete mLabels[i];
 }
 
+void LabelTrack::ResetFont()
+{
+   wxString facename = gPrefs->Read("/GUI/LabelFontFacename", "");
+   if (facename != "") {
+      msFont = wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
+                      wxFONTWEIGHT_NORMAL, FALSE, facename,
+                      wxFONTENCODING_SYSTEM);
+   }
+}
 
 /// ComputeTextPosition is 'smart' about where to display 
 /// the label text.
@@ -435,6 +445,8 @@ void LabelStruct::DrawText( wxDC & dc, wxRect & r)
 void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
                       double sel0, double sel1)
 {
+   dc.SetFont(msFont);
+
    double right = h + r.width / pps;
    double dsel0 = sel0;
    if (dsel0 < h)
