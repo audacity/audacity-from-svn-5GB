@@ -408,6 +408,12 @@ else
 	echo "  without LADSPA plug-ins";
 fi
 
+if [[ "$use_nyquist" = "yes" ]] ; then
+	echo "  with    Nyquist plug-ins";
+else
+	echo "  without Nyquist plug-ins";
+fi
+
 if [[ $use_vorbis = "yes" ]] ; then	
 	echo "  with    vorbis";
 else
