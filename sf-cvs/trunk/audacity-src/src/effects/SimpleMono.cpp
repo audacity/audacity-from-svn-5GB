@@ -34,9 +34,9 @@ bool EffectSimpleMono::Process()
          sampleCount len =
              (sampleCount) floor((endtime - starttime) * track->GetRate() + 0.5);
 
-         bool success = ProcessOne(count, track, starttime, len);
-
-         if (!success)
+         if (!NewTrackSimpleMono(count, track->GetRate()))
+            return false;
+         if (!ProcessOne(count, track, starttime, len))
             return false;
       }
 
@@ -75,5 +75,11 @@ bool EffectSimpleMono::ProcessOne(int count, WaveTrack * track,
 
    delete[]buffer;
 
+   return true;
+}
+
+//null implementation of NewTrackSimpleMono
+bool EffectSimpleMono::NewTrackSimpleMono(int count, double samplerate)
+{
    return true;
 }
