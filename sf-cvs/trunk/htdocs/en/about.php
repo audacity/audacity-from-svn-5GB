@@ -2,30 +2,15 @@
 
 <p>
 Audacity is a free audio editor.
-You can record sounds, play sounds, import and export WAV, AIFF, and
+You can record sounds, play sounds, import and export WAV, AIFF, Ogg Vorbis, and
 MP3 files, and more.
 Use it to edit your sounds using Cut, Copy and Paste (with unlimited
 Undo), mix tracks together, or apply effects to your recordings.
 It also has a built-in amplitude envelope editor,
 a customizable spectrogram mode and a
 frequency analysis window for audio analysis applications.
-Built-in effects include Bass Boost, Wahwah, and Noise Removal,
-and it also supports VST plug-in effects.
-</p>
-
-<p>
-Audacity version 1.0.0 is the most stable version we have
-released yet, and many people have found that its unique features and
-intuitive interface make it more enjoyable to use than other
-audio editors, including commercial ones.
-</p>
-
-<p>
-The developers of Audacity have also released
-<a href="<?php print "beta.php?$langLinkStr"; ?>">
-version 1.2.0-pre2</a>, which is a beta-quality preview of new things we are
-actively working on.  It contains many, many new features, but is not quite as
-polished and stable.
+Built-in effects include Echo, Change Tempo, and Noise Removal,
+and it also supports VST and LADSPA plug-in effects.
 </p>
 
 <center>
