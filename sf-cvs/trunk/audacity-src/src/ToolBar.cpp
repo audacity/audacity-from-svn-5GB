@@ -159,6 +159,11 @@ ToolBar::ToolBar(wxWindow * parent, wxWindowID id, const wxPoint & pos, const
 
    mBackgroundBrush.SetColour(backgroundColour);
    mBackgroundPen.SetColour(backgroundColour);
+
+   mBackgroundBitmap = NULL;
+   mBackgroundHeight = 0;
+   mBackgroundWidth = 0;
+
    mIdealSize = wxSize(300, size.y);
 } 
 
@@ -179,6 +184,13 @@ ToolBar::ToolBar(wxWindow * parent):wxWindow(parent, -1, wxPoint(1, 1),
    mIdealSize = wxSize(300, 20);
 } 
 
+
+ToolBar::~ToolBar()
+{
+   if (mBackgroundBitmap)
+      delete mBackgroundBitmap;
+
+}
 
 // This looks at the first pixel in the image, and shifts
 // the entire image by the vector difference between that 
@@ -388,6 +400,58 @@ void ToolBar::SetButton(bool down, AButton * button)
       button->PopUp();
 }
 
+void ToolBar::DrawBackground(wxDC &dc, int width, int height)
+{
+   #if defined(__WXMAC__)
+
+   if (mBackgroundWidth < width) {
+      if (mBackgroundBitmap)
+         delete mBackgroundBitmap;
+
+      mBackgroundBitmap = new wxBitmap(width, height);
+
+      wxMemoryDC memDC;
+      memDC.SelectObject(*mBackgroundBitmap);
+
+      int y;
+      memDC.SetPen(wxPen(wxColour(231, 231, 231), 1, wxSOLID));
+      for (y = 0; y < height; y += 4)
+         memDC.DrawLine(0, y, width, y);
+      memDC.SetPen(wxPen(wxColour(239, 239, 239), 1, wxSOLID));
+      for (y = 1; y < height; y += 2)
+         memDC.DrawLine(0, y, width, y);
+      memDC.SetPen(wxPen(wxColour(255, 255, 255), 1, wxSOLID));
+      for (y = 2; y < height; y += 4)
+         memDC.DrawLine(0, y, width, y);
+   }
+
+   wxMemoryDC memDC;
+   memDC.SelectObject(*mBackgroundBitmap);
+
+   dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
+
+   dc.SetPen(*wxBLACK_PEN);
+
+   dc.DrawLine(27, 0, 27, height - 1);
+   dc.DrawLine(55, 0, 55, height - 1);
+   dc.DrawLine(83, 0, 83, 27);
+   dc.DrawLine(0, 27, 83, 27);
+
+#else
+
+   dc.SetBrush(mBackgroundBrush);
+   dc.SetPen(mBackgroundPen);
+   dc.DrawRectangle(0, 0, width, height);
+
+   dc.SetPen(*wxBLACK_PEN);
+
+   dc.DrawLine(27, 0, 27, height - 1);
+   dc.DrawLine(55, 0, 55, height - 1);
+   dc.DrawLine(83, 0, 83, height - 1);
+   dc.DrawLine(0, 27, 83, 27);
+
+#endif
+}
 
 ////////////////////////////////////////////////////////////
 /// Methods for ToolBarFrame
@@ -462,3 +526,4 @@ void ToolBarFrame::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
 {
    this->Hide();
 } 
+

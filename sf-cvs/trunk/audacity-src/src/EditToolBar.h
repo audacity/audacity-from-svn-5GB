@@ -85,14 +85,13 @@ class EditToolBar:public ToolBar {
    
    AButton *mButtons[ETBNumButtons];
 
-   wxBitmap *mBackgroundBitmap;
-   int mBackgroundWidth;
-   int mBackgroundHeight;
-
    int mButtonPos;
    wxImage *upImage;
    wxImage *downImage;
    wxImage *hiliteImage;
+
+   int mDividers[100];
+   int mNumDividers;
 
    DECLARE_EVENT_TABLE()
 };

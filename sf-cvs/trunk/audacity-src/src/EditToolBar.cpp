@@ -78,19 +78,9 @@ void EditToolBar::InitializeEditToolBar()
    mIdealSize = wxSize(340, 27);
    mTitle = "Audacity Edit Toolbar";
    mType = EditToolBarID;
-
-   wxColour backgroundColour =
-       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
-   wxColour origColour(204, 204, 204);
+   mNumDividers = 0;
 
    MakeButtons();
-
-   mBackgroundBrush.SetColour(backgroundColour);
-   mBackgroundPen.SetColour(backgroundColour);
-
-   mBackgroundBitmap = NULL;
-   mBackgroundHeight = 0;
-   mBackgroundWidth = 0;
 }
 
 
@@ -113,14 +103,15 @@ void EditToolBar::AddButton(const char **fg, const char **disabled, const char *
                      disabled, alpha,
                      wxWindowID(id), wxPoint(mButtonPos, buttonTop),
                      wxSize(BUTTON_WIDTH, BUTTON_WIDTH), 3, 3);
-
    mButtons[id]->SetToolTip(tooltip);
    mButtonPos += BUTTON_WIDTH;
+   mDividers[mNumDividers++] = mButtonPos++;
 }
 
 void EditToolBar::AddSeparator()
 {
    mButtonPos += SEPARATOR_WIDTH;
+   mDividers[mNumDividers++] = mButtonPos++;
 }
 
 void EditToolBar::MakeButtons()
@@ -151,7 +142,7 @@ void EditToolBar::MakeButtons()
 
    /* Buttons */
 
-   mButtonPos = 1;
+   mButtonPos = 0;
 
    AddButton(Cut, CutDisabled, CutAlpha, ETBCutID,
              _("Cut"));
@@ -190,9 +181,6 @@ EditToolBar::~EditToolBar()
 {
    for (int i=0; i<ETBNumButtons; i++)
       delete mButtons[i];
-
-   if (mBackgroundBitmap)
-      delete mBackgroundBitmap;
 }
 
 void EditToolBar::OnKeyEvent(wxKeyEvent & event)
@@ -255,11 +243,11 @@ void EditToolBar::OnPaint(wxPaintEvent & evt)
    int width, height;
    GetSize(&width, &height);
 
-   dc.SetBrush(mBackgroundBrush);
-   dc.SetPen(mBackgroundPen);
-   dc.DrawRectangle(0, 0, width, height);
+   DrawBackground(dc, width, height);
 
    dc.SetPen(*wxBLACK_PEN);
+   for(int i=0; i<mNumDividers; i++)
+      dc.DrawLine(mDividers[i], 0, mDividers[i], height);
 }
 
 void EditToolBar::EnableDisableButtons()

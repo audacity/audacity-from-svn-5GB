@@ -100,9 +100,6 @@ class ControlToolBar:public ToolBar {
    ASlider *mVolume;
    int mCurrentTool;
 
-   wxBitmap *mBackgroundBitmap;
-   int mBackgroundWidth;
-   int mBackgroundHeight;
    wxBitmap *mDivBitmap;
    wxBitmap *mMuteBitmap;
    wxBitmap *mLoudBitmap;
