@@ -1,4 +1,4 @@
-<?php BoxTop('Aðustos 25, 2004: Audacity 1.2.2 duyuruldu'); ?>
+<?php BoxTop('25 Aðustos 2004: Audacity 1.2.2 duyuruldu'); ?>
 
 <p>
 Audacity 1.2.2 Audacity ses edötürünün en yeni stable versiyonudur.

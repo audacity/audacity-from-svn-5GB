@@ -37,7 +37,9 @@ $browseSourceStr = "Ta del av källkoden";
 $browseDoxygenStr = "Doxygen Class Docs ";
 $creditsStr = "Tack till";
 $sourceStr = "Källkod";
+$sourceDepStr = "Källkod område";
 $linuxStr = "Linux Binärt";
+$linuxStr2 = "Detta är en "static binary" som skall fungera på vilken Linuxkonfiguration som helst. Packa upp och kör "audacity" binary from vilken mapp som helst, eller kör "make install" som rot för att installera programmet.";
 $macOS9ReqStr = "Kräver Mac OS 8.6 eller högre";
 $macOSXReqStr = "Kräver Mac OS X 10.1 eller högre";
 $windowsReqStr = "Kräver Windows 98, ME, 2000, eller XP";
@@ -61,4 +63,5 @@ $altDownloadStr = "Problem med att ladda ner? Vill du ha en tidigare version?";
 $altDownloadStr2 = "Klicka här för att ladda ner från andra sajter";
 $docsStr = "Ladda ner senast dokumentation";
 $clickEnlargeStr = "(Klicka på bilden för att se den i större storlek)";
+$listPrivacyStr = ">privat policy.)";
 ?>
