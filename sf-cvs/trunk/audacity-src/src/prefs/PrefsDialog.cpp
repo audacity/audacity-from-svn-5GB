@@ -35,6 +35,7 @@
 #include "KeyConfigPrefs.h"
 #include "QualityPrefs.h"
 #include "SpectrumPrefs.h"
+#include "MousePrefs.h"
 
 enum {
    CategoriesID = 1000
@@ -71,6 +72,7 @@ wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
    topSizer->Add(catSizer, 1, wxGROW | wxALL, 0);
 
    /* All panel additions belong here */
+   // April/2003:  Of these, the Audio IO and FileFormat pages leak memory.
    mCategories->AddPage(new AudioIOPrefs(mCategories), _("Audio I/O"));
    mCategories->AddPage(new QualityPrefs(mCategories), _("Quality"));
    mCategories->AddPage(new FileFormatPrefs(mCategories), _("File Formats"));
@@ -78,6 +80,7 @@ wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
    mCategories->AddPage(new DirectoriesPrefs(mCategories), _("Directories"));
    mCategories->AddPage(new GUIPrefs(mCategories), _("Interface"));
    mCategories->AddPage(new KeyConfigPrefs(mCategories), _("Keyboard"));
+   mCategories->AddPage(new MousePrefs(mCategories), _("Mouse"));
 
    long selected = gPrefs->Read("/Prefs/PrefsCategory", 0L);
    if (selected < 0 || selected >= mCategories->GetPageCount())
