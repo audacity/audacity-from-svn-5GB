@@ -476,7 +476,7 @@ void AudacityApp::RunTest()
    wxStartTimer();
    for (z = 0; z < trials; z++) {
       int x0 = rand() % len;
-      int xlen = 1 + (rand() % (len - x0 - 1));
+      int xlen = 1 + (rand() % (len - x0));
       printf("Cut: %d - %d \n", x0 * scale, (x0 + xlen) * scale);
 
       t->Cut(double (x0 * scale), double ((x0 + xlen) * scale), &tmp);
