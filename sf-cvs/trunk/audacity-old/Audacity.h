@@ -34,3 +34,7 @@ void QuitAudacity();
 #include "configunix.h"
 #endif
 
+#ifdef __WXMSW__
+#include "configwin.h"
+#endif
+
