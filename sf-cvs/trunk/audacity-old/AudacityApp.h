@@ -12,11 +12,11 @@
 **********************************************************************/
 
 // Increment this every time you release a new version
-#define AUDACITY_VERSION_STRING "0.93"
+#define AUDACITY_VERSION_STRING "0.94"
 
 // Don't change this unless the file format changes
 // in an irrevocable way
-#define AUDACITY_FILE_FORMAT_VERSION "0.9"
+#define AUDACITY_FILE_FORMAT_VERSION "0.94"
 
 #include <wx/app.h>
 

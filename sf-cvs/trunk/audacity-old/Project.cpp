@@ -1105,12 +1105,15 @@ void AudacityProject::OpenFile(wxString fileName)
 
   wxString projName;
   wxString projPath;
+  wxString version;
   long longVpos;
 
   if (f.GetNextLine() != "Version") goto openFileError;
-  if (f.GetNextLine() != AUDACITY_FILE_FORMAT_VERSION) {
+  version = f.GetNextLine();
+  if (version != AUDACITY_FILE_FORMAT_VERSION &&
+	  version != "0.9") {
 	wxMessageBox("This project was saved by a different version of "
-				       "Audacity and is no longer supported.");
+				 "Audacity and is no longer supported.");
 	return;
   }
 
@@ -1130,6 +1133,10 @@ void AudacityProject::OpenFile(wxString fileName)
   if (!(f.GetNextLine().ToDouble(&mViewInfo.h))) goto openFileError;
   if (f.GetNextLine() != "zoom") goto openFileError;
   if (!(f.GetNextLine().ToDouble(&mViewInfo.zoom))) goto openFileError;
+  if (version != "0.9") {
+	if (f.GetNextLine() != "rate") goto openFileError;
+	if (!(f.GetNextLine().ToDouble(&mRate))) goto openFileError;
+  }
 
   mTracks->Clear();
   InitialState();
@@ -1203,7 +1210,7 @@ void AudacityProject::OnOpen(wxCommandEvent& event)
 
 void AudacityProject::Save(bool overwrite /* = true */)
 {
-  if (mName == "" || mFileName == "") {
+  if (mDirManager.GetProjectName() == "") {
 	SaveAs();
 	return;
   }
@@ -1278,6 +1285,8 @@ void AudacityProject::Save(bool overwrite /* = true */)
   f.AddLine(wxString::Format("%g", mViewInfo.h));
   f.AddLine("zoom");
   f.AddLine(wxString::Format("%g", mViewInfo.zoom));
+  f.AddLine("rate");
+  f.AddLine(wxString::Format("%g", mRate));
 
   f.AddLine("BeginTracks");
 
@@ -1325,6 +1334,9 @@ void AudacityProject::Save(bool overwrite /* = true */)
     mLastSavedTracks->Add(t->Duplicate());
     t = iter.Next();
   }
+
+  mStatus->SetField(wxString::Format("Saved %s",
+									 (const char *)mFileName), 0);
 }
 
 void AudacityProject::OnSave(wxCommandEvent& event)
