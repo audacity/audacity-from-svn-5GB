@@ -62,9 +62,11 @@ public:
 
   // Accessors
 
-  bool IsLinearInRegion(double t0, double t1);
-
   double GetValue(double t);
+
+  // This is much faster than calling GetValue() multiple times
+  // if you need more than one value in a row.
+  void GetValues(double *buffer, int len, double t0, double tstep);
 
   bool IsDirty();
 

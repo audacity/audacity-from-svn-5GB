@@ -94,7 +94,7 @@ void Envelope::Draw(wxDC &dc, wxRect &r, double h, double pps, bool dB)
 	  else
 		y = int(v*(r.height/2));
 
-	  wxRect circle(r.x+x-1, ctr-y-1, 4, 4);
+	  wxRect circle(r.x+x-1, ctr-y, 4, 4);
 	  dc.DrawEllipse(circle);
 	  circle.y = ctr+y-2;
 	  dc.DrawEllipse(circle);
@@ -394,39 +394,11 @@ void Envelope::SetTrackLen(double trackLen)
 
 // Accessors
 
-bool Envelope::IsLinearInRegion(double t0, double t1)
-{
-  // i.e. is this region totally free from control
-  // points.  This means that external functions can
-  // interpolate instead of calling GetValue() at every
-  // sample...
-
-  // currently returns false because interpolation is now
-  // done in db
-  return false;
-
-  /*
-  t0 -= mOffset;
-  t1 -= mOffset;
-
-  int len = mEnv.Count();
-  for(int i=0; i<len; i++) {
-	if (mEnv[i]->t > t0 && mEnv[i]->t < t1)
-	  return false;
-	if (mEnv[i]->t > t1)
-	  return true;
-  }
-
-  return true;
-  */
-}
-
 double Envelope::GetValue(double t)
 {
   t -= mOffset;
 
   int len = mEnv.Count();
-  int i=0;
 
   if (len <= 0 || t < mEnv[0]->t || t > mEnv[len-1]->t)
 	return 1.0;
@@ -470,43 +442,73 @@ double Envelope::GetValue(double t)
   return pow(10.0, v);
 }
 
-/*
-
-Old code: didn't do binary search, and didn't interpolate using decibels
-
-double Envelope::GetValue(double t)
+void Envelope::GetValues(double *buffer, int bufferLen,
+						   double t0, double tstep)
 {
-  t -= mOffset;
+  t0 -= mOffset;
 
-  // TODO: This should use a binary search
   int len = mEnv.Count();
-  int i=0;
-  while(i<len && t>mEnv[i]->t)
-    i++;
+
+  double t = t0;
+
+  double tprev, vprev, tnext, vnext, vstep;
+
+  for(int b=0; b<bufferLen; b++) {
+
+	if (len <= 0 || t < mEnv[0]->t || t > mEnv[len-1]->t) {
+	  buffer[b] = 1.0;
+	  t += tstep;
+	  continue;
+	}
+
+	if (b==0 || t>tnext) {
+
+	  // binary search
+	  int lo = 0;
+	  int hi = len-1;
+	  while(hi>(lo+1)) {
+		int mid = (lo+hi)/2;
+		if (t < mEnv[mid]->t)
+		  hi = mid;
+		else
+		  lo = mid;
+	  }
+	  
+	  tprev = mEnv[lo]->t;
+	  vprev = log10(mEnv[lo]->val);
+	  tnext = mEnv[hi]->t;
+	  vnext = log10(mEnv[hi]->val);
+	  
+	  // Special case for the log of zero
+	  if (mEnv[lo]->val <= 0.0)
+		vprev = -4.6; // This corresponds to the log10 of 1/32768
+	  if (mEnv[hi]->val <= 0.0)
+		vnext = -4.6;
 	
-	if (i==0 && len>0)
-	  return mEnv[0]->val;
+	  // Interpolate in logspace
+	  
+	  double dt = (tnext - tprev);
+	  
+	  double to = t - tprev;
+	  double v;
+	  if (dt > 0.0)
+		v = (vprev*(dt-to) + vnext*to) / dt;
+	  else
+		v = tnext;
+	
+	  buffer[b] = pow(10.0, v);
 
-  if (i>0 && i<len) {
-		double t0 = mEnv[i-1]->t;
-		double t1 = mEnv[i]->t;
-		double v0 = mEnv[i-1]->val;
-		double v1 = mEnv[i]->val;
+	  if (dt > 0.0)
+		vstep = pow(10.0, (vnext-vprev)*tstep/dt);
+	  else
+		vstep = 1.0;
+	}
+	else {
+	  buffer[b] = buffer[b-1]*vstep;
+	}
 
-		// Interpolate
-
-		double dt = (t1 - t0);
-
-		// This should never happen, but we certainly
-		// don't want to divide by zero...
-		if (dt <= 0.0)
-		  return 1.0;
-
-		double to = t - t0;
-		return (v0*(dt-to) + v1*to) / dt;
+	t += tstep;
   }
-  
-  return 1.0;
+
 }
 
-*/

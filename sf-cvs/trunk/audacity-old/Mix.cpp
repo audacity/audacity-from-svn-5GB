@@ -192,6 +192,7 @@ Mixer::Mixer(int numChannels, int bufferSize, bool interleaved)
   for(int c=0; c<mNumBuffers; c++)
 	mBuffer[c] = new sampleType[mInterleavedBufferSize];
   mTemp = new sampleType[mBufferSize];
+  mEnvValues = new double[mBufferSize];
 }
 
 Mixer::~Mixer()
@@ -200,6 +201,7 @@ Mixer::~Mixer()
 	delete[] mBuffer[c];
   delete[] mBuffer;
   delete[] mTemp;
+  delete[] mEnvValues;
 }
 
 void Mixer::UseVolumeSlider(APalette* palette)
@@ -292,30 +294,12 @@ void Mixer::Mix(int *channelFlags, WaveTrack *src, double t0, double t1)
     volume = 1.0;
   
   Envelope *e = src->GetEnvelope();
-  if (e->IsLinearInRegion(t0, t1)) {
-    double leftVal = e->GetValue(t0) * volume;
-    double rightVal = e->GetValue(t1) * volume;
-    
-    double val = leftVal;
-    double step = (rightVal-leftVal)/slen;
-    sampleType *buffer = &mTemp[soffset];
-    for(i=0; i<slen; i++) {
-      buffer[i] = sampleType(buffer[i]*val);
-      val += step;
-    }
-  }
-  else {
-    // The envelope changes within this region, so we
-    // do things the slow way, calculating the value of
-    // the envelope at each pixel
-    
-    double t = t0;
-    double tstep = 1.0 / src->rate;
-    for(i=0; i<slen; i++) {
-      mTemp[soffset+i] =
-	sampleType(mTemp[soffset+i]*volume*e->GetValue(t));
-      t += tstep;
-    }
+
+  e->GetValues(mEnvValues, slen, t0, 1.0 / src->rate);
+
+  for(i=0; i<slen; i++) {
+	mTemp[soffset+i] =
+	  sampleType(mTemp[soffset+i] * volume * mEnvValues[i]);
   }
   
   // Then mix it down to the appropriate tracks

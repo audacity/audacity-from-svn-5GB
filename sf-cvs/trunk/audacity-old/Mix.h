@@ -49,6 +49,7 @@ private:
   APalette   *mAPalette;
   sampleType **mBuffer;
   sampleType *mTemp;
+  double     *mEnvValues;
 };
 
 #endif

@@ -731,6 +731,7 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
   int ctr = r.y + (r.height/2);
   
   int *heights = NULL;
+  double *envValues = NULL;
 
   if (mid.width > 0) {
     dc.SetPen(*wxRED_PEN);	    
@@ -739,16 +740,19 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
 	PrepareCacheWaveform(cache, t0, pps, mid.width);
     
     heights = new int[mid.width];
+	envValues = new double[mid.width];
   }
+
+  track->envelope.GetValues(envValues, mid.width,
+							t0, tstep);
 
   double t = t0;
   int x;
   for(x=0; x<mid.width; x++) {
-    heights[x] = GetWaveYPos(track->envelope.GetValue(t+tOffset),
+    heights[x] = GetWaveYPos(envValues[x],
 							 mid.height/2,
 							 dB);
-
-    t += 1/pps;
+    t += tstep;
   }
 
   // Draw track area
@@ -793,7 +797,6 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
 	int *xpos = new int[slen];
 	int *ypos = new int[slen];
 
-	t = t0;
 	sampleCount s;
 	for(s=0; s<slen; s++) {
 	  double xx = ((double(s0+s)/rate + tOffset - h)*pps + 0.5);
@@ -801,9 +804,10 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
 		xx = -10000;
 	  if (xx > 10000)
 		xx = 10000;
+	  double tt = (s0 + s)/rate - tOffset;
 	  xpos[s] = (int)xx;
 	  ypos[s] = ctr-GetWaveYPos(buffer[s]/32768.0 *
-								track->envelope.GetValue(t+tOffset),
+								track->envelope.GetValue(tt),
 								mid.height/2,
 								dB);
 	}
@@ -848,7 +852,7 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
 	  
 	  dc.DrawLine(mid.x+x,h2,mid.x+x,h1+1);
 	  
-	  t += 1/pps;
+	  t += tstep;
 	}
   }
 
@@ -867,6 +871,8 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
 
   if (heights)
     delete[] heights;
+  if (envValues)
+	delete[] envValues;
 
   // Draw arrows on the left side if the track extends to the left of the
   // beginning of time.  :)
