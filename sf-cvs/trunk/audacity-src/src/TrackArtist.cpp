@@ -105,13 +105,13 @@ TrackArtist::~TrackArtist()
       while (( node = mTrackHash->Next() )) {
          TrackInfoCache *cache = (TrackInfoCache *) node->GetData();
          if (cache->where)
-            delete cache->where;
+            delete[] cache->where;
          if (cache->min)
-            delete cache->min;
+            delete[] cache->min;
          if (cache->max)
-            delete cache->max;
+            delete[] cache->max;
          if (cache->freq)
-            delete cache->freq;
+            delete[] cache->freq;
          delete cache;
       }
       delete mTrackHash;
