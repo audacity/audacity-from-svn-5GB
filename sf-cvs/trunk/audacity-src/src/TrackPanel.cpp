@@ -1055,6 +1055,24 @@ void TrackPanel::DoZoomInOut(wxMouseEvent & event, int trackLeftEdge)
 // BG: This handles drawing
 void TrackPanel::HandleDraw(wxMouseEvent & event)
 {
+   if (event.ButtonDown(1) || event.ButtonDClick(1)) {
+      wxRect r;
+      int dummy;
+
+      VTrack *selectedTrack = FindTrack(event.m_x, event.m_y, false, &r, &dummy);
+
+      if(selectedTrack == NULL)
+         return;
+
+      double rate = ((WaveTrack *)selectedTrack)->GetRate();
+      bool showPoints = (mViewInfo->zoom / rate > 3.0);
+
+      if(!showPoints)
+      {
+         wxMessageBox("You are not zoomed in enough. Zoom in until you can see the individual samples.", "Notice");
+         return;
+      }
+   }
 }
 
 // AS: This is for when a given track gets the x.
