@@ -273,12 +273,13 @@ void EffectChangeSpeed::ReportLibSampleRateError(int error)
 #define CHOICE_78 2
 #define CHOICE_NA 3 
 
-
-#define ID_TEXT_PERCENTCHANGE 10001
-#define ID_SLIDER_PERCENTCHANGE 10002
-#define ID_CHOICE_FROMVINYL 10003
-#define ID_CHOICE_TOVINYL 10004
-#define ID_BUTTON_PREVIEW 10005
+enum {
+   ID_TEXT_PERCENTCHANGE = 10001,
+   ID_SLIDER_PERCENTCHANGE,
+   ID_CHOICE_FROMVINYL,
+   ID_CHOICE_TOVINYL,
+	ID_BUTTON_PREVIEW
+};
 
 
 // event table for ChangeSpeedDialog
