@@ -7,6 +7,10 @@ in Audacity.
 Known bugs to fix:
 -----------------------------------------------------------
 
+- Crash on zooming in (email from Rui Batista)
+- Crash on exit when help window is left open
+  (1.0 and maybe 1.1, probably on Windows - see
+  email from Baier Ulrich)
 - The Mixer in the latest branch doesn't allocate a large
   enough buffer when a track is at a much higher sample
   rate than the project.  (Possibly need to dynamically
