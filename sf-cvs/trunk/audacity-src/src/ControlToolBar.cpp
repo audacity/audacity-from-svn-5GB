@@ -93,7 +93,7 @@ END_EVENT_TABLE()
 
 //Standard contructor
 ControlToolBar::ControlToolBar(wxWindow * parent):
-ToolBar(parent, -1, wxPoint(1, 1), wxSize(520, 55))
+ToolBar(parent, -1, wxPoint(1, 1), wxSize(400, 55))
 {
    InitializeControlToolBar();
 }
@@ -112,7 +112,7 @@ ControlToolBar::ControlToolBar(wxWindow * parent, wxWindowID id,
 // and creating the buttons.
 void ControlToolBar::InitializeControlToolBar()
 {
-   mIdealSize = wxSize(520, 55);
+   mIdealSize = wxSize(400, 55);
    mTitle = _("Audacity Control Toolbar");
    mType = ControlToolBarID;
 

@@ -2979,11 +2979,12 @@ void TrackPanel::DrawEverythingElse(Track * t, wxDC * dc, wxRect & r,
    int width, height;
    GetSize(&width, &height);
    wxRegion region = GetUpdateRegion();
+
+#if DEBUG_DRAW_TIMING
    wxRect rbox = region.GetBox();
-   #if DEBUG_DRAW_TIMING
    printf("Update Region: %d %d %d %d\n",
           rbox.x, rbox.y, rbox.width, rbox.height);
-   #endif
+#endif
    wxRegionContain contain = region.Contains(0, 0, GetLeftOffset(), height);
    if (contain == wxPartRegion || contain == wxInRegion) {
       r = trackRect;

@@ -77,7 +77,7 @@ END_EVENT_TABLE()
 
 //Standard contructor
 MixerToolBar::MixerToolBar(wxWindow * parent):
-   ToolBar(parent, -1, wxPoint(1, 1), wxSize(520, 27))
+   ToolBar(parent, -1, wxPoint(1, 1), wxSize(450, 27))
 {
    InitializeMixerToolBar();
 }
@@ -96,7 +96,7 @@ MixerToolBar::MixerToolBar(wxWindow * parent, wxWindowID id,
 // and creating the buttons.
 void MixerToolBar::InitializeMixerToolBar()
 {
-   mIdealSize = wxSize(520, 27);
+   mIdealSize = wxSize(450, 27);
    mTitle = _("Audacity Mixer Toolbar");
    mType = MixerToolBarID;
 

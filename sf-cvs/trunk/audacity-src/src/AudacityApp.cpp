@@ -511,8 +511,17 @@ bool AudacityApp::OnInit()
    //Initiate globally-held toolbar stubs here.
    gControlToolBarStub = new ToolBarStub(gParentWindow, ControlToolBarID);
 
-   gMixerToolBarStub = new ToolBarStub(gParentWindow, MixerToolBarID);
-   
+
+
+   //Only load the mixer toolbar if it says so in the preferences
+   bool mixerToolBar;
+   gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, true);
+   if(mixerToolBar)
+      gMixerToolBarStub =  new ToolBarStub(gParentWindow, MixerToolBarID);
+   else
+      gMixerToolBarStub = NULL;
+
+
    // Changing the following to NULL will make the application
    // load without the toolbar in memory at all.
 

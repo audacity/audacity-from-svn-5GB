@@ -139,6 +139,9 @@ void OnPlotSpectrum(wxEvent & event);
 void OnFloatControlToolBar(wxEvent & event);
 void OnLoadEditToolBar(wxEvent & event);
 void OnFloatEditToolBar(wxEvent & event);
+void OnLoadMixerToolBar(wxEvent & event);
+void OnFloatMixerToolBar(wxEvent & event);
+
 
         // Project Menu
 

@@ -798,6 +798,60 @@ void AudacityProject::OnFloatEditToolBar()
 }
 
 
+void AudacityProject::OnLoadMixerToolBar()
+{
+   if (gMixerToolBarStub) {
+      if (gMixerToolBarStub->GetLoadedStatus()) {
+
+         //the toolbar is "loaded", meaning its visible either in the window
+         //or floating
+
+         gMixerToolBarStub->SetLoadedStatus(false);
+         gMixerToolBarStub->HideWindowedToolBar();
+         gMixerToolBarStub->UnloadAll();
+
+      } else {
+
+         //the toolbar is not "loaded", meaning that although the stub exists, 
+         //the toolbar is not visible either in a window or floating around
+         gMixerToolBarStub->SetLoadedStatus(true);
+
+         if (gMixerToolBarStub->GetWindowedStatus()) {
+            //Make the floating toolbar appear
+            gMixerToolBarStub->ShowWindowedToolBar();
+            gMixerToolBarStub->LoadAll();
+         } else {
+            //Make it appear in all the windows
+            gMixerToolBarStub->LoadAll();
+         }
+
+      }
+   } else {
+      gMixerToolBarStub = new ToolBarStub(gParentWindow, MixerToolBarID);
+      gMixerToolBarStub->LoadAll();
+   }
+}
+
+
+void AudacityProject::OnFloatMixerToolBar()
+{
+   if (gMixerToolBarStub) {
+
+      if (gMixerToolBarStub->GetWindowedStatus()) {
+
+         gMixerToolBarStub->HideWindowedToolBar();
+         gMixerToolBarStub->LoadAll();
+
+      } else {
+
+         gMixerToolBarStub->ShowWindowedToolBar();
+         gMixerToolBarStub->UnloadAll();
+      }
+   }
+}
+
+
+
 //
 // Project Menu
 //

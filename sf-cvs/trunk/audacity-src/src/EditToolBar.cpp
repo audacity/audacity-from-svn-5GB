@@ -58,7 +58,7 @@ END_EVENT_TABLE()
 
 //Standard contructor
 EditToolBar::EditToolBar(wxWindow * parent)
-   : ToolBar(parent, -1, wxPoint(1, 1), wxSize(340, 27))
+   : ToolBar(parent, -1, wxPoint(1, 1), wxSize(350, 27))
 {
    InitializeEditToolBar();
 }
@@ -76,7 +76,7 @@ EditToolBar::EditToolBar(wxWindow * parent, wxWindowID id,
 // and creating the buttons.
 void EditToolBar::InitializeEditToolBar()
 {
-   mIdealSize = wxSize(340, 27);
+   mIdealSize = wxSize(350, 27);
    mTitle = _("Audacity Edit Toolbar");
    mType = EditToolBarID;
    mNumDividers = 0;

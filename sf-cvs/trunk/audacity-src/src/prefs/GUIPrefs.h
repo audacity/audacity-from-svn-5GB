@@ -31,6 +31,7 @@ class GUIPrefs : public PrefsPanel {
     wxCheckBox *mAlwaysEnablePause;
     wxCheckBox *mSpectrogram;
     wxCheckBox *mEditToolBar;
+    wxCheckBox *mMixerToolBar;
     wxTextCtrl *mLocale;
     wxStaticText *mLocaleLabel;
 };

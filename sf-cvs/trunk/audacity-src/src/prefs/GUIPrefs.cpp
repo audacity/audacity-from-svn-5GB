@@ -29,10 +29,12 @@ GUIPrefs::GUIPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
    // Scrolling
-   bool autoscroll, spectrogram, editToolBar, alwaysEnablePause;
+   bool autoscroll, spectrogram, editToolBar,mixerToolBar, alwaysEnablePause;
    gPrefs->Read("/GUI/AutoScroll", &autoscroll, true);
    gPrefs->Read("/GUI/UpdateSpectrogram", &spectrogram, true);
+
    gPrefs->Read("/GUI/EnableEditToolBar", &editToolBar, true);
+   gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, true);
    gPrefs->Read("/GUI/AlwaysEnablePause", &alwaysEnablePause, false);
 
    topSizer = new wxBoxSizer( wxVERTICAL );
@@ -57,6 +59,13 @@ PrefsPanel(parent)
    mEditToolBar = new wxCheckBox(this, -1, _("Enable Edit Toolbar"));
    mEditToolBar->SetValue(editToolBar);
    topSizer->Add(mEditToolBar, 0, wxGROW|wxALL, 2);
+
+
+
+   //Enable Mixer toolbar preference
+   mMixerToolBar = new wxCheckBox(this, -1, _("Enable Mixer Toolbar"));
+   mMixerToolBar->SetValue(mixerToolBar);
+   topSizer->Add(mMixerToolBar, 0, wxGROW|wxALL, 2);
 
 
    // Locale
@@ -103,6 +112,27 @@ bool GUIPrefs::Apply()
       }
    //----------------------End of Edit toolbar loading/unloading
    //---------------------------------------------------------------
+
+
+  //-------------------------------------------------------------
+   //---------------------- Mixer toolbar loading/unloading
+   gPrefs->Write("/GUI/EnableMixerToolBar", mMixerToolBar->GetValue());
+   enable = mMixerToolBar->GetValue();
+ 
+   if(gMixerToolBarStub && !enable) {
+     gMixerToolBarStub->UnloadAll();    //Unload all docked MIXER toolbars
+     delete gMixerToolBarStub;
+      gMixerToolBarStub = NULL;
+   }
+   else if(!gMixerToolBarStub && enable)
+      {  
+	gMixerToolBarStub =  new ToolBarStub(gParentWindow, MixerToolBarID);
+	gMixerToolBarStub->LoadAll();
+      }
+   //----------------------End of Mixer toolbar loading/unloading
+   //---------------------------------------------------------------
+
+
 
    gPrefs->Write("/Locale/Language", mLocale->GetValue());
 

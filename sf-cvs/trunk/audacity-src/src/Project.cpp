@@ -80,6 +80,7 @@
 
 #include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
 
+
 TrackList *AudacityProject::msClipboard = new TrackList();
 double AudacityProject::msClipLen = 0.0;
 AudacityProject *AudacityProject::msClipProject = NULL;
@@ -1036,6 +1037,15 @@ void AudacityProject::UpdateMenus()
             toolBarCheckSum += 3;
       }
    }
+   if (gMixerToolBarStub) {
+      if (gMixerToolBarStub->GetLoadedStatus()) {
+         if(gMixerToolBarStub->GetWindowedStatus())
+            toolBarCheckSum += 12;
+         else
+            toolBarCheckSum += 24;
+      }
+   }
+   
    
    
    // Get ahold of the clipboard status
@@ -1105,19 +1115,37 @@ void AudacityProject::UpdateMenus()
 
    if (gEditToolBarStub) {
 
-      // Loaded or unloaded?
-      GetCommands()->EnableItemsByFunction("appmenu", "OnFloatEditToolBar", gEditToolBarStub->GetLoadedStatus());
+     // Loaded or unloaded?
+     GetCommands()->EnableItemsByFunction("appmenu", "OnFloatEditToolBar", gEditToolBarStub->GetLoadedStatus());
 
-      // Floating or docked?
-      if (gEditToolBarStub->GetWindowedStatus())
-         GetCommands()->ChangeText("appmenu", "OnFloatEditToolBar", _("Dock Edit Toolbar"));
-      else
-         GetCommands()->ChangeText("appmenu", "OnFloatEditToolBar", _("Float Edit Toolbar"));
+     // Floating or docked?
+     if (gEditToolBarStub->GetWindowedStatus())
+       GetCommands()->ChangeText("appmenu", "OnFloatEditToolBar", _("Dock Edit Toolbar"));
+     else
+       GetCommands()->ChangeText("appmenu", "OnFloatEditToolBar", _("Float Edit Toolbar"));
    }
    else
-      {
-         GetCommands()->EnableItemsByFunction("appmenu", "OnFloatEditToolBar", false);
-      }
+     {
+       GetCommands()->EnableItemsByFunction("appmenu", "OnFloatEditToolBar", false);
+     }
+
+
+   if (gMixerToolBarStub) {
+     
+     // Loaded or unloaded?
+     GetCommands()->EnableItemsByFunction("appmenu", "OnFloatMixerToolBar", gMixerToolBarStub->GetLoadedStatus());
+     
+     // Floating or docked?
+     if (gMixerToolBarStub->GetWindowedStatus())
+       GetCommands()->ChangeText("appmenu", "OnFloatMixerToolBar", _("Dock Mixer Toolbar"));
+     else
+       GetCommands()->ChangeText("appmenu", "OnFloatMixerToolBar", _("Float Mixer Toolbar"));
+   }
+   else
+     {
+       GetCommands()->EnableItemsByFunction("appmenu", "OnFloatMixerToolBar", false);
+     }
+
 #endif
 
    GetCommands()->EnableItemsByFunction("appmenu", "OnQuickMix", numWaveTracksSelected > 0);
@@ -1360,12 +1388,28 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
       mToolBarArray.Add(toolbar);
       break;
 
+   case MixerToolBarID:
+
+     if (!gMixerToolBarStub) {
+       gMixerToolBarStub = new ToolBarStub(gParentWindow, MixerToolBarID);
+     }
+     
+     h = gMixerToolBarStub->GetHeight();
+     toolbar =
+       new MixerToolBar(this, -1, wxPoint(10, tbheight),
+			wxSize(width - 10, h));
+     
+     
+     mToolBarArray.Add(toolbar);
+     break;
+      
+     
    case NoneID:
    default:
-      toolbar = NULL;
-      break;
+     toolbar = NULL;
+     break;
    }
-
+   
    //Add the new toolbar to the ToolBarArray and redraw screen
    mTotalToolBarHeight += toolbar->GetHeight() +1;
    HandleResize();
@@ -1403,6 +1447,10 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
          case EditToolBarID:
             break;
             
+         case MixerToolBarID:
+            break;
+
+
          case NoneID:
          default:
             break;
@@ -1425,17 +1473,19 @@ bool AudacityProject::IsToolBarLoaded(enum ToolBarType t)
    return false;
 }
 
-
 void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 {
    if (event.ButtonDown())
       SetActiveProject(this);
 
+   //Initial hotspot is relative to TrackPanel window (right below the menu
    wxPoint hotspot;
    hotspot.x = event.m_x;
    hotspot.y = event.m_y;
 
 #ifndef __WXMAC__
+
+   //mouse is relative to the screen
    wxPoint mouse = ClientToScreen(hotspot);
 
    //See if we need to drag a toolbar off the window
@@ -1453,12 +1503,19 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
          i++;
       }
 
-      hotspot.y -= h - mToolBarArray[i]->GetHeight();
+      //You want the hotspot to be relative to the toolbar being clicked.
+      //So, subtract from the y coordinate the height of the toolbars above it.
+      //But, to do this you need to subtract the height of the last toolbar
+      //you looked at in the above loop
 
+      hotspot.y -= (h - mToolBarArray[i]->GetHeight() -1);
+      
       if (i >= mToolBarArray.GetCount()) {
          //This shouldn't really happen, except if the click is on
          //the border--which might occur for some platform-specific formatting
-      } else {
+      } 
+      else 
+	{
 
          int width, height;
          wxSize s = mToolBarArray[i]->GetIdealSize();
@@ -1490,9 +1547,13 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
          mDrag = new wxDragImage(*bitmap);
          delete bitmap;
 
+
+         hotspot = hotspot - wxPoint(1,1-h+height);
+
+	 mDrag->BeginDrag(mouse - hotspot, this, true);
          //Adjust a little because the bitmap is bigger than the toolbar
-         mDrag->BeginDrag(hotspot, this, true);
-         mDrag->Move(mouse - wxPoint(1, 2));
+
+         mDrag->Move(mouse);
          mDrag->Show();
          mToolBarHotspot = hotspot;
 
@@ -1502,7 +1563,7 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 
    else if (event.Dragging() && mDrag) {
 
-      mDrag->Move(mouse);
+     mDrag->Move(mouse - wxPoint(1, 1) );//+ mToolBarHotspot);
 
    } else if (event.ButtonUp() && mDrag) {
 
@@ -1523,6 +1584,12 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
          gEditToolBarStub->ShowWindowedToolBar(&mouse);
          gEditToolBarStub->UnloadAll();
          break;
+      case MixerToolBarID:
+         gMixerToolBarStub->ShowWindowedToolBar(&mouse);
+         gMixerToolBarStub->UnloadAll();
+         break;
+
+
 
       case NoneID:
       default:

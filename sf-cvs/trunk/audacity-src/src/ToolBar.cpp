@@ -116,11 +116,11 @@ void ToolBarStub::ShowWindowedToolBar(wxPoint * where /* = NULL */ )
          {
             mToolBarFrame->Move(*where);
          }
-      else
-
+      
       //Show the new window
       mToolBarFrame->Show();
    }
+
    mWindowedStatus = true;
 }
 
