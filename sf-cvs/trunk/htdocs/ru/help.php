@@ -1,22 +1,22 @@
 <?php BoxTop($helpStr); ?>
 
 <p>
-<a href="docs/contents.html">User's Guide / Documentation</a>
+<a href="docs/contents.html">Руководство пользователя / Документация</a>
 </p>
 
 <p>
 <?php print "<a href=tutorials.php?$langLinkStr>";
-?>Tutorials</a>
+?>Учебники</a>
 </p>
 
 <p>
 <?php print "<a href=faq.php?$langLinkStr>";
-?>Frequently Asked Questions (F.A.Q.)</a>
+?>Часто задаваемые вопросы (ЧаВО)</a>
 </p>
 
 <p>
 <a href="http://sourceforge.net/mailarchive/forum.php?forum_id=828"
->Audacity-Help Mailing List Archives</a>
+>Архивы списка рассылки Audacity-Help</a>
 </p>
 
 <p>
