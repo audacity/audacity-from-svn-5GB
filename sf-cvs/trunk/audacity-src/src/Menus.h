@@ -91,6 +91,7 @@ void UndoHistory(wxCommandEvent & event);
 void Cut(wxCommandEvent & event);
 void Copy(wxCommandEvent & event);
 void Paste(wxCommandEvent & event);
+void Trim(wxCommandEvent & event);
 
 void OnDelete(wxCommandEvent & event);
 void OnSilence(wxCommandEvent & event);

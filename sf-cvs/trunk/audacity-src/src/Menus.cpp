@@ -23,6 +23,7 @@
 #include <wx/filedlg.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
+
 #endif
 
 #include "sndfile.h"
@@ -54,6 +55,7 @@
 #include "HistoryWindow.h"
 #include "effects/Effect.h"
 #include "prefs/PrefsDialog.h"
+
 
 #define AUDACITY_MENUS_GLOBALS
 #include "Menus.h"
@@ -103,6 +105,7 @@ void AudacityProject::CreateMenuBar()
    mEditMenu->Append(CutID, _("Cut"));
    mEditMenu->Append(CopyID, _("Copy"));
    mEditMenu->Append(PasteID, _("Paste"));
+   mEditMenu->Append(TrimID, _("Trim"));
    mEditMenu->AppendSeparator();
    mEditMenu->Append(DeleteID, _("&Delete"));
    mEditMenu->Append(SilenceID, _("Silence"));
@@ -398,6 +401,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    SetCommandState(CutID, anySelection);
    mEditMenu->Enable(CopyID, anySelection);
    SetCommandState(CopyID, anySelection);
+   mEditMenu->Enable(TrimID, anySelection);
+   SetCommandState(TrimID, anySelection);
    mEditMenu->Enable(DeleteID, anySelection);
    SetCommandState(DeleteID, anySelection);
    mEditMenu->Enable(SilenceID, anySelection);
@@ -682,6 +687,8 @@ void AudacityProject::Cut(wxCommandEvent & event)
    mTrackPanel->Refresh(false);
 }
 
+
+
 void AudacityProject::Copy(wxCommandEvent & event)
 {
    ClearClipboard();
@@ -745,6 +752,51 @@ void AudacityProject::Paste(wxCommandEvent & event)
    FixScrollbars();
    mTrackPanel->Refresh(false);
 }
+
+
+
+void AudacityProject::Trim(wxCommandEvent & event)
+{
+   if(mViewInfo.sel1 > mViewInfo.sel0) {
+      ClearClipboard();
+      TrackListIterator iter(mTracks);
+
+      VTrack *n = iter.First();
+      VTrack *dest = 0;
+      
+      double fileEnd = n->GetMaxLen();
+      double selLength = mViewInfo.sel1-mViewInfo.sel0;
+      
+      while (n) {
+         if (n->GetSelected()) {
+            n->Cut(mViewInfo.sel1, fileEnd, &dest);
+         }
+         n = iter.Next();
+      }
+
+      n=iter.First();
+      while (n) {
+         if (n->GetSelected()) {
+            n->Cut(0,mViewInfo.sel0, &dest);
+         }
+         n = iter.Next();
+      }
+      
+
+      
+      //      msClipLen = (mViewInfo.sel0);
+      //      msClipProject = this;
+      
+      mViewInfo.sel0=0;
+      mViewInfo.sel1=selLength;
+      
+      PushState(_("Trim file to selection"));
+      FixScrollbars();
+      mTrackPanel->Refresh(false);
+   }
+}
+   
+
 
 void AudacityProject::OnDelete(wxCommandEvent & event)
 {

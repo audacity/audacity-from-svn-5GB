@@ -63,6 +63,7 @@ enum {
    CutID,
    CopyID,
    PasteID,
+   TrimID,
 
    DeleteID,
    SilenceID,
@@ -249,6 +250,12 @@ enum {
    mCommandIDs.Add( CMD_CETINT(PasteID) );
    mCommandNames.Add( CMD_CSTNAME("Paste") );
    mCommandDesc.Add( CMD_CSTNAME("Paste") );
+
+   CMD_ADDFUNCTION(Trim);
+   CMD_ASSIGNKEY('t', TRUE, FALSE, FALSE);
+   mCommandIDs.Add( CMD_CETINT(TrimID) );
+   mCommandNames.Add( CMD_CSTNAME("Trim") );
+   mCommandDesc.Add( CMD_CSTNAME("Trim") );
 
    CMD_ADDFUNCTION(OnDelete);
    CMD_ASSIGNKEY('k', TRUE, FALSE, FALSE);
@@ -471,6 +478,7 @@ enum {
    MNU_UPDATE_ACCELL(mEditMenu, CutID)
    MNU_UPDATE_ACCELL(mEditMenu, CopyID)
    MNU_UPDATE_ACCELL(mEditMenu, PasteID)
+   MNU_UPDATE_ACCELL(mEditMenu, TrimID)
    MNU_UPDATE_ACCELL(mEditMenu, DeleteID)
    MNU_UPDATE_ACCELL(mEditMenu, SilenceID)
    MNU_UPDATE_ACCELL(mEditMenu, SplitID)
