@@ -843,6 +843,11 @@ void FreqWindow::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
    this->Show(FALSE);
 }
 
+void FreqWindow::OnCloseWindow(wxCommandEvent & WXUNUSED(event))
+{
+   this->Show(FALSE);
+}
+
 void FreqWindow::Plot(int len, float *data, double rate)
 {
    mRate = rate;
