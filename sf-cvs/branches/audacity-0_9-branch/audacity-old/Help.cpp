@@ -108,10 +108,11 @@ void InitHelp(wxWindow * parent)
       #ifdef __WXGTK__
       paths.Add("/usr/local/share/doc/audacity/audacity-help.htb");
       paths.Add("/usr/share/doc/audacity/audacity-help.htb");
+      paths.Add("/usr/share/audacity/audacity-help.htb"); // for debian
       #endif
 
       #ifdef __WXMSW__
-      paths.Add("C:\Program Files\Audacity\audacity-help.htb");
+      paths.Add("C:\\Program Files\\Audacity\\audacity-help.htb");
       #endif
 
       for(int i=0; i<paths.GetCount() && helpFilePath==""; i++) {
