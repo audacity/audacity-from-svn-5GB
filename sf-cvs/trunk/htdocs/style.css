@@ -11,6 +11,7 @@ body {
 img { border:0; vertical-align: middle; }
 dt { font-weight:bold; }
 p, ul, ol { margin-top:0; margin-bottom:1em; }
+ul ul, ol ol { margin-bottom:0; }
 
 h1 { font-size:1.714em; margin:.25em; padding:0; }
 h2 { font-size:1.286em; margin:.5em 0; }
