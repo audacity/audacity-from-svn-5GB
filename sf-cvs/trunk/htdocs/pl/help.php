@@ -7,18 +7,18 @@ Audacity 1.2 Kompletny Manual:
 </p>
 
 <p>
-Audacity 1.2 Quick Reference:
+Audacity 1.2 Szybkie wprowadzenie:
 [<a href="onlinehelp-1.2/contents.htm">Przeglądaj Online</a>]
 </p>
 
 <p>
 <a href="http://www.audacityteam.org/wiki">Audacity Wiki</a>
-(Publicly-editable documentation, tips, tricks, and more)
+(Tworzona przez ludzi dokumentacja,tips'y triki i więcej)
 </p>
 
 <p>
 
-Search Audacity websites and documentation:
+Szukaj dokumentacji i stron poświęconych programowi Audacity:
 
 <form method="post" action="http://audacityteam.org/isearch/index.php" target="_self">
 
@@ -27,8 +27,8 @@ Search Audacity websites and documentation:
     <td>
 
       <input maxLength="255" name="s" size="20" value=''>
-      <input type="submit" value="Search">
-      <a TARGET="_blank" HREF="http://audacityteam.org/isearch/help.php"><font size="-1"> Help with searching</font></a>
+      <input type="submit" value="Szukaj">
+      <a TARGET="_blank" HREF="http://audacityteam.org/isearch/help.php"><font size="-1"> Pomoc w przeszukiwaniu</font></a>
     </td>
   </tr>
 </table>
@@ -43,17 +43,17 @@ Search Audacity websites and documentation:
 
 <p>
 <?php print "<a href=tutorials.php?$langLinkStr>";
-?>Tutorials</a>
+?>Przewodniki</a>
 </p>
 
 <p>
 <?php print "<a href=faq.php?$langLinkStr>";
-?>Frequently Asked Questions (F.A.Q.)</a>
+?>Najczęściej zadawane pytania (F.A.Q.)</a>
 </p>
 
 <p>
 <a href="http://sourceforge.net/mailarchive/forum.php?forum_id=828"
->Audacity-Help Mailing List Archives</a>
+>Archiwum mailingowej listy Audacity-Help </a>
 </p>
 
 <p>
@@ -86,7 +86,7 @@ Search Audacity websites and documentation:
 
 <p>
 <?php print "<a href=tutorials.php?$langLinkStr>";
-?>Tutorials</a>
+?>Przewodniki</a>
 </p>
 
 <p>
