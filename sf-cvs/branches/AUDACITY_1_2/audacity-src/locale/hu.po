@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hungarian 1.0\n"
 "POT-Creation-Date: 2004-02-01 07:48-0800\n"
-"PO-Revision-Date: 2004-08-22 09:17+0100\n"
+"PO-Revision-Date: 2004-11-18 08:47Közép-európai téli idõ\n"
 "Last-Translator: Balázs Márton <documan@mailbox.hu>\n"
 "Language-Team: Magyar <>\n"
 "MIME-Version: 1.0\n"
@@ -581,7 +581,6 @@ msgid "Audacity First Run"
 msgstr "Audacity elsõ indításakor"
 
 #: ../src/MeterToolBar.cpp:54
-#, fuzzy
 msgid "Audacity Meter Toolbar"
 msgstr "Audacity Monitor eszköztár"
 
@@ -951,7 +950,6 @@ msgid "Change upper speed limit (%) to:"
 msgstr "Felsõ sebességhatár változtatása (%):"
 
 #: ../src/effects/AvcCompressor.cpp:398
-#, fuzzy
 msgid "Change window size must be less than or equal to Adjustment window size."
 msgstr "A Változtatás Ablak mérete nem lehet nagyobb a Szabályzó Ablak méreténél"
 
@@ -1430,7 +1428,7 @@ msgstr "A(z) %s nevû könyvtár nem írható"
 
 #: ../src/widgets/Meter.cpp:305
 msgid "Disable"
-msgstr "Tilt"
+msgstr "Tiltás"
 
 #: ../src/HistoryWindow.cpp:94
 msgid "Discard"
@@ -1449,7 +1447,6 @@ msgid "Dock Edit Toolbar"
 msgstr "Szerkesztés eszköztár dokkolása"
 
 #: ../src/Menus.cpp:725
-#, fuzzy
 msgid "Dock Meter Toolbar"
 msgstr "Monitor eszköztár dokkolása"
 
@@ -1556,7 +1553,6 @@ msgid "Enable Edit Toolbar"
 msgstr "Szerkesztés eszköztár engedélyezése"
 
 #: ../src/prefs/GUIPrefs.cpp:92
-#, fuzzy
 msgid "Enable Meter Toolbar"
 msgstr "Monitor eszköztár engedélyezése"
 
@@ -1614,7 +1610,6 @@ msgid "Equalization"
 msgstr "Equalizer"
 
 #: ../src/effects/Equalization.cpp:665
-#, fuzzy
 msgid "Equalization, by Mitch Golden && Vaughan Johnson"
 msgstr "Equalizer. Készítette: Mitch Golden && Vaughan Johnson"
 
@@ -1647,7 +1642,6 @@ msgid "Error loading keyboard shortcuts"
 msgstr "Hiba a billentyûparancsok betöltésekor"
 
 #: ../src/AudacityApp.cpp:750
-#, fuzzy
 msgid "Error locking temporary folder"
 msgstr "Hiba a az ideiglenes könyvtárban"
 
@@ -1720,7 +1714,6 @@ msgid "Export &Labels..."
 msgstr "Címkék exportálása..."
 
 #: ../src/Menus.cpp:162
-#, fuzzy
 msgid "Export &Multiple..."
 msgstr "&Köteg-Exportálás..."
 
@@ -1748,7 +1741,6 @@ msgstr "MP3 exportálása"
 #: ../src/export/ExportMultiple.cpp:364
 #: ../src/export/ExportMultiple.cpp:466
 #: ../src/export/ExportMultiple.cpp:554
-#, fuzzy
 msgid "Export Multiple"
 msgstr "Köteg-Exportálás"
 
@@ -1902,7 +1894,6 @@ msgstr "Szerkesztés eszköztár leválasztása"
 
 #: ../src/Menus.cpp:335
 #: ../src/Menus.cpp:727
-#, fuzzy
 msgid "Float Meter Toolbar"
 msgstr "Monitor eszköztár leválasztása"
 
@@ -2006,7 +1997,6 @@ msgid "High-quality sample rate converter:"
 msgstr "Csúcsminõségû mintavételezési frekvencia konverter"
 
 #: ../src/widgets/Meter.cpp:285
-#, fuzzy
 msgid "Horizontal Stereo"
 msgstr "Vízszintes Sztereó"
 
@@ -2033,7 +2023,6 @@ msgid "ID3v2 (more flexible)"
 msgstr "ID3v2 (rugalmasabban beállítható)"
 
 #: ../src/export/ExportMultiple.cpp:479
-#, fuzzy
 msgid ""
 "If you have more than one Audio Track, you can export each track as a separate file,\n"
 "or if you have a Label Track, you can export a new file for each label.\n"
@@ -2425,7 +2414,6 @@ msgid "Minimum Change %:"
 msgstr "Minimális változtatás %:"
 
 #: ../src/effects/AvcCompressor.cpp:594
-#, fuzzy
 msgid "Minimum Change Window:"
 msgstr "Minimális Változtatás Ablak:"
 
@@ -2705,7 +2693,6 @@ msgid "Number of times to repeat: "
 msgstr "Ismétlések száma: "
 
 #: ../src/export/ExportMultiple.cpp:647
-#, fuzzy
 msgid "Numbering consecutively"
 msgstr "számozás alapján"
 
@@ -2975,9 +2962,8 @@ msgid "Plugins 1 to %i"
 msgstr "Plugin-ek 1-tõl %i-ig"
 
 #: ../src/effects/PopClick.h:29
-#, fuzzy
 msgid "Pop and Click Removal..."
-msgstr "Kattogás Eltávólító"
+msgstr "Kattogás Eltávolító"
 
 #: ../src/effects/Equalization.cpp:703
 msgid "Predefined:"
@@ -3674,7 +3660,6 @@ msgid "Split at labels"
 msgstr "Szétvágás a címkénél"
 
 #: ../src/export/ExportMultiple.cpp:604
-#, fuzzy
 msgid "Split files based on:"
 msgstr "Fájlok darabolása. Sorrend:"
 
@@ -3747,6 +3732,9 @@ msgid ""
 "\n"
 "To enable them again, open the Preferences dialog and click on the Interface tab."
 msgstr ""
+"A monitor eszköztár most le lesz tiltva.\n"
+"\n"
+"Az újbóli engedélyezést a Beállítások ablak Felület paneljén tudod megtenni."
 
 #: ../src/prefs/SpectrumPrefs.cpp:148
 msgid "The maximum frequency must be an integer"
@@ -3974,9 +3962,8 @@ msgid "Use OGG instead of MP3"
 msgstr "OGG használata MP3 helyett"
 
 #: ../src/export/ExportMultiple.cpp:641
-#, fuzzy
 msgid "Using Label/Track Name"
-msgstr "sáv neve alapján"
+msgstr "Sáv neve alapján"
 
 #: ../src/AudacityApp.cpp:547
 #: ../src/AudacityApp.cpp:617
@@ -4006,9 +3993,8 @@ msgid "Values in columns must be in ascending order."
 msgstr "Az oszlopok értékeinek emelkedõ sorrendben kell lenniük."
 
 #: ../src/widgets/Meter.cpp:286
-#, fuzzy
 msgid "Vertical Stereo"
-msgstr "Fügõleges sztereó"
+msgstr "Függõleges sztereó"
 
 #: ../src/import/ImportOGG.cpp:130
 msgid "Vorbis version mismatch"
