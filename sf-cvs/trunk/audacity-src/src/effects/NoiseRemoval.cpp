@@ -55,6 +55,15 @@ EffectNoiseRemoval::EffectNoiseRemoval()
    level = 8;
 }
 
+EffectNoiseRemoval::~EffectNoiseRemoval()
+{
+   delete [] noiseGate;
+   delete [] sum;
+   delete [] sumsq;
+   delete [] profileCount;
+   delete [] smoothing;
+}
+
 bool EffectNoiseRemoval::PromptUser()
 {
    NoiseRemovalDialog dlog(mParent, -1, _("Noise Removal"));

@@ -116,6 +116,9 @@ class Effect {
    // The constructor.  Called once at the beginning of the program.
    // Avoid allocating memory or doing time-consuming processing here.
    Effect();
+
+   //The destructor.
+   virtual ~Effect() {}
  
    // Called once each time an effect is called.  Perform any initialization;
    // make sure that the effect can be performed on the selected tracks and

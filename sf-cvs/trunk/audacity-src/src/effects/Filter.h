@@ -30,6 +30,7 @@ class EffectFilter: public Effect {
 public:
    
    EffectFilter();
+   virtual ~EffectFilter();
    
    virtual wxString GetEffectName() {
       return wxString(_("FFT Filter..."));

@@ -149,6 +149,8 @@ class AudacityProject:public wxFrame,
 
    // Other commands
 
+   static void DeleteClipboard() { delete msClipboard; }
+
    void UpdateMenus();
    void UpdatePrefs();
    void RedrawProject();

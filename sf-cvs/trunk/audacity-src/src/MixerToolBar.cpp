@@ -167,6 +167,8 @@ void MixerToolBar::InitializeMixerToolBar()
 
 MixerToolBar::~MixerToolBar()
 {
+   delete mPlayBitmap;
+   delete mRecordBitmap;
    delete mInputSlider;
    delete mOutputSlider;
    if (mInputSourceChoice)

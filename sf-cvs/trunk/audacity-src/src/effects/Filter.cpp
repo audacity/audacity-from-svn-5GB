@@ -42,6 +42,12 @@ EffectFilter::EffectFilter()
    filterFunc = new float[windowSize];
 }
 
+EffectFilter::~EffectFilter()
+{
+   delete mEnvelope;
+   delete [] filterFunc;
+}
+
 bool EffectFilter::PromptUser()
 {
    FilterDialog dlog(mParent, -1, _("FFT Filter"));

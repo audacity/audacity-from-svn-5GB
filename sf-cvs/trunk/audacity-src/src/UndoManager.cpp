@@ -54,14 +54,11 @@ void UndoManager::SetDescription(unsigned int n, wxString desc)
 
 void UndoManager::RemoveStateAt(int n)
 {
-   TrackListIterator iter(stack[n]->tracks);
+   delete stack[n]->tracks;
 
-   Track *t = iter.First();
-   while (t) {
-      delete t;
-      t = iter.Next();
-   }
+   UndoStackElem *tmpStackElem = stack[n];
    stack.RemoveAt(n);
+   delete tmpStackElem;
 
    current -= 1;
    saved -= 1;

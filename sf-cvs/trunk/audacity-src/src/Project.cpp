@@ -526,6 +526,12 @@ AudacityProject::~AudacityProject()
    mToolBarArray.Clear();
    WX_CLEAR_ARRAY(mToolBarArray)
 
+   delete mImporter;
+   mImporter = NULL;
+
+   delete mTrackFactory;
+   mTrackFactory = NULL;
+
    delete mTags;
    mTags = NULL;
 

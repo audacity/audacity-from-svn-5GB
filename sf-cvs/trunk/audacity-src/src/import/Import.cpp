@@ -50,6 +50,7 @@ Importer::Importer()
 
 Importer::~Importer()
 {
+   mImportPluginList->DeleteContents(true);
    delete mImportPluginList;
    delete mUnusableImportPluginList;
 }
