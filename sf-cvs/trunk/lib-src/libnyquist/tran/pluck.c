@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "stdio.h"
 #ifndef mips
 #include "stdlib.h"

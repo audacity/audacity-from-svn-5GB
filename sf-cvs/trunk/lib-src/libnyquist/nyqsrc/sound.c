@@ -4,6 +4,7 @@
 #ifdef UNIX
 #include "sys/types.h"
 #endif  
+#include <math.h>
 #include <stdio.h>
 #include "xlisp.h"
 #include "sound.h"

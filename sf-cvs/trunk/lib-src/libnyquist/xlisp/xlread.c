@@ -63,13 +63,6 @@ static char save_file_name[STRMAX+1]; /* keeps files opened by prompt */
 static int sfn_valid = FALSE;
 #endif
 
-/* dmazzoni */
-extern char *global_xlisp_path;
-void get_xlisp_path(char *paths, int paths_max)
-{
-   strcpy(paths, global_xlisp_path);
-}
-
 /* xlload - load a file of xlisp expressions */
 int xlload(char *fname, int vflag, int pflag)
 {
