@@ -62,7 +62,7 @@ class EffectToneGen:public Effect {
    int waveform;
    float frequency;
    float amplitude;
-   bool mix;
+   double length;
    int mSample;
    double mCurRate;
 };
@@ -73,7 +73,7 @@ class EffectToneGen:public Effect {
 #define ID_WAVEFORM 10001
 #define ID_AMPTEXT 10002
 #define ID_FREQTEXT 10003
-#define ID_MIX 10004
+#define ID_LENGTHTEXT 10005
 wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit =
                              TRUE, bool set_sizer = TRUE);
 
@@ -98,12 +98,11 @@ class ToneGenDialog:public wxDialog {
       return (wxTextCtrl *) FindWindow(ID_FREQTEXT);
    } wxTextCtrl *GetAmpText() {
       return (wxTextCtrl *) FindWindow(ID_AMPTEXT);
+   } wxTextCtrl *GetLengthText() {
+      return (wxTextCtrl *) FindWindow(ID_LENGTHTEXT);
    }
    wxChoice *GetWaveformChoice() {
       return (wxChoice *) FindWindow(ID_WAVEFORM);
-   }
-   wxCheckBox *GetMixChoice() {
-      return (wxCheckBox *) FindWindow(ID_MIX);
    }
    virtual bool Validate();
    virtual bool TransferDataToWindow();
@@ -122,7 +121,7 @@ class ToneGenDialog:public wxDialog {
    int waveform;
    float frequency;
    float amplitude;
-   bool mix;
+   double length;
 };
 
 #endif
