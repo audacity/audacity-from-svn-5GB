@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hungarian 1.0\n"
 "POT-Creation-Date: 2004-02-01 07:48-0800\n"
-"PO-Revision-Date: 2004-03-18 17:22+0100\n"
+"PO-Revision-Date: 2004-03-23 21:34+0100\n"
 "Last-Translator: Márton Balázs <documan@mailbox.hu>\n"
 "Language-Team: Magyar <>\n"
 "MIME-Version: 1.0\n"
@@ -1167,7 +1167,7 @@ msgstr "&Kivágás\tCtrl+X"
 
 #: ../src/FreqWindow.cpp:131
 msgid "Cuberoot Autocorrelation"
-msgstr "Köbgyök alapú autókorreláció"
+msgstr "Köbgyök autókorreláció"
 
 #: ../src/Menus.cpp:497
 msgid "Cursor Left\tLeft"
@@ -1500,7 +1500,7 @@ msgstr "Kódolás:"
 
 #: ../src/FreqWindow.cpp:132
 msgid "Enhanced Autocorrelation"
-msgstr "Kiterjesztett autókorreláció"
+msgstr "Fokozott autókorreláció"
 
 #: ../src/effects/nyquist/Nyquist.cpp:255
 msgid "Enter Nyquist Command: "
@@ -2173,7 +2173,7 @@ msgstr "Hely:"
 
 #: ../src/FreqWindow.cpp:178
 msgid "Log frequency"
-msgstr "Frekvencia napló"
+msgstr "Log. frekvencia"
 
 #: ../src/TrackPanel.cpp:4304
 #: ../src/TrackPanel.cpp:4305
@@ -2723,7 +2723,7 @@ msgstr "Phaser"
 
 #: ../src/TrackPanel.cpp:834
 msgid "Pitch (EAC)"
-msgstr "Hangmagasság (EAC)"
+msgstr "Hangmagasság (FAK)"
 
 #: ../src/effects/ChangePitch.cpp:260
 msgid "Pitch:   from"
