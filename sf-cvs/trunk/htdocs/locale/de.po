@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Audacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-01-08 09:59-0800\n"
-"PO-Revision-Date: 2005-02-03 16:43+0100\n"
+"PO-Revision-Date: 2005-02-03 20:55+0100\n"
 "Last-Translator: Karsten Zeller <pennywize@gmx.de>\n"
 "Language-Team: Pennywize <pennywize@gmx.de>\n"
 "MIME-Version: 1.0\n"
@@ -279,7 +279,6 @@ msgstr ""
 "</ul>"
 
 #. i18n-hint: You may change the link addresses below, if there is a
-#. Also check the translations of this web page:
 #: about/index.php:33
 msgid ""
 "<h3>About Free Software</h3>\n"
@@ -304,7 +303,6 @@ msgid "License"
 msgstr "Lizenz"
 
 #. i18n-hint:  These gnu.org web pages are available in several languages.
-#. See the bottom of each page for versions in other languages.
 #: about/license.php:25
 msgid ""
 "<p>Audacity is free software; you can redistribute it and/or modify it under the terms of the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License</a> as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.</p>\n"
@@ -1201,7 +1199,6 @@ msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The late
 msgstr "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - Die letzte Version des freien Audioeditors - Audacity"
 
 #. i18n-hint:  If this string is translated, it will appear above the list of
-#. original string.)
 #: download/windows.php:28
 #: download/windows.php:29
 msgid "localized_downloads_windows"
@@ -2657,5 +2654,5 @@ msgstr "Audacity 1.2.3 veröffentlicht"
 msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>\n"
 "<p>See the <a href=\"download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
-msgstr "<p>Audacity 1.2.3 ist die neue, stabile und kostenlose Version des Audioeditors. Diese Version beseitigt einen Fehler, der in Windows zu einem Problem bei zeitlich langen Aufnahmen führte. Ebenfalls enthalten sind einige neue Übersetzungen, sowie weitere kleinere Fehlerkorrekturen. </p><p>Bitte lesen Sie ebenfalls die <a href=\"download/release-notes\">Releaseinformationen</a>. </p>Sollten Sie noch Fragen haben oder auch Probleme mit Audacity, besuchen Sie uns im <a href=\"http://audacity.fuchsi.de\"><img src=\"audacity-logo.png\" width=\"201\" height=\"36\" border=\"0\" alt=\"Deutsches Forum\"></a>.</p> "
+msgstr "<p>Audacity 1.2.3 ist die neue, stabile und kostenlose Version des Audioeditors. Diese Version beseitigt einen Fehler, der in Windows zu einem Problem bei zeitlich langen Aufnahmen führte. Ebenfalls enthalten sind einige neue Übersetzungen, sowie weitere kleinere Fehlerkorrekturen. </p><p>Bitte lesen Sie ebenfalls die <a href=\"download/release-notes\">Releaseinformationen</a>. </p>Sollten Sie noch Fragen haben oder auch Probleme mit Audacity, besuchen Sie uns im <a href=\"http://audacity.fuchsi.de\"><img src=\"http://audacity.sourceforge.net/de/docs/schneiden/audacity-logo.png\" width=\"201\" height=\"36\" border=\"0\" alt=\"Deutsches Forum\"></a>.</p> "
 
