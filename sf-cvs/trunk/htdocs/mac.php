@@ -90,6 +90,7 @@ Known incompatibilities:
 It's still in beta, but it has far surpassed version 1.0 in
 OS X support.  Both recording and MP3 exporting are broken
    in Audacity 1.0, but they work much better in 1.1.3.
+</b>
 </p>
 
 <p>
