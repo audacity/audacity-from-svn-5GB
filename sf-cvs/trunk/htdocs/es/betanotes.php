@@ -1,6 +1,61 @@
 <?php BoxTop("$releaseNotesStr $betaVersion"); ?>
 
 <pre>
+Problemas conocidos en Audacity 1.1.3:
+  - Coloca un archivo llamado "Audacity-Commands.xml" en tu directorio
+    principal u otra parte de tu computadora. Este archivo es necesario
+    para el funcionamiento de Audacity 1.1.3. Pedimos disculpas por
+    desordenar tu computadora y prometemos colocar el archivo en un
+    lugar más agradable en la próxima versión.
+
+Nuevas capacidades en Audacity 1.1.3:
+  * Interface del Usuario
+    - Nueva barra de herramientas Mezcladora te permite controlar
+      el volumen de salida, volumen de entrada, y el dispositivo
+      de entrada directo desde Audacity.
+
+  * Archivo E/S
+    - Utiliza un formato de achivo de proyecto mejorado.
+      (Desafortunadamente la lectura de formatos previos,
+      incluyendo 1.1.1, no es soportada.)
+    - Archivos de bloque (guardados en directorios de proyecto de
+      Audacity) ahora utilizan el formato estándar AU. Aunque hay
+      un poco de meta-información de Audacity en estos archivos,
+      ahora pueden ser leidos también por muchos otros programas
+      populares de audio.
+    - Se solucionaron algunos errores relacionados con la
+      lectura/escritura de archivos de audio con más de 16 bits
+      por muestreo.
+    - Importar archivos en bruto (RAW) funciona nuevamente, con
+      una interface gráfica más simple pero con soporte para muchos
+      más formatos de archivo. Los algoritmos de autodetección son
+      mucho más precisos que en 1.0.
+
+  * Audio E/S
+    - Audio E/S completamente reescrito, con menor tardanza
+      y mínima posibilidad de *buffer underruns* mientras
+      se graba.
+
+  * Remuestreo
+    - Utilizando algoritmos de remuestreo de alta calidad, con
+      la opción de mejor calidad para el mezclado que para
+      reproducción en tiempo-real.
+
+    - Soporte preliminar para Pistas de Tiempo, para cambiar
+      la velocidad de reproducción en el tiempo.
+
+  * Muchos más errores reparados y nuevas capacidades
+
+Nuevas capacidades en Audacity 1.1.2:
+  * Interface del Usuario
+    - Error solucionado en la versión de Windows, para comandos
+      del menú de pista
+      "Nombre..." y "Partir Pista Estéreo"/"Hacer Pista Estéreo".
+  * Efectos
+    - Soporte para Nyquist en Windows (soporta plug-ins escritos
+      en Nyquist, un lenguaje funcional interpretado basado
+      en Lisp).
+
 Errores(bugs) conocidos en Audacity 1.1.1:
 
   * No corras el comando Benchmark (test de rendimiento) en
