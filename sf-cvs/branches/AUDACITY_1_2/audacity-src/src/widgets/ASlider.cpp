@@ -252,9 +252,9 @@ void LWSlider::Init(wxWindow * parent,
    dc->SelectObject(*bitmap);
 
    AColor::Medium(dc, false);
-   wxColour bkgnd = dc->GetPen().GetColour();
+   wxColour bkgnd = dc->GetBrush().GetColour();
    AColor::Medium(dc, true);   
-   wxColour selBkgnd = dc->GetPen().GetColour();
+   wxColour selBkgnd = dc->GetBrush().GetColour();
 
    wxImage *backgroundImage =
       CreateSysBackground(mWidth, mHeight, 0, bkgnd);
@@ -295,8 +295,8 @@ void LWSlider::Init(wxWindow * parent,
          dc->DrawBitmap(backgroundBitmap, 0, 0);
       }
       else {
-         //AColor::Medium(dc, i==1);
-         //dc->DrawRectangle(0, 0, mWidth, mHeight);
+         AColor::Medium(dc, i==1);
+         dc->DrawRectangle(-1, -1, mWidth+2, mHeight+2);
       }
 
       AColor::Medium(dc, i==1);
