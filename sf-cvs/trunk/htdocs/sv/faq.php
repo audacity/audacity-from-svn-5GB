@@ -29,9 +29,9 @@ Installation:<br>
 Använda Audacity:<br>
 
 <a href="#a1">Hur lägger jag ihop två spår?</a><br>
-<a href="#a2">Kan jag ta bort stämmor från en inspelning?</a><br>
+<a href="#a2">Kan jag ta bort sången från en inspelning?</a><br>
 
-<a href="#a3">När jag försöker spela in harmonier med mig själv,
+<a href="#a3">När jag försöker spela in stämmor med mig själv,
 varför är de två spåren inte synkroniserade?</a><br>
 <a href="#a4">Varför är ingen MP3-kodare inkluderad?</a><br>
 <a href="#a5">Kan jag spela in RealAudio eller eller annat strömmande ljud?</a><br>
@@ -99,12 +99,11 @@ och grafik.
 <p>
 
 Audacity-projektet startades hösten 1999
-av Dominic Mazzoni medans han var akademisk
-student vid Carnegie Mellon Universitet i Pittsburgh, PA, USA.
-Han arbetade på ett forskings-projekt med hans handledare, Professor
+av Dominic Mazzoni medan han var student vid Carnegie Mellon Universitet i Pittsburgh, PA, USA.
+Han arbetade på ett forskningsprojekt med hans handledare, Professor
 Roger Dannenberg, och dom behövde ett verktyg som gav dem möjligheten att
-visualisera ljud-analys algorithmer.  Tiden gick, och detta program
-utvecklades till en generell ljud-editerare, och andra människor började
+visualisera ljud-analysalgorithmer.  Tiden gick, och detta program
+utvecklades till ett generellt ljudredigeringsprogram, och andra människor började
 hjälpa till.
 <p>
 Idag är Audacity utvecklat med användandet av Sourceforge, en hemsida
@@ -138,7 +137,7 @@ sida för mer detaljer om hur du kan hjälpa till.
 Det viktigaste när du rapporterar en bugg är att vara
 så specifik som som möjligt.  Ge oss tillräckligt med information så
 vi kan återskapa buggen själva, annars är det inte troligt
-att vi kan fixa det. Skicka bugg-rapporter till
+att vi kan fixa det. Skicka buggrapporter till
 <a href="mailto:audacity-help@lists.sourceforge.net">
 <audacity-help@lists.sourceforge.net></a>.
 <br><font size=-1><?php print "$listPrivacyStr"; ?></font>
@@ -171,8 +170,8 @@ Vi vill bli av med alla buggar!  Tack för att du hjälper oss att finna dem.
 </b></font>
 
 <p>Från Internet Explorer, välj att köra filen.
-Detta lanserar Audacitys installations-program, som kommer att installera
-Audacity programmets filer och skapa en genväg från Start-Menyn.
+Detta lanserar Audacitys installationsprogram, som kommer att installera
+Audacityprogrammets filer och skapa en genväg från Start-Menyn.
 <p>
 Om du redan har laddat ner filen, dubell-klicka på den för att starta installationen.
 <p>
@@ -255,22 +254,22 @@ Audacity ett nytt spår automatiskt.
 <p>
 
 För att spara din blandning, kan du antingen Exportera project,
-vilket automatiskt blandar alladina spår tillsammans, eller
+vilket automatiskt blandar alla dina spår tillsammans, eller
 så kan du välja spår och använda "Snabbmix" från Projektmenyn.
 
 <p>
 <a name="a2"></a>
 <font size=+1><b>
-2. Kan jag ta bort stämmor från en inspelning?
+2. Kan jag ta bort sången från en inspelning?
 </b></font>
 <p>
 
-Med vissa stereo inspelningar, är det möjligt att ta bort stämmor
+Med vissa stereo inspelningar, är det möjligt att ta bort sången
 på grund av sättet inspelningen var mixad vid studion.
-Oftast är stämmorna placerade exakt i mitten av inspelningen,
+Oftast är sången placerad exakt i mitten av inspelningen,
 medans alla andra instrument är utanför. Om du
-subtraherar höger-kanalen från vänster-kanalen, blir stämmorna
-helt utelämnade, och kvar blir bara instrumenten.
+subtraherar höger-kanalen från vänster-kanalen, blir sången 
+helt utelämnad, och kvar blir bara instrumenten.
 <p>
 
 <b>Detta fungerar bara med vissa inspelingar!</b>
@@ -287,14 +286,14 @@ kommer stämmorna att vara borta.
 <p>
 <a name="a3"></a>
 <font size=+1><b>
-3. När jag försöker spela in harmonier med mig själv,
+3. När jag försöker spela in stämmor med mig själv,
 varför är de två spåren inte synkroniserade?
 </b></font>
 <p>
 Detta är normalt och det händer därför att det är en liten fördröjning
 mellan det att Audacity börjar spela upp ljud och när det
 kommer fram till högtalarna. Audacity försöker inte automatiskt
-korrigera denna fördröjning, och du måste göra det manuellt.
+korrigera denna fördröjning, utan du måste göra det manuellt.
 <p>
 För att korrigera denna fördröjning, använd
 Time Shift verktyget för att flytta
@@ -311,7 +310,7 @@ använda verktyget medans du lyssnar på inspelningen.
 
 Oturligt nog, så är algoritmen för kodning eller skapande av MP3 filer
 patenterad, och <b>Audacity</b> skulle inte kunna
-inkludera en MP3 exkporterings-algoritm utan att antingen
+inkludera en MP3 exporteringsalgoritm utan att antingen
 ta betalt eller inkräkta på lagarna i många länder.
 <p>
 Som en kompromiss, kommer Audacity med möjligheten att använda
@@ -357,8 +356,8 @@ Audacity spelar in från den förinställda input källan som är vald av
 ditt operativsystem. Om du har flera  input källor (som
 inbyggd mikrofon, extern mikrofon, line-in uttag, eller en
 audio CD) du måste välja en av dessa att spela in ifrån. Om du
-försöker spela in från från mikrofon, som exempel, men din input source
-är inställd till "line-in", så kommer Audacity bara spela in tystnad.
+försöker spela in från från mikrofon, som exempel, men din input källa
+ är inställd till "line-in", så kommer Audacity bara spela in tystnad.
 </p><p>
 Om du använder Windows, kan du ställa in input source:n genom att högerklicka
 på volum-ikonen i verktygs listen (nedre högra hörnet av skärmen).
@@ -383,22 +382,22 @@ Audacity.  Här finns några exempel:
 Method 1: Exportera Markering
 </p><ul>
 <li>Välj den region av ljud som korresponderar det första spåret.
-</li><li>Välj "Exportera som WAV" från File menyn, och spara det första spåret på hårddisken.
+</li><li>Välj "Exportera som WAV" från Arkiv-menyn, och spara det första spåret på hårddisken.
 </li><li>Fortsätt så med alla resterande spår.
 </li></ul>
 <p>
 Method 2: Radera och Ångra
 </p><ul>
 <li>Radera allting <i>förutom</i> för det första spåret.
-</li><li>Välj "Exportera som WAV" från File menyn, och spara det första spåret på hårddisken.
-</li><li>Välj "Ångra" från Edit menyn.  Fortsätt att ångra ända tills du har resten av ljudet tillbaka. (Audacity har obegränsad ångring.)
+</li><li>Välj "Exportera som WAV" från Arkiv-menyn, och spara det första spåret på hårddisken.
+</li><li>Välj "Ångra" från Redigera-menyn.  Fortsätt att ångra ända tills du har resten av ljudet tillbaka. (Audacity har obegränsad ångrafunktion.)
 </li><li>Fortsätt så med alla resterande spår.
 </li></ul>
 <p>
 Method 3: Dela och Exportera
 </p><ul>
 <li>Välj det du vill ha som första spår.
-</li><li>Välj "Dela" från Edit menyn, vilket flyttar markeringen till ett separat spår i Audacity.
+</li><li>Välj "Dela" från Redigera-menyn, vilket flyttar markeringen till ett separat spår i Audacity.
 </li><li>Fortsätt med detta tills alla låtar är i separata spår.
     Glöm inte att du ångra om du råkat göra fel.
 </li><li>Gå tillbaka och använd "Exportera markering som WAV" för att exportera varje
