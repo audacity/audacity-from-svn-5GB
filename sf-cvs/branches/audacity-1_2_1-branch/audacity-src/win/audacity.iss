@@ -45,7 +45,7 @@ Source: "..\win\Release\Languages\it\audacity.mo"; DestDir: "{app}\Languages\it"
 Source: "..\win\Release\Languages\it\wxstd.mo"; DestDir: "{app}\Languages\it"; Flags: ignoreversion
 Source: "..\win\Release\Languages\ja\audacity.mo"; DestDir: "{app}\Languages\ja"; Flags: ignoreversion
 Source: "..\win\Release\Languages\mk\audacity.mo"; DestDir: "{app}\Languages\mk"; Flags: ignoreversion
-Source: "..\win\Release\Languages\nb\audacity.mo"; DestDir: "{app}\Languages\no"; Flags: ignoreversion
+Source: "..\win\Release\Languages\nb\audacity.mo"; DestDir: "{app}\Languages\nb"; Flags: ignoreversion
 Source: "..\win\Release\Languages\nl\audacity.mo"; DestDir: "{app}\Languages\nl"; Flags: ignoreversion
 Source: "..\win\Release\Languages\nl\wxstd.mo"; DestDir: "{app}\Languages\nl"; Flags: ignoreversion
 Source: "..\win\Release\Languages\pl\audacity.mo"; DestDir: "{app}\Languages\pl"; Flags: ignoreversion
