@@ -158,6 +158,9 @@ Links to Other Audio Editors
      >Sound Studio</a> from Felt Tip Software
    <li><a href="http://www.hairersoft.com/Amadeus.html"
      >Amadeus II</a> from HairerSoft
+   <li><a href="http://www.bannister.org/software/cacophony.htm"
+      >Cacophony</a> from Richard Bannister
+
    <li><a href="http://www.kumulipo.com/"
      >Jasmine</a> from Kumulipo</a>
   </ul>
