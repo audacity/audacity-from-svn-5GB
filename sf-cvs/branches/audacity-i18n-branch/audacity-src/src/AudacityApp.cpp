@@ -153,7 +153,7 @@ pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent, AppleEvent * theReply
 // main frame
 bool AudacityApp::OnInit()
 {
- //  mChecker = new wxSingleInstanceChecker(GetAppName());
+   // mChecker = new wxSingleInstanceChecker(GetAppName());
    ::wxInitAllImageHandlers();
 
    wxFileSystem::AddHandler(new wxZipFSHandler);

@@ -13,13 +13,15 @@
 #include <wx/colordlg.h>
 #include <wx/msgdlg.h>
 #include <wx/sizer.h>
+#include <wx/intl.h>
 
 #include "../Prefs.h"
 #include "SpectrumPrefs.h"
 
 int numFFTSizes = 7;
 
-int FFTSizes[] = { 64,
+int FFTSizes[] = {
+   64,
    128,
    256,
    512,
@@ -28,13 +30,14 @@ int FFTSizes[] = { 64,
    4096
 };
 
-wxString stringFFTSizes[] = { "64 - most wideband",
-   "128",
-   "256 - default",
-   "512",
-   "1024",
-   "2048",
-   "4096 - most narrowband"
+wxString stringFFTSizes[] = {
+   wxTRANSLATE("64 - most wideband"),
+               "128",
+   wxTRANSLATE("256 - default"),
+               "512",
+               "1024",
+               "2048",
+   wxTRANSLATE("4096 - most narrowband")
 };
 
 SpectrumPrefs::SpectrumPrefs(wxWindow * parent):
@@ -57,23 +60,23 @@ PrefsPanel(parent)
       }
 
    topSizer = new wxStaticBoxSizer(
-      new wxStaticBox(this, -1, "Spectrogram Options"),
+      new wxStaticBox(this, -1, _("Spectrogram Options")),
       wxVERTICAL);
 
    {
       wxStaticBoxSizer *fftSizeSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, "FFT Size"),
+         new wxStaticBox(this, -1, _("FFT Size")),
          wxVERTICAL);
 
       mFFTSize[0] = new wxRadioButton(
-         this, -1, stringFFTSizes[0], wxDefaultPosition,
+         this, -1, _(stringFFTSizes[0]), wxDefaultPosition,
          wxDefaultSize, wxRB_GROUP );
       mFFTSize[0]->SetValue(false);
       fftSizeSizer->Add(mFFTSize[0], 0, 
          wxGROW|wxLEFT|wxRIGHT, RADIO_BUTTON_BORDER );
 
       for(i = 1; i < numFFTSizes; i++) {
-         mFFTSize[i] = new wxRadioButton(this, -1, stringFFTSizes[i]);
+         mFFTSize[i] = new wxRadioButton(this, -1, _(stringFFTSizes[i]));
          mFFTSize[i]->SetValue(false);
          fftSizeSizer->Add(mFFTSize[i], 0,
             wxGROW|wxLEFT|wxRIGHT, RADIO_BUTTON_BORDER );
@@ -86,7 +89,7 @@ PrefsPanel(parent)
    }
 
    {
-      mGrayscale  = new wxCheckBox(this, -1, "Grayscale");
+      mGrayscale  = new wxCheckBox(this, -1, _("Grayscale"));
       topSizer->Add(mGrayscale, 0,
          wxGROW|wxALL, RADIO_BUTTON_BORDER );
       
@@ -96,7 +99,7 @@ PrefsPanel(parent)
       wxBoxSizer *freqSizer = new wxBoxSizer( wxHORIZONTAL );
 
       freqSizer->Add(
-         new wxStaticText(this, -1, "Maximum Frequency (Hz):"),
+         new wxStaticText(this, -1, _("Maximum Frequency (Hz):")),
          0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER );
 
       mMaxFreqCtrl = new wxTextCtrl( this, -1, maxFreqStr,
@@ -138,12 +141,12 @@ bool SpectrumPrefs::Apply()
    wxString maxFreqStr = mMaxFreqCtrl->GetValue();
    long maxFreq;
    if (!maxFreqStr.ToLong(&maxFreq)) {
-      wxMessageBox("The maximum frequency must be an integer");
+      wxMessageBox(_("The maximum frequency must be an integer"));
       return false;
    }
    if (maxFreq < 100 || maxFreq > 100000) {
-      wxMessageBox("Maximum frequency must be in the range "
-                   "100 Hz - 100,000 Hz");
+      wxMessageBox(_("Maximum frequency must be in the range "
+                     "100 Hz - 100,000 Hz"));
       return false;
    }
    gPrefs->Write("/Spectrum/MaxFreq", maxFreq);
