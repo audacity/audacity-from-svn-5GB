@@ -80,63 +80,35 @@ void AudacityProject::CreateMenuBar()
    mViewMenu = new wxMenu();
    mProjectMenu = new wxMenu();
    mHelpMenu = new wxMenu();
-   for(i = 0; i < mCommandMenuItem.Count(); i++)
-   {
-      switch(mCommandMenuItem[i]->category)
-      {
+
+   wxMenu *menu = 0;
+   for(i = 0; i < mCommandMenuItem.Count(); i++) {
+      switch(mCommandMenuItem[i]->category) {
       case fileMenu:
-         if(mCommandMenuItem[i]->commandString == "---")
-         {
-            mFileMenu->AppendSeparator();
-         }
-         else
-         {
-            mFileMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
-         }
+         menu = mFileMenu;
          break;
       case editMenu:
-         if(mCommandMenuItem[i]->commandString == "---")
-         {
-            mEditMenu->AppendSeparator();
-         }
-         else
-         {
-            mEditMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
-         }
+         menu = mEditMenu;
          break;
       case viewMenu:
-         if(mCommandMenuItem[i]->commandString == "---")
-         {
-            mViewMenu->AppendSeparator();
-         }
-         else
-         {
-            mViewMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
-         }
+         menu = mViewMenu;
          break;
       case projectMenu:
-         if(mCommandMenuItem[i]->commandString == "---")
-         {
-            mProjectMenu->AppendSeparator();
-         }
-         else
-         {
-            mProjectMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
-         }
+         menu = mProjectMenu;
          break;
       case helpMenu:
-         if(mCommandMenuItem[i]->commandString == "---")
-         {
-            mHelpMenu->AppendSeparator();
-         }
-         else
-         {
-            mHelpMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
-         }
+         menu = mHelpMenu;
+         break;
+      default:
+         // ERROR -- should not happen
          break;
       }
+
+      if(mCommandMenuItem[i]->commandString == "---")
+         menu->AppendSeparator();
+      else menu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
    }
-   /*
+/*
    mFileMenu->Append(NewID, _("&New"));
    mFileMenu->Append(OpenID, _("&Open..."));
    mFileMenu->Append(CloseID, _("&Close"));
@@ -237,16 +209,15 @@ void AudacityProject::CreateMenuBar()
    mProjectMenu->AppendSeparator();
    mProjectMenu->Append(RemoveTracksID, _("&Remove Track(s)"));
 
-   /*
-      mTrackMenu = new wxMenu();
-      mTrackMenu->Append(QuickMixID, _("Quick Mix"));
-      mTrackMenu->AppendSeparator();
-      mTrackMenu->Append(WaveDisplayID, _("Waveform Display"));
-      mTrackMenu->Append(SpectrumDisplayID, _("Spectrum Display"));
-      mTrackMenu->AppendSeparator();
-      //  mTrackMenu->Append(AutoCorrelateID, _("AutoCorrelate"));
-      mTrackMenu->Append(PitchID, _("Pitch Extract"));
-    */
+   mTrackMenu = new wxMenu();
+   mTrackMenu->Append(QuickMixID, _("Quick Mix"));
+   mTrackMenu->AppendSeparator();
+   mTrackMenu->Append(WaveDisplayID, _("Waveform Display"));
+   mTrackMenu->Append(SpectrumDisplayID, _("Spectrum Display"));
+   mTrackMenu->AppendSeparator();
+   //  mTrackMenu->Append(AutoCorrelateID, _("AutoCorrelate"));
+   mTrackMenu->Append(PitchID, _("Pitch Extract"));
+*/
 
    mEffectMenu = new wxMenu();
 
