@@ -32,6 +32,8 @@ class AudioIOPrefs:public PrefsPanel {
    
    wxCheckBox *mDuplex;
 
+   wxCheckBox *mPlaythrough; // Currently Mac OS X only
+
    wxChoice *mRecChoice;
    wxChoice *mPlayChoice;
 
