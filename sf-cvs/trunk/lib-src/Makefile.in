@@ -7,8 +7,10 @@ allegro.a: allegro-recursive
 	ln -sf allegro/allegro.a allegro.a
 
 # dlcompat
-dlcompat/libdl.a:
+dl-recursive:
 	$(MAKE) -C dlcompat
+libdl.a: 
+	ln -sf dlcompat/libdl.a libdl.a
 
 # expat
 expat-recursive:
