@@ -1041,6 +1041,10 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
    double sel0 = viewInfo->sel0;
    double sel1 = viewInfo->sel1;
 
+   // if nothing is on the screen
+   if ((sampleCount) (h * rate + 0.5) >= numSamples)
+      return;
+
    WaveTrack *track = (WaveTrack *) cache->track;
    sampleCount numSamples = track->numSamples;
    double tOffset = track->GetOffset();
@@ -1058,8 +1062,10 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
    sampleCount ssel0 = (sampleCount) ((sel0 - tOffset) * rate + 0.5);
    sampleCount ssel1 = (sampleCount) ((sel1 - tOffset) * rate + 0.5);
 
-   if ((sampleCount) (tpre * rate + 0.5) >= numSamples)
-      return;
+   if (sel0 < tOffset)
+       ssel0 = 0;
+   if (sel1 < tOffset)
+       ssel1 = 0;
 
    // We draw directly to a bit image in memory,
    // and then paint this directly to our offscreen
