@@ -10,6 +10,12 @@
  *    dbg_mem_released: called when memory is released
  */
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  changes for portability and fix compiler warnings
+ */
+
+
 #if DEBUG_MEM
 typedef struct {
     long seq_num;
@@ -31,13 +37,14 @@ void dbg_mem_allocated(void *p, char *who)
 {
     dbg_mem_type info = (dbg_mem_type) p;
     if (p == (void *) dbg_mem_trace) {
-        nyquist_printf("dbg_mem_allocated(%lx, %s)\n", p, who);
+        nyquist_printf("dbg_mem_allocated(%p, %s)\n", p, who);
     }
     info--; /* info is stored (hidden) BEFORE the data */
     dbg_mem_last_seq_num++;
     if (dbg_mem_last_seq_num == dbg_mem_seq_num) {
-        nyquist_printf("dbg_mem_allocated: %s just allocated %x as number %d\n",
-               who, p, dbg_mem_last_seq_num);
+        nyquist_printf("dbg_mem_allocated: "
+                       "%s just allocated %p as number %d\n",
+                       who, p, (int)dbg_mem_last_seq_num);
         dbg_mem_pause();
     }
     info->seq_num = dbg_mem_last_seq_num;
@@ -49,18 +56,19 @@ void dbg_mem_freed(void *p, char *who)
 {
     dbg_mem_type info = (dbg_mem_type) p;
     if (p == (void *) dbg_mem_trace) {
-        nyquist_printf("dbg_mem_freed(%lx, %s)\n", p, who);
+        nyquist_printf("dbg_mem_freed(%p, %s)\n", p, who);
     }
     info--; /* info is stored (hidden) BEFORE the data */
     if (!info->who) {
-        nyquist_printf("MEMORY %x FREED TWICE!, second time by: %s, seq_num %d\n",
-               p, who, info->seq_num);
+        nyquist_printf("MEMORY %p FREED TWICE!, "
+                       "second time by: %s, seq_num %d\n",
+                       p, who, (int)info->seq_num);
         fflush(stdout);
         dbg_mem_pause();
     }
     if (info->seq_num == dbg_mem_seq_num) {
-        nyquist_printf("dbg_mem_freed: %s freeing %x, number %d\n",
-               who, p, dbg_mem_seq_num);
+        nyquist_printf("dbg_mem_freed: %s freeing %p, number %d\n",
+                       who, p, (int)dbg_mem_seq_num);
         dbg_mem_pause();
     }
     info->who = NULL;
@@ -70,19 +78,19 @@ void dbg_mem_released(void *p, char *who)
 {
     dbg_mem_type info = (dbg_mem_type) p;
     if (p == (void *) dbg_mem_trace) {
-        nyquist_printf("dbg_mem_released(%lx, %s)\n", p, who);
+        nyquist_printf("dbg_mem_released(%p, %s)\n", p, who);
     }
     info--; /* info is stored (hidden) BEFORE the data */
     if (!info->who) {
-        nyquist_printf(
-        "MEMORY %x RELEASED BUT NOT ALLOCATED!, released by: %s, seq_num %d\n",
-               p, who, info->seq_num);
+        nyquist_printf("MEMORY %p RELEASED BUT NOT ALLOCATED!, "
+                       "released by: %s, seq_num %d\n",
+                       p, who, (int)info->seq_num);
         fflush(stdout);
         dbg_mem_pause();
     }
     if (info->seq_num == dbg_mem_seq_num) {
-        nyquist_printf("dbg_mem_released: %s releasing %x, number %d\n",
-               who, p, dbg_mem_seq_num);
+       nyquist_printf("dbg_mem_released: %s releasing %p, number %d\n",
+                      who, p, (int)dbg_mem_seq_num);
         dbg_mem_pause();
     }
 }
@@ -98,10 +106,10 @@ void dbg_mem_check(void *p, char *who)
     }
     info--; /* info is stored (hidden) BEFORE the data */
     if (!info->who) {
-        nyquist_printf("DBG_MEM_CHECK (from %s): %x IS FREE!, seq_num %d\n", 
-               who, p, info->seq_num);
-        fflush(stdout);
-        dbg_mem_pause();
+       nyquist_printf("DBG_MEM_CHECK (from %s): %p IS FREE!, seq_num %d\n", 
+                      who, p, (int)info->seq_num);
+       fflush(stdout);
+       dbg_mem_pause();
     }
 }
 
@@ -115,11 +123,11 @@ void dbg_mem_print(char *msg, void *p)
     } else {
         info--; /* info is stored (hidden) BEFORE the data */
         if (!info->who) {
-            nyquist_printf(" %x IS FREE!, ", p);
+            nyquist_printf(" %p IS FREE!, ", p);
         } else {
-            nyquist_printf(" %x allocated by %s, ", p, info->who);
+            nyquist_printf(" %p allocated by %s, ", p, info->who);
         }
-        nyquist_printf("seq_num %d\n", info->seq_num);
+        nyquist_printf("seq_num %d\n", (int)info->seq_num);
     }
 }
 #endif
@@ -130,21 +138,21 @@ void print_sound_type(sound_type s)
     snd_list_type list;
     int blockcount;
 
-    nyquist_printf("sound_type: 0x%x\n", s);
+    nyquist_printf("sound_type: 0x%p\n", s);
     nyquist_printf("\tt0: %f\n", s->t0);
     nyquist_printf("\tsr: %f\n", s->sr);
-    nyquist_printf("\tcurrent: %d\n", s->current);
-    nyquist_printf("\tlogical_stop_cnt: %d\n", s->logical_stop_cnt);
-    nyquist_printf("\tlist: 0x%x\n", s->list);
+    nyquist_printf("\tcurrent: %d\n", (int)s->current);
+    nyquist_printf("\tlogical_stop_cnt: %d\n", (int)s->logical_stop_cnt);
+    nyquist_printf("\tlist: 0x%p\n", s->list);
     nyquist_printf("\tscale: %f\n", s->scale);
 
     list = s->list;
     blockcount = 0;
-    nyquist_printf("\t(0x%x:0x%x)->", list, list->block);
+    nyquist_printf("\t(0x%p:0x%p)->", list, list->block);
     while (list->block) {
         list = list->u.next;
         if (blockcount < 5) {
-            nyquist_printf("(0x%x:0x%x)->", list, list->block);
+            nyquist_printf("(0x%p:0x%p)->", list, list->block);
         }
         else if (blockcount == 5) {
             stdputstr(" ... ");
@@ -157,7 +165,7 @@ void print_sound_type(sound_type s)
 
 void print_snd_list_type(snd_list_type list)
 {
-    nyquist_printf("%x: [%x[%d], %x] refcnt %d ls %d", list, list->block,
+    nyquist_printf("%p: [%p[%d], %p] refcnt %d ls %d", list, list->block,
             list->block_len, list->u.next, 
             list->refcnt, list->logically_stopped);
 }
@@ -172,8 +180,8 @@ void print_sample_block_type(char *label,
     sample_block_values_type samp;
 
     samp = sampblock->samples;
-    nyquist_printf("%s: [%x(ref %d): len %d]: =========>>",
-           label, sampblock, sampblock->refcnt, len);
+    nyquist_printf("%s: [%p(ref %d): len %d]: =========>>",
+                   label, sampblock, (int)sampblock->refcnt, len);
     for (j = 0; j < len; j++) {
         nyquist_printf("%6g ", *samp++);
     }
@@ -188,7 +196,7 @@ void watch_susp(snd_susp_type s)
 {
     if (!susp_to_watch) {
         susp_to_watch = s;
-        nyquist_printf("watching susp %x\n", s);
+        nyquist_printf("watching susp %p\n", s);
     }
 }
 
@@ -198,7 +206,7 @@ void watch_sound(sound_type s)
 {
     if (!sound_to_watch) {
         sound_to_watch = s;
-        nyquist_printf("watching sound %x\n", s);
+        nyquist_printf("watching sound %p\n", s);
     }
 }
 
@@ -208,7 +216,7 @@ snd_list_type snd_list_to_watch = NULL;
 void watch_snd_list(snd_list_type s)
 {
     snd_list_to_watch = s;
-    nyquist_printf("watching snd_list %x\n", s);
+    nyquist_printf("watching snd_list %p\n", s);
 }
 
 

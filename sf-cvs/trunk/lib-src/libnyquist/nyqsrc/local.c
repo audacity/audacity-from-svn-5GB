@@ -1,5 +1,10 @@
 /* local.c -- call initialization code for all extensions */
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  changes for portability and fix compiler warnings
+ */
+
 #include "xlisp.h"
 #include "sound.h"
 #include "samples.h"
@@ -40,7 +45,7 @@ void print_local_gc_info(void)
 {
     char buf[50];
     /* print sample blocks */
-    sprintf(buf, "; samples %ldKB, %ldKB free",
+    sprintf(buf, "; samples %dKB, %dKB free",
             (sample_block_total * max_sample_block_len) / 1024,
             ((sample_block_total - sample_block_used) *
              max_sample_block_len) / 1024);

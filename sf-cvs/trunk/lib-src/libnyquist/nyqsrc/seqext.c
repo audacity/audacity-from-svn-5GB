@@ -8,6 +8,13 @@ to print and free SEQ type objects.
  * For a statement of limited permission to use, see Permission.doc
  */
 
+
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  portability fix: use %p instead of %lx
+ */
+
+
 #include "stdio.h"
 #include "xlisp.h"
 #include "cext.h"
@@ -50,7 +57,7 @@ static void xlseq_print(fptr, sequence)
   seq_type sequence;
 {
     char s[32];
-    sprintf(s, "#<SEQ:0x%lx>", sequence);
+    sprintf(s, "#<SEQ:0x%p>", sequence);
     xlputstr(fptr, s);
 }
 

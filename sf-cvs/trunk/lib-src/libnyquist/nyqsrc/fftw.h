@@ -19,7 +19,7 @@
  */
 
 /* fftw.h -- system-wide definitions */
-/* $Id: fftw.h,v 1.1.1.1 2002-09-16 05:05:09 dmazzoni Exp $ */
+/* $Id: fftw.h,v 1.2 2003-06-08 21:15:08 dmazzoni Exp $ */
 
 #ifndef FFTW_H
 #define FFTW_H

@@ -9,11 +9,11 @@
 #endif
 
 #ifndef PI
-#define PI (3.14159265358979323846)
+#define PI  (3.14159265358979323846)
 #endif
 
 #ifndef PI2
-#define PI2 (6.28318530717958647692)
+#define PI2 (6.28318530717958647693)
 #endif
 
 #define D2R (0.01745329348)          /* (2*pi)/360 */

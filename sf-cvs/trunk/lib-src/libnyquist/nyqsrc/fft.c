@@ -11,6 +11,12 @@
 #include "fft.h"
 #include "fftn.h"
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  change for portability: min->MIN
+ */
+
+
 /* NOTE: this code does not properly handle start times that do not
  * correspond to the time of the first actual sample
  */
@@ -67,7 +73,7 @@ void n_samples_from_sound(sound_type s, long n, float *table)
     s = sound_copy(s);
     while (n > 0) {
         sample_block_type sampblock = sound_get_next(s, &blocklen);
-        long togo = min(blocklen, n);
+        long togo = MIN(blocklen, n);
         long i;
         sample_block_values_type sbufp = sampblock->samples;
         for (i = 0; i < togo; i++) {

@@ -9,6 +9,11 @@
 #include "cext.h"
 #include "compose.h"
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  changes for portability and fix compiler warnings
+ */
+
 void compose_free();
 
 
@@ -34,7 +39,7 @@ typedef struct compose_susp_struct {
 void compose_fetch(register compose_susp_type susp, snd_list_type snd_list)
 {
     int cnt = 0; /* how many samples computed */
-    int togo;
+    int togo = 0;
     int n;
     sample_block_type out;
     register sample_block_values_type out_ptr;
@@ -95,11 +100,11 @@ void compose_fetch(register compose_susp_type susp, snd_list_type snd_list)
 #ifdef CUT
         /* don't run past the f input sample block: */
         susp_check_term_log_samples(f, f_ptr, f_cnt);
-        togo = min(togo, susp->f_cnt);
+        togo = MIN(togo, susp->f_cnt);
 #endif
         /* don't run past the g input sample block: */
         susp_check_term_samples(g, g_ptr, g_cnt);
-        togo = min(togo, susp->g_cnt);
+        togo = MIN(togo, susp->g_cnt);
 
         /* don't run past terminate time */
         if (susp->terminate_cnt != UNKNOWN &&
@@ -121,8 +126,10 @@ void compose_fetch(register compose_susp_type susp, snd_list_type snd_list)
         out_ptr_reg = out_ptr;
         if (n) do { /* the inner sample computation loop */
             double g_of_t = *g_ptr_reg;
-/*            float tmp;  /* for debugging */
-/*            nyquist_printf("output sample %d, g_of_t %g", susp->susp.current + cnt, g_of_t); */
+            #if 0
+            float tmp;  /* for debugging */
+            nyquist_printf("output sample %d, g_of_t %g", susp->susp.current + cnt, g_of_t);
+            #endif
             /* now we scan f and interpolate at time point g_of_t */
             while (susp->f_time < g_of_t) {
                 susp->f_time += susp->f_time_increment;
@@ -170,7 +177,7 @@ void compose_toss_fetch(susp, snd_list)
   register compose_susp_type susp;
   snd_list_type snd_list;
 {
-    long final_count = min(susp->susp.current + max_sample_block_len,
+    long final_count = MIN(susp->susp.current + max_sample_block_len,
                            susp->susp.toss_cnt);
     time_type final_time = susp->susp.t0 + final_count / susp->susp.sr;
     long n;
@@ -186,11 +193,11 @@ void compose_toss_fetch(susp, snd_list)
     /* convert to normal processing when we hit final_count */
     /* we want each signal positioned at final_time */
     if (final_count == susp->susp.toss_cnt) {
-        n = round((final_time - susp->f->t0) * susp->f->sr -
+        n = ROUND((final_time - susp->f->t0) * susp->f->sr -
                   (susp->f->current - susp->f_cnt));
         susp->f_ptr += n;
         susp_took(f_cnt, n);
-        n = round((final_time - susp->g->t0) * susp->g->sr -
+        n = ROUND((final_time - susp->g->t0) * susp->g->sr -
                   (susp->g->current - susp->g_cnt));
         susp->g_ptr += n;
         susp_took(g_cnt, n);
@@ -257,9 +264,9 @@ sound_type snd_make_compose(sound_type f, sound_type g)
     if (t0 < f->t0) sound_prepend_zeros(f, t0); */
     if (t0 < g->t0) sound_prepend_zeros(g, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(g->t0, t0);
+    t0_min = MIN(g->t0, t0);
     /* how many samples to toss before t0: */
-    susp->susp.toss_cnt = round((t0 - t0_min) * sr);
+    susp->susp.toss_cnt = ROUND((t0 - t0_min) * sr);
     if (susp->susp.toss_cnt > 0) {
         susp->susp.keep_fetch = susp->susp.fetch;
         susp->susp.fetch = compose_toss_fetch;

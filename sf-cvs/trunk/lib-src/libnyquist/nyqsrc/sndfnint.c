@@ -1,26 +1,28 @@
-/* nyqsrc/sndfnint.c -- interface to  snd/snd.h, 
- * nyqsrc/sound.h, nyqsrc/downsample.h, nyqsrc/sndread.h, 
- * nyqsrc/sndseq.h, nyqsrc/add.h, nyqsrc/multiseq.h, 
- * nyqsrc/samples.h, nyqsrc/sndwrite.h, nyqsrc/sndmax.h, 
- * nyqsrc/compose.h, nyqsrc/inverse.h, nyqsrc/resamp.h, 
- * nyqsrc/resampv.h, nyqsrc/fft.h, nyqsrc/avg.h, 
- * tran/amosc.h, tran/clip.h, tran/const.h, tran/fmosc.h, 
- * tran/integrate.h, tran/log.h, tran/maxv.h, tran/osc.h, 
- * tran/prod.h, tran/buzz.h, tran/pwl.h, tran/recip.h, 
- * tran/upsample.h, tran/scale.h, tran/sine.h, 
- * tran/partial.h, tran/white.h, tran/tone.h, 
- * tran/tonev.h, tran/atonev.h, tran/atone.h, 
- * tran/reson.h, tran/areson.h, tran/resonvc.h, 
- * tran/resoncv.h, tran/aresonvc.h, tran/aresoncv.h, 
- * tran/resonvv.h, tran/aresonvv.h, tran/offset.h, 
- * tran/slope.h, tran/delay.h, tran/delaycv.h, 
- * tran/shape.h, tran/sampler.h, tran/exp.h, 
- * tran/siosc.h, tran/follow.h, tran/gate.h, 
- * tran/quantize.h, tran/ifft.h, tran/congen.h, 
- * tran/fromobject.h, tran/fromarraystream.h, 
- * tran/coterm.h, tran/convolve.h, tran/alpass.h, 
- * tran/oneshot.h, tran/chase.h, tran/tapv.h, 
- * tran/biquad.h, tran/pluck.h */
+/* nyqsrc\sndfnint.c -- interface to  snd\snd.h, 
+ * nyqsrc\sound.h, nyqsrc\add.h, nyqsrc\avg.h, 
+ * nyqsrc\compose.h, nyqsrc\downsample.h, nyqsrc\fft.h, 
+ * nyqsrc\inverse.h, nyqsrc\multiseq.h, nyqsrc\resamp.h, 
+ * nyqsrc\resampv.h, nyqsrc\samples.h, nyqsrc\sndmax.h, 
+ * nyqsrc\sndread.h, nyqsrc\sndseq.h, nyqsrc\sndwrite.h, 
+ * nyqsrc\yin.h, ~nyqsrc\sndheader.h, tran\abs.h, 
+ * tran\alpass.h, tran\alpasscv.h, tran\alpassvv.h, 
+ * tran\amosc.h, tran\areson.h, tran\aresonvc.h, 
+ * tran\aresoncv.h, tran\aresonvv.h, tran\atone.h, 
+ * tran\atonev.h, tran\biquad.h, tran\buzz.h, 
+ * tran\chase.h, tran\clip.h, tran\congen.h, 
+ * tran\const.h, tran\convolve.h, tran\coterm.h, 
+ * tran\delay.h, tran\delaycv.h, tran\eqbandvvv.h, 
+ * tran\exp.h, tran\follow.h, tran\fmosc.h, 
+ * tran\fromobject.h, tran\fromarraystream.h, tran\gate.h, 
+ * tran\ifft.h, tran\integrate.h, tran\log.h, 
+ * tran\maxv.h, tran\offset.h, tran\oneshot.h, 
+ * tran\osc.h, tran\partial.h, tran\pluck.h, tran\prod.h, 
+ * tran\pwl.h, tran\quantize.h, tran\recip.h, 
+ * tran\reson.h, tran\resonvc.h, tran\resoncv.h, 
+ * tran\resonvv.h, tran\sampler.h, tran\scale.h, 
+ * tran\shape.h, tran\sine.h, tran\siosc.h, tran\slope.h, 
+ * tran\sqrt.h, tran\tapf.h, tran\tapv.h, tran\tone.h, 
+ * tran\tonev.h, tran\upsample.h, tran\white.h */
 
 #ifndef mips
 #include "stdlib.h"
@@ -320,6 +322,56 @@ LVAL xlc_step_to_hz(void)
 }
 
 
+#include "add.h"
+
+/* xlc_snd_add -- interface to C routine snd_add */
+/**/
+LVAL xlc_snd_add(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type arg2 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_add(arg1, arg2);
+    return cvsound(result);
+}
+
+
+#include "avg.h"
+
+/* xlc_snd_avg -- interface to C routine snd_avg */
+/**/
+LVAL xlc_snd_avg(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    long arg2 = getfixnum(xlgafixnum());
+    long arg3 = getfixnum(xlgafixnum());
+    long arg4 = getfixnum(xlgafixnum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_avg(arg1, arg2, arg3, arg4);
+    return cvsound(result);
+}
+
+
+#include "compose.h"
+
+/* xlc_snd_compose -- interface to C routine snd_compose */
+/**/
+LVAL xlc_snd_compose(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type arg2 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_compose(arg1, arg2);
+    return cvsound(result);
+}
+
+
 #include "downsample.h"
 
 /* xlc_snd_down -- interface to C routine snd_down */
@@ -336,82 +388,37 @@ LVAL xlc_snd_down(void)
 }
 
 
-#include "sndread.h"
+#include "fft.h"
 
-/* xlc_snd_read -- interface to C routine snd_make_read */
+/* xlc_snd_fft -- interface to C routine snd_fft */
 /**/
-LVAL xlc_snd_read(void)
+LVAL xlc_snd_fft(void)
 {
-    unsigned char * arg1 = getstring(xlgastring());
-    double arg2 = testarg2(xlgaanynum());
-    double arg3 = testarg2(xlgaanynum());
-    long arg4 = getfixnum(xlgafixnum());
-    long arg5 = getfixnum(xlgafixnum());
-    long arg6 = getfixnum(xlgafixnum());
-    long arg7 = getfixnum(xlgafixnum());
-    long arg8 = getfixnum(xlgafixnum());
-    double arg9 = testarg2(xlgaanynum());
-    double arg10 = testarg2(xlgaanynum());
-    long arg11 = 0;
-    long arg12 = 0;
+    sound_type arg1 = getsound(xlgasound());
+    long arg2 = getfixnum(xlgafixnum());
+    long arg3 = getfixnum(xlgafixnum());
+    LVAL arg4 = xlgetarg();
     LVAL result;
 
     xllastarg();
-    xlprot1(result);
-    result = snd_make_read(arg1, arg2, arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9, &arg10, &arg11, &arg12);
-    {	LVAL *next = &getvalue(RSLT_sym);
-	*next = cons(NIL, NIL);
-	car(*next) = cvfixnum(arg4);	next = &cdr(*next);
-	*next = cons(NIL, NIL);
-	car(*next) = cvfixnum(arg5);	next = &cdr(*next);
-	*next = cons(NIL, NIL);
-	car(*next) = cvfixnum(arg6);	next = &cdr(*next);
-	*next = cons(NIL, NIL);
-	car(*next) = cvfixnum(arg7);	next = &cdr(*next);
-	*next = cons(NIL, NIL);
-	car(*next) = cvfixnum(arg8);	next = &cdr(*next);
-	*next = cons(NIL, NIL);
-	car(*next) = cvflonum(arg9);	next = &cdr(*next);
-	*next = cons(NIL, NIL);
-	car(*next) = cvflonum(arg10);	next = &cdr(*next);
-	*next = cons(NIL, NIL);
-	car(*next) = cvfixnum(arg11);	next = &cdr(*next);
-	*next = cons(NIL, NIL);
-	car(*next) = cvfixnum(arg12);
-    }
-    xlpop();
+    result = snd_fft(arg1, arg2, arg3, arg4);
     return (result);
 }
 
 
-#include "sndseq.h"
+#include "inverse.h"
 
-/* xlc_snd_seq -- interface to C routine snd_sndseq */
+/* xlc_snd_inverse -- interface to C routine snd_inverse */
 /**/
-LVAL xlc_snd_seq(void)
+LVAL xlc_snd_inverse(void)
 {
     sound_type arg1 = getsound(xlgasound());
-    LVAL arg2 = xlgetarg();
+    double arg2 = testarg2(xlgaanynum());
+    double arg3 = testarg2(xlgaanynum());
     sound_type result;
 
     xllastarg();
-    result = snd_sndseq(arg1, arg2);
-    return cvsound(result);
-}
-
-
-#include "add.h"
-
-/* xlc_snd_add -- interface to C routine snd_add */
-/**/
-LVAL xlc_snd_add(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    sound_type arg2 = getsound(xlgasound());
-    sound_type result;
-
-    xllastarg();
-    result = snd_add(arg1, arg2);
+    result = snd_inverse(arg1, arg2, arg3);
     return cvsound(result);
 }
 
@@ -429,6 +436,39 @@ LVAL xlc_snd_multiseq(void)
     xllastarg();
     result = snd_make_multiseq(arg1, arg2);
     return (result);
+}
+
+
+#include "resamp.h"
+
+/* xlc_snd_resample -- interface to C routine snd_resample */
+/**/
+LVAL xlc_snd_resample(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_resample(arg1, arg2);
+    return cvsound(result);
+}
+
+
+#include "resampv.h"
+
+/* xlc_snd_resamplev -- interface to C routine snd_resamplev */
+/**/
+LVAL xlc_snd_resamplev(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    sound_type arg3 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_resamplev(arg1, arg2, arg3);
+    return cvsound(result);
 }
 
 
@@ -518,6 +558,86 @@ LVAL xlc_snd_fetch_array(void)
 }
 
 
+#include "sndmax.h"
+
+/* xlc_snd_max -- interface to C routine sound_max */
+/**/
+LVAL xlc_snd_max(void)
+{
+    LVAL arg1 = xlgetarg();
+    long arg2 = getfixnum(xlgafixnum());
+    double result;
+
+    xllastarg();
+    result = sound_max(arg1, arg2);
+    return cvflonum(result);
+}
+
+
+#include "sndread.h"
+
+/* xlc_snd_read -- interface to C routine snd_make_read */
+/**/
+LVAL xlc_snd_read(void)
+{
+    unsigned char * arg1 = getstring(xlgastring());
+    double arg2 = testarg2(xlgaanynum());
+    double arg3 = testarg2(xlgaanynum());
+    long arg4 = getfixnum(xlgafixnum());
+    long arg5 = getfixnum(xlgafixnum());
+    long arg6 = getfixnum(xlgafixnum());
+    long arg7 = getfixnum(xlgafixnum());
+    long arg8 = getfixnum(xlgafixnum());
+    double arg9 = testarg2(xlgaanynum());
+    double arg10 = testarg2(xlgaanynum());
+    long arg11 = 0;
+    long arg12 = 0;
+    LVAL result;
+
+    xllastarg();
+    xlprot1(result);
+    result = snd_make_read(arg1, arg2, arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9, &arg10, &arg11, &arg12);
+    {	LVAL *next = &getvalue(RSLT_sym);
+	*next = cons(NIL, NIL);
+	car(*next) = cvfixnum(arg4);	next = &cdr(*next);
+	*next = cons(NIL, NIL);
+	car(*next) = cvfixnum(arg5);	next = &cdr(*next);
+	*next = cons(NIL, NIL);
+	car(*next) = cvfixnum(arg6);	next = &cdr(*next);
+	*next = cons(NIL, NIL);
+	car(*next) = cvfixnum(arg7);	next = &cdr(*next);
+	*next = cons(NIL, NIL);
+	car(*next) = cvfixnum(arg8);	next = &cdr(*next);
+	*next = cons(NIL, NIL);
+	car(*next) = cvflonum(arg9);	next = &cdr(*next);
+	*next = cons(NIL, NIL);
+	car(*next) = cvflonum(arg10);	next = &cdr(*next);
+	*next = cons(NIL, NIL);
+	car(*next) = cvfixnum(arg11);	next = &cdr(*next);
+	*next = cons(NIL, NIL);
+	car(*next) = cvfixnum(arg12);
+    }
+    xlpop();
+    return (result);
+}
+
+
+#include "sndseq.h"
+
+/* xlc_snd_seq -- interface to C routine snd_sndseq */
+/**/
+LVAL xlc_snd_seq(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    LVAL arg2 = xlgetarg();
+    sound_type result;
+
+    xllastarg();
+    result = snd_sndseq(arg1, arg2);
+    return cvsound(result);
+}
+
+
 #include "sndwrite.h"
 
 /* xlc_snd_save -- interface to C routine sound_save */
@@ -578,43 +698,44 @@ LVAL xlc_snd_overwrite(void)
 }
 
 
-#include "sndmax.h"
+#include "yin.h"
 
-/* xlc_snd_max -- interface to C routine sound_max */
+/* xlc_snd_yin -- interface to C routine snd_yin */
 /**/
-LVAL xlc_snd_max(void)
+LVAL xlc_snd_yin(void)
 {
-    LVAL arg1 = xlgetarg();
-    long arg2 = getfixnum(xlgafixnum());
-    double result;
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    double arg3 = testarg2(xlgaanynum());
+    long arg4 = getfixnum(xlgafixnum());
+    LVAL result;
 
     xllastarg();
-    result = sound_max(arg1, arg2);
-    return cvflonum(result);
+    result = snd_yin(arg1, arg2, arg3, arg4);
+    return (result);
 }
 
 
-#include "compose.h"
+#include "abs.h"
 
-/* xlc_snd_compose -- interface to C routine snd_compose */
+/* xlc_snd_abs -- interface to C routine snd_abs */
 /**/
-LVAL xlc_snd_compose(void)
+LVAL xlc_snd_abs(void)
 {
     sound_type arg1 = getsound(xlgasound());
-    sound_type arg2 = getsound(xlgasound());
     sound_type result;
 
     xllastarg();
-    result = snd_compose(arg1, arg2);
+    result = snd_abs(arg1);
     return cvsound(result);
 }
 
 
-#include "inverse.h"
+#include "alpass.h"
 
-/* xlc_snd_inverse -- interface to C routine snd_inverse */
+/* xlc_snd_alpass -- interface to C routine snd_alpass */
 /**/
-LVAL xlc_snd_inverse(void)
+LVAL xlc_snd_alpass(void)
 {
     sound_type arg1 = getsound(xlgasound());
     double arg2 = testarg2(xlgaanynum());
@@ -622,32 +743,16 @@ LVAL xlc_snd_inverse(void)
     sound_type result;
 
     xllastarg();
-    result = snd_inverse(arg1, arg2, arg3);
+    result = snd_alpass(arg1, arg2, arg3);
     return cvsound(result);
 }
 
 
-#include "resamp.h"
+#include "alpasscv.h"
 
-/* xlc_snd_resample -- interface to C routine snd_resample */
+/* xlc_snd_alpasscv -- interface to C routine snd_alpasscv */
 /**/
-LVAL xlc_snd_resample(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    double arg2 = testarg2(xlgaanynum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_resample(arg1, arg2);
-    return cvsound(result);
-}
-
-
-#include "resampv.h"
-
-/* xlc_snd_resamplev -- interface to C routine snd_resamplev */
-/**/
-LVAL xlc_snd_resamplev(void)
+LVAL xlc_snd_alpasscv(void)
 {
     sound_type arg1 = getsound(xlgasound());
     double arg2 = testarg2(xlgaanynum());
@@ -655,43 +760,25 @@ LVAL xlc_snd_resamplev(void)
     sound_type result;
 
     xllastarg();
-    result = snd_resamplev(arg1, arg2, arg3);
+    result = snd_alpasscv(arg1, arg2, arg3);
     return cvsound(result);
 }
 
 
-#include "fft.h"
+#include "alpassvv.h"
 
-/* xlc_snd_fft -- interface to C routine snd_fft */
+/* xlc_snd_alpassvv -- interface to C routine snd_alpassvv */
 /**/
-LVAL xlc_snd_fft(void)
+LVAL xlc_snd_alpassvv(void)
 {
     sound_type arg1 = getsound(xlgasound());
-    long arg2 = getfixnum(xlgafixnum());
-    long arg3 = getfixnum(xlgafixnum());
-    LVAL arg4 = xlgetarg();
-    LVAL result;
-
-    xllastarg();
-    result = snd_fft(arg1, arg2, arg3, arg4);
-    return (result);
-}
-
-
-#include "avg.h"
-
-/* xlc_snd_avg -- interface to C routine snd_avg */
-/**/
-LVAL xlc_snd_avg(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    long arg2 = getfixnum(xlgafixnum());
-    long arg3 = getfixnum(xlgafixnum());
-    long arg4 = getfixnum(xlgafixnum());
+    sound_type arg2 = getsound(xlgasound());
+    sound_type arg3 = getsound(xlgasound());
+    double arg4 = testarg2(xlgaanynum());
     sound_type result;
 
     xllastarg();
-    result = snd_avg(arg1, arg2, arg3, arg4);
+    result = snd_alpassvv(arg1, arg2, arg3, arg4);
     return cvsound(result);
 }
 
@@ -717,6 +804,168 @@ LVAL xlc_snd_amosc(void)
 }
 
 
+#include "areson.h"
+
+/* xlc_snd_areson -- interface to C routine snd_areson */
+/**/
+LVAL xlc_snd_areson(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    double arg3 = testarg2(xlgaanynum());
+    long arg4 = getfixnum(xlgafixnum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_areson(arg1, arg2, arg3, arg4);
+    return cvsound(result);
+}
+
+
+#include "aresonvc.h"
+
+/* xlc_snd_aresonvc -- interface to C routine snd_aresonvc */
+/**/
+LVAL xlc_snd_aresonvc(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type arg2 = getsound(xlgasound());
+    double arg3 = testarg2(xlgaanynum());
+    long arg4 = getfixnum(xlgafixnum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_aresonvc(arg1, arg2, arg3, arg4);
+    return cvsound(result);
+}
+
+
+#include "aresoncv.h"
+
+/* xlc_snd_aresoncv -- interface to C routine snd_aresoncv */
+/**/
+LVAL xlc_snd_aresoncv(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    sound_type arg3 = getsound(xlgasound());
+    long arg4 = getfixnum(xlgafixnum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_aresoncv(arg1, arg2, arg3, arg4);
+    return cvsound(result);
+}
+
+
+#include "aresonvv.h"
+
+/* xlc_snd_aresonvv -- interface to C routine snd_aresonvv */
+/**/
+LVAL xlc_snd_aresonvv(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type arg2 = getsound(xlgasound());
+    sound_type arg3 = getsound(xlgasound());
+    long arg4 = getfixnum(xlgafixnum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_aresonvv(arg1, arg2, arg3, arg4);
+    return cvsound(result);
+}
+
+
+#include "atone.h"
+
+/* xlc_snd_atone -- interface to C routine snd_atone */
+/**/
+LVAL xlc_snd_atone(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_atone(arg1, arg2);
+    return cvsound(result);
+}
+
+
+#include "atonev.h"
+
+/* xlc_snd_atonev -- interface to C routine snd_atonev */
+/**/
+LVAL xlc_snd_atonev(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type arg2 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_atonev(arg1, arg2);
+    return cvsound(result);
+}
+
+
+#include "biquad.h"
+
+/* xlc_snd_biquad -- interface to C routine snd_biquad */
+/**/
+LVAL xlc_snd_biquad(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    double arg3 = testarg2(xlgaanynum());
+    double arg4 = testarg2(xlgaanynum());
+    double arg5 = testarg2(xlgaanynum());
+    double arg6 = testarg2(xlgaanynum());
+    double arg7 = testarg2(xlgaanynum());
+    double arg8 = testarg2(xlgaanynum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_biquad(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+    return cvsound(result);
+}
+
+
+#include "buzz.h"
+
+/* xlc_snd_buzz -- interface to C routine snd_buzz */
+/**/
+LVAL xlc_snd_buzz(void)
+{
+    long arg1 = getfixnum(xlgafixnum());
+    double arg2 = testarg2(xlgaanynum());
+    double arg3 = testarg2(xlgaanynum());
+    double arg4 = testarg2(xlgaanynum());
+    sound_type arg5 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_buzz(arg1, arg2, arg3, arg4, arg5);
+    return cvsound(result);
+}
+
+
+#include "chase.h"
+
+/* xlc_snd_chase -- interface to C routine snd_chase */
+/**/
+LVAL xlc_snd_chase(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    double arg3 = testarg2(xlgaanynum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_chase(arg1, arg2, arg3);
+    return cvsound(result);
+}
+
+
 #include "clip.h"
 
 /* xlc_snd_clip -- interface to C routine snd_clip */
@@ -729,6 +978,23 @@ LVAL xlc_snd_clip(void)
 
     xllastarg();
     result = snd_clip(arg1, arg2);
+    return cvsound(result);
+}
+
+
+#include "congen.h"
+
+/* xlc_snd_congen -- interface to C routine snd_congen */
+/**/
+LVAL xlc_snd_congen(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    double arg3 = testarg2(xlgaanynum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_congen(arg1, arg2, arg3);
     return cvsound(result);
 }
 
@@ -751,6 +1017,124 @@ LVAL xlc_snd_const(void)
 }
 
 
+#include "convolve.h"
+
+/* xlc_snd_convolve -- interface to C routine snd_convolve */
+/**/
+LVAL xlc_snd_convolve(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type arg2 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_convolve(arg1, arg2);
+    return cvsound(result);
+}
+
+
+#include "coterm.h"
+
+/* xlc_snd_coterm -- interface to C routine snd_coterm */
+/**/
+LVAL xlc_snd_coterm(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type arg2 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_coterm(arg1, arg2);
+    return cvsound(result);
+}
+
+
+#include "delay.h"
+
+/* xlc_snd_delay -- interface to C routine snd_delay */
+/**/
+LVAL xlc_snd_delay(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    double arg3 = testarg2(xlgaanynum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_delay(arg1, arg2, arg3);
+    return cvsound(result);
+}
+
+
+#include "delaycv.h"
+
+/* xlc_snd_delaycv -- interface to C routine snd_delaycv */
+/**/
+LVAL xlc_snd_delaycv(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    sound_type arg3 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_delaycv(arg1, arg2, arg3);
+    return cvsound(result);
+}
+
+
+#include "eqbandvvv.h"
+
+/* xlc_snd_eqbandvvv -- interface to C routine snd_eqbandvvv */
+/**/
+LVAL xlc_snd_eqbandvvv(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type arg2 = getsound(xlgasound());
+    sound_type arg3 = getsound(xlgasound());
+    sound_type arg4 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_eqbandvvv(arg1, arg2, arg3, arg4);
+    return cvsound(result);
+}
+
+
+#include "exp.h"
+
+/* xlc_snd_exp -- interface to C routine snd_exp */
+/**/
+LVAL xlc_snd_exp(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_exp(arg1);
+    return cvsound(result);
+}
+
+
+#include "follow.h"
+
+/* xlc_snd_follow -- interface to C routine snd_follow */
+/**/
+LVAL xlc_snd_follow(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    double arg3 = testarg2(xlgaanynum());
+    double arg4 = testarg2(xlgaanynum());
+    long arg5 = getfixnum(xlgafixnum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_follow(arg1, arg2, arg3, arg4, arg5);
+    return cvsound(result);
+}
+
+
 #include "fmosc.h"
 
 /* xlc_snd_fmosc -- interface to C routine snd_fmosc */
@@ -768,6 +1152,79 @@ LVAL xlc_snd_fmosc(void)
 
     xllastarg();
     result = snd_fmosc(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+    return cvsound(result);
+}
+
+
+#include "fromobject.h"
+
+/* xlc_snd_fromobject -- interface to C routine snd_fromobject */
+/**/
+LVAL xlc_snd_fromobject(void)
+{
+    double arg1 = testarg2(xlgaanynum());
+    double arg2 = testarg2(xlgaanynum());
+    LVAL arg3 = xlgetarg();
+    sound_type result;
+
+    xllastarg();
+    result = snd_fromobject(arg1, arg2, arg3);
+    return cvsound(result);
+}
+
+
+#include "fromarraystream.h"
+
+/* xlc_snd_fromarraystream -- interface to C routine snd_fromarraystream */
+/**/
+LVAL xlc_snd_fromarraystream(void)
+{
+    double arg1 = testarg2(xlgaanynum());
+    double arg2 = testarg2(xlgaanynum());
+    LVAL arg3 = xlgetarg();
+    sound_type result;
+
+    xllastarg();
+    result = snd_fromarraystream(arg1, arg2, arg3);
+    return cvsound(result);
+}
+
+
+#include "gate.h"
+
+/* xlc_snd_gate -- interface to C routine snd_gate */
+/**/
+LVAL xlc_snd_gate(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    double arg3 = testarg2(xlgaanynum());
+    double arg4 = testarg2(xlgaanynum());
+    double arg5 = testarg2(xlgaanynum());
+    double arg6 = testarg2(xlgaanynum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_gate(arg1, arg2, arg3, arg4, arg5, arg6);
+    return cvsound(result);
+}
+
+
+#include "ifft.h"
+
+/* xlc_snd_ifft -- interface to C routine snd_ifft */
+/**/
+LVAL xlc_snd_ifft(void)
+{
+    double arg1 = testarg2(xlgaanynum());
+    double arg2 = testarg2(xlgaanynum());
+    LVAL arg3 = xlgetarg();
+    long arg4 = getfixnum(xlgafixnum());
+    LVAL arg5 = xlgetarg();
+    sound_type result;
+
+    xllastarg();
+    result = snd_ifft(arg1, arg2, arg3, arg4, arg5);
     return cvsound(result);
 }
 
@@ -818,6 +1275,39 @@ LVAL xlc_snd_maxv(void)
 }
 
 
+#include "offset.h"
+
+/* xlc_snd_offset -- interface to C routine snd_offset */
+/**/
+LVAL xlc_snd_offset(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_offset(arg1, arg2);
+    return cvsound(result);
+}
+
+
+#include "oneshot.h"
+
+/* xlc_snd_oneshot -- interface to C routine snd_oneshot */
+/**/
+LVAL xlc_snd_oneshot(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    double arg3 = testarg2(xlgaanynum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_oneshot(arg1, arg2, arg3);
+    return cvsound(result);
+}
+
+
 #include "osc.h"
 
 /* xlc_snd_osc -- interface to C routine snd_osc */
@@ -839,6 +1329,42 @@ LVAL xlc_snd_osc(void)
 }
 
 
+#include "partial.h"
+
+/* xlc_snd_partial -- interface to C routine snd_partial */
+/**/
+LVAL xlc_snd_partial(void)
+{
+    double arg1 = testarg2(xlgaanynum());
+    double arg2 = testarg2(xlgaanynum());
+    sound_type arg3 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_partial(arg1, arg2, arg3);
+    return cvsound(result);
+}
+
+
+#include "pluck.h"
+
+/* xlc_snd_pluck -- interface to C routine snd_pluck */
+/**/
+LVAL xlc_snd_pluck(void)
+{
+    double arg1 = testarg2(xlgaanynum());
+    double arg2 = testarg2(xlgaanynum());
+    double arg3 = testarg2(xlgaanynum());
+    double arg4 = testarg2(xlgaanynum());
+    double arg5 = testarg2(xlgaanynum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_pluck(arg1, arg2, arg3, arg4, arg5);
+    return cvsound(result);
+}
+
+
 #include "prod.h"
 
 /* xlc_snd_prod -- interface to C routine snd_prod */
@@ -851,25 +1377,6 @@ LVAL xlc_snd_prod(void)
 
     xllastarg();
     result = snd_prod(arg1, arg2);
-    return cvsound(result);
-}
-
-
-#include "buzz.h"
-
-/* xlc_snd_buzz -- interface to C routine snd_buzz */
-/**/
-LVAL xlc_snd_buzz(void)
-{
-    long arg1 = getfixnum(xlgafixnum());
-    double arg2 = testarg2(xlgaanynum());
-    double arg3 = testarg2(xlgaanynum());
-    double arg4 = testarg2(xlgaanynum());
-    sound_type arg5 = getsound(xlgasound());
-    sound_type result;
-
-    xllastarg();
-    result = snd_buzz(arg1, arg2, arg3, arg4, arg5);
     return cvsound(result);
 }
 
@@ -891,6 +1398,22 @@ LVAL xlc_snd_pwl(void)
 }
 
 
+#include "quantize.h"
+
+/* xlc_snd_quantize -- interface to C routine snd_quantize */
+/**/
+LVAL xlc_snd_quantize(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    long arg2 = getfixnum(xlgafixnum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_quantize(arg1, arg2);
+    return cvsound(result);
+}
+
+
 #include "recip.h"
 
 /* xlc_snd_recip -- interface to C routine snd_recip */
@@ -902,153 +1425,6 @@ LVAL xlc_snd_recip(void)
 
     xllastarg();
     result = snd_recip(arg1);
-    return cvsound(result);
-}
-
-
-#include "upsample.h"
-
-/* xlc_snd_up -- interface to C routine snd_up */
-/**/
-LVAL xlc_snd_up(void)
-{
-    double arg1 = testarg2(xlgaanynum());
-    sound_type arg2 = getsound(xlgasound());
-    sound_type result;
-
-    xllastarg();
-    result = snd_up(arg1, arg2);
-    return cvsound(result);
-}
-
-
-#include "scale.h"
-
-/* xlc_snd_normalize -- interface to C routine snd_normalize */
-/**/
-LVAL xlc_snd_normalize(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    sound_type result;
-
-    xllastarg();
-    result = snd_normalize(arg1);
-    return cvsound(result);
-}
-
-
-#include "sine.h"
-
-/* xlc_snd_sine -- interface to C routine snd_sine */
-/**/
-LVAL xlc_snd_sine(void)
-{
-    double arg1 = testarg2(xlgaanynum());
-    double arg2 = testarg2(xlgaanynum());
-    double arg3 = testarg2(xlgaanynum());
-    double arg4 = testarg2(xlgaanynum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_sine(arg1, arg2, arg3, arg4);
-    return cvsound(result);
-}
-
-
-#include "partial.h"
-
-/* xlc_snd_partial -- interface to C routine snd_partial */
-/**/
-LVAL xlc_snd_partial(void)
-{
-    double arg1 = testarg2(xlgaanynum());
-    double arg2 = testarg2(xlgaanynum());
-    sound_type arg3 = getsound(xlgasound());
-    sound_type result;
-
-    xllastarg();
-    result = snd_partial(arg1, arg2, arg3);
-    return cvsound(result);
-}
-
-
-#include "white.h"
-
-/* xlc_snd_white -- interface to C routine snd_white */
-/**/
-LVAL xlc_snd_white(void)
-{
-    double arg1 = testarg2(xlgaanynum());
-    double arg2 = testarg2(xlgaanynum());
-    double arg3 = testarg2(xlgaanynum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_white(arg1, arg2, arg3);
-    return cvsound(result);
-}
-
-
-#include "tone.h"
-
-/* xlc_snd_tone -- interface to C routine snd_tone */
-/**/
-LVAL xlc_snd_tone(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    double arg2 = testarg2(xlgaanynum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_tone(arg1, arg2);
-    return cvsound(result);
-}
-
-
-#include "tonev.h"
-
-/* xlc_snd_tonev -- interface to C routine snd_tonev */
-/**/
-LVAL xlc_snd_tonev(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    sound_type arg2 = getsound(xlgasound());
-    sound_type result;
-
-    xllastarg();
-    result = snd_tonev(arg1, arg2);
-    return cvsound(result);
-}
-
-
-#include "atonev.h"
-
-/* xlc_snd_atonev -- interface to C routine snd_atonev */
-/**/
-LVAL xlc_snd_atonev(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    sound_type arg2 = getsound(xlgasound());
-    sound_type result;
-
-    xllastarg();
-    result = snd_atonev(arg1, arg2);
-    return cvsound(result);
-}
-
-
-#include "atone.h"
-
-/* xlc_snd_atone -- interface to C routine snd_atone */
-/**/
-LVAL xlc_snd_atone(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    double arg2 = testarg2(xlgaanynum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_atone(arg1, arg2);
     return cvsound(result);
 }
 
@@ -1067,24 +1443,6 @@ LVAL xlc_snd_reson(void)
 
     xllastarg();
     result = snd_reson(arg1, arg2, arg3, arg4);
-    return cvsound(result);
-}
-
-
-#include "areson.h"
-
-/* xlc_snd_areson -- interface to C routine snd_areson */
-/**/
-LVAL xlc_snd_areson(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    double arg2 = testarg2(xlgaanynum());
-    double arg3 = testarg2(xlgaanynum());
-    long arg4 = getfixnum(xlgafixnum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_areson(arg1, arg2, arg3, arg4);
     return cvsound(result);
 }
 
@@ -1125,42 +1483,6 @@ LVAL xlc_snd_resoncv(void)
 }
 
 
-#include "aresonvc.h"
-
-/* xlc_snd_aresonvc -- interface to C routine snd_aresonvc */
-/**/
-LVAL xlc_snd_aresonvc(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    sound_type arg2 = getsound(xlgasound());
-    double arg3 = testarg2(xlgaanynum());
-    long arg4 = getfixnum(xlgafixnum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_aresonvc(arg1, arg2, arg3, arg4);
-    return cvsound(result);
-}
-
-
-#include "aresoncv.h"
-
-/* xlc_snd_aresoncv -- interface to C routine snd_aresoncv */
-/**/
-LVAL xlc_snd_aresoncv(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    double arg2 = testarg2(xlgaanynum());
-    sound_type arg3 = getsound(xlgasound());
-    long arg4 = getfixnum(xlgafixnum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_aresoncv(arg1, arg2, arg3, arg4);
-    return cvsound(result);
-}
-
-
 #include "resonvv.h"
 
 /* xlc_snd_resonvv -- interface to C routine snd_resonvv */
@@ -1175,106 +1497,6 @@ LVAL xlc_snd_resonvv(void)
 
     xllastarg();
     result = snd_resonvv(arg1, arg2, arg3, arg4);
-    return cvsound(result);
-}
-
-
-#include "aresonvv.h"
-
-/* xlc_snd_aresonvv -- interface to C routine snd_aresonvv */
-/**/
-LVAL xlc_snd_aresonvv(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    sound_type arg2 = getsound(xlgasound());
-    sound_type arg3 = getsound(xlgasound());
-    long arg4 = getfixnum(xlgafixnum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_aresonvv(arg1, arg2, arg3, arg4);
-    return cvsound(result);
-}
-
-
-#include "offset.h"
-
-/* xlc_snd_offset -- interface to C routine snd_offset */
-/**/
-LVAL xlc_snd_offset(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    double arg2 = testarg2(xlgaanynum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_offset(arg1, arg2);
-    return cvsound(result);
-}
-
-
-#include "slope.h"
-
-/* xlc_snd_slope -- interface to C routine snd_slope */
-/**/
-LVAL xlc_snd_slope(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    sound_type result;
-
-    xllastarg();
-    result = snd_slope(arg1);
-    return cvsound(result);
-}
-
-
-#include "delay.h"
-
-/* xlc_snd_delay -- interface to C routine snd_delay */
-/**/
-LVAL xlc_snd_delay(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    double arg2 = testarg2(xlgaanynum());
-    double arg3 = testarg2(xlgaanynum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_delay(arg1, arg2, arg3);
-    return cvsound(result);
-}
-
-
-#include "delaycv.h"
-
-/* xlc_snd_delaycv -- interface to C routine snd_delaycv */
-/**/
-LVAL xlc_snd_delaycv(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    double arg2 = testarg2(xlgaanynum());
-    sound_type arg3 = getsound(xlgasound());
-    sound_type result;
-
-    xllastarg();
-    result = snd_delaycv(arg1, arg2, arg3);
-    return cvsound(result);
-}
-
-
-#include "shape.h"
-
-/* xlc_snd_shape -- interface to C routine snd_shape */
-/**/
-LVAL xlc_snd_shape(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    sound_type arg2 = getsound(xlgasound());
-    double arg3 = testarg2(xlgaanynum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_shape(arg1, arg2, arg3);
     return cvsound(result);
 }
 
@@ -1301,17 +1523,52 @@ LVAL xlc_snd_sampler(void)
 }
 
 
-#include "exp.h"
+#include "scale.h"
 
-/* xlc_snd_exp -- interface to C routine snd_exp */
+/* xlc_snd_normalize -- interface to C routine snd_normalize */
 /**/
-LVAL xlc_snd_exp(void)
+LVAL xlc_snd_normalize(void)
 {
     sound_type arg1 = getsound(xlgasound());
     sound_type result;
 
     xllastarg();
-    result = snd_exp(arg1);
+    result = snd_normalize(arg1);
+    return cvsound(result);
+}
+
+
+#include "shape.h"
+
+/* xlc_snd_shape -- interface to C routine snd_shape */
+/**/
+LVAL xlc_snd_shape(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type arg2 = getsound(xlgasound());
+    double arg3 = testarg2(xlgaanynum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_shape(arg1, arg2, arg3);
+    return cvsound(result);
+}
+
+
+#include "sine.h"
+
+/* xlc_snd_sine -- interface to C routine snd_sine */
+/**/
+LVAL xlc_snd_sine(void)
+{
+    double arg1 = testarg2(xlgaanynum());
+    double arg2 = testarg2(xlgaanynum());
+    double arg3 = testarg2(xlgaanynum());
+    double arg4 = testarg2(xlgaanynum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_sine(arg1, arg2, arg3, arg4);
     return cvsound(result);
 }
 
@@ -1335,210 +1592,50 @@ LVAL xlc_snd_siosc(void)
 }
 
 
-#include "follow.h"
+#include "slope.h"
 
-/* xlc_snd_follow -- interface to C routine snd_follow */
+/* xlc_snd_slope -- interface to C routine snd_slope */
 /**/
-LVAL xlc_snd_follow(void)
+LVAL xlc_snd_slope(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_slope(arg1);
+    return cvsound(result);
+}
+
+
+#include "sqrt.h"
+
+/* xlc_snd_sqrt -- interface to C routine snd_sqrt */
+/**/
+LVAL xlc_snd_sqrt(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_sqrt(arg1);
+    return cvsound(result);
+}
+
+
+#include "tapf.h"
+
+/* xlc_snd_tapf -- interface to C routine snd_tapf */
+/**/
+LVAL xlc_snd_tapf(void)
 {
     sound_type arg1 = getsound(xlgasound());
     double arg2 = testarg2(xlgaanynum());
-    double arg3 = testarg2(xlgaanynum());
+    sound_type arg3 = getsound(xlgasound());
     double arg4 = testarg2(xlgaanynum());
-    long arg5 = getfixnum(xlgafixnum());
     sound_type result;
 
     xllastarg();
-    result = snd_follow(arg1, arg2, arg3, arg4, arg5);
-    return cvsound(result);
-}
-
-
-#include "gate.h"
-
-/* xlc_snd_gate -- interface to C routine snd_gate */
-/**/
-LVAL xlc_snd_gate(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    double arg2 = testarg2(xlgaanynum());
-    double arg3 = testarg2(xlgaanynum());
-    double arg4 = testarg2(xlgaanynum());
-    double arg5 = testarg2(xlgaanynum());
-    double arg6 = testarg2(xlgaanynum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_gate(arg1, arg2, arg3, arg4, arg5, arg6);
-    return cvsound(result);
-}
-
-
-#include "quantize.h"
-
-/* xlc_snd_quantize -- interface to C routine snd_quantize */
-/**/
-LVAL xlc_snd_quantize(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    long arg2 = getfixnum(xlgafixnum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_quantize(arg1, arg2);
-    return cvsound(result);
-}
-
-
-#include "ifft.h"
-
-/* xlc_snd_ifft -- interface to C routine snd_ifft */
-/**/
-LVAL xlc_snd_ifft(void)
-{
-    double arg1 = testarg2(xlgaanynum());
-    double arg2 = testarg2(xlgaanynum());
-    LVAL arg3 = xlgetarg();
-    long arg4 = getfixnum(xlgafixnum());
-    LVAL arg5 = xlgetarg();
-    sound_type result;
-
-    xllastarg();
-    result = snd_ifft(arg1, arg2, arg3, arg4, arg5);
-    return cvsound(result);
-}
-
-
-#include "congen.h"
-
-/* xlc_snd_congen -- interface to C routine snd_congen */
-/**/
-LVAL xlc_snd_congen(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    double arg2 = testarg2(xlgaanynum());
-    double arg3 = testarg2(xlgaanynum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_congen(arg1, arg2, arg3);
-    return cvsound(result);
-}
-
-
-#include "fromobject.h"
-
-/* xlc_snd_fromobject -- interface to C routine snd_fromobject */
-/**/
-LVAL xlc_snd_fromobject(void)
-{
-    double arg1 = testarg2(xlgaanynum());
-    double arg2 = testarg2(xlgaanynum());
-    LVAL arg3 = xlgetarg();
-    sound_type result;
-
-    xllastarg();
-    result = snd_fromobject(arg1, arg2, arg3);
-    return cvsound(result);
-}
-
-
-#include "fromarraystream.h"
-
-/* xlc_snd_fromarraystream -- interface to C routine snd_fromarraystream */
-/**/
-LVAL xlc_snd_fromarraystream(void)
-{
-    double arg1 = testarg2(xlgaanynum());
-    double arg2 = testarg2(xlgaanynum());
-    LVAL arg3 = xlgetarg();
-    sound_type result;
-
-    xllastarg();
-    result = snd_fromarraystream(arg1, arg2, arg3);
-    return cvsound(result);
-}
-
-
-#include "coterm.h"
-
-/* xlc_snd_coterm -- interface to C routine snd_coterm */
-/**/
-LVAL xlc_snd_coterm(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    sound_type arg2 = getsound(xlgasound());
-    sound_type result;
-
-    xllastarg();
-    result = snd_coterm(arg1, arg2);
-    return cvsound(result);
-}
-
-
-#include "convolve.h"
-
-/* xlc_snd_convolve -- interface to C routine snd_convolve */
-/**/
-LVAL xlc_snd_convolve(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    sound_type arg2 = getsound(xlgasound());
-    sound_type result;
-
-    xllastarg();
-    result = snd_convolve(arg1, arg2);
-    return cvsound(result);
-}
-
-
-#include "alpass.h"
-
-/* xlc_snd_alpass -- interface to C routine snd_alpass */
-/**/
-LVAL xlc_snd_alpass(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    double arg2 = testarg2(xlgaanynum());
-    double arg3 = testarg2(xlgaanynum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_alpass(arg1, arg2, arg3);
-    return cvsound(result);
-}
-
-
-#include "oneshot.h"
-
-/* xlc_snd_oneshot -- interface to C routine snd_oneshot */
-/**/
-LVAL xlc_snd_oneshot(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    double arg2 = testarg2(xlgaanynum());
-    double arg3 = testarg2(xlgaanynum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_oneshot(arg1, arg2, arg3);
-    return cvsound(result);
-}
-
-
-#include "chase.h"
-
-/* xlc_snd_chase -- interface to C routine snd_chase */
-/**/
-LVAL xlc_snd_chase(void)
-{
-    sound_type arg1 = getsound(xlgasound());
-    double arg2 = testarg2(xlgaanynum());
-    double arg3 = testarg2(xlgaanynum());
-    sound_type result;
-
-    xllastarg();
-    result = snd_chase(arg1, arg2, arg3);
+    result = snd_tapf(arg1, arg2, arg3, arg4);
     return cvsound(result);
 }
 
@@ -1561,43 +1658,67 @@ LVAL xlc_snd_tapv(void)
 }
 
 
-#include "biquad.h"
+#include "tone.h"
 
-/* xlc_snd_biquad -- interface to C routine snd_biquad */
+/* xlc_snd_tone -- interface to C routine snd_tone */
 /**/
-LVAL xlc_snd_biquad(void)
+LVAL xlc_snd_tone(void)
 {
     sound_type arg1 = getsound(xlgasound());
     double arg2 = testarg2(xlgaanynum());
-    double arg3 = testarg2(xlgaanynum());
-    double arg4 = testarg2(xlgaanynum());
-    double arg5 = testarg2(xlgaanynum());
-    double arg6 = testarg2(xlgaanynum());
-    double arg7 = testarg2(xlgaanynum());
-    double arg8 = testarg2(xlgaanynum());
     sound_type result;
 
     xllastarg();
-    result = snd_biquad(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+    result = snd_tone(arg1, arg2);
     return cvsound(result);
 }
 
 
-#include "pluck.h"
+#include "tonev.h"
 
-/* xlc_snd_pluck -- interface to C routine snd_pluck */
+/* xlc_snd_tonev -- interface to C routine snd_tonev */
 /**/
-LVAL xlc_snd_pluck(void)
+LVAL xlc_snd_tonev(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type arg2 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_tonev(arg1, arg2);
+    return cvsound(result);
+}
+
+
+#include "upsample.h"
+
+/* xlc_snd_up -- interface to C routine snd_up */
+/**/
+LVAL xlc_snd_up(void)
+{
+    double arg1 = testarg2(xlgaanynum());
+    sound_type arg2 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_up(arg1, arg2);
+    return cvsound(result);
+}
+
+
+#include "white.h"
+
+/* xlc_snd_white -- interface to C routine snd_white */
+/**/
+LVAL xlc_snd_white(void)
 {
     double arg1 = testarg2(xlgaanynum());
     double arg2 = testarg2(xlgaanynum());
     double arg3 = testarg2(xlgaanynum());
-    double arg4 = testarg2(xlgaanynum());
-    double arg5 = testarg2(xlgaanynum());
     sound_type result;
 
     xllastarg();
-    result = snd_pluck(arg1, arg2, arg3, arg4, arg5);
+    result = snd_white(arg1, arg2, arg3);
     return cvsound(result);
 }
 

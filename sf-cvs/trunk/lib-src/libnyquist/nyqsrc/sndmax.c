@@ -1,5 +1,11 @@
 /* sndmax.c -- computes the maximum amplitude in a sound */
 
+
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  min->MIN; fix compiler warning
+ */
+
 #ifdef UNIX
 #include "sys/types.h"
 #endif	
@@ -14,7 +20,7 @@
 double sound_max(LVAL snd_expr, long n)
 {
     LVAL s_as_lval;
-    sound_type s;
+    sound_type s = NULL;
     long blocklen;
     sample_block_values_type sbufp;
     register double maximum = 0;
@@ -46,7 +52,7 @@ double sound_max(LVAL snd_expr, long n)
             if (sampblock == zero_block || blocklen == 0) {
                 break;
             }
-            togo = min(blocklen, n);
+            togo = MIN(blocklen, n);
             sbufp = sampblock->samples;
             for (j = 0; j < togo; j++) {
                 register double samp = *sbufp++;
