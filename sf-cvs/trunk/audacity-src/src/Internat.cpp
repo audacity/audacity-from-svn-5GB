@@ -65,6 +65,17 @@ void Internat::Init()
    #endif
 }
 
+// JKC: Added to fix a memory leak.
+void Internat::CleanUp()
+{
+#ifndef __WXMAC__
+   if( mConvLocal != NULL )
+   {
+      delete mConvLocal;
+   }
+#endif
+}
+
 wxChar Internat::GetDecimalSeparator()
 {
    return mDecimalSeparator;

@@ -911,6 +911,7 @@ int AudacityApp::OnExit()
    UnloadEffects();
 
    DeinitAudioIO();
+   Internat::CleanUp();// JKC
 
    delete mChecker;
 

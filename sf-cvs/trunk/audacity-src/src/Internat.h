@@ -22,6 +22,7 @@
 class Internat
 {
 public:
+	static void CleanUp();
    // Initialize internationalisation support. Call this once at
    // program start.
    static void Init();
