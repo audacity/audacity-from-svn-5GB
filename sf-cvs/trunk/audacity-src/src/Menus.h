@@ -57,6 +57,8 @@ void CreateMenuBar();
 void BuildMenuBar();
 void RebuildMenuBar();
 
+void AssignDefaults();
+
 void TokenizeCommandStrings(int mVal);
 
 wxString GetCommandName(int nIndex);

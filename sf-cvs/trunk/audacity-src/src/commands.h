@@ -173,10 +173,10 @@
                                       lossyFormat.c_str());
 
    // File menu
-   CMD_ADDMENU(_("&New\tCtrl+N"), _("New"), OnNew, fileMenu, enabledMenu);
-   CMD_ADDMENU(_("&Open...\tCtrl+O"), _("Open"), OnOpen, fileMenu, enabledMenu);
-   CMD_ADDMENU(_("&Close\tCtrl+W"), _("Close"), OnClose, fileMenu, enabledMenu);
-   CMD_ADDMENU(_("&Save Project\tCtrl+S"), _("Save Project"), OnSave, fileMenu, enabledMenu);
+   CMD_ADDMENU(_("&New"), _("New"), OnNew, fileMenu, enabledMenu);
+   CMD_ADDMENU(_("&Open..."), _("Open"), OnOpen, fileMenu, enabledMenu);
+   CMD_ADDMENU(_("&Close"), _("Close"), OnClose, fileMenu, enabledMenu);
+   CMD_ADDMENU(_("&Save Project"), _("Save Project"), OnSave, fileMenu, enabledMenu);
    CMD_ADDMENU(_("Save Project &As..."), _("Save Project As"), OnSaveAs, fileMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(fileMenu);
@@ -191,44 +191,44 @@
    CMD_ADDMENU(_("Export &Labels..."), _("Export Labels"), OnExportLabels, fileMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(fileMenu);
-   CMD_ADDMENU(_("&Preferences...\tCtrl+P"), _("Preferences"), OnPreferences, fileMenu, enabledMenu);
+   CMD_ADDMENU(_("&Preferences...\t"), _("Preferences"), OnPreferences, fileMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(fileMenu);
    CMD_ADDMENU(_("E&xit"), _("Exit"), OnExit, fileMenu, enabledMenu);
 
    // Edit menu
-   CMD_ADDMENU(_("Undo\tCtrl+Z"), _("Undo"), Undo, editMenu, enabledMenu);
-   CMD_ADDMENU(_("&Redo\tCtrl+R"), _("Redo"), Redo, editMenu, enabledMenu);
+   CMD_ADDMENU(_("Undo"), _("Undo"), Undo, editMenu, enabledMenu);
+   CMD_ADDMENU(_("&Redo"), _("Redo"), Redo, editMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(editMenu);
-   CMD_ADDMENU(_("Cut\tCtrl+X"), _("Cut"), Cut, editMenu, enabledMenu);
-   CMD_ADDMENU(_("Copy\tCtrl+C"), _("Copy"), Copy, editMenu, enabledMenu);
-   CMD_ADDMENU(_("Paste\tCtrl+V"), _("Paste"), Paste, editMenu, enabledMenu);
-   CMD_ADDMENU(_("&Trim\tCtrl+T"), _("Trim"), Trim, editMenu, enabledMenu);
+   CMD_ADDMENU(_("Cut"), _("Cut"), Cut, editMenu, enabledMenu);
+   CMD_ADDMENU(_("Copy"), _("Copy"), Copy, editMenu, enabledMenu);
+   CMD_ADDMENU(_("Paste"), _("Paste"), Paste, editMenu, enabledMenu);
+   CMD_ADDMENU(_("&Trim"), _("Trim"), Trim, editMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(editMenu);
-   CMD_ADDMENU(_("&Delete\tCtrl+K"), _("Delete"), OnDelete, editMenu, enabledMenu);
-   CMD_ADDMENU(_("&Silence\tCtrl+L"), _("Silence"), OnSilence, editMenu, enabledMenu);
+   CMD_ADDMENU(_("&Delete"), _("Delete"), OnDelete, editMenu, enabledMenu);
+   CMD_ADDMENU(_("&Silence"), _("Silence"), OnSilence, editMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(editMenu);
    CMD_ADDMENU(_("&Insert Silence..."), _("Insert Silence"), OnInsertSilence, editMenu, enabledMenu);
-   CMD_ADDMENU(_("Split\tCtrl+Y"), _("New"), OnSplit, editMenu, enabledMenu);
+   CMD_ADDMENU(_("Split"), _("New"), OnSplit, editMenu, enabledMenu);
    CMD_ADDMENU(_("Split At Labels"), _("New"), OnSplitLabels, editMenu, enabledMenu);
-   CMD_ADDMENU(_("D&uplicate\tCtrl+D"), _("New"), OnDuplicate, editMenu, enabledMenu);
+   CMD_ADDMENU(_("D&uplicate"), _("New"), OnDuplicate, editMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(editMenu);
-   CMD_ADDMENU(_("Select All\tCtrl+A"), _("Select All"), OnSelectAll, editMenu, enabledMenu);
+   CMD_ADDMENU(_("Select All"), _("Select All"), OnSelectAll, editMenu, enabledMenu);
 
    // View menu
-   CMD_ADDMENU(_("Zoom &In\tCtrl+1"), _("Zoom In"), OnZoomIn, viewMenu, enabledMenu);
-   CMD_ADDMENU(_("Zoom &Normal\tCtrl+2"), _("Zoom Normal"), OnZoomNormal, viewMenu, enabledMenu);
-   CMD_ADDMENU(_("Zoom &Out\tCtrl+3"), _("Zoom Out"), OnZoomOut, viewMenu, enabledMenu);
-   CMD_ADDMENU(_("&Fit in Window\tCtrl+F"), _("Fit in Window"), OnZoomFit, viewMenu, enabledMenu);
-   CMD_ADDMENU(_("Zoom to &Selection\tCtrl+E"), _("Zoom to Selection"), OnZoomSel, viewMenu, enabledMenu);
+   CMD_ADDMENU(_("Zoom &In"), _("Zoom In"), OnZoomIn, viewMenu, enabledMenu);
+   CMD_ADDMENU(_("Zoom &Normal"), _("Zoom Normal"), OnZoomNormal, viewMenu, enabledMenu);
+   CMD_ADDMENU(_("Zoom &Out"), _("Zoom Out"), OnZoomOut, viewMenu, enabledMenu);
+   CMD_ADDMENU(_("&Fit in Window"), _("Fit in Window"), OnZoomFit, viewMenu, enabledMenu);
+   CMD_ADDMENU(_("Zoom to &Selection"), _("Zoom to Selection"), OnZoomSel, viewMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(viewMenu);
    CMD_ADDMENU(_("History"), _("Undo History"), UndoHistory, viewMenu, enabledMenu);
-   CMD_ADDMENU(_("Plot Spectrum\tCtrl+U"), _("Plot Spectrum"), OnPlotSpectrum, viewMenu, enabledMenu);
+   CMD_ADDMENU(_("Plot Spectrum"), _("Plot Spectrum"), OnPlotSpectrum, viewMenu, enabledMenu);
 
 #ifndef __WXMAC__
    CMD_ADDMENU_SEP(viewMenu);
@@ -237,7 +237,7 @@
 #endif
 
    // Project menu
-   CMD_ADDMENU(_("&Import Audio...\tCtrl+I"), _("Import Audio"), OnImport, projectMenu, enabledMenu);
+   CMD_ADDMENU(_("&Import Audio..."), _("Import Audio"), OnImport, projectMenu, enabledMenu);
    CMD_ADDMENU(_("Import Labels..."), _("Import Labels..."), OnImportLabels, projectMenu, enabledMenu);
    CMD_ADDMENU(_("Import &MIDI..."), _("Import MIDI"), OnImportMIDI, projectMenu, enabledMenu);
    CMD_ADDMENU(_("Import Raw &Data..."), _("Import Raw Data"), OnImportRaw, projectMenu, enabledMenu);
@@ -277,5 +277,37 @@
    CMD_ADDMENU_SEP(helpMenu);
    CMD_ADDMENU(_("Run Benchmark..."), _("Run Benchmark"), OnBenchmark, helpMenu, enabledMenu);
 }
+
+#endif
+
+#ifdef AUDACITY_MENUS_COMMANDS_DEFAULT_SHORTCUTS
+
+//BG: Preprogrammed defaults
+
+gPrefs->DeleteGroup("/Keyboard");
+
+gPrefs->Write("/Keyboard/0/Ctrl+N", (long)0);
+gPrefs->Write("/Keyboard/1/Ctrl+O", (long)0);
+gPrefs->Write("/Keyboard/2/Ctrl+W", (long)0);
+gPrefs->Write("/Keyboard/3/Ctrl+S", (long)0);
+gPrefs->Write("/Keyboard/14/Ctrl+P", (long)0);
+gPrefs->Write("/Keyboard/17/Ctrl+Z", (long)0);
+gPrefs->Write("/Keyboard/18/Ctrl+R", (long)0);
+gPrefs->Write("/Keyboard/20/Ctrl+X", (long)0);
+gPrefs->Write("/Keyboard/21/Ctrl+C", (long)0);
+gPrefs->Write("/Keyboard/22/Ctrl+V", (long)0);
+gPrefs->Write("/Keyboard/23/Ctrl+T", (long)0);
+gPrefs->Write("/Keyboard/26/Ctrl+L", (long)0);
+gPrefs->Write("/Keyboard/25/Ctrl+K", (long)0);
+gPrefs->Write("/Keyboard/29/Ctrl+Y", (long)0);
+gPrefs->Write("/Keyboard/31/Ctrl+D", (long)0);
+gPrefs->Write("/Keyboard/33/Ctrl+A", (long)0);
+gPrefs->Write("/Keyboard/34/Ctrl+1", (long)0);
+gPrefs->Write("/Keyboard/35/Ctrl+2", (long)0);
+gPrefs->Write("/Keyboard/36/Ctrl+3", (long)0);
+gPrefs->Write("/Keyboard/37/Ctrl+F", (long)0);
+gPrefs->Write("/Keyboard/38/Ctrl+E", (long)0);
+gPrefs->Write("/Keyboard/41/Ctrl+U", (long)0);
+gPrefs->Write("/Keyboard/45/Ctrl+I", (long)0);
 
 #endif
