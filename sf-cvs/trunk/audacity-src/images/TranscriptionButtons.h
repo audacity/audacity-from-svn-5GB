@@ -35,3 +35,13 @@
 #include "TranscriptionImages/MakeTag.xpm"
 #include "TranscriptionImages/MakeTagAlpha.xpm"
 #include "TranscriptionImages/MakeTagDisabled.xpm"
+
+#include "TranscriptionImages/SelectSound.xpm"
+#include "TranscriptionImages/SelectSoundAlpha.xpm"
+#include "TranscriptionImages/SelectSoundDisabled.xpm"
+
+
+#include "TranscriptionImages/SelectSilence.xpm"
+#include "TranscriptionImages/SelectSilenceAlpha.xpm"
+#include "TranscriptionImages/SelectSilenceDisabled.xpm"
+
