@@ -559,8 +559,10 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
 
       x = 0;
 
-      theMin = temp[x];
-      theMax = temp[x];
+      if (b == block0) { // thanks to Nick Lamb for this fix
+         theMin = temp[x];
+         theMax = temp[x];
+      }
 
       while (x < num) {
 
