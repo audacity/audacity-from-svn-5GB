@@ -110,8 +110,8 @@ APalette::APalette(wxFrame* parent, wxWindowID id, const wxString& title,
   mCurrentTool = 0;
   mTool[0]->PushDown();
 
-  mBackgroundBrush.SetColour(wxColour(177, 177, 177));
-  mBackgroundPen.SetColour(wxColour(177, 177, 177));
+  mBackgroundBrush.SetColour(wxColour(204, 204, 204));
+  mBackgroundPen.SetColour(wxColour(204, 204, 204));
 }
 
 APalette::~APalette()

@@ -56,6 +56,7 @@ void AColor::Init()
   wxColour dark =
 	wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW);
 
+  #if defined(__WXMSW__) || defined(__WXGTK__)
   // unselected
   lightBrush[0].SetColour(light);
   mediumBrush[0].SetColour(med);
@@ -72,23 +73,25 @@ void AColor::Init()
   mediumPen[1].SetColour(200,200,214);
   darkPen[1].SetColour(148,148,170);
 
-#if 0
+  #else
+
   // unselected
   lightBrush[0].SetColour(255,255,255);
   mediumBrush[0].SetColour(204,204,204);
-  darkBrush[0].SetColour(170,170,170);
+  darkBrush[0].SetColour(130,130,130);
   lightPen[0].SetColour(255,255,255);
   mediumPen[0].SetColour(204,204,204);
-  darkPen[0].SetColour(170,170,170);
+  darkPen[0].SetColour(130,130,130);
 
   // selected
   lightBrush[1].SetColour(204,204,255);
-  mediumBrush[1].SetColour(170,170,204);
-  darkBrush[1].SetColour(148,148,170);
+  mediumBrush[1].SetColour(130,130,204);
+  darkBrush[1].SetColour(130,130,170);
   lightPen[1].SetColour(204,204,255);
-  mediumPen[1].SetColour(170,170,204);
-  darkPen[1].SetColour(148,148,170);
-#endif
+  mediumPen[1].SetColour(130,130,204);
+  darkPen[1].SetColour(130,130,170);
+
+  #endif
 
   inited = true;
 }
