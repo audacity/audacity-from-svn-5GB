@@ -1190,14 +1190,13 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
       //If we aren't displaying the waveform, Display a message dialog
       if(((WaveTrack *)mDrawingTrack)->GetDisplay() != WaveTrack::WaveformDisplay)
          {
+            ReleaseMouse();
             wxMessageBox("Draw currently only works with waveforms.", "Notice");
             return;
          }
       
       //Get rate in order to calculate the critical zoom threshold
       rate = ((WaveTrack *)mDrawingTrack)->GetRate();
-  
-
 
       //Find out the zoom level
       bool showPoints = (mViewInfo->zoom / rate > 3.0);
@@ -1205,6 +1204,7 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
       //If we aren't zoomed in far enough, show a message dialog.
       if(!showPoints)
          {
+            ReleaseMouse();
             wxMessageBox("You are not zoomed in enough. Zoom in until you can see the individual samples.", "Notice");
             return;
          }
