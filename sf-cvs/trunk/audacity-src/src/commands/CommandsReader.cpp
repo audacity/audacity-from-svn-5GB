@@ -11,6 +11,7 @@
 **********************************************************************/
 
 #include "CommandsReader.h"
+#include "CommandsCfg.h"
 
 #include <wx/string.h>
 #include <wx/file.h>
@@ -44,16 +45,16 @@ bool CommandsReader::ParseFile()
    XML_SetUserData(mParser, (void *)this);
    XML_SetElementHandler(mParser, startElement, endElement);
 
-   if(!wxFileExists("commands.cfg"))
+   if(!wxFileExists(gCommandsCfgLocation))
    {
-      wxMessageBox("commands.cfg does not exist!");
+      wxMessageBox(gCommandsCfgLocation + " does not exist!");
       return false;
    }
 
-   FILE *fp = fopen("commands.cfg", "rb");
+   FILE *fp = fopen(gCommandsCfgLocation, "rb");
    if(!fp || ferror(fp))
    {
-      wxMessageBox("Could not open file: commands.cfg");
+      wxMessageBox("Could not open file: " + gCommandsCfgLocation);
       return false;
    }
 

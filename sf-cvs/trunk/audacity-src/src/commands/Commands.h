@@ -47,6 +47,8 @@ private:
 
    CommandsWriter mCommandsWriter;
    CommandsReader mCommandsReader;
+
+   wxString mCommandsCfgLocation;
 };
 
 #endif

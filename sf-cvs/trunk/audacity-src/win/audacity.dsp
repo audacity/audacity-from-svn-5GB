@@ -848,6 +848,10 @@ SOURCE=..\src\commands\CommandsCallback.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\commands\CommandsCfg.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\commands\CommandsDefaultData.h
 # End Source File
 # Begin Source File

@@ -11,8 +11,11 @@
 **********************************************************************/
 
 #include <wx/tokenzr.h>
+#include <wx/dirdlg.h>
+#include <wx/filename.h>
 
 #include "../Project.h"
+#include "../Prefs.h"
 
 #include "Commands.h"
 
@@ -20,8 +23,27 @@
 #include "CommandsCallback.h"
 #undef AUDACITY_COMMANDS_CALLBACK_POINTERS
 
+wxString gCommandsCfgLocation;
+
 Commands::Commands()
 {
+   //Figure out where to put commands.cfg
+   gCommandsCfgLocation = gPrefs->Read("/CmdCfgLocation", "");
+
+   if(!gCommandsCfgLocation.Length())
+   {
+      gCommandsCfgLocation = wxDirSelector("Choose the location for commands.cfg", wxGetHomeDir());
+      if(!gCommandsCfgLocation.Length())
+      {
+         gCommandsCfgLocation = wxGetHomeDir();
+      }
+
+      wxFileName CommandsCfgFilename("commands.cfg");
+      CommandsCfgFilename.PrependDir(gCommandsCfgLocation);
+
+      gCommandsCfgLocation = CommandsCfgFilename.GetFullPath();
+      gPrefs->Write("/CmdCfgLocation", gCommandsCfgLocation);
+   }
 }
 
 Commands::~Commands()
@@ -39,7 +61,7 @@ wxMenuBar * Commands::GetMenuBar(wxString sMenu)
 
 bool Commands::Initialize()
 {
-   if(!wxFileExists("commands.cfg"))
+   if(!wxFileExists(gCommandsCfgLocation))
    {
       if(!Reset())
          return false;
