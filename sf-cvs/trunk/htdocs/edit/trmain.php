@@ -30,7 +30,7 @@ if ($fp) {
 
   if ($update == "true") {
 	 if (!is_dir("../updates/$lang")) {
-      mkdir("../updates/$lang");
+      mkdir("../updates/$lang", 0775);
 	   `chmod 775 ../updates/$lang`;
     }
 
