@@ -44,7 +44,7 @@ class PreviewPanel:public wxPanel {
    int len2;
 
  public:
-   bool param[4];
+   bool param[5];
 
    PreviewPanel(char *rawData, int dataLen, wxWindow * parent,
                  const wxPoint & pos, const wxSize & size,
