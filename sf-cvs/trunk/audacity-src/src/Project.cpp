@@ -878,21 +878,6 @@ void AudacityProject::OnDropFiles(wxDropFilesEvent & event)
 
 void AudacityProject::OpenFile(wxString fileName)
 {
-   // Make sure it isn't already open
-   int numProjects = gAudacityProjects.Count();
-   for (int i = 0; i < numProjects; i++)
-      if (gAudacityProjects[i]->mFileName == fileName) {
-         wxMessageBox("That project is already open in another window.");
-         return;
-      }
-   
-   // Open in a new window if this one is in use
-   if (mDirty || !mTracks->IsEmpty()) {
-      AudacityProject *project = CreateNewAudacityProject(gParentWindow);
-      project->OpenFile(fileName);
-      return;
-   }
-
    // We want to open projects using wxTextFile, but if it's NOT a project
    // file (but actually a WAV file, for example), then wxTextFile will spin
    // for a long time searching for line breaks.  So, we look for our

@@ -332,16 +332,22 @@ void AudacityProject::OnOpen(wxCommandEvent & event)
                                       this);    // Parent
 
    if (fileName != "") {
+      gPrefs->Write("/DefaultOpenPath", wxPathOnly(fileName));
 
-      path =::wxPathOnly(fileName);
-      gPrefs->Write("/DefaultOpenPath", path);
+      // Make sure it isn't already open
+      int numProjects = gAudacityProjects.Count();
+      for (int i = 0; i < numProjects; i++)
+         if (gAudacityProjects[i]->mFileName == fileName) {
+            wxMessageBox("That project is already open in another window.");
+            return;
+         }
 
-      if (mDirty) {
-         AudacityProject *project =
-             CreateNewAudacityProject(gParentWindow);
+      // Open in a new window if this one is in use
+      if (mDirty || !mTracks->IsEmpty()) {
+         AudacityProject *project = CreateNewAudacityProject(gParentWindow);
          project->OpenFile(fileName);
-      } else
-         OpenFile(fileName);
+      }
+      else OpenFile(fileName);
    }
 }
 
