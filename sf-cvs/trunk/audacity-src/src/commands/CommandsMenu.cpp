@@ -76,10 +76,9 @@ void CommandsMenu::PurgeData()
          //Delete submenus
          while(mnuSubArray.GetCount())
          {
-            //dmazzoni: this is an error...
-            //delete mnuSubArray[0];
-
+            wxMenu *tmpSubMenu = mnuSubArray[0];
             mnuSubArray.RemoveAt(0);
+            delete tmpSubMenu;
          }
 
          //clear the menu array
@@ -90,9 +89,12 @@ void CommandsMenu::PurgeData()
       //Delete menus
       while(mnuMainArray.GetCount())
       {
-         mMenuBarList[i]->menubar->Remove(0);
-         delete mnuMainArray[0];
+         //bgunlogson: Possibly rewrite so that the item wxMenuBar::Remove removes is the item that is removed from the array.
+         //bgunlogson: in other words, don't depend on the array order matching the menu order
+         wxMenu *tmpDelMenu = mMenuBarList[i]->menubar->Remove(0);
+         wxASSERT_MSG(mnuMainArray[0] == tmpDelMenu, "Menu array location did not match menu location");
          mnuMainArray.RemoveAt(0);
+         delete tmpDelMenu;
       }
 
       //clear the menu array
