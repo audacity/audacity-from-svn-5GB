@@ -98,7 +98,8 @@ class BlockFile {
    sampleCount mStart;
    sampleCount mLen;
    int mChannel;
-   void *mSndNode;
+   void *mSoundFile;
+   void *mInfo;
 };
 
 #endif

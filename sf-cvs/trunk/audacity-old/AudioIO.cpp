@@ -175,7 +175,7 @@ bool AudioIO::OpenDevice()
                                 NULL);
    */
 
-   return (error == paNoError);
+   return (mPortStream != NULL && error == paNoError);
 }
 
 bool AudioIO::Start()
@@ -472,6 +472,8 @@ void AudioIO::Stop()
    Pa_AbortStream(mPortStream);
    Pa_CloseStream(mPortStream);
 
+   mPortStream = NULL;
+
    if (mNumOutChannels > 0) {
       for(int i=0; i<mMaxBuffers; i++) {
          mOutBuffer[i].ID = 0;
@@ -543,7 +545,7 @@ AudacityProject *AudioIO::GetProject()
 
 double AudioIO::GetIndicator()
 {
-   if (mProject)
+   if (mProject && mPortStream)
       return mT0 + (Pa_StreamTime(mPortStream) / mRate);
    else
       return -1000000000.0;

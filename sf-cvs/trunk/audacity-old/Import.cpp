@@ -50,7 +50,7 @@ int Import(AudacityProject *project,
    }
 
    if (!fName.Right(3).CmpNoCase("mp3")) {
-#ifdef USE_LIBMAD
+#ifdef MP3SUPPORT
       *tracks = new WaveTrack *[2];
       success =::ImportMP3(project, fName,
                            &(*tracks)[0], &(*tracks)[1]);
@@ -85,15 +85,9 @@ int Import(AudacityProject *project,
    }
 
    if (::IsPCM(fName)) {
-      *tracks = new WaveTrack *[2];
-      success =::ImportPCM(parent, fName,
-                           &(*tracks)[0], &(*tracks)[1], dirManager);
+      success =::ImportPCM(parent, fName, tracks, &numTracks, dirManager);
       if (!success)
          return 0;
-
-      numTracks = 1;
-      if ((*tracks)[1] != NULL)
-         numTracks = 2;
 
       return numTracks;
    }

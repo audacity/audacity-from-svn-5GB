@@ -24,11 +24,11 @@ public:
    EffectCompressor();
    
    virtual wxString GetEffectName() {
-      return wxString("Compressor/Expander...");
+      return wxString("Compressor...");
    }
    
    virtual wxString GetEffectAction() {
-      return wxString("Compressing/Expanding");
+      return wxString("Compressing");
    }
    
    virtual bool PromptUser();

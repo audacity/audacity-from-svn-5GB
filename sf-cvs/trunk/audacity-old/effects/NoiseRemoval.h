@@ -15,6 +15,7 @@
 #include <wx/button.h>
 #include <wx/panel.h>
 #include <wx/sizer.h>
+#include <wx/slider.h>
 #include <wx/stattext.h>
 
 class wxString;

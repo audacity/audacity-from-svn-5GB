@@ -294,7 +294,9 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 
    for (int e = 0; e < Effect::GetNumEffects(); e++) {
       Effect *f = Effect::GetEffect(e);
-      mEffectMenu->Enable(mEffectMenu->FindItem(f->GetEffectName()),
+      wxString effectName = f->GetEffectName();
+      int itemNo = mEffectMenu->FindItem(effectName);
+      mEffectMenu->Enable(itemNo,
                           numWaveTracksSelected > 0
                           && nonZeroRegionSelected);
    }

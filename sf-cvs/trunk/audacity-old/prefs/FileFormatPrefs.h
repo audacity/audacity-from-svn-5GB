@@ -5,6 +5,7 @@
   FileFormatPrefs.h
 
   Joshua Haberman
+  Dominic Mazzoni
 
 **********************************************************************/
 
@@ -34,8 +35,8 @@ class FileFormatPrefs:public PrefsPanel {
    wxButton *mMP3FindButton;
    wxStaticText *mMP3Version;
 
-   // leave room for expansion. pointers are cheap
-   wxRadioButton *mDefaultExportFormats[20];
+   wxChoice *mDefaultExportFormat;
+   wxButton *mExportOptionsButton;
 
    void SetMP3VersionText();
 

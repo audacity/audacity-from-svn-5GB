@@ -16,6 +16,8 @@ AC_LANG([C++])
 AC_PROG_CXX
 AC_PROG_CXXCPP
 
+AC_PATH_PROG(WXSTATIC, libwx_gtk.a, /usr/lib, /usr/local/lib)
+
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_TYPE_OFF_T

@@ -124,6 +124,7 @@ mAutoScrolling(false)
    mIsSliding = false;
    mIsEnveloping = false;
    mIsMuting = false;
+   mIsZooming = false;
    mIsSoloing = false;
 
    mIndicatorShowing = false;
@@ -850,57 +851,84 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
 
 void TrackPanel::HandleZoom(wxMouseEvent &event)
 {
-    if (event.ButtonDown()) {
-        mViewInfo->zoomStart = event.m_x;
-        HandleSelect(event);
-    }
-    else if (event.Dragging()) {
-        HandleSelect(event);
-    }
-    else if (event.ButtonUp() || event.ButtonDClick()) {
-        int zoomLength = event.m_x - mViewInfo->zoomStart;
+   if (event.ButtonDown() || event.ButtonDClick()) {
+      mZoomStart = event.m_x;
+      mZoomEnd = event.m_x;
+   }
+   else if (event.Dragging()) {
+      mZoomEnd = event.m_x;
 
-        if (zoomLength < 0) zoomLength = - zoomLength;
+      int zoomLength = mZoomEnd - mZoomStart;
+      if (zoomLength < 0)
+         zoomLength = - zoomLength;
 
-        if (zoomLength > 3) {
-            mViewInfo->zoom *= (mViewInfo->screen * mViewInfo->zoom) / zoomLength;
+      if (zoomLength > 3)
+         mIsZooming = true;
 
+      if (mIsZooming)
+         Refresh(false);
+   }
+   else if (event.ButtonUp()) {
+      wxRect r;
+      int num;
+      bool isZooming = mIsZooming;
+      mIsZooming = false;
+
+      VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
+
+      int zoomLength = mZoomEnd - mZoomStart;      
+      if (zoomLength < 0) {
+         zoomLength = - zoomLength;
+         int tmp = mZoomEnd;
+         mZoomEnd = mZoomStart;
+         mZoomStart = tmp;
+      }
+
+      if (isZooming || zoomLength > 3) {
+
+         double left =
+            mViewInfo->h + ((mZoomStart - r.x) / mViewInfo->zoom);
+         double right = 
+            mViewInfo->h + ((mZoomEnd - r.x) / mViewInfo->zoom);      
+
+         mViewInfo->zoom *= mViewInfo->screen/(right-left);
+         
+         if (mViewInfo->zoom > 6000000)
+            mViewInfo->zoom = 6000000;
+         
+         mViewInfo->h = left;
+         
+         if (mViewInfo->h < 0) mViewInfo->h = 0;
+         
+         MakeParentRedrawScrollbars();
+         Refresh(false);
+      }
+      else {
+         double center_h = mViewInfo->h + (event.m_x - r.x) / mViewInfo->zoom;
+         
+         if (event.RightUp() || event.RightDClick() || event.ShiftDown())
+            mViewInfo->zoom /= 2.0;
+         else
+            mViewInfo->zoom *= 2.0;
+         
+         if (event.MiddleUp() || event.MiddleDClick())
+            mViewInfo->zoom = 44100.0 / 512.0;
+         
             if (mViewInfo->zoom > 6000000)
-                mViewInfo->zoom = 6000000;
-
-            mViewInfo->h = mViewInfo->sel0;
-    
-            if (mViewInfo->h < 0) mViewInfo->h = 0;
-
-            MakeParentRedrawScrollbars();
-            Refresh(false);
-        }
-        else {
-            double center_h = mViewInfo->h + (event.m_x - 115) / mViewInfo->zoom;
-
-            if (event.RightUp() || event.RightDClick() || event.ShiftDown())
-                mViewInfo->zoom /= 2.0;
-            else
-                mViewInfo->zoom *= 2.0;
-        
-            if (event.MiddleUp() || event.MiddleDClick())
-                mViewInfo->zoom = 44100.0 / 512.0;
-    
-            if (mViewInfo->zoom > 6000000)
-                mViewInfo->zoom = 6000000;
-    
+               mViewInfo->zoom = 6000000;
+            
             double new_center_h =
-                mViewInfo->h + (event.m_x - 115) / mViewInfo->zoom;
-    
+               mViewInfo->h + (event.m_x - r.x) / mViewInfo->zoom;
+            
             mViewInfo->h += (center_h - new_center_h);
-    
+            
             if (mViewInfo->h < 0)
-            mViewInfo->h = 0;
-
+               mViewInfo->h = 0;
+            
             MakeParentRedrawScrollbars();
             Refresh(false);
-        }
-    }
+      }
+   }
 }
 
 void TrackPanel::HandleClosing(wxMouseEvent & event)
@@ -1773,6 +1801,22 @@ void TrackPanel::DrawTracks(wxDC * dc)
       trackRect.y += t->GetHeight();
       num++;
       t = iter.Next();
+   }
+
+   // Draw zooming indicator
+
+   if (mIsZooming) {
+      wxRect r;
+
+      r.x = mZoomStart;
+      r.y = -1;
+      r.width = mZoomEnd - mZoomStart;
+      r.height = clip.height+2;
+
+      dc->SetBrush(*wxTRANSPARENT_BRUSH);
+      dc->SetPen(*wxBLACK_DASHED_PEN);
+
+      dc->DrawRectangle(r);
    }
 
    // Paint over the part below the tracks

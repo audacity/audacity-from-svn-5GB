@@ -1,4 +1,4 @@
-dnl aclocal.m4 generated automatically by aclocal 1.4-p4
+dnl aclocal.m4 generated automatically by aclocal 1.4
 
 dnl Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
@@ -177,7 +177,12 @@ NONE) lt_target="$host" ;;
 esac
 
 # Check for any special flags to pass to ltconfig.
-libtool_flags="--cache-file=$cache_file"
+#
+# the following will cause an existing older ltconfig to fail, so
+# we ignore this at the expense of the cache file... Checking this 
+# will just take longer ... bummer!
+#libtool_flags="--cache-file=$cache_file"
+#
 test "$enable_shared" = no && libtool_flags="$libtool_flags --disable-shared"
 test "$enable_static" = no && libtool_flags="$libtool_flags --disable-static"
 test "$enable_fast_install" = no && libtool_flags="$libtool_flags --disable-fast-install"

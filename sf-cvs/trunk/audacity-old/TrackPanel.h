@@ -171,6 +171,9 @@ class TrackPanel:public wxWindow {
    int mMouseMostRecentX;
    int mMouseMostRecentY;
 
+   int mZoomStart;
+   int mZoomEnd;
+
    int mInitialTrackHeight;
 
    bool mAutoScrolling;
@@ -180,6 +183,7 @@ class TrackPanel:public wxWindow {
    bool mIsResizing;
    bool mIsSliding;
    bool mIsEnveloping;
+   bool mIsZooming;
    bool mIsMuting;
    bool mIsSoloing;
 

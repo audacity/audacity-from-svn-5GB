@@ -1078,7 +1078,7 @@ void WaveTrack::Read(sampleType * buffer, WaveBlock * b,
              len * sizeof(sampleType), result);
    }
 
-   wxASSERT(result == (int) (len * sizeof(sampleType)));
+   /* wxASSERT(result == (int) (len * sizeof(sampleType))); */
 
    f->Close();
 }

@@ -5,6 +5,7 @@
   FileFormatPrefs.cpp
 
   Joshua Haberman
+  Dominic Mazzoni
 
 **********************************************************************/
 
@@ -15,9 +16,10 @@
 #include <wx/msgdlg.h>
 #include <wx/button.h>
 
+#include "../ExportMP3.h"
+#include "../FileFormats.h"
 #include "../Prefs.h"
 #include "../Track.h"
-#include "../ExportMP3.h"
 #include "FileFormatPrefs.h"
 
 wxString gCopyOrEditOptions[] = {
@@ -25,18 +27,8 @@ wxString gCopyOrEditOptions[] = {
    "Edit the original in place"
 };
 
-wxString gDefaultExportFormatOptions[] = {
-   "AIFF",
-#ifdef __WXMAC__
-   "AIFF with track markers",
-#endif
-   "WAV",
-   "IRCAM",
-   "AU",
-   "***last"
-};
-
-#define ID_MP3_FIND_BUTTON   7001
+#define ID_MP3_FIND_BUTTON         7001
+#define ID_EXPORT_OPTIONS_BUTTON   7002
 
 BEGIN_EVENT_TABLE(FileFormatPrefs, wxPanel)
    EVT_BUTTON(ID_MP3_FIND_BUTTON, FileFormatPrefs::OnMP3FindButton)
@@ -54,20 +46,17 @@ PrefsPanel(parent)
    if (copyEdit.IsSameAs("copy", false))
       copyEditPos = 0;
 
-
-   wxString defaultFormat =
-       gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");
-
-   mNumFormats = 1;
-   while (gDefaultExportFormatOptions[mNumFormats] != "***last")
-      mNumFormats++;
-
    long mp3Bitrate = gPrefs->Read("/FileFormats/MP3Bitrate", 128);
    wxString mp3BitrateString = wxString::Format("%d", mp3Bitrate);
 
-   int formatPos = 1;                     // Fall back to WAV
-   for (int i = 0; i < mNumFormats; i++)
-      if (defaultFormat.IsSameAs(gDefaultExportFormatOptions[i], false)) {
+   wxString defaultFormat = gPCMFormats[gDefaultPCMFormat].name;
+   wxString exportFormat =
+       gPrefs->Read("/FileFormats/DefaultExportFormat", defaultFormat);
+
+   int formatPos = gDefaultPCMFormat;
+   int i;
+   for (i = 0; i < gNumPCMFormats; i++)
+      if (exportFormat.IsSameAs(gPCMFormats[i].name, false)) {
          formatPos = i;
          break;
       }
@@ -108,26 +97,32 @@ PrefsPanel(parent)
          new wxStaticBox(this, -1, "Uncompressed Export Format"),
          wxVERTICAL);
 
-      mDefaultExportFormats[0] = new wxRadioButton(
-         this, -1, gDefaultExportFormatOptions[0],
-         wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+      wxString *formatStrings = new wxString[gNumPCMFormats];
+      for(i=0; i<gNumPCMFormats; i++)
+         formatStrings[i] = gPCMFormats[i].name;
 
-      /* I have no idea why this is necessary, but it always gets set on
-       * Windows if this isn't here! */
-      mDefaultExportFormats[0]->SetValue(false);
+      #ifdef __WXMAC__
+        // This is just to work around a wxChoice auto-sizing bug
+        mDefaultExportFormat = new wxChoice(
+           this, -1, wxDefaultPosition, wxSize(200,-1),
+           gNumPCMFormats, formatStrings);
+      #else
+        mDefaultExportFormat = new wxChoice(
+           this, -1, wxDefaultPosition, wxDefaultSize,
+           gNumPCMFormats, formatStrings);
+      #endif
+        mDefaultExportFormat->SetSelection(formatPos);
 
-      defFormatSizer->Add(
-         mDefaultExportFormats[0], 0,
-         wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER);
+      delete[] formatStrings;
 
-      for(int i = 1; i < mNumFormats; i++) {
-         mDefaultExportFormats[i] = new wxRadioButton(
-            this, -1, gDefaultExportFormatOptions[i]);
+      mExportOptionsButton = new wxButton(this, ID_EXPORT_OPTIONS_BUTTON,
+                                          "Export Options...");
 
-         defFormatSizer->Add(
-            mDefaultExportFormats[i], 
-            0, wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER);
-      }
+      defFormatSizer->Add(mDefaultExportFormat, 0,
+                          wxALL, GENERIC_CONTROL_BORDER);
+
+      defFormatSizer->Add(mExportOptionsButton, 0,
+                          wxALL, GENERIC_CONTROL_BORDER);
 
       topSizer->Add(
          defFormatSizer, 0, 
@@ -151,7 +146,7 @@ PrefsPanel(parent)
          SetMP3VersionText();
 
          mp3InfoSizer->Add(mMP3Version, 0,
-            wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+            wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
          
          mMP3FindButton = new wxButton(this, ID_MP3_FIND_BUTTON, "Find Library");
          
@@ -205,7 +200,6 @@ PrefsPanel(parent)
    /* set controls to match existing configuration... */
 
    mCopyOrEdit[copyEditPos]->SetValue(true);
-   mDefaultExportFormats[formatPos]->SetValue(true);
 }
 
 void FileFormatPrefs::SetMP3VersionText()
@@ -244,22 +238,17 @@ void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
 
 bool FileFormatPrefs::Apply()
 {
-   int pos;
    wxString copyEditString[] = { "copy", "edit" };
 
-   pos = mCopyOrEdit[0]->GetValue() ? 0 : 1;
+   int pos = mCopyOrEdit[0]->GetValue() ? 0 : 1;
    wxString copyOrEdit = copyEditString[pos];
 
-   for(int i = 0; i < mNumFormats; i++)
-      if(mDefaultExportFormats[i]->GetValue()) {
-         pos = i;
-         break;
-      }
+   int format = mDefaultExportFormat->GetSelection();
    
    gPrefs->SetPath("/FileFormats");
 
    wxString originalExportFormat = gPrefs->Read("DefaultExportFormat", "");
-   wxString defaultExportFormat = gDefaultExportFormatOptions[pos];
+   wxString defaultExportFormat = gPCMFormats[format].name;
 
    gPrefs->Write("CopyOrEditUncompressedData", copyOrEdit);
    gPrefs->Write("DefaultExportFormat", defaultExportFormat);

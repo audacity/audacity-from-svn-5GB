@@ -75,7 +75,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
    if (event.ButtonUp()) {
       mIsClicking = false;
 
-      ReleaseMouse();
+      //ReleaseMouse();
 
       if (event.m_x >= 0 && event.m_y >= 0 &&
           event.m_x < mWidth && event.m_y < mHeight) {
@@ -94,7 +94,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
 
    if (event.ButtonDown()) {
       mIsClicking = true;
-      CaptureMouse();
+      //CaptureMouse();
    }
 
    if (mIsClicking) {

@@ -1,36 +1,18 @@
-# Make PortAudio for Linux
+# Make PortAudio Library for Linux
 
-LIBS =  -lm -lpthread
+DEST = ../../../lib/linux/lib
 
-CDEFINES = -I../pa_common
-CFLAGS = -g
+CC = gcc
+
+CFLAGS = -g -I../pa_common
 PASRC = ../pa_common/pa_lib.c pa_linux_oss.c
 PAINC = ../pa_common/portaudio.h
+PAOBJ = ../pa_common/pa_lib.o pa_linux_oss.o
 
-# Tests that work.
-#TESTC   = $(PASRC) ../pa_tests/patest_sine.c
-TESTC   = $(PASRC) ../pa_tests/patest_sine_time.c
-#TESTC   = $(PASRC) ../pa_tests/patest_stop.c
-#TESTC   = $(PASRC) ../pa_tests/patest_sync.c
-#TESTC   = $(PASRC) ../pa_tests/patest_pink.c
-#TESTC   = $(PASRC) ../pa_tests/patest_leftright.c
-#TESTC   = $(PASRC) ../pa_tests/patest_clip.c
-#TESTC   = $(PASRC) ../pa_tests/patest_dither.c
-#TESTC   = $(PASRC) ../pa_tests/pa_devs.c
-#TESTC   = $(PASRC) ../pa_tests/patest_many.c
-#TESTC   = $(PASRC) ../pa_tests/patest_record.c
-#TESTC   = $(PASRC) ../pa_tests/patest_wire.c
-#TESTC   = $(PASRC) ../pa_tests/paqa_devs.c
+portaudio.a: $(PAOBJ)
+	ar ruv portaudio.a $(PAOBJ)
+	ranlib portaudio.a
+	cp portaudio.a $(DEST)
 
-# Tests that do not yet work.
-
-TESTH   = $(PAINC)
-
-all: patest
-
-patest: $(TESTC) $(TESTH) Makefile
-	gcc $(CFLAGS) $(TESTC) $(CDEFINES) $(LIBS) -o patest
-
-run: patest
-	./patest
-
+%.o: %.c $(PAINC) Makefile
+	$(CC) -c $(CFLAGS) $< -o $@
