@@ -194,9 +194,6 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBID3TAG], [
                    id3tag_h_found="yes",
                    id3tag_h_found="no")
 
-   # I don't know if any released id3tag is sufficient, so disabling
-   # system use for now...
-
    if test $libid3tag_found = yes && test $id3tag_h_found = yes ; then
       LIBID3TAG_SYSTEM_AVAILABLE="yes"
       LIBID3TAG_SYSTEM_LIBS=-lid3tag
