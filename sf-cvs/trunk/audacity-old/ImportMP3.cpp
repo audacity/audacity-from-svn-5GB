@@ -26,6 +26,11 @@
 #include "xaudio/linux/include/file_input.h"
 #endif
 
+#ifdef __WXMSW__
+#include "xaudio/win/include/decoder.h"
+#include "xaudio/win/include/file_input.h"
+#endif
+
 #ifdef __WXMAC__
 #include "xaudio/mac/include/decoder.h"
 #include "xaudio/mac/include/mpeg_codec.h"
@@ -55,12 +60,14 @@ bool ImportMP3(wxString fName, WaveTrack **left, WaveTrack **right,
   }
 
   /* register mpeg audio codec */
+#ifndef __WXMSW__
   {
 	XA_CodecModule module;
 
 	mpeg_codec_module_register(&module);
 	decoder_codec_module_register(decoder, &module);
   }
+#endif
 
   *left = new WaveTrack(dirManager);
   *right = new WaveTrack(dirManager);
@@ -109,6 +116,11 @@ bool ImportMP3(wxString fName, WaveTrack **left, WaveTrack **right,
 	  int samples = decoder->output_buffer->size / channels / 2;
 #endif
 
+#ifdef __WXMSW__
+	  int channels = decoder->output_buffer->stereo + 1;
+	  int samples = decoder->output_buffer->size / channels / 2;
+#endif
+
 #ifdef __WXMAC__
 	  int channels = decoder->output_buffer->channels;
 	  int samples = decoder->output_buffer->nb_samples / channels / 2;
@@ -121,13 +133,11 @@ bool ImportMP3(wxString fName, WaveTrack **left, WaveTrack **right,
 		bufferCount = 0;
 	  }
             
-	  bufferCount += samples;
-            
 	  if (channels == 1) {
 		stereo = false;
                 
 		for(int i=0; i<samples; i++)
-		  left_buffer[bufferCount+i] =
+		  left_buffer[bufferCount+i] = 
 			(((sampleType *)decoder->output_buffer->pcm_samples)[i]);
 	  }
 	  else {
@@ -141,7 +151,9 @@ bool ImportMP3(wxString fName, WaveTrack **left, WaveTrack **right,
 			(((sampleType *)(decoder->output_buffer->pcm_samples))[2*i+1]);
 		}
 	  }
-            
+
+          bufferCount += samples;                
+
 	  (*left)->rate = double(decoder->output_buffer->sample_rate);
 	  (*right)->rate = double(decoder->output_buffer->sample_rate);
 	}

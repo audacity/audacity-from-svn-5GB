@@ -77,6 +77,7 @@ WaveTrack::WaveTrack(DirManager *projDirManager):
   selectedBrush.SetColour(148,148,170);
   sampleBrush.SetColour(50,50,200);
   selsampleBrush.SetColour(50,50,200);
+
   blankPen.SetColour(214,214,214);
   unselectedPen.SetColour(192,192,192);
   selectedPen.SetColour(148,148,170);
@@ -357,6 +358,8 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
 
   dc.SetBrush(blankBrush);
   dc.SetPen(blankPen);
+
+  dc.DrawRectangle(r);
   
   wxRect mid = r;
 
@@ -365,7 +368,7 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
     pre.width = (int)((t0 - tpre)*pps);
     mid.x += pre.width;
     mid.width -= pre.width;
-    dc.DrawRectangle(pre);	    
+    //dc.DrawRectangle(pre);	    
   }
   
   if (tpost > t1) {
@@ -377,8 +380,8 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
 	  post.width -= (r.x - post.x);
 	  post.x = r.x;
 	}
-	if (post.width > 0)
-	  dc.DrawRectangle(post);
+	//if (post.width > 0)
+	  //dc.DrawRectangle(post);
   }
   
   mid.height -= 2;

@@ -38,8 +38,8 @@ enum {
 FreqWindow *gFreqWindow = NULL;
 
 #ifdef __WXMAC__
-#define FREQ_WINDOW_WIDTH 440
-#define FREQ_WINDOW_HEIGHT 300
+#define FREQ_WINDOW_WIDTH 450
+#define FREQ_WINDOW_HEIGHT 320
 #endif
 
 #ifdef __WXGTK__
@@ -48,8 +48,8 @@ FreqWindow *gFreqWindow = NULL;
 #endif
 
 #ifdef __WXMSW__
-#define FREQ_WINDOW_WIDTH 440
-#define FREQ_WINDOW_HEIGHT 300
+#define FREQ_WINDOW_WIDTH 450
+#define FREQ_WINDOW_HEIGHT 320
 #endif
 
 void InitFreqWindow(wxFrame *parent)
@@ -101,6 +101,8 @@ FreqWindow::FreqWindow(wxFrame* parent, wxWindowID id, const wxString& title,
 							wxPoint(10, 260),
 							wxSize(100, 30),
 							4, algChoiceStrings);
+
+  mAlgChoice->SetSelection(0);
 
   wxString sizeChoiceStrings[8] = {"128",
 								   "256",

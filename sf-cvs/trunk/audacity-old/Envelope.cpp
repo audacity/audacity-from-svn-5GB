@@ -268,15 +268,16 @@ void Envelope::CollapseRegion(double t0, double t1)
   t1 -= mOffset;
 
   int len = mEnv.Count();
+  int i;
 
-  for(int i=1; i<len-1; i++)
+  for(i=1; i<len-1; i++)
 	if (mEnv[i]->t >= t0 && mEnv[i]->t < t1) {
 	  delete mEnv[i];
 	  mEnv.RemoveAt(i);
 	  len--;
 	}
 
-  for(int i=0; i<len; i++)
+  for(i=0; i<len; i++)
 	if (mEnv[i]->t >= t1)
 	  mEnv[i]->t -= (t1 - t0);
 }

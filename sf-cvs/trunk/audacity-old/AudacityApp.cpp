@@ -29,6 +29,7 @@
 #include "FreqWindow.h"
 #include "Play.h"
 #include "Project.h"
+#include "WaveTrack.h"
 #include "effects/Amplify.h"
 #include "effects/Echo.h"
 #include "effects/Fade.h"
@@ -149,6 +150,7 @@ bool AudacityApp::OnInit()
 
 void AudacityApp::RunTest()
 {
+#ifdef __WXGTK__
   DirManager *d = new DirManager();
   WaveTrack *t = new WaveTrack(d);
   VTrack *tmp = NULL;
@@ -299,4 +301,5 @@ void AudacityApp::RunTest()
   delete[] small;
   delete[] small2;
   delete[] block;
+#endif
 }

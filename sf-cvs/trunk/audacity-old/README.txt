@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.9e (pre): September 28, 2000
+Version 0.91: October 3, 2000
 
 http://www.cs.cmu.edu/~music/audacity/
 
@@ -103,3 +103,9 @@ Changes from 0.8 to 0.9:
   into wherever you are.
 
 * Zoom menu
+
+* Frequency plot window
+
+* Improved MP3 importing
+
+
