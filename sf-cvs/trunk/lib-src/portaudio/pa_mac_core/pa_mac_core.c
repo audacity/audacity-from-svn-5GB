@@ -1,5 +1,5 @@
 /*
- * $Id: pa_mac_core.c,v 1.8 2003-09-18 06:11:55 dmazzoni Exp $
+ * $Id: pa_mac_core.c,v 1.9 2003-09-22 05:15:18 dmazzoni Exp $
  * pa_mac_core.c
  * Implementation of PortAudio for Mac OS X Core Audio
  *
@@ -969,6 +969,11 @@ static void PaOSX_FixVolumeScalars( AudioDeviceID devID, Boolean isInput,
         err = AudioDeviceGetProperty( devID, iChannel, isInput, 
             kAudioDevicePropertyVolumeScalar, &dataSize, &fdata32 );
 
+        printf("devID=%d\n", devID);
+
+        printf("Channel=%d input=%d volume=%f\n",
+               iChannel, (int)isInput, fdata32);
+
         if( err == noErr )
         {
             DBUG(("kAudioDevicePropertyVolumeScalar for channel %d = %f\n", iChannel, fdata32));
@@ -976,6 +981,10 @@ static void PaOSX_FixVolumeScalars( AudioDeviceID devID, Boolean isInput,
             {
                 dataSize = sizeof( fdata32 );
                 fdata32 = (Float32) newLevel;
+
+                printf("Channel=%d input=%d new volume=%f\n",
+                       iChannel, (int)isInput, fdata32);
+
                 err = AudioDeviceSetProperty( devID, 0, iChannel, isInput, 
                     kAudioDevicePropertyVolumeScalar, dataSize, &fdata32 );
                 if( err != noErr )
@@ -1307,10 +1316,10 @@ static PaError PaOSX_OpenCommonDevice( internalPortAudioStream   *past,
     OSStatus         err = noErr;
     Float64          deviceRate;
 
-    /* dmazzoni: set threshold below zero so that it doesn't adjust
-       input levels - however, it will still unmute, which is nice */
+    /* dmazzoni: this is not needed because we use PortMixer
     PaOSX_FixVolumeScalars( inOut->audioDeviceID, isInput,
         inOut->numChannels, -0.1, 0.9 );
+    */
 
     // The HW device format changes are asynchronous.
     // So we don't know when or if the PAOSX_DevicePropertyListener() will
