@@ -9,6 +9,7 @@ Audacity a été créé par des bénévoles durant leur temps libre.  Si vous apprécie
 <li><b>Faites-nous signe!</b>
 <p>
 Si Audacity vous plaît, dites-le nous!  Ecrivez à <a href="mailto:audacity-help@lists.sourceforge.net">audacity-help@lists.sourceforge.net</a> et faites-nous part de votre appréciation.  C'est pour nous un plaisir de savoir que les gens en sont satisfaits.  Et surtout, n'hésitez pas à nous faire part de vos commentaires et de vos  suggestions, car nous travaillons constamment à améliorer Audacity et votre avis est important pour nous.
+<br><?php print "$listPrivacyStr"; ?>
 <p>
 
 <li><b>Faites partie du groupe d'utilisateurs</b>
@@ -31,6 +32,8 @@ Votre aide nous est particulièrement précieuse lorsque vous prenez le temps de r
 <li><b>Devenez testeur bêta</b>
 <p>
 En plus de la dernière version stable, il y a toujours une version bêta d'Audacity.  Cette version comporte habituellement de nombreuses caractéristiques et fonctions nouvelles qui n'ont pas encore été testées.  Si vous souhaitez nous aider, téléchargez cette version d'Audacity et essayez-la.  Dites-nous ce que vous aimez, ce que vous n'aimez pas et ce qui, selon vous, pourrait être amélioré.  Soyez attentif(ve) aux<i> régressions</i>, c'est-à-dire à ce qui fonctionnait auparavant et qui ne fonctionne plus.
+<p>
+<li><b>Devenez Développeur</b>
 <p>
 Si vous êtes un programmeur d'expérience en C++ et que vous êtes familier avec des outils tel CVS, nous serions heureux d'avoir de l'aide pour le développement d'Audacity.  Dans ce cas, téléchargez le code source le plus récent de CVS, compilez-le et présentez-vous sur la <a href=http://lists.sourceforge.net/lists/listinfo/audacity-devel>liste de diffusion des développeurs d'Audacity.
 <?php print $develListStr; ?></a>.
