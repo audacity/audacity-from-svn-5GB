@@ -5,6 +5,7 @@
   AboutDialog.cpp
 
   Dominic Mazzoni
+  Vaughan Johnson
 
 **********************************************************************/
 
@@ -12,6 +13,7 @@
 #include <wx/html/htmlwin.h>
 #include <wx/button.h>
 #include <wx/dcclient.h>
+#include <wx/sizer.h>
 #include <wx/statbmp.h>
 #include <wx/intl.h>
 
@@ -57,16 +59,13 @@ BEGIN_EVENT_TABLE(Eraser, wxWindow)
 // ----------------------------------------------------------------------------
     BEGIN_EVENT_TABLE(AboutDialog, wxDialog)
     EVT_BUTTON(wxID_OK, AboutDialog::OnOK)
-    EVT_BUTTON(wxID_YES, AboutDialog::OnOK)
-    EVT_BUTTON(wxID_NO, AboutDialog::OnOK)
-    EVT_BUTTON(wxID_CANCEL, AboutDialog::OnOK)
     END_EVENT_TABLE()
 
     IMPLEMENT_CLASS(AboutDialog, wxDialog)
 
 AboutDialog::AboutDialog(wxWindow * parent)
 :  wxDialog(parent, -1, _("About Audacity..."),
-         wxDefaultPosition, wxSize(400, DLOG_HEIGHT))
+         wxDefaultPosition, wxSize(400, DLOG_HEIGHT), wxDEFAULT_DIALOG_STYLE)
 {
    wxString versionStr = AUDACITY_VERSION_STRING;
 
@@ -188,11 +187,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "<td>" + _("Primary developer") + "</td>"
       "</tr>"
       "<tr>"
-      "<td>Brian Gunlogson</td>"
-      "<td>" + _("Programmer") + "</td>"
-      "</tr>"
-      "<tr>"
-      "<td>Shane Mueller</td>"
+      "<td>James Crook</td>"
       "<td>" + _("Programmer") + "</td>"
       "</tr>"
       "<tr>"
@@ -200,23 +195,11 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "<td>" + _("Programmer") + "</td>"
       "</tr>"
       "<tr>"
-      "<td>Greg Mekkes</td>"
-      "<td>" + _("Programmer") + "</td>"
-      "</tr>"
-      "<tr>"
-      "<td>James Crook</td>"
-      "<td>" + _("Programmer") + "</td>"
-      "</tr>"
-      "<tr>"
-      "<td>Vince Busam</td>"
-      "<td>" + _("Programmer") + "</td>"
-      "</tr>"
-      "<tr>"
-      "<td>Augustus Saunders</td>"
-      "<td>" + _("Programmer") + "</td>"
-      "</tr>"
-      "<tr>"
       "<td>Markus Meyer</td>"
+      "<td>" + _("Programmer") + "</td>"
+      "</tr>"
+      "<tr>"
+      "<td>Shane Mueller</td>"
       "<td>" + _("Programmer") + "</td>"
       "</tr>"
       "<tr>"
@@ -224,26 +207,29 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "<td>" + _("Documentation Writer") + "</td>"
       "</tr>"
       "<tr>"
-      "<td>Paul Nasca</td>"
-      "<td>" + _("Effects programmer") + "</td>"
-      "</tr>"
-      "<tr>"
       "<td>Harvey Lubin</td>"
       "<td>" + _("Main Logo") + "</td>"
       "</tr>"
-      "<tr>"
-      "<td>Roger Dannenberg</td>"
-      "<td>" + _("Algorithms, MIDI & Audio I/O programming") + "</td>"
-      "</tr>"
       "</table>"
+      "<p>"
+      "<center>"
+      "<b>" + _("Developers:") + "</b>"
+      "<p>"
+      "<br>"
+      "William Bland<br>"
+      "Vince Busam<br>"
+      "Brian Gunlogson<br>"
+      "Greg Mekkes<br>"
+      "Augustus Saunders<br>"
+      "<br>"
       "<p>"
       "<center>"
       "<b>" + _("Other contributors:") + "</b>"
       "<p>"
       "<br>"
       "Dave Beydler<br>"
-      "William Bland<br>"
       "Jason Cohen<br>"
+      "Roger Dannenberg<br>"
       "Dave Fancella<br>"
       "Steve Harris<br>"
       "Daniel James<br>"
@@ -251,22 +237,25 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "Daniil Kolpakov<br>"
       "Robert Leidle<br>"
       "Logan Lewis<br>" 
-      "Monty<br>"
       "Tino Meinen<br>"
+      "Abe Milde<br>"
+      "Monty<br>"
+      "Paul Nasca<br>"
       "Jason Pepas<br>"
       "Mark Phillips<br>"
       "Alexandre Prokoudine<br>"
       "Jonathan Ryshpan<br>"
+      "Juhana Sadeharju<br>"
       "Patrick Shirkey<br>"
       "Mark Tomlinson<br>"
       "David Topper<br>"
       "Rudy Trubitt<br>"
-      "Juhana Sadeharju<br>"
+      "Tom Woodhams<br>"
       "Otto Wyss<br>"
       "<p>"
       "<b>" + _("Special thanks:") + "</b>"
       "<p><br>"
-      "The wxWindows Team<br>"
+      "The wxWidgets Team<br>"
       "The Ogg Vorbis Team<br>"
       "Rob Leslie (libmad)<br>"
       "Ross Bencina and Phil Burk (PortAudio)<br>"
@@ -280,31 +269,30 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "</html>";
    
    Centre();
+   this->SetBackgroundColour(wxColour(255, 255, 255));
 
-   Eraser *panel = new Eraser(this, -1,
-                              wxPoint(0, 0),
-                              wxSize(400, DLOG_HEIGHT));
-   panel->SetBackgroundColour(wxColour(255, 255, 255));
-
-   wxHtmlWindow *html = new wxHtmlWindow(panel, -1,
-                                         wxPoint(10, 210),
-                                         wxSize(380, 150));
-   html->SetPage(creditStr);
-
-   wxButton *ok = new wxButton(panel, wxID_OK,
-                               _("Audacious!"),
-                               wxPoint(150, 370),
-                               wxSize(100, 20));
-#ifndef TARGET_CARBON
-   ok->SetDefault();
-   ok->SetFocus();
-#endif
+   wxBoxSizer * pBoxSizer = new wxBoxSizer(wxVERTICAL);
 
    logo = new wxBitmap((const char **) AudacityLogo_xpm);
-
    icon =
-       new wxStaticBitmap(panel, -1, *logo, wxPoint(93, 10),
+       new wxStaticBitmap(this, -1, *logo, wxPoint(93, 10),
                           wxSize(215, 190));
+   pBoxSizer->Add(icon, 0, wxALIGN_CENTER | wxALL, 8);
+
+   wxHtmlWindow *html = new wxHtmlWindow(this, -1,
+                                         wxPoint(10, 210),
+                                         wxSize(380, 150), 
+                                         wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
+   html->SetPage(creditStr);
+   pBoxSizer->Add(html, 0, wxALIGN_CENTER | wxALL, 8);
+
+   wxButton *ok = new wxButton(this, wxID_OK,
+                               _("Audacious!"),
+                               wxPoint(150, 372),
+                               wxSize(100, 20));
+   ok->SetDefault();
+   ok->SetFocus();
+   pBoxSizer->Add(ok, 0, wxALIGN_CENTER | wxALL, 8);
 }
 
 AboutDialog::~AboutDialog()
@@ -315,5 +303,5 @@ AboutDialog::~AboutDialog()
 
 void AboutDialog::OnOK(wxCommandEvent & WXUNUSED(event))
 {
-   EndModal(wxID_YES);
+   EndModal(wxID_OK);
 }
