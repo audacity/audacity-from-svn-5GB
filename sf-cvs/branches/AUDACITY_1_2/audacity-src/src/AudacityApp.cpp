@@ -266,11 +266,15 @@ typedef int (AudacityApp::*SPECIALKEYEVENT)(wxKeyEvent&);
 
 #define globalNewID 4750
 #define globalOpenID 4751
+#define globalPrefsID 4752
+#define globalAboutID 4753
 
 BEGIN_EVENT_TABLE(AudacityApp, wxApp)
 #ifdef __WXMAC__
    EVT_MENU(globalNewID, AudacityApp::OnMenuNew)
    EVT_MENU(globalOpenID, AudacityApp::OnMenuOpen)
+   EVT_MENU(globalPrefsID, AudacityApp::OnMenuPreferences)
+   EVT_MENU(globalAboutID, AudacityApp::OnMenuAbout)
 #endif
 
 END_EVENT_TABLE()
@@ -424,14 +428,14 @@ bool AudacityApp::OnInit()
    LoadEffects();
 
 #ifdef __WXMAC__
-
 #ifdef __MACOSX__
+ #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))   
    EnableMenuCommand(NULL, kHICommandPreferences);
-#endif
-
    AEInstallEventHandler(kCoreEventClass,
                          kAEShowPreferences,
-                         NewAEEventHandlerUPP(AEOpenPrefs), 0, 0);   
+                         NewAEEventHandlerUPP(AEOpenPrefs), 0, 0);
+ #endif
+#endif
 
    // Install AppleEvent handlers (allows us to open documents
    // that are dragged to our application's icon)
@@ -442,7 +446,6 @@ bool AudacityApp::OnInit()
    AEInstallEventHandler(kCoreEventClass,
                          kAEQuitApplication,
                          NewAEEventHandlerUPP(AEQuit), 0, 0);
-
 
    // On the Mac, users don't expect a program to quit when you close the last window.
    // Create an offscreen frame with a menu bar.  The frame should never
