@@ -77,12 +77,16 @@ bool QuickMix(TrackList *tracks, DirManager *dirManager)
 
   WaveTrack *mixLeft = new WaveTrack(dirManager);
   mixLeft->rate = waveArray[0]->rate;
+  mixLeft->channel = VTrack::MonoChannel;
+  mixLeft->name = "Mix";
   WaveTrack *mixRight = 0;
   if (!mono) {
 	mixRight = new WaveTrack(dirManager);
 	mixRight->rate = waveArray[0]->rate;
+	mixRight->name = "Mix";
 	mixLeft->channel = VTrack::LeftChannel;
 	mixRight->channel = VTrack::RightChannel;
+	mixLeft->linked = true;
   }
 
   int maxBlockLen = mixLeft->GetIdealBlockSize();

@@ -21,6 +21,7 @@
 #include <wx/msgdlg.h>
 #include <wx/progdlg.h>
 
+#include "Import.h"
 #include "ImportRaw.h"
 
 #include "WaveTrack.h"
@@ -714,10 +715,16 @@ bool ImportRaw(wxWindow *parent,
 	offset = !offset;
   
   *dest1 = new WaveTrack(dirManager);
+  (*dest1)->name = TrackNameFromFileName(fName);
+  (*dest1)->channel = VTrack::MonoChannel;
   wxASSERT(*dest1);
   if (stereo) {
 	*dest2 = new WaveTrack(dirManager);
-	wxASSERT(*dest1);
+	wxASSERT(*dest2);
+	(*dest2)->name = TrackNameFromFileName(fName);
+	(*dest1)->channel = VTrack::LeftChannel;
+	(*dest2)->channel = VTrack::RightChannel;
+    (*dest1)->linked = true;
   }
 
   wxProgressDialog *progress = NULL;  

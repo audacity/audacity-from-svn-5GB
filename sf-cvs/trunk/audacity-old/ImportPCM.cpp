@@ -121,11 +121,14 @@ bool ImportPCM(wxWindow *parent,
   wxASSERT(*dest1);
   (*dest1)->rate = sndfile.format.srate;
   (*dest1)->name = TrackNameFromFileName(fName);
+  (*dest1)->channel = VTrack::MonoChannel;
   if (channels == 2) {
     *dest2 = new WaveTrack(dirManager);
     wxASSERT(*dest1);
     (*dest2)->rate = sndfile.format.srate;
     (*dest2)->name = TrackNameFromFileName(fName);
+	(*dest1)->channel = VTrack::LeftChannel;
+	(*dest2)->channel = VTrack::RightChannel;
     (*dest1)->linked = true;
   }
 
