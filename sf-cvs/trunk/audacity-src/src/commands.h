@@ -30,6 +30,8 @@
 
 #ifdef AUDACITY_MENUS_COMMANDS_ENUM
 
+typedef void (AudacityProject::*audEventFunction)(wxCommandEvent&);
+
 enum {
    MenusFirstID = 1100,
 
@@ -124,7 +126,7 @@ enum {
 
 {
    #define CMD_CETINT(a) ( (int *) a )
-   #define CMD_CACFUNC(a) ( (wxObjectEventFunction *)memcpy(malloc(sizeof(wxObjectEventFunction)), &(&a), sizeof(wxObjectEventFunction)) )
+   #define CMD_CACFUNC(a) ( (wxObjectEventFunction *)memcpy(malloc(sizeof(audEventFunction)), &((audEventFunction)&a), sizeof(audEventFunction)) )
    #define CMD_CSTNAME(a) ( new wxString( a ) )
    #define CMD_ASSIGNKEY(keyCode, controlDown, shiftDown, altDown) { wxKeyEvent tmpKeyEvent; tmpKeyEvent.m_x = 0; tmpKeyEvent.m_y = 0; tmpKeyEvent.m_keyCode = (wxKeyCode)keyCode; tmpKeyEvent.m_controlDown = controlDown; tmpKeyEvent.m_shiftDown = shiftDown; tmpKeyEvent.m_altDown = altDown; tmpKeyEvent.m_metaDown = FALSE; tmpKeyEvent.m_scanCode = 0; mCommandAssignedKey.Add( ( (wxKeyEvent *)memcpy(malloc(sizeof(wxKeyEvent)), &tmpKeyEvent, sizeof(wxKeyEvent)) ) ); }
 
