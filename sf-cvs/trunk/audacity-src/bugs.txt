@@ -1,208 +1,87 @@
 bugs.txt
 
-This file is where we keep track of all known bugs
-in Audacity. 
+For a complete bug list, please see our Bugzilla
+bug tracker:
 
------------------------------------------------------------
-Known bugs to fix:
------------------------------------------------------------
+  http://audacity.sourceforge.net/cgi-bin/bugzilla/
 
-- Export does not add the file extension (like ".wav")
-- If sample format is set to 24-bit, importing a file
-  causes corruption.
-- Mac OS 9: very small edit boxes in Prefs!
-- In 1.1.1: Windows only: selecting from the track
-  pop-up menu CRASHES!!!
-- (Gentoo Linux) can't scroll during playback
-- Recording new tracks should respect the default
-  sample format preference.
-- Problems exporting mono MP3 (and Ogg?) files.
-  Possibly need to use lame_encode_buffer, not only
-  lame_encode_buffer_interleaved.
-- Mac OS X: can't change tools when maximized!
-- Mac OS 9: typing while in an Open/Save dialog can
-  cause playback to start!!!
-- MAD imports values out of -1.0...1.0 range...need to clip
-- Program crashes if gPrefs can't be created (Linux)...
-- Fade doesn't fade out quite enough - it should finish
-  fading out a hair early.
-- Removing 4 minutes from a saved project file crashes
-  (see email from Jon (Gary) Salkind.)
-- Noise Removal: errors every 47 seconds or so (at block
-  boundaries - reproducible)
-- Plot Spectrum doesn't obey the selection - it grabs
+Following are some bugs which may not have been entered
+into bugzilla yet.  Some of these may have been fixed,
+too...people should try to reproduce them...
+
+* MAD imports values out of -1.0...1.0 range...need to clip
+
+* Program crashes if gPrefs can't be created (Linux)...
+
+* Plot Spectrum doesn't obey the selection - it grabs
   all tracks (or the last track?), not the selected track
-- Crash with FireWire audio devices on OS 9
-- Can't record on OS 9 when Finale is open
-- Export doesn't work on Mac OS 9???   AIFF???
-  See email from Laurie Sosna.
-- Amplify's "avoid clipping" doesn't always work because
-  of roundoff errors...it needs to be more conservative
-  about not clipping.
-- Parsing XML files doesn't work on OS X.
-- Opening 21 windows crashes (Mac OS X, repeatable - don't
-  open all at once, rather close, then open repeatedly...)
-- Open... shouldn't create a new project window, in
-  Audacity 1.1.
-- Crash on zooming in (email from Rui Batista)
-- Crash on exit when help window is left open
-  (1.0 and maybe 1.1, probably on Windows - see
-  email from Baier Ulrich)
-- The Mixer in the latest branch doesn't allocate a large
-  enough buffer when a track is at a much higher sample
-  rate than the project.  (Possibly need to dynamically
-  reallocate mTemp in MixDiffRates.)
-- Full duplex does not work correctly on Audacity 1.1 on
+
+* Full duplex does not work correctly on Audacity 1.1 on
   Linux.  Sounds recorded appear to be "down an octave".
-- Insert Silence does not insert space into envelope
-  (in Audacity 1.0 only; fix is in place for Audacity 1.1)
-- Sign error in Ruler (see track vertical ruler)
-- Problems with Ruler in Filter dialog
-- Hitting the spacebar causes Audacity to start playing;
-  hitting 'r' causes Audacity to start recording,
-  even when you're in an Open/Save dialog!  Mac OS only.
-- Double-clicking a track selects all in the ruler, but
-  not the track (Windows)
-- Right-click doesn't always zoom out, esp. after
-  doing a drag-zoom...
-- Segfault if slide tool is used while playing/recording
-- Exporting using LAME does incorrect sample rate,
+
+* Exporting using LAME does incorrect sample rate,
   or incorrect # of channels?  Maybe only with certain
   versions of LAME?
-- Core dump when doing long recordings on Linux
-- ID3 genre list doesn't fit in the window on Linux/GTK
-- Fix underflow problems when recording (as much as
-  possible) and try to report them if not
-- Use latest FreeVerb (3.0)
-- Fix divide-by-zero bug in Envelope.cpp (can crash
-  on Windows)
-- (possibly Mac only?) Copy portion of file, paste into
-  new project, save and close new project, CRASH!
-  See email from TC Baker
-- Link against libwx_gtk.so in RPM, and add instructions
-  to ln -s /usr/lib/libwx_gtk-2.2.so /usr/lib/libwx_gtk.so
-- 'amplify' effect can change -1 amplitude to +1
--  when the top track of a stereo track is shrunk so that
-  the 'solo' and 'mute' fields appear beside the lower track, these
-  buttons no longer work
-- drag-floating toolbars produces wierd ghosting of other previous
-  images in Windows(tm).
-- Skip-to-beginning/skip-to-end go to the absolute beginning or the
-  absolute end of all tracks, rather than the beginning/end of the
-  current track.
-- The ruler selection coloring responds strangely when you click or
-  double-click on the ruler.
-- Clicking on the track label selects the entire track, but is also used
-  for dragging the track vertically.  These can be conflicting
-  operations. Maybe the label needs a dragging 'affordance' on the left
-  edge or top (little graphical bumps or something) that can be used to
-  grab drag the track, with the rest of the label offering the 'select
-  all' behavior. This would make the ability to drag tracks around more
-  obvious as well.
-- Typing a key while there is no open window crashes on MacOS X. 
-  Wasn't present in 1.0 or 1.1.
-- Spacebar to play and stop only works after clicking an empty part
-  of the the control bar in MacOS X. Wasn't in 1.0 or 1.1.
-- When using a Nyquist plugin, default zoom is restored
-  once effect is applied
-- When using a Nyquist plugin on a track whose sample rate
+
+* When using a Nyquist plugin on a track whose sample rate
   differs from the project rate, the selection changes
   incorrectly, probably reflecting the project rate rather
   than the track rate.
 
------------------------------------------------------------
-Possible bugs to investigate:
------------------------------------------------------------
-
-- Silence at the end of Ogg files?  (Email from John Jack)
-- Exporting tracks with envelopes and an offset can result
+* Exporting tracks with envelopes and an offset can result
   in different WAV output than what you see on the screen in
   the editor.  (See email from Mike Tyson).
-- Linux: hit Undo lots of times in a row crashes.
-  (Email from Daniel James)  Can't reproduce.
-- Audacity is unstable when working with very large files
-- Possible memory leak in Windows 98 (???)
-  See emails from degarb@softhome.net
-- Problem reading AIFF files on Mac OS X?
-  (Private email from Tobias Jeger - the attached
-	AIFF file worked fine under Linux)
-- Does "make install" create all of the directories
-  it wants to installs into
-- Test USB mics under Mac OS 9 (see email from J. Blucher)
 
------------------------------------------------------------
-Fixed, need to port:
------------------------------------------------------------
+* In the input/output gain toolbar the pixmaps are in wrong places:
+the output has microphone pixmap.  (REALLY???)
 
-- Single instance checker (added to MSW only of 0.9
-  branch, need to port to HEAD)
-- Change menu item when you change export format
-  (need to port to HEAD)
-- Find VST folder on startup (need to port to HEAD)
+* Time scrollbar < and > buttons do not work after 16 (say) zoom steps,
+  e.g., with projects larger than 30 minutes of audio.
 
------------------------------------------------------------
-Fixed:
------------------------------------------------------------
+* After cut, the view is not at the cut point (if selection was
+  4 seconds, the view is 4 seconds forward from the cut point).
 
-- Audacity won't start under (some versions of?) MacOS 8.5,
-  complains about InterfaceLib and SetAntiAliasedTextEnabled
-  (now OS 8.6 is required)
-- Typing in the root directory as the Temp Files path
-  doesn't work (on Mac OS X)? (can't reproduce)
-- Menu bar does not function when Prefs dialog is
-  in front on MacOS
-- Get rid of any "exit()" calls in snd/ or other
-  libraries
-- Problems recording at other than 44100 Hz on Mac
-- Recording at a rate other than 44100 works, but the
-  track created has the wrong rate in its label
-- Fix id3lib compilation problems on Linux
-  (worked around: it's disabled by default)
-- Freeze when opening Prefs panel on MacOS 8.6
-  (fixed in wxWindows: it was an incompatibility with ATM)
-- Copy and Paste between projects
-- Temp directory in Prefs dialog should have a "Chooose..."
-  button to let you select a directory with a standard
-  file dialog.
-- RPM dependency is wrong - it should depend on:
-  libwx_gtk-2.2.so.6, not libwx_gtk.so
-  # Necessary for building the package: rpm -ba
-    BuildRequires:	wxGTK >= [version number if required]i 
-  # Necessary for installing the package: rpm -ivh
-    Requires:	wxGTK >= [version number if required]
-- Clicking close box only deletes one track of
-  stereo pair
-- Audacity "forgets" tracks' channels when saving/loading
-- Needs to handle temp directory better - bring up a
-  dialog if it's not there...
-- Undoing an envelope edit sometimes causes problems
-- Recording/Playback devices backwards on Windows
-- Need to have a warning when you write over a file the
-  project depends on - and an option to rename the file
-  if necessary.
-- Set Rate... dialog doesn't initialize with the
-  current rate.  Sometimes 0, sometimes junk.
-  (Note that there are two of these dialogs.)
-- Better aRts support (or at least a warning???)
-- Zoom tool shouldn't change selection
-- Scrolling with the zoom tool shouldn't zoom.
-- Closing a project window should throw away all blockfiles
-  other than the ones in the last saved version.  (Implement
-  this in conjunction with save changes dialogs.)
-- Save As... for a project should work.
-- Bug fixed: each track's channel was not being saved
-  in the project file.
-  (Was: stereo "linked" track that's really two mono tracks,
-   Check upon opening project)
-- Bug fixed: Must warn user if temp directory can't be created
-  Now checks on startup and opens Prefs Dialog for user to fix.
-- Bug fixed: Duplicate track doesn't work if track is shifted
-  past zero.  Track selection and copying are now more aware
-  of offsets.
-- Filenames with a period outside the extension are truncated.
-- "New..." menu item should be "New"
-- Crash in NoiseRemoval effect on Windows.
-- Shouldn't create envelope points outside the track range.
-- Compiled id3lib for Windows version.
-- Changed pthread_yield to sched_yield for portability.
-- Crash closing track or project while recording.
+* A toolbar goes slightly over the transport toolbar when they
+  are arranged automatically to the same row. (In wxGTK/Linux.)
+
+* mixer toolbar has no default device written on the menu, but
+  clearly some mixer channel is controlled;
+
+* even the play region is completely visible, the display jumps to
+  left -- it jumps so that the start of the play region is on the left
+  edge of display;
+
+* plot spectrum does not work if the selection is too small;
+
+* multitool slide stops when the pointer moves over the track labels;
+
+* multitool is still not "polished" - the handles on the left and
+  right should line up better
+
+* Drawing tool uses Alt modifier but that does not work in GNome
+  (or with other window managers) - there should be another key
+  sequence that's more likely to be supported
+
+* "Drag the label vertically to change the order of the tracks"
+  performs "select all". Two operations in one.  (It shouldn't
+  do this, right?)
+
+* very narrow selection is not always drawn; very narrow
+  selections should be one pixel wide if samples/pixel value
+  is high
+
+* very narrow selection with high samples/pixel value
+  causes problems in grabbing and dragging the selection edges
+
+* zoom at low samples/pixel value; make a selection; zoom-out;
+  now adjust an edge of the selection by one pixel; then
+  adjust the edge to its original pixel location; now the
+  selection differs from the original selection
+
+* beat finder (nyquist script) caused core dump
+  (I can't reproduce this...can someone send me a gdb trace?)
+
+* libsamplerate crashes if you try to change the rate by
+  more than a factor of 12.  We need to handle this case if
+  the user selects a track with, say, 71 Hz when the project
+  is 44100 Hz. 

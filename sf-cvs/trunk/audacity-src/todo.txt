@@ -1,95 +1,387 @@
 todo.txt
 
-This is the file where we keep track of all feature
-requests and plans, and organize them by which
-release they're going in.
+This file contains a list of current features being
+worked on, possible ideas, and ideas for the future.
+Last updated June 14, 2003.  Please check the
+Audacity-devel list to see who's working on what,
+and for updates.  This file is updated only about every
+2-3 months.
+
+------------------------------------------------------
+ Definitely in 1.2.0 - high priority
+------------------------------------------------------
+
+* Improved Save / Export
+
+  I think we all agree on this:
+
+  - Unified Export commands that let you save in any
+    format (except AUP) using a choice control in the
+    file selection dialog.
+
+  - The Save As dialog should let you save in any format,
+    AUP or one of the PCM/compressed audio formats.
+
+  - If you choose a format that does not support all of the
+    features of the project (e.g. multiple tracks, envelopes,
+    etc.) then it warns you that saving in this format will
+    result in a mixdown.
+
+  Ideas (not yet agreed upon):
+
+  - When saving/exporting, don't display formats that can't
+    support the project?  (I don't like this idea...
+    I think that all formats should be available, and it
+    warns you if it needs to do some sort of reduction
+    in order to save in that format.  It should tell the
+    user exactly what will be lost.)
+
+  - Exporting should take into account mute and solo?
+
+  - Does export depend on what tracks are selected?  I didn't
+    think it did...Juhana, could you test this and clarify the
+    problem?
+
+* Normalize Effect that removes DC bias and sets maximum
+  amplitude to some standard value like -6 dB
+
+  Note: Juhana wanted a key - instead, I propose the following
+  more general solutions:
+
+* Allow the user to create keyboard shortcuts for Effects
+
+* Finish adding Preview for all effects where it makes sense
+
+* Resize window to a larger size, including to full screen, also does
+  a fit-to-window if we were fitted to window before the resize.
+  I think that tracks should expand proportionally.
+
+  I think that when you open a project, auto-track-resizing should
+  be on by default.  It only goes off if you specifically drag the
+  _bottommost_ track and make it bigger or smaller.  (Then, how
+  should you turn it back on again?)
+
+* Upgrade of cursors and tool-button-bitmaps so that cursors
+  and button bitmaps match (on platforms where this is possible).
+  This should be supported on all platforms - I will personally
+  patch wxMac 2.4.0 to enable this feature on the official Mac
+  build.
+
+* Vertical zooming (of waveforms)
+
+  - You zoom in by clicking in a track's vertical ruler.  One
+    click zooms in, click-drag selects a region just like with
+    horizontal zooming.
+
+  - How best to zoom out or reset?  I think that when a track
+    is vertically zoomed in, a little button should appear
+    that lets you zoom out...
+
+* New waveform-drawing code that I half-finished  Speeds up
+  drawing in Mac OS X by 2-3x minimum, also should help on
+  older PCs.
+
+* Option to have "Close" not exit Audacity, but instead open
+  a new blank document.  A very vocal MINORITY of users seem
+  to prefer it this way; we should give them the option but
+  I don't think it should be the default (except on the Mac,
+  where m programs stay open until you explicitly Quit).
+
+* Check for multiple copies of Audacity on Unix
+
+* Fix all XML writers so that they encode characters
+  like '&' and '<'
+
+------------------------------------------------------
+ Ideas - need further discussion
+------------------------------------------------------
+
+* Zooming using mousewheel - obviously this shouldn't
+  be the only way to do it, since not everyone has a
+  mousewheel.  When should it be used, then?
+
+* Add a new item at the top of the Effect menu - Repeat Last Effect
+  (maybe it could dynamically change its name, i.e. "Repeat
+  Compressor".  It would not bring up a dialog, but use the last
+  values.  It would have a keyboard shortcut.
+
+* Make Generate a submenu of the Effect menu?
+
+* Add an Audio menu with items like Play, Stop, Record, Pause,
+  Loop, etc.?
+
+* We could have a bias parameter per track, next to the track
+  volume fader.  (I don't think this is useful - adjusting the
+  bias is a very unusual operation and the only reasonable
+  justification I can think of is to center the waveform
+  vertically - why would you ever legitimately want to bias
+  it?)
+
+* Fine tuning of colours/bitmaps
+
+  - Should the gain tooltips be the same shade as other
+    tooltips?  Where does wxWindows come up with the shade
+    for tooltip backgrounds?  Can we copy it?
+
+  - What's the consensus on the new magnifying glass image?
+    (I'd actually slightly favor reverting back to the older
+    image.)
+
+* It is possible to extend the selection out of the track display
+(when the view is scrolled to end), but then the end edge of the
+selection cannot be grabbed and dragged. Solution: selection can
+be made only up to the end of the track.
+
+  (I'm not sure this is a good idea...)
+
+* Open multiple files (it's supported by wxWindows; we should
+  enable and use this feature.)  Both Open and Import.
+
+* When a selection is readjusted by grab&drag, the release of the
+button at outside of the track panel could mean "undo".
+Similar for all other operations.
+
+* dragging the selection edge out of display starts moving the
+wave, but moving could start 100 or so pixels before the display
+edge so that the coming wave can be seen
+
+------------------------------------------------------
+ OK for 1.2.0 but not necessary
+------------------------------------------------------
+
+(If you want to do these, go ahead, but if nobody volunteers
+and I don't have time, I think it's okay if they slip...
+Note that some of them might make it into 1.2.1 even as we
+continue with a new unstable branch...)
+
+* VU meters, with a "monitor" mode for recording.
+
+* "Smart Record"
+
+  Includes higher-quality recording (because of extremely limited
+  GUI operations), timed recording, large VU meters, and more.
+  All of the recording options that are too complicated to do
+  with the normal record button (in the future: volume-triggered
+  recording, record directly to MP3/Ogg, etc.)
+
+* A master gain control.
+
+  (I don't think it's necessary.  I'd rather see some option
+   that lets you adjust all gains simultaneously by holding
+   down shift or something...)
+
+* A bars/beats time ruler and snap-to bars/beats.
+
+  (Karl, if you want to submit a patch, it's fine with me,
+  as long as it's complete and clean.)
+
+* A zoom-toggle button that switches between two zoom levels.
+
+[ We could add two radio buttons and one standard button to toolbar:
+<Z1, level1 select>, <Z2, level2 select>, and <ZS, zoom set>. The set
+button would assign the current zoom level to the selected button.
+Initially the zoom level memories would be empty, and only press of <ZS>
+will change their values, i.e., user could change the zoom in anyway
+but he would get the memorized zoom value by clicking the <Z1> and <Z2>
+buttons. ]
+
+* A function to export all tracks as separate wave files all at once.
+
+* Alternate keyboard layouts
+
+* In the Timeshift-tool mode I propose making [ctrl+mb1] do
+"Align track to cursor". Since they're only one clip per track,
+simply clicking anywhere in to the track should perform that function.
+Only the Selector tool can set the cursor, right?
+[ Checking the mouse button operations through should be done.
+Multitool should be considered as a base for the default mode.
+Some operations would work always, like making a selection.
+Then various tools would change function of some of the mouse
+buttons. Without the multitool the Audacity is very annoying to
+use, IMHO. ]
+
+* When drag selecting the tracks out of track window, the window should
+scroll and reveal more tracks.
+
+------------------------------------------------------
+ Should wait for next unstable branch
+------------------------------------------------------
+
+* One-click preview for 'cut selection'.  Plays (configurable)
+  3 seconds around the selection, _excluding_ the selection itself.
+
+  Compared to most other ideas, this is pretty complicated and
+  would require either some hacks, or some major changes to the
+  AudioIO code.  I'd rather avoid it.  If someone who understands
+  all of the details of AudioIO wants to do this, I won't object,
+  but I'll be wary of a patch.  IMHO, this will be more difficult
+  than adding looping if we want to implement it the cleanest and
+  most general way.
+
+* Maybe post 1.2 as we also need multiple projects in the same window
+feature: either by (i) subwindows inside the main window, a common
+toolbars, (ii) no subwindows but the project is technically behind
+a pointer which can be changed from a "projects" menu, (iii) different
+projects are in tabbed windows, as commonly used in 3D graphics
+software. Tabbed windows could also contain preferences/controls for
+Audacity and for all plug-ins. That requires a way to build the tab
+pages on-the-fly. Certainly post-1.2 stuff.
+
+* More built in code for automated testing, not sure exactly what,
+ideas for how to do this would be welcome.
+[ It is more like continuous research job. Leave to post-1.2 version. ]
+
+* Related to this, a self-image-capture class. This puts the gui through
+its paces, capturing .pngs of toolbars, sliders, dialogs according to
+an external script file.  This makes updating the images in the
+documentation much easier.
+[ Third party screen capture program which accepts remote commands
+via a named pipe, say. Audacity would then have a way to send one
+command only and a way to send commands repeatedly (n times per
+minute). ]
+
+* Half a dozen nyquist scripts, annotated and explained in the
+Audacity documentation.  Nyquist looks an incredibly powerful
+feature, but I haven't a clue how to do some of the simplest things
+things with it.
+
+* Track label could be changed to look like what is in commercial
+multitrack software. More compact, that is.
+
+  (I don't think we should necessarily copy the commercial software
+   in this regard.  I hate most of their UIs because they force me
+   to memorize what tiny little symbols and colors mean.  I like
+   my UIs to be "discoverable".)
+
+* Editable marker system. What key would you suggest to "Save the
+Selection" then?
+[ What EMS would be and how "save the selection" relates to it? ]
+
+------------------------------------------------------
+ Unclear - what are these?
+------------------------------------------------------
+
+* Window resizing handle (bottom right corner) in windows
+[ Do you mean "in MS Windows"? This could be wxWindows issue as
+I'm able to resize the window. ]
+
+* In zoom mode, scrollwheel click acts as middle button click, but when
+dragging with it, it behaves strangely (I couldn't figure out the logic)
+Also rmb dragging behaviour is strange. As lmb dragging is intuitive, I
+assumed that dragging small area with rmb would zoom out a lot,
+and dragging bigger areas would zoom out less.
+
+------------------------------------------------------
+ Bugs
+------------------------------------------------------
+
+* In the input/output gain toolbar the pixmaps are in wrong places:
+the output has microphone pixmap.  (REALLY???)
+
+* Time scrollbar < and > buttons do not work after 16 (say) zoom steps,
+e.g., with projects larger than 30 minutes of audio.
+
+* After cut, the view is not at the cut point (if selection was 4 seconds, the view is 4 seconds forward from the cut point).
+
+* A toolbar goes slightly over the transport toolbar when they
+are arranged automatically to the same row. (In wxGTK/Linux.)
+
+* mixer toolbar has no default device written on the menu, but
+clearly some mixer channel is controlled;
+
+* even the play region is completely visible, the display jumps to
+left -- it jumps so that the start of the play region is on the left
+edge of display;
+
+* plot spectrum does not work if the selection is too small;
+
+* multitool slide stops when the pointer moves over the track labels;
+
+* multitool is still not "polished" - the handles on the left and
+  right should line up better
+
+* Drawing tool uses Alt modifier but that does not work in GNome
+  (or with other window managers) - there should be another key
+  sequence that's more likely to be supported
+
+* "Drag the label vertically to change the order of the tracks"
+  performs "select all". Two operations in one.  (It shouldn't
+  do this, right?)
+
+* very narrow selection is not always drawn; very narrow
+selections should be one pixel wide if samples/pixel value
+is high
+
+* very narrow selection with high samples/pixel value
+causes problems in grabbing and dragging the selection edges
+
+* zoom at low samples/pixel value; make a selection; zoom-out;
+now adjust an edge of the selection by one pixel; then
+adjust the edge to its original pixel location; now the
+selection differs from the original selection
+
+* beat finder (nyquist script) caused core dump
+  (I can't reproduce this...can someone send me a gdb trace?)
+
+* libsamplerate crashes if you try to change the rate by
+  more than a factor of 12.  We need to handle this case if
+  the user selects a track with, say, 71 Hz when the project
+  is 44100 Hz.
+
+------------------------------------------------------
+ More future ideas
+------------------------------------------------------
+
+[JC]
+Audio Preview feature. This allows you to hear an edit before you
+commit to it. This is window dressing on the GUI - implemented
+initially by making the change, playing it and then undoing it.
+[JC]
+Cross fades with preview: Don't know how this would look, but will
+combine a fade in a fade out and a shift.
+[JC]
+Clip-out Preview. The key thing here is being able to easily adjust
+the end points of the section you want to cut out, hear what it sounds
+like with that piece removed and repeat.
+[JS]
+Are all these preview features already done?
+Check also item 5 at above in this mail.
+
+[JC]
+L&R <-> Average+Difference display. This way you can see what a stereo
+track gets mixed down to as mono, and the stereo content separately.
+
+[JC]
+Split Track into band pass filtered components. Useful even just to
+view a waveform without background mains hum.
+[JS] Spectrogram would do that already?
+
+[JC]
+Sound-diff: Ability to compare waveforms and have this displayed
+graphically.
+[JS] Can a plug-in operate on two tracks and generate preview to
+third track? Or replace the second track with the result.
+It would be essential that the substraction between two tracks
+is made interactively so that user may time-shift the waveforms
+and manually find the alignment between the tracks.
+This may go post-1.2 if it requires changes to plug-in system.
+
+* Allow UI while importing 
 
 -----------------------------------------------------------
-General TODO (uncategorized)
------------------------------------------------------------
-
-- Make "record" default to "pause" being on
-
------------------------------------------------------------
-Docs
------------------------------------------------------------
-
-- Add "how do I import a RealPlayer / WMA file"?
-  to the F.A.Q. (loop in sound card)
-
------------------------------------------------------------
-Website / Sourceforge
+Here's an older list of items.  Things we've already done
+have been removed, so these are all still valid ideas.
 -----------------------------------------------------------
 
 - Upload some icons for people to use with
   KDE, GNOME, WindowMaker, AfterStep, BlackBox...
-- Add a web counter
-- Make a log of HTTP_REFERER so we see where people
-  are coming from
 
------------------------------------------------------------
-1.0.1 TODO
------------------------------------------------------------
-
-- Address all bugs in "bugs.txt"
-- Make Audacity compile on Unix even if dlopen is
-  not supported (work around wxGTK 2.2.9 bug where
-  it can't be found)
-- Experiment with much larger recording buffers - does
-  latency suffer?  Do we care?  Does it result in fewer
-  underflows?
-- Test the "instant stop" on Windows and Mac.  Should
-  it be used for recording, too?
-- Bug on Linux: hold down spacebar to keep playing/stopping,
-  gets in endless loop...
-- Support MP3 exporting at even lower bitrates
-- Select region by typing in start and stop times
-
------------------------------------------------------------
-1.1 In Progress / Partially complete
------------------------------------------------------------
-
-- Plug-ins directory settable in preferences
-- Make all keyboard shortcuts configurable
-- Command-line exporting
-- LADSPA support (needs work - see email from
-  Jim Hainis about Pluggo)
-- Make envelopes save and load in new project file
-  format
-- Refactoring of TrackArtist/WaveTrack/Sequence
-  - Eliminate copy in GetWaveDisplay: WaveTrack could just
-    return a pointer to its own internal buffer, which
-	 will be valid as long as the track is valid...
-  - Add a WaveTrack::Clean method which throws away
-    cached data which is far behind in the undo history
-
-
------------------------------------------------------------
-1.1 TODO
------------------------------------------------------------
-
-Mac OS X:
-- Preferences menu item in right place
-- Cmd-Q for Quit
-- Use system-wide VST directory
-
-Coding standards::
-- Replace most assertions with error-checking code
-
-Stability::
-- Handle disk errors more cleanly.  Back out of whatever
-  operation is going on.
 - Do "preflight" check of disk space before editing
   operations.
+
 - Check for existence of project _folder_ when opening
   a project - help the user find it if it's not there.
 
-Unit tests::
-- Need to verify that the new 1.0 mixing code plays every
-  sample one and only once.
-
-Audio::
-- Improve latency of PortAudio
 - Smart Record dialog
   - VU meter
   - Control latency
@@ -98,30 +390,17 @@ Audio::
   - Visually show buffer sizes
   - Multi-channel record
   - Show remaining disk space
-  - Timed record (i.e. only record x seconds)
+  - Timed record (i.e. only record x seconds, start
+    at particular time)
+
 - Choice of dither
 - Pre-roll and post-roll: amount to play before and after
   a selection (see DG Malham email)
 - Latency control in Audio I/O prefs
-- portmixer
-  - output volume
-  - input device
-  - input volume
-  - playthrough
-  - stereo balance
 - Support portaudio multiple driver models
-- Play to End button (from selection, to end)
-
-Internationalization:
-- Fix strings which aren't being translated
-- Pop-up language choice dialog when program starts
-- Use pop-up menu in Prefs dialog
-- Work around wxWindows bug which only searches
-  working directory for language directories
 
 UI::
 - Turn off autoscrolling if the user manually hits the scroll bar.
-- Metronome
 - Allow opening multiple files (use wxFileDialog wxMULTIPLE option)
 - Label the "Left" and "Right" channels!
 - Select None
@@ -134,32 +413,19 @@ UI::
   you're working on, etc. like a lot of other programs have
 - Visual track dragging
 - Split at labels
-- Improve Save dialogs: use "Save", "Don't Save", and
+- Improve Save prompt dialogs: use "Save", "Don't Save", and
   include the name of the file.
 - When a user exports the entire project (in any format)
   and the export doesn't require any mixing, mark the project
   as not dirty (i.e. don't ask if they want to save it).
 - Put close box in toolbar.
-- Make toolbar minimize when you minimize all Audacity windows
-  (on MS Windows only)
-- Sample format prefs should actually work (should
-  affect recording - maybe provide an option to decide
-  what to do with imported recordings...)
 - Make ID3 tag dialog optional when saving MP3s
 - Horizonal line at zero point in waveform display
-- Vertical playback position indicator
-- Option to turn off blinking cursor
-- Change text of Undo menu item (Undo Cut, Undo Amplify, etc.)
 - While playing, click in ruler to change playback
   position
-- Remember window size and position
 - Import... should be able to import Audacity projects
   and Audacity project files
 - Crash recovery
-- Clean up a project directory upon open
-- Out of disk space checks
-- Nudge selection with arrow keys
-- Make colors configurable
 - Adapt text color - should be white by default if
   the background color is very dark
 - Select dialog box ("1.5 - 3.0 seconds")
@@ -167,57 +433,25 @@ UI::
 - Invert selection (for now, until we allow discontiguous selections,
                     this should mean two options: select up to selection,
                     and select after selection)
-- Zero Crossings (nudge selection to nearest ZC's)
-- Finish history window
 - Vertical zooming
-- Pan control for each track
-- Volume control for each track
-- Vertical bar indicating playback/recording position, too
-- Add high-quality resampling
 - Legend (Ruler) for pitch and spectrum
-- Recognize .mp2, .mpg, .mpeg as libmad-capable files
-- 1/24, 1/25 and 1/30-second frame count options for ruler.
-- Envelope editor should support linear, quadratic, and exponential,
-  ideally with a right-click.  Default should be linear; it makes the
-  most sense visually.  Also add to Filter dialog?
-- Envelopes should also be fully undo-able
-- Some way to insert silence with the mouse???
-- Looping - two forms of looping:
-  * An option to continuously loop the selection during playback
-    (maybe a "loop" checkbox under the Play button)
-  * A way to turn a track into a loop.  It would be cool if the
-    display showed the "real" waveform once, and then "ghosts" of
-    that waveform repeating forever...
+- A way to turn a track into a loop.  It would be cool if the
+  display showed the "real" waveform once, and then "ghosts" of
+  that waveform repeating forever...
 - Drag the play marker in the ruler to "skip" to a new time
    
 Import/Export::
-- Use latest libsndfile; finish exporting code
-- Rewrite the Import Raw Data... code
-- Import Audacity 1.0 projects
 - Support ID3 tags in Ogg files
 - Import/Export markers in WAV files (like Goldwave does - 
   see email from Shane M.)
-- Import directly from audio CD?
 
 Effects::
-- Fix VST plugin problems;
-  - UltraFunk Surround (see email from iceberg@techropolis.com)
-- Fix the 47-second bug in Noise Removal (see email
-  from Greg Trounson)
 - Show spectrum in FFT filter
-- Effects dialogs
-  - Preview button
-  - Save presets
-  - How to do this? Either have all effects dialogs inherit from
-    one, or have a sub-window for preview and presets.
 - Add real-time effects directly to tracks (see Ezequiel 5/10/2002)
 - Freeverb 3.0 (and better interface)
-- Pitch/tempo change
 - Smart Mix (like Quick Mix but guarantees no clipping)
 - Cross-fade (smooth between two tracks)
-- Compressor/Limiter/Expander
 - Native port of Freeverb (ideally optimized)
-- EQ
 - Auto find track boundaries
 - Pop/click removal
 - Save VST plug-in parameters to a file, or at least
@@ -233,39 +467,10 @@ Future:
 - "Fit in window" also works vertically
 - Better adaptation to different font sizes (sizers)
 - Move to lossless compression (FLAC?) for internal representation
+  (Note: this doesn't support 32-bit float samples)
 - discontiguous selection
 - visualization window: VU meters, equalizer, continuous waveform, oscilloscope
 - Scrubbing
 - Mouse scroller should vertically scroll project
-- Delete key should be permanently mapped on to the delete operation
 - User-adjustable fonts so I don't have to recompile just to get the
   ruler looking decent and the track label fitting.
-- Export menu options changed to generic "Export as..." and   "Export selection as..." leading to a format selection dialog.
-  (ogg/mp3/flac/wav/etc.)
-- A way to use the envelope tool to amplify (I have no clue
-  how this would work).
-- a way to manually manipulate individual samples (e.g., a new tool mode
-  or a keyboard modifier that allows you to grab a sample and drag it to
-  the spot you really want it at)
-
-Low level issues::
-- support multi-track I/O
-- support an arbitrary number of channels
-- Make projects one big file
-
------------------------------------------------------------
-Completed:
------------------------------------------------------------
-
-- Make "Exit program upon closing last window" an option
-  in the Preferences.  (This wasn't implemented like this,
-  but instead the program doesn't quit when the last window
-  is closed on the Mac, but it does on other platforms.
-  This mimics correct native behavior.)
-- Get announcement list running
-- Note on website that Audacity is incompatible
-  with Norton Protected Recycle Bin (see email
-  from Josef Ravenscroft)
-- Plug-ins should be split into many separate menus on Linux/GTK
-  (if you have lots of them)
-
