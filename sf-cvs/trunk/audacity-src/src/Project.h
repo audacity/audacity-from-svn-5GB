@@ -335,6 +335,9 @@ class AudacityProject:public wxFrame,
    bool mIconized;
    HistoryWindow *mHistoryWindow;
 
+
+   wxLongLong mLastSelectionAdjustment;
+
  public:
    ToolBarArray mToolBarArray;
  private:

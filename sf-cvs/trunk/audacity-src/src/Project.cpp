@@ -367,7 +367,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mTotalToolBarHeight(0),
      mDraggingToolBar(NoneID),
      mAudioIOToken(-1),
-     mIsDeleting(false)
+     mIsDeleting(false),
+     mLastSelectionAdjustment(0)
 {
    // These consts are used to make the function call more readable.
    const bool ONLY_IF_STUB_EXISTS=false;
@@ -464,6 +465,10 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mLastStatusUpdateTime = ::wxGetUTCTime();
    mTimer = new wxTimer(this, AudacityProjectTimerID);
    mTimer->Start(200);
+
+   //Initialize the last selection adjustment time.
+   mLastSelectionAdjustment = ::wxGetLocalTimeMillis();
+
 
    //
    // Create the TrackPanel and the scrollbars
