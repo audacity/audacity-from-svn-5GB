@@ -1155,7 +1155,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 
    SelectNone();
    mTracks->Select(t);
-   mViewInfo->sel0 = 0.0;
+   mViewInfo->sel0 = mTracks->GetMinOffset();
    mViewInfo->sel1 = mTracks->GetMaxLen();
    Refresh(false);
 }

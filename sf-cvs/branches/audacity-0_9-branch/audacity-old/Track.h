@@ -170,6 +170,7 @@ class TrackList {
    bool IsEmpty();
 
    double GetMaxLen();
+   double GetMinOffset();
    int GetHeight();
 
    // File I/O
