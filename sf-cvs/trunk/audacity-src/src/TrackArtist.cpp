@@ -46,7 +46,11 @@
 
 //#define PROFILE_WAVEFORM 0
 #ifdef PROFILE_WAVEFORM
-#include <sys/time.h>
+	#ifdef __WXMSW__
+		#include <time.h>
+	#else
+		#include <sys/time.h>
+	#endif
 double gWaveformTimeTotal = 0;
 int gWaveformTimeCount = 0;
 #endif
