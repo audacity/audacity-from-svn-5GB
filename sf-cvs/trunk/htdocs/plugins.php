@@ -6,7 +6,7 @@
 
   BoxTop($pluginsStr);
 
-  include GetTranslation("beta");
+  include GetTranslation("plugins");
 ?>
 
 <b>Windows:</b>
