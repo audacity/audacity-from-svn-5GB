@@ -12,7 +12,12 @@
 
 **********************************************************************/
 
+#include "NoiseRemoval.h"
+
 #include "../Audacity.h"
+#include "../Envelope.h"
+#include "../FFT.h"
+#include "../WaveTrack.h"
 
 #include <math.h>
 
@@ -21,27 +26,22 @@
 #define finite(x) _finite(x)
 #endif
 
-#ifdef __MACOSX__
-#include <math.h>
-#endif
-
 #ifdef __MACOS9__
 #include <fp.h>
 #define finite(x) isfinite(x)
 #endif
 
-#include <wx/msgdlg.h>
-#include <wx/textdlg.h>
+#include <wx/bitmap.h>
 #include <wx/brush.h>
-#include <wx/image.h>
+#include <wx/button.h>
 #include <wx/dcmemory.h>
-#include <wx/statbox.h>
+#include <wx/image.h>
 #include <wx/intl.h>
-
-#include "NoiseRemoval.h"
-#include "../Envelope.h"
-#include "../FFT.h"
-#include "../WaveTrack.h"
+#include <wx/msgdlg.h>
+#include <wx/sizer.h>
+#include <wx/slider.h>
+#include <wx/statbox.h>
+#include <wx/stattext.h>
 
 EffectNoiseRemoval::EffectNoiseRemoval()
 {

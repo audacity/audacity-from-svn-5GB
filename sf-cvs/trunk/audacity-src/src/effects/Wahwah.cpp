@@ -13,14 +13,20 @@
 
 **********************************************************************/
 
-#include <math.h>
-
-#include <wx/intl.h>
-
 #include "Wahwah.h"
 #include "../WaveTrack.h"
 #include "../FFT.h"
 #include "../Internat.h"
+
+#include <math.h>
+
+#include <wx/intl.h>
+#include <wx/button.h>
+#include <wx/stattext.h>
+#include <wx/slider.h>
+#include <wx/textctrl.h>
+#include <wx/sizer.h>
+#include <wx/intl.h>
 
 //
 // EffectWahwah

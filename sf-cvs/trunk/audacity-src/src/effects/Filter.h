@@ -8,19 +8,18 @@
 
 **********************************************************************/
 
+#include "Effect.h"
+
 #ifndef __AUDACITY_EFFECT_FILTER__
 #define __AUDACITY_EFFECT_FILTER__
 
-#include <wx/bitmap.h>
-#include <wx/button.h>
-#include <wx/panel.h>
-#include <wx/sizer.h>
-#include <wx/stattext.h>
+#include <wx/dialog.h>
 #include <wx/intl.h>
+#include <wx/panel.h>
 
 class wxString;
-
-#include "Effect.h"
+class wxBitmap;
+class wxSizer;
 
 class Envelope;
 class WaveTrack;

@@ -12,16 +12,13 @@
 #ifndef __AUDACITY_EFFECT_NORMALIZE__
 #define __AUDACITY_EFFECT_NORMALIZE__
 
-#include <wx/defs.h>
-#include <wx/button.h>
-#include <wx/checkbox.h>
-#include <wx/sizer.h>
-#include <wx/stattext.h>
-#include <wx/intl.h>
-
 #include "Effect.h"
 
+#include <wx/dialog.h>
+
 class wxString;
+class wxCheckBox;
+
 class WaveTrack;
 
 class EffectNormalize: public Effect {

@@ -12,13 +12,9 @@
 #ifndef __AUDACITY_EFFECT_EQUALIZATION__
 #define __AUDACITY_EFFECT_EQUALIZATION__
 
-#include <wx/bitmap.h>
-#include <wx/button.h>
 #include <wx/panel.h>
-#include <wx/sizer.h>
-#include <wx/stattext.h>
+#include <wx/dialog.h>
 #include <wx/intl.h>
-#include <wx/radiobox.h>
 
 // Declare window functions
 
@@ -28,6 +24,8 @@
 #define ID_LOADCURVE 10003
 
 class wxString;
+class wxSizer;
+class wxRadioBox;
 
 #include "Effect.h"
 

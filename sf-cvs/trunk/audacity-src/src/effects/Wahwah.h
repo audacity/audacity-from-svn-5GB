@@ -16,17 +16,12 @@
 #ifndef __AUDACITY_EFFECT_WAHWAH__
 #define __AUDACITY_EFFECT_WAHWAH__
 
-#include <wx/button.h>
 #include <wx/dialog.h>
-#include <wx/stattext.h>
-#include <wx/slider.h>
-#include <wx/textctrl.h>
-#include <wx/sizer.h>
-#include <wx/spinbutt.h>
-#include <wx/spinctrl.h>
-#include <wx/intl.h>
 
 class wxString;
+class wxSizer;
+class wxSlider;
+class wxTextCtrl;
 
 #include "SimpleMono.h"
 
@@ -80,8 +75,6 @@ friend class WahwahDialog;
 // Declare window functions
 
 #define ID_BUTTON_PREVIEW 10000
-#define ID_STAGES 10001
-#define ID_DRYWET 10002
 #define ID_FREQTEXT 10003
 #define ID_FREQSLIDER 10004
 #define ID_PHASETEXT 10005
@@ -140,12 +133,6 @@ class WahwahDialog:public wxDialog {
    }
    wxTextCtrl *GetFreqOffText() {
       return (wxTextCtrl *) FindWindow(ID_FREQOFFTEXT);
-   }
-   wxSlider *GetDryWet() {
-      return (wxSlider *) FindWindow(ID_DRYWET);
-   }
-   wxSpinCtrl *GetStages() {
-      return (wxSpinCtrl *) FindWindow(ID_STAGES);
    }
    virtual bool Validate();
    virtual bool TransferDataToWindow();

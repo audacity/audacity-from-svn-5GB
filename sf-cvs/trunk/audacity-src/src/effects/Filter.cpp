@@ -15,20 +15,24 @@
 
 **********************************************************************/
 
-#include <math.h>
-
-#include <wx/msgdlg.h>
-#include <wx/textdlg.h>
-#include <wx/brush.h>
-#include <wx/image.h>
-#include <wx/dcmemory.h>
-#include <wx/intl.h>
-
 #include "Filter.h"
 #include "../Envelope.h"
 #include "../FFT.h"
 #include "../WaveTrack.h"
 #include "../widgets/Ruler.h"
+
+#include <math.h>
+
+#include <wx/bitmap.h>
+#include <wx/brush.h>
+#include <wx/button.h>
+#include <wx/dcmemory.h>
+#include <wx/image.h>
+#include <wx/intl.h>
+#include <wx/msgdlg.h>
+#include <wx/textdlg.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
 
 EffectFilter::EffectFilter()
 {
