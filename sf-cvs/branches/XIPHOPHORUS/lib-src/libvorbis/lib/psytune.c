@@ -12,7 +12,7 @@
 
  function: simple utility that runs audio through the psychoacoustics
            without encoding
- last mod: $Id: psytune.c,v 1.1.1.4 2004-03-21 16:52:55 mbrubeck Exp $
+ last mod: $Id: psytune.c,v 1.1.1.5 2004-11-13 16:54:58 mbrubeck Exp $
 
  ********************************************************************/
 

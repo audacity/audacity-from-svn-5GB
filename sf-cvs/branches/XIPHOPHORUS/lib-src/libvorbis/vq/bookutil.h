@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: utility functions for loading .vqh and .vqd files
- last mod: $Id: bookutil.h,v 1.1.1.2 2002-04-21 23:36:53 habes Exp $
+ last mod: $Id: bookutil.h,v 1.1.1.3 2004-11-13 16:54:31 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <sys/time.h>
 
-#include "codebook.h"
+#include "localcodebook.h"
 
 extern char     *get_line(FILE *in);
 extern char     *setup_line(FILE *in);

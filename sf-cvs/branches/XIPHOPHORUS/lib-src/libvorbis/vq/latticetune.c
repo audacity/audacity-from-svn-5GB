@@ -12,7 +12,7 @@
 
  function: utility main for setting entropy encoding parameters
            for lattice codebooks
- last mod: $Id: latticetune.c,v 1.1.1.2 2002-04-21 23:36:53 habes Exp $
+ last mod: $Id: latticetune.c,v 1.1.1.3 2004-11-13 16:54:31 mbrubeck Exp $
 
  ********************************************************************/
 

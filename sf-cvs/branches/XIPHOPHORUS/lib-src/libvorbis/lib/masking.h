@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: masking curve data for psychoacoustics
- last mod: $Id: masking.h,v 1.1.1.3 2002-10-26 19:39:35 dmazzoni Exp $
+ last mod: $Id: masking.h,v 1.1.1.4 2004-11-13 16:54:53 mbrubeck Exp $
 
  ********************************************************************/
 
