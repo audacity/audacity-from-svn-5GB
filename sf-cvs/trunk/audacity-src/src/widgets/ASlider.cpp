@@ -163,7 +163,8 @@ LWSlider::LWSlider(wxWindow *parent,
                    wxString name,
                    const wxPoint &pos,
                    const wxSize &size,
-                   int style)
+                   int style,
+                   bool heavyweight)
 {
    mName = name;
    mValue = 0;
@@ -172,7 +173,7 @@ LWSlider::LWSlider(wxWindow *parent,
    mHeight = size.y;
    mParent = parent;
    mStyle = style;
-   mHW = false;
+   mHW = heavyweight;
    mID = -1;
 
    if (!(mWidth & 0))
@@ -189,6 +190,10 @@ LWSlider::LWSlider(wxWindow *parent,
    AColor::Medium(dc, true);   
    wxColour selBkgnd = dc->GetPen().GetColour();
 
+   wxImage *backgroundImage =
+      CreateSysBackground(mWidth, mHeight, 3, bkgnd);
+   wxBitmap backgroundBitmap =
+      backgroundImage->ConvertToBitmap();
    wxImage *thumbImage = new wxImage(wxBitmap(SliderThumb).ConvertToImage());
    wxImage *thumb1 = ChangeImageColour(thumbImage, bkgnd);
    wxImage *thumb2 = ChangeImageColour(thumbImage, selBkgnd);
@@ -216,8 +221,14 @@ LWSlider::LWSlider(wxWindow *parent,
       wxMemoryDC *dc = new wxMemoryDC();
       dc->SelectObject(*bitmap);
 
-      AColor::Medium(dc, i==1);
-      dc->DrawRectangle(0, 0, mWidth, mHeight);
+      if (mHW) {
+         dc->DrawBitmap(backgroundBitmap, 0, 0);
+      }
+      else {
+         AColor::Medium(dc, i==1);
+         dc->DrawRectangle(0, 0, mWidth, mHeight);
+      }
+
       AColor::Light(dc, i==1);
       dc->DrawLine(mLeftX, mCenterY, mRightX+1, mCenterY);
       AColor::Dark(dc, i==1);
@@ -261,6 +272,8 @@ LWSlider::LWSlider(wxWindow *parent,
       else
          mSelBitmap = bitmap;
    }
+
+   delete backgroundImage;
 
    int x=mWidth/2, y=mHeight, wx, wy;
    wxWindow *top = mParent;
@@ -557,9 +570,9 @@ ASlider::ASlider(wxWindow * parent, wxWindowID id,
                  const wxSize & size):
    wxWindow(parent, id, pos, size)
 {
-   mLWSlider = new LWSlider(this, name, wxPoint(0, 0), size, FRAC_SLIDER);
+   mLWSlider = new LWSlider(this, name, wxPoint(0, 0), size,
+                            FRAC_SLIDER, true);
    mLWSlider->SetId(id);
-   mLWSlider->mHW = true;
 }
 
 ASlider::~ASlider()
