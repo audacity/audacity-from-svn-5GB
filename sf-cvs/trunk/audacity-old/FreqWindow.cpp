@@ -87,6 +87,10 @@ FreqWindow::FreqWindow(wxWindow* parent, wxWindowID id, const wxString& title,
   
   mArrowCursor = new wxCursor(wxCURSOR_ARROW);
   mCrossCursor = new wxCursor(wxCURSOR_CROSS);
+
+  mFreqPlot = new FreqPlot(this, 0,
+						   wxPoint(0, 0),
+						   wxSize(FREQ_WINDOW_WIDTH, 250));
   
   mUpdateRect.x = 0;
   mUpdateRect.y = 0;
@@ -178,6 +182,7 @@ FreqWindow::FreqWindow(wxWindow* parent, wxWindowID id, const wxString& title,
 
 FreqWindow::~FreqWindow()
 {
+  delete mFreqPlot;
   if (mBitmap)
 	delete mBitmap;
   delete mCloseButton;
@@ -193,15 +198,15 @@ void FreqWindow::OnSize(wxSizeEvent &event)
   int width, height;
   GetClientSize(&width, &height);
 
-  //mTrackPanel->SetSize(0, 0,
-  //					     width-sbarWidth, height-sbarWidth);
-
-  // 440 x 330
+  // Original size was 440 x 330
 
   mUpdateRect.x = 0;
   mUpdateRect.y = 0;
   mUpdateRect.width = width;
   mUpdateRect.height = height - 80;
+
+  mFreqPlot->SetSize(0, 0, 
+					 width, height - 80);
 
   mPlotRect.x = 10;
   mPlotRect.y = 10;
@@ -245,11 +250,11 @@ void FreqWindow::OnMouseEvent(wxMouseEvent& event)
       r.height -= mBottomMargin;
 
       if (r.Inside(mMouseX, mMouseY))
-        SetCursor(*mCrossCursor);
+        mFreqPlot->SetCursor(*mCrossCursor);
       else
-        SetCursor(*mArrowCursor);
+        mFreqPlot->SetCursor(*mArrowCursor);
       
-      Refresh(false, &mUpdateRect);
+	  mFreqPlot->Refresh(false);
   }
 }
 
@@ -272,7 +277,7 @@ void FreqWindow::OnAxisChoice(wxCommandEvent &event)
 {
   mLogAxis = mAxisChoice->GetSelection();
 
-  Refresh(false);
+  mFreqPlot->Refresh(false);
 }
 
 // If f(0)=y0, f(1)=y1, f(2)=y2, and f(3)=y3, this function finds
@@ -374,10 +379,18 @@ float FreqWindow::GetProcessedValue(float freq0, float freq1)
 
 void FreqWindow::OnPaint(wxPaintEvent &evt)
 {
-  wxPaintDC dc(this);
-  
   int width, height;
   GetSize(&width, &height);
+
+  wxPaintDC frameDC(this);
+
+  frameDC.SetBrush(mBackgroundBrush);
+  frameDC.SetPen(mBackgroundPen);
+  frameDC.DrawRectangle(0, mUpdateRect.height,
+						width, height - mUpdateRect.height);
+
+  wxPaintDC dc(mFreqPlot);
+  
   height -= mUpdateRect.height;
   
   dc.SetBrush(mBackgroundBrush);
@@ -648,7 +661,7 @@ void FreqWindow::Recalc()
   mProcessed = NULL;
 
   if (!mData) {
-	Refresh(false);
+	mFreqPlot->Refresh(false);
 	return;
   }
 
@@ -660,14 +673,14 @@ void FreqWindow::Recalc()
   if (!(windowSize >= 32 && windowSize <= 65536 &&
 		alg>=0 && alg<=3 &&
 		windowFunc >= 0 && windowFunc <= 3)) {
-	Refresh(false);
+	mFreqPlot->Refresh(false);
 	return;
   }
 
   mWindowSize = windowSize;
 
   if (mDataLen < mWindowSize) {
-	Refresh(false);
+	mFreqPlot->Refresh(false);
 	return;
   }
 
@@ -752,7 +765,7 @@ void FreqWindow::Recalc()
   delete[] in;
   delete[] out;
 
-  Refresh(false);
+  mFreqPlot->Refresh(false);
 }
 
 void FreqWindow::OnExport()
@@ -795,3 +808,28 @@ void FreqWindow::OnExport()
   #endif
   f.Close();
 }
+
+
+BEGIN_EVENT_TABLE(FreqPlot, wxWindow)
+  EVT_PAINT  (                      FreqPlot::OnPaint)
+  EVT_MOUSE_EVENTS(                 FreqPlot::OnMouseEvent)
+END_EVENT_TABLE()
+
+FreqPlot::FreqPlot(wxWindow *parent, wxWindowID id,
+				   const wxPoint& pos,
+				   const wxSize& size):
+  wxWindow(parent, id, pos, size)
+{
+  freqWindow = (FreqWindow *)parent;
+}
+
+void FreqPlot::OnPaint(wxPaintEvent &evt)
+{
+  freqWindow->OnPaint(evt);
+}
+
+void FreqPlot::OnMouseEvent(wxMouseEvent& event)
+{
+  freqWindow->OnMouseEvent(event);
+}
+

@@ -26,6 +26,25 @@ extern FreqWindow *gFreqWindow;
 
 void InitFreqWindow(wxWindow *parent);
 
+class FreqWindow;
+
+class FreqPlot: public wxWindow
+{
+public:
+  FreqPlot(wxWindow *parent, wxWindowID id,
+		   const wxPoint& pos,
+		   const wxSize& size);
+
+  void OnMouseEvent(wxMouseEvent& event); 
+  void OnPaint(wxPaintEvent& event);
+
+private:
+
+  FreqWindow *freqWindow;
+
+DECLARE_EVENT_TABLE()
+  };
+
 class FreqWindow: public wxFrame
 {
 public:
@@ -38,9 +57,10 @@ public:
   void Plot(int len, float *data, double rate);
   
   void OnMouseEvent(wxMouseEvent& event); 
+  void OnPaint(wxPaintEvent& event);
+
   void OnCloseWindow(wxCloseEvent& event);
   void OnSize(wxSizeEvent &event);
-  void OnPaint(wxPaintEvent& event);
   void OnAlgChoice(wxCommandEvent& event);
   void OnSizeChoice(wxCommandEvent& event);
   void OnFuncChoice(wxCommandEvent& event);
@@ -50,6 +70,8 @@ public:
   void Recalc();
   
 private:
+
+  FreqPlot  *mFreqPlot;
   
   wxBrush   mBackgroundBrush;
   wxPen     mBackgroundPen;
