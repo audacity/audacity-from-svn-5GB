@@ -9,6 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: new_ru\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-08-10 20:54-0700\n"
 "PO-Revision-Date: 2004-08-13 03:03+0400\n"
 "Last-Translator: Alexandre Prokoudine <techwriter@land.ru>\n"
@@ -416,7 +417,8 @@ msgstr ""
 "ogg|Список файлов (*.lof)|*.lof"
 
 #: ../src/Menus.cpp:2625
-msgid "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
+msgid ""
+"All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
 msgstr ""
 "Все файлы (*.*)|*.*| Файлы в формате MIDI (*.mid)|*.mid| Файлы в формате "
 "Allegro (*.gro)|*.gro"
@@ -533,7 +535,8 @@ msgstr ""
 
 #: ../src/effects/ToneGen.cpp:33
 #, c-format
-msgid "Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f"
+msgid ""
+"Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f"
 msgstr ""
 "Применён эффект: Создать волну формы \"%s %s\" с частотой %.2f Гц и "
 "амплитудой %.2f"
@@ -795,8 +798,7 @@ msgstr ""
 "использован в настоящее время другой \n"
 "запущенной копией Audacity.\n"
 "Одновременный запуск двух и более копий \n"
-"программы может привести к сбоям в работе "
-"системы.\n"
+"программы может привести к сбоям в работе системы.\n"
 "\n"
 "Вы по-прежнему хотите запустить Audacity?"
 
@@ -1007,7 +1009,8 @@ msgid "Change upper speed limit (%) to:"
 msgstr "Изменить верхний предел скорости (%) на:"
 
 #: ../src/effects/AvcCompressor.cpp:398
-msgid "Change window size must be less than or equal to Adjustment window size."
+msgid ""
+"Change window size must be less than or equal to Adjustment window size."
 msgstr ""
 "Значение в окне изменения должно быть меньше\n"
 "или равно значению в окне подстройки."
@@ -1090,7 +1093,8 @@ msgstr "Очистить"
 
 #: ../src/TrackPanel.cpp:1616
 msgid "Click and drag to adjust relative size of stereo tracks."
-msgstr "Щёлкните и перетащите для регуляции относительного размера стереодорожек"
+msgstr ""
+"Щёлкните и перетащите для регуляции относительного размера стереодорожек"
 
 #: ../src/ControlToolBar.cpp:77
 msgid "Click and drag to edit the amplitude envelope"
@@ -1336,12 +1340,15 @@ msgstr ""
 
 #: ../src/FormatSelection.cpp:387
 #, c-format
-msgid "Cursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL frames)   %s"
-msgstr "Курсор: %1i:%02i:%02i:%06.3lf PAL ч:мм:сс:кк 25 fps (%.3lf кадров PAL)   %s"
+msgid ""
+"Cursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL frames)   %s"
+msgstr ""
+"Курсор: %1i:%02i:%02i:%06.3lf PAL ч:мм:сс:кк 25 fps (%.3lf кадров PAL)   %s"
 
 #: ../src/FormatSelection.cpp:309
 #, c-format
-msgid "Cursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 fps (%.3lf film frames)   %s"
+msgid ""
+"Cursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 fps (%.3lf film frames)   %s"
 msgstr ""
 "Курсор: %1i:%02i:%02i:%06.3lf film ч:мм:сс:кк 24 кадров/c (%.3lf кадров "
 "фильма)   %s"
@@ -1544,7 +1551,8 @@ msgstr "Октавой ниже"
 
 #: ../src/TrackPanel.cpp:1519
 msgid "Drag the label vertically to change the order of the tracks."
-msgstr "Перетащите эту дорожку вверх/вниз для смены порядка представления дорожек."
+msgstr ""
+"Перетащите эту дорожку вверх/вниз для смены порядка представления дорожек."
 
 #: ../src/ControlToolBar.cpp:82
 msgid "Drag to Zoom Into Region, Right-Click to Zoom Out"
@@ -1562,7 +1570,8 @@ msgstr "Изменение огибающей\tF3"
 
 #: ../src/TrackPanel.cpp:2364
 msgid "Draw currently only works with waveforms."
-msgstr "Этот инструмент работает пока только с волновым представлением сигнала."
+msgstr ""
+"Этот инструмент работает пока только с волновым представлением сигнала."
 
 #: ../src/Menus.cpp:1911
 msgid "Duplicate"
@@ -2097,12 +2106,12 @@ msgid ""
 "This project does not have multiple tracks or a Label Track, so you cannot "
 "export multiple files."
 msgstr ""
-"Если в вашем проекте больше одной звуковой дорожки, вы можете "
-"экспортировать каждую их них в отдельный файл,\n"
+"Если в вашем проекте больше одной звуковой дорожки, вы можете экспортировать "
+"каждую их них в отдельный файл,\n"
 "а при наличии дорожки для заметок -- экспортировать по новому \n"
 "файлу для каждой заметки.\n"
-"В этом проекте нет ни нескольких дорожек, ни дорожки для заметок, "
-"так что вызванная вами функция работать не будет."
+"В этом проекте нет ни нескольких дорожек, ни дорожки для заметок, так что "
+"вызванная вами функция работать не будет."
 
 #: ../src/Project.cpp:2198 ../src/Project.cpp:2245
 #: ../src/import/ImportRaw.cpp:408 ../src/import/ImportPCM.cpp:403
@@ -2177,9 +2186,7 @@ msgstr "Уровень на входе"
 
 #: ../src/MeterToolBar.cpp:66
 msgid "Input level meter - click to monitor input"
-msgstr ""
-"Индикатор уровня входа. "
-"Щёлкните для старта мониторинга входа."
+msgstr "Индикатор уровня входа. Щёлкните для старта мониторинга входа."
 
 #: ../src/prefs/PrefsDialog.cpp:89
 msgid "Interface"
@@ -2401,7 +2408,8 @@ msgstr "Предел понижения скорости"
 
 #: ../src/import/ImportLOF.cpp:362
 msgid "MIDI tracks cannot be offset individually, only audio files may be."
-msgstr "MIDI-дорожки не могут быть отделены друг от друга - только звуковые файлы."
+msgstr ""
+"MIDI-дорожки не могут быть отделены друг от друга - только звуковые файлы."
 
 #: ../src/prefs/FileFormatPrefs.cpp:172
 msgid "MP3 Export Setup"
@@ -2569,11 +2577,13 @@ msgstr "Многоинструментальный режим"
 
 #: ../src/TrackPanel.cpp:1541
 msgid "Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences"
-msgstr "Многоинструментальный режим: нажмите Ctrl-P для настройки мыши и клавиатуры"
+msgstr ""
+"Многоинструментальный режим: нажмите Ctrl-P для настройки мыши и клавиатуры"
 
 #: ../src/TrackPanel.cpp:1543
 msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
-msgstr "Мультиинструментальный режим: нажмите Ctrl-P для настройки мыши и клавиатуры"
+msgstr ""
+"Мультиинструментальный режим: нажмите Ctrl-P для настройки мыши и клавиатуры"
 
 #: ../src/TrackPanel.cpp:4673
 msgid "Mute"
@@ -3489,11 +3499,13 @@ msgstr ""
 msgid ""
 "Selection: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f hr:min:sec)   %"
 "s"
-msgstr "Выделение: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f ч:мин:сек)   %s"
+msgstr ""
+"Выделение: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f ч:мин:сек)   %s"
 
 #: ../src/FormatSelection.cpp:787
 #, c-format
-msgid "Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]"
+msgid ""
+"Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]"
 msgstr ""
 "Выделение: %i+%04i - %i+%04i (%i+%04i cdda секторов+байт)   [привязка по "
 "сэмплам]"
@@ -3526,7 +3538,8 @@ msgstr "Выделение: %i:%09.6f - %i:%09.6f (%i:%09.6f мин:сек)   %s"
 
 #: ../src/FormatSelection.cpp:676
 #, c-format
-msgid "Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)   [Snap-To Samples]"
+msgid ""
+"Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)   [Snap-To Samples]"
 msgstr ""
 "Выделение: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf мин:сек)   [привязка по "
 "сэмплам]"
@@ -3685,7 +3698,8 @@ msgstr ""
 "несовпадающими индивидуальными дорожками."
 
 #: ../src/effects/nyquist/Nyquist.cpp:330
-msgid "Sorry, cannot apply effect on stereo tracks where the tracks don't match."
+msgid ""
+"Sorry, cannot apply effect on stereo tracks where the tracks don't match."
 msgstr ""
 "Извините, но эффект невозможно применить к стереодорожкам\n"
 "с несовпадающими индивидуальными дорожками"
@@ -3821,7 +3835,8 @@ msgstr ""
 "данные в нескольких проектах.\n"
 
 #: ../src/Menus.cpp:2990
-msgid "The version of Audacity you are using does not support multiple time tracks."
+msgid ""
+"The version of Audacity you are using does not support multiple time tracks."
 msgstr ""
 "Загруженная версия Audacity не может использовать\n"
 "несколько дорожек времени в одном проекте."
@@ -4202,11 +4217,13 @@ msgstr ""
 "\n"
 
 #: ../src/export/Export.cpp:147
-msgid "Your tracks will be mixed down to a single mono channel in the exported file."
+msgid ""
+"Your tracks will be mixed down to a single mono channel in the exported file."
 msgstr "В экспортируемом файле дорожки будут сведены в один моноканал"
 
 #: ../src/export/Export.cpp:142
-msgid "Your tracks will be mixed down to two stereo channels in the exported file."
+msgid ""
+"Your tracks will be mixed down to two stereo channels in the exported file."
 msgstr "В экспортируемом файле дорожки будут сведены в два стереоканала"
 
 #: ../src/prefs/MousePrefs.cpp:92 ../src/prefs/MousePrefs.cpp:93
@@ -4429,4 +4446,3 @@ msgstr "с использованием SoundTouch (Olli Parviainen)"
 
 #~ msgid "Effects programmer"
 #~ msgstr "Программирование эффектов"
-
