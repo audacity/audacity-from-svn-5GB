@@ -16,6 +16,13 @@
 
 #include "../BlockFile.h"
 
+void ComputeLegacySummaryInfo(wxFileName fileName,
+                              int summaryLen,
+                              sampleFormat format,
+                              SummaryInfo *info,
+                              float *min, float *max, float *rms);
+                        
+
 //
 // This class supports loading BlockFiles in one of the old
 // Audacity BlockFile formats (versions 0.98 through 1.0, or
@@ -34,24 +41,25 @@ class LegacyBlockFile : public BlockFile {
                    sampleFormat format,
                    sampleCount summaryLen,
                    sampleCount len);
-   ~LegacyBlockFile();
+   virtual ~LegacyBlockFile();
 
    // Reading
 
    /// Read the summary section of the disk file
-   bool ReadSummary(void *data);
+   virtual bool ReadSummary(void *data);
    /// Read the data section of the disk file
-   int ReadData(samplePtr data, sampleFormat format,
-                sampleCount start, sampleCount len);
+   virtual int ReadData(samplePtr data, sampleFormat format,
+                        sampleCount start, sampleCount len);
 
    /// Create a new block file identical to this one
-   BlockFile *Copy(wxFileName newFileName);
+   virtual BlockFile *Copy(wxFileName newFileName);
    /// Write an XML representation of this file
-   void SaveXML(int depth, wxFFile &xmlFile);
+   virtual void SaveXML(int depth, wxFFile &xmlFile);
+   virtual int GetSpaceUsage();
+
    static BlockFile *BuildFromXML(wxString dir, const char **attrs,
                                   sampleCount len,
                                   sampleFormat format);
-   int GetSpaceUsage();
 
  protected:
    sampleFormat mFormat;

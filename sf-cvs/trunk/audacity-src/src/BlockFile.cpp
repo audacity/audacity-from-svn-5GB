@@ -55,7 +55,8 @@ BlockFile::BlockFile(wxFileName fileName, sampleCount samples):
 
 BlockFile::~BlockFile()
 {
-   wxRemoveFile(mFileName.GetFullPath());
+   if (!mLocked)
+      wxRemoveFile(mFileName.GetFullPath());
 }
 
 /// Returns the file name of the disk file associated with this
@@ -67,11 +68,14 @@ wxFileName BlockFile::GetFileName()
 }
 
 /// Marks this BlockFile as "locked."  A locked BlockFile may not
-/// be moved, only copied.  Locking a BlockFile  prevents it from
-/// disappearing if the project is saved in a different location.
+/// be moved or deleted, only copied.  Locking a BlockFile prevents
+/// it from disappearing if the project is saved in a different location.
 /// When doing a "Save As," Audacity locks all blocks belonging
 /// to the already-existing project, to ensure that the existing
-/// project remains valid with all the blocks it needs.
+/// project remains valid with all the blocks it needs.  Audacity
+/// also locks the blocks of the last saved version of a project when
+/// the project is deleted so that the files aren't deleted when their
+/// refcount hits zero.
 void BlockFile::Lock()
 {
    mLocked = true;
@@ -371,7 +375,8 @@ bool BlockFile::Read64K(float *buffer,
 /// @param aliasChannel The channel where this block's data is located in
 ///                     the aliased file
 AliasBlockFile::AliasBlockFile(wxFileName baseFileName,
-                               wxFileName aliasedFileName, sampleCount aliasStart,
+                               wxFileName aliasedFileName,
+                               sampleCount aliasStart,
                                sampleCount aliasLen, int aliasChannel):
    BlockFile(wxFileName(baseFileName.GetFullPath() + ".auf"), aliasLen),
    mAliasedFileName(aliasedFileName),

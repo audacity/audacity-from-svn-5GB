@@ -26,6 +26,66 @@
 
 #include "sndfile.h"
 
+void ComputeLegacySummaryInfo(wxFileName fileName,
+                              int summaryLen,
+                              sampleFormat format,
+                              SummaryInfo *info,
+                              float *min, float *max, float *rms)
+{
+   info->format = format;
+   info->bytesPerFrame =
+      SAMPLE_SIZE(info->format) * 3; /* min, max, rms */
+   info->totalSummaryBytes = summaryLen;
+   info->offset64K = 20; /* legacy header tag len */
+   info->frames64K = (summaryLen-20) /
+      (info->bytesPerFrame * 256);
+   info->offset256 = info->offset64K +
+      (info->frames64K * info->bytesPerFrame);
+   info->frames256 =
+      (summaryLen - 20 -
+       (info->frames64K * info->bytesPerFrame)) /
+      info->bytesPerFrame;
+
+   //
+   // Compute the min, max, and RMS of the block from the
+   // 64K summary data
+   //
+
+   float *summary = new float[info->frames64K * 3];
+   samplePtr data = NewSamples(info->frames64K * 3,
+                               info->format);
+
+   wxFFile summaryFile;
+   if( !summaryFile.Open(fileName.GetFullPath(), "rb") ) {
+      delete[] data;
+      return;
+   }
+   summaryFile.Seek(info->offset64K);
+   int read = summaryFile.Read(data,
+                               info->frames64K *
+                               info->bytesPerFrame);
+
+   int count = read / info->bytesPerFrame;
+
+   CopySamples(data, info->format,
+               (samplePtr)summary, floatSample, count);
+
+   (*min) = FLT_MAX;
+   (*max) = FLT_MIN;
+   float sumsq = 0;
+
+   for(int i=0; i<count; i++) {
+      if (summary[3*i] < (*min))
+         (*min) = summary[3*i];
+      if (summary[3*i+1] > (*max))
+         (*max) = summary[3*i+1];
+      sumsq += summary[3*i+2]*summary[3*i+2];
+   }
+   (*rms) = sqrt(sumsq / count);
+
+   DeleteSamples(data);
+   delete[] summary;   
+}
 
 /// Construct a LegacyBlockFile memory structure that will point to an
 /// existing block file.  This file must exist and be a valid block file.
@@ -42,59 +102,10 @@ LegacyBlockFile::LegacyBlockFile(wxFileName existingFile,
       // throw an exception?
       ;
 
-   mSummaryInfo.format = floatSample;
-   mSummaryInfo.bytesPerFrame =
-      SAMPLE_SIZE(mSummaryInfo.format) * 3; /* min, max, rms */
-   mSummaryInfo.totalSummaryBytes = summaryLen;
-   mSummaryInfo.offset64K = 20; /* legacy header tag len */
-   mSummaryInfo.frames64K = (summaryLen-20) /
-      (mSummaryInfo.bytesPerFrame * 256);
-   mSummaryInfo.offset256 = mSummaryInfo.offset64K +
-      (mSummaryInfo.frames64K * mSummaryInfo.bytesPerFrame);
-   mSummaryInfo.frames256 =
-      (summaryLen - 20 -
-       (mSummaryInfo.frames64K * mSummaryInfo.bytesPerFrame)) /
-      mSummaryInfo.bytesPerFrame;
-
-   //
-   // Compute the min, max, and RMS of the block from the
-   // 64K summary data
-   //
-
-   float *summary = new float[mSummaryInfo.frames64K * 3];
-   samplePtr data = NewSamples(mSummaryInfo.frames64K * 3,
-                               mSummaryInfo.format);
-
-   wxFFile summaryFile;
-   if( !summaryFile.Open(mFileName.GetFullPath(), "rb") ) {
-      delete[] data;
-      return;
-   }
-   summaryFile.Seek(mSummaryInfo.offset64K);
-   int read = summaryFile.Read(data,
-                               mSummaryInfo.frames64K *
-                               mSummaryInfo.bytesPerFrame);
-
-   int count = read / mSummaryInfo.bytesPerFrame;
-
-   CopySamples(data, mSummaryInfo.format,
-               (samplePtr)summary, floatSample, count);
-
-   mMin = FLT_MAX;
-   mMax = FLT_MIN;
-   float sumsq = 0;
-
-   for(int i=0; i<count; i++) {
-      if (summary[3*i] < mMin)
-         mMin = summary[3*i];
-      if (summary[3*i+1] > mMax)
-         mMax = summary[3*i+1];
-      sumsq += summary[3*i+2]*summary[3*i+2];
-   }
-   mRMS = sqrt(sumsq / count);
-
-   DeleteSamples(data);
-   delete[] summary;
+   ComputeLegacySummaryInfo(existingFile,
+                            summaryLen, floatSample,
+                            &mSummaryInfo,
+                            &mMin, &mMax, &mRMS);
 }
 
 LegacyBlockFile::~LegacyBlockFile()
@@ -252,3 +263,4 @@ int LegacyBlockFile::GetSpaceUsage()
    wxFFile dataFile(mFileName.GetFullPath());
    return dataFile.Length();
 }
+

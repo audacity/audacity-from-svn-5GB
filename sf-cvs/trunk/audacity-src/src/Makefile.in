@@ -132,6 +132,7 @@ LIBAUDACITY_OBJS = \
 	$(OBJDIR)/FileFormats.o \
 	$(OBJDIR)/SampleFormat.o \
 	$(OBJDIR)/blockfile/LegacyBlockFile.o \
+	$(OBJDIR)/blockfile/LegacyAliasBlockFile.o \
 	$(OBJDIR)/blockfile/SimpleBlockFile.o \
 	$(OBJDIR)/blockfile/PCMAliasBlockFile.o \
 

@@ -38,22 +38,23 @@ class SimpleBlockFile : public BlockFile {
    SimpleBlockFile(wxFileName existingFile, sampleCount len,
                    float min, float max, float rms);
 
-   ~SimpleBlockFile();
+   virtual ~SimpleBlockFile();
 
    // Reading
 
    /// Read the summary section of the disk file
-   bool ReadSummary(void *data);
+   virtual bool ReadSummary(void *data);
    /// Read the data section of the disk file
-   int ReadData(samplePtr data, sampleFormat format,
-                sampleCount start, sampleCount len);
+   virtual int ReadData(samplePtr data, sampleFormat format,
+                        sampleCount start, sampleCount len);
 
    /// Create a new block file identical to this one
-   BlockFile *Copy(wxFileName newFileName);
+   virtual BlockFile *Copy(wxFileName newFileName);
    /// Write an XML representation of this file
-   void SaveXML(int depth, wxFFile &xmlFile);
+   virtual void SaveXML(int depth, wxFFile &xmlFile);
+   virtual int GetSpaceUsage();
+
    static BlockFile *BuildFromXML(wxString dir, const char **attrs);
-   int GetSpaceUsage();
 };
 
 #endif

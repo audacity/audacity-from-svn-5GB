@@ -76,25 +76,25 @@ class BlockFile {
    /// Stores a representation of this file in XML
    virtual void SaveXML(int depth, wxFFile &xmlFile) = 0;
    /// Gets the filename of the disk file associated with this BlockFile
-   wxFileName GetFileName();
-   sampleCount GetLength() { return mLen; }
+   virtual wxFileName GetFileName();
+   virtual sampleCount GetLength() { return mLen; }
 
    /// Locks this BlockFile, to prevent it from being moved
-   void Lock();
+   virtual void Lock();
    /// Unlock this BlockFile, allowing it to be moved
-   void Unlock();
+   virtual void Unlock();
    /// Returns TRUE if this BlockFile is locked
-   bool IsLocked();
+   virtual bool IsLocked();
 
    /// Gets extreme values for the specified region
-   void GetMinMax(sampleCount start, sampleCount len,
-                  float *outMin, float *outMax, float *outRMS);
+   virtual void GetMinMax(sampleCount start, sampleCount len,
+                          float *outMin, float *outMax, float *outRMS);
    /// Gets extreme values for the entire block
-   void GetMinMax(float *outMin, float *outMax, float *outRMS);
+   virtual void GetMinMax(float *outMin, float *outMax, float *outRMS);
    /// Returns the 256 byte summary data block
-   bool Read256(float *buffer, sampleCount start, sampleCount len);
+   virtual bool Read256(float *buffer, sampleCount start, sampleCount len);
    /// Returns the 64K summary data block
-   bool Read64K(float *buffer, sampleCount start, sampleCount len);
+   virtual bool Read64K(float *buffer, sampleCount start, sampleCount len);
 
    /// Returns TRUE if this block references another disk file
    virtual bool IsAlias() { return false; }
@@ -106,13 +106,13 @@ class BlockFile {
 
    friend class DirManager;
 
-   void Ref();
-   bool Deref();
+   virtual void Ref();
+   virtual bool Deref();
 
  protected:
    /// Calculate summary data for the given sample data
-   void *CalcSummary(samplePtr buffer, sampleCount len,
-                     sampleFormat format);
+   virtual void *CalcSummary(samplePtr buffer, sampleCount len,
+                             sampleFormat format);
    /// Read the summary section of the file.  Derived classes implement.
    virtual bool ReadSummary(void *data) = 0;
 
@@ -159,7 +159,7 @@ class AliasBlockFile : public BlockFile
    virtual int ReadData(samplePtr data, sampleFormat format,
                         sampleCount start, sampleCount len) = 0;
 
-   int GetSpaceUsage();
+   virtual int GetSpaceUsage();
  private:
    // These methods are only for use by DirManager
    friend class DirManager;
@@ -173,9 +173,10 @@ class AliasBlockFile : public BlockFile
 
  protected:
    /// Write the summary to disk, using the derived ReadData() to get the data
-   void WriteSummary();
+   virtual void WriteSummary();
    /// Read the summary into a buffer
-   bool ReadSummary(void *data);
+   virtual bool ReadSummary(void *data);
+
    wxFileName  mAliasedFileName;
    sampleCount mAliasStart;
    int         mAliasChannel;
