@@ -155,6 +155,8 @@ void EffectNyquist::Parse(wxString line)
       ctrl.valStr = tokens[5];
       ctrl.lowStr = tokens[6];
       ctrl.highStr = tokens[7];
+      ctrl.low = 0.0;
+      ctrl.high = 0.0;
       ctrl.val = UNINITIALIZED_CONTROL;
 
       mControls.Add(ctrl);
