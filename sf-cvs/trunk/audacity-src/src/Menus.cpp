@@ -304,6 +304,9 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("FloatEditTB",    _("Float Edit Toolbar"),             FN(OnFloatEditToolBar));
    c->AddItem("FloatMixerTB",   _("Float Mixer Toolbar"),            FN(OnFloatMixerToolBar));
    c->AddItem("FloatMeterTB",   _("Float Meter Toolbar"),            FN(OnFloatMeterToolBar));
+
+   c->SetCommandFlags("FloatMeterTB", AudioIONotBusyFlag, AudioIONotBusyFlag);
+
    c->EndMenu();
 
    //
@@ -2296,6 +2299,10 @@ void AudacityProject::OnLoadMeterToolBar()
 
 void AudacityProject::OnFloatMeterToolBar()
 {
+   // Can't drag the Meter toolbar while Audio I/O is busy at all
+   if (gAudioIO->IsStreamActive())
+      return;
+
    if (gMeterToolBarStub) {
 
       if (gMeterToolBarStub->GetWindowedStatus()) {
