@@ -1,0 +1,192 @@
+# Makefile.in generated automatically by automake 1.4 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+host_alias = @host_alias@
+host_triplet = @host@
+AS = @AS@
+CC = @CC@
+CPP = @CPP@
+DEBUG = @DEBUG@
+DLLTOOL = @DLLTOOL@
+LIBTOOL = @LIBTOOL@
+LN_S = @LN_S@
+MAKEINFO = @MAKEINFO@
+OBJDUMP = @OBJDUMP@
+OGG_CFLAGS = @OGG_CFLAGS@
+OGG_LIBS = @OGG_LIBS@
+PACKAGE = @PACKAGE@
+PROFILE = @PROFILE@
+RANLIB = @RANLIB@
+VERSION = @VERSION@
+VE_LIB_AGE = @VE_LIB_AGE@
+VE_LIB_CURRENT = @VE_LIB_CURRENT@
+VE_LIB_REVISION = @VE_LIB_REVISION@
+VF_LIB_AGE = @VF_LIB_AGE@
+VF_LIB_CURRENT = @VF_LIB_CURRENT@
+VF_LIB_REVISION = @VF_LIB_REVISION@
+V_LIB_AGE = @V_LIB_AGE@
+V_LIB_CURRENT = @V_LIB_CURRENT@
+V_LIB_REVISION = @V_LIB_REVISION@
+pthread_lib = @pthread_lib@
+
+AUTOMAKE_OPTIONS = foreign
+
+EXTRA_DIST = line_1024x31_0sub0.vqh line_1024x31_0sub1.vqh line_1024x31_1sub0.vqh line_1024x31_1sub1.vqh line_1024x31_2sub1.vqh line_1024x31_2sub2.vqh line_1024x31_2sub3.vqh line_1024x31_3sub1.vqh line_1024x31_3sub2.vqh line_1024x31_3sub3.vqh line_1024x31_class0.vqh line_1024x31_class1.vqh line_1024x31_class2.vqh line_1024x31_class3.vqh line_128x19_0sub0.vqh line_128x19_1sub1.vqh line_128x19_1sub2.vqh line_128x19_1sub3.vqh line_128x19_2sub1.vqh line_128x19_2sub2.vqh line_128x19_2sub3.vqh line_128x19_class1.vqh line_128x19_class2.vqh line_128x7_0sub0.vqh line_128x7_1sub1.vqh line_128x7_1sub2.vqh line_128x7_1sub3.vqh line_128x7_2sub1.vqh line_128x7_2sub2.vqh line_128x7_2sub3.vqh line_128x7_class1.vqh line_128x7_class2.vqh lsp12_0.vqh lsp12_1.vqh lsp30_0.vqh lsp30_1.vqh lsp9_0.vqh lsp9_1.vqh res_22c_Z_1024aux.vqh res_22c_Z_128aux.vqh res_32c_Z_1024aux.vqh res_32c_Z_128aux.vqh res_44_A_1024aux.vqh res_44_A_128aux.vqh res_44_B_1024aux.vqh res_44_B_128aux.vqh res_44c_A_1024aux.vqh res_44c_A_128aux.vqh res_44c_B_1024aux.vqh res_44c_B_128aux.vqh res_44c_C_1024aux.vqh res_44c_C_128aux.vqh res_44c_E_1024aux.vqh res_44c_E_128aux.vqh res_44c_X_1024aux.vqh res_44c_X_128aux.vqh res_44c_Y_1024aux.vqh res_44c_Y_128aux.vqh res_44c_Z_1024aux.vqh res_44c_Z_128aux.vqh res_44_Y_1024aux.vqh res_44_Y_128aux.vqh res_44_Z_1024aux.vqh res_44_Z_128aux.vqh res_Ac_1024_1.vqh res_Ac_1024_2.vqh res_Ac_1024_3.vqh res_Ac_1024_4.vqh res_Ac_1024_5.vqh res_Ac_1024_6.vqh res_Ac_1024_7a.vqh res_Ac_1024_7.vqh res_Ac_1024_8a.vqh res_Ac_1024_8.vqh res_Ac_1024_9a.vqh res_Ac_1024_9b.vqh res_Ac_1024_9.vqh res_Ac_1.vqh res_Ac_2.vqh res_Ac_3.vqh res_Ac_4.vqh res_Ac_5.vqh res_Ac_6.vqh res_Ac_7a.vqh res_Ac_7.vqh res_Ac_8a.vqh res_Ac_8.vqh res_Ac_9a.vqh res_Ac_9b.vqh res_Ac_9.vqh res_B_1.vqh res_B_2.vqh res_B_3.vqh res_B_4.vqh res_B_5a.vqh res_B_5.vqh res_B_6a.vqh res_B_6b.vqh res_B_6.vqh res_Bc_1.vqh res_Bc_2.vqh res_Bc_3.vqh res_Bc_4.vqh res_Bc_5.vqh res_Bc_6.vqh res_Bc_7a.vqh res_Bc_7.vqh res_Bc_8a.vqh res_Bc_8.vqh res_Bc_9a.vqh res_Bc_9b.vqh res_Bc_9.vqh res_Cc_1.vqh res_Cc_2.vqh res_Cc_3.vqh res_Cc_4.vqh res_Cc_5.vqh res_Cc_6.vqh res_Cc_7.vqh res_Cc_8a.vqh res_Cc_8.vqh res_Cc_9a.vqh res_Cc_9b.vqh res_Cc_9.vqh res_Ec_1.vqh res_Ec_2.vqh res_Ec_3.vqh res_Ec_4.vqh res_Ec_5.vqh res_Ec_6.vqh res_Ec_7.vqh res_Ec_8a.vqh res_Ec_8.vqh res_Ec_9a.vqh res_Ec_9b.vqh res_Ec_9.vqh res_Xc_1.vqh res_Xc_2.vqh res_Xc_3.vqh res_Xc_4.vqh res_Xc_5.vqh res_Xc_6.vqh res_Xc_7.vqh res_Xc_8.vqh res_Xc_9a.vqh res_Xc_9b.vqh res_Xc_9.vqh res_Z_1.vqh res_Z_2.vqh res_Z_3.vqh res_Z_4.vqh res_Z_5.vqh res_Z_6a.vqh res_Z_6b.vqh res_Z_6.vqh res_Zc_1024aux.vqh res_Zc_128aux.vqh res_Zc_1.vqh res_Zc_2.vqh res_Zc_3.vqh res_Zc_4.vqh res_Zc_5.vqh res_Zc_6.vqh res_Zc_7.vqh res_Zc_8.vqh res_Zc_9a.vqh res_Zc_9b.vqh res_Zc_9.vqh temp26040.vqh
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_CLEAN_FILES = 
+DIST_COMMON =  Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = gtar
+GZIP_ENV = --best
+all: all-redirect
+.SUFFIXES:
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign --include-deps lib/books/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+tags: TAGS
+TAGS:
+
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = lib/books
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+install-exec-am:
+install-exec: install-exec-am
+
+install-data-am:
+install-data: install-data-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am:
+uninstall: uninstall-am
+all-am: Makefile
+all-redirect: all-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs:
+
+
+mostlyclean-generic:
+
+clean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+mostlyclean-am:  mostlyclean-generic
+
+mostlyclean: mostlyclean-am
+
+clean-am:  clean-generic mostlyclean-am
+
+clean: clean-am
+
+distclean-am:  distclean-generic clean-am
+	-rm -f libtool
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-generic distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
+
+.PHONY: tags distdir info-am info dvi-am dvi check check-am \
+installcheck-am installcheck install-exec-am install-exec \
+install-data-am install-data install-am install uninstall-am uninstall \
+all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
+
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:
