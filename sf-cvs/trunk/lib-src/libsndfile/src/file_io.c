@@ -21,12 +21,16 @@
 #include <string.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <sys/stat.h>
 
 #if (defined (__MWERKS__) && defined (macintosh))
 #include <Files.h>
+#else
+#include <sys/stat.h>
 #endif
 
+#if (defined (__MWERKS__) && defined (macintosh))
+#define EINTR -12345  /* EINTR will never happen on the Mac */
+#endif
 
 #include "sndfile.h"
 #include "config.h"
@@ -152,8 +156,11 @@ psf_ftell (int fd)
 
 int
 psf_fclose (int fd)
-{	if (fsync (fd) < 0 && errno == EBADF)
+{
+#if	(!defined (__MWERKS__)) /* dmazzoni */
+	if (fsync (fd) < 0 && errno == EBADF)
 		return 0 ;
+#endif
 
 	while (close (fd) < 0 && errno == EINTR)
 		errno = 0 ;
