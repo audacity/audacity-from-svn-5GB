@@ -4,6 +4,14 @@ Version 1.0 (Release Candidate 1)
 
 http://audacity.sourceforge.net/
 
+NOTE: If you have questions or comments about this program,
+please address them to:
+
+  audacity-help@lists.sourceforge.net
+  
+Please don't send email to individual developers with
+general questions.  Use the mailing list address, above.
+
 Primary author:
 
   Dominic Mazzoni <dominic@minorninth.com>
