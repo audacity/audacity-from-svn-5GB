@@ -26,7 +26,7 @@
 (setf *WATCH* NIL)
 
 (format t "~%Nyquist -- A Language for Sound Synthesis and Composition~%")
-(format t "    Copyright (c) 1991,1992,1995 by Roger B. Dannenberg~%")
+(format t "    Copyright (c) 1991-2003 by Roger B. Dannenberg~%")
 (format t "    Version 2.29~%~%")
 
 (setf *gc-flag* t)
