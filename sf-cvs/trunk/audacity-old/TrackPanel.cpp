@@ -25,12 +25,6 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
   EVT_PAINT(TrackPanel::OnPaint)
 END_EVENT_TABLE()
 
-#ifdef __WXMSW__
-#define SMALLFONTSIZE 8
-#else
-#define SMALLFONTSIZE 10
-#endif
-
 TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
 					   const wxPoint& pos,
 					   const wxSize& size,
@@ -410,15 +404,15 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
 
 void TrackPanel::HandleZoom(wxMouseEvent& event)
 {
-  if (event.ButtonDown()) {
+  if (event.ButtonDown() || event.ButtonDClick()) {
 	double center_h = mViewInfo->h + (event.m_x - 115) / mViewInfo->zoom;
 	
-	if (event.RightDown() || event.ShiftDown())
+	if (event.RightDown() || event.RightDClick() || event.ShiftDown())
 	  mViewInfo->zoom /= 2.0;
 	else
 	  mViewInfo->zoom *= 2.0;
 	
-	if (event.MiddleDown())
+	if (event.MiddleDown() || event.MiddleDClick())
 	  mViewInfo->zoom = 44100.0 / 512.0;
 	
 	double new_center_h = mViewInfo->h + (event.m_x - 115) / mViewInfo->zoom;
@@ -615,7 +609,12 @@ void TrackPanel::DrawRuler(wxDC& dc)
 
   dc.SetPen(*wxBLACK_PEN);
 
-  wxFont rulerFont(SMALLFONTSIZE, wxSWISS, wxNORMAL, wxNORMAL);
+  int fontSize = 10;
+  #ifdef __WXMSW__
+  fontSize = 8;
+  #endif
+
+  wxFont rulerFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
   dc.SetFont(rulerFont);
 
   int minSpace = 60;  // min pixels between labels
@@ -727,7 +726,12 @@ void TrackPanel::DrawTracks(wxDC& dc)
 
 	// Draw label area
 
-	wxFont labelFont(SMALLFONTSIZE, wxSWISS, wxNORMAL, wxNORMAL);
+    int fontSize = 10;
+    #ifdef __WXMSW__
+    fontSize = 8;
+    #endif
+
+	wxFont labelFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
 	dc.SetFont(labelFont);
 
 	wxRect labelRect = r;
