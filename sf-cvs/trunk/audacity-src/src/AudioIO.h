@@ -80,9 +80,9 @@ class AudioIO {
    /* Mixer services are always available.  If no stream is running, these
     * methods use whatever device is specified by the preferences.  If a
     * stream *is* running, naturally they manipulate the mixer associated
-    * with that stream.  If no mixer is available for whatever reason, the
-    * set method does nothing and the get method returns zeros (which is
-    * about the sanest thing they can do from a GUI perspective. */
+    * with that stream.  If no mixer is available, they are emulated
+    * (a gain is applied to input and output samples).
+    */
    void SetMixer(int inputSource, float inputVolume,
                  float playbackVolume);
    void GetMixer(int *inputSource, float *inputVolume,
@@ -95,7 +95,9 @@ class AudioIO {
    sampleFormat GetCaptureFormat() { return mCaptureFormat; }
    int GetNumCaptureChannels() { return mNumCaptureChannels; }
 
- private:
+
+
+public: 
 
    void FillBuffers();
 
@@ -141,6 +143,10 @@ class AudioIO {
 
    #if USE_PORTMIXER
    PxMixer            *mPortMixer;
+   bool                mEmulateMixerOutputVol;
+   bool                mEmulateMixerInputVol;
+   float               mMixerOutputVol;
+   float               mMixerInputVol;
    #endif
 
    friend class AudioThread;
