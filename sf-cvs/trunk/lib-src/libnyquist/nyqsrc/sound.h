@@ -3,7 +3,7 @@
 #ifdef __APPLE__
 #define HUGE_VAL 1e50
 #else
-#include <math.h> */
+#include <math.h>
 #endif
 
 #include "stdefs.h"

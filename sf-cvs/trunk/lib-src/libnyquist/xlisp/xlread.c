@@ -63,6 +63,13 @@ static char save_file_name[STRMAX+1]; /* keeps files opened by prompt */
 static int sfn_valid = FALSE;
 #endif
 
+/* dmazzoni */
+extern char *global_xlisp_path;
+void get_xlisp_path(paths, paths_max)
+{
+   strcpy(paths, global_xlisp_path);
+}
+
 /* xlload - load a file of xlisp expressions */
 int xlload(char *fname, int vflag, int pflag)
 {
@@ -120,7 +127,11 @@ int xlload(char *fname, int vflag, int pflag)
     if ((fp = osaopen(fullname,"r")) == NULL) {
 #ifdef UNIX
         if (fname[0] != '/') {
-            char *paths = getenv("XLISPPATH");
+#define paths_max 1024
+            char path[paths_max];
+            char *paths = path;
+            get_xlisp_path(paths, paths_max);
+
             if (!paths || !*paths) {
                 char msg[512];
                 sprintf(msg, "\n%s\n%s\n%s\n%s\n%s\n",
