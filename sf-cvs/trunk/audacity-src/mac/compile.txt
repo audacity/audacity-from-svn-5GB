@@ -92,7 +92,7 @@ audacity are in your home directory (~); you will need to change
 the paths accordingly depending on where you put them.
 
   cd ~/wxMac-2.4.0
-  patch < ~/audacity/mac/wxMac-2.4.0.patch
+  patch -p 1 < ~/audacity/mac/wxMac-2.4.0.patch
 
 ----------------------------------
 STEP 4:  Compile and install wxMac
