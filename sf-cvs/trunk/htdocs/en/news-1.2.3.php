@@ -1,9 +1,9 @@
-<?php BoxTop('May 8, 2004: Audacity 1.2.1 released'); ?>
+<?php BoxTop('November 15, 2004: Audacity 1.2.3 released'); ?>
 
 <p>
-Audacity 1.2.1 is a new stable version of the free Audacity sound editor.
-This release fixes several minor bugs that were found in Audacity 1.2.0.
-It also includes several new and updated translations.
+Audacity 1.2.3 is a new stable version of the free Audacity sound editor.
+This release fixes a bug that interfered with long recordings on some Windows
+systems.  It also includes several updated translations, and some other minor bug fixes and improvements.
 </p>
 
 <p>Download Audacity for:</p>
