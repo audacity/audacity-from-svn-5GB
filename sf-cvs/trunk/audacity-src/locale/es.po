@@ -2683,7 +2683,7 @@ msgstr "Cambio de Frecuencia"
 #: ../src/effects/Compressor.cpp:435
 #, fuzzy
 msgid "Ratio: "
-msgstr "Ubicación"
+msgstr "Fracción: "
 
 #: ../src/effects/Compressor.cpp:511
 #, c-format
@@ -3172,7 +3172,7 @@ msgstr "Establecer rango en '%d' - '%d'"
 #: ../src/prefs/QualityPrefs.cpp:173
 #, fuzzy
 msgid "Shaped"
-msgstr "Guardar "
+msgstr "Guardar"
 
 #: ../src/prefs/MousePrefs.cpp:90
 msgid "Shift-Left-Click"
