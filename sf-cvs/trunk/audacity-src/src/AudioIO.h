@@ -55,6 +55,11 @@ class AudioIO {
    bool IsBusy();
    bool IsPlaying();
    bool IsRecording();
+
+   // AS: This would be more properly named GetCurrentTime or
+   //  something like that.  The indicator is the little graphic
+   //  displayed in TrackPanel showing the current position while
+   //  you're playing or recording.
    double GetIndicator();
 
    AudacityProject *GetProject();

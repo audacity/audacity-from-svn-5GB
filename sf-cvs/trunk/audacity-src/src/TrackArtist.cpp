@@ -205,7 +205,6 @@ void TrackArtist::DrawTracks(TrackList * tracks,
    }
 
    // Empty out the hash table
-
    if (mTrackHash && mTrackHash->GetCount() > 0) {
       mTrackHash->BeginFind();
       wxNode *node;
@@ -336,7 +335,7 @@ void TrackArtist::DrawVRuler(VTrack * t, wxDC * dc, wxRect & r)
       r.y += 2;
       r.height -= 2;
 
-      int bottomNote = ((NoteTrack *) t)->mBottomNote;
+      int bottomNote = ((NoteTrack *) t)->GetBottomNote();
       int bottom = r.height +
           ((bottomNote / 12) * octaveHeight + notePos[bottomNote % 12]);
 
@@ -522,7 +521,6 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
 
    while (srcX < s1) {
       // Get more samples
-
       sampleCount num;
 
       num = ((track->block->Item(b)->len -
@@ -554,7 +552,6 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
       }
 
       // Get min/max of samples for each pixel we can
-
       x = 0;
 
       theMin = temp[x];
@@ -1067,7 +1064,6 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
    // and then paint this directly to our offscreen
    // bitmap.  Note that this could be optimized even
    // more, but for now this is not bad.  -dmazzoni
-
    wxImage *image = new wxImage((int) r.width, (int) r.height);
    wxASSERT(image);
    unsigned char *data = image->GetData();
@@ -1180,9 +1176,9 @@ and optional attributes as follows:
     
  */
 
-char *IsShape(Allegro_note_ptr note)
 // returns NULL if note is not a shape,
 // returns atom (string) value of note if note is a shape
+char *IsShape(Allegro_note_ptr note)
 {
   Parameters_ptr parameters = note->parameters;
   while (parameters) {
@@ -1194,8 +1190,8 @@ char *IsShape(Allegro_note_ptr note)
   return NULL;
 }
 
-double LookupRealAttribute(Allegro_note_ptr note, Attribute attr, double def)
 // returns value of attr, or default if not found
+double LookupRealAttribute(Allegro_note_ptr note, Attribute attr, double def)
 {
   Parameters_ptr parameters = note->parameters;
   while (parameters) {
@@ -1208,8 +1204,8 @@ double LookupRealAttribute(Allegro_note_ptr note, Attribute attr, double def)
   return def;
 }
 
-long LookupIntAttribute(Allegro_note_ptr note, Attribute attr, long def)
 // returns value of attr, or default if not found
+long LookupIntAttribute(Allegro_note_ptr note, Attribute attr, long def)
 {
   Parameters_ptr parameters = note->parameters;
   while (parameters) {
@@ -1222,8 +1218,8 @@ long LookupIntAttribute(Allegro_note_ptr note, Attribute attr, long def)
   return def;
 }
 
-bool LookupLogicalAttribute(Allegro_note_ptr note, Attribute attr, bool def)
 // returns value of attr, or default if not found
+bool LookupLogicalAttribute(Allegro_note_ptr note, Attribute attr, bool def)
 {
   Parameters_ptr parameters = note->parameters;
   while (parameters) {
@@ -1236,8 +1232,8 @@ bool LookupLogicalAttribute(Allegro_note_ptr note, Attribute attr, bool def)
   return def;
 }
 
-char *LookupStringAttribute(Allegro_note_ptr note, Attribute attr, char *def)
 // returns value of attr, or default if not found
+char *LookupStringAttribute(Allegro_note_ptr note, Attribute attr, char *def)
 {
   Parameters_ptr parameters = note->parameters;
   while (parameters) {
@@ -1250,8 +1246,8 @@ char *LookupStringAttribute(Allegro_note_ptr note, Attribute attr, char *def)
   return def;
 }
 
-char *LookupAtomAttribute(Allegro_note_ptr note, Attribute attr, char *def)
 // returns value of attr, or default if not found
+char *LookupAtomAttribute(Allegro_note_ptr note, Attribute attr, char *def)
 {
   Parameters_ptr parameters = note->parameters;
   while (parameters) {
@@ -1318,7 +1314,7 @@ void TrackArtist::DrawNoteTrack(TrackInfoCache *cache,
   int numPitches = r.height / pitchht;
   pitch0 = (ctrpitch - numPitches/2);
 
-  int bottomNote = track->mBottomNote;
+  int bottomNote = track->GetBottomNote();
   int bottom = r.height +
      ((bottomNote / 12) * octaveHeight + notePos[bottomNote % 12]);
 
@@ -1355,25 +1351,6 @@ void TrackArtist::DrawNoteTrack(TrackInfoCache *cache,
          }
       }
    }
-
-  /*
-  wxBrush backBrush;
-  wxPen backPen;
-
-  backBrush.SetColour(214,214,214);
-  backPen.SetColour(214,214,214);
-
-  dc.SetBrush(backBrush);
-  dc.SetPen(backPen);
-
-  dc.DrawRectangle(r);
-  
-  dc.SetPen(wxPen(wxColour(151,0,255),1,wxSOLID));
-
-  for(n=pitchht; n<r.height; n+=pitchht)
-    dc.DrawLine(r.x, r.y+r.height-n,
-                r.x + r.width, r.y+r.height-n);
-  */
 
   dc.SetClippingRegion(r);
   int numEvents = seq->notes.len;

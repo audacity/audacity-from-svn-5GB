@@ -21,8 +21,6 @@ class DirManager;
 
 class NoteTrack:public VTrack {
  public:
-   int mBottomNote;
-
    friend class TrackArtist;
 
    NoteTrack(DirManager * projDirManager);
@@ -35,9 +33,22 @@ class NoteTrack:public VTrack {
 
    void SetSequence(Seq_ptr seq);
 
+   int GetBottomNote() const { return mBottomNote; }
+   void SetBottomNote(int note) 
+     { 
+       if (note < 0)
+	 note = 0;
+       else if (note > 96)
+	 note = 96;
+
+       mBottomNote = note; 
+     }
+
  private:
    Seq_ptr mSeq;
    double mLen;
+
+   int mBottomNote;
 
    int mVisibleChannels;
 

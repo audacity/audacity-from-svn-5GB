@@ -64,49 +64,53 @@ class TrackPanel:public wxWindow {
 
  private:
 
-   //AS: I added these functions during refactoring.
-   //As I understand the logic, I will rename them
-   //more appropriately.
-   void TimerFunc1();
-   void TimerFunc2();
-
    void DrawCursors();
 
-   void ExtendSelection(wxMouseEvent &event);
-   void Augustus1(wxMouseEvent &event);
-   void Augustus3(wxMouseEvent &event, VTrack* pTrack, wxRect r, int num);
-   void ExtendSelection(int, int);
-   void OtherSelection(int, int);
-   void StartSelection(int, int);
+   void ScrollDuringDrag();
+   void UpdateIndicator();
 
+   // AS: Selection handling
+   void HandleSelect(wxMouseEvent & event);
+   void SelectionHandleDrag(wxMouseEvent &event);
+   void SelectionHandleClick(wxMouseEvent &event, 
+			     VTrack* pTrack, wxRect r, int num);
+   void StartSelection      (int, int);
+   void ExtendSelectionRight(int, int);
+   void ExtendSelectionLeft (int, int);
+
+   // AS: Cursor handling
+   void HandleCursor(wxMouseEvent & event);
    bool SetCursor1();
 
-   void Envelope1(wxMouseEvent &event);
-   void Envelope2(wxMouseEvent &event);
+   // AS: Amplitude Envelope editing handlers
+   void HandleEnvelope(wxMouseEvent & event);
+   void ForwardEventToEnvelope(wxMouseEvent &event);
 
-   void Slide1(wxMouseEvent &event, double& totalOffset, wxString& name);
-   void Slide2(wxMouseEvent &event, double& totalOffset, wxString& name);
-   void Slide3(double& totalOffset, wxString& name);
+   // AS: Track sliding handlers
+   void HandleSlide(wxMouseEvent & event);
+   void StartSlide(wxMouseEvent &event, double& totalOffset, wxString& name);
+   void DoSlide(wxMouseEvent &event, double& totalOffset);
 
-   void Zoom1(wxMouseEvent &event);
-   void Zoom2(wxMouseEvent &event);
-   void Zoom3(wxMouseEvent &event, wxRect&);
-   void Zoom4(wxMouseEvent &event, wxRect&);
+   // AS: Handle zooming into tracks
+   void HandleZoom(wxMouseEvent & event);
+   void DragZoom(int x);
+   void DoZoomInOut(wxMouseEvent &event, int x_center);
+
 
    void DoPopupMenu(wxMouseEvent &event, wxRect& titleRect, 
 		    VTrack* t, wxRect &r, int num);
 
-   void HandleCursor(wxMouseEvent & event);
+
    void HandleResize(wxMouseEvent & event);
-   void HandleSelect(wxMouseEvent & event);
-   void HandleEnvelope(wxMouseEvent & event);
-   void HandleSlide(wxMouseEvent & event);
-   void HandleZoom(wxMouseEvent & event);
+
+
    void HandleLabelClick(wxMouseEvent & event);
    void HandleClosing(wxMouseEvent & event);
    void HandleMutingSoloing(wxMouseEvent & event, bool solo);
    bool MuteSoloFunc(VTrack *t, wxRect r, wxMouseEvent &event, bool solo);
    void MakeParentRedrawScrollbars();
+   
+   // AS: Pushing the state preserves state for Undo operations.
    void MakeParentPushState(wxString desc);
 
    void OnSetName();
@@ -206,6 +210,11 @@ class TrackPanel:public wxWindow {
    int mZoomStart;
    int mZoomEnd;
 
+   double TrackPanel::ZoomBorder(int pos, int x) const
+   {
+     return mViewInfo->h + ((pos - x) / mViewInfo->zoom);  
+   }
+
    int mInitialTrackHeight;
 
    bool mAutoScrolling;
@@ -215,9 +224,11 @@ class TrackPanel:public wxWindow {
    bool mIsResizing;
    bool mIsSliding;
    bool mIsEnveloping;
-   bool mIsZooming;
    bool mIsMuting;
    bool mIsSoloing;
+
+   // AS: MAGIC NUMBER: I'm not sure why 3.
+   bool IsDragZooming() const { return abs(mZoomEnd - mZoomStart) > 3;}
 
    wxCursor *mArrowCursor;
    wxCursor *mSelectCursor;

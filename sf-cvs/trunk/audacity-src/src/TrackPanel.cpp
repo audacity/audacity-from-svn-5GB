@@ -36,13 +36,32 @@
 #include "Project.h"
 #include "WaveTrack.h"
 
-#ifdef BOUNCE
-#include "Bounce.h"
-extern Bounce *gBounce;
-#endif
-
 #define kLeftInset 4
 #define kTopInset 4
+
+template <class LOW, class MID, class HIGH>
+bool between_inclusive(LOW l, MID m, HIGH h)
+{
+  return ( m >= l && m <= h);
+}
+
+template <class LOW, class MID, class HIGH>
+bool between_exclusive(LOW l, MID m, HIGH h)
+{
+  return ( m > l && m < h);
+}
+
+template <class CLIPPEE, class CLIPVAL>
+void clip_top(CLIPPEE &clippee, CLIPVAL val)
+{
+  if (clippee > val) clippee = val;
+}
+
+template <class CLIPPEE, class CLIPVAL>
+void clip_bottom(CLIPPEE &clippee, CLIPVAL val)
+{
+  if (clippee < val) clippee = val;
+}
 
 enum {
    TrackPanelFirstID = 2000,
@@ -114,7 +133,6 @@ mAutoScrolling(false)
    mIsSliding = false;
    mIsEnveloping = false;
    mIsMuting = false;
-   mIsZooming = false;
    mIsSoloing = false;
 
    mIndicatorShowing = false;
@@ -225,64 +243,9 @@ void TrackPanel::GetTracksUsableArea(int *width, int *height) const
    *width -= 2 + kLeftInset;
 }
 
-// AS: Ok, this is handling some kind of scrolling case.
-// not sure exactly what, though.
-void TrackPanel::TimerFunc1()
-{
-  mAutoScrolling = true;
-  
-  if (mMouseMostRecentX > mCapturedRect.x + mCapturedRect.width)
-    mListener->TP_ScrollRight();
-  else if (mMouseMostRecentX < mCapturedRect.x)
-    mListener->TP_ScrollLeft();
-
-  wxMouseEvent *e2 = new wxMouseEvent(wxEVT_MOTION);
-  HandleSelect(*e2);
-  delete e2;
-
-  mAutoScrolling = false;
-}
-
-// AS: This seems to have something to do with drawing the ruler
-// that appears at the top of the screen.  Although it might
-// just be for drawing the blinky cursor thing that appears there.
-void TrackPanel::TimerFunc2()
-{
-  double ind = gAudioIO->GetIndicator();
-  bool onScreen = (ind >= mViewInfo->h
-		   && ind <= (mViewInfo->h + mViewInfo->screen));
-  
-  if (mIndicatorShowing || onScreen) {
-    mIndicatorShowing = (onScreen &&
-			 gAudioIO->IsBusy() &&
-			 gAudioIO->GetProject() ==
-			 (AudacityProject *) GetParent());
-
-    wxClientDC dc(this);
-    
-    int width, height;
-    GetSize(&width, &height);
-    height = GetRulerHeight();
-    
-    wxMemoryDC *memDC = new wxMemoryDC();
-    wxBitmap *rulerBitmap = new wxBitmap();
-    rulerBitmap->Create(width, height);
-    
-    memDC->SelectObject(*rulerBitmap);
-    
-    DrawRuler(memDC, true);
-    
-    dc.Blit(0, 0, width, height, memDC, 0, 0, wxCOPY, FALSE);
-    
-    delete memDC;
-    delete rulerBitmap;
-    
-  }
-}
-
 // AS: This function draws the blinky cursor things, both in the
-// ruler as seen at the top of the screen, but also in each of the
-// selected tracks.
+//  ruler as seen at the top of the screen, but also in each of the
+//  selected tracks.
 void TrackPanel::DrawCursors()
 {
   // The difference between a wxClientDC and a wxPaintDC
@@ -317,27 +280,26 @@ void TrackPanel::DrawCursors()
   }
 }
 
-// AS: What's this do?  Presumably we're repainting stuff on
-// every timer tick... ?
+// AS: This gets called on our wx timer events.
 void TrackPanel::OnTimer()
 {
+   // AS: If the user is dragging the mouse and there is a track that
+   //  has captured the mouse, then scroll the screen, as necessary.
    if (mIsSelecting && mCapturedTrack) {
-     TimerFunc1();
+     ScrollDuringDrag();
    }
-#ifdef BOUNCE
-   if (gAudioIO->IsPlaying() &&
-       gAudioIO->GetProject() == (AudacityProject *) GetParent())
-      gBounce->SetTime(gAudioIO->GetIndicator());
-#endif
 
+   // AS: The "indicator" is the little graphical mark shown in the ruler
+   //  that indicates where the current play/record position is.  IsBusy
+   //  is basically IsPlaying || IsRecording.
    if (mIndicatorShowing ||
        (gAudioIO->IsBusy() &&
         gAudioIO->GetProject() == (AudacityProject *) GetParent())) {
-     TimerFunc2();
+     UpdateIndicator();
    }
 
    // AS: Um, I get the feeling we want to redraw the cursors
-   // every 10 timer ticks or something...
+   //  every 10 timer ticks or something...
    mTimeCount = (mTimeCount + 1) % 10;
    if (mTimeCount == 0 &&
        !mTracks->IsEmpty() && mViewInfo->sel0 == mViewInfo->sel1) {
@@ -345,8 +307,65 @@ void TrackPanel::OnTimer()
    }
 }
 
+// AS: We check on each timer tick to see if we need to scroll.
+//  Scrolling is handled by mListener, which is an interface
+//  to the window TrackPanel is embedded in.
+void TrackPanel::ScrollDuringDrag()
+{
+  // AS: Why do we need AutoScrolling?
+  mAutoScrolling = true;
+  
+  if (mMouseMostRecentX > mCapturedRect.x + mCapturedRect.width)
+    mListener->TP_ScrollRight();
+  else if (mMouseMostRecentX < mCapturedRect.x)
+    mListener->TP_ScrollLeft();
+
+  // AS: To keep the selection working properly as we scroll,
+  //  we fake a mouse event (remember, this function is called
+  //  from a timer tick).
+  wxMouseEvent e(wxEVT_MOTION); // AS: For some reason, GCC won't let us pass this directly.
+  HandleSelect(e);
+
+  mAutoScrolling = false;
+}
+
+// AS: This updates the indicator (on a timer tick) that shows
+//  where the current play or record position is.  To do this,
+//  we cheat a little.  The indicator is drawn during the ruler
+//  drawing process (that should probably change, but...), so
+//  we create a memory DC and tell the ruler to draw itself there,
+//  antd then just blit that to the screen.
+void TrackPanel::UpdateIndicator()
+{
+  double indicator = gAudioIO->GetIndicator();
+  bool onScreen = between_inclusive(mViewInfo->h, indicator,
+		   mViewInfo->h + mViewInfo->screen);
+  
+  if (mIndicatorShowing || onScreen) {
+    mIndicatorShowing = (onScreen &&
+			 gAudioIO->IsBusy() &&
+			 gAudioIO->GetProject() ==
+			 (AudacityProject *) GetParent());
+
+    int width, height;
+    GetSize(&width, &height);
+    height = GetRulerHeight();
+    
+    wxClientDC dc(this);
+    wxMemoryDC memDC;
+    wxBitmap rulerBitmap;
+    rulerBitmap.Create(width, height);
+    
+    memDC.SelectObject(rulerBitmap);
+    
+    DrawRuler(&memDC, true);
+    
+    dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
+  }
+}
+
 // AS: This is what gets called during the normal course of needing
-// to repaint.
+//  to repaint.
 void TrackPanel::OnPaint(wxPaintEvent & event)
 {
    wxPaintDC dc(this);
@@ -372,6 +391,8 @@ void TrackPanel::OnPaint(wxPaintEvent & event)
    dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
 }
 
+// AS: Make our Parent (well, whoever is listening to us) push their state.
+//  this causes application state to be preserved on a stack for undo ops.
 void TrackPanel::MakeParentPushState(wxString desc)
 {
    mListener->TP_PushState(desc);
@@ -382,20 +403,7 @@ void TrackPanel::MakeParentRedrawScrollbars()
    mListener->TP_RedrawScrollbars();
 }
 
-
-// AS: I added this function.  Don't know what it's for,
-// just came as part of some refactoring...
-bool TrackPanel::SetCursor1()
-{
-   if(mIsSelecting ) SetCursor(*mSelectCursor);
-   else if(mIsSliding   ) SetCursor(*mSlideCursor );
-   else if(mIsEnveloping) SetCursor(*mArrowCursor );
-   else return false;
-
-   return true;
-}
-
-// AS: Still bad.  This is dependant on select=0, envelope=1, 
+// AS: This is still bad unclean: it's dependant on select=0, envelope=1, 
 // move/slide=2, and zoom=3.  And this should go somewhere else...
 const char *pMessages[] = {"Click and drag to select audio", 
 			   "Click and drag to edit the amplitude envelope",
@@ -409,8 +417,8 @@ const char *pMessages[] = {"Click and drag to select audio",
 #endif
 };
 
-// AS: I think this function is setting what icon your cursor is
-// using.  Also, it's setting a message in the status bar or something.
+// AS: This function is setting what icon your cursor is using
+//  Also, it sets a message in the status bar.
 void TrackPanel::HandleCursor(wxMouseEvent & event)
 {
   if (SetCursor1()) return;
@@ -424,35 +432,33 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 
       // First test to see if we're over the area that
       // resizes a track
-
-     // AS: MAGIC NUMBER: What is 5?
       if (event.m_y >= (r.y + r.height - 5) &&
           event.m_y < (r.y + r.height + 5)) {
+	// AS: MAGIC NUMBER: What is 5?
 
          mListener->
              TP_DisplayStatusMessage("Click and drag to resize the track",
                                      0);
-
          SetCursor(*mResizeCursor);
-         return;
       }
+      else {
+	int operation = mListener->TP_GetCurrentTool();
+	mListener->TP_DisplayStatusMessage(
+		     pMessages[operation], 0);
 
-      // Otherwise set the cursor based on the current tool
-      int operation = mListener->TP_GetCurrentTool();
-      mListener->TP_DisplayStatusMessage(
-		 pMessages[operation], 0);
-
-      // AS: Actually set the cursor based on what tool the
-      // user has selected.
-      assert(operation >= 0 && operation <= 3);
-      const wxCursor *pCursors[] = {mSelectCursor, mArrowCursor, mSlideCursor };
-      if (operation < 3)
-	SetCursor(*pCursors[operation]);
-      else if (operation == 3) {
-	if (event.ShiftDown())
-	  SetCursor(*mZoomInCursor);
-	else
-	  SetCursor(*mZoomOutCursor);
+	// AS: Change the cursor based on what tool the
+	//  user has selected.  These cases are a little whacked
+	//  because of zoom, which requires special handling.
+	assert(operation >= 0 && operation <= 3);
+	const wxCursor *pCursors[] = {mSelectCursor, mArrowCursor, mSlideCursor };
+	if (operation < 3) // in other words, if !zoom
+	  SetCursor(*pCursors[operation]);
+	else if (operation == 3) {
+	  if (event.ShiftDown())
+	    SetCursor(*mZoomInCursor);
+	  else
+	    SetCursor(*mZoomOutCursor);
+	}
       }
    } else {
       // Not over a track
@@ -460,60 +466,55 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
    }
 }
 
-// AS: Extend the selection to x, where x is in the context of the 
-// current viewable area of the selected track?  
-void TrackPanel::ExtendSelection(int x1, int x2)
+// AS: If we set the cursor here, we return true.
+//  Looking at HandleCursor, I'm not sure why HandleCursor
+//  bails if this function returns true... ?
+// AS: Could still use a better name for this function.
+bool TrackPanel::SetCursor1()
 {
-  double selend =
-    mViewInfo->h + ((x1 - x2) / mViewInfo->zoom);
-    
-  // Thanks to Jonathan Ryshpan for this new logic which
-  // grabs either the left or right side, depending on
-  // which is closer:
-  if (selend >= mViewInfo->sel1) {
-     mViewInfo->sel1 = selend;
-     mSelStart = mViewInfo->sel0;
-  } else if (selend <= mViewInfo->sel0) {
-     mViewInfo->sel0 = selend;
-     mSelStart = mViewInfo->sel1;
-  } else {
-     if ((mViewInfo->sel1 - selend) <= (selend - mViewInfo->sel0)) {
-        mViewInfo->sel1 = selend;
-     } else {
-        mViewInfo->sel0 = selend;
-     }
-  }
+   if     (mIsSelecting ) SetCursor(*mSelectCursor);
+   else if(mIsSliding   ) SetCursor(*mSlideCursor );
+   else if(mIsEnveloping) SetCursor(*mArrowCursor );
+   else return false;
+
+   return true;
 }
 
-// AS: ??
-void TrackPanel::OtherSelection(int x1, int x2)
+// AS: This function handles various ways of starting and extending
+//  selections.  These are the selections you make by clicking and
+//  dragging over a waveform.
+void TrackPanel::HandleSelect(wxMouseEvent & event)
 {
-  double selend = mViewInfo->h + ((x1 - x2) / mViewInfo->zoom);
-  
-  if (selend < 0.0)
-    selend = 0.0;
-  
-  if (selend >= mSelStart) {
-    mViewInfo->sel0 = mSelStart;
-    mViewInfo->sel1 = selend;
-  } else {
-    mViewInfo->sel0 = selend;
-    mViewInfo->sel1 = mSelStart;
-  }
+  // AS: Ok, did the user just click the mouse, release the mouse,
+  //  or drag?
+   if (event.ButtonDown()) {
+     wxRect r; 
+     int num;  
+     
+     VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
+     
+     // AS: Now, did they click in a track somewhere?  If so, we want
+     //  to extend the current selection or start a new selection, 
+     //  depending on the shift key.  If not, cancel all selections.
+     if (t)
+       SelectionHandleClick(event, t, r, num);
+     else 
+       SelectNone();
+     
+     Refresh(false);
+   }
+   else if (event.ButtonUp()) {
+     mCapturedTrack = NULL;
+     mIsSelecting = false;
+   }
+   else
+     SelectionHandleDrag(event);
 }
 
-// AS: Start making a selection?
-void TrackPanel::StartSelection(int x1, int x2)
-{
-  mSelStart =
-    mViewInfo->h + ((x1 - x2) / mViewInfo->zoom);
-  
-  mViewInfo->sel0 = mSelStart;
-  mViewInfo->sel1 = mSelStart;
-}
-
-// AS: ??
-void TrackPanel::Augustus3(wxMouseEvent &event, VTrack* pTrack, wxRect r, int num)
+// AS: This function gets called when we're handling selection
+//  and the mouse was just clicked.
+void TrackPanel::SelectionHandleClick(wxMouseEvent &event, 
+                     VTrack* pTrack, wxRect r, int num)
 {
   mCapturedTrack = pTrack;
   mCapturedRect = r;
@@ -526,7 +527,7 @@ void TrackPanel::Augustus3(wxMouseEvent &event, VTrack* pTrack, wxRect r, int nu
   // extend the current selection.
   if (event.ShiftDown()) {
 
-    ExtendSelection(event.m_x, r.x);
+    ExtendSelectionRight(event.m_x, r.x);
 
     mListener->
       TP_DisplayStatusMessage(wxString::
@@ -535,17 +536,15 @@ void TrackPanel::Augustus3(wxMouseEvent &event, VTrack* pTrack, wxRect r, int nu
 				     mViewInfo->sel1), 1);
   } else {  // AS: Otherwise, start a new selection
     
+    SelectNone();
     StartSelection(event.m_x, r.x);
 
-    SelectNone();
     mTracks->Select(pTrack);
-  
 
     mListener->
       TP_DisplayStatusMessage(wxString::
 			      Format("Cursor: %lf s", mSelStart),
 			      1);
-    
     mIsSelecting = true;
     
     if (pTrack->GetKind() == VTrack::Label)
@@ -556,29 +555,23 @@ void TrackPanel::Augustus3(wxMouseEvent &event, VTrack* pTrack, wxRect r, int nu
   }
 }
 
-// AS: I added this function during refactoring.  Not sure what it
-// does.
-void TrackPanel::Augustus1(wxMouseEvent &event)
+// AS: Reset our selection markers.
+void TrackPanel::StartSelection(int x1, int x2)
 {
-  wxRect r; // AS: Presumably, the bounding rect for the Track?
-  int num;  // AS: Great, what is num?
+  mSelStart =
+    mViewInfo->h + ((x1 - x2) / mViewInfo->zoom);
   
-  // AS: Returns NULL if there is no track selected?
-  VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
-  
-  if (t)
-    Augustus3(event, t, r, num);
-  else 
-    SelectNone();
-
-  // AS: For some reason, we don't want to refresh?
-  Refresh(false);
+  mViewInfo->sel0 = mSelStart;
+  mViewInfo->sel1 = mSelStart;
 }
 
-// AS: TODO: Comment this function.  hehe
-void TrackPanel::ExtendSelection(wxMouseEvent &event)
+// AS: If we're dragging to extend a selection (or actually,
+//  if the screen is scrolling while you're selecting), we
+//  handle it here.
+void TrackPanel::SelectionHandleDrag(wxMouseEvent &event)
 {
-
+  // AS: If we're not in the process of selecting (set in
+  //  the SelectionHandleClick above), fuhggeddaboudit.
   if (!mIsSelecting)
     return;
   
@@ -595,7 +588,7 @@ void TrackPanel::ExtendSelection(wxMouseEvent &event)
       int x = mAutoScrolling ? mMouseMostRecentX : event.m_x;
       int y = mAutoScrolling ? mMouseMostRecentY : event.m_y;
 
-      OtherSelection(x, r.x);
+      ExtendSelectionLeft(x, r.x);
       
       mListener->
 	TP_DisplayStatusMessage(wxString::
@@ -616,7 +609,6 @@ void TrackPanel::ExtendSelection(wxMouseEvent &event)
 	}
       }
       
-      // AS: ??
       Refresh(false);
       
 #ifdef __WXMAC__
@@ -627,65 +619,109 @@ void TrackPanel::ExtendSelection(wxMouseEvent &event)
   }
 }
   
-// AS: This function deals with a TrackPanel becoming selected?  Gaining the Focus?
-void TrackPanel::HandleSelect(wxMouseEvent & event)
+// AS: Extend the selection to x, where x is in the context of the 
+//  current viewable area of the selected track.
+void TrackPanel::ExtendSelectionRight(int x1, int x2)
 {
-   if (event.ButtonDown())
-     Augustus1(event);
+  double selend = ZoomBorder(x1, x2);
 
-   ExtendSelection(event);
+  // JR: grabs either the left or right side, depending on
+  // which is closer.
+  if (selend >= mViewInfo->sel1) {
+     mViewInfo->sel1 = selend;
+     mSelStart = mViewInfo->sel0;
+  } else if (selend <= mViewInfo->sel0) {
+     mViewInfo->sel0 = selend;
+     mSelStart = mViewInfo->sel1;
+  } else {
+     if ((mViewInfo->sel1 - selend) <= (selend - mViewInfo->sel0)) {
+        mViewInfo->sel1 = selend;
+     } else {
+        mViewInfo->sel0 = selend;
+     }
+  }
+}
+
+// AS: Extend the selection to the left.
+void TrackPanel::ExtendSelectionLeft(int x1, int x2)
+{
+  double selend = ZoomBorder(x1, x2);
+
+  clip_bottom(selend, 0.0);
+  
+  if (selend >= mSelStart) {
+    mViewInfo->sel0 = mSelStart;
+    mViewInfo->sel1 = selend;
+  } else {
+    mViewInfo->sel0 = selend;
+    mViewInfo->sel1 = mSelStart;
+  }
+}
+
+// AS: HandleEnvelope gets called when the user is changing the
+//  amplitude envelope on a track.
+void TrackPanel::HandleEnvelope(wxMouseEvent & event)
+{
+  if (event.ButtonDown()) {
+     wxRect r;
+     int num;
+     mCapturedTrack = FindTrack(event.m_x, event.m_y, false, &r, &num);
+     
+     if (!mCapturedTrack) 
+       return;
+     
+     mCapturedRect = r;
+     mCapturedRect.y += kTopInset;
+     mCapturedRect.height -= kTopInset;
+     mCapturedNum = num;
+   }
+
+  // AS: if there's actually a selected track, then forward all of the
+  //  mouse events to its envelope.
+   if (mCapturedTrack)
+     ForwardEventToEnvelope(event);
 
    if (event.ButtonUp()) {
       mCapturedTrack = NULL;
-      mIsSelecting = false;
+      MakeParentPushState("Adjusted envelope.");
    }
 }
 
-// AS: I created this function while decomposing...
-// What is this damn captured shit?  It's littered all
-// over here, and I can't figure out what it's for...
-void TrackPanel::Envelope1(wxMouseEvent &event)
+// AS: The Envelope class actually handles things at the mouse
+//  event level, so we have to forward the events over.  Envelope
+//  will then tell us wether or not we need to redraw.
+// AS: I'm not sure why we can't let the Envelope take care of
+//  redrawing itself.  ?
+void TrackPanel::ForwardEventToEnvelope(wxMouseEvent &event)
 {
-  wxRect r;
-  int num;
-  mCapturedTrack = FindTrack(event.m_x, event.m_y, false, &r, &num);
-  
-  if (!mCapturedTrack) 
-    return;
-  
-  mCapturedRect = r;
-  mCapturedRect.y += kTopInset;
-  mCapturedRect.height -= kTopInset;
-  mCapturedNum = num;
-}
-
-// AS: I created this function while decomposing...
-void TrackPanel::Envelope2(wxMouseEvent &event)
-{
-  //  assert (mCapturedTrack);
   if (!mCapturedTrack || mCapturedTrack->GetKind() != VTrack::Wave)
     return;
 
   WaveTrack* pwavetrack = dynamic_cast<WaveTrack*>(mCapturedTrack);
   assert(pwavetrack);
   Envelope *penvelope = pwavetrack->GetEnvelope();
+
+  // AS: WaveTracks can be displayed in several different formats.
+  //  This asks which one is in use. (ie, Wave, Spectrum, etc)
   int display = pwavetrack->GetDisplay();
   bool needUpdate = false;
-  
-  // AS: Okay, what does this display?  The captured track, cast to a WaveTrack,
-  // getting it's GetDisplay value...
+
+  // AS: If we're using the right type of display for envelope operations
+  //  ie one of the Wave displays
   if (display <= 1) {
     bool dB = (display == 1);
     
+    // AS: Then forward our mouse event to the envelope.  It'll recalculate
+    //  and then tell us wether or not to redraw.
     needUpdate = penvelope->MouseEvent(event, mCapturedRect,
 				       mViewInfo->h, mViewInfo->zoom, dB);
     
     // If this track is linked to another track, make the identical
     // change to the linked envelope:
     WaveTrack *link = dynamic_cast<WaveTrack*>(mTracks->GetLink(mCapturedTrack));
-    if (link && link->GetKind() == VTrack::Wave) {
+    if (link) {
       Envelope *e2 = link->GetEnvelope();
-      e2->MouseEvent(event, mCapturedRect,
+      needUpdate |= e2->MouseEvent(event, mCapturedRect,
 		     mViewInfo->h, mViewInfo->zoom, dB);
     }
   }
@@ -694,23 +730,42 @@ void TrackPanel::Envelope2(wxMouseEvent &event)
     Refresh(false);
 }
 
-// AS: HandleEnvelope gets called when the user is changing the
-// amplitude envelope on a track?
-void TrackPanel::HandleEnvelope(wxMouseEvent & event)
+// AS: "Sliding" is when the user is moving a wavetrack's offset.
+//  You can use the slide tool and drag around where a track starts. 
+void TrackPanel::HandleSlide(wxMouseEvent & event)
 {
-   if (!mCapturedTrack)
-     Envelope1(event);
+  // AS: Why do we have static variables here?!?
+  //  this is a MEMBER function, so we could make
+  //  member variables or static class members
+  //  instead (depending on what we actually need).
+   static double totalOffset;
+   static wxString name;
 
-   Envelope2(event);
+   if (event.ButtonDown())
+     StartSlide(event, totalOffset, name);
+
+   if (!mIsSliding)
+      return;
+
+   if (event.Dragging() && mCapturedTrack)
+     DoSlide(event, totalOffset);
+
 
    if (event.ButtonUp()) {
       mCapturedTrack = NULL;
-      MakeParentPushState("Adjusted envelope.");
+      mIsSliding = false;
+      MakeParentRedrawScrollbars();
+      if(totalOffset > 0)
+         MakeParentPushState(
+            wxString::Format("Slid track '%s' %s %.02f seconds", 
+                             name.c_str(),
+                             totalOffset > 0 ? "right" : "left",
+                             totalOffset > 0 ? totalOffset : -totalOffset));
    }
 }
 
-// AS: Yay, more decomposition!
-void TrackPanel::Slide1(wxMouseEvent &event, double& totalOffset, wxString& name)
+// AS: Pepare for sliding.
+void TrackPanel::StartSlide(wxMouseEvent &event, double& totalOffset, wxString& name)
 {
   totalOffset = 0;
   
@@ -718,10 +773,12 @@ void TrackPanel::Slide1(wxMouseEvent &event, double& totalOffset, wxString& name
   int num;
   
   VTrack *vt = FindTrack(event.m_x, event.m_y, false, &r, &num);
+
+  // AS: This name is used when we put a message in the undo list via
+  //  MakeParentPushState on ButtonUp.
   name = vt->GetName();
   
   if (vt) {
-    
     mCapturedTrack = vt;
     mCapturedRect = r;
     mCapturedNum = num;
@@ -734,14 +791,13 @@ void TrackPanel::Slide1(wxMouseEvent &event, double& totalOffset, wxString& name
   }
 }
 
-//AS: Decomposing...
-void TrackPanel::Slide2(wxMouseEvent &event, double& totalOffset, wxString& name)
+//AS: Change the selected track's (and its link's, if one) offset.
+void TrackPanel::DoSlide(wxMouseEvent &event, double& totalOffset)
 {
   double selend = mViewInfo->h +
     ((event.m_x - mCapturedRect.x) / mViewInfo->zoom);
   
-  if (selend < 0.0)
-    selend = 0.0;
+  clip_bottom(selend, 0.0);
   
   if (selend != mSelStart) {
     mCapturedTrack->Offset(selend - mSelStart);
@@ -757,136 +813,85 @@ void TrackPanel::Slide2(wxMouseEvent &event, double& totalOffset, wxString& name
   mSelStart = selend;
 }
 
-// AS: Guess what.
-void TrackPanel::Slide3(double &totalOffset, wxString& name)
-{
-      mCapturedTrack = NULL;
-      mIsSliding = false;
-      MakeParentRedrawScrollbars();
-      if(totalOffset > 0)
-         MakeParentPushState(
-            wxString::Format("Slid track '%s' %s %.02f seconds", 
-                             name.c_str(),
-                             totalOffset > 0 ? "right" : "left",
-                             totalOffset > 0 ? totalOffset : -totalOffset));
-} 
-
-// AS: HandleSlide gets called... ?
-void TrackPanel::HandleSlide(wxMouseEvent & event)
-{
-  // AS: Aw hell, why do we have friggin static variables here?!?
-   static double totalOffset;
-   static wxString name;
-
-   if (event.ButtonDown())
-     Slide1(event, totalOffset, name);
-
-   if (!mIsSliding)
-      return;
-
-   if (event.Dragging() && mCapturedTrack)
-     Slide2(event, totalOffset, name);
-
-   if (event.ButtonUp())
-     Slide3(totalOffset, name);
-}
-
-// AS: Refactored stuff...
-void TrackPanel::Zoom1(wxMouseEvent &event)
-{
-  mZoomEnd = event.m_x;
-
-  int zoomLength = mZoomEnd - mZoomStart;
-  if (zoomLength < 0)
-    zoomLength = - zoomLength;
-
-  if (zoomLength > 3)
-    mIsZooming = true;
-
-  if (mIsZooming)
-    Refresh(false);
-}
-
-// AS: Refactored
-void TrackPanel::Zoom3(wxMouseEvent &event, wxRect &r)
-{
-  double left =
-    mViewInfo->h + ((mZoomStart - r.x) / mViewInfo->zoom);
-  double right = 
-    mViewInfo->h + ((mZoomEnd - r.x) / mViewInfo->zoom);      
-  
-  mViewInfo->zoom *= mViewInfo->screen/(right-left);
-  
-  if (mViewInfo->zoom > 6000000)
-    mViewInfo->zoom = 6000000;
-  
-  mViewInfo->h = left;
-}
-
-// AS: Yup
-void TrackPanel::Zoom4(wxMouseEvent &event, wxRect &r)
-{
-  double center_h = mViewInfo->h + (event.m_x - r.x) / mViewInfo->zoom;
-    
-  if (event.RightUp() || event.RightDClick() || event.ShiftDown())
-    mViewInfo->zoom /= 2.0;
-  else
-    mViewInfo->zoom *= 2.0;
-    
-  if (event.MiddleUp() || event.MiddleDClick())
-    mViewInfo->zoom = 44100.0 / 512.0;
-    
-  if (mViewInfo->zoom > 6000000)
-    mViewInfo->zoom = 6000000;
-    
-  double new_center_h =
-    mViewInfo->h + (event.m_x - r.x) / mViewInfo->zoom;
-  
-  mViewInfo->h += (center_h - new_center_h);
-}
-
-// AS: Uh-huh.
-void TrackPanel::Zoom2(wxMouseEvent &event)
-{
-  int zoomLength = mZoomEnd - mZoomStart;      
-  if (zoomLength < 0) {
-    zoomLength = - zoomLength;
-    std::swap(mZoomEnd, mZoomStart);
-  }
-
-  wxRect r;
-  int num;
-  VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
-
-  if (mIsZooming || zoomLength > 3)
-    Zoom3(event, r);
-  else
-    Zoom4(event, r);
-  mIsZooming = false;
-    
-  if (mViewInfo->h < 0)
-    mViewInfo->h = 0;
-
-  MakeParentRedrawScrollbars();
-  Refresh(false);
-}
-
-// AS: This function takes care of all zoom requests?
+// AS: This function takes care of our different zoom 
+//  possibilities.  It is possible for a user to just
+//  "zoom in" or "zoom out," but it is also possible 
+//  for a user to drag and select an area that he
+//  or she wants to be zoomed in on.  We use mZoomStart
+//  and mZoomEnd to track the beggining and end of such
+//  a zoom area.  Note that the ViewInfo member
+//  mViewInfo actually keeps track of our zoom constant,
+//  so we achieve zooming by altering the zoom constant
+//  and forcing a refresh.
 void TrackPanel::HandleZoom(wxMouseEvent &event)
 {
    if (event.ButtonDown() || event.ButtonDClick()) {
       mZoomStart = event.m_x;
       mZoomEnd = event.m_x;
    }
-   else if (event.Dragging())
-     Zoom1(event);
-   else if (event.ButtonUp())
-     Zoom2(event);
+   else if (event.Dragging()) {
+     mZoomEnd = event.m_x;
+     
+     if (IsDragZooming())
+       Refresh(false);
+   }
+   else if (event.ButtonUp()) {
+     if (mZoomEnd < mZoomStart)
+       std::swap(mZoomEnd, mZoomStart);
+
+     wxRect r;
+     int num;
+     VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
+     
+     if (IsDragZooming())
+       DragZoom(r.x);
+     else
+       DoZoomInOut(event, r.x);
+     
+     mZoomEnd = mZoomStart = 0;
+     
+     // AS: MAGIC NUMBER: 
+     clip_top   (mViewInfo->zoom, 6000000);
+     clip_bottom(mViewInfo->h   , 0      );
+     
+     MakeParentRedrawScrollbars();
+     Refresh(false);
+   }
 }
 
-// AS: I'm guessing that this gets called when the application
-// or at least the TrackPanel is being closed??
-// Ah, this is probably for when a given track gets the x...
+// AS: This actually sets the Zoom value when you're done doing
+//  a drag zoom.
+void TrackPanel::DragZoom(int x)
+{
+  double left  = ZoomBorder(mZoomStart, x);
+  double right = ZoomBorder(mZoomEnd  , x);      
+
+  mViewInfo->zoom *= mViewInfo->screen/(right-left);
+
+  mViewInfo->h = left;
+}
+
+// AS: This handles normal Zoom In/Out, if you just clicked;
+//  IOW, if you were NOT dragging to zoom an area.
+// AS: MAGIC NUMBER: We've got several in this function.
+void TrackPanel::DoZoomInOut(wxMouseEvent &event, int x_center)
+{
+  double center_h = ZoomBorder(event.m_x, x_center);
+
+  if (event.RightUp() || event.RightDClick() || event.ShiftDown())
+    mViewInfo->zoom /= 2.0;
+  else
+    mViewInfo->zoom *= 2.0;
+
+  if (event.MiddleUp() || event.MiddleDClick())
+    mViewInfo->zoom = 44100.0 / 512.0;  // AS: Reset zoom.
+
+  double new_center_h = ZoomBorder(event.m_x, x_center);
+
+  mViewInfo->h += (center_h - new_center_h);
+}
+
+// AS: This is for when a given track gets the x.
 void TrackPanel::HandleClosing(wxMouseEvent & event)
 {
    VTrack *t = mCapturedTrack;
@@ -1637,7 +1642,7 @@ void TrackPanel::DrawEverythingElse(wxDC *dc, const wxRect panelRect, const wxRe
    for (VTrack *t = iter.First();t;t = iter.Next())
      DrawEverythingElse(t, dc, r, trackRect );
 
-   if (mIsZooming)
+   if (IsDragZooming())
      DrawZooming(dc, clip);
 
    // Paint over the part below the tracks
@@ -2006,12 +2011,8 @@ void TrackPanel::OnChangeOctave(wxEvent &event)
   NoteTrack *t = dynamic_cast<NoteTrack*>(mPopupMenuTarget);
   
   bool bDown = (OnDownOctaveID == event.GetId());
-  t->mBottomNote += (bDown) ? -12 : 12;
-  if (t->mBottomNote < 0)
-    t->mBottomNote = 0;
-  else if (t->mBottomNote > 96)
-    t->mBottomNote = 96;
-  
+  t->SetBottomNote( t->GetBottomNote() + ((bDown) ? -12 : 12));
+
   MakeParentPushState("TrackPanel::OnChangeOctave() FIXME!!");
   Refresh(false);
 }
