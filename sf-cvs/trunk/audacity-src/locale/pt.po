@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.1\n"
 "POT-Creation-Date: 2003-07-03 23:55-0700\n"
-"PO-Revision-Date: 2003-07-27 01:55-0300\n"
+"PO-Revision-Date: 2003-08-06 00:34-0300\n"
 "Last-Translator: Cleber Tavano <linux@mcm.net>\n"
 "Language-Team: Cleber Tavano <linux@mcm.net>\n"
 "MIME-Version: 1.0\n"
@@ -57,7 +57,7 @@ msgstr "&Sobre..."
 
 #: ../src/Menus.cpp:170
 msgid "&All\tCtrl+A"
-msgstr "&Tudo\tCtrl+A"
+msgstr "Selecionar &Tudo\tCtrl+A"
 
 #: ../src/Menus.cpp:315
 msgid "&Analyze"
@@ -109,7 +109,7 @@ msgstr "&Ajustar à janela\tCtrl+F"
 
 #: ../src/Menus.cpp:271
 msgid "&Generate"
-msgstr "&Inserir"
+msgstr "&Gerar"
 
 #: ../src/Menus.cpp:337
 msgid "&Help"
@@ -174,7 +174,7 @@ msgstr "&Salvar projeto\tCtrl+S"
 
 #: ../src/Menus.cpp:162
 msgid "&Silence\tCtrl+L"
-msgstr "&Silêncio\tCtrl+L"
+msgstr "&Silenciar\tCtrl+L"
 
 #: ../src/Menus.cpp:159
 #, fuzzy
@@ -660,7 +660,7 @@ msgstr "Dispositivos"
 
 #: ../src/WaveTrack.cpp:127
 msgid "Audio Track"
-msgstr "Faixa de Áudio"
+msgstr "Áudio"
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:425
 msgid "Author: "
@@ -778,7 +778,6 @@ msgstr "Centro"
 #. "spectrum".  Do not translate it unless you are sure you
 #. know the correct technical word in your language.
 #: ../src/FreqWindow.cpp:132
-#, fuzzy
 msgid "Cepstrum"
 msgstr "Cepstro"
 
@@ -1082,7 +1081,7 @@ msgstr "Criada nova faixa de áudio estéreo"
 
 #: ../src/Menus.cpp:2433
 msgid "Created new time track"
-msgstr "Criado nova faixa de tempo"
+msgstr "Criada nova faixa de tempo"
 
 #: ../src/effects/NoiseRemoval.h:42
 msgid "Creating Noise Profile"
@@ -1118,7 +1117,7 @@ msgstr "Cursor à Direita\tSeta Direita"
 
 #: ../src/Menus.cpp:172
 msgid "Cursor to End"
-msgstr "Cursor no final da faixa"
+msgstr "Selecionar do cursor até o final"
 
 #: ../src/FormatSelection.cpp:412
 #, c-format
@@ -1218,7 +1217,7 @@ msgstr "Cursor: %lf seg   [Antecipando amostras]"
 #: ../src/FormatSelection.cpp:649
 #, c-format
 msgid "Cursor: %li samples   [Snap-To Samples]"
-msgstr "Cursor: %li amostras   [antecipando amostras]"
+msgstr "Cursor: %li amostras   [Antecipando amostras]"
 
 #: ../src/EditToolBar.cpp:144
 #: ../src/Menus.cpp:1267
@@ -1352,7 +1351,7 @@ msgstr "Ferramenta de desenho"
 
 #: ../src/TrackPanel.cpp:2064
 msgid "Draw currently only works with waveforms."
-msgstr "Desenhar funciona apenas em ondas wave."
+msgstr "A ferramenta Desenhar funciona apenas em ondas wave."
 
 #: ../src/Menus.cpp:1435
 msgid "Duplicate"
@@ -1368,7 +1367,7 @@ msgstr "Compressor de extensão dinâmica"
 
 #: ../src/effects/Compressor.cpp:417
 msgid "Dynamic Range Compressor by Dominic Mazzoni"
-msgstr "Dynamic Range Compressor by Dominic Mazzoni"
+msgstr "Compressor de extensão dinâmica por Dominic Mazzoni"
 
 #: ../src/Menus.cpp:135
 msgid "E&xit"
@@ -1558,7 +1557,7 @@ msgstr "Exportar rótulos como:"
 #: ../src/export/ExportMP3.cpp:85
 #: ../src/export/ExportMP3.cpp:125
 msgid "Export MP3"
-msgstr "Exportação em formato .MP3"
+msgstr "Exportar em formato .MP3"
 
 #: ../src/Menus.cpp:118
 msgid "Export Selection As MP3..."
@@ -1578,7 +1577,7 @@ msgstr "Exportar..."
 
 #: ../src/export/ExportOGG.cpp:169
 msgid "Exporting the entire project as Ogg Vorbis"
-msgstr "Exportando todo o projeto como OGG Vorbis"
+msgstr "Exportando todo o projeto como Ogg Vorbis"
 
 #: ../src/export/ExportPCM.cpp:131
 #, c-format
@@ -1595,7 +1594,7 @@ msgstr "Exportando todo o projeto usando o intepretador de linha de comando"
 
 #: ../src/export/ExportOGG.cpp:168
 msgid "Exporting the selected audio as Ogg Vorbis"
-msgstr "Exportando o trecho selecionado como OGG Vorbis"
+msgstr "Exportando o trecho selecionado como Ogg Vorbis"
 
 #: ../src/export/ExportPCM.cpp:126
 #, c-format
@@ -1952,7 +1951,7 @@ msgstr "Erro LOF"
 
 #: ../src/Menus.cpp:2471
 msgid "Label"
-msgstr "Faixa de rótulo"
+msgstr "Rótulo"
 
 #: ../src/TrackPanel.cpp:2978
 msgid "Label Edit"
@@ -1960,11 +1959,11 @@ msgstr "Editar faixa de rótulo"
 
 #: ../src/LabelTrack.cpp:31
 msgid "Label Track"
-msgstr "Faixa de rótulo"
+msgstr "Rótulo"
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:439
 msgid "Ladspa Effect Settings"
-msgstr "Ajuste do Efeito  Landspa"
+msgstr "Ajuste do Efeito Ladspa"
 
 #: ../src/FreqWindow.cpp:1016
 msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
@@ -2098,7 +2097,7 @@ msgstr "Versão do Plug-in :"
 
 #: ../src/prefs/FileFormatPrefs.cpp:261
 msgid "MP3 exporting plugin not found"
-msgstr "Plug-in não encontrado"
+msgstr "Plug-in de exportação em formato MP3 não encontrado"
 
 #: ../src/AboutDialog.cpp:78
 msgid "MP3 importing disabled"
@@ -2254,14 +2253,13 @@ msgstr "NTSC drop-frame h:mm:ss:ff"
 
 #. i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:37
-#, fuzzy
 msgid "NTSC frames 29.97 fps"
-msgstr "Cursor: %.3lf quadros NTSC (29.97 fps)   %s"
+msgstr "Quadros NTSC (29.97 fps)"
 
 #. i18n-hint: hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:41
 msgid "NTSC non-drop-frame h:mm:ss:ff"
-msgstr "NTSC non-drop-frame h:mm:ss:ff"
+msgstr "Quadros NTSC non-drop h:mm:ss:ff"
 
 #: ../src/TrackPanel.cpp:4078
 msgid "Name Change"
@@ -2280,7 +2278,7 @@ msgstr "Nova faixa de &áudio"
 
 #: ../src/Menus.cpp:240
 msgid "New &Stereo Track"
-msgstr "Criar faixa e&stéreo"
+msgstr "Nova faixa de áudio e&stéreo"
 
 #: ../src/Menus.cpp:242
 msgid "New &Time Track"
@@ -2372,7 +2370,7 @@ msgstr "Não é uma biblioteca válida para exportação de MP3"
 
 #: ../src/import/ImportOGG.cpp:126
 msgid "Not an Ogg Vorbis file"
-msgstr "Não é um arquivo OGG Vorbis"
+msgstr "Não é um arquivo Ogg Vorbis"
 
 #: ../src/FreqWindow.cpp:454
 msgid "Not enough data selected."
@@ -2426,11 +2424,11 @@ msgstr "Nyquist gerou faixas de áudio demais para mixar! \n"
 
 #: ../src/prefs/FileFormatPrefs.cpp:138
 msgid "OGG Export Setup"
-msgstr "Configurações de exportação OGG"
+msgstr "Configurações de exportação Ogg"
 
 #: ../src/prefs/FileFormatPrefs.cpp:147
 msgid "OGG Quality:"
-msgstr "Qualidade do OGG:"
+msgstr "Qualidade do Ogg:"
 
 #: ../src/LangChoice.cpp:93
 #: ../src/Tags.cpp:653
@@ -3176,7 +3174,7 @@ msgstr "Ajustar conversor"
 #: ../src/TrackPanel.cpp:3993
 #, fuzzy
 msgid "Set Range"
-msgstr "Ajuste da taxa "
+msgstr "Ajuste da extensão"
 
 #: ../src/TrackPanel.cpp:595
 msgid "Set Range..."
@@ -3265,16 +3263,16 @@ msgstr ""
 #. i18n-hint: Set snap-to mode on or off
 #: ../src/Menus.cpp:194
 msgid "Snap Off"
-msgstr "Antecipação desligada"
+msgstr "Desabilitar antecipação"
 
 #. i18n-hint: Set snap-to mode on or off
 #: ../src/Menus.cpp:192
 msgid "Snap On"
-msgstr "Antecipação ligada"
+msgstr "Habilitar antecipação "
 
 #: ../src/Menus.cpp:189
 msgid "Snap-To..."
-msgstr "Antecipação em..."
+msgstr "Antecipação "
 
 #: ../src/TrackPanel.cpp:4314
 msgid "Solo"
@@ -3452,7 +3450,7 @@ msgstr "Ferramenta Deslizar"
 
 #: ../src/TimeTrack.cpp:40
 msgid "Time Track"
-msgstr "Faixa de Tempo"
+msgstr "Tempo"
 
 #: ../src/prefs/MousePrefs.cpp:97
 #, fuzzy
@@ -3600,7 +3598,7 @@ msgstr "Limite máximo de velocidade"
 
 #: ../src/prefs/FileFormatPrefs.cpp:158
 msgid "Use OGG instead of MP3"
-msgstr "Use OGG no lugar de MP3"
+msgstr "Use Ogg no lugar de MP3"
 
 #: ../src/AudacityApp.cpp:595
 #, c-format
@@ -3642,7 +3640,7 @@ msgstr "WET"
 
 #: ../src/effects/Wahwah.cpp:502
 msgid "Wah Frequency Offset (%):"
-msgstr "Wah Frequency Offset (%):"
+msgstr "Freqüência de Compensação Offset (%):"
 
 #: ../src/effects/Wahwah.cpp:51
 msgid "Wahwah"
@@ -3832,7 +3830,7 @@ msgstr "cdda min:seg:quadros 75 fps"
 #. you know the correct term.
 #: ../src/FormatSelection.cpp:54
 msgid "cdda sectors+bytes (snap to samples)"
-msgstr "cdda setores+bytes (antecipando amostras)"
+msgstr "cdda setores+bytes (Antecipando amostras)"
 
 #: ../src/TrackPanel.cpp:4043
 #: ../src/effects/ChangePitch.cpp:278
@@ -3867,11 +3865,11 @@ msgstr "min:seg"
 
 #: ../src/FormatSelection.cpp:46
 msgid "min:sec (snap to samples)"
-msgstr "min:seg (antecipando amostras)"
+msgstr "min:seg (Antecipando amostras)"
 
 #: ../src/FormatSelection.cpp:48
 msgid "min:sec+samples (snap to samples)"
-msgstr "min:seg+amostras (antecipando amostras)"
+msgstr "min:seg+amostras (Antecipando amostras)"
 
 #. i18n-hint: n/a is an English
 #. abbreviation meaning "not
@@ -3887,7 +3885,7 @@ msgstr "direito"
 
 #: ../src/FormatSelection.cpp:45
 msgid "samples (snap to samples)"
-msgstr "amostras (antecipando amostras)"
+msgstr "amostras (Antecipando amostras)"
 
 #: ../src/FormatSelection.cpp:24
 msgid "sec"
@@ -3895,11 +3893,11 @@ msgstr "seg"
 
 #: ../src/FormatSelection.cpp:47
 msgid "sec (snap to samples)"
-msgstr "seg (antecipando amostras)"
+msgstr "seg (Antecipando amostras)"
 
 #: ../src/FormatSelection.cpp:49
 msgid "sec+samples (snap to samples)"
-msgstr "seg+amostras (antecipando amostras)"
+msgstr "seg+amostras (Antecipando amostras)"
 
 #: ../src/FreqWindow.cpp:987
 msgid "spectrum.txt"
