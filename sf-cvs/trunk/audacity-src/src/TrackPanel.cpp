@@ -208,6 +208,9 @@ enum {
    OnMergeStereoID,
 
    OnSetTimeTrackRangeID,
+   OnCutSelectedTextID,
+   OnCopySelectedTextID,
+   OnPasteSelectedTextID,
 };
 
 BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
@@ -228,6 +231,10 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU(OnRateOtherID, TrackPanel::OnRateOther)
     EVT_MENU(OnSplitStereoID, TrackPanel::OnSplitStereo)
     EVT_MENU(OnMergeStereoID, TrackPanel::OnMergeStereo)
+
+    EVT_MENU(OnCutSelectedTextID, TrackPanel::OnCutSelectedText)
+    EVT_MENU(OnCopySelectedTextID, TrackPanel::OnCopySelectedText)
+    EVT_MENU(OnPasteSelectedTextID, TrackPanel::OnPasteSelectedText)
 END_EVENT_TABLE()
 
 
@@ -342,6 +349,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mIsPanSliding = false;
    mIsMinimizing = false;
    mSlideUpDownOnly = false;
+   startXPos=-1;
 
    gPrefs->Read("/GUI/AdjustSelectionEdges", &mAdjustSelectionEdges, true);
 
@@ -429,6 +437,11 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mTimeTrackMenu->AppendSeparator();
    mTimeTrackMenu->Append(OnSetTimeTrackRangeID, _("Set Range..."));
 
+   mLabelTrackLabelMenu = new wxMenu();
+   mLabelTrackLabelMenu->Append(OnCutSelectedTextID, _("Cut"));
+   mLabelTrackLabelMenu->Append(OnCopySelectedTextID, _("Copy"));
+   mLabelTrackLabelMenu->Append(OnPasteSelectedTextID, _("Paste"));
+
    mTrackArtist = new TrackArtist();
    mTrackArtist->SetInset(1, kTopInset + 1, kLeftInset + 2, 1);
 
@@ -490,6 +503,7 @@ TrackPanel::~TrackPanel()
    delete mWaveTrackMenu;
    delete mNoteTrackMenu;
    delete mLabelTrackMenu;
+   delete mLabelTrackLabelMenu;
    delete mTimeTrackMenu;
 
    while(!mScreenAtIndicator.IsEmpty())
@@ -550,6 +564,24 @@ void TrackPanel::GetTracksUsableArea(int *width, int *height) const
 
    // AS: MAGIC NUMBER: What does 2 represent?
    *width -= 2 + kLeftInset;
+}
+
+AudacityProject * TrackPanel::GetProject() const
+{
+   wxWindow * pWind;
+   pWind = GetParent(); //Page
+   wxASSERT( pWind );
+// Commented out section will be used when we have
+// the tracks in a Notebook
+#if 0
+   pWind = pWind->GetParent(); //Notebook
+   wxASSERT( pWind );
+   pWind = pWind->GetParent(); //MainPanel
+   wxASSERT( pWind );
+   pWind = pWind->GetParent(); //Project
+   wxASSERT( pWind );
+#endif
+   return (AudacityProject*)pWind;
 }
 
 void TrackPanel::RemoveStaleCursors(wxRegionIterator * upd)
@@ -693,7 +725,7 @@ void TrackPanel::DrawCursors(wxDC * dc)
                int warpedX = GetLeftOffset() + int (t0 * mViewInfo->zoom);
                dc->DrawLine(warpedX, y + kTopInset + 1, warpedX, y + height - 2);
             }
-         else if (t->GetSelected() && t->GetKind() != Track::Label)
+         else if (t->GetSelected())// && t->GetKind() != Track::Label)
          {
             wxCoord top = y + kTopInset + 1;
             wxCoord bottom = y + height - 2;
@@ -737,7 +769,7 @@ void TrackPanel::OnTimer()
    }
 
    wxCommandEvent dummyEvent;
-   AudacityProject *p = (AudacityProject*)GetParent();
+   AudacityProject *p = GetProject();
 
    // Each time the loop, check to see if we were playing or
    // recording audio, but the stream has stopped.
@@ -869,7 +901,7 @@ void TrackPanel::UpdateIndicator(wxDC * dc)
 
    // BG: Scroll screen if option is set
    // msmeyer: But only if not playing looped or in one-second mode
-   AudacityProject *p = (AudacityProject*)GetParent();
+   AudacityProject *p = GetProject();
    if (mViewInfo->bUpdateTrackIndicator &&
        p->mLastPlayMode != loopedPlay &&
        p->mLastPlayMode != oneSecondPlay && 
@@ -1021,7 +1053,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 {
    mLastMouseEvent = event;
 
-   AudacityProject *p = (AudacityProject*)GetParent();
+   AudacityProject *p = GetProject();
    bool unsafe = (p->GetAudioIOToken()>0 &&
                   gAudioIO->IsStreamActive(p->GetAudioIOToken()));
 
@@ -1718,7 +1750,7 @@ void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
    // Implement sliding between different tracks
    WaveTrackArray tracks = mTracks->GetWaveTrackArray(false);
    WaveTrack* mouseTrack = NULL;
-   for (int i=0; i<tracks.GetCount(); i++)
+   for (int i=0; i<(int)tracks.GetCount(); i++)
    {
       WaveTrack* track = tracks.Item(i);
       wxRect r;
@@ -2369,7 +2401,7 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
    else if (event.ButtonUp(1)) {
       mTrackLabel.DrawCloseBox(&dc, r, false);
       if (closeRect.Inside(event.m_x, event.m_y)) {
-         AudacityProject *p = (AudacityProject*)GetParent();
+         AudacityProject *p = GetProject();
          if (!gAudioIO->IsStreamActive(p->GetAudioIOToken()))
             RemoveTrack(t);
          mCapturedTrack = 0;
@@ -2623,7 +2655,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    if (!(event.ButtonDown(1) || event.ButtonDClick(1)))
       return;
 
-   AudacityProject *p = (AudacityProject*)GetParent();
+   AudacityProject *p = GetProject();
    bool unsafe = (p->GetAudioIOToken()>0 &&
                   gAudioIO->IsStreamActive(p->GetAudioIOToken()));
 
@@ -3055,7 +3087,7 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
    // There currently isn't a way to efficiently work with
    // more than one LabelTrack
    for (Track * t = iter.First(); t; t = iter.Next()) {
-      if (t->GetKind() == Track::Label && t->GetSelected()) {
+      if (t->GetKind() == Track::Label && t->GetSelected() && ((LabelTrack*)t)->getKeyOn()) {
          ((LabelTrack *) t)->KeyEvent(mViewInfo->sel0, mViewInfo->sel1,
                                       event);
          
@@ -3201,7 +3233,7 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
    wxRect rLabel;
    int dummy;
 
-   AudacityProject *p = (AudacityProject*)GetParent();
+   AudacityProject *p = GetProject();
    bool unsafe = (p->GetAudioIOToken()>0 &&
                   gAudioIO->IsStreamActive(p->GetAudioIOToken()));
 
@@ -3238,8 +3270,24 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
    
    if (pTrack && (pTrack->GetKind() == Track::Label)) 
    {
+      
+      LabelTrack *lTrack = (LabelTrack *) pTrack; 
+
       if(event.ButtonDown(1))      
       {
+         lTrack->SetKeyOn(true);
+
+         TrackListIterator iter(mTracks);
+         Track *n = iter.First();
+    
+         while (n) {
+               if (n->GetKind() == Track::Label && pTrack != n) {
+                  ((LabelTrack *)n)->ResetFlags();
+               }
+            
+            n = iter.Next();
+         }
+
          //If the button was pressed, check to see if we are over
          //a glyph (this is the second of three calls to the function).
          //std::cout << ((LabelTrack*)pTrack)->OverGlyph(event.m_x, event.m_y) << std::endl;
@@ -3253,19 +3301,82 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
       } else if( event.ButtonUp(1)) {
          mIsAdjustingLabel = false;
       }
-      ((LabelTrack *) pTrack)->HandleMouse(event, r,//mCapturedRect,
-                                           mViewInfo->h, mViewInfo->zoom,
-                                           &mViewInfo->sel0, &mViewInfo->sel1);
+      
+      lTrack->HandleMouse(event, r,//mCapturedRect,
+                          mViewInfo->h, mViewInfo->zoom, &mViewInfo->sel0, &mViewInfo->sel1);
+      
+      if (event.ButtonDown(3)) {
+         // popup menu for editing
+         Refresh(false);
+        
+         if ((lTrack->getSelectedIndex() != -1) && lTrack->OverTextBox(lTrack->GetLabel(lTrack->getSelectedIndex()), event.m_x, event.m_y)) {
+            mPopupMenuTarget = lTrack;
+            mLabelTrackLabelMenu->Enable(OnCutSelectedTextID, true);
+            mLabelTrackLabelMenu->Enable(OnCopySelectedTextID, true);
+            mLabelTrackLabelMenu->Enable(OnPasteSelectedTextID, lTrack->IsTextClipSupported());
+            PopupMenu(mLabelTrackLabelMenu, event.m_x + 1, event.m_y + 1);
+            // it's an invalid dragging event
+            lTrack->SetWrongDragging(true);
+         }
+         return;
+      }
+      
+      //If we are adjusting a label on a labeltrack, do not do anything 
+      //that follows. Instead, redraw the track.
+      if(mIsAdjustingLabel)
+      {
+         Refresh(false);
+         return;
+      }
+
+      // handle dragging
+      if(event.Dragging()) {
+         // locate the initial mouse position
+         if (event.LeftIsDown()) {
+            if (startXPos == -1) {
+               startXPos = event.m_x;
+               startYPos = event.m_y;
+
+               if ((lTrack->getSelectedIndex() != -1) && lTrack->OverTextBox(lTrack->GetLabel(lTrack->getSelectedIndex()), startXPos, startYPos)) {
+                  startYPos = -1;
+               }
+            }
+            // if initial mouse position in the text box
+            // then only drag text
+            if (startYPos == -1) {
+               Refresh(false);
+               return;
+            }
+         }
+      }
+     
+      // handle mouse left button up
+      if (event.LeftUp()) {
+         startXPos = -1;
+      }
+
+      // handle shift+ctrl down
+      /*if (event.ShiftDown()) { // && event.ControlDown()) {
+         lTrack->SetHighlightedByKey(true);
+         Refresh(false);
+         return;
+      }*/
+
+      // handle shift+mouse left button
+      if (event.ShiftDown() && event.ButtonDown() && (lTrack->getSelectedIndex() != -1)) {
+         // if the mouse is clicked in text box, set flags
+         if (lTrack->OverTextBox(lTrack->GetLabel(lTrack->getSelectedIndex()), event.m_x, event.m_y)) {
+            lTrack->SetInBox(true);
+            lTrack->SetDragXPos(event.m_x);
+            lTrack->SetResetCursorPos(true);
+            Refresh(false);
+            return;
+         }
+      }
+
+      
    }
    
-   //If we are adjusting a label on a labeltrack, do not do anything 
-   //that follows. Instead, redraw the track.
-   if(mIsAdjustingLabel)
-   {
-      Refresh(false);
-      return;
-   }
-
    ControlToolBar * pCtb = mListener->TP_GetControlToolBar();
    if( pCtb == NULL )
       return;
@@ -3819,7 +3930,7 @@ void TrackPanel::DrawOutsideOfTrack(Track * t, wxDC * dc, const wxRect r)
 
 void TrackPanel::DrawRuler( wxDC * dc, bool text )
 {
-   AudacityProject *p = (AudacityProject*)GetParent();
+   AudacityProject *p = GetProject();
    bool bIndicators = gAudioIO->IsStreamActive(p->GetAudioIOToken());
    mRuler->indicatorPos = bIndicators ? gAudioIO->GetStreamTime() : 0.0;
 
@@ -4218,6 +4329,31 @@ void TrackPanel::OnSetName(wxCommandEvent &event)
 
       Refresh(false);
    }
+}
+
+
+// cut selected text if cut menu item is selected
+void TrackPanel::OnCutSelectedText(wxCommandEvent &event)
+{
+   Track *t = mPopupMenuTarget;
+   ((LabelTrack *)t)->CutSelectedText();
+   Refresh(false);
+}
+
+// copy selected text if copy menu item is selected
+void TrackPanel::OnCopySelectedText(wxCommandEvent &event)
+{
+   Track *t = mPopupMenuTarget;
+   ((LabelTrack *)t)->CopySelectedText();
+   Refresh(false);
+}
+
+// paste selected text if paste menu item is selected
+void TrackPanel::OnPasteSelectedText(wxCommandEvent &event)
+{
+   Track *t = mPopupMenuTarget;
+   ((LabelTrack *)t)->PasteSelectedText();
+   Refresh(false);
 }
 
 class MyFontEnumerator : public wxFontEnumerator

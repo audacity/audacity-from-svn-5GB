@@ -13,6 +13,7 @@
 
 #include <wx/timer.h>
 #include <wx/window.h>
+#include <wx/panel.h>
 
 //Stm:  The following included because of the sampleCount struct.
 #include "Sequence.h"  
@@ -31,6 +32,7 @@ class Ruler;
 class AdornedRulerPanel;
 class LWSlider;
 class ControlToolBar; //Needed because state of controls can affect what gets drawn.
+class AudacityProject;
 
 struct ViewInfo;
 
@@ -156,6 +158,7 @@ class TrackPanel:public wxWindow {
    void SetSnapTo(int snapto);
 
    void HandleShiftKey(bool down);
+   AudacityProject * GetProject() const;
 
  private:
 
@@ -253,6 +256,10 @@ class TrackPanel:public wxWindow {
 
    void OnSplitStereo(wxCommandEvent &event);
    void OnMergeStereo(wxCommandEvent &event);
+   void OnCutSelectedText(wxCommandEvent &event);
+   void OnCopySelectedText(wxCommandEvent &event);
+   void OnPasteSelectedText(wxCommandEvent &event);
+
 
    void RemoveTrack(Track * toRemove);
 
@@ -290,6 +297,9 @@ class TrackPanel:public wxWindow {
    int MoveClipToTrack(int clipIndex, WaveTrack* src, WaveTrack* dst);
 
    TrackLabel mTrackLabel;
+   int startXPos;
+   int startYPos;
+   
 
    TrackPanelListener *mListener;
 
@@ -409,6 +419,7 @@ class TrackPanel:public wxWindow {
    wxMenu *mLabelTrackMenu;
    wxMenu *mRateMenu;
    wxMenu *mFormatMenu;
+   wxMenu *mLabelTrackLabelMenu;
 
    Track *mPopupMenuTarget;
 
