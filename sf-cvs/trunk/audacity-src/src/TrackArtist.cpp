@@ -41,12 +41,6 @@
 #include "ViewInfo.h"
 #include "widgets/Ruler.h"
 
-#ifdef new
-#undef new
-#endif
-
-#include <iostream>
-
 const int octaveHeight = 62;
 const int blackPos[5] = { 6, 16, 32, 42, 52 };
 const int whitePos[7] = { 0, 9, 17, 26, 35, 44, 53 };
