@@ -1,0 +1,2198 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: audacity site\n"
+"POT-Creation-Date: 2005-01-07 15:43-0800\n"
+"PO-Revision-Date: 2005-01-28 11:03-0300\n"
+"Last-Translator: Cleber Tavano <fotocleber@clarius.com.br>\n"
+"Language-Team: Cleber Tavano <fotocleber@clarius.com.br>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: about/credits.php:10
+#: main.inc.php:24
+msgid "Credits"
+msgstr "Créditos"
+
+#: about/credits.php:15
+msgid ""
+"These are some of the people who have <a href=\"../community/\">contributed</a> to the free Audacity audio editor.</p>  \n"
+"</p>If you have questions or feedback about Audacity, please see the <a href=\"../contact/\">contact page</a>."
+msgstr ""
+"Estas são algumas das pessoas que <a href=\"../community/\">contribuiram</a> para o projeto do editor livre de áudio Audacity.</p>\n"
+"</P>Caso tenha alguma dúvida, por favor entre em contato através da <a href=\"../contact/\">página de contato</a>."
+
+#: about/credits.php:18
+msgid "Lead Developers"
+msgstr "Desenvolvedores primários"
+
+#: about/credits.php:21
+msgid "Dominic is the project leader and original author of Audacity."
+msgstr "Dominic é o líder do projeto e o autor original do Audacity."
+
+#: about/credits.php:29
+msgid "Active Developers"
+msgstr "Desenvolvedores ativos"
+
+#: about/credits.php:35
+msgid "Contributors"
+msgstr "Colaboradores"
+
+#: about/credits.php:49
+#: main.inc.php:56
+#: community/index.php:21
+#: community/translation.php:10
+msgid "Translators"
+msgstr "Tradutores"
+
+#: about/credits.php:86
+msgid "Libraries"
+msgstr "Bibliotecas"
+
+#: about/credits.php:87
+msgid "Audacity is based on code from the following projects:"
+msgstr "O Audacity é baseado em códigos dos seguintes projetos:"
+
+#: about/credits.php:101
+msgid "Thanks"
+msgstr "Muito obrigado"
+
+#: about/credits.php:102
+msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
+msgstr "Há muitas pessoas e companhias que gostaríamos de agradecer. Muitas contribuiram com códigos, outras com sugestões, reprtando falhas, com dinheiro ou tempo para o projeto. Outros fizeram ferramentas que possibilitam com que o projeto se torne viável."
+
+#: about/credits.php:122
+msgid "(Let us know if we're forgetting anyone!)"
+msgstr "(Avise se você acha que faltou alguém!)"
+
+#: about/features.php:9
+#: main.inc.php:20
+msgid "Features"
+msgstr "Recursos"
+
+#: about/features.php:13
+msgid "This is a list of features in Audacity, the free audio editor.  For more information on how to use these features, go to the <a href=\"../help/\">help pages</a>."
+msgstr "Esta é a lista de recursos do Audacity. Para mais informações, visite a <a href=\"../help/\">página de ajuda</a>."
+
+#: about/features.php:15
+msgid ""
+"<h3>Recording</h3>\n"
+"<p>Audacity can record live audio through a microphone or mixer, or digitize recordings from cassette tapes, vinyl records, or minidiscs.  With some sound cards, it can also capture streaming audio.</p>\n"
+"<ul>\n"
+"  <li>Record from microphone, line input, or other sources.</li>\n"
+"  <li>Dub over existing tracks to create multi-track recordings.</li>\n"
+"  <li>Record up to 16 channels at once (requires multi-channel hardware).</li>\n"
+"  <li>Level meters can monitor volume levels before, during, and after recording.</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Gravação</h3>\n"
+"<p>O Audacity pode gravar sons por um microfone ou mixer, ou digitalizar áudio de fitas cassete, discos de vinil ou minidisc. Em algumas placas de som, é possível até mesmo gravar sons de streaming.</p>\n"
+"<ul>\n"
+"  <li>Grave de microfone, entrada de linha ou qualquer outra fonte. </li>\n"
+"  <li>Duble faixas sobre outras já existentes e crie projetos multi-faixas.</li>\n"
+"  <li>Grave até 16 canais ao mesmo tempo (requer hardware especial).</li>\n"
+"  <li>Medidores de nível de som exibem o volume antes, durante e depois da gravação em tempo real.</li>\n"
+"</ul>"
+
+#: about/features.php:25
+msgid ""
+"<h3>Import and Export</h3>\n"
+"<p>Import sound files, edit them, and combine them with other files or new recordings.  Export your recordings in several common file formats.</p>\n"
+"<ul>\n"
+"  <li>Import and export WAV, AIFF, AU, and <a href=\"http://vorbis.com\">Ogg Vorbis</a> files.</li>\n"
+"  <li>Import MPEG audio (including MP2 and MP3 files) with <a href=\"http://www.underbit.com/products/mad/\">libmad</a>.</li>\n"
+"  <li>Export MP3s with the optional LAME encoder library.</li>\n"
+"  <li>Create WAV or AIFF files suitable for burning to CD.</li>\n"
+"  <li>Import and export all file formats supported by <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a>.</li>\n"
+"  <li>Open raw (headerless) audio files using the “Import Raw” command.</li>\n"
+"  <li><strong>Note:</strong>  Audacity does not currently support WMA, AAC, or most other proprietary or restricted file formats.</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Importar e Exportar</h3>\n"
+"<p>Importe arquivos de som, edite-os e combine-os para criar novas músicas. Quando estiver pronto, exporte em diversos formatos.</p>\n"
+"<ul>\n"
+"  <li>Importe e exporte WAV, AIFF, AU, e <a href=\"http://vorbis.com\">Ogg Vorbis</a>.</li>\n"
+"  <li>Importe aúdio em formato MPEG (incluindo mp2 e mp3) com o <a href=\"http://www.underbit.com/products/mad/\">libmad</a>.</li>\n"
+"  <li>Exporte MP3s com o LAME encoder (opcional).</li>\n"
+"  <li>Crie arquivos WAV ou AIFF prontos para serem queimados como CDs de áudio.</li>\n"
+"  <li>Import e exporte todos os tipos de arquivo suportados pelo <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a>.</li>\n"
+"  <li>Abra arquivos de som sem formatação com o comando “Importar dados não-formatados”.</li>\n"
+"  <li><strong>Nota:</strong>  O Audacity não oferece suporte a formatos proprietários de som como WMA e AAC.</li>\n"
+"</ul>"
+
+#: about/features.php:37
+msgid ""
+"<h3>Editing</h3>\n"
+"<ul>\n"
+"  <li>Easy editing with Cut, Copy, Paste, and Delete.</li>\n"
+"  <li>Use unlimited Undo (and Redo) to go back any number of steps.</li>\n"
+"  <li>Very fast editing of large files.</li>\n"
+"  <li>Edit and mix an unlimited number of tracks.</li>\n"
+"  <li>Use the Drawing tool to alter individual sample points.</li>\n"
+"  <li>Fade the volume up or down smoothly with the Envelope tool.</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Editar</h3>\n"
+"<ul>\n"
+"  <li>Edição simplificada com Cortar, Copiar, Colar e Apagar.</li>\n"
+"  <li>Desfazer ilimitados para qualquer passo na edição.</li>\n"
+"  <li>Edição rápida mesmo em arquivos grandes.</li>\n"
+"  <li>Edite e mixe um número infinito de faixas de áudio.</li>\n"
+"  <li>Use a ferramenta de Desenho para alterar pontos de amostra individualmente.</li>\n"
+"  <li>Aumente ou abaixe o volume suavemente com as ferramentas de envelope.</li>\n"
+"</ul>"
+
+#: about/features.php:47
+msgid ""
+"<h3>Effects</h3>\n"
+"<ul>\n"
+"  <li>Change the pitch without altering the tempo, or vice-versa.</li>\n"
+"  <li>Remove static, hiss, hum, or other constant background noises.</li>\n"
+"  <li>Alter frequencies with Equalization, FFT Filter, and Bass Boost effects.</li>\n"
+"  <li>Adjust volumes with Compressor, Amplify, and Normalize effects.\n"
+"  <li>Other built-in effects include:\n"
+"    <ul>\n"
+"      <li>Echo</li>\n"
+"      <li>Phaser</li>\n"
+"      <li>Wahwah</li>\n"
+"      <li>Reverse</li>\n"
+"    </ul>\n"
+"  </li>\n"
+"</ul>"
+msgstr ""
+"<h3>Efeitos</h3>\n"
+"<ul>\n"
+"  <li>Mude o timbre da gravação sem alterar o tempo, ou vice-versa.</li>\n"
+"  <li>Remova sons de estática, cliques e estalos no som de fundo.</li>\n"
+"  <li>Altere freqüências com os efeitos Equalização, filtro FFT e Reforço de graves.</li>\n"
+"  <li>Ajuste volumes com o efeito Compressor, Amplificar e Normalizar.\n"
+"  <li>Outros efeitos incluidos no programa incluem:\n"
+"    <ul>\n"
+"      <li>Eco</li>\n"
+"      <li>Phaser</li>\n"
+"      <li>Wahwah</li>\n"
+"      <li>Inverter</li>\n"
+"    </ul>\n"
+"  </li>\n"
+"</ul>"
+
+#: about/features.php:63
+msgid ""
+"<h3>Sound Quality</h3>\n"
+"<ul>\n"
+"  <li>Record and edit 16-bit, 24-bit, and 32-bit (floating point) samples.</li>\n"
+"  <li>Record at up to 96 KHz.</li>\n"
+"  <li>Sample rates and formats are converted using high-quality resampling and dithering.</li>\n"
+"  <li>Mix tracks with different sample rates or formats, and Audacity will convert them automatically in realtime.</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Qualidade do Som</h3>\n"
+"<ul>\n"
+"  <li>Grave e edite áudio com amostras em 16-bit, 24-bit, e 32-bit (ponto flutuante).</li>\n"
+"  <li>Grave áudio a até 96 KHz.</li>\n"
+"  <li>Taxas de amostragem e formatação são transformadas com um algoritmo de alta qualidade.</li>\n"
+"  <li>Mescle faixas de áudio de diferentes taxas e formatos, o Audacity se encarrega de convertê-las em tempo real.</li>\n"
+"</ul>"
+
+#: about/features.php:71
+msgid ""
+"<h3>Plug-Ins</h3>\n"
+"<ul>\n"
+"  <li>Add new effects with <a href=\"http://www.ladspa.org/\">LADSPA plugins</a>.</li>\n"
+"  <li>Audacity includes some sample plugins by <a href=\"http://plugin.org.uk/\">Steve Harris</a>.</li>\n"
+"  <li>Load VST plugins for Windows and Mac, with the optional <a href=\"http://audacityteam.org/vst/\">VST Enabler</a>.</li>\n"
+"  <li>Write new effects with the built-in <a href=\"../help/nyquist\">Nyquist</a> programming language.</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Plug-Ins</h3>\n"
+"<ul>\n"
+"  <li>Adicione novos efeitos com <a href=\"http://www.ladspa.org/\">plugins LADSPA</a>.</li>\n"
+"  <li>O Audacity já inclui alguns plug-ins de exemplo feitos por <a href=\"http://plugin.org.uk/\">Steve Harris</a>.</li>\n"
+"  <li>Carregue plug-ins VST para Windows e Mac, com o <a href=\"http://audacityteam.org/vst/\">VST Enabler</a>.</li>\n"
+"  <li>Crie novos efeitos com a linguagem <a href=\"../help/nyquist\">Nyquist</a> incluída no programa.</li>\n"
+"</ul>"
+
+#: about/features.php:79
+msgid ""
+"<h3>Analysis</h3>\n"
+"<ul>\n"
+"  <li>Spectrogram mode for visualizing frequencies.</li>\n"
+"  <li>“Plot Spectrum” command for detailed frequency analysis.</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Análises</h3>\n"
+"<ul>\n"
+"  <li>Modo Espectrograma para visualização de freqüências.</li>\n"
+"  <li>Comando “Desenhar Espectro” para análises detalhadas de freqüências.</li>\n"
+"</ul>"
+
+#: about/features.php:85
+msgid ""
+"<h3>Free and Cross-Platform</h3>\n"
+"<ul>\n"
+"  <li>Licensed under the <a href=\"license\">GNU General Public License (GPL)</a>.</li>\n"
+"  <li>Runs on Mac OS X, Windows, and GNU/Linux.</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Livre e multi-plataforma</h3>\n"
+"<ul>\n"
+"  <li>Licenciado sob a licença <a href=\"license\">GNU General Public License (GPL)</a>.</li>\n"
+"  <li>Com versões para Mac OS X, Windows, e GNU/Linux.</li>\n"
+"</ul>"
+
+#: about/index.php:9
+#: about/main.inc.php:11
+#: help/faq.php:23
+msgid "About Audacity"
+msgstr "Sobre o Audacity"
+
+#: about/index.php:14
+#, fuzzy
+msgid ""
+"<p>Audacity is a free, easy-to-use audio editor and recorder for Windows, Mac OS X, GNU/Linux, and other operating systems.  You can use Audacity to:</p>\n"
+"\n"
+"<ul>\n"
+"  <li>Record live audio.</li>\n"
+"  <li>Convert tapes and records into digital recordings or CDs.</li>\n"
+"  <li>Edit Ogg Vorbis, MP3, and WAV sound files.</li>\n"
+"  <li>Cut, copy, splice, and mix sounds together.</li>\n"
+"  <li>Change the speed or pitch of a recording.</li>\n"
+"  <li>And more! See the complete <a href=\"features\">list of features</a>.</li>\n"
+"</ul>"
+msgstr ""
+"<p>O Audacity é um editor de áudio livre e fácil de usar disponível para Windows, Mac OS X e GNU/Linux. Use o Audacity para:</p>\n"
+"\n"
+"<ul>\n"
+"  <li>Gravações ao vivo.</li>\n"
+"  <li>Transformar fitas cassete em gravações digitais e CDs.</li>\n"
+"  <li>Editar arquivos em formato Ogg Vorbis, MP3 e WAV.</li>\n"
+"  <li>Cortar, copiar, colar e juntar sons e faixas de áudio.</li>\n"
+"  <li>Alterar a velocidade ou o timbre de uma gravação.</li>\n"
+"  <li>E muito mais! Veja a <a href=\"features\">lista completa de recursos</a>.</p>\n"
+"</ul>"
+
+#. i18n-hint: You may change the link addresses below, if there is a
+#. version of the page in your language at a different location.
+#.
+#. For official translations of the phrase "free software", please see:
+#. http://www.fsf.org/philosophy/fs-translations.html
+#.
+#. Also check the translations of this web page:
+#. http://www.fsf.org/philosophy/free-sw.html
+#: about/index.php:33
+#, fuzzy
+msgid ""
+"<h3>About Free Software</h3>\n"
+"\n"
+"<p>Audacity is free software, developed by a group of volunteers and distributed under the <a href=\"license\">GNU General Public License (GPL)</a>.</p>\n"
+"\n"
+"<p>Free software is not just free of cost (like “free beer”).  It is <b>free as in freedom</b> (like “free speech”).  Free software gives you the freedom to use a program, study how it works, improve it, and share it with others.  For more information, visit the <a href=\"http://www.fsf.org/\">Free Software Foundation</a>.</p>\n"
+"\n"
+"<p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href=\"http://www.mozilla.org/\">Mozilla</a> web browser, the <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> office suite, and entire <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Linux-based operating systems</a>.</p>"
+msgstr ""
+"<h3>Sobre o Software Livre</h3>\n"
+"\n"
+"<p>O Audacity é um software livre, desenvolvido por um grupo de voluntários e distribuído nos termos da licença <a href=\"license\">GNU General Public License (GPL)</a>.</p>\n"
+"\n"
+"<p><firstterm>Software Livre</firstterm> não é apenas software livre de custos.  É livre num sentido mais amplo, que se refere À liberdade de usar o programa como lhe aprouver. Você pode usá-lo para fins comerciais, vendê-lo, desmontá-lo e melhorá-lo também. Para mais informação, visite a página da <a href=\"http://www.fsf.org/\">Free Software Foundation</a>.</p>\n"
+"\n"
+"<p>Programas como o Audacity também são chamados de <B>código-aberto </b> pois seu código está aberto e publicamente disponível para que qualquer pessoa. Há muitos outros programas de código-aberto, como o navegador <a href=\"http://www.mozilla.org/\">Mozilla</a> e a suíte de escritório <a href=\"http://www.openoffice.org/\">OpenOffice.org</a>.</p>"
+
+#: about/license.php:9
+#: main.inc.php:23
+msgid "License"
+msgstr "Licença"
+
+#. i18n-hint:  These gnu.org web pages are available in several languages.
+#. Please link to the version in your language, if possible.  For example:
+#.
+#. http://www.gnu.org/licenses/licenses.es.html#GPL
+#. http://www.gnu.org/licenses/gpl-faq.cs.html
+#.
+#. See the bottom of each page for versions in other languages.
+#.
+#: about/license.php:25
+msgid ""
+"<p>Audacity is free software; you can redistribute it and/or modify it under the terms of the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License</a> as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.</p>\n"
+"\n"
+"<p>This license gives you the permission to modify, copy, distribute, and sell Audacity, as long as the code you distribute is available under the GPL.  If you have questions, please <a href=\"../contact/\">contact us</a>.\n"
+"\n"
+"<p>See also: <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Frequently Asked Questions about the GNU GPL</a>.</p>"
+msgstr ""
+"<p>O Audacity é um programa livre, você pode redistribuí-lo e/ou modificá-lo sob os termos da licença <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License</a> segundo publicado pela Free Software Foundation; segunda versão, ou mais recente.</p>\n"
+"\n"
+"<p>Esta licença permite modificar, copiar, distribuir e vender o Audacity, mas obriga que todo código produzido seja disponibilizado publicamente sob as mesmas condições. Caso tenha alguma dúvida sobre esta licença,  <a href=\"../contact/\">entre em contato</a>.\n"
+"\n"
+"<p>Veja também: <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Questões comuns sobre a licença GNU GPL</a>.</p>"
+
+#: about/links.php:9
+#: main.inc.php:25
+msgid "Links"
+msgstr "Links"
+
+#: about/links.php:14
+msgid "Other Things Named “Audacity” (not related to us)"
+msgstr "Outras coisas de nome ´´Audacity´´ (que não são relacionadas e este projeto)"
+
+#: about/links.php:16
+msgid "<a href=\"http://www.audiost.com/advr.htm\">Audacity DVR</a> is a digital voice recorder for Palm OS and Treo handheld computers"
+msgstr "<a href=\"http://www.audiost.com/advr.htm\">Audacity DVR</a> - gravador de voz para Palm OS."
+
+#: about/links.php:17
+msgid "<a href=\"http://www.audacity.org\">Audacity.org</a> is a research company for construction industry professionals."
+msgstr "<a href=\"http://www.audacity.org\">Audacity.org</a> - companhia de pesquisa em construção industrial."
+
+#: about/links.php:18
+msgid "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> is a street-rock band from Finland."
+msgstr "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> - banda de rock da Finlândia."
+
+#: about/links.php:19
+msgid "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> builds custom enterprise and departmental Windows applications."
+msgstr "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> - cria programas personalizados para Windows."
+
+#: about/links.php:22
+msgid "Other Audio Software"
+msgstr "Outros programas de áudio"
+
+#: about/links.php:23
+msgid "<a href=\"http://ardour.org/\">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux."
+msgstr "<a href=\"http://ardour.org/\">Ardour</a> - estação de edição de áudio para GNU/Linux."
+
+#: about/links.php:24
+msgid "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> is a free CD ripper for Microsoft Windows."
+msgstr "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> - transforma CDs de áudio em arquivos digitais, para Windows."
+
+#: about/links.php:25
+msgid "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records."
+msgstr "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> - ferramenta gratuita para captar e limpar áudio de discos de vinil."
+
+#: about/links.php:26
+msgid "More free software at SourceForge.net:"
+msgstr "Outros programas gratuitos no Sourceforge.net:"
+
+#: about/links.php:28
+msgid "Audio Editors"
+msgstr "Editores de áudio"
+
+#: about/links.php:29
+msgid "Audio Capture/Recording"
+msgstr "Captura/Gravação de áudio"
+
+#: about/links.php:30
+msgid "Audio Analysis"
+msgstr "Análise de áudio"
+
+# News  = notícias
+#: about/news.php:21
+#: index.php:64
+msgid "More news items..."
+msgstr "outras notícias..."
+
+# news noticias
+#: about/news.php:25
+#: main.inc.php:22
+msgid "News"
+msgstr "Notícias"
+
+#: about/screenshots.php:9
+#: index.php:36
+#: main.inc.php:21
+msgid "Screenshots"
+msgstr "Fotos de tela"
+
+#: about/screenshots.php:15
+msgid "Click any screenshot for a larger version."
+msgstr "Clique nas imagens para ampliar"
+
+#: about/screenshots.php:17
+msgid "Audacity running on Linux"
+msgstr "Audacity rodando em Linux"
+
+#: about/screenshots.php:19
+msgid "Audacity running on Windows"
+msgstr "Audacity rodando em Windows"
+
+#: about/screenshots.php:21
+msgid "Audacity running on Mac OS X"
+msgstr "Audacity rodando em Mac OS X"
+
+#: about/screenshots.php:23
+msgid "Noise Removal effect"
+msgstr "Efeito remoção de ruídos"
+
+#: about/screenshots.php:25
+msgid "Change Pitch effect"
+msgstr "Efeito alterar timbre"
+
+#: about/screenshots.php:27
+msgid "Change Tempo effect"
+msgstr "Efeito alterar tempo"
+
+#: about/screenshots.php:29
+msgid "Recording with Audacity"
+msgstr "Gravando com o Audacity"
+
+#: copyright.php:8
+msgid "Web Site Copyright and Trademark"
+msgstr "Direitos de cópia do site e aviso de marcas registradas"
+
+#. i18n-hint: The Creative Commons web page below is available in several
+#. languages.  Please link to the version in your language if possible.
+#.
+#. You may add a sentence like "Czech translation copyright YOUR NAME HERE"
+#. if you wish.
+#: copyright.php:22
+#, php-format
+msgid "This web site is Copyright &copy; %s members of the Audacity development team.  Except where otherwise noted, all text and images on this site are licensed under the <a href=\"http://creativecommons.org/licenses/by/2.0/\">Creative Commons Attribution License, version 2.0</a>.  You may modify, copy, distribute, and display this material, but you must give credit to the original authors.  Please see the license for details."
+msgstr "Este site tem direitos de cópia  &copy; %s reservados ao time de desenvolvedores do Audacity. Exceto onde indicado, todo o texto e imagens estão licenciadas sob a <a href=\"http://creativecommons.org/licenses/by/2.0/\">Creative Commons Attribution License, versão 2.0</a>.Você pode modificar, copiar, distribuir e exibir publicamente este material, dando crédito aos autores originais. Por favor, leia a licença para mais detalhes."
+
+#: copyright.php:24
+msgid "\"Audacity\" is a trademark of Dominic Mazzoni.  The Google logo is a trademark of Google, Inc."
+msgstr "\"Audacity\" é uma marca registrada de Dominic Mazzoni. O logo do Google é marca registrada de Google Inc."
+
+#: index.php:9
+msgid "Free Audio Editor and Recorder"
+msgstr "Editor de áudio gratuito"
+
+#: index.php:18
+msgid "for Microsoft Windows"
+msgstr "para Microsoft Windows"
+
+#: index.php:23
+msgid "for Mac OS 9 or X"
+msgstr "para Mac OS 9 ou X"
+
+#: index.php:28
+msgid "For Windows, Mac, or GNU/Linux"
+msgstr "Para Windows, Mac or Linux"
+
+#: index.php:33
+msgid "The Free, Cross-Platform Sound Editor"
+msgstr "O editor de áudio livre e fácil de usar!"
+
+#: index.php:38
+msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
+msgstr "O Audacity é um editor de áudio de código aberto que permite captar, reproduzir e editar sons. Disponível para Microsoft Windows, MacOS X e Linux. <a href=\"about/\">Conheça melhor o Audacity...</a>"
+
+#: index.php:42
+#, php-format
+msgid "Download Audacity %s"
+msgstr "Instale o Audacity %s"
+
+#: index.php:46
+msgid "Other downloads"
+msgstr "Outras versões"
+
+# notified - anuncio
+#: index.php:68
+msgid "Get Notified of New Versions"
+msgstr "Receba o anúncio de novas versões:"
+
+#: index.php:80
+msgid "Email address"
+msgstr "Endereço de email"
+
+#: index.php:81
+msgid "Add"
+msgstr "Adicionar"
+
+#: index.php:82
+msgid "Remove"
+msgstr "Remover"
+
+#: main.inc.php:17
+msgid "Home"
+msgstr "Início"
+
+#: main.inc.php:18
+msgid "About"
+msgstr "Sobre"
+
+#: main.inc.php:28
+#: download/index.php:9
+#: download/main.inc.php:11
+msgid "Download"
+msgstr "Instalar"
+
+#: main.inc.php:30
+#: download/index.php:19
+#: download/windows.php:10
+msgid "Windows"
+msgstr "Windows"
+
+#: main.inc.php:31
+msgid "Mac"
+msgstr "Mac"
+
+#: main.inc.php:32
+#: download/index.php:25
+#: download/linux.php:9
+msgid "Linux/Unix"
+msgstr "Linux/Unix"
+
+#: main.inc.php:33
+#: download/source.php:10
+msgid "Source Code"
+msgstr "Código-fonte"
+
+#: main.inc.php:34
+#: download/release-notes.php:9
+msgid "Release Notes"
+msgstr "Notas de Versão"
+
+#: main.inc.php:35
+#: download/common.inc.php:12
+msgid "Plug-Ins"
+msgstr "Plug-Ins"
+
+#: main.inc.php:36
+msgid "Buy a CD"
+msgstr "Compre em CD"
+
+#: main.inc.php:39
+#: help/main.inc.php:11
+msgid "Help"
+msgstr "Ajuda"
+
+#: main.inc.php:41
+msgid "FAQ"
+msgstr "FAQ"
+
+#: main.inc.php:42
+#: help/documentation.php:9
+msgid "Documentation"
+msgstr "Documentação"
+
+#: main.inc.php:43
+#: help/tutorials.php:9
+msgid "Tutorials"
+msgstr "Tutoriais"
+
+#: main.inc.php:44
+#: help/nyquist.php:10
+msgid "Nyquist"
+msgstr "Nyquist"
+
+#: main.inc.php:47
+#: contact/index.php:9
+#: contact/main.inc.php:11
+msgid "Contact Us"
+msgstr "Fale conosco"
+
+#: main.inc.php:49
+#: community/developers.php:15
+#: contact/lists.php:9
+#: contact/main.inc.php:13
+msgid "Mailing Lists"
+msgstr "Lista de emails"
+
+#: main.inc.php:50
+#: contact/main.inc.php:14
+#: contact/privacy.php:10
+msgid "Privacy Policy"
+msgstr "Política de privacidade"
+
+#: main.inc.php:53
+#: community/index.php:9
+#: community/main.inc.php:11
+msgid "Get Involved"
+msgstr "Envolva-se!"
+
+#: main.inc.php:55
+#: community/index.php:18
+msgid "Users"
+msgstr "Usuários"
+
+#: main.inc.php:57
+#: community/developers.php:9
+#: community/index.php:24
+msgid "Developers"
+msgstr "Desenvolvedores"
+
+#: main.inc.php:58
+msgid "Donate"
+msgstr "Doe"
+
+#: site-map.php:8
+#: include/footer.inc.php:15
+msgid "Site Map"
+msgstr "Mapa"
+
+#: community/developers.php:16
+msgid "Join the <a href=\"../contact/lists#devel\">audacity-devel</a> mailing list to discuss current and future development, or to get help building and modifying the Audacity source code."
+msgstr ""
+
+#: community/developers.php:18
+msgid ""
+"<h3 id=\"cvs\">CVS</h3>\n"
+"<p>You can get the latest development code from our CVS repository.</p>\n"
+"<ul>\n"
+"  <li><p><a href=\"http://cvs.sourceforge.net/viewcvs.py/audacity/audacity-src/\">Browse the Audacity source code online.</a></p></li>\n"
+"\n"
+"  <li><p>Use this command to check out the latest Audacity 1.2 (stable) source code from CVS:</p>\n"
+"  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity checkout -r AUDACITY_1_2 audacity</kbd></p></li>\n"
+"\n"
+"  <li><p>Or use this command to check out the latest Audacity 1.3 (unstable) source code from CVS:</p>\n"
+"  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity checkout audacity</kbd></p></li>\n"
+"</ul>\n"
+"<p>For more information, read the <a href=\"http://sourceforge.net/cvs/?group_id=6235\">SourceForge CVS instructions</a>.</p>\n"
+"<p>See the source code page for <a href=\"../download/source#instructions\">compilation instructions</a>.</a>"
+msgstr ""
+
+#: community/developers.php:32
+msgid ""
+"<h3 id=\"bugzilla\">Bugzilla</h3>\n"
+"<p>The Audacity developers use <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/index.cgi\">Bugzilla</a> to keep track of confirmed bugs.  Check the list of <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">open bugs</a> if you are looking for something to work on.</p>\n"
+"<p><strong>Note:</strong> This Bugzilla is for development use only.  If you are a user reporting new bugs, please <a href=\"../contact/\">send us e-mail</a> instead.  Thank you!</p>"
+msgstr ""
+
+#: community/donate.php:10
+msgid "Make a Donation"
+msgstr "Faça uma doação"
+
+#: community/donate.php:16
+msgid "Audacity is developed by volunteers, working in our spare time. It is not shareware, and we do not expect to make any money from it.  However, by donating money you can help us pay for bandwidth and web hosting, development tools, and audio hardware&mdash;things that help us provide Audacity for free and continue to make it better."
+msgstr ""
+"<P>O Audacity é desenvolvido por uma equipe de voluntários, em seu tempo livre. Não é um software \"shareware\" - onde se distribui gratuitamente apenas uma versão reduzida do programa - e ninguém espera obter lucros na venda deste software.</P>\n"
+"<p>No entanto, ao doar dinheiro, você estará ajudando a pagar os custos da manutenção do programa como hospedagem na internet, hardware necessário para testes, etc. </P>\n"
+"<P>Logo abaixo, há um ícone onde você poderá fazer uma doação voluntária utilizando seu cartão de crédito. É possível doar até mesmo 1 dólar americano.</P>\n"
+"<P>Doando dinheiro, você nos ajuda a cubrir os custos da hospedagem das páginas na Internet, ferramentas de desenvolvimento e novos sistemas de teste do programa. </P>\n"
+"<P>Note que neste momento todos estes recursos são disponibilizados gratuitamente na Internet, mas não há garantia que esta condição se manterá no futuro. Qualquer doação hoje manterá o site funcionando amanhã.</P>\n"
+"<P>O time de desenvolvedores do Audacity gostaria de comprar sistemas de áudio especializados e transformar o programa em uma solução completa para edição de áudio profissional. Suas doações tornarão isto possível o quanto antes.</P>\n"
+"Note que não damos nenhuma garantia ou promessa de retorno para uma doação."
+
+#: community/donate.php:18
+msgid "For a special gift if you donate US$20 or more, see our <a href=\"http://audacityteam.org/tshirt.php\">Audacity T-shirt offer</a>."
+msgstr ""
+
+#: community/donate.php:20
+msgid "We currently accept money via the Amazon Honor System. Use your credit card and make a payment as small as US$1.00, or up to US$50.00:"
+msgstr "Estamos aceitando doações pelo programa Amazon Honor System. Com o seu cartão de crédito internacional, é possível fazer doações de US$1,00 a US$50,00. "
+
+#: community/donate.php:30
+msgid "We also accept PayPal payments through the SourceForge donation system:"
+msgstr "Também aceitamos doações via Paypal pelo sistema de doaçõed do SourceForge:"
+
+#: community/donate.php:33
+msgid "Donate via PayPal"
+msgstr "Doe via Paypal"
+
+#: community/donate.php:36
+msgid "If you prefer to send a personal check or another form of payment, please visit the <a href=\"../about/credits\">credits</a> page and contact one of the lead developers."
+msgstr "Para doar mais de 50 dólares americanos, ou enviar-nos um cheque pagável nos Estados Unidos (consulte sua instituição bancária sobre esta possibilidade), visite a página de <a href=\"../about/credits\">Créditos</a> e consulte um dos desenvolvedores."
+
+#: community/donate.php:38
+msgid "We would also like to hear from any companies or groups interested in <a href=\"http://audacityteam.org/sponsor.php\">sponsoring Audacity development</a>."
+msgstr ""
+
+#: community/index.php:15
+msgid "Audacity is free software, developed by volunteers.  Here's how you can contribute to the Audacity project:"
+msgstr "O Audacity é um programa livre, desenvolvido por voluntários. Veja aqui como você também pode contribuir para este projeto:"
+
+#: community/index.php:19
+msgid "Give us feedback, report bugs, and become part of the Audacity user community."
+msgstr "Diga-nos o que pensa sobre o programa, reporte falhas, faça parte da comunidade de usuários do Audacity."
+
+#: community/index.php:22
+msgid "If you are fluent in both English and another language, you can help translate the Audacity software and web site.  We also need people to help provide support for Audacity in different languages."
+msgstr "Se você é fluente em inglês e em alguma outra língua, você pode ajudar a traduzir o Audacity e seu site. Estamos precisando de pessoas para oferecer suporte em outras línguas também."
+
+#: community/index.php:25
+msgid "If you are a C++ programmer, you can join the development team and help us improve Audacity.  We welcome documentation and other contributions too."
+msgstr "Se você conhece linguagem de programação C++, você pode ajudar a melhorar o Audacity. Documentação e qualquer outra contribuição também é muito bem-vinda."
+
+#: community/index.php:28
+msgid ""
+"You may also <a href=\"donate\">donate money</a> to support Audacity\n"
+"development."
+msgstr ""
+"Você também pode <a href=\"donate\">doar dinheiro</a> para auxiliar o desenvolvimento\n"
+"do programa."
+
+#: community/translation.php:16
+msgid "A group of volunteers is translating the free Audacity sound editor into several languages.  If you would like to help, please join the <a href=\"../contact/lists#translation\">audacity-translation mailing list</a> and introduce yourself."
+msgstr "Um grupo de tradutores voluntários traduz o Audacity para diversos idiomas. Caso queira ajudar, cadastre-se na <a href=\"../contact/lists#translation\">lista de tradução do Audacity</a> e apresente-se."
+
+#: community/translation.php:18
+msgid "Resources for Translators"
+msgstr "Recursos para tradução"
+
+#: community/translation.php:20
+msgid "Mailing list and archives"
+msgstr "Listas de emails e arquivos"
+
+#: community/translation.php:21
+msgid "Latest audacity.pot file"
+msgstr "Último arquivo audacity.pot"
+
+#: community/translation.php:22
+msgid "Latest audacity_website.pot file"
+msgstr "Último arquivo audacity_website.pot"
+
+#: community/translation.php:23
+msgid "wxWidgets i18n"
+msgstr "wxWidgets i18n"
+
+#  i18n-hint: These instructions are for translators only, so you may
+#. i18n-hint: These instructions are for translators only, so you may
+#. leave them untranslated if you like.
+#: community/translation.php:29
+#, php-format
+msgid ""
+"<h3>Translation Instructions</h3>\n"
+"\n"
+"<p>To start a new translation, download POT file above.  Rename it \"audacity.po\" before you begin translating.  To edit an existing translation, download the PO file for your language:</p>\n"
+"<ul>\n"
+"  <li><a href=\"%s\">Audacity translations</a></li>\n"
+"  <li><a href=\"%s\">Audacity web site translations</a></li>\n"
+"</ul>\n"
+"\n"
+"<p>These programs can create and edit PO files:</p>\n"
+"<ul>\n"
+"  <li><a href=\"http://poedit.sourceforge.net/\">poEdit</a> for Windows and Unix.</li>\n"
+"  <li><a href=\"http://i18n.kde.org/tools/kbabel/\">KBabel</a> for KDE.</li>\n"
+"  <li><a href=\"http://www.gnu.org/software/gettext/\">GNU gettext</a> is standard on most Unix systems.  It includes a PO mode for the Emacs text editor.</li>\n"
+"</ul>\n"
+"\n"
+"<p>Send completed PO files to Matt Brubeck, <a href=\"mailto:mbrubeck@cs.hmc.edu\">mbrubeck@cs.hmc.edu</a>.</p>\n"
+"\n"
+"<h3>Notes</h3>\n"
+"\n"
+"<ul>\n"
+"  <li><p>In poEdit, make sure to set the \"charset\" option correctly.  Otherwise, poEdit will not save any translations with non-English characters.</p>\n"
+"  <li><p>Strings like <b>\"&amp;File\"</b> and <b>\"New &amp;Audio Track\"</b> are menu items.  The letter after the \"&amp;\" symbol is used as a keyboard shortcut.</p>\n"
+"  <li><p><b>\"Import Audio...\\tCtrl+i\"</b> is also a menu item.  The \\t stands for a tab character, which separates the menu text from the keyboard command.</p>\n"
+"  <li><p>You will find many strings like <b>\"There were %%d buffer underruns, last near %%lf seconds.\"</b>  The %% signs mark places where numbers or names will be inserted into the string.  For example, this string might become \"There were 4 buffer underruns, last near 3.01 seconds.\" If you change the order of the the %% markers in a string, add \"1$\" after the percent sign that used to be first, \"2$\" after the percent sign that used to be second, and so on.  For example:</p>\n"
+"  <blockquote><p><b>\"The buffer underrun near %%2$lf seconds was the last of %%1$d.\"</b></p></blockquote>\n"
+"</ul>"
+msgstr ""
+"<h3>Instruções para tradução</h3>\n"
+"\n"
+"<p>To start a new translation, download POT file above.  Rename it \"audacity.po\" before you begin translating.  To edit an existing translation, download the PO file for your language:</p>\n"
+"<ul>\n"
+"  <li><a href=\"%s\">Audacity translations</a></li>\n"
+"  <li><a href=\"%s\">Audacity web site translations</a></li>\n"
+"</ul>\n"
+"\n"
+"<p>These programs can create and edit PO files:</p>\n"
+"<ul>\n"
+"  <li><a href=\"http://poedit.sourceforge.net/\">poEdit</a> for Windows and Unix.</li>\n"
+"  <li><a href=\"http://i18n.kde.org/tools/kbabel/\">KBabel</a> for KDE.</li>\n"
+"  <li><a href=\"http://www.gnu.org/software/gettext/\">GNU gettext</a> is standard on most Unix systems.  It includes a PO mode for the Emacs text editor.</li>\n"
+"</ul>\n"
+"\n"
+"<p>Send completed PO files to Matt Brubeck, <a href=\"mailto:mbrubeck@cs.hmc.edu\">mbrubeck@cs.hmc.edu</a>.</p>\n"
+"\n"
+"<h3>Notes</h3>\n"
+"\n"
+"<ul>\n"
+"  <li><p>In poEdit, make sure to set the \"charset\" option correctly.  Otherwise, poEdit will not save any translations with non-English characters.</p>\n"
+"  <li><p>Strings like <b>\"&amp;File\"</b> and <b>\"New &amp;Audio Track\"</b> are menu items.  The letter after the \"&amp;\" symbol is used as a keyboard shortcut.</p>\n"
+"  <li><p><b>\"Import Audio...\\tCtrl+i\"</b> is also a menu item.  The \\t stands for a tab character, which separates the menu text from the keyboard command.</p>\n"
+"  <li><p>You will find many strings like <b>\"There were %%d buffer underruns, last near %%lf seconds.\"</b>  The %% signs mark places where numbers or names will be inserted into the string.  For example, this string might become \"There were 4 buffer underruns, last near 3.01 seconds.\" If you change the order of the the %% markers in a string, add \"1$\" after the percent sign that used to be first, \"2$\" after the percent sign that used to be second, and so on.  For example:</p>\n"
+"  <blockquote><p><b>\"The buffer underrun near %%2$lf seconds was the last of %%1$d.\"</b></p></blockquote>\n"
+"</ul>"
+
+#: community/users.php:10
+msgid "User Community"
+msgstr "Comunidade de usuários"
+
+#: community/users.php:15
+msgid "Audacity was written by volunteers in their spare time.  If you appreciate Audacity and would like to help out, here are some ideas:"
+msgstr "O Audacity foi criado por um time de voluntários em seu tempo livre. Se você quiser ajudar também, aqui vão algumas idéias:"
+
+#: community/users.php:18
+msgid ""
+"<h3>Say Hello!</h3>\n"
+"<p>If you enjoy Audacity, <a href=\"../contact/\">write to us</a> and let us know that you like it.  It makes us happy to know that people enjoy it.  Also feel free to send comments and suggestions.  We're always improving Audacity, and we value your input.</p>"
+msgstr ""
+"<h3>Diga oi!</h3>\n"
+"<P>Se você gostou do Audacity, diga-nos!<a href=\"../contact/\"> Envie sua mensagem</a> e nos conte o que você mais lhe agradou. É sempre bom ouvir elogios dos usuários. Fique à vontade também para nos enviar suas críticas e sugestões. O Audacity é um programa livre e está sempre em evolução.</p>"
+
+#  i18n-hint:  Note that the wiki is in English.  If you want, you can create
+#. i18n-hint:  Note that the wiki is in English.  If you want, you can create
+#. a page in your language on the wiki, and link to it instead.
+#: community/users.php:24
+msgid ""
+"<h3>Join the User Community</h3>\n"
+"<p>Subscribe to the <a href=\"../contact/lists#users\">audacity-users mailing list</a> to share tips, questions, and feedback with other Audacity users and developers.</p> <p>Visit the <a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a>, a community resource where users can add or edit information about Audacity.</p>"
+msgstr ""
+"<h3>Ingresse na comunidade de usuários do Audacity</h3>\n"
+"<P>A <a href=\"../contact/lists#users\">lista de emails </a>é o lugar onde os usuários do Audacity se encontram e trocam idéias, conhecimento e experiências. As mensagens são em inglês, mas se a comunidade luso e brasileira crescer, a criação de uma lista em português será muito bem-vinda</p> <p>Visite também o <a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a>, um site com textos postados e editados pelos usuários do programa.</p>"
+
+#: community/users.php:28
+msgid ""
+"<h3>Report bugs</h3>\n"
+"<p>If you find a bug in Audacity, <a href=\"../contact/\">let us know</a>.</p>"
+msgstr ""
+"<h3>Reporte falhas</h3>\n"
+"<p>Se você achou um problema com o Audacity, <a href=\"../contact/\">diga-nos.</a> Lembre-se sempre de dizer a maior quantidade possível de informações sobre o seu sistema (processador, sistema operacional, memória, etc) e como o problema acontece.</p>"
+
+#: community/users.php:31
+msgid ""
+"<h3>Be a Beta Tester</h3>\n"
+"<p>In addition to the latest stable version of Audacity, we often have beta versions available.  These versions usually contain new features that haven't been tested yet.  If you want to help out, download this version of Audacity and play with it.  Let us know what you like and don't like, and tell us how you think it should be improved.  Tell us if you find any <em>regressions</em> - things that used to work but don't work anymore.</p>"
+msgstr ""
+"<h3>Teste versões beta</h3>\n"
+"<p>Junto à versão estável do Audacity, sempre há uma versão beta, que traz novos recursos que estão sendo testados e serão adicionados em versões futuras do programa. Teste esta versão e diga-nos o que pareceu interessante, o que funcionou, o que ainda precisa ser ajustado, etc. Diga também se você encontrou algum <em>regresso</em> - funções que estavam disponíveis antes e não estão mais.</p>"
+
+#  i18n-hint:  Please add a note that we can answer questions to
+#  i18n-hint:  Please add a note that we can answer questions to
+#  audacity-help in English only.  If there is an Audacity forum or mailing
+#  list in your language, you may add a link to it below.
+#: contact/index.php:19
+msgid ""
+"<p>If you have questions or comments for the Audacity developers, e-mail us at: <a href=\"mailto:audacity-help@lists.sourceforge.net\">audacity-help@lists.sourceforge.net</a>.\n"
+"(This is a public mailing list.  For details, see our <a href=\"../contact/privacy\">privacy policy</a>.)</p>\n"
+"\n"
+"<p><b>When you report a bug or problem, please:</b></p>\n"
+"<ol>\n"
+"  <li>Before you contact us, check the <a href=\"../help/faq\">Frequently Asked Questions</a>.</li>\n"
+"  <li>Tell us what version of Audacity and which operating system you are using.</li>\n"
+"  <li>Include details of what you are trying to do, and any error messages or other problems you experience.</li>\n"
+"</ol>"
+msgstr ""
+
+#: contact/index.php:29
+msgid ""
+"<h3>Discussion Lists</h3>\n"
+"<p>To discuss Audacity with other users and developers, join our <a href=\"../contact/lists\">mailing lists</a>.</p>"
+msgstr ""
+
+#: contact/lists.php:12
+msgid "You must subscribe to send messages to this list."
+msgstr "É necessário se inscrever para enviar mensagens para a lista."
+
+#. i18n-hint: The "%s" will be replaced by the name of a mailing list.
+#: contact/lists.php:14
+#, php-format
+msgid "%s archives and subscription information"
+msgstr "Informações sobre mensagens arquivadas e inscrições na lista %s"
+
+#  i18n-hint: Please add a note that these lists are in English.  If there are
+#. i18n-hint: Please add a note that these lists are in English.  If there are
+#. Audacity mailing lists or forums in your language, please link to them here.
+#: contact/lists.php:20
+msgid ""
+"These mailing lists are for discussion of the Audacity audio editor.  </p>\n"
+"<p>Note: These are public mailing lists.  For details, see our <a href=\"privacy\">privacy policy</a>."
+msgstr ""
+"Estas listas de emails são destinadas a discutir os diversos aspectos do Audacity. </p>\n"
+"<p>Nota: estas listas são públicas, por favor, veja a sua <a href=\"privacy\">política de privacidade</A>."
+
+#: contact/lists.php:27
+msgid "Discuss Audacity with other users and developers."
+msgstr "Discuta o Audacity com outros usuários e desenvolvedores."
+
+#: contact/lists.php:33
+msgid "For translators localizing the Audacity software and web site."
+msgstr "Para tradutores vertendo o programa e o website em outras línguas."
+
+#: contact/lists.php:39
+msgid "For developers working with the Audacity source code and documentation."
+msgstr "Para desenvolvedores que trabalham com o código-fonte do Audacity e sua documentação."
+
+#: contact/lists.php:45
+msgid "Share questions and tips about programming <a href=\"../help/nyquist\">Nyquist plug-ins</a>."
+msgstr "Partilhe dicas e truques sobre como programar <a href=\"../help/nyquist\">plug-ins Nyquist</a>."
+
+#: contact/lists.php:51
+msgid "Developers can subscribe to this mailing list to receive automatic updates from <a href=\"../community/developers#bugzilla\">Bugzilla</a>."
+msgstr "Desenvolvedores podem se cadastrar e receber notas de atualização automaticamente pelo <a href=\"../community/developers#bugzilla\">Bugzilla</a>."
+
+#: contact/lists.php:57
+msgid "Send a message to this list if you have questions or comments for the Audacity developers.  You do not need to subscribe to this list to send a message."
+msgstr "Caso tenha alguma dúvida ou sugestão para os desenvolvedores do programa, envie uma mensagem para esta lista. Não é necessário inscrever-se."
+
+#: contact/privacy.php:21
+msgid "Announcement List Policy"
+msgstr "Políticas para a Lista de Anúncios"
+
+#: contact/privacy.php:23
+msgid ""
+"<p>You can subscribe to our announcement list by entering your address in the form on the <a href=\"../\">Audacity home page</a>.  We will use this list only to send you brief announcements of new Audacity releases.  We will never share the addresses on this list with anyone.</p>\n"
+"<p>To <b>unsubscribe</b> from the list at any time, enter your address in the form on our <a href=\"../\">home page</a> and press the \"Remove\" button.  If you have any problems or questions, please contact <a href=\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>.</p>"
+msgstr ""
+"<p>Você pode receber em seu email um anúncio de novas versões do Audacity preenchendo o formulário na <a href=\"../\">página inicial</a>. Usaremos esta lista apenas para enviar breves anúncios sobre a disponibilidade de novas versões do programa. Estes emails não serão divididos com nenhuma entidade ou pessoa física.</p>\n"
+"<p>Para <b>desinscrever-se</b> da lista, coloque o mesmo email da inscrição no formulário da <a href=\"../\">página incial</a> e clique no botão Remover. Para maiores esclarecimentos sobre esta política de uso dos emails, por favor entre em contato, em inglês, com <a href=\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>.</p>"
+
+#: contact/privacy.php:26
+msgid "Mailing List Policy"
+msgstr "Políticas da Lista de emails"
+
+#: contact/privacy.php:28
+msgid ""
+"<p>(This applies to audacity-help, audacity-users, and other <a href=\"../contact/lists\">discussion lists</a>.)</p>\n"
+"<p>These are public mailing lists.  When you send a message to any of these addresses, including <a href=\"../contact/\">audacity-help</a>, it will be forwarded to dozens of people, including Audacity developers and others.  SourceForge and other web sites may publish archives of these lists.  <b>Your email address will normally be removed from published archives for your privacy, and the Audacity developers will not share your address with anyone or add it to any lists.</b>  However, we can't prevent other subscribers from seeing or publishing your messages.</p>\n"
+"<p>If you have any questions about this policy or are not comfortable writing to a public mailing list, send a private e-mail to the lead Audacity developer at: <a href=\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>.</p>"
+msgstr ""
+
+#: download/index.php:15
+msgid "Select your operating system to download the latest version of the free Audacity sound editor."
+msgstr "Selecione seu sistema operacional para instalar a mais nova versão do Audacity."
+
+#: download/index.php:22
+msgid "Mac OS 9 or X"
+msgstr "Mac OS 9 ou X"
+
+#: download/index.php:28
+msgid "You can also <a href=\"buy\">purchase</a> a copy of Audacity on CD."
+msgstr "Também é possível <a href=\"buy\">comprar</a> uma cópia do Audacity em CD."
+
+#: download/index.php:30
+msgid "If you wish to compile Audacity yourself, download the <a href=\"source\">source code</a>."
+msgstr "Caso queira compilar o Audacity em seu sistema, copie o <a href=\"source\">código-fonte</a>."
+
+#: download/index.php:32
+msgid "You may modify, distribute, and sell Audacity under the <a href=\"../about/license\">GNU GPL</a>."
+msgstr "Você pode modificar, distribuir ou vender o Audacity nos termos da licença <a href=\"../about/license\">GNU GPL</a>."
+
+#: download/buy.php:9
+msgid "Purchase Audacity on CD"
+msgstr "Compre o Audacity em CD"
+
+#: download/buy.php:13
+msgid "Audacity is free to download, but vendors are also free to sell copies of the program, thanks to the <a href=\"../about/license\">GNU General Public License</a>.  If you want a copy of Audacity on CD-ROM, we encourage you to buy from a vendor listed below."
+msgstr "O Audacity é gratuito para ser copiado e instalado via Internet. No entanto, é possível comprar cópias do programa graças à licença <a href=\"../about/license\">GNU General Public License</a>.  Caso queira comprar uma cópia em CD do programa, visite um dos sites abaixo:"
+
+#: download/buy.php:15
+msgid ""
+"<h3>TheOpenCD (Windows)</h3>\n"
+"  <p><a href=\"http://theopencd.sunsite.dk/\">TheOpenCD</a> is a collection of high-quality free software for Microsoft Windows, including Audacity.  You can <a href=\"http://theopencd.sunsite.dk/wheretobuy.php\">purchase a copy of TheOpenCD</a> from several different vendors.</p>"
+msgstr ""
+"<h3>TheOpenCD (Windows)</h3>\n"
+"  <p><a href=\"http://theopencd.sunsite.dk/\">TheOpenCD</a> é uma coleção de programas gratuitos para Microsoft Windows, que inclui o Audacity. <a href=\"http://theopencd.sunsite.dk/wheretobuy.php\">Clique aqui </a> e compre um cópia do TheOpenCD. </p>"
+
+#: download/common.inc.php:10
+msgid "LAME MP3 encoder"
+msgstr "LAME MP3 encoder"
+
+#: download/common.inc.php:10
+msgid "Allows Audacity to export MP3 files."
+msgstr "Permite ao Audacity exportar arquivos em formato MP3."
+
+#: download/common.inc.php:11
+msgid "VST Enabler"
+msgstr "Habilitador de VST"
+
+#: download/common.inc.php:11
+msgid "Allows Audacity to load VST plug-ins."
+msgstr "Permite ao Audacity executar plug-ins VST."
+
+#: download/common.inc.php:12
+msgid "Download additional effects and filters."
+msgstr "Instale efeitos e filtros adicionais."
+
+#: download/common.inc.php:13
+#: download/source.php:25
+#, php-format
+msgid "If you have trouble with your download, or need an older version of Audacity, try our <a href=\"%s\">alternate download links</a>."
+msgstr "Caso não consiga instalar o Audacity a partir destes links, tente a página de <a href=\"%s\">versões alternativas</a>."
+
+#: download/linux.php:15
+msgid "The easiest way to install the free Audacity audio editor on GNU/Linux (and other Unix-like systems) is to download a package built for your operating system:"
+msgstr "A maneira mais simples de instalar o Audacity no seu sistema Linux ou Unix é copiar uma versão compilada para o seu sistema:"
+
+#: download/linux.php:29
+msgid "Linux and Unix users may also compile Audacity from <a href=\"source\">source code</a>."
+msgstr "Usuários de Linux e Unix podem compilar o Audacity a partir do seu <a href=\"source\">código-fonte</a>."
+
+#: download/mac.php:10
+msgid "Mac OS 9 / X"
+msgstr "Mac OS 9 / X"
+
+#: download/mac.php:17
+#: download/source.php:16
+#: download/windows.php:16
+msgid "Recommended Download"
+msgstr "Componentes recomendados"
+
+#: download/mac.php:23
+msgid "(Unfortunately, we no longer have the resources to provide new versions of Audacity for Mac OS 9.)"
+msgstr "(Infelizmente não estamos desenvolvendo novas versões para Mac OS 9)"
+
+#: download/mac.php:26
+#: download/source.php:22
+#: download/windows.php:21
+msgid "Optional Downloads"
+msgstr "Componentes opcionais"
+
+#: download/mac.php:31
+#: download/windows.php:39
+msgid "System Requirements"
+msgstr "Requisitos mínimos do sistema"
+
+#: download/mac.php:33
+msgid "Audacity 1.2 requires Mac OS X 10.1 or later."
+msgstr "O Audacity 1.2 requer Mac OS X 10.1 ou mais novo."
+
+#: download/mac.php:34
+msgid "Audacity 1.0 requires Mac OS 9.0 or later."
+msgstr "O Audacity 1.0 requer Mac 9.0 ou mais novo."
+
+#: download/mac.php:35
+#: download/windows.php:42
+msgid "Audacity runs best with at least 64 MB RAM and 300 MHz processor."
+msgstr "O Audacity roda melhor num processador de no mínimo 300MHz e 64 Mega de RAM."
+
+#: download/nyquistplugins.php:10
+msgid "Download Nyquist Plug-Ins"
+msgstr "Copiando plug-ins Nyquist"
+
+#. i18n-hint: Sorry, the actual plug-in descriptions are not translatable yet.
+#: download/nyquistplugins.php:15
+msgid "<p>These are optional plug-in effects for the Audacity sound editor.  They are written in the <a href=\"../help/nyquist\">Nyquist programming language</a>.  For installation instructions, see the main <a href=\"plugins\">plug-ins page</a>.</p>"
+msgstr ""
+
+#: download/plugins.php:9
+msgid "Plug-In Effects"
+msgstr "Plug-ins de efeitos"
+
+#: download/plugins.php:14
+msgid "You can download and install plug-ins to add extra effects to Audacity.  Plug-ins appear at the bottom of the \"Effect\" menu.  To install new plug-ins, place them in the <b>Plug-Ins</b> folder inside the Audacity installation folder.  On Windows computers, this is usually under \"Program Files.\"  On Mac OS X, it is usually under \"Applications.\""
+msgstr ""
+
+#: download/plugins.php:16
+msgid "LADSPA Plug-Ins"
+msgstr "Plug-Ins LADSPA"
+
+#: download/plugins.php:17
+msgid "Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity comes with sample LADSPA effects for Mac and Windows.  For more information and downloads, see the <a href=\"http://www.ladspa.org/\">LADSPA web site</a>.</p>"
+msgstr ""
+
+#: download/plugins.php:19
+msgid "Nyquist Plug-Ins"
+msgstr "Plug-ins Nyquist "
+
+#: download/plugins.php:20
+msgid "Audacity has built-in support for cross-platform Nyquist effects.  You can download additional <a href=\"nyquistplugins\">Nyquist plug-ins</a>, or create your own using the <a href=\"../help/nyquist\">Nyquist programming language</a>"
+msgstr ""
+
+#: download/plugins.php:22
+msgid "VST Plug-Ins"
+msgstr "Plug-Ins VST"
+
+#: download/plugins.php:23
+msgid "Audacity can load VST effects (for Mac OS or Windows) using the optional <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>.  You can find VST effects at <a href=\"http://www.kvraudio.com/\">KVR Audio</a> and <a href=\"http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-ins/\">other plug-in sites</a>.</p>"
+msgstr ""
+
+#: download/release-notes.php:16
+msgid "Known Problems"
+msgstr "Falhas conhecidas"
+
+#: download/release-notes.php:17
+#, php-format
+msgid "The following are known bugs or problems in Audacity %s:"
+msgstr "Estas são as falhas já conhecidas no Audacity %s:"
+
+#: download/release-notes.php:19
+msgid "Audacity can import and display MIDI files, but cannot play or edit them."
+msgstr "O Audacity pode importar e exibir arquivos MIDI, mas não pode reproduzí-los ou editá-los."
+
+#: download/release-notes.php:20
+msgid "Linux:  Recording in full duplex (playing existing tracks while recording) on some systems causes mono recordings to sound distorted or low-pitched.  To work around this problem, set Audacity to record in stereo."
+msgstr ""
+
+#: download/release-notes.php:21
+msgid "MacOS X: Audacity cannot work with files or folders that are contained inside folders with non-English characters (accents, symbols, etc.) in their names.  Files with accented characters work, and Audacity projects with accented characters work.  Only folders with accented characters in their names will cause problems."
+msgstr ""
+
+#: download/release-notes.php:24
+msgid ""
+"<h3>Changes in Audacity 1.2.3</h3>\n"
+"<ul>\n"
+"  <li><p>Windows: Fixed a bug that caused recording to stop or display incorrectly after about 50 minutes, on some Windows systems.  (This was partly fixed in Audacity 1.2.2, but still didn't work on some systems.)</p></li>\n"
+"  <li><p>Mac OS X: Fixed a major bug that caused Audacity to crash at seemingly-random times on Mac systems, especially during playback or recording.</p></li>\n"
+"  <li><p>The Change Pitch and Change Tempo effects have been upgraded to use a new version of the SoundTouch library by Olli Parviainen, with better speed and higher quality.</p></li>\n"
+"  <li><p>libsndfile has been upgraded to version 1.0.11.  Audacity can now import Sound Designer II (SDII) files.</p></li>\n"
+"  <li><p>Fixed a bug that caused the program to run slowly when using the Envelope tool.</p></li>\n"
+"<li><p>Shift-clicking on a mute or solo button now un-mutes (or un-solos) all other tracks.</p></li>\n"
+"  <li><p>Nyquist plug-ins can now accept strings as input.  Also, a \"Debug\" button has been added to Nyquist effect dialogs, which allows you to see all of the output produced by Nyquist, for aid in debugging.</p></li>\n"
+"  <li><p>When the audio file referenced (\"aliased\") by an Audacity project is missing, Audacity will now always play silence.  Before, Audacity would sometimes repeat the most recent audio that was played previously.</p></li>\n"
+"  <li><p>VU Meters will now always reset when audio I/O has stopped.</p></li>\n"
+"  <li><p>New or updated translations: Italian (it), Hungarian (hu), Ukrainian (uk), Spanish (es). Polish (pl), Simplified Chinese (zh), Norsk-Bokmal (nb), French (fr), Russian (ru).</p></li>\n"
+"</ul>"
+msgstr ""
+
+#: download/source.php:24
+msgid "You can also get the latest development code from <a href=\"../community/developers#cvs\">CVS</a>."
+msgstr "É possível obter o código-fonte em desenvolvimento pelo <a href=\"../community/developers#cvs\">CVS</a>."
+
+#: download/source.php:28
+msgid "How to Build Audacity"
+msgstr "Como compilar o Audacity"
+
+#: download/source.php:30
+msgid "Dependencies"
+msgstr "Dependências"
+
+#: download/source.php:31
+msgid "The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is <b>required</b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the gtk2 or unicode options.  (Future versions of Audacity will support newer wxWidgets and GTK libraries.)"
+msgstr ""
+
+#: download/source.php:32
+msgid "You may also choose to install the following <b>optional libraries</b>, or get them by checking out Audacity from CVS."
+msgstr ""
+
+#: download/source.php:38
+msgid "If you install libraries using a package management system like Apt or RPM, make sure to install the \"dev\" (development) packages for each library."
+msgstr ""
+
+#: download/source.php:40
+msgid "Compilation"
+msgstr "Compilação"
+
+#: download/source.php:41
+msgid "To build Audacity, run the following command in the Audacity source directory:"
+msgstr ""
+
+#: download/source.php:47
+msgid "You can type <kbd>./configure --help</kbd> to see a list of compilation options.  After Audacity is compiled, run <kbd>make install</kbd> as root to install it."
+msgstr ""
+
+# news noticias
+#: download/source.php:49
+#, fuzzy
+msgid "Notes"
+msgstr "Notícias"
+
+#: download/source.php:50
+msgid "For additional information about building Audacity on Windows or Mac OS X, see the files <b>win/compile.txt</b> and <b>mac/compile.txt</b> in the Audacity source code directory."
+msgstr ""
+
+#  i18n-hint:  If this string is translated, it will appear above the list of
+#  original string.)
+#  i18n-hint:  If this string is translated, it will appear above the list of
+#  optional downloads on the "downloads/windows" page.  If there are extra
+#  files available in your language, add them here.  Otherwise, do not
+#  translate this string.  (Or make the translation identical to the
+#  original string.)
+#: download/windows.php:28
+#: download/windows.php:29
+msgid "localized_downloads_windows"
+msgstr ""
+
+#: download/windows.php:41
+msgid "Windows 98, ME, 2000, XP, or later.  (Sorry, Audacity is not supported on Windows 95 or NT 4.0.)"
+msgstr "Windows 98, ME, 2000, XP, ou mais novo.  (Não há suporte para Windows 95 ou NT 4.0.)"
+
+#  i18n-hint:  Please add a note that the manuals below are in English.  If
+#. i18n-hint:  Please add a note that the manuals below are in English.  If
+#. there is documentation available in your language, link to it here.
+#: help/documentation.php:16
+msgid "This page contains manuals and user’s guides for the free Audacity sound editor.  For additional help, see the <a href=\"faq\">Frequently Asked Questions</a> and <a href=\"tutorials\">Tutorials</a>."
+msgstr "Esta página contém guias e manuais de usuário para o Audacity. Para encontrar mais ajuda, veja a  <a href=\"faq\">FAQ</a>(Perguntas e Respostas Comuns) e os <a href=\"tutorials\">Tutoriais</a>."
+
+#: help/documentation.php:19
+msgid "Quick Reference Guide"
+msgstr "Guia de Referência Rápida"
+
+#: help/documentation.php:21
+msgid "Read the Audacity reference online."
+msgstr "Leia o guia de referência do Audacity online."
+
+#: help/documentation.php:21
+msgid "(You can also access this reference though the \"Help\" menu in the Audacity program.)"
+msgstr "(Acessável também pelo menu \"Ajuda\" do Audacity)"
+
+#: help/documentation.php:22
+msgid "Printable version of the Audacity reference."
+msgstr "Versão para impressão da guia de referência."
+
+#: help/documentation.php:25
+msgid "Audacity User’s Manual"
+msgstr "Manual do Usuário do Audacity"
+
+#: help/documentation.php:27
+msgid "Read the Audacity manual online."
+msgstr "Leia o manual online."
+
+#: help/documentation.php:28
+msgid "Download the Audacity manual."
+msgstr "Copie o manual do Audacity."
+
+#: help/documentation.php:28
+msgid "(To use the downloaded manual, unzip it and then open the \"index.html\" file.)"
+msgstr "(Para ler o manual, utilize um descompactador de arquivos ZIP e abra o arquivo \"index.html\" no seu navegador)"
+
+#: help/documentation.php:31
+#: help/index.php:26
+msgid "Other Resources"
+msgstr "Outros recursos"
+
+#: help/documentation.php:33
+#: help/index.php:28
+msgid "<a href=\"http://audacityteam.org/wiki/\">The Audacity Wiki</a> contains tips, tricks, and documentation that anyone can edit."
+msgstr "<a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a> contém dicas, truques e documentação livremente editável por qualquer pessoa."
+
+#: help/faq.php:26
+msgid "Is Audacity really free?  Why?"
+msgstr "O Audacity é realmente gratuito? "
+
+#: help/faq.php:27
+msgid ""
+"<p>Yes, Audacity is <a href=\"../about/\">completely free, open source software</a>.  You are free to use this program for personal or commercial purposes.  You are also free to give it away, sell it, or modify it for your own use, under the terms of the <a href=\"../about/license\">GNU General Public License</a>.</p>\n"
+"<p>The authors of Audacity decided to release it under the GPL for many reasons. Some of us do it out of generosity. Some of us do it for moral reasons, because we feel that all software should be free; others believe that there is a place for both free and proprietary software.</p>\n"
+"<p>One reason Audacity is free is so that it will be more popular and useful.  Yet another reason is to encourage collaboration. Because of Audacity's free license, dozens of people around the world have contributed code, bug fixes, documentation, and graphics.</p>"
+msgstr ""
+"<P>Sim, em praticamente todos os casos. O Audacity não é apenas gratuito, <a href=\"../about/\">é livre também</a>, e pode ser distribuído como você quiser.</p>\n"
+"<P>Audacity é distribuído segundo os termos da <a href=\"../about/license\">General Public License (GPL)</a>. Você é livre para utilizar este programa para fins comerciais ou pessoais. Você também pode doá-lo ou vendê-lo. O código-fonte é disponível publicamente na Internet e você pode modificá-lo à vontade, apenas deixando as suas alterações e este novo fonte disponível também sob as mesmas condições da GPL.</p>\n"
+"<P>O programa foi construído usando as bibliotecas wxWidgets, que são licenciadas segundo a LGPL, que é ainda menos restritiva que a GPL. Para conhecer mais, visite wxwidgets.org.</p>\n"
+"<P>Uma razão para o Audacity ser livre é para tornar-se mais popular. Nós da equipe de desenvolvimento do Audacity preferimos ver milhões de pessoas utilizando nosso programa sem pagar por isso do que poucas que pudessem pagar.</p>\n"
+"<P>Outra razão é que o software-livre permite e encoraja a colaboração. Se o Audacity fosse distribuído como \"Shareware\" dificilmente os usuários se sentiriam convidados a contribuir com relatos de problemas, testes e documentação. </p>"
+
+#: help/faq.php:32
+msgid "Does Audacity contain any spyware or adware?"
+msgstr "O Audacity contém Spyware ou Adware?"
+
+#: help/faq.php:33
+msgid "<p>No.  Audacity does not include any spyware or adware.  Audacity is <a href=\"../about/\">completely free and open source</a>.  It is developed by a not-for-profit volunteer group, and the source code is available for anyone to study or use.</p>"
+msgstr "<P>Não!! O programa não contém nenhum spyware ou adware. O Audacity é <a href=\"../about/\">completamente livre e de código aberto. </A> Ele é desenvolvido e mantido por um grupo de voluntários sem fins lucrativos e seu código fonte está publicamente disponível para qualquer pessoa.</P>"
+
+#: help/faq.php:36
+msgid "May I distribute copies of Audacity?"
+msgstr "Posso distribuir cópias do programa?"
+
+#: help/faq.php:37
+msgid "<p>You can redistribute Audacity under the GNU General Public License, which gives you permission to modify, copy, and sell the program as long as you keep the same license and make the source code available.  For details, see our <a href=\"../about/license\">license information</a>.</p>"
+msgstr ""
+
+#: help/faq.php:40
+msgid "Someone is selling Audacity on eBay.  Is this legal?"
+msgstr "Há pessoas vendendo o Audacity no Ebay/MercadoLivre. Isto é legal?"
+
+#: help/faq.php:41
+msgid ""
+"<p>It is legal to sell Audacity, as long as the seller makes the program and source code available under the <a href=\"../about/license\">GNU General Public License</a>.</p>\n"
+"<p>Some vendors try to trick customers by selling the software under a different name.  If you bought a product and later found out it was Audacity, we encourage you to <b>ask for a refund or file a complaint</b> if you feel you did not get a fair deal.  We ask vendors to give proper credit to the Audacity project, and allow users to make an informed choice.</p>\n"
+"<p><b>If you want to buy Audacity on CD</b>, please check out the vendors listed on our <a href=\"../download/buy\">purchase page</a>.</p>"
+msgstr ""
+
+#: help/faq.php:46
+msgid "Does Audacity work with screen-reader programs for blind users?"
+msgstr "O Audacity é compatível com programas de leitura de tela para cegos?"
+
+#  i18n-hint: The link below is in English.
+#. i18n-hint: The link below is in English.
+#: help/faq.php:48
+msgid "<p>Audacity works with most screen-reader programs, but some of Audacity’s features are difficult or impossible to use without a mouse.  We are working on improving the program’s accessibility and keyboard shortcuts.  For more information, see <a href=\"http://audacityteam.org/wiki/index.pl?AudacityForBlindUsers\">Audacity for Blind Users</a>.</p>"
+msgstr ""
+
+#: help/faq.php:51
+msgid "What does “time remaining” mean?  Does Audacity expire?"
+msgstr "O que quer dizer a expressão \"Tempo restante\"? O programa vai expirar?"
+
+#: help/faq.php:52
+msgid "<p>Audacity does not expire.  During recording, it displays how long you can record before running out of space on your computer’s hard drive.  To record for a longer time, delete old files or save your project on a larger disk.</p>"
+msgstr "<P>O Audacity não expira nunca. Durante a gravação, é mostrado o tempo de áudio disponível para gravação no seu computador, de acordo com a quantidade de espaço no seu disco rígido.</p>"
+
+#: help/faq.php:57
+msgid "Installation and Plug-Ins"
+msgstr "Instalação e Plug-ins"
+
+#: help/faq.php:60
+msgid "How do I download and install the LAME MP3 encoder?"
+msgstr "Como copiar e instalar o Lame MP3 encoder?"
+
+#: help/faq.php:61
+#, php-format
+msgid ""
+"<p>Because of software patents, we cannot distribute MP3 encoding software ourselves.  Follow these instructions to use the free LAME encoder to export MP3 files with Audacity.\n"
+"<h3>Windows</h3>\n"
+"<ol>\n"
+"  <li>Go to the <a href=\"%s\">LAME download page</a>.</li>\n"
+"  <li>Click on any link from the list of identical \"%s\" links.</li>\n"
+"  <li>When you have finished downloading LAME, unzip it and save the file <b>lame_enc.dll</b> anywhere on your computer.</li>\n"
+"  <li>The first time you use the \"Export as MP3\" command, Audacity will ask you where lame_enc.dll is saved.</li>\n"
+"</ol>\n"
+"<h3>Mac OS 9 or X</h3>\n"
+"<ol>\n"
+"  <li>Go to the <a href=\"%s\">LAME download page</a>.</li>\n"
+"  <li>Download the version of LameLib for your operating system.</li>\n"
+"  <li>When you have finished downloading, use Stuffit Expander to extract the files.  (This may happen automatically.)</li>\n"
+"  <li>Save the file called \"LameLib\" anywhere on your computer.</li>\n"
+"  <li>The first time you use the \"Export as MP3\" command, Audacity will ask you where LameLib is saved.</li>\n"
+"</ol>"
+msgstr ""
+
+#: help/faq.php:80
+msgid "How do I install VST plug-ins?"
+msgstr "Como instalar plug-ins VST?"
+
+#: help/faq.php:81
+#, php-format
+msgid ""
+"<ol>\n"
+"<li><p>First, download and unzip the <a href=\"%s\">VST Enabler</a>.</li>\n"
+"<li><p>Place the unzipped VST Enabler, along with your VST plug-ins, into the “Plug-ins” folder in the Audacity installation folder.  (On Mac OS X, this is usually in the Applications folder.  On Windows, it is usually under Program Files.)</li>\n"
+"<li><p>The next time you start Audacity, your VST effects will appear at the bottom of the “Effect” menu.</li>\n"
+"</ol>\n"
+"<p>See also: <a href=\"faq?s=install&amp;i=vst-bugs\">Why do some VST plug-ins look wrong, or not work?</a></p>"
+msgstr ""
+
+#: help/faq.php:89
+msgid "Why do some VST plug-ins look wrong, or not work?"
+msgstr "Por que alguns plug-ins VST não funcionam?"
+
+#: help/faq.php:90
+msgid ""
+"<p>The <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> is not yet able to display custom interfaces for plug-ins.  Instead, it uses generic controls for all VST plug-ins.  Because of this, many plug-ins will look or act differently than they do in other programs.</p>\n"
+"<p>Other VST plug-ins may not work at all, because of bugs in the VST Enabler.  You can <a href\"../contact/\">contact us</a> to report plug-ins that do not work.</p>  \n"
+"<p>Audacity also does not support VST instrument (VSTi) plug-ins.</p>"
+msgstr ""
+
+#: help/faq.php:95
+msgid "What should I do if I have problems downloading or installing Audacity?"
+msgstr "O que fazer se tiver problemas copiando ou instalando o Audacity?"
+
+#: help/faq.php:96
+msgid "<p>If you can't download Audacity, or if the downloaded setup file is corrupt, try downloading it from our <a href=\"http://sourceforge.net/project/showfiles.php?group_id=6235\">alternate servers</a>.</p>"
+msgstr ""
+
+#: help/faq.php:101
+msgid "Recording"
+msgstr "Gravação"
+
+#: help/faq.php:104
+msgid "How can I record in stereo?"
+msgstr "Como gravar faixas em estéreo?"
+
+#: help/faq.php:105
+msgid "<p>To record in stereo, open the Audacity preferences.  In the “Audio I/O” section, change the number of recording channels from 1 (mono) to 2 (stereo).</p>"
+msgstr ""
+
+#: help/faq.php:108
+msgid "How do I record from vinyl records, cassette tapes, or minidiscs?"
+msgstr "Como gravar de discos de vinil, fitas cassete ou minidiscs?"
+
+#: help/faq.php:109
+msgid ""
+"<p>First, set Audacity to <a href=\"faq?s=recording&amp;i=stereo\">record in stereo</a>.</p>\n"
+"<p>Next, plug one end of a stereo cable into the “Line Out” or “Headphone” connector on your tape deck, minidisc player, or stereo system.  Plug the other end into your computer’s “Line In” connector.  If you do not have a cable that fits both of these connectors, you can find one at an electronics store.</p>\n"
+"<p>Choose “Line In” as the input source on the Audacity toolbar, and press the Record button.  While Audacity is recording, start playing your tape or disc.  When you have captured the entire recording, press the Stop button.</p>\n"
+"<p>Notes:</p>\n"
+"<ul>\n"
+"\t<li><p>Do not plug stereo equipment into your computer’s “Microphone” port, which is designed for low-powered (“mic-level”) signals only.   Use the “Line In” port instead.</p></li>\n"
+"\t<li><p>Do not connect a turntable directly to your computer.  The signal from a turntable is distorted; it must be corrected by passing it through a phono pre-amp or a receiver with a “phono” input.</p></li>\n"
+"</ul>\n"
+"<p>See also: <a href=\"faq?s=files&amp;i=split\">How to split a long recording into multiple files</a>.</p>"
+msgstr ""
+
+#: help/faq.php:118
+#: help/faq.php:177
+#: help/faq.php:226
+msgid "See also:"
+msgstr "Veja também:"
+
+#: help/faq.php:118
+#: help/faq.php:202
+#: help/faq.php:226
+msgid "How do I save my recording on an audio CD?"
+msgstr "Como salvar o projeto para um CD de Áudio?"
+
+#: help/faq.php:121
+msgid "Why can’t I hear what I’m recording?"
+msgstr "Por que não é possível ouvir o que estou gravando?"
+
+#: help/faq.php:122
+msgid ""
+"<h3>Windows and Linux</h3>\n"
+"<p>To monitor your recording, open your computer's volume control panel.  Turn up the playback volume and turn off the “mute” checkbox for your recording source (usually “microphone” or “line in”).</p>\n"
+"<p>If this does not work, open the Audacity preferences.  In the “Audio I/O” section, turn on the “Software Playthrough” option.</p>\n"
+"<h3>Mac OS X</h3>\n"
+"<p>Open the Audacity preferences.  In the “Audio I/O” section, turn on the “playthrough” option.  “Hardware Playthrough” is best if it is available.  If it does not work, you can choose “Software Playthrough” instead.</p>\n"
+msgstr ""
+
+#: help/faq.php:130
+msgid "Can I play a track while recording a new one on top of it?"
+msgstr "Posso reproduzir uma faixa enquanto gravo uma outra sobre ela?"
+
+#: help/faq.php:131
+msgid ""
+"<p>This is called multi-track recording.  It makes it possible to record harmonies with yourself, or add new instruments or vocals to an existing recording.  To do this in Audacity, follow these instructions:</p>\n"
+"<ol>\n"
+"  <li>Import or record the first track.</li>\n"
+"  <li>Open the “Audio I/O” section of the Audacity preferences, and check the box labeled <b>Play other tracks while recording new one.</b></li>\n"
+"  <li>Close the preferences and press the <b>Record</b> button.</li>\n"
+"</ol>\n"
+"<p>See also: <a href=\"faq?s=recording&amp;i=sync\">Why isn't my new track in sync with the previous ones?</a></p>"
+msgstr ""
+
+#: help/faq.php:140
+msgid "Why isn’t my new track in sync with the previous ones?"
+msgstr "Por que a nova faixa não fica em sincronia com as demais?"
+
+#: help/faq.php:141
+msgid ""
+"<p>When you make a <a href=\"faq?s=recording&amp;i=multi-track\">multi-track recording</a>, there is an unpredictable delay between playback and recording.  Audacity tries to correct for this automatically, but this doesn't yet work on all computers.</p>\n"
+"<p>If a new track is not synchronized with the others, you can zoom in and use the Time Shift tool to drag it to the correct location.</p>"
+msgstr ""
+
+#: help/faq.php:145
+msgid "Can Audacity record RealAudio or other streaming audio?"
+msgstr "É possível salvar arquivos do RealAudio ou outros formatos de Fluxo Contínuo?"
+
+#: help/faq.php:146
+msgid ""
+"<h3>Windows and Linux</h3>\n"
+"<p>With most Windows and Linux audio devices, it is possible to record whatever sound the computer is currently playing, including internet radio streams.</p>\n"
+"<p>In the drop-down menu on Audacity's mixer toolbar, choose “Wave Out” or “Stereo Mix” as the input source.  (The exact name may be different, depending on your computer's sound drivers.)  When you press the Record button, Audacity will capture whatever sound is playing on your computer's speakers.</p>\n"
+"<p>If this doesn't work on your computer, you can instead use a cable to connect your computer's “Line Out” (speaker) port to its “Line In” port, and use Audacity to record from Line In.</p>\n"
+"<h3>Mac OS X</h3>\n"
+"<p>Mac OS X users can capture streaming audio using a program like <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> or <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>\n"
+msgstr ""
+"<p>Não de maneira automática. Muitos destes formatos foram projetados para tornar impossível a gravação no seu computador, preservando assim os seus direitos autorais. Estes tipos incluem Windows Media Player - .wma, Quicktime - .mov e RealPlayer - .ra . </p>\n"
+"<p>Ainda assim, é possível a gravação de qualquer tipo de som que seu computador possa reproduzir, apenas adquirindo um cabo que permita que a saída de áudio de sua placa de som (normalmente marcada como \"Line-out\") seja conectada diretamente na sua entrada de áudio, marcada como \"Line-in\".</p>/n<p>Agora, o Audacity deve poder gravar qualquer som enquanto este é reproduzido pelo seu computador.Apenas pressione \"Gravar\" no Audacity.</p>\n"
+
+#: help/faq.php:155
+msgid "Can I set Audacity to record at a certain time?"
+msgstr "Posso programar o Audacity para gravar a uma determinada hora?"
+
+#: help/faq.php:156
+msgid ""
+"<p>Sorry, Audacity does not yet support scheduled recording.  We may add this feature to a future version of the program.</p>\n"
+"<p>You can make Audacity <b>stop</b> recording after a certain time limit, by following these steps:</p>\n"
+"<ol>\n"
+"  <li>Turn on “Play existing tracks while recording” in the “Audio I/O” section of the preferences.</li>\n"
+"  <li>Choose “New Audio Track” from the Project menu.</li>\n"
+"  <li>Zoom out if necessary, then click and drag to select the amount of time you want to record.</li>\n"
+"  <li>Start recording.  Audacity will stop recording automatically when it reaches the end of the selected area.</li>\n"
+"</ol>"
+msgstr ""
+
+#: help/faq.php:168
+msgid "Opening and Saving Files"
+msgstr "Abrindo e Salvando arquivos"
+
+#: help/faq.php:171
+#: help/faq.php:177
+msgid "How do I open an Audacity project (AUP file) in another program?"
+msgstr "Como abrir os arquivos de projeto do Audacity (.AUP) em outro programa de edição?"
+
+#: help/faq.php:172
+msgid "<p>Audacity project files are saved in a special format that only Audacity can open.  To open your project in another program or burn it to CD, you must open the “project.aup” file in Audacity, and use the Export commands (in the File menu) to save it in a standard format like WAV or AIFF.</p>"
+msgstr ""
+
+#: help/faq.php:175
+msgid "Why does Audacity create a folder full of .au files when I save a project?"
+msgstr "Por que o programa cria uma pasta com arquivos .au quando salvo um projeto?"
+
+#: help/faq.php:176
+msgid "<p>Audacity breaks long tracks into small pieces so it can edit them more efficiently.  When you save a project, Audacity stores all of the pieces in a folder with a name like “project_data.”</p>  <p>You do not need to open these files yourself.  Audacity will load them automatically when you open the “project.aup” file, which is saved in the same location as the “data” folder.</p>"
+msgstr ""
+
+#: help/faq.php:180
+msgid "Audacity crashed!  Can I recover any unsaved data?"
+msgstr "O Audacity travou! Posso recuperar meus dados não-salvos?"
+
+#. i18n-hint: Sorry, these links are in English only.  If you would
+#. like to make more information available, please create a page on
+#. the wiki for now.
+#: help/faq.php:184
+msgid "<p>You may be able to recover your project automatically with the <a href=\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>.  Please see the <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Crash Recovery</a> page for more information.</p>"
+msgstr "<p>É possível  recuperar os aqruivos de projeto ainda não salvos com o <a href=\"http://www.mesw.de/audacity/recovery/\">Utilitário de recuperação do Audacity</a>. Por favor, leia a página <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Crash Recovery</a> para outras informações.</p>"
+
+#: help/faq.php:187
+msgid "Can Audacity import file formats like WMA, AAC, FLAC, etc.?"
+msgstr "É possível importar arquivos WMA, AAC, FLAC, etc?"
+
+#: help/faq.php:188
+msgid ""
+"<p>Audacity <b>cannot</b> import or export files in <b>WMA, AAC, RealAudio, Shorten (SHN)</b>, or most other proprietary formats.  Because of licensing and patent restrictions, we are not allowed to add these formats to Audacity.  Future versions of Audacity might be able to support these formats using codecs installed in your operating system.</p>\n"
+"<p>Some open formats are not yet supported by Audacity, including <b>Ogg Speex</b> and <b>FLAC</b>.  We hope to support these formats in future versions of Audacity.</p>\n"
+"<p>For a list of supported formats, see the <a href=\"../about/features\">feature list</a>.</p>\n"
+"<p>See also: <a href=\"faq?s=files&amp;i=midi\">Why can't I play MIDI files?</a></p>"
+msgstr ""
+"<P> O Audacity <B>não pode</b> importar ou exportar arquivos em formatos proprietários de som, como WMA, AAC, RealAudio, etc, por problemas de licenciamento. Esperamos adicionar o suporte a plug-ins que leiam estes formatos em breve</p>\n"
+"<P>Outros formatos não-proprietários como Ogg Speex também não são suportados na versão atual do Audacity.</p>\n"
+"<p>Para uma lista de formatos suportados pelo Audacity veja a <a href=\"../about/features\">lista de recursos</a>.</p>\n"
+"<p>Veja também a pergunta: <a href=\"faq?s=files&amp;i=midi\">Por que os arquivos MIDI não são reproduzidos?</a></p>"
+
+#: help/faq.php:194
+msgid "Why can’t I play MIDI files?"
+msgstr "Por que os arquivos MIDI não são reproduzidos?"
+
+#: help/faq.php:195
+msgid "<p>Sorry, Audacity cannot play, edit, or convert MIDI files.  It can only display them visually (for comparison with recorded sounds).  We might add MIDI editing to a future version of Audacity, but for now Audacity is focused on sampled audio (like WAV files).</p>"
+msgstr "<P>O Audacity não pode reproduzir, editar ou converter arquivos Midi. Só é possível visualizá-los (para comparação com arquivos gravados). Apesar do Audacity ser voltado à edição de sons Wav, esperamos adicionar o suporte a Midi em breve. </p>"
+
+#: help/faq.php:198
+msgid "How do I import a track from an audio CD?"
+msgstr "Como gravar sons de um CD?"
+
+#: help/faq.php:199
+msgid "<p>Audacity cannot import a track directly from an audio CD.  You must use a separate program like <a href=\"http://cdexos.sourceforge.net/\">CDex</a> or <a href=\"http://www.apple.com/itunes/\">iTunes</a> to extract CD tracks into a format that Audacity can read, like WAV or AIFF.</p>"
+msgstr "<P>O Audacity não importa som diretamente de CDs. Será necessário um programa a parte, conhecido por \"Ripper\".</P><P>Para Windows, recomendamos o <a href=\"http://cdexos.sourceforge.net/\">CDex</a></P><P>Para Mac OS (9 e X), recomendamos o Apple <a href=\"http://www.apple.com/itunes/\">iTunes</a>.</P><P>Para Linux, tente o Paranoia. </P>"
+
+#: help/faq.php:203
+msgid "After making a recording or editing a file in Audacity, follow these steps to save your work on an audio CD:"
+msgstr ""
+
+#: help/faq.php:204
+msgid ""
+"<ol>\n"
+"  <li>Use the “Export as WAV” or “Export as AIFF” command to save your Audacity recording in a sound file.</li>\n"
+"  <li>Use any CD-recording software (iTunes or Nero, for example) to burn this file to a CD.</li>\n"
+"</ol>\n"
+"<p>To make a disc you can play in normal CD players, make sure to create a “music” or “audio” CD (not a “data” CD).  Use CD-R discs, because some players cannot read CD-RW.</p>\n"
+"<p>Some CD software will burn only 16-bit, 44.1KHz stereo sound files.  If your CD recording software won't open your sound file, export the file again after choosing the following settings in Audacity:</p>\n"
+"<ol>\n"
+"  <li>At the bottom of the Audacity window, set the Project Rate to 44100 Hz.</li>\n"
+"  <li>In the File Formats preferences, choose WAV (16-bit...) or AIFF (16-bit...).</li>\n"
+"  <li>If your project does not already contain a stereo track, choose “New Stereo Track” from the Project menu.  (This will make Audacity export your recording as a stereo file.)</li>\n"
+"</ol>\n"
+"<p>See also: <a href=\"faq?s=files&amp;i=split\">How can I split a long recording into multiple tracks?</a></p>"
+msgstr ""
+"<ol>\n"
+"  <li>Use o comando  “Exporta como WAV” ou “Exportar como AIFF” para salvar o projeto em um arquivo de áudio.</li>\n"
+"  <li>Utilize um programa capaz de gravar CDs (como o iTunes ou Nero) para gravar o arquivo em um CD.</li>\n"
+"</ol>\n"
+"<p>Para poder ouvir este CD em qualquer aparelho de som, lembre-se de selecionar o tipo de gravação ´´CD de Áudio´´ e utilize CDRs, já que nem todos os aparelhosde som lêem CDRWs.</p>\n"
+"<p>Alguns programas só gravam CDs de áudio se o arquivo original estiver a 16-bit, 44.1KHz. Neste caso, exporte o arquivo de projeto novamente nesta configuração.</p>"
+
+#: help/faq.php:218
+msgid "How can I split a long recording into multiple files or CD tracks?"
+msgstr "Como transformar um único som em diversas faixas?"
+
+#: help/faq.php:219
+msgid ""
+"<p>Follow these steps to create a separate file for each song or segment of a long recording.  This is particularly useful if you are creating a CD, since each file will appear as a separate track on the CD.</p>\n"
+"<ol>\n"
+"  <li>Click to place the cursor at the start of the first song.</li>\n"
+"  <li>Choose “Add Label at Selection” from the Project menu.  If you wish, you can type the name of the song.</li>\n"
+"  <li>Repeat steps 1 and 2 for each song.</li>\n"
+"  <li>When you are finished, choose “Export Multiple” from the File menu.  When you click the “Export” button, Audacity will save each song as a separate file, using the format and location you choose.</li>\n"
+"</ol>"
+msgstr ""
+"<p>Caso você tenha mixado um único projeto com múltiplas faixas e deseje gravá-las num CD como faixas separadas, será necessário exportar o projeto em cada faixa que se deseje gravar, criando assim um arquivo para cada faixa.</p>\n"
+"<p>No Audacity há várias maneiras de se executar esta tarefa, por exemplo:</p>\n"
+"<p>Método 1: Exportando a seleção</p>\n"
+"<ol><li>Selecione a área correspondente à primeira faixa. \n"
+"</li><li>Selecione \"Exportar seleção como...\" no menu \"Arquivo\" e salve.\n"
+"</li><li>Repita o procedimento para cada faixa restante.\n"
+"</li></ol><p>Método 2: Apagar e Desfazer\n"
+"</p><ol><li>Selecione e apague tudo <i>exceto</i> o conteúdo da primeira faixa a ser exportada.</li>\n"
+"<li>Selecione \"Exportar como...\" no menu \"Arquivo\" e exporte a faixa.</li>\n"
+"<li>No menu \"Editar\" selecione \"Desfazer\" até obter todo o áudio oiriginal. (O Audacity tem \"desfazer\" ilimitados)</li>\n"
+"<li>Repita o procedimento para cada faixa restante.</li>\n"
+"</ol><p>Método 3: Separar e Exportar</p>\n"
+"<ul><li>Selecione a área correspondente à primeira faixa.</li>\n"
+"<li>Selecione no menu \"Editar\" - \"Cortar em nova faixa\" </li>\n"
+"<li>Repita o procedimento para cada faixa restante. </li>\n"
+"<li>Selecione as faixas recem-criadas e exporte uma a uma utilizando \"Exportar seleção como...\" </li>\n"
+"</ol>"
+
+#: help/faq.php:231
+msgid "Editing"
+msgstr "Editando"
+
+#: help/faq.php:234
+msgid "Why can’t I use the effects or other menu items?"
+msgstr "Por que alguns efeitos não estão disponíveis no menu?"
+
+#: help/faq.php:235
+msgid "<p>Some menu items are grayed out or disabled until they are ready for use.  Before choosing an effect, you must select the audio that you want to change.  To select audio, click and drag with the Selection tool to highlight it, or choose the “Select All” command from the Edit menu.</p>"
+msgstr ""
+
+#: help/faq.php:238
+msgid "How do I combine two files into one longer file?"
+msgstr "Como juntar duas faixas em uma só?"
+
+#: help/faq.php:239
+msgid ""
+"<p>Follow these steps to splice two files together:</p>\n"
+"<ol>\n"
+"  <li>Import both files into Audacity.</li>\n"
+"  <li>Select the second one by clicking on its label (the area around the mute/solo buttons).</li>\n"
+"  <li>Choose “Cut” from the Edit menu.</li>\n"
+"  <li>Place the cursor by clicking in the first track, after the end of the audio.</li>\n"
+"  <li>Choose “Paste” from the Edit menu.</li>\n"
+"</ol>\n"
+"<p>You can press the Play button to hear the result, and use the Export commands (in the File menu) to save it as a sound file.</p>"
+msgstr ""
+
+#: help/faq.php:250
+msgid "How do I mix two tracks together?"
+msgstr "Como mixar duas faixas simultaneamente?"
+
+#: help/faq.php:251
+msgid "<p>To mix two files, just import both of them into Audacity.  They will appear in separate tracks, and will be mixed together when you press the Play button.  You can use the Time Shift tool to move them around so that they start at different times, or use the other editing commands to alter either of the tracks.</p>"
+msgstr ""
+
+#: help/faq.php:254
+msgid "Can I remove the vocals from a recording to make a Karaoke track?"
+msgstr "É possível retirar os vocais de uma gravação?"
+
+#: help/faq.php:255
+msgid ""
+"<p>This is possible <b>only for certain stereo tracks</b>.  When the vocals are exactly the same on both stereo channels, you can remove them by “subtracting” one channel from the other.  This works for many studio recordings, where the vocal track is mixed exactly in the center.</p>\n"
+"<p>To do this in Audacity:</p>\n"
+"<ol>\n"
+"  <li>Import your stereo file into Audacity.</li>\n"
+"  <li>Open the track menu (click the arrow next to the track title), and choose “Split Stereo Track.”</li>\n"
+"  <li>Select the lower track (the right channel) by clicking it in the area around the mute/solo buttons.</li>\n"
+"  <li>Choose “Invert” from the Effects menu.</li>\n"
+"  <li>Using the track menus, change each track to “Mono.”</li>\n"
+"</ol>\n"
+"<p>Press the Play button to hear the results.  If you are lucky, the voice will be gone but most of the other instruments will be unaffected, just like a karaoke track.  You can use the Export commands in the File menu to save the results.</p>\n"
+msgstr ""
+"<P>Em algumas gravações é possível remover os vocais, devido à forma como estas foram mixadas. Normalmente, o vocal é mixado para estar exatamente no centro das faixas, enquanto os outros instrumentos são mixados para estarem um pouco mais à direita ou à esquerda dos canais. Subtraindo o canal direito do esquerdo, os vocais devem ser completamente apagados, sem prejuízo dos outros sons.</p>\n"
+"<P>Atenção, esta técnica só funciona em algumas gravações!!</p>\n"
+"<P>Para tentar, importe o áudio em estéreo, e clique na setinha abaixo, à esquerda da faixa selecionada. Selecione \"Separar faixas de estéreo\" (Split Stereo Track). Selecione a faixa mais abaixo - a da direita - e aplique o efeito \"Inverter verticalmente\" (Invert). Transforme todos os canais em mono e junte-os com o comando \"Quickmix\". Se a técnica funcionar, os vocais serão removidos.</p>\n"
+
+#: help/faq.php:284
+msgid "Other frequently asked questions..."
+msgstr "Outras questões comuns..."
+
+#: help/faq.php:288
+msgid "Frequently Asked Questions"
+msgstr "FAQ - Questões comuns"
+
+#: help/faq.php:292
+msgid "These are some of the most common questions about Audacity.  If your question isn’t answered here, see the <a href=\"documentation\">documentation</a>, or <a href=\"../contact/\">contact us</a> for help."
+msgstr "Estas são as perguntas mais comuns sobre o Audacity. Se o quevocê quer saber não for respondido aqui, veja a <a href=\"documentation\">documentação </a>, ou <a href=\"../contact/\">entre em contato </a>e peça ajuda."
+
+#: help/index.php:9
+msgid "Documentation and Support"
+msgstr "Documentação e suporte"
+
+#  i18n-hint: If there are any special resources for Audacity users in your
+#. i18n-hint: If there are any special resources for Audacity users in your
+#. language (forums, documentation, mailing lists...), you can add links to
+#. them here.
+#: help/index.php:17
+msgid ""
+"<p>If you have a question, check the list of <a href=\"faq\">Frequently Asked Questions</a>.</p>\n"
+"<p>For instructions and help using Audacity, see:</p>\n"
+"<ul>\n"
+"  <li><a href=\"documentation\">Documentation</a> - Read the user’s manual and quick reference.</li>\n"
+"  <li><a href=\"tutorials\">Tutorials</a> - Step by step articles teach you how to use Audacity.</li>\n"
+"</ul>\n"
+"<p>If your question isn’t answered here, please <a href=\"../contact/\">contact us</a>.</p>"
+msgstr ""
+
+#: help/nyquist.php:17
+#: help/nyquist2.php:17
+#: help/nyquist3.php:17
+msgid "Introduction to Nyquist and Lisp Programming"
+msgstr "Introdução à linguagem Lisp e Nyquist (em inglês)"
+
+#: help/nyquist.php:18
+#: help/nyquist2.php:10
+#: help/nyquist2.php:18
+#: help/nyquist3.php:18
+msgid "Programming in Nyquist"
+msgstr "Programando em Nyquist"
+
+#: help/nyquist.php:19
+#: help/nyquist2.php:19
+#: help/nyquist3.php:10
+#: help/nyquist3.php:19
+msgid "Creating Nyquist Plug-ins"
+msgstr "Criando plug-ins Nyquist (em inglês)"
+
+#: help/nyquist.php:22
+msgid ""
+"<p>Beginning with version 1.1.1, Audacity allows you to use the Nyquist programming language to write your own plug-in effects for Audacity.  Unlike VST and LADSPA plug-ins, Nyquist plug-ins can be written using an ordinary text editor and don't need to be compiled.</p>\n"
+"\n"
+"<p>Nyquist was written by <a href=\"http://www-2.cs.cmu.edu/~rbd/\">Roger B. Dannenberg</a> and was intended to be used as a complete programming language for audio synthesis and analysis, with support for MIDI, audio recording and playback, file I/O, object-oriented programming, profiling, debugging, and more.  Audacity uses only a subset of Nyquist's functionality, allowing you to take simple Nyquist functions and use them to process audio data.   Audacity doesn't include any support for debugging Nyquist code, so if you are trying to write a complicated plug-in, you may find it easier to get the full version of Nyquist and develop there, then turn it into an Audacity plug-in.  Nyquist is available from the Carnegie Mellon University Computer Music Project:</p>\n"
+"<ul>\n"
+"\t<li><a href=\"http://www-2.cs.cmu.edu/~music/music.software.html\">CMU Computer Music Project Software</a> - download the full Nyquist here</a></li>\n"
+"\t<li><a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">Complete Nyquist Reference Manual at CMU</a></li>\n"
+"</ul>\n"
+"\n"
+"<p>Note that you don't need to download Nyquist in order to write simple plug-ins to use with Audacity.  All of the instructions you need are below.</p>\n"
+"\n"
+"<h3>Lisp</h3>\n"
+"\n"
+"<p>Nyquist is based on Lisp.  If you have programmed in Lisp before, you can skim this section or go directly to the <a href=\"nyquist2\">next page</a>.  Otherwise, here's an extremely brief introduction to Lisp:</p>\n"
+"\n"
+"<p>In Lisp (and therefore Nyquist), everything is an S-Expression, which is just a list of tokens (words) separated by whitespace and enclosed in parentheses.  The name of the function is always the first token in an S-Expression, and all of the other tokens are arguments to this function.  Here's a simple example:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf area (* 3.14159 (expt radius 2)))\n"
+"</pre>\n"
+"\n"
+"<p>Let's break down this example.  The outermost S-expression has three members.  The first one, <code>setf</code>, is the name of the function (it stands for set-field).  <code>setf</code> is used to assign a value to a variable.  (There are other similar functions, like <code>set</code> and <code>setq</code>, but <code>setf</code> is the most powerful, so it's the one we'll use in our examples.) After <code>setf</code> comes <code>area</code>, which is the name of the variable we're going to set.  Next comes the value to assign to this variable, which in this case is another S-expression.</p>\n"
+"\n"
+"<p>Lisp doesn't have any special operators for Math functions - they're all functions like everything else, using <i>prefix</i> notation, where the name of the function (or operator) come before its arguments.  So instead of 3*7 for the product of 3 and 7, in Lisp you would write (* 3 7).  In Nyquist, the <code>expt</code> (exponent) function raises its first argument to the power of the second argument.  Therefore <code>(* 3.14159 (expt radius 2))</code> means 3.14159 times the square of <code>radius</code>, or the formula for the area of a circle.</p>\n"
+"\n"
+"<p>Rather than typing in this full expression every time, let's define a function for the area of the circle, that we can call every time we need it:</p>\n"
+"\n"
+"<pre>\n"
+"  (defun circlearea (radius) (* 3.14159 (expt radius 2)))\n"
+"</pre>\n"
+"\n"
+"<p>The <code>defun</code> function is used to define a new function.  The first argument is the name of the function, in this case <code>circlearea</code>.  The second argument is a list of arguments to the function to be defined - this is one of the few cases where you have an S-expression that is not interpreted as a function call.  Finally the last expression is the value of the function.  Now if we want to compute the area of a circle of radius <code>r</code>, we just need to compute:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf area (circlearea r))\n"
+"</pre>\n"
+"\n"
+"<p>An S-expression is just a representation of a list.  Lisp uses lists to represent just about everything (the name LISP comes from LISt Processing language), so it's helpful to know how to manipulate lists.  Let's start by assigning a list of numbers to a variable.  You can't quite do this:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf mylist (1 2 3 4 5))  <font color=#cc0000><--  error!</font>\n"
+"</pre>\n"
+"\n"
+"<p>The reason this doesn't work is that whenever Nyquist sees an S-expression, it tries to evaluate it as a function unless you tell it otherwise.  Since there's no function named \"1\" that takes arguments <code>(2 3 4 5)</code>, this will generate an error.  To tell lisp that you want to treat an S-expression literally, and not to evaluate it as a function, you <i>quote</i> it.  In Nyquist, you can quote a list by putting a single quotation mark before it, like this:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf mylist '(1 2 3 4 5))\n"
+"</pre>\n"
+"\n"
+"<p>Nyquist also provides a <code>list</code> function that you can use to construct lists - this is useful if some of the elements of the list are functions:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf mylist (list 1 2 3 4 (sqrt 25)))\n"
+"</pre>\n"
+"\n"
+"<p>To get things off of a list, you can use the <code>first</code> and <code>rest</code> functions.  (Traditionally, these were called <code>car</code> and <code>cdr</code>, respectively, but <code>first</code> and <code>rest</code> are much easier to remember.  Both sets of names are supported in Nyquist.)  The output of <code>(first mylist)</code> is 1, and the output of <code>(rest mylist)</code> is the list <code>(2 3 4 5)</code>.  So the second element of the list is <code>(first (rest mylist))</code>.</p>\n"
+"\n"
+"<h3>Lisp function reference</h3>\n"
+"\n"
+"<p>Here's a list of some of the basic lisp functions you might need.  For a complete list of Lisp / Nyquist functions, see the <a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">Nyquist Reference Manual</a>.</p>\n"
+"\n"
+"<p><b>Note: Symbols in Nyquist(like variable names and function names) are not case sensitive.  They are converted to uppercase internally.</b></p>\n"
+"\n"
+"<h4>Math functions</h4>\n"
+"<table class=\"function-list\" summary=\"List of functions and explanations\">\n"
+"<tr><td><code>(+ a b)</code></td><td>addition</td></tr>\n"
+"<tr><td><code>(- a b)</code></td><td>subtraction</td></tr>\n"
+"<tr><td><code>(* a b)</code></td><td>multiplication</td></tr>\n"
+"<tr><td><code>(/ a b)</code></td><td>division</td></tr>\n"
+"<tr><td><code>(truncate a b)</code></td><td>round down to integer (floor)</td></tr>\n"
+"<tr><td><code>(float a b)</code></td><td>integer to floating-point</td></tr>\n"
+"<tr><td><code>(rem a b c ...)</code></td><td>remainder</td></tr>\n"
+"<tr><td><code>(min a b c ...)</code></td><td>minimum</td></tr>\n"
+"<tr><td><code>(max a b c ...)</code></td><td>maximum </td></tr>\n"
+"<tr><td><code>(abs a)</code></td><td>absolute value</td></tr>\n"
+"<tr><td><code>(random n)</code></td><td>random integer between 1 and n-1</td></tr>\n"
+"<tr><td><code>(sin a b)</code></td><td>sine</td></tr>\n"
+"<tr><td><code>(cos a b)</code></td><td>cosine</td></tr>\n"
+"<tr><td><code>(tan a b)</code></td><td>tangent</td></tr>\n"
+"<tr><td><code>(expt a b)</code></td><td>exponent (a to the power of b)</td></tr>\n"
+"<tr><td><code>(sqrt a b)</code></td><td>square root</td></tr>\n"
+"<tr><td><code>(< a b)</code></td><td>test for a less than b</td></tr>\n"
+"<tr><td><code>(<= a b)</code></td><td>test for a less than or equal to b</td></tr>\n"
+"<tr><td><code>(> a b)</code></td><td>test for a greater than b</td></tr>\n"
+"<tr><td><code>(>= a b)</code></td><td>test for a greater than or equal to b</td></tr>\n"
+"<tr><td><code>(= a b)</code></td><td>test for equality</td></tr>\n"
+"<tr><td><code>(/= a b)</code></td><td>test for inequality</td></tr>\n"
+"</table>\n"
+"<h4>List functions</h4>\n"
+"<table class=\"function-list\" summary=\"List of functions and explanations\">\n"
+"<tr><td><code>(first l)</code></td><td>first element of a list (car)</td></tr>\n"
+"<tr><td><code>(rest l)</code></td><td>rest of the list (cdr)</td></tr>\n"
+"<tr><td><code>(reverse l)</code></td><td>reverse a list</td></tr>\n"
+"<tr><td><code>(list a b ...)</code></td><td>construct a list</td></tr>\n"
+"<tr><td><code>(append l1 l2)</code></td><td>append two lists</td></tr>\n"
+"<tr><td><code>(length l)</code></td><td>length of a list</td></tr>\n"
+"<tr><td><code>(maplist function l)</code></td><td>apply a function to every element in a list</td></tr>\n"
+"</table>\n"
+"\n"
+"<h4>Control</h4>\n"
+"<table class=\"function-list\" summary=\"List of functions and explanations\">\n"
+"<tr><td><code>(if expr expr1 expr2)</code></td><td>if expr is true, evaluates expr1, otherwise evaluates expr2</td></tr> \n"
+"</table>\n"
+"\n"
+"<h3><a href=\"nyquist2\">Next: Programming in Nyquist</a></h3>"
+msgstr ""
+
+#: help/nyquist2.php:22
+msgid ""
+"<p>What makes Nyquist distinct from Lisp is that it is designed to work with sound, and has lots of built-in primitives and functions that synthesize, analyze, and manipulate sounds.  Within Audacity, this makes it relatively easy to build complicated effects out of Nyquist's palette of built-in functions.</p>\n"
+"\n"
+"<p>In Nyquist, a variable can hold a sound just as easily as it can hold a number or a string.  There are a lot of functions provided that allow you to stretch, distort, and combine sounds very efficiently.  It is even possible to \"rip apart\" a sound and access its individual samples, but that's beyond the scope of this tutorial.</p>\n"
+"\n"
+"<p>To try out a Nyquist expression in Audacity, you can use \"Nyquist Prompt\" in the Effect menu.  Whatever audio you have selected will be in the variable <code>s</code>, and the selection will be replaced with the result of the Nyquist expression you enter.  In Part 3, you will learn how to create a plug-in effect using Nyquist.</p>\n"
+"\n"
+"<h3>Synthesizing</h3>\n"
+"\n"
+"<p>The following functions all create new sounds.  You can use them to create \"generate\" plug-in effects, or you can combine these synthesized sounds with selected audio to produce interesting effects.</p>\n"
+"\n"
+"<table class=\"function-list\" class=\"function-list\">\n"
+"<tr>\n"
+"<td>(noise)</td>\n"
+"<td>Generates white noise</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(const value [duration])</td>\n"
+"<td>Generates a constant (silent) signal</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(sine pitch [duration])</td>\n"
+"<td>Generates a sine wave at an indicated pitch and duration.<br>\n"
+"    The pitch is a MIDI note number, with 60 for middle C.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(hzosc hz)</td>\n"
+"<td>Generates a sine wave at a particular frequency in Hz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(osc-saw hz)</td>\n"
+"<td>Generates a sawtooth wave at a particular frequency in Hz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(osc-tri hz)</td>\n"
+"<td>Generates a triangle wave at a particular frequency in Hz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(osc-pulse hz bias)</td>\n"
+"<td>Generates a square pulse with variable width at the indicated\n"
+"    frequency (in Hertz). The bias parameter controls the pulse width \n"
+"    and should be between -1 and +1, giving a pulse width from 0%\n"
+"    (always at -1) to 100% (always at +1). When bias is zero,\n"
+"    a square wave is generated.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(pluck pitch)</td>\n"
+"<td>Generates a sound at the given pitch created using a\n"
+"    modified Karplus-Strong plucked string algorithm.</td>\n"
+"</tr>\n"
+"\n"
+"</table>\n"
+"\n"
+"<p>\n"
+"<b>Envelopes</b>\n"
+"</p>\n"
+"\n"
+"<p>Nyquist has support for envelopes.  By applying an envelope to a sound, you can control the overall shape of its amplitude.  One of the easiest ways to construct an envelope is with the <code>env</code> function, which takes 7 parameters that are commonly used for shaping synthesized musical notes: attack time, decay time, release time, attack level, decay level, sustain level, and overall duration.  See the figure below:</p>\n"
+"\n"
+"<p><img alt=\"Nyquist envelope diagram.\" src=\"../images/nyquist-envelope\" width=\"467\" height=\"200\"></p>\n"
+"\n"
+"<p>To apply an envelope to a sound, just use the <code>mult</code> function.  So if <code>s</code> is a sound, then this is the sound with a simple envelope applied to it:</p>\n"
+"\n"
+"<pre>\n"
+"  (mult s (env 0.1 0.1 0.2 1.0 0.5 0.3 1.0))\n"
+"</pre>\n"
+"\n"
+"<p>One of the most general type of envelope is a piece-wise linear function, which can be constructed with the <code>pwl</code> function.  The pwl function takes a list of parameters which denote (time, value) pairs. There is an implicit initial (time, value) pair of (0, 0), and an implicit final value of 0. There should always be an odd number of parameters, since the final time is not implicit.  For example:</p>\n"
+"\n"
+"<pre>\n"
+"  ; symmetric rise to 0.7 (at time 1) and fall back to 0 (at time 2):\n"
+"  (pwl 1.0 0.7 2.0)\n"
+"</pre>\n"
+"\n"
+"<h3>Combining sounds</h3>\n"
+"\n"
+"<p>Besides multiplying two sounds with the <code>mult</code> function, you can add two sounds (or envelopes) with the <code>add</code> function.</p>\n"
+"\n"
+"<h3>Filters</h3>\n"
+"\n"
+"<p>Nyquist comes with a number of common filters built-in.  Here are some of the more common ones:</p>\n"
+"\n"
+"<table class=\"function-list\">\n"
+"\n"
+"<tr>\n"
+"<td>(lp sound cutoff)</td>\n"
+"<td>Low-pass filter (first-order Butterworth). Cutoff may be a float or a signal (for time-varying filtering) and expresses hertz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(hp sound cutoff)</td>\n"
+"<td>High-pass filter (first-order Butterworth). Cutoff may be a float or a signal (for time-varying filtering) and expresses hertz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(comb sound hz decay)</td>\n"
+"<td>Applies a comb filter to sound, which emphasizes\n"
+"    (resonates at) frequencies that are multiples of a hz.\n"
+"</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(alpass sound decay hz)</td>\n"
+"<td>All-pass filter, creating a delay effect without the resonances\n"
+"    of a comb filter.  </td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(notch2 sound hz)</td>\n"
+"<td>Second-order notch filter centered at a frequency of hz.</td>\n"
+"</tr>\n"
+"\n"
+"</table>\n"
+"\n"
+"<h3>Transforming and combining sounds</h3>\n"
+"\n"
+"<p>It is beyond the scope of this introductory tutorial to explain all of the ways that a sound can be transformed in Nyquist.  These functions do not modify sounds directly, but instead modify the Nyquist <em>environment</em>.  In order for these changes to affect sounds, you must use the <code>cue</code> function.</p>\n"
+"\n"
+"<table class=\"function-list\">\n"
+"\n"
+"<tr>\n"
+"<td>(stretch factor (cue sound))</td>\n"
+"<td>Changes the length of the sound being cued by the given factor.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(scale factor (cue sound))</td>\n"
+"<td>Scales the amplitude of the sound being cued by the given factor.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(loud dB (cue sound))</td>\n"
+"<td>Increases or decreases the volume of the sound being cued by the<br>\n"
+"    given number of decibels.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(at t (cue sound))</td>\n"
+"<td>Starts the given sound at a particular time in seconds.<br>\n"
+"    This can't be used to add silence at the beginning or end,<br>\n"
+"    but it can be used when combining two or more sounds.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(seq (cue s1) (cue s2))</td>\n"
+"<td>Creates a sequence of sound s1 followed by sound s2.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(sim (cue s1) (cue s2))</td>\n"
+"<td>Combines two sounds so that they are played simultaneously.\n"
+"</tr>\n"
+"\n"
+"</table>\n"
+"\n"
+"<h3><a href=\"nyquist3\">Next: Creating Nyquist Plug-Ins</a></h3>"
+msgstr ""
+
+#: help/nyquist3.php:22
+msgid ""
+"<p>Creating a plug-in for Audacity using Nyquist is as simple as creating a text file with the extension \".ny\" with some Nyquist code, adding a few comments to indicate the type of plug-in, and placing the file in Audacity's <code>plug-ins</code> directory.  Here's a very simple plug-in as an example:</p>\n"
+"\n"
+"<pre>\n"
+"  ;nyquist plug-in\n"
+"  ;version 1\n"
+"  ;type process\n"
+"  ;name \"Fade In\"\n"
+"  ;action \"Fading In...\"\n"
+"  (mult (ramp) s)\n"
+"</pre>\n"
+"\n"
+"<p>The first two lines of a Nyquist plug-in must be exactly as in the example above, or Audacity will not load it.  (The version number is to support future expansions of the plug-in format.) The next line is the type of plug-in, which is discussed below.  Then comes the name of the plug-in, which is what is displayed in the menu bar, and then the \"action\", which is what Audacity displays while it is busy processing the plug-in.  There are other optional lines that may follow.  Any line that does not begin with a semicolon (;) is assumed to contain Nyquist code and will be executed.</p>\n"
+"\n"
+"<p>Audacity has support for three types of plug-ins that can be written in Nyquist:</p>\n"
+"\n"
+"<pre>\n"
+"  ;type generate\n"
+"  ;type process\n"
+"  ;type analyze\n"
+"</pre>\n"
+"\n"
+"<p>These correspond to the three menus that can contain plug-ins: Generate, Effect, and Analyze.  Generate plug-ins are expected to generate new audio from scratch, Effect plug-ins (\"process\") modify existing audio in-place, and Analyze plug-ins process audio but do not modify it (though they are allowed to add labels).</p>\n"
+"\n"
+"<p>For Effect and Analyze plug-ins, Audacity sets up the Nyquist environment so that the audio the user has selected is in the variable <code>s</code>.  All of the expressions in the plug-in file are executed in order, and the return value of the last expression is substituted for the selection in Audacity.  If the last expression does not return audio, Audacity returns an error.</p>\n"
+"\n"
+"<h3>Parameter dialogs</h3>\n"
+"\n"
+"<p>Audacity has limited support for plug-ins showing a dialog to get parameters from the user.  Here is an example of a plug-in that opens a dialog:</p>\n"
+"\n"
+"<pre>\n"
+"  ;nyquist plug-in\n"
+"  ;version 1\n"
+"  ;type process\n"
+"  ;name \"Delay...\"\n"
+"  ;action \"Performing Delay Effect...\"\n"
+"  ;info \"Demo effect for Nyquist by Roger Dannenberg.\\n"
+"This effect \n"
+"     creates a fixed number of echos.\"  ; (should be all on one line)\n"
+"  ;control decay \"Decay amount\" int \"dB\" 6 0 24\n"
+"  ;control delay \"Delay time\" real \"seconds\" 0.5 0.0 5.0\n"
+"  ;control count \"Number of echos\" int \"times\" 5 1 30\n"
+"\n"
+"  (defun delays (s decay delay count)\n"
+"    (if (= count 0) (cue s)\n"
+"\t   (sim (cue s)\n"
+"        (loud decay (at delay (delays s decay delay (- count 1)))))))\n"
+"  (stretch-abs 1 (delays s (- 0 decay) delay count))\n"
+"</pre>\n"
+"\n"
+"<p>If Audacity finds at least one \"control\" line, it will open a dialog to prompt the user for certain parameters to the plug-in.  Each parameter consists of a text box and a slider, and after the user has entered each one, the final value will be stored in a Nyquist variable with a name that you specify on the \"control\" line.  Here's what the dialog for the Delay effect shown above looks like in Audacity for Linux:</p>\n"
+"\n"
+"<p><img alt=\"Nyquist plugin screenshot\" src=\"../images/nyquist-plugin-screenshot\" width=\"414\" height=\"221\"></p>\n"
+"\n"
+"<p>Note that the \"info\" line is displayed at the top of the dialog, and that the \"\\n"
+"\" becomes a newline.  The parameters to the \"control\" line affect the appearance and limitations of the parameter.  Each \"control\" line must consist of exactly the following 8 elements, in order:</p>\n"
+"\n"
+"<ol>\n"
+"\t<li>The word \"control\"</li>\n"
+"\t<li>The name of the control - this is the name of the Nyquist variable that will get set when the user manipulates the dialog.</li>\n"
+"\t<li>The label to the left of the control</li>\n"
+"\t<li>The type of value: either <code>int</code> (integer) or <code>real</code>.</li>\n"
+"\t<li>The label to the right of the value (usually the units like \"Hz\" or \"dB\").</li>\n"
+"\t<li>The default/initial value of the parameter</li>\n"
+"\t<li>The minimum value of the parameter</li>\n"
+"\t<li>The maximum value of the parameter</li>\n"
+"</ol>\n"
+"\n"
+"<h3>Returning labels</h3>\n"
+"\n"
+"<p>Instead of returning audio, a Nyquist plug-in can instead return a list of labels.  A list of labels is simply a list of time/label pairs, for example:</p>\n"
+"\n"
+"<pre>\n"
+"  ((0.0 \"start\") (30.0 \"middle\") (60.0 \"end\"))\n"
+"</pre>\n"
+"\n"
+"<p>When a plug-in returns a list of exactly this form, Audacity will create a new label track and add the labels at those positions.  This style of plug-in is usually of type \"analyze\".</p>\n"
+"\n"
+"<h3>Processing stereo tracks</h3>\n"
+"\n"
+"<p>Nyquist represents stereo tracks as an array of sounds (not a list).  Many Nyquist functions automatically work with these arrays, but not all, so sometimes you may find it necessary to split up a stereo array, or reassemble one.  Here are some useful functions:</p>\n"
+"\n"
+"<table class=\"function-list\">\n"
+"<tr><td><code>(arrayp s)</code></td><td>returns true if <code>s</code> is an array</td></tr>\n"
+"<tr><td><code>(aref s 0)</code></td><td>the first element in array <code>s</code> - the left channel</td></tr>\n"
+"<tr><td><code>(aref s 1)</code></td><td>the second element in array <code>s</code> - the right channel</td></tr>\n"
+"<tr><td><code>(setf s (make-array 2))</code></td><td>makes <code>s</code> into a new array of length 2</td></tr>\n"
+"<tr><td><code>(setf (aref s 0) left)</code></td><td>makes <code>left</code> the first element of array <code>s</code></td></tr>\n"
+"<tr><td><code>(setf (aref s 1) right)</code></td><td>makes <code>right</code> the second element of array <code>s</code></td></tr>\n"
+"</table>\n"
+"\n"
+"<p>As a convenience, if the input to your Nyquist plug-in is stereo, but you only output a single (mono) sound, Audacity will automatically copy it to both the left and right channels.</p>\n"
+"\n"
+"<h3>Where to go from here</h3>\n"
+"\n"
+"<p>Audacity comes with some sample plug-ins that you can examine or modify as a starting point.  The best way to learn Nyquist is to try it.  If you're having trouble debugging, consider downloading the standalone version of Nyquist (see the link in Part 1).</p>\n"
+"\n"
+"<p>If you're having trouble getting Nyquist to work at all, please <a href=\"../contact/\">contact us</a>.</p>\n"
+"\n"
+"<p>If you are working on Nyquist plug-in effects and would like to share them with others, or if you would like to discuss general details of how to achieve certain effects in Nyquist, please join the <a href=\"../contact/lists#nyquist\">audacity-nyquist mailing list</a>.</p>\n"
+"\n"
+"<p>Don't forget to consult the full <a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">Nyquist Reference Manual</a> for more details of how Nyquist works.</p>"
+msgstr ""
+
+#  i18n-hint:  Please add a note that the links on this page are in English.
+#. i18n-hint:  Please add a note that the links on this page are in English.
+#. If there are tutorials in your language, link to them here.
+#: help/tutorials.php:16
+msgid "These articles give step-by-step instructions for common tasks using the free Audacity sound editor."
+msgstr "Estes artigos mostram passo-a-passo como executar operações simples no Audacity. Estas páginas estão em inglês, no entanto, caso queira traduzí-las, entre em contato conosco!"
+
+#  i18n-hint:  If this string is translated, it will appear above the list of
+#  i18n-hint:  If this string is translated, it will appear above the list of
+#  tutorials on the "help/tutorials" page.  If there are extra tutorials
+#  available in your language, add them here.  Otherwise, do not translate
+#  this string.  (Or make the translation identical to the original string.)
+#: help/tutorials.php:22
+#: help/tutorials.php:23
+msgid "localized_tutorials"
+msgstr ""
+
+#: help/tutorials.php:27
+msgid "Audacity 1.2 Tutorial by Dan Eliot"
+msgstr "Tutorial do Audacity 1.2 por Dan Eliot"
+
+#: help/tutorials.php:27
+msgid "Learn how to open and edit a WAV file, and save the result in an MP3."
+msgstr "Ensina a abrir arquivos de som já existentes, executar tarefas simples de edição e exportá-lo como outro arquivo. Contém animações em Flash com explicações detalhadas."
+
+#: help/tutorials.php:28
+msgid "Multi-Track Recording Tutorial from AGNULA"
+msgstr "Tutorial do Audacity no Agnula"
+
+#: help/tutorials.php:28
+msgid "Make a simple multi-track recording."
+msgstr "Trata da gravação \"Multitrack\" no Audacity, utilizando a distribuição Linux AGNULA"
+
+#: help/tutorials.php:29
+msgid "Audacity Tutorial by Daniel James"
+msgstr "Tutorial do Audacity por Daniel James"
+
+#: help/tutorials.php:29
+msgid "Shows how to mix a multi-track project.  Includes sample sound files."
+msgstr "Mostra a edição de som em Multitrack. Contém arquivos de exemplo para serem mixados conforme o tutorial."
+
+#: help/tutorials.php:32
+msgid "For additional help, see the <a href=\"documentation\">Audacity documentation</a>."
+msgstr "Para mais ajuda veja a <a href=\"documentation\">documentação do Audacity</a>."
+
+#: include/footer.inc.php:11
+#, fuzzy
+msgid "Page Footer"
+msgstr "Rodapé"
+
+#: include/footer.inc.php:13
+msgid "Privacy"
+msgstr "Privacidade"
+
+#: include/footer.inc.php:14
+msgid "Copyright"
+msgstr "Direitos de Cópia"
+
+#: include/footer.inc.php:17
+msgid "Creative Commons Attribution license"
+msgstr "Licença da Creative Commons Attribution"
+
+#: include/footer.inc.php:17
+msgid "Creative Commons: Some rights reserved."
+msgstr "Creative Commons: Alguns direitos reservados."
+
+#: include/footer.inc.php:18
+msgid "Development hosted by SourceForge"
+msgstr "Desenvolvimento baseado no SourceForge"
+
+#: include/footer.inc.php:19
+msgid "View this page in a different language"
+msgstr "Veja esta página em outro idioma"
+
+#: include/header.inc.php:11
+msgid "Audacity"
+msgstr "Audacity"
+
+#: include/header.inc.php:16
+#, fuzzy
+msgid "Jump to page content"
+msgstr "Ir para o conteúdo"
+
+#: include/header.inc.php:19
+msgid "Powered by Google"
+msgstr "Busca pelo Google"
+
+#: include/header.inc.php:24
+msgid "Search this site"
+msgstr "Busque no site"
+
+#: include/header.inc.php:28
+#, fuzzy
+msgid "Audacity: Free Sound Editor and Recording Software"
+msgstr "Audacity: Programa para gravação e edição de áudio"
+
+#: include/header.inc.php:40
+#, fuzzy
+msgid "Site Navigation"
+msgstr "Navegação no site"
+
+#  i18n-hint: Controls how dates are formatted.
+#  See http://www.php.net/manual/function.strftime.php for details.
+#: include/news.inc.php:24
+msgid "%B %d, %Y"
+msgstr "%d de %B de %Y"
+
+#: include/news.inc.php:41
+#: news/1.2.3-release.inc.php:5
+msgid "Audacity 1.2.3 Released"
+msgstr "Liberada a versão 1.2.3 do Audacity"
+
+#: include/news.inc.php:42
+#: news/1.2.3-release.inc.php:6
+msgid ""
+"<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>\n"
+"<p>See the <a href=\"download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
+msgstr ""
+"<p>A edição 1.2.3 é a nova versão estável do editor de áudio Audacity. Foram realizados ajustes e resolvida a falha que interferia em gravações de tempo prolongado nos computadores rodando Windows. Resolveu-se também os problemas de travamento na versão para MacOS X. Esta versão também está disponível em novas línguas e as traduções atuais foram revisadas.</p>\n"
+"<p>Por favor, leia as <a href=\"download/release-notes\">Notas de Versão</a> para conhecer as alterações efetuadas e a lista de falhas já conhecidas.</p>"
+

@@ -1,0 +1,14 @@
+PWM.ny  
+<p>Author Steven Jones   07 October 2004<br>
+This software is released under the terms if the GNU public license
+<p>Generates a modulated pulse tone with the following parameters.<br>
+key       - Tones frequency as MIDI key number 0...127<br>
+cents     - Detune amount in cents 0...99<br>
+Duration  - Tones duration in Milli seconds, 1...30000<br>
+Mod Rate  - Number of modulation cycles, 1...100<br>
+Mod Depth - Modulation depth as percent, -100...+100<br>
+Mod Wave  - 0 = tri, 1 = up sawtooth, 2 = down sawtooth<br>
+Width     - Fixed pulse width as percent. 0...100<br>
+Amp       - Amplitude as percent 0...100<br>
+<p>If the sum of the fixed width and the instantaneous modulation amount is<br>
+outside the interval [0,99] The output will go to full off or full on.
