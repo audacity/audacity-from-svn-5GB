@@ -184,7 +184,28 @@ PrefsPanel(parent)
 
             if(!GetMP3Exporter()->ValidLibraryLoaded())
                mMP3Bitrate->Enable(false);
+            
+            mp3InfoSizer->Add( 0, 0 );  /* we have nothing to put in the third column */
          }
+
+         /* this code works, but at the moment it's not worth it to work out
+          * the remaining details. (what should the default be, does it get
+          * stored, etc.)
+         
+         if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_QUALITY) {
+            mp3InfoSizer->Add(
+               new wxStaticText(this, -1, "Quality:"), 0,
+               wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+            mMP3Quality = new wxSlider(this, -1, GetMP3Exporter()->GetQuality(), 1,
+                  GetMP3Exporter()->GetQualityVariance());
+            mp3InfoSizer->Add(mMP3Quality, 0,
+                  wxGROW|wxALIGN_CENTER_VERTICAL|wxALL,GENERIC_CONTROL_BORDER);
+
+            if(!GetMP3Exporter()->ValidLibraryLoaded())
+               mMP3Quality->Enable(false);
+         }*/
+
 
          mp3SetupSizer->Add(
             mp3InfoSizer, 0, wxGROW|wxALL, 0);
