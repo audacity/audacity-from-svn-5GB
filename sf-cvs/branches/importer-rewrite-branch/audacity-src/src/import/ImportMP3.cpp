@@ -83,19 +83,32 @@ public:
    ~MP3ImportPlugin() { }
 
    wxString GetPluginFormatDescription();
-   bool Open(wxString Filename);
+   ImportFileHandle *Open(wxString Filename);
+};
+
+class MP3ImportFileHandle : public ImportFileHandle
+{
+public:
+   MP3ImportFileHandle(wxFile *file):
+      mFile(file),
+      mUserData(NULL)
+   {
+      mPrivateData.progressCallback = NULL;
+   }
+
+   ~MP3ImportFileHandle();
+
    void SetProgressCallback(progress_callback_t *function,
                             void *userData);
    wxString GetFileDescription();
    int GetFileUncompressedBytes();
    bool Import(TrackFactory *trackFactory, Track ***outTracks,
                int *outNumTracks);
-   void Close();
 private:
-   void *mUserData;
-   mad_decoder *mDecoder;
-   struct private_data *mPrivateData;
    wxFile *mFile;
+   void *mUserData;
+   struct private_data mPrivateData;
+   mad_decoder mDecoder;
 };
 
 void GetMP3ImportPlugin(ImportPluginList *importPluginList,
@@ -126,62 +139,58 @@ wxString MP3ImportPlugin::GetPluginFormatDescription()
    return "MP3";
 }
 
-bool MP3ImportPlugin::Open(wxString Filename)
+ImportFileHandle *MP3ImportPlugin::Open(wxString Filename)
 {
-   mFile = new wxFile((char *) Filename.c_str());
+   wxFile *file = new wxFile((char *) Filename.c_str());
 
-   if (!mFile->IsOpened()) {
-      return false;
+   if (!file->IsOpened()) {
+      delete file;
+      return NULL;
    }
 
-   mPrivateData = new struct private_data;
-   mDecoder = new struct mad_decoder;
-
-   mPrivateData->progressCallback = NULL;
-
    /* There's no way to tell if this is a valid mp3 file before actually
-    * decoding, so we return true. */
+    * decoding, so we return a valid FileHandle. */
 
-   return true;
-
+   return new MP3ImportFileHandle(file);
 }
 
-void MP3ImportPlugin::SetProgressCallback(progress_callback_t *function,
+
+void MP3ImportFileHandle::SetProgressCallback(progress_callback_t *function,
                                           void *userData)
 {
-   mPrivateData->progressCallback = function;
-   mPrivateData->userData = userData;
+   mPrivateData.progressCallback = function;
+   mPrivateData.userData = userData;
 }
 
-wxString MP3ImportPlugin::GetFileDescription()
+wxString MP3ImportFileHandle::GetFileDescription()
 {
    return "MP3";
 }
 
-int MP3ImportPlugin::GetFileUncompressedBytes()
+int MP3ImportFileHandle::GetFileUncompressedBytes()
 {
    // TODO
    return 0;
 }
 
-bool MP3ImportPlugin::Import(TrackFactory *trackFactory, Track ***outTracks,
+bool MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
                              int *outNumTracks)
 {
    int chn;
 
    /* Prepare decoder data, initialize decoder */
 
-   mPrivateData->file        = mFile;
-   mPrivateData->inputBuffer = new unsigned char [INPUT_BUFFER_SIZE];
-   mPrivateData->channels   = NULL;
-   mPrivateData->buffers    = NULL;
-   mPrivateData->bufferSize  = 1048576;
-   mPrivateData->numDecoded  = 0;
-   mPrivateData->cancelled   = false;
-   mPrivateData->numChannels = 0;
-   mPrivateData->trackFactory= trackFactory;
+   mPrivateData.file        = mFile;
+   mPrivateData.inputBuffer = new unsigned char [INPUT_BUFFER_SIZE];
+   mPrivateData.channels   = NULL;
+   mPrivateData.buffers    = NULL;
+   mPrivateData.bufferSize  = 1048576;
+   mPrivateData.numDecoded  = 0;
+   mPrivateData.cancelled   = false;
+   mPrivateData.numChannels = 0;
+   mPrivateData.trackFactory= trackFactory;
 
-   mad_decoder_init(mDecoder, mPrivateData, input_cb, 0, 0, output_cb, error_cb, 0);
+   mad_decoder_init(&mDecoder, &mPrivateData, input_cb, 0, 0, output_cb, error_cb, 0);
 
    /*
     TODO: where should this go?
@@ -190,38 +199,35 @@ bool MP3ImportPlugin::Import(TrackFactory *trackFactory, Track ***outTracks,
 
     */
 
-   wxBusyCursor wait;
-
-
    /* and send the decoder on its way! */
 
-   if(mad_decoder_run(mDecoder, MAD_DECODER_MODE_SYNC) == 0)
+   if(mad_decoder_run(&mDecoder, MAD_DECODER_MODE_SYNC) == 0)
    {
       /* success */
       printf("success\n");
 
-      mad_decoder_finish(mDecoder);
+      mad_decoder_finish(&mDecoder);
 
       /* write any samples left in the buffers */
-      for(chn = 0; chn < mPrivateData->numChannels; chn++)
-         mPrivateData->channels[chn]->Append((samplePtr)mPrivateData->buffers[chn],
+      for(chn = 0; chn < mPrivateData.numChannels; chn++)
+         mPrivateData.channels[chn]->Append((samplePtr)mPrivateData.buffers[chn],
                                              floatSample,
-                                             mPrivateData->numDecoded);
+                                             mPrivateData.numDecoded);
 
       /* copy the WaveTrack pointers into the Track pointer list that
        * we are expected to fill */
-      *outTracks = new Track* [mPrivateData->numChannels];
-      for(chn = 0; chn < mPrivateData->numChannels; chn++)
-         (*outTracks)[chn] = mPrivateData->channels[chn];
-      *outNumTracks = mPrivateData->numChannels;
+      *outTracks = new Track* [mPrivateData.numChannels];
+      for(chn = 0; chn < mPrivateData.numChannels; chn++)
+         (*outTracks)[chn] = mPrivateData.channels[chn];
+      *outNumTracks = mPrivateData.numChannels;
 
       /* clean up */
-      for(chn = 0; chn < mPrivateData->numChannels; chn++)
-         delete mPrivateData->buffers[chn];
+      for(chn = 0; chn < mPrivateData.numChannels; chn++)
+         delete mPrivateData.buffers[chn];
 
-      delete mPrivateData->inputBuffer;
-      delete[] mPrivateData->channels;
-      delete[] mPrivateData->buffers;
+      delete mPrivateData.inputBuffer;
+      delete[] mPrivateData.channels;
+      delete[] mPrivateData.buffers;
 
       return true;
    }
@@ -230,29 +236,25 @@ bool MP3ImportPlugin::Import(TrackFactory *trackFactory, Track ***outTracks,
       /* failure */
       printf("failure\n");
 
-      mad_decoder_finish(mDecoder);
+      mad_decoder_finish(&mDecoder);
 
       /* delete everything */
-      for(chn = 0; chn < mPrivateData->numChannels; chn++)
+      for(chn = 0; chn < mPrivateData.numChannels; chn++)
       {
-         delete mPrivateData->channels[chn];
-         delete mPrivateData->buffers[chn];
+         delete mPrivateData.channels[chn];
+         delete mPrivateData.buffers[chn];
       }
 
-      delete[] mPrivateData->channels;
-      delete[] mPrivateData->buffers;
-      delete mPrivateData->inputBuffer;
+      delete[] mPrivateData.channels;
+      delete[] mPrivateData.buffers;
+      delete mPrivateData.inputBuffer;
 
       return false;
    }
 }
 
-void MP3ImportPlugin::Close()
+MP3ImportFileHandle::~MP3ImportFileHandle()
 {
-   if(mPrivateData)
-      delete mPrivateData;
-   if(mDecoder)
-      delete mDecoder;
    if(mFile) {
       if (mFile->IsOpened())
          mFile->Close();
@@ -274,7 +276,6 @@ enum mad_flow input_cb(void *_data, struct mad_stream *stream)
       data->cancelled = data->progressCallback(data->userData,
                                                (float)data->file->Tell() /
                                                data->file->Length());
-
       if(data->cancelled)
          return MAD_FLOW_STOP;
    }
