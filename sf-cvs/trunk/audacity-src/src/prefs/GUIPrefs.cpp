@@ -249,7 +249,8 @@ bool GUIPrefs::Apply()
 
 
    int localeIndex = mLocale->GetSelection();
-   gPrefs->Write("/Locale/Language", mLangCodes[localeIndex]);
+   if (localeIndex >= 0 && localeIndex < mLangCodes.Length())
+      gPrefs->Write("/Locale/Language", mLangCodes[localeIndex]);
 
    int envdBRange=36;
    if(mdBArray[1]->GetValue())envdBRange=48;
@@ -257,7 +258,6 @@ bool GUIPrefs::Apply()
    if(mdBArray[3]->GetValue())envdBRange=120;
    if(mdBArray[4]->GetValue())envdBRange=145;
    gPrefs->Write("/GUI/EnvdBRange", envdBRange);
-
 
    return true;
 }
