@@ -276,10 +276,10 @@ class TrackPanel:public wxWindow {
 
 //This constant determines the size of the vertical region (in pixels) around
 //the bottom of a track that can be used for vertical track resizing.
-#define VERTICAL_TRACK_RESIZE_REGION 5
+#define TRACK_RESIZE_REGION 5
 
 //This constant determines the size of the horizontal region (in pixels) around
 //the right and left selection bounds that can be used for horizontal selection adjusting
-#define HORIZONTAL_SELECTION_RESIZE_REGION 3
+#define SELECTION_RESIZE_REGION 3
 
 #endif
