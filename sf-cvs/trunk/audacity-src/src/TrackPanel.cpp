@@ -467,15 +467,21 @@ void TrackPanel::ExtendSelection(int x1, int x2)
   double selend =
     mViewInfo->h + ((x1 - x2) / mViewInfo->zoom);
     
-  if (selend > mViewInfo->sel1) {
-    mViewInfo->sel1 = selend;
-    mSelStart = mViewInfo->sel0;
-  } else if (selend < mViewInfo->sel0) {
-    mViewInfo->sel0 = selend;
-    mSelStart = mViewInfo->sel1;
+  // Thanks to Jonathan Ryshpan for this new logic which
+  // grabs either the left or right side, depending on
+  // which is closer:
+  if (selend >= mViewInfo->sel1) {
+     mViewInfo->sel1 = selend;
+     mSelStart = mViewInfo->sel0;
+  } else if (selend <= mViewInfo->sel0) {
+     mViewInfo->sel0 = selend;
+     mSelStart = mViewInfo->sel1;
   } else {
-    mViewInfo->sel1 = selend;
-    mSelStart = mViewInfo->sel0;
+     if ((mViewInfo->sel1 - selend) <= (selend - mViewInfo->sel0)) {
+        mViewInfo->sel1 = selend;
+     } else {
+        mViewInfo->sel0 = selend;
+     }
   }
 }
 
