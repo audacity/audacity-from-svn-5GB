@@ -691,6 +691,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
    } else {
       // Not over a track
       SetCursor(*mArrowCursor);
+      mListener->TP_DisplayStatusMessage("",0);
    }
 }
 
