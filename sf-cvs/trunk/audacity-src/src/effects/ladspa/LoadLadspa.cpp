@@ -17,6 +17,9 @@
 
 #define descriptorFnName "ladspa_descriptor"
 
+#include <wx/defs.h>
+#include <wx/wx.h>
+
 // For Mac and Linux, use dlopen
 #if defined(__WXMAC__) || defined(__WXGTK__)
 #include <dlfcn.h>
@@ -66,10 +69,12 @@ void LoadLadspaEffect(wxString fname)
    // dlopen() by hand under WXGTK, above...
 
    wxDllType libHandle = NULL;
-     
+   
+   /*
    libHandle = wxDllLoader::LoadLibrary(FILENAME(fname));
    mainFn = (LADSPA_Descriptor_Function)
       wxDllLoader::GetSymbol(libHandle, descriptorFnName);
+	  */
 #endif
 
    if (mainFn) {

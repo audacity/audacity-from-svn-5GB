@@ -26,6 +26,7 @@
 #include <wx/generic/dragimgg.h>
 #include <wx/frame.h>
 #include <wx/intl.h>
+#include <wx/dcclient.h>
 
 #include "AStatus.h"
 #include "DirManager.h"

@@ -287,8 +287,12 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("FitInWindow",    _("&Fit in Window\tCtrl+F"),         FN(OnZoomFit));
    c->AddItem("FitV",           _("Fit &Vertically\tCtrl+Shift+F"),  FN(OnZoomFitV));
    c->AddItem("ZoomSel",        _("&Zoom to Selection\tCtrl+E"),     FN(OnZoomSel));
-   c->AddSeparator();
 
+   c->AddSeparator();
+   c->AddItem("CollapseAllTracks", _("&Collapse All Tracks\tCtrl+Shift+C"), FN(OnCollapseAllTracks));
+   c->AddItem("ExpandAllTracks", _("E&xpand All Tracks\tCtrl+Shift+X"), FN(OnExpandAllTracks));
+
+   c->AddSeparator();
    c->BeginSubMenu(_("Set Selection Format"));
    c->AddItemList("SelectionFormat", GetSelectionFormats(), FN(OnSelectionFormat));
    c->EndSubMenu();
@@ -2944,6 +2948,35 @@ void AudacityProject::OnSeparator()
 
 }
 
+void AudacityProject::OnCollapseAllTracks()
+{
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t)
+   {
+      t->SetMinimized(true);
+      t = iter.Next();
+   }
+
+   ModifyState();
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnExpandAllTracks()
+{
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t)
+   {
+      t->SetMinimized(false);
+      t = iter.Next();
+   }
+
+   ModifyState();
+   mTrackPanel->Refresh(false);
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

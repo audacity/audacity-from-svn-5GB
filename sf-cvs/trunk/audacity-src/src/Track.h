@@ -37,10 +37,13 @@ class Track: public XMLTagHandler {
    int        mDirty;
 
    bool       mLinked;
+   bool       mMinimized;
 
  public:
-   int GetHeight() const { return mHeight; }
+   int GetHeight() const { if (mMinimized) return 20; else return mHeight; }
    void SetHeight( int h ) { mHeight = h; }
+   bool GetMinimized() const { return mMinimized; }
+   void SetMinimized(bool isMinimized) { mMinimized = isMinimized; }
 
  // Keep in Track
 
