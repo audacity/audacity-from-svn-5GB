@@ -142,14 +142,14 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
 
    mAlgChoice->SetSelection(0);
 
-   wxString sizeChoiceStrings[8] = { "128",
-      "256",
-      "512",
-      "1024",
-      "2048",
-      "4096",
-      "8192",
-      "16384"
+   wxString sizeChoiceStrings[8] = { wxT("128"),
+      wxT("256"),
+      wxT("512"),
+      wxT("1024"),
+      wxT("2048"),
+      wxT("4096"),
+      wxT("8192"),
+      wxT("16384")
    };
 
    mSizeChoice = new wxChoice(this, FreqSizeChoiceID,
@@ -498,7 +498,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
          memDC.DrawLine(mInfoRect.x, y, r.x, y);
 
          if (i != (int) mYMin) {
-            wxString label = wxString::Format("%d dB", i);
+            wxString label = wxString::Format(wxT("%d dB"), i);
             long labelWidth, labelHeight;
             memDC.GetTextExtent(label, &labelWidth, &labelHeight);
             memDC.DrawText(label, r.x - labelWidth - 2, y + 1);
@@ -509,16 +509,16 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
       long labelWidth, labelHeight;
 
       if (fabs(mYMax) < 1.0)
-         label.Printf("%.3f", mYMax);
+         label.Printf(wxT("%.3f"), mYMax);
       else
-         label.Printf("%.1f", mYMax);
+         label.Printf(wxT("%.1f"), mYMax);
       memDC.GetTextExtent(label, &labelWidth, &labelHeight);
       memDC.DrawText(label, r.x - labelWidth - 2, r.y + 2);
 
       if (fabs(mYMin) < 1.0)
-         label.Printf("%.3f", mYMin);
+         label.Printf(wxT("%.3f"), mYMin);
       else
-         label.Printf("%.1f", mYMin);
+         label.Printf(wxT("%.1f"), mYMin);
       memDC.GetTextExtent(label, &labelWidth, &labelHeight);
       memDC.DrawText(label,
                      r.x - labelWidth - 2,
@@ -528,7 +528,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
          int y = int ((mYMax / (mYMax - mYMin)) * r.height);
 
          if (y > labelHeight + 4 && y < r.height - 2 * labelHeight - 4) {
-            label = "0.0";
+            label = wxT("0.0");
             memDC.GetTextExtent(label, &labelWidth, &labelHeight);
             memDC.DrawText(label,
                            r.x - labelWidth - 2, r.y + y - labelHeight);
@@ -592,13 +592,13 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
             wxString label;
             if (alg == 0) {
                if (xPos < 950.0)
-                  label = wxString::Format("%dHz", int (xPos + 0.5));
+                  label = wxString::Format(wxT("%dHz"), int (xPos + 0.5));
                else
                   label =
-                      wxString::Format("%dKHz",
+                      wxString::Format(wxT("%dKHz"),
                                        int ((xPos / 1000.0) + 0.5));
             } else
-               label = wxString::Format("%.4f s", xPos);
+               label = wxString::Format(wxT("%.4f s"), xPos);
             long labelWidth, labelHeight;
             memDC.GetTextExtent(label, &labelWidth, &labelHeight);
             if (x + labelWidth < width)
@@ -737,8 +737,8 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
       if (alg == 0) {
          wxString xpitch = PitchName_Absolute(Freq2Pitch(xPos));
          wxString peakpitch = PitchName_Absolute(Freq2Pitch(bestpeak));
-         const char *xp = (const char *) xpitch;
-         const char *pp = (const char *) peakpitch;
+         const wxChar *xp = xpitch.c_str();
+         const wxChar *pp = peakpitch.c_str();
          info.Printf(_("Cursor: %d Hz (%s) = %d dB    "
                        "Peak: %d Hz (%s)"),
                      int (xPos + 0.5),
@@ -746,8 +746,8 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
       } else if (xPos > 0.0 && bestpeak > 0.0) {
          wxString xpitch = PitchName_Absolute(Freq2Pitch(1.0 / xPos));
          wxString peakpitch = PitchName_Absolute(Freq2Pitch(1.0 / bestpeak));
-         const char *xp = (const char *) xpitch;
-         const char *pp = (const char *) peakpitch;
+         const wxChar *xp = xpitch.c_str();
+         const wxChar *pp = peakpitch.c_str();
          info.Printf(_("Cursor: %.4f sec (%d Hz) (%s) = %f,    "
                        "Peak: %.4f sec (%d Hz) (%s)"),
                      xPos,
@@ -996,12 +996,12 @@ void FreqWindow::OnExport(wxCommandEvent & WXUNUSED(event))
    wxString fName = _("spectrum.txt");
 
    fName = wxFileSelector(_("Export Spectral Data As:"),
-                          NULL, fName, "txt", "*.txt", wxSAVE, this);
+                          NULL, fName, wxT("txt"), wxT("*.txt"), wxSAVE, this);
 
-   if (fName == "")
+   if (fName == wxT(""))
       return;
 
-   wxTextFile f(FILENAME(fName));
+   wxTextFile f(FILENAME(fName).c_str());
 #ifdef __WXMAC__
    wxFile *temp = new wxFile();
    temp->Create(FILENAME(fName));
@@ -1019,12 +1019,12 @@ void FreqWindow::OnExport(wxCommandEvent & WXUNUSED(event))
       f.AddLine(_("Frequency (Hz)\tLevel (dB)"));
       for (int i = 1; i < mProcessedSize; i++)
          f.AddLine(wxString::
-                   Format("%f\t%f", i * mRate / mWindowSize,
+                   Format(wxT("%f\t%f"), i * mRate / mWindowSize,
                           mProcessed[i]));
    } else {
       f.AddLine(_("Lag (seconds)\tFrequency (Hz)\tLevel"));
       for (int i = 1; i < mProcessedSize; i++)
-         f.AddLine(wxString::Format("%f\t%f\t%f",
+         f.AddLine(wxString::Format(wxT("%f\t%f\t%f"),
                                     i / mRate, 1.0 / i, mProcessed[i]));
    }
 

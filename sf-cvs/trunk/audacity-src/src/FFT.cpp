@@ -356,18 +356,18 @@ int NumWindowFuncs()
    return 4;
 }
 
-const char *WindowFuncName(int whichFunction)
+const wxChar *WindowFuncName(int whichFunction)
 {
    switch (whichFunction) {
    default:
    case 0:
       return _("Rectangular");
    case 1:
-      return "Bartlett";
+      return wxT("Bartlett");
    case 2:
-      return "Hamming";
+      return wxT("Hamming");
    case 3:
-      return "Hanning";
+      return wxT("Hanning");
    }
 }
 

@@ -73,20 +73,20 @@ bool ConvertLegacyTrack(wxTextFile *f, FILE *outf)
 
    kind = (*f)[f->GetCurrentLine()];
 
-   if (kind == "WaveTrack") {
+   if (kind == wxT("WaveTrack")) {
       fprintf(outf, "\t<wavetrack name='%s'",
-              (const char *)f->GetNextLine());
+              (const char *)f->GetNextLine().mb_str());
 
       wxString channel = f->GetNextLine();
-      if (channel == "left") {
+      if (channel == wxT("left")) {
          fprintf(outf, " channel='0'");
          line = f->GetNextLine();
       }
-      else if (channel == "right") {
+      else if (channel == wxT("right")) {
          fprintf(outf, " channel='1'");
          line = f->GetNextLine();
       }
-      else if (channel == "mono") {
+      else if (channel == wxT("mono")) {
          fprintf(outf, " channel='2'");
          line = f->GetNextLine();
       }
@@ -95,18 +95,18 @@ bool ConvertLegacyTrack(wxTextFile *f, FILE *outf)
          line = channel;
       }
 
-      if (line == "linked") {
+      if (line == wxT("linked")) {
          fprintf(outf, " linked='1'");
          line = f->GetNextLine();
       }
 
-      if (line != "offset")
+      if (line != wxT("offset"))
          return false;
-      fprintf(outf, " offset='%s'", (const char *)f->GetNextLine());
+      fprintf(outf, " offset='%s'", (const char *)f->GetNextLine().mb_str());
 
       long envLen;
 
-      if (f->GetNextLine() != "EnvNumPoints")
+      if (f->GetNextLine() != wxT("EnvNumPoints"))
          return false;
       line = f->GetNextLine();
       line.ToLong(&envLen);
@@ -118,16 +118,16 @@ bool ConvertLegacyTrack(wxTextFile *f, FILE *outf)
          return false;
 
       f->GoToLine(envStart+(2*envLen));
-      if (f->GetNextLine() != "EnvEnd")
+      if (f->GetNextLine() != wxT("EnvEnd"))
          return false;
-      if (f->GetNextLine() != "numSamples")
+      if (f->GetNextLine() != wxT("numSamples"))
          return false;
 
       wxString numSamples = f->GetNextLine();
 
-      if (f->GetNextLine() != "rate")
+      if (f->GetNextLine() != wxT("rate"))
          return false;
-      fprintf(outf, " rate='%s'", (const char *)f->GetNextLine());
+      fprintf(outf, " rate='%s'", (const char *)f->GetNextLine().mb_str());
       fprintf(outf, ">\n");
 
       if (envLen > 0) {
@@ -136,14 +136,14 @@ bool ConvertLegacyTrack(wxTextFile *f, FILE *outf)
          long i;
          for(i=0; i<envLen; i++) {
             fprintf(outf, "\t\t\t<controlpoint t='%s' val='%s'/>\n",
-                    (const char *)f->GetLine(envStart + 2*i + 1),
-                    (const char *)f->GetLine(envStart + 2*i + 2));
+                    (const char *)f->GetLine(envStart + 2*i + 1).mb_str(),
+                    (const char *)f->GetLine(envStart + 2*i + 2).mb_str());
          }
 
          fprintf(outf, "\t\t</envelope>\n");
       }
 
-      if (f->GetNextLine() != "numBlocks")
+      if (f->GetNextLine() != wxT("numBlocks"))
          return false;
       long numBlocks;
       line = f->GetNextLine();
@@ -154,7 +154,7 @@ bool ConvertLegacyTrack(wxTextFile *f, FILE *outf)
 
       fprintf(outf, "\t\t<sequence maxsamples='524288'");
       fprintf(outf, " sampleformat='131073' ");
-      fprintf(outf, " numsamples='%s'>\n", (const char *)numSamples);
+      fprintf(outf, " numsamples='%s'>\n", (const char *)numSamples.mb_str());
 
       long b;
       for(b=0; b<numBlocks; b++) {
@@ -162,20 +162,20 @@ bool ConvertLegacyTrack(wxTextFile *f, FILE *outf)
          wxString len;
          wxString name;
 
-         if (f->GetNextLine() != "Block start")
+         if (f->GetNextLine() != wxT("Block start"))
             return false;
          start = f->GetNextLine();
-         if (f->GetNextLine() != "Block len")
+         if (f->GetNextLine() != wxT("Block len"))
             return false;
          len = f->GetNextLine(); 
-         if (f->GetNextLine() != "Block info")
+         if (f->GetNextLine() != wxT("Block info"))
             return false;
          name = f->GetNextLine();
 
          fprintf(outf, "\t\t\t<waveblock start='%s'>\n",
-                 (const char *)start);
+                 (const char *)start.mb_str());
 
-         if (name == "Alias") {
+         if (name == wxT("Alias")) {
             wxString aliasPath = f->GetNextLine();
             wxString localLen = f->GetNextLine();
             wxString aliasStart = f->GetNextLine();
@@ -184,20 +184,20 @@ bool ConvertLegacyTrack(wxTextFile *f, FILE *outf)
             wxString localName = f->GetNextLine();
 
             fprintf(outf, "\t\t\t\t<legacyblockfile");
-            fprintf(outf, " name='%s'", (const char *)localName);
+            fprintf(outf, " name='%s'", (const char *)localName.mb_str());
             fprintf(outf, " alias='1'");
-            fprintf(outf, " aliaspath='%s'", (const char *)aliasPath);
-            fprintf(outf, " aliasstart='%s'", (const char *)aliasStart);
-            fprintf(outf, " aliaslen='%s'", (const char *)aliasLen);
-            fprintf(outf, " aliaschannel='%s'", (const char *)aliasChannel);
-            fprintf(outf, " summarylen='%s'", (const char *)localLen);
+            fprintf(outf, " aliaspath='%s'", (const char *)aliasPath.mb_str());
+            fprintf(outf, " aliasstart='%s'", (const char *)aliasStart.mb_str());
+            fprintf(outf, " aliaslen='%s'", (const char *)aliasLen.mb_str());
+            fprintf(outf, " aliaschannel='%s'", (const char *)aliasChannel.mb_str());
+            fprintf(outf, " summarylen='%s'", (const char *)localLen.mb_str());
             fprintf(outf, " norms='1'");
             fprintf(outf, " />\n");
          }
          else {
             fprintf(outf, "\t\t\t\t<legacyblockfile");
-            fprintf(outf, " name='%s'", (const char *)name);
-            fprintf(outf, " len='%s'", (const char *)len);
+            fprintf(outf, " name='%s'", (const char *)name.mb_str());
+            fprintf(outf, " len='%s'", (const char *)len.mb_str());
             fprintf(outf, " summarylen='8244'");
             fprintf(outf, " norms='1'");
             fprintf(outf, " />\n");
@@ -211,9 +211,9 @@ bool ConvertLegacyTrack(wxTextFile *f, FILE *outf)
       
       return true;
    }
-   else if (kind == "LabelTrack") {
+   else if (kind == wxT("LabelTrack")) {
       line = f->GetNextLine();
-      if (line != "NumMLabels")
+      if (line != wxT("NumMLabels"))
          return false;
 
       long numLabels, l;
@@ -233,26 +233,26 @@ bool ConvertLegacyTrack(wxTextFile *f, FILE *outf)
          title = f->GetNextLine();
 
          fprintf(outf, "\t\t<label t='%s' title='%s' />\n",
-                 (const char *)t, (const char *)title);
+                 (const char *)t.mb_str(), (const char *)title.mb_str());
       }
 
       fprintf(outf, "\t</labeltrack>\n");
 
       line = f->GetNextLine();
-      if (line != "MLabelsEnd")
+      if (line != wxT("MLabelsEnd"))
          return false;
 
       return true;
    }
-   else if (kind == "NoteTrack") {
+   else if (kind == wxT("NoteTrack")) {
       // Just skip over it - they didn't even work in version 1.0!
 
       do {
          line = f->GetNextLine();
-         if (line == "WaveTrack" ||
-             line == "NoteTrack" ||
-             line == "LabelTrack" |\
-             line == "EndTracks") {
+         if (line == wxT("WaveTrack") ||
+             line == wxT("NoteTrack") ||
+             line == wxT("LabelTrack") |\
+             line == wxT("EndTracks")) {
             f->GoToLine(f->GetCurrentLine()-1);
             return true;
          }
@@ -275,7 +275,7 @@ bool ConvertLegacyProjectFile(wxFileName filename)
       index++;
       fflush(stdout);
       backupName = filename.GetPath() + wxFILE_SEP_PATH + filename.GetName() +
-         "_bak" + wxString::Format("%d", index) + "." + filename.GetExt();
+         wxT("_bak") + wxString::Format(wxT("%d"), index) + wxT(".") + filename.GetExt();
    } while(::wxFileExists(FILENAME(backupName)));
 
    // This will move the original file out of the way, but 
@@ -290,7 +290,7 @@ bool ConvertLegacyProjectFile(wxFileName filename)
 
    wxString name = filename.GetFullPath();
 
-   outf = fopen((const char *)FILENAME(name), "wb");
+   outf = fopen(FILENAME(name).fn_str(), "wb");
    if (!outf)
       return false;
 
@@ -301,29 +301,29 @@ bool ConvertLegacyProjectFile(wxFileName filename)
    wxString label;
    wxString value;
 
-   if (f.GetFirstLine() != "AudacityProject")
+   if (f.GetFirstLine() != wxT("AudacityProject"))
       return false;
-   if (f.GetNextLine() != "Version")
+   if (f.GetNextLine() != wxT("Version"))
       return false;
-   if (f.GetNextLine() != "0.95")
+   if (f.GetNextLine() != wxT("0.95"))
       return false;
-   if (f.GetNextLine() != "projName")
+   if (f.GetNextLine() != wxT("projName"))
       return false;
 
    fprintf(outf, "<audacityproject projname='%s'",
-           (const char *)f.GetNextLine());
+           (const char *)f.GetNextLine().mb_str());
    fprintf(outf, " version='1.1.0' audacityversion='%s'",
            AUDACITY_VERSION_STRING);
    label = f.GetNextLine();
-   while (label != "BeginTracks") {
+   while (label != wxT("BeginTracks")) {
       value = f.GetNextLine();
-      fprintf(outf, " %s='%s'", (const char *)label, (const char *)value);
+      fprintf(outf, " %s='%s'", (const char *)label.mb_str(), (const char *)value.mb_str());
       label = f.GetNextLine();
    }
    fprintf(outf, ">\n");
 
    label = f.GetNextLine();
-   while (label != "EndTracks") {
+   while (label != wxT("EndTracks")) {
       bool success = ConvertLegacyTrack(&f, outf);
       if (!success)
          return false;
@@ -334,7 +334,7 @@ bool ConvertLegacyProjectFile(wxFileName filename)
 
    renamer.Finished();
 
-   ::wxMessageBox(wxString::Format(_("Converted a 1.0 project file to the new format.\nThe old file has been saved as '%s'"), (const char *)backupName),
+   ::wxMessageBox(wxString::Format(_("Converted a 1.0 project file to the new format.\nThe old file has been saved as '%s'"), backupName.c_str()),
                   _("Opening Audacity Project"));
 
    return true;

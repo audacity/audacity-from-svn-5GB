@@ -11,6 +11,8 @@
 #ifndef __AUDACITY_SAMPLE_FORMAT__
 #define __AUDACITY_SAMPLE_FORMAT__
 
+#include <wx/defs.h>
+
 //
 // Definitions / Meta-Information
 //
@@ -25,7 +27,7 @@ typedef enum {
 
 typedef char *samplePtr;
 
-const char *GetSampleFormatStr(sampleFormat format);
+const wxChar *GetSampleFormatStr(sampleFormat format);
 
 //
 // Allocating/Freeing Samples

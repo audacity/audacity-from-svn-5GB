@@ -173,7 +173,7 @@ AudioIO::AudioIO()
    if (err != paNoError) {
       wxString errStr = _("There was an error initializing the audio i/o layer.\n");
       errStr += _("You will not be able to play or record audio.\n\n");
-      wxString paErrStr = Pa_GetErrorText(err);
+      wxString paErrStr = LAT1CTOWX(Pa_GetErrorText(err));
       if (paErrStr)
          errStr += _("Error: ")+paErrStr;
       // XXX: we are in libaudacity, popping up dialogs not allowed!  A
@@ -294,7 +294,7 @@ wxArrayString AudioIO::GetInputSourceNames()
    {
       int numSources = Px_GetNumInputSources(mPortMixer);
       for( int source = 0; source < numSources; source++ )
-         deviceNames.Add(Px_GetInputSourceName(mPortMixer, source));
+         deviceNames.Add(LAT1CTOWX(Px_GetInputSourceName(mPortMixer, source)));
    }
 
    return deviceNames;
@@ -321,8 +321,8 @@ void AudioIO::HandleDeviceChange()
 
    int recDeviceNum = Pa_GetDefaultInputDeviceID();
    int playDeviceNum = Pa_GetDefaultOutputDeviceID();
-   wxString recDevice = gPrefs->Read("/AudioIO/RecordingDevice", "");
-   wxString playDevice = gPrefs->Read("/AudioIO/PlaybackDevice", "");
+   wxString recDevice = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
+   wxString playDevice = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
    int j;
 
    // msmeyer: This tries to open the device with the highest samplerate
@@ -332,10 +332,10 @@ void AudioIO::HandleDeviceChange()
    for(j=0; j<Pa_CountDevices(); j++) {
       const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
 
-      if (info->name == playDevice && info->maxOutputChannels > 0)
+      if (LAT1CTOWX(info->name) == playDevice && info->maxOutputChannels > 0)
          playDeviceNum = j;
 
-      if (info->name == recDevice && info->maxInputChannels > 0)
+      if (LAT1CTOWX(info->name) == recDevice && info->maxInputChannels > 0)
          recDeviceNum = j;
    }
    
@@ -441,17 +441,17 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
    if( numPlaybackChannels > 0)
    {
       playbackParameters = new PaStreamParameters;
-      wxString playbackDeviceName = gPrefs->Read("/AudioIO/PlaybackDevice", "");
+      wxString playbackDeviceName = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
       const PaDeviceInfo *playbackDeviceInfo;
       
       playbackParameters->device = Pa_GetDefaultOutputDevice();
       
-      if( playbackDeviceName != "" )
+      if( playbackDeviceName != wxT("") )
       {
          for( int i = 0; i < Pa_GetDeviceCount(); i++)
          {
             const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
-            if (info->name == playbackDeviceName && info->maxOutputChannels > 0)
+            if (LAT1CTOWX(info->name) == playbackDeviceName && info->maxOutputChannels > 0)
                playbackParameters->device = i;
          }
       }
@@ -474,16 +474,16 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
       mCaptureFormat = captureFormat;
       captureParameters = new PaStreamParameters;
       const PaDeviceInfo *captureDeviceInfo;
-      wxString captureDeviceName = gPrefs->Read("/AudioIO/RecordingDevice", "");
+      wxString captureDeviceName = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
 
       captureParameters->device = Pa_GetDefaultInputDevice();
 
-      if( captureDeviceName != "" )
+      if( captureDeviceName != wxT("") )
       {
          for( int i = 0; i < Pa_GetDeviceCount(); i++)
          {
             const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
-            if (info->name == captureDeviceName && info->maxInputChannels > 0)
+            if (LAT1CTOWX(info->name) == captureDeviceName && info->maxInputChannels > 0)
                captureParameters->device = i;
          }
       }
@@ -532,14 +532,14 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
    if( numPlaybackChannels > 0 )
    {
       playbackDevice =  Pa_GetDefaultOutputDeviceID();
-      wxString playbackDeviceName = gPrefs->Read("/AudioIO/PlaybackDevice", "");
+      wxString playbackDeviceName = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
 
-      if( playbackDeviceName != "" )
+      if( playbackDeviceName != wxT("") )
       {
          for( int i = 0; i < Pa_CountDevices(); i++)
          {
             const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
-            if (info->name == playbackDeviceName && info->maxOutputChannels > 0)
+            if (LAT1CTOWX(info->name) == playbackDeviceName && info->maxOutputChannels > 0)
                playbackDevice = i;
          }
       }
@@ -550,14 +550,14 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
       // For capture, every input channel gets its own track
       mCaptureFormat = captureFormat;
       captureDevice =  Pa_GetDefaultInputDeviceID();
-      wxString captureDeviceName = gPrefs->Read("/AudioIO/RecordingDevice", "");
+      wxString captureDeviceName = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
 
-      if( captureDeviceName != "" )
+      if( captureDeviceName != wxT("") )
       {
          for( int i = 0; i < Pa_CountDevices(); i++)
          {
             const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
-            if (info->name == captureDeviceName && info->maxInputChannels > 0)
+            if (LAT1CTOWX(info->name) == captureDeviceName && info->maxInputChannels > 0)
                captureDevice = i;
          }
       }
@@ -603,7 +603,7 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
 
             mPreviousHWPlaythrough = Px_GetPlaythrough(mPortMixer);
 
-            gPrefs->Read("/AudioIO/Playthrough", &playthrough, false);
+            gPrefs->Read(wxT("/AudioIO/Playthrough"), &playthrough, false);
             if (playthrough)
                Px_SetPlaythrough(mPortMixer, 1.0);
             else
@@ -635,9 +635,9 @@ void AudioIO::StartMonitoring(double sampleRate)
    bool success;
    long captureChannels;
    sampleFormat captureFormat = (sampleFormat)
-      gPrefs->Read("/SamplingRate/DefaultProjectSampleFormat", floatSample);
-   gPrefs->Read("/AudioIO/RecordChannels", &captureChannels, 1L);
-   gPrefs->Read("/AudioIO/SWPlaythrough", &mSoftwarePlaythrough, false);
+      gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
+   gPrefs->Read(wxT("/AudioIO/RecordChannels"), &captureChannels, 1L);
+   gPrefs->Read(wxT("/AudioIO/SWPlaythrough"), &mSoftwarePlaythrough, false);
    int playbackChannels = 0;
 
    if (mSoftwarePlaythrough)
@@ -692,7 +692,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    }
    #endif
 
-   gPrefs->Read("/AudioIO/SWPlaythrough", &mSoftwarePlaythrough, false);
+   gPrefs->Read(wxT("/AudioIO/SWPlaythrough"), &mSoftwarePlaythrough, false);
 
    mInputMeter = NULL;
    mOutputMeter = NULL;
@@ -818,7 +818,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
       // TODO
       // we'll need a more complete way to indicate error.
       // AND we need to delete the ring buffers and mixers, etc.
-      printf("%s\n", Pa_GetErrorText(err));
+      wxPrintf(wxT("%hs\n"), Pa_GetErrorText(err));
       mStreamToken = 0;
       return 0;
    }
@@ -1183,9 +1183,9 @@ wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDe
    const PaDeviceInfo* recInfo = NULL;
 
    if (playDevice.IsEmpty())
-      playDevice = gPrefs->Read("/AudioIO/PlaybackDevice", "");
+      playDevice = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
    if (recDevice.IsEmpty())
-      recDevice = gPrefs->Read("/AudioIO/RecordingDevice", "");
+      recDevice = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
 
    int i;
 
@@ -1197,9 +1197,9 @@ wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDe
 #endif
       const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
 
-      if (info->name == playDevice && info->maxOutputChannels > 0)
+      if (LAT1CTOWX(info->name) == playDevice && info->maxOutputChannels > 0)
          playInfo = info;
-      if (info->name == recDevice && info->maxInputChannels > 0)
+      if (LAT1CTOWX(info->name) == recDevice && info->maxInputChannels > 0)
          recInfo = info;
    }
 
@@ -1676,7 +1676,7 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
          if (len < framesPerBuffer)
          {
             gAudioIO->mLostSamples += (framesPerBuffer - len);
-            printf("lost %d samples\n", (int)(framesPerBuffer - len));
+            wxPrintf(wxT("lost %d samples\n"), (int)(framesPerBuffer - len));
          }
 
          float gain = 1.0;

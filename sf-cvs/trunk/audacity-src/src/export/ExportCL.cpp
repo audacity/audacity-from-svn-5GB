@@ -52,8 +52,8 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
    wxWindow *parent = project;
    TrackList *tracks = project->GetTracks();
    
-   wxString command = gPrefs->Read("/FileFormats/ExternalProgramExportCommand", "lame - '%f'");
-   command.Replace("%f", fName);
+   wxString command = gPrefs->Read(wxT("/FileFormats/ExternalProgramExportCommand"), wxT("lame - '%f'"));
+   command.Replace(wxT("%f"), fName);
 
    /* establish parameters */
    int channels = stereo ? 2 : 1;
@@ -90,7 +90,7 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
    header.dataID[3] = 'a';
    header.dataLen   = sampleBytes;
 
-   FILE *pipe = popen(command.c_str(), "w");
+   FILE *pipe = popen(command.mb_str(), "w");
 
    /* write the header */
 
@@ -146,7 +146,7 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
             message = _("Exporting the entire project using command-line encoder");
 
          progress =
-             new wxProgressDialog("Export",
+             new wxProgressDialog(wxT("Export"),
                                   message,
                                   1000,
                                   parent,

@@ -84,7 +84,7 @@ int ImportRaw(wxWindow *parent, wxString fileName,
    SF_INFO sndInfo;
    int result;
 
-   encoding = RawAudioGuess((const char *)fileName,
+   encoding = RawAudioGuess(fileName,
                             &int_offset, &numChannels);
    offset = (sf_count_t)int_offset;
 
@@ -111,7 +111,7 @@ int ImportRaw(wxWindow *parent, wxString fileName,
    sndInfo.samplerate = (int)rate;
    sndInfo.channels = (int)numChannels;
    sndInfo.format = encoding | SF_FORMAT_RAW;
-   sndFile = sf_open((const char *)FILENAME(fileName), SFM_READ, &sndInfo);
+   sndFile = sf_open(FILENAME(fileName).fn_str(), SFM_READ, &sndInfo);
    if (!sndFile) {
       // TODO: Handle error
       char str[1000];
@@ -141,7 +141,7 @@ int ImportRaw(wxWindow *parent, wxString fileName,
    //
    
    format = (sampleFormat)
-      gPrefs->Read("/SamplingRate/DefaultProjectSampleFormat", floatSample);
+      gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
 
    if (format != floatSample &&
        sf_subtype_more_than_16_bits(encoding))
@@ -348,7 +348,7 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
    gridSizer->Add(new wxStaticText(this, 0, _("Start offset:")),
                   0, wxALIGN_LEFT | wxALL, 5);
 
-   mOffsetText = new wxTextCtrl(this, 0, wxString::Format("%d", mOffset));
+   mOffsetText = new wxTextCtrl(this, 0, wxString::Format(wxT("%d"), mOffset));
    gridSizer->Add(mOffsetText, 0, wxALIGN_LEFT | wxALL, 5);
 
    gridSizer->Add(new wxStaticText(this, 0, _("bytes")),
@@ -359,10 +359,10 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
    gridSizer->Add(new wxStaticText(this, 0, _("Amount to import:")),
                   0, wxALIGN_LEFT | wxALL, 5);
 
-   mPercentText = new wxTextCtrl(this, 0, "100");
+   mPercentText = new wxTextCtrl(this, 0, wxT("100"));
    gridSizer->Add(mPercentText, 0, wxALIGN_LEFT | wxALL, 5);
 
-   gridSizer->Add(new wxStaticText(this, 0, "%"),
+   gridSizer->Add(new wxStaticText(this, 0, wxT("%")),
                   0, wxALIGN_LEFT | wxALL, 5);
 
    // Rate text
@@ -370,7 +370,7 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
    gridSizer->Add(new wxStaticText(this, 0, _("Sample rate:")),
                   0, wxALIGN_LEFT | wxALL, 5);
 
-   mRateText = new wxTextCtrl(this, 0, wxString::Format("%d", (int)mRate));
+   mRateText = new wxTextCtrl(this, 0, wxString::Format(wxT("%d"), (int)mRate));
    gridSizer->Add(mRateText, 0, wxALIGN_LEFT | wxALL, 5);
 
    /* i18n-hint: This is the abbreviation for "Hertz", or

@@ -42,7 +42,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
 :  wxDialog(parent, -1, _("About Audacity..."),
          wxDefaultPosition, wxSize(400, DLOG_HEIGHT), wxDEFAULT_DIALOG_STYLE)
 {
-   wxString versionStr = AUDACITY_VERSION_STRING;
+   wxString versionStr = wxT(AUDACITY_VERSION_STRING);
 
    wxString informationStr;
 
@@ -51,28 +51,28 @@ AboutDialog::AboutDialog(wxWindow * parent)
    #else
    informationStr += _("MP3 importing disabled");
    #endif
-   informationStr += "<br>\n";
+   informationStr += wxT("<br>\n");
 
    #ifdef USE_LIBVORBIS
    informationStr += _("Ogg Vorbis importing enabled");
    #else
    informationStr += _("Ogg Vorbis importing disabled");
    #endif
-   informationStr += "<br>\n";
+   informationStr += wxT("<br>\n");
 
    #ifdef USE_LIBID3TAG
    informationStr += _("ID3 tag exporting enabled");
    #else
    informationStr += _("ID3 tag exporting disabled");
    #endif
-   informationStr += "<br>\n";
+   informationStr += wxT("<br>\n");
 
    # if USE_LADSPA
    informationStr += _("LADSPA plug-in support enabled");
    # else
    informationStr += _("LADSPA plug-in support disabled");
    # endif
-   informationStr += "<br>\n";
+   informationStr += wxT("<br>\n");
 
    #if USE_LIBRESAMPLE
    informationStr += _("Libresample support enabled");
@@ -81,15 +81,15 @@ AboutDialog::AboutDialog(wxWindow * parent)
    #else
    informationStr += _("No resampling support enabled");
    #endif
-   informationStr += "<br>\n";
+   informationStr += wxT("<br>\n");
 
    // wxWindows version:
    informationStr += wxVERSION_STRING;
-   informationStr += "<br>\n";
+   informationStr += wxT("<br>\n");
 
    // Current date
    informationStr += _("Program build date:");
-   informationStr += " " __DATE__ "<br>\n";
+   informationStr += wxT(" " __DATE__ "<br>\n");
 
    wxString par1Str = _(
      "Audacity is a free program written by a team of volunteer developers "
@@ -120,77 +120,77 @@ AboutDialog::AboutDialog(wxWindow * parent)
 
       For example:  "English translation by Dominic Mazzoni."
       */
-   if (_("translator_credits") != wxString("translator_credits")) {
-      translatorCredits += "<p><center>";
+   if (_("translator_credits") != wxString(wxT("translator_credits"))) {
+      translatorCredits += wxT("<p><center>");
       translatorCredits += _("translator_credits");
-      translatorCredits += "</center>";
+      translatorCredits += wxT("</center>");
    }
    wxString localeStr = wxLocale::GetSystemEncodingName();
 
-   wxString creditStr = 
+   wxString creditStr = wxT(
       "<html>"
-      "<head><META http-equiv=\"Content-Type\" content=\"text/html; charset=" + localeStr + "\"></head>"
+      "<head><META http-equiv=\"Content-Type\" content=\"text/html; charset=") + localeStr + wxT("\"></head>"
       "<body bgcolor=\"#ffffff\">"
       "<font size=1>"
       "<center>"
-      "<h3>Audacity " + versionStr + "</h3>"
+      "<h3>Audacity ") + versionStr + wxT("</h3>")
       + _("A Free Digital Audio Editor") +
-      "</center>"
-      "<p>"
+      wxT("</center>"
+      "<p>")
       + par1Str +
-      "<p>"
+      wxT("<p>")
       + par2Str +
-      "<p>"
+      wxT("<p>"
       "http://audacity.sourceforge.net/"
       "<p>"
-      "<center><b>" + _("Information") + "</b></center>"
-      "<p><br>"
+      "<center><b>") + _("Information") + wxT("</b></center>"
+      "<p><br>")
       + informationStr +
-      "<p>"
-      "<center><b>" + _("Credits") + "</b></center>"
+      wxT("<p>"
+      "<center><b>") + _("Credits") + wxT("</b></center>")
       + translatorCredits +
-      "<p>"
+      wxT("<p>"
       "<table border=0>"
       "<tr>"
       "<td>Dominic Mazzoni</td>"
-      "<td>" + _("Project leader and primary programmer") + "</td>"
+      "<td>") + _("Project leader and primary programmer") + wxT("</td>"
       "</tr>"
       "<tr>"
       "<td>Joshua Haberman</td>"
-      "<td>" + _("Primary developer") + "</td>"
+      "<td>") + _("Primary developer") + wxT("</td>"
       "</tr>"
       "<tr>"
       "<td>Matt Brubeck</td>"
-      "<td>" + _("Primary developer") + "</td>"
+      "<td>") + _("Primary developer") + wxT("</td>"
       "</tr>"
       "<tr>"
       "<td>James Crook</td>"
-      "<td>" + _("Programmer") + "</td>"
+      "<td>") + _("Programmer") + wxT("</td>"
       "</tr>"
       "<tr>"
       "<td>Vaughan Johnson</td>"
-      "<td>" + _("Programmer") + "</td>"
+      "<td>") + _("Programmer") + wxT("</td>"
       "</tr>"
       "<tr>"
       "<td>Markus Meyer</td>"
-      "<td>" + _("Programmer") + "</td>"
+      "<td>") + _("Programmer") + wxT("</td>"
       "</tr>"
       "<tr>"
       "<td>Shane Mueller</td>"
-      "<td>" + _("Programmer") + "</td>"
+      "<td>") + _("Programmer") + wxT("</td>"
       "</tr>"
       "<tr>"
       "<td>Tony Oetzmann </td>"
-      "<td>" + _("Documentation Writer") + "</td>"
+      "<td>") + _("Documentation Writer") + wxT("</td>"
       "</tr>"
       "<tr>"
       "<td>Harvey Lubin</td>"
-      "<td>" + _("Main Logo") + "</td>"
+      "<td>") + _("Main Logo") + wxT("</td>"
       "</tr>"
       "</table>"
       "<p>"
       "<center>"
-      "<b>" + _("Developers:") + "</b>"
+      "<b>") + _("Developers:") + wxT("</b>"
       "<p>"
       "<br>"
       "William Bland<br>"
@@ -201,7 +201,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "<br>"
       "<p>"
       "<center>"
-      "<b>" + _("Other contributors:") + "</b>"
+      "<b>") + _("Other contributors:") + wxT("</b>"
       "<p>"
       "<br>"
       "Dave Beydler<br>"
@@ -230,7 +230,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "Tom Woodhams<br>"
       "Otto Wyss<br>"
       "<p>"
-      "<b>" + _("Special thanks:") + "</b>"
+      "<b>") + _("Special thanks:") + wxT("</b>"
       "<p><br>"
       "The wxWidgets Team<br>"
       "The Ogg Vorbis Team<br>"
@@ -243,7 +243,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "</center>"
       "</font>"
       "</body>"
-      "</html>";
+      "</html>");
    
    Centre();
    this->SetBackgroundColour(wxColour(255, 255, 255));

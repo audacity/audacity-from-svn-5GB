@@ -73,11 +73,11 @@ int gMenusDirty = 0;
 void InitPreferences()
 {
 #ifdef AUDACITY_NAME
-   wxString appName = AUDACITY_NAME;
-   wxString vendorName = AUDACITY_NAME;
+   wxString appName = wxT(AUDACITY_NAME);
+   wxString vendorName = wxT(AUDACITY_NAME);
 #else
-   wxString vendorName = "Audacity";
-   wxString appName = "Audacity";
+   wxString vendorName = wxT("Audacity");
+   wxString appName = wxT("Audacity");
 #endif
 
    wxTheApp->SetVendorName(vendorName);
@@ -92,40 +92,40 @@ void InitPreferences()
    // 0.95 and 0.96 of Audacity.
    wxString path;
    bool fix = false;   
-   path = gPrefs->Read("/DefaultOpenPath", "");
-   if (path.Length() > 0 && path.Left(1)=="/")
+   path = gPrefs->Read(wxT("/DefaultOpenPath"), wxT(""));
+   if (path.Length() > 0 && path.Left(1)==wxT("/"))
       fix = true;
-   path = gPrefs->Read("/DefaultExportPath", "");
-   if (path.Length() > 0 && path.Left(1)=="/")
+   path = gPrefs->Read(wxT("/DefaultExportPath"), wxT(""));
+   if (path.Length() > 0 && path.Left(1)==wxT("/"))
       fix = true;
-   path = gPrefs->Read("/Directories/TempDir", "");
-   if (path.Length() > 0 && path.Left(1)=="/")
+   path = gPrefs->Read(wxT("/Directories/TempDir"), wxT(""));
+   if (path.Length() > 0 && path.Left(1)==wxT("/"))
       fix = true;
    if (fix) {
-      gPrefs->Write("/DefaultOpenPath", FROMFILENAME(::wxGetCwd()));
-      gPrefs->Write("/DefaultExportPath", FROMFILENAME(::wxGetCwd()));
-      gPrefs->Write("/Directories/TempDir", "");
+      gPrefs->Write(wxT("/DefaultOpenPath"), FROMFILENAME(::wxGetCwd()));
+      gPrefs->Write(wxT("/DefaultExportPath"), FROMFILENAME(::wxGetCwd()));
+      gPrefs->Write(wxT("/Directories/TempDir"), wxT(""));
       wxMessageBox(_("Some of your preferences were from an earlier version "
                      "of Audacity and have been reset."));
    }
 #endif
 #endif
 
-   gPrefs->Write("/Version", (wxString)AUDACITY_VERSION_STRING);
+   gPrefs->Write(wxT("/Version"), wxString(wxT(AUDACITY_VERSION_STRING)));
 
    // BG: Make sure the users prefs are up to date
    // BG: Otherwise reset some of them to their defaults
    wxString prefsversion;
-   prefsversion = gPrefs->Read("/PrefsVersion", "");
+   prefsversion = gPrefs->Read(wxT("/PrefsVersion"), wxT(""));
 
-   if(prefsversion.CmpNoCase((wxString)AUDACITY_PREFS_VERSION_STRING))
+   if(prefsversion.CmpNoCase(wxString(wxT(AUDACITY_PREFS_VERSION_STRING))))
    {
       // BG: Reset the prefs by removing them
-      if(gPrefs->Exists("/Keyboard"))
-         gPrefs->DeleteGroup("/Keyboard");
-      if(gPrefs->Exists("/Locale"))
-         gPrefs->DeleteGroup("/Locale");
-      gPrefs->Write("/PrefsVersion", (wxString)AUDACITY_PREFS_VERSION_STRING);
+      if(gPrefs->Exists(wxT("/Keyboard")))
+         gPrefs->DeleteGroup(wxT("/Keyboard"));
+      if(gPrefs->Exists(wxT("/Locale")))
+         gPrefs->DeleteGroup(wxT("/Locale"));
+      gPrefs->Write(wxT("/PrefsVersion"), wxString(wxT(AUDACITY_PREFS_VERSION_STRING)));
    }
 }
 
@@ -140,13 +140,13 @@ void FinishPreferences()
 
 int ReadExportFormatPref()
 {
-   return gPrefs->Read("/FileFormats/ExportFormat_SF1",
+   return gPrefs->Read(wxT("/FileFormats/ExportFormat_SF1"),
                        (long int)(SF_FORMAT_WAV | SF_FORMAT_PCM_16));
 }
 
 void WriteExportFormatPref(int format)
 {
-   gPrefs->Write("/FileFormats/ExportFormat_SF1", (long int)format);
+   gPrefs->Write(wxT("/FileFormats/ExportFormat_SF1"), (long int)format);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

@@ -15,6 +15,8 @@
 #ifndef __AUDACITY_PITCHNAME__
 #define __AUDACITY_PITCHNAME__
 
+#include <wx/defs.h>
+
 // Freq2Pitch takes a frequency in Hz (exponential scale relative to 
 // alphabetic pitch names) and returns a pitch ID number (linear 
 // scale), such that A440 (A4) is 57, middle C (C4) is 48, etc.
@@ -31,12 +33,12 @@ unsigned int PitchIndex(float pitchNum);
 // PitchName takes pitchNum (as per result from 
 // Freq2Pitch) and returns a standard pitch/note name [C, C#, etc.). 
 // Sharps are the default, unless, bWantFlats is true.
-char * PitchName(float pitchNum, bool bWantFlats = false);
+wxChar * PitchName(float pitchNum, bool bWantFlats = false);
 
 // PitchName_Absolute does the same thing as PitchName, but appends 
 // the register number, e.g., instead of "C" it will return "C4" 
 // if the pitchNum corresonds to middle C.
-char * PitchName_Absolute(float pitchNum, bool bWantFlats = false);
+wxChar * PitchName_Absolute(float pitchNum, bool bWantFlats = false);
 
 #endif	// __AUDACITY_PITCHNAME__
 

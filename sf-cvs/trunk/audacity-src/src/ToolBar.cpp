@@ -114,7 +114,7 @@ ToolBarStub::ToolBarStub(wxWindow * Parent, enum ToolBarType tbt)
    mWindowedStatus = false;
    mLoadedStatus = true;
 
-   mTitle = "";
+   mTitle = wxT("");
 } 
 
 
@@ -244,7 +244,7 @@ ToolBar::ToolBar(wxWindow * parent, wxWindowID id, const wxPoint & pos, const
    mToolBarStub(tbs)
 {
    //Set some default values that should be overridden
-   mTitle = "Audacity Toolbar";
+   mTitle = wxT("Audacity Toolbar");
 
    wxColour backgroundColour =
       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
@@ -267,7 +267,7 @@ ToolBar::ToolBar(wxWindow * parent):wxWindow(parent, -1, wxPoint(1, 1),
               wxSize(300, 20),ToolBarStub * tbs) 
 {
    //Set some default values that should be overridden
-   mTitle = "Audacity Toolbar";
+   mTitle = wxT("Audacity Toolbar");
 
    wxColour backgroundColour =
       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
@@ -473,7 +473,7 @@ END_EVENT_TABLE()
 ///Constructor for a ToolBarMiniFrame. You give it a type and
 ///It will create a toolbar of that type inside the frame.
 ToolBarMiniFrame::ToolBarMiniFrame(wxWindow * parent, enum ToolBarType tbt)
-   : wxMiniFrame(gParentWindow, -1, "", wxPoint(1, 1),
+   : wxMiniFrame(gParentWindow, -1, wxT(""), wxPoint(1, 1),
                  wxSize(20, 20),
                  wxSTAY_ON_TOP | wxMINIMIZE_BOX | wxCAPTION
                  | ((parent == NULL)?0x0:wxFRAME_FLOAT_ON_PARENT))
@@ -482,7 +482,7 @@ ToolBarMiniFrame::ToolBarMiniFrame(wxWindow * parent, enum ToolBarType tbt)
 
    mToolBar = ToolBar::MakeToolBar(this, tbt);
    mToolBar->Move(20,0);
-   mDockButton = new wxButton(this,TOOLBAR_CLOSE_BUTTON,">|<",wxPoint(0,0),wxSize(15,mToolBar->GetHeight()));
+   mDockButton = new wxButton(this,TOOLBAR_CLOSE_BUTTON,wxT(">|<"),wxPoint(0,0),wxSize(15,mToolBar->GetHeight()));
    mDockButton->SetToolTip(_("Dock Toolbar"));
 
    SetTitle(mToolBar->GetTitle());
@@ -545,7 +545,7 @@ END_EVENT_TABLE()
 ///Constructor for a ToolBarFullFrame. You give it a type and
 ///It will create a toolbar of that type inside the frame.
 ToolBarFullFrame::ToolBarFullFrame(wxWindow * parent, enum ToolBarType tbt)
-   : wxFrame(gParentWindow, -1, "", wxPoint(1, 1),
+   : wxFrame(gParentWindow, -1, wxT(""), wxPoint(1, 1),
              wxSize(20, 20),
              wxSTAY_ON_TOP | wxMINIMIZE_BOX | wxCAPTION
              | wxRESIZE_BORDER

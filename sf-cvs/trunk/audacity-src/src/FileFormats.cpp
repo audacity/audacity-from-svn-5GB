@@ -17,6 +17,8 @@
 
 #include "FileFormats.h"
 
+#include "Internat.h"
+
 //
 // enumerating headers
 //
@@ -40,7 +42,7 @@ wxString sf_header_index_name(int format)
    sf_command(NULL, SFC_GET_FORMAT_MAJOR,
               &format_info, sizeof (format_info)) ;
 
-   return format_info.name;
+   return LAT1CTOWX(format_info.name);
 }
 
 unsigned int sf_header_index_to_type(int i)
@@ -76,7 +78,7 @@ wxString sf_encoding_index_name(int i)
    format_info.format = i;
    sf_command (NULL, SFC_GET_FORMAT_SUBTYPE,
                &format_info, sizeof (format_info));
-   return format_info.name;
+   return LAT1CTOWX(format_info.name);
 }
 
 unsigned int sf_encoding_index_to_subtype(int i)
@@ -103,7 +105,7 @@ wxString sf_header_name(int format)
    format_info.format = (format & SF_FORMAT_TYPEMASK);
    sf_command(NULL, SFC_GET_FORMAT_INFO, &format_info, sizeof(format_info));
 
-   return format_info.name;
+   return LAT1CTOWX(format_info.name);
 }
 
 wxString sf_header_shortname(int format)
@@ -127,7 +129,7 @@ wxString sf_header_shortname(int format)
          i++;
    }
 
-   s = tmp;
+   s = LAT1CTOWX(tmp);
 
    free(tmp);
 
@@ -142,7 +144,7 @@ wxString sf_header_extension(int format)
    format_info.format = (format & SF_FORMAT_TYPEMASK);
    sf_command(NULL, SFC_GET_FORMAT_INFO, &format_info, sizeof(format_info));
 
-   return format_info.extension;
+   return LAT1CTOWX(format_info.extension);
 }
 
 wxString sf_encoding_name(int encoding)
@@ -153,7 +155,7 @@ wxString sf_encoding_name(int encoding)
    format_info.format = (encoding & SF_FORMAT_SUBMASK);
    sf_command(NULL, SFC_GET_FORMAT_INFO, &format_info, sizeof(format_info));
 
-   return format_info.name;
+   return LAT1CTOWX(format_info.name);
 }
 
 int sf_num_simple_formats()
@@ -210,18 +212,18 @@ void sf_get_all_extensions(wxStringList exts)
       sf_command(NULL, SFC_GET_FORMAT_MAJOR,
                  &format_info, sizeof (format_info)) ;
       
-      exts.Add(format_info.extension);
+      exts.Add(LAT1CTOWX(format_info.extension));
    }
 
    // Some other extensions that are often sound files
    // but aren't included by libsndfile
 
-   exts.Add("aif"); // AIFF file with a DOS-style extension
-   exts.Add("ircam");
-   exts.Add("snd");
-   exts.Add("svx");
-   exts.Add("svx8");
-   exts.Add("sv16");
+   exts.Add(wxT("aif")); // AIFF file with a DOS-style extension
+   exts.Add(wxT("ircam"));
+   exts.Add(wxT("snd"));
+   exts.Add(wxT("svx"));
+   exts.Add(wxT("svx8"));
+   exts.Add(wxT("sv16"));
 }
 
 #ifdef __WXMAC__

@@ -330,7 +330,7 @@ void FilterPanel::OnPaint(wxPaintEvent & evt)
    dbRuler.SetOrientation(wxVERTICAL);
    dbRuler.SetRange(12, -12);
    dbRuler.SetFormat(Ruler::LinearDBFormat);
-   dbRuler.SetUnits("dB");
+   dbRuler.SetUnits(wxT("dB"));
    dbRuler.Draw(memDC);
 
    Ruler freqRuler;
@@ -338,7 +338,7 @@ void FilterPanel::OnPaint(wxPaintEvent & evt)
    freqRuler.SetOrientation(wxHORIZONTAL);
    freqRuler.SetRange(0.0, 22050.0);
    freqRuler.SetFormat(Ruler::IntFormat);
-   freqRuler.SetUnits("Hz");
+   freqRuler.SetUnits(wxT("Hz"));
    freqRuler.SetFlip(true);
    freqRuler.Draw(memDC);
 

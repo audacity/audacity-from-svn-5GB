@@ -93,23 +93,23 @@ double TimeTrack::warp( double t )
    return result;
 }
 
-bool TimeTrack::HandleXMLTag(const char *tag, const char **attrs)
+bool TimeTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
-   if (!strcmp(tag, "timetrack")) {
+   if (!wxStrcmp(tag, wxT("timetrack"))) {
       while(*attrs) {
-         const char *attr = *attrs++;
-         const char *value = *attrs++;
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
          
          if (!value)
             break;
          
-         else if (!strcmp(attr, "offset")) {
-            Internat::CompatibleToDouble(wxString(value), &mOffset);
+         else if (!wxStrcmp(attr, wxT("offset"))) {
+            Internat::CompatibleToDouble(value, &mOffset);
             mEnvelope->SetOffset(mOffset);
-         }else if (!strcmp(attr, "name"))
+         }else if (!wxStrcmp(attr, wxT("name")))
             mName = value;
-         else if (!strcmp(attr, "channel"))
-            mChannel = atoi(value);
+         else if (!wxStrcmp(attr, wxT("channel")))
+            mChannel = wxAtoi(value);
          
       } // while
       return true;
@@ -118,9 +118,9 @@ bool TimeTrack::HandleXMLTag(const char *tag, const char **attrs)
    return false;
 }
 
-XMLTagHandler *TimeTrack::HandleXMLChild(const char *tag)
+XMLTagHandler *TimeTrack::HandleXMLChild(const wxChar *tag)
 {
-   if (!strcmp(tag, "envelope"))
+   if (!wxStrcmp(tag, wxT("envelope")))
       return mEnvelope;
 
   return NULL;
@@ -133,9 +133,9 @@ void TimeTrack::WriteXML(int depth, FILE *fp)
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
    fprintf(fp, "<timetrack ");
-   fprintf(fp, "name=\"%s\" ", XMLEsc(mName).c_str());
+   fprintf(fp, "name=\"%s\" ", (const char *)XMLEsc(mName).mb_str());
    fprintf(fp, "channel=\"%d\" ", mChannel);
-   fprintf(fp, "offset=\"%s\" ", Internat::ToString(mOffset, 8).c_str());
+   fprintf(fp, "offset=\"%s\" ", (const char *)Internat::ToString(mOffset, 8).mb_str());
    fprintf(fp, ">\n");
 
    mEnvelope->WriteXML(depth+1, fp);

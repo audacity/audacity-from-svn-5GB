@@ -37,28 +37,28 @@ int FFTSizes[numFFTSizes] = {
 
 wxString stringFFTSizes[numFFTSizes] = {
    wxTRANSLATE("8 - most wideband"),
-               "16",
-               "32",
-               "64",
-               "128",
+               wxT("16"),
+               wxT("32"),
+               wxT("64"),
+               wxT("128"),
    wxTRANSLATE("256 - default"),
-               "512",
-               "1024",
-               "2048",
+               wxT("512"),
+               wxT("1024"),
+               wxT("2048"),
    wxTRANSLATE("4096 - most narrowband")
 };
 
 SpectrumPrefs::SpectrumPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
-   int fftSize = gPrefs->Read("/Spectrum/FFTSize", 256L);
+   int fftSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256L);
    bool isGrayscale = false;
-   gPrefs->Read("/Spectrum/Grayscale", &isGrayscale, false);
+   gPrefs->Read(wxT("/Spectrum/Grayscale"), &isGrayscale, false);
 
    int i;
-   int maxFreq = gPrefs->Read("/Spectrum/MaxFreq", 8000L);
+   int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), 8000L);
    wxString maxFreqStr;
-   maxFreqStr.Printf("%d", maxFreq);
+   maxFreqStr.Printf(wxT("%d"), maxFreq);
 
    int pos = 5;      // Fall back to 256 if it doesn't match anything else
    for (i = 0; i < numFFTSizes; i++)
@@ -75,14 +75,14 @@ PrefsPanel(parent)
          wxVERTICAL);
 
       mFFTSize[0] = new wxRadioButton(
-         this, -1, _(stringFFTSizes[0]), wxDefaultPosition,
+         this, -1, wxGetTranslation(stringFFTSizes[0]), wxDefaultPosition,
          wxDefaultSize, wxRB_GROUP );
       mFFTSize[0]->SetValue(false);
       fftSizeSizer->Add(mFFTSize[0], 0, 
          wxGROW|wxLEFT|wxRIGHT, RADIO_BUTTON_BORDER );
 
       for(i = 1; i < numFFTSizes; i++) {
-         mFFTSize[i] = new wxRadioButton(this, -1, _(stringFFTSizes[i]));
+         mFFTSize[i] = new wxRadioButton(this, -1, wxGetTranslation(stringFFTSizes[i]));
          mFFTSize[i]->SetValue(false);
          fftSizeSizer->Add(mFFTSize[i], 0,
             wxGROW|wxLEFT|wxRIGHT, RADIO_BUTTON_BORDER );
@@ -147,10 +147,10 @@ bool SpectrumPrefs::Apply()
       }
 
    long fftSize = FFTSizes[pos];
-   gPrefs->Write("/Spectrum/FFTSize", fftSize);
+   gPrefs->Write(wxT("/Spectrum/FFTSize"), fftSize);
 
    bool isGrayscale = mGrayscale->GetValue();
-   gPrefs->Write("/Spectrum/Grayscale", isGrayscale);
+   gPrefs->Write(wxT("/Spectrum/Grayscale"), isGrayscale);
 
    wxString maxFreqStr = mMaxFreqCtrl->GetValue();
    long maxFreq;
@@ -163,7 +163,7 @@ bool SpectrumPrefs::Apply()
                      "100 Hz - 100,000 Hz"));
       return false;
    }
-   gPrefs->Write("/Spectrum/MaxFreq", maxFreq);
+   gPrefs->Write(wxT("/Spectrum/MaxFreq"), maxFreq);
 
    // TODO: Force all projects to repaint themselves
 

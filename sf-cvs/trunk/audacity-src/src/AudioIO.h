@@ -115,8 +115,8 @@ class AudioIO {
     * If you don't give them, the default devices from the preferences
     * will be used.
     */
-   static wxArrayLong GetSupportedSampleRates(wxString playDevice = "",
-                                              wxString recDevice = "");
+   static wxArrayLong GetSupportedSampleRates(wxString playDevice = wxT(""),
+                                              wxString recDevice = wxT(""));
 
    /* Get a supported sample rate which can be used a an optimal
     * default. Currently, this uses the first supported rate in

@@ -58,19 +58,19 @@ wxString DirManager::globaltemp;
 
 DirManager::DirManager()
 {
-   wxLogDebug("DirManager: Created new instance");
+   wxLogDebug(wxT("DirManager: Created new instance"));
 
    mRef = 1; // MM: Initial refcount is 1 by convention
    
    // set up local temp subdir
    wxString numstring;
-   numstring.Printf("project%d",numDirManagers);
+   numstring.Printf(wxT("project%d"),numDirManagers);
    mytemp=globaltemp + wxFILE_SEP_PATH + numstring;
 
    numDirManagers++;
 
-   projPath = "";
-   projName = "";
+   projPath = wxT("");
+   projName = wxT("");
 
    mLoadingTarget = NULL;
 
@@ -90,7 +90,7 @@ DirManager::DirManager()
       wxLogNull logNo;
       if (wxGetDiskSpace(globaltemp, NULL, &freeSpace)) {
          if (freeSpace < 1048576) {
-            ShowWarningDialog(NULL, "DiskSpaceWarning",
+            ShowWarningDialog(NULL, wxT("DiskSpaceWarning"),
                               _("Warning: there is very little free disk space left on this "
                                 "volume. Please select another temporary directory in your "
                                 "preferences."));
@@ -127,7 +127,7 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
                                   wxString dirspec,
                                   int files_p,int dirs_p,
                                   int progress_count,int progress_bias,
-                                  char *prompt, wxProgressDialog **progress){
+                                  wxChar *prompt, wxProgressDialog **progress){
 
    int count=0;
    bool cont;
@@ -149,7 +149,7 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
             if (prompt && progress && !*progress && wxGetElapsedTime(false) > 500)
                *progress =
                   new wxProgressDialog(_("Progress"),
-                                       _(prompt),
+                                       prompt,
                                        1000,
                                        NULL,
                                        wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
@@ -184,7 +184,7 @@ static int rm_dash_rf_enumerate_prompt(wxString dirpath,
                                        wxStringList *flist, 
                                        wxString dirspec,
                                        int files_p,int dirs_p,
-                                       int progress_count,char *prompt){
+                                       int progress_count,wxChar *prompt){
 
    wxProgressDialog *progress = NULL;
    wxStartTimer();
@@ -211,14 +211,14 @@ static int rm_dash_rf_enumerate(wxString dirpath,
 
 
 static void rm_dash_rf_execute(wxStringList fnameList, 
-                               int count, int files_p, int dirs_p, char *prompt){
+                               int count, int files_p, int dirs_p, wxChar *prompt){
 
-   char **array = fnameList.ListToArray();   
+   wxChar **array = fnameList.ListToArray();   
    wxProgressDialog *progress = NULL;
    wxStartTimer();
 
    for (int i = 0; i < count; i++) {
-      char *file = array[i];
+      wxChar *file = array[i];
       if(files_p){
          wxRemoveFile(file);
       }
@@ -229,7 +229,7 @@ static void rm_dash_rf_execute(wxStringList fnameList,
       if (prompt && !progress && wxGetElapsedTime(false) > 500)
          progress =
             new wxProgressDialog(_("Progress"),
-                                 _(prompt),
+                                 prompt,
                                  1000,
                                  NULL,
                                  wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
@@ -255,7 +255,7 @@ void DirManager::CleanTempDir(bool startup)
 
    // don't count the global temp directory, which this will find and
    // list last
-   count=rm_dash_rf_enumerate(globaltemp,&fnameList,"project*",1,1)-1;
+   count=rm_dash_rf_enumerate(globaltemp,&fnameList,wxT("project*"),1,1)-1;
    
    if (count == 0) 
       return;
@@ -269,7 +269,7 @@ void DirManager::CleanTempDir(bool startup)
            "Delete temporary files?");
       
       int action = wxMessageBox(prompt,
-                                "Warning",
+                                wxT("Warning"),
                                 wxYES_NO | wxICON_EXCLAMATION,
                                 NULL);
       
@@ -279,7 +279,7 @@ void DirManager::CleanTempDir(bool startup)
       }
    }
 
-   rm_dash_rf_execute(fnameList,count,1,1,"Cleaning up temporary files");
+   rm_dash_rf_execute(fnameList,count,1,1,wxT("Cleaning up temporary files"));
 }
 
 bool DirManager::SetProject(wxString & projPath, wxString & projName,
@@ -289,10 +289,10 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
    wxString oldName = this->projName;
    wxString oldFull = projFull;
    wxString oldLoc = projFull;
-   if (oldLoc == "")
+   if (oldLoc == wxT(""))
       oldLoc = mytemp;
 
-   if (projPath == "")
+   if (projPath == wxT(""))
       projPath = FROMFILENAME(::wxGetCwd());
 
    this->projPath = projPath;
@@ -308,7 +308,7 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
             return false;
 
       #ifdef __UNIX__
-      chmod(FILENAME(projFull), 0775);
+      chmod(FILENAME(projFull).fn_str(), 0775);
       #endif
 
    } else {
@@ -406,7 +406,7 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
       count+=rm_dash_rf_enumerate(cleanupLoc2,&dirlist,wxEmptyString,0,1);
       
       if(count)
-         rm_dash_rf_execute(dirlist,count,0,1,"Cleaning up cache directories");
+         rm_dash_rf_execute(dirlist,count,0,1,wxT("Cleaning up cache directories"));
    }
    return true;
 }
@@ -421,7 +421,7 @@ wxLongLong DirManager::GetFreeDiskSpace()
    wxLongLong freeSpace = -1;
    wxString path = projPath;
 
-   if (projPath == "")
+   if (projPath == wxT(""))
       path = mytemp;
    {
       wxLogNull logNo;
@@ -435,21 +435,21 @@ wxLongLong DirManager::GetFreeDiskSpace()
 wxFileName DirManager::MakeBlockFilePath(wxString value){
    
    wxFileName dir;
-   dir.AssignDir(projFull != ""? projFull: mytemp);
+   dir.AssignDir(projFull != wxT("")? projFull: mytemp);
    
-   if(value.GetChar(0)=='d'){
+   if(value.GetChar(0)==wxT('d')){
       // this file is located in a subdiretory tree 
-      int location=value.Find('b');
+      int location=value.Find(wxT('b'));
       wxString subdir=value.Mid(0,location);
       dir.AppendDir(subdir);
       
       if(!dir.DirExists())dir.Mkdir();
    }
    
-   if(value.GetChar(0)=='e'){
+   if(value.GetChar(0)==wxT('e')){
       // this file is located in a new style two-deep subdirectory tree 
       wxString topdir=value.Mid(0,3);
-      wxString middir="d";
+      wxString middir=wxT("d");
       middir.Append(value.Mid(3,2));
       
       dir.AppendDir(topdir);
@@ -477,15 +477,15 @@ bool DirManager::AssignFile(wxFileName &fileName,
       // set to true only if called from MakeFileBlockName().
       
       wxString filespec;
-      filespec.Printf("%s.*",value.c_str());
+      filespec.Printf(wxT("%s.*"),value.c_str());
       if(checkit.HasFiles(filespec)){
          // collision with on-disk state!
          wxString collision;
          checkit.GetFirst(&collision,filespec);
          
-         wxLogWarning("Audacity found an orphaned blockfile %s!\n" 
-                      "Please consider saving and reloading the project "
-                      "to perform a complete project check.\n",
+         wxLogWarning(wxT("Audacity found an orphaned blockfile %s!\n") 
+                      wxT("Please consider saving and reloading the project ")
+                      wxT("to perform a complete project check.\n"),
                       collision.c_str());
          
          return FALSE;
@@ -545,8 +545,8 @@ void DirManager::BalanceFileAdd(int midkey)
 
 void DirManager::BalanceInfoAdd(wxString file)
 {
-   const char *s=file.c_str();
-   if(s[0]=='e'){
+   const wxChar *s=file.c_str();
+   if(s[0]==wxT('e')){
       // this is one of the modern two-deep managed files 
       // convert filename to keys 
       unsigned int topnum = (hexchar_to_int(s[1]) << 4) | 
@@ -565,8 +565,8 @@ void DirManager::BalanceInfoAdd(wxString file)
 // on non-empty directories.
 void DirManager::BalanceInfoDel(wxString file)
 {
-   const char *s=file.c_str();
-   if(s[0]==(int)'e'){
+   const wxChar *s=file.c_str();
+   if(s[0]==wxT('e')){
       // this is one of the modern two-deep managed files 
 
       unsigned int topnum = (hexchar_to_int(s[1]) << 4) | 
@@ -591,11 +591,11 @@ void DirManager::BalanceInfoDel(wxString file)
             dirMidPool.erase(midkey);
 
             // delete the actual directory
-            wxString dir=(projFull != ""? projFull: mytemp);
+            wxString dir=(projFull != wxT("")? projFull: mytemp);
             dir += wxFILE_SEP_PATH;
             dir += file.Mid(0,3);
             dir += wxFILE_SEP_PATH;
-            dir += "d";
+            dir += wxT("d");
             dir += file.Mid(3,2);
             wxFileName::Rmdir(dir);
 
@@ -611,7 +611,7 @@ void DirManager::BalanceInfoDel(wxString file)
                if(--dirTopPool[topnum]<1){
                   // do *not* erase the hash entry from dirTopPool
                   // *do* delete the actual directory
-                  wxString dir=(projFull != ""? projFull: mytemp);
+                  wxString dir=(projFull != wxT("")? projFull: mytemp);
                   dir += wxFILE_SEP_PATH;
                   dir += file.Mid(0,3);
                   wxFileName::Rmdir(dir);
@@ -711,7 +711,7 @@ wxFileName DirManager::MakeBlockFileName()
 
       }
 
-      baseFileName.Printf("e%02x%02x%03x",topnum,midnum,filenum);
+      baseFileName.Printf(wxT("e%02x%02x%03x"),topnum,midnum,filenum);
 
       if(blockFileHash.find(baseFileName) == blockFileHash.end()){
          // not in the hash, good. 
@@ -795,31 +795,31 @@ BlockFile *DirManager::CopyBlockFile(BlockFile *b)
    return b2;
 }
 
-bool DirManager::HandleXMLTag(const char *tag, const char **attrs)
+bool DirManager::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
    if( mLoadingTarget == NULL )
       return false;
 
-   if( !wxStricmp(tag, "silentblockfile") ) {
+   if( !wxStricmp(tag, wxT("silentblockfile")) ) {
       // Silent blocks don't actually have a file associated, so
       // we don't need to worry about the hash table at all
       *mLoadingTarget = SilentBlockFile::BuildFromXML(*this, attrs);
       return true;
    }
-   else if ( !wxStricmp(tag, "simpleblockfile") )
+   else if ( !wxStricmp(tag, wxT("simpleblockfile")) )
       *mLoadingTarget = SimpleBlockFile::BuildFromXML(*this, attrs);
-   else if( !wxStricmp(tag, "pcmaliasblockfile") )
+   else if( !wxStricmp(tag, wxT("pcmaliasblockfile")) )
       *mLoadingTarget = PCMAliasBlockFile::BuildFromXML(*this, attrs);
-   else if( !wxStricmp(tag, "blockfile") ||
-            !wxStricmp(tag, "legacyblockfile") ) {
+   else if( !wxStricmp(tag, wxT("blockfile")) ||
+            !wxStricmp(tag, wxT("legacyblockfile")) ) {
       // Support Audacity version 1.1.1 project files
 
       int i=0;
       bool alias = false;
 
       while(attrs[i]) {
-         if (!wxStricmp(attrs[i], "alias")) {
-            if (atoi(attrs[i+1])==1)
+         if (!wxStricmp(attrs[i], wxT("alias"))) {
+            if (wxAtoi(attrs[i+1])==1)
                alias = true;
          }
          i++;
@@ -913,7 +913,7 @@ bool DirManager::CopyToNewProjectDirectory(BlockFile *f)
 void DirManager::Ref(BlockFile * f)
 {
    f->Ref();
-   //  printf("Ref(%d): %s\n",f->refCount, (const char *)(f->fullPath));
+   //  wxPrintf(wxT("Ref(%d): %s\n"),f->refCount, f->fullPath.c_str());
 }
 
 int DirManager::GetRefCount(BlockFile * f)
@@ -925,7 +925,7 @@ void DirManager::Deref(BlockFile * f)
 {
    wxString theFileName = f->GetFileName().GetName();
 
-   //  printf("Deref(%d): %s\n",f->mRefCount-1, (const char *)f->mRullPath);
+   //  wxPrintf(wxT("Deref(%d): %s\n"),f->mRefCount-1, f->mRullPath.c_str());
 
    if (f->Deref()) {
       // If Deref() returned true, the reference count reached zero
@@ -981,7 +981,7 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
       return false;
    }
 
-   printf(_("Renamed file: %s\n"), (const char *)renamedFile.GetFullPath());
+   wxPrintf(_("Renamed file: %s\n"), renamedFile.GetFullPath().c_str());
 
    // Go through our block files and see if any indeed point to
    // the file we're concerned about.  If so, point the block file
@@ -997,7 +997,7 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
 
       if (b->IsAlias() && ab->GetAliasedFile() == fName) {
          needToRename = true;
-         printf(_("Changing block %s\n"), (const char *)b->GetFileName().GetFullName());
+         wxPrintf(_("Changing block %s\n"), b->GetFileName().GetFullName().c_str());
          ab->ChangeAliasedFile(renamedFile);
       }
 
@@ -1053,7 +1053,7 @@ void DirManager::Deref()
    // MM: Automatically delete if refcount reaches zero
    if (mRef == 0)
    {
-//      wxLogDebug("DirManager::Deref: Automatically deleting 'this'");
+//      wxLogDebug(wxT("DirManager::Deref: Automatically deleting 'this'"));
       delete this;
    }
 }
@@ -1084,9 +1084,9 @@ int DirManager::ProjectFSCK(bool forceerror)
    BlockHash    missingDataList;
 
    // this function is finally a misnomer
-   rm_dash_rf_enumerate_prompt((projFull != ""? projFull: mytemp),
+   rm_dash_rf_enumerate_prompt((projFull != wxT("")? projFull: mytemp),
                                &fnameList,wxEmptyString,1,0,blockcount,
-                               "Inspecting project file data...");
+                               wxT("Inspecting project file data..."));
    
    // enumerate orphaned blockfiles
    BlockHash diskFileHash;
@@ -1099,7 +1099,7 @@ int DirManager::ProjectFSCK(bool forceerror)
       if(blockFileHash.find(basename) == blockFileHash.end()){
          // the blockfile on disk is orphaned
          orphanList.Add(fullname.GetFullPath());
-         wxLogWarning("Orphaned blockfile: (%s)",
+         wxLogWarning(wxT("Orphaned blockfile: (%s)"),
                       fullname.GetFullPath().c_str());
       }
       node=node->GetNext();
@@ -1124,7 +1124,7 @@ int DirManager::ProjectFSCK(bool forceerror)
    i=missingAliasFiles.begin();
    while(i != missingAliasFiles.end()) {
       wxString key=i->first;
-      wxLogWarning("Missing alias file: (%s)",key.c_str());
+      wxLogWarning(wxT("Missing alias file: (%s)"),key.c_str());
       i++;
    }
 
@@ -1140,10 +1140,10 @@ int DirManager::ProjectFSCK(bool forceerror)
             that the Blockfile abstraction can't find itself */
          wxFileName file=MakeBlockFilePath(key);
          file.SetName(key);
-         file.SetExt("auf");
+         file.SetExt(wxT("auf"));
          if(!wxFileExists(file.GetFullPath().c_str())){
             missingSummaryList[key]=b;
-            wxLogWarning("Missing summary file: (%s.auf)",
+            wxLogWarning(wxT("Missing summary file: (%s.auf)"),
                          key.c_str());
          }
       }
@@ -1159,10 +1159,10 @@ int DirManager::ProjectFSCK(bool forceerror)
       if(!b->IsAlias()){
          wxFileName file=MakeBlockFilePath(key);
          file.SetName(key);
-         file.SetExt("au");
+         file.SetExt(wxT("au"));
          if(!wxFileExists(file.GetFullPath().c_str())){
             missingDataList[key]=b;
-            wxLogWarning("Missing data file: (%s.au)",
+            wxLogWarning(wxT("Missing data file: (%s.au)"),
                          key.c_str());
          }
       }
@@ -1176,9 +1176,9 @@ int DirManager::ProjectFSCK(bool forceerror)
       !missingDataList.empty() ||
       !missingSummaryList.empty()){
 
-      wxLogWarning("Project check found inconsistencies inspecting the "
-                   "loaded project data; click 'Details' for a complete "
-                   "list of errors, or 'OK' to proceed to more options.");
+      wxLogWarning(wxT("Project check found inconsistencies inspecting the ")
+                   wxT("loaded project data; click 'Details' for a complete ")
+                   wxT("list of errors, or 'OK' to proceed to more options."));
       
       wxLog::GetActiveTarget()->Flush(); // Flush is both modal
       // (desired) and will clear the log (desired)
@@ -1195,11 +1195,11 @@ int DirManager::ProjectFSCK(bool forceerror)
       
       prompt.Printf(promptA,orphanList.GetCount());
       
-      char *buttons[]={"Delete orphaned files [safe and recommended]",
-                       "Continue without deleting; silently work around the extra files",
-                       "Close project immediately with no changes",NULL};
+      wxChar *buttons[]={wxT("Delete orphaned files [safe and recommended]"),
+                       wxT("Continue without deleting; silently work around the extra files"),
+                       wxT("Close project immediately with no changes"),NULL};
       int action = ShowMultiDialog(prompt,
-                                   "Warning",
+                                   wxT("Warning"),
                                    buttons);
 
       if(action==2)return (ret | FSCKstatus_CLOSEREQ);
@@ -1230,11 +1230,11 @@ int DirManager::ProjectFSCK(bool forceerror)
       
       prompt.Printf(promptA,missingAliasFiles.size());
       
-      char *buttons[]={"Replace missing data with silence [permanent upon save]",
-                       "Temporarily replace missing files with silence [this session only]",
-                       "Close project immediately with no further changes",NULL};
+      wxChar *buttons[]={wxT("Replace missing data with silence [permanent upon save]"),
+                       wxT("Temporarily replace missing files with silence [this session only]"),
+                       wxT("Close project immediately with no further changes"),NULL};
       int action = ShowMultiDialog(prompt,
-                                   "Warning",
+                                   wxT("Warning"),
                                    buttons);
 
       if(action==2)return (ret | FSCKstatus_CLOSEREQ);
@@ -1270,11 +1270,11 @@ int DirManager::ProjectFSCK(bool forceerror)
       
       prompt.Printf(promptA,missingSummaryList.size());
       
-      char *buttons[]={"Regenerate summary files [safe and recommended]",
-                       "Fill in silence for missing display data [this session only]",
-                       "Close project immediately with no further changes",NULL};
+      wxChar *buttons[]={wxT("Regenerate summary files [safe and recommended]"),
+                       wxT("Fill in silence for missing display data [this session only]"),
+                       wxT("Close project immediately with no further changes"),NULL};
       int action = ShowMultiDialog(prompt,
-                                   "Warning",
+                                   wxT("Warning"),
                                    buttons);
 
       if(action==2)return (ret | FSCKstatus_CLOSEREQ);
@@ -1307,11 +1307,11 @@ int DirManager::ProjectFSCK(bool forceerror)
       
       prompt.Printf(promptA,missingDataList.size());
       
-      char *buttons[]={"Replace missing data with silence [permanent immediately]",
-                       "Temporarily replace missing data with silence [this session only]",
-                       "Close project immediately with no further changes",NULL};
+      wxChar *buttons[]={wxT("Replace missing data with silence [permanent immediately]"),
+                       wxT("Temporarily replace missing data with silence [this session only]"),
+                       wxT("Close project immediately with no further changes"),NULL};
       int action = ShowMultiDialog(prompt,
-                                   "Warning",
+                                   wxT("Warning"),
                                    buttons);
       
       if(action==2)return (ret | FSCKstatus_CLOSEREQ);
@@ -1332,9 +1332,9 @@ int DirManager::ProjectFSCK(bool forceerror)
 
    // clean up any empty directories
    fnameList.Clear();
-   rm_dash_rf_enumerate_prompt((projFull != ""? projFull: mytemp),
+   rm_dash_rf_enumerate_prompt((projFull != wxT("")? projFull: mytemp),
                                &fnameList,wxEmptyString,0,1,blockcount,
-                               "Cleaning up unused directories in project data...");
+                               wxT("Cleaning up unused directories in project data..."));
    rm_dash_rf_execute(fnameList,0,0,1,0);
 
 

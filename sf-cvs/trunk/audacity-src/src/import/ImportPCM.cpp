@@ -73,7 +73,7 @@ void GetPCMImportPlugin(ImportPluginList *importPluginList,
 
 wxString PCMImportPlugin::GetPluginFormatDescription()
 {
-    return "Uncompressed PCM Audio Files";
+    return wxT("Uncompressed PCM Audio Files");
 }
 
 ImportFileHandle *PCMImportPlugin::Open(wxString filename)
@@ -82,7 +82,7 @@ ImportFileHandle *PCMImportPlugin::Open(wxString filename)
    SNDFILE *file;
 
    memset(&info, 0, sizeof(info));
-   file = sf_open(FILENAME(filename), SFM_READ, &info);
+   file = sf_open(FILENAME(filename).fn_str(), SFM_READ, &info);
    if (!file) {
       // TODO: Handle error
       //char str[1000];
@@ -111,7 +111,7 @@ PCMImportFileHandle::PCMImportFileHandle(wxString name,
    //
    
    mFormat = (sampleFormat)
-      gPrefs->Read("/SamplingRate/DefaultProjectSampleFormat", floatSample);
+      gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
 
    if (mFormat != floatSample &&
        sf_subtype_more_than_16_bits(mInfo.format))
@@ -170,11 +170,11 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
    bool cancelled = false;
    
    wxString copyEdit =
-       gPrefs->Read("/FileFormats/CopyOrEditUncompressedData", "edit");
+       gPrefs->Read(wxT("/FileFormats/CopyOrEditUncompressedData"), wxT("edit"));
 
    // Fall back to "edit" if it doesn't match anything else
    bool doEdit = true;          
-   if (copyEdit.IsSameAs("copy", false))
+   if (copyEdit.IsSameAs(wxT("copy"), false))
       doEdit = false;
 
    // If the format is not seekable, we must use 'copy' mode,
@@ -334,7 +334,7 @@ bool ImportPCM(wxWindow * parent,
    if (!fp) {
       char str[1000];
       sf_error_str((SNDFILE *)NULL, str, 1000);
-      wxMessageBox(str);
+      wxMessageBox(LAT1CTOWX(str));
 
       return false;
    }
@@ -342,7 +342,7 @@ bool ImportPCM(wxWindow * parent,
    wxString progressStr;
    wxString formatName = sf_header_name(info.format & SF_FORMAT_TYPEMASK);
    progressStr.Printf(_("Importing %s file..."),
-                      (const char *)formatName);
+                      formatName.c_str());
 
    *numChannels = info.channels;
    *channels = new WaveTrack*[*numChannels];
@@ -370,11 +370,11 @@ bool ImportPCM(wxWindow * parent,
    sampleCount maxBlockSize = (*channels)[0]->GetMaxBlockSize();
 
    wxString copyEdit =
-       gPrefs->Read("/FileFormats/CopyOrEditUncompressedData", "edit");
+       gPrefs->Read(wxT("/FileFormats/CopyOrEditUncompressedData"), wxT("edit"));
 
    // Fall back to "edit" if it doesn't match anything else
    bool doEdit = true;          
-   if (copyEdit.IsSameAs("copy", false))
+   if (copyEdit.IsSameAs(wxT("copy"), false))
       doEdit = false;
 
    if (doEdit) {

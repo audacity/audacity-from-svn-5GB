@@ -77,7 +77,7 @@ class LOFImportPlugin : public ImportPlugin
 {
 public:
    LOFImportPlugin():
-      ImportPlugin(wxStringList("lof", NULL))
+      ImportPlugin(wxStringList(wxT("lof"), NULL))
    {
    }
 
@@ -228,15 +228,15 @@ static int CountNumTracks(AudacityProject *proj)
 
 void LOFImportFileHandle::lofOpenFiles(wxString* ln)
 {  
-   wxStringTokenizer tok(*ln, " ");
-   wxStringTokenizer temptok1(*ln, "\"");
-   wxStringTokenizer temptok2(*ln, " ");
+   wxStringTokenizer tok(*ln, wxT(" "));
+   wxStringTokenizer temptok1(*ln, wxT("\""));
+   wxStringTokenizer temptok2(*ln, wxT(" "));
    int tokenplace = 0;
    
    wxString targetfile;
    wxString tokenholder = tok.GetNextToken();
    
-   if (tokenholder.IsSameAs("window", false))
+   if (tokenholder.IsSameAs(wxT("window"), false))
    {
       // set any duration/offset factors for last window, as all files were called
       doDuration();
@@ -253,7 +253,7 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
       {
          tokenholder = tok.GetNextToken();
          
-         if (tokenholder.IsSameAs("offset", false))
+         if (tokenholder.IsSameAs(wxT("offset"), false))
          {
             if (tok.HasMoreTokens())
                tokenholder = tok.GetNextToken();
@@ -274,7 +274,7 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
                tokenholder = tok.GetNextToken();
          }
          
-         if (tokenholder.IsSameAs("duration", false))
+         if (tokenholder.IsSameAs(wxT("duration"), false))
          {
             if (tok.HasMoreTokens())
                tokenholder = tok.GetNextToken();
@@ -292,15 +292,15 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
             }
          }     // End if statement
 
-         if (tokenholder.IsSameAs("#"))
+         if (tokenholder.IsSameAs(wxT("#")))
          {
             // # indicates comments; ignore line
-            tok = wxStringTokenizer("", " ");
+            tok = wxStringTokenizer(wxT(""), wxT(" "));
          }
       }     // End while loop
    }        // End if statement
    
-   else if (tokenholder.IsSameAs("file", false))
+   else if (tokenholder.IsSameAs(wxT("file"), false))
    {
 
       // To identify filename and open it
@@ -308,8 +308,8 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
       targetfile = temptok1.GetNextToken();
       
       // If file is a midi
-      if (targetfile.AfterLast('.').IsSameAs("mid", false)
-          ||  targetfile.AfterLast('.').IsSameAs("midi", false))
+      if (targetfile.AfterLast(wxT('.')).IsSameAs(wxT("mid"), false)
+          ||  targetfile.AfterLast(wxT('.')).IsSameAs(wxT("midi"), false))
       {
          nTrack = new NoteTrack(mProject->GetDirManager());
          
@@ -334,13 +334,13 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
       {
          tokenholder = tok.GetNextToken();
          
-         if (tokenholder.IsSameAs("#"))
+         if (tokenholder.IsSameAs(wxT("#")))
          {
             // # indicates comments; ignore line
-            tok = wxStringTokenizer("", " ");
+            tok = wxStringTokenizer(wxT(""), wxT(" "));
          }
          
-         if (tokenholder.IsSameAs("offset", false))
+         if (tokenholder.IsSameAs(wxT("offset"), false))
          {
             if (tok.HasMoreTokens())
                tokenholder = tok.GetNextToken();
@@ -356,8 +356,8 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
                for (int i = 1; i < CountNumTracks(mProject) - 1; i++)
                   t = iter.Next();
 
-               if (targetfile.AfterLast('.').IsSameAs("mid", false) ||
-                   targetfile.AfterLast('.').IsSameAs("midi", false))
+               if (targetfile.AfterLast(wxT('.')).IsSameAs(wxT("mid"), false) ||
+                   targetfile.AfterLast(wxT('.')).IsSameAs(wxT("midi"), false))
                {
                   wxMessageBox(_("MIDI tracks cannot be offset individually, "
                                  "only audio files may be."),
@@ -387,10 +387,10 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
       }     // End if statement
    }     // End if statement
    
-   else if (tokenholder.IsSameAs("#"))
+   else if (tokenholder.IsSameAs(wxT("#")))
    {
       // # indicates comments; ignore line
-      tok = wxStringTokenizer("", " ");
+      tok = wxStringTokenizer(wxT(""), wxT(" "));
    }
    else
    {

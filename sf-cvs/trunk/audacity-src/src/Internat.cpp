@@ -20,7 +20,7 @@
 
 #include <locale.h>
 
-wxChar Internat::mDecimalSeparator = '.'; // default
+wxChar Internat::mDecimalSeparator = wxT('.'); // default
 wxMBConv *Internat::mConvLocal = 0;
 
 #ifdef __WXMAC__
@@ -33,9 +33,9 @@ void Internat::Init()
    // Save decimal point character
    struct lconv * localeInfo = localeconv();
    if (localeInfo)
-      mDecimalSeparator = localeInfo->decimal_point[0];
+      mDecimalSeparator = wxString(localeInfo->decimal_point, wxConvLocal).GetChar(0);
 
-//   wxLogDebug("Decimal separator set to '%c'", mDecimalSeparator);
+//   wxLogDebug(wxT("Decimal separator set to '%c'"), mDecimalSeparator);
 
    #ifndef __WXMAC__
    // Set up character-set conversion for UTF-8 input and output.
@@ -85,8 +85,8 @@ bool Internat::CompatibleToDouble(const wxString& stringToConvert, double* resul
 {
    // Regardless of the locale, always respect comma _and_ point
    wxString s = stringToConvert;
-   s.Replace(",", wxString(GetDecimalSeparator()));
-   s.Replace(".", wxString(GetDecimalSeparator()));
+   s.Replace(wxT(","), wxString(GetDecimalSeparator()));
+   s.Replace(wxT("."), wxString(GetDecimalSeparator()));
    return s.ToDouble(result);
 }
 
@@ -103,12 +103,12 @@ wxString Internat::ToString(double numberToConvert,
    wxString format, result;
 
    if (digitsAfterDecimalPoint == -1)
-      format = "%f";
+      format = wxT("%f");
    else
-      format.Printf("%%.%if", digitsAfterDecimalPoint);
+      format.Printf(wxT("%%.%if"), digitsAfterDecimalPoint);
 
    result.Printf(format, numberToConvert);
-   result.Replace(wxString(GetDecimalSeparator()), ".");
+   result.Replace(wxString(GetDecimalSeparator()), wxT("."));
 
    return result;
 }
@@ -142,7 +142,7 @@ wxString MacConvertString(TECObjectRef ec,
 
    buf[byteOutLen] = 0;
 
-   wxString result = wxString(buf);
+   wxString result = wxString(buf, wxConvLocal);
    delete[] buf;
 
    return result;

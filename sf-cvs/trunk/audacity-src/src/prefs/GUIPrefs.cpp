@@ -81,7 +81,7 @@ GUIPrefs::GUIPrefs(wxWindow * parent):
    GetLanguages(mLangCodes, mLangNames);
    int numLangs = mLangNames.GetCount();
 
-   wxString currentLang = gPrefs->Read("/Locale/Language", "en");
+   wxString currentLang = gPrefs->Read(wxT("/Locale/Language"), wxT("en"));
    wxString *langArray = new wxString[numLangs];
 
    for(i=0; i<numLangs; i++)
@@ -305,54 +305,54 @@ void GUIPrefs::AllCheckBoxActions()
    mCurrentCheckBoxContainer=0;
 
    CheckBoxAction( _("Autoscroll while playing"),
-      "/GUI/AutoScroll", true);
+      wxT("/GUI/AutoScroll"), true);
    CheckBoxAction( _("Always allow pausing"),
-      "/GUI/AlwaysEnablePause", true);
+      wxT("/GUI/AlwaysEnablePause"), true);
    CheckBoxAction( _("Update spectrogram while playing"),
-      "/GUI/UpdateSpectrogram", true);
+      wxT("/GUI/UpdateSpectrogram"), true);
    CheckBoxAction( _("Quit Audacity upon closing last window"),
-      "/GUI/QuitOnClose", bQuitOnCloseDefault );
+      wxT("/GUI/QuitOnClose"), bQuitOnCloseDefault );
    CheckBoxAction(
       _("Enable dragging of left and right selection edges"),
-      "/GUI/AdjustSelectionEdges", true);
+      wxT("/GUI/AdjustSelectionEdges"), true);
    CheckBoxAction(
       _("Enable ergonomic order of audio I/O buttons"),
-      "/GUI/ErgonomicTransportButtons", true);
+      wxT("/GUI/ErgonomicTransportButtons"), true);
    CheckBoxAction(
       _("Enable display of cut lines"),
-      "/GUI/EnableCutLines", false);
+      wxT("/GUI/EnableCutLines"), false);
 
    mCurrentCheckBoxContainer=1;
 
    CheckBoxAction( _("Enable Edit Toolbar"),
-      "/GUI/EnableEditToolBar", true, EditToolBarID );
+      wxT("/GUI/EnableEditToolBar"), true, EditToolBarID );
    CheckBoxAction( _("Enable Mixer Toolbar"),
-      "/GUI/EnableMixerToolBar",true, MixerToolBarID );
+      wxT("/GUI/EnableMixerToolBar"),true, MixerToolBarID );
    CheckBoxAction( _("Enable Meter Toolbar"),
-      "/GUI/EnableMeterToolBar",true, MeterToolBarID );
+      wxT("/GUI/EnableMeterToolBar"),true, MeterToolBarID );
    CheckBoxAction( _("Enable Transcription Toolbar"),
-      "/GUI/EnableTranscriptionToolBar",false, TranscriptionToolBarID );
+      wxT("/GUI/EnableTranscriptionToolBar"),false, TranscriptionToolBarID );
    
 // Don't yet allow normal users to disable the main mix window.
 //   CheckBoxAction(
 //      _("Main Mix"),
-//      "/GUI/MainMix", true,-1);
+//      wxT("/GUI/MainMix"), true,-1);
 #if 0
    CheckBoxAction(
       _("Main Mix (as a tree)"),
-      "/GUI/MainMixTree", false,-1);
+      wxT("/GUI/MainMixTree"), false,-1);
    CheckBoxAction(
       _("Clips"),
-      "/GUI/Clips", false,-1);
+      wxT("/GUI/Clips"), false,-1);
    CheckBoxAction(
       _("Effects Graph"),
-      "/GUI/EffectsGraph", false,-1);
+      wxT("/GUI/EffectsGraph"), false,-1);
    CheckBoxAction(
       _("Nyquist Debugger"),
-      "/GUI/NyquistDebugger", false,-1);
+      wxT("/GUI/NyquistDebugger"), false,-1);
    CheckBoxAction(
       _("Audacity Tester"), 
-      "/GUI/AudacityTester", false,-1);
+      wxT("/GUI/AudacityTester"), false,-1);
 #endif
 };
 
@@ -366,7 +366,7 @@ void GUIPrefs::AllRadioButtonActions()
 {
    mCurrentRadioButton=-1;
 
-   mCurrentPrefName = "/GUI/EnvdBRange";
+   mCurrentPrefName = wxT("/GUI/EnvdBRange");
    mCurrentPrefValue = -1;
    mSelectedRadioButton=-1;
 
@@ -396,7 +396,7 @@ bool GUIPrefs::Apply()
    AllCheckBoxActions();
    int localeIndex = mLocale->GetSelection();
    if (localeIndex >= 0 && (unsigned) localeIndex < mLangCodes.GetCount())
-      gPrefs->Write("/Locale/Language", mLangCodes[localeIndex]);
+      gPrefs->Write(wxT("/Locale/Language"), mLangCodes[localeIndex]);
 
    AllRadioButtonActions();
    return true;

@@ -44,19 +44,19 @@ PrefsPanel(parent)
    /* Read existing config... */
 
    wxString copyEdit =
-       gPrefs->Read("/FileFormats/CopyOrEditUncompressedData", "edit");
+       gPrefs->Read(wxT("/FileFormats/CopyOrEditUncompressedData"), wxT("edit"));
 
    int copyEditPos = 1; // Fall back to edit if it doesn't match anything else
-   if (copyEdit.IsSameAs("copy", false))
+   if (copyEdit.IsSameAs(wxT("copy"), false))
       copyEditPos = 0;
 
-   long mp3Bitrate = gPrefs->Read("/FileFormats/MP3Bitrate", 128);
-   wxString mp3BitrateString = wxString::Format("%ld", mp3Bitrate);
+   long mp3Bitrate = gPrefs->Read(wxT("/FileFormats/MP3Bitrate"), 128);
+   wxString mp3BitrateString = wxString::Format(wxT("%ld"), mp3Bitrate);
 
    mFormat = ReadExportFormatPref();
 
-   wxString lossyFormat = gPrefs->Read("/FileFormats/LossyExportFormat", "MP3");
-   long oggQuality = gPrefs->Read("/FileFormats/OggExportQuality", 50)/10;
+   wxString lossyFormat = gPrefs->Read(wxT("/FileFormats/LossyExportFormat"), wxT("MP3"));
+   long oggQuality = gPrefs->Read(wxT("/FileFormats/OggExportQuality"), 50)/10;
 
    /* Begin layout code... */
 
@@ -98,7 +98,7 @@ PrefsPanel(parent)
 
       wxString *formatStrings = new wxString[numSimpleFormats+1];
       for(int i=0; i<numSimpleFormats; i++) {
-         formatStrings[i] = sf_simple_format(i)->name;
+         formatStrings[i] = wxString(sf_simple_format(i)->name, wxConvISO8859_1);
          if (mFormat == sf_simple_format(i)->format)
             sel = i;
       }
@@ -119,7 +119,7 @@ PrefsPanel(parent)
         
       delete[] formatStrings;
 
-      mFormatText = new wxStaticText(this, -1, "CAPITAL LETTERS");
+      mFormatText = new wxStaticText(this, -1, wxT("CAPITAL LETTERS"));
       SetFormatText();
       
       defFormatSizer->Add(mDefaultExportFormat, 0,
@@ -156,7 +156,7 @@ PrefsPanel(parent)
       // dmazzoni: Ogg is now always in the File menu...
       #if 0
       mOGGEnabled = new wxCheckBox(this, -1, _("Use OGG instead of MP3"));
-      mOGGEnabled->SetValue((lossyFormat == "OGG"));
+      mOGGEnabled->SetValue((lossyFormat == wxT("OGG")));
 
       vOGGFormatSizer->Add(mOGGEnabled, 0,
                            wxALL, GENERIC_CONTROL_BORDER);
@@ -180,7 +180,7 @@ PrefsPanel(parent)
             new wxStaticText(this, -1, _("MP3 Library Version:")), 0, 
             wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
-         mMP3Version = new wxStaticText(this, -1, "CAPITAL LETTERS");
+         mMP3Version = new wxStaticText(this, -1, wxT("CAPITAL LETTERS"));
          SetMP3VersionText();
 
          mp3InfoSizer->Add(mMP3Version, 0,
@@ -197,9 +197,9 @@ PrefsPanel(parent)
                new wxStaticText(this, -1, _("Bit Rate:")), 0,
                wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
-            wxString bitrates[] = { "16", "24", "32", "40", "48", "56", "64",
-                                    "80", "96", "112", "128", "160",
-                                    "192", "224", "256", "320" };
+            wxString bitrates[] = { wxT("16"), wxT("24"), wxT("32"), wxT("40"), wxT("48"), wxT("56"), wxT("64"),
+                                    wxT("80"), wxT("96"), wxT("112"), wxT("128"), wxT("160"),
+                                    wxT("192"), wxT("224"), wxT("256"), wxT("320") };
             int numBitrates = 16;
 
             #ifdef __WXMAC__
@@ -216,7 +216,7 @@ PrefsPanel(parent)
 
             mMP3Bitrate->SetStringSelection(mp3BitrateString);
             if(mMP3Bitrate->GetSelection() == -1)
-               mMP3Bitrate->SetStringSelection("128");
+               mMP3Bitrate->SetStringSelection(wxT("128"));
 
             if(!GetMP3Exporter()->ValidLibraryLoaded())
                mMP3Bitrate->Enable(false);
@@ -269,7 +269,7 @@ void FileFormatPrefs::SetFormatText()
 
    formatString = sf_header_name(mFormat & SF_FORMAT_TYPEMASK);
 
-   formatString += ", " + sf_encoding_name(mFormat & SF_FORMAT_SUBMASK);
+   formatString += wxT(", ") + sf_encoding_name(mFormat & SF_FORMAT_SUBMASK);
 
    mFormatText->SetLabel(formatString);
 }
@@ -291,14 +291,14 @@ void FileFormatPrefs::OnFormatChoice(wxCommandEvent& evt)
          
 void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
 {
-   wxString oldPath = gPrefs->Read("/MP3/MP3LibPath", "");
+   wxString oldPath = gPrefs->Read(wxT("/MP3/MP3LibPath"), wxT(""));
  
-   gPrefs->Write("/MP3/MP3LibPath", wxString(""));
+   gPrefs->Write(wxT("/MP3/MP3LibPath"), wxString(wxT("")));
    
    if (GetMP3Exporter()->FindLibrary(this))
       SetMP3VersionText();
    else {
-      gPrefs->Write("/MP3/MP3LibPath", oldPath);
+      gPrefs->Write(wxT("/MP3/MP3LibPath"), oldPath);
    }
    
    if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE)
@@ -311,33 +311,33 @@ bool FileFormatPrefs::Apply()
 
    WriteExportFormatPref(mFormat);
    
-   gPrefs->SetPath("/FileFormats");
+   gPrefs->SetPath(wxT("/FileFormats"));
 
-   wxString copyEditString[] = { "copy", "edit" };
+   wxString copyEditString[] = { wxT("copy"), wxT("edit") };
    int pos = mCopyOrEdit[0]->GetValue() ? 0 : 1;
    wxString copyOrEdit = copyEditString[pos];
-   gPrefs->Write("CopyOrEditUncompressedData", copyOrEdit);
+   gPrefs->Write(wxT("CopyOrEditUncompressedData"), copyOrEdit);
 
    if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
       long bitrate;
       mMP3Bitrate->GetStringSelection().ToLong(&bitrate);
-      gPrefs->Write("MP3Bitrate", bitrate);
+      gPrefs->Write(wxT("MP3Bitrate"), bitrate);
    }
-   gPrefs->SetPath("/");
+   gPrefs->SetPath(wxT("/"));
       
    if (originalExportFormat != mFormat)
       gMenusDirty++;
 
-   wxString lossyFormat = "MP3";
+   wxString lossyFormat = wxT("MP3");
    
    #if 0 // dmazzoni
-   if(mOGGEnabled->GetValue()) lossyFormat = "OGG";
+   if(mOGGEnabled->GetValue()) lossyFormat = wxT("OGG");
    #endif
 
    long oggQuality = mOGGQuality->GetValue();
 
-   gPrefs->Write("/FileFormats/LossyExportFormat", lossyFormat);
-   gPrefs->Write("/FileFormats/OggExportQuality", (long)(oggQuality * 10));
+   gPrefs->Write(wxT("/FileFormats/LossyExportFormat"), lossyFormat);
+   gPrefs->Write(wxT("/FileFormats/OggExportQuality"), (long)(oggQuality * 10));
 
    // Tell all open projects to modify their menu bar to reflect
    // the new export formats.

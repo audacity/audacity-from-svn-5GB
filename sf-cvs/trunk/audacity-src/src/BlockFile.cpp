@@ -461,7 +461,7 @@ AliasBlockFile::AliasBlockFile(wxFileName baseFileName,
                                wxFileName aliasedFileName,
                                sampleCount aliasStart,
                                sampleCount aliasLen, int aliasChannel):
-   BlockFile(wxFileName(baseFileName.GetFullPath() + ".auf"), aliasLen),
+   BlockFile(wxFileName(baseFileName.GetFullPath() + wxT(".auf")), aliasLen),
    mAliasedFileName(aliasedFileName),
    mAliasStart(aliasStart),
    mAliasChannel(aliasChannel)
@@ -495,12 +495,12 @@ void AliasBlockFile::WriteSummary()
    // I would much rather have this code as part of the constructor, but
    // I can't call virtual functions from the constructor.  So we just
    // need to ensure that every derived class calls this in *its* constructor
-   wxFFile summaryFile;
+   wxFFile summaryFile(fopen(FILENAME(mFileName.GetFullPath()).fn_str(), "wb"));
 
-   if( !summaryFile.Open(FILENAME(mFileName.GetFullPath()), "wb") ){
+   if( !summaryFile.IsOpened() ){
       // Never silence the Log w.r.t write errors; they always count
       // as new errors
-      wxLogError("Unable to write summary data to file %s",
+      wxLogError(wxT("Unable to write summary data to file %s"),
                    mFileName.GetFullPath().c_str());
       // If we can't write, there's nothing to do.
       return;
@@ -529,11 +529,11 @@ AliasBlockFile::~AliasBlockFile()
 ///              be at least mSummaryInfo.totalSummaryBytes long.
 bool AliasBlockFile::ReadSummary(void *data)
 {
-   wxFFile summaryFile;
+   wxFFile summaryFile(fopen(FILENAME(mFileName.GetFullPath()).fn_str(), "rb"));
    wxLogNull *silence=0;
    if(mSilentLog)silence= new wxLogNull();
 
-   if( !summaryFile.Open(FILENAME(mFileName.GetFullPath()), "rb") ){
+   if( !summaryFile.IsOpened() ){
 
       // new model; we need to return valid data
       memset(data,0,(size_t)mSummaryInfo.totalSummaryBytes);

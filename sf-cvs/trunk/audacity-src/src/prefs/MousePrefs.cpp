@@ -59,9 +59,9 @@ PrefsPanel(parent)
 {
    /* read prefs all at once, then set up the dialog */
    // There aren't any configurable preferences yet.
-   gPrefs->SetPath("/Mouse");
-//   mValue = gPrefs->Read("itemname", "");
-   gPrefs->SetPath("/");
+   gPrefs->SetPath(wxT("/Mouse"));
+//   mValue = gPrefs->Read(wxT("itemname"), wxT(""));
+   gPrefs->SetPath(wxT("/"));
 
 //   topSizer = new wxBoxSizer( wxVERTICAL );
    outSizer = new wxBoxSizer( wxVERTICAL );
@@ -80,7 +80,7 @@ PrefsPanel(parent)
 
    //An empty first column is a workaround - under Win98 the first column 
    //can't be right aligned.
-   mList->InsertColumn(BlankColumn,   "",               wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(BlankColumn,   wxT(""),               wxLIST_FORMAT_LEFT );
    mList->InsertColumn(ToolColumn,    _("Tool"),            wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(ActionColumn,  _("Command Action"),  wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(ButtonsColumn, _("Buttons"),         wxLIST_FORMAT_LEFT );
@@ -143,14 +143,14 @@ void MousePrefs::AddItem( wxString const & MouseButtons, wxString const & Tool,
                          wxString const & Action, wxString const & Comment )
 {
    int i=mList->GetItemCount();
-   mList->InsertItem( i, "" );
+   mList->InsertItem( i, wxT("") );
    mList->SetItem( i, ToolColumn, Tool );
    mList->SetItem( i, ActionColumn, Action );
    mList->SetItem( i, ButtonsColumn, MouseButtons );
 
    // Add a space before the text to work around a minor bug in the 
    // list control when showing narrow columns.
-   wxString Temp(" ");
+   wxString Temp(wxT(" "));
    Temp+=Comment;
    mList->SetItem( i, CommentColumn, Temp );
 }
@@ -161,9 +161,9 @@ void MousePrefs::AddItem( wxString const & MouseButtons, wxString const & Tool,
 bool MousePrefs::Apply()
 {
    /* Step 2: Write to gPrefs */
-   gPrefs->SetPath("/Mouse");
-//   gPrefs->Write("itemname", mValue);
-   gPrefs->SetPath("/");
+   gPrefs->SetPath(wxT("/Mouse"));
+//   gPrefs->Write(wxT("itemname"), mValue);
+   gPrefs->SetPath(wxT("/"));
    return true;
 }
 

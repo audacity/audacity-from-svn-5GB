@@ -74,7 +74,7 @@ PrefsPanel(parent)
 
    //An empty first column is a workaround - under Win98 the first column 
    //can't be right aligned.
-   mList->InsertColumn(BlankColumn,    "", wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(BlankColumn,    wxT(""), wxLIST_FORMAT_LEFT );
    mList->InsertColumn(CommandColumn,  _("Command"),  wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(KeyComboColumn, _("Key Combination"), wxLIST_FORMAT_LEFT );
 
@@ -92,7 +92,7 @@ PrefsPanel(parent)
 
    //Add key combo text box
    mCurrentComboText = new SysKeyTextCtrl(
-      this, CurrentComboID, "",
+      this, CurrentComboID, wxT(""),
       wxDefaultPosition, wxSize(115, -1), 0 );
 
    wxButton *pSetButton = new wxButton(this, SetButtonID, _("Set"));
@@ -152,23 +152,23 @@ void KeyConfigPrefs::OnSave(wxCommandEvent& event)
 {
    Apply();
 
-   wxString fName = "Audacity-keys.xml";
-   wxString path = gPrefs->Read("/DefaultExportPath",
+   wxString fName = wxT("Audacity-keys.xml");
+   wxString path = gPrefs->Read(wxT("/DefaultExportPath"),
                                 FROMFILENAME(::wxGetCwd()));
 
    fName = wxFileSelector(_("Export Keyboard Shortcuts As:"),
                           NULL,
                           fName,
-                          "xml",
-                          "*.xml", wxSAVE | wxOVERWRITE_PROMPT, this);
+                          wxT("xml"),
+                          wxT("*.xml"), wxSAVE | wxOVERWRITE_PROMPT, this);
 
    if (!fName)
       return;
 
    path = wxPathOnly(fName);
-   gPrefs->Write("/DefaultExportPath", path);
+   gPrefs->Write(wxT("/DefaultExportPath"), path);
 
-   FILE *fp = fopen((const char *)FILENAME(fName), "wb");
+   FILE *fp = fopen(FILENAME(fName).fn_str(), "wb");
    if (!fp || ferror(fp)) {
       wxMessageBox(_("Couldn't write to file: ") + fName,
                    _("Error saving keyboard shortcuts"),
@@ -182,13 +182,13 @@ void KeyConfigPrefs::OnSave(wxCommandEvent& event)
 
 void KeyConfigPrefs::OnLoad(wxCommandEvent& event)
 {
-   wxString path = gPrefs->Read("/DefaultOpenPath",
+   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),
                                 FROMFILENAME(::wxGetCwd()));
 
    wxString fileName = wxFileSelector(_("Select an XML file containing Audacity keyboard shortcuts..."),
                                       path,     // Path
-                                      "",       // Name
-                                      "",       // Extension
+                                      wxT(""),       // Name
+                                      wxT(""),       // Extension
                                       _("XML files (*.xml)|*.xml|"
                                         "All files (*.*)|*.*"),
                                       0,        // Flags
@@ -198,7 +198,7 @@ void KeyConfigPrefs::OnLoad(wxCommandEvent& event)
       return;
 
    path = wxPathOnly(fileName);
-   gPrefs->Write("/DefaultOpenPath", path);
+   gPrefs->Write(wxT("/DefaultOpenPath"), path);
 
    XMLFileReader reader;
    if (!reader.Parse(mManager, fileName))
@@ -224,14 +224,14 @@ void KeyConfigPrefs::OnClear(wxCommandEvent& event)
    if (mCommandSelected < 0 || mCommandSelected >= (int)mNames.GetCount())
       return;
 
-   mList->SetItem( mCommandSelected, KeyComboColumn, "" );
+   mList->SetItem( mCommandSelected, KeyComboColumn, wxT("") );
 }
 
 void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
 {
    mCommandSelected = event.GetIndex();
    if (mCommandSelected < 0 || mCommandSelected >= (int)mNames.GetCount()) {
-      mCurrentComboText->SetLabel("");
+      mCurrentComboText->SetLabel(wxT(""));
       return;
    }
    
@@ -259,15 +259,15 @@ void KeyConfigPrefs::RepopulateBindingsList()
    mManager->GetAllCommandNames(mNames, false);
    unsigned int i;
    for(i=0; i<mNames.GetCount(); i++) {
-      mList->InsertItem( i, "" );
+      mList->InsertItem( i, wxT("") );
       wxString label = mManager->GetLabelFromName(mNames[i]);
       label = wxMenuItem::GetLabelFromText(label.BeforeFirst('\t'));
       wxString key = mManager->GetKeyFromName(mNames[i]);
 
       #ifdef __WXMAC__
       // Replace Ctrl with Cmd
-      if (key.Length() >= 5 && key.Left(5)=="Ctrl+") {
-         key = "Cmd+"+key.Right(key.Length()-5);
+      if (key.Length() >= 5 && key.Left(5)==wxT("Ctrl+")) {
+         key = wxT("Cmd+")+key.Right(key.Length()-5);
       }
       #endif
 
@@ -291,7 +291,7 @@ bool KeyConfigPrefs::Apply()
    unsigned int i;
    wxListItem item;
 
-   gPrefs->SetPath("/NewKeys");
+   gPrefs->SetPath(wxT("/NewKeys"));
 
    //
    // Only store the key in the preferences if it's different 
@@ -308,8 +308,8 @@ bool KeyConfigPrefs::Apply()
 
       #ifdef __WXMAC__
       // Replace Cmd with Ctrl
-      if (key.Length() >= 4 && key.Left(4)=="Cmd+") {
-         key = "Ctrl+"+key.Right(key.Length()-4);
+      if (key.Length() >= 4 && key.Left(4)==wxT("Cmd+")) {
+         key = wxT("Ctrl+")+key.Right(key.Length()-4);
       }
       #endif
 
@@ -331,7 +331,7 @@ bool KeyConfigPrefs::Apply()
       }
    }
 
-   gPrefs->SetPath("/");
+   gPrefs->SetPath(wxT("/"));
 
    for(i=0; i<gAudacityProjects.GetCount(); i++)
       if(gAudacityProjects[i])

@@ -59,23 +59,23 @@ void InitDitherers()
    // Note: We use 'triangle' dithering for now, because
    //       the 'shaped' dithering is supposed to be broken.
    gLowQualityDither = (Dither::DitherType)
-   gPrefs->Read("/Quality/DitherAlgorithm", (long)Dither::none);
+   gPrefs->Read(wxT("/Quality/DitherAlgorithm"), (long)Dither::none);
 
    gHighQualityDither = (Dither::DitherType)
-   gPrefs->Read("/Quality/HQDitherAlgorithm", (long)Dither::triangle);
+   gPrefs->Read(wxT("/Quality/HQDitherAlgorithm"), (long)Dither::triangle);
 }
 
-const char *GetSampleFormatStr(sampleFormat format)
+const wxChar *GetSampleFormatStr(sampleFormat format)
 {
    switch(format) {
    case int16Sample:
-      return "16-bit";
+      return wxT("16-bit");
    case int24Sample:
-      return "24-bit";
+      return wxT("24-bit");
    case floatSample:
-      return "32-bit float";
+      return wxT("32-bit float");
    }
-   return ""; // compiler food
+   return wxT(""); // compiler food
 }
 
 samplePtr NewSamples(int count, sampleFormat format)

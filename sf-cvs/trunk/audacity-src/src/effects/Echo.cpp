@@ -35,7 +35,7 @@ EffectEcho::EffectEcho()
 wxString EffectEcho::GetEffectDescription() { 
    // Note: This is useful only after values have been set. 
    return wxString::Format(_("Applied effect: %s delay = %f seconds, decay factor = %f"), 
-                           (const char *)(this->GetEffectName()), delay, decay); 
+                           this->GetEffectName().c_str(), delay, decay); 
 } 
 
 bool EffectEcho::PromptUser()
@@ -200,7 +200,7 @@ EchoDialog::EchoDialog(EffectEcho * effect,
 
 	//v Override wxTextValidator to disallow negative values <= -100.0?
    m_pTextCtrl_Delay = 
-		new wxTextCtrl(this, ID_TEXT_DELAY, "1.0", 
+		new wxTextCtrl(this, ID_TEXT_DELAY, wxT("1.0"), 
 							wxDefaultPosition, wxSize(64, -1), 0,
 							wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_Delay->Add(m_pTextCtrl_Delay, 0, 
@@ -219,7 +219,7 @@ EchoDialog::EchoDialog(EffectEcho * effect,
 
 	//v Override wxTextValidator to disallow negative values <= -100.0?
    m_pTextCtrl_Decay = 
-		new wxTextCtrl(this, ID_TEXT_DECAY, "0.5", 
+		new wxTextCtrl(this, ID_TEXT_DECAY, wxT("0.5"), 
 							wxDefaultPosition, wxSize(64, -1), 0,
 							wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_Decay->Add(m_pTextCtrl_Decay, 0, 
@@ -268,11 +268,11 @@ bool EchoDialog::TransferDataToWindow()
 
 	wxString str;
 	if (m_pTextCtrl_Delay) {
-		str.Printf("%f", delay);
+		str.Printf(wxT("%f"), delay);
 		m_pTextCtrl_Delay->SetValue(str);
 	}
 	if (m_pTextCtrl_Decay) {
-		str.Printf("%f", decay);
+		str.Printf(wxT("%f"), decay);
 		m_pTextCtrl_Decay->SetValue(str);
 	}
 

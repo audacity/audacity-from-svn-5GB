@@ -109,43 +109,43 @@ int Tags::GetTrackNumber()
    return mTrackNum;
 }
 
-bool Tags::HandleXMLTag(const char *tag, const char **attrs)
+bool Tags::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
-   if (strcmp(tag, "tags") != 0)
+   if (wxStrcmp(tag, wxT("tags")) != 0)
       return false;
 
    // loop through attrs, which is a null-terminated list of
    // attribute-value pairs
    while(*attrs) {
-      const char *attr = *attrs++;
-      const char *value = *attrs++;
+      const wxChar *attr = *attrs++;
+      const wxChar *value = *attrs++;
 
       if (!value)
          break;
 
-      if (!strcmp(attr, "title"))
+      if (!wxStrcmp(attr, wxT("title")))
          mTitle = value;
-      else if (!strcmp(attr, "artist"))
+      else if (!wxStrcmp(attr, wxT("artist")))
          mArtist = value;
-      else if (!strcmp(attr, "album"))
+      else if (!wxStrcmp(attr, wxT("album")))
          mAlbum = value;
-      else if (!strcmp(attr, "track"))
-         mTrackNum = atoi(value);
-      else if (!strcmp(attr, "year"))
+      else if (!wxStrcmp(attr, wxT("track")))
+         mTrackNum = wxAtoi(value);
+      else if (!wxStrcmp(attr, wxT("year")))
          mYear = value;
-      else if (!strcmp(attr, "genre"))
-         mGenre = atoi(value);
-      else if (!strcmp(attr, "comments"))
+      else if (!wxStrcmp(attr, wxT("genre")))
+         mGenre = wxAtoi(value);
+      else if (!wxStrcmp(attr, wxT("comments")))
          mComments = value;
-      else if (!strcmp(attr, "id3v2"))
-         mID3V2 = atoi(value)?true:false;         
+      else if (!wxStrcmp(attr, wxT("id3v2")))
+         mID3V2 = wxAtoi(value)?true:false;         
    } // while
 
    
    return true;
 }
 
-XMLTagHandler *Tags::HandleXMLChild(const char *)
+XMLTagHandler *Tags::HandleXMLChild(const wxChar *)
 {
    return NULL;
 }
@@ -157,13 +157,13 @@ void Tags::WriteXML(int depth, FILE *fp)
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
    fprintf(fp, "<tags ");
-   fprintf(fp, "title=\"%s\" ", XMLEsc(mTitle).c_str());
-   fprintf(fp, "artist=\"%s\" ", XMLEsc(mArtist).c_str());
-   fprintf(fp, "album=\"%s\" ", XMLEsc(mAlbum).c_str());
+   fprintf(fp, "title=\"%s\" ", (const char *)XMLEsc(mTitle).mb_str());
+   fprintf(fp, "artist=\"%s\" ", (const char *)XMLEsc(mArtist).mb_str());
+   fprintf(fp, "album=\"%s\" ", (const char *)XMLEsc(mAlbum).mb_str());
    fprintf(fp, "track=\"%d\" ", mTrackNum);
-   fprintf(fp, "year=\"%s\" ", XMLEsc(mYear).c_str());
+   fprintf(fp, "year=\"%s\" ", (const char *)XMLEsc(mYear).mb_str());
    fprintf(fp, "genre=\"%d\" ", mGenre);
-   fprintf(fp, "comments=\"%s\" ", XMLEsc(mComments).c_str());
+   fprintf(fp, "comments=\"%s\" ", (const char *)XMLEsc(mComments).mb_str());
    fprintf(fp, "id3v2=\"%d\" ", (int)mID3V2);
    fprintf(fp, "/>\n"); // XML shorthand for childless tag
 }
@@ -227,14 +227,14 @@ wxString GetID3FieldStr(struct id3_tag *tp, const char *name)
 	 ustr = id3_field_getstrings(&frame->fields[1], 0);
 
       if (ustr) {
-	 char *str = (char *)id3_ucs4_latin1duplicate(ustr);
-	 wxString s = str;
+	 char *str = (char *)id3_ucs4_utf8duplicate(ustr);
+	 wxString s = UTF8CTOWX(str);
 	 free(str);
 	 return s;
       }
    }
 
-   return "";
+   return wxT("");
 }
 
 #endif // ifdef USE_LIBID3TAG 
@@ -258,8 +258,8 @@ wxString GetGenreNum(int i)
   if (i_ucs4) {
     id3_latin1_decode(i_latin1, i_ucs4);
     genre_ucs4 = id3_genre_name(i_ucs4);
-    char *genre_char = (char *)id3_ucs4_latin1duplicate(genre_ucs4);
-    wxString genreStr = genre_char;
+    char *genre_char = (char *)id3_ucs4_utf8duplicate(genre_ucs4);
+    wxString genreStr = UTF8CTOWX(genre_char);
     free(genre_char);
     free(i_ucs4);
     return genreStr;    
@@ -267,14 +267,14 @@ wxString GetGenreNum(int i)
 
 #endif // ifdef USE_LIBID3TAG 
 
-  return "";
+  return wxT("");
 }
 
 void Tags::ImportID3(wxString fileName)
 {
 #ifdef USE_LIBID3TAG 
 
-   struct id3_file *fp = id3_file_open((const char *)FILENAME(fileName),
+   struct id3_file *fp = id3_file_open(FILENAME(fileName).fn_str(),
                                        ID3_FILE_MODE_READONLY);
    if (!fp) return;
 
@@ -340,36 +340,36 @@ int Tags::ExportID3(char **buffer, bool *endOfFile)
 #ifdef USE_LIBID3TAG 
    struct id3_tag *tp = id3_tag_new();
    
-   if (mTitle != "")
-      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_TITLE, mTitle));
+   if (mTitle != wxT(""))
+      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_TITLE, mTitle.mb_str()));
 
-   if (mArtist != "")
-      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_ARTIST, mArtist));
+   if (mArtist != wxT(""))
+      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_ARTIST, mArtist.mb_str()));
 
-   if (mAlbum != "")
-      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_ALBUM, mAlbum));
+   if (mAlbum != wxT(""))
+      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_ALBUM, mAlbum.mb_str()));
 
-   if (mYear != "")
-      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_YEAR, mYear));
+   if (mYear != wxT(""))
+      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_YEAR, mYear.mb_str()));
 
-   if (mComments != "")
-      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_COMMENT, mComments));
+   if (mComments != wxT(""))
+      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_COMMENT, mComments.mb_str()));
 
    if (mTrackNum >= 0) {
       wxString trackNumStr;
-      trackNumStr.Printf("%d", mTrackNum);
-      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_TRACK, trackNumStr));
+      trackNumStr.Printf(wxT("%d"), mTrackNum);
+      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_TRACK, trackNumStr.mb_str()));
    }
 
    if (mGenre >= 0) {
       if (mID3V2) {
          wxString genreStr = GetGenreNum(mGenre);
-         id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_GENRE, genreStr));
+         id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_GENRE, genreStr.mb_str()));
       }
       else {
          wxString genreStr;
-         genreStr.Printf("%d", mGenre);
-         id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_GENRE, genreStr));
+         genreStr.Printf(wxT("%d"), mGenre);
+         id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_GENRE, genreStr.mb_str()));
       }
    }
 
@@ -508,7 +508,7 @@ bool TagsDialog::TransferDataToWindow()
    text = GetTrackNumText();
    if (text && mTags->mTrackNum != -1) {
       wxString numStr;
-      numStr.Printf("%d", mTags->mTrackNum);
+      numStr.Printf(wxT("%d"), mTags->mTrackNum);
       text->SetValue(numStr);
    }
 
@@ -556,7 +556,7 @@ bool TagsDialog::TransferDataFromWindow()
    c = GetTrackNumText();
    if (c) {
       wxString str = c->GetValue();
-      if (str == "")
+      if (str == wxT(""))
          mTags->mTrackNum = -1;
       else {
          long i;
@@ -627,7 +627,7 @@ wxSizer *MakeTagsDialog(wxWindow * parent, bool call_fit,
    gridSizer->Add(item3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
    wxTextCtrl *item4 =
-       new wxTextCtrl(parent, ID_TITLE_TEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_TITLE_TEXT, wxT(""), wxDefaultPosition,
                       wxSize(200, -1), 0);
    gridSizer->Add(item4, 1, wxEXPAND | wxALL, 5);
 
@@ -637,7 +637,7 @@ wxSizer *MakeTagsDialog(wxWindow * parent, bool call_fit,
    gridSizer->Add(item5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
    wxTextCtrl *item6 =
-       new wxTextCtrl(parent, ID_ARTIST_TEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_ARTIST_TEXT, wxT(""), wxDefaultPosition,
                       wxSize(200, -1), 0);
    gridSizer->Add(item6, 1, wxEXPAND | wxALL, 5);
 
@@ -647,7 +647,7 @@ wxSizer *MakeTagsDialog(wxWindow * parent, bool call_fit,
    gridSizer->Add(item7, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
    wxTextCtrl *item8 =
-       new wxTextCtrl(parent, ID_ALBUM_TEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_ALBUM_TEXT, wxT(""), wxDefaultPosition,
                       wxSize(200, -1), 0);
    gridSizer->Add(item8, 1, wxEXPAND | wxALL, 5);
 
@@ -663,7 +663,7 @@ wxSizer *MakeTagsDialog(wxWindow * parent, bool call_fit,
    hSizer->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxTextCtrl *item10 =
-       new wxTextCtrl(parent, ID_TRACK_NUM_TEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_TRACK_NUM_TEXT, wxT(""), wxDefaultPosition,
                       wxSize(40, -1), 0);
    hSizer->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -673,7 +673,7 @@ wxSizer *MakeTagsDialog(wxWindow * parent, bool call_fit,
    hSizer->Add(item11, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxTextCtrl *item12 =
-       new wxTextCtrl(parent, ID_YEAR_TEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_YEAR_TEXT, wxT(""), wxDefaultPosition,
                       wxSize(40, -1), 0);
    hSizer->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);
    
@@ -706,7 +706,7 @@ wxSizer *MakeTagsDialog(wxWindow * parent, bool call_fit,
    gridSizer->Add(item22, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
    wxTextCtrl *item23 =
-       new wxTextCtrl(parent, ID_COMMENTS_TEXT, "", wxDefaultPosition,
+       new wxTextCtrl(parent, ID_COMMENTS_TEXT, wxT(""), wxDefaultPosition,
                       wxSize(200, -1), 0);
    gridSizer->Add(item23, 1, wxEXPAND | wxALL, 5);
    

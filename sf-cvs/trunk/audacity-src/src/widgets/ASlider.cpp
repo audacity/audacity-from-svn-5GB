@@ -191,7 +191,7 @@ SliderDialog::SliderDialog(wxWindow * parent, wxWindowID id,
 {
    
    wxBeginBusyCursor();
-   wxString * dummy = new wxString(wxString::Format("%2.2f",value));
+   wxString * dummy = new wxString(wxString::Format(wxT("%2.2f"),value));
 
    //Keep track of the height
    int h = 1;
@@ -258,7 +258,7 @@ void SliderDialog::OnMouseEvent(wxMouseEvent & event)
       {
          mSlider->OnMouseEvent(event);
          //update the text control accordingly.
-         mTextCtrl->SetValue(wxString::Format("%2.2f",mSlider->Get()));
+         mTextCtrl->SetValue(wxString::Format(wxT("%2.2f"),mSlider->Get()));
       }
    OnPaint(event);
 
@@ -285,7 +285,7 @@ void SliderDialog::OnEnter(wxCommandEvent & event)
    mSlider->Set(val);
 
    //Set the text value to the slider's
-   mTextCtrl->SetValue(wxString::Format("%2.2f",mSlider->Get()));
+   mTextCtrl->SetValue(wxString::Format(wxT("%2.2f"),mSlider->Get()));
 
    wxMouseEvent dummy;
    //repaint
@@ -546,10 +546,10 @@ void LWSlider::CreatePopWin()
    if (mPopWin)
       return;
 
-   wxString maxStr = mName + ": 000000";
+   wxString maxStr = mName + wxT(": 000000");
 
    if (mStyle == PAN_SLIDER || mStyle == DB_SLIDER || mStyle == SPEED_SLIDER)
-      maxStr += "000";
+      maxStr += wxT("000");
 
    wxWindow *top = mParent;
    while(top && !top->IsTopLevel()) {
@@ -631,34 +631,34 @@ void LWSlider::FormatPopWin()
 
    switch(mStyle) {
    case FRAC_SLIDER:
-      label.Printf("%s: %.1f", (const char *)mName, mCurrentValue);
+      label.Printf(wxT("%s: %.1f"), mName.c_str(), mCurrentValue);
       break;
      
    case DB_SLIDER:
-      valstr.Printf("%.1f", mCurrentValue);
-      if (valstr.Right(1) == "0")
+      valstr.Printf(wxT("%.1f"), mCurrentValue);
+      if (valstr.Right(1) == wxT("0"))
          valstr = valstr.Left(valstr.Length() - 2);
       if (mCurrentValue > 0)
-         valstr = "+" + valstr;
+         valstr = wxT("+") + valstr;
       
-      label.Printf("%s: %s dB", (const char*)mName, (const char *)valstr);
+      label.Printf(wxT("%s: %s dB"), mName.c_str(), valstr.c_str());
       break;
    case PAN_SLIDER:
       if (mCurrentValue == 0.0)
-         label.Printf("%s: %s", (const char *)mName,
+         label.Printf(wxT("%s: %s"), mName.c_str(),
                       _("Center"));
       else {
          if (mCurrentValue < 0.0)
-            label.Printf("%s: %.0f%% %s", (const char *)mName,
+            label.Printf(wxT("%s: %.0f%% %s"), mName.c_str(),
                          -mCurrentValue * 100.0f, _("Left"));
          else /* if (val > 0.0) */
-            label.Printf("%s: %.0f%% %s", (const char *)mName,
+            label.Printf(wxT("%s: %.0f%% %s"), mName.c_str(),
                          mCurrentValue * 100.0f, _("Right"));
       }
         
       break;
    case SPEED_SLIDER:
-      label.Printf("%s: %.2fx", (const char *)mName, mCurrentValue);
+      label.Printf(wxT("%s: %.2fx"), mName.c_str(), mCurrentValue);
       break;
    }
 
@@ -678,7 +678,7 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
       #endif
    }
    else if (event.Leaving()) {
-      GetActiveProject()->TP_DisplayStatusMessage("",0);
+      GetActiveProject()->TP_DisplayStatusMessage(wxT(""),0);
       Refresh();
    }
    

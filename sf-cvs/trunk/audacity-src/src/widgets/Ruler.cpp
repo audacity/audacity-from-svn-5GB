@@ -34,7 +34,7 @@ Ruler::Ruler()
    mFlip = false;
    mLog = false;
    mLabelEdges = false;
-   mUnits = "";
+   mUnits = wxT("");
 
    mLeft = -1;
    mTop = -1;
@@ -423,39 +423,39 @@ wxString Ruler::LabelString(double d, bool major)
 
    switch(mFormat) {
    case IntFormat:
-      s.Printf("%d", (int)floor(d+0.5));
+      s.Printf(wxT("%d"), (int)floor(d+0.5));
       break;
    case LinearDBFormat:
       if (mMinor >= 1.0)
-         s.Printf("%d", (int)floor(d+0.5));
+         s.Printf(wxT("%d"), (int)floor(d+0.5));
       else {
-         s.Printf("%.1f", d);
+         s.Printf(wxT("%.1f"), d);
       }
       break;
    case RealFormat:
       if (mMinor >= 1.0)
-         s.Printf("%d", (int)floor(d+0.5));
+         s.Printf(wxT("%d"), (int)floor(d+0.5));
       else {
-         s.Printf(wxString::Format("%%.%df", mDigits), d);
+         s.Printf(wxString::Format(wxT("%%.%df"), mDigits), d);
       }
       break;
    case TimeFormat:
       if (major) {
          if (d < 0) {
-            s = "-";
+            s = wxT("-");
             d = -d;
          }
 
          #if ALWAYS_HH_MM_SS
          int secs = (int)(d + 0.5);
          if (mMinor >= 1.0) {
-            s.Printf("%d:%02d:%02d", secs/3600, (secs/60)%60, secs%60);
+            s.Printf(wxT("%d:%02d:%02d"), secs/3600, (secs/60)%60, secs%60);
          }
          else {
             wxString t1, t2, format;
-            t1.Printf("%d:%02d:", secs/3600, (secs/60)%60);
-            format.Printf("%%0%d.%dlf", mDigits+3, mDigits);
-            t2.Printf((const char *)format, fmod(d, 60.0));
+            t1.Printf(wxT("%d:%02d:"), secs/3600, (secs/60)%60);
+            format.Printf(wxT("%%0%d.%dlf"), mDigits+3, mDigits);
+            t2.Printf(format.c_str(), fmod(d, 60.0));
             s += t1 + t2;
          }
          break;
@@ -464,27 +464,27 @@ wxString Ruler::LabelString(double d, bool major)
          if (mMinor >= 3600.0) {
             int hrs = (int)(d / 3600.0 + 0.5);
             wxString h;
-            h.Printf("%d:00:00", hrs);
+            h.Printf(wxT("%d:00:00"), hrs);
             s += h;
          }
          else if (mMinor >= 60.0) {
             int minutes = (int)(d / 60.0 + 0.5);
             wxString m;
             if (minutes >= 60)
-               m.Printf("%d:%02d:00", minutes/60, minutes%60);
+               m.Printf(wxT("%d:%02d:00"), minutes/60, minutes%60);
             else
-               m.Printf("%d:00", minutes);
+               m.Printf(wxT("%d:00"), minutes);
             s += m;
          }
          else if (mMinor >= 1.0) {
             int secs = (int)(d + 0.5);
             wxString t;
             if (secs >= 3600)
-               t.Printf("%d:%02d:%02d", secs/3600, (secs/60)%60, secs%60);
+               t.Printf(wxT("%d:%02d:%02d"), secs/3600, (secs/60)%60, secs%60);
             else if (secs >= 60)
-               t.Printf("%d:%02d", secs/60, secs%60);
+               t.Printf(wxT("%d:%02d"), secs/60, secs%60);
             else
-               t.Printf("%d", secs);
+               t.Printf(wxT("%d"), secs);
             s += t;
          }
          else {
@@ -492,15 +492,15 @@ wxString Ruler::LabelString(double d, bool major)
             wxString t1, t2, format;
 
             if (secs >= 3600)
-               t1.Printf("%d:%02d:", secs/3600, (secs/60)%60);
+               t1.Printf(wxT("%d:%02d:"), secs/3600, (secs/60)%60);
             else if (secs >= 60)
-               t1.Printf("%d:", secs/60);
+               t1.Printf(wxT("%d:"), secs/60);
 
             if (secs >= 60)
-               format.Printf("%%0%d.%dlf", mDigits+3, mDigits);
+               format.Printf(wxT("%%0%d.%dlf"), mDigits+3, mDigits);
             else
-               format.Printf("%%%d.%dlf", mDigits+3, mDigits);
-            t2.Printf((const char *)format, fmod(d, 60.0));
+               format.Printf(wxT("%%%d.%dlf"), mDigits+3, mDigits);
+            t2.Printf(format.c_str(), fmod(d, 60.0));
 
             s += t1 + t2;
          }
@@ -509,8 +509,8 @@ wxString Ruler::LabelString(double d, bool major)
       }
    }
    
-   if (mUnits != "")
-      s = (s + " " + mUnits);
+   if (mUnits != wxT(""))
+      s = (s + wxT(" ") + mUnits);
 
    return s;
 }
@@ -530,7 +530,7 @@ void Ruler::Tick(int pos, double d, bool major)
    label->pos = pos;
    label->lx = mLeft - 1000; // don't display
    label->ly = mTop - 1000;  // don't display
-   label->text = "";
+   label->text = wxT("");
 
    mDC->SetFont(major? *mMajorFont: *mMinorFont);
 
@@ -801,7 +801,7 @@ void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
                           mRight, mTop + pos);
       }
 
-      if (mMajorLabels[i].text != "")
+      if (mMajorLabels[i].text != wxT(""))
          mDC->DrawText(mMajorLabels[i].text,
                        mMajorLabels[i].lx,
                        mMajorLabels[i].ly);
@@ -829,7 +829,7 @@ void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
                           mRight, mTop + pos);
       }
 
-      if (mMinorLabels[i].text != "")
+      if (mMinorLabels[i].text != wxT(""))
          mDC->DrawText(mMinorLabels[i].text,
                        mMinorLabels[i].lx,
                        mMinorLabels[i].ly);

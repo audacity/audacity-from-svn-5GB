@@ -56,7 +56,7 @@ void LoadLadspaEffect(wxString fname)
 
    void *libHandle = NULL;
 
-   libHandle = dlopen(FILENAME(fname), RTLD_LAZY);
+   libHandle = dlopen(FILENAME(fname).fn_str(), RTLD_LAZY);
    
    mainFn = (LADSPA_Descriptor_Function)
       dlsym(libHandle, descriptorFnName);
@@ -103,30 +103,30 @@ void LoadLadspaPlugins()
    wxString pathVar;
    unsigned int i;
 
-   pathVar = wxGetenv("LADSPA_PATH");
-   if (pathVar != "")
+   pathVar = wxGetenv(wxT("LADSPA_PATH"));
+   if (pathVar != wxT(""))
       wxGetApp().AddMultiPathsToPathList(pathVar, pathList);
 
    #ifdef __WXGTK__
-   wxGetApp().AddUniquePathToPathList(INSTALL_PREFIX "/ladspa", pathList);
-   wxGetApp().AddUniquePathToPathList("/usr/local/lib/ladspa", pathList);
-   wxGetApp().AddUniquePathToPathList("/usr/lib/ladspa", pathList);
+   wxGetApp().AddUniquePathToPathList(INSTALL_PREFIX wxT("/ladspa"), pathList);
+   wxGetApp().AddUniquePathToPathList(wxT("/usr/local/lib/ladspa"), pathList);
+   wxGetApp().AddUniquePathToPathList(wxT("/usr/lib/ladspa"), pathList);
    #endif
 
    for(i=0; i<audacityPathList.GetCount(); i++) {
       wxString prefix = audacityPathList[i] + wxFILE_SEP_PATH;
-      wxGetApp().AddUniquePathToPathList(prefix + "ladspa",
+      wxGetApp().AddUniquePathToPathList(prefix + wxT("ladspa"),
                                          pathList);
-      wxGetApp().AddUniquePathToPathList(prefix + "plugins",
+      wxGetApp().AddUniquePathToPathList(prefix + wxT("plugins"),
                                          pathList);
-      wxGetApp().AddUniquePathToPathList(prefix + "plug-ins",
+      wxGetApp().AddUniquePathToPathList(prefix + wxT("plug-ins"),
                                          pathList);
    }
 
    #ifdef __WXMSW__
-   wxGetApp().FindFilesInPathList("*.dll", pathList, wxFILE, files);   
+   wxGetApp().FindFilesInPathList(wxT("*.dll"), pathList, wxFILE, files);   
    #else
-   wxGetApp().FindFilesInPathList("*.so", pathList, wxFILE, files);
+   wxGetApp().FindFilesInPathList(wxT("*.so"), pathList, wxFILE, files);
    #endif
 
    for(i=0; i<files.GetCount(); i++)

@@ -129,9 +129,9 @@ class CommandManager: public XMLTagHandler
    void SetDefaultFlags(wxUint32 flags, wxUint32 mask);
 
    void SetCommandFlags(wxString name, wxUint32 flags, wxUint32 mask);
-   void SetCommandFlags(const char **names,
+   void SetCommandFlags(const wxChar **names,
                         wxUint32 flags, wxUint32 mask);
-   // Pass multiple command names as const char *, terminated by NULL
+   // Pass multiple command names as const wxChar *, terminated by NULL
    void SetCommandFlags(wxUint32 flags, wxUint32 mask, ...);
 
    //
@@ -164,9 +164,9 @@ class CommandManager: public XMLTagHandler
    // Loading/Saving
    //
 
-   virtual bool HandleXMLTag(const char *tag, const char **attrs);
-   virtual void HandleXMLEndTag(const char *tag);
-   virtual XMLTagHandler *HandleXMLChild(const char *tag);
+   virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
+   virtual void HandleXMLEndTag(const wxChar *tag);
+   virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
    virtual void WriteXML(int depth, FILE *fp);
 
  protected:

@@ -36,7 +36,7 @@ class AStatus:public wxWindow {
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnMouseEvent(wxMouseEvent & event);
 
-   void SetField(const char *msg, int fieldNum);
+   void SetField(const wxChar *msg, int fieldNum);
 
    void SetRate(double rate);
 

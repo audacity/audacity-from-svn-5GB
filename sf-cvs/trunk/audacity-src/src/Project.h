@@ -203,7 +203,7 @@ class AudacityProject:public wxFrame,
 
    // TrackPanel callback methods
 
-   virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum);
+   virtual void TP_DisplayStatusMessage(const wxChar *msg, int fieldNum);
    virtual void TP_DisplaySelection();
    virtual int TP_GetCurrentTool();
    virtual void TP_OnPlayKey();
@@ -246,8 +246,8 @@ class AudacityProject:public wxFrame,
 
    // XMLTagHandler callback methods
 
-   virtual bool HandleXMLTag(const char *tag, const char **attrs);
-   virtual XMLTagHandler *HandleXMLChild(const char *tag);
+   virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
+   virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
    virtual void WriteXML(int depth, FILE *fp);
 
    PlayMode mLastPlayMode;

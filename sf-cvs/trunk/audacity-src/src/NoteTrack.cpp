@@ -83,7 +83,7 @@ void NoteTrack::DrawLabelControls(wxDC & dc, wxRect & r)
             dc.DrawRectangle(box);
          }
 
-         dc.DrawText(wxString::Format("%d", channel), box.x + 5,
+         dc.DrawText(wxString::Format(wxT("%d"), channel), box.x + 5,
                      box.y + 3);
       }
 
@@ -130,7 +130,7 @@ void NoteTrack::CalcLen()
       for (int i = 0; i < numEvents; i++) {
          if (mSeq->notes[numEvents - 1]->time > mLen)
             mLen = mSeq->notes[numEvents - 1]->time;
-         if (mSeq->notes[numEvents - 1]->type == 'n') {
+         if (mSeq->notes[numEvents - 1]->type == wxT('n')) {
             double endtime = mSeq->notes[numEvents - 1]->time +
                 ((Allegro_note_ptr) mSeq->notes[numEvents - 1])->dur;
             if (endtime > mLen)
@@ -150,12 +150,12 @@ void NoteTrack::SetSequence(Seq *seq)
    CalcLen();
 }
 
-bool NoteTrack::HandleXMLTag(const char *tag, const char **attrs)
+bool NoteTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
    return false;
 }
 
-XMLTagHandler *NoteTrack::HandleXMLChild(const char *tag)
+XMLTagHandler *NoteTrack::HandleXMLChild(const wxChar *tag)
 {
    return NULL;
 }

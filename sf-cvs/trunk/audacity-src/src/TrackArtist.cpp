@@ -223,7 +223,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
       bev.Inflate(-1, -1);
       AColor::Bevel(*dc, true, bev);
 
-      float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
+      float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
       float min, max;
       ((WaveTrack *)t)->GetDisplayBounds(&min, &max);
 
@@ -272,8 +272,8 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
          return;
 
       double rate = ((WaveTrack *) t)->GetRate();
-      int windowSize = gPrefs->Read("/Spectrum/FFTSize", 256);
-      int maxFreq = gPrefs->Read("/Spectrum/MaxFreq", 8000);
+      int windowSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256);
+      int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), 8000);
       int maxSamples = int (maxFreq * windowSize / rate + 0.5);
       if (maxSamples > windowSize / 2)
          maxSamples = windowSize / 2;
@@ -283,20 +283,20 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
       wxString num;
       long textWidth, textHeight;
 
-      num.Printf("%dK", int (maxFreq / 1000 + 0.5));
+      num.Printf(wxT("%dK"), int (maxFreq / 1000 + 0.5));
       dc->GetTextExtent(num, &textWidth, &textHeight);
       dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + 2);
-      num = "Hz";
+      num = wxT("Hz");
       dc->GetTextExtent(num, &textWidth, &textHeight);
       dc->DrawText(num, r.x + r.width - 3 - textWidth,
                    r.y + textHeight + 2);
 
-      num.Printf("%d", minFreq);
+      num.Printf(wxT("%d"), minFreq);
       dc->GetTextExtent(num, &textWidth, &textHeight);
       dc->DrawText(num, r.x + r.width - 3 - textWidth,
                    r.y + r.height - 2 - 2 * textHeight);
 
-      num = "Hz";
+      num = wxT("Hz");
       dc->GetTextExtent(num, &textWidth, &textHeight);
       dc->DrawText(num, r.x + r.width - 3 - textWidth,
                    r.y + r.height - 2 - textHeight);
@@ -375,7 +375,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 
          if (octave >= 2 && octave <= 9) {
             wxString s;
-            s.Printf("C%d", octave - 2);
+            s.Printf(wxT("C%d"), octave - 2);
             long width, height;
             dc->GetTextExtent(s, &width, &height);
             if (r.y + obottom - height + 4 > r.y &&
@@ -526,7 +526,7 @@ void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r,
    int *mintop = new int[r.width];
    int *minbot = new int[r.width];
    int x;
-   float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
+   float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
 
    // First we compute the truncated shape of the waveform background.
    // If drawEnvelope is true, then we compute the lower border of the
@@ -660,7 +660,7 @@ void TrackArtist::DrawIndividualClipSamples(wxDC &dc, wxRect r,
    sampleCount s0 = (sampleCount) (t0 * rate + 0.5);
    sampleCount slen = (sampleCount) (r.width * rate / pps + 0.5);
    sampleCount snSamples = clip->GetNumSamples(); 
-   float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
+   float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
    
    slen += 4;
 
@@ -742,7 +742,7 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
    int *r1 = new int[r.width];
    int *r2 = new int[r.width];
    int x;
-   float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
+   float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
 
    for (x = 0; x < r.width; x++) {
       h1[x] = GetWaveYPosNew(min[x] * envValues[x], zoomMin, zoomMax,
@@ -885,7 +885,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
       DrawClipWaveform(track, it->GetData(), dc, r, viewInfo, drawEnvelope, drawSamples,
                        drawSliders, dB, muted);
 
-   if (gPrefs->Read("/GUI/EnableCutLines", (long)0))
+   if (gPrefs->Read(wxT("/GUI/EnableCutLines"), (long)0))
    {
       track->UpdateCutLinesCache();
 
@@ -1120,7 +1120,7 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    if (drawEnvelope) {
       dc.SetPen(AColor::envelopePen);
       int x;
-      float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
+      float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
       for (x = 0; x < mid.width; x++) {
          int envTop, envBottom;
          
@@ -1182,7 +1182,7 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
       (tv0.tv_sec + tv0.tv_usec*0.000001);
    gWaveformTimeTotal += elapsed;
    gWaveformTimeCount++;
-   printf("Avg waveform drawing time: %f\n",
+   wxPrintf(wxT("Avg waveform drawing time: %f\n"),
           gWaveformTimeTotal / gWaveformTimeCount);
 #endif
 }
@@ -1387,7 +1387,7 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
    }
 
    bool isGrayscale = false;
-   gPrefs->Read("/Spectrum/Grayscale", &isGrayscale, false);
+   gPrefs->Read(wxT("/Spectrum/Grayscale"), &isGrayscale, false);
 
    int x = 0;
    sampleCount w1 = (sampleCount) ((t0*rate + x *rate *tstep) + .5);
@@ -1893,7 +1893,7 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
               #else
 		      int textWidth, textHeight;
               #endif
-		      dc.GetTextExtent(s, &textWidth, &textHeight);
+		      dc.GetTextExtent(LAT1CTOWX(s), &textWidth, &textHeight);
               long hoffset = 0;
               long voffset = -textHeight; // default should be baseline of text
 
@@ -1916,7 +1916,7 @@ void TrackArtist::DrawNoteTrack(NoteTrack *track,
                 dc.DrawRectangle(TIME_TO_X(x) + hoffset, y + voffset,
                                  textWidth, textHeight);
               }
-              dc.DrawText(s, TIME_TO_X(x) + hoffset, y + voffset);
+              dc.DrawText(LAT1CTOWX(s), TIME_TO_X(x) + hoffset, y + voffset);
             }
           }
         }

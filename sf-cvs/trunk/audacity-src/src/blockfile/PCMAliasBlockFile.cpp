@@ -60,7 +60,7 @@ int PCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
    if(mSilentAliasLog)silence= new wxLogNull();
 
    memset(&info, 0, sizeof(info));
-   SNDFILE *sf=sf_open(FILENAME(mAliasedFileName.GetFullPath()), 
+   SNDFILE *sf=sf_open(FILENAME(mAliasedFileName.GetFullPath()).fn_str(), 
                        SFM_READ, &info);
    
    if (!sf){
@@ -127,25 +127,25 @@ BlockFile *PCMAliasBlockFile::Copy(wxFileName newFileName)
 void PCMAliasBlockFile::SaveXML(int depth, wxFFile &xmlFile)
 {
    for(int i = 0; i < depth; i++)
-      xmlFile.Write("\t");
-   xmlFile.Write("<pcmaliasblockfile ");
-   xmlFile.Write(wxString::Format("summaryfile='%s' ",
+      xmlFile.Write(wxT("\t"));
+   xmlFile.Write(wxT("<pcmaliasblockfile "));
+   xmlFile.Write(wxString::Format(wxT("summaryfile='%s' "),
                                   XMLTagHandler::XMLEsc(mFileName.GetFullName()).c_str()));
-   xmlFile.Write(wxString::Format("aliasfile='%s' ",
+   xmlFile.Write(wxString::Format(wxT("aliasfile='%s' "),
                                   XMLTagHandler::XMLEsc(mAliasedFileName.GetFullPath()).c_str()));
-   xmlFile.Write(wxString::Format("aliasstart='%d' ", mAliasStart));
-   xmlFile.Write(wxString::Format("aliaslen='%d' ", mLen));
-   xmlFile.Write(wxString::Format("aliaschannel='%d' ", mAliasChannel));
-   xmlFile.Write(wxString::Format("min='%s' ",
+   xmlFile.Write(wxString::Format(wxT("aliasstart='%d' "), mAliasStart));
+   xmlFile.Write(wxString::Format(wxT("aliaslen='%d' "), mLen));
+   xmlFile.Write(wxString::Format(wxT("aliaschannel='%d' "), mAliasChannel));
+   xmlFile.Write(wxString::Format(wxT("min='%s' "),
             Internat::ToString(mMin).c_str()));
-   xmlFile.Write(wxString::Format("max='%s' ",
+   xmlFile.Write(wxString::Format(wxT("max='%s' "),
             Internat::ToString(mMax).c_str()));
-   xmlFile.Write(wxString::Format("rms='%s'",
+   xmlFile.Write(wxString::Format(wxT("rms='%s'"),
             Internat::ToString(mRMS).c_str()));
-   xmlFile.Write("/>\n");
+   xmlFile.Write(wxT("/>\n"));
 }
 
-BlockFile *PCMAliasBlockFile::BuildFromXML(DirManager &dm, const char **attrs)
+BlockFile *PCMAliasBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs)
 {
    wxFileName summaryFileName;
    wxFileName aliasFileName;
@@ -154,25 +154,25 @@ BlockFile *PCMAliasBlockFile::BuildFromXML(DirManager &dm, const char **attrs)
 
    while(*attrs)
    {
-       const char *attr =  *attrs++;
-       const char *value = *attrs++;
+       const wxChar *attr =  *attrs++;
+       const wxChar *value = *attrs++;
 
-       if( !wxStricmp(attr, "summaryfile") )
+       if( !wxStricmp(attr, wxT("summaryfile")) )
 	  dm.AssignFile(summaryFileName,value,FALSE);
-       if( !wxStricmp(attr, "aliasfile") )
+       if( !wxStricmp(attr, wxT("aliasfile")) )
           aliasFileName.Assign(value);
-       if( !wxStricmp(attr, "aliasstart") )
-          aliasStart = atoi(value);
-       if( !wxStricmp(attr, "aliaslen") )
-          aliasLen = atoi(value);
-       if( !wxStricmp(attr, "aliaschannel") )
-          aliasChannel = atoi(value);
-       if( !wxStricmp(attr, "min") )
-          min = atoi(value);
-       if( !wxStricmp(attr, "max") )
-          max = atoi(value);
-       if( !wxStricmp(attr, "rms") )
-          rms = atoi(value);
+       if( !wxStricmp(attr, wxT("aliasstart")) )
+          aliasStart = wxAtoi(value);
+       if( !wxStricmp(attr, wxT("aliaslen")) )
+          aliasLen = wxAtoi(value);
+       if( !wxStricmp(attr, wxT("aliaschannel")) )
+          aliasChannel = wxAtoi(value);
+       if( !wxStricmp(attr, wxT("min")) )
+          min = wxAtoi(value);
+       if( !wxStricmp(attr, wxT("max")) )
+          max = wxAtoi(value);
+       if( !wxStricmp(attr, wxT("rms")) )
+          rms = wxAtoi(value);
    }
 
    return new PCMAliasBlockFile(summaryFileName, aliasFileName,

@@ -1038,7 +1038,7 @@ int GuessIntFormats(int numTests, char **rawData, int dataSize,
    return format;
 }
 
-int RawAudioGuess(const char *in_fname,
+int RawAudioGuess(const wxString &in_fname,
                   int *out_offset, int *out_channels)
 {
    const int numTests = 11;
@@ -1059,7 +1059,7 @@ int RawAudioGuess(const char *in_fname,
    *out_offset = 0;
    *out_channels = 1;
 
-   inf = fopen(FILENAME(in_fname), "rb");
+   inf = fopen(FILENAME(in_fname).fn_str(), "rb");
 
    if (!inf) {
      #if RAW_GUESS_DEBUG

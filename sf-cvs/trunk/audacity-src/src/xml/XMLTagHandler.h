@@ -30,18 +30,18 @@ class XMLTagHandler {
    // tag and the attribute-value pairs (null-terminated), and
    // return true on success, and false on failure.  If you return
    // false, you will not get any calls about children.
-   virtual bool HandleXMLTag(const char *tag, const char **attrs) = 0;
+   virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs) = 0;
 
    // This method will be called when a closing tag is encountered.
    // It is optional to override this method.
-   virtual void HandleXMLEndTag(const char *tag) {}
+   virtual void HandleXMLEndTag(const wxChar *tag) {}
 
    // If the XML document has children of your tag, this method
    // should be called.  Typically you should construct a new
    // object for the child, insert it into your own local data
    // structures, and then return it.  If you do not wish to
    // handle this child, return NULL and it will be ignored.
-   virtual XMLTagHandler *HandleXMLChild(const char *tag) = 0;
+   virtual XMLTagHandler *HandleXMLChild(const wxChar *tag) = 0;
 
    // When this method is called, write your own tag and tags for
    // all of your children to the file.  One tag should appear

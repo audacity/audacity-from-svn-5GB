@@ -167,12 +167,12 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
     mBkgndBrush = wxBrush(backgroundColour, wxSOLID);
 
-   mMeterRefreshRate = gPrefs->Read("/Meter/MeterRefreshRate", 30);
+   mMeterRefreshRate = gPrefs->Read(wxT("/Meter/MeterRefreshRate"), 30);
    if (mIsInput) {
-      mMeterDisabled = gPrefs->Read("/Meter/MeterInputDisabled", (long)0);
+      mMeterDisabled = gPrefs->Read(wxT("/Meter/MeterInputDisabled"), (long)0);
    }
    else {
-      mMeterDisabled = gPrefs->Read("/Meter/MeterOutputDisabled", (long)0);
+      mMeterDisabled = gPrefs->Read(wxT("/Meter/MeterOutputDisabled"), (long)0);
    }
 
 //   CreateIcon(2);
@@ -299,7 +299,7 @@ void Meter::OnMouse(wxMouseEvent &evt)
 {
   #if wxUSE_TOOLTIPS // Not available in wxX11
    if (evt.Leaving()){
-      GetActiveProject()->TP_DisplayStatusMessage("",0);
+      GetActiveProject()->TP_DisplayStatusMessage(wxT(""),0);
    }
    else if (evt.Entering()) {
       // Display the tooltip in the status bar
@@ -593,7 +593,7 @@ void Meter::HandleLayout()
 
    switch(mStyle) {
    default:
-      printf("Style not handled yet!\n");
+      wxPrintf(wxT("Style not handled yet!\n"));
    case Disable:
       break;
    case VerticalStereo:
@@ -971,11 +971,11 @@ void Meter::OnDisableMeter(wxCommandEvent &evt)
       }
    if (mIsInput)
       {
-      gPrefs->Write("/Meter/MeterInputDisabled", mMeterDisabled);
+      gPrefs->Write(wxT("/Meter/MeterInputDisabled"), mMeterDisabled);
       }
    else
       {
-      gPrefs->Write("/Meter/MeterOutputDisabled", mMeterDisabled);
+      gPrefs->Write(wxT("/Meter/MeterOutputDisabled"), mMeterDisabled);
       }
 
 }
@@ -1045,7 +1045,7 @@ void Meter::OnPreferences(wxCommandEvent &evt)
                _("Meter Perferences"),
                mMeterRefreshRate, 1, 100)))
       mMeterRefreshRate = refreshRate;
-   gPrefs->Write("/Meter/MeterRefreshRate", mMeterRefreshRate);
+   gPrefs->Write(wxT("/Meter/MeterRefreshRate"), mMeterRefreshRate);
    
    mTimer.Start(1000/mMeterRefreshRate);
 }

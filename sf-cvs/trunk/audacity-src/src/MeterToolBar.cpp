@@ -15,7 +15,7 @@
 #include <wx/dc.h>
 #include <wx/dcclient.h>
 #include <wx/event.h>
-
+#include <wx/dcclient.h> // wxPaintDC
 #include "MeterToolBar.h"
 #include "Audacity.h"
 #include "widgets/Meter.h"
@@ -61,8 +61,8 @@ void MeterToolBar::InitializeMeterToolBar()
                             wxPoint(100, 0),
                             wxSize(99, 55));
 
-   mPlayMeter->SetLabel( "Meter-Play");
-   mRecordMeter->SetLabel( "Meter-Record");
+   mPlayMeter->SetLabel( wxT("Meter-Play"));
+   mRecordMeter->SetLabel( wxT("Meter-Record"));
    #if wxUSE_TOOLTIPS
    mPlayMeter->SetToolTip(_("Output level meter"));
    mRecordMeter->SetToolTip(_("Input level meter - click to monitor input"));

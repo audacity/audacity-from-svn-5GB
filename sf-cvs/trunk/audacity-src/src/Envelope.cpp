@@ -119,7 +119,7 @@ double Envelope::toDB(double value)
    if (value == 0)
       return 0;
    
-   double envdBRange = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
+   double envdBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
    double sign = (value >= 0 ? 1 : -1);
 
    double db = 20 * log10(fabs(value));
@@ -138,7 +138,7 @@ double Envelope::fromDB(double value) const
       return 0;
 
    double sign = (value >= 0 ? 1 : -1);
-   double envdBRange = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
+   double envdBRange = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
    return pow(10.0, ((fabs(value) * envdBRange) - envdBRange) / 20.0)*sign;;
 }
 
@@ -163,7 +163,7 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB,
    h -= mOffset;
 
    double tright = h + (r.width / pps);
-   double dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
+   double dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
 
    dc.SetPen(mPen);
    dc.SetBrush(*wxWHITE_BRUSH);
@@ -207,16 +207,16 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB,
    }
 }
 
-bool Envelope::HandleXMLTag(const char *tag, const char **attrs)
+bool Envelope::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
-   if (!strcmp(tag, "envelope")) {
+   if (!wxStrcmp(tag, wxT("envelope"))) {
       int numPoints = 0;
 
       while (*attrs) {
-         const char *attr = *attrs++;
-         const char *value = *attrs++;
-         if (!strcmp(attr, "numpoints"))
-            numPoints = atoi(value);
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
+         if (!wxStrcmp(attr, wxT("numpoints")))
+            numPoints = wxAtoi(value);
       }
       WX_CLEAR_ARRAY(mEnv);
       mEnv.Alloc(numPoints);
@@ -227,9 +227,9 @@ bool Envelope::HandleXMLTag(const char *tag, const char **attrs)
    }
 }
 
-XMLTagHandler *Envelope::HandleXMLChild(const char *tag)
+XMLTagHandler *Envelope::HandleXMLChild(const wxChar *tag)
 {
-   if (!strcmp(tag, "controlpoint")) {
+   if (!wxStrcmp(tag, wxT("controlpoint"))) {
       EnvPoint *e = new EnvPoint();
       mEnv.Add(e);
       return e;
@@ -251,8 +251,8 @@ void Envelope::WriteXML(int depth, FILE *fp)
       for(i = 0; i < depth+1; i++)
          fprintf(fp, "\t");
       fprintf(fp, "<controlpoint t='%s' val='%s'/>\n",
-            Internat::ToString(mEnv[ctrlPt]->t, 12).c_str(),
-            Internat::ToString(mEnv[ctrlPt]->val, 12).c_str());
+            (const char *)Internat::ToString(mEnv[ctrlPt]->t, 12).mb_str(),
+            (const char *)Internat::ToString(mEnv[ctrlPt]->val, 12).mb_str());
    }
 
    for (i = 0; i < depth; i++)
@@ -307,11 +307,11 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
    int bestNum = -1;
    int bestDist = 10; // Must be within 10 pixel radius.
    
-   double dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
+   double dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
    
    mContourOffset = false;
    
-   //   wxLogDebug("Y:%i Height:%i Offset:%i", y, height, mContourOffset );
+   //   wxLogDebug(wxT("Y:%i Height:%i Offset:%i"), y, height, mContourOffset );
    
    int len = mEnv.Count();
    for (int i = 0; i < len; i++) {

@@ -50,24 +50,24 @@ AudioIOPrefs::AudioIOPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
    /* read prefs all at once, then set up the dialog */
-   gPrefs->SetPath("/AudioIO");
-   mPlayDevice = gPrefs->Read("PlaybackDevice", "");
-   mRecDevice = gPrefs->Read("RecordingDevice", "");
+   gPrefs->SetPath(wxT("/AudioIO"));
+   mPlayDevice = gPrefs->Read(wxT("PlaybackDevice"), wxT(""));
+   mRecDevice = gPrefs->Read(wxT("RecordingDevice"), wxT(""));
 
    long recordChannels = 1;
-   gPrefs->Read("RecordChannels", &recordChannels, 1L);
+   gPrefs->Read(wxT("RecordChannels"), &recordChannels, 1L);
    bool duplex;
-   gPrefs->Read("Duplex", &duplex, false);
+   gPrefs->Read(wxT("Duplex"), &duplex, false);
 
    #ifdef __MACOSX__
    bool playthrough;
-   gPrefs->Read("Playthrough", &playthrough, false);
+   gPrefs->Read(wxT("Playthrough"), &playthrough, false);
    #endif
 
    bool swplaythrough;
-   gPrefs->Read("SWPlaythrough", &swplaythrough, false);
+   gPrefs->Read(wxT("SWPlaythrough"), &swplaythrough, false);
 
-   gPrefs->SetPath("/");
+   gPrefs->SetPath(wxT("/"));
 
    topSizer = new wxBoxSizer( wxVERTICAL );
 
@@ -114,13 +114,13 @@ PrefsPanel(parent)
 #endif
       const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
       if (info->maxOutputChannels > 0) {
-         mPlayNames[k] = info->name;
+         mPlayNames[k] = wxString(info->name, wxConvISO8859_1);
 #if USE_PORTAUDIO_V19
-         playLabels[k].Printf("%s: %s",
+         playLabels[k].Printf(wxT("%hs: %hs"),
                              Pa_GetHostApiInfo(info->hostApi)->name,
                              info->name);
 #else
-         playLabels[k] = info->name;
+         playLabels[k] = wxString(info->name, wxConvISO8859_1);
 #endif
 
          if (mPlayNames[k] == mPlayDevice)
@@ -193,13 +193,13 @@ PrefsPanel(parent)
 #endif
       const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
       if (info->maxInputChannels > 0) {
-         mRecNames[k] = info->name;
+         mRecNames[k] = wxString(info->name, wxConvISO8859_1);
 #if USE_PORTAUDIO_V19
-         recLabels[k].Printf("%s: %s",
+         recLabels[k].Printf(wxT("%hs: %hs"),
                              Pa_GetHostApiInfo(info->hostApi)->name,
                              info->name);
 #else
-         recLabels[k] = info->name;
+         recLabels[k] = wxString(info->name, wxConvISO8859_1);
 #endif
          if (mRecNames[k] == mRecDevice)
             recIndex = k;
@@ -230,7 +230,7 @@ PrefsPanel(parent)
    const int numChannels = 16;
    wxString channelNames[16];
    for(int c=0; c<numChannels; c++)
-      channelNames[c] = wxString::Format("%d", c+1);
+      channelNames[c] = wxString::Format(wxT("%d"), c+1);
    channelNames[0] = wxString::Format(_("1 (Mono)"));
    channelNames[1] = wxString::Format(_("2 (Stereo)"));
 
@@ -325,21 +325,21 @@ bool AudioIOPrefs::Apply()
    bool duplex = mDuplex->GetValue();
 
    /* Step 2: Write to gPrefs */
-   gPrefs->SetPath("/AudioIO");
+   gPrefs->SetPath(wxT("/AudioIO"));
 
-   gPrefs->Write("PlaybackDevice", mPlayDevice);
-   gPrefs->Write("RecordingDevice", mRecDevice);
+   gPrefs->Write(wxT("PlaybackDevice"), mPlayDevice);
+   gPrefs->Write(wxT("RecordingDevice"), mRecDevice);
 
-   gPrefs->Write("RecordChannels", recordChannels);
-   gPrefs->Write("Duplex", duplex);
+   gPrefs->Write(wxT("RecordChannels"), recordChannels);
+   gPrefs->Write(wxT("Duplex"), duplex);
 
    #ifdef __MACOSX__
-   gPrefs->Write("Playthrough", mPlaythrough->GetValue());
+   gPrefs->Write(wxT("Playthrough"), mPlaythrough->GetValue());
    #endif
 
-   gPrefs->Write("SWPlaythrough", mSWPlaythrough->GetValue());
+   gPrefs->Write(wxT("SWPlaythrough"), mSWPlaythrough->GetValue());
 
-   gPrefs->SetPath("/");
+   gPrefs->SetPath(wxT("/"));
 
    /* Step 3: Make audio sub-system re-read preferences */
 

@@ -38,15 +38,15 @@ struct EnvPoint : public XMLTagHandler {
    double t;
    double val;
 
-   bool HandleXMLTag(const char *tag, const char **attrs)
+   bool HandleXMLTag(const wxChar *tag, const wxChar **attrs)
    {
-      if (!strcmp(tag, "controlpoint")) {
+      if (!wxStrcmp(tag, wxT("controlpoint"))) {
          while (*attrs) {
-            const char *attr = *attrs++;
-            const char *value = *attrs++;
-            if (!strcmp(attr, "t"))
+            const wxChar *attr = *attrs++;
+            const wxChar *value = *attrs++;
+            if (!wxStrcmp(attr, wxT("t")))
                t = Internat::CompatibleToDouble(value);
-            else if (!strcmp(attr, "val"))
+            else if (!wxStrcmp(attr, wxT("val")))
                val = Internat::CompatibleToDouble(value);
          }
          return true;
@@ -55,7 +55,7 @@ struct EnvPoint : public XMLTagHandler {
          return false;
    }
 
-   XMLTagHandler *HandleXMLChild(const char *tag)
+   XMLTagHandler *HandleXMLChild(const wxChar *tag)
    {
       return NULL;
    }
@@ -66,8 +66,8 @@ struct EnvPoint : public XMLTagHandler {
       for (i=0; i<depth; i++)
          fprintf(fp, "\t");
       fprintf(fp, "<controlpoint t='%s' val='%s'/>\n",
-            Internat::ToString(t,8).c_str(),
-            Internat::ToString(val).c_str());
+            (const char *)Internat::ToString(t,8).mb_str(),
+            (const char *)Internat::ToString(val).mb_str());
    }
 };
 
@@ -94,8 +94,8 @@ class Envelope : public XMLTagHandler {
 #endif
 
    // Newfangled XML file I/O
-   virtual bool HandleXMLTag(const char *tag, const char **attrs);
-   virtual XMLTagHandler *HandleXMLChild(const char *tag);
+   virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
+   virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
    virtual void WriteXML(int depth, FILE *fp);
 
 

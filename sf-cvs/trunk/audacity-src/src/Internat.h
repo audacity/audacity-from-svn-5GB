@@ -68,9 +68,13 @@ private:
 #define FILENAME(X) Internat::ToFilename(X)
 #define FROMFILENAME(X) Internat::FromFilename(X)
 #else
-#define FILENAME(X) (X)
-#define FROMFILENAME(X) (X)
+#define FILENAME(X) wxString(X)
+#define FROMFILENAME(X) wxString(X)
 #endif
+
+// Convert C strings to wxString
+#define UTF8CTOWX(X) wxString((X), wxConvUTF8)
+#define LAT1CTOWX(X) wxString((X), wxConvISO8859_1)
 
 #endif
 

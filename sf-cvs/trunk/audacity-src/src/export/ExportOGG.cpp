@@ -32,6 +32,8 @@
 #include "../Mix.h"
 #include "../Prefs.h"
 
+#include "../Internat.h"
+
 #define SAMPLES_PER_RUN 8192
 
 bool ExportOGG(AudacityProject *project,
@@ -41,13 +43,13 @@ bool ExportOGG(AudacityProject *project,
    double    rate    = project->GetRate();
    wxWindow  *parent = project;
    TrackList *tracks = project->GetTracks();
-   double    quality = (gPrefs->Read("/FileFormats/OggExportQuality", 50)/(float)100.0);
+   double    quality = (gPrefs->Read(wxT("/FileFormats/OggExportQuality"), 50)/(float)100.0);
 
    wxLogNull logNo;            // temporarily disable wxWindows error messages 
    bool      cancelling = false;
    int       eos = 0;
 
-   wxFFile outFile(fName, "wb");
+   wxFFile outFile(fopen(FILENAME(fName).fn_str(), "wb"));
 
    if(!outFile.IsOpened()) {
       wxMessageBox(_("Unable to open target file for writing"));

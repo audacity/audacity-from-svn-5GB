@@ -91,14 +91,14 @@
 MP3Exporter::MP3Exporter()
 {
    if (gPrefs)
-      mLibPath = gPrefs->Read("/MP3/MP3LibPath", "");
+      mLibPath = gPrefs->Read(wxT("/MP3/MP3LibPath"), wxT(""));
 }
 
 bool MP3Exporter::FindLibrary(wxWindow *parent)
 {
-   mLibPath = gPrefs->Read("/MP3/MP3LibPath", "");
+   mLibPath = gPrefs->Read(wxT("/MP3/MP3LibPath"), wxT(""));
 
-   if (mLibPath=="" || !::wxFileExists(FILENAME(mLibPath))) {
+   if (mLibPath==wxT("") || !::wxFileExists(FILENAME(mLibPath))) {
    
       int action = wxMessageBox(GetLibraryMessage(),
                                 _("Export MP3"),
@@ -110,17 +110,17 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
          /* i18n-hint: It's asking for the location of a file, for
             example, "Where is lame_enc.dll?" - you could translate
             "Where would I find the file %s" instead if you want. */
-         question.Printf(_("Where is %s?"), (const char *)GetLibraryName());
+         question.Printf(_("Where is %s?"), GetLibraryName().c_str());
          mLibPath = wxFileSelector(question, 
                                    GetLibraryPath(),        // Path
                                    GetLibraryName(),        // Name
-                                   "",      // Extension
+                                   wxT(""),      // Extension
                                    GetLibraryTypeString(),
                                    wxOPEN, parent);
          
-         if (mLibPath == "") {
-            mLibPath = "";
-            gPrefs->Write("/MP3/MP3LibPath", mLibPath);
+         if (mLibPath == wxT("")) {
+            mLibPath = wxT("");
+            gPrefs->Write(wxT("/MP3/MP3LibPath"), mLibPath);
          
             return false;
          }
@@ -128,8 +128,8 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
          wxString path, baseName, extension;
          ::wxSplitPath(mLibPath, &path, &baseName, &extension);
          
-         if (extension != "")
-            baseName += "." + extension;
+         if (extension != wxT(""))
+            baseName += wxT(".") + extension;
          
          if (baseName.CmpNoCase(GetLibraryName())) {
          
@@ -137,8 +137,8 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
             question.Printf(_("Audacity was expecting a library named \"%s\".  "
                               "Are you sure you want to attempt to export MP3 "
                               "files using \"%s\"?"),
-                            (const char *)GetLibraryName(),
-                            (const char *)baseName);
+                            GetLibraryName().c_str(),
+                            baseName.c_str());
 
             int action = wxMessageBox(question,
                                       _("Export MP3"),
@@ -146,21 +146,21 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
                                       parent);
             
             if (action != wxYES) {
-               mLibPath = "";
-               gPrefs->Write("/MP3/MP3LibPath", mLibPath);
+               mLibPath = wxT("");
+               gPrefs->Write(wxT("/MP3/MP3LibPath"), mLibPath);
             
                return false;
             }
          }
       }
       else {
-         mLibPath = "";
-         gPrefs->Write("/MP3/MP3LibPath", mLibPath);
+         mLibPath = wxT("");
+         gPrefs->Write(wxT("/MP3/MP3LibPath"), mLibPath);
             
          return false;
       }
       
-      gPrefs->Write("/MP3/MP3LibPath", mLibPath);
+      gPrefs->Write(wxT("/MP3/MP3LibPath"), mLibPath);
    }
    
    return true;
@@ -242,12 +242,12 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
          
       wxString GetLibraryPath()
       {
-         return "/usr/lib";
+         return wxT("/usr/lib");
       }
 
          wxString GetLibraryName()
          {
-            return "libmp3lame.so";
+            return wxT("libmp3lame.so");
          }
          
          wxString GetLibraryTypeString()
@@ -288,34 +288,34 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
 
             /* get function pointers from the shared library */
 
-            lame_init = (lame_init_t *)lame_enc_lib.GetSymbol("lame_init");
-            get_lame_version = (get_lame_version_t *)lame_enc_lib.GetSymbol("get_lame_version");
+            lame_init = (lame_init_t *)lame_enc_lib.GetSymbol(wxT("lame_init"));
+            get_lame_version = (get_lame_version_t *)lame_enc_lib.GetSymbol(wxT("get_lame_version"));
             lame_init_params = 
-               (lame_init_params_t *) lame_enc_lib.GetSymbol("lame_init_params");
+               (lame_init_params_t *) lame_enc_lib.GetSymbol(wxT("lame_init_params"));
             lame_encode_buffer =
-                (lame_encode_buffer_t *) lame_enc_lib.GetSymbol("lame_encode_buffer");
+                (lame_encode_buffer_t *) lame_enc_lib.GetSymbol(wxT("lame_encode_buffer"));
             lame_encode_buffer_interleaved =
-                (lame_encode_buffer_interleaved_t *) lame_enc_lib.GetSymbol("lame_encode_buffer_interleaved");
+                (lame_encode_buffer_interleaved_t *) lame_enc_lib.GetSymbol(wxT("lame_encode_buffer_interleaved"));
             lame_encode_flush =
-                (lame_encode_flush_t *) lame_enc_lib.GetSymbol("lame_encode_flush");
+                (lame_encode_flush_t *) lame_enc_lib.GetSymbol(wxT("lame_encode_flush"));
             lame_close =
-                (lame_close_t *) lame_enc_lib.GetSymbol("lame_close");
+                (lame_close_t *) lame_enc_lib.GetSymbol(wxT("lame_close"));
 
             lame_close =
-                (lame_close_t *) lame_enc_lib.GetSymbol("lame_close");
+                (lame_close_t *) lame_enc_lib.GetSymbol(wxT("lame_close"));
 
             lame_set_in_samplerate =
-                (lame_set_in_samplerate_t *) lame_enc_lib.GetSymbol("lame_set_in_samplerate");
+                (lame_set_in_samplerate_t *) lame_enc_lib.GetSymbol(wxT("lame_set_in_samplerate"));
             lame_set_num_channels =
-                (lame_set_num_channels_t *) lame_enc_lib.GetSymbol("lame_set_num_channels");
+                (lame_set_num_channels_t *) lame_enc_lib.GetSymbol(wxT("lame_set_num_channels"));
             lame_set_quality =
-                (lame_set_quality_t *) lame_enc_lib.GetSymbol("lame_set_quality");
+                (lame_set_quality_t *) lame_enc_lib.GetSymbol(wxT("lame_set_quality"));
             lame_get_quality =
-                (lame_get_quality_t *) lame_enc_lib.GetSymbol("lame_get_quality");
+                (lame_get_quality_t *) lame_enc_lib.GetSymbol(wxT("lame_get_quality"));
             lame_set_brate =
-                (lame_set_brate_t *) lame_enc_lib.GetSymbol("lame_set_brate");
+                (lame_set_brate_t *) lame_enc_lib.GetSymbol(wxT("lame_set_brate"));
             lame_get_brate =
-                (lame_get_brate_t *) lame_enc_lib.GetSymbol("lame_get_brate");
+                (lame_get_brate_t *) lame_enc_lib.GetSymbol(wxT("lame_get_brate"));
 
             /* we assume that if all the symbols are found, it's a valid library */
 
@@ -341,9 +341,9 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
       bool ValidLibraryLoaded() { return mLibraryLoaded; }
 
       wxString GetLibraryVersion() {
-         if(!mLibraryLoaded) return "";
+         if(!mLibraryLoaded) return wxT("");
 
-         return wxString::Format("LAME %s", get_lame_version());
+         return wxString::Format(wxT("LAME %hs"), get_lame_version());
       }
 
       int InitializeStream(int channels, int sampleRate) {
@@ -502,7 +502,7 @@ void ReleaseMP3Exporter()
          
       wxString GetLibraryPath()
       {
-         return "";
+         return wxT("");
       }
 
 
@@ -544,7 +544,7 @@ void ReleaseMP3Exporter()
 
          wxString GetLibraryName()
          {
-            return "LameLib";
+            return wxT("LameLib");
          }
          
          wxString GetLibraryTypeString()
@@ -586,59 +586,59 @@ void ReleaseMP3Exporter()
                                   errMsg);
 
             if (err) {
-               printf("GetDiskFragment: err=%d\n", err);
+               printf(wxT("GetDiskFragment: err=%d\n"), err);
                return false;
             }
 
-            MakePString(name, "lame_init");
+            MakePString(name, wxT("lame_init"));
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_init = NewMachOFromCFM(mainAddr);
 
-            MakePString(name, "get_lame_version");
+            MakePString(name, wxT("get_lame_version"));
             FindSymbol(connID, name, &mainAddr, &symClass);
             get_lame_version = NewMachOFromCFM(mainAddr);
 
-            MakePString(name, "lame_init_params");
+            MakePString(name, wxT("lame_init_params"));
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_init_params = NewMachOFromCFM(mainAddr);
 
-            MakePString(name, "lame_encode_buffer");
+            MakePString(name, wxT("lame_encode_buffer"));
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_encode_buffer = NewMachOFromCFM(mainAddr);
 
-            MakePString(name, "lame_encode_buffer_interleaved");
+            MakePString(name, wxT("lame_encode_buffer_interleaved"));
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_encode_buffer_interleaved = NewMachOFromCFM(mainAddr);
 
-            MakePString(name, "lame_encode_flush");
+            MakePString(name, wxT("lame_encode_flush"));
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_encode_flush = NewMachOFromCFM(mainAddr);
 
-            MakePString(name, "lame_close");
+            MakePString(name, wxT("lame_close"));
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_close = NewMachOFromCFM(mainAddr);
 
-            MakePString(name, "lame_set_in_samplerate");
+            MakePString(name, wxT("lame_set_in_samplerate"));
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_set_in_samplerate = NewMachOFromCFM(mainAddr);
 
-            MakePString(name, "lame_set_num_channels");
+            MakePString(name, wxT("lame_set_num_channels"));
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_set_num_channels = NewMachOFromCFM(mainAddr);
 
-            MakePString(name, "lame_set_quality");
+            MakePString(name, wxT("lame_set_quality"));
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_set_quality = NewMachOFromCFM(mainAddr);
 
-            MakePString(name, "lame_get_quality");
+            MakePString(name, wxT("lame_get_quality"));
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_get_quality = NewMachOFromCFM(mainAddr);
 
-            MakePString(name, "lame_set_brate");
+            MakePString(name, wxT("lame_set_brate"));
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_set_brate = NewMachOFromCFM(mainAddr);
 
-            MakePString(name, "lame_get_brate");
+            MakePString(name, wxT("lame_get_brate"));
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_get_brate = NewMachOFromCFM(mainAddr);
 
@@ -667,9 +667,9 @@ void ReleaseMP3Exporter()
       bool ValidLibraryLoaded() { return mLibraryLoaded; }
 
       wxString GetLibraryVersion() {
-         if(!mLibraryLoaded) return "";
+         if(!mLibraryLoaded) return wxT("");
 
-         return wxString::Format("LAME %s", get_lame_version());
+         return wxString::Format(wxT("LAME %hs"), get_lame_version());
       }
 
       int InitializeStream(int channels, int sampleRate) {
@@ -853,12 +853,12 @@ void ReleaseMP3Exporter()
 
          wxString GetLibraryPath()
          {
-            return "";
+            return wxT("");
          }
 
          wxString GetLibraryName()
          {
-            return "LAMELib";
+            return wxT("LAMELib");
          }
          
          wxString GetLibraryTypeString()
@@ -929,7 +929,7 @@ void ReleaseMP3Exporter()
       bool ValidLibraryLoaded() { return mLibraryLoaded; }
 
       wxString GetLibraryVersion() {
-         if(!mLibraryLoaded) return "";
+         if(!mLibraryLoaded) return wxT("");
 
          if(get_lame_version)
             return get_lame_version();
@@ -1103,12 +1103,12 @@ public:
 
    wxString GetLibraryPath()
    {
-      return "";
+      return wxT("");
    }
 
    wxString GetLibraryName()
    {
-      return "lame_enc.dll";
+      return wxT("lame_enc.dll");
    }
    
    wxString GetLibraryTypeString()
@@ -1169,11 +1169,11 @@ public:
       BE_VERSION ver;
 
       if(!mLibraryLoaded)
-         return "";
+         return wxT("");
 
       beVersion(&ver);
 
-	  return wxString::Format("LAME v%d.%d", ver.byMajorVersion, ver.byMinorVersion);
+	  return wxString::Format(wxT("LAME v%d.%d"), ver.byMajorVersion, ver.byMinorVersion);
    }
 
    int InitializeStream(int channels, int sampleRate) {
@@ -1326,21 +1326,21 @@ bool ExportMP3(AudacityProject *project,
    success = GetMP3Exporter()->LoadLibrary();
    if (!success) {
       wxMessageBox(_("Could not open MP3 encoding library!"));
-      gPrefs->Write("/MP3/MP3LibPath", wxString(""));
+      gPrefs->Write(wxT("/MP3/MP3LibPath"), wxString(wxT("")));
 
       return false;
    }
 
    if(!GetMP3Exporter()->ValidLibraryLoaded()) {
       wxMessageBox(_("Not a valid or supported MP3 encoding library!"));      
-      gPrefs->Write("/MP3/MP3LibPath", wxString(""));
+      gPrefs->Write(wxT("/MP3/MP3LibPath"), wxString(wxT("")));
       
       return false;
    }
    
    /* Open file for writing */
 
-   wxFFile outFile(FILENAME(fName), "wb");
+   wxFFile outFile(fopen(FILENAME(fName).fn_str(), "wb"));
    if (!outFile.IsOpened()) {
       wxMessageBox(_("Unable to open target file for writing"));
       return false;
@@ -1364,7 +1364,7 @@ bool ExportMP3(AudacityProject *project,
 
    /* Export MP3 using DLL */
 
-   long bitrate = gPrefs->Read("/FileFormats/MP3Bitrate", 128);
+   long bitrate = gPrefs->Read(wxT("/FileFormats/MP3Bitrate"), 128);
    GetMP3Exporter()->SetBitrate(bitrate);
 
    sampleCount inSamples = GetMP3Exporter()->InitializeStream(stereo ? 2 : 1, int(rate + 0.5));

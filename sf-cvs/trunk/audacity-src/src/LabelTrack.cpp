@@ -131,8 +131,8 @@ void LabelTrack::ResetFlags()
 void LabelTrack::ResetFont()
 {
    mFontHeight = -1;
-   wxString facename = gPrefs->Read("/GUI/LabelFontFacename", "");
-   if (facename != "") {
+   wxString facename = gPrefs->Read(wxT("/GUI/LabelFontFacename"), wxT(""));
+   if (facename != wxT("")) {
       msFont = wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
                       wxFONTWEIGHT_NORMAL, FALSE, facename,
                       wxFONTENCODING_SYSTEM);
@@ -498,9 +498,9 @@ void LabelStruct::DrawHighlight( wxDC & dc, int xPos1, int xPos2, int charHeight
    changeInitialMouseXPos = false;
    
    wxPen curPen = dc.GetPen();
-   curPen.SetColour(wxString("BLUE"));
+   curPen.SetColour(wxString(wxT("BLUE")));
    wxBrush curBrush = dc.GetBrush();
-   curBrush.SetColour(wxString("BLUE"));
+   curBrush.SetColour(wxString(wxT("BLUE")));
    dc.DrawRectangle(xPos1, y-charHeight/2, xPos2-xPos1+0.5, charHeight );
 }
 
@@ -589,7 +589,7 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
    // guarding against the case where there are no
    // labels or all are empty strings, which for example
    // happens with a new label track.
-   dc.GetTextExtent("Demo Text x^y", &textWidth, &textHeight);
+   dc.GetTextExtent(wxT("Demo Text x^y"), &textWidth, &textHeight);
    mTextHeight = (int)textHeight;   
    ComputeLayout( r, h , pps );
    dc.SetTextForeground(wxColour(0, 0, 0));
@@ -743,7 +743,7 @@ void LabelTrack::calculateFontHeight(wxDC & dc)
    int charLeading;
 
    // Calculate the width of the substring and add it to Xpos
-   dc.GetTextExtent("Test String", NULL, &mFontHeight, &charDescent, &charLeading);
+   dc.GetTextExtent(wxT("Test String"), NULL, &mFontHeight, &charDescent, &charLeading);
 
    // The cursor will have height charHeight.  We don't include the descender as 
    // part of the height because for phonetic fonts this leads to cursors which are
@@ -773,8 +773,8 @@ bool LabelTrack::CutSelectedText()
    if( !IsTextSelected() )
       return false;
 
-   wxString left="";
-   wxString right="";
+   wxString left=wxT("");
+   wxString right=wxT("");
    wxString text = mLabels[mSelIndex]->title;
    
    // swapping to make sure currentCursorPos > initialCursorPos always
@@ -850,8 +850,8 @@ bool LabelTrack::PasteSelectedText()
       return false;
 
    wxTextDataObject data;
-   wxString left="";
-   wxString right="";
+   wxString left=wxT("");
+   wxString right=wxT("");
    
    // if the mouse is clicked in text box
    if (mInBox) {
@@ -1301,7 +1301,7 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
 
       case WXK_RETURN:
       case WXK_ESCAPE:
-         if (mLabels[mSelIndex]->title == "") {
+         if (mLabels[mSelIndex]->title == wxT("")) {
             delete mLabels[mSelIndex];
             mLabels.RemoveAt(mSelIndex);
          }
@@ -1384,8 +1384,8 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
 
 void LabelTrack::RemoveSelectedText() 
 {
-   wxString left = "";
-   wxString right = "";
+   wxString left = wxT("");
+   wxString right = wxT("");
    
    if (mInitialCursorPos > mCurrentCursorPos) {
       int temp = mCurrentCursorPos;
@@ -1420,10 +1420,10 @@ bool LabelTrack::IsSelected() const
 void LabelTrack::Export(wxTextFile & f)
 {
    for (int i = 0; i < (int)mLabels.Count(); i++) {
-      f.AddLine(wxString::Format("%f\t%f\t%s",
+      f.AddLine(wxString::Format(wxT("%f\t%f\t%s"),
                                  (double)mLabels[i]->t,
                                  (double)mLabels[i]->t1,
-                                 (const char *) (mLabels[i]->title)));
+                                 mLabels[i]->title.c_str()));
    }
 }
 
@@ -1454,8 +1454,8 @@ void LabelTrack::Import(wxTextFile & in)
       
       //get the timepoint of the left edge of the label.
       i = 0;
-      while (i < len && currentLine.GetChar(i) != ' '
-         && currentLine.GetChar(i) != '\t')
+      while (i < len && currentLine.GetChar(i) != wxT(' ')
+         && currentLine.GetChar(i) != wxT('\t'))
       {
          i++;
       }
@@ -1469,8 +1469,8 @@ void LabelTrack::Import(wxTextFile & in)
       
       //Now, go until we find the start of the get the next token
       while (i < len
-         && (currentLine.GetChar(i) == ' '
-         || currentLine.GetChar(i) == '\t'))
+         && (currentLine.GetChar(i) == wxT(' ')
+         || currentLine.GetChar(i) == wxT('\t')))
       {
          i++;
       }
@@ -1478,8 +1478,8 @@ void LabelTrack::Import(wxTextFile & in)
       i2=i;
       
       //Now, go to the end of the second token.
-      while (i < len && currentLine.GetChar(i) != ' '
-         && currentLine.GetChar(i) != '\t')
+      while (i < len && currentLine.GetChar(i) != wxT(' ')
+         && currentLine.GetChar(i) != wxT('\t'))
       {
          i++;
       }
@@ -1514,9 +1514,9 @@ void LabelTrack::Import(wxTextFile & in)
    SortLabels();
 }
 
-bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
+bool LabelTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
-   if (!strcmp(tag, "label")) {
+   if (!wxStrcmp(tag, wxT("label"))) {
 
       LabelStruct *l = new LabelStruct();
 
@@ -1524,19 +1524,19 @@ bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
       // attribute-value pairs
       bool has_t1 = false;
       while(*attrs) {
-         const char *attr = *attrs++;
-         const char *value = *attrs++;
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
          
          if (!value)
             break;
          
-         if (!strcmp(attr, "t"))
-            Internat::CompatibleToDouble(wxString(value), &l->t);
-         else if (!strcmp(attr, "t1")) {
+         if (!wxStrcmp(attr, wxT("t")))
+            Internat::CompatibleToDouble(value, &l->t);
+         else if (!wxStrcmp(attr, wxT("t1"))) {
             has_t1 = true;
-            Internat::CompatibleToDouble(wxString(value), &l->t1);
+            Internat::CompatibleToDouble(value, &l->t1);
          }
-         else if (!strcmp(attr, "title"))
+         else if (!wxStrcmp(attr, wxT("title")))
             l->title = value;
 
       } // while
@@ -1550,18 +1550,18 @@ bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
 
       return true;
    }
-   else if (!strcmp(tag, "labeltrack")) {
+   else if (!wxStrcmp(tag, wxT("labeltrack"))) {
       if (*attrs) {
-         const char *attr = *attrs++;
-         const char *value = *attrs++;
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
          
          if (!value)
             return true;
 
-         if (!strcmp(attr, "name"))
+         if (!wxStrcmp(attr, wxT("name")))
             mName = value;
-         else if (!strcmp(attr, "numlabels")) {
-            int len = atoi(value);
+         else if (!wxStrcmp(attr, wxT("numlabels"))) {
+            int len = wxAtoi(value);
             mLabels.Clear();
             mLabels.Alloc(len);
          }
@@ -1573,9 +1573,9 @@ bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
    return false;
 }
 
-XMLTagHandler *LabelTrack::HandleXMLChild(const char *tag)
+XMLTagHandler *LabelTrack::HandleXMLChild(const wxChar *tag)
 {
-   if (!strcmp(tag, "label"))
+   if (!wxStrcmp(tag, wxT("label")))
       return this;
    else
       return NULL;
@@ -1589,16 +1589,16 @@ void LabelTrack::WriteXML(int depth, FILE *fp)
    for(j=0; j<depth; j++)
       fprintf(fp, "\t");
    fprintf(fp, "<labeltrack ");
-   fprintf(fp, "name=\"%s\" ", XMLEsc(mName).c_str());
+   fprintf(fp, "name=\"%s\" ", (const char *)XMLEsc(mName).mb_str());
    fprintf(fp, "numlabels=\"%d\">\n", len);
 
    for (i = 0; i < len; i++) {
       for(j=0; j<depth+1; j++)
          fprintf(fp, "\t");
       fprintf(fp, "<label t=\"%s\" t1=\"%s\" title=\"%s\"/>\n",
-            Internat::ToString(mLabels[i]->t, 8).c_str(),
-            Internat::ToString(mLabels[i]->t1, 8).c_str(),
-            XMLEsc(mLabels[i]->title).c_str());
+            (const char *)Internat::ToString(mLabels[i]->t, 8).mb_str(),
+            (const char *)Internat::ToString(mLabels[i]->t1, 8).mb_str(),
+            (const char *)XMLEsc(mLabels[i]->title).mb_str());
    }
    for(j=0; j<depth; j++)
       fprintf(fp, "\t");
@@ -1608,7 +1608,7 @@ void LabelTrack::WriteXML(int depth, FILE *fp)
 #if LEGACY_PROJECT_FILE_SUPPORT
 bool LabelTrack::Load(wxTextFile * in, DirManager * dirManager)
 {
-   if (in->GetNextLine() != "NumMLabels")
+   if (in->GetNextLine() != wxT("NumMLabels"))
       return false;
 
    unsigned long len;
@@ -1631,7 +1631,7 @@ bool LabelTrack::Load(wxTextFile * in, DirManager * dirManager)
       mLabels.Add(l);
    }
 
-   if (in->GetNextLine() != "MLabelsEnd")
+   if (in->GetNextLine() != wxT("MLabelsEnd"))
       return false;
    SortLabels();
    return true;
@@ -1639,15 +1639,15 @@ bool LabelTrack::Load(wxTextFile * in, DirManager * dirManager)
 
 bool LabelTrack::Save(wxTextFile * out, bool overwrite)
 {
-   out->AddLine("NumMLabels");
+   out->AddLine(wxT("NumMLabels"));
    int len = mLabels.Count();
-   out->AddLine(wxString::Format("%d", len));
+   out->AddLine(wxString::Format(wxT("%d"), len));
 
    for (int i = 0; i < len; i++) {
-      out->AddLine(wxString::Format("%lf", mLabels[i]->t));
+      out->AddLine(wxString::Format(wxT("%lf"), mLabels[i]->t));
       out->AddLine(mLabels[i]->title);
    }
-   out->AddLine("MLabelsEnd");
+   out->AddLine(wxT("MLabelsEnd"));
 
    return true;
 }

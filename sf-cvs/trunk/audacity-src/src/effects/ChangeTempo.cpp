@@ -44,7 +44,7 @@ EffectChangeTempo::EffectChangeTempo()
 wxString EffectChangeTempo::GetEffectDescription() { 
    // Note: This is useful only after change amount has been set. 
    return wxString::Format(_("Applied effect: %s %.1f%%"), 
-                           (const char *)(this->GetEffectName()), 
+                           this->GetEffectName().c_str(), 
 									m_PercentChange); 
 } 
 
@@ -189,7 +189,7 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
 
 	//v Override wxTextValidator to disallow negative values <= -100.0?
    m_pTextCtrl_PercentChange = 
-		new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, "0.0", 
+		new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, wxT("0.0"), 
 							wxDefaultPosition, wxSize(40, -1), 0,
 							wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_PercentChange->Add(m_pTextCtrl_PercentChange, 0, 
@@ -217,7 +217,7 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
 								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    m_pTextCtrl_FromBPM = 
-		new wxTextCtrl(this, ID_TEXT_FROMBPM, "", 
+		new wxTextCtrl(this, ID_TEXT_FROMBPM, wxT(""), 
 							wxDefaultPosition, wxSize(40, -1), 0,
 							wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_BPM->Add(m_pTextCtrl_FromBPM, 0, 
@@ -229,7 +229,7 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
 								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    m_pTextCtrl_ToBPM = 
-		new wxTextCtrl(this, ID_TEXT_TOBPM, "", 
+		new wxTextCtrl(this, ID_TEXT_TOBPM, wxT(""), 
 							wxDefaultPosition, wxSize(40, -1), 0,
 							wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_BPM->Add(m_pTextCtrl_ToBPM, 0, 
@@ -247,7 +247,7 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
 									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    m_pTextCtrl_FromLength = 
-		new wxTextCtrl(this, ID_TEXT_FROMLENGTH, "", 
+		new wxTextCtrl(this, ID_TEXT_FROMLENGTH, wxT(""), 
 							wxDefaultPosition, wxSize(48, -1), 
 							wxTE_READONLY); // Read only because it's from the selection.
 							// No validator because it's read only.
@@ -260,7 +260,7 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
 									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    m_pTextCtrl_ToLength =
-       new wxTextCtrl(this, ID_TEXT_TOLENGTH, "", 
+       new wxTextCtrl(this, ID_TEXT_TOLENGTH, wxT(""), 
 								wxDefaultPosition, wxSize(48, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_Length->Add(m_pTextCtrl_ToLength, 0, 
@@ -315,27 +315,27 @@ bool ChangeTempoDialog::TransferDataToWindow()
 	wxString str;
 	if (m_pTextCtrl_FromBPM) {
 		if (m_FromBPM != 0)
-			str.Printf("%d", m_FromBPM);
+			str.Printf(wxT("%d"), m_FromBPM);
 		else
-			str = "";
+			str = wxT("");
 		m_pTextCtrl_FromBPM->SetValue(str);
 	}
 	if (m_pTextCtrl_ToBPM) {
 		if (m_ToBPM != 0)
-			str.Printf("%d", m_ToBPM);
+			str.Printf(wxT("%d"), m_ToBPM);
 		else
-			str = "";
+			str = wxT("");
 		m_pTextCtrl_ToBPM->SetValue(str);
 	}
 
 	// from/to Length controls
 	if (m_pTextCtrl_FromLength) {
-		str.Printf("%.2f", m_FromLength);
+		str.Printf(wxT("%.2f"), m_FromLength);
 		m_pTextCtrl_FromLength->SetValue(str);
 		m_pTextCtrl_FromLength->Enable(false); // Disable because the value comes from the user selection.
 	}
 	if (m_pTextCtrl_ToLength) {
-		str.Printf("%.2f", m_ToLength);
+		str.Printf(wxT("%.2f"), m_ToLength);
 		m_pTextCtrl_ToLength->SetValue(str);
 	}
 
@@ -529,7 +529,7 @@ void ChangeTempoDialog::Update_Text_PercentChange()
 {
 	if (m_pTextCtrl_PercentChange) {
 		wxString str;
-		str.Printf("%.1f", m_PercentChange);
+		str.Printf(wxT("%.1f"), m_PercentChange);
 		m_pTextCtrl_PercentChange->SetValue(str);
 	}
 }
@@ -559,7 +559,7 @@ void ChangeTempoDialog::Update_Text_ToBPM()
 										0.5); // Add 0.5 so trunc -> round.
 	if (m_pTextCtrl_ToBPM) {
 		wxString str;
-		str.Printf("%d", m_ToBPM);
+		str.Printf(wxT("%d"), m_ToBPM);
 		m_pTextCtrl_ToBPM->SetValue(str);
 	}
 }
@@ -570,7 +570,7 @@ void ChangeTempoDialog::Update_Text_ToLength()
 	m_ToLength = (m_FromLength * 100.0) / (100.0 + m_PercentChange);
 	if (m_pTextCtrl_ToLength) {
 		wxString str;
-		str.Printf("%.2f", m_ToLength);
+		str.Printf(wxT("%.2f"), m_ToLength);
 		m_pTextCtrl_ToLength->SetValue(str);
 	}
 }

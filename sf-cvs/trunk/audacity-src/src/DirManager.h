@@ -82,7 +82,7 @@ class DirManager: public XMLTagHandler {
    // the BlockFile.
    BlockFile *CopyBlockFile(BlockFile *b);
 
-   BlockFile *LoadBlockFile(const char **attrs, sampleFormat format);
+   BlockFile *LoadBlockFile(const wxChar **attrs, sampleFormat format);
    void SaveBlockFile(BlockFile *f, int depth, FILE *fp);
 
 #if LEGACY_PROJECT_FILE_SUPPORT
@@ -104,8 +104,8 @@ class DirManager: public XMLTagHandler {
    void SetLoadingTarget(BlockFile **target) { mLoadingTarget = target; }
    void SetLoadingFormat(sampleFormat format) { mLoadingFormat = format; }
    void SetLoadingBlockLength(sampleCount len) { mLoadingBlockLen = len; }
-   bool HandleXMLTag(const char *tag, const char **attrs);
-   XMLTagHandler *HandleXMLChild(const char *tag) { return NULL; }
+   bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
+   XMLTagHandler *HandleXMLChild(const wxChar *tag) { return NULL; }
    void WriteXML(int depth, FILE *fp) { }
    bool AssignFile(wxFileName &filename,wxString value,bool check);
 

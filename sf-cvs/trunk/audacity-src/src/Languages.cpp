@@ -37,14 +37,14 @@ WX_DECLARE_STRING_HASH_MAP(wxString, LangHash);
 bool TranslationExists(wxArrayString &audacityPathList, wxString code)
 {
    wxArrayString results;   
-   wxGetApp().FindFilesInPathList(wxString::Format("%s/audacity.mo",
-                                                   (const char *)code),
+   wxGetApp().FindFilesInPathList(wxString::Format(wxT("%s/audacity.mo"),
+                                                   code.c_str()),
                                   audacityPathList,
                                   wxFILE,
                                   results);
    
-   wxGetApp().FindFilesInPathList(wxString::Format("%s/LC_MESSAGES/audacity.mo",
-                                                   (const char *)code),
+   wxGetApp().FindFilesInPathList(wxString::Format(wxT("%s/LC_MESSAGES/audacity.mo"),
+                                                   code.c_str()),
                                   audacityPathList,
                                   wxFILE,
                                   results);
@@ -64,7 +64,7 @@ wxString GetSystemLanguageCode()
    if (info) {
       wxString fullCode = info->CanonicalName;
       if (fullCode.Length() < 2)
-         return "en";
+         return wxT("en");
 
       wxString code = fullCode.Left(2);
       unsigned int i;
@@ -78,7 +78,7 @@ wxString GetSystemLanguageCode()
       }
    }
 
-   return "en";
+   return wxT("en");
 }
 
 void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
@@ -88,31 +88,31 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    LangHash localLanguageName;
    LangHash reverseHash;
 
-   localLanguageName["bg"] = "Balgarski";
-   localLanguageName["ca"] = "Catalan";
-   localLanguageName["da"] = "Dansk";
-   localLanguageName["de"] = "Deutsch";
-   localLanguageName["en"] = "English";
-   localLanguageName["es"] = "Español";
-   localLanguageName["fi"] = "Suomi";
-   localLanguageName["fr"] = "Français";
-   localLanguageName["it"] = "Italiano";
-   localLanguageName["ja"] = "Nihongo";
-   localLanguageName["hu"] = "Magyar";
-   localLanguageName["mk"] = "Makedonski";
-   localLanguageName["nl"] = "Nederlands";
-   localLanguageName["nb"] = "Norsk";
-   localLanguageName["pl"] = "Polski";
-   localLanguageName["pt"] = "Português";
-   localLanguageName["ru"] = "Russky";
-   localLanguageName["sl"] = "Slovenscina";
-   localLanguageName["sv"] = "Svenska";
+   localLanguageName[wxT("bg")] = wxT("Balgarski");
+   localLanguageName[wxT("ca")] = wxT("Catalan");
+   localLanguageName[wxT("da")] = wxT("Dansk");
+   localLanguageName[wxT("de")] = wxT("Deutsch");
+   localLanguageName[wxT("en")] = wxT("English");
+   localLanguageName[wxT("es")] = wxT("Español");
+   localLanguageName[wxT("fi")] = wxT("Suomi");
+   localLanguageName[wxT("fr")] = wxT("Français");
+   localLanguageName[wxT("it")] = wxT("Italiano");
+   localLanguageName[wxT("ja")] = wxT("Nihongo");
+   localLanguageName[wxT("hu")] = wxT("Magyar");
+   localLanguageName[wxT("mk")] = wxT("Makedonski");
+   localLanguageName[wxT("nl")] = wxT("Nederlands");
+   localLanguageName[wxT("nb")] = wxT("Norsk");
+   localLanguageName[wxT("pl")] = wxT("Polski");
+   localLanguageName[wxT("pt")] = wxT("Português");
+   localLanguageName[wxT("ru")] = wxT("Russky");
+   localLanguageName[wxT("sl")] = wxT("Slovenscina");
+   localLanguageName[wxT("sv")] = wxT("Svenska");
 
    wxArrayString audacityPathList = wxGetApp().audacityPathList;
-   wxGetApp().AddUniquePathToPathList(wxString::Format("%s/share/locale",
-                                                       INSTALL_PREFIX),
+   wxGetApp().AddUniquePathToPathList(wxString::Format(wxT("%s/share/locale"),
+                                                       wxT(INSTALL_PREFIX)),
                                       audacityPathList);
-   wxString lastCode = "";
+   wxString lastCode = wxT("");
 
    int i;
    for(i=wxLANGUAGE_UNKNOWN; i<wxLANGUAGE_USER_DEFINED;i++) {
@@ -126,10 +126,10 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
       wxString name = info->Description;
       bool found = false;
 
-      if (localLanguageName[fullCode] != "") {
+      if (localLanguageName[fullCode] != wxT("")) {
          name = localLanguageName[fullCode];
       }
-      if (localLanguageName[code] != "") {
+      if (localLanguageName[code] != wxT("")) {
          name = localLanguageName[code];
       }
 
@@ -149,7 +149,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
             found = true;
          }
 
-         if (code == "en" && !found) {
+         if (code == wxT("en") && !found) {
             tempCodes.Add(code);
             tempNames.Add(name);
             found = true;

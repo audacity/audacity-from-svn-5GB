@@ -127,8 +127,8 @@ class Track: public XMLTagHandler {
 
    // XMLTagHandler callback methods
 
-   virtual bool HandleXMLTag(const char *tag, const char **attrs) = 0;
-   virtual XMLTagHandler *HandleXMLChild(const char *tag) = 0;
+   virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs) = 0;
+   virtual XMLTagHandler *HandleXMLChild(const wxChar *tag) = 0;
    virtual void WriteXML(int depth, FILE *fp) = 0;
 
    // Returns true if an error was encountered while trying to

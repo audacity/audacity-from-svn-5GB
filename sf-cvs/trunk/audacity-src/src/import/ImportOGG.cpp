@@ -29,8 +29,8 @@ void GetOGGImportPlugin(ImportPluginList *importPluginList,
                         UnusableImportPluginList *unusableImportPluginList)
 {
    UnusableImportPlugin* oggIsUnsupported =
-      new UnusableImportPlugin("Ogg Vorbis",
-                               wxStringList("ogg", NULL));
+      new UnusableImportPlugin(wxT("Ogg Vorbis"),
+                               wxStringList(wxT("ogg"), NULL));
 
    unusableImportPluginList->Append(oggIsUnsupported);
 }
@@ -55,7 +55,7 @@ class OggImportPlugin : public ImportPlugin
 {
 public:
    OggImportPlugin():
-      ImportPlugin(wxStringList("ogg", NULL))
+      ImportPlugin(wxStringList(wxT("ogg"), NULL))
    {
    }
 
@@ -99,13 +99,13 @@ void GetOGGImportPlugin(ImportPluginList *importPluginList,
 
 wxString OggImportPlugin::GetPluginFormatDescription()
 {
-    return "Ogg Vorbis";
+    return wxT("Ogg Vorbis");
 }
 
 ImportFileHandle *OggImportPlugin::Open(wxString filename)
 {
    OggVorbis_File *vorbisFile = new OggVorbis_File;
-   wxFFile *file = new wxFFile(FILENAME(filename), "rb");
+   wxFFile *file = new wxFFile(fopen(FILENAME(filename).fn_str(), "rb"));
 
    if (!file->IsOpened()) {
       // No need for a message box, it's done automatically (but how?)
@@ -156,7 +156,7 @@ void OggImportFileHandle::SetProgressCallback(progress_callback_t progressCallba
 
 wxString OggImportFileHandle::GetFileDescription()
 {
-   return "Ogg Vorbis";
+   return wxT("Ogg Vorbis");
 }
 
 int OggImportFileHandle::GetFileUncompressedBytes()

@@ -74,10 +74,10 @@ bool ExportPCM(AudacityProject *project,
       return false;
    }
 
-   sf = sf_open((const char *)FILENAME(fName), SFM_WRITE, &info);
+   sf = sf_open(FILENAME(fName).fn_str(), SFM_WRITE, &info);
    if (!sf) {
       wxMessageBox(wxString::Format(_("Cannot export audio to %s"),
-                                    (const char *)fName));
+                                    fName.c_str()));
       return false;
    }
 
@@ -125,12 +125,12 @@ bool ExportPCM(AudacityProject *project,
             message =
                 wxString::
                 Format(_("Exporting the selected audio as a %s file"),
-                       (const char *) formatStr);
+                       formatStr.c_str());
          else
             message =
                 wxString::
                 Format(_("Exporting the entire project as a %s file"),
-                       (const char *) formatStr);
+                       formatStr.c_str());
 
          progress =
              new wxProgressDialog(_("Export"),
@@ -157,7 +157,7 @@ bool ExportPCM(AudacityProject *project,
       char buffer[1000];
       sf_error_str(sf, buffer, 1000);
       wxMessageBox(wxString::Format
-                   (_("Error (file may not have been written): %s"),
+                   (_("Error (file may not have been written): %hs"),
                     buffer));
    }
 

@@ -158,7 +158,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
    }
 
    if (event.Leaving()){
-      GetActiveProject()->TP_DisplayStatusMessage("",0);
+      GetActiveProject()->TP_DisplayStatusMessage(wxT(""),0);
    }
    
 

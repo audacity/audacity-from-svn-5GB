@@ -26,7 +26,7 @@ public:
    // constructors and destructors
    MultiDialog(wxString prompt,
                wxString title,
-               char **buttons);
+               wxChar **buttons);
    
 private:
    void OnOK( wxCommandEvent &event );
@@ -42,7 +42,7 @@ END_EVENT_TABLE()
    
 MultiDialog::MultiDialog(wxString prompt,
                          wxString title,
-                         char **buttons):
+                         wxChar **buttons):
    wxDialog(NULL, (wxWindowID)-1, (wxString)_("title"))
 {
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -69,11 +69,11 @@ MultiDialog::MultiDialog(wxString prompt,
       count++;
    }
 
-   mBox = new wxRadioBox(this,-1," Please select an action ",
+   mBox = new wxRadioBox(this,-1,wxT(" Please select an action "),
                          wxDefaultPosition,wxDefaultSize,count,prompts);
    mBox->SetSelection(0);
 
-   wxButton *ok = new wxButton(this, wxID_OK, "OK");
+   wxButton *ok = new wxButton(this, wxID_OK, wxT("OK"));
    
    vSizer->Add(mBox, 1, wxGROW|wxALIGN_CENTER|wxALL, 5);
    vSizer->Add(ok, 0, wxALIGN_CENTER|wxALL, 5);
@@ -93,7 +93,7 @@ void MultiDialog::OnOK(wxCommandEvent &event)
 
 int ShowMultiDialog(wxString prompt,
                     wxString title,
-                    char **buttons)
+                    wxChar **buttons)
 {
    MultiDialog dlog(prompt,title,buttons);
    dlog.CentreOnParent();

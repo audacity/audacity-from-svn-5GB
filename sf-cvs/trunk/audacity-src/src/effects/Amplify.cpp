@@ -39,7 +39,7 @@ EffectAmplify::EffectAmplify()
 wxString EffectAmplify::GetEffectDescription() { 
    // Note: This is useful only after ratio has been set. 
    return wxString::Format(_("Applied effect: %s %.1f dB"), 
-                           (const char *)(this->GetEffectName()), 20*log10(ratio)); 
+                           this->GetEffectName().c_str(), 20*log10(ratio)); 
 } 
 
 bool EffectAmplify::Init()
@@ -140,7 +140,7 @@ wxDialog(parent, id, title, position, size, style)
 												wxDefaultPosition, wxDefaultSize, 0);
    item2->Add(pStaticText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-   wxTextCtrl * item4 = new wxTextCtrl(this, ID_AMP_TEXT, "", 
+   wxTextCtrl * item4 = new wxTextCtrl(this, ID_AMP_TEXT, wxT(""), 
 													wxDefaultPosition, wxSize(60, -1), 
 													0, wxTextValidator(wxFILTER_NUMERIC));
    item2->Add(item4, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -160,7 +160,7 @@ wxDialog(parent, id, title, position, size, style)
 												wxDefaultPosition, wxDefaultSize, 0);
    item6->Add(pStaticText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-   wxTextCtrl *item8 = new wxTextCtrl(this, ID_PEAK_TEXT, "", 
+   wxTextCtrl *item8 = new wxTextCtrl(this, ID_PEAK_TEXT, wxT(""), 
 													wxDefaultPosition, wxSize(60, -1), 0);
    item6->Add(item8, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -229,14 +229,14 @@ bool AmplifyDialog::TransferDataToWindow()
    wxTextCtrl *text = GetAmpText();
    if (text) {
       wxString str;
-      str.Printf("%.1f", 20*log10(ratio));
+      str.Printf(wxT("%.1f"), 20*log10(ratio));
       text->SetValue(str);
    }
 
    text = GetPeakText();
    if (text) {
       wxString str;
-      str.Printf("%.1f", 20*log10(ratio*peak));
+      str.Printf(wxT("%.1f"), 20*log10(ratio*peak));
       text->SetValue(str);
    }
 
@@ -283,7 +283,7 @@ void AmplifyDialog::OnAmpText(wxCommandEvent & event)
          slider->SetValue((int)(200*log10(ratio)+0.5));
 
       wxString str;
-      str.Printf("%.1f", 20*log10(ratio*peak));
+      str.Printf(wxT("%.1f"), 20*log10(ratio*peak));
       GetPeakText()->SetValue(str);
 
       mLoopDetect = false;
@@ -316,7 +316,7 @@ void AmplifyDialog::OnPeakText(wxCommandEvent & event)
          slider->SetValue((int)(10*dB+0.5));
       
       wxString str;
-      str.Printf("%.1f", dB);
+      str.Printf(wxT("%.1f"), dB);
       GetAmpText()->SetValue(str);
       
       mLoopDetect = false;
@@ -344,9 +344,9 @@ void AmplifyDialog::OnAmpSlider(wxCommandEvent & event)
        ratio2 * peak < 1.0)
       ratio = 1.0 / peak;
    
-   str.Printf("%.1f", 20*log10(ratio));
+   str.Printf(wxT("%.1f"), 20*log10(ratio));
    GetAmpText()->SetValue(str);
-   str.Printf("%.1f", 20*log10(ratio*peak));
+   str.Printf(wxT("%.1f"), 20*log10(ratio*peak));
    GetPeakText()->SetValue(str);
 
    mLoopDetect = false;
