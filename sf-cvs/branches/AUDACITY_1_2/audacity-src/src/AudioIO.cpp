@@ -22,7 +22,6 @@
 
 **********************************************************************/
 
-#include <iostream>
 #include <math.h>
 #include <stdlib.h>
 
@@ -419,13 +418,15 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
    mLastPaError = paNoError;
    mRate = sampleRate;
 
+   mNumPlaybackChannels = numPlaybackChannels;
+   mNumCaptureChannels = numCaptureChannels;
+
 #if USE_PORTAUDIO_V19
-   PaStreamParameters *playbackParameters;
-   PaStreamParameters *captureParameters;
+   PaStreamParameters *playbackParameters = NULL;
+   PaStreamParameters *captureParameters = NULL;
 
    if( numPlaybackChannels > 0)
    {
-      mNumPlaybackChannels = numPlaybackChannels;
       playbackParameters = new PaStreamParameters;
       wxString playbackDeviceName = gPrefs->Read("/AudioIO/PlaybackDevice", "");
       const PaDeviceInfo *playbackDeviceInfo;
@@ -454,14 +455,9 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
       playbackParameters->suggestedLatency =
          playbackDeviceInfo->defaultLowOutputLatency;
    }
-   else
-   {
-      playbackParameters = NULL;
-   }
 
    if( numCaptureChannels > 0)
    {
-      mNumCaptureChannels = numCaptureChannels;
       mCaptureFormat = captureFormat;
       captureParameters = new PaStreamParameters;
       const PaDeviceInfo *captureDeviceInfo;
@@ -492,10 +488,6 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
       captureParameters->suggestedLatency =
          captureDeviceInfo->defaultHighInputLatency;
    }
-   else
-   {
-      captureParameters = NULL;
-   }
 
    mLastPaError = Pa_OpenStream( &mPortStreamV19,
                                  captureParameters, playbackParameters,
@@ -520,13 +512,12 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
 
 #else
 
-   PaDeviceID captureDevice, playbackDevice;
+   PaDeviceID captureDevice = paNoDevice,
+              playbackDevice = paNoDevice;
    PaSampleFormat paCaptureFormat = 0;
 
    if( numPlaybackChannels > 0 )
    {
-      mNumPlaybackChannels = numPlaybackChannels;
-
       playbackDevice =  Pa_GetDefaultOutputDeviceID();
       wxString playbackDeviceName = gPrefs->Read("/AudioIO/PlaybackDevice", "");
 
@@ -540,18 +531,10 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
          }
       }
    }
-   else
-   {
-      playbackDevice = paNoDevice;
-      mNumPlaybackChannels = 0;
-   }
-
 
    if( numCaptureChannels > 0 )
    {
       // For capture, every input channel gets its own track
-      mNumCaptureChannels = numCaptureChannels;
-      
       mCaptureFormat = captureFormat;
       captureDevice =  Pa_GetDefaultInputDeviceID();
       wxString captureDeviceName = gPrefs->Read("/AudioIO/RecordingDevice", "");
@@ -568,12 +551,6 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
       
       paCaptureFormat =
          AudacityToPortAudioSampleFormat(mCaptureFormat);
-   }
-   else
-   {
-      captureDevice = paNoDevice;
-      mNumCaptureChannels = 0;
-      mCaptureFormat = (sampleFormat)0;
    }
 
    mPortStreamV18 = NULL;
@@ -966,6 +943,7 @@ void AudioIO::StopStream()
             {
                delete mCaptureBuffers[i];
                mCaptureTracks[i]->Flush();
+               mCaptureTracks[i]->Offset(mLastRecordingOffset);
             }
          
          delete[] mCaptureBuffers;
@@ -1126,6 +1104,7 @@ double AudioIO::GetStreamTime()
    // [JH]: I need to diagram this, but I'm pretty sure this calculation
    // is off by one buffer size
    double time = lastBufferTime + deltat;
+
    return NormalizeStreamTime(time);
 #else
    PaStream *stream = mPortStreamV18;
@@ -1667,7 +1646,24 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
       
      #if USE_PORTAUDIO_V19
       gAudioIO->mTotalSamplesPlayed += framesPerBuffer;
-      gAudioIO->mLastBufferAudibleTime = timeInfo->outputBufferDacTime;
+      if (numPlaybackChannels > 0)
+         gAudioIO->mLastBufferAudibleTime = timeInfo->outputBufferDacTime;
+      else
+         gAudioIO->mLastBufferAudibleTime = timeInfo->inputBufferAdcTime;
+     #endif
+
+      // Record the reported latency from PortAudio.
+      // TODO: Don't recalculate this with every callback?
+     #if USE_PORTAUDIO_V19
+      if (numCaptureChannels > 0 && numPlaybackChannels > 0)
+         gAudioIO->mLastRecordingOffset = timeInfo->inputBufferAdcTime - timeInfo->outputBufferDacTime;
+      else
+         gAudioIO->mLastRecordingOffset = 0;
+     #else
+      if (numCaptureChannels > 0 && numPlaybackChannels > 0)
+         gAudioIO->mLastRecordingOffset = (Pa_StreamTime(gAudioIO->mPortStreamV18) - outTime) / gAudioIO->mRate;
+      else
+         gAudioIO->mLastRecordingOffset = 0;
      #endif
 
    } // if mStreamToken > 0
