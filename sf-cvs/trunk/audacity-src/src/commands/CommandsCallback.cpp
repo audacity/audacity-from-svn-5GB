@@ -22,6 +22,7 @@
 #include "../Project.h"
 
 #include "../LabelTrack.h"
+#include "../import/ImportMIDI.h"
 #include "../import/ImportRaw.h"
 #include "../export/Export.h"
 #include "../prefs/PrefsDialog.h"
@@ -944,7 +945,7 @@ void AudacityProject::OnImportMIDI()
 
       NoteTrack *newTrack = new NoteTrack(&mDirManager);
 
-      if (0/*::ImportMIDI(fileName, newTrack)*/) {
+      if (::ImportMIDI(fileName, newTrack)) {
 
          SelectNone();
          mTracks->Add(newTrack);
