@@ -35,6 +35,7 @@
 #include <wx/hash.h>
 
 #include "BlockFile.h"
+#include "WaveTrack.h"
 
 class wxTextFile;
 
@@ -56,6 +57,17 @@ public:
 
   BlockFile *NewTempBlockFile();
   BlockFile *NewBlockFile();
+
+  BlockFile *NewTempAliasBlockFile(int localLen,
+								   wxString fullPath,
+								   sampleCount start,
+								   sampleCount len,
+								   int channel);
+  BlockFile *NewAliasBlockFile(int localLen,
+							   wxString fullPath,
+							   sampleCount start,
+							   sampleCount len,
+							   int channel);
 
   BlockFile *LoadBlockFile(wxTextFile *in);
   void SaveBlockFile(BlockFile *f, wxTextFile *out);

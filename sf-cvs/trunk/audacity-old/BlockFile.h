@@ -9,11 +9,11 @@
   This class is a wrapper for a file that represents a block of
   information.  It supports reference counting (the constructor
   defaults the reference count to 1) so that a single block can
-  be pointed to by multiple tracks or virtual tracks.  In addition,
-  this class hides the internals of the low-level file operations
-  (one more layer beyond wxWindows) so that the details can be
-  changed later.  For example, one could add a feature that would
-  cache frequently used blocks in memory.
+  be pointed to by multiple tracks or virtual tracks.
+
+  In addition, this class abstracts low-level file reading
+  and writing, which allows block files to actually point to
+  the middle of another audio file on disk for part of its data.
 
   Currently only DirManager should be creating and destroying
   BlockFiles, or managing their reference counts.  You should
@@ -28,27 +28,37 @@
 #include <wx/string.h>
 #include <wx/ffile.h>
 
+#include "WaveTrack.h"
+
 class BlockFile
 {
 public:
   // Normal block file
   BlockFile(wxString name, wxString fullPath);
 
-  // Lightweight block file
-  BlockFile(wxString fullPath, int start, int len);
-
+  // Alias block file
+  BlockFile(wxString name, wxString fullPath,
+			int localLen,
+			wxString aliasFullPath,
+			sampleCount aliasStart, sampleCount aliasLen,
+			int aliasChannel);
+  
   ~BlockFile();  
 
-  bool Open(bool write);
+  bool OpenReadHeader();
+  bool OpenReadData();
+  bool OpenWriting();
+
   void Close();
 
   int Read(void *data, int len);
   int Write(void *data, int len);
-  bool Seek(int where, wxSeekMode mode = wxFromStart);
-  int Tell();
+  bool SeekTo(int where);
 
   // this accessor should be used for debugging only
   wxString GetName();
+
+  bool IsAlias();
 
 private:
   
@@ -58,19 +68,24 @@ private:
   bool Deref();
 
   // General variables
-  int refCount;
-  wxString fullPath;
+  int          mRefCount;
 
-  bool isLightweightFile;
+  bool         mAlias; // Does this file alias another file
 
-  // Lightweight BlockFile variables
-  int start;
-  int len;
-  int pos;
-  
-  // Normal BlockFile variables
-  wxString name;
-  wxFFile *theFile;
+  int          mPos;  
+
+  // Information about local data
+  wxString     mName;
+  wxString     mFullPath;
+  wxFFile     *mFile;
+
+  // Information about aliased sound data
+  wxString     mAliasFullPath;
+  int          mLocalLen;
+  sampleCount  mStart;
+  sampleCount  mLen;
+  int          mChannel;
+  void         *mSndNode;
 };
 
 #endif

@@ -124,6 +124,11 @@ public:
   void Delete(sampleCount start, sampleCount len);
   void AppendBlock(WaveBlock *b);
 
+  void AppendAlias(wxString fullPath,
+				   sampleCount start,
+				   sampleCount len,
+				   int channel);
+
   static sampleCount GetIdealBlockSize();
 
   BlockArray *GetBlockArray() {return block;}
@@ -166,9 +171,16 @@ private:
 	       sampleCount start, sampleCount len);
   void Read64K(sampleType *buffer, WaveBlock *b,
 	       sampleCount start, sampleCount len);
-  void Write(sampleType *buffer, WaveBlock *b,
-	     sampleCount start, sampleCount len,
-	     bool makeCopy = true);
+
+  // These are the two ways to write data to a block
+  void FirstWrite(sampleType *buffer, WaveBlock *b, sampleCount len);
+  void CopyWrite(sampleType *buffer, WaveBlock *b,
+				 sampleCount start, sampleCount len);
+
+  // Both block-writing methods and AppendAlias call this
+  // method to write the summary data
+  void UpdateSummaries(sampleType *buffer, WaveBlock *b,
+					   sampleCount len);
 
   BlockArray *Blockify(sampleType *buffer, sampleCount len);
 

@@ -279,12 +279,12 @@ void AudacityProject::OnExportLabels(wxCommandEvent& event)
 
 void AudacityProject::OnExportMix(wxCommandEvent& event)
 {
-  ::Export(mTracks, false, 0.0, mTracks->GetMaxLen());
+  ::Export(this, mTracks, false, 0.0, mTracks->GetMaxLen());
 }
 
 void AudacityProject::OnExportSelection(wxCommandEvent& event)
 {
-  ::Export(mTracks, true, mViewInfo.sel0, mViewInfo.sel1);
+  ::Export(this, mTracks, true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
 void AudacityProject::OnPreferences(wxCommandEvent& event)

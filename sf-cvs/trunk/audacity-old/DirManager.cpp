@@ -197,15 +197,70 @@ BlockFile *DirManager::NewBlockFile()
   return newBlockFile;
 }
 
+BlockFile *DirManager::NewTempAliasBlockFile(int localLen,
+											 wxString fullPath,
+											 sampleCount start,
+											 sampleCount len,
+											 int channel)
+{
+  wxString theFileName;
+  wxString thePathName;
+  do {
+    theFileName.Printf("b%05d.auf",fileIndex++);
+    thePathName = temp + pathChar + theFileName;
+  } while (wxFileExists(thePathName));
+
+  BlockFile *newBlockFile = new BlockFile(theFileName, thePathName,
+										  localLen,
+										  fullPath,
+										  start, len, channel);
+
+  blockFileHash->Put(theFileName, (wxObject *)newBlockFile);
+
+  CheckHashTableSize();
+
+  return newBlockFile;  
+}
+
+BlockFile *DirManager::NewAliasBlockFile(int localLen,
+										 wxString fullPath,
+										 sampleCount start,
+										 sampleCount len,
+										 int channel)
+{
+  if (projFull == "")
+    return NewTempAliasBlockFile(localLen, fullPath, start, len, channel);
+  
+  wxString theFileName;
+  wxString thePathName;
+  do {
+    theFileName.Printf("b%05d.auf",fileIndex++);
+    thePathName = projFull + pathChar + theFileName;
+  } while (wxFileExists(thePathName));
+
+  BlockFile *newBlockFile = new BlockFile(theFileName, thePathName,
+										  localLen,
+										  fullPath,
+										  start, len, channel);
+
+  blockFileHash->Put(theFileName, (wxObject *)newBlockFile);
+
+  CheckHashTableSize();
+
+  return newBlockFile;
+}
+
 void DirManager::SaveBlockFile(BlockFile *f, wxTextFile *out)
 {
-  if (f->isLightweightFile) {
-	out->AddLine("LW");
-	out->AddLine(f->name);
-	out->AddLine(wxString::Format("%d", f->start));
-	out->AddLine(wxString::Format("%d", f->len));
+  if (f->IsAlias()) {
+	out->AddLine("Alias");
+	out->AddLine(f->mAliasFullPath);
+	out->AddLine(wxString::Format("%d", f->mLocalLen));
+	out->AddLine(wxString::Format("%d", f->mStart));
+	out->AddLine(wxString::Format("%d", f->mLen));
+	out->AddLine(wxString::Format("%d", f->mChannel));
   }
-  out->AddLine(f->name);
+  out->AddLine(f->mName);
 }
 
 BlockFile *DirManager::LoadBlockFile(wxTextFile *in)
@@ -214,24 +269,38 @@ BlockFile *DirManager::LoadBlockFile(wxTextFile *in)
 
   wxString blockName = in->GetNextLine();
 
-  if (blockName == "LW") {
-	wxString fullPath = in->GetNextLine();
-	long start;
+  bool alias = false;
+  wxString aliasFullPath;
+  long localLen, start, len, channel;
+
+  if (blockName == "Alias") {
+	alias = true;
+	aliasFullPath = in->GetNextLine();
+	if (!(in->GetNextLine().ToLong(&localLen))) return NULL;
 	if (!(in->GetNextLine().ToLong(&start))) return NULL;
-	long len;
 	if (!(in->GetNextLine().ToLong(&len))) return NULL;
-	BlockFile *newBlockFile = new BlockFile(fullPath, start, len);
-	return newBlockFile;
+	if (!(in->GetNextLine().ToLong(&channel))) return NULL;
+
+	blockName = in->GetNextLine();
   }
 
   wxString pathName = projFull + pathChar + blockName;
   BlockFile *retrieved = (BlockFile *)blockFileHash->Get(blockName);
   if (retrieved) {
+	wxASSERT(retrieved->IsAlias() == alias);
     retrieved->Ref();
     return retrieved;
   }
-  else {
-    BlockFile *newBlockFile = new BlockFile(blockName, pathName);
+  else {	
+    BlockFile *newBlockFile;
+	
+	if (alias)
+	  newBlockFile = new BlockFile(blockName, pathName,
+								   localLen,
+								   aliasFullPath,
+								   start, len, channel);
+	else
+	  newBlockFile = new BlockFile(blockName, pathName);
 
     blockFileHash->Put(blockName, (wxObject *)newBlockFile); 
 
@@ -245,20 +314,20 @@ BlockFile *DirManager::LoadBlockFile(wxTextFile *in)
 
 void DirManager::MakePartOfProject(BlockFile *f)
 {
-  wxString newFullPath = projFull + pathChar + f->name;
-  if (newFullPath != f->fullPath) {
-    bool ok = wxRenameFile(f->fullPath, newFullPath);
+  wxString newFullPath = projFull + pathChar + f->mName;
+  if (newFullPath != f->mFullPath) {
+    bool ok = wxRenameFile(f->mFullPath, newFullPath);
     if (ok)
-      f->fullPath = newFullPath;
+      f->mFullPath = newFullPath;
     else {
-      ok = wxCopyFile(f->fullPath, newFullPath);
+      ok = wxCopyFile(f->mFullPath, newFullPath);
       if (ok) {
-	wxRemoveFile(f->fullPath);
-	f->fullPath = newFullPath;
+	wxRemoveFile(f->mFullPath);
+	f->mFullPath = newFullPath;
       } else {
 	wxString msg;
 	msg.Printf("Could not rename %s to %s",
-		   (const char *)f->fullPath, (const char *)newFullPath);
+		   (const char *)f->mFullPath, (const char *)newFullPath);
 	wxMessageBox(msg);
       }
     }
@@ -273,9 +342,9 @@ void DirManager::Ref(BlockFile *f)
 
 void DirManager::Deref(BlockFile *f)
 {
-  wxString theFileName = f->name;
+  wxString theFileName = f->mName;
 
-  //  printf("Deref(%d): %s\n",f->refCount-1, (const char *)f->fullPath);
+  //  printf("Deref(%d): %s\n",f->mRefCount-1, (const char *)f->mRullPath);
 
   if (f->Deref()) {
     // If Deref() returned true, the reference count reached zero

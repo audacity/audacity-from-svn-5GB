@@ -29,11 +29,11 @@ FileFormatPrefs::FileFormatPrefs(wxWindow *parent):
 	PrefsPanel(parent)
 {
 	wxString copyEdit = 
-		gPrefs->Read("/FileFormats/CopyOrEditUncompressedData", "copy");
+		gPrefs->Read("/FileFormats/CopyOrEditUncompressedData", "edit");
 
-	int pos = 0;   // Fall back to copy if it doesn't match anything else
-	if(copyEdit.IsSameAs("edit", false))
-		pos = 1;
+	int pos = 1;   // Fall back to edit if it doesn't match anything else
+	if(copyEdit.IsSameAs("copy", false))
+		pos = 0;
 
 	mEnclosingBox = new wxStaticBox(this, -1,
 			                        "File Format Settings",
@@ -86,7 +86,7 @@ bool FileFormatPrefs::Apply()
 		= gDefaultExportFormatOptions[mDefaultExportFormat->GetSelection()];
 
 	gPrefs->SetPath("/FileFormats");
-	gPrefs->Write("CopyOrEditUncompresseData", copyOrEdit);
+	gPrefs->Write("CopyOrEditUncompressedData", copyOrEdit);
 	gPrefs->Write("DefaultExportFormat", defaultExportFormat);
 	gPrefs->SetPath("/");
 

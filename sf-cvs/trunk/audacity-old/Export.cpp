@@ -32,8 +32,9 @@
 
 #include "Export.h"
 
-bool Export(TrackList *tracks, bool selectionOnly,
-	    double t0, double t1)
+bool Export(wxWindow *parent,
+			TrackList *tracks, bool selectionOnly,
+			double t0, double t1)
 {
   wxString format =
     gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");    
@@ -171,10 +172,11 @@ bool Export(TrackList *tracks, bool selectionOnly,
   wxYield();
   wxStartTimer();
   wxBusyCursor busy;
+  bool cancelling = false;
 
   double t = t0;
 
-  while(t < t1) {
+  while(t < t1 && !cancelling) {
 
     double deltat = timeStep;
     if (t + deltat > t1)
@@ -215,14 +217,28 @@ bool Export(TrackList *tracks, bool selectionOnly,
     t += deltat;
 
     if (!progress && wxGetElapsedTime(false) > 500) {
+	  
+	  wxString message;
+
+	  if (selectionOnly)
+		message = wxString::Format("Exporting the selected audio as a %s file",
+								   (const char *)format);
+	  else
+		message = wxString::Format("Exporting the entire project as a %s file",
+								   (const char *)format);			
+
       progress =
-	new wxProgressDialog("Export",
-			     wxString::Format("Exporting %s file",
-					      (const char *)format),
-			     1000);
+		new wxProgressDialog("Export",
+							 message,
+							 1000,
+							 parent,
+							 wxPD_CAN_ABORT |
+							 wxPD_REMAINING_TIME |
+							 wxPD_AUTO_HIDE);
     }	
     if (progress) {
-      progress->Update(int(((t-t0)*1000)/(t1-t0)+0.5));
+	  cancelling = 
+		!progress->Update(int(((t-t0)*1000)/(t1-t0)+0.5));
     }
 	
     delete mixer;
