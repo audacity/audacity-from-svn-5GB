@@ -34,6 +34,24 @@
   For the record, we aim to support LAME 3.70 on. Since LAME 3.70 was
   released in April of 2000, that should be plenty.
 
+
+  Copyright 2002, 2003 Joshua Haberman.
+  Some portions may be Copyright 2003 Paolo Patruno.
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
 **********************************************************************/
 
 #include <wx/defs.h>
@@ -193,6 +211,7 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
          /* function pointers to the symbols we get from the library */
          lame_init_t* lame_init;
          lame_init_params_t* lame_init_params;
+         lame_encode_buffer_t* lame_encode_buffer;
          lame_encode_buffer_interleaved_t* lame_encode_buffer_interleaved;
          lame_encode_flush_t* lame_encode_flush;
          lame_close_t* lame_close;
@@ -272,6 +291,8 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
             get_lame_version = (get_lame_version_t *)lame_enc_lib.GetSymbol("get_lame_version");
             lame_init_params = 
                (lame_init_params_t *) lame_enc_lib.GetSymbol("lame_init_params");
+            lame_encode_buffer =
+                (lame_encode_buffer_t *) lame_enc_lib.GetSymbol("lame_encode_buffer");
             lame_encode_buffer_interleaved =
                 (lame_encode_buffer_interleaved_t *) lame_enc_lib.GetSymbol("lame_encode_buffer_interleaved");
             lame_encode_flush =
@@ -300,6 +321,7 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
             if (!lame_init ||
                 !get_lame_version ||
                 !lame_init_params ||
+                !lame_encode_buffer ||
                 !lame_encode_buffer_interleaved ||
                 !lame_encode_flush ||
                 !lame_close ||
@@ -349,6 +371,19 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
       int EncodeRemainder(short int inbuffer[], int nSamples,
                         unsigned char outbuffer[]) {
          return lame_encode_buffer_interleaved(mGF, inbuffer, nSamples, outbuffer,
+            mOutBufferSize);
+      }
+
+      int EncodeBufferMono(short int inbuffer[], unsigned char outbuffer[]) {
+         if(!mEncoding) return -1;
+
+         return lame_encode_buffer(mGF, inbuffer,inbuffer, mSamplesPerChunk,
+            outbuffer, mOutBufferSize);
+      }
+
+      int EncodeRemainderMono(short int inbuffer[], int nSamples,
+                        unsigned char outbuffer[]) {
+         return lame_encode_buffer(mGF, inbuffer, inbuffer, nSamples, outbuffer,
             mOutBufferSize);
       }
 
@@ -436,6 +471,7 @@ void ReleaseMP3Exporter()
          /* function pointers to the symbols we get from the library */
          lame_init_t* lame_init;
          lame_init_params_t* lame_init_params;
+         lame_encode_buffer_t* lame_encode_buffer;
          lame_encode_buffer_interleaved_t* lame_encode_buffer_interleaved;
          lame_encode_flush_t* lame_encode_flush;
          lame_close_t* lame_close;
@@ -565,6 +601,10 @@ void ReleaseMP3Exporter()
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_init_params = NewMachOFromCFM(mainAddr);
 
+            MakePString(name, "lame_encode_buffer");
+            FindSymbol(connID, name, &mainAddr, &symClass);
+            lame_encode_buffer = NewMachOFromCFM(mainAddr);
+
             MakePString(name, "lame_encode_buffer_interleaved");
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_encode_buffer_interleaved = NewMachOFromCFM(mainAddr);
@@ -607,6 +647,7 @@ void ReleaseMP3Exporter()
             if (!lame_init ||
                 !get_lame_version ||
                 !lame_init_params ||
+                !lame_encode_buffer ||
                 !lame_encode_buffer_interleaved ||
                 !lame_encode_flush ||
                 !lame_close ||
@@ -656,6 +697,19 @@ void ReleaseMP3Exporter()
       int EncodeRemainder(short int inbuffer[], int nSamples,
                         unsigned char outbuffer[]) {
          return lame_encode_buffer_interleaved(mGF, inbuffer, nSamples, outbuffer,
+            mOutBufferSize);
+      }
+
+      int EncodeBufferMono(short int inbuffer[], unsigned char outbuffer[]) {
+         if(!mEncoding) return -1;
+
+         return lame_encode_buffer(mGF, inbuffer, inbuffer, mSamplesPerChunk,
+            outbuffer, mOutBufferSize);
+      }
+
+      int EncodeRemainderMono(short int inbuffer[], int nSamples,
+                        unsigned char outbuffer[]) {
+         return lame_encode_buffer(mGF, inbuffer, inbuffer , inbuffer, nSamples, outbuffer,
             mOutBufferSize);
       }
 
@@ -1330,10 +1384,18 @@ bool ExportMP3(AudacityProject *project,
       
       short *mixed = (short *)mixer->GetBuffer();
 
-      if(blockLen < inSamples)
-         bytes = GetMP3Exporter()->EncodeRemainder(mixed, blockLen, buffer);
-      else
-         bytes = GetMP3Exporter()->EncodeBuffer(mixed, buffer);
+      if(blockLen < inSamples) {
+         if (stereo)
+            bytes = GetMP3Exporter()->EncodeRemainder(mixed,  blockLen , buffer);
+         else
+            bytes = GetMP3Exporter()->EncodeRemainderMono(mixed,  blockLen , buffer);
+      }
+      else {
+         if (stereo)
+            bytes = GetMP3Exporter()->EncodeBuffer(mixed, buffer);
+         else
+            bytes = GetMP3Exporter()->EncodeBufferMono(mixed, buffer);
+      }
 
       outFile.Write(buffer, bytes);
 
