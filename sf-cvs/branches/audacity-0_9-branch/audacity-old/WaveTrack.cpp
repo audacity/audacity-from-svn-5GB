@@ -279,6 +279,8 @@ void WaveTrack::Copy(double t0, double t1, VTrack ** dest)
 
    *dest = new WaveTrack(dirManager);
    ((WaveTrack *) * dest)->rate = rate;
+   ((WaveTrack *) * dest)->channel = channel;
+   ((WaveTrack *) * dest)->name = name;
 
    sampleType *buffer = new sampleType[maxSamples];
 
