@@ -878,7 +878,6 @@ void TrackPanel::HandleZoom(wxMouseEvent &event)
 
       wxRect r;
       int num;
-      VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
 
       if (IsDragZooming())
          DragZoom(r.x);
@@ -960,7 +959,8 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
       mIsClosing = false;
    }
 
-   if(mTracks->IsEmpty()) // BG: There are no more tracks on screen, so set zoom to normal
+   // BG: There are no more tracks on screen, so set zoom to normal
+   if(mTracks->IsEmpty())
    {
       mViewInfo->zoom = 44100.0 / 512.0;
       mListener->TP_RedrawScrollbars();
@@ -1954,6 +1954,9 @@ void TrackPanel::OnFormatChange(wxEvent &event)
       break;
    case OnFloatID:
       newFormat = floatSample;
+      break;
+   default:
+      // ERROR -- should not happen
       break;
    }
 

@@ -65,7 +65,7 @@ int audacityAudioCallback(
 {
    int numOutChannels = gAudioIO->mNumOutChannels;
    int numInChannels = gAudioIO->mNumInChannels;
-   int minIndex, minID = 0;
+   int minIndex = 0, minID = 0;
    int i;
    
    //
@@ -463,7 +463,7 @@ void AudioIO::FillBuffers()
       flatLen = 0;
       for(f=0; f<numFull; f++) {
          int minID = mInID+1;
-         int minIndex;
+         int minIndex = 0;
          for(i=0; i<mNumInBuffers; i++)
             if (mInBuffer[i].ID > 0 &&
                 mInBuffer[i].ID < minID) {
