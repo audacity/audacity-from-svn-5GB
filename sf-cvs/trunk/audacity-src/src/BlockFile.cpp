@@ -309,7 +309,7 @@ bool BlockFile::Read256(float *buffer,
           summary + mSummaryInfo.offset256 + (start * mSummaryInfo.bytesPerFrame),
           len * mSummaryInfo.bytesPerFrame);
 
-   delete summary;
+   delete[] summary;
 
    return true;
 }
@@ -338,7 +338,7 @@ bool BlockFile::Read64K(float *buffer,
           summary + mSummaryInfo.offset64K + (start * mSummaryInfo.bytesPerFrame),
           len * mSummaryInfo.bytesPerFrame);
 
-   delete summary;
+   delete[] summary;
 
    return true;
 }
@@ -365,7 +365,7 @@ bool BlockFile::Read64K(float *buffer,
 AliasBlockFile::AliasBlockFile(wxFileName baseFileName,
                                wxFileName aliasedFileName, sampleCount aliasStart,
                                sampleCount aliasLen, int aliasChannel):
-   BlockFile(wxFileName(baseFileName.GetFullPath() + ".smy"), aliasLen),
+   BlockFile(wxFileName(baseFileName.GetFullPath() + ".auf"), aliasLen),
    mAliasedFileName(aliasedFileName),
    mAliasStart(aliasStart),
    mAliasChannel(aliasChannel)
