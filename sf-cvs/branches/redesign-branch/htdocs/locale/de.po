@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Audacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-01-08 09:59-0800\n"
-"PO-Revision-Date: 2005-01-22 11:32+0100\n"
+"PO-Revision-Date: 2005-01-23 11:35+0100\n"
 "Last-Translator: Karsten Zeller <pennywize@gmx.de>\n"
 "Language-Team: Pennywize <pennywize@gmx.de>\n"
 "MIME-Version: 1.0\n"
@@ -663,20 +663,28 @@ msgid "Audacity is developed by volunteers, working in our spare time. It is not
 msgstr "Audacity wird von Freiwilligen entwickelt in Ihrer freien Zeit.Es ist keine Shareware und wir erwarten auch, damit kein Geld zu verdienen. Wie auch immer, wenn Sie Geld spenden, können wir das für Bandbreite und Webserver verwenden oder neue Audio Hardware &mdash;  Dinge die uns helfen, Audacity kostenlos und frei zu halten und immer weiter zu verbessern."
 
 #: community/donate.php:18
+msgid "For a special gift if you donate US$20 or more, see our <a href=\"http://audacityteam.org/tshirt.php\">Audacity T-shirt offer</a>."
+msgstr "Wenn Sie eine grosse Spende machen wollen, zum Beispiel mehr als US$20, beachten Sie unser <a href=\"http://audacityteam.org/tshirt.php\">Audacity T- Shirt Angebot</a>."
+
+#: community/donate.php:20
 msgid "We currently accept money via the Amazon Honor System. Use your credit card and make a payment as small as US$1.00, or up to US$50.00:"
 msgstr "Wir akzeptieren auch Geld über das Amazon Honor System. Nutzen Sie Ihre Kreditkarte und machen eine Spende, vielleicht nur US$1.00 oder auch US$50.00:"
 
-#: community/donate.php:28
+#: community/donate.php:30
 msgid "We also accept PayPal payments through the SourceForge donation system:"
 msgstr "Wir aktzeptieren PayPal Zahlungen über das SourceForge Spendensystem:"
 
-#: community/donate.php:31
+#: community/donate.php:33
 msgid "Donate via PayPal"
 msgstr "Spenden Sie über PayPal"
 
-#: community/donate.php:34
+#: community/donate.php:36
 msgid "If you prefer to send a personal check or another form of payment, please visit the <a href=\"../about/credits\">credits</a> page and contact one of the lead developers."
 msgstr "Wenn Sie eine andere Art der Zahlung bevorzugen, schauen sie auf der <a href=\"../about/credits\">credits</a> Seite nach und kontaktieren einen der Hauptentwickler."
+
+#: community/donate.php:38
+msgid "We would also like to hear from any companies or groups interested in <a href=\"http://audacityteam.org/sponsor.php\">sponsoring Audacity development</a>."
+msgstr "Natürlich würden wir uns freuen, wenn wir von Unternehmen oder Gruppen angesprochen werden, die interessiert sind, die <a href=\"http://audacityteam.org/sponsor.php\">Audacity Entwicklung</a> zu unterstützten."
 
 #: community/index.php:15
 msgid "Audacity is free software, developed by volunteers.  Here's how you can contribute to the Audacity project:"
@@ -1217,10 +1225,12 @@ msgid "(To use the downloaded manual, unzip it and then open the \"index.html\" 
 msgstr "(Um das heruntergeladene Handbuch zu nutzen, entpacken Sie es und öffnen die \"index.html\" Datei.)"
 
 #: help/documentation.php:31
+#: help/index.php:26
 msgid "Other Resources"
 msgstr "Andere Quellen:"
 
 #: help/documentation.php:33
+#: help/index.php:28
 msgid "<a href=\"http://audacityteam.org/wiki/\">The Audacity Wiki</a> contains tips, tricks, and documentation that anyone can edit."
 msgstr "<a href=\"http://audacityteam.org/wiki/\">Die Audacity Wiki</a> enthält Tipps, Tricks und Dokumentationen die jedermann ändern kann."
 
@@ -2589,7 +2599,7 @@ msgstr "Unterstützt von Google"
 
 #: include/header.inc.php:24
 msgid "Search this site"
-msgstr "Suche"
+msgstr "Durchsuche diese Seite"
 
 #: include/header.inc.php:28
 msgid "Audacity: Free Sound Editor and Recording Software"
