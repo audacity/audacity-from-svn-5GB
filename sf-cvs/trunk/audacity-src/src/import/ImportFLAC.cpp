@@ -14,6 +14,7 @@
 #include "../Audacity.h"
 
 #include "Import.h"
+#include "ImportPlugin.h"
 
 #ifndef USE_LIBFLAC
 
