@@ -105,7 +105,7 @@ Known issues/problems:
 
 Changes in 0.99:
 
-  - Audacity is now stable and fully-functioning on MacOS X
+  - Audacity is now more stable and functional on MacOS X
 
   - "Save Changes" dialog on MacOS and Linux
 
@@ -118,7 +118,7 @@ Changes in 0.99:
 
   - Miscellaneous bug fixes
 
-Changes in 0.98b (Windows-only release):
+Changes in 0.98b (Windows-only bugfix release):
 
   - Fixed "Noise Removal" crash
 
