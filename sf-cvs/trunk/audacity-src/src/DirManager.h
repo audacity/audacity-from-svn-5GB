@@ -54,6 +54,8 @@ class DirManager: public XMLTagHandler {
 
    wxString GetProjectName();
 
+   wxLongLong GetFreeDiskSpace();
+
    BlockFile *NewSimpleBlockFile(samplePtr sampleData, sampleCount sampleLen,
                                  sampleFormat format);
    BlockFile *NewAliasBlockFile( wxString aliasedFile, sampleCount aliasStart,

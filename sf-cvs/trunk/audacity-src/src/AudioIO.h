@@ -75,6 +75,7 @@ class AudioIO {
 
    AudacityProject *GetProject();
    sampleFormat GetFormat();
+   int GetNumRecordingChannels();
 
  private:
 
