@@ -52,6 +52,7 @@
 #define kLeftInset 4
 #define kTopInset 4
 
+
 // Is the distance between A and B less than D?
 template < class A, class B, class DIST > bool within(A a, B b, DIST d)
 {
@@ -284,9 +285,6 @@ void TrackPanel::SetStop(bool bStopped)
 {
    mViewInfo->bIsPlaying = !bStopped;
 
-   
-   // Set the play indicator boolean to false.
-   mPlayIndicatorExists=false;
    
    Refresh(false);
 }
@@ -656,8 +654,6 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       else
          SelectNone();
       
-
-      mPlayIndicatorExists=false;
       Refresh(false);
       
    } else if (event.ButtonUp(1) || event.ButtonUp(3)) {
@@ -670,8 +666,6 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       mViewInfo->sel1 = mTracks->GetEndTime();
       mTracks->Select(mCapturedTrack);
 
-      //Set the playindicator to false so it doesn't get undrawn
-      mPlayIndicatorExists=false;
       Refresh(false);
 
       mCapturedTrack = NULL;
@@ -806,9 +800,6 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
             }
          }
 
-         //Set the playindicator to false so it doesn't get undrawn
-         mPlayIndicatorExists=false;
-
          Refresh(false);
 
 #ifdef __WXMAC__
@@ -914,8 +905,10 @@ void TrackPanel::ForwardEventToEnvelope(wxMouseEvent & event)
       }
    }
 
-   if (needUpdate)
+   if (needUpdate) {
+
       Refresh(false);
+   }
 }
 
 // AS: "Sliding" is when the user is moving a wavetrack's offset.
@@ -1024,9 +1017,6 @@ void TrackPanel::HandleZoom(wxMouseEvent & event)
 
       if (IsDragZooming()){
 
-         //Set the playindicator to false so it doesn't get undrawn
-         mPlayIndicatorExists=false;
-      
          Refresh(false);
 
       }
@@ -1046,8 +1036,6 @@ void TrackPanel::HandleZoom(wxMouseEvent & event)
       mZoomEnd = mZoomStart = 0;
 
       MakeParentRedrawScrollbars();
-      //Set the playindicator to false so it doesn't get undrawn
-      mPlayIndicatorExists=false;
       Refresh(false);
    }
 }
@@ -1152,8 +1140,6 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
 
       mListener->TP_DisplayStatusMessage("", 0);        //STM: Clear message if all tracks are removed
       
-      //Set the playindicator to false so it doesn't get undrawn
-      mPlayIndicatorExists=false;
       Refresh(false);
    }
 }
@@ -1580,8 +1566,6 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
             mCapturedTrack->SetHeight(newTrackHeight);
          }
          
-         //Set the playindicator to false so it doesn't get undrawn
-         mPlayIndicatorExists=false;
          Refresh(false);
       }
       // DM: This happens when the button is released from a drag.
@@ -1618,8 +1602,6 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
          ((LabelTrack *) t)->KeyEvent(mViewInfo->sel0, mViewInfo->sel1,
                                       event);
          
-         //Set the playindicator to false so it doesn't get undrawn
-         mPlayIndicatorExists=false;
          Refresh(false);
          MakeParentPushState("TrackPanel::OnKeyEvent() FIXME!!");
          event.Skip();
@@ -1881,6 +1863,7 @@ void TrackPanel::DrawRulerIndicator(wxDC * dc)
    }
 }
 
+
 //
 // This draws the play indicator as a vertical line on each of the tracks
 //
@@ -1892,35 +1875,51 @@ void TrackPanel::DrawTrackIndicator(wxDC * dc)
    if (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen)) {
       indp = GetLeftOffset() + int ((ind - mViewInfo->h) * mViewInfo->zoom);
  
-      //Only redraw things if the indicator position has changed since the last
-      //time this function was called.  This stops the flickering that can occur
-      //when the view is zoomed waaaaay out.
-      if (indp != mLastIndicator) { 
-         dc->SetPen(*wxWHITE_PEN);
-         dc->SetLogicalFunction(wxXOR);
+         dc->SetPen(*wxBLACK_PEN);
+         dc->SetLogicalFunction(wxINVERT);
+
          
          //Get the size of the trackpanel region, so we know where to redraw
          int width, height;
          GetSize(&width, &height);   
          
          
-         //If an indicator line needs to be erased, do so by redrawing a small
-         // rectangle surrounding it.
-           wxRect r;
-         if(mPlayIndicatorExists)
-            r = wxRect(0,0, indp,height);    //Redraw everything before indicator, just in case
-         else {
-            r = wxRect(mLastIndicator,0,1,height); //Redraw sliver around previous indicator
-            mPlayIndicatorExists = true;
-         }
-         
-         Refresh(false, &r);                // This get rid of the previous indicator
-         
-         dc->DrawLine(indp,0,indp,height);  // This draws the new indicator
-         mLastIndicator=indp;               // This updates the old indicator value to the new indicator position
+
+       
+         int x = indp;
+         int y = -mViewInfo->vpos + GetRulerHeight();
+        
+          
+           if (x >= GetLeftOffset()) {
+            // Draw cursor in all selected tracks
+            TrackListIterator iter(mTracks);
+   
+            
+            // Iterate through each track
+            for (Track * t = iter.First(); t; t = iter.Next()) {
+               int height = t->GetHeight();
+               if ( t->GetKind() != Track::Label) {
+               
+                  //If you are supposed to redraw the indicator, do so:
+                  if(mPlayIndicatorExists) {
+                     dc->DrawLine(mLastIndicator, y + kTopInset + 1, mLastIndicator, y + height - 2);
+                  }
+
+                  //Draw the new indicator in its correct location
+                  dc->DrawLine(x, y + kTopInset + 1, x, y + height - 2);
+               
+               }
+               //Incriment y so you draw on the proper track
+               y += height;
+            }
+
+           }
+           //Set the boolean to true so that things get redrawn next time.
+           mPlayIndicatorExists=true;
+           mLastIndicator=indp;               // This updates the old indicator value to the new indicator position
       
-      }
    }
+  
 }
 
 void TrackPanel::GetCloseBoxRect(const wxRect r, wxRect & dest) const
@@ -1959,6 +1958,21 @@ void TrackPanel::GetTrackControlsRect(const wxRect r, wxRect & dest) const
    dest.y += 18 + kTopInset;
    dest.height -= (24 + kTopInset);
 }
+
+
+//
+// This function overrides Refresh() of wxWindow so that the 
+// boolean play indicator can be set to false, so that an old play indicator that is
+// no longer there won't get  XORed (to erase it), thus redrawing it on the 
+// TrackPanel
+//
+void TrackPanel::Refresh(bool eraseBackground) 
+{
+   mPlayIndicatorExists=false;
+   wxWindow::Refresh(eraseBackground);
+}
+
+
 
 void TrackPanel::DrawCloseBox(wxDC * dc, const wxRect r, bool down)
 {
@@ -2294,6 +2308,7 @@ void TrackPanel::OnSplitStereo()
    MakeParentPushState(wxString::Format(_("Split stereo track '%s'"),
                                         mPopupMenuTarget->GetName().
                                         c_str()));
+
    Refresh(false);
 }
 
@@ -2311,6 +2326,7 @@ void TrackPanel::OnMergeStereo()
                                            c_str()));
    } else
       mPopupMenuTarget->SetLinked(false);
+
    Refresh(false);
 }
 
@@ -2405,6 +2421,7 @@ void TrackPanel::OnRateChange(wxEvent & event)
 
    mPopupMenuTarget = NULL;
    MakeParentRedrawScrollbars();
+
    Refresh(false);
 }
 
@@ -2459,7 +2476,6 @@ void TrackPanel::OnMoveTrack(wxEvent & event)
                                            event.GetId() ==
                                            OnMoveUpID ? _("up") :
                                            _("down")));
-      mPlayIndicatorExists=false;
       Refresh(false);
    }
 }
@@ -2493,6 +2509,7 @@ void TrackPanel::OnSetName()
       MakeParentPushState(wxString::Format(_("Renamed '%s' to '%s'"),
                                            defaultStr.c_str(),
                                            newName.c_str()));
+
       Refresh(false);
    }
 }
