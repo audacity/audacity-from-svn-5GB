@@ -7,14 +7,76 @@ in Audacity.
 Known bugs to fix:
 -----------------------------------------------------------
 
-- Zoom tool shouldn't change selection
-- Scrolling with the zoom tool shouldn't zoom.
-- Closing a project window should throw away all blockfiles
-  other than the ones in the last saved version.  (Implement
-  this in conjunction with save changes dialogs.)
-- Save As... for a project should work.
-- Record at other than 44100 Hz (on Mac only?)
-- Find VST folder on startup
+- NoiseRemoval crashes (Windows only?)
+- Problems recording at other than 44100 Hz on Mac
+- Recording at a rate other than 44100 works, but the
+  track created has the wrong rate in its label
+- Compile id3lib for Windows version
+- pthread_yield -> sched_yield (or rewrite to not
+  require yielding)
+- Fix id3lib compilation problems on Linux
+- Freeze when opening Prefs panel on MacOS 8.6
+- Exporting using LAME does incorrect sample rate,
+  or incorrect # of channels?  Maybe only with certain
+  versions of LAME?
+- Core dump when doing long recordings on Linux
+- ID3 genre list doesn't fit in the window on Linux/GTK
+- Fix underflow problems when recording (as much as
+  possible) and try to report them if not
+- When importing a filename with a period in it,
+  it gets truncated early.
+- "New..." should be "New"
+- Menu bar does not function when Prefs dialog is
+  in front on MacOS
+- Get rid of any "exit()" calls in snd/ or other
+  libraries
+- Use latest FreeVerb (3.0)
+
+-----------------------------------------------------------
+Possible bugs to investigate:
+-----------------------------------------------------------
+
+- Audacity is unstable when working with very large files
+- Possible memory leak in Windows 98 (???)
+  See emails from degarb@softhome.net
+- Typing in the root directory as the Temp Files path
+  doesn't work (on Mac OS X)?
+- Problem reading AIFF files on Mac OS X?
+  (Private email from Tobias Jeger - the attached
+	AIFF file worked fine under Linux)
+- Does "make install" create all of the directories
+  it wants to installs into
+
+-----------------------------------------------------------
+Fixed, need to port:
+-----------------------------------------------------------
+
+- Single instance checker (added to MSW only of 0.9
+  branch, need to port to HEAD)
+- Change menu item when you change export format
+  (need to port to HEAD)
+- Find VST folder on startup (need to port to HEAD)
+
+-----------------------------------------------------------
+Fixed:
+-----------------------------------------------------------
+
+- Copy and Paste between projects
+- Temp directory in Prefs dialog should have a "Chooose..."
+  button to let you select a directory with a standard
+  file dialog.
+- RPM dependency is wrong - it should depend on:
+  libwx_gtk-2.2.so.6, not libwx_gtk.so
+  # Necessary for building the package: rpm -ba
+    BuildRequires:	wxGTK >= [version number if required]i 
+  # Necessary for installing the package: rpm -ivh
+    Requires:	wxGTK >= [version number if required]
+- Clicking close box only deletes one track of
+  stereo pair
+- Audacity "forgets" tracks' channels when saving/loading
+- Needs to handle temp directory better - bring up a
+  dialog if it's not there...
+- Undoing an envelope edit sometimes causes problems
 - Recording/Playback devices backwards on Windows
 - Need to have a warning when you write over a file the
   project depends on - and an option to rename the file
@@ -23,49 +85,18 @@ Known bugs to fix:
   current rate.  Sometimes 0, sometimes junk.
   (Note that there are two of these dialogs.)
 - Better aRts support (or at least a warning???)
-- Device prefs in Mac OS X
-- Clicking close box only deletes one track of
-  stereo pair
-- Audacity "forgets" tracks' channels when saving/loading
-- Needs to handle temp directory better - bring up a
-  dialog if it's not there...
-- Undoing an envelope edit sometimes causes problems
-- Recording at a rate other than 44100 works, but the
-  track created has the wrong rate in its label
-- RPM dependency is wrong - it should depend on:
-  libwx_gtk-2.2.so.6, not libwx_gtk.so
-  # Necessary for building the package: rpm -ba
-    BuildRequires:	wxGTK >= [version number if required]i 
-  # Necessary for installing the package: rpm -ivh
-    Requires:	wxGTK >= [version number if required]
-- make install should create directories it installs into
-
------------------------------------------------------------
-Possible bugs to investigate:
------------------------------------------------------------
-
-- Single instance checker?
-- Possible memory leak in Windows 98 (???)
-  See emails from degarb@softhome.net
-- Typing in the root directory as the Temp Files path
-  doesn't work (on Mac OS X)?
-- Problem reading AIFF files on Mac OS X?
-  (Private email from Tobias Jeger - the attached
-	AIFF file worked fine under Linux)
-- Insert silence crashes Mac OS X
-
------------------------------------------------------------
-Fixed:
------------------------------------------------------------
-
+- Zoom tool shouldn't change selection
+- Scrolling with the zoom tool shouldn't zoom.
+- Closing a project window should throw away all blockfiles
+  other than the ones in the last saved version.  (Implement
+  this in conjunction with save changes dialogs.)
+- Save As... for a project should work.
 - Bug fixed: each track's channel was not being saved
   in the project file.
   (Was: stereo "linked" track that's really two mono tracks,
    Check upon opening project)
-
 - Bug fixed: Must warn user if temp directory can't be created
   Now checks on startup and opens Prefs Dialog for user to fix.
-
 - Bug fixed: Duplicate track doesn't work if track is shifted
   past zero.  Track selection and copying are now more aware
   of offsets.

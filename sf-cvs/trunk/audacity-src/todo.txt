@@ -5,23 +5,43 @@ requests and plans, and organize them by which
 release they're going in.
 
 -----------------------------------------------------------
-Unit tests:
+Website / Sourceforge
 -----------------------------------------------------------
 
-- Need to test that block size does remain constrained
-  even with lots of edits in one place.
-  (al la email from Peter Peterson)
+- Get announcement list running
+- Instructions for LAMELib or .sit archive
+- Upload some icons for people to use with
+  KDE, GNOME, WindowMaker, AfterStep, BlackBox...
+- Note on website that Audacity is incompatible
+  with Norton Protected Recycle Bin (see email
+  from Josef Ravenscroft)
+
+-----------------------------------------------------------
+1.0 / Audacity 0.9 branch
+-----------------------------------------------------------
+
+- Address all bugs in "bugs.txt"
+- Add more keyboard shortcuts and "nudge" commands
+- Backport "Save Changes?" dialog
+
+-----------------------------------------------------------
+1.1.1 / HEAD
+-----------------------------------------------------------
+
+Unit tests:
 - Need to verify that the new 1.0 mixing code plays every
   sample one and only once.
 
------------------------------------------------------------
-1.0 (required):
------------------------------------------------------------
+Audio:
+- Multiple sample formats (16-bit, float as a minimum)
+- Choice of dither
+- Pre-roll and post-roll: amount to play before and after
+  a selection (see DG Malham email)
 
 UI::
-- Create a proper icon (on Windows) instead of using
-  AudacityLogo.xpm
-- Save changes? dialog
+- While playing, click in ruler to change playback
+  position
+- Remember window size and position
 - Import... should be able to import Audacity projects
   and Audacity project files
 - Crash recovery
@@ -30,83 +50,65 @@ UI::
 - Make "Exit program upon closing last window" an option
   in the Preferences.  (The alternative would be to create
   a new empty project when you close the last window.)
-- better ruler, both for time (horizontally) and magnitude/pitch (vertical)
 - Out of disk space checks
-
------------------------------------------------------------
-1.2:
------------------------------------------------------------
-
-UI::
-- Undo shouldn't change the selection, but two Undos should...
-- Edit markers
-- Roger's Allegro stuff
-- Finish history window
-- ability to drag tracks instead of move down, move down, move down
-- "Fit in window" also works vertically
-- auto-fit on open (configurable?)
-- right-click capabilities
-- loop over a small segment
-- better adaptation to different font sizes (sizers)
-- move to lossless compression (FLAC?) for internal representation
-- Pan control for each track
-- Volume control for each track
-- add "trim" (= opposite of delete -- delete all but selection)
-- invert selection (for now, until we allow discontiguous selections,
+- Nudge selection with arrow keys
+- Make all keyboard shortcuts configurable
+- Make colors configurable
+- Select dialog box ("1.5 - 3.0 seconds")
+- Show selection (i.e. zoom such that the selection fits)
+- Select to end
+- Select to start
+- Invert selection (for now, until we allow discontiguous selections,
                     this should mean two options: select up to selection,
                     and select after selection)
-- legend for pitch and spectrum
-- resampling
-- History window, with ability to throw away undo information to
-  save disk space
+- Zero Crossings (nudge selection to nearest ZC's)
+- Finish history window
+- Vertical zooming
+- Pan control for each track
+- Volume control for each track
+- Trim (= opposite of delete -- delete all but selection)
 - Autoscrolling during playback (and recording?)
 - Vertical bar indicating playback/recording position, too
-- Rewritten Import Raw Data...
+- Add high-quality resampling
+- Legend (Ruler) for pitch and spectrum
+- Recognize .mp2, .mpg, .mpeg as libmad-capable files
+- Plug-ins should be split into many separate menus on Linux/GTK
+  (if you have lots of them)
+- How about a key to "jump left 5 seconds" -- allowing you to
+  find a pop/click easily
 
-Audio I/O::
-- move to portaudio
-- move to libsndfile
-- import/export ogg vorbis everywhere
+Import/Export
+- Import latest libsndfile; finish exporting code
+- Rewrite the Import Raw Data... code
+- Command-line LAME exporting
 
 Effects::
 - Smart Mix (like Quick Mix but guarantees no clipping)
 - Cross-fade (smooth between two tracks)
 - Compressor/Limiter/Expander
 - Native port of Freeverb (ideally optimized)
-
-UI::
-- make colors configurable
-- allow labels to contain selections, which would be activated by clicking
-  on the label
-- invert selection (i.e. allow discontiguous selection)
-
-New features::
-- visualization window: VU meters, equalizer, continuous waveform, oscilloscope
 - EQ
-
-Low level issues::
-- support more sample sizes, allow conversion
-- support multi-track I/O
-- support an arbitrary number of channels
-- Make projects one big file
+- Auto find track boundaries
+- Pop/click removal
 
 -----------------------------------------------------------
 Future:
 -----------------------------------------------------------
 
+- Edit markers
+- Ability to drag tracks instead of move down, move down, move down
+- "Fit in window" also works vertically
+- Loops
+- Better adaptation to different font sizes (sizers)
+- Move to lossless compression (FLAC?) for internal representation
+- allow labels to contain selections, which would be activated by clicking
+  on the label
+- discontiguous selection
+- visualization window: VU meters, equalizer, continuous waveform, oscilloscope
 - Scrubbing
 
------------------------------------------------------------
-Already done:
------------------------------------------------------------
+Low level issues::
+- support multi-track I/O
+- support an arbitrary number of channels
+- Make projects one big file
 
-- When the user exports, for example, a WAV file, but
-  they don't type the WAV extension, it should add it
-  for them.  (If they type a DIFFERENT extension, it
-  should leave it alone.)
-
-- Automatic approximate resampling, if two tracks are at
-  different sample rates but are supposed to be played
-  together
-
-- Noise reduction (this is the most requested effect)
