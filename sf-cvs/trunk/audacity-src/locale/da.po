@@ -2,11 +2,11 @@
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../src/ToolBar.cpp:430 ../src/prefs/KeyConfigPrefs.cpp:151
+#: ../src/ToolBar.cpp:503 ../src/prefs/KeyConfigPrefs.cpp:153
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.1\n"
-"POT-Creation-Date: 2002-09-20 23:21-0700\n"
+"POT-Creation-Date: 2002-11-06 00:01-0800\n"
 "PO-Revision-Date: 2002-07-03 23:15+0100\n"
 "Last-Translator: Henrik Ræder Clausen <henrik@fangorn.dk>\n"
 "Language-Team: Dansk <da@li.org>\n"
@@ -24,11 +24,11 @@ msgstr "      Spor: %d\n"
 msgid "  Mix length: %f sec\n"
 msgstr "  Mixlængde: %f sek\n"
 
-#: ../src/widgets/AButton.cpp:128
+#: ../src/widgets/AButton.cpp:133
 msgid " (disabled)"
 msgstr " (frakoblet)"
 
-#: ../src/Project.cpp:1637
+#: ../src/Project.cpp:1646
 #, fuzzy
 msgid " File..."
 msgstr "FFT Filter..."
@@ -43,99 +43,95 @@ msgstr " Enorm!  "
 msgid " window"
 msgstr " vindue"
 
-#: ../src/Menus.cpp:105
+#: ../src/Menus.cpp:108
 msgid "&Analyze"
 msgstr ""
 
-#: ../src/commands.h:197
+#: ../src/commands.h:215
 msgid "&Close"
 msgstr "&Luk"
 
-#: ../src/commands.h:231
+#: ../src/commands.h:249
 msgid "&Delete"
 msgstr "&Slet"
 
-#: ../src/Menus.cpp:100 ../src/Menus.cpp:124
+#: ../src/Menus.cpp:103 ../src/Menus.cpp:127
 msgid "&Edit"
 msgstr "&Rediger"
 
-#: ../src/commands.h:186 ../src/prefs/FileFormatPrefs.cpp:338
+#: ../src/commands.h:204 ../src/prefs/FileFormatPrefs.cpp:341
 #, c-format
 msgid "&Export as %s..."
 msgstr "&Eksporter som %s..."
 
-#: ../src/Menus.cpp:99 ../src/Menus.cpp:123
+#: ../src/Menus.cpp:102 ../src/Menus.cpp:126
 msgid "&File"
 msgstr "&Fil"
 
-#: ../src/commands.h:247
+#: ../src/commands.h:266
 msgid "&Fit in Window"
 msgstr "&Tilpas til vinduet"
 
-#: ../src/Menus.cpp:106 ../src/Menus.cpp:127
+#: ../src/Menus.cpp:106
+#, fuzzy
+msgid "&Generate"
+msgstr "Laver tone"
+
+#: ../src/Menus.cpp:109 ../src/Menus.cpp:130
 msgid "&Help"
 msgstr "&Hjaelp"
 
-#: ../src/commands.h:261
+#: ../src/commands.h:280
 msgid "&Import Audio..."
 msgstr "&Importér lyddata"
 
-#: ../src/Menus.cpp:103
-#, fuzzy
-msgid "&Insert"
-msgstr "Omvend"
-
-#: ../src/commands.h:235
-msgid "&Insert Silence..."
-msgstr "&Indsæt stilhed..."
-
 # Depends on context.
-#: ../src/commands.h:195
+#: ../src/commands.h:213
 msgid "&New"
 msgstr "&Ny(t)"
 
-#: ../src/commands.h:196
+#: ../src/commands.h:214
 msgid "&Open..."
 msgstr "&Åbn..."
 
-#: ../src/commands.h:214
+#: ../src/commands.h:232
 msgid "&Preferences..."
 msgstr "&Indstillinger"
 
-#: ../src/Menus.cpp:102 ../src/Menus.cpp:126
+#: ../src/Menus.cpp:105 ../src/Menus.cpp:129
 msgid "&Project"
 msgstr "&Projekt"
 
-#: ../src/commands.h:271
+#: ../src/commands.h:290
 msgid "&Quick Mix"
 msgstr "&Hurtigmix"
 
-#: ../src/commands.h:222
+#: ../src/commands.h:240
 msgid "&Redo"
 msgstr "&Gentag"
 
 # Note: 'spor' is singularis *and* pluralis in Danish.
-#: ../src/commands.h:310
+#: ../src/commands.h:297
 msgid "&Remove Track(s)"
 msgstr "&Fjern spor"
 
-#: ../src/commands.h:198
+#: ../src/commands.h:216
 msgid "&Save Project"
 msgstr "&Gem projekt"
 
-#: ../src/commands.h:232
+#: ../src/commands.h:250
 msgid "&Silence"
 msgstr "&Stilhed"
 
-#: ../src/commands.h:228
+#: ../src/commands.h:246
 msgid "&Trim"
 msgstr "&Beskær"
 
-#: ../src/Menus.cpp:101 ../src/Menus.cpp:125
+#: ../src/Menus.cpp:104 ../src/Menus.cpp:128
 msgid "&View"
 msgstr "&Visning"
 
-#: ../src/prefs/FileFormatPrefs.cpp:399
+#: ../src/prefs/FileFormatPrefs.cpp:404
 #, fuzzy
 msgid ""
 "(Not all combinations of headers\n"
@@ -246,15 +242,15 @@ msgstr "unsigned PCM"
 msgid "A New Digital Audio Editor"
 msgstr "Et nyt digitalt lydredigeringsprogram"
 
-#: ../src/commands.h:313
+#: ../src/commands.h:335
 msgid "About Audacity"
 msgstr "Om Audacity"
 
-#: ../src/AboutDialog.cpp:68 ../src/commands.h:313
+#: ../src/AboutDialog.cpp:68 ../src/commands.h:335
 msgid "About Audacity..."
 msgstr "Om Audacity..."
 
-#: ../src/effects/AvcCompressor.cpp:458
+#: ../src/effects/AvcCompressor.cpp:613
 #, c-format
 msgid ""
 "Above values are in samples.\n"
@@ -271,24 +267,29 @@ msgid ""
 "7/21/02: WAV and MP3 files both work."
 msgstr ""
 
-#: ../src/HistoryWindow.cpp:60
+#: ../src/HistoryWindow.cpp:61
 msgid "Action"
 msgstr "Handling"
 
-#: ../src/prefs/KeyConfigPrefs.cpp:112
+#: ../src/prefs/KeyConfigPrefs.cpp:114
 msgid "Add"
 msgstr "Tilføj"
 
-#: ../src/TrackPanel.cpp:922
+#: ../src/TrackPanel.cpp:937
 msgid "Adjusted envelope."
 msgstr "Justerede konvolut."
 
-#: ../src/effects/AvcCompressor.cpp:399
+#: ../src/effects/AvcCompressor.cpp:571
+#, fuzzy
+msgid "Adjustment Delay:"
+msgstr "Ladspa effektindstillinger"
+
+#: ../src/effects/AvcCompressor.cpp:554
 #, fuzzy
 msgid "Adjustment Settings"
 msgstr "Ladspa effektindstillinger"
 
-#: ../src/effects/AvcCompressor.cpp:404
+#: ../src/effects/AvcCompressor.cpp:559
 msgid "Adjustment Window:"
 msgstr ""
 
@@ -296,152 +297,161 @@ msgstr ""
 msgid "Album:"
 msgstr "Album:"
 
-#: ../src/AboutDialog.cpp:189
+#: ../src/AboutDialog.cpp:201
 msgid "Algorithms, MIDI & Audio I/O programming"
 msgstr "Algoritmer, MIDI og Audio I/O programmering"
 
-#: ../src/commands.h:291
+#: ../src/commands.h:332
+msgid "Align"
+msgstr ""
+
+#: ../src/commands.h:318
 #, fuzzy
 msgid "Align End with Cursor"
 msgstr "Sammensat med nul"
 
-#: ../src/commands.h:293
+#: ../src/commands.h:320
 #, fuzzy
 msgid "Align End with Selection End"
 msgstr "Sammensat med nul"
 
-#: ../src/commands.h:292
+#: ../src/commands.h:319
 msgid "Align End with Selection Start"
 msgstr ""
 
-#: ../src/commands.h:301
+#: ../src/commands.h:328
 #, fuzzy
 msgid "Align Group End with Cursor"
 msgstr "Sammensat med nul"
 
-#: ../src/commands.h:303
+#: ../src/commands.h:330
 msgid "Align Group End with Selection End"
 msgstr ""
 
-#: ../src/commands.h:302
+#: ../src/commands.h:329
 msgid "Align Group End with Selection Start"
 msgstr ""
 
-#: ../src/commands.h:296
+#: ../src/commands.h:323
 #, fuzzy
 msgid "Align Group with Cursor"
 msgstr "Sammensæt med nul"
 
-#: ../src/commands.h:298
+#: ../src/commands.h:325
 msgid "Align Group with Selection End"
 msgstr ""
 
-#: ../src/commands.h:297
+#: ../src/commands.h:324
 msgid "Align Group with Selection Start"
 msgstr ""
 
 # Bedre glose end 'sammensæt' ville være godt.
-#: ../src/commands.h:284
+#: ../src/commands.h:311
 #, fuzzy
 msgid "Align Tracks &Together"
 msgstr "Sammensæt &spor"
 
-#: ../src/commands.h:284
+#: ../src/commands.h:311
 #, fuzzy
 msgid "Align Tracks Together"
 msgstr "Sammensæt spor"
 
-#: ../src/commands.h:286
+#: ../src/commands.h:313
 #, fuzzy
 msgid "Align with &Cursor"
 msgstr "Sammensæt med &nul"
 
-#: ../src/commands.h:285
+#: ../src/commands.h:312
 #, fuzzy
 msgid "Align with &Zero"
 msgstr "Sammensæt med &nul"
 
-#: ../src/commands.h:286
+#: ../src/commands.h:313
 #, fuzzy
 msgid "Align with Cursor"
 msgstr "Sammensæt med nul"
 
-#: ../src/commands.h:288
+#: ../src/commands.h:315
 #, fuzzy
 msgid "Align with Selection &End"
 msgstr "Sammensæt med nul"
 
-#: ../src/commands.h:287
+#: ../src/commands.h:314
 #, fuzzy
 msgid "Align with Selection &Start"
 msgstr "Sammensæt med nul"
 
-#: ../src/commands.h:288
+#: ../src/commands.h:315
 #, fuzzy
 msgid "Align with Selection End"
 msgstr "Sammensæt med nul"
 
-#: ../src/commands.h:287
+#: ../src/commands.h:314
 #, fuzzy
 msgid "Align with Selection Start"
 msgstr "Sammensæt med nul"
 
-#: ../src/commands.h:285
+#: ../src/commands.h:312
 #, fuzzy
 msgid "Align with Zero"
 msgstr "Sammensæt med nul"
 
-#: ../src/Menus.cpp:1745
+#: ../src/commands.h:332
+#, fuzzy
+msgid "Align..."
+msgstr "Forstærk..."
+
+#: ../src/Menus.cpp:1793
 #, fuzzy
 msgid "Aligned end with sel0"
 msgstr "Sammensat med nul"
 
-#: ../src/Menus.cpp:1765
+#: ../src/Menus.cpp:1813
 #, fuzzy
 msgid "Aligned end with sel1"
 msgstr "Sammensat med nul"
 
-#: ../src/Menus.cpp:1881 ../src/Menus.cpp:1921
+#: ../src/Menus.cpp:1929 ../src/Menus.cpp:1969
 #, fuzzy
 msgid "Aligned group end with sel0"
 msgstr "Sammensat med nul"
 
-#: ../src/Menus.cpp:1803
+#: ../src/Menus.cpp:1851
 #, fuzzy
 msgid "Aligned group with sel0"
 msgstr "Sammensat med nul"
 
-#: ../src/Menus.cpp:1841
+#: ../src/Menus.cpp:1889
 #, fuzzy
 msgid "Aligned group with sel1"
 msgstr "Sammensat med nul"
 
 # Bøjningen er problematisk.
-#: ../src/Menus.cpp:1689
+#: ../src/Menus.cpp:1737
 #, fuzzy
 msgid "Aligned tracks"
 msgstr "Sammensatte spor"
 
-#: ../src/Menus.cpp:1707
+#: ../src/Menus.cpp:1755
 #, fuzzy
 msgid "Aligned with sel0"
 msgstr "Sammensat med nul"
 
-#: ../src/Menus.cpp:1725
+#: ../src/Menus.cpp:1773
 #, fuzzy
 msgid "Aligned with sel1"
 msgstr "Sammensat med nul"
 
-#: ../src/Menus.cpp:1653
+#: ../src/Menus.cpp:1701
 #, fuzzy
 msgid "Aligned with zero"
 msgstr "Sammensat med nul"
 
-#: ../src/Menus.cpp:1509
+#: ../src/Menus.cpp:1557
 msgid "All files (*.*)|*.*"
 msgstr "Alle filer (*.*)|*.*"
 
-#: ../src/Project.cpp:1174
+#: ../src/Project.cpp:1183
 msgid ""
 "All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files "
 "(*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|IRCAM files "
@@ -451,13 +461,13 @@ msgstr ""
 "(*.wav)|*.wav|AIFF filer (*.aif)|*.aif|AU filer (*.au)|*.au|IRCAM filer "
 "(*.snd)|*.snd|MP3 filer (*.mp3)|*.mp3"
 
-#: ../src/Menus.cpp:1473
+#: ../src/Menus.cpp:1521
 msgid ""
 "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
 msgstr ""
 "Alle filer (*.*)|*.*|MIDI filer (*.mid)|*.mid|Allegro filer (*.gro)|*.gro"
 
-#: ../src/Menus.cpp:1406
+#: ../src/Menus.cpp:1454
 msgid ""
 "All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU "
 "files (*.au)|*.au|IRCAM files (*.snd)|*.snd|MP3 files (*.mp3)|*.mp3|Ogg "
@@ -471,20 +481,20 @@ msgstr ""
 msgid "Amiga IFF/SVX8/SV16"
 msgstr "Amiga IFF/SVX8/SV16"
 
-#: ../src/effects/Amplify.cpp:300
+#: ../src/effects/Amplify.cpp:306
 msgid "Amplification (dB):"
 msgstr "Forstærkning (db):"
 
-#: ../src/effects/AvcCompressor.cpp:476
+#: ../src/effects/AvcCompressor.cpp:631
 #, fuzzy
 msgid "Amplification Settings"
 msgstr "Forstærkning (db):"
 
-#: ../src/effects/Amplify.cpp:55
+#: ../src/effects/Amplify.cpp:61
 msgid "Amplify"
 msgstr "Forstærk"
 
-#: ../src/effects/Amplify.cpp:290
+#: ../src/effects/Amplify.cpp:296
 msgid "Amplify by Dominic Mazzoni"
 msgstr "Forstærk af Dominic Mazzoni"
 
@@ -496,7 +506,7 @@ msgstr "Forstærk..."
 msgid "Amplifying"
 msgstr "Forstærker"
 
-#: ../src/effects/ToneGen.cpp:265
+#: ../src/effects/ToneGen.cpp:306
 msgid "Amplitude (0-1)"
 msgstr "Styrke (0-1):"
 
@@ -504,11 +514,58 @@ msgstr "Styrke (0-1):"
 msgid "Apple/SGI AIFF"
 msgstr "Apple/SGI AIFF"
 
-#: ../src/Project.cpp:792
-msgid "Applied an effect."
+#: ../src/effects/Effect.h:84
+#, fuzzy, c-format
+msgid "Applied effect: %s"
 msgstr "Effekt anvendt."
 
-#: ../src/effects/nyquist/Nyquist.cpp:140
+#: ../src/effects/Amplify.cpp:32
+#, fuzzy, c-format
+msgid "Applied effect: %s %.1f dB"
+msgstr "Effekt anvendt."
+
+#: ../src/effects/Phaser.cpp:46
+msgid ""
+"Applied effect: %s %d stages, %.0f%% wet, frequency = %.1f Hz, start phase = "
+"%.0f deg, depth = %d, feedback = %.0f%%"
+msgstr ""
+
+#: ../src/effects/AvcCompressor.cpp:86
+#, c-format
+msgid "Applied effect: %s change window = %d samples"
+msgstr ""
+
+#: ../src/effects/Echo.cpp:26
+#, c-format
+msgid "Applied effect: %s delay = %f seconds, decay factor = %f"
+msgstr ""
+
+#: ../src/effects/BassBoost.cpp:35
+#, c-format
+msgid "Applied effect: %s frequency = %.0f Hz, boost = %.0f dB"
+msgstr ""
+
+#: ../src/effects/Wahwah.cpp:40
+msgid ""
+"Applied effect: %s frequency = %.1f Hz, start phase = %.0f deg, depth = "
+"%.0f%%, resonance = %.1f, frequency offset = %.0f%%"
+msgstr ""
+
+#: ../src/effects/ToneGen.cpp:32
+#, c-format
+msgid ""
+"Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f"
+msgstr ""
+
+#: ../src/effects/Silence.h:36
+msgid "Applied effect: Generate Silence"
+msgstr ""
+
+#: ../src/effects/Noise.h:31
+msgid "Applied effect: Generate White Noise"
+msgstr ""
+
+#: ../src/effects/nyquist/Nyquist.cpp:142
 #, fuzzy
 msgid "Appling Nyquist Effect..."
 msgstr "Effekt anvendt."
@@ -521,7 +578,7 @@ msgstr "Anvender Phaser"
 msgid "Applying Wahwah"
 msgstr "Anvender Wahwah"
 
-#: ../src/AboutDialog.cpp:185
+#: ../src/AboutDialog.cpp:197
 msgid "Aqua Graphics (MacOS)"
 msgstr "Aqua grafik (MacOS)"
 
@@ -529,7 +586,7 @@ msgstr "Aqua grafik (MacOS)"
 msgid "Artist:"
 msgstr "Kunstner:"
 
-#: ../src/prefs/KeyConfigPrefs.cpp:119
+#: ../src/prefs/KeyConfigPrefs.cpp:121
 msgid "Assign Defaults"
 msgstr "Sæt standardværdier"
 
@@ -543,11 +600,11 @@ msgstr ""
 "antal spor, der kan spilles samtidig: %.1f\n"
 
 # This pun is of course untranslateable. I put 'Excellent' instead.
-#: ../src/AboutDialog.cpp:237
+#: ../src/AboutDialog.cpp:251
 msgid "Audacious!"
 msgstr "Glimrende!"
 
-#: ../src/ControlToolBar.cpp:113
+#: ../src/ControlToolBar.cpp:117
 msgid "Audacity Control Toolbar"
 msgstr "Audacity kontrolværktøjer"
 
@@ -559,7 +616,7 @@ msgstr ""
 msgid "Audacity Preferences"
 msgstr "Audacity indstillinger"
 
-#: ../src/DirManager.cpp:88
+#: ../src/DirManager.cpp:84
 msgid ""
 "Audacity could not find a place to store temporary files.\n"
 "Please enter an appropriate directory in the preferences dialog."
@@ -636,7 +693,7 @@ msgstr ""
 "Programmet er baseret på værktøjssættet wxWindows og findes i udgaver til "
 "Windows, MacOS, Linux og andre former af Unix."
 
-#: ../src/DirManager.cpp:97
+#: ../src/DirManager.cpp:93
 msgid ""
 "Audacity is now going to exit.  Please launch Audacity again to use the new "
 "temporary directory."
@@ -644,7 +701,7 @@ msgstr ""
 "Audacity vil lukke nu. Start Audacity igen for at bruge den nye midlertidige "
 "mappe."
 
-#: ../src/Project.cpp:1723
+#: ../src/Project.cpp:1732
 msgid "Audacity projects (*.aup)|*.aup"
 msgstr "Audacity projekter (*.aup)|*.aup"
 
@@ -669,15 +726,15 @@ msgstr "Lydspor"
 msgid "Author: "
 msgstr "Forfatter:"
 
-#: ../src/effects/AvcCompressor.cpp:83
+#: ../src/effects/AvcCompressor.cpp:114
 msgid "Automatic Volume Control"
 msgstr ""
 
-#: ../src/effects/AvcCompressor.cpp:386
+#: ../src/effects/AvcCompressor.cpp:541
 msgid "Automatic Volume Control by Vincent A. Busam"
 msgstr ""
 
-#: ../src/effects/AvcCompressor.h:56
+#: ../src/effects/AvcCompressor.h:66
 msgid "Automatic Volume Control..."
 msgstr ""
 
@@ -685,20 +742,16 @@ msgstr ""
 msgid "Autoscroll while playing"
 msgstr "Automatisk rulning under afspilning"
 
-#: ../src/Menus.cpp:1132 ../src/Menus.cpp:1136
-msgid "Bad number of seconds."
-msgstr "Ugyldigt antal sekunder."
-
 #: ../src/Benchmark.cpp:460
 #, c-format
 msgid "Bad: block %d sample %d\n"
 msgstr "Ugyldig: blok %d punkt %d\n"
 
-#: ../src/effects/BassBoost.cpp:62
+#: ../src/effects/BassBoost.cpp:68
 msgid "BassBoost"
 msgstr "BasBoost"
 
-#: ../src/effects/BassBoost.cpp:259
+#: ../src/effects/BassBoost.cpp:265
 msgid "BassBoost by Nasca Octavian Paul"
 msgstr "BasBoost af Nasca Octavian Paul"
 
@@ -722,7 +775,7 @@ msgstr "Bitrate:"
 msgid "Block size should be in the range 1 - 1024 KB."
 msgstr "Blokstørrelsen skal ligge i intervallet 1 - 1024 KB."
 
-#: ../src/effects/BassBoost.cpp:282
+#: ../src/effects/BassBoost.cpp:288
 msgid "Boost (dB):"
 msgstr "Løft (dB):"
 
@@ -730,13 +783,13 @@ msgstr "Løft (dB):"
 msgid "Boosting Bass Frequencies"
 msgstr "Løfter basfrekvenser"
 
-#: ../src/Tags.cpp:606 ../src/effects/Amplify.cpp:350
-#: ../src/effects/AvcCompressor.cpp:549 ../src/effects/BassBoost.cpp:309
-#: ../src/effects/Filter.cpp:443 ../src/effects/Phaser.cpp:525
-#: ../src/effects/ToneGen.cpp:303 ../src/effects/Wahwah.cpp:517
+#: ../src/Tags.cpp:606 ../src/effects/Amplify.cpp:356
+#: ../src/effects/AvcCompressor.cpp:704 ../src/effects/BassBoost.cpp:315
+#: ../src/effects/Filter.cpp:443 ../src/effects/Phaser.cpp:537
+#: ../src/effects/ToneGen.cpp:346 ../src/effects/Wahwah.cpp:528
 #: ../src/effects/ladspa/LadspaEffect.cpp:448
-#: ../src/effects/nyquist/Nyquist.cpp:566 ../src/import/ImportRaw.cpp:907
-#: ../src/prefs/FileFormatPrefs.cpp:458 ../src/prefs/PrefsDialog.cpp:97
+#: ../src/effects/nyquist/Nyquist.cpp:568 ../src/import/ImportRaw.cpp:907
+#: ../src/prefs/FileFormatPrefs.cpp:463 ../src/prefs/PrefsDialog.cpp:97
 msgid "Cancel"
 msgstr "Afbryd"
 
@@ -755,32 +808,32 @@ msgstr "Kan ikke eksportere lyd til %s"
 msgid "Cepstrum"
 msgstr "Cepstrum"
 
-#: ../src/TrackPanel.cpp:2872
+#: ../src/TrackPanel.cpp:2909
 msgid "Change track name to:"
 msgstr "Skift sporets navn til:"
 
-#: ../src/effects/AvcCompressor.cpp:291
+#: ../src/effects/AvcCompressor.cpp:388
 msgid ""
 "Change window size must be less than or equal to Adjustment window size."
 msgstr ""
 
-#: ../src/TrackPanel.cpp:2683
+#: ../src/TrackPanel.cpp:2701
 #, c-format
 msgid "Changed '%s' to %d Hz"
 msgstr "Ændrede '%s' til %d Hz"
 
-#: ../src/TrackPanel.cpp:2614 ../src/TrackPanel.cpp:2761
+#: ../src/TrackPanel.cpp:2632 ../src/TrackPanel.cpp:2798
 #, c-format
 msgid "Changed '%s' to %s"
 msgstr "Ændrede '%s' til %s"
 
-#: ../src/TrackPanel.cpp:2666
+#: ../src/TrackPanel.cpp:2684
 #, c-format
 msgid "Changed '%s' to %s display"
 msgstr "Ændrede '%s' til %s visning"
 
-#: ../src/TrackPanel.cpp:723 ../src/TrackPanel.cpp:740
-#: ../src/TrackPanel.cpp:1688
+#: ../src/TrackPanel.cpp:738 ../src/TrackPanel.cpp:755
+#: ../src/TrackPanel.cpp:1706
 msgid "Changed Selection Region"
 msgstr ""
 
@@ -792,7 +845,7 @@ msgstr ""
 "Ændringen af den midlertidige mappe træder først i kraft, når Audacity "
 "starter næste gang."
 
-#: ../src/effects/AvcCompressor.h:60
+#: ../src/effects/AvcCompressor.h:70
 msgid "Changing volume"
 msgstr ""
 
@@ -830,49 +883,49 @@ msgid "Cleaning up temporary files..."
 msgstr "Sletter midlertidige filer..."
 
 #: ../src/Benchmark.cpp:213 ../src/effects/Filter.cpp:434
-#: ../src/prefs/KeyConfigPrefs.cpp:97
+#: ../src/prefs/KeyConfigPrefs.cpp:99
 msgid "Clear"
 msgstr "Slet"
 
-#: ../src/TrackPanel.cpp:680
+#: ../src/TrackPanel.cpp:695
 msgid "Click and drag to adjust relative size of stereo tracks."
 msgstr "Klik og træk for at ændre relativ størrelse på begge spor"
 
 # Ikke sikker på denne.
-#: ../src/TrackPanel.cpp:564
+#: ../src/TrackPanel.cpp:579
 msgid "Click and drag to edit the amplitude envelope"
 msgstr "Klik og træk for at redigere styrke-konvolutten"
 
 # Ikke sikker på denne.
-#: ../src/TrackPanel.cpp:573
+#: ../src/TrackPanel.cpp:588
 msgid "Click and drag to edit the samples"
 msgstr "Klik og træk for at redigere samplerne"
 
-#: ../src/TrackPanel.cpp:565
+#: ../src/TrackPanel.cpp:580
 msgid "Click and drag to move a track in time"
 msgstr "Klik og træk for at flytte et spor langs tidsaksen"
 
-#: ../src/TrackPanel.cpp:649
+#: ../src/TrackPanel.cpp:664
 msgid "Click and drag to move left selection boundary."
 msgstr "Klik og træk for at flytte venstre markeringsgrænse."
 
-#: ../src/TrackPanel.cpp:654
+#: ../src/TrackPanel.cpp:669
 msgid "Click and drag to move right selection boundary."
 msgstr "Klik og træk for at flytte højre markeringsgrænse."
 
-#: ../src/TrackPanel.cpp:685
+#: ../src/TrackPanel.cpp:700
 msgid "Click and drag to resize the track."
 msgstr "Klik og træk for at ændre størrelse på sporet"
 
-#: ../src/TrackPanel.cpp:563
+#: ../src/TrackPanel.cpp:578
 msgid "Click and drag to select audio"
 msgstr "Klik og træk for at markere et stykke lyd"
 
-#: ../src/TrackPanel.cpp:567
+#: ../src/TrackPanel.cpp:582
 msgid "Click to Zoom In, Shift-Click to Zoom Out"
 msgstr "Klik for at zoome ind, Shift-klik for at zoome ud"
 
-#: ../src/Benchmark.cpp:218 ../src/FreqWindow.cpp:120 ../src/commands.h:197
+#: ../src/Benchmark.cpp:218 ../src/FreqWindow.cpp:120 ../src/commands.h:215
 #: ../src/effects/NoiseRemoval.cpp:408
 msgid "Close"
 msgstr "Luk"
@@ -881,7 +934,7 @@ msgstr "Luk"
 msgid "Command-line exporting is only supported on UNIX"
 msgstr "Eksport via kommandolinen er kun implementeret under UNIX"
 
-#: ../src/AudacityApp.cpp:406
+#: ../src/AudacityApp.cpp:427
 msgid ""
 "Command-line options supported:\n"
 "  -help (this message)\n"
@@ -901,7 +954,7 @@ msgstr ""
 "en lydfil for at åbne den.\n"
 "\n"
 
-#: ../src/prefs/KeyConfigPrefs.cpp:59
+#: ../src/prefs/KeyConfigPrefs.cpp:61
 msgid "Commands"
 msgstr "Kommandoer"
 
@@ -918,7 +971,7 @@ msgstr "Komprimerer"
 msgid "Compressor"
 msgstr "Komprimering..."
 
-#: ../src/EditToolBar.cpp:159 ../src/commands.h:226
+#: ../src/EditToolBar.cpp:151 ../src/commands.h:244
 msgid "Copy"
 msgstr "Kopiér"
 
@@ -926,13 +979,13 @@ msgstr "Kopiér"
 msgid "Could not open MP3 encoding library!"
 msgstr "Kunne ikke åbne mp3-kodnings bibliotek!"
 
-#: ../src/Menus.cpp:1445 ../src/Project.cpp:1221 ../src/Project.cpp:1227
-#: ../src/Project.cpp:1420 ../src/import/ImportMIDI.cpp:30
+#: ../src/Menus.cpp:1493 ../src/Project.cpp:1230 ../src/Project.cpp:1236
+#: ../src/Project.cpp:1429 ../src/import/ImportMIDI.cpp:30
 #: ../src/import/ImportRaw.cpp:316 ../src/import/ImportRaw.cpp:784
 msgid "Could not open file: "
 msgstr "Kunne ikke åbne fil:"
 
-#: ../src/Project.cpp:1569
+#: ../src/Project.cpp:1578
 #, c-format
 msgid ""
 "Could not save project.  Perhaps %s is not writeable,\n"
@@ -945,23 +998,19 @@ msgstr ""
 msgid "Couldn't open the Audacity Help file."
 msgstr "Kunne ikke åbne Audacitys hjælpefil"
 
-#: ../src/FreqWindow.cpp:1085 ../src/Menus.cpp:708 ../src/Project.cpp:1581
+#: ../src/FreqWindow.cpp:1085 ../src/Menus.cpp:757 ../src/Project.cpp:1590
 msgid "Couldn't write to file: "
 msgstr "Kunne ikke skrive til fil:"
 
-#: ../src/effects/ToneGen.cpp:297
-msgid "Create Tone"
-msgstr "Lav tone"
-
-#: ../src/Menus.cpp:1935
+#: ../src/Menus.cpp:1983
 msgid "Created new audio track"
 msgstr "Nyt lydspor oprettet"
 
-#: ../src/Menus.cpp:1950
+#: ../src/Menus.cpp:1998
 msgid "Created new label track"
 msgstr "Nyt etiketspor oprettet"
 
-#: ../src/Project.cpp:1746
+#: ../src/Project.cpp:1755
 msgid "Created new project"
 msgstr "Nyt projekt oprettet"
 
@@ -977,32 +1026,47 @@ msgstr "Lavet af"
 msgid "Cuberoot Autocorrelation"
 msgstr "Kubikrod autokorrelation"
 
-#: ../src/commands.h:275
+#: ../src/commands.h:301
 #, fuzzy
 msgid "Cursor or Selection Restore"
 msgstr "Eksportér det markerede som"
 
-#: ../src/commands.h:274
+#: ../src/commands.h:300
 #, fuzzy
 msgid "Cursor or Selection Save"
 msgstr "Zoom til markering"
 
-#: ../src/commands.h:281
+#: ../src/commands.h:307
 #, fuzzy
 msgid "Cursor to Selection End"
 msgstr "Zoom til markering"
 
-#: ../src/commands.h:280
+#: ../src/commands.h:306
 #, fuzzy
 msgid "Cursor to Selection Start"
 msgstr "Sammensæt med nul"
 
-#: ../src/commands.h:279
+#: ../src/commands.h:305
 msgid "Cursor to Track End"
 msgstr ""
 
-#: ../src/commands.h:278
+#: ../src/commands.h:304
 msgid "Cursor to Track Start"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:3222
+#, c-format
+msgid "Cursor: %.3lf NTSC frames (29.97 fps)   %s"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:3187
+#, c-format
+msgid "Cursor: %.3lf PAL frames (25 fps)   %s"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:3152
+#, c-format
+msgid "Cursor: %.3lf film frames (24 fps)   %s"
 msgstr ""
 
 #: ../src/FreqWindow.cpp:827
@@ -1010,76 +1074,66 @@ msgstr ""
 msgid "Cursor: %.4f sec (%d Hz) (%s) = %f,    Peak: %.4f sec (%d Hz) (%s)"
 msgstr "Markør: %.4f sek (%d Hz) (%s) = %f,    Top: %.4f sek (%d Hz) (%s)"
 
+#: ../src/TrackPanel.cpp:3274
+#, c-format
+msgid "Cursor: %02i:%02i:%06.3lf cdda min:sec:frames (75 fps)   %s"
+msgstr ""
+
 #: ../src/FreqWindow.cpp:816
 #, c-format
 msgid "Cursor: %d Hz (%s) = %d dB    Peak: %d Hz (%s)"
 msgstr "Markør: %d Hz (%s) = %d dB    Top: %d Hz (%s)"
 
-#: ../src/TrackPanel.cpp:3362
+#: ../src/TrackPanel.cpp:3481
 #, c-format
 msgid ""
 "Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [based on rate "
 "= %7.1f - for use with 44100 only]"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:3308
+#: ../src/TrackPanel.cpp:3437
 #, c-format
 msgid ""
 "Cursor: %i+%i sec+samples   [based on rate = %7.1f - use Set Rate to "
 "reset/set]"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:3272
+#: ../src/TrackPanel.cpp:3403
 #, c-format
 msgid ""
 "Cursor: %i:%02i+%i min:sec+samples   [based on rate = %7.1f - use Set Rate "
 "to reset/set]"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:3048
+#: ../src/TrackPanel.cpp:3084
 #, fuzzy, c-format
-msgid "Cursor: %i:%09.6f min:sec"
+msgid "Cursor: %i:%09.6f min:sec   %s"
 msgstr "Markør: %lf s"
 
-#: ../src/TrackPanel.cpp:3200
+#: ../src/TrackPanel.cpp:3335
 #, c-format
 msgid ""
 "Cursor: %i:%09.6lf min:sec   [based on rate = %7.1f - use Set Rate to "
 "reset/set]"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:3140
-#, c-format
-msgid "Cursor: %lf NTSC frames (29.97 fps)"
-msgstr ""
-
-#: ../src/TrackPanel.cpp:3117
-#, c-format
-msgid "Cursor: %lf PAL frames (25 fps)"
-msgstr ""
-
-#: ../src/TrackPanel.cpp:3094
-#, c-format
-msgid "Cursor: %lf film frames (24 fps)"
-msgstr ""
-
-#: ../src/TrackPanel.cpp:3071
+#: ../src/TrackPanel.cpp:3118
 #, fuzzy, c-format
-msgid "Cursor: %lf sec"
+msgid "Cursor: %lf sec   %s"
 msgstr "Markør: %lf s"
 
-#: ../src/TrackPanel.cpp:3232
+#: ../src/TrackPanel.cpp:3366
 #, c-format
 msgid "Cursor: %lf sec   [based on rate = %7.1f - use Set Rate to reset/set]"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:3165
+#: ../src/TrackPanel.cpp:3301
 #, c-format
 msgid ""
 "Cursor: %li samples   [based on rate = %7.1f - use Set Rate to reset/set]"
 msgstr ""
 
-#: ../src/EditToolBar.cpp:157 ../src/commands.h:225
+#: ../src/EditToolBar.cpp:149 ../src/commands.h:243
 msgid "Cut"
 msgstr "Klip"
 
@@ -1088,7 +1142,7 @@ msgstr "Klip"
 msgid "Cut (%d, %d) failed.\n"
 msgstr "Klip (%d, %d) mislykkedes.\n"
 
-#: ../src/Menus.cpp:828
+#: ../src/Menus.cpp:877
 msgid "Cut to the clipboard"
 msgstr "Klip til udklipsholderen"
 
@@ -1097,12 +1151,12 @@ msgstr "Klip til udklipsholderen"
 msgid "Cut: %d - %d \n"
 msgstr "Klip: %d - %d \n"
 
-#: ../src/commands.h:238
+#: ../src/commands.h:255
 msgid "D&uplicate"
 msgstr "D&uplikerér"
 
 # Betyder forhåbentlig _ikke_ tør.
-#: ../src/effects/Phaser.cpp:430
+#: ../src/effects/Phaser.cpp:442
 #, fuzzy
 msgid "DRY"
 msgstr "DRY"
@@ -1115,28 +1169,28 @@ msgstr "Standard optageformat:"
 msgid "Default Sample Rate:"
 msgstr "Standard optagerate:"
 
-#: ../src/effects/Echo.cpp:28
+#: ../src/effects/Echo.cpp:34
 msgid "Delay time (seconds): "
 msgstr "Forsinkelsestid (sekunder):"
 
-#: ../src/commands.h:231
+#: ../src/commands.h:249
 msgid "Delete"
 msgstr "Slet"
 
-#: ../src/Project.cpp:1823
+#: ../src/Project.cpp:1832
 #, c-format
 msgid "Deleted %.2f seconds at t=%.2f"
 msgstr "Slettede %.2f sekunder ved t=%.2f"
 
-#: ../src/effects/Wahwah.cpp:459
+#: ../src/effects/Wahwah.cpp:470
 msgid "Depth (%):"
 msgstr "Dybde (%):"
 
-#: ../src/effects/Phaser.cpp:483
+#: ../src/effects/Phaser.cpp:495
 msgid "Depth:"
 msgstr "Dybde:"
 
-#: ../src/prefs/KeyConfigPrefs.cpp:72 ../src/prefs/KeyConfigPrefs.cpp:161
+#: ../src/prefs/KeyConfigPrefs.cpp:74 ../src/prefs/KeyConfigPrefs.cpp:163
 msgid ""
 "Description:\n"
 " "
@@ -1162,11 +1216,11 @@ msgstr "Mappen %s findes ikke. Skal den oprettes?"
 msgid "Directory %s is not writable"
 msgstr "Kan ikke skrive til mappen %s"
 
-#: ../src/HistoryWindow.cpp:93
+#: ../src/HistoryWindow.cpp:94
 msgid "Discard"
 msgstr "Bortkast"
 
-#: ../src/HistoryWindow.cpp:69
+#: ../src/HistoryWindow.cpp:70
 msgid "Discard undo data"
 msgstr "Bortkast fortrydelsesdata"
 
@@ -1178,15 +1232,15 @@ msgstr "Disk # blokke:\n"
 msgid "Disk Block Size (KB):"
 msgstr "Disk blokstørrelse (KB):"
 
-#: ../src/Project.cpp:992
+#: ../src/Project.cpp:1000
 msgid "Dock Control Toolbar"
 msgstr "Forankring af kontrolværktøj"
 
-#: ../src/Menus.cpp:552
+#: ../src/Menus.cpp:601
 msgid "Dock Edit Toolbar"
 msgstr "Forankring af redigeringsværktøj"
 
-#: ../src/AboutDialog.cpp:173
+#: ../src/AboutDialog.cpp:185
 msgid "Documentation Writer"
 msgstr "Dokumentation skrevet af"
 
@@ -1195,36 +1249,36 @@ msgstr "Dokumentation skrevet af"
 msgid "Doing correctness check...\n"
 msgstr "Kontrollerer korrekthed...\n"
 
-#: ../src/effects/Amplify.cpp:334
+#: ../src/effects/Amplify.cpp:340
 msgid "Don't allow clipping"
 msgstr "Tillad ikke klipning"
 
-#: ../src/TrackPanel.cpp:269
+#: ../src/TrackPanel.cpp:284
 msgid "Down Octave"
 msgstr "Oktav ned"
 
-#: ../src/TrackPanel.cpp:619
+#: ../src/TrackPanel.cpp:634
 msgid "Drag the label vertically to change the order of the tracks."
 msgstr "Træk etiketten op eller ned for at ændre sporenes rækkefølge."
 
-#: ../src/ControlToolBar.cpp:407
+#: ../src/ControlToolBar.cpp:384
 msgid "Draw Tool"
 msgstr "Tegneværktøj"
 
-#: ../src/commands.h:238
+#: ../src/commands.h:255
 #, fuzzy
 msgid "Duplicate"
 msgstr "Duplikeret"
 
-#: ../src/Menus.cpp:986
+#: ../src/Menus.cpp:1035
 msgid "Duplicated"
 msgstr "Duplikeret"
 
-#: ../src/commands.h:218
+#: ../src/commands.h:236
 msgid "E&xit"
 msgstr "&Afslut"
 
-#: ../src/effects/Echo.cpp:27
+#: ../src/effects/Echo.cpp:33
 msgid "Echo"
 msgstr "Ekko"
 
@@ -1232,21 +1286,17 @@ msgstr "Ekko"
 msgid "Echo..."
 msgstr "Ekko..."
 
-#: ../src/commands.h:268
+#: ../src/commands.h:287
 msgid "Edit ID3 Tags"
 msgstr "Redigér ID3 tags"
 
-#: ../src/Menus.cpp:1545
+#: ../src/Menus.cpp:1593
 msgid "Edit ID3 Tags (for MP3 exporting)"
 msgstr "Redigér ID3 tags (til mp3 kodning)"
 
-#: ../src/commands.h:268
+#: ../src/commands.h:287
 msgid "Edit ID3 Tags..."
 msgstr "Redigér ID3 tags..."
-
-#: ../src/AboutDialog.cpp:165
-msgid "Edit Toolbar, and general developer"
-msgstr "Værktøjslinje redigering, og generel udvikler"
 
 #: ../src/export/ExportMP3.cpp:918
 msgid "Edit the ID3 tags for the MP3 file"
@@ -1256,11 +1306,11 @@ msgstr "Redigér ID3 tags for mp3 filen"
 msgid "Edit the original in place"
 msgstr "Redigér direkte i originalfilen"
 
-#: ../src/Menus.cpp:104
+#: ../src/Menus.cpp:107
 msgid "Effec&t"
 msgstr "&Effekt"
 
-#: ../src/AboutDialog.cpp:177
+#: ../src/AboutDialog.cpp:189
 msgid "Effects programmer"
 msgstr "Effekt-programmering"
 
@@ -1274,11 +1324,11 @@ msgstr "Brugt tid: %f sek\n"
 msgid "Enable Edit Toolbar"
 msgstr "Luk redigeringsværktøj"
 
-#: ../src/effects/AvcCompressor.cpp:483
+#: ../src/effects/AvcCompressor.cpp:638
 msgid "Enabled"
 msgstr ""
 
-#: ../src/prefs/FileFormatPrefs.cpp:427
+#: ../src/prefs/FileFormatPrefs.cpp:432
 msgid "Encoding: "
 msgstr "Kodning:"
 
@@ -1290,7 +1340,7 @@ msgstr "Forbedret autokorrelation"
 msgid "Ensoniq PARIS"
 msgstr "Ensoniq PARIS"
 
-#: ../src/effects/nyquist/Nyquist.cpp:216
+#: ../src/effects/nyquist/Nyquist.cpp:218
 msgid "Enter Nyquist Command: "
 msgstr ""
 
@@ -1299,15 +1349,15 @@ msgid "Enter a rate in Hz (samples per second):"
 msgstr "Indtast rate i Hz (punkter pr. sekund):"
 
 # The original states "Hz (per second)". This is incorrect, as Hz already means 'per second' in itself.
-#: ../src/TrackPanel.cpp:2810
+#: ../src/TrackPanel.cpp:2847
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
 msgstr "Indtast optageraten i Hz mellem 1 og 100000:"
 
-#: ../src/effects/Echo.cpp:43
+#: ../src/effects/Echo.cpp:49
 msgid "Enter the decay factor: "
 msgstr "Indtast decay faktor:"
 
-#: ../src/ControlToolBar.cpp:398
+#: ../src/ControlToolBar.cpp:375
 #, fuzzy
 msgid "Envelope Tool"
 msgstr "Konvoluteringsværktøj"
@@ -1321,7 +1371,7 @@ msgstr "Fejl"
 msgid "Error (file may not have been written): %s"
 msgstr "Fejl (filen er muligvis ikke skrevet): %s"
 
-#: ../src/AudioIO.cpp:261
+#: ../src/AudioIO.cpp:278
 msgid ""
 "Error opening audio device.\n"
 "(Change the device in the Preferences dialog.)"
@@ -1337,7 +1387,7 @@ msgstr "Fejl ved tydning af Allegro-fil."
 msgid "Error parsing MIDI file."
 msgstr "Fejl ved tydning af MIDI-fil."
 
-#: ../src/Project.cpp:1497
+#: ../src/Project.cpp:1506
 #, c-format
 msgid "Error reading Audacity Project %s in line %d"
 msgstr "Fejl ved læsning af Audacity projekt %s, linje %d"
@@ -1347,7 +1397,7 @@ msgstr "Fejl ved læsning af Audacity projekt %s, linje %d"
 msgid "Errors in %d/%d blocks\n"
 msgstr "Fejl i %d/%d blokke\n"
 
-#: ../src/commands.h:218
+#: ../src/commands.h:236
 msgid "Exit"
 msgstr "Afslut"
 
@@ -1371,15 +1421,15 @@ msgstr "Forventede at læse %d punkter, fik %d punkter.\n"
 msgid "Export"
 msgstr "Eksportér"
 
-#: ../src/commands.h:210
+#: ../src/commands.h:228
 msgid "Export &Labels..."
 msgstr "Eksportér &etiketter"
 
-#: ../src/commands.h:202
+#: ../src/commands.h:220
 msgid "Export As"
 msgstr "Eksportér som"
 
-#: ../src/commands.h:206
+#: ../src/commands.h:224
 msgid "Export As (lossy)"
 msgstr "Eksportér som (med tab)"
 
@@ -1388,11 +1438,11 @@ msgid "Export Benchmark Data As:"
 msgstr "Eksportér testresultat som:"
 
 # Mon 'etiketter' er den bedste glose her?
-#: ../src/commands.h:210
+#: ../src/commands.h:228
 msgid "Export Labels"
 msgstr "Eksportér etiketter"
 
-#: ../src/Menus.cpp:689
+#: ../src/Menus.cpp:738
 msgid "Export Labels As:"
 msgstr "Eksportér etiketter som:"
 
@@ -1400,16 +1450,16 @@ msgstr "Eksportér etiketter som:"
 msgid "Export MP3"
 msgstr "Eksportér mp3"
 
-#: ../src/commands.h:203
+#: ../src/commands.h:221
 msgid "Export Selection As"
 msgstr "Eksportér det markerede som"
 
-#: ../src/commands.h:207
+#: ../src/commands.h:225
 msgid "Export Selection As (lossy)"
 msgstr "Eksportér det markerede som (med tab)"
 
-#: ../src/commands.h:187 ../src/commands.h:191
-#: ../src/prefs/FileFormatPrefs.cpp:339 ../src/prefs/FileFormatPrefs.cpp:341
+#: ../src/commands.h:205 ../src/commands.h:209
+#: ../src/prefs/FileFormatPrefs.cpp:342 ../src/prefs/FileFormatPrefs.cpp:344
 #, c-format
 msgid "Export Selection as %s..."
 msgstr "Eksportér det markerede som %s..."
@@ -1419,7 +1469,7 @@ msgstr "Eksportér det markerede som %s..."
 msgid "Export Spectral Data As:"
 msgstr "Eksporter spektral data som:"
 
-#: ../src/commands.h:190 ../src/prefs/FileFormatPrefs.cpp:340
+#: ../src/commands.h:208 ../src/prefs/FileFormatPrefs.cpp:343
 #, c-format
 msgid "Export as %s..."
 msgstr "Eksportér som %s..."
@@ -1486,11 +1536,11 @@ msgstr "Fader ind"
 msgid "Fading Out"
 msgstr "Fader ud"
 
-#: ../src/effects/Phaser.cpp:499
+#: ../src/effects/Phaser.cpp:511
 msgid "Feedback (%):"
 msgstr "Feedback (%):"
 
-#: ../src/prefs/FileFormatPrefs.cpp:389
+#: ../src/prefs/FileFormatPrefs.cpp:394
 msgid "File Format"
 msgstr "Filformat"
 
@@ -1506,23 +1556,23 @@ msgstr "Filen er for lille til at analysere."
 msgid "Find Library"
 msgstr "Find bibliotek"
 
-#: ../src/EditToolBar.cpp:179
+#: ../src/EditToolBar.cpp:171
 msgid "Fit entire project in window"
 msgstr "Tilpas hele projektet til vinduet"
 
-#: ../src/commands.h:247
+#: ../src/commands.h:266
 msgid "Fit in Window"
 msgstr "Tilpas til vinduet"
 
-#: ../src/EditToolBar.cpp:177
+#: ../src/EditToolBar.cpp:169
 msgid "Fit selection in window"
 msgstr "Tilpas det markerede til vinduet"
 
-#: ../src/Project.cpp:934 ../src/commands.h:256
+#: ../src/Project.cpp:942 ../src/commands.h:275
 msgid "Float Control Toolbar"
 msgstr "Flydende kontrolværktøjer"
 
-#: ../src/Menus.cpp:554 ../src/commands.h:257
+#: ../src/Menus.cpp:603 ../src/commands.h:276
 msgid "Float Edit Toolbar"
 msgstr "Flydende redigeringsværktøjer"
 
@@ -1538,11 +1588,11 @@ msgstr "Ledig plads:"
 msgid "Frequency (Hz)\tLevel (dB)"
 msgstr "Frekvens (Hz)\tNiveau (dB)"
 
-#: ../src/effects/BassBoost.cpp:266
+#: ../src/effects/BassBoost.cpp:272
 msgid "Frequency (Hz):"
 msgstr "Frekvens (Hz):"
 
-#: ../src/effects/ToneGen.cpp:249
+#: ../src/effects/ToneGen.cpp:290
 msgid "Frequency / Hz"
 msgstr "Frekvens / Hz"
 
@@ -1554,8 +1604,23 @@ msgstr "Frekvensanalyse"
 msgid "GNU Octave data file"
 msgstr ""
 
-#: ../src/effects/ToneGen.h:45
+#: ../src/effects/ToneGen.cpp:340
+#, fuzzy
+msgid "Generate Tone"
+msgstr "Laver tone"
+
+#: ../src/effects/Silence.h:31
+#, fuzzy
+msgid "Generating Silence"
+msgstr "Laver tone"
+
+#: ../src/effects/ToneGen.h:44
 msgid "Generating Tone"
+msgstr "Laver tone"
+
+#: ../src/effects/Noise.h:35
+#, fuzzy
+msgid "Generating White Noise"
 msgstr "Laver tone"
 
 #: ../src/Tags.cpp:566
@@ -1574,11 +1639,11 @@ msgstr "Gråtoner"
 msgid "HTML Help Books (*.htb)|*.htb"
 msgstr "HTML hjælpebøger (*.htb)|*.htb"
 
-#: ../src/prefs/FileFormatPrefs.cpp:409
+#: ../src/prefs/FileFormatPrefs.cpp:414
 msgid "Header: "
 msgstr "Header:"
 
-#: ../src/commands.h:251
+#: ../src/commands.h:270
 msgid "History"
 msgstr "Historie"
 
@@ -1599,56 +1664,56 @@ msgstr "ID3v1 (mere kompatibelt)"
 msgid "ID3v2 (more flexible)"
 msgstr "ID3v2 (mere fleksibelt)"
 
-#: ../src/Project.cpp:1639 ../src/import/ImportPCM.cpp:393
+#: ../src/Project.cpp:1648 ../src/import/ImportPCM.cpp:393
 #: ../src/import/ImportPCM.cpp:478 ../src/import/ImportRaw.cpp:906
 msgid "Import"
 msgstr "Importér"
 
-#: ../src/commands.h:263
+#: ../src/commands.h:282
 msgid "Import &MIDI..."
 msgstr "Importér &MIDI..."
 
-#: ../src/commands.h:261
+#: ../src/commands.h:280
 msgid "Import Audio"
 msgstr "Importér lyddata"
 
-#: ../src/commands.h:262
+#: ../src/commands.h:281
 msgid "Import Labels..."
 msgstr "Importér etiketter..."
 
-#: ../src/commands.h:263
+#: ../src/commands.h:282
 msgid "Import MIDI"
 msgstr "Importér MIDI"
 
-#: ../src/commands.h:264
+#: ../src/commands.h:283
 msgid "Import Raw &Data..."
 msgstr "Importér rå &data..."
 
-#: ../src/commands.h:264 ../src/import/ImportRaw.cpp:872
+#: ../src/commands.h:283 ../src/import/ImportRaw.cpp:872
 msgid "Import Raw Data"
 msgstr "Importér rå data"
 
-#: ../src/Project.cpp:1698
+#: ../src/Project.cpp:1707
 #, c-format
 msgid "Imported '%s'"
 msgstr "Importerede '%s'"
 
-#: ../src/Menus.cpp:1491
+#: ../src/Menus.cpp:1539
 #, c-format
 msgid "Imported MIDI from '%s'"
 msgstr "Importerede MIDI fra '%s'"
 
-#: ../src/Menus.cpp:1458
+#: ../src/Menus.cpp:1506
 #, c-format
 msgid "Imported labels from '%s'"
 msgstr "Importerede etiketter fra '%s'"
 
-#: ../src/Menus.cpp:1534
+#: ../src/Menus.cpp:1582
 #, c-format
 msgid "Imported raw audio from '%s'"
 msgstr "Importerede rå lyddata fra '%s'"
 
-#: ../src/Project.cpp:1635
+#: ../src/Project.cpp:1644
 #, fuzzy
 msgid "Importing "
 msgstr "Importér"
@@ -1662,15 +1727,6 @@ msgstr "Importerer %s fil..."
 #, fuzzy
 msgid "Information"
 msgstr "Introduktion"
-
-#: ../src/Menus.cpp:1125 ../src/commands.h:235
-msgid "Insert Silence"
-msgstr "Indsæt stilhed"
-
-#: ../src/Menus.cpp:1157
-#, c-format
-msgid "Inserted %.2f seconds of silence at %.2f"
-msgstr "Indstatte %.2f sekunders stilhed ved %.2f"
 
 # This really depends on context.
 #: ../src/prefs/PrefsDialog.cpp:78
@@ -1689,7 +1745,7 @@ msgstr "Introduktion"
 msgid "Invalid Vorbis bitstream header"
 msgstr "Ugyldig Vorbis bitstream header"
 
-#: ../src/AStatus.cpp:273 ../src/TrackPanel.cpp:2822
+#: ../src/AStatus.cpp:273 ../src/TrackPanel.cpp:2859
 msgid "Invalid rate."
 msgstr "Ugyldig rate."
 
@@ -1706,12 +1762,8 @@ msgstr "Omvender"
 msgid "Keyboard"
 msgstr "Tastatur"
 
-#: ../src/AboutDialog.cpp:161
-msgid "Keyboard shortcuts, and general developer"
-msgstr "Tastaturgenveje, og generel udvikler"
-
 # Kunne også betyde 'nøgler'
-#: ../src/prefs/KeyConfigPrefs.cpp:89
+#: ../src/prefs/KeyConfigPrefs.cpp:91
 #, fuzzy
 msgid "Keys"
 msgstr "Taster"
@@ -1728,11 +1780,11 @@ msgstr ""
 msgid "LADSPA plug-in suppport enabled"
 msgstr ""
 
-#: ../src/effects/Phaser.cpp:451 ../src/effects/Wahwah.cpp:427
+#: ../src/effects/Phaser.cpp:463 ../src/effects/Wahwah.cpp:438
 msgid "LFO Frequency (Hz):"
 msgstr "LFO frekvens (Hz):"
 
-#: ../src/effects/Phaser.cpp:467 ../src/effects/Wahwah.cpp:443
+#: ../src/effects/Phaser.cpp:479 ../src/effects/Wahwah.cpp:454
 msgid "LFO Start Phase (deg.):"
 msgstr "LFO startfase (grader):"
 
@@ -1752,19 +1804,19 @@ msgstr "Forsinkelse (sekunder)\tFrekvens (Hz)\tNiveau"
 msgid "Language:"
 msgstr "Sprog:"
 
-#: ../src/TrackPanel.cpp:251
+#: ../src/TrackPanel.cpp:265
 msgid "Left Channel"
 msgstr "Venstre kanal"
 
-#: ../src/TrackPanel.cpp:2590
+#: ../src/TrackPanel.cpp:2608
 msgid "Left, "
 msgstr "Venstre,"
 
-#: ../src/TrackPanel.cpp:569
+#: ../src/TrackPanel.cpp:584
 msgid "Left-Click to Zoom In, Right-Click to Zoom Out"
 msgstr "Venstreklik for at zoome ind, højreklik for at zoome ud"
 
-#: ../src/TrackPanel.cpp:571
+#: ../src/TrackPanel.cpp:586
 msgid "Left=Zoom In, Right=Zoom Out, Middle=Normal"
 msgstr "Venstre = zoom ind, højre = zoom ud, midter = normal"
 
@@ -1772,7 +1824,7 @@ msgstr "Venstre = zoom ind, højre = zoom ud, midter = normal"
 msgid "Less"
 msgstr "Mindre"
 
-#: ../src/HistoryWindow.cpp:84
+#: ../src/HistoryWindow.cpp:85
 msgid "Levels to discard: "
 msgstr "Niveauer at forkaste:"
 
@@ -1810,16 +1862,16 @@ msgstr ""
 msgid "MP3 importing enabled"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:2644
+#: ../src/TrackPanel.cpp:2662
 #, c-format
 msgid "Made '%s' a stereo track"
 msgstr "Har gjort '%s' til et stereospor"
 
-#: ../src/AboutDialog.cpp:181
+#: ../src/AboutDialog.cpp:193
 msgid "Main Logo"
 msgstr "Hovedlogo"
 
-#: ../src/TrackPanel.cpp:253
+#: ../src/TrackPanel.cpp:267
 msgid "Make Stereo Track"
 msgstr "Lav stereospor"
 
@@ -1828,7 +1880,7 @@ msgid "Make a copy of the file to edit"
 msgstr "Lav en kopi af den fil, der skal redigeres"
 
 # Den oversætter man vist ikke.
-#: ../src/ControlToolBar.cpp:138
+#: ../src/ControlToolBar.cpp:148
 #, fuzzy
 msgid "Master Gain Control"
 msgstr "Master Gain Control"
@@ -1850,11 +1902,11 @@ msgstr "Maksimumfrekvensen skal ligge i intervallet 100 Hz - 100.000 Hz"
 msgid "Media read error"
 msgstr "Mediefejl ved læsning"
 
-#: ../src/effects/AvcCompressor.cpp:440
+#: ../src/effects/AvcCompressor.cpp:595
 msgid "Minimum Change %:"
 msgstr ""
 
-#: ../src/effects/AvcCompressor.cpp:428
+#: ../src/effects/AvcCompressor.cpp:583
 msgid "Minimum Change Window:"
 msgstr ""
 
@@ -1862,7 +1914,7 @@ msgstr ""
 msgid "Mix"
 msgstr "Mix"
 
-#: ../src/effects/ToneGen.cpp:281
+#: ../src/effects/ToneGen.cpp:323
 msgid "Mix Output"
 msgstr ""
 
@@ -1870,11 +1922,11 @@ msgstr ""
 msgid "Mixing tracks"
 msgstr "Mixer spor"
 
-#: ../src/TrackPanel.cpp:250
+#: ../src/TrackPanel.cpp:264
 msgid "Mono"
 msgstr "Mono"
 
-#: ../src/TrackPanel.cpp:2588
+#: ../src/TrackPanel.cpp:2606
 msgid "Mono, "
 msgstr "Mono,"
 
@@ -1882,27 +1934,27 @@ msgstr "Mono,"
 msgid "More"
 msgstr "Mere"
 
-#: ../src/TrackPanel.cpp:243 ../src/TrackPanel.cpp:266
-#: ../src/TrackPanel.cpp:275
+#: ../src/TrackPanel.cpp:257 ../src/TrackPanel.cpp:281
+#: ../src/TrackPanel.cpp:290
 msgid "Move Track Down"
 msgstr "Flyt spor nedad"
 
-#: ../src/TrackPanel.cpp:242 ../src/TrackPanel.cpp:265
-#: ../src/TrackPanel.cpp:274
+#: ../src/TrackPanel.cpp:256 ../src/TrackPanel.cpp:280
+#: ../src/TrackPanel.cpp:289
 msgid "Move Track Up"
 msgstr "Flyt spor opad"
 
-#: ../src/TrackPanel.cpp:2840
+#: ../src/TrackPanel.cpp:2877
 #, c-format
 msgid "Moved '%s' %s"
 msgstr "Flyttede '%s' %s"
 
-#: ../src/TrackPanel.cpp:1421
+#: ../src/TrackPanel.cpp:1437
 msgid "Moved Sample"
 msgstr ""
 
 # Skal vel ikke oversættes.
-#: ../src/TrackPanel.cpp:2354
+#: ../src/TrackPanel.cpp:2372
 msgid "Mute"
 msgstr "Mute"
 
@@ -1912,33 +1964,33 @@ msgstr "Mute"
 msgid "NIST/Sphere"
 msgstr "NIST/Sphere"
 
-#: ../src/TrackPanel.cpp:240 ../src/TrackPanel.cpp:263
-#: ../src/TrackPanel.cpp:272
+#: ../src/TrackPanel.cpp:254 ../src/TrackPanel.cpp:278
+#: ../src/TrackPanel.cpp:287
 msgid "Name..."
 msgstr "Navn..."
 
 # Depends on context.
-#: ../src/commands.h:195
+#: ../src/commands.h:213
 msgid "New"
 msgstr "Ny(t)"
 
-#: ../src/commands.h:306
+#: ../src/commands.h:293
 msgid "New &Audio Track"
 msgstr "Nyt &lydspor"
 
-#: ../src/commands.h:307
+#: ../src/commands.h:294
 msgid "New &Label Track"
 msgstr "Nyt &etiketspor"
 
-#: ../src/commands.h:306
+#: ../src/commands.h:293
 msgid "New Audio Track"
 msgstr "Nyt lydspor"
 
-#: ../src/commands.h:307
+#: ../src/commands.h:294
 msgid "New Label Track"
 msgstr "Nyt etiketspor"
 
-#: ../src/effects/Amplify.cpp:322
+#: ../src/effects/Amplify.cpp:328
 msgid "New Peak Amplitude (dB):"
 msgstr "Ny top-styrke (dB):"
 
@@ -1946,7 +1998,7 @@ msgstr "Ny top-styrke (dB):"
 msgid "New Temporary Directory"
 msgstr "Ny midlertidig mappe"
 
-#: ../src/effects/AvcCompressor.cpp:493
+#: ../src/effects/AvcCompressor.cpp:648
 msgid "New Value"
 msgstr ""
 
@@ -1999,15 +2051,15 @@ msgstr "For lidt data markeret."
 msgid "Note Track"
 msgstr "Nodespor"
 
-#: ../src/prefs/KeyConfigPrefs.cpp:72
+#: ../src/prefs/KeyConfigPrefs.cpp:74
 msgid "Nothing selected."
 msgstr "Intet valgt."
 
-#: ../src/Menus.cpp:779
+#: ../src/Menus.cpp:828
 msgid "Nothing to redo"
 msgstr "Intet at gentage"
 
-#: ../src/Menus.cpp:761
+#: ../src/Menus.cpp:810
 msgid "Nothing to undo"
 msgstr "Intet at fortryde"
 
@@ -2019,33 +2071,29 @@ msgstr "Antal redigeringer:"
 msgid "Number of edits should be in the range 1 - 10000."
 msgstr "Antal redigeringer skal ligge i intervallet 1 - 10000."
 
-#: ../src/Menus.cpp:1124
-msgid "Number of seconds of silence to insert:"
-msgstr "Antal sekunders stilhed at indsætte:"
-
-#: ../src/effects/nyquist/Nyquist.cpp:215
+#: ../src/effects/nyquist/Nyquist.cpp:217
 msgid "Nyquist Prompt"
 msgstr ""
 
-#: ../src/effects/nyquist/Nyquist.cpp:147
+#: ../src/effects/nyquist/Nyquist.cpp:149
 msgid "Nyquist Prompt..."
 msgstr ""
 
-#: ../src/effects/nyquist/Nyquist.cpp:452
+#: ../src/effects/nyquist/Nyquist.cpp:454
 msgid "Nyquist did not return audio.\n"
 msgstr ""
 
-#: ../src/effects/nyquist/Nyquist.cpp:414
+#: ../src/effects/nyquist/Nyquist.cpp:416
 #, c-format
 msgid "Nyquist returned the value: %d"
 msgstr ""
 
-#: ../src/effects/nyquist/Nyquist.cpp:405
+#: ../src/effects/nyquist/Nyquist.cpp:407
 #, c-format
 msgid "Nyquist returned the value: %f"
 msgstr ""
 
-#: ../src/effects/nyquist/Nyquist.cpp:463
+#: ../src/effects/nyquist/Nyquist.cpp:465
 msgid "Nyquist returned too many audio channels.\n"
 msgstr ""
 
@@ -2057,11 +2105,11 @@ msgstr "Indstillinger for Ogg eksport"
 msgid "OGG Quality:"
 msgstr "OGG Kvalitet"
 
-#: ../src/LangChoice.cpp:91 ../src/Tags.cpp:599 ../src/effects/Amplify.cpp:343
-#: ../src/effects/AvcCompressor.cpp:541 ../src/effects/BassBoost.cpp:302
-#: ../src/effects/Filter.cpp:439 ../src/effects/Phaser.cpp:519
-#: ../src/effects/Wahwah.cpp:511 ../src/effects/ladspa/LadspaEffect.cpp:443
-#: ../src/effects/nyquist/Nyquist.cpp:561 ../src/prefs/FileFormatPrefs.cpp:451
+#: ../src/LangChoice.cpp:91 ../src/Tags.cpp:599 ../src/effects/Amplify.cpp:349
+#: ../src/effects/AvcCompressor.cpp:696 ../src/effects/BassBoost.cpp:308
+#: ../src/effects/Filter.cpp:439 ../src/effects/Phaser.cpp:531
+#: ../src/effects/Wahwah.cpp:522 ../src/effects/ladspa/LadspaEffect.cpp:443
+#: ../src/effects/nyquist/Nyquist.cpp:563 ../src/prefs/FileFormatPrefs.cpp:456
 #: ../src/prefs/PrefsDialog.cpp:88
 msgid "OK"
 msgstr "OK"
@@ -2078,19 +2126,19 @@ msgstr ""
 msgid "Ogg Vorbis support is not included in this build of Audacity"
 msgstr "Ogg Vorbis understøttelse er ikke medtaget i denne udgave af Audacity"
 
-#: ../src/commands.h:318 ../src/commands.h:320
+#: ../src/commands.h:340 ../src/commands.h:342
 msgid "Online Help"
 msgstr "Online hjælp"
 
-#: ../src/commands.h:323
+#: ../src/commands.h:345
 msgid "Online Help Index"
 msgstr "Online hjælp index"
 
-#: ../src/commands.h:323
+#: ../src/commands.h:345
 msgid "Online Help Index..."
 msgstr "Online hjælp index..."
 
-#: ../src/commands.h:318 ../src/commands.h:320
+#: ../src/commands.h:340 ../src/commands.h:342
 msgid "Online Help..."
 msgstr "Online hjælp..."
 
@@ -2113,19 +2161,19 @@ msgid ""
 msgstr ""
 "Kun libmp3lame.so|libmp3lame.so|Delte objektifler (*.so)|*.so|All Files (*)|*"
 
-#: ../src/commands.h:196
+#: ../src/commands.h:214
 msgid "Open"
 msgstr "Åbn"
 
-#: ../src/effects/AvcCompressor.cpp:488
+#: ../src/effects/AvcCompressor.cpp:643
 msgid "Original Value"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:195
+#: ../src/AboutDialog.cpp:207
 msgid "Other contributors:"
 msgstr "Andre bidrag fra:"
 
-#: ../src/AStatus.cpp:70 ../src/TrackPanel.cpp:219
+#: ../src/AStatus.cpp:70 ../src/TrackPanel.cpp:228
 #: ../src/prefs/FileFormatPrefs.cpp:105
 msgid "Other..."
 msgstr "Andre..."
@@ -2134,7 +2182,7 @@ msgstr "Andre..."
 msgid "Passed correctness check!\n"
 msgstr "Korrekthedstjek bestået!\n"
 
-#: ../src/EditToolBar.cpp:161 ../src/commands.h:227
+#: ../src/EditToolBar.cpp:153 ../src/commands.h:245
 msgid "Paste"
 msgstr "Sæt ind"
 
@@ -2143,9 +2191,14 @@ msgstr "Sæt ind"
 msgid "Paste: %d\n"
 msgstr "Sæt ind: %d\n"
 
-#: ../src/Menus.cpp:897
+#: ../src/Menus.cpp:946
 msgid "Pasted from the clipboard"
 msgstr "Satte ind fra udklipsholderen"
+
+#: ../src/ControlToolBar.cpp:343
+#, fuzzy
+msgid "Pause"
+msgstr "Sæt ind"
 
 #: ../src/Benchmark.cpp:380
 #, c-format
@@ -2166,11 +2219,11 @@ msgstr "Anvender FFT filter"
 msgid "Performing Ladspa Effect: %s"
 msgstr "Anvender Ladspa effekt: %s"
 
-#: ../src/effects/Phaser.cpp:46
+#: ../src/effects/Phaser.cpp:58
 msgid "Phaser"
 msgstr "Phaser"
 
-#: ../src/effects/Phaser.cpp:402
+#: ../src/effects/Phaser.cpp:414
 msgid "Phaser by Nasca Octavian Paul"
 msgstr "Phaser af Nasca Octavian Paul"
 
@@ -2178,11 +2231,11 @@ msgstr "Phaser af Nasca Octavian Paul"
 msgid "Phaser..."
 msgstr "Phaser..."
 
-#: ../src/TrackPanel.cpp:248
+#: ../src/TrackPanel.cpp:262
 msgid "Pitch (EAC)"
 msgstr "Pitch (EAC)"
 
-#: ../src/ControlToolBar.cpp:368
+#: ../src/ControlToolBar.cpp:329
 msgid "Play"
 msgstr "Afspil"
 
@@ -2195,24 +2248,24 @@ msgid "Playback Device"
 msgstr "Afspilningsenhed"
 
 # Formulering lidt svag.
-#: ../src/effects/Echo.cpp:50
+#: ../src/effects/Echo.cpp:56
 msgid "Please enter a positive number for the decay factor: "
 msgstr "Indtast et positivt tal til decay faktor:"
 
-#: ../src/effects/Echo.cpp:36
+#: ../src/effects/Echo.cpp:42
 msgid "Please enter a positive number for the delay time: "
 msgstr "Indtast et positivt tal for delay tid:"
 
-#: ../src/commands.h:252
+#: ../src/commands.h:271
 msgid "Plot Spectrum"
 msgstr "Plot spektrum"
 
-#: ../src/Menus.cpp:165
+#: ../src/Menus.cpp:168
 #, c-format
 msgid "Plugins %d to %d"
 msgstr "Udvidelser %d til %d"
 
-#: ../src/commands.h:214
+#: ../src/commands.h:232
 msgid "Preferences"
 msgstr "Indstillinger"
 
@@ -2228,7 +2281,9 @@ msgstr "Primær udvikler"
 msgid "Program build date:"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:169
+#: ../src/AboutDialog.cpp:161 ../src/AboutDialog.cpp:165
+#: ../src/AboutDialog.cpp:169 ../src/AboutDialog.cpp:173
+#: ../src/AboutDialog.cpp:177 ../src/AboutDialog.cpp:181
 msgid "Programmer"
 msgstr "Programmør"
 
@@ -2259,11 +2314,11 @@ msgstr "Propellorheads Rex2"
 msgid "Quality"
 msgstr "Kvalitet"
 
-#: ../src/Mix.cpp:149 ../src/commands.h:271
+#: ../src/Mix.cpp:149 ../src/commands.h:290
 msgid "Quick Mix"
 msgstr "Hurtigt mix"
 
-#: ../src/Menus.cpp:1564
+#: ../src/Menus.cpp:1612
 msgid "Quick mix"
 msgstr "Hurtigt mix"
 
@@ -2279,7 +2334,7 @@ msgstr "Rå PCM data"
 msgid "Reading data again...\n"
 msgstr "Læser data igen...\n"
 
-#: ../src/ControlToolBar.cpp:378
+#: ../src/ControlToolBar.cpp:337
 msgid "Record"
 msgstr "Optag"
 
@@ -2295,11 +2350,11 @@ msgstr "Optageenhed"
 msgid "Rectangular"
 msgstr "Rektangulær"
 
-#: ../src/EditToolBar.cpp:169 ../src/commands.h:222
+#: ../src/EditToolBar.cpp:161 ../src/commands.h:240
 msgid "Redo"
 msgstr "Gentag"
 
-#: ../src/prefs/KeyConfigPrefs.cpp:94
+#: ../src/prefs/KeyConfigPrefs.cpp:96
 msgid "Remove"
 msgstr "Fjern"
 
@@ -2307,15 +2362,15 @@ msgstr "Fjern"
 msgid "Remove Noise"
 msgstr "Fjern støj"
 
-#: ../src/commands.h:310
+#: ../src/commands.h:297
 msgid "Remove Track(s)"
 msgstr "Fjern spor"
 
-#: ../src/Menus.cpp:1968
+#: ../src/Menus.cpp:2016
 msgid "Removed audio track(s)"
 msgstr "Fjernede lydspor"
 
-#: ../src/TrackPanel.cpp:1483
+#: ../src/TrackPanel.cpp:1499
 #, c-format
 msgid "Removed track '%s.'"
 msgstr "Fjernede spor '%s'."
@@ -2324,16 +2379,16 @@ msgstr "Fjernede spor '%s'."
 msgid "Removing Noise"
 msgstr "Fjerner støj"
 
-#: ../src/TrackPanel.cpp:2876
+#: ../src/TrackPanel.cpp:2913
 #, c-format
 msgid "Renamed '%s' to '%s'"
 msgstr "Omdøbte '%s' til '%s'"
 
-#: ../src/effects/Wahwah.cpp:475
+#: ../src/effects/Wahwah.cpp:486
 msgid "Resonance:"
 msgstr "Resonans:"
 
-#: ../src/effects/AvcCompressor.cpp:535
+#: ../src/effects/AvcCompressor.cpp:690
 #, fuzzy
 msgid "Restore Defaults"
 msgstr "Sæt standardværdier"
@@ -2348,11 +2403,11 @@ msgstr "Omvending"
 msgid "Reversing"
 msgstr "Vender"
 
-#: ../src/TrackPanel.cpp:252
+#: ../src/TrackPanel.cpp:266
 msgid "Right Channel"
 msgstr "Højre kanal"
 
-#: ../src/TrackPanel.cpp:2592
+#: ../src/TrackPanel.cpp:2610
 msgid "Right, "
 msgstr "Højre,"
 
@@ -2360,11 +2415,11 @@ msgstr "Højre,"
 msgid "Run"
 msgstr "Kør"
 
-#: ../src/commands.h:327
+#: ../src/commands.h:349
 msgid "Run Benchmark"
 msgstr "Kør hastighedstest"
 
-#: ../src/commands.h:327
+#: ../src/commands.h:349
 msgid "Run Benchmark..."
 msgstr "Kør hastighedstest..."
 
@@ -2393,31 +2448,31 @@ msgstr "Gem"
 msgid "Save %s File As:"
 msgstr "Gem %s fil som:"
 
-#: ../src/commands.h:198
+#: ../src/commands.h:216
 msgid "Save Project"
 msgstr "Gem projekt"
 
-#: ../src/commands.h:199
+#: ../src/commands.h:217
 msgid "Save Project &As..."
 msgstr "Gem project som..."
 
-#: ../src/commands.h:199
+#: ../src/commands.h:217
 msgid "Save Project As"
 msgstr "Gem projekt som"
 
-#: ../src/Project.cpp:1719
+#: ../src/Project.cpp:1728
 msgid "Save Project As:"
 msgstr "Gem projekt som:"
 
-#: ../src/Project.cpp:1138
+#: ../src/Project.cpp:1147
 msgid "Save changes before closing?"
 msgstr "Gem ændringer inden lukning?"
 
-#: ../src/Project.cpp:1139
+#: ../src/Project.cpp:1148
 msgid "Save changes?"
 msgstr "Gem ændringer?"
 
-#: ../src/Project.cpp:1619
+#: ../src/Project.cpp:1628
 #, c-format
 msgid "Saved %s"
 msgstr "%s gemt"
@@ -2426,11 +2481,11 @@ msgstr "%s gemt"
 msgid "Sawtooth"
 msgstr "Savtakker"
 
-#: ../src/commands.h:324
+#: ../src/commands.h:346
 msgid "Search Online Help"
 msgstr "Søg i online hjælp"
 
-#: ../src/commands.h:324
+#: ../src/commands.h:346
 msgid "Search Online Help..."
 msgstr "Søg i online hjælp..."
 
@@ -2442,11 +2497,20 @@ msgstr "Led efter?"
 msgid "Search help for keyword"
 msgstr "Søg hjælp efter nøgleord"
 
-#: ../src/commands.h:241
+#: ../src/commands.h:258
 msgid "Select All"
 msgstr "Markér alt"
 
-#: ../src/Menus.cpp:1469
+#: ../src/commands.h:260
+#, fuzzy
+msgid "Select Cursor to End"
+msgstr "Zoom til markering"
+
+#: ../src/commands.h:259
+msgid "Select Start to Cursor"
+msgstr ""
+
+#: ../src/Menus.cpp:1517
 msgid "Select a MIDI file..."
 msgstr "Vælg en MIDI-fil..."
 
@@ -2460,7 +2524,7 @@ msgstr ""
 "så Audacity kan vide, hvad der skal\n"
 "filtreres ud, og klik så på 'Find støjprofil':"
 
-#: ../src/Menus.cpp:1429
+#: ../src/Menus.cpp:1477
 msgid "Select a text file containing labels..."
 msgstr "Vælg en tekstfil der indeholder etiketter..."
 
@@ -2474,103 +2538,114 @@ msgstr ""
 "vælg, hvor meget støj, du vil filtrere ud,\n"
 "og klik så på 'Fjern støj'.\n"
 
-#: ../src/Menus.cpp:1402 ../src/Project.cpp:1170
+#: ../src/Menus.cpp:1450 ../src/Project.cpp:1179
 msgid "Select an audio file..."
 msgstr "Vælg en lydfil..."
 
-#: ../src/Menus.cpp:1505
+#: ../src/Menus.cpp:1553
 msgid "Select any uncompressed audio file..."
 msgstr "Vælg en ukomprimeret lydfil"
 
-#: ../src/ControlToolBar.cpp:395
+#: ../src/ControlToolBar.cpp:372
 msgid "Selection Tool"
 msgstr "Markeringsværktøj"
 
-#: ../src/TrackPanel.cpp:3370
+#: ../src/TrackPanel.cpp:3230
+#, fuzzy, c-format
+msgid "Selection: %.3lf - %.3lf (%.3lf NTSC frames)   %s"
+msgstr "Markeret: %lf - %lf s"
+
+#: ../src/TrackPanel.cpp:3195
+#, fuzzy, c-format
+msgid "Selection: %.3lf - %.3lf (%.3lf PAL frames)   %s"
+msgstr "Markeret: %lf - %lf s"
+
+#: ../src/TrackPanel.cpp:3160
+#, fuzzy, c-format
+msgid "Selection: %.3lf - %.3lf (%.3lf film frames)   %s"
+msgstr "Markeret: %lf - %lf s"
+
+#: ../src/TrackPanel.cpp:3282
+#, c-format
+msgid ""
+"Selection: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda "
+"min:sec:frames)   %s"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:3489
 #, c-format
 msgid ""
 "Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [based on rate = "
 "%7.1f - for use with 44100 only]"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:3316
+#: ../src/TrackPanel.cpp:3445
 #, c-format
 msgid ""
 "Selection: %i+%i - %i+%i (%i+%i sec+samples)   [based on rate = %7.1f - use "
 "Set Rate to reset/set]"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:3280
+#: ../src/TrackPanel.cpp:3411
 #, c-format
 msgid ""
 "Selection: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sec+samples)   [based on "
 "rate = %7.1f - use Set Rate to reset/set]"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:3055
-#, c-format
-msgid "Selection: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)"
-msgstr ""
+#: ../src/TrackPanel.cpp:3091
+#, fuzzy, c-format
+msgid "Selection: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)   %s"
+msgstr "Markeret: %lf - %lf s"
 
-#: ../src/TrackPanel.cpp:3208
+#: ../src/TrackPanel.cpp:3343
 #, c-format
 msgid ""
 "Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)   [based on rate = "
 "%7.1f - use Set Rate to reset/set]"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:3147
+#: ../src/TrackPanel.cpp:3125
 #, fuzzy, c-format
-msgid "Selection: %lf - %lf (%lf NTSC frames)"
+msgid "Selection: %lf - %lf (%lf sec)   %s"
 msgstr "Markeret: %lf - %lf s"
 
-#: ../src/TrackPanel.cpp:3124
-#, fuzzy, c-format
-msgid "Selection: %lf - %lf (%lf PAL frames)"
-msgstr "Markeret: %lf - %lf s"
-
-#: ../src/TrackPanel.cpp:3101
-#, fuzzy, c-format
-msgid "Selection: %lf - %lf (%lf film frames)"
-msgstr "Markeret: %lf - %lf s"
-
-#: ../src/TrackPanel.cpp:3078
-#, fuzzy, c-format
-msgid "Selection: %lf - %lf (%lf sec)"
-msgstr "Markeret: %lf - %lf s"
-
-#: ../src/TrackPanel.cpp:3240
+#: ../src/TrackPanel.cpp:3374
 #, c-format
 msgid ""
 "Selection: %lf - %lf (%lf sec)   [based on rate = %7.1f - use Set Rate to "
 "reset/set]"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:3173
+#: ../src/TrackPanel.cpp:3309
 #, c-format
 msgid ""
 "Selection: %li - %li (%li samples)   [based on rate = %7.1f - use Set Rate "
 "to reset/set]"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:3380
+#: ../src/TrackPanel.cpp:3499
 #, c-format
 msgid "Selection: invalid iformat value (%i) in TrackPanel.cpp"
 msgstr ""
 
 # Usikker på denne.
-#: ../src/AStatus.cpp:263 ../src/TrackPanel.cpp:258 ../src/TrackPanel.cpp:2812
+#: ../src/AStatus.cpp:263 ../src/TrackPanel.cpp:272 ../src/TrackPanel.cpp:2849
 msgid "Set Rate"
 msgstr "Vælg rate"
 
-#: ../src/TrackPanel.cpp:256
+#: ../src/TrackPanel.cpp:270
 msgid "Set Sample Format"
 msgstr "Vælg optageformat"
 
-#: ../src/TrackPanel.cpp:260
+#: ../src/TrackPanel.cpp:274
 #, fuzzy
 msgid "Set Selection Format"
 msgstr "Vælg optageformat"
+
+#: ../src/TrackPanel.cpp:275
+msgid "Set Snap-To Mode"
+msgstr ""
 
 #: ../src/FileFormats.cpp:47
 msgid "Shorten (lossless compression)"
@@ -2585,16 +2660,16 @@ msgstr "Vis detaljerede oplysninger om hver blokfil"
 msgid "Show detailed info about each editing operation"
 msgstr "Vis detaljerede oplysninger om hver redigering"
 
-#: ../src/commands.h:232
+#: ../src/commands.h:250 ../src/effects/Silence.h:27
 msgid "Silence"
 msgstr "Stilhed"
 
-#: ../src/EditToolBar.cpp:165
+#: ../src/EditToolBar.cpp:157
 #, fuzzy
 msgid "Silence selection"
 msgstr "Stilhedsmarkering"
 
-#: ../src/Menus.cpp:952
+#: ../src/Menus.cpp:1001
 #, c-format
 msgid "Silenced selected tracks for %.2f seconds at %.2f"
 msgstr "Lavede stilhed i de valgte spor. %.2f sekunder ved %.2f"
@@ -2603,24 +2678,24 @@ msgstr "Lavede stilhed i de valgte spor. %.2f sekunder ved %.2f"
 msgid "Sine"
 msgstr "Sinus"
 
-#: ../src/HistoryWindow.cpp:61
+#: ../src/HistoryWindow.cpp:62
 msgid "Size"
 msgstr "Størrelse"
 
-#: ../src/ControlToolBar.cpp:383
+#: ../src/ControlToolBar.cpp:357
 msgid "Skip to End"
 msgstr "Hop til slutningen"
 
-#: ../src/ControlToolBar.cpp:363
+#: ../src/ControlToolBar.cpp:323
 msgid "Skip to Start"
 msgstr "Hop til begyndelsen"
 
-#: ../src/TrackPanel.cpp:998
+#: ../src/TrackPanel.cpp:1013
 #, c-format
 msgid "Slid track '%s' %s %.02f seconds"
 msgstr "Flyttede sporet '%s' %s %.02f sekunder"
 
-#: ../src/TrackPanel.cpp:2354
+#: ../src/TrackPanel.cpp:2372
 msgid "Solo"
 msgstr "Solo"
 
@@ -2648,7 +2723,7 @@ msgstr "Beklager, stinavnet må maksimalt være 256 karakterer langt."
 msgid "Sound Designer 2"
 msgstr "Sound Designer 2"
 
-#: ../src/AboutDialog.cpp:212
+#: ../src/AboutDialog.cpp:224
 msgid "Special thanks:"
 msgstr "Særlig tak til:"
 
@@ -2656,28 +2731,28 @@ msgstr "Særlig tak til:"
 msgid "Spectrograms"
 msgstr "Spektogrammer"
 
-#: ../src/FreqWindow.cpp:126 ../src/TrackPanel.cpp:247
+#: ../src/FreqWindow.cpp:126 ../src/TrackPanel.cpp:261
 msgid "Spectrum"
 msgstr "Spektrum"
 
 # 'Opdel' er mere tydeligt end 'Del' i denne sammenhæng.
-#: ../src/Menus.cpp:1032 ../src/commands.h:236
+#: ../src/Menus.cpp:1081 ../src/commands.h:253
 msgid "Split"
 msgstr "Opdel"
 
-#: ../src/commands.h:237
+#: ../src/commands.h:254
 msgid "Split At Labels"
 msgstr "Opdel ved etiketter"
 
-#: ../src/TrackPanel.cpp:254
+#: ../src/TrackPanel.cpp:268
 msgid "Split Stereo Track"
 msgstr "Opdel stereospor"
 
-#: ../src/Menus.cpp:1115
+#: ../src/Menus.cpp:1164
 msgid "Split at labels"
 msgstr "Opdel ved etiketter"
 
-#: ../src/TrackPanel.cpp:2628
+#: ../src/TrackPanel.cpp:2646
 #, c-format
 msgid "Split stereo track '%s'"
 msgstr "Opdel stereospor '%s'"
@@ -2686,7 +2761,7 @@ msgstr "Opdel stereospor '%s'"
 msgid "Square"
 msgstr "Firkant"
 
-#: ../src/effects/Phaser.cpp:409
+#: ../src/effects/Phaser.cpp:421
 msgid "Stages:"
 msgstr "Trin:"
 
@@ -2702,11 +2777,11 @@ msgstr "Trin 1"
 msgid "Step 2"
 msgstr "Trin 2"
 
-#: ../src/TrackPanel.cpp:2585
+#: ../src/TrackPanel.cpp:2603
 msgid "Stereo, "
 msgstr "Stereo,"
 
-#: ../src/ControlToolBar.cpp:373
+#: ../src/ControlToolBar.cpp:351
 msgid "Stop"
 msgstr "Stop"
 
@@ -2730,11 +2805,11 @@ msgstr "Test datastørrelse (MB):"
 msgid "Test data size should be in the range 1 - 2000 MB."
 msgstr "Test datastørrelsen skal ligge i området 1 - 2000 MB"
 
-#: ../src/Menus.cpp:1433
+#: ../src/Menus.cpp:1481
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr "Tekst filer (*.txt)|*.txt|Alle filer (*.*)|*.*"
 
-#: ../src/Project.cpp:1192
+#: ../src/Project.cpp:1201
 msgid "That project is already open in another window."
 msgstr "Dette projekt er allerede åbent i et andet vindue."
 
@@ -2742,17 +2817,17 @@ msgstr "Dette projekt er allerede åbent i et andet vindue."
 msgid "The maximum frequency must be an integer"
 msgstr "Maksimumfrekvensen skal være et heltal"
 
-#: ../src/Menus.cpp:683
+#: ../src/Menus.cpp:732
 msgid "There are no label tracks to export."
 msgstr "Der er ingen etiketter at eksportere."
 
-#: ../src/AudioIO.cpp:565
+#: ../src/AudioIO.cpp:605
 #, c-format
 msgid "There were %d buffer underruns, data was lost."
 msgstr "Der var %d buffer underløb, data gik tabt."
 
 # Har vi en bedre glose for 'frames'?
-#: ../src/AudioIO.cpp:571
+#: ../src/AudioIO.cpp:611
 #, c-format
 msgid "There were %d possibly repeated frames, last near %lf seconds."
 msgstr "Der var %d muligvis gentagne frames, den seneste omkring %lf sekunder."
@@ -2767,7 +2842,7 @@ msgstr ""
 "faciliteter. Vi har brug for dine tilbagemeldinger, så besøg vores websted "
 "og send os fejlrapporter og ønsker om nye muligheder."
 
-#: ../src/Project.cpp:1435
+#: ../src/Project.cpp:1444
 msgid ""
 "This project was saved by a different version of Audacity and is no longer "
 "supported."
@@ -2780,7 +2855,7 @@ msgstr ""
 msgid "This version of Audacity was not compiled with %s support."
 msgstr "Denne udgave af Audacity er ikke bygget med Ogg Vorbis understøttelse."
 
-#: ../src/ControlToolBar.cpp:401
+#: ../src/ControlToolBar.cpp:378
 msgid "Time Shift Tool"
 msgstr "Tidsforskydningsværktøj"
 
@@ -2803,7 +2878,7 @@ msgstr "Tid til at lave %d redigeringer: %ld ms\n"
 msgid "Title:"
 msgstr "Titel:"
 
-#: ../src/Menus.cpp:1288
+#: ../src/Menus.cpp:1336
 msgid "To plot the spectrum, all selected tracks must be the same sample rate."
 msgstr ""
 
@@ -2811,11 +2886,21 @@ msgstr ""
 msgid "Tone Generator"
 msgstr "Tonegenerator"
 
-#: ../src/effects/ToneGen.h:41
-msgid "Tone Generator..."
-msgstr "Tonegenerator"
+# The Black Angel's Death Song:
+# Gone to choose, choose again
+# Sacrificials remains make it hard to forget
+# Where you come from
+# ...
+# Come again, choose to go
+# And if Epiphany's terror reduced you to shame
+# Have your head bobbed and weaved
+# Choose a side to be on
+#: ../src/effects/ToneGen.h:40
+#, fuzzy
+msgid "Tone..."
+msgstr "Vælg..."
 
-#: ../src/Menus.cpp:1314
+#: ../src/Menus.cpp:1362
 #, c-format
 msgid ""
 "Too much audio was selected.  Only the first %.1f seconds of audio will be "
@@ -2827,7 +2912,7 @@ msgstr ""
 msgid "Track # blocks: %d\n"
 msgstr "Spor # blokke: %d\n"
 
-#: ../src/TrackPanel.cpp:2873
+#: ../src/TrackPanel.cpp:2910
 msgid "Track Name"
 msgstr "Spor navn"
 
@@ -2841,15 +2926,15 @@ msgstr "Spor nummer:"
 msgid "Trial %d\n"
 msgstr "Prøve %d\n"
 
-#: ../src/commands.h:228
+#: ../src/commands.h:246
 msgid "Trim"
 msgstr "Beskær"
 
-#: ../src/EditToolBar.cpp:163
+#: ../src/EditToolBar.cpp:155
 msgid "Trim everything outside selection"
 msgstr "Beskær alt udenfor det markerede"
 
-#: ../src/Menus.cpp:928
+#: ../src/Menus.cpp:977
 msgid "Trim file to selection"
 msgstr "Beskær filen til det markerede"
 
@@ -2865,19 +2950,19 @@ msgstr "Kan ikke åbne filen til skrivning"
 msgid "Uncompressed Export Format"
 msgstr "Ukomprimeret eksportformat"
 
-#: ../src/EditToolBar.cpp:168 ../src/commands.h:221
+#: ../src/EditToolBar.cpp:160 ../src/commands.h:239
 msgid "Undo"
 msgstr "Fortryd"
 
-#: ../src/HistoryWindow.cpp:47 ../src/commands.h:251
+#: ../src/HistoryWindow.cpp:47 ../src/commands.h:270
 msgid "Undo History"
 msgstr "Fortrydelseshistorie"
 
-#: ../src/HistoryWindow.cpp:76
+#: ../src/HistoryWindow.cpp:77
 msgid "Undo Levels Available (lots and lots)"
 msgstr "Maksimalt antal fortrydelser (rigeligt)"
 
-#: ../src/HistoryWindow.cpp:146
+#: ../src/HistoryWindow.cpp:147
 #, c-format
 msgid "Undo Levels Available: %d"
 msgstr "Maksimalt antal fortrydelser: %d"
@@ -2886,7 +2971,7 @@ msgstr "Maksimalt antal fortrydelser: %d"
 msgid "Unknown Subtype"
 msgstr "Ukendt undertype"
 
-#: ../src/AudacityApp.cpp:437
+#: ../src/AudacityApp.cpp:458
 #, c-format
 msgid "Unknown command line option: %s\n"
 msgstr "Ukendt kommandolinje option: %s\n"
@@ -2895,7 +2980,7 @@ msgstr "Ukendt kommandolinje option: %s\n"
 msgid "Unknown header"
 msgstr "Ukendt header"
 
-#: ../src/TrackPanel.cpp:268
+#: ../src/TrackPanel.cpp:283
 msgid "Up Octave"
 msgstr "Oktav op"
 
@@ -2912,7 +2997,7 @@ msgstr "Brug Ogg i stedet for mp3"
 msgid "Using %d blocks of %d samples each, for a total of %.1f MB.\n"
 msgstr "Bruger %d blokke af %d punkter hver, ialt %.1f mb.\n"
 
-#: ../src/AudacityApp.cpp:422
+#: ../src/AudacityApp.cpp:443
 #, c-format
 msgid "Using block size of %ld\n"
 msgstr "Bruger blokstørrelse %ld\n"
@@ -2921,17 +3006,17 @@ msgstr "Bruger blokstørrelse %ld\n"
 msgid "VOC (SoundBlaster)"
 msgstr ""
 
-#: ../src/effects/AvcCompressor.cpp:255 ../src/effects/AvcCompressor.cpp:292
-#: ../src/effects/AvcCompressor.cpp:313 ../src/effects/AvcCompressor.cpp:320
+#: ../src/effects/AvcCompressor.cpp:352 ../src/effects/AvcCompressor.cpp:389
+#: ../src/effects/AvcCompressor.cpp:414 ../src/effects/AvcCompressor.cpp:421
 msgid "Validation error"
 msgstr ""
 
-#: ../src/effects/AvcCompressor.cpp:254
+#: ../src/effects/AvcCompressor.cpp:351
 #, c-format
 msgid "Value must be from %d to %d."
 msgstr ""
 
-#: ../src/effects/AvcCompressor.cpp:312 ../src/effects/AvcCompressor.cpp:319
+#: ../src/effects/AvcCompressor.cpp:413 ../src/effects/AvcCompressor.cpp:420
 msgid "Values in columns must be in ascending order."
 msgstr ""
 
@@ -2940,20 +3025,20 @@ msgid "Vorbis version mismatch"
 msgstr "Forkert Vorbis-version"
 
 # ??
-#: ../src/effects/Phaser.cpp:437
+#: ../src/effects/Phaser.cpp:449
 #, fuzzy
 msgid "WET"
 msgstr "WET"
 
-#: ../src/effects/Wahwah.cpp:491
+#: ../src/effects/Wahwah.cpp:502
 msgid "Wah Frequency Offset (%):"
 msgstr "Wah frekvens offset (%):"
 
-#: ../src/effects/Wahwah.cpp:40
+#: ../src/effects/Wahwah.cpp:51
 msgid "Wahwah"
 msgstr "Wahwah"
 
-#: ../src/effects/Wahwah.cpp:420
+#: ../src/effects/Wahwah.cpp:431
 msgid "Wahwah by Nasca Octavian Paul"
 msgstr "Wahwah af Nasca Octavian Paul"
 
@@ -2969,15 +3054,15 @@ msgstr ""
 "Advarsel: Der er meget lidt ledig diskplads på dette drev. Vi anbefaler at "
 "vælge en anden midlertidig mappe i Indstillinger."
 
-#: ../src/TrackPanel.cpp:245
+#: ../src/TrackPanel.cpp:259
 msgid "Waveform"
 msgstr "Bølgeform"
 
-#: ../src/TrackPanel.cpp:246
+#: ../src/TrackPanel.cpp:260
 msgid "Waveform (dB)"
 msgstr "Bølgeform (dB)"
 
-#: ../src/effects/ToneGen.cpp:235
+#: ../src/effects/ToneGen.cpp:276
 msgid "Waveform:"
 msgstr "Bølgeform:"
 
@@ -2993,6 +3078,11 @@ msgstr "Hvor er %s?"
 #: ../src/Help.cpp:90
 msgid "Where is audacity-help.htb?"
 msgstr "Hvor er audacity-help.htb?"
+
+#: ../src/effects/Noise.h:27
+#, fuzzy
+msgid "White Noise"
+msgstr "Fjern støj"
 
 #: ../src/FileFormats.cpp:46
 msgid "Windows Media Audio"
@@ -3010,7 +3100,7 @@ msgstr ""
 msgid "Year:"
 msgstr "År:"
 
-#: ../src/Project.cpp:786
+#: ../src/Project.cpp:792
 #, fuzzy
 msgid "You must select a track first."
 msgstr "Vælg et spor først.\n"
@@ -3027,39 +3117,39 @@ msgid ""
 msgstr ""
 "Dine spor vil blive mixet ned til to stereokanaler i den eksporterede fil."
 
-#: ../src/commands.h:244
+#: ../src/commands.h:263
 msgid "Zoom &In"
 msgstr "Zoom &ind"
 
-#: ../src/commands.h:245
+#: ../src/commands.h:264
 msgid "Zoom &Normal"
 msgstr "Zoom &normal"
 
-#: ../src/commands.h:246
+#: ../src/commands.h:265
 msgid "Zoom &Out"
 msgstr "Zoom &ud"
 
-#: ../src/EditToolBar.cpp:173 ../src/commands.h:244
+#: ../src/EditToolBar.cpp:165 ../src/commands.h:263
 msgid "Zoom In"
 msgstr "Zoom ind"
 
-#: ../src/commands.h:245
+#: ../src/commands.h:264
 msgid "Zoom Normal"
 msgstr "Zoom normal"
 
-#: ../src/EditToolBar.cpp:175 ../src/commands.h:246
+#: ../src/EditToolBar.cpp:167 ../src/commands.h:265
 msgid "Zoom Out"
 msgstr "Zoom ud"
 
-#: ../src/ControlToolBar.cpp:404
+#: ../src/ControlToolBar.cpp:381
 msgid "Zoom Tool"
 msgstr "Zoom værktøj"
 
-#: ../src/commands.h:248
+#: ../src/commands.h:267
 msgid "Zoom to &Selection"
 msgstr "Zoom til &markering"
 
-#: ../src/commands.h:248
+#: ../src/commands.h:267
 msgid "Zoom to Selection"
 msgstr "Zoom til markering"
 
@@ -3072,15 +3162,15 @@ msgstr "benchmark.txt"
 msgid "big-endian"
 msgstr "big-endian"
 
-#: ../src/TrackPanel.cpp:2845
+#: ../src/TrackPanel.cpp:2882
 msgid "down"
 msgstr "ned"
 
-#: ../src/Menus.cpp:687
+#: ../src/Menus.cpp:736
 msgid "labels.txt"
 msgstr "labels.txt"
 
-#: ../src/TrackPanel.cpp:1001
+#: ../src/TrackPanel.cpp:1016
 msgid "left"
 msgstr "venstre"
 
@@ -3097,7 +3187,7 @@ msgstr "mono"
 msgid "n-bit DWVW"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:1001
+#: ../src/TrackPanel.cpp:1016
 msgid "right"
 msgstr "højre"
 
@@ -3117,9 +3207,40 @@ msgstr "stereo"
 msgid "unsigned"
 msgstr "uden fortegn"
 
-#: ../src/TrackPanel.cpp:2844
+#: ../src/TrackPanel.cpp:2881
 msgid "up"
 msgstr "op"
+
+#, fuzzy
+#~ msgid "&Insert"
+#~ msgstr "Omvend"
+
+#~ msgid "&Insert Silence..."
+#~ msgstr "&Indsæt stilhed..."
+
+#~ msgid "Bad number of seconds."
+#~ msgstr "Ugyldigt antal sekunder."
+
+#~ msgid "Create Tone"
+#~ msgstr "Lav tone"
+
+#~ msgid "Edit Toolbar, and general developer"
+#~ msgstr "Værktøjslinje redigering, og generel udvikler"
+
+#~ msgid "Insert Silence"
+#~ msgstr "Indsæt stilhed"
+
+#~ msgid "Inserted %.2f seconds of silence at %.2f"
+#~ msgstr "Indstatte %.2f sekunders stilhed ved %.2f"
+
+#~ msgid "Keyboard shortcuts, and general developer"
+#~ msgstr "Tastaturgenveje, og generel udvikler"
+
+#~ msgid "Number of seconds of silence to insert:"
+#~ msgstr "Antal sekunders stilhed at indsætte:"
+
+#~ msgid "Tone Generator..."
+#~ msgstr "Tonegenerator"
 
 #, fuzzy
 #~ msgid "This version of Audacity was not compiled with "
