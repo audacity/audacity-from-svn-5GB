@@ -12,7 +12,7 @@
 <table border="0" cellpadding="1" cellspacing="0" bgcolor="#000099">
 <tr><td><table border="0" cellspacing="1" cellpadding="4">
 <tr><td bgcolor="#ffffff">
-<table cellpadding="0" cellspacing="1"><tr><td>
+<table cellpadding="0" cellspacing="2"><tr><td>
 <?php AddFlags('</td><td>', '</td><tr><tr><td>'); ?></td></tr>
 </table></td></tr>
 
