@@ -40,8 +40,8 @@
 #include "MeterToolBar.h"
 #include "ImageManipulation.h"
 #include "MixerToolBar.h"
+#include "TranscriptionToolBar.h"
 #include "Project.h"
-
 
 
 ////////////////////////////////////////////////////////////
@@ -395,22 +395,25 @@ void ToolBar::DrawBackground(wxDC &dc, int width, int height)
 ToolBar *MakeToolBar(enum ToolBarType tbt, wxWindow *parent)
 {
    ToolBar *tb = NULL;
-
+   
    switch (tbt) {
-      case ControlToolBarID:
-         tb = new ControlToolBar(parent);
-         break;
-      case MixerToolBarID:
-         tb = new MixerToolBar(parent);
-         break;
-      case EditToolBarID:
-         tb = new EditToolBar(parent);
-         break;
-      case MeterToolBarID:
-         tb = new MeterToolBar(parent);
-         break;
-      case NoneID:
-      default:
+   case ControlToolBarID:
+      tb = new ControlToolBar(parent);
+      break;
+   case MixerToolBarID:
+      tb = new MixerToolBar(parent);
+      break;
+   case EditToolBarID:
+      tb = new EditToolBar(parent);
+      break;
+   case MeterToolBarID:
+      tb = new MeterToolBar(parent);
+      break;
+   case TranscriptionToolBarID:
+      tb  = new TranscriptionToolBar(parent);
+      break;
+   case NoneID:
+   default:
          break;
    }
 

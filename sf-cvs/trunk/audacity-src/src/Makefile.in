@@ -71,8 +71,10 @@ OBJS = \
 	Track.o \
 	TrackArtist.o \
 	TrackPanel.o \
+	TranscriptionToolBar.o \
 	ToolBar.o \
 	UndoManager.o \
+	VoiceKey.o \
 	WaveTrack.o \
 	TimeTrack.o \
 	commands/CommandManager.o \

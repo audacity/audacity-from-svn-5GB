@@ -60,7 +60,8 @@ enum ToolBarType {
    ControlToolBarID,
    MixerToolBarID,
    EditToolBarID,
-   MeterToolBarID
+   MeterToolBarID,
+   TranscriptionToolBarID
 };
 
 ////////////////////////////////////////////////////////////

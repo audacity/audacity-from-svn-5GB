@@ -28,7 +28,9 @@ wxUint32 GetUpdateFlags();
 
 double NearestZeroCrossing(double t0);
 
-void DoAddLabel(double left, double right);
+
+//Adds label and returns index of label in labeltrack.
+int DoAddLabel(double left, double right);
 
 // used in routines OnSelectionSave
 // and OnSelectionRestore

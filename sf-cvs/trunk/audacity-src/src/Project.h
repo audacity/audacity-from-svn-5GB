@@ -101,6 +101,10 @@ class AudacityProject:public wxFrame,
    double GetSel0() { return mViewInfo.sel0; }
    double GetSel1() { return mViewInfo.sel1; }
 
+   void SetSel0(double);        //Added by STM 
+   void SetSel1(double);        //Added by STM 
+
+
    bool Clipboard() { return msClipLen > 0.0; }
 
    wxString GetName();

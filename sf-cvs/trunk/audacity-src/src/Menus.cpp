@@ -2805,7 +2805,7 @@ void AudacityProject::OnNewTimeTrack()
       }
 }
 
-void AudacityProject::DoAddLabel(double left, double right)
+int AudacityProject::DoAddLabel(double left, double right)
 {
    TrackListIterator iter(mTracks);
    LabelTrack *lt = NULL;
@@ -2826,12 +2826,13 @@ void AudacityProject::DoAddLabel(double left, double right)
    SelectNone();
    lt->SetSelected(true);
 
-   lt->AddLabel(left, right);
+   int index = lt->AddLabel(left, right);
 
    PushState(_("Added label"), _("Label"));
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
+   return index;
 }
 
 void AudacityProject::OnAddLabel()
