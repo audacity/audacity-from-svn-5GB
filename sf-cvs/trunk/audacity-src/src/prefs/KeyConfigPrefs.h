@@ -4,8 +4,6 @@
 
   KeyConfigPrefs.h
 
-  Joshua Haberman
-  Dominic Mazzoni
   Brian Gunlogson
 
 **********************************************************************/
@@ -15,11 +13,11 @@
 
 #include "PrefsPanel.h"
 
-class wxButton;
 class wxChoice;
 class wxCommandEvent;
-class wxRadioButton;
 class wxStaticText;
+class wxListCtrl;
+class wxListEvent;
 class wxWindow;
 
 class KeyConfigPrefs:public PrefsPanel {
@@ -29,25 +27,12 @@ class KeyConfigPrefs:public PrefsPanel {
    ~KeyConfigPrefs();
    bool Apply();
 
-   void OnFormatChoice(wxCommandEvent& evt);
-
  private:
-   wxRadioButton *mCopyOrEdit[2];
-   wxChoice *mMP3Bitrate;
-   wxButton *mMP3FindButton;
-   wxStaticText *mMP3Version;
+   void OnFormatChoice(wxCommandEvent& evt);
+   void OnItemSelected(wxListEvent &event);
 
    wxChoice *mSelectedCategory;
-   wxButton *mExportOptionsButton;
-   wxStaticText *mFormatText;
-
-   int mFormat;
-   int mFormatBits;
-
-   void SetMP3VersionText();
-   void SetFormatText();
-
-   void Other();
+   wxListCtrl *mCategoryCommands;
 
  public:
    DECLARE_EVENT_TABLE();
