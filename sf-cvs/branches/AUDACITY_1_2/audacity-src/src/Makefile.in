@@ -201,7 +201,7 @@ $(DIRS): %:
 #
 
 Audacity.coff:
-   cd ../win && windres -I`wx-config --prefix`/include ../win/audacity.rc ../src/Audacity.coff && cd ../src
+	cd ../win && windres -I`wx-config --prefix`/include ../win/audacity.rc ../src/Audacity.coff && cd ../src
 
 #
 # Include ".depend" if it exists (run "make dep" to generate it)

@@ -54,6 +54,12 @@ portaudio/pa_unix_oss/portaudio.a:
 portaudio-v19/lib/libportaudio.a:
 	cd portaudio-v19 && $(MAKE)
 
+portaudio/pa_win_wmme/portaudio.a:
+	cd portaudio/pa_win_wmme && $(MAKE)
+
+portmixer/px_win_wmme/portmixer.a:
+	cd portmixer/px_win_wmme && $(MAKE)
+
 portaudio/pa_mac_core/portaudio.a:
 	cd portaudio/pa_mac_core && $(MAKE)
 
@@ -80,8 +86,10 @@ clean:
 	-$(MAKE) -C libflac clean
 	-$(MAKE) -C portaudio/pa_unix_oss clean
 	-$(MAKE) -C portaudio/pa_mac_core clean
+	-$(MAKE) -C portaudio/pa_win_wmme clean
 	-$(MAKE) -C portmixer/px_unix_oss clean
 	-$(MAKE) -C portmixer/px_mac_core clean
+	-$(MAKE) -C portmixer/px_win_wmme clean
 	-$(MAKE) -C soundtouch clean
 
 distclean:
@@ -98,6 +106,8 @@ distclean:
 	-$(MAKE) -C libflac distclean
 	-$(MAKE) -C portaudio/pa_unix_oss distclean
 	-$(MAKE) -C portaudio/pa_mac_core distclean
+	-$(MAKE) -C portaudio/pa_win_wmme distclean
 	-$(MAKE) -C portmixer/px_unix_oss distclean
 	-$(MAKE) -C portmixer/px_mac_core distclean
+	-$(MAKE) -C portmixer/px_win_wmme distclean
 	-$(MAKE) -C soundtouch distclean
