@@ -23,9 +23,13 @@
 #include "../images/AudacityLogo.xpm"
 
 #ifdef __WXMSW__
-#define DLOG_HEIGHT 430
+# define DLOG_HEIGHT 430
 #else
-#define DLOG_HEIGHT 400
+# if defined(__WXMAC__) && ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION >= 5))
+#  define DLOG_HEIGHT 430
+# else
+#  define DLOG_HEIGHT 400
+# endif
 #endif
 
 
