@@ -280,7 +280,7 @@ void ToolBar::SetButton(bool down, AButton * button)
 void ToolBar::DrawBackground(wxDC &dc, int width, int height)
 {
 
-#if defined(__WXMAC__)
+#ifdef USE_AQUA_THEME
 
    if (mBackgroundWidth < width) {
       if (mBackgroundBitmap)

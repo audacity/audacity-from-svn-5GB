@@ -156,7 +156,7 @@ void ControlToolBar::InitializeControlToolBar()
    wxImage *sliderOriginal = new wxImage(wxBitmap(Slider).ConvertToImage());
    wxImage *thumbOriginal = new wxImage(wxBitmap(SliderThumb).ConvertToImage());
 
-#ifdef __WXMAC__
+#ifdef USE_AQUA_THEME
    wxImage *sliderNew = sliderOriginal;
    wxImage *thumbNew = thumbOriginal;
 #else
@@ -168,7 +168,7 @@ void ControlToolBar::InitializeControlToolBar()
 
    delete sliderOriginal;
    delete thumbOriginal;
-#ifndef __WXMAC__
+#ifndef USE_AQUA_THEME
    delete sliderNew;
    delete thumbNew;
 #endif
@@ -220,7 +220,7 @@ wxImage *ControlToolBar::MakeToolImage(wxImage * tool,
    wxImage *bkgndOriginal = new wxImage(wxBitmap(src).ConvertToImage());
    wxImage *upOriginal = new wxImage(wxBitmap(Up).ConvertToImage());
 
-#ifdef __WXMAC__
+#ifdef USE_AQUA_THEME
    wxImage *background = bkgndOriginal;
 #else
    wxColour backgroundColour =
@@ -244,7 +244,7 @@ wxImage *ControlToolBar::MakeToolImage(wxImage * tool,
       result = OverlayImage(background, tool, mask, 0, 0);
    delete background;
 
-   #ifndef __WXMAC__
+   #ifndef USE_AQUA_THEME
    delete bkgndOriginal;
    delete upOriginal;
    #endif
@@ -371,7 +371,7 @@ void ControlToolBar::MakeButtons()
    wxColour newColour =
        wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
 
-#ifdef __WXMAC__
+#ifdef USE_AQUA_THEME
    upPattern = upOriginal;
    downPattern = downOriginal;
    hilitePattern = hiliteOriginal;
@@ -469,7 +469,7 @@ void ControlToolBar::MakeButtons()
          mFF->SetToolTip(_("Skip to End"));
    #endif
 
-#ifndef __WXMAC__
+#ifndef USE_AQUA_THEME
    delete upPattern;
    delete downPattern;
    delete hilitePattern;
@@ -481,7 +481,7 @@ void ControlToolBar::MakeButtons()
 
    /* Tools */
 
-   #ifdef __WXMAC__ // different positioning
+   #ifdef USE_AQUA_THEME // different positioning
    mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
    mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 26);
    mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 26, 0);
@@ -980,7 +980,7 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
    GetSize(&width, &height);
 
 
-#if defined __WXMAC__
+#ifdef USE_AQUA_THEME
    // Mac has an Aqua background...
    DrawBackground(dc, width, height); 
 #else
@@ -993,7 +993,7 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
    AColor::Bevel( dc, true, bevelRect );
 #endif
 
-   #ifndef __WXMAC__
+   #ifndef USE_AQUA_THEME
    // JKC: Grey horizontal spacer line between buttons.
    // Not quite ideal, but seems the best solution to 
    // make the tool button heights add up to the 

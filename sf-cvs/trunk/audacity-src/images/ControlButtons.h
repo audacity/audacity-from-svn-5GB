@@ -1,4 +1,4 @@
-#ifdef __WXMAC__
+#ifdef USE_AQUA_THEME
 #include "Aqua/UpButtonSquare.xpm"
 #include "Aqua/DownButtonSquare.xpm"
 #include "Aqua/HiliteButtonSquare.xpm"
