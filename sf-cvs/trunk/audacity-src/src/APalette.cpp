@@ -26,9 +26,10 @@
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #include <wx/brush.h>
-#include <wx/image.h>
 #include <wx/intl.h>
 #endif
+
+#include <wx/image.h>
 
 #include <math.h>
 
