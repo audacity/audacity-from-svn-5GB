@@ -69,7 +69,7 @@ portmixer/px_unix_oss/portmixer.a:
 portmixer/px_mac_core/portmixer.a:
 	cd portmixer/px_mac_core && $(MAKE)
 
-soundtouch/soundtouch.a:
+soundtouch/source/SoundTouch/.libs/libSoundTouch.a:
 	cd soundtouch && $(MAKE)
 
 clean:

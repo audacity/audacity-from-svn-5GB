@@ -10,10 +10,10 @@
  * Author e-mail : oparviai @ iki.fi
  * File created  : 13-Jan-2002
  *
- * Last changed  : $Date: 2004-03-14 15:51:43 $
- * File revision : $Revision: 1.1.1.1 $
+ * Last changed  : $Date: 2004-11-05 03:28:10 $
+ * File revision : $Revision: 1.1.1.1.2.1 $
  *
- * $Id: cpu_detect.h,v 1.1.1.1 2004-03-14 15:51:43 mbrubeck Exp $
+ * $Id: cpu_detect.h,v 1.1.1.1.2.1 2004-11-05 03:28:10 mbrubeck Exp $
  *
  * License :
  * 

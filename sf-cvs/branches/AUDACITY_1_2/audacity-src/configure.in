@@ -239,9 +239,9 @@ AC_ARG_WITH(help,
 if [[ "$use_soundtouch" = "yes" ]] ; then
 	AC_DEFINE(USE_SOUNDTOUCH, 1,	
 	[Define if SoundTouch support should be enabled])
-	CXXFLAGS="-I../lib-src/soundtouch/src $CXXFLAGS"
-	BUILDLIBS="$BUILDLIBS soundtouch/soundtouch.a"
-	EXTRAOBJS="$EXTRAOBJS ../lib-src/soundtouch/soundtouch.a"		
+	CXXFLAGS="-I../lib-src/soundtouch/include $CXXFLAGS"
+	BUILDLIBS="$BUILDLIBS soundtouch/source/SoundTouch/.libs/libSoundTouch.a"		
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/soundtouch/source/SoundTouch/.libs/libSoundTouch.a"		
 
    if test ! -f "lib-src/soundtouch/Makefile"; then
 		echo "--- Configuring soundtouch";

@@ -1,6 +1,6 @@
 dnl SoundTouch configure.ac, by David W. Durham
 dnl
-dnl $Id: configure.ac,v 1.1.1.1 2004-03-14 15:51:33 mbrubeck Exp $
+dnl $Id: configure.ac,v 1.1.1.1.2.1 2004-11-05 03:28:08 mbrubeck Exp $
 dnl
 dnl This file is part of SoundTouch, an audio processing library for pitch/time adjustments
 dnl 

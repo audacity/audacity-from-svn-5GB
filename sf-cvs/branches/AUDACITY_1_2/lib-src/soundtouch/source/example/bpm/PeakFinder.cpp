@@ -9,10 +9,10 @@
  * Author e-mail : oparviai @ iki.fi
  * File created  : 11-Jan-2003
  *
- * Last changed  : $Date: 2004-03-14 15:51:42 $
- * File revision : $Revision: 1.1.1.1 $
+ * Last changed  : $Date: 2004-11-05 03:28:10 $
+ * File revision : $Revision: 1.1.1.1.2.1 $
  *
- * $Id: PeakFinder.cpp,v 1.1.1.1 2004-03-14 15:51:42 mbrubeck Exp $
+ * $Id: PeakFinder.cpp,v 1.1.1.1.2.1 2004-11-05 03:28:10 mbrubeck Exp $
  *
  * License :
  *

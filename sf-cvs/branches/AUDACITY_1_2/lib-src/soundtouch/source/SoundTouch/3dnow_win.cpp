@@ -34,10 +34,10 @@
  * Author e-mail : oparviai @ iki.fi
  * File created  : 02-Nov-2003
  *
- * Last changed  : $Date: 2004-10-26 19:09:35 $
- * File revision : $Revision: 1.2 $
+ * Last changed  : $Date: 2004-11-05 03:28:09 $
+ * File revision : $Revision: 1.2.2.1 $
  *
- * $Id: 3dnow_win.cpp,v 1.2 2004-10-26 19:09:35 vjohnson Exp $
+ * $Id: 3dnow_win.cpp,v 1.2.2.1 2004-11-05 03:28:09 mbrubeck Exp $
  *
  * License :
  * 
