@@ -547,7 +547,11 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    // loads either the XPM or the windows resource, depending on the platform
 #if !defined(__WXMAC__) && !defined(__WXX11__)
-   wxIcon ic(wxICON(AudacityLogo48x48));
+   #ifdef __WXMSW__
+      wxIcon ic(wxICON(AudacityLogo));
+   #else
+      wxIcon ic(wxICON(AudacityLogo48x48));
+   #endif
    SetIcon(ic);
 #endif
    mIconized = false;
