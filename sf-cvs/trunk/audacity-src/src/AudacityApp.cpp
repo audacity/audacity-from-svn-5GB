@@ -356,9 +356,17 @@ void AudacityApp::OnKey(wxKeyEvent& event)
    else if (key == WXK_SPACE)
       newStr = "Spacebar";
    else
+   {
+      event.Skip();
       return; // Don't change it if we don't recognize the key
+   }
 
-   (audacityPrj->*((wxEventFunction) (audacityPrj->GetCommandFunc(audacityPrj->FindCommandByCombos(newStr)))))(event);
+   audEventFunction audFunc = audacityPrj->GetCommandFunc(audacityPrj->FindCommandByCombos(newStr));
+
+   if(audFunc)
+      (audacityPrj->*((wxEventFunction) audFunc))(event);
+
+   event.Skip();
 }
 
 int AudacityApp::OnExit()

@@ -201,6 +201,7 @@ wxString AudacityProject::GetCommandDesc(int nIndex)
 
 audEventFunction AudacityProject::GetCommandFunc(int nIndex)
 {
+   if((nIndex < 0) || (nIndex >= GetNumCommands())) return NULL;
    return mCommandMenuItem[nIndex]->callbackFunction;
 }
 
