@@ -59,9 +59,9 @@ Ja, på nesten alle måter. Audacity er ikke bare distribuert kostnadsfritt, men d
 Audacity er distribuert under vilkårene til 
 <a href="http://www.gnu.org/copyleft/gpl.html"
 >General Public License (GPL)</a>.
-Du kan fritt og gratis bruke dette programmet for private eller kommersielle formål. Du er også fri til å gi det bort eller selge det. Kildekoden til dette programmet er fritt tilgjengelig på nettet, og du kan gjerne modifisere programmet for egen bruk, men eventuelle forandringer du gjør må også være distribuert under vilkårene til GPL.
+Du kan kostnadsfritt bruke dette programmet for private eller kommersielle formål. Du har også lov til å gi det bort eller selge det. Kildekoden til dette programmet er fritt tilgjengelig på nettet, og du kan gjerne modifisere programmet for egen bruk, men eventuelle forandringer du gjør må også være distribuert under vilkårene til GPL.
 <p>
-Audacity ble bygd vha. wxWidgets, et programmvarebibliotek som er gitt ut under den mindre restriktive beskyttelsen til LGPL.
+Audacity ble bygd vha. wxWidgets, et programvarebibliotek som er gitt ut under den mindre restriktive beskyttelsen til LGPL.
 For mer informasjon, vennligst se
 <a href="http://wxwidgets.org/">wxwidgets.org</a>.
 <p>
@@ -110,6 +110,7 @@ Vennligst se vår nye <?php print "<a href=donatetime.php?$langLinkStr>"; ?>Doner
 
 Den viktigste tingen når du rapporterer en feil er å være så spesifikk som mulig. Gi oss nok informasjon til at vi kan reprodusere feilen selv, ellers er det lite sannsynlig at vi klarer å rette den opp. Send feilrapporter til <a href="mailto:audacity-help@lists.sourceforge.net">
 <audacity-help@lists.sourceforge.net></a>.
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font>
 <p>
 Husk å gi beskjed om hvilket operativsystem du kjører (som f.eks. Windows 98, MacOS 9.1, RedHat Linux 7.1, osv.) og eventuell annen informasjon du finner relevant. 
 <p>
@@ -158,7 +159,7 @@ Det er ikke nødvendig å installere Audacity. Bare dra Audacity-mappen til Progra
 <p>
 <a name="i4"></a>
 <font size=+1><b>
-4. Unix: Hvorfor får jeg feil med avhengigheter når jeg installerer fra RPM-pakken?
+4. Unix: Hvorfor får jeg feil med programavhengigheter når jeg installerer fra RPM-pakken?
 <br></b></font>
 
 <p><font size=+0>Først, sjekk at du har wxGTK installert; lenken kan du finne fra vår Linux-side - http://audacity.sourceforge.net/linux.html. Hvis RPM-en fortsatt ikke vil installere er dette pga. et fortsatt uløst problem. Bare installer RPM-en med flagget --nodeps.</font>
@@ -202,7 +203,7 @@ For å lagre miksen din kan du enten eksportere prosjektet, noe som automatisk mi
 </b></font>
 <p>
 
-Det er mulig å fjerne all vokal fra noen stereo-opptak pga. måten opptaket ble mikset på studioet. Ofte er vokalene plassert eksakt i senteret av opptaket, mens alle andre instrumenter er litt forskjøvet fra midten. Hvis du subtraherer høyre kanal fra venstre vil vokalen bli helt borte, mens instrumentalen står igjen.
+Det er mulig å fjerne all vokal fra enkelte stereo-opptak pga. måten opptaket ble mikset på studioet. Ofte er vokalene plassert eksakt i senteret av opptaket, mens alle andre instrumenter er litt forskjøvet fra midten. Hvis du subtraherer høyre kanal fra venstre vil vokalen bli helt borte, mens instrumentalen står igjen.
 <p>
 
 <b>Dette virker bare på noen opptak!</b>
@@ -277,7 +278,8 @@ Det finnes mange måter å dele et opptak opp i flere spor i Audacity. Her er noen
 </p><p>
 Metode 1: Eksportere markering
 </p><ul>
-<li>Velg den delen av lydsporet som korresponderer med det første sporet. </li><li>Velg "Eksporter markering som WAV..." fra Fil-menyen, og lagre til disken.
+<li>Velg den delen av lydsporet som korresponderer med det første sporet. 
+</li><li>Velg "Eksporter markering som WAV..." fra Fil-menyen, og lagre til disken.
 </li><li>Fortsett slik for alle de resterende sporene.
 </li></ul>
 <p>

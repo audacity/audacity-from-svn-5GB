@@ -1,10 +1,10 @@
 <h2>Canvis a l'Audacity 1.2.3</h2>
 <ul>
 <li><p>
-		Windows: Arreglat un error que feia que els enregistraments s'aturessin o es mostressin de manera incorrecta al cap de 50 minuts, en alguns sistemes Windows (Això es va resoldre parcialment a l'Audacity 1.2.2, però seguia sense funcionar en alguns sistemes.)
+		Windows: S'ha arreglat un error que feia que els enregistraments s'aturessin o es mostressin de manera incorrecta al cap de 50 minuts, en alguns sistemes Windows (Això es va resoldre parcialment a l'Audacity 1.2.2, però seguia sense funcionar en alguns sistemes.)
 </p></li>
 <li><p>
-		Mac OS X: Arreglat un error que feia que l'Audacity es es pengés a l'atzar en sistemes Mac, especialment mentre s'enregistrava o s'escoltava un so.
+		Mac OS X: S'ha arreglat un error que feia que l'Audacity es es pengés a l'atzar en sistemes Mac, especialment mentre s'enregistrava o s'escoltava un so.
 </p></li>
 <li><p>
     Els efectes de canviar el to i canviar el temps han estat actualitzats i ara fan servir una versió de la biblioteca  SoundTouch, d'Olli Parviainen,
