@@ -152,6 +152,7 @@ mAutoScrolling(false)
    mIsClosing = false;
    mIsSelecting = false;
    mIsResizing = false;
+   mIsResizingLinkedTracks = false;
    mIsRearranging = false;
    mIsSliding = false;
    mIsEnveloping = false;
@@ -495,6 +496,7 @@ const char *pMessages[] = { _("Click and drag to select audio"),
 #endif
 };
 
+
 // AS: This function is setting what icon your cursor is using
 //  Also, it sets a message in the status bar.
 void TrackPanel::HandleCursor(wxMouseEvent & event)
@@ -529,105 +531,140 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
       // see if we are over the label, which can be
       // used to drag the track
       if (label) {
-         mListener->
-             TP_DisplayStatusMessage(_
-                                     ("Drag this track up or down to change the"
-                                      " order of the tracks."), 0);
-         SetCursor(*mArrowCursor);
-      }
-      /////////////////////////////////////////
-      // test to see if we're over the area that
-      // resizes a track
-      else if (event.m_y >= (r.y + r.height - VERTICAL_TRACK_RESIZE_REGION)
-               && event.m_y <
-               (r.y + r.height + VERTICAL_TRACK_RESIZE_REGION)) {
+          
+         /////////////////////////////////////////
+         // test to see if we're over the area of the label that
+         // resizes a (both) tracks
+         
+         if (event.m_y >= (r.y + r.height - VERTICAL_TRACK_RESIZE_REGION)
+             && event.m_y < (r.y + r.height + VERTICAL_TRACK_RESIZE_REGION)) {
+            
+            //Check to see if it is the second channel of a stereo track
+            VTrack *prev = mTracks->GetPrev(label);
+            if(mTracks->GetLink(prev) == label) {
+               
+               mListener->
+                  TP_DisplayStatusMessage(_
+                                          ("Click and drag to resize both tracks"),
+                                          0);
+               SetCursor(*mResizeCursor);               
+            }
+            else if ( !label->GetLinked() ) {
+               
+               //It is not linked to anything
+               mListener->
+                  TP_DisplayStatusMessage(_
+                                          ("Click and drag to resize the track"),
+                                          0);
+               SetCursor(*mResizeCursor);
+            }
+         }
+         
 
-         mListener->
-             TP_DisplayStatusMessage(_
-                                     ("Click and drag to resize the track"),
-                                     0);
-         SetCursor(*mResizeCursor);
+         //This is the normal part of the track label
+         else {
+            mListener->
+               TP_DisplayStatusMessage(_
+                                       ("Drag this track up or down to change the"
+                                        " order of the tracks."), 0);
+            SetCursor(*mArrowCursor);
+         }
       }
+      
       /////////////////////////////////////////
       //Otherwise, we must be over the wave window 
       else {
-         int operation = mListener->TP_GetCurrentTool();
-         int leftSel, rightSel;
 
-
-         // Change the cursor based on the selected tool.
-         switch (operation) {
-         case selectTool:
-
-            //Make sure you are within the selected track
-            if ((label && label->GetSelected())
-                || (nonlabel && nonlabel->GetSelected())) {
-
-               leftSel = TimeToPosition(mViewInfo->sel0, r.x);
-               rightSel = TimeToPosition(mViewInfo->sel1, r.x);
-
-               ///////////////////////////////////////
-               // Check to see if the cursor is on top 
-               //of the left selection boundary
-               if (leftSel < rightSel
-                   && event.m_x >=
-                   leftSel - HORIZONTAL_SELECTION_RESIZE_REGION
-                   && event.m_x <=
-                   leftSel + HORIZONTAL_SELECTION_RESIZE_REGION) {
-                  mListener->
-                      TP_DisplayStatusMessage(_
-                                              ("Click and drag to move left selection boundary."),
-                                              0);
-                  SetCursor(*mAdjustLeftSelectionCursor);
+         if (event.m_y >= (r.y + r.height - VERTICAL_TRACK_RESIZE_REGION)
+             && event.m_y < (r.y + r.height + VERTICAL_TRACK_RESIZE_REGION)) {
+            
+            mListener->
+               TP_DisplayStatusMessage(_
+                                       ("Click and drag to resize the track"),
+                                       0);
+            SetCursor(*mResizeCursor);
+         }
+         else {
+            
+            int operation = mListener->TP_GetCurrentTool();
+            int leftSel, rightSel;
+            
+            
+            // Change the cursor based on the selected tool.
+            switch (operation) {
+            case selectTool:
+               
+               //Make sure you are within the selected track
+               if ((label && label->GetSelected())
+                   || (nonlabel && nonlabel->GetSelected())) {
+                  
+                  leftSel = TimeToPosition(mViewInfo->sel0, r.x);
+                  rightSel = TimeToPosition(mViewInfo->sel1, r.x);
+                  
+                  ///////////////////////////////////////
+                  // Check to see if the cursor is on top 
+                  //of the left selection boundary
+                  if (leftSel < rightSel
+                      && event.m_x >=
+                      leftSel - HORIZONTAL_SELECTION_RESIZE_REGION
+                      && event.m_x <=
+                      leftSel + HORIZONTAL_SELECTION_RESIZE_REGION) {
+                     mListener->
+                        TP_DisplayStatusMessage(_
+                                                ("Click and drag to move left selection boundary."),
+                                                0);
+                     SetCursor(*mAdjustLeftSelectionCursor);
+                  }
+                  ///////////////////////////////////////
+                  // Check to see if the cursor is on top 
+                  //of the right selection boundary, (or if right==left)
+                  
+                  else if (event.m_x >=
+                           rightSel - HORIZONTAL_SELECTION_RESIZE_REGION
+                           && event.m_x <=
+                           rightSel + HORIZONTAL_SELECTION_RESIZE_REGION) {
+                     mListener->
+                        TP_DisplayStatusMessage(_
+                                                ("Click and drag to move right selection boundary."),
+                                                0);
+                     SetCursor(*mAdjustRightSelectionCursor);
+                  } else {
+                     //Draw a normal cursor
+                     mListener->TP_DisplayStatusMessage(pMessages[operation],
+                                                        0);
+                     SetCursor(*mSelectCursor);
+                     
+                  }
                }
                ///////////////////////////////////////
-               // Check to see if the cursor is on top 
-               //of the right selection boundary, (or if right==left)
-
-               else if (event.m_x >=
-                        rightSel - HORIZONTAL_SELECTION_RESIZE_REGION
-                        && event.m_x <=
-                        rightSel + HORIZONTAL_SELECTION_RESIZE_REGION) {
-                  mListener->
-                      TP_DisplayStatusMessage(_
-                                              ("Click and drag to move right selection boundary."),
-                                              0);
-                  SetCursor(*mAdjustRightSelectionCursor);
-               } else {
-                  //Draw a normal cursor
-                  mListener->TP_DisplayStatusMessage(pMessages[operation],
-                                                     0);
+               // Otherwise, draw the normal cursor 
+               //
+               else {
+                  mListener->TP_DisplayStatusMessage(pMessages[operation], 0);
                   SetCursor(*mSelectCursor);
-
                }
-            }
-            ///////////////////////////////////////
-            // Otherwise, draw the normal cursor 
-            //
-            else {
-               mListener->TP_DisplayStatusMessage(pMessages[operation], 0);
-               SetCursor(*mSelectCursor);
-            }
+            
             break;
-
+            
          case envelopeTool:
             SetCursor(*mArrowCursor);
             mListener->TP_DisplayStatusMessage(pMessages[operation], 0);
             break;
-
-
+            
+            
          case slideTool:
             mListener->TP_DisplayStatusMessage(pMessages[operation], 0);
             SetCursor(*mSlideCursor);
             break;
-
-
+            
+            
          case zoomTool:
             mListener->TP_DisplayStatusMessage(pMessages[operation], 0);
             SetCursor(event.ShiftDown()? *mZoomOutCursor : *mZoomInCursor);
             break;
+            }
+            
          }
-
       }
    } else {
       // Not over a track
@@ -716,19 +753,19 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
          if (leftSel < rightSel
              && event.m_x >= leftSel - HORIZONTAL_SELECTION_RESIZE_REGION
              && event.m_x <= leftSel + HORIZONTAL_SELECTION_RESIZE_REGION)
-         {
-            mSelStart = mViewInfo->sel1;        //Pin the right selection boundary
-            mIsSelecting = true;
-            startNewSelection = false;
-         } else if (event.m_x >=
-                    rightSel - HORIZONTAL_SELECTION_RESIZE_REGION
-                    && event.m_x <=
-                    rightSel + HORIZONTAL_SELECTION_RESIZE_REGION) {
-            mSelStart = mViewInfo->sel0;        //Pin the left selection boundary
-            mIsSelecting = true;
-            startNewSelection = false;
-         }
-
+            {
+               mSelStart = mViewInfo->sel1;        //Pin the right selection boundary
+               mIsSelecting = true;
+               startNewSelection = false;
+            } 
+         else if (event.m_x >= rightSel - HORIZONTAL_SELECTION_RESIZE_REGION
+                  && event.m_x <= rightSel + HORIZONTAL_SELECTION_RESIZE_REGION) 
+            {
+               mSelStart = mViewInfo->sel0;        //Pin the left selection boundary
+               mIsSelecting = true;
+               startNewSelection = false;
+            }
+         
       }
 
       if (startNewSelection) {
@@ -737,11 +774,11 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
          StartSelection(event.m_x, r.x);
          mTracks->Select(pTrack);
          mListener->
-             TP_DisplayStatusMessage(wxString::
-                                     Format(_("Cursor: %lf s"), mSelStart),
-                                     1);
+            TP_DisplayStatusMessage(wxString::
+                                    Format(_("Cursor: %lf s"), mSelStart),
+                                    1);
       }
-
+      
       if (pTrack->GetKind() == VTrack::Label)
          ((LabelTrack *) pTrack)->MouseDown(mMouseClickX, mMouseClickY,
                                             mCapturedRect,
@@ -1432,39 +1469,92 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
    if (event.ButtonDown(1)) {
 
       wxRect r;
+      wxRect rLabel;
       int num;
 
       // DM: Figure out what track is about to be resized
       VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
+      VTrack *label = FindTrack(event.m_x, event.m_y, true, &rLabel, &num);
+      
+      if(label) {
+         //STM: The mouse is clicking on the label part. make sure it is not
+         // over the mid-region of two linked tracks
+         
+         //The mouse is over the resize region of a single track:
+         // treat it exactly as if it is over the non-label portion
+ 
+         //Check to see if it is the second channel of a stereo track
+         VTrack *prev = mTracks->GetPrev(label);
+  
+         if ( mTracks->GetLink(prev) == label ) {     
+            
+            mCapturedTrack=label; 
+            mMouseClickX = event.m_x;
+            mMouseClickY = event.m_y;
+            mInitialTrackHeight = label->GetHeight();
+            mInitialUpperTrackHeight = prev->GetHeight();
+            //Keep track of the relative size of the two tracks:
+            // mInitialLowerTrackProportion =  static_cast <double> (mInitialTrackHeight / (mInitialTrackHeight + mInitialUpperTrackHeight));
+            mIsResizing = true;
+            mIsResizingLinkedTracks=true;
 
-      if (t) {
-
-         // DM: Capture the track so that we continue to resize
-         //  THIS track, no matter where the user moves the mouse
-         mCapturedTrack = t;
-         //mCapturedRect = r;
-         //mCapturedNum = num;
-
-         // DM: Save the initial mouse location and the initial height
-         mMouseClickX = event.m_x;
-         mMouseClickY = event.m_y;
-         mInitialTrackHeight = t->GetHeight();
-
-         mIsResizing = true;
-      }
-   } else if (mIsResizing) {
+         } else if (!label->GetLinked()){
+            //It is not linked to anything: treat it as if it is a normal resize
+            
+            t = label;
+             
+         }}
+    
+         if (t) {
+            
+            // DM: Capture the track so that we continue to resize
+            //  THIS track, no matter where the user moves the mouse
+            mCapturedTrack = t;
+            //mCapturedRect = r;
+            //mCapturedNum = num;
+            
+            // DM: Save the initial mouse location and the initial height
+            mMouseClickX = event.m_x;
+            mMouseClickY = event.m_y;
+            mInitialTrackHeight = t->GetHeight();
+            
+            mIsResizing = true;
+         }
+      } else if (mIsResizing) {
 
       // DM: Dragging means that the mouse button IS down and has moved
       //  from its initial location.  By the time we get here, we
       //  have already received a ButtonDown() event and saved the
       //  track being resized in mCapturedTrack.
       if (event.Dragging()) {
+         
          int delta = (event.m_y - mMouseClickY);
-         int newTrackHeight = mInitialTrackHeight + delta;
-         if (newTrackHeight < 20)
-            newTrackHeight = 20;
-         mCapturedTrack->SetHeight(newTrackHeight);
-         Refresh(false);
+
+   
+         
+         //STM: We may be dragging one or two (stereo) tracks.  If two, resize proportionally
+         if(mIsResizingLinkedTracks) {
+            VTrack *prev = mTracks->GetPrev(mCapturedTrack);
+            double proportion = static_cast <double>(mInitialTrackHeight) / (mInitialTrackHeight + mInitialUpperTrackHeight);
+            int newTrackHeight = static_cast <int> (mInitialTrackHeight + delta * proportion); 
+            int newUpperTrackHeight = static_cast <int> ( mInitialUpperTrackHeight + delta * (1.0 - proportion));
+
+            //make sure neither track is smaller than 20;
+            if(newTrackHeight < 20) newTrackHeight = 20;
+            if(newUpperTrackHeight < 20) newUpperTrackHeight = 20;
+            
+            mCapturedTrack->SetHeight(newTrackHeight);
+            prev->SetHeight(newUpperTrackHeight);
+            Refresh(false);
+            
+         } else {
+            int newTrackHeight = mInitialTrackHeight + delta ;          
+            if (newTrackHeight < 20)
+               newTrackHeight = 20;   
+            mCapturedTrack->SetHeight(newTrackHeight);
+            Refresh(false);
+         }
+
       }
       // DM: This happens when the button is released from a drag.
       //  Since we actually took care of resizing the track when
@@ -1473,6 +1563,7 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
       else if (event.ButtonUp(1)) {
          mCapturedTrack = NULL;
          mIsResizing = false;
+         mIsResizingLinkedTracks = false;
          MakeParentRedrawScrollbars();
          MakeParentPushState("TrackPanel::HandleResize() FIXME!!");
       }
@@ -1585,18 +1676,27 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
 //  from the other OnMouseEvent code.
 void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
 {
+
    wxRect r;
+   wxRect rLabel;
    int dummy;
 
    FindTrack(event.m_x, event.m_y, false, &r, &dummy);
+   FindTrack(event.m_x, event.m_y, true, &rLabel, &dummy);
 
-   if (event.ButtonDown(1) &&
-       event.m_y >= (r.y + r.height - VERTICAL_TRACK_RESIZE_REGION) &&
-       event.m_y < (r.y + r.height + VERTICAL_TRACK_RESIZE_REGION)) {
-      HandleResize(event);
-      HandleCursor(event);
-      return;
-   }
+   //call HandleResize if I'm over the border area 
+   if (event.ButtonDown(1) 
+       && (( event.m_y >= (r.y + r.height - VERTICAL_TRACK_RESIZE_REGION) 
+             && event.m_y < (r.y + r.height + VERTICAL_TRACK_RESIZE_REGION))
+           || ( event.m_y >= (rLabel.y + rLabel.height - VERTICAL_TRACK_RESIZE_REGION) 
+                && event.m_y < (rLabel.y + rLabel.height + VERTICAL_TRACK_RESIZE_REGION))
+           )
+       )
+      {
+         HandleResize(event);
+         HandleCursor(event);
+         return;
+      }
 
    if (!mCapturedTrack && event.m_x < GetLabelWidth()) {
       HandleLabelClick(event);
@@ -2317,6 +2417,9 @@ void TrackPanel::OnSetName()
    }
 }
 
+
+//  Here, 'label' refers to the rectangle to the left of the track
+// or tracks (if stereo)
 VTrack *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
                               wxRect * trackRect, int *trackNum)
 {
