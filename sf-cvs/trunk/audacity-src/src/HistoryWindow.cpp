@@ -45,7 +45,8 @@ END_EVENT_TABLE()
 
 HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
 wxDialog(parent, -1, _("Undo History"), wxDefaultPosition,
-         wxDefaultSize, wxDIALOG_MODELESS | wxCAPTION | wxTHICK_FRAME)
+         wxDefaultSize,
+	wxDIALOG_MODELESS | wxCAPTION | wxTHICK_FRAME | wxSYSTEM_MENU)
 {
    mTopSizer = new wxBoxSizer(wxVERTICAL);
 
