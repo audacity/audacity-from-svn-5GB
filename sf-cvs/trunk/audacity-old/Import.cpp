@@ -24,6 +24,8 @@
 #include "ImportOGG.h"
 #include "ImportRaw.h"
 
+#include "Project.h"
+
 // General purpose function used by importers
 wxString TrackNameFromFileName(wxString fName)
 {
@@ -31,11 +33,14 @@ wxString TrackNameFromFileName(wxString fName)
 }
 
 // returns number of tracks imported
-int Import(wxWindow * parent,
-           wxString fName, WaveTrack *** tracks, DirManager * dirManager)
+int Import(AudacityProject *project,
+           wxString fName,
+           WaveTrack *** tracks)
 {
    bool success;
    int numTracks = 0;
+   DirManager *dirManager = project->GetDirManager();
+   wxWindow *parent = project;
 
    if (!fName.Right(3).CmpNoCase("mid") ||
        !fName.Right(3).CmpNoCase("midi")) {
@@ -47,8 +52,8 @@ int Import(wxWindow * parent,
    if (!fName.Right(3).CmpNoCase("mp3")) {
 #ifdef MP3SUPPORT
       *tracks = new WaveTrack *[2];
-      success =::ImportMP3(parent, fName,
-                           &(*tracks)[0], &(*tracks)[1], dirManager);
+      success =::ImportMP3(project, fName,
+                           &(*tracks)[0], &(*tracks)[1]);
       if (!success)
          return 0;
 

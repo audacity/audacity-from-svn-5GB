@@ -43,6 +43,7 @@
 #include "NoteTrack.h"
 #include "Prefs.h"
 #include "Project.h"
+#include "Tags.h"
 #include "Track.h"
 #include "TrackPanel.h"
 #include "WaveTrack.h"
@@ -204,6 +205,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mViewInfo.sbarScreen = 1;
    mViewInfo.sbarTotal = 1;
 
+   mMenuBar = NULL;
    CreateMenuBar();
 
    int left = 0, top = 0, width, height;
@@ -281,18 +283,23 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    //
 
    // loads either the XPM or the windows resource, depending on the platform
+   #ifndef __WXMAC__
    wxIcon ic(wxICON(AudacityLogo));
    SetIcon(ic);
+   #endif
 
    // Min size, max size
    SetSizeHints(250, 200, 20000, 20000);
+
+   // Create tags object
+   mTags = new Tags();
 
    gAudacityProjects.Add(this);
 }
 
 AudacityProject::~AudacityProject()
 {
-   // TODO delete mTracks;
+   delete mTags;
 
    gAudacityProjects.Remove(this);
 
@@ -309,6 +316,11 @@ void AudacityProject::RedrawProject()
 DirManager *AudacityProject::GetDirManager()
 {
    return &mDirManager;
+}
+
+Tags *AudacityProject::GetTags()
+{
+   return mTags;
 }
 
 wxString AudacityProject::GetName()
@@ -951,7 +963,7 @@ void AudacityProject::Import(wxString fileName)
    WaveTrack **newTracks;
    int numTracks;
 
-   numTracks =::Import(this, fileName, &newTracks, &mDirManager);
+   numTracks =::Import(this, fileName, &newTracks);
 
    if (numTracks <= 0)
       return;

@@ -17,15 +17,19 @@
 #include "snd/snd.h"
 
 #include "Audacity.h"
+#include "LabelTrack.h"
+#include "Mix.h"
+#include "Project.h"
 #include "Track.h"
 #include "WaveTrack.h"
-#include "Mix.h"
-#include "LabelTrack.h"
 
-bool ExportPCM(wxString format, bool stereo, double rate, wxString fName,
-               wxWindow * parent, TrackList * tracks, bool selectionOnly,
-               double t0, double t1)
+bool ExportPCM(AudacityProject *project,
+               wxString format, bool stereo, wxString fName,
+               bool selectionOnly, double t0, double t1)
 {
+   double rate = project->GetRate();
+   wxWindow *parent = project;
+   TrackList *tracks = project->GetTracks();
 
    int header = SND_HEAD_NONE;
    bool trackMarkers = false;

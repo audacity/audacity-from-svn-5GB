@@ -32,12 +32,12 @@
 #include "Import.h"
 #include "ImportRaw.h"
 #include "ImportMIDI.h"
-
 #include "LabelTrack.h"
 #include "Mix.h"
 #include "NoteTrack.h"
 #include "Prefs.h"
 #include "Project.h"
+#include "Tags.h"
 #include "Track.h"
 #include "TrackPanel.h"
 #include "WaveTrack.h"
@@ -50,20 +50,35 @@
 
 void AudacityProject::CreateMenuBar()
 {
+   mMenusDirtyCheck = gMenusDirty;
+
    mMenuBar = new wxMenuBar();
 
    // Note: if you change the titles of any of the menus here,
-   // you must also change the title in OnUpdateMenus, below:
+   // you must also change the title in OnUpdateMenus, below.
+   
+   wxString pcmFormat =
+       gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");
+   mExportString.Printf("&Export as %s...", pcmFormat);
+   mExportSelectionString.Printf("Export &Selection as %s...", pcmFormat);
+   wxString lossyFormat =
+       "MP3";
+   mExportLossyString.Printf("&Export as %s...", lossyFormat);
+   mExportSelectionLossyString.Printf("Export &Selection as %s...", lossyFormat);
 
    mFileMenu = new wxMenu();
    mFileMenu->Append(NewID, "&New...\tCtrl+N");
    mFileMenu->Append(OpenID, "&Open...\tCtrl+O");
    mFileMenu->Append(CloseID, "&Close\tCtrl+W");
-   mFileMenu->Append(SaveID, "&Save\tCtrl+S");
-   mFileMenu->Append(SaveAsID, "Save &As...");
+   mFileMenu->Append(SaveID, "&Save Project\tCtrl+S");
+   mFileMenu->Append(SaveAsID, "Save Project &As...");
    mFileMenu->AppendSeparator();
-   mFileMenu->Append(ExportMixID, "&Export...");
-   mFileMenu->Append(ExportSelectionID, "Export &Selected Audio...");
+   mFileMenu->Append(ExportMixID, mExportString);
+   mFileMenu->Append(ExportSelectionID, mExportSelectionString);
+   mFileMenu->AppendSeparator();
+   mFileMenu->Append(ExportLossyMixID, mExportLossyString);
+   mFileMenu->Append(ExportLossySelectionID, mExportSelectionLossyString);
+   mFileMenu->AppendSeparator();
    mFileMenu->Append(ExportLabelsID, "Export &Labels...");
    mFileMenu->AppendSeparator();
    mFileMenu->Append(PreferencesID, "&Preferences...\tCtrl+P");
@@ -105,6 +120,8 @@ void AudacityProject::CreateMenuBar()
    mProjectMenu->Append(ImportLabelsID, "Import Labels...");
    mProjectMenu->Append(ImportMIDIID, "Import &MIDI...");
    mProjectMenu->Append(ImportRawID, "Import Raw Data...");
+   mProjectMenu->AppendSeparator();
+   mProjectMenu->Append(EditID3ID, "Edit ID3 Tags...");   
    mProjectMenu->AppendSeparator();
    mProjectMenu->Append(QuickMixID, "&Quick Mix");
    mProjectMenu->AppendSeparator();
@@ -164,6 +181,41 @@ void AudacityProject::CreateMenuBar()
 
 void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 {
+   if (mMenusDirtyCheck != gMenusDirty) {
+   
+      /*
+      
+      TODO!
+      
+      This crashes - need to fix:
+      
+      wxString pcmFormat =
+       gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");
+      mExportString.Printf("&Export as %s...", pcmFormat);
+      mExportSelectionString.Printf("Export &Selection as %s...", pcmFormat);
+      wxString lossyFormat =
+          "MP3";
+      mExportLossyString.Printf("&Export as %s...", lossyFormat);
+      mExportSelectionLossyString.Printf("Export &Selection as %s...", lossyFormat);
+   
+      wxMenuItem *item = mFileMenu->Remove(7);
+      item->SetName(mExportString);
+      mFileMenu->Insert(7, item);
+      
+      item = mFileMenu->Remove(8);
+      item->SetName(mExportSelectionString);
+      mFileMenu->Insert(8, item);
+      
+      item = mFileMenu->Remove(10);
+      item->SetName(mExportLossyString);
+      mFileMenu->Insert(10, item);
+      
+      item = mFileMenu->Remove(11);
+      item->SetName(mExportSelectionLossyString);
+      mFileMenu->Insert(11, item);
+      */
+   }
+
    // Note that the titles of the menus here are dependent on the
    // titles above.
 
@@ -196,8 +248,11 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
       t = iter.Next();
    }
 
-   mFileMenu->Enable(mFileMenu->FindItem("Export..."), numTracks > 0);
-   mFileMenu->Enable(mFileMenu->FindItem("Export Selected Audio..."),
+   mFileMenu->Enable(mFileMenu->FindItem(mExportString), numTracks > 0);
+   mFileMenu->Enable(mFileMenu->FindItem(mExportSelectionString),
+                     numTracksSelected > 0 && nonZeroRegionSelected);
+   mFileMenu->Enable(mFileMenu->FindItem(mExportLossyString), numTracks > 0);
+   mFileMenu->Enable(mFileMenu->FindItem(mExportSelectionLossyString),
                      numTracksSelected > 0 && nonZeroRegionSelected);
    mFileMenu->Enable(mFileMenu->FindItem("Export Labels..."),
                      numLabelTracks > 0);
@@ -359,12 +414,30 @@ void AudacityProject::OnExportLabels(wxCommandEvent & event)
 
 void AudacityProject::OnExportMix(wxCommandEvent & event)
 {
-   ::Export(this, mTracks, false, 0.0, mTracks->GetMaxLen());
+   wxString format =
+       gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");   
+
+   ::Export(this, format, false, 0.0, mTracks->GetMaxLen());
 }
 
 void AudacityProject::OnExportSelection(wxCommandEvent & event)
 {
-   ::Export(this, mTracks, true, mViewInfo.sel0, mViewInfo.sel1);
+   wxString format =
+       gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");   
+
+   ::Export(this, format, true, mViewInfo.sel0, mViewInfo.sel1);
+}
+
+void AudacityProject::OnExportLossyMix(wxCommandEvent & event)
+{
+   // Until Ogg Vorbis is supported, this is hard-coded to MP3
+   ::Export(this, "MP3", false, 0.0, mTracks->GetMaxLen());
+}
+
+void AudacityProject::OnExportLossySelection(wxCommandEvent & event)
+{
+   // Until Ogg Vorbis is supported, this is hard-coded to MP3
+   ::Export(this, "MP3", true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
 void AudacityProject::OnPreferences(wxCommandEvent & event)
@@ -888,6 +961,11 @@ void AudacityProject::OnImportRaw(wxCommandEvent & event)
          mTrackPanel->Refresh(false);
       }
    }
+}
+
+void AudacityProject::OnEditID3(wxCommandEvent & event)
+{
+   mTags->ShowEditDialog(this, "Edit ID3 Tags (for MP3 exporting)");
 }
 
 void AudacityProject::OnQuickMix(wxCommandEvent & event)

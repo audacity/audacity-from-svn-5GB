@@ -38,8 +38,10 @@
 #include "Import.h"
 #include "ImportMP3.h"
 
-#include "WaveTrack.h"
 #include "DirManager.h"
+#include "WaveTrack.h"
+#include "Project.h"
+#include "Tags.h"
 
 #ifdef USE_LIBMPEG3
    #include "mpeg3/libmpeg3.h"
@@ -62,10 +64,15 @@
    #error MP3 support selected but no mp3 decoding library specified
 #endif
 
-bool ImportMP3(wxWindow * parent,
-               wxString fName, WaveTrack ** left, WaveTrack ** right,
-               DirManager * dirManager)
+bool ImportMP3(AudacityProject * project,
+               wxString fName, WaveTrack ** left, WaveTrack ** right)
 {
+   DirManager *dirManager = project->GetDirManager();
+   wxWindow *parent = project;
+
+   Tags *tags = project->GetTags();
+   tags->ImportID3(fName);
+
 #ifdef USE_LIBMPEG3
 
    wxBusyCursor wait;

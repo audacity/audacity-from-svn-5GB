@@ -32,6 +32,7 @@ class wxDragImage;
 
 class TrackList;
 class APalette;
+class Tags;
 
 class AudacityProject;
 
@@ -63,6 +64,7 @@ class AudacityProject:public wxFrame,
    APalette *GetAPalette();
    wxString GetName();
    DirManager *GetDirManager();
+   Tags *GetTags();
 
    // File I/O
 
@@ -138,6 +140,10 @@ class AudacityProject:public wxFrame,
    wxString mFileName;
    DirManager mDirManager;
    double mRate;
+   
+   // Tags (artist name, song properties, MP3 ID3 info, etc.)
+   
+   Tags *mTags;
 
    // List of tracks and display info
 

@@ -56,6 +56,7 @@ pascal OSErr FSpGetFullPath(const FSSpec * spec,
 #include "Prefs.h"
 
 wxConfig *gPrefs = NULL;
+int gMenusDirty = 0;
 
 void InitPreferences()
 {
@@ -90,6 +91,11 @@ void InitPreferences()
                    "and have been reset.");
    }
 #endif
+
+   // Fix exporting - MP3 is no longer a valid default export format in 0.96
+   // (it has its own menu items!)
+   if (gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV") == "MP3")
+      gPrefs->Write("/FileFormats/DefaultExportFormat", "WAV");
 
    gPrefs->Write("/Version", AUDACITY_VERSION_STRING);
 }

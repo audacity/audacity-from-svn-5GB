@@ -11,13 +11,15 @@
 #ifndef __AUDACITY_EXPORTPCM__
 #define __AUDACITY_EXPORTPCM__
 
-class WaveTrack;
-class DirManager;
 class wxString;
 
-bool ExportPCM(wxString format, bool stereo, double rate, wxString fName,
-               wxWindow * parent, TrackList * tracks, bool selectionOnly,
-               double t0, double t1);
+class AudacityProject;
+class DirManager;
+class WaveTrack;
+
+bool ExportPCM(AudacityProject *project,
+               wxString format, bool stereo, wxString fName,
+               bool selectionOnly, double t0, double t1);
 
 
 #endif

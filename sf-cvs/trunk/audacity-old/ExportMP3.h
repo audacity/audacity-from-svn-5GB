@@ -13,10 +13,19 @@
 
 #include <wx/string.h>
 
+class AudacityProject;
+
 class MP3Exporter {
    public:
-      
-      virtual bool LoadLibrary(wxString fileName = "") = 0;
+   
+      MP3Exporter();
+   
+      virtual wxString GetLibraryName() = 0;
+      virtual wxString GetLibraryMessage() = 0;
+      virtual wxString GetLibraryTypeString() = 0;
+
+      virtual bool FindLibrary(wxWindow *parent);
+      virtual bool LoadLibrary() = 0;
       virtual bool ValidLibraryLoaded() = 0;
       virtual const char *GetLibraryVersion() = 0;
 
@@ -41,15 +50,18 @@ class MP3Exporter {
       virtual void SetQuality(int quality) = 0;
       virtual int GetQuality() = 0;
       virtual ~MP3Exporter() { };
+
+  protected:
+   wxString mLibPath;
 };
 
 #define MP3CONFIG_BITRATE 0x00000001
 #define MP3CONFIG_QUALITY 0x00000002
 
-extern MP3Exporter *gMP3Exporter;
+MP3Exporter *GetMP3Exporter();
         
-bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
-               TrackList * tracks, bool selectionOnly, double t0,
-               double t1);
+bool ExportMP3(AudacityProject *project,
+               bool stereo, wxString fName,
+               bool selectionOnly, double t0, double t1);
 
 #endif

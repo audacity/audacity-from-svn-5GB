@@ -33,7 +33,7 @@ void UndoManager::ClearStates()
          delete t;
          t = iter.Next();
       }
-      stack.Remove(i);
+      stack.RemoveAt(i);
    }
 
    current = -1;
@@ -64,7 +64,7 @@ void UndoManager::PushState(TrackList * l, double sel0, double sel1)
 
    i = stack.Count() - 1;
    while (i > current)
-      stack.Remove(i--);
+      stack.RemoveAt(i--);
 
    TrackList *tracksCopy = new TrackList();
    TrackListIterator iter(l);

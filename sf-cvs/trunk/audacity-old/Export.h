@@ -11,10 +11,12 @@
 #ifndef __AUDACITY_EXPORT__
 #define __AUDACITY_EXPORT__
 
-class WaveTrack;
+class AudacityProject;
 class DirManager;
+class WaveTrack;
 
-bool Export(wxWindow * parent,
-            TrackList * tracks, bool selectionOnly, double t0, double t1);
+bool Export(AudacityProject *project,
+            wxString format,
+            bool selectionOnly, double t0, double t1);
 
 #endif

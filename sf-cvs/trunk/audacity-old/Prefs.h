@@ -14,3 +14,5 @@ void InitPreferences();
 void FinishPreferences();
 
 extern wxConfig *gPrefs;
+
+extern int gMenusDirty;

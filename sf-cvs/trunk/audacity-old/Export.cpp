@@ -21,24 +21,24 @@
 #include <wx/progdlg.h>
 #include <wx/textfile.h>
 
-
-#include "Audacity.h"
-#include "WaveTrack.h"
-#include "Track.h"
-#include "DirManager.h"
-#include "LabelTrack.h"
-#include "Prefs.h"
-#include "Mix.h"
-
 #include "Export.h"
 #include "ExportPCM.h"
 #include "ExportMP3.h"
 
-bool Export(wxWindow * parent,
-            TrackList * tracks, bool selectionOnly, double t0, double t1)
+#include "Audacity.h"
+#include "DirManager.h"
+#include "LabelTrack.h"
+#include "Mix.h"
+#include "Prefs.h"
+#include "Project.h"
+#include "Track.h"
+#include "WaveTrack.h"
+
+bool Export(AudacityProject *project,
+            wxString format,
+            bool selectionOnly, double t0, double t1)
 {
-   wxString format =
-       gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");
+   TrackList *tracks = project->GetTracks();
 
    /* Test to see if the format is supported. This could more easily be done
     * later when we dispatch to a specific function, but I think it's best to
@@ -153,12 +153,13 @@ bool Export(wxWindow * parent,
        format == "AIFF" ||
        format == "IRCAM" ||
        format == "AU" || format == "AIFF with track markers")
-      return ExportPCM(format, stereo, rate, fName, parent, tracks,
+      return ExportPCM(project, format, stereo, fName,
                        selectionOnly, t0, t1);
    else if (format == "MP3")
-      return ExportMP3(stereo, rate, fName, parent, tracks,
+      return ExportMP3(project, stereo, fName,
                        selectionOnly, t0, t1);
 
-   /* Execution should never reach this point...! */
-
+   /* Execution should never reach this point...!
+      Return false only so we don't get a compiler warning */
+   return false;
 }

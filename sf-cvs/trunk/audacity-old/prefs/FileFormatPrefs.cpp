@@ -19,22 +19,27 @@
 #include "../ExportMP3.h"
 #include "FileFormatPrefs.h"
 
-wxString gCopyOrEditOptions[] = { "Make a copy of the file to edit",
+wxString gCopyOrEditOptions[] = {
+   "Make a copy of the file to edit",
    "Edit the original in place"
 };
-wxString gDefaultExportFormatOptions[] = { "AIFF",
+
+wxString gDefaultExportFormatOptions[] = {
+   "AIFF",
 #ifdef __WXMAC__
    "AIFF with track markers",
 #endif
    "WAV",
    "IRCAM",
    "AU",
-#ifdef USE_LIBVORBIS
-   "Ogg Vorbis",
-#endif
-   "MP3",
    "***last"
 };
+
+#define ID_MP3_FIND_BUTTON   7001
+
+BEGIN_EVENT_TABLE(FileFormatPrefs, wxPanel)
+   EVT_BUTTON(ID_MP3_FIND_BUTTON, FileFormatPrefs::OnMP3FindButton)
+END_EVENT_TABLE()
 
 FileFormatPrefs::FileFormatPrefs(wxWindow * parent):
 PrefsPanel(parent)
@@ -58,19 +63,13 @@ PrefsPanel(parent)
 
    long mp3Bitrate = gPrefs->Read("/FileFormats/MP3Bitrate", 128);
    wxString mp3BitrateString = wxString::Format("%d", mp3Bitrate);
-   gMP3Exporter->LoadLibrary();
 
    int formatPos = 1;                     // Fall back to WAV
    for (int i = 0; i < mNumFormats; i++)
       if (defaultFormat.IsSameAs(gDefaultExportFormatOptions[i], false)) {
-         /* Don't set it to MP3 if no MP3 library is loaded */
-         if(gDefaultExportFormatOptions[i] == "MP3" && !gMP3Exporter->LoadLibrary())
-            continue;
-
          formatPos = i;
          break;
       }
-
 
    /* Begin layout code... */
 
@@ -86,7 +85,6 @@ PrefsPanel(parent)
       mCopyOrEdit[0] = new wxRadioButton(
          this, -1, "Make a copy of the file to edit",
          wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
-      mCopyOrEdit[0]->SetValue(false);
           
       copyOrEditSizer->Add( mCopyOrEdit[0], 0,
          wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
@@ -94,7 +92,6 @@ PrefsPanel(parent)
       mCopyOrEdit[1] = new wxRadioButton(
          this, -1, "Edit the original in place",
          wxDefaultPosition, wxDefaultSize, 0 );
-      mCopyOrEdit[1]->SetValue(false);
    
       copyOrEditSizer->Add( mCopyOrEdit[1], 0,
          wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
@@ -102,10 +99,9 @@ PrefsPanel(parent)
       topSizer->Add( copyOrEditSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER );
    }
 
-
    {
       wxStaticBoxSizer *defFormatSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, "Export Format"),
+         new wxStaticBox(this, -1, "Uncompressed Export Format"),
          wxVERTICAL);
 
       mDefaultExportFormats[0] = new wxRadioButton(
@@ -123,10 +119,6 @@ PrefsPanel(parent)
       for(int i = 1; i < mNumFormats; i++) {
          mDefaultExportFormats[i] = new wxRadioButton(
             this, -1, gDefaultExportFormatOptions[i]);
-         mDefaultExportFormats[i]->SetValue(false);
-
-         if(gDefaultExportFormatOptions[i] == "MP3" && !gMP3Exporter->ValidLibraryLoaded())
-            mDefaultExportFormats[i]->Enable(false);
 
          defFormatSizer->Add(
             mDefaultExportFormats[i], 
@@ -144,25 +136,24 @@ PrefsPanel(parent)
          wxVERTICAL);
 
       {
-         wxString versionString;
-
-         if(!gMP3Exporter->ValidLibraryLoaded())
-            versionString = "MP3 exporting plugin not found";
-         else
-            versionString = gMP3Exporter->GetLibraryVersion();
-
-         wxFlexGridSizer *mp3InfoSizer = new wxFlexGridSizer(0, 2, 0, 0);
+         wxFlexGridSizer *mp3InfoSizer = new wxFlexGridSizer(0, 3, 0, 0);
 
          mp3InfoSizer->Add(
             new wxStaticText(this, -1, "MP3 Library Version:"), 0, 
             wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
+         mMP3Version = new wxStaticText(this, -1, "");
+         SetMP3VersionText();
 
-         mp3InfoSizer->Add(
-            new wxStaticText(this, -1, versionString), 0,
-            wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+         mp3InfoSizer->Add(mMP3Version, 1,
+            wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+         
+         mMP3FindButton = new wxButton(this, ID_MP3_FIND_BUTTON, "Find Library");
+         
+         mp3InfoSizer->Add(mMP3FindButton, 0,
+                           wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
-         if(gMP3Exporter->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
+         if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
             mp3InfoSizer->Add(
                new wxStaticText(this, -1, "Bit Rate:"), 0,
                wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
@@ -170,8 +161,14 @@ PrefsPanel(parent)
             wxString bitrates[] = { "56", "96", "128", "192", "256", "320" };
             int numBitrates = 6;
 
+            #ifdef __WXMAC__
+            // This is just to work around a wxChoice auto-sizing bug
+            mMP3Bitrate = new wxChoice(
+               this, -1, wxDefaultPosition, wxSize(120,-1), numBitrates, bitrates);
+            #else
             mMP3Bitrate = new wxChoice(
                this, -1, wxDefaultPosition, wxDefaultSize, numBitrates, bitrates);
+            #endif
 
             mp3InfoSizer->Add(mMP3Bitrate, 0, 
                wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
@@ -180,7 +177,7 @@ PrefsPanel(parent)
             if(mMP3Bitrate->GetSelection() == -1)
                mMP3Bitrate->SetStringSelection("128");
 
-            if(!gMP3Exporter->ValidLibraryLoaded())
+            if(!GetMP3Exporter()->ValidLibraryLoaded())
                mMP3Bitrate->Enable(false);
          }
 
@@ -206,6 +203,39 @@ PrefsPanel(parent)
    mDefaultExportFormats[formatPos]->SetValue(true);
 }
 
+void FileFormatPrefs::SetMP3VersionText()
+{
+   wxString versionString;
+   bool doMP3 = true;
+   
+   doMP3 = GetMP3Exporter()->LoadLibrary();
+
+   if (doMP3)
+      doMP3 = GetMP3Exporter()->ValidLibraryLoaded();
+
+   if(doMP3)
+      versionString = GetMP3Exporter()->GetLibraryVersion();
+   else
+      versionString = "MP3 exporting plugin not found";
+   
+   mMP3Version->SetLabel(versionString);
+}
+         
+void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
+{
+   wxString oldPath = gPrefs->Read("/MP3/MP3LibPath", "");
+ 
+   gPrefs->Write("/MP3/MP3LibPath", "");
+   
+   if (GetMP3Exporter()->FindLibrary(this))
+      SetMP3VersionText();
+   else {
+      gPrefs->Write("/MP3/MP3LibPath", oldPath);
+   }
+   
+   mMP3Bitrate->Enable(GetMP3Exporter()->ValidLibraryLoaded());
+}
+
 bool FileFormatPrefs::Apply()
 {
    int pos;
@@ -219,17 +249,24 @@ bool FileFormatPrefs::Apply()
          pos = i;
          break;
       }
+   
+   gPrefs->SetPath("/FileFormats");
 
+   wxString originalExportFormat = gPrefs->Read("DefaultExportFormat", "");
    wxString defaultExportFormat = gDefaultExportFormatOptions[pos];
 
-   gPrefs->SetPath("/FileFormats");
    gPrefs->Write("CopyOrEditUncompressedData", copyOrEdit);
    gPrefs->Write("DefaultExportFormat", defaultExportFormat);
 
-   if(gMP3Exporter->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
+   if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
       long bitrate;
       mMP3Bitrate->GetStringSelection().ToLong(&bitrate);
       gPrefs->Write("MP3Bitrate", bitrate);
+   }
+   
+   if (originalExportFormat != defaultExportFormat) {
+      // Force the menu bar to get recreated
+      gMenusDirty++;
    }
 
    gPrefs->SetPath("/");

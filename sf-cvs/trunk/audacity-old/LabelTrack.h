@@ -23,6 +23,7 @@ class wxTextFile;
 class wxWindow;
 class TrackList;
 
+class AudacityProject;
 class DirManager;
 
 struct LabelStruct {
@@ -35,10 +36,9 @@ WX_DEFINE_ARRAY(LabelStruct *, LabelArray);
 
 class LabelTrack:public VTrack {
    friend class BouncePane;
-   friend bool ExportPCM(wxString format, bool stereo, double rate,
-                         wxString fName, wxWindow * parent,
-                         TrackList * tracks, bool selectionOnly, double t0,
-                         double t1);
+   friend bool ExportPCM(AudacityProject *project,
+               wxString format, bool stereo, wxString fName,
+               bool selectionOnly, double t0, double t1);
 
  public:
     LabelTrack(DirManager * projDirManager);

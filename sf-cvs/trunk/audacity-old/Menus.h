@@ -23,9 +23,11 @@ enum {
    CloseID,
    SaveID,
    SaveAsID,
-   ExportLabelsID,
    ExportMixID,
    ExportSelectionID,
+   ExportLossyMixID,
+   ExportLossySelectionID,
+   ExportLabelsID,
    PreferencesID,
    ExitID,
 
@@ -63,6 +65,8 @@ enum {
    ImportLabelsID,
    ImportMIDIID,
    ImportRawID,
+   
+   EditID3ID,
 
    AlignZeroID,
    AlignID,
@@ -97,9 +101,11 @@ EVT_MENU(NewID, AudacityProject::OnNew)
     EVT_MENU(CloseID, AudacityProject::OnClose)
     EVT_MENU(SaveID, AudacityProject::OnSave)
     EVT_MENU(SaveAsID, AudacityProject::OnSaveAs)
-    EVT_MENU(ExportLabelsID, AudacityProject::OnExportLabels)
     EVT_MENU(ExportMixID, AudacityProject::OnExportMix)
     EVT_MENU(ExportSelectionID, AudacityProject::OnExportSelection)
+    EVT_MENU(ExportLossyMixID, AudacityProject::OnExportLossyMix)
+    EVT_MENU(ExportLossySelectionID, AudacityProject::OnExportLossySelection)
+    EVT_MENU(ExportLabelsID, AudacityProject::OnExportLabels)
     EVT_MENU(PreferencesID, AudacityProject::OnPreferences)
     EVT_MENU(ExitID, AudacityProject::OnExit)
     // Edit menu
@@ -127,6 +133,7 @@ EVT_MENU(NewID, AudacityProject::OnNew)
     EVT_MENU(ImportLabelsID, AudacityProject::OnImportLabels)
     EVT_MENU(ImportMIDIID, AudacityProject::OnImportMIDI)
     EVT_MENU(ImportRawID, AudacityProject::OnImportRaw)
+    EVT_MENU(EditID3ID, AudacityProject::OnEditID3)
     EVT_MENU(AlignID, AudacityProject::OnAlign)
     EVT_MENU(AlignZeroID, AudacityProject::OnAlignZero)
     EVT_MENU(QuickMixID, AudacityProject::OnQuickMix)
@@ -145,6 +152,13 @@ EVT_MENU(NewID, AudacityProject::OnNew)
 private:
 double mInsertSilenceAmount;
 
+wxString mExportString;
+wxString mExportSelectionString;
+wxString mExportLossyString;
+wxString mExportSelectionLossyString;
+
+int      mMenusDirtyCheck;
+
 public:
 void CreateMenuBar();
 
@@ -158,9 +172,12 @@ void OnClose(wxCommandEvent & event);
 void OnSave(wxCommandEvent & event);
 void OnSaveAs(wxCommandEvent & event);
 
-void OnExportLabels(wxCommandEvent & event);
 void OnExportMix(wxCommandEvent & event);
 void OnExportSelection(wxCommandEvent & event);
+void OnExportLossyMix(wxCommandEvent & event);
+void OnExportLossySelection(wxCommandEvent & event);
+
+void OnExportLabels(wxCommandEvent & event);
 
 void OnPreferences(wxCommandEvent & event);
 
@@ -203,6 +220,8 @@ void OnImport(wxCommandEvent & event);
 void OnImportLabels(wxCommandEvent & event);
 void OnImportMIDI(wxCommandEvent & event);
 void OnImportRaw(wxCommandEvent & event);
+
+void OnEditID3(wxCommandEvent & event);
 
 void OnQuickMix(wxCommandEvent & event);
 

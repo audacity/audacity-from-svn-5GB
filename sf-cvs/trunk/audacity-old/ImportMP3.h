@@ -13,12 +13,12 @@
 
 #include <wx/string.h>
 
-#include "DirManager.h"
-#include "WaveTrack.h"
+class AudacityProject;
+class DirManager;
+class WaveTrack;
 
-bool ImportMP3(wxWindow * parent,
-               wxString Filename, WaveTrack ** dest1, WaveTrack ** dest2,
-               DirManager * dirManager);
+bool ImportMP3(AudacityProject * project,
+               wxString fName, WaveTrack ** left, WaveTrack ** right);
 
 
 #endif

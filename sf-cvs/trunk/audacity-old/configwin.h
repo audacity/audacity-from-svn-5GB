@@ -6,3 +6,7 @@
 
 // No Ogg Vorbis support (yet)
 // #define USE_LIBVORBIS
+
+// ID3 support
+#define ID3SUPPORT
+

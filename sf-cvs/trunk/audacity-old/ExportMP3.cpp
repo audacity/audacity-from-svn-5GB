@@ -45,10 +45,87 @@
 #include <wx/ffile.h>
 #include <wx/log.h>
 
-#include "Mix.h"
-#include "WaveTrack.h"
 #include "ExportMP3.h"
+#include "Mix.h"
 #include "Prefs.h"
+#include "Project.h"
+#include "Tags.h"
+#include "WaveTrack.h"
+
+
+MP3Exporter::MP3Exporter()
+{
+   if (gPrefs)
+      mLibPath = gPrefs->Read("/MP3/MP3LibPath", "");
+}
+
+bool MP3Exporter::FindLibrary(wxWindow *parent)
+{
+   mLibPath = gPrefs->Read("/MP3/MP3LibPath", "");
+
+   if (mLibPath=="" || !::wxFileExists(mLibPath)) {
+   
+      int action = wxMessageBox(GetLibraryMessage(),
+                                "Export MP3",
+                                wxYES_NO | wxICON_EXCLAMATION,
+                                parent);
+
+      if (action == wxYES) {
+         wxString question;
+         question.Printf("Where is %s?", (const char *)GetLibraryName());
+         mLibPath = wxFileSelector(question, NULL,
+                                   GetLibraryName(),        // Name
+                                   "",      // Extension
+                                   GetLibraryTypeString(),
+                                   wxOPEN, parent);
+         
+         if (mLibPath == "") {
+            mLibPath = "";
+            gPrefs->Write("/MP3/MP3LibPath", mLibPath);
+         
+            return false;
+         }
+         
+         wxString path, baseName, extension;
+         ::wxSplitPath(mLibPath, &path, &baseName, &extension);
+         
+         if (extension != "")
+            baseName += "." + extension;
+         
+         if (baseName != GetLibraryName()) {
+         
+            wxString question;
+            question.Printf("Audacity was expecting a library named \"%s\".  "
+                            "Are you sure you want to attempt to export MP3 "
+                            "files using \"%s\"?",
+                            (const char *)GetLibraryName(),
+                            (const char *)baseName);
+
+            int action = wxMessageBox(question,
+                                      "Export MP3",
+                                      wxYES_NO | wxICON_EXCLAMATION,
+                                      parent);
+            
+            if (action != wxYES) {
+               mLibPath = "";
+               gPrefs->Write("/MP3/MP3LibPath", mLibPath);
+            
+               return false;
+            }
+         }
+      }
+      else {
+         mLibPath = "";
+         gPrefs->Write("/MP3/MP3LibPath", mLibPath);
+            
+         return false;
+      }
+      
+      gPrefs->Write("/MP3/MP3LibPath", mLibPath);
+   }
+   
+   return true;
+}
 
 #ifdef __WXGTK__
 
@@ -129,17 +206,34 @@
             mEncoding = false;
             mGF = NULL;
          }
+         
+         wxString GetLibraryName()
+         {
+            return "libmp3lame.so";
+         }
+         
+         wxString GetLibraryTypeString()
+         {
+            return "Shared Object files (*.so)|*.so"
+         }
+         
+         wxString GetLibraryMessage()
+         {
+            return "Audacity does not export MP3 files directly, but instead uses the "
+                   "freely available LAME library to handle MP3 file encoding.  You must "
+                   "obtain libmp3lame.so separately, either by downloading it or building "
+                   "it from the sources, and then locate the file for Audacity.  You only "
+                   "need to do this once.\n\n"
+                   "Would you like to locate libmp3lame.so now?";
+         }
 
-         bool  LoadLibrary(wxString fileName = "") {
+         bool  LoadLibrary() {
             wxLogNull logNo;
-
-            if(fileName == "") fileName = "libmp3lame.so";
 
             wxDllType libHandle = NULL;
 
-            if (wxFileExists(wxGetCwd() + wxFILE_SEP_PATH + fileName))
-               libHandle = wxDllLoader::LoadLibrary(
-                           wxGetCwd() + wxFILE_SEP_PATH + fileName);
+            if (wxFileExists(mLibPath))
+               libHandle = wxDllLoader::LoadLibrary(mLibPath);
             else
                return false;
 
@@ -236,8 +330,15 @@
       int GetQuality() { return -1; }
    };
 
-LinuxLAMEExporter gLinuxLAMEExporter;
-MP3Exporter *gMP3Exporter = &gLinuxLAMEExporter;
+MP3Exporter *gMP3Exporter = NULL;
+
+MP3Exporter *GetMP3Exporter()
+{
+   if (!gMP3Exporter)
+      gMP3Exporter = new LinuxLAMEExporter();
+   
+   return gMP3Exporter;
+}
 
 #elif defined(__WXMAC__)
 
@@ -338,14 +439,32 @@ MP3Exporter *gMP3Exporter = &gLinuxLAMEExporter;
             mGF = NULL;
          }
 
-         bool  LoadLibrary(wxString fileName = "") {
-            if(fileName == "") fileName = "LAMELib";
+         wxString GetLibraryName()
+         {
+            return "LAMELib";
+         }
+         
+         wxString GetLibraryTypeString()
+         {
+            return "Shared Libraries|*";
+         }
+         
+         wxString GetLibraryMessage()
+         {
+            // Must be <= 255 characters on Mac
+            return "Audacity does not export MP3 files directly, but instead uses LAME, "
+                   "an MP3 exporting library available separately.  See the documentation "
+                   "for more information.\n\n"
+                   "Would you like to locate LameLib now?";
+         }
+
+         bool  LoadLibrary() {
+            wxLogNull logNo;
 
             wxDllType libHandle = NULL;
-            
-            if (wxFileExists(wxGetCwd() + wxFILE_SEP_PATH + fileName))
-               libHandle = wxDllLoader::LoadLibrary(
-                           wxGetCwd() + wxFILE_SEP_PATH + fileName);
+
+            if (wxFileExists(mLibPath))
+               libHandle = wxDllLoader::LoadLibrary(mLibPath);
             else
                return false;
 
@@ -417,6 +536,10 @@ MP3Exporter *gMP3Exporter = &gLinuxLAMEExporter;
       int GetOutBufferSize() {
          return mOutBufferSize;
       }
+      
+      int GetConfigurationCaps() {
+         return MP3CONFIG_BITRATE;
+      }
 
       int EncodeBuffer(short int inbuffer[], unsigned char outbuffer[]) {
          if(!mEncoding) return -1;
@@ -475,8 +598,15 @@ MP3Exporter *gMP3Exporter = &gLinuxLAMEExporter;
       int GetQuality() { return -1; }
    };
 
-MacLAMEExporter gMacLAMEExporter;
-MP3Exporter *gMP3Exporter = &gMacLAMEExporter;
+MP3Exporter *gMP3Exporter = NULL;
+
+MP3Exporter *GetMP3Exporter()
+{
+   if (!gMP3Exporter)
+      gMP3Exporter = new MacLAMEExporter();
+   
+   return gMP3Exporter;
+}
 
 #elif defined(__WXMSW__)
 
@@ -534,17 +664,35 @@ public:
       mDefaultRate = 128;
    }
 
-   bool LoadLibrary(wxString fileName) {
+   wxString GetLibraryName()
+   {
+      return "lame_enc.dll";
+   }
+   
+   wxString GetLibraryTypeString()
+   {
+      return "Dynamically Linked Libraries (*.dll)|*.dll"
+   }
+   
+   wxString GetLibraryMessage()
+   {
+      return "Audacity does not export MP3 files directly, but instead uses the\n"
+             "freely available Blade library to handle MP3 file encoding.  You must\n"
+             "obtain lame_enc.dll separately, by downloading the Blade MP3 encoder,"
+             "and then locate this file for Audacity.  You only need to do this once.\n\n"
+             "Would you like to locate lame_enc.dll now?";
+   }
+
+
+   bool  LoadLibrary() {
+      wxLogNull logNo;
+
       wxDllType libHandle = NULL;
 
-      if(fileName == "") fileName = "lame_enc.dll";
-
-      if (wxFileExists(wxGetCwd() + wxFILE_SEP_PATH + fileName))
-         libHandle = wxDllLoader::LoadLibrary(
-                     wxGetCwd() + wxFILE_SEP_PATH + fileName);
+      if (wxFileExists(mLibPath))
+         libHandle = wxDllLoader::LoadLibrary(mLibPath);
       else
          return false;
-
 
       beInitStream = (BEINITSTREAM)wxDllLoader::GetSymbol(libHandle, "beInitStream");
       beEncodeChunk = (BEENCODECHUNK)wxDllLoader::GetSymbol(libHandle, "beEncodeChunk");
@@ -667,36 +815,77 @@ public:
 
 };
 
-BladeEncExporter gBladeEncExporter;   
-MP3Exporter *gMP3Exporter = &gBladeEncExporter;
+MP3Exporter *gMP3Exporter = NULL;
+
+MP3Exporter *GetMP3Exporter()
+{
+   if (!gMP3Exporter)
+      gMP3Exporter = new BladeEncExporter();
+   
+   return gMP3Exporter;
+}
 
 #endif      
 
-bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
-               TrackList * tracks, bool selectionOnly, double t0,
-               double t1)
+bool ExportMP3(AudacityProject *project,
+               bool stereo, wxString fName,
+               bool selectionOnly, double t0, double t1)
 {
+   double rate = project->GetRate();
+   wxWindow *parent = project;
+   TrackList *tracks = project->GetTracks();
+
    wxLogNull logNo;             /* temporarily disable wxWindows error messages */
 
-   gMP3Exporter->LoadLibrary();
-   if(!gMP3Exporter->ValidLibraryLoaded()) {
-      wxMessageBox("No MP3 encoding library found!");
+   bool success = GetMP3Exporter()->FindLibrary(parent);
+   
+   if (!success)
+      return false;
+
+   success = GetMP3Exporter()->LoadLibrary();
+   if (!success) {
+      wxMessageBox("Could not open MP3 encoding library!");
+      gPrefs->Write("/MP3/MP3LibPath", "");
+
       return false;
    }
+
+   if(!GetMP3Exporter()->ValidLibraryLoaded()) {
+      wxMessageBox("Not a valid or supported MP3 encoding library!");      
+      gPrefs->Write("/MP3/MP3LibPath", "");
+      
+      return false;
+   }
+   
+   /* Open file for writing */
 
    wxFFile outFile(fName, "wb");
    if (!outFile.IsOpened()) {
       wxMessageBox("Unable to open target file for writing");
       return false;
    }
+   
+   /* Put ID3 tags at beginning of file */
+   
+   Tags *tags = project->GetTags();
+   if (!tags->ShowEditDialog(project, "Edit the ID3 tags for the MP3 file"))
+      return false;  // used selected "cancel"
+
+   char *id3buffer;
+   int id3len;
+   bool endOfFile;
+   id3len = tags->ExportID3(&id3buffer, &endOfFile);
+   if (!endOfFile)
+     outFile.Write(id3buffer, id3len);
+
+   /* Export MP3 using DLL */
 
    long bitrate = gPrefs->Read("/FileFormats/MP3Bitrate", 128);
-   gMP3Exporter->SetBitrate(bitrate);
-
+   GetMP3Exporter()->SetBitrate(bitrate);
 
    int iRate = int (rate + 0.5);
 
-   sampleCount inSamples = gMP3Exporter->InitializeStream(stereo ? 2 : 1, int(rate + 0.5));
+   sampleCount inSamples = GetMP3Exporter()->InitializeStream(stereo ? 2 : 1, int(rate + 0.5));
    double timeStep =  (double)inSamples / rate;
    double t = t0;
 
@@ -708,7 +897,7 @@ bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
    long bytes;
 
 
-   int bufferSize = gMP3Exporter->GetOutBufferSize();
+   int bufferSize = GetMP3Exporter()->GetOutBufferSize();
    unsigned char *buffer = new unsigned char[bufferSize];
    wxASSERT(buffer);
 
@@ -749,9 +938,9 @@ bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
       sampleType *mixed = mixer->GetBuffer();
 
       if(lastFrame)
-         bytes = gMP3Exporter->EncodeRemainder(mixed, numSamples, buffer);
+         bytes = GetMP3Exporter()->EncodeRemainder(mixed, numSamples, buffer);
       else
-         bytes = gMP3Exporter->EncodeBuffer(mixed, buffer);
+         bytes = GetMP3Exporter()->EncodeBuffer(mixed, buffer);
 
       outFile.Write(buffer, bytes);
 
@@ -786,11 +975,35 @@ bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
 
    }
 
-
-   bytes = gMP3Exporter->FinishStream(buffer);
+   bytes = GetMP3Exporter()->FinishStream(buffer);
 
    if (bytes)
       outFile.Write(buffer, bytes);
+   
+   /* Write ID3 tag if it was supposed to be at the end of the file */
+   
+   if (endOfFile)
+      outFile.Write(id3buffer, id3len);
+   delete[] id3buffer;
+
+   /* Close file */
+   
+   outFile.Close();
+      
+   /* MacOS: set the file type/creator so that the OS knows it's an MP3
+      file which was created by Audacity */
+      
+#ifdef __WXMAC__
+   FSSpec spec;
+   wxMacFilename2FSSpec(fName, &spec);
+   FInfo finfo;
+   if (FSpGetFInfo(&spec, &finfo) == noErr) {
+      finfo.fdType = 'MP3 ';
+      finfo.fdCreator = AUDACITY_CREATOR;
+
+      FSpSetFInfo(&spec, &finfo);
+   }
+#endif
 
    if (progress)
       delete progress;
