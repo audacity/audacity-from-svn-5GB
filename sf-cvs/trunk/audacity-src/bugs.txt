@@ -7,6 +7,7 @@ in Audacity.
 Known bugs to fix:
 -----------------------------------------------------------
 
+- Segfault if slide tool is used while playing/recording
 - Problems recording at other than 44100 Hz on Mac
 - Recording at a rate other than 44100 works, but the
   track created has the wrong rate in its label
