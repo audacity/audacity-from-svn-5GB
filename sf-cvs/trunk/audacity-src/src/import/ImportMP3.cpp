@@ -64,7 +64,7 @@ struct private_data {
    TrackFactory *trackFactory;
    WaveTrack **channels;
    int numChannels;
-   progress_callback_t *progressCallback;
+   progress_callback_t progressCallback;
    void *userData;
    bool cancelled;
 };
@@ -95,7 +95,7 @@ public:
 
    ~MP3ImportFileHandle();
 
-   void SetProgressCallback(progress_callback_t *function,
+   void SetProgressCallback(progress_callback_t function,
                             void *userData);
    wxString GetFileDescription();
    int GetFileUncompressedBytes();
@@ -152,7 +152,7 @@ ImportFileHandle *MP3ImportPlugin::Open(wxString Filename)
 }
 
 
-void MP3ImportFileHandle::SetProgressCallback(progress_callback_t *function,
+void MP3ImportFileHandle::SetProgressCallback(progress_callback_t function,
                                           void *userData)
 {
    mPrivateData.progressCallback = function;

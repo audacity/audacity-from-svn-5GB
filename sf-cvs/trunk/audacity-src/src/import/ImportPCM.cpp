@@ -49,7 +49,7 @@ public:
    PCMImportFileHandle(wxString name, SNDFILE *file, SF_INFO info);
    ~PCMImportFileHandle();
 
-   void SetProgressCallback(progress_callback_t *function,
+   void SetProgressCallback(progress_callback_t function,
                             void *userData);
    wxString GetFileDescription();
    int GetFileUncompressedBytes();
@@ -61,7 +61,7 @@ private:
    SF_INFO               mInfo;
    sampleFormat          mFormat;
    void                 *mUserData;
-   progress_callback_t  *mProgressCallback;
+   progress_callback_t  mProgressCallback;
 };
 
 void GetPCMImportPlugin(ImportPluginList *importPluginList,

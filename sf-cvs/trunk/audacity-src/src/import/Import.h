@@ -26,7 +26,7 @@ class Track;
 class ImportPlugin;
 class ImportFileHandle;
 class UnusableImportPlugin;
-typedef bool progress_callback_t( void *userData, float percent );
+typedef bool (*progress_callback_t)( void *userData, float percent );
 
 class Format {
 public:

@@ -23,7 +23,7 @@
 class TrackFactory;
 class Track;
 
-typedef bool progress_callback_t( void *userData, float percent );
+typedef bool (*progress_callback_t)( void *userData, float percent );
 
 class ImportFileHandle;
 
@@ -69,7 +69,7 @@ protected:
 class ImportFileHandle
 {
 public:
-   virtual void SetProgressCallback(progress_callback_t *function,
+   virtual void SetProgressCallback(progress_callback_t function,
                                     void *userData) = 0;
 
    // This is similar to GetImporterDescription, but if possible the
