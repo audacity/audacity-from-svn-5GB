@@ -88,7 +88,8 @@ pthread_lib = @pthread_lib@
 
 AUTOMAKE_OPTIONS = foreign dist-zip
 
-SUBDIRS = lib include doc examples win32 debian vq
+SUBDIRS = lib include doc win32 debian vq
+#examples [don't build automatically for Audacity]
 
 m4datadir = $(datadir)/aclocal
 m4data_DATA = vorbis.m4

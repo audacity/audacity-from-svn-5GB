@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: psychoacoustics not including preecho
- last mod: $Id: psy.c,v 1.6 2002-10-27 05:57:05 dmazzoni Exp $
+ last mod: $Id: psy.c,v 1.7 2002-10-31 07:00:46 dmazzoni Exp $
 
  ********************************************************************/
 
