@@ -71,7 +71,13 @@ void LoadEffects()
    //Effect::RegisterEffect(new EffectAvcCompressor());
 
    Effect::RegisterEffect(new EffectBassBoost());
-   Effect::RegisterEffect(new EffectChangeSpeed());
+	#if USE_LIBSAMPLERATE
+		Effect::RegisterEffect(new EffectChangeSpeed());
+	#endif
+	#ifdef USE_SOUNDTOUCH
+		Effect::RegisterEffect(new EffectChangePitch());
+		Effect::RegisterEffect(new EffectChangeTempo());
+	#endif
    Effect::RegisterEffect(new EffectCompressor());
    Effect::RegisterEffect(new EffectEcho());
    Effect::RegisterEffect(new EffectEqualization());
@@ -88,10 +94,6 @@ void LoadEffects()
    // Analyze menu
    // [nothing built-in, but plug-ins might go here]
 
-#ifdef USE_SOUNDTOUCH
-   Effect::RegisterEffect(new EffectChangePitch());
-   Effect::RegisterEffect(new EffectChangeTempo());
-#endif
 
 #ifdef USE_WAVELET
    Effect::RegisterEffect(new EffectWaveletDenoise());
