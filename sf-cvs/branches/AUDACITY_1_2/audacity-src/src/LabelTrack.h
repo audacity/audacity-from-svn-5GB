@@ -12,6 +12,7 @@
 #define _LABELTRACK_
 
 #include <wx/brush.h>
+#include <wx/font.h>
 #include <wx/pen.h>
 #include <wx/dynarray.h>
 #include <wx/string.h>
@@ -91,6 +92,8 @@ class LabelTrack:public Track {
 
    void AddLabel(double t, double t1, const wxString &title = "");
 
+   static void ResetFont();
+
  private:
 
    int mSelIndex;
@@ -107,6 +110,8 @@ class LabelTrack:public Track {
 
    // Used only for a LabelTrack on the clipboard
    double mClipLen;
+
+   static wxFont msFont;
 
    void InitColours();
 };
