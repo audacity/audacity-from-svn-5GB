@@ -18,9 +18,8 @@ intuitive brugerflade gør den nemmere og sjovere at bruge end
 mange andre lydeditorer, deriblandt kommercielle programmer.
 </p>
 
-<p>Audacity-udviklerne har også udgivet en version 1.1.0, som er en betaudgave
-med en stribe nye faciliteter under udvikling. Der er rigtig mange nye muligheder,
-men programmet er ikke færdigudviklet, og derfor ikke så finpudset og stabilt som version 1.0.0.
+<p>Audacity-udviklerne har også udgivet version 1.1.0, som er en betaudgave
+med en stribe nye faciliteter under udvikling. Der er rigtig mange nye muligheder, men programmet er ikke færdigudviklet, og derfor ikke så finpudset og stabilt som version 1.0.0.
 </p>
 
 <center>
@@ -42,8 +41,7 @@ Koden er tilgængelig på <a href="http://www.sourceforge.net">SourceForge</a>.
 Spørgsmål/kommentarer?
 Send e-mail til <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a> I øjeblikket er det nødvendigt
-at kunne engelsk for at bruge listen, men der er planer om at lave en dansk 
-liste i fremtiden.
+at kunne engelsk for at bruge listen, men en dansk vil blive oprettet, hvis der er behov for det.
 </p>
 
 <?php BoxBottom(); ?>
