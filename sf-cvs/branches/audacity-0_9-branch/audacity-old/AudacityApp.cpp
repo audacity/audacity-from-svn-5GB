@@ -29,6 +29,9 @@
 #include <AppleEvents.h>
 #endif
 
+#ifdef __WXMSW__
+#endif
+
 #include "AudacityApp.h"
 #include "AButton.h"
 #include "ASlider.h"
@@ -170,7 +173,37 @@ pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent, AppleEvent * theReply
 // main frame
 bool AudacityApp::OnInit()
 {
- //  mChecker = new wxSingleInstanceChecker(GetAppName());
+#if 0
+   mChecker = new wxSingleInstanceChecker(GetAppName());
+   if ( mChecker->IsAnotherRunning() )
+   {
+      wxMessageBox("Audacity is already running...");
+
+      return FALSE;
+   }
+#endif
+#ifdef __WXMSW__
+   // This is our own replacement for wxSingleInstanceChecker for Windows.
+   mSingleInstanceMutex = (void *)::CreateMutex(NULL, FALSE, "AudacitySingleInstanceMutex");
+   bool alreadyRunning = (GetLastError() == ERROR_ALREADY_EXISTS);
+   if (alreadyRunning) {
+      wxString prompt =
+         "The system has detected that another copy of Audacity may be running.\n"
+         "Running two copies of Audacity simultaneously may lead to data loss or\n"
+         "cause your system to crash.\n\n"
+         "Are you sure you want to launch Audacity now?";
+         int action = wxMessageBox(prompt,
+                                   "Audacity is already running",
+                                   wxYES_NO | wxICON_EXCLAMATION,
+                                   NULL);
+         if (action == wxNO) {
+            CloseHandle((HANDLE)mSingleInstanceMutex);
+            return false;
+         }
+   }
+#endif
+   
+   
    ::wxInitAllImageHandlers();
 
    wxFileSystem::AddHandler(new wxZipFSHandler);
@@ -287,7 +320,15 @@ bool AudacityApp::OnInit()
 
 int AudacityApp::OnExit() {
 
-//   delete mChecker;
+#if 0
+   delete mChecker;
+#endif
+#ifdef __WXMSW__
+   if (mSingleInstanceMutex)
+      CloseHandle((HANDLE)mSingleInstanceMutex);
+   mSingleInstanceMutex = NULL;
+#endif
+
    return 0;
 }
 

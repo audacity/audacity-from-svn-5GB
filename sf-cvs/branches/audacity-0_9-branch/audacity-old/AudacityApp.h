@@ -22,5 +22,12 @@ class AudacityApp:public wxApp {
 
  private:
    void RunTest();
-//   wxSingleInstanceChecker *mChecker;
+
+#ifdef __WXMSW__
+   void *mSingleInstanceMutex;
+#endif
+
+#if 0
+   wxSingleInstanceChecker *mChecker;
+#endif
 };
