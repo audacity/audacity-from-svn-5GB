@@ -1,7 +1,11 @@
 sound_type snd_make_white(time_type t0, rate_type sr, time_type d);
 sound_type snd_white(time_type t0, rate_type sr, time_type d);
     /* LISP: (snd-white ANYNUM ANYNUM ANYNUM) */
+
+#ifndef __APPLE__
 #include <math.h>
+#endif
+
 #include "switches.h" /* to define (or not) MACINTOSH */
 
 #if defined(MACINTOSH) || defined(UNIX)

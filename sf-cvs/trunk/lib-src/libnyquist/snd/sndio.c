@@ -23,7 +23,6 @@
 #elif defined(__FreeBSD__)
 #include <sys/stat.h>
 #else
-#include <stat.h>
 #endif
 #endif
 //#include "audio.h"

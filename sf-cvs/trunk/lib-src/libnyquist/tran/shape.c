@@ -9,7 +9,7 @@
 #include "cext.h"
 #include "shape.h"
 
-void shape_free();
+static void shape_free();
 
 
 typedef struct shape_susp_struct {
@@ -166,7 +166,7 @@ void shape_mark(shape_susp_type susp)
 }
 
 
-void shape_free(shape_susp_type susp)
+static void shape_free(shape_susp_type susp)
 {
 table_unref(susp->the_table);    sound_unref(susp->sin);
     ffree_generic(susp, sizeof(shape_susp_node), "shape_free");

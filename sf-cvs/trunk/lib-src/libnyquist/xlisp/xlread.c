@@ -775,7 +775,7 @@ LOCAL LVAL psymbol(LVAL fptr)
     int escflag;
     LVAL val;
     pname(fptr,&escflag);
-    return (escflag || !isnumber(buf,&val) ? xlenter(buf) : val);
+    return (escflag || !xlisnumber(buf,&val) ? xlenter(buf) : val);
 }
 
 /* punintern - parse an uninterned symbol */
@@ -887,8 +887,8 @@ LOCAL badeof(LVAL fptr)
     xlfail("unexpected EOF");
 }
 
-/* isnumber - check if this string is a number */
-int isnumber(char *str, LVAL *pval)
+/* xlisnumber - check if this string is a number */
+int xlisnumber(char *str, LVAL *pval)
 {
     int dl,dr;
     char *p;

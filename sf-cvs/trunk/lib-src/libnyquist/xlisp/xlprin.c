@@ -166,7 +166,7 @@ LOCAL void putsymbol(LVAL fptr, char *str, int escflag)
     downcase = (getvalue(s_printcase) == k_downcase);
 
     /* check for the first character being '#' */
-    if (*str == '#' || *str == '.' || isnumber(str,NULL))
+    if (*str == '#' || *str == '.' || xlisnumber(str,NULL))
         xlputc(fptr,'\\');
 
     /* output each character */
