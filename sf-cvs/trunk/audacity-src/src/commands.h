@@ -191,7 +191,7 @@
    CMD_ADDMENU(_("Export &Labels..."), _("Export Labels"), OnExportLabels, fileMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(fileMenu);
-   CMD_ADDMENU(_("&Preferences...\t"), _("Preferences"), OnPreferences, fileMenu, enabledMenu);
+   CMD_ADDMENU(_("&Preferences..."), _("Preferences"), OnPreferences, fileMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(fileMenu);
    CMD_ADDMENU(_("E&xit"), _("Exit"), OnExit, fileMenu, enabledMenu);
