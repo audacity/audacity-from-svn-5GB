@@ -10,14 +10,12 @@ Audacity nyní umí nahrávat a upravovat 24 a 32 bitové vzorky (pohyblivá øadová è
 </li>
 
 <li>
-Audacity's sound input and output has been improved.  Audacity can now
-record more than two channels at once.  Latency is reduced, for lower
-chances of skipping and buffer underruns.
+Vstup a výstup zvuku v Audacity byl vylepšen. Audacity nyní mùže nahrávat více než dva kanály najednou. Kvùli snížení možnosti podteèení vyrovnávací pamìti byla snížena latence.
 </li>
 </ul>
 
 
-<h3>Effects</h3>
+<h3>Efekty</h3>
 
 <ul>
 <li>
@@ -49,7 +47,7 @@ Other new effects include:
 </ul>
 
 
-<h3>New Editing Features</h3>
+<h3>Nové editaèní vlastnosti</h3>
 
 <ul>
 <li>
@@ -73,7 +71,7 @@ Press "Z" to move selection edges to the nearest zero-crossings.
 </ul>
 
 
-<h3>Plugins</h3>
+<h3>Pluginy</h3>
 
 <ul>
 <li>
@@ -89,7 +87,7 @@ in a LISP-like language.
 </ul>
 
 
-<h3>File Import and Export</h3>
+<h3>Import a export souborù</h3>
 
 <ul>
 <li>
@@ -118,7 +116,7 @@ offsets listed in a text file.
 </ul>
 
 
-<h3>Improved User Interface</h3>
+<h3>Vylepšené uživatelské rozhraní</h3>
 
 <ul>
 <li>
