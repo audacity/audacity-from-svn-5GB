@@ -122,7 +122,7 @@ install:
 		$(PREFIX)/share/doc/audacity/audacity-help.htb
 	$(INSTALL) -m 644 README.txt $(PREFIX)/share/doc/audacity/README.txt
 	$(INSTALL) -m 644 LICENSE.txt $(PREFIX)/share/doc/audacity/LICENSE.txt
-       -test -d $(PREFIX)/bin || \
+	-test -d $(PREFIX)/bin || \
 		mkdir -m 755 -p $(PREFIX)/bin
 	$(INSTALL) -m 755 audacity $(PREFIX)/bin/audacity
 
