@@ -16,8 +16,9 @@
 #include "portaudio.h"
 
 #include <wx/string.h>
-#include <wx/timer.h>
+#include <wx/thread.h>
 
+#include "RingBuffer.h"
 #include "SampleFormat.h"
 #include "WaveTrack.h"
 
@@ -28,15 +29,10 @@ extern AudioIO *gAudioIO;
 
 void InitAudioIO();
 
-class AudioIOTimer:public wxTimer {
+class AudioThread : public wxThread {
  public:
-   virtual void Notify();
-};
-
-struct AudioIOBuffer {
-   int          ID;
-   int          len;
-   samplePtr    data;
+   AudioThread();
+   virtual ExitCode Entry();
 };
 
 class AudioIO {
@@ -53,6 +49,10 @@ class AudioIO {
 
    void Stop();
    void HardStop();
+   void SetPaused(bool state);
+   bool GetPaused();
+   void SetAlwaysEnablePause(bool bEnable);
+
    bool IsBusy();
    bool IsPlaying();
    bool IsRecording(Track *t = NULL);
@@ -64,66 +64,52 @@ class AudioIO {
    double GetIndicator();
 
    AudacityProject *GetProject();
-
-   void OnTimer();
-
    sampleFormat GetFormat();
-
-   void AddDroppedSamples(sampleCount nSamples);
-
-   double GetPauseIndicator();
-
-   void SetPaused(bool state);
-   bool GetPaused();
-
-   void SetAlwaysEnablePause(bool bEnable);
 
  private:
 
    bool Start();
-
    bool OpenDevice();
-   void FillBuffers();   
+   void PrepareOutTracks(TrackList * tracks);
+   void FillBuffers();
+   void AddDroppedSamples(sampleCount nSamples);
+   double GetPauseIndicator();
+   void Finish();
 
-   AudacityProject     *mProject;
-   TrackList           *mTracks;
+   AudioThread        *mThread;
+   AudacityProject    *mProject;
+   TrackList          *mTracks;
+   sampleCount         mInBufferSize;
+   RingBuffer        **mInBuffers;
+   WaveTrack         **mInTracks;
+   int                 mNumOutTracks;
+   sampleCount         mOutBufferSize;
+   RingBuffer        **mOutBuffers;
+   WaveTrack         **mOutTracks;
    double              mRate;
    double              mT;
    double              mRecT;
    double              mT0;
    double              mT1;
+   bool                mStopping;
    bool                mHardStop;
    bool                mPaused;
    bool                mAlwaysEnablePause;
-
-   sampleCount         mDroppedSamples;
+   bool                mStarted;
+   bool                mReachedEnd;
    double              mPausePosition;
-
    PortAudioStream    *mPortStream;
-
+   double              mLastIndicator;
+   double              mLastStableIndicator;
+   int                 mPortAudioBufferSize;
    unsigned int        mNumInChannels;
    unsigned int        mNumOutChannels;
-
    sampleFormat        mFormat;
-   
-   WaveTrack         **mInTracks;
+   float              *mTempFloats;
+   int                 mDroppedSamples;
+   int                 mLostSamples;
 
-   AudioIOTimer        mTimer;
-   
-   sampleCount         mBufferSize;
-   int                 mInID;
-   int                 mOutID;
-   unsigned int        mMaxBuffers;
-   unsigned int        mInitialNumOutBuffers;
-   unsigned int        mNumOutBuffers;
-   unsigned int        mNumInBuffers;
-   AudioIOBuffer      *mOutBuffer;
-   AudioIOBuffer      *mInBuffer;
-   
-   int                 mInUnderruns;
-   int                 mRepeats;
-   int                 mLastChecksum;
-   double              mRepeatPoint;
+   friend class AudioThread;
    
    friend int audacityAudioCallback(
 		void *inputBuffer, void *outputBuffer,
