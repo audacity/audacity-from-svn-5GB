@@ -162,11 +162,12 @@ void AudacityProject::CreateMenuBar()
 
 #ifndef __WXMAC__
    mHelpMenu->AppendSeparator();
-#endif
 
    mHelpMenu->Append(HelpID, "Online Help...");
    mHelpMenu->Append(HelpIndexID, "Online Help Index...");
    mHelpMenu->Append(HelpSearchID, "Search Online Help...");
+
+#endif
 
    mMenuBar->Append(mFileMenu, "&File");
    mMenuBar->Append(mEditMenu, "&Edit");
