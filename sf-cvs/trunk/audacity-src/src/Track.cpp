@@ -39,6 +39,14 @@ VTrack::VTrack(DirManager * projDirManager)
 
 VTrack::VTrack(const VTrack &orig)
 {
+   Init(orig);
+   tOffset = orig.tOffset;
+   dirty = rand();
+}
+
+// Copy all the track properties except the actual contents
+void VTrack::Init(const VTrack &orig)
+{
    name = orig.name;
    
    dirManager = orig.dirManager;
@@ -51,11 +59,7 @@ VTrack::VTrack(const VTrack &orig)
    collapsedHeight = orig.collapsedHeight;
    expandedHeight = orig.expandedHeight;
 
-   tOffset = orig.tOffset;
-
    channel = orig.channel;
-
-   dirty = rand();
 }
 
 bool VTrack::Load(wxTextFile * in, DirManager * dirManager)

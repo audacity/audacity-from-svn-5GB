@@ -51,6 +51,7 @@ class VTrack {
 
    virtual ~ VTrack() { }
    
+   virtual void Init(const VTrack &orig);
    virtual VTrack *Duplicate() const { return new VTrack(*this); }
 
    int GetCollapsedHeight() const { return collapsedHeight; }
