@@ -7,6 +7,10 @@ in Audacity.
 Known bugs to fix:
 -----------------------------------------------------------
 
+- Mac OS 9: very small edit boxes in Prefs!
+- In 1.1.1: Windows only: selecting from the track
+  pop-up menu CRASHES!!!
+- (Gentoo Linux) can't scroll during playback
 - Recording new tracks should respect the default
   sample format preference.
 - Problems exporting mono MP3 (and Ogg?) files.
