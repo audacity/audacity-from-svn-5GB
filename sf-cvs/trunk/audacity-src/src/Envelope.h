@@ -204,11 +204,9 @@ class Envelope : public XMLTagHandler {
    // and this function resets them (call whenever the Envelope changes)
    void resetIntegralMemoizer() { lastIntegral_t0=0; lastIntegral_t1=0; lastIntegral_result=0; }
 
-   int PixelPositionOf( double v, int height, bool upper, bool dB,
-                        float zoomMin, float zoomMax );
-
    float ValueOfPixel( int y, int height, bool upper, bool dB,
                        float zoomMin, float zoomMax );
 };
 
 #endif
+

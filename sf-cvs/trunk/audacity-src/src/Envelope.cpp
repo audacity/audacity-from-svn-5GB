@@ -24,6 +24,7 @@
 #include "AColor.h"
 #include "Prefs.h"
 #include "DirManager.h"
+#include "TrackArtist.h"
 
 Envelope::Envelope()
 {
@@ -141,13 +142,19 @@ double Envelope::fromDB(double value) const
    return pow(10.0, ((fabs(value) * envdBRange) - envdBRange) / 20.0)*sign;;
 }
 
-void DrawPoint(wxDC & dc, wxRect & r, int x, int y, bool top)
+void DrawPoint(wxDC & dc, wxRect & r, int x, int y, bool top, bool contour)
 {
    if (y >= 0 && y <= r.height) {
-      wxRect circle(r.x + x - 2, r.y + (top? y: y-5),
+     if(contour){
+       wxRect circle(r.x + x - 2, r.y + y - 2,
+		     4, 4);
+      dc.DrawEllipse(circle);
+     }else{
+       wxRect circle(r.x + x - 2, r.y + (top? y-1: y-4),
                     4, 4);
       dc.DrawEllipse(circle);
    }
+}
 }
 
 void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB,
@@ -156,6 +163,7 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB,
    h -= mOffset;
 
    double tright = h + (r.width / pps);
+   double dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
 
    dc.SetPen(mPen);
    dc.SetBrush(*wxWHITE_BRUSH);
@@ -169,39 +177,25 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB,
 
          double v = mEnv[i]->val;
          int x = int ((mEnv[i]->t - h) * pps);
-         int y;
+         int y,y2;
 
-         if (dB)
-            v = toDB(v);
+	 y = GetWaveYPosNew(v, zoomMin, zoomMax, r.height, dB,
+			    true, dBr, false);
+	 DrawPoint(dc, r, x, y, true, false);
 
          if (mMirror) {
-            float v1 = (zoomMax - v) / (zoomMax - zoomMin);
-            y = (int)(v1 * r.height);
-            DrawPoint(dc, r, x, y, true);
-
-            // Mirror
-            v1 = (zoomMax + v) / (zoomMax - zoomMin);
-            y = (int)(v1 * r.height);
-            DrawPoint(dc, r, x, y, false);
-            
-            if (v > 0.5 && !dB) {
-               // Contour top
-               v1 = (zoomMax - (v - 0.5)) / (zoomMax - zoomMin);
-               y = (int)(v1 * r.height);
-               DrawPoint(dc, r, x, y, true);
-               
-               // Contour bottom
-               v1 = (zoomMax + (v - 0.5)) / (zoomMax - zoomMin);
-               y = (int)(v1 * r.height);
-               DrawPoint(dc, r, x, y, false);
-            }
-         }
-         else {
-            float v1 = (zoomMax - v) / (zoomMax - 0);
-            y = (int)(v1 * r.height);
-            if (y >= 0 && y < r.height) {
-               wxRect circle(r.x + x - 2, y-2, 4, 4);
-               dc.DrawEllipse(circle);
+	   y2 = GetWaveYPosNew(-v-.000000001, zoomMin, zoomMax, r.height, dB,
+			       true, dBr, false);
+	   DrawPoint(dc, r, x, y2, false, false);
+	   
+	   // Contour
+	   y = GetWaveYPosNew(v, zoomMin, zoomMax, r.height, dB,
+			      false, dBr, false);
+	   y2 = GetWaveYPosNew(-v-.000000001, zoomMin, zoomMax, r.height, dB,
+			       false, dBr, false);
+	   if(y<=y2){
+	     DrawPoint(dc, r, x, y, true, true);
+	     DrawPoint(dc, r, x, y2, false, true);
             }
          }
 
@@ -265,54 +259,22 @@ void Envelope::WriteXML(int depth, FILE *fp)
    fprintf(fp, "</envelope>\n");
 }
 
-void Envelope::GetEventParams(int &height, bool &upper, bool dB,
-                              wxMouseEvent & event, wxRect & r,
-                              float &zoomMin, float &zoomMax)
-{
-   height = r.height;
-
-   if (mMirror) {
-     //if (dB) {
-     //  zoomMin = -1.0;
-     //    zoomMax = 1.0;
-     // }  --this code breaks dragging a zoomed envelope in db mode
-
-      int ctr = (int)(r.height * zoomMax / (zoomMax - zoomMin));
-      upper = (event.m_y - r.y < ctr);
-   }
-   else {
-      zoomMin = 0.0;
-      zoomMax = 1.0;
-      upper = true;
-   }
-}
-
 #ifndef SQR
 #define SQR(X) ((X)*(X))
 #endif
 
 
-int Envelope::PixelPositionOf( double v, int height,
-                               bool upper, bool dB,
-                               float zoomMin, float zoomMax)
-{
-   if (dB)
-      v = toDB(v);
-
-   if (upper)
-      v = (zoomMax - v) / (zoomMax - zoomMin);
-   else
-      v = (zoomMax + v) / (zoomMax - zoomMin);
-
-   return (int)(v * height);
-}
-
 float Envelope::ValueOfPixel( int y, int height, bool upper, bool dB,
-                              float zoomMin, float zoomMax )
-{
+                              float zoomMin, float zoomMax ){
    float v;
 
    v = zoomMax - (y/(float)height) * (zoomMax - zoomMin);
+
+   if (mContourOffset) 
+     if( v > 0.0 )
+       v += .5;
+     else
+       v -= .5;
 
    if (dB)
       v = fromDB(v);
@@ -323,9 +285,6 @@ float Envelope::ValueOfPixel( int y, int height, bool upper, bool dB,
    if (!upper)
       v = -v;
 
-   if (mContourOffset)
-      v += 0.5;
-
    return v;
 }
 
@@ -333,36 +292,22 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
                                      double h, double pps, bool dB,
                                      float zoomMin, float zoomMax)
 {
-   int height;
    bool upper;
-   GetEventParams( height, upper, dB, event, r,
-                   zoomMin, zoomMax );
+   int ctr = (int)(r.height * zoomMax / (zoomMax - zoomMin));
+   upper = (event.m_y - r.y < ctr);
+
+   int clip_y = event.m_y - r.y;
+   if(clip_y < 0) clip_y = 0;
+   if(clip_y > r.height) clip_y = r.height;
 
    mIsDeleting = false;
    double tleft = h - mOffset;
    double tright = tleft + (r.width / pps);
    int bestNum = -1;
    int bestDist = 10; // Must be within 10 pixel radius.
-   int yDisplace;
 
-/*
-   int ContourSpacing = height/2;
+   double dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
 
-   double v = GetValueAtX( event.m_x, r, h, pps );
-   int    y = PixelPositionOf( v, height, upper, dB,
-                               zoomMin, zoomMax );
-
-   // within bestDist pixels of inner boundary still counts as inner.
-   int yTolerance = bestDist;
-   if ( abs(event.m_y-y) > (ContourSpacing-yTolerance) )
-   {
-      mContourOffset = upper ? -ContourSpacing : ContourSpacing;
-   }
-   else
-   {
-      mContourOffset = 0;
-   }
-*/
    mContourOffset = false;
 
 //   wxLogDebug("Y:%i Height:%i Offset:%i", y, height, mContourOffset );
@@ -370,29 +315,29 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
    int len = mEnv.Count();
    for (int i = 0; i < len; i++) {
       if (mEnv[i]->t >= tleft && mEnv[i]->t <= tright) {
-         int x, y, d;
 
-         x = int ((mEnv[i]->t + mOffset - h) * pps) + r.x;
-         y = PixelPositionOf( mEnv[i]->val, height, upper, dB,
-                              zoomMin, zoomMax );
-         yDisplace = (y-(event.m_y-r.y));
-         d = (int)(sqrt(SQR(x - event.m_x) + SQR(yDisplace)) + 0.5);
-         if (d < bestDist) {
-            bestNum = i;
-            bestDist = d;
-            mContourOffset = false;
-         }
+	int x = int ((mEnv[i]->t + mOffset - h) * pps) + r.x;
+	int y[4];
 
-         if (mMirror && !dB && mEnv[i]->val > 0.5) {
-            x = int ((mEnv[i]->t + mOffset - h) * pps) + r.x;
-            y = PixelPositionOf( mEnv[i]->val - 0.5, height, upper, dB,
-                                 zoomMin, zoomMax );
-            yDisplace = (y-(event.m_y-r.y));
-            d = (int)(sqrt(SQR(x - event.m_x) + SQR(yDisplace)) + 0.5);
+	y[0] = GetWaveYPosNew( mEnv[i]->val, zoomMin, zoomMax, r.height,
+			       dB, true, dBr, false);
+	y[1] = GetWaveYPosNew( -mEnv[i]->val, zoomMin, zoomMax, r.height,
+			       dB, true, dBr, false);
+	y[2] = GetWaveYPosNew( mEnv[i]->val, zoomMin, zoomMax, r.height,
+			       dB, false, dBr, false);
+	y[3] = GetWaveYPosNew( -mEnv[i]->val-.00000001, zoomMin, zoomMax, 
+			       r.height, dB, false, dBr, false);
+
+	for(int j=0; j<4; j++){
+
+	  if(j>1 && (!mMirror || y[2]>y[3]))continue;
+	  
+	  int d = (int)(sqrt(SQR(x-event.m_x) + SQR(y[j]-(event.m_y-r.y))) + 0.5);
             if (d < bestDist) {
                bestNum = i;
                bestDist = d;
-               mContourOffset = true;
+	    mContourOffset = false;
+	    if(j>1)mContourOffset = true;
             }
          }
       }
@@ -410,13 +355,27 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
 
       double v = GetValueAtX( event.m_x, r, h, pps );
 
-      double newVal = ValueOfPixel(event.m_y - r.y, height, upper, dB,
-                                   zoomMin, zoomMax);
+      int ct = GetWaveYPosNew( v, zoomMin, zoomMax, r.height, dB, 
+				 false, dBr, false) ;
+      int cb = GetWaveYPosNew( -v-.000000001, zoomMin, zoomMax, r.height, dB, 
+				 false, dBr, false) ;
+      if( ct <= cb ){
+	int t = GetWaveYPosNew( v, zoomMin, zoomMax, r.height, dB, 
+				   true, dBr, false) ;
+	int b = GetWaveYPosNew( -v, zoomMin, zoomMax, r.height, dB, 
+				 true, dBr, false) ;
 
-      if (mMirror && !dB && v > 0.5 && newVal < (v-0.25)) {
-         newVal += 0.5;
+	ct = (t + ct) / 2;
+	cb = (b + cb) / 2;
+
+	mContourOffset = false;
+	if((event.m_y - r.y) > ct &&
+	   ((event.m_y - r.y) < cb))
          mContourOffset = true;
       }
+
+      double newVal = ValueOfPixel(clip_y, r.height, upper, dB,
+                                   zoomMin, zoomMax);
 
       //float MaxAmplify = ( mContourOffset ) ? 1.4 : 1.0;
       float MaxAmplify = 2.0;
@@ -443,10 +402,9 @@ bool Envelope::HandleDragging( wxMouseEvent & event, wxRect & r,
                                double h, double pps, bool dB,
                                float zoomMin, float zoomMax )
 {
-   int height;
-   bool upper;
-   GetEventParams( height, upper, dB, event, r,
-                   zoomMin, zoomMax );
+   int clip_y = event.m_y - r.y;
+   if(clip_y < 0) clip_y = 0;
+   if(clip_y > r.height) clip_y = r.height;
 
    mDirty = true;
 
@@ -485,27 +443,8 @@ bool Envelope::HandleDragging( wxMouseEvent & event, wxRect & r,
    if (mIsDeleting)
       return false;
 
-   /*
 
-   int y;
-   if (mUpper)
-      y = ctr - event.m_y-mContourOffset;
-   else
-      y = event.m_y+mContourOffset - ctr;
-
-   double newVal;
-
-   if (dB)
-      newVal = fromDB(y / double (height));
-   else
-      newVal = y / double (height);
-
-   if (newVal < 0.0)
-      newVal = 0.0;
-
-   */
-
-   double newVal = ValueOfPixel(event.m_y - r.y, height, mUpper, dB,
+   double newVal = ValueOfPixel(clip_y, r.height, mUpper, dB,
                                 zoomMin, zoomMax);   
 
    //float MaxAmplify = ( mContourOffset ) ? 1.4 : 1.0;
@@ -542,11 +481,6 @@ bool Envelope::HandleMouseButtonUp( wxMouseEvent & event, wxRect & r,
                                     double h, double pps, bool dB,
                                     float zoomMin, float zoomMax )
 {
-   int height;
-   bool upper;
-   GetEventParams( height, upper, dB, event, r,
-                   zoomMin, zoomMax );
-
    if (mIsDeleting) {
       delete mEnv[mDragPoint];
       mEnv.RemoveAt(mDragPoint);
@@ -864,8 +798,7 @@ void Envelope::GetValues(double *buffer, int bufferLen,
                vprev = -7;       // This corresponds to -140 dB
             if (mEnv[hi]->val <= 0.0)
                vnext = -7;
-         }
-         else {
+       } else {
             vprev = mEnv[lo]->val;
             vnext = mEnv[hi]->val;
          }
@@ -905,7 +838,6 @@ void Envelope::GetValues(double *buffer, int bufferLen,
 
       t += tstep;
    }
-
 }
 
 int Envelope::NumberOfPointsAfter(double t)
