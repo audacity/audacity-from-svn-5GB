@@ -33,7 +33,7 @@
 #include <wx/msgdlg.h>
 
 #include "Audacity.h"
-#include "../Internat.h"
+#include "Internat.h"
 
 #ifdef USE_LIBID3TAG 
    #include <id3tag.h>

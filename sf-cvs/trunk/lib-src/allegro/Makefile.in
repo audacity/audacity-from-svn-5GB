@@ -2,16 +2,21 @@
 
 CC = @CC@
 CCC = @CXX@
+srcdir=@srcdir@
 
 CFLAGS = -g -O
-OBJ = \
+CPPOBJ = \
 	allegro.cpp.o \
 	allegrord.cpp.o \
 	allegrowr.cpp.o \
 	mfallegro.cpp.o \
 	mfmidi.cpp.o \
 	strparse.cpp.o \
-	stimelinux.c.o 
+
+
+COBJ=stimelinux.c.o 
+
+OBJ=$(CPPOBJ) $(COBJ)
 
 allegro.a: $(OBJ)
 	ar ruv allegro.a $(OBJ)
@@ -20,8 +25,9 @@ allegro.a: $(OBJ)
 clean:
 	rm -f allegro.a *.o
 
-%.cpp.o: %.cpp Makefile
+$(CPPOBJ): %.cpp.o: $(srcdir)/%.cpp Makefile
 	$(CCC) -c $(CFLAGS) $< -o $@
 
-%.c.o: %.c Makefile
+$(COBJ): %.c.o: $(srcdir)/%.c Makefile
 	$(CC) -c $(CFLAGS) $< -o $@
+

@@ -11,6 +11,18 @@
 CC = @CC@
 CCC = @CXX@
 
+# Files that must exist in order to compile a C/C++ files
+CDEPEND = @CDEPEND@
+
+LOCAL_LIBS = @LOCAL_LIBS@
+EXTRAOBJS = @EXTRAOBJS@
+LIBS = @LIBS@
+DIRS=blockfile commands effects effects/ladspa export import prefs widgets xml
+
+srcdir=@srcdir@
+top_srcdir=@top_srcdir@
+top_builddir=@top_builddir@
+
 # CFLAGS are specific to C.
 override CFLAGS += @CFLAGS@
 
@@ -18,159 +30,147 @@ override CFLAGS += @CFLAGS@
 override CXXFLAGS += @CXXFLAGS@
 
 # CPPFLAGS are for both C and C++.
-override CPPFLAGS += -Wall -Iinclude @CPPFLAGS@ 
+override CPPFLAGS += -Wall -I$(srcdir)/include -I. @CPPFLAGS@ 
 
-# Files that must exist in order to compile a C/C++ files
-CDEPEND = @CDEPEND@
-
-EXTRAOBJS = @EXTRAOBJS@
-OPTOBJS = @OPTOBJS@
-LIBS = @LIBS@
 
 ########################################
 # ALL OBJECT FILES
 
-OBJDIR = obj
-
 OBJS = \
-	$(OBJDIR)/AColor.o \
-	$(OBJDIR)/AStatus.o \
-	$(OBJDIR)/AboutDialog.o \
-	$(OBJDIR)/AudacityApp.o \
-	$(OBJDIR)/AudioIO.o \
-	$(OBJDIR)/Benchmark.o \
-	$(OBJDIR)/ControlToolBar.o \
-	$(OBJDIR)/Envelope.o \
-	$(OBJDIR)/EditToolBar.o \
-	$(OBJDIR)/FFT.o \
-	$(OBJDIR)/FormatSelection.o \
-	$(OBJDIR)/FreqWindow.o \
-	$(OBJDIR)/Help.o \
-	$(OBJDIR)/HistoryWindow.o \
-	$(OBJDIR)/ImageManipulation.o \
-	$(OBJDIR)/LabelTrack.o \
-	$(OBJDIR)/Languages.o \
-	$(OBJDIR)/LangChoice.o \
-	$(OBJDIR)/Legacy.o \
-	$(OBJDIR)/Menus.o \
-	$(OBJDIR)/Mix.o \
-	$(OBJDIR)/MixerToolBar.o \
-	$(OBJDIR)/NoteTrack.o \
-	$(OBJDIR)/PitchName.o \
-	$(OBJDIR)/Project.o \
-	$(OBJDIR)/Resample.o \
-	$(OBJDIR)/RingBuffer.o \
-	$(OBJDIR)/Spectrum.o \
-	$(OBJDIR)/Tags.o \
-	$(OBJDIR)/Track.o \
-	$(OBJDIR)/TrackArtist.o \
-	$(OBJDIR)/TrackPanel.o \
-	$(OBJDIR)/ToolBar.o \
-	$(OBJDIR)/UndoManager.o \
-	$(OBJDIR)/WaveTrack.o \
-	$(OBJDIR)/TimeTrack.o \
-	$(OBJDIR)/commands/CommandManager.o \
-	$(OBJDIR)/commands/Keyboard.o \
-	$(OBJDIR)/effects/Effect.o \
-	$(OBJDIR)/effects/SimpleMono.o \
-	$(OBJDIR)/effects/SimplePairedTwoTrack.o \
-	$(OBJDIR)/effects/SoundTouchEffect.o \
-	$(OBJDIR)/effects/LoadEffects.o \
-	$(OBJDIR)/effects/Amplify.o \
-	$(OBJDIR)/effects/BassBoost.o \
-	$(OBJDIR)/effects/ChangePitch.o \
-	$(OBJDIR)/effects/ChangeSpeed.o \
-	$(OBJDIR)/effects/ChangeTempo.o \
-	$(OBJDIR)/effects/Compressor.o \
-	$(OBJDIR)/effects/Echo.o \
-	$(OBJDIR)/effects/Equalization.o \
-	$(OBJDIR)/effects/Fade.o \
-	$(OBJDIR)/effects/Filter.o \
-	$(OBJDIR)/effects/Invert.o \
-	$(OBJDIR)/effects/Noise.o \
-	$(OBJDIR)/effects/NoiseRemoval.o \
-	$(OBJDIR)/effects/Normalize.o \
-	$(OBJDIR)/effects/Phaser.o \
-	$(OBJDIR)/effects/Repeat.o \
-	$(OBJDIR)/effects/Reverse.o \
-	$(OBJDIR)/effects/Silence.o \
-	$(OBJDIR)/effects/ToneGen.o \
-	$(OBJDIR)/effects/Wahwah.o \
-	$(OBJDIR)/export/Export.o \
-	$(OBJDIR)/export/ExportMP3.o \
-	$(OBJDIR)/export/ExportOGG.o \
-	$(OBJDIR)/export/ExportPCM.o \
-	$(OBJDIR)/export/ExportCL.o \
-	$(OBJDIR)/import/Import.o \
-	$(OBJDIR)/import/ImportLOF.o \
-	$(OBJDIR)/import/ImportMIDI.o \
-	$(OBJDIR)/import/ImportMP3.o \
-	$(OBJDIR)/import/ImportOGG.o \
-	$(OBJDIR)/import/ImportPCM.o \
-	$(OBJDIR)/import/ImportRaw.o \
-	$(OBJDIR)/import/RawAudioGuess.o \
-	$(OBJDIR)/prefs/PrefsDialog.o \
-	$(OBJDIR)/prefs/AudioIOPrefs.o \
-	$(OBJDIR)/prefs/QualityPrefs.o \
-	$(OBJDIR)/prefs/FileFormatPrefs.o \
-	$(OBJDIR)/prefs/DirectoriesPrefs.o \
-	$(OBJDIR)/prefs/GUIPrefs.o \
-	$(OBJDIR)/prefs/KeyConfigPrefs.o \
-	$(OBJDIR)/prefs/MousePrefs.o \
-	$(OBJDIR)/prefs/SpectrumPrefs.o \
-	$(OBJDIR)/widgets/AButton.o \
-	$(OBJDIR)/widgets/ASlider.o \
-	$(OBJDIR)/widgets/Ruler.o \
-	$(OBJDIR)/widgets/Warning.o \
-	$(OBJDIR)/xml/XMLFileReader.o \
+	AColor.o \
+	AStatus.o \
+	AboutDialog.o \
+	AudacityApp.o \
+	AudioIO.o \
+	Benchmark.o \
+	ControlToolBar.o \
+	Envelope.o \
+	EditToolBar.o \
+	FFT.o \
+	FormatSelection.o \
+	FreqWindow.o \
+	Help.o \
+	HistoryWindow.o \
+	ImageManipulation.o \
+	LabelTrack.o \
+	Languages.o \
+	LangChoice.o \
+	Legacy.o \
+	Menus.o \
+	Mix.o \
+	MixerToolBar.o \
+	NoteTrack.o \
+	PitchName.o \
+	Project.o \
+	Resample.o \
+	RingBuffer.o \
+	Spectrum.o \
+	Tags.o \
+	Track.o \
+	TrackArtist.o \
+	TrackPanel.o \
+	ToolBar.o \
+	UndoManager.o \
+	WaveTrack.o \
+	TimeTrack.o \
+	commands/CommandManager.o \
+	commands/Keyboard.o \
+	effects/Effect.o \
+	effects/SimpleMono.o \
+	effects/SimplePairedTwoTrack.o \
+	effects/SoundTouchEffect.o \
+	effects/LoadEffects.o \
+	effects/Amplify.o \
+	effects/BassBoost.o \
+	effects/ChangePitch.o \
+	effects/ChangeSpeed.o \
+	effects/ChangeTempo.o \
+	effects/Compressor.o \
+	effects/Echo.o \
+	effects/Equalization.o \
+	effects/Fade.o \
+	effects/Filter.o \
+	effects/Invert.o \
+	effects/Noise.o \
+	effects/NoiseRemoval.o \
+	effects/Normalize.o \
+	effects/Phaser.o \
+	effects/Repeat.o \
+	effects/Reverse.o \
+	effects/Silence.o \
+	effects/ToneGen.o \
+	effects/Wahwah.o \
+	export/Export.o \
+	export/ExportMP3.o \
+	export/ExportOGG.o \
+	export/ExportPCM.o \
+	export/ExportCL.o \
+	import/Import.o \
+	import/ImportLOF.o \
+	import/ImportMIDI.o \
+	import/ImportMP3.o \
+	import/ImportOGG.o \
+	import/ImportPCM.o \
+	import/ImportRaw.o \
+	import/RawAudioGuess.o \
+	prefs/PrefsDialog.o \
+	prefs/AudioIOPrefs.o \
+	prefs/QualityPrefs.o \
+	prefs/FileFormatPrefs.o \
+	prefs/DirectoriesPrefs.o \
+	prefs/GUIPrefs.o \
+	prefs/KeyConfigPrefs.o \
+	prefs/MousePrefs.o \
+	prefs/SpectrumPrefs.o \
+	widgets/AButton.o \
+	widgets/ASlider.o \
+	widgets/Ruler.o \
+	widgets/Warning.o \
+	xml/XMLFileReader.o \
+	@OPTOBJS@
 
 TEMPORARILY_DISABLED_IMPORTER_OBJS = \
-	$(OBJDIR)/import/ImportMIDI.o \
-	$(OBJDIR)/import/ImportPCM.o \
-	$(OBJDIR)/import/ImportRaw.o \
+	import/ImportMIDI.o \
+	import/ImportPCM.o \
+	import/ImportRaw.o \
 
 LIBAUDACITY_OBJS = \
-	$(OBJDIR)/BlockFile.o \
-	$(OBJDIR)/Dither.o \
-	$(OBJDIR)/DirManager.o \
-	$(OBJDIR)/FileFormats.o \
-	$(OBJDIR)/Prefs.o \
-	$(OBJDIR)/SampleFormat.o \
-	$(OBJDIR)/Sequence.o \
-	$(OBJDIR)/Internat.o \
-	$(OBJDIR)/blockfile/LegacyBlockFile.o \
-	$(OBJDIR)/blockfile/LegacyAliasBlockFile.o \
-	$(OBJDIR)/blockfile/SilentBlockFile.o \
-	$(OBJDIR)/blockfile/SimpleBlockFile.o \
-	$(OBJDIR)/blockfile/PCMAliasBlockFile.o \
-	$(OBJDIR)/xml/XMLTagHandler.o \
+	BlockFile.o \
+	Dither.o \
+	DirManager.o \
+	FileFormats.o \
+	Prefs.o \
+	SampleFormat.o \
+	Sequence.o \
+	Internat.o \
+	blockfile/LegacyBlockFile.o \
+	blockfile/LegacyAliasBlockFile.o \
+	blockfile/SilentBlockFile.o \
+	blockfile/SimpleBlockFile.o \
+	blockfile/PCMAliasBlockFile.o \
+	xml/XMLTagHandler.o \
 
-#
-# We stick object files in separate directories for convenience
-#
-
-DIRS = \
-	$(OBJDIR) $(OBJDIR)/effects $(OBJDIR)/effects/ladspa \
-	$(OBJDIR)/effects/VST $(OBJDIR)/effects/nyquist $(OBJDIR)/export \
-	$(OBJDIR)/import $(OBJDIR)/prefs $(OBJDIR)/widgets $(OBJDIR)/xml \
-	$(OBJDIR)/commands $(OBJDIR)/blockfile
 
 ########################################
 # DEPENDENCIES
 
-DEPS = $(OBJS:$(OBJDIR)/%.o=%.cpp) $(OPTOBJS:$(OBJDIR)/%.o=%.cpp) \
-	$(LIBAUDACITY_OBJS:$(OBJDIR)/%.o=%.cpp)
+SOURCES = $(OBJS:%.o=$(srcdir)/%.cpp)
+LIBAUDACITY_SOURCES = $(LIBAUDACITY_OBJS:%.o=$(srcdir)/%.cpp)
+#DEPS = $(SOURCES) $(OPTOBJS) $(LIBAUDACITY_OBJS)
 
 ########################################
 
 all: $(DIRS) libaudacity.a ../audacity
 
-libaudacity.a: $(DIRS) $(LIBAUDACITY_OBJS)
+libaudacity.a: $(LIBAUDACITY_OBJS)
 	ar rcs libaudacity.a $(LIBAUDACITY_OBJS)
 
-../audacity: $(DIRS) $(OBJS) $(EXTRAOBJS) $(OPTOBJS) libaudacity.a Makefile
-	$(CCC) -o ../audacity $(OBJS) $(OPTOBJS) $(EXTRAOBJS) libaudacity.a $(LIBS)
+../audacity: $(OBJS) $(LOCAL_LIBS:%=$(top_builddir)/lib-src/%) $(EXTRAOBJS) libaudacity.a Makefile
+	$(CCC) -o ../audacity $(OBJS) $(LOCAL_LIBS:%=$(top_builddir)/lib-src/%) $(EXTRAOBJS) libaudacity.a $(LIBS)
 	@AFTERBUILD@
+
+$(DIRS):
+	mkdir -p $(DIRS)
 
 #
 # You can optionally "make dep" to make dependencies.
@@ -178,23 +178,18 @@ libaudacity.a: $(DIRS) $(LIBAUDACITY_OBJS)
 #
 
 dep:
-	$(CCC) -MM $(CXXFLAGS) $(CPPFLAGS) $(DEPS) | \
-		sed -e 's/^.*: \([^ ]*\)\.cpp/$(OBJDIR)\/\1.o: /' \
-		> .depend
+	$(CCC) -MM $(CXXFLAGS) $(CPPFLAGS) $(SOURCES) $(OPTSOURCES) $(LIBAUDACITY_SOURCES) > .depend
 
 clean:
-	rm -rf obj/
+	rm -rf $(OBJS) $(LIBAUDACITY_OBJS)
 	rm -f libaudacity.a
 
 #
 # Rule for compiling C++ files
 #
 
-$(OPTOBJS) $(OBJS) $(LIBAUDACITY_OBJS): $(OBJDIR)/%.o: %.cpp configunix.h $(CDEPEND)
+$(OBJS) $(LIBAUDACITY_OBJS): %.o: $(srcdir)/%.cpp configunix.h $(CDEPEND)
 	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
-
-$(DIRS): %: 
-	-test -d $@ || mkdir $@
 
 #
 # Include ".depend" if it exists (run "make dep" to generate it)

@@ -64,9 +64,6 @@
 /* Define if LADSPA plug-ins are enabled */
 #undef USE_LADSPA
 
-/* Define if the FLAC library is present */
-#undef USE_LIBFLAC
-
 /* Define if libid3tag is present */
 #undef USE_LIBID3TAG
 
@@ -94,20 +91,14 @@
 /* Define if SoundTouch support should be enabled */
 #undef USE_SOUNDTOUCH
 
+/* Placeholder for large file support */
+#undef _FILE_OFFSET_BITS
+
+/* We're using cygwin */
+#undef __CYGWIN__
+
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 
 /* Define to `unsigned' if <sys/types.h> does not define. */
 #undef size_t
-
-// Indentation settings for Vim and Emacs and unique identifier for Arch, a
-// version control system. Please do not modify past this point.
-//
-// Local Variables:
-// c-basic-offset: 3
-// indent-tabs-mode: nil
-// End:
-//
-// vim: et sts=3 sw=3
-// arch-tag: 8e107146-7e72-48cd-a3ee-5db610f5b722
-
