@@ -339,7 +339,7 @@ bool AudioIO::Start()
          mInBuffers[i] = new RingBuffer(floatSample, mInBufferSize);
    }
 
-   if (mNumOutChannels > 0 && mNumOutTracks > 0) {
+   if (mNumOutChannels > 0) {
       // 5 seconds of buffering per channel
       mOutBufferSize = (sampleCount)(mRate * 5);
       mOutBuffers = new RingBuffer*[mNumOutTracks];
