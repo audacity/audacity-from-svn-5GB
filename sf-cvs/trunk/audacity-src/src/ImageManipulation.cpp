@@ -171,7 +171,7 @@ wxImage *CreateBackground(int width, int height, wxColour colour)
 
 // Creates an image with the Mac OS X Aqua stripes, to be used
 // as a background
-wxImage *CreateAquaBackground(int width, int height)
+wxImage *CreateAquaBackground(int width, int height, int offset)
 {
    wxImage *image = new wxImage(width, height);
    unsigned char *ip = image->GetData();
@@ -180,7 +180,7 @@ wxImage *CreateAquaBackground(int width, int height)
    int x, y;
 
    for(y=0; y<height; y++) {
-      v = val[y%4];
+      v = val[(y+offset)%4];
       for(x=0; x<width*3; x++)
          *ip++ = v;
    }
@@ -188,10 +188,11 @@ wxImage *CreateAquaBackground(int width, int height)
    return image;
 }
 
-wxImage *CreateSysBackground(int width, int height, wxColour colour)
+wxImage *CreateSysBackground(int width, int height, int offset,
+                             wxColour colour)
 {
    #ifdef __WXMAC__
-   return CreateAquaBackground(width, height);
+   return CreateAquaBackground(width, height, offset);
    #else
    return CreateBackground(width, height, colour);
    #endif

@@ -91,7 +91,8 @@ void MixerToolBar::InitializeMixerToolBar()
 
    wxImage *speaker = new wxImage(Speaker);
    wxImage *speakerAlpha = new wxImage(SpeakerAlpha);
-   wxImage *bkgnd = CreateSysBackground(25, 25, backgroundColour);
+   wxImage *bkgnd = CreateSysBackground(25, 25, 3,
+                                        backgroundColour);
    wxImage *speakerFinal = OverlayImage(bkgnd, speaker, speakerAlpha, 0, 0);
    wxImage *mic = new wxImage(Mic);
    wxImage *micAlpha = new wxImage(MicAlpha);

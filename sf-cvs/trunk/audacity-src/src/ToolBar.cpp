@@ -271,8 +271,8 @@ void ToolBar::DrawBackground(wxDC &dc, int width, int height)
       if (mBackgroundBitmap)
          delete mBackgroundBitmap;
       
-      wxImage *aquaImage = CreateAquaBackground(width, height);
-      mBackgroundBitmap = wxBitmap(aquaImage);
+      wxImage *aquaImage = CreateAquaBackground(width, height, 0);
+      mBackgroundBitmap = new wxBitmap(aquaImage);
       delete aquaImage;
    }
 
