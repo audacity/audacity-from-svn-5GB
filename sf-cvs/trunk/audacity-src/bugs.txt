@@ -6,6 +6,12 @@ in Audacity.
 -----------------------------------------------------------
 Known bugs to fix:
 -----------------------------------------------------------
+
+- Recording new tracks should respect the default
+  sample format preference.
+- Problems exporting mono MP3 (and Ogg?) files.
+  Possibly need to use lame_encode_buffer, not only
+  lame_encode_buffer_interleaved.
 - Mac OS X: can't change tools when maximized!
 - Mac OS 9: typing while in an Open/Save dialog can
   cause playback to start!!!

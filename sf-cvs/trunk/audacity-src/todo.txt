@@ -5,6 +5,12 @@ requests and plans, and organize them by which
 release they're going in.
 
 -----------------------------------------------------------
+General TODO (uncategorized)
+-----------------------------------------------------------
+
+- Make "record" default to "pause" being on
+
+-----------------------------------------------------------
 Docs
 -----------------------------------------------------------
 
