@@ -59,8 +59,7 @@ enum ToolBarType {
    NoneID,
    ControlToolBarID,
    MixerToolBarID,
-   EditToolBarID,
-   MeterToolBarID
+   EditToolBarID
 };
 
 ////////////////////////////////////////////////////////////
@@ -89,10 +88,6 @@ class ToolBar:public wxWindow {
    wxSize GetIdealSize() {
       return mIdealSize;
    };
-   void GetIdealSize(int *width, int *height) {
-      *width = mIdealSize.x;
-      *height = mIdealSize.y;
-   }
    virtual void EnableDisableButtons() = 0;
 
 
@@ -165,5 +160,32 @@ class ToolBarStub {
    bool mLoadedStatus;          //Whether the toolbar is loaded (visible) or not
 
 };
+
+
+////////////////////////////////////////////////////////////
+/// class ToolBarFrame
+////////////////////////////////////////////////////////////
+
+
+class ToolBarFrame:public wxMiniFrame {
+ public:
+
+   ToolBarFrame(wxWindow * parent, ToolBar * tb, const wxString & title,
+                const wxPoint & pos);
+    ToolBarFrame(wxWindow * parent, ToolBar * TB);
+    ToolBarFrame(wxWindow * parent, enum ToolBarType tbt);
+    virtual ~ ToolBarFrame();
+
+   void OnCloseWindow(wxCloseEvent & event);
+   ToolBar *GetToolBar() {
+      return mToolBar;
+   };
+
+ protected:
+   ToolBar * mToolBar;
+ public:
+   DECLARE_EVENT_TABLE()
+};
+
 
 #endif

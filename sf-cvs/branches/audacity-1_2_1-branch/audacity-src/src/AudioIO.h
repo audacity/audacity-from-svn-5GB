@@ -32,7 +32,6 @@ class RingBuffer;
 class Mixer;
 class TimeTrack;
 class AudioThread;
-class Meter;
 
 extern AudioIO *gAudioIO;
 
@@ -94,10 +93,6 @@ class AudioIO {
                  float *playbackVolume);
    wxArrayString GetInputSourceNames();
    void HandleDeviceChange();
-
-   /* Set the current VU meters - this should be done once after
-      each call to StartStream currently */
-   void SetMeters(Meter *inputMeter, Meter *outputMeter);
    
    /* Get a list of sample rates the current input/output device
     * supports. Since there is no concept (yet) for different input/output
@@ -173,9 +168,6 @@ private:
    volatile bool       mAudioThreadFillBuffersLoopRunning;
    volatile double     mLastBufferAudibleTime;
    volatile double     mTotalSamplesPlayed;
-
-   Meter              *mInputMeter;
-   Meter              *mOutputMeter;
 
    #if USE_PORTMIXER
    PxMixer            *mPortMixer;

@@ -45,8 +45,6 @@
 #include "Project.h"
 #include "Track.h"
 
-#include "MeterToolBar.h"
-
 #include "../AColor.h"
 #include "../images/ControlButtons.h"
 
@@ -711,7 +709,6 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
             success = true;
             p->SetAudioIOToken(token);
             mBusyProject = p;
-            SetVUMeters(p);
          } else
          {
             // msmeyer: Show error message if stream could not be opened
@@ -751,16 +748,7 @@ void ControlToolBar::OnPlay(wxCommandEvent &evt)
       PlayCurrentRegion(false);
 }
 
-void ControlToolBar::SetVUMeters(AudacityProject *p)
-{
-   MeterToolBar *bar;
-   bar = p->GetMeterToolBar();
-   if (bar) {
-      Meter *play, *record;
-      bar->GetMeters(&play, &record);
-      gAudioIO->SetMeters(record, play);
-   }
-}
+
 
 void ControlToolBar::PlayCurrentRegion(bool looped /* = false */)
 {
@@ -870,7 +858,6 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       if (success) {
          p->SetAudioIOToken(token);
          mBusyProject = p;
-         SetVUMeters(p);
       }
       else {
          // msmeyer: Show error message if stream could not be opened
