@@ -20,18 +20,18 @@
 #include "DirManager.h"
 
 LabelTrack::LabelTrack(DirManager * projDirManager):
-VTrack(projDirManager)
+Track(projDirManager)
 {
    InitColours();
    SetName(_("Label Track"));
 
-   SetExpandedHeight(30);         // Label tracks are narrow
+   mHeight = 30;     // Label tracks are narrow
 
    mSelIndex = -1;
 }
 
 LabelTrack::LabelTrack(const LabelTrack &orig) :
-VTrack(orig)
+Track(orig)
 {
    InitColours();
 
@@ -167,7 +167,12 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
    }
 }
 
-double LabelTrack::GetMaxLen() const
+double LabelTrack::GetStartTime()
+{
+   return 0.0;
+}
+
+double LabelTrack::GetEndTime()
 {
    int len = mLabels.Count();
 
@@ -345,7 +350,7 @@ bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
             return true;
 
          if (!strcmp(attr, "name"))
-            name = value;
+            mName = value;
          else if (!strcmp(attr, "numlabels")) {
             int len = atoi(value);
             mLabels.Clear();
@@ -375,7 +380,7 @@ void LabelTrack::WriteXML(int depth, FILE *fp)
    for(j=0; j<depth; j++)
       fprintf(fp, "\t");
    fprintf(fp, "<labeltrack ");
-   fprintf(fp, "name=\"%s\" ", name.c_str());
+   fprintf(fp, "name=\"%s\" ", mName.c_str());
    fprintf(fp, "numlabels=\"%d\">\n", len);
 
    for (i = 0; i < len; i++) {
@@ -436,7 +441,7 @@ bool LabelTrack::Save(wxTextFile * out, bool overwrite)
 }
 #endif
 
-void LabelTrack::Cut(double t0, double t1, VTrack ** dest)
+bool LabelTrack::Cut(double t0, double t1, Track ** dest)
 {
    *dest = new LabelTrack(GetDirManager());
    int len = mLabels.Count();
@@ -453,9 +458,11 @@ void LabelTrack::Cut(double t0, double t1, VTrack ** dest)
          mLabels[i]->t -= (t1 - t0);
    }
    ((LabelTrack *) (*dest))->mClipLen = (t1 - t0);
+
+   return true;
 }
 
-void LabelTrack::Copy(double t0, double t1, VTrack ** dest) const
+bool LabelTrack::Copy(double t0, double t1, Track ** dest) const
 {
    *dest = new LabelTrack(GetDirManager());
    int len = mLabels.Count();
@@ -469,12 +476,14 @@ void LabelTrack::Copy(double t0, double t1, VTrack ** dest) const
       }
    }
    ((LabelTrack *) (*dest))->mClipLen = (t1 - t0);
+
+   return true;
 }
 
-void LabelTrack::Paste(double t, const VTrack * src)
+bool LabelTrack::Paste(double t, const Track * src)
 {
-   if (src->GetKind() != VTrack::Label)
-      return;
+   if (src->GetKind() != Track::Label)
+      return false;
 
    int len = mLabels.Count();
    int pos = 0;
@@ -495,9 +504,11 @@ void LabelTrack::Paste(double t, const VTrack * src)
       mLabels[pos]->t += sl->mClipLen;
       pos++;
    }
+
+   return true;
 }
 
-void LabelTrack::Clear(double t0, double t1)
+bool LabelTrack::Clear(double t0, double t1)
 {
    int len = mLabels.Count();
 
@@ -510,9 +521,11 @@ void LabelTrack::Clear(double t0, double t1)
       else if (mLabels[i]->t > t1)
          mLabels[i]->t -= (t1 - t0);
    }
+
+   return true;
 }
 
-void LabelTrack::Silence(double t0, double t1)
+bool LabelTrack::Silence(double t0, double t1)
 {
    int len = mLabels.Count();
 
@@ -523,15 +536,19 @@ void LabelTrack::Silence(double t0, double t1)
          i--;
       }
    }
+
+   return true;
 }
 
-void LabelTrack::InsertSilence(double t, double len)
+bool LabelTrack::InsertSilence(double t, double len)
 {
    int numLabels = mLabels.Count();
 
    for (int i = 0; i < numLabels; i++)
       if (mLabels[i]->t >= t)
          mLabels[i]->t += len;
+
+   return true;
 }
 
 int LabelTrack::GetNumLabels() const

@@ -30,7 +30,7 @@
 #include <wx/dynarray.h>
 #include <wx/string.h>
 
-class VTrack;
+class Track;
 class TrackList;
 
 struct UndoStackElem {

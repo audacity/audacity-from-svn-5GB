@@ -56,26 +56,26 @@ wxString ExportCommon(AudacityProject *project,
    float earliestBegin = *t1, latestEnd = *t0;
 
    TrackListIterator iter1(tracks);
-   VTrack *tr = iter1.First();
+   Track *tr = iter1.First();
 
    while (tr) {
-      if (tr->GetKind() == VTrack::Wave) {
+      if (tr->GetKind() == Track::Wave) {
          if (tr->GetSelected() || !selectionOnly) {
 
             numSelected++;
 
-            if (tr->GetChannel() == VTrack::LeftChannel)
+            if (tr->GetChannel() == Track::LeftChannel)
                numLeft++;
-            else if (tr->GetChannel() == VTrack::RightChannel)
+            else if (tr->GetChannel() == Track::RightChannel)
                numRight++;
-            else if (tr->GetChannel() == VTrack::MonoChannel)
+            else if (tr->GetChannel() == Track::MonoChannel)
                numMono++;
             
             if(tr->GetOffset() < earliestBegin)
                earliestBegin = tr->GetOffset();
 
-            if(tr->GetMaxLen() > latestEnd)
-               latestEnd = tr->GetMaxLen();
+            if(tr->GetEndTime() > latestEnd)
+               latestEnd = tr->GetEndTime();
 
          }
       }

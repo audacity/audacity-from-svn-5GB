@@ -25,13 +25,12 @@ class wxDC;
 class wxRect;
 class wxHashTable;
 
-class VTrack;
+class Track;
 class WaveTrack;
 class NoteTrack;
 class LabelTrack;
 class TrackList;
 struct ViewInfo;
-class TrackInfoCache;
 
 class TrackArtist {
 
@@ -43,13 +42,11 @@ class TrackArtist {
                    wxDC & dc, wxRect & r,
                    wxRect & clip, ViewInfo * viewInfo, bool drawEnvelope);
 
-   void DrawVRuler(VTrack * t, wxDC * dc, wxRect & r);
+   void DrawVRuler(Track * t, wxDC * dc, wxRect & r);
 
    void SetInset(int left, int top, int right, int bottom);
 
  private:
-    wxHashTable * mTrackHash;
-
    int mInsetLeft;
    int mInsetTop;
    int mInsetRight;
@@ -68,28 +65,20 @@ class TrackArtist {
    wxPen selsamplePen;
    wxPen shadowPen;
 
-   void PrepareCacheWaveform(TrackInfoCache * cache,
-                             double start, double pps, int screenWidth);
-
    int GetWaveYPos(float value, int height, bool dB);
 
-   void DrawWaveform(TrackInfoCache * cache,
+   void DrawWaveform(WaveTrack *track,
                      wxDC & dc, wxRect & r,
                      ViewInfo * viewInfo, bool drawEnvelope, bool dB);
 
-   void PrepareCacheSpectrum(TrackInfoCache * cache,
-                             double start, double pps,
-                             int screenWidth, int screenHeight,
-                             bool autocorrelation);
-
-   void DrawSpectrum(TrackInfoCache * cache,
+   void DrawSpectrum(WaveTrack *track,
                      wxDC & dc, wxRect & r,
                      ViewInfo * viewInfo, bool autocorrelation);
 
-   void DrawNoteTrack(TrackInfoCache * cache,
+   void DrawNoteTrack(NoteTrack *track,
                       wxDC & dc, wxRect & r, ViewInfo * viewInfo);
 
-   void DrawLabelTrack(TrackInfoCache * cache,
+   void DrawLabelTrack(LabelTrack *track,
                        wxDC & dc, wxRect & r, ViewInfo * viewInfo);
 };
 

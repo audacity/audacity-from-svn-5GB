@@ -55,7 +55,7 @@ class AudioIO {
    void HardStop();
    bool IsBusy();
    bool IsPlaying();
-   bool IsRecording(VTrack *t = NULL);
+   bool IsRecording(Track *t = NULL);
 
    // AS: This would be more properly named GetCurrentTime or
    //  something like that.  The indicator is the little graphic

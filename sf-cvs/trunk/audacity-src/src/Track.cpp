@@ -18,119 +18,42 @@
 #include "LabelTrack.h"
 #include "DirManager.h"
 
-VTrack::VTrack(DirManager * projDirManager) 
-  : dirManager(projDirManager)
+Track::Track(DirManager * projDirManager) 
+  : mDirManager(projDirManager)
 {
-   selected  = false;
-   collapsed = false;
-   linked    = false;
-   mute      = false;
-   solo      = false;
+   mSelected  = false;
+   mLinked    = false;
+   mMute      = false;
+   mSolo      = false;
 
-   collapsedHeight = 20;
-   expandedHeight = 106;
+   mHeight = 106;
 
-   tOffset = 0.0;
+   mOffset = 0.0;
 
-   dirty = rand();
+   mDirty = 0;
 
-   channel = MonoChannel;
+   mChannel = MonoChannel;
 }
 
-VTrack::VTrack(const VTrack &orig)
+Track::Track(const Track &orig)
 {
    Init(orig);
-   tOffset = orig.tOffset;
-   dirty = rand();
+   mOffset = orig.mOffset;
+   mDirty = rand();
 }
 
 // Copy all the track properties except the actual contents
-void VTrack::Init(const VTrack &orig)
+void Track::Init(const Track &orig)
 {
-   name = orig.name;
+   mName = orig.mName;
    
-   dirManager = orig.dirManager;
-   selected = orig.selected;
-   collapsed = orig.collapsed;
-   linked = orig.linked;
-   mute = orig.mute;
-   solo = orig.solo;
-
-   collapsedHeight = orig.collapsedHeight;
-   expandedHeight = orig.expandedHeight;
-
-   channel = orig.channel;
-}
-
-#if LEGACY_PROJECT_FILE_SUPPORT
-
-bool VTrack::Load(wxTextFile * in, DirManager * dirManager)
-{
-   this->dirManager = dirManager;
-
-   name = in->GetNextLine();
-   wxString line = in->GetNextLine();
-   if (line == "left") {
-      channel = LeftChannel;
-      line = in->GetNextLine();
-   }
-   if (line == "right") {
-      channel = RightChannel;
-      line = in->GetNextLine();
-   }
-   if (line == "linked") {
-      linked = true;
-      line = in->GetNextLine();
-   }
-   if (line != "offset")
-      return false;
-   if (!(in->GetNextLine().ToDouble(&tOffset)))
-      return false;
-
-   return true;
-}
-
-bool VTrack::Save(wxTextFile * out, bool overwrite)
-{
-   out->AddLine(name);
-   if (channel == LeftChannel)
-      out->AddLine("left");
-   else if (channel == RightChannel)
-      out->AddLine("right");
-   if (linked)
-      out->AddLine("linked");
-   out->AddLine("offset");
-   out->AddLine(wxString::Format("%f", tOffset));
-
-   return true;
-}
-
-#endif
-
-void VTrack::SetHeight(int h)
-{
-   Expand();
-   expandedHeight = h;
-}
-
-void VTrack::Collapse()
-{
-   collapsed = true;
-}
-
-void VTrack::Expand()
-{
-   collapsed = false;
-}
-
-void VTrack::Toggle()
-{
-   collapsed = !collapsed;
-}
-
-bool VTrack::IsCollapsed() const
-{
-   return collapsed;
+   mDirManager = orig.mDirManager;
+   mSelected = orig.mSelected;
+   mLinked = orig.mLinked;
+   mMute = orig.mMute;
+   mSolo = orig.mSolo;
+   mHeight = orig.mHeight;
+   mChannel = orig.mChannel;
 }
 
 // TrackListIterator
@@ -139,7 +62,7 @@ TrackListIterator::TrackListIterator(TrackList * val)
    l = val;
 }
 
-VTrack *TrackListIterator::First()
+Track *TrackListIterator::First()
 {
    cur = l->head;
 
@@ -149,7 +72,7 @@ VTrack *TrackListIterator::First()
       return NULL;
 }
 
-VTrack *TrackListIterator::Next()
+Track *TrackListIterator::Next()
 {
    if (cur)
       cur = cur->next;
@@ -160,7 +83,7 @@ VTrack *TrackListIterator::Next()
       return NULL;
 }
 
-VTrack *TrackListIterator::RemoveCurrent()
+Track *TrackListIterator::RemoveCurrent()
 {
    TrackListNode *p = cur;
    TrackListNode *next = p->next;
@@ -186,74 +109,6 @@ VTrack *TrackListIterator::RemoveCurrent()
       return NULL;
 }
 
-#if LEGACY_PROJECT_FILE_SUPPORT
-// TrackList
-bool TrackList::Save(wxTextFile * out, bool overwrite)
-{
-   TrackListNode *n = head;
-
-   while (n) {
-      VTrack *t = n->t;
-      switch (((VTrack *) t)->GetKind()) {
-      case VTrack::Wave:
-         out->AddLine("WaveTrack");
-         break;
-      case VTrack::Note:
-         out->AddLine("NoteTrack");
-         break;
-      case VTrack::Label:
-         out->AddLine("LabelTrack");
-         break;
-      default:
-         out->AddLine("Track");
-         break;
-      }
-
-      t->Save(out, overwrite);
-
-      n = n->next;
-   }
-
-   out->AddLine("EndTracks");
-
-   return true;
-}
-
-bool TrackList::Load(wxTextFile * in, DirManager * dirManager)
-{
-   for (;;) {
-      wxString cmd = in->GetNextLine();
-      if (cmd == "EndTracks")
-         return true;
-
-      VTrack *newt = 0;
-
-      if (cmd == "Track") {
-         newt = new VTrack(dirManager);
-      }
-
-      if (cmd == "WaveTrack") {
-         newt = new WaveTrack(dirManager);
-      }
-
-      if (cmd == "NoteTrack") {
-         newt = new NoteTrack(dirManager);
-      }
-
-      if (cmd == "LabelTrack") {
-         newt = new LabelTrack(dirManager);
-      }
-
-      if (newt) {
-         Add(newt);
-         newt->Load(in, dirManager);
-      }
-   }
-
-   return true;
-}
-#endif
-
 TrackList::TrackList()
 {
    head = 0;
@@ -267,7 +122,7 @@ TrackList::TrackList(TrackList * list)
 
    TrackListIterator iter(list);
 
-   VTrack *t = iter.First();
+   Track *t = iter.First();
    while (t) {
       Add(t);
       t = iter.Next();
@@ -279,16 +134,16 @@ TrackList::~TrackList()
    Clear();
 }
 
-double TrackList::GetMaxLen() const
+double TrackList::GetEndTime() const
 {
    if (IsEmpty())
       return 0.0;
 
-   double len = head->t->GetMaxLen();
+   double len = head->t->GetEndTime();
    ConstTrackListIterator iter(this);
 
-   for (VTrack *t = iter.First(); t; t = iter.Next()) {
-      double l = t->GetMaxLen();
+   for (Track *t = iter.First(); t; t = iter.Next()) {
+      double l = t->GetEndTime();
       if (l > len)
          len = l;
    }
@@ -304,7 +159,7 @@ double TrackList::GetMinOffset() const
    double len = head->t->GetOffset();
    ConstTrackListIterator iter(this);
 
-   for (VTrack *t = iter.First(); t; t = iter.Next()) {
+   for (Track *t = iter.First(); t; t = iter.Next()) {
       double l = t->GetOffset();
       if (l < len)
          len = l;
@@ -319,16 +174,16 @@ int TrackList::GetHeight() const
 
    ConstTrackListIterator iter(this);
 
-   for (VTrack *t = iter.First(); t; t = iter.Next())
+   for (Track *t = iter.First(); t; t = iter.Next())
       height += t->GetHeight();
 
    return height;
 }
 
-void TrackList::Add(VTrack * t)
+void TrackList::Add(Track * t)
 {
    TrackListNode *n = new TrackListNode();
-   n->t = (VTrack *) t;
+   n->t = (Track *) t;
    n->prev = tail;
    n->next = 0;
    if (tail)
@@ -338,7 +193,7 @@ void TrackList::Add(VTrack * t)
       head = n;
 }
 
-void TrackList::Remove(VTrack * t)
+void TrackList::Remove(Track * t)
 {
    TrackListNode *p = head;
    while (p) {
@@ -375,7 +230,7 @@ void TrackList::Clear(bool deleteTracks /* = false */)
    tail = 0;
 }
 
-void TrackList::Select(VTrack * t, bool selected /* = true */ )
+void TrackList::Select(Track * t, bool selected /* = true */ )
 {
    TrackListNode *p = head;
    while (p) {
@@ -393,7 +248,7 @@ void TrackList::Select(VTrack * t, bool selected /* = true */ )
 }
 
 
-VTrack *TrackList::GetLink(VTrack * t) const
+Track *TrackList::GetLink(Track * t) const
 {
    TrackListNode *p = head;
    while (p) {
@@ -410,7 +265,7 @@ VTrack *TrackList::GetLink(VTrack * t) const
    return NULL;
 }
 
-VTrack *TrackList::GetNext(VTrack * t) const
+Track *TrackList::GetNext(Track * t) const
 {
    TrackListNode *p = head;
    while (p) {
@@ -425,7 +280,7 @@ VTrack *TrackList::GetNext(VTrack * t) const
    return NULL;
 }
 
-VTrack *TrackList::GetPrev(VTrack * t) const
+Track *TrackList::GetPrev(Track * t) const
 {
    TrackListNode *p = head;
    while (p) {
@@ -440,7 +295,7 @@ VTrack *TrackList::GetPrev(VTrack * t) const
    return NULL;
 }
 
-bool TrackList::CanMoveUp(VTrack * t) const
+bool TrackList::CanMoveUp(Track * t) const
 {
    TrackListNode *p = head;
    while (p) {
@@ -457,7 +312,7 @@ bool TrackList::CanMoveUp(VTrack * t) const
    return false;
 }
 
-bool TrackList::CanMoveDown(VTrack * t) const
+bool TrackList::CanMoveDown(Track * t) const
 {
    TrackListNode *p = head;
    while (p) {
@@ -482,7 +337,7 @@ bool TrackList::CanMoveDown(VTrack * t) const
 // in one of the tracks.
 void TrackList::Swap(TrackListNode * s1, TrackListNode * s2)
 {
-   VTrack *source[4];
+   Track *source[4];
    TrackListNode *target[4];
 
    target[0] = s1;
@@ -516,7 +371,7 @@ void TrackList::Swap(TrackListNode * s1, TrackListNode * s2)
    }
 }
 
-bool TrackList::MoveUp(VTrack * t)
+bool TrackList::MoveUp(Track * t)
 {
    TrackListNode *p = head;
    while (p) {
@@ -540,7 +395,7 @@ bool TrackList::MoveUp(VTrack * t)
    return false;
 }
 
-bool TrackList::MoveDown(VTrack * t)
+bool TrackList::MoveDown(Track * t)
 {
    TrackListNode *p = head;
    while (p) {
@@ -565,7 +420,7 @@ bool TrackList::MoveDown(VTrack * t)
    return false;
 }
 
-bool TrackList::Contains(VTrack * t) const
+bool TrackList::Contains(Track * t) const
 {
    TrackListNode *p = head;
    while (p) {
@@ -583,6 +438,21 @@ bool TrackList::IsEmpty() const
 
 #include <map>
 #include "BlockFile.h"
+#include "Sequence.h"
+
+class SeqBlock {
+ public:
+   BlockFile * f;
+
+   sampleCount start;
+   sampleCount len;
+   float       min;
+   float       max;
+   float       rms;
+};
+
+WX_DEFINE_ARRAY(SeqBlock *, BlockArray);
+
 // get the sum of the sizes of all blocks this track list
 // references.  However, if a block is referred to multiple
 // times it is only counted once.  Return value is in bytes
@@ -591,8 +461,8 @@ unsigned int TrackList::GetSpaceUsage()
    // the map guarantees that I only count each block once
    std::map<BlockFile*,unsigned int> blockFiles;
    for (TrackListNode *p = head; p; p = p->next) {
-      if (p->t->GetKind() == VTrack::Wave) {
-         BlockArray *blocks = ((WaveTrack*)p->t)->GetBlockArray();
+      if (p->t->GetKind() == Track::Wave) {
+         BlockArray *blocks = ((WaveTrack*)p->t)->GetSequence()->GetBlockArray();
          for (unsigned int i = 0; i < blocks->GetCount(); i++)
             if (blocks->Item(i)->f->mType == BlockFile::BLOCK_TYPE_UNCOMPRESSED)
                blockFiles[blocks->Item(i)->f] = blocks->Item(i)->len *
@@ -623,8 +493,8 @@ unsigned int TrackList::GetAdditionalSpaceUsage(UndoStack *stack)
    // get a map of all blocks referenced in this TrackList
    std::map<BlockFile*,unsigned int> curBlockFiles;
    for (p = head; p; p = p->next) {
-      if (p->t->GetKind() == VTrack::Wave) {
-         BlockArray *blocks = ((WaveTrack*)p->t)->GetBlockArray();
+      if (p->t->GetKind() == Track::Wave) {
+         BlockArray *blocks = ((WaveTrack*)p->t)->GetSequence()->GetBlockArray();
          for (unsigned int i = 0; i < blocks->GetCount(); i++)
             if (blocks->Item(i)->f->mType == BlockFile::BLOCK_TYPE_UNCOMPRESSED)
                curBlockFiles[blocks->Item(i)->f] = blocks->Item(i)->len *
@@ -640,8 +510,8 @@ unsigned int TrackList::GetAdditionalSpaceUsage(UndoStack *stack)
       if (stackElem->tracks == this)
          break;
       for (p = stackElem->tracks->head; p; p = p->next) {
-         if (p->t->GetKind() == VTrack::Wave) {
-            BlockArray *blocks = ((WaveTrack*)p->t)->GetBlockArray();
+         if (p->t->GetKind() == Track::Wave) {
+            BlockArray *blocks = ((WaveTrack*)p->t)->GetSequence()->GetBlockArray();
             for (unsigned int i = 0; i < blocks->GetCount(); i++)
                if (blocks->Item(i)->f->mType == BlockFile::BLOCK_TYPE_UNCOMPRESSED)
                   prevBlockFiles.insert(blocks->Item(i)->f);

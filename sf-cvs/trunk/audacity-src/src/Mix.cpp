@@ -30,7 +30,7 @@ bool QuickMix(TrackList *tracks, DirManager *dirManager,
               double rate, sampleFormat format)
 {
    WaveTrack **waveArray;
-   VTrack *t;
+   Track *t;
    int numWaves = 0;
    int numLeft = 0;
    int numRight = 0;
@@ -42,18 +42,18 @@ bool QuickMix(TrackList *tracks, DirManager *dirManager,
 
    t = iter.First();
    while (t) {
-      if (t->GetSelected() && t->GetKind() == VTrack::Wave) {
+      if (t->GetSelected() && t->GetKind() == Track::Wave) {
          numWaves++;
          switch (t->GetChannel()) {
-         case VTrack::MonoChannel:
+         case Track::MonoChannel:
             numLeft++;
             numRight++;
             numMono++;
             break;
-         case VTrack::LeftChannel:
+         case Track::LeftChannel:
             numLeft++;
             break;
-         case VTrack::RightChannel:
+         case Track::RightChannel:
             numRight++;
             break;
          }
@@ -70,27 +70,25 @@ bool QuickMix(TrackList *tracks, DirManager *dirManager,
    w = 0;
    t = iter.First();
    while (t) {
-      if (t->GetSelected() && t->GetKind() == VTrack::Wave) {
+      if (t->GetSelected() && t->GetKind() == Track::Wave) {
          waveArray[w++] = (WaveTrack *) t;
-         if (t->GetMaxLen() > totalTime)
-            totalTime = t->GetMaxLen();
+         if (t->GetEndTime() > totalTime)
+            totalTime = t->GetEndTime();
       }
       t = iter.Next();
    }
 
-   WaveTrack *mixLeft = new WaveTrack(dirManager);
-   mixLeft->SetSampleFormat(format);
+   WaveTrack *mixLeft = new WaveTrack(dirManager, format);
    mixLeft->SetRate(rate);
-   mixLeft->SetChannel(VTrack::MonoChannel);
+   mixLeft->SetChannel(Track::MonoChannel);
    mixLeft->SetName(_("Mix"));
    WaveTrack *mixRight = 0;
    if (!mono) {
-      mixRight = new WaveTrack(dirManager);
-      mixRight->SetSampleFormat(format);
+      mixRight = new WaveTrack(dirManager, format);
       mixRight->SetRate(rate);
       mixRight->SetName(_("Mix"));
-      mixLeft->SetChannel(VTrack::LeftChannel);
-      mixRight->SetChannel(VTrack::RightChannel);
+      mixLeft->SetChannel(Track::LeftChannel);
+      mixRight->SetChannel(Track::RightChannel);
       mixLeft->SetLinked(true);
    }
 
@@ -120,13 +118,13 @@ bool QuickMix(TrackList *tracks, DirManager *dirManager,
             mixer->MixMono(waveArray[i], tt, tt + blockTime);
          else {
             switch (waveArray[i]->GetChannel()) {
-            case VTrack::LeftChannel:
+            case Track::LeftChannel:
                mixer->MixLeft(waveArray[i], tt, tt + blockTime);
                break;
-            case VTrack::RightChannel:
+            case Track::RightChannel:
                mixer->MixRight(waveArray[i], tt, tt + blockTime);
                break;
-            case VTrack::MonoChannel:
+            case Track::MonoChannel:
                mixer->MixMono(waveArray[i], tt, tt + blockTime);
                break;
             }
@@ -254,51 +252,18 @@ void Mixer::MixMono(WaveTrack * src, double t0, double t1)
    delete flags;
 }
 
-void Mixer::GetSamples(WaveTrack *src, int s0, int slen)
-{
-   // Retrieves samples from a track, even outside of the range which
-   // contains samples.  (Fills in extra space with zeros.)
-   // Puts samples in mTemp
-   
-   if (slen > mTempBufferSize) {
-      mTempBufferSize = slen;
-      DeleteSamples(mTemp);
-      mTemp = NewSamples(mTempBufferSize, mFormat);
-   }
-   
-   int soffset = 0;
-   int getlen = slen;
-   if (s0 < 0) {
-      soffset = -s0;
-      getlen -= soffset;
-      s0 = 0;
-   }
-   if (s0+getlen > src->GetNumSamples()) {
-      getlen = src->GetNumSamples() - s0;
-   }
-   
-   src->Get(mTemp + soffset*SAMPLE_SIZE(mFormat), mFormat,
-            (sampleCount)s0, (sampleCount)getlen);
-
-   ClearSamples(mTemp, mFormat, 0, soffset);
-   ClearSamples(mTemp, mFormat, soffset+getlen, slen-(soffset+getlen));
-}
-
 void Mixer::MixDiffRates(int *channelFlags, WaveTrack * src,
                          double t0, double t1)
 {
-   if ((t0 - src->GetOffset()) >= src->GetNumSamples() / src->GetRate() ||
-       (t1 - src->GetOffset()) <= 0)
+   if (t0 > t1 || t0 > src->GetEndTime() || t1 < src->GetStartTime())
       return;
-
-   int s0 = int ((t0 - src->GetOffset()) * src->GetRate());
 
    // get a couple more samples than we need
    int slen = int ((t1 - t0) * src->GetRate()) + 2;
 
-   int destlen = int ((t1 - t0) * mRate + 0.5);
+   src->Get(mTemp, mFormat, t0, slen);
 
-   GetSamples(src, s0, slen);
+   int destlen = (int)floor((t1 - t0) * mRate + 0.5);
 
    double volume;
    if (mUseVolumeSlider)
@@ -335,6 +300,7 @@ void Mixer::MixDiffRates(int *channelFlags, WaveTrack * src,
       case int16Sample: {
          short *temp = (short *)mTemp;
          short *dest = (short *)destPtr;
+         int s0 = (int)floor((t0 - src->GetStartTime())*src->GetRate() + 0.5);
          int frac = int(32768.0 * (t0 - s0/src->GetRate()));
          int fracstep = int(32768.0 * src->GetRate()/mRate + 0.5);
 
@@ -351,6 +317,7 @@ void Mixer::MixDiffRates(int *channelFlags, WaveTrack * src,
       case int24Sample: {
          int *temp = (int *)mTemp;
          int *dest = (int *)destPtr;
+         int s0 = (int)floor((t0 - src->GetStartTime())*src->GetRate() + 0.5);
          float frac = t0 - s0/src->GetRate();
          float fracstep = src->GetRate()/mRate;
 
@@ -368,6 +335,7 @@ void Mixer::MixDiffRates(int *channelFlags, WaveTrack * src,
       case floatSample: {
          float *temp = (float *)mTemp;
          float *dest = (float *)destPtr;
+         int s0 = (int)floor((t0 - src->GetStartTime())*src->GetRate() + 0.5);
          float frac = t0 - s0/src->GetRate();
          float fracstep = src->GetRate()/mRate;
 
@@ -390,21 +358,16 @@ void Mixer::MixDiffRates(int *channelFlags, WaveTrack * src,
 void Mixer::MixSameRate(int *channelFlags, WaveTrack * src,
                         double t0, double t1)
 {
-   if ((t0 - src->GetOffset()) >= src->GetNumSamples() / src->GetRate() ||
-       (t1 - src->GetOffset()) <= 0)
+   if (t0 > t1 || t0 > src->GetEndTime() || t1 < src->GetStartTime())
       return;
-      
-   int s0 = int ((t0 - src->GetOffset()) * src->GetRate() + 0.5);
-   int s1 = int ((t1 - src->GetOffset()) * src->GetRate() + 0.5);
 
-   int slen = s1 - s0;
-
+   int slen = (int)floor((t1 - t0) * src->GetRate());
    if (slen <= 0)
       return;
    if (slen > mBufferSize)
       slen = mBufferSize;
 
-   GetSamples(src, s0, slen);
+   src->Get(mTemp, mFormat, t0, slen);
 
    double volume;
    if (mUseVolumeSlider)

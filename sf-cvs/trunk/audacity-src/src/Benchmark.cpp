@@ -289,6 +289,11 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    if (!Validate())
       return;
 
+   #if 0
+
+   // This code will become part of libaudacity,
+   // and this class will be phased out.
+
    long blockSize, numEdits, dataSize, randSeed;
 
    mBlockSizeStr.ToLong(&blockSize);
@@ -319,7 +324,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    DirManager *d = new DirManager();
    WaveTrack *t = new WaveTrack(d);
-   VTrack *tmp = NULL;
+   Track *tmp = NULL;
 
    t->SetRate(1.0);
 
@@ -513,6 +518,9 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    WaveTrack::SetMaxDiskBlockSize(1048576);
    HoldPrint(false);
+
+   #endif
+
 }
 
 

@@ -415,22 +415,22 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    int numLabelTracksSelected = 0;
 
    TrackListIterator iter(mTracks);
-   VTrack *t = iter.First();
+   Track *t = iter.First();
    while (t) {
       numTracks++;
       // JH: logically, we only want to count a stereo pair as one track. Right??
       // I'm changing it and hoping I don't break anything
-      if (t->GetKind() == VTrack::Wave && t->GetLinked() == false)
+      if (t->GetKind() == Track::Wave && t->GetLinked() == false)
          numWaveTracks++;
-      if (t->GetKind() == VTrack::Label)
+      if (t->GetKind() == Track::Label)
          numLabelTracks++;
       if (t->GetSelected()) {
          numTracksSelected++;
          // JH: logically, we only want to count a stereo pair as one track. Right??
          // I'm changing it and hoping I don't break anything
-         if (t->GetKind() == VTrack::Wave && t->GetLinked() == false)
+         if (t->GetKind() == Track::Wave && t->GetLinked() == false)
             numWaveTracksSelected++;
-         else if(t->GetKind() == VTrack::Label)
+         else if(t->GetKind() == Track::Label)
             numLabelTracksSelected++;
 
       }
@@ -638,14 +638,14 @@ void AudacityProject::OnExit(wxEvent & event)
 
 void AudacityProject::OnExportLabels(wxEvent & event)
 {
-   VTrack *t;
+   Track *t;
    int numLabelTracks = 0;
 
    TrackListIterator iter(mTracks);
 
    t = iter.First();
    while (t) {
-      if (t->GetKind() == VTrack::Label)
+      if (t->GetKind() == Track::Label)
          numLabelTracks++;
       t = iter.Next();
    }
@@ -682,7 +682,7 @@ void AudacityProject::OnExportLabels(wxEvent & event)
 
    t = iter.First();
    while (t) {
-      if (t->GetKind() == VTrack::Label)
+      if (t->GetKind() == Track::Label)
          ((LabelTrack *) t)->Export(f);
 
       t = iter.Next();
@@ -698,7 +698,7 @@ void AudacityProject::OnExportLabels(wxEvent & event)
 
 void AudacityProject::OnExportMix(wxEvent & event)
 {
-   ::Export(this, false, 0.0, mTracks->GetMaxLen());
+   ::Export(this, false, 0.0, mTracks->GetEndTime());
 }
 
 void AudacityProject::OnExportSelection(wxEvent & event)
@@ -708,7 +708,7 @@ void AudacityProject::OnExportSelection(wxEvent & event)
 
 void AudacityProject::OnExportLossyMix(wxEvent & event)
 {
-   ::ExportLossy(this, false, 0.0, mTracks->GetMaxLen());
+   ::ExportLossy(this, false, 0.0, mTracks->GetEndTime());
 }
 
 void AudacityProject::OnExportLossySelection(wxEvent & event)
@@ -777,8 +777,8 @@ void AudacityProject::Cut(wxEvent & event)
 
    TrackListIterator iter(mTracks);
 
-   VTrack *n = iter.First();
-   VTrack *dest = 0;
+   Track *n = iter.First();
+   Track *dest = 0;
 
    while (n) {
       if (n->GetSelected()) {
@@ -808,8 +808,8 @@ void AudacityProject::Copy(wxEvent & event)
 
    TrackListIterator iter(mTracks);
 
-   VTrack *n = iter.First();
-   VTrack *dest = 0;
+   Track *n = iter.First();
+   Track *dest = 0;
 
    while (n) {
       if (n->GetSelected()) {
@@ -839,17 +839,17 @@ void AudacityProject::Paste(wxEvent & event)
    TrackListIterator iter(mTracks);
    TrackListIterator clipIter(msClipboard);
 
-   VTrack *n = iter.First();
-   VTrack *c = clipIter.First();
+   Track *n = iter.First();
+   Track *c = clipIter.First();
 
    while (n && c) {
       if (n->GetSelected()) {
-         if (msClipProject != this && c->GetKind() == VTrack::Wave)
+         if (msClipProject != this && c->GetKind() == Track::Wave)
             ((WaveTrack *) c)->Lock();
 
          n->Paste(tsel, c);
 
-         if (msClipProject != this && c->GetKind() == VTrack::Wave)
+         if (msClipProject != this && c->GetKind() == Track::Wave)
             ((WaveTrack *) c)->Unlock();
 
          c = clipIter.Next();
@@ -877,7 +877,7 @@ void AudacityProject::Trim(wxEvent & event)
       return;
 
    TrackListIterator iter(mTracks);
-   VTrack *n = iter.First();
+   Track *n = iter.First();
 
    while (n) {
       if (n->GetSelected()) {
@@ -887,7 +887,7 @@ void AudacityProject::Trim(wxEvent & event)
             n->SetOffset(mViewInfo.sel0);
 
          //Delete the section after the right selector
-         n->Clear(mViewInfo.sel1, n->GetMaxLen());
+         n->Clear(mViewInfo.sel1, n->GetEndTime());
       }
       n = iter.Next();
    }
@@ -908,7 +908,7 @@ void AudacityProject::OnSilence(wxEvent & event)
 {
    TrackListIterator iter(mTracks);
 
-   VTrack *n = iter.First();
+   Track *n = iter.First();
 
    while (n) {
       if (n->GetSelected())
@@ -928,8 +928,8 @@ void AudacityProject::OnDuplicate(wxEvent & event)
 {
    TrackListIterator iter(mTracks);
 
-   VTrack *n = iter.First();
-   VTrack *dest = 0;
+   Track *n = iter.First();
+   Track *dest = 0;
 
    TrackList newTracks;
 
@@ -962,8 +962,8 @@ void AudacityProject::OnSplit(wxEvent & event)
 {
    TrackListIterator iter(mTracks);
 
-   VTrack *n = iter.First();
-   VTrack *dest = 0;
+   Track *n = iter.First();
+   Track *dest = 0;
 
    TrackList newTracks;
 
@@ -977,7 +977,7 @@ void AudacityProject::OnSplit(wxEvent & event)
             dest->Init(*n);
             dest->SetOffset(wxMax(sel0, n->GetOffset()));
 
-            if (sel1 >= n->GetMaxLen())
+            if (sel1 >= n->GetEndTime())
                n->Clear(sel0, sel1);
             else if (sel0 <= n->GetOffset()) {
                n->Clear(sel0, sel1);
@@ -1008,15 +1008,15 @@ void AudacityProject::OnSplitLabels(wxEvent & event)
 {
    TrackListIterator iter(mTracks);
 
-   VTrack *n = iter.First();
-   VTrack *srcRight = 0;
-   VTrack *srcLeft = 0;
+   Track *n = iter.First();
+   Track *srcRight = 0;
+   Track *srcLeft = 0;
    bool stereo = false;
    LabelTrack *label = 0;
 
    while(n) {
       if(n->GetSelected()) {
-         if(n->GetKind() == VTrack::Wave) {
+         if(n->GetKind() == Track::Wave) {
             if(n->GetLinked() == true) {
                stereo = true;
                srcLeft = n;
@@ -1027,7 +1027,7 @@ void AudacityProject::OnSplitLabels(wxEvent & event)
                stereo = false;
             }
          }
-         else if(n->GetKind() == VTrack::Label)
+         else if(n->GetKind() == Track::Label)
             label = (LabelTrack*)n;  // cast necessary to call LabelTrack specific methods
       }
       n = iter.Next();
@@ -1045,15 +1045,15 @@ void AudacityProject::OnSplitLabels(wxEvent & event)
       // if on the last label, extend to the end of the wavetrack
       if(i == label->GetNumLabels() - 1) {
          if(stereo)
-            end = wxMax(srcLeft->GetMaxLen(), srcRight->GetMaxLen());
+            end = wxMax(srcLeft->GetEndTime(), srcRight->GetEndTime());
          else
-            end = srcLeft->GetMaxLen();
+            end = srcLeft->GetEndTime();
       }
       else
          end = label->GetLabel(i+1)->t;
 
-      VTrack *destLeft = 0;
-      VTrack *destRight = 0;
+      Track *destLeft = 0;
+      Track *destRight = 0;
 
       srcLeft->Copy(begin, end, &destLeft);
       if (destLeft) {
@@ -1113,7 +1113,7 @@ void AudacityProject::OnInsertSilence(wxEvent & event)
 
    TrackListIterator iter(mTracks);
 
-   VTrack *n = iter.First();
+   Track *n = iter.First();
 
    while (n) {
       if (n->GetSelected())
@@ -1134,13 +1134,13 @@ void AudacityProject::OnSelectAll(wxEvent & event)
 {
    TrackListIterator iter(mTracks);
 
-   VTrack *t = iter.First();
+   Track *t = iter.First();
    while (t) {
       t->SetSelected(true);
       t = iter.Next();
    }
    mViewInfo.sel0 = mTracks->GetMinOffset();
-   mViewInfo.sel1 = mTracks->GetMaxLen();
+   mViewInfo.sel1 = mTracks->GetEndTime();
 
    mTrackPanel->Refresh(false);
 }
@@ -1191,7 +1191,7 @@ void AudacityProject::OnZoomNormal(wxEvent & event)
 
 void AudacityProject::OnZoomFit(wxEvent & event)
 {
-   double len = mTracks->GetMaxLen();
+   double len = mTracks->GetEndTime();
 
    if (len <= 0.0)
       return;
@@ -1221,11 +1221,11 @@ void AudacityProject::OnPlotSpectrum(wxEvent & event)
    TODO NOW int selcount = 0;
    WaveTrack *selt = NULL;
    TrackListIterator iter(mTracks);
-   VTrack *t = iter.First();
+   Track *t = iter.First();
    while (t) {
       if (t->GetSelected())
          selcount++;
-      if (t->GetKind() == VTrack::Wave)
+      if (t->GetKind() == Track::Wave)
          selt = (WaveTrack *) t;
       t = iter.Next();
    }
@@ -1506,7 +1506,7 @@ void AudacityProject::OnQuickMix(wxEvent & event)
       // After the tracks have been mixed, remove the originals
 
       TrackListIterator iter(mTracks);
-      VTrack *t = iter.First();
+      Track *t = iter.First();
 
       while (t) {
          if (t->GetSelected())
@@ -1525,7 +1525,7 @@ void AudacityProject::OnQuickMix(wxEvent & event)
 void AudacityProject::OnAlignZero(wxEvent & event)
 {
    TrackListIterator iter(mTracks);
-   VTrack *t = iter.First();
+   Track *t = iter.First();
 
    while (t) {
       if (t->GetSelected())
@@ -1545,7 +1545,7 @@ void AudacityProject::OnAlign(wxEvent & event)
    int num = 0;
 
    TrackListIterator iter(mTracks);
-   VTrack *t = iter.First();
+   Track *t = iter.First();
 
    while (t) {
       if (t->GetSelected()) {
@@ -1577,8 +1577,7 @@ void AudacityProject::OnAlign(wxEvent & event)
 
 void AudacityProject::OnNewWaveTrack(wxEvent & event)
 {
-   WaveTrack *t = new WaveTrack(&mDirManager);
-   t->SetSampleFormat(mDefaultFormat);
+   WaveTrack *t = new WaveTrack(&mDirManager, mDefaultFormat);
    t->SetRate(mRate);
    SelectNone();
 
@@ -1609,7 +1608,7 @@ void AudacityProject::OnNewLabelTrack(wxEvent & event)
 void AudacityProject::OnRemoveTracks(wxEvent & event)
 {
    TrackListIterator iter(mTracks);
-   VTrack *t = iter.First();
+   Track *t = iter.First();
 
    while (t) {
       if (t->GetSelected())

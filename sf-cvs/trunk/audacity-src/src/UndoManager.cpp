@@ -56,7 +56,7 @@ void UndoManager::RemoveStateAt(int n)
 {
    TrackListIterator iter(stack[n]->tracks);
 
-   VTrack *t = iter.First();
+   Track *t = iter.First();
    while (t) {
       delete t;
       t = iter.Next();
@@ -106,7 +106,7 @@ void UndoManager::PushState(TrackList * l, double sel0, double sel1,
 
    for (i = current + 1; i < stack.Count(); i++) {
       TrackListIterator iter(stack[i]->tracks);
-      VTrack *t = iter.First();
+      Track *t = iter.First();
       while (t) {
          delete t;
          t = iter.Next();
@@ -119,7 +119,7 @@ void UndoManager::PushState(TrackList * l, double sel0, double sel1,
 
    TrackList *tracksCopy = new TrackList();
    TrackListIterator iter(l);
-   VTrack *t = iter.First();
+   Track *t = iter.First();
    while (t) {
       tracksCopy->Add(t->Duplicate());
       t = iter.Next();
@@ -208,7 +208,7 @@ void UndoManager::Debug()
 
       TrackListIterator iter(stack[i]->tracks);
       WaveTrack *t = (WaveTrack *) (iter.First());
-      printf("*%d* %s %d\n", i, (i == (unsigned int)current) ? "-->" : "   ",
-             t ? t->GetNumSamples() : 0);
+      printf("*%d* %s %f\n", i, (i == (unsigned int)current) ? "-->" : "   ",
+             t ? t->GetEndTime()-t->GetStartTime() : 0);
    }
 }

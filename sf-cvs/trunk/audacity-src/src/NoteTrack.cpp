@@ -20,7 +20,7 @@
 #include "DirManager.h"
 
 NoteTrack::NoteTrack(DirManager * projDirManager):
-VTrack(projDirManager)
+Track(projDirManager)
 {
    SetName(_("Note Track"));
 
@@ -34,7 +34,7 @@ VTrack(projDirManager)
    mVisibleChannels = 0xFFFF;
 }
 
-VTrack *NoteTrack::Duplicate() const
+Track *NoteTrack::Duplicate()
 {
    return new NoteTrack(mDirManager);
 }

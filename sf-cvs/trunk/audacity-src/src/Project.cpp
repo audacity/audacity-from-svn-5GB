@@ -546,7 +546,7 @@ void AudacityProject::FixScrollbars()
 
    // Add 1/4 of a screen of blank space to the end of the longest track
    mViewInfo.screen = ((double) panelWidth) / mViewInfo.zoom;
-   mViewInfo.total = mTracks->GetMaxLen() + mViewInfo.screen / 4;
+   mViewInfo.total = mTracks->GetEndTime() + mViewInfo.screen / 4;
 
    if (mViewInfo.h > mViewInfo.total - mViewInfo.screen) {
       mViewInfo.h = mViewInfo.total - mViewInfo.screen;
@@ -727,11 +727,11 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
 
    if (f) {
       TrackListIterator iter(mTracks);
-      VTrack *t = iter.First();
+      Track *t = iter.First();
       int count = 0;
 
       while (t) {
-         if (t->GetSelected() && t->GetKind() == (VTrack::Wave))
+         if (t->GetSelected() && t->GetKind() == (Track::Wave))
             count++;
          t = iter.Next();
       }
@@ -1210,7 +1210,7 @@ void AudacityProject::OpenFile(wxString fileName)
       // the version saved on disk will be preserved until the
       // user selects Save().
       
-      VTrack *t;
+      Track *t;
       TrackListIterator iter(mTracks);
       mLastSavedTracks = new TrackList();
       t = iter.First();
@@ -1343,7 +1343,7 @@ void AudacityProject::WriteXML(int depth, FILE *fp)
 
    mTags->WriteXML(depth+1, fp);
 
-   VTrack *t;
+   Track *t;
    TrackListIterator iter(mTracks);
    t = iter.First();
    while (t) {
@@ -1433,7 +1433,7 @@ void AudacityProject::OpenLegacyProjectFile()
    // the version saved on disk will be preserved until the
    // user selects Save().
 
-   VTrack *t;
+   Track *t;
    TrackListIterator iter(mTracks);
    mLastSavedTracks = new TrackList();
    t = iter.First();
@@ -1493,9 +1493,9 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    // Lock all blocks in all tracks of the last saved version
    if (mLastSavedTracks && !overwrite) {
       TrackListIterator iter(mLastSavedTracks);
-      VTrack *t = iter.First();
+      Track *t = iter.First();
       while (t) {
-         if (t->GetKind() == VTrack::Wave)
+         if (t->GetKind() == Track::Wave)
             ((WaveTrack *) t)->Lock();
          t = iter.Next();
       }
@@ -1507,9 +1507,9 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    // Unlock all blocks in all tracks of the last saved version
    if (mLastSavedTracks && !overwrite) {
       TrackListIterator iter(mLastSavedTracks);
-      VTrack *t = iter.First();
+      Track *t = iter.First();
       while (t) {
-         if (t->GetKind() == VTrack::Wave)
+         if (t->GetKind() == Track::Wave)
             ((WaveTrack *) t)->Unlock();
          t = iter.Next();
       }
@@ -1560,7 +1560,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
 
    mLastSavedTracks = new TrackList();
    TrackListIterator iter(mTracks);
-   VTrack *t = iter.First();
+   Track *t = iter.First();
    while (t) {
       mLastSavedTracks->Add(t->Duplicate());
       t = iter.Next();
@@ -1671,7 +1671,7 @@ void AudacityProject::PopState(TrackList * l)
 {
    mTracks->Clear(true);
    TrackListIterator iter(l);
-   VTrack *t = iter.First();
+   Track *t = iter.First();
    while (t) {
       //    printf("Popping track with %d samples\n",
       //           ((WaveTrack *)t)->numSamples);
@@ -1700,7 +1700,7 @@ void AudacityProject::SetStateTo(unsigned int n)
 void AudacityProject::ClearClipboard()
 {
    TrackListIterator iter(msClipboard);
-   VTrack *n = iter.First();
+   Track *n = iter.First();
    while (n) {
       delete n;
       n = iter.Next();
@@ -1715,7 +1715,7 @@ void AudacityProject::Clear()
 {
    TrackListIterator iter(mTracks);
 
-   VTrack *n = iter.First();
+   Track *n = iter.First();
 
    while (n) {
       if (n->GetSelected())
@@ -1736,7 +1736,7 @@ void AudacityProject::SelectNone()
 {
    TrackListIterator iter(mTracks);
 
-   VTrack *t = iter.First();
+   Track *t = iter.First();
    while (t) {
       t->SetSelected(false);
       t = iter.Next();
@@ -1755,7 +1755,7 @@ void AudacityProject::Rewind(bool shift)
 
 void AudacityProject::SkipEnd(bool shift)
 {
-   double len = mTracks->GetMaxLen();
+   double len = mTracks->GetEndTime();
 
    mViewInfo.sel1 = len;
    if (!shift || mViewInfo.sel0 > mViewInfo.sel1)

@@ -65,13 +65,13 @@ bool VSTEffect::Init()
 
    if (inputs > 1) {
       TrackListIterator iter(mWaveTracks);
-      VTrack *left = iter.First();
+      Track *left = iter.First();
       while(left) {
          sampleCount lstart, rstart, llen, rlen;
          GetSamples((WaveTrack *)left, &lstart, &llen);
          
          if (left->GetLinked()) {
-            VTrack *right = iter.Next();
+            Track *right = iter.Next();
             GetSamples((WaveTrack *)right, &rstart, &rlen);
             
             if (llen != rlen || ((WaveTrack *)left)->GetRate() != ((WaveTrack *)right)->GetRate()) {
@@ -127,8 +127,8 @@ bool VSTEffect::Process()
 {
    TrackListIterator iter(mWaveTracks);
    int count = 0;
-   VTrack *left = iter.First();
-   VTrack *right;
+   Track *left = iter.First();
+   Track *right;
    while(left) {
       sampleCount lstart, rstart, len;
       GetSamples((WaveTrack *)left, &lstart, &len);

@@ -523,6 +523,17 @@ void Envelope::Paste(double t0, Envelope *e)
    }
 }
 
+void Envelope::InsertSpace(double t0, double tlen)
+{
+   unsigned int len = mEnv.Count();
+   unsigned int i;
+
+   for (i = 0; i < len; i++)
+      if (mEnv[i]->t > t0)
+         mEnv[i]->t += tlen;
+   mTrackLen += tlen;
+}
+
 // Private methods
 
 int Envelope::Insert(double when, double value)

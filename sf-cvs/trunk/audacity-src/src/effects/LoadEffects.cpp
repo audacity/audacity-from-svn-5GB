@@ -43,6 +43,9 @@
 
 void LoadEffects(wxString searchDir)
 {
+   Effect::RegisterEffect(new EffectInvert(), false);
+
+#if 0
    Effect::RegisterEffect(new EffectAmplify(), false);
    Effect::RegisterEffect(new EffectBassBoost(), false);
    Effect::RegisterEffect(new EffectCompressor(), false);
@@ -70,4 +73,6 @@ void LoadEffects(wxString searchDir)
 #endif
 
    // TODO: sort
+
+#endif // 0
 }

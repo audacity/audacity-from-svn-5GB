@@ -34,11 +34,11 @@
 
 class wxString;
 
-#include "Effect.h"
+#include "SimpleMono.h"
 
 class WaveTrack;
 
-class EffectAmplify:public Effect {
+class EffectAmplify:public EffectSimpleMono {
 
  public:
    EffectAmplify();
@@ -55,11 +55,8 @@ class EffectAmplify:public Effect {
 
    virtual bool PromptUser();
    
-   virtual bool Process();
-
- private:
-   bool ProcessOne(int count, WaveTrack * t,
-                   sampleCount start, sampleCount len);
+ protected:
+   virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
 
  private:
    float ratio;

@@ -11,190 +11,159 @@
 #ifndef __AUDACITY_WAVETRACK__
 #define __AUDACITY_WAVETRACK__
 
-#include <wx/dynarray.h>
-#include <wx/string.h>
-#include <wx/thread.h>
-
-#include "SampleFormat.h"
 #include "Track.h"
+#include "SampleFormat.h"
+#include "Sequence.h"
 
-typedef int sampleCount;
-
-class DirManager;
-class BlockFile;
 class Envelope;
+class WaveCache;
+class SpecCache;
 
-class WaveBlock {
+class WaveTrack: public Track {
+
  public:
-   BlockFile * f;
 
-   sampleCount start;
-   sampleCount len;
-   float       min;
-   float       max;
-   float       rms;
-};
+   //
+   // Constructor / Destructor / Duplicator
+   //
 
-class SummaryInfo {
- public:
-   int            bytesPerFrame;
-   sampleCount    frames64K;
-   int            offset64K;
-   sampleCount    frames256;
-   int            offset256;
-   int            totalSummaryBytes;
-};
+   WaveTrack(DirManager * projDirManager, sampleFormat format = floatSample);
+   WaveTrack(WaveTrack &orig);
+   virtual ~WaveTrack();
 
-WX_DEFINE_ARRAY(WaveBlock *, BlockArray);
+   virtual Track *Duplicate();
 
-class WaveTrack:public VTrack {
- public:
-   friend class TrackArtist;
+   //
+   // Identifying the type of track
+   //
 
-   static void SetMaxDiskBlockSize(int bytes);
-   int  GetSummaryBytes() const;
+   virtual int GetKind() const { return Wave; } 
 
-   sampleCount GetMaxBlockSize() const;
-   sampleCount GetIdealBlockSize() const;
+   //
+   // WaveTrack parameters
+   //
 
+   double GetRate() const;
+   void SetRate(double newRate);
+
+   virtual double GetOffset() const;
+   virtual void SetOffset(double t);
+
+   virtual double GetStartTime();
+   virtual double GetEndTime();
+
+   sampleFormat GetSampleFormat() {return mSequence->GetSampleFormat();}
+   bool ConvertToSampleFormat(sampleFormat format);
+
+   // GET RID OF THESE
    enum {
       WaveformDisplay,
       WaveformDBDisplay,
       SpectrumDisplay,
       PitchDisplay
-   };
+   } WaveTrackDisplay;
+   void SetDisplay(int display) {mDisplay = display;}
+   int GetDisplay() {return mDisplay;}
 
-   WaveTrack(DirManager * projDirManager);
-   WaveTrack(const WaveTrack &orig);
-   virtual ~ WaveTrack();
+   //
+   // High-level editing
+   //
 
-   // Locks all of this track's BlockFiles, keeping them
-   // from being moved.  See BlockFile.h for details.
-   virtual void Lock();
-   virtual void Unlock();
+   virtual bool Cut  (double t0, double t1, Track **dest);
+   virtual bool Copy (double t0, double t1, Track **dest);
+   virtual bool Clear(double t0, double t1);
+   virtual bool Paste(double t, const Track *src);
 
-   virtual VTrack *Duplicate() const { return new WaveTrack(*this); }
+   virtual bool Silence(double t0, double t1);
+   virtual bool InsertSilence(double t, double len);
 
-   virtual void Cut  (double t0, double t1, VTrack ** dest);
-   virtual void Copy (double t0, double t1, VTrack ** dest) const;
-   virtual void Clear(double t0, double t1);
-   virtual void Paste(double t, const VTrack * src);
+   //
+   // Accessing samples directly
+   //
+   // The Get methods here will pad the buffer with zeros
+   // if you ask for samples out of range.
+   //
 
-   virtual void Silence(double t0, double t1);
-   virtual void InsertSilence(double t, double len);
+   bool Get(samplePtr buffer, sampleFormat format,
+            double t0, sampleCount len);
+   bool GetWaveDisplay(float *min, float *max, float *rms, sampleCount *where,
+                       int numPixels, double t0, double pixelsPerSecond);
+   bool GetSpectrogram(float *buffer, sampleCount *where,
+                       int numPixels, int height,
+                       double t0, double pixelsPerSecond,
+                       bool autocorrelation);
+   bool GetMinMax(float *min, float *max, double t0, double t1);
 
-   virtual void SetDisplay(int d);
-   virtual int GetDisplay() const;
+   bool Set(samplePtr buffer, sampleFormat format,
+            double t0, sampleCount len);
+   bool Append(samplePtr buffer, sampleFormat format, sampleCount len);
+   bool AppendAlias(wxString fName, sampleCount start,
+                    sampleCount len, int channel);
 
-   // XMLTagHandler callback methods
+   //
+   // Getting information about the track's internal block sizes
+   // for efficiency
+   //
+
+   sampleCount GetBestBlockSize(double t0);
+   sampleCount GetMaxBlockSize() const;
+   sampleCount GetIdealBlockSize() const;
+
+   //
+   // XMLTagHandler callback methods for loading and saving
+   //
 
    virtual bool HandleXMLTag(const char *tag, const char **attrs);
    virtual XMLTagHandler *HandleXMLChild(const char *tag);
    virtual void WriteXML(int depth, FILE *fp);
 
-#if LEGACY_PROJECT_FILE_SUPPORT
-   virtual bool Load(wxTextFile * in, DirManager * dirManager);
-   virtual bool Save(wxTextFile * out, bool overwrite);
-#endif
+   //
+   // Lock and unlock the track: you must lock the track before
+   // doing a copy and paste between projects.
+   //
 
-   virtual int GetKind() const { return Wave; } 
-   virtual void SetOffset(double t);   
+   bool Lock();
+   bool Unlock();
 
-   virtual double GetMaxLen() const;
-
-   sampleFormat GetSampleFormat() const;
-   bool SetSampleFormat(sampleFormat format);
-   void ConvertToSampleFormat(sampleFormat format);
-
-   void GetMinMax(sampleCount start, sampleCount len,
-                  float * min, float * max) const;
-
-   double GetRate() const;
-   void SetRate(double newRate);
-
-   sampleCount GetNumSamples() const { return mNumSamples; }
-   void SetNumSamples(sampleCount sc) { mNumSamples = sc; }
+   //
+   // Access the track's amplitude envelope
+   //
 
    Envelope *GetEnvelope() { return mEnvelope; }
-   const Envelope *GetEnvelope() const { return mEnvelope; }
 
-   float Get(sampleCount pos) const;
-   void  Get(float * buffer, sampleCount start, sampleCount len) const;
-   void  Get(samplePtr buffer, sampleFormat format,
-             sampleCount start, sampleCount len) const;
+   //
+   // Temporary - to be removed after TrackArtist is deleted:
+   //
 
-   // Pass NULL to set silence
-   void Set(float * buffer,
-            sampleCount start, sampleCount len);
-   void Set(samplePtr buffer, sampleFormat format,
-            sampleCount start, sampleCount len);
+   Sequence *GetSequence() { return mSequence; }
 
-   void Append(samplePtr buffer, sampleFormat format, sampleCount len);
-   void Delete(sampleCount start, sampleCount len);
-   void AppendBlock(WaveBlock * b);
+ protected:
 
-   void AppendAlias(wxString fullPath,
-                    sampleCount start, sampleCount len, int channel);
+   //
+   // Protected variables
+   //
 
-   sampleCount GetBestBlockSize(sampleCount start) const;
-
-   BlockArray *GetBlockArray() const { return mBlock; }
-
- private:
-   static int    sMaxDiskBlockSize;
-
-   BlockArray   *mBlock;
-   sampleFormat  mSampleFormat;
-   sampleCount   mNumSamples;
+   Sequence     *mSequence;
    double        mRate;
    Envelope     *mEnvelope;
-   SummaryInfo   mSummary;
+   samplePtr     mAppendBuffer;
+   int           mAppendBufferLen;
 
-   sampleCount   mMinSamples;
-   sampleCount   mMaxSamples;
+   WaveCache    *mWaveCache;
+   SpecCache    *mSpecCache;
 
-   // On-screen display info
-   int mDisplay; // wave/spectrum
+   // GET RID OF THIS
+   int           mDisplay;
 
- private:
-   void CalcSummaryInfo();
+   //
+   // Protected methods
+   //
 
-   int FindBlock(sampleCount pos) const;
-   int FindBlock(sampleCount pos, sampleCount lo,
-                 sampleCount guess, sampleCount hi) const;
-   WaveBlock *NewInitedWaveBlock();
+   bool TimeToSamples(double t0, sampleCount *s0);
+   void TimeToSamplesClip(double t0, sampleCount *s0);
 
-   void Read(samplePtr buffer, sampleFormat format,
-             WaveBlock * b,
-             sampleCount start, sampleCount len) const;
-   void Read256(float * buffer, WaveBlock * b,
-                sampleCount start, sampleCount len) const;
-   void Read64K(float * buffer, WaveBlock * b,
-                sampleCount start, sampleCount len) const;
-
-   // These are the two ways to write data to a block
-   void FirstWrite(samplePtr buffer, WaveBlock * b, sampleCount len);
-   void CopyWrite(samplePtr buffer, WaveBlock * b,
-                  sampleCount start, sampleCount len);
-
-   // Both block-writing methods and AppendAlias call this
-   // method to write the summary data
-   void UpdateSummaries(samplePtr buffer, WaveBlock * b,
-                        sampleCount len);
-
-   BlockArray *Blockify(samplePtr buffer, sampleCount len);
-
- public:
-
-   // This function makes sure that the track isn't messed up
-   // because of inconsistent block starts & lengths
-   void ConsistencyCheck(const char *whereStr);
-
-   // This function prints information to stdout about the blocks in the
-   // tracks and indicates if there are inconsistencies.
-   void Debug();
-   void DebugPrintf(wxString *dest);
+   bool Flush();
 
 };
 
-#endif
+#endif // __AUDACITY_WAVETRACK__

@@ -22,16 +22,18 @@ class DirManager;
 class Seq;   // from "allegro.h"
 
 
-class NoteTrack:public VTrack {
+class NoteTrack:public Track {
  public:
    friend class TrackArtist;
 
    NoteTrack(DirManager * projDirManager);
 
-   virtual VTrack *Duplicate() const;
+   virtual Track *Duplicate();
    
    virtual int GetKind() const { return Note; } 
-   virtual double GetMaxLen() const { return mLen; }
+
+   virtual double GetStartTime() { return 0.0; }
+   virtual double GetEndTime() { return mLen; }
 
    void DrawLabelControls(wxDC & dc, wxRect & r);
    bool LabelClick(wxRect & r, int x, int y, bool right);
