@@ -167,16 +167,30 @@
 ;;        or local variables
 ;;
 (defun timed-seq (score)
-  (at (caar score)
-      (seqrep (i (length score))
-        (cond ((cdr score)
-               (let (event)
-                (prog1 
-                 (set-logical-stop (stretch (cadar score) 
-                                            (setf event (eval (caddar score))))
-                                   (- (caadr score) (caar score)))
-;		 (display "timed-seq" (caddar score) (local-to-global 0))
-                 (setf score (cdr score)))))
-              (t
-               (stretch (cadar score) (eval (caddar score))))))))
+  ; check to insure that times are strictly increasing and >= 0 and stretches are >= 0
+  (let ((start-time 0) error-msg)
+    (dolist (event score)
+      (cond ((< (car event) start-time)
+             (error (format nil "Out-of-order time in TIMED-SEQ: ~A" event)))
+            ((< (cadr event) 0)
+             (error (format nil "Negative stretch factor in TIMED-SEQ: ~A" event)))
+            (t
+             (setf start-time (car event)))))
+    (cond ((null score) (s-rest 0))
+          (t
+           (at (caar score)
+               (seqrep (i (length score))
+                 (cond ((cdr score)
+                        (let (event)
+                          (prog1
+                            (set-logical-stop
+                              (stretch (cadar score)
+                              (setf event (eval (caddar score))))
+                            (- (caadr score) (caar score)))
+;                           (display "timed-seq" (caddar score) (local-to-global 0))
+                            (setf score (cdr score)))))
+                         (t
+                          (stretch (cadar score) (eval (caddar score)))))))))))
+
+
 

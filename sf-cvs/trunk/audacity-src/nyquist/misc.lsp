@@ -67,5 +67,26 @@
            (dotimes (i (length fullpath))
              (cond ((equal (char fullpath i) *file-separator*)
                     (setf n i))))
-           (subseq fullpath 0 (1+ n)))
+           (setf fullpath (subseq fullpath 0 (1+ n)))
+           ;; if this is a Mac, use ':' in place of empty path
+           (cond ((and (equal fullpath "") 
+                       (equal *file-separator* #\:))
+                  (setf fullpath ":")))
+           fullpath)
           (t nil))))
+          
+;; real-random -- pick a random real from a range
+;;
+(defun real-random (from to)
+  (cond ((= from to) from)
+          (t
+         (+ from
+           (* (random 10000)
+              0.0001
+              (- to from))))))
+
+;; power -- raise a number to some power x^y
+;;
+(defun power (x y)
+  (exp (* (log (float x)) y)))
+  
