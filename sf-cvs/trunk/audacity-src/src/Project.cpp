@@ -1078,18 +1078,21 @@ void AudacityProject::DecorateToolBar( wxPaintDC & dc, int iToolBar )
    wxRect r;
    r.x = toolbarleft-grabberWidth;
    r.y = toolbartop;
-   r.width = grabberWidth;
-   r.height = toolbarheight;
+   r.width = grabberWidth-1;
+   r.height = toolbarheight-1;
    // filled rectangle.
    dc.DrawRectangle(r);
+   AColor::Bevel( dc, true, r );
 
+#if 0
    //JKC: Draw a beveled rectangle round the grab-bar.
    AColor::Light(&dc, false);
    dc.DrawLine( r.x, r.y, r.x+r.width, r.y);
    dc.DrawLine( r.x, r.y, r.x,         r.y+r.height);
    AColor::Dark(&dc, false);
-   dc.DrawLine( r.x,         r.y+r.height, r.x+r.width, r.y+r.height);
-   dc.DrawLine( r.x+r.width, r.y,          r.x+r.width, r.y+r.height);
+   dc.DrawLine( r.x+1,         r.y+r.height-1, r.x+r.width, r.y+r.height-1);
+   dc.DrawLine( r.x+r.width-2, r.y+1,          r.x+r.width-2, r.y+r.height);
+#endif
 
    // Draw little bumps to the left of the toolbar to
    // make it a "grab-bar".
@@ -1107,11 +1110,13 @@ void AudacityProject::DecorateToolBar( wxPaintDC & dc, int iToolBar )
    for (j = minbump + 1; j < maxbump + 1; j += 4)
       dc.DrawLine(r.x+3, toolbartop + j, r.x+6, toolbartop + j);
 
+#if 0
    //Draw a black line to the right of the grab-bar
    dc.SetPen(*wxBLACK_PEN);
    dc.DrawLine(r.x+9, toolbartop, r.x+9, toolbarbottom);
 
    dc.DrawLine(r.x, toolbarbottom, r.x+toolbarwidth+grabberWidth, toolbarbottom);
+#endif
 }
 
 void AudacityProject::OnPaint(wxPaintEvent & /*event*/)

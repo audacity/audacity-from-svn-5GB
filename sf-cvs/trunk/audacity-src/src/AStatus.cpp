@@ -17,6 +17,7 @@
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
+#include <wx/frame.h>
 
 #include "AudioIO.h"
 #include "AColor.h"
@@ -229,7 +230,16 @@ void AStatus::OnPaint(wxPaintEvent & event)
 
    AColor::Bevel(memDC, false, cursorField);
 #if defined __WXMSW__
-   DrawDragHandle( &memDC, mWidth-4, mHeight-4 );
+   //Under MS Windows draw the drag handle if not maximized.
+   if( GetParent() != NULL)
+   {
+      //TODO: Using the cast here assumes that the immediate parent is
+      //a frame.  This is just fine for Audacity, but to be strictly
+      //correct we should test this before casting, possibly 
+      //using GetStyle() [JKC].
+      if( !((wxFrame*)GetParent())->IsMaximized() )
+         DrawDragHandle( &memDC, mWidth-4, mHeight-4 );
+   }
 #endif
 
    msg = mField[1];
