@@ -57,5 +57,6 @@ void QuitHelp()
 {
   if (gHelp) {
 	delete gHelp;
+	gHelp = NULL;
   }
 }
