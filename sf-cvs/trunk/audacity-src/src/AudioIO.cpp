@@ -27,6 +27,8 @@
 #include "MixerToolBar.h"
 #include "Prefs.h"
 
+wxMutex gNoCallbackMutex;
+
 AudioIO *gAudioIO;
 
 void InitAudioIO()
@@ -102,7 +104,11 @@ int audacityAudioCallback(
    unsigned int i;
    int t;
 
-   if(gAudioIO->GetPaused()) {
+   // WARNING: BG: If you return after the next block of code, remember to unlock the mutex
+   // BG: I would have used wxCriticalSectionLocker, but I was not sure
+   // if I could block in the callback
+
+   if(gAudioIO->GetPaused() || (gNoCallbackMutex.TryLock() != wxMUTEX_NO_ERROR)) {
       if (outputBuffer && numOutChannels > 0) {
          ClearSamples((samplePtr)outputBuffer, gAudioIO->GetFormat(),
                       0, framesPerBuffer * numOutChannels);
@@ -206,7 +212,9 @@ int audacityAudioCallback(
          }
       }
    }
-   
+
+   gNoCallbackMutex.Unlock();
+
    return 0;
 }
 
@@ -661,6 +669,12 @@ void AudioIO::Finish()
 {
    // Only allow one thread to access this code at a time
    wxCriticalSectionLocker locker(mFinishSection);
+
+   //BG: Do not allow this to execute at the same time as the stop function
+   wxCriticalSectionLocker Stoplocker(mStopSection);
+
+   //BG: Prevent port audio callback from doing anything
+   wxMutexLocker Callbacklocker(gNoCallbackMutex);
 
    //If portaudio is still active, return
    if(mPortStream)
