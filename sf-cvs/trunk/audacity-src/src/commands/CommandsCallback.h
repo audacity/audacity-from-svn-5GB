@@ -23,7 +23,7 @@
 
 #ifdef AUDACITY_COMMANDS_CALLBACK_POINTERS
 
-#define NUM_CALLBACK_FUNCTIONS 89
+#define NUM_CALLBACK_FUNCTIONS 91
 
 /******************************************************************
 Remember to update the value above when you change the arrays below
@@ -38,7 +38,8 @@ audEventFunction callback_function_pointers[] = {&AudacityProject::OnNew,&Audaci
 &AudacityProject::OnSelectCursorEnd,&AudacityProject::OnSelectStartCursor,&AudacityProject::OnZoomIn,
 &AudacityProject::OnZoomOut,&AudacityProject::OnZoomNormal,&AudacityProject::OnZoomFit,&AudacityProject::OnZoomSel,
 &AudacityProject::OnPlotSpectrum,&AudacityProject::OnFloatControlToolBar,&AudacityProject::OnLoadEditToolBar,
-&AudacityProject::OnFloatEditToolBar,&AudacityProject::OnImport,&AudacityProject::OnImportLabels,
+&AudacityProject::OnFloatEditToolBar,&AudacityProject::OnLoadMixerToolBar,&AudacityProject::OnFloatMixerToolBar,
+&AudacityProject::OnImport,&AudacityProject::OnImportLabels,
 &AudacityProject::OnImportMIDI,&AudacityProject::OnImportRaw,&AudacityProject::OnEditID3,&AudacityProject::OnQuickMix,
 &AudacityProject::OnSelectionSave,&AudacityProject::OnSelectionRestore,&AudacityProject::OnCursorTrackStart,
 &AudacityProject::OnCursorTrackEnd,&AudacityProject::OnCursorSelStart,&AudacityProject::OnCursorSelEnd,
@@ -60,7 +61,8 @@ const char *callback_function_strings[] = {"OnNew","OnOpen","OnClose","OnSave","
 "OnExportLossyMix","OnExportLossySelection","OnExportLabels","OnPreferences","OnExit","Undo","Redo","UndoHistory","Cut",
 "Copy","Paste","PasteOver","Trim","OnDelete","OnSilence","OnSplit","OnSplitLabels","OnDuplicate","OnSelectAll","OnSelectCursorEnd",
 "OnSelectStartCursor","OnZoomIn","OnZoomOut","OnZoomNormal","OnZoomFit","OnZoomSel","OnPlotSpectrum",
-"OnFloatControlToolBar","OnLoadEditToolBar","OnFloatEditToolBar","OnImport","OnImportLabels","OnImportMIDI","OnImportRaw",
+"OnFloatControlToolBar","OnLoadEditToolBar","OnFloatEditToolBar","OnLoadMixerToolBar",
+"OnFloatMixerToolBar","OnImport","OnImportLabels","OnImportMIDI","OnImportRaw",
 "OnEditID3","OnQuickMix","OnSelectionSave","OnSelectionRestore","OnCursorTrackStart","OnCursorTrackEnd","OnCursorSelStart",
 "OnCursorSelEnd","OnAlignZero","OnAlignGroupZero","OnAlign","OnAlignCursor","OnAlignSelStart","OnAlignSelEnd","OnAlignEndCursor",
 "OnAlignEndSelStart","OnAlignEndSelEnd", "OnAlignGroupCursor","OnAlignGroupSelStart","OnAlignGroupSelEnd",
@@ -131,6 +133,9 @@ void OnPlotSpectrum();
 void OnFloatControlToolBar();
 void OnLoadEditToolBar();
 void OnFloatEditToolBar();
+void OnLoadMixerToolBar();
+void OnFloatMixerToolBar();
+
 
         // Project Menu
 

@@ -226,7 +226,10 @@ bool AudioIOPrefs::Apply()
    gAudioIO->HandleDeviceChange();
 
    for( unsigned int i = 0; i < gAudacityProjects.GetCount(); i++ )
-       gAudacityProjects[i]->GetMixerToolBar()->UpdateControls();
+     {
+       if(gAudacityProjects[i]->GetMixerToolBar())
+	 gAudacityProjects[i]->GetMixerToolBar()->UpdateControls();
+     }
 #endif // USE_PORTMIXER
 
    return true;

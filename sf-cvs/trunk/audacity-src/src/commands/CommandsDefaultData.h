@@ -74,6 +74,7 @@ static const char *CommandsDefaultXML[] = {
 "\t\t\t<itemseparator/>",
 "\t\t\t<item translation=\"Float Control Toolbar\" functions=\"OnFloatControlToolBar\"/>",
 "\t\t\t<item translation=\"Float Edit Toolbar\" functions=\"OnFloatEditToolBar\"/>",
+"\t\t\t<item translation=\"Float Mixer Toolbar\" functions=\"OnFloatMixerToolBar\"/>",
 #endif
 "\t\t</menu>",
 "\t\t<!-- Project Menu -->",
@@ -248,6 +249,7 @@ static const char *CommandsDefaultXML[] = {
 
    COMMANDS_ADDTRANSLATIONSTRING(_("Float Control Toolbar"), "Float Control Toolbar");
    COMMANDS_ADDTRANSLATIONSTRING(_("Float Edit Toolbar"), "Float Edit Toolbar");
+   COMMANDS_ADDTRANSLATIONSTRING(_("Float Mixer Toolbar"), "Float Mixer Toolbar");
 
    // Project menu
    COMMANDS_ADDTRANSLATIONSTRING(_("&Project"), "Project");
