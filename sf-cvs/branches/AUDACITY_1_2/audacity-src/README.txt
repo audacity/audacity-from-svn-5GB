@@ -121,6 +121,9 @@ license.  Specifically:
   libogg: BSD-like license.
     Optional separate download, along with libvorbis.
 
+  libresample: LGPL
+    High-quality audio resampling.
+    
   libsndfile: LGPL
     Reads and writes uncompressed PCM audio files.
     Included with Audacity.
@@ -260,7 +263,29 @@ Changes in 1.2.0-pre4:
     time-shift offset.
 
   * Fixed bugs in the new resampler that added noise to resampled
-    audio on some systems.
+    audio on some systems. If you experienced noise when exporting
+    to a WAV, MP3 or OGG file you may have been bitten by this bug.
+  
+  * Fixed problem that caused Windows XP to use the short name
+    of a file ("TESTFI~1.AUP"), which led to problems when the
+    file was later opened again using the long file name.
+    
+  * Fixed bug that caused file exports to fail if the destination
+    directory was the root folder of a Windows drive.
+    
+  * Fixed bug that led to occasional crashes when using the
+    time-shift tool in conjunction with high zoom factors.
+    
+  * Dithering is now only applied on export when it is really
+    necessary (i.e. when downsampling).
+    
+  * Files that only contain mono tracks are now automatically
+    exported to stereo files when they contain tracks which are
+    panned to the left or the right.
+    
+  * Audacity's application information which is written to the
+    Windows registry now always contains the full path to the
+    executable.
 
   * Mac OS X: Supports Playthrough (listen to what you're recording
     while recording it)
