@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: single-block PCM analysis mode dispatch
- last mod: $Id: analysis.c,v 1.1.1.2 2002-04-21 23:36:45 habes Exp $
+ last mod: $Id: analysis.c,v 1.1.1.3 2002-10-26 19:39:30 dmazzoni Exp $
 
  ********************************************************************/
 
@@ -24,17 +24,13 @@
 #include "registry.h"
 #include "scales.h"
 #include "os.h"
+#include "misc.h"
 
 int analysis_noisy=1;
 
 /* decides between modes, dispatches to the appropriate mapping. */
 int vorbis_analysis(vorbis_block *vb, ogg_packet *op){
-  vorbis_dsp_state     *vd=vb->vd;
-  backend_lookup_state *b=vd->backend_state;
-  vorbis_info          *vi=vd->vi;
-  codec_setup_info     *ci=vi->codec_setup;
-  int                   type,ret;
-  int                   mode=0;
+  int                   ret;
 
   vb->glue_bits=0;
   vb->time_bits=0;
@@ -43,29 +39,20 @@ int vorbis_analysis(vorbis_block *vb, ogg_packet *op){
 
   /* first things first.  Make sure encode is ready */
   oggpack_reset(&vb->opb);
-  /* Encode the packet type */
-  oggpack_write(&vb->opb,0,1);
   
-  /* currently lazy.  Short block dispatches to 0, long to 1. */
-  
-  if(vb->W &&ci->modes>1)mode=1;
-  type=ci->map_type[ci->mode_param[mode]->mapping];
-  vb->mode=mode;
+  /* we only have one mapping type (0), and we let the mapping code
+     itself figure out what soft mode to use.  This allows easier
+     bitrate management */
 
-  /* Encode frame mode, pre,post windowsize, then dispatch */
-  oggpack_write(&vb->opb,mode,b->modebits);
-  if(vb->W){
-    oggpack_write(&vb->opb,vb->lW,1);
-    oggpack_write(&vb->opb,vb->nW,1);
-    /*fprintf(stderr,"*");
-  }else{
-  fprintf(stderr,".");*/
-  }
-
-  if((ret=_mapping_P[type]->forward(vb,b->mode[mode])))
+  if((ret=_mapping_P[0]->forward(vb)))
     return(ret);
 
   if(op){
+    if(vorbis_bitrate_managed(vb))
+      /* The app is using a bitmanaged mode... but not using the
+         bitrate management interface. */
+      return(OV_EINVAL);
+    
     op->packet=oggpack_get_buffer(&vb->opb);
     op->bytes=oggpack_bytes(&vb->opb);
     op->b_o_s=0;
@@ -77,7 +64,7 @@ int vorbis_analysis(vorbis_block *vb, ogg_packet *op){
 }
 
 /* there was no great place to put this.... */
-void _analysis_output_always(char *base,int i,float *v,int n,int bark,int dB){
+void _analysis_output_always(char *base,int i,float *v,int n,int bark,int dB,ogg_int64_t off){
   int j;
   FILE *of;
   char buffer[80];
@@ -89,28 +76,44 @@ void _analysis_output_always(char *base,int i,float *v,int n,int bark,int dB){
     if(!of)perror("failed to open data dump file");
     
     for(j=0;j<n;j++){
-      if(dB && v[j]==0)
-	fprintf(of,"\n\n");
-      else{
-	if(bark)
-	  fprintf(of,"%g ",toBARK(22050.f*j/n));
+      if(bark){
+	float b=toBARK((4000.f*j/n)+.25);
+	fprintf(of,"%f ",b);
+      }else
+	if(off!=0)
+	  fprintf(of,"%f ",(double)(j+off)/8000.);
 	else
-	  fprintf(of,"%g ",(double)j);
-	
-	if(dB){
-	  fprintf(of,"%g\n",todB(v+j));
-	}else{
-	  fprintf(of,"%g\n",v[j]);
-	}
+	  fprintf(of,"%f ",(double)j);
+      
+      if(dB){
+	float val;
+	if(v[j]==0.)
+	  val=-140.;
+	else
+	  val=todB(v+j);
+	fprintf(of,"%f\n",val);
+      }else{
+	fprintf(of,"%f\n",v[j]);
       }
     }
     fclose(of);
     /*  } */
 }
 
-void _analysis_output(char *base,int i,float *v,int n,int bark,int dB){
-#ifdef ANALYSIS
-  if(analysis_noisy)_analysis_output_always(base,i,v,n,bark,dB);
-#endif
+void _analysis_output(char *base,int i,float *v,int n,int bark,int dB,
+		      ogg_int64_t off){
+  if(analysis_noisy)_analysis_output_always(base,i,v,n,bark,dB,off);
 }
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
   function: lookup based functions
-  last mod: $Id: lookup.c,v 1.1.1.2 2002-04-21 23:36:46 habes Exp $
+  last mod: $Id: lookup.c,v 1.1.1.3 2002-10-26 19:39:35 dmazzoni Exp $
 
  ********************************************************************/
 
@@ -19,6 +19,7 @@
 #include "lookup.h"
 #include "lookup_data.h"
 #include "os.h"
+#include "misc.h"
 
 #ifdef FLOAT_LOOKUP
 

@@ -5,14 +5,14 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: normalized modified discrete cosine transform
            power of two length transform only [64 <= n ]
- last mod: $Id: mdct.c,v 1.1.1.2 2002-04-21 23:36:45 habes Exp $
+ last mod: $Id: mdct.c,v 1.1.1.3 2002-10-26 19:39:30 dmazzoni Exp $
 
  Original algorithm adapted long ago from _The use of multirate filter
  banks for coding of high quality digital audio_, by T. Sporer,
@@ -44,6 +44,7 @@
 #include "vorbis/codec.h"
 #include "mdct.h"
 #include "os.h"
+#include "misc.h"
 
 /* build lookups for trig functions; also pre-figure scaling and
    some window function algebra. */
@@ -95,11 +96,6 @@ STIN void mdct_butterfly_8(DATA_TYPE *x){
   REG_TYPE r1   = x[6] - x[2];
   REG_TYPE r2   = x[4] + x[0];
   REG_TYPE r3   = x[4] - x[0];
-
-           r0   = x[6] + x[2];
-	   r1   = x[6] - x[2];
-	   r2   = x[4] + x[0];
-	   r3   = x[4] - x[0];
 
 	   x[6] = r0   + r2;
 	   x[4] = r0   - r2;

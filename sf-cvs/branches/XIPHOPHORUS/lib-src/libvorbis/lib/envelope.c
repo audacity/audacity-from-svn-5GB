@@ -5,15 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
- function: PCM data envelope analysis and manipulation
- last mod: $Id: envelope.c,v 1.1.1.2 2002-04-21 23:36:45 habes Exp $
-
- Preecho calculation.
+ function: PCM data envelope analysis 
+ last mod: $Id: envelope.c,v 1.1.1.3 2002-10-26 19:39:30 dmazzoni Exp $
 
  ********************************************************************/
 
@@ -28,225 +26,305 @@
 #include "os.h"
 #include "scales.h"
 #include "envelope.h"
+#include "mdct.h"
 #include "misc.h"
-#include "iir.c" /* Yes, ugly, but needed for inlining */
-
-/* Digital filter designed by mkfilter/mkshape/gencode A.J. Fisher */
-
-static int   cheb_highpass_stages=6;
-static float cheb_highpass_B[]={1.f,-6.f,15.f,-20.f,15.f,-6.f,1.f};
-
-static int   cheb_bandpass_stages=6;
-static float cheb_bandpass_B[]={-1.f,0.f,3.f,0.f,-3.f,0.f,1.f};
-
-
-/* 10kHz Chebyshev highpass */
-static float cheb_highpass10k_gain= 54.34519586f;
-static float cheb_highpass10k_A[]={
-  -0.2064797169f,
-  -0.5609713214f,
-  -1.1352465327f,
-  -1.4495555418f,
-  -1.7938140760f,
-  -0.9473564683f};
-
-/* 6kHz-10kHz Chebyshev bandpass */
-static float cheb_bandpass6k_gain=113.4643935f;
-static float cheb_bandpass6k_A[]={
-  -0.5712621337f,
-  1.5626130710f,
-  -3.3348854983f,
-  4.0471340821f,
-  -4.0051680331f,
-  2.2786325610f};
-
-/* 3kHz-6kHz Chebyshev bandpass */
-static float cheb_bandpass3k_gain= 248.8359377f;
-static float cheb_bandpass3k_A[]={
-  -0.6564230022f,
-  3.3747911257f,
-  -8.0098635981f,
-  11.0040876874f,
-  -9.2250963484f,
-  4.4760355389f};
-
-/* 1.5kHz-3kHz Chebyshev bandpass */
-static float cheb_bandpass1k_gain= 1798.537183f;
-static float cheb_bandpass1k_A[]={
-  -0.8097527363f,
-  4.7725742682f,
-  -11.9800219408f,
-  16.3770336223f,
-  -12.8553129536f,
-  5.4948074309f};
 
 void _ve_envelope_init(envelope_lookup *e,vorbis_info *vi){
   codec_setup_info *ci=vi->codec_setup;
   vorbis_info_psy_global *gi=&ci->psy_g_param;
   int ch=vi->channels;
-  int i;
-  e->winlength=ci->blocksizes[0]/2; /* not random */
-  e->minenergy=fromdB(gi->preecho_minenergy);
-  e->iir=_ogg_calloc(ch*4,sizeof(*e->iir));
-  e->filtered=_ogg_calloc(ch*4,sizeof(*e->filtered));
+  int i,j;
+  int n=e->winlength=128;
+  e->searchstep=64; /* not random */
+
+  e->minenergy=gi->preecho_minenergy;
   e->ch=ch;
   e->storage=128;
-  for(i=0;i<ch*4;i+=4){
+  e->cursor=ci->blocksizes[1]/2;
+  e->mdct_win=_ogg_calloc(n,sizeof(*e->mdct_win));
+  mdct_init(&e->mdct,n);
 
-    IIR_init(e->iir+i,cheb_highpass_stages,cheb_highpass10k_gain,
-	     cheb_highpass10k_A,cheb_highpass_B);
-    IIR_init(e->iir+i+1,cheb_bandpass_stages,cheb_bandpass6k_gain,
-	     cheb_bandpass6k_A,cheb_bandpass_B);
-    IIR_init(e->iir+i+2,cheb_bandpass_stages,cheb_bandpass3k_gain,
-	     cheb_bandpass3k_A,cheb_bandpass_B);
-    IIR_init(e->iir+i+3,cheb_bandpass_stages,cheb_bandpass1k_gain,
-	     cheb_bandpass1k_A,cheb_bandpass_B);
-
-    e->filtered[i]=_ogg_calloc(e->storage,sizeof(*e->filtered[i]));
-    e->filtered[i+1]=_ogg_calloc(e->storage,sizeof(*e->filtered[i+1]));
-    e->filtered[i+2]=_ogg_calloc(e->storage,sizeof(*e->filtered[i+2]));
-    e->filtered[i+3]=_ogg_calloc(e->storage,sizeof(*e->filtered[i+3]));
+  for(i=0;i<n;i++){
+    e->mdct_win[i]=sin(i/(n-1.)*M_PI);
+    e->mdct_win[i]*=e->mdct_win[i];
   }
+
+  /* magic follows */
+  e->band[0].begin=2;  e->band[0].end=4;
+  e->band[1].begin=4;  e->band[1].end=5;
+  e->band[2].begin=6;  e->band[2].end=6;
+  e->band[3].begin=9;  e->band[3].end=8;
+  e->band[4].begin=13;  e->band[4].end=8;
+  e->band[5].begin=17;  e->band[5].end=8;
+  e->band[6].begin=22;  e->band[6].end=8;
+
+  for(j=0;j<VE_BANDS;j++){
+    n=e->band[j].end;
+    e->band[j].window=_ogg_malloc(n*sizeof(*e->band[0].window));
+    for(i=0;i<n;i++){
+      e->band[j].window[i]=sin((i+.5)/n*M_PI);
+      e->band[j].total+=e->band[j].window[i];
+    }
+    e->band[j].total=1./e->band[j].total;
+  }
+  
+  e->filter=_ogg_calloc(VE_BANDS*ch,sizeof(*e->filter));
+  e->mark=_ogg_calloc(e->storage,sizeof(*e->mark));
 
 }
 
 void _ve_envelope_clear(envelope_lookup *e){
   int i;
-  for(i=0;i<e->ch*4;i++){
-    IIR_clear((e->iir+i));
-    _ogg_free(e->filtered[i]);
-  }
-  _ogg_free(e->filtered);
-  _ogg_free(e->iir);
+  mdct_clear(&e->mdct);
+  for(i=0;i<VE_BANDS;i++)
+    _ogg_free(e->band[i].window);
+  _ogg_free(e->mdct_win);
+  _ogg_free(e->filter);
+  _ogg_free(e->mark);
   memset(e,0,sizeof(*e));
 }
 
-/* straight threshhold based until we find something that works better
-   and isn't patented */
-static float _ve_deltai(envelope_lookup *ve,float *pre,float *post){
-  long n=ve->winlength;
+/* fairly straight threshhold-by-band based until we find something
+   that works better and isn't patented. */
 
-  long i;
+static int _ve_amp(envelope_lookup *ve,
+		   vorbis_info_psy_global *gi,
+		   float *data,
+		   envelope_band *bands,
+		   envelope_filter_state *filters,
+		   long pos){
+  long n=ve->winlength;
+  int ret=0;
+  long i,j;
+  float decay;
 
   /* we want to have a 'minimum bar' for energy, else we're just
      basing blocks on quantization noise that outweighs the signal
      itself (for low power signals) */
 
   float minV=ve->minenergy;
-  float A=minV*minV*n;
-  float B=A;
+  float *vec=alloca(n*sizeof(*vec));
 
-  for(i=0;i<n;i++){
-    A+=pre[i]*pre[i];
-    B+=post[i]*post[i];
+  /* stretch is used to gradually lengthen the number of windows
+     considered prevoius-to-potential-trigger */
+  int stretch=max(VE_MINSTRETCH,ve->stretch/2);
+  float penalty=gi->stretch_penalty-(ve->stretch/2-VE_MINSTRETCH);
+  if(penalty<0.f)penalty=0.f;
+  if(penalty>gi->stretch_penalty)penalty=gi->stretch_penalty;
+  
+  /*_analysis_output_always("lpcm",seq2,data,n,0,0,
+    totalshift+pos*ve->searchstep);*/
+  
+ /* window and transform */
+  for(i=0;i<n;i++)
+    vec[i]=data[i]*ve->mdct_win[i];
+  mdct_forward(&ve->mdct,vec,vec);
+  
+  /*_analysis_output_always("mdct",seq2,vec,n/2,0,1,0); */
+
+  /* near-DC spreading function; this has nothing to do with
+     psychoacoustics, just sidelobe leakage and window size */
+  {
+    float temp=vec[0]*vec[0]+.7*vec[1]*vec[1]+.2*vec[2]*vec[2];
+    int ptr=filters->nearptr;
+
+    /* the accumulation is regularly refreshed from scratch to avoid
+       floating point creep */
+    if(ptr==0){
+      decay=filters->nearDC_acc=filters->nearDC_partialacc+temp;
+      filters->nearDC_partialacc=temp;
+    }else{
+      decay=filters->nearDC_acc+=temp;
+      filters->nearDC_partialacc+=temp;
+    }
+    filters->nearDC_acc-=filters->nearDC[ptr];
+    filters->nearDC[ptr]=temp;
+
+    decay*=(1./(VE_NEARDC+1));
+    filters->nearptr++;
+    if(filters->nearptr>=VE_NEARDC)filters->nearptr=0;
+    decay=todB(&decay)*.5-15.f;
+  }
+  
+  /* perform spreading and limiting, also smooth the spectrum.  yes,
+     the MDCT results in all real coefficients, but it still *behaves*
+     like real/imaginary pairs */
+  for(i=0;i<n/2;i+=2){
+    float val=vec[i]*vec[i]+vec[i+1]*vec[i+1];
+    val=todB(&val)*.5f;
+    if(val<decay)val=decay;
+    if(val<minV)val=minV;
+    vec[i>>1]=val;
+    decay-=8.;
   }
 
-  A=todB(&A);
-  B=todB(&B);
+  /*_analysis_output_always("spread",seq2++,vec,n/4,0,0,0);*/
+  
+  /* perform preecho/postecho triggering by band */
+  for(j=0;j<VE_BANDS;j++){
+    float acc=0.;
+    float valmax,valmin;
 
-  return(B-A);
+    /* accumulate amplitude */
+    for(i=0;i<bands[j].end;i++)
+      acc+=vec[i+bands[j].begin]*bands[j].window[i];
+   
+    acc*=bands[j].total;
+
+    /* convert amplitude to delta */
+    {
+      int p,this=filters[j].ampptr;
+      float postmax,postmin,premax=-99999.f,premin=99999.f;
+      
+      p=this;
+      p--;
+      if(p<0)p+=VE_AMP;
+      postmax=max(acc,filters[j].ampbuf[p]);
+      postmin=min(acc,filters[j].ampbuf[p]);
+      
+      for(i=0;i<stretch;i++){
+	p--;
+	if(p<0)p+=VE_AMP;
+	premax=max(premax,filters[j].ampbuf[p]);
+	premin=min(premin,filters[j].ampbuf[p]);
+      }
+      
+      valmin=postmin-premin;
+      valmax=postmax-premax;
+
+      /*filters[j].markers[pos]=valmax;*/
+      filters[j].ampbuf[this]=acc;
+      filters[j].ampptr++;
+      if(filters[j].ampptr>=VE_AMP)filters[j].ampptr=0;
+    }
+
+    /* look at min/max, decide trigger */
+    if(valmax>gi->preecho_thresh[j]+penalty){
+      ret|=1;
+      ret|=4;
+    }
+    if(valmin<gi->postecho_thresh[j]-penalty)ret|=2;
+  }
+ 
+  return(ret);
 }
+
+#if 0
+static int seq=0;
+static ogg_int64_t totalshift=-1024;
+#endif
 
 long _ve_envelope_search(vorbis_dsp_state *v){
   vorbis_info *vi=v->vi;
   codec_setup_info *ci=vi->codec_setup;
   vorbis_info_psy_global *gi=&ci->psy_g_param;
   envelope_lookup *ve=((backend_lookup_state *)(v->backend_state))->ve;
-  long i,j,k;
+  long i,j;
+
+  int first=ve->current/ve->searchstep;
+  int last=v->pcm_current/ve->searchstep-VE_WIN;
+  if(first<0)first=0;
 
   /* make sure we have enough storage to match the PCM */
-  if(v->pcm_storage>ve->storage){
-    ve->storage=v->pcm_storage;
-    for(i=0;i<ve->ch*4;i++)
-      ve->filtered[i]=_ogg_realloc(ve->filtered[i],ve->storage*sizeof(*ve->filtered[i]));
+  if(last+VE_WIN+VE_POST>ve->storage){
+    ve->storage=last+VE_WIN+VE_POST; /* be sure */
+    ve->mark=_ogg_realloc(ve->mark,ve->storage*sizeof(*ve->mark));
   }
 
-  /* catch up the highpass to match the pcm */
-  for(i=0;i<ve->ch;i++){
-    float *pcm=v->pcm[i];
-    float *filtered0=ve->filtered[i*4];
-    float *filtered1=ve->filtered[i*4+1];
-    float *filtered2=ve->filtered[i*4+2];
-    float *filtered3=ve->filtered[i*4+3];
-    IIR_state *iir0=ve->iir+i*4;
-    IIR_state *iir1=ve->iir+i*4+1;
-    IIR_state *iir2=ve->iir+i*4+2;
-    IIR_state *iir3=ve->iir+i*4+3;
-    int flag=1;
-    for(j=ve->current;j<v->pcm_current;j++){
-      filtered0[j]=IIR_filter(iir0,pcm[j]);
-      filtered1[j]=IIR_filter_Band(iir1,pcm[j]);
-      filtered2[j]=IIR_filter_Band(iir2,pcm[j]);
-      filtered3[j]=IIR_filter_Band(iir3,pcm[j]);
-      if(pcm[j])flag=0;
-    }
-    if(flag && ve->current+64<v->pcm_current){
-      IIR_reset(iir0);
-      IIR_reset(iir1);
-      IIR_reset(iir2);
-      IIR_reset(iir3);
+  for(j=first;j<last;j++){
+    int ret=0;
+
+    ve->stretch++;
+    if(ve->stretch>VE_MAXSTRETCH*2)
+      ve->stretch=VE_MAXSTRETCH*2;
+    
+    for(i=0;i<ve->ch;i++){
+      float *pcm=v->pcm[i]+ve->searchstep*(j);
+      ret|=_ve_amp(ve,gi,pcm,ve->band,ve->filter+i*VE_BANDS,j);
     }
 
+    ve->mark[j+VE_POST]=0;
+    if(ret&1){
+      ve->mark[j]=1;
+      ve->mark[j+1]=1;
+    }
+
+    if(ret&2){
+      ve->mark[j]=1;
+      if(j>0)ve->mark[j-1]=1;
+    }
+
+    if(ret&4)ve->stretch=-1;
   }
 
-  ve->current=v->pcm_current;
+  ve->current=last*ve->searchstep;
 
   {
-    int flag=-1;
     long centerW=v->centerW;
-    long beginW=centerW-ci->blocksizes[v->W]/4;
-    /*long endW=centerW+ci->blocksizes[v->W]/4+ci->blocksizes[0]/4;*/
-    long testW=centerW+ci->blocksizes[v->W]/4+ci->blocksizes[1]/2+ci->blocksizes[0]/4;
-    if(v->W)
-      beginW-=ci->blocksizes[v->lW]/4;
-    else
-      beginW-=ci->blocksizes[0]/4;
-
-    if(ve->mark>=centerW && ve->mark<testW)return(0);
-    if(ve->mark>=testW)return(1);
-
-    if(v->W)
-      j=ve->cursor;
-    else
-      j=centerW-ci->blocksizes[0]/4;
+    long testW=
+      centerW+
+      ci->blocksizes[v->W]/4+
+      ci->blocksizes[1]/2+
+      ci->blocksizes[0]/4;
     
-    while(j+ve->winlength*3/2<=v->pcm_current){
+    j=ve->cursor;
+    
+    while(j<ve->current-(ve->searchstep)){/* account for postecho
+                                             working back one window */
       if(j>=testW)return(1);
+ 
       ve->cursor=j;
 
-      for(i=0;i<ve->ch;i++){
-	for(k=0;k<4;k++){
-	  float *filtered=ve->filtered[i*4+k]+j;
-	  float *filtered2=ve->filtered[i*4+k]+j+ve->winlength/2;
-	  float m=_ve_deltai(ve,filtered-ve->winlength,filtered);
-	  float mm=_ve_deltai(ve,filtered2-ve->winlength,filtered2);
-	  
-	  if(m>gi->preecho_thresh[k] || m<gi->postecho_thresh[k]){
-	    if(j<=centerW){
-	      ve->prevmark=ve->mark=j;
-	    }else{
-	      /* if a quarter-short-block advance is an even stronger
-		 reading, set *that* as the impulse point. */
-	      if((m>0. && mm>m) || (m<0. && mm<m))
-		flag=j+ve->winlength/2;
-	      else
-		if(flag<0)flag=j;
+      if(ve->mark[j/ve->searchstep]){
+	if(j>centerW){
+
+	  #if 0
+	  if(j>ve->curmark){
+	    float *marker=alloca(v->pcm_current*sizeof(*marker));
+	    int l,m;
+	    memset(marker,0,sizeof(*marker)*v->pcm_current);
+	    fprintf(stderr,"mark! seq=%d, cursor:%fs time:%fs\n",
+		    seq,
+		    (totalshift+ve->cursor)/44100.,
+		    (totalshift+j)/44100.);
+	    _analysis_output_always("pcmL",seq,v->pcm[0],v->pcm_current,0,0,totalshift);
+	    _analysis_output_always("pcmR",seq,v->pcm[1],v->pcm_current,0,0,totalshift);
+
+	    _analysis_output_always("markL",seq,v->pcm[0],j,0,0,totalshift);
+	    _analysis_output_always("markR",seq,v->pcm[1],j,0,0,totalshift);
+	    
+	    for(m=0;m<VE_BANDS;m++){
+	      char buf[80];
+	      sprintf(buf,"delL%d",m);
+	      for(l=0;l<last;l++)marker[l*ve->searchstep]=ve->filter[m].markers[l]*.1;
+	      _analysis_output_always(buf,seq,marker,v->pcm_current,0,0,totalshift);
 	    }
+
+	    for(m=0;m<VE_BANDS;m++){
+	      char buf[80];
+	      sprintf(buf,"delR%d",m);
+	      for(l=0;l<last;l++)marker[l*ve->searchstep]=ve->filter[m+VE_BANDS].markers[l]*.1;
+	      _analysis_output_always(buf,seq,marker,v->pcm_current,0,0,totalshift);
+	    }
+
+	    for(l=0;l<last;l++)marker[l*ve->searchstep]=ve->mark[l]*.4;
+	    _analysis_output_always("mark",seq,marker,v->pcm_current,0,0,totalshift);
+	   
+	    
+	    seq++;
+	    
 	  }
+#endif
+
+	  ve->curmark=j;
+	  if(j>=testW)return(1);
+	  return(0);
 	}
       }
-      
-      if(flag>=0){
- 	ve->prevmark=ve->mark;
-	ve->mark=flag;
-	if(flag>=testW)return(1);
-	return(0);
-      }
-      
-      j+=ve->winlength/2;
+      j+=ve->searchstep;
     }
   }
- 
+  
   return(-1);
 }
 
@@ -265,22 +343,41 @@ int _ve_envelope_mark(vorbis_dsp_state *v){
     endW+=ci->blocksizes[0]/4;
   }
 
-  if(ve->prevmark>=beginW && ve->prevmark<endW)return(1);
-  if(ve->mark>=beginW && ve->mark<endW)return(1);
+  if(ve->curmark>=beginW && ve->curmark<endW)return(1);
+  {
+    long first=beginW/ve->searchstep;
+    long last=endW/ve->searchstep;
+    long i;
+    for(i=first;i<last;i++)
+      if(ve->mark[i])return(1);
+  }
   return(0);
 }
 
 void _ve_envelope_shift(envelope_lookup *e,long shift){
+  int smallsize=e->current/e->searchstep+VE_POST; /* adjust for placing marks
+						     ahead of ve->current */
+  int smallshift=shift/e->searchstep;
   int i;
-  for(i=0;i<e->ch*4;i++)
-    memmove(e->filtered[i],e->filtered[i]+shift,(e->current-shift)*
-	    sizeof(*e->filtered[i]));
+
+  memmove(e->mark,e->mark+smallshift,(smallsize-smallshift)*sizeof(*e->mark));
+  
+  #if 0
+  for(i=0;i<VE_BANDS*e->ch;i++)
+    memmove(e->filter[i].markers,
+	    e->filter[i].markers+smallshift,
+	    (1024-smallshift)*sizeof(*(*e->filter).markers));
+  totalshift+=shift;
+  #endif 
+
   e->current-=shift;
-  if(e->prevmark>=0)
-    e->prevmark-=shift;
-  if(e->mark>=0)
-    e->mark-=shift;
+  if(e->curmark>=0)
+    e->curmark-=shift;
   e->cursor-=shift;
 }
+
+
+
+
 
 
