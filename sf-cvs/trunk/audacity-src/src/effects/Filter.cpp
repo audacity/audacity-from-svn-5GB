@@ -53,7 +53,7 @@ bool EffectFilter::PromptUser()
    if (!dlog.GetReturnCode())
       return false;
 
-   for(unsigned int i=0; i<=windowSize/2; i++) {
+   for(int i=0; i<=windowSize/2; i++) {
       double envVal = mEnvelope->GetValue(((double)i)/(windowSize/2));
       filterFunc[i] = (float)(pow(4.0, envVal*2.0 - 1.0));
    }
@@ -99,8 +99,7 @@ bool EffectFilter::ProcessOne(int count, WaveTrack * t,
    
    sampleCount originalLen = len;
    
-   unsigned int i;
-   
+   int i;
    for(i=0; i<windowSize; i++)
       lastWindow[i] = 0;
    
@@ -112,11 +111,11 @@ bool EffectFilter::ProcessOne(int count, WaveTrack * t,
       t->Get(buffer, s, block);
       
       for(i=0; i<block; i+=windowSize/2) {
-         unsigned int wcopy = windowSize;
+         int wcopy = windowSize;
          if (i + wcopy > block)
             wcopy = block - i;
          
-         unsigned int j;
+         int j;
          for(j=0; j<wcopy; j++)
             thisWindow[j] = buffer[i+j];
          for(j=wcopy; j<windowSize; j++)
@@ -167,7 +166,7 @@ void EffectFilter::Filter(sampleCount len,
    FFT(len, false, inr, NULL, outr, outi);
    
    // Apply filter
-   unsigned int half = len/2;
+   int half = len/2;
    for(i=0; i<=half; i++) {
       int j = len - i;
       

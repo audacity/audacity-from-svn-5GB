@@ -57,7 +57,7 @@ bool EffectInvert::ProcessOne(int count, WaveTrack *t,
          block = len;
 
       t->Get(buffer, s, block);
-      for (unsigned int i = 0; i < block; i++) {
+      for (int i = 0; i < block; i++) {
          buffer[i] = (float) (-buffer[i]);
       }
       t->Set(buffer, s, block);
