@@ -153,7 +153,7 @@ void BlockFile::Close()
   if (mAlias && ((snd_node *)mSndNode)) {
 	snd_close(((snd_node *)mSndNode));
 	delete ((snd_node *)mSndNode);
-	((snd_node *)mSndNode) = NULL;
+	mSndNode = NULL;
   }
 
 }
