@@ -152,7 +152,7 @@ bool EffectEqualization::PromptUser()
    float hiFreq = ((float)(t->GetRate())/2.);
 
    EqualizationDialog dlog(((double)loFreqI), hiFreq, mFilterFunc, windowSize,
-			   mParent, -1, _("Equaliation"));
+			   mParent, -1, _("Equalization"));
 
    dlog.CentreOnParent();
    dlog.ShowModal();
