@@ -47,7 +47,6 @@
 
 
 
-class WaveTrack;
 class wxString;
 
 
