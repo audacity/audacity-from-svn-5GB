@@ -339,8 +339,11 @@ void PowerSpectrum(
 
   rt = (h1r=RealOut[0])+ImagOut[0];
   it = h1r-ImagOut[0];
-
   Out[0] = rt*rt + it*it;
+
+  rt = RealOut[Half/2];
+  it = ImagOut[Half/2];
+  Out[Half/2] = rt*rt + it*it;
 
   delete[] tmpReal;
   delete[] tmpImag;
