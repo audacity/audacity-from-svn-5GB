@@ -13,6 +13,7 @@ Jestli (si) uíváte Audacity, øeknìte nám to! Pošlete e-mail na
 >audacity-help@lists.sourceforge.net</a>
  a dejte nám vìdìt, e se vám líbí. Vìdomí, e je lidem ku prospìchu nás dìlá šastnımi. Také se nám nebojte poslat svoje komentáøe a doporuèení - stále Audacity vylepšujeme a ceníme si vašich pøíspìvkù. 
 (Pozn. pøekladatele: Smìle do toho, ale udìlejte to v angliètinì! :))
+<br><?php print "$listPrivacyStr"; ?>
 <p>
 
 <li><b>Pøipojte se k uivatelské komunitì</b>

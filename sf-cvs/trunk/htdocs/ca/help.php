@@ -59,6 +59,7 @@ Cercar als llocs web i a la documentació de l'Audacity:
 <p>
 <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font></br>
 </p>
 
 <?php BoxBottom(); ?>

@@ -17,6 +17,7 @@ L'Audacity s'està desenvolupant gràcies al treball d'un equip de voluntaris i so
 <p>
 Preguntes/comentaris? 
 Envieu un missatge en anglès a <a href="mailto:audacity-help@lists.sourceforge.net">audacity-help@lists.sourceforge.net</a> Esperem que en el futur hi hagi també adreces de suport en altres idiomes. 
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font></br>
 </p>
 
 <?php BoxBottom(); ?>

@@ -63,4 +63,5 @@ $altDownloadStr = "Teniu problemes amb les descàrregues? Necessiteu una nova ver
 $altDownloadStr2 = "Feu clic aquí per altres enllaços de descàrrega";
 $docsStr = "Descarregueu-vos la documentació més recent";
 $clickEnlargeStr = "(Cliqueu a qualsevol imatge per engrandir-la)";
+$listPrivacyStr = "<a href=privacy.php>Política de privadesa</a>";
 ?>

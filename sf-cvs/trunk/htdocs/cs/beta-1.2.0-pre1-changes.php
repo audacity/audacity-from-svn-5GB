@@ -1,6 +1,6 @@
 <h2>Zmìny v Audacity 1.2</h2>
 
-Tato stránka obsahuje popis nejvýznamnìjších zmìn od vydání naší poslední stabilní verze Audacity 1.0.0. Uživatelé betaverzí by se mìli podívat na changelog <a href="<?php print "betanotes.php$langQueryStr"; ?>">zmìny od vydání Audacity 1.1.0</a>.
+Hlavní zmìny od naší poslední stabilní verze Audacity 1.0.0:
 
 <h3>Zvuk v profesionální kvalitì</h3>
 
@@ -18,8 +18,6 @@ Vstup a výstup zvuku v Audacity byl vylepšen. Audacity nyní mùže nahrávat více n
 <img alt="screenshots" border="0" src="images/screen/linux/change-pitch.png" align="right"></a>
 <h3>Efekty</h3>
 
-<!--
--->
 
 <ul>
 <li>
@@ -33,6 +31,7 @@ Tøi nové efekty na zmìnu ladìní a rychlosti stopy:
 
 <li>
 Vìtšina efektù nyní obsahuje tlaèítko "Preview", které umožòuje vyzkoušet rùzná nastavení pøed zavøením efektového okna. Nový pøíkaz vám umožní zopakovat poslednì použitý efekt bez opìtovného otevírání okna.
+
 </li>
 
 <li>

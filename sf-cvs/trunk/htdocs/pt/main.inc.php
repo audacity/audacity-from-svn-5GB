@@ -63,4 +63,5 @@ $altDownloadStr = "Problemas ao copiar? Precisa de uma versão antiga?";
 $altDownloadStr2 = "Clique aqui para outros locais de download.";
 $docsStr = "Baixe os manuais: ";
 $clickEnlargeStr = "Clique nas imagens para ampliar";
+$listPrivacyStr = ">política de privacidade.)";
 ?>

@@ -1,4 +1,4 @@
-<?php BoxTop('May 8, 2004: Audacity 1.2.1 released'); ?>
+<?php BoxTop('8 de maig de 2004: llançament de l\'Audacity 1.2.1'); ?>
 
 <p>
 Audacity 1.2.1 és la nova versió estable de l'editor d'àudio digital Audacity.

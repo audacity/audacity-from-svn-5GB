@@ -13,7 +13,9 @@ Toto jsou známé problémy v Audacity 1.2.1:
 
 <li><p>Linux: Obousmìrné nahrávání (full duplex - pøehrávání existující stopy bìhem nahrávání) mùe na nìkterıch Linuxovıch systémech zpùsobit, e nahranı zvuk je u mono nahrávek zpomalenı.</p></li>
 
-<li><p>Pouze MacOS X: Audacity neumí pracovat se soubory nebo adresáøi, které jsou obsaeny v adresáøích s mezinárodními znaky (èárky, háèky, atd.) v názvu. Pøitom soubory i projekty Audacity s tìmito znaky fungují. Problémy zpùsobují jen soubory, které jsou uvnitø adresáøù se zmínìnımi znaky.</p></li>
+<li><p>MacOS X: Spuštìní Audacity mùe zapøíèinit chybné nastavení nìkterıch zvukovıch zaøízení na USB. Nápravu lze zjednat v programu "Audio MIDI Setup" od Apple, pøièem Audacity musí stále bìet.</p></li>
+
+<li><p>MacOS X: Audacity neumí pracovat se soubory nebo adresáøi, které jsou obsaeny v adresáøích s mezinárodními znaky (èárky, háèky, atd.) v názvu. Pøitom soubory i projekty Audacity s tìmito znaky fungují. Problémy zpùsobují jen soubory, které jsou uvnitø adresáøù se zmínìnımi znaky.</p></li>
 
 <li><p>Okno "O programu" špatnì zobrazuje znaky mimo západní kódování (pozn. pøekladatele: vè. èeštiny).</p></li>
 <?/* ******************************* */ ?>

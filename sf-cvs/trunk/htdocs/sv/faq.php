@@ -1,8 +1,8 @@
-<?php BoxTop("Frequently Asked Questions"); ?>
+<?php BoxTop("Frequently Asked Questions - Vanliga ställda frågor"); ?>
 
 <!--
 <table width=100% cellpadding=6 width=100%><tr><td bgcolor="#ffd0d0" align="center">
-<font size="+3">Frequently Asked Questions</font>
+<font size="+3">Vanliga ställda frågor</font>
 </td></tr></table>
 -->
 
@@ -42,7 +42,7 @@ varför är de två spåren inte synkroniserade?</a><br>
 <p>
 
 <table cellpadding=6 width=100%><tr><td bgcolor="#ffd0d0" align="center">
-<font size="+1">General</font>
+<font size="+1">Allmänt</font>
 </td></tr></table>
 
 <p>
@@ -56,20 +56,20 @@ varför är de två spåren inte synkroniserade?</a><br>
 <p>
 
 Ja,  Audacity är inte bara distribuerad
-utan kostnad, men du har också möjligeten att göra nästan
+utan kostnad, men du har också möjligheten att göra nästan
 vad du vill med det.
 <p>
 Audacity är distribuerad under termerna för
 <a href="http://www.gnu.org/copyleft/gpl.html"
 >General Public License (GPL)</a>.
-Du har friheten till att använda denna programvara för personliga eller kommersiella
-ändamål.  Du har också friheten till att ge ifrån eller sälja det.
+Du har friheten att använda denna programvara för personligt eller kommersiellt
+ändamål.  Du har också friheten att fritt dela med dig av programmet eller sälja det.
 Källkoden till detta program är fritt tillgänglig på
-internet, och du har friheten att ändra det för ditt eget användade, men
+Internet, och du har friheten att ändra det för eget bruk, men
 ändringar måste också bli distribuerade under GPL.
 <p>
-Audacity är byggt med hjälp av wxWidgets, ett mjukvaru bibliotek som
-är utgiven under den minde restriktiva LGPL.  
+Audacity är byggt med hjälp av wxWidgets, ett mjukvarubibliotek som
+är utgiven under den mindre restriktiva LGPL.  
 För mer information, gå till
 <a href="http://wxwidgets.org/">wxwidgets.org</a>.
 <p>
@@ -79,10 +79,9 @@ Några gör det för moralen, därför att vi tycker att
 all mjukvara  borde vara gratis, medans andra tror att
 det finns ett behov av både gratis och kommersiell mjukvara i världen.
 <p>
-En anledning till att Audacity är gratis är att den blir mer populär.
+En anledning till att Audacity är gratis är att den blir mer allmänt förekommande.
 Många av oss skulle hellre se en miljon glada människor använda
-Audacity gratis än tusen människor som betalar.
-Most users are more friendly when they get something for free.
+Audacity gratis än tusen människor som betalar. De flera blir mer nöjda med programmet om det är gratis.
 
 <p>
 Ännu en anledning är att det främjar samarbete. Om Audacity
@@ -121,11 +120,11 @@ Audacity, och utvecklingen fortsätter att accelerera.
 </b></font>
 
 Leta rätt på buggar och meddela oss.
-Skriva kod.  Översätta det till dit eget språk. Rita grafik.
-Bli medlem i Audacity-Users e-post lista. Skicka pengar till oss.
+Skriv kod.  Översätta det till ditt eget språk. Rita grafik.
+Bli medlem i Audacityqnvändarnas postlista. Skicka pengar till oss.
 <p>
-Var god se vår nya <?php print "<a href=donatetime.php?$langLinkStr>"; ?>Donations</a>
-sida för mer detaljer om hur du kan hjälpa till.
+Var vänlig se vår nya <?php print "<a href=donatetime.php?$langLinkStr>"; ?>Bidra med pengar</a> 
+för mer detaljer om hur du kan hjälpa till.
 <p>
 
 <a name="g4"></a>
@@ -170,13 +169,13 @@ Vi vill bli av med alla buggar!  Tack för att du hjälper oss att finna dem.
 </b></font>
 
 <p>Från Internet Explorer, välj att köra filen.
-Detta lanserar Audacitys installationsprogram, som kommer att installera
-Audacityprogrammets filer och skapa en genväg från Start-Menyn.
+Detta startar Audacitys installationsprogram, som kommer att installera
+Audacityprogrammets filer och skapa en genväg från Startmenyn.
 <p>
-Om du redan har laddat ner filen, dubell-klicka på den för att starta installationen.
+Om du redan har laddat ner filen, dubbelklicka på den för att starta installationen.
 <p>
-Om du föredrar att inte använda installations-programmet, kan du också
-ladda ner Audacity i form av en ZIP fil, vilken du kan dekompressera
+Om du föredrar att inte använda installationsprogrammet, kan du också
+ladda ner Audacity i form av en zip-fil, vilken du kan packa upp 
 med hjälp av WinZip.
 
 <p>
@@ -187,24 +186,24 @@ med hjälp av WinZip.
 
 <p><font size=+0>Audacity kan avinstalleras genom att öppna 
 Lägga Till/Ta bort Program i
-Kontroll Panelen.  Välj "Audacity" från listan och
-klicka på knappaen
-"Lägg TIll/Ta bort".
-Detta lanserar Audacitys avinstalltions program.
+kontrollpanelen.  Välj "Audacity" från listan och
+klicka på knappen
+"Lägg till/Ta bort".
+Detta startar Audacitys avinstallationsprogram.
 
 <p>
 <a name="i3"></a> <font size=+1><b> 3. Mac: Vad gör jag med .sit filen?<br> </b></font>
 
 <p>
 Du behöver en färsk version av StuffIt Expander, StuffIt Expander
-komemr med alla Macintoshar och är oftast konfigurerad 
-Med alla Mac webbläsare.  Om Audacity inte dekomprimeras
-automatiskt, dra "audacity.sit" till StuffIt Expander för att dekomprimera
-den.
+kommer med alla Macintoshar och är oftast konfigurerad 
+med alla Mac-webbläsare.  Om Audacity inte packar upp 
+automatiskt, dra "audacity.sit" till StuffIt Expander för att packa upp 
+filen.
 <p>
 Det finns inget behov att installera Audacity. Bara dra Audacity
 mappen till din Applications mapp, eller vart du vill ha den.
-För att avinstallera, bara dra mappen till sopkorgen.
+För att avinstallera, bara dra mappen till soptunnan.
 
 <p>
 <a name="i4"></a>
@@ -213,7 +212,7 @@ För att avinstallera, bara dra mappen till sopkorgen.
 <br></b></font>
 
 <p><font size=+0>Först, se till att wxGTK är installerat; en länk finns
-på våran Linux sida - http://audacity.sourceforge.net/linux.html. Om Rpm:en
+på vår Linux sida - http://audacity.sourceforge.net/linux.html. Om Rpm:en
 fortfarande inte installeras, är detta en olöst bisak.  Installera bara RPM:en
 med flaggan --nodeps.</font>
 
@@ -244,16 +243,16 @@ och kör sen "ldconfig". Du kanske cokså vill lägga till "usr/local/bin" till sök
 </b></font>
 <p>
 
-Audacity lägger ihop automatiskt.  Allt du behöver göra är att
+Audacity lägger ihop spåren automatiskt.  Allt du behöver göra är att
 importera två spår till samma projekt, vilket du kan
-göra genom att använda "Importera ljudfil" kommandot i Projektmenyn, 
-eller helt enkelt att dra de två ljud-filerna till 
-Audacity. När du trycker spela-in knappen, skapar
+göra genom att klicka på "Importera ljudfil" i Projektmenyn, 
+eller helt enkelt att dra de två ljudfilerna till 
+Audacity. När du trycker på spela-in knappen, skapar
 Audacity ett nytt spår automatiskt.
 
 <p>
 
-För att spara din blandning, kan du antingen Exportera project,
+För att spara din blandning, kan du antingen Exportera projekt,
 vilket automatiskt blandar alla dina spår tillsammans, eller
 så kan du välja spår och använda "Snabbmix" från Projektmenyn.
 
@@ -264,23 +263,21 @@ så kan du välja spår och använda "Snabbmix" från Projektmenyn.
 </b></font>
 <p>
 
-Med vissa stereo inspelningar, är det möjligt att ta bort sången
+Med vissa stereoinspelningar, är det möjligt att ta bort sången
 på grund av sättet inspelningen var mixad vid studion.
 Oftast är sången placerad exakt i mitten av inspelningen,
-medans alla andra instrument är utanför. Om du
-subtraherar höger-kanalen från vänster-kanalen, blir sången 
+medan alla andra instrument är utanför. Om du
+tar bort höger-kanalen från vänster-kanalen, blir sången 
 helt utelämnad, och kvar blir bara instrumenten.
 <p>
 
 <b>Detta fungerar bara med vissa inspelingar!</b>
 <p>
-För att uppnå detta i Audacity, importera en stereo inspelning, sen
-klicka på spårets pop-up meny (den lilla nedåt-pilen bredvid s
-pårets namn)och välj "Dela stereospår".
+För att uppnå detta i Audacity, importera en stereoinspelning, klicka sedan på spårets pop-up meny (den lilla nedåt-pilen bredvid spårets namn) och välj "Dela stereospår".
 Välj nu det nedersta spåret (den högra kanalen) och använd
-"Invertera" effekten (från Effekt menyn).  Slutligen, använd
-spårens pop-up menyer för att göra båda kanalerna Mono Kanaler,
-och sen mixa dom tillsammans med hjälp av Snabbmix. Om du har tur
+"Invertera" effekten (från Effektmenyn).  Slutligen, använd
+spårens pop-up menyer för att göra båda kanalerna monokanaler,
+och mixa dom tillsammans med hjälp av Snabbmix. Om du har tur
 kommer stämmorna att vara borta.
 
 <p>
@@ -298,7 +295,7 @@ korrigera denna fördröjning, utan du måste göra det manuellt.
 För att korrigera denna fördröjning, använd
 Time Shift verktyget för att flytta
 en av spåren tills dom är synkroniserade. Kom ihåg att du kan
-använda verktyget medans du lyssnar på inspelningen.
+använda verktyget medan du lyssnar på inspelningen.
 
 <p>
 
@@ -310,13 +307,12 @@ använda verktyget medans du lyssnar på inspelningen.
 
 Oturligt nog, så är algoritmen för kodning eller skapande av MP3 filer
 patenterad, och <b>Audacity</b> skulle inte kunna
-inkludera en MP3 exporteringsalgoritm utan att antingen
+inkludera en MP3 export-algoritm utan att antingen
 ta betalt eller inkräkta på lagarna i många länder.
 <p>
 Som en kompromiss, kommer Audacity med möjligheten att använda
-andra MP3 enkodare, vilka du måste ladda ner separat.
-Det är upp till dig att se till att du är tillmötesgående men
-någon licensierings restriktioner införda av MP3 enkodare.
+andra MP3-kodare, vilka du måste ladda ner separat.
+Det är upp till dig att se till att du är noga med att följa restriktionerna för MP3-kodare.
 <p>
 För mer information, se sidan om Exportering av MP3 filer
 i våran Online Hjälp.
@@ -336,15 +332,15 @@ RealOne Player, Windows Media Player, och Quicktime, är uttryckligen
 avsett för att du inte ska kunna spela in det.
 </p><p>
 Det är ändå nästan alltid möjligt att spela in allting som din dator
-kan spela genom att loop:a din ljud-utgång till din ljud-ingång/mikrofon-intag
+kan spela genom att koppla din ljudutgång till din ljudingång/mikrofonuttag
 på din dators ljudkort.
 </p><p>
-Använd en 1/8 inch stereo mini till 1/8 inch stereo mini kabel.  Koppla en ända
-till ljud-utgången på din dator eller ljud-kort (där du
-kopplar in högtalare eller hörlurar - den är oftast färgad grön).  Koppla in den andra änden i mikrofon-intaget eller ljud-ingången (oftast färgad röd).
+Använd en 1/8 tum stereo mini till 1/8 tum stereo minikabel.  Koppla en ända
+till ljudutgången på din dator eller ljudkort (där du
+kopplar in högtalare eller hörlurar - den är oftast färgad grön).  Koppla in den andra änden i mikrofonuttaget eller ljudingången (oftast färgad röd).
 </p><p>
 Nu kan Audacity spela in allt som datorn spelar upp. Tryck Inspelning
-i Audacity, och sen tryck Play i programmet som spelar upp ditt streamande ljud.
+i Audacity, och sen tryck Spela i programmet som spelar upp ditt streamande ljud.
 </p><p>
 
 <a name="a6"></a>
@@ -352,15 +348,15 @@ i Audacity, och sen tryck Play i programmet som spelar upp ditt streamande ljud.
 6. Hjälp! Jag har tryckt "spela in" men allt jag får är tystnad!
 </b></font>
 </p><p>
-Audacity spelar in från den förinställda input källan som är vald av
-ditt operativsystem. Om du har flera  input källor (som
+Audacity spelar in från den förinställda ingångskällan som är vald av
+ditt operativsystem. Om du har flera  ingångskällor (som
 inbyggd mikrofon, extern mikrofon, line-in uttag, eller en
-audio CD) du måste välja en av dessa att spela in ifrån. Om du
-försöker spela in från från mikrofon, som exempel, men din input källa
+audio-CD) du måste välja en av dessa att spela in ifrån. Om du
+försöker spela in från från mikrofon, som exempel, men din ingångskälla
  är inställd till "line-in", så kommer Audacity bara spela in tystnad.
 </p><p>
-Om du använder Windows, kan du ställa in input source:n genom att högerklicka
-på volum-ikonen i verktygs listen (nedre högra hörnet av skärmen).
+Om du använder Windows, kan du ställa in ingångskällan genom att högerklicka
+på volymikonen i verktygslisten (nedre högra hörnet av skärmen).
 </p><p>
 Om du använder Mac OS 9, använd Sound control panel.  I MAc OS X, använd
 Sound panel i System Preferences (det finns en input-flik om du 10.2 eller högre).
