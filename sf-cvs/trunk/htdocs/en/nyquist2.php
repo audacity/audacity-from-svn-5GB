@@ -18,11 +18,36 @@ Nyquist is not very efficient at doing this.
 </p>
 
 <p>
+
+</p>
+
+<p>
+One of the easiest ways to manipulate sound is with the <tt>sim</tt>
+function (short for <i>simultaneous</i>.  You can use it to combine
+two or more sounds.  Suppose you have a sound in a variable <tt>a</tt>
+and another sound in <tt>b</tt>.  To mix them together into a new
+sound, <tt>c</tt>:
+</p>
+
+<pre>
+  (setf c (sim a b))
+</pre>
+
+<p>
+
+</p>
+
+<p>
 <b>Some trivia about Nyquist</b>
 <ul>
 <li>Symbols (like variable names and function names) are not
     case sensitive.  Nyquist converts them to uppercase internally.
 </ul>
+</p>
+
+<p>
+<?php print "<a href=nyquist3.php?$langLinkStr>";
+?><b>Next page</b></a>
 </p>
 
 <?php BoxBottom(); ?>
