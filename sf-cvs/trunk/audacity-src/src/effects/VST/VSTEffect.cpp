@@ -274,7 +274,7 @@ BEGIN_EVENT_TABLE(VSTEffectDialog, wxDialog)
     EVT_BUTTON(wxID_OK, VSTEffectDialog::OnOK)
     EVT_BUTTON(wxID_CANCEL, VSTEffectDialog::OnCancel)
     EVT_COMMAND_SCROLL(VSTEFFECT_SLIDER_ID, VSTEffectDialog::OnSlider)
-    EVT_SLIDER(VSTEFFECT_SLIDER_ID, VSTEffectDialog::OnSlider)
+    EVT_SLIDER(VSTEFFECT_SLIDER_ID, VSTEffectDialog::OnSliderCmd)
 END_EVENT_TABLE()
 
 VSTEffectDialog::VSTEffectDialog(wxWindow * parent,
@@ -376,7 +376,7 @@ void VSTEffectDialog::OnSlider(wxScrollEvent & WXUNUSED(event))
    }
 }
 
-void VSTEffectDialog::OnSlider(wxCommandEvent & WXUNUSED(event))
+void VSTEffectDialog::OnSliderCmd(wxCommandEvent & WXUNUSED(event))
 {
    for (int p = 0; p < numParams; p++) {
       float val;
