@@ -310,7 +310,7 @@ AButton *ControlToolBar::MakeButton(char const **foreground,
    // buttons should be a little lower.
    int buttonTop = 4;
 #ifdef __WXMSW__
-   buttonTop=6;
+   buttonTop=4;
 #endif
 
 
