@@ -246,9 +246,9 @@ void APalette::OnKeyEvent(wxKeyEvent & event)
 
    if (event.KeyCode() == WXK_SPACE) {
       if (gAudioIO->IsBusy()) {
-         OnStop();
          SetPlay(false);
          SetStop(true);
+         OnStop();
       } else {
          OnPlay();
          SetPlay(true);
@@ -323,7 +323,11 @@ void APalette::OnRecord()
    AudacityProject *p = GetActiveProject();
    if (p) {
       TrackList *t = p->GetTracks();
-      bool success = gAudioIO->StartRecord(p, t);
+      double t0 = p->GetSel0();
+      double t1 = p->GetSel1();
+      if (t1 == t0)
+         t1 = t->GetMaxLen();
+      bool success = gAudioIO->StartRecord(p, t, t0, t1);
       if (!success) {
          SetPlay(false);
          SetStop(false);

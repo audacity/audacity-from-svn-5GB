@@ -6,14 +6,14 @@
 
   Dominic Mazzoni
 
-  Use the SND library to play and record sound
+  Use the PortAudio library to play and record sound
 
 **********************************************************************/
 
 #ifndef __AUDACITY_AUDIO_IO__
 #define __AUDACITY_AUDIO_IO__
 
-#include "snd/snd.h"
+#include "portaudio.h"
 
 #include <wx/string.h>
 #include <wx/timer.h>
@@ -32,6 +32,12 @@ class AudioIOTimer:public wxTimer {
    virtual void Notify();
 };
 
+struct AudioIOBuffer {
+   int          ID;
+   int          len;
+   sampleType  *data;
+};
+
 class AudioIO {
 
  public:
@@ -41,49 +47,59 @@ class AudioIO {
    bool StartPlay(AudacityProject * project,
                   TrackList * tracks, double t0, double t1);
 
-   bool StartRecord(AudacityProject * project, TrackList * tracks);
-
-   void OnTimer();
+   bool StartRecord(AudacityProject * project,
+                    TrackList * tracks, double t0, double t1);
 
    void Stop();
    void HardStop();
    bool IsBusy();
    bool IsPlaying();
    bool IsRecording();
+   double GetIndicator();
 
    AudacityProject *GetProject();
-   double GetIndicator();
+
+   void OnTimer();
 
  private:
 
-   void Finish();
-   bool OpenPlaybackDevice(AudacityProject * project);
+   bool Start();
 
-   AudacityProject *mProject;
-   TrackList *mTracks;
-   double mT;
-   double mRecT;
-   double mT0;
-   double mT1;
-   int mTicks;
-   bool mStop;
-   bool mHardStop;
-   snd_node mPlayNode;
-   snd_node mRecordNode;
+   bool OpenDevice();
+   void FillBuffers();   
 
-   bool mRecordStereo;
-   bool mDuplex;                // play and record at same time
+   AudacityProject     *mProject;
+   TrackList           *mTracks;
+   double              mRate;
+   double              mT;
+   double              mRecT;
+   double              mT0;
+   double              mT1;
+   bool                mHardStop;
+   int                 mID;
+   
+   PortAudioStream    *mPortStream;
 
-   bool mRecording;
-   WaveTrack *mRecordLeft;
-   WaveTrack *mRecordRight;
+   int                 mNumInChannels;
+   int                 mNumOutChannels;
+   
+   bool                mDuplex;                // play and record at same time
+   bool                mRecording;
 
-   AudioIOTimer mTimer;
-   wxStopWatch mStopWatch;
+   WaveTrack         **mInTracks;
 
-#ifdef __WXMAC__
-   int mStartTicks;
-#endif
+   AudioIOTimer        mTimer;
+   wxStopWatch         mStopWatch;
+   
+   sampleCount         mBufferSize;
+   unsigned int        mNumBuffers;
+   AudioIOBuffer      *mOutBuffer;
+   AudioIOBuffer      *mInBuffer;
+   
+   friend int audacityAudioCallback(
+		void *inputBuffer, void *outputBuffer,
+		unsigned long framesPerBuffer,
+		PaTimestamp outTime, void *userData );
 };
 
 #endif

@@ -171,6 +171,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mAPalette(NULL),
    mDrag(NULL),
    mTrackPanel(NULL),
+   mHistoryWindow(NULL),
    mAutoScrolling(false)
 {
 
@@ -1308,9 +1309,9 @@ void AudacityProject::TP_OnPlayKey()
    APalette *palette = GetAPalette();
 
    if (gAudioIO->IsBusy()) {
-      palette->OnStop();
       palette->SetPlay(false);
       palette->SetStop(true);
+      palette->OnStop();
    } else {
       palette->OnPlay();
       palette->SetPlay(true);
