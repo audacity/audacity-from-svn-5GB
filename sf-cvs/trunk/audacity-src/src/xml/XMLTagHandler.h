@@ -27,6 +27,10 @@ class XMLTagHandler {
    // false, you will not get any calls about children.
    virtual bool HandleXMLTag(const char *tag, const char **attrs) = 0;
 
+   // This method will be called when a closing tag is encountered.
+   // It is optional to override this method.
+   virtual void HandleXMLEndTag(const char *tag) {}
+
    // If the XML document has children of your tag, this method
    // should be called.  Typically you should construct a new
    // object for the child, insert it into your own local data

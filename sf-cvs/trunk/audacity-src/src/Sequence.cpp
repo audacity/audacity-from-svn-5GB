@@ -22,6 +22,8 @@
 #include "BlockFile.h"
 #include "DirManager.h"
 
+#include "blockfile/SilentBlockFile.h"
+
 class SeqBlock {
  public:
    BlockFile * f;
@@ -44,6 +46,7 @@ Sequence::Sequence(DirManager * projDirManager, sampleFormat format)
 
    mMinSamples = sMaxDiskBlockSize / SAMPLE_SIZE(mSampleFormat) / 2;
    mMaxSamples = mMinSamples * 2;
+   mErrorOpening = false;
 }
 
 Sequence::Sequence(const Sequence &orig)
@@ -54,6 +57,7 @@ Sequence::Sequence(const Sequence &orig)
    mSampleFormat = orig.mSampleFormat;
    mMaxSamples = orig.mMaxSamples;
    mMinSamples = orig.mMinSamples;
+   mErrorOpening = false;
 
    mBlock = new BlockArray();
 
@@ -476,33 +480,22 @@ bool Sequence::SetSilence(sampleCount s0, sampleCount len)
 bool Sequence::InsertSilence(sampleCount s0, sampleCount len)
 {
    // Create a new track containing as much silence as we
-   // need to insert, and then call Paste to do the insertion
+   // need to insert, and then call Paste to do the insertion.
+   // We make use of a SilentBlockFile, which takes up no
+   // space on disk.
+
    Sequence *sTrack = new Sequence(mDirManager, mSampleFormat);
 
    sampleCount idealSamples = GetIdealBlockSize();
 
-   // Allocate a zeroed buffer
-   samplePtr buffer = NewSamples(idealSamples, mSampleFormat);
-   ClearSamples(buffer, mSampleFormat, 0, idealSamples);
-
    sampleCount pos = 0;
-   BlockFile *firstBlockFile = NULL;
 
    while (len) {
       sampleCount l = (len > idealSamples ? idealSamples : len);
 
       SeqBlock *w = new SeqBlock();
       w->start = pos;
-      if (pos == 0 || len == l) {
-         w->f = mDirManager->NewSimpleBlockFile(buffer, l, mSampleFormat);
-         firstBlockFile = w->f;
-      } else {
-         w->f = mDirManager->CopyBlockFile(firstBlockFile);
-         if (!w->f) {
-            // TODO set error message
-            return false;
-         }
-      }
+      w->f = new SilentBlockFile(l);
 
       sTrack->mBlock->Add(w);
 
@@ -515,7 +508,6 @@ bool Sequence::InsertSilence(sampleCount s0, sampleCount len)
    Paste(s0, sTrack);
 
    delete sTrack;
-   DeleteSamples(buffer);
 
    return ConsistencyCheck("InsertSilence");
 }
@@ -631,6 +623,43 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
    }
    
    return false;
+}
+
+void Sequence::HandleXMLEndTag(const char *tag)
+{
+   if (strcmp(tag, "sequence") != 0)
+      return;
+
+   // Make sure that the sequence is valid
+   // First, replace missing blockfiles with SilentBlockFiles
+   unsigned int b;
+   for (b = 0; b < mBlock->Count(); b++) {
+      if (!mBlock->Item(b)->f) {
+         sampleCount len;
+
+         if (b < mBlock->Count()-1)
+            len = mBlock->Item(b+1)->start - mBlock->Item(b)->start;
+         else
+            len = mNumSamples - mBlock->Item(b)->start;
+
+         mBlock->Item(b)->f = new SilentBlockFile(len);
+         mErrorOpening = true;
+      }
+   }
+
+   // Next, make sure that start times and lengths are consistent
+   sampleCount numSamples = 0;
+   for (b = 0; b < mBlock->Count(); b++) {
+      if (mBlock->Item(b)->start != numSamples) {
+         mBlock->Item(b)->start = numSamples;
+         mErrorOpening = true;         
+      }
+      numSamples += mBlock->Item(b)->f->GetLength();
+   }
+   if (mNumSamples != numSamples) {
+      mNumSamples = numSamples;
+      mErrorOpening = true;
+   }
 }
 
 XMLTagHandler *Sequence::HandleXMLChild(const char *tag)

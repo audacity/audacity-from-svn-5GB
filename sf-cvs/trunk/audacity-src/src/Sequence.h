@@ -76,8 +76,11 @@ class Sequence: public XMLTagHandler {
    //
 
    virtual bool HandleXMLTag(const char *tag, const char **attrs);
+   virtual void HandleXMLEndTag(const char *tag);
    virtual XMLTagHandler *HandleXMLChild(const char *tag);
    virtual void WriteXML(int depth, FILE *fp);
+
+   bool GetErrorOpening() { return mErrorOpening; }
 
    //
    // Lock/Unlock all of this sequence's BlockFiles, keeping them
@@ -139,6 +142,8 @@ class Sequence: public XMLTagHandler {
 
    sampleCount   mMinSamples;
    sampleCount   mMaxSamples;
+
+   bool          mErrorOpening;
 
    //
    // Private methods

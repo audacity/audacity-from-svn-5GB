@@ -1813,11 +1813,14 @@ void AudacityProject::OpenFile(wxString fileName)
       // the version saved on disk will be preserved until the
       // user selects Save().
       
+      bool err = false;
       Track *t;
       TrackListIterator iter(mTracks);
       mLastSavedTracks = new TrackList();
       t = iter.First();
       while (t) {
+         if (t->GetErrorOpening())
+            err = true;
          mLastSavedTracks->Add(t->Duplicate());
          t = iter.Next();
       }
@@ -1825,6 +1828,12 @@ void AudacityProject::OpenFile(wxString fileName)
       InitialState();
       HandleResize();
       mTrackPanel->Refresh(false);
+
+      if (err) {
+         ::wxMessageBox(_("An error occurred while opening the project file.\nSome audio may not have been retrieved."),
+                        _("Error opening project"),
+                        wxOK | wxCENTRE, this);
+      }
    }
    else {
       mTracks->Clear(true);

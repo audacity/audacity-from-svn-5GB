@@ -157,6 +157,9 @@ class WaveTrack: public Track {
    virtual XMLTagHandler *HandleXMLChild(const char *tag);
    virtual void WriteXML(int depth, FILE *fp);
 
+   // Returns true if an error occurred while reading from XML
+   virtual bool GetErrorOpening();
+
    //
    // Lock and unlock the track: you must lock the track before
    // doing a copy and paste between projects.

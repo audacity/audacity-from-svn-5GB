@@ -126,5 +126,8 @@ void XMLFileReader::endElement(void *userData, const char *name)
 {
    XMLFileReader *This = (XMLFileReader *)userData;
 
+   if (This->mHandler[This->mDepth])
+      This->mHandler[This->mDepth]->HandleXMLEndTag(name);
+
    This->mDepth--;
 }

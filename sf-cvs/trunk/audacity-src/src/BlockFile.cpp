@@ -57,7 +57,7 @@ BlockFile::BlockFile(wxFileName fileName, sampleCount samples):
 
 BlockFile::~BlockFile()
 {
-   if (!mLocked)
+   if (!mLocked && mFileName.HasName())
       wxRemoveFile(mFileName.GetFullPath());
 }
 
