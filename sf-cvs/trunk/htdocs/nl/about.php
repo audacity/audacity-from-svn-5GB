@@ -29,6 +29,7 @@ De code wordt beheerd op <a href="http://www.sourceforge.net">SourceForge</a>.
 Vragen/opmerkingen?
 Stuur een email (in het Engels!)naar <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font></br>
 </p>
 
 <!-- Engels is de voertaal en daarom dienen vragen en opmerkingen in het engels te worden gemaild. Ook de help-pagina is in het engels!

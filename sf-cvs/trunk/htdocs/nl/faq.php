@@ -120,7 +120,10 @@ pagina voor meer informatie over hoe je kunt helpen.
 </b></font>
 <p>
 
-Het belangrijkste bij het rapporteren van een fout is, dat je deze zo specifiek mogelijk meldt.  Geef ons alle informatie, zodat wij de fout zelf kunnen reproduceren, anders is het voor ons onmogelijk om de fout te herstellen.
+Het belangrijkste bij het rapporteren van een fout is, dat je deze zo specifiek mogelijk meldt.  Geef ons alle informatie, zodat wij de fout zelf kunnen reproduceren, anders is het voor ons onmogelijk om de fout te herstellen.  Stuur foutenrapportages naar
+<a href="mailto:audacity-help@lists.sourceforge.net">
+<audacity-help@lists.sourceforge.net></a>.
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font>
 <p>
 Het is belangrijk dat je ons ook mededeelt welk besturingsprogramma je gebruikt(zoals Windows 98, MacOS 9.1, RedHat Linux 7.1, etc.)
 en alle andere informatie over je computer waarvan je denkt dat dit wel eens relevant kan zijn.
@@ -149,7 +152,7 @@ We willen alle fouten uitbannen!  Bedankt dat je de tijd nam om ons te helpen de
 <p>
 Als je het bestand heb gedownload met de optie Opslaan, hoef je, als de download gereed is, alleen maar te dubbelklikken op het bestand om daarmee de installatie uit te voeren.
 <p>
-Als je voorkeur uitgaat naar het niet gebruiken van het installatieprogramma, kun je Audacity ook als een ZIP bestand downloaden, die je dan kunt uitpakken met behulp van WinZip.
+Als je voorkeur uitgaat naar het niet gebruiken van het installatieprogramma, kun je Audacity ook als een ZIP bestand downloaden, die je dan kunt uitpakken met behulp van bijvoorbeeld WinZip.
 
 <p>
 <a name="i2"></a>
@@ -164,7 +167,7 @@ Als je voorkeur uitgaat naar het niet gebruiken van het installatieprogramma, ku
 
 <p>
 Je hebt een recente versie van StuffIt Expander nodig.  StuffIt Expander
-wordt geleverd met alle Macintoshes en is normaal gesproken als standaard geconfigureerd in alle Mac web browsers.  Als Audacity niet automatisch wordt uitgepakt, sleep dan "audacity.sit" naar StuffIt Expander om het uitpakken te laten beginnen.
+wordt geleverd met alle Macintoshes en is normaal gesproken standaard geconfigureerd in alle Mac web browsers.  Als Audacity niet automatisch wordt uitgepakt, sleep dan "audacity.sit" naar StuffIt Expander om het uitpakken te laten beginnen.
 <p>
 Installeren van Audacity is niet nodig.  Je hoeft alleen maar de Audacity
 Map naar je Programma's map te slepen of waar je het dan ook wilt plaatsen.  Voor het deïnstalleren: Sleep de gehele folder naar de prullenbak.
@@ -188,7 +191,7 @@ Map naar je Programma's map te slepen of waar je het dan ook wilt plaatsen.  Voo
 <br>- Als je de wxWindows RPM hebt geïnstalleerd, voer dan "ldconfig" (als
 root) uit zodat je systeem weet dat een nieuwe bibliotheek aanwezig is.
 
-<br><br>- Als je wxWindows hebt geïnstalleerd
+<br><br>- Als je wxWidgets hebt geïnstalleerd
 van source, is het waarschijnlijk geïnstallerd in /usr/local, maar /usr/local/lib is misschien
 niet in je bibliotheek pad. voeg /usr/local/lib toe aan het bestand  "/etc/ld.so.conf"
 en voer dan "ldconfig" uit. Het zou kunnen dat je ook "/usr/local/bin" aan je pad moet toevoegen, zodat programma's de "wx-config" utility kunnen vinden.<br>
@@ -244,6 +247,7 @@ en mix ze dan samen met behulp van Quick Mix.  Als je geluk hebt zal het vocale 
 Dit is normaal en dit komt doordat er een kleine vertraging zit tussen het starten van het geluid in Audacity en de tijd die nodig is voor het geluid om je speakers te bereiken.  Audacity probeert deze vertraging niet automatisch te corrigeren dus zul je dit handmatig moeten doen.
 <p>
 Om deze vertraging te corrigeren kun je de Time Shift tool gebruiken om een van de tracks op te schuiven totdat ze op dezelfde lijn zitten.  Merk op dat je deze tool kunt gebruiken tijdens het beluisteren van de opname.
+
 
 <p>
 
