@@ -2,7 +2,7 @@
 
 <p>
 Audacity 1.2.3 è la nuova versione stabile di Audacity, l'editor audio libero.
-Questa versione corregge un bug che interferiva con le registrazioni lunghe su alcuni sistemi Windows. Include inoltre numerose traduzioni aggiornate, nonchè altre correzioni e miglioramenti minori.
+Questa versione corregge un bug che interferiva con le registrazioni lunghe su alcuni sistemi Windows e un altro bug che causava crash imprevedibili su Mac OS X.  Include inoltre numerose traduzioni aggiornate, nonchè altre correzioni e miglioramenti minori.
 </p>
 <P> Scarica Audacity per: </p>
 <ul>
@@ -12,7 +12,7 @@ Questa versione corregge un bug che interferiva con le registrazioni lunghe su a
 </ul>
 
 <p>
-Leggi le <a href="stablenotes.php<?php print $langQueryStr; ?>">Note di rialascio</a> per veder cosa è cambiato, e una lista dei problemi conosciuti di questa versione.
+Leggi le <a href="stablenotes.php<?php print $langQueryStr; ?>">Note di rilascio</a> per vedere cosa è cambiato, e una lista dei problemi conosciuti di questa versione.
 </p>
 
 <?php BoxBottom(); ?>
