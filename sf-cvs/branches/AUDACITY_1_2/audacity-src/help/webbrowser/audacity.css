@@ -1,0 +1,169 @@
+/*----------------------------------------------------------------------*/
+/*	Stylesheet for Audacity Manual Pages				*/
+/*	All font sizes are expressed in pixels and thus are displayed	*/
+/*	in an almost identical fashion across standard browsers,	*/
+/*	namely Gecko based browsers, Opera and IE,			*/
+/*      on Windows, Linux and MacOS X.					*/
+/*----------------------------------------------------------------------*/
+
+A,A:Visited,
+A:Active,A:Hover {	font-family : Verdana,Arial,Helvetica,Sanserif;        }
+A:Hover		 {	color: Red;
+			text-decoration : none;
+	                background-color : #EEEE80;}
+A:link,A:visited {	color : #EE0000;}
+
+H1,H2,H3,H4        {    font-family : Verdana,Arial,Helvetica,Sanserif; }
+
+H1                {     font-size : 32px; font-weight : normal; }		/*24pt;*/
+H2                {     font-size : 24px; font-weight : normal; }	/*18pt;*/
+H3                {     font-size : 16px; }				/*12pt;*/
+H4                {     font-size : 13px; }				/*10pt;*/
+
+
+BODY,P            {	font-family : Verdana,Arial,Helvetica,Sanserif;
+                        font-style : normal;
+                        font-weight : normal;
+                        color : Black;			}
+
+BODY,.linknobg   {      background-color : White;	}
+
+.linknobg        {      text-decoration : none;	}
+
+P, .sf, UL, LI, OL, TD, .linknobg
+                 {      font-size : 13px; /*10pt;95%;*/ 	}
+
+
+A.sf             {      font-weight : bold;		}
+
+
+.negative        {      color : Red;			}
+
+
+.menu_major      {      font-size : 24px; /*12pt;110%;*/
+                        font-weight : bold;
+                        padding : 0px;
+                        padding-left  : 8px;
+                        padding-right : 10px; 
+                        text-decoration : none;		}
+
+.menu_tutorials  {	font-size : 14px;
+                        font-weight : normal; /*bold;*/		}
+
+
+.menuref,.menuref_current,.menuref_item
+                {       font-size : 16px; /*12pt;110%;*/
+                        font-weight : bold;
+                        padding : 2px;
+                        padding-left : 8px;
+                        padding-right : 8px;		}
+.menuref        {       background-color : #C0A0A0;	}
+.menuref_current {      background-color : #FFD0D0;	}
+.menuref_item   {       color : #C00000;		}
+
+
+
+.q,.qr,.qg,.qb,.qy,.qo
+                {       font-size : 22px; /*16pt;*/
+                        font-weight : normal;
+                        padding : 4px;
+                        width : 96%;			}
+
+.q              {       background-color : #FFECEC;	}
+
+
+.agreen,.ayellow,.ablue
+                {        font-size : 13px; /*10pt;*/
+                         line-height : 16px;
+                         margin-left : 16px;		}
+
+.agreen         {        background-color : #ECFFEC;	}
+.ayellow        {        background-color : #FFFFEC;	}
+.ablue          {        background-color : #ECECFF;	}
+
+
+.a,.ar,.ag,.ao,.ab,.ay,.title_y,.title_b,.title_r,.title_g,.title_o,.title_0
+                {        width : 92%;
+                         margin-left : 16px;		}
+
+.ss,.top_y,.top_r,.top_b,.top_g,.top_o
+		{	font-size : 11px; /*formerly 10px*/
+			font-weight : bold;		}
+
+/*
+A.ss		{	color : #80FF80;
+			background-color : #006000;
+			padding : 1px;	}
+*/
+
+.title_r,.top_r,.bg_r,
+.title_g,.top_g,.bg_g,
+.title_b,.top_b,.bg_b,
+.title_y,.top_y,.bg_y,
+.title_o,.top_o,.bg_o,
+.title_0	{	padding:2px;			}
+
+.title_r,.top_r,.bg_r,.qr	{	background-color : #FFD0D0;        }
+.title_g,.top_g,.bg_g,.qg	{	background-color : #D0FFD0;        }
+.title_b,.top_b,.bg_b,.qb	{	background-color : #D0D0FF;        }
+.title_y,.top_y,.bg_y,.qy	{	background-color : #FFFF80;        }
+.title_o,.top_o,.bg_o,.qo	{	background-color : #FFD060;        }
+
+.textr		{       color : #F03030;	}
+.textg		{       color : #30D030;	}
+.textb		{       color : #705DCF;	}
+.texty		{       color : #E0E020;	}
+.texto		{	color : #E08000;	}
+
+.ar		{       border-color: #FF7D7D;	background-color : #FFF0F0;	}
+.ag		{       border-color: #B4FFA7;	background-color : #F0FFF0;	}
+.ab		{       border-color: #907DFF;	background-color : #F0F0FF;	}
+.ay		{       border-color: #FEFF7D;	background-color : #FFFFE0;	}
+.ao		{	border-color: #FFD277;	background-color : #FFF6E2;	}
+
+.ar,.ag,.ab,.ay,.ao
+		{	font-weight:Bold;
+			font-size: 13px; /*10pt;*/
+			color: #000000 ;
+			font-family: Verdana, Arial, Helvetica, sans-serif;
+			border-width: 2px;
+			border-style:solid;
+			padding: 4pt; /*4px*/;			}
+
+.ar,.ag,.ab,.ay,.ao,.a
+		{	font-size : 13px; /*10pt;x-small;*/
+        		font-weight : normal;		}
+
+.pushin		{	margin-left : 16px;		}
+
+.sysmenu        {	font-family : Arial,Helvetica,Sanserif;
+                        font-size : 13px; /*10pt;90%;x-small*/
+                        background-color : #D4D0C8;
+                        padding : 2px;			}
+
+.keybshc_menu	{	text-decoration:none;		}
+
+.keybshc,.keybshc_menu
+		{       font-family : Verdana, Arial, Helvetica, sans-serif;
+                        font-size : 18px; /*14pt*/
+                        font-style: normal; font-weight: normal;
+                        line-height: 34px; /*26pt*/
+                        background-color : #EEDCD5;
+                        padding : 3px;
+                        padding-left : 6px;
+                        padding-right : 6px;
+                        border-color: #FF0033 black black;
+                        border: thin double;
+                        				}
+
+.keybshc_s	{       font-family : Verdana, Arial, Helvetica, sans-serif;
+                        font-size : 13px;  /*10pt*/
+                        font-style: normal; font-weight: bold;
+                        line-height: 21px; /*16pt*/;
+                        background-color : #EEDCD5;
+                        padding : 2px;
+                        padding-left : 3px;
+                        padding-right : 3px;
+                        border-color: #FF0033 black black;
+                        border: thin double;
+                        				}

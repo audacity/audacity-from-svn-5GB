@@ -1,0 +1,81 @@
+#!/usr/bin/perl
+
+print "maketarball 1.2.0-pre1 -- make Audacity distribution tarball\n";
+
+unless(-f "src/Audacity.h") {
+	print "Must be run from Audacity directory\n";
+	exit;
+}
+
+# find version number
+open(HEADER, "src/Audacity.h");
+@lines = <HEADER>;
+$lines = join " ", @lines;
+$lines =~ /AUDACITY_VERSION_STRING "([0-9\-.a-z]*)"/;
+$version = $1;
+print "version set to $version...\n";
+close(HEADER);
+
+print "making copy of source directory...\n";
+`cp -r . ../audacity-src-$version`;
+chdir "../audacity-src-$version";
+
+print "removing CVS directories...\n";
+`find . -name "CVS" -exec rm -rf '{}' \\; 2> /dev/null`;
+
+print "removing emacs temp files...\n";
+`find . -name "*~" -exec rm -rf '{}' \\; 2> /dev/null`;
+
+print "removing executable and other intermediate files...\n";
+`rm -rf audacity .depend obj config.cache config.status config.log Makefile`;
+
+print "removing bugs and todo lists\n";
+`rm -f bugs.txt todo.txt`;
+
+print "removing scripts...\n";
+`rm -rf scripts`;
+
+print "removing libraries that should be installed locally...\n";
+`rm -rf lib-src/libogg lib-src/libvorbis lib-src/libmad lib-src/id3lib`;
+`rm -rf lib-src/iAVC lib-src/libsamplerate`;
+`rm -rf lib-src/wave++ lib-src/libflac`;
+
+print "removing qa\n";
+`rm -rf qa`;
+
+print "removing doxygen files (unfinished)\n";
+`rm audacity.dox`;
+
+print "removing webbrowser help files\n";
+`rm -rf help/webbrowser`;
+
+print "removing unused portaudio-v19 dirs\n";
+`rm -rf lib-src/portaudio-v19/docs`;
+`rm -rf lib-src/portaudio-v19/pa_asio`;
+`rm -rf lib-src/portaudio-v19/pa_sgi`;
+`rm -rf lib-src/portaudio-v19/pa_mac_sm`;
+`rm -f lib-src/portaudio-v19/pa_tests/debug*`;
+
+print "removing wxstd locale files (since they should come with wxWindows\n";
+`rm -rf locale/wxstd`;
+
+print "removing Nyquist plug-ins that are just for show\n";
+`rm -f plug-ins/analyze.ny plug-ins/fadein.ny plug-ins/fadeout.ny`;
+`rm -f plug-ins/beat.ny`;
+
+print "removing out-of-date translations: fr hu ja pl sl\n";
+`rm -f locale/fr.po`;
+`rm -f locale/hu.po`;
+`rm -f locale/ja.po`;
+`rm -f locale/pl.po`;
+`rm -f locale/sl.po`;
+
+`mv locale/Makefile.in /tmp/Makefile.in.tmp`;
+`sed 's/bg ca cs da de es fr hu it ja mk nl pl pt ru sl sv/bg ca cs da de es it mk nl pt ru sv/' /tmp/Makefile.in.tmp > locale/Makefile.in`;
+`rm /tmp/Makefile.in.tmp`;
+
+#print "making tarball audacity-src-$version.tgz...\n";
+chdir "..";
+#`tar zcf audacity-src-$version.tgz audacity-src-$version`;
+
+print "done.\n";
