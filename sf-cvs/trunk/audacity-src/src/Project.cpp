@@ -56,6 +56,8 @@
 #include "effects/Effect.h"
 #include "Menus.h"
 
+#include "iostream.h"
+
 #include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
 
 TrackList *AudacityProject::msClipboard = new TrackList();
@@ -66,16 +68,19 @@ AudacityProject *AudacityProject::msClipProject = NULL;
 const int sbarSpaceWidth = 15;
 const int sbarControlWidth = 16;
 const int sbarExtraLen = 1;
+const int sbarHjump=30;          //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
 #endif
 #ifdef __WXMSW__
 const int sbarSpaceWidth = 16;
 const int sbarControlWidth = 16;
 const int sbarExtraLen = 0;
+const int sbarHjump=30;          //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
 #endif
 #ifdef __WXGTK__
 const int sbarSpaceWidth = 15;
 const int sbarControlWidth = 15;
 const int sbarExtraLen = 0;
+const int sbarHjump=30;          //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
 #endif
 
 #if defined(__WXGTK__) || defined(__WXMOTIF__)
@@ -162,14 +167,17 @@ enum {
 #undef AUDACITY_MENUS_GLOBALS
 
 BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
-    EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
-    EVT_PAINT(AudacityProject::OnPaint)
-    EVT_CLOSE(AudacityProject::OnCloseWindow)
-    EVT_SIZE(AudacityProject::OnSize)
-    EVT_ACTIVATE(AudacityProject::OnActivate)
-    EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
-    EVT_DROP_FILES(AudacityProject::OnDropFiles)
-    EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
+   EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
+   EVT_PAINT(AudacityProject::OnPaint)
+   EVT_CLOSE(AudacityProject::OnCloseWindow)
+   EVT_SIZE(AudacityProject::OnSize)
+   EVT_ACTIVATE(AudacityProject::OnActivate)
+   EVT_COMMAND_SCROLL_LINEUP(HSBarID, AudacityProject::OnScrollLeftButton)
+   EVT_COMMAND_SCROLL_LINEDOWN(HSBarID, AudacityProject::OnScrollRightButton)
+   EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
+
+   EVT_DROP_FILES(AudacityProject::OnDropFiles)
+   EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
     // Update menu method
     EVT_UPDATE_UI(UndoID, AudacityProject::OnUpdateMenus)
 END_EVENT_TABLE()
@@ -486,37 +494,67 @@ void AudacityProject::FinishAutoScroll()
 
 void AudacityProject::OnScrollLeft()
 {
-   int pos = mHsbar->GetThumbPosition();
 
+
+   int pos = mHsbar->GetThumbPosition();
+   pos= (pos>0) ? pos: 0;        //Set to larger of pos and 0
+   
    if (pos > 0) {
-      mHsbar->SetThumbPosition(pos - 1);
+      mHsbar->SetThumbPosition(pos - sbarHjump);     //Jump 30 pixels to the left
       FinishAutoScroll();
    }
 }
 
 void AudacityProject::OnScrollRight()
 {
+
    int pos = mHsbar->GetThumbPosition();
    int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
-
+   pos= (pos < max)? pos: max;  //Set to smaller of pos and max
+   
    if (pos < max) {
-#ifdef __WXGTK__
-      // work around a bug in wxGTK, can't scroll one to the
-      // right by updating the thumb position.
-      mHsbar->SetThumbPosition(pos + 2);
-#else
-      mHsbar->SetThumbPosition(pos + 1);
-#endif
-
+      mHsbar->SetThumbPosition(pos + sbarHjump);   //Jump 30 pixels to the right
       FinishAutoScroll();
+      }
+}
+
+void AudacityProject::OnScrollLeftButton(wxScrollEvent & event)
+{
+
+
+   int pos = mHsbar->GetThumbPosition();
+   pos= (pos>0) ? pos: 0;        //Set to larger of pos and 0
+   
+   if (pos > 0) {
+      mHsbar->SetThumbPosition(pos - sbarHjump);     //Jump 30 pixels to the left
+      OnScroll(event);
    }
 }
 
+
+void AudacityProject::OnScrollRightButton(wxScrollEvent & event)
+{
+
+   int pos = mHsbar->GetThumbPosition();
+   int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
+   pos= (pos < max)? pos: max;  //Set to smaller of pos and max
+   
+   if (pos < max) {
+      mHsbar->SetThumbPosition(pos + sbarHjump);   //Jump 30 pixels to the right
+
+      OnScroll(event);
+   }
+}
+
+
+
 void AudacityProject::TP_ScrollWindow(double scrollto)
 {
-   int pos = (int) (scrollto * mViewInfo.zoom)
-       / mViewInfo.scrollStep;
+   int pos = (int) (scrollto * mViewInfo.zoom);
+  
    int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
+
+
 
    if (pos > max)
       pos = max;
@@ -553,13 +591,11 @@ void AudacityProject::FixScrollbars()
       rescroll = true;
    }
 
-   mViewInfo.sbarTotal = (int) (mViewInfo.total * mViewInfo.zoom)
-       / mViewInfo.scrollStep;
-   mViewInfo.sbarScreen = (int) (mViewInfo.screen * mViewInfo.zoom)
-       / mViewInfo.scrollStep;
+   mViewInfo.sbarTotal = (int) (mViewInfo.total * mViewInfo.zoom);
 
-   mViewInfo.sbarH = (int) (mViewInfo.h * mViewInfo.zoom)
-       / mViewInfo.scrollStep;
+   mViewInfo.sbarScreen = (int) (mViewInfo.screen * mViewInfo.zoom);
+
+   mViewInfo.sbarH = (int) (mViewInfo.h * mViewInfo.zoom);
 
    mViewInfo.vpos = mVsbar->GetThumbPosition() * mViewInfo.scrollStep;
 
@@ -592,7 +628,7 @@ void AudacityProject::FixScrollbars()
    }
 
    mHsbar->SetScrollbar(mViewInfo.sbarH, mViewInfo.sbarScreen,
-                        mViewInfo.sbarTotal, mViewInfo.sbarScreen, TRUE);
+                        mViewInfo.sbarTotal, 180 , TRUE);
    mVsbar->SetScrollbar(mViewInfo.vpos / mViewInfo.scrollStep,
                         panelHeight / mViewInfo.scrollStep,
                         totalHeight / mViewInfo.scrollStep,
@@ -672,33 +708,37 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
    int hoffset = 0;
    int voffset = 0;
 
-   mViewInfo.sbarH = mHsbar->GetThumbPosition();
+   
+   
+   mViewInfo.sbarH =  mHsbar->GetThumbPosition() ;
+ 
 
    if (mViewInfo.sbarH != hlast) {
-      mViewInfo.h =
-          (mViewInfo.sbarH * mViewInfo.scrollStep) / mViewInfo.zoom;
+      mViewInfo.h =  mViewInfo.sbarH  / mViewInfo.zoom;
+   
       if (mViewInfo.h > mViewInfo.total - mViewInfo.screen)
          mViewInfo.h = mViewInfo.total - mViewInfo.screen;
       if (mViewInfo.h < 0.0)
          mViewInfo.h = 0.0;
-      hoffset = (mViewInfo.sbarH - hlast) * mViewInfo.scrollStep;
+      hoffset = (mViewInfo.sbarH - hlast);
    }
 
    mViewInfo.vpos = mVsbar->GetThumbPosition() * mViewInfo.scrollStep;
    voffset = mViewInfo.vpos - vlast;
 
-   /*
-      TODO: add back fast scrolling code
+   
+   /*   TODO: add back fast scrolling code
 
       // Track panel is updated either way, but it is smart and only redraws
       // what is needed
-      trackPanel->FastScroll(-hoffset, -voffset);
+      mTrackPanel->FastScroll(-hoffset, -voffset);
 
       // Ruler panel updated if we scroll horizontally
       if (hoffset) {
       REDRAW(rulerPanel);
-      }
-    */
+     }
+   */
+
 
    SetActiveProject(this);
 
@@ -1685,7 +1725,20 @@ void AudacityProject::SkipEnd(bool shift)
    if (!shift || mViewInfo.sel0 > mViewInfo.sel1)
       mViewInfo.sel0 = len;
 
-   TP_ScrollWindow(len);
+   //STM: Determine wisely where to position the viewport
+   // There are two conditions:
+   //
+   // (1) If the total width of the sample is larger than the viewport
+   //     is wide, sets the viewport so that the end of the sample will 
+   //     have about 5% empty space after it
+   // (2) If the total width of the sample is less than the viewport is
+   //     wide, set the viewport's left edge to be 0.
+
+   //The following formula for viewstart is simple: End of sample  - new width
+   double viewstart= len - mViewInfo.screen * .95;
+   viewstart = viewstart > 0 ? viewstart: 0.0;
+
+   TP_ScrollWindow(viewstart);
 }
 
 
