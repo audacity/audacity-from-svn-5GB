@@ -78,6 +78,7 @@ OBJS = \
 	$(OBJDIR)/effects/Amplify.o \
 	$(OBJDIR)/effects/AvcCompressor.o \
 	$(OBJDIR)/effects/BassBoost.o \
+	$(OBJDIR)/effects/ChangeSpeed.o \
 	$(OBJDIR)/effects/ChangeTempo.o \
 	$(OBJDIR)/effects/Compressor.o \
 	$(OBJDIR)/effects/Echo.o \
