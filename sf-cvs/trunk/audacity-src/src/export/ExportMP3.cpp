@@ -1268,7 +1268,7 @@ bool ExportMP3(AudacityProject *project,
    tracks->GetWaveTracks(selectionOnly, &numWaveTracks, &waveTracks);
    Mixer *mixer = new Mixer(numWaveTracks, waveTracks,
                             tracks->GetTimeTrack(),
-                            0.0, tracks->GetEndTime(),
+                            t0, t1,
                             stereo? 2: 1, inSamples, true,
                             rate, int16Sample);
 
@@ -1308,8 +1308,8 @@ bool ExportMP3(AudacityProject *project,
       }
 
       if (progress) {
-         int progressvalue = int (1000 * (mixer->MixGetCurrentTime() /
-                                          tracks->GetEndTime()));
+         int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
+                                          (t1-t0)));
          cancelling = !progress->Update(progressvalue);
       }
 
