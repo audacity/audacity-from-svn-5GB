@@ -34,6 +34,7 @@
 #include <wx/tooltip.h>
 
 #include "Audacity.h"
+#include "AudioIO.h"
 #include "ImageManipulation.h"
 #include "widgets/ASlider.h"
 #include "Prefs.h"
@@ -165,24 +166,31 @@ void MixerToolBar::RecreateTipWindows()
 
 void MixerToolBar::UpdateControls()
 {
+#if USE_PORTMIXER
    float inputVolume;
    float playbackVolume;
    int inputSource;
 
    gAudioIO->GetMixer(&inputSource, &inputVolume, &playbackVolume);
 
-   mInputSourceChoice->SetSelection(inputSource);
+   // This causes weird GUI behavior and isn't really essential.
+   // We could enable it again later.
+   //if (inputSource != mInputSourceChoice->GetSelection())
+   //    mInputSourceChoice->SetSelection(inputSource);
    mOutputSlider->Set(playbackVolume);
    mInputSlider->Set(inputVolume);
+#endif // USE_PORTMIXER
 }
 
 void MixerToolBar::SetMixer(wxCommandEvent &event)
 {
+#if USE_PORTMIXER
    float inputVolume = mInputSlider->Get();
    float outputVolume = mOutputSlider->Get();
    int inputSource = mInputSourceChoice->GetSelection();
 
    gAudioIO->SetMixer(inputSource, inputVolume, outputVolume);
+#endif // USE_PORTMIXER
 }
 
 void MixerToolBar::OnPaint(wxPaintEvent & evt)
