@@ -7,44 +7,33 @@
 </p>
 
 <p>
-Справочен файл (help) на Audacity 1.2:
+Кратък справочник за Audacity 1.2:
 [<a href="onlinehelp-1.2/contents.htm">Разглеждане он-лайн</a>]
+</p>
+
+<p>
+<a target=_top href="http://www.audacityteam.org/wiki">Wiki-сайт за Audacity</a>
+(документация, съвети, хитрости и др., публично достъпни за редактиране)
 </p>
 
 <p>
 Търсене в документацията на Audacity:
 
-<?php
-/* Include the iSearch search form */
+<form method="post" action="/isearch/index.php" target="_self">
 
-/* Relative reference to isearch directory */
-$isearch_path = "isearch";
+<table border="0" cellpadding="3" cellspacing="1">
+  <tr>
+    <td>
 
-/* Set the width of the entry box in chars */
-$isearch_searchFormWidth = 20;
+      <input maxLength="255" name="s" size="20" value=''>
+      <input type="submit" value="Търсене">
+      <a TARGET="_blank" HREF="/isearch/help.php">Помощ</a>
+    </td>
+  </tr>
+</table>
 
-/* Optional - set target frame for search results.
- * Default value is "_self".
- */
-$isearch_resultFrame = "_self";
-
-/* Optional - allow the user to select "all words" or "any words" to match.
- * Default value is False.
- */
-$isearch_allowSetOperator = False;
-
-/* Optional - add a "Search Internet" button to be displayed.
- * Default value is True.
- */
-$isearch_allowSearchInternet = False;
-
-/* Optional - Determine whether page containing this form is UTF-8 encoded.
- * Default value is True.
- */
-$isearch_charsetUtf8 = "True";
-
-include("$isearch_path/isearch_form.inc.php");
-?>
+<input type="hidden" name="action" value="search">
+</form>
 </p>
 
 <p>
