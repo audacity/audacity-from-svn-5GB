@@ -320,7 +320,7 @@ ac_subdirs_all="$ac_subdirs_all [lib-src/libid3tag]"
 ac_subdirs_all="$ac_subdirs_all [lib-src/libflac]"
 ac_subdirs_all="$ac_subdirs_all [lib-src/portaudio-v19]"
 ac_subdirs_all="$ac_subdirs_all [lib-src/dlcompat]"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS OPTOBJS CDEPEND AFTERBUILD INSTALL_PREFIX CONFIGHEADER AUDACITY_NAME subdirs ZIP WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS OPTOBJS CDEPEND AFTERBUILD INSTALL_PREFIX CONFIGHEADER PRECOMP_CFLAGS EXTRATARGETS AUDACITY_NAME subdirs ZIP WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -3150,6 +3150,8 @@ test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
 
 
+
+
 test "$program_prefix" != NONE &&
   program_transform_name="s,^,$program_prefix,;$program_transform_name"
 # Use a double $ so make ignores it.
@@ -5890,7 +5892,7 @@ else
 		LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
 		LIBS="-framework CoreAudio $LIBS -lz"
 
-		AFTERBUILD="cp ../audacity ../Audacity.app && `$WX_CONFIG --rezflags` ../Audacity.app ../mac/audacity.r -c auDy && /Developer/Tools/SetFile -a avBstClinmed ../Audacity.app"
+		EXTRATARGETS="../Audacity.app"
 
 		if [ "$use_ladspa" = "default" ] ; then
 			use_ladspa="yes";
@@ -5954,10 +5956,27 @@ _ACEOF
 	esac
 fi
 
+use_precomp="no"
+
 case "$host_os" in
 	darwin* | rhapsody*)
 		{ echo "$as_me:$LINENO: WARNING: Not using native lrint() and lrintf() because they are missing on 10.1." >&5
 echo "$as_me: WARNING: Not using native lrint() and lrintf() because they are missing on 10.1." >&2;}
+
+		cc_version=`$CC --version | head -1`
+		if echo "$cc_version" | grep "3\." >/dev/null ; then
+		   echo "checking for gcc 3.x... yes"
+		   gcc3="yes"
+		   echo "Enabling precompiled headers"
+		   use_precomp="yes"
+		else
+		   echo "checking for gcc 3.x... no"
+		   gcc3="no"
+		fi
+
+		echo "Enabling prebinding"
+		LIBS="$LIBS -prebind"
+
 		;;
 	*)
       		echo "$as_me:$LINENO: checking for lrint" >&5
@@ -6076,6 +6095,11 @@ fi
 
 		;;
 	esac
+
+if [ "$use_precomp" = "yes" ] ; then
+   CDEPEND="${CDEPEND} AudacityHeaders.h.gch"
+   PRECOMP_CFLAGS="-include AudacityHeaders.h"
+fi
 
 if [ "$use_ladspa" = "yes" ] ; then
    case "$host_os" in
@@ -6921,6 +6945,8 @@ s,@CDEPEND@,$CDEPEND,;t t
 s,@AFTERBUILD@,$AFTERBUILD,;t t
 s,@INSTALL_PREFIX@,$INSTALL_PREFIX,;t t
 s,@CONFIGHEADER@,$CONFIGHEADER,;t t
+s,@PRECOMP_CFLAGS@,$PRECOMP_CFLAGS,;t t
+s,@EXTRATARGETS@,$EXTRATARGETS,;t t
 s,@AUDACITY_NAME@,$AUDACITY_NAME,;t t
 s,@subdirs@,$subdirs,;t t
 s,@ZIP@,$ZIP,;t t
