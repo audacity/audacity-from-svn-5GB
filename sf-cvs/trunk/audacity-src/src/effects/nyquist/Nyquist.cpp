@@ -25,6 +25,8 @@
 
 #include "Nyquist.h"
 
+#include <locale.h>
+
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY(NyqControlArray);
 

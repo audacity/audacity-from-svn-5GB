@@ -91,9 +91,6 @@
 /* Define if SoundTouch support should be enabled */
 #undef USE_SOUNDTOUCH
 
-/* Define if FLAC support should be enabled */
-#undef USE_LIBFLAC
-
 /* Placeholder for large file support */
 #undef _FILE_OFFSET_BITS
 

@@ -190,7 +190,6 @@ PrefsDialog::~PrefsDialog()
 #ifdef __WXMAC__
    mMacHiddenFrame->Destroy();
 #endif
-
    gPrefsDialogVisible = false;
 }
 

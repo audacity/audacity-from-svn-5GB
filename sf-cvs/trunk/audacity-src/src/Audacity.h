@@ -32,6 +32,7 @@ extern wxWindow *gParentWindow;
 extern ToolBarStub *gControlToolBarStub;
 extern ToolBarStub *gMixerToolBarStub;
 extern ToolBarStub *gEditToolBarStub;
+extern ToolBarStub *gMeterToolBarStub;
 
 void QuitAudacity(bool bForce);
 void QuitAudacity();

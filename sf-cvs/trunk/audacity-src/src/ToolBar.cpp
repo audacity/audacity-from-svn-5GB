@@ -37,10 +37,58 @@
 #include "widgets/ASlider.h"
 #include "ControlToolBar.h"
 #include "EditToolBar.h"
+#include "MeterToolBar.h"
 #include "ImageManipulation.h"
 #include "MixerToolBar.h"
 #include "Project.h"
 
+
+
+////////////////////////////////////////////////////////////
+/// class ToolBarFrame
+////////////////////////////////////////////////////////////
+
+class ToolBarFrame {
+ public:
+   virtual ~ToolBarFrame() {}
+
+   ToolBar *GetToolBar() {
+      return mToolBar;
+   };
+
+   virtual void DoShow(bool visible = true) = 0;
+   virtual void DoMove(wxPoint where) = 0;
+   
+ protected:
+   ToolBar *mToolBar;
+};
+
+class ToolBarMiniFrame:public wxMiniFrame, public ToolBarFrame {
+ public:
+   ToolBarMiniFrame(wxWindow * parent, enum ToolBarType tbt);
+   virtual ~ToolBarMiniFrame();
+   
+   void OnCloseWindow(wxCloseEvent & event);
+   virtual void DoShow(bool visible);
+   virtual void DoMove(wxPoint where);
+   
+ public:
+   DECLARE_EVENT_TABLE()
+};
+
+class ToolBarFullFrame:public wxFrame, public ToolBarFrame {
+ public:
+   ToolBarFullFrame(wxWindow * parent, enum ToolBarType tbt);
+   virtual ~ToolBarFullFrame();
+   
+   void OnCloseWindow(wxCloseEvent & event);
+   void OnSize(wxSizeEvent & event);
+   virtual void DoShow(bool visible);
+   virtual void DoMove(wxPoint where);
+    
+ public:
+   DECLARE_EVENT_TABLE()
+};
 
 ////////////////////////////////////////////////////////////
 /// Methods for ToolBarStub
@@ -48,21 +96,17 @@
 
 
 /// ToolBarStub Constructer. Requires a ToolBarType.
-/// Whenever a ToolBarStub is around, there will be a floating
-/// ToolBarFrame.  It may be hidden or unhidden.
 ToolBarStub::ToolBarStub(wxWindow * Parent, enum ToolBarType tbt) 
 {
-   //Create a frame with a toolbar of type tbt inside it
-   mToolBarFrame = new ToolBarFrame(Parent, tbt);
-
-   //Get the newly-created toolbar to get some info from it.
-   ToolBar * tempTB = mToolBarFrame->GetToolBar();
+   // Don't create the frame until the first time we need it
+   mToolBarFrame = NULL;
+   mFrameParent = Parent;
 
    mType = tbt;
-   mTitle = tempTB->GetTitle();
-   mSize = tempTB->GetSize();
    mWindowedStatus = false;
    mLoadedStatus = true;
+
+   mTitle = "";
 } 
 
 
@@ -111,14 +155,27 @@ void ToolBarStub::ShowWindowedToolBar(wxPoint * where /* = NULL */ )
 {
    if (!mWindowedStatus) {
       
+      if (!mToolBarFrame) {
+         //Create a frame with a toolbar of type tbt inside it
+         if (mType == MeterToolBarID)
+            mToolBarFrame = new ToolBarFullFrame(mFrameParent, mType);
+         else
+            mToolBarFrame = new ToolBarMiniFrame(mFrameParent, mType);
+         
+         //Get the newly-created toolbar to get some info from it.
+         ToolBar * tempTB = mToolBarFrame->GetToolBar();
+         
+         mTitle = tempTB->GetTitle();
+         mSize = tempTB->GetSize();
+      }
+
       //Move the frame to the mouse position
-      if (where)
-         {
-            mToolBarFrame->Move(*where);
-         }
+      if (where) {
+         mToolBarFrame->DoMove(*where);
+      }
       
       //Show the new window
-      mToolBarFrame->Show();
+      mToolBarFrame->DoShow();
    }
 
    mWindowedStatus = true;
@@ -129,7 +186,8 @@ void ToolBarStub::ShowWindowedToolBar(wxPoint * where /* = NULL */ )
 void ToolBarStub::HideWindowedToolBar() 
 {
    if (mWindowedStatus) {
-      mToolBarFrame->Hide();
+      if (mToolBarFrame)
+         mToolBarFrame->DoShow(false);
       mWindowedStatus = false;
    }
 }
@@ -138,11 +196,11 @@ void ToolBarStub::HideWindowedToolBar()
 // To de-Iconize a windowed toolbar we just show it. 
 void ToolBarStub::Iconize(bool bIconize) 
 {
-   if (mWindowedStatus) {
+   if (mWindowedStatus && mToolBarFrame) {
       if( bIconize )
-         mToolBarFrame->Hide();
+         mToolBarFrame->DoShow(false);
       else
-         mToolBarFrame->Show();
+         mToolBarFrame->DoShow(true);
    }
 }
 
@@ -334,90 +392,126 @@ void ToolBar::DrawBackground(wxDC &dc, int width, int height)
 
 }
 
-////////////////////////////////////////////////////////////
-/// Methods for ToolBarFrame
-////////////////////////////////////////////////////////////
-    
-BEGIN_EVENT_TABLE(ToolBarFrame, wxMiniFrame) 
-   EVT_CLOSE(ToolBarFrame::OnCloseWindow)
-END_EVENT_TABLE()  
-
-/// There are three Constructors for ToolBarFrame. The first two take an actual
-/// toolbar as an argument, and create a frame around it.  The third takes a
-/// ToolBarType, and constructs a new ToolBar of that type inside the new
-/// frame.  To instantiate a new toolbar, add a condition to the switch
-/// statement inside the third constructor.
-ToolBarFrame::ToolBarFrame(wxWindow * parent, ToolBar * TB,
-                           const wxString & Title, const wxPoint & position)
-   : wxMiniFrame(parent, -1, Title, position,
-                 wxSize(TB->GetSize().x,
-                        TB->GetSize().y + TOOLBAR_HEIGHT_OFFSET),
-                 wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP | wxMINIMIZE_BOX |
-                 wxFRAME_FLOAT_ON_PARENT),
-     mToolBar(TB) 
+ToolBar *MakeToolBar(enum ToolBarType tbt, wxWindow *parent)
 {
-   SetSize(TB->GetIdealSize());
-} 
+   ToolBar *tb = NULL;
 
-///
-///This is a alternate constructor for a toolbarframe, taking a 
-/// toolbar as an argument
-///
-ToolBarFrame::ToolBarFrame(wxWindow * parent, ToolBar * TB)
-   : wxMiniFrame(parent, -1, TB->GetTitle(), wxPoint(0, 0), TB->GetSize(),
-         wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP | wxMINIMIZE_BOX
-         | wxFRAME_FLOAT_ON_PARENT),
-     mToolBar(TB) 
-{
-
-} 
-
-///
-///Alternate constructor for a ToolBarFrame. You give it a type and
-///It will create a toolabr of that type inside the frame.
-ToolBarFrame::ToolBarFrame(wxWindow * parent, enum ToolBarType tbt)
-   : wxMiniFrame(gParentWindow, -1, "", wxPoint(1, 1),
-         wxSize(20, 20),
-         wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP | wxMINIMIZE_BOX
-         | ((parent == NULL)?0x0:wxFRAME_FLOAT_ON_PARENT))
-{
-   //Create an embedded toolbar of the proper type
    switch (tbt) {
       case ControlToolBarID:
-         mToolBar = new ControlToolBar(this);
+         tb = new ControlToolBar(parent);
          break;
       case MixerToolBarID:
-         mToolBar = new MixerToolBar(this);
+         tb = new MixerToolBar(parent);
          break;
       case EditToolBarID:
-         mToolBar = new EditToolBar(this);
+         tb = new EditToolBar(parent);
+         break;
+      case MeterToolBarID:
+         tb = new MeterToolBar(parent);
          break;
       case NoneID:
       default:
          break;
    }
 
-   //Use information about the toolbar to set the frame information properly.
-   SetTitle(mToolBar->GetTitle());
-   SetSize(wxSize(
-           mToolBar->GetSize().x, mToolBar->GetSize().y +
-           TOOLBAR_HEIGHT_OFFSET));
+   return tb;
 }
 
-///
-/// Standard ToolBarFrame destructor
-ToolBarFrame::~ToolBarFrame() 
+////////////////////////////////////////////////////////////
+/// Methods for ToolBarMiniFrame and ToolBarFullFrame
+////////////////////////////////////////////////////////////
+    
+BEGIN_EVENT_TABLE(ToolBarMiniFrame, wxMiniFrame) 
+   EVT_CLOSE(ToolBarMiniFrame::OnCloseWindow)
+END_EVENT_TABLE()  
+
+///Constructor for a ToolBarMiniFrame. You give it a type and
+///It will create a toolbar of that type inside the frame.
+ToolBarMiniFrame::ToolBarMiniFrame(wxWindow * parent, enum ToolBarType tbt)
+   : wxMiniFrame(gParentWindow, -1, "", wxPoint(1, 1),
+                 wxSize(20, 20),
+                 wxSTAY_ON_TOP | wxMINIMIZE_BOX | wxCAPTION
+                 | ((parent == NULL)?0x0:wxFRAME_FLOAT_ON_PARENT))
+{
+   mToolBar = MakeToolBar(tbt, this);
+   SetTitle(mToolBar->GetTitle());
+   SetSize(wxSize(mToolBar->GetSize().x,
+                  mToolBar->GetSize().y + TOOLBAR_HEIGHT_OFFSET));
+}
+
+ToolBarMiniFrame::~ToolBarMiniFrame() 
 {
    delete mToolBar;
 }
 
-
 /// This hides the floating toolbar, effectively 'hiding' the window
-void ToolBarFrame::OnCloseWindow(wxCloseEvent & WXUNUSED(event)) 
+void ToolBarMiniFrame::OnCloseWindow(wxCloseEvent & WXUNUSED(event)) 
 {
    this->Hide();
 } 
 
+void ToolBarMiniFrame::DoShow(bool visible)
+{
+   Show(visible);
+}
+
+void ToolBarMiniFrame::DoMove(wxPoint where)
+{
+   Move(where);
+}
+
+
+    
+BEGIN_EVENT_TABLE(ToolBarFullFrame, wxFrame) 
+   EVT_CLOSE(ToolBarFullFrame::OnCloseWindow)
+   EVT_SIZE(ToolBarFullFrame::OnSize)
+END_EVENT_TABLE()  
+
+///Constructor for a ToolBarFullFrame. You give it a type and
+///It will create a toolbar of that type inside the frame.
+ToolBarFullFrame::ToolBarFullFrame(wxWindow * parent, enum ToolBarType tbt)
+   : wxFrame(gParentWindow, -1, "", wxPoint(1, 1),
+             wxSize(20, 20),
+             wxSTAY_ON_TOP | wxMINIMIZE_BOX | wxCAPTION
+             | wxRESIZE_BORDER
+             | ((parent == NULL)?0x0:wxFRAME_FLOAT_ON_PARENT))
+{
+   mToolBar = MakeToolBar(tbt, this);
+   SetTitle(mToolBar->GetTitle());
+
+   // This is a hack for now
+   if (tbt == MeterToolBarID)
+      SetSize(300, 150);
+   else
+      SetSize(wxSize(mToolBar->GetSize().x,
+                     mToolBar->GetSize().y));
+}
+
+ToolBarFullFrame::~ToolBarFullFrame() 
+{
+   delete mToolBar;
+}
+
+/// This hides the floating toolbar, effectively 'hiding' the window
+void ToolBarFullFrame::OnCloseWindow(wxCloseEvent & WXUNUSED(event)) 
+{
+   this->Hide();
+} 
+
+void ToolBarFullFrame::OnSize(wxSizeEvent & event)
+{
+   mToolBar->SetSize(GetClientSize());
+}
+
+void ToolBarFullFrame::DoShow(bool visible)
+{
+   Show(visible);
+}
+
+void ToolBarFullFrame::DoMove(wxPoint where)
+{
+   Move(where);
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
@@ -429,4 +523,3 @@ void ToolBarFrame::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
 //
 // vim: et sts=3 sw=3
 // arch-tag: 2f4ec75c-bdb7-4889-96d1-5d00abc41027
-

@@ -58,6 +58,12 @@ PrefsPanel(parent)
    gPrefs->Read("RecordChannels", &recordChannels, 1L);
    bool duplex;
    gPrefs->Read("Duplex", &duplex, false);
+
+   #ifdef __MACOSX__
+   bool playthrough;
+   gPrefs->Read("Playthrough", &playthrough, false);
+   #endif
+
    gPrefs->SetPath("/");
 
    topSizer = new wxBoxSizer( wxVERTICAL );
@@ -207,6 +213,13 @@ PrefsPanel(parent)
    mDuplex->SetValue(duplex);
    topSizer->Add(mDuplex, 0, wxGROW|wxALL, 2);
 
+   #ifdef __MACOSX__
+   mPlaythrough = new wxCheckBox(this, -1,
+                                 _("Playthrough (Play new track while recording it)"));
+   mPlaythrough->SetValue(playthrough);
+   topSizer->Add(mPlaythrough, 0, wxGROW|wxALL, 2);
+   #endif
+
    outSizer = new wxBoxSizer( wxVERTICAL );
    outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
 
@@ -236,12 +249,18 @@ bool AudioIOPrefs::Apply()
 
    gPrefs->Write("RecordChannels", recordChannels);
    gPrefs->Write("Duplex", duplex);
+
+   #ifdef __MACOSX__
+   gPrefs->Write("Playthrough", mPlaythrough->GetValue());
+   #endif
+
    gPrefs->SetPath("/");
 
    /* Step 3: Make audio sub-system re-read preferences */
 
 #if USE_PORTMIXER
-   gAudioIO->HandleDeviceChange();
+   if (gAudioIO)
+      gAudioIO->HandleDeviceChange();
 
    for( unsigned int i = 0; i < gAudacityProjects.GetCount(); i++ )
      {

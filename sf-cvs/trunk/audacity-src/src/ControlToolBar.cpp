@@ -46,6 +46,8 @@
 #include "Track.h"
 
 #include "AColor.h"
+#include "MeterToolBar.h"
+
 #include "../images/ControlButtons.h"
 
 // Code duplication warning: these apparently need to be in the
@@ -343,12 +345,12 @@ void ControlToolBar::RegenerateToolsTooltips()
 //   (as of April 2003).
    
    //	Vaughan, October 2003: Now we're crashing on Win2K if 
- 	// "Quit when closing last window" is unchecked, when we come back 
- 	// through here, on either of the wxSafeYield calls.
- 	// James confirms that commenting them out does not cause his original problem 
- 	// to reappear, so they're commented out now.
- 	//		wxSafeYield(); //Deal with some queued up messages...
- 
+	// "Quit when closing last window" is unchecked, when we come back 
+	// through here, on either of the wxSafeYield calls.
+	// James confirms that commenting them out does not cause his original problem 
+	// to reappear, so they're commented out now.
+	//		wxSafeYield(); //Deal with some queued up messages...
+
    #if wxUSE_TOOLTIPS
    mTool[selectTool]->SetToolTip(_("Selection Tool"));
    mTool[envelopeTool]->SetToolTip(_("Envelope Tool"));
@@ -357,7 +359,8 @@ void ControlToolBar::RegenerateToolsTooltips()
    mTool[drawTool]->SetToolTip(_("Draw Tool"));
    mTool[multiTool]->SetToolTip(_("Multi-Tool Mode"));
    #endif
-   // wxSafeYield();
+
+   //		wxSafeYield();
    return;
 
 }
@@ -638,8 +641,10 @@ void ControlToolBar::SetRecord(bool down)
 void ControlToolBar::PlayPlayRegion(double t0, double t1,
                                     bool looped /* = false */)
 {
-   if (gAudioIO->IsBusy())
+   if (gAudioIO->IsBusy()) {
+      mPlay->PopUp();
       return;
+   }
    
    mStop->Enable();
    mRewind->Disable();
@@ -708,10 +713,11 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
             success = true;
             p->SetAudioIOToken(token);
             mBusyProject = p;
+            SetVUMeters(p);
          } else
          {
             // msmeyer: Show error message if stream could not be opened
-            wxMessageBox(_("Error while opening sound device. Please check the output "
+            wxMessageBox(_("Error while opening sound device. Please check the input "
                            "device settings and the project sample rate."),
                          _("Error"), wxOK | wxICON_EXCLAMATION, this);
          }
@@ -747,7 +753,16 @@ void ControlToolBar::OnPlay(wxCommandEvent &evt)
       PlayCurrentRegion(false);
 }
 
-
+void ControlToolBar::SetVUMeters(AudacityProject *p)
+{
+   MeterToolBar *bar;
+   bar = p->GetMeterToolBar();
+   if (bar) {
+      Meter *play, *record;
+      bar->GetMeters(&play, &record);
+      gAudioIO->SetMeters(record, play);
+   }
+}
 
 void ControlToolBar::PlayCurrentRegion(bool looped /* = false */)
 {
@@ -788,8 +803,10 @@ void ControlToolBar::StopPlaying()
 
 void ControlToolBar::OnRecord(wxCommandEvent &evt)
 {
-   if (gAudioIO->IsBusy())
+   if (gAudioIO->IsBusy()) {
+      mRecord->PopUp();
       return;
+   }
 
    mPlay->Disable();
    mStop->Enable();
@@ -857,13 +874,14 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       if (success) {
          p->SetAudioIOToken(token);
          mBusyProject = p;
+         SetVUMeters(p);
       }
       else {
          // msmeyer: Show error message if stream could not be opened
          wxMessageBox(_("Error while opening sound device. Please check the output "
                         "device settings and the project sample rate."),
                       _("Error"), wxOK | wxICON_EXCLAMATION, this);
-         
+
          SetPlay(false);
          SetStop(false);
          SetRecord(false);
@@ -1001,7 +1019,6 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
    AColor::Dark( &dc, false);
    dc.DrawLine(0, 27, 81, 27);
    #endif
-
 }
 
 void ControlToolBar::EnableDisableButtons()
@@ -1026,8 +1043,6 @@ void ControlToolBar::EnableDisableButtons()
    mFF->SetEnabled(tracks && !busy);
 }
 
-
-
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //
@@ -1038,4 +1053,3 @@ void ControlToolBar::EnableDisableButtons()
 //
 // vim: et sts=3 sw=3
 // arch-tag: ebfdc42a-6a03-4826-afa2-937a48c0565b
-

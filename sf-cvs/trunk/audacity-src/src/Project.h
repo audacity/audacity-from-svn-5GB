@@ -51,6 +51,7 @@ class TrackList;
 class Tags;
 class ControlToolBar;
 class MixerToolBar;
+class MeterToolBar;
 class HistoryWindow;
 class Importer;
 
@@ -198,6 +199,7 @@ class AudacityProject:public wxFrame,
    void UnloadToolBar(enum ToolBarType);
    ControlToolBar *GetControlToolBar();
    MixerToolBar *GetMixerToolBar();
+   MeterToolBar *GetMeterToolBar();
    bool IsToolBarLoaded(enum ToolBarType);
 
  private:

@@ -105,6 +105,7 @@ class DirManager: public XMLTagHandler {
    static void CleanTempDir(bool startup);
 
  private:
+
    // Create new unique track name
    wxString NewTrackName();
 

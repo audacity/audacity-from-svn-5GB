@@ -113,6 +113,8 @@ class ControlToolBar:public ToolBar {
    void OnShiftDown(wxKeyEvent & event);
    void OnShiftUp(wxKeyEvent & event);
 
+   void SetVUMeters(AudacityProject *p);
+
  private:
 
    void InitializeControlToolBar();
