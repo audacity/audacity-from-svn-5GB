@@ -1226,55 +1226,67 @@ void AudacityProject::OnZoomSel(wxEvent & event)
 void AudacityProject::OnPlotSpectrum(wxEvent & event)
 {
    int selcount = 0;
-   WaveTrack *selt = NULL;
+   int i;
+   double rate = 0;
+   sampleCount len = 0;
+   float *buffer = NULL;
+   bool warning = false;
    TrackListIterator iter(mTracks);
    Track *t = iter.First();
    while (t) {
-      if (t->GetSelected())
+      if (t->GetSelected() && t->GetKind() == Track::Wave) {
+         WaveTrack *track = (WaveTrack *)t;
+         if (selcount==0) {
+            rate = track->GetRate();
+            longSampleCount start, end;
+            start = track->TimeToLongSamples(mViewInfo.sel0);
+            end = track->TimeToLongSamples(mViewInfo.sel1);
+            len = (sampleCount)(end - start);
+            if (len > 1048576) {
+               warning = true;
+               len = 1048576;
+            }
+            buffer = new float[len];
+            track->Get((samplePtr)buffer, floatSample, start, len);
+         }
+         else {
+            if (track->GetRate() != rate) {
+               wxMessageBox(_("To plot the spectrum, all selected tracks must be the same sample rate."));
+               delete[] buffer;
+               return;
+            }
+            longSampleCount start;
+            start = track->TimeToLongSamples(mViewInfo.sel0);
+            float *buffer2 = new float[len];
+            track->Get((samplePtr)buffer2, floatSample, start, len);
+            for(i=0; i<len; i++)
+               buffer[i] += buffer2[i];
+            delete[] buffer2;
+         }
          selcount++;
-      if (t->GetKind() == Track::Wave)
-         selt = (WaveTrack *) t;
+      }
       t = iter.Next();
    }
-   if (selcount != 1) {
-      wxMessageBox(_("Please select a single track first.\n"));
+   
+   if (selcount == 0)
       return;
+   
+   if (selcount > 1)
+      for(i=0; i<len; i++)
+         buffer[i] /= selcount;
+   
+   if (warning) {
+      wxString msg;
+      msg.Printf(_("Too much audio was selected.  Only the first %.1f seconds of audio will be analyzed."),
+                          (len / rate));
+      wxMessageBox(msg);
    }
 
-   /* This shouldn't be possible, since the menu is grayed out.
-    * But we'll check just in case it does happen, to prevent
-    * the crash that would result. */
-
-   if (!selt) {
-      wxMessageBox(_("Please select a track first.\n"));
-      return;
-   }
-
-   sampleCount s0 = (sampleCount) ((mViewInfo.sel0 - selt->GetOffset())
-                                   * selt->GetRate());
-   sampleCount s1 = (sampleCount) ((mViewInfo.sel1 - selt->GetOffset())
-                                   * selt->GetRate());
-   sampleCount slen = s1 - s0;
-
-   if (slen > 1048576)
-      slen = 1048576;
-
-   float *data = new float[slen];
-
-   // CHECKME - I really do not understand this if tom@bfad.de
-   if (s0 >= selt->GetMaxBlockSize() || s0 + slen > selt->GetMaxBlockSize()) {
-      wxMessageBox(_("Not enough samples selected.\n"));
-      delete[]data;
-      return;
-   }
-
-   selt->Get((samplePtr)data, floatSample, s0, slen);
-
-   gFreqWindow->Plot(slen, data, selt->GetRate());
+   gFreqWindow->Plot(len, buffer, rate);
    gFreqWindow->Show(true);
    gFreqWindow->Raise();
 
-   delete[]data;
+   delete[] buffer;
 }
 
 
