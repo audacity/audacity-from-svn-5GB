@@ -17,13 +17,36 @@ plug-ins (contributed by users)</b>:
 (To use, unzip and drop in Audacity's <b>Plug-ins</b> folder.
 </p>
 
+<!--
+<li><a href="nyquist/.zip"></a>
+    <a href="nyquist/.html">[Info]</a>
+-->
+
 <ul>
+<li><a href="nyquist/10bandeq.zip">10-Band Equalizer</a>
+    <a href="nyquist/10bandeq.html">[Info]</a>
+<li><a href="nyquist/bbdelay.zip">Bouncing Ball Delay with Panning</a>
+    <a href="nyquist/bbdelay.html">[Info]</a>
 <li><a href="nyquist/bouncingball.zip">Bouncing Ball Delay</a>
+    <a href="nyquist/bouncingball.html">[Info]</a>
+<li><a href="nyquist/customeq.zip">Custom EQ</a>
+    <a href="nyquist/customeq.html">[Info]</a>
+<li><a href="nyquist/hpdelay.zip">High Pass Delay</a>
+    <a href="nyquist/hpdelay.html">[Info]</a>
 <li><a href="nyquist/lfolp.zip">LFO Low Pass Filter</a>
+    <a href="nyquist/lfolp.html">[Info]</a>
 <li><a href="nyquist/lfopan.zip">LFO Pan</a>
+    <a href="nyquist/lfopan.html">[Info]</a>
+<li><a href="nyquist/lpdelay.zip">Low Pass Delay</a>
+    <a href="nyquist/lpdelay.html">[Info]</a>
+<li><a href="nyquist/multibandeq.zip">Multi-Band EQ</a>
+    <a href="nyquist/multibandeq.html">[Info]</a>
 <li><a href="nyquist/pan.zip">Pan</a>
+    <a href="nyquist/pan.html">[Info]</a>
 <li><a href="nyquist/ramppan.zip">Ramp Pan</a>
-<!-- <li><a href="nyquist/touchtone.zip">Touch Tones</a> -->
+    <a href="nyquist/ramppan.html">[Info]</a>
+<li><a href="nyquist/touchtone.zip">Touch Tones</a>
+    <a href="nyquist/touchtone.html">[Info]</a>
 </ul>
 
 <b>Windows:</b>
