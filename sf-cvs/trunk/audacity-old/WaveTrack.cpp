@@ -167,6 +167,77 @@ VTrack *WaveTrack::Duplicate()
   return (VTrack *)copy;
 }
 
+void WaveTrack::GetMinMax(sampleCount start, sampleCount len, sampleType *outMin, sampleType *outMax)
+{
+  sampleType min = 32727;
+  sampleType max = -32768;
+  
+  int block0 = FindBlock(start);
+  int block1 = FindBlock(start + len);
+  
+  // First calculate the min/max of the blocks in the middle of this region;
+  // this is very fast because we have the min/max of every entire block already
+  // in memory.
+  
+  int b, i;
+  
+  for(b=block0+1; b<block1; b++) {
+    if (block->Item(b)->min < min)
+      min = block->Item(b)->min;
+    if (block->Item(b)->max > max);
+      max = block->Item(b)->max;
+  }
+  
+  // Now we take the first and last blocks into account, noting that the selection
+  // may only partly overlap these blocks.  If the overall min/max of either of
+  // these blocks is within min...max, then we can ignore them.  If not,
+  // we need read some samples and summaries from disk.
+
+  if (block->Item(block0)->min < min || block->Item(block0)->max > max) {
+    int s0 = start - block->Item(block0)->start;
+    int l0 = len;
+    int max = block->Item(block0)->len - start;
+    if (l0 > max)
+      l0 = max;
+    sampleType *buffer = new sampleType[l0];
+    
+    // TODO: optimize this to use Read256 and Read64K
+    
+    Read(buffer, block->Item(block0), s0, l0);
+    for(i=0; i<l0; i++) {
+      if (buffer[i] < min)
+        min = buffer[i];
+      if (buffer[i] > max)
+        max = buffer[i];
+    }
+
+    delete[] buffer;
+  }
+  
+  if (block1 > block0 &&
+      (block->Item(block1)->min < min || block->Item(block1)->max > max)) {
+
+    int s0 = 0;
+    int l0 = (start+len) - block->Item(block1)->start;
+    sampleType *buffer = new sampleType[l0];
+    
+    // TODO: optimize this to use Read256 and Read64K
+    
+    Read(buffer, block->Item(block1), s0, l0);
+    for(i=0; i<l0; i++) {
+      if (buffer[i] < min)
+        min = buffer[i];
+      if (buffer[i] > max)
+        max = buffer[i];
+    }
+
+    delete[] buffer;
+
+  }
+  *outMin = min;
+  *outMax = max;
+}
+
 void WaveTrack::PrepareCacheMinMax(double start, double pps, int screenWidth)
 {
   wxASSERT(start>=0.0);
@@ -918,12 +989,12 @@ void WaveTrack::Paste(double t, VTrack *src)
     largerBlock->len = block->Item(b)->len + addedLen;
     largerBlock->f = dirManager->NewBlockFile();
     bool inited = InitBlock(largerBlock);
-	wxASSERT(inited);
+    wxASSERT(inited);
     
     Write(buffer, largerBlock, 0, largerBlock->len, false);
 
     dirManager->Deref(block->Item(b)->f);
-	delete block->Item(b);
+    delete block->Item(b);
     block->Item(b) = largerBlock;
 
     for(int i=b+1; i<numBlocks; i++)
@@ -953,7 +1024,7 @@ void WaveTrack::Paste(double t, VTrack *src)
 
   for(i=0; i<b; i++) {
     newBlock->Add(block->Item(i));
-	newNumBlocks++;
+    newNumBlocks++;
   }
 
   WaveBlock *splitBlock = block->Item(b);
@@ -1013,6 +1084,8 @@ void WaveTrack::Paste(double t, VTrack *src)
 	  insertBlock->start = srcBlock->Item(i)->start + s;
 	  insertBlock->len = srcBlock->Item(i)->len;
 	  insertBlock->f = srcBlock->Item(i)->f;
+	  insertBlock->min = srcBlock->Item(i)->min;
+	  insertBlock->max = srcBlock->Item(i)->max;
 	  dirManager->Ref(insertBlock->f);
 	  
 	  newBlock->Add(insertBlock);
@@ -1276,6 +1349,8 @@ void WaveTrack::InsertSilence(double t, double lenSecs)
     WaveBlock *w = new WaveBlock();
     w->start = pos;
     w->len = l;
+    w->min = 0;
+    w->max = 0;
     if (pos == 0 || len==l) {
       w->f = dirManager->NewBlockFile();
       firstBlockFile = w->f;
@@ -1309,6 +1384,8 @@ void WaveTrack::AppendBlock(WaveBlock *b)
   newBlock->start = numSamples;
   newBlock->len = b->len;
   newBlock->f = b->f;
+  newBlock->min = b->min;
+  newBlock->max = b->max;
   dirManager->Ref(newBlock->f);
   block->Add(newBlock);
   numSamples += newBlock->len;
@@ -1358,37 +1435,37 @@ bool WaveTrack::Load(wxTextFile *in, DirManager *dirManager)
   block->Alloc(numBlocks);
 
   for(b=0; b<numBlocks; b++) {
-	w = new WaveBlock();
+  	w = new WaveBlock();
 
-	if (in->GetNextLine() != "Block start") goto readWaveTrackError;
-	if (!(in->GetNextLine().ToLong(&longBlockStart))) goto readWaveTrackError;
-	w->start = longBlockStart;
-	
-	if (in->GetNextLine() != "Block len") goto readWaveTrackError;
-	if (!(in->GetNextLine().ToLong(&longBlockLen))) goto readWaveTrackError;
-	w->len = longBlockLen;
-	
-	if (in->GetNextLine() != "Block name") goto readWaveTrackError;
-	wxString name = in->GetNextLine();
-	
-	w->f = dirManager->GetBlockFile(name);
-	
-	if (!w->f) {
-	  
-	  numSamples = 0;
-	  block->Clear();
+  	if (in->GetNextLine() != "Block start") goto readWaveTrackError;
+  	if (!(in->GetNextLine().ToLong(&longBlockStart))) goto readWaveTrackError;
+  	w->start = longBlockStart;
+  	
+  	if (in->GetNextLine() != "Block len") goto readWaveTrackError;
+  	if (!(in->GetNextLine().ToLong(&longBlockLen))) goto readWaveTrackError;
+  	w->len = longBlockLen;
+  	
+  	if (in->GetNextLine() != "Block name") goto readWaveTrackError;
+  	wxString name = in->GetNextLine();
+  	
+  	w->f = dirManager->GetBlockFile(name);
+  	
+  	if (!w->f) {
+  	  
+  	  numSamples = 0;
+  	  block->Clear();
 
-	  blockMutex->Unlock();	  
+  	  blockMutex->Unlock();	  
 
-	  wxString msg;
-	  msg.Printf("The file named \"%s\" is missing from the project.",
-				 (const char *)name);
-	  wxMessageBox(msg);
-	  
-	  return false;
-	}
+  	  wxString msg;
+  	  msg.Printf("The file named \"%s\" is missing from the project.",
+  				 (const char *)name);
+  	  wxMessageBox(msg);
+  	  
+  	  return false;
+  	}
 
-	block->Add(w);
+  	block->Add(w);
   }
 
   blockMutex->Unlock();
@@ -1698,7 +1775,23 @@ void WaveTrack::Write(sampleType *buffer, WaveBlock *b,
     tempSummary64K[(sumStart+i) * 2 + 1] = max;
   }
   
-  // Write summaries back
+  // Recalc block-level summary
+  
+  sumLen = (maxSamples + 65535) / 65536;
+  
+  min = tempSummary64K[0];
+  max = tempSummary64K[0];  
+  
+  for(i=1; i<sumLen; i++) {
+    if (tempSummary64K[i]<min)
+      min = tempSummary64K[i];
+    else if (tempSummary64K[i]>max)
+      max = tempSummary64K[i];
+  }
+  b->min = min;
+  b->max = max;
+  
+  // Write 256 and 64K summaries to disk
   f->Seek(headerTagLen, wxFromStart);
   f->Write((void *)tempSummary64K, summary64KLen * sizeof(sampleType));
   f->Seek(headerTagLen + summary64KLen*sizeof(sampleType), wxFromStart);  
@@ -1821,14 +1914,14 @@ void WaveTrack::Append(sampleType *buffer, sampleCount len)
 
   // Append the rest as new blocks
   while(len) {
-	sampleCount idealSamples = GetIdealBlockSize();
+    sampleCount idealSamples = GetIdealBlockSize();
     sampleCount l = (len > idealSamples? idealSamples: len);
     WaveBlock *w = new WaveBlock();
     w->f = dirManager->NewBlockFile();
     w->start = numSamples;
     w->len = l;
-	bool inited = InitBlock(w);
-	wxASSERT(inited);
+    bool inited = InitBlock(w);
+    wxASSERT(inited);
     Write(buffer, w, 0, l, false);
     block->Add(w);
     
@@ -1853,14 +1946,14 @@ BlockArray *WaveTrack::Blockify(sampleType *buffer, sampleCount len)
   int num = (len + (maxSamples-1))/maxSamples;
 
   for(int i=0; i<num; i++) {
-	WaveBlock *b = NewInitedWaveBlock();
+  	WaveBlock *b = NewInitedWaveBlock();
 
-	b->start = i*len/num;
-	b->len = ((i+1)*len/num) - b->start;
-	
-	Write(&buffer[b->start], b, 0, b->len, false);
-	
-	list->Add(b);
+  	b->start = i*len/num;
+  	b->len = ((i+1)*len/num) - b->start;
+  	
+  	Write(&buffer[b->start], b, 0, b->len, false);
+  	
+  	list->Add(b);
   }
 
   return list;

@@ -33,6 +33,8 @@ public:
   
   sampleCount   start;
   sampleCount   len;
+  sampleType    min;
+  sampleType    max;
 };
 
 WX_DEFINE_ARRAY(WaveBlock *, BlockArray);
@@ -106,6 +108,8 @@ public:
   virtual void Offset(double t);
 
   virtual double GetMaxLen();
+  
+  void GetMinMax(sampleCount start, sampleCount len, sampleType *min, sampleType *max);
 
   double GetRate();
   void SetRate(double newRate);
