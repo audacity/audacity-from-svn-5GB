@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-print "maketarball 1.1.3 -- make Audacity distribution tarball\n";
+print "maketarball 1.2.0-pre1 -- make Audacity distribution tarball\n";
 
 unless(-f "src/Audacity.h") {
 	print "Must be run from Audacity directory\n";
@@ -11,7 +11,7 @@ unless(-f "src/Audacity.h") {
 open(HEADER, "src/Audacity.h");
 @lines = <HEADER>;
 $lines = join " ", @lines;
-$lines =~ /AUDACITY_VERSION_STRING "([0-9.a-z]*)"/;
+$lines =~ /AUDACITY_VERSION_STRING "([0-9\-.a-z]*)"/;
 $version = $1;
 print "version set to $version...\n";
 close(HEADER);
@@ -36,21 +36,39 @@ print "removing scripts...\n";
 `rm -rf scripts`;
 
 print "removing libraries that should be installed locally...\n";
-`rm -rf lib-src/libogg lib-src/libvorbis lib-src/libmad lib-src/id3lib lib-src/libid3tag`;
+`rm -rf lib-src/libogg lib-src/libvorbis lib-src/libmad lib-src/id3lib`;
+`rm -rf lib-src/iAVC lib-src/libsamplerate`;
 `rm -rf lib-src/wave++ lib-src/libflac`;
 
 print "removing qa\n";
 `rm -rf qa`;
 
-print "removing help files (haven't been updated for 1.1)\n";
+print "removing doxygen files (unfinished)\n";
+`rm audacity.dox`;
+
+print "removing webbrowser help files\n";
 `rm -rf help/webbrowser`;
-`rm -rf help/wxhelp`;
+
+print "removing unused portaudio-v19 dirs\n";
+`rm -rf lib-src/portaudio-v19/docs`;
+`rm -rf lib-src/portaudio-v19/pa_asio`;
+`rm -rf lib-src/portaudio-v19/pa_sgi`;
+`rm -rf lib-src/portaudio-v19/pa_mac_sm`;
+`rm -f lib-src/portaudio-v19/pa_tests/debug*`;
 
 print "removing wxstd locale files (since they should come with wxWindows\n";
 `rm -rf locale/wxstd`;
 
-printf "removing Nyquist plug-ins that are just for show\n";
+print "removing Nyquist plug-ins that are just for show\n";
 `rm -f plug-ins/analyze.ny plug-ins/fadein.ny plug-ins/fadeout.ny`;
+`rm -f plug-ins/beat.ny`;
+
+print "removing out-of-date translations: fr hu ja pl sl\n";
+`rm -f locale/fr.po`;
+`rm -f locale/hu.po`;
+`rm -f locale/ja.po`;
+`rm -f locale/pl.po`;
+`rm -f locale/sl.po`;
 
 #print "making tarball audacity-src-$version.tgz...\n";
 chdir "..";
