@@ -144,6 +144,7 @@ we can reproduce the bug ourselves, otherwise it's unlikely
 that we'll be able to fix it.  Send bug reports to
 <a href="mailto:audacity-help@lists.sourceforge.net">
 &lt;audacity-help@lists.sourceforge.net&gt;</a>.
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font>
 <p>
 Be sure to let us know what operating system you run
 (such as Windows 98, MacOS 9.1, RedHat Linux 7.1, etc.)

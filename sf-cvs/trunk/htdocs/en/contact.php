@@ -28,6 +28,7 @@ asked.
 Email: <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a><br>
 or Browse: <a href="http://sourceforge.net/mailarchive/forum.php?forum_id=828">Audacity-Help Archives</a><br>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font>
 If you're having a technical problem with Audacity, and it's too
 specific to bother other Audacity users, send mail to this address.
 It will be read by a team of Audacity developers and maintainers.

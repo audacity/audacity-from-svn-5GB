@@ -17,6 +17,7 @@ and let us know that you like it.  It makes us happy to know that
 people enjoy it.  Also feel free to send us your comments and
 suggestions - we're always improving Audacity, and we value your
 input.
+<br><?php print "$listPrivacyStr"; ?>
 <p>
 
 <li><b>Join the User Community</b>
