@@ -172,7 +172,7 @@ void SysKeyTextCtrl::OnKey(wxKeyEvent& event)
 
    if (event.ControlDown() && key >= 1 && key <= 26)
       newStr += (char)(64 + key);
-   else if (key >= '0' && key <= 'z')
+   else if (key >= 33 && key <= 126)
       newStr += (char)key;
    else if (key == WXK_BACK)
       newStr = "";
