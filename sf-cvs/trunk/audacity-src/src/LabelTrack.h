@@ -19,6 +19,8 @@
 #include <wx/pen.h>
 #include <wx/dynarray.h>
 #include <wx/string.h>
+#include <wx/clipbrd.h>
+
 
 class wxKeyEvent;
 class wxMouseEvent;
@@ -33,21 +35,28 @@ class DirManager;
 class LabelStruct 
 {
 public:
+   LabelStruct();
    void DrawLines( wxDC & dc, wxRect & r);
    void DrawGlyphs( wxDC & dc, wxRect & r, int GlyphLeft, int GlyphRight);
    void DrawText( wxDC & dc, wxRect & r);
+   void DrawTextBox( wxDC & dc, wxRect & r);
+   void DrawHighlight( wxDC & dc, int xPos1, int xPos2, int charHeight);
+   void getXPos( wxDC & dc, int * xPos1, int cursorPos);
    
 public:
-   double t;
-   double t1;
-   wxString title;
-   int width;
+   double t;  // Time for left hand of label.
+   double t1; // Time for right hand of label.
+   wxString title; // Text of the label.
+   int width; // width of the text in pixels.
+   
 // Working storage for on-screen layout.
-   int x;
-   int x1;
-   int xText;
-   int y;
+   int x;     // Pixel position of left hand glyph
+   int x1;    // Pixel position of right hand glyph
+   int xText; // Pixel position of left hand side of text box
+   int y;     // Pixel position of label.
 
+   bool highlighted;              // if the text is highlighted
+   bool changeInitialMouseXPos;   // flag to change initial mouse X pos 
 };
 
 WX_DEFINE_ARRAY(LabelStruct *, LabelArray);
@@ -77,6 +86,8 @@ class LabelTrack:public Track {
    void Draw(wxDC & dc, wxRect & r, double h, double pps,
              double sel0, double sel1);
 
+   int getSelectedIndex() const { return mSelIndex; }
+
    virtual int GetKind() const { return Label; } 
 
    virtual double GetStartTime();
@@ -99,11 +110,31 @@ class LabelTrack:public Track {
    // one in Track.
    virtual bool Copy (double t0, double t1, Track ** dest);// const;
    virtual bool Clear(double t0, double t1);
-   virtual bool Paste(double t, Track * src);
+   virtual bool Paste(double t, const Track * src);
 
    virtual bool Silence(double t0, double t1);
    virtual bool InsertSilence(double t, double len);
    int OverGlyph(int x, int y);
+
+
+   void ResetFlags();
+   bool OverTextBox(const LabelStruct *pLabel, int x, int y);
+   bool CutSelectedText();
+   bool CopySelectedText();
+   bool PasteSelectedText();
+   bool IsTextClipSupported();
+   
+   // methods to set flags
+   void SetDragXPos(const int d) { mDragXPos = d; };
+   void SetInBox(bool inTextBox) { mInBox = inTextBox; };
+   void SetResetCursorPos(bool resetFlag) { mResetCursorPos = resetFlag; };
+   void SetWrongDragging(bool rightFlag) { mRightDragging = rightFlag; };
+   void SetKeyOn(bool keyFlag) { mKeyOn = keyFlag; };
+   void SetDrawCursor(bool drawCursorFlag) { mDrawCursor = drawCursorFlag; };
+   
+   bool getKeyOn() { return mKeyOn; };
+
+
    void HandleMouse(const wxMouseEvent & evt, wxRect & r, double h, double pps,
                            double *newSel0, double *newSel1);
 
@@ -121,6 +152,9 @@ class LabelTrack:public Track {
 
    //This returns the index of the label we just added.
    int AddLabel(double t, double t1, const wxString &title = "");
+
+   //get current cursor position
+   int getCurrentCursorPosition() const { mCurrentCursorPos; };
 
  public:
 	 void SortLabels();
@@ -152,12 +186,30 @@ class LabelTrack:public Track {
    static wxIcon mBoundaryGlyphs[ NUM_GLYPH_CONFIGS * NUM_GLYPH_HIGHLIGHTS];
 
    int xUsed[MAX_NUM_ROWS];
+
+   static int mFontHeight;
+   int mXPos1;                         //left X pos of highlighted area
+   int mXPos2;                         //right X pos of highlighted area 
+   int mCurrentCursorPos;              //current cursor position
+   int mInitialCursorPos;              //initial cursor position
+   double mMouseXPos;                  //mouse X pos
+   int mDragXPos;                      //end X pos of dragging
+   bool mInBox;                        //flag to tell if the mouse is in text box
+   bool mResetCursorPos;               //flag to reset cursor position(used in the dragging the glygh) 
+   bool mRightDragging;                //flag to tell if it's a valid dragging
+   bool mKeyOn;                        //flag to tell if current label track has keyboard focus
+   bool mDrawCursor;                   //flag to tell if drawing the cursor or not
+   
    // Used only for a LabelTrack on the clipboard
    double mClipLen;
 
    void InitColours();
    void ComputeLayout(wxRect & r, double h, double pps);
    void ComputeTextPosition(wxRect & r, int index);
+   void SetCurrentCursorPosition(wxDC & dc, int xPos);
+
+   void calculateFontHeight(wxDC & dc);
+   void RemoveSelectedText();
 
    bool mIsAdjustingLabel;
 

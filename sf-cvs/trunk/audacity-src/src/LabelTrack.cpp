@@ -5,6 +5,8 @@
   LabelTrack.cpp
 
   Dominic Mazzoni
+  James Crook
+  Jun Wan
 
 **********************************************************************/
 
@@ -16,6 +18,9 @@
 #include <wx/textfile.h>
 #include <wx/intl.h>
 #include <wx/icon.h>
+#include <stdio.h>
+#include <wx/clipbrd.h>
+#include <wx/dataobj.h>
 
 #include <wx/log.h>
 
@@ -23,7 +28,6 @@
 #include "DirManager.h"
 #include "Internat.h"
 #include "Prefs.h"
-
 
 wxFont LabelTrack::msFont;
 
@@ -38,6 +42,8 @@ wxIcon LabelTrack::mBoundaryGlyphs[ NUM_GLYPH_CONFIGS * NUM_GLYPH_HIGHLIGHTS ];
 int LabelTrack::mIconHeight;
 int LabelTrack::mIconWidth;
 int LabelTrack::mTextHeight;
+
+int LabelTrack::mFontHeight=-1;
 
 
 // TODO: Surely there is a header file which already defines max and min?
@@ -73,6 +79,10 @@ LabelTrack::LabelTrack(DirManager * projDirManager):
    mHeight = 62;     
    CreateCustomGlyphs();
    mSelIndex = -1;
+
+   // reset falgs
+   ResetFlags();
+
 }
 
 LabelTrack::LabelTrack(const LabelTrack &orig) :
@@ -92,8 +102,10 @@ LabelTrack::LabelTrack(const LabelTrack &orig) :
       l->title = orig.mLabels[i]->title;
       mLabels.Add(l);
    }
-
    mSelIndex = orig.mSelIndex;
+
+   // reset flags
+   ResetFlags();
 }
 
 LabelTrack::~LabelTrack()
@@ -104,16 +116,25 @@ LabelTrack::~LabelTrack()
       delete mLabels[i];
 }
 
+void LabelTrack::ResetFlags()
+{
+   mMouseXPos = -1;
+   mDragXPos = -1;
+   mCurrentCursorPos = 1;
+   mResetCursorPos = false;
+   mRightDragging = false;
+   mKeyOn = false;
+   mDrawCursor = false;
+}
+
 void LabelTrack::ResetFont()
 {
-
+   mFontHeight = -1;
    wxString facename = gPrefs->Read("/GUI/LabelFontFacename", "");
    if (facename != "") {
       msFont = wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
                       wxFONTWEIGHT_NORMAL, FALSE, facename,
                       wxFONTENCODING_SYSTEM);
-
- 
    }
 }
 
@@ -335,6 +356,10 @@ void LabelTrack::ComputeLayout( wxRect & r, double h, double pps)
    }
 }
 
+LabelStruct::LabelStruct() {
+   changeInitialMouseXPos = true;
+   highlighted = false;
+}
 
 /// Draw vertical lines that go exactly through the position
 /// of the start or end of a label.
@@ -401,6 +426,45 @@ void LabelStruct::DrawText( wxDC & dc, wxRect & r)
    const int yFrameHeight = LabelTrack::mTextHeight+3;
    const int xBarShorten  = LabelTrack::mIconWidth+4;
 
+   // Draw frame for the text...
+   // We draw it half an icon width left of the text itself.
+   {
+      const int xStart=max(r.x,xText-LabelTrack::mIconWidth/2);
+      const int xEnd=min(r.x+r.width,xText+width+LabelTrack::mIconWidth/2);
+      const int xWidth = xEnd-xStart;
+
+      if( (xStart < (r.x+r.width)) && (xEnd > r.x) && (xWidth>0))
+      {
+         // Now draw the text itself.
+         dc.DrawText(title, xText, y-LabelTrack::mTextHeight/2);
+      }
+   }
+}
+
+void LabelStruct::DrawTextBox( wxDC & dc, wxRect & r) 
+{
+   if (y<0) 
+      return;
+   //If y is positive then it is the center line for the 
+   //text we are about to draw.
+   const int yBarHeight=3;
+   const int yFrameHeight = LabelTrack::mTextHeight+3;
+   const int xBarShorten  = LabelTrack::mIconWidth+4;
+
+   {
+      const int xStart=max(r.x,x+xBarShorten/2);
+      const int xEnd=min(r.x+r.width,x1-xBarShorten/2);
+      const int xWidth = xEnd-xStart;
+
+      if( (xStart < (r.x+r.width)) && (xEnd > r.x) && (xWidth>0))
+      {
+         
+         wxRect bar( xStart,y-yBarHeight/2, 
+            xWidth,yBarHeight);
+         if( x1 > x+xBarShorten )
+            dc.DrawRectangle(bar);
+      }
+   }
 
    // In drawing the bar and the frame, we compute the clipping
    // to the viewport ourselves.  Under Win98 the GDI does its 
@@ -412,34 +476,42 @@ void LabelStruct::DrawText( wxDC & dc, wxRect & r)
    // We don't quite draw from x to x1 because we allow 
    // half an icon width at each end.
    {
-      const int xStart=max(r.x,x+xBarShorten/2);
-      const int xEnd=min(r.x+r.width,x1-xBarShorten/2);
-      const int xWidth = xEnd-xStart;
-
-      if( (xStart < (r.x+r.width)) && (xEnd > r.x) && (xWidth>0))
-      {
-         wxRect bar( xStart,y-yBarHeight/2, 
-            xWidth,yBarHeight);
-         if( x1 > x+xBarShorten )
-            dc.DrawRectangle(bar);
-      }
-   }
-   // Draw frame for the text...
-   // We draw it half an icon width left of the text itself.
-   {
       const int xStart=max(r.x,xText-LabelTrack::mIconWidth/2);
       const int xEnd=min(r.x+r.width,xText+width+LabelTrack::mIconWidth/2);
       const int xWidth = xEnd-xStart;
 
       if( (xStart < (r.x+r.width)) && (xEnd > r.x) && (xWidth>0))
       {
-         wxRect frame(
+          wxRect frame(
             xStart,y-yFrameHeight/2,
             xWidth,yFrameHeight );
          dc.DrawRectangle(frame);
-         // Now draw the text itself.
-         dc.DrawText(title, xText, y-LabelTrack::mTextHeight/2);
       }
+   }
+}
+
+/// Draws text-selected region within the label
+void LabelStruct::DrawHighlight( wxDC & dc, int xPos1, int xPos2, int charHeight)
+{    
+   highlighted = true;
+   changeInitialMouseXPos = false;
+   
+   wxPen curPen = dc.GetPen();
+   curPen.SetColour(wxString("BLUE"));
+   wxBrush curBrush = dc.GetBrush();
+   curBrush.SetColour(wxString("BLUE"));
+   dc.DrawRectangle(xPos1, y-charHeight/2, xPos2-xPos1+0.5, charHeight );
+}
+
+void LabelStruct::getXPos( wxDC & dc, int * xPos1, int cursorPos) 
+{
+   *xPos1 = xText;
+   if( cursorPos > 0)
+   {
+      int partWidth;
+      // Calculate the width of the substring and add it to Xpos
+      dc.GetTextExtent(title.Left(cursorPos), &partWidth, NULL);
+      *xPos1 += partWidth;
    }
 }
 
@@ -449,9 +521,11 @@ void LabelStruct::DrawText( wxDC & dc, wxRect & r)
 void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
                       double sel0, double sel1)
 {
-   
    if(msFont.Ok())
       dc.SetFont(msFont);
+
+   if (mFontHeight == -1)
+      calculateFontHeight(dc);
 
    double right = h + r.width / pps;
    double dsel0 = sel0;
@@ -481,7 +555,8 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
    wxRect after = r;
    after.x += (before.width + selr.width);
    after.width -= (before.width + selr.width);
-   if (after.x < r.x) {
+   if (after.x < r.x) 
+   {
       after.width -= (r.x - after.x);
       after.x = r.x;
    }
@@ -503,8 +578,8 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
    // text label title changes.
    for (i = 0; i < (int)mLabels.Count(); i++) 
    {
-         dc.GetTextExtent(mLabels[i]->title, &textWidth, &textHeight);
-         mLabels[i]->width = textWidth;
+      dc.GetTextExtent(mLabels[i]->title, &textWidth, &textHeight);
+      mLabels[i]->width = textWidth;
    }
 
    // TODO: And this only needs to be done once, but we
@@ -525,10 +600,14 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
    int GlyphRight;
    // Now we draw the various items in this order,
    // so that the correct things overpaint each other.
+
+   // Draw vertical lines that show where the end positions are.
    for (i = 0; i < nLabels; i++) 
    {
       mLabels[i]->DrawLines( dc, r );
    }
+
+   // Draw the end glyphs.
    for (i = 0; i < nLabels; i++) 
    {
       GlyphLeft=0;
@@ -540,13 +619,287 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
       mLabels[i]->DrawGlyphs( dc, r, GlyphLeft, GlyphRight );
    }
 
+   // Draw the label boxes.
+   for (i = 0; i < nLabels; i++)
+   {
+      if( mSelIndex==i) dc.SetBrush(mTextEditBrush);
+      mLabels[i]->DrawTextBox( dc, r );
+      if( mSelIndex==i) dc.SetBrush(mTextNormalBrush);
+   }
+
+   // Draw highlights
+   if ((mDragXPos != -1) && (mSelIndex >= 0 ))
+   {
+      // find the left X pos of highlighted area
+      mLabels[mSelIndex]->getXPos(dc, &mXPos1, mInitialCursorPos);
+      // for preventing dragging glygh from changing current cursor position
+      if (mResetCursorPos) {
+         // set end dragging position to current cursor position
+         SetCurrentCursorPosition(dc, mDragXPos);
+         mResetCursorPos = false;
+      }
+      // find the right X pos of highlighted area
+      mLabels[mSelIndex]->getXPos(dc, &mXPos2, mCurrentCursorPos);
+      mLabels[mSelIndex]->DrawHighlight(dc, mXPos1, mXPos2, mFontHeight);
+   }
+
+   // Draw the text and the label boxes.
    for (i = 0; i < nLabels; i++)
    {
       if( mSelIndex==i) dc.SetBrush(mTextEditBrush);
       mLabels[i]->DrawText( dc, r );
       if( mSelIndex==i) dc.SetBrush(mTextNormalBrush);
    }
+
+   // Draw the cursor, if there is one.
+   if( mSelIndex >=0 )
+   {
+      i = mSelIndex;
+      int xPos = mLabels[i]->xText;
+      
+      // if mouse is clicked in text box
+      if (mMouseXPos != -1) 
+      {
+         // set current cursor position
+         SetCurrentCursorPosition(dc, mMouseXPos);
+         // for preventing from resetting by shift+mouse left button
+         // set initialCursorPos equal to currentCursorPos
+         if (mLabels[mSelIndex]->changeInitialMouseXPos)
+            mInitialCursorPos = mCurrentCursorPos;
+         mDrawCursor = true;
+         mMouseXPos = -1;
+      }
+
+      if( mCurrentCursorPos > 0)
+      {
+         // Calculate the width of the substring and add it to Xpos
+         int partWidth;
+         dc.GetTextExtent((mLabels[i]->title).Left(mCurrentCursorPos), &partWidth, NULL);
+         xPos += partWidth;
+      }
+      
+      // Draw the cursor
+      wxPen currentPen = dc.GetPen();
+      const int CursorWidth=2;
+      if (mDrawCursor) {
+         currentPen.SetWidth(CursorWidth);
+         dc.DrawLine(xPos, mLabels[i]->y - mFontHeight/2, xPos, mLabels[i]->y + mFontHeight/2);
+         currentPen.SetWidth(1);
+      }
+   }
 }
+
+/// Set the cursor position according to x position of mouse
+/// uses GetTextExtent to find the character position 
+/// corresponding to the x pixel position.
+void LabelTrack::SetCurrentCursorPosition(wxDC & dc, int xPos) 
+{
+   // A bool indicator to see if set the cursor position or not
+   bool finished = false;
+   int charIndex = 1;
+   int partWidth;
+   int oneWidth;
+   double bound;
+   wxString subString;
+   while (!finished && (charIndex < (int)mLabels[mSelIndex]->title.length() + 1)) 
+   {
+      subString = (mLabels[mSelIndex]->title).Left(charIndex);
+      // Get the width of substring
+      dc.GetTextExtent(subString, &partWidth, NULL);
+      if (charIndex > 1) 
+      {
+         // Get the width of the last character
+         dc.GetTextExtent(subString.Right(1), &oneWidth, NULL);
+         bound = mLabels[mSelIndex]->xText + partWidth - oneWidth * 0.5;
+      }
+      else 
+      {
+         bound = mLabels[mSelIndex]->xText + partWidth * 0.5;
+      }
+
+      if (xPos <= bound) 
+      {
+         // Found
+         mCurrentCursorPos = charIndex - 1;
+         finished = true;
+      } 
+      else 
+      {
+         // Advance
+         charIndex++;
+      }
+   }
+   if (!finished) 
+   {
+      // Cursor should be in the last position
+      mCurrentCursorPos = mLabels[mSelIndex]->title.length();
+   }
+}
+
+void LabelTrack::calculateFontHeight(wxDC & dc) 
+{
+   int charDescent;
+   int charLeading;
+
+   // Calculate the width of the substring and add it to Xpos
+   dc.GetTextExtent("Test String", NULL, &mFontHeight, &charDescent, &charLeading);
+
+   // The cursor will have height charHeight.  We don't include the descender as 
+   // part of the height because for phonetic fonts this leads to cursors which are
+   // too tall.  We don't include leading either - it is usually 0.
+   // To make up for ignoring the descender height, we add one pixel above and below
+   // using CursorExtraHeight so that the cursor is just a little taller than the
+   // body of the characters.
+   const int CursorExtraHeight=2;
+   mFontHeight += CursorExtraHeight - (charLeading+charDescent);
+}
+
+/// Cut the selected text in the text box
+///  @return true if text is selected in text box, false otherwise
+bool LabelTrack::CutSelectedText() 
+{
+   if (mSelIndex == -1)
+      return false;
+   if (!mLabels[mSelIndex]->highlighted)
+      return false;
+
+   wxString left="";
+   wxString right="";
+   wxString text = mLabels[mSelIndex]->title;
+   
+   // swapping to make sure currentCursorPos > initialCursorPos always
+   if (mInitialCursorPos > mCurrentCursorPos) {
+      int temp = mCurrentCursorPos;
+      mCurrentCursorPos = mInitialCursorPos;
+      mInitialCursorPos = temp;
+   }
+
+   // data for cutting
+   wxString data = mLabels[mSelIndex]->title.Mid(mInitialCursorPos, mCurrentCursorPos-mInitialCursorPos);
+   
+   // get left-remaining text
+   if (mInitialCursorPos > 0) {
+      left = text.Mid(0, mInitialCursorPos);
+   }
+
+   // get right-remaining text
+   if (mCurrentCursorPos < (int)text.Length()) {
+      right = text.Mid(mCurrentCursorPos, text.Length()-mCurrentCursorPos);
+   }
+
+   // set title to the combination of the two remainders
+   mLabels[mSelIndex]->title = left + right;
+   
+   // copy data onto clipboard
+   if (wxTheClipboard->Open()) {
+      wxTheClipboard->SetData(new wxTextDataObject(data));
+      wxTheClipboard->Close();
+   }
+   
+   // set cursor positions
+   mCurrentCursorPos = left.Length();
+   mInitialCursorPos = mCurrentCursorPos;
+   return true;
+}
+
+/// Copy the selected text in the text box
+///  @return true if text is selected in text box, false otherwise
+bool LabelTrack::CopySelectedText() 
+{
+   if (mSelIndex == -1)
+      return false;
+   if (!mLabels[mSelIndex]->highlighted)
+      return false;
+
+   // swapping to make sure currentCursorPos > mInitialCursorPos always
+   if (mInitialCursorPos > mCurrentCursorPos) {
+      int temp = mCurrentCursorPos;
+      mCurrentCursorPos = mInitialCursorPos;
+      mInitialCursorPos = temp;
+   }
+   
+   // data for copying
+   wxString data = mLabels[mSelIndex]->title.Mid(mInitialCursorPos, mCurrentCursorPos-mInitialCursorPos);
+
+   // copy the data on clipboard
+   if (wxTheClipboard->Open()) {
+      wxTheClipboard->SetData(new wxTextDataObject(data));
+      wxTheClipboard->Close();
+   }
+   
+   // set initialCursorPos equal to currentCursorPos
+   mInitialCursorPos = mCurrentCursorPos;
+   return true;
+}
+
+/// Paste the text on the clipboard to text box
+///  @return true if mouse is clicked in text box, false otherwise
+bool LabelTrack::PasteSelectedText() 
+{
+   if (mSelIndex == -1)
+      return false;
+
+   wxTextDataObject data;
+   wxString left="";
+   wxString right="";
+   
+   // if the mouse is clicked in text box
+   if (mInBox) {
+      // if text data is available
+      if (wxTheClipboard->Open()) {
+         if (wxTheClipboard->IsSupported( wxDF_TEXT )) {
+            wxTheClipboard->GetData( data );
+         }
+         wxTheClipboard->Close();
+      }
+
+      // if there is some highlighted text
+      if (mLabels[mSelIndex]->highlighted) {
+         // swapping to make sure currentCursorPos > mInitialCursorPos always
+         if (mInitialCursorPos > mCurrentCursorPos) {
+            int temp = mCurrentCursorPos;
+            mCurrentCursorPos = mInitialCursorPos;
+            mInitialCursorPos = temp;
+         }
+
+         // same as cutting
+         if (mInitialCursorPos > 0) {
+            left = (mLabels[mSelIndex]->title).Mid(0, mInitialCursorPos);
+         }
+         if (mCurrentCursorPos < (int)(mLabels[mSelIndex]->title).Length()) {
+            right = (mLabels[mSelIndex]->title).Mid(mCurrentCursorPos, (mLabels[mSelIndex]->title).Length()-mCurrentCursorPos);
+         }
+         mLabels[mSelIndex]->title = left + data.GetText() + right;            
+         mCurrentCursorPos = left.Length() + data.GetTextLength() - 1;
+      } 
+      else
+      {
+         // insert the data on the clipboard from the cursor position
+         if (mCurrentCursorPos < (int)(mLabels[mSelIndex]->title).Length()) {
+            right = (mLabels[mSelIndex]->title).Mid(mCurrentCursorPos);
+         }
+         mLabels[mSelIndex]->title = (mLabels[mSelIndex]->title).Left(mCurrentCursorPos);
+         mLabels[mSelIndex]->title += data.GetText();
+         mLabels[mSelIndex]->title += right;
+         mCurrentCursorPos += data.GetTextLength() - 1;
+      }
+      // set mInitialCursorPos equal to currentCursorPos
+      mInitialCursorPos = mCurrentCursorPos;
+      return true;
+   }
+   return false;
+}
+
+
+/// @return true if the text data is available in the clipboard, false otherwise
+bool LabelTrack::IsTextClipSupported() {
+   if (wxTheClipboard->Open()) {
+      if (wxTheClipboard->IsSupported( wxDF_TEXT ))
+         return true;
+   }
+   return false;
+}
+
 
 double LabelTrack::GetStartTime()
 {
@@ -568,11 +921,10 @@ double LabelTrack::GetEndTime()
  
    double end = 0.0;
    for(int i = 0; i < len; i++)
-      {
-         
-         if(mLabels[i]->t1 > end)
-            end = mLabels[i]->t1;
-      }
+   {
+      if(mLabels[i]->t1 > end)
+         end = mLabels[i]->t1;
+   }
    return end;
 }
  
@@ -595,8 +947,8 @@ int LabelTrack::OverGlyph(int x, int y)
    //Determine the new selection.
    LabelStruct * pLabel;
    int result=0;
-   const int d1=10; //distance in pixels.
-   const int d2=5;  //distance in pixels.
+   const int d1=10; //distance in pixels, used for have we hit drag handle.
+   const int d2=5;  //distance in pixels, used for have we hit drag handle center.
    
    //If not over a label, reset it
    mMouseOverLabelLeft  = -1;
@@ -614,6 +966,7 @@ int LabelTrack::OverGlyph(int x, int y)
          if(abs(pLabel->x - x) < d2 )
             mbHitCenter = true;
          result |= 1;
+         mInBox = false;     // to disable the dragging for selecting the text in text box
       }
       // use else-if so that we don't detect left and right 
       // of the same label.
@@ -624,10 +977,32 @@ int LabelTrack::OverGlyph(int x, int y)
          if(abs(pLabel->x1 - x) < d2 )
             mbHitCenter = true;
          result |= 2;
+         mInBox = false;     // to disable the dragging for selecting the text in text box
       }
+
+      // give text box better priority for selecting
+      if(OverTextBox(pLabel, x, y))
+      {
+         result = 0;
+      }
+
    }
    return result;
 }
+
+
+// return true if the mouse is over text box, false otherwise
+bool LabelTrack::OverTextBox(const LabelStruct *pLabel, int x, int y) 
+{
+   if( (pLabel->xText-(mIconWidth/2) < x) && 
+            (x<pLabel->xText+pLabel->width+(mIconWidth/2)) &&
+            (abs(pLabel->y-y)<mIconHeight/2))
+   {
+      return true;
+   }
+   return false;
+}
+
 
 /// HandleMouse gets called with every mouse move or click.
 /// 
@@ -642,10 +1017,23 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
       mMouseOverLabelRight = -1;
       return;
    }
-   
+
    if(evt.Dragging())
-   {
-      
+   { 
+      // if dragging happens in text box
+      if (mInBox) {
+         // end dragging x position in pixels
+         // set flag to update current cursor position
+         mDragXPos = evt.m_x;
+         mResetCursorPos = true;
+         
+         // if it's an invalid dragging, disable displaying
+         if (mRightDragging) {
+            mDragXPos = -1;
+            mRightDragging = false;
+         }
+      }
+
       //If we are currently adjusting a label, 
       //just reset its value and redraw.
       if(mIsAdjustingLabel )  // This guard is necessary but hides another bug.  && mSelIndex != -1)
@@ -664,7 +1052,6 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
          if (mMouseOverLabelRight>=0)
          {
             mLabels[mMouseOverLabelRight]->t1 = h + (evt.m_x - r.x)/pps;
-            
             if( mLabels[mMouseOverLabelRight]->t > mLabels[mMouseOverLabelRight]->t1)
             {
                mLabels[mMouseOverLabelRight]->t  = mLabels[mMouseOverLabelRight]->t1;
@@ -680,14 +1067,42 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
          }
          SortLabels();
       }
+
       return;
    }
-   
+
    if( evt.ButtonDown())
    {
       //OverGlyph sets mMouseOverLabel to be the chosen label.         
       mIsAdjustingLabel = OverGlyph(evt.m_x, evt.m_y) != 0;   
       
+      // reset mouseXPos if the mouse is pressed in thte text box
+      mMouseXPos = -1;
+      mInBox = false;
+      bool changeCursor = true;
+
+      // reset the highlight indicator
+      wxRect highlightedRect;
+      if (mSelIndex != -1) {
+         // the rectangle  of highlighted area
+         if (mXPos1 < mXPos2)
+            highlightedRect = wxRect(mXPos1, mLabels[mSelIndex]->y - mFontHeight/2, mXPos2-mXPos1+0.5, mFontHeight);
+         else
+            highlightedRect = wxRect(mXPos2, mLabels[mSelIndex]->y - mFontHeight/2, mXPos1-mXPos2+0.5, mFontHeight);
+
+         // reset when left button is down
+         if (evt.LeftDown()) 
+            mLabels[mSelIndex]->highlighted = false;
+         // reset when right button is down outside text box
+         if (evt.RightDown())
+         {
+            if (!highlightedRect.Inside(evt.m_x, evt.m_y))
+               mLabels[mSelIndex]->highlighted = false;
+         }
+         // set changeInitialMouseXPos flag
+         mLabels[mSelIndex]->changeInitialMouseXPos = true;
+      }
+
       if(mIsAdjustingLabel )
       {
          //The mouse was clicked on the label adjuster.
@@ -702,21 +1117,40 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
 //          mSelIndex = mMouseOverLabelLeft;
          }
          return;
+      } 
+      else 
+      {
+         // disable displaying if left button is down
+         if (evt.LeftDown())
+            mDragXPos = -1;
+            
+         // disable displaying if right button is down outside text box
+         if( mSelIndex >0)
+         {
+            if (evt.RightDown())
+            {
+               if (!highlightedRect.Inside(evt.m_x, evt.m_y))
+                  mDragXPos = -1;
+               else
+                  // if it's in text box, don't need to reset the current cursor position
+                  changeCursor = false;
+            }
+         }
       }
       
       LabelStruct * pLabel;
-
-      //OK, they aren't dragging or clicking on an edge.
-      //TODO: Move this into a function 'FindLabel' or some such.
       for (int i = 0; i < (int)mLabels.Count(); i++) {
          pLabel = mLabels[i];
-         if( (pLabel->xText-(mIconWidth/2) < evt.m_x) && 
-            (evt.m_x<pLabel->xText+pLabel->width+(mIconWidth/2)) &&
-            (abs(pLabel->y-evt.m_y)<mIconHeight/2))
+         if(OverTextBox(pLabel, evt.m_x, evt.m_y))
          {
             mSelIndex = i;
             *newSel0 = mLabels[i]->t;
             *newSel1 = mLabels[i]->t1;
+            // set mouseXPos to set current cursor position
+            if (changeCursor)
+               mMouseXPos = evt.m_x;
+            // set mInBox flag
+            mInBox = true;
             return;
          }
       }
@@ -746,29 +1180,103 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
 #endif
 
    long keyCode = event.KeyCode();
-   
+
    if (mSelIndex >= 0) {
       switch (keyCode) {
+
       case WXK_BACK:
          {
             int len = mLabels[mSelIndex]->title.Length();
             
-            //If the label is not blank get rid of a letter
+            //IF the label is not blank THEN get rid of a letter or letters according to cursor position
             if (len > 0)
             {
-               mLabels[mSelIndex]->title = mLabels[mSelIndex]->title.Left(len - 1);
+               // IF there are some highlighted letters, THEN delete them
+               if (mLabels[mSelIndex]->highlighted) {
+                  RemoveSelectedText();
+               }
+               else
+               {
+                  // delete one letter
+                  if (mCurrentCursorPos > 0) {
+                     mLabels[mSelIndex]->title.Remove(mCurrentCursorPos-1, 1);
+                     mCurrentCursorPos--;
+                  }
+               }
             }
             else
             {
-               
+               // ELSE no text in text box, so delete whole label.
                delete mLabels[mSelIndex];
                mLabels.RemoveAt(mSelIndex);
                mSelIndex = -1;
+               mCurrentCursorPos = 1;
+            }
+            mInitialCursorPos = mCurrentCursorPos;
+         }
+         break;
+
+      case WXK_DELETE:
+         {
+            int len = mLabels[mSelIndex]->title.Length();
+            
+            //If the label is not blank get rid of a letter according to cursor position
+            if (len > 0)
+            {
+               // if there are some highlighted letters, delete them
+               if (mLabels[mSelIndex]->highlighted) {
+                  RemoveSelectedText();
+               }
+               else
+               {
+                  // delete one letter
+                  if (mCurrentCursorPos < len) {
+                     mLabels[mSelIndex]->title.Remove(mCurrentCursorPos, 1);
+                  }
+               }
+            }
+            else
+            {
+               // delete whole label if no text in text box
+               delete mLabels[mSelIndex];
+               mLabels.RemoveAt(mSelIndex);
+               mSelIndex = -1;
+               mCurrentCursorPos = 1;
+            }
+            mInitialCursorPos = mCurrentCursorPos;
+         }
+         break;
+
+      case WXK_LEFT:
+         // Moving cursor left
+         if (mCurrentCursorPos > 0) {
+            mCurrentCursorPos--;
+            if (event.ShiftDown()) {
+               mDragXPos = 0;
+            }
+            else
+            {
+               mDragXPos = -1;
+               mInitialCursorPos = mCurrentCursorPos;
             }
          }
          break;
-         
-      case WXK_DELETE:
+
+      case WXK_RIGHT:
+         // Moving cursor right
+         if (mCurrentCursorPos < (int)mLabels[mSelIndex]->title.length()) {
+            mCurrentCursorPos++;
+            if (event.ShiftDown()) {
+               mDragXPos = 0;
+            }
+            else
+            {
+               mDragXPos = -1;
+               mInitialCursorPos = mCurrentCursorPos;
+            }
+         }
+         break;
+
       case WXK_RETURN:
       case WXK_ESCAPE:
          if (mLabels[mSelIndex]->title == "") {
@@ -784,14 +1292,39 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
             if (mSelIndex > 0)
                mSelIndex--;
          } else {
-            if (mSelIndex < (int)mLabels.Count() - 1)
+            if (mSelIndex < (int)mLabels.Count() - 1) 
                mSelIndex++;
          }
-         break;
          
+         mCurrentCursorPos = mLabels[mSelIndex]->title.Length();
+         break;
+      
       default:
-         if( IsGoodLabelCharacter( keyCode ))
-            mLabels[mSelIndex]->title += keyCode;
+         if( IsGoodLabelCharacter( keyCode )) {
+            // Test if cursor is in the end of string or not
+            if (mLabels[mSelIndex]->highlighted) {
+               RemoveSelectedText();
+            }
+
+            if (mCurrentCursorPos < (int)mLabels[mSelIndex]->title.length()) {
+               // Get substring on the righthand side of cursor
+               wxString rightPart = mLabels[mSelIndex]->title.Mid(mCurrentCursorPos);
+               // Set title to substring on the lefthand side of cursor
+               mLabels[mSelIndex]->title = mLabels[mSelIndex]->title.Left(mCurrentCursorPos);
+               //append keycode
+               mLabels[mSelIndex]->title += keyCode;
+               //append the right part substring
+               mLabels[mSelIndex]->title += rightPart;
+            }
+            else
+            {
+               //append keycode
+               mLabels[mSelIndex]->title += keyCode;
+            }
+            //moving cursor position forward
+            mCurrentCursorPos++;
+            mInitialCursorPos = mCurrentCursorPos;
+         }
          break;
       }
    } 
@@ -807,10 +1340,13 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
    else
    {
       // Create new label
+      wxString rightPart;
       LabelStruct *l = new LabelStruct();
       l->t = sel0;
       l->t1 = sel1;
       l->title += wxChar(keyCode);
+      mCurrentCursorPos = 1;
+      mInitialCursorPos = mCurrentCursorPos;
       
       int len = mLabels.Count();
       int pos = 0;
@@ -822,6 +1358,30 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
       
       mSelIndex = pos;
    }
+}
+
+void LabelTrack::RemoveSelectedText() 
+{
+   wxString left = "";
+   wxString right = "";
+   
+   if (mInitialCursorPos > mCurrentCursorPos) {
+      int temp = mCurrentCursorPos;
+      mCurrentCursorPos = mInitialCursorPos;
+      mInitialCursorPos = temp;
+   }
+
+   if (mInitialCursorPos > 0) {
+      left = (mLabels[mSelIndex]->title).Mid(0, mInitialCursorPos);
+   }
+   if (mCurrentCursorPos < (int)(mLabels[mSelIndex]->title).Length()) {
+      right = (mLabels[mSelIndex]->title).Mid(mCurrentCursorPos, (mLabels[mSelIndex]->title).Length()-mCurrentCursorPos);
+   }
+   mLabels[mSelIndex]->title = left + right;
+   mCurrentCursorPos = left.Length();
+   mInitialCursorPos = mCurrentCursorPos;
+   mLabels[mSelIndex]->highlighted = false;
+   mDragXPos = -1;
 }
 
 void LabelTrack::Unselect()
@@ -1114,7 +1674,7 @@ bool LabelTrack::Copy(double t0, double t1, Track ** dest)
    return true;
 }
 
-bool LabelTrack::Paste(double t, Track * src)
+bool LabelTrack::Paste(double t, const Track * src)
 {
    if (src->GetKind() != Track::Label)
       return false;
@@ -1420,7 +1980,6 @@ void LabelTrack::SortLabels()
       }
    }
 }
-
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
