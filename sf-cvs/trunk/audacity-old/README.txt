@@ -127,6 +127,10 @@ Changes in 0.96:
   
   - Allows editing of MP3 ID3 tags with export.
 
+* Preferences:
+
+  - Added Audio I/O selectors on Mac (Dominic) and Windows (Joshua)
+
 * Effects:
 
   - Added progress dialog support to all effects (which also allows
