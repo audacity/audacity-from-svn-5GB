@@ -534,11 +534,24 @@ void CompressorDialog::OnOk(wxCommandEvent &event)
 void CompressorDialog::OnPreview(wxCommandEvent &event)
 {
    TransferDataFromWindow();
+
+	// Save & restore parameters around Preview, because we didn't do OK.
+   double    oldAttackTime = mEffect->mAttackTime;
+   double    oldThresholdDB = mEffect->mThresholdDB;
+   double    oldRatio = mEffect->mRatio;
+   bool      oldUseGain = mEffect->mUseGain;
+
+   mEffect->mAttackTime = attack;
    mEffect->mThresholdDB = threshold;
    mEffect->mRatio = ratio;
    mEffect->mUseGain = useGain;
-   mEffect->mAttackTime = attack;
+
    mEffect->Preview();
+
+   mEffect->mAttackTime = oldAttackTime;
+   mEffect->mThresholdDB = oldThresholdDB;
+   mEffect->mRatio = oldRatio;
+   mEffect->mUseGain = oldUseGain;
 }
 
 void CompressorDialog::OnCancel(wxCommandEvent &event)
