@@ -7,6 +7,8 @@ in Audacity.
 Known bugs to fix:
 -----------------------------------------------------------
 
+- Hitting the spacebar causes Audacity to start playing
+  (Mac OS only?)
 - Double-clicking a track selects all in the ruler, but
   not the track (Windows)
 - Right-click doesn't always zoom out, esp. after

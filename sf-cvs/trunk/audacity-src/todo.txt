@@ -45,13 +45,36 @@ Website / Sourceforge
 1.1 TODO
 -----------------------------------------------------------
 
+Mac OS X:
+- Preferences menu item in right place
+- Cmd-Q for Quit
+- Use system-wide VST directory
+
+Coding standards::
+- Replace most assertions with error-checking code
+
+Stability::
+- Handle disk errors more cleanly.  Back out of whatever
+  operation is going on.
+- Do "preflight" check of disk space before editing
+  operations.
+- Check for existence of project _folder_ when opening
+  a project - help the user find it if it's not there.
+
 Unit tests::
 - Need to verify that the new 1.0 mixing code plays every
   sample one and only once.
 
 Audio::
-- Smart Record dialog (tries to use less CPU power
-  and ensure no dropped samples)
+- Smart Record dialog
+  - VU meter
+  - Control latency
+  - Use as little CPU power as possible
+  - Detect dropped samples using many different methods
+  - Visually show buffer sizes
+  - Multi-channel record
+  - Show remaining disk space
+  - Timed record (i.e. only record x seconds)
 - Choice of dither
 - Pre-roll and post-roll: amount to play before and after
   a selection (see DG Malham email)
@@ -61,8 +84,32 @@ Audio::
   - input device
   - input volume
   - playthrough
+- Support portaudio multiple driver models
+
+Internationalization:
+- Fix strings which aren't being translated
+- Pop-up language choice dialog when program starts
+- Use pop-up menu in Prefs dialog
+- Work around wxWindows bug which only searches
+  working directory for language directories
 
 UI::
+- Save preferences (write to disk) after closing dialog
+- A "mini view" of the whole project, which shows what part
+  you're working on, etc. like a lot of other programs have
+- Visual track dragging
+- Split at labels
+- Improve Save dialogs: use "Save", "Don't Save", and
+  include the name of the file.
+- When a user exports the entire project (in any format)
+  and the export doesn't require any mixing, mark the project
+  as not dirty (i.e. don't ask if they want to save it).
+- Put close box in toolbar.
+- Make toolbar minimize when you minimize all Audacity windows
+  (on MS Windows only)
+- Sample format prefs should actually work (should
+  affect recording - maybe provide an option to decide
+  what to do with imported recordings...)
 - Make ID3 tag dialog optional when saving MP3s
 - Horizonal line at zero point in waveform display
 - Vertical playback position indicator
@@ -108,7 +155,7 @@ UI::
 - Drag the play marker in the ruler to "skip" to a new time
    
 Import/Export::
-- Import latest libsndfile; finish exporting code
+- Use latest libsndfile; finish exporting code
 - Rewrite the Import Raw Data... code
 - Import Audacity 1.0 projects
 - Support ID3 tags in Ogg files
@@ -116,10 +163,17 @@ Import/Export::
   see email from Shane M.)
 
 Effects::
+- Fix VST plugin problems;
+  - UltraFunk Surround (see email from iceberg@techropolis.com)
 - Fix the 47-second bug in Noise Removal (see email
   from Greg Trounson)
 - Show spectrum in FFT filter
-- Add preview button to all effects dialogs
+- Effects dialogs
+  - Preview button
+  - Save presets
+  - How to do this? Either have all effects dialogs inherit from
+    one, or have a sub-window for preview and presets.
+- Add real-time effects directly to tracks (see Ezequiel 5/10/2002)
 - Freeverb 3.0 (and better interface)
 - Pitch/tempo change
 - Smart Mix (like Quick Mix but guarantees no clipping)
