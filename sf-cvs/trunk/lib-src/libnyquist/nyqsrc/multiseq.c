@@ -3,6 +3,8 @@
    of two multichannel signals */
 
 /* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  changes for portability and fix compiler warnings
  */
 
 #include "stdio.h"
@@ -154,7 +156,7 @@ void multiseq_advance(multiseq_type ms, time_type target)
     time_type new_horizon;
     time_type new_low_water;
 
-D    nyquist_printf("multiseq_advance: %x->low_water %g, target %g\n", 
+D    nyquist_printf("multiseq_advance: %p->low_water %g, target %g\n", 
             ms, ms->low_water, target);
     while (ms->low_water < target - 0.000001) {
         new_horizon = 0.0;
@@ -212,7 +214,7 @@ D			    nyquist_printf(
                 }
             }
 D           nyquist_printf(" current %d cnt %d ", 
-                susp->susp.current, susp->s1_cnt);
+                (int)susp->susp.current, (int)susp->s1_cnt);
 
             /* while the susp has prefetched a block that ends at or
              * before horizon, put the block on the snd_list and
@@ -226,7 +228,7 @@ D           nyquist_printf(" current %d cnt %d ",
                 susp->s1_cnt = 0;
 #ifdef MULTISEQ_GC_DEBUG
                 nyquist_printf(
-                "multiseq: output block %x%s on snd_list %x to chan %d\n",
+                "multiseq: output block %p%s on snd_list %p to chan %d\n",
                        susp->s1_bptr,
                        (susp->s1_bptr == internal_zero_block ?
                         " (INTERNAL ZERO BLOCK)" : ""), 
@@ -266,7 +268,7 @@ D			    nyquist_printf(
                     }
                 }
 D               nyquist_printf("\n\toutput block, current %d cnt %d ",
-                        susp->susp.current, susp->s1_cnt);
+                               (int)susp->susp.current, (int)susp->s1_cnt);
             }
             if (!susp->logical_stop_bits)
                  my_hor = susp_time(susp, ms);
@@ -351,21 +353,22 @@ void multiseq_convert(multiseq_type ms)
         if (susp->s2->scale != 1.0) {
             susp->s2 = snd_make_normalize(susp->s2);
         }
-                                                                                                                            
-        sother_start = round((susp->s2->t0 - susp->susp.t0) * susp->s2->sr);
-D	nyquist_printf("sother_start computed for %x: %d\n", susp, sother_start);
+
+        sother_start = ROUND((susp->s2->t0 - susp->susp.t0) * susp->s2->sr);
+D	    nyquist_printf("sother_start computed for %p: %d\n",
+                      susp, (int)sother_start);
         if (sother_start > susp->susp.current) {
-D	    nyquist_printf("susp %x using add_s1_nn_fetch\n", susp);
+D	    nyquist_printf("susp %p using add_s1_nn_fetch\n", susp);
             susp->susp.fetch = add_s1_nn_fetch;
             susp->susp.name = "multiseq:add_s1_nn_fetch";
         } else if (susp->terminate_bits) { /* s1 is done, just get s2 now */
             sound_unref(susp->s1);
             susp->s1 = NULL;
-D	    nyquist_printf("susp %x using add_s2_nn_fetch\n", susp);
+D	    nyquist_printf("susp %p using add_s2_nn_fetch\n", susp);
             susp->susp.fetch = add_s2_nn_fetch;
             susp->susp.name = "multiseq:add_s2_nn_fetch";
         } else {
-D	    nyquist_printf("susp %x using add_s1_s2_nn_fetch\n", susp);
+D	    nyquist_printf("susp %p using add_s1_s2_nn_fetch\n", susp);
             susp->susp.fetch = add_s1_s2_nn_fetch;
             susp->susp.name = "multiseq:add_s1_s2_nn_fetch";
         }
@@ -424,7 +427,7 @@ void multiseq_fetch(susp, snd_list)
      */
 #ifdef MULTISEQ_GC_DEBUG
     if (snd_list_to_watch == snd_list->u.next) {
-        nyquist_printf("multiseq_fetch: backing out snd_list_to_watch from %x\n",
+        nyquist_printf("multiseq_fetch: backing out snd_list_to_watch from %p\n",
                snd_list_to_watch);
         watch_snd_list(snd_list);
     }
@@ -433,7 +436,8 @@ void multiseq_fetch(susp, snd_list)
     snd_list->u.susp = (snd_susp_type) susp;
     snd_list->block = NULL;
 
-D    nyquist_printf("multiseq_fetch called: susp %x s1_cnt %d\n", susp, susp->s1_cnt);
+D    nyquist_printf("multiseq_fetch called: susp %p s1_cnt %d\n",
+                    susp, (int)susp->s1_cnt);
 
     /* first compute how many samples we can generate from s1: */
     if (susp->s1_cnt == 0) {
@@ -466,7 +470,7 @@ D		    nyquist_printf(
 
     /* now compute time of the last sample */
     block_end_time = susp_time(susp, susp->multiseq);
-D   nyquist_printf("block_end_time of %x: %g\n", susp, block_end_time);
+D   nyquist_printf("block_end_time of %p: %g\n", susp, block_end_time);
     multiseq_advance(susp->multiseq,  block_end_time);
 }
 
@@ -477,8 +481,8 @@ void multiseq_mark(add_susp_type susp)
 {
     int i;
     multiseq_type ms = susp->multiseq;
-D    nyquist_printf("multiseq_mark(%x)\n", susp);
-/*    nyquist_printf("marking s1@%x in add@%x\n", susp->s1, susp);*/
+D    nyquist_printf("multiseq_mark(%p)\n", susp);
+/*    nyquist_printf("marking s1@%p in add@%p\n", susp->s1, susp);*/
     if (ms->closure) mark(ms->closure);
 
     /* mark s1 of each susp in multiseq */
@@ -582,9 +586,9 @@ D	nyquist_printf("snd_make_multiseq: not_logically_stopped_cnt %d\n",
             EXIT(1);
         }
         ms->chans[i] = snd->list;
-D        nyquist_printf("ms->chans[%d] = %x, %x->u.susp = %x\n",
+D        nyquist_printf("ms->chans[%d] = %p, %p->u.susp = %p\n",
                 i, snd->list, snd->list, snd->list->u.susp);
-        ms->t0 = min(ms->t0, susp->s1->t0);
+        ms->t0 = MIN(ms->t0, susp->s1->t0);
         ms->sr = susp->s1->sr;	/* assume all samp rates are equal */
 D        nyquist_printf("Multiseq sound[%d]: \n", i);
 D        sound_print_tree(susp->s1);
@@ -614,7 +618,7 @@ void multiseq_free(add_susp_type susp)
              */
             if (ms->chans[i]->u.susp == (snd_susp_type) susp) {
                 ms->chans[i] = NULL;
-D                nyquist_printf("susp %x freed, ms@%x->chans[%d] = NULL\n",
+D                nyquist_printf("susp %p freed, ms@%p->chans[%d] = NULL\n",
                         susp, ms, i);
             }
         }
@@ -640,10 +644,10 @@ void multiseq_print_tree(add_susp_type susp, int n)
     if (!susp->multiseq) {
         xlfail("internal error: missing multiseq structure");
     }
-    nyquist_printf("multiseq@%x = [ ", susp->multiseq);
+    nyquist_printf("multiseq@%p = [ ", susp->multiseq);
     for (i = 0; i < susp->multiseq->nchans; i++) {
         if (susp->multiseq->chans[i]) {
-            nyquist_printf("%x", susp->multiseq->chans[i]->u.susp);
+            nyquist_printf("%p", susp->multiseq->chans[i]->u.susp);
         } else {
             stdputstr("NULL");
         }

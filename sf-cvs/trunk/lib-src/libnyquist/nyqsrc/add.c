@@ -2,6 +2,7 @@
 /* CHANGE LOG
  * 19May92 rbd  fix t0 to mean time rather than samples
                 fix to logically stop and terminate at MAX of 2 inputs
+ * 28Apr03  dm  changes for portability and fix compiler warnings
  */
 
 /* DOCUMENTATION:
@@ -86,12 +87,12 @@ void add_s1_s2_nn_fetch(susp, snd_list)
     falloc_sample_block(out, "add_s1_s2_nn_fetch");
     snd_list->block = out;
     out_ptr = out->samples;
-A   nyquist_printf("add[%x,%x] (s1_s2_nn) %x new block %x\n", 
-           susp->s1, susp->s2, susp, out);
+A   nyquist_printf("add[%p,%p] (s1_s2_nn) %p new block %p\n", 
+                   susp->s1, susp->s2, susp, out);
     
     /* fill up the new block */
     while (cnt < max_sample_block_len && susp->terminate_bits == 0) {
-A       nyquist_printf("add[%x,%x] (s1_s2_nn) %x starting outer loop, cnt %d\n",
+A       nyquist_printf("add[%p,%p] (s1_s2_nn) %p starting outer loop, cnt %d\n",
                susp->s1, susp->s2, susp, cnt);
         
         /* first compute how many samples to generate in inner loop: */
@@ -99,25 +100,25 @@ A       nyquist_printf("add[%x,%x] (s1_s2_nn) %x starting outer loop, cnt %d\n",
         togo = max_sample_block_len - cnt;
         
         /* don't run past the s1 input sample block: */
-A	nyquist_printf("add[%x,%x]: look for samples (for s1) \n", susp->s1, susp->s2);
+A	nyquist_printf("add[%p,%p]: look for samples (for s1) \n", susp->s1, susp->s2);
 /*        if (!susp->s1->list->block) watch_susp(susp->s1->list->u.susp); */
         susp_check_term_log_block_samples(s1, s1_bptr, s1_ptr, s1_cnt, 1, 3);
-A	nyquist_printf("add[%x,%x]: found samples (for s1) s1_cnt=%d\n",
-               susp->s1, susp->s2, susp->s1_cnt);
-        togo = min(togo, susp->s1_cnt);
+A	nyquist_printf("add[%p,%p]: found samples (for s1) s1_cnt=%d\n",
+               susp->s1, susp->s2, (int)susp->s1_cnt);
+        togo = MIN(togo, susp->s1_cnt);
         if (susp->terminate_bits & 1) {
-A	    nyquist_printf("add[%x,%x]: terminate bits on (for s1) togo=%d\n",
+A	    nyquist_printf("add[%p,%p]: terminate bits on (for s1) togo=%d\n",
                    susp->s1, susp->s2, togo);
         }
         
         /* don't run past the s2 input sample block: */
-A	nyquist_printf("add[%x,%x]: look for samples (for s2) \n", susp->s1, susp->s2);
+A	nyquist_printf("add[%p,%p]: look for samples (for s2) \n", susp->s1, susp->s2);
         susp_check_term_log_block_samples(s2, s2_bptr, s2_ptr, s2_cnt, 2, 3);
-A	nyquist_printf("add[%x,%x]: found samples (for s2) s2_cnt=%d\n",
-               susp->s1, susp->s2, susp->s2_cnt);
-        togo = min(togo, susp->s2_cnt);
+A	nyquist_printf("add[%p,%p]: found samples (for s2) s2_cnt=%d\n",
+               susp->s1, susp->s2, (int)susp->s2_cnt);
+        togo = MIN(togo, susp->s2_cnt);
 A	if (susp->terminate_bits & 2) {
-            nyquist_printf("add[%x,%x]: terminate bits on (for s2) togo=%d\n",
+            nyquist_printf("add[%p,%p]: terminate bits on (for s2) togo=%d\n",
                    susp->s1, susp->s2, togo);
         }
         
@@ -125,12 +126,12 @@ A	if (susp->terminate_bits & 2) {
          * if a sound has terminated)
          */
 A	nyquist_printf(
- "add[%x,%x] (s1_s2_nn) %x: logically_stopped %d, logical_stop_cnt %d\n",
+ "add[%p,%p] (s1_s2_nn) %p: logically_stopped %d, logical_stop_cnt %d\n",
                susp->s1, susp->s2, susp, susp->logically_stopped, 
-               susp->susp.log_stop_cnt);
+               (int)susp->susp.log_stop_cnt);
         if (!susp->logically_stopped && susp->susp.log_stop_cnt != UNKNOWN) {
             int to_stop = susp->susp.log_stop_cnt - (susp->susp.current + cnt);
-A	    nyquist_printf("add[%x,%x]: to_stop = %d\n", susp->s1, susp->s2, to_stop);
+A	    nyquist_printf("add[%p,%p]: to_stop = %d\n", susp->s1, susp->s2, to_stop);
             /* logical stops have to be indicated on block boundaries */
             if (to_stop < togo) {
                 if (to_stop == 0) {
@@ -157,12 +158,12 @@ A	    nyquist_printf("add[%x,%x]: to_stop = %d\n", susp->s1, susp->s2, to_stop);
         if (susp->terminate_cnt != UNKNOWN &&
             susp->terminate_cnt <= susp->susp.current + cnt + togo) {
             togo = susp->terminate_cnt - (susp->susp.current + cnt);
-D	    nyquist_printf("add[%x,%x]: togo = %d\n", susp->s1, susp->s2, togo);
+D	    nyquist_printf("add[%p,%p]: togo = %d\n", susp->s1, susp->s2, togo);
             if (togo == 0) break;
         }
         
         n = togo;
-A	nyquist_printf("add[%x,%x] (s1_s2_nn) %x starting inner loop, n %d\n", 
+A	nyquist_printf("add[%p,%p] (s1_s2_nn) %p starting inner loop, n %d\n", 
                susp->s1, susp->s2, susp, n);
         s1_ptr_reg = susp->s1_ptr;
         s2_ptr_reg = susp->s2_ptr;
@@ -183,7 +184,7 @@ A 	    nyquist_printf("add_s1_s2_nn: %g + %g\n", *s1_ptr_reg, *s2_ptr_reg);
         cnt += togo;
     } /* outer loop */
     
-A   nyquist_printf("add[%x,%x] (s1_s2_nn) %x ending outer loop, cnt %d\n",
+A   nyquist_printf("add[%p,%p] (s1_s2_nn) %p ending outer loop, cnt %d\n",
            susp->s1, susp->s2, susp, cnt);
     
     snd_list->block_len = cnt;
@@ -198,18 +199,18 @@ A   nyquist_printf("add[%x,%x] (s1_s2_nn) %x ending outer loop, cnt %d\n",
      * (see above) and we just never test susp->susp.log_stop_cnt.
      */
     if (susp->logically_stopped) {
-A   nyquist_printf("add[%x,%x] (s1_s2_nn) %x->logically_stopped already true\n",
+A   nyquist_printf("add[%p,%p] (s1_s2_nn) %p->logically_stopped already true\n",
            susp->s1, susp->s2, susp);
         snd_list->logically_stopped = true;
     } else if (susp->susp.log_stop_cnt == susp->susp.current) {
-A   nyquist_printf("add[%x,%x] (s1_s2_nn) %x->logically_stopped set to true\n",
+A   nyquist_printf("add[%p,%p] (s1_s2_nn) %p->logically_stopped set to true\n",
            susp->s1, susp->s2, susp);
         susp->logically_stopped = true;
     }
     
     /* test for termination of s1 */
     if (susp->terminate_bits == 3) {
-D	nyquist_printf("add[%x,%x] (s1_s2_nn) s1 and s2 terminated, unrefed\n",
+D	nyquist_printf("add[%p,%p] (s1_s2_nn) s1 and s2 terminated, unrefed\n",
                susp->s1, susp->s2);
         /* free susp and point to terminal zeros (leaving pending snd_lists)*/
         if (cnt) {
@@ -220,31 +221,31 @@ D	nyquist_printf("add[%x,%x] (s1_s2_nn) s1 and s2 terminated, unrefed\n",
             /* no samples generated */
             snd_list_terminate(snd_list);
         }
-D	nyquist_printf("add[%x,%x] (s1_s2_nn) %x terminated.\n",
+D	nyquist_printf("add[%p,%p] (s1_s2_nn) %p terminated.\n",
                susp->s1, susp->s2, susp);
     } else {
         if (susp->terminate_bits & 1) {
-D	    nyquist_printf("add[%x,%x] (s1_s2_nn) s1 terminated, unrefed\n",
+D	    nyquist_printf("add[%p,%p] (s1_s2_nn) s1 terminated, unrefed\n",
                    susp->s1, susp->s2);
             sound_unref(susp->s1);
             susp->s1 = NULL;
             susp->susp.fetch = add_s2_nn_fetch;
 D           nyquist_printf("add_s1_s2_nn_fetch: add_s2_nn_fetch installed\n");
             if (cnt == 0) {
-D		nyquist_printf("add[%x,%x]: calling add_s2_nn_fetch\n",
+D		nyquist_printf("add[%p,%p]: calling add_s2_nn_fetch\n",
                        susp->s1, susp->s2);
                 add_s2_nn_fetch(susp, snd_list);
             }
         }
         else if (susp->terminate_bits & 2) {
-D	    nyquist_printf("add[%x,%x] (s1_s2_nn) s2 terminated, unrefed\n",
+D	    nyquist_printf("add[%p,%p] (s1_s2_nn) s2 terminated, unrefed\n",
                    susp->s1, susp->s2);
             sound_unref(susp->s2);
             susp->s2 = NULL;
             susp->susp.fetch = add_s1_nn_fetch;
 D           stdputstr("add_s1_s2_nn_fetch: add_s1_nn_fetch installed\n");
             if (cnt == 0) {
-D		nyquist_printf("add[%x,%x]: calling add_s1_nn_fetch\n",
+D		nyquist_printf("add[%p,%p]: calling add_s1_nn_fetch\n",
                        susp->s1, susp->s2);
                 add_s1_nn_fetch(susp, snd_list);
             }
@@ -267,13 +268,13 @@ void add_s1_nn_fetch(susp, snd_list)
   snd_list_type snd_list;
 {
     /* expansion of add_s_nn_fetch(snd_list,s1,s2,1); follows: */
-    int togo, s2_start;
+    int togo, s2_start=0;
     int n;
     sample_block_type out;
     register sample_block_values_type out_ptr;
 
-D   nyquist_printf("add_s1_nn_fetch(susp %x, snd_list %x, s1_cnt %d)\n",
-           susp, snd_list, susp->s1_cnt);
+D   nyquist_printf("add_s1_nn_fetch(susp %p, snd_list %p, s1_cnt %d)\n",
+           susp, snd_list, (int)susp->s1_cnt);
 
 #ifdef GC_DEBUG
     snd_list_report(snd_list, "add_s1_nn_fetch");
@@ -286,7 +287,7 @@ D   nyquist_printf("add_s1_nn_fetch(susp %x, snd_list %x, s1_cnt %d)\n",
     susp_check_term_log_block_samples(s1, s1_bptr,
                                       s1_ptr, s1_cnt, 1, 3);
 B   if (susp->terminate_bits & 1)
-        nyquist_printf("add[%x,%x]: s1 terminates\n", susp->s1, susp->s2);
+        nyquist_printf("add[%p,%p]: s1 terminates\n", susp->s1, susp->s2);
 
     /* don't run past the s1 input sample block: */
     togo = susp->s1_cnt;
@@ -324,7 +325,7 @@ D	    stdputstr("add_s_nn_fetch: unexpected condition\n");
         } else /* no s2 */ {
             snd_list_terminate(snd_list);
         }
-D	nyquist_printf("add_s_nn_fetch: special return, susp %x\n", susp);
+D	nyquist_printf("add_s_nn_fetch: special return, susp %p\n", susp);
         return; /* fetching taken care of by another routine */
     }
 /*    if (susp->terminate_cnt != UNKNOWN &&
@@ -346,10 +347,10 @@ D	nyquist_printf("add_s1_nn_fetch: to_stop %d togo %d\n", to_stop, togo);
 
     /* consider other signal? don't run past its start time... */
     if (susp->s2) {
-        s2_start = round((susp->s2->t0 - susp->susp.t0) *
+        s2_start = ROUND((susp->s2->t0 - susp->susp.t0) *
             susp->s2->sr);
         if (s2_start < susp->susp.current + togo)
-            togo = min(togo, s2_start - susp->susp.current);
+            togo = MIN(togo, s2_start - susp->susp.current);
 B           if (togo == 0) stdputstr("togo is zero at checkpoint 4\n");
     }
 
@@ -374,11 +375,11 @@ B           if (togo == 0) stdputstr("togo is zero at checkpoint 4\n");
          */
 
         /* just fetch and pass blocks on */
-        if (0) nyquist_printf("add[%x,%x] (s%d_nn) %x starting uncopy, togo %d\n", susp->s1, susp->s2,
+        if (0) nyquist_printf("add[%p,%p] (s%d_nn) %p starting uncopy, togo %d\n", susp->s1, susp->s2,
                1, susp, togo);
         snd_list->block = susp->s1_bptr;
         (susp->s1_bptr->refcnt)++;
-        if (0) nyquist_printf("add[%x,%x] (s%d_nn) %x shared block %x zero_block %x\n",susp->s1, susp->s2,
+        if (0) nyquist_printf("add[%p,%p] (s%d_nn) %p shared block %p zero_block %p\n",susp->s1, susp->s2,
                1, susp, susp->s1_bptr, zero_block);
 
         susp_took(s1_cnt, togo);
@@ -391,7 +392,7 @@ B           if (togo == 0) stdputstr("togo is zero at checkpoint 4\n");
          * SND_get_zeros, which returns zero blocks but does not link
          * them onto the sound list.
          */
-        if (0) nyquist_printf("s2 %x thissr %g suspsr %g get_next %d lsc %d\n",
+        if (0) nyquist_printf("s2 %p thissr %g suspsr %g get_next %d lsc %d\n",
                 susp->s2, susp->s1->sr, susp->susp.sr,
                 susp->s1->get_next == SND_get_next,
                 susp->s1->logical_stop_cnt == UNKNOWN);
@@ -399,7 +400,8 @@ B           if (togo == 0) stdputstr("togo is zero at checkpoint 4\n");
             susp->s1->get_next == SND_get_next &&
             susp->s1->logical_stop_cnt == UNKNOWN) {
             snd_list_type addend_list;
-D	    nyquist_printf("add[%x,%x]: collapsing! LSC %d\n", susp->s1, susp->s2, susp->s1->logical_stop_cnt);
+D	    nyquist_printf("add[%p,%p]: collapsing! LSC %d\n", susp->s1, susp->s2,
+                      (int)susp->s1->logical_stop_cnt);
 D	    sound_print_tree(susp->s1);
             /* will "current" values match? */
             /* test for logical stop */
@@ -429,11 +431,11 @@ D	    sound_print_tree(susp->s1);
         falloc_sample_block(out, "add_s1_nn_fetch");
         snd_list->block = out;
         out_ptr = out->samples;
-B        nyquist_printf("add[%x,%x] (s1_nn) %x new block %x, s1_ptr %x block %x s1_cnt %d togo %d\n", susp->s1, susp->s2, susp, out, susp->s1_ptr, susp->s1_bptr->samples, susp->s1_cnt, togo);
+B        nyquist_printf("add[%p,%p] (s1_nn) %p new block %p, s1_ptr %p block %p s1_cnt %d togo %d\n", susp->s1, susp->s2, susp, out, susp->s1_ptr, susp->s1_bptr->samples, (int)susp->s1_cnt, togo);
         n = togo;
 B       if (togo == 0) stdputstr("togo is zero at checkpoint 5\n");
 B	if (togo == 0) nyquist_printf(
-        "add[%x,%x] (s%d_nn) %x starting copy loop, togo %d\n",
+        "add[%p,%p] (s%d_nn) %p starting copy loop, togo %d\n",
                susp->s1, susp->s2, 1, susp, togo);
         while (n--) { /* the inner sample computation loop */
             /* scale? */
@@ -462,9 +464,9 @@ D        stdputstr("add_s_nn_fetch: add_s1_s2_fetch installed\n");
         /* s2 finished and s1 stops */
         /* go to terminal state */
         susp->s1 = NULL;
-D        nyquist_printf("add_s_nn_fetch: go to terminal state.  susp->s2 %x, \
-               susp->susp.current %d, s2_start %d, susp->s1->list %x, \
-               zero_snd_list %x\n", susp->s2, susp->susp.current,
+D        nyquist_printf("add_s_nn_fetch: go to terminal state.  susp->s2 %p, \
+               susp->susp.current %d, s2_start %d, susp->s1->list %p, \
+               zero_snd_list %p\n", susp->s2, (int)susp->susp.current,
                s2_start, susp->s1->list, zero_snd_list);
         /* !!! free resources and set up pointers to terminal snd_list */
         /* !!! logically stopped? */
@@ -481,7 +483,7 @@ D        stdputstr("add_s_nn_fetch: susp->logically_stopped\n");
 D    {
         if (susp->logically_stopped || snd_list->logically_stopped) 
             stdputstr("STOPPED\n");
-        else nyquist_printf("ok: current %d\n", susp->susp.current); }
+        else nyquist_printf("ok: current %d\n", (int)susp->susp.current); }
 }
 
 
@@ -489,12 +491,12 @@ void add_s2_nn_fetch(susp, snd_list)
   register add_susp_type susp;
   snd_list_type snd_list;
 {
-    int togo, s1_start;
+    int togo, s1_start=0;
     int n;
     sample_block_type out;
     register sample_block_values_type out_ptr;
 
-D   nyquist_printf("add_s2_nn_fetch(susp %x, snd_list %x)\n",
+D   nyquist_printf("add_s2_nn_fetch(susp %p, snd_list %p)\n",
            susp, snd_list);
 
 #ifdef GC_DEBUG
@@ -516,7 +518,7 @@ D   nyquist_printf("add_s2_nn_fetch(susp %x, snd_list %x)\n",
     /* if (susp->s2_ptr == zero_block->samples) { -sep21 RBD*/
     if (susp->terminate_bits & 2) {
         if (susp->s1) {
-            s1_start = round((susp->s1->t0 - susp->susp.t0) *
+            s1_start = ROUND((susp->s1->t0 - susp->susp.t0) *
                 susp->s1->sr);
              if (0) nyquist_printf("add_s_nn_fetch: s1_start %d\n", s1_start);
         }
@@ -543,7 +545,7 @@ D	    stdputstr("add_s_nn_fetch: unexpected condition\n");
         } else /* no s1 */ {
             snd_list_terminate(snd_list);
         }
-D	nyquist_printf("add_s_nn_fetch: special return, susp %x\n", susp);
+D	nyquist_printf("add_s_nn_fetch: special return, susp %p\n", susp);
         return; /* fetching taken care of by another routine */
     }
 /*    if (susp->terminate_cnt != UNKNOWN &&
@@ -565,10 +567,10 @@ D	nyquist_printf("add_s2_nn_fetch: to_stop %d togo %d\n", to_stop, togo);
 
     /* consider other signal? don't run past its start time... */
     if (susp->s1) {
-        s1_start = round((susp->s1->t0 - susp->susp.t0) *
+        s1_start = ROUND((susp->s1->t0 - susp->susp.t0) *
             susp->s1->sr);
         if (s1_start < susp->susp.current + togo)
-            togo = min(togo, s1_start - susp->susp.current);
+            togo = MIN(togo, s1_start - susp->susp.current);
     }
 
     /*
@@ -592,11 +594,11 @@ D	nyquist_printf("add_s2_nn_fetch: to_stop %d togo %d\n", to_stop, togo);
          */
 
         /* just fetch and pass blocks on */
-D	nyquist_printf("add[%x,%x] (s%d_nn) %x starting uncopy, togo %d\n", susp->s2, susp->s1,
+D	nyquist_printf("add[%p,%p] (s%d_nn) %p starting uncopy, togo %d\n", susp->s2, susp->s1,
                2, susp, togo);
         snd_list->block = susp->s2_bptr;
         (susp->s2_bptr->refcnt)++;
-D	nyquist_printf("add[%x,%x] (s%d_nn) %x shared block %x zero_block %x\n",susp->s2, susp->s1,
+D	nyquist_printf("add[%p,%p] (s%d_nn) %p shared block %p zero_block %p\n",susp->s2, susp->s1,
                2, susp, susp->s2_bptr, zero_block);
 
         susp_took(s2_cnt, togo);
@@ -609,7 +611,7 @@ D	nyquist_printf("add[%x,%x] (s%d_nn) %x shared block %x zero_block %x\n",susp->
          * SND_get_zeros, which returns zero blocks but does not link
          * them onto the sound list.
          */
-        if (0) nyquist_printf("s1 %x thissr %g suspsr %g get_next %d lsc %d\n",
+        if (0) nyquist_printf("s1 %p thissr %g suspsr %g get_next %d lsc %d\n",
                 susp->s1, susp->s2->sr, susp->susp.sr,
                 susp->s2->get_next == SND_get_next,
                 susp->s2->logical_stop_cnt == UNKNOWN);
@@ -617,7 +619,8 @@ D	nyquist_printf("add[%x,%x] (s%d_nn) %x shared block %x zero_block %x\n",susp->
             susp->s2->get_next == SND_get_next &&
             susp->s2->logical_stop_cnt == UNKNOWN) {
             snd_list_type addend_list;
-D	    nyquist_printf("add[%x,%x]: collapsing! LSC %d\n", susp->s2, susp->s1, susp->s2->logical_stop_cnt);
+D	    nyquist_printf("add[%p,%p]: collapsing! LSC %d\n",
+                      susp->s2, susp->s1, (int)susp->s2->logical_stop_cnt);
 D	    sound_print_tree(susp->s2);
             /* will "current" values match? */
             /* test for logical stop */
@@ -647,13 +650,13 @@ D	    sound_print_tree(susp->s2);
         falloc_sample_block(out, "add_s2_nn_fetch");
         snd_list->block = out;
         out_ptr = out->samples;
-B       nyquist_printf("add[%x,%x] (s2_nn) %x new block %x\n",
+B       nyquist_printf("add[%p,%p] (s2_nn) %p new block %p\n",
                susp->s2, susp->s1, susp, out);
         n = togo;
         if (n == 0)
             stdputstr("zero block length error in add_s2_nn_fetch\n");
 B       nyquist_printf(
-        "add[%x,%x] (s2_nn) %x starting copy loop, togo %d\n",
+        "add[%p,%p] (s2_nn) %p starting copy loop, togo %d\n",
                susp->s2, susp->s1, susp, togo);
         while (n--) { /* the inner sample computation loop */
             /* scale? */
@@ -684,9 +687,9 @@ D        stdputstr("add_s_nn_fetch: add_s1_s2_fetch installed\n");
         /* s1 finished and s2 stops */
         /* go to terminal state */
         susp->s2 = NULL;
-D        nyquist_printf("add_s_nn_fetch: go to terminal state.  susp->s1 %x, \
-               susp->susp.current %d, s1_start %d, susp->s2->list %x, \
-               zero_snd_list %x\n", susp->s1, susp->susp.current,
+D        nyquist_printf("add_s_nn_fetch: go to terminal state.  susp->s1 %p, \
+               susp->susp.current %d, s1_start %d, susp->s2->list %p, \
+               zero_snd_list %p\n", susp->s1, (int)susp->susp.current,
                s1_start, susp->s2->list, zero_snd_list);
         /* !!! free resources and set up pointers to terminal snd_list */
         /* !!! logically stopped? */
@@ -703,7 +706,9 @@ D        stdputstr("add_s_nn_fetch: susp->logically_stopped\n");
     if (0) {
         if (susp->logically_stopped || snd_list->logically_stopped) 
             stdputstr("STOPPED\n");
-        else nyquist_printf("ok: current %d\n", susp->susp.current); }
+        else
+            nyquist_printf("ok: current %d\n", (int)susp->susp.current);
+    }
 }
 
 
@@ -712,22 +717,23 @@ void add_zero_fill_nn_fetch(susp, snd_list)
   register add_susp_type susp;
   snd_list_type snd_list;
 {
-    int togo, s_start;
+    int togo, s_start=0;
 
 #ifdef GC_DEBUG
     snd_list_report(snd_list, "add_zero_fill_nn_fetch");
 #endif
     togo = max_sample_block_len;
 
-    if (0) fprintf(stderr, "add_zero_fill_nn_fetch, susp.current %d\n", susp->susp.current);
+    if (0) fprintf(stderr, "add_zero_fill_nn_fetch, susp.current %d\n",
+                   (int)susp->susp.current);
     /* don't run past start time ... */
     if (susp->s1) {
-        s_start = round((susp->s1->t0 - susp->susp.t0) * susp->s1->sr);
+        s_start = ROUND((susp->s1->t0 - susp->susp.t0) * susp->s1->sr);
         if (s_start < susp->susp.current + togo) {
             togo = s_start - susp->susp.current;
         }
     } else if (susp->s2) {
-        s_start = round((susp->s2->t0 - susp->susp.t0) * susp->s2->sr);
+        s_start = ROUND((susp->s2->t0 - susp->susp.t0) * susp->s2->sr);
         if (s_start < susp->susp.current + togo) {
             togo = s_start - susp->susp.current;
         }
@@ -761,10 +767,10 @@ void add_free(add_susp_type susp)
 
 void add_mark(add_susp_type susp)
 {
-/*    nyquist_printf("add_mark(%x)\n", susp);*/
-/*    nyquist_printf("marking s1@%x in add@%x\n", susp->s1, susp);*/
+/*    nyquist_printf("add_mark(%p)\n", susp);*/
+/*    nyquist_printf("marking s1@%p in add@%p\n", susp->s1, susp);*/
     sound_xlmark(susp->s1);
-/*    nyquist_printf("marking s2@%x in add@%x\n", susp->s2, susp);*/
+/*    nyquist_printf("marking s2@%p in add@%p\n", susp->s2, susp);*/
     sound_xlmark(susp->s2);
 
 }
@@ -792,8 +798,8 @@ sound_type snd_make_add(s1, s2)
   sound_type s2;
 {
     register add_susp_type susp;
-    rate_type sr = max(s1->sr, s2->sr);
-    time_type t0 = min(s1->t0, s2->t0);
+    rate_type sr = MAX(s1->sr, s2->sr);
+    time_type t0 = MIN(s1->t0, s2->t0);
     int interp_desc = 0;
     double sample_offset;
 
@@ -874,6 +880,6 @@ sound_type snd_add(s1, s2, t0)
 {
     sound_type s1_copy = sound_copy(s1);
     sound_type s2_copy = sound_copy(s2);
-/*    nyquist_printf("snd_add %x %x copied to %x %x\n", s1, s2, s1_copy,  s2_copy); */
+/*    nyquist_printf("snd_add %p %p copied to %p %p\n", s1, s2, s1_copy,  s2_copy); */
     return snd_make_add(s1_copy, s2_copy, t0);
 }

@@ -1,5 +1,12 @@
 /* resamp.c -- resample signal using sinc interpolation */
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  min->MIN, max->MAX
+ */
+
+
+
 #include "stdio.h"
 #ifndef mips
 #include "stdlib.h"
@@ -200,7 +207,7 @@ samples need to be shifted from the end of X to the beginning.
         togo = susp->Xsize - susp->Xp;
         /* don't run past the s input sample block: */
         susp_check_term_log_samples(s, s_ptr, s_cnt);
-        togo = min(togo, susp->s_cnt);
+        togo = MIN(togo, susp->s_cnt);
 
         /* don't run past logical stop time */
         if (!susp->logically_stopped && 
@@ -348,7 +355,7 @@ sound_type snd_make_resample(sound_type s, rate_type sr)
     susp->susp.current = 0;
     susp->s = s;
     susp->s_cnt = 0;
-    susp->Xoff = (int) (((susp->Nmult + 1) / 2.0) * max(1.0, 1.0 / susp->factor) + 10);
+    susp->Xoff = (int) (((susp->Nmult + 1) / 2.0) * MAX(1.0, 1.0 / susp->factor) + 10);
     susp->Xsize = (long) ((max_sample_block_len / susp->factor) + 2 * susp->Xoff);
     susp->X = calloc(susp->Xsize, sizeof(sample_type));
     susp->Xp = susp->Xoff;

@@ -1,10 +1,14 @@
 /* sound.c -- nyquist sound data type */
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  changes for portability and fix compiler warnings
+ */
+
 /* define size_t: */
 #ifdef UNIX
 #include "sys/types.h"
 #endif  
-#include <math.h>
 #include <stdio.h>
 #include "xlisp.h"
 #include "sound.h"
@@ -42,6 +46,15 @@ void sample_block_unref(sample_block_type sam);
 #ifdef SNAPSHOTS
 boolean sound_created_flag = false;
 #endif
+
+
+/* xlbadsr - report a "bad combination of sample rates" error */
+LVAL snd_badsr(void)
+{
+    xlfail("bad combination of sample rates");
+    return NIL; /* never happens */
+}
+
 
 /* compute-phase -  given a phase in radians, a wavetable specified as
  *  the nominal pitch (in half steps), the table length, and the sample
@@ -96,7 +109,8 @@ void block_watch(long sample_block)
         return;
     }
     blocks_to_watch[blocks_to_watch_len++] = (sample_block_type) sample_block;
-    nyquist_printf("block_watch - added %d = 0x%x\n", sample_block, sample_block);
+    nyquist_printf("block_watch - added %d = %x\n",
+                   (int)sample_block, (int)sample_block);
 }
 
 
@@ -112,13 +126,13 @@ void block_watch(long sample_block)
 
 void fetch_zeros(snd_susp_type susp, snd_list_type snd_list)
 {
-    int len = min(susp->log_stop_cnt - susp->current,
+    int len = MIN(susp->log_stop_cnt - susp->current,
                    max_sample_block_len);
 /*    nyquist_printf("fetch_zeros, lsc %d current %d len %d\n", 
             susp->log_stop_cnt, susp->current, len); */
     if (len < 0) {
         char error[80];
-        sprintf(error, "fetch_zeros susp %x (%s) len %d", susp, susp->name, len);
+        sprintf(error, "fetch_zeros susp %p (%s) len %d", susp, susp->name, len);
         xlabort(error);
     }
     if (len == 0) { /* we've reached the logical stop time */
@@ -144,7 +158,7 @@ long sound_nth_block(sound_type snd, long n)
     for (i = 0; i < n; i++) {
         if (i == 1) {
             gcbug_snd_list = snd_list;
-            nyquist_printf("gcbug_snd_list = 0x%x\n", gcbug_snd_list);
+            nyquist_printf("gcbug_snd_list = 0x%p\n", gcbug_snd_list);
         }
         if (!snd_list->block) return 0;
         snd_list = snd_list->u.next;
@@ -183,7 +197,7 @@ snd_list_type snd_list_create(snd_susp_type susp)
     snd_list->refcnt = 1;               /* one ref */
     snd_list->block_len = 0;            /* no samples */
     snd_list->logically_stopped = false;/* not stopped */
-/*    nyquist_printf("snd_list_create => %x\n", snd_list);*/
+/*    nyquist_printf("snd_list_create => %p\n", snd_list);*/
     return snd_list;
 }
 
@@ -219,7 +233,7 @@ sound_type sound_create(
     falloc_sound(sound, "sound_create");
     if (((long) sound) & 3) errputstr("sound not word aligned\n");
     last_sound = sound; /* debug */
-    /* nyquist_printf("sound_create %x gets %g\n", sound, t0); */
+    /* nyquist_printf("sound_create %p gets %g\n", sound, t0); */
     sound->t0 = t0;
     sound->time = t0;
     sound->stop = MAX_STOP;
@@ -231,8 +245,8 @@ sound_type sound_create(
     sound->logical_stop_cnt = UNKNOWN;
     sound->table = NULL;
     sound->extra = NULL;
-    /* nyquist_printf("sound_create susp %x snd_list %x\n", susp, sound->list);
-       nyquist_printf("sound_create'd %x\n", sound); */
+    /* nyquist_printf("sound_create susp %p snd_list %p\n", susp, sound->list);
+       nyquist_printf("sound_create'd %p\n", sound); */
 #ifdef SNAPSHOTS
     sound_created_flag = true;
 #endif
@@ -295,7 +309,7 @@ void sound_prepend_zeros(sound_type snd, time_type t0)
     /* make caller happy by claiming the sound now starts at exactly t0;
      * this is always true within 0.5 samples as allowed by Fugue. */
     snd->t0 = t0;
-/*    nyquist_printf("sound_prepend_zeros: snd %x true_t0 %g sr %g n %d\n", 
+/*    nyquist_printf("sound_prepend_zeros: snd %p true_t0 %g sr %g n %d\n", 
            snd, snd->true_t0, snd->sr, n);*/
 }
 
@@ -330,7 +344,7 @@ sound_type sound_copy(sound_type snd)
     falloc_sound(sndcopy, "sound_copy");
     *sndcopy = *snd;    /* copy the whole structure */
     snd_list_ref(snd->list);    /* copied a reference so fix the count */
-/*    nyquist_printf("sound_copy'd %x to %x\n", snd, sndcopy); */
+/*    nyquist_printf("sound_copy'd %p to %p\n", snd, sndcopy); */
     if (snd->table) snd->table->refcount++;
 #ifdef GC_DEBUG
     if (sndcopy == sound_to_watch) abort();
@@ -378,7 +392,7 @@ table_type sound_to_table(sound_type s)
 
     while (len > 1) {
         sample_block_type sampblock = sound_get_next(s, &blocklen);
-        long togo = min(blocklen, len);
+        long togo = MIN(blocklen, len);
         long i;
         sample_block_values_type sbufp = sampblock->samples;
 /*      nyquist_printf("in sound_to_table, sampblock = %d\n", sampblock);*/
@@ -426,7 +440,7 @@ void sound_unref(sound_type snd)
     if (!snd) return;
     snd_list_unref(snd->list);
     table_unref(snd->table);
-/*    nyquist_printf("\t\t\t\t\tfreeing sound@%x\n", snd);*/
+/*    nyquist_printf("\t\t\t\t\tfreeing sound@%p\n", snd);*/
     if (snd->extra) free(snd->extra);
     ffree_sound(snd, "sound_unref");
 }
@@ -468,7 +482,8 @@ void snd_list_unref(snd_list_type list)
     void (*freefunc)();
 
     if (list == NULL || list == zero_snd_list) {
-        if (list == NULL) nyquist_printf("why did snd_list_unref get %x?\n", list);
+        if (list == NULL)
+           nyquist_printf("why did snd_list_unref get %p?\n", list);
         return;
     }
     list->refcnt--;
@@ -483,11 +498,11 @@ void snd_list_unref(snd_list_type list)
         }
         else if (list->block == NULL) { /* the next thing is the susp */
             /* free suspension structure */
-            /* nyquist_printf("freeing susp@%x\n", list->u.susp); */
+            /* nyquist_printf("freeing susp@%p\n", list->u.susp); */
             freefunc = list->u.susp->free;
             (*freefunc)(list->u.susp);
         }
-        /* nyquist_printf("freeing snd_list@%x\n", list); */
+        /* nyquist_printf("freeing snd_list@%p\n", list); */
         ffree_snd_list(list, "snd_list_unref");
     }
 }
@@ -507,7 +522,7 @@ void sample_block_test(sample_block_type sam, char *s)
         if ((sam > (blocks_to_watch[i] - 1)) &&
             (sam < (blocks_to_watch[i] + 1))) {
             nyquist_printf(
-    "WOOPS! %s(0x%x) refers to a block 0x%x on the watch list!\n",
+    "WOOPS! %s(0x%p) refers to a block 0x%p on the watch list!\n",
                     s, sam, blocks_to_watch[i]);
         }
     }
@@ -521,10 +536,7 @@ void sample_block_unref(sample_block_type sam)
 #ifndef GCBUG
     sample_block_test(sam, "sample_block_unref");
 #endif        
-
-    /* dmazzoni */
-    /*nyquist_printf("freeing sample block %x\n", sam);*/
-
+/*      nyquist_printf("freeing sample block %p\n", sam); */
         ffree_sample_block(sam, "sample_block_unref");
     }
 }
@@ -595,7 +607,7 @@ double snd_sref(sound_type s, time_type t)
 {
     double exact_cnt;      /* how many fractional samples to scan */
     int cnt;               /* how many samples to flush */
-    sample_block_type sampblock;
+    sample_block_type sampblock = NULL;
     long blocklen;
     sample_type x1, x2;    /* interpolate between these samples */
 
@@ -739,7 +751,6 @@ sound_type snd_xform(sound_type snd,
                       promoted_sample_type scale)
 {
     long start_cnt, stop_cnt; /* clipping samples (sample 0 at new t0) */
-    double shift = time - snd->time;
 
     /* start_cnt should reflect max of where the sound starts (t0)
      * and the new start_time.
@@ -781,7 +792,8 @@ sound_type snd_xform(sound_type snd,
          */
         ffree_snd_list(snd->list, "snd_xform");
         snd->list = zero_snd_list;
-        nyquist_printf("snd_xform: (stop_time < t0 or start >= stop) -> zero sound = %x\n, snd");
+        nyquist_printf("snd_xform: (stop_time < t0 or start >= stop) "
+                       "-> zero sound = %p\n", snd);
         
     } else {
         snd = sound_copy(snd);
@@ -866,11 +878,11 @@ sample_block_type SND_flush(sound_type snd, long * cnt)
  */
 sample_block_type SND_get_zeros(sound_type snd, long * cnt)
 {
-    int len = min(snd->prepend_cnt, max_sample_block_len);
+    int len = MIN(snd->prepend_cnt, max_sample_block_len);
     /* stdputstr("SND_get_zeros: "); */
     if (len < 0) {
         char error[80];
-        sprintf(error, "SND_get_zeros snd %g len %d", snd, len);
+        sprintf(error, "SND_get_zeros snd %p len %d", snd, len);
         xlabort(error);
     }
     if (len == 0) { /* we've finished prepending zeros */
@@ -881,7 +893,7 @@ sample_block_type SND_get_zeros(sound_type snd, long * cnt)
         *cnt = len;
         snd->current += len;
         snd->prepend_cnt -= len;
-/*        nyquist_printf("returning internal_zero_block@%x\n", internal_zero_block);
+/*        nyquist_printf("returning internal_zero_block@%p\n", internal_zero_block);
         fflush(stdout); */
         return internal_zero_block;
     }
@@ -1008,17 +1020,17 @@ sample_block_type SND_get_first(sound_type snd, long * cnt)
 
         snd_list->u.next = snd_list_create(susp);
         snd_list->block = internal_zero_block;
-        /* nyquist_printf("SND_get_first: susp->fetch %x\n",
+        /* nyquist_printf("SND_get_first: susp->fetch %p\n",
                 susp->fetch); */
         (*(susp->fetch))(susp, snd_list);
 #ifdef GC_DEBUG
         snd_list_debug(snd_list, "SND_get_first");
 #endif
-        /* nyquist_printf("SND_get_first: snd_list %x, block %x, length %d\n",
+        /* nyquist_printf("SND_get_first: snd_list %p, block %p, length %d\n",
                snd_list, snd_list->block, snd_list->block_len); */
     }
     if ((snd->logical_stop_cnt == UNKNOWN) && snd_list->logically_stopped) {
-        /* nyquist_printf("SND_get_first/next: snd %x logically stopped at %d\n",
+        /* nyquist_printf("SND_get_first/next: snd %p logically stopped at %d\n",
                 snd, snd->current); */
         snd->logical_stop_cnt = snd->current;
     }
@@ -1126,7 +1138,7 @@ void min_cnt(long *cnt_ptr, sound_type sound, snd_susp_type susp, long cnt)
       susp->sr + 0.5);
     /* if *cnt_ptr is uninitialized, just plug in c, otherwise compute min */
     if ((*cnt_ptr == UNKNOWN) || (*cnt_ptr > c)) {
-/*        nyquist_printf("min_cnt %x: new count is %d\n", susp, c);*/
+/*        nyquist_printf("min_cnt %p: new count is %d\n", susp, c);*/
 /*        if (c == 0) sound_print_tree(printing_this_sound);*/
         *cnt_ptr = c;
     }
@@ -1160,7 +1172,7 @@ void sound_init(void)
 #ifdef GC_DEBUG
     { long s;
       stdputstr("sound_to_watch: ");
-      scanf("%x", &s);
+      scanf("%p", &s);
       watch_sound(s);
     }
 #endif
@@ -1227,7 +1239,7 @@ void set_watch(where)
 {
     if (watch_me == NULL) {
         watch_me = where;
-        nyquist_printf("set_watch: watch_me = %lx\n", watch_me);
+        nyquist_printf("set_watch: watch_me = %p\n", watch_me);
     }
 }
 
@@ -1277,14 +1289,14 @@ void sound_print_sound(sound_type s, long n)
 
     while (ntotal < n) {
         if (s->logical_stop_cnt != UNKNOWN)
-            nyquist_printf("LST=%d ", s->logical_stop_cnt);
+            nyquist_printf("LST=%d ", (int)s->logical_stop_cnt);
         sound_print_tree(s);
         sampblock = sound_get_next(s, &blocklen);
         if (sampblock == zero_block || blocklen == 0) {
             break;
         }
         print_sample_block_type("sound_print", sampblock,
-                                min(blocklen, n - ntotal));
+                                MIN(blocklen, n - ntotal));
         ntotal += blocklen;
     }
     nyquist_printf("total samples: %d\n", ntotal);
@@ -1309,8 +1321,8 @@ void sound_print_array(LVAL sa, long n)
     t0 = tmax = (getsound(getelement(sa, 0)))->t0;
     for (i = 1; i < len; i++) {
         sound_type s = getsound(getelement(sa, i));
-        t0 = min(s->t0, t0);
-        tmax = max(s->t0, tmax);
+        t0 = MIN(s->t0, t0);
+        tmax = MAX(s->t0, tmax);
     }
 
     /* if necessary, prepend zeros */
@@ -1319,7 +1331,7 @@ void sound_print_array(LVAL sa, long n)
         for (i = 0; i < len; i++) {
             sound_type s = getsound(getelement(sa, i));
             if (t0 < s->t0) {
-                nyquist_printf(" %d ", i);
+                nyquist_printf(" %d ", (int)i);
                 sound_prepend_zeros(s, t0);
             }
         }
@@ -1340,16 +1352,17 @@ void sound_print_array(LVAL sa, long n)
                       done = false;
                 }
                 current = s->current - blocklen;
-                nyquist_printf("chan %d current %d:\n", i, current);
+                nyquist_printf("chan %d current %d:\n", i, (int)current);
                  print_sample_block_type("sound_print", sampblock,
-                                        min(blocklen, n - current));
+                                        MIN(blocklen, n - current));
                 current = s->current;
-                upper = max(upper, current);
+                upper = MAX(upper, current);
             }
         }
         if (done) break;
     }
-    nyquist_printf("total: %d samples x %d channels\n", upper, len);
+    nyquist_printf("total: %d samples x %d channels\n",
+                   (int)upper, (int)len);
 }
 
 
@@ -1415,8 +1428,8 @@ void sound_play(snd_expr)
 void sound_print_tree(snd)
   sound_type snd;
 {
-/*    nyquist_printf("sample_block_free %x\n", sample_block_free);*/
-    nyquist_printf("SOUND PRINT TREE of %x\n", snd);
+/*    nyquist_printf("sample_block_free %p\n", sample_block_free);*/
+    nyquist_printf("SOUND PRINT TREE of %p\n", snd);
     sound_print_tree_1(snd, 0);
 }
 
@@ -1437,17 +1450,20 @@ void sound_print_tree_1(snd, n)
         stdputstr("... (skipping remainder of sound)\n");
         return;
     }
-    nyquist_printf("sound_type@%x(%s@%x)t0 %g stop %d sr %g lsc %d scale %g pc %d", snd, 
-            (snd->get_next == SND_get_next ? "SND_get_next" :
-              (snd->get_next == SND_get_first ? "SND_get_first" : "?")),
-            snd->get_next, snd->t0, snd->stop, snd->sr, 
-            snd->logical_stop_cnt, snd->scale, snd->prepend_cnt);
+    nyquist_printf("sound_type@%p(%s@%p)t0 "
+                   "%g stop %d sr %g lsc %d scale %g pc %d",
+                   snd, 
+                   (snd->get_next == SND_get_next ? "SND_get_next" :
+                    (snd->get_next == SND_get_first ? "SND_get_first" : "?")),
+                   snd->get_next, snd->t0, (int)snd->stop, snd->sr, 
+                   (int)snd->logical_stop_cnt, snd->scale,
+                   (int)snd->prepend_cnt);
     if (!snd) {
         stdputstr("\n");
         return;
     }
     snd_list = snd->list;
-    nyquist_printf("->snd_list@%x", snd_list);
+    nyquist_printf("->snd_list@%p", snd_list);
     if (snd_list == zero_snd_list) {
         stdputstr(" = zero_snd_list\n");
         return;
@@ -1463,10 +1479,14 @@ void sound_print_tree_1(snd, n)
             stdputstr("->\n");
             indent(n + 2);
 
-            nyquist_printf("susp@%x(%s)toss_cnt %d current %d lsc %d sr %g t0 %g %x\n",
-                    snd_list->u.susp, snd_list->u.susp->name,
-                    snd_list->u.susp->toss_cnt, snd_list->u.susp->current, snd_list->u.susp->log_stop_cnt,
-                    snd_list->u.susp->sr, snd_list->u.susp->t0, snd_list);
+            nyquist_printf("susp@%p(%s)toss_cnt %d "
+                           "current %d lsc %d sr %g t0 %g %p\n",
+                           snd_list->u.susp, snd_list->u.susp->name,
+                           (int)snd_list->u.susp->toss_cnt,
+                           (int)snd_list->u.susp->current,
+                           (int)snd_list->u.susp->log_stop_cnt,
+                           snd_list->u.susp->sr,
+                           snd_list->u.susp->t0, snd_list);
 /*            stdputstr("HI THERE AGAIN\n");*/
             susp_print_tree(snd_list->u.susp, n + 4);
             return;
@@ -1515,7 +1535,7 @@ double step_to_hz(steps)
 static void sound_xlfree(s)
 sound_type s;
 {
-/*    nyquist_printf("sound_xlfree(%x)\n", s);*/
+/*    nyquist_printf("sound_xlfree(%p)\n", s);*/
     sound_unref(s);
 }
 
@@ -1551,7 +1571,7 @@ sound_type s;
     snd_list_type snd_list;
     long counter = 0;
 #ifdef TRACESNDGC
-    nyquist_printf("sound_xlmark(%x)\n", s);
+    nyquist_printf("sound_xlmark(%p)\n", s);
 #endif
     if (!s) return; /* pointers to sounds are sometimes NULL */
     snd_list = s->list;
@@ -1577,13 +1597,13 @@ sound_type s;
     }
     if (snd_list->u.susp->mark) {
 #ifdef TRACESNDGC
-        nyquist_printf(" found susp (%s) at %x with mark method\n",
+        nyquist_printf(" found susp (%s) at %p with mark method\n",
                snd_list->u.susp->name, snd_list->u.susp);
 #endif
         (*(snd_list->u.susp->mark))(snd_list->u.susp);
     } else {
 #ifdef TRACESNDGC
-        nyquist_printf(" no mark method on susp %x (%s)\n",
+        nyquist_printf(" no mark method on susp %p (%s)\n",
                snd_list->u.susp, snd_list->u.susp->name);
 #endif
     }
@@ -1627,7 +1647,7 @@ sound_type sound_zero(time_type t0,rate_type sr)
 LVAL cvsound(s)
 sound_type s;
 {
-/*   nyquist_printf("cvsound(%x)\n", s);*/
+/*   nyquist_printf("cvsound(%p)\n", s);*/
    return (cvextern(sound_desc, (unsigned char *) s));
 }
 

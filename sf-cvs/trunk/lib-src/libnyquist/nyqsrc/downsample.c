@@ -1,3 +1,12 @@
+/* downsample.c -- linear interpolation to a lower sample rate */
+
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  changes for portability and fix compiler warnings
+ */
+
+
+
 #include "stdio.h"
 #ifndef mips
 #include "stdlib.h"
@@ -36,7 +45,7 @@ void down_n_fetch(susp, snd_list)
   snd_list_type snd_list;
 {
     int cnt = 0; /* how many samples computed */
-    int togo;
+    int togo = 0;
     int n;
     sample_block_type out;
     register sample_block_values_type out_ptr;
@@ -55,7 +64,7 @@ void down_n_fetch(susp, snd_list)
 
         /* don't run past the s input sample block: */
         susp_check_term_log_samples(s, s_ptr, s_cnt);
-        togo = min(togo, susp->s_cnt);
+        togo = MIN(togo, susp->s_cnt);
 
         /* don't run past terminate time */
         if (susp->terminate_cnt != UNKNOWN &&
@@ -105,7 +114,7 @@ void down_s_fetch(susp, snd_list)
   snd_list_type snd_list;
 {
     int cnt = 0; /* how many samples computed */
-    int togo;
+    int togo = 0;
     int n;
     sample_block_type out;
     register sample_block_values_type out_ptr;
@@ -170,7 +179,7 @@ void down_i_fetch(susp, snd_list)
 {
     int cnt = 0; /* how many samples computed */
     sample_type s_x2_sample;
-    int togo;
+    int togo = 0;
     int n;
     sample_block_type out;
     register sample_block_values_type out_ptr;
@@ -282,7 +291,7 @@ void down_toss_fetch(snd_list)
   snd_list_type snd_list;
 {
     register down_susp_type susp = (down_susp_type) snd_list->u.susp;
-    long final_count = min(susp->susp.current + max_sample_block_len,
+    long final_count = MIN(susp->susp.current + max_sample_block_len,
                            susp->susp.toss_cnt);
     time_type final_time = susp->susp.t0 + final_count / susp->susp.sr;
     long n;
@@ -294,7 +303,7 @@ void down_toss_fetch(snd_list)
     /* convert to normal processing when we hit final_count */
     /* we want each signal positioned at final_time */
     if (final_count == susp->susp.toss_cnt) {
-        n = round((final_time - susp->s->t0) * susp->s->sr -
+        n = ROUND((final_time - susp->s->t0) * susp->s->sr -
              (susp->s->current - susp->s_cnt));
         susp->s_ptr += n;
         susp_took(s_cnt, n);
@@ -335,7 +344,6 @@ sound_type snd_make_down(sr, s)
     register down_susp_type susp;
     /* sr specified as input parameter */
     time_type t0 = s->t0;
-    int interp_desc = 0;
     sample_type scale_factor = 1.0F;
     time_type t0_min = t0;
 
@@ -357,9 +365,9 @@ sound_type snd_make_down(sr, s)
     /* handle unequal start times, if any */
     if (t0 < s->t0) sound_prepend_zeros(s, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(s->t0, t0);
+    t0_min = MIN(s->t0, t0);
     /* how many samples to toss before t0: */
-    susp->susp.toss_cnt = round((t0 - t0_min) * sr);
+    susp->susp.toss_cnt = ROUND((t0 - t0_min) * sr);
     if (susp->susp.toss_cnt > 0) {
         susp->susp.keep_fetch = susp->susp.fetch;
         susp->susp.fetch = down_toss_fetch;

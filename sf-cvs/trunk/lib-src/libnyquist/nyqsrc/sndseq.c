@@ -3,6 +3,8 @@
    of two signals */
 
 /* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  changes for portability and fix compiler warnings
  */
 
 #include "stdio.h"
@@ -114,17 +116,20 @@ void sndseq_fetch(susp, snd_list)
 
         xlsave1(result);
 
-D      nyquist_printf("sndseq_fetch: about to eval closure at %g, susp->susp.t0 %g, susp.current %d:\n",
-               now, susp->susp.t0, susp->susp.current);
+D      nyquist_printf("sndseq_fetch: about to eval closure at %g, "
+                      "susp->susp.t0 %g, susp.current %d:\n",
+                      now, susp->susp.t0, (int)susp->susp.current);
         result = xleval(cons(susp->closure, consa(cvflonum(now))));
 
         susp->logical_stop_bits = 1;   /* mark s1 as logically stopped */
         if (exttypep(result, a_sound)) {
             susp->s2 = sound_copy(getsound(result));
-D          nyquist_printf("sndseq: copied result from closure is %x\n", susp->s2);
+D           nyquist_printf("sndseq: copied result from closure is %p\n",
+                           susp->s2);
         } else xlerror("closure did not return a sound", result);
-D        nyquist_printf("in sndseq: logically stopped; %x returned from evform\n",
-               susp->s2);
+D        nyquist_printf("in sndseq: logically stopped; "
+                        "%p returned from evform\n",
+                        susp->s2);
         susp->closure = NULL;   /* allow garbage collection now */
         result = NIL;
 
@@ -144,7 +149,7 @@ D        nyquist_printf("in sndseq: logically stopped; %x returned from evform\n
         }
 
         /* figure out which add fetch routine to use */
-        delay = round((susp->s2->t0 - now) * susp->s1->sr);
+        delay = ROUND((susp->s2->t0 - now) * susp->s1->sr);
         if (susp->terminate_bits) {     /* s1 is done, just get s2 now */
             sound_unref(susp->s1);
             susp->s1 = NULL;
@@ -188,7 +193,7 @@ D        stdputstr("in sndseq: returned from add's fetch\n");
     /* don't run past logical stop time */
     if (!susp->logically_stopped && susp->susp.log_stop_cnt != UNKNOWN) {
         int to_stop = susp->susp.log_stop_cnt - susp->susp.current;
-        togo = min(togo, to_stop);
+        togo = MIN(togo, to_stop);
     }
     assert(togo >= 0);
 
@@ -290,7 +295,6 @@ sound_type snd_make_sndseq(s1, closure)
     register sndseq_susp_type susp;
     /* t0 specified as input parameter */
     sample_type scale_factor = 1.0F;
-    int interp_desc = 0;
     sound_type result;
 
     xlprot1(closure);

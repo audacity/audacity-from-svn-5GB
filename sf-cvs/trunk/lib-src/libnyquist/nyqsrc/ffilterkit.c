@@ -1,12 +1,18 @@
 /*
- * ffilterkit.c (library "filterkit.a"):  Kaiser-windowed low-pass filter support.
- *
+ * ffilterkit.c (library "filterkit.a"):  
+ * Kaiser-windowed low-pass filter support.
+ */
 
 /* ffilterkit.c
  *
  * FilterUp() - Applies a filter to a given sample when up-converting.
  * FilterUD() - Applies a filter to a given sample when up- or down-
  *                   converting.
+ */
+
+ /* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  changes for portability and fix compiler warnings
  */
 
 #include <stdio.h>

@@ -1,5 +1,10 @@
 /* sndwrite.c -- write sounds to files */
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  changes for portability and fix compiler warnings
+ */
+
 #include "stdlib.h"
 #include "switches.h"
 #include "string.h"
@@ -144,11 +149,6 @@ double sound_save(
     snd_node snd;
     snd_node player;
     long flags;
-    int sts;
-    XLCONTEXT cntxt;
-    extern XLCONTEXT *xltarget;
-    extern int xlmask;
-    extern LVAL xlvalue;
 
     snd.device = SND_DEVICE_FILE;
     snd.write_flag = SND_WRITE;
@@ -197,20 +197,11 @@ double sound_save(
         
         play = prepare_audio(play, &snd, &player);
 
-        xlbegin(&cntxt, CF_UNWIND, NIL);
-        if (sts = setjmp(cntxt.c_jmpbuf)) {
-            /* printf("debug - closing file and audio\n"); */
-        } else {
-            max_sample = sound_save_array(result, n, &snd,
-                              buf, &ntotal, (play == NIL ? NULL : &player));
-            *duration = ntotal / *sr;
-        }
-        xlend(&cntxt);
+        max_sample = sound_save_array(result, n, &snd,
+                         buf, &ntotal, (play == NIL ? NULL : &player));
+        *duration = ntotal / *sr;
         if (filename[0]) snd_close(&snd);
         if (play != NIL) finish_audio(&player);
-
-        /* if unwinding, continue unwinding */
-        if (sts) xljump(xltarget, xlmask, xlvalue);
     } else if (exttypep(result, a_sound)) {
         *nchans = snd.format.channels = 1;
         *sr = snd.format.srate = (getsound(result))->sr;
@@ -220,20 +211,11 @@ double sound_save(
 
         play = prepare_audio(play, &snd, &player);
 
-        xlbegin(&cntxt, CF_UNWIND, NIL);
-        if (sts = setjmp(cntxt.c_jmpbuf)) {
-            /* printf("debug - closing file and audio\n"); */
-        } else {
-            max_sample = sound_save_sound(result, n, &snd,
-                            buf, &ntotal, (play == NIL ? NULL : &player));
-            *duration = ntotal / *sr;
-        }
-        xlend(&cntxt);
+        max_sample = sound_save_sound(result, n, &snd,
+                        buf, &ntotal, (play == NIL ? NULL : &player));
+        *duration = ntotal / *sr;
         if (filename[0]) snd_close(&snd);
         if (play != NIL) finish_audio(&player);
-
-        /* if unwinding, continue unwinding */
-        if (sts) xljump(xltarget, xlmask, xlvalue);
     } else {
         xlerror("sound_save: expression did not return a sound",
                  result);
@@ -282,8 +264,9 @@ double sound_overwrite(
     }
 
     if (snd_open(&snd, &flags) != SND_SUCCESS) {
-        sprintf(error, "snd_overwrite: cannot open file %s and seek to %d", 
-                filename, byte_offset);
+        sprintf(error,
+                "snd_overwrite: cannot open file %s and seek to %d", 
+                filename, (int)byte_offset);
         free(buf);
         xlabort(error);
     }
@@ -296,9 +279,9 @@ double sound_overwrite(
         if (nchans != i) {
             sprintf(error, "%s%d%s%d%s", 
                     "snd_overwrite: number of channels in sound (",
-                    i,
+                    (int)i,
                     ") does not match\n    number of channels in file (",
-                    nchans,
+                    (int)nchans,
                     ")");
             free(buf);
             snd_close(&snd);
@@ -333,7 +316,7 @@ double sound_overwrite(
             sprintf(error, "%s%s%d%s", 
                     "snd_overwrite: number of channels in sound (1",
                     ") does not match\n    number of channels in file (",
-                    nchans,
+                    (int)nchans,
                     ")");
             free(buf);
             snd_close(&snd);
@@ -379,7 +362,7 @@ cvtfn_type find_cvt_to_fn(snd_type snd, char *buf)
     if (cvtfn == cvt_to_unknown) {
         char error[50];
         sprintf(error, "Cannot write %d-bit samples in mode %s",
-                snd->format.bits, snd_mode_to_string(snd->format.mode));
+                (int)snd->format.bits, snd_mode_to_string(snd->format.mode));
         free(buf);
         snd_close(snd);
         xlabort(error);
@@ -539,7 +522,7 @@ sample_type sound_save_array(LVAL sa, long n, snd_type snd,
     for (i = 0; i < chans; i++) {
         state[i].sound = getsound(getelement(sa, i));
         state[i].scale = state[i].sound->scale;
-D       nyquist_printf("save scale factor %d = %g\n", i, state[i].scale);
+D       nyquist_printf("save scale factor %d = %g\n", (int)i, state[i].scale);
         state[i].terminated = false;
         state[i].cnt = 0;   /* force a fetch */
         start_time = min(start_time, state[i].sound->t0);
@@ -582,14 +565,16 @@ D       nyquist_printf("save scale factor %d = %g\n", i, state[i].scale);
         for (i = 0; i < chans; i++) {
             if (state[i].cnt == 0) {
                 if (sndwrite_trace) {
-                    nyquist_printf("CALLING SOUND_GET_NEXT ON CHANNEL %d (%x)\n",
-                           i, state[i].sound);
+                    nyquist_printf("CALLING SOUND_GET_NEXT "
+                                   "ON CHANNEL %d (%p)\n",
+                                   (int)i, state[i].sound);
                     sound_print_tree(state[i].sound);
                 }
                 state[i].ptr = sound_get_next(state[i].sound,
                                    &(state[i].cnt))->samples;
                 if (sndwrite_trace) {
-                    nyquist_printf("RETURNED FROM CALL TO SOUND_GET_NEXT ON CHANNEL %d\n", i);
+                    nyquist_printf("RETURNED FROM CALL TO SOUND_GET_NEXT "
+                                   "ON CHANNEL %d\n", (int)i);
                 }
                 if (state[i].ptr == zero_block->samples) {
                     state[i].terminated = true;
@@ -650,4 +635,5 @@ D       nyquist_printf("save scale factor %d = %g\n", i, state[i].scale);
     xlpop();
     return max_sample;
 }
+
 

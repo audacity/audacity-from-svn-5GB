@@ -3,6 +3,7 @@
 /* CHANGELOG
  *
  * 29Jun95  RBD  ULAW fixed problems with signed chars
+ * 28Apr03  dm   explicitly declare sndread_file_open_count as int
  */
 
 #include "switches.h"
@@ -37,7 +38,7 @@
 #define O_RDONLY 0
 #endif
 
-static sndread_file_open_count = 0;
+static int sndread_file_open_count = 0;
 
 void read__fetch(susp, snd_list)
   register read_susp_type susp;

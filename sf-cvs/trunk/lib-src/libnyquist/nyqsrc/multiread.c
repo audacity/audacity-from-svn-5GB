@@ -1,3 +1,10 @@
+/* multiread.c -- read multichannel sound file */
+
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  changes for portability and fix compiler warnings
+ */
+
 #include "stdio.h"
 #ifdef UNIX
 #include "sys/file.h"
@@ -41,7 +48,6 @@ void multiread_fetch(susp, snd_list)
     int i, j;
     int frames_read = 0; /* total frames read in this call to fetch */
     int n;
-    boolean more_to_go = true;  /* outer loop until blocks are read */
     sample_block_type out;
     char input_buffer[input_buffer_max];
     float *float_ptr;
@@ -99,7 +105,7 @@ void multiread_fetch(susp, snd_list)
              * will now be NULL!
              */
             if (!susp->chan[j]) {
-                nyquist_printf("susp %x Channel %d disappeared!\n", susp, j);
+                nyquist_printf("susp %p Channel %d disappeared!\n", susp, j);
                 ffree_snd_list(snd_list, "multiread_fetch");
             } else {
                 susp->chan[j]->u.next = snd_list;

@@ -1,37 +1,15 @@
-/* sound.h -- new fugue sound data type */
+/* sound.h -- new nyquist sound data type */
 
-#ifdef __APPLE__
-#define HUGE_VAL 1e50
-#else
-
-#ifdef round
-#undef round
-#endif
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  changes for portability: moved some defns out of here
+ */
 
 #include <math.h>
-#endif
-
 #include "stdefs.h"
 
-#ifndef max
-#define max(a, b) ((a) > (b) ? (a) : (b))
-#define min(a, b) ((a) < (b) ? (a) : (b))
-#endif
-
-#ifndef WIN32
-#ifndef abs
-#define abs(a) ((a) > 0 ? (a) : -(a))
-#endif
-#endif
-
-#ifdef WINGUI
-void nyquist_printf(char *format, ...);
-#else
-#ifdef MACINTOSH
-void nyquist_printf(char *format, ...);
-#else
+#if USE_PRINTF
 #define nyquist_printf printf
-#endif
 #endif
 
 #define PERMS		 0644		/* -rw-r--r-- */
@@ -100,9 +78,32 @@ void nyquist_printf(char *format, ...);
 #define INTERP_sri 30
 #define INTERP_srr 31
 
+#define INTERP_nnnn 0
+#define INTERP_nnns 1
+#define INTERP_nnsn 4
+#define INTERP_nnss 5
+#define INTERP_nsnn 16
+#define INTERP_nsns 17
+#define INTERP_nssn 20
+#define INTERP_nsss 21
+#define INTERP_snnn 64
+#define INTERP_snns 65
+#define INTERP_snsn 68
+#define INTERP_snss 69
+#define INTERP_ssnn 80
+#define INTERP_ssns 81
+#define INTERP_sssn 84
+#define INTERP_ssss 85
+#define INTERP_niii 42
+#define INTERP_siii 106
+#define INTERP_nrrr 63
+#define INTERP_srrr 127
+
 
 #define INTERP_MASK 3
 #define INTERP_SHIFT 2
+
+LVAL snd_badsr(void);
 
 typedef double time_type;
 typedef double rate_type;
@@ -217,7 +218,7 @@ extern sound_type printing_this_sound;  /* debugging global */
 double compute_phase(double phase, double key, long n, double srate,
                      double new_srate, double freq, double *incr_ptr);
 
-boolean soundp(LVAL s);
+boolean soundp();
 /* LISP: (SOUNDP ANY) */
 
 void snd_list_ref(snd_list_type list);
@@ -409,7 +410,7 @@ double step_to_hz();
  */
 #define logical_stop_cnt_cvt(sound) \
     (sound->logical_stop_cnt == UNKNOWN ? UNKNOWN : \
-     round((sound->logical_stop_cnt / sound->sr) * susp->susp.sr))
+     ROUND((sound->logical_stop_cnt / sound->sr) * susp->susp.sr))
 
 
 /* logical_stop_test tests to see if sound has logically stopped; if so,

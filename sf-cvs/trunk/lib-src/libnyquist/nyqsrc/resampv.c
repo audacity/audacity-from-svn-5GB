@@ -1,3 +1,12 @@
+/* resampv.c -- use sinc interpolation to resample at a time-varying sample rate */
+
+
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  min->MIN, max->MAX
+ */
+
+
 #include "stdio.h"
 #ifndef mips
 #include "stdlib.h"
@@ -16,7 +25,7 @@
 /* Algorithm:
  First compute a factor = ratio of new sample rate to original sample rate.
  We have Time, the offset into X
- We want Xoff = ((susp->Nmult + 1) / 2.0) * max(1.0, 1.0 / factor) + 10
+ We want Xoff = ((susp->Nmult + 1) / 2.0) * MAX(1.0, 1.0 / factor) + 10
  samples on either side of Time before we interpolate.
  If Xoff * 2 > Xsize, then we're in trouble because X is not big enough.
  Assume this is a pathalogical case, raise the cutoff frequency to
@@ -159,7 +168,7 @@ void resamplev__fetch(register resamplev_susp_type susp, snd_list_type snd_list)
 
             /* update Xoff, which depends upon factor_inverse: */
             susp->Xoff = (int) (((susp->Nmult + 1) / 2.0) *
-                         max(1.0, susp->factor_inverse)) + 10;
+                         MAX(1.0, susp->factor_inverse)) + 10;
             if (susp->Xoff * 2 > susp->Xsize) {
                 /* bad because X is not big enough for filter, so we'll
                  * raise the cutoff frequency as necessary
@@ -241,7 +250,7 @@ void resampv_refill(resamplev_susp_type susp) {
 
         /* don't run past the f input sample block: */
         susp_check_samples(f, f_ptr, f_cnt);
-        togo = min(togo, susp->f_cnt);
+        togo = MIN(togo, susp->f_cnt);
 
         n = togo;
         f_ptr_reg = susp->f_ptr;
@@ -323,7 +332,7 @@ sound_type snd_make_resamplev(sound_type f, rate_type sr, sound_type g)
     susp->next_g = 0;
     susp->phase_in_g_increment = g->sr / sr;
     susp->phase_in_g = 2.0;
-    susp->Xoff = (int) (((susp->Nmult + 1) / 2.0) * 2.0) /* max(1.0, 1.0 / susp->factor) */ + 10;
+    susp->Xoff = (int) (((susp->Nmult + 1) / 2.0) * 2.0) /* MAX(1.0, 1.0 / susp->factor) */ + 10;
     /* this size is not critical unless it is too small */
     susp->Xsize = max_sample_block_len + 2 * susp->Xoff;
     susp->X = calloc(susp->Xsize, sizeof(sample_type));

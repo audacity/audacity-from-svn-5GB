@@ -1,4 +1,9 @@
-/* samples.c -- fugue sound data type */
+/* samples.c -- various functions for the Nyquist sound data type */
+
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  min->MIN, max->MAX
+ */
 
 #include <stdio.h>
 #ifndef mips
@@ -32,7 +37,7 @@ sound_type snd_from_array(double t0, double sr, LVAL array)
     result = sound_create(NULL, t0, sr, 1.0);
     snd_list = result->list;
     while (total < getsize(array)) {
-        long togo = min(getsize(array) - total, max_sample_block_len);
+        long togo = MIN(getsize(array) - total, max_sample_block_len);
         sample_block_type block;
         int i;
         falloc_sample_block(block, "snd_from_array");
@@ -118,7 +123,7 @@ LVAL snd_samples(sound_type s, long len)
 
     while (len > 0) {
         sample_block_type sampblock = sound_get_next(s, &blocklen);
-        long togo = min(blocklen, len);
+        long togo = MIN(blocklen, len);
         long i;
         sample_block_values_type sbufp = sampblock->samples;
         for (i = 0; i < togo; i++) {
