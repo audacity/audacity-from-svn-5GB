@@ -171,7 +171,7 @@ void CopySamples(samplePtr src, sampleFormat srcFormat,
       else if (srcFormat == int24Sample)
          switch(gDither) {
          case 0: {
-            int *sp = (int *)sp;
+            int *sp = (int *)src;
             for(i=0; i<len; i++) {
                ((short *)dst)[i] = (short)(*sp >> 8);
                sp += stride;
