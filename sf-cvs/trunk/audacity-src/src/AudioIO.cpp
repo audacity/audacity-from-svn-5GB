@@ -305,6 +305,7 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
    }
 
    project->ReReadSettings();
+   mProject->HandleResize();
 
    return Start();
 }

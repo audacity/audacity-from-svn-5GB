@@ -437,6 +437,11 @@ void TrackPanel::MakeParentRedrawScrollbars()
    mListener->TP_RedrawScrollbars();
 }
 
+void TrackPanel::MakeParentResize()
+{
+   mListener->TP_HandleResize();
+}
+
 // AS: This is still bad unclean: it's dependant on select=0, envelope=1, 
 //  move/slide=2, and zoom=3.  And this should go somewhere else...
 const char *pMessages[] = {_("Click and drag to select audio"), 
@@ -950,6 +955,7 @@ void TrackPanel::RemoveTrack(VTrack * toRemove)
    MakeParentPushState(wxString::Format(_("Removed track '%s.'"),
                                         name.c_str()));
    MakeParentRedrawScrollbars();
+   MakeParentResize();
    Refresh(false);
 }
 
@@ -1349,23 +1355,40 @@ void TrackPanel::SetLabelFont(wxDC * dc)
 
 void TrackPanel::DrawRuler(wxDC * dc, bool text)
 {
-   wxRect r;
+   // BG: Are there any tracks on the screen?
+   if(!mTracks->IsEmpty()) // BG: Yes, there are tracks on the screen
+   {
+      wxRect r;
 
-   GetSize(&r.width, &r.height);
-   r.x = 0;
-   r.y = 0;
-   r.height = GetRulerHeight() - 1;
+      GetSize(&r.width, &r.height);
+      r.x = 0;
+      r.y = 0;
+      r.height = GetRulerHeight() - 1;
 
-   DrawRulerBorder(dc, r);
+      DrawRulerBorder(dc, r);
 
-   if (mViewInfo->sel0 < mViewInfo->sel1)
-     DrawRulerSelection(dc, r);
+      if (mViewInfo->sel0 < mViewInfo->sel1)
+        DrawRulerSelection(dc, r);
 
-   DrawRulerMarks(dc, r, text);
+      DrawRulerMarks(dc, r, text);
 
-   if (gAudioIO->IsBusy() &&
-       gAudioIO->GetProject() == (AudacityProject *) GetParent())
-     DrawRulerIndicator(dc);
+      if (gAudioIO->IsBusy() &&
+          gAudioIO->GetProject() == (AudacityProject *) GetParent())
+        DrawRulerIndicator(dc);
+   }
+   else // BG: No, there are not any tracks on the screen
+   {
+      // BG: Draw grey area instead of ruler
+      wxRect r;
+
+      GetSize(&r.width, &r.height);
+      r.x = 0;
+      r.y = 0;
+      r.height = GetRulerHeight();
+
+      AColor::Medium(dc, false);
+      dc->DrawRectangle(r);
+   }
 }
 
 void TrackPanel::DrawRulerBorder(wxDC* dc, wxRect &r)
