@@ -183,6 +183,8 @@ Mixer::Mixer(int numInputTracks, WaveTrack **inputTracks,
    mInterleaved = outInterleaved;
    mRate = outRate;
    mFormat = outFormat;
+   mApplyTrackGains = true;
+   mGains = new float[mNumChannels];
 
    if (mInterleaved) {
       mNumBuffers = 1;
@@ -259,6 +261,7 @@ Mixer::~Mixer()
    delete[] mInputTrack;
    delete[] mEnvValues;
    delete[] mFloatBuffer;
+   delete[] mGains;
 
    #if USE_LIBSAMPLERATE
    for(i=0; i<mNumInputTracks; i++) {
@@ -271,14 +274,20 @@ Mixer::~Mixer()
    #endif
 }
 
+void Mixer::ApplyTrackGains(bool apply)
+{
+   mApplyTrackGains = apply;
+}
+
 void Mixer::Clear()
 {
    for (int c = 0; c < mNumBuffers; c++)
       memset(mBuffer[c], 0, mInterleavedBufferSize * SAMPLE_SIZE(mFormat));
 }
 
-void MixBuffers(int numChannels, int *channelFlags, sampleFormat format,
-                samplePtr src, samplePtr *dests, int len, bool interleaved)
+void MixBuffers(int numChannels, int *channelFlags, float *gains,
+                sampleFormat format, samplePtr src, samplePtr *dests,
+                int len, bool interleaved)
 {
    for (int c = 0; c < numChannels; c++) {
       if (!channelFlags[c])
@@ -295,12 +304,19 @@ void MixBuffers(int numChannels, int *channelFlags, sampleFormat format,
          skip = 1;
       }
 
+      float gain = gains[c];
+
       switch(format) {
       case int16Sample: {
          short *dest = (short *)destPtr;
          short *temp = (short *)src;
          for (int j = 0; j < len; j++) {
-            *dest += temp[j];
+            float f = temp[j] * gain;
+            if (f > 32767)
+               f = 32767;
+            if (f < -32768)
+               f = -32768;
+            *dest += (short)f;
             dest += skip;
          }
       } break;
@@ -308,7 +324,12 @@ void MixBuffers(int numChannels, int *channelFlags, sampleFormat format,
          int *dest = (int *)destPtr;
          int *temp = (int *)src;
          for (int j = 0; j < len; j++) {
-            *dest += temp[j];
+            float f = temp[j] * gain;
+            if (f > 8388607)
+               f = 8388607;
+            if (f < -8388608)
+               f = -8388608;
+            *dest += (int)f;
             dest += skip;
          }
       } break;
@@ -316,7 +337,7 @@ void MixBuffers(int numChannels, int *channelFlags, sampleFormat format,
          float *dest = (float *)destPtr;
          float *temp = (float *)src;
          for (int j = 0; j < len; j++) {
-            *dest += temp[j];
+            *dest += temp[j] * gain;
             dest += skip;
          }
       } break;
@@ -335,7 +356,7 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
    double initialWarp = mRate / track->GetRate();
    double t = mT;
    int sampleSize = SAMPLE_SIZE(floatSample);
-   int i;
+   int i, c;
 
    sampleCount out = 0;
 
@@ -410,7 +431,13 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
                mTemp, mFormat,
                mMaxOut);
 
-   MixBuffers(mNumChannels, channelFlags, mFormat,
+   for(c=0; c<mNumChannels; c++)
+      if (mApplyTrackGains)
+         mGains[c] = track->GetChannelGain(c);
+      else
+         mGains[c] = 1.0;
+
+   MixBuffers(mNumChannels, channelFlags, mGains, mFormat,
               mTemp, mBuffer, mMaxOut, mInterleaved);
 
    return mMaxOut;
@@ -422,6 +449,7 @@ sampleCount Mixer::MixSameRate(int *channelFlags, WaveTrack *track,
                                longSampleCount *pos)
 {
    int slen = mMaxOut;
+   int c;
 
    if (mT1 != mT0 && mT + slen/track->GetRate() > mT1)
       slen = (int)((mT1 - mT) * track->GetRate() + 0.5);
@@ -441,7 +469,13 @@ sampleCount Mixer::MixSameRate(int *channelFlags, WaveTrack *track,
                mTemp, mFormat,
                slen);
 
-   MixBuffers(mNumChannels, channelFlags, mFormat,
+   for(c=0; c<mNumChannels; c++)
+      if (mApplyTrackGains)
+         mGains[c] = track->GetChannelGain(c);
+      else
+         mGains[c] = 1.0;
+
+   MixBuffers(mNumChannels, channelFlags, mGains, mFormat,
               mTemp, mBuffer, slen, mInterleaved);
 
    *pos += slen;

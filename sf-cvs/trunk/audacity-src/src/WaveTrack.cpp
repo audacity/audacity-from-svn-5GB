@@ -93,7 +93,7 @@ WaveTrack *TrackFactory::NewWaveTrack(sampleFormat format, double rate)
    if (rate == 0) 
    {
       rate = (double) gPrefs->
-         Read("/SamplingRate/DefaultProjectSampleRate", 44100.0);
+         Read("/SamplingRate/DefaultProjectSampleRate", 44100);
    }
 
    return new WaveTrack(mDirManager, format, rate);
@@ -110,7 +110,7 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
    if (rate == 0) 
    {
       rate = (double) gPrefs->
-         Read("/SamplingRate/DefaultProjectSampleRate", 44100.0);
+         Read("/SamplingRate/DefaultProjectSampleRate", 44100);
    }
 
    mDisplay = 0; // DELETEME
@@ -118,6 +118,8 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
    mSequence = new Sequence(projDirManager, format);
    mEnvelope = new Envelope();
    mRate = rate;
+   mGain = 1.0;
+   mPan = 0.0;
    mAppendBuffer = NULL;
    mAppendBufferLen = 0;
    SetName(_("Audio Track"));
@@ -148,6 +150,8 @@ void WaveTrack::Init(const WaveTrack &orig)
 {
    Track::Init(orig);
    mRate = orig.mRate;
+   mGain = orig.mGain;
+   mPan = orig.mPan;
    SetName(orig.GetName());
 }
 
@@ -175,6 +179,47 @@ void WaveTrack::SetRate(double newRate)
 {
    mRate = newRate;
    MarkChanged();
+}
+
+float WaveTrack::GetGain() const
+{
+   return mGain;
+}
+
+void WaveTrack::SetGain(float newGain)
+{
+   mGain = newGain;
+}
+
+float WaveTrack::GetPan() const
+{
+   return mPan;
+}
+
+void WaveTrack::SetPan(float newPan)
+{
+   if (newPan > 1.0)
+      mPan = 1.0;
+   else if (newPan < -1.0)
+      mPan = -1.0;
+   else
+      mPan = newPan;
+}
+
+float WaveTrack::GetChannelGain(int channel)
+{
+   float left = 1.0;
+   float right = 1.0;
+
+   if (mPan < 0)
+      right = (mPan + 1.0);
+   else if (mPan > 0)
+      left = 1.0 - mPan;
+
+   if ((channel%2) == 0)
+      return left*mGain;
+   else
+      return right*mGain;
 }
 
 double WaveTrack::GetOffset() const
@@ -764,6 +809,17 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
             wxString(value).ToDouble(&mRate);
          else if (!strcmp(attr, "offset"))
             wxString(value).ToDouble(&mOffset);
+         else if (!strcmp(attr, "gain")) {
+            double d;
+            wxString(value).ToDouble(&d);
+            mGain = d;
+         }
+         else if (!strcmp(attr, "pan")) {
+            double d;
+            wxString(value).ToDouble(&d);
+            if (d >= -1.0 && d <= 1.0)
+               mGain = d;
+         }
          else if (!strcmp(attr, "name"))
             mName = value;
          else if (!strcmp(attr, "channel"))
@@ -802,6 +858,8 @@ void WaveTrack::WriteXML(int depth, FILE *fp)
    fprintf(fp, "linked=\"%d\" ", mLinked);
    fprintf(fp, "offset=\"%.8g\" ", mOffset);
    fprintf(fp, "rate=\"%g\" ", mRate);
+   fprintf(fp, "gain=\"%g\" ", (double)mGain);
+   fprintf(fp, "pan=\"%g\" ", (double)mPan);
    fprintf(fp, ">\n");
 
    mSequence->WriteXML(depth+1, fp);

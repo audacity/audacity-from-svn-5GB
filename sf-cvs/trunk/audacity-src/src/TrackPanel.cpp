@@ -5,10 +5,18 @@
   TrackPanel.cpp
 
   Dominic Mazzoni
+  and lots of other contributors
 
   AS: The TrackPanel class is responsible for rendering the panel
       displayed to the left of a track.  TrackPanel also takes care
       of the functionality for each of the buttons in that panel.
+
+  This is currently some of the worst code in Audacity.  It's
+  not really unreadable, there's just way too much stuff in this
+  one file.  Rather than apply a quick fix, the long-term plan
+  is to create a GUITrack class that knows how to draw itself
+  and handle events.  Then this class just helps coordinate
+  between tracks.
 
 **********************************************************************/
 
@@ -46,6 +54,7 @@
 #include "WaveTrack.h"
 #include "TimeTrack.h"
 
+#include "widgets/ASlider.h"
 #include "widgets/Ruler.h"
 
 //FIXME: the code below is obsolete
@@ -212,6 +221,8 @@ mAutoScrolling(false)
    mIsEnveloping = false;
    mIsMuting = false;
    mIsSoloing = false;
+   mIsGainSliding = false;
+   mIsPanSliding = false;
 
    mIndicatorShowing = false;
 
@@ -336,6 +347,12 @@ mAutoScrolling(false)
    mZoomEnd = -1;
    mPrevWidth = -1;
    mPrevHeight = -1;
+
+   //To prevent flicker, we create an initial set of 16 sliders
+   //which won't ever be shown.
+   int i;
+   for(i=0; i<16; i++)
+      MakeMoreSliders();
 }
 
 TrackPanel::~TrackPanel()
@@ -368,6 +385,12 @@ TrackPanel::~TrackPanel()
    delete mNoteTrackMenu;
    delete mLabelTrackMenu;
    delete mTimeTrackMenu;
+
+   unsigned int i;
+   for(i=0; i<mGains.Count(); i++)
+      delete mGains[i];
+   for(i=0; i<mPans.Count(); i++)
+      delete mPans[i];
 
    while(!mScreenAtIndicator.IsEmpty())
    {
@@ -1683,6 +1706,67 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
    }
 }
 
+void TrackPanel::MakeMoreSliders()
+{
+   wxRect r(0, 0, 1000, 1000);
+   wxRect gainRect;
+   wxRect panRect;
+
+   GetGainRect(r, gainRect);
+   GetPanRect(r, panRect);
+
+   LWSlider *slider = new LWSlider(this, _("Gain"),
+                                   wxPoint(gainRect.x, gainRect.y),
+                                   wxSize(gainRect.width, gainRect.height),
+                                   DB_SLIDER);
+   mGains.Add(slider);
+   
+   slider = new LWSlider(this, _("Pan"),
+                         wxPoint(panRect.x, panRect.y),
+                         wxSize(panRect.width, panRect.height),
+                         PAN_SLIDER);
+   mPans.Add(slider);
+}
+
+void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
+{
+   LWSlider *slider;
+
+   if (pan)
+      slider = mPans[mCapturedNum];
+   else
+      slider = mGains[mCapturedNum];
+
+   slider->OnMouseEvent(event);
+
+   float newValue = slider->Get();
+
+   WaveTrack *link = (WaveTrack *)mTracks->GetLink(mCapturedTrack);
+   
+   if (pan) {
+      ((WaveTrack *)mCapturedTrack)->SetPan(newValue);
+      if (link)
+         link->SetPan(newValue);
+   }
+   else {
+      ((WaveTrack *)mCapturedTrack)->SetGain(newValue);
+      if (link)
+         link->SetGain(newValue);
+   }
+   
+   if (event.ButtonUp()) {
+      mIsGainSliding = false;
+      mIsPanSliding = false;
+
+      if (pan)
+         MakeParentPushState(_("Changed track panning"));
+      else
+         MakeParentPushState(_("Changed track gain"));
+   }
+
+   this->Refresh(false);
+}
+
 // AS: This function gets called when a user clicks on the
 //  title of a track, dropping down the menu.
 void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
@@ -1819,6 +1903,18 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
           MuteSoloFunc(t, r, event.m_x, event.m_y, true))
          return;
    }
+   // DM: Check Gain and Pan on WaveTracks:
+   if (!second && t->GetKind() == Track::Wave) {
+      if (GainFunc(t, r, event,
+                   num-1, event.m_x, event.m_y))
+         return;
+   }
+   // DM: Check Gain and Pan on WaveTracks:
+   if (!second && t->GetKind() == Track::Wave) {
+      if (PanFunc(t, r, event,
+                  num-1, event.m_x, event.m_y))
+         return;
+   }
    // DM: If it's a NoteTrack, it has special controls
    if (!second && t && t->GetKind() == Track::Note) {
       wxRect midiRect;
@@ -1903,6 +1999,42 @@ void TrackPanel::CalculateRearrangingThresholds(wxMouseEvent & event)
           event.m_y + mTracks->GetNext(mCapturedTrack)->GetHeight();
    else
       mMoveDownThreshold = INT_MAX;
+}
+
+bool TrackPanel::GainFunc(Track * t, wxRect r, wxMouseEvent &event,
+                          int index, int x, int y)
+{
+   wxRect sliderRect;
+   GetGainRect(r, sliderRect);
+   if (sliderRect.Inside(x, y)) {
+      mIsGainSliding = true;
+      mCapturedTrack = t;
+      mCapturedRect = r;
+      mCapturedNum = index;
+      HandleSliders(event, false);
+
+      return true;
+   }
+
+   return false;
+}
+
+bool TrackPanel::PanFunc(Track * t, wxRect r, wxMouseEvent &event,
+                         int index, int x, int y)
+{
+   wxRect sliderRect;
+   GetPanRect(r, sliderRect);
+   if (sliderRect.Inside(x, y)) {
+      mIsPanSliding = true;
+      mCapturedTrack = t;
+      mCapturedRect = r;
+      mCapturedNum = index;
+      HandleSliders(event, true);
+
+      return true;
+   }
+
+   return false;
 }
 
 // AS: Mute or solo the given track (t).  If solo is true, we're 
@@ -2173,8 +2305,13 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
    else if (mIsResizing) {
       HandleResize(event);
       HandleCursor(event);
-   } else if (mIsRearranging)
+   }
+   else if (mIsRearranging)
       HandleRearrange(event);
+   else if (mIsGainSliding)
+      HandleSliders(event, false);
+   else if (mIsPanSliding)
+      HandleSliders(event, true);
    else
       TrackSpecificMouseEvent(event);
 }
@@ -2464,6 +2601,22 @@ void TrackPanel::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo) const
       dest.x += 36 + 8;
 }
 
+void TrackPanel::GetGainRect(const wxRect r, wxRect & dest) const
+{
+   dest.x = r.x + 8;
+   dest.y = r.y + 70;
+   dest.width = 80;
+   dest.height = 25;
+}
+
+void TrackPanel::GetPanRect(const wxRect r, wxRect & dest) const
+{
+   dest.x = r.x + 8;
+   dest.y = r.y + 100;
+   dest.width = 80;
+   dest.height = 25;
+}
+
 void TrackPanel::GetTrackControlsRect(const wxRect r, wxRect & dest) const
 {
    dest = r;
@@ -2596,8 +2749,11 @@ void TrackPanel::DrawEverythingElse(wxDC * dc, const wxRect panelRect,
    wxRect trackRect = panelRect;
    wxRect r;
 
-   for (Track * t = iter.First(); t; t = iter.Next())
-      DrawEverythingElse(t, dc, r, trackRect);
+   int i = 0;
+   for (Track * t = iter.First(); t; t = iter.Next()) {
+      DrawEverythingElse(t, dc, r, trackRect, i);
+      i++;
+   }
 
    if (IsDragZooming())
       DrawZooming(dc, clip);
@@ -2611,7 +2767,7 @@ void TrackPanel::DrawEverythingElse(wxDC * dc, const wxRect panelRect,
 // AS: Note that this is being called in a loop and that the parameter values
 //  are expected to be maintained each time through.
 void TrackPanel::DrawEverythingElse(Track * t, wxDC * dc, wxRect & r,
-                                    wxRect & trackRect)
+                                    wxRect & trackRect, int index)
 {
    trackRect.height = t->GetHeight();
 
@@ -2633,7 +2789,7 @@ void TrackPanel::DrawEverythingElse(Track * t, wxDC * dc, wxRect & r,
       skipBorder = true;
 
    if (!skipBorder)
-      DrawOutside(t, dc, r, labelw, vrul, trackRect);
+      DrawOutside(t, dc, r, labelw, vrul, trackRect, index);
 
    r = trackRect;
    r.x += GetVRulerOffset();
@@ -2661,9 +2817,30 @@ void TrackPanel::DrawZooming(wxDC * dc, const wxRect clip)
    dc->DrawRectangle(r);
 }
 
+void TrackPanel::DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index)
+{
+   wxRect gainRect;
+   wxRect panRect;
+
+   GetGainRect(r, gainRect);
+   GetPanRect(r, panRect);
+
+   while (mGains.Count() < (unsigned int)index+1 ||
+          mPans.Count() < (unsigned int)index+1)
+      MakeMoreSliders();
+
+   mGains[index]->Move(wxPoint(gainRect.x, gainRect.y));
+   mGains[index]->Set(t->GetGain());
+   mGains[index]->OnPaint(*dc, t->GetSelected());
+
+   mPans[index]->Move(wxPoint(panRect.x, panRect.y));
+   mPans[index]->Set(t->GetPan());
+   mPans[index]->OnPaint(*dc, t->GetSelected());
+}
+
 void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
                              const int labelw, const int vrul,
-                             const wxRect trackRect)
+                             const wxRect trackRect, int index)
 {
    wxRect r = rec;
 
@@ -2685,6 +2862,8 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    if (t->GetKind() == Track::Wave) {
       DrawMuteSolo(dc, r, t, false, false);
       DrawMuteSolo(dc, r, t, false, true);
+
+      DrawSliders(dc, (WaveTrack *)t, r, index);
    }
 
    r = trackRect;
@@ -3186,8 +3365,13 @@ Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
    int n = 1;
 
    for (Track * t = iter.First(); t;
-        r.y += r.height, n++, t = iter.Next()) {
+        r.y += t->GetHeight(), n++, t = iter.Next()) {
       r.height = t->GetHeight();
+
+      if (label && t->GetLinked()) {
+         Track *link = mTracks->GetLink(t);
+         r.height += link->GetHeight();
+      }
 
       if (r.Inside(mouseX, mouseY)) {
          if (trackRect) {

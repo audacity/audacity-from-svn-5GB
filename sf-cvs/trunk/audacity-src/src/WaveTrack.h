@@ -65,6 +65,17 @@ class WaveTrack: public Track {
    double GetRate() const;
    void SetRate(double newRate);
 
+   // Multiplicative factor.  Only converted to dB for display.
+   float GetGain() const;
+   void SetGain(float newGain);
+
+   // -1.0 (left) -> 1.0 (right)
+   float GetPan() const;
+   void SetPan(float newPan);
+
+   // Takes gain and pan into account
+   float GetChannelGain(int channel);
+
    virtual double GetOffset() const;
    virtual void SetOffset(double t);
 
@@ -174,6 +185,8 @@ class WaveTrack: public Track {
 
    Sequence     *mSequence;
    double        mRate;
+   float         mGain;
+   float         mPan;
    Envelope     *mEnvelope;
    samplePtr     mAppendBuffer;
    int           mAppendBufferLen;

@@ -30,7 +30,7 @@ Track::Track(DirManager * projDirManager)
    mMute      = false;
    mSolo      = false;
 
-   mHeight = 106;
+   mHeight = 136;
 
    mOffset = 0.0;
 
