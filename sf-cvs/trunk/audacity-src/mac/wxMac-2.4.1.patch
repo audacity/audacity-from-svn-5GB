@@ -1,3 +1,9 @@
+WARNING: wxMac 2.4.1 has a serious bug in wxNotebook that makes it IMPOSSIBLE
+to run Audacity successfully with this version.  Please use wxMac 2.4.0
+instead and apply the patch labeled wxMac-2.4.0.patch.
+
+See the compile.txt file in this directory for more information.
+
 *** include/wx/font.h~	Sun Oct 27 17:51:41 2002
 --- include/wx/font.h	Sun Jun 29 22:03:07 2003
 ***************
