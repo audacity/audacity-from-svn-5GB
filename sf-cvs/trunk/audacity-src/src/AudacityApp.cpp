@@ -237,6 +237,7 @@ bool AudacityApp::OnInit()
    wxString lang = gPrefs->Read("/Locale/Language", "en");
 
    if (lang != "en") {
+      wxLogNull nolog;
       mLocale = new wxLocale("", lang, "", true, true);
       mLocale->AddCatalog("audacity");
    } else
