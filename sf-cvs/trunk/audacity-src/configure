@@ -3303,7 +3303,7 @@ cat >>confdefs.h <<\_ACEOF
 _ACEOF
 
 else
-	cat >>confdefs.h <<_ACEOF
+   cat >>confdefs.h <<_ACEOF
 #define INSTALL_PREFIX "$prefix"
 _ACEOF
 
@@ -5525,12 +5525,12 @@ cat >>confdefs.h <<\_ACEOF
 #define USE_PORTMIXER 1
 _ACEOF
 
-	CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/px_common $CXXFLAGS"
+   CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/px_common $CXXFLAGS"
 fi
 
 
 if [ "$use_portmixer" = "yes" ] && [ "$use_portaudio" = "v19" ] ; then
-	{ { echo "$as_me:$LINENO: error: *** PortAudio v19 does not work with PortMixer (at least not yet) " >&5
+   { { echo "$as_me:$LINENO: error: *** PortAudio v19 does not work with PortMixer (at least not yet) " >&5
 echo "$as_me: error: *** PortAudio v19 does not work with PortMixer (at least not yet) " >&2;}
    { (exit 1); exit 1; }; }
 fi
@@ -5629,7 +5629,7 @@ echo "${ECHO_T}no" >&6
 fi
 
 if [ "$WX_CONFIG" = "no" ] ; then
-	{ { echo "$as_me:$LINENO: error: \"Could not find wx-config: is wxWindows installed? is wx-config in your path?\"" >&5
+   { { echo "$as_me:$LINENO: error: \"Could not find wx-config: is wxWindows installed? is wx-config in your path?\"" >&5
 echo "$as_me: error: \"Could not find wx-config: is wxWindows installed? is wx-config in your path?\"" >&2;}
    { (exit 1); exit 1; }; }
 fi
@@ -5700,9 +5700,9 @@ cat >>confdefs.h <<\_ACEOF
 _ACEOF
 
 
-	BUILDLIBS="$BUILDLIBS portaudio-v19/lib/libportaudio.a"
-	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
-	CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio-v19/pa_common $CXXFLAGS"
+   BUILDLIBS="$BUILDLIBS portaudio-v19/lib/libportaudio.a"
+   EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
+   CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio-v19/pa_common $CXXFLAGS"
 
 
 
@@ -5711,51 +5711,50 @@ subdirs="$subdirs lib-src/portaudio-v19"
 
 else
 
-	CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio/pa_common $CXXFLAGS"
+   CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio/pa_common $CXXFLAGS"
 
-	case "${host_os}" in
-	  darwin* | rhapsody*)
+   case "${host_os}" in
+     darwin* | rhapsody*)
 
-		CONFIGHEADER="configunix.h"
-
-
-		CXXFLAGS="-I../mac $CXXFLAGS"
-
-		BUILDLIBS="$BUILDLIBS portaudio/pa_mac_core/portaudio.a"
-		EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_mac_core/portaudio.a"
-
-	   if [ "$use_portmixer" = "yes" ] ; then
-			BUILDLIBS="$BUILDLIBS portmixer/px_mac_core/portmixer.a"
-			EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_mac_core/portmixer.a"
-	   fi
-
-		LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
-		LIBS="-framework CoreAudio $LIBS -lz"
-
-		AFTERBUILD="cp ../audacity ../Audacity.app && `$WX_CONFIG --rezflags` ../Audacity.app ../mac/audacity.r -c auDy && /Developer/Tools/SetFile -a avBstClinmed ../Audacity.app"
-
-		if [ "$use_ladspa" = "default" ] ; then
-			use_ladspa="yes";
-		fi
+      CONFIGHEADER="configunix.h"
 
 
-	;;
+      CXXFLAGS="-I../mac $CXXFLAGS"
 
-	cygwin*)
+      BUILDLIBS="$BUILDLIBS portaudio/pa_mac_core/portaudio.a"
+      EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_mac_core/portaudio.a"
 
- 	BUILDLIBS="$BUILDLIBS portaudio/pa_win_wmme/portaudio.a"
- 	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_win_wmme/portaudio.a"
- 	LIBS="$LIBS -lkernel32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lodbc32 -lodbccp32 -lwsock32 -lwinmm"
- 	CONFIGHEADER="configwin.h"
+      if [ "$use_portmixer" = "yes" ] ; then
+         BUILDLIBS="$BUILDLIBS portmixer/px_mac_core/portmixer.a"
+         EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_mac_core/portmixer.a"
+      fi
 
-    if [ "$use_portmixer" = "yes" ] ; then
- 		BUILDLIBS="$BUILDLIBS portmixer/px_win_wmme/portmixer.a"
- 		EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_win_wmme/portmixer.a"
-    fi
+      LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
+      LIBS="-framework CoreAudio $LIBS -lz"
 
- 	if [ "$use_ladspa" = "default" ] ; then
- 		use_ladspa="yes";
- 	fi
+      AFTERBUILD="cp ../audacity ../Audacity.app && `$WX_CONFIG --rezflags` ../Audacity.app ../mac/audacity.r -c auDy && /Developer/Tools/SetFile -a avBstClinmed ../Audacity.app"
+
+      if [ "$use_ladspa" = "default" ] ; then
+         use_ladspa="yes";
+      fi
+
+                        ;;
+
+   cygwin*)
+
+      BUILDLIBS="$BUILDLIBS portaudio/pa_win_wmme/portaudio.a"
+      EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_win_wmme/portaudio.a"
+      LIBS="$LIBS -lkernel32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lodbc32 -lodbccp32 -lwsock32 -lwinmm"
+      CONFIGHEADER="configwin.h"
+
+      if [ "$use_portmixer" = "yes" ] ; then
+         BUILDLIBS="$BUILDLIBS portmixer/px_win_wmme/portmixer.a"
+         EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_win_wmme/portmixer.a"
+      fi
+
+      if [ "$use_ladspa" = "default" ] ; then
+         use_ladspa="yes";
+      fi
 
 
 cat >>confdefs.h <<\_ACEOF
@@ -5768,37 +5767,37 @@ cat >>confdefs.h <<\_ACEOF
 _ACEOF
 
 
- 	AFTERBUILD=""
-	;;
+      AFTERBUILD=""
+      ;;
 
-	  *)
+   *)
 
-		CONFIGHEADER="configunix.h"
+      CONFIGHEADER="configunix.h"
 
-		BUILDLIBS="$BUILDLIBS portaudio/pa_unix_oss/portaudio.a"
-		EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
+      BUILDLIBS="$BUILDLIBS portaudio/pa_unix_oss/portaudio.a"
+      EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
 
-	   if [ "$use_portmixer" = "yes" ] ; then
-			BUILDLIBS="$BUILDLIBS portmixer/px_unix_oss/portmixer.a"
-			EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_unix_oss/portmixer.a"
-	   fi
+      if [ "$use_portmixer" = "yes" ] ; then
+         BUILDLIBS="$BUILDLIBS portmixer/px_unix_oss/portmixer.a"
+         EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_unix_oss/portmixer.a"
+      fi
 
-		if [ "$use_ladspa" = "default" ] ; then
-			use_ladspa="yes";
-		fi
+      if [ "$use_ladspa" = "default" ] ; then
+         use_ladspa="yes";
+      fi
 
-		AFTERBUILD=""
+      AFTERBUILD=""
 
-	esac
+   esac
 fi
 
 case "$host_os" in
-	darwin* | rhapsody*)
-		{ echo "$as_me:$LINENO: WARNING: Not using native lrint() and lrintf() because they are missing on 10.1." >&5
+   darwin* | rhapsody*)
+      { echo "$as_me:$LINENO: WARNING: Not using native lrint() and lrintf() because they are missing on 10.1." >&5
 echo "$as_me: WARNING: Not using native lrint() and lrintf() because they are missing on 10.1." >&2;}
-		;;
-	*)
-      		echo "$as_me:$LINENO: checking for lrint" >&5
+      ;;
+   *)
+            echo "$as_me:$LINENO: checking for lrint" >&5
 echo $ECHO_N "checking for lrint... $ECHO_C" >&6
 if test "${ac_cv_c99_lrint+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -5863,7 +5862,7 @@ _ACEOF
 
 fi
 
-		echo "$as_me:$LINENO: checking for lrintf" >&5
+      echo "$as_me:$LINENO: checking for lrintf" >&5
 echo $ECHO_N "checking for lrintf... $ECHO_C" >&6
 if test "${ac_cv_c99_lrintf+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -5928,8 +5927,8 @@ _ACEOF
 
 fi
 
-		;;
-	esac
+      ;;
+esac
 
 if [ "$use_ladspa" = "yes" ] ; then
    case "$host_os" in
@@ -6136,14 +6135,14 @@ fi
 
 
 case "${host_os}" in
- 	cygwin*)
- 		          ac_config_headers="$ac_config_headers src/configwin.h:src/configtemplate.h"
+   cygwin*)
+                ac_config_headers="$ac_config_headers src/configwin.h:src/configtemplate.h"
 
- 		;;
- 	*)
- 		          ac_config_headers="$ac_config_headers src/configunix.h:src/configtemplate.h"
+      ;;
+   *)
+                ac_config_headers="$ac_config_headers src/configunix.h:src/configtemplate.h"
 
- 		;;
+      ;;
 esac
 
                                                                                           ac_config_files="$ac_config_files Makefile src/Makefile lib-src/Makefile lib-src/allegro/Makefile lib-src/expat/Makefile lib-src/libnyquist/Makefile lib-src/portaudio/pa_unix_oss/Makefile locale/Makefile tests/Makefile"
@@ -7501,13 +7500,13 @@ done
 echo "prefix=$prefix";
 
 if [ "$use_portaudio" = "v19" ] ; then
-	echo ""
-	echo "Note: portaudio v19 supports ALSA and Jack, but may be less stable."
+   echo ""
+   echo "Note: portaudio v19 supports ALSA and Jack, but may be less stable."
 else
-	echo ""
-	echo "Note: portaudio v18 only supports OSS.  If your system supports"
-	echo "ALSA, you may want to reconfigure --with-portaudio=v19, though"
-	echo "portaudio v19 is newer and possibly less stable."
+   echo ""
+   echo "Note: portaudio v18 only supports OSS.  If your system supports"
+   echo "ALSA, you may want to reconfigure --with-portaudio=v19, though"
+   echo "portaudio v19 is newer and possibly less stable."
 fi
 
 
@@ -7516,3 +7515,10 @@ echo "Run 'configure --help' for an explanation of these options,"
 echo "otherwise run 'make' to build Audacity."
 
 
+
+# Local Variables:
+# c-basic-offset: 3
+# indent-tabs-mode: nil
+# End:
+#
+# vim: et sts=3 sw=3
