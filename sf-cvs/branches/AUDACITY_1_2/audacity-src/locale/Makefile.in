@@ -17,7 +17,7 @@ top_srcdir=@top_srcdir@
 INSTALL=@INSTALL@
 AUDACITY_NAME=@AUDACITY_NAME@
 ifdef DESTDIR
-   INSTALL_PATH=$(top_srcdir)/$(DESTDIR)
+   INSTALL_PATH=$(DESTDIR)
 else
    INSTALL_PATH=
 endif
