@@ -69,7 +69,7 @@ void AudacityProject::CreateMenuBar()
    mExportSelectionLossyString.Printf("Export Selection as %s...", lossyFormat.c_str());
 
    mFileMenu = new wxMenu();
-   mFileMenu->Append(NewID, "&New...\tCtrl+N");
+   mFileMenu->Append(NewID, "&New\tCtrl+N");
    mFileMenu->Append(OpenID, "&Open...\tCtrl+O");
    mFileMenu->Append(CloseID, "&Close\tCtrl+W");
    mFileMenu->Append(SaveID, "&Save Project\tCtrl+S");

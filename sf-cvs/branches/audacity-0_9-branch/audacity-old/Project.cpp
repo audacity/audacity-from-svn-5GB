@@ -1213,12 +1213,8 @@ void AudacityProject::Save(bool overwrite /* = true */ ,
 
 void AudacityProject::SaveAs()
 {
-   wxString fName;
-
-   wxString path, baseName, extension;
-   ::wxSplitPath(mFileName, &path, &baseName, &extension);
-   extension = "aup";
-   fName = baseName + "." + extension;
+   wxString path = wxPathOnly(mFileName);
+   wxString fName = mName + ".aup";
 
    fName = wxFileSelector("Save Project As:",
                           path,
@@ -1229,17 +1225,14 @@ void AudacityProject::SaveAs()
    if (fName == "")
       return;
 
-   if (fName == ".aup") {
+   if (wxFileNameFromPath(fName) == ".aup") {
       wxMessageBox("You must name the file!");
       return;
    }
 
-   ::wxSplitPath(fName, &path, &baseName, &extension);
-   extension = "aup";
-
-   mName = baseName + "." + extension;
-   mFileName = path + wxFILE_SEP_PATH + mName;
-   SetTitle(baseName);
+   mFileName = fName;
+   mName =::TrackNameFromFileName(fName);
+   SetTitle(mName);
 
    Save(false, true);
 }
