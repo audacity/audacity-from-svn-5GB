@@ -15,10 +15,18 @@
 
 void QuitAudacity();
 
+extern wxFrame *gParentFrame;
+
 class AudacityApp:public wxApp {
  public:
    bool OnInit(void);
    int OnExit(void);
+   
+   void OnMenuAbout(wxCommandEvent & event);
+   void OnMenuNew(wxCommandEvent & event);
+   void OnMenuOpen(wxCommandEvent & event);
+   void OnMenuPreferences(wxCommandEvent & event);
+   void OnMenuExit(wxCommandEvent & event);
 
  private:
    void RunTest();
@@ -30,4 +38,10 @@ class AudacityApp:public wxApp {
 #if 0
    wxSingleInstanceChecker *mChecker;
 #endif
+
+public:
+    DECLARE_EVENT_TABLE()
+
 };
+
+extern AudacityApp & wxGetApp();
