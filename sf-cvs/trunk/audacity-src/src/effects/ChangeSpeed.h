@@ -30,13 +30,6 @@
 #include "Effect.h"
 
 
-#define ID_TEXT 10000
-#define ID_TEXT_PERCENTCHANGE 10001
-#define ID_SLIDER_PERCENTCHANGE 10002
-#define ID_CHOICE_FROMVINYL 10003
-#define ID_CHOICE_TOVINYL 10004
-
-
 class wxString;
 
 
@@ -81,6 +74,9 @@ class EffectChangeSpeed : public Effect {
 										// Slider is (-100, 200], but textCtrls can set higher.
    int		m_FromVinyl;		// from standard vinyl speed (RPM)
    int		m_ToVinyl;			// to standard vinyl speed (RPM)
+
+   
+friend class ChangeSpeedDialog;
 };
 
 //----------------------------------------------------------------------------
@@ -89,29 +85,12 @@ class EffectChangeSpeed : public Effect {
 
 class ChangeSpeedDialog:public wxDialog {
  public:
-   ChangeSpeedDialog(wxWindow * parent,
-							wxWindowID id, 
+   ChangeSpeedDialog(EffectChangeSpeed * effect,
+							wxWindow * parent, wxWindowID id, 
 							const wxString & title, 
 							const wxPoint & pos = wxDefaultPosition, 
 							const wxSize & size = wxDefaultSize, 
 							long style = wxDEFAULT_DIALOG_STYLE);
-
-   // accessors
-   wxTextCtrl * GetTextCtrl_PercentChange() {
-      return (wxTextCtrl *) FindWindow(ID_TEXT_PERCENTCHANGE);
-   }
-   wxSlider * GetSlider_PercentChange() {
-      return (wxSlider *) FindWindow(ID_SLIDER_PERCENTCHANGE);
-   }
-   wxChoice * GetChoice_FromVinyl() { 
-      return (wxChoice *) FindWindow(ID_CHOICE_FROMVINYL);
-   }
-   wxChoice * GetChoice_ToVinyl() { 
-      return (wxChoice *) FindWindow(ID_CHOICE_TOVINYL);
-   }
-   wxButton * GetOK() {
-      return (wxButton *) FindWindow(wxID_OK);
-   }
 
    virtual bool Validate();
    virtual bool TransferDataToWindow();
@@ -124,6 +103,7 @@ class ChangeSpeedDialog:public wxDialog {
    void OnChoice_FromVinyl(wxCommandEvent & event); 
    void OnChoice_ToVinyl(wxCommandEvent & event); 
 
+   void OnPreview( wxCommandEvent &event );
    void OnOk(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
 
@@ -135,14 +115,24 @@ class ChangeSpeedDialog:public wxDialog {
 
  private:
 	bool m_bLoopDetect;
-   DECLARE_EVENT_TABLE()
+	EffectChangeSpeed * m_pEffect;
+
+   // controls
+   wxTextCtrl *	m_pTextCtrl_PercentChange;
+   wxSlider *		m_pSlider_PercentChange;
+   wxChoice *		m_pChoice_FromVinyl;
+   wxChoice *		m_pChoice_ToVinyl;
 
  public:
+	// effect parameters
    double	m_PercentChange;	// percent change to apply to tempo
 										// -100% is meaningless, but sky's the upper limit.
 										// Slider is (-100, 200], but textCtrls can set higher.
    int		m_FromVinyl;		// from standard vinyl speed (RPM)
    int		m_ToVinyl;			// to standard vinyl speed (RPM)
+
+ private:
+   DECLARE_EVENT_TABLE()
 };
 
 

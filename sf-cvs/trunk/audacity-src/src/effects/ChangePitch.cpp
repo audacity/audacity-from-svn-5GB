@@ -111,7 +111,7 @@ bool EffectChangePitch::PromptUser()
 {
 	this->DeduceFrequencies(); // Set frequency-related control values based on sample.
 
-   ChangePitchDialog dlog(mParent, -1, _("Change Pitch"));
+   ChangePitchDialog dlog(this, mParent, -1, _("Change Pitch"));
    dlog.m_FromPitchIndex = m_FromPitchIndex;
    dlog.m_bWantPitchDown = m_bWantPitchDown;
    dlog.m_ToPitchIndex = m_ToPitchIndex;
@@ -152,6 +152,22 @@ bool EffectChangePitch::PromptUser()
 #define PERCENTCHANGE_MAX 100 // warped above zero to actually go up to 400%
 #define PERCENTCHANGE_SLIDER_WARP 1.30105 // warp power takes max from 100 to 400.
 
+
+#define ID_TEXT_PERCENTCHANGE 10001
+#define ID_SLIDER_PERCENTCHANGE 10002
+
+#define ID_CHOICE_FROMPITCH 10003
+#define ID_RADIOBOX_PITCHUPDOWN 10004
+#define ID_CHOICE_TOPITCH 10005
+
+#define ID_TEXT_SEMITONESCHANGE 10006
+
+#define ID_TEXT_FROMFREQUENCY 10007
+#define ID_TEXT_TOFREQUENCY 10008
+
+#define ID_BUTTON_PREVIEW 10009
+
+
 // event table for ChangePitchDialog
 
 BEGIN_EVENT_TABLE(ChangePitchDialog, wxDialog)
@@ -169,17 +185,38 @@ BEGIN_EVENT_TABLE(ChangePitchDialog, wxDialog)
 
     EVT_TEXT(ID_TEXT_PERCENTCHANGE, ChangePitchDialog::OnText_PercentChange)
     EVT_SLIDER(ID_SLIDER_PERCENTCHANGE, ChangePitchDialog::OnSlider_PercentChange)
+
+    EVT_BUTTON(ID_BUTTON_PREVIEW, ChangePitchDialog::OnPreview)
 END_EVENT_TABLE()
 
 
-ChangePitchDialog::ChangePitchDialog(wxWindow * parent, 
-												 wxWindowID id, const wxString & title, 
-												 const wxPoint & position, const wxSize & size, 
+ChangePitchDialog::ChangePitchDialog(EffectChangePitch * effect, 
+												 wxWindow * parent, wxWindowID id, 
+												 const wxString & title, 
+												 const wxPoint & position, 
+												 const wxSize & size, 
 												 long style)
 : wxDialog(parent, id, title, position, size, style)
 {
    m_bLoopDetect = false;
+	m_pEffect = effect;
 
+	// NULL out these control members because there are some cases where the 
+	// event table handlers get called during this method, and those handlers that 
+	// can cause trouble check for NULL.
+   m_pChoice_FromPitch = NULL;
+	m_pRadioBox_PitchUpDown = NULL;
+	m_pChoice_ToPitch = NULL;
+   
+	m_pTextCtrl_SemitonesChange = NULL;
+
+	m_pTextCtrl_FromFrequency = NULL;
+	m_pTextCtrl_ToFrequency = NULL;
+   
+	m_pTextCtrl_PercentChange = NULL;
+	m_pSlider_PercentChange = NULL;
+
+	// effect parameters
 	m_FromPitchIndex = -1;		// -1 => uninitialized
 	m_bWantPitchDown = false;
 	m_ToPitchIndex = -1;			// -1 => uninitialized
@@ -198,19 +235,19 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
    wxBoxSizer * pBoxSizer_Dialog = new wxBoxSizer(wxVERTICAL);
 
 	// heading
-   pStaticText =
-		new wxStaticText(this, ID_TEXT, _("Change Pitch without Changing Tempo"),
-								wxDefaultPosition, wxDefaultSize, 0);
+   pStaticText = new wxStaticText(this, -1, 
+												_("Change Pitch without Changing Tempo"),
+												wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxALL, 8);
 
-   pStaticText =
-		new wxStaticText(this, ID_TEXT, _("by Vaughan Johnson && Dominic Mazzoni"),
-								wxDefaultPosition, wxDefaultSize, 0);
+   pStaticText = new wxStaticText(this, -1, 
+												_("by Vaughan Johnson && Dominic Mazzoni"),
+												wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxTOP | wxLEFT | wxRIGHT, 8);
 
-   pStaticText =
-		new wxStaticText(this, ID_TEXT, _("using SoundTouch, by Olli Parviainen"),
-								wxDefaultPosition, wxDefaultSize, 0);
+   pStaticText = new wxStaticText(this, -1, 
+												_("using SoundTouch, by Olli Parviainen"),
+												wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxBOTTOM | wxLEFT | wxRIGHT, 8);
 
    pBoxSizer_Dialog->Add(0, 8, 0); // spacer
@@ -219,9 +256,8 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
 	// from/to pitch controls
    wxBoxSizer * pBoxSizer_Pitch = new wxBoxSizer(wxHORIZONTAL);
    
-   pStaticText =
-       new wxStaticText(this, ID_TEXT, _("Pitch:   from"),
-                        wxDefaultPosition, wxDefaultSize, 0);
+   pStaticText = new wxStaticText(this, -1, _("Pitch:   from"),
+												wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Pitch->Add(pStaticText, 0, 
 								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
@@ -229,31 +265,27 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
 		{"C", "C#/Db", "D", "D#/Eb", "E", "F", 
        "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"};
 	const int numChoicesPitchNames = 12;
-
-   wxChoice * pChoice_FromPitch =
+   m_pChoice_FromPitch = 
 		new wxChoice(this, ID_CHOICE_FROMPITCH, wxDefaultPosition, wxSize(64, -1), 
 							numChoicesPitchNames, strArray_PitchNames);
-   pBoxSizer_Pitch->Add(pChoice_FromPitch, 0, 
+   pBoxSizer_Pitch->Add(m_pChoice_FromPitch, 0, 
 								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
 	const wxString strArray_RadioPitchUpDown[] = {_("up"), _("down")};
-	wxRadioBox * pRadioBox_PitchUpDown = 
-		new wxRadioBox(this, ID_RADIOBOX_PITCHUPDOWN, "", 
-							wxDefaultPosition, wxDefaultSize, 
-							2, strArray_RadioPitchUpDown, 1);
-   pBoxSizer_Pitch->Add(pRadioBox_PitchUpDown, 0, 
+	m_pRadioBox_PitchUpDown = 
+		new wxRadioBox(this, ID_RADIOBOX_PITCHUPDOWN, "", wxDefaultPosition, wxDefaultSize, 
+								2, strArray_RadioPitchUpDown, 1);
+   pBoxSizer_Pitch->Add(m_pRadioBox_PitchUpDown, 0, 
 								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
    
-	pStaticText =
-       new wxStaticText(this, ID_TEXT, _("to"),
-                        wxDefaultPosition, wxDefaultSize, 0);
+	pStaticText = new wxStaticText(this, -1, _("to"), wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Pitch->Add(pStaticText, 0, 
 								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-   wxChoice * pChoice_ToPitch =
+   m_pChoice_ToPitch = 
 		new wxChoice(this, ID_CHOICE_TOPITCH, wxDefaultPosition, wxSize(64, -1), 
 							numChoicesPitchNames, strArray_PitchNames);
-   pBoxSizer_Pitch->Add(pChoice_ToPitch, 0, 
+   pBoxSizer_Pitch->Add(m_pChoice_ToPitch, 0, 
 								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
    pBoxSizer_Dialog->Add(pBoxSizer_Pitch, 0, wxALIGN_CENTER | wxALL, 4);
@@ -261,17 +293,16 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
 
 	// semitones change controls
    wxBoxSizer * pBoxSizer_SemitonesChange = new wxBoxSizer(wxHORIZONTAL);
-   pStaticText =
-       new wxStaticText(this, ID_TEXT, _("Semitones (half-steps):"),
-                        wxDefaultPosition, wxDefaultSize, 0);
+   pStaticText = new wxStaticText(this, -1, _("Semitones (half-steps):"),
+												wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_SemitonesChange->Add(pStaticText, 0, 
 												wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-   wxTextCtrl * pTextCtrl_SemitonesChange =
-       new wxTextCtrl(this, ID_TEXT_SEMITONESCHANGE, "0.0", 
-								wxDefaultPosition, wxSize(40, -1), 0,
-								wxTextValidator(wxFILTER_NUMERIC));
-   pBoxSizer_SemitonesChange->Add(pTextCtrl_SemitonesChange, 0, 
+   m_pTextCtrl_SemitonesChange = 
+		new wxTextCtrl(this, ID_TEXT_SEMITONESCHANGE, "0.0", 
+							wxDefaultPosition, wxSize(40, -1), 0, 
+							wxTextValidator(wxFILTER_NUMERIC));
+   pBoxSizer_SemitonesChange->Add(m_pTextCtrl_SemitonesChange, 0, 
 												wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
    pBoxSizer_Dialog->Add(pBoxSizer_SemitonesChange, 0, wxALIGN_CENTER | wxALL, 4);
@@ -281,31 +312,29 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
    pBoxSizer_Dialog->Add(0, 8, 0); // spacer
    wxBoxSizer * pBoxSizer_Frequency = new wxBoxSizer(wxHORIZONTAL);
    
-   pStaticText =
-       new wxStaticText(this, ID_TEXT, _("Frequency (Hz):   from"),
-                        wxDefaultPosition, wxDefaultSize, 0);
+   pStaticText = new wxStaticText(this, -1, _("Frequency (Hz):   from"),
+									       wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Frequency->Add(pStaticText, 0, 
 									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-   wxTextCtrl * pTextCtrl_FromFrequency =
-       new wxTextCtrl(this, ID_TEXT_FROMFREQUENCY, "", 
-								wxDefaultPosition, wxSize(64, -1), 0,
-								wxTextValidator(wxFILTER_NUMERIC));
-   pBoxSizer_Frequency->Add(pTextCtrl_FromFrequency, 0, 
+   m_pTextCtrl_FromFrequency = 
+		new wxTextCtrl(this, ID_TEXT_FROMFREQUENCY, "", 
+							wxDefaultPosition, wxSize(64, -1), 0,
+							wxTextValidator(wxFILTER_NUMERIC));
+   pBoxSizer_Frequency->Add(m_pTextCtrl_FromFrequency, 0, 
 									wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
-   pStaticText =
-       new wxStaticText(this, ID_TEXT, _("to"),
-                        wxDefaultPosition, wxDefaultSize, 0);
+   pStaticText = new wxStaticText(this, -1, _("to"),
+									       wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Frequency->Add(pStaticText, 0, 
 									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-   wxTextCtrl * pTextCtrl_ToFrequency =
-       new wxTextCtrl(this, ID_TEXT_TOFREQUENCY, "", 
-								wxDefaultPosition, wxSize(64, -1), 0,
-								wxTextValidator(wxFILTER_NUMERIC));
-   pBoxSizer_Frequency->Add(pTextCtrl_ToFrequency, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
+   m_pTextCtrl_ToFrequency = 
+		new wxTextCtrl(this, ID_TEXT_TOFREQUENCY, "", 
+							wxDefaultPosition, wxSize(64, -1), 0,
+							wxTextValidator(wxFILTER_NUMERIC));
+   pBoxSizer_Frequency->Add(m_pTextCtrl_ToFrequency, 0, 
+										wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
    pBoxSizer_Dialog->Add(pBoxSizer_Frequency, 0, wxALIGN_CENTER | wxALL, 4);
 
@@ -318,47 +347,49 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
 
    wxBoxSizer * pBoxSizer_PercentChange = new wxBoxSizer(wxHORIZONTAL);
    
-   pStaticText =
-		new wxStaticText(this, ID_TEXT, _("Percent Change:"),
-								wxDefaultPosition, wxDefaultSize, 0);
+   pStaticText = new wxStaticText(this, -1, _("Percent Change:"),
+												wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_PercentChange->Add(pStaticText, 0, 
 											wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
 	//v Override wxTextValidator to disallow negative values <= -100.0?
-   wxTextCtrl * pTextCtrl_PercentChange =
-       new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, "0.0", 
-								wxDefaultPosition, wxSize(40, -1), 0,
-								wxTextValidator(wxFILTER_NUMERIC));
-   pBoxSizer_PercentChange->Add(pTextCtrl_PercentChange, 0, 
+   m_pTextCtrl_PercentChange = 
+		new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, "0.0", 
+							wxDefaultPosition, wxSize(40, -1), 0,
+							wxTextValidator(wxFILTER_NUMERIC));
+   pBoxSizer_PercentChange->Add(m_pTextCtrl_PercentChange, 0, 
 											wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
    pBoxSizer_Dialog->Add(pBoxSizer_PercentChange, 0, wxALIGN_CENTER | wxALL, 4);
 
-   wxSlider * pSlider_PercentChange =
-       new wxSlider(this, ID_SLIDER_PERCENTCHANGE, 
+   m_pSlider_PercentChange = 
+		new wxSlider(this, ID_SLIDER_PERCENTCHANGE, 
 							0, PERCENTCHANGE_MIN, PERCENTCHANGE_MAX,
 							wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   pBoxSizer_Dialog->Add(pSlider_PercentChange, 1, 
+   pBoxSizer_Dialog->Add(m_pSlider_PercentChange, 1, 
 									wxGROW | wxALIGN_CENTER | wxLEFT | wxRIGHT, 4);
 
    pBoxSizer_Dialog->Add(0, 8, 0); // spacer
 
 
-	// OK & Cancel buttons
+	// Preview, OK, & Cancel buttons
    pBoxSizer_Dialog->Add(0, 8, 0); // spacer
 
    wxBoxSizer * pBoxSizer_OK = new wxBoxSizer(wxHORIZONTAL);
 
+   wxButton * pButton_Preview = 
+		new wxButton(this, ID_BUTTON_PREVIEW, m_pEffect->GetPreviewName());
+   pBoxSizer_OK->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 4);
+   pBoxSizer_OK->Add(40, 8); // horizontal spacer
+
    wxButton * pButton_OK =
-       new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition,
-                    wxDefaultSize, 0);
+       new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
    pButton_OK->SetDefault();
    pButton_OK->SetFocus();
    pBoxSizer_OK->Add(pButton_OK, 0, wxALIGN_CENTER | wxALL, 4);
 
    wxButton * pButton_Cancel =
-       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
+       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_OK->Add(pButton_Cancel, 0, wxALIGN_CENTER | wxALL, 4);
 
    pBoxSizer_Dialog->Add(pBoxSizer_OK, 0, wxALIGN_CENTER | wxALL, 8);
@@ -380,9 +411,8 @@ bool ChangePitchDialog::TransferDataToWindow()
    m_bLoopDetect = true;
 
 	// from/to pitch controls
-	wxChoice * pChoice = this->GetChoice_FromPitch();
-	if (pChoice) 
-		pChoice->SetSelection(m_FromPitchIndex);
+	if (m_pChoice_FromPitch) 
+		m_pChoice_FromPitch->SetSelection(m_FromPitchIndex);
 
 	this->Update_RadioBox_PitchUpDown();
 	this->Update_Choice_ToPitch();
@@ -393,14 +423,13 @@ bool ChangePitchDialog::TransferDataToWindow()
 
 
 	// from/to frequency controls
-	wxTextCtrl * pTextCtrl = this->GetTextCtrl_FromFrequency();
-	if (pTextCtrl) {
+	if (m_pTextCtrl_FromFrequency) {
 		wxString str;
 		if (m_FromFrequency > 0.0)
 			str.Printf("%.3f", m_FromFrequency);
 		else
 			str = "";
-		pTextCtrl->SetValue(str);
+		m_pTextCtrl_FromFrequency->SetValue(str);
 	}
 
 	this->Update_Text_ToFrequency();
@@ -419,54 +448,45 @@ bool ChangePitchDialog::TransferDataToWindow()
 bool ChangePitchDialog::TransferDataFromWindow()
 {
    double newDouble;
-	wxChoice * pChoice;
-	wxTextCtrl * pTextCtrl;
 	wxString str;
 
 
 	// from/to pitch controls
-   pChoice = this->GetChoice_FromPitch();
-	if (pChoice) 
-		m_FromPitchIndex = pChoice->GetSelection(); 
+	if (m_pChoice_FromPitch) 
+		m_FromPitchIndex = m_pChoice_FromPitch->GetSelection(); 
 
-	wxRadioBox * pRadioBox = this->GetRadioBox_PitchUpDown();
-	if (pRadioBox)
-		m_bWantPitchDown = (pRadioBox->GetSelection() == 1);
+	if (m_pRadioBox_PitchUpDown)
+		m_bWantPitchDown = (m_pRadioBox_PitchUpDown->GetSelection() == 1);
 
-   pChoice = this->GetChoice_ToPitch();
-	if (pChoice) 
-		m_ToPitchIndex = pChoice->GetSelection();
+	if (m_pChoice_ToPitch) 
+		m_ToPitchIndex = m_pChoice_ToPitch->GetSelection();
 
 
 	// semitones change control
-	pTextCtrl = this->GetTextCtrl_SemitonesChange();
-   if (pTextCtrl) {
-      str = pTextCtrl->GetValue();
+   if (m_pTextCtrl_SemitonesChange) {
+      str = m_pTextCtrl_SemitonesChange->GetValue();
       str.ToDouble(&newDouble);
 		m_SemitonesChange = newDouble;
 	}
 
 
 	// from/to frequency controls
-   pTextCtrl = this->GetTextCtrl_FromFrequency();
-   if (pTextCtrl) {
-      str = pTextCtrl->GetValue();
+   if (m_pTextCtrl_FromFrequency) {
+      str = m_pTextCtrl_FromFrequency->GetValue();
       str.ToDouble(&newDouble);
 		m_FromFrequency = newDouble;
 	}
 
-   pTextCtrl = this->GetTextCtrl_ToFrequency();
-   if (pTextCtrl) {
-      str = pTextCtrl->GetValue();
+   if (m_pTextCtrl_ToFrequency) {
+      str = m_pTextCtrl_ToFrequency->GetValue();
       str.ToDouble(&newDouble);
 		m_ToFrequency = newDouble;
 	}
 
 
 	// percent change controls
-   pTextCtrl = this->GetTextCtrl_PercentChange();
-   if (pTextCtrl) {
-      str = pTextCtrl->GetValue();
+   if (m_pTextCtrl_PercentChange) {
+      str = m_pTextCtrl_PercentChange->GetValue();
       str.ToDouble(&newDouble);
 		m_PercentChange = newDouble;
 	}
@@ -521,9 +541,8 @@ void ChangePitchDialog::OnChoice_FromPitch(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-	wxChoice * pChoice = this->GetChoice_FromPitch();
-   if (pChoice) {
-		m_FromPitchIndex = pChoice->GetSelection();
+   if (m_pChoice_FromPitch) {
+		m_FromPitchIndex = m_pChoice_FromPitch->GetSelection();
 
 		this->Calc_ToPitchIndex();
 
@@ -538,9 +557,8 @@ void ChangePitchDialog::OnRadioBox_PitchUpDown(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-	wxRadioBox * pRadioBox = this->GetRadioBox_PitchUpDown();
-	if (pRadioBox) {
-		m_bWantPitchDown = (pRadioBox->GetSelection() == 1);
+	if (m_pRadioBox_PitchUpDown) {
+		m_bWantPitchDown = (m_pRadioBox_PitchUpDown->GetSelection() == 1);
 
 		this->Calc_SemitonesChange_fromPitches();
 		this->Calc_PercentChange(); // Call *after* m_SemitonesChange is updated.
@@ -560,9 +578,8 @@ void ChangePitchDialog::OnChoice_ToPitch(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-	wxChoice * pChoice = this->GetChoice_ToPitch();
-   if (pChoice) {
-		m_ToPitchIndex = pChoice->GetSelection();
+   if (m_pChoice_ToPitch) {
+		m_ToPitchIndex = m_pChoice_ToPitch->GetSelection();
 
 		this->Calc_SemitonesChange_fromPitches();
 		this->Calc_PercentChange(); // Call *after* m_SemitonesChange is updated.
@@ -582,9 +599,8 @@ void ChangePitchDialog::OnText_SemitonesChange(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-	wxTextCtrl * pTextCtrl = this->GetTextCtrl_SemitonesChange();
-	if (pTextCtrl) {
-		wxString str = pTextCtrl->GetValue();
+	if (m_pTextCtrl_SemitonesChange) {
+		wxString str = m_pTextCtrl_SemitonesChange->GetValue();
       double newValue;
       str.ToDouble(&newValue);
 		m_SemitonesChange = newValue;
@@ -596,8 +612,9 @@ void ChangePitchDialog::OnText_SemitonesChange(wxCommandEvent & event)
 
 		m_bLoopDetect = true;
 		this->Update_RadioBox_PitchUpDown();
-		if (pTextCtrl->IsModified())
-			pTextCtrl->SetFocus(); // See note at implementation of Update_RadioBox_PitchUpDown.
+		if (m_pTextCtrl_SemitonesChange->IsModified())
+			// See note at implementation of Update_RadioBox_PitchUpDown.
+			m_pTextCtrl_SemitonesChange->SetFocus(); 
 		this->Update_Choice_ToPitch();
 		this->Update_Text_ToFrequency();
 		this->Update_Text_PercentChange();
@@ -611,9 +628,8 @@ void ChangePitchDialog::OnText_FromFrequency(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-	wxTextCtrl * pTextCtrl = this->GetTextCtrl_FromFrequency();
-	if (pTextCtrl) {
-		wxString str = pTextCtrl->GetValue();
+	if (m_pTextCtrl_FromFrequency) {
+		wxString str = m_pTextCtrl_FromFrequency->GetValue();
 		double newDouble;
       str.ToDouble(&newDouble);
 		m_FromFrequency = newDouble;
@@ -625,8 +641,9 @@ void ChangePitchDialog::OnText_FromFrequency(wxCommandEvent & event)
 
 		m_bLoopDetect = true;
 		this->Update_RadioBox_PitchUpDown();
-		if (pTextCtrl->IsModified())
-			pTextCtrl->SetFocus(); // See note at implementation of Update_RadioBox_PitchUpDown.
+		if (m_pTextCtrl_FromFrequency->IsModified())
+			// See note at implementation of Update_RadioBox_PitchUpDown.
+			m_pTextCtrl_FromFrequency->SetFocus(); 
 		this->Update_Choice_ToPitch();
 		this->Update_Text_ToFrequency();
 		m_bLoopDetect = false;
@@ -638,9 +655,8 @@ void ChangePitchDialog::OnText_ToFrequency(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-   wxTextCtrl * pTextCtrl = this->GetTextCtrl_ToFrequency();
-   if (pTextCtrl) {
-      wxString str = pTextCtrl->GetValue();
+   if (m_pTextCtrl_ToFrequency) {
+      wxString str = m_pTextCtrl_ToFrequency->GetValue();
 		double newDouble;
       str.ToDouble(&newDouble);
 		m_ToFrequency = newDouble;
@@ -654,8 +670,9 @@ void ChangePitchDialog::OnText_ToFrequency(wxCommandEvent & event)
 
 		m_bLoopDetect = true;
 		this->Update_RadioBox_PitchUpDown();
-		if (pTextCtrl->IsModified())
-			pTextCtrl->SetFocus(); // See note at implementation of Update_RadioBox_PitchUpDown.
+		if (m_pTextCtrl_ToFrequency->IsModified())
+			// See note at implementation of Update_RadioBox_PitchUpDown.
+			m_pTextCtrl_ToFrequency->SetFocus(); 
 		this->Update_Choice_ToPitch();
 		this->Update_Text_SemitonesChange();
 		this->Update_Text_PercentChange();
@@ -669,9 +686,8 @@ void ChangePitchDialog::OnText_PercentChange(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-   wxTextCtrl * pTextCtrl = this->GetTextCtrl_PercentChange();
-   if (pTextCtrl) {
-      wxString str = pTextCtrl->GetValue();
+   if (m_pTextCtrl_PercentChange) {
+      wxString str = m_pTextCtrl_PercentChange->GetValue();
       double newValue;
       str.ToDouble(&newValue);
 		m_PercentChange = newValue;
@@ -683,8 +699,9 @@ void ChangePitchDialog::OnText_PercentChange(wxCommandEvent & event)
 
       m_bLoopDetect = true;
 		this->Update_RadioBox_PitchUpDown();
-		if (pTextCtrl->IsModified())
-			pTextCtrl->SetFocus(); // See note at implementation of Update_RadioBox_PitchUpDown.
+		if (m_pTextCtrl_PercentChange->IsModified())
+			// See note at implementation of Update_RadioBox_PitchUpDown.
+			m_pTextCtrl_PercentChange->SetFocus(); 
 		this->Update_Choice_ToPitch();
 		this->Update_Text_SemitonesChange();
 		this->Update_Text_ToFrequency();
@@ -698,9 +715,8 @@ void ChangePitchDialog::OnSlider_PercentChange(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-	wxSlider * pSlider = this->GetSlider_PercentChange();
-	if (pSlider) {
-		m_PercentChange = (double)(pSlider->GetValue()); 
+	if (m_pSlider_PercentChange) {
+		m_PercentChange = (double)(m_pSlider_PercentChange->GetValue()); 
 		// Warp positive values to actually go up faster & further than negatives.
 		if (m_PercentChange > 0.0)
 			m_PercentChange = pow(m_PercentChange, PERCENTCHANGE_SLIDER_WARP);
@@ -718,6 +734,21 @@ void ChangePitchDialog::OnSlider_PercentChange(wxCommandEvent & event)
 		this->Update_Text_PercentChange();
 	   m_bLoopDetect = false;
 	}
+}
+
+
+void ChangePitchDialog::OnPreview(wxCommandEvent &event)
+{
+   TransferDataFromWindow();
+
+   m_pEffect->mSoundTouch = new SoundTouch();
+   m_pEffect->mSoundTouch->setChannels(1);
+   m_pEffect->mSoundTouch->setPitchSemiTones((float)(m_SemitonesChange));
+
+	m_pEffect->Preview();
+
+	delete m_pEffect->mSoundTouch;
+	m_pEffect->mSoundTouch = NULL;
 }
 
 void ChangePitchDialog::OnOk(wxCommandEvent & event)
@@ -752,62 +783,58 @@ void ChangePitchDialog::OnCancel(wxCommandEvent & event)
 // need to be conditionalized on wxTextCtrl::IsModified.
 void ChangePitchDialog::Update_RadioBox_PitchUpDown() 
 {
-	wxRadioBox * pRadioBox = this->GetRadioBox_PitchUpDown();
-	if (pRadioBox)
-		pRadioBox->SetSelection((int)(m_bWantPitchDown));
+	if (m_pRadioBox_PitchUpDown)
+		m_pRadioBox_PitchUpDown->SetSelection((int)(m_bWantPitchDown));
 }
 
 void ChangePitchDialog::Update_Choice_ToPitch() 
 {
-	wxChoice * pChoice = this->GetChoice_ToPitch();
-	if (pChoice) 
-		pChoice->SetSelection(m_ToPitchIndex);
+	if (m_pChoice_ToPitch) 
+		m_pChoice_ToPitch->SetSelection(m_ToPitchIndex);
 }
 
 
 void ChangePitchDialog::Update_Text_SemitonesChange()
 {
-	wxTextCtrl * pTextCtrl = this->GetTextCtrl_SemitonesChange();
-	if (pTextCtrl) {
+	if (m_pTextCtrl_SemitonesChange) {
 		wxString str;
 		str.Printf("%.2f", m_SemitonesChange);
-		pTextCtrl->SetValue(str);
+		m_pTextCtrl_SemitonesChange->SetValue(str);
 	}
 }
 
 void ChangePitchDialog::Update_Text_ToFrequency() 
 {
-	wxTextCtrl * pTextCtrl = this->GetTextCtrl_ToFrequency();
-	if (pTextCtrl) {
+	if (m_pTextCtrl_ToFrequency) {
 		wxString str;
 		if (m_ToFrequency > 0.0)
 			str.Printf("%.3f", m_ToFrequency);
 		else
 			str = "";
-		pTextCtrl->SetValue(str);
+		m_pTextCtrl_ToFrequency->SetValue(str);
 	}
 }
 
 
 void ChangePitchDialog::Update_Text_PercentChange()
 {
-	wxTextCtrl * pTextCtrl = this->GetTextCtrl_PercentChange();
-	if (pTextCtrl) {
+	if (m_pTextCtrl_PercentChange) {
 		wxString str;
 		str.Printf("%.1f", m_PercentChange);
-		pTextCtrl->SetValue(str);
+		m_pTextCtrl_PercentChange->SetValue(str);
 	}
 }
 
 void ChangePitchDialog::Update_Slider_PercentChange()
 {
-   wxSlider * pSlider = this->GetSlider_PercentChange();
-   if (pSlider) {
+   if (m_pSlider_PercentChange) {
 		double unwarped = m_PercentChange;
 		if (unwarped > 0.0)
 			// Un-warp values above zero to actually go up to PERCENTCHANGE_MAX.
 			unwarped = pow(m_PercentChange, (1.0 / PERCENTCHANGE_SLIDER_WARP));
-		pSlider->SetValue((int)(unwarped + 0.5)); // Add 0.5 so trunc -> round.
+
+		// Add 0.5 to unwarped so trunc -> round.
+		m_pSlider_PercentChange->SetValue((int)(unwarped + 0.5)); 
 	}
 }
 

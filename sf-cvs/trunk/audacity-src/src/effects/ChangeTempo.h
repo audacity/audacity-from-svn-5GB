@@ -27,14 +27,6 @@
 
 #include "SoundTouchEffect.h"
 
-#define ID_TEXT 10000
-#define ID_TEXT_PERCENTCHANGE 10001
-#define ID_SLIDER_PERCENTCHANGE 10002
-#define ID_TEXT_FROMBPM 10003
-#define ID_TEXT_TOBPM 10004
-#define ID_TEXT_FROMLENGTH 10005
-#define ID_TEXT_TOLENGTH 10006
-
 
 class wxString;
 
@@ -66,6 +58,8 @@ class EffectChangeTempo:public EffectSoundTouch {
    unsigned int	m_ToBPM;				// Zero value means not yet set.
    double			m_FromLength;		// starting length of selection
    double			m_ToLength;			// target length of selection
+
+friend class ChangeTempoDialog;
 };
 
 //----------------------------------------------------------------------------
@@ -74,35 +68,12 @@ class EffectChangeTempo:public EffectSoundTouch {
 
 class ChangeTempoDialog:public wxDialog {
  public:
-   ChangeTempoDialog(wxWindow * parent,
-							wxWindowID id, 
+   ChangeTempoDialog(EffectChangeTempo * effect, 
+							wxWindow * parent, wxWindowID id, 
 							const wxString & title, 
 							const wxPoint & pos = wxDefaultPosition, 
 							const wxSize & size = wxDefaultSize, 
 							long style = wxDEFAULT_DIALOG_STYLE);
-
-   // accessors
-   wxTextCtrl * GetTextCtrl_PercentChange() {
-      return (wxTextCtrl *) FindWindow(ID_TEXT_PERCENTCHANGE);
-   }
-   wxSlider * GetSlider_PercentChange() {
-      return (wxSlider *) FindWindow(ID_SLIDER_PERCENTCHANGE);
-   }
-   wxTextCtrl * GetTextCtrl_FromBPM() { 
-      return (wxTextCtrl *) FindWindow(ID_TEXT_FROMBPM);
-   }
-   wxTextCtrl * GetTextCtrl_ToBPM() { 
-      return (wxTextCtrl *) FindWindow(ID_TEXT_TOBPM);
-   }
-   wxTextCtrl * GetTextCtrl_FromLength() { 
-      return (wxTextCtrl *) FindWindow(ID_TEXT_FROMLENGTH);
-   }
-   wxTextCtrl * GetTextCtrl_ToLength() { 
-      return (wxTextCtrl *) FindWindow(ID_TEXT_TOLENGTH);
-   }
-   wxButton * GetOK() {
-      return (wxButton *) FindWindow(wxID_OK);
-   }
 
    virtual bool Validate();
    virtual bool TransferDataToWindow();
@@ -116,6 +87,7 @@ class ChangeTempoDialog:public wxDialog {
    void OnText_ToBPM(wxCommandEvent & event); 
    void OnText_ToLength(wxCommandEvent & event); 
 
+   void OnPreview( wxCommandEvent &event );
    void OnOk(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
 
@@ -127,9 +99,18 @@ class ChangeTempoDialog:public wxDialog {
 
  private:
    bool m_bLoopDetect;
-   DECLARE_EVENT_TABLE()
+	EffectChangeTempo * m_pEffect;
+
+   // controls
+   wxTextCtrl *	m_pTextCtrl_PercentChange;
+   wxSlider *		m_pSlider_PercentChange;
+   wxTextCtrl *	m_pTextCtrl_FromBPM;
+   wxTextCtrl *	m_pTextCtrl_ToBPM;
+   wxTextCtrl *	m_pTextCtrl_FromLength;
+   wxTextCtrl *	m_pTextCtrl_ToLength;
 
  public:
+	// effect parameters
    double			m_PercentChange;	// percent change to apply to tempo
 												// -100% is meaningless, but sky's the upper limit.
 												// Slider is (-100, 200], but textCtrls can set higher.
@@ -137,6 +118,9 @@ class ChangeTempoDialog:public wxDialog {
    unsigned int	m_ToBPM;				// Zero value means not yet set.
    double			m_FromLength;		// starting length of selection
    double			m_ToLength;			// target length of selection
+
+ private:
+   DECLARE_EVENT_TABLE()
 };
 
 

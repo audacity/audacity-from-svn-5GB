@@ -30,22 +30,6 @@
 
 #include "SoundTouchEffect.h"
 
-// Make these first 3 ID_'s match ChangeSpeed and ChangeTempo to avoid compiler warnings.
-#define ID_TEXT 10000
-
-#define ID_TEXT_PERCENTCHANGE 10001
-#define ID_SLIDER_PERCENTCHANGE 10002
-
-#define ID_CHOICE_FROMPITCH 10003
-#define ID_RADIOBOX_PITCHUPDOWN 10004
-#define ID_CHOICE_TOPITCH 10005
-
-#define ID_TEXT_SEMITONESCHANGE 10006
-
-#define ID_TEXT_FROMFREQUENCY 10007
-#define ID_TEXT_TOFREQUENCY 10008
-
-
 
 class wxString;
 
@@ -86,6 +70,8 @@ class EffectChangePitch:public EffectSoundTouch {
    float				m_ToFrequency;			// target frequency of selection
 
    double			m_PercentChange;		// percent change to apply to pitch
+
+friend class ChangePitchDialog;
 };
 
 //----------------------------------------------------------------------------
@@ -94,45 +80,12 @@ class EffectChangePitch:public EffectSoundTouch {
 
 class ChangePitchDialog:public wxDialog {
  public:
-   ChangePitchDialog(wxWindow * parent,
-							wxWindowID id, 
+   ChangePitchDialog(EffectChangePitch * effect, 
+							wxWindow * parent, wxWindowID id, 
 							const wxString & title, 
 							const wxPoint & pos = wxDefaultPosition, 
 							const wxSize & size = wxDefaultSize, 
 							long style = wxDEFAULT_DIALOG_STYLE);
-
-   // accessors
-   wxChoice * GetChoice_FromPitch() { 
-      return (wxChoice *) FindWindow(ID_CHOICE_FROMPITCH);
-   }
-	wxRadioBox * GetRadioBox_PitchUpDown() {
-		return (wxRadioBox *) FindWindow(ID_RADIOBOX_PITCHUPDOWN);
-	}
-   wxChoice * GetChoice_ToPitch() { 
-      return (wxChoice *) FindWindow(ID_CHOICE_TOPITCH);
-   }
-   
-   wxTextCtrl * GetTextCtrl_SemitonesChange() { 
-      return (wxTextCtrl *) FindWindow(ID_TEXT_SEMITONESCHANGE);
-   }
-
-	wxTextCtrl * GetTextCtrl_FromFrequency() { 
-      return (wxTextCtrl *) FindWindow(ID_TEXT_FROMFREQUENCY);
-   }
-   wxTextCtrl * GetTextCtrl_ToFrequency() { 
-      return (wxTextCtrl *) FindWindow(ID_TEXT_TOFREQUENCY);
-   }
-   
-	wxTextCtrl * GetTextCtrl_PercentChange() {
-      return (wxTextCtrl *) FindWindow(ID_TEXT_PERCENTCHANGE);
-   }
-   wxSlider * GetSlider_PercentChange() {
-      return (wxSlider *) FindWindow(ID_SLIDER_PERCENTCHANGE);
-   }
-   
-	wxButton * GetOK() {
-      return (wxButton *) FindWindow(wxID_OK);
-   }
 
    virtual bool Validate();
    virtual bool TransferDataToWindow();
@@ -159,6 +112,7 @@ class ChangePitchDialog:public wxDialog {
 	void OnText_PercentChange(wxCommandEvent & event);
    void OnSlider_PercentChange(wxCommandEvent & event);
 
+   void OnPreview( wxCommandEvent &event );
    void OnOk(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
 
@@ -175,20 +129,37 @@ class ChangePitchDialog:public wxDialog {
 
  private:
    bool m_bLoopDetect;
-   DECLARE_EVENT_TABLE()
+	EffectChangePitch * m_pEffect;
+
+   // controls
+   wxChoice *		m_pChoice_FromPitch;
+	wxRadioBox *	m_pRadioBox_PitchUpDown;
+   wxChoice *		m_pChoice_ToPitch;
+   
+   wxTextCtrl *	m_pTextCtrl_SemitonesChange;
+
+	wxTextCtrl *	m_pTextCtrl_FromFrequency;
+   wxTextCtrl *	m_pTextCtrl_ToFrequency;
+   
+	wxTextCtrl *	m_pTextCtrl_PercentChange;
+   wxSlider *		m_pSlider_PercentChange;
 
  public:
-   int				m_FromPitchIndex;		// pitch index, per PitchIndex
-	bool				m_bWantPitchDown;		// up to ToPitchNum if false (default), else down
-   int				m_ToPitchIndex;		// pitch index, per PitchIndex
+	// effect parameters
+   int		m_FromPitchIndex;		// pitch index, per PitchIndex
+	bool		m_bWantPitchDown;		// up to ToPitchNum if false (default), else down
+   int		m_ToPitchIndex;		// pitch index, per PitchIndex
 
-	double			m_SemitonesChange;	// how many semitones to change pitch
+	double	m_SemitonesChange;	// how many semitones to change pitch
 	
-   float				m_FromFrequency;		// starting frequency of selection
-   float				m_ToFrequency;			// target frequency of selection
+   float		m_FromFrequency;		// starting frequency of selection
+   float		m_ToFrequency;			// target frequency of selection
 
-   double			m_PercentChange;		// percent change to apply to pitch
-													// Slider is (-100, 200], but textCtrls can set higher.
+   double	m_PercentChange;		// percent change to apply to pitch
+											// Slider is (-100, 200], but textCtrls can set higher.
+
+ private:
+   DECLARE_EVENT_TABLE()
 };
 
 
