@@ -20,35 +20,33 @@ CC = @CC@
 OBJDIR = obj
 
 OBJS = \
-	$(OBJDIR)/AudacityApp.cpp.o \
 	$(OBJDIR)/AButton.cpp.o \
 	$(OBJDIR)/AColor.cpp.o \
-	$(OBJDIR)/ASlider.cpp.o \
 	$(OBJDIR)/APalette.cpp.o \
-	$(OBJDIR)/Project.cpp.o \
-	$(OBJDIR)/Play.cpp.o \
-	$(OBJDIR)/TrackPanel.cpp.o \
-	$(OBJDIR)/NoteTrack.cpp.o \
-	$(OBJDIR)/WaveTrack.cpp.o \
-	$(OBJDIR)/LabelTrack.cpp.o \
-	$(OBJDIR)/Track.cpp.o \
+	$(OBJDIR)/ASlider.cpp.o \
+	$(OBJDIR)/AboutDialog.cpp.o \
+	$(OBJDIR)/AudacityApp.cpp.o \
 	$(OBJDIR)/BlockFile.cpp.o \
+	$(OBJDIR)/DirManager.cpp.o \
+	$(OBJDIR)/DiskFunctions.cpp.o \
 	$(OBJDIR)/Envelope.cpp.o \
 	$(OBJDIR)/Export.cpp.o \
+	$(OBJDIR)/FFT.cpp.o \
+	$(OBJDIR)/FreqWindow.cpp.o \
 	$(OBJDIR)/Import.cpp.o \
-	$(OBJDIR)/ImportRaw.cpp.o \
 	$(OBJDIR)/ImportMIDI.cpp.o \
 	$(OBJDIR)/ImportMP3.cpp.o \
-	$(OBJDIR)/Landmark.cpp.o \
-	$(OBJDIR)/Peak.cpp.o \
-	$(OBJDIR)/Spectrum.cpp.o \
-	$(OBJDIR)/FFT.cpp.o \
-	$(OBJDIR)/DiskFunctions.cpp.o \
-	$(OBJDIR)/DirManager.cpp.o \
-	$(OBJDIR)/UndoManager.cpp.o \
-	$(OBJDIR)/AboutDialog.cpp.o \
-	$(OBJDIR)/Pitch.cpp.o \
+	$(OBJDIR)/ImportRaw.cpp.o \
+	$(OBJDIR)/LabelTrack.cpp.o \
 	$(OBJDIR)/Mix.cpp.o \
+	$(OBJDIR)/NoteTrack.cpp.o \
+	$(OBJDIR)/Play.cpp.o \
+	$(OBJDIR)/Project.cpp.o \
+	$(OBJDIR)/Spectrum.cpp.o \
+	$(OBJDIR)/Track.cpp.o \
+	$(OBJDIR)/TrackPanel.cpp.o \
+	$(OBJDIR)/UndoManager.cpp.o \
+	$(OBJDIR)/WaveTrack.cpp.o \
 	$(OBJDIR)/effects/Effect.cpp.o \
 	$(OBJDIR)/effects/Amplify.cpp.o \
 	$(OBJDIR)/effects/Echo.cpp.o \
@@ -59,13 +57,7 @@ OBJS = \
 	$(OBJDIR)/snd/sndheader.c.o \
 	$(OBJDIR)/snd/sndlinux.c.o \
 	$(OBJDIR)/snd/sndcvt.c.o \
-	$(OBJDIR)/snd/sndio.c.o \
-	$(OBJDIR)/mp3/common.c.o \
-	$(OBJDIR)/mp3/dct64_i386.c.o \
-	$(OBJDIR)/mp3/decode_i386.c.o \
-	$(OBJDIR)/mp3/layer3.c.o \
-	$(OBJDIR)/mp3/tabinit.c.o \
-	$(OBJDIR)/mp3/interface.c.o
+	$(OBJDIR)/snd/sndio.c.o
 
 ########################################
 # DEPENDENCIES
