@@ -33,6 +33,11 @@ Ruler::Ruler()
    mLog = false;
    mUnits = "";
 
+   mLeft = -1;
+   mTop = -1;
+   mRight = -1;
+   mBottom = -1;
+
    int fontSize = 10;
 #ifdef __WXMSW__
    fontSize = 8;
@@ -419,10 +424,16 @@ void Ruler::Tick(int pos, double d, bool major)
    wxCoord strW, strH;
    int strPos, strLen, strLeft, strTop;
 
+   Label *label;
    if (major)
-      mMajorLabels[mNumMajor++].pos = pos;
+      label = &mMajorLabels[mNumMajor++];
    else
-      mMinorLabels[mNumMinor++].pos = pos;
+      label = &mMinorLabels[mNumMajor++];
+
+   label->pos = pos;
+   label->lx = mLeft - 1000; // don't display
+   label->ly = mTop - 1000;  // don't display
+   label->text = "";
 
    mDC->SetFont(major? *mMajorFont: *mMinorFont);
 
@@ -464,13 +475,7 @@ void Ruler::Tick(int pos, double d, bool major)
       if (mBits[strPos+i])
          return;
 
-   // If not, add the label
-
-   Label *label;
-   if (major)
-      label = &mMajorLabels[mNumMajor-1];
-   else
-      label = &mMinorLabels[mNumMinor-1];
+   // If not, position the label and give it text
 
    label->lx = strLeft;
    label->ly = strTop;
@@ -603,7 +608,7 @@ void Ruler::Draw(wxDC& dc)
                           mRight, mTop + pos);
       }
 
-      if (mMajorLabels[i].text)
+      if (mMajorLabels[i].text != "")
          mDC->DrawText(mMajorLabels[i].text,
                        mMajorLabels[i].lx,
                        mMajorLabels[i].ly);
@@ -631,7 +636,7 @@ void Ruler::Draw(wxDC& dc)
                           mRight, mTop + pos);
       }
 
-      if (mMinorLabels[i].text)
+      if (mMinorLabels[i].text != "")
          mDC->DrawText(mMinorLabels[i].text,
                        mMinorLabels[i].lx,
                        mMinorLabels[i].ly);
