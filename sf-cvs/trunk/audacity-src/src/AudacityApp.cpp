@@ -262,6 +262,9 @@ bool AudacityApp::OnInit()
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
    SetTopWindow(project);
 
+   // Can't handle command-line args on Mac OS X yet...
+   #if !(defined(__WXMAC__) && defined(__UNIX__))
+
    // Parse command-line arguments
 
    if (argc > 1) {
@@ -311,6 +314,8 @@ bool AudacityApp::OnInit()
 
       }                         // for option...
    }                            // if (argc>1)
+
+   #endif // not Mac OS X
 
    return TRUE;
 }
