@@ -70,13 +70,12 @@ bool AudioIO::OpenPlaybackDevice(AudacityProject * project)
    mPlayNode.format.mode = SND_MODE_PCM;
    mPlayNode.format.bits = 16;
    mPlayNode.format.srate = project->GetRate();
+   wxString deviceStr = gPrefs->Read("/AudioIO/PlaybackDevice", "");
 #ifdef __WXGTK__
-   wxString linuxDevice =
-       gPrefs->Read("/AudioIO/PlaybackDevice", "/dev/dsp");
-   strcpy(mPlayNode.u.audio.devicename, linuxDevice.c_str());
-#else
-   strcpy(mPlayNode.u.audio.devicename, "");
+   if (deviceStr == "")
+      deviceStr = "/dev/dsp";
 #endif
+   strcpy(mPlayNode.u.audio.devicename, deviceStr.c_str());
    strcpy(mPlayNode.u.audio.interfacename, "");
    mPlayNode.u.audio.descriptor = 0;
    mPlayNode.u.audio.protocol = SND_COMPUTEAHEAD;
@@ -174,6 +173,7 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks)
                            VTrack::LeftChannel : VTrack::MonoChannel);
 
    if (mRecordStereo) {
+      mRecordLeft->linked = true;
       mRecordRight = new WaveTrack(project->GetDirManager());
       mRecordRight->selected = true;
       mRecordRight->channel = VTrack::RightChannel;
@@ -198,13 +198,12 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks)
    mRecordNode.format.mode = SND_MODE_PCM;
    mRecordNode.format.bits = 16;
    mRecordNode.format.srate = project->GetRate();
+   wxString deviceStr = gPrefs->Read("/AudioIO/RecordingDevice", "");
 #ifdef __WXGTK__
-   wxString linuxDevice =
-       gPrefs->Read("/AudioIO/RecordingDevice", "/dev/dsp");
-   strcpy(mRecordNode.u.audio.devicename, linuxDevice.c_str());
-#else
-   strcpy(mRecordNode.u.audio.devicename, "");
+   if (deviceStr == "")
+      deviceStr = "/dev/dsp";
 #endif
+   strcpy(mRecordNode.u.audio.devicename, deviceStr.c_str());
    strcpy(mRecordNode.u.audio.interfacename, "");
    mRecordNode.u.audio.descriptor = 0;
    mRecordNode.u.audio.protocol = SND_COMPUTEAHEAD;
