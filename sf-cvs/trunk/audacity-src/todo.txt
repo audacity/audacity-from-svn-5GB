@@ -39,6 +39,7 @@ Audio:
   a selection (see DG Malham email)
 
 UI::
+- Tooltips
 - While playing, click in ruler to change playback
   position
 - Remember window size and position
