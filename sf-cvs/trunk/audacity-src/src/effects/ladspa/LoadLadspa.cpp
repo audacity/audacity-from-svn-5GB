@@ -28,89 +28,83 @@
 
 #include "ladspa.h"
 
+#include "../../Audacity.h"
+#include "../../AudacityApp.h"
 #include "LadspaEffect.h"
 
-/* Declare Static functions */
-static void SearchLadspaInDir(wxString dir);
-
-void SearchLadspaInDir(wxString dir)
+void LoadLadspaEffect(wxString fname)
 {
-   wxLogNull nolog;
+   wxLogNull logNo;
+   LADSPA_Descriptor_Function mainFn = NULL;
    
-   wxString fname =
-      wxFindFirstFile((const char *)(dir + wxFILE_SEP_PATH + "*.so"));
-
-   while (fname != "") {
-      wxLogNull logNo;
-      LADSPA_Descriptor_Function mainFn = NULL;
-
-      // XXX: The following code uses the wxWindows DLL class, which does
-      //      not allow us to control the flags passed to dlopen().  This
-      //      leads to potential segfault bugs when plugins have conflicting
-      //      symbols, so until wxWindows adds this capability we are calling
-      //      dlopen() by hand.
-      //
-      // wxDllType libHandle = NULL;
-      //  
-      // libHandle = wxDllLoader::LoadLibrary(fname);
-      //
-      // mainFn = (LADSPA_Descriptor_Function)
-      //    wxDllLoader::GetSymbol(libHandle,
-      //                           "ladspa_descriptor");
-      
 #ifdef __WXGTK__
-      void *libHandle = NULL;
+   void *libHandle = NULL;
+   
+   libHandle = dlopen(fname, RTLD_LAZY);
+   
+   mainFn = (LADSPA_Descriptor_Function)
+      dlsym(libHandle, "ladspa_descriptor");
+#else
+   // The following code uses the wxWindows DLL class, which does
+   // not allow us to control the flags passed to dlopen().  This
+   // leads to potential segfault bugs when plugins have conflicting
+   // symbols, so until wxWindows adds this capability we are calling
+   // dlopen() by hand under WXGTK, above...
 
-      libHandle = dlopen(fname, RTLD_LAZY);
-
-      mainFn = (LADSPA_Descriptor_Function)
-                  dlsym(libHandle, "ladspa_descriptor");
+   wxDllType libHandle = NULL;
+     
+   libHandle = wxDllLoader::LoadLibrary(fname);
+   mainFn = (LADSPA_Descriptor_Function)
+      wxDllLoader::GetSymbol(libHandle,
+                             "ladspa_descriptor");
 #endif
 
-      if (mainFn) {
-         int index = 0;
-         const LADSPA_Descriptor *data;
-
-         data = mainFn(index);
-         while(data) {
-            LadspaEffect *effect = new LadspaEffect(data);
-            Effect::RegisterEffect(effect);
-
-            // Get next plugin
-            index++;
-            data = mainFn(index);            
-         }
+   if (mainFn) {
+      int index = 0;
+      const LADSPA_Descriptor *data;
+      
+      data = mainFn(index);
+      while(data) {
+         LadspaEffect *effect = new LadspaEffect(data);
+         Effect::RegisterEffect(effect);
+         
+         // Get next plugin
+         index++;
+         data = mainFn(index);            
       }
-
-      fname = wxFindNextFile();
    }
 }
 
 void LoadLadspaPlugins()
 {
-   wxStringList paths;
+   wxArrayString audacityPathList = wxGetApp().audacityPathList;
+   wxArrayString pathList;
+   wxArrayString files;
+   wxString pathVar;
+   unsigned int i;
 
-   wxString pathVar = wxGetenv("LADSPA_PATH");
-   if (pathVar != "") {
-      wxString onePath = pathVar.BeforeFirst(wxPATH_SEP[0]);
-      pathVar = pathVar.AfterFirst(wxPATH_SEP[0]);
-      if (!paths.Member(onePath))
-         paths.Add(onePath);
-   }
+   pathVar = wxGetenv("LADSPA_PATH");
+   if (pathVar != "")
+      wxGetApp().AddMultiPathsToPathList(pathVar, pathList);
 
    #ifdef __WXGTK__
-   wxString stdPath = "/usr/local/lib/ladspa";
-   if (!paths.Member(stdPath))
-      paths.Add(stdPath);
-   stdPath = "/usr/lib/ladspa";
-   if (!paths.Member(stdPath))
-      paths.Add(stdPath);
+   wxGetApp().AddUniquePathToPathList(INSTALL_PREFIX "/ladspa", pathList);
+   wxGetApp().AddUniquePathToPathList("/usr/local/lib/ladspa", pathList);
+   wxGetApp().AddUniquePathToPathList("/usr/lib/ladspa", pathList);
    #endif
 
-   for ( wxStringList::Node *node = paths.GetFirst();
-         node;
-         node = node->GetNext() ) {
-      SearchLadspaInDir(node->GetData());
+   for(unsigned i=0; i<audacityPathList.GetCount(); i++) {
+      wxString prefix = audacityPathList[i] + wxFILE_SEP_PATH;
+      wxGetApp().AddUniquePathToPathList(prefix + "ladspa",
+                                         pathList);
+      wxGetApp().AddUniquePathToPathList(prefix + "plugins",
+                                         pathList);
+      wxGetApp().AddUniquePathToPathList(prefix + "plug-ins",
+                                         pathList);
    }
 
+   wxGetApp().FindFilesInPathList("*.so", pathList, wxFILE, files);
+
+   for(i=0; i<files.GetCount(); i++)
+      LoadLadspaEffect(files[i]);
 }

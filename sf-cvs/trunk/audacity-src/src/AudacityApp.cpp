@@ -19,6 +19,10 @@
 #include <wx/fs_zip.h>
 #include <wx/image.h>
 
+#if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
+#include <wx/filename.h>
+#endif
+
 #ifdef __WXGTK__
 #include <unistd.h>
 #endif
@@ -247,7 +251,53 @@ bool AudacityApp::OnInit()
    } else
       mLocale = NULL;
 
-   LoadEffects(wxPathOnly(argv[0]));
+   //
+   // Paths: set search path and temp dir path
+   //
+
+   wxString home = wxGetHomeDir();
+
+   // On Unix systems, search the install path and the user's
+   // .audacity-files directory, plus check the AUDACITY_PATH
+   // environment variable.  The default temp dir is in /tmp
+   #ifdef __WXGTK__
+   defaultTempDir.Printf("/tmp/audacity1.1-%s", wxGetenv("USER"));
+   wxString pathVar = wxGetenv("AUDACITY_PATH");
+   if (pathVar != "")
+      AddMultiPathsToPathList(pathVar, audacityPathList);
+   AddUniquePathToPathList(wxString::Format("%s/.audacity-files",
+                                            (const char *)home),
+                           audacityPathList);
+   AddUniquePathToPathList(wxString::Format("%s/share/audacity",
+                                            INSTALL_PREFIX),
+                           audacityPathList);
+   AddUniquePathToPathList(wxString::Format("%s/share/doc/audacity",
+                                            INSTALL_PREFIX),
+                           audacityPathList);
+   #endif
+   
+   // On Mac and Windows systems, use the directory which contains Audacity.
+   #ifdef __WXMSW__
+   // On Windows, the path to the Audacity program is in argv[0]
+   wxString progPath = wxPathOnly(argv[0]);
+   AddUniquePathToPathList(progPath, audacityPathList);
+   defaultTempDir.Printf("%s\\audacity_1_1_temp", (const char *)progPath);
+   #endif
+   #ifdef __MACOSX__
+   // On Mac OS X, the path to the Audacity program is in argv[0]
+   wxString progPath = wxPathOnly(argv[0]);
+   AddUniquePathToPathList(progPath, audacityPathList);
+   defaultTempDir.Printf("%s/audacity_1_1_temp", (const char *)progPath);
+   #endif
+   #ifdef __MACOS9__
+   // On Mac OS 9, the initial working directory is the one that
+   // contains the program.
+   wxString progPath = wxGetCwd();
+   AddUniquePathToPathList(progPath, audacityPathList);
+   defaultTempDir.Printf("%s/audacity_1_1_temp", (const char *)progPath);
+   #endif
+
+   LoadEffects();
 
 #ifdef __WXMAC__
 
@@ -370,6 +420,63 @@ bool AudacityApp::OnInit()
    #endif // not Mac OS X
 
    return TRUE;
+}
+
+// static
+void AudacityApp::AddUniquePathToPathList(wxString path,
+                                          wxArrayString &pathList)
+{
+   #if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
+   wxFileName pathNorm = path;
+   pathNorm.Normalize();
+   path = pathNorm;
+   #endif
+
+   for(unsigned int i=0; i<pathList.GetCount(); i++) {
+      #if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
+      if (wxFileName(path) == wxFileName(pathList[i]))
+         return;
+      #else
+      if (path == pathList[i])
+         return;
+      #endif
+   }
+
+   pathList.Add(path);
+}
+
+// static
+void AudacityApp::AddMultiPathsToPathList(wxString multiPathString,
+                                          wxArrayString &pathList)
+{
+   while (multiPathString != "") {
+      wxString onePath = multiPathString.BeforeFirst(wxPATH_SEP[0]);
+      multiPathString = multiPathString.AfterFirst(wxPATH_SEP[0]);
+      AddUniquePathToPathList(onePath, pathList);
+   }
+}
+
+// static
+void AudacityApp::FindFilesInPathList(wxString pattern,
+                                      wxArrayString pathList,
+                                      int flags,
+                                      wxArrayString &results)
+{
+   wxLogNull nolog;
+
+   if (pattern == "")
+      return;
+
+   for(unsigned i=0; i<pathList.GetCount(); i++) {
+      wxString path = pathList[i];
+
+      wxString fname = 
+         wxFindFirstFile((const char *)(path + wxFILE_SEP_PATH + pattern));
+      while(fname != "") {
+         results.Add(fname);
+         fname = wxFindNextFile();
+      }
+   }
 }
 
 void AudacityApp::OnKey(wxKeyEvent& event)

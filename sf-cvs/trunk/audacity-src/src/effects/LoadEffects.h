@@ -13,6 +13,6 @@
 
 #include <wx/string.h>
 
-void LoadEffects(wxString searchDir);
+void LoadEffects();
 
 #endif // define __AUDACITY_LOAD_EFFECTS__

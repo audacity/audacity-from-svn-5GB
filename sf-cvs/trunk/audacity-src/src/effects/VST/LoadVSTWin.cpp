@@ -4,6 +4,7 @@
 
   LoadVSTWin.cpp
 
+  Dominic Mazzoni
   Mark Tomlinson
 
 **********************************************************************/
@@ -12,8 +13,9 @@
 
 #include "AudioEffect.hpp"      // VST API
 
-#include "VSTEffect.h"          // This class's header
-#include "../DirManager.h"      // Audacity class which handles data structures
+#include "VSTEffect.h"
+#include "../../AudacityApp.h"
+#include "LoadVSTWin.h"
 
 int audacityVSTID = 1;
 
@@ -31,70 +33,60 @@ extern "C" {
    
    typedef AEffect *(*vstPluginMain) (audioMasterCallback audioMaster);
    
-   void LoadVSTPlugins(wxString searchDir) {
-      wxString pathChar = DirManager::GetPathChar();
-      wxString vstDirPath = searchDir + pathChar + "vst";
-      wxString fname;
-
-      fname =
-          wxFindFirstFile((const char *) (vstDirPath + pathChar +
-                                          "*.DLL"));
-
-      while (fname != "") {
-         HANDLE hLib = LoadLibrary(fname);
-
-         if (hLib != NULL) {
-
-            // get the address of the main() function
-
-            vstPluginMain pDllMain =
-                (vstPluginMain) GetProcAddress((HINSTANCE) hLib, "main");
-
-            if (pDllMain != NULL) {
-
-               AEffect *theEffect;
-
-               theEffect = (pDllMain) (audioMaster);
-
-               if (theEffect->magic == kEffectMagic) {
-                  wxString title = wxFileNameFromPath(fname);
-                  int len = title.Len();
-                  if (len > 4 && (title.Mid(len - 4) == ".DLL"
-                                  || title.Mid(len - 4) == ".dll"))
-                     title = title.Mid(0, len - 4);
-
-                  VSTEffect *vst = new VSTEffect(title, theEffect);
-                  Effect::RegisterEffect(vst);
-               }
+   void LoadVSTPlugin(wxString fname) {
+      HANDLE hLib = LoadLibrary(fname);
+      
+      if (hLib != NULL) {
+         
+         // get the address of the main() function
+         
+         vstPluginMain pDllMain =
+            (vstPluginMain) GetProcAddress((HINSTANCE) hLib, "main");
+         
+         if (pDllMain != NULL) {
+            
+            AEffect *theEffect;
+            
+            theEffect = (pDllMain) (audioMaster);
+            
+            if (theEffect->magic == kEffectMagic) {
+               wxString title = wxFileNameFromPath(fname);
+               int len = title.Len();
+               if (len > 4 && (title.Mid(len - 4, 1) == "."))
+                  title = title.Mid(0, len - 4);
+               
+               VSTEffect *vst = new VSTEffect(title, theEffect);
+               Effect::RegisterEffect(vst);
             }
-
-            audacityVSTID++;
-         } else {
-            FreeLibrary((HINSTANCE) hLib);
          }
-
-         fname = wxFindNextFile();
+         
+         audacityVSTID++;
+      } else {
+         FreeLibrary((HINSTANCE) hLib);
       }
+   }
+
+   void LoadVSTPlugins() {
+      wxArrayString audacityPathList = wxGetApp().audacityPathList;
+      wxArrayString pathList;
+      wxArrayString files;
+      unsigned int i;
+      
+      for(i=0; i<audacityPathList.GetCount(); i++) {
+         wxString prefix = audacityPathList[i] + wxFILE_SEP_PATH;
+         wxGetApp().AddUniquePathToPathList(prefix + "VST",
+                                            pathList);
+         wxGetApp().AddUniquePathToPathList(prefix + "plugins",
+                                            pathList);
+         wxGetApp().AddUniquePathToPathList(prefix + "plug-ins",
+                                            pathList);
+      }
+
+      wxGetApp().FindFilesInPathList("*.dll", pathList, wxFILE, files);
+      
+      for(i=0; i<files.GetCount(); i++)
+         LoadVSTPlugin(files[i]);
    }
 
 
 };                              // extern "C"
-
-/*
-
-How to enumerate symbols:
-
-        long numSymbols;
-    
-        err = CountSymbols(connID, &numSymbols);
-        if (!err)
-            for(int y=0; y<numSymbols; y++) {
-            
-                Str255 symbolName;
-            
-                err = GetIndSymbol(connID, y, symbolName, &symbolAddress, &symbolClass);
-                
-                
-            }
-
-*/

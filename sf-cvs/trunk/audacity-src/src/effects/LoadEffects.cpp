@@ -43,7 +43,7 @@
 #include "ladspa/LoadLadspa.h"
 #endif
 
-void LoadEffects(wxString searchDir)
+void LoadEffects()
 {
    Effect::RegisterEffect(new EffectAmplify());
    Effect::RegisterEffect(new EffectAvcCompressor());
@@ -66,7 +66,7 @@ void LoadEffects(wxString searchDir)
 #endif
 
 #if defined(__WXMAC__) || defined(__WXMSW__)
-   LoadVSTPlugins(searchDir);
+   LoadVSTPlugins();
 #endif
 
 #ifdef USE_LADSPA

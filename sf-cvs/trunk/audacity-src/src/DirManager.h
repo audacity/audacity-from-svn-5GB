@@ -75,12 +75,6 @@ class DirManager {
    void Ref(BlockFile * f);
    void Deref(BlockFile * f);
 
-   static wxString GetHomeDir() {
-      return home;
-   } static wxString GetPathChar() {
-      return pathChar;
-   }
-
  private:
    void CleanTempDir();
 
@@ -111,8 +105,6 @@ class DirManager {
 
    wxStringList aliasList;
 
-   static wxString pathChar;
-   static wxString home;
    static wxString temp;
 
    static bool firstCtor;

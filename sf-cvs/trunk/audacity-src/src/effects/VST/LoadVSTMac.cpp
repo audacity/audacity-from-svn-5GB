@@ -29,16 +29,14 @@
 #include "AEffect.h"
 #include "AudioEffect.hpp"        // VST API
 
-#include "VSTEffect.h"            // This class's header
-#include "../../DirManager.h"     // Audacity class which handles data structures
+#include "VSTEffect.h"
+#include "../../AudacityApp.h"
 #include "LoadVSTMac.h"   
 
 int audacityVSTID = 1;
 
 extern "C" {
    
-   long audioMaster(AEffect * effect, long opcode, long index,
-                    long value, void *ptr, float opt);
    long audioMaster(AEffect * effect, long opcode, long index,
                     long value, void *ptr, float opt)
    {
@@ -54,34 +52,50 @@ extern "C" {
 
    typedef AEffect *(*vstPluginMain)(audioMasterCallback audioMaster);
 
-   void LoadVSTPlugins(wxString searchDir) 
+   void LoadVSTPlugins(wxString fname)
    {
-      wxString pathChar = DirManager::GetPathChar();
-      wxString home = DirManager::GetHomeDir();
-      #ifdef __MACOSX__
-        wxString vstDirPath = searchDir + pathChar + "vst";
-      #else
-        wxString vstDirPath = home + pathChar + "vst";
-      #endif
-
-      wxString fname;
-      
 #ifdef __MACOSX__
       audioMasterCallback audioMasterFPtr =
          (audioMasterCallback)NewCFMFromMachO(audioMaster);
 #else
-    // What is the corrct way of creating an audioMasterCallback in OS 9/Carbon 
-	// audioMasterCallback audioMasterFPtr = NULL; 
+      // What is the corrct way of creating an audioMasterCallback
+      // in OS 9/Carbon???
+      // audioMasterCallback audioMasterFPtr = NULL; 
       audioMasterCallback audioMasterFPtr = audioMaster;
 #endif      
 
-      fname = wxFindFirstFile((const char *) (vstDirPath + pathChar + "*"));
+      wxArrayString audacityPathList = wxGetApp().audacityPathList;
+      wxArrayString pathList;
+      wxArrayString files;
+      unsigned int i;
+      
+      for(i=0; i<audacityPathList.GetCount(); i++) {
+         wxString prefix = audacityPathList[i] + wxFILE_SEP_PATH;
+         wxGetApp().AddUniquePathToPathList(prefix + "VST",
+                                            pathList);
+         wxGetApp().AddUniquePathToPathList(prefix + "Plugins",
+                                            pathList);
+         wxGetApp().AddUniquePathToPathList(prefix + "Plug-Ins",
+                                            pathList);
+      }
 
-      while (fname != "") {
+      #ifdef __MACOSX__
+      wxGetApp().AddUniquePathToPathList("/Library/Audio/Plug-Ins/VST",
+                              pathList);
+      wxString vstPath;
+      vstPath.Printf("/Users/%s/Library/Audio/Plug-Ins/VST",
+                     wxGetenv("USER"));
+      wxGetApp().AddUniquePathToPathList(vstPath,
+                                         pathList);
+      #endif
+
+      wxGetApp().FindFilesInPathList("*", pathList, wxFILE, files);
+      
+      for(i=0; i<files.GetCount(); i++) {
          short   resFileID;
          FSSpec  spec;
-
-         wxMacFilename2FSSpec(fname, &spec);
+         
+         wxMacFilename2FSSpec(files[i], &spec);
          resFileID = FSpOpenResFile(&spec, fsRdPerm);
          short cResCB = Count1Resources('aEff');
 
@@ -139,10 +153,11 @@ extern "C" {
                audacityVSTID++;
             }
          }
-
+         
          CloseResFile(resFileID);
-         fname = wxFindNextFile();
+
       }
+         
 #ifdef __MACOSX__
       DisposeCFMFromMachO(audioMasterFPtr);
 #endif  //   __MACOSX__
