@@ -42,6 +42,7 @@
 #include "Mix.h"
 #include "NoteTrack.h"
 #include "Play.h"
+#include "Prefs.h"
 #include "Project.h"
 #include "Track.h"
 #include "TrackPanel.h"
@@ -79,6 +80,7 @@ AudacityProject *GetActiveProject()
 void SetActiveProject(AudacityProject *project)
 {
   gActiveProject = project;
+  wxTheApp->SetTopWindow(project);
 }
 
 AudacityProject *CreateNewAudacityProject(wxWindow *parentWindow)
@@ -759,15 +761,9 @@ void AudacityProject::OnPaint(wxPaintEvent& event)
   r.height = height;
   dc.DrawRectangle(r);
   
-  r.x = 0;
-  r.y = height-sbarSpaceWidth;
-  r.width = width;
-  r.height = sbarSpaceWidth;
-  dc.DrawRectangle(r);
-
   // If we're displaying the palette inside the window,
   // draw little bumps to the left of the palette to
-  // indicate it's grabbable
+  // indicate it's grabable
 
   if (!gWindowedPalette) {
 	int h = GetAPaletteHeight();
@@ -888,12 +884,16 @@ void AudacityProject::OnMouseEvent(wxMouseEvent& event)
 	wxClientDC dc(this);
 
 	wxBitmap *bitmap = new wxBitmap(width, height);
-	wxMemoryDC memDC;
-	memDC.SelectObject(*bitmap);
-	memDC.Blit(0, 0, width, height, &dc, 10, 0);
-	memDC.SelectObject(wxNullBitmap);
+	wxMemoryDC *memDC = new wxMemoryDC();
+	memDC->SelectObject(*bitmap);
+	memDC->Blit(0, 0, width, height, &dc, 10, 0);
+    delete memDC;
 
 	mDrag = new wxDragImage(*bitmap);
+
+    // TODO
+    prinf("Does this crash?  About to delete the bitmap we're going to drag...");
+    delete bitmap;
 
 	mDrag->BeginDrag(hotspot, this, true);
 	mDrag->Move(mouse);
@@ -1112,9 +1112,11 @@ void AudacityProject::OnNew()
 
 void AudacityProject::OnOpen()
 {
+  wxString path = gPrefs->Read("/DefaultOpenPath", ::wxGetCwd());
+  
   wxString fileName =
-	wxFileSelector("Select an audio file...",
-				   "", // Path
+    wxFileSelector("Select an audio file...",
+				   path, // Path
 				   "", // Name
 				   "", // Extension
 				   "", // Wildcard
@@ -1122,12 +1124,16 @@ void AudacityProject::OnOpen()
 				   this); // Parent
   
   if (fileName != "") {
-	if (mDirty) {
-	  AudacityProject *project = CreateNewAudacityProject(gParentWindow);
-	  project->OpenFile(fileName);
-	}
-	else
-	  OpenFile(fileName);
+  
+    path = ::wxPathOnly(fileName);
+    gPrefs->Write("/DefaultOpenPath", path);
+  
+  	if (mDirty) {
+  	  AudacityProject *project = CreateNewAudacityProject(gParentWindow);
+  	  project->OpenFile(fileName);
+  	}
+  	else
+  	  OpenFile(fileName);
   }
 }
 
@@ -1331,17 +1337,23 @@ void AudacityProject::ImportFile(wxString fileName)
 
 void AudacityProject::OnImport()
 {
+  wxString path = gPrefs->Read("/DefaultOpenPath", ::wxGetCwd());
+  
   wxString fileName =
 	wxFileSelector("Select an audio file...",
-				   "", // Path
+				   path, // Path
 				   "", // Name
 				   "", // Extension
 				   "", // Wildcard
 				   0, // Flags
 				   this); // Parent
 
-  if (fileName != "")
-	ImportFile(fileName);
+  if (fileName != "") {
+    path = ::wxPathOnly(fileName);
+    gPrefs->Write("/DefaultOpenPath", path);
+
+    ImportFile(fileName);
+  }
 }
 
 void AudacityProject::OnExportLabels()
@@ -1970,4 +1982,5 @@ void AudacityProject::TP_RedrawScrollbars()
 void AudacityProject::TP_HasMouse()
 {
   SetActiveProject(this);
+  mTrackPanel->SetFocus();
 }
