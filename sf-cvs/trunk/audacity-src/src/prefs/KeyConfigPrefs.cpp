@@ -59,8 +59,7 @@ PrefsPanel(parent), mCommandSelected(-1)
       //Insert supported commands into list control
       for(int i = 0; i < mAudacity->GetNumCommands(); i++)
       {
-         if(mAudacity->GetMenuType(i) != typeSeparator)
-            mCommandsList->InsertItem(i, mAudacity->GetCommandName(i));
+         mCommandsList->InsertItem(i, mAudacity->GetCommandName(i));
       }
 
       vCommandSizer->Add(mCommandsList, 0,
@@ -139,6 +138,14 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
    wxWindow *wDescLabel = FindWindow(DescriptionTextID);
    mCommandSelected = event.GetIndex();
 
+   if(mAudacity->GetMenuType(mCommandSelected) == typeSeparator)
+   {
+      if(wDescLabel)
+         wDescLabel->SetLabel(_(""));
+
+      return;
+   }
+
    gPrefs->SetPath("/Keyboard/" + wxString::Format("%i", mCommandSelected));
 
    long keyIndex;
@@ -197,8 +204,8 @@ void KeyConfigPrefs::AddComboToList(wxCommandEvent& event)
 {
    wxString comboString = mCurrentComboText->GetValue();
 
-   //BG: Cannot add blank key or empty category
-   if((!comboString.length()) || (mCommandSelected < 0))
+   //BG: Cannot add blank key or empty category or seperator items
+   if((!comboString.length()) || (mCommandSelected < 0) || (mAudacity->GetMenuType(mCommandSelected) == typeSeparator))
       return;
 
    for(int i = 0; i < mKeysList->GetItemCount(); i++)
