@@ -18,7 +18,7 @@
 #include "../Audacity.h"
 #include "../Prefs.h"
 #include "../SampleFormat.h"
-#include "../dither.h"
+#include "../Dither.h"
 #include "QualityPrefs.h"
 
 #if USE_LIBSAMPLERATE
