@@ -49,41 +49,41 @@ public:
 
    void PurgeData();
 
-   void AddMenuBar(wxString &sMenu);
-   wxMenuBar * GetMenuBar(wxString &sMenu);
+   void AddMenuBar(wxString sMenu);
+   wxMenuBar * GetMenuBar(wxString sMenu);
    wxMenuBar * CurrentMenuBar();
 
-   void BeginMenu(wxString &tName);
+   void BeginMenu(wxString tName);
    void EndMenu();
 
-   void BeginSubMenu(wxString &tName);
+   void BeginSubMenu(wxString tName);
    void EndSubMenu();
    wxMenu * CurrentSubMenu();
 
    wxMenu * CurrentMenu();
 
-   void AddItem(wxString &tName, wxString &sFunctions, wxString &sKeys);
+   void AddItem(wxString tName, wxString sFunctions, wxString sKeys);
    void AddSeparator();
-   void AddDynamicItem(wxString &sName);
-   void AppendEffect(int idEffect, wxString &sName, wxString &sType);
-   void AppendEffects(EffectArray *effs, wxString &sType, bool spill);
+   void AddDynamicItem(wxString sName);
+   void AppendEffect(int idEffect, wxString sName, wxString sType);
+   void AppendEffects(EffectArray *effs, wxString sType, bool spill);
 
    int GetUniqueIdentifier(wxString sFunctions = "", wxString sKeys = "");
    void SetIdentifierData(int nID, wxString sFunctions = "", wxString sKeys = "");
 
    wxMenu * GetMenuFromIdentifier(int nID);
 
-   int GetIdentifiersFromFunction(wxString &sFunction, bool bReset = false);
-   int GetIdentifierFromFunctions(wxString &sFunctions);
+   int GetIdentifiersFromFunction(wxString sFunction, bool bReset = false);
+   int GetIdentifierFromFunctions(wxString sFunctions);
    wxString GetFunctionsFromIdentifier(int nID);
 
    wxString GetKeysFromIdentifier(int nID);
-   int GetIdentifierFromKey(wxString &sKey);
-   int GetIdentifierFromKeys(wxString &sKeys);
+   int GetIdentifierFromKey(wxString sKey);
+   int GetIdentifierFromKeys(wxString sKeys);
 
-   wxString GetFirstKey(wxString &sKeys);
+   wxString GetFirstKey(wxString sKeys);
 
-   wxString AppendComboString(wxString &tName, wxString &sKeys);
+   wxString AppendComboString(wxString tName, wxString sKeys);
 
 private:
    MenuBarList mMenuBarList;

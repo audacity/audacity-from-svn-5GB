@@ -177,7 +177,7 @@ void CommandsReader::HandleXMLTagStart(const char *tag, const char **attrs)
 
       if(!item_keys)
       {
-         s_item_keys = wxString("");
+         s_item_keys = "";
       }
       else
       {
@@ -247,7 +247,7 @@ void CommandsReader::InitializeTranslationStrings()
 #undef AUDACITY_COMMANDS_TRANSLATION_STRINGS
 }
 
-CommandsTranslationItem * CommandsReader::GetTranslationItem(wxString& untranslatedName)
+CommandsTranslationItem * CommandsReader::GetTranslationItem(wxString untranslatedName)
 {
    for(int i = 0; i < (int)mCommandsTranslationArray.GetCount(); i++)
    {
@@ -258,7 +258,7 @@ CommandsTranslationItem * CommandsReader::GetTranslationItem(wxString& untransla
    return NULL;
 }
 
-wxString CommandsReader::GetTranslatedName(wxString& untranslatedName)
+wxString CommandsReader::GetTranslatedName(wxString untranslatedName)
 {
    CommandsTranslationItem *tmpTranslation = GetTranslationItem(untranslatedName);
 
