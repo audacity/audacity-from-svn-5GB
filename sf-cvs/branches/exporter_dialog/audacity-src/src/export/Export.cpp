@@ -70,19 +70,6 @@ bool Export(AudacityProject *project,
   return true;
 }
 
-bool ExportLossy(AudacityProject *project,
-                 bool selectionOnly, double t0, double t1)
-{
-  FormatSelectionDialog *  select = new FormatSelectionDialog(project, selectionOnly,t0,t1);
-  if(select->ShowModal() == wxID_CANCEL)
-    {
-      return false;
-    }
-  return true;
-
-}
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -118,12 +105,23 @@ FormatSelectionDialog::FormatSelectionDialog(AudacityProject * project, bool sel
   //Create a top-level sizer, which hase to sizers inside it, 
   //spaced horizontally.
   mainSizer = new wxBoxSizer(wxVERTICAL);
-  wxBoxSizer * topSizer = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer * leftSizer = new wxBoxSizer(wxVERTICAL);
-  mSecondaryOptionSizer = new wxBoxSizer(wxVERTICAL);
+
+
+  wxStaticBox * topBox = new wxStaticBox(this, -1, "", wxDefaultPosition,  wxDefaultSize,  0,"staticBox");
+  wxStaticBoxSizer * topBoxSizer = new wxStaticBoxSizer(topBox,wxHORIZONTAL);
+
+
+
+  //Make left sizer a box
+  wxStaticBox * leftBox = new wxStaticBox(this, -1, _("Export File Type"), wxDefaultPosition,  wxDefaultSize,  0,"staticBox");
+  wxStaticBoxSizer * leftSizer = new wxStaticBoxSizer(leftBox,wxVERTICAL);
+
+  //Make the option box (on the right)
+  wxStaticBox * optionBox = new wxStaticBox(this, -1, _("Options"), wxDefaultPosition,  wxDefaultSize,  0,"staticBox");
+  wxStaticBoxSizer * optionSizer = new wxStaticBoxSizer(optionBox,wxVERTICAL);
+
   wxBoxSizer * bottomSizer = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer * tmpSizer;
-    
+  wxBoxSizer  *tmpSizer;
 
   //------------------------------------------------------  
   //Create the format chooser.
@@ -172,10 +170,13 @@ FormatSelectionDialog::FormatSelectionDialog(AudacityProject * project, bool sel
   mNumAvailableFormats++;
 
 
+  //Only allow command-line export on gtk
+#if __WXGTK__
   formatStrings[mNumAvailableFormats] = _("Command-Line Exporter");
   mFormats[mNumAvailableFormats] = FORMAT_TYPE_COMMANDLINE;
   mNumAvailableFormats++;
-  
+#endif  
+
   for(int i =0; i < sf_num_headers(); i++)
     {
       formatStrings[i+mNumAvailableFormats] = sf_header_index_name(i);
@@ -196,11 +197,14 @@ FormatSelectionDialog::FormatSelectionDialog(AudacityProject * project, bool sel
   
 
   //Create new tmpSizer, add label and chooser to it, then add it to panel.
-  tmpSizer= new wxBoxSizer(wxHORIZONTAL);
-  tmpSizer->Add(new wxStaticText(this, -1, _("Select type of file:")), 0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
- //Add the primary format chooser to the left sizer.
-  tmpSizer->Add(mFormatChooser,1,wxALL | wxALIGN_CENTER, 0);
-  leftSizer->Add(tmpSizer,1,wxALL | wxALIGN_CENTER,10);
+  //tmpSizerL = new wxBoxSizer(wxVERTICAL);
+  // tmpSizerR = new wxBoxSizer(wxVERTICAL);
+  tmpSizer = new wxBoxSizer(wxHORIZONTAL);
+
+ //Add the primary format chooser to the left sizer.  
+  tmpSizer->Add(new wxStaticText(this, -1, _("Type of file:")), 1, wxALIGN_RIGHT, 0);
+  tmpSizer->Add(mFormatChooser,2,wxALIGN_LEFT, 0);
+  leftSizer->Add(tmpSizer,1,  wxALIGN_CENTER,1);
 
   
   //------------------------------------------------------  
@@ -269,7 +273,7 @@ FormatSelectionDialog::FormatSelectionDialog(AudacityProject * project, bool sel
 
   if(numSelected > 2)
     {
-      wxString tmp = numSelected + _(" (each a separate track)");
+      wxString tmp = numSelected + _(" (separate tracks)");
       mChannelChooser->Append(tmp);
     }
   //The default selection should depend on what was in the project.  If there were
@@ -288,11 +292,12 @@ FormatSelectionDialog::FormatSelectionDialog(AudacityProject * project, bool sel
     }
   
   //Add controls to a sizer and add sizer to left panel.
-  tmpSizer= new wxBoxSizer(wxHORIZONTAL);
-  tmpSizer->Add(new wxStaticText(this, -1, _("Select number of channels to export:")), 0, 
-		 wxALL|wxALIGN_CENTER_VERTICAL, 0);
-  tmpSizer->Add(mChannelChooser,1,wxALL | wxALIGN_CENTER, 0);
-  leftSizer->Add(tmpSizer, 0, wxALL|wxALIGN_CENTER_VERTICAL, 10);
+
+  tmpSizer = new wxBoxSizer(wxHORIZONTAL);
+  tmpSizer->Add(new wxStaticText(this, -1, _("Number of channels:")), 1, wxALIGN_RIGHT, 0);
+  tmpSizer->Add(mChannelChooser, 2, wxALIGN_LEFT, 0);
+  leftSizer->Add(tmpSizer,1,  wxALIGN_CENTER,0);
+
 
   //------------------------------------------------------  
   //Create a sample rate selector.
@@ -338,22 +343,29 @@ FormatSelectionDialog::FormatSelectionDialog(AudacityProject * project, bool sel
 
   
  //(re)create a sizer, and add label, chooser, and textbox to it. Then add it to left panel.
-  tmpSizer= new wxBoxSizer(wxHORIZONTAL);
-  tmpSizer->Add(new wxStaticText(this, -1, _("Select Sample Rate:")), 0,  wxALL|wxALIGN_CENTER_VERTICAL, 0);
-  tmpSizer->Add( mSampleRates, 0, wxALL|wxALIGN_CENTER_VERTICAL, 0 );
-  tmpSizer->Add( mOtherSampleRate, 0, wxALL|wxALIGN_CENTER_VERTICAL, 0 );
-  leftSizer->Add( tmpSizer, 0, wxALL|wxALIGN_CENTER_VERTICAL, 10 );
-  
-  
+
+ tmpSizer = new wxBoxSizer(wxHORIZONTAL);
+
+  tmpSizer->Add(new wxStaticText(this, -1, _("Sample Rate:")), 1,  wxALIGN_LEFT, 0);
+  tmpSizer->Add( mSampleRates, 1, wxALIGN_CENTER, 0 );
+  tmpSizer->Add( mOtherSampleRate, 1, wxALIGN_RIGHT, 0 );
+
+  leftSizer->Add(tmpSizer,1,  wxALIGN_CENTER,1);
   delete[] stringRates;
+
+
   //-------------------------------------------------------------------
   //Create a (blank) encoding chooser. Filled in when a format is chosen
   //--------------------------------------------------------------------
   
+  mOptionText = new wxStaticText(this, -1, _(""));
   mOptionChooser = new wxChoice(this, FSD_SECONDARY_CHOOSER,
 				wxDefaultPosition,wxSize(200, -1),
 				0, NULL);
-  mSecondaryOptionSizer->Add(mOptionChooser,1, wxALL | wxALIGN_CENTER, 10);
+  tmpSizer = new wxBoxSizer(wxHORIZONTAL);
+  tmpSizer->Add(mOptionText, 1,   wxALIGN_CENTER, 1);
+  tmpSizer->Add(mOptionChooser,1, wxALIGN_CENTER, 1);
+  optionSizer->Add(tmpSizer,1, wxALIGN_CENTER, 1);
 
 
   
@@ -364,29 +376,34 @@ FormatSelectionDialog::FormatSelectionDialog(AudacityProject * project, bool sel
   //Create a hidden quality slider, for OGG (and maybe mp3/flac)
   //--------------------------------------------------------------------
   long oggQuality = gPrefs->Read("/FileFormats/OggExportQuality", 50)/10;
+  mQualityText = new wxStaticText(this, -1, _("Select OGG Quality:"));
   mQualitySlider = new wxSlider(this, -1, oggQuality, 0, 10,
 				wxDefaultPosition, wxDefaultSize,
 				wxSL_LABELS);
-  mQualitySlider->Hide();
-  mSecondaryOptionSizer->Add(mQualitySlider,1, wxALL | wxGROW, 1);
-
+  //  mQualityText->Hide();
+  //  mQualitySlider->Hide();
+  tmpSizer = new wxBoxSizer(wxHORIZONTAL);
+ 
+  tmpSizer->Add(mQualityText, 1, wxALIGN_CENTER, 0);
+  tmpSizer->Add(mQualitySlider,1, wxALIGN_CENTER, 1);
+  
+  optionSizer->Add(tmpSizer,1, wxALIGN_CENTER|wxGROW|wxALL, 1);
   //-----------------
   //Add them to the main sizer.
-  topSizer->Add(leftSizer,1, wxALL | wxALIGN_CENTER, 10);
-  topSizer->Add(mSecondaryOptionSizer,1, wxALL | wxALIGN_CENTER, 10);
-  mainSizer->Add(topSizer,1, wxALL | wxALIGN_CENTER,10);  
+  topBoxSizer->Add(leftSizer,1, wxALIGN_LEFT|wxGROW|wxALL, 0);
+  topBoxSizer->Add(optionSizer,1, wxALIGN_RIGHT|wxGROW|wxALL, 0);
+  mainSizer->Add(topBoxSizer,4, wxALIGN_CENTER|wxGROW|wxALL,0);  
 
   //-----------------
   //Now, the bottom sizer.
 
   mOK = new wxButton(this, FSD_OK, _("OK") );
   mCancel = new wxButton(this, FSD_CANCEL, _("Cancel") );
-  bottomSizer->Add(mCancel,1,wxALL | wxALIGN_CENTER,10);
-  bottomSizer->Add(mOK,1, wxALL | wxALIGN_CENTER,10);
-  mainSizer->Add(bottomSizer,1, wxALL | wxALIGN_CENTER,10);
+  bottomSizer->Add(mCancel,0, wxALIGN_CENTER,0);
+  bottomSizer->Add(mOK,0,  wxALIGN_CENTER,0);
+  mainSizer->Add(bottomSizer,1, wxALIGN_CENTER,0);
 
 
-  SetAutoLayout(true);
   
   wxCommandEvent evt;
   OnSelectFormat(evt);
@@ -419,14 +436,19 @@ void FormatSelectionDialog::OnSelectFormat(wxCommandEvent &event)
   switch(mCurrentFormatChoice)
     {
     case FORMAT_TYPE_OGG:         //Ogg Vorbis
+      mQualityText->Show();
       mQualitySlider->Show();
+      mOptionText->Hide();
       mOptionChooser->Hide();
       //      double    quality = (gPrefs->Read("/FileFormats/OggExportQuality", 50)/(float)100.0);
       break;
       
     case FORMAT_TYPE_MP3:         //MP3
       {
+	mQualityText->Hide();
 	mQualitySlider->Hide();
+	mOptionText->SetLabel(_("Select MP3 Bitrate:"));
+	mOptionText->Show();
 	mOptionChooser->Show();
       
 	//Give user option of these bitrates to export to:
@@ -456,20 +478,30 @@ void FormatSelectionDialog::OnSelectFormat(wxCommandEvent &event)
 
 
     case FORMAT_TYPE_FLAC:         //FLAC
+	mQualityText->Hide();
 	mQualitySlider->Hide();
-	mOptionChooser->Show();
+	mOptionText->SetLabel(_("FLAC Export Not Yet Implemented"));
+	mOptionText->Show();
+	mOptionChooser->Hide();
 
       break;
 
     case FORMAT_TYPE_LABELS:        //Text labels 
+	mQualityText->Hide();
 	mQualitySlider->Hide();
-	mOptionChooser->Show();
+	mOptionText->SetLabel(_("Export Text Labels Not Yet Implemented"));
+	mOptionText->Show();
+	mOptionChooser->Hide();
+
 
       break;
  
     case FORMAT_TYPE_COMMANDLINE:   //Command-line export
+	mQualityText->Hide();
 	mQualitySlider->Hide();
-	mOptionChooser->Show();
+	mOptionText->SetLabel(_("Command-Line Export Not Yet Implemented"));
+	mOptionText->Show();
+	mOptionChooser->Hide();
 
       break;
 
@@ -490,7 +522,10 @@ void FormatSelectionDialog::OnSelectFormat(wxCommandEvent &event)
       
       {
 
+	mQualityText->Hide();
 	mQualitySlider->Hide();
+	mOptionText->SetLabel(_("Select Encoding Format:"));
+	mOptionText->Show();
 	mOptionChooser->Show();
 
 	//Create an array of labels.  We may not use all of them.
@@ -544,12 +579,25 @@ void FormatSelectionDialog::OnSelectFormat(wxCommandEvent &event)
 }
 
 
-/// This callback gets executed whenever the rate-change slider moves.
+/// This callback gets executed whenever the rate-change chooser changes.
 void FormatSelectionDialog::OnRate(wxCommandEvent & event)
 {
+  //If the last item is selected, enable the text box.
   int sel = mSampleRates->GetSelection();
   mOtherSampleRate->Enable(sel == mSampleRates->GetCount() - 1);
-  mRate = 44100;
+  
+
+  wxArrayLong sampleRates = AudioIO::GetSupportedSampleRates();
+
+
+  if(sel < mSampleRates->GetCount()-1)
+    {
+      mRate = (int)sampleRates[sel];
+    }
+  else
+    {
+      mRate = atoi(mOtherSampleRate->GetLineText(0));
+    }
 }
 
 void FormatSelectionDialog::OnChannelsChange(wxCommandEvent & event){

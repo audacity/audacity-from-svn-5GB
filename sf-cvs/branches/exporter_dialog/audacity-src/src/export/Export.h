@@ -78,18 +78,45 @@ class  FormatSelectionDialog: public wxDialog
   void OnResize(wxCommandEvent & event);
   void OnChannelsChange(wxCommandEvent & event);
 
+
+
+
+  /*
+    The selection dialog has the following basic layout, eliminating
+    sizers and anonymous static text 
+
+    -------------------------------------mSecondaryOptionSizer ----
+    |                               |                             |
+    |                               |  mOptionText                |
+    | mFormatChooser                |  mOptionChooser             |
+    |                               |                             |
+    | mChannelChooser               |  mQualityText               |
+    |                               |  mQualitySlider             |
+    | mSampleRates mOtherSampleRate |                             |
+    |                               |                             |
+    ---------------------------------------------------------------
+    |                                                             |
+    |                      mCancel       mOK                      |
+    |                                                             |
+    ---------------------------------------------------------------
+
+  */
+
+
   
   wxChoice       * mFormatChooser;
-  wxChoice       * mOptionChooser;                   //Chooses secondary options for libsoundfile formats
   wxChoice       * mChannelChooser;
   wxChoice       * mSampleRates;  
   wxTextCtrl     * mOtherSampleRate;
+
+  wxStaticText   * mOptionText;
+  wxChoice       * mOptionChooser;                   //Chooses secondary options for libsoundfile formats
+  wxStaticText   * mQualityText;
   wxSlider       * mQualitySlider;
+
   wxButton       * mOK;
   wxButton       * mCancel;
   wxBoxSizer     * mainSizer;
-  wxBoxSizer     * mSecondaryOptionSizer;
- 
 
   AudacityProject * mProject;               //The associated project to export.
   FormatType  mCurrentFormatChoice;         //Determine what basic export format.
