@@ -90,6 +90,7 @@ void OnExportMP3Mix();
 void OnExportMP3Selection();
 void OnExportOggMix();
 void OnExportOggSelection();
+void OnExportMultiple();
 
 void OnExportLabels();
 
