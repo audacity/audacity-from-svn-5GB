@@ -979,6 +979,9 @@ bool AudacityProject::ProcessEffectEvent(int nEffectIndex)
 
 void AudacityProject::UpdateMenus()
 {
+   if (!gControlToolBarStub)
+      return;
+
    GetCommands()->EnableItemsByFunction("appmenu", "OnSave", mUndoManager.UnsavedChanges());
 
    bool nonZeroRegionSelected = (mViewInfo.sel1 > mViewInfo.sel0);
