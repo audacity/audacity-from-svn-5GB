@@ -76,8 +76,11 @@ int audacityAudioCallback(
 
    if(gAudioIO->GetPaused())
    {
-      ClearSamples((samplePtr)outputBuffer, gAudioIO->GetFormat(),
-                   0, framesPerBuffer * numOutChannels);
+      if (outputBuffer && numOutChannels > 0) {
+         ClearSamples((samplePtr)outputBuffer, gAudioIO->GetFormat(),
+                      0, framesPerBuffer * numOutChannels);
+      }
+
       gAudioIO->AddDroppedSamples(framesPerBuffer);
       return 0;
    }
@@ -379,10 +382,9 @@ bool AudioIO::GetPaused(){
 
 void AudioIO::FillBuffers()
 {
-
    unsigned int numEmpty = 0;
    unsigned int i;
-   
+
    // Playback buffers
 
    for(i=0; i<mNumOutBuffers; i++) {
