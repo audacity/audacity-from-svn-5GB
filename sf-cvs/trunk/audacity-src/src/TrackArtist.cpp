@@ -17,6 +17,7 @@
 
 #include "TrackArtist.h"
 
+#include <float.h>
 #include <math.h>
 
 #include <wx/brush.h>
@@ -62,9 +63,9 @@ class TrackInfoCache:public wxObject {
    bool spectrum;
 
    // WaveTrack minmax only
-   short *min;
-   short *max;
-   short *rms;
+   float *min;
+   float *max;
+   float *rms;
 
    // WaveTrack Spectrum only
    float *freq;
@@ -413,11 +414,11 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
    cache->pps = pps;
    cache->start = start;
    cache->len = screenWidth;
-   cache->min = new short[cache->len];
+   cache->min = new float[cache->len];
    wxASSERT(cache->min);
-   cache->max = new short[cache->len];
+   cache->max = new float[cache->len];
    wxASSERT(cache->max);
-   cache->rms = new short[cache->len];
+   cache->rms = new float[cache->len];
    wxASSERT(cache->rms);
    cache->where = new sampleCount[cache->len + 1];
    wxASSERT(cache->where);
@@ -503,12 +504,12 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
 
    int block0 = track->FindBlock(s0);
 
-   short *temp = new short[track->mMaxSamples];
+   float *temp = new float[track->mMaxSamples];
 
    int pixel = p0;
 
-   short theMin = 0;
-   short theMax = 0;
+   float theMin = 0;
+   float theMax = 0;
    float sumsq = 0.0;
    unsigned int b = block0;
    int jcount = 0;
@@ -527,7 +528,7 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
 
       switch (divisor) {
       case 1:
-         track->Read((samplePtr)temp, int16Sample,
+         track->Read((samplePtr)temp, floatSample,
                      track->mBlock->Item(b),
                      srcX - track->mBlock->Item(b)->start, num);
          break;
@@ -563,15 +564,15 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
                cache->max[pixel - 1] = theMax;
                if (jcount > 0) {
                   float rms = (float)sqrt(sumsq / jcount);
-                  cache->rms[pixel - 1] = (short)(rms + 0.5);
+                  cache->rms[pixel - 1] = rms;
                }
                else
-                  cache->rms[pixel - 1] = 0;
+                  cache->rms[pixel - 1] = 0.0f;
             }
             pixel++;
             if (cache->where[pixel] != cache->where[pixel - 1]) {
-               theMin = 32767;
-               theMax = -32768;
+               theMin = FLT_MAX;
+               theMax = -FLT_MAX;
                sumsq = 0.0;
                jcount = 0;
             }
@@ -630,10 +631,10 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
       cache->max[pixel - 1] = theMax;
       if (jcount > 0) {
          float rms = (float)sqrt(sumsq / jcount);
-         cache->rms[pixel - 1] = (short)(rms + 0.5);
+         cache->rms[pixel - 1] = rms;
       }
       else
-         cache->rms[pixel - 1] = 0;
+         cache->rms[pixel - 1] = 0.0f;
       pixel++;
    }
 
@@ -669,8 +670,13 @@ int TrackArtist::GetWaveYPos(float value, int height, bool dB)
          val = 1.0;
 
       return (int) (sign * (height * val + 0.5));
-   } else
+   } else {
+      if (value < -1.0)
+         value = -1.0;
+      if (value > 1.0)
+         value = 1.0;
       return (int) (value * height + sign * 0.5);
+   }
 }
 
 void TrackArtist::DrawWaveform(TrackInfoCache * cache,
@@ -807,8 +813,8 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
          if (s0 + slen > track->GetNumSamples())
             slen = track->GetNumSamples() - s0;
 
-         short *buffer = new short[slen];
-         track->Get((samplePtr)buffer, int16Sample, s0, slen);
+         float *buffer = new float[slen];
+         track->Get((samplePtr)buffer, floatSample, s0, slen);
          int *xpos = new int[slen];
          int *ypos = new int[slen];
 
@@ -822,7 +828,7 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
                xx = 10000;
             double tt = (s0 + s) / rate - tOffset;
             xpos[s] = (int) xx;
-            ypos[s] = ctr - GetWaveYPos(buffer[s] / 32768.0 *
+            ypos[s] = ctr - GetWaveYPos(buffer[s] *
                                         track->GetEnvelope()->GetValue(tt),
                                         mid.height / 2, dB);
          }
@@ -852,18 +858,18 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
       }
    }
    else if (mid.width > 0) {
-      // Fisplay a line representing the
+      // Display a line representing the
       // min and max of the samples in this region
       t = t0;
       short *h1 = new short[mid.width];
       short *h2 = new short[mid.width];
 
       for (x = 0; x < mid.width; x++) {
-         h1[x] = ctr - GetWaveYPos(cache->min[x] / 32768.0 *
+         h1[x] = ctr - GetWaveYPos(cache->min[x] *
                                    track->GetEnvelope()->GetValue(t + tOffset),
                                    mid.height / 2,
                                    dB);
-         h2[x] = ctr - GetWaveYPos(cache->max[x] / 32768.0 *
+         h2[x] = ctr - GetWaveYPos(cache->max[x] *
                                    track->GetEnvelope()->GetValue(t + tOffset),
                                    mid.height / 2,
                                    dB);
@@ -880,11 +886,11 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
       t = t0;
       for (x = 0; x < mid.width; x++) {
 
-         int r1 = ctr - GetWaveYPos(cache->rms[x] / -32768.0 *
+         int r1 = ctr - GetWaveYPos(-cache->rms[x] *
                                     track->GetEnvelope()->GetValue(t + tOffset),
                                     mid.height / 2,
                                     dB);
-         int r2 = ctr - GetWaveYPos(cache->rms[x] / 32768.0 *
+         int r2 = ctr - GetWaveYPos(cache->rms[x] *
                                     track->GetEnvelope()->GetValue(t + tOffset),
                                     mid.height / 2,
                                     dB);

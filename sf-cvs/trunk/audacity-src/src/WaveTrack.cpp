@@ -10,6 +10,7 @@
 
 #include "WaveTrack.h"
 
+#include <float.h>
 #include <math.h>
 
 #include <wx/msgdlg.h>
@@ -35,7 +36,7 @@ void WaveTrack::CalcSummaryInfo()
 {
    SummaryInfo *s = &mSummary;
 
-   s->bytesPerFrame = 6;
+   s->bytesPerFrame = sizeof(float) * 3; /* min, max, rms */
 
    s->frames64K = (mMaxSamples + 65535) / 65536;
    s->frames256 = s->frames64K * 256;
@@ -208,8 +209,8 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
       return;
    }
 
-   short min = 32767;
-   short max = -32768;
+   float min = FLT_MAX;
+   float max = -FLT_MAX;
 
    unsigned int block0 = FindBlock(start);
    unsigned int block1 = FindBlock(start + len);
@@ -240,10 +241,10 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
       if (l0 > maxl0)
          l0 = maxl0;
 
-      short *buffer = new short[l0];
+      float *buffer = new float[l0];
 
       // TODO: optimize this to use Read256 and Read64K
-      Read((samplePtr)buffer, int16Sample, mBlock->Item(block0), s0, l0);
+      Read((samplePtr)buffer, floatSample, mBlock->Item(block0), s0, l0);
       for (i = 0; i < l0; i++) {
          if (buffer[i] < min)
             min = buffer[i];
@@ -260,10 +261,10 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
 
       s0 = 0;
       l0 = (start + len) - mBlock->Item(block1)->start;
-      short *buffer = new short[l0];
+      float *buffer = new float[l0];
 
       // TODO: optimize this to use Read256 and Read64K
-      Read((samplePtr)buffer, int16Sample, mBlock->Item(block1), s0, l0);
+      Read((samplePtr)buffer, floatSample, mBlock->Item(block1), s0, l0);
       for (i = 0; i < l0; i++) {
          if (buffer[i] < min)
             min = buffer[i];
@@ -275,10 +276,8 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
 
    }
 
-   CopySamples((samplePtr)&min, int16Sample,
-               (samplePtr)outMin, floatSample, 1);
-   CopySamples((samplePtr)&max, int16Sample,
-               (samplePtr)outMax, floatSample, 1);
+   *outMin = min;
+   *outMax = max;
 }
 
 void WaveTrack::SetDisplay(int d)
@@ -506,6 +505,7 @@ void WaveTrack::Paste(double t, const VTrack * src)
          insertBlock->len = srcBlock->Item(i)->len;
          insertBlock->min = srcBlock->Item(i)->min;
          insertBlock->max = srcBlock->Item(i)->max;
+         // FIXME? What about insertBlock->rms ?
 
          insertBlock->f = GetDirManager()->CopyBlockFile(srcBlock->Item(i)->f);
          if (!insertBlock->f) {
@@ -624,8 +624,9 @@ void WaveTrack::InsertSilence(double t, double lenSecs)
       WaveBlock *w = new WaveBlock();
       w->start = pos;
       w->len = l;
-      w->min = 0;
-      w->max = 0;
+      w->min = 0.0;
+      w->max = 0.0;
+      // FIXME? What about w->rms ?
       if (pos == 0 || len == l) {
          w->f = GetDirManager()->NewBlockFile(mSummary.totalSummaryBytes);
          firstBlockFile = w->f;
@@ -687,6 +688,7 @@ void WaveTrack::AppendBlock(WaveBlock * b)
    }
    newBlock->min = b->min;
    newBlock->max = b->max;
+   // FIXME? What about newBlock->rms ?
    GetDirManager()->Ref(newBlock->f);
    mBlock->Add(newBlock);
    mNumSamples += newBlock->len;
@@ -1046,7 +1048,7 @@ void WaveTrack::Read(samplePtr buffer, sampleFormat format,
    }
 }
 
-void WaveTrack::Read256(short *buffer, WaveBlock * b,
+void WaveTrack::Read256(float *buffer, WaveBlock * b,
                         sampleCount start, sampleCount len) const
 {
    wxASSERT(b);
@@ -1066,7 +1068,7 @@ void WaveTrack::Read256(short *buffer, WaveBlock * b,
    free(summary);
 }
 
-void WaveTrack::Read64K(short *buffer, WaveBlock * b,
+void WaveTrack::Read64K(float *buffer, WaveBlock * b,
                         sampleCount start, sampleCount len) const
 {
    wxASSERT(b);
@@ -1136,48 +1138,48 @@ void WaveTrack::UpdateSummaries(samplePtr buffer,
 
    memcpy(fullSummary, headerTag, headerTagLen);
 
-   short *summary64K = (short *)(fullSummary + mSummary.offset64K);
-   short *summary256 = (short *)(fullSummary + mSummary.offset256);
+   float *summary64K = (float *)(fullSummary + mSummary.offset64K);
+   float *summary256 = (float *)(fullSummary + mSummary.offset256);
 
-   short *sbuffer = new short[len];
+   float *fbuffer = new float[len];
    CopySamples(buffer, mSampleFormat,
-               (samplePtr)sbuffer, int16Sample, len);
+               (samplePtr)fbuffer, floatSample, len);
 
    sampleCount sumLen;
    sampleCount i, j, jcount;
 
-   short min, max;
+   float min, max;
    float sumsq;
 
    // Recalc 256 summaries
    sumLen = (len + 255) / 256;
 
    for (i = 0; i < sumLen; i++) {
-      min = sbuffer[i * 256];
-      max = sbuffer[i * 256];
+      min = fbuffer[i * 256];
+      max = fbuffer[i * 256];
       sumsq = ((float)min) * ((float)min);
       jcount = 256;
       if (i * 256 + jcount > len)
          jcount = len - i * 256;
       for (j = 1; j < jcount; j++) {
-         short s1 = sbuffer[i * 256 + j];
-         sumsq += ((float)s1) * ((float)s1);
-         if (s1 < min)
-            min = s1;
-         else if (s1 > max)
-            max = s1;
+         float f1 = fbuffer[i * 256 + j];
+         sumsq += ((float)f1) * ((float)f1);
+         if (f1 < min)
+            min = f1;
+         else if (f1 > max)
+            max = f1;
       }
 
       float rms = (float)sqrt(sumsq / jcount);
 
       summary256[i * 3] = min;
       summary256[i * 3 + 1] = max;
-      summary256[i * 3 + 2] = (short)(rms + 0.5);
+      summary256[i * 3 + 2] = rms;
    }
    for (i = sumLen; i < mSummary.frames256; i++) {
-      summary256[i * 3] = 0;
-      summary256[i * 3 + 1] = 0;
-      summary256[i * 3 + 2] = 0;
+      summary256[i * 3] = 0.0f;
+      summary256[i * 3 + 1] = 0.0f;
+      summary256[i * 3 + 2] = 0.0f;
    }
 
    // Recalc 64K summaries
@@ -1202,12 +1204,12 @@ void WaveTrack::UpdateSummaries(samplePtr buffer,
 
       summary64K[i * 3] = min;
       summary64K[i * 3 + 1] = max;
-      summary64K[i * 3 + 2] = (short)(rms + 0.5);
+      summary64K[i * 3 + 2] = rms;
    }
    for (i = sumLen; i < mSummary.frames64K; i++) {
-      summary256[i * 3] = 0;
-      summary256[i * 3 + 1] = 0;
-      summary256[i * 3 + 2] = 0;
+      summary256[i * 3] = 0.0f;
+      summary256[i * 3 + 1] = 0.0f;
+      summary256[i * 3 + 2] = 0.0f;
    }
 
    // Recalc block-level summary
@@ -1226,11 +1228,11 @@ void WaveTrack::UpdateSummaries(samplePtr buffer,
    }
    b->min = min;
    b->max = max;
-   b->rms = (short)(sqrt(sumsq / sumLen) + 0.5);
+   b->rms = sqrt(sumsq / sumLen);
 
    b->f->WriteSummary(fullSummary);
 
-   delete[] sbuffer;
+   delete[] fbuffer;
    free(fullSummary);
 }
 
