@@ -36,7 +36,7 @@ LegacyAliasBlockFile::LegacyAliasBlockFile(wxFileName fileName,
 
    ComputeLegacySummaryInfo(fileName,
                             summaryLen, format,
-                            &mSummaryInfo, noRMS,
+                            &mSummaryInfo, noRMS, FALSE,
                             &mMin, &mMax, &mRMS);
 }
 
@@ -114,6 +114,10 @@ BlockFile *LegacyAliasBlockFile::BuildFromXML(wxString projDir, const char **att
                                    summaryLen, noRMS);
 }
 
+// regenerates the summary info, doesn't deal with missing alias files
+void LegacyAliasBlockFile::Recover(){
+   WriteSummary();
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
@@ -125,4 +129,7 @@ BlockFile *LegacyAliasBlockFile::BuildFromXML(wxString projDir, const char **att
 //
 // vim: et sts=3 sw=3
 // arch-tag: b5ab502b-a641-4013-b4fd-1dea05d9b3fd
+
+
+
 

@@ -15,6 +15,7 @@
 #include <wx/utils.h>
 #include <wx/filefn.h>
 #include <wx/ffile.h>
+#include <wx/log.h>
 
 #include "BlockFile.h"
 #include "Internat.h"
@@ -55,6 +56,7 @@ BlockFile::BlockFile(wxFileName fileName, sampleCount samples):
    mLen(samples),
    mSummaryInfo(samples)
 {
+   mSilentLog=FALSE;
 }
 
 BlockFile::~BlockFile()
@@ -372,10 +374,7 @@ bool BlockFile::Read256(float *buffer,
    wxASSERT(start >= 0);
 
    char *summary = new char[mSummaryInfo.totalSummaryBytes];
-   if (!this->ReadSummary(summary)) {
-      // TODO handle missing file
-      return false;
-   }
+   this->ReadSummary(summary);
 
    if (start+len > mSummaryInfo.frames256)
       len = mSummaryInfo.frames256 - start;
@@ -414,15 +413,13 @@ bool BlockFile::Read64K(float *buffer,
    wxASSERT(start >= 0);
 
    char *summary = new char[mSummaryInfo.totalSummaryBytes];
-   if (!this->ReadSummary(summary)) {
-      // TODO handle missing file
-      return false;
-   }
+   this->ReadSummary(summary);
 
    if (start+len > mSummaryInfo.frames64K)
       len = mSummaryInfo.frames64K - start;
 
-   CopySamples(summary + mSummaryInfo.offset64K + (start * mSummaryInfo.bytesPerFrame),
+   CopySamples(summary + mSummaryInfo.offset64K + 
+               (start * mSummaryInfo.bytesPerFrame),
                mSummaryInfo.format,
                (samplePtr)buffer, floatSample, len*mSummaryInfo.fields);
 
@@ -469,6 +466,7 @@ AliasBlockFile::AliasBlockFile(wxFileName baseFileName,
    mAliasStart(aliasStart),
    mAliasChannel(aliasChannel)
 {
+   mSilentAliasLog=FALSE;
 }
 
 AliasBlockFile::AliasBlockFile(wxFileName existingSummaryFile,
@@ -480,15 +478,10 @@ AliasBlockFile::AliasBlockFile(wxFileName existingSummaryFile,
    mAliasStart(aliasStart),
    mAliasChannel(aliasChannel)
 {
-   if( !wxFileExists(FILENAME(existingSummaryFile.GetFullPath())))
-   {
-      // Throw an exception?
-      return;
-   }
-
    mMin = min;
    mMax = max;
    mRMS = rms;
+   mSilentAliasLog=FALSE;
 }
 /// Write the summary to disk.  Derived classes must call this method
 /// from their constructors for the summary to be correctly written.
@@ -496,15 +489,22 @@ AliasBlockFile::AliasBlockFile(wxFileName existingSummaryFile,
 /// summarize.
 void AliasBlockFile::WriteSummary()
 {
-   wxASSERT( !wxFileExists(FILENAME(mFileName.GetFullPath())));
+   // Now checked carefully in the DirManager
+   //wxASSERT( !wxFileExists(FILENAME(mFileName.GetFullPath())));
+
    // I would much rather have this code as part of the constructor, but
    // I can't call virtual functions from the constructor.  So we just
    // need to ensure that every derived class calls this in *its* constructor
    wxFFile summaryFile;
 
-   if( !summaryFile.Open(FILENAME(mFileName.GetFullPath()), "wb") )
-      // failed.  what to do?
+   if( !summaryFile.Open(FILENAME(mFileName.GetFullPath()), "wb") ){
+      // Never silence the Log w.r.t write errors; they always count
+      // as new errors
+      wxLogError("Unable to write summary data to file %s",
+                   mFileName.GetFullPath().c_str());
+      // If we can't write, there's nothing to do.
       return;
+   }
 
    // To build the summary data, call ReadData (implemented by the
    // derived classes) to get the sample data
@@ -530,9 +530,25 @@ AliasBlockFile::~AliasBlockFile()
 bool AliasBlockFile::ReadSummary(void *data)
 {
    wxFFile summaryFile;
+   wxLogNull *silence=0;
+   if(mSilentLog)silence= new wxLogNull();
 
-   if( !summaryFile.Open(FILENAME(mFileName.GetFullPath()), "rb") )
-      return false;
+   if( !summaryFile.Open(FILENAME(mFileName.GetFullPath()), "rb") ){
+
+      // new model; we need to return valid data
+      memset(data,0,(size_t)mSummaryInfo.totalSummaryBytes);
+      if(silence) delete silence;
+
+      // we silence the logging for this operation in this object
+      // after first occurrence of error; it's already reported and
+      // spewing at the user will complicate the user's ability to
+      // deal
+      mSilentLog=TRUE;
+      return true;
+
+   }else mSilentLog=FALSE; // worked properly, any future error is new 
+
+   if(silence) delete silence;
 
    int read = summaryFile.Read(data, (size_t)mSummaryInfo.totalSummaryBytes);
 

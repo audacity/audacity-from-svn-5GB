@@ -17,6 +17,7 @@
 #include <wx/intl.h>
 #include <wx/filefn.h>
 #include <wx/ffile.h>
+#include <wx/log.h>
 
 #include "Sequence.h"
 
@@ -663,6 +664,7 @@ void Sequence::HandleXMLEndTag(const char *tag)
             len = mNumSamples - mBlock->Item(b)->start;
 
          mBlock->Item(b)->f = new SilentBlockFile(len);
+         wxLogWarning("Gap detected in project file\n");
          mErrorOpening = true;
       }
    }
@@ -672,12 +674,14 @@ void Sequence::HandleXMLEndTag(const char *tag)
    for (b = 0; b < mBlock->Count(); b++) {
       if (mBlock->Item(b)->start != numSamples) {
          mBlock->Item(b)->start = numSamples;
+         wxLogWarning("Gap detected in project file\n");
          mErrorOpening = true;         
       }
       numSamples += mBlock->Item(b)->f->GetLength();
    }
    if (mNumSamples != numSamples) {
       mNumSamples = numSamples;
+      wxLogWarning("Gap detected in project file\n");
       mErrorOpening = true;
    }
 }

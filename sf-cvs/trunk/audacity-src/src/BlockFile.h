@@ -105,6 +105,19 @@ class BlockFile {
    virtual BlockFile *Copy(wxFileName newFileName) = 0;
 
    virtual int GetSpaceUsage() = 0;
+
+   /// if the on-disk state disappeared, either recover it (if it was
+   //summary only), write out a placeholder of silence data (missing
+   //.au) or mark the blockfile to deal some other way without spewing
+   //errors.
+   virtual void Recover() = 0;
+   /// if we've detected an on-disk problem, the user opted to
+   //continue and the error persists, don't keep reporting it.  The
+   //Object implements this functionality internally, but we want to
+   //be able to tell the logging to shut up from outside too.
+   void SilenceLog() { mSilentLog = TRUE; }
+
+
  private:
 
    friend class DirManager;
@@ -132,7 +145,7 @@ class BlockFile {
    sampleCount mLen;
    SummaryInfo mSummaryInfo;
    float mMin, mMax, mRMS;
-
+   bool mSilentLog;
 };
 
 /// A BlockFile that refers to data in an existing file
@@ -167,6 +180,11 @@ class AliasBlockFile : public BlockFile
                         sampleCount start, sampleCount len) = 0;
 
    virtual int GetSpaceUsage();
+
+   /// as SilentLog (which would affect Summary data access), but
+   // applying to Alias file access
+   void SilenceAliasLog() { mSilentAliasLog = TRUE; }
+
  private:
    // These methods are only for use by DirManager
    friend class DirManager;
@@ -187,6 +205,7 @@ class AliasBlockFile : public BlockFile
    wxFileName  mAliasedFileName;
    sampleCount mAliasStart;
    int         mAliasChannel;
+   bool        mSilentAliasLog;
 };
 
 #endif
@@ -202,4 +221,5 @@ class AliasBlockFile : public BlockFile
 //
 // vim: et sts=3 sw=3
 // arch-tag: ebcc7075-5983-4092-a316-1f2e2b0bcbc3
+
 
