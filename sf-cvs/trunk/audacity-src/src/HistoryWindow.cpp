@@ -54,13 +54,12 @@ wxDialog(parent, -1, _("Undo History"), wxDefaultPosition,
                           wxLC_REPORT /* | wxLC_EDIT_LABELS */);
    mList->SetSizeHints(350, 180);
 
-   wxImageList *imageList = new wxImageList(24, 24); //TODO: free
+   wxImageList *imageList = new wxImageList(24, 24);
    imageList->Add(wxIcon(empty_24x17_xpm));
    imageList->Add(wxIcon(arrow_xpm));
    mList->SetImageList(imageList, wxIMAGE_LIST_SMALL);
    mList->InsertColumn(0, _("Action"), wxLIST_FORMAT_LEFT, 280);
    mList->InsertColumn(1, _("Size"), wxLIST_FORMAT_LEFT, 66);
-
 
    mTopSizer->Add(mList, 1, wxGROW|wxALL, 2);
 
@@ -175,5 +174,6 @@ void HistoryWindow::OnItemSelected(wxListEvent &event)
 
 HistoryWindow::~HistoryWindow()
 {
+   delete mList->GetImageList(wxIMAGE_LIST_SMALL);
 }
 
