@@ -21,6 +21,8 @@
 
 #include "Prefs.h"
 
+#include "AudioIO.h"
+
 class WaveCache {
 public:
    WaveCache(int cacheLen)
@@ -93,7 +95,7 @@ WaveTrack *TrackFactory::NewWaveTrack(sampleFormat format, double rate)
    if (rate == 0) 
    {
       rate = (double) gPrefs->
-         Read("/SamplingRate/DefaultProjectSampleRate", 44100);
+         Read("/SamplingRate/DefaultProjectSampleRate", AudioIO::GetOptimalSupportedSampleRate());
    }
 
    return new WaveTrack(mDirManager, format, rate);
@@ -110,7 +112,7 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
    if (rate == 0) 
    {
       rate = (double) gPrefs->
-         Read("/SamplingRate/DefaultProjectSampleRate", 44100);
+         Read("/SamplingRate/DefaultProjectSampleRate", AudioIO::GetOptimalSupportedSampleRate());
    }
 
    mDisplay = 0; // DELETEME

@@ -45,7 +45,13 @@ class AStatus:public wxWindow {
    void OnRate22(wxCommandEvent & event);
    void OnRate44(wxCommandEvent & event);
    void OnRate48(wxCommandEvent & event);
+   void OnRate96(wxCommandEvent & event);
    void OnRateOther(wxCommandEvent & event);
+
+   // msmeyer: Call this to enable/disable menu items
+   // in the "rate" menu, f.e. if sound card selection
+   // has changed.
+   void UpdateRates();
 
  private:
 

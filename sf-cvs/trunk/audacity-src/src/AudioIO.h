@@ -89,6 +89,25 @@ class AudioIO {
                  float *playbackVolume);
    wxArrayString GetInputSourceNames();
    void HandleDeviceChange();
+   
+   /* Get a list of sample rates the current input/output device
+    * supports. Since there is no concept (yet) for different input/output
+    * sample rates, this currently returns only sample rates that are
+    * supported on both the output and input device. If no information
+    * about available sample rates can be fetched, it returns a default
+    * list.
+    * You can explicitely give the names of the playDevice/recDevice.
+    * If you don't give them, the default devices from the preferences
+    * will be used.
+    */
+   static wxArrayLong GetSupportedSampleRates(wxString playDevice = "",
+                                              wxString recDevice = "");
+
+   /* Get a supported sample rate which can be used a an optimal
+    * default. Currently, this uses the first supported rate in
+    * the list [44100, 48000, highest sample rate].
+    */
+   static int GetOptimalSupportedSampleRate();
 
    // This is given in seconds based on starting at t0
    double GetStreamTime();

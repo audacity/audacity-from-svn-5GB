@@ -328,7 +328,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                  const wxSize & size)
    : wxFrame(parent, id, "Audacity", pos, size),
      mImportProgressDialog(NULL),
-     mRate((double) gPrefs->Read("/SamplingRate/DefaultProjectSampleRate", 44100)),
+     mRate((double) gPrefs->Read("/SamplingRate/DefaultProjectSampleRate", AudioIO::GetOptimalSupportedSampleRate())),
      mDefaultFormat((sampleFormat) gPrefs->
            Read("/SamplingRate/DefaultProjectSampleFormat", floatSample)),
      mDirty(false),
@@ -625,6 +625,7 @@ void AudacityProject::UpdatePrefs()
    mTrackPanel->UpdatePrefs();
    ControlToolBar *controltoolbar = (ControlToolBar *)mToolBarArray[0];
    controltoolbar->UpdatePrefs();
+   mStatus->UpdateRates();
 }
 
 void AudacityProject::RedrawProject()
@@ -1974,9 +1975,17 @@ void AudacityProject::AddImportedTracks(wxString fileName,
 
    delete[]newTracks;
 
+   // Automatically assign rate of imported file to whole project,
+   // if this is the first file that is imported
    if (initiallyEmpty && newRate > 0) {
-      mRate = newRate;
-      mStatus->SetRate(mRate);
+      // msmeyer: Before changing rate, check if rate is supported
+      // by current sound card. If it is not, don't change it,
+      // otherwise playback won't work.
+      if (AudioIO::GetSupportedSampleRates().Index((int)newRate) != wxNOT_FOUND)
+      {
+         mRate = newRate;
+         mStatus->SetRate(mRate);
+      }
    }
 
    PushState(wxString::Format(_("Imported '%s'"), fileName.c_str()));
