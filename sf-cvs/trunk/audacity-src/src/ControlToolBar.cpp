@@ -39,6 +39,7 @@
 #include "widgets/AButton.h"
 #include "widgets/ASlider.h"
 #include "AudioIO.h"
+#include "ImageManipulation.h"
 #include "Prefs.h"
 #include "Project.h"
 #include "Track.h"
@@ -108,12 +109,6 @@ ControlToolBar::ControlToolBar(wxWindow * parent, wxWindowID id,
 // and creating the buttons.
 void ControlToolBar::InitializeControlToolBar()
 {
-#if defined(__WXMAC__)          // && defined(TARGET_CARBON)
-   int sliderX = 390;
-#else
-   int sliderX = 400;
-#endif
-
    mIdealSize = wxSize(520, 55);
    mTitle = _("Audacity Control Toolbar");
    mType = ControlToolBarID;
@@ -136,14 +131,6 @@ void ControlToolBar::InitializeControlToolBar()
    wxImage *thumbNew = ChangeImageColour(thumbOriginal,
                                          backgroundColour);
 #endif
-
-   /*
-   mVolume =
-      new ASlider(this, 0, "Master Gain Control",
-                  wxPoint(sliderX, 14), wxSize(100, 28));
-   */
-
-   //mVolume->SetToolTip(_("Master Gain Control"));
 
    delete sliderOriginal;
    delete thumbOriginal;

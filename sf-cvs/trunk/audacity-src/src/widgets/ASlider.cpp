@@ -25,113 +25,12 @@
 
 #include "ASlider.h"
 
+
 #include "../AColor.h"
+#include "../ImageManipulation.h"
 #include "../Project.h"
 
 #include "../../images/SliderThumb.xpm"
-
-//
-// ChangeBkgndColour
-//
-
-wxImage *ChangeBkgndColour(wxImage *srcImage,
-                           wxColour &dstColour) 
-{
-   unsigned char *src = srcImage->GetData();
-   int width = srcImage->GetWidth();
-   int height = srcImage->GetHeight();
-
-   wxImage * dstImage = new wxImage(width, height);
-   unsigned char *dst = dstImage->GetData();
-
-   int srcVal[3], dstVal[3];
-   dstVal[0] = dstColour.Red();
-   dstVal[1] = dstColour.Green();
-   dstVal[2] = dstColour.Blue();
-
-   srcVal[0] = src[0];
-   srcVal[1] = src[1];
-   srcVal[2] = src[2];
-
-   int i;
-   for (i = 0; i < width * height; i++) {
-      if (src[3*i]==srcVal[3*i] &&
-          src[3*i+1]==srcVal[3*i+1] &&
-          src[3*i+2]==srcVal[3*i+2]) {
-         *dst++ = dstVal[0];
-         *dst++ = dstVal[1];
-         *dst++ = dstVal[2];
-      }
-      else {
-         *dst++ = src[3*i];         
-         *dst++ = src[3*i+1];         
-         *dst++ = src[3*i+2];         
-      }
-   }
-
-   return dstImage;
-}
-
-wxImage *ChangeImageColour(wxImage * srcImage,
-                           wxColour & srcColour,
-                           wxColour & dstColour) 
-{
-   // This function takes a source image, which it assumes to
-   // be grayscale, and smoothly changes the overall color
-   // to the specified color, and returns the result as a
-   // new image.  This works well for grayscale 3D images.
-   // Audacity uses this routines to make the buttons
-   // (skip-start, play, stop, record, skip-end) adapt to
-   // the color scheme of the user.
-
-   unsigned char *src = srcImage->GetData();
-   int width = srcImage->GetWidth();
-   int height = srcImage->GetHeight();
-
-   wxImage * dstImage = new wxImage(width, height);
-   unsigned char *dst = dstImage->GetData();
-
-   //Get the source color
-   int srcVal[3], srcOpp[3];
-   srcVal[0] = srcColour.Red();
-   srcVal[1] = srcColour.Green();
-   srcVal[2] = srcColour.Blue();
-
-   int dstVal[3], dstOpp[3];
-   dstVal[0] = dstColour.Red();
-   dstVal[1] = dstColour.Green();
-   dstVal[2] = dstColour.Blue();
-
-   int i;
-   for (i = 0; i < 3; i++) {
-      srcOpp[i] = 255 - srcVal[i];
-      dstOpp[i] = 255 - dstVal[i];
-
-   }
-
-   int c = 0;
-   for (i = 0; i < width * height * 3; i++) {
-      int s = (int) *src;
-
-      if (s > srcVal[c])
-         *dst++ = dstVal[c] + dstOpp[c] * (s - srcVal[c]) / srcOpp[c];
-
-      else
-         *dst++ = dstVal[c] * s / srcVal[c];
-      src++;
-      c = (c + 1) % 3;
-   }
-
-   return dstImage;
-}
-
-wxImage *ChangeImageColour(wxImage * srcImage, wxColour & dstColour) 
-{
-   unsigned char *src = srcImage->GetData();
-   wxColour c;
-   c.Set(src[0], src[1], src[2]);
-   return ChangeImageColour(srcImage, c, dstColour);
-}
 
 //
 // TipPanel

@@ -35,6 +35,7 @@
 #include "widgets/AButton.h"
 #include "widgets/ASlider.h"
 #include "AudioIO.h"
+#include "ImageManipulation.h"
 #include "Project.h"
 #include "UndoManager.h"
 

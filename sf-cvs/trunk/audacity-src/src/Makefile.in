@@ -47,6 +47,7 @@ OBJS = \
 	$(OBJDIR)/FreqWindow.o \
 	$(OBJDIR)/Help.o \
 	$(OBJDIR)/HistoryWindow.o \
+	$(OBJDIR)/ImageManipulation.o \
 	$(OBJDIR)/LabelTrack.o \
 	$(OBJDIR)/Languages.o \
 	$(OBJDIR)/LangChoice.o \

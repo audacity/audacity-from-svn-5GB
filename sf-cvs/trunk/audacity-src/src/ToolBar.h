@@ -105,15 +105,6 @@ class ToolBar:public wxWindow {
                                 wxSize size,
                                 int xoff, int yoff);
 
-   wxImage *OverlayImage(wxImage * background,
-                         wxImage * foreground,
-                         wxImage * mask, int xoff, int yoff);
- 
-   wxImage *ChangeImageColour(wxImage * srcImage, wxColour & dstColour);
-   wxImage *ChangeImageColour(wxImage * srcImage,
-                              wxColour & srcColour,
-                              wxColour & dstColour);
-
    void SetButton(bool down, AButton* button);
 
    void DrawBackground(wxDC &dc, int width, int height);
