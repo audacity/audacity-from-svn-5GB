@@ -43,17 +43,17 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /Ob2 /I "." /I "c:\wx\lib\msw" /I "..\src\include" /I "..\src\include\win32" /I "..\lib-src\allegro" /I "..\lib-src\expat" /I "..\lib-src\libid3tag" /I "..\lib-src\portaudio\pa_common" /I "..\lib-src\libsndfile\src" /I "..\lib-src\libmad" /I "..\lib-src\libogg\include" /I "..\lib-src\libvorbis\include" /D "NDEBUG" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /Ob2 /I "." /I "$(WXWIN)\include" /I "$(WXWIN)\lib\msw" /I "..\src\include" /I "..\src\include\win32" /I "..\lib-src\allegro" /I "..\lib-src\expat" /I "..\lib-src\libid3tag" /I "..\lib-src\portaudio\pa_common" /I "..\lib-src\libsndfile\src" /I "..\lib-src\libmad" /I "..\lib-src\libogg\include" /I "..\lib-src\libvorbis\include" /D "NDEBUG" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x809 /d "NDEBUG"
-# ADD RSC /l 0x809 /i "w:\wx2\include" /d "NDEBUG"
+# ADD RSC /l 0x809 /i "$(WXWIN)\include" /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 libid3tag.lib expat.lib mad.lib sndfile.lib PAStaticWMME.lib wxmsw.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib png.lib zlib.lib jpeg.lib tiff.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib libci.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /libpath:"..\lib-src\libogg\win32\static_release" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_release" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_release" /libpath:"w:\wx2\lib" /libpath:"..\lib-src\libid3tag" /libpath:"..\lib-src\expat" /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro"
+# ADD LINK32 libid3tag.lib expat.lib mad.lib sndfile.lib PAStaticWMME.lib wxmsw.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib png.lib zlib.lib jpeg.lib tiff.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib libci.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /libpath:"..\lib-src\libogg\win32\static_release" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_release" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_release" /libpath:"$(WXWIN)\lib" /libpath:"..\lib-src\libid3tag" /libpath:"..\lib-src\expat" /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro"
 # SUBTRACT LINK32 /pdb:none /nodefaultlib
 
 !ELSEIF  "$(CFG)" == "Audacity - Win32 Debug"
@@ -70,17 +70,18 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Zi /Od /I "." /I "c:\wx\lib\mswd" /I "..\src\include" /I "..\src\include\win32" /I "..\lib-src\allegro" /I "..\lib-src\expat" /I "..\lib-src\libid3tag" /I "..\lib-src\portaudio\pa_common" /I "..\lib-src\libsndfile\src" /I "..\lib-src\libmad" /I "..\lib-src\libogg\include" /I "..\lib-src\libvorbis\include" /D "_DEBUG" /D DEBUG=1 /D "__WXDEBUG__" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /YX"wx/wxprec.h" /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Zi /Od /I "." /I "$(WXWIN)\include" /I "$(WXWIN)\lib\mswd" /I "..\src\include" /I "..\src\include\win32" /I "..\lib-src\allegro" /I "..\lib-src\expat" /I "..\lib-src\libid3tag" /I "..\lib-src\portaudio\pa_common" /I "..\lib-src\libsndfile\src" /I "..\lib-src\libmad" /I "..\lib-src\libogg\include" /I "..\lib-src\libvorbis\include" /D "_DEBUG" /D DEBUG=1 /D "__WXDEBUG__" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /YX"wx/wxprec.h" /FD /c
+# SUBTRACT CPP /X
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x809 /d "_DEBUG"
-# ADD RSC /l 0x809 /i "w:\wx2\include" /d "_DEBUG"
+# ADD RSC /l 0x809 /i "$(WXWIN)\include" /d "_DEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 libid3tagd.lib expatd.lib madd.lib sndfiled.lib PAStaticWMMED.lib wxmswd.lib ogg_static_d.lib vorbis_static_d.lib vorbisfile_static_d.lib pngd.lib zlib.lib jpegd.lib tiffd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"..\lib-src\libogg\win32\static_debug" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_debug" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_debug" /libpath:"w:\wx2\lib" /libpath:"..\lib-src\libid3tag" /libpath:"..\lib-src\expat" /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro" /IGNORE:4049
+# ADD LINK32 libid3tagd.lib expatd.lib madd.lib sndfiled.lib PAStaticWMMED.lib wxmswd.lib ogg_static_d.lib vorbis_static_d.lib vorbisfile_static_d.lib pngd.lib zlib.lib jpegd.lib tiffd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"..\lib-src\libogg\win32\static_debug" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_debug" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_debug" /libpath:"$(WXWIN)\lib" /libpath:"..\lib-src\libid3tag" /libpath:"..\lib-src\expat" /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro" /IGNORE:4049
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
