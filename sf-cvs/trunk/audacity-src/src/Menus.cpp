@@ -62,7 +62,13 @@
 #include "Menus.h"
 #undef AUDACITY_MENUS_GLOBALS
 
-#define MAX_NUMBER_OF_PLUGINS_IN_MENU 10
+#ifdef __WXGTK__
+#define MAX_MENU_LEN 20
+#define MAX_SUBMENU_LEN 10
+#else
+#define MAX_MENU_LEN 1000
+#define MAX_SUBMENU_LEN 1000
+#endif
 
 void AudacityProject::CreateMenuBar()
 {
@@ -80,16 +86,18 @@ void AudacityProject::CreateMenuBar()
    mEditMenu = new wxMenu();
    mViewMenu = new wxMenu();
    mProjectMenu = new wxMenu();
+   mInsertMenu = new wxMenu();
    mEffectMenu = new wxMenu();
-   mPluginMenu = new wxMenu();
+   mAnalyzeMenu = new wxMenu();
    mHelpMenu = new wxMenu();
 
    mMenuBar->Append(mFileMenu, _("&File"));
    mMenuBar->Append(mEditMenu, _("&Edit"));
    mMenuBar->Append(mViewMenu, _("&View"));
    mMenuBar->Append(mProjectMenu, _("&Project"));
+   mMenuBar->Append(mInsertMenu, _("&Insert"));
    mMenuBar->Append(mEffectMenu, _("Effec&t"));
-   mMenuBar->Append(mPluginMenu, _("Plugin&s"));
+   mMenuBar->Append(mAnalyzeMenu, _("&Analyze"));
    mMenuBar->Append(mHelpMenu, _("&Help"));
 
    SetMenuBar(mMenuBar);
@@ -105,25 +113,64 @@ void AudacityProject::RebuildMenuBar()
    mEditMenu = new wxMenu();
    mViewMenu = new wxMenu();
    mProjectMenu = new wxMenu();
-   mEffectMenu = new wxMenu();
-   mPluginMenu = new wxMenu();
    mHelpMenu = new wxMenu();
 
    delete mMenuBar->Replace(fileMenu, mFileMenu, _("&File"));
    delete mMenuBar->Replace(editMenu, mEditMenu, _("&Edit"));
    delete mMenuBar->Replace(viewMenu, mViewMenu, _("&View"));
    delete mMenuBar->Replace(projectMenu, mProjectMenu, _("&Project"));
-   delete mMenuBar->Replace(effectMenu, mEffectMenu, _("Effec&t"));
-   wxMenu * tmp = mMenuBar->Replace(pluginMenu, mPluginMenu, _("Plugin&s"));
-   size_t eMax = tmp->GetMenuItemCount(); 
-   for(size_t e = 0; e < eMax; e++){
-      tmp->Destroy(FirstPluginSubMenuID + e);
-   }
-
-   delete tmp;
    delete mMenuBar->Replace(helpMenu, mHelpMenu, _("&Help"));
 
    BuildMenuBar();
+}
+
+void AudacityProject::AppendEffects(EffectArray *effs, wxMenu *menu,
+                                    bool spill)
+{
+   unsigned int currentLen = menu->GetMenuItemCount();
+   unsigned int effLen = effs->GetCount();
+   unsigned int i;
+
+   if (!spill || currentLen + effLen <= MAX_MENU_LEN) {
+      for(i=0; i<effLen; i++)
+         menu->Append(FirstEffectID + (*effs)[i]->GetID(),
+                      (*effs)[i]->GetEffectName());
+      return;
+   }
+
+   // There were too many effects in this menu.  Put the
+   // extras (plug-ins) in submenus.
+
+   wxMenu * tmp;
+   wxString label;
+   tmp = new wxMenu;
+   int lower = 1;
+   int upper = MAX_SUBMENU_LEN;
+   int submenu = 0;
+
+   for (i=0; i<effLen; i++) {
+      tmp->Append(FirstEffectID + (*effs)[i]->GetID(),
+                  (*effs)[i]->GetEffectName());
+
+      if( ((i+1) % MAX_SUBMENU_LEN) == 0
+          || i == (effLen - 1)) {
+         //upper limit should be the current plugin number (+1)
+         upper = i + 1;
+         //make submenu label
+         label.Printf(_("Plugins %d to %d"), lower, upper);
+
+         // Add the submenu to the menu
+         menu->Append(FirstPluginSubMenuID + submenu, label, tmp, label);
+
+         //reset lower for next time.
+         lower += MAX_SUBMENU_LEN;
+
+         submenu++;
+         if(i != (effLen - 1))
+            tmp = new wxMenu;      // go on to next temp menu
+      }
+
+   }
 }
 
 void AudacityProject::BuildMenuBar()
@@ -198,77 +245,49 @@ void AudacityProject::BuildMenuBar()
       }
    }
 
-
-   int numEffects = Effect::GetNumEffects(false);
-   int fi;
-   for (fi = 0; fi < numEffects; fi++)
-      mEffectMenu->Append(FirstEffectID + fi,
-                          (Effect::GetEffect(fi, false))->GetEffectName());
-
-
- #if defined __WXGTK__
-
-
-   //STM: only put MAX_NUMBER_OF_PLUGINS_IN_MENU in the menu.  If
-   //there are more, split into multiple submenus.
-
-   int numPlugins = Effect::GetNumEffects(true);
-
-   if( numPlugins <= MAX_NUMBER_OF_PLUGINS_IN_MENU) {
-      for (fi = 0; fi < numPlugins; fi++)
-         mPluginMenu->Append(FirstPluginID + fi,
-                             (Effect::GetEffect(fi, true))->GetEffectName());
-   }
-   else {
-      //There are more than MAX_NUMBER_OF_PLUGINS_IN_MENU plugins: make submenus
-      
- 
-      wxMenu * tmp;
-      wxString label;
-      tmp = new wxMenu;
-      int lower,upper, submenu;
-      
-      lower = 1;
-      upper = MAX_NUMBER_OF_PLUGINS_IN_MENU;
-      submenu=0;
-      for (fi = 0; fi < numPlugins; fi++){
-  
-         tmp->Append(FirstPluginID + fi,
-                     (Effect::GetEffect(fi, true))->GetEffectName());
-    
-         //
-         if( (fi+1) % MAX_NUMBER_OF_PLUGINS_IN_MENU == 0
-             ||  fi == (numPlugins - 1)) {
-            
-            
-            upper = fi +1;   //upper limit should be the current plugin number (+1)
-            label =  wxString::Format(_("Plugins %d to %d"), lower, upper);  //make submenu label
-            mPluginMenu->Append(FirstPluginSubMenuID + submenu, label, tmp , label);   //Add submenu
-            submenu++;                                          //Increment submenu counter
-
-            lower += MAX_NUMBER_OF_PLUGINS_IN_MENU;              //reset lower for next time.
-            if(fi != (numPlugins -1))
-               tmp= new wxMenu;                                 //reset temp. menu
-         }
-
-      }
-   }
-
-
-#else
-
-  int numPlugins = Effect::GetNumEffects(true);
-   for (fi = 0; fi < numPlugins; fi++)
-      mPluginMenu->Append(FirstPluginID + fi,
-                          (Effect::GetEffect(fi, true))->GetEffectName());
-#endif
-  
-
 #ifdef __WXMAC__
    wxApp::s_macAboutMenuItemId = AboutID;
 #endif
 
    mInsertSilenceAmount = 1.0;
+
+   if (mInsertMenu->GetMenuItemCount() > 0)
+      return;
+
+   EffectArray *effs;
+
+   effs = Effect::GetEffects(BUILTIN_EFFECT | INSERT_EFFECT);
+   AppendEffects(effs, mInsertMenu, false);
+   delete effs;
+
+   effs = Effect::GetEffects(PLUGIN_EFFECT | INSERT_EFFECT);
+   if (effs->GetCount() > 0) {
+      mInsertMenu->AppendSeparator();
+      AppendEffects(effs, mInsertMenu, true);
+   }
+   delete effs;
+
+   effs = Effect::GetEffects(BUILTIN_EFFECT | PROCESS_EFFECT);
+   AppendEffects(effs, mEffectMenu, false);
+   delete effs;
+
+   effs = Effect::GetEffects(PLUGIN_EFFECT | PROCESS_EFFECT);
+   if (effs->GetCount() > 0) {
+      mEffectMenu->AppendSeparator();
+      AppendEffects(effs, mEffectMenu, true);
+   }
+   delete effs;
+
+   effs = Effect::GetEffects(BUILTIN_EFFECT | ANALYZE_EFFECT);
+   AppendEffects(effs, mAnalyzeMenu, false);
+   delete effs;
+
+   effs = Effect::GetEffects(PLUGIN_EFFECT | ANALYZE_EFFECT);
+   if (effs->GetCount() > 0) {
+      mAnalyzeMenu->AppendSeparator();
+      AppendEffects(effs, mAnalyzeMenu, true);
+   }
+   delete effs;
 }
 
 void AudacityProject::AssignDefaults()
@@ -540,39 +559,30 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    SetMenuState(mProjectMenu, AlignZeroID, numTracksSelected > 0);
    SetMenuState(mProjectMenu, RemoveTracksID, numTracksSelected > 0);
 
+   // Effects menus
 
-   //Enable the effects menu
-   int e;
-   for (e = 0; e < Effect::GetNumEffects(false); e++) {
-      mEffectMenu->Enable(FirstEffectID + e,
+   EffectArray *effs;
+   unsigned int e;
+
+   effs = Effect::GetEffects(BUILTIN_EFFECT | PLUGIN_EFFECT | INSERT_EFFECT);
+   for(e=0; e<effs->GetCount(); e++)
+      mInsertMenu->Enable(FirstEffectID + (*effs)[e]->GetID(),
+                          numWaveTracksSelected > 0);
+   delete effs;
+
+   effs = Effect::GetEffects(BUILTIN_EFFECT | PLUGIN_EFFECT | PROCESS_EFFECT);
+   for(e=0; e<effs->GetCount(); e++)
+      mEffectMenu->Enable(FirstEffectID + (*effs)[e]->GetID(),
                           numWaveTracksSelected > 0
                           && nonZeroRegionSelected);
-   }
-   
-//STM: This makes sub-menus for the plugin menu.  It might only work well
-//on wxGTK, so I'm doing conditional compilation.  
+   delete effs;
 
-#if defined __WXGTK__
-
-	//Enable/disable the Plugins menu options.
-   int numPlugins = Effect::GetNumEffects(true);
-
-
-   //enable or disable each menu item based on whether there is a selection.
-   for (e = 0; e < numPlugins; e++) {
-      mPluginMenu->Enable(FirstPluginID + e,
+   effs = Effect::GetEffects(BUILTIN_EFFECT | PLUGIN_EFFECT | ANALYZE_EFFECT);
+   for(e=0; e<effs->GetCount(); e++)
+      mAnalyzeMenu->Enable(FirstEffectID + (*effs)[e]->GetID(),
                           numWaveTracksSelected > 0
-                          && nonZeroRegionSelected);
-   }
-#else
-   
-   for (e = 0; e < Effect::GetNumEffects(true); e++) {
-      mPluginMenu->Enable(FirstPluginID + e,
-                          numWaveTracksSelected > 0
-                          && nonZeroRegionSelected);
-   }
-
-#endif
+                           && nonZeroRegionSelected);
+   delete effs;
 
    //Now, go through each toolbar, and and call EnableDisableButtons()
    unsigned int i;

@@ -748,19 +748,15 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
 
 bool AudacityProject::ProcessEvent(wxEvent & event)
 {
-   int numEffects = Effect::GetNumEffects(false);
-   int numPlugins = Effect::GetNumEffects(true);
+   int numEffects = Effect::GetNumEffects();
    Effect *f = NULL;
 
    if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED) {
-      // Builtin Effects
       if (event.GetId() >= FirstEffectID &&
           event.GetId() < FirstEffectID + numEffects) {
-         f = Effect::GetEffect(event.GetId() - FirstEffectID, false);
-      } else if (event.GetId() >= FirstPluginID &&
-                 event.GetId() < FirstPluginID + numPlugins) {
-         f = Effect::GetEffect(event.GetId() - FirstPluginID, true);
-      } else if (HandleMenuEvent(event))
+         f = Effect::GetEffect(event.GetId() - FirstEffectID);
+      }
+      else if (HandleMenuEvent(event))
          return true;
    }
 
@@ -775,8 +771,8 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
          t = iter.Next();
       }
 
-      if (count == 0 || mViewInfo.sel0 == mViewInfo.sel1) {
-         wxMessageBox(_("No audio data is selected."));
+      if (count == 0) {
+         wxMessageBox(_("You must select a track first."));
          return true;
       }
 

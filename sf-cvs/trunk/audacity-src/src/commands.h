@@ -21,8 +21,9 @@
 
    enum menuState {disabledMenu = 0, enabledMenu};
 
-   enum menuCategory {fileMenu = 0, editMenu, viewMenu, projectMenu, effectMenu,
-                      pluginMenu, helpMenu, numMenus};
+   enum menuCategory {fileMenu = 0, editMenu, viewMenu, projectMenu,
+                      insertMenu, effectMenu, analyzeMenu, helpMenu,
+                      numMenus};
 
    enum menuType { typeSeparator=0, typeNormal, typeCheckItem, typeRadioItem};
    // BG: This is the structure that holds information about individual command items.
@@ -141,10 +142,8 @@
 
       FirstEffectID = 2000,
 
-      // Plugin Menu
-
-      FirstPluginID = 3000,
       FirstPluginSubMenuID = 4000
+
    };
 
 #endif

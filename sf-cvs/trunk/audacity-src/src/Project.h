@@ -35,6 +35,7 @@ class wxDC;
 
 #include "AStatus.h"
 #include "DirManager.h"
+#include "effects/Effect.h"
 #include "UndoManager.h"
 #include "ViewInfo.h"
 #include "ToolBar.h"
@@ -69,6 +70,7 @@ extern AProjectArray gAudacityProjects;
 
 
 WX_DEFINE_ARRAY(ToolBar *, ToolBarArray);
+WX_DEFINE_ARRAY(wxMenu *, MenuArray);
 
 class AudacityProject:public wxFrame,
                       public TrackPanelListener,
@@ -233,8 +235,9 @@ class AudacityProject:public wxFrame,
    wxMenu *mViewMenu;
    wxMenu *mProjectMenu;
    wxMenu *mTrackMenu;
+   wxMenu *mInsertMenu;
    wxMenu *mEffectMenu;
-   wxMenu *mPluginMenu;
+   wxMenu *mAnalyzeMenu;
    wxMenu *mHelpMenu;
 
    // Window elements

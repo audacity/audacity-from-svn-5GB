@@ -42,6 +42,10 @@ class VSTEffect:public Effect {
    
    virtual wxString GetEffectAction();
    
+   virtual int GetEffectFlags() {
+      return PLUGIN_EFFECT | PROCESS_EFFECT;
+   }
+
    virtual bool Init();
 
    virtual bool PromptUser();

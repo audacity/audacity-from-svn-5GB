@@ -39,8 +39,14 @@ class EffectToneGen:public EffectSimpleMono {
 
    virtual wxString GetEffectName() {
       return wxString(_("Tone Generator..."));
-   } virtual wxString GetEffectAction() {
+   }
+
+   virtual wxString GetEffectAction() {
       return wxString(_("Generating Tone"));
+   }
+
+   virtual int GetEffectFlags() {
+      return BUILTIN_EFFECT | INSERT_EFFECT;
    }
 
    virtual bool PromptUser();
