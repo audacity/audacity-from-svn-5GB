@@ -12,13 +12,13 @@ CC = @CC@
 CCC = @CXX@
 
 # CFLAGS are specific to C.
-CFLAGS = @CFLAGS@
+override CFLAGS += @CFLAGS@
 
 # CXXFLAGS are specific to C++.
-CXXFLAGS = @CXXFLAGS@
+override CXXFLAGS += @CXXFLAGS@
 
 # CPPFLAGS are for both C and C++.
-CPPFLAGS = -Wall -Iinclude @CPPFLAGS@ 
+override CPPFLAGS += -Wall -Iinclude @CPPFLAGS@ 
 
 # Files that must exist in order to compile a C/C++ files
 CDEPEND = @CDEPEND@

@@ -1,6 +1,6 @@
 CC = gcc
 
-CFLAGS = -g -O2 -Ixmlparse -Ixmltok
+override CFLAGS += -g -O2 -Ixmlparse -Ixmltok
 
 OBJS = xmlparse/xmlparse.o xmltok/xmlrole.o xmltok/xmltok.o
 
