@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I "." /I "include" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /Ob2 /I "." /I "include" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -101,11 +101,19 @@ SOURCE=..\src\au_g72x.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\avr.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\command.c
 # End Source File
 # Begin Source File
 
 SOURCE=..\src\common.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\dither.c
 # End Source File
 # Begin Source File
 
@@ -130,6 +138,10 @@ SOURCE=..\src\float32.c
 # Begin Source File
 
 SOURCE=..\src\gsm610.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\htk.c
 # End Source File
 # Begin Source File
 
@@ -169,6 +181,10 @@ SOURCE=..\src\pcm.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\pvf.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\raw.c
 # End Source File
 # Begin Source File
@@ -185,11 +201,11 @@ SOURCE=..\src\sds.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\sfendian.c
+SOURCE=..\src\sndfile.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\sndfile.c
+SOURCE=..\src\strings.c
 # End Source File
 # Begin Source File
 
@@ -227,6 +243,10 @@ SOURCE=..\src\wav_w64.c
 
 SOURCE=..\src\wve.c
 # End Source File
+# Begin Source File
+
+SOURCE=..\src\xi.c
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -254,7 +274,7 @@ SOURCE=..\src\sndfile.h
 !IF  "$(CFG)" == "libsndfile - Win32 Release"
 
 # Begin Custom Build - Using Windows versions of libsndfile headers
-InputDir=\audacity\audacity\lib-src\libsndfile\src
+InputDir=\sfw_dev\Audacity_HEAD\audacity\lib-src\libsndfile\src
 IntDir=.\Release
 InputPath=..\src\sndfile.h
 
@@ -268,7 +288,7 @@ InputPath=..\src\sndfile.h
 !ELSEIF  "$(CFG)" == "libsndfile - Win32 Debug"
 
 # Begin Custom Build - Using Windows versions of libsndfile headers
-InputDir=\audacity\audacity\lib-src\libsndfile\src
+InputDir=\sfw_dev\Audacity_HEAD\audacity\lib-src\libsndfile\src
 IntDir=.\Debug
 InputPath=..\src\sndfile.h
 

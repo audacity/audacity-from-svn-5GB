@@ -286,6 +286,10 @@ unsigned char alaw_encode [2048 + 1] =
 	0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0x2a
 } ; /* alaw_encode */
 
+#ifdef WIN32 //vvv for compatibility with MSVC++ 6 compiler
+   #define inline  
+#endif
+
 static inline void
 alaw2s_array (unsigned char *buffer, int count, short *ptr)
 {	while (--count >= 0)
