@@ -1,4 +1,4 @@
-Compiling Audacity under Windows using Microsoft Visual C++ 6.0
+Compiling Audacity under Microsoft Windows (TM) using Microsoft Visual C++ 6.0
 
 Authors:
   Vince Busam
@@ -8,7 +8,7 @@ Authors:
 
 ================================================================
 This version is currently accurate for Audacity version 1.2.0.
-Last Updated: July 14, 2003
+Last Updated: July 29, 2003
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 ================================================================
@@ -36,8 +36,8 @@ wxWindows is available from http://www.wxwindows.org.
 Similar to the Linux kernel, wxWindows is available as
 stable and development branches.  
 
-Audacity 1.2.0 uses wxWindows 2.4.1, the official, stable release 
-for Windows, available at "http://www.wxwindows.org/".
+Audacity 1.2.0 uses wxWindows 2.4.0 for Microsoft Windows (MSW), 
+available at "http://www.wxwindows.org/".
 
 
 ------------------------
@@ -85,9 +85,9 @@ STEP 4:  Set wxWindows location for Audacity
 Before you can start the build process, you must update the
 project settings to tell Visual C++ where to find wxWindows.
 There are three settings that need changing:
-    1.  Include Directory (e.g., "C:\wxWindows_2.4.1\include")
-    2.  Resource Directory (e.g., "C:\wxWindows_2.4.1\include")
-    3.  Library Directory (e.g., "C:\wxWindows_2.4.1\lib")
+    1.  Include Directory (e.g., "C:\wxWindows_2.4.0\include")
+    2.  Resource Directory (e.g., "C:\wxWindows_2.4.0\include")
+    3.  Library Directory (e.g., "C:\wxWindows_2.4.0\lib")
 
 Fortunately, this is parameterized, using a Windows system 
 environment variable. There are various ways to set these, so 
@@ -96,7 +96,7 @@ environment variable WXWIN, set to the top-level directory
 where you installed wxWindows. For example, 
 in your "autoexec.bat" file, you might have a line:
 
-   set WXWIN=C:\wxWindows-2.4.1
+   set WXWIN=C:\wxWindows-2.4.0
 
 Note that you don't want a trailing backslash on that. In the 
 Audacity project file, there are declarations like 
