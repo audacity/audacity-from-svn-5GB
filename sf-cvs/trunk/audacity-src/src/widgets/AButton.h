@@ -44,6 +44,13 @@ class AButton:public wxWindow {
 
    virtual ~ AButton();
 
+   virtual void SetAlternateImages(wxImage *up,
+                                   wxImage *over,
+                                   wxImage *down,
+                                   wxImage *dis);
+
+   virtual void SetAlternate(bool useAlternateImages);
+
    virtual void Disable();
    virtual void Enable();
    void SetEnabled(bool state) {
@@ -74,6 +81,8 @@ class AButton:public wxWindow {
    int mWidth;
    int mHeight;
 
+   bool mAlternate;
+
    bool mWasShiftDown;
 
    bool mButtonIsDown;
@@ -89,6 +98,7 @@ class AButton:public wxWindow {
    AButtonState mButtonState;
 
    wxBitmap *mBitmap[4];
+   wxBitmap *mAltBitmap[4];
 
  public:
 

@@ -107,6 +107,9 @@ class ControlToolBar:public ToolBar {
 
    virtual void EnableDisableButtons();
 
+   void OnShiftDown(wxKeyEvent & event);
+   void OnShiftUp(wxKeyEvent & event);
+
  private:
 
    void InitializeControlToolBar();
@@ -117,6 +120,9 @@ class ControlToolBar:public ToolBar {
                      wxWindowID id, int left, int top);
    AButton *MakeButton(char const **foreground, char const **disabled,
                        char const **alpha, int id, bool processdownevents);
+
+   void MakeLoopImage();
+
    void MakeButtons();
    int mButtonPos;
 

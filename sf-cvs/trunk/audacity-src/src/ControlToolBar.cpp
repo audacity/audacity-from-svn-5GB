@@ -295,8 +295,30 @@ AButton *ControlToolBar::MakeButton(char const **foreground,
    return r;
 }
 
+void ControlToolBar::MakeLoopImage()
+{
+   int xoff = 16;
+   int yoff = 16;
 
+   wxImage * color 			= new wxImage(wxBitmap(Loop).ConvertToImage());
+   wxImage * color_disabled = new wxImage(wxBitmap(LoopDisabled).ConvertToImage());
+   wxImage * mask 			= new wxImage(wxBitmap(LoopAlpha).ConvertToImage());
+   
+   wxImage * up2 			   = OverlayImage(upPattern, color, mask, xoff, yoff);
+   wxImage * hilite2 		= OverlayImage(hilitePattern, color, mask, xoff, yoff);
+   wxImage * down2 			= OverlayImage(downPattern, color, mask, xoff + 1, yoff + 1);
+   wxImage * disable2 		= OverlayImage(upPattern, color_disabled, mask, xoff, yoff);
 
+   mPlay->SetAlternateImages(up2, hilite2, down2, disable2);
+
+   delete color;
+   delete color_disabled;
+   delete mask;
+   delete up2;
+   delete hilite2;
+   delete down2;
+   delete disable2;
+}
 
 void ControlToolBar::RegenerateToolsTooltips()
 {
@@ -361,6 +383,8 @@ void ControlToolBar::MakeButtons()
                       (char const **) PlayAlpha, ID_PLAY_BUTTON,
                       false);
    mPlay->SetToolTip(_("Play (with shift for loop-play)"));
+
+   MakeLoopImage();
 
    mRecord = MakeButton((char const **) Record,
                         (char const **) RecordDisabled,
@@ -504,8 +528,10 @@ void ControlToolBar::SetPlay(bool down)
 {
    if (down)
       mPlay->PushDown();
-   else
+   else {
       mPlay->PopUp();
+      mPlay->SetAlternate(false);
+   }
 }
 
 void ControlToolBar::SetStop(bool down)
@@ -521,7 +547,6 @@ void ControlToolBar::SetStop(bool down)
          mPause->Disable();
       mRewind->Enable();
       mFF->Enable();
-
    }
 }
 
@@ -623,23 +648,34 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
    }
 }
 
+void ControlToolBar::OnShiftDown(wxKeyEvent & event)
+{
+   // Turn the "Play" button into a "Loop" button
+   if (!mPlay->IsDown())
+      mPlay->SetAlternate(true);
+}
+
+void ControlToolBar::OnShiftUp(wxKeyEvent & event)
+{
+   // Turn the "Loop" button into a "Play" button
+   if (!mPlay->IsDown())
+      mPlay->SetAlternate(false);
+}
+
 void ControlToolBar::OnPlay(wxCommandEvent &evt)
 {
    if(mPlay->WasShiftDown())
-     {
-       PlayCurrentRegion(true);
-     }
+      PlayCurrentRegion(true);
    else
-     {
-       PlayCurrentRegion();
-     }
-
+      PlayCurrentRegion(false);
 }
 
 
 
 void ControlToolBar::PlayCurrentRegion(bool looped /* = false */)
 {
+   mPlay->SetAlternate(looped);
+
    AudacityProject *p = GetActiveProject();
    if (p)
    {
