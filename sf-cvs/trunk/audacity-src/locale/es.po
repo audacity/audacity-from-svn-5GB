@@ -751,7 +751,9 @@ msgstr "Profundidad:"
 #: ../src/prefs/KeyConfigPrefs.cpp:66
 #: ../src/prefs/KeyConfigPrefs.cpp:132
 msgid "Description:\n"
+" "
 msgstr "Descripción:\n"
+" "
 
 #: ../src/prefs/AudioIOPrefs.cpp:100
 #: ../src/prefs/AudioIOPrefs.cpp:149
