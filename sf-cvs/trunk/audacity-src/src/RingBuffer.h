@@ -31,6 +31,7 @@ class RingBuffer {
 
    int AvailForGet();
    int Get(samplePtr buffer, sampleFormat format, int samples);
+   int Discard(int samples);
 
  private:
    sampleFormat  mFormat;

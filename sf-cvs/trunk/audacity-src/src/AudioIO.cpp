@@ -140,11 +140,17 @@ int audacityAudioCallback(
          
          // Cut if somebody else is soloing
          if (numSolo>0 && !mt->GetSolo())
+         {
+            gAudioIO->mOutBuffers[t]->Discard(framesPerBuffer);
             continue;
+         }
          
          // Cut if we're muted (unless we're soloing)
          if (mt->GetMute() && !mt->GetSolo())
+         {
+            gAudioIO->mOutBuffers[t]->Discard(framesPerBuffer);
             continue;
+         }
          
          unsigned int len = (unsigned int)
             gAudioIO->mOutBuffers[t]->Get((samplePtr)tempFloats, floatSample,
