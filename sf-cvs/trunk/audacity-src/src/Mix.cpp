@@ -265,12 +265,14 @@ Mixer::~Mixer()
    delete[] mEnvValues;
    delete[] mFloatBuffer;
    delete[] mGains;
+	delete[] mSamplePos;
 
    #if USE_LIBSAMPLERATE
    for(i=0; i<mNumInputTracks; i++) {
       src_delete(mSRC[i]);
       delete[] mSampleQueue[i];
    }
+	delete[] mSRC;
    delete[] mSampleQueue;
    delete[] mQueueStart;
    delete[] mQueueLen;
@@ -488,6 +490,9 @@ sampleCount Mixer::MixSameRate(int *channelFlags, WaveTrack *track,
 
 sampleCount Mixer::Process(int maxToProcess)
 {
+   if (mT1 != mT0 && mT >= mT1)
+      return 0;
+   
    int i, j;
    sampleCount out;
    sampleCount maxOut = 0;
@@ -495,9 +500,6 @@ sampleCount Mixer::Process(int maxToProcess)
    double avg = 0.0;
 
    mMaxOut = maxToProcess;
-
-   if (mT1 != mT0 && mT >= mT1)
-      return 0;
 
    Clear();
    for(i=0; i<mNumInputTracks; i++) {
@@ -540,6 +542,8 @@ sampleCount Mixer::Process(int maxToProcess)
 
    avg /= mNumInputTracks;
    mT = avg;
+
+   delete [] channelFlags; 
 
    return maxOut;
 }

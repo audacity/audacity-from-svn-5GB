@@ -131,6 +131,11 @@ AudioIO::AudioIO()
 
 AudioIO::~AudioIO()
 {
+#if defined(USE_PORTMIXER) && !defined(USE_PORTAUDIO_V19)
+   if( mPortMixer )
+      Px_CloseMixer(mPortMixer);
+   mPortMixer = NULL;
+#endif
    Pa_Terminate();
 
    /* Delete is a "graceful" way to stop the thread.

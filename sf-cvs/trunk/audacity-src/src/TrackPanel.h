@@ -73,7 +73,6 @@ class TrackPanel:public wxWindow {
 
    void OnPaint(wxPaintEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
-   void TrackSpecificMouseEvent(wxMouseEvent & event);
    void OnKeyEvent(wxKeyEvent & event);
 
    void OnTimer();
@@ -93,6 +92,7 @@ class TrackPanel:public wxWindow {
 
  private:
 
+   void TrackSpecificMouseEvent(wxMouseEvent & event);
    void DrawCursors(wxDC * dc = NULL);
    void RemoveStaleCursors(wxRegionIterator * upd);
 
