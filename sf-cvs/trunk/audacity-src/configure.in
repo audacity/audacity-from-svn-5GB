@@ -124,6 +124,10 @@ AC_CHECK_FILE(lib-src/libsamplerate/src/samplerate.h,
               default_libsamplerate="local",
               default_libsamplerate="system")
 
+AC_CHECK_FILE(lib-src/libresample/include/resample.h,
+              default_libresample="yes",
+              default_libresample="no")
+
 AC_CHECK_FILE(lib-src/libflac/include/FLAC/format.h,
               default_libflac="local",
               default_libflac="system")
@@ -175,9 +179,15 @@ AC_ARG_WITH(libsndfile,
 	use_libsndfile=$withval,
 	use_libsndfile=$default_libsndfile)
 
+AC_ARG_WITH(libresample,
+	[AC_HELP_STRING([--with-libresample],
+		[use libresample: [yes no]])],
+	use_libresample=$withval,
+	use_libresample=$default_libresample)
+
 AC_ARG_WITH(libsamplerate,
 	[AC_HELP_STRING([--with-libsamplerate],
-		[which libsamplerate to use: [local system none]])],
+		[use libsamplerate (instead of libresample): [local system none]])],
 	use_libsamplerate=$withval,
 	use_libsamplerate=$default_libsamplerate)
 
@@ -231,9 +241,7 @@ if [[ "$use_soundtouch" = "yes" ]] ; then
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/soundtouch/soundtouch.a"		
 
    if test ! -f "lib-src/soundtouch/Makefile"; then
-		echo "---";
-		echo "--- Configuring soundtouch:";
-		echo "---";
+		echo "--- Configuring soundtouch";
 		AC_CONFIG_SUBDIRS([[lib-src/soundtouch]])
    fi
 fi
@@ -259,9 +267,7 @@ if [[ "$use_libsndfile" = "local" ]] ; then
 	CXXFLAGS="$CXXFLAGS -I../lib-src/libsndfile/src"
 
    if test ! -f "lib-src/libsndfile/Makefile"; then
-		echo "---";
-		echo "--- Configuring libsndfile:";
-		echo "---";
+		echo "--- Configuring libsndfile";
 		AC_CONFIG_SUBDIRS([[lib-src/libsndfile]])
    fi
 fi
@@ -275,6 +281,20 @@ if [[ "$use_libsndfile" = "system" ]] ; then
 	LIBS="$LIBS -lsndfile"	
 fi
 
+if [[ "$use_libresample" = "yes" ]] ; then
+	use_libsamplerate="none";
+	BUILDLIBS="$BUILDLIBS libresample/libresample.a"
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/libresample/libresample.a"
+	CXXFLAGS="$CXXFLAGS -I../lib-src/libresample/include"
+	AC_DEFINE(USE_LIBRESAMPLE, 1,
+		[Define if libresample support should be enabled])
+
+   if test ! -f "lib-src/libresample/Makefile"; then
+		echo "--- Configuring libresample";
+		AC_CONFIG_SUBDIRS([[lib-src/libresample]])
+   fi
+fi
+
 if [[ "$use_libsamplerate" = "local" ]] ; then
 	BUILDLIBS="$BUILDLIBS libsamplerate/src/.libs/libsamplerate.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/libsamplerate/src/.libs/libsamplerate.a"
@@ -283,9 +303,7 @@ if [[ "$use_libsamplerate" = "local" ]] ; then
 		[Define if libsamplerate support should be enabled])
 
    if test ! -f "lib-src/libsamplerate/Makefile"; then
-		echo "---";
-		echo "--- Configuring libsamplerate:";
-		echo "---";
+		echo "--- Configuring libsamplerate";
 		AC_CONFIG_SUBDIRS([[lib-src/libsamplerate]])
    fi
 fi
@@ -309,9 +327,7 @@ if [[ "$use_libmad" = "yes" ]] ; then
 	CDEPEND="$CDEPEND ../lib-src/libmad/mad.h"
 
    if test ! -f "lib-src/libmad/Makefile"; then
-		echo "---";
-		echo "--- Configuring libmad:";
-		echo "---";
+		echo "--- Configuring libmad";
 		AC_CONFIG_SUBDIRS([[lib-src/libmad]])
    fi
 fi
@@ -364,16 +380,12 @@ if [[ $use_vorbis = "yes" ]] ; then
 		[Define if the ogg vorbis decoding library is present])
 
    if test ! -f "lib-src/libogg/Makefile"; then
-		echo "---";
-		echo "--- Configuring libogg:";
-		echo "---";
+		echo "--- Configuring libogg";
 		AC_CONFIG_SUBDIRS([[lib-src/libogg]])
    fi
 
    if test ! -f "lib-src/libvorbis/Makefile"; then
-		echo "---";
-		echo "--- Configuring libvorbis:";
-		echo "---";
+		echo "--- Configuring libvorbis";
 		AC_CONFIG_SUBDIRS([[lib-src/libvorbis]])
    fi
 fi
@@ -403,9 +415,7 @@ if [[ $use_libid3tag = "yes" ]] ; then
       [Define if libid3tag is present])
 
    if test ! -f "lib-src/libid3tag/Makefile"; then
-		echo "---";
-		echo "--- Configuring libid3tag:";
-		echo "---";
+		echo "--- Configuring libid3tag";
 		AC_CONFIG_SUBDIRS([[lib-src/libid3tag]])
    fi
 fi
@@ -436,9 +446,7 @@ if [[ $use_libflac = "yes" ]] ; then
       [Define if the FLAC library is present])
 
    if test ! -f "lib-src/libflac/Makefile"; then
-		echo "---";
-		echo "--- Configuring libflac:";
-		echo "---";
+		echo "--- Configuring libflac";
 		AC_CONFIG_SUBDIRS([[lib-src/libflac]])
    fi
 fi
@@ -577,12 +585,14 @@ if [[ $use_libsndfile = "system" ]] ; then
 	echo "  with    libsndfile=system";
 fi
 
-if [[ $use_libsamplerate = "system" ]] ; then
+if [[ $use_libresample = "yes" ]] ; then
+	echo "  with    libresample";
+elif [[ $use_libsamplerate = "system" ]] ; then
 	echo "  with    libsamplerate=system";
 elif [[ $use_libsamplerate = "local" ]] ; then
 	echo "  with    libsamplerate";
 else
-	echo "  without libsamplerate";
+	echo "  without any resampling support";
 fi
 
 if [[ $use_libid3tag = "yes" ]] ; then

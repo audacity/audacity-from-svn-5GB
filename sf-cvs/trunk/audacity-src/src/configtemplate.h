@@ -73,6 +73,9 @@
 /* Define if PortMixer support should be enabled */
 #undef USE_PORTMIXER
 
+/* Define if libresample support should be enabled */
+#undef USE_LIBRESAMPLE
+
 /* Define if libsamplerate support should be enabled */
 #undef USE_LIBSAMPLERATE
 

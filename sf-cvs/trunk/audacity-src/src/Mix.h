@@ -18,10 +18,7 @@
 #include "WaveTrack.h"
 #include "TimeTrack.h"
 #include "ControlToolBar.h"
-
-#if USE_LIBSAMPLERATE
-#include <samplerate.h>
-#endif
+#include "Resample.h"
 
 class ControlToolBar;
 class DirManager;
@@ -85,12 +82,10 @@ class Mixer {
    sampleCount MixSameRate(int *channelFlags, WaveTrack *src,
                            longSampleCount *pos);
 
-#if USE_LIBSAMPLERATE
    sampleCount MixVariableRates(int *channelFlags, WaveTrack *track,
                                 longSampleCount *pos, float *queue,
                                 int *queueStart, int *queueLen,
-                                SRC_STATE *SRC);
-#endif
+                                Resample *SRC);
 
  private:
    // Input
@@ -104,14 +99,12 @@ class Mixer {
    double           mT;  // Current time
    double           mT0; // Start time
    double           mT1; // Stop time (none if mT0==mT1)   
-#if USE_LIBSAMPLERATE
-   SRC_STATE      **mSRC;
+   Resample       **mSRC;
    float          **mSampleQueue;
    int             *mQueueStart;
    int             *mQueueLen;
    int              mQueueMaxLen;
    int              mProcessLen;
-#endif
 
    // Output
    int              mMaxOut;

@@ -15,10 +15,7 @@
 #include "widgets/Ruler.h"
 #include "Prefs.h"
 #include "Internat.h"
-
-#if USE_LIBSAMPLERATE
-#include <samplerate.h>
-#endif
+#include "Resample.h"
 
 TimeTrack *TrackFactory::NewTimeTrack()
 {
@@ -44,9 +41,6 @@ TimeTrack::TimeTrack(DirManager *projDirManager):
    mRuler->SetLabelEdges(false);
    mRuler->SetFormat(Ruler::TimeFormat);
 
-   mConverterList = NULL;
-   mConverter = gPrefs->Read("/Quality/SampleRateConverter", (long)2); // SRC_SINC_FASTEST
-
    blankBrush.SetColour(214, 214, 214);
    blankPen.SetColour(214, 214, 214);
 }
@@ -67,8 +61,6 @@ TimeTrack::TimeTrack(TimeTrack &orig):
    mRuler = new Ruler();
    mRuler->SetLabelEdges(false);
    mRuler->SetFormat(Ruler::TimeFormat);
-
-   mConverterList = NULL;
 }
 
 // Copy the track metadata but not the contents.
@@ -89,19 +81,14 @@ Track *TimeTrack::Duplicate()
    return new TimeTrack(*this);
 }
 
-void TimeTrack::addConverter( int i, const char *name )
-{
-  ConverterList *el = new ConverterList( i, name );
-  el->next = mConverterList;
-  mConverterList = el;
-}
-
 // Our envelope represents the playback speed, which is the rate of change of
 // playback position.  We want to find the playback position at time t, so
 // we have to integrate the playback speed.
 double TimeTrack::warp( double t )
 {
-   double result = GetEnvelope()->Integral( 0.0, t, GetRangeLower()/100.0, GetRangeUpper()/100.0 );
+   double result = GetEnvelope()->Integral( 0.0, t,
+                                            GetRangeLower()/100.0,
+                                            GetRangeUpper()/100.0 );
    //printf( "Warping %.2f to %.2f\n", t, result );
    return result;
 }

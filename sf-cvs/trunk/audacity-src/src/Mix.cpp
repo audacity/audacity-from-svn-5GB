@@ -25,10 +25,7 @@
 #include "Envelope.h"
 #include "ControlToolBar.h"
 #include "Prefs.h"
-
-#ifdef USE_LIBSAMPLERATE 
-	#include <samplerate.h>
-#endif
+#include "Resample.h"
 
 bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
               double rate, sampleFormat format,
@@ -214,38 +211,22 @@ Mixer::Mixer(int numInputTracks, WaveTrack **inputTracks,
    mTemp = NewSamples(mInterleavedBufferSize, mFormat);
    mFloatBuffer = new float[mInterleavedBufferSize];
 
-   #if USE_LIBSAMPLERATE
-   long converterType;
-   if (mTimeTrack)
-      converterType = (long)timeTrack->getConverter();
-   else {
-      if (highQuality)
-         converterType = gPrefs->Read("/Quality/HQSampleRateConverter",
-                                      (long)SRC_SINC_FASTEST);
-      else
-         converterType = gPrefs->Read("/Quality/SampleRateConverter",
-                                      (long)SRC_SINC_FASTEST);
-   }
-
    mQueueMaxLen = 65536;
    mProcessLen = 1024;
-
-   double warpFactor = 1.0;
-   if (timeTrack) {
-      warpFactor = timeTrack->GetEnvelope()->GetValue(startTime);
-      warpFactor = (timeTrack->GetRangeLower() * (1 - warpFactor) +
-                    warpFactor * timeTrack->GetRangeUpper())/100.0;
-   }
 
    mQueueStart = new int[mNumInputTracks];
    mQueueLen = new int[mNumInputTracks];
    mSampleQueue = new float *[mNumInputTracks];
-   mSRC = new SRC_STATE*[mNumInputTracks];
+   mSRC = new Resample*[mNumInputTracks];
    int error;
    for(i=0; i<mNumInputTracks; i++) {
-      double warp = (mRate / mInputTrack[i]->GetRate()) / warpFactor;
-      mSRC[i] = src_new(converterType, 1, &error);
-      src_set_ratio(mSRC[i], warp);
+      double factor = (mRate / mInputTrack[i]->GetRate());
+      double lowFactor = factor, highFactor = factor;
+      if (timeTrack) {
+         highFactor /= timeTrack->GetRangeLower() / 100.0;
+         lowFactor /= timeTrack->GetRangeUpper() / 100.0;
+      }
+      mSRC[i] = new Resample(highQuality, lowFactor, highFactor);
       mSampleQueue[i] = new float[mQueueMaxLen];
       mQueueStart[i] = 0;
       mQueueLen[i] = 0;
@@ -255,12 +236,6 @@ Mixer::Mixer(int numInputTracks, WaveTrack **inputTracks,
    if (mQueueMaxLen > envLen)
       envLen = mQueueMaxLen;
    mEnvValues = new double[envLen];
-
-   #else
-
-   mEnvValues = new double[mInterleavedBufferSize];
-
-   #endif
 }
 
 Mixer::~Mixer()
@@ -277,16 +252,14 @@ Mixer::~Mixer()
    delete[] mGains;
 	delete[] mSamplePos;
 
-   #if USE_LIBSAMPLERATE
    for(i=0; i<mNumInputTracks; i++) {
-      src_delete(mSRC[i]);
+      delete mSRC[i];
       delete[] mSampleQueue[i];
    }
 	delete[] mSRC;
    delete[] mSampleQueue;
    delete[] mQueueStart;
    delete[] mQueueLen;
-   #endif
 }
 
 void Mixer::ApplyTrackGains(bool apply)
@@ -367,13 +340,10 @@ void MixBuffers(int numChannels, int *channelFlags, float *gains,
    }
 }
    
-#if USE_LIBSAMPLERATE
-
-// TODO: SRC limits are 1/12 to 12 * playback.  Make sure we respect this
 sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
                                     longSampleCount *pos, float *queue,
                                     int *queueStart, int *queueLen,
-                                    SRC_STATE *SRC)
+                                    Resample *SRC)
 {
    double initialWarp = mRate / track->GetRate();
    double t = *pos / track->GetRate();
@@ -419,33 +389,34 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
       if (*queueLen < mProcessLen)
          thisProcessLen = *queueLen;
 
-      SRC_DATA mySrcData;
-
-      mySrcData.end_of_input = (*queueLen < mProcessLen);
-      mySrcData.input_frames = thisProcessLen;
-      mySrcData.output_frames = mMaxOut - out;
-      mySrcData.data_in = &queue[*queueStart];
-      mySrcData.data_out = &mFloatBuffer[out];
-
-      mySrcData.src_ratio = initialWarp;
+      double factor = initialWarp;
       if (mTimeTrack) {
          double warpFactor = mTimeTrack->GetEnvelope()->GetValue(t);
          warpFactor = (mTimeTrack->GetRangeLower() * (1 - warpFactor) +
                        warpFactor * mTimeTrack->GetRangeUpper())/100.0;
 
-         mySrcData.src_ratio /= warpFactor;
+         factor /= warpFactor;
       }
 
-      int error;
-      if((error = src_process(SRC, &mySrcData)))
-         printf( "SRC Error: %s\n", src_strerror( error ) );
+      int input_used;
+      bool last = (*queueLen < mProcessLen);
+      int outgen = SRC->Process(factor,
+                                &queue[*queueStart],
+                                thisProcessLen,
+                                last,
+                                &input_used,
+                                &mFloatBuffer[out],
+                                mMaxOut - out);
 
-      *queueStart += mySrcData.input_frames_used;
-      *queueLen -= mySrcData.input_frames_used;
-      out += mySrcData.output_frames_gen;
-      t += (mySrcData.input_frames_used / track->GetRate());
+      if (outgen < 0)
+         return 0;
 
-      if (mySrcData.end_of_input)
+      *queueStart += input_used;
+      *queueLen -= input_used;
+      out += outgen;
+      t += (input_used / track->GetRate());
+
+      if (last)
          break;
    }
 
@@ -464,8 +435,6 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
 
    return mMaxOut;
 }
-
-#endif // USE_LIBSAMPLERATE
 
 sampleCount Mixer::MixSameRate(int *channelFlags, WaveTrack *track,
                                longSampleCount *pos)
@@ -541,14 +510,12 @@ sampleCount Mixer::Process(int maxToProcess)
          break;
       }
 
-      #if USE_LIBSAMPLERATE
       if (mTimeTrack ||
           track->GetRate() != mRate)
          out = MixVariableRates(channelFlags, track,
                                 &mSamplePos[i], mSampleQueue[i],
                                 &mQueueStart[i], &mQueueLen[i], mSRC[i]);
       else
-      #endif
          out = MixSameRate(channelFlags, track, &mSamplePos[i]);
 
       if (out > maxOut)
@@ -586,10 +553,8 @@ void Mixer::Restart()
    for(i=0; i<mNumInputTracks; i++)
       mSamplePos[i] = mInputTrack[i]->TimeToLongSamples(mT0);
 
-#if USE_LIBSAMPLERATE
    for(i=0; i<mNumInputTracks; i++) {
       mQueueStart[i] = 0;
       mQueueLen[i] = 0;
    }
-#endif
 }

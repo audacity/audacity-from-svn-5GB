@@ -19,8 +19,6 @@ class wxRect;
 class wxDC;
 class Envelope;
 class Ruler;
-class ConverterList; /* defined at the end of this file */
-
 
 class TimeTrack: public Track {
 
@@ -70,11 +68,6 @@ class TimeTrack: public Track {
 
    double warp( double t );
 
-   void addConverter( int i, const char *name );
-   ConverterList* GetConverterList() { return mConverterList; }
-   int getConverter() { return mConverter; }
-   void setConverter( int i ) { mConverter = i; }
-
    void testMe();
 
  private:
@@ -82,8 +75,6 @@ class TimeTrack: public Track {
    Ruler           *mRuler;
    long             mRangeLower;
    long             mRangeUpper;
-   ConverterList   *mConverterList;
-   int              mConverter;
 
    void Init(const TimeTrack &orig);
    virtual Track *Duplicate();
@@ -92,33 +83,6 @@ class TimeTrack: public Track {
 
    wxBrush blankBrush;
    wxPen blankPen;
-};
-
-
-
-/*
-  ConverterList is a linked list of available sample rate
-  conversion methods.
-*/
-class ConverterList
-{
-public:
-   int id;
-   const char *name;
-   ConverterList *next;
-
-   ConverterList()
-   {
-     id = 0;
-     name = NULL;
-     next = NULL;
-   }
-
-   ConverterList( int the_id, const char *the_name )
-   {
-     id = the_id;
-     name = the_name;
-   }
 };
 
 

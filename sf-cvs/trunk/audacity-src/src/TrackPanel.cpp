@@ -594,7 +594,6 @@ enum {
    OnMergeStereoID,
 
    OnSetTimeTrackRangeID,
-   OnSetTimeTrackConverterID
 };
 
 BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
@@ -603,7 +602,6 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_PAINT(TrackPanel::OnPaint)
     EVT_MENU(OnSetNameID, TrackPanel::OnSetName)
     EVT_MENU(OnSetTimeTrackRangeID, TrackPanel::OnSetTimeTrackRange)
-    EVT_MENU(OnSetTimeTrackConverterID, TrackPanel::OnSetTimeTrackConverter)
 
     EVT_MENU_RANGE(OnMoveUpID, OnMoveDownID, TrackPanel::OnMoveTrack)
     EVT_MENU_RANGE(OnUpOctaveID, OnDownOctaveID, TrackPanel::OnChangeOctave)
@@ -805,8 +803,6 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mTimeTrackMenu->Append(OnMoveDownID, _("Move Track Down"));
    mTimeTrackMenu->AppendSeparator();
    mTimeTrackMenu->Append(OnSetTimeTrackRangeID, _("Set Range..."));
-   mTimeTrackMenu->AppendSeparator();
-   mTimeTrackMenu->Append(OnSetTimeTrackConverterID, _("Set Converter..."));
 
    mTrackArtist = new TrackArtist();
    mTrackArtist->SetInset(1, kTopInset + 1, kLeftInset + 2, 1);
@@ -4201,17 +4197,17 @@ void TrackPanel::OnSetTimeTrackRange()
                                   _("Lower speed limit"),
                                   _("Lower speed limit"),
                                   lower,
-                                  10,
-                                  1000);
+                                  13,
+                                  1200);
 
       upper = wxGetNumberFromUser(_("Change upper speed limit (%) to:"),
                                   _("Upper speed limit"),
                                   _("Upper speed limit"),
                                   upper,
                                   lower+1,
-                                  1000);
+                                  1200);
 
-      if( lower >= 10 && upper <= 1000 && lower < upper ) {
+      if( lower >= 13 && upper <= 1200 && lower < upper ) {
          t->SetRangeLower(lower);
          t->SetRangeUpper(upper);
          MakeParentPushState(wxString::Format(_("Set range to '%d' - '%d'"),
@@ -4221,39 +4217,6 @@ void TrackPanel::OnSetTimeTrackRange()
          Refresh(false);
       }
    }
-   mPopupMenuTarget = NULL;
-}
-
-void TrackPanel::OnSetTimeTrackConverter()
-{
-   TimeTrack *t = (TimeTrack*)mPopupMenuTarget;
-   
-   if (t) {
-      ConverterList *lst = t->GetConverterList();
-      ConverterList *count;
-      
-      int num = 0;
-      for( count = lst; count != NULL; count = count->next )
-         num++;
-      
-      wxString *choices = new wxString[num];
-      int *indices = new int[num];
-      int n=0;
-      for( count = lst; count != NULL; count = count->next ) {
-         choices[n] = _(count->name);
-         indices[n++] = count->id;
-      }
-      
-      int choice = wxGetSingleChoiceIndex(_("Sample rate conversion method"),
-                                          _("Sample rate conversion method"),
-                                          num,
-                                          choices);
-      t->setConverter( indices[choice] );
-
-      delete [] choices;
-      delete [] indices;
-   }      
-   
    mPopupMenuTarget = NULL;
 }
 

@@ -77,12 +77,12 @@
 
 /* Function prototypes */
 
-int SrcUp(float X[], float Y[], double factor, double *Time,
-          UWORD Nx, UWORD Nwing, float LpScl,
-          float Imp[], float ImpD[], BOOL Interp);
+int lrsSrcUp(float X[], float Y[], double factor, double *Time,
+             UWORD Nx, UWORD Nwing, float LpScl,
+             float Imp[], float ImpD[], BOOL Interp);
 
-int SrcUD(float X[], float Y[], double factor, double *Time,
-          UWORD Nx, UWORD Nwing, float LpScl,
-          float Imp[], float ImpD[], BOOL Interp);
+int lrsSrcUD(float X[], float Y[], double factor, double *Time,
+             UWORD Nx, UWORD Nwing, float LpScl,
+             float Imp[], float ImpD[], BOOL Interp);
 
 #endif
