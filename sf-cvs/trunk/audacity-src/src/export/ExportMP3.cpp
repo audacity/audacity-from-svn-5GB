@@ -36,6 +36,7 @@
 
 **********************************************************************/
 
+#include <wx/defs.h>
 #include <wx/textctrl.h>
 #include <wx/dynlib.h>
 #include <wx/msgdlg.h>
@@ -48,6 +49,7 @@
 #include <wx/filedlg.h>
 #include <wx/intl.h>
 
+#include "../Audacity.h"
 #include "ExportMP3.h"
 #include "../Mix.h"
 #include "../Prefs.h"

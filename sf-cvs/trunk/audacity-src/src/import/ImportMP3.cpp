@@ -17,6 +17,7 @@
   
 **********************************************************************/
 
+#include <wx/defs.h>
 #include "../Audacity.h"
 
 #ifdef USE_LIBMAD

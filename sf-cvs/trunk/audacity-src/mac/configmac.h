@@ -4,6 +4,8 @@
 #define AUDACITY_CREATOR      'auDy'
 #define AUDACITY_PROJECT_TYPE 'auDp'
 
+#ifndef __UNIX__
+
 // Use libmad for importing MP3 on the mac
 #define MP3SUPPORT
 #define USE_LIBMAD
@@ -13,3 +15,6 @@
 
 // ID3 support
 #define USE_LIBID3TAG
+
+#endif
+
