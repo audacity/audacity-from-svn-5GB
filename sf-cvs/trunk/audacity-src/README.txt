@@ -23,6 +23,7 @@ Authors:
   Mark Phillips <mitb@totaldeath.com>
   Tony Oetzmann <airon@epost.de>
   Brian Gunlogson <bmg300@users.sf.net>
+  Shane Mueller <nestify@users.sf.net>
 
 Icons and logo:
 
