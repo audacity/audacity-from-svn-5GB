@@ -6,6 +6,22 @@ href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/audacity/audacity-src/">aqu
 
 <p><h3>Manual rápido de CVS do Audacity:</h3>
   Para acessar o código-fonte do Audacity, use um navegador de CVS e copie os fontes para seu computador. Após a checagem das versões, o sistema será capaz de mantê-lo sempre atualizado com a versão de trabalho dos fontes do grupo. As instruções a seguir estão em inglês, devido à quantidade de informações técnicas específicas. 
+<p>
+<h3>Note: Version 1.2 is now branched:</h3>
+If you want the stable branch of Audacity, version 1.2.x, you now need to
+type <tt>-r AUDACITY_1_2</tt> when you do a cvs update or checkout.
+Otherwise you will get the CVS HEAD, which may become quite unstable
+now as we start working on version 1.3.0.
+
+<p><h3>Quick Audacity CVS Howto:</h3>
+  If you want to access the Audacity source code, you can
+  use a cvs client to download a cvs branch onto your
+  computer. Once you have checked out a branch once, your CVS
+  client software will be able to help you keep your version
+  updated with the other Audacity developers. Follow the
+  instructions below to get the source code.
+
+
 <h4>Anonymous CVS access with a command-line cvs client:</h4>
 <p>Enter the following on the command line (note that it
 is a single line with no carriage returns):<br>
@@ -13,20 +29,24 @@ is a single line with no carriage returns):<br>
 login </tt><br></ul>
 and hit the enter key when it asks for a password.
 
-<p>Then, <b>to get the latest branch (1.1.0)</b> (as a single line):
+<p>Then, <b>to get the latest cutting-edge code (1.3.0)</b> (as a single line):
 <br>
    <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co
 audacity</tt></ul>
-or <b>for the stable branch (0.9-1.0)</b> (as a single line):<br>
+or <b>for the stable branch (1.2.0)</b> (as a single line):<br>
+   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co -r AUDACITY_1_2 audacity</tt></ul>
+or <b>for the old 1.0 branch (1.0.0)</b> (as a single line):<br>
    <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co -r audacity-0_9-branch audacity-old</tt></ul>
 
 <p> Alternately, you can set your <tt>CVSROOT</tt> environment
 variable to
 <tt>:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt>
 (see below).<br>
-Then, <b>to get the latest unstable branch (1.1.0)</b>, enter<br> 
+Then, <b>to get the latest unstable branch (1.3.0)</b>, enter<br> 
    <ul><tt>cvs checkout audacity</tt></ul>
-Or, <b>for the stable branch (0.9-1.0)</b>, enter <br>
+Or, <b>for the stable branch (1.2)</b>, enter <br>
+   <ul><tt>cvs checkout -r AUDACITY_1_2 audacity</tt></ul>
+or <b>for the old 1.0 branch</b>, enter <br>
    <ul><tt>cvs checkout -r audacity-0_9-branch audacity-old</tt></ul>
 
 <p> To set the  <tt>CVSROOT</tt> environment variable, you
@@ -60,12 +80,20 @@ variable does not contain any white space at the end--which
 can happen if you copied the variables directly from this web page.
 
 <p>
-<b>To get the latest unstable branch (1.1.0):</b><br>
+<b>To get the latest unstable branch (1.3.0):</b><br>
 Under the "Checkout Settings" dialog, enter
 <tt>audacity</tt> as the module name. Hit "OK" and the
 branch will be automatically downloaded onto your computer.
 <p>
-<b>To get the stable (0.9-1.0) branch: </b><br>
+<b>To get the stable (1.2.0) branch: </b><br>
+Under the "Checkout Settings" dialog, enter
+<tt>audacity</tt> as the module name.  Then, under the
+"Sticky options" tab, check the "Retrieve rev./tag/branch
+(-r)" box and enter <tt>AUDACITY_1_2</tt> into the
+box beside it. Hit "OK" and the branch will be automatically
+downloaded onto your computer.
+<p>
+<b>To get the old version 1.0 branch: </b><br>
 Under the "Checkout Settings" dialog, enter
 <tt>audacity-old</tt> as the module name.  Then, under the
 "Sticky options" tab, check the "Retrieve rev./tag/branch
