@@ -873,6 +873,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent& event)
     mPopupMenuTarget = t;
     {
       wxClientDC dc(this);
+	  SetLabelFont(&dc);
       DrawTitleBar(&dc, r, t, true);
     }
     bool canMakeStereo = false;
@@ -897,6 +898,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent& event)
     
     {
       wxClientDC dc(this);
+	  SetLabelFont(&dc);
       DrawTitleBar(&dc, r, t, false);
     }
     return;
@@ -1130,6 +1132,17 @@ void TrackPanel::OnMouseEvent(wxMouseEvent& event)
   }
 }
 
+void TrackPanel::SetLabelFont(wxDC *dc)
+{
+  int fontSize = 10;
+  #ifdef __WXMSW__
+    fontSize = 8;
+  #endif
+  
+  wxFont labelFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
+  dc->SetFont(labelFont);
+}
+
 void TrackPanel::DrawRuler(wxDC *dc, bool text)
 {
   wxRect r;
@@ -1192,14 +1205,7 @@ void TrackPanel::DrawRuler(wxDC *dc, bool text)
 
   dc->SetPen(*wxBLACK_PEN);
 
-  int fontSize = 10;
-  #ifdef __WXMSW__
-  fontSize = 8;
-  #endif
-
-  wxFont rulerFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
-  if (text)
-    dc->SetFont(rulerFont);
+  SetLabelFont(dc);
 
   int minSpace = 60;  // min pixels between labels
 
@@ -1445,17 +1451,11 @@ void TrackPanel::DrawTracks(wxDC *dc)
 
     // Draw label area
 
-    int fontSize = 10;
-    #ifdef __WXMSW__
-    fontSize = 8;
-    #endif
+	SetLabelFont(dc);
+    dc->SetTextForeground(wxColour(0, 0, 0));
     
     int labelw = GetLabelWidth();
     int vrul = GetVRulerOffset();
-
-    wxFont labelFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
-    dc->SetFont(labelFont);
-    dc->SetTextForeground(wxColour(0, 0, 0));
 
     // If this track is linked to the next one, display a common
     // border for both, otherwise draw a normal border
@@ -1643,13 +1643,7 @@ void TrackPanel::DrawTracks(wxDC *dc)
 
 	// Draw label area
 
-    int fontSize = 10;
-    #ifdef __WXMSW__
-    fontSize = 8;
-    #endif
-
-	wxFont labelFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
-	dc->SetFont(labelFont);
+	SetLabelFont(dc);
 	dc->SetTextForeground(wxColour(0, 0, 0));
 
 	wxRect labelRect = r;

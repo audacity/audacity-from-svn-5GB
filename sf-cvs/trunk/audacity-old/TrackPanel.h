@@ -125,6 +125,8 @@ private:
   int GetVRulerOffset();
   int GetLabelWidth();
 
+  void SetLabelFont(wxDC *dc);
+
   void DrawRuler(wxDC *dc, bool text = true);
   void DrawTracks(wxDC *dc);
   
