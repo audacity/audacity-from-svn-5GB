@@ -9,31 +9,34 @@ Email: audacity-help@lists.sourceforge.net
 
 Lead Developers:
 
-  Dominic Mazzoni
-  Joshua Haberman
   Matt Brubeck
+  Joshua Haberman
+  Dominic Mazzoni (project leader)
 
-Developers:
-
-  Brian Gunlogson
-  Shane Mueller
-  Vaughan Johnson
-  Greg Mekkes
+Active Developers:
   James Crook
-  Vince Busam
-  Augustus Saunders  
+  Vaughan Johnson
+  Markus Meyer
+  Shane Mueller
   Tony Oetzmann
-  Paul Nasca
-  Roger Dannenberg
+
+Developers
+  William Bland
+  Vince Busam
+  Brian Gunlogson
+  Greg Mekkes
+  Augustus Saunders  
 
 Other Contributors:
-
   Dave Beydler
   Jason Cohen
+  Roger Dannenberg
   Steve Harris
   Daniil Kolpakov
   Robert Leidle
   Logan Lewis
+  Abe Milde
+  Paul Nasca
   Jason Pepas
   Mark Phillips
   Jonathan Ryshpan
@@ -41,6 +44,8 @@ Other Contributors:
   Mark Tomlinson
   David Topper
   Rudy Trubitt
+  Tom Woodhams
+
 
 The Audacity Logo:
 
@@ -246,6 +251,9 @@ Known issues/problems:
     sound card your default when using Audacity, but please let
     us know if this affects you so that we can track down and
     solve the problem.
+
+    Also note that the Windows installer will replace 1.0.0 installations, 
+    but not the 1.1.x beta installations.
 
 -------------------------------------------------------------
 
