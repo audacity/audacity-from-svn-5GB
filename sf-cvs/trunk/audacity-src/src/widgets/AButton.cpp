@@ -287,7 +287,3 @@ void AButton::PopUp()
    this->Refresh(false);
 }
 
-void AButton::SetToolTips( wxString enabled, wxString disabled )
-{
-   SetToolTip( mButtonIsDown ? disabled : enabled );
-}
