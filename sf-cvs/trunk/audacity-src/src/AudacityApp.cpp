@@ -34,6 +34,8 @@
 #endif
 
 #include "AudacityApp.h"
+
+#include "AboutDialog.h"
 #include "AudioIO.h"
 #include "Benchmark.h"
 #include "effects/LoadEffects.h"
@@ -42,7 +44,7 @@
 #include "Prefs.h"
 #include "Project.h"
 #include "WaveTrack.h"
-
+#include "prefs/PrefsDialog.h"
 
 class ToolBar;
 class ControlToolBar;
@@ -182,6 +184,11 @@ pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent,
 
 BEGIN_EVENT_TABLE(AudacityApp, wxApp)
     EVT_CHAR(AudacityApp::OnKey)
+	EVT_MENU(AboutID, AudacityApp::OnMenuAbout)
+	EVT_MENU(NewID, AudacityApp::OnMenuNew)
+	EVT_MENU(OpenID, AudacityApp::OnMenuOpen)
+	EVT_MENU(PreferencesID, AudacityApp::OnMenuPreferences)
+	EVT_MENU(ExitID, AudacityApp::OnMenuExit)
 END_EVENT_TABLE()
 
 // The `main program' equivalent, creating the windows and returning the
@@ -239,12 +246,44 @@ bool AudacityApp::OnInit()
    LoadEffects();
 
 #ifdef __WXMAC__
+
+   // Install AppleEvent handlers (allows us to open documents
+   // that are dragged to our application's icon)
+
    AEInstallEventHandler(kCoreEventClass,
                          kAEOpenDocuments,
                          NewAEEventHandlerUPP(AEOpenFiles), 0, 0);
    AEInstallEventHandler(kCoreEventClass,
                          kAEQuitApplication,
                          NewAEEventHandlerUPP(AEQuit), 0, 0);
+
+
+   // On the Mac, users don't expect a program to quit when you close the last window.
+   // Create an offscreen frame with a menu bar.  The frame should never
+   // be visible, but when all other windows are closed, this menu bar should
+   // become visible.
+
+   gParentFrame = new wxFrame(NULL, -1, "invisible", wxPoint(5000, 5000), wxSize(100, 100));
+   wxMenu *fileMenu = new wxMenu();
+   fileMenu->Append(NewID, "&New\tCtrl+N");
+   fileMenu->Append(OpenID, "&Open...\tCtrl+O");
+   fileMenu->AppendSeparator();
+   fileMenu->Append(PreferencesID, "&Preferences...\tCtrl+P");
+   fileMenu->AppendSeparator();
+   fileMenu->Append(ExitID, "Quit\tCtrl+Q");
+   wxMenu *helpMenu = new wxMenu();
+   helpMenu->Append(AboutID, "About Audacity...");
+   wxApp::s_macAboutMenuItemId = AboutID;
+   
+   wxMenuBar *menuBar = new wxMenuBar();
+   menuBar->Append(fileMenu, "&File");
+   menuBar->Append(helpMenu, "&Help");
+   
+   gParentFrame->SetMenuBar(menuBar);
+   gParentFrame->Show();
+
+   SetTopWindow(gParentFrame);
+
 #endif
 
    SetExitOnFrameDelete(true);
@@ -383,4 +422,35 @@ int AudacityApp::OnExit()
 
 //   delete mChecker;
    return 0;
+}
+
+// The following five methods are currently only used on Mac OS,
+// where it's possible to have a menu bar but no windows open.
+// It doesn't hurt any other platforms, though.
+
+void AudacityApp::OnMenuAbout(wxCommandEvent & event)
+{
+   AboutDialog dlog(NULL);
+   dlog.ShowModal();
+}
+
+void AudacityApp::OnMenuNew(wxCommandEvent & event)
+{
+   CreateNewAudacityProject(gParentWindow);
+}
+
+void AudacityApp::OnMenuOpen(wxCommandEvent & event)
+{
+   AudacityProject::ShowOpenDialog(NULL);
+}
+
+void AudacityApp::OnMenuPreferences(wxCommandEvent & event)
+{
+   PrefsDialog dialog(NULL /* parent */ );
+   dialog.ShowModal();
+}
+
+void AudacityApp::OnMenuExit(wxCommandEvent & event)
+{
+   QuitAudacity();
 }

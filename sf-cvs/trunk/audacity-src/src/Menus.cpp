@@ -576,41 +576,7 @@ void AudacityProject::OnNew(wxEvent & event)
 
 void AudacityProject::OnOpen(wxEvent & event)
 {
-   wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
-
-   wxString fileName = wxFileSelector(_("Select an audio file..."),
-                                      path,     // Path
-                                      "",       // Name
-                                      "",       // Extension
-                                      _("All files (*.*)|*.*|"
-                                        "Audacity projects (*.aup)|*.aup|"
-                                        "WAV files (*.wav)|*.wav|"
-                                        "AIFF files (*.aif)|*.aif|"
-                                        "AU files (*.au)|*.au|"
-                                        "IRCAM files (*.snd)|*.snd|"
-                                        "MP3 files (*.mp3)|*.mp3"),
-                                      0,        // Flags
-                                      this);    // Parent
-
-   if (fileName != "") {
-      gPrefs->Write("/DefaultOpenPath", wxPathOnly(fileName));
-
-      // Make sure it isn't already open
-      int numProjects = gAudacityProjects.Count();
-      for (int i = 0; i < numProjects; i++)
-         if (gAudacityProjects[i]->mFileName == fileName) {
-            wxMessageBox
-                ("That project is already open in another window.");
-            return;
-         }
-      // Open in a new window if this one is in use
-      if (mDirty || !mTracks->IsEmpty()) {
-         AudacityProject *project =
-             CreateNewAudacityProject(gParentWindow);
-         project->OpenFile(fileName);
-      } else
-         OpenFile(fileName);
-   }
+   ShowOpenDialog(this);
 }
 
 void AudacityProject::OnSave(wxEvent & event)
