@@ -324,7 +324,7 @@ pcm_init (SF_PRIVATE *psf)
 
 		} ;
 
-	psf->filelength = psf_get_filelen (psf->filedes) ;
+	psf->filelength = psf_get_filelen (psf) ;
 	psf->datalength = (psf->dataend) ? psf->dataend - psf->dataoffset :
 							psf->filelength - psf->dataoffset ;
 	psf->sf.frames  = psf->datalength / psf->blockwidth ;
@@ -344,7 +344,7 @@ pcm_read_sc2s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (signed char), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (signed char), readcount, psf) ;
 		sc2s_array ((signed char*) (psf->buffer), thisread, ptr + total) ;
 		total += thisread ;
 		len -= thisread ;
@@ -368,7 +368,7 @@ pcm_read_uc2s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (unsigned char), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (unsigned char), readcount, psf) ;
 		uc2s_array ((unsigned char*) (psf->buffer), thisread, ptr + total) ;
 		total += thisread ;
 		len -= thisread ;
@@ -387,7 +387,7 @@ static sf_count_t
 pcm_read_bes2s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 {	int		total ;
 
-	total = psf_fread (ptr, sizeof (short), len, psf->filedes) ;
+	total = psf_fread (ptr, sizeof (short), len, psf) ;
 	if (CPU_IS_LITTLE_ENDIAN)
 		endswap_short_array (ptr, len) ;
 
@@ -402,7 +402,7 @@ static sf_count_t
 pcm_read_les2s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 {	int		total ;
 
-	total = psf_fread (ptr, sizeof (short), len, psf->filedes) ;
+	total = psf_fread (ptr, sizeof (short), len, psf) ;
 	if (CPU_IS_BIG_ENDIAN)
 		endswap_short_array (ptr, len) ;
 
@@ -421,7 +421,7 @@ pcm_read_bet2s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf) ;
 		bet2s_array ((tribyte*) (psf->buffer), thisread, ptr + total) ;
 		total += thisread ;
 		len -= thisread ;
@@ -445,7 +445,7 @@ pcm_read_let2s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf) ;
 		let2s_array ((tribyte*) (psf->buffer), thisread, ptr + total) ;
 		total += thisread ;
 		len -= thisread ;
@@ -469,7 +469,7 @@ pcm_read_bei2s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (int), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (int), readcount, psf) ;
 		bei2s_array ((int*) (psf->buffer), thisread, ptr + total) ;
 		total += thisread ;
 		len -= thisread ;
@@ -493,7 +493,7 @@ pcm_read_lei2s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (int), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (int), readcount, psf) ;
 		lei2s_array ((int*) (psf->buffer), thisread, ptr + total) ;
 		total += thisread ;
 		len -= thisread ;
@@ -520,7 +520,7 @@ pcm_read_sc2i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (signed char), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (signed char), readcount, psf) ;
 		sc2i_array ((signed char*) (psf->buffer), thisread, ptr + total) ;
 		total += thisread ;
 		len -= thisread ;
@@ -544,7 +544,7 @@ pcm_read_uc2i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (unsigned char), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (unsigned char), readcount, psf) ;
 		uc2i_array ((unsigned char*) (psf->buffer), thisread, ptr + total) ;
 		total += thisread ;
 		len -= thisread ;
@@ -568,7 +568,7 @@ pcm_read_bes2i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (short), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (short), readcount, psf) ;
 		bes2i_array ((short*) (psf->buffer), thisread, ptr + total) ;
 		total += thisread ;
 		len -= thisread ;
@@ -592,7 +592,7 @@ pcm_read_les2i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (short), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (short), readcount, psf) ;
 		les2i_array ((short*) (psf->buffer), thisread, ptr + total) ;
 		total += thisread ;
 		len -= thisread ;
@@ -616,7 +616,7 @@ pcm_read_bet2i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf) ;
 		bet2i_array ((tribyte*) (psf->buffer), thisread, ptr + total) ;
 		total += thisread ;
 		len -= thisread ;
@@ -640,7 +640,7 @@ pcm_read_let2i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf) ;
 		let2i_array ((tribyte*) (psf->buffer), thisread, ptr + total) ;
 		total += thisread ;
 		len -= thisread ;
@@ -659,7 +659,7 @@ static sf_count_t
 pcm_read_bei2i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 {	int		total ;
 
-	total = psf_fread (ptr, sizeof (int), len, psf->filedes) ;
+	total = psf_fread (ptr, sizeof (int), len, psf) ;
 	if (CPU_IS_LITTLE_ENDIAN)
 		endswap_int_array	(ptr, len) ;
 
@@ -673,7 +673,7 @@ static sf_count_t
 pcm_read_lei2i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 {	int		total ;
 
-	total = psf_fread (ptr, sizeof (int), len, psf->filedes) ;
+	total = psf_fread (ptr, sizeof (int), len, psf) ;
 	if (CPU_IS_BIG_ENDIAN)
 		endswap_int_array	(ptr, len) ;
 
@@ -698,7 +698,7 @@ pcm_read_sc2f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (signed char), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (signed char), readcount, psf) ;
 		sc2f_array ((signed char*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -725,7 +725,7 @@ pcm_read_uc2f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (unsigned char), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (unsigned char), readcount, psf) ;
 		uc2f_array ((unsigned char*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -752,7 +752,7 @@ pcm_read_bes2f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (short), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (short), readcount, psf) ;
 		bes2f_array ((short*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -779,7 +779,7 @@ pcm_read_les2f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (short), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (short), readcount, psf) ;
 		les2f_array ((short*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -807,7 +807,7 @@ pcm_read_bet2f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf) ;
 		bet2f_array ((tribyte*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -835,7 +835,7 @@ pcm_read_let2f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf) ;
 		let2f_array ((tribyte*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -862,7 +862,7 @@ pcm_read_bei2f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (int), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (int), readcount, psf) ;
 		bei2f_array ((int*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -889,7 +889,7 @@ pcm_read_lei2f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (int), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (int), readcount, psf) ;
 		lei2f_array ((int*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -919,7 +919,7 @@ pcm_read_sc2d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (signed char), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (signed char), readcount, psf) ;
 		sc2d_array ((signed char*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -946,7 +946,7 @@ pcm_read_uc2d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (unsigned char), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (unsigned char), readcount, psf) ;
 		uc2d_array ((unsigned char*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -973,7 +973,7 @@ pcm_read_bes2d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (short), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (short), readcount, psf) ;
 		bes2d_array ((short*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -1000,7 +1000,7 @@ pcm_read_les2d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (short), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (short), readcount, psf) ;
 		les2d_array ((short*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -1027,7 +1027,7 @@ pcm_read_bet2d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf) ;
 		bet2d_array ((tribyte*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -1054,7 +1054,7 @@ pcm_read_let2d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, SIZEOF_TRIBYTE, readcount, psf) ;
 		let2d_array ((tribyte*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -1081,7 +1081,7 @@ pcm_read_bei2d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (int), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (int), readcount, psf) ;
 		bei2d_array ((int*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -1108,7 +1108,7 @@ pcm_read_lei2d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, sizeof (int), readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, sizeof (int), readcount, psf) ;
 		lei2d_array ((int*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		len -= thisread ;
@@ -1138,7 +1138,7 @@ pcm_write_s2sc	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		s2sc_array (ptr + total, (signed char*) (psf->buffer), writecount) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (signed char), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (signed char), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1162,7 +1162,7 @@ pcm_write_s2uc	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		s2uc_array (ptr + total, (unsigned char*) (psf->buffer), writecount) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (unsigned char), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (unsigned char), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1180,7 +1180,7 @@ static sf_count_t
 pcm_write_s2bes	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 {
 	if (CPU_IS_BIG_ENDIAN)
-		return psf_fwrite (ptr, sizeof (short), len, psf->filedes) ;
+		return psf_fwrite (ptr, sizeof (short), len, psf) ;
 	else
 	{	int			bufferlen, writecount, thiswrite ;
 		sf_count_t	total = 0 ;
@@ -1190,7 +1190,7 @@ pcm_write_s2bes	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 		while (len > 0)
 		{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 			endswap_short_copy ((short*) (psf->buffer), ptr + total, writecount) ;
-			thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf->filedes) ;
+			thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf) ;
 			total += thiswrite ;
 			len -= thiswrite ;
 			if (thiswrite < writecount)
@@ -1208,7 +1208,7 @@ static sf_count_t
 pcm_write_s2les	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 {
 	if (CPU_IS_LITTLE_ENDIAN)
-		return psf_fwrite (ptr, sizeof (short), len, psf->filedes) ;
+		return psf_fwrite (ptr, sizeof (short), len, psf) ;
 	else
 	{	int			bufferlen, writecount, thiswrite ;
 		sf_count_t	total = 0 ;
@@ -1218,7 +1218,7 @@ pcm_write_s2les	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 		while (len > 0)
 		{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 			endswap_short_copy ((short*) (psf->buffer), ptr + total, writecount) ;
-			thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf->filedes) ;
+			thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf) ;
 			total += thiswrite ;
 			len -= thiswrite ;
 			if (thiswrite < writecount)
@@ -1243,7 +1243,7 @@ pcm_write_s2bet	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		s2bet_array (ptr + total, (tribyte*) (psf->buffer), writecount) ;
-		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1267,7 +1267,7 @@ pcm_write_s2let	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		s2let_array (ptr + total, (tribyte*) (psf->buffer), writecount) ;
-		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1291,7 +1291,7 @@ pcm_write_s2bei	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		s2bei_array (ptr + total, (int*) (psf->buffer), writecount) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1315,7 +1315,7 @@ pcm_write_s2lei	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		s2lei_array (ptr + total, (int*) (psf->buffer), writecount) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1342,7 +1342,7 @@ pcm_write_i2sc	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		i2sc_array (ptr + total, (signed char*) (psf->buffer), writecount) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (signed char), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (signed char), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1366,7 +1366,7 @@ pcm_write_i2uc	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		i2uc_array (ptr + total, (unsigned char*) (psf->buffer), writecount) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (signed char), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (signed char), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1390,7 +1390,7 @@ pcm_write_i2bes	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		i2bes_array (ptr + total, (short*) (psf->buffer), writecount) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1414,7 +1414,7 @@ pcm_write_i2les	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		i2les_array (ptr + total, (short*) (psf->buffer), writecount) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1438,7 +1438,7 @@ pcm_write_i2bet	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		i2bet_array (ptr + total, (tribyte*) (psf->buffer), writecount) ;
-		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1462,7 +1462,7 @@ pcm_write_i2let	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		i2let_array (ptr + total, (tribyte*) (psf->buffer), writecount) ;
-		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1480,7 +1480,7 @@ static sf_count_t
 pcm_write_i2bei	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 {	
 	if (CPU_IS_BIG_ENDIAN)
-		return psf_fwrite (ptr, sizeof (int), len, psf->filedes) ;
+		return psf_fwrite (ptr, sizeof (int), len, psf) ;
 	else
 	{	int			bufferlen, writecount, thiswrite ;
 		sf_count_t	total = 0 ;
@@ -1490,7 +1490,7 @@ pcm_write_i2bei	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 		while (len > 0)
 		{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 			endswap_int_copy ((int*) (psf->buffer), ptr + total, writecount) ;
-			thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf->filedes) ;
+			thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf) ;
 			total += thiswrite ;
 			len -= thiswrite ;
 			if (thiswrite < writecount)
@@ -1509,7 +1509,7 @@ static sf_count_t
 pcm_write_i2lei	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 {	
 	if (CPU_IS_LITTLE_ENDIAN)
-		return psf_fwrite (ptr, sizeof (int), len, psf->filedes) ;
+		return psf_fwrite (ptr, sizeof (int), len, psf) ;
 	else
 	{	int			bufferlen, writecount, thiswrite ;
 		sf_count_t	total = 0 ;
@@ -1519,7 +1519,7 @@ pcm_write_i2lei	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 		while (len > 0)
 		{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 			endswap_int_copy ((int*) (psf->buffer), ptr + total, writecount) ;
-			thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf->filedes) ;
+			thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf) ;
 			total += thiswrite ;
 			len -= thiswrite ;
 			if (thiswrite < writecount)
@@ -1549,7 +1549,7 @@ pcm_write_f2sc	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		f2sc_array (ptr + total, (signed char*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (signed char), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (signed char), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1576,7 +1576,7 @@ pcm_write_f2uc	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		f2uc_array (ptr + total, (unsigned char*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (unsigned char), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (unsigned char), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1603,7 +1603,7 @@ pcm_write_f2bes	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		f2bes_array (ptr + total, (short*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1630,7 +1630,7 @@ pcm_write_f2les	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		f2les_array (ptr + total, (short*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1657,7 +1657,7 @@ pcm_write_f2let	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		f2let_array (ptr + total, (tribyte*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1685,7 +1685,7 @@ pcm_write_f2bet	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		f2bet_array (ptr + total, (tribyte*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1713,7 +1713,7 @@ pcm_write_f2bei	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		f2bei_array (ptr + total, (int*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1740,7 +1740,7 @@ pcm_write_f2lei	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		f2lei_array (ptr + total, (int*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1770,7 +1770,7 @@ pcm_write_d2sc	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		d2sc_array (ptr + total, (signed char*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (signed char), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (signed char), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1797,7 +1797,7 @@ pcm_write_d2uc	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		d2uc_array (ptr + total, (unsigned char*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (unsigned char), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (unsigned char), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1824,7 +1824,7 @@ pcm_write_d2bes	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		d2bes_array (ptr + total, (short*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1851,7 +1851,7 @@ pcm_write_d2les	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		d2les_array (ptr + total, (short*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (short), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1878,7 +1878,7 @@ pcm_write_d2let	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		d2let_array (ptr + total, (tribyte*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1905,7 +1905,7 @@ pcm_write_d2bet	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		d2bet_array (ptr + total, (tribyte*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, SIZEOF_TRIBYTE, writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1932,7 +1932,7 @@ pcm_write_d2bei	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		d2bei_array (ptr + total, (int*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)
@@ -1959,7 +1959,7 @@ pcm_write_d2lei	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		d2lei_array (ptr + total, (int*) (psf->buffer), writecount, normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, sizeof (int), writecount, psf) ;
 		total += thiswrite ;
 		len -= thiswrite ;
 		if (thiswrite < writecount)

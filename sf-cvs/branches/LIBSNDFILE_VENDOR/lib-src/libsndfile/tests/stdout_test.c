@@ -117,7 +117,7 @@ stdout_test	(char *str, int typemajor, int count)
 	SF_INFO		sfinfo ;
 	int			k, total, this_write ;
 	
-	fprintf (stderr, "    %-5s : writing %d frames to stdout  ... ", str, count) ;
+	fprintf (stderr, "    %-5s : writing %d frames to stdout  .... ", str, count) ;
 	
 	sfinfo.samplerate  = 44100 ;
 	sfinfo.format 	   = (typemajor | SF_FORMAT_PCM_16) ;
@@ -130,7 +130,7 @@ stdout_test	(char *str, int typemajor, int count)
 		
 	if (! (file = sf_open ("-", SFM_WRITE, &sfinfo)))
 	{	fprintf (stderr, "sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 

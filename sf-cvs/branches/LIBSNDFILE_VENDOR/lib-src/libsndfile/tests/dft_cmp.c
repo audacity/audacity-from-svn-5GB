@@ -17,6 +17,7 @@
 */
 
 #include	<stdio.h>
+#include	<stdlib.h>
 #include	<math.h>
 
 #include	"dft_cmp.h"
@@ -118,6 +119,9 @@ calc_max_spectral_difference (double *orig, double *test)
 		if (max_diff < fabs (orig [k] - test [k]))
 			max_diff = fabs (orig [k] - test [k]) ;
 		} ;
+
+	if (max_diff < 1e-25)
+		return -500.0 ;
 
 	return 20.0 * log10 (max_diff / orig_max) ;
 } /* calc_max_spectral_difference */

@@ -108,7 +108,13 @@ nist_open	(SF_PRIVATE *psf)
 /*------------------------------------------------------------------------------
 */
 
-static int 	
+static char bad_header [] = 
+{	'N', 'I', 'S', 'T', '_', '1', 'A', 0x0d, 0x0a, 
+	' ', ' ', ' ', '1', '0', '2', '4', 0x0d, 0x0a,
+	0
+} ;
+
+	static int 	
 nist_read_header (SF_PRIVATE *psf)
 {	char	*psf_header ;
 	int		bitwidth = 0, bytes = 0, count, encoding ;
@@ -135,13 +141,15 @@ nist_read_header (SF_PRIVATE *psf)
 		cptr [0] = 0 ;
 		} ;
 
-	psf_log_printf (psf, psf_header) ;
+	psf_log_printf (psf, "%s", psf_header) ;
 	
+	if (strstr (psf_header, bad_header) == psf_header)
+		return SFE_NIST_CRLF_CONVERISON ;
+
 	/* Make sure its a NIST file. */
 	if (strstr (psf_header, "NIST_1A\n   1024\n") != psf_header)
-	{	printf ("Not a NIST file.\n") ;
-		puts (psf_header) ;
-		exit (1) ;
+	{	psf_log_printf (psf, "Not a NIST file.\n") ;
+		return SFE_NIST_BAD_HEADER ;
 		} ;
 
 	/* Determine sample encoding, start by assuming PCM. */		
@@ -216,7 +224,7 @@ nist_read_header (SF_PRIVATE *psf)
 
 	psf->close = nist_close ;
 
-	psf_fseek (psf->filedes, psf->dataoffset, SEEK_SET) ;
+	psf_fseek (psf, psf->dataoffset, SEEK_SET) ;
 
 	if (encoding == SF_FORMAT_PCM_U8)
 	{	switch (psf->bytewidth)
@@ -255,8 +263,8 @@ nist_close	(SF_PRIVATE  *psf)
 		**  re-write correct values for the datasize header element.
 		*/
 
-		psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf->filedes) ;
+		psf_fseek (psf, 0, SEEK_END) ;
+		psf->filelength = psf_ftell (psf) ;
 
 		psf->dataoffset = NIST_HEADER_LENGTH ;
 		psf->datalength = psf->filelength - psf->dataoffset ;
@@ -278,7 +286,7 @@ nist_write_header (SF_PRIVATE  *psf, int calc_length)
 	long		samples ;
 	sf_count_t	current ;
 
-	current = psf_ftell (psf->filedes) ;
+	current = psf_ftell (psf) ;
 
 	/* Prevent compiler warning. */
 	calc_length = calc_length ;
@@ -294,7 +302,7 @@ nist_write_header (SF_PRIVATE  *psf, int calc_length)
 	memset (psf->header, 0, sizeof (psf->header)) ;
 	psf->headindex = 0 ;
 		
-	psf_fseek (psf->filedes, 0, SEEK_SET) ;
+	psf_fseek (psf, 0, SEEK_SET) ;
 
 	psf_asciiheader_printf (psf, "NIST_1A\n   1024\n") ;
 	psf_asciiheader_printf (psf, "channel_count -i %d\n", psf->sf.channels) ;
@@ -339,12 +347,15 @@ nist_write_header (SF_PRIVATE  *psf, int calc_length)
 	/* Zero fill to dataoffset. */
 	psf_binheader_writef (psf, "z", NIST_HEADER_LENGTH - psf->headindex) ;
 
-	psf_fwrite (psf->header, psf->headindex, 1, psf->filedes) ;
+	psf_fwrite (psf->header, psf->headindex, 1, psf) ;
+
+	if (psf->error)
+		return psf->error ;
 
 	if (current > 0)
-		psf_fseek (psf->filedes, current, SEEK_SET) ;
+		psf_fseek (psf, current, SEEK_SET) ;
 		
-	return 0 ;		
+	return psf->error ;		
 } /* nist_write_header */
 
 

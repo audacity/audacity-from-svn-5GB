@@ -136,11 +136,11 @@ mat4_close	(SF_PRIVATE  *psf)
 		 *  re-write correct values for the datasize header element.
 		 */
 
-		psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf->filedes) ;
+		psf_fseek (psf, 0, SEEK_END) ;
+		psf->filelength = psf_ftell (psf) ;
 
 		psf->datalength = psf->filelength - psf->dataoffset ;
-		psf_fseek (psf->filedes, 0, SEEK_SET) ;
+		psf_fseek (psf, 0, SEEK_SET) ;
 
 		psf->sf.frames = psf->datalength / psf->blockwidth ;
 		mat4_write_header (psf, SF_FALSE) ;
@@ -162,12 +162,12 @@ mat4_write_header (SF_PRIVATE *psf, int calc_length)
 	int			encoding ;
 	double		samplerate ;
 
-	current = psf_ftell (psf->filedes) ;
+	current = psf_ftell (psf) ;
 
 	if (calc_length)
-	{	psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf->filedes) ;
-		psf_fseek (psf->filedes, 0, SEEK_SET) ;
+	{	psf_fseek (psf, 0, SEEK_END) ;
+		psf->filelength = psf_ftell (psf) ;
+		psf_fseek (psf, 0, SEEK_SET) ;
 
 		psf->datalength = psf->filelength - psf->dataoffset ;
 		if (psf->dataend)
@@ -184,7 +184,7 @@ mat4_write_header (SF_PRIVATE *psf, int calc_length)
 	/* Reset the current header length to zero. */
 	psf->header [0] = 0 ;
 	psf->headindex = 0 ;
-	psf_fseek (psf->filedes, 0, SEEK_SET) ;
+	psf_fseek (psf, 0, SEEK_SET) ;
 
 	/* Need sample rate as a double for writing to the header. */
 	samplerate = psf->sf.samplerate ;
@@ -205,14 +205,17 @@ mat4_write_header (SF_PRIVATE *psf, int calc_length)
 		return SFE_BAD_OPEN_FORMAT ;
 
 	/* Header construction complete so write it out. */
-	psf_fwrite (psf->header, psf->headindex, 1, psf->filedes) ;
+	psf_fwrite (psf->header, psf->headindex, 1, psf) ;
+
+	if (psf->error)
+		return psf->error ;
 
 	psf->dataoffset = psf->headindex ;
 
 	if (current > 0)
-		psf_fseek (psf->filedes, current, SEEK_SET) ;
+		psf_fseek (psf, current, SEEK_SET) ;
 
-	return 0 ;
+	return psf->error ;
 } /* mat4_write_header */
 
 static int
@@ -281,7 +284,7 @@ mat4_read_header (SF_PRIVATE *psf)
 
 	psf_log_printf (psf, " Name  : %s\n", name) ;
 
-	psf->dataoffset = psf_ftell (psf->filedes) ;
+	psf->dataoffset = psf_ftell (psf) ;
 
 	if (rows == 0 && cols == 0)
 	{	psf_log_printf (psf, "*** Error : zero channel count.\n") ;

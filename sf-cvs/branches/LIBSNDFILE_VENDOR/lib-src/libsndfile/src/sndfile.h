@@ -79,6 +79,7 @@ enum
 	SF_FORMAT_MS_ADPCM		= 0x0013,		/* Microsoft ADPCM. */
 
 	SF_FORMAT_GSM610		= 0x0020,		/* GSM 6.10 encoding. */
+	SF_FORMAT_VOX_ADPCM		= 0x0021,		/* OKI / Dialogix ADPCM */
 
 	SF_FORMAT_G721_32		= 0x0030,		/* 32kbs G721 ADPCM encoding. */
 	SF_FORMAT_G723_24		= 0x0031,		/* 24kbs G723 ADPCM encoding. */
@@ -88,6 +89,7 @@ enum
 	SF_FORMAT_DWVW_16		= 0x0041, 		/* 16 bit Delta Width Variable Word encoding. */
 	SF_FORMAT_DWVW_24		= 0x0042, 		/* 24 bit Delta Width Variable Word encoding. */
 	SF_FORMAT_DWVW_N		= 0x0043, 		/* N bit Delta Width Variable Word encoding. */
+	
 
 	/* Endian-ness options. */
 
@@ -119,6 +121,8 @@ enum
 	SFC_GET_SIMPLE_FORMAT_COUNT		= 0x1020,
 	SFC_GET_SIMPLE_FORMAT			= 0x1021,
 
+	SFC_GET_FORMAT_INFO				= 0x1028,
+
 	SFC_GET_FORMAT_MAJOR_COUNT		= 0x1030,
 	SFC_GET_FORMAT_MAJOR			= 0x1031,
 	SFC_GET_FORMAT_SUBTYPE_COUNT	= 0x1032,
@@ -138,9 +142,12 @@ enum
 	SFC_SET_ADD_DITHER_ON_READ		= 0x1071,
 	
 	SFC_FILE_TRUNCATE				= 0x1080,
-	
+
+	SFC_SET_RAW_START_OFFSET		= 0x1090,
+
 	/* Following commands for testing only. */
-	SFC_TEST_ADD_TRAILING_DATA		= 0x6000
+	SFC_TEST_ADD_TRAILING_DATA		= 0x6000,
+	SFC_TEST_IEEE_FLOAT_REPLACE		= 0x6001
 } ;
 
 enum
@@ -152,6 +159,18 @@ enum
 	SFM_READ	= 0x10,
 	SFM_WRITE	= 0x20,
 	SFM_RDWR	= 0x30
+} ;
+
+/* Pubic error values. These are guaranteed to remain unchanged for the duration
+** of the library major version number. 
+** There are also a large number of private error numbers which are internal to
+** the library which can change at any time.
+*/
+
+enum
+{	SF_ERR_NO_ERROR     		= 0,
+	SF_ERR_UNRECOGNISED_FORMAT	= 1,
+	SF_ERR_SYSTEM				= 2
 } ;
 
 /* A SNDFILE* pointer can be passed around much like stdio.h's FILE* pointer. */
@@ -196,31 +215,38 @@ typedef struct
 /* Open the specified file for read, write or both. On error, this will
 ** return a NULL pointer. To find the error number, pass a NULL SNDFILE
 ** to sf_perror () or sf_error_str ().
+** All calls to sf_open() should be matched with a call to sf_close().
 */
 
 SNDFILE* 	sf_open		(const char *path, int mode, SF_INFO *sfinfo) ;
 
-/* sf_error () returns TRUE if an error has been recorded for the given SNDFILE. */
+/* sf_error () returns a error number which can be translated to a text 
+** string using sf_error_number().
+*/
 
 int		sf_error		(SNDFILE *sndfile) ;
 
-/* sf_perror () prints the current error string to stderr. */
-
-int		sf_perror		(SNDFILE *sndfile) ;
-
-/* sf_error_str () returns the current error message to the caller in the
-** string buffer provided.
+/* sf_strerror () returns to the caller a pointer to the current error message for 
+** the given SNDFILE.
 */
 
-int		sf_error_str	(SNDFILE *sndfile, char* str, size_t len) ;
+const char* sf_strerror (SNDFILE *sndfile) ;
 
 /* sf_error_number () allows the retrieval of the error string for each internal
-** error number. This is provided mainly for testing purposes and most users of
-** this library will not need to use it.
+** error number. 
 **
 */
 
-int		sf_error_number	(int errnum, char *str, size_t maxlen) ;
+const char*	sf_error_number	(int errnum) ;
+
+/* The following three error functions are deprecated but they will remain in the
+** library for the forseeable future. The function sf_strerror() should be used
+** in their place.
+*/
+
+int		sf_perror		(SNDFILE *sndfile) ;
+int		sf_error_str	(SNDFILE *sndfile, char* str, size_t len) ;
+
 
 /* Return TRUE if fields of the SF_INFO struct are a valid combination of values. */
 
@@ -237,9 +263,8 @@ int		sf_format_check	(const SF_INFO *info) ;
 ** read / write pointer to the first data sample.
 ** On success sf_seek returns the current position in (multi-channel)
 ** samples from the start of the file.
-** The sf_read_seek() and sf_write_seek functions only work on files
-** openned in read/write mode allowing the current read and write
-** positions to be manipulated separately.
+** Please see the libsndfile documentation for moving the read pointer
+** separately from the write pointer on files open in mode SFM_RDWR.
 ** On error all of these functions return -1.
 */
 
@@ -290,7 +315,10 @@ sf_count_t	sf_write_float	(SNDFILE *sndfile, float *ptr, sf_count_t items) ;
 sf_count_t	sf_read_double	(SNDFILE *sndfile, double *ptr, sf_count_t items) ;
 sf_count_t	sf_write_double	(SNDFILE *sndfile, double *ptr, sf_count_t items) ;
 
-/* Close the SNDFILE. Returns 0 on success, or an error number. */
+/* Close the SNDFILE and clean up all memory allocations associated with this
+** file. 
+** Returns 0 on success, or an error number. 
+*/
 
 int		sf_close		(SNDFILE *sndfile) ;
 

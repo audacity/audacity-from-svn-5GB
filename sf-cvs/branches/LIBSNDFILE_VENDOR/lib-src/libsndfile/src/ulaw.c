@@ -64,7 +64,7 @@ ulaw_init (SF_PRIVATE *psf)
 	psf->bytewidth  = 1 ;
 	psf->blockwidth = psf->sf.channels ;
 
-	psf->filelength = psf_get_filelen (psf->filedes) ;
+	psf->filelength = psf_get_filelen (psf) ;
 	psf->datalength = (psf->dataend) ? psf->dataend - psf->dataoffset : 
 							psf->filelength - psf->dataoffset ;
 	psf->sf.frames = psf->datalength / psf->blockwidth ;
@@ -81,7 +81,7 @@ ulaw_read_ulaw2s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 	
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, 1, readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, 1, readcount, psf) ;
 		ulaw2s_array ((unsigned char*) (psf->buffer), thisread, ptr + total) ;
 		total += thisread ;
 		if (thisread < readcount)
@@ -105,7 +105,7 @@ ulaw_read_ulaw2i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 	
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, 1, readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, 1, readcount, psf) ;
 		ulaw2i_array ((unsigned char*) (psf->buffer), thisread, ptr + total) ;
 		total += thisread ;
 		if (thisread < readcount)
@@ -132,7 +132,7 @@ ulaw_read_ulaw2f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, 1, readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, 1, readcount, psf) ;
 		ulaw2f_array ((unsigned char*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		if (thisread < readcount)
@@ -158,7 +158,7 @@ ulaw_read_ulaw2d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
-		thisread = psf_fread (psf->buffer, 1, readcount, psf->filedes) ;
+		thisread = psf_fread (psf->buffer, 1, readcount, psf) ;
 		ulaw2d_array ((unsigned char*) (psf->buffer), thisread, ptr + total, normfact) ;
 		total += thisread ;
 		if (thisread < readcount)
@@ -186,7 +186,7 @@ ulaw_write_s2ulaw	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		s2ulaw_array (ptr + total, writecount, (unsigned char*) (psf->buffer)) ;
-		thiswrite = psf_fwrite (psf->buffer, 1, writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, 1, writecount, psf) ;
 		total += thiswrite ;
 		if (thiswrite < writecount)
 			break ;
@@ -210,7 +210,7 @@ ulaw_write_i2ulaw	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		i2ulaw_array (ptr + total, writecount, (unsigned char*) (psf->buffer)) ;
-		thiswrite = psf_fwrite (psf->buffer, 1, writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, 1, writecount, psf) ;
 		total += thiswrite ;
 		if (thiswrite < writecount)
 			break ;
@@ -237,7 +237,7 @@ ulaw_write_f2ulaw	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		f2ulaw_array (ptr + total, writecount, (unsigned char*) (psf->buffer), normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, 1, writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, 1, writecount, psf) ;
 		total += thiswrite ;
 		if (thiswrite < writecount)
 			break ;
@@ -264,7 +264,7 @@ ulaw_write_d2ulaw	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		d2ulaw_array (ptr + total, writecount, (unsigned char*) (psf->buffer), normfact) ;
-		thiswrite = psf_fwrite (psf->buffer, 1, writecount, psf->filedes) ;
+		thiswrite = psf_fwrite (psf->buffer, 1, writecount, psf) ;
 		total += thiswrite ;
 		if (thiswrite < writecount)
 			break ;

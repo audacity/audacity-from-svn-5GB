@@ -286,7 +286,7 @@ AC_DEFUN([AC_C99_FUNC_LRINT],
   ac_cv_c99_lrint,
 [
 lrint_save_CFLAGS=$CFLAGS
-CFLAGS="-O2"
+CFLAGS="-O2 -lm"
 AC_TRY_LINK([
 #define		_ISOC9X_SOURCE	1
 #define 	_ISOC99_SOURCE	1
@@ -304,7 +304,7 @@ if test "$ac_cv_c99_lrint" = yes; then
   AC_DEFINE(HAVE_LRINT, 1,
             [Define if you have C99's lrint function.])
 fi
-])# AC_C99_LRINT
+])# AC_C99_FUNC_LRINT
 dnl @synopsis AC_C99_FUNC_LRINTF
 dnl
 dnl Check whether C99's lrintf function is available.
@@ -322,7 +322,7 @@ AC_DEFUN([AC_C99_FUNC_LRINTF],
   ac_cv_c99_lrintf,
 [
 lrintf_save_CFLAGS=$CFLAGS
-CFLAGS="-O2"
+CFLAGS="-O2 -lm"
 AC_TRY_LINK([
 #define		_ISOC9X_SOURCE	1
 #define 	_ISOC99_SOURCE	1
@@ -340,4 +340,4 @@ if test "$ac_cv_c99_lrintf" = yes; then
   AC_DEFINE(HAVE_LRINTF, 1,
             [Define if you have C99's lrintf function.])
 fi
-])# AC_C99_LRINTF
+])# AC_C99_FUNC_LRINTF

@@ -34,7 +34,7 @@ Libraries, include files, etc you can use to develop libsndfile applications.
 %build
 ./configure --prefix=%{prefix}
 make
-
+88
 %install
 if [ -d $RPM_BUILD_ROOT ]; then rm -rf $RPM_BUILD_ROOT; fi
 mkdir -p $RPM_BUILD_ROOT
@@ -54,7 +54,10 @@ if [ -d $RPM_BUILD_ROOT ]; then rm -rf $RPM_BUILD_ROOT; fi
 %{prefix}/lib/libsndfile.la
 %{prefix}/lib/libsndfile.so
 %{prefix}/include/sndfile.h
+%{prefix}/lib/pkgconfig/sndfile.pc
 
 %changelog
 * Thu Jul 6 2000 Josh Green <jgreen@users.sourceforge.net>
 - Created libsndfile.spec.in
+* Mon Oct 21 2002 Erik de Castro Lopo <erikd@zip.com.au>
+- Force installation of sndfile.pc file.

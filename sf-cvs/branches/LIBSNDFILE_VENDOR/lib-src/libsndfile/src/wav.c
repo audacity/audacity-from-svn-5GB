@@ -56,7 +56,6 @@
 #define DISP_MARKER	(MAKE_MARKER ('D', 'I', 'S', 'P'))
 #define acid_MARKER	(MAKE_MARKER ('a', 'c', 'i', 'd'))
 #define PAD_MARKER	(MAKE_MARKER ('P', 'A', 'D', ' '))
-#define adtl_MARKER	(MAKE_MARKER ('a', 'd', 't', 'l'))
 #define afsp_MARKER	(MAKE_MARKER ('a', 'f', 's', 'p'))
 #define clm_MARKER	(MAKE_MARKER ('c', 'l', 'm', ' '))
 
@@ -131,7 +130,7 @@ wav_open	(SF_PRIVATE *psf)
 
 		if (subformat == SF_FORMAT_IMA_ADPCM || subformat == SF_FORMAT_MS_ADPCM)
 		{	blockalign = wav_w64_srate2blocksize (psf->sf.samplerate * psf->sf.channels) ;
-			framesperblock = -1 ;
+			framesperblock = -1 ; /* Corrected later. */
 			} ;
 
 		/* By default, add the peak chunk to floating point files. Default behaviour
@@ -150,9 +149,6 @@ wav_open	(SF_PRIVATE *psf)
 
 	switch (subformat)
 	{	case SF_FORMAT_PCM_U8 :
-					error = pcm_init (psf) ;
-					break ;
-
 		case SF_FORMAT_PCM_16 :
 		case SF_FORMAT_PCM_24 :
 		case SF_FORMAT_PCM_32 :
@@ -257,7 +253,7 @@ wav_read_header	(SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 					psf_binheader_readf (psf, "e4", &dword) ;
 
 					psf->datalength = dword ;
-					psf->dataoffset = psf_ftell (psf->filedes) ;
+					psf->dataoffset = psf_ftell (psf) ;
 
 					if (psf->datalength > psf->filelength - psf->dataoffset)
 					{	psf_log_printf (psf, "data : %D (should be %D)\n", psf->datalength, psf->filelength - psf->dataoffset) ;
@@ -279,9 +275,9 @@ wav_read_header	(SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 						break ;
 
 					/* Seek past data and continue reading header. */
-					psf_fseek (psf->filedes, psf->datalength, SEEK_CUR) ;
+					psf_fseek (psf, psf->datalength, SEEK_CUR) ;
 
-					dword = psf_ftell (psf->filedes) ;
+					dword = psf_ftell (psf) ;
 					if (dword != (sf_count_t) (psf->dataoffset + psf->datalength))
 						psf_log_printf (psf, "*** psf_fseek past end error ***\n", dword, psf->dataoffset + psf->datalength) ;
 					break ;
@@ -346,7 +342,7 @@ wav_read_header	(SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 						psf_log_printf (psf, cptr) ;
 						};
 
-					psf->has_peak = SF_TRUE ;
+					psf->has_peak = SF_TRUE ; /* Found PEAK chunk. */
 					break ;
 
 			case cue_MARKER :
@@ -412,7 +408,7 @@ wav_read_header	(SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 						psf_binheader_readf (psf, "j", dword);
 						break ;
 						} ;
-					if (psf_ftell (psf->filedes) & 0x03)
+					if (psf_ftell (psf) & 0x03)
 					{	psf_log_printf (psf, "  Unknown chunk marker at position %d. Resynching.\n", dword - 4) ;
 						psf_binheader_readf (psf, "j", -3) ;
 						break ;
@@ -425,13 +421,7 @@ wav_read_header	(SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 		if (! psf->sf.seekable && (parsestage & HAVE_data))
 			break ;
 
-		if (psf_ferror (psf->filedes))
-		{	psf_log_printf (psf, "*** Error on file handle. ***\n", marker) ;
-			psf_fclearerr (psf->filedes) ;
-			break ;
-			} ;
-
-		if (psf_ftell (psf->filedes) >= psf->filelength - sizeof (dword))
+		if (psf_ftell (psf) >= psf->filelength - sizeof (dword))
 			break ;
 
 		if (psf->logindex >= sizeof (psf->logbuffer) - 2)
@@ -443,7 +433,7 @@ wav_read_header	(SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 
 	psf->endian = SF_ENDIAN_LITTLE ;		/* All WAV files are little endian. */
 
-	psf_fseek (psf->filedes, psf->dataoffset, SEEK_SET) ;
+	psf_fseek (psf, psf->dataoffset, SEEK_SET) ;
 
 	/*
 	** Check for 'wvpk' at the start of the DATA section. Not able to
@@ -454,7 +444,7 @@ wav_read_header	(SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 		return SFE_WAV_WVPK_DATA ;
 
 	/* Seek to start of DATA section. */
-	psf_fseek (psf->filedes, psf->dataoffset, SEEK_SET) ;
+	psf_fseek (psf, psf->dataoffset, SEEK_SET) ;
 
 	psf->close = wav_close ;
 
@@ -513,12 +503,12 @@ wav_write_header (SF_PRIVATE *psf, int calc_length)
 {	sf_count_t	current ;
 	int 		fmt_size, k, subformat, add_fact_chunk = SF_FALSE ;
 
-	current = psf_ftell (psf->filedes) ;
+	current = psf_ftell (psf) ;
 
 	if (calc_length)
-	{	psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf->filedes) ;
-		psf_fseek (psf->filedes, 0, SEEK_SET) ;
+	{	psf_fseek (psf, 0, SEEK_END) ;
+		psf->filelength = psf_ftell (psf) ;
+		psf_fseek (psf, 0, SEEK_SET) ;
 
 		psf->datalength = psf->filelength - psf->dataoffset ;
 		if (psf->dataend)
@@ -530,7 +520,7 @@ wav_write_header (SF_PRIVATE *psf, int calc_length)
 	/* Reset the current header length to zero. */
 	psf->header [0] = 0 ;
 	psf->headindex = 0 ;
-	psf_fseek (psf->filedes, 0, SEEK_SET) ;
+	psf_fseek (psf, 0, SEEK_SET) ;
 
 	/* RIFF marker, length, WAVE and 'fmt ' markers. */
 	if (psf->filelength < 8)
@@ -683,14 +673,16 @@ wav_write_header (SF_PRIVATE *psf, int calc_length)
 		} ;
 
 	psf_binheader_writef (psf, "etm8", data_MARKER, psf->datalength) ;
-	psf_fwrite (psf->header, psf->headindex, 1, psf->filedes) ;
+	psf_fwrite (psf->header, psf->headindex, 1, psf) ;
+	if (psf->error)
+		return psf->error ;
 
 	psf->dataoffset = psf->headindex ;
 
 	if (current > 0)
-		psf_fseek (psf->filedes, current, SEEK_SET) ;
+		psf_fseek (psf, current, SEEK_SET) ;
 
-	return 0 ;
+	return psf->error ;
 } /* wav_write_header */
 
 static int
@@ -700,7 +692,7 @@ wav_write_tailer (SF_PRIVATE *psf)
 	/* Reset the current header buffer length to zero. */
 	psf->header [0] = 0 ;
 	psf->headindex = 0 ;
-	psf_fseek (psf->filedes, 0, SEEK_END) ;
+	psf_fseek (psf, 0, SEEK_END) ;
 
 	/* Add a PEAK cunk if requested. */
 	if (psf->has_peak && psf->peak_loc == SF_PEAK_END)
@@ -722,7 +714,7 @@ wav_write_tailer (SF_PRIVATE *psf)
 
 	/* Write the tailer. */
 	if (psf->headindex > 0)
-		psf_fwrite (psf->header, psf->headindex, 1, psf->filedes) ;
+		psf_fwrite (psf->header, psf->headindex, 1, psf) ;
 
 	return 0 ;
 } /* wav_write_tailer */
@@ -734,13 +726,13 @@ wav_close (SF_PRIVATE  *psf)
 	{	/*  Now we know for certain the length of the file we can
 		 *  re-write correct values for the RIFF and data chunks.
 		 */
-		psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->dataend = psf_ftell (psf->filedes) ;
+		psf_fseek (psf, 0, SEEK_END) ;
+		psf->dataend = psf_ftell (psf) ;
 		wav_write_tailer (psf) ;
 
-		psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf->filedes) ;
-		psf_fseek (psf->filedes, 0, SEEK_SET) ;
+		psf_fseek (psf, 0, SEEK_END) ;
+		psf->filelength = psf_ftell (psf) ;
+		psf_fseek (psf, 0, SEEK_SET) ;
 
 		psf->datalength = psf->filelength - psf->dataoffset - (psf->filelength - psf->dataend) ;
  		psf->sf.frames = psf->datalength / (psf->bytewidth * psf->sf.channels) ;
@@ -774,7 +766,7 @@ wav_subchunk_parse (SF_PRIVATE *psf, int chunk)
 {	sf_count_t	current_pos ;
 	int 		dword, bytesread, length ;
 
-	current_pos = psf_fseek (psf->filedes, 0, SEEK_CUR) ;
+	current_pos = psf_fseek (psf, 0, SEEK_CUR) ;
 
 	bytesread = psf_binheader_readf (psf, "e4", &length);
 
@@ -825,12 +817,28 @@ wav_subchunk_parse (SF_PRIVATE *psf, int chunk)
 					psf_log_printf (psf, "    %M : %s\n", chunk, psf->buffer) ;
 					break ;
 
-			case DISP_MARKER :
 			case labl_MARKER :
+					{	int mark_id ;
+					
+						bytesread += psf_binheader_readf (psf, "e44", &dword, &mark_id);
+						dword -= 4 ;
+						dword += (dword & 1) ;
+						if (dword > SIGNED_SIZEOF (psf->buffer))
+						{	psf_log_printf (psf, "  *** %M : %d (too big)\n", chunk, dword) ;
+							return SFE_INTERNAL ;
+							} ;
+						psf_binheader_readf (psf, "b", psf->buffer, dword) ;
+						bytesread += dword ;
+						psf->buffer [dword - 1] = 0 ;
+						psf_log_printf (psf, "    %M : %d : %s\n", chunk, mark_id, psf->buffer) ;
+						} ;
+					break ;
+
+
+			case DISP_MARKER :
 			case ltxt_MARKER :
 			case note_MARKER :
-					psf_binheader_readf (psf, "e4", &dword);
-					bytesread += sizeof (dword) ;
+					bytesread += psf_binheader_readf (psf, "e4", &dword);
 					dword += (dword & 1) ;
 					psf_binheader_readf (psf, "j", dword) ;
 					bytesread += dword ;
@@ -857,12 +865,13 @@ wav_subchunk_parse (SF_PRIVATE *psf, int chunk)
 
 static int
 wav_read_smpl_chunk (SF_PRIVATE *psf, unsigned int chunklen)
-{	unsigned int bytesread = 0, dword ;
+{	unsigned int bytesread = 0, dword, sampler_data, loop_count ;
+	int k ;
 
 	chunklen += (chunklen & 1) ;
 
 	bytesread += psf_binheader_readf (psf, "e4", &dword);
-	psf_log_printf (psf, "  Manufacturer : %u\n", dword) ;
+	psf_log_printf (psf, "  Manufacturer : %X\n", dword) ;
 
 	bytesread += psf_binheader_readf (psf, "e4", &dword);
 	psf_log_printf (psf, "  Product      : %u\n", dword) ;
@@ -874,9 +883,13 @@ wav_read_smpl_chunk (SF_PRIVATE *psf, unsigned int chunklen)
 	psf_log_printf (psf, "  Midi Note    : %u\n", dword) ;
 
 	bytesread += psf_binheader_readf (psf, "e4", &dword);
-	LSF_SNPRINTF ((char*) psf->buffer, sizeof (psf->buffer), "%f",
-			(1.0 * 0x80000000) / ((unsigned int) dword)) ;
-	psf_log_printf (psf, "  Pitch Fract. : %s\n", psf->buffer) ;
+	if (dword != 0)
+	{	LSF_SNPRINTF ((char*) psf->buffer, sizeof (psf->buffer), "%f",
+				(1.0 * 0x80000000) / ((unsigned int) dword)) ;
+		psf_log_printf (psf, "  Pitch Fract. : %s\n", psf->buffer) ;
+		}
+	else
+		psf_log_printf (psf, "  Pitch Fract. : 0\n") ;
 
 	bytesread += psf_binheader_readf (psf, "e4", &dword);
 	psf_log_printf (psf, "  SMPTE Format : %u\n", dword) ;
@@ -886,17 +899,15 @@ wav_read_smpl_chunk (SF_PRIVATE *psf, unsigned int chunklen)
 		(dword >> 24) & 0x7F, (dword >> 16) & 0x7F, (dword >> 8) & 0x7F, dword & 0x7F) ;
 	psf_log_printf (psf, "  SMPTE Offset : %s\n", psf->buffer) ;
 
-	bytesread += psf_binheader_readf (psf, "e4", &dword);
-	psf_log_printf (psf, "  Loop Count   : %u\n", dword) ;
+	bytesread += psf_binheader_readf (psf, "e4", &loop_count);
+	psf_log_printf (psf, "  Loop Count   : %u\n", loop_count) ;
 
-	/* This is probably wrong. Sampler Data hols the number of data bytes after
-	** The CUE chunks which is not actually CUE data. Need to find an example
-	** of these files and then fix this.
+	/* Sampler Data holds the number of data bytes after the CUE chunks which 
+	** is not actually CUE data. Display value after CUE data.
 	*/
-	bytesread += psf_binheader_readf (psf, "e4", &dword);
-	psf_log_printf (psf, "  Sampler Data : %u\n", dword) ;
+	bytesread += psf_binheader_readf (psf, "e4", &sampler_data);
 
-	while (chunklen - bytesread >= 24)
+	while (loop_count > 0 && chunklen - bytesread >= 24)
 	{
 		bytesread += psf_binheader_readf (psf, "e4", &dword);
 		psf_log_printf (psf, "    Cue ID : %2u", dword) ;
@@ -915,11 +926,36 @@ wav_read_smpl_chunk (SF_PRIVATE *psf, unsigned int chunklen)
 
 		bytesread += psf_binheader_readf (psf, "e4", &dword);
 		psf_log_printf (psf, "  Count : %5u\n", dword) ;
+		
+		loop_count -- ;
 		} ;
+		
+	if (chunklen - bytesread == 0)
+	{	if (sampler_data != 0)
+			psf_log_printf (psf, "  Sampler Data : %u (should be 0)\n", sampler_data) ;
+		else
+			psf_log_printf (psf, "  Sampler Data : %u\n", sampler_data) ;
+		}
+	else
+	{	if (sampler_data != chunklen - bytesread)
+		{	psf_log_printf (psf, "  Sampler Data : %u (should have been %u)\n", sampler_data, chunklen - bytesread) ;
+			sampler_data = chunklen - bytesread ;
+			}
+		else
+			psf_log_printf (psf, "  Sampler Data : %u\n", sampler_data) ;
 
-	if (chunklen - bytesread != 0)
-	{	psf_log_printf (psf, "*** %d bytes left in smpl chunk\n", chunklen - bytesread) ;
-		psf_binheader_readf (psf, "j", chunklen - bytesread) ;
+		psf_log_printf (psf, "      ") ;
+		for (k = 0 ; k < (int) sampler_data ; k++)
+		{	char ch ;
+	
+			if (k > 0 && (k % 20) == 0)
+				psf_log_printf (psf, "\n      ") ;
+
+			bytesread += psf_binheader_readf (psf, "1", &ch) ;
+			psf_log_printf (psf, "%02X ", ch & 0xFF) ;
+			} ;
+
+		psf_log_printf (psf, "\n") ;
 		} ;
 
 	return 0 ;

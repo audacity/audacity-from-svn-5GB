@@ -34,26 +34,25 @@
 #define		M_PI		3.14159265358979323846264338
 #endif
 
-static  void	dwvw_test (int format, int bit_width) ;
+static  void	dwvw_test (int format, int bit_width, char *filename) ;
 
 int
 main (void)
 {
-	dwvw_test (SF_FORMAT_RAW | SF_FORMAT_DWVW_12, 12) ;
-	dwvw_test (SF_FORMAT_RAW | SF_FORMAT_DWVW_16, 16) ;
-	dwvw_test (SF_FORMAT_RAW | SF_FORMAT_DWVW_24, 24) ;
+	dwvw_test (SF_FORMAT_RAW | SF_FORMAT_DWVW_12, 12, "dwvw12.raw") ;
+	dwvw_test (SF_FORMAT_RAW | SF_FORMAT_DWVW_16, 16, "dwvw16.raw") ;
+	dwvw_test (SF_FORMAT_RAW | SF_FORMAT_DWVW_24, 24, "dwvw24.raw") ;
 
 	return 0 ;
 } /* main */
 
 static  void
-dwvw_test (int format, int bit_width)
+dwvw_test (int format, int bit_width, char *filename)
 {	static	int		write_buf [BUFFER_SIZE] ;
 	static	int		read_buf  [BUFFER_SIZE] ;
 
 	SNDFILE	*file ;
 	SF_INFO sfinfo ;
-	char	*filename ;
 	double 	value ;
 	int		k, bit_mask ;
 	
@@ -62,21 +61,14 @@ dwvw_test (int format, int bit_width)
 	/* Only want to grab the top bit_width bits. */
 	bit_mask = (-1 << (32 - bit_width)) ;
 
-	filename = "test.raw" ;
-	
-	printf ("    dwvw_test : %d bits  ... ", bit_width) ;
-	fflush (stdout) ;
+	print_test_name ("dwvw_test", filename) ;
 
 	sfinfo.format      = format ;
 	sfinfo.samplerate  = 44100 ;
 	sfinfo.frames     = -1 ; /* Unknown! */
 	sfinfo.channels    = 1 ;
 	
-	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
-	{	printf ("sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
-		exit (1) ;
-		} ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
 		
 	/* Generate random.frames. */
 	k = 0 ;
@@ -91,11 +83,7 @@ dwvw_test (int format, int bit_width)
 	sf_write_int (file, write_buf, BUFFER_SIZE) ;
 	sf_close (file) ;
 	
-	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
-	{	printf ("sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
-		exit (1) ;
-		} ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
 		
 	if ((k = sf_read_int (file, read_buf, BUFFER_SIZE)) != BUFFER_SIZE)
 	{	printf ("Error (line %d) : Only read %d/%d.frames.\n", __LINE__, k, BUFFER_SIZE) ;
@@ -114,8 +102,8 @@ dwvw_test (int format, int bit_width)
 
 	sf_close (file) ;
 
-	printf ("ok\n") ;
 	unlink (filename) ;
+	printf ("ok\n") ;
 
 	return ;
 } /* dwvw_test */

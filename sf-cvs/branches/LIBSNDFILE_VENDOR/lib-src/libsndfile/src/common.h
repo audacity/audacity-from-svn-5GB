@@ -29,6 +29,7 @@
 #define	SF_FILENAME_LEN			(256)
 #define	SF_HEADER_LEN			(2048)
 #define	SF_TEXT_LEN				(1024)
+#define SF_SYSERR_LEN			(256)
 
 #define		BITWIDTH2BYTES(x)	(((x) + 7) / 8)
 
@@ -77,7 +78,9 @@ enum
 	SF_FORMAT_DWD			= 0x4040000,		/* DiamondWare Digirized */
 
 	/* Following are detected but not supported. */
-	SF_FORMAT_REX			= 0x090000,			/* Propellorheads Rex/Rcy */
+	SF_FORMAT_OGG			= 0x4090000,
+
+	SF_FORMAT_REX			= 0x40A0000,		/* Propellorheads Rex/Rcy */
 	SF_FORMAT_SD2			= 0x40C0000,		/* Sound Designer 2 */
 	SF_FORMAT_REX2			= 0x40D0000,		/* Propellorheads Rex2 */
 	SF_FORMAT_KRZ			= 0x40E0000,		/* Kurzweil sampler file */
@@ -86,11 +89,12 @@ enum
 	SF_FORMAT_SHN			= 0x4110000,		/* Shorten. */
 
 	/* Unsupported encodings. */
+	SF_FORMAT_VORBIS		= 0x1001,
+
 	SF_FORMAT_SVX_FIB		= 0x1020, 		/* SVX Fibonacci Delta encoding. */
 	SF_FORMAT_SVX_EXP		= 0x1021, 		/* SVX Exponential Delta encoding. */
 
 	SF_FORMAT_PCM_N			= 0x1030
-
 } ;
 
 /*---------------------------------------------------------------------------------------
@@ -119,6 +123,8 @@ typedef struct sf_private_tag
 {	/* Force the compiler to double align the start of buffer. */
 	double			buffer		[SF_BUFFER_LEN/sizeof(double)] ;
 	char			filename	[SF_FILENAME_LEN] ;
+
+	char			syserr		[SF_SYSERR_LEN] ;
 
 	/* logbuffer and logindex should only be changed within the logging functions 
 	** of common.c
@@ -173,6 +179,8 @@ typedef struct sf_private_tag
 	int				auto_header ;	
 	int				write_dither, read_dither ;	
 	int				add_test_tailer ;
+
+	int				ieee_replace ;
 	/* A set of file specific function pointers */
 
 	sf_count_t		(*read_short)	(struct sf_private_tag*, short *ptr, sf_count_t len) ;
@@ -193,12 +201,13 @@ typedef struct sf_private_tag
 } SF_PRIVATE ;
 
 enum
-{	SFE_NO_ERROR	= 0,
-
+{	SFE_NO_ERROR		= SF_ERR_NO_ERROR,
+	SFE_BAD_OPEN_FORMAT	= SF_ERR_UNRECOGNISED_FORMAT,
+	SFE_SYSTEM			= SF_ERR_SYSTEM,
+	
 	SFE_BAD_FILE,
 	SFE_BAD_FILE_READ,
 	SFE_OPEN_FAILED,
-	SFE_BAD_OPEN_FORMAT,
 	SFE_BAD_SNDFILE_PTR,
 	SFE_BAD_SF_INFO_PTR,
 	SFE_BAD_SF_INCOMPLETE,
@@ -270,6 +279,7 @@ enum
 	
 	SFE_RAW_READ_BAD_SPEC,
 	SFE_RAW_BAD_BITWIDTH,
+	SFE_RAW_BAD_FORMAT,
 	
 	SFE_PAF_NO_MARKER,
 	SFE_PAF_VERSION,
@@ -282,6 +292,7 @@ enum
 	SFE_SVX_BAD_COMP, 	
 
 	SFE_NIST_BAD_HEADER,
+	SFE_NIST_CRLF_CONVERISON,
 	SFE_NIST_BAD_ENCODING,
 
 	SFE_VOC_NO_CREATIVE, 
@@ -331,10 +342,10 @@ int u_bitwidth_to_subformat (int bits) ;
 /*  Functions for reading and writing floats and doubles on processors
 **	with non-IEEE floats/doubles.
 */
-float	float32_read  (unsigned char *cptr) ;
 float	float32_be_read  (unsigned char *cptr) ;
 float	float32_le_read  (unsigned char *cptr) ;
-void	float32_write (float in, unsigned char *out) ;
+void	float32_be_write (float in, unsigned char *out) ;
+void	float32_le_write (float in, unsigned char *out) ;
 
 double	double64_be_read  (unsigned char *cptr) ;
 double	double64_le_read  (unsigned char *cptr) ;
@@ -366,6 +377,8 @@ void	peak_update_double	(SF_PRIVATE *psf, double *ptr, size_t items) ;
 int		psf_get_format_simple_count	(void) ;
 int		psf_get_format_simple		(SF_FORMAT_INFO *data) ;
 
+int		psf_get_format_info			(SF_FORMAT_INFO *data) ;
+
 int		psf_get_format_major_count	(void) ;
 int		psf_get_format_major		(SF_FORMAT_INFO *data) ;
 
@@ -386,20 +399,22 @@ void  psf_get_date_str (char *str, int maxlen) ;
 **	some 32 bit OSes. Implementation in file_io.c.
 */ 
 
-int psf_open (const char *pathname, int flags) ;
+int psf_open (SF_PRIVATE *psf, const char *pathname, int flags) ;
 
-sf_count_t psf_fseek (int fd, sf_count_t offset, int whence) ;
-sf_count_t psf_fread (void *ptr, sf_count_t bytes, sf_count_t count, int fd) ;
-sf_count_t psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t count, int fd) ;
-sf_count_t psf_fgets (char *buffer, sf_count_t bufsize, int fd) ;
-sf_count_t psf_ftell (int fd) ;
-sf_count_t psf_get_filelen (int fd) ;
+sf_count_t psf_fseek (SF_PRIVATE *psf, sf_count_t offset, int whence) ;
+sf_count_t psf_fread (void *ptr, sf_count_t bytes, sf_count_t count, SF_PRIVATE *psf) ;
+sf_count_t psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t count, SF_PRIVATE *psf) ;
+sf_count_t psf_fgets (char *buffer, sf_count_t bufsize, SF_PRIVATE *psf) ;
+sf_count_t psf_ftell (SF_PRIVATE *psf) ;
+sf_count_t psf_get_filelen (SF_PRIVATE *psf) ;
 
-void psf_fclearerr (int fd) ;
+int psf_ftruncate (SF_PRIVATE *psf, sf_count_t len) ;
+int psf_fclose (SF_PRIVATE *psf) ;
 
-int psf_ftruncate (int fd, sf_count_t len) ;
-int psf_ferror (int fd) ;
-int psf_fclose (int fd) ;
+/*
+void psf_fclearerr (SF_PRIVATE *psf) ;
+int psf_ferror (SF_PRIVATE *psf) ;
+*/
 
 /*------------------------------------------------------------------------------------ 
 ** Functions for reading and writing different file formats.
@@ -421,6 +436,8 @@ int		wav_open	(SF_PRIVATE *psf) ;
 
 /* In progress. Do not currently work. */
 
+int		ogg_open	(SF_PRIVATE *psf) ;
+
 int		rx2_open	(SF_PRIVATE *psf) ;
 int		sds_open	(SF_PRIVATE *psf) ;
 int		sd2_open	(SF_PRIVATE *psf) ;
@@ -439,6 +456,7 @@ int 	float32_init	(SF_PRIVATE *psf) ;
 int 	double64_init	(SF_PRIVATE *psf) ;
 int 	dwvw_init		(SF_PRIVATE *psf, int bitwidth) ;
 int		gsm610_init 	(SF_PRIVATE *psf) ;
+int		vox_adpcm_init 	(SF_PRIVATE *psf) ;
 
 int		wav_w64_ima_init (SF_PRIVATE *psf, int blockalign, int samplesperblock) ;
 int		wav_w64_msadpcm_init (SF_PRIVATE *psf, int blockalign, int samplesperblock) ;
