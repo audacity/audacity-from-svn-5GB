@@ -9,6 +9,7 @@ Authors:
   Shane Mueller
   Vaughan Johnson
   Dave Fancella
+  Markus Meyer
 
 ================================================================
 This version is currently accurate for Audacity version 1.2.0.
@@ -27,34 +28,43 @@ Microsoft at
 It is worth noting that Audacity uses VC++'s multithreaded
 statically-linked run-time libraries.
 
+A note regarding the library wxWidgets, which is used by Audacity:
+
+  This library was formerly known as wxWindows, but its name has
+  now changed to wxWidgets. At the time of writing, the current
+  version 2.4.2 is advertised as "wxWidgets 2.4.2", but the file
+  archives still contain the old name. It is expected that this will
+  change in future releases, so some of the instructions below
+  may or may not apply.
+
 ---------------------------
-MSVC++ STEP 1:  Download wxWindows
+MSVC++ STEP 1:  Download wxWidgets
 ---------------------------
 To simplify the implementation of a near-identical user
 interface across platforms, Audacity uses classes and
-resources from wxWindows, a portable GUI framework for C++
-(and Python).  You must download and build wxWindows before
+resources from wxWidgets, a portable GUI framework for C++
+(and Python).  You must download and build wxWidgets before
 attempting to compile Audacity, or nothing will work!
 
-wxWindows is available from http://www.wxwindows.org.
-Similar to the Linux kernel, wxWindows is available as
+wxWidgets is available from http://www.wxwidgets.org.
+Similar to the Linux kernel, wxWidgets is available as
 stable and development branches.  
 
-Audacity 1.2.0 uses wxWindows 2.4.0 for Microsoft Windows (MSW), 
-available at "http://www.wxwindows.org/".
+Audacity 1.2.0 uses wxWidgets 2.4.0 or greater for Microsoft
+Windows (MSW),  available at "http://www.wxwidgets.org/".
 
 
 ------------------------
-MSVC++ STEP 2:  Build wxWindows
+MSVC++ STEP 2:  Build wxWidgets
 ------------------------
-When you have downloaded and installed wxWindows, you must
+When you have downloaded and installed wxWidgets, you must
 build it.  First though, to be compatible with Audacity, you
 must alter the build settings to use the multithreaded
 statically-linked run-time libraries instead of the
 multithreaded DLL run-time libraries.  This isn't hard:
 
 1. Launch Visual C++ and open the workspace file called
-   "wxWindows.dsw" in the "src" directory of your wxWindows
+   "wxWidgets.dsw" in the "src" directory of your wxWidgets
    installation.
 
 2. Select "Project"->"Settings" (Alt+F7), choose "Win32 Release"
@@ -67,11 +77,11 @@ multithreaded DLL run-time libraries.  This isn't hard:
 4. Now select "Win32 Debug" from the "Settings For" combo and
    change the run-time library to "Debug Multithreaded".
 
-5. Now you can click "OK" and build wxWindows by selecting
+5. Now you can click "OK" and build wxWidgets by selecting
    "Build"->"Batch Build" and clicking "Rebuild All".
 
 This will build both Debug and Release versions of the
-wxWindows library.
+wxWidgets library.
 
 --------------------------
 MSVC++ STEP 3:  Download Audacity
@@ -84,58 +94,43 @@ load the Audacity workspace: it's "audacity.dsw" in the
 "win" directory of the Audacity source tree.
 
 --------------------------------------------
-MSVC++ STEP 4:  Set wxWindows location for Audacity
+MSVC++ STEP 4:  Set wxWidgets location for Audacity
 --------------------------------------------
 Before you can start the build process, you must update the
-project settings to tell Visual C++ where to find wxWindows.
+project settings to tell Visual C++ where to find wxWidgets.
 There are three settings that need changing:
-    1.  Include Directory (e.g., "C:\wxWindows_2.4.0\include")
-    2.  Resource Directory (e.g., "C:\wxWindows_2.4.0\include")
-    3.  Library Directory (e.g., "C:\wxWindows_2.4.0\lib")
+    1.  Include Directory (e.g., "C:\wxWidgets_2.4.0\include")
+    2.  Resource Directory (e.g., "C:\wxWidgets_2.4.0\include")
+    3.  Library Directory (e.g., "C:\wxWidgets_2.4.0\lib")
 
 Fortunately, this is parameterized, using a Windows system 
 environment variable. There are various ways to set these, so 
 look in the Windows help system. You want to create an 
 environment variable WXWIN, set to the top-level directory 
-where you installed wxWindows. For example, 
+where you installed wxWidgets. For example, 
 in your "autoexec.bat" file, you might have a line:
 
-   set WXWIN=C:\wxWindows-2.4.0
+   set WXWIN=C:\wxWidgets-2.4.0
 
 Note that you don't want a trailing backslash on that. In the 
 Audacity project file, there are declarations like 
 
    $(WXWIN)\include
 
-that get interpreted as, e.g., "C:\wxWindows_2.4.0\include".
+that get interpreted as, e.g., "C:\wxWidgets_2.4.0\include".
 
 Once you have set the WXWIN environment variable correctly, 
 the Audacity project file's declarations will do the rest.
 
----------------------------
-MSVC++ STEP 5:  Ignore lib setting
----------------------------
-Some people previously reported error messages linking
-Audacity.  You may not have this problem.  However, if you
-receive error messages during the link process, try the
-following.
-
-Go to the "Project"->"Settings" menu item in Visual Studio.
-
-Ignore lib. Select "Win32 Debug" or "Win32 Release" as
-appropriate for the build you were doing from the "Settings For"
-combo. Select only "Audacity" in the tree, the Link tab, and
-"Input" in the combo box. Enter "libcmt.lib" in the
-"Ignore libraries" box if you were attempting to perform a
-Release build, or "libcmtd.lib" for a Debug build.
-
-On some systems, it seems you need to ignore "msvcrt.lib" 
-or "msvcrtd.lib" instead of "libcmtd.lib" or "libcmtd.lib", and on 
-some, you don't need to explicitly any.
-
 -----------------------
-MSVC++ STEP 6:  Build Audacity
+MSVC++ STEP 5:  Build Audacity
 -----------------------
+Open the file "configwin.h" and change it according to the
+third-party libraries you have installed. Audacity comes with
+all libs necessary to build the default configuration, but
+some functionality like OGG/Vorbis support can be activated
+optionally and must be downloaded separately.
+
 Select the configuration that you wish to build
 ("Audacity - Win32 Release" for general use, "Audacity -
 Win32 Debug" for a slower but debuggable executable) from
@@ -146,12 +141,51 @@ That's all - if this procedure doesn't work, you can ask for
 help on the Audacity development mailing list:
 audacity-devel@lists.sourceforge.net.  The first suggestion
 is likely to be "try it again with a clean installation of
-the wxWindows source and the latest Audacity source from
+the wxWidgets source and the latest Audacity source from
 CVS" though, so if that's not what you just attempted, you
 might want to try that first... 
 
+---------------------------
+HELP! I get linker errors!
+---------------------------
+It happens that Audacity does compile, but during the linking
+process you get a bunch of error messages like this:
+
+  MSVCRTD.lib(MSVCRTD.dll) : error LNK2005: _free
+  already defined in LIBCMTD.lib(dbgheap.obj)
+
+This is usually caused by conflicting runtime library
+settings. All libraries linked with Audacity must use the
+multithreaded statically-linked libraries, as explained in
+step 2 above. Make sure you set the correct library for
+both Debug and Release builds. Also make sure you check all
+other libraries too, like the Ogg Vorbis libraries, if you
+have them installed.
+
+You may want to use the /VERBOSE:LIB linker parameter to
+get information about which library is causing the conflict.
+
+If all else fails, use the following procedure to force
+Audacity to link to the correct library:
+
+Go to the "Project"->"Settings" menu item in Visual Studio.
+
+Ignore lib. Select "Win32 Debug" or "Win32 Release" as
+appropriate for the build you were doing from the "Settings For"
+combo. Select only "Audacity" in the tree, the Link tab, and
+"Input" in the combo box. Enter "libcmt.lib" in the
+"Ignore libraries" box if you were attempting to perform a
+Release build, or "libcmtd.lib" for a Debug build.
+
+On some systems, you will need to ignore "msvcrt.lib" 
+or "msvcrtd.lib" instead of "libcmtd.lib" or "libcmtd.lib",
+depending on the library which actually causes the conflict.
+
+Note that if you have configured all libraries correctly,
+none of the above should actually be necessary.
+
 -----------------------
-MSVC++ (OPTIONAL) STEP 7:  Add VST support
+MSVC++ (OPTIONAL) STEP 6:  Add VST support
 -----------------------
 Audacity does not support VST plug-ins by default, but 
 here is how to enable it.
@@ -215,10 +249,10 @@ compare your installed packages to the list of packages needed.
 	w32api
 
 ---------------------------------------
-Cygwin STEP 2:  Download and install wxWindows
+Cygwin STEP 2:  Download and install wxWidgets
 ---------------------------------------
 
-1.  Go to http://www.wxwindows.org/ and download wxWindows v2.4.1 or greater.  Make
+1.  Go to http://www.wxwidgets.org/ and download wxWidgets v2.4.1 or greater.  Make
 sure you download the "wxAll" package that contains source code for all ports.  The
 Win32 port will not work for compiling audacity, since it was compiled and installed
 to work with MS Visual C++.
@@ -226,14 +260,14 @@ to work with MS Visual C++.
 2.  Untar the archive from the Cygwin command line, using a command like:
 tar -xzvf (wxwindows).
 
-3.  From the top-level of the wxWindows source tree, type './configure'.
-** For some reason, I haven't been able to get Audacity to link to wxWindows statically
+3.  From the top-level of the wxWidgets source tree, type './configure'.
+** For some reason, I haven't been able to get Audacity to link to wxWidgets statically
 under Cygwin.  Since there are bigger fish to fry right now, I haven't dealt with it.  I
 would appreciate if someone gets it to work if you let me know what you did.  To try this,
-use './configure --disable-shared' for wxWindows configuration.
+use './configure --disable-shared' for wxWidgets configuration.
 
 When complete, type "make".  When that's complete, "make install".  If all goes well,
-you will have wxWindows installed in your Cygwin installation!
+you will have wxWidgets installed in your Cygwin installation!
 
 ---------------------------------
 Cygwin STEP 3:  Download Audacity
@@ -437,7 +471,7 @@ Audacity will not build with `wx-config --static --libs`.  If you get it to work
 Miscellaneous Problems
 ----------------------
 
-When I tried to get Audacity to compile with wxWindows 2.4.0, I ran into trouble with large file
+When I tried to get Audacity to compile with wxWidgets 2.4.0, I ran into trouble with large file
 support.  This trouble is characterized by a linker error that looks like this:
 
 obj/import/ImportMP3.o(.text+0x63b): In function
@@ -445,12 +479,12 @@ obj/import/ImportMP3.o(.text+0x63b): In function
 /home/dfancella/audacity/src/import/ImportMP3.cpp:278: undefined
 reference to `wxFile::Read(void*, long long)'
 
-This problem went away when compiled with wxWindows 2.4.1.  However, since the proper solution
+This problem went away when compiled with wxWidgets 2.4.1.  However, since the proper solution
 to the problem was never identified, it is possible that this problem will resurface with future
-versions of wxWindows.  It is also possible that this occurred as a bug in wxWindows 2.4.0 that was
+versions of wxWidgets.  It is also possible that this occurred as a bug in wxWidgets 2.4.0 that was
 fixed in 2.4.1, in which case it's not likely to reappear.
 
-The root of the problem is that wxWindows was compiled without large file support enabled, while
+The root of the problem is that wxWidgets was compiled without large file support enabled, while
 Audacity was compiled with it.  This is determined by a #define symbol, _INPUT_BYTE_OFFSET being
 set to 64 for large file support.  It should also affect libsndfile, but mysteriously it did not.
 If you encounter this problem and find a fix, please submit a patch.
