@@ -27,22 +27,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* dmazzoni: make sure that you're not trying to use this sndfile.h
-   on Windows or MacOS.  There's a separate file for that...
-*/
-
-#if (defined (__MWERKS__) || defined(__MACOS9__))
-#error This is the Unix variant of sndfile.h.  On Mac OS 9, you must
-#error copy both "sndfile.h" and "config.h" from libsndfile/MacOS/ to
-#error libsndfile/src/ and recompile.
-#endif
-
-#if (defined (__WIN32__) || defined(__WIN32) || defined(WIN32))
-#error This is the Unix variant of sndfile.h.  On Windows, you must
-#error copy both "sndfile.h" and "config.h" from libsndfile/Win32/ to
-#error libsndfile/src/ and recompile.
-#endif
-
 /* For the Metrowerks CodeWarrior Pro Compiler (mainly MacOS) */
 
 #if	(defined (__MWERKS__))

@@ -34,7 +34,7 @@ PrefsPanel(parent)
 {
    // Scrolling
    bool autoscroll, spectrogram, editToolBar,mixerToolBar, alwaysEnablePause,
-      quitOnClose, adjustSelectionEdges;
+      quitOnClose, adjustSelectionEdges, ergonomicTransportButtons;
    int envdBRange;
 
    gPrefs->Read("/GUI/AutoScroll", &autoscroll, true);
@@ -55,6 +55,7 @@ PrefsPanel(parent)
 
    gPrefs->Read("/GUI/QuitOnClose", &quitOnClose, defaultQuitOnClose);
    gPrefs->Read("/GUI/AdjustSelectionEdges", &adjustSelectionEdges, true);
+   gPrefs->Read("/GUI/ErgonomicTransportButtons", &ergonomicTransportButtons, true);
    gPrefs->Read("/GUI/EnvdBRange", &envdBRange, ENV_DB_RANGE);
 
    topSizer = new wxBoxSizer( wxVERTICAL );
@@ -101,6 +102,12 @@ PrefsPanel(parent)
    mAdjustSelectionEdges->SetValue(adjustSelectionEdges);
    topSizer->Add(mAdjustSelectionEdges, 0, wxGROW|wxALL, 2);
 
+   // Enable/disable ergonomic order of transport buttons
+   mErgonomicTransportButtons =
+      new wxCheckBox(this, -1,
+                     _("Enable ergonomic order of transport buttons"));
+   mErgonomicTransportButtons->SetValue(ergonomicTransportButtons);
+   topSizer->Add(mErgonomicTransportButtons, 0, wxGROW|wxALL, 2);
 
    // Locale
    GetLanguages(mLangCodes, mLangNames);
@@ -210,6 +217,8 @@ bool GUIPrefs::Apply()
    gPrefs->Write("/GUI/QuitOnClose", mQuitOnClose->GetValue());
    gPrefs->Write("/GUI/AdjustSelectionEdges",
                  mAdjustSelectionEdges->GetValue());
+   gPrefs->Write("/GUI/ErgonomicTransportButtons",
+                 mErgonomicTransportButtons->GetValue());
 
    //-------------------------------------------------------------
    //---------------------- Edit toolbar loading/unloading
