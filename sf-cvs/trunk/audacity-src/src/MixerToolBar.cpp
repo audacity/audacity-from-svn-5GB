@@ -37,12 +37,23 @@
 #include "ImageManipulation.h"
 #include "widgets/ASlider.h"
 #include "Prefs.h"
+#include "Project.h"
 
 #if USE_PORTMIXER
 #include "portmixer.h"
 #endif
 
 #include "../images/MixerImages.h"
+
+MixerToolBar *GetCurrentMixerToolBar()
+{
+   AudacityProject *project = GetActiveProject();
+
+   if (project)
+      return project->GetMixerToolBar();
+   else
+      return NULL;
+}
 
 ////////////////////////////////////////////////////////////
 /// Methods for MixerToolBar

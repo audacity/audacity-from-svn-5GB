@@ -58,4 +58,6 @@ class MixerToolBar:public ToolBar {
    DECLARE_EVENT_TABLE()
 };
 
+MixerToolBar *GetCurrentMixerToolBar();
+
 #endif
