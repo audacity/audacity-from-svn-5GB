@@ -82,7 +82,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 wxd.lib xpmd.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib xaudio.lib ogg.lib vorbis.lib vorbisfile.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"../../lib" /libpath:"../../contrib/lib" /libpath:"./xaudio/win/lib" /libpath:"./vorbis/win/lib"
+# ADD LINK32 wxd.lib xpmd.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib xaudio.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"../../lib" /libpath:"../../contrib/lib" /libpath:"./xaudio/win/lib" /libpath:"./vorbis/win/lib"
 
 !ELSEIF  "$(CFG)" == "Audacity - Win32 Debug DLL"
 
@@ -635,6 +635,14 @@ SOURCE=.\FreqWindow.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Help.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Help.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Import.cpp
 # End Source File
 # Begin Source File
@@ -739,6 +747,14 @@ SOURCE=.\Track.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\TrackArtist.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\TrackArtist.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\TrackPanel.cpp
 # End Source File
 # Begin Source File
@@ -752,6 +768,10 @@ SOURCE=.\UndoManager.cpp
 # Begin Source File
 
 SOURCE=.\UndoManager.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ViewInfo.h
 # End Source File
 # Begin Source File
 

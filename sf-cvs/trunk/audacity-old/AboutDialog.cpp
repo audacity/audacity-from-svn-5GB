@@ -15,6 +15,12 @@
 
 #include "xpm/AudacityLogo.xpm"
 
+#ifdef __WXMSW__
+#define DLOG_HEIGHT 430
+#else
+#define DLOG_HEIGHT 400
+#endif
+
 class Eraser: public wxWindow {
 public:
 
@@ -55,7 +61,7 @@ IMPLEMENT_CLASS(AboutDialog, wxDialog)
 
 AboutDialog::AboutDialog(wxWindow *parent)
   : wxDialog(parent, -1, "About Audacity...",
-  wxDefaultPosition, wxSize(400, 400))
+  wxDefaultPosition, wxSize(400, DLOG_HEIGHT))
 {
   Centre();
 
