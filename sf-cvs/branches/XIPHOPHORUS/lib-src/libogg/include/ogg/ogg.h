@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
- * by the XIPHOPHORUS Company http://www.xiph.org/                  *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
+ * by the Xiph.Org Foundation http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: toplevel libogg include
- last mod: $Id: ogg.h,v 1.1.1.2 2002-04-21 23:27:12 habes Exp $
+ last mod: $Id: ogg.h,v 1.1.1.3 2002-10-26 19:24:05 dmazzoni Exp $
 
  ********************************************************************/
 #ifndef _OGG_H
@@ -110,15 +110,16 @@ typedef struct {
 /* Ogg BITSTREAM PRIMITIVES: bitstream ************************/
 
 extern void  oggpack_writeinit(oggpack_buffer *b);
+extern void  oggpack_writetrunc(oggpack_buffer *b,long bits);
+extern void  oggpack_writealign(oggpack_buffer *b);
+extern void  oggpack_writecopy(oggpack_buffer *b,void *source,long bits);
 extern void  oggpack_reset(oggpack_buffer *b);
 extern void  oggpack_writeclear(oggpack_buffer *b);
 extern void  oggpack_readinit(oggpack_buffer *b,unsigned char *buf,int bytes);
 extern void  oggpack_write(oggpack_buffer *b,unsigned long value,int bits);
 extern long  oggpack_look(oggpack_buffer *b,int bits);
-extern long  oggpack_look_huff(oggpack_buffer *b,int bits);
 extern long  oggpack_look1(oggpack_buffer *b);
 extern void  oggpack_adv(oggpack_buffer *b,int bits);
-extern int   oggpack_adv_huff(oggpack_buffer *b,int bits);
 extern void  oggpack_adv1(oggpack_buffer *b);
 extern long  oggpack_read(oggpack_buffer *b,int bits);
 extern long  oggpack_read1(oggpack_buffer *b);
@@ -152,6 +153,7 @@ extern int      ogg_stream_packetpeek(ogg_stream_state *os,ogg_packet *op);
 extern int      ogg_stream_init(ogg_stream_state *os,int serialno);
 extern int      ogg_stream_clear(ogg_stream_state *os);
 extern int      ogg_stream_reset(ogg_stream_state *os);
+extern int      ogg_stream_reset_serialno(ogg_stream_state *os,int serialno);
 extern int      ogg_stream_destroy(ogg_stream_state *os);
 extern int      ogg_stream_eos(ogg_stream_state *os);
 
@@ -174,3 +176,9 @@ extern void     ogg_packet_clear(ogg_packet *op);
 #endif
 
 #endif  /* _OGG_H */
+
+
+
+
+
+
