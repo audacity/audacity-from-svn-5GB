@@ -1652,6 +1652,11 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       GetParent()->ProcessEvent(e);
    }
 
+   if (event.ButtonDown())
+      CaptureMouse();
+   else if (event.ButtonUp())
+      ReleaseMouse();
+
    if (mIsClosing)
       HandleClosing(event);
    else if (mIsMuting)

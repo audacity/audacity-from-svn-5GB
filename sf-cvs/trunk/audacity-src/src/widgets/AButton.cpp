@@ -15,11 +15,11 @@
 
 **********************************************************************/
 
+#include "AButton.h"
+
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
 #include <wx/image.h>
-
-#include "AButton.h"
 
 BEGIN_EVENT_TABLE(AButton, wxWindow)
     EVT_MOUSE_EVENTS(AButton::OnMouseEvent)
@@ -100,7 +100,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
    if (event.ButtonUp()) {
       mIsClicking = false;
 
-      //ReleaseMouse();
+      ReleaseMouse();
 
       if (event.m_x >= 0 && event.m_y >= 0 &&
           event.m_x < mWidth && event.m_y < mHeight) {
@@ -121,7 +121,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
 
    if (event.ButtonDown()) {
       mIsClicking = true;
-      //CaptureMouse();
+      CaptureMouse();
    }
 
    if (mIsClicking) {
