@@ -95,7 +95,7 @@ audacity: $(OBJS) Makefile
 
 dep:
 	$(CCC) -M $(CFLAGS) $(DEPS) | \
-		perl -pe 's/^(.*)\.o: ([^ ]*(?=\/)\/?)([^ \/]+\.(\w+))/$(OBJDIR)\/$$2$$1.$$4.o: $$2$$3/;' \
+		perl -pe 's/^(.*)\.o: ([^\/]*\/)??([^ \/]+\.(\w+))/$(OBJDIR)\/$$2$$1.$$4.o: $$2$$3/;' \
 		> .depend
 
 #
