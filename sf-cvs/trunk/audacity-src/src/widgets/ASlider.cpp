@@ -121,7 +121,7 @@ void TipPanel::SetPos(const wxPoint& pos)
 {
    wxClientDC dc(this);
    wxFont labelFont(sliderFontSize, wxSWISS, wxNORMAL, wxNORMAL);
-   dc->SetFont(labelFont);
+   dc.SetFont(labelFont);
    int width, height;
    dc.GetTextExtent(label, &width, &height);
    width += 4;
