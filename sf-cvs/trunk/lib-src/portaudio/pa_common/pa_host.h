@@ -2,7 +2,7 @@
 #define PA_HOST_H
 
 /*
- * $Id: pa_host.h,v 1.3 2002-05-06 07:08:35 dmazzoni Exp $
+ * $Id: pa_host.h,v 1.4 2002-10-26 07:06:16 dmazzoni Exp $
  * Host dependant internal API for PortAudio
  *
  * Author: Phil Burk  <philburk@softsynth.com>
