@@ -95,11 +95,6 @@ AC_ARG_WITH(help,
 	use_help=$withval,
 	use_help="yes")
 
-dnl check to make sure that all the user's options are valid
-AC_CANONICAL_HOST
-host_cpu=`echo "$host_cpu" | sed "s/i.86/i386/"`
-host_os=`echo "$host_os" | sed "s/-.*//"`
-
 if [[ "$use_libmad" = "yes" ]] ; then
 
 	AC_DEFINE(USE_LIBMAD, 1,
@@ -121,6 +116,20 @@ if [[ "$use_libmad" = "system" ]] ; then
 
    AC_CHECK_HEADER(mad.h, ,
 		AC_MSG_ERROR([*** libmad headers not found.  Run configure --without-libmad to disable it.]))	
+
+   dnl make sure libmad is at least version 0.14.2b
+   AC_TRY_RUN([
+#include <mad.h>
+int main() {
+#if MAD_VERSION_MAJOR == 0  && MAD_VERSION_MINOR <= 13
+   return 1; /* <= 0.13, too old */
+#elsif MAD_VERSION_MAJOR == 0  &&  MAD_VERSION_MINOR == 14  &&  MAD_VERSION_PATCH < 2
+   return 1; /* 0.14.0 <= x < 0.14.2, too old */
+#else
+   return 0;
+#endif
+}], true, dnl success
+    AC_MSG_ERROR([*** Please update your version of libmad to at least 0.14.2b]))
 	
 	AC_DEFINE(USE_LIBMAD, 1,
 		[Define if mp3 support is implemented with the libmad library])
@@ -150,8 +159,8 @@ if [[ $use_vorbis = "system" ]] ; then
 
    dnl check for both headers and libraries
    
-   AC_CHECK_LIB(vorbisfile, ov_open, true, dnl here true is just a nop
-	   AC_MSG_ERROR([*** Ogg Vorbis libraries not found. libvorbis must be installed for Ogg Vorbis support]),
+   AC_CHECK_LIB(vorbisfile, vorbis_bitrate_addblock, true, dnl here true is just a nop
+	   AC_MSG_ERROR([*** Ogg Vorbis libraries not found or they are too old. libvorbis >= 1.0-rc3 must be installed for Ogg Vorbis support]),
 	   -lvorbis -logg) dnl auxiliary library that -lvorbisfile needs
 
    AC_CHECK_HEADER(vorbis/vorbisfile.h, ,
