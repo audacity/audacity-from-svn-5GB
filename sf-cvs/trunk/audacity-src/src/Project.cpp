@@ -423,7 +423,14 @@ void AudacityProject::OnScrollRight()
    int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
 
    if (pos < max) {
+      #ifdef __WXGTK__
+      // work around a bug in wxGTK, can't scroll one to the
+      // right by updating the thumb position.
+      mHsbar->SetThumbPosition(pos + 2);
+      #else
       mHsbar->SetThumbPosition(pos + 1);
+      #endif
+
       FinishAutoScroll();
    }
 }
