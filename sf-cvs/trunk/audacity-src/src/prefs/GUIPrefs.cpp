@@ -105,7 +105,7 @@ PrefsPanel(parent)
    // Enable/disable ergonomic order of transport buttons
    mErgonomicTransportButtons =
       new wxCheckBox(this, -1,
-                     _("Enable ergonomic order of transport buttons"));
+                     _("Enable ergonomic order of audio I/O buttons"));
    mErgonomicTransportButtons->SetValue(ergonomicTransportButtons);
    topSizer->Add(mErgonomicTransportButtons, 0, wxGROW|wxALL, 2);
 
