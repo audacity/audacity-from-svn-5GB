@@ -14,8 +14,8 @@
 <p>
 
 <li>
-Присъединяване: <a href="http://lists.sourceforge.net/lists/listinfo/audacity-users">списък Audacity-Users</a><br>
-Преглед: <a href="http://www.geocrawler.com/lists/3/SourceForge/14680/0/">архив на Audacity-Users</a><br>
+Присъединяване: <a target=_top href="http://lists.sourceforge.net/lists/listinfo/audacity-users">списък Audacity-Users</a><br>
+Преглед: <a target=_top href="http://sourceforge.net/mailarchive/forum.php?forum_id=827">архив на Audacity-Users</a><br>
 Това е нов пощенски списък, чрез който потребителите на Audacity могат да общуват помежду си и да споделят идеи.
 Ако мислите, че друг потребител на Audacity би могъл да отговори на въпроса ви, запишете се в списъка и задайте
 въпроса. Можете да прегледате архивите, за да видите дали някой не е питал по-рано за същото.
@@ -23,7 +23,7 @@
 
 <li>
 Пишете на адрес: <a href="mailto:audacity-help@lists.sourceforge.net">audacity-help@lists.sourceforge.net</a><br>
-или прегледайте: <a href="http://www.geocrawler.com/lists/3/SourceForge/14679/0/">архива на Audacity-Help</a><br>
+или прегледайте: <a target=_top href="http://sourceforge.net/mailarchive/forum.php?forum_id=828">архива на Audacity-Help</a><br>
 Ако имате технически проблем с Audacity и той е прекалено специфичен, за да се занимават останалите потребители с него,
 пишете на този адрес. Писмото ви ще бъде прегледано от екипа на Audacity. Ако по друга причина искате да се свържете
 пряко с разработчиците на Audacity, използвайте същия адрес.
