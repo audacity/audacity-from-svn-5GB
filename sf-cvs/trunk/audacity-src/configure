@@ -687,7 +687,7 @@ Optional Packages:
   --with-id3tag           use libid3tag for mp3 id3 tag support
   --with-libsndfile       which libsndfile to use: [local], [or], [system]
   --with-ladspa           compile with ladspa plug-in support [default=yes]
-  --with-nyquist          compile with Nyquist support [default=no]
+  --with-nyquist          compile with Nyquist support [default=yes]
   --with-help             Make the help file "audacity-help.htb" [default=yes]
 
 Some influential environment variables:
@@ -2814,7 +2814,7 @@ if test "${with_nyquist+set}" = set; then
   withval="$with_nyquist"
   use_nyquist=$withval
 else
-  use_nyquist="no"
+  use_nyquist="yes"
 fi;
 
 # Check whether --with-help or --without-help was given.
