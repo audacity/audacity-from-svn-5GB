@@ -34,15 +34,14 @@
 
 #include "widgets/AButton.h"
 #include "widgets/ASlider.h"
-#include "ToolBar.h"
 #include "AudioIO.h"
 #include "Project.h"
 #include "UndoManager.h"
 
 #include "../images/EditButtons.h"
 
-
-class ToolBar;
+const int BUTTON_WIDTH = 27;
+const int SEPARATOR_WIDTH = 14;
 
 ////////////////////////////////////////////////////////////
 /// Methods for EditToolBar
@@ -111,27 +110,38 @@ void EditToolBar::InitializeEditToolBar()
 
 // This is a convenience function that allows for button creation in
 // MakeButtons() with fewer arguments
-AButton *EditToolBar::MakeButton(wxImage * up, wxImage * down,
-                                 wxImage * hilite,
-                                 char const **foreground,
-                                 char const **disabled,
-                                 char const **alpha, int id, int left)
+
+void EditToolBar::AddButton(AButton **button, char **fg,
+                            char **disabled, char **alpha,
+                            int id, const char *tooltip)
 {
-   return ToolBar::MakeButton(up, down, hilite, foreground, disabled, alpha,
-             wxWindowID(id), wxPoint(left,0), wxSize(27, 27), 3, 3);
+   *button = ToolBar::MakeButton(upImage, downImage, hiliteImage,
+                (const char **) fg, (const char **) disabled,
+                (const char **) alpha, wxWindowID(id), wxPoint(mButtonPos, 0),
+                wxSize(BUTTON_WIDTH, BUTTON_WIDTH), 3, 3);
+
+   (*button)->SetToolTip(tooltip);
+   mButtonPos += BUTTON_WIDTH;
 }
 
-
+void EditToolBar::AddSeparator()
+{
+   mButtonPos += SEPARATOR_WIDTH;
+}
 
 void EditToolBar::MakeButtons()
 {
+   wxColour newColour =
+       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+   wxColour baseColour = wxColour(204, 204, 204);
+
    wxImage *upOriginal = new wxImage(Up);
    wxImage *downOriginal = new wxImage(Down);
    wxImage *hiliteOriginal = new wxImage(Hilite);
 
-   wxColour newColour =
-       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
-   wxColour baseColour = wxColour(204, 204, 204);
+   upImage = ChangeImageColour(upOriginal, baseColour, newColour);
+   downImage = ChangeImageColour(downOriginal, baseColour, newColour);
+   hiliteImage = ChangeImageColour(hiliteOriginal, baseColour, newColour);
 
 #ifdef __WXGTK__
    /* dmazzoni: hack to get around XPM color bugs in GTK */
@@ -139,98 +149,38 @@ void EditToolBar::MakeButtons()
    baseColour.Set(data[28 * 3], data[28 * 3 + 1], data[28 * 3 + 2]);
 #endif
 
-   wxImage *upPattern =
-       ChangeImageColour(upOriginal, baseColour, newColour);
-   wxImage *downPattern =
-       ChangeImageColour(downOriginal, baseColour, newColour);
-   wxImage *hilitePattern =
-       ChangeImageColour(hiliteOriginal, baseColour, newColour);
-
-
    /* Buttons */
 
-   //Cut Button
-   mCut = MakeButton(upPattern, downPattern, hilitePattern,
-                     (char const **) Cut,
-                     (char const **) CutDisabled,
-                     (char const **) CutAlpha, ETBCutID, 1);
-   mCut->SetToolTip(_("Cut selection (to clipboard)"));
+   mButtonPos = 1;
 
+   AddButton(&mCut, Cut, CutDisabled, CutAlpha, ETBCutID,
+             _("Cut selection to clipboard"));
+   AddButton(&mCopy, Copy, CopyDisabled, CopyAlpha, ETBCopyID,
+             _("Copy selection to clipboard"));
+   AddButton(&mPaste, Paste, PasteDisabled, PasteAlpha, ETBPasteID,
+             _("Paste selection"));
+   AddButton(&mTrim, Trim, TrimDisabled, TrimAlpha, ETBTrimID,
+             _("Trim everything outside selection"));
+   AddButton(&mSilence, Silence, SilenceDisabled, SilenceAlpha, ETBSilenceID,
+             _("Insert Silence"));
 
-   //Copy Button
-   mCopy = MakeButton(upPattern, downPattern, hilitePattern,
-                      (char const **) Copy,
-                      (char const **) CopyDisabled,
-                      (char const **) CopyAlpha, ETBCopyID, 28);
-   mCopy->SetToolTip(_("Copy selection to clipboard"));
+   AddSeparator();
+   AddButton(&mUndo, Undo, UndoDisabled, UndoAlpha, ETBUndoID, _("Undo"));
+   AddButton(&mRedo, Redo, RedoDisabled, RedoAlpha, ETBRedoID, _("Redo"));
+   AddSeparator();
 
+   AddButton(&mZoomIn, ZoomIn, ZoomInDisabled, ZoomInAlpha, ETBZoomInID,
+             _("Zoom In"));
+   AddButton(&mZoomOut, ZoomOut, ZoomOutDisabled, ZoomOutAlpha, ETBZoomOutID,
+             _("Zoom Out"));
+   AddButton(&mZoomSel, ZoomSel, ZoomSelDisabled, ZoomSelAlpha, ETBZoomSelID,
+             _("Fit selection in window"));
+   AddButton(&mZoomFit, ZoomFit, ZoomFitDisabled, ZoomFitAlpha, ETBZoomFitID,
+             _("Fit entire file in window"));
 
-   //Paste Button
-   mPaste = MakeButton(upPattern, downPattern, hilitePattern,
-                       (char const **) Paste,
-                       (char const **) PasteDisabled,
-                       (char const **) PasteAlpha, ETBPasteID, 55);
-   mPaste->SetToolTip(_("Paste clipboard"));
-
-   //Trim Button
-   mTrim = MakeButton(upPattern, downPattern, hilitePattern,
-                      (char const **) Trim,
-                      (char const **) TrimDisabled,
-                      (char const **) TrimAlpha, ETBTrimID, 82);
-   mTrim->SetToolTip(_("Trim everything outside selection"));
-
-   //Silence Button
-   mSilence = MakeButton(upPattern, downPattern, hilitePattern,
-                         (char const **) Silence,
-                         (char const **) SilenceDisabled,
-                         (char const **) SilenceAlpha, ETBSilenceID, 109);
-   mSilence->SetToolTip(_("Insert Silence"));
-
-   //Undo Button
-   mUndo = MakeButton(upPattern, downPattern, hilitePattern,
-                      (char const **) Undo,
-                      (char const **) UndoDisabled,
-                      (char const **) UndoAlpha, ETBUndoID, 150);
-   mUndo->SetToolTip(_("Undo last action"));
-
-   //Redo Button
-   mRedo = MakeButton(upPattern, downPattern, hilitePattern,
-                      (char const **) Redo,
-                      (char const **) RedoDisabled,
-                      (char const **) RedoAlpha, ETBRedoID, 177);
-   mRedo->SetToolTip(_("Redo last undo"));
-
-   //Zoom In Button
-   mZoomIn = MakeButton(upPattern, downPattern, hilitePattern,
-                        (char const **) ZoomIn,
-                        (char const **) ZoomInDisabled,
-                        (char const **) ZoomInAlpha, ETBZoomInID, 220);
-   mZoomIn->SetToolTip(_("Zoom In"));
-
-   //Zoom Out Button
-   mZoomOut = MakeButton(upPattern, downPattern, hilitePattern,
-                         (char const **) ZoomOut,
-                         (char const **) ZoomOutDisabled,
-                         (char const **) ZoomOutAlpha, ETBZoomOutID, 247);
-   mZoomOut->SetToolTip(_("Zoom Out"));
-
-   //Zoom to selection Button
-   mZoomSel = MakeButton(upPattern, downPattern, hilitePattern,
-                         (char const **) ZoomSel,
-                         (char const **) ZoomSelDisabled,
-                         (char const **) ZoomSelAlpha, ETBZoomSelID, 274);
-   mZoomSel->SetToolTip(_("Fit selection in window"));
-
-   //Zoom All Button
-   mZoomFit = MakeButton(upPattern, downPattern, hilitePattern,
-                         (char const **) ZoomFit,
-                         (char const **) ZoomFitDisabled,
-                         (char const **) ZoomFitAlpha, ETBZoomFitID, 302);
-   mZoomFit->SetToolTip(_("Fit entire file in window"));
-
-   delete upPattern;
-   delete downPattern;
-   delete hilitePattern;
+   delete upImage;
+   delete downImage;
+   delete hiliteImage;
    delete upOriginal;
    delete downOriginal;
    delete hiliteOriginal;
@@ -252,23 +202,12 @@ EditToolBar::~EditToolBar()
 
    if (mBackgroundBitmap)
       delete mBackgroundBitmap;
-
 }
 
 void EditToolBar::OnKeyEvent(wxKeyEvent & event)
 {
-   /*
-   if (event.KeyCode() == WXK_SPACE) {
-      if (gAudioIO->IsBusy()) {
-      } else {
-      }
-      return;
-   } else
-      event.Skip();
-   */
+   event.Skip();
 }
-
-
 
 void EditToolBar::OnCut()
 {
