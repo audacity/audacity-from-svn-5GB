@@ -51,6 +51,8 @@ OBJS = \
 	$(OBJDIR)/Help.o \
 	$(OBJDIR)/HistoryWindow.o \
 	$(OBJDIR)/LabelTrack.o \
+	$(OBJDIR)/Languages.o \
+	$(OBJDIR)/LangChoice.o \
 	$(OBJDIR)/Menus.o \
 	$(OBJDIR)/Mix.o \
 	$(OBJDIR)/NoteTrack.o \
