@@ -325,6 +325,11 @@ void AudioIO::HandleDeviceChange()
    wxArrayLong supportedSampleRates = GetSupportedSampleRates(playDevice, recDevice);
    int highestSampleRate = supportedSampleRates[supportedSampleRates.GetCount() - 1];
 
+   mEmulateMixerInputVol = true;
+   mEmulateMixerOutputVol = true;
+   mMixerInputVol = 1.0;
+   mMixerOutputVol = 1.0;
+
    PortAudioStream *stream;
    int error;
    error = Pa_OpenStream(&stream, recDeviceNum, 2, paFloat32, NULL,
@@ -339,16 +344,15 @@ void AudioIO::HandleDeviceChange()
                             audacityAudioCallback, NULL);
    }
 
-   if( error ) {
-      mEmulateMixerInputVol = true;
-      mEmulateMixerOutputVol = true;
-      mMixerInputVol = 1.0;
-      mMixerOutputVol = 1.0;
-
+   if( error )
       return;
-   }
 
    mPortMixer = Px_OpenMixer(stream, 0);
+
+   if (!mPortMixer) {
+      Pa_CloseStream(stream);
+      return;
+   }
 
    // Determine mixer capabilities - it it doesn't support either
    // input or output, we emulate them (by multiplying this value
