@@ -1,5 +1,8 @@
 all: @BUILDLIBS@
 
+allegro/allegro.a:
+	cd allegro && $(MAKE)
+
 libogg/src/.libs/libogg.a:
 	cd libogg && $(MAKE)
 
