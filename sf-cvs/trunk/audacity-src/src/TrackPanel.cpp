@@ -594,11 +594,12 @@ void TrackPanel::OnTimer()
       DrawCursors();
    }
    // BG: Update the screen while playing
-   if((mTimeCount % 20) == 0 &&
-      (gAudioIO->IsStreamActive(p->GetAudioIOToken()) &&
-       !gAudioIO->IsPaused()))
-   {
-      p->RedrawProject();
+   if((gAudioIO->IsStreamActive(p->GetAudioIOToken()) &&
+       !gAudioIO->IsPaused())) {
+      if (gAudioIO->GetNumCaptureChannels())
+         p->RedrawProject();
+      else if ((mTimeCount % 20) == 0)
+         p->RedrawProject();
    }
    if(mTimeCount > 1000)
       mTimeCount = 0;

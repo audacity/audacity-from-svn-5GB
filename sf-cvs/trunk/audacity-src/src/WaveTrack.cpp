@@ -132,7 +132,6 @@ WaveTrack::WaveTrack(WaveTrack &orig):
 {
    mDisplay = 0; // DELETEME
 
-   orig.Flush();
    Init(orig);
 
    mSequence = new Sequence(*orig.mSequence);
@@ -244,9 +243,9 @@ double WaveTrack::GetStartTime()
 
 double WaveTrack::GetEndTime()
 {
-   Flush();
+   longSampleCount numSamples = mSequence->GetNumSamples() + mAppendBufferLen;
 
-   double maxLen = mOffset + mSequence->GetNumSamples()/mRate;
+   double maxLen = mOffset + numSamples/mRate;
    if (maxLen < 0.0)
       maxLen = 0.0;
 
@@ -255,7 +254,6 @@ double WaveTrack::GetEndTime()
 
 bool WaveTrack::ConvertToSampleFormat(sampleFormat format)
 {
-   Flush();
    MarkChanged();
    
    return mSequence->ConvertToSampleFormat(format);
@@ -268,9 +266,6 @@ bool WaveTrack::Cut(double t0, double t1, Track **dest)
    WaveTrack *newTrack;
 
    if (t1 < t0)
-      return false;
-
-   if (!Flush())
       return false;
 
    TimeToSamplesClip(t0, &s0);
@@ -299,9 +294,6 @@ bool WaveTrack::Cut(double t0, double t1, Track **dest)
 bool WaveTrack::Copy(double t0, double t1, Track **dest)
 {
    if (t1 < t0)
-      return false;
-
-   if (!Flush())
       return false;
 
    sampleCount s0, s1;
@@ -336,12 +328,6 @@ bool WaveTrack::Paste(double t0, const Track *src)
    if (src->GetKind() != Track::Wave)
       return false;
 
-   if (!Flush())
-      return false;
-
-   if (!((WaveTrack *)src)->Flush())
-      return false;
-
    TimeToSamplesClip(t0, &s0);
 
    if (mSequence->Paste(s0, ((WaveTrack *)src)->mSequence)) {
@@ -358,9 +344,6 @@ bool WaveTrack::Clear(double t0, double t1)
    sampleCount s0, s1;
 
    if (t1 < t0)
-      return false;
-
-   if (!Flush())
       return false;
 
    TimeToSamplesClip(t0, &s0);
@@ -382,9 +365,6 @@ bool WaveTrack::Silence(double t0, double t1)
    if (t1 < t0)
       return false;
 
-   if (!Flush())
-      return false;
-
    TimeToSamplesClip(t0, &s0);
    TimeToSamplesClip(t1, &s1);
 
@@ -395,9 +375,6 @@ bool WaveTrack::Silence(double t0, double t1)
 bool WaveTrack::InsertSilence(double t, double len)
 {
    sampleCount s0, slen;
-
-   if (!Flush())
-      return false;
 
    TimeToSamplesClip(t, &s0);
    slen = (sampleCount)floor(len * mRate + 0.5);
@@ -492,13 +469,81 @@ bool WaveTrack::GetWaveDisplay(float *min, float *max, float *rms,
    }
 
    if (p1 > p0) {
-      if (!mSequence->GetWaveDisplay(&mWaveCache->min[p0],
-                                     &mWaveCache->max[p0],
-                                     &mWaveCache->rms[p0],
-                                     p1-p0,
-                                     &mWaveCache->where[p0],
-                                     mRate / pixelsPerSecond))
-         return false;
+
+      /* handle values in the append buffer */
+
+      int numSamples = mSequence->GetNumSamples();
+      int a;
+
+      for(a=p0; a<p1; a++)
+         if (mWaveCache->where[a+1] > numSamples)
+            break;
+
+      if (a < p1) {
+         int i;
+
+         sampleFormat seqFormat = mSequence->GetSampleFormat();
+
+         for(i=a; i<p1; i++) {
+            sampleCount left = mWaveCache->where[i] - numSamples;
+            sampleCount right = mWaveCache->where[i+1] - numSamples;
+
+            wxCriticalSectionLocker locker(mAppendCriticalSection);
+
+            if (left < 0)
+               left = 0;
+            if (right > mAppendBufferLen)
+               right = mAppendBufferLen;
+
+            if (right > left) {
+               float *b;
+               sampleCount len = right-left;
+               sampleCount j;
+
+               if (seqFormat == floatSample)
+                  b = &((float *)mAppendBuffer)[left];
+               else {
+                  b = new float[len];
+                  CopySamples(mAppendBuffer + left*SAMPLE_SIZE(seqFormat),
+                              seqFormat,
+                              (samplePtr)b, floatSample, len);
+               }
+
+               float max = b[0];
+               float min = b[0];
+               float sumsq = b[0] * b[0];
+
+               for(j=1; j<len; j++) {
+                  if (b[j] > max)
+                     max = b[j];
+                  if (b[j] < min)
+                     min = b[j];
+                  sumsq += b[j]*b[j];
+               }
+
+               mWaveCache->min[i] = min;
+               mWaveCache->max[i] = max;
+               mWaveCache->rms[i] = (float)sqrt(sumsq / len);
+
+               if (seqFormat != floatSample)
+                  delete[] b;
+            }
+         }         
+
+         // So that the sequence doesn't try to write any
+         // of these values
+         p1 = a;
+      }
+
+      if (p1 > p0) {
+         if (!mSequence->GetWaveDisplay(&mWaveCache->min[p0],
+                                        &mWaveCache->max[p0],
+                                        &mWaveCache->rms[p0],
+                                        p1-p0,
+                                        &mWaveCache->where[p0],
+                                        mRate / pixelsPerSecond))
+            return false;
+      }
    }
 
    mWaveCache->dirty = mDirty;
@@ -750,7 +795,6 @@ bool WaveTrack::Append(samplePtr buffer, sampleFormat format,
 bool WaveTrack::AppendAlias(wxString fName, sampleCount start,
                             sampleCount len, int channel)
 {
-   Flush();
    MarkChanged();
 
    return mSequence->AppendAlias(fName, start, len, channel);
@@ -848,8 +892,6 @@ void WaveTrack::WriteXML(int depth, FILE *fp)
 {
    int i;
 
-   Flush();
-   
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
    fprintf(fp, "<wavetrack ");
@@ -873,17 +915,11 @@ void WaveTrack::WriteXML(int depth, FILE *fp)
 
 bool WaveTrack::Lock()
 {
-   if (!Flush())
-      return false;
-
    return mSequence->Lock();
 }
 
 bool WaveTrack::Unlock()
 {
-   if (!Flush())
-      return false;
-
    return mSequence->Unlock();
 }
 

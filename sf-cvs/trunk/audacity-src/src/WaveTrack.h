@@ -130,10 +130,15 @@ class WaveTrack: public Track {
    bool Set(samplePtr buffer, sampleFormat format,
             longSampleCount start, sampleCount len);
 
+   /// You must call Flush after the last Append
    bool Append(samplePtr buffer, sampleFormat format,
                sampleCount len, unsigned int stride=1);
+   /// Flush must be called after last Append
+   bool Flush();
+
    bool AppendAlias(wxString fName, sampleCount start,
                     sampleCount len, int channel);
+
 
    //
    // Getting information about the track's internal block sizes
@@ -203,8 +208,6 @@ class WaveTrack: public Track {
 
    bool TimeToSamples(double t0, sampleCount *s0);
    void TimeToSamplesClip(double t0, sampleCount *s0);
-
-   bool Flush();
 
  private:
 

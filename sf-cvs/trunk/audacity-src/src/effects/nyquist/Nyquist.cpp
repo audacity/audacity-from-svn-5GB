@@ -508,6 +508,7 @@ bool EffectNyquist::ProcessOne()
    nyx_get_audio(StaticPutCallback, (void *)this);
    
    for(i=0; i<outChannels; i++) {
+      mOutputTrack[i]->Flush();
       if (mCurBuffer[i])
          DeleteSamples(mCurBuffer[i]);
       mOutputTime = mOutputTrack[i]->GetEndTime();

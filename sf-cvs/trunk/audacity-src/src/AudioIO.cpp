@@ -521,6 +521,7 @@ void AudioIO::StopStream()
       for( unsigned int i = 0; i < mCaptureTracks.GetCount(); i++ )
       {
          delete mCaptureBuffers[i];
+         mCaptureTracks[i]->Flush();
       }
 
       delete[] mCaptureBuffers;

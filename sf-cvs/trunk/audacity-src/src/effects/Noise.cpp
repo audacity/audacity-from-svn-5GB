@@ -55,6 +55,7 @@ bool EffectNoise::Process()
       }
       delete[] data;
 
+      tmp->Flush();
       track->Paste(mT0, tmp);
       delete tmp;
       
