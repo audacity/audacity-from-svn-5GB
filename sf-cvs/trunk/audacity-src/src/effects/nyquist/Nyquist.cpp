@@ -488,7 +488,7 @@ bool EffectNyquist::ProcessOne()
 
          nyx_get_label(l, &t, &str);
 
-         ltrack->Add(t + mT0, str);
+         ltrack->AddLabel(t + mT0, t + mT0, str);
       }
 
       return true;

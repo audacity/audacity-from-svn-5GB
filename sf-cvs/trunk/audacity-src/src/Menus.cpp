@@ -2454,8 +2454,6 @@ void AudacityProject::OnNewTimeTrack()
       }
 }
 
-//FIXME: This does not work for selections.
-//LabelTrack appears to be missing functionality
 void AudacityProject::OnAddLabel()
 {
    TrackListIterator iter(mTracks);
@@ -2471,13 +2469,13 @@ void AudacityProject::OnAddLabel()
 
    if (!lt) {
       lt = new LabelTrack(mDirManager);
-
-      SelectNone();
-
       mTracks->Add(lt);
-   }
 
-   lt->Add(mViewInfo.sel0, "");
+   }
+   SelectNone();
+   lt->SetSelected(true);
+
+   lt->AddLabel(mViewInfo.sel0, mViewInfo.sel1);
 
    PushState(_("Added label"), _("Label"));
 

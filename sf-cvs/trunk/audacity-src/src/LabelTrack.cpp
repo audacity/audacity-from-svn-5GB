@@ -45,6 +45,7 @@ Track(orig)
    for (int i = 0; i < len; i++) {
       LabelStruct *l = new LabelStruct();
       l->t = orig.mLabels[i]->t;
+      l->t1 = orig.mLabels[i]->t1;
       l->title = orig.mLabels[i]->title;
       mLabels.Add(l);
    }
@@ -192,7 +193,8 @@ double LabelTrack::GetEndTime()
       return mLabels[len - 1]->t;
 }
 
-void LabelTrack::MouseDown(int x, int y, wxRect & r, double h, double pps)
+void LabelTrack::MouseDown(int x, int y, wxRect & r, double h, double pps,
+                           double *newSel0, double *newSel1)
 {
    double mouseH = h + (x - r.x) / pps;
 
@@ -200,6 +202,8 @@ void LabelTrack::MouseDown(int x, int y, wxRect & r, double h, double pps)
       if (mLabels[i]->t - (8 / pps) < mouseH &&
           mouseH < mLabels[i]->t + (mLabels[i]->width / pps)) {
          mSelIndex = i;
+         *newSel0 = mLabels[i]->t;
+         *newSel1 = mLabels[i]->t1;
          return;
       }
    }
@@ -222,6 +226,7 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
          break;
 
       case WXK_RETURN:
+      case WXK_ESCAPE:
          if (mLabels[mSelIndex]->title == "") {
             delete mLabels[mSelIndex];
             mLabels.RemoveAt(mSelIndex);
@@ -248,6 +253,7 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
 
       LabelStruct *l = new LabelStruct();
       l->t = sel0;
+      l->t1 = sel1;
       l->title += wxChar(keyCode);
 
       int len = mLabels.Count();
@@ -271,6 +277,9 @@ bool LabelTrack::IsSelected() const
 {
    return (mSelIndex >= 0 && mSelIndex < (int)mLabels.Count());
 }
+
+// TODO: Make Export include label end-times (LabelStruct::t1). 
+// Make Import handle files with or without end-times.
 
 void LabelTrack::Export(wxTextFile & f)
 {
@@ -320,6 +329,7 @@ void LabelTrack::Import(wxTextFile & in)
 
       LabelStruct *l = new LabelStruct();
       l->t = t;
+      l->t1 = t;
       l->title = title;
       mLabels.Add(l);
    }
@@ -333,6 +343,7 @@ bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
 
       // loop through attrs, which is a null-terminated list of
       // attribute-value pairs
+      bool has_t1 = false;
       while(*attrs) {
          const char *attr = *attrs++;
          const char *value = *attrs++;
@@ -342,10 +353,19 @@ bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
          
          if (!strcmp(attr, "t"))
             wxString(value).ToDouble(&l->t);
+         else if (!strcmp(attr, "t1")) {
+            has_t1 = true;
+            wxString(value).ToDouble(&l->t1);
+         }
          else if (!strcmp(attr, "title"))
             l->title = value;
 
       } // while
+
+      // Handle files created by Audacity 1.1.   Labels in Audacity 1.1
+      // did not have separate start- and end-times.
+      if (!has_t1)
+         l->t1 = l->t;
 
       mLabels.Add(l);
 
@@ -396,8 +416,8 @@ void LabelTrack::WriteXML(int depth, FILE *fp)
    for (i = 0; i < len; i++) {
       for(j=0; j<depth+1; j++)
          fprintf(fp, "\t");
-      fprintf(fp, "<label t=\"%.8g\" title=\"%s\"/>\n",
-              mLabels[i]->t,
+      fprintf(fp, "<label t=\"%.8g\" t1=\"%.8g\" title=\"%s\"/>\n",
+              mLabels[i]->t, mLabels[i]->t1,
               XMLEsc(mLabels[i]->title).c_str());
    }
    for(j=0; j<depth; j++)
@@ -425,6 +445,8 @@ bool LabelTrack::Load(wxTextFile * in, DirManager * dirManager)
       LabelStruct *l = new LabelStruct();
       if (!(in->GetNextLine().ToDouble(&l->t)))
          return false;
+      // Legacy file format does not include label end-times.
+      l->t1 = l->t;
       l->title = in->GetNextLine();
       mLabels.Add(l);
    }
@@ -459,13 +481,16 @@ bool LabelTrack::Cut(double t0, double t1, Track ** dest)
    for (int i = 0; i < len; i++) {
       if (t0 <= mLabels[i]->t && mLabels[i]->t <= t1) {
          mLabels[i]->t -= t0;
+         mLabels[i]->t1 -= t0;
          ((LabelTrack *) (*dest))->mLabels.Add(mLabels[i]);
          mLabels.RemoveAt(i);
          len--;
          i--;
       }
-      else if (mLabels[i]->t > t1)
+      else if (mLabels[i]->t > t1) {
          mLabels[i]->t -= (t1 - t0);
+         mLabels[i]->t1 -= (t1 - t0);
+      }
    }
    ((LabelTrack *) (*dest))->mClipLen = (t1 - t0);
 
@@ -481,6 +506,7 @@ bool LabelTrack::Copy(double t0, double t1, Track ** dest) const
       if (t0 <= mLabels[i]->t && mLabels[i]->t <= t1) {
          LabelStruct *l = new LabelStruct();
          l->t = mLabels[i]->t - t0;
+         l->t1 = mLabels[i]->t1 - t0;
          l->title = mLabels[i]->title;
          ((LabelTrack *) (*dest))->mLabels.Add(l);
       }
@@ -505,6 +531,7 @@ bool LabelTrack::Paste(double t, const Track * src)
    for (unsigned int j = 0; j < sl->mLabels.Count(); j++) {
       LabelStruct *l = new LabelStruct();
       l->t = sl->mLabels[j]->t + t;
+      l->t1 = sl->mLabels[j]->t1 + t;
       l->title = sl->mLabels[j]->title;
       mLabels.Insert(l, pos++);
       len++;
@@ -512,6 +539,7 @@ bool LabelTrack::Paste(double t, const Track * src)
 
    while (pos < len) {
       mLabels[pos]->t += sl->mClipLen;
+      mLabels[pos]->t1 += sl->mClipLen;
       pos++;
    }
 
@@ -528,8 +556,10 @@ bool LabelTrack::Clear(double t0, double t1)
          len--;
          i--;
       }
-      else if (mLabels[i]->t > t1)
+      else if (mLabels[i]->t > t1) {
          mLabels[i]->t -= (t1 - t0);
+         mLabels[i]->t1 -= (t1 - t0);
+      }
    }
 
    return true;
@@ -554,9 +584,13 @@ bool LabelTrack::InsertSilence(double t, double len)
 {
    int numLabels = mLabels.Count();
 
-   for (int i = 0; i < numLabels; i++)
+   for (int i = 0; i < numLabels; i++) {
       if (mLabels[i]->t >= t)
          mLabels[i]->t += len;
+
+      if (mLabels[i]->t1 >= t)
+         mLabels[i]->t1 += len;
+   }
 
    return true;
 }
@@ -571,18 +605,22 @@ const LabelStruct *LabelTrack::GetLabel(int index) const
    return mLabels[index];
 }
 
-void LabelTrack::Add(double t, wxString title)
+void LabelTrack::AddLabel(double t, double t1, const wxString &title)
 {
+   LabelStruct *l = new LabelStruct();
+   l->t = t;
+   l->t1 = t1;
+   l->title = title;
+
    int len = mLabels.Count();
    int pos = 0;
 
    while (pos < len && mLabels[pos]->t < t)
       pos++;
 
-   LabelStruct *l = new LabelStruct();
-   l->t = t;
-   l->title = title;
    mLabels.Insert(l, pos);
+
+   mSelIndex = pos;
 }
 
 // Private method called from the constructor

@@ -28,6 +28,7 @@ class DirManager;
 
 struct LabelStruct {
    double t;
+   double t1;
    wxString title;
    int width;
 };
@@ -73,7 +74,8 @@ class LabelTrack:public Track {
    virtual bool Silence(double t0, double t1);
    virtual bool InsertSilence(double t, double len);
 
-   void MouseDown(int x, int y, wxRect & r, double h, double pps);
+   void MouseDown(int x, int y, wxRect & r, double h, double pps,
+                           double *newSel0, double *newSel1);
 
    void KeyEvent(double sel0, double sel1, wxKeyEvent & event);
 
@@ -87,7 +89,7 @@ class LabelTrack:public Track {
    int GetNumLabels() const;
    const LabelStruct *GetLabel(int index) const;
 
-   void Add(double t, wxString title);
+   void AddLabel(double t, double t1, const wxString &title = "");
 
  private:
 
