@@ -4318,6 +4318,12 @@ void TrackLabel::DrawMuteSolo(wxDC * dc, const wxRect r, Track * t,
    dc->DrawText(str, bev.x + (bev.width - textWidth) / 2, bev.y + 2);
 
    AColor::Bevel(*dc, (solo?t->GetSolo():t->GetMute()) == down, bev);
+
+   if (solo && !down) {
+      // Update the mute button, which may be grayed out depending on
+      // the state of the solo button.
+      DrawMuteSolo(dc, r, t, false, false);
+   }
 }
 
 void TrackLabel::MakeMoreSliders()
