@@ -1,6 +1,15 @@
 <?php BoxTop("Nyquist (2)"); ?>
 
 <p>
+<?php print "<a href=nyquist.php?$langLinkStr>";
+?>Part 1: Introduction to Nyquist and Lisp programming.</a><br>
+<?php print "<a href=nyquist2.php?$langLinkStr>";
+?>Part 2: Programming in Nyquist.</a><br>
+<?php print "<a href=nyquist3.php?$langLinkStr>";
+?>Part 3: Creating Nyquist plug-ins.</a><br>
+</p>
+
+<p>
 What makes Nyquist distinct from Lisp is that it is designed to work with
 sound, and has lots of built-in primitives and functions that synthesize,
 analyze, and manipulate sounds.  Within Audacity, this makes it
