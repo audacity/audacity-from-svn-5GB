@@ -39,7 +39,7 @@ void get_xlisp_path(char *paths, int paths_max)
 
 
 #ifdef USE_NYQUIST
-	#ifndef __WXGTK__ // Not for Linux because stdlib.h for gcc defines its own random().
+	#ifdef __WXMSW__ // Not for Linux because stdlib.h for gcc defines its own random().
 		/* vjohnson */
 		extern "C" {
 		long random_seed = 1534781L;

@@ -115,6 +115,7 @@ int audacityAudioCallback(
    //
 
    if (outputBuffer && numOutChannels > 0) {
+      float volume = gAudioIO->mProject->GetControlToolBar()->GetSoundVol();
 
       float *outputFloats = (float *)outputBuffer;
       for(i=0; i<framesPerBuffer*numOutChannels; i++)
@@ -165,12 +166,12 @@ int audacityAudioCallback(
          if (vt->GetChannel() == Track::LeftChannel ||
              vt->GetChannel() == Track::MonoChannel)
             for(i=0; i<len; i++)
-               outputFloats[numOutChannels*i] += tempFloats[i];
+               outputFloats[numOutChannels*i] += volume*tempFloats[i];
          
          if (vt->GetChannel() == Track::RightChannel ||
              vt->GetChannel() == Track::MonoChannel)
             for(i=0; i<len; i++)
-               outputFloats[numOutChannels*i+1] += tempFloats[i];
+               outputFloats[numOutChannels*i+1] += volume*tempFloats[i];
       }
    }
    
