@@ -19,6 +19,7 @@
 #include <math.h>
 
 #include <wx/defs.h>
+#include <wx/docview.h>
 #include <wx/msgdlg.h>
 #include <wx/filedlg.h>
 #include <wx/textfile.h>
@@ -200,17 +201,10 @@ void AudacityProject::CreateMenusAndCommands()
    wxMenu* pm = c->BeginSubMenu(_("Recent &Files..."));
    c->EndSubMenu();
    // TODO - read the number of files to store in history from preferences
-   mRecentFiles = new audFileHistory(6, wxID_FILE1);
+   mRecentFiles = new wxFileHistory();
    mRecentFiles->UseMenu(pm);
-   pm = c->BeginSubMenu(_("Recent Pro&jects..."));
-   c->EndSubMenu();
-   mRecentProjects = new audFileHistory(6, 6050);
-   mRecentProjects->UseMenu(pm);
    gPrefs->SetPath("/RecentFiles");
    mRecentFiles->Load(*gPrefs);
-   gPrefs->SetPath("..");
-   gPrefs->SetPath("/RecentProjects");
-   mRecentProjects->Load(*gPrefs);
    gPrefs->SetPath("..");
    c->AddSeparator();
 
@@ -635,8 +629,6 @@ void AudacityProject::RebuildMenuBar()
    mCommandManager.PurgeData();
    delete mRecentFiles;
    mRecentFiles = NULL;
-   delete mRecentProjects;
-   mRecentProjects = NULL;
    CreateMenusAndCommands();
 }
 
