@@ -349,7 +349,6 @@ void AudioIO::HandleDeviceChange()
    }
 
    mPortMixer = Px_OpenMixer(stream, 0);
-   Pa_CloseStream(stream);
 
    // Determine mixer capabilities - it it doesn't support either
    // input or output, we emulate them (by multiplying this value
@@ -374,6 +373,8 @@ void AudioIO::HandleDeviceChange()
    if (Px_GetInputVolume(mPortMixer) < 0.95)
       mEmulateMixerInputVol = true;
    Px_SetInputVolume(mPortMixer, mMixerInputVol);
+
+   Pa_CloseStream(stream);
 
    #if 0
    printf("PortMixer: Output: %s Input: %s\n",
