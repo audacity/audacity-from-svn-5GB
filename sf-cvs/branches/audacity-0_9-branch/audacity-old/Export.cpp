@@ -60,6 +60,13 @@ bool Export(AudacityProject *project,
       return false;
    }
 
+#ifndef USE_LIBVORBIS
+   if (format == "OGG") {
+      wxMessageBox("Sorry, this build of Audacity does not include Ogg Vorbis support");
+      return false;
+   }
+#endif
+
    /* First analyze the selected audio, perform sanity checks, and provide
     * information as appropriate. */
 
@@ -268,9 +275,11 @@ bool Export(AudacityProject *project,
    else if (format == "MP3")
       return ExportMP3(project, stereo, fName,
                        selectionOnly, t0, t1);
+#ifdef USE_LIBVORBIS
    else if (format == "OGG")
       return ExportOGG(project, stereo, fName,
                        selectionOnly, t0, t1);
+#endif
 
    /* Execution should never reach this point...!
       Return false only so we don't get a compiler warning */
