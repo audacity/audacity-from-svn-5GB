@@ -26,6 +26,7 @@ $available_locales = array(
   "nb" => array("nb_NO", "Norsk (Bokm&aring;l)"),
   "pt" => array("pt_BR", "Portugu&ecirc;s"),
   "sl" => array("sl_SI", "Sloven&#353;&#269;ina"),
+  "sv" => array("sv_SE", "Svenska"),
   "zh-CN" => array("zh_CN.UTF-8", "&#20013;&#25991;(&#31616;)"),
 );
 
