@@ -551,7 +551,7 @@ void ChangeSpeedDialog::OnPreview(wxCommandEvent &event)
 {
    TransferDataFromWindow();
 
-	// Save & restore m_pEffect->m_PercentChange around Preview, since we didn't do OK.
+	// Save & restore parameters around Preview, because we didn't do OK.
 	double oldPercentChange = m_pEffect->m_PercentChange;
    m_pEffect->m_PercentChange = m_PercentChange;
    m_pEffect->Preview();
