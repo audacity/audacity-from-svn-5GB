@@ -18,7 +18,6 @@
 #include <wx/dcmemory.h>
 #include <wx/image.h>
 
-#include "AButton.h"
 #include "ASlider.h"
 
 BEGIN_EVENT_TABLE(ASlider, wxWindow)
