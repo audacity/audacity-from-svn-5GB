@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.1\n"
 "POT-Creation-Date: 2002-11-26 10:32-0800\n"
-"PO-Revision-Date: 2002-11-27 05:55--300\n"
+"PO-Revision-Date: 2003-01-10 21:25--300\n"
 "Last-Translator: Cleber Tavano <linux@mcm.net>\n"
 "Language-Team: Cleber Tavano <linux@mcm.net>\n"
 "MIME-Version: 1.0\n"
@@ -135,8 +135,8 @@ msgstr "E&xibir"
 #: ../src/prefs/FileFormatPrefs.cpp:404
 msgid "(Not all combinations of headers\n"
 "and encodings are possible.)"
-msgstr "(Nem todas as possibilidades entre formatos e\n"
-"codecs estão disponíveis.)"
+msgstr "(Nem todas as possibilidades entre tipos e\n"
+"formatos estão disponíveis.)"
 
 #: ../src/import/ImportRaw.cpp:902
 msgid "0-byte offset"
@@ -180,7 +180,7 @@ msgstr "32-bit PCM"
 
 #: ../src/FileFormats.cpp:152
 msgid "32-bit floating point"
-msgstr "32-bit ponto flutuante"
+msgstr "32-bit - ponto flutuante"
 
 #: ../src/FileFormats.cpp:159
 msgid "32kbps G721 ADPCM"
@@ -200,7 +200,7 @@ msgstr "64-bit Wave (Sonic Foundry)"
 
 #: ../src/FileFormats.cpp:153
 msgid "64-bit floating point"
-msgstr "64-bit ponto flutuante"
+msgstr "64-bit - ponto flutuante"
 
 #: ../src/import/ImportRaw.cpp:882
 msgid "8-bit"
@@ -251,20 +251,23 @@ msgid ""
 "http://www.busam.com/skyland/iavc\n"
 "7/21/02: WAV and MP3 files both work."
 msgstr ""
-"Este valores estão em amostras.\n"
-"Configurações de Ajuste define o\n"
+"Valores em amostras.\n"
+"\n"
+"Configurações de Ajuste: define o\n"
 "número de amostras médias.\n"
-"Janela de ajuste define o menor\n"
-"tempo entre as alterações de\n"
-"volume.\n"
-"Menor modificação ajusta o\n"
-"volume antes de alterar.\n"
-"A tabela à direita determina quanto\n"
-"cada nível de volume deve ser \n"
-"amplificado.\n"
+" \n"
+"Janela de ajuste: define o menor\n"
+"tempo entre as alterações de volume.\n"
+" \n"
+"Menor modificação: ajusta o\n"
+"volume antes da alteração.\n"
+" \n"
+"A tabela Ajustes de Amplificação \n"
+"determina quanto cada nível de volume \n"
+"deve ser amplificado.\n"
+" \n"
 "Veja mais em: \n"
-"http://www.busam.com/skyland/iavc\n"
-"21/7/02: WAV e MP3 estão funcionando."
+"http://www.busam.com/skyland/iavc"
 
 #: ../src/HistoryWindow.cpp:61
 msgid "Action"
@@ -491,7 +494,7 @@ msgid "Applied effect: %s %d stages, %.0f%% wet, frequency = %.1f Hz, start phas
 msgstr "Efeito aplicado: %s %d estágios, %.0f%% wet, freqüência = %.1f Hz, fase inicial = %.0f graus, prof. = %d, retorno = %.0f%%"
 
 #: ../src/effects/AvcCompressor.cpp:86
-#, fuzzy, c-format
+#, c-format
 msgid "Applied effect: %s change window = %d samples"
 msgstr "Efeito aplicado: %s altera janela = %d amostras"
 
@@ -593,7 +596,7 @@ msgid ""
 "\n"
 "Would you like to locate LameLib now?"
 msgstr ""
-"O Audacity não pode exportar arquivos em formato .MP3 sozinho. Para isto, é utilizado o LAME, um DLL de exportação disponível na Internet. Veja a ajuda para detalhes. \n"
+"O Audacity não pode exportar arquivos em formato .MP3 diretamente. No entanto, pode ser utilizado o LAME, um DLL de exportação disponível na Internet. Veja a ajuda para detalhes. \n"
 "\n"
 "Gostaria de buscar pelo LameLib agora?"
 
@@ -605,13 +608,14 @@ msgid ""
 "\n"
 "Would you like to locate lame_enc.dll now?"
 msgstr ""
-"O Audacity não pode exportar arquivos em formato .MP3 sozinho. \n"
-"Para isto, é utilizado o LAME, um DLL de exportação disponível \n"
-"gratiuitamente na Internet. Você deve obter este DLL diretamente \n"
-"da Internet, buscando por \"lame_enc.dll\" e informar ao Audacity \n"
-"onde ele se encontra.\n"
-"\n"
-"Gostaria de buscar pelo lame_enc.dll agora?"
+"Não é possível exportar diretamente arquivos em formato .MP3 por questões de licenciamento.\n"
+" \n"
+"No entanto, o Audacity pode utilizar o LAME, um DLL de exportação disponível gratuitamente\n"
+"na Internet, para exportar neste formato.\n"
+"Você deve obter este DLL diretamente da Internet, buscando por \"lame_enc.dll\". \n"
+"Feita a cópia deste DLL para o sistema, deve-se informar ao Audacity onde encontrá-lo.\n"
+" \n"
+"Gostaria de buscar pelo lame_enc.dll em seu sistema agora?"
 
 #: ../src/export/ExportMP3.cpp:237
 msgid ""
@@ -623,11 +627,10 @@ msgid ""
 "\n"
 "Would you like to locate libmp3lame.so now?"
 msgstr ""
-"Não é feita a exportação para MP3 automaticamente! O Audacity usa\n"
-"uma biblioteca disponível gratuitamente na Internet da LAME para isso.\n"
-"Você deve obter o arquivo libmp3lame.so separadamente, baixando-o\n"
-"da Internet e então localizando-o no Audacity. Só há a necessidade de se\n"
-"proceder assim uma única vez.\n"
+"Não é feita a exportação para MP3 diretamente. O Audacity usa uma biblioteca disponível gratuitamente na Internet da LAME para isso.\n"
+"Você deve obter o arquivo \"libmp3lame.so\" separadamente, baixando-o\n"
+"da Internet e então localizando-o no Audacity.  Só há a  necessidade de \n"
+"se proceder assim uma única vez.\n"
 "\n"
 "Proceder a busca por libmp3lame.so no sistema agora?"
 
@@ -650,7 +653,7 @@ msgstr "Audacity esperava por um arquivo chamado \"%s\". Está certo que deseja e
 
 #: ../src/prefs/PrefsDialog.cpp:74
 msgid "Audio I/O"
-msgstr "E/S de Áudio"
+msgstr "Dispositivos"
 
 #: ../src/WaveTrack.cpp:99
 msgid "Audio Track"
@@ -1115,7 +1118,7 @@ msgstr "Descrição:\n"
 #: ../src/prefs/AudioIOPrefs.cpp:100
 #: ../src/prefs/AudioIOPrefs.cpp:149
 msgid "Device:"
-msgstr "Dispositivo"
+msgstr "Dispositivo:"
 
 #: ../src/prefs/PrefsDialog.cpp:78
 #: ../src/prefs/PrefsDialog.cpp:184
@@ -1243,7 +1246,7 @@ msgstr "Ligado"
 
 #: ../src/prefs/FileFormatPrefs.cpp:432
 msgid "Encoding: "
-msgstr "Codec: "
+msgstr "Formato:"
 
 #: ../src/FreqWindow.cpp:129
 msgid "Enhanced Autocorrelation"
@@ -1259,16 +1262,15 @@ msgstr "Digite comando Nyquist: "
 
 #: ../src/AStatus.cpp:262
 msgid "Enter a rate in Hz (samples per second):"
-msgstr "Digite uma taxa em Hz (amostragems por segundo): "
+msgstr "Digite uma taxa em Hz (amostragens por segundo): "
 
 #: ../src/TrackPanel.cpp:2846
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
 msgstr "Entre uma taxa de amostragem em Hz por segundo, entre 1 e 100000:"
 
 #: ../src/effects/Echo.cpp:49
-#, fuzzy
 msgid "Enter the decay factor: "
-msgstr "Entre o fator de queda: (decay)"
+msgstr "Entre o fator de queda (decay):"
 
 #: ../src/ControlToolBar.cpp:381
 msgid "Envelope Tool"
@@ -1361,7 +1363,7 @@ msgstr "Exportar rótulos como:"
 #: ../src/export/ExportMP3.cpp:85
 #: ../src/export/ExportMP3.cpp:122
 msgid "Export MP3"
-msgstr "Exportar como MP3"
+msgstr "Exportação em formato .MP3"
 
 #: ../src/commands.h:221
 msgid "Export Selection As"
@@ -1495,7 +1497,7 @@ msgstr "Flutuar barra de edição"
 
 #: ../src/Tags.cpp:494
 msgid "Format:"
-msgstr "Formato:"
+msgstr "Arquivo:"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:71
 msgid "Free Space:"
@@ -1715,7 +1717,7 @@ msgstr "Atraso (seg.)\tFreqüência (Hz)\tNível"
 
 #: ../src/prefs/GUIPrefs.cpp:65
 msgid "Language:"
-msgstr "Língua:"
+msgstr "Língua da interface:"
 
 #: ../src/TrackPanel.cpp:265
 msgid "Left Channel"
@@ -1755,7 +1757,7 @@ msgstr "Freqüência log:"
 
 #: ../src/prefs/FileFormatPrefs.cpp:169
 msgid "MP3 Export Setup"
-msgstr "Configurações de exportação em MP3:"
+msgstr "Configurações de exportação em MP3"
 
 #: ../src/prefs/FileFormatPrefs.cpp:177
 msgid "MP3 Library Version:"
@@ -1990,12 +1992,12 @@ msgstr "Nyquist não gerou áudio algum! \n"
 #: ../src/effects/nyquist/Nyquist.cpp:430
 #, c-format
 msgid "Nyquist returned the value: %d"
-msgstr "Nyquist gerou o seguinte: %d"
+msgstr "O Nyquist gerou: %d"
 
 #: ../src/effects/nyquist/Nyquist.cpp:421
 #, c-format
 msgid "Nyquist returned the value: %f"
-msgstr "Nyquist gerou o seguinte: %f"
+msgstr "O Nyquist gerou: %f"
 
 #: ../src/effects/nyquist/Nyquist.cpp:479
 msgid "Nyquist returned too many audio channels.\n"
@@ -2003,7 +2005,7 @@ msgstr "Nyquist gerou faixas de áudio demais para mixar! \n"
 
 #: ../src/prefs/FileFormatPrefs.cpp:138
 msgid "OGG Export Setup"
-msgstr "Configurações de exportação OGG:"
+msgstr "Configurações de exportação OGG"
 
 #: ../src/prefs/FileFormatPrefs.cpp:147
 msgid "OGG Quality:"
@@ -2026,15 +2028,15 @@ msgstr "OK"
 
 #: ../src/AboutDialog.cpp:85
 msgid "Ogg Vorbis importing disabled"
-msgstr "Ogg Vorbis importing disabled"
+msgstr "Importação Ogg Vorbis desabilitada"
 
 #: ../src/AboutDialog.cpp:83
 msgid "Ogg Vorbis importing enabled"
-msgstr "Ogg Vorbis importing enabled"
+msgstr "Importação Ogg Vorbis habilitada"
 
 #: ../src/export/Export.cpp:217
 msgid "Ogg Vorbis support is not included in this build of Audacity"
-msgstr "Ogg Vorbis support is not included in this build of Audacity"
+msgstr "Suporte a Ogg Vorbis não é parte desta versão do Audacity"
 
 #: ../src/commands.h:340
 #: ../src/commands.h:342
@@ -2056,11 +2058,11 @@ msgstr "Ajuda online..."
 
 #: ../src/export/ExportMP3.cpp:791
 msgid "Only LAMELib|LAMELib|Shared Libraries (*)|*"
-msgstr "Apenas LAMELib|LAMELib|Shared Libraries (*)|*"
+msgstr "Apenas LAMELib|LAMELib|Bibliotecas partilhadas (*)|*"
 
 #: ../src/export/ExportMP3.cpp:504
 msgid "Only LameLib|LameLib|All Files (*)|*"
-msgstr "Apenas LAMELib|LAMELib|All Files (*)|*"
+msgstr "Apenas LAMELib|LAMELib|Todos os arquivos (*)|*"
 
 #: ../src/export/ExportMP3.cpp:1022
 msgid "Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*"
@@ -2080,7 +2082,7 @@ msgstr "Valor original"
 
 #: ../src/AboutDialog.cpp:207
 msgid "Other contributors:"
-msgstr "Other contributors:"
+msgstr "Outras pessoas que devemos agradecer:"
 
 #: ../src/AStatus.cpp:70
 #: ../src/prefs/FileFormatPrefs.cpp:105
@@ -2150,11 +2152,11 @@ msgstr "Reproduzir"
 
 #: ../src/prefs/AudioIOPrefs.cpp:171
 msgid "Play other tracks while recording new one"
-msgstr "Reproduzir faixas durante a gravação de outra"
+msgstr "Gravar e reproduzir faixas simultaneamente "
 
 #: ../src/prefs/AudioIOPrefs.cpp:67
 msgid "Playback Device"
-msgstr "Dispositivo de reprodução"
+msgstr "Reprodução de som"
 
 #: ../src/effects/Echo.cpp:56
 msgid "Please enter a positive number for the decay factor: "
@@ -2166,7 +2168,7 @@ msgstr "Por favor, digite um número positivo para o atraso:"
 
 #: ../src/commands.h:271
 msgid "Plot Spectrum"
-msgstr "Desenhar espectro..."
+msgstr "Espectro de freqüência..."
 
 #: ../src/Menus.cpp:168
 #, c-format
@@ -2184,11 +2186,11 @@ msgstr "Preparando...\n"
 #: ../src/AboutDialog.cpp:153
 #: ../src/AboutDialog.cpp:157
 msgid "Primary developer"
-msgstr "Primary developer"
+msgstr "Desenvolvedor primário"
 
 #: ../src/AboutDialog.cpp:110
 msgid "Program build date:"
-msgstr "Program build date:"
+msgstr "Data de compilação:"
 
 #: ../src/AboutDialog.cpp:161
 #: ../src/AboutDialog.cpp:165
@@ -2197,7 +2199,7 @@ msgstr "Program build date:"
 #: ../src/AboutDialog.cpp:177
 #: ../src/AboutDialog.cpp:181
 msgid "Programmer"
-msgstr "Programmer"
+msgstr "Programador"
 
 #: ../src/DirManager.cpp:168
 msgid "Progress"
@@ -2205,7 +2207,7 @@ msgstr "Progresso"
 
 #: ../src/AboutDialog.cpp:149
 msgid "Project leader and primary programmer"
-msgstr "Project leader and primary programmer"
+msgstr "Líder do projeto e programador principal"
 
 #: ../src/AStatus.cpp:188
 msgid "Project rate:"
@@ -2238,7 +2240,7 @@ msgstr "Random Seed :"
 
 #: ../src/FileFormats.cpp:32
 msgid "Raw PCM data"
-msgstr "Raw PCM data"
+msgstr "Dados Raw PCM"
 
 #: ../src/Benchmark.cpp:472
 msgid "Reading data again...\n"
@@ -2254,7 +2256,7 @@ msgstr "Gravar som estéreo"
 
 #: ../src/prefs/AudioIOPrefs.cpp:117
 msgid "Recording Device"
-msgstr "Gravando dispositivo"
+msgstr "Gravação de som"
 
 #: ../src/FFT.cpp:364
 msgid "Rectangular"
@@ -2406,13 +2408,12 @@ msgid "Select All"
 msgstr "Selecionar tudo"
 
 #: ../src/commands.h:260
-#, fuzzy
 msgid "Select Cursor to End"
-msgstr "Selecione cursor para o fim"
+msgstr "Selecionar do cursor para o fim"
 
 #: ../src/commands.h:259
 msgid "Select Start to Cursor"
-msgstr "Selecione início do cursor"
+msgstr "Selecionar do início até o cursor"
 
 #: ../src/Menus.cpp:1517
 msgid "Select a MIDI file..."
@@ -2535,7 +2536,6 @@ msgid "Set Selection Format"
 msgstr "Ajuste do formato da seleção"
 
 #: ../src/TrackPanel.cpp:275
-#, fuzzy
 msgid "Set Snap-To Mode"
 msgstr "Modo Snap-to"
 
@@ -2622,11 +2622,11 @@ msgstr "Espectro"
 #: ../src/Menus.cpp:1081
 #: ../src/commands.h:253
 msgid "Split"
-msgstr "Juntar"
+msgstr "Cortar em nova faixa"
 
 #: ../src/commands.h:254
 msgid "Split At Labels"
-msgstr "Juntar nos rótulos"
+msgstr "Cortar em nova faixa pelos rótulos"
 
 #: ../src/TrackPanel.cpp:268
 msgid "Split Stereo Track"
@@ -2679,7 +2679,7 @@ msgstr "TESTE FALHOU!!!\n"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:50
 msgid "Temp. Directory"
-msgstr "Pasta de arquivos temporários:"
+msgstr "Pasta de arquivos temporários"
 
 #: ../src/Benchmark.cpp:166
 msgid "Test Data Size (MB):"
@@ -2717,7 +2717,7 @@ msgstr "É possível que haja %d quadros repetidos próximos a %lf segundos."
 
 #: ../src/AboutDialog.cpp:120
 msgid "This is a beta version of the program.  It may contain bugs and unfinished features.  We depend on your feedback, so please visit our website and give us your bug reports and feature requests."
-msgstr "This is a beta version of the program.  It may contain bugs and unfinished features.  We depend on your feedback, so please visit our website and give us your bug reports and feature requests."
+msgstr "Esta é uma versão beta do programa, para testes. Podem haver problemas ou recursos não implementados. Dependemos de sua ajuda para tornar este programa cada vez melhor. Visite nosso site e reporte qualquer problema que possa ter."
 
 #: ../src/Project.cpp:1451
 msgid "This project was saved by a different version of Audacity and is no longer supported."
@@ -2810,7 +2810,7 @@ msgstr "Não foi possível abrir o arquivo de destino para gravação."
 
 #: ../src/prefs/FileFormatPrefs.cpp:93
 msgid "Uncompressed Export Format"
-msgstr "Formato de exportação de arquivos sem compressão:"
+msgstr "Formato de exportação de arquivos sem compressão"
 
 #: ../src/commands.h:239
 #: ../src/EditToolBar.cpp:160
@@ -2851,7 +2851,7 @@ msgstr "Subir oitava"
 
 #: ../src/prefs/GUIPrefs.cpp:51
 msgid "Update spectrogram while playing"
-msgstr "Atualizar o espectrograma durante a reprodução"
+msgstr "Atualizar espectrograma durante a reprodução"
 
 #: ../src/prefs/FileFormatPrefs.cpp:156
 msgid "Use OGG instead of MP3"
@@ -2930,7 +2930,7 @@ msgstr "Formato:"
 
 #: ../src/prefs/FileFormatPrefs.cpp:68
 msgid "When importing uncompressed audio files"
-msgstr "Quando importar arquivos não comprimidos:"
+msgstr "Quando importar arquivos não comprimidos"
 
 #: ../src/export/ExportMP3.cpp:91
 #, c-format
