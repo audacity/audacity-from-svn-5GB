@@ -870,7 +870,7 @@ msgstr "Impossibile sostituire"
 #: ../src/effects/nyquist/Nyquist.cpp:617 ../src/import/ImportRaw.cpp:406
 #: ../src/prefs/FileFormatPrefs.cpp:466 ../src/prefs/PrefsDialog.cpp:109
 msgid "Cancel"
-msgstr "Cancella"
+msgstr "Annulla"
 
 #: ../src/export/ExportPCM.cpp:73
 msgid "Cannot export audio in this format."
@@ -3839,7 +3839,7 @@ msgid ""
 "the same effect as clicking no."
 msgstr ""
 "ATTENZIONE: Potreste essere invitati a salvare il vostro lavoro. Cliccando "
-"su Cancella o su No otterrete lo stesso effetto."
+"su Annulla o su No otterrete lo stesso effetto."
 
 #: ../src/effects/Phaser.cpp:484
 msgid "WET"
