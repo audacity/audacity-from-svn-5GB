@@ -17,10 +17,12 @@
 #include <wx/msgdlg.h>
 #include <wx/filedlg.h>
 #include <wx/textfile.h>
+#include <wx/progdlg.h>
 
 #include "../Project.h"
 
 #include "../LabelTrack.h"
+#include "../import/ImportRaw.h"
 #include "../export/Export.h"
 #include "../prefs/PrefsDialog.h"
 #include "../HistoryWindow.h"
@@ -916,34 +918,36 @@ void AudacityProject::OnImportRaw()
                       0,        // Flags
                       this);    // Parent
 
-   if (fileName != "") {
-      path =::wxPathOnly(fileName);
-      gPrefs->Write("/DefaultOpenPath", path);
+   if (fileName == "")
+      return;
 
-      WaveTrack *left = 0;
-      WaveTrack *right = 0;
+   path =::wxPathOnly(fileName);
+   gPrefs->Write("/DefaultOpenPath", path);
+   
+   Track **newTracks;
+   int numTracks;
+   
+   wxStartTimer();
 
-      if (0/*::ImportRaw(this, fileName, &left, &right, &mDirManager)*/) {
+   wxASSERT(!mImportProgressDialog);
 
-         SelectNone();
+   mImportingRaw = true;
 
-         if (left) {
-            mTracks->Add(left);
-            left->SetSelected(true);
-         }
+   numTracks = ::ImportRaw(this, fileName, mTrackFactory, &newTracks,
+                           AudacityProject::ImportProgressCallback,
+                           this);
 
-         if (right) {
-            mTracks->Add(right);
-            right->SetSelected(true);
-         }
-
-         PushState(wxString::Format(_("Imported raw audio from '%s'"),
-                                    fileName.c_str()));
-
-         FixScrollbars();
-         mTrackPanel->Refresh(false);
-      }
+   if(mImportProgressDialog) {
+      delete mImportProgressDialog;
+      mImportProgressDialog = NULL;
    }
+
+   mImportingRaw = false;
+   
+   if (numTracks <= 0)
+      return;
+
+   AddImportedTracks(fileName, newTracks, numTracks);
 }
 
 void AudacityProject::OnEditID3()

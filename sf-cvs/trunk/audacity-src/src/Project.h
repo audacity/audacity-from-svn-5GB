@@ -124,6 +124,8 @@ class AudacityProject:public wxFrame,
    static void ShowOpenDialog(AudacityProject *proj);
    void OpenFile(wxString fileName);
    void Import(wxString fileName);
+   void AddImportedTracks(wxString fileName,
+                          Track **newTracks, int numTracks);
    bool Save(bool overwrite = true, bool fromSaveAs = false);
    bool SaveAs();
    void Clear();
@@ -292,6 +294,7 @@ class AudacityProject:public wxFrame,
    wxScrollBar *mVsbar;
    bool mAutoScrolling;
    bool mActive;
+   bool mImportingRaw;
    HistoryWindow *mHistoryWindow;
 
    ToolBarArray mToolBarArray;

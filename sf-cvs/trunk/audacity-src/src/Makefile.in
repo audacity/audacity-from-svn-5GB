@@ -103,6 +103,8 @@ OBJS = \
 	$(OBJDIR)/import/ImportMP3.o \
 	$(OBJDIR)/import/ImportOGG.o \
 	$(OBJDIR)/import/ImportPCM.o \
+	$(OBJDIR)/import/ImportRaw.o \
+	$(OBJDIR)/import/RawAudioGuess.o \
 	$(OBJDIR)/prefs/PrefsDialog.o \
 	$(OBJDIR)/prefs/AudioIOPrefs.o \
 	$(OBJDIR)/prefs/QualityPrefs.o \
