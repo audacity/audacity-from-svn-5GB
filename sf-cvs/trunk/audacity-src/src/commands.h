@@ -143,16 +143,27 @@ enum {
 
    audEventFunction fp;  //Set up temporary function pointer to use for assigning keybindings
 
+   int format = ReadExportFormatPref();
+   wxString pcmFormat = sf_header_name(format & SF_FORMAT_TYPEMASK);
+
+   mExportString.Printf(_("&Export as %s..."), pcmFormat.c_str());
+   mExportSelectionString.Printf(_("Export &Selection as %s..."),
+                                 pcmFormat.c_str());
+   wxString lossyFormat = "MP3";
+   mExportLossyString.Printf(_("Export as %s..."), lossyFormat.c_str());
+   mExportSelectionLossyString.Printf(_("Export Selection as %s..."),
+                                      lossyFormat.c_str());
+
    // File menu
    CMD_ADDMENU("New\tCtrl+N", "New", OnNew, fileMenu, enabledMenu);
    CMD_ADDMENU("Open...\tCtrl+O", "Open", OnOpen, fileMenu, enabledMenu);
    CMD_ADDMENU("Close\tCtrl+W", "Close", OnClose, fileMenu, enabledMenu);
    CMD_ADDMENU("Save Project\tCtrl+S", "Save Project", OnSave, fileMenu, enabledMenu);
    CMD_ADDMENU("Save Project &As...", "Save Project As", OnSaveAs, fileMenu, enabledMenu);
-   CMD_ADDMENU("Export as %s...", "Export As", OnExportMix, fileMenu, enabledMenu);
-   CMD_ADDMENU("Export &Selection as %s...", "Export Selection As", OnExportSelection, fileMenu, enabledMenu);
-   CMD_ADDMENU("Export as %s...", "Export As (lossy)", OnExportLossyMix, fileMenu, enabledMenu);
-   CMD_ADDMENU("Export Selection as %s...", "Export Selection As (lossy)", OnExportLossySelection, fileMenu, enabledMenu);
+   CMD_ADDMENU(mExportString, "Export As", OnExportMix, fileMenu, enabledMenu);
+   CMD_ADDMENU(mExportSelectionString, "Export Selection As", OnExportSelection, fileMenu, enabledMenu);
+   CMD_ADDMENU(mExportLossyString, "Export As (lossy)", OnExportLossyMix, fileMenu, enabledMenu);
+   CMD_ADDMENU(mExportSelectionLossyString, "Export Selection As (lossy)", OnExportLossySelection, fileMenu, enabledMenu);
    CMD_ADDMENU("Export &Labels...", "Export Labels", OnExportLabels, fileMenu, enabledMenu);
    CMD_ADDMENU("Prefrences...\tCtrl+P", "Prefrences", OnPreferences, fileMenu, enabledMenu);
    CMD_ADDMENU("E&xit", "Exit", OnExit, fileMenu, enabledMenu);
@@ -179,9 +190,11 @@ enum {
    CMD_ADDMENU("Zoom to Selection\tCtrl+E", "Zoom to Selection", OnZoomSel, viewMenu, enabledMenu);
    CMD_ADDMENU("History", "Undo History", UndoHistory, viewMenu, enabledMenu);
    CMD_ADDMENU("Plot Spectrum\tCtrl+U", "Plot Spectrum", OnPlotSpectrum, viewMenu, enabledMenu);
-   CMD_ADDMENU("%s Control Toolbar", "Float Control Toolbar", OnFloatControlToolBar, viewMenu, enabledMenu);
-   CMD_ADDMENU("%s Edit Toolbar", "Load Edit Toolbar", OnLoadEditToolBar, viewMenu, enabledMenu);
-   CMD_ADDMENU("%s Edit Toolbar", "Float Edit Toolbar", OnFloatEditToolBar, viewMenu, enabledMenu);
+#ifndef __WXMAC__
+   CMD_ADDMENU("Float Control Toolbar", "Float Control Toolbar", OnFloatControlToolBar, viewMenu, enabledMenu);
+   CMD_ADDMENU("Unload Edit Toolbar", "Load Edit Toolbar", OnLoadEditToolBar, viewMenu, enabledMenu);
+   CMD_ADDMENU("Float Edit Toolbar", "Float Edit Toolbar", OnFloatEditToolBar, viewMenu, enabledMenu);
+#endif
 
    // Project menu
    CMD_ADDMENU("Import Audio...\tCtrl+I", "Import Audio", OnImport, projectMenu, enabledMenu);

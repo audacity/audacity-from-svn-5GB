@@ -70,17 +70,6 @@ void AudacityProject::CreateMenuBar()
 
    mMenuBar = new wxMenuBar();
 
-   int format = ReadExportFormatPref();
-   wxString pcmFormat = sf_header_name(format & SF_FORMAT_TYPEMASK);
-
-   mExportString.Printf(_("&Export as %s..."), pcmFormat.c_str());
-   mExportSelectionString.Printf(_("Export &Selection as %s..."),
-                                 pcmFormat.c_str());
-   wxString lossyFormat = "MP3";
-   mExportLossyString.Printf(_("Export as %s..."), lossyFormat.c_str());
-   mExportSelectionLossyString.Printf(_("Export Selection as %s..."),
-                                      lossyFormat.c_str());
-
 #define AUDACITY_MENUS_COMMANDS_EVENT_TABLE
 #include "commands.h" // BG: Generate an array of command names, and their corresponding functions
 #undef AUDACITY_MENUS_COMMANDS_EVENT_TABLE
