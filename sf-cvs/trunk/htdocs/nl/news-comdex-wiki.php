@@ -12,11 +12,14 @@ het stemmen eindigt op 31 oktober.
 </p>
 
 <p>
-De <a href="http://audacityteam.org/wiki/">Audacity Wiki</a> is een publiekelijk bewerkbare website over allerlei aan Audacity gerelateerde zaken.  Momenteel bevat het tips, documentatie en links, plus een plaats waar toekomstige nieuwtjes aangevraagd kunnen worden.  Het leueke is, dat iedereen makkelijk mee kan doen - je hoeft alleen maar een link onderop de pagina aan te klikken om je eigen opmerking te plaatsen of te bewerken.  We hopen dat je dit een leuke en behulpzame bron zult vinden.
+De <a href="http://audacityteam.org/wiki/">Audacity Wiki</a> is een publiekelijk bewerkbare website over allerlei aan Audacity gerelateerde
+zaken. Momenteel bevat het tips, documentatie en links, plus een plaats waar toekomstige nieuwtjes aangevraagd kunnen worden.  Het leuke is, dat iedereen makkelijk mee kan doen - je hoeft alleen maar een link onderop de pagina aan
+te klikken om je eigen opmerking te plaatsen of te bewerken.  We hopen dat
+je dit een leuke en behulpzame bron zult vinden.
 </p>
 
 <p>
-Er zijn nu ook <a href="http://audacityteam.org/tshirt.php">Audacity T-Shirts</a> verkrijgbaar als dank voor een ieder die heeft meegewerkt.
+Er zijn nu <a href="http://audacityteam.org/tshirt.php">Audacity T-Shirts</a> verkrijgbaar als dank voor een ieder die heeft meegewerkt.
 </p>
 
 <p>
@@ -28,8 +31,10 @@ welke we opgezet hebben voor extra inhoud betreffende Audacity en onderwerpen di
 </p>
 
 <p>
-Kom binnekort nog eens hier terug voor Audacity 1.2.0-pre3. Als je de laatste tijd (of nooit) een beta-versie of pre-uitgave van Audacity hebt uitgeprobeerd, neem dan eens een kijkje bij onze nieuwe en geupdate
-<a href="http://audacity.sourceforge.net/screenshots.php"
+Kom snel terug voor Audacity 1.2.0-pre3. Als je de laatste tijd, of nooit,
+een beta-versie of pre-uitgave van Audacity hebt uitgeprobeerd, neem dan
+eens een kijkje bij onze nieuwe en
+geupdate <a href="http://audacity.sourceforge.net/screenshots.php"
 >Screenshots</a>. 
 </p>
 
