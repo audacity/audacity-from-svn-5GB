@@ -598,6 +598,10 @@ int AudacityApp::OnAllKeys(wxKeyEvent& event)
    if(event.ShiftDown())
       newStr += "Shift+";
 
+   //BG: Don't allow noncombo letters to be bound
+   if(((!event.ControlDown() && !event.AltDown() && !event.ShiftDown()) && (key >= 33 && key <= 126)) || ((!event.ControlDown() && !event.AltDown() && event.ShiftDown()) && (key >= 33 && key <= 126)))
+      return -1;
+
    if (event.ControlDown() && key >= 1 && key <= 26)
       newStr += (char)(64 + key);
    else if (key >= 33 && key <= 126)

@@ -125,7 +125,13 @@ bool Commands::Reparse()
 
 bool Commands::ProcessKeyCombo(wxString sKeyCombo)
 {
-   return ExecuteFunctionsList(mCommandsReader.GetCommandsMenu()->GetFunctionsFromIdentifier(mCommandsReader.GetCommandsMenu()->GetIdentifierFromKey(sKeyCombo)));
+   int comboID = mCommandsReader.GetCommandsMenu()->GetIdentifierFromKey(sKeyCombo);
+
+   //BG: Simple hack for now, if key is not bound, return false
+   if(comboID == -1)
+      return false;
+
+   return ExecuteFunctionsList(mCommandsReader.GetCommandsMenu()->GetFunctionsFromIdentifier(comboID));
 }
 
 bool Commands::HandleMenuEvent(wxEvent &event)
