@@ -50,8 +50,8 @@ bool Export(AudacityProject *project,
        format != "AIFF with track markers" &&
 #endif
        format != "MP3") {
-      wxMessageBox(wxString::Format("Sorry, cannot export %s data (yet).",
-                                    "Change the default export format in your preferences",
+      wxMessageBox(wxString::Format("Sorry, cannot export %s data (yet). "
+                                    "Change the default export format in your preferences.",
                                     (const char *) format));
       return false;
    }
