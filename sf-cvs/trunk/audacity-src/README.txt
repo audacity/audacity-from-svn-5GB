@@ -1,38 +1,59 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.1.0 (June 5, 2002)
+Version 1.1.1 (November 6, 2002)
 For changelog, see the bottom of this document.
 
-http://audacity.sourceforge.net/
+WWW:   http://audacity.sourceforge.net/
 
-Primary author:
+Email: audacity-help@lists.sourceforge.net
 
-  Dominic Mazzoni <dominic@minorninth.com>
+Lead Developers:
 
-Authors:
+  Dominic Mazzoni
+  Joshua Haberman
+  Matt Brubeck
 
-  Dominic Mazzoni <dominic@minorninth.com>
-  Roger Dannenberg <rbd+@cs.cmu.edu>
-  Jason Cohen <cohen3+@andrew.cmu.edu>
-  Robert Leidle <rfl+@andrew.cmu.edu>
-  Mark Tomlinson <marktoml@hotmail.com>
-  Joshua Haberman <joshua@haberman.com>
-  Nasca Octavian Paul <paulnasca@email.ro> or <paulnasca@yahoo.com>
-  Logan Lewis <proxima@proxc.com>
-  Matt Brubeck <mbrubeck@cs.hmc.edu>
-  Mark Phillips <mitb@totaldeath.com>
-  Tony Oetzmann <airon@epost.de>
-  Brian Gunlogson <bmg300@users.sf.net>
-  Shane Mueller <nestify@users.sf.net>
+Developers:
 
-Icons and logo:
+  Brian Gunlogson
+  Shane Mueller
+  Vaughan Johnson
+  Greg Mekkes
+  Vince Busam
+  Augustus Saunders  
+  Tony Oetzmann
+  Paul Nasca
+  Roger Dannenberg
 
-  Harvey Lubin <agrapha@agrapha.com>
+Other Contributors:
+
+  Dave Beydler
+  Jason Cohen
+  Steve Harris
+  Daniil Kolpakov
+  Robert Leidle
+  Logan Lewis
+  Jason Pepas
+  Mark Phillips
+  Jonathan Ryshpan
+  Patrick Shirkey
+  Mark Tomlinson
+  David Topper
+  Rudy Trubitt
+
+The Audacity Logo:
+
+  Harvey Lubin
   http://www.agrapha.com/
 
-Aqua/MacOS graphics:
+Special Thanks:
 
-  Tom Woodhams <tom@imaginemedia.co.uk>
+  The wxWindows Team
+  The Ogg Vorbis Team
+  Rob Leslie (libmad)
+  Ross Bencina and Phil Burk (PortAudio)
+  Erik de Castro Lopo (libsndfile)
+  Verilogix, Inc.
 
 -------------------------------------------------------------
 
@@ -70,7 +91,8 @@ If you install the RPM, make sure you install the devel RPM
 as well, otherwise, you won't be able to compile Audacity
 from source.
 
-To compile on Linux and other Unix systems, simply run:
+To compile on Linux, Mac OS X, and other Unix systems,
+simply run:
 
   ./configure
   make
@@ -86,8 +108,7 @@ To compile on Windows using MSVC++, please follow the
 instructions found in compile.txt in the "win" subdirectory.
 
 For more information on compilation (CodeWarrior for Mac is
-also supported) please email
-audacity-devel@lists.sourceforge.net
+also supported) please email audacity-help@lists.sourceforge.net
 
 -------------------------------------------------------------
 
@@ -97,17 +118,53 @@ Known issues/problems:
   minimizing a project window.  As a workaround, you can
   just keep the tool palette docked with the project window.
 
-* Linux: Full duplex (play one track while recording another)
-  does not seem to work, even if your sound card supports it.
-  This is likely a problem with the way we are using OSS.
-
-* Linux: Some users report choppy audio.  This is likely a
-  problem with the way we are using OSS.
-
-* Linux: Sound cards that only deal with more than two
-  channels are not yet supported.
-
 -------------------------------------------------------------
+
+New features in Audacity 1.1.1:
+
+  * User Interface
+    - Tooltips appear in Statusbar.
+    - Vertical cursor follows play/record
+    - Pause button
+    - Drawing tool (with three different modes)
+    - Vertical Resizing of stereo tracks is more fun.
+    - Adjust selection by click-dragging selection boundary
+    - Toolbar button context-sensitive enabling/disabling
+    - Better zooming functionality (centers region)
+    - Multiple ways to display the cursor position and selection
+    - Snap-to selection mode
+    - Drag tracks up and down
+    - Align and group align functions
+    - Cursor save/restore
+    - Working history window
+  * Effects
+    - Effects broken down into three menus: Generate, Effect, and
+      Analyze
+    - Generate menu lets you generate silence, noise, or a tone
+    - Nyquist support (supports plug-ins written in Nyquist,
+      an interpreted functional language based on Lisp)
+  * Localization
+    - Improved localization support
+    - More languages available
+    - Language selection dialog on startup
+  * Mac OS X
+    - Support for more audio hardware
+    - Support for full-duplex (play while recording)
+    - Support for MP3 exporting using LameLib Carbon
+  * Unix
+    - Audacity now has a man page (it describes command-line
+      options and how to set the search path)
+  * File Formats
+    - Uses libsndfile 1.0, which fixes some bugs and
+      improves performance
+  * Searching for Files:
+    - On Windows and Mac OS, Audacity now looks for
+      translations in the "Languages" folder and all plug-ins
+      in the "Plug-ins" folder, relative to the program.
+    - On Unix, Audacity looks for translations in
+      <prefix>/share/locale and looks for everything else
+      in <prefix>/share/audacity and also in any paths in
+      the AUDACITY_PATH environment variable
 
 New features in Audacity 1.1.0:
 
