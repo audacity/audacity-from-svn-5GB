@@ -86,7 +86,7 @@ bool EffectRepeat::Process()
    TrackListIterator iter(mWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
-	double maxDestLen = 0.0;
+	double maxDestLen = 0.0; // used to change selection to original plus generated
 	double newDestLen = 0.0;
    while (track) {
       double trackStart = track->GetStartTime();
@@ -195,7 +195,7 @@ bool EffectRepeat::Process()
       count++;
    }
 
-	mT1 = mT0 + maxDestLen;
+	mT1 = mT0 + maxDestLen; // Change selection to original plus generated.
    return true;
 }
 
