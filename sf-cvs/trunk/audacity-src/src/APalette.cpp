@@ -621,7 +621,7 @@ void APalette::OnRewind()
 
    AudacityProject *p = GetActiveProject();
    if (p)
-      p->Rewind();
+      p->Rewind(mRewind->WasShiftDown());
 }
 
 void APalette::OnFF()
@@ -633,7 +633,7 @@ void APalette::OnFF()
 
    AudacityProject *p = GetActiveProject();
    if (p)
-      p->SkipEnd();
+      p->SkipEnd(mFF->WasShiftDown());
 }
 
 float APalette::GetSoundVol()

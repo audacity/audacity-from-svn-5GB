@@ -102,8 +102,8 @@ class AudacityProject:public wxFrame,
 
    void RedrawProject();
    void SelectNone();
-   void Rewind();
-   void SkipEnd();
+   void Rewind(bool shift);
+   void SkipEnd(bool shift);
 
    // Scrollbars
 
