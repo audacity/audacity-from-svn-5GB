@@ -56,6 +56,7 @@ enum {
    ZoomOutID,
    ZoomNormalID,
    ZoomFitID,
+   ZoomSelID,
 
    PlotSpectrumID,
 
@@ -134,6 +135,7 @@ enum {
     EVT_MENU(ZoomOutID, AudacityProject::OnZoomOut)
     EVT_MENU(ZoomNormalID, AudacityProject::OnZoomNormal)
     EVT_MENU(ZoomFitID, AudacityProject::OnZoomFit)
+    EVT_MENU(ZoomSelID, AudacityProject::OnZoomSel)
     EVT_MENU(PlotSpectrumID, AudacityProject::OnPlotSpectrum)
     EVT_MENU(FloatPaletteID, AudacityProject::OnFloatPalette)
     // Project menu
@@ -227,8 +229,10 @@ void OnZoomIn(wxCommandEvent & event);
 void OnZoomOut(wxCommandEvent & event);
 void OnZoomNormal(wxCommandEvent & event);
 void OnZoomFit(wxCommandEvent & event);
+void OnZoomSel(wxCommandEvent & event);
 
 void ZoomFit();
+void ZoomSel();
 
 void OnPlotSpectrum(wxCommandEvent & event);
 

@@ -938,6 +938,13 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
 
       mIsClosing = false;
    }
+
+   if(mTracks->IsEmpty()) // BG: There are no more tracks on screen, so set zoom to normal
+   {
+      mViewInfo->zoom = 44100.0 / 512.0;
+      mListener->TP_RedrawScrollbars();
+      Refresh(false);
+   }
 }
 
 // This actually removes the specified track.  Called from HandleClosing.
