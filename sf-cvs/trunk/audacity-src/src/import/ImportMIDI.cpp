@@ -8,6 +8,7 @@
 
 **********************************************************************/
 
+#include <wx/defs.h>
 #include <wx/msgdlg.h>
 #include <wx/file.h>
 #include <wx/intl.h>

@@ -325,7 +325,7 @@ void AmplifyDialog::OnCancel(wxCommandEvent & event)
    EndModal(false);
 }
 
-wxSizer *MakeAmplifyDialog(wxPanel * parent, bool call_fit,
+wxSizer *MakeAmplifyDialog(wxWindow * parent, bool call_fit,
                              bool set_sizer)
 {
    wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);

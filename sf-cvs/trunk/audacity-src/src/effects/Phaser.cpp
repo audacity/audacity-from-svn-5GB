@@ -443,7 +443,7 @@ void PhaserDialog::OnCancel(wxCommandEvent & event)
 
 // Implement window functions
 
-wxSizer *CreatePhaserDialog(wxPanel * parent, bool call_fit,
+wxSizer *CreatePhaserDialog(wxWindow * parent, bool call_fit,
                             bool set_sizer)
 {
    wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);

@@ -433,7 +433,7 @@ void TagsDialog::OnCancel(wxCommandEvent & event)
    EndModal(false);
 }
 
-wxSizer *MakeTagsDialog(wxPanel * parent, bool call_fit,
+wxSizer *MakeTagsDialog(wxWindow * parent, bool call_fit,
                              bool set_sizer)
 {
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);

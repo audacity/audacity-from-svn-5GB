@@ -115,6 +115,8 @@ wxLongLong GetFreeDiskSpace(TCHAR * path)
 
 #elif defined(__WXMAC__)
 
+#include <CoreServices/CoreServices.h>
+
 void my_c2pstr(char *str)
 {
    int len = strlen((const char *) str);

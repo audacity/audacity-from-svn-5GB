@@ -14,6 +14,12 @@
 
 #include "TrackPanel.h"
 
+#ifdef __WXMAC__
+#ifdef __UNIX__
+#include <Carbon/Carbon.h>
+#endif
+#endif
+
 #include <math.h>
 #include <algorithm>
 
@@ -1071,8 +1077,8 @@ void TrackPanel::DoPopupMenu(wxMouseEvent &event, wxRect& titleRect,
       theMenu->Enable(OnMoveDownID, mTracks->CanMoveDown(t));
 
 #ifdef __WXMAC__
-      ::InsertMenu(mRateMenu->GetHMenu(), -1);
-      ::InsertMenu(mFormatMenu->GetHMenu(), -1);
+      ::InsertMenu((OpaqueMenuHandle *)mRateMenu->GetHMenu(), -1);
+      ::InsertMenu((OpaqueMenuHandle *)mFormatMenu->GetHMenu(), -1);
 #endif
 
       PopupMenu(theMenu, titleRect.x + 1,

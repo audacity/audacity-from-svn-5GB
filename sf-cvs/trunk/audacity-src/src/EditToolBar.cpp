@@ -19,6 +19,8 @@
 #endif
 
 #ifndef WX_PRECOMP
+#include <wx/log.h>
+#include <wx/event.h>
 #include <wx/brush.h>
 #include <wx/dcclient.h>
 #include <wx/intl.h>

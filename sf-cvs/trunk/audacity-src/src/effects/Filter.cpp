@@ -414,7 +414,7 @@ void FilterDialog::OnCancel(wxCommandEvent &event)
    EndModal(false);
 }
 
-wxSizer *MakeFilterDialog( wxPanel *parent, bool call_fit, bool set_sizer )
+wxSizer *MakeFilterDialog( wxWindow *parent, bool call_fit, bool set_sizer )
 {
    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 

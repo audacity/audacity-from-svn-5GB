@@ -27,8 +27,15 @@
 #include <wx/string.h>
 #endif
 
-#ifndef __WXMAC__
-#include <wx/dragimag.h>
+#ifdef __WXMAC__
+# ifdef __UNIX__
+#  include <CoreServices/CoreServices.h>
+# endif
+
+void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
+
+#else
+# include <wx/dragimag.h>
 #endif
 
 #include <wx/filedlg.h>
@@ -193,10 +200,14 @@ mRate((double) gPrefs->
       Read("/SamplingRate/DefaultProjectSampleRate", 44100)),
 mDefaultFormat((sampleFormat) gPrefs->
                Read("/SamplingRate/DefaultProjectSampleFormat",
-                    floatSample)), mDirty(false), mDrag(NULL),
+                    floatSample)), mDirty(false),
 mTrackPanel(NULL), mAutoScrolling(false), mHistoryWindow(NULL),
 mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
 {
+   #ifndef __WXMAC__
+   mDrag = NULL;
+   #endif
+
    // Create track list
    mTracks = new TrackList();
    mLastSavedTracks = NULL;

@@ -14,14 +14,20 @@
 
 #include <math.h>
 
+#include <wx/defs.h>
+
 #ifdef __WXMSW__
 #include <float.h>
 #define finite(x) _finite(x)
 #endif
 
 #ifdef __WXMAC__
-#include <fp.h>
-#define finite(x) isfinite(x)
+# ifdef __UNIX__
+#  include <math.h>
+# else
+#  include <fp.h>
+#  define finite(x) isfinite(x)
+# endif
 #endif
 
 #include <wx/msgdlg.h>

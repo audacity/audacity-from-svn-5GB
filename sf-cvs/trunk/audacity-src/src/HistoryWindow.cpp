@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include <wx/defs.h>
+#include <wx/log.h>
 #include <wx/button.h>
 #include <wx/event.h>
 #include <wx/image.h>

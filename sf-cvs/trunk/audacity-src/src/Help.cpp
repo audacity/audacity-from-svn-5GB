@@ -48,6 +48,7 @@ void QuitHelp()
 
 #else
 
+#include <wx/defs.h>
 #include <wx/filedlg.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>

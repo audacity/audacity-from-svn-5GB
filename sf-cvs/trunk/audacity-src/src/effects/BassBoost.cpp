@@ -292,7 +292,7 @@ void BassBoostDialog::OnCancel(wxCommandEvent & event)
    EndModal(false);
 }
 
-wxSizer *MakeBassBoostDialog(wxPanel * parent, bool call_fit,
+wxSizer *MakeBassBoostDialog(wxWindow * parent, bool call_fit,
                              bool set_sizer)
 {
    wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
