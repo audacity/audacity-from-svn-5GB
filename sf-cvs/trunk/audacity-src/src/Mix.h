@@ -26,7 +26,9 @@ class ControlToolBar;
 class DirManager;
 
 bool QuickMix(TrackList * tracks, TrackFactory *factory,
-              double rate, sampleFormat format);
+              double rate, sampleFormat format,
+              double startTime, double endTime,
+              WaveTrack **newLeft, WaveTrack **newRight);
 
 void MixBuffers(int numChannels, int *channelFlags, float *gains,
                 sampleFormat format, samplePtr src,

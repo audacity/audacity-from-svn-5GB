@@ -39,7 +39,7 @@ EffectCompressor::EffectCompressor()
 
 bool EffectCompressor::PromptUser()
 {
-   CompressorDialog dlog(mParent, -1, _("Dynamic Range Compressor"));
+   CompressorDialog dlog(this, mParent, -1, _("Dynamic Range Compressor"));
    dlog.threshold = mThresholdDB;
    dlog.ratio = mRatio;
    dlog.attack = mAttackTime;
@@ -63,9 +63,9 @@ bool EffectCompressor::PromptUser()
 bool EffectCompressor::NewTrackSimpleMono()
 {
    if (mCircle)
-      delete mCircle;
+      delete[] mCircle;
    if (mLevelCircle)
-      delete mLevelCircle;
+      delete[] mLevelCircle;
 
    mCircleSize = 100;
    mCircle = new double[mCircleSize];
@@ -77,7 +77,7 @@ bool EffectCompressor::NewTrackSimpleMono()
    mCirclePos = 0;
    mRMSSum = 0.0;
 
-   mGainDB = (-mThresholdDB * (1 - 1/mRatio) - 1);
+   mGainDB = ((mThresholdDB*-0.7) * (1 - 1/mRatio));
    if (mGainDB < 0)
       mGainDB = 0;
 
@@ -385,23 +385,27 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
 enum {
    ThresholdID = 7100,
    RatioID,
-   AttackID
+   AttackID,
+   PreviewID
 };
 
 BEGIN_EVENT_TABLE(CompressorDialog,wxDialog)
    EVT_BUTTON( wxID_OK, CompressorDialog::OnOk )
    EVT_BUTTON( wxID_CANCEL, CompressorDialog::OnCancel )
+   EVT_BUTTON( PreviewID, CompressorDialog::OnPreview )
    EVT_SIZE( CompressorDialog::OnSize )
    EVT_SLIDER( ThresholdID, CompressorDialog::OnSlider )
    EVT_SLIDER( RatioID, CompressorDialog::OnSlider )
    EVT_SLIDER( AttackID, CompressorDialog::OnSlider )
 END_EVENT_TABLE()
 
-CompressorDialog::CompressorDialog(wxWindow *parent, wxWindowID id,
+CompressorDialog::CompressorDialog(EffectCompressor *effect,
+                                   wxWindow *parent, wxWindowID id,
                                    const wxString &title,
                                    const wxPoint &position, const wxSize& size,
                                    long style ) :
-   wxDialog( parent, id, title, position, size, style )
+   wxDialog( parent, id, title, position, size, style ),
+   mEffect(effect)
 {
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -449,6 +453,10 @@ CompressorDialog::CompressorDialog(wxWindow *parent, wxWindowID id,
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
    hSizer = new wxBoxSizer(wxHORIZONTAL);
+
+   wxButton *preview = new wxButton(this, PreviewID, mEffect->GetPreviewName());
+   hSizer->Add(preview, 0, wxALIGN_CENTRE|wxALL, 5);
+   hSizer->Add(40, 10);
 
    wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
    ok->SetDefault();
@@ -517,6 +525,16 @@ void CompressorDialog::OnOk(wxCommandEvent &event)
    TransferDataFromWindow();
 
    EndModal(true);
+}
+
+void CompressorDialog::OnPreview(wxCommandEvent &event)
+{
+   TransferDataFromWindow();
+   mEffect->mThresholdDB = threshold;
+   mEffect->mRatio = ratio;
+   mEffect->mUseGain = useGain;
+   mEffect->mAttackTime = attack;
+   mEffect->Preview();
 }
 
 void CompressorDialog::OnCancel(wxCommandEvent &event)

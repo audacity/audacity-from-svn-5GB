@@ -8,11 +8,18 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
+#include <wx/defs.h>
 #include <wx/string.h>
+#include <wx/msgdlg.h>
 #include <wx/progdlg.h>
 #include <wx/timer.h>
 
 #include "Effect.h"
+#include "../AudioIO.h"
+#include "../Mix.h"
+#include "../Prefs.h"
 #include "../WaveTrack.h"
 
 //
@@ -223,3 +230,78 @@ long TrapLong(long x, long min, long max)
    else
       return x;
 }
+
+wxString Effect::GetPreviewName()
+{
+   return _("Preview");
+}
+
+void Effect::Preview()
+{
+   if (gAudioIO->IsBusy())
+      return;
+
+   // Mix the first 3 seconds of audio from all of the tracks
+   double previewLen = 3.0;
+
+   WaveTrack *mixLeft = NULL;
+   WaveTrack *mixRight = NULL;
+   double rate = gPrefs->Read("/SamplingRate/DefaultProjectSampleRate",
+                              AudioIO::GetOptimalSupportedSampleRate());
+   double t0 = mT0;
+   double t1 = t0 + previewLen;
+
+   if (t1 > mT1)
+      t1 = mT1;
+
+   if (t1 <= t0)
+      return;
+
+   if (!::QuickMix(mWaveTracks, mFactory, rate, floatSample, t0, t1,
+                   &mixLeft, &mixRight))
+      return;
+
+   WaveTrackArray playbackTracks;
+   WaveTrackArray recordingTracks;
+   playbackTracks.Add(mixLeft);
+   if (mixRight)
+      playbackTracks.Add(mixRight);
+
+   // Apply effect
+
+   TrackList *saveWaveTracks = mWaveTracks;
+   mWaveTracks = new TrackList();
+   mWaveTracks->Add(mixLeft);
+   if (mixRight)
+      mWaveTracks->Add(mixRight);
+
+   Process();
+
+   // Start audio playing
+   
+   int token =
+      gAudioIO->StartStream(playbackTracks, recordingTracks, NULL,
+                            rate, t0, t1);
+   if (token) {
+      wxBusyCursor busy;
+      ::wxUsleep((int)(previewLen*1000));
+
+      while(gAudioIO->IsStreamActive(token)) {
+         ::wxUsleep(100);
+      }
+      gAudioIO->StopStream();
+
+      while(gAudioIO->IsBusy()) {
+         ::wxUsleep(100);
+      }
+   }
+   else {
+      wxMessageBox(_("Error while opening sound device. Please check the output "
+                     "device settings and the project sample rate."),
+                   _("Error"), wxOK | wxICON_EXCLAMATION, mParent);
+   }
+
+   delete mWaveTracks;
+   mWaveTracks = saveWaveTracks;
+}
+

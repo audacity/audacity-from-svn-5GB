@@ -94,6 +94,7 @@ OBJS = \
 	$(OBJDIR)/effects/Noise.o \
 	$(OBJDIR)/effects/NoiseRemoval.o \
 	$(OBJDIR)/effects/Phaser.o \
+	$(OBJDIR)/effects/Repeat.o \
 	$(OBJDIR)/effects/Reverse.o \
 	$(OBJDIR)/effects/Silence.o \
 	$(OBJDIR)/effects/ToneGen.o \
