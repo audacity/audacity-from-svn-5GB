@@ -136,7 +136,7 @@ if [[ $use_vorbis = "system" ]] ; then
    AC_CHECK_HEADER(vorbis/vorbisfile.h, ,
 		AC_MSG_ERROR([*** Ogg Vorbis headers not found. libvorbis must be installed for Ogg Vorbis support]))
 
-	LIBS="$LIBS -lvorbisfile -lvorbis -logg"
+	LIBS="$LIBS -lvorbisenc -lvorbisfile -lvorbis -logg"
 	AC_DEFINE(USE_LIBVORBIS, 1,
 		[Define if the ogg vorbis decoding library is present])
 fi
@@ -230,7 +230,6 @@ fi
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
-AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
 
 dnl Checks for library functions.
