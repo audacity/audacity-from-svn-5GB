@@ -10,9 +10,6 @@ Known bugs to fix:
 - Problems recording at other than 44100 Hz on Mac
 - Recording at a rate other than 44100 works, but the
   track created has the wrong rate in its label
-- Compile id3lib for Windows version
-- pthread_yield -> sched_yield (or rewrite to not
-  require yielding)
 - Fix id3lib compilation problems on Linux
 - Freeze when opening Prefs panel on MacOS 8.6
 - Exporting using LAME does incorrect sample rate,
@@ -102,3 +99,5 @@ Fixed:
 - "New..." menu item should be "New"
 - Crash in NoiseRemoval effect on Windows.
 - Shouldn't create envelope points outside the track range.
+- Compiled id3lib for Windows version.
+- Changed pthread_yield to sched_yield for portability.
