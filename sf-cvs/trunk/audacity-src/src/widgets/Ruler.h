@@ -47,6 +47,8 @@
 #include <wx/window.h>
 #include "../Envelope.h"
 
+struct ViewInfo;
+
 class Ruler {
  public:
 
@@ -114,6 +116,7 @@ class Ruler {
    void Draw(wxDC& dc);
    void Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed);
 
+
  private:
    void Invalidate();
    void Update();
@@ -122,6 +125,7 @@ class Ruler {
    void FindLinearTickSizes(double UPP);
    wxString LabelString(double d, bool major);
    void Tick(int pos, double d, bool major);
+
 
  private:
    int          mLeft, mTop, mRight, mBottom;
@@ -181,6 +185,44 @@ class RulerPanel : public wxPanel {
 
 private:
     DECLARE_EVENT_TABLE()
+};
+
+// This is an Audacity Specific ruler panel which additionally
+// has border, selection markers, play marker.
+// Once TrackPanel uses wxSizers, we will derive it from some 
+// wxWindow and the GetSize and SetSize functions
+// will then be wxWindows functions instead.
+//class AdornedRulerPanel : public RulerPanel {
+class AdornedRulerPanel 
+{
+ public:
+//   AdornedRulerPanel(wxWindow* parent, wxWindowID id,
+//              const wxPoint& pos = wxDefaultPosition,
+//              const wxSize& size = wxDefaultSize);
+
+    AdornedRulerPanel();
+   ~AdornedRulerPanel();
+
+public:
+   void DrawAdornedRuler(wxDC * dc, ViewInfo * pViewInfo, bool text, bool indicator);
+   static int GetRulerHeight() { return 22;}
+   void SetSize( const wxRect & r );
+   void GetSize( int * width, int * height );
+   void SetLeftOffset( int offset ){ leftOffset = offset;}
+   double indicatorPos;
+
+public:
+   Ruler  ruler;
+
+private:
+   wxRect mRect;
+   ViewInfo * mViewInfo;
+   int leftOffset;  // Number of pixels before we hit the 'zero position'.
+   int GetLeftOffset() { return leftOffset;}
+   void DrawBorder(wxDC * dc, wxRect & r);
+   void DrawSelection(wxDC * dc,  const wxRect r);
+   void DrawMarks(wxDC * dc, const wxRect r, bool /*text */ );
+   void DrawIndicator(wxDC * dc);
 };
 
 #endif //define __AUDACITY_RULER__
