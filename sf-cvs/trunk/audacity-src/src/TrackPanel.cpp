@@ -1450,7 +1450,8 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
       if (pTrack->GetKind() == Track::Label)
          ((LabelTrack *) pTrack)->MouseDown(mMouseClickX, mMouseClickY,
                                             mCapturedRect,
-                                            mViewInfo->h, mViewInfo->zoom);
+                                            mViewInfo->h, mViewInfo->zoom,
+                                            &mViewInfo->sel0, &mViewInfo->sel1);
    }
    mIsSelecting = true;
 }
