@@ -37,6 +37,8 @@
 #include "Project.h"
 #include "WaveTrack.h"
 
+#include "widgets/Ruler.h"
+
 #define kLeftInset 4
 #define kTopInset 4
 
@@ -195,6 +197,10 @@ mAutoScrolling(false)
 
    mPopupMenuTarget = NULL;
 
+   mRuler = new Ruler();
+   mRuler->SetLabelEdges(false);
+   mRuler->SetFormat(Ruler::TimeFormat);
+
    mTimeCount = 0;
    mTimer.parent = this;
    mTimer.Start(50, FALSE);
@@ -206,6 +212,8 @@ TrackPanel::~TrackPanel()
       delete mBitmap;
 
    delete mTrackArtist;
+
+   delete mRuler;
 
    delete mArrowCursor;
    delete mSelectCursor;
@@ -1418,6 +1426,14 @@ void TrackPanel::DrawRulerSelection(wxDC* dc, const wxRect r)
 
 void TrackPanel::DrawRulerMarks(wxDC *dc, const wxRect r, bool text)
 {
+   mRuler->SetBounds(r.x, r.y, r.x+r.width-1, r.y+r.height-1);
+   double min = mViewInfo->h - GetLeftOffset() / mViewInfo->zoom;
+   double max = min + r.width / mViewInfo->zoom;
+   mRuler->SetRange(min, max);
+   
+   mRuler->Draw(*dc);
+
+#if 0
    // Draw marks on ruler
    dc->SetPen(*wxBLACK_PEN);
 
@@ -1505,6 +1521,7 @@ void TrackPanel::DrawRulerMarks(wxDC *dc, const wxRect r, bool text)
       }
       pos += 1.0 / mViewInfo->zoom;
    }
+#endif
 }
 
 void TrackPanel::DrawRulerIndicator(wxDC *dc)

@@ -24,15 +24,16 @@
 BEGIN_EVENT_TABLE(AButton, wxWindow)
     EVT_MOUSE_EVENTS(AButton::OnMouseEvent)
     EVT_PAINT(AButton::OnPaint)
-    END_EVENT_TABLE()
+END_EVENT_TABLE()
 
 AButton::AButton(wxWindow * parent, wxWindowID id,
-                     const wxPoint & pos,
-                     const wxSize & size,
-                     char **upXPM,
-                     char **overXPM,
-                     char **downXPM,
-                     char **disXPM):wxWindow(parent, id, pos, size)
+                 const wxPoint & pos,
+                 const wxSize & size,
+                 char **upXPM,
+                 char **overXPM,
+                 char **downXPM,
+                 char **disXPM):
+   wxWindow(parent, id, pos, size)
 {
    mButtonIsDown = false;
    mButtonState = AButtonUp;
@@ -44,6 +45,28 @@ AButton::AButton(wxWindow * parent, wxWindowID id,
    mBitmap[2] = new wxBitmap((const char **) downXPM);
    mBitmap[3] = new wxBitmap((const char **) disXPM);
 
+   GetSize(&mWidth, &mHeight);
+}
+
+AButton::AButton(wxWindow * parent, wxWindowID id,
+                const wxPoint & pos,
+                const wxSize & size,
+                wxImage *up,
+                wxImage *over,
+                wxImage *down,
+                wxImage *dis):
+   wxWindow(parent, id, pos, size)
+{
+   mButtonIsDown = false;
+   mButtonState = AButtonUp;
+   mIsClicking = false;
+   mEnabled = true;
+   
+   mBitmap[0] = new wxBitmap(up->ConvertToBitmap());
+   mBitmap[1] = new wxBitmap(over->ConvertToBitmap());
+   mBitmap[2] = new wxBitmap(down->ConvertToBitmap());
+   mBitmap[3] = new wxBitmap(dis->ConvertToBitmap());
+   
    GetSize(&mWidth, &mHeight);
 }
 

@@ -864,7 +864,8 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    if (mUndoManager.UnsavedChanges()) {
       int result = wxMessageBox(_("Save changes before closing?"),
                                 _("Save changes?"),
-                                wxYES_NO | wxCANCEL | wxICON_QUESTION);
+                                wxYES_NO | wxCANCEL | wxICON_QUESTION,
+                                this);
 
       if (result == wxCANCEL || (result == wxYES && !Save()) ) {
          event.Veto();
@@ -1360,6 +1361,24 @@ void AudacityProject::SelectNone()
       t->SetSelected(false);
       t = iter.Next();
    }
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::Rewind()
+{
+   mViewInfo.sel0 = 0;
+   mViewInfo.sel1 = 0;
+
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::SkipEnd()
+{
+   double len = mTracks->GetMaxLen();
+
+   mViewInfo.sel0 = len;
+   mViewInfo.sel1 = len;
+
    mTrackPanel->Refresh(false);
 }
 
