@@ -113,7 +113,23 @@ These RPMs have been reported to work well with Caldera OpenLinux, also.
 
 ?>
 
+<?php BoxTop("Unix Tips"); ?>
 
+<p>
+Are you using a soundserver like
+<a href="http://www.arts-project.org/">aRts</a> (commonly found with KDE)
+or
+<a href="http://www.gnome.org/softwaremap/projects/esound/">esd</a> (commonly found with GNOME)?
+If so, you will need to kill it first before using Audacity!
+Example:
+</p>
+<p>
+<tt>
+  killall artsd
+</tt>
+</p>
+
+<?php BoxBottom(); ?>
 
 
 
