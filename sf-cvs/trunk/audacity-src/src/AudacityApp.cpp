@@ -337,6 +337,7 @@ bool AudacityApp::OnInit()
 
    LoadEffects();
 
+
 #ifdef __WXMAC__
 
 #ifdef __MACOSX__
@@ -814,15 +815,8 @@ int AudacityApp::OnAllKeys(wxKeyEvent& event)
 
    if(audacityPrj->IsActive())
    {
-      int commandIndex = audacityPrj->FindCommandByCombos(newStr);
-
-      if(audacityPrj->GetCommandState(commandIndex) == enabledMenu)
+      if(audacityPrj->GetCommands()->ProcessKeyCombo(newStr))
       {
-         audEventFunction audFunc = audacityPrj->GetCommandFunc(commandIndex);
-
-         if(audFunc)
-            (audacityPrj->*((wxEventFunction) audFunc))(event);
-
          return TRUE;
       }
    }

@@ -46,9 +46,10 @@
 
 #include "widgets/Ruler.h"
 
-#if defined(__WXMAC__) && !defined(__UNIX__)
-#include <Menus.h>
-#endif
+//FIXME: the code below is obsolete
+//#if defined(__WXMAC__) && !defined(__UNIX__)
+//#include <Menus.h>
+//#endif
 
 #define kLeftInset 4
 #define kTopInset 4

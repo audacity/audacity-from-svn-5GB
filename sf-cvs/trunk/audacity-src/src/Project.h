@@ -48,9 +48,7 @@ class wxDC;
 #include "TrackPanel.h"
 #include "xml/XMLTagHandler.h"
 
-#define AUDACITY_MENUS_GLOBALS
-#include "Menus.h"
-#undef AUDACITY_MENUS_GLOBALS
+#include "commands/Commands.h"
 
 class wxWindow;
 class wxBoxSizer;
@@ -96,6 +94,8 @@ class AudacityProject:public wxFrame,
 
    // Accessors
 
+   Commands *GetCommands() { return &mCommands; };
+
    TrackList *GetTracks() { return mTracks; };
    UndoManager *GetUndoManager() { return &mUndoManager; }
 
@@ -121,17 +121,17 @@ class AudacityProject:public wxFrame,
    bool SaveAs();
    void Clear();
 
-   // Methods associated with menu items are in Menus.h
-
-#define AUDACITY_MENUS_METHODS
-#include "Menus.h"
-#undef AUDACITY_MENUS_METHODS
+#define AUDACITY_COMMANDS_CALLBACK_CALLBACKS
+#include "commands/CommandsCallback.h"
+#undef AUDACITY_COMMANDS_CALLBACK_CALLBACKS
 
  public:
 
    // Message Handlers
 
    virtual bool ProcessEvent(wxEvent & event);
+   bool ProcessEffectEvent(int nEffectIndex);
+   void OnUpdateMenus(wxUpdateUIEvent & event);
 
    void OnActivate(wxActivateEvent & event);
    void OnDropFiles(wxDropFilesEvent & event);
@@ -149,6 +149,7 @@ class AudacityProject:public wxFrame,
    void RedrawProject();
    void PostRedrawMessage();
    void SelectNone();
+   void Zoom(double level);
    void Rewind(bool shift);
    void SkipEnd(bool shift);
    void SetStop(bool bStopped);
@@ -242,18 +243,24 @@ class AudacityProject:public wxFrame,
    UndoManager mUndoManager;
    bool mDirty;
 
-   // Menus
+   // Commands
 
-   wxMenuBar *mMenuBar;
-   wxMenu *mFileMenu;
-   wxMenu *mEditMenu;
-   wxMenu *mViewMenu;
-   wxMenu *mProjectMenu;
-   wxMenu *mTrackMenu;
-   wxMenu *mGenerateMenu;
-   wxMenu *mEffectMenu;
-   wxMenu *mAnalyzeMenu;
-   wxMenu *mHelpMenu;
+   Commands mCommands;
+
+   bool mFirstTimeUpdateMenus;
+   bool mLastNonZeroRegionSelected;
+   int mLastNumTracks;
+   int mLastNumTracksSelected;
+   int mLastNumWaveTracks;
+   int mLastNumWaveTracksSelected;
+   int mLastNumLabelTracks;
+   double mLastZoomLevel;
+   int mLastToolBarCheckSum;   //This finds the state of the toolbars:
+                               //Base three for ControlToolBar, EditToolBar, etc
+                               // 0: unloaded, 1: docked, 2: floating (* 3 for EditToolBar)
+   bool mLastUndoState;
+   bool mLastRedoState;
+   bool mLastClipboardState;   // true: clipboard full; false: clipboard empty.
 
    // Window elements
 

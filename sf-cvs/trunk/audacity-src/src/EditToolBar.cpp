@@ -194,43 +194,42 @@ void EditToolBar::OnButton(wxCommandEvent &event)
    AudacityProject *p = GetActiveProject();
    if (!p) return;
 
-   wxCommandEvent e;
    bool busy = gAudioIO->IsBusy();
    int id = event.GetId();
 
    switch (id) {
       case ETBCutID:
-         if (!busy) p->Cut(e);
+         if (!busy) p->Cut();
          break;
       case ETBCopyID:
-         if (!busy) p->Copy(e);
+         if (!busy) p->Copy();
          break;
       case ETBPasteID:
-         if (!busy) p->Paste(e);
+         if (!busy) p->Paste();
          break;
       case ETBTrimID:
-         if (!busy) p->Trim(e);
+         if (!busy) p->Trim();
          break;
       case ETBSilenceID:
-         if (!busy) p->OnSilence(e);
+         if (!busy) p->OnSilence();
          break;
       case ETBUndoID:
-         if (!busy) p->Undo(e);
+         if (!busy) p->Undo();
          break;
       case ETBRedoID:
-         if (!busy) p->Redo(e);
+         if (!busy) p->Redo();
          break;
       case ETBZoomInID:
-         p->OnZoomIn(e);
+         p->OnZoomIn();
          break;
       case ETBZoomOutID:
-         p->OnZoomOut(e);
+         p->OnZoomOut();
          break;
       case ETBZoomSelID:
-         p->OnZoomSel(e);
+         p->OnZoomSel();
          break;
       case ETBZoomFitID:
-         p->OnZoomFit(e);
+         p->OnZoomFit();
          break;
    }
 
