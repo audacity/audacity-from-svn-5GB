@@ -12,6 +12,7 @@ DefaultGroupName=Audacity
 AlwaysCreateUninstallIcon=yes
 LicenseFile=C:\proxima\Download\audacity\audacity-win-0.98\LICENSE.txt
 InfoBeforeFile=C:\proxima\Download\audacity\audacity-win-0.98\README.txt
+ChangesAssociations=yes
 ; uncomment the following line if you want your installation to run on NT 3.51 too.
 ; MinVersion=4,3.51
 
@@ -31,4 +32,13 @@ Name: "{userdesktop}\Audacity"; Filename: "{app}\audacity.exe"; MinVersion: 4,4;
 
 [Run]
 Filename: "{app}\audacity.exe"; Description: "Launch Audacity"; Flags: nowait postinstall skipifsilent
+
+[Registry]
+Root: HKCR; Subkey: ".aup"; ValueType: string; ValueName: ""; ValueData: "Audacity.Project"; Flags: uninsdeletevalue
+
+Root: HKCR; Subkey: "Audacity.Project"; ValueType: string; ValueName: ""; ValueData: "Audacity Project File"; Flags: uninsdeletekey
+
+Root: HKCR; Subkey: "Audacity.Project\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\audacity.exe,0"
+
+Root: HKCR; Subkey: "Audacity.Project\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\audacity.exe"" ""%1"""
 
