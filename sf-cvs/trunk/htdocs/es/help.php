@@ -15,7 +15,7 @@
 </p>
 
 <p>
-<a href="http://www.geocrawler.com/lists/3/SourceForge/14679/0/"
+<a href="http://sourceforge.net/mailarchive/forum.php?forum_id=828"
 >Archivos de la Audacity-Help Mailing List</a>
 </p>
 
