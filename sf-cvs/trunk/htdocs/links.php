@@ -67,11 +67,9 @@ Links to Other Audio Editors
 
 <li>Audio Editors
   <ul>
-   <li><a href
-     "http://www.harmony-central.com/Software/Mac/soundeffects-092.html"
+   <li><a href="http://www.harmony-central.com/Software/Mac/soundeffects-092.html"
      >SoundEffects 0.92</a>
-   <li><a href
-     "http://www.harmony-central.com/Software/Mac/sonicworx-artist-basic.html"
+   <li><a href="http://www.harmony-central.com/Software/Mac/sonicworx-artist-basic.html"
      >SonicWORX Artist Basic</a>
    <li><a href="http://www.prosoniq.com"
      >SonicWORX Artist</a>
