@@ -9,232 +9,232 @@ Index
 
 	<li><object>
 		<param name="Name" value="New">
-		<param name="Local" value="menu1.htm#new">
+		<param name="Local" value="menu_file.htm#new">
 		</object>
 	<li><object>
 		<param name="Name" value="Open...">
-		<param name="Local" value="menu1.htm#open">
+		<param name="Local" value="menu_file.htm#open">
 		</object>
 	<li><object>
 		<param name="Name" value="Close">
-		<param name="Local" value="menu1.htm#close">
+		<param name="Local" value="menu_file.htm#close">
 		</object>
 	<li><object>
 		<param name="Name" value="Save">
-		<param name="Local" value="menu1.htm#save">
+		<param name="Local" value="menu_file.htm#save">
 		</object>
 	<li><object>
 		<param name="Name" value="Save As...">
-		<param name="Local" value="menu1.htm#saveas">
+		<param name="Local" value="menu_file.htm#saveas">
 		</object>
 	<li><object>
 		<param name="Name" value="Export...">
-		<param name="Local" value="menu1.htm#export">
+		<param name="Local" value="menu_file.htm#export">
 		</object>
 	<li><object>
 		<param name="Name" value="Export Selection...">
-		<param name="Local" value="menu1.htm#exportsel">
+		<param name="Local" value="menu_file.htm#exportsel">
 		</object>
 	<li><object>
 		<param name="Name" value="Export Labels...">
-		<param name="Local" value="menu1.htm#exportlabels">
+		<param name="Local" value="menu_file.htm#exportlabels">
 		</object>
 	<li><object>
 		<param name="Name" value="Preferences...">
-		<param name="Local" value="menu1.htm#prefs">
+		<param name="Local" value="menu_file.htm#prefs">
 		</object>
 	<li><object>
 		<param name="Name" value="Exit">
-		<param name="Local" value="menu1.htm#exit">
+		<param name="Local" value="menu_file.htm#exit">
 		</object>
 	<li><object>
 		<param name="Name" value="Quit">
-		<param name="Local" value="menu1.htm#exit">
+		<param name="Local" value="menu_file.htm#exit">
 		</object>
 	<li><object>
 		<param name="Name" value="Undo">
-		<param name="Local" value="menu2.htm#undo">
+		<param name="Local" value="menu_edit.htm#undo">
 		</object>
 	<li><object>
 		<param name="Name" value="Redo">
-		<param name="Local" value="menu2.htm#redo">
+		<param name="Local" value="menu_edit.htm#redo">
 		</object>
 	<li><object>
 		<param name="Name" value="Cut">
-		<param name="Local" value="menu2.htm#cut">
+		<param name="Local" value="menu_edit.htm#cut">
 		</object>
 	<li><object>
 		<param name="Name" value="Copy">
-		<param name="Local" value="menu2.htm#copy">
+		<param name="Local" value="menu_edit.htm#copy">
 		</object>
 	<li><object>
 		<param name="Name" value="Paste">
-		<param name="Local" value="menu2.htm#Paste">
+		<param name="Local" value="menu_edit.htm#Paste">
 		</object>
 	<li><object>
 		<param name="Name" value="Delete">
-		<param name="Local" value="menu2.htm#delete">
+		<param name="Local" value="menu_edit.htm#delete">
 		</object>
 	<li><object>
 		<param name="Name" value="Silence">
-		<param name="Local" value="menu2.htm#silence">
+		<param name="Local" value="menu_edit.htm#silence">
 		</object>
 	<li><object>
 		<param name="Name" value="Insert Silence...">
-		<param name="Local" value="menu2.htm#insertsilence">
+		<param name="Local" value="menu_edit.htm#insertsilence">
 		</object>
 	<li><object>
 		<param name="Name" value="Split">
-		<param name="Local" value="menu2.htm#split">
+		<param name="Local" value="menu_edit.htm#split">
 		</object>
 	<li><object>
 		<param name="Name" value="Duplicate">
-		<param name="Local" value="menu2.htm#duplicate">
+		<param name="Local" value="menu_edit.htm#duplicate">
 		</object>
 	<li><object>
 		<param name="Name" value="Select All">
-		<param name="Local" value="menu2.htm#selectall">
+		<param name="Local" value="menu_edit.htm#selectall">
 		</object>
 	<li><object>
 		<param name="Name" value="Zoom In">
-		<param name="Local" value="menu3.htm#zoomin">
+		<param name="Local" value="menu_view.htm#zoomin">
 		</object>
 	<li><object>
 		<param name="Name" value="Zoom Normal">
-		<param name="Local" value="menu3.htm#zoomnormal">
+		<param name="Local" value="menu_view.htm#zoomnormal">
 		</object>
 	<li><object>
 		<param name="Name" value="Zoom Out">
-		<param name="Local" value="menu3.htm#zoomout">
+		<param name="Local" value="menu_view.htm#zoomout">
 		</object>
 	<li><object>
 		<param name="Name" value="Fit in Window">
-		<param name="Local" value="menu3.htm#zoomfit">
+		<param name="Local" value="menu_view.htm#zoomfit">
 		</object>
 	<li><object>
 		<param name="Name" value="Plot Spectrum">
-		<param name="Local" value="menu3.htm#spectrum">
+		<param name="Local" value="menu_view.htm#spectrum">
 		</object>
 	<li><object>
 		<param name="Name" value="Float Palette">
-		<param name="Local" value="menu3.htm#float">
+		<param name="Local" value="menu_view.htm#float">
 		</object>
 	<li><object>
 		<param name="Name" value="Unfloat Palette">
-		<param name="Local" value="menu3.htm#float">
+		<param name="Local" value="menu_view.htm#float">
 		</object>
 	<li><object>
 		<param name="Name" value="Import...">
-		<param name="Local" value="menu4.htm#import">
+		<param name="Local" value="menu_project.htm#import">
 		</object>
 	<li><object>
 		<param name="Name" value="Quick Mix">
-		<param name="Local" value="menu4.htm#quickmix">
+		<param name="Local" value="menu_project.htm#quickmix">
 		</object>
 	<li><object>
 		<param name="Name" value="Align Together">
-		<param name="Local" value="menu4.htm#aligntogether">
+		<param name="Local" value="menu_project.htm#aligntogether">
 		</object>
 	<li><object>
 		<param name="Name" value="Align with Zero">
-		<param name="Local" value="menu4.htm#alignzero">
+		<param name="Local" value="menu_project.htm#alignzero">
 		</object>
 	<li><object>
 		<param name="Name" value="New Audio Track">
-		<param name="Local" value="menu4.htm#newaudiotrack">
+		<param name="Local" value="menu_project.htm#newaudiotrack">
 		</object>
 	<li><object>
 		<param name="Name" value="New Label Track">
-		<param name="Local" value="menu4.htm#newlabeltrack">
+		<param name="Local" value="menu_project.htm#newlabeltrack">
 		</object>
 	<li><object>
 		<param name="Name" value="Remove Track(s)">
-		<param name="Local" value="menu4.htm#remove">
+		<param name="Local" value="menu_project.htm#remove">
 		</object>
 	<li><object>
 		<param name="Name" value="Effects">
-		<param name="Local" value="menu5.htm">
+		<param name="Local" value="menu_effect.htm">
 		</object>
 	<li><object>
 		<param name="Name" value="Amplify...">
-		<param name="Local" value="menu5.htm">
+		<param name="Local" value="menu_effect.htm">
 		</object>
     <li><object>
 		<param name="Name" value="BassBoost...">
-		<param name="Local" value="menu5.htm">
+		<param name="Local" value="menu_effect.htm">
 		</object>
     <li><object>
 		<param name="Name" value="Phaser...">
-		<param name="Local" value="menu5.htm">
+		<param name="Local" value="menu_effect.htm">
 		</object>
     <li><object>
 		<param name="Name" value="Wahwah...">
-		<param name="Local" value="menu5.htm">
+		<param name="Local" value="menu_effect.htm">
 		</object>
     <li><object>
 		<param name="Name" value="FFT Filter...">
-		<param name="Local" value="menu5.htm">
+		<param name="Local" value="menu_effect.htm">
 		</object>
 	<li><object>
 		<param name="Name" value="Fade In">
-		<param name="Local" value="menu5.htm">
+		<param name="Local" value="menu_effect.htm">
 		</object>
 	<li><object>
 		<param name="Name" value="Fade Out">
-		<param name="Local" value="menu5.htm">
+		<param name="Local" value="menu_effect.htm">
 		</object>
 	<li><object>
 		<param name="Name" value="Echo...">
-		<param name="Local" value="menu5.htm">
+		<param name="Local" value="menu_effect.htm">
 		</object>
 	<li><object>
 		<param name="Name" value="Maximize Amplitude">
-		<param name="Local" value="menu5.htm">
+		<param name="Local" value="menu_effect.htm">
 		</object>
 
 	<li><object>
 		<param name="Name" value="Selection Tool">
-		<param name="Local" value="toolbar.htm#selection">
+		<param name="Local" value="toolbar_control.htm#selection">
 		</object>
 	<li><object>
 		<param name="Name" value="Envelope Tool">
-		<param name="Local" value="toolbar.htm#envelope">
+		<param name="Local" value="toolbar_control.htm#envelope">
 		</object>
 	<li><object>
 		<param name="Name" value="Time Shift Tool">
-		<param name="Local" value="toolbar.htm#timeshift">
+		<param name="Local" value="toolbar_control.htm#timeshift">
 		</object>
 	<li><object>
 		<param name="Name" value="Zoom Tool">
-		<param name="Local" value="toolbar.htm#zoom">
+		<param name="Local" value="toolbar_control.htm#zoom">
 		</object>
 	<li><object>
 		<param name="Name" value="Toolbar">
-		<param name="Local" value="toolbar.htm">
+		<param name="Local" value="toolbar_control.htm">
 		</object>
 	<li><object>
 		<param name="Name" value="Play Button">
-		<param name="Local" value="toolbar.htm#play">
+		<param name="Local" value="toolbar_control.htm#play">
 		</object>
 	<li><object>
 		<param name="Name" value="Stop Button">
-		<param name="Local" value="toolbar.htm#stop">
+		<param name="Local" value="toolbar_control.htm#stop">
 		</object>
 	<li><object>
 		<param name="Name" value="Record Button">
-		<param name="Local" value="toolbar.htm#record">
+		<param name="Local" value="toolbar_control.htm#record">
 		</object>
 	<li><object>
 		<param name="Name" value="Master Gain Control">
-		<param name="Local" value="toolbar.htm#gain">
+		<param name="Local" value="toolbar_control.htm#gain">
 		</object>
 	<li><object>
 		<param name="Name" value="Gain Control">
-		<param name="Local" value="toolbar.htm#gain">
+		<param name="Local" value="toolbar_control.htm#gain">
 		</object>
 	<li><object>
 		<param name="Name" value="Volume Control">
-		<param name="Local" value="toolbar.htm#gain">
+		<param name="Local" value="toolbar_control.htm#gain">
 		</object>
 
 	<li><object>
@@ -277,18 +277,18 @@ Index
 		<param name="Name" value="Ogg Vorbis">
 		<param name="Local" value="fileformats.htm#ogg">
 		</object>
-
 	<li><object>
-		<param name="Name" value="Introduction">
-		<param name="Local" value="intro.htm">
+		<param name="Name" value="FLAC">
+		<param name="Local" value="fileformats.htm#flac">
 		</object>
+
 	<li><object>
 		<param name="Name" value="Menus">
 		<param name="Local" value="menus.htm">
 		</object>
 	<li><object>
 		<param name="Name" value="Toolbar">
-		<param name="Local" value="toolbar.htm">
+		<param name="Local" value="toolbar_control.htm">
 		</object>
 
 </ul>

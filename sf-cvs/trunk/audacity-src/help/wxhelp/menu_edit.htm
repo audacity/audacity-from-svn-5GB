@@ -1,141 +1,117 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
-<htm>
+<html>
 <head>
-	<title>Edit Menu</title>
-	<meta http-equiv="Content-Type" content="text/htm; charset=iso-8859-1">
-	<link rel=stylesheet type="text/css" href="audacity.css">
+<title>Audacity - Edit Menu</title>
 </head>
 
-<body>
-<!--top table-->
-<center>
-<table width="100%" border=0 cellspacing=0 cellpadding=0>
-  <tr>
-    <td width="25%" align=left valign=top><a class=ss href="contents.htm">Back to the main page</a></td>
-    <td width="50%" align=center><a class="ss" href="screen.htm">Back to the Stuff On Screen page</a></td>
-    <td width="25%" align=right>&nbsp;</td>
-  </tr>
-</table>
-</center>
-<BR>
-<table cellpadding=0 cellspacing=0 width="98%">
-	<tr>
-	  <td align=center>
-	  	<table cellpadding=0 cellspacing=0><tr>
-	  	<td><a class=menuref_current href="menu_file.htm">File</a></td>
-	  	<td><a class=menuref href="menu_edit.htm">Edit</a></td>
-	  	<td><a class=menuref href="menu_view.htm">View</a></td>
-	  	<td><a class=menuref href="menu_project.htm">Project</a></td>
-	  	<td><a class=menuref href="menu_effects.htm">Effects</a></td>
-	  	</tr></table>
-	  </td>
-	</tr>
-	<tr>
-	  <td class=bg_r align=center><font size="+3">Edit Menu</font></td>
-	</tr>
-</table>
+<body text="#000000" link="#000099" vlink="#000099">
 
-<center>
-  <table width="100%"><tr>
-    <td valign=top width="50%">
+<font color="#000099">
+<h1>Edit Menu</h1>
+</font>
+
+<b>Undo</b> - This will undo the last editing operation you performed to your
+project.  Audacity supports full unlimited undo - meaning
+you can undo every editing operation back to when you opened the window.
+<br><p>
+
+<b>Redo</b> - This will redo any editing operations that were just undone.
+After you perform a new editing operation,
+you can no longer redo the operations that were undone.
+<br><p>
 
 
-<a name="undo"></a>
-<p class=menuref_item><font size="+2" color="RED">Undo</font></p>
-<p class=a>This will undo the last editing operation you performed to your
-project.  Audacity currently supports full unlimited undo - meaning
-you can undo every editing operation back to the last time the
-document was saved.</p>
-
-
-
-<a name="redo"></a>
-<p class=menuref_item><font size="+2" color="RED">Redo</font></p>
-<p class=a>This will redo any editing operations that were just undone.
-After you perform a new editing operation, including simply
-resizing a track, you can no longer redo the operations that
-were undone.</p>
-
-
-<a name="cut"></a>
-<P class=menuref_item><font size="+2" color="RED">Cut</font></P>
-<p class=a>Removes the selected audio data and places it on the clipboard.
+<b>Cut</b> - Removes the selected audio data and places it on the clipboard.
 Only one "thing" can be on the clipboard at a time, but it may
-contain multiple tracks.</p>
+contain multiple tracks.
+<br><p>
 
 
-<a name="copy"></a>
-<p class=menuref_item><font size="+2" color="RED">Copy</font></p>
-<p class=a>Copies the selected audio data to the clipboard without removing it from the project.</p>
+<b>Copy</b> - Copies the selected audio data to the clipboard without
+removing it from the project.
+<br><p>
 
 
-	</td>
-	<td valign=top width="50%">
+<b>Paste</b> - Inserts whatever is on the clipboard at the position of the
+selection or cursor in the project, replacing whatever audio data
+is currently selected, if any.
+<br><p>
 
+<b>Trim</b> - Removes everything to the left and right of the selection.
+<br><p>
 
-<a name="paste"></a>
-<p class=menuref_item><font size="+2" color="RED">Paste</font></p>
-<p class=a>Inserts whatever is on the clipboard at the position of the
-selection cursor in the project, replacing whatever audio data
-is currently selected, if any.</p>
+<b>Delete</b> - Removes the audio data that is currently selected without
+copying it to the clipboard.
+<br><p>
 
-<a name="delete"></a>
-<p class=menuref_item><font size="+2" color="RED">Delete</font></p>
-<p class=a>Removes the audio data that is currently selected without
-copying it to the clipboard.</p>
+<b>Silence</b> - Erases the audio data currently selected, replacing it with
+silence instead of removing it.
+<br><p>
 
-<a name="silence"></a>
-<p class=menuref_item><font size="+2" color="RED">Silence</font></p>
-<p class=a>Erases the audio data currently selected, replacing it with
-silence instead of removing it completely.</p>
-
-<a name="insertsilence"></a>
-<p class=menuref_item><font size="+2" color="RED">Insert Silence...</font></p>
-<p class=a>Prompts for a dialog indicating the number of seconds of silence
-to insert, then inserts that amount of silence at the current
-selection cursor position in the project, replacing whatever audio
-data is currently selected, if any.</p>
-
-
-	</td>
-    </tr>
-    <tr><td colspan=2 class=top_b>&nbsp;</td></tr>
-</table>
-</center>
-
-
-<a name="split"></a>
-<p class=menuref_item><font size="+2" color="RED">Split</font></p>
-<p class=a>Moves the selected region into its own track or tracks, replacing
-the affected portion of the original track with silence.  See the figure below:</p>
+<b>Split</b> - Moves the selected region into its own track or tracks,
+replacing the affected portion of the original track with silence.
+See the figure below:
+<br><p>
 
 <center><img border=0 src="images/split.png" width="320" height="80" alt="Split function illustration"></center>
+<br><p>
 
-<a name="duplicate"></a>
-<p class=menuref_item><font size="+2" color="RED">Duplicate</font></p>
-<p class=a>Makes a copy of all or part of a track or set of tracks into new
-tracks.  See the figure below:</p>
+<b>Duplicate</b> - Makes a copy of all or part of a track or set of tracks
+into new tracks.  See the figure below:
+<br><p>
 
 <center><img border=0 src="images/duplicate.png" width="320" height="80" alt="Duplicate function illustration"></center>
+<br><p>
 
+<b>Select All</b> - Selects all of the audio in all of the tracks.
+<br><p>
 
-<a name="selectall"></a>
-<p class=menuref_item><font size="+2" color="RED">Select All</font></p>
-<p class=a>Selects all of the audio in all of the tracks.</p>
+<b>Select Start to Cursor</b> - Selects from the beginning of the selected
+tracks to the cursor position.
+<br><p>
 
+<b>Select Cursor to End</b> - Selects from the cursor position to the end
+of the selected tracks.
+<br><p>
 
-<center>
-<table width="100%" border=0 cellspacing=0 cellpadding=0>
-  <tr>
-    <td width="25%" align=left valign=top><a class=ss href="contents.htm">Back to the main page</a></td>
-    <td width="50%" align=center><a class="ss" href="screen.htm">Back to the Stuff On Screen page</a></td>
-    <td width="25%" align=right>&nbsp;</td>
-  </tr>
-</table>
-</center>
+<b>Find Zero Crossings</b> - Modifies the selection slightly so that both
+the left and right edge of the selection appear on a positive-slope
+zero crossing.  This makes it easier to cut and paste audio without resulting
+in a large audible clicking sound.
+<br><p>
+
+<b>Selection Save</b> - Remembers the current selection (or cursor position),
+allowing you to restore it later.
+<br><p>
+
+<b>Selection Restore</b> - Restores the cursor position to the last position
+saved by "Selection Save".
+<br><p>
+
+<b>Move Cursor to Track Start</b>
+<br><p>
+
+<b>Move Cursor to Track End</b>
+<br><p>
+
+<b>Move Cursor to Selection Start</b>
+<br><p>
+
+<b>Move Cursor to Selection End</b>
+<br><p>
+
+<b>Snap-To On</b> - When Snap-To mode is enabled, the selection will be
+constrained to the nearest interval, by default the nearest second.
+So if you click and drag from 4.2 seconds to 9.8 seconds, it will result
+in a selection from 4 seconds to 10 seconds, exactly.  You can change the
+units that are snapped to using the "Set Selection Format" option in the
+<a href="menu_view.htm">View Menu</a>.
+<br><p>
+
+<b>Snap-To Off</b> - Turns Snap-To mode off, letting you select arbitrary
+ranges of time.
+<br><p>
 
 </body>
-</htm>
-
-
+</html>
 
