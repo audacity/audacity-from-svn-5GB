@@ -23,6 +23,9 @@ Website / Sourceforge
 - Address all bugs in "bugs.txt"
 - Add more keyboard shortcuts and "nudge" commands
 - Backport "Save Changes?" dialog
+- Make Audacity compile on Unix even if dlopen is
+  not supported (work around wxGTK 2.2.9 bug where
+  it can't be found)
 
 -----------------------------------------------------------
 1.1.1 / HEAD
@@ -39,7 +42,6 @@ Audio:
   a selection (see DG Malham email)
 
 UI::
-- Tooltips
 - While playing, click in ruler to change playback
   position
 - Remember window size and position
@@ -55,6 +57,8 @@ UI::
 - Nudge selection with arrow keys
 - Make all keyboard shortcuts configurable
 - Make colors configurable
+- Adapt text color - should be white by default if
+  the background color is very dark
 - Select dialog box ("1.5 - 3.0 seconds")
 - Show selection (i.e. zoom such that the selection fits)
 - Select to end

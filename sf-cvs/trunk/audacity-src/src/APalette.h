@@ -31,6 +31,8 @@ class ASlider;
 class APalette;
 class APaletteFrame;
 
+class wxImage;
+
 extern APaletteFrame *gAPaletteFrame;
 extern bool gWindowedPalette;
 
@@ -66,7 +68,14 @@ class APalette:public wxWindow {
    float GetSoundVol();
 
  private:
+   AButton *MakeTool(const char **tool, const char **alpha,
+                     wxWindowID id, int left, int top);
+   AButton *MakeButton(wxImage *up, wxImage *down, wxImage *hilite,
+                       const char **foreground, const char **alpha,
+                       wxWindowID id, int left);
    void MakeButtons();
+   
+ private:
 
    AButton * mTool[4];
 

@@ -8,11 +8,16 @@
 
   This class manages the miniframe window (aka floating window)
   which contains the tool selection (ibeam, envelope, move, zoom),
-  the play/stop/record buttons, and the volume control.  All of the
-  controls in this window were custom-written for Audacity - they
-  are not native controls on any platform - however, it is intended
-  that the images could be easily replaced to allow "skinning" or
-  just customization to match the look and feel of each platform.
+  the skip-start/play/stop/record/skip-end buttons, and the
+  volume control.  All of the controls in this window were
+  custom-written for Audacity - they are not native controls
+  on any platform - however, it is intended that the images could
+  be easily replaced to allow "skinning" or just customization
+  to match the look and feel of each platform.
+
+  Now pieces together the buttons by adjusting the background
+  to match the user's system default background color, and then
+  overlaying the button label on using alpha-blending.
 
 **********************************************************************/
 
@@ -30,6 +35,7 @@
 #endif
 
 #include <wx/image.h>
+#include <wx/tooltip.h>
 
 #include <math.h>
 
@@ -55,11 +61,7 @@ bool gWindowedPalette = false;
 #define APALETTE_HEIGHT_OFFSET 25
 #endif
 
-#if defined(__WXMAC__)          // && defined(TARGET_CARBON)
-#include "../images/Aqua.xpm"
-#else
 #include "../images/Palette.xpm"
-#endif
 
 void InitAPaletteFrame(wxWindow * parent)
 {
@@ -119,10 +121,10 @@ APaletteFrame::APaletteFrame(wxWindow * parent,
                              const wxString & title,
                              const wxPoint & pos):
    wxMiniFrame(parent, id, title, pos,
-               wxSize(360, GetAPaletteHeight() + APALETTE_HEIGHT_OFFSET),
+               wxSize(460, GetAPaletteHeight() + APALETTE_HEIGHT_OFFSET),
                wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP |
                wxMINIMIZE_BOX | wxFRAME_FLOAT_ON_PARENT),
-   mPalette(this, 0, wxPoint(0, 0), wxSize(300, GetAPaletteHeight()))
+   mPalette(this, 0, wxPoint(0, 0), wxSize(400, GetAPaletteHeight()))
 {
 
 }
@@ -147,9 +149,16 @@ BEGIN_EVENT_TABLE(APalette, wxWindow)
 END_EVENT_TABLE()
    
 wxImage *ChangeImageColour(wxImage *srcImage,
-                           wxColour &srcColour,
                            wxColour &dstColour)
 {
+   // This function takes a source image, which it assumes to
+   // be grayscale, and smoothly changes the overall color
+   // to the specified color, and returns the result as a
+   // new image.  This works well for grayscale 3D images.
+   // Audacity uses this routines to make the buttons
+   // (skip-start, play, stop, record, skip-end) adapt to
+   // the color scheme of the user.
+
    unsigned char *src = srcImage->GetData();
    int width = srcImage->GetWidth();
    int height = srcImage->GetHeight();
@@ -158,9 +167,9 @@ wxImage *ChangeImageColour(wxImage *srcImage,
    unsigned char *dst = dstImage->GetData();
 
    int srcVal[3], srcOpp[3];
-   srcVal[0] = srcColour.Red();
-   srcVal[1] = srcColour.Green();
-   srcVal[2] = srcColour.Blue();
+   srcVal[0] = src[0];
+   srcVal[1] = src[1];
+   srcVal[2] = src[2];
 
    int dstVal[3], dstOpp[3];
    dstVal[0] = dstColour.Red();
@@ -176,6 +185,7 @@ wxImage *ChangeImageColour(wxImage *srcImage,
    int c = 0;
    for(i=0; i<width*height*3; i++) {
       int s = (int)*src;
+
       if (s > srcVal[c])
          *dst++ = dstVal[c] + dstOpp[c] * (s - srcVal[c]) / srcOpp[c];
       else
@@ -187,11 +197,17 @@ wxImage *ChangeImageColour(wxImage *srcImage,
    return dstImage;
 }
 
-wxImage *MakeButton(wxImage *background,
-                    wxImage *foreground,
-                    wxImage *mask,
-                    int xoff, int yoff)
+wxImage *OverlayImage(wxImage *background,
+                      wxImage *foreground,
+                      wxImage *mask,
+                      int xoff, int yoff)
 {
+   // Takes a background image, foreground image, and mask
+   // (i.e. the alpha channel for the foreground), and
+   // returns an new image where the foreground has been
+   // overlaid onto the background using alpha-blending,
+   // at location (xoff, yoff).
+
    unsigned char *bk = background->GetData();
    unsigned char *fg = foreground->GetData();
    unsigned char *m = mask->GetData();
@@ -222,105 +238,179 @@ wxImage *MakeButton(wxImage *background,
    return dstImage;
 }
 
+wxImage *MakeToolImage(wxImage *tool,
+                       wxImage *mask,
+                       int style)
+{
+   // This code takes the image of a tool, and its mask,
+   // and creates one of four images of this tool inside
+   // a little button, for the tool palette.  The tool
+   // is alpha-blended onto the background.
+
+   int width = tool->GetWidth();
+   int height = tool->GetHeight();
+   int i;
+   
+   wxImage *background = new wxImage(width, height);
+   wxColour colour;
+   unsigned char *bkgnd = background->GetData();
+   unsigned char r, g, b;
+
+   //
+   // Background
+   //
+
+   colour = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+   r = colour.Red(); g = colour.Green(); b = colour.Blue();
+   if (style == 1) { // hilite
+      r += (255-r)/2; g += (255-g)/2; b += (255-b)/2;
+   }
+   else if (style == 2) { // down
+      if ((r + g + b) / 3 > 128) {
+         r = r*2/3; g = g*2/3; b = b*2/3;
+      }
+      else {
+         r += (255-r)/3; g += (255-g)/3; b += (255-b)/3;      
+      }
+   }
+
+   unsigned char *p = bkgnd;
+   for(i=0; i<width*height; i++) {
+      *p++ = r; *p++ = g; *p++ = b;
+   }
+
+   //
+   // Top hilite
+   //
+
+   if (style == 2) // down
+      colour = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW);
+   else
+      colour = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DHIGHLIGHT);
+   r = colour.Red(); g = colour.Green(); b = colour.Blue();
+
+   p = bkgnd;
+   for(i=0; i<width; i++) {
+      *p++ = r; *p++ = g; *p++ = b;
+   }
+
+   p = bkgnd;
+   for(i=0; i<height; i++) {
+      *p++ = r; *p++ = g; *p++ = b;
+      p += 3*(width-1);
+   }
+
+   //
+   // Bottom shadow
+   //
+
+   if (style == 2) // down
+      colour = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DHIGHLIGHT);
+   else
+      colour = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW);
+   r = colour.Red(); g = colour.Green(); b = colour.Blue();
+
+   p = bkgnd + 3*(height-1)*width;
+   for(i=0; i<width; i++) {
+      *p++ = r; *p++ = g; *p++ = b;
+   }
+
+   p = bkgnd + 3*(width-1);
+   for(i=0; i<height; i++) {
+      *p++ = r; *p++ = g; *p++ = b;
+      p += 3*(width-1);
+   }
+
+   // 
+   // Overlay the tool on top of it
+   //
+
+   wxImage *result = OverlayImage(background, tool, mask, 0, 0);
+   delete background;
+
+   return result;
+}
+
+AButton *APalette::MakeButton(wxImage *up, wxImage *down, wxImage *hilite,
+                              const char **foreground, const char **alpha,
+                              wxWindowID id, int left)
+{
+   wxImage *ctr = new wxImage(foreground);                           
+   wxImage *mask = new wxImage(alpha);
+   wxImage *up2 = OverlayImage(up, ctr, mask, 16, 16);
+   wxImage *hilite2 = OverlayImage(hilite, ctr, mask, 16, 16);
+   wxImage *down2 = OverlayImage(down, ctr, mask, 17, 17);
+   AButton *button =
+      new AButton(this, id,
+                  wxPoint(left, 4), wxSize(48, 48),
+                  up2, hilite2, down2, up2);
+   delete ctr;
+   delete mask;
+   delete up2;
+   delete down2;
+   delete hilite2;
+
+   return button;
+}
+
+AButton *APalette::MakeTool(const char **tool, const char **alpha,
+                            wxWindowID id, int left, int top)
+{
+   wxImage *ctr = new wxImage(tool);
+   wxImage *mask = new wxImage(alpha);
+   wxImage *up = MakeToolImage(ctr, mask, 0);
+   wxImage *hilite = MakeToolImage(ctr, mask, 1);
+   wxImage *down = MakeToolImage(ctr, mask, 2);   
+   wxImage *dis = MakeToolImage(ctr, mask, 3);   
+
+   AButton *button =
+      new AButton(this, id, wxPoint(left, top), wxSize(27, 27),
+                  up, hilite, down, dis);
+
+   delete ctr;
+   delete mask;
+   delete up;
+   delete hilite;
+   delete down;
+   delete dis;
+
+   return button;
+}
+
 void APalette::MakeButtons()
 {
    wxImage *upOriginal = new wxImage(UpButton);
    wxImage *downOriginal = new wxImage(DownButton);
    wxImage *hiliteOriginal = new wxImage(HiliteButton);
 
-   wxColour origColour(204, 204, 204);
    wxColour newColour = 
       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
 
-   wxImage *upPattern = ChangeImageColour(upOriginal,
-                                          origColour, newColour);
-   wxImage *downPattern = ChangeImageColour(downOriginal,
-                                            origColour, newColour);
-   wxImage *hilitePattern = ChangeImageColour(hiliteOriginal,
-                                              origColour, newColour);
+   wxImage *upPattern = ChangeImageColour(upOriginal, newColour);
+   wxImage *downPattern = ChangeImageColour(downOriginal, newColour);
+   wxImage *hilitePattern = ChangeImageColour(hiliteOriginal, newColour);
 
-   wxImage *up, *down, *hilite;
-   wxImage *ctr, *mask;
+   /* Buttons */
 
-   /* Rewind */
+   mRewind = MakeButton(upPattern, downPattern, hilitePattern,
+                        Rewind, RewindAlpha, ID_REW_BUTTON, 64);
+   mRewind->SetToolTip(_("Skip to Start"));
 
-   ctr = new wxImage(Rewind);
-   mask = new wxImage(RewindAlpha);
-   up = MakeButton(upPattern, ctr, mask, 16, 16);
-   hilite = MakeButton(hilitePattern, ctr, mask, 16, 16);
-   down = MakeButton(downPattern, ctr, mask, 17, 17);
-   mRewind = new AButton(this, ID_REW_BUTTON,
-                         wxPoint(64, 4), wxSize(48, 48),
-                         up, hilite, down, up);
-   delete ctr;
-   delete mask;
-   delete up;
-   delete down;
-   delete hilite;
+   mPlay = MakeButton(upPattern, downPattern, hilitePattern,
+                      Play, PlayAlpha, ID_PLAY_BUTTON, 114);
+   mPlay->SetToolTip(_("Play"));
 
-   /* Play */
+   mStop = MakeButton(upPattern, downPattern, hilitePattern,
+                      Stop, StopAlpha, ID_STOP_BUTTON, 164);
+   mStop->SetToolTip(_("Stop"));
 
-   ctr = new wxImage(Play);
-   mask = new wxImage(PlayAlpha);
-   up = MakeButton(upPattern, ctr, mask, 16, 16);
-   hilite = MakeButton(hilitePattern, ctr, mask, 16, 16);
-   down = MakeButton(downPattern, ctr, mask, 17, 17);
-   mPlay = new AButton(this, ID_PLAY_BUTTON,
-                       wxPoint(114, 4), wxSize(48, 48),
-                       up, hilite, down, up);
-   delete ctr;
-   delete mask;
-   delete up;
-   delete down;
-   delete hilite;
+   mRecord = MakeButton(upPattern, downPattern, hilitePattern,
+                        Record, RecordAlpha, ID_RECORD_BUTTON, 214);
+   mRecord->SetToolTip(_("Record"));
 
-   /* Stop */
-
-   ctr = new wxImage(Stop);
-   mask = new wxImage(StopAlpha);
-   up = MakeButton(upPattern, ctr, mask, 16, 16);
-   hilite = MakeButton(hilitePattern, ctr, mask, 16, 16);
-   down = MakeButton(downPattern, ctr, mask, 17, 17);
-   mStop = new AButton(this, ID_STOP_BUTTON,
-                       wxPoint(164, 4), wxSize(48, 48),
-                       up, hilite, down, up);
-   delete ctr;
-   delete mask;
-   delete up;
-   delete down;
-   delete hilite;
-
-   /* Record */
-
-   ctr = new wxImage(Record);
-   mask = new wxImage(RecordAlpha);
-   up = MakeButton(upPattern, ctr, mask, 16, 16);
-   hilite = MakeButton(hilitePattern, ctr, mask, 16, 16);
-   down = MakeButton(downPattern, ctr, mask, 17, 17);
-   mRecord = new AButton(this, ID_RECORD_BUTTON,
-                         wxPoint(214, 4), wxSize(48, 48),
-                         up, hilite, down, up);
-   delete ctr;
-   delete mask;
-   delete up;
-   delete down;
-   delete hilite;
-
-   /* Fast Forward */
-
-   ctr = new wxImage(FFwd);
-   mask = new wxImage(FFwdAlpha);
-   up = MakeButton(upPattern, ctr, mask, 16, 16);
-   hilite = MakeButton(hilitePattern, ctr, mask, 16, 16);
-   down = MakeButton(downPattern, ctr, mask, 17, 17);
-   mFF = new AButton(this, ID_FF_BUTTON,
-                     wxPoint(264, 4), wxSize(48, 48),
-                     up, hilite, down, up);
-   delete ctr;
-   delete mask;
-   delete up;
-   delete down;
-   delete hilite;
+   mFF = MakeButton(upPattern, downPattern, hilitePattern,
+                    FFwd, FFwdAlpha, ID_FF_BUTTON, 264);
+   mFF->SetToolTip(_("Skip to End"));
 
    delete upPattern;
    delete downPattern;
@@ -328,37 +418,30 @@ void APalette::MakeButtons()
    delete upOriginal;
    delete downOriginal;
    delete hiliteOriginal;
+
+   /* Tools */
+
+   mTool[0] = MakeTool(IBeam, IBeamAlpha, ID_IBEAM, 0, 0);
+   mTool[0]->SetToolTip(_("Selection Tool"));
+
+   mTool[1] = MakeTool(Envelope, EnvelopeAlpha, ID_SELECT, 28, 0);
+   mTool[1]->SetToolTip(_("Envelope Tool"));
+
+   mTool[2] = MakeTool(TimeShift, TimeShiftAlpha, ID_MOVE, 0, 28);
+   mTool[2]->SetToolTip(_("Time Shift Tool"));
+
+   mTool[3] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 28, 28);
+   mTool[3]->SetToolTip(_("Zoom Tool"));
+
+   wxToolTip::Enable(true);
+   wxToolTip::SetDelay(1000);
 }
 
 APalette::APalette(wxWindow * parent, wxWindowID id,
-                       const wxPoint & pos,
-                       const wxSize & size):wxWindow(parent, id, pos, size)
+                   const wxPoint & pos,
+                   const wxSize & size):
+   wxWindow(parent, id, pos, size)
 {
-#if defined(__WXMAC__)          // && defined(TARGET_CARBON)
-   int off = 1;
-#else
-   int off = 0;
-#endif
-
-   mTool[0] =
-       new AButton(this, ID_IBEAM, wxPoint(off, off), wxSize(27, 27),
-                   (char **) IBeamUp, (char **) IBeamOver,
-                   (char **) IBeamDown, (char **) IBeamUp);
-   mTool[1] =
-       new AButton(this, ID_SELECT, wxPoint(28, off), wxSize(27, 27),
-                   (char **) SelectUp, (char **) SelectOver,
-                   (char **) SelectDown, (char **) SelectUp);
-   mTool[2] =
-       new AButton(this, ID_MOVE, wxPoint(off, 28), wxSize(27, 27),
-                   (char **) MoveUp, (char **) MoveOver,
-                   (char **) MoveDown, (char **) MoveUp);
-   mTool[3] =
-       new AButton(this, ID_ZOOM, wxPoint(28, 28), wxSize(27, 27),
-                   (char **) ZoomUp, (char **) ZoomOver,
-                   (char **) ZoomDown, (char **) ZoomUp);
-
-   MakeButtons();
-
 #if defined(__WXMAC__)          // && defined(TARGET_CARBON)
    int sliderX = 362;
 #else
@@ -369,18 +452,19 @@ APalette::APalette(wxWindow * parent, wxWindowID id,
       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
    wxColour origColour(204, 204, 204);
 
+   MakeButtons();
+
    wxImage *sliderOriginal = new wxImage(Slider);
    wxImage *thumbOriginal = new wxImage(SliderThumb);
    wxImage *sliderNew = ChangeImageColour(sliderOriginal,
-                                          origColour,
                                           backgroundColour);
    wxImage *thumbNew = ChangeImageColour(thumbOriginal,
-                                         origColour,
                                          backgroundColour);
 
    mVolume =
        new ASlider(this, 0, wxPoint(sliderX, 14), wxSize(100, 28),
                    sliderNew, thumbNew, 100);
+   mVolume->SetToolTip(_("Master Gain Control"));
 
    delete sliderOriginal;
    delete thumbOriginal;
