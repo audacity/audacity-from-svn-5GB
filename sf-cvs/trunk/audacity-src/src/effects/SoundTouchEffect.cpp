@@ -18,10 +18,9 @@
 
 #include <math.h>
 
-#include "SoundTouch.h"
-
 #include "SoundTouchEffect.h"
 #include "../WaveTrack.h"
+
 
 bool EffectSoundTouch::Process()
 {

@@ -18,9 +18,12 @@
 #define __AUDACITY_EFFECT_SOUNDTOUCH__
 
 #include "Effect.h"
+#include "SoundTouch.h"
+
+using namespace soundtouch;
+
 
 class WaveTrack;
-class SoundTouch;
 
 class EffectSoundTouch:public Effect {
 
