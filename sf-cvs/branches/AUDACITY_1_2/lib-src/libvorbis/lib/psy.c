@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: psychoacoustics not including preecho
- last mod: $Id: psy.c,v 1.7.4.1 2004-07-30 06:57:29 mbrubeck Exp $
+ last mod: $Id: psy.c,v 1.7.4.2 2004-11-25 02:47:54 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -31,6 +31,7 @@
 
 #define NEGINF -9999.f
 static double stereo_threshholds[]={0.0, .5, 1.0, 1.5, 2.5, 4.5, 8.5, 16.5, 9e10};
+static double stereo_threshholds_limited[]={0.0, .5, 1.0, 1.5, 2.0, 2.5, 4.5, 8.5, 9e10};
 
 vorbis_look_psy_global *_vp_global_look(vorbis_info *vi){
   codec_setup_info *ci=vi->codec_setup;
@@ -265,7 +266,7 @@ static float ***setup_tone_curves(float curveatt_dB[P_BANDS],float binHz,int n,
 
 void _vp_psy_init(vorbis_look_psy *p,vorbis_info_psy *vi,
 		  vorbis_info_psy_global *gi,int n,long rate){
-  long i,j,lo=-99,hi=0;
+  long i,j,lo=-99,hi=1;
   long maxoc;
   memset(p,0,sizeof(*p));
 
@@ -283,6 +284,12 @@ void _vp_psy_init(vorbis_look_psy *p,vorbis_info_psy *vi,
   p->n=n;
   p->rate=rate;
 
+  /* AoTuV HF weighting */
+  p->m_val = 1.;
+  if(rate < 26000) p->m_val = 0;
+  else if(rate < 38000) p->m_val = .94;   /* 32kHz */
+  else if(rate > 46000) p->m_val = 1.275; /* 48kHz */
+  
   /* set up the lookups for a given blocksize and sample rate */
 
   for(i=0,j=0;i<MAX_ATH-1;i++){
@@ -303,10 +310,10 @@ void _vp_psy_init(vorbis_look_psy *p,vorbis_info_psy *vi,
     for(;lo+vi->noisewindowlomin<i && 
 	  toBARK(rate/(2*n)*lo)<(bark-vi->noisewindowlo);lo++);
     
-    for(;hi<n && (hi<i+vi->noisewindowhimin ||
+    for(;hi<=n && (hi<i+vi->noisewindowhimin ||
 	  toBARK(rate/(2*n)*hi)<(bark+vi->noisewindowhi));hi++);
     
-    p->bark[i]=(lo<<16)+hi;
+    p->bark[i]=((lo-1)<<16)+(hi-1);
 
   }
 
@@ -536,45 +543,57 @@ static void bark_noise_hybridmp(int n,const long *b,
                                 const float offset,
                                 const int fixed){
   
-  float *N=alloca((n+1)*sizeof(*N));
-  float *X=alloca((n+1)*sizeof(*N));
-  float *XX=alloca((n+1)*sizeof(*N));
-  float *Y=alloca((n+1)*sizeof(*N));
-  float *XY=alloca((n+1)*sizeof(*N));
+  float *N=alloca(n*sizeof(*N));
+  float *X=alloca(n*sizeof(*N));
+  float *XX=alloca(n*sizeof(*N));
+  float *Y=alloca(n*sizeof(*N));
+  float *XY=alloca(n*sizeof(*N));
 
   float tN, tX, tXX, tY, tXY;
-  float fi;
   int i;
 
   int lo, hi;
   float R, A, B, D;
-  
+  float w, x, y;
+
   tN = tX = tXX = tY = tXY = 0.f;
-  for (i = 0, fi = 0.f; i < n; i++, fi += 1.f) {
-    float w, x, y;
+
+  y = f[0] + offset;
+  if (y < 1.f) y = 1.f;
+
+  w = y * y * .5;
     
-    x = fi;
+  tN += w;
+  tX += w;
+  tY += w * y;
+
+  N[0] = tN;
+  X[0] = tX;
+  XX[0] = tXX;
+  Y[0] = tY;
+  XY[0] = tXY;
+
+  for (i = 1, x = 1.f; i < n; i++, x += 1.f) {
+    
     y = f[i] + offset;
     if (y < 1.f) y = 1.f;
+
     w = y * y;
-    N[i] = tN;
-    X[i] = tX;
-    XX[i] = tXX;
-    Y[i] = tY;
-    XY[i] = tXY;
+    
     tN += w;
     tX += w * x;
     tXX += w * x * x;
     tY += w * y;
     tXY += w * x * y;
+
+    N[i] = tN;
+    X[i] = tX;
+    XX[i] = tXX;
+    Y[i] = tY;
+    XY[i] = tXY;
   }
-  N[i] = tN;
-  X[i] = tX;
-  XX[i] = tXX;
-  Y[i] = tY;
-  XY[i] = tXY;
   
-  for (i = 0, fi = 0.f;; i++, fi += 1.f) {
+  for (i = 0, x = 0.f;; i++, x += 1.f) {
     
     lo = b[i] >> 16;
     if( lo>=0 ) break;
@@ -589,17 +608,18 @@ static void bark_noise_hybridmp(int n,const long *b,
     A = tY * tXX - tX * tXY;
     B = tN * tXY - tX * tY;
     D = tN * tXX - tX * tX;
-    R = (A + fi * B) / D;
+    R = (A + x * B) / D;
     if (R < 0.f)
       R = 0.f;
     
     noise[i] = R - offset;
   }
   
-  for ( ; hi < n; i++, fi += 1.f) {
+  for ( ;; i++, x += 1.f) {
     
     lo = b[i] >> 16;
     hi = b[i] & 0xffff;
+    if(hi>=n)break;
     
     tN = N[hi] - N[lo];
     tX = X[hi] - X[lo];
@@ -610,14 +630,14 @@ static void bark_noise_hybridmp(int n,const long *b,
     A = tY * tXX - tX * tXY;
     B = tN * tXY - tX * tY;
     D = tN * tXX - tX * tX;
-    R = (A + fi * B) / D;
+    R = (A + x * B) / D;
     if (R < 0.f) R = 0.f;
     
     noise[i] = R - offset;
   }
-  for ( ; i < n; i++, fi += 1.f) {
+  for ( ; i < n; i++, x += 1.f) {
     
-    R = (A + fi * B) / D;
+    R = (A + x * B) / D;
     if (R < 0.f) R = 0.f;
     
     noise[i] = R - offset;
@@ -625,10 +645,11 @@ static void bark_noise_hybridmp(int n,const long *b,
   
   if (fixed <= 0) return;
   
-  for (i = 0, fi = 0.f; i < (fixed + 1) / 2; i++, fi += 1.f) {
+  for (i = 0, x = 0.f;; i++, x += 1.f) {
     hi = i + fixed / 2;
     lo = hi - fixed;
-    
+    if(lo>=0)break;
+
     tN = N[hi] + N[-lo];
     tX = X[hi] - X[-lo];
     tXX = XX[hi] + XX[-lo];
@@ -639,14 +660,15 @@ static void bark_noise_hybridmp(int n,const long *b,
     A = tY * tXX - tX * tXY;
     B = tN * tXY - tX * tY;
     D = tN * tXX - tX * tX;
-    R = (A + fi * B) / D;
+    R = (A + x * B) / D;
 
-    if (R > 0.f && R - offset < noise[i]) noise[i] = R - offset;
+    if (R - offset < noise[i]) noise[i] = R - offset;
   }
-  for ( ; hi < n; i++, fi += 1.f) {
+  for ( ;; i++, x += 1.f) {
     
     hi = i + fixed / 2;
     lo = hi - fixed;
+    if(hi>=n)break;
     
     tN = N[hi] - N[lo];
     tX = X[hi] - X[lo];
@@ -657,13 +679,13 @@ static void bark_noise_hybridmp(int n,const long *b,
     A = tY * tXX - tX * tXY;
     B = tN * tXY - tX * tY;
     D = tN * tXX - tX * tX;
-    R = (A + fi * B) / D;
+    R = (A + x * B) / D;
     
-    if (R > 0.f && R - offset < noise[i]) noise[i] = R - offset;
+    if (R - offset < noise[i]) noise[i] = R - offset;
   }
-  for ( ; i < n; i++, fi += 1.f) {
-    R = (A + fi * B) / D;
-    if (R > 0.f && R - offset < noise[i]) noise[i] = R - offset;
+  for ( ; i < n; i++, x += 1.f) {
+    R = (A + x * B) / D;
+    if (R - offset < noise[i]) noise[i] = R - offset;
   }
 }
 
@@ -780,14 +802,14 @@ void _vp_noisemask(vorbis_look_psy *p,
     }
     
     if(seq&1)
-      _analysis_output("medianR",seq/2,work,n,1,0,0);
+      _analysis_output("median2R",seq/2,work,n,1,0,0);
     else
-      _analysis_output("medianL",seq/2,work,n,1,0,0);
+      _analysis_output("median2L",seq/2,work,n,1,0,0);
     
     if(seq&1)
-      _analysis_output("envelopeR",seq/2,work2,n,1,0,0);
+      _analysis_output("envelope2R",seq/2,work2,n,1,0,0);
     else
-      _analysis_output("enveloperL",seq/2,work2,n,1,0,0);
+      _analysis_output("envelope2L",seq/2,work2,n,1,0,0);
     seq++;
   }
 #endif
@@ -795,6 +817,7 @@ void _vp_noisemask(vorbis_look_psy *p,
   for(i=0;i<n;i++){
     int dB=logmask[i]+.5;
     if(dB>=NOISE_COMPAND_LEVELS)dB=NOISE_COMPAND_LEVELS-1;
+    if(dB<0)dB=0;
     logmask[i]= work[i]+p->vi->noisecompand[dB];
   }
 
@@ -829,14 +852,57 @@ void _vp_offset_and_mix(vorbis_look_psy *p,
 			float *noise,
 			float *tone,
 			int offset_select,
-			float *logmask){
+			float *logmask,
+			float *mdct,
+			float *logmdct){
   int i,n=p->n;
+  float de, coeffi, cx;/* AoTuV */
   float toneatt=p->vi->tone_masteratt[offset_select];
+
+  cx = p->m_val;
   
   for(i=0;i<n;i++){
     float val= noise[i]+p->noiseoffset[offset_select][i];
     if(val>p->vi->noisemaxsupp)val=p->vi->noisemaxsupp;
     logmask[i]=max(val,tone[i]+toneatt);
+
+
+    /* AoTuV */
+    /** @ M1 **
+	The following codes improve a noise problem.  
+	A fundamental idea uses the value of masking and carries out
+	the relative compensation of the MDCT. 
+	However, this code is not perfect and all noise problems cannot be solved. 
+	by Aoyumi @ 2004/04/18
+    */
+
+    if(offset_select == 1) {
+      coeffi = -17.2;       /* coeffi is a -17.2dB threshold */
+      val = val - logmdct[i];  /* val == mdct line value relative to floor in dB */
+      
+      if(val > coeffi){
+	/* mdct value is > -17.2 dB below floor */
+	
+	de = 1.0-((val-coeffi)*0.005*cx);
+	/* pro-rated attenuation:
+	   -0.00 dB boost if mdct value is -17.2dB (relative to floor) 
+	   -0.77 dB boost if mdct value is 0dB (relative to floor) 
+	   -1.64 dB boost if mdct value is +17.2dB (relative to floor) 
+	   etc... */
+	
+	if(de < 0) de = 0.0001;
+      }else
+	/* mdct value is <= -17.2 dB below floor */
+	
+	de = 1.0-((val-coeffi)*0.0003*cx);
+      /* pro-rated attenuation:
+	 +0.00 dB atten if mdct value is -17.2dB (relative to floor) 
+	 +0.45 dB atten if mdct value is -34.4dB (relative to floor) 
+	 etc... */
+      
+      mdct[i] *= de;
+      
+    }
   }
 }
 
@@ -950,8 +1016,9 @@ float **_vp_quantize_couple_memo(vorbis_block *vb,
 
 /* this is for per-channel noise normalization */
 static int apsort(const void *a, const void *b){
-  if(fabs(**(float **)a)>fabs(**(float **)b))return -1;
-  return 1;
+  float f1=fabs(**(float**)a);
+  float f2=fabs(**(float**)b);
+  return (f1<f2)-(f1>f2);
 }
 
 int **_vp_quantize_couple_sort(vorbis_block *vb,
@@ -1090,6 +1157,10 @@ void _vp_couple(int blobno,
       nonzero[vi->coupling_mag[i]]=1; 
       nonzero[vi->coupling_ang[i]]=1; 
 
+       /* The threshold of a stereo is changed with the size of n */
+       if(n > 1000)
+         postpoint=stereo_threshholds_limited[g->coupling_postpointamp[blobno]]; 
+ 
       for(j=0;j<p->n;j+=partition){
 	float acc=0.f;
 
@@ -1129,3 +1200,25 @@ void _vp_couple(int blobno,
   }
 }
 
+/* AoTuV */
+/** @ M2 **
+   The boost problem by the combination of noise normalization and point stereo is eased. 
+   However, this is a temporary patch. 
+   by Aoyumi @ 2004/04/18
+*/
+
+void hf_reduction(vorbis_info_psy_global *g,
+                      vorbis_look_psy *p, 
+                      vorbis_info_mapping0 *vi,
+                      float **mdct){
+ 
+  int i,j,n=p->n, de=0.3*p->m_val;
+  int limit=g->coupling_pointlimit[p->vi->blockflag][PACKETBLOBS/2];
+  int start=p->vi->normal_start;
+  
+  for(i=0; i<vi->coupling_steps; i++){
+    /* for(j=start; j<limit; j++){} // ???*/
+    for(j=limit; j<n; j++) 
+      mdct[i][j] *= (1.0 - de*((float)(j-limit) / (float)(n-limit)));
+  }
+}

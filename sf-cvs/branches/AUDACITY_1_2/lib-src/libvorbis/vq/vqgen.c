@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: train a VQ codebook 
- last mod: $Id: vqgen.c,v 1.4.4.1 2004-07-30 06:57:31 mbrubeck Exp $
+ last mod: $Id: vqgen.c,v 1.4.4.2 2004-11-25 02:47:58 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -83,8 +83,7 @@ void _vqgen_seed(vqgen *v){
 int directdsort(const void *a, const void *b){
   float av=*((float *)a);
   float bv=*((float *)b);
-  if(av>bv)return(-1);
-  return(1);
+  return (av<bv)-(av>bv);
 }
 
 void vqgen_cellmetric(vqgen *v){

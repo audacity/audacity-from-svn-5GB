@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: floor backend 1 implementation
- last mod: $Id: floor1.c,v 1.4.4.1 2004-07-30 06:57:29 mbrubeck Exp $
+ last mod: $Id: floor1.c,v 1.4.4.2 2004-11-25 02:47:53 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -57,7 +57,6 @@ typedef struct lsfit_acc{
   long x2a;
   long y2a;
   long xya; 
-  long n;
   long an;
 } lsfit_acc;
 
@@ -461,14 +460,13 @@ static int accumulate_fit(const float *flr,const float *mdct,
     a->y2a=y2a*weight+y2b;
     a->xya=xya*weight+xyb;
     a->an=na*weight+nb;
-    a->n=nb;
   }
 
   return(na);
 }
 
 static void fit_line(lsfit_acc *a,int fits,int *y0,int *y1){
-  long x=0,y=0,x2=0,y2=0,xy=0,n=0,an=0,i;
+  long x=0,y=0,x2=0,y2=0,xy=0,an=0,i;
   long x0=a[0].x0;
   long x1=a[fits-1].x1;
 
@@ -478,7 +476,6 @@ static void fit_line(lsfit_acc *a,int fits,int *y0,int *y1){
     x2+=a[i].x2a;
     y2+=a[i].y2a;
     xy+=a[i].xya;
-    n+=a[i].n;
     an+=a[i].an;
   }
 
@@ -488,7 +485,6 @@ static void fit_line(lsfit_acc *a,int fits,int *y0,int *y1){
     x2+=  x0 *  x0;
     y2+= *y0 * *y0;
     xy+= *y0 *  x0;
-    n++;
     an++;
   }
 
@@ -498,11 +494,10 @@ static void fit_line(lsfit_acc *a,int fits,int *y0,int *y1){
     x2+=  x1 *  x1;
     y2+= *y1 * *y1;
     xy+= *y1 *  x1;
-    n++;
     an++;
   }
   
-  {
+  if(an){
     /* need 64 bit multiplies, which C doesn't give portably as int */
     double fx=x;
     double fy=y;
@@ -513,13 +508,16 @@ static void fit_line(lsfit_acc *a,int fits,int *y0,int *y1){
     double b=(an*fxy-fx*fy)*denom;
     *y0=rint(a+b*x0);
     *y1=rint(a+b*x1);
-
+    
     /* limit to our range! */
     if(*y0>1023)*y0=1023;
     if(*y1>1023)*y1=1023;
     if(*y0<0)*y0=0;
     if(*y1<0)*y1=0;
-
+    
+  }else{
+    *y0=0;
+    *y1=0;
   }
 }
 
@@ -663,6 +661,10 @@ int *floor1_fit(vorbis_block *vb,vorbis_look_floor1 *look,
 	  int ly=post_Y(fit_valueA,fit_valueB,ln);
 	  int hy=post_Y(fit_valueA,fit_valueB,hn);
 	  
+	  if(ly==-1 || hy==-1){
+	    exit(1);
+	  }
+
 	  if(inspect_error(lx,hx,ly,hy,logmask,logmdct,info)){
 	    /* outside error bounds/begin search area.  Split it. */
 	    int ly0=-200;
@@ -755,7 +757,8 @@ int *floor1_interpolate_fit(vorbis_block *vb,vorbis_look_floor1 *look,
 }
 
 
-int floor1_encode(vorbis_block *vb,vorbis_look_floor1 *look,
+int floor1_encode(oggpack_buffer *opb,vorbis_block *vb,
+		  vorbis_look_floor1 *look,
 		  int *post,int *ilogmask){
 
   long i,j;
@@ -838,13 +841,13 @@ int floor1_encode(vorbis_block *vb,vorbis_look_floor1 *look,
     
     /* we have everything we need. pack it out */
     /* mark nontrivial floor */
-    oggpack_write(&vb->opb,1,1);
+    oggpack_write(opb,1,1);
       
     /* beginning/end post */
     look->frames++;
     look->postbits+=ilog(look->quant_q-1)*2;
-    oggpack_write(&vb->opb,out[0],ilog(look->quant_q-1));
-    oggpack_write(&vb->opb,out[1],ilog(look->quant_q-1));
+    oggpack_write(opb,out[0],ilog(look->quant_q-1));
+    oggpack_write(opb,out[1],ilog(look->quant_q-1));
       
       
     /* partition by partition */
@@ -882,7 +885,7 @@ int floor1_encode(vorbis_block *vb,vorbis_look_floor1 *look,
 	}
 	/* write it */
 	look->phrasebits+=
-	  vorbis_book_encode(books+info->class_book[class],cval,&vb->opb);
+	  vorbis_book_encode(books+info->class_book[class],cval,opb);
 	
 #ifdef TRAIN_FLOOR1
 	{
@@ -904,7 +907,7 @@ int floor1_encode(vorbis_block *vb,vorbis_look_floor1 *look,
 	  /* hack to allow training with 'bad' books */
 	  if(out[j+k]<(books+book)->entries)
 	    look->postbits+=vorbis_book_encode(books+book,
-					       out[j+k],&vb->opb);
+					       out[j+k],opb);
 	  /*else
 	    fprintf(stderr,"+!");*/
 	  
@@ -949,7 +952,7 @@ int floor1_encode(vorbis_block *vb,vorbis_look_floor1 *look,
       return(1);
     }
   }else{
-    oggpack_write(&vb->opb,0,1);
+    oggpack_write(opb,0,1);
     memset(ilogmask,0,vb->pcmend/2*sizeof(*ilogmask));
     seq++;
     return(0);
