@@ -10,19 +10,20 @@
 
 **********************************************************************/
 
+#include <stdio.h>
+
 #include <wx/brush.h>
+#include <wx/clipbrd.h>
+#include <wx/dataobj.h>
 #include <wx/dc.h>
 #include <wx/event.h>
+#include <wx/icon.h>
+#include <wx/intl.h>
+#include <wx/log.h>
 #include <wx/pen.h>
 #include <wx/string.h>
 #include <wx/textfile.h>
-#include <wx/intl.h>
-#include <wx/icon.h>
-#include <stdio.h>
-#include <wx/clipbrd.h>
-#include <wx/dataobj.h>
-
-#include <wx/log.h>
+#include <wx/utils.h>
 
 #include "LabelTrack.h"
 #include "DirManager.h"
@@ -288,7 +289,7 @@ void LabelTrack::ComputeLayout( wxRect & r, double h, double pps)
    int iRow;
    // Rows are the 'same' height as icons or as the text,
    // whichever is taller.
-   const int yRowHeight = max(mTextHeight,mIconHeight)+3;// pixels.
+   const int yRowHeight = wxMax(mTextHeight,mIconHeight)+3;// pixels.
    // Extra space at end of rows.
    // We allow space for one half icon at the start and two
    // half icon widths for extra x for the text frame.
@@ -296,7 +297,7 @@ void LabelTrack::ComputeLayout( wxRect & r, double h, double pps)
    // allowed to be obscured by the text].
    const int xExtra= (3 * mIconWidth)/2;
 
-   const int nRows = min((r.height / yRowHeight) + 1, MAX_NUM_ROWS);
+   const int nRows = wxMin((r.height / yRowHeight) + 1, MAX_NUM_ROWS);
    // Initially none of the rows have been used.
    // So set a value that is less than any valid value.
    const int xStart = r.x -(int)(h*pps) -100;
@@ -418,8 +419,8 @@ void LabelStruct::DrawText( wxDC & dc, wxRect & r)
    // Draw frame for the text...
    // We draw it half an icon width left of the text itself.
    {
-      const int xStart=max(r.x,xText-LabelTrack::mIconWidth/2);
-      const int xEnd=min(r.x+r.width,xText+width+LabelTrack::mIconWidth/2);
+      const int xStart=wxMax(r.x,xText-LabelTrack::mIconWidth/2);
+      const int xEnd=wxMin(r.x+r.width,xText+width+LabelTrack::mIconWidth/2);
       const int xWidth = xEnd-xStart;
 
       if( (xStart < (r.x+r.width)) && (xEnd > r.x) && (xWidth>0))
@@ -441,8 +442,8 @@ void LabelStruct::DrawTextBox( wxDC & dc, wxRect & r)
    const int xBarShorten  = LabelTrack::mIconWidth+4;
 
    {
-      const int xStart=max(r.x,x+xBarShorten/2);
-      const int xEnd=min(r.x+r.width,x1-xBarShorten/2);
+      const int xStart=wxMax(r.x,x+xBarShorten/2);
+      const int xEnd=wxMin(r.x+r.width,x1-xBarShorten/2);
       const int xWidth = xEnd-xStart;
 
       if( (xStart < (r.x+r.width)) && (xEnd > r.x) && (xWidth>0))
@@ -465,8 +466,8 @@ void LabelStruct::DrawTextBox( wxDC & dc, wxRect & r)
    // We don't quite draw from x to x1 because we allow 
    // half an icon width at each end.
    {
-      const int xStart=max(r.x,xText-LabelTrack::mIconWidth/2);
-      const int xEnd=min(r.x+r.width,xText+width+LabelTrack::mIconWidth/2);
+      const int xStart=wxMax(r.x,xText-LabelTrack::mIconWidth/2);
+      const int xEnd=wxMin(r.x+r.width,xText+width+LabelTrack::mIconWidth/2);
       const int xWidth = xEnd-xStart;
 
       if( (xStart < (r.x+r.width)) && (xEnd > r.x) && (xWidth>0))
