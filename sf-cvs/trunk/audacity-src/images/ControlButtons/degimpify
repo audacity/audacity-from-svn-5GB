@@ -3,5 +3,8 @@
 # use Audacity
 for arg in $@
 do
-  cat $arg| sed -e 's/\_xpm\[\]/\[\]/' -e 's/^static char \*/static const char \*/' > $arg
+  filename=$(tempfile)
+  cat $arg| sed -e 's/\_xpm\[\]/\[\]/' -e 's/^static char \*/static const char  \*/' > $filename
+  mv  $filename $arg
+
 done
