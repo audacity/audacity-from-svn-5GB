@@ -33,6 +33,7 @@ class LegacyAliasBlockFile : public PCMAliasBlockFile
 
    virtual void SaveXML(int depth, wxFFile &xmlFile);
    virtual BlockFile *Copy(wxFileName fileName);
+   virtual void Recover();
 
    static BlockFile *BuildFromXML(wxString projDir, const char **attrs);
 };

@@ -10,6 +10,7 @@
 
 #include <wx/utils.h>
 #include <wx/wxchar.h>
+#include <wx/log.h>
 
 #include <sndfile.h>
 
@@ -50,12 +51,30 @@ int PCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
 {
    SF_INFO info;
 
-   memset(&info, 0, sizeof(info));
-   SNDFILE *sf = sf_open(FILENAME(mAliasedFileName.GetFullPath()),
-                         SFM_READ, &info);
+   if(!mAliasedFileName.IsOk()){ // intentionally silenced 
+      memset(data,0,SAMPLE_SIZE(format)*len);
+      return len;
+   }
 
-   if (!sf)
-      return 0;
+   wxLogNull *silence=0;
+   if(mSilentAliasLog)silence= new wxLogNull();
+
+   memset(&info, 0, sizeof(info));
+   SNDFILE *sf=sf_open(FILENAME(mAliasedFileName.GetFullPath()), 
+                       SFM_READ, &info);
+   
+   if (!sf){
+      
+      memset(data,0,SAMPLE_SIZE(format)*len);
+
+      if(silence) delete silence;
+      mSilentAliasLog=TRUE;
+
+      return len;
+   }
+
+   if(silence) delete silence;
+   mSilentAliasLog=FALSE;
 
    sf_seek(sf, mAliasStart + start, SEEK_SET);
    samplePtr buffer = NewSamples(len * info.channels, floatSample);
@@ -139,7 +158,7 @@ BlockFile *PCMAliasBlockFile::BuildFromXML(DirManager &dm, const char **attrs)
        const char *value = *attrs++;
 
        if( !wxStricmp(attr, "summaryfile") )
-	  dm.AssignFile(summaryFileName,value);
+	  dm.AssignFile(summaryFileName,value,FALSE);
        if( !wxStricmp(attr, "aliasfile") )
           aliasFileName.Assign(value);
        if( !wxStricmp(attr, "aliasstart") )
@@ -161,6 +180,10 @@ BlockFile *PCMAliasBlockFile::BuildFromXML(DirManager &dm, const char **attrs)
                                 min, max, rms);
 }
 
+void PCMAliasBlockFile::Recover(void)
+{
+   WriteSummary();
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
@@ -172,4 +195,5 @@ BlockFile *PCMAliasBlockFile::BuildFromXML(DirManager &dm, const char **attrs)
 //
 // vim: et sts=3 sw=3
 // arch-tag: 7afeef28-696c-40c6-9558-c1134ac04a66
+
 

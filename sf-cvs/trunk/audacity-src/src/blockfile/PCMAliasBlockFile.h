@@ -38,6 +38,7 @@ class PCMAliasBlockFile : public AliasBlockFile
                         sampleCount start, sampleCount len);
    virtual void SaveXML(int depth, wxFFile &xmlFile);
    virtual BlockFile *Copy(wxFileName fileName);
+   virtual void Recover();
 
    static BlockFile *BuildFromXML(DirManager &dm, const char **attrs);
 };

@@ -83,6 +83,7 @@
 #include "Track.h"
 #include "TrackPanel.h"
 #include "WaveTrack.h"
+#include "DirManager.h"
 #include "effects/Effect.h"
 #include "prefs/PrefsDialog.h"
 #include "widgets/Warning.h"
@@ -1939,14 +1940,34 @@ void AudacityProject::OpenFile(wxString fileName)
       InitialState();
       HandleResize();
       mTrackPanel->Refresh(false);
+      mTrackPanel->Update(); // force any repaint to happen now,
+      // else any asynch calls into the blockfile code will not have
+      // finished logging errors (if any) before the call to ProjectFSCK()
 
-      if (err) {
-         ::wxMessageBox(_("An error occurred while opening the project file.\nSome audio may not have been retrieved."),
-                        _("Error opening project"),
-                        wxOK | wxCENTRE, this);
+      int status=GetDirManager()->ProjectFSCK(err);
+
+      if(status & FSCKstatus_CLOSEREQ){
+         // there was an error in the load/check and the user
+         // explictly opted to close the project
+
+         mTracks->Clear(true);
+         
+         mFileName = "";
+         SetTitle("Audacity");
+         mTrackPanel->Refresh(true);
+
+      }else if (status & FSCKstatus_CHANGED){
+         
+         t = iter.First();
+         while (t) {
+            t->MarkChanged();
+            t = iter.Next();
+         }
+         mTrackPanel->Refresh(true);
+         this->PushState(_("Project checker repaired file"), _("Repair"));
+
       }
-   }
-   else {
+   } else {
       mTracks->Clear(true);
 
       mFileName = "";

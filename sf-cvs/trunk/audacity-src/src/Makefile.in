@@ -139,6 +139,7 @@ OBJS = \
 	widgets/AButton.o \
 	widgets/ASlider.o \
 	widgets/Meter.o \
+	widgets/MultiDialog.o \
 	widgets/Ruler.o \
 	widgets/Warning.o \
 	xml/XMLFileReader.o \

@@ -20,7 +20,7 @@ void ComputeLegacySummaryInfo(wxFileName fileName,
                               int summaryLen,
                               sampleFormat format,
                               SummaryInfo *info,
-                              bool noRMS,
+                              bool noRMS,bool Silent,
                               float *min, float *max, float *rms);
                         
 
@@ -58,6 +58,7 @@ class LegacyBlockFile : public BlockFile {
    /// Write an XML representation of this file
    virtual void SaveXML(int depth, wxFFile &xmlFile);
    virtual int GetSpaceUsage();
+   virtual void Recover();
 
    static BlockFile *BuildFromXML(wxString dir, const char **attrs,
                                   sampleCount len,

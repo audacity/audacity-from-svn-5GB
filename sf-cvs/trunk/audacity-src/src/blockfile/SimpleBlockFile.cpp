@@ -11,6 +11,7 @@
 #include <wx/filefn.h>
 #include <wx/ffile.h>
 #include <wx/utils.h>
+#include <wx/log.h>
 
 #include "SimpleBlockFile.h"
 #include "../FileFormats.h"
@@ -48,14 +49,16 @@ SimpleBlockFile::SimpleBlockFile(wxFileName baseFileName,
                                  sampleFormat format):
    BlockFile(wxFileName(baseFileName.GetFullPath() + ".au"), sampleLen)
 {
-   wxASSERT( !wxFileExists(FILENAME(mFileName.GetFullPath())) );
+   // Now checked in the DirManager
+   //wxASSERT( !wxFileExists(FILENAME(mFileName.GetFullPath())) );
 
    // Open and write the file
    wxFFile file;
 
-   if( !file.Open((const wxChar *)FILENAME(mFileName.GetFullPath()), "wb") )
-       // Throw an exception?
-       return;
+   if( !file.Open((const wxChar *)FILENAME(mFileName.GetFullPath()), "wb") ){
+      // Can't do anything else.
+      return;
+   }
 
    auHeader header;
 
@@ -130,10 +133,6 @@ SimpleBlockFile::SimpleBlockFile(wxFileName existingFile, sampleCount len,
    BlockFile(existingFile, len)
 {
 
-   if( !wxFileExists(FILENAME(existingFile.GetFullPath())))
-      // throw an exception?
-      ;
-
    mMin = min;
    mMax = max;
    mRMS = rms;
@@ -151,13 +150,27 @@ bool SimpleBlockFile::ReadSummary(void *data)
 {
    wxFFile file;
 
-   if( !file.Open((const wxChar *)FILENAME(mFileName.GetFullPath()), "rb") )
-      return false;
+   wxLogNull *silence=0;
+   if(mSilentLog)silence= new wxLogNull();
+   
+   if(!file.Open((const wxChar *)FILENAME(mFileName.GetFullPath()), "rb") ){
+      
+      memset(data,0,(size_t)mSummaryInfo.totalSummaryBytes);
 
+      if(silence) delete silence;
+      mSilentLog=TRUE;
+
+      return true;
+      
+   }
+
+   if(silence) delete silence;
+   mSilentLog=FALSE;
+   
    // The offset is just past the au header
    if( !file.Seek(sizeof(auHeader)) )
       return false;
-
+   
    int read = (int)file.Read(data, (size_t)mSummaryInfo.totalSummaryBytes);
 
    FixSummary(data);
@@ -176,13 +189,24 @@ int SimpleBlockFile::ReadData(samplePtr data, sampleFormat format,
                         sampleCount start, sampleCount len)
 {
    SF_INFO info;
-
+   wxLogNull *silence=0;
+   if(mSilentLog)silence= new wxLogNull();
+   
    memset(&info, 0, sizeof(info));
-   SNDFILE *sf = sf_open(FILENAME(mFileName.GetFullPath()), SFM_READ, &info);
+   SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()), SFM_READ, &info);
 
-   if (!sf)
-      return 0;
+   if (!sf){
+      
+      memset(data,0,SAMPLE_SIZE(format)*len);
 
+      if(silence) delete silence;
+      mSilentLog=TRUE;
+
+      return len;
+   }
+   if(silence) delete silence;
+   mSilentLog=FALSE;
+   
    sf_seek(sf, start, SEEK_SET);
    samplePtr buffer = NewSamples(len, floatSample);
 
@@ -254,7 +278,7 @@ BlockFile *SimpleBlockFile::BuildFromXML(DirManager &dm, const char **attrs)
        const char *value = *attrs++;
 
        if( !strcmp(attr, "filename") )
-	  dm.AssignFile(fileName,value);
+	  dm.AssignFile(fileName,value,FALSE);
        if( !strcmp(attr, "len") )
           len = atoi(value);
        if( !strcmp(attr, "min") )
@@ -285,6 +309,33 @@ int SimpleBlockFile::GetSpaceUsage()
    return dataFile.Length();
 }
 
+void SimpleBlockFile::Recover(){
+   wxFFile file;
+   int i;
+
+   if( !file.Open((const wxChar *)FILENAME(mFileName.GetFullPath()), "wb") ){
+      // Can't do anything else.
+      return;
+   }
+
+   auHeader header;
+   header.magic = 0x2e736e64;
+   header.dataOffset = sizeof(auHeader) + mSummaryInfo.totalSummaryBytes;
+
+   // dataSize is optional, and we opt out
+   header.dataSize = 0xffffffff;
+   header.encoding = AU_SAMPLE_FORMAT_16;
+   header.sampleRate = 44100;
+   header.channels = 1;
+   file.Write(&header, sizeof(header));
+
+   for(i=0;i<mSummaryInfo.totalSummaryBytes;i++)
+      file.Write("\0",1);
+
+   for(i=0;i<mLen*2;i++)
+      file.Write("\0",1);
+
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
@@ -296,4 +347,5 @@ int SimpleBlockFile::GetSpaceUsage()
 //
 // vim: et sts=3 sw=3
 // arch-tag: 606f2b69-1fda-40a3-88e6-06ff91d708c2
+
 

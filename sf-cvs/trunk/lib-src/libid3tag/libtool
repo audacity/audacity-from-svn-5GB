@@ -44,7 +44,7 @@ available_tags=" CXX F77"
 
 # ### BEGIN LIBTOOL CONFIG
 
-# Libtool was configured on host lips:
+# Libtool was configured on host Snotfish:
 
 # Shell to use when invoking shell scripts.
 SHELL="/bin/sh"
@@ -66,7 +66,7 @@ fast_install=yes
 
 # The host system.
 host_alias=
-host=powerpc-unknown-linux-gnu
+host=i686-pc-linux-gnu
 
 # An echo program that does not interpret backslashes.
 echo="echo"
@@ -313,7 +313,7 @@ variables_saved_for_relink="PATH  LD_RUN_PATH GCC_EXEC_PREFIX COMPILER_PATH LIBR
 link_all_deplibs=unknown
 
 # Compile-time system search path for libraries
-sys_lib_search_path_spec=" /usr/lib/gcc-lib/powerpc-linux/3.3.4/ /usr/lib/gcc/powerpc-linux/3.3.4/ /usr/lib/gcc-lib/powerpc-linux/3.3.4/../../../../powerpc-linux/lib/powerpc-linux/3.3.4/ /usr/lib/gcc-lib/powerpc-linux/3.3.4/../../../../powerpc-linux/lib/ /usr/lib/gcc-lib/powerpc-linux/3.3.4/../../../powerpc-linux/3.3.4/ /usr/lib/gcc-lib/powerpc-linux/3.3.4/../../../ /lib/powerpc-linux/3.3.4/ /lib/ /usr/lib/powerpc-linux/3.3.4/ /usr/lib/"
+sys_lib_search_path_spec=" /usr/lib/gcc-lib/i486-linux/3.3.3/ /usr/lib/gcc/i486-linux/3.3.3/ /usr/lib/gcc-lib/i486-linux/3.3.3/../../../../i486-linux/lib/i486-linux/3.3.3/ /usr/lib/gcc-lib/i486-linux/3.3.3/../../../../i486-linux/lib/ /usr/lib/gcc-lib/i486-linux/3.3.3/../../../i486-linux/3.3.3/ /usr/lib/gcc-lib/i486-linux/3.3.3/../../../ /lib/i486-linux/3.3.3/ /lib/ /usr/lib/i486-linux/3.3.3/ /usr/lib/"
 
 # Run-time system search path for libraries
 sys_lib_dlsearch_path_spec="/lib /usr/lib"
@@ -6739,7 +6739,7 @@ build_old_libs=`case $build_libtool_libs in yes) $echo no;; *) $echo yes;; esac`
 # End:
 # ### BEGIN LIBTOOL TAG CONFIG: CXX
 
-# Libtool was configured on host lips:
+# Libtool was configured on host Snotfish:
 
 # Shell to use when invoking shell scripts.
 SHELL="/bin/sh"
@@ -6761,7 +6761,7 @@ fast_install=yes
 
 # The host system.
 host_alias=
-host=powerpc-unknown-linux-gnu
+host=i686-pc-linux-gnu
 
 # An echo program that does not interpret backslashes.
 echo="echo"
@@ -6912,11 +6912,11 @@ striplib="strip --strip-unneeded"
 
 # Dependencies to place before the objects being linked to create a
 # shared library.
-predep_objects="/usr/lib/gcc-lib/powerpc-linux/3.3.4/../../../crti.o /usr/lib/gcc-lib/powerpc-linux/3.3.4/crtbeginS.o"
+predep_objects="/usr/lib/gcc-lib/i486-linux/3.3.3/../../../crti.o /usr/lib/gcc-lib/i486-linux/3.3.3/crtbeginS.o"
 
 # Dependencies to place after the objects being linked to create a
 # shared library.
-postdep_objects="/usr/lib/gcc-lib/powerpc-linux/3.3.4/crtsavres.o /usr/lib/gcc-lib/powerpc-linux/3.3.4/crtendS.o /usr/lib/gcc-lib/powerpc-linux/3.3.4/../../../crtn.o"
+postdep_objects="/usr/lib/gcc-lib/i486-linux/3.3.3/crtendS.o /usr/lib/gcc-lib/i486-linux/3.3.3/../../../crtn.o"
 
 # Dependencies to place before the objects being linked to create a
 # shared library.
@@ -6928,7 +6928,7 @@ postdeps="-lstdc++ -lm -lgcc_s -lc -lgcc_s"
 
 # The library search path used internally by the compiler when linking
 # a shared library.
-compiler_lib_search_path="-L/usr/lib/gcc-lib/powerpc-linux/3.3.4 -L/usr/lib/gcc-lib/powerpc-linux/3.3.4/../../.."
+compiler_lib_search_path="-L/usr/lib/gcc-lib/i486-linux/3.3.3 -L/usr/lib/gcc-lib/i486-linux/3.3.3/../../.."
 
 # Method to check whether dependent libraries are shared objects.
 deplibs_check_method="pass_all"
@@ -7008,7 +7008,7 @@ variables_saved_for_relink="PATH LD_LIBRARY_PATH LD_RUN_PATH GCC_EXEC_PREFIX COM
 link_all_deplibs=unknown
 
 # Compile-time system search path for libraries
-sys_lib_search_path_spec=" /usr/lib/gcc-lib/powerpc-linux/3.3.4/ /usr/lib/gcc/powerpc-linux/3.3.4/ /usr/lib/gcc-lib/powerpc-linux/3.3.4/../../../../powerpc-linux/lib/powerpc-linux/3.3.4/ /usr/lib/gcc-lib/powerpc-linux/3.3.4/../../../../powerpc-linux/lib/ /usr/lib/gcc-lib/powerpc-linux/3.3.4/../../../powerpc-linux/3.3.4/ /usr/lib/gcc-lib/powerpc-linux/3.3.4/../../../ /lib/powerpc-linux/3.3.4/ /lib/ /usr/lib/powerpc-linux/3.3.4/ /usr/lib/"
+sys_lib_search_path_spec=" /usr/lib/gcc-lib/i486-linux/3.3.3/ /usr/lib/gcc/i486-linux/3.3.3/ /usr/lib/gcc-lib/i486-linux/3.3.3/../../../../i486-linux/lib/i486-linux/3.3.3/ /usr/lib/gcc-lib/i486-linux/3.3.3/../../../../i486-linux/lib/ /usr/lib/gcc-lib/i486-linux/3.3.3/../../../i486-linux/3.3.3/ /usr/lib/gcc-lib/i486-linux/3.3.3/../../../ /lib/i486-linux/3.3.3/ /lib/ /usr/lib/i486-linux/3.3.3/ /usr/lib/"
 
 # Run-time system search path for libraries
 sys_lib_dlsearch_path_spec="/lib /usr/lib"
@@ -7035,7 +7035,7 @@ include_expsyms=""
 
 # ### BEGIN LIBTOOL TAG CONFIG: F77
 
-# Libtool was configured on host lips:
+# Libtool was configured on host Snotfish:
 
 # Shell to use when invoking shell scripts.
 SHELL="/bin/sh"
@@ -7057,7 +7057,7 @@ fast_install=yes
 
 # The host system.
 host_alias=
-host=powerpc-unknown-linux-gnu
+host=i686-pc-linux-gnu
 
 # An echo program that does not interpret backslashes.
 echo="echo"
@@ -7073,7 +7073,7 @@ LTCC="gcc"
 CC="g77"
 
 # Is the compiler the GNU C compiler?
-with_gcc=yes
+with_gcc=
 
 # An ERE matcher.
 EGREP="grep -E"
@@ -7304,7 +7304,7 @@ variables_saved_for_relink="PATH LD_LIBRARY_PATH LD_RUN_PATH GCC_EXEC_PREFIX COM
 link_all_deplibs=unknown
 
 # Compile-time system search path for libraries
-sys_lib_search_path_spec=" /usr/lib/gcc-lib/powerpc-linux/2.95.4/ /usr/lib/gcc/powerpc-linux/2.95.4/ /usr/powerpc-linux/lib/powerpc-linux/2.95.4/ /usr/powerpc-linux/lib/ /usr/lib/powerpc-linux/2.95.4/ /usr/lib/ /lib/powerpc-linux/2.95.4/ /lib/ /usr/lib/powerpc-linux/2.95.4/ /usr/lib/"
+sys_lib_search_path_spec=" /usr/lib/gcc-lib/i386-linux/3.3/ /usr/lib/gcc/i386-linux/3.3/ /usr/lib/gcc-lib/i386-linux/3.3/../../../../i386-linux/lib/i386-linux/3.3/ /usr/lib/gcc-lib/i386-linux/3.3/../../../../i386-linux/lib/ /usr/lib/gcc-lib/i386-linux/3.3/../../../i386-linux/3.3/ /usr/lib/gcc-lib/i386-linux/3.3/../../../ /lib/i386-linux/3.3/ /lib/ /usr/lib/i386-linux/3.3/ /usr/lib/"
 
 # Run-time system search path for libraries
 sys_lib_dlsearch_path_spec="/lib /usr/lib"

@@ -21,6 +21,7 @@
 #include <wx/filefn.h>
 #include <wx/ffile.h>
 #include <wx/utils.h>
+#include <wx/log.h>
 
 #include "LegacyBlockFile.h"
 #include "../FileFormats.h"
@@ -32,7 +33,7 @@ void ComputeLegacySummaryInfo(wxFileName fileName,
                               int summaryLen,
                               sampleFormat format,
                               SummaryInfo *info,
-                              bool noRMS,
+                              bool noRMS,bool Silent,
                               float *min, float *max, float *rms)
 {
    int fields = 3; /* min, max, rms */
@@ -64,15 +65,25 @@ void ComputeLegacySummaryInfo(wxFileName fileName,
    samplePtr data = NewSamples(info->frames64K * fields,
                                info->format);
 
+   wxLogNull *silence=0;
    wxFFile summaryFile;
+   int read;
+   if(Silent)silence= new wxLogNull();
+
    if( !summaryFile.Open(fileName.GetFullPath(), "rb") ) {
-      delete[] data;
-      return;
+      wxLogWarning("Unable to access summary file %s; substituting silence for remainder of session",
+                   fileName.GetFullPath().c_str());
+
+      read=info->frames64K * info->bytesPerFrame;
+      memset(data,0,read);
+   }else{
+      summaryFile.Seek(info->offset64K);
+      read = summaryFile.Read(data,
+                              info->frames64K *
+                              info->bytesPerFrame);
    }
-   summaryFile.Seek(info->offset64K);
-   int read = summaryFile.Read(data,
-                               info->frames64K *
-                               info->bytesPerFrame);
+
+   if(silence) delete silence;
 
    int count = read / info->bytesPerFrame;
 
@@ -112,9 +123,6 @@ LegacyBlockFile::LegacyBlockFile(wxFileName existingFile,
    BlockFile(existingFile, len),
    mFormat(format)
 {
-   if( !wxFileExists(FILENAME(existingFile.GetFullPath())) )
-      // throw an exception?
-      ;
 
    sampleFormat summaryFormat;
 
@@ -125,7 +133,7 @@ LegacyBlockFile::LegacyBlockFile(wxFileName existingFile,
 
    ComputeLegacySummaryInfo(existingFile,
                             summaryLen, summaryFormat,
-                            &mSummaryInfo, noRMS,
+                            &mSummaryInfo, noRMS, FALSE,
                             &mMin, &mMax, &mRMS);
 }
 
@@ -140,11 +148,23 @@ LegacyBlockFile::~LegacyBlockFile()
 bool LegacyBlockFile::ReadSummary(void *data)
 {
    wxFFile summaryFile;
+   wxLogNull *silence=0;
+   if(mSilentLog)silence= new wxLogNull();
 
-   if( !summaryFile.Open(mFileName.GetFullPath(), "rb") )
-      return false;
+   if( !summaryFile.Open(mFileName.GetFullPath(), "rb") ){
+
+      memset(data,0,(size_t)mSummaryInfo.totalSummaryBytes);
+
+      if(silence) delete silence;
+      mSilentLog=TRUE;
+
+      return true;
+   }
 
    int read = summaryFile.Read(data, (size_t)mSummaryInfo.totalSummaryBytes);
+   
+   if(silence) delete silence;
+   mSilentLog=FALSE;
 
    return (read == mSummaryInfo.totalSummaryBytes);
 }
@@ -182,40 +202,46 @@ int LegacyBlockFile::ReadData(samplePtr data, sampleFormat format,
    info.frames = mLen + (mSummaryInfo.totalSummaryBytes /
                          SAMPLE_SIZE(mFormat));
    
-   SNDFILE *sf = sf_open(FILENAME(mFileName.GetFullPath()), SFM_READ, &info);
+   SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()), SFM_READ, &info);
+   wxLogNull *silence=0;
+   if(mSilentLog)silence= new wxLogNull();
 
-   if (!sf)
-      return 0;
+   if (!sf){
+       
+      memset(data,0,SAMPLE_SIZE(format)*len);
+
+      if(silence) delete silence;
+      mSilentLog=TRUE;
+
+      return len;
+   }
+   if(silence) delete silence;
+   mSilentLog=FALSE;
 
    sf_count_t seekstart = start +
-      (mSummaryInfo.totalSummaryBytes / SAMPLE_SIZE(mFormat));
+         (mSummaryInfo.totalSummaryBytes / SAMPLE_SIZE(mFormat));
    sf_seek(sf, seekstart , SEEK_SET);
-
+   
    samplePtr buffer = NewSamples(len, floatSample);
-
    int framesRead = 0;
-
+   
    // If both the src and dest formats are integer formats,
    // read integers from the file (otherwise we would be
    // converting to float and back, which is unneccesary)
    if (format == int16Sample &&
        sf_subtype_is_integer(info.format)) {
       framesRead = sf_readf_short(sf, (short *)data, len);
-   }
-   else
-   if (format == int24Sample &&
-       sf_subtype_is_integer(info.format))
-   {
+   }else if (format == int24Sample &&
+             sf_subtype_is_integer(info.format)) {
       framesRead = sf_readf_int(sf, (int *)data, len);
-
-      // libsndfile gave us the 3 byte sample in the 3 most
+      
+         // libsndfile gave us the 3 byte sample in the 3 most
       // significant bytes -- we want it in the 3 least
       // significant bytes.
       int *intPtr = (int *)data;
       for( int i = 0; i < framesRead; i++ )
          intPtr[i] = intPtr[i] >> 8;
-   }
-   else {
+   } else {
       // Otherwise, let libsndfile handle the conversion and
       // scaling, and pass us normalized data as floats.  We can
       // then convert to whatever format we want.
@@ -223,10 +249,10 @@ int LegacyBlockFile::ReadData(samplePtr data, sampleFormat format,
       CopySamples(buffer, floatSample,
                   (samplePtr)data, format, framesRead);
    }
-
-   DeleteSamples(buffer);
-
+   
    sf_close(sf);
+   
+   DeleteSamples(buffer);
 
    return framesRead;
 }
@@ -293,7 +319,11 @@ int LegacyBlockFile::GetSpaceUsage()
    return dataFile.Length();
 }
 
+void LegacyBlockFile::Recover()
+{
 
+
+}
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //

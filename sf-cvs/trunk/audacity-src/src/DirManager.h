@@ -42,6 +42,9 @@ class wxHashTable;
 class BlockFile;
 class SequenceTest;
 
+#define FSCKstatus_CLOSEREQ 0x1
+#define FSCKstatus_CHANGED  0x2
+
 WX_DECLARE_HASH_MAP(int, int, wxIntegerHash, wxIntegerEqual, DirHash);
 WX_DECLARE_HASH_MAP(wxString,BlockFile *,wxStringHash,wxStringEqual,BlockHash);
 
@@ -104,9 +107,10 @@ class DirManager: public XMLTagHandler {
    bool HandleXMLTag(const char *tag, const char **attrs);
    XMLTagHandler *HandleXMLChild(const char *tag) { return NULL; }
    void WriteXML(int depth, FILE *fp) { }
-   void AssignFile(wxFileName &filename,wxString value);
+   bool AssignFile(wxFileName &filename,wxString value,bool check);
 
    static void CleanTempDir(bool startup);
+   int ProjectFSCK(bool);
 
  private:
 
@@ -114,6 +118,7 @@ class DirManager: public XMLTagHandler {
    wxString NewTrackName();
 
    wxFileName MakeBlockFileName();
+   wxFileName MakeBlockFilePath(wxString value);
 
    // Create new unique names
    wxString NewTempBlockName();

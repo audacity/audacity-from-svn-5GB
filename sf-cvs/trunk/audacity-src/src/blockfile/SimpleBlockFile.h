@@ -54,6 +54,7 @@ class SimpleBlockFile : public BlockFile {
    /// Write an XML representation of this file
    virtual void SaveXML(int depth, wxFFile &xmlFile);
    virtual int GetSpaceUsage();
+   virtual void Recover();
 
    static BlockFile *BuildFromXML(DirManager &dm, const char **attrs);
 };
