@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include "Envelope.h"
+
 #include <math.h>
 
 #include <wx/dc.h>
@@ -17,7 +19,6 @@
 #include <wx/textfile.h>
 
 #include "AColor.h"
-#include "Envelope.h"
 #include "DirManager.h"
 
 Envelope::Envelope()

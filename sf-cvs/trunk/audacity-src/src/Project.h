@@ -18,6 +18,14 @@
 #ifndef __AUDACITY_PROJECT__
 #define __AUDACITY_PROJECT__
 
+// Work around bugs in <wx/dragimag.h>, wxGTK 2.2.9.2
+// (bad use of preprocessor, failure to forward-declare class names)
+// Bug report forwarded to wxWindows team.
+class wxRect;
+class wxMemoryDC;
+class wxDC;
+#include <wx/dragimag.h>
+
 #include <wx/frame.h>
 #include <wx/intl.h>
 
@@ -36,7 +44,6 @@
 
 class wxWindow;
 class wxBoxSizer;
-class wxDragImage;
 class wxScrollEvent;
 class wxScrollBar;
 

@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include "Mix.h"
+
 #include <math.h>
 
 #include <wx/textctrl.h>
@@ -15,8 +17,6 @@
 #include <wx/progdlg.h>
 #include <wx/timer.h>
 #include <wx/intl.h>
-
-#include "Mix.h"
 
 #include "WaveTrack.h"
 #include "DirManager.h"
