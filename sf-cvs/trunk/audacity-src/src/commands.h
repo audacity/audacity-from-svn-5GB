@@ -121,7 +121,15 @@
       SeparatorDummy1,  ///*DUMMY SEPARATOR: necessary because of above conditional compilation*/
       QuickMixID,
       /*DUMMY SEPARATOR*/
-      AlignID = QuickMixID + 2,
+      SelectionSaveID = QuickMixID + 2,
+      SelectionRestoreID,
+      /*DUMMY SEPARATOR*/
+      CursorTrackStartID = SelectionRestoreID + 2,
+      CursorTrackEndID,
+      CursorSelStartID,
+      CursorSelEndID,
+      /*DUMMY SEPARATOR*/
+      AlignID = CursorSelEndID + 2,
       AlignZeroID,
       AlignCursorID,
       AlignSelStartID,
@@ -259,6 +267,16 @@
 #endif
    CMD_ADDMENU_SEP(projectMenu);
    CMD_ADDMENU(_("&Quick Mix"), _("Quick Mix"), OnQuickMix, projectMenu, enabledMenu);
+
+   CMD_ADDMENU_SEP(projectMenu);
+   CMD_ADDMENU(_("Cursor or Selection Save"), _("Cursor or Selection Save"), OnSelectionSave, projectMenu, enabledMenu);
+   CMD_ADDMENU(_("Cursor or Selection Restore"), _("Cursor or Selection Restore"), OnSelectionRestore, projectMenu, enabledMenu);
+
+   CMD_ADDMENU_SEP(projectMenu);
+   CMD_ADDMENU(_("Cursor to Track Start"), _("Cursor to Track Start"), OnCursorTrackStart, projectMenu, enabledMenu);
+   CMD_ADDMENU(_("Cursor to Track End"), _("Cursor to Track End"), OnCursorTrackEnd, projectMenu, enabledMenu);
+   CMD_ADDMENU(_("Cursor to Selection Start"), _("Cursor to Selection Start"), OnCursorSelStart, projectMenu, enabledMenu);
+   CMD_ADDMENU(_("Cursor to Selection End"), _("Cursor to Selection End"), OnCursorSelEnd, projectMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(projectMenu);
    CMD_ADDMENU(_("Align Tracks &Together"), _("Align Tracks Together"), OnAlign, projectMenu, enabledMenu);
