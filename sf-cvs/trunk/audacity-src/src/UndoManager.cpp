@@ -140,8 +140,16 @@ TrackList *UndoManager::SetStateTo(unsigned int n, double *sel0, double *sel1)
 
    current = n;
 
-   *sel0 = stack[current]->sel0;
-   *sel1 = stack[current]->sel1;
+   if (current == (stack.Count()-1)) {
+      *sel0 = stack[current]->sel0;
+      *sel1 = stack[current]->sel1;
+   }
+   else {
+      current++;
+      *sel0 = stack[current]->sel0;
+      *sel1 = stack[current]->sel1;
+      current--;
+   }
 
    return stack[current]->tracks;
 }
@@ -164,8 +172,16 @@ TrackList *UndoManager::Redo(double *sel0, double *sel1)
 
    current++;
 
-   *sel0 = stack[current]->sel0;
-   *sel1 = stack[current]->sel1;
+   if (!RedoAvailable()) {
+      *sel0 = stack[current]->sel0;
+      *sel1 = stack[current]->sel1;
+   }
+   else {
+      current++;
+      *sel0 = stack[current]->sel0;
+      *sel1 = stack[current]->sel1;
+      current--;
+   }
 
    return stack[current]->tracks;
 }
