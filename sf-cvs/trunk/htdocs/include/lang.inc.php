@@ -46,7 +46,7 @@ function localization_setup() {
 
   // Override the default if the user has an explicit cookie or query string.
   $force_lang = get_requested_lang();
-  if ($force_lang && array_key_exists($force_lang, $available_locales)
+  if ($force_lang && array_key_exists($force_lang, $available_locales))
     $lang = $force_lang;
 
   if ($available_locales[$lang]) {
