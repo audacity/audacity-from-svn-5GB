@@ -6,10 +6,10 @@
  * Author e-mail : oparviai @ iki.fi
  * File created  : 13-Jan-2002
  *
- * Last changed  : $Date: 2004-03-14 15:51:41 $
- * File revision : $Revision: 1.1.1.1 $
+ * Last changed  : $Date: 2004-03-15 17:14:10 $
+ * File revision : $Revision: 1.2 $
  *
- * $Id: STTypes.h,v 1.1.1.1 2004-03-14 15:51:41 mbrubeck Exp $
+ * $Id: STTypes.h,v 1.2 2004-03-15 17:14:10 mbrubeck Exp $
  *
  * License :
  * 
@@ -53,8 +53,8 @@ namespace soundtouch
     // Enable one of the following defines to choose either 16bit integer or
     // 32bit float sample type. If you don't have opinion, using integer samples
     // is generally faster.
-    #define INTEGER_SAMPLES       // 16bit integer samples
-    //#define FLOAT_SAMPLES       // 32bit float samples
+    //#define INTEGER_SAMPLES       // 16bit integer samples
+    #define FLOAT_SAMPLES       // 32bit float samples
 
 
     #ifdef INTEGER_SAMPLES
