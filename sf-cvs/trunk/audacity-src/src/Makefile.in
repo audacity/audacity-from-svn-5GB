@@ -24,6 +24,7 @@ CPPFLAGS = @CPPFLAGS@ -Iinclude -Iinclude/linux
 CDEPEND = @CDEPEND@
 
 EXTRAOBJS = @EXTRAOBJS@
+OPTOBJS = @OPTOBJS@
 LIBS = @LIBS@
 
 ########################################
@@ -104,14 +105,14 @@ OBJS = \
 ########################################
 # DEPENDENCIES
 
-DEPS = $(OBJS:$(OBJDIR)/%.o=%.cpp)
+DEPS = $(OBJS:$(OBJDIR)/%.o=%.cpp) $(OPTOBJS:$(OBJDIR)/%.o=%.cpp)
 
 ########################################
 
 all: dirs ../audacity
 
-../audacity: $(OBJS) $(EXTRAOBJS) Makefile
-	$(CCC) -o ../audacity $(OBJS) $(EXTRAOBJS) $(LIBS)
+../audacity: $(OBJS) $(EXTRAOBJS) $(OPTOBJS) Makefile
+	$(CCC) -o ../audacity $(OBJS) $(EXTRAOBJS) $(OPTOBJS) $(LIBS)
 	@AFTERBUILD@
 
 #
@@ -131,7 +132,7 @@ clean:
 # Rule for compiling C++ files
 #
 
-$(OBJS): $(OBJDIR)/%.o: %.cpp configunix.h $(CDEPEND)
+$(OPTOBJS) $(OBJS): $(OBJDIR)/%.o: %.cpp configunix.h $(CDEPEND)
 	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
 
 #

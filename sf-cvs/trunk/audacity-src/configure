@@ -2847,6 +2847,7 @@ test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
 
 
+
 SUBDIRS="$SUBDIRS lib-src/libsndfile"
 BUILDLIBS="$BUILDLIBS libsndfile/src/.libs/libsndfile.a"
 EXTRAOBJS="$EXTRAOBJS ../lib-src/libsndfile/src/.libs/libsndfile.a"
@@ -3397,7 +3398,7 @@ if [ $use_wavelet = "yes" ] ; then
 	SUBDIRS="$SUBDIRS wave++/source"
 	BUILDLIBS="$BUILDLIBS wave++/source/libw.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/wave++/source/libw.a"
-	EXTRAOBJS="\$(OBJDIR)/effects/WaveletDenoise.o $EXTRAOBJS"
+	OPTOBJS="$(OPTOBJS) \$(OBJDIR)/effects/WaveletDenoise.o"
 
 	CXXFLAGS="$CXXFLAGS -I../lib-src/wave++/source"
 
@@ -3551,8 +3552,8 @@ else
 fi
 
 if [ "$use_ladspa" = "yes" ] ; then
-	EXTRAOBJS="\$(OBJDIR)/effects/ladspa/LoadLadspa.o $EXTRAOBJS"
-	EXTRAOBJS="\$(OBJDIR)/effects/ladspa/LadspaEffect.o $EXTRAOBJS"
+	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/ladspa/LoadLadspa.o"
+	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/ladspa/LadspaEffect.o"
 
 
 cat >>confdefs.h <<\_ACEOF
@@ -4400,6 +4401,7 @@ s,@INSTALL_SCRIPT@,$INSTALL_SCRIPT,;t t
 s,@INSTALL_DATA@,$INSTALL_DATA,;t t
 s,@BUILDLIBS@,$BUILDLIBS,;t t
 s,@EXTRAOBJS@,$EXTRAOBJS,;t t
+s,@OPTOBJS@,$OPTOBJS,;t t
 s,@CDEPEND@,$CDEPEND,;t t
 s,@AFTERBUILD@,$AFTERBUILD,;t t
 s,@build@,$build,;t t

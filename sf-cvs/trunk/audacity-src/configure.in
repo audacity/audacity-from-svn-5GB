@@ -38,6 +38,7 @@ AC_PROG_INSTALL
 dnl extra variables
 AC_SUBST(BUILDLIBS)
 AC_SUBST(EXTRAOBJS)
+AC_SUBST(OPTOBJS)
 AC_SUBST(CDEPEND)
 AC_SUBST(AFTERBUILD)
 
@@ -147,7 +148,7 @@ if [[ $use_wavelet = "yes" ]] ; then
 	SUBDIRS="$SUBDIRS wave++/source"
 	BUILDLIBS="$BUILDLIBS wave++/source/libw.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/wave++/source/libw.a"
-	EXTRAOBJS="\$(OBJDIR)/effects/WaveletDenoise.o $EXTRAOBJS"
+	OPTOBJS="$(OPTOBJS) \$(OBJDIR)/effects/WaveletDenoise.o"
 
 	CXXFLAGS="$CXXFLAGS -I../lib-src/wave++/source"
 		
@@ -223,8 +224,8 @@ else
 fi
 
 if [[ "$use_ladspa" = "yes" ]] ; then
-	EXTRAOBJS="\$(OBJDIR)/effects/ladspa/LoadLadspa.o $EXTRAOBJS"
-	EXTRAOBJS="\$(OBJDIR)/effects/ladspa/LadspaEffect.o $EXTRAOBJS"
+	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/ladspa/LoadLadspa.o"
+	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/ladspa/LadspaEffect.o"
 
 	AC_DEFINE(USE_LADSPA, 1,
 		[Define if LADSPA plug-ins are enabled])
