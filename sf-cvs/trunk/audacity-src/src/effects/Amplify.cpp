@@ -159,21 +159,21 @@ bool AmplifyDialog::TransferDataToWindow()
 
    slider = GetAmpSlider();
    if (slider)
-      slider->SetValue((int)(100*log10(ratio)+0.5));
+      slider->SetValue((int)(200*log10(ratio)+0.5));
 
    mLoopDetect = true;
 
    wxTextCtrl *text = GetAmpText();
    if (text) {
       wxString str;
-      str.Printf("%.1f", 10*log10(ratio));
+      str.Printf("%.1f", 20*log10(ratio));
       text->SetValue(str);
    }
 
    text = GetPeakText();
    if (text) {
       wxString str;
-      str.Printf("%.1f", 10*log10(ratio*peak));
+      str.Printf("%.1f", 20*log10(ratio*peak));
       text->SetValue(str);
    }
 
@@ -190,7 +190,7 @@ bool AmplifyDialog::TransferDataFromWindow()
 
       wxString val = c->GetValue();
       val.ToDouble(&r);
-      ratio = pow(10,TrapDouble(r*10, AMP_MIN, AMP_MAX)/100.0);
+      ratio = pow(10,TrapDouble(r*10, AMP_MIN, AMP_MAX)/200.0);
    }
 
    return TRUE;
@@ -211,14 +211,14 @@ void AmplifyDialog::OnAmpText(wxCommandEvent & event)
 
       wxString val = c->GetValue();
       val.ToDouble(&r);
-      ratio = pow(10,TrapDouble(r*10, AMP_MIN, AMP_MAX)/100.0);
+      ratio = pow(10,TrapDouble(r*10, AMP_MIN, AMP_MAX)/200.0);
 
       wxSlider *slider = GetAmpSlider();
       if (slider)
-         slider->SetValue((int)(100*log10(ratio)+0.5));
+         slider->SetValue((int)(200*log10(ratio)+0.5));
 
       wxString str;
-      str.Printf("%.1f", 10*log10(ratio*peak));
+      str.Printf("%.1f", 20*log10(ratio*peak));
       GetPeakText()->SetValue(str);
 
       mLoopDetect = false;
@@ -241,10 +241,10 @@ void AmplifyDialog::OnPeakText(wxCommandEvent & event)
       wxString val = c->GetValue();
       val.ToDouble(&r);
 
-      ratio = pow(10, r/10.0) / peak;
+      ratio = pow(10, r/20.0) / peak;
       
-      double dB = TrapDouble(100*log10(ratio), AMP_MIN, AMP_MAX)/10.0;
-      ratio = pow(10, dB/10.0);
+      double dB = TrapDouble(200*log10(ratio), AMP_MIN, AMP_MAX)/10.0;
+      ratio = pow(10, dB/20.0);
 
       wxSlider *slider = GetAmpSlider();
       if (slider)
@@ -269,19 +269,19 @@ void AmplifyDialog::OnAmpSlider(wxCommandEvent & event)
 
    wxString str;
    double dB = GetAmpSlider()->GetValue() / 10.0;
-   ratio = pow(10,TrapDouble(dB, AMP_MIN, AMP_MAX)/10.0);
+   ratio = pow(10,TrapDouble(dB, AMP_MIN, AMP_MAX)/20.0);
    
    double dB2 = (GetAmpSlider()->GetValue()-1) / 10.0;
-   double ratio2 = pow(10,TrapDouble(dB2, AMP_MIN, AMP_MAX)/10.0);
+   double ratio2 = pow(10,TrapDouble(dB2, AMP_MIN, AMP_MAX)/20.0);
 
    if (GetClipCheckBox()->GetValue() &&
        ratio * peak > 1.0 &&
        ratio2 * peak < 1.0)
       ratio = 1.0 / peak;
    
-   str.Printf("%.1f", 10*log10(ratio));
+   str.Printf("%.1f", 20*log10(ratio));
    GetAmpText()->SetValue(str);
-   str.Printf("%.1f", 10*log10(ratio*peak));
+   str.Printf("%.1f", 20*log10(ratio*peak));
    GetPeakText()->SetValue(str);
 
    mLoopDetect = false;
