@@ -804,6 +804,8 @@ void AudacityProject::FixScrollbars()
    if (rescroll && mViewInfo.screen < mViewInfo.total){
       mTrackPanel->Refresh(false);
    }
+
+   UpdateMenus();
 }
 
 void AudacityProject::HandleResize()
@@ -976,14 +978,6 @@ bool AudacityProject::ProcessEffectEvent(int nEffectIndex)
 }
 
 void AudacityProject::UpdateMenus()
-{
-   wxUpdateUIEvent dummyEvent;
-   mFirstTimeUpdateMenus = true;
-   OnUpdateMenus(dummyEvent);
-}
-
-//TODO: This function is still kinda hackish, clean up
-void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 {
    GetCommands()->EnableItemsByFunction("appmenu", "OnSave", mUndoManager.UnsavedChanges());
 
@@ -1195,6 +1189,17 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    if(gEditToolBarStub){
       gEditToolBarStub->GetToolBar()->EnableDisableButtons();
    }
+}
+
+//TODO: This function is still kinda hackish, clean up
+void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
+{
+   if (::wxGetUTCTime() == mLastUpdateUITime)
+      return;
+
+   mLastUpdateUITime = ::wxGetUTCTime();
+
+   UpdateMenus();
 }
 
 
@@ -2163,6 +2168,8 @@ void AudacityProject::PushState(wxString desc,
 
    if (mHistoryWindow)
       mHistoryWindow->UpdateDisplay();
+
+   UpdateMenus();
 }
 
 void AudacityProject::PopState(TrackList * l)
@@ -2179,6 +2186,8 @@ void AudacityProject::PopState(TrackList * l)
    }
 
    HandleResize();
+
+   UpdateMenus();
 }
 
 void AudacityProject::SetStateTo(unsigned int n)
@@ -2194,6 +2203,15 @@ void AudacityProject::SetStateTo(unsigned int n)
 //
 // Clipboard methods
 //
+
+//static
+void AudacityProject::DeleteClipboard()
+{
+   if (msClipboard) {
+      delete msClipboard;
+      msClipboard = NULL;
+   }
+}
 
 void AudacityProject::ClearClipboard()
 {

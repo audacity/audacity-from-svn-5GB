@@ -158,7 +158,7 @@ class AudacityProject:public wxFrame,
 
    // Other commands
 
-   static void DeleteClipboard() { delete msClipboard; }
+   static void DeleteClipboard();
 
    void UpdateMenus();
    void UpdatePrefs();
@@ -282,6 +282,7 @@ class AudacityProject:public wxFrame,
 
    wxTimer *mTimer;
    long mLastStatusUpdateTime;
+   long mLastUpdateUITime;
 
    AStatus *mStatus;
    wxPoint mToolBarHotspot;
