@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "POT-Creation-Date: 2003-05-26 16:37+0400\n"
-"PO-Revision-Date: 2003-05-27 11:07+0400\n"
+"PO-Revision-Date: 2003-05-27 11:41+0400\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -104,11 +104,11 @@ msgstr "&Уместить в окне\tCtrl+F"
 
 #: ../src/Menus.cpp:219
 msgid "&Generate"
-msgstr "Создание (&G)"
+msgstr "&Создание"
 
 #: ../src/Menus.cpp:275
 msgid "&Help"
-msgstr "Справка (&H)"
+msgstr "Сп&равка"
 
 #: ../src/Menus.cpp:160
 msgid "&History..."
@@ -2758,7 +2758,7 @@ msgstr "Повторы - Доминик Маццони"
 
 #: ../src/effects/Repeat.h:34
 msgid "Repeat..."
-msgstr "Создание повторов"
+msgstr "Создать повторы..."
 
 #: ../src/effects/Repeat.cpp:30
 #, c-format
