@@ -36,6 +36,11 @@ Known bugs to fix:
   track created has the wrong rate in its label
 - RPM dependency is wrong - it should depend on:
   libwx_gtk-2.2.so.6, not libwx_gtk.so
+  # Necessary for building the package: rpm -ba
+    BuildRequires:	wxGTK >= [version number if required]i 
+  # Necessary for installing the package: rpm -ivh
+    Requires:	wxGTK >= [version number if required]
+- make install should create directories it installs into
 
 -----------------------------------------------------------
 Possible bugs to investigate:
