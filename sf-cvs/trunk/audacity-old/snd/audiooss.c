@@ -27,16 +27,16 @@ oss_info get_oss_info(snd_type snd)
 }
 
 
-int audio_reset(snd_type snd);
-
-
 long audio_poll(snd_type snd)
 {
   oss_info dp = get_oss_info(snd);
-
   audio_buf_info info;
-  ioctl(dp->audio_fd, SNDCTL_DSP_GETOSPACE, &info);
 
+  if (snd->write_flag == SND_READ)
+	ioctl(dp->audio_fd, SNDCTL_DSP_GETISPACE, &info);
+  else
+	ioctl(dp->audio_fd, SNDCTL_DSP_GETOSPACE, &info);
+  
   /* Note that this returns frames while audio_write
 	 returns bytes */
 
@@ -44,10 +44,13 @@ long audio_poll(snd_type snd)
 }
 
 
-long audio_read(snd_type snd, void *buffer, long length)
+long audio_read(snd_type snd, void *buffer, long length_in_bytes)
 {
-  /* Not implemented */
-  return !SND_SUCCESS;
+  oss_info dp = get_oss_info(snd);
+
+  int rval = read(dp->audio_fd, buffer, length_in_bytes);
+
+  return rval;
 }
 
 
@@ -71,12 +74,26 @@ int audio_open(snd_type snd, long *flags)
   snd->u.audio.descriptor = (oss_info) malloc(sizeof(oss_info_struct));
   dp = get_oss_info(snd);
 
-  /* Open /dev/dspW */
-  dp->audio_fd = open("/dev/dspW", O_WRONLY, 0);
+  if (snd->write_flag == SND_READ) {
+	/* open audio input */
 
-  if (dp->audio_fd == -1)
-	return !SND_SUCCESS;
+	/* Open /dev/dspW */
+	dp->audio_fd = open("/dev/dspW", O_RDONLY, 0);
+	
+	if (dp->audio_fd == -1)
+	  return !SND_SUCCESS;
+  }
+  else {
+	/* open audio output */
 
+	/* Open /dev/dspW */
+	dp->audio_fd = open("/dev/dspW", O_WRONLY, 0);
+	
+	if (dp->audio_fd == -1)
+	  return !SND_SUCCESS;
+  }
+
+	
   /* Set format to signed 16-bit little-endian */
   format = AFMT_S16_LE;
   if (ioctl(dp->audio_fd, SNDCTL_DSP_SETFMT, &format) == -1)
@@ -90,7 +107,7 @@ int audio_open(snd_type snd, long *flags)
 	return !SND_SUCCESS;
   if (channels != snd->format.channels)
 	return !SND_SUCCESS;
-
+  
   /* Set sampling rate.  Must set sampling rate AFTER setting
 	 number of channels. */
   rate = (int)(snd->format.srate + 0.5);
@@ -99,7 +116,7 @@ int audio_open(snd_type snd, long *flags)
   if (rate - (int)(snd->format.srate + 0.5) > 100 ||
 	  rate - (int)(snd->format.srate + 0.5) < -100)
 	return !SND_SUCCESS;
-
+  
   return SND_SUCCESS;
 }
 
