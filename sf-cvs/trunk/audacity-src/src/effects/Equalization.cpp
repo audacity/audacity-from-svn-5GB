@@ -140,7 +140,7 @@ EffectEqualization::EffectEqualization()
 EffectEqualization::~EffectEqualization()
 {
    if(mFilterFunc) 
-      delete mFilterFunc;
+      delete[] mFilterFunc;
    mFilterFunc = NULL;
 }
 
