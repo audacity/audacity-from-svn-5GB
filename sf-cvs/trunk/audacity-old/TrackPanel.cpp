@@ -833,33 +833,62 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
    }
 }
 
-void TrackPanel::HandleZoom(wxMouseEvent & event)
+void TrackPanel::HandleZoom(wxMouseEvent &event)
 {
-   if (event.ButtonDown() || event.ButtonDClick()) {
-      double center_h = mViewInfo->h + (event.m_x - 115) / mViewInfo->zoom;
+	if (event.ButtonDown()) {
+		mViewInfo->zoomStart = event.m_x;
+		HandleSelect(event);
+	}
+	else if (event.Dragging()) {
+		HandleSelect(event);
+	}
+	else if (event.ButtonUp() || event.ButtonDClick()) {
+		SelectNone();
+		int zoomLength = event.m_x - mViewInfo->zoomStart;
 
-      if (event.RightDown() || event.RightDClick() || event.ShiftDown())
-         mViewInfo->zoom /= 2.0;
-      else
-         mViewInfo->zoom *= 2.0;
+		if (zoomLength < 0) zoomLength = - zoomLength;
 
-      if (event.MiddleDown() || event.MiddleDClick())
-         mViewInfo->zoom = 44100.0 / 512.0;
+		if (zoomLength > 3) {
+			mViewInfo->zoom *= (mViewInfo->screen * mViewInfo->zoom) / zoomLength;
 
-      if (mViewInfo->zoom > 6000000)
-         mViewInfo->zoom = 6000000;
+			if (mViewInfo->zoom > 6000000)
+				mViewInfo->zoom = 6000000;
 
-      double new_center_h =
-          mViewInfo->h + (event.m_x - 115) / mViewInfo->zoom;
+			if (mViewInfo->zoomStart < event.m_x)
+				mViewInfo->h += mViewInfo->zoomStart / mViewInfo->zoom;
+			else mViewInfo->h += event.m_x / mViewInfo->zoom;
+	
+			if (mViewInfo->h < 0) mViewInfo->h = 0;
 
-      mViewInfo->h += (center_h - new_center_h);
+			MakeParentRedrawScrollbars();
+			Refresh(false);
+		}
+		else {
+			double center_h = mViewInfo->h + (event.m_x - 115) / mViewInfo->zoom;
 
-      if (mViewInfo->h < 0)
-         mViewInfo->h = 0;
+			if (event.RightUp() || event.RightDClick() || event.ShiftDown())
+				mViewInfo->zoom /= 2.0;
+			else
+				mViewInfo->zoom *= 2.0;
+		
+			if (event.MiddleUp() || event.MiddleDClick())
+				mViewInfo->zoom = 44100.0 / 512.0;
+	
+			if (mViewInfo->zoom > 6000000)
+				mViewInfo->zoom = 6000000;
+	
+			double new_center_h =
+				mViewInfo->h + (event.m_x - 115) / mViewInfo->zoom;
+	
+			mViewInfo->h += (center_h - new_center_h);
+	
+			if (mViewInfo->h < 0)
+			mViewInfo->h = 0;
 
-      MakeParentRedrawScrollbars();
-      Refresh(false);
-   }
+			MakeParentRedrawScrollbars();
+			Refresh(false);
+		}
+	}
 }
 
 void TrackPanel::HandleClosing(wxMouseEvent & event)
