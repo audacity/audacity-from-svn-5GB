@@ -253,6 +253,7 @@ class TrackFactory
 
    DirManager *mDirManager;
    friend class AudacityProject;
+   friend class BenchmarkDialog;
 
  public:
    // These methods are defined in WaveTrack.cpp, NoteTrack.cpp,

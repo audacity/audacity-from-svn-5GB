@@ -26,6 +26,8 @@
 
 #include "Benchmark.h"
 #include "Project.h"
+#include "WaveTrack.h"
+#include "Sequence.h"
 
 class BenchmarkDialog: public wxDialog
 {
@@ -289,8 +291,6 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    if (!Validate())
       return;
 
-   #if 0
-
    // This code will become part of libaudacity,
    // and this class will be phased out.
 
@@ -316,14 +316,15 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
       return;
    }
 
-   WaveTrack::SetMaxDiskBlockSize(blockSize * 1024);
+   Sequence::SetMaxDiskBlockSize(blockSize * 1024);
 
    wxBusyCursor busy;
 
    HoldPrint(true);
 
    DirManager *d = new DirManager();
-   WaveTrack *t = new WaveTrack(d);
+   TrackFactory *fact = new TrackFactory(d);
+   WaveTrack *t = fact->NewWaveTrack(int16Sample);
    Track *tmp = NULL;
 
    t->SetRate(1.0);
@@ -370,9 +371,14 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
       t->Append((samplePtr)block, int16Sample, scale);
    }
 
-   if (t->GetNumSamples() != (sampleCount)len * scale) {
+   // This forces the WaveTrack to flush all of the appends (which is
+   // only necessary if you want to access the Sequence class directly,
+   // as we're about to do).
+   t->GetEndTime();
+
+   if (t->GetSequence()->GetNumSamples() != (sampleCount)len * scale) {
       Printf(_("Expected len %d, track len %d.\n"), len * scale,
-             t->GetNumSamples());
+             t->GetSequence()->GetNumSamples());
       goto fail;
    }
    //t->Debug();
@@ -394,7 +400,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
          Printf(_("Cut (%d, %d) failed.\n"), (x0 * scale),
                 (x0 + xlen) * scale);
          Printf(_("Expected len %d, track len %d.\n"), len * scale,
-                t->GetNumSamples());
+                t->GetSequence()->GetNumSamples());
          goto fail;
       }
 
@@ -404,10 +410,10 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
       t->Paste(double (y0 * scale), tmp);
 
-      if (t->GetNumSamples() != (sampleCount)len * scale) {
+      if (t->GetSequence()->GetNumSamples() != (sampleCount)len * scale) {
          Printf(_("Trial %d\n"), z);
          Printf(_("Expected len %d, track len %d.\n"), len * scale,
-                t->GetNumSamples());
+                t->GetSequence()->GetNumSamples());
          goto fail;
       }
       // Copy
@@ -429,7 +435,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    elapsed = timer.Time();
 
    if (mBlockDetail) {
-      t->DebugPrintf(&tempStr);
+      t->GetSequence()->DebugPrintf(&tempStr);
       mToPrint += tempStr;
    }
    Printf(_("Time to perform %d edits: %ld ms\n"), trials, elapsed);
@@ -498,9 +504,10 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    delete[]small2;
    delete[]block;
 
+   delete fact;
    delete d;
 
-   WaveTrack::SetMaxDiskBlockSize(1048576);
+   Sequence::SetMaxDiskBlockSize(1048576);
    HoldPrint(false);
 
    return;
@@ -516,11 +523,8 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    delete d;
 
-   WaveTrack::SetMaxDiskBlockSize(1048576);
+   Sequence::SetMaxDiskBlockSize(1048576);
    HoldPrint(false);
-
-   #endif
-
 }
 
 
