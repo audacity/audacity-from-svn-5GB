@@ -237,6 +237,68 @@ void *BlockFile::CalcSummary(samplePtr buffer, sampleCount len,
    return fullSummary;
 }
 
+static void ComputeMinMax256(float *summary256,
+                             float *outMin, float *outMax, int *outBads)
+{
+   float min, max;
+   int i;
+   int bad = 0;
+
+   min = 1.0;
+   max = -1.0;
+   for(i=0; i<256; i++) {
+      if (summary256[3*i] < min)
+         min = summary256[3*i];
+      else if (!(summary256[3*i] >= min))
+         bad++;
+      if (summary256[3*i+1] > max)
+         max = summary256[3*i+1];
+      else if (!(summary256[3*i+1] <= max))
+         bad++;
+   }
+
+   *outMin = min;
+   *outMax = max;
+   *outBads = bad;
+}
+
+/// Byte-swap the summary data, in case it was saved by a system
+/// on a different platform
+void BlockFile::FixSummary(void *data)
+{
+   if (mSummaryInfo.format != floatSample ||
+       mSummaryInfo.fields != 3)
+      return;
+
+   float *summary64K = (float *)((char *)data + mSummaryInfo.offset64K);
+   float *summary256 = (float *)((char *)data + mSummaryInfo.offset256);
+
+   float min, max;
+   int bad;
+   int i;
+
+   ComputeMinMax256(summary256, &min, &max, &bad);
+
+   if (min != summary64K[0] || max != summary64K[1] || bad > 0) {
+      unsigned int *buffer = (unsigned int *)data;
+      int len = mSummaryInfo.totalSummaryBytes / 4;
+
+      for(i=0; i<len; i++)
+         buffer[i] = wxUINT32_SWAP_ALWAYS(buffer[i]);
+
+      ComputeMinMax256(summary256, &min, &max, &bad);
+      if (min == summary64K[0] && max == summary64K[1] && bad == 0) {
+         // The byte-swapping worked!
+         return;
+      }
+
+      // Hmmm, no better, we should swap back
+
+      for(i=0; i<len; i++)
+         buffer[i] = wxUINT32_SWAP_ALWAYS(buffer[i]);
+   }   
+}
+
 /// Retrieves the minimum, maximum, and maximum RMS of the
 /// specified sample data in this block.
 ///
@@ -472,6 +534,8 @@ bool AliasBlockFile::ReadSummary(void *data)
       return false;
 
    int read = summaryFile.Read(data, (size_t)mSummaryInfo.totalSummaryBytes);
+
+   FixSummary(data);
 
    return (read == mSummaryInfo.totalSummaryBytes);
 }
