@@ -18,17 +18,17 @@ Audacity 1.2 Snelgids:
 
 <p>
 
-Doorzoek de Audacity documentatie:
+Doorzoek de Audacity websites en documentatie:
 
-<form method="post" action="/isearch/index.php" target="_self">
+<form method="post" action="http://audacityteam.org/isearch/index.php" target="_self">
 
 <table border="0" cellpadding="3" cellspacing="1">
   <tr>
     <td>
 
       <input maxLength="255" name="s" size="20" value=''>
-      <input type="submit" value="Search Site">
-      <a TARGET="_blank" HREF="/isearch/help.php">Help</a>
+      <input type="submit" value="Search">
+      <a TARGET="_blank" HREF="http://audacityteam.org/isearch/help.php">font size="-1"> Help with searching</font></a>
     </td>
   </tr>
 </table>
