@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.2.0-pre3
+Version 1.2.0-pre4
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -238,7 +238,7 @@ Known issues/problems:
   * Recording in full duplex (play existing tracks while recording) on some
     Linux systems causes the recording to sound slowed-down.
 
-  * MacOS X only: Audacity cannot work with files or folders that
+  * Mac OS X only: Audacity cannot work with files or folders that
     are contained inside folders with international characters
     (accent marks, etc.) in their names.  Note that files with
     accented characters work, and Audacity projects with
@@ -249,6 +249,17 @@ Known issues/problems:
     1.0.0 installations, but not the 1.1.x beta installations.
 
 -------------------------------------------------------------
+
+Changes in 1.2.0-pre4:
+
+  * Mac OS X: Supports Playthrough (listen to what you're recording
+    while recording it)
+
+  * Mac OS X: Audacity is now a package (you can right-click on
+    Audacity.app and select 'Show Package Contents').  Launch time
+    has improved significantly.
+
+  * Mac OS X: Supports playthrough if your hardware device supports it.
 
 Changes in 1.2.0-pre3:
 
