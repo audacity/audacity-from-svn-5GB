@@ -86,6 +86,8 @@ template < class CLIPPEE, class CLIPVAL >
       clippee = val;
 }
 
+int iformat = 1;
+
 enum {
    TrackPanelFirstID = 2000,
 
@@ -113,6 +115,15 @@ enum {
    On24BitID,
    OnFloatID,
 
+   OnFormat1ID,
+   OnFormat2ID,
+   OnFormat3ID,
+   OnFormat4ID,
+   OnFormat5ID,
+   OnFormat6ID,
+   OnFormat7ID,
+   OnFormat8ID,
+
    OnWaveformID,
    OnWaveformDBID,
    OnSpectrumID,
@@ -135,6 +146,7 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU_RANGE(OnWaveformID, OnPitchID, TrackPanel::OnSetDisplay)
     EVT_MENU_RANGE(OnRate8ID, OnRate48ID, TrackPanel::OnRateChange)
     EVT_MENU_RANGE(On16BitID, OnFloatID, TrackPanel::OnFormatChange)
+    EVT_MENU_RANGE(OnFormat1ID, OnFormat8ID, TrackPanel::OnSelectionChange)
     EVT_MENU(OnRateOtherID, TrackPanel::OnRateOther)
     EVT_MENU(OnSplitStereoID, TrackPanel::OnSplitStereo)
     EVT_MENU(OnMergeStereoID, TrackPanel::OnMergeStereo)
@@ -188,6 +200,16 @@ mAutoScrolling(false)
    mFormatMenu->Append(On24BitID, GetSampleFormatStr(int24Sample));
    mFormatMenu->Append(OnFloatID, GetSampleFormatStr(floatSample));
 
+   mSelectionMenu = new wxMenu();
+   mSelectionMenu->Append(OnFormat1ID, "min:sec (from ruler)");
+   mSelectionMenu->Append(OnFormat2ID, "sec (from ruler)");
+   mSelectionMenu->Append(OnFormat3ID, "samples (44100 hardwired)");
+   mSelectionMenu->Append(OnFormat4ID, "min:sec (44100 hardwired)");
+   mSelectionMenu->Append(OnFormat5ID, "sec (44100 hardwired)");
+   mSelectionMenu->Append(OnFormat6ID, "min:sec+samples (44100 hardwired)");
+   mSelectionMenu->Append(OnFormat7ID, "sec+samples (44100 hardwired)");
+   mSelectionMenu->Append(OnFormat8ID, "cdda sectors+bytes (44100 only)");
+
    mWaveTrackMenu = new wxMenu();
    mWaveTrackMenu->Append(OnSetNameID, _("Name..."));
    mWaveTrackMenu->AppendSeparator();
@@ -208,6 +230,8 @@ mAutoScrolling(false)
    mWaveTrackMenu->Append(0, _("Set Sample Format"), mFormatMenu);
    mWaveTrackMenu->AppendSeparator();
    mWaveTrackMenu->Append(0, _("Set Rate"), mRateMenu);
+   mWaveTrackMenu->AppendSeparator();
+   mWaveTrackMenu->Append(0, _("Set Selection Format"), mSelectionMenu);
 
    mNoteTrackMenu = new wxMenu();
    mNoteTrackMenu->Append(OnSetNameID, _("Name..."));
@@ -684,7 +708,6 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       mViewInfo->sel1 = mCapturedTrack->GetEndTime();
 
       Refresh(false);
-      DisplaySelection();
 
       mCapturedTrack = NULL;
       mIsSelecting = false;
@@ -1525,9 +1548,11 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
 # ifdef __UNIX__
       ::InsertMenu((OpaqueMenuHandle *) mRateMenu->GetHMenu(), -1);
       ::InsertMenu((OpaqueMenuHandle *) mFormatMenu->GetHMenu(), -1);
+      ::InsertMenu((OpaqueMenuHandle *) mSelectionMenu->GetHMenu(), -1);
 # else
       ::InsertMenu((MenuRef) mRateMenu->GetHMenu(), -1);
       ::InsertMenu((MenuRef) mFormatMenu->GetHMenu(), -1);
+      ::InsertMenu((MenuRef) mSelectionMenu->GetHMenu(), -1);
 # endif
 #endif
 
@@ -1537,6 +1562,7 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
 #ifdef __WXMAC__
       ::DeleteMenu(mFormatMenu->MacGetMenuId());
       ::DeleteMenu(mRateMenu->MacGetMenuId());
+      ::DeleteMenu(mSelectionMenu->MacGetMenuId());
 #endif
    }
 
@@ -1639,7 +1665,6 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    mViewInfo->sel1 = t->GetEndTime();
 
    Refresh(false);  
-   DisplaySelection();
    MakeParentPushState(wxString::Format(_("Changed Selection Region")));
 }
 
@@ -2244,6 +2269,7 @@ void TrackPanel::Refresh(bool eraseBackground /* = TRUE */,
 {
    mPlayIndicatorExists=false;
    wxWindow::Refresh(eraseBackground);
+   DisplaySelection();
 }
 
 
@@ -2638,6 +2664,40 @@ void TrackPanel::SetRate(Track * pTrack, double rate)
                                         pTrack->GetName().c_str(), rate));
 }
 
+// GM: Handles selection from the Set Selection Format submenu
+//  of the track menu.
+void TrackPanel::OnSelectionChange(wxEvent & event)
+{
+   int id = event.GetId();
+   switch (id) {
+   case OnFormat1ID:
+      iformat = 1;
+      break;
+   case OnFormat2ID:
+      iformat = 2;
+      break;
+   case OnFormat3ID:
+      iformat = 3;
+      break;
+   case OnFormat4ID:
+      iformat = 4;
+      break;
+   case OnFormat5ID:
+      iformat = 5;
+      break;
+   case OnFormat6ID:
+      iformat = 6;
+      break;
+   case OnFormat7ID:
+      iformat = 7;
+      break;
+   case OnFormat8ID:
+      iformat = 8;
+      break;
+   }
+   DisplaySelection();
+}
+
 // DM: Handles the selection from the Format submenu of the
 //  track menu.
 void TrackPanel::OnFormatChange(wxEvent & event)
@@ -2866,7 +2926,11 @@ void TrackPanel::DisplaySelection()
    //   iformat = 8 --> use cdda sectors+bytes (2352 byte blocks)
    //                   (only applicable for projects with rate = 44100)
 
-   int iformat = 4;
+   // iformat is a global variable defined near the top of
+   // TrackPanel.cpp to a default value of 1.  When event handler
+   // TrackPanel::OnSelectionChange is called, iformat is changed.
+   // The following line was previously used when iformat was hardwired.
+// int iformat = 4;
 
    //
    // CAUTION: iformat >= 3 are a little touchy as far as
@@ -2904,8 +2968,8 @@ void TrackPanel::DisplaySelection()
    //       This is because the first sample actually spans the first
    //       1/rate seconds of sound, it is not a point in time 
    //       located at time = 0.  The same thing applies to iformat=8.
-   //       The lowest the selection will go is 0+0004 since 1 sample
-   //       is 4 bytes of cd audio.
+   //       The lowest the selection will go is 0+0004 for a cursor
+   //       position and 0+0001 for a selection range.
 
    // Get project sample rate
    //
@@ -2913,6 +2977,8 @@ void TrackPanel::DisplaySelection()
    // Since everything I tried did not work, it is hardwired to 44100.
    // Help - someone bail me out on this!!
 // double rate = ???? ;
+   // When this gets fixed, remove "(44100 hardwired)" from Set Selection Format
+   // menu items.  The menu item cdda sectors+bytes will always be for 44100 only.
    double rate = 44100.0;
 
    // Variables needed for the various iformat values.
