@@ -73,7 +73,7 @@ void LoadLadspaEffect(wxString fname)
       wxDllLoader::GetSymbol(libHandle, descriptorFnName);
       */
    wxDynamicLibrary* pDLL = new wxDynamicLibrary();
-   if (pDLL && pDLL->Load(FILENAME(fname)))
+   if (pDLL && pDLL->Load(FILENAME(fname)), wxDL_LAZY)
       mainFn = (LADSPA_Descriptor_Function)(pDLL->GetSymbol(descriptorFnName));
 #endif
 
