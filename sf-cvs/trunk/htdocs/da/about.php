@@ -4,11 +4,10 @@
 Audacity er en fri og gratis lydeditor.
 Du kan indspille lyd, afspille lyd, importere og eksportere filer i WAV, AIFF, mp3 med mere.
 Brug Audacity til at redigere lyd med Klip, Kopiér og Indsæt (og ubegrænset fortrydelse), 
-mix spor sammen, eller tilføj effekter til dine indspilninger.
+mixe spor sammen, eller tilføje effekter til dine indspilninger.
 Det har også en indbygget styrke-konvoluttering, en justerbar spektogramfremstilling,
 og et frekvensanalysevindue til brug for egentlig lydanalyse. 
-Indbyggede effekter omfatter blandt andet Bas boost, Wahwah, støjfjernelse, og programmet
-kan bruge VST-udvidelser.
+Indbyggede effekter omfatter blandt andet Bas boost, Wahwah, støjfjernelse, og programmet kan bruge VST-udvidelser.
 </p>
 
 <p>
@@ -18,8 +17,8 @@ intuitive brugerflade gør den nemmere og sjovere at bruge end
 mange andre lydeditorer, deriblandt kommercielle programmer.
 </p>
 
-<p>Audacity-udviklerne har også udgivet version 1.1.0, som er en betaudgave
-med en stribe nye faciliteter under udvikling. Der er rigtig mange nye muligheder, men programmet er ikke færdigudviklet, og derfor ikke så finpudset og stabilt som version 1.0.0.
+<p>Audacity-udviklerne har også udgivet version 1.2.0-pre2, som er en betaudgave
+med en stribe nye faciliteter under udvikling. Der er rigtig mange nye muligheder, men er ikke så finpudset og stabilt som version 1.0.0.
 </p>
 
 <center>
@@ -31,9 +30,7 @@ Audacity udvikles af et hold frivillige programmører som Open Source.
 Det er skrevet i C og C++, ved hjælp af
 <a href="http://www.wxwindows.org/">wxWindows</a> cross-platform værktøjssættet.
 Hele kildeteksten er udgivet under
-<a href="http://www.gnu.org/copyleft/gpl.html"
->GNU General Public License</a>, som kort sagt tillader enhver at ændre på 
-kildekoden, så længe de offentliggør deres ændringer.
+<a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a>, som kort sagt tillader enhver at ændre på kildekoden, så længe de offentliggør deres ændringer.
 Koden er tilgængelig på <a href="http://www.sourceforge.net">SourceForge</a>.
 </p>
 

@@ -1,9 +1,12 @@
 <?php BoxTop("CVS"); ?>
 
 Vi bruger <a href="http://www.cvshome.org">CVS</a>, Concurrent Versions
-System, for at koordinere udviklingen af Audacity. Klik
- <a
-href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/audacity/audacity-src/">her</a> for at kigge gennem kildeteksten direkte fra vores CVS server.
+System, for at koordinere udviklingen af Audacity. Klik  <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/audacity/audacity-src/">her</a> for at kigge i kildeteksten direkte fra vores CVS server.
+
+<p>
+<h3>Bemærk: Version 1.2 har nu sin egen gren:</h3>
+For at få den stabile udgave af Audacity version 1.2.x skal du nu skrive <tt>-r AUDACITY_1_2</tt> for at få en CVS opdatering eller checkout.
+Ellers får du CVS HEAD, som kan blive ganske ustabil, når vi begynder at arbejde på version 1.3.0.
 
 <p><h3>Hurtig start med Audacity CVS:</h3>
   Hvis du vil have fat i kildekoden til Audacity, kan du bruge en CVS klient
@@ -16,22 +19,25 @@ href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/audacity/audacity-src/">her
 <h4>Anonym CVS adgang med kommando-linje klient:</h4>
 <p>Skriv følgende på kommandolinjen (bemærk at det er en lang linje uden linjeskift):<br>
 <ul><tt>cvs -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity login </tt><br></ul>
-og tryk Enter når du bliver spurgt om en adgangskode.
+og tryk Enter, når du bliver spurgt om en adgangskode.
 
-<p>Derefter <b>får du seneste udgave (1.1.0)</b> (på en linje):
+<p>Så, <b>hvis du vil have den allerseneste udgave (1.3.0) skriver du </b> (på en linje):
 <br>
-   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co
-audacity</tt></ul>
-eller <b>for at få den stabile udgave (0.9-1.0)</b> (på en linje):<br>
+   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co audacity</tt></ul>
+eller <b>for at få den stabile udgave (1.2.0)</b> (på en linje):<br>
+   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co -r AUDACITY_1_2 audacity</tt></ul>
+eller, <b>for at få den gamle 1.0 gren (1.0.0)</b> (på en linje):<br>
    <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co -r audacity-0_9-branch audacity-old</tt></ul>
 
 <p> Alternativ kan du sætte <tt>CVSROOT</tt> environment
 variablen til
 <tt>:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt>
 (se nedenfor).<br>
-Så <b>kan du få den seneste udgave (1.1.0)</b> ved at indtaste<br> 
+Så <b>kan du få den seneste udviklingsudgave (1.3.0)</b> ved at indtaste<br> 
    <ul><tt>cvs checkout audacity</tt></ul>
-Eller, <b>for den seneste stabile udgave(0.9-1.0)</b>, tast <br>
+Eller, <b>for at få den stabile gren (1.2)</b>, skriv <br>
+   <ul><tt>cvs checkout -r AUDACITY_1_2 audacity</tt></ul>
+eller <b>for at få den gamle 1.0 gren</b>, skriv <br>
    <ul><tt>cvs checkout -r audacity-0_9-branch audacity-old</tt></ul>
 
 <p> For at sætte environment variablen <tt>CVSROOT</tt>, kan du
@@ -51,7 +57,7 @@ For at bruge en grafisk klient som wincvs, maccvs, eller gcvs
 (kan fås her: <a href="http://cvsgui.org">cvsgui.org</a>), skal du sætte
 <tt>CVSROOT</tt> variablen (i Admin|Preferences undermenuen) til 
 <tt>:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt>
-og vælge "pserver" eller "Password" authentikering. Så, på
+og vælge "pserver" eller "Password" autentikering. Så, på
 fanebladet "Globals" i Indstillinger-dialogboksen, skal du
 sikre dig at punktet "Checkout read-only (CVSREAD)" ikke er markeret.
 Dernæst vælger du 'login', og taster Enter for adgangskoden (som er tom).
@@ -59,15 +65,23 @@ Endelig vælger du "Create|Checkout module", vælger en placering for
 den kode, du henter, og følger instruktionerne herunder, afhængig af,
 hvilken udgave, du vil hente.
 Hvis du får en fejlmelding, skal du sikre dig at din <tt>CVSROOT</tt>
-variabel ikke har overflødige mellemrum efter bogstaverne - det kan ske ved et uheld.
+variabel ikke har overflødige mellemrum efter bogstaverne - det kan ske fx hvis du kopierer indholdet fra denne side.
 
 <p>
-<b>For at få den seneste ikke-stabile udgave (1.1.0):</b><br>
+<b>For at få den seneste ikke-stabile udgave (1.3.0):</b><br>
 I dialogboksen "Checkout Settings" indtaster du 
 <tt>audacity</tt> som modulnavn. Klik "OK", og denne gren bliver 
 automatisk overført til din computere.
 <p>
-<b>For at få den stabilee udgave (0.9-1.0): </b><br>
+<b>For at få den stabile (1.2.0) gren: </b><br>
+I dialogboksen "Checkout Settings" skriver du
+<tt>audacity</tt> som modulnavnet. På fanebladet 
+"Sticky options" markerer du punktet "Retrieve rev./tag/branch
+(-r)" og skriver <tt>AUDACITY_1_2</tt> i tekstfeltet ved siden af.
+Klik på "OK" og du vil få denne gren overført til din computer.
+
+<p>
+<b>For at få den gamle udgave (1.0): </b><br>
 I dialogboksen "Checkout Settings" indtaster du
 <tt>audacity-old</tt> som modulnavn. Så indstiller du under
 "Sticky options" fanebladet punktet "Retrieve rev./tag/branch
