@@ -449,9 +449,9 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->BeginMenu(_("&Help"));
    c->SetDefaultFlags(0, 0);
-   c->AddItem("About",          _("&About Audacity..."),          FN(OnAbout));
-   c->AddSeparator();   
    c->AddItem("Help",           _("&Online Help..."),             FN(OnHelp));
+   c->AddSeparator();   
+   c->AddItem("About",          _("&About Audacity..."),          FN(OnAbout));
 
 #if 0 // No Benchmark in stable release
    c->AddSeparator();   
