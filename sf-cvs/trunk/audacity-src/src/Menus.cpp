@@ -467,7 +467,6 @@ void AudacityProject::Undo(wxCommandEvent & event)
    PopState(l);
 
    FixScrollbars();
-   //UpdateMenus();
    mTrackPanel->Refresh(false);
 
    if(mHistoryWindow)
@@ -485,7 +484,6 @@ void AudacityProject::Redo(wxCommandEvent & event)
    PopState(l);
 
    FixScrollbars();
-   //UpdateMenus();
    mTrackPanel->Refresh(false);
 
    if(mHistoryWindow)
@@ -530,7 +528,6 @@ void AudacityProject::Cut(wxCommandEvent & event)
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
-   //UpdateMenus();
 }
 
 void AudacityProject::Copy(wxCommandEvent & event)
@@ -553,12 +550,6 @@ void AudacityProject::Copy(wxCommandEvent & event)
 
    msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
    msClipProject = this;
-
-   //mViewInfo.sel1 = mViewInfo.sel0;
-   //UpdateMenus();
-
-   //  PushState();
-   //  Not an undoable operation
 }
 
 void AudacityProject::Paste(wxCommandEvent & event)
@@ -601,7 +592,6 @@ void AudacityProject::Paste(wxCommandEvent & event)
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
-   //UpdateMenus();
 }
 
 void AudacityProject::OnDelete(wxCommandEvent & event)
@@ -767,7 +757,6 @@ void AudacityProject::OnSelectAll(wxCommandEvent & event)
    mViewInfo.sel1 = mTracks->GetMaxLen();
 
    mTrackPanel->Refresh(false);
-   //UpdateMenus();
 }
 
 //
@@ -1064,7 +1053,6 @@ void AudacityProject::OnAlignZero(wxCommandEvent & event)
    PushState(_("Aligned with zero"));
 
    mTrackPanel->Refresh(false);
-   //UpdateMenus();
 }
 
 void AudacityProject::OnAlign(wxCommandEvent & event)
@@ -1101,8 +1089,6 @@ void AudacityProject::OnAlign(wxCommandEvent & event)
    PushState(_("Aligned tracks"));
 
    mTrackPanel->Refresh(false);
-   //UpdateMenus();
-
 }
 
 void AudacityProject::OnNewWaveTrack(wxCommandEvent & event)
@@ -1150,7 +1136,6 @@ void AudacityProject::OnRemoveTracks(wxCommandEvent & event)
    PushState(_("Removed audio track(s)"));
 
    mTrackPanel->Refresh(false);
-   //UpdateMenus();
 }
 
 //
