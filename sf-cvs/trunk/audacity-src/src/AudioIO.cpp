@@ -43,6 +43,7 @@ AudioIO::AudioIO()
    mInitialNumOutBuffers = 8;
    mFormat = floatSample;
    mPaused = false;
+   mDroppedSamples = 0;
 
    PaError err = Pa_Initialize();
 
@@ -72,8 +73,14 @@ int audacityAudioCallback(
    unsigned int i;
 
 
+   if(gAudioIO->GetPaused())
+   {
+      ClearSamples((samplePtr)outputBuffer, gAudioIO->GetFormat(),
+                   0, framesPerBuffer * numOutChannels);
+      gAudioIO->AddDroppedSamples(framesPerBuffer);
+      return 0;
+   }
 
-   
 
    //
    // Copy from our pool of output buffers to PortAudio's output buffer
@@ -234,6 +241,8 @@ bool AudioIO::Start()
    mBufferSize = 4096;
    mInUnderruns = 0;
    mRepeats = 0;
+   mDroppedSamples = 0;
+   mPaused = false;
 
    unsigned int i;
 
@@ -342,6 +351,11 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
    }
 
    return Start();
+}
+
+void AudioIO::AddDroppedSamples(int nSamples)
+{
+   mDroppedSamples += nSamples;
 }
 
 void AudioIO::SetPaused(bool state)
@@ -640,7 +654,7 @@ AudacityProject *AudioIO::GetProject()
 double AudioIO::GetIndicator()
 {
    if (mProject && mPortStream)
-      return mT0 + (Pa_StreamTime(mPortStream)/ mRate);
+      return mT0 + ((Pa_StreamTime(mPortStream)-mDroppedSamples)/ mRate);
    else
       return -1000000000.0;
 }
