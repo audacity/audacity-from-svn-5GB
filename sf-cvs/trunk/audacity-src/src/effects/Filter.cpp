@@ -333,7 +333,10 @@ void FilterPanel::OnMouseEvent(wxMouseEvent & event)
    if (mEnvelope->MouseEvent(event, mEnvRect, 0.0, mEnvRect.width, false))
       Refresh(false);
 
-   if (event.ButtonUp() && HasCapture()) {
+   if (event.ButtonUp()) {
+      #if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
+      if (HasCapture())
+      #endif
       ReleaseMouse();
    }
 }
