@@ -259,6 +259,8 @@ bool Export(WaveTrack *left, WaveTrack *right)
   char *dstbuffer = new char[maxblocksize*4];
   char *leftbuffer = new char[maxblocksize*4];
   char *rightbuffer = new char[maxblocksize*4];
+  
+  wxASSERT(srcbuffer && dstbuffer && leftbuffer && rightbuffer);
 
   wxProgressDialog *progress = NULL;  
   wxYield();
@@ -300,11 +302,11 @@ bool Export(WaveTrack *left, WaveTrack *right)
 
 	if (!progress && wxGetElapsedTime(false) > 500) {
 	  progress =
-		new wxProgressDialog("Export", "Exporting audio file",
-							 len);
+		new wxProgressDialog("Export", wxString::Format("Exporting %s file",extension),
+							 1000);
 	}	
 	if (progress) {
-	  progress->Update(pos);
+	  progress->Update(int((pos*1000.0)/len));
 	}
   }
 
