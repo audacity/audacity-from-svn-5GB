@@ -122,29 +122,111 @@ bool Export(AudacityProject *project,
    /* Prepare and display the filename selection dialog */
 
    // account for "AIFF with track markers"
-   wxString extension = "." + format.BeforeFirst(' ').Lower();
+   wxString dlgExt = "." + format.BeforeFirst(' ').Lower();
+   wxString defaultName;
+   wxString projectName = project->GetName();
+   if (projectName.Length() > 4 && projectName.Right(4).Upper()==".AUP")
+      defaultName = projectName.Left(projectName.Length()-4)+dlgExt;
+   else
+      defaultName = projectName + dlgExt;
 
    wxString path = gPrefs->Read("/DefaultExportPath",::wxGetCwd());
 
-   wxString fName = wxFileSelector(wxString::Format("Save %s File As:",
-                                                    (const char *) format),
-                                   path,
-                                   extension,   // default file name
-                                   extension,   // extension
-                                   "*.*",
-                                   wxSAVE | wxOVERWRITE_PROMPT);
+   wxString fName;
+   wxString nameOnly;
+   wxString pathOnly;
+   wxString extension;
+   bool fileOkay;
 
-   if (fName.Length() >= 256) {
-      wxMessageBox
-          ("Sorry, pathnames longer than 256 characters not supported.");
-      return false;
-   }
+   do {
+      fileOkay = true;
 
-   if (fName == "")
-      return false;
+      fName = wxFileSelector(wxString::Format("Save %s File As:",
+                                              (const char *) format),
+                             path,
+                             defaultName,   // default file name
+                             dlgExt,   // extension
+                             "*.*",
+                             wxSAVE | wxOVERWRITE_PROMPT);
 
-   path =::wxPathOnly(fName);
-   gPrefs->Write("/DefaultExportPath", path);
+      if (fName.Length() >= 256) {
+         wxMessageBox
+            ("Sorry, pathnames longer than 256 characters not supported.");
+         return false;
+      }
+      
+      if (fName == "")
+         return false;
+
+      ::wxSplitPath(fName, &pathOnly, &nameOnly, &extension);
+      gPrefs->Write("/DefaultExportPath", pathOnly);
+
+      if (nameOnly.Left(1)=="." && extension=="") {
+         wxString prompt =
+            "Are you sure you want to save the file as \""+
+            nameOnly+"\"?\n";
+
+         int action = wxMessageBox(prompt,
+                                   "Warning",
+                                   wxYES_NO | wxICON_EXCLAMATION,
+                                   project);
+
+         fileOkay = (action == wxYES);
+         continue;
+      }
+      
+      /*
+       * Check the extension - add the default if it's not there,
+       * and warn user if it's abnormal.
+       */
+      
+      wxString defExt = format.BeforeFirst(' ');
+      wxString defExt3 = defExt;
+      if (defExt.Length() > 3)
+         defExt3 = defExt.Left(3);
+      
+      if (extension == "") {
+         #ifdef __WXMSW__
+         // Windows prefers 3-char uppercase extensions
+         extension = defExt3;
+         #else
+         // Linux and Mac prefer lowercase extensions
+         extension = defExt.Lower();
+         #endif
+      }
+      else if (extension.Upper() != defExt.Upper() &&
+               extension.Upper() != defExt3.Upper()) {
+         #ifdef __WXMSW__
+         // Windows prefers 3-char extensions
+         defExt = defExt3;
+         #endif
+
+         wxString prompt =
+            "You are about to save a "+format+" file with the name \""+
+            nameOnly+"."+extension+"\".\n"+
+            "Normally these files end in \"."+defExt+"\", and\n"+
+            "some programs will not open files with nonstandard "+
+            "extensions.\n"
+            "Are you sure you want to save the file under this name?";         
+
+         int action = wxMessageBox(prompt,
+                                   "Warning",
+                                   wxYES_NO | wxICON_EXCLAMATION,
+                                   project);
+
+         if (action == wxYES)
+            fileOkay = true;
+         else {
+            fileOkay = false;
+            path = pathOnly;
+            defaultName = nameOnly + "." + extension;
+         }
+      }
+
+      fName = pathOnly + wxFILE_SEP_PATH + 
+         nameOnly + "." + extension;
+
+   } while (!fileOkay);
 
    /* Finally, dispatch to the correct procedure... 
     * These functions take too many parameters, almost to the point where I
