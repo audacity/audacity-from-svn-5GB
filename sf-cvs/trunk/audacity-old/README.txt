@@ -90,6 +90,10 @@ Known issues/problems:
   and its data directory somewhere else manually when you
   need to make a copy of a project.
 
+* All platforms: Maximize Amplitude doesn't always work.
+  As a workaround, use "Amplify..." and figure out the
+  best amplification factor manually.
+
 * Windows: The floating tool palette does not minimize when
   minimizing a project window.  As a workaround, you can
   just keep the tool palette docked with the project window.
