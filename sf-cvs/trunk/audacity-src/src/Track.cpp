@@ -468,9 +468,7 @@ unsigned int TrackList::GetSpaceUsage()
       if (p->t->GetKind() == Track::Wave) {
          BlockArray *blocks = ((WaveTrack*)p->t)->GetSequence()->GetBlockArray();
          for (unsigned int i = 0; i < blocks->GetCount(); i++)
-            if (blocks->Item(i)->f->mType == BlockFile::BLOCK_TYPE_UNCOMPRESSED)
-               blockFiles[blocks->Item(i)->f] = blocks->Item(i)->len *
-                     SAMPLE_SIZE(blocks->Item(i)->f->mSampleFormat);
+            blockFiles[blocks->Item(i)->f] = blocks->Item(i)->f->GetSpaceUsage();
       }
    }
 
@@ -499,9 +497,7 @@ unsigned int TrackList::GetAdditionalSpaceUsage(UndoStack *stack)
       if (p->t->GetKind() == Track::Wave) {
          BlockArray *blocks = ((WaveTrack*)p->t)->GetSequence()->GetBlockArray();
          for (unsigned int i = 0; i < blocks->GetCount(); i++)
-            if (blocks->Item(i)->f->mType == BlockFile::BLOCK_TYPE_UNCOMPRESSED)
-               curBlockFiles[blocks->Item(i)->f] = blocks->Item(i)->len *
-                     SAMPLE_SIZE(blocks->Item(i)->f->mSampleFormat);
+            curBlockFiles[blocks->Item(i)->f] = blocks->Item(i)->f->GetSpaceUsage();
       }
    }
 
@@ -516,8 +512,7 @@ unsigned int TrackList::GetAdditionalSpaceUsage(UndoStack *stack)
          if (p->t->GetKind() == Track::Wave) {
             BlockArray *blocks = ((WaveTrack*)p->t)->GetSequence()->GetBlockArray();
             for (unsigned int i = 0; i < blocks->GetCount(); i++)
-               if (blocks->Item(i)->f->mType == BlockFile::BLOCK_TYPE_UNCOMPRESSED)
-                  prevBlockFiles.insert(blocks->Item(i)->f);
+               prevBlockFiles.insert(blocks->Item(i)->f);
          }
       }
    }

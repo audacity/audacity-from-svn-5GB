@@ -15,6 +15,7 @@
 
 #include <wx/dynarray.h>
 #include <wx/intl.h>
+#include <wx/ffile.h>
 
 #include "Sequence.h"
 
@@ -34,19 +35,6 @@ class SeqBlock {
 
 WX_DEFINE_ARRAY(SeqBlock *, BlockArray);
 
-class SummaryInfo {
- public:
-   int            bytesPerFrame;
-   sampleCount    frames64K;
-   int            offset64K;
-   sampleCount    frames256;
-   int            offset256;
-   int            totalSummaryBytes;
-};
-
-const int headerTagLen = 20;
-char headerTag[headerTagLen + 1] = "AudacityBlockFile110";
-
 int Sequence::sMaxDiskBlockSize = 1048576;
 
 // Sequence methods
@@ -57,10 +45,8 @@ Sequence::Sequence(DirManager * projDirManager, sampleFormat format)
    mSampleFormat = format;
    mBlock = new BlockArray();
 
-   mSummary = new SummaryInfo;
    mMinSamples = sMaxDiskBlockSize / SAMPLE_SIZE(mSampleFormat) / 2;
    mMaxSamples = mMinSamples * 2;
-   CalcSummaryInfo();
 }
 
 Sequence::Sequence(const Sequence &orig)
@@ -68,8 +54,6 @@ Sequence::Sequence(const Sequence &orig)
    mDirManager = orig.mDirManager;
    mNumSamples = 0;
    mSampleFormat = orig.mSampleFormat;
-   mSummary = new SummaryInfo;
-   *mSummary = *orig.mSummary;
    mMaxSamples = orig.mMaxSamples;
    mMinSamples = orig.mMinSamples;
 
@@ -87,13 +71,6 @@ Sequence::~Sequence()
    }
 
    delete mBlock;
-
-   delete mSummary;
-}
-
-int Sequence::GetSummaryBytes() const
-{
-   return mSummary->totalSummaryBytes;
 }
 
 sampleCount Sequence::GetMaxBlockSize() const
@@ -150,12 +127,12 @@ bool Sequence::ConvertToSampleFormat(sampleFormat format)
    mSampleFormat = format;
 
    for (unsigned int i = 0; i < mBlock->Count(); i++) {
-      BlockFile *oldBlock = mBlock->Item(i)->f;
-      sampleCount len = mBlock->Item(i)->len;
+      SeqBlock *b = mBlock->Item(i);
+      BlockFile *oldBlock = b->f;
+      sampleCount len = b->len;
 
       if (!oldBlock->IsAlias()) {
-         BlockFile *newBlock =
-            mDirManager->NewBlockFile(mSummary->totalSummaryBytes);
+         BlockFile *newBlock;
 
          samplePtr buffer1 = NewSamples(len, oldFormat);
          samplePtr buffer2 = NewSamples(len, mSampleFormat);
@@ -163,12 +140,10 @@ bool Sequence::ConvertToSampleFormat(sampleFormat format)
          oldBlock->ReadData(buffer1, oldFormat, 0, len);
          CopySamples(buffer1, oldFormat,
                      buffer2, mSampleFormat, len);
-         newBlock->WriteData(buffer2, mSampleFormat, len);
+         newBlock = mDirManager->NewSimpleBlockFile(buffer2, len, mSampleFormat);
 
          mBlock->Item(i)->f = newBlock;
          mDirManager->Deref(oldBlock);
-
-         UpdateSummaries(buffer2, mBlock->Item(i), len);
 
          DeleteSamples(buffer2);
          DeleteSamples(buffer1);
@@ -192,66 +167,63 @@ bool Sequence::GetMinMax(sampleCount start, sampleCount len,
 
    unsigned int block0 = FindBlock(start);
    unsigned int block1 = FindBlock(start + len);
-   
+
    sampleCount s0, l0, maxl0;
 
    // First calculate the min/max of the blocks in the middle of this region;
    // this is very fast because we have the min/max of every entire block
    // already in memory.
    unsigned int b;
-   int i;
 
    for (b = block0 + 1; b < block1; b++) {
-      if (mBlock->Item(b)->min < min)
-         min = mBlock->Item(b)->min;
-      if (mBlock->Item(b)->max > max)
-         max = mBlock->Item(b)->max;
+      float blockMin, blockMax, blockRMS;
+      mBlock->Item(b)->f->GetMinMax(&blockMin, &blockMax, &blockRMS);
+
+      if (blockMin < min)
+         min = blockMin;
+      if (blockMax > max)
+         max = blockMax;
    }
 
    // Now we take the first and last blocks into account, noting that the
    // selection may only partly overlap these blocks.  If the overall min/max
    // of either of these blocks is within min...max, then we can ignore them.
    // If not, we need read some samples and summaries from disk.
-   if (mBlock->Item(block0)->min < min || mBlock->Item(block0)->max > max) {
+   float block0Min, block0Max, block0RMS;
+   mBlock->Item(block0)->f->GetMinMax(&block0Min, &block0Max, &block0RMS);
+
+   if (block0Min < min || block0Max > max) {
       s0 = start - mBlock->Item(block0)->start;
       l0 = len;
       maxl0 = mBlock->Item(block0)->start + mBlock->Item(block0)->len - start;
       if (l0 > maxl0)
          l0 = maxl0;
 
-      float *buffer = new float[l0];
-
-      // TODO: optimize this to use Read256 and Read64K
-      Read((samplePtr)buffer, floatSample, mBlock->Item(block0), s0, l0);
-      for (i = 0; i < l0; i++) {
-         if (buffer[i] < min)
-            min = buffer[i];
-         if (buffer[i] > max)
-            max = buffer[i];
-      }
-
-      delete[]buffer;
+      float partialMin, partialMax, partialRMS;
+      mBlock->Item(block0)->f->GetMinMax(s0, l0,
+                                         &partialMin, &partialMax, &partialRMS);
+      if (partialMin < min)
+         min = partialMin;
+      if (partialMax > max)
+         max = partialMax;
    }
 
+   float block1Min, block1Max, block1RMS;
+   mBlock->Item(block1)->f->GetMinMax(&block1Min, &block1Max, &block1RMS);
+
    if (block1 > block0 &&
-       (mBlock->Item(block1)->min < min
-        || mBlock->Item(block1)->max > max)) {
+       (block1Min < min || block1Max > max)) {
 
       s0 = 0;
       l0 = (start + len) - mBlock->Item(block1)->start;
-      float *buffer = new float[l0];
 
-      // TODO: optimize this to use Read256 and Read64K
-      Read((samplePtr)buffer, floatSample, mBlock->Item(block1), s0, l0);
-      for (i = 0; i < l0; i++) {
-         if (buffer[i] < min)
-            min = buffer[i];
-         if (buffer[i] > max)
-            max = buffer[i];
-      }
-
-      delete[]buffer;
-
+      float partialMin, partialMax, partialRMS;
+      mBlock->Item(block1)->f->GetMinMax(s0, l0,
+                                         &partialMin, &partialMax, &partialRMS);
+      if (partialMin < min)
+         min = partialMin;
+      if (partialMax > max)
+         max = partialMax;
    }
 
    *outMin = min;
@@ -357,9 +329,7 @@ bool Sequence::Paste(sampleCount s, const Sequence *src)
       largerBlock->start = mBlock->Item(b)->start;
       largerBlock->len = mBlock->Item(b)->len + addedLen;
       largerBlock->f =
-         mDirManager->NewBlockFile(mSummary->totalSummaryBytes);
-
-      FirstWrite(buffer, largerBlock, largerBlock->len);
+         mDirManager->NewSimpleBlockFile(buffer, largerBlock->len, mSampleFormat);
 
       mDirManager->Deref(mBlock->Item(b)->f);
       delete mBlock->Item(b);
@@ -533,9 +503,8 @@ bool Sequence::InsertSilence(sampleCount s0, sampleCount len)
       w->max = float(0.0);
       w->rms = float(0.0);
       if (pos == 0 || len == l) {
-         w->f = mDirManager->NewBlockFile(mSummary->totalSummaryBytes);
+         w->f = mDirManager->NewSimpleBlockFile(buffer, l, mSampleFormat);
          firstBlockFile = w->f;
-         FirstWrite(buffer, w, l);
       } else {
          w->f = mDirManager->CopyBlockFile(firstBlockFile);
          if (!w->f) {
@@ -565,17 +534,11 @@ bool Sequence::AppendAlias(wxString fullPath,
                            sampleCount len, int channel)
 {
    SeqBlock *newBlock = new SeqBlock();
+
    newBlock->start = mNumSamples;
    newBlock->len = len;
-   newBlock->f = mDirManager->NewBlockFile(mSummary->totalSummaryBytes);
-   newBlock->f->SetAliasedData(fullPath, start, len, channel);
-
-   samplePtr buffer = NewSamples(len, mSampleFormat);
-   Read(buffer, mSampleFormat, newBlock, 0, len);
-
-   UpdateSummaries(buffer, newBlock, len);
-
-   DeleteSamples(buffer);
+   newBlock->f =
+      mDirManager->NewAliasBlockFile(fullPath, start, len, channel);
 
    mBlock->Add(newBlock);
    mNumSamples += newBlock->len;
@@ -633,15 +596,6 @@ sampleCount Sequence::GetBestBlockSize(sampleCount start) const
 
 bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
 {
-   if (!strcmp(tag, "blockfile")) {
-      if (mBlock->Count() == 0)
-         return false;
-
-      SeqBlock *lastSeqBlock = mBlock->Item(mBlock->Count()-1);
-      lastSeqBlock->f = mDirManager->LoadBlockFile(attrs, mSampleFormat);
-
-      return true;
-   }
    if (!strcmp(tag, "waveblock")) {
       SeqBlock *wb = new SeqBlock();
       wb->f = 0;
@@ -666,6 +620,7 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
       } // while
 
       mBlock->Add(wb);
+      mDirManager->SetLoadingTarget(&wb->f);
 
       return true;
    }
@@ -686,8 +641,6 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
             mNumSamples = atoi(value);         
       } // while
 
-      CalcSummaryInfo();
-
       return true;
    }
    
@@ -696,11 +649,10 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
 
 XMLTagHandler *Sequence::HandleXMLChild(const char *tag)
 {
-   if (!strcmp(tag, "waveblock") ||
-       !strcmp(tag, "blockfile"))
+   if (!strcmp(tag, "waveblock"))
       return this;
    else
-      return NULL;
+      return mDirManager;
 }
 
 void Sequence::WriteXML(int depth, FILE *fp)
@@ -725,7 +677,9 @@ void Sequence::WriteXML(int depth, FILE *fp)
       fprintf(fp, "len=\"%d\" ", bb->len);
       fprintf(fp, ">\n");
 
-      mDirManager->SaveBlockFile(bb->f, depth+2, fp);
+      wxFFile xmlFile(fp);
+      bb->f->SaveXML(depth+2, xmlFile);
+      xmlFile.Detach();
 
       for(i=0; i<depth+1; i++)
          fprintf(fp, "\t");
@@ -735,13 +689,6 @@ void Sequence::WriteXML(int depth, FILE *fp)
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
    fprintf(fp, "</sequence>\n");
-}
-
-SeqBlock *Sequence::NewInitedSeqBlock()
-{
-   SeqBlock *b = new SeqBlock();
-   b->f = mDirManager->NewBlockFile(mSummary->totalSummaryBytes);
-   return b;
 }
 
 int Sequence::FindBlock(sampleCount pos, sampleCount lo,
@@ -801,60 +748,6 @@ bool Sequence::Read(samplePtr buffer, sampleFormat format,
    return true;
 }
 
-bool Sequence::Read256(float *buffer, SeqBlock * b,
-                       sampleCount start, sampleCount len) const
-{
-   wxASSERT(b);
-   wxASSERT(start >= 0);
-   wxASSERT(start + len <= ((b->len + 255) / 256));
-
-   char *summary = (char *)malloc(GetSummaryBytes());
-   if (!b->f->ReadSummary(summary)) {
-      // TODO handle missing file
-      return false;
-   }
-
-   memcpy(buffer,
-          summary + mSummary->offset256 + (start * mSummary->bytesPerFrame),
-          len * mSummary->bytesPerFrame);
-
-   free(summary);
-
-   return true;
-}
-
-bool Sequence::Read64K(float *buffer, SeqBlock * b,
-                       sampleCount start, sampleCount len) const
-{
-   wxASSERT(b);
-   wxASSERT(start >= 0);
-   wxASSERT(start + len <= ((b->len + 65535) / 65536));
-
-   char *summary = (char *)malloc(GetSummaryBytes());
-   if (!b->f->ReadSummary(summary)) {
-      // TODO handle missing file
-      return false;
-   }
-
-   memcpy(buffer,
-          summary + mSummary->offset64K + (start * mSummary->bytesPerFrame),
-          len * mSummary->bytesPerFrame);
-
-   free(summary);
-
-   return true;
-}
-
-bool Sequence::FirstWrite(samplePtr buffer, SeqBlock * b,
-                          sampleCount len)
-{
-   wxASSERT(b);
-   wxASSERT(b->len <= mMaxSamples);
-
-   UpdateSummaries(buffer, b, len);
-   return b->f->WriteData(buffer, mSampleFormat, len);
-}
-
 bool Sequence::CopyWrite(samplePtr buffer, SeqBlock *b,
                          sampleCount start, sampleCount len)
 {
@@ -874,121 +767,11 @@ bool Sequence::CopyWrite(samplePtr buffer, SeqBlock *b,
    memcpy(newBuffer + start*sampleSize, buffer, len*sampleSize);
 
    BlockFile *oldBlockFile = b->f;
-   b->f = mDirManager->NewBlockFile(mSummary->totalSummaryBytes);
+   b->f = mDirManager->NewSimpleBlockFile(newBuffer, b->len, mSampleFormat);
 
    mDirManager->Deref(oldBlockFile);
 
-   b->f->WriteData(newBuffer, mSampleFormat, b->len);
-   UpdateSummaries(newBuffer, b, b->len);
-
    DeleteSamples(newBuffer);
-
-   return true;
-}
-
-bool Sequence::UpdateSummaries(samplePtr buffer,
-                               SeqBlock * b, sampleCount len)
-{
-   char *fullSummary = (char *)malloc(mSummary->totalSummaryBytes);
-
-   memcpy(fullSummary, headerTag, headerTagLen);
-
-   float *summary64K = (float *)(fullSummary + mSummary->offset64K);
-   float *summary256 = (float *)(fullSummary + mSummary->offset256);
-
-   float *fbuffer = new float[len];
-   CopySamples(buffer, mSampleFormat,
-               (samplePtr)fbuffer, floatSample, len);
-
-   sampleCount sumLen;
-   sampleCount i, j, jcount;
-
-   float min, max;
-   float sumsq;
-
-   // Recalc 256 summaries
-   sumLen = (len + 255) / 256;
-
-   for (i = 0; i < sumLen; i++) {
-      min = fbuffer[i * 256];
-      max = fbuffer[i * 256];
-      sumsq = ((float)min) * ((float)min);
-      jcount = 256;
-      if (i * 256 + jcount > len)
-         jcount = len - i * 256;
-      for (j = 1; j < jcount; j++) {
-         float f1 = fbuffer[i * 256 + j];
-         sumsq += ((float)f1) * ((float)f1);
-         if (f1 < min)
-            min = f1;
-         else if (f1 > max)
-            max = f1;
-      }
-
-      float rms = (float)sqrt(sumsq / jcount);
-
-      summary256[i * 3] = min;
-      summary256[i * 3 + 1] = max;
-      summary256[i * 3 + 2] = rms;
-   }
-   for (i = sumLen; i < mSummary->frames256; i++) {
-      summary256[i * 3] = 0.0f;
-      summary256[i * 3 + 1] = 0.0f;
-      summary256[i * 3 + 2] = 0.0f;
-   }
-
-   // Recalc 64K summaries
-   sumLen = (len + 65535) / 65536;
-
-   for (i = 0; i < sumLen; i++) {
-      min = summary256[3 * i * 256];
-      max = summary256[3 * i * 256 + 1];
-      sumsq = (float)summary256[3 * i * 256 + 2];
-      sumsq *= sumsq;
-
-      for (j = 1; j < 256; j++) {
-         if (summary256[3 * (i * 256 + j)] < min)
-            min = summary256[3 * (i * 256 + j)];
-         if (summary256[3 * (i * 256 + j) + 1] > max)
-            max = summary256[3 * (i * 256 + j) + 1];
-         float r1 = summary256[3 * (i * 256 + j) + 2];
-         sumsq += r1*r1;
-      }
-
-      float rms = (float)sqrt(sumsq / 256);
-
-      summary64K[i * 3] = min;
-      summary64K[i * 3 + 1] = max;
-      summary64K[i * 3 + 2] = rms;
-   }
-   for (i = sumLen; i < mSummary->frames64K; i++) {
-      summary64K[i * 3] = 0.0f;
-      summary64K[i * 3 + 1] = 0.0f;
-      summary64K[i * 3 + 2] = 0.0f;
-   }
-
-   // Recalc block-level summary
-   min = summary64K[0];
-   max = summary64K[1];
-   sumsq = (float)summary64K[2];
-   sumsq *= sumsq;
-   
-   for (i = 1; i < sumLen; i++) {
-      if (summary64K[3*i] < min)
-         min = summary64K[3*i];
-      else if (summary64K[3*i+1] > max)
-         max = summary64K[3*i+1];
-      float r1 = (float)summary64K[3*i+2];
-      sumsq += (r1*r1);
-   }
-   b->min = min;
-   b->max = max;
-   b->rms = sqrt(sumsq / sumLen);
-
-   b->f->WriteSummary(fullSummary);
-
-   delete[] fbuffer;
-   free(fullSummary);
 
    return true;
 }
@@ -1145,11 +928,11 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,
               srcX - mBlock->Item(b)->start, num);
          break;
       case 256:
-         Read256(temp, mBlock->Item(b),
+         mBlock->Item(b)->f->Read256(temp,
                  (srcX - mBlock->Item(b)->start) / divisor, num);
          break;
       case 65536:
-         Read64K(temp, mBlock->Item(b),
+         mBlock->Item(b)->f->Read64K(temp,
                  (srcX - mBlock->Item(b)->start) / divisor, num);
          break;
       }
@@ -1287,7 +1070,7 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
       else
          addLen = GetIdealBlockSize() - lastBlock->len;
 
-      SeqBlock *newLastBlock = NewInitedSeqBlock();
+      SeqBlock *newLastBlock = new SeqBlock();
 
       samplePtr buffer2 = NewSamples((lastBlock->len + addLen), mSampleFormat);
       Read(buffer2, mSampleFormat, lastBlock, 0, lastBlock->len);
@@ -1306,7 +1089,8 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
       newLastBlock->start = lastBlock->start;
       newLastBlock->len = lastBlock->len + addLen;
 
-      FirstWrite(buffer2, newLastBlock, lastBlock->len + addLen);
+      newLastBlock->f =
+         mDirManager->NewSimpleBlockFile(buffer2, newLastBlock->len, mSampleFormat);
 
       DeleteSamples(buffer2);
 
@@ -1323,15 +1107,16 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
       sampleCount idealSamples = GetIdealBlockSize();
       sampleCount l = (len > idealSamples ? idealSamples : len);
       SeqBlock *w = new SeqBlock();
-      w->f = mDirManager->NewBlockFile(mSummary->totalSummaryBytes);
       w->start = mNumSamples;
       w->len = l;
 
       if (format == mSampleFormat)
-         FirstWrite(buffer, w, l);
+      {
+         w->f = mDirManager->NewSimpleBlockFile(buffer, l, mSampleFormat);
+      }
       else {
          CopySamples(buffer, format, temp, mSampleFormat, l);
-         FirstWrite(temp, w, l);
+         w->f = mDirManager->NewSimpleBlockFile(temp, l, mSampleFormat);
       }
 
       mBlock->Add(w);
@@ -1360,13 +1145,13 @@ BlockArray *Sequence::Blockify(samplePtr buffer, sampleCount len)
    int num = (len + (mMaxSamples - 1)) / mMaxSamples;
 
    for (int i = 0; i < num; i++) {
-      SeqBlock *b = NewInitedSeqBlock();
+      SeqBlock *b = new SeqBlock();
 
       b->start = i * len / num;
       b->len = ((i + 1) * len / num) - b->start;
+      samplePtr bufStart = buffer + (b->start * SAMPLE_SIZE(mSampleFormat));
 
-      FirstWrite(buffer + (b->start * SAMPLE_SIZE(mSampleFormat)),
-                 b, b->len);
+      b->f = mDirManager->NewSimpleBlockFile(bufStart, b->len, mSampleFormat);
 
       list->Add(b);
    }
@@ -1403,10 +1188,11 @@ bool Sequence::Delete(sampleCount start, sampleCount len)
       Read(buffer + (pos * sampleSize), mSampleFormat,
            b, pos + len, newLen - pos);
 
-      SeqBlock *newBlock = NewInitedSeqBlock();
+      SeqBlock *newBlock = new SeqBlock();
       newBlock->start = b->start;
       newBlock->len = newLen;
-      FirstWrite(buffer, newBlock, newLen);
+      newBlock->f =
+         mDirManager->NewSimpleBlockFile(buffer, newLen, mSampleFormat);
 
       mBlock->Item(b0) = newBlock;
 
@@ -1443,14 +1229,15 @@ bool Sequence::Delete(sampleCount start, sampleCount len)
    sampleCount preBufferLen = start - preBlock->start;
    if (preBufferLen) {
       if (preBufferLen >= mMinSamples || b0 == 0) {
-         SeqBlock *insBlock = NewInitedSeqBlock();
+         SeqBlock *insBlock = new SeqBlock();
 
          insBlock->len = preBufferLen;
          insBlock->start = preBlock->start;
 
          samplePtr preBuffer = NewSamples(preBufferLen, mSampleFormat);
          Read(preBuffer, mSampleFormat, preBlock, 0, preBufferLen);
-         FirstWrite(preBuffer, insBlock, preBufferLen);
+         insBlock->f =
+            mDirManager->NewSimpleBlockFile(preBuffer, preBufferLen, mSampleFormat);
          DeleteSamples(preBuffer);
 
          newBlock->Add(insBlock);
@@ -1516,7 +1303,7 @@ bool Sequence::Delete(sampleCount start, sampleCount len)
        (postBlock->start + postBlock->len) - (start + len);
    if (postBufferLen) {
       if (postBufferLen >= mMinSamples || b1 == numBlocks - 1) {
-         SeqBlock *insBlock = NewInitedSeqBlock();
+         SeqBlock *insBlock = new SeqBlock();
 
          insBlock->len = postBufferLen;
          insBlock->start = start;
@@ -1524,7 +1311,9 @@ bool Sequence::Delete(sampleCount start, sampleCount len)
          samplePtr postBuffer = NewSamples(postBufferLen, mSampleFormat);
          sampleCount pos = (start + len) - postBlock->start;
          Read(postBuffer, mSampleFormat, postBlock, pos, postBufferLen);
-         FirstWrite(postBuffer, insBlock, postBufferLen);
+         insBlock->f =
+            mDirManager->NewSimpleBlockFile(postBuffer, postBufferLen, mSampleFormat);
+
          DeleteSamples(postBuffer);
 
          newBlock->Add(insBlock);
@@ -1623,7 +1412,7 @@ void Sequence::DebugPrintf(wxString *dest)
           mBlock->Item(i)->start,
           mBlock->Item(i)->len,
           mDirManager->GetRefCount(mBlock->Item(i)->f),
-          (const char *) (mBlock->Item(i)->f->GetName()));
+          (const char *) (mBlock->Item(i)->f->GetFileName().GetFullName()));
       if (pos != mBlock->Item(i)->start)
          *dest += "  ERROR\n";
       else
@@ -1646,19 +1435,5 @@ void Sequence::Debug()
 void Sequence::SetMaxDiskBlockSize(int bytes)
 {
    sMaxDiskBlockSize = bytes;
-}
-
-void Sequence::CalcSummaryInfo()
-{
-   SummaryInfo *s = mSummary;
-
-   s->bytesPerFrame = sizeof(float) * 3; /* min, max, rms */
-
-   s->frames64K = (mMaxSamples + 65535) / 65536;
-   s->frames256 = s->frames64K * 256;
-
-   s->offset64K = headerTagLen;
-   s->offset256 = s->offset64K + (s->frames64K * s->bytesPerFrame);
-   s->totalSummaryBytes = s->offset256 + (s->frames256 * s->bytesPerFrame);  
 }
 

@@ -39,13 +39,11 @@ OBJS = \
 	$(OBJDIR)/AudacityApp.o \
 	$(OBJDIR)/AudioIO.o \
 	$(OBJDIR)/Benchmark.o \
-	$(OBJDIR)/BlockFile.o \
 	$(OBJDIR)/ControlToolBar.o \
 	$(OBJDIR)/DirManager.o \
 	$(OBJDIR)/DiskFunctions.o \
 	$(OBJDIR)/Envelope.o \
 	$(OBJDIR)/EditToolBar.o \
-	$(OBJDIR)/FileFormats.o \
 	$(OBJDIR)/FFT.o \
 	$(OBJDIR)/FreqWindow.o \
 	$(OBJDIR)/Help.o \
@@ -59,7 +57,6 @@ OBJS = \
 	$(OBJDIR)/Prefs.o \
 	$(OBJDIR)/Project.o \
 	$(OBJDIR)/RingBuffer.o \
-	$(OBJDIR)/SampleFormat.o \
 	$(OBJDIR)/Sequence.o \
 	$(OBJDIR)/Spectrum.o \
 	$(OBJDIR)/Tags.o \
@@ -120,17 +117,28 @@ TEMPORARILY_DISABLED_IMPORTER_OBJS = \
 	$(OBJDIR)/import/ImportPCM.o \
 	$(OBJDIR)/import/ImportRaw.o \
 
+LIBAUDACITY_OBJS = \
+	$(OBJDIR)/BlockFile.o \
+	$(OBJDIR)/FileFormats.o \
+	$(OBJDIR)/SampleFormat.o \
+	$(OBJDIR)/blockfile/SimpleBlockFile.o \
+	$(OBJDIR)/blockfile/PCMAliasBlockFile.o \
+
 ########################################
 # DEPENDENCIES
 
-DEPS = $(OBJS:$(OBJDIR)/%.o=%.cpp) $(OPTOBJS:$(OBJDIR)/%.o=%.cpp)
+DEPS = $(OBJS:$(OBJDIR)/%.o=%.cpp) $(OPTOBJS:$(OBJDIR)/%.o=%.cpp) \
+	$(LIBAUDACITY_OBJS:$(OBJDIR)/%.o=%.cpp)
 
 ########################################
 
-all: dirs ../audacity
+all: dirs libaudacity.a ../audacity
 
-../audacity: $(OBJS) $(EXTRAOBJS) $(OPTOBJS) Makefile
-	$(CCC) -o ../audacity $(OBJS) $(OPTOBJS) $(EXTRAOBJS) $(LIBS)
+libaudacity.a: $(LIBAUDACITY_OBJS)
+	ar rcs libaudacity.a $(LIBAUDACITY_OBJS)
+
+../audacity: $(OBJS) $(EXTRAOBJS) $(OPTOBJS) libaudacity.a Makefile
+	$(CCC) -o ../audacity $(OBJS) $(OPTOBJS) $(EXTRAOBJS) libaudacity.a $(LIBS)
 	@AFTERBUILD@
 
 #
@@ -150,7 +158,7 @@ clean:
 # Rule for compiling C++ files
 #
 
-$(OPTOBJS) $(OBJS): $(OBJDIR)/%.o: %.cpp configunix.h $(CDEPEND)
+$(OPTOBJS) $(OBJS) $(LIBAUDACITY_OBJS): $(OBJDIR)/%.o: %.cpp configunix.h $(CDEPEND)
 	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
 
 #
@@ -161,7 +169,7 @@ DIRS = \
 	$(OBJDIR) $(OBJDIR)/effects $(OBJDIR)/effects/ladspa \
 	$(OBJDIR)/effects/VST $(OBJDIR)/effects/nyquist $(OBJDIR)/export \
 	$(OBJDIR)/import $(OBJDIR)/prefs $(OBJDIR)/widgets $(OBJDIR)/xml \
-	$(OBJDIR)/commands
+	$(OBJDIR)/commands $(OBJDIR)/blockfile
 
 dirs: $(DIRS)
 
