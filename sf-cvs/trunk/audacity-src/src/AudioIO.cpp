@@ -18,10 +18,11 @@
 #include "AudioIO.h"
 #include "Project.h"
 #include "Track.h"
-#include "WaveTrack.h"
+#include "WaveTrack.h"  
 #include "Mix.h"
-#include "APalette.h"
+#include "ControlToolBar.h"
 #include "Prefs.h"
+
 
 AudioIO *gAudioIO;
 
@@ -331,7 +332,8 @@ void AudioIO::FillBuffers()
       }
       
       Mixer *mixer = new Mixer(mNumOutChannels, block, true, mRate);
-      mixer->UseVolumeSlider(mProject->GetAPalette());
+
+      mixer->UseVolumeSlider(mProject->GetControlToolBar());
       mixer->Clear();
 
       TrackListIterator iter2(mTracks);
@@ -479,13 +481,15 @@ void AudioIO::OnTimer()
 
 void AudioIO::Stop()
 {
+
    if (!mProject)
       return;
 
    if (!mHardStop) {
-      mProject->GetAPalette()->SetPlay(false);
-      mProject->GetAPalette()->SetStop(false);
-      mProject->GetAPalette()->SetRecord(false);
+     
+      mProject->GetControlToolBar()->SetPlay(false);
+      mProject->GetControlToolBar()->SetStop(false);
+      mProject->GetControlToolBar()->SetRecord(false);
    }
 
    Pa_AbortStream(mPortStream);

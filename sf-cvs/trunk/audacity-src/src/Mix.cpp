@@ -19,7 +19,8 @@
 #include "WaveTrack.h"
 #include "DirManager.h"
 #include "Envelope.h"
-#include "APalette.h"
+#include "ControlToolBar.h"
+
 
 bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
 {
@@ -190,7 +191,7 @@ Mixer::Mixer(int numChannels, int bufferSize, bool interleaved, double rate)
    mInterleaved = interleaved;
    mRate = rate;
    mUseVolumeSlider = false;
-   mAPalette = NULL;
+   mControlToolBar= NULL;
 
    if (mInterleaved) {
       mNumBuffers = 1;
@@ -217,10 +218,10 @@ Mixer::~Mixer()
    delete[]mEnvValues;
 }
 
-void Mixer::UseVolumeSlider(APalette * palette)
+void Mixer::UseVolumeSlider(ControlToolBar * ctb)
 {
    mUseVolumeSlider = true;
-   mAPalette = palette;
+   mControlToolBar = ctb;
 }
 
 void Mixer::Clear()
@@ -304,7 +305,7 @@ void Mixer::MixDiffRates(int *channelFlags, WaveTrack * src, double t0, double t
 
    double volume;
    if (mUseVolumeSlider)
-      volume = mAPalette->GetSoundVol();
+      volume = mControlToolBar->GetSoundVol();
    else
       volume = 1.0;
 
@@ -365,7 +366,7 @@ void Mixer::MixSameRate(int *channelFlags, WaveTrack * src, double t0, double t1
 
    double volume;
    if (mUseVolumeSlider)
-      volume = mAPalette->GetSoundVol();
+      volume = mControlToolBar->GetSoundVol();
    else
       volume = 1.0;
 

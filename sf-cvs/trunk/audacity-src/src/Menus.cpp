@@ -16,13 +16,14 @@
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
-   #include <wx/app.h>
-   #include <wx/intl.h>
-   #include <wx/menu.h>
-   #include <wx/string.h>
-   #include <wx/filedlg.h>
-   #include <wx/msgdlg.h>
-   #include <wx/textdlg.h>
+#include <wx/app.h>
+#include <wx/intl.h>
+#include <wx/menu.h>
+#include <wx/string.h>
+#include <wx/filedlg.h>
+#include <wx/msgdlg.h>
+#include <wx/textdlg.h>
+
 #endif
 
 #include "sndfile.h"
@@ -31,7 +32,9 @@
 
 #include "Audacity.h"
 #include "AboutDialog.h"
-#include "APalette.h"
+#include "ToolBar.h"
+#include "ControlToolBar.h"
+#include "EditToolBar.h"
 #include "Benchmark.h"
 #include "export/Export.h"
 #include "FileFormats.h"
@@ -53,6 +56,7 @@
 #include "effects/Effect.h"
 #include "prefs/PrefsDialog.h"
 
+
 #define AUDACITY_MENUS_GLOBALS
 #include "Menus.h"
 #undef AUDACITY_MENUS_GLOBALS
@@ -64,7 +68,7 @@ void AudacityProject::CreateMenuBar()
 
    mMenuBar = new wxMenuBar();
 
-   int format = ReadExportFormatPref();                         
+   int format = ReadExportFormatPref();
    wxString pcmFormat = sf_header_name(format & SF_FORMAT_TYPEMASK);
 
    mExportString.Printf(_("&Export as %s..."), pcmFormat.c_str());
@@ -101,6 +105,7 @@ void AudacityProject::CreateMenuBar()
    mEditMenu->Append(CutID, _("Cut"));
    mEditMenu->Append(CopyID, _("Copy"));
    mEditMenu->Append(PasteID, _("Paste"));
+   mEditMenu->Append(TrimID, _("Trim"));
    mEditMenu->AppendSeparator();
    mEditMenu->Append(DeleteID, _("&Delete"));
    mEditMenu->Append(SilenceID, _("Silence"));
@@ -123,7 +128,45 @@ void AudacityProject::CreateMenuBar()
 
 #ifndef __WXMAC__
    mViewMenu->AppendSeparator();
-   mViewMenu->Append(FloatPaletteID, _("Float or Unfloat Palette"));
+
+   if (gControlToolBarStub->GetWindowedStatus()) {
+      mViewMenu->Append(FloatControlToolBarID,
+                        _("Unfloat Control Toolbar"));
+   } else {
+      mViewMenu->Append(FloatControlToolBarID,
+                        _("Float Control Toolbar"));
+   }
+   
+ 
+   if (!gEditToolBarStub)
+      {
+         //If a gEditToolBarStub doesn't exist, make the menu option
+         //enable loading
+       
+         mViewMenu->Append(LoadEditToolBarID, _("Load Editing Toolbar"));
+         mViewMenu->Append(FloatEditToolBarID, _("Float Editing Toolbar"));
+         mViewMenu->FindItem(FloatEditToolBarID)->Enable(false);
+
+     
+      }
+   else
+      {
+   
+            
+         if(gEditToolBarStub->GetWindowedStatus()) 
+            mViewMenu->Append(FloatEditToolBarID, _("Unfloat Editing Toolbar"));
+         else
+            mViewMenu->Append(FloatEditToolBarID,    _("Float Editing Toolbar"));
+
+
+         if(gEditToolBarStub->GetLoadedStatus()){
+            mViewMenu->Append(LoadEditToolBarID, _("Unload Editing Toolbar"));
+         } else {
+            mViewMenu->Append(LoadEditToolBarID, _("Load Editing Toolbar"));
+            mViewMenu->FindItem(FloatEditToolBarID)->Enable(false);
+         }
+      }
+   
 #endif
 
    mProjectMenu = new wxMenu();
@@ -133,7 +176,7 @@ void AudacityProject::CreateMenuBar()
    mProjectMenu->Append(ImportRawID, _("Import Raw Data..."));
 #ifdef USE_ID3LIB
    mProjectMenu->AppendSeparator();
-   mProjectMenu->Append(EditID3ID, _("Edit ID3 Tags..."));   
+   mProjectMenu->Append(EditID3ID, _("Edit ID3 Tags..."));
 #endif
    mProjectMenu->AppendSeparator();
    mProjectMenu->Append(QuickMixID, _("&Quick Mix"));
@@ -272,8 +315,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 {
    if (mMenusDirtyCheck != gMenusDirty) {
       /*
-      TODO!
-      */
+         TODO!
+       */
    }
 
 #define AUDACITY_MENUS_COMMANDS_ACCELL_TABLE
@@ -323,12 +366,12 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    // the last time we were here.
 
    if (!mFirstTimeUpdateMenus &&
-       mLastNonZeroRegionSelected==nonZeroRegionSelected &&
-       mLastNumTracks==numTracks &&
-       mLastNumTracksSelected==numTracksSelected &&
-       mLastNumWaveTracks==numWaveTracks &&
-       mLastNumWaveTracksSelected==numWaveTracksSelected &&
-       mLastNumLabelTracks==numLabelTracks)
+       mLastNonZeroRegionSelected == nonZeroRegionSelected &&
+       mLastNumTracks == numTracks &&
+       mLastNumTracksSelected == numTracksSelected &&
+       mLastNumWaveTracks == numWaveTracks &&
+       mLastNumWaveTracksSelected == numWaveTracksSelected &&
+       mLastNumLabelTracks == numLabelTracks)
       return;
 
    // Otherwise, save state and then update all of the menus
@@ -358,6 +401,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    SetCommandState(CutID, anySelection);
    mEditMenu->Enable(CopyID, anySelection);
    SetCommandState(CopyID, anySelection);
+   mEditMenu->Enable(TrimID, anySelection);
+   SetCommandState(TrimID, anySelection);
    mEditMenu->Enable(DeleteID, anySelection);
    SetCommandState(DeleteID, anySelection);
    mEditMenu->Enable(SilenceID, anySelection);
@@ -433,12 +478,12 @@ void AudacityProject::OnOpen(wxCommandEvent & event)
                                       "",       // Name
                                       "",       // Extension
                                       _("All files (*.*)|*.*|"
-                                      "Audacity projects (*.aup)|*.aup|"
-                                      "WAV files (*.wav)|*.wav|"
-                                      "AIFF files (*.aif)|*.aif|"
-                                      "AU files (*.au)|*.au|"
-                                      "IRCAM files (*.snd)|*.snd|"
-                                      "MP3 files (*.mp3)|*.mp3"),
+                                        "Audacity projects (*.aup)|*.aup|"
+                                        "WAV files (*.wav)|*.wav|"
+                                        "AIFF files (*.aif)|*.aif|"
+                                        "AU files (*.au)|*.au|"
+                                        "IRCAM files (*.snd)|*.snd|"
+                                        "MP3 files (*.mp3)|*.mp3"),
                                       0,        // Flags
                                       this);    // Parent
 
@@ -449,16 +494,17 @@ void AudacityProject::OnOpen(wxCommandEvent & event)
       int numProjects = gAudacityProjects.Count();
       for (int i = 0; i < numProjects; i++)
          if (gAudacityProjects[i]->mFileName == fileName) {
-            wxMessageBox("That project is already open in another window.");
+            wxMessageBox
+                ("That project is already open in another window.");
             return;
          }
-
       // Open in a new window if this one is in use
       if (mDirty || !mTracks->IsEmpty()) {
-         AudacityProject *project = CreateNewAudacityProject(gParentWindow);
+         AudacityProject *project =
+             CreateNewAudacityProject(gParentWindow);
          project->OpenFile(fileName);
-      }
-      else OpenFile(fileName);
+      } else
+         OpenFile(fileName);
    }
 }
 
@@ -580,7 +626,7 @@ void AudacityProject::Undo(wxCommandEvent & event)
    FixScrollbars();
    mTrackPanel->Refresh(false);
 
-   if(mHistoryWindow)
+   if (mHistoryWindow)
       mHistoryWindow->UpdateDisplay();
 }
 
@@ -597,13 +643,13 @@ void AudacityProject::Redo(wxCommandEvent & event)
    FixScrollbars();
    mTrackPanel->Refresh(false);
 
-   if(mHistoryWindow)
+   if (mHistoryWindow)
       mHistoryWindow->UpdateDisplay();
 }
 
 void AudacityProject::UndoHistory(wxCommandEvent & event)
 {
-   if(mHistoryWindow)
+   if (mHistoryWindow)
       mHistoryWindow->Show(true);
    else {
       mHistoryWindow = new HistoryWindow(this, &mUndoManager);
@@ -640,6 +686,8 @@ void AudacityProject::Cut(wxCommandEvent & event)
    FixScrollbars();
    mTrackPanel->Refresh(false);
 }
+
+
 
 void AudacityProject::Copy(wxCommandEvent & event)
 {
@@ -680,14 +728,14 @@ void AudacityProject::Paste(wxCommandEvent & event)
 
    while (n && c) {
       if (n->GetSelected()) {
-         if (msClipProject != this && c->GetKind()==VTrack::Wave)
-            ((WaveTrack *)c)->Lock();
-         
+         if (msClipProject != this && c->GetKind() == VTrack::Wave)
+            ((WaveTrack *) c)->Lock();
+
          n->Paste(tsel, c);
-         
-         if (msClipProject != this && c->GetKind()==VTrack::Wave)
-            ((WaveTrack *)c)->Unlock();
-         
+
+         if (msClipProject != this && c->GetKind() == VTrack::Wave)
+            ((WaveTrack *) c)->Unlock();
+
          c = clipIter.Next();
       }
 
@@ -704,6 +752,51 @@ void AudacityProject::Paste(wxCommandEvent & event)
    FixScrollbars();
    mTrackPanel->Refresh(false);
 }
+
+
+
+void AudacityProject::Trim(wxCommandEvent & event)
+{
+   if(mViewInfo.sel1 > mViewInfo.sel0) {
+      ClearClipboard();
+      TrackListIterator iter(mTracks);
+
+      VTrack *n = iter.First();
+      VTrack *dest = 0;
+      
+      double fileEnd = n->GetMaxLen();
+      double selLength = mViewInfo.sel1-mViewInfo.sel0;
+      
+      while (n) {
+         if (n->GetSelected()) {
+            n->Cut(mViewInfo.sel1, fileEnd, &dest);
+         }
+         n = iter.Next();
+      }
+
+      n=iter.First();
+      while (n) {
+         if (n->GetSelected()) {
+            n->Cut(0,mViewInfo.sel0, &dest);
+         }
+         n = iter.Next();
+      }
+      
+
+      
+      //      msClipLen = (mViewInfo.sel0);
+      //      msClipProject = this;
+      
+      mViewInfo.sel0=0;
+      mViewInfo.sel1=selLength;
+      
+      PushState(_("Trim file to selection"));
+      FixScrollbars();
+      mTrackPanel->Refresh(false);
+   }
+}
+   
+
 
 void AudacityProject::OnDelete(wxCommandEvent & event)
 {
@@ -723,9 +816,9 @@ void AudacityProject::OnSilence(wxCommandEvent & event)
       n = iter.Next();
    }
 
-   PushState(
-      wxString::Format(_("Silenced selected tracks for %.2f seconds at %.2f"),
-                       mViewInfo.sel1 - mViewInfo.sel0, mViewInfo.sel0));
+   PushState(wxString::
+             Format(_("Silenced selected tracks for %.2f seconds at %.2f"),
+                    mViewInfo.sel1 - mViewInfo.sel0, mViewInfo.sel0));
 
    mTrackPanel->Refresh(false);
 }
@@ -744,7 +837,7 @@ void AudacityProject::OnDuplicate(wxCommandEvent & event)
          n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          if (dest) {
             dest->Init(*n);
-            dest->SetOffset( wxMax(mViewInfo.sel0, n->GetOffset()) );
+            dest->SetOffset(wxMax(mViewInfo.sel0, n->GetOffset()));
             newTracks.Add(dest);
          }
       }
@@ -777,19 +870,18 @@ void AudacityProject::OnSplit(wxCommandEvent & event)
       if (n->GetSelected()) {
          double sel0 = mViewInfo.sel0;
          double sel1 = mViewInfo.sel1;
-         
+
          n->Copy(sel0, sel1, &dest);
          if (dest) {
             dest->Init(*n);
-            dest->SetOffset( wxMax(sel0, n->GetOffset()) );
+            dest->SetOffset(wxMax(sel0, n->GetOffset()));
 
             if (sel1 >= n->GetMaxLen())
                n->Clear(sel0, sel1);
             else if (sel0 <= n->GetOffset()) {
                n->Clear(sel0, sel1);
                n->SetOffset(sel1);
-            }
-            else
+            } else
                n->Silence(sel0, sel1);
 
             newTracks.Add(dest);
@@ -846,9 +938,9 @@ void AudacityProject::OnInsertSilence(wxCommandEvent & event)
       n = iter.Next();
    }
 
-   PushState(
-       wxString::Format(_("Inserted %.2f seconds of silence at %.2f"),
-                        mInsertSilenceAmount, mViewInfo.sel0));
+   PushState(wxString::
+             Format(_("Inserted %.2f seconds of silence at %.2f"),
+                    mInsertSilenceAmount, mViewInfo.sel0));
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
@@ -885,7 +977,7 @@ void AudacityProject::OnZoomIn(wxCommandEvent & event)
 void AudacityProject::OnZoomOut(wxCommandEvent & event)
 {
    mViewInfo.zoom /= 2.0;
-   if(mViewInfo.zoom <= 1.0)
+   if (mViewInfo.zoom <= 1.0)
       mViewInfo.zoom = 1.0;
    FixScrollbars();
    mTrackPanel->Refresh(false);
@@ -930,7 +1022,7 @@ void AudacityProject::OnPlotSpectrum(wxCommandEvent & event)
     * But we'll check just in case it does happen, to prevent
     * the crash that would result. */
 
-   if(!selt) {
+   if (!selt) {
       wxMessageBox(_("Please select a track first.\n"));
       return;
    }
@@ -968,13 +1060,81 @@ void AudacityProject::OnPlotSpectrum(wxCommandEvent & event)
    delete[]data_sample;
 }
 
-void AudacityProject::OnFloatPalette(wxCommandEvent & event)
+
+void AudacityProject::OnFloatControlToolBar(wxCommandEvent & event)
 {
-   if (gWindowedPalette)
-      HideWindowedPalette();
-   else
-      ShowWindowedPalette();
+   if (gControlToolBarStub->GetWindowedStatus()) {
+
+      gControlToolBarStub->HideWindowedToolBar();
+      gControlToolBarStub->LoadAll();
+   } else {
+      gControlToolBarStub->ShowWindowedToolBar();
+      gControlToolBarStub->UnloadAll();
+   }
 }
+
+
+void AudacityProject::OnLoadEditToolBar(wxCommandEvent & event)
+{
+   if (gEditToolBarStub) 
+      {  
+         if (gEditToolBarStub->GetLoadedStatus()) 
+            {
+
+               //the toolbar is "loaded", meaning its visible either in the window or floating
+
+               gEditToolBarStub->SetLoadedStatus(false);
+               gEditToolBarStub->HideWindowedToolBar();        
+               gEditToolBarStub->UnloadAll();
+               
+            }
+         else
+            {
+ 
+               //the toolbar is not "loaded", meaning that although the stub exists, 
+               //the toolbar is not visible either in a window or floating around
+               gEditToolBarStub->SetLoadedStatus(true);
+               
+               if(gEditToolBarStub->GetWindowedStatus())
+                  {
+                     //Make the floating toolbar appear
+                     gEditToolBarStub->ShowWindowedToolBar();
+                     gEditToolBarStub->LoadAll();
+                  }
+               else
+                  {
+                     //Make it appear in all the windows
+                     gEditToolBarStub->LoadAll();
+                  }
+               
+ 
+            }
+      }
+   else
+      {
+         gEditToolBarStub = new ToolBarStub(gParentWindow, EditToolBarID);
+         gEditToolBarStub->LoadAll();
+      }
+}
+
+
+void AudacityProject::OnFloatEditToolBar(wxCommandEvent & event)
+{
+   if (gEditToolBarStub ){
+
+      if (gEditToolBarStub->GetWindowedStatus()) {
+         
+         gEditToolBarStub->HideWindowedToolBar();
+         gEditToolBarStub->LoadAll();
+
+      } else {
+
+         gEditToolBarStub->ShowWindowedToolBar();
+         gEditToolBarStub->UnloadAll();
+      }
+   }
+}
+
 
 //
 // Project Menu
@@ -1039,8 +1199,8 @@ void AudacityProject::OnImportLabels(wxCommandEvent & event)
       mTracks->Add(newTrack);
       newTrack->SetSelected(true);
 
-      PushState(
-         wxString::Format(_("Imported labels from '%s'"), fileName.c_str()));
+      PushState(wxString::
+                Format(_("Imported labels from '%s'"), fileName.c_str()));
 
       FixScrollbars();
       mTrackPanel->Refresh(false);
@@ -1054,7 +1214,7 @@ void AudacityProject::OnImportMIDI(wxCommandEvent & event)
    wxString fileName = wxFileSelector(_("Select a MIDI file..."),
                                       path,     // Path
                                       "",       // Name
-                                      "",   // Extension
+                                      "",       // Extension
                                       _("All files (*.*)|*.*|"
                                         "MIDI files (*.mid)|*.mid|"
                                         "Allegro files (*.gro)|*.gro"),
@@ -1073,9 +1233,8 @@ void AudacityProject::OnImportMIDI(wxCommandEvent & event)
          mTracks->Add(newTrack);
          newTrack->SetSelected(true);
 
-         PushState(
-             wxString::Format(_("Imported MIDI from '%s'"),
-                              fileName.c_str()));
+         PushState(wxString::Format(_("Imported MIDI from '%s'"),
+                                    fileName.c_str()));
 
          FixScrollbars();
          mTrackPanel->Refresh(false);
@@ -1117,9 +1276,8 @@ void AudacityProject::OnImportRaw(wxCommandEvent & event)
             right->SetSelected(true);
          }
 
-         PushState(
-             wxString::Format(_("Imported raw audio from '%s'"),
-                              fileName.c_str()));
+         PushState(wxString::Format(_("Imported raw audio from '%s'"),
+                                    fileName.c_str()));
 
          FixScrollbars();
          mTrackPanel->Refresh(false);

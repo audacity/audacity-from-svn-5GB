@@ -165,7 +165,7 @@ ToolBar *ToolBarStub::GetToolBar()
 /// Methods for ToolBar
 ////////////////////////////////////////////////////////////
 
-
+IMPLEMENT_DYNAMIC_CLASS(ToolBar, wxWindow)
 // Constructor for ToolBar. Should be used by children toolbars
 // to instantiate the initial parameters of the toolbar.
 ToolBar::ToolBar(wxWindow * parent, wxWindowID id, const wxPoint & pos, const wxSize & size):

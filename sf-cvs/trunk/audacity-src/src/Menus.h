@@ -29,7 +29,7 @@ wxString mExportSelectionString;
 wxString mExportLossyString;
 wxString mExportSelectionLossyString;
 
-int      mMenusDirtyCheck;
+int mMenusDirtyCheck;
 
 bool mLastNonZeroRegionSelected;
 
@@ -91,6 +91,7 @@ void UndoHistory(wxCommandEvent & event);
 void Cut(wxCommandEvent & event);
 void Copy(wxCommandEvent & event);
 void Paste(wxCommandEvent & event);
+void Trim(wxCommandEvent & event);
 
 void OnDelete(wxCommandEvent & event);
 void OnSilence(wxCommandEvent & event);
@@ -114,7 +115,9 @@ void ZoomSel();
 
 void OnPlotSpectrum(wxCommandEvent & event);
 
-void OnFloatPalette(wxCommandEvent & event);
+void OnFloatControlToolBar(wxCommandEvent & event);
+void OnLoadEditToolBar(wxCommandEvent & event);
+void OnFloatEditToolBar(wxCommandEvent & event);
 
         // Project Menu
 

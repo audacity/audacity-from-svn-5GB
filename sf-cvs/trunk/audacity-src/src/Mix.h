@@ -12,10 +12,10 @@
 #define __AUDACITY_MIX__
 
 #include <wx/string.h>
-
 #include "WaveTrack.h"
+#include "ControlToolBar.h"
 
-class APalette;
+class ControlToolBar;
 class DirManager;
 
 bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate);
@@ -25,8 +25,7 @@ class Mixer {
    Mixer(int numChannels, int bufferSize, bool interleaved, double rate);
    virtual ~ Mixer();
 
-   void UseVolumeSlider(APalette * palette);
-
+   void UseVolumeSlider(ControlToolBar * c);
    void Clear();
    void MixLeft(WaveTrack * src, double t0, double t1);
    void MixRight(WaveTrack * src, double t0, double t1);
@@ -50,7 +49,7 @@ class Mixer {
    int mInterleavedBufferSize;
    bool mInterleaved;
    bool mUseVolumeSlider;
-   APalette *mAPalette;
+   ControlToolBar *mControlToolBar;
    sampleType **mBuffer;
    double *mEnvValues;
    double mRate;
