@@ -427,8 +427,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    //Modify toolbar-specific Menus
 
    if (gEditToolBarStub) {
-      wxMenuItemBase *load = mViewMenu->FindItem(LoadEditToolBarID);
-      wxMenuItemBase *dock = mViewMenu->FindItem(FloatEditToolBarID);
+      wxMenuItemBase *load = mViewMenu->FindItem(LoadEditToolBarID),
+                     *dock = mViewMenu->FindItem(FloatEditToolBarID);
 
       // Loaded or unloaded?
       if (gEditToolBarStub->GetLoadedStatus()) {
@@ -494,7 +494,6 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    //Now, do the same thing for the (possibly invisible) floating toolbars
    gControlToolBarStub->GetToolBar()->EnableDisableButtons(sumFlags);
    gEditToolBarStub->GetToolBar()->EnableDisableButtons(sumFlags);
-
 }
 
 //

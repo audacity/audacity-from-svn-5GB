@@ -11,6 +11,8 @@
 
 **********************************************************************/
 
+#include "EditToolBar.h"
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -35,7 +37,6 @@
 #include "widgets/AButton.h"
 #include "widgets/ASlider.h"
 #include "ToolBar.h"
-#include "EditToolBar.h"
 #include "AudioIO.h"
 #include "Project.h"
 
