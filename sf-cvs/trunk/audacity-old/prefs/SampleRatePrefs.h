@@ -25,7 +25,7 @@ class SampleRatePrefs:public PrefsPanel {
    bool Apply();
 
  private:
-   wxRadioButton *mSampleRates[5];
+   wxRadioButton *mSampleRates[6];
 
 };
 

@@ -31,10 +31,13 @@ class DirectoriesPrefs:public PrefsPanel {
    wxStaticBox *mEnclosingBox;
 
    wxStaticText *mTempDirLabel;
-   wxStaticText *mTempDir;
+   wxStaticText *mTempDirText;
    wxButton *mChange;
    wxStaticText *mFreeSpaceLabel;
    wxStaticText *mFreeSpace;
+   
+   wxString      mOldTempDir;
+   wxString      mTempDir;
 
  public:
     DECLARE_EVENT_TABLE()

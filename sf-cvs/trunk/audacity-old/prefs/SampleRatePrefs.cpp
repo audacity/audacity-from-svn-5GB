@@ -31,6 +31,8 @@ wxString stringRates[] = { "8000",
    "48000"
 };
 
+// Don't forget to change the size of the mSampleRates array in
+// SampleRatePrefs.h when you change this
 #define NUM_RATES 6
 
 SampleRatePrefs::SampleRatePrefs(wxWindow * parent):
@@ -39,7 +41,7 @@ PrefsPanel(parent)
    int rate =
        gPrefs->Read("/SamplingRate/DefaultProjectSampleRate", 44100);
 
-   int pos = 3;     // Fall back to 44100 if it doesn't match anything else
+   int pos = 4;     // Fall back to 44100 if it doesn't match anything else
    for (int i = 0; i < NUM_RATES; i++)
       if (rate == rates[i]) {
          pos = i;
@@ -75,7 +77,7 @@ PrefsPanel(parent)
    SetAutoLayout(true);
    topSizer->Fit(this);
    topSizer->SetSizeHints(this);
-   SetSizer(topSizer); 
+   SetSizer(topSizer);
 }
 
 bool SampleRatePrefs::Apply()
@@ -100,8 +102,11 @@ bool SampleRatePrefs::Apply()
 
 SampleRatePrefs::~SampleRatePrefs()
 {
-   for(int i = 0; i < NUM_RATES; i++)
-      delete mSampleRates[i];
+   // These don't need to be deleted since they're part of the
+   // sizer hierarchy
+   //
+   //for(int i = 0; i < NUM_RATES; i++)
+   //   delete mSampleRates[i];
 }
 
 

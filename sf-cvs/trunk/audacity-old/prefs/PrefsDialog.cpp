@@ -129,7 +129,7 @@ void PrefsDialog::OnOK(wxCommandEvent & event)
 
 PrefsDialog::~PrefsDialog()
 {
-   delete mCategories;
-   delete mOK;
-   delete mCancel;
+   //delete mCategories;
+   //delete mOK;
+   //delete mCancel;
 }

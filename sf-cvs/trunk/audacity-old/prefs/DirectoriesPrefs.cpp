@@ -32,7 +32,8 @@ END_EVENT_TABLE()
 DirectoriesPrefs::DirectoriesPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
-   wxString dir = gPrefs->Read("/Directories/TempDir", "");
+   mTempDir = gPrefs->Read("/Directories/TempDir", "");
+   mOldTempDir = mTempDir;
 
    topSizer = new wxStaticBoxSizer(
       new wxStaticBox(this, -1, "Directories"), wxVERTICAL );
@@ -47,8 +48,8 @@ PrefsPanel(parent)
          this, -1, "Location:", wxDefaultPosition,
          wxDefaultSize, wxALIGN_RIGHT );
 
-      mTempDir = new wxStaticText(
-         this, -1, dir,
+      mTempDirText = new wxStaticText(
+         this, -1, mTempDir,
          wxDefaultPosition, wxDefaultSize, 0 );
 
       mFreeSpaceLabel = new wxStaticText(
@@ -56,7 +57,7 @@ PrefsPanel(parent)
          wxDefaultPosition, wxDefaultSize, 0 );
 
       mFreeSpace = new wxStaticText(
-         this, -1, FormatSize(GetFreeDiskSpace((char *) (const char *) dir)),
+         this, -1, FormatSize(GetFreeDiskSpace((char *) (const char *) mTempDir)),
          wxDefaultPosition, wxDefaultSize, 0 );
 
       mChange = new wxButton(
@@ -64,7 +65,7 @@ PrefsPanel(parent)
          wxDefaultPosition, wxDefaultSize, 0 );
         
       tempDirGridSizer->Add( mTempDirLabel, 0, wxALIGN_LEFT|wxALL, 2 );
-      tempDirGridSizer->Add( mTempDir, 0, wxGROW|wxALL, 2 );
+      tempDirGridSizer->Add( mTempDirText, 0, wxGROW|wxALL, 2 );
       tempDirGridSizer->Add( mFreeSpaceLabel, 0, wxALIGN_LEFT|wxALL, 2 );
       tempDirGridSizer->Add( mFreeSpace, 0, wxGROW|wxALL, 2 );
       tempDirSizer->Add( tempDirGridSizer, 0, wxGROW|wxALL, 2 );
@@ -83,20 +84,19 @@ PrefsPanel(parent)
 
 void DirectoriesPrefs::SetTempDir(wxCommandEvent & event)
 {
-   wxString dir;
    wxDirDialog dialog(this,
-                      "Select Temporary Directory", mTempDir->GetLabel());
+                      "Select Temporary Directory", mTempDir);
 
    if (dialog.ShowModal() == wxID_CANCEL)
       return;
 
-   dir = dialog.GetPath();
+   mTempDir = dialog.GetPath();
 
    /* TODO: make sure directory is writable */
 
-   mTempDir->SetLabel(dir);
+   mTempDirText->SetLabel(mTempDir);
    mFreeSpace->
-       SetLabel(FormatSize(GetFreeDiskSpace((char *) (const char *) dir)));
+       SetLabel(FormatSize(GetFreeDiskSpace((char *) (const char *) mTempDir)));
 }
 
 
@@ -124,13 +124,9 @@ wxString DirectoriesPrefs::FormatSize(long size)
 
 bool DirectoriesPrefs::Apply()
 {
-   wxString oldDir;
+   gPrefs->Write("/Directories/TempDir", mTempDir);
 
-   gPrefs->SetPath("/Directories");
-   oldDir = gPrefs->Read("TempDir", "none");
-   gPrefs->Write("TempDir", mTempDir->GetLabel());
-
-   if (mTempDir->GetLabel() != oldDir)
+   if (mTempDir != mOldTempDir)
       wxMessageBox
           ("Changes to temporary directory will not take effect until Audacity is restarted");
 
@@ -139,9 +135,11 @@ bool DirectoriesPrefs::Apply()
 
 DirectoriesPrefs::~DirectoriesPrefs()
 {
+/*
    delete mTempDirLabel;
    delete mTempDir;
    delete mChange;
    delete mFreeSpaceLabel;
    delete mFreeSpace;
+*/
 }

@@ -153,9 +153,11 @@ bool FileFormatPrefs::Apply()
 
 FileFormatPrefs::~FileFormatPrefs()
 {
+/*
    delete mCopyOrEdit[0];
    delete mCopyOrEdit[1];
 
    for(int i = 0; i < mNumFormats; i++)
       delete mDefaultExportFormats[i];
+*/
 }
