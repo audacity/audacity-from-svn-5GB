@@ -237,7 +237,7 @@ static int file_close(snd_type snd)
 #define file_reset success_fn
 
 
-static long mem_reset(snd_type snd)
+static int mem_reset(snd_type snd)
 {
     snd->u.mem.buffer_pos = 0;
     if (snd->write_flag != SND_READ) {

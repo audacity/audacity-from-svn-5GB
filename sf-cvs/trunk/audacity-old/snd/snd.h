@@ -144,7 +144,7 @@ typedef long (*snd_read_fn)(struct snd_struct *snd, void *buffer, long length);
 typedef long (*snd_write_fn)(struct snd_struct *snd, void *buffer, long length);
 typedef int (*snd_open_fn)(struct snd_struct *snd, long *flags);
 typedef int (*snd_close_fn)(struct snd_struct *snd);
-typedef int (*snd_reset_fn)(struct snd_struct *snd);
+//typedef int (*snd_reset_fn)(struct snd_struct *snd);
 typedef int (*snd_flush_fn)(struct snd_struct *snd);
 
 typedef struct {

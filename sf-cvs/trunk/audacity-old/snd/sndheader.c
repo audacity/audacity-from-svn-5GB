@@ -622,10 +622,10 @@ long snd_read_header(snd_type snd, long *flags)
 		    int len;
 		    markers[i].id = readshort(snd->u.file.file, &read_in);
 		    markers[i].position = readlong(snd->u.file.file, &read_in);
-		    if (snd_file_read(snd->u.file.file, label, 1) != 1) 
+		    if (snd_file_read(snd->u.file.file, (char *)label, (long)1) != 1) 
 			return fail(snd, "problem reading AIFF file\n");
 		    len = label[0] | 1;
-		    if (snd_file_read(snd->u.file.file, label, len) != len)
+		    if (snd_file_read(snd->u.file.file, (char *)label, (long)len) != len)
 			return fail(snd, "problam reading AIFF file\n");
 		}
 	    } else if (strncmp(buf, "INST", 4) == 0) {
@@ -1058,7 +1058,7 @@ void write_sndheader_finish(snd_type snd)
 double read_ieee_extended(snd_type snd)
 {
     unsigned char buf[10];
-    if (snd_file_read(snd->u.file.file, buf, 10) != 10)
+    if (snd_file_read(snd->u.file.file, (char *)buf, (long)10) != 10)
 	fail(snd, "EOF while reading IEEE extended number");
     return ConvertFromIeeeExtended(buf);
 }

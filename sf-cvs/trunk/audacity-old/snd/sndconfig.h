@@ -65,4 +65,9 @@ void snd_free(void *a);
   #endif
   #include "sndwin32.h"
 
+#elif defined(macintosh) || defined(__WXMAC__)
+  #ifndef MAC
+    #define MAC
+  #endif
+  #include "sndmac.h"
 #endif

@@ -28,6 +28,6 @@ int audio_flush(snd_type snd);
 #endif
 
 #ifdef LINUX
-#include "audiolinux.h"
+//#include "audiolinux.h"
 #endif
 
