@@ -50,7 +50,11 @@ bool CommandsWriter::WriteXML()
       if(!currentLine.Cmp("//EOF//"))
          break;
 
+#ifdef __WXMSW__
+      fprintf(fp, "%s\r\n", currentLine.c_str());
+#else
       fprintf(fp, "%s\n", currentLine.c_str());
+#endif
    }
 
    fclose(fp);
