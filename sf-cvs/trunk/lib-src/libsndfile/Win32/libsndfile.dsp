@@ -242,6 +242,37 @@ SOURCE=..\src\sfendian.h
 # Begin Source File
 
 SOURCE=..\src\sndfile.h
+
+!IF  "$(CFG)" == "libsndfile - Win32 Release"
+
+# Begin Custom Build - Using Windows versions of libsndfile headers
+InputDir=\audacity\audacity\lib-src\libsndfile\src
+IntDir=.\Release
+InputPath=..\src\sndfile.h
+
+"$(IntDir)\tempconfig.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy sndfile.h "$(InputPath)" 
+	copy config.h "$(InputDir)\config.h" 
+	copy config.h "$(IntDir)\tempconfig.h" 
+	
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "libsndfile - Win32 Debug"
+
+# Begin Custom Build - Using Windows versions of libsndfile headers
+InputDir=\audacity\audacity\lib-src\libsndfile\src
+IntDir=.\Debug
+InputPath=..\src\sndfile.h
+
+"$(IntDir)\tempconfig.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy sndfile.h "$(InputPath)" 
+	copy config.h "$(InputDir)\config.h" 
+	copy config.h "$(IntDir)\tempconfig.h" 
+	
+# End Custom Build
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
