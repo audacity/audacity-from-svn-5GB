@@ -90,25 +90,29 @@ void QuitAudacity(bool bForce)
    // in a Save Changes dialog, don't continue.
    // BG: unless force is true
 
-   // BG: Store size of Window 0.
-   wxSize wndSize = gAudacityProjects[0]->GetSize();
-   bool wndMaximized = gAudacityProjects[0]->IsMaximized();
+   // BG: Are there any projects open?
+   if(!gAudacityProjects.IsEmpty())
+   {
+      // BG: Store size of Window 0.
+      wxSize wndSize = gAudacityProjects[0]->GetSize();
+      bool wndMaximized = gAudacityProjects[0]->IsMaximized();
 
-   size_t len = gAudacityProjects.Count();
-   for (size_t i = 0; i < len; i++) {
-      if (!gAudacityProjects[i]->Close())
-      {
-         if(!bForce)
+      size_t len = gAudacityProjects.Count();
+      for (size_t i = 0; i < len; i++) {
+         if (!gAudacityProjects[i]->Close())
          {
-            return;
+            if(!bForce)
+            {
+               return;
+            }
          }
       }
-   }
 
-   // BG: Save Window position
-   gPrefs->Write("/Window/Width", wndSize.GetWidth());
-   gPrefs->Write("/Window/Height", wndSize.GetHeight());
-   gPrefs->Write("/Window/Maximized", wndMaximized);
+      // BG: Save Window position
+      gPrefs->Write("/Window/Width", wndSize.GetWidth());
+      gPrefs->Write("/Window/Height", wndSize.GetHeight());
+      gPrefs->Write("/Window/Maximized", wndMaximized);
+   }
 
    if (gFreqWindow)
       gFreqWindow->Destroy();
@@ -592,6 +596,7 @@ void AudacityApp::FindFilesInPathList(wxString pattern,
 //BG: Filters all events before they are processed
 int AudacityApp::FilterEvent(wxEvent& event)
 {
+   //Send key events to the commands code
    if(event.GetEventType() == wxEVT_KEY_DOWN)
       return (this->*((SPECIALKEYEVENT) (&AudacityApp::OnAllKeys)))
          ((wxKeyEvent&)event);
