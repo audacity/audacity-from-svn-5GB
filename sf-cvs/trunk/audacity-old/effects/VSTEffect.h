@@ -32,6 +32,7 @@ public:
   virtual void End();
 
 private:
+  bool isOpened;
   wxString pluginName;
   AEffect *aEffect;
 

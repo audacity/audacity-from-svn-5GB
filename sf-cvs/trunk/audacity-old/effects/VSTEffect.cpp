@@ -30,6 +30,8 @@ VSTEffect::VSTEffect(wxString pluginName, AEffect *aEffect)
     buffer = NULL;
     fInBuffer = NULL;
     fOutBuffer = NULL;
+    
+    isOpened = false;
 }
   
 wxString VSTEffect::GetEffectName()
@@ -39,7 +41,10 @@ wxString VSTEffect::GetEffectName()
 
 bool VSTEffect::Begin(wxWindow *parent)
 {
-    aEffect->dispatcher(aEffect, effOpen, 0, 0, NULL, 0.0);
+    if (!isOpened) {
+      aEffect->dispatcher(aEffect, effOpen, 0, 0, NULL, 0.0);
+      isOpened = true;
+    }
 
     // Try to figure out how many parameters it takes by seeing how
     // many parameters have names
@@ -69,7 +74,7 @@ bool VSTEffect::Begin(wxWindow *parent)
 
     inputs = aEffect->numInputs;
     outputs = aEffect->numOutputs;
-
+    
     mBlockSize = 0;
 
     return true;
@@ -96,11 +101,21 @@ bool VSTEffect::DoIt(
 
     aEffect->dispatcher(aEffect, effSetSampleRate, 0, 0, NULL, (float)t->rate);
     aEffect->dispatcher(aEffect, effSetBlockSize, 0, mBlockSize, NULL, 0.0);
-
-    sampleCount s = start;
     
-    int i, j;
+    // Some plug-ins save a lot of state.  We attempt to flush that
+    // here by feeding it five seconds of zeroes before each track.
+    
+	int i, j, c;
+	for(i=0; i<inputs; i++) {
+	  for(j=0; j<mBlockSize; j++)
+	    fInBuffer[i][j] = 0.0;
+	}
+	for(c=0; c<5; c++)
+      aEffect->processReplacing(aEffect, fInBuffer, fOutBuffer, mBlockSize);    
 
+    // Actually perform the effect here
+
+    sampleCount s = start;    
     while(len) {
         int block = mBlockSize;
         if (block > len)
@@ -137,10 +152,6 @@ void VSTEffect::End()
             delete fOutBuffer[i];
         delete[] fInBuffer;
         delete[] fOutBuffer; 
-
-        #ifndef __WXMSW__
-        aEffect->dispatcher(aEffect, effClose, 0, 0, NULL, 0.0);
-        #endif
 
     }
     buffer = NULL;
