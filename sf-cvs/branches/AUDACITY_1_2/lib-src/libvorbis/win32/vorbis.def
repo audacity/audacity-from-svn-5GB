@@ -1,5 +1,5 @@
 ;
-; $Id: vorbis.def,v 1.4 2002-10-31 07:00:48 dmazzoni Exp $
+; $Id: vorbis.def,v 1.4.4.1 2004-07-30 06:57:31 mbrubeck Exp $
 ; 
 LIBRARY
 EXPORTS
