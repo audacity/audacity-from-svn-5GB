@@ -95,16 +95,13 @@ clean:
 # We stick object files in separate directories for convenience
 #
 
-dirs: obj obj/snd obj/mp3 obj/effects
+dirs: obj obj/snd obj/effects
 
 obj:
 	mkdir obj
 
 obj/snd:
 	mkdir obj/snd
-
-obj/mp3:
-	mkdir obj/mp3
 
 obj/effects:
 	mkdir obj/effects
