@@ -17,9 +17,6 @@
 
 #define descriptorFnName "ladspa_descriptor"
 
-#include <wx/defs.h>
-#include <wx/wx.h>
-
 // For Mac and Linux, use dlopen
 #if defined(__WXMAC__) || defined(__WXGTK__)
 #include <dlfcn.h>
@@ -62,6 +59,7 @@ void LoadLadspaEffect(wxString fname)
       dlsym(libHandle, descriptorFnName);
 
 #else
+   /*
    // The following code uses the wxWindows DLL class, which does
    // not allow us to control the flags passed to dlopen().  This
    // leads to potential segfault bugs when plugins have conflicting
@@ -69,12 +67,14 @@ void LoadLadspaEffect(wxString fname)
    // dlopen() by hand under WXGTK, above...
 
    wxDllType libHandle = NULL;
-   
-   /*
+     
    libHandle = wxDllLoader::LoadLibrary(FILENAME(fname));
    mainFn = (LADSPA_Descriptor_Function)
       wxDllLoader::GetSymbol(libHandle, descriptorFnName);
-	  */
+      */
+   wxDynamicLibrary* pDLL = new wxDynamicLibrary();
+   if (pDLL && pDLL->Load(FILENAME(fname)))
+      mainFn = (LADSPA_Descriptor_Function)(pDLL->GetSymbol(descriptorFnName));
 #endif
 
    if (mainFn) {
