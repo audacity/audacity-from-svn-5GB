@@ -180,7 +180,6 @@ CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cflags`"
 if [[ "$host_os" = "darwin5.3" ]] ; then
 	dnl Mac OS X CoreAudio configuration
 
-	SUBDIRS="$SUBDIRS lib-src/portaudio/pa_mac_core"
 	BUILDLIBS="$BUILDLIBS portaudio/pa_mac_core/portaudio.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_mac_core/portaudio.a"
 
@@ -193,7 +192,6 @@ if [[ "$host_os" = "darwin5.3" ]] ; then
 else
 	dnl Unix OSS configuration
 
-	SUBDIRS="$SUBDIRS lib-src/portaudio/pa_unix_oss"
 	BUILDLIBS="$BUILDLIBS portaudio/pa_unix_oss/portaudio.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
 
@@ -209,7 +207,8 @@ AC_TYPE_SIZE_T
 dnl Checks for library functions.
 
 AC_CONFIG_HEADER(src/configunix.h:src/configtemplate.h)
-AC_CONFIG_FILES([Makefile src/Makefile lib-src/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile lib-src/Makefile \
+					  lib-src/allegro/Makefile])
 
 AC_CONFIG_SUBDIRS([$SUBDIRS])
 AC_OUTPUT
