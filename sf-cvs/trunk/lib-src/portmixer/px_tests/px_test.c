@@ -1,21 +1,48 @@
 #include <stdio.h>
 
 #include "portmixer.h"
+#include "portaudio.h"
+
+static int DummyCallbackFunc(void *inputBuffer, void *outputBuffer,
+                             unsigned long framesPerBuffer,
+                             PaTimestamp outTime, void *userData)
+{
+   return 0;
+}
 
 int main(int argc, char **argv)
 {
    int num_mixers;
    int i;
+   PaError          error;
+   PortAudioStream *stream;
+   int             recDeviceNum;
+   int             playDeviceNum;
+   int             inputChannels = 2;
 
-   num_mixers = Px_GetNumMixers(0);
+   recDeviceNum = Pa_GetDefaultInputDeviceID();
+   playDeviceNum = Pa_GetDefaultOutputDeviceID();
+
+   error = Pa_OpenStream(&stream, recDeviceNum, inputChannels, paFloat32, NULL,
+                         paNoDevice, 0, paFloat32, NULL,
+                         44101, 512, 1, paClipOff | paDitherOff,
+                         DummyCallbackFunc, NULL);
+
+   if (error) {
+      printf("PortAudio error %d: %s\n", error,
+             Pa_GetErrorText(error));
+      return -1;
+   }
+   
+   num_mixers = Px_GetNumMixers(stream);
    printf("Number of mixers: %d\n", num_mixers);
    for(i=0; i<num_mixers; i++) {
       PxMixer *mixer;
       int num;
       int j;
 
-      printf("Mixer %d: %s\n", i, Px_GetMixerName(0, i));
-      mixer = Px_OpenMixer(0, i);
+      printf("Mixer %d: %s\n", i, Px_GetMixerName(stream, i));
+      mixer = Px_OpenMixer(stream, i);
       if (!mixer) {
          printf("  Could not open mixer!\n");
          continue;
@@ -46,6 +73,8 @@ int main(int argc, char **argv)
 
       Px_CloseMixer(mixer);
    }
+
+   Pa_CloseStream(stream);
 
    return 0;
 }
