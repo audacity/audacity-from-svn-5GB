@@ -401,14 +401,17 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
   mid.height -= 2;
   int ctr = r.y + (r.height/2);
   
+  int *heights = NULL;
+
   if (mid.width > 0) {
     dc.SetPen(*wxRED_PEN);	    
     dc.DrawLine(mid.x, ctr, mid.x + mid.width, ctr);
 
     PrepareCacheMinMax(t0, pps, mid.width);
+    
+    heights = new int[mid.width];
   }
 
-  int *heights = new int[mid.width];
   double t = t0;
   int x;
   for(x=0; x<mid.width; x++) {
@@ -470,7 +473,8 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
 	}
   }
 
-  delete[] heights;
+  if (heights)
+    delete[] heights;
 
   // Draw arrows on the left side if the track extends to the left of the
   // beginning of time.  :)
