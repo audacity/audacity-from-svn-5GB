@@ -1,11 +1,9 @@
-
 <?php BoxTop("Gentoo Linux"); ?>
 
 <p>
-<a href="http://www.gentoo.org/">Gentoo Linux</a> currently has audacity version 1.1.1-3 in it's portage system as the "stable" release.
-To install audacity...
-<p>
-<xmp>$ emerge audacity</xmp>
+Audacity is in the <a href="http://www.gentoo.org/">Gentoo Linux</a> Portage
+system.  To install Audacity, run:
+<kbd>emerge audacity</kbd>
 </p>
 
 <p>
