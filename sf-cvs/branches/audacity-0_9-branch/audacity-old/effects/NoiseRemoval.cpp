@@ -272,7 +272,7 @@ void EffectNoiseRemoval::RemoveNoise(sampleCount len,
    outi[0] *= smoothing[0];
    outr[half] *= smoothing[half];
    outi[half] *= smoothing[half];
-   for(i=0; i<=half; i++) {
+   for(i=1; i<half; i++) {
       int j = len - i;
       float smooth = smoothing[i];
 
