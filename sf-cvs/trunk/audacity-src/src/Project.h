@@ -118,6 +118,7 @@ class AudacityProject:public wxFrame,
 
    virtual bool ProcessEvent(wxEvent & event);
 
+   void OnKey(wxKeyEvent& event);
    void OnActivate(wxActivateEvent & event);
    void OnDropFiles(wxDropFilesEvent & event);
    void OnPaint(wxPaintEvent & event);
