@@ -82,6 +82,7 @@ const int sbarExtraLen = 0;
 #include "../images/AudacityLogo.xpm"
 #endif
 
+
 int gAudacityDocNum = 0;
 AProjectArray gAudacityProjects;
 AudacityProject *gActiveProject;
@@ -347,6 +348,8 @@ AudacityProject::~AudacityProject()
    //Do this from the bottom, to avoid too much popping forward in the array
    // that would be obtained if you keep deleting the 0th item from the front
 
+
+
    for (i = mToolBarArray.GetCount() - 1; i >= 0; i--) 
       {
 
@@ -354,15 +357,18 @@ AudacityProject::~AudacityProject()
          mToolBarArray.RemoveAt(i);
       }
    mToolBarArray.Clear();
+   WX_CLEAR_ARRAY(mToolBarArray)
 
 
 
    delete mTags;
    mTags = NULL;
 
+
    mTracks->Clear(true);
    delete mTracks;
    mTracks = NULL;
+
 
    WX_CLEAR_ARRAY(mCommandDesc)
    mCommandDesc.Clear();
@@ -386,18 +392,26 @@ AudacityProject::~AudacityProject()
    }
    mCommandAssignedKey.Clear();
 
+
+
    gAudacityProjects.Remove(this);
 
    if (gAudacityProjects.IsEmpty())
+      {
       QuitAudacity();
+      }
+   else
+      {
 
-   if (gActiveProject == this) {
-      // Find a new active project
-      if (gAudacityProjects.GetCount() > 0)
-         gActiveProject = gAudacityProjects[0];
-      else
-         gActiveProject = NULL;
-   }
+         if (gActiveProject == this) {
+            // Find a new active project
+            if (gAudacityProjects.GetCount() > 0)
+               gActiveProject = gAudacityProjects[0];
+            else
+               gActiveProject = NULL;
+         }
+
+      }
 }
 
 void AudacityProject::RedrawProject()
@@ -919,7 +933,9 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
    HandleResize();
 }
 
-
+//
+// To make menu items consistent with the state of 
+// audacity, put code here and call this function at appropriate times.
 void AudacityProject::MakeToolBarMenuEntriesCorrect ()
 {
 
@@ -933,16 +949,16 @@ void AudacityProject::MakeToolBarMenuEntriesCorrect ()
                   {
                  
                      //Loaded/windowed
-                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Unload Editing Toolbar"));
-                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Unfloat Editing Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Unload Edit Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Unfloat Edit Toolbar"));
                      ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->Enable(true);                 
                   }
                else
                   {
                   
                      //Loaded/unwindowed
-                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Unload Editing Toolbar"));
-                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Float Editing Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Unload Edit Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Float Edit Toolbar"));
                      ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->Enable(true);                 
                   }
             }
@@ -953,16 +969,16 @@ void AudacityProject::MakeToolBarMenuEntriesCorrect ()
                   {
                    
                      //Unloaded/windowed
-                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Load Editing Toolbar"));
-                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Unfloat Editing Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Load Edit Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Unfloat Edit Toolbar"));
                      ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->Enable(false);                 
                   }
                else
                   {
                   
                      //Unloaded/unwindowed
-                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Load Editing Toolbar"));
-                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Float Editing Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Load Edit Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Float Edit Toolbar"));
                      ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->Enable(false);                 
                      
                   }
