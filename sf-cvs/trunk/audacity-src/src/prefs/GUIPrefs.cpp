@@ -52,7 +52,7 @@ PrefsPanel(parent)
    gPrefs->Read("/GUI/EnableEditToolBar", &editToolBar, true);
    gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, true);
    gPrefs->Read("/GUI/EnableMeterToolBar", &meterToolBar, true);
-   gPrefs->Read("/GUI/EnableTranscriptionToolBar", &transcriptionToolBar, true);
+   gPrefs->Read("/GUI/EnableTranscriptionToolBar", &transcriptionToolBar, false);
    gPrefs->Read("/GUI/AlwaysEnablePause", &alwaysEnablePause, false);
 
    // Code duplication warning: this default is repeated in Project.cpp
