@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: single-block PCM analysis mode dispatch
- last mod: $Id: analysis.c,v 1.2 2002-10-26 20:28:17 dmazzoni Exp $
+ last mod: $Id: analysis.c,v 1.3 2002-10-27 05:57:05 dmazzoni Exp $
 
  ********************************************************************/
 

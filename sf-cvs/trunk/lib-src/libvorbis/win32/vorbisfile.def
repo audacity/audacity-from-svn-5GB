@@ -1,7 +1,7 @@
 ;
 ; vorbisfile.def
 ;
-; last modified: $Id: vorbisfile.def,v 1.2 2002-10-26 20:28:19 dmazzoni Exp $
+; last modified: $Id: vorbisfile.def,v 1.3 2002-10-27 05:57:06 dmazzoni Exp $
 ;
 LIBRARY
 EXPORTS
