@@ -9,6 +9,31 @@
   This just acts as an interface to LAME. A Lame dynamic library must
   be present
 
+  The difficulty in our approach is that we are attempting to use LAME
+  in a way it was not designed to be used. LAME's API is reasonably
+  consistant, so if we were linking directly against it we could expect
+  this code to work with a variety of different LAME versions. However,
+  the data structures change from version to version, and so linking
+  with one version of the header and dynamically linking against a
+  different version of the dynamic library will not work correctly.
+
+  The solution is to find the lowest common denominator between versions.
+  The bare minimum of functionality we must use is this:
+      1. Initialize the library.
+      2. Set, at minimum, the following global options:
+          i.  input sample rate
+          ii. input channels
+      3. Encode the stream
+      4. Call the finishing routine
+
+  Just so that it's clear that we're NOT free to use whatever features
+  of LAME we like, I'm not including lame.h, but instead enumerating
+  here the extent of functions and structures that we can rely on being
+  able to import and use from a dynamic library.
+
+  For the record, we aim to support LAME 3.70 on. Since LAME 3.70 was
+  released in April of 2000, that should be plenty.
+
 **********************************************************************/
 
 #include <wx/dynlib.h>
@@ -24,17 +49,58 @@
 #include "WaveTrack.h"
 #include "ExportMP3.h"
 
-#include "lame.h"
+/* ---------------------------------------------------------------------------*/
 
-typedef void (*lame_initTYPE) (lame_global_flags *);
-typedef int (*lame_encode_buffer_interleavedTYPE) (lame_global_flags *,
-                                                   short int[], int,
-                                                   char *, int);
-typedef int (*lame_encode_bufferTYPE) (lame_global_flags *,
-                                                   short int[], short int[], int,
-                                                   char *, int);
-typedef int (*lame_encode_finishTYPE) (lame_global_flags *, char *, int);
-typedef int (*lame_versionTYPE) (lame_global_flags *, char *);
+/* What follows is the subset of LAME functionality we can count on. */
+
+typedef struct {
+   unsigned long num_samples;
+   int num_channels;
+   int in_samplerate;
+
+   /* The above are the ONLY members of this structure we can reliably read or
+    * write to. */
+
+   int space[1000];  /* to liberally accomadate for the real size of the struct */
+} lame_global_flags;
+
+/* All functions types are suffexed with _t because gcc won't let you have a type
+ * and a variable of the same name */
+
+/* NOTE: Lame >= 3.88 renames this to lame_init_old, depricating it in favor of a
+ * lame_global_flags *lame_init(void). However, we'll still call the old one for
+ * consistancy's sake. Please don't break this again, LAME authors... */
+typedef void lame_init_t(lame_global_flags *);
+
+/* NOTE: Same deal with this one: >= 3.88 changes it to:
+ * const char *get_lame_version(), but this time they don't even leave us a
+ * compatibility version! aggh! */
+typedef void lame_version_t(lame_global_flags *, char *);
+typedef const char *get_lame_version_t();
+
+typedef void lame_init_params_t(lame_global_flags*);
+
+typedef int lame_encode_buffer_t (
+      lame_global_flags* gf,
+      const short int    buffer_l [],
+      const short int    buffer_r [],
+      const int          nsamples,
+      unsigned char *    mp3buf,
+      const int          mp3buf_size );
+
+typedef int lame_encode_buffer_interleaved_t(
+      lame_global_flags* gf,
+      short int          pcm[],
+      int                num_samples,   /* per channel */
+      unsigned char*     mp3buf,
+      int                mp3buf_size );
+
+typedef int lame_encode_finish_t(
+      lame_global_flags *gf,
+      unsigned char*     mp3buf,
+      int                size );
+
+/* ---------------------------------------------------------------------------*/
 
 #ifdef __WXMSW__
 const char *libname = "lame_enc.dll";
@@ -70,30 +136,36 @@ bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
       return false;
    }
    
-   lame_initTYPE lame_init =
-       (lame_initTYPE) wxDllLoader::GetSymbol(libHandle,
-                                              "lame_init");
-   lame_versionTYPE lame_version =
-       (lame_versionTYPE) wxDllLoader::GetSymbol(libHandle,
-                                              "lame_version");
-   lame_initTYPE lame_init_params =
-       (lame_initTYPE) wxDllLoader::GetSymbol(libHandle,
-                                              "lame_init_params");
-   lame_encode_buffer_interleavedTYPE lame_encode_buffer_interleaved =
-       (lame_encode_buffer_interleavedTYPE) wxDllLoader::
-       GetSymbol(libHandle,
-                 "lame_encode_buffer_interleaved");
-   lame_encode_bufferTYPE lame_encode_buffer =
-       (lame_encode_bufferTYPE) wxDllLoader::
-       GetSymbol(libHandle,
-                 "lame_encode_buffer");
-   lame_encode_finishTYPE lame_encode_finish =
-       (lame_encode_finishTYPE) wxDllLoader::GetSymbol(libHandle,
-                                                       "lame_encode_finish");
+   lame_init_t* lame_init = (lame_init_t *)wxDllLoader::GetSymbol(libHandle, "lame_init_old");
+
+   if(!lame_init)
+      lame_init = (lame_init_t *) wxDllLoader::GetSymbol(libHandle, "lame_init");
+
+   lame_version_t* lame_version = (lame_version_t *) wxDllLoader::GetSymbol(libHandle, 
+                                                                        "lame_version");
+   
+   get_lame_version_t* get_lame_version = (get_lame_version_t *) wxDllLoader::GetSymbol(
+                                                                           libHandle,
+                                                                        "get_lame_version");
+
+   lame_init_params_t *lame_init_params = (lame_init_params_t *) wxDllLoader::GetSymbol(
+                                                                         libHandle,
+                                                                         "lame_init_params");
+
+   lame_encode_buffer_interleaved_t *lame_encode_buffer_interleaved =
+       (lame_encode_buffer_interleaved_t *) wxDllLoader::GetSymbol(libHandle,
+                                                             "lame_encode_buffer_interleaved");
+
+   lame_encode_buffer_t *lame_encode_buffer = (lame_encode_buffer_t *) wxDllLoader::GetSymbol(
+                                                                          libHandle,
+                                                                          "lame_encode_buffer");
+   lame_encode_finish_t *lame_encode_finish =
+       (lame_encode_finish_t *) wxDllLoader::GetSymbol(libHandle, "lame_encode_finish");
 
    if (!lame_init ||
        !lame_init_params ||
        !(lame_encode_buffer_interleaved || lame_encode_buffer) ||
+       !(lame_version || get_lame_version) ||
        !lame_encode_finish) {
       wxMessageBox(wxString::
                    Format("%s is not a compatible lame encoder", libname));
@@ -102,7 +174,7 @@ bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
 
    // Allocate extra space for the global flags so that a new version of LAME
    // doesn't overwrite any memory!
-   lame_global_flags *gf = (lame_global_flags *)new char[sizeof(lame_global_flags)+1000];
+   lame_global_flags *gf = (lame_global_flags *)new char[100000];
 
    lame_init(gf);
    
@@ -116,9 +188,13 @@ bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
 
    gf->num_channels = stereo ? 2 : 1;
    gf->in_samplerate = int (rate + 0.5);
-   gf->brate = 128;              // TODO: make this configurable?
+
+   /* It's impossible to set these and maintain compatibility with different versions
+    * of LAME (without customizing it for each different version, which would be insane.
+    * We just have to rely on sane defaults. */
+   /*gf->brate = 128;              // TODO: make this configurable?
    gf->mode = stereo ? 0 : 3;    // (0, 1, 3) = (stereo, jstereo, mono)
-   gf->quality = 2;              // 2 = high, 5 = medium, 9 = low
+   gf->quality = 2;              // 2 = high, 5 = medium, 9 = low */
 
    lame_init_params(gf);
 
@@ -142,7 +218,7 @@ bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
    }
 
    int bufferSize = int (1.25 * timeStep * rate) + 7200;
-   char *buffer = new char[bufferSize];
+   unsigned char *buffer = new unsigned char[bufferSize];
    wxASSERT(buffer);
 
    while (t < t1 && !cancelling) {
