@@ -14,7 +14,7 @@
 
 **********************************************************************/
 
-#include "../Audacity.h"
+#include "Audacity.h"
 
 #include <math.h>
 
@@ -24,25 +24,27 @@
 #include <wx/textfile.h>
 #include <wx/progdlg.h>
 
-#include "../Project.h"
+#include "Project.h"
 
-#include "../AudioIO.h"
-#include "../LabelTrack.h"
-#include "../import/ImportMIDI.h"
-#include "../import/ImportRaw.h"
-#include "../export/Export.h"
-#include "../prefs/PrefsDialog.h"
-#include "../HistoryWindow.h"
-#include "../FileFormats.h"
-#include "../FormatSelection.h"
-#include "../FreqWindow.h"
-#include "../Prefs.h"
-#include "../NoteTrack.h"
-#include "../Tags.h"
-#include "../Mix.h"
-#include "../AboutDialog.h"
-#include "../Help.h"
-#include "../Benchmark.h"
+#include "AudioIO.h"
+#include "LabelTrack.h"
+#include "import/ImportMIDI.h"
+#include "import/ImportRaw.h"
+#include "export/Export.h"
+#include "prefs/PrefsDialog.h"
+#include "HistoryWindow.h"
+#include "FileFormats.h"
+#include "FormatSelection.h"
+#include "FreqWindow.h"
+#include "Prefs.h"
+#include "NoteTrack.h"
+#include "Tags.h"
+#include "Mix.h"
+#include "AboutDialog.h"
+#include "Help.h"
+#include "Benchmark.h"
+
+#include "Resample.h"
 
 enum {
    kAlignZero=0,
@@ -2496,14 +2498,6 @@ void AudacityProject::OnNewTimeTrack()
       {
          TimeTrack *t = new TimeTrack(mDirManager);
 
-         #if USE_LIBSAMPLERATE
-         const char *str = NULL;
-         for( int i = 0 ; (str = src_get_name (i)) != NULL; i++ )
-            t->addConverter( i, str );
-         #else
-         t->addConverter(0, "No Sample Rate Conversion Available");
-         #endif
-         
          SelectNone();
          mTracks->AddToHead(t);
          t->SetSelected(true);

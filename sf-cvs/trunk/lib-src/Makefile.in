@@ -33,6 +33,9 @@ libmad/mad.h: libmad/.libs/libmad.a
 libsamplerate/src/.libs/libsamplerate.a:
 	cd libsamplerate && $(MAKE)
 
+libresample/libresample.a:
+	cd libresample && $(MAKE)
+
 libflac/src/libFLAC/.libs/libFLAC.a:
 	cd libflac && $(MAKE)
 
@@ -64,6 +67,7 @@ clean:
 	-$(MAKE) -C libmad clean
 	-$(MAKE) -C libogg clean
 	-$(MAKE) -C libsamplerate clean
+	-$(MAKE) -C libresample clean
 	-$(MAKE) -C libsndfile clean
 	-$(MAKE) -C libvorbis clean
 	-$(MAKE) -C libflac clean
@@ -80,6 +84,7 @@ distclean:
 	-$(MAKE) -C libmad distclean
 	-$(MAKE) -C libogg distclean
 	-$(MAKE) -C libsamplerate distclean
+	-$(MAKE) -C libresample distclean
 	-$(MAKE) -C libsndfile distclean
 	-$(MAKE) -C libvorbis distclean
 	-$(MAKE) -C libflac distclean

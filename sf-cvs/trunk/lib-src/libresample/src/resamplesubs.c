@@ -27,16 +27,16 @@
 /* Sampling rate up-conversion only subroutine;
  * Slightly faster than down-conversion;
  */
-int SrcUp(float X[],
-          float Y[],
-          double factor,
-          double *Time,
-          UWORD Nx,
-          UWORD Nwing,
-          float LpScl,
-          float Imp[],
-          float ImpD[],
-          BOOL Interp)
+int lrsSrcUp(float X[],
+             float Y[],
+             double factor,
+             double *Time,
+             UWORD Nx,
+             UWORD Nwing,
+             float LpScl,
+             float Imp[],
+             float ImpD[],
+             BOOL Interp)
 {
     float *Xp, *Ystart;
     float v;
@@ -52,11 +52,11 @@ int SrcUp(float X[],
     {
         Xp = &X[(int)(*Time)]; /* Ptr to current input sample */
         /* Perform left-wing inner product */
-        v = FilterUp(Imp, ImpD, Nwing, Interp, Xp,
-                            (*Time)-floor(*Time), -1);
+        v = lrsFilterUp(Imp, ImpD, Nwing, Interp, Xp,
+                        (*Time)-floor(*Time), -1);
         /* Perform right-wing inner product */
-        v += FilterUp(Imp, ImpD, Nwing, Interp, Xp+1, 
-                      ((-(*Time))-floor(-(*Time))), 1);
+        v += lrsFilterUp(Imp, ImpD, Nwing, Interp, Xp+1, 
+                         ((-(*Time))-floor(-(*Time))), 1);
 
         v *= LpScl;   /* Normalize for unity filter gain */
 
@@ -68,16 +68,16 @@ int SrcUp(float X[],
 
 /* Sampling rate conversion subroutine */
 
-int SrcUD(float X[],
-          float Y[],
-          double factor,
-          double *Time,
-          UWORD Nx,
-          UWORD Nwing,
-          float LpScl,
-          float Imp[],
-          float ImpD[],
-          BOOL Interp)
+int lrsSrcUD(float X[],
+             float Y[],
+             double factor,
+             double *Time,
+             UWORD Nx,
+             UWORD Nwing,
+             float LpScl,
+             float Imp[],
+             float ImpD[],
+             BOOL Interp)
 {
     float *Xp, *Ystart;
     float v;
@@ -95,11 +95,11 @@ int SrcUD(float X[],
     while (*Time < endTime)
     {
         Xp = &X[(int)(*Time)];     /* Ptr to current input sample */
-        v = FilterUD(Imp, ImpD, Nwing, Interp, Xp,
-                     (*Time)-floor(*Time), -1, dh);
-                     /* Perform left-wing inner product */
-        v += FilterUD(Imp, ImpD, Nwing, Interp, Xp+1, 
-                            ((-(*Time))-floor(-(*Time))), 1, dh);
+        v = lrsFilterUD(Imp, ImpD, Nwing, Interp, Xp,
+                        (*Time)-floor(*Time), -1, dh);
+        /* Perform left-wing inner product */
+        v += lrsFilterUD(Imp, ImpD, Nwing, Interp, Xp+1, 
+                         ((-(*Time))-floor(-(*Time))), 1, dh);
 
         v *= LpScl;   /* Normalize for unity filter gain */
         *Y++ = v;               /* Deposit output */

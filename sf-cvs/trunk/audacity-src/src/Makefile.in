@@ -60,6 +60,7 @@ OBJS = \
 	$(OBJDIR)/NoteTrack.o \
 	$(OBJDIR)/PitchName.o \
 	$(OBJDIR)/Project.o \
+	$(OBJDIR)/Resample.o \
 	$(OBJDIR)/RingBuffer.o \
 	$(OBJDIR)/Sequence.o \
 	$(OBJDIR)/Spectrum.o \
