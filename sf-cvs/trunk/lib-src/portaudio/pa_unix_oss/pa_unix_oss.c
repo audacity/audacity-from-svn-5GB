@@ -944,7 +944,7 @@ PaError PaHost_OpenStream( internalPortAudioStream   *past )
             DBUG(("PaHost_OpenStream: attempt to open %s for O_RDONLY\n", pad->pad_DeviceName ));
             /* dmazzoni: test it first in nonblocking mode to
                make sure the device is not busy */ 
-            pahsc->pahsc_InputHandle = open(pad->pad_DeviceName,O_RDONLY|O_NONBLOCK);
+            pahsc->pahsc_InputHandle = open(pad->pad_DeviceName,O_RDWR|O_NONBLOCK);
             if(pahsc->pahsc_InputHandle==-1)
             {
                 ERR_RPT(("PaHost_OpenStream: could not open %s for O_RDONLY\n", pad->pad_DeviceName ));
@@ -953,7 +953,7 @@ PaError PaHost_OpenStream( internalPortAudioStream   *past )
             }
             close(pahsc->pahsc_InputHandle);
 
-            pahsc->pahsc_InputHandle = open(pad->pad_DeviceName,O_RDONLY);
+            pahsc->pahsc_InputHandle = open(pad->pad_DeviceName,O_RDWR);
             if(pahsc->pahsc_InputHandle==-1)
             {
                 ERR_RPT(("PaHost_OpenStream: could not open %s for O_RDONLY\n", pad->pad_DeviceName ));
