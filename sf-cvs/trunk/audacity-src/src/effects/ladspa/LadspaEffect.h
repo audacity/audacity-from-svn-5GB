@@ -9,13 +9,12 @@
 **********************************************************************/
 
 class wxSlider;
+class wxStaticText;
+class wxTextCtrl;
 
 #include <wx/dialog.h>
-#include <wx/stattext.h>
 
 #include "../Effect.h"
-
-
 
 class LadspaEffect:public Effect {
 
@@ -48,6 +47,7 @@ class LadspaEffect:public Effect {
    float **fOutBuffer;
    int inputs;
    int outputs;
+   int numInputControls;
    unsigned long *inputPorts;
    unsigned long *outputPorts;
    float *inputControls;
@@ -59,9 +59,8 @@ class LadspaEffectDialog:public wxDialog {
 
  public:
    LadspaEffectDialog(wxWindow * parent,
-                      wxString effectName,
-                      int numParams,
-                      const wxPoint & pos = wxDefaultPosition);
+                      const LADSPA_Descriptor *data,
+                      float *inputControls);
 
    ~LadspaEffectDialog();
 
@@ -72,7 +71,11 @@ class LadspaEffectDialog:public wxDialog {
     DECLARE_EVENT_TABLE()
 
  private:
+    const LADSPA_Descriptor *mData;
     wxSlider **sliders;
+    wxTextCtrl **fields;
     wxStaticText **labels;
-    int numParams;
+    unsigned long *ports;
+    unsigned long numParams;
+    float *inputControls;
 };

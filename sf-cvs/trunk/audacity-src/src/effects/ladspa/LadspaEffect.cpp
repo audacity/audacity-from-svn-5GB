@@ -13,8 +13,12 @@
 #include "ladspa.h"
 
 #include <wx/button.h>
-#include <wx/slider.h>
 #include <wx/msgdlg.h>
+#include <wx/sizer.h>
+#include <wx/slider.h>
+#include <wx/statbox.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
 
 #include "../Effect.h"          // Audacity Effect base class
 #include "LadspaEffect.h"       // This class's header file
@@ -27,22 +31,10 @@ LadspaEffect::LadspaEffect(const LADSPA_Descriptor *data)
    buffer = NULL;
    fInBuffer = NULL;
    fOutBuffer = NULL;
-}
 
-wxString LadspaEffect::GetEffectName()
-{
-   return pluginName + "...";
-}
-
-wxString LadspaEffect::GetEffectAction()
-{
-   return pluginName + "Performing Ladspa Effect: \""+pluginName+"\"";
-}
-
-bool LadspaEffect::Init()
-{
    inputs = 0;
    outputs = 0;
+   numInputControls = 0;
 
    unsigned long p;
 
@@ -63,8 +55,28 @@ bool LadspaEffect::Init()
             outputs++;
          }
       }
+      if (LADSPA_IS_PORT_CONTROL(d) &&
+          LADSPA_IS_PORT_INPUT(d)) {
+         numInputControls++;
+      }
    }
+}
 
+wxString LadspaEffect::GetEffectName()
+{
+   if (numInputControls > 0)
+      return pluginName + "...";
+   else
+      return pluginName;
+}
+
+wxString LadspaEffect::GetEffectAction()
+{
+   return "Performing Ladspa Effect: \""+pluginName+"\"";
+}
+
+bool LadspaEffect::Init()
+{
    mBlockSize = 0;
 
    if (inputs > 1) {
@@ -97,6 +109,15 @@ bool LadspaEffect::Init()
 
 bool LadspaEffect::PromptUser()
 {
+   if (numInputControls > 0) {
+      LadspaEffectDialog dlog(mParent, mData, inputControls);
+      dlog.CentreOnParent();
+      dlog.ShowModal();
+      
+      if (!dlog.GetReturnCode())
+         return false;
+   }
+
    return true;
 }
 
@@ -276,74 +297,95 @@ END_EVENT_TABLE()
 
 IMPLEMENT_CLASS(LadspaEffectDialog, wxDialog)
 
-    LadspaEffectDialog::LadspaEffectDialog(wxWindow * parent,
-                                     wxString effectName,
-                                     int numParams,
-                                     const wxPoint & pos)
-:wxDialog(parent, -1, effectName, pos, wxSize(320, 430),
-          wxDEFAULT_DIALOG_STYLE)
+   LadspaEffectDialog::LadspaEffectDialog(wxWindow * parent,
+                                          const LADSPA_Descriptor *data,
+                                          float *inputControls)
+      :wxDialog(parent, -1, data->Name,
+                wxDefaultPosition, wxDefaultSize,
+                wxDEFAULT_DIALOG_STYLE)
 {
-   #if 0
-   this->numParams = numParams;
+   numParams = 0;
+   this->mData = data;
+   this->inputControls = inputControls;
 
-   int y = 10;
+   sliders = new wxSlider*[mData->PortCount];
+   fields = new wxTextCtrl*[mData->PortCount];
+   labels = new wxStaticText*[mData->PortCount];
+   ports = new unsigned long [mData->PortCount];
 
-   new wxStaticText(this, 0, "Ladspa Plug-in parameters:", wxPoint(10, y),
-                    wxSize(300, 15));
-   y += 20;
+   unsigned long p;
+   for(p=0; p<mData->PortCount; p++) {
+      LADSPA_PortDescriptor d = mData->PortDescriptors[p];
+      if (LADSPA_IS_PORT_CONTROL(d) &&
+          LADSPA_IS_PORT_INPUT(d)) {
+         ports[numParams] = p;
+         numParams++;
+      }
+   }
 
-   sliders = new wxSlider *[numParams];
-   labels = new wxStaticText *[numParams];
+   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+   wxControl *item;
 
-   for (int p = 0; p < numParams; p++) {
+   item = new wxStaticText(this, 0,
+                           wxString("Author: ")+mData->Maker);
+   mainSizer->Add(item, 0, wxALL, 5);
+   
+   if (mData->Copyright &&
+       mData->Copyright[0] && 
+       mData->Copyright != wxString("None")) {
+      
+      item = new wxStaticText(this, 0,
+                              mData->Copyright);
+      mainSizer->Add(item, 0, wxALL, 5);
+   }
 
-      char paramName[256];
-      aEffect->dispatcher(aEffect, effGetParamName, p, 0,
-                          (void *) paramName, 0.0);
-      new wxStaticText(this, 0, wxString(paramName), wxPoint(10, y),
-                       wxSize(85, 15));
+   wxSizer *paramSizer =
+      new wxStaticBoxSizer(new wxStaticBox(this, -1,
+                                           "Ladspa Effect Settings"),
+                           wxVERTICAL );
 
-      float val = aEffect->getParameter(aEffect, p);
+   wxFlexGridSizer *gridSizer =
+      new wxFlexGridSizer(3, 0, 0);
+
+   for (p = 0; p < numParams; p++) {
+
+      item = new wxStaticText(this, 0, mData->PortNames[ports[p]]);
+      gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+      wxString fieldText;
+      fieldText.Printf("%f", inputControls[ports[p]]);
+      fields[p] = new wxTextCtrl(this, 0, fieldText);
+      gridSizer->Add(fields[p], 0, wxALL, 5);
 
       sliders[p] =
           new wxSlider(this, LadspaEFFECT_SLIDER_ID,
-                       1000 * val, 0, 1000,
-                       wxPoint(100, y + 5), wxSize(200, 25));
-
-      char label[256];
-      aEffect->dispatcher(aEffect, effGetParamDisplay, p, 0,
-                          (void *) label, 0.0);
-      char units[256];
-      aEffect->dispatcher(aEffect, effGetParamLabel, p, 0, (void *) units,
-                          0.0);
-
-      labels[p] =
-          new wxStaticText(this, 0,
-                           wxString::Format("%s %s", label, units),
-                           wxPoint(10, y + 15), wxSize(85, 15));
-
-      y += 35;
+                       0, 0, 1000,
+                       wxDefaultPosition,
+                       wxSize(200, -1));
+      gridSizer->Add(sliders[p], 0, wxALL, 5);
    }
+   
+   paramSizer->Add(gridSizer, 1, wxALL, 5);
+   mainSizer->Add(paramSizer, 1, wxALL, 5);
 
-   wxButton *ok =
-       new wxButton(this, wxID_OK, "OK", wxPoint(110, y), wxSize(80, 30));
-   wxButton *cancel =
-       new wxButton(this, wxID_CANCEL, "Cancel", wxPoint(210, y),
-                    wxSize(80, 30));
-   y += 40;
+   wxBoxSizer *okSizer = new wxBoxSizer(wxHORIZONTAL);
 
-   wxSize size;
-   size.x = 320;
-   size.y = y;
+   wxButton *button;
 
-#ifdef __WXMSW__
-   size.y += 20;
-#endif
+   button = new wxButton(this, wxID_OK, "OK");
+   button->SetDefault();
+   button->SetFocus();
+   okSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   Centre(wxBOTH | wxCENTER_FRAME);
+   button = new wxButton(this, wxID_CANCEL, "Cancel");
+   okSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   SetSize(size);
-#endif
+   mainSizer->Add(okSizer, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   SetAutoLayout(TRUE);
+   SetSizer(mainSizer);
+   mainSizer->Fit(this);
+   mainSizer->SetSizeHints(this);
 }
 
 LadspaEffectDialog::~LadspaEffectDialog()

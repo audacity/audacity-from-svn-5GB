@@ -42,7 +42,7 @@ wxString VSTEffect::GetEffectName()
 
 wxString VSTEffect::GetEffectAction()
 {
-   return pluginName + "Performing VST Effect: \""+pluginName+"\"";
+   return "Performing VST Effect: \""+pluginName+"\"";
 }
 
 bool VSTEffect::Init()
