@@ -18,6 +18,7 @@
 
 #include <wx/button.h>
 #include <wx/slider.h>
+#include <wx/msgdlg.h>
 
 #include "Effect.h"             // Audacity Effect base class
 #include "VSTEffect.h"          // This class's header file

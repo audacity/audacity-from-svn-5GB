@@ -46,8 +46,11 @@ wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
 
    wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
 
-   mCategories = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize,
-                                wxNB_LEFT);
+   mCategories = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize
+#ifdef __WXGTK__
+                                ,wxNB_LEFT
+#endif
+                                );
    wxNotebookSizer *catSizer = new wxNotebookSizer(mCategories);
 
 

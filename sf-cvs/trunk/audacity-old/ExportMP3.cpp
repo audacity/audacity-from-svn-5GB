@@ -234,6 +234,165 @@
 LinuxLAMEExporter gLinuxLAMEExporter;
 MP3Exporter *gMP3Exporter = &gLinuxLAMEExporter;
 
+#elif defined(__WXMSW__)
+
+#include "BladeMP3EncDLL.h"
+
+class BladeEncExporter : public MP3Exporter {
+private:
+   BE_CONFIG mConf;
+   BE_VERSION mVersion;
+   HBE_STREAM mStreamHandle;
+   bool mLibraryLoaded, mEncoding,mStereo;
+   unsigned long mOutBufferSize, mInSampleNum;
+
+
+   BEINITSTREAM beInitStream;
+   BEENCODECHUNK beEncodeChunk;
+   BEDEINITSTREAM beDeinitStream;
+   BECLOSESTREAM beCloseStream;
+   BEVERSION beVersion;
+
+public:
+   BladeEncExporter() {
+      mLibraryLoaded = false;
+      mEncoding = false;
+
+      /* Set all the config defaults to sane values */
+
+      memset(&mConf, 0, sizeof(BE_CONFIG));
+      mConf.dwConfig = BE_CONFIG_LAME;
+      mConf.format.LHV1.dwStructVersion = 1;
+      mConf.format.LHV1.dwStructSize = sizeof(BE_CONFIG);
+      mConf.format.LHV1.dwReSampleRate = 0;
+      mConf.format.LHV1.dwBitrate = 128;
+      //mConf.format.LHV1.dwMaxBitrate = 128;
+      mConf.format.LHV1.nPreset = LQP_HIGH_QUALITY;
+	  mConf.format.LHV1.dwMpegVersion = MPEG1;
+//      mConf.format.LHV1.bCopyright = false;
+//      mConf.format.LHV1.bCRC = true;
+//      mConf.format.LHV1.bOriginal = false;
+//      mConf.format.LHV1.bPrivate = false;
+//      mConf.format.LHV1.bWriteVBRHeader = false;
+//      mConf.format.LHV1.bEnableVBR = true;
+//      mConf.format.LHV1.nVBRQuality = 2;
+//      mConf.format.LHV1.dwVbrAbr_bps = -1;
+//      mConf.format.LHV1.bNoRes = true;
+   }
+
+   bool LoadLibrary(wxString fileName) {
+      wxDllType libHandle = NULL;
+
+      if(fileName == "") fileName = "lame_enc.dll";
+
+      if (wxFileExists(wxGetCwd() + wxFILE_SEP_PATH + fileName))
+         libHandle = wxDllLoader::LoadLibrary(
+                     wxGetCwd() + wxFILE_SEP_PATH + fileName);
+      else
+         return false;
+
+
+      beInitStream = (BEINITSTREAM)wxDllLoader::GetSymbol(libHandle, "beInitStream");
+      beEncodeChunk = (BEENCODECHUNK)wxDllLoader::GetSymbol(libHandle, "beEncodeChunk");
+      beDeinitStream = (BEDEINITSTREAM)wxDllLoader::GetSymbol(libHandle, "beDeinitStream");
+      beCloseStream = (BECLOSESTREAM)wxDllLoader::GetSymbol(libHandle, "beCloseStream");
+      beVersion = (BEVERSION)wxDllLoader::GetSymbol(libHandle, "beVersion");
+
+      if(!beInitStream ||
+         !beEncodeChunk ||
+         !beDeinitStream ||
+         !beCloseStream ||
+         !beVersion)
+         return false;
+
+      beVersion(&mVersion);
+      mLibraryLoaded = true;
+      return true;
+   }
+
+   bool ValidLibraryLoaded() { return mLibraryLoaded; }
+
+   const char *GetLibraryVersion() { return NULL; }
+
+   int InitializeStream(int channels, int sampleRate) {
+
+      if(!mLibraryLoaded)
+         return -1;
+
+	  int modes[] = { 0, BE_MP3_MODE_MONO, BE_MP3_MODE_STEREO };
+	  mConf.format.LHV1.dwSampleRate = sampleRate;
+	  mConf.format.LHV1.nMode = modes[channels];
+
+      beInitStream(&mConf, &mInSampleNum, &mOutBufferSize, &mStreamHandle);
+
+	  if(channels == 2)
+		  mStereo = true;
+	  else
+		  mStereo = false;
+
+      mEncoding = true;
+
+      return mInSampleNum;
+   }
+
+   int GetOutBufferSize() {
+      if (!mEncoding)
+         return -1;
+
+	  if(mStereo)
+		 return mOutBufferSize * 2;
+	  else
+		 return mOutBufferSize;
+   }
+
+   int EncodeBuffer(short int inbuffer[], unsigned char outbuffer[]) {
+      if(!mEncoding)
+         return -1;
+      
+      unsigned long bytes;
+      beEncodeChunk(mStreamHandle, mInSampleNum, inbuffer, outbuffer, &bytes);
+
+      return bytes;
+   }
+
+   int EncodeRemainder(short int inbuffer[], int nSamples, unsigned char outbuffer[]) {
+      if(!mEncoding)
+         return -1;
+
+      unsigned long bytes;
+      beEncodeChunk(mStreamHandle, nSamples, inbuffer, outbuffer, &bytes);
+
+      return bytes;
+   }
+
+   int FinishStream(unsigned char outbuffer[]) {
+      if(!mEncoding)
+         return -1;
+
+      unsigned long bytes;
+      beDeinitStream(mStreamHandle, outbuffer, &bytes);
+      beCloseStream(mStreamHandle);
+
+      mEncoding = false;
+      return bytes;
+   }
+
+   void CancelEncoding() {
+      beCloseStream(mStreamHandle);
+   }
+
+   int GetQualityVariance() { return -1; }
+   
+   void SetBitrate(int rate) { }
+   int GetBitrate() { return -1; }
+   void SetQuality(int quality) { }
+   int GetQuality() { return -1; }
+
+};
+
+BladeEncExporter gBladeEncExporter;   
+MP3Exporter *gMP3Exporter = &gBladeEncExporter;
+
 #endif      
 
 
@@ -252,6 +411,7 @@ bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
    gMP3Exporter->LoadLibrary();
    if(!gMP3Exporter->ValidLibraryLoaded()) {
       wxMessageBox("No MP3 encoding library found!");
+      return false;
    }
 
    wxFFile outFile(fName, "w");
