@@ -432,6 +432,14 @@ SOURCE=..\src\effects\BassBoost.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\effects\ChangeTempo.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\ChangeTempo.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\effects\Compressor.cpp
 # End Source File
 # Begin Source File
