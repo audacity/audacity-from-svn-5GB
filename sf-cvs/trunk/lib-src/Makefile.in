@@ -1,3 +1,4 @@
+
 all: @BUILDLIBS@
 
 allegro/allegro.a:
@@ -39,11 +40,24 @@ portaudio/pa_mac_core/portaudio.a:
 	cd portaudio/pa_mac_core && $(MAKE)
 
 clean:
-	cd allegro && $(MAKE) clean
-	cd expat && $(MAKE) clean
-	cd libid3tag && $(MAKE) clean
-	cd libmad && $(MAKE) clean
-	cd libogg && $(MAKE) clean
-	cd libsndfile && $(MAKE) clean
-	cd libvorbis && $(MAKE) clean
-	cd portaudio/pa_unix_oss && $(MAKE) clean
+	-$(MAKE) -C allegro clean
+	-$(MAKE) -C expat clean
+	-$(MAKE) -C libid3tag clean
+	-$(MAKE) -C libmad clean
+	-$(MAKE) -C libogg clean
+	-$(MAKE) -C libsndfile clean
+	-$(MAKE) -C libvorbis clean
+	-$(MAKE) -C portaudio/pa_unix_oss clean
+	-$(MAKE) -C portaudio/pa_mac_core clean
+
+distclean:
+	-$(MAKE) -C allegro distclean
+	-$(MAKE) -C expat distclean
+	-$(MAKE) -C libid3tag distclean
+	-$(MAKE) -C libmad distclean
+	-$(MAKE) -C libogg distclean
+	-$(MAKE) -C libsndfile distclean
+	-$(MAKE) -C libvorbis distclean
+	-$(MAKE) -C portaudio/pa_unix_oss distclean
+	-$(MAKE) -C portaudio/pa_mac_core distclean
+
