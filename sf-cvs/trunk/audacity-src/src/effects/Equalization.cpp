@@ -515,7 +515,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
 			  &mPanel,
 			  this, TRUE, mEnvelope); 
    
-   SetSizeHints(300, 200, 20000, 20000);
+   SetSizeHints(300, 300, 20000, 20000);
 
    SetSize(400, 300);
 
