@@ -122,10 +122,11 @@ class TrackListIterator {
    VTrack *First();
    VTrack *Next();
    VTrack *RemoveCurrent();     // returns next
+   VTrack *Insert(VTrack *t);   // inserts after cur, returns new node
 
  private:
     TrackList * l;
-   TrackListNode *cur;
+    TrackListNode *cur;
 };
 
 class TrackList {
