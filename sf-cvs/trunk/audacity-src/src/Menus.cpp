@@ -357,23 +357,23 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    //Modify toolbar-specific Menus
 
    if (gEditToolBarStub) {
-      wxMenuItem *load = mViewMenu->FindItem(LoadEditToolBarID);
-      wxMenuItem *dock = mViewMenu->FindItem(FloatEditToolBarID);
+      wxMenuItemBase *load = mViewMenu->FindItem(LoadEditToolBarID);
+      wxMenuItemBase *dock = mViewMenu->FindItem(FloatEditToolBarID);
 
       // Loaded or unloaded?
       if (gEditToolBarStub->GetLoadedStatus()) {
-         ((wxMenuItemBase *)load)->SetName(_("Unload Edit Toolbar"));
+         load->SetName(_("Unload Edit Toolbar"));
          dock->Enable(true);
       } else {
-         ((wxMenuItemBase *)load)->SetName(_("Load Edit Toolbar"));
+         load->SetName(_("Load Edit Toolbar"));
          dock->Enable(false);
       }
 
       // Floating or docked?
       if (gEditToolBarStub->GetWindowedStatus())
-         ((wxMenuItemBase *)dock)->SetName(_("Dock Edit Toolbar"));
+         dock->SetName(_("Dock Edit Toolbar"));
       else
-         ((wxMenuItemBase *)dock)->SetName(_("Float Edit Toolbar"));
+         dock->SetName(_("Float Edit Toolbar"));
    }
 
    // Return from this function if nothing's changed since
