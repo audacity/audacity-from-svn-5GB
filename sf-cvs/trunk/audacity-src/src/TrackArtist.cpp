@@ -636,6 +636,7 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
    
    for (s = 0; s < slen; s++) {
       double tt = double (s) / rate;
+      double envt = t0 + tOffset + tt;
       double xx = (tt * pps + 0.5);
       
       if (xx < -10000)
@@ -645,7 +646,7 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
       
       xpos[s] = (int) xx;
 
-      ypos[s] = GetWaveYPosNew(buffer[s] * track->GetEnvelope()->GetValue(tt),
+      ypos[s] = GetWaveYPosNew(buffer[s] * track->GetEnvelope()->GetValue(envt),
                                zoomMin, zoomMax, r.height, dB, true, dBr, false);
       if (ypos[s] < -1)
          ypos[s] = -1;
