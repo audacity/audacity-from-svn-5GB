@@ -20,6 +20,7 @@
 #include <wx/dcmemory.h>
 
 #include "Compressor.h"
+#include "../Audacity.h" // for rint from configwin.h
 #include "../WaveTrack.h"
 #include "../widgets/Ruler.h"
 
