@@ -35,4 +35,4 @@
 # audacity/lib-src/...<the rest of the lib-src repository>
 # audacity/configure
 # audacity/...<the rest of the audacity repository>
-audacity-all   audacity &lib-src
+audacity-all   audacity-old &lib-src
