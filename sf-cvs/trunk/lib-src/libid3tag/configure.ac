@@ -17,7 +17,7 @@ dnl You should have received a copy of the GNU General Public License
 dnl along with this program; if not, write to the Free Software
 dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 dnl
-AC_REVISION([$Id: configure.ac,v 1.1 2003-09-07 01:21:44 dmazzoni Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.2 2003-09-07 01:27:03 dmazzoni Exp $])dnl
 
 dnl Process this file with autoconf to produce a configure script.
 
@@ -200,6 +200,5 @@ test -n "$profile"  && CFLAGS="$CFLAGS $profile" LDFLAGS="$LDFLAGS $profile"
 dnl LTLIBOBJS=`echo "$LIBOBJS" | sed -e 's/\.o/.lo/g'`
 dnl AC_SUBST(LTLIBOBJS)
 
-AC_CONFIG_FILES([Makefile msvc++/Makefile  \
-	libid3tag.list])
+AC_CONFIG_FILES([Makefile libid3tag.list])
 AC_OUTPUT
