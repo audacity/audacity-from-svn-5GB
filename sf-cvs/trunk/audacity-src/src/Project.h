@@ -161,6 +161,7 @@ class AudacityProject:public wxFrame,
    // Clipboard (static because it is shared by all projects)
 
    static TrackList *msClipboard;
+   static AudacityProject *msClipProject;
    static double msClipLen;
 
    // History/Undo manager

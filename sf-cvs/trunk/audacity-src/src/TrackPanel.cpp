@@ -1908,6 +1908,8 @@ void TrackPanel::RemoveTrack(VTrack * toRemove)
      t = iter.RemoveCurrent();
    }
 
+   delete toRemove;
+
    MakeParentPushState(wxString::Format("Removed track '%s.'", name.c_str()));
    MakeParentRedrawScrollbars();
 

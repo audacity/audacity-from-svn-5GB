@@ -27,12 +27,15 @@ BlockFile::BlockFile(wxString name, wxString fullPath)
    mSoundFile = NULL;
    mInfo = NULL;
 
+   mLocked = false;
+
    mPos = 0;
 
    mRefCount = 1;
 }
 
 BlockFile::BlockFile(wxString name, wxString fullPath,
+                     int localLen,
                      wxString aliasFullPath,
                      sampleCount aliasStart,
                      sampleCount aliasLen, int aliasChannel)
@@ -46,10 +49,13 @@ BlockFile::BlockFile(wxString name, wxString fullPath,
    mFile = NULL;
 
    mAliasFullPath = aliasFullPath;
+   mLocalLen = localLen;
    mStart = aliasStart;
    mLen = aliasLen;
    mChannel = aliasChannel;
    mPos = 0;
+
+   mLocked = false;
 
    mSoundFile = NULL;
    mInfo = NULL;
@@ -63,9 +69,42 @@ BlockFile::~BlockFile()
       Close();
 }
 
+void BlockFile::Lock()
+{
+   mLocked = true;
+}
+
+void BlockFile::Unlock()
+{
+   mLocked = false;
+}
+
+bool BlockFile::IsLocked()
+{
+   return mLocked;
+}
+
 wxString BlockFile::GetName()
 {
    return mName;
+}
+
+wxString BlockFile::GetAliasedFile()
+{
+   wxASSERT(mAlias);
+   
+   return mAliasFullPath;
+}
+
+void BlockFile::ChangeAliasedFile(wxString newFile)
+{
+   // This method is only called with the DirManager is moving
+   // a file we depend on out of the way, so that a new file
+   // with the same name can be exported.
+   
+   wxASSERT(mAlias);
+   
+   mAliasFullPath = newFile;
 }
 
 bool BlockFile::IsAlias()

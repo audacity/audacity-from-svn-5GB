@@ -323,7 +323,8 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    srand(randSeed);
 
    int len, scale;
-   scale = 7500 + (rand() % 1000);
+   //scale = 7500 + (rand() % 1000);
+   scale = 200 + (rand() % 100);
    len = (dataSize * 1048576) / (scale*sizeof(sampleType));
    while(len < 20 || scale > (blockSize*1024)/4) {
       scale = (scale / 2) + (rand() % 100);
