@@ -1,0 +1,31 @@
+sq1 "algorithmic sequencer number 1"<br>
+Author Steven Jones, 30 September 2004<br>
+This software is released under the terms of the GNU public license.
+<p>
+The sq1 sequencer generates complex sequences of tones by using the sum of
+three square wave LFOs to frequency modulate two oscillators. The oscillators
+output one of four waves (sine, tri, square and saw) and may be detuned
+relative to each other. The wave tables are not band limited so aliasing
+will result for sufficiently high frequencies.  There is also an overall three
+stage amplitude envelope.
+<p>
+<pre>
+Parameters:
+center	- The unmodulated carrier frequency in Hertz.
+detune	- The frequency of oscillator 2 relative to oscillator 1
+wave	- The wave selector. 0=sine, 1=tri, 2=square, 3=saw
+          Both oscillators produce the same wave-shape.
+attack	- Attack time in seconds.
+sustain - Sustain time in seconds
+decay   - Decay time in seconds
+f1	- Frequency of LFO 1 in hertz
+a1	- Amplitude of LFO 1
+f2      - Frequency of LFO 2
+a2      - Amplitude of LFO 2
+f3	- Frequency of LFO 3
+a3	- Amplitude of LFO 3
+</pre>
+<p>
+The three LFOs are interchangeable. Note that the LFO amplitudes are
+calibrated in Hertz indicating the corresponding frequency shift in the audio
+oscillators. 
