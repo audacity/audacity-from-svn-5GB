@@ -13,6 +13,7 @@
 #include "AColor.h"
 #include "TimeTrack.h"
 #include "widgets/Ruler.h"
+#include "Prefs.h"
 
 #if USE_LIBSAMPLERATE
 #include <samplerate.h>
@@ -43,8 +44,7 @@ TimeTrack::TimeTrack(DirManager *projDirManager):
    mRuler->SetFormat(Ruler::TimeFormat);
 
    mConverterList = NULL;
-   mConverter = 0; // libsamplerate default,
-   // currently SRC_SINC_BEST_QUALITY which is a good choice
+   mConverter = gPrefs->Read("/Quality/SampleRateConverter", (long)4); // SRC_LINEAR
 
    blankBrush.SetColour(214, 214, 214);
    blankPen.SetColour(214, 214, 214);

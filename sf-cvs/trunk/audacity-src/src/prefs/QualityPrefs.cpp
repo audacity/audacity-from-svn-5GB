@@ -126,9 +126,9 @@ PrefsPanel(parent)
    #if USE_LIBSAMPLERATE
 
    int converterHQ = 
-      gPrefs->Read("/Quality/HQSampleRateConverter", (long)SRC_SINC_BEST_QUALITY);
+      gPrefs->Read("/Quality/HQSampleRateConverter", (long)SRC_SINC_FASTEST);
    int converter = 
-      gPrefs->Read("/Quality/SampleRateConverter", (long)SRC_SINC_FASTEST);
+      gPrefs->Read("/Quality/SampleRateConverter", (long)SRC_LINEAR);
 
    wxString *converterStrings;
    int numConverters = 0;
