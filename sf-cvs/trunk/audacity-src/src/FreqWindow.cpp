@@ -68,7 +68,7 @@ BEGIN_EVENT_TABLE(FreqWindow, wxFrame)
     EVT_CLOSE(FreqWindow::OnCloseWindow)
     EVT_SIZE(FreqWindow::OnSize)
     EVT_PAINT(FreqWindow::OnPaint)
-    EVT_BUTTON(FreqCloseButtonID, FreqWindow::OnCloseWindow)
+    EVT_BUTTON(FreqCloseButtonID, FreqWindow::OnCloseButton)
     EVT_BUTTON(FreqExportButtonID, FreqWindow::OnExport)
     EVT_CHOICE(FreqAlgChoiceID, FreqWindow::OnAlgChoice)
     EVT_CHOICE(FreqSizeChoiceID, FreqWindow::OnSizeChoice)
@@ -843,7 +843,7 @@ void FreqWindow::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
    this->Show(FALSE);
 }
 
-void FreqWindow::OnCloseWindow(wxCommandEvent & WXUNUSED(event))
+void FreqWindow::OnCloseButton(wxCommandEvent & WXUNUSED(event))
 {
    this->Show(FALSE);
 }
