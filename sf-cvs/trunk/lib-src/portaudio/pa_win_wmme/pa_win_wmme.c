@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_wmme.c,v 1.5 2002-05-06 07:08:36 dmazzoni Exp $
+ * $Id: pa_win_wmme.c,v 1.6 2002-05-07 00:08:52 bmg300 Exp $
  * pa_win_wmme.c
  * Implementation of PortAudio for Windows MultiMedia Extensions (WMME)
  *
@@ -112,7 +112,11 @@ static  gUnderCallbackCounter = 0;
 #define UNDER_SLEEP_FOR      (500)
 #endif
 
+#ifndef WIN32
 #define PRINT(x) { printf x; fflush(stdout); }
+#else
+#define PRINT(x)
+#endif
 #define ERR_RPT(x) PRINT(x)
 #define DBUG(x)  /* PRINT(x) /**/
 #define DBUGX(x) /* PRINT(x) */
