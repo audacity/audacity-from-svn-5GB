@@ -241,8 +241,12 @@ New features in Audacity 1.2.0:
       You can optionally save/load a keyboard layout to share
       with friends.
     - Type "Z" to snap the selection to the nearest zero-crossings.
+	 - Support for opening multiple files from the same dialog.
+    - Support for using a text file to specify a list of audio files
+	   to open with offsets.
 
   * Effects
+    - Repeat Last Effect
     - Improved VST plug-in support
     - Most effects now have a Preview button
     - Compressor (Dynamic Range Compressor)
@@ -251,7 +255,7 @@ New features in Audacity 1.2.0:
       area you have selected
     - Change Tempo (without changing pitch)
     - Change Speed (changing both pitch and tempo)
-    - Repeat
+    - Repeat effect - useful for creating loops
 
   * Audio I/O
     - Type "1" to hear a 1-second preview of the audio surrounding
