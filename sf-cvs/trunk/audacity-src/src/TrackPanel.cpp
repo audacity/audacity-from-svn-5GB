@@ -945,12 +945,15 @@ void TrackPanel::RemoveTrack(VTrack * toRemove)
    VTrack *partner = mTracks->GetLink(toRemove);
    wxString name;
 
-   for (VTrack *t = iter.First(); t; t = iter.Next())
+   VTrack *t = iter.First();
+   while (t) {
       if (t == toRemove || t == partner) {
          name = t->GetName();
          delete t;
          t = iter.RemoveCurrent();
       }
+      else t = iter.Next();
+   }
 
    MakeParentPushState(wxString::Format(_("Removed track '%s.'"),
                                         name.c_str()));
