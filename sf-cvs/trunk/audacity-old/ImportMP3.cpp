@@ -35,6 +35,7 @@
 #include <wx/string.h>
 #include <wx/timer.h>
 
+#include "Import.h"
 #include "ImportMP3.h"
 
 #include "WaveTrack.h"
@@ -81,11 +82,13 @@ bool ImportMP3(wxWindow *parent,
 
   *left = new WaveTrack(dirManager);
   (*left)->channel = VTrack::LeftChannel;
+  (*left)->name = TrackNameFromFileName(fName);
   if(stereo) {
   	*right = new WaveTrack(dirManager);
   	(*right)->channel = VTrack::RightChannel;
+	(*right)->name = TrackNameFromFileName(fName);
+    (*left)->linked = true;
   }
-
 
   wxProgressDialog *progress = NULL;
 

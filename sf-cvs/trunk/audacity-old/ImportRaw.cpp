@@ -346,7 +346,6 @@ bool GuessPCMFormat(wxString fName,
       #ifdef IMPORT_DEBUG
 	    fprintf(af,"Both appear random.\n");
       #endif
-      return false;
     }
     if ((even > 0.15) || (odd > 0.15)) {
       vote16++;
@@ -643,7 +642,7 @@ bool GuessPCMFormat(wxString fName,
     #endif
 
   }
-  
+
   if (sampleData) {
     *sampleData = new char[dataSize];
     *sampleDataLen = dataSize;
@@ -683,7 +682,13 @@ bool ImportRaw(wxWindow *parent,
   char *data;
   int dataLen;
 
-  GuessPCMFormat(fName, b16, sign, stereo, big, offset, &data, &dataLen);
+  bool success = 
+	GuessPCMFormat(fName, b16, sign, stereo, big, offset, &data, &dataLen);
+
+  if (!success) {
+	
+	return false;
+  }
 
   ImportDialog dlg(data, dataLen, parent);
 
@@ -818,7 +823,7 @@ ImportDialog::ImportDialog(char *data,
 						   int dataLen,
 						   wxWindow *parent,
 						   const wxPoint& pos)
-  : wxDialog( parent, -1, "Import", pos,
+  : wxDialog( parent, -1, "Import Raw Data", pos,
 			  wxDefaultSize, wxDEFAULT_DIALOG_STYLE )
 {
   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -842,7 +847,7 @@ ImportDialog::ImportDialog(char *data,
   offset[0] = new wxRadioButton(this, PREV_RADIO_ID, "0-byte offset", wxDefaultPosition, wxDefaultSize,wxRB_GROUP);
   offset[1] = new wxRadioButton(this, PREV_RADIO_ID, "1-byte offset");
   
-  wxButton *ok = new wxButton(this, wxID_OK, "OK");
+  wxButton *ok = new wxButton(this, wxID_OK, "Import");
   wxButton *cancel = new wxButton(this, wxID_CANCEL, "Cancel");
 
   preview = new PreviewPanel(data, dataLen,
@@ -898,11 +903,11 @@ void ImportDialog::OnCancel(wxCommandEvent& WXUNUSED(event))
 }
 
 BEGIN_EVENT_TABLE(PreviewPanel, wxPanel)
-  EVT_PAINT(PreviewPanel::OnPaint)
-  EVT_ERASE_BACKGROUND(PreviewPanel::OnEraseBackground)
-  END_EVENT_TABLE()
-
-  void PreviewPanel::OnEraseBackground(wxEraseEvent &ignore)
+EVT_PAINT(PreviewPanel::OnPaint)
+EVT_ERASE_BACKGROUND(PreviewPanel::OnEraseBackground)
+END_EVENT_TABLE()
+  
+void PreviewPanel::OnEraseBackground(wxEraseEvent &ignore)
 {
 }
 

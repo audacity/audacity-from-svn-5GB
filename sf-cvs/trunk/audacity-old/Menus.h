@@ -62,8 +62,6 @@ enum {
   ImportID,
   ImportLabelsID,
   ImportMIDIID,
-  ImportMP3ID,
-  ImportOGGID,
   ImportRawID,
   
   AlignZeroID,
@@ -130,13 +128,6 @@ enum {
   EVT_MENU(ImportLabelsID, AudacityProject::OnImportLabels)
   EVT_MENU(ImportMIDIID, AudacityProject::OnImportMIDI)
   EVT_MENU(ImportRawID, AudacityProject::OnImportRaw)
-#ifdef USE_LIBVORBIS
-  EVT_MENU(ImportOGGID, AudacityProject::OnImportOGG)
-#endif
-
-#ifdef MP3SUPPORT
-  EVT_MENU(ImportMP3ID, AudacityProject::OnImportMP3)
-#endif
   EVT_MENU(AlignID, AudacityProject::OnAlign)
   EVT_MENU(AlignZeroID, AudacityProject::OnAlignZero)
   EVT_MENU(QuickMixID, AudacityProject::OnQuickMix)
@@ -214,13 +205,6 @@ public:
 	void OnImport(wxCommandEvent& event);
 	void OnImportLabels(wxCommandEvent& event);
 	void OnImportMIDI(wxCommandEvent& event);
-#ifdef MP3SUPPORT
-	void OnImportMP3(wxCommandEvent& event);
-#endif
-
-#ifdef USE_LIBVORBIS
-	void OnImportOGG(wxCommandEvent& event);
-#endif
 	void OnImportRaw(wxCommandEvent& event);
 
 	void OnQuickMix(wxCommandEvent& event);

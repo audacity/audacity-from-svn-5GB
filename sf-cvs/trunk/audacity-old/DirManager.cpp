@@ -102,7 +102,7 @@ void DirManager::CleanTempDir()
   wxStringList fnameList;
   int count=0;
 
-  fname = wxFindFirstFile((const char *)(temp + pathChar + "*"));
+  fname = wxFindFirstFile((const char *)(temp + pathChar + "*.auf"));
   while (fname != "") {
     count++;
     fnameList.Add(fname);

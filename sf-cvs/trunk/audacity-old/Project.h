@@ -69,17 +69,9 @@ public:
   // File I/O
 
   void OpenFile(wxString fileName);
+  void Import(wxString fileName);
   void Save(bool overwrite = true, bool fromSaveAs = false);
   void SaveAs();
-  void ImportFile(wxString fileName);
-#ifdef MP3SUPPORT
-  void ImportMP3(wxString fileName);
-#endif
-
-#ifdef USE_LIBVORBIS
-  void ImportOGG(wxString fileName);
-#endif
-
   void Clear();
 
   // Methods associated with menu items are in Menus.h

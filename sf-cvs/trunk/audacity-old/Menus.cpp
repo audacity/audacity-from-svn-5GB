@@ -32,8 +32,6 @@
 #include "Import.h"
 #include "ImportRaw.h"
 #include "ImportMIDI.h"
-#include "ImportMP3.h"
-#include "ImportOGG.h"
 
 #include "LabelTrack.h"
 #include "Mix.h"
@@ -106,13 +104,6 @@ void AudacityProject::CreateMenuBar()
   mProjectMenu->Append(ImportID, "&Import Audio...\tCtrl+I");
   mProjectMenu->Append(ImportLabelsID, "Import Labels...");
   mProjectMenu->Append(ImportMIDIID, "Import &MIDI...");
-#ifdef MP3SUPPORT
-  mProjectMenu->Append(ImportMP3ID, "Import MP&3...");
-#endif
-
-#ifdef USE_LIBVORBIS
-  mProjectMenu->Append(ImportOGGID, "Import &OGG...");
-#endif
   mProjectMenu->Append(ImportRawID, "Import Raw Data...");
   mProjectMenu->AppendSeparator();
   mProjectMenu->Append(QuickMixID, "&Quick Mix");
@@ -775,7 +766,9 @@ void AudacityProject::OnImport(wxCommandEvent& event)
 				   "WAV files (*.wav)|*.wav|"
 				   "AIFF files (*.aif)|*.aif|"
 				   "AU files (*.au)|*.au|"
-				   "IRCAM files (*.snd)|*.snd|",
+				   "IRCAM files (*.snd)|*.snd|"
+				   "MP3 files (*.mp3)|*.mp3|"
+				   "Ogg Vorbis files (*.ogg)|*.ogg|",
 				   0, // Flags
 				   this); // Parent
 
@@ -783,7 +776,7 @@ void AudacityProject::OnImport(wxCommandEvent& event)
     path = ::wxPathOnly(fileName);
     gPrefs->Write("/DefaultOpenPath", path);
 
-    ImportFile(fileName);
+    Import(fileName);
   }
 }
 
@@ -861,54 +854,6 @@ void AudacityProject::OnImportMIDI(wxCommandEvent& event)
 	}
   }
 }
-
-#ifdef MP3SUPPORT
-void AudacityProject::OnImportMP3(wxCommandEvent& event)
-{
-  wxString path = gPrefs->Read("/DefaultOpenPath", ::wxGetCwd());
-  
-  wxString fileName =
-	wxFileSelector("Select an MP3 file...",
-				   path, // Path
-				   "", // Name
-				   ".mp3", // Extension
-				   "MP3 files (*.mp3)|*.mp3|"
-				   "All files (*.*)|*.*",
-				   0, // Flags
-				   this); // Parent
-
-  if (fileName != "") {
-    path = ::wxPathOnly(fileName);
-    gPrefs->Write("/DefaultOpenPath", path);
-
-	ImportMP3(fileName);
-  }
-}
-#endif /* MP3SUPPORT */
-
-#ifdef USE_LIBVORBIS
-void AudacityProject::OnImportOGG(wxCommandEvent& event)
-{
-  wxString path = gPrefs->Read("/DefaultOpenPath", ::wxGetCwd());
-  
-  wxString fileName =
-	wxFileSelector("Select an OGG file...",
-				   path, // Path
-				   "", // Name
-				   ".ogg", // Extension
-				   "MP3 files (*.ogg)|*.ogg|"
-				   "All files (*.*)|*.*",
-				   0, // Flags
-				   this); // Parent
-
-  if (fileName != "") {
-    path = ::wxPathOnly(fileName);
-    gPrefs->Write("/DefaultOpenPath", path);
-
-	ImportOGG(fileName);
-  }
-}
-#endif /* USE_LIBVORBIS */
 
 void AudacityProject::OnImportRaw(wxCommandEvent& event)
 {

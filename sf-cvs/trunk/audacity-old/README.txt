@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.95: targeting April 14, 2001
+Version 0.95: April 27, 2001
 
 http://www.cs.cmu.edu/~music/audacity/
 
@@ -78,7 +78,16 @@ email Dominic Mazzoni <dmazzoni+@cs.cmu.edu>.
 
 -------------------------------------------------------------
 
-Known problems:
+Known issues/problems:
+
+* All platforms: There is no warning asking you if you want
+  to save changes when you quit or close a window.
+
+* All platforms: Save As... does not correctly make a copy
+  of a project.  It moves the project, but leaves the old
+  one broken.  As a workaround, just copy the project file
+  and its data directory somewhere else manually when you
+  need to make a copy of a project.
 
 * Windows: The floating tool palette does not minimize when
   minimizing a project window.  As a workaround, you can
@@ -87,6 +96,12 @@ Known problems:
 * Linux: Full duplex (play one track while recording another)
   does not seem to work, even if your sound card supports it.
   This is likely a problem with the way we are using OSS.
+
+* Linux: Some users report choppy audio.  This is likely a
+  problem with the way we are using OSS.
+
+* Linux: Sound cards that only deal with more than two
+  channels are not yet supported.
 
 -------------------------------------------------------------
 
@@ -108,6 +123,9 @@ Changes in 0.95:
 
   - Added support for the Free libmpeg3 library on unix 
     to replace the proprietary xaudio (Joshua)
+
+  - Importing MP3 and Ogg Vorbis files is now handled automatically
+    by the Open and Import commands.
 
   - Fixed the Import Raw Data feature, so now you can
     import files of almost any arbitrary format (as long

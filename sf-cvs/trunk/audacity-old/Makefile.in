@@ -39,6 +39,7 @@ OBJS = \
 	$(OBJDIR)/ImportMIDI.cpp.o \
 	$(OBJDIR)/ImportMP3.cpp.o \
 	$(OBJDIR)/ImportOGG.cpp.o \
+	$(OBJDIR)/ImportPCM.cpp.o \
 	$(OBJDIR)/ImportRaw.cpp.o \
 	$(OBJDIR)/LabelTrack.cpp.o \
 	$(OBJDIR)/Menus.cpp.o \

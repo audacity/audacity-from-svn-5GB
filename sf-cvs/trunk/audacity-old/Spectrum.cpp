@@ -123,7 +123,7 @@ bool ComputeSpectrum(sampleType *data, int width, int height,
 
 	// Reverse and scale
 	for(i=0; i<maxSamples; i++)
-	  in[i] = sqrt(processed[i] / (windowSize/2));
+	  in[i] = processed[i] / (windowSize/4);
 	for(i=0; i<maxSamples; i++)
 	  processed[maxSamples-1-i] = in[i];
   }

@@ -38,9 +38,6 @@
 #include "AudioIO.h"
 #include "FreqWindow.h"
 #include "Import.h"
-#include "ImportMP3.h"
-#include "ImportOGG.h"
-
 #include "LabelTrack.h"
 #include "Mix.h"
 #include "NoteTrack.h"
@@ -831,85 +828,24 @@ void AudacityProject::OnCloseWindow(wxCloseEvent& event)
 
 void AudacityProject::OpenFile(wxString fileName)
 {
-#ifdef MP3SUPPORT
-  // Check for .MP3 suffix
-
-  if (!fileName.Right(3).CmpNoCase("mp3")) {
-    if (mDirty || !mTracks->IsEmpty()) {
-	    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
-	    project->ImportMP3(fileName);
-      return;
-    }
-    else {
-	    ImportMP3(fileName);
-		if (!mTracks->IsEmpty()) {
-		  mFileName = fileName;
-		  mName = wxFileNameFromPath(mFileName);
-		  SetTitle(mName);
-		}
-	    return;
-    }
+  if (mDirty || !mTracks->IsEmpty()) {
+	AudacityProject *project = CreateNewAudacityProject(gParentWindow);
+	project->OpenFile(fileName);
   }
-#endif /* MP3SUPPORT */
-
-#ifdef USE_LIBVORBIS
-  // Check for .OGG suffix
-
-  if (!fileName.Right(3).CmpNoCase("ogg")) {
-    if (mDirty || !mTracks->IsEmpty()) {
-	    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
-	    project->ImportOGG(fileName);
-      return;
-    }
-    else {
-	    ImportOGG(fileName);
-		if (!mTracks->IsEmpty()) {
-		  mFileName = fileName;
-		  mName = wxFileNameFromPath(mFileName);
-		  SetTitle(mName);
-		}
-	    return;
-    }
-  }
-#endif /* USE_LIBVORBIS */
-
-  // Check for .WAV, .AIFF, .AIF, .AU, or .IRCAM suffix
-
-  if (!fileName.Right(3).CmpNoCase("wav") ||
-      !fileName.Right(4).CmpNoCase("aiff") ||
-      !fileName.Right(3).CmpNoCase("aif") ||
-      !fileName.Right(2).CmpNoCase("au") ||
-      !fileName.Right(3).CmpNoCase("snd") ||
-      !fileName.Right(5).CmpNoCase("ircam")) {
-    if (mDirty || !mTracks->IsEmpty()) {
-	    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
-#ifdef MP3SUPPORT
-	    project->ImportMP3(fileName);
-#endif
-      return;
-    }
-    else {
-	    ImportFile(fileName);
-      if (!mTracks->IsEmpty()) {
-        mFileName = fileName;
-        mName = wxFileNameFromPath(mFileName);
-        SetTitle(mName);
-      }
-	    return;
-    }
-  }
-  
-  // If it didn't end in any of those extensions, next we check to see
-  // if it's a project file (should end in .aup, but we don't care).
 
   // We want to open projects using wxTextFile, but if it's NOT a project
   // file (but actually a WAV file, for example), then wxTextFile will spin
-  // for a long time searching for line breaks.  So, we look for our signature
-  // at the beginning of the file first:
+  // for a long time searching for line breaks.  So, we look for our
+  // signature at the beginning of the file first:
 
   bool isProjectFile;
   wxString firstLine = "AudacityProject";
   char temp[16];
+
+  if (!::wxFileExists(fileName)) {
+	wxMessageBox("Couldn't open "+mFileName);
+    return;
+  }
 
   wxFile ff(fileName);
   if (!ff.IsOpened()) {
@@ -921,45 +857,23 @@ void AudacityProject::OpenFile(wxString fileName)
   isProjectFile = (firstLine == temp);
   ff.Close();
 
-  // If we think it's a project file, try to open it using wxTextFile
+  if (!isProjectFile) {
+	// Try opening it as any other form of audio
+	Import(fileName);
+	return;
+  }
 
   wxTextFile f;
 
-  if (isProjectFile) {
-    f.Open(fileName);
-    if (!f.IsOpened()) {
-	  wxMessageBox("Couldn't open "+mFileName);
-	  return;
-    }
-  }
-
-  // If not, try to import it as a WAV file or some other recognized format
-
-  if (!isProjectFile || f.GetFirstLine() != firstLine) {
-    f.Close();
-    if (mDirty || !mTracks->IsEmpty()) {
-	    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
-	    project->ImportFile(fileName);
-      return;
-    }
-    else {
-	    ImportFile(fileName);
-      if (!mTracks->IsEmpty()) {
-        mFileName = fileName;
-        mName = wxFileNameFromPath(mFileName);
-        SetTitle(mName);
-      }
-
-      // TODO:
-      // If we get here, we have no idea what the file format is.
-      // Later this could pop up the "Import Raw Data..." dialog.
-
-	    return;
-    }
+  f.Open(fileName);
+  if (!f.IsOpened()) {
+	wxMessageBox("Couldn't open "+mFileName);
+	return;
   }
 
   mFileName = fileName;
   mName = wxFileNameFromPath(mFileName);
+
   SetTitle(mName);
 
   ///
@@ -971,10 +885,11 @@ void AudacityProject::OpenFile(wxString fileName)
   wxString version;
   long longVpos;
 
+  f.GetFirstLine(); // This should say "AudacityProject"
+
   if (f.GetNextLine() != "Version") goto openFileError;
   version = f.GetNextLine();
-  if (version != AUDACITY_FILE_FORMAT_VERSION &&
-	  version != "0.9") {
+  if (version != AUDACITY_FILE_FORMAT_VERSION) {
 	wxMessageBox("This project was saved by a different version of "
 				 "Audacity and is no longer supported.");
 	return;
@@ -983,6 +898,7 @@ void AudacityProject::OpenFile(wxString fileName)
   if (f.GetNextLine() != "projName") goto openFileError;
   projName = f.GetNextLine();
   projPath = wxPathOnly(mFileName);
+
   if (!mDirManager.SetProject(projPath, projName, false)) return;
 
   if (f.GetNextLine() != "sel0") goto openFileError;
@@ -1038,6 +954,54 @@ openFileError:
 	f.GetCurrentLine()));
   f.Close();
   return;
+}
+
+void AudacityProject::Import(wxString fileName)
+{
+  WaveTrack       **newTracks;
+  int             numTracks;
+
+  numTracks = ::Import(this, fileName, &newTracks, &mDirManager);
+
+  if (numTracks <= 0)
+	return;
+
+  SelectNone();
+  
+  bool initiallyEmpty = mTracks->IsEmpty();
+  bool rateWarning = false;
+  double newRate;
+  
+  for(int i=0; i<numTracks; i++) {
+	if (i==0)
+	  newRate = newTracks[i]->rate;
+	if (newTracks[i]->rate != mRate)
+	  rateWarning = true;
+	mTracks->Add(newTracks[i]);
+	newTracks[i]->selected = true;
+  }
+
+  delete[] newTracks;
+  
+  if (initiallyEmpty) {
+	mRate = newRate;
+	mStatus->SetRate(mRate);
+  }
+  else if (rateWarning) {
+	wxMessageBox("Warning: your file has multiple sampling rates.  "
+				 "Audacity will ignore any track which is not at "
+				 "the same sampling rate as the project.");
+  }
+
+  PushState();    
+  ZoomFit();
+  mTrackPanel->Refresh(false);
+
+  if (initiallyEmpty) {
+	mName = ::TrackNameFromFileName(fileName);
+	mFileName = ::wxPathOnly(fileName) + "/" + mName;
+	SetTitle(mName);
+  }
 }
 
 void AudacityProject::Save(bool overwrite /* = true */,
@@ -1174,137 +1138,38 @@ void AudacityProject::Save(bool overwrite /* = true */,
 
 void AudacityProject::SaveAs()
 {
-  wxString fName = mFileName;
-  if (fName == "")
-    fName = ".aup";
+  wxString fName;
+
+  wxString path, baseName, extension;
+  ::wxSplitPath(mFileName, &path, &baseName, &extension);
+  extension = "aup";
+  fName = baseName + "." + extension;
 
   fName = wxFileSelector("Save Project As:",
-                         NULL,
+                         path,
                          fName,
-                         "aup",
+                         "",
                          "Audacity projects (*.aup)|*.aup",
                          wxSAVE,
                          this);
 
-  // wxString fName = wxSaveFileSelector("", "aup");
-
   if (fName == "")
 	return;
 
-  mFileName = fName;
-  mName = wxFileNameFromPath(mFileName);
-  SetTitle(mName);
+  if (fName == ".aup") {
+	wxMessageBox("You must name the file!");
+	return;
+  }
+
+  ::wxSplitPath(fName, &path, &baseName, &extension);
+  extension = "aup";
+
+  mName = baseName + "." + extension;
+  mFileName = path + "/" + mName;
+  SetTitle(baseName);
 
   Save(false, true);
 }
-
-void AudacityProject::ImportFile(wxString fileName)
-{
-  WaveTrack *left = 0;
-  WaveTrack *right = 0;
-
-  if (ImportWAV(this, fileName, &left, &right, &mDirManager)) {
-
-	if (left || right) {
-
-	  SelectNone();
-
-	  if (mTracks->IsEmpty()) {
-		if (left)
-		  mRate = left->rate;
-		else
-		  mRate = right->rate;
-
-		mStatus->SetRate(mRate);
-	  }
-	  else {
-		if ((left && left->rate != mRate) ||
-			(right && right->rate != mRate)) {
-		  wxMessageBox("Warning: your file has multiple sampling rates.  "
-					   "Audacity will ignore any track which is not at "
-					   "the same sampling rate as the project.");
-		}
-	  }
-
-	}
-
-	if (left) {
-	  if (right) {
-		left->channel = VTrack::LeftChannel;
-		right->channel = VTrack::RightChannel;
-	  }
-	  else
-		left->channel = VTrack::MonoChannel;
-	}
-	else
-	  right->channel = VTrack::MonoChannel;
-
-    if (left) {
-      mTracks->Add(left);
-	  left->selected = true;
-    }
-
-    if (right) {
-      mTracks->Add(right);
-	  right->selected = true;
-    }
-
-    PushState();
-	
-	ZoomFit();
-  }
-}
-
-#ifdef MP3SUPPORT
-void AudacityProject::ImportMP3(wxString fileName)
-{
-  WaveTrack *left = 0;
-  WaveTrack *right = 0;
-
-  if (::ImportMP3(this, fileName, &left, &right, &mDirManager)) {
-
-    if (left || right) {
-      SelectNone();
-    }
-    
-    if (left) {
-      mTracks->Add(left);
-      left->selected = true;
-    }
-    
-    if (right) {
-      mTracks->Add(right);
-      right->selected = true;
-    }
-    
-    PushState();
-    
-	ZoomFit();
-
-  }
-}
-#endif /* MP3SUPPORT */
-
-#ifdef USE_LIBVORBIS
-void AudacityProject::ImportOGG(wxString fileName)
-{
-	WaveTrack **channels = 0;
-	int numChannels = 0;
-
-	if(::ImportOGG(this, fileName, &channels, &numChannels, &mDirManager)) {
-		for(int c = 0; c < numChannels; c++) {
-			mTracks->Add(channels[c]);
-			channels[c]->selected = true;
-		}
-		
-		// TODO: delete array of channels (does this occur anywhere else?)
-
-		PushState();
-
-		ZoomFit();
-	}
-}
-#endif /* USE_LIBVORBIS */
 
 //
 // Zoom methods
