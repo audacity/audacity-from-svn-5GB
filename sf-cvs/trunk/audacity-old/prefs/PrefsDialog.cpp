@@ -74,7 +74,7 @@ wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
    mOK->SetFocus();
 #endif
 
-  mCancel = new wxButton(this,
+   mCancel = new wxButton(this,
                           wxID_CANCEL,
                           "Cancel");
 
@@ -90,7 +90,10 @@ wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
    topSizer->Fit(this);
    topSizer->SetSizeHints(this);
 
-
+   #ifdef __WXMAC__
+   // Until sizing works properly on the Mac
+   SetSize(500, 350);
+   #endif
 }
 
 

@@ -75,14 +75,14 @@ PrefsPanel(parent)
          wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
           
       copyOrEditSizer->Add( mCopyOrEdit[0], 0,
-         wxGROW|wxALL, RADIO_BUTTON_BORDER );
+         wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
 
       mCopyOrEdit[1] = new wxRadioButton(
          this, -1, "Edit the original in place",
          wxDefaultPosition, wxDefaultSize, 0 );
    
       copyOrEditSizer->Add( mCopyOrEdit[1], 0,
-         wxGROW|wxALL, RADIO_BUTTON_BORDER );
+         wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
 
       topSizer->Add( copyOrEditSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER );
    }
@@ -90,7 +90,7 @@ PrefsPanel(parent)
 
    {
       wxStaticBoxSizer *defFormatSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, "Default Export Format"),
+         new wxStaticBox(this, -1, "Export Format"),
          wxVERTICAL);
 
       mDefaultExportFormats[0] = new wxRadioButton(
@@ -99,14 +99,14 @@ PrefsPanel(parent)
 
       defFormatSizer->Add(
          mDefaultExportFormats[0], 0,
-         wxGROW|wxALL, RADIO_BUTTON_BORDER);
+         wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER);
 
       for(int i = 1; i < mNumFormats; i++) {
          mDefaultExportFormats[i] = new wxRadioButton(
             this, -1, gDefaultExportFormatOptions[i]);
          defFormatSizer->Add(
             mDefaultExportFormats[i], 
-            0, wxGROW|wxALL, RADIO_BUTTON_BORDER);
+            0, wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER);
       }
 
       topSizer->Add(

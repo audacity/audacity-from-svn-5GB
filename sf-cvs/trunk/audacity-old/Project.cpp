@@ -583,15 +583,14 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
 
       Effect *f = Effect::GetEffect(event.GetId() - FirstEffectID);
 
-      if (!f->DoEffect(this, mTracks, mViewInfo.sel0, mViewInfo.sel1)) {
-         wxMessageBox("Effect unsuccessful.  Select Undo to revert back to the previous state.");
+      if (f->DoEffect(this, mTracks, mViewInfo.sel0, mViewInfo.sel1)) {
+         PushState();
+         FixScrollbars();
+         mTrackPanel->Refresh(false);
       }
-
-      PushState();
-
-      FixScrollbars();
-
-      mTrackPanel->Refresh(false);
+      else {
+         // TODO: undo the effect if necessary?
+      }
 
       // This indicates we handled the event.
       return true;

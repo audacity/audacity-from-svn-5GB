@@ -17,6 +17,7 @@
 
 int rates[] = { 8000,
    11025,
+   16000,
    22050,
    44100,
    48000
@@ -24,12 +25,13 @@ int rates[] = { 8000,
 
 wxString stringRates[] = { "8000",
    "11025",
+   "16000",
    "22050",
    "44100",
    "48000"
 };
 
-#define NUM_RATES 5
+#define NUM_RATES 6
 
 SampleRatePrefs::SampleRatePrefs(wxWindow * parent):
 PrefsPanel(parent)
@@ -38,7 +40,7 @@ PrefsPanel(parent)
        gPrefs->Read("/SamplingRate/DefaultProjectSampleRate", 44100);
 
    int pos = 3;     // Fall back to 44100 if it doesn't match anything else
-   for (int i = 0; i < 5; i++)
+   for (int i = 0; i < NUM_RATES; i++)
       if (rate == rates[i]) {
          pos = i;
          break;
@@ -57,12 +59,12 @@ PrefsPanel(parent)
                                           wxDefaultPosition, wxDefaultSize,
                                           wxRB_GROUP);
       defProjSizer->Add(
-         mSampleRates[0], 0, wxGROW | wxALL, RADIO_BUTTON_BORDER);
+         mSampleRates[0], 0, wxGROW | wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER);
 
       for(int j = 1; j < NUM_RATES; j++) {
          mSampleRates[j] = new wxRadioButton(this, -1, stringRates[j]);
          defProjSizer->Add(
-            mSampleRates[j], 0, wxGROW| wxALL, RADIO_BUTTON_BORDER);
+            mSampleRates[j], 0, wxGROW| wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER);
       }
 
       mSampleRates[pos]->SetValue(true);

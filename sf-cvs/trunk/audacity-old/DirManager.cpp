@@ -50,8 +50,12 @@ DirManager::DirManager()
 {
    if (firstCtor) {
       wxString tempPref = gPrefs->Read("/Directories/TempDir", temp);
-      if (tempPref == "" || tempPref.GetChar(0) != '/')
+      if (tempPref == "")
          tempPref = temp;
+      #ifndef __WXMAC__         
+      if (tempPref.GetChar(0) != '/')
+         tempPref = temp;
+      #endif
       temp = tempPref;
       if (!wxPathExists(temp))
          wxMkdir(temp);

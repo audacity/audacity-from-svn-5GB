@@ -66,15 +66,15 @@ PrefsPanel(parent)
          wxVERTICAL);
 
       mFFTSize[0] = new wxRadioButton(
-         this, -1, "Radio", wxDefaultPosition,
+         this, -1, stringFFTSizes[0], wxDefaultPosition,
          wxDefaultSize, wxRB_GROUP );
       fftSizeSizer->Add(mFFTSize[0], 0, 
-         wxGROW|wxALL, RADIO_BUTTON_BORDER );
+         wxGROW|wxLEFT|wxRIGHT, RADIO_BUTTON_BORDER );
 
       for(i = 1; i < numFFTSizes; i++) {
          mFFTSize[i] = new wxRadioButton(this, -1, stringFFTSizes[i]);
          fftSizeSizer->Add(mFFTSize[i], 0,
-            wxGROW|wxALL, RADIO_BUTTON_BORDER );
+            wxGROW|wxLEFT|wxRIGHT, RADIO_BUTTON_BORDER );
       }
 
       mFFTSize[pos]->SetValue(true);
@@ -94,12 +94,13 @@ PrefsPanel(parent)
       wxBoxSizer *freqSizer = new wxBoxSizer( wxHORIZONTAL );
 
       freqSizer->Add(
-         new wxStaticText(this, -1, "Maximum Frequency:"),
-         0, wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER );
+         new wxStaticText(this, -1, "Maximum Frequency (Hz):"),
+         0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER );
 
       mMaxFreqCtrl = new wxTextCtrl( this, -1, maxFreqStr,
          wxDefaultPosition, wxSize(80,-1));
-      freqSizer->Add(mMaxFreqCtrl, 1, wxGROW|wxALL, GENERIC_CONTROL_BORDER );
+      freqSizer->Add(mMaxFreqCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL,
+                     GENERIC_CONTROL_BORDER );
 
       topSizer->Add(freqSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER );
    }
