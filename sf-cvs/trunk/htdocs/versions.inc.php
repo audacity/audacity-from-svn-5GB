@@ -6,7 +6,7 @@
   // beta/versions.inc.php...
 
   $stableVersion =   "1.2.1";
-  $betaVersion =     "1.2.0-pre4";
+  $betaVersion =     "1.2.2-pre1";
 
   $winStableVersion = "1.2.1";
   $winStableSize =    "2.9 MB";
