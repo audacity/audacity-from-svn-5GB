@@ -50,7 +50,7 @@ class wxTimer;
 #include "TrackPanel.h"
 #include "xml/XMLTagHandler.h"
 
-#include "commands/Commands.h"
+#include "commands/CommandManager.h"
 
 const int AudacityProjectTimerID = 5200;
 
@@ -101,9 +101,6 @@ class AudacityProject:public wxFrame,
 
    virtual ~ AudacityProject();
 
-   // Accessors
-   Commands *GetCommands() { return &mCommands; };
-
    TrackList *GetTracks() { return mTracks; };
    UndoManager *GetUndoManager() { return &mUndoManager; }
 
@@ -134,16 +131,13 @@ class AudacityProject:public wxFrame,
    bool SaveAs();
    void Clear();
 
-#define AUDACITY_COMMANDS_CALLBACK_CALLBACKS
-#include "commands/CommandsCallback.h"
-#undef AUDACITY_COMMANDS_CALLBACK_CALLBACKS
+#include "Menus.h"
 
  public:
 
    // Message Handlers
 
    virtual bool ProcessEvent(wxEvent & event);
-   bool ProcessEffectEvent(int nEffectIndex);
    void OnUpdateMenus(wxUpdateUIEvent & event);
 
    void OnActivate(wxActivateEvent & event);
@@ -155,6 +149,8 @@ class AudacityProject:public wxFrame,
    void OnScroll(wxScrollEvent & event);
    void OnCloseWindow(wxCloseEvent & event);
    void OnTimer(wxTimerEvent & event);
+
+   bool HandleKeyEvent(wxKeyEvent & event);
 
    void HandleResize();
 
@@ -185,6 +181,7 @@ class AudacityProject:public wxFrame,
    // TrackPanel callback methods
 
    virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum);
+   virtual void TP_DisplaySelection();
    virtual int TP_GetCurrentTool();
    virtual void TP_OnPlayKey();
    virtual void TP_PushState(wxString desc =
@@ -258,6 +255,9 @@ class AudacityProject:public wxFrame,
    TrackList *mTracks;
    ViewInfo mViewInfo;
 
+   int mSelectionFormat;
+   int mSnapTo;
+
    TrackList *mLastSavedTracks;
 
    // Clipboard (static because it is shared by all projects)
@@ -273,7 +273,7 @@ class AudacityProject:public wxFrame,
 
    // Commands
 
-   Commands mCommands;
+   CommandManager mCommandManager;
 
    bool mFirstTimeUpdateMenus;
    bool mLastNonZeroRegionSelected;

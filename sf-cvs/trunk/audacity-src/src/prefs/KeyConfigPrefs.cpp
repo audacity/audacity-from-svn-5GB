@@ -21,7 +21,6 @@
 
 #include "../Prefs.h"
 #include "KeyConfigPrefs.h"
-#include "../commands/CommandsCfg.h"
 
 #define AssignDefaultsButtonID  7001
 #define CurrentComboID          7002
@@ -69,7 +68,9 @@ PrefsPanel(parent)
    mList->InsertColumn(1, _("Key Combination"), wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(2, _("Command Action"),  wxLIST_FORMAT_LEFT );
 
-   gAudacityProjects[0]->GetCommands()->FillKeyBindingsList(mList);
+   // TODO
+   //gAudacityProjects[0]->GetCommands()->FillKeyBindingsList(mList);
+
    mList->SetColumnWidth( 0, 0 ); // First column width is zero, to hide it.
 //   mList->SetColumnWidth( 1, wxLIST_AUTOSIZE );
    // Would like to use wxLIST_AUTOSIZE but
@@ -121,7 +122,7 @@ PrefsPanel(parent)
    //Add label
    topSizer->Add(
             new wxStaticText(this, -1,
-               gCommandsCfgLocation + locationStatus),
+                             /*gCommandsCfgLocation*/"" + locationStatus),
             0, wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
 
    outSizer = new wxBoxSizer( wxVERTICAL );
@@ -137,12 +138,16 @@ PrefsPanel(parent)
 void KeyConfigPrefs::RepopulateBindingsList()
 {
    mList->DeleteAllItems(); // Delete contents, but not the column headers.
-   gAudacityProjects[0]->GetCommands()->FillKeyBindingsList(mList);
+
+   // TODO
+   //gAudacityProjects[0]->GetCommands()->FillKeyBindingsList(mList);
 }
 
 
 void KeyConfigPrefs::AssignDefaults(wxCommandEvent& event)
 {
+#if 0
+
    for(unsigned int i = 0; i < gAudacityProjects.GetCount(); i++)
    {
       if(gAudacityProjects[i])
@@ -153,12 +158,17 @@ void KeyConfigPrefs::AssignDefaults(wxCommandEvent& event)
          gAudacityProjects[i]->UpdateMenus();
       }
    }
+
+   #endif
+
    // Update the list that is displayed on screen.
    RepopulateBindingsList();
 }
 
 void KeyConfigPrefs::RebuildMenus(wxCommandEvent& event)
 {
+   #if 0
+
    for(unsigned int i = 0; i < gAudacityProjects.GetCount(); i++)
    {
       if(gAudacityProjects[i])
@@ -169,6 +179,9 @@ void KeyConfigPrefs::RebuildMenus(wxCommandEvent& event)
          gAudacityProjects[i]->UpdateMenus();
       }
    }
+
+   #endif
+
    // Update the list that is displayed on screen.
    RepopulateBindingsList();
 }
@@ -216,6 +229,10 @@ SysKeyTextCtrl::~SysKeyTextCtrl()
 void SysKeyTextCtrl::OnKey(wxKeyEvent& event)
 {
    wxString newStr = "";
+
+   //
+   // Code Duplication alert: this code is now in commands/Keyboard.cpp
+   //
 
    long key = event.GetKeyCode();
 

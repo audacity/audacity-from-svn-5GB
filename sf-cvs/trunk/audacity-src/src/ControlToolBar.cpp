@@ -545,6 +545,8 @@ void ControlToolBar::OnPlay(wxCommandEvent &evt)
    mFF->Disable();
    mPause->Enable();
 
+   mPlay->PushDown();
+
    AudacityProject *p = GetActiveProject();
    if (p) {
       TrackList *t = p->GetTracks();
@@ -581,6 +583,8 @@ void ControlToolBar::OnPlay(wxCommandEvent &evt)
 
 void ControlToolBar::OnStop(wxCommandEvent &evt)
 {
+   mStop->PushDown();
+
    SetStop(false);
    gAudioIO->StopStream();
    SetPlay(false);
@@ -604,6 +608,8 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
    mRewind->Disable();
    mFF->Disable();
    mPause->Enable();
+
+   mRecord->PushDown();
 
    AudacityProject *p = GetActiveProject();
    if (p) {
@@ -677,10 +683,12 @@ void ControlToolBar::OnPause(wxCommandEvent &evt)
 { 
    if(mPaused)
    {
+      mPause->PopUp();
       mPaused=false;
    }
    else
    {       
+      mPause->PushDown();
       mPaused=true;
    }
    
@@ -689,6 +697,7 @@ void ControlToolBar::OnPause(wxCommandEvent &evt)
 
 void ControlToolBar::OnRewind(wxCommandEvent &evt)
 {
+   mRewind->PushDown();
    mRewind->PopUp();
 
    if (gAudioIO->IsStreamActive(GetActiveProject()->GetAudioIOToken()))
@@ -701,6 +710,7 @@ void ControlToolBar::OnRewind(wxCommandEvent &evt)
 
 void ControlToolBar::OnFF(wxCommandEvent &evt)
 {
+   mFF->PushDown();
    mFF->PopUp();
 
    if (gAudioIO->IsStreamActive(GetActiveProject()->GetAudioIOToken()))
