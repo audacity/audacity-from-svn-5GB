@@ -757,44 +757,30 @@ void AudacityProject::Paste(wxCommandEvent & event)
 
 void AudacityProject::Trim(wxCommandEvent & event)
 {
- 
-   if(mViewInfo.sel1 > mViewInfo.sel0) {
-      TrackListIterator iter(mTracks);
+   if(mViewInfo.sel0 >= mViewInfo.sel1)
+      return;
 
-      VTrack *n = iter.First();
+   TrackListIterator iter(mTracks);
+   VTrack *n = iter.First();
 
-      double selLength = mViewInfo.sel1 - mViewInfo.sel0;
-     
+   double selLength = mViewInfo.sel1 - mViewInfo.sel0;
 
-      //Delete the section after the right selector
-      while (n) {
-         if (n->GetSelected()) {
-            
-            n->Clear(mViewInfo.sel1, n->GetMaxLen());
-         }
-         n = iter.Next();
+   while (n) {
+      if (n->GetSelected()) {
+         //Delete the section before the left selector
+         n->Clear(n->GetOffset(), mViewInfo.sel0);
+         if (mViewInfo.sel0 > n->GetOffset())
+            n->SetOffset(mViewInfo.sel0);
+
+         //Delete the section after the right selector
+         n->Clear(mViewInfo.sel1, n->GetMaxLen());
       }
-
-
-      //Delete the section before the left selector
-      n=iter.First();
-        while (n) {
-         if (n->GetSelected()) { 
-              n->Clear((double)0, mViewInfo.sel0);
-         }
-         n = iter.Next();
-        }
-      
-
-      //Reset the selectors
-      mViewInfo.sel0=0;
-      mViewInfo.sel1=selLength;
-         
-      FixScrollbars();
-      mTrackPanel->Refresh(false);
-      PushState(_("Trim file to selection"));   
-  
+      n = iter.Next();
    }
+
+   FixScrollbars();
+   mTrackPanel->Refresh(false);
+   PushState(_("Trim file to selection"));   
 }
    
 
