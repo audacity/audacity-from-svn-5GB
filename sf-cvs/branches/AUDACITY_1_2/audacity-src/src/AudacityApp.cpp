@@ -278,18 +278,17 @@ bool AudacityApp::OnInit()
       mChecker = new wxSingleInstanceChecker(name);
       if ( mChecker->IsAnotherRunning() ) {
          wxString prompt =
-            _("The system has detected that another copy of Audacity may be running.\n"
-            "Running two copies of Audacity simultaneously may lead to data loss or\n"
-            "cause your system to crash.\n\n"
-            "Are you sure you want to launch Audacity now?");
+            _("The system has detected that another copy of Audacity is running.\n"
+            "Running two copies of Audacity simultaneously may lead to\n"
+            "data loss or cause your system to crash, so is not allowed.\n\n"
+            "Use the New or Open commands in the currently running Audacity\n"
+            "process to open multiple projects simultaneously.\n");
          int action = wxMessageBox(prompt,
                                    _("Audacity is already running"),
-                                   wxYES_NO | wxICON_EXCLAMATION,
-                                   NULL);
-         if (action == wxNO) {
-            delete mChecker;
-            return false;
-         }
+                                   wxOK | wxICON_ERROR);
+         delete mChecker;
+         mChecker = NULL;
+         return false;
       }
    }
 
