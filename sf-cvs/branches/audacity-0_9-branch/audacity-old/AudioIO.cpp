@@ -422,6 +422,9 @@ void AudioIO::OnTimer()
 void AudioIO::Stop()
 {
    mStop = true;
+   if (!mRecording) {
+      snd_reset(&mPlayNode);
+   }
 }
 
 void AudioIO::HardStop()
