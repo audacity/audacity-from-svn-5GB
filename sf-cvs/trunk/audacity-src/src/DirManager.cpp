@@ -29,6 +29,7 @@
 #include "Audacity.h"
 #include "AudacityApp.h"
 #include "BlockFile.h"
+#include "blockfile/LegacyBlockFile.h"
 #include "blockfile/SimpleBlockFile.h"
 #include "blockfile/PCMAliasBlockFile.h"
 #include "DirManager.h"
@@ -389,9 +390,41 @@ bool DirManager::HandleXMLTag(const char *tag, const char **attrs)
       *mLoadingTarget = SimpleBlockFile::BuildFromXML(projFull, attrs);
    else if( !wxStricmp(tag, "pcmaliasblockfile") )
       *mLoadingTarget = PCMAliasBlockFile::BuildFromXML(projFull, attrs);
+   else if( !wxStricmp(tag, "blockfile") ) {
+      // Support Audacity version 1.1.1 project files?
+
+      /*
+      int i, len;
+      const char **attr2;
+      bool alias=false;
+      
+      len = 0;
+      attr2 = attrs;
+      while(*attr2++)
+         len++;
+      
+      attr2 = new const char *[len+1];
+      for(i=0; i<len+1; i++)
+         attr2[i] = attrs[i];
+      
+      for(i=0; i<len/2; i++) {
+         if (!wxStricmp(attrs[2*i], "alias")) {
+            if (atoi(attrs[2*i+1])==1)
+               alias = true;
+         }
+         if (!wxStricmp(attrs[2*i], "aliaspath"))
+            attrs[2*i] = "aliasfile";
+      }
+      */
+
+      printf("DirManager got a Legacy\n");
+
+      *mLoadingTarget = LegacyBlockFile::BuildFromXML(projFull, attrs,
+                                                      mLoadingFormat);
+   }
    else
       return false;
-
+      
    blockFileHash->Put( (*mLoadingTarget)->GetFileName().GetName(),
                        (wxObject*) *mLoadingTarget );
    return true;
