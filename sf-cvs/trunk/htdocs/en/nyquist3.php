@@ -169,6 +169,12 @@ Here are some useful functions:
 <tr><td><tt>(setf (aref s 1) right)</tt></td><td>makes <tt>right</tt> the second element of array <tt>s</tt></td></tr>
 </table>
 
+<p>
+As a convenience, if the input to your Nyquist plug-in is stereo,
+but you only output a single (mono) sound, Audacity will automatically
+copy it to both the left and right channels.
+</p>
+
 <?php BoxBottom(); ?>
 
 
