@@ -1,7 +1,7 @@
 <h2>Audacity 1.2.3'deki deðiþiklikler</h2>
 <ul>
 <li><p>
-    Bazý pencere sistemlerinde 50 dakikadan sonra kaydýn dýrmasýna ya da hatalý
+    Bazý pencere sistemlerinde 50 dakikadan sonra kaydýn durmasýna ya da hatalý
     görünüme sebep olan hata giderildi. (Bu hata Audacity 1.2.2'de giderilmiþti
     ancak hala bazý pencere sistemlerinde vardý)
 </p></li>

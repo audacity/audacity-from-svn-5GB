@@ -9,6 +9,7 @@ Manual complet de l'Audacity 1.2:
 <p>
 Guia de referència ràpida de l'Audacity 1.2:
 [<a href="onlinehelp-1.2/contents.htm">Consultar-la en línia</a>]
+[<a href="onlinehelp-1.2/reference.html">Versió per imprimir</a>]
 </p>
 
 <p>
@@ -18,7 +19,7 @@ Guia de referència ràpida de l'Audacity 1.2:
 
 <p>
 
-Cercar als llocs web i a la documentació de l'Audacity:
+Cerca als llocs web i a la documentació de l'Audacity:
 
 <form method="post" action="http://audacityteam.org/isearch/index.php" target="_self">
 
