@@ -957,9 +957,9 @@ bool Sequence::UpdateSummaries(samplePtr buffer,
       summary64K[i * 3 + 2] = rms;
    }
    for (i = sumLen; i < mSummary->frames64K; i++) {
-      summary256[i * 3] = 0.0f;
-      summary256[i * 3 + 1] = 0.0f;
-      summary256[i * 3 + 2] = 0.0f;
+      summary64K[i * 3] = 0.0f;
+      summary64K[i * 3 + 1] = 0.0f;
+      summary64K[i * 3 + 2] = 0.0f;
    }
 
    // Recalc block-level summary
@@ -1132,8 +1132,14 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,
       int x = 0;
 
       if (b==block0) {
-         theMin = temp[x];
-         theMax = temp[x];
+         if (divisor > 1) {
+            theMin = temp[0];
+            theMax = temp[1];
+         }
+         else {
+            theMin = temp[0];
+            theMax = temp[0];
+         }
          sumsq = 0.0;
          jcount = 0;
       }
