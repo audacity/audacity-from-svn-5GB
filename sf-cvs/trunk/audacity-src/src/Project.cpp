@@ -1003,19 +1003,33 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    GetCommands()->EnableItemsByFunction("appmenu", "OnCursorSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlign", numWaveTracksSelected > 1);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignZero", numWaveTracksSelected > 0);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignZeroMoveSel", numWaveTracksSelected == 1);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupZero", numWaveTracksSelected > 1);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupZeroMoveSel", numWaveTracksSelected > 1);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignCursor", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignCursorMoveSel", numWaveTracksSelected == 1 && !nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignSelStart", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignSelStartMoveSel", numWaveTracksSelected == 1 && nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignSelEndMoveSel", numWaveTracksSelected == 1 && nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignEndCursor", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignEndCursorMoveSel", numWaveTracksSelected == 1 && !nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignEndSelStart", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignEndSelStartMoveSel", numWaveTracksSelected == 1 && nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignEndSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignEndSelEndMoveSel", numWaveTracksSelected == 1 && nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupCursor", numWaveTracksSelected > 1 && !nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupCursorMoveSel", numWaveTracksSelected > 1 && !nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupSelStart", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupSelStartMoveSel", numWaveTracksSelected > 1 && nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupSelEnd", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupSelEndMoveSel", numWaveTracksSelected > 1 && nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupEndCursor", numWaveTracksSelected > 1 && !nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupEndCursorMoveSel", numWaveTracksSelected > 1 && !nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupEndSelStart", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupEndSelStartMoveSel", numWaveTracksSelected > 1 && nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupEndSelEnd", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupEndSelEndMoveSel", numWaveTracksSelected > 1 && nonZeroRegionSelected);
    GetCommands()->EnableItemsByFunction("appmenu", "OnRemoveTracks", numTracksSelected > 0);
 
    // Effects menus
