@@ -78,7 +78,7 @@ class EditToolBar:public ToolBar {
 
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnKeyEvent(wxKeyEvent & event);
-   virtual void EnableDisableButtons(bool anySelection, bool anyTracks);
+   virtual void EnableDisableButtons(int sumOfFlags);
 
 
    void OnCut();

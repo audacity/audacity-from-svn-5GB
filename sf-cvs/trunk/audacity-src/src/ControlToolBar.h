@@ -86,7 +86,7 @@ class ControlToolBar:public ToolBar {
 
    float GetSoundVol();
 
-   virtual void EnableDisableButtons(bool anySelection, bool anyTracks);
+   virtual void EnableDisableButtons(int sumOfFlags);
 
  private:
 

@@ -27,8 +27,6 @@
     
 
 #include <wx/image.h>
-#include <math.h>
-    
 
 #include "widgets/AButton.h"
 #include "widgets/ASlider.h"
@@ -48,7 +46,6 @@
 #define TOOLBAR_HEIGHT_OFFSET 25
 #endif  /*  */
     
-#include <iostream.h>
     
 ////////////////////////////////////////////////////////////
 /// Methods for ToolBarStub
@@ -502,7 +499,36 @@ void ToolBarFrame::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
    this->Hide();
 } 
 
-void ToolBar::EnableDisableButtons(bool anySelection, bool anyTracks) 
+void ToolBar::EnableDisableButtons(int sumOfFlags) 
 {
    // Place toolbar-specific button-enabling code here
+   // sumOfFlags gets sent to all toolbars.
+   // These flags are as follows:
+   // 1 =2^0: if there is a selection
+   // 2 =2^1: if there is at least one track
+   // 4 =2^2: if UNDO is possible
+   // 8 =2^3: if REDO is possible
+   // 16=2^4: if zoomin is possible  (max zoom in not hit)
+   // 32=2^5: if zoomout is possible (max zoom out not hit)
+
+   //These should be added up and passed to EnableDisableButtons.
+   //Within EnableDisableButtons, ExtractFlag(sum, bit)
+   //can be used to extract a particular flag, which is
+   //the log base 2 of the summand (0,1,2,etc.)
 } 
+
+
+
+//***********************************************************
+//This extracts a flag in the nth binary digit of an integer,
+//from its least significant to its most
+//The actual form of the int shouldn't matter, because it
+//is accomplished entirely through modular arithmetic
+bool ToolBar::ExtractFlag(int flagsum, int bit)
+{
+   //Ghetto 2^bit calculator
+   unsigned int power=1;
+   for(unsigned int i=0;i<bit;i++) power *= 2;
+
+   return (flagsum % ( power*2)) / power;
+}

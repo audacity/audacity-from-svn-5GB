@@ -46,6 +46,10 @@ int mLastNumTracksSelected;
 int mLastNumWaveTracks;
 int mLastNumWaveTracksSelected;
 int mLastNumLabelTracks;
+double mLastZoomLevel;
+int mLastToolBarCheckSum;   //This finds the state of the toolbars:
+                            //Base three for ControlToolBar, EditToolBar, etc
+                            // 0: unloaded, 1: docked, 2: floating (* 3 for EditToolBar)
 
 bool mFirstTimeUpdateMenus;
 
