@@ -1136,6 +1136,7 @@ void AudacityProject::OpenFile(wxString fileName)
   if (version != "0.9") {
 	if (f.GetNextLine() != "rate") goto openFileError;
 	if (!(f.GetNextLine().ToDouble(&mRate))) goto openFileError;
+	mStatus->SetRate(mRate);
   }
 
   mTracks->Clear();
