@@ -174,6 +174,13 @@ MixerToolBar::~MixerToolBar()
       delete mInputSourceChoice;
 }
 
+void MixerToolBar::RecreateTipWindows()
+{
+   // Hack to make sure they appear on top of other windows
+   mInputSlider->RecreateTipWin();
+   mOutputSlider->RecreateTipWin();
+}
+
 float MixerToolBar::GetInputVol()
 {
    return mInputSlider->Get();
