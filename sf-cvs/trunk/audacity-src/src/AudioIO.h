@@ -35,6 +35,7 @@ class AudacityProject;
 extern AudioIO *gAudioIO;
 
 void InitAudioIO();
+void DeinitAudioIO();
 
 class AudioThread : public wxThread {
  public:
@@ -128,6 +129,7 @@ class AudioIO {
    friend class AudioThread;
 
    friend void InitAudioIO();
+   friend void DeinitAudioIO();
    
    friend int audacityAudioCallback(
 		void *inputBuffer, void *outputBuffer,

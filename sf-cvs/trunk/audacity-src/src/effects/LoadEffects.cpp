@@ -92,3 +92,8 @@ void LoadEffects()
    LoadLadspaPlugins();
 #endif
 }
+
+void UnloadEffects()
+{
+   Effect::UnregisterEffects();
+}

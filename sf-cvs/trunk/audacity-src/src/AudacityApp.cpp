@@ -892,6 +892,10 @@ int AudacityApp::OnExit()
 
    FinishPreferences();
 
+   UnloadEffects();
+
+   DeinitAudioIO();
+
 //   delete mChecker;
    return 0;
 }

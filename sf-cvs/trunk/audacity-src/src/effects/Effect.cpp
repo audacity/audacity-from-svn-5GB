@@ -43,6 +43,14 @@ void Effect::RegisterEffect(Effect *f)
       mEffects.Add(f);
 }
 
+void Effect::UnregisterEffects()
+{
+   for(int i=0; i<sNumEffects; i++)
+      delete mEffects[i];
+
+   mEffects.Clear();
+}
+
 int Effect::GetNumEffects()
 {
    return sNumEffects;

@@ -48,6 +48,7 @@ class Effect {
  //
  public:
    static void RegisterEffect(Effect *f);
+   static void UnregisterEffects();
    static Effect *GetEffect(int ID);
    static int GetNumEffects();
 
