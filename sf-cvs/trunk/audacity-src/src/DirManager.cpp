@@ -414,12 +414,16 @@ bool DirManager::HandleXMLTag(const char *tag, const char **attrs)
    if( mLoadingTarget == NULL )
       return false;
 
-   if ( !wxStricmp(tag, "simpleblockfile") )
+   if( !wxStricmp(tag, "silentblockfile") ) {
+      // Silent blocks don't actually have a file associated, so
+      // we don't need to worry about the hash table at all
+      *mLoadingTarget = SilentBlockFile::BuildFromXML(*this, attrs);
+      return true;
+   }
+   else if ( !wxStricmp(tag, "simpleblockfile") )
       *mLoadingTarget = SimpleBlockFile::BuildFromXML(*this, attrs);
    else if( !wxStricmp(tag, "pcmaliasblockfile") )
       *mLoadingTarget = PCMAliasBlockFile::BuildFromXML(*this, attrs);
-   else if( !wxStricmp(tag, "silentblockfile") )
-      *mLoadingTarget = SilentBlockFile::BuildFromXML(*this, attrs);
    else if( !wxStricmp(tag, "blockfile") ||
             !wxStricmp(tag, "legacyblockfile") ) {
       // Support Audacity version 1.1.1 project files
@@ -447,8 +451,29 @@ bool DirManager::HandleXMLTag(const char *tag, const char **attrs)
    else
       return false;
       
-   blockFileHash->Put( (*mLoadingTarget)->GetFileName().GetName(),
-                       (wxObject*) *mLoadingTarget );
+   //
+   // If the block we loaded is already in the hash table, then the
+   // object we just loaded is a duplicate, so we delete it and
+   // return a reference to the existing object instead.
+   //
+
+   wxString name = (*mLoadingTarget)->GetFileName().GetName();    
+   BlockFile *retrieved = (BlockFile *) blockFileHash->Get(name);
+   if (retrieved) {
+      // Lock it in order to delete it safely, i.e. without having
+      // it delete the file, too...
+      (*mLoadingTarget)->Lock();
+      delete (*mLoadingTarget);
+
+      Ref(retrieved); // Add one to its reference count
+      *mLoadingTarget = retrieved;
+      return true;
+   }
+
+   // This is a new object
+   blockFileHash->Put( name, (wxObject*) *mLoadingTarget );
+   CheckHashTableSize();
+
    return true;
 }
 
