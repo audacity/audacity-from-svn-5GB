@@ -30,8 +30,6 @@
 #include <wx/dynarray.h>
 #include <wx/string.h>
 
-#include "HistoryWindow.h"
-
 class VTrack;
 class TrackList;
 

@@ -21,13 +21,17 @@
 #include <wx/colour.h>
 #include <wx/dc.h>
 #include <wx/dcmemory.h>
+#include <wx/gdicmn.h>
 #include <wx/hash.h>
 #include <wx/image.h>
 #include <wx/pen.h>
 
+#include "allegro.h"
+
 #include "TrackArtist.h"
 
 #include "AColor.h"
+#include "Track.h"
 #include "NoteTrack.h"
 #include "WaveTrack.h"
 #include "LabelTrack.h"

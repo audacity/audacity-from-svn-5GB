@@ -15,7 +15,7 @@
 
 #include "Track.h"
 
-#include "allegro.h"
+class Seq;   // from "allegro.h"
 
 class DirManager;
 
@@ -31,7 +31,7 @@ class NoteTrack:public VTrack {
    void DrawLabelControls(wxDC & dc, wxRect & r);
    bool LabelClick(wxRect & r, int x, int y, bool right);
 
-   void SetSequence(Seq_ptr seq);
+   void SetSequence(Seq *seq);
 
    int GetBottomNote() const { return mBottomNote; }
    void SetBottomNote(int note) 
@@ -45,7 +45,7 @@ class NoteTrack:public VTrack {
      }
 
  private:
-   Seq_ptr mSeq;
+   Seq *mSeq;
    double mLen;
 
    int mBottomNote;

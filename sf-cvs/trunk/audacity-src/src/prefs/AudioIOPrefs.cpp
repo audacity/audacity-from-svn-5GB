@@ -16,16 +16,18 @@
 
 **********************************************************************/
 
-#include <wx/window.h>
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/choice.h>
+#include <wx/gdicmn.h>
+#include <wx/intl.h>
+#include <wx/msgdlg.h>
+#include <wx/sizer.h>
+#include <wx/statbox.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/gdicmn.h>
-#include <wx/statbox.h>
-#include <wx/msgdlg.h>
-#include <wx/button.h>
 #include <wx/utils.h>
-#include <wx/sizer.h>
-#include <wx/intl.h>
+#include <wx/window.h>
 
 #include "../Prefs.h"
 #include "AudioIOPrefs.h"

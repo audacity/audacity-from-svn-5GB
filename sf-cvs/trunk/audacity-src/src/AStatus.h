@@ -11,7 +11,6 @@
 #ifndef __AUDACITY_STATUS__
 #define __AUDACITY_STATUS__
 
-#include <wx/gdicmn.h>
 #include <wx/window.h>
 
 class wxBitmap;

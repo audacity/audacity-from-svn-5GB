@@ -8,12 +8,15 @@
 
 **********************************************************************/
 
-#include <wx/window.h>
-#include <wx/statbox.h>
+#include <wx/checkbox.h>
 #include <wx/colordlg.h>
-#include <wx/msgdlg.h>
-#include <wx/sizer.h>
 #include <wx/intl.h>
+#include <wx/msgdlg.h>
+#include <wx/radiobut.h>
+#include <wx/sizer.h>
+#include <wx/statbox.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
 
 #include "../Prefs.h"
 #include "SpectrumPrefs.h"

@@ -21,10 +21,9 @@
 #define __AUDACITY_PREFS_PANEL__
 
 #include <wx/panel.h>
-#include <wx/window.h>
-#include <wx/gdicmn.h>
-#include <wx/sizer.h>
-#include <wx/notebook.h>
+
+class wxWindow;
+class wxStaticBoxSizer;
 
 /* A few constants for an attempt at semi-uniformity */
 #define PREFS_FONT_SIZE     8

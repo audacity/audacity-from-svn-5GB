@@ -26,9 +26,10 @@
 #define __AUDACITY_BLOCKFILE__
 
 #include <wx/string.h>
-#include <wx/ffile.h>
 
 #include "WaveTrack.h"
+
+class wxFFile;
 
 class BlockFile {
  public:

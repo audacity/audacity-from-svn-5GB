@@ -12,7 +12,9 @@
 
 #include <wx/dc.h>
 #include <wx/brush.h>
+#include <wx/event.h>
 #include <wx/pen.h>
+#include <wx/textfile.h>
 
 #include "AColor.h"
 #include "Envelope.h"

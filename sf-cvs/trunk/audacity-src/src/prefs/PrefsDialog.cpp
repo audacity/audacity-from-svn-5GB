@@ -8,16 +8,16 @@
 
 **********************************************************************/
 
-#include <wx/window.h>
-#include <wx/dialog.h>
-#include <wx/gdicmn.h>
-#include <wx/listbox.h>
-#include <wx/font.h>
-#include <wx/msgdlg.h>
-#include <wx/intl.h>
-#include <wx/notebook.h>
-#include <wx/event.h>
 #include <wx/button.h>
+#include <wx/dialog.h>
+#include <wx/event.h>
+#include <wx/font.h>
+#include <wx/gdicmn.h>
+#include <wx/intl.h>
+#include <wx/listbox.h>
+#include <wx/msgdlg.h>
+#include <wx/notebook.h>
+#include <wx/sizer.h>
 
 #include "../Prefs.h"
 

@@ -11,16 +11,13 @@
 #ifndef __AUDACITY_AUDIO_IO_PREFS__
 #define __AUDACITY_AUDIO_IO_PREFS__
 
-#include <wx/window.h>
-#include <wx/stattext.h>
-#include <wx/textctrl.h>
-#include <wx/statbox.h>
-#include <wx/event.h>
-#include <wx/button.h>
-#include <wx/checkbox.h>
-#include <wx/choice.h>
+#include <wx/string.h>
 
 #include "PrefsPanel.h"
+
+class wxWindow;
+class wxCheckBox;
+class wxChoice;
 
 class AudioIOPrefs:public PrefsPanel {
 

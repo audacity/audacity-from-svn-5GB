@@ -12,11 +12,12 @@
 #define __AUDACITY_FREQ_WINDOW__
 
 #include <wx/brush.h>
-#include <wx/button.h>
-#include <wx/choice.h>
+#include <wx/frame.h>
 #include <wx/gdicmn.h>
 #include <wx/pen.h>
-#include <wx/minifram.h>
+
+class wxButton;
+class wxChoice;
 
 class FreqWindow;
 

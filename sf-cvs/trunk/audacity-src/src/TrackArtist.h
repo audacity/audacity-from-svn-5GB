@@ -18,13 +18,16 @@
 #ifndef __AUDACITY_TRACKARTIST__
 #define __AUDACITY_TRACKARTIST__
 
+class wxDC;
+class wxRect;
+
 class VTrack;
 class WaveTrack;
 class NoteTrack;
 class LabelTrack;
+class TrackList;
+class ViewInfo;
 struct TrackInfoCache;
-
-#include "TrackPanel.h"
 
 class TrackArtist {
 

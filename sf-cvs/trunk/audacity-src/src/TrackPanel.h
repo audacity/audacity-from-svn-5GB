@@ -14,8 +14,6 @@
 #include <wx/timer.h>
 #include <wx/window.h>
 
-#include "ViewInfo.h"
-
 class wxMenu;
 class wxRect;
 class wxStatusBar;
@@ -25,6 +23,7 @@ class VTrack;
 class TrackPanel;
 class TrackArtist;
 class Ruler;
+class ViewInfo;
 
 class TrackPanelListener {
  public:

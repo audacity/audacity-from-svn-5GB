@@ -8,7 +8,7 @@
 
 **********************************************************************/
 
-#include <wx/window.h>
+#include <wx/radiobut.h>
 #include <wx/statbox.h>
 #include <wx/sizer.h>
 #include <wx/intl.h>

@@ -21,6 +21,7 @@
 #include <wx/app.h>
 #include <wx/dc.h>
 #include <wx/dcmemory.h>
+#include <wx/intl.h>
 #include <wx/string.h>
 #endif
 
@@ -30,14 +31,16 @@
 
 #include <wx/filedlg.h>
 #include <wx/msgdlg.h>
+#include <wx/scrolbar.h>
 #include <wx/textfile.h>
-#include <wx/intl.h>
 
 #include "Audacity.h"
 #include "AColor.h"
 #include "APalette.h"
+#include "AStatus.h"
 #include "AudioIO.h"
 #include "FreqWindow.h"
+#include "HistoryWindow.h"
 #include "import/Import.h"
 #include "LabelTrack.h"
 #include "Mix.h"

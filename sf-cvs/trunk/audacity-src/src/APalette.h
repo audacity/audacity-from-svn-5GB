@@ -20,11 +20,8 @@
 #define __AUDACITY_PALETTE__
 
 #include <wx/brush.h>
-#include <wx/gdicmn.h>
 #include <wx/pen.h>
 #include <wx/minifram.h>
-
-#include "Project.h"
 
 class AButton;
 class ASlider;
@@ -32,6 +29,8 @@ class APalette;
 class APaletteFrame;
 
 class wxImage;
+class wxSize;
+class wxPoint;
 
 extern APaletteFrame *gAPaletteFrame;
 extern bool gWindowedPalette;

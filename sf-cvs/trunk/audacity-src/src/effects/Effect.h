@@ -14,6 +14,7 @@
 #include <wx/dynarray.h>
 #include <wx/string.h>
 
+class wxWindow;
 class wxFrame;
 class wxProgressDialog;
 

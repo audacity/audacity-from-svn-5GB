@@ -19,20 +19,22 @@
 #define __AUDACITY_PROJECT__
 
 #include <wx/frame.h>
-#include <wx/window.h>
-#include <wx/scrolbar.h>
 #include <wx/intl.h>
 
 #include "AStatus.h"
 #include "DirManager.h"
 #include "TrackPanel.h"
 #include "UndoManager.h"
+#include "ViewInfo.h"
 
+class wxWindow;
 class wxBoxSizer;
 class wxDragImage;
+class wxScrollEvent;
+class wxScrollBar;
 
-class TrackList;
 class APalette;
+class TrackList;
 class Tags;
 
 class AudacityProject;

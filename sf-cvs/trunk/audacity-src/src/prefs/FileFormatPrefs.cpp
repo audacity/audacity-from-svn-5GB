@@ -9,12 +9,12 @@
 
 **********************************************************************/
 
-#include <wx/window.h>
 #include <wx/statbox.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
-#include <wx/msgdlg.h>
 #include <wx/button.h>
+#include <wx/radiobut.h>
+#include <wx/choice.h>
 #include <wx/intl.h>
 
 #include "sndfile.h"
@@ -22,7 +22,6 @@
 #include "../export/ExportMP3.h"
 #include "../FileFormats.h"
 #include "../Prefs.h"
-#include "../Track.h"
 #include "FileFormatPrefs.h"
 
 #define ID_MP3_FIND_BUTTON         7001

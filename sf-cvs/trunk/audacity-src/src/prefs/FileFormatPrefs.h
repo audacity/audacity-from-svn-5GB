@@ -12,12 +12,14 @@
 #ifndef __AUDACITY_FILE_FORMAT_PREFS__
 #define __AUDACITY_FILE_FORMAT_PREFS__
 
-#include <wx/window.h>
-#include <wx/statbox.h>
-#include <wx/radiobut.h>
-#include <wx/choice.h>
-
 #include "PrefsPanel.h"
+
+class wxButton;
+class wxChoice;
+class wxCommandEvent;
+class wxRadioButton;
+class wxStaticText;
+class wxWindow;
 
 class FileFormatPrefs:public PrefsPanel {
 

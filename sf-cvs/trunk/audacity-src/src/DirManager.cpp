@@ -19,6 +19,7 @@
 #include <wx/textfile.h>
 #include <wx/intl.h>
 
+#include "BlockFile.h"
 #include "DirManager.h"
 #include "DiskFunctions.h"
 #include "Prefs.h"
