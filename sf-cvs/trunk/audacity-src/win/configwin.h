@@ -5,4 +5,6 @@
 #define USE_LIBVORBIS
 #define USE_LIBID3TAG
 
+#define INSTALL_PREFIX "."
+
 #define rint(x)   (floor((x)+0.5f)) 
