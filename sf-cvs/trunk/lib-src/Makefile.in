@@ -54,6 +54,9 @@ portmixer/px_unix_oss/portmixer.a:
 portmixer/px_mac_core/portmixer.a:
 	cd portmixer/px_mac_core && $(MAKE)
 
+soundtouch/soundtouch.a:
+	cd soundtouch && $(MAKE)
+
 clean:
 	-$(MAKE) -C allegro clean
 	-$(MAKE) -C expat clean
@@ -68,6 +71,7 @@ clean:
 	-$(MAKE) -C portaudio/pa_mac_core clean
 	-$(MAKE) -C portmixer/px_unix_oss clean
 	-$(MAKE) -C portmixer/px_mac_core clean
+	-$(MAKE) -C soundtouch clean
 
 distclean:
 	-$(MAKE) -C allegro distclean
@@ -83,3 +87,4 @@ distclean:
 	-$(MAKE) -C portaudio/pa_mac_core distclean
 	-$(MAKE) -C portmixer/px_unix_oss distclean
 	-$(MAKE) -C portmixer/px_mac_core distclean
+	-$(MAKE) -C soundtouch distclean
