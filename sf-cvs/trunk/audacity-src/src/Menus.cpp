@@ -382,20 +382,13 @@ void AudacityProject::ModifyExportMenus()
 {
    int format = ReadExportFormatPref();
    wxString pcmFormat = sf_header_shortname(format & SF_FORMAT_TYPEMASK);
-   wxString lossyFormat = gPrefs->Read("/FileFormats/LossyExportFormat", "MP3");
 
    mCommandManager.Modify("Export",
                           wxString::Format(_("&Export As %s..."),
                                            (const char *)pcmFormat));
    mCommandManager.Modify("ExportSel",
-                          wxString::Format(_("&Export Selection as %s..."),
+                          wxString::Format(_("&Export Selection As %s..."),
                                            (const char *)pcmFormat));
-   mCommandManager.Modify("ExportLossy",
-                          wxString::Format(_("&Export As %s..."),
-                                           (const char *)lossyFormat));
-   mCommandManager.Modify("ExportLossySel",
-                          wxString::Format(_("&Export Selection as %s..."),
-                                           (const char *)lossyFormat));
 }
 
 void AudacityProject::ModifyUndoMenus()
@@ -543,8 +536,10 @@ void AudacityProject::UpdateMenus()
 
    mCommandManager.Enable("Export", numTracks > 0);
    mCommandManager.Enable("ExportSel", anySelection);
-   mCommandManager.Enable("ExportLossy", numTracks > 0);
-   mCommandManager.Enable("ExportLossySel", anySelection);
+   mCommandManager.Enable("ExportMP3", numTracks > 0);
+   mCommandManager.Enable("ExportMP3Sel", anySelection);
+   mCommandManager.Enable("ExportOgg", numTracks > 0);
+   mCommandManager.Enable("ExportOggSel", anySelection);
    mCommandManager.Enable("ExportLabels", numLabelTracks > 0);
 
    mCommandManager.Enable("Cut", anySelection);
