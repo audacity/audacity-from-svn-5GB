@@ -21,11 +21,13 @@
 #include "AudioIO.h"
 #include "Project.h"
 #include "Track.h"
-#include "WaveTrack.h"  
+#include "WaveTrack.h"
+#include "Envelope.h"
 #include "Mix.h"
 #include "ControlToolBar.h"
 #include "MixerToolBar.h"
 #include "Prefs.h"
+#include "TimeTrack.h"
 
 wxMutex gNoCallbackMutex;
 
@@ -222,7 +224,7 @@ void AudioIO::AdjustMixer()
 {
 #if USE_PORTMIXER
    AudacityProject *project = mProject;
-   PxMixer *mixer = mMixer;
+   PxMixer *mixer = mPortMixer;
 
    if (project && mixer) {
       MixerToolBar *mixerToolbar = project->GetMixerToolBar();
@@ -292,10 +294,10 @@ bool AudioIO::OpenDevice()
                          NULL);
 
 #if USE_PORTMIXER
-   mMixer = NULL;
+   mPortMixer = NULL;
    if (mPortStream != NULL && error == paNoError) {
-      mMixer = Px_OpenMixer(mPortStream, 0);
-      if (mMixer)
+      mPortMixer = Px_OpenMixer(mPortStream, 0);
+      if (mPortMixer)
          AdjustMixer();
    }
 #endif
@@ -329,8 +331,14 @@ bool AudioIO::Start()
       // 5 seconds of buffering per channel
       mOutBufferSize = (sampleCount)(mRate * 5);
       mOutBuffers = new RingBuffer*[mNumOutTracks];
-      for(i=0; i<(unsigned int)mNumOutTracks; i++)
+      mOutMixers = new Mixer*[mNumOutTracks];
+      for(i=0; i<(unsigned int)mNumOutTracks; i++) {
          mOutBuffers[i] = new RingBuffer(floatSample, mOutBufferSize);
+         mOutMixers[i] = new Mixer(1, &mOutTracks[i],
+                                   mTracks->GetTimeTrack(),
+                                   mT0, mT1, 1, mOutBufferSize, false,
+                                   mRate, floatSample);
+      }
    }
 
    FillBuffers();
@@ -389,6 +397,35 @@ bool AudioIO::StartPlay(AudacityProject * project, TrackList * tracks,
    mT1 = t1;
 
    mNumInChannels = 0;
+
+#if 0
+
+   TrackListIterator iter(mTracks);
+   for( Track* t = iter.First(); t != NULL; t = iter.Next() )
+      if (t->GetKind() == Track::Wave) {
+         WaveTrack* wt = (WaveTrack*)t;
+         
+         
+         TimeTrack* tt = t->GetTimeTrack();
+         if (tt) {
+            src_reset( wt->GetSRC() );
+            double warpFactor;
+            if( wt->GetStartTime() <= t0 )
+               warpFactor = tt->GetEnvelope()->GetValue( t0 );
+            else
+               warpFactor = tt->GetEnvelope()->GetValue( wt->GetStartTime() );
+            warpFactor = (tt->GetRangeLower() * (1 - warpFactor) + warpFactor * tt->GetRangeUpper())/100.0;
+            
+            
+            printf("src_set_ratio %f\n", 1/warpFactor);
+            src_set_ratio( wt->GetSRC(), 1/warpFactor );
+         }
+
+
+      }
+
+#endif
+
    mNumOutChannels = 2;
 
    PrepareOutTracks(tracks);
@@ -509,16 +546,9 @@ void AudioIO::FillBuffers()
 
          if (block > 0) {
             for(i=0; i<mNumOutTracks; i++) {
-               WaveTrack *t = mOutTracks[i];
-               
-               // Use the mixer only as a format and rate converter for now   
-               Mixer *mixer = new Mixer(1, block, true, mRate, floatSample);
-               mixer->Clear();
-               mixer->MixMono(t, mT, mT + deltat);
-               samplePtr outbytes = mixer->GetBuffer();
-
-               mOutBuffers[i]->Put(outbytes, floatSample, block);
-               delete mixer;
+               int processed = mOutMixers[i]->Process(block);
+               samplePtr outBytes = mOutMixers[i]->GetBuffer();
+               mOutBuffers[i]->Put(outBytes, floatSample, processed);
             }
          }
          
@@ -576,8 +606,8 @@ void AudioIO::Stop()
 
    if (stream) {
       #if USE_PORTMIXER
-      PxMixer *mixer = mMixer;
-      mMixer = NULL;
+      PxMixer *mixer = mPortMixer;
+      mPortMixer = NULL;
       Px_CloseMixer(mixer);
       #endif
 
@@ -687,9 +717,12 @@ void AudioIO::Finish()
 
    int i;
    if (mNumOutChannels > 0) {
-      for(i=0; i<mNumOutTracks; i++)
+      for(i=0; i<mNumOutTracks; i++) {
          delete mOutBuffers[i];
+         delete mOutMixers[i];
+      }
       delete[] mOutBuffers;
+      delete[] mOutMixers;
       delete[] mOutTracks;
    }
    if (mNumInChannels > 0) {

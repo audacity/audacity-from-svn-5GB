@@ -30,6 +30,7 @@ Envelope::Envelope()
 
    Insert(0.0, 1.0);
    Insert(1000000000.0, 1.0);
+   mDefaultValue = 1.0;
 
    mDragPoint = -1;
    mDirty = false;
@@ -37,6 +38,9 @@ Envelope::Envelope()
    mIsDeleting = false;
 
    mMirror = true;
+
+   mPen.SetColour(110, 110, 220);
+   mBrush.SetColour(110, 110, 220);
 }
 
 Envelope::~Envelope()
@@ -132,7 +136,7 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB)
 
    double tright = h + (r.width / pps);
 
-   dc.SetPen(AColor::envelopePen);
+   dc.SetPen(mPen);
    dc.SetBrush(*wxWHITE_BRUSH);
 
    int ctr, height;
@@ -149,8 +153,8 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB)
    for (int i = 0; i < len; i++) {
       if (mEnv[i]->t >= h && mEnv[i]->t <= tright) {
          if (i == mDragPoint) {
-            dc.SetPen(AColor::envelopePen);
-            dc.SetBrush(AColor::envelopeBrush);
+            dc.SetPen(mPen);
+            dc.SetBrush(mBrush);
          }
 
          double v = mEnv[i]->val;
@@ -170,7 +174,7 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB)
          }
 
          if (i == mDragPoint) {
-            dc.SetPen(AColor::envelopePen);
+            dc.SetPen(mPen);
             dc.SetBrush(*wxWHITE_BRUSH);
          }
       }
@@ -277,6 +281,7 @@ bool Envelope::Save(wxTextFile * out, bool overwrite)
 }
 
 #endif /* LEGACY_PROJECT_FILE_SUPPORT */
+
 
 // Returns true if parent needs to be redrawn
 bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
@@ -635,8 +640,18 @@ void Envelope::GetValues(double *buffer, int bufferLen,
 
    for (int b = 0; b < bufferLen; b++) {
 
-      if (len <= 0 || t < mEnv[0]->t || t > mEnv[len - 1]->t) {
-         buffer[b] = 1.0;
+      if (len <= 0) {
+	 buffer[b] = mDefaultValue;
+	 t += tstep;
+	 continue;
+      }
+      if (t < mEnv[0]->t) {
+         buffer[b] = mEnv[0]->val;
+         t += tstep;
+         continue;
+      }
+      if (t > mEnv[len - 1]->t) {
+         buffer[b] = mEnv[len - 1]->val;
          t += tstep;
          continue;
       }
@@ -707,4 +722,274 @@ void Envelope::GetValues(double *buffer, int bufferLen,
       t += tstep;
    }
 
+}
+
+int Envelope::NumberOfPointsAfter(double t)
+{
+   if( t >= mEnv[mEnv.Count()-1]->t )
+      return 0;
+   else if( t < mEnv[0]->t )
+      return mEnv.Count();
+   else
+      {
+         int lo = 0;
+         int hi = mEnv.Count() - 1;
+         while (hi > (lo + 1))
+            {
+               int mid = (lo + hi) / 2;
+               if (t < mEnv[mid]->t)
+                  hi = mid;
+               else
+                  lo = mid;
+            }
+         if( mEnv[hi]->t == t )
+            return mEnv.Count() - (hi+1);
+         else
+            return mEnv.Count() - hi;
+      }
+}
+
+double Envelope::NextPointAfter(double t)
+{
+   if( mEnv[mEnv.Count()-1]->t < t )
+      return t;
+   else if( t < mEnv[0]->t )
+      return mEnv[0]->t;
+   else
+      {
+         int lo = 0;
+         int hi = mEnv.Count() - 1;
+         while (hi > (lo + 1))
+            {
+               int mid = (lo + hi) / 2;
+               if (t < mEnv[mid]->t)
+                  hi = mid;
+               else
+                  lo = mid;
+            }
+         if( mEnv[hi]->t == t )
+            return mEnv[hi+1]->t;
+         else
+            return mEnv[hi]->t;
+      }
+}
+
+double Envelope::Average( double t0, double t1 )
+{
+  if( t0 == t1 )
+    return GetValue( t0 );
+  else
+    return Integral( t0, t1 ) / (t1 - t0);
+}
+
+// We should be able to write a very efficient memoizer for this
+// but make sure it gets reset when the envelope is changed.
+double Envelope::Integral( double t0, double t1 )
+{
+   //printf( "\n\nIntegral:  t0=%f, t1=%f\n", t0, t1 );
+   double total=0, contrib=0;
+   
+   if( t0 == t1 )
+      return 0;
+   if( t0 > t1 )
+      {
+         printf( "Odd things happening in Integral!\n" );
+         return mDefaultValue;
+      }
+   if( mEnv.Count() < 1 )
+      {
+         printf( "Really strange things happening in Integral!\n" );
+         return mDefaultValue;
+      }
+   if( mEnv.Count() < 2 )
+      {
+         printf( "Strange things happening in Integral!\n" );
+         return mEnv[0]->val;
+      }
+   
+   // Integrating outside the range of the Envelope
+   if( t1 <= mEnv[0]->t )
+      return mEnv[0]->val * (t1 - t0);
+   // Integrating outside the range of the Envelope
+   if( t0 >= mEnv[mEnv.Count()-1]->t )
+      return mEnv[mEnv.Count()-1]->val * (t1 - t0);
+   
+   //printf( "Integral: we are not integrating entirely outside the range of the envelope.\n" );
+   
+   unsigned int i = 0;
+   double lastT, lastVal;
+   
+   // See if t0 is outside the range of the envelope
+   if( t0 < mEnv[0]->t )
+      {
+         contrib = (mEnv[0]->t - t0) * mEnv[0]->val;
+         total += contrib;
+         //printf( "Contribution to integral between %f and %f is %f\n", t0, mEnv[0]->t, contrib );
+         lastT = mEnv[0]->t;
+         lastVal = mEnv[0]->val;
+      }
+   else
+      {
+         // Skip any points that come before t0 using binary search
+         int lo = 0;
+         int hi = mEnv.Count() - 1;
+         while (hi > (lo + 1)) {
+            int mid = (lo + hi) / 2;
+            if (t0 < mEnv[mid]->t)
+               hi = mid;
+            else
+               lo = mid;
+         }
+         i = lo;
+         //printf( "Integral: the point immediately before t0 is i=%d, which has t=%f.\n", i, mEnv[i]->t );
+         
+         // i is now the point immediately before t0.
+         lastVal = ((mEnv[i]->val * (mEnv[i+1]->t - t0))
+                    + (mEnv[i+1]->val *(t0 - mEnv[i]->t)))
+            / (mEnv[i+1]->t - mEnv[i]->t); // value at t0
+         lastT = t0;
+      }
+   
+   // see if there are no more envelope points before t1
+   if( t1 <= mEnv[i+1]->t )
+      {
+         double thisVal = ((mEnv[i]->val * (mEnv[i+1]->t - t1))
+                           + (mEnv[i+1]->val *(t1 - mEnv[i]->t)))
+            / (mEnv[i+1]->t - mEnv[i]->t); // value at t1
+         //printf( "Integral: the value at t1 is %f\n", thisVal );
+         //printf( "Integral: lastT is %f, lastVal is %f\n", lastT, lastVal );
+         contrib = (t1 - lastT) * (thisVal + lastVal) / 2;
+         total += contrib;
+         //printf( "Contribution to integral between %f and %f is %f\n", lastT, t1, contrib );
+         return total;
+      }
+   
+   // there is at least one envelope point to go before we get to t1
+   contrib = (mEnv[i+1]->t - lastT) * (lastVal + mEnv[i+1]->val) / 2;
+   lastT = mEnv[i+1]->t;
+   lastVal = mEnv[i+1]->val;
+   total += contrib;
+   //printf( "Contribution to integral between %f and %f is %f\n", lastT, mEnv[i+1]->t, contrib );
+   i++;
+   
+   // loop through the rest of the envelope points until we get to t1
+   while (i < mEnv.Count()-1 && mEnv[i+1]->t < t1)
+      {
+         //printf( "Integral: looping.  i=%d, t=%f.\n", i, mEnv[i]->t );
+         contrib = (mEnv[i+1]->t - mEnv[i]->t) * (mEnv[i]->val + mEnv[i+1]->val) / 2;
+         total += contrib;
+         //printf( "Contribution to integral between %f and %f is %f\n", mEnv[i]->t, mEnv[i+1]->t, contrib );
+         lastT = mEnv[i+1]->t;
+         lastVal = mEnv[i+1]->val;
+         i++;
+      }
+   
+   // See if t1 is outside the range of the envelope
+   if( t1 >= mEnv[mEnv.Count()-1]->t )
+      {
+         contrib = (t1 - mEnv[mEnv.Count()-1]->t) * mEnv[mEnv.Count()-1]->val;
+         total += contrib;
+         //printf( "Contribution to integral between %f and %f is %f\n", lastVal, t1, contrib );
+      }
+   else
+      {
+         // i is now the point immediately before t1.
+         //printf( "Integral: the point immediately before t1 is i=%d, which has t=%f.\n", i, mEnv[i]->t );
+         //printf( "Integral: the point immediately after t1 is i=%d, which has t=%f.\n", i+1, mEnv[i+1]->t );
+         double thisVal = ((mEnv[i]->val * (mEnv[i+1]->t - t1))
+                           + (mEnv[i+1]->val *(t1 - mEnv[i]->t)))
+            / (mEnv[i+1]->t - mEnv[i]->t); // value at t1
+         //printf( "Integral: the value at t1 is %f\n", thisVal );
+         //printf( "Integral: lastT is %f, lastVal is %f\n", lastT, lastVal );
+         contrib = (t1 - mEnv[i]->t) * (mEnv[i]->val + thisVal) / 2;
+         total += contrib;
+         //printf( "Contribution to integral between %f and %f is %f\n", mEnv[i]->t, t1, contrib );
+      }
+   return total;
+}
+
+// This one scales the y-axis before integrating.
+// To re-scale [0,1] to [minY,maxY] we use the mapping y -> minY + (maxY - minY)y
+// So we want to find the integral of (minY + (maxY - minY)f(t)), where f is our envelope.
+// But that's just (t1 - t0)minY + (maxY - minY)Integral( t0, t1 ).
+double Envelope::Integral( double t0, double t1, double minY, double maxY )
+{
+  return ((t1 - t0) * minY) + ((maxY - minY) * Integral( t0, t1 ));
+}
+
+void Envelope::print()
+{
+  for( unsigned int i = 0; i < mEnv.Count(); i++ )
+    printf( "(%.2f, %.2f)\n", mEnv[i]->t, mEnv[i]->val );
+}
+
+void checkResult( int n, double a, double b )
+{
+  if( (a-b > 0 ? a-b : b-a) > 0.0000001 )
+    {
+      printf( "Envelope:  Result #%d is: %f, should be %f\n", n, a, b );
+      //exit( -1 );
+    }
+}
+
+void Envelope::testMe()
+{
+   double t0=0, t1=0;
+
+   SetInterpolateDB(false);
+   Mirror(false);
+
+   SetDefaultValue(0.5);
+   Flatten(0.5);
+   checkResult( 1, Integral(0.0,100.0), 50);
+   checkResult( 2, Integral(-10.0,10.0), 10);
+
+   SetDefaultValue(1.0);
+   Flatten(0.5);
+   checkResult( 3, Integral(0.0,100.0), 50);
+   checkResult( 4, Integral(-10.0,10.0), 10);
+   checkResult( 5, Integral(-20.0,-10.0), 5);
+
+   SetDefaultValue(0.5);
+   Flatten(0.5);
+   Insert( 5.0, 0.5 );
+   checkResult( 6, Integral(0.0,100.0), 50);
+   checkResult( 7, Integral(-10.0,10.0), 10);
+
+   SetDefaultValue(0.5);
+   Flatten(0.0);
+   Insert( 0.0, 0.0 );
+   Insert( 5.0, 1.0 );
+   Insert( 10.0, 0.0 );
+   t0 = 10.0 - .1;
+   t1 = 10.0 + .1;
+   double result = Integral(0.0,t1);
+   double resulta = Integral(0.0,t0);
+   double resultb = Integral(t0,t1);
+   // Integrals should be additive
+   checkResult( 8, result - resulta - resultb, 0);
+
+   SetDefaultValue(0.5);
+   Flatten(0.0);
+   Insert( 0.0, 0.0 );
+   Insert( 5.0, 1.0 );
+   Insert( 10.0, 0.0 );
+   t0 = 10.0 - .1;
+   t1 = 10.0 + .1;
+   checkResult( 9, Integral(0.0,t1), 5);
+   checkResult( 10, Integral(0.0,t0), 4.999);
+   checkResult( 11, Integral(t0,t1), .001);
+
+   WX_CLEAR_ARRAY(mEnv)
+   Insert( 0.0, 0.0 );
+   Insert( 5.0, 1.0 );
+   Insert( 10.0, 0.0 );
+   checkResult( 12, NumberOfPointsAfter( -1 ), 3 );
+   checkResult( 13, NumberOfPointsAfter( 0 ), 2 );
+   checkResult( 14, NumberOfPointsAfter( 1 ), 2 );
+   checkResult( 15, NumberOfPointsAfter( 5 ), 1 );
+   checkResult( 16, NumberOfPointsAfter( 7 ), 1 );
+   checkResult( 17, NumberOfPointsAfter( 10 ), 0 );
+   checkResult( 18, NextPointAfter( 0 ), 5 );
+   checkResult( 19, NextPointAfter( 5 ), 10 );
 }

@@ -73,6 +73,9 @@
 /* Define if PortMixer support should be enabled */
 #undef USE_PORTMIXER
 
+/* Define if libsamplerate support should be enabled */
+#undef USE_LIBSAMPLERATE
+
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 

@@ -508,6 +508,11 @@ void Ruler::Tick(int pos, double d, bool major)
 
 void Ruler::Update()
 {
+  Update(NULL, 0, 0);
+}
+
+void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
+{
    // This gets called when something has been changed
    // (i.e. we've been invalidated).  Recompute all
    // tick positions.
@@ -536,107 +541,136 @@ void Ruler::Update()
       double UPP = (mMax-mMin)/mLength;  // Units per pixel
 
       FindLinearTickSizes(UPP);
-
+      
       // Left and Right Edges
       if (mLabelEdges) {
-	 Tick(0, mMin, true);
-	 Tick(mLength, mMax, true);
+         Tick(0, mMin, true);
+         Tick(mLength, mMax, true);
       }
-
+      
       // Zero (if it's in the middle somewhere)
       if (mMin * mMax < 0.0) {
-	 int mid = (int)(mLength*(mMin/(mMin-mMax)) + 0.5);
-	 Tick(mid, 0.0, true);
+         int mid = (int)(mLength*(mMin/(mMin-mMax)) + 0.5);
+         Tick(mid, 0.0, true);
       }
-   
+      
       double sg = UPP > 0.0? 1.0: -1.0;
-
+      
       // Major ticks
       double d = mMin - UPP/2;
+      double lastD = d;
       int majorInt = (int)floor(sg * d / mMajor);
       i = -1;
       while(i <= mLength) {
-	 i++;
-	 d += UPP;
-	
-	 if ((int)floor(sg * d / mMajor) > majorInt) {
-	   majorInt = (int)floor(sg * d / mMajor);
-	   Tick(i, sg * majorInt * mMajor, true);
-	 }
+         double warpfactor;
+         if( d>0 && speedEnv != NULL ) {
+            warpfactor = speedEnv->Average( lastD, d );
+            // Now we re-scale so that 0.5 is normal speed and
+            // 0 and 1.0 are min% and max% of normal speed
+            warpfactor = (maxSpeed * (1 - warpfactor) +
+                          warpfactor * minSpeed) / 100.0;
+         }
+         else
+            warpfactor = 1.0;
+         
+         i++;
+         lastD = d;
+         d += UPP*warpfactor;
+         
+         if ((int)floor(sg * d / mMajor) > majorInt) {
+            majorInt = (int)floor(sg * d / mMajor);
+            Tick(i, sg * majorInt * mMajor, true);
+         }
       }
-
+         
       // Minor ticks
       d = mMin - UPP/2;
+      lastD = d;
       int minorInt = (int)floor(sg * d / mMinor);
       i = -1;
       while(i <= mLength) {
-	 i++;
-	 d += UPP;
-
-	 if ((int)floor(sg * d / mMinor) > minorInt) {
-	    minorInt = (int)floor(sg * d / mMinor);
-	    Tick(i, sg * minorInt * mMinor, false);
-	 }
+         double warpfactor;
+         if( d>0 && speedEnv != NULL ) {
+            warpfactor = speedEnv->Average( lastD, d );
+            // Now we re-scale so that 0.5 is normal speed and
+            // 0 and 1.0 are min% and max% of normal speed
+            warpfactor = (maxSpeed * (1 - warpfactor) +
+                          warpfactor * minSpeed) / 100.0;
+         }
+         else
+            warpfactor = 1.0;
+         
+         i++;
+         lastD = d;
+         d += UPP*warpfactor;
+         
+         if ((int)floor(sg * d / mMinor) > minorInt) {
+            minorInt = (int)floor(sg * d / mMinor);
+            Tick(i, sg * minorInt * mMinor, false);
+         }
       }
-
+      
+      // Left and Right Edges
+      if (mLabelEdges) {
+         Tick(0, mMin, true);
+         Tick(mLength, mMax, true);
+      }
+      
    }
    else {
       // log case
-
+      
       double loLog = log10(mMin);
       double hiLog = log10(mMax);
       double scale = mLength/(hiLog - loLog);
       int loDecade = (int) floor(loLog);
       int hiDecade = (int) ceil(hiLog);
-
+      
       int pos;
       double val;
       double startDecade = pow(10., (double)loDecade);
-
+      
       // Major ticks are the decades
       double decade = startDecade;
       for(i=loDecade; i<hiDecade; i++) {
-	 if(i!=loDecade) {
-	    val = decade;
-	    if(val > mMin && val < mMax) {
-	      pos = (int)(((log10(val) - loLog)*scale)+0.5);
-	      Tick(pos, val, true);
-	    }
-	 }
-	 decade *= 10.;
-      }
-
-      // Left and Right Edges
-      if (mLabelEdges) {
-	 Tick(0, mMin, true);
-	 Tick(mLength, mMax, true);
+         if(i!=loDecade) {
+            val = decade;
+            if(val > mMin && val < mMax) {
+               pos = (int)(((log10(val) - loLog)*scale)+0.5);
+               Tick(pos, val, true);
+            }
+         }
+         decade *= 10.;
       }
       
       // Minor ticks are multiples of decades
       decade = startDecade;
       for(i=loDecade; i<hiDecade; i++) {
-	 for(j=2; j<=9; j++) {
-	    val = decade * j;
-	    if(val > mMin && val < mMax) {
-	      pos = (int)(((log10(val) - loLog)*scale)+0.5);
-	      Tick(pos, val, false);
-	    }
-	 }
-	 decade *= 10.;
+         for(j=2; j<=9; j++) {
+            val = decade * j;
+            if(val > mMin && val < mMax) {
+               pos = (int)(((log10(val) - loLog)*scale)+0.5);
+               Tick(pos, val, false);
+            }
+         }
+         decade *= 10.;
       }
-	
    }
-
+   
    mValid = true;
-
 }
 
 void Ruler::Draw(wxDC& dc)
 {
+   Draw( dc, NULL, 0, 0 );
+}
+
+void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
+{
    mDC = &dc;
 
    if (!mValid)
-      Update();
+      Update( speedEnv, minSpeed, maxSpeed );
 
    mDC->SetPen(*wxBLACK_PEN);
    mDC->SetTextForeground(*wxBLACK);

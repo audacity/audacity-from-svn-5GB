@@ -45,6 +45,7 @@
 #include <wx/font.h>
 #include <wx/panel.h>
 #include <wx/window.h>
+#include "../Envelope.h"
 
 class Ruler {
  public:
@@ -111,10 +112,13 @@ class Ruler {
 
    // Note that it will not erase for you...
    void Draw(wxDC& dc);
+   void Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed);
 
  private:
    void Invalidate();
    void Update();
+   void Update(Envelope *speedEnv, long minSpeed, long maxSpeed);
+   void FindTickSizes();
    void FindLinearTickSizes(double UPP);
    wxString LabelString(double d, bool major);
    void Tick(int pos, double d, bool major);

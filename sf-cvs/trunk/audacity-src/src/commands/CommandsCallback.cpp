@@ -1977,6 +1977,57 @@ void AudacityProject::OnNewLabelTrack()
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::OnNewTimeTrack()
+{
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+   bool alreadyHaveTimeTrack = false;
+   
+   while (t)
+      {
+         if (t->GetKind() == Track::Time)
+            {
+               alreadyHaveTimeTrack = true;
+               break;
+            }
+         t = iter.Next();
+      }
+   
+   if( alreadyHaveTimeTrack )
+      {
+         wxString msg;
+         msg.Printf(_("The version of Audacity you are using does not support multiple time tracks."));
+         wxMessageBox(msg);
+      }
+   else
+      {
+         TimeTrack *t = new TimeTrack(&mDirManager);
+
+         #if USE_LIBSAMPLERATE
+         const char *str = NULL;
+         for( int i = 0 ; (str = src_get_name (i)) != NULL; i++ )
+            t->addConverter( i, str );
+         #else
+         t->addConverter(0, "No Sample Rate Conversion Available");
+         #endif
+         
+         SelectNone();
+         mTracks->AddToHead(t);
+         t->SetSelected(true);
+         
+         PushState(_("Created new time track"));
+
+         /*
+         TrackListIterator iter(mTracks);
+         for( Track *tr = iter.First(); (tr); tr = iter.Next() )
+            tr->SetTimeTrack( t );
+         */
+         
+         FixScrollbars();
+         mTrackPanel->Refresh(false);
+      }
+}
+
 //FIXME: This does not work for selections.
 //LabelTrack appears to be missing functionality
 void AudacityProject::OnAddLabel()

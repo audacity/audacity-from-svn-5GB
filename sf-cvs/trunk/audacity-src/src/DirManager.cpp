@@ -593,6 +593,8 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
 {
    // Quick check: If it's not even in our alias list,
    // then the file name is A-OK.
+
+   #if 0
    printf("file name: %s\n", fName.GetFullPath().c_str());
    printf("string list:\n");
    wxStringListNode *node = aliasList.GetFirst();
@@ -602,6 +604,7 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
       printf("%s\n", string.c_str());
       node = node->GetNext();
    }
+   #endif
 
    if (!aliasList.Member(fName.GetFullPath()))
       return true;

@@ -59,7 +59,6 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
    int channels = stereo ? 2 : 1;
    unsigned long totalSamples = (unsigned long)((t1 - t0) * rate + 0.5);
    unsigned long sampleBytes = totalSamples * channels * SAMPLE_SIZE(int16Sample);
-   double timeStep = 10.0;      // write in blocks of 10 secs
 
    /* fill up the wav header */
    wav_header header;
@@ -97,7 +96,7 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
 
    fwrite( &header, sizeof(wav_header), 1, pipe );
 
-   //sampleCount maxSamples = int (timeStep * rate + 0.5);
+   sampleCount maxBlockLen = 44100 * 5;
 
    wxProgressDialog *progress = NULL;
    wxYield();
@@ -105,40 +104,25 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
    wxBusyCursor busy;
    bool cancelling = false;
 
-   double t = t0;
+   int numWaveTracks;
+   WaveTrack **waveTracks;
+   tracks->GetWaveTracks(selectionOnly, &numWaveTracks, &waveTracks);
+   Mixer *mixer = new Mixer(numWaveTracks, waveTracks,
+                            tracks->GetTimeTrack(),
+                            0.0, tracks->GetEndTime(),
+                            channels, maxBlockLen, true,
+                            rate, int16Sample);
 
-   while (t < t1 && !cancelling) {
+   while(!cancelling) {
+      sampleCount numSamples = mixer->Process(maxBlockLen);
 
-      double deltat = timeStep;
-      if (t + deltat > t1)
-         deltat = t1 - t;
-
-      sampleCount numSamples = int (deltat * rate + 0.5);
-
-      Mixer *mixer = new Mixer(channels, numSamples, true, rate, int16Sample);
-      wxASSERT(mixer);
-      mixer->Clear();
+      if (numSamples == 0)
+         break;
+      
+      samplePtr mixed = mixer->GetBuffer();
 
       char *buffer = new char[numSamples * SAMPLE_SIZE(int16Sample) * channels];
       wxASSERT(buffer);
-
-      TrackListIterator iter(tracks);
-      Track *tr = iter.First();
-      while (tr) {
-         if (tr->GetKind() == Track::Wave) {
-            if (tr->GetSelected() || !selectionOnly) {
-               if (tr->GetChannel() == Track::MonoChannel)
-                  mixer->MixMono((WaveTrack *) tr, t, t + deltat);
-               if (tr->GetChannel() == Track::LeftChannel)
-                  mixer->MixLeft((WaveTrack *) tr, t, t + deltat);
-               if (tr->GetChannel() == Track::RightChannel)
-                  mixer->MixRight((WaveTrack *) tr, t, t + deltat);
-            }
-         }
-         tr = iter.Next();
-      }
-
-      samplePtr mixed = mixer->GetBuffer();
 
       // Byte-swapping is neccesary on big-endian machines, since
       // WAV files are little-endian
@@ -151,8 +135,6 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
 #endif
 
       fwrite( mixed, numSamples * channels * SAMPLE_SIZE(int16Sample), 1, pipe );
-
-      t += deltat;
 
       if (!progress && wxGetElapsedTime(false) > 500) {
 
@@ -172,13 +154,15 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
                                   wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
       }
       if (progress) {
-         cancelling =
-             !progress->Update(int (((t - t0) * 1000) / (t1 - t0) + 0.5));
+         int progressvalue = int (1000 * (mixer->GetCurrentTime() /
+                                          tracks->GetEndTime()));
+         cancelling = !progress->Update(progressvalue);
       }
 
-      delete mixer;
       delete[]buffer;
    }
+
+   delete mixer;
 
    pclose( pipe );
 

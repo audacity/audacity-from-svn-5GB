@@ -65,6 +65,7 @@ OBJS = \
 	$(OBJDIR)/ToolBar.o \
 	$(OBJDIR)/UndoManager.o \
 	$(OBJDIR)/WaveTrack.o \
+	$(OBJDIR)/TimeTrack.o \
 	$(OBJDIR)/commands/Commands.o \
 	$(OBJDIR)/commands/CommandsCallback.o \
 	$(OBJDIR)/commands/CommandsMenu.o \
