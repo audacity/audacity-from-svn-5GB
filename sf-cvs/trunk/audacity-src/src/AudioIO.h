@@ -110,6 +110,8 @@ class AudioIO {
    int                 mLostSamples;
 
    friend class AudioThread;
+
+   friend void InitAudioIO();
    
    friend int audacityAudioCallback(
 		void *inputBuffer, void *outputBuffer,
