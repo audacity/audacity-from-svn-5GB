@@ -6709,9 +6709,9 @@ fi
 # Check whether --enable-justsrc or --disable-justsrc was given.
 if test "${enable_justsrc+set}" = set; then
   enableval="$enable_justsrc"
-  ac_arg_justsrc="Y"
+  ac_arg_justsrc=$enableval
 else
-  ac_arg_justsrc="N"
+  ac_arg_justsrc="yes"
 fi;
 
 # Check whether --enable-force-broken-float or --disable-force-broken-float was given.
@@ -10436,7 +10436,7 @@ if test x"$ac_cv_prog_autogen" = "xno" ; then
 # Now use the information from the checking stage.
 
 subdirs="man doc Win32 MacOS Octave src"    # Do not add src/GSM610 or src/G72x here.
-if test $ac_arg_justsrc = "N" ; then
+if test $ac_arg_justsrc = "no" ; then
 	subdirs="$subdirs examples tests"
 	fi
 
