@@ -27,6 +27,7 @@
 #include <wx/wx.h>
 #include <wx/brush.h>
 #include <wx/image.h>
+#include <wx/intl.h>
 #endif
 
 #include <math.h>
@@ -70,7 +71,7 @@ void InitAPaletteFrame(wxWindow * parent)
    where.y += 20;
 #endif
 
-   gAPaletteFrame = new APaletteFrame(parent, -1, "Audacity Palette",
+   gAPaletteFrame = new APaletteFrame(parent, -1, _("Audacity Palette"),
                                       where);
 
    if (gWindowedPalette) {
