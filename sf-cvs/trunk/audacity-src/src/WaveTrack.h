@@ -230,6 +230,10 @@ class WaveTrack: public Track {
    // Remove cut line, without expanding the audio in it
    bool RemoveCutLine(double cutLinePosition);
 
+   // This track has been merged into a stereo track.  Copy shared parameters
+   // from the new partner.
+   virtual void Merge(const Track &orig);
+
    //
    // The following code will eventually become part of a GUIWaveTrack
    // and will be taken out of the WaveTrack class:

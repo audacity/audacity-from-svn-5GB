@@ -83,6 +83,10 @@ class Track: public XMLTagHandler {
    void Init(const Track &orig);
    virtual Track *Duplicate() = 0;
 
+   // Called when this track is merged with another, and should
+   // take on some paramaters of its partner.
+   virtual void Merge(const Track &orig);
+
    wxString GetName() const { return mName; }
    void SetName( wxString n ) { mName = n; }
 
