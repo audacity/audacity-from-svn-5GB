@@ -94,14 +94,24 @@ void EffectFilter::Filter(sampleCount len,
   
   WindowFunc(2, len, inr);
 
-  RealFFT(len, inr, outr, outi);
-  
+  FFT(len, false, inr, NULL, outr, outi);
+
+  //  RealFFT(len, inr, outr, outi);
+
   // Apply filter
-  /*
-  for(i=0; i<len; i++) {
-    outr[i] = (outr[i]*(len-i))/len;
-    outi[i] = (outi[i]*(len-i))/len;
-  }*/
+
+  int half = len/2;
+  for(i=0; i<=half; i++) {
+	int j = len - i;
+
+    outr[i] = outr[i]*sin(float(i)/half);
+    outi[i] = outi[i]*sin(float(i)/half);
+
+	if (i!=0 && i!=len/2) {
+	  outr[j] = outr[j]*sin(float(i)/half);
+	  outi[j] = outi[j]*sin(float(i)/half);
+	}
+  }
   
   FFT(len, true, outr, outi, inr, ini);
 
