@@ -100,7 +100,7 @@ public:
    LWSliderArray mPans;
    wxWindow * pParent;
 
-friend TrackPanel;
+friend class TrackPanel;
 };
 
 
