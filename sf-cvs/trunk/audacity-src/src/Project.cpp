@@ -2420,6 +2420,16 @@ ControlToolBar *AudacityProject::GetControlToolBar()
    return (ControlToolBar *) tb;
 }
 
+//JKC: same as above *except* this a virtual function that
+//can be called from the track panel callback.
+//It seems a little crazy doing this but TrackArtist 
+//needs to get information about the tool bar state and 
+//I don't currently see a cleaner way.
+ControlToolBar * AudacityProject::TP_GetControlToolBar()
+{
+   return GetControlToolBar();
+}
+
 MixerToolBar *AudacityProject::GetMixerToolBar()
 {
    for(unsigned int i=0; i<mToolBarArray.GetCount(); i++)

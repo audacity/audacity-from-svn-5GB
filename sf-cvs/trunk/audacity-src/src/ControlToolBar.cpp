@@ -48,10 +48,11 @@
 
 enum {
    ID_SELECT,
+   ID_ZOOM,
    ID_ENVELOPE,
    ID_SLIDE,
-   ID_ZOOM,
    ID_DRAW,
+   ID_MULTI,
    ID_PLAY_BUTTON,
    ID_RECORD_BUTTON,
    ID_PAUSE_BUTTON,
@@ -62,6 +63,22 @@ enum {
    ID_FIRST_TOOL = ID_SELECT,
    ID_LAST_TOOL = ID_DRAW
 };
+
+// Strings to convert a tool number into a status message
+// These MUST be in the same order as the ids above.
+const char * MessageOfTool[numTools] = { _("Click and drag to select audio"),
+#if defined( __WXMAC__ )
+   _("Click to Zoom In, Shift-Click to Zoom Out"),
+#elif defined( __WXMSW__ )
+   _("Left-Click to Zoom In, Right-Click to Zoom Out"),
+#elif defined( __WXGTK__ )
+   _("Left=Zoom In, Right=Zoom Out, Middle=Normal"),
+#endif
+   _("Click and drag to edit the amplitude envelope"),
+   _("Click and drag to move a track in time"),
+   _("Click and drag to edit the samples")
+};
+
 
 const int BUTTON_WIDTH = 50;
 
@@ -77,6 +94,8 @@ BEGIN_EVENT_TABLE(ControlToolBar, wxWindow)
    EVT_CHAR(ControlToolBar::OnKeyEvent)
    EVT_COMMAND_RANGE(ID_FIRST_TOOL, ID_LAST_TOOL,
          wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnTool)
+   EVT_COMMAND(ID_MULTI,
+         wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnMultiTool)
    EVT_COMMAND(ID_PLAY_BUTTON,
          wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnPlay)
    EVT_COMMAND(ID_STOP_BUTTON,
@@ -115,10 +134,18 @@ void ControlToolBar::InitializeControlToolBar()
    mIdealSize = wxSize(400, 55);
    mTitle = _("Audacity Control Toolbar");
    mType = ControlToolBarID;
+   mInMultiMode = false;
 
    wxColour backgroundColour =
        wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
    wxColour origColour(204, 204, 204);
+
+   //Read the following wxASSERTs as documentating a design decision
+   wxASSERT( selectTool   == ID_SELECT   - ID_FIRST_TOOL );
+   wxASSERT( envelopeTool == ID_ENVELOPE - ID_FIRST_TOOL );
+   wxASSERT( slideTool    == ID_SLIDE    - ID_FIRST_TOOL );
+   wxASSERT( zoomTool     == ID_ZOOM     - ID_FIRST_TOOL );
+   wxASSERT( drawTool     == ID_DRAW     - ID_FIRST_TOOL );
 
    MakeButtons();
 
@@ -142,11 +169,10 @@ void ControlToolBar::InitializeControlToolBar()
    delete thumbNew;
 #endif
 
-   mCurrentTool = 0;
-   mTool[0]->PushDown();
+   mCurrentTool = selectTool;
+   mTool[mCurrentTool]->PushDown();
 
    gPrefs->Read("/GUI/AlwaysEnablePause", &mAlwaysEnablePause, false);
-
 
    mPaused=false;             //Turn the paused state to off
 #if 0
@@ -271,6 +297,56 @@ AButton *ControlToolBar::MakeButton(char const **foreground,
 }
 
 
+
+
+void ControlToolBar::RegenerateToolsTooltips()
+{
+
+// JKC: 
+//   Under Win98 Tooltips appear to be buggy, when you have a lot of
+//   tooltip messages flying around.  I found that just creating a 
+//   twelfth tooltip caused Audacity to crash when it tried to show 
+//   any tooltip.
+//
+//   Win98 does NOT recover from this crash - for any application which is 
+//   using tooltips will also crash thereafter...  so you must reboot.
+//   Rather weird.  
+//
+//   Getting windows to process more of its stacked up messages seems
+//   to workaround the problem.  The problem is not fully understood though
+//   (as of April 2003).
+   
+   if( !mInMultiMode )
+   {
+      wxSafeYield(); //Deal with some queued up messages...
+      mTool[selectTool]->SetToolTip(_("Selection Tool"));
+      mTool[envelopeTool]->SetToolTip(_("Envelope Tool"));
+      mTool[slideTool]->SetToolTip(_("Time Shift Tool"));
+      mTool[zoomTool]->SetToolTip(_("Zoom Tool"));
+      mTool[drawTool]->SetToolTip(_("Draw Tool"));
+      mMultiTool->SetToolTip(_("Multi-Tool Mode"));
+      wxSafeYield();
+      return;
+   }
+
+   wxSafeYield();
+
+   //Tool tips for multi-mode.
+   //_("//Note for translators: Tooltips - concise text prefered.")
+   mTool[envelopeTool]->SetToolTips( _("Show Envelope"), _("Hide Envelope"));
+   mTool[slideTool]->SetToolTips(    _("Show Time-shifters"), _("Hide Time-shifters"));
+   //Sample blobs get larger when enabled.  (must be zoomed in sufficiently to see).
+   mTool[drawTool]->SetToolTips(     _("Enable Sample Edits"),  _("No Sample Edits"));
+   //No visual handle for these two, though the cursor does change.
+   //If both are enabled, can still zoom in or out using right mouse button.
+   mTool[selectTool]->SetToolTips(   _("Enable Selections"), _("No Selections"));
+   mTool[zoomTool]->SetToolTips(     _("Enable Zoom"),      _("No Zoom"));
+   //
+   mMultiTool->SetToolTips(          _("Multi-Tool Mode"),  _("Single-Tool Mode"));
+   wxSafeYield();
+
+}
+
 void ControlToolBar::MakeButtons()
 {
    wxImage *upOriginal = new wxImage(wxBitmap(UpButton).ConvertToImage());
@@ -306,8 +382,6 @@ void ControlToolBar::MakeButtons()
                       false);
    mPlay->SetToolTip(_("Play"));
 
-
-
    mRecord = MakeButton((char const **) Record,
                         (char const **) RecordDisabled,
                         (char const **) RecordAlpha, ID_RECORD_BUTTON,
@@ -319,8 +393,6 @@ void ControlToolBar::MakeButtons()
                       (char const **) PauseAlpha, ID_PAUSE_BUTTON,
                        true);
    mPause->SetToolTip(_("Pause"));
-   
-
 
    mStop = MakeButton((char const **) Stop,
                       (char const **) StopDisabled,
@@ -346,25 +418,21 @@ void ControlToolBar::MakeButtons()
 
    /* Tools */
 
-   mTool[0] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
-   mTool[0]->SetToolTip(_("Selection Tool"));
+   mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
+   mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 28);
+   mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 28, 0);
+   mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 28, 28);
 
-   mTool[1] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 28, 0);
-   mTool[1]->SetToolTip(_("Envelope Tool"));
-
-   mTool[2] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 0, 28);
-   mTool[2]->SetToolTip(_("Time Shift Tool"));
-
-   mTool[3] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 28, 28);
-   mTool[3]->SetToolTip(_("Zoom Tool"));
-
-   mTool[4] = MakeTool(Draw, DrawAlpha, ID_DRAW, 56, 0);
-   mTool[4]->SetToolTip(_("Draw Tool"));
+   mTool[drawTool] = MakeTool(Draw, DrawAlpha, ID_DRAW, 56, 0);
+   mMultiTool = MakeTool(Multi, MultiAlpha, ID_MULTI, 56, 28); 
+   mMultiTool->SetButtonToggles( true );
+   RegenerateToolsTooltips();
 
 #ifdef __WXMAC__
    wxToolTip::Enable(false);    // DM: tooltips are broken in wxMac
 #else
-   wxToolTip::Enable(true);     // MB: Should make this a pref
+// MB: Should make this a pref
+   wxToolTip::Enable(true);     
    wxToolTip::SetDelay(1000);
 #endif
 }
@@ -439,6 +507,14 @@ void ControlToolBar::UpdatePrefs()
 int ControlToolBar::GetCurrentTool()
 {
    return mCurrentTool;
+}
+
+void ControlToolBar::SetCurrentTool(int tool, bool show)
+{
+   //In multi-mode the current tool is shown by the 
+   //cursor icon.  The buttons are not updated.
+   wxASSERT( show == false );
+   mCurrentTool=tool;
 }
 
 void ControlToolBar::SetPlay(bool down)
@@ -657,20 +733,107 @@ float ControlToolBar::GetSoundVol()
    return 1.0; //return mVolume->Get();
 }
 
+bool ControlToolBar::GetSelectToolDown()
+{
+   return mTool[ selectTool]->IsDown();
+}
+
+bool ControlToolBar::GetZoomToolDown()
+{
+   return mTool[ zoomTool]->IsDown();
+}
+
+bool ControlToolBar::GetEnvelopeToolDown()
+{
+   return mTool[ envelopeTool]->IsDown();
+}
+
+bool ControlToolBar::GetSlideToolDown()
+{
+   return mTool[ slideTool]->IsDown();
+}
+
+bool ControlToolBar::GetDrawToolDown()
+{
+   return mTool[ drawTool ]->IsDown();
+}
+
+bool ControlToolBar::GetMultiToolDown()
+{
+   return mMultiTool->IsDown();
+}
+
+const char * ControlToolBar::GetMessageForTool( int ToolNumber )
+{
+   wxASSERT( ToolNumber >= 0 );
+   wxASSERT( ToolNumber < numTools );
+   return MessageOfTool[ ToolNumber ];
+}
+
+
 void ControlToolBar::OnTool(wxCommandEvent & evt)
 {
-   int prev = mCurrentTool;
-   mCurrentTool = evt.GetId() - ID_FIRST_TOOL;
+   if( mInMultiMode ){
+      //We're in multimode and the buttons have been
+      //updated. 
+      //Need to have one of the 'default tools' available.
+      //So check that at least one is down.
+      if( !mTool[selectTool]->IsDown() && !mTool[zoomTool]->IsDown() )
+      {
+         //Whichever one we just popped up, push down the other.
+         int toolToPushDown = (evt.GetId() == ID_SELECT) ? zoomTool : selectTool;
+         mTool[ toolToPushDown ]->PushDown();
+      }
+      RegenerateToolsTooltips();
+      //What gets displayed will also have
+      //changed as a result.
+      RedrawAllProjects();
+      return;
+   }
 
-   for (int i = 0; i < 5; i++)
-      if (i == mCurrentTool)
+   mCurrentTool = evt.GetId() - ID_FIRST_TOOL;
+   for (int i = 0; i < numTools; i++)
+      if (i == mCurrentTool) 
          mTool[i]->PushDown();
       else
          mTool[i]->PopUp();
 
-   if (mCurrentTool == envelopeTool || prev == envelopeTool)
-      RedrawAllProjects();
+   RedrawAllProjects();
 }
+
+
+void ControlToolBar::OnMultiTool(wxCommandEvent & evt)
+{
+   // Enter multi-mode?
+   if( !mInMultiMode ){
+      mInMultiMode = true;
+      mPreviousTool = mCurrentTool;
+      mCurrentTool = selectTool;
+      // In multi-mode, all tools are active.
+      // So all buttons go down and are to 'toggle'.
+      for(int i=0;i<numTools;i++){
+         mTool[i]->PushDown();
+         // Become interested in 'up' events for all tools.
+         mTool[i]->SetButtonToggles( true );
+      }
+   }
+   // ELSE leave multi mode.
+   else {
+      mInMultiMode = false;
+      mCurrentTool = mPreviousTool;
+      for (int i = 0; i < numTools; i++){
+         // No longer interested in 'up' events.
+         mTool[i]->SetButtonToggles( false );
+         if (i == mCurrentTool) 
+            mTool[i]->PushDown();
+         else
+            mTool[i]->PopUp();
+      }
+   }
+   RegenerateToolsTooltips();
+   RedrawAllProjects();
+}
+
 
 void ControlToolBar::OnPaint(wxPaintEvent & evt)
 {
@@ -712,3 +875,5 @@ void ControlToolBar::EnableDisableButtons()
    mRewind->SetEnabled(tracks && !busy);
    mFF->SetEnabled(tracks && !busy);
 }
+
+

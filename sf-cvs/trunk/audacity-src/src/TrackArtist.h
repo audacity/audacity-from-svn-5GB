@@ -42,11 +42,13 @@ class TrackArtist {
 
    void DrawTracks(TrackList * tracks,
                    wxDC & dc, wxRect & r,
-                   wxRect & clip, ViewInfo * viewInfo, bool drawEnvelope);
+                   wxRect & clip, ViewInfo * viewInfo, 
+                   bool drawEnvelope,bool drawSamples,bool drawSliders);
 
    void DrawVRuler(Track * t, wxDC * dc, wxRect & r);
 
    void SetInset(int left, int top, int right, int bottom);
+   int GetWaveYPos(float value, int height, bool dB);
 
  private:
    int mInsetLeft;
@@ -59,6 +61,7 @@ class TrackArtist {
    wxBrush selectedBrush;
    wxBrush sampleBrush;
    wxBrush selsampleBrush;
+   wxBrush dragsampleBrush;// for samples which are draggable.
    wxPen blankPen;
    wxPen unselectedPen;
    wxPen selectedPen;
@@ -69,11 +72,10 @@ class TrackArtist {
 
    Ruler *vruler;
 
-   int GetWaveYPos(float value, int height, bool dB);
-
    void DrawWaveform(WaveTrack *track,
                      wxDC & dc, wxRect & r,
-                     ViewInfo * viewInfo, bool drawEnvelope, bool dB);
+                     ViewInfo * viewInfo, 
+                     bool drawEnvelope, bool drawSamples,bool drawSliders, bool dB);
 
    void DrawSpectrum(WaveTrack *track,
                      wxDC & dc, wxRect & r,
@@ -86,7 +88,11 @@ class TrackArtist {
                        wxDC & dc, wxRect & r, ViewInfo * viewInfo);
 
    void DrawTimeTrack(TimeTrack *track,
-		      wxDC & dc, wxRect & r, ViewInfo * viewInfo);
+                       wxDC & dc, wxRect & r, ViewInfo * viewInfo);
+
+   void DrawTimeSlider(WaveTrack *track,
+                       wxDC & dc, wxRect & r, ViewInfo * viewInfo, bool rightwards);
+
 };
 
 #endif                          // define __AUDACITY_TRACKARTIST__

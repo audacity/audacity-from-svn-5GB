@@ -65,6 +65,7 @@ TrackArtist::TrackArtist()
    selectedBrush  .SetColour(148, 148, 170);
    sampleBrush    .SetColour( 50,  50, 200);
    selsampleBrush .SetColour( 50,  50, 200);
+   dragsampleBrush.SetColour(  0,   0,   0);
 
    blankPen     .SetColour(214, 214, 214);
    unselectedPen.SetColour(192, 192, 192);
@@ -94,7 +95,7 @@ void TrackArtist::DrawTracks(TrackList * tracks,
                              wxDC & dc, wxRect & r,
                              wxRect & clip,
                              ViewInfo * viewInfo,
-			     bool drawEnvelope)
+                             bool drawEnvelope,bool drawSamples,bool drawSliders)
 {
    wxRect trackRect = r;
 
@@ -117,11 +118,11 @@ void TrackArtist::DrawTracks(TrackList * tracks,
             switch (((WaveTrack *)t)->GetDisplay()) {
             case WaveTrack::WaveformDisplay:
                DrawWaveform((WaveTrack *)t, dc, rr, viewInfo,
-                            drawEnvelope, false);
+                            drawEnvelope, drawSamples, drawSliders, false);
                break;
             case WaveTrack::WaveformDBDisplay:
                DrawWaveform((WaveTrack *)t, dc, rr, viewInfo,
-                            drawEnvelope, true);
+                            drawEnvelope,  drawSamples, drawSliders, true);
                break;
             case WaveTrack::SpectrumDisplay:
                DrawSpectrum((WaveTrack *)t, dc, rr, viewInfo, false);
@@ -137,9 +138,9 @@ void TrackArtist::DrawTracks(TrackList * tracks,
          case Track::Label:
             DrawLabelTrack((LabelTrack *)t, dc, rr, viewInfo);
             break;
-	 case Track::Time:
-	    DrawTimeTrack((TimeTrack *)t, dc, rr, viewInfo);
-	    break;
+         case Track::Time:
+            DrawTimeTrack((TimeTrack *)t, dc, rr, viewInfo);
+            break;
          }
       }
 
@@ -328,7 +329,7 @@ int TrackArtist::GetWaveYPos(float value, int height, bool dB)
 void TrackArtist::DrawWaveform(WaveTrack *track,
                                wxDC & dc, wxRect & r,
                                ViewInfo * viewInfo,
-                               bool drawEnvelope, bool dB)
+                               bool drawEnvelope, bool drawSamples,bool drawSliders, bool dB)
 {
    double h = viewInfo->h;          //The horizontal position in seconds
    double pps = viewInfo->zoom;     //points-per-second--the zoom level
@@ -560,13 +561,15 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
 
          if (showPoints) {
             // Draw points
+            int tickSize= drawSamples ? 4 : 3;// Bigger ellipses when draggable.
             wxRect pr;
-            pr.width = 3;
-            pr.height = 3;
-            dc.SetBrush(sampleBrush);
+            pr.width = tickSize;
+            pr.height = tickSize;
+            //different colour when draggable.
+            dc.SetBrush( drawSamples ? dragsampleBrush : sampleBrush);
             for (s = 0; s < slen; s++) {
-               pr.x = r.x + xpos[s] - 1;
-               pr.y = ypos[s] - 1;
+               pr.x = r.x + xpos[s] - tickSize/2;
+               pr.y = ypos[s] - tickSize/2;
                dc.DrawEllipse(pr);
             }
          }
@@ -673,7 +676,56 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
       delete[] rms;
       delete[] where;
    }
+   
+   if( drawSliders )
+   {
+      DrawTimeSlider(track,dc, r, viewInfo, true);  // directed right
+      DrawTimeSlider(track,dc, r, viewInfo, false); // directed left
+   }
 }
+
+
+void TrackArtist::DrawTimeSlider(WaveTrack *track,
+                       wxDC & dc, wxRect & r, ViewInfo * viewInfo, bool rightwards)
+{
+   const int border=3; // 3 pixels all round.
+   const int width=6; // width of the drag box.
+   const int taper=6; // how much the box tapers by.
+   const int barSpacing = 4; // how far apart the bars are.
+   const int barWidth = 3;
+
+   //Enough space to draw in?
+   if( r.height <= ((taper+border + barSpacing) * 2 ))
+      return;
+   if( r.width <= (width*2 + border * 3))
+      return;
+
+   // The draggable box is tapered towards the direction you drag it.
+   int leftTaper  = rightwards ? 0 : 6;
+   int rightTaper = rightwards ? 6 : 0;
+
+   int xLeft = rightwards ? (r.x +border) : (r.x + r.width - (border+width));
+   int yTop  = r.y+border;
+   int yBot  = r.y+r.height-border;
+
+   dc.SetPen(*wxWHITE_PEN);
+   dc.DrawLine( xLeft, yBot-leftTaper, xLeft, yTop+leftTaper );
+   dc.DrawLine( xLeft, yTop+leftTaper, xLeft+width, yTop+rightTaper );
+   dc.SetPen(*wxBLACK_PEN);
+   dc.DrawLine( xLeft+width, yTop+rightTaper, xLeft+width, yBot-rightTaper );
+   dc.DrawLine( xLeft+width, yBot-rightTaper, xLeft, yBot-leftTaper);
+
+   int firstBar = yTop + taper + taper/2;
+   int nBars    = (yBot-yTop-taper*3) / barSpacing +1;
+   xLeft += (width-barWidth+1)/2;
+   int y;
+   for(int i=0;i<nBars;i++)
+   {
+      y = firstBar + barSpacing*i;
+      dc.DrawLine( xLeft, y, xLeft+barWidth, y);
+   }
+}
+
 
 void TrackArtist::DrawSpectrum(WaveTrack *track,
                                wxDC & dc, wxRect & r,
@@ -681,8 +733,8 @@ void TrackArtist::DrawSpectrum(WaveTrack *track,
 {
    if(!viewInfo->bUpdateSpectrogram && viewInfo->bIsPlaying)
    {
-      // BG: Draw waveform instead of spectrum
-      DrawWaveform(track, dc, r, viewInfo, false, false);
+      // BG: Draw (undecorated) waveform instead of spectrum
+      DrawWaveform(track, dc, r, viewInfo, false, false, false, false);
       /*
       // BG: uncomment to draw grey instead of spectrum
       dc.SetBrush(unselectedBrush);
