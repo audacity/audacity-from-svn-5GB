@@ -569,8 +569,8 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand("SelCntrLeft", _("Selection Contract Left\tCtrl+Shift+Right"),   FN(OnSelContractLeft));
    c->AddCommand("SelCntrRight",_("Selection Contract Right\tCtrl+Shift+Left"), FN(OnSelContractRight));
 
-   c->AddCommand("SetLeftSelection",_("Set Left Selection at playback position\tCtrl+L"), FN(OnSetLeftSelection));
-   c->AddCommand("SetRightSelection",_("Set Left Selection at playback position\tCtrl+R"), FN(OnSetRightSelection));
+   c->AddCommand("SetLeftSelection",_("Set Left Selection at playback position\t["), FN(OnSetLeftSelection));
+   c->AddCommand("SetRightSelection",_("Set Left Selection at playback position\t]"), FN(OnSetRightSelection));
 
    c->AddCommand("TrackPan", _("Change pan on first selected track\tShift+P"),FN(OnTrackPan));
    c->AddCommand("TrackGain", _("Change gain on first selected track\tShift+G"),FN(OnTrackGain));
@@ -1074,9 +1074,18 @@ void AudacityProject::OnCycleTracks()
 
 void AudacityProject::OnCursorLeft()
 {
+
+   //if the last adjustment was very recent, we are
+   //holding the key down and should move faster.
+   wxLongLong curtime = ::wxGetLocalTimeMillis();
+   int multiplier =1;
+   if(curtime - mLastSelectionAdjustment < 50)
+      multiplier=4;
+   mLastSelectionAdjustment = curtime;
+
    if (mViewInfo.sel0 == mViewInfo.sel1) {
-      mViewInfo.sel0 -= 1/mViewInfo.zoom;
-      mViewInfo.sel1 -= 1/mViewInfo.zoom;
+      mViewInfo.sel0 -= multiplier/mViewInfo.zoom;
+      mViewInfo.sel1 -= multiplier/mViewInfo.zoom;
       if (mViewInfo.sel0 < 0.0)
          mViewInfo.sel0 = 0.0;
       if (mViewInfo.sel1 < 0.0)
@@ -1090,9 +1099,19 @@ void AudacityProject::OnCursorLeft()
 
 void AudacityProject::OnCursorRight()
 {
+
+   //if the last adjustment was very recent, we are
+   //holding the key down and should move faster.
+   wxLongLong curtime = ::wxGetLocalTimeMillis();
+   int multiplier =1;
+   if(curtime - mLastSelectionAdjustment < 50)
+      multiplier=4;
+   mLastSelectionAdjustment = curtime;
+
+
    if (mViewInfo.sel0 == mViewInfo.sel1) {
-      mViewInfo.sel0 += 1/mViewInfo.zoom;
-      mViewInfo.sel1 += 1/mViewInfo.zoom;
+      mViewInfo.sel0 += multiplier/mViewInfo.zoom;
+      mViewInfo.sel1 += multiplier/mViewInfo.zoom;
    }
    else
       mViewInfo.sel0 = mViewInfo.sel1;
@@ -1102,7 +1121,16 @@ void AudacityProject::OnCursorRight()
 
 void AudacityProject::OnSelExtendLeft()
 {
-   mViewInfo.sel0 -= 1/mViewInfo.zoom;
+   //if the last adjustment was very recent, we are
+   //holding the key down and should move faster.
+   wxLongLong curtime = ::wxGetLocalTimeMillis();
+   int multiplier =1;
+   if(curtime - mLastSelectionAdjustment < 50)
+      multiplier=4;
+   mLastSelectionAdjustment = curtime;
+
+
+   mViewInfo.sel0 -= multiplier/mViewInfo.zoom;
    if (mViewInfo.sel0 < 0.0)
       mViewInfo.sel0 = 0.0;
    mTrackPanel->Refresh(false);
@@ -1110,13 +1138,30 @@ void AudacityProject::OnSelExtendLeft()
 
 void AudacityProject::OnSelExtendRight()
 {
-   mViewInfo.sel1 += 1/mViewInfo.zoom;
+   //if the last adjustment was very recent, we are
+   //holding the key down and should move faster.
+   wxLongLong curtime = ::wxGetLocalTimeMillis();
+   int multiplier =1;
+   if(curtime - mLastSelectionAdjustment < 50)
+      multiplier=4;
+   mLastSelectionAdjustment = curtime;
+
+   mViewInfo.sel1 += multiplier/mViewInfo.zoom;
    mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnSelContractLeft()
 {
-   mViewInfo.sel0 += 1/mViewInfo.zoom;
+   //if the last adjustment was very recent, we are
+   //holding the key down and should move faster.
+   wxLongLong curtime = ::wxGetLocalTimeMillis();
+   int multiplier =1;
+   if(curtime - mLastSelectionAdjustment < 50)
+      multiplier=4;
+   mLastSelectionAdjustment = curtime;
+
+
+   mViewInfo.sel0 += multiplier/mViewInfo.zoom;
    if (mViewInfo.sel0 > mViewInfo.sel1)
       mViewInfo.sel0 = mViewInfo.sel1;
    mTrackPanel->Refresh(false);
@@ -1124,11 +1169,21 @@ void AudacityProject::OnSelContractLeft()
 
 void AudacityProject::OnSelContractRight()
 {
-   mViewInfo.sel1 -= 1/mViewInfo.zoom;
+   //if the last adjustment was very recent, we are
+   //holding the key down and should move faster.
+   wxLongLong curtime = ::wxGetLocalTimeMillis();
+   int multiplier =1;
+   if(curtime - mLastSelectionAdjustment < 50)
+      multiplier=4;
+   mLastSelectionAdjustment = curtime;
+
+
+   mViewInfo.sel1 -= multiplier/mViewInfo.zoom;
    if (mViewInfo.sel1 < mViewInfo.sel0)
       mViewInfo.sel1 = mViewInfo.sel0;
    mTrackPanel->Refresh(false);
 }
+
 
 //this pops up a dialog which allows the left selection to be set.
 //If playing/recording is happening, it sets the left selection at
@@ -1163,7 +1218,7 @@ void AudacityProject::OnSetLeftSelection()
             }
          delete dialog;
       }
-
+   
    if(mViewInfo.sel1 < mViewInfo.sel0)
       mViewInfo.sel1 = mViewInfo.sel0;
    mTrackPanel->Refresh(false);
@@ -1233,6 +1288,7 @@ void AudacityProject::OnTrackClose()
 {
    mTrackPanel->OnTrackClose(mTrackPanel->GetFirstSelectedTrack());
 }
+
 
 
 double AudacityProject::NearestZeroCrossing(double t0)
