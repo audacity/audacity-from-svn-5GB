@@ -21,6 +21,7 @@
 
 EffectArray Effect::mEffects;
 int Effect::sNumEffects = 0;
+double Effect::sDefaultGenerateLen = 30.0;
 
 void Effect::RegisterEffect(Effect *f)
 {

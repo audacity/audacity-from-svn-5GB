@@ -166,6 +166,14 @@ class Effect {
    bool TrackGroupProgress(int whichGroup, double frac);
 
    int GetNumWaveTracks() { return mNumTracks; }
+
+ //
+ // protected static data
+ //
+ // Preferences shared by all effects
+ //
+ protected:
+   static double sDefaultGenerateLen;
  
  //
  // private methods

@@ -80,9 +80,11 @@ OBJS = \
 	$(OBJDIR)/effects/Fade.o \
 	$(OBJDIR)/effects/Filter.o \
 	$(OBJDIR)/effects/Invert.o \
+	$(OBJDIR)/effects/Noise.o \
 	$(OBJDIR)/effects/NoiseRemoval.o \
 	$(OBJDIR)/effects/Phaser.o \
 	$(OBJDIR)/effects/Reverse.o \
+	$(OBJDIR)/effects/Silence.o \
 	$(OBJDIR)/effects/ToneGen.o \
 	$(OBJDIR)/effects/Wahwah.o \
 	$(OBJDIR)/export/Export.o \
