@@ -42,7 +42,7 @@ const char *creditText =
   "please visit our website and give us your bug reports and "
   "feature requests."
   "<p>"
-  "http://www.cs.cmu.edu/~music/audacity/"
+  "http://audacity.sourceforge.net/"
   "<p>"
   "<center><b>Credits</b></center>"
   "<p>"

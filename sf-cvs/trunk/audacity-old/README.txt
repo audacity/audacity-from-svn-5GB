@@ -2,7 +2,7 @@ Audacity: A Free, Cross-Platform Digital Audio Editor
 
 Version 0.96
 
-http://www.cs.cmu.edu/~music/audacity/
+http://audacity.sourceforge.net/
 
 Primary author:
 
@@ -68,6 +68,9 @@ To compile under Linux, simply run:
 
   ./configure
   make
+  
+(There is no make install, so just copy the executable
+ "audacity" whereever you want it.)
 
 If you want to do any development, you might want to generate
 dependencies:
