@@ -15,7 +15,7 @@ Mocht je je afvragen wat Audacity precies is, of als je problemen hebt met het i
 <li>
 Meldt je aan bij: <a href="http://lists.sourceforge.net/lists/listinfo/audacity-users">Audacity-Users Mailing List</a><br>
 Surf naar: <a href="http://sourceforge.net/mailarchive/forum.php?forum_id=827">Audacity-Users Archives</a><br>
-Dit is een nieuwe mailing lijst waarmee Audacity gebruikers met elkaar kunnen communiceren en ideeën kunnen uitwisselen.  Als je denkt dat je vraag mogelijk door een andere Audacity gebruiker zou kunnen worden beantwoord, meldt je dan a.u.b. aan bij de mailing lijst en zet daar je vraag uit.  Je kunt de archieven raadplegen om na te gaan of je vraag misschien al is gesteld.
+Dit is een nieuwe mailing lijst waarmee Audacity gebruikers met elkaar kunnen communiceren en ideeën kunnen uitwisselen.  Als je denkt dat je vraag mogelijk door een andere Audacity gebruiker zou kunnen worden beantwoord, meldt je dan a.u.b. aan bij de mailing lijst en (zet daar je vraag uit) stel daar je vraag.  Je kunt de archieven raadplegen om na te gaan of je vraag misschien al is gesteld.
 <p>
 
 <li>

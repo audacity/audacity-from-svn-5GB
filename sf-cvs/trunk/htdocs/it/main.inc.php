@@ -63,4 +63,5 @@ $altDownloadStr = "Avete problemi con il download? Vi serve una versione precede
 $altDownloadStr2 = "Clicca qui per altri collegamenti";
 $docsStr = "Scarica la documentazione aggiornata";
 $clickEnlargeStr = "(Clicca sulle immagini per ingrandirle.)";
+$listPrivacyStr = "> note sulla privacy.)";
 ?>

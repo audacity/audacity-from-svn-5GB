@@ -1,11 +1,11 @@
-<?php BoxTop('25 Aðustos 2004: Audacity 1.2.2 duyuruldu'); ?>
+<?php BoxTop('Kasým 2004: Audacity 1.2.3 released'); ?>
 
 <p>
-Audacity 1.2.2 Audacity özgür ses editörünün en yeni kararlý versiyonudur.
-Bu daðýtým seviye göstergeleri, multi-dosya export ve çoklu-track kayýtlarý için lower latency gibi yeni özellikler içermektedir. Ayrýca mevcut bug'larýn bir çoðu düzeltilmiþtir
+Audacity 1.2.3 Audacity ses edötürünün en yeni kararlý versiyonudur.
+Bu daðýtýmda baze pencere sistemlerinde mevcut olan uzun kayýt sýrasýnda oluþan interfere hatasý düzeltilmiþtir. Ayrýca yeni eklenen bir kaç yeni dil desteði ve tespit edilmiþ hatalar giderilmiþtir. 
 </p>
 
-<p>Download Audacity:</p>
+<p>Audacity'yi Ýndirmek için:</p>
 <ul>
 <li><a href="windows.php<?php print $langQueryStr; ?>">Windows</a>
 <li><a href="mac.php<?php print $langQueryStr; ?>">Mac OS X</a>

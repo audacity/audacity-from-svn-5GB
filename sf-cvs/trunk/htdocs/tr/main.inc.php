@@ -1,6 +1,6 @@
 <?php
 $charset = "iso-8859-9";
-$translatorName = "Ali Erdinc Koroglu";
+$translatorName = "Ali Erdinç Köroðlu";
 $languageStr = "Turkish";
 $metaDescription = "Audacity, özgür bir cross-platform dijital ses editörü";
 $helpSectionStr = "Yardým";
@@ -10,7 +10,7 @@ $helpStr = "Online Yardým";
 $faqStr = "S.S.S";
 $tutorialsStr = "Tutorials";
 $linksStr = "Linkler";
-$contactUsStr = "Kontak";
+$contactUsStr = "Ýletiþim";
 $downloadSectionStr = "Download";
 $stableStr = "Kararlý";
 $betaStr = "Beta";
