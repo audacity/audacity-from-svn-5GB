@@ -33,26 +33,26 @@
 /* Define if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
+/* Define if audio I/O happens with KDE/aRts soundserver */
+#undef USE_ARTS
+
+/* Define if audio I/O was not compiled in */
+#undef USE_AUDIO_NONE
+
 /* Define if id3lib is present */
 #undef USE_ID3LIB
 
-/* Define if mp3 support is implemented with the libmpeg3 library */
-#undef USE_LIBMPEG3
+/* Define if mp3 support is implemented with the libmad library */
+#undef USE_LIBMAD
 
 /* Define if the ogg vorbis decoding library is present */
 #undef USE_LIBVORBIS
 
-/* Define if mp3 support is implemented with the xaudio library */
-#undef USE_XAUDIO
-
 /* Define if audio I/O happens with OSS */
 #undef USE_OSS
 
-/* Define if audio I/O happens with KDE/aRts soundserver */
-#undef USE_ARTS
-
-/* define if audio I/O was not compiled in */
-#undef USE_AUDIO_NONE
+/* Define if mp3 support is implemented with the xaudio library */
+#undef USE_XAUDIO
 
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const

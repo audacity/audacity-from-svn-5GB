@@ -14,13 +14,12 @@
   unlimited license to.  The library is available in binary form
   only from www.xaudio.com.  It is very fast, robust, and stable.
 
-  libmpeg3: a free as in speech and beer mp3 decoding library. I'm not
-  sure where it will and won't compile, but it works at least on Linux
+  libmad: a free as in speech and beer mp3 decoding library.
 
   There is a master symbol MP3SUPPORT -- if it is not defined, there
   be no MP3 support at all. If MP3SUPPORT is defined, another symbol
   must be defined as well to indicate which library -- at the moment,
-  either USE_XAUDIO or USE_LIBMPEG3
+  either USE_XAUDIO or USE_LIBMAD
   
 **********************************************************************/
 
@@ -43,8 +42,184 @@
 #include "Project.h"
 #include "Tags.h"
 
-#ifdef USE_LIBMPEG3
-   #include "mpeg3/libmpeg3.h"
+#ifdef USE_LIBMAD
+
+extern "C" {
+#include "mad.h"
+}
+
+/** here are all of the callbacks and data structures for libmad ************/
+
+#define INPUT_BUFFER_SIZE 65535
+#define PROGRESS_SCALING_FACTOR 100000
+
+/* this is a private structure we can use for whatever we like, and it will get
+ * passed to each of the callback routines, allowing us to keep track of
+ * things. */
+struct priv_data {
+   wxFile *file;   /* the file containing the mp3 data we're feeding the encoder */
+   unsigned char *inputBuffer;
+   WaveTrack **leftTrack, **rightTrack;
+   sampleType *leftBuffer, *rightBuffer;
+   sampleCount bufferSize;  /* how big each of the above buffers is */
+   sampleCount numDecoded;  /* how many decoded samples are sitting in each buffer */
+   wxString name;           /* what to name the created tracks */ 
+   wxProgressDialog *progress;
+   bool cancelled;
+   DirManager *dirManager;  /* Grr. don't ask. */
+   wxWindow *parent;        /* Likewise. */
+};
+
+
+
+/* convert libmad's fixed point representation to 16 bit signed integers. This
+ * code is taken verbatim from minimad.c. */
+
+inline sampleType scale(mad_fixed_t sample)
+{
+  /* round */
+  sample += (1L << (MAD_F_FRACBITS - 16));
+
+  /* clip */
+  if (sample >= MAD_F_ONE)
+    sample = MAD_F_ONE - 1;
+  else if (sample < -MAD_F_ONE)
+    sample = -MAD_F_ONE;
+
+  /* quantize */
+  return sample >> (MAD_F_FRACBITS + 1 - 16);
+}
+
+
+
+enum mad_flow input_cb(void *_data, struct mad_stream *stream)
+{
+   struct priv_data *data = (struct priv_data *)_data;
+
+   if(data->file->Eof()) {
+      data->cancelled = false;
+      return MAD_FLOW_STOP;
+   }
+
+   /* "Each time you refill your buffer, you need to preserve the data in
+    *  your existing buffer from stream.next_frame to the end.
+    *
+    *  This usually amounts to calling memmove() on this unconsumed portion
+    *  of the buffer and appending new data after it, before calling
+    *  mad_stream_buffer()"
+    *           -- Rob Leslie, on the mad-dev mailing list */
+
+   unsigned int unconsumedBytes;
+   if(stream->next_frame) {
+      unconsumedBytes = data->inputBuffer + INPUT_BUFFER_SIZE - stream->next_frame;
+      memmove(data->inputBuffer, stream->next_frame, unconsumedBytes);
+   }
+   else
+      unconsumedBytes = 0;
+
+   
+   size_t read = data->file->Read(data->inputBuffer + unconsumedBytes,
+                                  INPUT_BUFFER_SIZE - unconsumedBytes);
+
+   mad_stream_buffer(stream, data->inputBuffer, read);
+
+   return MAD_FLOW_CONTINUE;
+}
+
+
+
+enum mad_flow output_cb(void *_data,
+                        struct mad_header const *header,
+                        struct mad_pcm *pcm)
+{
+   unsigned int channels, samples, samplerate;
+   mad_fixed_t const *left, *right;
+   struct priv_data *data = (struct priv_data *)_data;
+
+   samplerate= pcm->samplerate;
+   channels  = pcm->channels;
+   samples   = pcm->length;
+   left      = pcm->samples[0];
+   right     = pcm->samples[1];
+
+   /* the left and right buffers get created on the first run */
+ 
+   if(!data->leftBuffer) {
+      data->leftBuffer = new sampleType[data->bufferSize];
+      *data->leftTrack = new WaveTrack(data->dirManager);
+      (*data->leftTrack)->channel = VTrack::LeftChannel;
+      (*data->leftTrack)->name = data->name;
+      (*data->leftTrack)->rate = samplerate;
+      
+      if(channels == 2) {
+         data->rightBuffer = new sampleType[data->bufferSize];
+         *data->rightTrack = new WaveTrack(data->dirManager);
+         (*data->rightTrack)->channel = VTrack::RightChannel;
+         (*data->rightTrack)->name = data->name;
+         (*data->rightTrack)->rate = samplerate;
+         (*data->leftTrack)->linked = true;
+      }
+   }
+
+   /*
+   printf("data->progress: %d time: %d progress %d/%d\n",
+          (int)data->progress,
+          wxGetElapsedTime(),
+          data->file->Tell(),
+          data->file->Length());
+   */
+
+   if(!data->progress /*&& wxGetElapsedTime() > 500*/)
+      data->progress = new wxProgressDialog("Import",
+                                            "Importing MP3 file...",
+                                            1000,
+                                            data->parent,
+                                            wxPD_CAN_ABORT | wxPD_ELAPSED_TIME |
+                                            wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
+
+                                            
+   if(data->numDecoded + samples > data->bufferSize) {
+      (*data->leftTrack)->Append(data->leftBuffer, data->numDecoded);
+      if(channels == 2)
+         (*data->rightTrack)->Append(data->rightBuffer, data->numDecoded);
+
+      data->numDecoded = 0;
+   }
+
+   while(samples--) {
+      data->leftBuffer[data->numDecoded] = scale(*left++);
+      if(channels == 2)
+         data->rightBuffer[data->numDecoded] = scale(*right++);
+
+      data->numDecoded++;
+   }
+
+   if( data->progress &&
+      !data->progress->Update( int(1000.0 * data->file->Tell() / data->file->Length()) ) ) {
+      
+      /* user cancelled */
+
+      data->cancelled = true;
+      return MAD_FLOW_STOP;
+   }
+   return MAD_FLOW_CONTINUE;
+}
+
+
+
+enum mad_flow error_cb(void *_data, struct mad_stream *stream, 
+                       struct mad_frame *frame)
+{
+/* enum mad_flow {
+     MAD_FLOW_CONTINUE = 0x0000,
+     MAD_FLOW_STOP     = 0x0010,
+     MAD_FLOW_BREAK    = 0x0011,
+     MAD_FLOW_IGNORE   = 0x0020
+   }; */
+
+   return MAD_FLOW_CONTINUE;
+}
+
 #elif defined(USE_XAUDIO)
    #ifdef __WXGTK__
       #include "xaudio/linux/include/decoder.h"
@@ -73,112 +248,68 @@ bool ImportMP3(AudacityProject * project,
    Tags *tags = project->GetTags();
    tags->ImportID3(fName);
 
-#ifdef USE_LIBMPEG3
-
+#ifdef USE_LIBMAD
    wxBusyCursor wait;
 
-   mpeg3_t *file = mpeg3_open((char *) fName.c_str());
+   /* Prepare decoder data, initialize decoder */
 
-   if (!file) {
+   wxFile file((char *) fName.c_str());
+
+   if (!file.IsOpened()) {
       wxMessageBox("Could not open " + fName);
       return false;
    }
 
-   int len = mpeg3_audio_samples(file, 0);
-   int stereo = (mpeg3_audio_channels(file, 0) > 1);
+   struct priv_data data;
+   struct mad_decoder decoder;
 
-   *left = new WaveTrack(dirManager);
-   (*left)->channel = VTrack::LeftChannel;
-   (*left)->name = TrackNameFromFileName(fName);
-   if (stereo) {
-      *right = new WaveTrack(dirManager);
-      (*right)->channel = VTrack::RightChannel;
-      (*right)->name = TrackNameFromFileName(fName);
-      (*left)->linked = true;
-   }
+   data.file        = &file;
+   data.inputBuffer = new unsigned char [INPUT_BUFFER_SIZE];
+   data.leftTrack   = left;
+   data.rightTrack  = right;
+   data.leftBuffer  = NULL;
+   data.rightBuffer = NULL;
+   data.bufferSize  = WaveTrack::GetIdealBlockSize();
+   data.numDecoded  = 0;
+   data.name        = TrackNameFromFileName(fName);
+   data.progress    = NULL;
+   data.cancelled   = false;
+   data.dirManager  = dirManager;
+   data.parent      = parent;
 
-   wxProgressDialog *progress = NULL;
-
-   wxYield();
    wxStartTimer();
+   
+   mad_decoder_init(&decoder, &data, input_cb, 0, 0, output_cb, error_cb, 0);
+   
+   /* and send the decoder on its way! */
 
-#define BUFFER_SIZE 32768
-#define CODEC_TRANSFER_SIZE 4096
-   sampleType *leftBuffer = new sampleType[BUFFER_SIZE];
-   sampleType *rightBuffer = new sampleType[BUFFER_SIZE];
+   mad_decoder_run(&decoder, MAD_DECODER_MODE_SYNC);
 
-   wxASSERT(leftBuffer);
-   wxASSERT(rightBuffer);
+   mad_decoder_finish(&decoder);
 
-   int decodedSamples = 0;
-   int pos = 0;
+   /* write anything left in the buffers and clean up */
 
-   bool cancelled = false;
+   (*data.leftTrack)->Append(data.leftBuffer, data.numDecoded);
+   if(data.rightBuffer)
+      (*data.rightTrack)->Append(data.rightBuffer, data.numDecoded);
 
-   mpeg3_seek_percentage(file, 0);
-   while (!cancelled && pos < len) {
+   if(data.leftBuffer)
+      delete [] data.leftBuffer;
+   
+   if(data.rightBuffer)
+      delete [] data.rightBuffer;
 
-      if (decodedSamples + CODEC_TRANSFER_SIZE > BUFFER_SIZE) {
-         (*left)->Append((sampleType *) leftBuffer, decodedSamples);
+   if(data.progress)
+      delete data.progress;
 
-         if (stereo)
-            (*right)->Append((sampleType *) rightBuffer, decodedSamples);
-
-         decodedSamples = 0;
-      }
-
-      mpeg3_read_audio(file, NULL,      // pointer to array of floats (but we're using ints)
-                       (leftBuffer + decodedSamples), 0,        // Channel to decode
-                       CODEC_TRANSFER_SIZE,     // Number of _samples_ to decode
-                       0);
-      if (stereo)
-         int leftBytes = mpeg3_reread_audio(file,
-                                            NULL,
-                                            (rightBuffer + decodedSamples),
-                                            1,  // Channel to decode
-                                            CODEC_TRANSFER_SIZE,
-                                            0);
-
-      pos += CODEC_TRANSFER_SIZE;
-      decodedSamples += CODEC_TRANSFER_SIZE;
-
-      if (!progress && wxGetElapsedTime(false) > 500) {
-         progress =
-             new wxProgressDialog("Import",
-                                  "Importing MP3 file...",
-                                  1000,
-                                  parent,
-                                  wxPD_CAN_ABORT |
-                                  wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
-
-      }
-
-      if (progress) {
-         cancelled =
-             !progress->Update((int) (mpeg3_tell_percentage(file) * 1000));
-      }
-   }
-
-   mpeg3_close(file);
-
-   delete[]leftBuffer;
-   if (stereo)
-      delete[]rightBuffer;
-
-   delete progress;
-
-   if (cancelled) {
-      if (*left) {
-         delete *left;
-         *left = NULL;
-      }
-      if (*right) {
-         delete *right;
-         *right = NULL;
-      }
+   if(data.cancelled && *data.leftTrack) {
+      delete *data.leftTrack;
+      if(*data.rightTrack)
+         delete *data.rightTrack;
 
       return false;
    }
+
 
    return true;
 
