@@ -581,11 +581,6 @@ void AudioIO::Stop()
       Pa_CloseStream(stream);
    }
 
-   #ifdef __WXMSW__
-   while(Pa_StreamActive(stream))
-      wxSleep(1);
-   #endif
-
    mPortStream = NULL;
 
    mStopping = true;
