@@ -217,7 +217,7 @@ typedef int (AudacityApp::*SPECIALKEYEVENT)(wxKeyEvent&);
 BEGIN_EVENT_TABLE(AudacityApp, wxApp)
 
    //These appear to cause trouble on non-mac platforms:
-#ifdef __WXMAC__
+#if 0 //def __WXMAC__
 	EVT_MENU(AboutID, AudacityApp::OnMenuAbout)
 	EVT_MENU(NewID, AudacityApp::OnMenuNew)
 	EVT_MENU(OpenID, AudacityApp::OnMenuOpen)
@@ -411,6 +411,9 @@ bool AudacityApp::OnInit()
    // become visible.
 
    gParentFrame = new wxFrame(NULL, -1, "invisible", wxPoint(5000, 5000), wxSize(100, 100));
+
+#if 0
+
    wxMenu *fileMenu = new wxMenu();
    fileMenu->Append(NewID, "&New\tCtrl+N");
    fileMenu->Append(OpenID, "&Open...\tCtrl+O");
@@ -429,8 +432,11 @@ bool AudacityApp::OnInit()
    wxMenuBar *menuBar = new wxMenuBar();
    menuBar->Append(fileMenu, "&File");
    menuBar->Append(helpMenu, "&Help");
-   
+
    gParentFrame->SetMenuBar(menuBar);
+
+#endif // #if 0
+
    gParentFrame->Show();
 
    SetTopWindow(gParentFrame);

@@ -30,11 +30,12 @@ class AudioIOPrefs:public PrefsPanel {
    wxString  mRecDevice;
    wxString  mPlayDevice;
    
-   wxCheckBox *mRecordStereo;
    wxCheckBox *mDuplex;
 
    wxChoice *mRecChoice;
    wxChoice *mPlayChoice;
+
+   wxChoice *mChannelsChoice;
 
  public:
     DECLARE_EVENT_TABLE()

@@ -458,17 +458,13 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
    mT0 = t0;
    mT1 = t1;
 
-   bool stereo, duplex;
-   gPrefs->Read("/AudioIO/RecordStereo", &stereo, false);
+   bool duplex;
+   long recordChannels;
+   gPrefs->Read("/AudioIO/RecordChannels", &recordChannels, 1L);
    gPrefs->Read("/AudioIO/Duplex", &duplex, false);
    mFormat = (sampleFormat)gPrefs->Read("/AudioIO/SampleFormat", floatSample);
 
-   mNumInChannels = stereo? 2: 1;
-
-#ifdef __MACOSX__
-   mNumInChannels = 2; // DM: OS X is buggy, only does stereo
-#endif
-
+   mNumInChannels = recordChannels;
    mNumOutChannels = duplex? 2: 0;
    
    if (mNumOutChannels > 0)
@@ -481,11 +477,11 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
       mInTracks[i] = new WaveTrack(project->GetDirManager(), mFormat);
       mInTracks[i]->SetSelected(true);
       mInTracks[i]->SetOffset(mT0);
-      if (stereo)
+      if (recordChannels == 2)
          mInTracks[i]->SetChannel(i==0? Track::LeftChannel : Track::RightChannel);
       else
          mInTracks[i]->SetChannel(Track::MonoChannel);
-      if (stereo && i==0)
+      if (recordChannels==2 && i==0)
          mInTracks[i]->SetLinked(true);
       mInTracks[i]->SetRate(mRate);
       

@@ -50,8 +50,9 @@ PrefsPanel(parent)
    gPrefs->SetPath("/AudioIO");
    mPlayDevice = gPrefs->Read("PlaybackDevice", "");
    mRecDevice = gPrefs->Read("RecordingDevice", "");
-   bool recordStereo;
-   gPrefs->Read("RecordStereo", &recordStereo, false);
+
+   long recordChannels = 1;
+   gPrefs->Read("RecordChannels", &recordChannels, 1L);
    bool duplex;
    gPrefs->Read("Duplex", &duplex, false);
    gPrefs->SetPath("/");
@@ -64,7 +65,7 @@ PrefsPanel(parent)
 
    wxStaticBoxSizer *playbackSizer =
       new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("Playback Device")),
+         new wxStaticBox(this, -1, _("Playback")),
             wxVERTICAL);
 
    wxBoxSizer *pFileSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -114,7 +115,7 @@ PrefsPanel(parent)
 
    wxStaticBoxSizer *recordingSizer =
       new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("Recording Device")),
+         new wxStaticBox(this, -1, _("Recording")),
             wxVERTICAL);
 
    wxBoxSizer *rFileSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -155,17 +156,30 @@ PrefsPanel(parent)
    recordingSizer->Add(rFileSizer, 0,
       wxGROW|wxALL, GENERIC_CONTROL_BORDER);
 
+   rFileSizer = new wxBoxSizer(wxHORIZONTAL);
+
+   const int numChannels = 16;
+   wxString channelNames[16];
+   for(int c=0; c<numChannels; c++)
+      channelNames[c] = wxString::Format("%d", c+1);
+   channelNames[0] = wxString::Format(_("1 (Mono)"));
+   channelNames[1] = wxString::Format(_("2 (Stereo)"));
+
+   mChannelsChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
+                                  numChannels, channelNames);
+   mChannelsChoice->SetSelection(recordChannels-1);
+
+   rFileSizer->Add(
+      new wxStaticText(this, -1, _("Channels:")), 0, 
+      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+   rFileSizer->Add(mChannelsChoice, 1, 
+      wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
+
+   recordingSizer->Add(rFileSizer, 0,
+      wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+
    topSizer->Add(recordingSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
-
-   mRecordStereo = new wxCheckBox(this, -1, _("Record in Stereo"));
-   mRecordStereo->SetValue(recordStereo);
-   topSizer->Add(mRecordStereo, 0, wxGROW|wxALL, 2);
-
-#ifdef __MACOSX__
-   // DM: Mono is broken in PortAudio for OS X
-   mRecordStereo->SetValue(true);
-   mRecordStereo->Enable(false);
-#endif
 
    mDuplex = new wxCheckBox(this, -1,
                             _("Play other tracks while recording new one"));
@@ -190,7 +204,7 @@ bool AudioIOPrefs::Apply()
    mPlayDevice = mPlayChoice->GetStringSelection();
    mRecDevice = mRecChoice->GetStringSelection();   
 
-   bool recordStereo = mRecordStereo->GetValue();
+   long recordChannels = mChannelsChoice->GetSelection()+1;
    bool duplex = mDuplex->GetValue();
 
    /* Step 2: Write to gPrefs */
@@ -199,7 +213,7 @@ bool AudioIOPrefs::Apply()
    gPrefs->Write("PlaybackDevice", mPlayDevice);
    gPrefs->Write("RecordingDevice", mRecDevice);
 
-   gPrefs->Write("RecordStereo", recordStereo);
+   gPrefs->Write("RecordChannels", recordChannels);
    gPrefs->Write("Duplex", duplex);
    gPrefs->SetPath("/");
 
