@@ -337,7 +337,9 @@ bool AudacityApp::OnInit()
 
 #ifdef __WXMAC__
 
+#ifdef __MACOSX__
    EnableMenuCommand(NULL, kHICommandPreferences);
+#endif
 
    AEInstallEventHandler(kCoreEventClass,
                          kAEShowPreferences,
