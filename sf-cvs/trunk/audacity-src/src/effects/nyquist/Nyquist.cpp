@@ -15,11 +15,15 @@
 #include <wx/textdlg.h>
 #include <wx/textfile.h>
 
+#include "../../Audacity.h"
+#include "../../AudacityApp.h"
 #include "../../LabelTrack.h"
 #include "Nyquist.h"
 
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY(NyqControlArray);
+
+wxString EffectNyquist::mXlispPath;
 
 #define UNINITIALIZED_CONTROL ((double)99999999.99)
 
@@ -169,15 +173,42 @@ EffectNyquist::~EffectNyquist()
 {
 }
 
+bool EffectNyquist::SetXlispPath()
+{
+   wxString fname;
+
+   fname.Printf("%s/nyinit.lsp", (const char *)mXlispPath);
+   if (!(::wxFileExists(fname)))
+      mXlispPath = "";
+
+   if (mXlispPath == "") {
+      wxArrayString audacityPathList = wxGetApp().audacityPathList;
+      wxArrayString pathList;
+      wxArrayString files;
+      unsigned int i;
+
+      for(i=0; i<audacityPathList.GetCount(); i++) {
+         wxString prefix = audacityPathList[i] + wxFILE_SEP_PATH;
+         wxGetApp().AddUniquePathToPathList(prefix + "nyquist",
+                                            pathList);
+      }
+
+      wxGetApp().FindFilesInPathList("nyquist.lsp", pathList, wxFILE, files);
+
+      if (files.GetCount() > 0)
+         mXlispPath = ::wxPathOnly(files[0]);
+   }
+
+   setenv("XLISPPATH", (const char *)mXlispPath, 1);
+
+   fname.Printf("%s/nyinit.lsp", (const char *)mXlispPath);
+   return ::wxFileExists(fname);
+}
+
 bool EffectNyquist::PromptUser()
 {
-   char *env = getenv("XLISPPATH");
-   if (!env) {
-      wxMessageBox("The XLISPPATH environment variable is not set.\n"
-                   "Nyquist cannot run.", "Nyquist",
-                   wxOK | wxCENTRE, mParent);
+   if (!SetXlispPath())
       return false;
-   }
    
    if (mInteractive) {
       wxString temp;

@@ -93,7 +93,7 @@ void LoadLadspaPlugins()
    wxGetApp().AddUniquePathToPathList("/usr/lib/ladspa", pathList);
    #endif
 
-   for(unsigned i=0; i<audacityPathList.GetCount(); i++) {
+   for(i=0; i<audacityPathList.GetCount(); i++) {
       wxString prefix = audacityPathList[i] + wxFILE_SEP_PATH;
       wxGetApp().AddUniquePathToPathList(prefix + "ladspa",
                                          pathList);
