@@ -9,6 +9,12 @@
 
 **********************************************************************/
 
+/*********************************************************************
+TODO: OBSOLETE
+FIXME: OBSOLETE
+OBSOLETE: BG: Use wxGetDiskSpace instead
+*********************************************************************/
+
 // The free-space routine returns -1 if it can't figure out the
 // answer for any reason
 #include <wx/longlong.h>

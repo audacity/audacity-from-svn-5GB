@@ -289,21 +289,26 @@ bool AudacityApp::OnInit()
                            audacityPathList);
 
    #endif
-   
+
+   wxFileName tmpFile;
+   tmpFile.AssignTempFileName("nn");
+   wxString tmpDirLoc = tmpFile.GetPath(wxPATH_GET_VOLUME);
+   ::wxRemoveFile(tmpFile.GetFullPath());
+
    // On Mac and Windows systems, use the directory which contains Audacity.
    #ifdef __WXMSW__
    // On Windows, the path to the Audacity program is in argv[0]
    wxString progPath = wxPathOnly(argv[0]);
    AddUniquePathToPathList(progPath, audacityPathList);
    AddUniquePathToPathList(progPath+"\\Languages", audacityPathList);
-   defaultTempDir.Printf("%s\\audacity_1_1_temp", (const char *)progPath);
+   defaultTempDir.Printf("%s\\audacity_1_1_temp", (const char *)tmpDirLoc);
    #endif
    #ifdef __MACOSX__
    // On Mac OS X, the path to the Audacity program is in argv[0]
    wxString progPath = wxPathOnly(argv[0]);
    AddUniquePathToPathList(progPath, audacityPathList);
    AddUniquePathToPathList(progPath+"/Languages", audacityPathList);
-   defaultTempDir.Printf("%s/audacity_1_1_temp", (const char *)progPath);
+   defaultTempDir.Printf("%s/audacity_1_1_temp", (const char *)tmpDirLoc);
    #endif
    #ifdef __MACOS9__
    // On Mac OS 9, the initial working directory is the one that
@@ -311,7 +316,7 @@ bool AudacityApp::OnInit()
    wxString progPath = wxGetCwd();
    AddUniquePathToPathList(progPath, audacityPathList);
    AddUniquePathToPathList(progPath+":Languages", audacityPathList);
-   defaultTempDir.Printf("%s/audacity_1_1_temp", (const char *)progPath);
+   defaultTempDir.Printf("%s/audacity_1_1_temp", (const char *)tmpDirLoc);
    #endif
 
    // BG: Create a temporary window to set as the top window
