@@ -10,6 +10,7 @@
 
 #include <wx/dialog.h>
 #include <wx/html/htmlwin.h>
+#include <wx/intl.h>
 
 #include "AboutDialog.h"
 #include "Audacity.h"
@@ -21,6 +22,8 @@
 #else
 #define DLOG_HEIGHT 400
 #endif
+
+// MB: Figure out how to translate this
 
 const char *creditText =
   "<html>"
@@ -126,7 +129,7 @@ BEGIN_EVENT_TABLE(Eraser, wxWindow)
     IMPLEMENT_CLASS(AboutDialog, wxDialog)
 
     AboutDialog::AboutDialog(wxWindow * parent)
-:  wxDialog(parent, -1, "About Audacity...",
+:  wxDialog(parent, -1, _("About Audacity..."),
          wxDefaultPosition, wxSize(400, DLOG_HEIGHT))
 {
    Centre();
@@ -143,7 +146,7 @@ BEGIN_EVENT_TABLE(Eraser, wxWindow)
    html->SetPage(creditStr);
 
    wxButton *ok = new wxButton(panel, wxID_OK,
-                               "Audacious!",
+                               _("Audacious!"),
                                wxPoint(150, 370),
                                wxSize(100, 20));
 #ifndef TARGET_CARBON

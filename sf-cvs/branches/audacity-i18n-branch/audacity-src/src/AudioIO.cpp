@@ -13,6 +13,7 @@
 #include <wx/textctrl.h>
 #include <wx/msgdlg.h>
 #include <wx/timer.h>
+#include <wx/intl.h>
 
 #include "AudioIO.h"
 #include "Project.h"
@@ -229,8 +230,8 @@ bool AudioIO::Start()
    FillBuffers();
 
    if (!OpenDevice()) {
-      wxMessageBox("Error opening audio device.\n"
-                   "(Change the device in the Preferences dialog.)");
+      wxMessageBox(_("Error opening audio device.\n"
+                     "(Change the device in the Preferences dialog.)"));
 
       return false;
    }
@@ -515,12 +516,14 @@ void AudioIO::Stop()
    
    if (mInUnderruns) {
       wxString str;
-      str.Printf("There were %d buffer underruns, data was lost.", mInUnderruns);
+      str.Printf(_("There were %d buffer underruns, data was lost."),
+                mInUnderruns);
       wxMessageBox(str);
    }
    if (mRepeats) {
       wxString str;
-      str.Printf("There were %d possibly repeated frames, last near %lf seconds.",
+      str.Printf(_("There were %d possibly repeated frames, "
+                   "last near %lf seconds."),
                  mRepeats, mRepeatPoint);
       wxMessageBox(str);
    }
