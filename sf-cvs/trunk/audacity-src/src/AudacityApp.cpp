@@ -270,12 +270,12 @@ bool AudacityApp::OnInit()
       mChecker = new wxSingleInstanceChecker(name);
       if ( mChecker->IsAnotherRunning() ) {
          wxString prompt =
-            "The system has detected that another copy of Audacity may be running.\n"
+            _("The system has detected that another copy of Audacity may be running.\n"
             "Running two copies of Audacity simultaneously may lead to data loss or\n"
             "cause your system to crash.\n\n"
-            "Are you sure you want to launch Audacity now?";
+            "Are you sure you want to launch Audacity now?");
          int action = wxMessageBox(prompt,
-                                   "Audacity is already running",
+                                   _("Audacity is already running"),
                                    wxYES_NO | wxICON_EXCLAMATION,
                                    NULL);
          if (action == wxNO) {
@@ -567,6 +567,7 @@ bool AudacityApp::OnInit()
             continue;
          bool handled = false;
 
+         /* i18n-hint: '-help', '-test' and '-blocksize' need to stay in English. */
          if (!wxString("-help").CmpNoCase(argv[option])) {
             printf(_("Command-line options supported:\n"
                      "  -help (this message)\n"

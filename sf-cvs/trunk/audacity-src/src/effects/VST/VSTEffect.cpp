@@ -174,8 +174,8 @@ bool VSTEffect::Init()
             GetSamples((WaveTrack *)right, &rstart, &rlen);
             
             if (llen != rlen || ((WaveTrack *)left)->GetRate() != ((WaveTrack *)right)->GetRate()) {
-               wxMessageBox("Sorry, VST Effects cannot be performed on stereo tracks where "
-                            "the individual channels of the track do not match.");
+               wxMessageBox(_("Sorry, VST Effects cannot be performed on stereo tracks where "
+                            "the individual channels of the track do not match."));
                return false;
             }
          }
@@ -190,7 +190,7 @@ bool VSTEffect::Init()
 bool VSTEffect::PromptUser()
 {
    if (!(aEffect->flags & effFlagsCanReplacing)) {
-      wxMessageBox("Can't process replacing");
+      wxMessageBox(_("Can't process replacing"));
       return false;
    }
 
@@ -404,7 +404,7 @@ VSTEffectDialog::VSTEffectDialog(wxWindow * parent,
 
    int y = 10;
 
-   new wxStaticText(this, 0, "VST Plug-in parameters:", wxPoint(10, y),
+   new wxStaticText(this, 0, _("VST Plug-in parameters:"), wxPoint(10, y),
                     wxSize(300, 15));
    y += 20;
 
@@ -446,9 +446,9 @@ VSTEffectDialog::VSTEffectDialog(wxWindow * parent,
                    vst->GetPreviewName(),
                    wxPoint(10, y), wxSize(80, 30));
    wxButton *ok =
-       new wxButton(this, wxID_OK, "OK", wxPoint(110, y), wxSize(80, 30));
+       new wxButton(this, wxID_OK, _("OK"), wxPoint(110, y), wxSize(80, 30));
    wxButton *cancel =
-       new wxButton(this, wxID_CANCEL, "Cancel", wxPoint(210, y),
+       new wxButton(this, wxID_CANCEL, _("Cancel"), wxPoint(210, y),
                     wxSize(80, 30));
 
    y += 40;

@@ -621,17 +621,18 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
    // best we can do - we'll use it if any of the renames,
    // creates, or deletes fail.
    wxString errStr =
-      "Error: is directory write-protected or disk full?";
+     _( "Error: is directory write-protected or disk full?" );
 
-   // Figure out what the new name for the existing file
-   // would be.  Try to go from "mysong.wav" to "mysong-old1.wav".
+   /* i18n-hint: 'old' is part of a filename used when a file is renamed. */
+   // Figure out what the new name for the existing file would be.  
+   /* i18n-hint: e.g. Try to go from "mysong.wav" to "mysong-old1.wav". */
    // Keep trying until we find a filename that doesn't exist.
 
    wxFileName renamedFile = fName;
    int i = 0;
    do {
       i++;
-      renamedFile.SetName(wxString::Format("%s-old%d", fName.GetName().c_str(), i));
+      renamedFile.SetName(wxString::Format(_("%s-old%d"), fName.GetName().c_str(), i));
    } while (renamedFile.FileExists());
 
    // Test creating a file by that name to make sure it will
@@ -647,7 +648,7 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
       return false;
    }
 
-   printf("Renamed file: %s\n", (const char *)renamedFile.GetFullPath());
+   printf(_("Renamed file: %s\n"), (const char *)renamedFile.GetFullPath());
 
    // Go through our block files and see if any indeed point to
    // the file we're concerned about.  If so, point the block file
@@ -664,7 +665,7 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
 
       if (b->IsAlias() && ab->GetAliasedFile() == fName) {
          needToRename = true;
-         printf("Changing block %s\n", (const char *)b->GetFileName().GetFullName());
+         printf(_("Changing block %s\n"), (const char *)b->GetFileName().GetFullName());
          ab->ChangeAliasedFile(renamedFile);
       }
 
@@ -720,7 +721,7 @@ void DirManager::Deref()
    // MM: Automatically delete if refcount reaches zero
    if (mRef == 0)
    {
-      wxLogDebug("DirManager::Deref: Automatically deleting 'this'");
+//      wxLogDebug("DirManager::Deref: Automatically deleting 'this'");
       delete this;
    }
 }

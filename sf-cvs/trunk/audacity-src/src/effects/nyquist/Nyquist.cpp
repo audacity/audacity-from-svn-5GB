@@ -329,8 +329,8 @@ bool EffectNyquist::Process()
 
             mCurTrack[1] = (WaveTrack *)iter.Next();
             if (mCurTrack[1]->GetRate() != mCurTrack[0]->GetRate()) {
-               wxMessageBox("Sorry, cannot apply effect on stereo tracks "
-                            "where the tracks don't match.", "Nyquist",
+               wxMessageBox(_("Sorry, cannot apply effect on stereo tracks "
+                            "where the tracks don't match."), "Nyquist",
                             wxOK | wxCENTRE, mParent);
                return false;
             }

@@ -92,9 +92,11 @@ wxString FormatSelection(int iformat, int iSnapTo,
    //   use (long int)rint() to get a long int out of a double
 
    wxString result;
-   char *SnapTo[12][1];
-   SnapTo[0][0] = "[Snap-To Off]";
-   SnapTo[0][1] = "[Snap-To On]";
+   // TODO: Check whether we need a 'const' in the char * somewhere.
+   char * SnapTo[2];
+   /* i18n-hint: These snap-to strings will appear in the status bar. */
+   SnapTo[0] = (char *)_("[Snap-To Off]");
+   SnapTo[1] = (char *)_("[Snap-To On]");
 
    // variables used
    int ihr1, ihr2, ihrtot;
@@ -141,10 +143,10 @@ wxString FormatSelection(int iformat, int iSnapTo,
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
          result.Printf(_("Cursor: %i:%09.6f min:sec   %s"),
-                       imin1, dsec1, SnapTo[0][iSnapTo]);
+                       imin1, dsec1, SnapTo[iSnapTo]);
       else
          result.Printf(_("Selection: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)   %s"),
-                       imin1, dsec1, imin2, dsec2, imintot, dsectot, SnapTo[0][iSnapTo]);
+                       imin1, dsec1, imin2, dsec2, imintot, dsectot, SnapTo[iSnapTo]);
       break;
 
    case SELECTION_FORMAT_RULER_SEC:
@@ -165,10 +167,10 @@ wxString FormatSelection(int iformat, int iSnapTo,
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
          result.Printf(_("Cursor: %lf sec   %s"),
-                       dsec1, SnapTo[0][iSnapTo]);
+                       dsec1, SnapTo[iSnapTo]);
       else
          result.Printf(_("Selection: %lf - %lf (%lf sec)   %s"),
-                       dsec1, dsec2, dsectot, SnapTo[0][iSnapTo]);
+                       dsec1, dsec2, dsectot, SnapTo[iSnapTo]);
       break;
 
    case SELECTION_FORMAT_RULER_HR_MIN_SEC:
@@ -212,10 +214,10 @@ wxString FormatSelection(int iformat, int iSnapTo,
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
          result.Printf(_("Cursor: %1i:%02i:%09.6f hr:min:sec   %s"),
-                       ihr1, imin1, dsec1, SnapTo[0][iSnapTo]);
+                       ihr1, imin1, dsec1, SnapTo[iSnapTo]);
       else
          result.Printf(_("Selection: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f hr:min:sec)   %s"),
-                       ihr1, imin1, dsec1, ihr2, imin2, dsec2, ihrtot, imintot, dsectot, SnapTo[0][iSnapTo]);
+                       ihr1, imin1, dsec1, ihr2, imin2, dsec2, ihrtot, imintot, dsectot, SnapTo[iSnapTo]);
       break;
 
    case SELECTION_FORMAT_RULER_FILM_FRAMES:
@@ -236,10 +238,10 @@ wxString FormatSelection(int iformat, int iSnapTo,
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
          result.Printf(_("Cursor: %.3lf film frames (24 fps)   %s"),
-                       dframes1, SnapTo[0][iSnapTo]);
+                       dframes1, SnapTo[iSnapTo]);
       else
          result.Printf(_("Selection: %.3lf - %.3lf (%.3lf film frames)   %s"),
-                       dframes1, dframes2, dframestot, SnapTo[0][iSnapTo]);
+                       dframes1, dframes2, dframestot, SnapTo[iSnapTo]);
       break;
 
    case SELECTION_FORMAT_RULER_FILM_HMMSSFF:
@@ -289,11 +291,11 @@ wxString FormatSelection(int iformat, int iSnapTo,
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1) 
          result.Printf(_("Cursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 fps (%.3lf film frames)   %s"),
-                       ihr1, imin1, isec1, dframes1, dframes1keep, SnapTo[0][iSnapTo]);
+                       ihr1, imin1, isec1, dframes1, dframes1keep, SnapTo[iSnapTo]);
       else
          result.Printf(_("Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf film h:mm:ss:ff) (%.3lf film frames)   %s"),
                        ihr1, imin1, isec1, dframes1, ihr2, imin2, isec2, dframes2, ihrtot, imintot, isectot, dframestot, dframestotkeep,
-                       SnapTo[0][iSnapTo]);
+                       SnapTo[iSnapTo]);
       break;
 
    case SELECTION_FORMAT_RULER_PAL_FRAMES:
@@ -314,10 +316,10 @@ wxString FormatSelection(int iformat, int iSnapTo,
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
          result.Printf(_("Cursor: %.3lf PAL frames (25 fps)   %s"),
-                       dframes1, SnapTo[0][iSnapTo]);
+                       dframes1, SnapTo[iSnapTo]);
       else
          result.Printf(_("Selection: %.3lf - %.3lf (%.3lf PAL frames)   %s"),
-                       dframes1, dframes2, dframestot, SnapTo[0][iSnapTo]);
+                       dframes1, dframes2, dframestot, SnapTo[iSnapTo]);
       break;
 
    case SELECTION_FORMAT_RULER_PAL_HMMSSFF:
@@ -367,11 +369,11 @@ wxString FormatSelection(int iformat, int iSnapTo,
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
          result.Printf(_("Cursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL frames)   %s"),
-                       ihr1, imin1, isec1, dframes1, dframes1keep, SnapTo[0][iSnapTo]);
+                       ihr1, imin1, isec1, dframes1, dframes1keep, SnapTo[iSnapTo]);
       else
          result.Printf(_("Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff) (%.3lf PAL frames)   %s"),
                        ihr1, imin1, isec1, dframes1, ihr2, imin2, isec2, dframes2, ihrtot, imintot, isectot, dframestot, dframestotkeep,
-                       SnapTo[0][iSnapTo]);
+                       SnapTo[iSnapTo]);
       break;
 
    case SELECTION_FORMAT_RULER_NTSC_FRAMES:
@@ -392,10 +394,10 @@ wxString FormatSelection(int iformat, int iSnapTo,
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
          result.Printf(_("Cursor: %.3lf NTSC frames (29.97 fps)   %s"),
-                       dframes1, SnapTo[0][iSnapTo]);
+                       dframes1, SnapTo[iSnapTo]);
       else
          result.Printf(_("Selection: %.3lf - %.3lf (%.3lf NTSC frames)   %s"),
-                       dframes1, dframes2, dframestot, SnapTo[0][iSnapTo]);
+                       dframes1, dframes2, dframestot, SnapTo[iSnapTo]);
       break;
 
    case SELECTION_FORMAT_RULER_NTSC_DF_HMMSSFF:
@@ -512,11 +514,11 @@ wxString FormatSelection(int iformat, int iSnapTo,
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
          result.Printf(_("Cursor: %1i:%02i:%02i:%06.3lf NTSC drop-frame h:mm:ss:ff (%.3lf NTSC frames)   %s"),
-                       ihr1, imin1, isec1, dframes1, dframes1keep, SnapTo[0][iSnapTo]);
+                       ihr1, imin1, isec1, dframes1, dframes1keep, SnapTo[iSnapTo]);
       else
          result.Printf(_("Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf NTSC drop-frame h:mm:ss:ff) (%.3lf NTSC frames)   %s"),
                        ihr1, imin1, isec1, dframes1, ihr2, imin2, isec2, dframes2, ihrtot, imintot, isectot, dframestot, dframestotkeep,
-                       SnapTo[0][iSnapTo]);
+                       SnapTo[iSnapTo]);
       break;
 
    case SELECTION_FORMAT_RULER_NTSC_NDF_HMMSSFF:
@@ -570,11 +572,11 @@ wxString FormatSelection(int iformat, int iSnapTo,
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
          result.Printf(_("Cursor: %1i:%02i:%02i:%06.3lf NTSC non-drop-frame h:mm:ss:ff (%.3lf NTSC frames)   %s"),
-                       ihr1, imin1, isec1, dframes1, dframes1keep, SnapTo[0][iSnapTo]);
+                       ihr1, imin1, isec1, dframes1, dframes1keep, SnapTo[iSnapTo]);
       else
          result.Printf(_("Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf NTSC non-drop-frame h:mm:ss:ff) (%.3lf NTSC frames)   %s"),
                        ihr1, imin1, isec1, dframes1, ihr2, imin2, isec2, dframes2, ihrtot, imintot, isectot, dframestot, dframestotkeep,
-                       SnapTo[0][iSnapTo]);
+                       SnapTo[iSnapTo]);
       break;
 
    case SELECTION_FORMAT_RULER_CDDA_MIN_SEC_FRAMES:
@@ -612,10 +614,10 @@ wxString FormatSelection(int iformat, int iSnapTo,
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
          result.Printf(_("Cursor: %02i:%02i:%06.3lf cdda min:sec:frames (75 fps)   %s"),
-                       imin1, isec1, dframes1, SnapTo[0][iSnapTo]);
+                       imin1, isec1, dframes1, SnapTo[iSnapTo]);
       else
          result.Printf(_("Selection: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda min:sec:frames)   %s"),
-                       imin1, isec1, dframes1, imin2, isec2, dframes2, imintot, isectot, dframestot, SnapTo[0][iSnapTo]);
+                       imin1, isec1, dframes1, imin2, isec2, dframes2, imintot, isectot, dframestot, SnapTo[iSnapTo]);
       break;
 
    case SELECTION_FORMAT_SAMPLES:

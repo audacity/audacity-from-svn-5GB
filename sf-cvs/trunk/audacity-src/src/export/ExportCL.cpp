@@ -141,9 +141,9 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
          wxString message;
 
          if (selectionOnly)
-            message = "Exporting the selected audio using command-line encoder";
+            message = _("Exporting the selected audio using command-line encoder");
          else
-            message = "Exporting the entire project using command-line encoder";
+            message = _("Exporting the entire project using command-line encoder");
 
          progress =
              new wxProgressDialog("Export",

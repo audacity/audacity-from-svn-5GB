@@ -3729,8 +3729,8 @@ int channels[] = { Track::LeftChannel, Track::RightChannel,
    Track::MonoChannel
 };
 
-const char *channelmsgs[] = { "'left' channel", "'right' channel",
-   "'mono'"
+const char *channelmsgs[] = { _("'left' channel"), _("'right' channel"),
+   _("'mono'")
 };
 
 void TrackPanel::OnChannelChange(wxEvent & event)
@@ -3783,7 +3783,7 @@ void TrackPanel::OnMergeStereo(wxEvent &event)
 
 // AS: Set the Display mode based on the menu choice in the Track Menu.
 //  Note that gModes MUST BE IN THE SAME ORDER AS THE MENU CHOICES!!
-const char *gModes[] = { "waveform", "waveformDB", "spectrum", "pitch" };
+//  const char *gModes[] = { "waveform", "waveformDB", "spectrum", "pitch" };
 void TrackPanel::OnSetDisplay(wxEvent & event)
 {
    int id = event.GetId();

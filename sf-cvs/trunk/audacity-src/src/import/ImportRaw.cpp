@@ -321,10 +321,10 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
    // Channels choice
 
    wxString channelStrings[16];
-   channelStrings[0].Printf("1 Channel (Mono)");
-   channelStrings[1].Printf("2 Channels (Stereo)");
+   channelStrings[0].Printf(_("1 Channel (Mono)"));
+   channelStrings[1].Printf(_("2 Channels (Stereo)"));
    for(i=2; i<16; i++) {
-      channelStrings[i].Printf("%d Channels", i+1);
+      channelStrings[i].Printf(_("%d Channels"), i+1);
    }
    mChannelChoice =
       new wxChoice(this, ChoiceID,
