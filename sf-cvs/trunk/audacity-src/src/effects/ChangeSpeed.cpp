@@ -213,9 +213,8 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
 // ChangeSpeedDialog
 //----------------------------------------------------------------------------
 
-// -99 for PERCENTCHANGE_MIN is too much change for SRC (libsamplerate). 
-// This magic number gives src_ratio right at its limit.
-#define PERCENTCHANGE_MIN -91.66666667 
+// -99 for PERCENTCHANGE_MIN because -100% is nonsensical.
+#define PERCENTCHANGE_MIN -99
 
 #define PERCENTCHANGE_MAX 100 // warped above zero to actually go up to 400%
 #define PERCENTCHANGE_SLIDER_WARP 1.30105 // warp power takes max from 100 to 400.
@@ -322,7 +321,7 @@ ChangeSpeedDialog::ChangeSpeedDialog(EffectChangeSpeed * effect,
 
    m_pSlider_PercentChange = 
 		new wxSlider(this, ID_SLIDER_PERCENTCHANGE, 0, 
-							(int)PERCENTCHANGE_MIN, (int)PERCENTCHANGE_MAX,
+							PERCENTCHANGE_MIN, PERCENTCHANGE_MAX,
 							wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
    pBoxSizer_Dialog->Add(m_pSlider_PercentChange, 1, 
 									wxGROW | wxALIGN_CENTER | wxLEFT | wxRIGHT, 4);
