@@ -147,7 +147,7 @@ void ShowHelp(wxWindow * parent)
    InitHelp(parent);
 
    if (gHelp)
-      gHelp->Display("Introduction");
+      gHelp->Display("Main");
 }
 
 void ShowHelpIndex(wxWindow * parent)
