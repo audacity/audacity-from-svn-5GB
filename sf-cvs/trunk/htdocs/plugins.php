@@ -13,6 +13,19 @@
 <ul>
 
   <li>
+  <a href="http://www.digitalfishphones.com"
+  >Fish Fillets bundle</a> - includes a Compressor, a DeEsser and a
+  Noisegate.
+
+  <li><a href="http://www.smartelectronix.com/~bram/"
+  >Bram/Smarteletronix</a> - Cyanide is one of the best
+  distortion units, H20 is an interesting compressor, and
+  SupaPhaser is a legend among VST users.
+
+  <li><a href="http://www.mda-vst.com/effects.htm"
+  >Maxim Digital Audio</a> - 30 great free plug-ins.
+
+  <li>
   <a href="http://www.cs.bath.ac.uk/~rwd/"
   >Richard Dobson's Plug-ins</a> - includes a good
   Pitch Shifter.
@@ -46,6 +59,19 @@
 
 <b>Mac:</b>
 <ul>
+
+  <li>
+  <a href="http://www.digitalfishphones.com"
+  >Fish Fillets bundle</a> - includes a Compressor, a DeEsser and a
+  Noisegate.
+
+  <li><a href="http://www.smartelectronix.com/~bram/"
+  >Bram/Smarteletronix</a> - Cyanide is one of the best
+  distortion units, H20 is an interesting compressor, and
+  SupaPhaser is a legend among VST users.
+
+  <li><a href="http://www.mda-vst.com/effects.htm"
+  >Maxim Digital Audio</a> - 30 great free plug-ins.
 
   <li>
   <a href="http://www.cs.bath.ac.uk/~rwd/"
@@ -85,6 +111,19 @@ Carbon VST plug-ins.
 <b>Mac OS X (Carbon) plug-ins</b>
 
 <ul>
+
+  <li>
+  <a href="http://www.digitalfishphones.com"
+  >Fish Fillets bundle</a> - includes a Compressor, a DeEsser and a
+  Noisegate.
+
+  <li><a href="http://www.smartelectronix.com/~bram/"
+  >Bram/Smarteletronix</a> - Cyanide is one of the best
+  distortion units, H20 is an interesting compressor, and
+  SupaPhaser is a legend among VST users.
+
+  <li><a href="http://www.mda-vst.com/effects.htm"
+  >Maxim Digital Audio</a> - 30 great free plug-ins.
 
 <li><a href="http://www.lone-electron.com/Canz3D"
     >Canz3D - free spatial simulation plug-in</a>
