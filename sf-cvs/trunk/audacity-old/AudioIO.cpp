@@ -31,6 +31,11 @@
 
 AudioIO *gAudioIO;
 
+#ifdef __WXGTK__
+bool gLinuxFirstTime = true;
+char gLinuxDevice[256] = "/dev/dsp";
+#endif
+
 #ifdef BOUNCE
 #include "Bounce.h"
 Bounce *gBounce = NULL;
@@ -135,8 +140,10 @@ void AudioIO::Finish()
   mRecordRight = NULL;
 
 #ifdef BOUNCE
-  delete gBounce;
-  gBounce = NULL;
+  if (gBounce) {
+	  delete gBounce;
+	  gBounce = NULL;
+  }
 #endif
 }
 
@@ -180,16 +187,20 @@ bool AudioIO::StartRecord(AudacityProject *project,
   strcpy(mSndNode.u.audio.interfacename,"");
   mSndNode.u.audio.descriptor = 0;
   mSndNode.u.audio.protocol = SND_COMPUTEAHEAD;
+  #ifdef __WXMAC__
+  mSndNode.u.audio.latency = 1.0;
+  #else
   mSndNode.u.audio.latency = 0.25;
+  #endif
   mSndNode.u.audio.granularity = 0.0;
 
   long flags = 0;
   int err = snd_open(&mSndNode, &flags);
 
   if (err) {
-	wxMessageBox(wxString::Format(
-		"Error opening audio device--adjust it in your preferences: %d",err));
-	return false;
+  	wxMessageBox(wxString::Format(
+  		"Error opening audio device--adjust it in your preferences: %d",err));
+  	return false;
   }
 
   mStopWatch.Start(0);
@@ -221,6 +232,11 @@ void AudioIO::OnTimer()
 
 	  return;
 	}
+	
+	#ifdef __WXMAC__
+	if (block < 22050)
+	  return;
+	#endif
 
 	sampleType *in = new sampleType[block*2];
 	sampleType *left = new sampleType[block];
@@ -255,15 +271,18 @@ void AudioIO::OnTimer()
 
   if (mT>=mT1) {
     if (GetIndicator() >= mT1) {
+	    #ifdef BOUNCE
+			  if (gBounce) {
+				  delete gBounce;
+				  gBounce = NULL;
+			  }
+			#endif
       if (snd_flush(&mSndNode) == SND_SUCCESS) {
         Finish();
         return;
       }
     }
   }
-
-  // TODO: Don't fill the buffer with more data every time
-  // timer is called
 
   double deltat = mSndNode.u.audio.latency;
   if (mT + deltat > mT1)
@@ -327,6 +346,16 @@ void AudioIO::Stop()
 bool AudioIO::IsBusy()
 {
   return (mProject != NULL);
+}
+
+bool AudioIO::IsPlaying()
+{
+  return (mProject != NULL && !mRecording);
+}
+
+bool AudioIO::IsRecording()
+{
+  return (mProject != NULL && mRecording);
 }
 
 void AudioIOTimer::Notify()

@@ -50,6 +50,8 @@ public:
 
   void Stop();
   bool IsBusy();
+  bool IsPlaying();
+  bool IsRecording();
 
   AudacityProject *GetProject();
   double GetIndicator();
