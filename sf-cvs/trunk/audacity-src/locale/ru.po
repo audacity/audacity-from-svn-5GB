@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "POT-Creation-Date: 2003-05-26 16:37+0400\n"
-"PO-Revision-Date: 2003-05-26 16:44+0400\n"
+"PO-Revision-Date: 2003-05-27 11:07+0400\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2750,7 +2750,7 @@ msgstr "Название '%s' изменено на '%s'"
 
 #: ../src/effects/Repeat.cpp:35
 msgid "Repeat"
-msgstr ""
+msgstr "Создать повторы"
 
 #: ../src/effects/Repeat.cpp:184
 msgid "Repeat by Dominic Mazzoni"
@@ -2758,12 +2758,12 @@ msgstr "Повторы - Доминик Маццони"
 
 #: ../src/effects/Repeat.h:34
 msgid "Repeat..."
-msgstr ""
+msgstr "Создание повторов"
 
 #: ../src/effects/Repeat.cpp:30
 #, c-format
 msgid "Repeated %d times"
-msgstr ""
+msgstr "Создано повторов: %d"
 
 #: ../src/effects/Wahwah.cpp:486
 msgid "Resonance:"
