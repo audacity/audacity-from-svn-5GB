@@ -358,6 +358,18 @@ void LWSlider::Move(const wxPoint &newpos)
    }
 }
 
+void LWSlider::RecreateTipWin()
+{
+   delete mPopWin;
+   mPopWin = NULL;
+   int left = mLeft;
+   int top = mTop;
+
+   mLeft--;
+   mTop--;
+   Move(wxPoint(left, top));
+}
+
 void LWSlider::OnPaint(wxDC &dc, bool selected)
 {
    //thumbPos should be in pixels
@@ -580,6 +592,11 @@ void ASlider::OnPaint(wxPaintEvent &event)
 void ASlider::OnMouseEvent(wxMouseEvent &event)
 {
    mLWSlider->OnMouseEvent(event);
+}
+
+void ASlider::RecreateTipWin()
+{
+   mLWSlider->RecreateTipWin();
 }
 
 float ASlider::Get()

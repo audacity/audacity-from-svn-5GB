@@ -56,6 +56,8 @@ class LWSlider
    void OnMouseEvent(wxMouseEvent &event);
    void Refresh();
 
+   void RecreateTipWin();
+
  private:
 
    void FormatPopWin();
@@ -114,6 +116,8 @@ class ASlider :public wxWindow
 
    void OnPaint(wxPaintEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
+
+   void RecreateTipWin();
 
  private:
    LWSlider *mLWSlider;

@@ -33,6 +33,8 @@ class MixerToolBar:public ToolBar {
    
    void UpdatePrefs();
 
+   void RecreateTipWindows();
+
    float GetInputVol();
    float GetOutputVol();
    int GetInputSource();
