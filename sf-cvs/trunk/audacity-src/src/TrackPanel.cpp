@@ -1808,7 +1808,6 @@ void TrackPanel::HandleVZoom(wxMouseEvent & event)
       mZoomEnd = event.m_y;
    }
    else if (event.Dragging()) {
-      printf("DRAG\n");
       mZoomEnd = event.m_y;
       if (IsDragZooming()){
          Refresh(false);

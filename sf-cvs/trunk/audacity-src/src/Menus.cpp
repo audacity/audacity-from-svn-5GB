@@ -139,7 +139,19 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->BeginMenu(_("&Edit"));
    c->AddItem("Undo",           _("&Undo\tCtrl+Z"),                  FN(OnUndo));
-   c->AddItem("Redo",           _("&Redo\tCtrl+R"),                  FN(OnRedo));
+
+   // The default shortcut key for Redo is different
+   // on different platforms.
+
+   wxString redoLabel = _("&Redo");
+   #ifdef __WXMSW__
+   redoLabel += "\tCtrl+Y";
+   #else
+   redoLabel += "\tCtrl+Shift+Z";
+   #endif
+
+   c->AddItem("Redo",           redoLabel,                           FN(OnRedo));
+
    c->AddSeparator();
    c->AddItem("Cut",            _("Cu&t\tCtrl+X"),                   FN(OnCut));
    c->AddItem("Copy",           _("&Copy\tCtrl+C"),                  FN(OnCopy)); 
@@ -149,7 +161,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("Delete",         _("&Delete\tCtrl+K"),                FN(OnDelete));
    c->AddItem("Silence",        _("&Silence\tCtrl+L"),               FN(OnSilence));
    c->AddSeparator();
-   c->AddItem("Split",          _("Spl&it\tCtrl+Y"),                 FN(OnSplit));
+   c->AddItem("Split",          _("Spl&it"),                         FN(OnSplit));
    c->AddItem("Duplicate",      _("D&uplicate\tCtrl+D"),             FN(OnDuplicate));
    c->AddItem("SelectAll",      _("Select &All\tCtrl+A"),            FN(OnSelectAll));
    c->AddItem("SelStartCursor", _("Select Start to Cursor"),         FN(OnSelectStartCursor));
@@ -254,7 +266,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->EndMenu();
 
    c->BeginMenu(_("&Effect"));
-   c->AddItem("RepeatLastEffect",     _("Repeat Last Effect\tCtrl+G"),    FN(OnRepeatLastEffect));
+   c->AddItem("RepeatLastEffect",     _("Repeat Last Effect\tCtrl+R"),    FN(OnRepeatLastEffect));
    c->AddSeparator();
 
    effects = Effect::GetEffects(PROCESS_EFFECT | BUILTIN_EFFECT);
