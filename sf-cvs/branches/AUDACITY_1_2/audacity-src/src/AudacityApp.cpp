@@ -87,6 +87,7 @@ wxWindow *gParentWindow = NULL;
 ToolBarStub *gControlToolBarStub = NULL;
 ToolBarStub *gMixerToolBarStub = NULL;
 ToolBarStub *gEditToolBarStub = NULL;
+ToolBarStub *gMeterToolBarStub = NULL;
 
 bool gIsQuitting = false;
 
@@ -165,6 +166,11 @@ void QuitAudacity(bool bForce)
    if (gEditToolBarStub) {
       delete gEditToolBarStub;
       gEditToolBarStub = NULL;
+   }
+
+   if (gMeterToolBarStub) {
+      delete gMeterToolBarStub;
+      gMeterToolBarStub = NULL;
    }
 
    //Delete the clipboard
@@ -484,6 +490,8 @@ bool AudacityApp::OnInit()
       gEditToolBarStub =  new ToolBarStub(gParentWindow, EditToolBarID);
    else
       gEditToolBarStub = NULL;
+
+   gMeterToolBarStub = new ToolBarStub(gParentWindow, MeterToolBarID);
 
    #if 0
    // dmazzoni: no longer create FreqWindow on startup because
