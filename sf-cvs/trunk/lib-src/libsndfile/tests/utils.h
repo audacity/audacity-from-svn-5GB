@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -24,13 +24,17 @@
 */
 
 
-#define SF_COUNT_TO_LONG(x)	((long)(x))
+#define SF_COUNT_TO_LONG(x)	((long) (x))
+#define	ARRAY_LEN(x)		((int) (sizeof (x)) / (sizeof ((x) [0])))
+
+#define	PIPE_INDEX(x)	((x) + 500)
+#define	PIPE_TEST_LEN	12345
 
 void	gen_windowed_sine (double *data, int len, double maximum) ;
 
-void	check_file_hash_or_die  (char *filename, unsigned int target_hash, int line_num) ;
+void	check_file_hash_or_die	(const char *filename, unsigned int target_hash, int line_num) ;
 
-void	print_test_name (char *test, const char *filename) ;
+void	print_test_name (const char *test, const char *filename) ;
 
 /*
 **	Functions for saving two vectors of data in an ascii text file which
@@ -46,8 +50,9 @@ int	oct_save_double	(double *a, double *b, int len) ;
 #ifdef SNDFILE_H
 
 void 	dump_log_buffer (SNDFILE *file) ;
-void 	check_log_buffer_or_die (SNDFILE *file) ;
-int 	string_in_log_buffer (SNDFILE *file, char *s) ;
+void 	check_log_buffer_or_die (SNDFILE *file, int line_num) ;
+int 	string_in_log_buffer (SNDFILE *file, const char *s) ;
+void	hexdump_file (const char * filename, sf_count_t offset, sf_count_t length) ;
 
 SNDFILE *test_open_file_or_die
 			(const char *filename, int mode, SF_INFO *sfinfo, int line_num) ;

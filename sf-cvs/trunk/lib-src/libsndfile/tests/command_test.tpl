@@ -1,6 +1,6 @@
 [+ AutoGen5 template c +]
 /*
-** Copyright (C) 2001-2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2001-2002 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -17,38 +17,43 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
+#include "config.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include	<stdio.h>
-#include	<string.h>
-#include	<unistd.h>
-#include	<math.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
-#include	<sndfile.h>
+#include <math.h>
 
-#include	"utils.h"
+#include <sndfile.h>
+
+#include "utils.h"
 
 #define	BUFFER_LEN		(1<<10)
 #define LOG_BUFFER_SIZE	1024
 
-static	void	float_norm_test		(char *filename) ;
-static	void	double_norm_test	(char *filename) ;
+static	void	float_norm_test		(const char *filename) ;
+static	void	double_norm_test	(const char *filename) ;
 static	void	format_tests		(void) ;
-static	void	calc_peak_test		(int filetype, char *filename) ;
-static	void	truncate_test		(char *filename, int filetype) ;
+static	void	calc_peak_test		(int filetype, const char *filename) ;
+static	void	truncate_test		(const char *filename, int filetype) ;
 
 /* Force the start of this buffer to be double aligned. Sparc-solaris will
 ** choke if its not.
 */
 
-static	float	float_data  [BUFFER_LEN] ;
-static	double	double_data [BUFFER_LEN] ;
+static	float	float_data	[BUFFER_LEN] ;
+static	double	double_data	[BUFFER_LEN] ;
 
 int
-main (int argc, char *argv[])
+main (int argc, char *argv [])
 {	/*-char	*filename ;-*/
-	int		bDoAll = 0 ;
-	int		nTests = 0 ;
+	int		do_all = 0 ;
+	int		test_count = 0 ;
 
 	if (argc != 2)
 	{	printf ("Usage : %s <test>\n", argv [0]) ;
@@ -63,9 +68,9 @@ main (int argc, char *argv[])
 		exit (1) ;
 		} ;
 
-	bDoAll =! strcmp (argv [1], "all");
+	do_all =! strcmp (argv [1], "all") ;
 
-	if (bDoAll || ! strcmp (argv [1], "ver"))
+	if (do_all || ! strcmp (argv [1], "ver"))
 	{	char buffer [128] ;
 		buffer [0] = 0 ;
 		sf_command (NULL, SFC_GET_LIB_VERSION, buffer, sizeof (buffer)) ;
@@ -73,43 +78,43 @@ main (int argc, char *argv[])
 		{	printf ("Line %d: could not retrieve lib version.\n", __LINE__) ;
 			exit (1) ;
 			} ;
-		nTests++ ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "norm"))
+	if (do_all || ! strcmp (argv [1], "norm"))
 	{	/*	Preliminary float/double normalisation tests. More testing
 		**	is done in the program 'floating_point_test'.
 		*/
-		float_norm_test  ("float.wav") ;
-		double_norm_test ("double.wav") ;
-		nTests++ ;
+		float_norm_test		("float.wav") ;
+		double_norm_test	("double.wav") ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "peak"))
-	{	calc_peak_test (SF_ENDIAN_BIG    | SF_FORMAT_RAW, "be-peak.raw") ;
-		calc_peak_test (SF_ENDIAN_LITTLE | SF_FORMAT_RAW, "le-peak.raw") ;
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "peak"))
+	{	calc_peak_test (SF_ENDIAN_BIG		| SF_FORMAT_RAW, "be-peak.raw") ;
+		calc_peak_test (SF_ENDIAN_LITTLE	| SF_FORMAT_RAW, "le-peak.raw") ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "format"))
+	if (do_all || ! strcmp (argv [1], "format"))
 	{	format_tests () ;
-		nTests++ ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "trunc"))
-	{	truncate_test ("truncate.raw", SF_FORMAT_RAW | SF_FORMAT_DOUBLE) ;
+	if (do_all || ! strcmp (argv [1], "trunc"))
+	{	truncate_test ("truncate.raw", SF_FORMAT_RAW | SF_FORMAT_PCM_32) ;
 		truncate_test ("truncate.au" , SF_FORMAT_AU | SF_FORMAT_PCM_16) ;
-		nTests++ ;
+		test_count++ ;
 		} ;
 
-	if (nTests == 0)
+	if (test_count == 0)
 	{	printf ("Mono : ************************************\n") ;
 		printf ("Mono : *  No '%s' test defined.\n", argv [1]) ;
 		printf ("Mono : ************************************\n") ;
 		return 1 ;
 		} ;
 
-	return 0;
+	return 0 ;
 } /* main */
 
 /*============================================================================================
@@ -117,17 +122,17 @@ main (int argc, char *argv[])
 */
 
 static void
-float_norm_test (char *filename)
+float_norm_test (const char *filename)
 {	SNDFILE			*file ;
 	SF_INFO			sfinfo ;
 	unsigned int	k ;
 
 	print_test_name ("float_norm_test", filename) ;
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.format 	   = (SF_FORMAT_RAW | SF_FORMAT_PCM_16) ;
-	sfinfo.channels    = 1 ;
-	sfinfo.frames     = BUFFER_LEN ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.format		= (SF_FORMAT_RAW | SF_FORMAT_PCM_16) ;
+	sfinfo.channels		= 1 ;
+	sfinfo.frames		= BUFFER_LEN ;
 
 	/* Create float_data with all values being less than 1.0. */
 	for (k = 0 ; k < BUFFER_LEN / 2 ; k++)
@@ -233,17 +238,17 @@ float_norm_test (char *filename)
 } /* float_norm_test */
 
 static void
-double_norm_test (char *filename)
+double_norm_test (const char *filename)
 {	SNDFILE			*file ;
 	SF_INFO			sfinfo ;
 	unsigned int	k ;
 
 	print_test_name ("double_norm_test", filename) ;
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.format 	   = (SF_FORMAT_RAW | SF_FORMAT_PCM_16) ;
-	sfinfo.channels    = 1 ;
-	sfinfo.frames     = BUFFER_LEN ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.format		= (SF_FORMAT_RAW | SF_FORMAT_PCM_16) ;
+	sfinfo.channels		= 1 ;
+	sfinfo.frames		= BUFFER_LEN ;
 
 	/* Create double_data with all values being less than 1.0. */
 	for (k = 0 ; k < BUFFER_LEN / 2 ; k++)
@@ -445,7 +450,7 @@ format_tests	(void)
 } /* format_tests */
 
 static	void
-calc_peak_test (int filetype, char *filename)
+calc_peak_test (int filetype, const char *filename)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	int			k, format ;
@@ -455,10 +460,10 @@ calc_peak_test (int filetype, char *filename)
 
 	format = (filetype | SF_FORMAT_PCM_16) ;
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.format 	   = format ;
-	sfinfo.channels    = 1 ;
-	sfinfo.frames     = BUFFER_LEN ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.format		= format ;
+	sfinfo.channels		= 1 ;
+	sfinfo.frames		= BUFFER_LEN ;
 
 	/* Create double_data with max value of 0.5. */
 	for (k = 0 ; k < BUFFER_LEN ; k++)
@@ -502,10 +507,10 @@ calc_peak_test (int filetype, char *filename)
 	sf_close (file) ;
 
 	format = (filetype | SF_FORMAT_FLOAT) ;
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.format 	   = format ;
-	sfinfo.channels    = 1 ;
-	sfinfo.frames     = BUFFER_LEN ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.format		= format ;
+	sfinfo.channels		= 1 ;
+	sfinfo.frames		= BUFFER_LEN ;
 
 	/* Create double_data with max value of 0.5. */
 	for (k = 0 ; k < BUFFER_LEN ; k++)
@@ -554,20 +559,23 @@ calc_peak_test (int filetype, char *filename)
 } /* calc_peak_test */
 
 static void
-truncate_test (char *filename, int filetype)
+truncate_test (const char *filename, int filetype)
 {	SNDFILE 	*file ;
 	SF_INFO		sfinfo ;
 	sf_count_t	len ;
+	int			*int_data ;
 
 	print_test_name ("truncate_test", filename) ;
 
-	sfinfo.samplerate = 11025 ;
-	sfinfo.format 	  = filetype ;
-	sfinfo.channels   = 2 ;
+	sfinfo.samplerate	= 11025 ;
+	sfinfo.format		= filetype ;
+	sfinfo.channels		= 2 ;
+
+	int_data = (int*) double_data ;
 
 	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
-	test_write_double_or_die (file, 0, double_data, BUFFER_LEN, __LINE__) ;
+	test_write_int_or_die (file, 0, int_data, BUFFER_LEN, __LINE__) ;
 
 	len = 100 ;
 	if (sf_command (file, SFC_FILE_TRUNCATE, &len, sizeof (len)))
@@ -583,3 +591,13 @@ truncate_test (char *filename, int filetype)
 	unlink (filename) ;
 	puts ("ok") ;
 } /* truncate_test */
+
+[+ COMMENT
+
+ Do not edit or modify anything in this comment block.
+ The following line is a file identity tag for the GNU Arch 
+ revision control system.
+
+ arch-tag: 59e5d452-8dae-45aa-99aa-b78dc0deba1c
+
++]

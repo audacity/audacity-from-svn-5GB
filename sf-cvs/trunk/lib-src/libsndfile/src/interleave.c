@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -16,6 +16,8 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
+#include <stdlib.h>
+
 #include	"sndfile.h"
 #include	"config.h"
 #include	"sfendian.h"
@@ -29,7 +31,7 @@ typedef struct
 	sf_count_t		channel_len ;
 
 	sf_count_t		(*read_short)	(SF_PRIVATE*, short *ptr, sf_count_t len) ;
-	sf_count_t		(*read_int)		(SF_PRIVATE*, int *ptr, sf_count_t len) ;
+	sf_count_t		(*read_int)	(SF_PRIVATE*, int *ptr, sf_count_t len) ;
 	sf_count_t		(*read_float)	(SF_PRIVATE*, float *ptr, sf_count_t len) ;
 	sf_count_t		(*read_double)	(SF_PRIVATE*, double *ptr, sf_count_t len) ;
 
@@ -37,18 +39,18 @@ typedef struct
 
 
 
-static sf_count_t	interleave_read_short  (SF_PRIVATE *psf, short *ptr, sf_count_t len) ;
-static sf_count_t	interleave_read_int    (SF_PRIVATE *psf, int *ptr, sf_count_t len) ;
-static sf_count_t	interleave_read_float  (SF_PRIVATE *psf, float *ptr, sf_count_t len) ;
-static sf_count_t	interleave_read_double (SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
+static sf_count_t	interleave_read_short	(SF_PRIVATE *psf, short *ptr, sf_count_t len) ;
+static sf_count_t	interleave_read_int	(SF_PRIVATE *psf, int *ptr, sf_count_t len) ;
+static sf_count_t	interleave_read_float	(SF_PRIVATE *psf, float *ptr, sf_count_t len) ;
+static sf_count_t	interleave_read_double	(SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
 
-static sf_count_t	interleave_seek		(SF_PRIVATE*, int mode, sf_count_t samples_from_start) ;
+static sf_count_t	interleave_seek	(SF_PRIVATE*, int mode, sf_count_t samples_from_start) ;
 
 
 
 
 int
-interleave_init (SF_PRIVATE *psf)
+interleave_init	(SF_PRIVATE *psf)
 {	INTERLEAVE_DATA *pdata ;
 
 	if (psf->mode != SFM_READ)
@@ -68,20 +70,20 @@ puts ("interleave_init") ;
 	psf->interleave = pdata ;
 
 	/* Save the existing methods. */
-	pdata->read_short  = psf->read_short ;
-	pdata->read_int    = psf->read_int ;
-	pdata->read_float  = psf->read_float ;
-	pdata->read_double = psf->read_double ;
+	pdata->read_short	= psf->read_short ;
+	pdata->read_int		= psf->read_int ;
+	pdata->read_float	= psf->read_float ;
+	pdata->read_double	= psf->read_double ;
 
 	pdata->channel_len = psf->sf.frames * psf->bytewidth ;
 
 	/* Insert our new methods. */
-	psf->read_short  = interleave_read_short ;
-	psf->read_int    = interleave_read_int ;
-	psf->read_float  = interleave_read_float ;
-	psf->read_double = interleave_read_double ;
+	psf->read_short		= interleave_read_short ;
+	psf->read_int		= interleave_read_int ;
+	psf->read_float		= interleave_read_float ;
+	psf->read_double	= interleave_read_double ;
 
-	psf->new_seek    = interleave_seek ;
+	psf->seek = interleave_seek ;
 
 	return 0 ;
 } /* pcm_interleave_init */
@@ -90,7 +92,7 @@ puts ("interleave_init") ;
 */
 
 static sf_count_t
-interleave_read_short  (SF_PRIVATE *psf, short *ptr, sf_count_t len)
+interleave_read_short	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 {	INTERLEAVE_DATA *pdata ;
 	sf_count_t	offset, templen ;
 	int			chan, count, k ;
@@ -114,8 +116,8 @@ interleave_read_short  (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 		templen = len / psf->sf.channels ;
 
 		while (templen > 0)
-		{	if (templen > sizeof (pdata->buffer) / sizeof (short))
-				count = sizeof (pdata->buffer) / sizeof (short) ;
+		{	if (templen > SIGNED_SIZEOF (pdata->buffer) / SIGNED_SIZEOF (short))
+				count = SIGNED_SIZEOF (pdata->buffer) / SIGNED_SIZEOF (short) ;
 			else
 				count = (int) templen ;
 
@@ -137,7 +139,7 @@ interleave_read_short  (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 } /* interleave_read_short */
 
 static sf_count_t
-interleave_read_int    (SF_PRIVATE *psf, int *ptr, sf_count_t len)
+interleave_read_int	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 {	INTERLEAVE_DATA *pdata ;
 	sf_count_t	offset, templen ;
 	int			chan, count, k ;
@@ -161,8 +163,8 @@ interleave_read_int    (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 		templen = len / psf->sf.channels ;
 
 		while (templen > 0)
-		{	if (templen > sizeof (pdata->buffer) / sizeof (int))
-				count = sizeof (pdata->buffer) / sizeof (int) ;
+		{	if (templen > SIGNED_SIZEOF (pdata->buffer) / SIGNED_SIZEOF (int))
+				count = SIGNED_SIZEOF (pdata->buffer) / SIGNED_SIZEOF (int) ;
 			else
 				count = (int) templen ;
 
@@ -184,7 +186,7 @@ interleave_read_int    (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 } /* interleave_read_int */
 
 static sf_count_t
-interleave_read_float  (SF_PRIVATE *psf, float *ptr, sf_count_t len)
+interleave_read_float	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 {	INTERLEAVE_DATA *pdata ;
 	sf_count_t	offset, templen ;
 	int			chan, count, k ;
@@ -198,10 +200,10 @@ interleave_read_float  (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	for (chan = 0 ; chan < psf->sf.channels ; chan++)
 	{	outptr = ptr + chan ;
 
-		offset = psf->dataoffset + pdata->channel_len * chan + psf->read_current * psf->bytewidth  ;
+		offset = psf->dataoffset + pdata->channel_len * chan + psf->read_current * psf->bytewidth ;
 
 /*-printf ("chan : %d     read_current : %6lld    offset : %6lld\n", chan, psf->read_current, offset) ;-*/
-	
+
 		if (psf_fseek (psf, offset, SEEK_SET) != offset)
 		{	psf->error = SFE_INTERLEAVE_SEEK ;
 /*-puts ("interleave_seek error") ; exit (1) ;-*/
@@ -211,8 +213,8 @@ interleave_read_float  (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 		templen = len / psf->sf.channels ;
 
 		while (templen > 0)
-		{	if (templen > sizeof (pdata->buffer) / sizeof (float))
-				count = sizeof (pdata->buffer) / sizeof (float) ;
+		{	if (templen > SIGNED_SIZEOF (pdata->buffer) / SIGNED_SIZEOF (float))
+				count = SIGNED_SIZEOF (pdata->buffer) / SIGNED_SIZEOF (float) ;
 			else
 				count = (int) templen ;
 
@@ -235,7 +237,7 @@ interleave_read_float  (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 } /* interleave_read_float */
 
 static sf_count_t
-interleave_read_double (SF_PRIVATE *psf, double *ptr, sf_count_t len)
+interleave_read_double	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 {	INTERLEAVE_DATA *pdata ;
 	sf_count_t	offset, templen ;
 	int			chan, count, k ;
@@ -259,8 +261,8 @@ interleave_read_double (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 		templen = len / psf->sf.channels ;
 
 		while (templen > 0)
-		{	if (templen > sizeof (pdata->buffer) / sizeof (double))
-				count = sizeof (pdata->buffer) / sizeof (double) ;
+		{	if (templen > SIGNED_SIZEOF (pdata->buffer) / SIGNED_SIZEOF (double))
+				count = SIGNED_SIZEOF (pdata->buffer) / SIGNED_SIZEOF (double) ;
 			else
 				count = (int) templen ;
 
@@ -295,3 +297,10 @@ interleave_seek	(SF_PRIVATE *psf, int mode, sf_count_t samples_from_start)
 
 	return samples_from_start ;
 } /* interleave_seek */
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 82314e13-0225-4408-a2f2-e6dab3f38904
+*/

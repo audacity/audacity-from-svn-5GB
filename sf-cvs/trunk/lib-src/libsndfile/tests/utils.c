@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -24,19 +24,37 @@
 */
 
 
-#include	<stdio.h>
-#include	<string.h>
-#include	<math.h>
 
-#include	<sndfile.h>
+#include "config.h"
 
-#include	"utils.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-#ifndef		M_PI
-#define		M_PI		3.14159265358979323846264338
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
 #endif
 
-#define		LOG_BUFFER_SIZE		2048
+#if (HAVE_DECL_S_IRGRP == 0)
+#include <sf_unistd.h>
+#endif
+
+#include <errno.h>
+#include <string.h>
+#include <ctype.h>
+#include <math.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+
+#include <sndfile.h>
+
+#include "utils.h"
+
+#ifndef	M_PI
+#define	M_PI		3.14159265358979323846264338
+#endif
+
+#define SIGNED_SIZEOF(x)	((int) (sizeof (x)))
+#define	LOG_BUFFER_SIZE		2048
 
 void
 gen_windowed_sine (double *data, int len, double maximum)
@@ -47,7 +65,7 @@ gen_windowed_sine (double *data, int len, double maximum)
 	**	Choose a frequency of 1/32 so that it aligns perfectly with a DFT
 	**	bucket to minimise spreading of energy over more than one bucket.
 	**	Also do not want to make the frequency too high as some of the
-	**	codec (ie gsm610) have a quite severe high frequency roll off.
+	**	codecs (ie gsm610) have a quite severe high frequency roll off.
 	*/
 	len /= 2 ;
 
@@ -55,7 +73,7 @@ gen_windowed_sine (double *data, int len, double maximum)
 	{	data [k] = sin (2.0 * k * M_PI * 1.0 / 32.0 + 0.4) ;
 
 		/* Apply Hanning Window. */
-		data [k] *= maximum * (0.5 - 0.5 * cos (2.0 * M_PI * k / ((len)-1))) ;
+		data [k] *= maximum * (0.5 - 0.5 * cos (2.0 * M_PI * k / ((len) - 1))) ;
 		}
 
 	return ;
@@ -63,7 +81,7 @@ gen_windowed_sine (double *data, int len, double maximum)
 
 
 void
-check_file_hash_or_die  (char *filename, unsigned int target_hash, int line_num)
+check_file_hash_or_die (const char *filename, unsigned int target_hash, int line_num)
 {	static unsigned char	buffer [2048] ;
 	unsigned int	hash1, hash2 ;
 	FILE 	*file ;
@@ -73,7 +91,7 @@ check_file_hash_or_die  (char *filename, unsigned int target_hash, int line_num)
 
 	/* The 'b' in the mode string means binary for Win32. */
 	if (! (file = fopen (filename, "rb")))
-	{	printf ("\n\nLine %d: could not open file '%s'\n", line_num, filename) ;
+	{	printf ("\n\nLine %d: could not open file '%s'\n\n", line_num, filename) ;
 		exit (1) ;
 		} ;
 
@@ -96,7 +114,7 @@ check_file_hash_or_die  (char *filename, unsigned int target_hash, int line_num)
 		} ;
 
 	if (hash1 != target_hash)
-	{	printf ("\n\nLine %d: incorrect hash value 0x%08x should be 0x%08x\n", line_num, hash1, target_hash) ;
+	{	printf ("\n\nLine %d: incorrect hash value 0x%08x should be 0x%08x\n\n", line_num, hash1, target_hash) ;
 		exit (1) ;
 		}
 
@@ -104,7 +122,7 @@ check_file_hash_or_die  (char *filename, unsigned int target_hash, int line_num)
 } /* check_file_hash_or_die */
 
 void
-print_test_name (char *test, const char *filename)
+print_test_name (const char *test, const char *filename)
 {	int count ;
 
 	if (test == NULL || filename == NULL)
@@ -112,9 +130,9 @@ print_test_name (char *test, const char *filename)
 		exit (1) ;
 		} ;
 
-	printf ("    %-20s : %s ", test, filename) ;
+	printf ("    %-25s : %s ", test, filename) ;
 
-	count = 20 - strlen (filename) ;
+	count = 24 - strlen (filename) ;
 	while (count -- > 0)
 		putchar ('.') ;
 	putchar (' ') ;
@@ -246,7 +264,7 @@ oct_save_double	(double *a, double *b, int len)
 
 
 void
-check_log_buffer_or_die (SNDFILE *file)
+check_log_buffer_or_die (SNDFILE *file, int line_num)
 {	static char	buffer [LOG_BUFFER_SIZE] ;
 	int			count ;
 
@@ -256,20 +274,20 @@ check_log_buffer_or_die (SNDFILE *file)
 	count = sf_command	(file, SFC_GET_LOG_INFO, buffer, LOG_BUFFER_SIZE) ;
 
 	if (LOG_BUFFER_SIZE - count < 2)
-	{	printf ("Possible long log buffer.\n") ;
+	{	printf ("\n\nLine %d : Possible long log buffer.\n", line_num) ;
 		exit (1) ;
 		}
 
 	/* Look for "Should" */
 	if (strstr (buffer, "ould"))
-	{	puts ("\n\nLog buffer contains `ould'. Dumping.\n") ;
+	{	printf ("\n\nLine %d : Log buffer contains `ould'. Dumping.\n", line_num) ;
 		puts (buffer) ;
 		exit (1) ;
 		} ;
 
 	/* Look for "**" */
 	if (strstr (buffer, "*"))
-	{	puts ("\n\nLog buffer contains `*'. Dumping.\n") ;
+	{	printf ("\n\nLine %d : Log buffer contains `*'. Dumping.\n", line_num) ;
 		puts (buffer) ;
 		exit (1) ;
 		} ;
@@ -278,7 +296,7 @@ check_log_buffer_or_die (SNDFILE *file)
 } /* check_log_buffer_or_die */
 
 int
-string_in_log_buffer (SNDFILE *file, char *s)
+string_in_log_buffer (SNDFILE *file, const char *s)
 {	static char	buffer [LOG_BUFFER_SIZE] ;
 	int			count ;
 
@@ -297,6 +315,58 @@ string_in_log_buffer (SNDFILE *file, char *s)
 } /* string_in_log_buffer */
 
 void
+hexdump_file (const char * filename, sf_count_t offset, sf_count_t length)
+{
+	FILE * file ;
+	char buffer [16] ;
+	int k, m, ch, readcount ;
+
+	if (length > 1000000)
+	{	printf ("\n\nError : length (%ld) too long.\n\n", SF_COUNT_TO_LONG (offset)) ;
+		exit (1) ;
+		} ;
+
+	if ((file = fopen (filename, "r")) == NULL)
+	{	printf ("\n\nError : hexdump_file (%s) could not open file for read.\n\n", filename) ;
+		exit (1) ;
+		} ;
+
+	if (fseek (file, offset, SEEK_SET) != 0)
+	{	printf ("\n\nError : fseek(file, %ld, SEEK_SET) failed : %s\n\n", SF_COUNT_TO_LONG (offset), strerror (errno)) ;
+		exit (1) ;
+		} ;
+
+	puts ("\n\n") ;
+
+	for (k = 0 ; k < length ; k+= sizeof (buffer))
+	{	readcount = fread (buffer, 1, sizeof (buffer), file) ;
+
+		printf ("%08lx : ", SF_COUNT_TO_LONG (offset + k)) ;
+
+		for (m = 0 ; m < readcount ; m++)
+			printf ("%02x ", buffer [m] & 0xFF) ;
+
+		for (m = readcount ; m < SIGNED_SIZEOF (buffer) ; m++)
+			printf ("   ") ;
+
+		printf ("  ") ;
+		for (m = 0 ; m < readcount ; m++)
+		{	ch = isprint (buffer [m]) ? buffer [m] : '.' ;
+			putchar (ch) ;
+			} ;
+
+		if (readcount < SIGNED_SIZEOF (buffer))
+			break ;
+
+		putchar ('\n') ;
+		} ;
+
+	puts ("\n") ;
+
+	fclose (file) ;
+} /* hexdump_file */
+
+void
 dump_log_buffer (SNDFILE *file)
 {	static char	buffer [LOG_BUFFER_SIZE] ;
 	int			count ;
@@ -306,28 +376,80 @@ dump_log_buffer (SNDFILE *file)
 	/* Get the log buffer data. */
 	count = sf_command	(file, SFC_GET_LOG_INFO, buffer, LOG_BUFFER_SIZE) ;
 
-	puts (buffer) ;
+	if (strlen (buffer) < 1)
+		puts ("Log buffer empty.\n") ;
+	else
+		puts (buffer) ;
 
 	return ;
 } /* dump_log_buffer */
 
 SNDFILE *
 test_open_file_or_die (const char *filename, int mode, SF_INFO *sfinfo, int line_num)
-{	SNDFILE *file ;
-	char *modestr ;
+{	static int count = 0 ;
 
-	if (! (file = sf_open (filename, mode, sfinfo)))
-	{	switch (mode)
-		{	case SFM_READ :		modestr = "SFM_READ" ; break ;
-			case SFM_WRITE :	modestr = "SFM_WRITE" ; break ;
-			case SFM_RDWR :		modestr = "SFM_RDWR" ; break ;
-			default : modestr = "????" ; break ;
+	SNDFILE *file ;
+	const char *modestr, *func_name ;
+	int oflags = 0, omode = 0 ;
+
+	/*
+	** Need to test both sf_open() and sf_open_fd().
+	** Do so alternately.
+	*/
+
+	switch (mode)
+	{	case SFM_READ :
+				modestr = "SFM_READ" ;
+				oflags = O_RDONLY ;
+				omode = 0 ;
+				break ;
+
+		case SFM_WRITE :
+				modestr = "SFM_WRITE" ;
+				oflags = O_WRONLY | O_CREAT | O_TRUNC ;
+				omode = S_IRUSR | S_IWUSR | S_IRGRP ;
+				break ;
+
+		case SFM_RDWR :
+				modestr = "SFM_RDWR" ;
+				oflags = O_RDWR | O_CREAT ;
+				omode = S_IRUSR | S_IWUSR | S_IRGRP ;
+				break ;
+		default :
+				printf ("\n\nLine %d: Bad mode.\n", line_num) ;
+				fflush (stdout) ;
+				exit (1) ;
+		} ;
+
+#if (defined (__CYGWIN__) || defined (WIN32) || defined (_WIN32))
+	/* Stupid fscking windows. */
+	oflags |= O_BINARY ;
+#endif
+
+	if (((++count) & 1) == 1)
+	{	int fd ;
+
+		if (omode == 0)
+			fd = open (filename, oflags) ;
+		else
+			fd = open (filename, oflags, omode) ;
+
+		if (fd < 0)
+		{	perror ("open") ;
+			exit (1) ;
 			} ;
-		
-		printf ("\n\nLine %d: sf_open (%s) failed : ", line_num, modestr) ;
-		fflush (stdout) ;
+
+		func_name = "sf_open_fd" ;
+		file = sf_open_fd (fd, mode, sfinfo, SF_TRUE) ;
+		}
+	else
+	{	func_name = "sf_open" ;
+		file = sf_open (filename, mode, sfinfo) ;
+		} ;
+
+	if (file == NULL)
+	{	printf ("\n\nLine %d: %s (%s) failed : %s\n\n", line_num, func_name, modestr, sf_strerror (NULL)) ;
 		dump_log_buffer (file) ;
-		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 
@@ -362,8 +484,8 @@ test_read_write_position_or_die (SNDFILE *file, int line_num, int pass, sf_count
 
 void
 test_seek_or_die (SNDFILE *file, sf_count_t offset, int whence, sf_count_t new_pos, int channels, int line_num)
-{	sf_count_t position ;
-	char		*channel_name, *whence_name ;
+{	sf_count_t	position ;
+	const char	*channel_name, *whence_name ;
 
 	switch (whence)
 	{	case SEEK_SET :
@@ -406,9 +528,9 @@ test_seek_or_die (SNDFILE *file, sf_count_t offset, int whence, sf_count_t new_p
 	channel_name = (channels == 1) ? "Mono" : "Stereo" ;
 
 	if ((position = sf_seek (file, offset, whence)) != new_pos)
-	{	printf ("Line %d : %s : sf_seek (file, %ld, %s) returned %ld.\n", line_num,
-					channel_name, SF_COUNT_TO_LONG (offset), whence_name,
-					SF_COUNT_TO_LONG (position)) ;
+	{	printf ("\n\nLine %d : %s : sf_seek (file, %ld, %s) returned %ld (should be %ld).\n\n",
+					line_num, channel_name, SF_COUNT_TO_LONG (offset), whence_name,
+					SF_COUNT_TO_LONG (position), SF_COUNT_TO_LONG (new_pos)) ;
 		exit (1) ;
 		} ;
 
@@ -706,6 +828,7 @@ test_writef_double_or_die (SNDFILE *file, int pass, double *test, sf_count_t fra
 
 	return ;
 } /* test_writef_double */
+
 
 
 

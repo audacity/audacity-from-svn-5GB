@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +17,6 @@
 */
 
 #include	<stdio.h>
-#include	<unistd.h>
 #include	<fcntl.h>
 #include	<string.h>
 #include	<ctype.h>
@@ -104,10 +103,10 @@ wve_read_header (SF_PRIVATE *psf)
 	psf->dataoffset = 0x20 ;
 	psf->datalength = psf->filelength - psf->dataoffset ;
 
-	psf->sf.format     = SF_FORMAT_WVE | SF_FORMAT_ALAW ;
-	psf->sf.samplerate = 8000 ;
-	psf->sf.frames     = psf->datalength ;
-	psf->sf.channels   = 1 ;
+	psf->sf.format		= SF_FORMAT_WVE | SF_FORMAT_ALAW ;
+	psf->sf.samplerate	= 8000 ;
+	psf->sf.frames		= psf->datalength ;
+	psf->sf.channels	= 1 ;
 
 	return alaw_init (psf) ;
 } /* wve_read_header */
@@ -116,3 +115,10 @@ wve_read_header (SF_PRIVATE *psf)
 */
 
 #endif
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: ba368cb5-523f-45e4-98c1-5b99a102f73f
+*/

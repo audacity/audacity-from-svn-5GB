@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +17,6 @@
 */
 
 #include	<stdio.h>
-#include	<unistd.h>
 #include	<fcntl.h>
 #include	<string.h>
 #include	<ctype.h>
@@ -29,9 +28,9 @@
 #include	"float_cast.h"
 
 /*------------------------------------------------------------------------------
-** Information on how to decode and encode this file was obtained in a PDF 
-** file which I found on http://www.wotsit.org/. 
-** Also did a lot of testing with GNU Octave but do not have access to 
+** Information on how to decode and encode this file was obtained in a PDF
+** file which I found on http://www.wotsit.org/.
+** Also did a lot of testing with GNU Octave but do not have access to
 ** Matlab (tm) and so could not test it there.
 */
 
@@ -97,7 +96,10 @@ mat5_open	(SF_PRIVATE *psf)
 	subformat = psf->sf.format & SF_FORMAT_SUBMASK ;
 
 	if (psf->mode == SFM_WRITE || psf->mode == SFM_RDWR)
-	{	psf->endian = psf->sf.format & SF_FORMAT_ENDMASK ;
+	{	if (psf->is_pipe)
+			return SFE_NO_PIPE_WRITE ;
+
+		psf->endian = psf->sf.format & SF_FORMAT_ENDMASK ;
 		if (CPU_IS_LITTLE_ENDIAN && (psf->endian == SF_ENDIAN_CPU || psf->endian == 0))
 			psf->endian = SF_ENDIAN_LITTLE ;
 		else if (CPU_IS_BIG_ENDIAN && (psf->endian == SF_ENDIAN_CPU || psf->endian == 0))
@@ -111,24 +113,24 @@ mat5_open	(SF_PRIVATE *psf)
 
 	psf->close = mat5_close ;
 
-	psf->blockwidth  = psf->bytewidth * psf->sf.channels ;
+	psf->blockwidth = psf->bytewidth * psf->sf.channels ;
 
 	switch (subformat)
-	{	case  SF_FORMAT_PCM_U8 :
-		case  SF_FORMAT_PCM_16 :
-		case  SF_FORMAT_PCM_32 :
+	{	case SF_FORMAT_PCM_U8 :
+		case SF_FORMAT_PCM_16 :
+		case SF_FORMAT_PCM_32 :
 				error = pcm_init (psf) ;
 				break ;
 
-		case  SF_FORMAT_FLOAT :
+		case SF_FORMAT_FLOAT :
 				error = float32_init (psf) ;
 				break ;
 
-		case  SF_FORMAT_DOUBLE :
+		case SF_FORMAT_DOUBLE :
 				error = double64_init (psf) ;
 				break ;
 
-		default :   break ;
+		default : break ;
 		} ;
 
 	return error ;
@@ -138,26 +140,10 @@ mat5_open	(SF_PRIVATE *psf)
 */
 
 static int
-mat5_close	(SF_PRIVATE  *psf)
+mat5_close	(SF_PRIVATE *psf)
 {
 	if (psf->mode == SFM_WRITE || psf->mode == SFM_RDWR)
-	{	/*  Now we know for certain the length of the file we can
-		 *  re-write correct values for the datasize header element.
-		 */
-
-		psf_fseek (psf, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf) ;
-
-		psf->datalength = psf->filelength - psf->dataoffset ;
-		psf_fseek (psf, 0, SEEK_SET) ;
-
-		psf->sf.frames = psf->datalength / psf->blockwidth ;
-		mat5_write_header (psf, SF_FALSE) ;
-		} ;
-
-	if (psf->fdata)
-		free (psf->fdata) ;
-	psf->fdata = NULL ;
+		mat5_write_header (psf, SF_TRUE) ;
 
 	return 0 ;
 } /* mat5_close */
@@ -167,8 +153,8 @@ mat5_close	(SF_PRIVATE  *psf)
 
 static int
 mat5_write_header (SF_PRIVATE *psf, int calc_length)
-{	static char	*sr_name = "samplerate\0\0\0\0\0\0\0\0\0\0\0" ;
-	static char	*wd_name = "wavedata\0" ;
+{	static const char	*sr_name = "samplerate\0\0\0\0\0\0\0\0\0\0\0" ;
+	static const char	*wd_name = "wavedata\0" ;
 	sf_count_t	current, datasize ;
 	int			encoding ;
 
@@ -202,7 +188,7 @@ mat5_write_header (SF_PRIVATE *psf, int calc_length)
 		case SF_FORMAT_FLOAT :
 				encoding = MAT5_TYPE_FLOAT ;
 				break ;
-				
+
 		case SF_FORMAT_DOUBLE :
 				encoding = MAT5_TYPE_DOUBLE ;
 				break ;
@@ -219,16 +205,16 @@ mat5_write_header (SF_PRIVATE *psf, int calc_length)
 	psf_binheader_writef (psf, "S", "MATLAB 5.0 MAT-file, written by " PACKAGE "-" VERSION ", ") ;
 	psf_get_date_str ((char*) psf->buffer, sizeof (psf->buffer)) ;
 	psf_binheader_writef (psf, "jS", -1, psf->buffer) ;
-	
+
 	memset (psf->buffer, ' ', 124 - psf->headindex) ;
 	psf_binheader_writef (psf, "b", psf->buffer, 124 - psf->headindex) ;
 
 	psf->rwf_endian = psf->endian ;
 
 	if (psf->rwf_endian == SF_ENDIAN_BIG)
-		psf_binheader_writef (psf, "2b", 0x0100,  "MI", 2) ;
+		psf_binheader_writef (psf, "2b", 0x0100, "MI", 2) ;
 	else
-		psf_binheader_writef (psf, "2b", 0x0100,  "IM", 2) ;
+		psf_binheader_writef (psf, "2b", 0x0100, "IM", 2) ;
 
 	psf_binheader_writef (psf, "444444", MAT5_TYPE_ARRAY, 64, MAT5_TYPE_UINT32, 8, 6, 0) ;
 	psf_binheader_writef (psf, "4444", MAT5_TYPE_INT32, 8, 1, 1) ;
@@ -275,26 +261,26 @@ mat5_read_header (SF_PRIVATE *psf)
 	int		type, size, flags1, flags2, rows, cols ;
 
 	psf_binheader_readf (psf, "pb", 0, psf->buffer, 124) ;
-	
+
 	psf->buffer [125] = 0 ;
-	
+
 	if (strlen ((char*) psf->buffer) >= 124)
 		return SFE_UNIMPLEMENTED ;
-		
+
 	if (strstr ((char*) psf->buffer, "MATLAB 5.0 MAT-file") == (char*) psf->buffer)
 		psf_log_printf (psf, "%s\n", psf->buffer) ;
-		
-	
+
+
 	psf_binheader_readf (psf, "E22", &version, &endian) ;
 
 	if (endian == MI_MARKER)
 	{	psf->endian = psf->rwf_endian = SF_ENDIAN_BIG ;
-		if (CPU_IS_LITTLE_ENDIAN)  version = ENDSWAP_SHORT (version) ;
-		} 
+		if (CPU_IS_LITTLE_ENDIAN) version = ENDSWAP_SHORT (version) ;
+		}
 	else if (endian == IM_MARKER)
 	{	psf->endian = psf->rwf_endian = SF_ENDIAN_LITTLE ;
-		if (CPU_IS_BIG_ENDIAN)  version = ENDSWAP_SHORT (version) ;
-		} 
+		if (CPU_IS_BIG_ENDIAN) version = ENDSWAP_SHORT (version) ;
+		}
 	else
 		return SFE_MAT5_BAD_ENDIAN ;
 
@@ -305,35 +291,35 @@ mat5_read_header (SF_PRIVATE *psf)
 	psf_log_printf (psf, "Version : 0x%04X\n", version) ;
 	psf_log_printf (psf, "Endian  : 0x%04X => %s\n", endian,
 				(psf->endian == SF_ENDIAN_LITTLE) ? "Little" : "Big") ;
-				
+
 	/*========================================================*/
 	psf_binheader_readf (psf, "44", &type, &size) ;
 	psf_log_printf (psf, "Block\n Type : %X    Size : %d\n", type, size) ;
 
 	if (type != MAT5_TYPE_ARRAY)
 		return SFE_MAT5_NO_BLOCK ;
-	
+
 	psf_binheader_readf (psf, "44", &type, &size) ;
 	psf_log_printf (psf, "    Type : %X    Size : %d\n", type, size) ;
-	
+
 	if (type != MAT5_TYPE_UINT32)
 		return SFE_MAT5_NO_BLOCK ;
-	
+
 	psf_binheader_readf (psf, "44", &flags1, &flags2) ;
 	psf_log_printf (psf, "    Flg1 : %X    Flg2 : %d\n", flags1, flags2) ;
-	
+
 	psf_binheader_readf (psf, "44", &type, &size) ;
 	psf_log_printf (psf, "    Type : %X    Size : %d\n", type, size) ;
-	
+
 	if (type != MAT5_TYPE_INT32)
 		return SFE_MAT5_NO_BLOCK ;
-	
+
 	psf_binheader_readf (psf, "44", &rows, &cols) ;
 	psf_log_printf (psf, "    Rows : %X    Cols : %d\n", rows, cols) ;
-	
+
 	if (rows != 1 || cols != 1)
 		return SFE_MAT5_SAMPLE_RATE ;
-	
+
 	psf_binheader_readf (psf, "4", &type) ;
 
 	if (type == MAT5_TYPE_SCHAR)
@@ -343,7 +329,7 @@ mat5_read_header (SF_PRIVATE *psf)
 		{	psf_log_printf (psf, "Error : Bad name length.\n") ;
 			return SFE_MAT5_NO_BLOCK ;
 			} ;
-				
+
 		psf_binheader_readf (psf, "bj", name, size, (8 - (size % 8)) % 8) ;
 		name [size] = 0 ;
 		}
@@ -360,13 +346,13 @@ mat5_read_header (SF_PRIVATE *psf)
 		}
 	else
 		return SFE_MAT5_NO_BLOCK ;
-	
+
 	psf_log_printf (psf, "    Name : %s\n", name) ;
-	
+
 	/*-----------------------------------------*/
-	
+
 	psf_binheader_readf (psf, "44", &type, &size) ;
-	
+
 	switch (type)
 	{	case MAT5_TYPE_DOUBLE :
 				{	double	samplerate ;
@@ -374,57 +360,57 @@ mat5_read_header (SF_PRIVATE *psf)
 					psf_binheader_readf (psf, "d", &samplerate) ;
 					LSF_SNPRINTF (name, sizeof (name), "%f\n", samplerate) ;
 					psf_log_printf (psf, "    Val  : %s\n", name) ;
-	
-					psf->sf.samplerate = lrint (samplerate) ;	
+
+					psf->sf.samplerate = lrint (samplerate) ;
 					} ;
 				break ;
-				
+
 		case MAT5_TYPE_COMP_USHORT :
 				{	unsigned short samplerate ;
 
 					psf_binheader_readf (psf, "j2j", -4, &samplerate, 2) ;
 					psf_log_printf (psf, "    Val  : %u\n", samplerate) ;
-					psf->sf.samplerate = samplerate ;	
+					psf->sf.samplerate = samplerate ;
 					}
 				break ;
 
 		case MAT5_TYPE_COMP_UINT :
 				psf_log_printf (psf, "    Val  : %u\n", size) ;
-				psf->sf.samplerate = size ;	
+				psf->sf.samplerate = size ;
 				break ;
-				
+
 		default :
 			psf_log_printf (psf, "    Type : %X    Size : %d  ***\n", type, size) ;
 			return SFE_MAT5_SAMPLE_RATE ;
 		} ;
 
 	/*-----------------------------------------*/
-	
+
 
 	psf_binheader_readf (psf, "44", &type, &size) ;
 	psf_log_printf (psf, " Type : %X    Size : %d\n", type, size) ;
 
 	if (type != MAT5_TYPE_ARRAY)
 		return SFE_MAT5_NO_BLOCK ;
-	
+
 	psf_binheader_readf (psf, "44", &type, &size) ;
 	psf_log_printf (psf, "    Type : %X    Size : %d\n", type, size) ;
-	
+
 	if (type != MAT5_TYPE_UINT32)
 		return SFE_MAT5_NO_BLOCK ;
-	
+
 	psf_binheader_readf (psf, "44", &flags1, &flags2) ;
 	psf_log_printf (psf, "    Flg1 : %X    Flg2 : %d\n", flags1, flags2) ;
-	
+
 	psf_binheader_readf (psf, "44", &type, &size) ;
 	psf_log_printf (psf, "    Type : %X    Size : %d\n", type, size) ;
-	
+
 	if (type != MAT5_TYPE_INT32)
 		return SFE_MAT5_NO_BLOCK ;
-	
+
 	psf_binheader_readf (psf, "44", &rows, &cols) ;
 	psf_log_printf (psf, "    Rows : %X    Cols : %d\n", rows, cols) ;
-	
+
 	psf_binheader_readf (psf, "4", &type) ;
 
 	if (type == MAT5_TYPE_SCHAR)
@@ -434,7 +420,7 @@ mat5_read_header (SF_PRIVATE *psf)
 		{	psf_log_printf (psf, "Error : Bad name length.\n") ;
 			return SFE_MAT5_NO_BLOCK ;
 			} ;
-				
+
 		psf_binheader_readf (psf, "bj", name, size, (8 - (size % 8)) % 8) ;
 		name [size] = 0 ;
 		}
@@ -453,7 +439,7 @@ mat5_read_header (SF_PRIVATE *psf)
 		return SFE_MAT5_NO_BLOCK ;
 
 	psf_log_printf (psf, "    Name : %s\n", name) ;
-	
+
 	psf_binheader_readf (psf, "44", &type, &size) ;
 	psf_log_printf (psf, "    Type : %X    Size : %d\n", type, size) ;
 
@@ -464,8 +450,8 @@ mat5_read_header (SF_PRIVATE *psf)
 		return SFE_MAT5_ZERO_CHANNELS ;
 		} ;
 
-	psf->sf.channels = rows ;
-	psf->sf.frames   = cols ;
+	psf->sf.channels	= rows ;
+	psf->sf.frames		= cols ;
 
 	psf->sf.format = psf->endian | SF_FORMAT_MAT5 ;
 
@@ -511,3 +497,10 @@ mat5_read_header (SF_PRIVATE *psf)
 	return 0 ;
 } /* mat5_read_header */
 
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: dfdb6742-b2be-4be8-b390-d0c674e8bc8e
+*/
