@@ -105,6 +105,8 @@ audacity: $(OBJS) Makefile
 install:
 	-test ! -f audacity-help.htb || $(INSTALL) -m 644 audacity-help.htb \
 		$(PREFIX)/share/doc/audacity/audacity-help.htb
+	$(INSTALL) -m 644 README.txt $(PREFIX)/share/doc/audacity/README.txt
+	$(INSTALL) -m 644 LICENSE.txt $(PREFIX)/share/doc/audacity/LICENSE.txt
 	$(INSTALL) -m 755 audacity $(PREFIX)/bin/audacity
 
 #
