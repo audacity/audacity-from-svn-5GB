@@ -25,8 +25,12 @@
 #endif
 
 #ifdef __WXMAC__
-#include <AEDataModel.h>
-#include <AppleEvents.h>
+# ifdef __UNIX__
+#  include <ApplicationServices/ApplicationServices.h>
+# else
+#  include <AEDataModel.h>
+#  include <AppleEvents.h>
+# endif
 #endif
 
 #ifdef __WXMSW__
@@ -251,8 +255,8 @@ bool AudacityApp::OnInit()
    Effect::RegisterEffect(new EffectReverse());
    Effect::RegisterEffect(new EffectWahwah());
 
-#if defined(__WXMAC__) && !defined(__DARWIN__)
-   LoadVSTPlugins();
+#if defined(__WXMAC__)
+   LoadVSTPlugins(wxPathOnly(argv[0]));
 #endif
 #if defined(__WXMSW__)
    LoadVSTPlugins(wxPathOnly(argv[0]));
@@ -289,7 +293,7 @@ bool AudacityApp::OnInit()
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
    SetTopWindow(project);
 
-#ifndef __DARWIN__
+#ifndef __MACOSX__
 
    // Parse command-line arguments
 
