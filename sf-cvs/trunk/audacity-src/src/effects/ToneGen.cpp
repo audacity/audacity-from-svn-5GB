@@ -19,17 +19,17 @@
 
 EffectToneGen::EffectToneGen()
 {
-   frequency = 1000.0; //Hz
-   waveform = 0; //sine
+   frequency = 1000.0;          //Hz
+   waveform = 0;                //sine
    amplitude = 1.0;
    mix = false;
 }
 
-bool EffectToneGen::Init()
+bool EffectToneGen::NewTrackSimpleMono(int count)
 {
-   mSample=0;  //used to keep track of the current sample number
-               //between calls to EffectToneGen::ProcessSimpleMono
-               //to avoid phase jumps at block boundaries
+   mSample = 0; //used to keep track of the current sample number
+   //between calls to EffectToneGen::ProcessSimpleMono
+   //to avoid phase jumps at block boundaries
    return true;
 }
 
@@ -46,7 +46,7 @@ bool EffectToneGen::PromptUser()
    dlog.TransferDataToWindow();
    dlog.CentreOnParent();
    dlog.ShowModal();
-   
+
    if (dlog.GetReturnCode() == 0)
       return false;
 
@@ -54,58 +54,59 @@ bool EffectToneGen::PromptUser()
    waveform = dlog.waveform;
    amplitude = dlog.amplitude;
    mix = dlog.mix;
-   
+
    return true;
 }
 
-bool EffectToneGen::ProcessSimpleMono(float *buffer,
-                               sampleCount len, double samplerate)
+bool EffectToneGen::ProcessSimpleMono(float *buffer, sampleCount len, double samplerate)
 {
-   double throwaway=0; //passed to modf but never used
+   double throwaway = 0;        //passed to modf but never used
    int i;
 
    switch (waveform) {
-      case 0:  //sine
-         if (mix)
-            for (i=0;i<len;i++)
-               buffer[i]=(buffer[i]+amplitude*(float)sin(2*M_PI*(i+mSample)*frequency/samplerate))/2;
-         else
-            for (i=0;i<len;i++)
-               buffer[i]=amplitude*(float)sin(2*M_PI*(i+mSample)*frequency/samplerate);
-         mSample+=len;
-         break;
-      
-      case 1: //square
-         if (mix)
-            for (i=0;i<len;i++) {
-               if (modf(((i+mSample)*frequency/samplerate),&throwaway)<0.5)
-                  buffer[i]=(buffer[i]+amplitude)/2;
-               else
-                  buffer[i]=(buffer[i]-amplitude)/2;
-            }
-         else
-            for (i=0;i<len;i++) {
-               if (modf(((i+mSample)*frequency/samplerate),&throwaway)<0.5)
-                  buffer[i]=amplitude;
-               else
-                  buffer[i]=-amplitude;
-            }
-         mSample+=len;
-         break;
-      
-      case 2: //sawtooth
-         if (mix)
-            for (i=0;i<len;i++)
-               buffer[i]=amplitude*((((i+mSample)%(int)(samplerate/frequency))/(samplerate/frequency))-0.5)+buffer[i]/2; //hmm
-         else
-            for (i=0;i<len;i++)
-               buffer[i]=2*amplitude*((((i+mSample)%(int)(samplerate/frequency))/(samplerate/frequency))-0.5);
-         mSample+=len;
-         break;
+   case 0:                     //sine
+      if (mix)
+         for (i = 0; i < len; i++)
+            buffer[i] =
+                (buffer[i] +
+                 amplitude * (float) sin(2 * M_PI * (i + mSample) * frequency / samplerate)) / 2;
+      else
+         for (i = 0; i < len; i++)
+            buffer[i] =
+                amplitude * (float) sin(2 * M_PI * (i + mSample) * frequency / samplerate);
+      mSample += len;
+      break;
 
-      default:
-         break;
-      }
+   case 1:                     //square
+      if (mix)
+         for (i = 0; i < len; i++) {
+            if (modf(((i + mSample) * frequency / samplerate), &throwaway) < 0.5)
+               buffer[i] = (buffer[i] + amplitude) / 2;
+            else
+               buffer[i] = (buffer[i] - amplitude) / 2;
+      } else
+         for (i = 0; i < len; i++) {
+            if (modf(((i + mSample) * frequency / samplerate), &throwaway) < 0.5)
+               buffer[i] = amplitude;
+            else
+               buffer[i] = -amplitude;
+         }
+      mSample += len;
+      break;
+
+   case 2:                     //sawtooth
+      if (mix)
+         for (i = 0; i < len; i++)
+            buffer[i] = amplitude * ((((i + mSample) % (int) (samplerate / frequency)) / (samplerate / frequency)) - 0.5) + buffer[i] / 2;      //hmm
+      else
+         for (i = 0; i < len; i++)
+            buffer[i] = 2 * amplitude * ((((i + mSample) % (int) (samplerate / frequency)) / (samplerate / frequency)) - 0.5);
+      mSample += len;
+      break;
+
+   default:
+      break;
+   }
    return true;
 }
 
@@ -125,8 +126,8 @@ bool EffectToneGen::ProcessSimpleMono(float *buffer,
 // WDR: event table for PhaserDialog
 
 BEGIN_EVENT_TABLE(ToneGenDialog, wxDialog)
-   EVT_BUTTON(wxID_OK, ToneGenDialog::OnCreateTone)
-   EVT_BUTTON(wxID_CANCEL, ToneGenDialog::OnCancel)
+    EVT_BUTTON(wxID_OK, ToneGenDialog::OnCreateTone)
+EVT_BUTTON(wxID_CANCEL, ToneGenDialog::OnCancel)
 //   EVT_TEXT(ID_FREQTEXT, ToneGenDialog::OnFreqText)
 //   EVT_CHOICE(ID_WAVEFORM, ToneGenDialog::OnWaveformChoice)
 END_EVENT_TABLE()
@@ -135,7 +136,7 @@ ToneGenDialog::ToneGenDialog(wxWindow * parent, wxWindowID id, const wxString & 
 wxDialog(parent, id, title, position, size, style)
 {
    CreateToneGenDialog(this, TRUE);
-   
+
 }
 
 bool ToneGenDialog::Validate()
@@ -222,7 +223,7 @@ void ToneGenDialog::OnCancel(wxCommandEvent & event)
 }
 
 wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
-                            bool set_sizer)
+                             bool set_sizer)
 {
    wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
 
@@ -234,9 +235,8 @@ wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
                         wxDefaultSize, 0);
    item2->Add(item3, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   wxChoice *item4 =
-       new wxChoice(parent, ID_WAVEFORM, wxDefaultPosition,
-                      wxSize(80, -1), 0, NULL);
+   wxChoice *item4 = new wxChoice(parent, ID_WAVEFORM, wxDefaultPosition,
+                                  wxSize(80, -1), 0, NULL);
    item2->Add(item4, 0, wxALIGN_CENTRE | wxALL, 5);
 
    item0->Add(item2, 1, wxALIGN_CENTRE | wxALL, 5);
@@ -245,7 +245,8 @@ wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
    wxBoxSizer *item5 = new wxBoxSizer(wxHORIZONTAL);
 
    wxStaticText *item6 =
-       new wxStaticText(parent, ID_TEXT, _("Frequency / Hz"), wxDefaultPosition,
+       new wxStaticText(parent, ID_TEXT, _("Frequency / Hz"),
+                        wxDefaultPosition,
                         wxDefaultSize, 0);
    item5->Add(item6, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -260,7 +261,8 @@ wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
    wxBoxSizer *item8 = new wxBoxSizer(wxHORIZONTAL);
 
    wxStaticText *item9 =
-       new wxStaticText(parent, ID_TEXT, _("Amplitude (0-1)"), wxDefaultPosition,
+       new wxStaticText(parent, ID_TEXT, _("Amplitude (0-1)"),
+                        wxDefaultPosition,
                         wxDefaultSize, 0);
    item8->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -275,13 +277,14 @@ wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
    wxBoxSizer *item14 = new wxBoxSizer(wxHORIZONTAL);
 
    wxStaticText *item15 =
-       new wxStaticText(parent, ID_TEXT, _("Mix Output"), wxDefaultPosition,
-                    wxDefaultSize, 0);
+       new wxStaticText(parent, ID_TEXT, _("Mix Output"),
+                        wxDefaultPosition,
+                        wxDefaultSize, 0);
    item14->Add(item15, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxCheckBox *item16 =
        new wxCheckBox(parent, ID_MIX, "", wxDefaultPosition,
-                    wxDefaultSize, 0);
+                      wxDefaultSize, 0);
    item14->Add(item16, 0, wxALIGN_CENTRE | wxALL, 5);
 
    item0->Add(item14, 0, wxALIGN_CENTRE | wxALL, 5);
