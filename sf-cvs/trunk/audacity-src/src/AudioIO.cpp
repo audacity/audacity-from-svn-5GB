@@ -355,6 +355,8 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
       mTracks->Add(mInTracks[i]);
    }
 
+   mLastChecksum = -32768;
+
    return Start();
 }
 
