@@ -34,9 +34,11 @@ class RingBuffer {
    int Discard(int samples);
 
  private:
+   int Len();
+   
    sampleFormat  mFormat;
-   int           mLen;
    int           mStart;
+   int           mEnd;
    int           mBufferSize;
    samplePtr     mBuffer;
 };
