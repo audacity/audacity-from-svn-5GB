@@ -922,7 +922,7 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
          else if (!strcmp(attr, "channel"))
             mChannel = atoi(value);
          else if (!strcmp(attr, "linked"))
-            mLinked = atoi(value);
+            mLinked = atoi(value)?true:false;
          
       } // while
       return true;

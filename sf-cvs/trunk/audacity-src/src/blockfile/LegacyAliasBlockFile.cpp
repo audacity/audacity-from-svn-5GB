@@ -106,7 +106,7 @@ BlockFile *LegacyAliasBlockFile::BuildFromXML(wxString projDir, const char **att
        if( !wxStricmp(attr, "summarylen") )
           summaryLen = atoi(value);
        if( !wxStricmp(attr, "norms") )
-          noRMS = (bool)atoi(value);
+          noRMS = atoi(value)?true:false;
    }
 
    return new LegacyAliasBlockFile(summaryFileName, aliasFileName,

@@ -100,7 +100,7 @@ bool EffectPhaser::NewTrackSimpleMono()
 
    phase = startphase;
    if (mCurChannel == Track::RightChannel)
-      phase += M_PI;
+      phase += (float)M_PI;
 
    return true;
 }

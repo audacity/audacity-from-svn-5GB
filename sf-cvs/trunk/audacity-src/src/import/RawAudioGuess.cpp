@@ -344,7 +344,7 @@ int GuessFloatFormats(int numTests, char **rawData, int dataSize,
             for(test=0; test<numTests; test++) {
                float min, max;
 
-               ExtractFloats(prec, endian,
+               ExtractFloats(prec?true:false, endian?true:false,
                              true, /* stereo */
                              offset,
                              rawData[test], dataSize,
@@ -422,14 +422,14 @@ int GuessFloatFormats(int numTests, char **rawData, int dataSize,
    for (test = 0; test < numTests; test++) {
       float leftChannel, rightChannel, combinedChannel;
 
-      ExtractFloats(bestPrec, bestEndian,
+      ExtractFloats(bestPrec?true:false, bestEndian?true:false,
                     true, /* stereo */
                     bestOffset,
                     rawData[test], dataSize,
                     data1, data2, &len1, &len2);
       leftChannel = JumpStat(data1, len1);
       rightChannel = JumpStat(data2, len2);
-      ExtractFloats(bestPrec, bestEndian,
+      ExtractFloats(bestPrec?true:false, bestEndian?true:false,
                     false, /* stereo */
                     bestOffset,
                     rawData[test], dataSize,
@@ -462,7 +462,7 @@ int GuessFloatFormats(int numTests, char **rawData, int dataSize,
       for (test = 0; test < numTests; test++) {
          float redundant;
 
-         ExtractFloats(bestPrec, bestEndian,
+         ExtractFloats(bestPrec?true:false, bestEndian?true:false,
                        false, /* stereo */
                        bestOffset,
                        rawData[test], dataSize,

@@ -44,6 +44,9 @@ const float EffectEqualization::curvex[] =
     5000., 6000., 7000., 8000., 9000., 10000., 15000., 16000.
   };
 
+// Don't want to be warned about double->float precision loss here
+// when compiling with MSVC.
+#pragma warning( disable: 4305 )
 const float EffectEqualization::curvey[][nCurvePoints] =
    {
       {
@@ -119,6 +122,8 @@ const float EffectEqualization::curvey[][nCurvePoints] =
 	-8.0,  -10.0, -11.5, -12.0, -12.5, -12.5, -12.5, -12.5
       }
   };
+
+#pragma warning( default: 4305 )
 
 const char * EffectEqualization::curveNames[] =
   {

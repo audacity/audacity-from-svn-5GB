@@ -277,7 +277,7 @@ BlockFile *LegacyBlockFile::BuildFromXML(wxString projDir, const char **attrs,
 {
    wxFileName fileName;
    sampleCount summaryLen = 0;
-   int noRMS = 0;
+   bool noRMS = false;
 
    while(*attrs)
    {
@@ -289,7 +289,7 @@ BlockFile *LegacyBlockFile::BuildFromXML(wxString projDir, const char **attrs,
        if( !strcmp(attr, "len") )
           len = atoi(value);
        if( !strcmp(attr, "norms") )
-          noRMS = (bool)atoi(value);
+          noRMS = atoi(value)?true:false;
        if( !strcmp(attr, "format") )
           format = (sampleFormat)atoi(value);
        if( !strcmp(attr, "summarylen") )
