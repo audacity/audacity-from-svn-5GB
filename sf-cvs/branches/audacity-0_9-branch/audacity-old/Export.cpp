@@ -81,7 +81,9 @@ bool Export(AudacityProject *project,
                rate = ((WaveTrack *) tr)->GetRate();
 
             if (rate != ((WaveTrack *) tr)->GetRate()) {
-               wxMessageBox("Cannot export tracks with different rates.");
+               wxMessageBox( "This version of Audacity requires that all tracks\n"
+                             "match the project sample rate to play or export.\n"
+                             "To change the sample rate of a track, click on its title.");
                return false;
             }
 

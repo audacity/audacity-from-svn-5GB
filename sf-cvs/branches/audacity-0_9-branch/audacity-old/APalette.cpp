@@ -372,6 +372,22 @@ void APalette::OnPlay()
    AudacityProject *p = GetActiveProject();
    if (p) {
       TrackList *t = p->GetTracks();
+
+      TrackListIterator iter(t);
+      VTrack *tr = iter.First();
+
+      while(tr) {
+         if(tr->GetKind() == VTrack::Wave) {
+            if( ((WaveTrack*)tr)->GetRate() != p->GetRate() )  {
+               wxMessageBox( "This version of Audacity requires that all tracks\n"
+                             "match the project sample rate to play or export.\n"
+                             "To change the sample rate of a track, click on its title.");
+               return;
+            }
+         }
+         tr = iter.Next();
+      }
+
       double t0 = p->GetSel0();
       double t1 = p->GetSel1();
 
