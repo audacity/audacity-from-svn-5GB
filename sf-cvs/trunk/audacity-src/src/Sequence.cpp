@@ -680,9 +680,11 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
          else if (!strcmp(attr, "sampleformat"))
             mSampleFormat = (sampleFormat)atoi(value);
          else if (!strcmp(attr, "numsamples"))
-            mNumSamples = atoi(value);
-         
+            mNumSamples = atoi(value);         
       } // while
+
+      CalcSummaryInfo();
+
       return true;
    }
    
