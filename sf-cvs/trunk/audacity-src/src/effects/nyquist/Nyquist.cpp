@@ -25,6 +25,8 @@ WX_DEFINE_OBJARRAY(NyqControlArray);
 
 wxString EffectNyquist::mXlispPath;
 
+char global_xlisp_path[1000];
+
 #define UNINITIALIZED_CONTROL ((double)99999999.99)
 
 wxString EffectNyquist::UnQuote(wxString s)
@@ -199,7 +201,7 @@ bool EffectNyquist::SetXlispPath()
          mXlispPath = ::wxPathOnly(files[0]);
    }
 
-   setenv("XLISPPATH", (const char *)mXlispPath, 1);
+   strncpy(global_xlisp_path, (const char *)mXlispPath, 1000);
 
    fname.Printf("%s/nyinit.lsp", (const char *)mXlispPath);
    return ::wxFileExists(fname);
