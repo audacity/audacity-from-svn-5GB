@@ -4,6 +4,8 @@
         Permission is granted for unrestricted non-commercial use
 
 HISTORY
+28-Apr-03   Mazzoni
+                Added declarations for path.c (new file)
 30-Mar-88	Dale Amon CMU-CSD
                 Set it up for unix. Picked _TURBOC_  because defs
                 are reasonable.
@@ -161,10 +163,6 @@ extern long ptrtoabs();
 
 #ifdef LINUX_INTEL
 #define XL_LITTLE_ENDIAN
-#endif
-
-#ifdef __BIG_ENDIAN__ /* __POWERPC__, __APPLE__, __MACH__ */
-#define XL_BIG_ENDIAN
 #endif
 
 /* default important definitions */
@@ -822,13 +820,6 @@ LVAL obshow(void);
 LVAL clnew(void);
 LVAL clisnew(void);
 LVAL clanswer(void);
-
-/* dmazzoni: get rid of these?
-LOCAL LVAL entermsg(LVAL cls, LVAL msg);
-LOCAL LVAL sendmsg(LVAL obj, LVAL cls, LVAL sym);
-LOCAL LVAL evmethod(LVAL obj, LVAL msgcls, LVAL method);
-*/
-
 void obsymbols(void);
 void xloinit(void);
 
@@ -985,11 +976,11 @@ long osrand(long rseed);
 LVAL xlinfo(void);
 LVAL xsetdir(void);
 /* Added End */
-#ifdef WINDOWS
-void get_xlisp_path(char *p, long p_max);
-#endif
 
-
+/* These are now implemented in path.c   -dmazzoni */
+const char *return_xlisp_path();
+const char *find_in_xlisp_path(const char *fname);
+void set_xlisp_path(const char *p);
 
 /* local.c - these procedures are specific to each implementation */
 

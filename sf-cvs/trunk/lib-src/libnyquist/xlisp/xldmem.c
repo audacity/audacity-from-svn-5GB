@@ -4,6 +4,8 @@
         Permission is granted for unrestricted non-commercial use
 
  * HISTORY
+ * 28-Apr-03    Mazzoni
+ *  eliminate some compiler warnings
  * 14-Apr-88	Dannenberg
  *	Call free method when an EXTERN node is garbage collected
  */
@@ -39,10 +41,7 @@ FORWARD LVAL newnode(int type);
 FORWARD LOCAL unsigned char *stralloc(int size);
 FORWARD LOCAL int addseg(void);
 FORWARD void mark(LVAL ptr);
-
-
-/* dmazzoni: was FORWARD LOCAL void sweep(void); */
-void sweep(void);
+FORWARD LOCAL void sweep(void);
 
 #ifdef DEBUG_GC
 static long dbg_gc_n = 0;	/* counts save operations */
@@ -181,6 +180,7 @@ LVAL cvchar(int n)
     if (n >= CHARMIN && n <= CHARMAX)
         return (&charseg->sg_nodes[n-CHARMIN]);
     xlerror("character code out of range",cvfixnum((FIXTYPE)n));
+    return NIL; /* won't reach this line */
 }
 
 /* newustream - create a new unnamed stream */
@@ -224,7 +224,7 @@ LVAL newvector(int size)
     xlsave1(vect);
     vect = newnode(VECTOR);
     vect->n_vsize = 0;
-    if (bsize = size * sizeof(LVAL)) {
+    if ((bsize = size * sizeof(LVAL))) {
         if ((vect->n_vdata = (LVAL *)calloc(1,bsize)) == NULL) {
             findmem();
             if ((vect->n_vdata = (LVAL *)calloc(1,bsize)) == NULL)
@@ -315,12 +315,12 @@ void gc(void)
 
     /* mark the evaluation stack */
     for (p = xlstack; p < xlstktop; ++p)
-        if (tmp = **p)
+        if ((tmp = **p))
             mark(tmp);
 
     /* mark the argument stack */
     for (ap = xlargstkbase; ap < xlsp; ++ap)
-        if (tmp = *ap)
+        if ((tmp = *ap))
             mark(tmp);
 
     /* sweep memory collecting all unmarked nodes */
@@ -351,19 +351,11 @@ void gc(void)
     }
 }
 
-/*extern void *test_mark;*/
-
 /* mark - mark all accessible nodes */
 void mark(LVAL ptr)
 {
     register LVAL this,prev,tmp;
     int type,i,n;
-
-    /*
-    if (ptr == test_mark) {
-       printf("\n\nFound test_mark\n\n");
-       }
-    */
 
     /* initialize */
     prev = NIL;
@@ -376,12 +368,12 @@ void mark(LVAL ptr)
         while (!(this->n_flags & MARK))
 
             /* check cons and symbol nodes */
-            if ((type = ntype(this)) == CONS || type == USTREAM) {
-                if (tmp = car(this)) {
+            if (((type = ntype(this))) == CONS || type == USTREAM) {
+                if ((tmp = car(this))) {
                     this->n_flags |= MARK|LEFT;
                     rplaca(this,prev);
                 }
-                else if (tmp = cdr(this)) {
+                else if ((tmp = cdr(this))) {
                     this->n_flags |= MARK;
                     rplacd(this,prev);
                 }
@@ -402,7 +394,7 @@ void mark(LVAL ptr)
                 case VECTOR:
                 case CLOSURE:
                     for (i = 0, n = getsize(this); --n >= 0; ++i)
-                        if (tmp = getelement(this,i))
+                        if ((tmp = getelement(this,i)))
                             mark(tmp);
                     break;
                 case EXTERN:
@@ -421,7 +413,7 @@ void mark(LVAL ptr)
                     prev->n_flags &= ~LEFT;
                     tmp = car(prev);
                     rplaca(prev,this);
-                    if (this = cdr(prev)) {
+                    if ((this = cdr(prev))) {
                         rplacd(prev,tmp);			
                         break;
                     }
@@ -441,9 +433,7 @@ void mark(LVAL ptr)
 }
 
 /* sweep - sweep all unmarked nodes and add them to the free list */
-
-/* dmazzoni: was LOCAL void sweep(void) */
-void sweep(void)
+LOCAL void sweep(void)
 {
     SEGMENT *seg;
     LVAL p;
@@ -645,11 +635,11 @@ LVAL xmem(void)
 
 /* xinfo - show information on control-t */
 LVAL xinfo()
- {
+{
     char buf[80];
 
-    sprintf(buf,"\n[ Free: %d, GC calls: %d, Total: %ld",
-            nfree, gccalls, total);
+    sprintf(buf,"\n[ Free: %d, GC calls: %d, Total: %d",
+            (int)nfree, (int)gccalls, (int)total);
     stdputstr(buf);
     print_local_gc_info();
     stdputstr("]\n");

@@ -3,6 +3,12 @@
         All Rights Reserved
         Permission is granted for unrestricted non-commercial use	*/
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  eliminate some compiler warnings
+ */
+
+
 #include "xlisp.h"
 
 /* external variables */
@@ -300,7 +306,7 @@ LOCAL void placeform(LVAL place, LVAL value)
         setelement(arg1,i,value);
         xlpop();
     }
-    else if (fun = xlgetprop(fun,s_setf))
+    else if ((fun = xlgetprop(fun,s_setf)))
         setffunction(fun,place,value);
     else
         xlfail("bad place form");
@@ -402,7 +408,7 @@ LVAL xwhen(void)
     LVAL val;
 
     /* check the test expression */
-    if (val = xleval(xlgetarg()))
+    if ((val = xleval(xlgetarg())))
         while (moreargs())
             val = xleval(nextarg());
 
@@ -675,7 +681,7 @@ LOCAL LVAL prog(int pflag)
 
 /* 4035 is the "no return value" warning message */
 /* xgo, xreturn, xrtnfrom, and xthrow don't return anything */
-#pragma warning(disable: 4035)
+/* #pragma warning(disable: 4035) */
 /* xgo - special form 'go' */
 LVAL xgo(void)
 {
@@ -687,6 +693,7 @@ LVAL xgo(void)
 
     /* transfer to the label */
     xlgo(label);
+    return NIL; /* never happens */
 }
 
 /* xreturn - special form 'return' */
@@ -700,6 +707,7 @@ LVAL xreturn(void)
 
     /* return from the inner most block */
     xlreturn(NIL,val);
+    return NIL; /* never happens */
 }
 
 /* xrtnfrom - special form 'return-from' */
@@ -714,6 +722,7 @@ LVAL xrtnfrom(void)
 
     /* return from the inner most block */
     xlreturn(name,val);
+    return NIL; /* never happens */
 }
 
 /* xprog1 - special form 'prog1' */
@@ -1083,6 +1092,7 @@ LVAL xthrow(void)
 
     /* throw the tag */
     xlthrow(tag,val);
+    return NIL; /* never happens */
 }
 
 /* xunwindprotect - special form 'unwind-protect' */
@@ -1090,8 +1100,10 @@ LVAL xunwindprotect(void)
 {
     extern XLCONTEXT *xltarget;
     extern int xlmask;
-    XLCONTEXT cntxt,*target;
-    int mask,sts;
+    XLCONTEXT cntxt;
+    XLCONTEXT *target = NULL;
+    int mask = 0;
+    int sts;
     LVAL val;
 
     /* protect some pointers */
@@ -1102,7 +1114,7 @@ LVAL xunwindprotect(void)
 
     /* evaluate the protected expression */
     xlbegin(&cntxt,CF_UNWIND,NIL);
-    if (sts = setjmp(cntxt.c_jmpbuf)) {
+    if ((sts = setjmp(cntxt.c_jmpbuf))) {
         target = xltarget;
         mask = xlmask;
         val = xlvalue;
@@ -1206,7 +1218,8 @@ LVAL xuntrace(void)
 /* dobindings - handle bindings for let/let*, prog/prog*, do/do* */
 LOCAL void dobindings(LVAL list, LVAL env)
 {
-    LVAL bnd,sym,val;
+    LVAL bnd, val;
+    LVAL sym = NULL;
 
     /* protect some pointers */
     xlsave1(val);

@@ -2,6 +2,12 @@
 /*	Copyright (c) 1985, by David Michael Betz
         All Rights Reserved
         Permission is granted for unrestricted non-commercial use	*/
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  eliminate some compiler warnings
+ *              replaced system-specific code with generic calls (see path.c)
+ */
+
 
 #include "stdlib.h"
 #include "string.h"
@@ -52,10 +58,10 @@ FORWARD LOCAL LVAL plist(LVAL fptr);
 FORWARD LOCAL LVAL pvector(LVAL fptr);
 FORWARD LOCAL void upcase(char *str);
 FORWARD LOCAL int pname(LVAL fptr,int *pescflag);
-FORWARD LOCAL pcomment(LVAL fptr);
+FORWARD LOCAL void pcomment(LVAL fptr);
 FORWARD LOCAL int checkeof(LVAL fptr);
 FORWARD LOCAL int nextch(LVAL fptr);
-FORWARD LOCAL badeof(LVAL fptr);
+FORWARD LOCAL void badeof(LVAL fptr);
 FORWARD LOCAL int storech(char *buf, int i, int ch);
 
 #ifdef WINDOWS
@@ -67,7 +73,9 @@ static int sfn_valid = FALSE;
 int xlload(char *fname, int vflag, int pflag)
 {
     char fullname[STRMAX+1];
+#ifdef WINDOWS
     char *ptr;
+#endif
     LVAL fptr,expr;
     XLCONTEXT cntxt;
     FILE *fp;
@@ -118,151 +126,23 @@ int xlload(char *fname, int vflag, int pflag)
 
     /* open the file */
     if ((fp = osaopen(fullname,"r")) == NULL) {
-#ifdef UNIX
-        if (fname[0] != '/') {
-#define paths_max 1024
-            char path[paths_max];
-            char *paths = path;
-            get_xlisp_path(paths, paths_max);
+        /* new cross-platform code by dmazzoni - new xlisp_path
+           implementation is in path.c */
+        const char *newname = find_in_xlisp_path(fullname);
+        if (newname && newname[0]) {
+            if (strlen(newname) > STRMAX)
+                goto toolong;
+            strcpy(fullname, newname);
+            fp = osaopen(fullname, "r");
+        }
 
-            if (!paths || !*paths) {
-                char msg[512];
-                sprintf(msg, "\n%s\n%s\n%s\n%s\n%s\n",
-  "Warning: XLISP failed to find XLISPPATH in the environment.",
-  "If you are using Nyquist, probably you should cd to the",
-  "nyquist directory and type:",
-  "    setenv XLISPPATH `pwd`/runtime:`pwd`/lib",
-  "or set XLISPPATH in your .login or .cshrc file.");
-                errputstr(msg);
-            }
-            /* make sure we got paths, and the list is not empty */
-            while (paths && *paths) {
-                char *ptr = fullname;
-                /* skip over separator */
-                while (*paths == ':') paths++;
-                /* scan next directory into fullname */
-                while (*paths && (*paths != ':')) {
-                    if ((ptr - fullname) >= STRMAX) goto toolong;
-                    *ptr++ = *paths++;
-                }
-                /* add "/" if needed */
-                if (ptr[-1] != '/') *ptr++ = '/';
-                /* append the file name */
-                if ((ptr - fullname) + strlen(fname) + 4 > STRMAX) 
-                    goto toolong;
-                strcpy(ptr, fname);
-                /* append the .lsp extension */
-                if (needsextension(fullname)) {
-                    strcat(fullname, ".lsp");
-                }
-                if (fp = osaopen(fullname, "r")) goto gotfile;
-            }
+        if (!fp) {
+           /* the file STILL wasn't found */
+           xlpopn(2);
+           return (FALSE);
         }
-#endif
-#ifdef WINDOWS
-        /* is this a relative path? */
-        if (fname[0] != '\\' && (strlen(fname) < 2 || fname[1] != ':')) {
-#define paths_max 1024
-            char paths[paths_max];
-            char *p = paths;
-            get_xlisp_path(paths, paths_max);
-            /* make sure we got paths, and the list is not empty */
-            if (!*p) {
-                sprintf(paths, "\n%s\n%s\n%s\n",
-  "Warning: XLISP failed to find XLISPPATH in the Registry.",
-  "You should follow the installation instructions. Enter an",
-  "empty string if you really want no search path.");
-                errputstr(paths);
-                *p = 0;
-            }
-            while (*p) {
-                    char *ptr = fullname;
-                /* skiip over separator */
-                while (*p == ',') p++;
-                /* scan next directory into fullname */
-                while (*p && (*p != ',')) {
-                    if ((ptr - fullname) >= STRMAX) goto toolong;
-                    *ptr++ = *p++;
-                }
-                /* add "\" if needed */
-                if (ptr[-1] != '\\') *ptr++ = '\\';
-                /* append the file name */
-                if ((ptr - fullname) + strlen(fname) + 4 > STRMAX)
-                    goto toolong;
-                strcpy(ptr, fname);
-                /* append the .lsp extension */
-                if (needsextension(fullname)) {
-                    strcat(fullname, ".lsp");
-                }
-                /* printf("Trying to open \"%s\"\n", fullname);	*/
-                if (fp = osaopen(fullname, "r")) goto gotfile;
-            }
-        }
-#endif
-#ifdef MACINTOSH
-        /* is this a relative path? I don't know how to do this
-         * correctly, so we'll assume it's relative if there is no
-         * embedded colon (:)
-         */
-        if (strchr(fname, ':') == NULL) {
-#define paths_max 1024
-            char paths[paths_max];
-            char *p = paths;
-            int prefs_found = true;
-            get_xlisp_path(paths, paths_max);
-            /* make sure we got paths, and the list is not empty */
-            if (!*p) {
-                if (prefs_found) {
-                    sprintf(paths, "\n%s\n%s\n%s\n",
-  "Warning: XLISP failed to find XLISPPATH in XLisp Preferences.",
-  "You should probably delete XLisp Preferences and let XLisp",
-  "create a new one for you.");
-                } else {
-                    sprintf(paths, "\n%s\n%s\n%s\n%s\n%s\n",
-  "Warning: XLISP failed to find XLisp Preferences.",
-  "You should manually locate and load the file runtime:init.lsp",
-  "Nyquist will create an XLisp Preferences file to automatically",
-  "find the file next time. You may edit XLisp Preferences to add",
-  "additional search paths, using a comma as separator.");
-                }
-                errputstr(paths);
-                *p = 0;
-            }
-            while (*p) {
-                char *ptr = fullname;
-                /* skiip over separator */
-                while (*p == ',') p++;
-                /* scan next directory into fullname */
-                while (*p && (*p != ',')) {
-                    if ((ptr - fullname) >= STRMAX) goto toolong;
-                    *ptr++ = *p++;
-                }
-                /* add ":" if needed */
-                if (ptr[-1] != ':') *ptr++ = ':';
-                /* append the file name */
-                if ((ptr - fullname) + strlen(fname) + 4 > STRMAX)
-                    goto toolong;
-                strcpy(ptr, fname);
-                /* append the .lsp extension */
-                if (needsextension(fullname)) {
-                    strcat(fullname, ".lsp");
-                }
-                /* printf("Trying to open \"%s\"\n", fullname);	*/
-                if (fp = osaopen(fullname, "r")) goto gotfile;
-            }
-        }
-#endif
-        xlpopn(2);
-        return (FALSE);
     }
-gotfile:
-#ifdef MACINTOSH
-    /* We found the file ok, call setup_preferences to create
-     * XLisp Preferences file (this only happens if previous
-     * attempt to find the file failed
-     */
-    setup_preferences(fullname);
-#endif
+
     setfile(fptr,fp);
     setvalue(s_loadingfiles, cons(fptr, getvalue(s_loadingfiles)));
     setvalue(s_loadingfiles, cons(cvstring(fullname), getvalue(s_loadingfiles)));
@@ -581,12 +461,13 @@ LVAL rmlpar(void)
 
 /* 4035 is the "no return value" warning message */
 /* rmrpar, pcomment, badeof, and upcase don't return anything */
-#pragma warning(disable: 4035)
+/* #pragma warning(disable: 4035) */
 
 /* rmrpar - read macro for ')' */
 LVAL rmrpar(void)
 {
     xlfail("misplaced right paren");
+    return NULL; /* never used */
 }
 
 /* rmsemi - read macro for ';' */
@@ -609,7 +490,7 @@ LVAL rmsemi(void)
 }
 
 /* pcomment - parse a comment delimited by #| and |# */
-LOCAL pcomment(LVAL fptr)
+LOCAL void pcomment(LVAL fptr)
 {
     int lastch,ch,n;
 
@@ -793,7 +674,7 @@ LOCAL LVAL punintern(LVAL fptr)
 /* pname - parse a symbol/package name */
 LOCAL int pname(LVAL fptr,int *pescflag)
 {
-    int mode,ch,i;
+    int mode,ch=0,i;
     LVAL type;
 
     /* initialize */
@@ -885,7 +766,7 @@ LOCAL int checkeof(LVAL fptr)
 }
 
 /* badeof - unexpected eof */
-LOCAL badeof(LVAL fptr)
+LOCAL void badeof(LVAL fptr)
 {
     xlgetc(fptr);
     xlfail("unexpected EOF");
@@ -986,11 +867,11 @@ void xlrinit(void)
     setvalue(s_rtable,rtable);
 
     /* initialize the readtable */
-    for (p = WSPACE; ch = *p++; )
+    for (p = WSPACE; (ch = *p++); )
         setelement(rtable,ch,k_wspace);
-    for (p = CONST1; ch = *p++; )
+    for (p = CONST1; (ch = *p++); )
         setelement(rtable,ch,k_const);
-    for (p = CONST2; ch = *p++; )
+    for (p = CONST2; (ch = *p++); )
         setelement(rtable,ch,k_const);
 
     /* setup the escape characters */

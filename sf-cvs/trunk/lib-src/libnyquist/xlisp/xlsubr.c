@@ -3,6 +3,11 @@
         All Rights Reserved
         Permission is granted for unrestricted non-commercial use	*/
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  eliminate some compiler warnings
+ */
+
 #include "string.h"
 #include "xlisp.h"
 
@@ -62,7 +67,7 @@ LVAL xlgetfile(void)
     LVAL arg;
 
     /* get a file or stream (cons) or nil */
-    if (arg = xlgetarg()) {
+    if ((arg = xlgetarg())) {
         if (streamp(arg)) {
             if (getfile(arg) == NULL)
                 xlfail("file not open");
@@ -111,24 +116,27 @@ int needsextension(char *name)
  * are used in LVAL expressions, but they do not return anything
  * warning 4035 is "no return value"
  */
-#pragma warning(disable: 4035)
+/* #pragma warning(disable: 4035) */
 
 /* xlbadtype - report a "bad argument type" error */
 LVAL xlbadtype(LVAL arg)
 {
     xlerror("bad argument type",arg);
+    return NIL; /* never happens */
 }
 
 /* xltoofew - report a "too few arguments" error */
 LVAL xltoofew(void)
 {
     xlfail("too few arguments");
+    return NIL; /* never happens */
 }
 
 /* xltoomany - report a "too many arguments" error */
 LVAL xltoomany(void)
 {
     xlfail("too many arguments");
+    return NIL; /* never happens */
 }
 
 /* eq - internal eq function */

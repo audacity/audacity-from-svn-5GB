@@ -485,8 +485,10 @@ LVAL xhash(void)
         str = getstring(getpname(val));
     else if (stringp(val))
         str = getstring(val);
-    else
+    else {
         xlerror("bad argument type",val);
+        str = NULL;
+    }
 
     /* return the hash index */
     return (cvfixnum((FIXTYPE)hash((char *) str, n)));
@@ -544,7 +546,7 @@ LVAL xvector(void)
 }
 
 /* allow xerror, xcleanup, xtoplevel, and xcontinue to return nothing */
-#pragma warning(disable: 4035)
+/* #pragma warning(disable: 4035)*/
 
 /* xerror - special form 'error' */
 LVAL xerror(void)
@@ -558,6 +560,7 @@ LVAL xerror(void)
 
     /* signal the error */
     xlerror((char *) getstring(emsg),arg);
+    return NIL; /* won't ever happen */
 }
 
 /* xcerror - special form 'cerror' */

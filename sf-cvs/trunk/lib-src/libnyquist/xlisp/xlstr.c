@@ -3,6 +3,11 @@
         All Rights Reserved
         Permission is granted for unrestricted non-commercial use	*/
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  eliminate some compiler warnings
+ */
+
 #include "string.h"
 #include "xlisp.h"
 
@@ -87,6 +92,8 @@ LOCAL LVAL strcompare(int fcn, int icase)
     case 'G':	return (start2 >= end2 ? fix(start1) : NIL);
     case '>':	return (start2 >= end2 && start1 < end1 ? fix(start1) : NIL);
     }
+
+    return NIL; /* Normally shouldn't happen */
 }
 
 /* case conversion functions */
@@ -359,6 +366,7 @@ LVAL xstring(void)
         return (cvstring(buf));
     default:
         xlbadtype(arg);
+        return NIL; /* never happens */
     }
 }
 
