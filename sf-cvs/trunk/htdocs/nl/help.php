@@ -13,7 +13,7 @@ Audacity 1.2 Snelgids:
 
 <p>
 <a href="http://www.audacityteam.org/wiki">Audacity Wiki</a>
-(Publiek-bewerkbare documentatie, tips, trucs en meer)
+(Publiekelijk-bewerkbare documentatie, tips, trucs en meer)
 </p>
 
 <p>
@@ -59,6 +59,7 @@ Doorzoek de Audacity websites en documentatie:
 <p>
 <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font></br>
 </p>
 
 <?php BoxBottom(); ?>
@@ -102,6 +103,7 @@ Doorzoek de Audacity websites en documentatie:
 <p>
 <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font>
 </p>
 
 <?php BoxBottom(); ?>

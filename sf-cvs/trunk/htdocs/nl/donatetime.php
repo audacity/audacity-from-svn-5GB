@@ -12,6 +12,7 @@ Als je plezier beleeft aan Audacity, laat het ons eens weten!  Stuur een e-mail 
 <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>
 en laat ons eens weten dat je het programma waardeert.  Het maakt ons weer gelukkig als we weten dat mensen het programma waarderen.  Als je er behoefte aan hebt, kun je ons ook je opmerkingen of suggesties sturen - we zijn altijd bezig Audacity verder te ontwikkelen en te verbeteren en we waarderen je inbreng.
+<br><?php print "$listPrivacyStr"; ?>
 <p>
 
 <li><b>Sluit je aan bij de Gebruikers Gemeenschap</b>
