@@ -137,10 +137,6 @@ enum {
 BEGIN_EVENT_TABLE(EchoDialog, wxDialog)
     EVT_BUTTON(wxID_OK, EchoDialog::OnOk)
     EVT_BUTTON(wxID_CANCEL, EchoDialog::OnCancel)
-
-    //vvv EVT_TEXT(ID_TEXT_DELAY, EchoDialog::OnText_Delay)
-    //vvv EVT_SLIDER(ID_TEXT_DECAY, EchoDialog::OnText_Decay)
-
     EVT_BUTTON(ID_BUTTON_PREVIEW, EchoDialog::OnPreview)
 END_EVENT_TABLE()
 
