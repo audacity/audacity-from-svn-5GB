@@ -1042,9 +1042,14 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
 {
    if(!viewInfo->bUpdateSpectrogram && viewInfo->bIsPlaying)
    {
+      // BG: Draw waveform instead of spectrum
+      DrawWaveform(cache, dc, r, viewInfo, false, false);
+      /*
+      // BG: uncomment to draw grey instead of spectrum
       dc.SetBrush(unselectedBrush);
       dc.SetPen(unselectedPen);
       dc.DrawRectangle(r);
+      */
       return;
    }
 
