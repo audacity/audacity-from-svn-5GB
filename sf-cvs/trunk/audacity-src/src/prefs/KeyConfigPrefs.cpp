@@ -73,7 +73,7 @@ PrefsPanel(parent)
 
    //An empty first column is a workaround - under Win98 the first column 
    //can't be right aligned.
-   mList->InsertColumn(BlankColumn,    _T(""), wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(BlankColumn,    "", wxLIST_FORMAT_LEFT );
    mList->InsertColumn(CommandColumn,  _("Command"),  wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(KeyComboColumn, _("Key Combination"), wxLIST_FORMAT_LEFT );
 
@@ -245,7 +245,7 @@ void KeyConfigPrefs::RepopulateBindingsList()
    mManager->GetAllCommandNames(mNames, false);
    unsigned int i;
    for(i=0; i<mNames.GetCount(); i++) {
-      mList->InsertItem( i, _T("") );
+      mList->InsertItem( i, "" );
       wxString label = mManager->GetLabelFromName(mNames[i]);
       label = wxMenuItem::GetLabelFromText(label.BeforeFirst('\t'));
       wxString key = mManager->GetKeyFromName(mNames[i]);

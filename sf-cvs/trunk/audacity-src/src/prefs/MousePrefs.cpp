@@ -80,7 +80,7 @@ PrefsPanel(parent)
 
    //An empty first column is a workaround - under Win98 the first column 
    //can't be right aligned.
-   mList->InsertColumn(BlankColumn,   _T(""),               wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(BlankColumn,   "",               wxLIST_FORMAT_LEFT );
    mList->InsertColumn(ToolColumn,    _("Tool"),            wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(ActionColumn,  _("Command Action"),  wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(ButtonsColumn, _("Buttons"),         wxLIST_FORMAT_LEFT );
@@ -133,7 +133,7 @@ MousePrefs::~MousePrefs()
 void MousePrefs::AddItem( wxString const & MouseButtons, wxString const & Tool, wxString const & Action )
 {
    int i=mList->GetItemCount();
-   mList->InsertItem( i, _T("") );
+   mList->InsertItem( i, "" );
    mList->SetItem( i, ToolColumn, Tool );
    mList->SetItem( i, ActionColumn, Action );
    mList->SetItem( i, ButtonsColumn, MouseButtons );
