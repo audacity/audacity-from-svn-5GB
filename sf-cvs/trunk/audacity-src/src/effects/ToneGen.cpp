@@ -337,16 +337,17 @@ wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
 
    wxBoxSizer *item11 = new wxBoxSizer(wxHORIZONTAL);
 
-   wxButton *item12 =
-       new wxButton(parent, wxID_OK, _("Generate Tone"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   item12->SetDefault();
-   item11->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);
-
    wxButton *item13 =
        new wxButton(parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item11->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxButton *item12 =
+       new wxButton(parent, wxID_OK, _("Generate Tone"), wxDefaultPosition,
+                    wxDefaultSize, 0);
+   item12->SetDefault();
+   item12->SetFocus();
+   item11->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);
 
    item0->Add(item11, 0, wxALIGN_CENTRE | wxALL, 5);
 

@@ -462,17 +462,17 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
    
    wxBoxSizer *okSizer = new wxBoxSizer(wxHORIZONTAL);
 
+   wxButton *cancel =
+       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
+                    wxDefaultSize, 0);
+   okSizer->Add(cancel, 0, wxALIGN_CENTRE | wxALL, 5);
+
    mOK = 
        new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition,
                     wxDefaultSize, 0);
    mOK->SetDefault();
    mOK->SetFocus();
    okSizer->Add(mOK, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxButton *cancel =
-       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   okSizer->Add(cancel, 0, wxALIGN_CENTRE | wxALL, 5);
 
    mainSizer->Add(okSizer, 0, wxALIGN_CENTRE | wxALL, 5);
 

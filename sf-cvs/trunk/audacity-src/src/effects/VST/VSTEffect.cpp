@@ -90,12 +90,15 @@ VSTEffectGUIDialog::VSTEffectGUIDialog(wxWindow *parent, wxWindowID id,
       new wxButton(this, PREVIEW_ID, mEffect->GetPreviewName());
    hSizer->Add(preview, 0, wxALIGN_CENTRE|wxALL, 5);
 
-   wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
-   ok->SetDefault();
-   hSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
+   hSizer->Add(20, 10); // horizontal spacer
 
    wxButton *cancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
    hSizer->Add(cancel, 0, wxALIGN_CENTRE|wxALL, 5);
+
+   wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
+   ok->SetDefault();
+   ok->SetFocus();
+   hSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
 
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -441,15 +444,15 @@ VSTEffectDialog::VSTEffectDialog(wxWindow * parent,
       y += 35;
    }
 
+   y += 20;
    wxButton *preview =
       new wxButton(this, PREVIEW_ID,
                    vst->GetPreviewName(),
                    wxPoint(10, y), wxSize(80, 30));
-   wxButton *ok =
-       new wxButton(this, wxID_OK, _("OK"), wxPoint(110, y), wxSize(80, 30));
    wxButton *cancel =
-       new wxButton(this, wxID_CANCEL, _("Cancel"), wxPoint(210, y),
-                    wxSize(80, 30));
+       new wxButton(this, wxID_CANCEL, _("Cancel"), wxPoint(130, y), wxSize(80, 30));
+   wxButton *ok =
+       new wxButton(this, wxID_OK, _("OK"), wxPoint(220, y), wxSize(80, 30));
 
    y += 40;
 

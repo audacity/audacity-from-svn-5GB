@@ -649,17 +649,17 @@ wxSizer *MakeTagsDialog(wxWindow * parent, bool call_fit,
    
    wxBoxSizer *okSizer = new wxBoxSizer(wxHORIZONTAL);
 
+   wxButton *item15 =
+       new wxButton(parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
+                    wxDefaultSize, 0);
+   okSizer->Add(item15, 0, wxALIGN_CENTRE | wxALL, 5);
+
    wxButton *item14 =
        new wxButton(parent, wxID_OK, _("OK"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item14->SetDefault();
    item14->SetFocus();
    okSizer->Add(item14, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxButton *item15 =
-       new wxButton(parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   okSizer->Add(item15, 0, wxALIGN_CENTRE | wxALL, 5);
 
    mainSizer->Add(okSizer, 0, wxALIGN_CENTRE | wxALL, 5);
 
