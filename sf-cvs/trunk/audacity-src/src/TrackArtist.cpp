@@ -473,7 +473,8 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
          sampleCount s;
          for (s = 0; s < slen; s++) {
             double xx =
-                ((double (s0 + s) / rate + tOffset - h) *pps + 0.5);
+                ((double (s0 + s) / rate + tOffset - h) * pps + 0.5);
+
             if (xx < -10000)
                xx = -10000;
             if (xx > 10000)
@@ -487,8 +488,8 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
 
          // Draw lines
          for (s = 0; s < slen - 1; s++) {
-            dc.DrawLine(mid.x + xpos[s], ypos[s],
-                        mid.x + xpos[s + 1], ypos[s + 1]);
+            dc.DrawLine(r.x + xpos[s], ypos[s],
+                        r.x + xpos[s + 1], ypos[s + 1]);
          }
 
          if (showPoints) {
@@ -498,7 +499,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
             pr.height = 3;
             dc.SetBrush(sampleBrush);
             for (s = 0; s < slen; s++) {
-               pr.x = mid.x + xpos[s] - 1;
+               pr.x = r.x + xpos[s] - 1;
                pr.y = ypos[s] - 1;
                dc.DrawEllipse(pr);
             }
