@@ -37,6 +37,8 @@ class EffectAvcCompressor: public EffectSimplePairedTwoTrackInt16 {
 public:
    
    EffectAvcCompressor();
+
+   virtual ~EffectAvcCompressor() {}
    
    virtual wxString GetEffectName() {
       return wxString(_("Automatic Volume Control..."));
