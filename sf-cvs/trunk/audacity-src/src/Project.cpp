@@ -1412,9 +1412,9 @@ void AudacityProject::TP_OnPlayKey()
       palette->SetStop(true);
       palette->OnStop();
    } else {
-      palette->OnPlay();
       palette->SetPlay(true);
       palette->SetStop(false);
+      palette->OnPlay();
    }
 }
 
