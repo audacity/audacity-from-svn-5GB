@@ -108,3 +108,14 @@ int RingBuffer::Get(samplePtr buffer, sampleFormat format,
    return copied;
 }
 
+int RingBuffer::Discard(int samplesToDiscard)
+{
+   if (samplesToDiscard > mLen)
+      samplesToDiscard = mLen;
+
+   mStart = (mStart + samplesToDiscard) % mBufferSize;
+   mLen -= samplesToDiscard;
+
+   return samplesToDiscard;
+}
+
