@@ -349,7 +349,7 @@ void DirManager::SaveBlockFile(BlockFile * f, wxTextFile * out)
    out->AddLine(f->mName);
 }
 
-BlockFile *DirManager::LoadBlockFile(wxTextFile * in)
+BlockFile *DirManager::LoadBlockFile(wxTextFile * in, sampleFormat format)
 {
    wxASSERT(projFull != "");
 
@@ -393,6 +393,8 @@ BlockFile *DirManager::LoadBlockFile(wxTextFile * in)
          newBlockFile->SetAliasedData(aliasFullPath, start, len, channel);
          aliasList.Add(aliasFullPath);
       }
+
+      newBlockFile->mSampleFormat = format;
 
       blockFileHash->Put(blockName, (wxObject *) newBlockFile);
 
