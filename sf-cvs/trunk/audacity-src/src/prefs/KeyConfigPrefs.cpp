@@ -126,6 +126,8 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
 
 bool KeyConfigPrefs::Apply()
 {
+   mAudacity->RebuildMenuBar();
+
    return true;
 }
 
