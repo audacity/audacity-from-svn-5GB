@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\include" /I "..\..\..\include" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D VERSION=\"1.0.4\" /D "FLAC__CPU_IA32" /D "FLAC__HAS_NASM" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\include" /I "..\..\..\include" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D VERSION=\"1.0.4\" /D "FLAC__CPU_IA32" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -63,8 +63,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "Debug"
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ  /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\include" /I "..\..\..\include" /D "_DEBUG" /D "FLAC__OVERFLOW_DETECT" /D "WIN32" /D "_MBCS" /D "_LIB" /D VERSION=\"1.0.4\" /D "FLAC__CPU_IA32" /D "FLAC__HAS_NASM" /YX /FD /GZ  /c
+# ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\include" /I "..\..\..\include" /D "_DEBUG" /D "FLAC__OVERFLOW_DETECT" /D "WIN32" /D "_MBCS" /D "_LIB" /D VERSION=\"1.0.4\" /D "FLAC__CPU_IA32" /YX /FD /GZ /c
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -101,23 +101,11 @@ SOURCE=..\ia32\cpu_asm.nasm
 
 !IF  "$(CFG)" == "libflac - Win32 Release"
 
-# Begin Custom Build - Assembling $(InputPath)
-InputPath=..\ia32\cpu_asm.nasm
-
-"..\ia32\cpu_asm.obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	nasmw -f win32 -d OBJ_FORMAT_win32 -i ..\ia32\ ..\ia32\cpu_asm.nasm -o ..\ia32\cpu_asm.obj
-
-# End Custom Build
+# PROP Exclude_From_Build 1
 
 !ELSEIF  "$(CFG)" == "libflac - Win32 Debug"
 
-# Begin Custom Build - Assembling $(InputPath)
-InputPath=..\ia32\cpu_asm.nasm
-
-"..\ia32\cpu_asm.obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	nasmw -f win32 -d OBJ_FORMAT_win32 -i ..\ia32\ ..\ia32\cpu_asm.nasm -o ..\ia32\cpu_asm.obj
-
-# End Custom Build
+# PROP Exclude_From_Build 1
 
 !ENDIF 
 
@@ -144,23 +132,11 @@ SOURCE=..\ia32\fixed_asm.nasm
 
 !IF  "$(CFG)" == "libflac - Win32 Release"
 
-# Begin Custom Build - Assembling $(InputPath)
-InputPath=..\ia32\fixed_asm.nasm
-
-"..\ia32\fixed_asm.obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	nasmw -f win32 -d OBJ_FORMAT_win32 -i ..\ia32\ ..\ia32\fixed_asm.nasm -o ..\ia32\fixed_asm.obj
-
-# End Custom Build
+# PROP Exclude_From_Build 1
 
 !ELSEIF  "$(CFG)" == "libflac - Win32 Debug"
 
-# Begin Custom Build - Assembling $(InputPath)
-InputPath=..\ia32\fixed_asm.nasm
-
-"..\ia32\fixed_asm.obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	nasmw -f win32 -d OBJ_FORMAT_win32 -i ..\ia32\ ..\ia32\fixed_asm.nasm -o ..\ia32\fixed_asm.obj
-
-# End Custom Build
+# PROP Exclude_From_Build 1
 
 !ENDIF 
 
@@ -179,23 +155,11 @@ SOURCE=..\ia32\lpc_asm.nasm
 
 !IF  "$(CFG)" == "libflac - Win32 Release"
 
-# Begin Custom Build - Assembling $(InputPath)
-InputPath=..\ia32\lpc_asm.nasm
-
-"..\ia32\lpc_asm.obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	nasmw -f win32 -d OBJ_FORMAT_win32 -i ..\ia32\ ..\ia32\lpc_asm.nasm -o ..\ia32\lpc_asm.obj
-
-# End Custom Build
+# PROP Exclude_From_Build 1
 
 !ELSEIF  "$(CFG)" == "libflac - Win32 Debug"
 
-# Begin Custom Build - Assembling $(InputPath)
-InputPath=..\ia32\lpc_asm.nasm
-
-"..\ia32\lpc_asm.obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	nasmw -f win32 -d OBJ_FORMAT_win32 -i ..\ia32\ ..\ia32\lpc_asm.nasm -o ..\ia32\lpc_asm.obj
-
-# End Custom Build
+# PROP Exclude_From_Build 1
 
 !ENDIF 
 
