@@ -188,7 +188,7 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks)
 #ifdef __WXMAC__
       mRecordNode.u.audio.latency = 1.0;
 #else
-      mRecordNode.u.audio.latency = 0.25;
+      mRecordNode.u.audio.latency = 0.5;
 #endif
    }
    mRecordNode.u.audio.granularity = mRecordNode.u.audio.latency;
