@@ -114,6 +114,7 @@
 
 </table>
 
+<!--
 <h3><?php print "Linux ($linuxBetaVersion)" ?></h3>
 
 <table border="0">
@@ -129,6 +130,7 @@
 </td>
 </tr>
 </table>
+-->
 
 <h3><?php print "Source Code ($srcBetaVersion)" ?></h3>
 
