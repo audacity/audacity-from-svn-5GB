@@ -28,6 +28,7 @@ class Track;
 class TrackPanel;
 class TrackArtist;
 class WaveTrack;
+class LabelTrack;
 class Ruler;
 class AdornedRulerPanel;
 class LWSlider;
@@ -163,7 +164,9 @@ class TrackPanel:public wxPanel {
 
  private:
 
-   void TrackSpecificMouseEvent(wxMouseEvent & event);
+   bool IsUnsafe();
+   bool HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMouseEvent & event);
+   void HandleTrackSpecificMouseEvent(wxMouseEvent & event);
    void DrawCursors(wxDC * dc = NULL);
    void RemoveStaleCursors(wxRegionIterator * upd);
 
@@ -184,12 +187,22 @@ class TrackPanel:public wxPanel {
 			     Track* pTrack, wxRect r, int num);
    void StartSelection (int, int);
    void ExtendSelection(int, int);
+   void SelectAllTracks();
+
 
    // AS: Cursor handling
+   bool SetCursorByActivity( );
+   void SetCursorAndTipWhenInLabel( Track * t, wxMouseEvent &event, const char ** ppTip );
+   void SetCursorAndTipWhenInVResizeArea( Track * label, bool blinked, const char ** ppTip );
+   void SetCursorAndTipWhenInLabelTrack( LabelTrack * pLT, wxMouseEvent & event, const char ** ppTip );
+   void SetCursorAndTipWhenSelectTool( Track * t, wxMouseEvent & event, wxRect &r, bool bMultiToolMode, const char ** ppTip );
+   void SetCursorAndTipByTool( int tool, wxMouseEvent & event, const char **ppTip );
    void HandleCursor(wxMouseEvent & event);
 
    // AS: Envelope editing handlers
    void HandleEnvelope(wxMouseEvent & event);
+   void ForwardEventToTimeTrackEnvelope(wxMouseEvent & event);
+   void ForwardEventToWaveTrackEnvelope(wxMouseEvent & event);
    void ForwardEventToEnvelope(wxMouseEvent &event);
 
    // AS: Track sliding handlers
@@ -199,13 +212,24 @@ class TrackPanel:public wxPanel {
 
    // AS: Handle zooming into tracks
    void HandleZoom(wxMouseEvent & event);
+   void HandleZoomClick(wxMouseEvent & event);
+   void HandleZoomDrag(wxMouseEvent & event);
+   void HandleZoomButtonUp(wxMouseEvent & event);
+
    void DragZoom(int x);
    void DoZoomInOut(wxMouseEvent &event, int x_center);
 
    void HandleVZoom(wxMouseEvent & event);
+   void HandleVZoomClick(wxMouseEvent & event);
+   void HandleVZoomDrag(wxMouseEvent & event);
+   void HandleVZoomButtonUp(wxMouseEvent & event);
 
-   // BG: Handle drawing
-   void HandleDraw(wxMouseEvent & event);
+   // Handle sample editing using the 'draw' tool.
+   bool IsSampleEditingPossible( wxMouseEvent & event );
+   void HandleSampleEditing(wxMouseEvent & event);
+   void HandleSampleEditingClick( wxMouseEvent & event );
+   void HandleSampleEditingDrag( wxMouseEvent & event );
+   void HandleSampleEditingButtonUp( wxMouseEvent & event );
 
    // MM: Handle mouse wheel rotation
    void HandleWheelRotation(wxMouseEvent & event);
@@ -213,7 +237,10 @@ class TrackPanel:public wxPanel {
    void DoPopupMenu(wxMouseEvent &event, wxRect& titleRect, 
 		    Track* t, wxRect &r, int num);
 
-
+   // Handle resizing.
+   void HandleResizeClick(wxMouseEvent & event);
+   void HandleResizeDrag(wxMouseEvent & event);
+   void HandleResizeButtonUp(wxMouseEvent & event);
    void HandleResize(wxMouseEvent & event);
 
    void HandleLabelClick(wxMouseEvent & event);
@@ -294,8 +321,9 @@ private:
    int IdOfRate( int rate );
    int IdOfFormat( int format );
 
-   int startXPos;
-   int startYPos;
+   //JKC: These two belong in the label track.
+   int mLabelTrackStartXPos;
+   int mLabelTrackStartYPos;
    
    wxString TrackSubText(Track *t);
 
@@ -395,7 +423,7 @@ private:
    };
 
    enum MouseCaptureEnum mMouseCapture;
-   void SetCapturedTrack( Track * t, enum TrackPanel::MouseCaptureEnum MouseCapture=IsUncaptured );
+   void SetCapturedTrack( Track * t, enum MouseCaptureEnum MouseCapture=IsUncaptured );
    bool mAdjustSelectionEdges;
    bool mSlideUpDownOnly;
 
