@@ -662,5 +662,9 @@ SOURCE=..\snd\sndwin32.c
 SOURCE=..\sys\term.c
 # End Source File
 # End Group
+# Begin Source File
+
+SOURCE=.\winfun.c
+# End Source File
 # End Target
 # End Project
