@@ -5,80 +5,83 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: audacity site\n"
-"POT-Creation-Date: 2005-01-07 15:43-0800\n"
-"PO-Revision-Date: 2005-01-28 11:03-0300\n"
-"Last-Translator: Cleber Tavano <fotocleber@clarius.com.br>\n"
-"Language-Team: Cleber Tavano <fotocleber@clarius.com.br>\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2005-01-03 20:59-0800\n"
+"PO-Revision-Date: 2005-01-27 16:11+0100\n"
+"Last-Translator: Kevin Brubeck Unhammer <kiwibird@online.no>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+# ikke bare bidragsytere; inkluderer hoved-, aktive og andre utviklere, takk-til-folk, oversettere osv.
+# Anerkjennelse? eh..
 #: about/credits.php:10
 #: main.inc.php:24
 msgid "Credits"
-msgstr "Créditos"
+msgstr "Takk til"
 
 #: about/credits.php:15
 msgid ""
 "These are some of the people who have <a href=\"../community/\">contributed</a> to the free Audacity audio editor.</p>  \n"
 "</p>If you have questions or feedback about Audacity, please see the <a href=\"../contact/\">contact page</a>."
 msgstr ""
-"Estas são algumas das pessoas que <a href=\"../community/\">contribuiram</a> para o projeto do editor livre de áudio Audacity.</p>\n"
-"</P>Caso tenha alguma dúvida, por favor entre em contato através da <a href=\"../contact/\">página de contato</a>."
+"Dette er noen av menneskene som har <a href=\"../community/\">bidratt</a> til det frie lydredigeringsprogrammet Audacity.</p>  \n"
+"</p>Hvis du har spørsmål eller tilbakemeldinger om Audacity, vennligst les <a href=\"../contact/\">kontaktsiden</a>."
 
 #: about/credits.php:18
 msgid "Lead Developers"
-msgstr "Desenvolvedores primários"
+msgstr "Hovedutviklere"
 
 #: about/credits.php:21
 msgid "Dominic is the project leader and original author of Audacity."
-msgstr "Dominic é o líder do projeto e o autor original do Audacity."
+msgstr "Dominic er prosjektleder og den opprinnelige skaperen av Audacity."
 
 #: about/credits.php:29
 msgid "Active Developers"
-msgstr "Desenvolvedores ativos"
+msgstr "Aktive utviklere"
 
 #: about/credits.php:35
 msgid "Contributors"
-msgstr "Colaboradores"
+msgstr "Bidragsytere"
 
 #: about/credits.php:49
 #: main.inc.php:56
 #: community/index.php:21
 #: community/translation.php:10
 msgid "Translators"
-msgstr "Tradutores"
+msgstr "Oversettere"
 
 #: about/credits.php:86
 msgid "Libraries"
-msgstr "Bibliotecas"
+msgstr "Biblioteker"
 
 #: about/credits.php:87
 msgid "Audacity is based on code from the following projects:"
-msgstr "O Audacity é baseado em códigos dos seguintes projetos:"
+msgstr "Audacity er basert på kode fra de følgende prosjektene:"
 
 #: about/credits.php:101
 msgid "Thanks"
-msgstr "Muito obrigado"
+msgstr "Takk"
 
 #: about/credits.php:102
 msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
-msgstr "Há muitas pessoas e companhias que gostaríamos de agradecer. Muitas contribuiram com códigos, outras com sugestões, reprtando falhas, com dinheiro ou tempo para o projeto. Outros fizeram ferramentas que possibilitam com que o projeto se torne viável."
+msgstr "Det er mange andre personer og organisasjoner som vi ønsker å takke. Mange av disse har bidratt med kode, programfikser, tilbakemeldinger, penger, tid eller annet til prosjektet. Andre igjen produserer ganske enkelt verktøyer som gjorde hele prosjektet mulig. "
 
 #: about/credits.php:122
 msgid "(Let us know if we're forgetting anyone!)"
-msgstr "(Avise se você acha que faltou alguém!)"
+msgstr "(Si fra om det er noen vi har glemt!)"
 
 #: about/features.php:9
 #: main.inc.php:20
 msgid "Features"
-msgstr "Recursos"
+msgstr "Funksjoner"
 
 #: about/features.php:13
 msgid "This is a list of features in Audacity, the free audio editor.  For more information on how to use these features, go to the <a href=\"../help/\">help pages</a>."
-msgstr "Esta é a lista de recursos do Audacity. Para mais informações, visite a <a href=\"../help/\">página de ajuda</a>."
+msgstr "Dette er en liste over funksjonene til Audacity, det frie lydredigeringsprogrammet. Hvis du vil ha informasjon om hvordan du bruker disse funksjonene kan du lese <a href=\"../help/\">hjelpesidene</a>."
 
+# dubbe..
 #: about/features.php:15
 msgid ""
 "<h3>Recording</h3>\n"
@@ -90,13 +93,13 @@ msgid ""
 "  <li>Level meters can monitor volume levels before, during, and after recording.</li>\n"
 "</ul>"
 msgstr ""
-"<h3>Gravação</h3>\n"
-"<p>O Audacity pode gravar sons por um microfone ou mixer, ou digitalizar áudio de fitas cassete, discos de vinil ou minidisc. Em algumas placas de som, é possível até mesmo gravar sons de streaming.</p>\n"
+"<h3>Opptak</h3>\n"
+"<p>Audacity kan ta opp direktesendt lyd gjennom en mikrofon eller mikser, eller digitalisere opptak fra lydkassetter, vinylplater eller minidisc. Med noen lydkort er det også mulig å fange opp direkteavspilt (\"streaming\") lyd.</p>\n"
 "<ul>\n"
-"  <li>Grave de microfone, entrada de linha ou qualquer outra fonte. </li>\n"
-"  <li>Duble faixas sobre outras já existentes e crie projetos multi-faixas.</li>\n"
-"  <li>Grave até 16 canais ao mesmo tempo (requer hardware especial).</li>\n"
-"  <li>Medidores de nível de som exibem o volume antes, durante e depois da gravação em tempo real.</li>\n"
+"  <li>Ta opp fra mikrofon, innlinje eller andre kilder.</li>\n"
+"  <li>Dubbe/ettersynkronisere over eksisterende spor for å lage flersporsinnspillinger.</li>\n"
+"  <li>Spille inn i opp til 16 kanaler samtidig (krever flerkanalsmaskinvare).</li>\n"
+"  <li>Nivåmetre kan overvåke volumnivå før, under og etter opptak.</li>\n"
 "</ul>"
 
 #: about/features.php:25
@@ -113,16 +116,16 @@ msgid ""
 "  <li><strong>Note:</strong>  Audacity does not currently support WMA, AAC, or most other proprietary or restricted file formats.</li>\n"
 "</ul>"
 msgstr ""
-"<h3>Importar e Exportar</h3>\n"
-"<p>Importe arquivos de som, edite-os e combine-os para criar novas músicas. Quando estiver pronto, exporte em diversos formatos.</p>\n"
+"<h3>Importering og Eksportering</h3>\n"
+"<p>Importer lydfiler, rediger dem og kombiner dem med andre filer eller nye opptak. Eksporter innspillingene til flere kjente filformat.</p>\n"
 "<ul>\n"
-"  <li>Importe e exporte WAV, AIFF, AU, e <a href=\"http://vorbis.com\">Ogg Vorbis</a>.</li>\n"
-"  <li>Importe aúdio em formato MPEG (incluindo mp2 e mp3) com o <a href=\"http://www.underbit.com/products/mad/\">libmad</a>.</li>\n"
-"  <li>Exporte MP3s com o LAME encoder (opcional).</li>\n"
-"  <li>Crie arquivos WAV ou AIFF prontos para serem queimados como CDs de áudio.</li>\n"
-"  <li>Import e exporte todos os tipos de arquivo suportados pelo <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a>.</li>\n"
-"  <li>Abra arquivos de som sem formatação com o comando “Importar dados não-formatados”.</li>\n"
-"  <li><strong>Nota:</strong>  O Audacity não oferece suporte a formatos proprietários de som como WMA e AAC.</li>\n"
+"  <li>Importer og eksporter filer i formatene WAV, AIFF, AU og <a href=\"http://vorbis.com\">Ogg Vorbis</a>.</li>\n"
+"  <li>Importer MPEG-lyd (inkludert MP2 og MP3-filer) med <a href=\"http://www.underbit.com/products/mad/\">libmad</a>.</li>\n"
+"  <li>Eksporter MP3-er med det valgfrie LAME encoder-biblioteket.</li>\n"
+"  <li>Lag WAV eller AIFF-filer, som kan brennes til CD.</li>\n"
+"  <li>Importer og eksporter alle filformat som er støttet av <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a>.</li>\n"
+"  <li>Åpne lydfiler med rå (headerless) data vha. \"Importer rå data\"-kommandoen.</li>\n"
+"  <li><strong>Merk:</strong> Audacity støtter foreløpig ikke formatene WMA, AAC eller de fleste andre opphavsrettslig beskyttede eller begrensede filformat.</li>\n"
 "</ul>"
 
 #: about/features.php:37
@@ -137,14 +140,14 @@ msgid ""
 "  <li>Fade the volume up or down smoothly with the Envelope tool.</li>\n"
 "</ul>"
 msgstr ""
-"<h3>Editar</h3>\n"
+"<h3>Redigering</h3>\n"
 "<ul>\n"
-"  <li>Edição simplificada com Cortar, Copiar, Colar e Apagar.</li>\n"
-"  <li>Desfazer ilimitados para qualquer passo na edição.</li>\n"
-"  <li>Edição rápida mesmo em arquivos grandes.</li>\n"
-"  <li>Edite e mixe um número infinito de faixas de áudio.</li>\n"
-"  <li>Use a ferramenta de Desenho para alterar pontos de amostra individualmente.</li>\n"
-"  <li>Aumente ou abaixe o volume suavemente com as ferramentas de envelope.</li>\n"
+"  <li>Enkel redigering vha. Klipp ut, Kopier, Lim inn og Slett.</li>\n"
+"  <li>Bruk ubegrenset Angre (og Gjør om) for å gå tilbake et vilkårlig antall steg.</li>\n"
+"  <li>Meget rask redigering av store filer.</li>\n"
+"  <li>Rediger og miks et ubegrenset antall spor.</li>\n"
+"  <li>Bruk Tegneverktøyet for å endre individuelle datapunkt.</li>\n"
+"  <li>Ton volumet jevnt opp eller ned vha. Omhyllingskurveverktøyet.</li>\n"
 "</ul>"
 
 #: about/features.php:47
@@ -165,18 +168,18 @@ msgid ""
 "  </li>\n"
 "</ul>"
 msgstr ""
-"<h3>Efeitos</h3>\n"
+"<h3>Effekter</h3>\n"
 "<ul>\n"
-"  <li>Mude o timbre da gravação sem alterar o tempo, ou vice-versa.</li>\n"
-"  <li>Remova sons de estática, cliques e estalos no som de fundo.</li>\n"
-"  <li>Altere freqüências com os efeitos Equalização, filtro FFT e Reforço de graves.</li>\n"
-"  <li>Ajuste volumes com o efeito Compressor, Amplificar e Normalizar.\n"
-"  <li>Outros efeitos incluidos no programa incluem:\n"
+"  <li>Endre tonehøyde uten å endre tempo, eller omvendt.</li>\n"
+"  <li>Fjern støy, pipelyder, summing eller andre konstante bakgrunnslyder.</li>\n"
+"  <li>Endre frekvenser med effektene Equalization, FFT-filter og Bass Boost.</li>\n"
+"  <li>Juster volumer med effektene Komprimering, Forsterk og Normaliser.\n"
+"  <li>Noen av de andre innebygde effektene er:\n"
 "    <ul>\n"
-"      <li>Eco</li>\n"
+"      <li>Ekko</li>\n"
 "      <li>Phaser</li>\n"
 "      <li>Wahwah</li>\n"
-"      <li>Inverter</li>\n"
+"      <li>Baklengs</li>\n"
 "    </ul>\n"
 "  </li>\n"
 "</ul>"
@@ -191,12 +194,12 @@ msgid ""
 "  <li>Mix tracks with different sample rates or formats, and Audacity will convert them automatically in realtime.</li>\n"
 "</ul>"
 msgstr ""
-"<h3>Qualidade do Som</h3>\n"
+"<h3>Lydkvalitet</h3>\n"
 "<ul>\n"
-"  <li>Grave e edite áudio com amostras em 16-bit, 24-bit, e 32-bit (ponto flutuante).</li>\n"
-"  <li>Grave áudio a até 96 KHz.</li>\n"
-"  <li>Taxas de amostragem e formatação são transformadas com um algoritmo de alta qualidade.</li>\n"
-"  <li>Mescle faixas de áudio de diferentes taxas e formatos, o Audacity se encarrega de convertê-las em tempo real.</li>\n"
+"  <li>Ta opp og rediger lydklipp i 16-bit, 24-bit og 32-bit (floating point).</li>\n"
+"  <li>Spill inn med opp til 96 KHz.</li>\n"
+"  <li>Datarater og formater blir konvertert vha. omsampling og dithering med høy kvalitet.</li>\n"
+"  <li>Miks sammen spor med forskjellige datarater eller formater, og Audacity konverterer dem automatisk i nåtid.</li>\n"
 "</ul>"
 
 #: about/features.php:71
@@ -209,12 +212,12 @@ msgid ""
 "  <li>Write new effects with the built-in <a href=\"../help/nyquist\">Nyquist</a> programming language.</li>\n"
 "</ul>"
 msgstr ""
-"<h3>Plug-Ins</h3>\n"
+"<h3>Programtillegg</h3>\n"
 "<ul>\n"
-"  <li>Adicione novos efeitos com <a href=\"http://www.ladspa.org/\">plugins LADSPA</a>.</li>\n"
-"  <li>O Audacity já inclui alguns plug-ins de exemplo feitos por <a href=\"http://plugin.org.uk/\">Steve Harris</a>.</li>\n"
-"  <li>Carregue plug-ins VST para Windows e Mac, com o <a href=\"http://audacityteam.org/vst/\">VST Enabler</a>.</li>\n"
-"  <li>Crie novos efeitos com a linguagem <a href=\"../help/nyquist\">Nyquist</a> incluída no programa.</li>\n"
+"  <li>Legg til nye effekter med <a href=\"http://www.ladspa.org/\">LADSPA-tillegg</a>.</li>\n"
+"  <li>Audacity kommer med noen programtillegg som prøvesmak, laget av <a href=\"http://plugin.org.uk/\">Steve Harris</a>.</li>\n"
+"  <li>Hvis du installerer <a href=\"http://audacityteam.org/vst/\">VST Enabler</a> kan du laste inn VST-tillegg for Windows og Mac.</li>\n"
+"  <li>Skriv nye effekter med det innebygde <a href=\"../help/nyquist\">Nyquist</a>-programmeringsspråket.</li>\n"
 "</ul>"
 
 #: about/features.php:79
@@ -225,10 +228,10 @@ msgid ""
 "  <li>“Plot Spectrum” command for detailed frequency analysis.</li>\n"
 "</ul>"
 msgstr ""
-"<h3>Análises</h3>\n"
+"<h3>Analyse</h3>\n"
 "<ul>\n"
-"  <li>Modo Espectrograma para visualização de freqüências.</li>\n"
-"  <li>Comando “Desenhar Espectro” para análises detalhadas de freqüências.</li>\n"
+"  <li>Spektrogram-modus for å visualisere frekvenser.</li>\n"
+"  <li>“Plott spektrum”-kommando for detaljert frekvensanalyse.</li>\n"
 "</ul>"
 
 #: about/features.php:85
@@ -239,20 +242,19 @@ msgid ""
 "  <li>Runs on Mac OS X, Windows, and GNU/Linux.</li>\n"
 "</ul>"
 msgstr ""
-"<h3>Livre e multi-plataforma</h3>\n"
+"<h3>Fritt og kryss-plattform</h3>\n"
 "<ul>\n"
-"  <li>Licenciado sob a licença <a href=\"license\">GNU General Public License (GPL)</a>.</li>\n"
-"  <li>Com versões para Mac OS X, Windows, e GNU/Linux.</li>\n"
+"  <li>Lisensiert under <a href=\"license\">GNU General Public License (GPL)</a>.</li>\n"
+"  <li>Kjører på Mac OS X, Windows og GNU/Linux.</li>\n"
 "</ul>"
 
 #: about/index.php:9
 #: about/main.inc.php:11
 #: help/faq.php:23
 msgid "About Audacity"
-msgstr "Sobre o Audacity"
+msgstr "Om Audacity"
 
 #: about/index.php:14
-#, fuzzy
 msgid ""
 "<p>Audacity is a free, easy-to-use audio editor and recorder for Windows, Mac OS X, GNU/Linux, and other operating systems.  You can use Audacity to:</p>\n"
 "\n"
@@ -265,27 +267,21 @@ msgid ""
 "  <li>And more! See the complete <a href=\"features\">list of features</a>.</li>\n"
 "</ul>"
 msgstr ""
-"<p>O Audacity é um editor de áudio livre e fácil de usar disponível para Windows, Mac OS X e GNU/Linux. Use o Audacity para:</p>\n"
+"<p>Audacity er et fritt og brukervennlig program for lydredigering og opptak i Windows, Mac OS X, GNU/Linux og andre operativsystemer. Du kan bruke Audacity til å:</p>\n"
 "\n"
 "<ul>\n"
-"  <li>Gravações ao vivo.</li>\n"
-"  <li>Transformar fitas cassete em gravações digitais e CDs.</li>\n"
-"  <li>Editar arquivos em formato Ogg Vorbis, MP3 e WAV.</li>\n"
-"  <li>Cortar, copiar, colar e juntar sons e faixas de áudio.</li>\n"
-"  <li>Alterar a velocidade ou o timbre de uma gravação.</li>\n"
-"  <li>E muito mais! Veja a <a href=\"features\">lista completa de recursos</a>.</p>\n"
+"  <li>Ta opp direktesendt lyd.</li>\n"
+"  <li>Konvertere kassetter og vinylplater til digitale opptak eller CD-er.</li>\n"
+"  <li>Redigere Ogg Vorbis, MP3 og WAV-lydfiler.</li>\n"
+"  <li>Klippe, kopiere, spleise og mikse lyder sammen.</li>\n"
+"  <li>Endre hastigheten eller tonehøyden til ett opptak.</li>\n"
+"  <li>Og mer: les den fullstendige <a href=\"features\">listen over funksjoner</a>.</p>\n"
 "</ul>"
 
+#  i18n-hint: You may change the link addresses below, if there is a
+#  version of the page in your language at a different location.
 #. i18n-hint: You may change the link addresses below, if there is a
-#. version of the page in your language at a different location.
-#.
-#. For official translations of the phrase "free software", please see:
-#. http://www.fsf.org/philosophy/fs-translations.html
-#.
-#. Also check the translations of this web page:
-#. http://www.fsf.org/philosophy/free-sw.html
 #: about/index.php:33
-#, fuzzy
 msgid ""
 "<h3>About Free Software</h3>\n"
 "\n"
@@ -295,27 +291,27 @@ msgid ""
 "\n"
 "<p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href=\"http://www.mozilla.org/\">Mozilla</a> web browser, the <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> office suite, and entire <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Linux-based operating systems</a>.</p>"
 msgstr ""
-"<h3>Sobre o Software Livre</h3>\n"
+"<h3>Om fri programvare</h3>\n"
 "\n"
-"<p>O Audacity é um software livre, desenvolvido por um grupo de voluntários e distribuído nos termos da licença <a href=\"license\">GNU General Public License (GPL)</a>.</p>\n"
+"<p>Audacity er fri programvare, utviklet av en gruppe frivillige og distribuert under <a href=\"license\">GNU General Public License (GPL)</a>.</p>\n"
 "\n"
-"<p><firstterm>Software Livre</firstterm> não é apenas software livre de custos.  É livre num sentido mais amplo, que se refere À liberdade de usar o programa como lhe aprouver. Você pode usá-lo para fins comerciais, vendê-lo, desmontá-lo e melhorá-lo também. Para mais informação, visite a página da <a href=\"http://www.fsf.org/\">Free Software Foundation</a>.</p>\n"
+"<p><firstterm>Fri programvare (free software)</firstterm> er ikke bare kostnadsfritt (som \"gratis øl\"). Det er fritt som i frihet (som i \"ytringsfrihet\"). Fri programvare gir deg friheten til å bruke et program, studere hvordan det fungerer, forbedre det og dele det med andre. Hvis du vil ha mer informasjon kan du besøke sidene til <a href=\"http://www.fsf.org/home.no.html\">Free Software Foundation</a>.</p>\n"
 "\n"
-"<p>Programas como o Audacity também são chamados de <B>código-aberto </b> pois seu código está aberto e publicamente disponível para que qualquer pessoa. Há muitos outros programas de código-aberto, como o navegador <a href=\"http://www.mozilla.org/\">Mozilla</a> e a suíte de escritório <a href=\"http://www.openoffice.org/\">OpenOffice.org</a>.</p>"
+"<p>Programmer som Audacity blir også kalt <a href=\"http://opensource.org/\">åpen kildekode-programvare</a>, fordi kildekoden er tilgjengelig for hvem enn som vil studere den eller bruke den.</p>\n"
+"\n"
+"<p>Det finnes tusenvis av frie og åpen kildekode-programmer, bl.a. nettleseren <a href=\"http://www.firefox.no/\">Mozilla</a>, kontorpakken <a href=\"http://no.openoffice.org/index.html\">OpenOffice.org</a> og alle <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Linux-baserte operativsystemer</a>.</p>"
 
 #: about/license.php:9
 #: main.inc.php:23
 msgid "License"
-msgstr "Licença"
+msgstr "Lisens"
 
+#  i18n-hint:  These gnu.org web pages are available in several languages.
+#  Please link to the version in your language, if possible.  For example:
+#  http://www.gnu.org/licenses/licenses.es.html#GPL
+#  http://www.gnu.org/licenses/gpl-faq.cs.html
+#  See the bottom of each page for versions in other languages.
 #. i18n-hint:  These gnu.org web pages are available in several languages.
-#. Please link to the version in your language, if possible.  For example:
-#.
-#. http://www.gnu.org/licenses/licenses.es.html#GPL
-#. http://www.gnu.org/licenses/gpl-faq.cs.html
-#.
-#. See the bottom of each page for versions in other languages.
-#.
 #: about/license.php:25
 msgid ""
 "<p>Audacity is free software; you can redistribute it and/or modify it under the terms of the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License</a> as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.</p>\n"
@@ -324,200 +320,198 @@ msgid ""
 "\n"
 "<p>See also: <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Frequently Asked Questions about the GNU GPL</a>.</p>"
 msgstr ""
-"<p>O Audacity é um programa livre, você pode redistribuí-lo e/ou modificá-lo sob os termos da licença <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License</a> segundo publicado pela Free Software Foundation; segunda versão, ou mais recente.</p>\n"
+"<p>Audacity er fri programvare, du kan omdistribuere og/eller modifisere programmet under vilkårene til <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License</a> utgitt av Free Software Foundation; enten versjon 2 av lisensen eller (om du vil) en hvilken som helst senere versjon.</p>\n"
 "\n"
-"<p>Esta licença permite modificar, copiar, distribuir e vender o Audacity, mas obriga que todo código produzido seja disponibilizado publicamente sob as mesmas condições. Caso tenha alguma dúvida sobre esta licença,  <a href=\"../contact/\">entre em contato</a>.\n"
+"<p>Denne lisensen gir deg tillatelse til å modifisere, kopiere, distribuere og selge Audacity, så lenge koden du distribuerer er tilgjengelig under GPL. Hvis du har spørsmål, vennligst <a href=\"../contact/\">ta kontakt</a>.\n"
 "\n"
-"<p>Veja também: <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Questões comuns sobre a licença GNU GPL</a>.</p>"
+"<p>Se også: <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Ofte Spurte Spørsmål om GNU GPL</a>.</p>"
 
 #: about/links.php:9
 #: main.inc.php:25
 msgid "Links"
-msgstr "Links"
+msgstr "Lenker"
 
 #: about/links.php:14
 msgid "Other Things Named “Audacity” (not related to us)"
-msgstr "Outras coisas de nome ´´Audacity´´ (que não são relacionadas e este projeto)"
+msgstr "Andre ting kalt \"Audacity\" (ikke relatert til oss)"
 
 #: about/links.php:16
 msgid "<a href=\"http://www.audiost.com/advr.htm\">Audacity DVR</a> is a digital voice recorder for Palm OS and Treo handheld computers"
-msgstr "<a href=\"http://www.audiost.com/advr.htm\">Audacity DVR</a> - gravador de voz para Palm OS."
+msgstr "<a href=\"http://www.audiost.com/advr.htm\">Audacity DVR</a> er et program for å gjøre digitale opptak av tale på håndholdte maskiner som kjører Palm OS eller Treo. "
 
 #: about/links.php:17
 msgid "<a href=\"http://www.audacity.org\">Audacity.org</a> is a research company for construction industry professionals."
-msgstr "<a href=\"http://www.audacity.org\">Audacity.org</a> - companhia de pesquisa em construção industrial."
+msgstr "<a href=\"http://www.audacity.org\">Audacity.org</a> er et forskningsselskap for fagfolk i bygge- og anleggsindustrien. "
 
 #: about/links.php:18
 msgid "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> is a street-rock band from Finland."
-msgstr "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> - banda de rock da Finlândia."
+msgstr "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> er et gaterock-band fra Finland."
 
+# foretaks?
 #: about/links.php:19
 msgid "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> builds custom enterprise and departmental Windows applications."
-msgstr "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> - cria programas personalizados para Windows."
+msgstr "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> bygger skreddersydde drifts- og avdelingsprogrammer for Windows. "
 
 #: about/links.php:22
 msgid "Other Audio Software"
-msgstr "Outros programas de áudio"
+msgstr "Andre lydprogrammer"
 
 #: about/links.php:23
 msgid "<a href=\"http://ardour.org/\">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux."
-msgstr "<a href=\"http://ardour.org/\">Ardour</a> - estação de edição de áudio para GNU/Linux."
+msgstr "<a href=\"http://ardour.org/\">Ardour</a> er en kraftig digital arbeidsstasjon for lyd som kjører på GNU/Linux."
 
+# ripper?
 #: about/links.php:24
 msgid "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> is a free CD ripper for Microsoft Windows."
-msgstr "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> - transforma CDs de áudio em arquivos digitais, para Windows."
+msgstr "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> er en fri CD-ripper for Microsoft Windows."
 
 #: about/links.php:25
 msgid "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records."
-msgstr "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> - ferramenta gratuita para captar e limpar áudio de discos de vinil."
+msgstr "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> er et fritt verktøy for å fange opp og renske opptak fra vinylplater."
 
 #: about/links.php:26
 msgid "More free software at SourceForge.net:"
-msgstr "Outros programas gratuitos no Sourceforge.net:"
+msgstr "Mer gratis programvare fra SourceForge.net:"
 
 #: about/links.php:28
 msgid "Audio Editors"
-msgstr "Editores de áudio"
+msgstr "Lydredigeringsprogrammer"
 
 #: about/links.php:29
 msgid "Audio Capture/Recording"
-msgstr "Captura/Gravação de áudio"
+msgstr "Fange opp/spille inn lyd"
 
 #: about/links.php:30
 msgid "Audio Analysis"
-msgstr "Análise de áudio"
+msgstr "Lydanalyse"
 
-# News  = notícias
 #: about/news.php:21
 #: index.php:64
 msgid "More news items..."
-msgstr "outras notícias..."
+msgstr "Flere nyheter..."
 
-# news noticias
 #: about/news.php:25
 #: main.inc.php:22
 msgid "News"
-msgstr "Notícias"
+msgstr "Nyheter"
 
 #: about/screenshots.php:9
-#: index.php:36
 #: main.inc.php:21
 msgid "Screenshots"
-msgstr "Fotos de tela"
+msgstr "Skjermbilder"
 
 #: about/screenshots.php:15
 msgid "Click any screenshot for a larger version."
-msgstr "Clique nas imagens para ampliar"
+msgstr "Klikk på skjermbildene for å se en større versjon."
 
 #: about/screenshots.php:17
 msgid "Audacity running on Linux"
-msgstr "Audacity rodando em Linux"
+msgstr "Audacity på Linux"
 
 #: about/screenshots.php:19
 msgid "Audacity running on Windows"
-msgstr "Audacity rodando em Windows"
+msgstr "Audacity på Windows"
 
 #: about/screenshots.php:21
 msgid "Audacity running on Mac OS X"
-msgstr "Audacity rodando em Mac OS X"
+msgstr "Audacity på Mac OS X"
 
 #: about/screenshots.php:23
 msgid "Noise Removal effect"
-msgstr "Efeito remoção de ruídos"
+msgstr "Effekten Støyfjerning"
 
 #: about/screenshots.php:25
 msgid "Change Pitch effect"
-msgstr "Efeito alterar timbre"
+msgstr "Effekten Endre tonehøyde"
 
 #: about/screenshots.php:27
 msgid "Change Tempo effect"
-msgstr "Efeito alterar tempo"
+msgstr "Effekten Endre tempo"
 
 #: about/screenshots.php:29
 msgid "Recording with Audacity"
-msgstr "Gravando com o Audacity"
+msgstr "Innspilling med Audacity "
 
 #: copyright.php:8
 msgid "Web Site Copyright and Trademark"
-msgstr "Direitos de cópia do site e aviso de marcas registradas"
+msgstr "Nettstedets opphavsrett og varemerke"
 
+#  i18n-hint: The Creative Commons web page below is available in several
+#  languages.  Please link to the version in your language if possible.
 #. i18n-hint: The Creative Commons web page below is available in several
-#. languages.  Please link to the version in your language if possible.
-#.
-#. You may add a sentence like "Czech translation copyright YOUR NAME HERE"
-#. if you wish.
 #: copyright.php:22
 #, php-format
 msgid "This web site is Copyright &copy; %s members of the Audacity development team.  Except where otherwise noted, all text and images on this site are licensed under the <a href=\"http://creativecommons.org/licenses/by/2.0/\">Creative Commons Attribution License, version 2.0</a>.  You may modify, copy, distribute, and display this material, but you must give credit to the original authors.  Please see the license for details."
-msgstr "Este site tem direitos de cópia  &copy; %s reservados ao time de desenvolvedores do Audacity. Exceto onde indicado, todo o texto e imagens estão licenciadas sob a <a href=\"http://creativecommons.org/licenses/by/2.0/\">Creative Commons Attribution License, versão 2.0</a>.Você pode modificar, copiar, distribuir e exibir publicamente este material, dando crédito aos autores originais. Por favor, leia a licença para mais detalhes."
+msgstr "Audacity sine utviklere eier opphavsretten &copy; %s til dette nettstedet. Alle tekster og bilder på dette nettstedet er lisensiert under <a href=\"http://creativecommons.org/licenses/by/2.0/\">Creative Commons Attribution-lisens, versjon 2.0</a>, med unntak av steder hvor annet er nevnt. Du kan modifisere, kopiere, distribuere og vise fram tekst og annet stoff herfra, men du må kreditere de opprinnelige forfatterne. Vennligst se lisensen for flere detaljer. "
 
 #: copyright.php:24
 msgid "\"Audacity\" is a trademark of Dominic Mazzoni.  The Google logo is a trademark of Google, Inc."
-msgstr "\"Audacity\" é uma marca registrada de Dominic Mazzoni. O logo do Google é marca registrada de Google Inc."
+msgstr "\"Audacity\" er et varemerke eid av Dominic Mazzoni. Google-logoen er et varemerke eid av Google, Inc."
 
 #: index.php:9
 msgid "Free Audio Editor and Recorder"
-msgstr "Editor de áudio gratuito"
+msgstr "Fritt lydredigerings- og innspillingsprogram"
 
 #: index.php:18
 msgid "for Microsoft Windows"
-msgstr "para Microsoft Windows"
+msgstr "for Microsoft Windows"
 
 #: index.php:23
 msgid "for Mac OS 9 or X"
-msgstr "para Mac OS 9 ou X"
+msgstr "for Mac OS 9 eller X"
 
 #: index.php:28
 msgid "For Windows, Mac, or GNU/Linux"
-msgstr "Para Windows, Mac or Linux"
+msgstr "For Windows, Mac eller GNU/Linux"
 
+# fri...
+# kan ikke si "plattformuavhengig", pga passer ikke til _alle_ plattformer...
 #: index.php:33
 msgid "The Free, Cross-Platform Sound Editor"
-msgstr "O editor de áudio livre e fácil de usar!"
+msgstr "Det frie, kryss-platforms lydredigeringsprogrammet"
 
 #: index.php:38
 msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
-msgstr "O Audacity é um editor de áudio de código aberto que permite captar, reproduzir e editar sons. Disponível para Microsoft Windows, MacOS X e Linux. <a href=\"about/\">Conheça melhor o Audacity...</a>"
+msgstr "Audacity er gratis, åpen kildekode-programvare for å spille inn og redigere lyder. Det er tilgjengelig både for Mac OS X, Microsoft Windows, GNU/Linux og andre operativsystem. <a href=\"about/\">Lær mer om Audacity...</a>"
 
 #: index.php:42
 #, php-format
 msgid "Download Audacity %s"
-msgstr "Instale o Audacity %s"
+msgstr "Last ned Audacity %s"
 
 #: index.php:46
 msgid "Other downloads"
-msgstr "Outras versões"
+msgstr "Andre nedlastinger"
 
-# notified - anuncio
 #: index.php:68
 msgid "Get Notified of New Versions"
-msgstr "Receba o anúncio de novas versões:"
+msgstr "Få beskjed om nye utgaver"
 
 #: index.php:80
 msgid "Email address"
-msgstr "Endereço de email"
+msgstr "Epost-adresse"
 
 #: index.php:81
 msgid "Add"
-msgstr "Adicionar"
+msgstr "Legg til"
 
 #: index.php:82
 msgid "Remove"
-msgstr "Remover"
+msgstr "Fjern"
 
 #: main.inc.php:17
 msgid "Home"
-msgstr "Início"
+msgstr "Hjem"
 
 #: main.inc.php:18
 msgid "About"
-msgstr "Sobre"
+msgstr "Om"
 
 #: main.inc.php:28
 #: download/index.php:9
 #: download/main.inc.php:11
 msgid "Download"
-msgstr "Instalar"
+msgstr "Last ned"
 
 #: main.inc.php:30
 #: download/index.php:19
@@ -538,40 +532,40 @@ msgstr "Linux/Unix"
 #: main.inc.php:33
 #: download/source.php:10
 msgid "Source Code"
-msgstr "Código-fonte"
+msgstr "Kildekode"
 
 #: main.inc.php:34
 #: download/release-notes.php:9
 msgid "Release Notes"
-msgstr "Notas de Versão"
+msgstr "Utgivelseskommentarer"
 
 #: main.inc.php:35
 #: download/common.inc.php:12
 msgid "Plug-Ins"
-msgstr "Plug-Ins"
+msgstr "Programtillegg"
 
 #: main.inc.php:36
 msgid "Buy a CD"
-msgstr "Compre em CD"
+msgstr "Kjøp en CD"
 
 #: main.inc.php:39
 #: help/main.inc.php:11
 msgid "Help"
-msgstr "Ajuda"
+msgstr "Hjelp"
 
 #: main.inc.php:41
 msgid "FAQ"
-msgstr "FAQ"
+msgstr "FAQ (Ofte stilte spørsmål)"
 
 #: main.inc.php:42
 #: help/documentation.php:9
 msgid "Documentation"
-msgstr "Documentação"
+msgstr "Dokumentasjon"
 
 #: main.inc.php:43
 #: help/tutorials.php:9
 msgid "Tutorials"
-msgstr "Tutoriais"
+msgstr "Veiledninger"
 
 #: main.inc.php:44
 #: help/nyquist.php:10
@@ -582,50 +576,51 @@ msgstr "Nyquist"
 #: contact/index.php:9
 #: contact/main.inc.php:11
 msgid "Contact Us"
-msgstr "Fale conosco"
+msgstr "Kontakt oss"
 
 #: main.inc.php:49
 #: community/developers.php:15
 #: contact/lists.php:9
 #: contact/main.inc.php:13
 msgid "Mailing Lists"
-msgstr "Lista de emails"
+msgstr "E-postlister"
 
 #: main.inc.php:50
 #: contact/main.inc.php:14
 #: contact/privacy.php:10
 msgid "Privacy Policy"
-msgstr "Política de privacidade"
+msgstr "Retningslinjer angående personvern"
 
+# alternativt: Delta
 #: main.inc.php:53
 #: community/index.php:9
 #: community/main.inc.php:11
 msgid "Get Involved"
-msgstr "Envolva-se!"
+msgstr "Engasjer deg"
 
 #: main.inc.php:55
 #: community/index.php:18
 msgid "Users"
-msgstr "Usuários"
+msgstr "Brukere"
 
 #: main.inc.php:57
 #: community/developers.php:9
 #: community/index.php:24
 msgid "Developers"
-msgstr "Desenvolvedores"
+msgstr "Utviklere"
 
 #: main.inc.php:58
 msgid "Donate"
-msgstr "Doe"
+msgstr "Doner"
 
 #: site-map.php:8
 #: include/footer.inc.php:15
 msgid "Site Map"
-msgstr "Mapa"
+msgstr "Nettkart"
 
 #: community/developers.php:16
 msgid "Join the <a href=\"../contact/lists#devel\">audacity-devel</a> mailing list to discuss current and future development, or to get help building and modifying the Audacity source code."
-msgstr ""
+msgstr "Bli med på <a href=\"../contact/lists#devel\">audacity-devel</a>-epostlista for å diskutere aktuell og framtidig utvikling, eller for å hjelpe oss med å bygge og modifisere kildekoden til Audacity."
 
 #: community/developers.php:18
 msgid ""
@@ -643,6 +638,19 @@ msgid ""
 "<p>For more information, read the <a href=\"http://sourceforge.net/cvs/?group_id=6235\">SourceForge CVS instructions</a>.</p>\n"
 "<p>See the source code page for <a href=\"../download/source#instructions\">compilation instructions</a>.</a>"
 msgstr ""
+"<h3 id=\"cvs\">CVS</h3>\n"
+"<p>Du kan få den nyeste utviklingskoden fra vårt CVS-lager.</p>\n"
+"<ul>\n"
+"  <li><p><a href=\"http://cvs.sourceforge.net/viewcvs.py/audacity/audacity-src/\">Les gjennom kildekoden til Audacity på nett.</a></p></li>\n"
+"\n"
+"  <li><p>Bruk denne kommandoen for å sjekke ut seneste kildekode til Audacity 1.2 (stabil) fra CVS:</p>\n"
+"  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity checkout -r AUDACITY_1_2 audacity</kbd></p></li>\n"
+"\n"
+"  <li><p>Eller bruk denne kommandoen for å sjekke ut seneste kildekode til Audacity 1.3 (ustabil) fra CVS:</p>\n"
+"  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity checkout audacity</kbd></p></li>\n"
+"</ul>\n"
+"<p>Hvis du vil ha mer informasjon kan du lese <a href=\"http://sourceforge.net/cvs/?group_id=6235\">SourceForge sin CVS-veiledning</a>.</p>\n"
+"<p>Se nettsiden til kildekoden for en <a href=\"../download/source#instructions\">bruksanvisning for kompilering</a>.</p>"
 
 #: community/developers.php:32
 msgid ""
@@ -650,97 +658,85 @@ msgid ""
 "<p>The Audacity developers use <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/index.cgi\">Bugzilla</a> to keep track of confirmed bugs.  Check the list of <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">open bugs</a> if you are looking for something to work on.</p>\n"
 "<p><strong>Note:</strong> This Bugzilla is for development use only.  If you are a user reporting new bugs, please <a href=\"../contact/\">send us e-mail</a> instead.  Thank you!</p>"
 msgstr ""
+"<h3 id=\"bugzilla\">Bugzilla</h3>\n"
+"<p>Audacity-utviklerne bruker <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/index.cgi\">Bugzilla</a> for å holde styr på bekreftede programfeil. Les listen over <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">åpne feil</a> hvis du leter etter noe å jobbe med.</p>\n"
+"<p><strong>Merk:</strong> Vår Bugzilla er bare for utviklingsbruk. Hvis du er en bruker som rapporterer nye feil, vennligst <a href=\"../contact/\">send oss en epost</a> isteden. Takk!</p>"
 
 #: community/donate.php:10
 msgid "Make a Donation"
-msgstr "Faça uma doação"
+msgstr "Gi pengestøtte"
 
 #: community/donate.php:16
 msgid "Audacity is developed by volunteers, working in our spare time. It is not shareware, and we do not expect to make any money from it.  However, by donating money you can help us pay for bandwidth and web hosting, development tools, and audio hardware&mdash;things that help us provide Audacity for free and continue to make it better."
-msgstr ""
-"<P>O Audacity é desenvolvido por uma equipe de voluntários, em seu tempo livre. Não é um software \"shareware\" - onde se distribui gratuitamente apenas uma versão reduzida do programa - e ninguém espera obter lucros na venda deste software.</P>\n"
-"<p>No entanto, ao doar dinheiro, você estará ajudando a pagar os custos da manutenção do programa como hospedagem na internet, hardware necessário para testes, etc. </P>\n"
-"<P>Logo abaixo, há um ícone onde você poderá fazer uma doação voluntária utilizando seu cartão de crédito. É possível doar até mesmo 1 dólar americano.</P>\n"
-"<P>Doando dinheiro, você nos ajuda a cubrir os custos da hospedagem das páginas na Internet, ferramentas de desenvolvimento e novos sistemas de teste do programa. </P>\n"
-"<P>Note que neste momento todos estes recursos são disponibilizados gratuitamente na Internet, mas não há garantia que esta condição se manterá no futuro. Qualquer doação hoje manterá o site funcionando amanhã.</P>\n"
-"<P>O time de desenvolvedores do Audacity gostaria de comprar sistemas de áudio especializados e transformar o programa em uma solução completa para edição de áudio profissional. Suas doações tornarão isto possível o quanto antes.</P>\n"
-"Note que não damos nenhuma garantia ou promessa de retorno para uma doação."
+msgstr "Audacity blir utviklet av frivillige, som jobber på fritida. Det er ikke shareware, og vi forventer ikke å tjene noen penger ut av det. Likevel, ved å donere penger kan du hjelpe oss å betale for båndbredde og nettjenere, utviklingsverktøy og lydutstyr&mdash;ting som vil hjelpe oss med å fritt gi ut Audacity og fortsette å forbedre det. "
 
 #: community/donate.php:18
-msgid "For a special gift if you donate US$20 or more, see our <a href=\"http://audacityteam.org/tshirt.php\">Audacity T-shirt offer</a>."
-msgstr ""
-
-#: community/donate.php:20
 msgid "We currently accept money via the Amazon Honor System. Use your credit card and make a payment as small as US$1.00, or up to US$50.00:"
-msgstr "Estamos aceitando doações pelo programa Amazon Honor System. Com o seu cartão de crédito internacional, é possível fazer doações de US$1,00 a US$50,00. "
+msgstr "Vi kan nå ta imot penger via Amazon Honor-systemet. Bruk kredittkortet ditt og betal så lite som US$1.00 eller så mye som US$50.00:"
 
-#: community/donate.php:30
+#: community/donate.php:28
 msgid "We also accept PayPal payments through the SourceForge donation system:"
-msgstr "Também aceitamos doações via Paypal pelo sistema de doaçõed do SourceForge:"
+msgstr "Vi aksepterer også PayPal-betalinger gjennom SourceForge sitt donasjonssystem:"
 
-#: community/donate.php:33
+#: community/donate.php:31
 msgid "Donate via PayPal"
-msgstr "Doe via Paypal"
+msgstr "Doner via PayPal"
 
-#: community/donate.php:36
+#: community/donate.php:34
 msgid "If you prefer to send a personal check or another form of payment, please visit the <a href=\"../about/credits\">credits</a> page and contact one of the lead developers."
-msgstr "Para doar mais de 50 dólares americanos, ou enviar-nos um cheque pagável nos Estados Unidos (consulte sua instituição bancária sobre esta possibilidade), visite a página de <a href=\"../about/credits\">Créditos</a> e consulte um dos desenvolvedores."
-
-#: community/donate.php:38
-msgid "We would also like to hear from any companies or groups interested in <a href=\"http://audacityteam.org/sponsor.php\">sponsoring Audacity development</a>."
-msgstr ""
+msgstr "Hvis du heller vil sende en personlig sjekk eller en annen type betaling, vennligst besøk siden <a href=\"../about/credits\">takk til</a> og ta kontakt med en av hovedutviklerne."
 
 #: community/index.php:15
 msgid "Audacity is free software, developed by volunteers.  Here's how you can contribute to the Audacity project:"
-msgstr "O Audacity é um programa livre, desenvolvido por voluntários. Veja aqui como você também pode contribuir para este projeto:"
+msgstr "Audacity er gratis programvare, utviklet på frivillig basis. Slik kan du bidra med din hjelp til Audacity-prosjektet:"
 
 #: community/index.php:19
 msgid "Give us feedback, report bugs, and become part of the Audacity user community."
-msgstr "Diga-nos o que pensa sobre o programa, reporte falhas, faça parte da comunidade de usuários do Audacity."
+msgstr "Gi oss tilbakemeldinger, rapporter feil og bli en del av Audacitys brukermiljø."
 
 #: community/index.php:22
 msgid "If you are fluent in both English and another language, you can help translate the Audacity software and web site.  We also need people to help provide support for Audacity in different languages."
-msgstr "Se você é fluente em inglês e em alguma outra língua, você pode ajudar a traduzir o Audacity e seu site. Estamos precisando de pessoas para oferecer suporte em outras línguas também."
+msgstr "Hvis du snakker engelsk og et annet språk flytende, kan du hjelpe til med å oversette Audacity-programvaren og nettstedet. Vi trenger også folk som kan hjelpe til med å gi brukerstøtte for Audacity i forskjellige språk."
 
 #: community/index.php:25
 msgid "If you are a C++ programmer, you can join the development team and help us improve Audacity.  We welcome documentation and other contributions too."
-msgstr "Se você conhece linguagem de programação C++, você pode ajudar a melhorar o Audacity. Documentação e qualquer outra contribuição também é muito bem-vinda."
+msgstr "Hvis du programmerer i C++ kan du bli med på utviklingsgruppa og hjelpe oss med å forbedre Audacity. Dokumentasjon og andre bidrag er også velkomne bidrag. "
 
 #: community/index.php:28
 msgid ""
 "You may also <a href=\"donate\">donate money</a> to support Audacity\n"
 "development."
 msgstr ""
-"Você também pode <a href=\"donate\">doar dinheiro</a> para auxiliar o desenvolvimento\n"
-"do programa."
+"Du kan også <a href=\"donate\">donere penger</a> for å støtte utviklingen av\n"
+"Audacity."
 
 #: community/translation.php:16
 msgid "A group of volunteers is translating the free Audacity sound editor into several languages.  If you would like to help, please join the <a href=\"../contact/lists#translation\">audacity-translation mailing list</a> and introduce yourself."
-msgstr "Um grupo de tradutores voluntários traduz o Audacity para diversos idiomas. Caso queira ajudar, cadastre-se na <a href=\"../contact/lists#translation\">lista de tradução do Audacity</a> e apresente-se."
+msgstr "En gruppe frivillige oversetter det frie lydredigeringsprogrammet Audacity til flere språk. Hvis du har lyst til å hjelpe til kan du gjerne bli med på e-postlisten <a href=\"../contact/lists#translation\">audacity-translation</a> og introdusere deg selv."
 
 #: community/translation.php:18
 msgid "Resources for Translators"
-msgstr "Recursos para tradução"
+msgstr "Ressurser for oversettere"
 
 #: community/translation.php:20
 msgid "Mailing list and archives"
-msgstr "Listas de emails e arquivos"
+msgstr "E-postliste og arkiver"
 
 #: community/translation.php:21
 msgid "Latest audacity.pot file"
-msgstr "Último arquivo audacity.pot"
+msgstr "Nyeste audacity.pot-fil"
 
 #: community/translation.php:22
 msgid "Latest audacity_website.pot file"
-msgstr "Último arquivo audacity_website.pot"
+msgstr "Nyeste audacity_website.pot-fil"
 
 #: community/translation.php:23
 msgid "wxWidgets i18n"
 msgstr "wxWidgets i18n"
 
 #  i18n-hint: These instructions are for translators only, so you may
+#  leave them untranslated if you like.
 #. i18n-hint: These instructions are for translators only, so you may
-#. leave them untranslated if you like.
 #: community/translation.php:29
 #, php-format
 msgid ""
@@ -771,80 +767,52 @@ msgid ""
 "  <blockquote><p><b>\"The buffer underrun near %%2$lf seconds was the last of %%1$d.\"</b></p></blockquote>\n"
 "</ul>"
 msgstr ""
-"<h3>Instruções para tradução</h3>\n"
-"\n"
-"<p>To start a new translation, download POT file above.  Rename it \"audacity.po\" before you begin translating.  To edit an existing translation, download the PO file for your language:</p>\n"
-"<ul>\n"
-"  <li><a href=\"%s\">Audacity translations</a></li>\n"
-"  <li><a href=\"%s\">Audacity web site translations</a></li>\n"
-"</ul>\n"
-"\n"
-"<p>These programs can create and edit PO files:</p>\n"
-"<ul>\n"
-"  <li><a href=\"http://poedit.sourceforge.net/\">poEdit</a> for Windows and Unix.</li>\n"
-"  <li><a href=\"http://i18n.kde.org/tools/kbabel/\">KBabel</a> for KDE.</li>\n"
-"  <li><a href=\"http://www.gnu.org/software/gettext/\">GNU gettext</a> is standard on most Unix systems.  It includes a PO mode for the Emacs text editor.</li>\n"
-"</ul>\n"
-"\n"
-"<p>Send completed PO files to Matt Brubeck, <a href=\"mailto:mbrubeck@cs.hmc.edu\">mbrubeck@cs.hmc.edu</a>.</p>\n"
-"\n"
-"<h3>Notes</h3>\n"
-"\n"
-"<ul>\n"
-"  <li><p>In poEdit, make sure to set the \"charset\" option correctly.  Otherwise, poEdit will not save any translations with non-English characters.</p>\n"
-"  <li><p>Strings like <b>\"&amp;File\"</b> and <b>\"New &amp;Audio Track\"</b> are menu items.  The letter after the \"&amp;\" symbol is used as a keyboard shortcut.</p>\n"
-"  <li><p><b>\"Import Audio...\\tCtrl+i\"</b> is also a menu item.  The \\t stands for a tab character, which separates the menu text from the keyboard command.</p>\n"
-"  <li><p>You will find many strings like <b>\"There were %%d buffer underruns, last near %%lf seconds.\"</b>  The %% signs mark places where numbers or names will be inserted into the string.  For example, this string might become \"There were 4 buffer underruns, last near 3.01 seconds.\" If you change the order of the the %% markers in a string, add \"1$\" after the percent sign that used to be first, \"2$\" after the percent sign that used to be second, and so on.  For example:</p>\n"
-"  <blockquote><p><b>\"The buffer underrun near %%2$lf seconds was the last of %%1$d.\"</b></p></blockquote>\n"
-"</ul>"
 
 #: community/users.php:10
 msgid "User Community"
-msgstr "Comunidade de usuários"
+msgstr "Brukermiljø"
 
 #: community/users.php:15
 msgid "Audacity was written by volunteers in their spare time.  If you appreciate Audacity and would like to help out, here are some ideas:"
-msgstr "O Audacity foi criado por um time de voluntários em seu tempo livre. Se você quiser ajudar também, aqui vão algumas idéias:"
+msgstr "Audacity ble skrevet av frivillige på fritida. Hvis du setter pris på Audacity og har lyst til å hjelpe til har vi noen idéer her:"
 
 #: community/users.php:18
 msgid ""
 "<h3>Say Hello!</h3>\n"
 "<p>If you enjoy Audacity, <a href=\"../contact/\">write to us</a> and let us know that you like it.  It makes us happy to know that people enjoy it.  Also feel free to send comments and suggestions.  We're always improving Audacity, and we value your input.</p>"
 msgstr ""
-"<h3>Diga oi!</h3>\n"
-"<P>Se você gostou do Audacity, diga-nos!<a href=\"../contact/\"> Envie sua mensagem</a> e nos conte o que você mais lhe agradou. É sempre bom ouvir elogios dos usuários. Fique à vontade também para nos enviar suas críticas e sugestões. O Audacity é um programa livre e está sempre em evolução.</p>"
+"<h3>Si hei!</h3>\n"
+"<p>Hvis du liker Audacity, <a href=\"../contact/\">skriv til oss</a> og la oss få vite at du liker det. Det gjør oss glade å vite at folk liker det. Du er også velkommen til å sende kommentarer og forslag. Vi forbedrer hele tiden på Audacity, og verdsetter dine innspill.</p>"
 
-#  i18n-hint:  Note that the wiki is in English.  If you want, you can create
 #. i18n-hint:  Note that the wiki is in English.  If you want, you can create
-#. a page in your language on the wiki, and link to it instead.
 #: community/users.php:24
 msgid ""
 "<h3>Join the User Community</h3>\n"
 "<p>Subscribe to the <a href=\"../contact/lists#users\">audacity-users mailing list</a> to share tips, questions, and feedback with other Audacity users and developers.</p> <p>Visit the <a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a>, a community resource where users can add or edit information about Audacity.</p>"
 msgstr ""
-"<h3>Ingresse na comunidade de usuários do Audacity</h3>\n"
-"<P>A <a href=\"../contact/lists#users\">lista de emails </a>é o lugar onde os usuários do Audacity se encontram e trocam idéias, conhecimento e experiências. As mensagens são em inglês, mas se a comunidade luso e brasileira crescer, a criação de uma lista em português será muito bem-vinda</p> <p>Visite também o <a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a>, um site com textos postados e editados pelos usuários do programa.</p>"
+"<h3>Bli med i brukermiljøet</h3>\n"
+"<p>Abonner på <a href=\"../contact/lists#users\">epostlisten audacity-users</a> for å dele tips, spørsmål og tilbakemeldinger med andre brukere og utviklere av Audacity.</p> <p>Besøk siden <a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a>, en felles miljøressurs hvor brukere kan legge til eller redigere informasjon om Audacity.</p>"
 
 #: community/users.php:28
 msgid ""
 "<h3>Report bugs</h3>\n"
 "<p>If you find a bug in Audacity, <a href=\"../contact/\">let us know</a>.</p>"
 msgstr ""
-"<h3>Reporte falhas</h3>\n"
-"<p>Se você achou um problema com o Audacity, <a href=\"../contact/\">diga-nos.</a> Lembre-se sempre de dizer a maior quantidade possível de informações sobre o seu sistema (processador, sistema operacional, memória, etc) e como o problema acontece.</p>"
+"<h3>Rapporter programfeil</h3>\n"
+"<p>Hvis du finner en feil i Audacity, <a href=\"../contact/\">la oss vite om den</a>.</p>"
 
 #: community/users.php:31
 msgid ""
 "<h3>Be a Beta Tester</h3>\n"
 "<p>In addition to the latest stable version of Audacity, we often have beta versions available.  These versions usually contain new features that haven't been tested yet.  If you want to help out, download this version of Audacity and play with it.  Let us know what you like and don't like, and tell us how you think it should be improved.  Tell us if you find any <em>regressions</em> - things that used to work but don't work anymore.</p>"
 msgstr ""
-"<h3>Teste versões beta</h3>\n"
-"<p>Junto à versão estável do Audacity, sempre há uma versão beta, que traz novos recursos que estão sendo testados e serão adicionados em versões futuras do programa. Teste esta versão e diga-nos o que pareceu interessante, o que funcionou, o que ainda precisa ser ajustado, etc. Diga também se você encontrou algum <em>regresso</em> - funções que estavam disponíveis antes e não estão mais.</p>"
+"<h3>Bli en betatester</h3>\n"
+"<p>I tillegg til den seneste stabile versjonen av Audacity har vi ofte betaversjoner tilgjengelig. Disse versjonene har vanligvis nye funksjoner som ikke ennå har blitt testet. Hvis du vil hjelpe til kan du laste ned denne versjonen av Audacity og leke rundt med den. La oss få vite hva du liker og ikke liker, og fortell os hvordan du synes det bør forbedres. Fortell oss om du finner noen <em>regresjoner</em> - ting som pleide å fungere, men ikke gjør det nå lenger.</p>"
 
-#  i18n-hint:  Please add a note that we can answer questions to
 #  i18n-hint:  Please add a note that we can answer questions to
 #  audacity-help in English only.  If there is an Audacity forum or mailing
 #  list in your language, you may add a link to it below.
+#. i18n-hint:  Please add a note that we can answer questions to
 #: contact/index.php:19
 msgid ""
 "<p>If you have questions or comments for the Audacity developers, e-mail us at: <a href=\"mailto:audacity-help@lists.sourceforge.net\">audacity-help@lists.sourceforge.net</a>.\n"
@@ -857,73 +825,85 @@ msgid ""
 "  <li>Include details of what you are trying to do, and any error messages or other problems you experience.</li>\n"
 "</ol>"
 msgstr ""
+"<p>Hvis du har spørsmål eller kommentarer til utviklerne av Audacity, send oss en epost på <a href=\"mailto:audacity-help@lists.sourceforge.net\">audacity-help@lists.sourceforge.net</a>. Listen er engelskspråklig. \n"
+"(Dette er en offentlig epostliste. Les vår <a href=\"../contact/privacy\">personvernspolicy</a> for flere detaljer.)</p>\n"
+"\n"
+"<p><b>Når du rapporterer en feil eller et problem, vennligst:</b></p>\n"
+"<ol>\n"
+"  <li>Sjekk om spørsmålet ditt allerede er besvart på <a href=\"../help/faq\">Ofte Spurte Spørsmål</a> før du kontakter oss.</li>\n"
+"  <li>Fortell oss om hvilken versjon av Audacity og hvilket operativsystem du bruker.</li>\n"
+"  <li>Inkluder detaljer om hva det er du prøver å gjøre, i tillegg til eventuelle feilmeldinger eller andre problemer du opplever.</li>\n"
+"</ol>"
 
 #: contact/index.php:29
 msgid ""
 "<h3>Discussion Lists</h3>\n"
 "<p>To discuss Audacity with other users and developers, join our <a href=\"../contact/lists\">mailing lists</a>.</p>"
 msgstr ""
+"<h3>Diskusjonslister</h3>\n"
+"<p>Hvis du vil å diskutere Audacity med andre brukere og utviklere kan du melde deg på våre <a href=\"../contact/lists\">epostlister</a>.</p>"
 
 #: contact/lists.php:12
 msgid "You must subscribe to send messages to this list."
-msgstr "É necessário se inscrever para enviar mensagens para a lista."
+msgstr "Du må melde deg på for å sende meldinger til denne listen."
 
 #. i18n-hint: The "%s" will be replaced by the name of a mailing list.
 #: contact/lists.php:14
 #, php-format
 msgid "%s archives and subscription information"
-msgstr "Informações sobre mensagens arquivadas e inscrições na lista %s"
+msgstr "%s arkiver og påmeldingsinformasjon"
 
 #  i18n-hint: Please add a note that these lists are in English.  If there are
+#  Audacity mailing lists or forums in your language, please link to them here.
 #. i18n-hint: Please add a note that these lists are in English.  If there are
-#. Audacity mailing lists or forums in your language, please link to them here.
 #: contact/lists.php:20
 msgid ""
 "These mailing lists are for discussion of the Audacity audio editor.  </p>\n"
 "<p>Note: These are public mailing lists.  For details, see our <a href=\"privacy\">privacy policy</a>."
 msgstr ""
-"Estas listas de emails são destinadas a discutir os diversos aspectos do Audacity. </p>\n"
-"<p>Nota: estas listas são públicas, por favor, veja a sua <a href=\"privacy\">política de privacidade</A>."
+"Disse e-postlistene er til for diskusjon om lydredigeringsprogrammet Audacity.</p>\n"
+"<p>Merk: Disse er offentlig tilgjengelige e-postlister. Hvis du vil ha flere detaljer, les våre <a href=\"privacy\">retningslinjer angående personvern</a>."
 
 #: contact/lists.php:27
 msgid "Discuss Audacity with other users and developers."
-msgstr "Discuta o Audacity com outros usuários e desenvolvedores."
+msgstr "Diskuter Audacity med brukere og utviklere."
 
+# localizing????
 #: contact/lists.php:33
 msgid "For translators localizing the Audacity software and web site."
-msgstr "Para tradutores vertendo o programa e o website em outras línguas."
+msgstr "For oversettere av programmet Audacity og det tilhørende nettstedet. "
 
 #: contact/lists.php:39
 msgid "For developers working with the Audacity source code and documentation."
-msgstr "Para desenvolvedores que trabalham com o código-fonte do Audacity e sua documentação."
+msgstr "For utviklere som jobber med kildekoden eller dokumentasjonen til Audacity."
 
 #: contact/lists.php:45
 msgid "Share questions and tips about programming <a href=\"../help/nyquist\">Nyquist plug-ins</a>."
-msgstr "Partilhe dicas e truques sobre como programar <a href=\"../help/nyquist\">plug-ins Nyquist</a>."
+msgstr "Del spørsmål og tips relatert til programmering av <a href=\"../help/nyquist\">Nyquist-tillegg</a>."
 
 #: contact/lists.php:51
 msgid "Developers can subscribe to this mailing list to receive automatic updates from <a href=\"../community/developers#bugzilla\">Bugzilla</a>."
-msgstr "Desenvolvedores podem se cadastrar e receber notas de atualização automaticamente pelo <a href=\"../community/developers#bugzilla\">Bugzilla</a>."
+msgstr "Utviklere kan abonnere på denne listen for å motta automatiske oppdateringer fra <a href=\"../community/developers#bugzilla\">Bugzilla</a>."
 
 #: contact/lists.php:57
 msgid "Send a message to this list if you have questions or comments for the Audacity developers.  You do not need to subscribe to this list to send a message."
-msgstr "Caso tenha alguma dúvida ou sugestão para os desenvolvedores do programa, envie uma mensagem para esta lista. Não é necessário inscrever-se."
+msgstr "Send en beskjed til denne listen om du har spørsmål eller kommentarer til Audacity-utviklerne. Du trenger ikke å abonnere på listen for å sende en beskjed."
 
 #: contact/privacy.php:21
 msgid "Announcement List Policy"
-msgstr "Políticas para a Lista de Anúncios"
+msgstr "Retningslinjer angående kunngjøringslisten"
 
 #: contact/privacy.php:23
 msgid ""
 "<p>You can subscribe to our announcement list by entering your address in the form on the <a href=\"../\">Audacity home page</a>.  We will use this list only to send you brief announcements of new Audacity releases.  We will never share the addresses on this list with anyone.</p>\n"
 "<p>To <b>unsubscribe</b> from the list at any time, enter your address in the form on our <a href=\"../\">home page</a> and press the \"Remove\" button.  If you have any problems or questions, please contact <a href=\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>.</p>"
 msgstr ""
-"<p>Você pode receber em seu email um anúncio de novas versões do Audacity preenchendo o formulário na <a href=\"../\">página inicial</a>. Usaremos esta lista apenas para enviar breves anúncios sobre a disponibilidade de novas versões do programa. Estes emails não serão divididos com nenhuma entidade ou pessoa física.</p>\n"
-"<p>Para <b>desinscrever-se</b> da lista, coloque o mesmo email da inscrição no formulário da <a href=\"../\">página incial</a> e clique no botão Remover. Para maiores esclarecimentos sobre esta política de uso dos emails, por favor entre em contato, em inglês, com <a href=\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>.</p>"
+"<p>Du kan abonnere på kunngjøringslisten vår ved å skrive inn adressen din på skjemaet på <a href=\"../\">hjemmesiden til Audacity</a>. Vi kommer bare til å bruke denne listen til å sende deg korte kunngjøringer om nye Audacity-utgivelser. Vi kommer aldri til å dele adressene på denne listen med noen.</p>\n"
+"<p>Når som helst kan du <b>stoppe abonnementet</b> til listen ved å skrive inn adressen i skjemaet på <a href=\"../\">hjemmesiden vår</a> og trykke \"Fjern\"-knappen. Hvis du har problemer eller spørsmål, vennligst ta kontakt med <a href=\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>.</p>"
 
 #: contact/privacy.php:26
 msgid "Mailing List Policy"
-msgstr "Políticas da Lista de emails"
+msgstr "Retningslinjer angående epostlisten"
 
 #: contact/privacy.php:28
 msgid ""
@@ -931,34 +911,37 @@ msgid ""
 "<p>These are public mailing lists.  When you send a message to any of these addresses, including <a href=\"../contact/\">audacity-help</a>, it will be forwarded to dozens of people, including Audacity developers and others.  SourceForge and other web sites may publish archives of these lists.  <b>Your email address will normally be removed from published archives for your privacy, and the Audacity developers will not share your address with anyone or add it to any lists.</b>  However, we can't prevent other subscribers from seeing or publishing your messages.</p>\n"
 "<p>If you have any questions about this policy or are not comfortable writing to a public mailing list, send a private e-mail to the lead Audacity developer at: <a href=\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>.</p>"
 msgstr ""
+"<p>(Dette gjelder audacity-help, audacity-users, og andre <a href=\"../contact/lists\">diskusjonslister</a>.)</p>\n"
+"<p>Disse er offentlig tilgjengelige e-postlister. Når du sender en beskjed til en av disse adressene, inklusive <a href=\"../contact/\">audacity-help</a>, vil den bli videresendt til dusinvis av mennesker, bl.a. utviklerne av Audacity, og andre. SourceForge og andre nettsteder kan publisere arkiver av disse listene. <b>E-postadressen vil vanligvis bli fjernet fra publiserte arkiver av hensyn til ditt personvern, og utviklerne av Audacity vil ikke dele din adresse med noen elelr legge den til noen lister.</b> Likevel, vi kan ikke hindre andre abonnenter fra å se eller publisere dine e-poster.</p>\n"
+"<p>Hvis du har noen spørsmål om disse retningslinjene, eller du ikke er tilfreds med å skrive til en offentlig tilgjengelig e-postliste, vennligst send en privat e-post til hovedutvikleren av Audacity på: <a href=\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>.</p>"
 
 #: download/index.php:15
 msgid "Select your operating system to download the latest version of the free Audacity sound editor."
-msgstr "Selecione seu sistema operacional para instalar a mais nova versão do Audacity."
+msgstr "Velg ditt operativsystem for å laste ned den seneste versjonen av Audacity, det frie lydredigeringsprogrammet."
 
 #: download/index.php:22
 msgid "Mac OS 9 or X"
-msgstr "Mac OS 9 ou X"
+msgstr "Mac OS 9 eller X"
 
 #: download/index.php:28
 msgid "You can also <a href=\"buy\">purchase</a> a copy of Audacity on CD."
-msgstr "Também é possível <a href=\"buy\">comprar</a> uma cópia do Audacity em CD."
+msgstr "Du kan også <a href=\"buy\">kjøpe</a> en kopi av Audacity på CD."
 
 #: download/index.php:30
 msgid "If you wish to compile Audacity yourself, download the <a href=\"source\">source code</a>."
-msgstr "Caso queira compilar o Audacity em seu sistema, copie o <a href=\"source\">código-fonte</a>."
+msgstr "Hvis du ønsker å kompilere Audacity selv kan du laste ned <a href=\"source\">kildekoden</a>."
 
 #: download/index.php:32
 msgid "You may modify, distribute, and sell Audacity under the <a href=\"../about/license\">GNU GPL</a>."
-msgstr "Você pode modificar, distribuir ou vender o Audacity nos termos da licença <a href=\"../about/license\">GNU GPL</a>."
+msgstr "Du kan modifisere, distribuere og selge Audacity under lisensen <a href=\"../about/license\">GNU GPL</a>."
 
 #: download/buy.php:9
 msgid "Purchase Audacity on CD"
-msgstr "Compre o Audacity em CD"
+msgstr "Kjøp Audacity på CD"
 
 #: download/buy.php:13
 msgid "Audacity is free to download, but vendors are also free to sell copies of the program, thanks to the <a href=\"../about/license\">GNU General Public License</a>.  If you want a copy of Audacity on CD-ROM, we encourage you to buy from a vendor listed below."
-msgstr "O Audacity é gratuito para ser copiado e instalado via Internet. No entanto, é possível comprar cópias do programa graças à licença <a href=\"../about/license\">GNU General Public License</a>.  Caso queira comprar uma cópia em CD do programa, visite um dos sites abaixo:"
+msgstr "Audacity kan lastes ned gratis, men forhandlere har også lov til å selge kopier av programmet, takket være <a href=\"../about/license\">GNU General Public License</a>.  Hvis du vil ha en kopi av Audacity på CD-ROM anbefaler vi deg å kjøpe fra en av forhandlerne på listen nedenfor."
 
 #: download/buy.php:15
 msgid ""
@@ -966,41 +949,41 @@ msgid ""
 "  <p><a href=\"http://theopencd.sunsite.dk/\">TheOpenCD</a> is a collection of high-quality free software for Microsoft Windows, including Audacity.  You can <a href=\"http://theopencd.sunsite.dk/wheretobuy.php\">purchase a copy of TheOpenCD</a> from several different vendors.</p>"
 msgstr ""
 "<h3>TheOpenCD (Windows)</h3>\n"
-"  <p><a href=\"http://theopencd.sunsite.dk/\">TheOpenCD</a> é uma coleção de programas gratuitos para Microsoft Windows, que inclui o Audacity. <a href=\"http://theopencd.sunsite.dk/wheretobuy.php\">Clique aqui </a> e compre um cópia do TheOpenCD. </p>"
+"  <p><a href=\"http://theopencd.sunsite.dk/\">TheOpenCD</a> er en samling med gratis kvalitetsprogramvare for Microsoft Windows, som inkluderer Audacity. Du kan <a href=\"http://theopencd.sunsite.dk/wheretobuy.php\">kjøpe en kopi av TheOpenCD</a> fra en rekke forskjellige forhandlere.</p>"
 
 #: download/common.inc.php:10
 msgid "LAME MP3 encoder"
-msgstr "LAME MP3 encoder"
+msgstr "LAME MP3-omkoder"
 
 #: download/common.inc.php:10
 msgid "Allows Audacity to export MP3 files."
-msgstr "Permite ao Audacity exportar arquivos em formato MP3."
+msgstr "Lar Audacity eksportere MP3-filer."
 
 #: download/common.inc.php:11
 msgid "VST Enabler"
-msgstr "Habilitador de VST"
+msgstr "VST Enabler"
 
 #: download/common.inc.php:11
 msgid "Allows Audacity to load VST plug-ins."
-msgstr "Permite ao Audacity executar plug-ins VST."
+msgstr "Lar Audacity laste inn VST-tillegg."
 
 #: download/common.inc.php:12
 msgid "Download additional effects and filters."
-msgstr "Instale efeitos e filtros adicionais."
+msgstr "Last ned ytterligere effekter og filtere."
 
 #: download/common.inc.php:13
 #: download/source.php:25
 #, php-format
 msgid "If you have trouble with your download, or need an older version of Audacity, try our <a href=\"%s\">alternate download links</a>."
-msgstr "Caso não consiga instalar o Audacity a partir destes links, tente a página de <a href=\"%s\">versões alternativas</a>."
+msgstr "Hvis du har problemer med å laste ned, eller trenger en eldre versjon av Audacity, prøv våre <a href=\"%s\">alternative nedlastingslenker</a>."
 
 #: download/linux.php:15
 msgid "The easiest way to install the free Audacity audio editor on GNU/Linux (and other Unix-like systems) is to download a package built for your operating system:"
-msgstr "A maneira mais simples de instalar o Audacity no seu sistema Linux ou Unix é copiar uma versão compilada para o seu sistema:"
+msgstr "Den enkleste måten å installere det frie lydredigeringsprogrammet Audacity på GNU/Linux (og andre Unix-lignende systemer) er å laste ned en pakke bygget for ditt operativsystem:"
 
 #: download/linux.php:29
 msgid "Linux and Unix users may also compile Audacity from <a href=\"source\">source code</a>."
-msgstr "Usuários de Linux e Unix podem compilar o Audacity a partir do seu <a href=\"source\">código-fonte</a>."
+msgstr "Linux og Unix-brukere kan også kompilere Audacity selv fra <a href=\"source\">kildekoden</a>."
 
 #: download/mac.php:10
 msgid "Mac OS 9 / X"
@@ -1010,97 +993,97 @@ msgstr "Mac OS 9 / X"
 #: download/source.php:16
 #: download/windows.php:16
 msgid "Recommended Download"
-msgstr "Componentes recomendados"
+msgstr "Anbefalt nedlasting"
 
 #: download/mac.php:23
 msgid "(Unfortunately, we no longer have the resources to provide new versions of Audacity for Mac OS 9.)"
-msgstr "(Infelizmente não estamos desenvolvendo novas versões para Mac OS 9)"
+msgstr "(Uheldigvis her vi ikke lenger nok ressurser til å tilby nye versjoner av Audacity til Mac OS 9.)"
 
 #: download/mac.php:26
 #: download/source.php:22
 #: download/windows.php:21
 msgid "Optional Downloads"
-msgstr "Componentes opcionais"
+msgstr "Valgfrie nedlastinger"
 
 #: download/mac.php:31
 #: download/windows.php:39
 msgid "System Requirements"
-msgstr "Requisitos mínimos do sistema"
+msgstr "Systemkrav"
 
 #: download/mac.php:33
 msgid "Audacity 1.2 requires Mac OS X 10.1 or later."
-msgstr "O Audacity 1.2 requer Mac OS X 10.1 ou mais novo."
+msgstr "Audacity 1.2 krever Mac OS X 10.1 eller nyere."
 
 #: download/mac.php:34
 msgid "Audacity 1.0 requires Mac OS 9.0 or later."
-msgstr "O Audacity 1.0 requer Mac 9.0 ou mais novo."
+msgstr "Audacity 1.0 krever Mac OS 9.0 eller nyere."
 
 #: download/mac.php:35
 #: download/windows.php:42
 msgid "Audacity runs best with at least 64 MB RAM and 300 MHz processor."
-msgstr "O Audacity roda melhor num processador de no mínimo 300MHz e 64 Mega de RAM."
+msgstr "Audacity kjører best med minst 64 MB RAM og 300 MHz prosessor."
 
 #: download/nyquistplugins.php:10
 msgid "Download Nyquist Plug-Ins"
-msgstr "Copiando plug-ins Nyquist"
+msgstr "Last ned programtillegg for Nyquist"
 
 #. i18n-hint: Sorry, the actual plug-in descriptions are not translatable yet.
 #: download/nyquistplugins.php:15
 msgid "<p>These are optional plug-in effects for the Audacity sound editor.  They are written in the <a href=\"../help/nyquist\">Nyquist programming language</a>.  For installation instructions, see the main <a href=\"plugins\">plug-ins page</a>.</p>"
-msgstr ""
+msgstr "<p>Disse er valgfrie tilleggseffekter for lydredigeringsprogrammet Audacity. De ble skrevet i <a href=\"../help/nyquist\">programmeringsspråket Nyquist</a>. Trenger du installeringsinstruksjoner, vennligst les siden om <a href=\"plugins\">programtillegg</a>.</p>"
 
 #: download/plugins.php:9
 msgid "Plug-In Effects"
-msgstr "Plug-ins de efeitos"
+msgstr "Tilleggseffekter"
 
 #: download/plugins.php:14
 msgid "You can download and install plug-ins to add extra effects to Audacity.  Plug-ins appear at the bottom of the \"Effect\" menu.  To install new plug-ins, place them in the <b>Plug-Ins</b> folder inside the Audacity installation folder.  On Windows computers, this is usually under \"Program Files.\"  On Mac OS X, it is usually under \"Applications.\""
-msgstr ""
+msgstr "Du kan laste ned og installere programtillegg for å legge til ekstra-effekter i Audacity. Tillegg dukker opp på bunnen av \"Effekt\"-menyen. For å installere tillegg, plasser dem i <b>Plug-Ins</b>-mappa i installasjonsmappa til Audacity. På Windows-maskiner er dette vanligvis under \"Programfiler.\" På Mac OS X er det vanligvis under \"Programmer.\""
 
 #: download/plugins.php:16
 msgid "LADSPA Plug-Ins"
-msgstr "Plug-Ins LADSPA"
+msgstr "LADSPA-tillegg"
 
 #: download/plugins.php:17
 msgid "Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity comes with sample LADSPA effects for Mac and Windows.  For more information and downloads, see the <a href=\"http://www.ladspa.org/\">LADSPA web site</a>.</p>"
-msgstr ""
+msgstr "Audacity har innebygd støtte for LADSPA-tillegg. Disse programtilleggene er for det meste bygd for Linux, men noen er tilgjengelige for andre operativsystemer også. Audacity har innebygd et utvalg LADSPA-effekter for Mac og Windows. Hvis du vil ha mer informasjon og nedlastinger kan du se på <a href=\"http://www.ladspa.org/\">LADSPA sitt nettsted</a>.</p>"
 
 #: download/plugins.php:19
 msgid "Nyquist Plug-Ins"
-msgstr "Plug-ins Nyquist "
+msgstr "Nyquist-tillegg"
 
 #: download/plugins.php:20
 msgid "Audacity has built-in support for cross-platform Nyquist effects.  You can download additional <a href=\"nyquistplugins\">Nyquist plug-ins</a>, or create your own using the <a href=\"../help/nyquist\">Nyquist programming language</a>"
-msgstr ""
+msgstr "Audacity har innebygd støtte for plattformsuavhengige Nyquist-effekter. Du kan laste ned ytterlige <a href=\"nyquistplugins\">Nyquist-tillegg</a> eller lage dine egne vha. <a href=\"../help/nyquist\">Nyquist-programmeringsspråket</a>"
 
 #: download/plugins.php:22
 msgid "VST Plug-Ins"
-msgstr "Plug-Ins VST"
+msgstr "VST-tillegg"
 
 #: download/plugins.php:23
 msgid "Audacity can load VST effects (for Mac OS or Windows) using the optional <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>.  You can find VST effects at <a href=\"http://www.kvraudio.com/\">KVR Audio</a> and <a href=\"http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-ins/\">other plug-in sites</a>.</p>"
-msgstr ""
+msgstr "Audacity kan laste inn VST-effekter (for Mac OS eller Windows) vha. det valgfrie tillegget <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>. Du kan laste ned VST-effekter fra <a href=\"http://www.kvraudio.com/\">KVR Audio</a> eller <a href=\"http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-ins/\">andre sider for programtillegg</a>.</p>"
 
 #: download/release-notes.php:16
 msgid "Known Problems"
-msgstr "Falhas conhecidas"
+msgstr "Kjente problemer"
 
 #: download/release-notes.php:17
 #, php-format
 msgid "The following are known bugs or problems in Audacity %s:"
-msgstr "Estas são as falhas já conhecidas no Audacity %s:"
+msgstr "De følgende er kjente programfeil eller problemer i Audacity %s:"
 
 #: download/release-notes.php:19
 msgid "Audacity can import and display MIDI files, but cannot play or edit them."
-msgstr "O Audacity pode importar e exibir arquivos MIDI, mas não pode reproduzí-los ou editá-los."
+msgstr "Audacity kan importere og vise MIDI-filer, men ikke spille eller redigere dem."
 
 #: download/release-notes.php:20
 msgid "Linux:  Recording in full duplex (playing existing tracks while recording) on some systems causes mono recordings to sound distorted or low-pitched.  To work around this problem, set Audacity to record in stereo."
-msgstr ""
+msgstr "Linux: Innspilling i full duplex (spille av eksisterende spor under opptak) vil på noen systemer gjøre at mono-opptak lyder forvrengt eller har for lav tone. For å unngå dette problemet kan du få Audacity til å ta opp i stereo."
 
 #: download/release-notes.php:21
 msgid "MacOS X: Audacity cannot work with files or folders that are contained inside folders with non-English characters (accents, symbols, etc.) in their names.  Files with accented characters work, and Audacity projects with accented characters work.  Only folders with accented characters in their names will cause problems."
-msgstr ""
+msgstr "MacOS X: Audacity kan ikke jobbe med filer eller mapper som er inneholdt i mapper med ikke-Engelske tegn (aksenttegn, symboler osv.) i navnet. Filer med aksenttegn fungerer, og Audacity-prosjekter med aksenttegn fungerer. Bare mapper med aksenttegn i navnet vil skape problemer."
 
 #: download/release-notes.php:24
 msgid ""
@@ -1118,60 +1101,67 @@ msgid ""
 "  <li><p>New or updated translations: Italian (it), Hungarian (hu), Ukrainian (uk), Spanish (es). Polish (pl), Simplified Chinese (zh), Norsk-Bokmal (nb), French (fr), Russian (ru).</p></li>\n"
 "</ul>"
 msgstr ""
+"<h3>Forandringer i Audacity 1.2.3</h3>\n"
+"<ul>\n"
+"  <li><p>Windows: Rettet en feil som gjorde at opptak stoppet eller ble vist feil etter rundt 50 minutter på noen Windows-systemer. (Dette ble delvis rettet i Audacity 1.2.2, men virket fortsatt ikke på noen systemer).</p></li>\n"
+"  <li><p>Mac OS X: Rettet en større feil som fikk Audacity til å kræsje på tilsynelatende tilfeldige tidspunkter på noen Mac-systemer, spesielt ved avspilling eller opptak.</p></li>\n"
+"<li><p>Effektene Forandre tonehøyde og Forandre tempo har blitt oppgradert til en ny versjon av biblioteket SoundTouch av Olli Parviainen, med bedre hastighet og høyere kvalitet.</p></li>\n"
+"<li><p>libsndfile har blitt oppgradert til versjon 1.0.11. Audacity kan nå importere filer fra Sound Designer II (SDII).</p></li>\n"
+"<li><p>Rettet en feil som fikk programmet til å kjøre sakte ved bruk av Omhyllingskurveverktøyet.</p></li>\n"
+"<li><p>Shift-klikking på en Demp- eller Solo-knapp vil nå skru demp av (eller solo av) på alle andre spor.</p></li>\n"
+"<li><p>Nyquist-innstikksmoduler kan nå akseptere strenger som inndata. I tillegg har en \"Debug\"-knapp blitt lagt til dialogene til Nyquist-effektene, som gjør at du kan se all utdataen produsert av Nyquist, for hjelp ved avlusing.</p></li>\n"
+"<li><p>Når lydfilen som er referert til (\"aliased\") av et Audacity prosjekt mangler, vil Audacity nå alltid spille stillhet. Før ville Audacity noen ganger gjenta den nyeste av lydene som tidligere hadde blitt spilt.</p></li>\n"
+"<li><p>VU-metrene vil nå alltid omstarte når lyd I/O (inn/ut) har stoppet.</p></li>\n"
+"<li><p>Nye eller oppdaterte oversettelser: Italiensk (it), Ungarsk (hu), Ukransk (uk), Spansk (es), Polsk (pl), Forenklet Kinesisk(zh), Norsk-Bokmål (nb), Fransk (fr), Russisk (ru).</p></li>\n"
+"</ul>"
 
+# utviklingskoden ?
 #: download/source.php:24
 msgid "You can also get the latest development code from <a href=\"../community/developers#cvs\">CVS</a>."
-msgstr "É possível obter o código-fonte em desenvolvimento pelo <a href=\"../community/developers#cvs\">CVS</a>."
+msgstr "Du kan også få den nyeste utviklingskoden fra <a href=\"../community/developers#cvs\">CVS</a>."
 
 #: download/source.php:28
 msgid "How to Build Audacity"
-msgstr "Como compilar o Audacity"
+msgstr "Hvordan bygge Audacity"
 
+# bruke parantes?
 #: download/source.php:30
 msgid "Dependencies"
-msgstr "Dependências"
+msgstr "Bindinger (avhengigheter)"
 
 #: download/source.php:31
 msgid "The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is <b>required</b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the gtk2 or unicode options.  (Future versions of Audacity will support newer wxWidgets and GTK libraries.)"
-msgstr ""
+msgstr "<a href=\"http://wxwidgets.org\">wxWidgets</a>-biblioteket er <b>nødvendig</b>. Audacity 1.2 trenger wxGTK 2.4, kompilert <em>uten</em> tilleggene gtk2 eller unicode. (Fremtidige versjoner av Audacity vil støtte nyere bibliotek av wxWidgets og GTK.)"
 
 #: download/source.php:32
 msgid "You may also choose to install the following <b>optional libraries</b>, or get them by checking out Audacity from CVS."
-msgstr ""
+msgstr "Du kan også velge å installere følgende <b>valgfrie bibliotek</b>, eller du kan få dem ved å sjekke ut Audacity fra CVS."
 
 #: download/source.php:38
 msgid "If you install libraries using a package management system like Apt or RPM, make sure to install the \"dev\" (development) packages for each library."
-msgstr ""
+msgstr "Hvis du installerer bibliotek vha. et pakkehåndteringssystem som Apt eller RPM, sjekk at du installerer pakkene under kategorien \"dev\" (development, utvikling) for hvert bibliotek."
 
 #: download/source.php:40
 msgid "Compilation"
-msgstr "Compilação"
+msgstr "Kompilering"
 
 #: download/source.php:41
 msgid "To build Audacity, run the following command in the Audacity source directory:"
-msgstr ""
+msgstr "For å bygge Audacity, kjør følgende kommando i Audacity sin rotkatalog:"
 
 #: download/source.php:47
 msgid "You can type <kbd>./configure --help</kbd> to see a list of compilation options.  After Audacity is compiled, run <kbd>make install</kbd> as root to install it."
-msgstr ""
+msgstr "Du kan skrive <kbd>./configure --help</kbd> for å se en liste over kompileringsvalg. Etter at Audacity er kompilert, kjør <kbd>make install</kbd> som rotbruker for å installere det."
 
-# news noticias
 #: download/source.php:49
-#, fuzzy
 msgid "Notes"
-msgstr "Notícias"
+msgstr "Bemerkninger"
 
 #: download/source.php:50
 msgid "For additional information about building Audacity on Windows or Mac OS X, see the files <b>win/compile.txt</b> and <b>mac/compile.txt</b> in the Audacity source code directory."
-msgstr ""
+msgstr "Hvis du vil ha mer informasjon om å bygge Audacity på Windows eller Mac OS X, les filene <b>win/compile.txt</b> og <b>mac/compile.txt</b> i kildekodemappa til Audacity."
 
-#  i18n-hint:  If this string is translated, it will appear above the list of
-#  original string.)
-#  i18n-hint:  If this string is translated, it will appear above the list of
-#  optional downloads on the "downloads/windows" page.  If there are extra
-#  files available in your language, add them here.  Otherwise, do not
-#  translate this string.  (Or make the translation identical to the
-#  original string.)
+#. i18n-hint:  If this string is translated, it will appear above the list of
 #: download/windows.php:28
 #: download/windows.php:29
 msgid "localized_downloads_windows"
@@ -1179,60 +1169,58 @@ msgstr ""
 
 #: download/windows.php:41
 msgid "Windows 98, ME, 2000, XP, or later.  (Sorry, Audacity is not supported on Windows 95 or NT 4.0.)"
-msgstr "Windows 98, ME, 2000, XP, ou mais novo.  (Não há suporte para Windows 95 ou NT 4.0.)"
+msgstr "Windows 98, ME, 2000, XP eller.  (Beklager, Audacity er ikke støttet på Windows 95 eller NT 4.0.)"
 
 #  i18n-hint:  Please add a note that the manuals below are in English.  If
+#  there is documentation available in your language, link to it here.
 #. i18n-hint:  Please add a note that the manuals below are in English.  If
-#. there is documentation available in your language, link to it here.
 #: help/documentation.php:16
 msgid "This page contains manuals and user’s guides for the free Audacity sound editor.  For additional help, see the <a href=\"faq\">Frequently Asked Questions</a> and <a href=\"tutorials\">Tutorials</a>."
-msgstr "Esta página contém guias e manuais de usuário para o Audacity. Para encontrar mais ajuda, veja a  <a href=\"faq\">FAQ</a>(Perguntas e Respostas Comuns) e os <a href=\"tutorials\">Tutoriais</a>."
+msgstr "Denne siden inneholder håndbøker og brukerveiledninger for Audacity, det frie lydredigeringsprogrammet. Hvis du vil ha mer hjelp kan du lese <a href=\"faq\">Ofte Spurte Spørsmål</a> og <a href=\"tutorials\">Veiledninger</a>. "
 
 #: help/documentation.php:19
 msgid "Quick Reference Guide"
-msgstr "Guia de Referência Rápida"
+msgstr "Hurtigreferanse"
 
 #: help/documentation.php:21
 msgid "Read the Audacity reference online."
-msgstr "Leia o guia de referência do Audacity online."
+msgstr "Les Audacity-referansen på nett."
 
 #: help/documentation.php:21
 msgid "(You can also access this reference though the \"Help\" menu in the Audacity program.)"
-msgstr "(Acessável também pelo menu \"Ajuda\" do Audacity)"
+msgstr "(Du kan også få tilgang til denne referansen gjennom \"Hjelp\"-menyen i Audacity-programmet.)"
 
 #: help/documentation.php:22
 msgid "Printable version of the Audacity reference."
-msgstr "Versão para impressão da guia de referência."
+msgstr "Utskriftsversjon av Audacity-referansen."
 
 #: help/documentation.php:25
 msgid "Audacity User’s Manual"
-msgstr "Manual do Usuário do Audacity"
+msgstr "Brukerhåndboka til Audacity"
 
 #: help/documentation.php:27
 msgid "Read the Audacity manual online."
-msgstr "Leia o manual online."
+msgstr "Les brukerhåndboka til Audacity på nettet."
 
 #: help/documentation.php:28
 msgid "Download the Audacity manual."
-msgstr "Copie o manual do Audacity."
+msgstr "Last ned håndboka til Audacity"
 
 #: help/documentation.php:28
 msgid "(To use the downloaded manual, unzip it and then open the \"index.html\" file.)"
-msgstr "(Para ler o manual, utilize um descompactador de arquivos ZIP e abra o arquivo \"index.html\" no seu navegador)"
+msgstr "(For å bruke håndboka du har lastet ned, pakk ut og åpne \"index.html\"-fila.)"
 
 #: help/documentation.php:31
-#: help/index.php:26
 msgid "Other Resources"
-msgstr "Outros recursos"
+msgstr "Andre ressurser"
 
 #: help/documentation.php:33
-#: help/index.php:28
 msgid "<a href=\"http://audacityteam.org/wiki/\">The Audacity Wiki</a> contains tips, tricks, and documentation that anyone can edit."
-msgstr "<a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a> contém dicas, truques e documentação livremente editável por qualquer pessoa."
+msgstr "<a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a> inneholder tips, triks og dokumentasjon som kan redigeres av alle."
 
 #: help/faq.php:26
 msgid "Is Audacity really free?  Why?"
-msgstr "O Audacity é realmente gratuito? "
+msgstr "Er Audacity virkelig fritt og gratis? Hvorfor?"
 
 #: help/faq.php:27
 msgid ""
@@ -1240,31 +1228,29 @@ msgid ""
 "<p>The authors of Audacity decided to release it under the GPL for many reasons. Some of us do it out of generosity. Some of us do it for moral reasons, because we feel that all software should be free; others believe that there is a place for both free and proprietary software.</p>\n"
 "<p>One reason Audacity is free is so that it will be more popular and useful.  Yet another reason is to encourage collaboration. Because of Audacity's free license, dozens of people around the world have contributed code, bug fixes, documentation, and graphics.</p>"
 msgstr ""
-"<P>Sim, em praticamente todos os casos. O Audacity não é apenas gratuito, <a href=\"../about/\">é livre também</a>, e pode ser distribuído como você quiser.</p>\n"
-"<P>Audacity é distribuído segundo os termos da <a href=\"../about/license\">General Public License (GPL)</a>. Você é livre para utilizar este programa para fins comerciais ou pessoais. Você também pode doá-lo ou vendê-lo. O código-fonte é disponível publicamente na Internet e você pode modificá-lo à vontade, apenas deixando as suas alterações e este novo fonte disponível também sob as mesmas condições da GPL.</p>\n"
-"<P>O programa foi construído usando as bibliotecas wxWidgets, que são licenciadas segundo a LGPL, que é ainda menos restritiva que a GPL. Para conhecer mais, visite wxwidgets.org.</p>\n"
-"<P>Uma razão para o Audacity ser livre é para tornar-se mais popular. Nós da equipe de desenvolvimento do Audacity preferimos ver milhões de pessoas utilizando nosso programa sem pagar por isso do que poucas que pudessem pagar.</p>\n"
-"<P>Outra razão é que o software-livre permite e encoraja a colaboração. Se o Audacity fosse distribuído como \"Shareware\" dificilmente os usuários se sentiriam convidados a contribuir com relatos de problemas, testes e documentação. </p>"
+"<p>Ja, Audacity er <a href=\"../about/\">fullstendig fri, åpen-kildekode programvare</a>. Du kan fritt frem anvende dette programmet for privat eller kommersiell bruk. Du kan også fritt gi det bort, selge det eller modifisere det til egen bruk, under vilkårene gitt av <a href=\"../about/license\">GNU General Public License</a>.</p>\n"
+"<p>Forfatterne av Audacity bestemte seg for å gi ut programmet under GPL for flere grunner. Noen av oss gjør det av generøsitet. Noen gjør det for etiske grunner, fordi vi føler at all programvare burde være gratis, mens andre av oss mener at det er nødvendig med både gratis og kommersiell programvare i verden. </p>\n"
+"<p>En grunn til at Audacity er gratis er så det blir mer populært. Mange av oss vil heller se en million mennesker som bruker Audacity med glede uten å betale noe, enn å ha tusen mennesker betale oss. De fleste brukere er mer vennlige når de får noe gratis.</p>"
 
 #: help/faq.php:32
 msgid "Does Audacity contain any spyware or adware?"
-msgstr "O Audacity contém Spyware ou Adware?"
+msgstr "Inneholder Audacity noe spyware eller adware (snikreklame)?"
 
 #: help/faq.php:33
 msgid "<p>No.  Audacity does not include any spyware or adware.  Audacity is <a href=\"../about/\">completely free and open source</a>.  It is developed by a not-for-profit volunteer group, and the source code is available for anyone to study or use.</p>"
-msgstr "<P>Não!! O programa não contém nenhum spyware ou adware. O Audacity é <a href=\"../about/\">completamente livre e de código aberto. </A> Ele é desenvolvido e mantido por um grupo de voluntários sem fins lucrativos e seu código fonte está publicamente disponível para qualquer pessoa.</P>"
+msgstr "<p>Nei. Audacity inneholder ikke noen form for spyware eller adware. Audacity er <a href=\"../about/\">fullstendig fritt og utgitt med åpen kildekode</a>. Det blir utviklet på frivillig basis av en ideell (not-for-profit) gruppe, og kildekoden er tilgjengelig for enhver som vil studere eller bruke den.</p>"
 
 #: help/faq.php:36
 msgid "May I distribute copies of Audacity?"
-msgstr "Posso distribuir cópias do programa?"
+msgstr "Kan jeg distribuere kopier av Audacity?"
 
 #: help/faq.php:37
 msgid "<p>You can redistribute Audacity under the GNU General Public License, which gives you permission to modify, copy, and sell the program as long as you keep the same license and make the source code available.  For details, see our <a href=\"../about/license\">license information</a>.</p>"
-msgstr ""
+msgstr "<p>Du kan gjendistribuere Audacity under lisensen GNU General Public Licence, som gir deg tillatelse til å modifisere, kopiere og selge programmet så lenge du holder deg til samme lisens og gjør kildekoden tilgjengelig. Hvis du vil ha flere detaljer, se <a href=\"../about/license\">lisensinformasjonen</a> vår.</p>"
 
 #: help/faq.php:40
 msgid "Someone is selling Audacity on eBay.  Is this legal?"
-msgstr "Há pessoas vendendo o Audacity no Ebay/MercadoLivre. Isto é legal?"
+msgstr "Noen selger Audacity på eBay. Er dette lovlig?"
 
 #: help/faq.php:41
 msgid ""
@@ -1272,32 +1258,35 @@ msgid ""
 "<p>Some vendors try to trick customers by selling the software under a different name.  If you bought a product and later found out it was Audacity, we encourage you to <b>ask for a refund or file a complaint</b> if you feel you did not get a fair deal.  We ask vendors to give proper credit to the Audacity project, and allow users to make an informed choice.</p>\n"
 "<p><b>If you want to buy Audacity on CD</b>, please check out the vendors listed on our <a href=\"../download/buy\">purchase page</a>.</p>"
 msgstr ""
+"<p>Det er lovlig å selge Audacity, så lenge selgeren gjør programmet og kildekoden tilgjengelig under lisensen <a href=\"../about/license\">GNU General Public License</a>.</p>\n"
+"<p>Noen forhandlere prøver å lure kunder ved å selge programvaren under et annet navn. Hvis har kjøpt et produkt og senere fant ut at det var Audacity vil vi anbefale at du <b>spør etter refusjon eller inngir en klage</b> om du føler at du ikke fikk en rettferdig handel. Vi spør forhandlere om å gi rettmessig anerkjennelse til Audacity-prosjektet, og la brukere få ta informerte valg.</p>\n"
+"<p><b>Hvis du har lyst til å kjøpe Audacity på CD</b>, vennligst forespør deg hos forhandlerne som står oppført på vår <a href=\"../download/buy\">kjøpsside</a>.</p>"
 
 #: help/faq.php:46
 msgid "Does Audacity work with screen-reader programs for blind users?"
-msgstr "O Audacity é compatível com programas de leitura de tela para cegos?"
+msgstr "Fungerer Audacity med skjermleserprogrammer for blinde brukere?"
 
 #  i18n-hint: The link below is in English.
 #. i18n-hint: The link below is in English.
 #: help/faq.php:48
 msgid "<p>Audacity works with most screen-reader programs, but some of Audacity’s features are difficult or impossible to use without a mouse.  We are working on improving the program’s accessibility and keyboard shortcuts.  For more information, see <a href=\"http://audacityteam.org/wiki/index.pl?AudacityForBlindUsers\">Audacity for Blind Users</a>.</p>"
-msgstr ""
+msgstr "<p>Audacity virker med de fleste skjermleserprogrammer, men noen av Audacity sine funksjoner er vanskelige eller umulige å bruke uten mus. Vi jobber med å forbedre programmets tilgjengelighet og tastatursnarveier. Hvis du vil ha mer informasjon kan du lese om <a href=\"http://audacityteam.org/wiki/index.pl?AudacityForBlindUsers\">Audacity for blinde brukere (på engelsk)</a>.</p>"
 
 #: help/faq.php:51
 msgid "What does “time remaining” mean?  Does Audacity expire?"
-msgstr "O que quer dizer a expressão \"Tempo restante\"? O programa vai expirar?"
+msgstr "Hva betyr \"(Innspillings)tid som gjenstår\"? Kommer Audacity til å utløpe?"
 
 #: help/faq.php:52
 msgid "<p>Audacity does not expire.  During recording, it displays how long you can record before running out of space on your computer’s hard drive.  To record for a longer time, delete old files or save your project on a larger disk.</p>"
-msgstr "<P>O Audacity não expira nunca. Durante a gravação, é mostrado o tempo de áudio disponível para gravação no seu computador, de acordo com a quantidade de espaço no seu disco rígido.</p>"
+msgstr "<p>Audacity går ikke ut på dato. Under opptak viser programmet hvor lenge du kan ta opp før du går tom for plass på harddisken til maskinen din. Hvis du vil ta opp mer må du slette gamle filer eller lagre prosjektet på en større disk.</p>"
 
 #: help/faq.php:57
 msgid "Installation and Plug-Ins"
-msgstr "Instalação e Plug-ins"
+msgstr "Installasjon og programtillegg"
 
 #: help/faq.php:60
 msgid "How do I download and install the LAME MP3 encoder?"
-msgstr "Como copiar e instalar o Lame MP3 encoder?"
+msgstr "Hvordan laster jeg ned og installerer LAME MP3-omkoderen?"
 
 #: help/faq.php:61
 #, php-format
@@ -1319,10 +1308,26 @@ msgid ""
 "  <li>The first time you use the \"Export as MP3\" command, Audacity will ask you where LameLib is saved.</li>\n"
 "</ol>"
 msgstr ""
+"<p>På grunn av programvarepatenter kan vi ikke selv distribuere programvaren for MP3-omkoding. Følg disse instruksjonene for å bruke den frie LAME-omkoderen for å eksportere MP3-filer med Audacity.\n"
+"<h3>Windows</h3>\n"
+"<ol>\n"
+"  <li>Gå til <a href=\"%s\">nedlastingssiden til LAME</a>.</li>\n"
+"  <li>Klikk på en av lenkene fra listen av identiske lenker \"%s\"lenker.</li>\n"
+"  <li>Når du er ferdig med å laste ned LAME, pakk ut og lagre fila <b>lame_enc.dll</b> et sted på harddisken.</li>\n"
+"  <li>Første gangen du bruker kommandoen \"Eksporter som MP3\" vil Audacity spørre deg hvor lame_enc.dll ligger lagret.</li>\n"
+"</ol>\n"
+"<h3>Mac OS 9 eller X</h3>\n"
+"<ol>\n"
+"  <li>Gå til <a href=\"%s\">nedlastingssiden til LAME</a>.</li>\n"
+"  <li>Last ned versjonen av LameLib for som passer ditt operativsystem.</li>\n"
+"  <li>Når du er ferdig med å laste ned, bruk Stuffit Expander for å pakke ut filene (dette skjer kanskje automatisk).</li>\n"
+"  <li>Lagre fila kalt \"LameLib\" et sted på harddisken.</li>\n"
+"  <li>Første gangen du bruker kommandoen \"Eksporter som MP3\" vil Audacity spørre deg hvor LameLib ligger lagret.</li>\n"
+"</ol>"
 
 #: help/faq.php:80
 msgid "How do I install VST plug-ins?"
-msgstr "Como instalar plug-ins VST?"
+msgstr "Hvordan installerer jeg VST-tillegg?"
 
 #: help/faq.php:81
 #, php-format
@@ -1334,10 +1339,16 @@ msgid ""
 "</ol>\n"
 "<p>See also: <a href=\"faq?s=install&amp;i=vst-bugs\">Why do some VST plug-ins look wrong, or not work?</a></p>"
 msgstr ""
+"<ol>\n"
+"<li><p>Først, last ned og pakk ut <a href=\"%s\">VST Enabler</a>.</li>\n"
+"<li><p>Plasser VST Enabler, nå upakket, sammen med VST-tilleggene i \"Plug-ins\"-mappa i Audacity sin installasjonsmappe (på Mac OS X er dette vanligvis i Programmer/Applications-mappa, i Windows er det vanligvis under Programfiler).</li>\n"
+"<li><p>Neste gangen du åpner Audacity vil VST-effektene dukke opp i bunnen av  \"Effekt\"-menyen.</li>\n"
+"</ol>\n"
+"<p>Se også: <a href=\"faq?s=install&amp;i=vst-bugs\">Hvorfor er det noen VST-tillegg som synes feil, eller ikke fungerer?</a></p>"
 
 #: help/faq.php:89
 msgid "Why do some VST plug-ins look wrong, or not work?"
-msgstr "Por que alguns plug-ins VST não funcionam?"
+msgstr "Hvorfor er det noen VST-tillegg som synes feil, eller ikke fungerer?"
 
 #: help/faq.php:90
 msgid ""
@@ -1345,30 +1356,33 @@ msgid ""
 "<p>Other VST plug-ins may not work at all, because of bugs in the VST Enabler.  You can <a href\"../contact/\">contact us</a> to report plug-ins that do not work.</p>  \n"
 "<p>Audacity also does not support VST instrument (VSTi) plug-ins.</p>"
 msgstr ""
+"<p><a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> har ikke ennå støtte for å vise egendefinerte grensesnitt for programtillegg. I stedet bruker den felleskontroller for alle VST-tillegg. På grunn av dette vil mange tillegg se ut eller oppføre seg forskjellig fra hvordan de er i andre programmer.</p>\n"
+"<p>Andre VST-tillegg vil kanskje ikke virke i det hele tatt, pga. feil i VST Enabler. Du kan <a href\"../contact/\">kontakte oss</a> for å melde fra om programtillegg som ikke fungerer.</p>  \n"
+"<p>Audacity støtter heller ikke tillegg av typen VST instrument (VSTi).</p>"
 
 #: help/faq.php:95
 msgid "What should I do if I have problems downloading or installing Audacity?"
-msgstr "O que fazer se tiver problemas copiando ou instalando o Audacity?"
+msgstr "Hva burde jeg gjøre dersom jeg har problemer med å laste ned eller installere Audacity?"
 
 #: help/faq.php:96
 msgid "<p>If you can't download Audacity, or if the downloaded setup file is corrupt, try downloading it from our <a href=\"http://sourceforge.net/project/showfiles.php?group_id=6235\">alternate servers</a>.</p>"
-msgstr ""
+msgstr "<p>Hvis du ikke får til å laste ned Audacity, eller installasjonsfila du lastet ned er korrupt, kan du prøve å laste ned fra disse <a href=\"http://sourceforge.net/project/showfiles.php?group_id=6235\">alternative serverne</a>.</p>"
 
 #: help/faq.php:101
 msgid "Recording"
-msgstr "Gravação"
+msgstr "Opptak"
 
 #: help/faq.php:104
 msgid "How can I record in stereo?"
-msgstr "Como gravar faixas em estéreo?"
+msgstr "Hvordan kan jeg ta opp i stereo?"
 
 #: help/faq.php:105
 msgid "<p>To record in stereo, open the Audacity preferences.  In the “Audio I/O” section, change the number of recording channels from 1 (mono) to 2 (stereo).</p>"
-msgstr ""
+msgstr "<p>For å ta opp i stereo, åpne Audacity-innstillingene. I \"Lyd I/O\"-delen, endre antallet opptakskanaler fra 1 (mono) til 2 (stereo).</p>"
 
 #: help/faq.php:108
 msgid "How do I record from vinyl records, cassette tapes, or minidiscs?"
-msgstr "Como gravar de discos de vinil, fitas cassete ou minidiscs?"
+msgstr "Hvordan tar jeg opp fra vinylplater, lydkassetter eller minidisker?"
 
 #: help/faq.php:109
 msgid ""
@@ -1382,22 +1396,31 @@ msgid ""
 "</ul>\n"
 "<p>See also: <a href=\"faq?s=files&amp;i=split\">How to split a long recording into multiple files</a>.</p>"
 msgstr ""
+"<p>Først, still inn Audacity Audacity til å <a href=\"faq?s=recording&amp;i=stereo\">ta opp i stereo</a>.</p>\n"
+"<p>Plugg så den ene enden av en stereokabel i inngangen merket \"utlinje\" eller \"hodetelefon\" på kassettspilleren, minidisk-spilleren eller stereoanlegget ditt. Den andre enden plugger du inn i \"innlinje\"-inngangen på PC-en din. Har du ikke en kabel som passer til begge disse inngangene, så finner du en på en elektronikkbutikk.</p>\n"
+"<p>Velg “Line In” som innkilde på verktøylinja i Audacity og trykk Spill inn-knappen. Mens Audacity spiller inn, starter du kassetten eller disken. Når du har fanget opp hele opptaket trykker du Stopp-knappen.</p>\n"
+"<p>Merk:</p>\n"
+"<ul>\n"
+"\t<li><p>Ikke plugg stereoanlegg ol. utstyr direkte inn i maskinens \"mikrofon\"-inngang, denne er bare beregnet på signaler lav spenning (\"mikrofon-nivå\"). Bruk i stedet \"innlinje\"-inngangen.</p></li>\n"
+"\t<li><p>Ikke koble LP-spillere direkte til PC-en. Signalet fra en LP-spiller er forvrengt, det må korrigeres ved å kjøre det gjennom en phono-forforsterker eller en mottaker med \"phono\"-inngang.</p></li>\n"
+"</ul>\n"
+"<p>Se også: <a href=\"faq?s=files&amp;i=split\">Hvordan dele et langt opptak i flere filer</a>.</p>"
 
 #: help/faq.php:118
 #: help/faq.php:177
 #: help/faq.php:226
 msgid "See also:"
-msgstr "Veja também:"
+msgstr "Se også:"
 
 #: help/faq.php:118
 #: help/faq.php:202
 #: help/faq.php:226
 msgid "How do I save my recording on an audio CD?"
-msgstr "Como salvar o projeto para um CD de Áudio?"
+msgstr "Hvordan lagrer jeg opptaket mitt på en lyd-CD?"
 
 #: help/faq.php:121
 msgid "Why can’t I hear what I’m recording?"
-msgstr "Por que não é possível ouvir o que estou gravando?"
+msgstr "Hvorfor kan jeg ikke høre det jeg tar opp?"
 
 #: help/faq.php:122
 msgid ""
@@ -1407,10 +1430,15 @@ msgid ""
 "<h3>Mac OS X</h3>\n"
 "<p>Open the Audacity preferences.  In the “Audio I/O” section, turn on the “playthrough” option.  “Hardware Playthrough” is best if it is available.  If it does not work, you can choose “Software Playthrough” instead.</p>\n"
 msgstr ""
+"<h3>Windows og Linux</h3>\n"
+"<p>For å overvåke opptaket, åpne datamaskinen sitt volum-kontrollpanel. Skru opp avspillingsvolumet (og deaktiver \"demp\"-avmerkingsboksen) for opptakskilden, vanligvis \"microphone\" eller \"line inn.\"</p>\n"
+"<p>Hvis dette ikke fungerer, åpne Audacity-innstillingene. I \"Lyd I/O\"-delen, skru på \"Spill gjennom med programvare“-valget.</p>\n"
+"<h3>Mac OS X</h3>\n"
+"<p>Åpne Audacity-innstillingene. I \"Lyd I/O\"-delen, skru på \"Spill gjennom med ...“-valget. “Spill gjennom med maskinvare” er best hvis det er tilgjengelig. Hvis det ikke fungerer, kan du velge \"Spill gjennom med programvare” insteden.</p>\n"
 
 #: help/faq.php:130
 msgid "Can I play a track while recording a new one on top of it?"
-msgstr "Posso reproduzir uma faixa enquanto gravo uma outra sobre ela?"
+msgstr "Kan jeg spille av ett spor mens jeg tar opp et nytt spor på toppen av det første?"
 
 #: help/faq.php:131
 msgid ""
@@ -1422,20 +1450,29 @@ msgid ""
 "</ol>\n"
 "<p>See also: <a href=\"faq?s=recording&amp;i=sync\">Why isn't my new track in sync with the previous ones?</a></p>"
 msgstr ""
+"<p>Dette kalles flersporsopptak. Det gjør det mulig å spille inn i harmoni med deg selv, eller legge til nye instrumenter eller stemmer til et eksisterende opptak. Følg disse stegene for å gjøre dette i Audacity:</p>\n"
+"<ol>\n"
+"  <li>Importer eller ta opp det første sporet.</li>\n"
+"  <li>Åpne “Lyd I/O”-delen av innstillingene i Audacity og merk av boksen <b>Spill andre spor samtidig med innspilling av nytt.</b></li>\n"
+"  <li>Lukk innstillingene og trykk <b>Spill inn</b>-knappen.</li>\n"
+"</ol>\n"
+"<p>Se også: <a href=\"faq?s=recording&amp;i=sync\">Hvorfor er ikke mitt nye spor synkronisert med de gamle?</a></p>"
 
 #: help/faq.php:140
 msgid "Why isn’t my new track in sync with the previous ones?"
-msgstr "Por que a nova faixa não fica em sincronia com as demais?"
+msgstr "Hvorfor er ikke mitt nye spor synkronisert med de gamle?"
 
 #: help/faq.php:141
 msgid ""
 "<p>When you make a <a href=\"faq?s=recording&amp;i=multi-track\">multi-track recording</a>, there is an unpredictable delay between playback and recording.  Audacity tries to correct for this automatically, but this doesn't yet work on all computers.</p>\n"
 "<p>If a new track is not synchronized with the others, you can zoom in and use the Time Shift tool to drag it to the correct location.</p>"
 msgstr ""
+"<p>Når du lager et <a href=\"faq?s=recording&amp;i=multi-track\">flersporsopptak</a> er det en uforutsigbar forsinkelse mellom avspilling og opptak. Audacity prøver å korrigere for dette automatisk, men det virker ikke ennå på alle datamaskiner.</p>\n"
+"<p>Hvis et spor ikke er synkronisert med andre kan du zoome inn og bruke Tidsforskyvningsverktøyet for å dra det til ønsket posisjon.</p>"
 
 #: help/faq.php:145
 msgid "Can Audacity record RealAudio or other streaming audio?"
-msgstr "É possível salvar arquivos do RealAudio ou outros formatos de Fluxo Contínuo?"
+msgstr "Kan Audacity ta opp RealAudio og annen direkteavspilt (\"streaming\") lyd?"
 
 #: help/faq.php:146
 msgid ""
@@ -1446,12 +1483,16 @@ msgid ""
 "<h3>Mac OS X</h3>\n"
 "<p>Mac OS X users can capture streaming audio using a program like <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> or <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>\n"
 msgstr ""
-"<p>Não de maneira automática. Muitos destes formatos foram projetados para tornar impossível a gravação no seu computador, preservando assim os seus direitos autorais. Estes tipos incluem Windows Media Player - .wma, Quicktime - .mov e RealPlayer - .ra . </p>\n"
-"<p>Ainda assim, é possível a gravação de qualquer tipo de som que seu computador possa reproduzir, apenas adquirindo um cabo que permita que a saída de áudio de sua placa de som (normalmente marcada como \"Line-out\") seja conectada diretamente na sua entrada de áudio, marcada como \"Line-in\".</p>/n<p>Agora, o Audacity deve poder gravar qualquer som enquanto este é reproduzido pelo seu computador.Apenas pressione \"Gravar\" no Audacity.</p>\n"
+"<h3>Windows og Linux</h3>\n"
+"<p>Med de fleste lydenheter for Windows og Linux er det mulig å ta opp hva enn lyd datamaskinen spiller, inkludert direkteavspilt lyd fra nettradio.</p>\n"
+"<p>I rullegardinmenyen på mikser-verktøylinja til Audacity velger du \"Wave Out\" eller \"Stereo Mix\" som innkilde (det eksakte navnet kan være forskjellig, avhengig av lydkortdriverne til systemet ditt). Når du nå trykker på Spill inn-knappen vil Audacity fange opp all lyd som spiller på PC-en din sine høyttalere.</p>\n"
+"<p>Hvis dette ikke fungerer på maskinen din kan du isteden bruke en kabel for å koble maskinen din sin utlinje-port (høyttalerporten) til innlinje-porten, og bruke Audacity til å ta opp fra innlinja.</p>\n"
+"<h3>Mac OS X</h3>\n"
+"<p>Mac OS X-brukere kan fange opp direkteavspilt lyd vha. programmer som f.eks. <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> eller <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>\n"
 
 #: help/faq.php:155
 msgid "Can I set Audacity to record at a certain time?"
-msgstr "Posso programar o Audacity para gravar a uma determinada hora?"
+msgstr "Kan jeg stille inn Audacity til å ta opp ved et spesielt tidspunkt?"
 
 #: help/faq.php:156
 msgid ""
@@ -1464,42 +1505,51 @@ msgid ""
 "  <li>Start recording.  Audacity will stop recording automatically when it reaches the end of the selected area.</li>\n"
 "</ol>"
 msgstr ""
+"<p>Beklager, Audacity har ennå ikke støtte for opptak til bestemte tidspunkt. Vi vil kanskje legge til denne funksjonen i en framtidig utgave av programmet.</p>\n"
+"<p>Du kan få Audacity til å <b>stoppe</b> å ta opp etter en gitt tidsgrense, ved å gjøre følgende:</p>\n"
+"<ol>\n"
+"  <li>Skru på “Spill andre spor samtidig med innspilling av nytt” i “LydI/O”-seksjonen av innstillingene.</li>\n"
+"  <li>Velg “Nytt lydspor” fra Prosjekt-menyen.</li>\n"
+"  <li>Om nødvendig, zoom ut, så kan du klikke og dra for å velge hvor lang tid du vil ta opp.</li>\n"
+"  <li>Start innspillingen. Audacity vil automatisk stanse opptaket ved slutten av det markerte området.</li>\n"
+"</ol>"
 
 #: help/faq.php:168
 msgid "Opening and Saving Files"
-msgstr "Abrindo e Salvando arquivos"
+msgstr "Åpning og lukking av filer"
 
 #: help/faq.php:171
 #: help/faq.php:177
 msgid "How do I open an Audacity project (AUP file) in another program?"
-msgstr "Como abrir os arquivos de projeto do Audacity (.AUP) em outro programa de edição?"
+msgstr "Hvordan åpner jeg et Audacity-prosjekt (AUP-filer) i et annet program?"
 
 #: help/faq.php:172
 msgid "<p>Audacity project files are saved in a special format that only Audacity can open.  To open your project in another program or burn it to CD, you must open the “project.aup” file in Audacity, and use the Export commands (in the File menu) to save it in a standard format like WAV or AIFF.</p>"
-msgstr ""
+msgstr "<p>Audacity sine prosjektfiler er lagret i et spesielt format som bare Audacity kan åpne. For å åpne prosjektet i et annet program, eller brenne det på CD, må du åpne \"prosjekt.aup\"-fila i Audacity og bruke Eksporter-kommandoen (i Fil-menyen) for å lagre den i et standardformat, som WAV eller AIFF.</p>"
 
 #: help/faq.php:175
 msgid "Why does Audacity create a folder full of .au files when I save a project?"
-msgstr "Por que o programa cria uma pasta com arquivos .au quando salvo um projeto?"
+msgstr "Hvorfor lager Audacity en katalog full av .au-filer når jeg lagrer et prosjekt?"
 
 #: help/faq.php:176
 msgid "<p>Audacity breaks long tracks into small pieces so it can edit them more efficiently.  When you save a project, Audacity stores all of the pieces in a folder with a name like “project_data.”</p>  <p>You do not need to open these files yourself.  Audacity will load them automatically when you open the “project.aup” file, which is saved in the same location as the “data” folder.</p>"
-msgstr ""
+msgstr "<p>Audacity deler lange spor inn i små biter for å gjøre redigering mer effektivt. Når du lagrer et prosjekt vil Audacity arkivere alle bitene i en mappe med et navn som \"prosjekt_data\".</p>  <p>Du trenger ikke å åpne disse filene selv. Audacity vil laste dem automatisk når du åpner \"prosjekt.aup\"-fila, som er lagret på samme sted som \"data\"-mappa.</p>"
 
 #: help/faq.php:180
 msgid "Audacity crashed!  Can I recover any unsaved data?"
-msgstr "O Audacity travou! Posso recuperar meus dados não-salvos?"
+msgstr "Audacity brøt sammen! Er det mulig å gjenopprette ulagret data?"
 
+#  i18n-hint: Sorry, these links are in English only.  If you would
+#  like to make more information available, please create a page on
+#  the wiki for now.
 #. i18n-hint: Sorry, these links are in English only.  If you would
-#. like to make more information available, please create a page on
-#. the wiki for now.
 #: help/faq.php:184
 msgid "<p>You may be able to recover your project automatically with the <a href=\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>.  Please see the <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Crash Recovery</a> page for more information.</p>"
-msgstr "<p>É possível  recuperar os aqruivos de projeto ainda não salvos com o <a href=\"http://www.mesw.de/audacity/recovery/\">Utilitário de recuperação do Audacity</a>. Por favor, leia a página <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Crash Recovery</a> para outras informações.</p>"
+msgstr "<p>Det kan hende at du klarer å gjenopprette prosjektet ditt automatisk vha. programmet <a href=\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>. Vennligst les siden <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Crash Recovery</a> (bare på engelsk foreløpig) for mer informasjon.</p>"
 
 #: help/faq.php:187
 msgid "Can Audacity import file formats like WMA, AAC, FLAC, etc.?"
-msgstr "É possível importar arquivos WMA, AAC, FLAC, etc?"
+msgstr "Kan Audacity importere filformat som WMA, AAC, FLAC osv.?"
 
 #: help/faq.php:188
 msgid ""
@@ -1508,30 +1558,30 @@ msgid ""
 "<p>For a list of supported formats, see the <a href=\"../about/features\">feature list</a>.</p>\n"
 "<p>See also: <a href=\"faq?s=files&amp;i=midi\">Why can't I play MIDI files?</a></p>"
 msgstr ""
-"<P> O Audacity <B>não pode</b> importar ou exportar arquivos em formatos proprietários de som, como WMA, AAC, RealAudio, etc, por problemas de licenciamento. Esperamos adicionar o suporte a plug-ins que leiam estes formatos em breve</p>\n"
-"<P>Outros formatos não-proprietários como Ogg Speex também não são suportados na versão atual do Audacity.</p>\n"
-"<p>Para uma lista de formatos suportados pelo Audacity veja a <a href=\"../about/features\">lista de recursos</a>.</p>\n"
-"<p>Veja também a pergunta: <a href=\"faq?s=files&amp;i=midi\">Por que os arquivos MIDI não são reproduzidos?</a></p>"
+"<p>Audacity kan <b>ikke</b> importere eller eksportere filer i formatene <b>WMA, AAC, RealAudio, Shorten (SHN)</b> eller i de fleste andre opphavsrettslig beskyttede format. På grunn av lisens- og patentrestriksjoner har vi ikke lov til å legge til disse formatene i Audacity. Framtidige versjoner av Audacity vil kanskje ha mulighet for å støtte disse formatene vha. kodeker installert på operativsystemet ditt.</p>\n"
+"<p>Noen åpne format er ennå ikke støttet av Audacity, bl.a. <b>Ogg Speex</b> og <b>FLAC</b>. Vi håper å kunne støtte disse formatene i framtidige utgaver av Audacity.</p>\n"
+"<p>Hvis du vil ha en liste over støttede format kan du lese <a href=\"../about/features\">listen over funksjoner</a>.</p>\n"
+"<p>Se også: <a href=\"faq?s=files&amp;i=midi\">Hvorfor kan jeg ikke spille av MIDI-filer?</a></p>"
 
 #: help/faq.php:194
 msgid "Why can’t I play MIDI files?"
-msgstr "Por que os arquivos MIDI não são reproduzidos?"
+msgstr "Hvorfor kan jeg ikke spille av MIDI-filer?"
 
 #: help/faq.php:195
 msgid "<p>Sorry, Audacity cannot play, edit, or convert MIDI files.  It can only display them visually (for comparison with recorded sounds).  We might add MIDI editing to a future version of Audacity, but for now Audacity is focused on sampled audio (like WAV files).</p>"
-msgstr "<P>O Audacity não pode reproduzir, editar ou converter arquivos Midi. Só é possível visualizá-los (para comparação com arquivos gravados). Apesar do Audacity ser voltado à edição de sons Wav, esperamos adicionar o suporte a Midi em breve. </p>"
+msgstr "<p>Beklageligvis kan Audacity ikke spille av, redigere eller konvertere MIDI-filer. Det kan bare vise dem visuelt (for sammenligning med innspilte lyder). Det er mulig at vi legger til MIDI-redigering i en framtidig versjon av Audacity, men for nå er Audacity rettet mot innspilt lyd (som WAV-filer).</p>"
 
 #: help/faq.php:198
 msgid "How do I import a track from an audio CD?"
-msgstr "Como gravar sons de um CD?"
+msgstr "Hvordan kan jeg importere et spor fra en lyd-CD?"
 
 #: help/faq.php:199
 msgid "<p>Audacity cannot import a track directly from an audio CD.  You must use a separate program like <a href=\"http://cdexos.sourceforge.net/\">CDex</a> or <a href=\"http://www.apple.com/itunes/\">iTunes</a> to extract CD tracks into a format that Audacity can read, like WAV or AIFF.</p>"
-msgstr "<P>O Audacity não importa som diretamente de CDs. Será necessário um programa a parte, conhecido por \"Ripper\".</P><P>Para Windows, recomendamos o <a href=\"http://cdexos.sourceforge.net/\">CDex</a></P><P>Para Mac OS (9 e X), recomendamos o Apple <a href=\"http://www.apple.com/itunes/\">iTunes</a>.</P><P>Para Linux, tente o Paranoia. </P>"
+msgstr "<p>Audacity kan ikke importere et spor direkte fra en lyd-CD. Du må bruke et separat program, som <a href=\"http://cdexos.sourceforge.net/\">CDex</a> eller <a href=\"http://www.apple.com/itunes/\">iTunes</a>, for å trekke ut CD-spor til et format som Audacity kan lese, f.eks. WAV eller AIFF.</p>"
 
 #: help/faq.php:203
 msgid "After making a recording or editing a file in Audacity, follow these steps to save your work on an audio CD:"
-msgstr ""
+msgstr "Etter å ha gjort et opptak eller redigert en fil i Audacity kan du ta følgende steg for å lagre arbeidet ditt på en lyd-CD:"
 
 #: help/faq.php:204
 msgid ""
@@ -1549,15 +1599,21 @@ msgid ""
 "<p>See also: <a href=\"faq?s=files&amp;i=split\">How can I split a long recording into multiple tracks?</a></p>"
 msgstr ""
 "<ol>\n"
-"  <li>Use o comando  “Exporta como WAV” ou “Exportar como AIFF” para salvar o projeto em um arquivo de áudio.</li>\n"
-"  <li>Utilize um programa capaz de gravar CDs (como o iTunes ou Nero) para gravar o arquivo em um CD.</li>\n"
+"  <li>Bruk kommandoen \"Eksporter som WAV” eller “Eksporter som AIFF” for å lagre Audacity-opptaket ditt til en lydfil.</li>\n"
+"  <li>Bruk et CD-brennerprogram (f.eks. iTunes eller Nero) for å brenne denne fila til CD.</li>\n"
 "</ol>\n"
-"<p>Para poder ouvir este CD em qualquer aparelho de som, lembre-se de selecionar o tipo de gravação ´´CD de Áudio´´ e utilize CDRs, já que nem todos os aparelhosde som lêem CDRWs.</p>\n"
-"<p>Alguns programas só gravam CDs de áudio se o arquivo original estiver a 16-bit, 44.1KHz. Neste caso, exporte o arquivo de projeto novamente nesta configuração.</p>"
+"<p>For å lage ei plate du kan spille på vanlige CD-spillere må du velge CD-type “musikk” eller “audio”/\"lyd\" (ikke en “data”-CD).  Bruk CD-R-plater, siden noen spillere ikke klarer å lese CD-RW.</p>\n"
+"<p>Visse CD-programmer vil bare brenne lydfiler i 16-bit, 44.1KHz stereo-format. Hvis brenneprogrammet ditt ikke klarer å åpne lydfila må du eksportere fila igjen etter å ha valgt følgende innstillinger i Audacity:</p>\n"
+"<ol>\n"
+"  <li>På bunnen av Audacity-vinduet, sett Prosjektrate til 44100 Hz.</li>\n"
+"  <li>I innstillingene for Filformat, velg WAV (16-bit...) eller AIFF (16-bit...).</li>\n"
+"  <li>Hvis prosjektet ditt ikke allerede har et stereospor, velg \"Nytt stereospor\" fra Prosjekt-menyen (dette garanterer at Audacity eksporterer opptaket ditt som ei stereofil).</li>\n"
+"</ol>\n"
+"<p>Se også: <a href=\"faq?s=files&amp;i=split\">Hvordan kan jeg dele et langt opptak i flere filer eller CD-spor?</a></p>"
 
 #: help/faq.php:218
 msgid "How can I split a long recording into multiple files or CD tracks?"
-msgstr "Como transformar um único som em diversas faixas?"
+msgstr "Hvordan kan jeg dele et langt opptak i flere filer eller CD-spor?"
 
 #: help/faq.php:219
 msgid ""
@@ -1569,39 +1625,29 @@ msgid ""
 "  <li>When you are finished, choose “Export Multiple” from the File menu.  When you click the “Export” button, Audacity will save each song as a separate file, using the format and location you choose.</li>\n"
 "</ol>"
 msgstr ""
-"<p>Caso você tenha mixado um único projeto com múltiplas faixas e deseje gravá-las num CD como faixas separadas, será necessário exportar o projeto em cada faixa que se deseje gravar, criando assim um arquivo para cada faixa.</p>\n"
-"<p>No Audacity há várias maneiras de se executar esta tarefa, por exemplo:</p>\n"
-"<p>Método 1: Exportando a seleção</p>\n"
-"<ol><li>Selecione a área correspondente à primeira faixa. \n"
-"</li><li>Selecione \"Exportar seleção como...\" no menu \"Arquivo\" e salve.\n"
-"</li><li>Repita o procedimento para cada faixa restante.\n"
-"</li></ol><p>Método 2: Apagar e Desfazer\n"
-"</p><ol><li>Selecione e apague tudo <i>exceto</i> o conteúdo da primeira faixa a ser exportada.</li>\n"
-"<li>Selecione \"Exportar como...\" no menu \"Arquivo\" e exporte a faixa.</li>\n"
-"<li>No menu \"Editar\" selecione \"Desfazer\" até obter todo o áudio oiriginal. (O Audacity tem \"desfazer\" ilimitados)</li>\n"
-"<li>Repita o procedimento para cada faixa restante.</li>\n"
-"</ol><p>Método 3: Separar e Exportar</p>\n"
-"<ul><li>Selecione a área correspondente à primeira faixa.</li>\n"
-"<li>Selecione no menu \"Editar\" - \"Cortar em nova faixa\" </li>\n"
-"<li>Repita o procedimento para cada faixa restante. </li>\n"
-"<li>Selecione as faixas recem-criadas e exporte uma a uma utilizando \"Exportar seleção como...\" </li>\n"
+"<p>Følg disse stegene for å lage en egen fil for hver sang eller hvert segment av et langt opptak. Dette er spesielt nyttig hvis du brenner ei CD-plate, siden hver fil vil komme som et eget spor på CD-en.</p>\n"
+"<ol>\n"
+"  <li>Trykk for å plassere musepekeren ved starten av den første sangen.</li>\n"
+"  <li>Velg “Legg til kommentar ved markering” fra Prosjekt-menyen. Om du har lyst, kan du skrive inn navnet til sangen</li>\n"
+"  <li>Gjenta steg 1 og 2 for hver sang.</li>\n"
+"  <li>Når du er ferdig, velg “Eksporter flere filer...” fra Fil-menyen. Når du velger \"Eksporter\"-knappen, vil Audacity lagre hver sang som ei egen fil, med ditt valgte format og plassering.</li>\n"
 "</ol>"
 
 #: help/faq.php:231
 msgid "Editing"
-msgstr "Editando"
+msgstr "Redigering"
 
 #: help/faq.php:234
 msgid "Why can’t I use the effects or other menu items?"
-msgstr "Por que alguns efeitos não estão disponíveis no menu?"
+msgstr "Hvorfor kan jeg ikke bruke effektene eller andre menyvalg?"
 
 #: help/faq.php:235
 msgid "<p>Some menu items are grayed out or disabled until they are ready for use.  Before choosing an effect, you must select the audio that you want to change.  To select audio, click and drag with the Selection tool to highlight it, or choose the “Select All” command from the Edit menu.</p>"
-msgstr ""
+msgstr "<p>Noen menyelementer er grå (utilgjengelige) eller deaktiverte til det er mulig å bruke dem. Før du velger en effekt må du velge den delen av lyden som du vil endre. For å markere lyd, klikk med musa og dra med Markeringsverktøyet for å utheve utvalget, eller bruk kommandoen \"Velg Alt\" fra Rediger-menyen.</p>"
 
 #: help/faq.php:238
 msgid "How do I combine two files into one longer file?"
-msgstr "Como juntar duas faixas em uma só?"
+msgstr "Hvordan kombinerer jeg to filer i en lengre fil?"
 
 #: help/faq.php:239
 msgid ""
@@ -1615,18 +1661,27 @@ msgid ""
 "</ol>\n"
 "<p>You can press the Play button to hear the result, and use the Export commands (in the File menu) to save it as a sound file.</p>"
 msgstr ""
+"<p>Følg disse stegene for å skjøte to filer sammen:</p>\n"
+"<ol>\n"
+"  <li>Importer begge filene inn i Audacity.</li>\n"
+"  <li>Klikk på kommentaren (området rundt Demp/Solo-knappene) til den andre fila for å velge den.</li>\n"
+"  <li>Velg \"Klipp\" fra Rediger-menyen.</li>\n"
+"  <li>Plasser pekeren ved å klikke på det første sporet, etter slutten av lyden.</li>\n"
+"  <li>Velg \"Lim inn\" fra Rediger-menyen.</li>\n"
+"</ol>\n"
+"<p>Du kan trykke Spill av-knappen for å høre resultatet, eller bruke Eksporter-kommandoene (i Fil-menyen) for å lagre den som en lydfil.</p>"
 
 #: help/faq.php:250
 msgid "How do I mix two tracks together?"
-msgstr "Como mixar duas faixas simultaneamente?"
+msgstr "Hvordan mikser jeg to spor sammen?"
 
 #: help/faq.php:251
 msgid "<p>To mix two files, just import both of them into Audacity.  They will appear in separate tracks, and will be mixed together when you press the Play button.  You can use the Time Shift tool to move them around so that they start at different times, or use the other editing commands to alter either of the tracks.</p>"
-msgstr ""
+msgstr "<p>For å mikse to filer sammen trenger du bare å importere begge inn i Audacity. De vil vises som separate spor, og vil bli mikset sammen når du trykker Spill av-knappen. Du kan bruke Tidsforskyvningsverktøyet for å flytte dem rundt så de starter ved forskjellige tider, eller bruke andre redigeringskommandoer for å endre det ene eller det andre sporet.</p>"
 
 #: help/faq.php:254
 msgid "Can I remove the vocals from a recording to make a Karaoke track?"
-msgstr "É possível retirar os vocais de uma gravação?"
+msgstr "Kan jeg fjerne stemmer fra et opptak for å lage et Karaoke-spor?"
 
 #: help/faq.php:255
 msgid ""
@@ -1641,30 +1696,37 @@ msgid ""
 "</ol>\n"
 "<p>Press the Play button to hear the results.  If you are lucky, the voice will be gone but most of the other instruments will be unaffected, just like a karaoke track.  You can use the Export commands in the File menu to save the results.</p>\n"
 msgstr ""
-"<P>Em algumas gravações é possível remover os vocais, devido à forma como estas foram mixadas. Normalmente, o vocal é mixado para estar exatamente no centro das faixas, enquanto os outros instrumentos são mixados para estarem um pouco mais à direita ou à esquerda dos canais. Subtraindo o canal direito do esquerdo, os vocais devem ser completamente apagados, sem prejuízo dos outros sons.</p>\n"
-"<P>Atenção, esta técnica só funciona em algumas gravações!!</p>\n"
-"<P>Para tentar, importe o áudio em estéreo, e clique na setinha abaixo, à esquerda da faixa selecionada. Selecione \"Separar faixas de estéreo\" (Split Stereo Track). Selecione a faixa mais abaixo - a da direita - e aplique o efeito \"Inverter verticalmente\" (Invert). Transforme todos os canais em mono e junte-os com o comando \"Quickmix\". Se a técnica funcionar, os vocais serão removidos.</p>\n"
+"<b>Dette virker bare på noen opptak.</b> Når vokalene er nøyaktig like på begge stereokanalene kan du fjerne dem ved å \"subtrahere\" en kanal fra den andre. Dette er mulig med mange studio-opptak hvor vokalsporet er plassert eksakt i senteret av opptaket.</p>\n"
+"<p>For å gjøre dette i Audacity:</p>\n"
+"<ol>\n"
+"  <li>Importer en stereo-fil inn i Audacity.</li>\n"
+"  <li>Klikk på hurtigmenyen til sporet (den lille ned-pila ved siden av navnet til sporet) og velg \"Del opp stereospor\".</li>\n"
+"  <li>Velg så det nederste sporet (høyre kanal) ved å klikke på det i området rundt Demp/Solo-knappene.</li>\n"
+"  <li>Velg \"Inverter\" fra Effekt-menyen.</li>\n"
+"  <li>Bruk hurtigmenyen til sporene for å gjøre begge til Mono-kanaler.</li>\n"
+"</ol>\n"
+"<p>Klikk Spill av-knappen for å høre resultatene. Hvis du er heldig vil all stemme nå være borte, mens de fleste instrumentene vil være uberørt, akkurat som et karaokespor. Du kan bruke Eksporter-kommandoen i Fil-menyen for å lagre resultatene.</p>\n"
 
 #: help/faq.php:284
 msgid "Other frequently asked questions..."
-msgstr "Outras questões comuns..."
+msgstr "Andre ofte spurte spørsmål..."
 
 #: help/faq.php:288
 msgid "Frequently Asked Questions"
-msgstr "FAQ - Questões comuns"
+msgstr "Ofte Spurte Spørsmål"
 
 #: help/faq.php:292
 msgid "These are some of the most common questions about Audacity.  If your question isn’t answered here, see the <a href=\"documentation\">documentation</a>, or <a href=\"../contact/\">contact us</a> for help."
-msgstr "Estas são as perguntas mais comuns sobre o Audacity. Se o quevocê quer saber não for respondido aqui, veja a <a href=\"documentation\">documentação </a>, ou <a href=\"../contact/\">entre em contato </a>e peça ajuda."
+msgstr "Dette er noen av de mest vanlige spørsmålene om Audacity. Hvis spørsmålet ditt ikke ble besvart her kan du lese <a href=\"documentation\">dokumentasjonen</a> eller <a href=\"../contact/\">kontakte oss</a> for mer hjelp."
 
 #: help/index.php:9
 msgid "Documentation and Support"
-msgstr "Documentação e suporte"
+msgstr "Dokumentasjon og støtte"
 
 #  i18n-hint: If there are any special resources for Audacity users in your
+#  language (forums, documentation, mailing lists...), you can add links to
+#  them here.
 #. i18n-hint: If there are any special resources for Audacity users in your
-#. language (forums, documentation, mailing lists...), you can add links to
-#. them here.
 #: help/index.php:17
 msgid ""
 "<p>If you have a question, check the list of <a href=\"faq\">Frequently Asked Questions</a>.</p>\n"
@@ -1675,26 +1737,33 @@ msgid ""
 "</ul>\n"
 "<p>If your question isn’t answered here, please <a href=\"../contact/\">contact us</a>.</p>"
 msgstr ""
+"<p>Hvis du har et spørsmål, sjekk listen over <a href=\"faq\">Ofte Spurte Spørsmål</a>.</p>\n"
+"<p>For instruksjoner og hjelp vedrørende bruk av Audacity:</p>\n"
+"<ul>\n"
+"  <li><a href=\"documentation\">Dokumentasjon</a> - Les brukerhåndboka og hurtigreferansen.</li>\n"
+"  <li><a href=\"tutorials\">Veiledninger</a> - Artikler som steg for steg går gjennom hvordan du bruker Audacity.</li>\n"
+"</ul>\n"
+"<p>Vennligst <a href=\"../contact/\">kontakt oss</a> om ditt spørsmål ikke ble besvart her.</p>"
 
 #: help/nyquist.php:17
 #: help/nyquist2.php:17
 #: help/nyquist3.php:17
 msgid "Introduction to Nyquist and Lisp Programming"
-msgstr "Introdução à linguagem Lisp e Nyquist (em inglês)"
+msgstr "Introduksjon til Nyquist og Lisp-programmering"
 
 #: help/nyquist.php:18
 #: help/nyquist2.php:10
 #: help/nyquist2.php:18
 #: help/nyquist3.php:18
 msgid "Programming in Nyquist"
-msgstr "Programando em Nyquist"
+msgstr "Programmering i Nyquist"
 
 #: help/nyquist.php:19
 #: help/nyquist2.php:19
 #: help/nyquist3.php:10
 #: help/nyquist3.php:19
 msgid "Creating Nyquist Plug-ins"
-msgstr "Criando plug-ins Nyquist (em inglês)"
+msgstr "Å lage Nyquist-tillegg"
 
 #: help/nyquist.php:22
 msgid ""
@@ -2076,116 +2145,112 @@ msgid ""
 msgstr ""
 
 #  i18n-hint:  Please add a note that the links on this page are in English.
+#  If there are tutorials in your language, link to them here.
 #. i18n-hint:  Please add a note that the links on this page are in English.
-#. If there are tutorials in your language, link to them here.
 #: help/tutorials.php:16
 msgid "These articles give step-by-step instructions for common tasks using the free Audacity sound editor."
-msgstr "Estes artigos mostram passo-a-passo como executar operações simples no Audacity. Estas páginas estão em inglês, no entanto, caso queira traduzí-las, entre em contato conosco!"
+msgstr "Disse engelskspråklige artiklene gir instruksjoner som steg-for-steg viser vanlige oppgaver ved bruken av Audacity, det frie lydredigeringsprogrammet."
 
-#  i18n-hint:  If this string is translated, it will appear above the list of
-#  i18n-hint:  If this string is translated, it will appear above the list of
-#  tutorials on the "help/tutorials" page.  If there are extra tutorials
-#  available in your language, add them here.  Otherwise, do not translate
-#  this string.  (Or make the translation identical to the original string.)
+#. i18n-hint:  If this string is translated, it will appear above the list of
 #: help/tutorials.php:22
 #: help/tutorials.php:23
 msgid "localized_tutorials"
 msgstr ""
+"<p><ul>    <li><a href=\"http://www.lu.hio.no/ALU/elarena/verkt/aud/aud1.htm\">Innføring</a> på norsk fra Høgskolen i Oslo, med forklarende bilder.</li>\n"
+"  <li><a href=\"http://munin.hsh.no/home/va/audacity/Startside.htm\">Kort innføring</a> på norsk fra Høgskolen Stord/Haugesund, med bilder og informasjon om lydkort.</li>\n"
+"</ul></p>"
 
 #: help/tutorials.php:27
 msgid "Audacity 1.2 Tutorial by Dan Eliot"
-msgstr "Tutorial do Audacity 1.2 por Dan Eliot"
+msgstr "Audacity 1.2-veiledning av Dan Eliot"
 
 #: help/tutorials.php:27
 msgid "Learn how to open and edit a WAV file, and save the result in an MP3."
-msgstr "Ensina a abrir arquivos de som já existentes, executar tarefas simples de edição e exportá-lo como outro arquivo. Contém animações em Flash com explicações detalhadas."
+msgstr "Lær deg hvordan du åpner og redigerer en WAV-fil, og lagrer resultatet som en MP3."
 
 #: help/tutorials.php:28
 msgid "Multi-Track Recording Tutorial from AGNULA"
-msgstr "Tutorial do Audacity no Agnula"
+msgstr "Veiledning i flersporsopptak fra AGNULA"
 
 #: help/tutorials.php:28
 msgid "Make a simple multi-track recording."
-msgstr "Trata da gravação \"Multitrack\" no Audacity, utilizando a distribuição Linux AGNULA"
+msgstr "Lag et enkelt flersporsopptak."
 
 #: help/tutorials.php:29
 msgid "Audacity Tutorial by Daniel James"
-msgstr "Tutorial do Audacity por Daniel James"
+msgstr "Audacity-veiledning av Daniel James"
 
 #: help/tutorials.php:29
 msgid "Shows how to mix a multi-track project.  Includes sample sound files."
-msgstr "Mostra a edição de som em Multitrack. Contém arquivos de exemplo para serem mixados conforme o tutorial."
+msgstr "Viser hvordan du mikser et flersporsprosjekt. Kommer med smakeprøver på lydfiler."
 
 #: help/tutorials.php:32
 msgid "For additional help, see the <a href=\"documentation\">Audacity documentation</a>."
-msgstr "Para mais ajuda veja a <a href=\"documentation\">documentação do Audacity</a>."
+msgstr "Hvis du vil ha mer hjelp, les <a href=\"documentation\">dokumentasjonen til Audacity</a>."
 
 #: include/footer.inc.php:11
-#, fuzzy
 msgid "Page Footer"
-msgstr "Rodapé"
+msgstr "Bunntekst"
 
 #: include/footer.inc.php:13
 msgid "Privacy"
-msgstr "Privacidade"
+msgstr "Personvern"
 
 #: include/footer.inc.php:14
 msgid "Copyright"
-msgstr "Direitos de Cópia"
+msgstr "Opphavsrett"
 
 #: include/footer.inc.php:17
 msgid "Creative Commons Attribution license"
-msgstr "Licença da Creative Commons Attribution"
+msgstr "Creative Commons Attribution-lisens"
 
 #: include/footer.inc.php:17
 msgid "Creative Commons: Some rights reserved."
-msgstr "Creative Commons: Alguns direitos reservados."
+msgstr "Creative Commons: Visse rettigheter forbeholdes."
 
 #: include/footer.inc.php:18
 msgid "Development hosted by SourceForge"
-msgstr "Desenvolvimento baseado no SourceForge"
+msgstr "Utviklingen skjer på tjenere fra SourceForge"
 
 #: include/footer.inc.php:19
 msgid "View this page in a different language"
-msgstr "Veja esta página em outro idioma"
+msgstr "Les denne siden på et annet språk"
 
 #: include/header.inc.php:11
 msgid "Audacity"
 msgstr "Audacity"
 
 #: include/header.inc.php:16
-#, fuzzy
 msgid "Jump to page content"
-msgstr "Ir para o conteúdo"
+msgstr "Gå til side-innhold"
 
 #: include/header.inc.php:19
 msgid "Powered by Google"
-msgstr "Busca pelo Google"
+msgstr "Drevet av Google"
 
 #: include/header.inc.php:24
 msgid "Search this site"
-msgstr "Busque no site"
+msgstr "Søk"
 
 #: include/header.inc.php:28
-#, fuzzy
 msgid "Audacity: Free Sound Editor and Recording Software"
-msgstr "Audacity: Programa para gravação e edição de áudio"
+msgstr "Audacity: Fri lydredigerings- og innspillingsprogramvare"
 
 #: include/header.inc.php:40
-#, fuzzy
 msgid "Site Navigation"
-msgstr "Navegação no site"
+msgstr "Nettstedsnavigasjon"
 
 #  i18n-hint: Controls how dates are formatted.
 #  See http://www.php.net/manual/function.strftime.php for details.
+#. i18n-hint: Controls how dates are formatted.
 #: include/news.inc.php:24
 msgid "%B %d, %Y"
-msgstr "%d de %B de %Y"
+msgstr "%d.%B, %Y"
 
 #: include/news.inc.php:41
 #: news/1.2.3-release.inc.php:5
 msgid "Audacity 1.2.3 Released"
-msgstr "Liberada a versão 1.2.3 do Audacity"
+msgstr "Audacity 1.2.3 utgitt"
 
 #: include/news.inc.php:42
 #: news/1.2.3-release.inc.php:6
@@ -2193,6 +2258,6 @@ msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>\n"
 "<p>See the <a href=\"download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
 msgstr ""
-"<p>A edição 1.2.3 é a nova versão estável do editor de áudio Audacity. Foram realizados ajustes e resolvida a falha que interferia em gravações de tempo prolongado nos computadores rodando Windows. Resolveu-se também os problemas de travamento na versão para MacOS X. Esta versão também está disponível em novas línguas e as traduções atuais foram revisadas.</p>\n"
-"<p>Por favor, leia as <a href=\"download/release-notes\">Notas de Versão</a> para conhecer as alterações efetuadas e a lista de falhas já conhecidas.</p>"
+"<p>Audacity 1.2.3 er en ny, stabil utgave av Audacity. Denne utgaven retter en feil som forstyrret lange opptak på noen Windows-maskiner, og en annen feil som forårsaket tilfeldige krasj på Mac OS X. Den inkluderer også flere oppdaterte oversettelser, og noen mindre feilrettinger og forbedringer.</p>\n"
+"<p>Les <a href=\"download/release-notes\">Utgivelseskommentarene</a> for å se hva som er forandret, og for en liste over kjente problemer i denne versjonen.</p>"
 
