@@ -1190,7 +1190,8 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
       //If we aren't displaying the waveform, Display a message dialog
       if(((WaveTrack *)mDrawingTrack)->GetDisplay() != WaveTrack::WaveformDisplay)
          {
-            ReleaseMouse();
+            
+            ReleaseMouse();   //<--Not sure why this is really needed, but it fixes a wierd mouse problem
             wxMessageBox("Draw currently only works with waveforms.", "Notice");
             return;
          }
@@ -1204,7 +1205,7 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
       //If we aren't zoomed in far enough, show a message dialog.
       if(!showPoints)
          {
-            ReleaseMouse();
+            ReleaseMouse(); //<--Not sure why this is really needed, but it fixes a wierd mouse problem
             wxMessageBox("You are not zoomed in enough. Zoom in until you can see the individual samples.", "Notice");
             return;
          }
