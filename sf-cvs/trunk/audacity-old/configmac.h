@@ -12,4 +12,4 @@
 // #define USE_LIBVORBIS
 
 // ID3 support
-#define ID3SUPPORT
+#define USE_ID3LIB

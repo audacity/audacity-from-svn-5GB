@@ -32,9 +32,10 @@
 
 #include "Audacity.h"
 
-#include "id3/tag.h"
-#include "id3/misc_support.h"
-
+#ifdef USE_ID3LIB
+   #include "id3/tag.h"
+   #include "id3/misc_support.h"
+#endif
 
 #include "Tags.h"
 
@@ -55,7 +56,8 @@ Tags::~Tags()
 
 bool Tags::Load(wxTextFile * in, DirManager * dirManager)
 {
-//   #warning TODO
+/*   Oddly enought, MSVC doesn't understand #warning  */
+/*   #warning TODO */
 
    return true;
 }
@@ -67,6 +69,7 @@ bool Tags::Save(wxTextFile * out, bool overwrite)
 
 bool Tags::ShowEditDialog(wxWindow *parent, wxString title)
 {
+#ifdef USE_ID3LIB
    Tags theCopy;
    theCopy.mTitle = mTitle;
    theCopy.mArtist = mArtist;
@@ -97,10 +100,15 @@ bool Tags::ShowEditDialog(wxWindow *parent, wxString title)
    }
 
    return true;
+#else
+   return true; // we want callers to think it succeeded, otherwise they'll cancel what
+                // they were doing...
+#endif
 }
 
 void Tags::ImportID3(wxString fileName)
 {
+#ifdef USE_ID3LIB
    ID3_Tag tag((char *) fileName.c_str());
 
    mTitle = ID3_GetTitle(&tag);
@@ -110,11 +118,13 @@ void Tags::ImportID3(wxString fileName)
    mYear = ID3_GetYear(&tag);
    mGenre = ID3_GetGenreNum(&tag);
    mComments = ID3_GetComment(&tag);
+#endif // USE_ID3LIB
 }
 
 // returns buffer len; caller frees
 int Tags::ExportID3(char **buffer, bool *endOfFile)
 {
+#ifdef USE_ID3LIB
    ID3_Tag tag;   
 
    ID3_AddTitle(&tag, (const char *)mTitle);
@@ -141,6 +151,12 @@ int Tags::ExportID3(char **buffer, bool *endOfFile)
       *endOfFile = true;
       return 128;
    }
+   
+#else
+   *buffer = new char[0];
+   *endOfFile = true;
+   return 0;
+#endif // USE_ID3LIB
 }
 
 //

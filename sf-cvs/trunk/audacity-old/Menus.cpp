@@ -120,8 +120,10 @@ void AudacityProject::CreateMenuBar()
    mProjectMenu->Append(ImportLabelsID, "Import Labels...");
    mProjectMenu->Append(ImportMIDIID, "Import &MIDI...");
    mProjectMenu->Append(ImportRawID, "Import Raw Data...");
+#ifdef USE_ID3LIB
    mProjectMenu->AppendSeparator();
    mProjectMenu->Append(EditID3ID, "Edit ID3 Tags...");   
+#endif
    mProjectMenu->AppendSeparator();
    mProjectMenu->Append(QuickMixID, "&Quick Mix");
    mProjectMenu->AppendSeparator();

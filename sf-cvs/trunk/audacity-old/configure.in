@@ -35,6 +35,11 @@ AC_ARG_WITH(vorbis,
 		[enable ogg vorbis support (libraries must be installed) [default=no]])],
 	use_vorbis=$withval,
 	use_vorbis="no")
+AC_ARG_WITH(id3,
+	[AC_HELP_STRING([--with-id3lib],
+		[enable id3lib support (libraries must be installed) [default=no]])],
+	use_id3lib=$withval,
+	use_id3lib="no")
 
 
 dnl check to make sure that all the user's options are valid
@@ -112,6 +117,19 @@ if [[ $use_vorbis = "yes" ]] ; then
 		[Define if the ogg vorbis decoding library is present])
 fi
 
+if [[ $use_id3lib = "yes" ]] ; then
+   dnl libid3 -- check both headers and libraries
+
+   AC_CHECK_LIB(id3, ID3Tag_New, true, dnl here true is just a nop
+      AC_MSG_ERROR([*** id3lib not found. id3lib must be installed for id3 tag support]))
+
+   AC_CHECK_HEADER(id3.h, ,
+      AC_MSG_ERROR([*** id3lib headers not found. id3lib must be installed for id3 tag support]))
+   LIBS="$LIBS -lid3"
+	AC_DEFINE(USE_ID3LIB, 1,
+      [Define if id3lib is present])
+fi
+
 dnl --- check for required libraries ---
 
 dnl wxWindows -- we assume that if wx-config is found, wxWindows is successfully installed.
@@ -122,14 +140,6 @@ fi
 LIBS="$LIBS `$WX_CONFIG --libs`"
 CFLAGS="$CFLAGS `$WX_CONFIG --cflags`"
 
-dnl libid3 -- check both headers and libraries
-
-AC_CHECK_LIB(id3, ID3Tag_New, true, dnl here true is just a nop
-   AC_MSG_ERROR([*** libid3 not found. This library is required to build Audacity.]))
-
-AC_CHECK_HEADER(id3.h, ,
-   AC_MSG_ERROR([*** libid3 headers not found. This library is required to build Audacity.]))
-LIBS="$LIBS -lid3"
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
