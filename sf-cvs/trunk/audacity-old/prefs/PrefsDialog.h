@@ -20,7 +20,7 @@
 class PrefsDialog: public wxDialog {
 
 public:
-	PrefsDialog();
+	PrefsDialog(wxWindow *parent);
 	~PrefsDialog();
 
 	void OnCategoryChange(wxCommandEvent& event);

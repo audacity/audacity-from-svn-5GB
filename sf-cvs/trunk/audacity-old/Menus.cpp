@@ -315,8 +315,8 @@ void AudacityProject::OnExportSelection(wxCommandEvent& event)
 
 void AudacityProject::OnPreferences(wxCommandEvent& event)
 {
-	PrefsDialog dialog;
-	dialog.ShowModal();
+  PrefsDialog dialog(this /* parent */);
+  dialog.ShowModal();
 }
 
 //

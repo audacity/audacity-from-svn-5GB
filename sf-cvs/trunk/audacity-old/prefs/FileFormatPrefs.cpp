@@ -43,7 +43,7 @@ FileFormatPrefs::FileFormatPrefs(wxWindow *parent):
 								           PREFS_TOP_MARGIN),
 								   wxSize (GetSize().GetWidth() -
 								   		   PREFS_SIDE_MARGINS * 2,
-										   60),
+										   65),
 								   2,
 								   gCopyOrEditOptions,
 								   1);
@@ -62,10 +62,10 @@ FileFormatPrefs::FileFormatPrefs(wxWindow *parent):
 	mDefaultExportFormat = new wxRadioBox(this, -1,
 			                       "Default export format",
 								   wxPoint(PREFS_SIDE_MARGINS,
-									       85),
+									       90),
 								   wxSize (GetSize().GetWidth() -
 								   		   PREFS_SIDE_MARGINS * 2,
-								   		   130),
+								   		   160),
 								   6,
 								   gDefaultExportFormatOptions,
 								   1);

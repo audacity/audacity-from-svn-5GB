@@ -45,8 +45,8 @@ AudioIOPrefs::AudioIOPrefs(wxWindow *parent):
 									GetSize());
 
 	gPrefs->SetPath("/AudioIO");
-	wxString playDevice = gPrefs->Read("PlaybackDevice", "");
-	wxString recDevice  = gPrefs->Read("RecordingDevice", "");
+	wxString playDevice = gPrefs->Read("PlaybackDevice", "/dev/dsp");
+	wxString recDevice  = gPrefs->Read("RecordingDevice", "/dev/dsp");
 	gPrefs->SetPath("/");
 
 	

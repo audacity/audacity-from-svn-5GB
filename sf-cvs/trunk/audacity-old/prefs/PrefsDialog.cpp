@@ -35,10 +35,12 @@ END_EVENT_TABLE()
 
 
 
-PrefsDialog::PrefsDialog():
-	wxDialog(NULL, -1, "Audacity Preferences", wxDefaultPosition,
-			 wxSize(500, 410), wxDIALOG_MODAL)
+PrefsDialog::PrefsDialog(wxWindow *parent):
+	wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
+			 wxSize(500, 420), wxDIALOG_MODAL)
 {
+    CentreOnParent();
+
 	mCategories = new wxListBox(this,
 	                            CategoriesID, 
 								wxPoint(20, 20),
@@ -47,12 +49,18 @@ PrefsDialog::PrefsDialog():
 	mOK         = new wxButton (this, 
 	                            wxID_OK,
 								"OK",
-								wxPoint(400, 375),
+								wxPoint(400, 385),
 								wxSize(80, 20));
+
+    #ifndef TARGET_CARBON
+    mOK->SetDefault();
+    mOK->SetFocus();							  
+    #endif
+
 	mCancel      = new wxButton(this, 
 	                            wxID_CANCEL,
 								"Cancel",
-								wxPoint(300, 375),
+								wxPoint(300, 385),
 								wxSize(90, 20));
 
 	/* All panel additions belong here */
