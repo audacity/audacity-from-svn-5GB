@@ -72,7 +72,7 @@ class ToolBar:public wxWindow {
    ToolBar(wxWindow * parent, wxWindowID id,
            const wxPoint & pos, const wxSize & size);
 
-   virtual ~ ToolBar() {};
+   virtual ~ToolBar();
    virtual int GetHeight() {
       return GetSize().y;
    };
@@ -113,8 +113,15 @@ class ToolBar:public wxWindow {
                               wxColour & dstColour);
 
    void SetButton(bool down, AButton* button);
+
+   void DrawBackground(wxDC &dc, int width, int height);
+
    wxBrush mBackgroundBrush;
    wxPen mBackgroundPen;
+   wxBitmap *mBackgroundBitmap;
+   int mBackgroundWidth;
+   int mBackgroundHeight;
+
    enum ToolBarType mType;
    wxString mTitle;
 
