@@ -58,6 +58,7 @@ OBJS = \
 	$(OBJDIR)/NoteTrack.o \
 	$(OBJDIR)/Prefs.o \
 	$(OBJDIR)/Project.o \
+	$(OBJDIR)/RingBuffer.o \
 	$(OBJDIR)/SampleFormat.o \
 	$(OBJDIR)/Sequence.o \
 	$(OBJDIR)/Spectrum.o \
