@@ -108,6 +108,7 @@ class VSTEffectDialog:public wxDialog {
    void OnSliderCmd(wxCommandEvent & event);
    void OnOK(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
+   void OnPreview(wxCommandEvent & event);
 
    DECLARE_EVENT_TABLE()
 
