@@ -56,6 +56,12 @@ public:
   static EffectArray *Effects;
 };
 
+// Utility functions
+
+float TrapFloat(float x, float min, float max);
+double TrapDouble(double x, double min, double max);
+long TrapLong(long x, long min, long max);
+
 #endif
 
 

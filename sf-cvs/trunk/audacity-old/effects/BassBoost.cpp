@@ -180,11 +180,7 @@ bool BassBoostDialog::TransferDataFromWindow()
 
 	wxString val = c->GetValue();
 	val.ToLong(&b);
-	if (b < BOOST_MIN)
-	  b = BOOST_MIN;
-	else if (b > BOOST_MAX)
-	  b = BOOST_MAX;
-	boost = b;
+	boost = TrapLong(b, BOOST_MIN, BOOST_MAX);
   }
 
   c = GetFreqText();
@@ -193,12 +189,7 @@ bool BassBoostDialog::TransferDataFromWindow()
 
 	wxString val = c->GetValue();
 	val.ToLong(&f);
-	if (f < FREQ_MIN)
-	  f = FREQ_MIN;
-	else if (f > FREQ_MAX)
-	  f = FREQ_MAX;
-
-	freq = f;
+	freq = TrapLong(f, FREQ_MIN, FREQ_MAX);
   }
 
   return TRUE;
@@ -212,8 +203,9 @@ void BassBoostDialog::OnBoostText( wxCommandEvent &event )
   if (c) {
 	long boost;
 
-	wxString val = c->GetValue();
-	val.ToLong(&boost);
+	c->GetValue().ToLong(&boost);
+	freq = TrapLong(boost, BOOST_MIN, BOOST_MAX);
+
 	if (boost < BOOST_MIN)
 	  boost = BOOST_MIN;
 	else if (boost > BOOST_MAX)
@@ -231,12 +223,8 @@ void BassBoostDialog::OnFreqText( wxCommandEvent &event )
   if (c) {
 	long freq;
 
-	wxString val = c->GetValue();
-	val.ToLong(&freq);
-	if (freq < FREQ_MIN)
-	  freq = FREQ_MIN;
-	else if (freq > FREQ_MAX)
-	  freq = FREQ_MAX;
+	c->GetValue().ToLong(&freq);
+	freq = TrapLong(freq, FREQ_MIN, FREQ_MAX);
 	
 	wxSlider *slider = GetFreqSlider();
 	if (slider)

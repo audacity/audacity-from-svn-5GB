@@ -58,3 +58,35 @@ bool Effect::DoInPlaceEffect(WaveTrack *t, double t0, double t1,
   return DoIt(t, s0, s1-s0);
 }
 
+float TrapFloat(float x, float min, float max)
+{
+  if (x<=min)
+	return min;
+  else if (x>=max)
+	return max;
+  else
+	return x;
+}
+
+double TrapDouble(double x, double min, double max)
+{
+  if (x<=min)
+	return min;
+  else if (x>=max)
+	return max;
+  else
+	return x;
+}
+
+long TrapLong(long x, long min, long max)
+{
+  if (x<=min)
+	return min;
+  else if (x>=max)
+	return max;
+  else
+	return x;
+}
+
+
+
