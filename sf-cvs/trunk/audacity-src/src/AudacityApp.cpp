@@ -113,6 +113,9 @@ void QuitAudacity()
 IMPLEMENT_APP(AudacityApp)
 
 #ifdef __WXMAC__
+
+wxString wxMacFSSpec2MacFilename( const FSSpec *spec ) ;
+
 pascal OSErr AEQuit(const AppleEvent * theAppleEvent,
                     AppleEvent * theReply, long Refcon)
 {
@@ -121,18 +124,9 @@ pascal OSErr AEQuit(const AppleEvent * theAppleEvent,
 }
 
 /* prototype of MoreFiles fn, included in wxMac already */
-#ifdef __MACOSX__
-extern "C" {
-pascal OSErr FSpGetFullPath(const FSSpec * spec,
-		     short *fullPathLength, Handle * fullPath);
-};
-#else
-pascal OSErr FSpGetFullPath(const FSSpec * spec,
-                            short *fullPathLength, Handle * fullPath);
-#endif
 
-pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent,
-                         AppleEvent * theReply, long Refcon)
+pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent, AppleEvent * theReply,
+                         long Refcon)
 {
    AEDescList docList;
    AEKeyword keywd;
@@ -140,9 +134,6 @@ pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent,
    Size actualSize;
    long itemsInList;
    FSSpec theSpec;
-   CInfoPBRec pb;
-   Handle nameh;
-   short namelen;
    OSErr err;
    short i;
 
@@ -159,24 +150,13 @@ pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent,
    for (i = 1; i <= itemsInList; i++) {
       AEGetNthPtr(&docList, i, typeFSS, &keywd, &returnedType,
                   (Ptr) & theSpec, sizeof(theSpec), &actualSize);
+      wxString fName = wxMacFSSpec2MacFilename(&theSpec);
 
-      if (noErr == FSpGetFullPath(&theSpec, &namelen, &nameh)) {
-         HLock(nameh);
-         char *str = new char[namelen + 1];
-         memcpy(str, (char *) *nameh, namelen);
-         str[namelen] = 0;
-         HUnlock(nameh);
-         DisposeHandle(nameh);
-
-         AudacityProject *project = GetActiveProject();
-
-         if (project == NULL || !project->GetTracks()->IsEmpty()) {
-            project = CreateNewAudacityProject(gParentWindow);
-         }
-         project->OpenFile(str);
-
-         delete[]str;
+      AudacityProject *project = GetActiveProject();
+      if (project == NULL || !project->GetTracks()->IsEmpty()) {
+         project = CreateNewAudacityProject(gParentWindow);
       }
+      project->OpenFile(fName);
    }
 
    return noErr;
