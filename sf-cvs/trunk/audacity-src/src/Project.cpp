@@ -18,12 +18,15 @@
 #include "Audacity.h"
 
 #include <wx/wxprec.h>
+
+#include <wx/defs.h>
 #include <wx/app.h>
 #include <wx/dc.h>
 #include <wx/dcmemory.h>
 #include <wx/intl.h>
 #include <wx/string.h>
 #include <wx/ffile.h>
+#include <wx/log.h>
 
 #ifdef __MACOSX__
 #include <CoreServices/CoreServices.h>

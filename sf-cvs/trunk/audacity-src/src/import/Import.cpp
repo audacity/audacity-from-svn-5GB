@@ -133,9 +133,11 @@ int Importer::Import(wxString fName,
       UnusableImportPlugin *unusableImportPlugin = unusableImporterNode->GetData();
       if( unusableImportPlugin->SupportsExtension(extension) )
       {
-         errorMessage = _("This version of Audacity was not compiled with ") +
-                        unusableImportPlugin->GetPluginFormatDescription() +
-                        _(" support.");
+         errorMessage.Printf(_("This version of Audacity was not "
+                               "compiled with %s support."),
+                             (const char *)
+                             unusableImportPlugin->
+                             GetPluginFormatDescription());
          return 0;
       }
       unusableImporterNode = unusableImporterNode->GetNext();
