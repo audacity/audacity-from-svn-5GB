@@ -2,13 +2,13 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppName=Audacity 1.1
-AppVerName=Audacity 1.1.3
+AppName=Audacity 1.2
+AppVerName=Audacity 1.2.0
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
-DefaultDirName={pf}\Audacity 1.1
-DefaultGroupName=Audacity 1.1
+DefaultDirName={pf}\Audacity 1.2
+DefaultGroupName=Audacity 1.2
 AlwaysCreateUninstallIcon=yes
 LicenseFile=E:\sfw_dev\audacity\LICENSE.txt
 InfoBeforeFile=E:\sfw_dev\audacity\README.txt
@@ -20,7 +20,7 @@ Name: "desktopicon"; Description: "Create a &desktop icon"; GroupDescription: "A
 
 [Files]
 Source: "E:\sfw_dev\audacity\win\Release\audacity.exe"; DestDir: "{app}"; CopyMode: alwaysoverwrite
-Source: "E:\sfw_dev\audacity\win\Release\audacity-help.htb"; DestDir: "{app}"; CopyMode: alwaysoverwrite
+Source: "E:\sfw_dev\audacity\win\Release\audacity-1.2-help.htb"; DestDir: "{app}"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\bg\audacity.mo"; DestDir: "{app}\Languages\bg"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\ca\audacity.mo"; DestDir: "{app}\Languages\ca"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\da\audacity.mo"; DestDir: "{app}\Languages\da"; CopyMode: alwaysoverwrite
@@ -66,20 +66,20 @@ Source: "E:\sfw_dev\audacity\win\Release\Nyquist\system.lsp"; DestDir: "{app}\Ny
 Source: "E:\sfw_dev\audacity\win\Release\Nyquist\test.lsp"; DestDir: "{app}\Nyquist"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Nyquist\xlinit.lsp"; DestDir: "{app}\Nyquist"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\analyze.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
-; problematic so omit for now:   Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\beat.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
+Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\beat.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\delay.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\fadein.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\fadeout.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\Freeverb2.dll"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\Freeverb-readme.txt"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
+; VST is turned off.    Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\Freeverb2.dll"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
+; VST is turned off.    Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\Freeverb-readme.txt"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\highpass.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\lowpass.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\pluck.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\tremolo.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 
 [Icons]
-Name: "{group}\Audacity 1.1"; Filename: "{app}\audacity.exe"
-Name: "{userdesktop}\Audacity 1.1"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
+Name: "{group}\Audacity 1.2"; Filename: "{app}\audacity.exe"
+Name: "{userdesktop}\Audacity 1.2"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\audacity.exe"; Description: "Launch Audacity"; Flags: nowait postinstall skipifsilent
