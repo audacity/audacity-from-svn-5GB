@@ -114,7 +114,7 @@ bool ExportOGG(AudacityProject *project,
 
       if(t + deltat > t1) {
          done = true;
-         deltat = t1 - 1;
+         deltat = t1 - t;
          samplesThisRun = int(deltat * rate + 0.5);
       }
       
