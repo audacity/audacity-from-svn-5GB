@@ -26,6 +26,7 @@ OBJS = \
 	$(OBJDIR)/ASlider.cpp.o \
 	$(OBJDIR)/APalette.cpp.o \
 	$(OBJDIR)/Project.cpp.o \
+	$(OBJDIR)/Play.cpp.o \
 	$(OBJDIR)/TrackPanel.cpp.o \
 	$(OBJDIR)/NoteTrack.cpp.o \
 	$(OBJDIR)/WaveTrack.cpp.o \
@@ -48,10 +49,8 @@ OBJS = \
 	$(OBJDIR)/DirManager.cpp.o \
 	$(OBJDIR)/UndoManager.cpp.o \
 	$(OBJDIR)/AboutDialog.cpp.o \
-	$(OBJDIR)/GenericStream.cpp.o \
 	$(OBJDIR)/Pitch.cpp.o \
 	$(OBJDIR)/Mix.cpp.o \
-	$(OBJDIR)/PlayLinux.cpp.o \
 	$(OBJDIR)/effects/Effect.cpp.o \
 	$(OBJDIR)/effects/Amplify.cpp.o \
 	$(OBJDIR)/effects/Echo.cpp.o \

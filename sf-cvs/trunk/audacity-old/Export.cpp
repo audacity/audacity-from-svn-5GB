@@ -25,8 +25,6 @@
 #include "WaveTrack.h"
 #include "DirManager.h"
 
-#include "AudioApp.h"
-
 #include "Export.h"
 
 const int EXPORT_RADIO_ID = 13000;
