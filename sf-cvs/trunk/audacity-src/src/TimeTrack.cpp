@@ -9,10 +9,14 @@
 **********************************************************************/
 
 #include <wx/intl.h>
+#include "Audacity.h"
 #include "AColor.h"
 #include "TimeTrack.h"
 #include "widgets/Ruler.h"
+
+#if USE_LIBSAMPLERATE
 #include <samplerate.h>
+#endif
 
 TimeTrack *TrackFactory::NewTimeTrack()
 {
@@ -39,7 +43,8 @@ TimeTrack::TimeTrack(DirManager *projDirManager):
    mRuler->SetFormat(Ruler::TimeFormat);
 
    mConverterList = NULL;
-   mConverter = SRC_LINEAR;
+   mConverter = 0; // libsamplerate default,
+   // currently SRC_SINC_BEST_QUALITY which is a good choice
 
    blankBrush.SetColour(214, 214, 214);
    blankPen.SetColour(214, 214, 214);
