@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "POT-Creation-Date: 2003-06-30 11:13+0400\n"
-"PO-Revision-Date: 2003-06-30 12:56+0400\n"
+"PO-Revision-Date: 2003-07-01 13:05+0400\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -58,7 +58,7 @@ msgstr "&О программе..."
 
 #: ../src/Menus.cpp:173
 msgid "&All\tCtrl+A"
-msgstr "Выделить &всё\tCtrl+A"
+msgstr "&Всё\tCtrl+A"
 
 #: ../src/Menus.cpp:312
 msgid "&Analyze"
@@ -1141,7 +1141,7 @@ msgstr "Курсор вправо\tRight"
 
 #: ../src/Menus.cpp:175
 msgid "Cursor to End"
-msgstr "Переместить курсор к концу дорожки"
+msgstr "От курсора до конца"
 
 #: ../src/FormatSelection.cpp:394
 #, c-format
@@ -3059,7 +3059,7 @@ msgstr "Выберите один или несколько звуковых файлов..."
 
 #: ../src/Menus.cpp:172
 msgid "Select..."
-msgstr "Выбрать..."
+msgstr "Выделить..."
 
 #: ../src/Menus.cpp:368
 msgid "Selection Contract Left\tCtrl+Shift+Right"
@@ -3419,7 +3419,7 @@ msgstr "Начальное смещение:"
 
 #: ../src/Menus.cpp:174
 msgid "Start to Cursor"
-msgstr ""
+msgstr "От начала до курсора"
 
 #: ../src/effects/NoiseRemoval.cpp:374
 msgid "Step 1"
