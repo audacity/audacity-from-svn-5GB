@@ -4,7 +4,7 @@
  *
  * Copyright (c) 2002
  *
- * Written by Dominic Mazzoni
+ * Written by Dominic Mazzoni and Augustus Saunders
  *
  * PortMixer is intended to work side-by-side with PortAudio,
  * the Portable Real-Time Audio Library by Ross Bencina and
@@ -242,7 +242,7 @@ void VolumeFunction(HMIXEROBJ hMixer, DWORD controlID, PxVolume *volume)
 {
    MIXERCONTROLDETAILS details;
    MMRESULT result;
-   unsigned short value = 0;
+   MIXERCONTROLDETAILS_UNSIGNED value = 0;
 
    details.cbStruct = sizeof(MIXERCONTROLDETAILS);
    details.dwControlID = controlID;
@@ -308,14 +308,29 @@ void Px_SetMasterVolume( PxMixer *mixer, PxVolume volume )
 
 PxVolume Px_GetPCMOutputVolume( PxMixer *mixer )
 {
-   PxInfo *info = (PxInfo *)mixer;
+  MMRESULT result;
+  DWORD vol = 0;
+  unsigned short mono_vol = 0;
+  PxInfo *info = (PxInfo *)mixer;
 
-   return 1.0;
+  result = waveOutGetVolume(info->muxID, &vol);
+
+  if (result != MMSYSERR_NOERROR)
+     return 0.0;
+
+  mono_vol = (unsigned short)vol;
+  return (PxVolume)mono_vol/65535.0;
 }
 
 void Px_SetPCMOutputVolume( PxMixer *mixer, PxVolume volume )
 {
-   PxInfo *info = (PxInfo *)mixer;
+  MMRESULT result;
+  PxInfo *info = (PxInfo *)mixer;
+
+  result = waveOutSetVolume(info->muxID, volume*65535);
+
+  if (result != MMSYSERR_NOERROR)
+      return;
 }
 
 /*
@@ -326,26 +341,37 @@ int Px_GetNumOutputVolumes( PxMixer *mixer )
 {
    PxInfo *info = (PxInfo *)mixer;
 
-   return 0;
+   return 2;
 }
 
 const char *Px_GetOutputVolumeName( PxMixer *mixer, int i )
 {
    PxInfo *info = (PxInfo *)mixer;
    
-   return NULL;
+   if (i==1)
+      return "Wave Out";
+   else
+      return "Master Volume";
 }
 
 PxVolume Px_GetOutputVolume( PxMixer *mixer, int i )
 {
    PxInfo *info = (PxInfo *)mixer;
 
-   return 0.0;
+   if (i==1)
+      return Px_GetPCMOutputVolume(mixer);
+   else
+      return Px_GetMasterVolume(mixer);
 }
 
 void Px_SetOutputVolume( PxMixer *mixer, int i, PxVolume volume )
 {
    PxInfo *info = (PxInfo *)mixer;
+
+   if (i==1)
+      Px_SetPCMOutputVolume(mixer, volume);
+   else
+      Px_SetMasterVolume(mixer, volume);
 }
 
 /*
@@ -472,7 +498,7 @@ PxVolume Px_GetPlaythrough( PxMixer *mixer )
    return 0.0;
 }
 
-void Px_SetPlaythrough( PxMixer *mixer, PxVolume balance )
+void Px_SetPlaythrough( PxMixer *mixer, PxVolume volume )
 {
 }
 
