@@ -774,7 +774,7 @@ bool WaveTrack::Lock()
    if (!Flush())
       return false;
 
-   mSequence->Lock();
+   return mSequence->Lock();
 }
 
 bool WaveTrack::Unlock()
@@ -782,7 +782,7 @@ bool WaveTrack::Unlock()
    if (!Flush())
       return false;
 
-   mSequence->Unlock();
+   return mSequence->Unlock();
 }
 
 longSampleCount WaveTrack::TimeToLongSamples(double t0)
