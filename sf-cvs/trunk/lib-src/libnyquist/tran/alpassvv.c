@@ -572,7 +572,7 @@ void alpassvv_print_tree(alpassvv_susp_type susp, int n)
 sound_type snd_make_alpassvv(sound_type input, sound_type delaysnd, sound_type feedback, double maxdelay)
 {
     register alpassvv_susp_type susp;
-    rate_type sr = MAX(max(input->sr, delaysnd->sr), feedback->sr);
+    rate_type sr = MAX(MAX(input->sr, delaysnd->sr), feedback->sr);
     time_type t0 = MAX(input->t0, delaysnd->t0);
     int interp_desc = 0;
     sample_type scale_factor = 1.0F;
@@ -609,7 +609,7 @@ sound_type snd_make_alpassvv(sound_type input, sound_type delaysnd, sound_type f
     if (t0 < delaysnd->t0) sound_prepend_zeros(delaysnd, t0);
     if (t0 < feedback->t0) sound_prepend_zeros(feedback, t0);
     /* minimum start time over all inputs: */
-    t0_min = MIN(input->t0, min(delaysnd->t0, min(feedback->t0, t0)));
+    t0_min = MIN(input->t0, MIN(delaysnd->t0, min(feedback->t0, t0)));
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

@@ -561,7 +561,7 @@ sound_type snd_make_resoncv(sound_type s1, double hz, sound_type bw, int normali
     if (t0 < s1->t0) sound_prepend_zeros(s1, t0);
     if (t0 < bw->t0) sound_prepend_zeros(bw, t0);
     /* minimum start time over all inputs: */
-    t0_min = MIN(s1->t0, min(bw->t0, t0));
+    t0_min = MIN(s1->t0, MIN(bw->t0, t0));
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {
