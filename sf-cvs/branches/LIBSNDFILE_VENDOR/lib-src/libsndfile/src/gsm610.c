@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -16,25 +16,18 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-#include	<stdio.h>
-#include	<string.h>
-#include	<unistd.h>
+#include "config.h"
 
-#include	"sndfile.h"
-#include	"config.h"
-#include	"sfendian.h"
-#include	"float_cast.h"
-#include	"common.h"
-#include	"wav_w64.h"
-#include	"GSM610/gsm.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#if (CPU_IS_LITTLE_ENDIAN == 1)
-#	define	MAKE_MARKER(a,b,c,d)		((a)|((b)<<8)|((c)<<16)|((d)<<24))
-#elif (CPU_IS_BIG_ENDIAN == 1)
-#	define	MAKE_MARKER(a,b,c,d)		(((a)<<24)|((b)<<16)|((c)<<8)|(d))
-#else
-#	error "Cannot determine endian-ness of processor."
-#endif
+#include "sndfile.h"
+#include "sfendian.h"
+#include "float_cast.h"
+#include "common.h"
+#include "wav_w64.h"
+#include "GSM610/gsm.h"
 
 #define	GSM610_BLOCKSIZE		33
 #define	GSM610_SAMPLES			160
@@ -43,9 +36,9 @@ typedef struct gsm610_tag
 {	int				blocks ;
 	int				blockcount, samplecount ;
 	int				samplesperblock, blocksize ;
-	
-	int				(*decode_block) (SF_PRIVATE *psf, struct gsm610_tag *pgsm610) ;
-	int				(*encode_block) (SF_PRIVATE *psf, struct gsm610_tag *pgsm610) ;
+
+	int				(*decode_block)	(SF_PRIVATE *psf, struct gsm610_tag *pgsm610) ;
+	int				(*encode_block)	(SF_PRIVATE *psf, struct gsm610_tag *pgsm610) ;
 
 	short			samples [WAV_W64_GSM610_SAMPLES] ;
 	unsigned char	block [WAV_W64_GSM610_BLOCKSIZE] ;
@@ -53,37 +46,37 @@ typedef struct gsm610_tag
 	gsm				gsm_data ;
 } GSM610_PRIVATE ;
 
-static sf_count_t	gsm610_read_s (SF_PRIVATE *psf, short *ptr, sf_count_t len) ;
-static sf_count_t	gsm610_read_i (SF_PRIVATE *psf, int *ptr, sf_count_t len) ;
-static sf_count_t	gsm610_read_f (SF_PRIVATE *psf, float *ptr, sf_count_t len) ;
-static sf_count_t	gsm610_read_d (SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
+static sf_count_t	gsm610_read_s	(SF_PRIVATE *psf, short *ptr, sf_count_t len) ;
+static sf_count_t	gsm610_read_i	(SF_PRIVATE *psf, int *ptr, sf_count_t len) ;
+static sf_count_t	gsm610_read_f	(SF_PRIVATE *psf, float *ptr, sf_count_t len) ;
+static sf_count_t	gsm610_read_d	(SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
 
-static sf_count_t	gsm610_write_s (SF_PRIVATE *psf, short *ptr, sf_count_t len) ;
-static sf_count_t	gsm610_write_i (SF_PRIVATE *psf, int *ptr, sf_count_t len) ;
-static sf_count_t	gsm610_write_f (SF_PRIVATE *psf, float *ptr, sf_count_t len) ;
-static sf_count_t	gsm610_write_d (SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
+static sf_count_t	gsm610_write_s	(SF_PRIVATE *psf, short *ptr, sf_count_t len) ;
+static sf_count_t	gsm610_write_i	(SF_PRIVATE *psf, int *ptr, sf_count_t len) ;
+static sf_count_t	gsm610_write_f	(SF_PRIVATE *psf, float *ptr, sf_count_t len) ;
+static sf_count_t	gsm610_write_d	(SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
 
-static	int gsm610_read_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610, short *ptr, int len) ;
-static	int gsm610_write_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610, short *ptr, int len) ;
+static	int gsm610_read_block	(SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610, short *ptr, int len) ;
+static	int gsm610_write_block	(SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610, short *ptr, int len) ;
 
-static	int	gsm610_decode_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610) ;
-static	int	gsm610_encode_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610) ;
+static	int	gsm610_decode_block	(SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610) ;
+static	int	gsm610_encode_block	(SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610) ;
 
-static	int	gsm610_wav_decode_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610) ;
-static	int	gsm610_wav_encode_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610) ;
+static	int	gsm610_wav_decode_block	(SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610) ;
+static	int	gsm610_wav_encode_block	(SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610) ;
 
-static sf_count_t  gsm610_seek   (SF_PRIVATE *psf, int mode, sf_count_t offset) ;
+static sf_count_t	gsm610_seek	(SF_PRIVATE *psf, int mode, sf_count_t offset) ;
 
-static int	gsm610_close	(SF_PRIVATE  *psf) ;
+static int	gsm610_close	(SF_PRIVATE *psf) ;
 
 /*============================================================================================
 ** WAV GSM610 initialisation function.
 */
 
 int
-gsm610_init (SF_PRIVATE *psf)
+gsm610_init	(SF_PRIVATE *psf)
 {	GSM610_PRIVATE	*pgsm610 ;
-	int  true = 1 ;
+	int		true_flag = 1 ;
 
 	if (psf->mode == SFM_RDWR)
 		return SFE_BAD_MODE_RW ;
@@ -108,7 +101,7 @@ Need separate gsm_data structs for encode and decode.
 
 	if ((psf->sf.format & SF_FORMAT_TYPEMASK) == SF_FORMAT_WAV ||
 				(psf->sf.format & SF_FORMAT_TYPEMASK) == SF_FORMAT_W64)
-	{	gsm_option (pgsm610->gsm_data,  GSM_OPT_WAV49, &true) ;
+	{	gsm_option (pgsm610->gsm_data, GSM_OPT_WAV49, &true_flag) ;
 
 		pgsm610->encode_block = gsm610_wav_encode_block ;
 		pgsm610->decode_block = gsm610_wav_decode_block ;
@@ -119,11 +112,11 @@ Need separate gsm_data structs for encode and decode.
 	else
 	{	pgsm610->encode_block = gsm610_encode_block ;
 		pgsm610->decode_block = gsm610_decode_block ;
-		
+
 		pgsm610->samplesperblock = GSM610_SAMPLES ;
 		pgsm610->blocksize = GSM610_BLOCKSIZE ;
 		} ;
-		
+
 	if (psf->mode == SFM_READ)
 	{	if (psf->datalength % pgsm610->blocksize)
 		{	psf_log_printf (psf, "*** Warning : data chunk seems to be truncated.\n") ;
@@ -136,24 +129,24 @@ Need separate gsm_data structs for encode and decode.
 
 		pgsm610->decode_block (psf, pgsm610) ;	/* Read first block. */
 
-		psf->read_short  = gsm610_read_s ;
-		psf->read_int    = gsm610_read_i ;
-		psf->read_float  = gsm610_read_f ;
-		psf->read_double = gsm610_read_d ;
+		psf->read_short		= gsm610_read_s ;
+		psf->read_int		= gsm610_read_i ;
+		psf->read_float		= gsm610_read_f ;
+		psf->read_double	= gsm610_read_d ;
 		} ;
 
 	if (psf->mode == SFM_WRITE)
-	{	pgsm610->blockcount  = 0 ;
+	{	pgsm610->blockcount = 0 ;
 		pgsm610->samplecount = 0 ;
 
-		psf->write_short  = gsm610_write_s ;
-		psf->write_int    = gsm610_write_i ;
-		psf->write_float  = gsm610_write_f ;
-		psf->write_double = gsm610_write_d ;
+		psf->write_short	= gsm610_write_s ;
+		psf->write_int		= gsm610_write_i ;
+		psf->write_float	= gsm610_write_f ;
+		psf->write_double	= gsm610_write_d ;
 		} ;
 
-	psf->close    = gsm610_close ;
-	psf->new_seek = gsm610_seek ;
+	psf->close = gsm610_close ;
+	psf->seek = gsm610_seek ;
 
 	psf->filelength = psf_get_filelen (psf) ;
 	psf->datalength = psf->filelength - psf->dataoffset ;
@@ -166,7 +159,7 @@ Need separate gsm_data structs for encode and decode.
 */
 
 static int
-gsm610_wav_decode_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610)
+gsm610_wav_decode_block	(SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610)
 {	int	k ;
 
 	pgsm610->blockcount ++ ;
@@ -185,7 +178,7 @@ gsm610_wav_decode_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610)
 		return 0 ;
 		} ;
 
-	if (gsm_decode (pgsm610->gsm_data, pgsm610->block+(WAV_W64_GSM610_BLOCKSIZE+1)/2, pgsm610->samples+WAV_W64_GSM610_SAMPLES/2) < 0)
+	if (gsm_decode (pgsm610->gsm_data, pgsm610->block + (WAV_W64_GSM610_BLOCKSIZE + 1) / 2, pgsm610->samples + WAV_W64_GSM610_SAMPLES / 2) < 0)
 	{	psf_log_printf (psf, "Error from gsm_decode() on frame : %d.5\n", pgsm610->blockcount) ;
 		return 0 ;
 		} ;
@@ -194,7 +187,7 @@ gsm610_wav_decode_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610)
 } /* gsm610_wav_decode_block */
 
 static int
-gsm610_decode_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610)
+gsm610_decode_block	(SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610)
 {	int	k ;
 
 	pgsm610->blockcount ++ ;
@@ -217,12 +210,12 @@ gsm610_decode_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610)
 } /* gsm610_decode_block */
 
 static int
-gsm610_read_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610, short *ptr, int len)
+gsm610_read_block	(SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610, short *ptr, int len)
 {	int	count, total = 0, indx = 0 ;
 
 	while (indx < len)
 	{	if (pgsm610->blockcount >= pgsm610->blocks && pgsm610->samplecount >= pgsm610->samplesperblock)
-		{	memset (&(ptr[indx]), 0, (size_t) ((len - indx) * sizeof (short))) ;
+		{	memset (&(ptr [indx]), 0, (size_t) ((len - indx) * sizeof (short))) ;
 			return total ;
 			} ;
 
@@ -232,7 +225,7 @@ gsm610_read_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610, short *ptr, int len
 		count = pgsm610->samplesperblock - pgsm610->samplecount ;
 		count = (len - indx > count) ? count : len - indx ;
 
-		memcpy (&(ptr[indx]), &(pgsm610->samples [pgsm610->samplecount]), count * sizeof (short)) ;
+		memcpy (&(ptr [indx]), &(pgsm610->samples [pgsm610->samplecount]), count * sizeof (short)) ;
 		indx += count ;
 		pgsm610->samplecount += count ;
 		total = indx ;
@@ -242,7 +235,7 @@ gsm610_read_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610, short *ptr, int len
 } /* gsm610_read_block */
 
 static sf_count_t
-gsm610_read_s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
+gsm610_read_s	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 {	GSM610_PRIVATE 	*pgsm610 ;
 	int			readcount, count ;
 	sf_count_t	total = 0 ;
@@ -267,7 +260,7 @@ gsm610_read_s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 } /* gsm610_read_s */
 
 static sf_count_t
-gsm610_read_i  (SF_PRIVATE *psf, int *ptr, sf_count_t len)
+gsm610_read_i	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 {	GSM610_PRIVATE *pgsm610 ;
 	short		*sptr ;
 	int			k, bufferlen, readcount = 0, count ;
@@ -292,7 +285,7 @@ gsm610_read_i  (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 } /* gsm610_read_i */
 
 static sf_count_t
-gsm610_read_f  (SF_PRIVATE *psf, float *ptr, sf_count_t len)
+gsm610_read_f	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 {	GSM610_PRIVATE *pgsm610 ;
 	short		*sptr ;
 	int			k, bufferlen, readcount = 0, count ;
@@ -320,7 +313,7 @@ gsm610_read_f  (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 } /* gsm610_read_f */
 
 static sf_count_t
-gsm610_read_d  (SF_PRIVATE *psf, double *ptr, sf_count_t len)
+gsm610_read_d	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 {	GSM610_PRIVATE *pgsm610 ;
 	short		*sptr ;
 	int			k, bufferlen, readcount = 0, count ;
@@ -348,7 +341,7 @@ gsm610_read_d  (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 } /* gsm610_read_d */
 
 static sf_count_t
-gsm610_seek   (SF_PRIVATE *psf, int mode, sf_count_t offset)
+gsm610_seek	(SF_PRIVATE *psf, int mode, sf_count_t offset)
 {	GSM610_PRIVATE *pgsm610 ;
 	int			newblock, newsample ;
 
@@ -364,15 +357,15 @@ gsm610_seek   (SF_PRIVATE *psf, int mode, sf_count_t offset)
 		} ;
 
 	if (offset == 0)
-	{	int true = 1 ;
+	{	int true_flag = 1 ;
 
 		psf_fseek (psf, psf->dataoffset, SEEK_SET) ;
-		pgsm610->blockcount  = 0 ;
+		pgsm610->blockcount = 0 ;
 
 		gsm_init (pgsm610->gsm_data) ;
 		if ((psf->sf.format & SF_FORMAT_TYPEMASK) == SF_FORMAT_WAV ||
 				(psf->sf.format & SF_FORMAT_TYPEMASK) == SF_FORMAT_W64)
-			gsm_option (pgsm610->gsm_data,  GSM_OPT_WAV49, &true) ;
+			gsm_option (pgsm610->gsm_data, GSM_OPT_WAV49, &true_flag) ;
 
 		pgsm610->decode_block (psf, pgsm610) ;
 		pgsm610->samplecount = 0 ;
@@ -384,13 +377,13 @@ gsm610_seek   (SF_PRIVATE *psf, int mode, sf_count_t offset)
 		return	((sf_count_t) -1) ;
 		} ;
 
-	newblock  = offset / pgsm610->samplesperblock ;
-	newsample = offset % pgsm610->samplesperblock ;
+	newblock	= offset / pgsm610->samplesperblock ;
+	newsample	= offset % pgsm610->samplesperblock ;
 
 	if (psf->mode == SFM_READ)
 	{	if (psf->read_current != newblock * pgsm610->samplesperblock + newsample)
 		{	psf_fseek (psf, psf->dataoffset + newblock * pgsm610->samplesperblock, SEEK_SET) ;
-			pgsm610->blockcount  = newblock ;
+			pgsm610->blockcount = newblock ;
 			pgsm610->decode_block (psf, pgsm610) ;
 			pgsm610->samplecount = newsample ;
 			} ;
@@ -408,7 +401,7 @@ gsm610_seek   (SF_PRIVATE *psf, int mode, sf_count_t offset)
 */
 
 static int
-gsm610_encode_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610)
+gsm610_encode_block	(SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610)
 {	int k ;
 
 	/* Encode the samples. */
@@ -428,7 +421,7 @@ gsm610_encode_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610)
 } /* gsm610_encode_block */
 
 static int
-gsm610_wav_encode_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610)
+gsm610_wav_encode_block	(SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610)
 {	int k ;
 
 	/* Encode the samples. */
@@ -449,7 +442,7 @@ gsm610_wav_encode_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610)
 } /* gsm610_wav_encode_block */
 
 static int
-gsm610_write_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610, short *ptr, int len)
+gsm610_write_block	(SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610, short *ptr, int len)
 {	int		count, total = 0, indx = 0 ;
 
 	while (indx < len)
@@ -471,7 +464,7 @@ gsm610_write_block (SF_PRIVATE *psf, GSM610_PRIVATE *pgsm610, short *ptr, int le
 } /* gsm610_write_block */
 
 static sf_count_t
-gsm610_write_s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
+gsm610_write_s	(SF_PRIVATE *psf, short *ptr, sf_count_t len)
 {	GSM610_PRIVATE 	*pgsm610 ;
 	int			writecount, count ;
 	sf_count_t	total = 0 ;
@@ -496,7 +489,7 @@ gsm610_write_s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
 } /* gsm610_write_s */
 
 static sf_count_t
-gsm610_write_i  (SF_PRIVATE *psf, int *ptr, sf_count_t len)
+gsm610_write_i	(SF_PRIVATE *psf, int *ptr, sf_count_t len)
 {	GSM610_PRIVATE *pgsm610 ;
 	short		*sptr ;
 	int			k, bufferlen, writecount = 0, count ;
@@ -521,7 +514,7 @@ gsm610_write_i  (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 } /* gsm610_write_i */
 
 static sf_count_t
-gsm610_write_f  (SF_PRIVATE *psf, float *ptr, sf_count_t len)
+gsm610_write_f	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 {	GSM610_PRIVATE *pgsm610 ;
 	short		*sptr ;
 	int			k, bufferlen, writecount = 0, count ;
@@ -539,7 +532,7 @@ gsm610_write_f  (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : len ;
 		for (k = 0 ; k < writecount ; k++)
-			sptr [k] = lrintf (normfact * ptr [total + k])  ;
+			sptr [k] = lrintf (normfact * ptr [total + k]) ;
 		count = gsm610_write_block (psf, pgsm610, sptr, writecount) ;
 
 		total += count ;
@@ -549,7 +542,7 @@ gsm610_write_f  (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 } /* gsm610_write_f */
 
 static sf_count_t
-gsm610_write_d  (SF_PRIVATE *psf, double *ptr, sf_count_t len)
+gsm610_write_d	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 {	GSM610_PRIVATE *pgsm610 ;
 	short		*sptr ;
 	int			k, bufferlen, writecount = 0, count ;
@@ -577,7 +570,7 @@ gsm610_write_d  (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 } /* gsm610_write_d */
 
 static int
-gsm610_close	(SF_PRIVATE  *psf)
+gsm610_close	(SF_PRIVATE *psf)
 {	GSM610_PRIVATE *pgsm610 ;
 
 	if (! psf->fdata)
@@ -593,27 +586,20 @@ gsm610_close	(SF_PRIVATE  *psf)
 		if (pgsm610->samplecount && pgsm610->samplecount < pgsm610->samplesperblock)
 			pgsm610->encode_block (psf, pgsm610) ;
 
-		/*  Now we know for certain the length of the file we can
-		**  re-write correct values for the RIFF and data chunks.
-		*/
-
-		psf_fseek (psf, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf) ;
-
-		psf->sf.frames = pgsm610->samplesperblock * pgsm610->blockcount ;
-		psf->datalength = psf->filelength - psf->dataoffset ;
-
 		if (psf->write_header)
-			psf->write_header (psf, SF_FALSE) ;
+			psf->write_header (psf, SF_TRUE) ;
 		} ;
 
 	if (pgsm610->gsm_data)
 		gsm_destroy (pgsm610->gsm_data) ;
 
-	if (psf->fdata)
-		free (psf->fdata) ;
-	psf->fdata = NULL ;
-
 	return 0 ;
 } /* gsm610_close */
 
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 8575187d-af4f-4acf-b9dd-6ff705628345
+*/

@@ -77,7 +77,6 @@ void Gsm_Coder (
 		 */
 
 		{ register int i;
-		  register longword ltmp;
 		  for (i = 0; i <= 39; i++)
 			dp[ i ] = GSM_ADD( State->e[5 + i], dpp[i] );
 		}
@@ -88,3 +87,11 @@ void Gsm_Coder (
 	(void)memcpy( (char *)State->dp0, (char *)(State->dp0 + 160),
 		120 * sizeof(*State->dp0) );
 }
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: ae8ef1b2-5a1e-4263-94cd-42b15dca81a3
+*/
+

@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,7 @@
 #define	AU_HEADER_FILE
 
 
-enum 
+enum
 {	AU_H_G721_32	= 200,
 	AU_H_G723_24	= 201,
 	AU_H_G723_40	= 202
@@ -30,3 +30,10 @@ int	au_g72x_reader_init (SF_PRIVATE *psf, int codec) ;
 int	au_g72x_writer_init (SF_PRIVATE *psf, int codec) ;
 
 #endif /* AU_HEADER_FILE */
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 63affc81-e204-4468-9705-60abe4d10689
+*/

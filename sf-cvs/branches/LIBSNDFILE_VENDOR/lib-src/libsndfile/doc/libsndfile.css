@@ -75,3 +75,7 @@ pre {
 	font-family : courier, monospace ;
 	font-size : medium ;
 }
+a:link { color : #9090FF ; }
+a:visited { color : #5050FF ; }
+a:active { color : #FF00FF ; }
+a:hover { background-color : #202080 ; }

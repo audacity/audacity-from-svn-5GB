@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +17,6 @@
 */
 
 #include	<stdio.h>
-#include	<unistd.h>
 #include	<fcntl.h>
 #include	<string.h>
 #include	<ctype.h>
@@ -82,7 +81,7 @@ dwd_open (SF_PRIVATE *psf)
 	subformat = psf->sf.format & SF_FORMAT_SUBMASK ;
 
 	if (psf->mode == SFM_WRITE || psf->mode == SFM_RDWR)
-	{	
+	{
 		/*-psf->endian = psf->sf.format & SF_FORMAT_ENDMASK ;
 		if (CPU_IS_LITTLE_ENDIAN && psf->endian == SF_ENDIAN_CPU)
 			psf->endian = SF_ENDIAN_LITTLE ;
@@ -96,7 +95,7 @@ dwd_open (SF_PRIVATE *psf)
 		-*/
 		} ;
 
-	psf->close    = dwd_close ;
+	psf->close = dwd_close ;
 
 	/*-psf->blockwidth = psf->bytewidth * psf->sf.channels ;-*/
 
@@ -107,17 +106,14 @@ dwd_open (SF_PRIVATE *psf)
 */
 
 static int
-dwd_close	(SF_PRIVATE  *psf)
+dwd_close	(SF_PRIVATE *psf)
 {
-
-	if (psf->fdata)
-		free (psf->fdata) ;
-	psf->fdata = NULL ;
+	psf = psf ;
 
 	return 0 ;
 } /* dwd_close */
 
-/* This struct contains all the fields of interest om the DWD header, but does not 
+/* This struct contains all the fields of interest om the DWD header, but does not
 ** do so in the same order and layout as the actual file, header.
 ** No assumptions are made about the packing of this struct.
 */
@@ -129,16 +125,16 @@ typedef struct
 
 static int
 dwd_read_header (SF_PRIVATE *psf)
-{	DWD_HEADER  	dwdh ;
+{	DWD_HEADER	dwdh ;
 
 	memset (psf->buffer, 0, sizeof (psf->buffer)) ;
 	/* Set position to start of file to begin reading header. */
 	psf_binheader_readf (psf, "pb", 0, psf->buffer, DWD_IDENTIFIER_LEN) ;
-	
+
 	if (memcmp (psf->buffer, DWD_IDENTIFIER, DWD_IDENTIFIER_LEN) != 0)
 		return SFE_DWD_NO_DWD ;
 
-	psf_log_printf (psf, "Read only : DiamondWare Digitized (.dwd)\n",  psf->buffer) ;
+	psf_log_printf (psf, "Read only : DiamondWare Digitized (.dwd)\n", psf->buffer) ;
 
 	psf_binheader_readf (psf, "11", &dwdh.major, &dwdh.minor) ;
 	psf_binheader_readf (psf, "e4j1", &dwdh.id, 1, &dwdh.compression) ;
@@ -149,16 +145,16 @@ dwd_read_header (SF_PRIVATE *psf)
 	psf_log_printf (psf, "  Version Major : %d\n  Version Minor : %d\n  Unique ID     : %08X\n",
 						dwdh.major, dwdh.minor, dwdh.id) ;
 	psf_log_printf (psf, "  Compression   : %d => ", dwdh.compression) ;
-	
+
 	if (dwdh.compression != 0)
 	{	psf_log_printf (psf, "Unsupported compression\n") ;
 		return SFE_DWD_COMPRESSION ;
 		}
 	else
 		psf_log_printf (psf, "None\n") ;
-	
+
 	psf_log_printf (psf, "  Sample Rate   : %d\n  Channels      : %d\n"
-						 "  Bit Width     : %d\n", 
+						 "  Bit Width     : %d\n",
 						 dwdh.srate, dwdh.channels, dwdh.bitwidth) ;
 
 	switch (dwdh.bitwidth)
@@ -171,7 +167,7 @@ dwd_read_header (SF_PRIVATE *psf)
 				psf->sf.format = SF_FORMAT_DWD | SF_FORMAT_PCM_16 ;
 				psf->bytewidth = 2 ;
 				break ;
-				
+
 		default :
 				psf_log_printf (psf, "*** Bad bit width %d\n", dwdh.bitwidth) ;
 				return SFE_DWD_BAND_BIT_WIDTH ;
@@ -187,17 +183,16 @@ dwd_read_header (SF_PRIVATE *psf)
 	psf_log_printf (psf, "  Max Value     : %d\n", dwdh.maxval) ;
 	psf_log_printf (psf, "  Frames        : %d\n", dwdh.frames) ;
 	psf_log_printf (psf, "  Data Offset   : %d\n", dwdh.offset) ;
-	
+
 	psf->datalength = dwdh.datalen ;
 	psf->dataoffset = dwdh.offset ;
-	
+
 	psf->endian = SF_ENDIAN_LITTLE ;
 
 	psf->sf.samplerate = dwdh.srate ;
 	psf->sf.channels = dwdh.channels ;
-	psf->sf.seekable = SF_TRUE ;
 	psf->sf.sections = 1 ;
-	
+
 	return pcm_init (psf) ;
 } /* dwd_read_header */
 
@@ -205,3 +200,10 @@ dwd_read_header (SF_PRIVATE *psf)
 */
 
 #endif
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: a5e1d2a6-a840-4039-a0e7-e1a43eb05a4f
+*/

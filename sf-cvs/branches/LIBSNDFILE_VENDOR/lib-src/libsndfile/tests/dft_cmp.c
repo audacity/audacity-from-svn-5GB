@@ -1,18 +1,18 @@
 /*
-** Copyright (C) 2002 Erik de Castro Lopo <erikd@zip.com.au>
-**  
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+**
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
-** 
+**
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software 
+** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
@@ -41,17 +41,17 @@ dft_cmp (int linenum, double *orig, double *test, int len, double target_snr, in
 {	static double orig_spec [DFT_SPEC_LENGTH] ;
 	static double test_spec [DFT_SPEC_LENGTH] ;
 	double		snr ;
-	
+
 	if (! orig || ! test)
 	{	printf ("Error (line % d) : dft_cmp : Bad input arrays.\n", linenum) ;
 		return 1 ;
 		} ;
-		
+
 	if (len != DFT_DATA_LENGTH)
 	{	printf ("Error (line % d) : dft_cmp : Bad input array length.\n", linenum) ;
 		return 1 ;
 		} ;
-		
+
 	dft_magnitude (orig, orig_spec) ;
 	dft_magnitude (test, test_spec) ;
 
@@ -59,25 +59,26 @@ dft_cmp (int linenum, double *orig, double *test, int len, double target_snr, in
 
 	if (snr > target_snr)
 	{	printf ("\n\nLine %d: Actual SNR (% 4.1f) > target SNR (% 4.1f).\n\n", linenum, snr, target_snr) ;
+		oct_save_double	(orig, test, len) ;
 		if (allow_exit)
 			exit (1) ;
 		} ;
-		
+
 	if (snr < -500.0)
 		snr = -500.0 ;
-		
+
 	return snr ;
 } /* dft_cmp */
 
 /*--------------------------------------------------------------------------------
-**	Quick dirty calculation of magnitude spectrum for real valued data using 
-**	Discrete Fourier Transform. Since the data is real, the DFT is only 
+**	Quick dirty calculation of magnitude spectrum for real valued data using
+**	Discrete Fourier Transform. Since the data is real, the DFT is only
 **	calculated for positive frequencies.
 */
 
-static void	
+static void
 dft_magnitude (const double *data, double *spectrum)
-{	static double cos_angle [DFT_DATA_LENGTH] = { 0.0 };
+{	static double cos_angle [DFT_DATA_LENGTH] = { 0.0 } ;
 	static double sin_angle [DFT_DATA_LENGTH] ;
 
 	double	real_part, imag_part ;
@@ -94,28 +95,30 @@ dft_magnitude (const double *data, double *spectrum)
 	for (k = 1 ; k < DFT_SPEC_LENGTH ; k++)
 	{	real_part = 0.0 ;
 		imag_part = 0.0 ;
-	
+
 		for (n = 0 ; n < DFT_DATA_LENGTH ; n++)
 		{	real_part += data [n] * cos_angle [(k * n) % DFT_DATA_LENGTH] ;
 			imag_part += data [n] * sin_angle [(k * n) % DFT_DATA_LENGTH] ;
 			} ;
-	
+
 		spectrum [k] = sqrt (real_part * real_part + imag_part * imag_part) ;
 		} ;
-	
+
 	spectrum [k] = 0.0 ;
-	
+
+	spectrum [0] = spectrum [1] = spectrum [2] = spectrum [3] = spectrum [4] = 0.0 ;
+
 	return ;
 } /* dft_magnitude */
 
-static double 
+static double
 calc_max_spectral_difference (double *orig, double *test)
 {	double orig_max = 0.0, max_diff = 0.0 ;
 	int	k ;
-	
+
 	for (k = 0 ; k < DFT_SPEC_LENGTH ; k++)
 	{	if (orig_max < orig [k])
-			orig_max = orig [k]	;
+			orig_max = orig [k] ;
 		if (max_diff < fabs (orig [k] - test [k]))
 			max_diff = fabs (orig [k] - test [k]) ;
 		} ;
@@ -125,3 +128,10 @@ calc_max_spectral_difference (double *orig, double *test)
 
 	return 20.0 * log10 (max_diff / orig_max) ;
 } /* calc_max_spectral_difference */
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: cba7ffe2-bafe-44bd-b57a-15def3408410
+*/

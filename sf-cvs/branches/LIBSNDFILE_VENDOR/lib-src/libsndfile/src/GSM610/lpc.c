@@ -176,7 +176,6 @@ static void Reflection_coefficients (
 {
 	register int	i, m, n;
 	register word	temp;
-	register longword ltmp;
 	word		ACF[9];	/* 0..8 */
 	word		P[  9];	/* 0..8 */
 	word		K[  9]; /* 2..8 */
@@ -195,7 +194,7 @@ static void Reflection_coefficients (
 	assert(temp >= 0 && temp < 32);
 
 	/* ? overflow ? */
-	for (i = 0; i <= 8; i++) ACF[i] = SASR( L_ACF[i] << temp, 16 );
+	for (i = 0; i <= 8; i++) ACF[i] = SASR_L( L_ACF[i] << temp, 16 );
 
 	/*   Initialize array P[..] and K[..] for the recursion.
 	 */
@@ -284,8 +283,6 @@ static void Quantization_and_coding (
 )
 {
 	register word	temp;
-	longword	ltmp;
-
 
 	/*  This procedure needs four tables; the following equations
 	 *  give the optimum scaling for the constants:
@@ -301,7 +298,7 @@ static void Quantization_and_coding (
 		temp = GSM_MULT( A,   *LAR );	\
 		temp = GSM_ADD(  temp,   B );	\
 		temp = GSM_ADD(  temp, 256 );	\
-		temp = SASR(     temp,   9 );	\
+		temp = SASR_W(     temp,   9 );	\
 		*LAR  =  temp>MAC ? MAC - MIC : (temp<MIC ? 0 : temp - MIC); \
 		LAR++;
 
@@ -334,3 +331,11 @@ void Gsm_LPC_Analysis (
 	Transformation_to_Log_Area_Ratios (LARc);
 	Quantization_and_coding		  (LARc);
 }
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 63146664-a002-4e1e-8b7b-f0cc8a6a53da
+*/
+

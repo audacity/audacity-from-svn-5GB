@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -27,7 +27,7 @@
 */
 
 #include	<stdio.h>
-#include	<unistd.h>
+#include	<stdlib.h>
 #include	<string.h>
 
 #include	"sndfile.h"
@@ -37,8 +37,7 @@
 #include	"common.h"
 
 typedef struct
-{	int		filedes ;
-	int		dwm_maxsize, bit_width, max_delta, span ;
+{	int		dwm_maxsize, bit_width, max_delta, span ;
 	int		samplecount ;
 	int		bit_count, bits, last_delta_width, last_sample ;
 	struct
@@ -60,11 +59,11 @@ static sf_count_t dwvw_write_i (SF_PRIVATE *psf, int *ptr, sf_count_t len) ;
 static sf_count_t dwvw_write_f (SF_PRIVATE *psf, float *ptr, sf_count_t len) ;
 static sf_count_t dwvw_write_d (SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
 
-static sf_count_t	dwvw_seek   (SF_PRIVATE *psf, int mode, sf_count_t offset) ;
-static int	dwvw_close  (SF_PRIVATE *psf) ;
+static sf_count_t	dwvw_seek	(SF_PRIVATE *psf, int mode, sf_count_t offset) ;
+static int	dwvw_close	(SF_PRIVATE *psf) ;
 
 static int	dwvw_decode_data (SF_PRIVATE *psf, DWVW_PRIVATE *pdwvw, int *ptr, int len) ;
-static int  dwvw_decode_load_bits (SF_PRIVATE *psf, DWVW_PRIVATE *pdwvw, int bit_count) ;
+static int	dwvw_decode_load_bits (SF_PRIVATE *psf, DWVW_PRIVATE *pdwvw, int bit_count) ;
 
 static int	dwvw_encode_data (SF_PRIVATE *psf, DWVW_PRIVATE *pdwvw, int *ptr, int len) ;
 static void dwvw_encode_store_bits (SF_PRIVATE *psf, DWVW_PRIVATE *pdwvw, int data, int new_bits) ;
@@ -84,14 +83,10 @@ dwvw_init (SF_PRIVATE *psf, int bitwidth)
 	if (psf->mode == SFM_RDWR)
 		return SFE_BAD_MODE_RW ;
 
-	if (! (pdwvw = malloc (sizeof (DWVW_PRIVATE))))
+	if ((pdwvw = calloc (1, sizeof (DWVW_PRIVATE))) == NULL)
 		return SFE_MALLOC_FAILED ;
 
 	psf->fdata = (void*) pdwvw ;
-
-	memset (pdwvw, 0, sizeof (DWVW_PRIVATE)) ;
-
-	pdwvw->filedes = psf->filedes ;
 
 	pdwvw->bit_width 	= bitwidth ;
 	pdwvw->dwm_maxsize	= bitwidth / 2 ;
@@ -101,24 +96,24 @@ dwvw_init (SF_PRIVATE *psf, int bitwidth)
 	dwvw_read_reset (pdwvw) ;
 
 	if (psf->mode == SFM_READ)
-	{	psf->read_short  = dwvw_read_s ;
-		psf->read_int    = dwvw_read_i ;
-		psf->read_float  = dwvw_read_f ;
-		psf->read_double = dwvw_read_d ;
+	{	psf->read_short		= dwvw_read_s ;
+		psf->read_int		= dwvw_read_i ;
+		psf->read_float		= dwvw_read_f ;
+		psf->read_double	= dwvw_read_d ;
 		} ;
 
 	if (psf->mode == SFM_WRITE)
-	{	psf->write_short  = dwvw_write_s ;
-		psf->write_int    = dwvw_write_i ;
-		psf->write_float  = dwvw_write_f ;
-		psf->write_double = dwvw_write_d ;
+	{	psf->write_short	= dwvw_write_s ;
+		psf->write_int		= dwvw_write_i ;
+		psf->write_float	= dwvw_write_f ;
+		psf->write_double	= dwvw_write_d ;
 		} ;
 
-	psf->new_seek	= dwvw_seek ;
-	psf->close  	= dwvw_close ;
+	psf->seek	= dwvw_seek ;
+	psf->close	= dwvw_close ;
 
 	/* FIXME : This s bogus. */
-	SF_COUNT_MAX_POSITIVE (psf->sf.frames) ;
+	psf->sf.frames = SF_COUNT_MAX ;
 	psf->datalength = psf->sf.frames ;
 	/* EMXIF : This s bogus. */
 
@@ -129,10 +124,10 @@ dwvw_init (SF_PRIVATE *psf, int bitwidth)
 */
 
 static int
-dwvw_close  (SF_PRIVATE *psf)
+dwvw_close (SF_PRIVATE *psf)
 {	DWVW_PRIVATE *pdwvw ;
 
-	if (! psf->fdata)
+	if (psf->fdata == NULL)
 		return 0 ;
 	pdwvw = (DWVW_PRIVATE*) psf->fdata ;
 
@@ -145,31 +140,15 @@ dwvw_close  (SF_PRIVATE *psf)
 		/* Write the last buffer worth of data to disk. */
 		psf_fwrite (pdwvw->b.buffer, 1, pdwvw->b.index, psf) ;
 
-		/*  Now we know for certain the length of the file we can re-write
-		**	correct values for the FORM, COMM and SSND chunks.
-		*/
-
-		psf_fseek (psf, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf) ;
-		psf_fseek (psf, 0, SEEK_SET) ;
-
-		psf->datalength = psf->filelength - psf->dataoffset ;
-
- 		psf->sf.frames = pdwvw->samplecount ;
-
 		if (psf->write_header)
-			psf->write_header (psf, SF_FALSE) ;
+			psf->write_header (psf, SF_TRUE) ;
 		} ;
-
-	if (psf->fdata)
-		free (psf->fdata) ;
-	psf->fdata = NULL ;
 
 	return 0 ;
 } /* dwvw_close */
 
 static sf_count_t
-dwvw_seek   (SF_PRIVATE *psf, int mode, sf_count_t offset)
+dwvw_seek	(SF_PRIVATE *psf, int mode, sf_count_t offset)
 {	DWVW_PRIVATE *pdwvw ;
 
 	mode = mode ;
@@ -349,7 +328,7 @@ dwvw_decode_data (SF_PRIVATE *psf, DWVW_PRIVATE *pdwvw, int *ptr, int len)
 
 		if (sample >= pdwvw->max_delta)
 			sample -= pdwvw->span ;
-		else if (sample <  - pdwvw->max_delta)
+		else if (sample < - pdwvw->max_delta)
 			sample += pdwvw->span ;
 
 		/* Store the sample justifying to the most significant bit. */
@@ -423,13 +402,13 @@ dwvw_decode_load_bits (SF_PRIVATE *psf, DWVW_PRIVATE *pdwvw, int bit_count)
 
 static void
 dwvw_read_reset (DWVW_PRIVATE *pdwvw)
-{	pdwvw->samplecount  = 0 ;
-	pdwvw->b.index		= 0 ;
-	pdwvw->b.end		= 0 ;
-	pdwvw->bit_count    = 0 ;
-	pdwvw->bits			= 0 ;
+{	pdwvw->samplecount		= 0 ;
+	pdwvw->b.index			= 0 ;
+	pdwvw->b.end			= 0 ;
+	pdwvw->bit_count		= 0 ;
+	pdwvw->bits				= 0 ;
 	pdwvw->last_delta_width = 0 ;
-	pdwvw->last_sample  = 0 ;
+	pdwvw->last_sample		= 0 ;
 } /* dwvw_read_reset */
 
 static void
@@ -443,7 +422,7 @@ dwvw_encode_store_bits (SF_PRIVATE *psf, DWVW_PRIVATE *pdwvw, int data, int new_
 	/* Transfer bit to buffer. */
 	while (pdwvw->bit_count >= 8)
 	{	byte = pdwvw->bits >> (pdwvw->bit_count - 	8) ;
-		pdwvw->bit_count -= 8	;
+		pdwvw->bit_count -= 8 ;
 		pdwvw->b.buffer [pdwvw->b.index] = byte & 0xFF ;
 		pdwvw->b.index ++ ;
 		} ;
@@ -478,7 +457,7 @@ dump_bits (DWVW_PRIVATE *pdwvw)
 } /* dump_bits */
 #endif
 
-#define HIGHEST_BIT(x,count)   		\
+#define HIGHEST_BIT(x,count)		\
 			{	int y = x ;			\
 				(count) = 0 ;	 	\
 				while (y)			\
@@ -634,7 +613,7 @@ dwvw_write_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : len ;
 		for (k = 0 ; k < writecount ; k++)
-			iptr [k] = lrintf (normfact * ptr [total + k])  ;
+			iptr [k] = lrintf (normfact * ptr [total + k]) ;
 		count = dwvw_encode_data (psf, pdwvw, iptr, writecount) ;
 
 		total += count ;
@@ -665,7 +644,7 @@ dwvw_write_d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : len ;
 		for (k = 0 ; k < writecount ; k++)
-			iptr [k] = lrint (normfact * ptr [total + k])  ;
+			iptr [k] = lrint (normfact * ptr [total + k]) ;
 		count = dwvw_encode_data (psf, pdwvw, iptr, writecount) ;
 
 		total += count ;
@@ -676,3 +655,10 @@ dwvw_write_d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 
 	return total ;
 } /* dwvw_write_d */
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 1ca09552-b01f-4d7f-9bcf-612f834fe41d
+*/

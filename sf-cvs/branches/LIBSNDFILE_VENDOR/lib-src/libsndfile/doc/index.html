@@ -5,20 +5,20 @@
 	<TITLE>
 	libsndfile
 	</TITLE>
-	<META NAME="Author"      CONTENT="Erik de Castro Lopo (erikd AT zip DOT com DOT au)">
-    <META NAME="Version"     CONTENT="libsndfile-1.0.3">
+	<META NAME="Author"      CONTENT="Erik de Castro Lopo (erikd AT mega-nerd DOT com)">
+    <META NAME="Version"     CONTENT="libsndfile-1.0.10">
 	<META NAME="Description" CONTENT="The libsndfile Home Page">
 	<META NAME="Keywords"    CONTENT="WAV AIFF AU SVX PAF NIST W64 libsndfile sound audio dsp Linux">
 	<META NAME="ROBOTS" 	 CONTENT="NOFOLLOW">
 	<LINK REL=StyleSheet HREF="libsndfile.css" TYPE="text/css" MEDIA="all">
 </HEAD>
 
-<BODY TEXT="#FFFFFF" BGCOLOR="#000000" LINK="#9090FF" VLINK="#5050FF" ALINK="#FF00FF">
-
+<BODY>
+<!-- pepper -->
 <CENTER>
 	<IMG SRC="libsndfile.jpg" HEIGHT=98 WIDTH=367 ALT="libsndfile.jpg">
 </CENTER>
-	
+<!-- pepper -->
 <CENTER>
 		<A HREF="#History">History</A> -+- 
 		<A HREF="#Features">Features</A> -+- 
@@ -26,10 +26,11 @@
 		<BR> 
 		<A HREF="api.html">Programming Interface</A> -+- 
 		<A HREF="bugs.html">Bug Reporting</A> -+- 
-		<A HREF="#Download">Download</A>
+		<A HREF="#Download">Download</A> -+-
+		<A HREF="NEWS">News</A>
 		<BR> 
 		<A HREF="FAQ.html">FAQ</A> -+- 
-		<A HREF="NEWS">News</A> -+- 
+		<A HREF="lists.html">Mailing Lists</A> -+- 
 		<A HREF="ChangeLog">Change Log</A> -+- 
 		<A HREF="#Licensing">Licensing Information</A>
 </CENTER>
@@ -41,43 +42,45 @@
 	library interface. It is released in source code format under the 
 		<A HREF="http://www.gnu.org/copyleft/lesser.html">Gnu Lesser General Public License</A>.
 </P>
+<!-- pepper -->
 <P>
 	The library was written to compile and run on a Linux system but should compile
-	and run on just about any Unix (including MacOSX). It can also be compiled and 
-	run on Win32 systems using the Microsoft compiler and MacOS using the Metrowerks 
-	compiler. There are directions for compiling libsndfile on these platforms in the 
-	Win32 and MacOS directories of the source code distribution.
+	and run on just about any Unix (including MacOSX). 
+	It can also be compiled and run on Win32 systems using the Microsoft compiler and 
+	MacOS (OS9 and earlier) using the Metrowerks compiler. 
+	There are directions for compiling libsndfile on these platforms in the Win32 and 
+	MacOS directories of the source code distribution.
 </P>
 <P>
 	It was designed to handle both little-endian (such as WAV) and big-endian 
 	(such as AIFF) data, and to compile and run correctly on little-endian (such as Intel 
 	and DEC/Compaq Alpha) processor systems as well as big-endian processor systems such 
-	as Motorola 68k, Power PC, MIPS and Sparc. Hopefully the design of the library will 
-	also make it easy to extend for reading and writing new sound file formats.
+	as Motorola 68k, Power PC, MIPS and Sparc. 
+	Hopefully the design of the library will also make it easy to extend for reading and 
+	writing new sound file formats.
 </P>
+<!-- pepper -->
 <P>
     It has been compiled and tested (at one time or another) on the following systems:
 </P>
+<!-- pepper -->
 <UL>
-	<LI>i586-pc-linux-gnu (Redhat 5.2 glibc)
- 	<LI>powerpc-unknown-linux-gnu (Linux PPC)
-	<LI>powerpc-apple-darwin5.5 (Mac OS X 10.1)
-	<!-- <LI>powerpc-apple-darwin6.0 (Mac OS X 10.2) -->
-	<LI>sparc-sun-solaris2.8 (gcc)
- 	<LI>mips-sgi-irix5.3 (Native IRIX toolset)
-	<LI>sparc-sun-solaris2.5.1 (gcc)
-	<LI>mips-sgi-irix5.3 (gcc)
-	<LI>mips-sgi-irix6.3 (cc - native compiler)
-	<LI>QNX 6.0 (gcc 2.96.2 19991024) 
-	<LI>i386-unknown-openbsd2.9 (gcc 2.95.3 20010125)
+	<LI>i586-pc-linux-gnu (Linux on PC hardware)
+ 	<LI>powerpc-unknown-linux-gnu (Linux on Apple Mac hardware)
+	<LI>powerpc-apple-darwin7.0 (Mac OS X 10.3)
+	<LI>sparc-sun-solaris2.8 (using gcc)
+	<LI>mips-sgi-irix5.3 (using gcc)
+	<LI>QNX 6.0
+	<LI>i386-unknown-openbsd2.9
 	<BR>
 	<LI>Win32 (Microsoft Visual C++)
-	<LI>MacOS 8.6 (Metrowerks Codewarrior Pro4)
 </UL>
+<!-- pepper -->
 <P>
 	At the moment, each new release is being tested on i386 Linux, PowerPC Linux,
 	MacOSX on PowerPC and Win32.
 </P>
+<!-- pepper -->
 
 <A NAME="Capabilities"></A>
 <A NAME="Features"></A>
@@ -89,14 +92,14 @@
 	<lI> Ability to read and write a large number of file formats.
 	<LI> A simple, elegant and easy to use Applications Programming Interface.
 	<LI> Usable on Unix, Win32, MacOS and others.
-	<LI> On the fly format conversion, including endian swapping, type conversion 
+	<LI> On the fly format conversion, including endian-ness swapping, type conversion 
 			and bitwidth scaling.
 	<LI> Optional normalisation when reading floating point data from files containing
 			integer data.
 	<LI> Ability to open files in read/write mode.
 	<LI> The ability to write the file header without closing the file (only on files 
 			open for write or read/write).
-	<LI> Ability to query the library about all supported formats and retrive text 
+	<LI> Ability to query the library about all supported formats and retrieve text 
 			strings describing each format.
 	</UL>
 <P>
@@ -110,14 +113,14 @@
 <P>
 	The following table lists the file formats and encodings that libsndfile can read
 	and write.
-	The file formats formats are arranged across the top and encodings along the left
+	The file formats are arranged across the top and encodings along the left
 	edge.
 </P>
 <BR>
 
 <TABLE BORDER="1" cellpadding="2">
 	<TR><TD>&nbsp;</TD>
-	<TD ALIGN="center">M'soft<BR>WAV</TD>
+	<TD ALIGN="center">Micro- soft<BR>WAV</TD>
 	<TD ALIGN="center">SGI / Apple<BR>AIFF / AIFC</TD>
 	<TD ALIGN="center">Sun / DEC /<BR>NeXT<BR>AU / SND</TD>
 	<TD ALIGN="center">Header- less<BR>RAW</TD>
@@ -129,112 +132,141 @@
 	<TD ALIGN="center">Sound forge<BR>W64</TD>
 	<TD ALIGN="center"><A HREF="octave.html">GNU Octave 2.0</A><BR>MAT4</TD>
 	<TD ALIGN="center"><A HREF="octave.html">GNU Octave 2.1</A><BR>MAT5</TD>
+	<TD ALIGN="center">Portable Voice Format<BR>PVF</TD>
+	<TD ALIGN="center">Fasttracker 2<BR>XI</TD>
+	<TD ALIGN="center">HMM Tool Kit<BR>HTK</TD>
 	<!-- TD ALIGN="center">Sound<BR>Designer II<BR>SD2</TD -->
 	</TR>
 <TR><TD>Unsigned 8 bit PCM</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD>
-	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD>
+	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>Signed 8 bit PCM</TD>
 	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD>
-	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>Signed 16 bit PCM</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
-	
+	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD>
 </TR>
 
 <TR><TD>Signed 24 bit PCM</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
-	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>Signed 32 bit PCM</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD>
-	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
+	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>32 bit float</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD>
-	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
+	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>64 bit double</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>u-law encoding</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
-	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 <TR><TD>A-law encoding</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD>
-	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>IMA ADPCM</TD>
 	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD>
-	<TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>MS ADPCM</TD>
 	<TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>GSM 6.10</TD>
 	<TD ALIGN="center">R/W</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>G721 ADPCM 32kbps</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>G723 ADPCM 24kbps</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>G723 ADPCM 40kbps</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>12 bit DWVW</TD>
 	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>16 bit DWVW</TD>
 	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 
 <TR><TD>24 bit DWVW</TD>
 	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
 <TR><TD>Ok Dialogic ADPCM</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+</TR>
+<TR><TD>8 bit DPCM</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD>
+</TR>
+<TR><TD>16 bit DPCM</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD>
 </TR>
 </TABLE>
+<!-- pepper -->
 
 <P>
 	Some of the file formats I am also interested in adding are:
@@ -254,6 +286,7 @@
 	Other file formats may also be added on request.
 </P>
 
+<!-- pepper -->
 
 <A NAME="History"></A>
 <H1><B>History</B></H1>
@@ -291,11 +324,16 @@
 	<LI>Version 1.0.1 (Sep 14 2002) Added MAT4 and MAT5 file formats.
 	<LI>Version 1.0.2 (Nov 24 2002) Added VOX ADPCM format.
 	<LI>Version 1.0.3 (Dec 09 2002) Fixes for Linux on ia64 CPUs.
+	<LI>Version 1.0.4 (Feb 02 2003) New file formats and functionality.
+	<LI>Version 1.0.5 (May 03 2003) One new file format and new functionality.
+	<LI>Version 1.0.6 (Feb 08 2004) Large file fix for Linux/Solaris, new functionality 
+		and Win32 improvements.
+	<LI>Version 1.0.7 (Feb 24 2004) Fix build problems on MacOSX and fix ia64/MIPS etc
+		clip mode detction.
+	<LI>Version 1.0.8 (Mar 14 2004) Minor bug fixes.
+	<LI>Version 1.0.9 (Mar 30 2004) Add AVR format. Improve handling of some WAV files.
+	<LI>Version 1.0.10 (Jun 14 2004) Minor bug fixes. Fix support fro Win32 MinGW compiler.
 	</UL>
-<P>
-	<A HREF="version-1.html">This document</A> details the changes in the API between 
-	libsndfile version 0 and version 1.
-</P>
 	
 <A NAME="Similar"></A>
 <H1><B>Similar or Related Projects</B></H1>
@@ -304,11 +342,11 @@
 	<LI><A HREF="http://home.sprynet.com/~cbagwell/sox.html">SoX</A> is a program for 
 		converting between sound file formats.
 	<LI><A HREF="http://members.home.com/ve3wwg/gnuwave.html">Wavplay</A> started out 
-		as a minimal WAV file player under Linux and has mutated into Gnuwave a client/server
+		as a minimal WAV file player under Linux and has mutated into Gnuwave, a client/server
 		application for more general multimedia and games sound playback.
 	<LI><A HREF="http://www.68k.org/~michael/audiofile/">Audiofile</A> (libaudiofile) is 
 		a library similar to libsndfile but with a different programming interface. The 
-		author Michael Pruett has set out to clone (and fix some bugs) the libaudiofile 
+		author Michael Pruett has set out to clone (and fix some bugs in) the libaudiofile 
 		library which ships with SGI's IRIX OS.
 	<LI><A HREF="ftp://ccrma-ftp.stanford.edu/pub/Lisp/sndlib.tar.gz">sndlib.tar.gz</A> is 
 		another library written by Bill Schottstaedt of CCRMA.
@@ -321,16 +359,42 @@
 	read the license 
 		<A HREF="http://www.gnu.org/copyleft/lesser.html">here</A> 
 	or read a simple explanation of the ideas behind the GPL and the LGPL  
-		<A HREF="http://www.gnu.org/copyleft/copyleft.html">here</A>. 
+		<A HREF="http://www.gnu.org/copyleft/copyleft.html">here</A>.
 </P>
 <P>
-	If you would like to use libsndfile but the GNU LGPL does not meet your needs you may 
-	contact 
-        <A HREF="m&#97;ilt&#111;:&#101;rikd&#64;z&#105;p.&#99;om.au">the author</A> 
-for other licensing arrangements.
+	You can use libsndfile with 
+		<A HREF="http://www.gnu.org/">Free Software</A>, 
+		<A HREF="http://www.opensource.org/">Open Source</A>,
+	proprietary, shareware or other closed source applications as long as libsndfile 
+	is used as a dynamically loaded library and you abide by a small number of other
+	conditions (read the LGPL for more info).
+	With applications released under the GNU GPL you can also use libsndfile statically 
+	linked to your application.
 </P>
-	
+<P>
+	I would like to see libsndfile used as widely as possible but I would prefer it 
+	if you released software that uses libsndfile as 
+		<A HREF="http://www.gnu.org/">Free Software</A>
+	or
+		<A HREF="http://www.opensource.org/">Open Source</A>.
+	However, if you put in a great deal of effort building a huge application
+	which simply uses libsndfile for file I/O, then I have no problem with you releasing
+	that as closed source and charging as much money as you want for it.
+</P>
 <A NAME="Download"></A>
+<P>
+	What I don't like to see is things like Steve Dekorte's 
+		<A HREF="http://www.dekorte.com/Software/OSX/SoundConverter/">SoundConverter</A>
+	for Mac OSX.
+	Mr Dekorte has grabbed a number of Free Software packages and wrapped them in a 
+	rather amateurish, buggy GUI and released the result as shareware.
+	He charges US$10 for the full version when his contribution to the whole is, by 
+	his own 
+		<A HREF="http://groups.google.com/groups?selm=3F9B8F8B.7853300B@mega-nerd.com">
+		admission</A>,
+	less than 10%.
+</P>
+
 <H1><B>Download</B></H1>
 <P>
 	Here is the latest version. It is available in the following formats (I am no longer
@@ -338,10 +402,7 @@ for other licensing arrangements.
 </P>
 	<UL>
 	<LI>Source code as a .tar.gz : 
-			<A HREF="libsndfile-1.0.3.tar.gz">libsndfile-1.0.3.tar.gz</A>
-	<LI>Last version 0 release (for compatibility with older software) as a .tar.gz : 
-			<A HREF="libsndfile-0.0.28.tar.gz">libsndfile-0.0.28.tar.gz</A>
-
+			<A HREF="libsndfile-1.0.10.tar.gz">libsndfile-1.0.10.tar.gz</A>
 	</UL>
 <P>
 	Compiling libsndfile is relatively easy. The INSTALL file in the top level directory
@@ -350,26 +411,46 @@ for other licensing arrangements.
 	tarball. These instructions are mirrored 
 		<A HREF="win32.html">here</A>.
 </P>
+<P>
+	Pre-release versions of libsndfile are available
+			<A HREF="http://www.mega-nerd.com/tmp/">here</A>
+	and are announced on the
+			<A HREF="lists.html">libsndfile-devel</A>
+	mailing list.
+</P>
 <BR><BR>
 
 <HR>
 
 <P>
 	The latest version of this document can be found
-		<A HREF="http://www.zip.com.au/~erikd/libsndfile/">here</A>.
+		<A HREF="http://www.mega-nerd.com/libsndfile/">here</A>.
 </P>
 <P>
 Author : 
-	<A HREF="m&#97;ilt&#111;:&#101;rikd&#64;z&#105;p.&#99;om.au">Erik de Castro Lopo</a>
+	<A HREF="m&#97;ilt&#111;:&#101;rikd&#64;&#109;eg&#97;-&#110;erd.&#99;om">
+		Erik de Castro Lopo</a>
 </P>
+<!-- pepper -->
 <P>
 This page has been accessed
 	<IMG SRC=
-	"/cgi-bin/counter?ft=6|frgb=55;55;55|tr=0|trgb=0;0;0|wxh=15;20|md=6|dd=B|st=1|sh=1|df=libsndfile.dat" 
+	"/cgi-bin/Count.cgi?ft=6|frgb=55;55;55|tr=0|trgb=0;0;0|wxh=15;20|md=6|dd=B|st=1|sh=1|df=libsndfile.dat" 
 	HEIGHT=30 WIDTH=100 ALT="counter.gif">
 times.
 </P>
+<!-- pepper -->
+<!-- pepper -->
+<!-- pepper -->
 
 <BR><BR>
 </BODY>
 </HTML>
+
+<!--
+  Do not edit or modify anything in this comment block.
+  The arch-tag line is a file identity tag for the GNU Arch 
+  revision control system.
+ 
+  arch-tag: a96adffb-3017-46e2-82a0-6d77832b14d5
+-->

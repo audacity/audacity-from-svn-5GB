@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2001 Erik de Castro Lopo <erikd@mega-nerd.com>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -71,7 +71,7 @@ enum
 
 typedef struct 
 {	/* Private data. Don't mess with it. */
-	unsigned char	private [256] ;  
+	unsigned long	private [256 / sizeof (long)] ;  
 
 	/* Public data. Read only. */
 	int				blocksize, max_bytes, samplesperblock, bytesperblock ;
@@ -107,3 +107,11 @@ int g72x_encode_block (G72x_DATA *data) ;
 */
 
 #endif /* !G72X_HEADER_FILE */
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 6ca84e5f-f932-4ba1-87ee-37056d921621
+*/
+
