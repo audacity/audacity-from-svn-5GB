@@ -23,8 +23,11 @@
 
 #ifdef AUDACITY_COMMANDS_CALLBACK_POINTERS
 
-#define NUM_CALLBACK_FUNCTIONS 88
+#define NUM_CALLBACK_FUNCTIONS 89
 
+/******************************************************************
+Remember to update the value above when you change the arrays below
+******************************************************************/
 audEventFunction callback_function_pointers[] = {&AudacityProject::OnNew,&AudacityProject::OnOpen,&AudacityProject::OnClose,
 &AudacityProject::OnSave,&AudacityProject::OnSaveAs,&AudacityProject::OnExportMix,&AudacityProject::OnExportSelection,
 &AudacityProject::OnExportLossyMix,&AudacityProject::OnExportLossySelection,&AudacityProject::OnExportLabels,
