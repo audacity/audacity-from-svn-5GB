@@ -1,7 +1,8 @@
 <h2>Changes in Audacity 1.2.2</h2>
 <ul>
-<li><p>VU Meters added for both playback and recording.  Click on
-    the recording meter to monitor the input without recording.</p></li>
+<li><p><a href="onlinehelp-1.2/toolbar_meter.htm">Meter Toolbar</a> added for
+  monitoring volume levels during playback and recording.  Click on the
+  recording meter to monitor the input without recording.</p></li>
 
 <li><p>Export Multiple - new feature that lets you export multiple
     files at once, either by track, or split based on labels.</p></li>
