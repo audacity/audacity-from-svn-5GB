@@ -139,7 +139,7 @@ bool EffectNoiseRemoval::ProcessOne(int count, WaveTrack * track,
 {
    sampleCount s = 0;
    sampleCount idealBlockLen = track->GetMaxBlockSize() * 4;
-   
+
    if (idealBlockLen % windowSize != 0)
       idealBlockLen += (windowSize - (idealBlockLen % windowSize));
    
@@ -157,14 +157,14 @@ bool EffectNoiseRemoval::ProcessOne(int count, WaveTrack * track,
       smoothing[i] = float(0.0);
    }
    
-   while((s < len)&&((len-s)!=(windowSize/2))) {
+   while((s < len)&&((len-s)>(windowSize/2))) {
       sampleCount block = idealBlockLen;
       if (s + block > len)
          block = len - s;
       
       track->Get((samplePtr) buffer, floatSample, start + s, block);
       
-      for(i=0; i<block; i+=windowSize/2) {
+      for(i=0; i<(block-windowSize/2); i+=windowSize/2) {
          int wcopy = windowSize;
          if (i + wcopy > block)
             wcopy = block - i;
@@ -188,11 +188,12 @@ bool EffectNoiseRemoval::ProcessOne(int count, WaveTrack * track,
          lastWindow = tempP;
       }
       
-      if (len > block && len > windowSize/2)
-         block -= windowSize/2;  //we want to shift by half a window at a time
-      
+      // Shift by half-a-window less than the block size we loaded
+      // (so that the blocks properly overlap)
+      block -= windowSize/2;
+
       if (!doProfile)
-      track->Set((samplePtr) buffer, floatSample, start + s, block);
+         track->Set((samplePtr) buffer, floatSample, start + s, block);
       
       s += block;
       
@@ -219,7 +220,7 @@ void EffectNoiseRemoval::GetProfile(sampleCount len,
       in[i] = buffer[i];
 
    // Apply window and FFT
-   WindowFunc(3, len, in); // Hanning window
+   /* WindowFunc(3, len, in); // Hanning window */
    PowerSpectrum(len, in, out);
    
    for(i=0; i<=len/2; i++) {
@@ -252,7 +253,7 @@ void EffectNoiseRemoval::RemoveNoise(sampleCount len,
       inr[i] = buffer[i];
 
    // Apply window and FFT
-   WindowFunc(3, len, inr); // Hanning window
+   /* WindowFunc(3, len, inr); // Hanning window */
    FFT(len, false, inr, NULL, outr, outi);
 
    for(i=0; i<len; i++)
@@ -302,6 +303,7 @@ void EffectNoiseRemoval::RemoveNoise(sampleCount len,
 
    // Inverse FFT and normalization
    FFT(len, true, outr, outi, inr, ini);
+   WindowFunc(3, len, inr); // Hanning window */
    
    for(i=0; i<len; i++)
       buffer[i] = inr[i];
