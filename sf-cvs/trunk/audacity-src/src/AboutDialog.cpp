@@ -70,21 +70,21 @@ AboutDialog::AboutDialog(wxWindow * parent)
 
    wxString informationStr;
 
-   #if MP3SUPPORT
+   #ifdef MP3SUPPORT
    informationStr += _("MP3 importing enabled");
    #else
    informationStr += _("MP3 importing disabled");
    #endif
    informationStr += "<br>\n";
 
-   #if USE_LIBVORBIS
+   #ifdef USE_LIBVORBIS
    informationStr += _("Ogg Vorbis importing enabled");
    #else
    informationStr += _("Ogg Vorbis importing disabled");
    #endif
    informationStr += "<br>\n";
 
-   #if USE_LIBID3TAG
+   #ifdef USE_LIBID3TAG
    informationStr += _("ID3 tag exporting enabled");
    #else
    informationStr += _("ID3 tag exporting disabled");
