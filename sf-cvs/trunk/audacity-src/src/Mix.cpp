@@ -339,12 +339,18 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
 
          int getLen = mQueueMaxLen - *queueLen;
 
+         #if 0
+
+         // TODO: fix this code so that extra silence isn't added
+         // to the end of a track
+
          double trackTime = (*pos + getLen) / track->GetRate();
          if (trackTime > track->GetEndTime()) {
             getLen = (int)(0.5 + track->GetRate() *
                            (track->GetEndTime() -
                             ((*pos) / track->GetRate())));
          }
+         #endif
 
          track->Get((samplePtr)&queue[*queueLen], floatSample,
                     *pos, getLen);
