@@ -166,18 +166,13 @@ static const char *CommandsDefaultXML[] = {
 "\t\t</menu>",
 "\t\t<!-- Help Menu -->",
 "\t\t<menu translation=\"Help\">",
-"\t\t\t<item translation=\"About Audacity\" functions=\"OnAbout\"/>",
-"\t\t\t<itemseparator/>",
-   //STM: There may be an error here: This platform distinction may not be needed.
-#ifndef __WXMAC__
 "\t\t\t<item translation=\"Online Help\" functions=\"OnHelp\"/>",
-#else
-"\t\t\t<item translation=\"Online Help\" functions=\"OnHelp\"/>",
-#endif
 "\t\t\t<item translation=\"Online Help Index\" functions=\"OnHelpIndex\"/>",
 "\t\t\t<item translation=\"Search Online Help\" functions=\"OnHelpSearch\"/>",
 "\t\t\t<itemseparator/>",
 "\t\t\t<item translation=\"Run Benchmark\" functions=\"OnBenchmark\"/>",
+"\t\t\t<itemseparator/>",
+"\t\t\t<item translation=\"About Audacity\" functions=\"OnAbout\"/>",
 "\t\t</menu>",
 "\t</menubar>",
 "</commands>",
@@ -314,11 +309,12 @@ static const char *CommandsDefaultXML[] = {
    // Help menu
    COMMANDS_ADDTRANSLATIONSTRING(_("&Help"), "Help");
 
-   COMMANDS_ADDTRANSLATIONSTRING(_("About Audacity..."), "About Audacity");
    COMMANDS_ADDTRANSLATIONSTRING(_("Online Help..."), "Online Help");
    COMMANDS_ADDTRANSLATIONSTRING(_("Online Help Index..."), "Online Help Index");
    COMMANDS_ADDTRANSLATIONSTRING(_("Search Online Help..."), "Search Online Help");
 
    COMMANDS_ADDTRANSLATIONSTRING(_("Run Benchmark..."), "Run Benchmark");
+
+   COMMANDS_ADDTRANSLATIONSTRING(_("About Audacity..."), "About Audacity");
 
 #endif
