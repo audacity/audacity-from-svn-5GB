@@ -71,11 +71,11 @@ AC_ARG_WITH(vorbis,
 		[enable ogg vorbis support [default=yes]])],
 	use_vorbis=$withval,
 	use_vorbis="yes")
-AC_ARG_WITH(id3,
-	[AC_HELP_STRING([--with-id3],
-		[compile with id3lib [default=no]])],
-	use_id3lib=$withval,
-	use_id3lib="no")
+AC_ARG_WITH(id3tag,
+	[AC_HELP_STRING([--with-id3tag],
+		[compile with libid3tag [default=yes]])],
+	use_libid3tag=$withval,
+	use_libid3tag="yes")
 AC_ARG_WITH(help,
 	[AC_HELP_STRING([--with-help],
 		[Make the help file "audacity-help.htb" [default=yes]])],
@@ -133,13 +133,14 @@ if [[ $use_vorbis = "system" ]] ; then
 		[Define if the ogg vorbis decoding library is present])
 fi
 
-if [[ $use_id3lib = "yes" ]] ; then
-	EXTRAOBJS="$EXTRAOBJS ../lib-src/id3lib/src/.libs/libid3.a"
-	BUILDLIBS="$BUILDLIBS id3lib/src/.libs/libid3.a"
-	CPPFLAGS="$CPPFLAGS -Iid3lib/include"
+if [[ $use_libid3tag = "yes" ]] ; then
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/libid3tag/.libs/libid3tag.a"
+	BUILDLIBS="$BUILDLIBS libid3tag/.libs/libid3tag.a"
+	CPPFLAGS="$CPPFLAGS -I../lib-src"
+	SUBDIRS="$SUBDIRS lib-src/libid3tag"
 		
-	AC_DEFINE(USE_ID3LIB, 1,
-      [Define if id3lib is present])
+	AC_DEFINE(USE_LIBID3TAG, 1,
+      [Define if libid3tag is present])
 fi
 
 dnl if [[ $use_help = "yes" ]] ; then
@@ -184,10 +185,10 @@ AC_OUTPUT
 echo ""
 echo "Finished configure:"
 
-if [[ $use_id3lib = "yes" ]] ; then
-	echo "  with    id3lib";
+if [[ $use_libid3tag = "yes" ]] ; then
+	echo "  with    libid3tag";
 else
-	echo "  without id3lib";
+	echo "  without libid3tag";
 fi
 
 if [[ $use_libmad = "yes" ]] ; then
