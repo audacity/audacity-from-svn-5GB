@@ -25,6 +25,7 @@
 #endif
 
 #ifdef __WXMAC__
+#include <AEDataModel.h>
 #include <AppleEvents.h>
 #endif
 
@@ -98,13 +99,8 @@ void QuitAudacity()
 
 IMPLEMENT_APP(AudacityApp)
 #ifdef __WXMAC__
-#ifdef TARGET_CARBON
-pascal OSErr AEQuit(const AppleEvent * theAppleEvent,
-                    AppleEvent * theReply, unsigned long Refcon)
-#else
-pascal OSErr AEQuit(AppleEvent * theAppleEvent, AppleEvent * theReply,
+pascal OSErr AEQuit(const AppleEvent * theAppleEvent, AppleEvent * theReply,
                     long Refcon)
-#endif
 {
    QuitAudacity();
 
@@ -115,13 +111,8 @@ pascal OSErr AEQuit(AppleEvent * theAppleEvent, AppleEvent * theReply,
 pascal OSErr FSpGetFullPath(const FSSpec * spec,
                             short *fullPathLength, Handle * fullPath);
 
-#ifdef TARGET_CARBON
-pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent,
-                         AppleEvent * theReply, unsigned long Refcon)
-#else
-pascal OSErr AEOpenFiles(AppleEvent * theAppleEvent, AppleEvent * theReply,
+pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent, AppleEvent * theReply,
                          long Refcon)
-#endif
 {
    AEDescList docList;
    AEKeyword keywd;
