@@ -22,7 +22,7 @@
 
 #include "sndfile.h"
 
-#include "../export/ExportMP3.h"
+#include "../export/MP3Exporter.h"
 #include "../FileFormats.h"
 #include "../Prefs.h"
 #include "FileFormatPrefs.h"
@@ -189,24 +189,28 @@ PrefsPanel(parent)
          mp3InfoSizer->Add(mMP3FindButton, 0,
                            wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
-         if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
-            mp3InfoSizer->Add(
-               new wxStaticText(this, -1, _("Bit Rate:")), 0,
-               wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+	 //Create dummy exporter to extract info from.
+	 MP3Exporter * tmpExporter = new PlatformMP3Exporter(GetActiveProject(),0.0,0.0,true,44100,2,0,0); 
+	 if(tmpExporter->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
+        
 
-            wxString bitrates[] = { "16", "24", "32", "40", "48", "56", "64",
-                                    "80", "96", "112", "128", "160",
-                                    "192", "224", "256", "320" };
-            int numBitrates = 16;
+	   mp3InfoSizer->Add(
+			     new wxStaticText(this, -1, _("Bit Rate:")), 0,
+			     wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+	   
+	   wxString bitrates[] = { "16", "24", "32", "40", "48", "56", "64",
+				   "80", "96", "112", "128", "160",
+				   "192", "224", "256", "320" };
+	   int numBitrates = 16;
 
-            #ifdef __WXMAC__
+#ifdef __WXMAC__
             // This is just to work around a wxChoice auto-sizing bug
             mMP3Bitrate = new wxChoice(
                this, -1, wxDefaultPosition, wxSize(120,-1), numBitrates, bitrates);
-            #else
+#else
             mMP3Bitrate = new wxChoice(
                this, -1, wxDefaultPosition, wxDefaultSize, numBitrates, bitrates);
-            #endif
+#endif
 
             mp3InfoSizer->Add(mMP3Bitrate, 0, 
                wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
@@ -215,8 +219,11 @@ PrefsPanel(parent)
             if(mMP3Bitrate->GetSelection() == -1)
                mMP3Bitrate->SetStringSelection("128");
 
-            if(!GetMP3Exporter()->ValidLibraryLoaded())
-               mMP3Bitrate->Enable(false);
+
+	    if(!tmpExporter->ValidLibraryLoaded())
+	      mMP3Bitrate->Enable(false);
+	    
+	    delete tmpExporter;
          }
 
          mp3SetupSizer->Add(
@@ -247,16 +254,21 @@ void FileFormatPrefs::SetMP3VersionText()
    wxString versionString;
    bool doMP3 = true;
    
-   doMP3 = GetMP3Exporter()->LoadLibrary();
+   //Create dummy exporter to extract info from.
+   MP3Exporter * tmpExporter = new PlatformMP3Exporter(GetActiveProject(),0.0,0.0,true,44100,2,0,0); 
+
+   doMP3 = tmpExporter->LoadLibrary();
 
    if (doMP3)
-      doMP3 = GetMP3Exporter()->ValidLibraryLoaded();
+      doMP3 = tmpExporter->ValidLibraryLoaded();
 
    if(doMP3)
-      versionString = GetMP3Exporter()->GetLibraryVersion();
+      versionString = tmpExporter->GetLibraryVersion();
    else
       versionString = _("MP3 exporting plugin not found");
    
+   delete tmpExporter;
+
    mMP3Version->SetLabel(versionString);
 }
 
@@ -291,15 +303,20 @@ void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
    wxString oldPath = gPrefs->Read("/MP3/MP3LibPath", "");
  
    gPrefs->Write("/MP3/MP3LibPath", wxString(""));
-   
-   if (GetMP3Exporter()->FindLibrary(this))
+
+   //Create dummy exporter to extract info from.
+   MP3Exporter * tmpExporter = new PlatformMP3Exporter(GetActiveProject(),0.0,0.0,true,44100,2,0,0); 
+
+   if (tmpExporter->FindLibrary(this))
       SetMP3VersionText();
    else {
       gPrefs->Write("/MP3/MP3LibPath", oldPath);
    }
    
-   if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE)
-      mMP3Bitrate->Enable(GetMP3Exporter()->ValidLibraryLoaded());
+   if(tmpExporter->GetConfigurationCaps() & MP3CONFIG_BITRATE)
+     mMP3Bitrate->Enable(tmpExporter->ValidLibraryLoaded());
+
+   delete tmpExporter;
 }
 
 bool FileFormatPrefs::Apply()
@@ -315,11 +332,16 @@ bool FileFormatPrefs::Apply()
    wxString copyOrEdit = copyEditString[pos];
    gPrefs->Write("CopyOrEditUncompressedData", copyOrEdit);
 
-   if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
+
+   //Create dummy exporter to extract info from.
+   MP3Exporter * tmpExporter = new PlatformMP3Exporter(GetActiveProject(),0.0,0.0,true,44100,2,0,0); 
+
+   if(tmpExporter->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
       long bitrate;
       mMP3Bitrate->GetStringSelection().ToLong(&bitrate);
       gPrefs->Write("MP3Bitrate", bitrate);
    }
+   delete tmpExporter;
    gPrefs->SetPath("/");
       
    if (originalExportFormat != mFormat)
