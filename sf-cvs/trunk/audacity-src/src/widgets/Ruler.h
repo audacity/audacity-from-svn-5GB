@@ -204,7 +204,8 @@ class AdornedRulerPanel
    ~AdornedRulerPanel();
 
 public:
-   void DrawAdornedRuler(wxDC * dc, ViewInfo * pViewInfo, bool text, bool indicator);
+   void DrawAdornedRuler(wxDC * dc, ViewInfo * pViewInfo, 
+      bool text, bool indicator, bool bRecording);
    static int GetRulerHeight() { return 22;}
    void SetSize( const wxRect & r );
    void GetSize( int * width, int * height );
@@ -222,7 +223,7 @@ private:
    void DrawBorder(wxDC * dc, wxRect & r);
    void DrawSelection(wxDC * dc,  const wxRect r);
    void DrawMarks(wxDC * dc, const wxRect r, bool /*text */ );
-   void DrawIndicator(wxDC * dc);
+   void DrawIndicator(wxDC * dc, bool bRecording);
 };
 
 #endif //define __AUDACITY_RULER__

@@ -837,7 +837,8 @@ void AdornedRulerPanel::GetSize( int * width, int * height )
 }
 
 
-void AdornedRulerPanel::DrawAdornedRuler(wxDC * dc, ViewInfo * pViewInfo, bool text, bool indicator)
+void AdornedRulerPanel::DrawAdornedRuler(
+   wxDC * dc, ViewInfo * pViewInfo, bool text, bool indicator, bool bRecording)
 {
    wxRect r;
 
@@ -847,16 +848,16 @@ void AdornedRulerPanel::DrawAdornedRuler(wxDC * dc, ViewInfo * pViewInfo, bool t
    r.x = 0;
    r.y = 0;
 
-
    DrawBorder(dc, r);
 
    if (pViewInfo->sel0 < pViewInfo->sel1)
       DrawSelection(dc, r);
 
+   if( indicator )
+      DrawIndicator(dc, bRecording);
+
    DrawMarks(dc, r, text);
 
-   if( indicator )
-      DrawIndicator(dc);
 }
 
 void AdornedRulerPanel::DrawBorder(wxDC * dc, wxRect & r)
@@ -919,7 +920,7 @@ void AdornedRulerPanel::DrawMarks(wxDC * dc, const wxRect r, bool /*text */ )
 //This draws the little triangular indicator on the 
 //AdornedRulerPanel.
 //
-void AdornedRulerPanel::DrawIndicator(wxDC * dc)
+void AdornedRulerPanel::DrawIndicator(wxDC * dc, bool bRecording)
 {
    // Draw indicator
    double ind = indicatorPos; 
@@ -928,14 +929,15 @@ void AdornedRulerPanel::DrawIndicator(wxDC * dc)
       int indp =
           GetLeftOffset() + int ((ind - mViewInfo->h) * mViewInfo->zoom);
 
-      dc->SetPen(*wxTRANSPARENT_PEN);
-      dc->SetBrush(*wxBLACK_BRUSH);
+      AColor::IndicatorColor(dc, bRecording );
+//      dc->SetPen(*wxTRANSPARENT_PEN);
+//      dc->SetBrush(*wxBLACK_BRUSH);
 
       int indsize = 6;
 
       wxPoint tri[3];
       tri[0].x = indp;
-      tri[0].y = indsize + 1;
+      tri[0].y = (indsize * 3)/2 + 1;
       tri[1].x = indp - indsize;
       tri[1].y = 1;
       tri[2].x = indp + indsize;

@@ -3089,7 +3089,11 @@ void TrackPanel::DrawRuler( wxDC * dc, bool text )
    r.height = GetRulerHeight() - 1;
    mRuler->SetSize( r );
    mRuler->SetLeftOffset( GetLeftOffset() );
-   mRuler->DrawAdornedRuler( dc, mViewInfo, text, bIndicators );
+
+      
+   bool bRecording = (gAudioIO->GetNumCaptureChannels() ? false : true);
+
+   mRuler->DrawAdornedRuler( dc, mViewInfo, text, bIndicators, bRecording );
 }
 
 
