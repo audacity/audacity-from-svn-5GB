@@ -167,7 +167,7 @@ EffectNyquist::EffectNyquist(wxString fName)
 {
    mOK = false;
    mInteractive = false;
-   mAction = _("Appling Nyquist Effect...");
+   mAction = _("Applying Nyquist Effect...");
 
    if (fName == "") {
       // Interactive Nyquist
