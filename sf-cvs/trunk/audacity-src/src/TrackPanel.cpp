@@ -127,11 +127,6 @@ enum {
 // using Set Rate in the track pulldown menu
 double samplerate = 44100.0;
 
-// set default selection format
-int iformat = SELECTION_FORMAT_RULER_MIN_SEC;
-
-// initialize SnapTo mode to off
-int iSnapTo = 0;
 
 enum {
    TrackPanelFirstID = 2000,
@@ -224,6 +219,10 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
 mListener(listener), mTracks(tracks), mViewInfo(viewInfo), mBitmap(NULL),
 mAutoScrolling(false)
 {
+
+   iformat = SELECTION_FORMAT_RULER_MIN_SEC;
+   iSnapTo = 0; // OFF.
+
    mIsClosing = false;
    mIsSelecting = false;
    mIsResizing = false;
@@ -252,41 +251,52 @@ mAutoScrolling(false)
    mRearrangeCursor = new wxCursor(wxCURSOR_HAND);
    mAdjustLeftSelectionCursor = new wxCursor(wxCURSOR_POINT_LEFT);
    mAdjustRightSelectionCursor = new wxCursor(wxCURSOR_POINT_RIGHT);
+
+   // Use AppendCheckItem so we can have ticks beside the items.
+   // We would use AppendRadioItem but it only currently works on windows and GTK.
    mRateMenu = new wxMenu();
-   mRateMenu->Append(OnRate8ID, "8000 Hz");
-   mRateMenu->Append(OnRate11ID, "11025 Hz");
-   mRateMenu->Append(OnRate16ID, "16000 Hz");
-   mRateMenu->Append(OnRate22ID, "22050 Hz");
-   mRateMenu->Append(OnRate44ID, "44100 Hz");
-   mRateMenu->Append(OnRate48ID, "48000 Hz");
-   mRateMenu->Append(OnRateOtherID, _("Other..."));
+   mRateMenu->AppendCheckItem(OnRate8ID, "8000 Hz");
+   mRateMenu->AppendCheckItem(OnRate11ID, "11025 Hz");
+   mRateMenu->AppendCheckItem(OnRate16ID, "16000 Hz");
+   mRateMenu->AppendCheckItem(OnRate22ID, "22050 Hz");
+   mRateMenu->AppendCheckItem(OnRate44ID, "44100 Hz");
+   mRateMenu->AppendCheckItem(OnRate48ID, "48000 Hz");
+   mRateMenu->AppendCheckItem(OnRateOtherID, _("Other..."));
 
    mFormatMenu = new wxMenu();
-   mFormatMenu->Append(On16BitID, GetSampleFormatStr(int16Sample));
-   mFormatMenu->Append(On24BitID, GetSampleFormatStr(int24Sample));
-   mFormatMenu->Append(OnFloatID, GetSampleFormatStr(floatSample));
+   mFormatMenu->AppendCheckItem(On16BitID, GetSampleFormatStr(int16Sample));
+   mFormatMenu->AppendCheckItem(On24BitID, GetSampleFormatStr(int24Sample));
+   mFormatMenu->AppendCheckItem(OnFloatID, GetSampleFormatStr(floatSample));
 
+   // JKC: I think these menus need to move to the main menubar,
+   // and the associated variables iformat and iSnapTo to move with them.
    mSelectionMenu = new wxMenu();
-   mSelectionMenu->Append(OnFormatRulerMinSecID, "min:sec (from ruler)");
-   mSelectionMenu->Append(OnFormatRulerSecID, "sec (from ruler)");
-   mSelectionMenu->Append(OnFormatRulerFilmFramesID, "film frames 24 fps (from ruler)");
-   mSelectionMenu->Append(OnFormatRulerFilmhmmssffID, "film h:mm:ss:ff 24 fps (from ruler)");
-   mSelectionMenu->Append(OnFormatRulerPALFramesID, "PAL frames 25 fps (from ruler)");
-   mSelectionMenu->Append(OnFormatRulerPALhmmssffID, "PAL h:mm:ss:ff 25 fps (from ruler)");
-   mSelectionMenu->Append(OnFormatRulerNTSCFramesID, "NTSC frames 29.97 fps (from ruler)");
-   mSelectionMenu->Append(OnFormatRulerNTSCDFhmmssffID, "NTSC drop-frame h:mm:ss:ff (from ruler)");
-   mSelectionMenu->Append(OnFormatRulerNTSCnonDFhmmssffID, "NTSC non-drop-frame h:mm:ss:ff (from ruler)");
-   mSelectionMenu->Append(OnFormatRulerCddaMinSecFramesID, "cdda min:sec:frames 75 fps (from ruler)");
-   mSelectionMenu->Append(OnFormatSamplesID, "samples (snap to samples)");
-   mSelectionMenu->Append(OnFormatMinSecID, "min:sec (snap to samples)");
-   mSelectionMenu->Append(OnFormatSecID, "sec (snap to samples)");
-   mSelectionMenu->Append(OnFormatMinSecSamplesID, "min:sec+samples (snap to samples)");
-   mSelectionMenu->Append(OnFormatSecSamplesID, "sec+samples (snap to samples)");
-   mSelectionMenu->Append(OnFormatCDDASectorsBytesID, "cdda sectors+bytes (snap to samples)");
+   mSelectionMenu->AppendCheckItem(OnFormatRulerMinSecID, "min:sec (from ruler)");
+   mSelectionMenu->AppendCheckItem(OnFormatRulerSecID, "sec (from ruler)");
+   mSelectionMenu->AppendCheckItem(OnFormatRulerFilmFramesID, "film frames 24 fps (from ruler)");
+   mSelectionMenu->AppendCheckItem(OnFormatRulerFilmhmmssffID, "film h:mm:ss:ff 24 fps (from ruler)");
+   mSelectionMenu->AppendCheckItem(OnFormatRulerPALFramesID, "PAL frames 25 fps (from ruler)");
+   mSelectionMenu->AppendCheckItem(OnFormatRulerPALhmmssffID, "PAL h:mm:ss:ff 25 fps (from ruler)");
+   mSelectionMenu->AppendCheckItem(OnFormatRulerNTSCFramesID, "NTSC frames 29.97 fps (from ruler)");
+   mSelectionMenu->AppendCheckItem(OnFormatRulerNTSCDFhmmssffID, "NTSC drop-frame h:mm:ss:ff (from ruler)");
+   mSelectionMenu->AppendCheckItem(OnFormatRulerNTSCnonDFhmmssffID, "NTSC non-drop-frame h:mm:ss:ff (from ruler)");
+   mSelectionMenu->AppendCheckItem(OnFormatRulerCddaMinSecFramesID, "cdda min:sec:frames 75 fps (from ruler)");
+   mSelectionMenu->AppendCheckItem(OnFormatSamplesID, "samples (snap to samples)");
+   mSelectionMenu->AppendCheckItem(OnFormatMinSecID, "min:sec (snap to samples)");
+   mSelectionMenu->AppendCheckItem(OnFormatSecID, "sec (snap to samples)");
+   mSelectionMenu->AppendCheckItem(OnFormatMinSecSamplesID, "min:sec+samples (snap to samples)");
+   mSelectionMenu->AppendCheckItem(OnFormatSecSamplesID, "sec+samples (snap to samples)");
+   mSelectionMenu->AppendCheckItem(OnFormatCDDASectorsBytesID, "cdda sectors+bytes (snap to samples)");
+   // Default item..
+   wxASSERT( iformat = SELECTION_FORMAT_RULER_MIN_SEC);
+   mSelectionMenu->Check( OnFormatRulerMinSecID, true );
 
    mSnapToMenu = new wxMenu();
-   mSnapToMenu->Append(OnSnapToOffID, "Off (for ruler based formats)");
-   mSnapToMenu->Append(OnSnapToOnID, "On (for ruler based formats)");
+   mSnapToMenu->AppendCheckItem(OnSnapToOffID, "Off (for ruler based formats)");
+   mSnapToMenu->AppendCheckItem(OnSnapToOnID, "On (for ruler based formats)");
+   // Default item..
+   wxASSERT( iSnapTo == 0);
+   mSnapToMenu->Check( OnSnapToOffID, true );
 
    mWaveTrackMenu = new wxMenu();
    mWaveTrackMenu->Append(OnSetNameID, _("Name..."));
@@ -2025,6 +2035,11 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
                       display != WaveTrack::WaveformDBDisplay);
       theMenu->Enable(OnSpectrumID, display != WaveTrack::SpectrumDisplay);
       theMenu->Enable(OnPitchID, display != WaveTrack::PitchDisplay);
+      
+      WaveTrack * track = (WaveTrack *)t;
+      SetMenuCheck( *mRateMenu,   IdOfRate(   track->GetRate()));
+      SetMenuCheck( *mFormatMenu, IdOfFormat( track->GetSampleFormat()));
+ 
    }
 
    if (t->GetKind() == Track::Note)
@@ -3558,6 +3573,7 @@ void TrackPanel::OnSelectionChange(wxEvent & event)
       iformat = SELECTION_FORMAT_CDDA_SECTORS_BYTES;
       break;
    }
+   SetMenuCheck( *mSelectionMenu, id );
    DisplaySelection();
 }
 
@@ -3574,6 +3590,7 @@ void TrackPanel::OnSnapToChange(wxEvent & event)
       iSnapTo = 1;
       break;
    }
+   SetMenuCheck( *mSnapToMenu, id );
    DisplaySelection();
 }
 
@@ -3613,16 +3630,53 @@ void TrackPanel::OnFormatChange(wxEvent & event)
                                         c_str(),
                                         GetSampleFormatStr(newFormat)));
 
+   SetMenuCheck( *mFormatMenu, id );
    mPopupMenuTarget = NULL;
    MakeParentRedrawScrollbars();
    Refresh(false);
 }
 
+/// Converts a format enumeration to a wxWindows menu item Id.
+int TrackPanel::IdOfFormat( int format )
+{
+   switch (format) {
+   case int16Sample:
+      return On16BitID;
+   case int24Sample:
+      return On24BitID;
+   case floatSample:
+      return OnFloatID;
+   default:
+      // ERROR -- should not happen
+      wxASSERT( false );
+      break;
+   }
+   return OnFloatID;// Compiler food.
+}
+
+/// Puts a check mark at a given position in a menu, clearing all other check marks.
+void TrackPanel::SetMenuCheck( wxMenu & menu, int newId )
+{
+   wxMenuItemList & list = menu.GetMenuItems();
+   wxMenuItem * item;
+   int id;
+
+   for ( wxwxMenuItemListNode * node = list.GetFirst(); node; node = node->GetNext() )
+   {
+      item = node->GetData();
+      id = item->GetId();
+      menu.Check( id, id==newId );
+   }
+
+}
+
+
 // AS: Ok, this function handles the selection from the Rate
 //  submenu of the track menu, except for "Other" (see OnRateOther).
 //  gRates MUST CORRESPOND DIRECTLY TO THE RATES AS LISTED IN THE MENU!!
 //  IN THE SAME ORDER!!
-int gRates[] = { 8000, 11025, 16000, 22050, 44100, 48000 };
+const int nRates=6;
+int gRates[nRates] = { 8000, 11025, 16000, 22050, 44100, 48000 };
 void TrackPanel::OnRateChange(wxEvent & event)
 {
    int id = event.GetId();
@@ -3630,6 +3684,7 @@ void TrackPanel::OnRateChange(wxEvent & event)
    wxASSERT(mPopupMenuTarget
             && mPopupMenuTarget->GetKind() == Track::Wave);
 
+   SetMenuCheck( *mRateMenu, id );
    SetRate(mPopupMenuTarget, gRates[id - OnRate8ID]);
 
    mPopupMenuTarget = NULL;
@@ -3639,6 +3694,17 @@ void TrackPanel::OnRateChange(wxEvent & event)
 
    Refresh(false);
 }
+
+/// Converts a sampling rate to a wxWindows menu item id
+int TrackPanel::IdOfRate( int rate )
+{
+   for(int i=0;i<nRates;i++) {
+      if( gRates[i] == rate ) 
+         return i+OnRate8ID;
+   }
+   return OnRateOtherID;
+}
+
 
 void TrackPanel::OnRateOther(wxEvent &event)
 {
@@ -3673,6 +3739,7 @@ void TrackPanel::OnRateOther(wxEvent &event)
 
    samplerate = theRate;
 
+   SetMenuCheck( *mRateMenu, event.GetId() );
    SetRate(mPopupMenuTarget, theRate);
 
    mPopupMenuTarget = NULL;
@@ -3796,8 +3863,12 @@ void TrackPanel::OnSetName(wxEvent &event)
    }
 }
 
-//  Here, 'label' refers to the rectangle to the left of the track
-// or tracks (if stereo); i.e., whether the label should be considered.
+/// Determines which track is under the mouse 
+///  @param mouseX - mouse X position.
+///  @param mouseY - mouse Y position.
+///  @param label  - true iff the X Y position is relative to side-panel with the labels in it.
+///  @param *trackRect - returns track rectangle.
+///  @param *trackNum  - returns track number.
 Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
                               wxRect * trackRect, int *trackNum)
 {
@@ -3851,10 +3922,7 @@ Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
    return NULL;
 }
 
-
-//This method displays the bounds of the selection
-//in the status bar.
-
+/// Displays the bounds of the selection in the status bar.
 void TrackPanel::DisplaySelection()
 {
    if (!mListener)
