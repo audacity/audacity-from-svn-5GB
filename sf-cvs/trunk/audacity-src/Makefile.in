@@ -14,7 +14,7 @@ audacity:
 install: audacity
 	-test -d $(PREFIX)/share/doc/audacity || \
 		mkdir -m 755 -p $(PREFIX)/share/doc/audacity
-	-test -f audacity-help.htb || $(INSTALL) -m 644 audacity-help.htb \
+	-test -f audacity-help.htb && $(INSTALL) -m 644 audacity-help.htb \
 		$(PREFIX)/share/doc/audacity/audacity-help.htb
 	$(INSTALL) -m 644 README.txt $(PREFIX)/share/doc/audacity/README.txt
 	$(INSTALL) -m 644 LICENSE.txt $(PREFIX)/share/doc/audacity/LICENSE.txt
