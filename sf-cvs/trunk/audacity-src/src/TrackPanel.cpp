@@ -3084,15 +3084,16 @@ void TrackPanel::OnSetTimeTrackConverter()
    
    if (t) {
       ConverterList *lst = t->GetConverterList();
+      ConverterList *count;
       
       int num = 0;
-      for( ConverterList *count = lst; count != NULL; count = count->next )
+      for( count = lst; count != NULL; count = count->next )
          num++;
       
-      wxString choices[num];
-      int indices[num];
+      wxString *choices = new wxString[num];
+      int *indices = new int[num];
       int n=0;
-      for( ConverterList *count = lst; count != NULL; count = count->next ) {
+      for( count = lst; count != NULL; count = count->next ) {
          choices[n] = _(count->name);
          indices[n++] = count->id;
       }
@@ -3102,6 +3103,9 @@ void TrackPanel::OnSetTimeTrackConverter()
                                           num,
                                           choices);
       t->setConverter( indices[choice] );
+
+      delete [] choices;
+      delete [] indices;
    }      
    
    mPopupMenuTarget = NULL;
