@@ -13,6 +13,7 @@
 
 class wxString;
 
+#include <wx/intl.h>
 #include "Effect.h"
 
 class WaveTrack;
@@ -24,11 +25,11 @@ public:
    EffectCompressor();
    
    virtual wxString GetEffectName() {
-      return wxString("Compressor...");
+      return wxString(_("Compressor..."));
    }
    
    virtual wxString GetEffectAction() {
-      return wxString("Compressing");
+      return wxString(_("Compressing"));
    }
    
    virtual bool PromptUser();

@@ -21,6 +21,7 @@
 #include <wx/slider.h>
 #include <wx/textctrl.h>
 #include <wx/sizer.h>
+#include <wx/intl.h>
 
 // Declare window functions
 
@@ -40,11 +41,11 @@ class EffectBassBoost:public Effect {
    EffectBassBoost();
 
    virtual wxString GetEffectName() {
-      return wxString("BassBoost...");
+      return wxString(_("BassBoost..."));
    }
    
    virtual wxString GetEffectAction() {
-      return wxString("Boosting Bass Frequencies");
+      return wxString(_("Boosting Bass Frequencies"));
    }
    
    virtual bool PromptUser();
