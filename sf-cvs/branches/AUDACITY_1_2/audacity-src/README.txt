@@ -270,6 +270,21 @@ Known issues/problems:
 
 -------------------------------------------------------------
 
+Changes in 1.2.2:
+
+  * VU Meters added for both playback and recording.  Click on
+    the recording meter to monitor the input without recording.
+
+  * Fixed freeze in Unix/X-Windows caused by captured mouse when
+    audio device hangs.  (Audacity may not respond, but it will
+    no longer freeze all of X.)
+
+  * You can now add a label at the current playback position - in
+    the Project menu, with a shortcut of Ctrl+M.
+
+  * Clicking on a label now selects all of the tracks, making it
+    easier to use the label track to recall selections.
+
 Changes in 1.2.1:
 
   * Fix a possible crash when opening or resizing the Equalization window.
