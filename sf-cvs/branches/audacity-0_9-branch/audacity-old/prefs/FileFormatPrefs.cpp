@@ -72,6 +72,8 @@ PrefsPanel(parent)
          break;
       }
 
+   long oggQuality = gPrefs->Read("/FileFormats/OggExportQuality", 50)/10;
+
    /* Begin layout code... */
 
    topSizer = new wxStaticBoxSizer(
@@ -151,7 +153,7 @@ PrefsPanel(parent)
          SetMP3VersionText();
 
          mp3InfoSizer->Add(mMP3Version, 0,
-            wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+            wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
          
          mMP3FindButton = new wxButton(this, ID_MP3_FIND_BUTTON, "Find Library");
          
@@ -203,6 +205,25 @@ PrefsPanel(parent)
 
          mp3SetupSizer->Add(
             mp3InfoSizer, 0, wxGROW|wxALL, 0);
+      }
+
+      {
+
+         wxStaticBoxSizer *OGGFormatSizer = new wxStaticBoxSizer(
+            new wxStaticBox(this, -1, "OGG Export Setup"),
+            wxHORIZONTAL);
+         mOGGQuality = new wxSlider(this, -1, oggQuality, 0, 10,
+                               wxDefaultPosition, wxDefaultSize,
+                               wxSL_LABELS);
+         OGGFormatSizer->Add(new wxStaticText(this, -1, "OGG Quality:"), 0, 
+                             wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL,
+                             GENERIC_CONTROL_BORDER);
+         OGGFormatSizer->Add(mOGGQuality, 1,
+                             wxALL|wxGROW, GENERIC_CONTROL_BORDER);
+
+         topSizer->Add(
+            OGGFormatSizer, 0, 
+            wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, TOP_LEVEL_BORDER );
       }
 
       topSizer->Add(
@@ -284,6 +305,10 @@ bool FileFormatPrefs::Apply()
       mMP3Bitrate->GetStringSelection().ToLong(&bitrate);
       gPrefs->Write("MP3Bitrate", bitrate);
    }
+
+
+   long oggQuality = mOGGQuality->GetValue();
+   gPrefs->Write("/FileFormats/OggExportQuality", oggQuality * 10);
    
    if (originalExportFormat != defaultExportFormat) {
       // Force the menu bar to get recreated
