@@ -27,16 +27,9 @@ WX_DEFINE_OBJARRAY(NyqControlArray);
 
 wxString EffectNyquist::mXlispPath;
 
-char global_xlisp_path[1000];
-
 extern "C" {
-/* dmazzoni */
-void get_xlisp_path(char *paths, int paths_max)
-{
-   strcpy(paths, global_xlisp_path);
+   extern void set_xlisp_path(const char *p);
 }
-}
-
 
 #ifdef USE_NYQUIST
 	#ifdef __WXMSW__ // Not for Linux because stdlib.h for gcc defines its own random().
@@ -241,11 +234,12 @@ bool EffectNyquist::SetXlispPath()
 
       wxGetApp().FindFilesInPathList("nyquist.lsp", pathList, wxFILE, files);
 
-      if (files.GetCount() > 0)
+      if (files.GetCount() > 0) {
          mXlispPath = ::wxPathOnly(files[0]);
+      }
    }
 
-   strncpy(global_xlisp_path, (const char *)mXlispPath, 1000);
+   set_xlisp_path((const char *)mXlispPath);
 
    fname = mXlispPath + wxFILE_SEP_PATH + "nyinit.lsp";
    return ::wxFileExists(fname);
