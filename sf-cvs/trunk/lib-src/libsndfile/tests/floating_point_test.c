@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -22,64 +22,99 @@
 #include	<math.h>
 
 #include	<sndfile.h>
-#include	"check_log_buffer.h"
+
+#include	"dft_cmp.h"
+#include	"utils.h"
+
+/* Configureation header from ../src or ../Win32. */
+#include	<config.h>
+#include	<float_cast.h>
 
 #define	SAMPLE_RATE			11025
-#define	BUFFER_SIZE			(1<<14)
 
-static	void	float_scaled_test		(char *str, int filetype, int bitwidth, double tolerance) ;
-static	void	double_scaled_test		(char *str, int filetype, int bitwidth, double tolerance) ;
+static void	float_scaled_test	(char *filename, int allow_exit, int filetype, unsigned int target_hash, double target_snr) ;
+static void	double_scaled_test	(char *filename, int allow_exit, int filetype, double target_snr) ;
 
-static	int		error_function (double data, double orig, double scale, double margin) ;
-static	void	gen_float_signal (float *data, unsigned int datalen) ;
-static	void	gen_double_signal (double *data, unsigned int datalen) ;
+static	double	orig_data [DFT_DATA_LENGTH] ;
+static	double	test_data [DFT_DATA_LENGTH] ;
 
-static	double	orig_data [BUFFER_SIZE] ;
-static	double	test_data [BUFFER_SIZE] ;
 
-int		main (int argc, char *argv[])
-{	
+int		
+main (int argc, char *argv [])
+{	int allow_exit = 1 ;
+
+	if (argc == 2 && ! strstr (argv [1], "no-exit"))
+		allow_exit = 0 ;
+
+#if (! (HAVE_LRINTF || HAVE_LRINT_REPLACEMENT))
+	puts ("** This platform does not have lrintf(), so file hash \n"
+		  "** checking cannot be performed.") ;
+#endif
+
 	/* Float tests. */
+	float_scaled_test	("float.raw", allow_exit, SF_ENDIAN_LITTLE | SF_FORMAT_RAW  | SF_FORMAT_FLOAT, 0x80413625, -163.0) ;
 
-	float_scaled_test	("float", SF_FORMAT_WAV  | SF_FORMAT_FLOAT, 32, 0.005) ;
+	/* Test both signed and unsigned 8 bit files. */
+	float_scaled_test	("pcm_s8.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_PCM_S8, 0x929316c4, -39.0) ;
+	float_scaled_test	("pcm_u8.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_PCM_U8, 0x529542c4, -39.0) ;
+
+	float_scaled_test	("pcm_16.raw", allow_exit, SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_PCM_16, 0x87bd2472, -87.0) ;
+	float_scaled_test	("pcm_24.raw", allow_exit, SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_PCM_24, 0xdc903e47, -138.0) ;
+	float_scaled_test	("pcm_32.raw", allow_exit, SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_PCM_32, 0xb214e199, -163.0) ;
+
+	float_scaled_test	("ulaw.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_ULAW, 0x37b101b5, -50.0) ;
+	float_scaled_test	("alaw.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_ALAW, 0x0c7141ec, -49.0) ;
+
+	float_scaled_test	("imaadpcm.wav", allow_exit, SF_FORMAT_WAV | SF_FORMAT_IMA_ADPCM, 0x590d3df8, -47.0) ;
+	float_scaled_test	("msadpcm.wav" , allow_exit, SF_FORMAT_WAV | SF_FORMAT_MS_ADPCM, 0xe49453f9, -40.0) ;
+	float_scaled_test	("gsm610.raw"  , allow_exit, SF_FORMAT_RAW | SF_FORMAT_GSM610, 0x6b20daf0, -33.0) ;
+
+	float_scaled_test	("g721_32.au", allow_exit, SF_FORMAT_AU | SF_FORMAT_G721_32, 0x0d15119d, -34.0) ;
+	float_scaled_test	("g723_24.au", allow_exit, SF_FORMAT_AU | SF_FORMAT_G723_24, 0x8394e3b8, -34.0) ;
+	float_scaled_test	("g723_40.au", allow_exit, SF_FORMAT_AU | SF_FORMAT_G723_40, 0xbad070d2, -40.0) ;
+
+	/*	PAF files do not use the same encoding method for 24 bit PCM data as other file
+	**	formats so we need to explicitly test it here.
+	*/
+	float_scaled_test	("le_paf_24.paf", allow_exit, SF_ENDIAN_LITTLE | SF_FORMAT_PAF | SF_FORMAT_PCM_24, 0xf36eb03a, -149.0) ;
+	float_scaled_test	("be_paf_24.paf", allow_exit, SF_ENDIAN_BIG    | SF_FORMAT_PAF | SF_FORMAT_PCM_24, 0x730d92d3, -149.0) ;
+
+	float_scaled_test	("dwvw_12.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_DWVW_12, 0x137efb5e, -64.0) ;
+	float_scaled_test	("dwvw_16.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_DWVW_16, 0xb3070047, -92.0) ;
+	float_scaled_test	("dwvw_24.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_DWVW_24, 0x6f408fa0, -151.0) ;
+
+	/*==============================================================================
+	** Double tests. 
+	*/
+
+	double_scaled_test	("double.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_DOUBLE, -300.0) ;
 
 	/* Test both signed (AIFF) and unsigned (WAV) 8 bit files. */
-	float_scaled_test	("pcm_s8", SF_FORMAT_WAV  | SF_FORMAT_PCM, 8, 0.01) ;
-	float_scaled_test	("pcm_u8", SF_FORMAT_AIFF | SF_FORMAT_PCM, 8, 0.01) ;
+	double_scaled_test	("pcm_s8.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_PCM_S8, -39.0) ;
+	double_scaled_test	("pcm_u8.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_PCM_U8, -39.0) ;
 
-	float_scaled_test	("pcm_16", SF_FORMAT_WAV  | SF_FORMAT_PCM, 16, 0.01) ;
-	float_scaled_test	("pcm_24", SF_FORMAT_WAV  | SF_FORMAT_PCM, 24, 0.01) ;
-	float_scaled_test	("pcm_32", SF_FORMAT_WAV  | SF_FORMAT_PCM, 32, 0.01) ;
-	
-	float_scaled_test	("ulaw", SF_FORMAT_AU | SF_FORMAT_ULAW, 16, 0.01) ;
-	float_scaled_test	("alaw", SF_FORMAT_AU | SF_FORMAT_ALAW, 16, 0.01) ;
-	
-	float_scaled_test	("imaadpcm", SF_FORMAT_WAV | SF_FORMAT_IMA_ADPCM, 16, 0.05) ;
-	float_scaled_test	("msadpcm" , SF_FORMAT_WAV | SF_FORMAT_MS_ADPCM, 16, 0.05) ;
-	float_scaled_test	("gsm610"  , SF_FORMAT_WAV | SF_FORMAT_GSM610, 16, 0.08) ;
+	double_scaled_test	("pcm_16.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_PCM_16, -87.0) ;
+	double_scaled_test	("pcm_24.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_PCM_24, -135.0) ;
+	double_scaled_test	("pcm_32.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_PCM_32, -184.0) ;
 
-	float_scaled_test	("g721_32", SF_FORMAT_AU | SF_FORMAT_G721_32, 16, 0.02) ;
-	float_scaled_test	("g723_24", SF_FORMAT_AU | SF_FORMAT_G723_24, 16, 0.02) ;
-	
-	/* Double tests. */
+	double_scaled_test	("ulaw.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_ULAW, -50.0) ;
+	double_scaled_test	("alaw.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_ALAW, -49.0) ;
 
-	/* Test both signed (AIFF) and unsigned (WAV) 8 bit files. */
-	double_scaled_test	("pcm_s8", SF_FORMAT_WAV  | SF_FORMAT_PCM, 8, 0.01) ;
-	double_scaled_test	("pcm_u8", SF_FORMAT_AIFF | SF_FORMAT_PCM, 8, 0.01) ;
+	double_scaled_test	("imaadpcm.wav", allow_exit, SF_FORMAT_WAV | SF_FORMAT_IMA_ADPCM, -47.0) ;
+	double_scaled_test	("msadpcm.wav" , allow_exit, SF_FORMAT_WAV | SF_FORMAT_MS_ADPCM, -40.0) ;
+	double_scaled_test	("gsm610.raw"  , allow_exit, SF_FORMAT_RAW | SF_FORMAT_GSM610, -33.0) ;
 
-	double_scaled_test	("pcm_16", SF_FORMAT_WAV  | SF_FORMAT_PCM, 16, 0.01) ;
-	double_scaled_test	("pcm_24", SF_FORMAT_WAV  | SF_FORMAT_PCM, 24, 0.01) ;
-	double_scaled_test	("pcm_32", SF_FORMAT_WAV  | SF_FORMAT_PCM, 32, 0.01) ;
-	
-	double_scaled_test	("ulaw", SF_FORMAT_AU | SF_FORMAT_ULAW, 16, 0.01) ;
-	double_scaled_test	("alaw", SF_FORMAT_AU | SF_FORMAT_ALAW, 16, 0.01) ;
-	
-	double_scaled_test	("imaadpcm", SF_FORMAT_WAV | SF_FORMAT_IMA_ADPCM, 16, 0.05) ;
-	double_scaled_test	("msadpcm" , SF_FORMAT_WAV | SF_FORMAT_MS_ADPCM, 16, 0.05) ;
-	double_scaled_test	("gsm610"  , SF_FORMAT_WAV | SF_FORMAT_GSM610, 16, 0.08) ;
+	double_scaled_test	("g721_32.au", allow_exit, SF_FORMAT_AU | SF_FORMAT_G721_32, -34.0) ;
+	double_scaled_test	("g723_24.au", allow_exit, SF_FORMAT_AU | SF_FORMAT_G723_24, -34.0) ;
+	double_scaled_test	("g723_40.au", allow_exit, SF_FORMAT_AU | SF_FORMAT_G723_40, -40.0) ;
 
-	double_scaled_test	("g721_32", SF_FORMAT_AU | SF_FORMAT_G721_32, 16, 0.2) ;
-	double_scaled_test	("g723_24", SF_FORMAT_AU | SF_FORMAT_G723_24, 16, 0.2) ;
+	/*	24 bit PCM PAF files tested here. */
+	double_scaled_test	("be_paf_24.paf", allow_exit, SF_ENDIAN_BIG    | SF_FORMAT_PAF  | SF_FORMAT_PCM_24, -151.0) ;
+	double_scaled_test	("le_paf_24.paf", allow_exit, SF_ENDIAN_LITTLE | SF_FORMAT_PAF  | SF_FORMAT_PCM_24, -151.0) ;
+
+	double_scaled_test	("dwvw_12.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_DWVW_12, -64.0) ;
+	double_scaled_test	("dwvw_16.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_DWVW_16, -92.0) ;
+	double_scaled_test	("dwvw_24.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_DWVW_24, -151.0) ;
 
 	return 0;
 } /* main */
@@ -88,141 +123,133 @@ int		main (int argc, char *argv[])
  *	Here are the test functions.
  */ 
 
-static	
-void	float_scaled_test (char *str, int filetype, int bitwidth, double tolerance)
-{	char 			filename [256] ;
-	SNDFILE			*file ;
-	SF_INFO			sfinfo ;
-	unsigned int	k ;
-	float			*float_data, *float_test ;
-	double			scale ;
-	
-	strncpy (filename, str, sizeof (filename)) ;
-	filename [sizeof (filename) - 1] = 0 ;
-	strncat (filename, ".dat", sizeof (filename)) ;
-	filename [sizeof (filename) - 1] = 0 ;
+#define PUT_DOTS(k)					\
+			{	while (k--)			\
+					putchar ('.') ;	\
+				putchar (' ') ;		\
+				}
+static void	
+float_scaled_test (char *filename, int allow_exit, int filetype, unsigned int target_hash, double target_snr)
+{	static	float	float_orig [DFT_DATA_LENGTH] ;
+	static	float	float_test [DFT_DATA_LENGTH] ;
 
-	printf ("    float_scaled_test  : %s ", str) ;
-	for (k = strlen (str) ; k < 10 ; k++)
-		putchar ('.') ;
-	putchar (' ') ;
+	SNDFILE		*file ;
+	SF_INFO		sfinfo ;
+	int			k ;
+	double		snr ;
 	
-	float_data = (float*) orig_data ;
-	float_test = (float*) test_data ;
-
-	gen_float_signal (float_data, BUFFER_SIZE) ;
+	printf ("    float_scaled_test  : %s ", filename) ;	
+	k = abs (18 - strlen (filename)) ;
+	PUT_DOTS (k) ;
+	fflush (stdout) ;
+	
+	gen_windowed_sine (orig_data, DFT_DATA_LENGTH, 0.95) ;
+	
+	for (k = 0 ; k < DFT_DATA_LENGTH ; k++)
+		float_orig [k] = orig_data [k] ;
 		
 	sfinfo.samplerate  = SAMPLE_RATE ;
-	sfinfo.samples     = BUFFER_SIZE ;
+	sfinfo.frames     = DFT_DATA_LENGTH ;
 	sfinfo.channels    = 1 ;
-	sfinfo.pcmbitwidth = bitwidth ;
 	sfinfo.format 	   = filetype ;
 
-	if (! (file = sf_open_write (filename, &sfinfo)))
-	{	printf ("sf_open_write failed with error : ") ;
+	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
+	{	printf ("\n\nLine %d: sf_open_write failed with error : ", __LINE__) ;
+		fflush (stdout) ;
 		sf_perror (NULL) ;
 		exit (1) ;
 		} ;
-	
-	sf_command (file, "norm float", "on", 0) ;
-	
-	if (sf_write_float (file, float_data, BUFFER_SIZE) != BUFFER_SIZE)
-	{	printf ("sf_write_float failed with error : ") ;
+
+	if ((k = sf_write_float (file, float_orig, DFT_DATA_LENGTH)) != DFT_DATA_LENGTH)
+	{	printf ("\n\nLine %d: sf_write_float failed with error (%d -> %d) : ", __LINE__, DFT_DATA_LENGTH, k) ;
+		fflush (stdout) ;
 		sf_perror (file) ;
 		exit (1) ;
 		} ;
 		
 	sf_close (file) ;
-	
-	memset (float_test, 0, BUFFER_SIZE * sizeof (float)) ;
 
-	if (! (file = sf_open_read (filename, &sfinfo)))
-	{	printf ("sf_open_read failed with error : ") ;
+#if (! (HAVE_LRINTF || HAVE_LRINT_REPLACEMENT))
+	target_hash = target_hash ; /* Avoid compiler warning. */
+#else
+	check_file_hash_or_die (filename, target_hash, __LINE__) ;
+#endif
+	
+	memset (float_test, 0, sizeof (float_test)) ;
+
+	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
+	{	printf ("\n\nLine %d: sf_open_read failed with error : ", __LINE__) ;
+		fflush (stdout) ;
 		sf_perror (NULL) ;
 		exit (1) ;
 		} ;
 	
 	if (sfinfo.format != filetype)
-	{	printf ("Returned format incorrect (0x%08X => 0x%08X).\n", filetype, sfinfo.format) ;
+	{	printf ("\n\nLine %d: Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.samples < BUFFER_SIZE)
-	{	printf ("%s (line %d) : Incorrect number of samples in file (too short). (%d should be %d)\n", __FILE__, __LINE__, sfinfo.samples, BUFFER_SIZE) ;
+	if (sfinfo.frames < DFT_DATA_LENGTH)
+	{	printf ("\n\nLine %d: Incorrect number of.frames in file (too short). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), DFT_DATA_LENGTH) ;
 		exit (1) ;
 		} ;
 	
 	if (sfinfo.channels != 1)
-	{	printf ("%s (line %d) : Incorrect number of channels in file.\n", __FILE__, __LINE__) ;
+	{	printf ("\n\nLine %d: Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
 		} ;
 
-	if (sfinfo.pcmbitwidth != bitwidth)
-	{	printf ("%s (line %d) : Incorrect bit width (%d => %d).\n", __FILE__, __LINE__, bitwidth, sfinfo.pcmbitwidth) ;
-		exit (1) ;
-		} ;
-
-	check_log_buffer (file) ;
-	
-	sf_command (file, "norm float", "on", 0) ;
+	check_log_buffer_or_die (file) ;
 		
-	if ((k = sf_read_float (file, float_test, BUFFER_SIZE)) < 0.99 * BUFFER_SIZE)
-	{	printf ("%s (line %d) : short read (%d).\n", __FILE__, __LINE__, k) ;
+	if ((k = sf_read_float (file, float_test, DFT_DATA_LENGTH)) < DFT_DATA_LENGTH)
+	{	printf ("\n\nLine %d: short read (%d).\n", __LINE__, k) ;
 		exit (1) ;
 		} ;
 
 	sf_close (file) ;
 
-	scale = bitwidth > 8 ? 32600.0 : 126.0 ;
-	for (k = 0 ; k < BUFFER_SIZE ; k++)
-		if (error_function (float_test [k], float_data [k], scale, tolerance))
-		{	printf ("%s (line %d) : Incorrect sample (#%d : %f should be %f).\n", __FILE__, __LINE__, k, float_test [k], float_data [k]) ;
-			exit (1) ;
-			} ;
+	for (k = 0 ; k < DFT_DATA_LENGTH ; k++)
+		test_data [k] = float_test [k] ;
+
+	snr = dft_cmp (__LINE__, orig_data, test_data, DFT_DATA_LENGTH, target_snr, allow_exit) ;
+
+	if (snr < target_snr)
+		printf ("% 6.1fdB SNR ... ok\n", snr) ;
 
 	unlink (filename) ;
-			
-	printf ("ok\n") ;
+
+	return ;			
 } /* float_scaled_test */
 
-static	
-void	double_scaled_test (char *str, int filetype, int bitwidth, double tolerance)
-{	char 			filename [256] ;
-	SNDFILE			*file ;
-	SF_INFO			sfinfo ;
-	unsigned int	k ;
-	double			scale ;
-	
-	strncpy (filename, str, sizeof (filename)) ;
-	filename [sizeof (filename) - 1] = 0 ;
-	strncat (filename, ".dat", sizeof (filename)) ;
-	filename [sizeof (filename) - 1] = 0 ;
-	
+static void	
+double_scaled_test (char *filename, int allow_exit, int filetype, double target_snr)
+{	SNDFILE		*file ;
+	SF_INFO		sfinfo ;
+	int			k ;
+	double		snr ;
 
-	printf ("    double_scaled_test : %s ", str) ;
-	for (k = strlen (str) ; k < 10 ; k++)
-		putchar ('.') ;
-	putchar (' ') ;
-
-	gen_double_signal (orig_data, BUFFER_SIZE) ;
+	printf ("    double_scaled_test : %s ", filename) ;
+	k = abs (18 - strlen (filename)) ;
+	PUT_DOTS (k) ;
+	fflush (stdout) ;
+	
+	gen_windowed_sine (orig_data, DFT_DATA_LENGTH, 0.95) ;
 		
 	sfinfo.samplerate  = SAMPLE_RATE ;
-	sfinfo.samples     = BUFFER_SIZE ;
+	sfinfo.frames     = DFT_DATA_LENGTH ;
 	sfinfo.channels    = 1 ;
-	sfinfo.pcmbitwidth = bitwidth ;
 	sfinfo.format 	   = filetype ;
 
-	if (! (file = sf_open_write (filename, &sfinfo)))
-	{	printf ("%s (line %d) : sf_open_write failed with error : ", __FILE__, __LINE__) ;
+	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
+	{	printf ("\n\nLine %d: sf_open_write failed with error : ", __LINE__) ;
+		fflush (stdout) ;
 		sf_perror (NULL) ;
 		exit (1) ;
 		} ;
 
-	/* This does nothing at the moment. */	
-	sf_command (file, "norm double", "on", 0) ;
-	
-	if (sf_write_double (file, orig_data, BUFFER_SIZE, 1) != BUFFER_SIZE)
-	{	printf ("%s (line %d) : sf_write_double failed with error : ", __FILE__, __LINE__) ;
+	if (sf_write_double (file, orig_data, DFT_DATA_LENGTH) != DFT_DATA_LENGTH)
+	{	printf ("\n\nLine %d: sf_write_double failed with error : ", __LINE__) ;
+		fflush (stdout) ;
 		sf_perror (file) ;
 		exit (1) ;
 		} ;
@@ -231,115 +258,43 @@ void	double_scaled_test (char *str, int filetype, int bitwidth, double tolerance
 	
 	memset (test_data, 0, sizeof (test_data)) ;
 
-	if (! (file = sf_open_read (filename, &sfinfo)))
-	{	printf ("%s (line %d) : sf_open_read failed with error : ", __FILE__, __LINE__) ;
+	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
+	{	printf ("\n\nLine %d: sf_open_read failed with error : ", __LINE__) ;
+		fflush (stdout) ;
 		sf_perror (NULL) ;
 		exit (1) ;
 		} ;
 	
 	if (sfinfo.format != filetype)
-	{	printf ("%s (line %d) : Returned format incorrect (0x%08X => 0x%08X).\n", __FILE__, __LINE__, filetype, sfinfo.format) ;
+	{	printf ("\n\nLine %d: Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.samples < BUFFER_SIZE)
-	{	printf ("%s (line %d) : Incorrect number of samples in file (too short). (%d should be %d)\n", __FILE__, __LINE__, sfinfo.samples, BUFFER_SIZE) ;
+	if (sfinfo.frames < DFT_DATA_LENGTH)
+	{	printf ("\n\nLine %d: Incorrect number of.frames in file (too short). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), DFT_DATA_LENGTH) ;
 		exit (1) ;
 		} ;
 	
 	if (sfinfo.channels != 1)
-	{	printf ("%s (line %d) : Incorrect number of channels in file.\n", __FILE__, __LINE__) ;
+	{	printf ("\n\nLine %d: Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
 		} ;
 
-	if (sfinfo.pcmbitwidth != bitwidth)
-	{	printf ("%s (line %d) : Incorrect bit width (%d => %d).\n", __FILE__, __LINE__, bitwidth, sfinfo.pcmbitwidth) ;
-		exit (1) ;
-		} ;
-
-	check_log_buffer (file) ;
+	check_log_buffer_or_die (file) ;
 		
-	/* This does nothing at the moment. */	
-	sf_command (file, "norm double", "on", 0) ;
-	
-	if ((k = sf_read_double (file, test_data, BUFFER_SIZE, 1)) < 0.99 * BUFFER_SIZE)
-	{	printf ("%s (line %d) : short read (%d).\n", __FILE__, __LINE__, k) ;
+	if ((k = sf_read_double (file, test_data, DFT_DATA_LENGTH)) < DFT_DATA_LENGTH)
+	{	printf ("\n\nLine %d: short read (%d).\n", __LINE__, k) ;
 		exit (1) ;
 		} ;
 
 	sf_close (file) ;
 
-	scale = bitwidth > 8 ? 32600.0 : 126.0 ;
-	for (k = 0 ; k < BUFFER_SIZE ; k++)
-		if (error_function (test_data [k], orig_data [k], scale, tolerance))
-		{	printf ("%s (line %d) : Incorrect sample (#%d : %f should be %f).\n", __FILE__, __LINE__, k, test_data [k], orig_data [k]) ;
-			exit (1) ;
-			} ;
+	snr = dft_cmp (__LINE__, orig_data, test_data, DFT_DATA_LENGTH, target_snr, allow_exit) ;
+
+	if (snr < target_snr)
+		printf ("% 6.1fdB SNR ... ok\n", snr) ;
 
 	unlink (filename) ;
-			
-	printf ("ok\n") ;
+
+	return ;			
 } /* double_scaled_test */
-
-/*========================================================================================
-**	Auxiliary functions
-*/
-
-static
-void	gen_float_signal (float *data, unsigned int datalen)
-{	unsigned int k, ramplen ;
-	float	amp = 0.0 ;
-	
-	ramplen = datalen / 20 ;
-
-	for (k = 0 ; k < datalen ; k++)
-	{	if (k <= ramplen)
-			amp = k / ((float) ramplen) ;
-		else if (k > datalen - ramplen)
-			amp = (datalen - k) / ((float) ramplen) ;
-		data [k] = amp * (0.5 * sin (202.2 * 2.0 * M_PI * ((float) (k+1)) / ((float) SAMPLE_RATE))
-							+ 0.4 * cos (441.1 * 2.0 * M_PI * ((float) (k+1)) / ((float) SAMPLE_RATE))) ;
-		} ;
-	return ;
-} /* gen_float_signal */
-
-static
-void	gen_double_signal (double *data, unsigned int datalen)
-{	unsigned int k, ramplen ;
-	double	amp = 0.0 ;
-	
-	ramplen = datalen / 20 ;
-
-	for (k = 0 ; k < datalen ; k++)
-	{	if (k <= ramplen)
-			amp = k / ((double) ramplen) ;
-		else if (k > datalen - ramplen)
-			amp = (datalen - k) / ((double) ramplen) ;
-		data [k] = amp * (0.5 * sin (202.2 * 2.0 * M_PI * ((double) (k+1)) / ((double) SAMPLE_RATE))
-							+ 0.4 * cos (441.1 * 2.0 * M_PI * ((double) (k+1)) / ((double) SAMPLE_RATE))) ;
-		} ;
-	return ;
-} /* gen_double_signal */
-
-static
-int error_function (double data, double orig, double scale, double margin)
-{	double error ;
-
-	data = scale * fabs (data) ;
-	orig = scale * fabs (orig) ;
-
-	if (data < 1.0 && orig < 1.0)
-		return 0 ;
-
-	if (data < 2.0 && orig < 1.0)
-		return 0 ;
-
-	if (data < 1.0 && orig < 2.0)
-		return 0 ;
-
-	error = fabs (orig - data) * orig / scale ;
-	if (error / (data + orig) > margin)
-	{	return 1 ;
-		} ;
-	return 0 ;
-} /* error_function */

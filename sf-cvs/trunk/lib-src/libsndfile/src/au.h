@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +22,8 @@
 
 enum 
 {	AU_H_G721_32	= 200,
-	AU_H_G723_24	= 201
+	AU_H_G723_24	= 201,
+	AU_H_G723_40	= 202
 } ;
 
 int	au_g72x_reader_init (SF_PRIVATE *psf, int codec) ;

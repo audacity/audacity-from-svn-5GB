@@ -44,7 +44,7 @@
  */
 
 #include "g72x.h"
-#include "private.h"
+#include "g72x_priv.h"
 
 /*
  * Maps G.723_16 code word to reconstructed scale factor normalized log

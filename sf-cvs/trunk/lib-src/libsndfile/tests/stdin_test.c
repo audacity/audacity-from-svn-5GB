@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2001-2002 Erik de Castro Lopo <erikd@zip.com.au>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -31,15 +31,20 @@ static	void	stdin_test	(char *str, int typemajor, int count) ;
 
 int
 main (int argc, char *argv [])
-{	unsigned int	count, bDoAll = 0, nTests = 0 ;
+{	int	count, bDoAll = 0, nTests = 0 ;
 	
 	if (argc != 3 || !(count = atoi (argv [2])))
 	{	fprintf (stderr, "This program cannot be run by itself. It needs\n") ;
-		fprintf (stderr, "to be run from the stdio_test.sh sheel script.\n") ;
+		fprintf (stderr, "to be run from the stdio_test program.\n") ;
 		exit (1) ;
 		} ;
 		
 	bDoAll = ! strcmp (argv [1], "all") ;
+
+	if (bDoAll || ! strcmp (argv [1], "raw"))
+	{	stdin_test	("raw", SF_FORMAT_RAW, count) ;
+		nTests++ ;
+		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "wav"))
 	{	stdin_test	("wav", SF_FORMAT_WAV, count) ;
@@ -76,12 +81,23 @@ main (int argc, char *argv [])
 		nTests++ ;
 		} ;
 
+	if (bDoAll || ! strcmp (argv [1], "voc"))
+	{	stdin_test	("voc", SF_FORMAT_VOC, count) ;
+		nTests++ ;
+		} ;
+
+	if (bDoAll || ! strcmp (argv [1], "w64"))
+	{	stdin_test	("w64", SF_FORMAT_W64, count) ;
+		nTests++ ;
+		} ;
+
 	if (nTests == 0)
-	{	printf ("Mono : ************************************\n") ;
-		printf ("Mono : *  No '%s' test defined.\n", argv [1]) ;
-		printf ("Mono : ************************************\n") ;
+	{	printf ("************************************\n") ;
+		printf ("*  No '%s' test defined.\n", argv [1]) ;
+		printf ("************************************\n") ;
 		return 1 ;
 		} ;
+
 	return 0;
 } /* main */
 
@@ -89,35 +105,42 @@ static	void
 stdin_test	(char *str, int typemajor, int count)
 {	static	short	data [BUFFER_LEN] ;
 
-	SNDFILE			*file ;
-	SF_INFO			sfinfo ;
-	unsigned int	k, total ;
+	SNDFILE		*file ;
+	SF_INFO		sfinfo ;
+	int			k, total ;
 	
-	fprintf (stderr, "    %-5s : reading %d samples from stdin ... ", str, count) ;
+	fprintf (stderr, "    %-5s : reading %d frames from stdin ... ", str, count) ;
 	
-	if (! (file = sf_open_read ("-", &sfinfo)))
+	if (typemajor == SF_FORMAT_RAW)
+	{	sfinfo.samplerate  = 44100 ;
+		sfinfo.format 	   = SF_FORMAT_RAW | SF_FORMAT_PCM_16 ;
+		sfinfo.channels    = 1 ;
+		sfinfo.frames     = 0 ;
+		} ;
+	
+	if (! (file = sf_open ("-", SFM_READ, &sfinfo)))
 	{	fprintf (stderr, "sf_open_read failed with error : ") ;
 		sf_perror (NULL) ;
 		exit (1) ;
 		} ;
 
-	if (sfinfo.samplerate  != 44100)
-	{	fprintf (stderr, "\n\nError : sample rate (%u) should be 44100\n", sfinfo.samplerate) ;
+	if ((sfinfo.format & SF_FORMAT_TYPEMASK) != typemajor)
+	{	fprintf (stderr, "\n\nError : File type doesn't match\n") ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.pcmbitwidth  != 16)
-	{	fprintf (stderr, "\n\nError : pcm bit width (%u) should be 16\n", sfinfo.pcmbitwidth) ;
+	if (sfinfo.samplerate  != 44100)
+	{	fprintf (stderr, "\n\nError : sample rate (%d) should be 44100\n", sfinfo.samplerate) ;
 		exit (1) ;
 		} ;
 	
 	if (sfinfo.channels  != 1)
-	{	fprintf (stderr, "\n\nError : channels (%u) should be 1\n", sfinfo.channels) ;
+	{	fprintf (stderr, "\n\nError : channels (%d) should be 1\n", sfinfo.channels) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.samples < count)
-	{	fprintf (stderr, "\n\nError : sample count (%u, 0x%08x) should be %d\n", sfinfo.samples, sfinfo.samples, count) ;
+	if (sfinfo.frames < count)
+	{	fprintf (stderr, "\n\nError : sample count (%ld) should be %d\n", (long) sfinfo.frames, count) ;
 		exit (1) ;
 		} ;
 	
@@ -127,7 +150,7 @@ stdin_test	(char *str, int typemajor, int count)
 
 
 	if (total != count)
-	{	fprintf (stderr, "\n\nError : expected (%u) samples, read %u\n", count, total) ;
+	{	fprintf (stderr, "\n\nError : expected (%d).frames, read %d\n", count, total) ;
 		exit (1) ;
 		} ;
 		

@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ extern int	sf_error_number	(int errnum, char *str, size_t maxlen) ;
 static	char	strbuffer [BUFFER_SIZE] ;
 static	char	noerror   [SHORT_BUFFER] ;
 
-int		main (int argc, char *argv[])
+int		main (void)
 {	int		k ;
 
 	sf_error_number (0, noerror, SHORT_BUFFER) ;

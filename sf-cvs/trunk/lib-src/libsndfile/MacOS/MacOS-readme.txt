@@ -15,8 +15,8 @@ suitable for inclusion in other MacOS projects:
 1. using CodeWarrior, create a new "Empty Project"
 
 2. obtain the libsndfile source distribution (see homepage URL below);
-   add all ".c" files found in the top level of the "src" folder to the
-   project
+   add all ".c" files found in the top level of the "src", "src/GSM610" and 
+   "src/G72x" folders to the project
 
 3. starting from the factory defaults, adjust the following project
    settings:
@@ -27,7 +27,7 @@ suitable for inclusion in other MacOS projects:
         file name = "libsndfile"
 
 4. grab the "config.h" file from the MacOS directory and replace the default
-   config.h file
+   config.h file in the "src" directory
 
 5. Make the project
 
@@ -64,19 +64,3 @@ The file "README" in the libsndfile distribution, for general
 information about libsndfile.
 
 
-CONTACTS
---------
-
-libsndfile was written by Erik de Castro Lopo (erikd@zip.com.au).  
-The libsndfile home page is at :
-
-        http://www.zip.com.au/~erikd/libsndfile/
-
-MacOS-specific questions, and issues specific to the instructions
-contained in this document should be directed to Ben "Jacobs" at the
-address below.
-
-
-Good luck,
-
--Ben "Jacobs" <random@well.com>
