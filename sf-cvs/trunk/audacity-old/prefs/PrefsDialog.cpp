@@ -114,7 +114,7 @@ void PrefsDialog::OnOK(wxCommandEvent& event)
 		if(!panel->Apply()) {
 			PrefsPanel *tmp = 
 				(PrefsPanel*)mCategories->GetClientData(mSelected);
-			tmp->HidePrefsPanel;
+			tmp->HidePrefsPanel();
 			panel->ShowPrefsPanel();
 
 			mCategories->SetSelection(i);

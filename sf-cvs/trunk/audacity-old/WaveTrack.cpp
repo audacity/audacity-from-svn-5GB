@@ -12,6 +12,7 @@
 
 #include <wx/colour.h>
 #include <wx/dc.h>
+#include <wx/dcmemory.h>
 #include <wx/file.h>
 #include <wx/image.h>
 #include <wx/msgdlg.h>

@@ -28,6 +28,8 @@
 #include <wx/dragimag.h>
 #endif
 
+#include <wx/filedlg.h>
+#include <wx/msgdlg.h>
 #include <wx/textfile.h>
 
 #include "AudacityApp.h"
@@ -1276,21 +1278,9 @@ void AudacityProject::ImportOGG(wxString fileName)
 	}
 }
 
-void AudacityProject::UpdateMenus()
-{
-  
-}
-
 //
 // Zoom methods
 //
-
-void AudacityProject::OnZoomNormal(wxCommandEvent& event)
-{
-  mViewInfo.zoom = 44100.0 / 512.0;
-  FixScrollbars();
-  mTrackPanel->Refresh(false);
-}
 
 void AudacityProject::ZoomFit()
 {
