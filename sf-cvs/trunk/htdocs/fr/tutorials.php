@@ -1,0 +1,1 @@
+<?php BoxTop($tutorialsStr); ?><p><a href="http://www.daniel.uklinux.net/tutorial/">Un tutoriel Audacity par Daniel James</a> - incluant les fichiers d'échantillons sonores que vous pourrez mixer vous-même. (en anglais seulement)</p><?php BoxBottom(); ?>
