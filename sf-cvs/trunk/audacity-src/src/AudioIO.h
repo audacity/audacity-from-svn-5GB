@@ -184,6 +184,7 @@ private:
    volatile bool       mAudioThreadShouldCallFillBuffersOnce;
    volatile bool       mAudioThreadFillBuffersLoopRunning;
    volatile double     mLastBufferAudibleTime;
+   volatile double     mLastRecordingOffset;
    volatile double     mTotalSamplesPlayed;
    PaError             mLastPaError;
 

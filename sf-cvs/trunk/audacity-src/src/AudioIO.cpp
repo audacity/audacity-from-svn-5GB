@@ -965,6 +965,7 @@ void AudioIO::StopStream()
             {
                delete mCaptureBuffers[i];
                mCaptureTracks[i]->Flush();
+               mCaptureTracks[i]->SetOffset(mLastRecordingOffset);
             }
          
          delete[] mCaptureBuffers;
@@ -1667,6 +1668,20 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
      #if USE_PORTAUDIO_V19
       gAudioIO->mTotalSamplesPlayed += framesPerBuffer;
       gAudioIO->mLastBufferAudibleTime = timeInfo->outputBufferDacTime;
+     #endif
+
+      // Record the reported latency from PortAudio.
+      // TODO: Don't recalculate this with every callback?
+     #if USE_PORTAUDIO_V19
+      if (numCaptureChannels > 0 && numPlaybackChannels > 0)
+         gAudioIO->mLastRecordingOffset = timeInfo->inputBufferAdcTime - timeInfo->outputBufferDacTime;
+      else
+         gAudioIO->mLastRecordingOffset = 0;
+     #else
+      if (numCaptureChannels > 0 && numPlaybackChannels > 0)
+         gAudioIO->mLastRecordingOffset = (Pa_StreamTime(gAudioIO->mPortStreamV18) - outTime) / gAudioIO->mRate;
+      else
+         gAudioIO->mLastRecordingOffset = 0;
      #endif
 
    } // if mStreamToken > 0
