@@ -530,7 +530,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
 {
    // AS: Ok, did the user just click the mouse, release the mouse,
    //  or drag?
-   if (event.ButtonDown(1)) {
+   if (event.ButtonDown(1)|| event.ButtonDown(3)) {
       wxRect r; 
       int num;  
 
@@ -546,7 +546,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
 
       Refresh(false);
    }
-   else if (event.ButtonUp(1)) {
+   else if (event.ButtonUp(1) || event.ButtonUp(3)) {
       mCapturedTrack = NULL;
       mIsSelecting = false;
    }
@@ -576,7 +576,7 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent &event,
    mMouseClickX = event.m_x;
    mMouseClickY = event.m_y;
 
-   if (event.ShiftDown()) {
+   if (event.ShiftDown() || event.ButtonDown(3)) {
       // If the shift button is down, extend the current selection.
       double x = PositionToTime(event.m_x, r.x);
 
