@@ -3,7 +3,7 @@
 <p>
 Vé a la página <?php print "<a href=beta.php?$langLinkStr>"; ?>Versiones Beta</a> para bajarla.
 Esta versón agrega un control de ganacia y paneo a cada pista,
-soporta *resampling* de alta calidad, y posee varias nuevas
+soporta remuestreo de alta calidad, y posee varias nuevas
 características y errores corregidos.
 <?php print "<a href=betanotes.php?$langLinkStr>"; ?>Lista de características nuevas en 1.1.3.</a>
 </p>
