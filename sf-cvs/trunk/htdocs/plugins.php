@@ -13,6 +13,10 @@
 <ul>
 
   <li>
+  <a href="http://kvr-vst.com">KVR-VST.com</a> is one of the best
+  sites for VST and other plug-ins</a>.
+
+  <li>
   <a href="http://www.digitalfishphones.com"
   >Fish Fillets bundle</a> - includes a Compressor, a DeEsser and a
   Noisegate.
@@ -59,6 +63,10 @@
 
 <b>Mac:</b>
 <ul>
+
+  <li>
+  <a href="http://kvr-vst.com">KVR-VST.com</a> is one of the best
+  sites for VST and other plug-ins</a>.
 
   <li>
   <a href="http://www.digitalfishphones.com"
@@ -111,6 +119,10 @@ Carbon VST plug-ins.
 <b>Mac OS X (Carbon) plug-ins</b>
 
 <ul>
+
+  <li>
+  <a href="http://kvr-vst.com">KVR-VST.com</a> is one of the best
+  sites for VST and other plug-ins</a>.
 
   <li>
   <a href="http://www.digitalfishphones.com"
