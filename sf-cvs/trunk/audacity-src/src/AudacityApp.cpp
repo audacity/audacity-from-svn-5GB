@@ -30,6 +30,7 @@
 #endif
 
 #include "AudacityApp.h"
+#include "APalette.h"
 #include "AudioIO.h"
 #include "Benchmark.h"
 #include "effects/LoadEffects.h"
@@ -38,11 +39,6 @@
 #include "Prefs.h"
 #include "Project.h"
 #include "WaveTrack.h"
-
-#include "iostream.h"
-
-class ToolBar;
-class ControlToolBar;
 
 #ifdef __WXGTK__
 void wxOnAssert(const char *fileName, int lineNumber, const char *msg)
@@ -53,18 +49,16 @@ void wxOnAssert(const char *fileName, int lineNumber, const char *msg)
       printf("ASSERTION FAILED!\n%s: %d\n", fileName, lineNumber);
 
    // Force core dump
-   int *i = 0;
-   if (*i)
+  int *i = 0;
+  if (*i)
       exit(1);
 
-   exit(0);
+  exit(0);
 }
 #endif
 
 wxFrame *gParentFrame = NULL;
 wxWindow *gParentWindow = NULL;
-ToolBarStub *gControlToolBarStub = NULL;
-ToolBarStub *gEditToolBarStub = NULL;
 
 void QuitAudacity()
 {
@@ -76,36 +70,26 @@ void QuitAudacity()
          return;
    }
 
-
+   if (gAPaletteFrame)
+      gAPaletteFrame->Destroy();
    if (gFreqWindow)
       gFreqWindow->Destroy();
    if (gParentFrame)
       gParentFrame->Destroy();
 
+   gAPaletteFrame = NULL;
    gFreqWindow = NULL;
    gParentFrame = NULL;
-
-
-   if (gControlToolBarStub) {
-      delete gControlToolBarStub;
-      gControlToolBarStub = NULL;
-   }
-   if (gEditToolBarStub) {
-      delete gEditToolBarStub;
-      gEditToolBarStub = NULL;
-   }
-
 
    QuitHelp();
 
    FinishPreferences();
-
 }
 
 IMPLEMENT_APP(AudacityApp)
 #ifdef __WXMAC__
-pascal OSErr AEQuit(const AppleEvent * theAppleEvent,
-                    AppleEvent * theReply, long Refcon)
+pascal OSErr AEQuit(const AppleEvent * theAppleEvent, AppleEvent * theReply,
+                    long Refcon)
 {
    QuitAudacity();
 
@@ -116,8 +100,8 @@ pascal OSErr AEQuit(const AppleEvent * theAppleEvent,
 pascal OSErr FSpGetFullPath(const FSSpec * spec,
                             short *fullPathLength, Handle * fullPath);
 
-pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent,
-                         AppleEvent * theReply, long Refcon)
+pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent, AppleEvent * theReply,
+                         long Refcon)
 {
    AEDescList docList;
    AEKeyword keywd;
@@ -189,8 +173,8 @@ bool AudacityApp::OnInit()
    if (lang != "en") {
       mLocale = new wxLocale("", lang, "");
       mLocale->AddCatalog("audacity");
-   } else
-      mLocale = NULL;
+   }
+   else mLocale = NULL;
 
    LoadEffects();
 
@@ -205,16 +189,7 @@ bool AudacityApp::OnInit()
 
    SetExitOnFrameDelete(true);
 
-   //Initiate pointers to toolbars here, and create 
-   //the toolbars that should be loaded at startup.
-
-
-   //Initiate globally-held toolbar stubs here.
-   gControlToolBarStub = new ToolBarStub(gParentWindow, ControlToolBarID);
-   gEditToolBarStub = NULL;  //Don't load this until user requests via menu
-
-   // new ToolBarStub(gParentWindow, EditToolBarID);
-
+   InitAPaletteFrame(gParentWindow);
    InitFreqWindow(gParentWindow);
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
    SetTopWindow(project);
@@ -234,7 +209,9 @@ bool AudacityApp::OnInit()
                      "  -blocksize ### (set max disk block size in bytes)\n"
                      "\n"
                      "In addition, specify the name of an audio file or "
-                     "Audacity project\n" "to open it.\n" "\n"));
+                     "Audacity project\n"
+                     "to open it.\n"
+                     "\n"));
             exit(0);
          }
 
@@ -272,8 +249,7 @@ bool AudacityApp::OnInit()
    return TRUE;
 }
 
-int AudacityApp::OnExit()
-{
+int AudacityApp::OnExit() {
 
 //   delete mChecker;
    return 0;

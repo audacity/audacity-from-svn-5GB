@@ -26,9 +26,6 @@
 #include "TrackPanel.h"
 #include "UndoManager.h"
 #include "ViewInfo.h"
-#include "ToolBar.h"
-#include "ControlToolBar.h"
-#include "EditToolBar.h"
 
 class wxWindow;
 class wxBoxSizer;
@@ -36,10 +33,9 @@ class wxDragImage;
 class wxScrollEvent;
 class wxScrollBar;
 
-class Toolbar;
+class APalette;
 class TrackList;
 class Tags;
-class ControlToolBar;
 
 class AudacityProject;
 
@@ -53,9 +49,6 @@ WX_DEFINE_ARRAY(AudacityProject *, AProjectArray);
 extern AProjectArray gAudacityProjects;
 
 class HistoryWindow;
-class ToolBar;
-
-WX_DEFINE_ARRAY(ToolBar *, ToolBarArray);
 
 class AudacityProject:public wxFrame,
     public TrackPanelListener, public AStatusListener {
@@ -74,7 +67,7 @@ class AudacityProject:public wxFrame,
    TrackList *GetTracks();
    double GetSel0();
    double GetSel1();
-
+   APalette *GetAPalette();
    wxString GetName();
    DirManager *GetDirManager();
    Tags *GetTags();
@@ -128,8 +121,7 @@ class AudacityProject:public wxFrame,
    virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum);
    virtual int TP_GetCurrentTool();
    virtual void TP_OnPlayKey();
-   virtual void TP_PushState(wxString desc =
-                             wxString(_("Not SPECIFIED YET!")));
+   virtual void TP_PushState(wxString desc = wxString(_("Not SPECIFIED YET!")));
    virtual void TP_RedrawScrollbars();
    virtual void TP_ScrollLeft();
    virtual void TP_ScrollRight();
@@ -137,13 +129,10 @@ class AudacityProject:public wxFrame,
    virtual void TP_ScrollWindow(double scrollto);
    virtual void TP_HandleResize();
 
-   // ToolBar
+   // APalette
 
-   void LoadToolBar(enum ToolBarType);
-   void UnloadToolBar(enum ToolBarType);
-   void MakeToolBarMenuEntriesCorrect();
-   ControlToolBar *GetControlToolBar();
-   bool IsToolBarLoaded(enum ToolBarType);
+   void ShowPalette();
+   void HidePalette();
 
    // AStatus callback methods
 
@@ -152,7 +141,6 @@ class AudacityProject:public wxFrame,
    void SetStateTo(unsigned int n);
 
  private:
-
 
    // Private Methods
 
@@ -166,9 +154,9 @@ class AudacityProject:public wxFrame,
    wxString mFileName;
    DirManager mDirManager;
    double mRate;
-
+   
    // Tags (artist name, song properties, MP3 ID3 info, etc.)
-
+   
    Tags *mTags;
 
    // List of tracks and display info
@@ -203,19 +191,17 @@ class AudacityProject:public wxFrame,
 
    // Window elements
 
-
+   APalette *mAPalette;
    AStatus *mStatus;
-   wxPoint mToolBarHotspot;
+   wxPoint mPaletteHotspot;
    wxDragImage *mDrag;
    TrackPanel *mTrackPanel;
    wxScrollBar *mHsbar;
    wxScrollBar *mVsbar;
-   bool mAutoScrolling;
-   HistoryWindow *mHistoryWindow;
 
-   ToolBarArray mToolBarArray;
-   int mTotalToolBarHeight;
-   enum ToolBarType mDraggingToolBar;
+   bool mAutoScrolling;
+
+   HistoryWindow *mHistoryWindow;
 
  public:
 
