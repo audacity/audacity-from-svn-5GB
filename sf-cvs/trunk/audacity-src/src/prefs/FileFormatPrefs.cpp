@@ -333,7 +333,7 @@ bool FileFormatPrefs::Apply()
    gPrefs->Write("/FileFormats/LossyExportFormat", lossyFormat);
    gPrefs->Write("/FileFormats/OggExportQuality", (long)(oggQuality * 10));
 
-   const char *pcmFmt = ((wxString)sf_header_name(mFormat & SF_FORMAT_TYPEMASK)).c_str();
+   wxString pcmFmt = (sf_header_shortname(mFormat & SF_FORMAT_TYPEMASK)).c_str();
 
    // should do for all open projects, right???
    // BG: Probably, lets try it
@@ -341,8 +341,8 @@ bool FileFormatPrefs::Apply()
    {
       if(gAudacityProjects[i])
       {
-         gAudacityProjects[i]->GetCommands()->ChangeText("appmenu", "OnExportMix", wxString::Format(_("&Export as %s..."), pcmFmt));
-         gAudacityProjects[i]->GetCommands()->ChangeText("appmenu", "OnExportSelection", wxString::Format(_("Export Selection as %s..."), pcmFmt));
+         gAudacityProjects[i]->GetCommands()->ChangeText("appmenu", "OnExportMix", wxString::Format(_("&Export as %s..."), (const char *)pcmFmt));
+         gAudacityProjects[i]->GetCommands()->ChangeText("appmenu", "OnExportSelection", wxString::Format(_("Export Selection as %s..."), (const char *)pcmFmt));
          gAudacityProjects[i]->GetCommands()->ChangeText("appmenu", "OnExportLossyMix", wxString::Format(_("Export as %s..."), lossyFormat.c_str()));
          gAudacityProjects[i]->GetCommands()->ChangeText("appmenu", "OnExportLossySelection", wxString::Format(_("Export Selection as %s..."), lossyFormat.c_str()));
       }
@@ -418,15 +418,20 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
    gridSizer->Add(item, 0,
                   wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-   wxString *headerStrings = new wxString[sf_num_headers()];
    int i;
-   for(i=0; i<sf_num_headers(); i++)
-      headerStrings[i] = sf_header_name(i);
+   int selection=0;
+
+   wxString *headerStrings = new wxString[sf_num_headers()];
+   for(i=0; i<sf_num_headers(); i++) {
+      headerStrings[i] = sf_header_index_name(i);
+      if ((mFormat & SF_FORMAT_TYPEMASK) == sf_header_index_to_type(i))
+         selection = i;
+   }
    mHeaderChoice = 
       new wxChoice(this, ID_HEADER_CHOICE,
                    wxDefaultPosition, wxDefaultSize,
                    sf_num_headers(), headerStrings);
-   mHeaderChoice->SetSelection(((mFormat & SF_FORMAT_TYPEMASK) / 0x10000)-1);
+   mHeaderChoice->SetSelection(selection);
    gridSizer->Add(mHeaderChoice, 1, wxEXPAND | wxALL, 5);
 
    /***/
@@ -436,13 +441,17 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
    gridSizer->Add(item, 0,
                   wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
    wxString *encodingStrings = new wxString[sf_num_encodings()];
-   for(i=0; i<sf_num_encodings(); i++)
-      encodingStrings[i] = sf_encoding_name(i+1);
+   selection = 0;
+   for(i=0; i<sf_num_encodings(); i++) {
+      encodingStrings[i] = sf_encoding_index_name(i);
+      if ((mFormat & SF_FORMAT_SUBMASK) == sf_encoding_index_to_subtype(i))
+         selection = i;
+   }
    mEncodingChoice = 
       new wxChoice(this, ID_ENCODING_CHOICE,
                    wxDefaultPosition, wxDefaultSize,
                    sf_num_encodings(), encodingStrings);
-   mEncodingChoice->SetSelection((mFormat & SF_FORMAT_SUBMASK) - 1);
+   mEncodingChoice->SetSelection(selection);
                                         
    gridSizer->Add(mEncodingChoice, 1, wxEXPAND | wxALL, 5);
 
@@ -490,7 +499,7 @@ void OtherFormatDialog::OnChoice(wxCommandEvent & event)
    int h = mHeaderChoice->GetSelection();
    int e = mEncodingChoice->GetSelection();
 
-   mFormat = (h+1)*0x10000 + (e+1);
+   mFormat = sf_header_index_to_type(h) | sf_encoding_index_to_subtype(e);
 
    ValidateChoices();
 }

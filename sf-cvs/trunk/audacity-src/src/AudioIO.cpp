@@ -24,6 +24,7 @@
 #include "WaveTrack.h"  
 #include "Mix.h"
 #include "ControlToolBar.h"
+#include "MixerToolBar.h"
 #include "Prefs.h"
 
 AudioIO *gAudioIO;
@@ -109,6 +110,8 @@ int audacityAudioCallback(
       gAudioIO->AddDroppedSamples(framesPerBuffer);
       return 0;
    }
+
+   gAudioIO->AdjustMixer();
 
    //
    // Mix and copy to PortAudio's output buffer
@@ -206,6 +209,26 @@ int audacityAudioCallback(
    return 0;
 }
 
+void AudioIO::AdjustMixer()
+{
+#if USE_PORTMIXER
+   AudacityProject *project = mProject;
+   PxMixer *mixer = mMixer;
+
+   if (project && mixer) {
+      MixerToolBar *mixerToolbar = project->GetMixerToolBar();
+      if (mixerToolbar) {
+         if (mNumOutChannels > 0)
+            Px_SetPCMOutputVolume(mixer, mixerToolbar->GetOutputVol());
+         if (mNumInChannels > 0) {
+            Px_SetInputVolume(mixer, mixerToolbar->GetInputVol());
+            Px_SetCurrentInputSource(mixer, mixerToolbar->GetInputSource());
+         }
+      }
+   }
+#endif
+}
+
 bool AudioIO::OpenDevice()
 {
    PaError         error;
@@ -258,6 +281,15 @@ bool AudioIO::OpenDevice()
                          paClipOff | paDitherOff,
                          audacityAudioCallback,
                          NULL);
+
+#if USE_PORTMIXER
+   mMixer = NULL;
+   if (mPortStream != NULL && error == paNoError) {
+      mMixer = Px_OpenMixer(mPortStream, 0);
+      if (mMixer)
+         AdjustMixer();
+   }
+#endif
 
    return (mPortStream != NULL && error == paNoError);
 }
@@ -531,6 +563,12 @@ void AudioIO::Stop()
    PortAudioStream *stream = mPortStream;
 
    if (stream) {
+      #if USE_PORTMIXER
+      PxMixer *mixer = mMixer;
+      mMixer = NULL;
+      Px_CloseMixer(mixer);
+      #endif
+
       if (mReachedEnd && !mHardStop)
          Pa_StopStream(stream);
       else

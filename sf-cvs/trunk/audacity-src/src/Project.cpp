@@ -67,6 +67,7 @@
 #include "import/Import.h"
 #include "LabelTrack.h"
 #include "Mix.h"
+#include "MixerToolBar.h"
 #include "NoteTrack.h"
 #include "Prefs.h"
 #include "Tags.h"
@@ -316,6 +317,20 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
       top += h + 1;
       height -= h + 1;
       mTotalToolBarHeight += h;
+   }
+
+   if (gMixerToolBarStub) {
+      if (gMixerToolBarStub->GetLoadedStatus()
+          && !gMixerToolBarStub->GetWindowedStatus()) {
+         int h = gMixerToolBarStub->GetHeight();
+         ToolBar *etb = new MixerToolBar(this, 0, wxPoint(10, top),
+                                         wxSize(width - 10 - sbarSpaceWidth, h));
+         mToolBarArray.Add((ToolBar *) etb);
+
+         top += h + 1;
+         height -= h + 1;
+         mTotalToolBarHeight += h;
+      }
    }
 
    if (gEditToolBarStub) {
@@ -2144,6 +2159,17 @@ ControlToolBar *AudacityProject::GetControlToolBar()
    return (ControlToolBar *) tb;
 }
 
+MixerToolBar *AudacityProject::GetMixerToolBar()
+{
+   ToolBar *tb = NULL;
+
+   for(int i=0; i<mToolBarArray.GetCount(); i++)
+      if ((mToolBarArray[i]->GetType()) == MixerToolBarID)
+         return (MixerToolBar *)mToolBarArray[i];
+
+   if (gMixerToolBarStub)
+      return (MixerToolBar *)gMixerToolBarStub->GetToolBar();
+}
 
 void AudacityProject::SetStop(bool bStopped)
 {

@@ -142,11 +142,13 @@ void ControlToolBar::InitializeControlToolBar()
                                          backgroundColour);
 #endif
 
+   /*
    mVolume =
-       new ASlider(this, 0, wxPoint(sliderX, 14), wxSize(100, 28),
-                   sliderNew, thumbNew, 100);
+      new ASlider(this, 0, "Master Gain Control",
+                  wxPoint(sliderX, 14), wxSize(100, 28));
+   */
 
-   mVolume->SetToolTip(_("Master Gain Control"));
+   //mVolume->SetToolTip(_("Master Gain Control"));
 
    delete sliderOriginal;
    delete thumbOriginal;
@@ -155,7 +157,7 @@ void ControlToolBar::InitializeControlToolBar()
    delete thumbNew;
 #endif
 
-   mVolume->Set(80);
+   //mVolume->Set(0.8);
 
    mCurrentTool = 0;
    mTool[0]->PushDown();
@@ -409,7 +411,7 @@ ControlToolBar::~ControlToolBar()
    delete mFF;
    delete mPause;
 
-   delete mVolume;
+   //delete mVolume;
 
 #if 0
 #if defined(__WXMAC__)          // && defined(TARGET_CARBON)
@@ -612,12 +614,7 @@ void ControlToolBar::OnFF(wxCommandEvent &evt)
 
 float ControlToolBar::GetSoundVol()
 {
-   int v = mVolume->Get();
-
-   if (v == 0)
-      return float(0.0);
-
-   return (pow(2.0, (v / 10.0)) / 256.0);
+   return 1.0; //return mVolume->Get();
 }
 
 void ControlToolBar::OnTool(wxCommandEvent & evt)

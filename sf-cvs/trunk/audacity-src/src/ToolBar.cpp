@@ -35,6 +35,7 @@
 #include "widgets/AButton.h"
 #include "widgets/ASlider.h"
 #include "ControlToolBar.h"
+#include "MixerToolBar.h"
 #include "EditToolBar.h"
 #include "Project.h"
 #include "Audacity.h"
@@ -509,6 +510,9 @@ ToolBarFrame::ToolBarFrame(wxWindow * parent, enum ToolBarType tbt)
    switch (tbt) {
       case ControlToolBarID:
          mToolBar = new ControlToolBar(this);
+         break;
+      case MixerToolBarID:
+         mToolBar = new MixerToolBar(this);
          break;
       case EditToolBarID:
          mToolBar = new EditToolBar(this);

@@ -597,7 +597,7 @@ bool WaveTrack::Get(samplePtr buffer, sampleFormat format,
 
    if (s0+getlen > mSequence->GetNumSamples())
       getlen = mSequence->GetNumSamples() - s0;
-   
+
    if (!mSequence->Get(buffer + soffset*SAMPLE_SIZE(format), format,
                        s0, getlen))
       return false;

@@ -167,7 +167,7 @@ static const char *CommandsDefaultXML[] = {
    //BG: DO NOT mark the last item in each macro for translation
 
    int format = ReadExportFormatPref();
-   wxString pcmFormat = sf_header_name(format & SF_FORMAT_TYPEMASK);
+   wxString pcmFormat = sf_header_shortname(format & SF_FORMAT_TYPEMASK);
    wxString lossyFormat = gPrefs->Read("/FileFormats/LossyExportFormat", "MP3");
 
    // File menu

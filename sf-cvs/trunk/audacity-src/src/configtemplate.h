@@ -63,6 +63,9 @@
 /* Define if libnyquist is present */
 #undef USE_NYQUIST
 
+/* Define if portmixer is to be used */
+#undef USE_PORTMIXER
+
 /* Define if wave++ is present */
 #undef USE_WAVELET
 

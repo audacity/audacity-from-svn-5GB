@@ -60,6 +60,7 @@ class Toolbar;
 class TrackList;
 class Tags;
 class ControlToolBar;
+class MixerToolBar;
 class HistoryWindow;
 class Importer;
 
@@ -184,6 +185,7 @@ class AudacityProject:public wxFrame,
    void LoadToolBar(enum ToolBarType);
    void UnloadToolBar(enum ToolBarType);
    ControlToolBar *GetControlToolBar();
+   MixerToolBar *GetMixerToolBar();
    bool IsToolBarLoaded(enum ToolBarType);
 
    // AStatus callback methods
