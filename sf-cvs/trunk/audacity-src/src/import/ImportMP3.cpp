@@ -91,6 +91,23 @@ enum mad_flow input_cb(void *_data, struct mad_stream *stream)
 {
    struct priv_data *data = (struct priv_data *)_data;
 
+   if(!data->progress)
+      data->progress = new wxProgressDialog("Import",
+                                            "Importing MP3 file...",
+                                            1000,
+                                            data->parent,
+                                            wxPD_CAN_ABORT | wxPD_ELAPSED_TIME |
+                                            wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
+
+   if( data->progress &&
+      !data->progress->Update( int(1000.0 * data->file->Tell() /
+                                   data->file->Length()) ) ) {      
+      /* user cancelled */
+
+      data->cancelled = true;
+      return MAD_FLOW_STOP;
+   }
+
    if(data->file->Eof()) {
       data->cancelled = false;
       return MAD_FLOW_STOP;
@@ -148,23 +165,6 @@ enum mad_flow output_cb(void *_data,
       }
    }
 
-   /*
-   printf("data->progress: %d time: %d progress %d/%d\n",
-          (int)data->progress,
-          wxGetElapsedTime(),
-          data->file->Tell(),
-          data->file->Length());
-   */
-
-   if(!data->progress /*&& wxGetElapsedTime() > 500*/)
-      data->progress = new wxProgressDialog("Import",
-                                            "Importing MP3 file...",
-                                            1000,
-                                            data->parent,
-                                            wxPD_CAN_ABORT | wxPD_ELAPSED_TIME |
-                                            wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
-
-                                            
    if(data->numDecoded + samples > data->bufferSize) {
       (*data->leftTrack)->Append(data->leftBuffer, data->numDecoded);
       if(channels == 2)
@@ -181,14 +181,6 @@ enum mad_flow output_cb(void *_data,
       data->numDecoded++;
    }
 
-   if( data->progress &&
-      !data->progress->Update( int(1000.0 * data->file->Tell() / data->file->Length()) ) ) {
-      
-      /* user cancelled */
-
-      data->cancelled = true;
-      return MAD_FLOW_STOP;
-   }
    return MAD_FLOW_CONTINUE;
 }
 
