@@ -945,7 +945,7 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
 
    wxRect buttonRect;
    GetMuteSoloRect(r, buttonRect, solo);
-   
+
    wxClientDC dc(this);
 
    if (event.Dragging())
@@ -953,10 +953,10 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
    else if (event.ButtonUp()) {
 
       if (buttonRect.Inside(event.m_x, event.m_y))
-	{
-	  if (solo) t->SetSolo(!t->GetSolo()); 
-	  else t->SetMute(!t->GetMute());
-	}
+      {
+         if (solo) t->SetSolo(!t->GetSolo()); 
+         else t->SetMute(!t->GetMute());
+      }
 
       DrawMuteSolo(&dc, r, t, false, solo);
       if (solo) mIsSoloing = false; 
