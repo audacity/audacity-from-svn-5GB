@@ -76,6 +76,7 @@ class BlockFile {
    virtual void SaveXML(int depth, wxFFile &xmlFile) = 0;
    /// Gets the filename of the disk file associated with this BlockFile
    wxFileName GetFileName();
+   sampleCount GetLength() { return mLen; }
 
    /// Locks this BlockFile, to prevent it from being moved
    void Lock();
@@ -120,6 +121,7 @@ class BlockFile {
 
  protected:
    wxFileName mFileName;
+   sampleCount mLen;
    SummaryInfo mSummaryInfo;
    float mMin, mMax, mRMS;
 
@@ -175,7 +177,6 @@ class AliasBlockFile : public BlockFile
    bool ReadSummary(void *data);
    wxFileName  mAliasedFileName;
    sampleCount mAliasStart;
-   sampleCount mAliasLen;
    int         mAliasChannel;
 };
 

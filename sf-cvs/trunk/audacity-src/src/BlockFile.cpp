@@ -46,6 +46,7 @@ BlockFile::BlockFile(wxFileName fileName, sampleCount samples):
    mLocked(false),
    mRefCount(1),
    mFileName(fileName),
+   mLen(samples),
    mSummaryInfo(samples)
 {
 }
@@ -367,7 +368,6 @@ AliasBlockFile::AliasBlockFile(wxFileName baseFileName,
    BlockFile(wxFileName(baseFileName.GetFullPath() + ".smy"), aliasLen),
    mAliasedFileName(aliasedFileName),
    mAliasStart(aliasStart),
-   mAliasLen(aliasLen),
    mAliasChannel(aliasChannel)
 {
 }
@@ -379,7 +379,6 @@ AliasBlockFile::AliasBlockFile(wxFileName existingSummaryFile,
    BlockFile(existingSummaryFile, aliasLen),
    mAliasedFileName(aliasedFileName),
    mAliasStart(aliasStart),
-   mAliasLen(aliasLen),
    mAliasChannel(aliasChannel)
 {
    if( !existingSummaryFile.FileExists() )
@@ -409,10 +408,10 @@ void AliasBlockFile::WriteSummary()
 
    // To build the summary data, call ReadData (implemented by the
    // derived classes) to get the sample data
-   samplePtr sampleData = NewSamples(mAliasLen, floatSample);
-   this->ReadData(sampleData, floatSample, 0, mAliasLen);
+   samplePtr sampleData = NewSamples(mLen, floatSample);
+   this->ReadData(sampleData, floatSample, 0, mLen);
 
-   void *summaryData = BlockFile::CalcSummary(sampleData, mAliasLen,
+   void *summaryData = BlockFile::CalcSummary(sampleData, mLen,
                                             floatSample);
    summaryFile.Write(summaryData, mSummaryInfo.totalSummaryBytes);
 

@@ -97,7 +97,7 @@ BlockFile *PCMAliasBlockFile::Copy(wxFileName newFileName)
 {
    BlockFile *newBlockFile = new PCMAliasBlockFile(newFileName,
                                                    mAliasedFileName, mAliasStart,
-                                                   mAliasLen, mAliasChannel,
+                                                   mLen, mAliasChannel,
                                                    mMin, mMax, mRMS);
 
    return newBlockFile;
@@ -111,7 +111,7 @@ void PCMAliasBlockFile::SaveXML(int depth, wxFFile &xmlFile)
    xmlFile.Write(wxString::Format("summaryfile='%s' ", mFileName.GetFullName().c_str()));
    xmlFile.Write(wxString::Format("aliasfile='%s' ", mAliasedFileName.GetFullPath().c_str()));
    xmlFile.Write(wxString::Format("aliasstart='%d' ", mAliasStart));
-   xmlFile.Write(wxString::Format("aliaslen='%d' ", mAliasLen));
+   xmlFile.Write(wxString::Format("aliaslen='%d' ", mLen));
    xmlFile.Write(wxString::Format("aliaschannel='%d' ", mAliasChannel));
    xmlFile.Write(wxString::Format("min='%f' ", mMin));
    xmlFile.Write(wxString::Format("max='%f' ", mMax));
