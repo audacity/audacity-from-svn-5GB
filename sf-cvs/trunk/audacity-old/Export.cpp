@@ -23,6 +23,7 @@
 
 #include "snd/snd.h"
 
+#include "AudacityApp.h"
 #include "WaveTrack.h"
 #include "DirManager.h"
 
@@ -299,7 +300,7 @@ bool Export(WaveTrack *left, WaveTrack *right)
 
 	if (!progress && wxGetElapsedTime(false) > 500) {
 	  progress =
-		new wxProgressDialog("Export","Exporting audio file",
+		new wxProgressDialog("Export", "Exporting audio file",
 							 len);
 	}	
 	if (progress) {
@@ -308,6 +309,34 @@ bool Export(WaveTrack *left, WaveTrack *right)
   }
 
   snd_close(&sndfile);
+  
+#ifdef __WXMAC__
+  FSSpec spec ;
+
+  wxUnixFilename2FSSpec( fName , &spec ) ;
+  FInfo finfo ;
+  if ( FSpGetFInfo( &spec , &finfo ) == noErr )
+  {
+    switch(header) {
+    case SND_HEAD_AIFF:
+  	  finfo.fdType = 'AIFF';
+  	  break;
+    case SND_HEAD_IRCAM:
+  	  finfo.fdType = 'IRCA';
+  	  break;
+    case SND_HEAD_NEXT:
+  	  finfo.fdType = 'AU  ';
+  	  break;
+    case SND_HEAD_WAVE:
+  	  finfo.fdType = 'WAVE';
+  	  break;
+    }
+  	
+  	finfo.fdCreator = AUDACITY_CREATOR;
+
+  	FSpSetFInfo( &spec , &finfo ) ;
+  }
+#endif
 
   if (progress)
 	delete progress;

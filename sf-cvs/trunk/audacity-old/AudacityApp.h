@@ -18,6 +18,11 @@
 // in an irrevocable way
 #define AUDACITY_FILE_FORMAT_VERSION "0.9"
 
+// Macintosh-specific: Audacity's four-character "creator" code
+// and project type code
+#define AUDACITY_CREATOR      'auDy'
+#define AUDACITY_PROJECT_TYPE 'auDp'
+
 extern wxWindow *gParentWindow;
 
 void QuitAudacity();

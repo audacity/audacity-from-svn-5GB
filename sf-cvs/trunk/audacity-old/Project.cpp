@@ -1224,6 +1224,19 @@ void AudacityProject::OnSave(bool overwrite /* = true */)
   f.Write();
 #endif
   f.Close();
+  
+#ifdef __WXMAC__
+  FSSpec spec ;
+
+	wxUnixFilename2FSSpec( mFileName , &spec ) ;
+	FInfo finfo ;
+	if ( FSpGetFInfo( &spec , &finfo ) == noErr )
+	{
+		finfo.fdType = AUDACITY_PROJECT_TYPE;
+		finfo.fdCreator = AUDACITY_CREATOR;
+		FSpSetFInfo( &spec , &finfo ) ;
+	}
+#endif
 
   if (mLastSavedTracks) {
 
