@@ -25,12 +25,6 @@
   there are some methods in ToolBarStub that will load and unload toolbars from
   all project windows.
 
-  If you want to determine what type of child toolbar something is, you must 
-  use the WX_CREATE_DYNAMIC_CLASS() and WX_INSTANTIATE_DYNAMIC_CLASS() macros.
-  Then, you can use wxDynamicCast(parent*, child_class_type) to cast a base class
-  instantiation into the child class (if it really is a child).
-
-
 
 **********************************************************************/
 
@@ -41,7 +35,6 @@
 #include <wx/pen.h>
 #include <wx/minifram.h>
 #include <wx/object.h>
-#include "widgets/AButton.h"
 
 class ToolBarStub;
 class ToolBarFrame;
@@ -49,13 +42,22 @@ class ToolBarFrame;
 class wxImage;
 class wxSize;
 class wxPoint;
+
+class AButton;
 class AudacityProject;
+
+#if defined(__WXMAC__)
+   #define TOOLBAR_HEIGHT_OFFSET 0
+#elif defined(__WXGTK__)
+   #define TOOLBAR_HEIGHT_OFFSET 22
+#elif defined(__WXMSW__)
+   #define TOOLBAR_HEIGHT_OFFSET 25
+#endif
 
 enum ToolBarType {
    NoneID,
    ControlToolBarID,
-   EditToolBarID,
-   DummyToolBarID
+   EditToolBarID
 };
 
 ////////////////////////////////////////////////////////////
@@ -63,15 +65,13 @@ enum ToolBarType {
 ////////////////////////////////////////////////////////////
 
 class ToolBar:public wxWindow {
-   DECLARE_DYNAMIC_CLASS(ToolBar) 
  public:
-   ToolBar() {
-   };
+   ToolBar() {};
    ToolBar(wxWindow * parent);
    ToolBar(wxWindow * parent, wxWindowID id,
            const wxPoint & pos, const wxSize & size);
 
-   virtual ~ ToolBar();
+   virtual ~ ToolBar() {};
    virtual int GetHeight() {
       return GetSize().y;
    };
@@ -81,12 +81,12 @@ class ToolBar:public wxWindow {
    enum ToolBarType GetType() {
       return mType;
    };
-   virtual void OnKeyEvent(wxKeyEvent & event);
-   virtual void OnPaint(wxPaintEvent & event);
+   virtual void OnKeyEvent(wxKeyEvent & event) = 0;
+   virtual void OnPaint(wxPaintEvent & event) = 0;
    wxSize GetIdealSize() {
       return mIdealSize;
    };
-   virtual void EnableDisableButtons(int sumOfFlags);
+   virtual void EnableDisableButtons() = 0;
 
 
  protected:
@@ -112,7 +112,6 @@ class ToolBar:public wxWindow {
                               wxColour & dstColour);
 
    void SetButton(bool down, AButton* button);
-   bool ExtractFlag(int flagsum, int bit);
    wxBrush mBackgroundBrush;
    wxPen mBackgroundPen;
    enum ToolBarType mType;
@@ -184,7 +183,6 @@ class ToolBarFrame:public wxMiniFrame {
  public:
    DECLARE_EVENT_TABLE()
 };
-
 
 
 #endif

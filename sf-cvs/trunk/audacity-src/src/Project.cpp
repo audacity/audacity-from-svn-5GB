@@ -191,19 +191,16 @@ EVT_DROP_FILES(AudacityProject::OnDropFiles)
 END_EVENT_TABLE()
 
 AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
-                                     const wxPoint & pos,
-                                     const wxSize & size):wxFrame(parent,
-                                                                  id,
-                                                                  "Audacity",
-                                                                  pos,
-                                                                  size),
-mRate((double) gPrefs->
-      Read("/SamplingRate/DefaultProjectSampleRate", 44100)),
-mDefaultFormat((sampleFormat) gPrefs->
-               Read("/SamplingRate/DefaultProjectSampleFormat",
-                    floatSample)), mDirty(false),
-mTrackPanel(NULL), mAutoScrolling(false), mHistoryWindow(NULL),
-mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
+                                 const wxPoint & pos,
+                                 const wxSize & size)
+   : wxFrame(parent, id, "Audacity", pos, size),
+     mRate((double) gPrefs->Read("/SamplingRate/DefaultProjectSampleRate",
+                                 44100)),
+     mDefaultFormat((sampleFormat) gPrefs->
+           Read("/SamplingRate/DefaultProjectSampleFormat", floatSample)),
+     mDirty(false),
+     mTrackPanel(NULL), mAutoScrolling(false), mHistoryWindow(NULL),
+     mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
 {
    #ifndef __WXMAC__
    mDrag = NULL;
@@ -1587,20 +1584,15 @@ void AudacityProject::SkipEnd(bool shift)
 ControlToolBar *AudacityProject::GetControlToolBar()
 {
    ToolBar *tb = NULL;
-   bool GetToolBarFromFrame = false;
 
-   if (mToolBarArray.GetCount() != 0) {
-      tb = mToolBarArray[0];
-      if ((tb->GetType()) != ControlToolBarID)
-         GetToolBarFromFrame = true;
-   } else {
-      GetToolBarFromFrame = true;
-   }
+   if (mToolBarArray.GetCount() > 0)
+      if ((mToolBarArray[0]->GetType()) == ControlToolBarID)
+         tb = mToolBarArray[0];
 
-   if (GetToolBarFromFrame && gControlToolBarStub)
+   if (!tb && gControlToolBarStub)
       tb = gControlToolBarStub->GetToolBar();
 
-   return wxDynamicCast(tb, ControlToolBar);
+   return (ControlToolBar *) tb;
 }
 
 

@@ -27,20 +27,13 @@
 #ifndef __AUDACITY_CONTROL_TOOLBAR__
 #define __AUDACITY_CONTROL_TOOLBAR__
 
-#include <wx/brush.h>
-#include <wx/pen.h>
-#include <wx/minifram.h>
-#include <wx/object.h>
-
 #include "ToolBar.h"
-
 
 class AButton;
 class ASlider;
 class ControlToolBar;
 class ToolBar;
 class ToolBarFrame;
-
 
 class wxImage;
 class wxSize;
@@ -55,14 +48,9 @@ enum {
 };
 
 
-
 class ControlToolBar:public ToolBar {
-
-   DECLARE_DYNAMIC_CLASS(ControlToolBar)
-
  public:
-   ControlToolBar() {
-   };
+   ControlToolBar() {};
    ControlToolBar(wxWindow * parent, wxWindowID id,
                   const wxPoint & pos, const wxSize & size);
    ControlToolBar(wxWindow * parent);
@@ -86,7 +74,7 @@ class ControlToolBar:public ToolBar {
 
    float GetSoundVol();
 
-   virtual void EnableDisableButtons(int sumOfFlags);
+   virtual void EnableDisableButtons();
 
  private:
 
@@ -112,7 +100,6 @@ class ControlToolBar:public ToolBar {
    ASlider *mVolume;
    int mCurrentTool;
 
-
    wxBitmap *mBackgroundBitmap;
    int mBackgroundWidth;
    int mBackgroundHeight;
@@ -122,21 +109,5 @@ class ControlToolBar:public ToolBar {
 
    DECLARE_EVENT_TABLE()
 };
-
-
-
-
-
-#define ID_FIRST_TOOL      500
-#define ID_IBEAM           500
-#define ID_SELECT          501
-#define ID_MOVE            502
-#define ID_ZOOM            503
-#define ID_LAST_TOOL       503
-#define ID_PLAY_BUTTON     504
-#define ID_STOP_BUTTON     505
-#define ID_RECORD_BUTTON   506
-#define ID_FF_BUTTON       507
-#define ID_REW_BUTTON      508
 
 #endif

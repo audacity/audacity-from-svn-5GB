@@ -62,14 +62,9 @@ enum {
 };
 
 
-
 class EditToolBar:public ToolBar {
-
-   DECLARE_DYNAMIC_CLASS(EditToolBar)
-
  public:
-   EditToolBar() {
-   };
+   EditToolBar() {};
    EditToolBar(wxWindow * parent, wxWindowID id,
                const wxPoint & pos, const wxSize & size);
    EditToolBar(wxWindow * parent);
@@ -78,8 +73,7 @@ class EditToolBar:public ToolBar {
 
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnKeyEvent(wxKeyEvent & event);
-   virtual void EnableDisableButtons(int sumOfFlags);
-
+   virtual void EnableDisableButtons();
 
    void OnCut();
    void OnCopy();
@@ -95,9 +89,7 @@ class EditToolBar:public ToolBar {
    void OnZoomSel();
    void OnZoomFit();
 
-
  private:
-
 
    void MakeButtons();
    AButton *MakeButton(wxImage * up, wxImage * down, wxImage * hilite,

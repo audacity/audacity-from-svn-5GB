@@ -43,6 +43,9 @@ class AButton:public wxWindow {
 
    virtual void Disable();
    virtual void Enable();
+   void SetEnabled(bool state) {
+      state ? Enable() : Disable();
+   }
 
    virtual void PushDown();
    virtual void PopUp();

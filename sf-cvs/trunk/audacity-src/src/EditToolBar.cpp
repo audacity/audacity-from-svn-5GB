@@ -32,26 +32,12 @@
 #include <wx/image.h>
 #include <wx/tooltip.h>
 
-#include <math.h>
-
 #include "widgets/AButton.h"
 #include "widgets/ASlider.h"
 #include "ToolBar.h"
 #include "AudioIO.h"
 #include "Project.h"
-
-
-#ifdef __WXMAC__
-#define TOOLBAR_HEIGHT_OFFSET 0
-#endif
-
-#ifdef __WXGTK__
-#define TOOLBAR_HEIGHT_OFFSET 22
-#endif
-
-#ifdef __WXMSW__
-#define TOOLBAR_HEIGHT_OFFSET 25
-#endif
+#include "UndoManager.h"
 
 #include "../images/EditButtons.h"
 
@@ -62,45 +48,39 @@ class ToolBar;
 /// Methods for EditToolBar
 ////////////////////////////////////////////////////////////
 
-//This is necessary to do RTTI  Require a DECLARE_DYNAMIC_CLASS() in header.
-IMPLEMENT_DYNAMIC_CLASS(EditToolBar, ToolBar)
+BEGIN_EVENT_TABLE(EditToolBar, wxWindow)
+   EVT_PAINT(EditToolBar::OnPaint)
+   EVT_CHAR(EditToolBar::OnKeyEvent)
+   EVT_COMMAND(ETBCutID, wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnCut)
+   EVT_COMMAND(ETBCopyID, wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnCopy)
+   EVT_COMMAND(ETBPasteID, wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnPaste)
+   EVT_COMMAND(ETBTrimID, wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnTrim)
+   EVT_COMMAND(ETBSilenceID,
+         wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnSilence)
+   EVT_COMMAND(ETBUndoID, wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnUndo)
+   EVT_COMMAND(ETBRedoID, wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnRedo)
 
+   EVT_COMMAND(ETBZoomInID,
+         wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnZoomIn)
+   EVT_COMMAND(ETBZoomOutID,
+         wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnZoomOut)
+   EVT_COMMAND(ETBZoomSelID,
+         wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnZoomSel)
+   EVT_COMMAND(ETBZoomFitID,
+         wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnZoomFit)
+END_EVENT_TABLE()
 
-    BEGIN_EVENT_TABLE(EditToolBar, wxWindow)
-    EVT_PAINT(EditToolBar::OnPaint)
-    EVT_CHAR(EditToolBar::OnKeyEvent)
-    EVT_COMMAND(ETBCutID, wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnCut)
-    EVT_COMMAND(ETBCopyID, wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnCopy)
-    EVT_COMMAND(ETBPasteID, wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnPaste)
-    EVT_COMMAND(ETBTrimID, wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnTrim)
-    EVT_COMMAND(ETBSilenceID,
-            wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnSilence)
-    EVT_COMMAND(ETBUndoID, wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnUndo)
-    EVT_COMMAND(ETBRedoID, wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnRedo)
-
-    EVT_COMMAND(ETBZoomInID,
-            wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnZoomIn)
-    EVT_COMMAND(ETBZoomOutID,
-            wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnZoomOut)
-    EVT_COMMAND(ETBZoomSelID,
-            wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnZoomSel)
-    EVT_COMMAND(ETBZoomFitID,
-            wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnZoomFit)
-
-
-    END_EVENT_TABLE()
-    //Standard contructor
-EditToolBar::EditToolBar(wxWindow * parent):
-ToolBar(parent, -1, wxPoint(1, 1), wxSize(340, 27))
+//Standard contructor
+EditToolBar::EditToolBar(wxWindow * parent)
+   : ToolBar(parent, -1, wxPoint(1, 1), wxSize(340, 27))
 {
    InitializeEditToolBar();
 }
 
 //Another constructor
 EditToolBar::EditToolBar(wxWindow * parent, wxWindowID id,
-                         const wxPoint & pos,
-                         const wxSize & size):ToolBar(parent, id,
-                                                      pos, size)
+                         const wxPoint & pos, const wxSize & size)
+   : ToolBar(parent, id, pos, size)
 {
    InitializeEditToolBar();
 }
@@ -131,33 +111,20 @@ void EditToolBar::InitializeEditToolBar()
 
 // This is a convenience function that allows for button creation in
 // MakeButtons() with fewer arguments
-AButton *EditToolBar::MakeButton(wxImage * up,
-                                 wxImage * down,
+AButton *EditToolBar::MakeButton(wxImage * up, wxImage * down,
                                  wxImage * hilite,
                                  char const **foreground,
                                  char const **disabled,
                                  char const **alpha, int id, int left)
 {
-   wxPoint p;
-   p.x = left;
-   p.y = 0;
-
-   AButton *button = this->ToolBar::MakeButton(up, down, hilite,
-                                               foreground,
-                                               disabled,
-                                               alpha,
-                                               wxWindowID(id), p,
-                                               wxSize(27, 27), 3, 3);
-   return button;
+   return ToolBar::MakeButton(up, down, hilite, foreground, disabled, alpha,
+             wxWindowID(id), wxPoint(left,0), wxSize(27, 27), 3, 3);
 }
 
 
 
 void EditToolBar::MakeButtons()
 {
-
-
-
    wxImage *upOriginal = new wxImage(Up);
    wxImage *downOriginal = new wxImage(Down);
    wxImage *hiliteOriginal = new wxImage(Hilite);
@@ -178,7 +145,6 @@ void EditToolBar::MakeButtons()
        ChangeImageColour(downOriginal, baseColour, newColour);
    wxImage *hilitePattern =
        ChangeImageColour(hiliteOriginal, baseColour, newColour);
-
 
 
    /* Buttons */
@@ -220,8 +186,6 @@ void EditToolBar::MakeButtons()
                          (char const **) SilenceAlpha, ETBSilenceID, 109);
    mSilence->SetToolTip(_("Insert Silence"));
 
-
-
    //Undo Button
    mUndo = MakeButton(upPattern, downPattern, hilitePattern,
                       (char const **) Undo,
@@ -235,8 +199,6 @@ void EditToolBar::MakeButtons()
                       (char const **) RedoDisabled,
                       (char const **) RedoAlpha, ETBRedoID, 177);
    mRedo->SetToolTip(_("Redo last undo"));
-
-
 
    //Zoom In Button
    mZoomIn = MakeButton(upPattern, downPattern, hilitePattern,
@@ -265,8 +227,6 @@ void EditToolBar::MakeButtons()
                          (char const **) ZoomFitDisabled,
                          (char const **) ZoomFitAlpha, ETBZoomFitID, 302);
    mZoomFit->SetToolTip(_("Fit entire file in window"));
-
-
 
    delete upPattern;
    delete downPattern;
@@ -297,6 +257,7 @@ EditToolBar::~EditToolBar()
 
 void EditToolBar::OnKeyEvent(wxKeyEvent & event)
 {
+   /*
    if (event.KeyCode() == WXK_SPACE) {
       if (gAudioIO->IsBusy()) {
       } else {
@@ -304,6 +265,7 @@ void EditToolBar::OnKeyEvent(wxKeyEvent & event)
       return;
    } else
       event.Skip();
+   */
 }
 
 
@@ -435,9 +397,8 @@ void EditToolBar::OnZoomFit()
 {
    wxCommandEvent event;
    AudacityProject *p = GetActiveProject();
-   if (p) {
+   if (p)
       p->OnZoomFit(event);
-   }
 
    SetButton(false, mZoomFit);
 }
@@ -457,77 +418,37 @@ void EditToolBar::OnPaint(wxPaintEvent & evt)
    dc.SetPen(*wxBLACK_PEN);
 }
 
-
-void EditToolBar::EnableDisableButtons(int sumOfFlags)
+void EditToolBar::EnableDisableButtons()
 {
-   //Enable/disable based on presence of a wavetrack
-   if (ExtractFlag(sumOfFlags,1)) {
-      mCut->Enable();
-      mCopy->Enable();
-      mPaste->Enable();
-      mTrim->Enable();
-      mSilence->Enable();
-      mZoomIn->Enable();
-      mZoomOut->Enable();
-      mZoomSel->Enable();
-      mZoomFit->Enable();
+   AudacityProject *p = GetActiveProject();
+   if (!p) return;
 
-   } else {
-      //There are no tracks in this project, so disable everything
-      mCut->Disable();
-      mCopy->Disable();
-      mPaste->Disable();
-      mTrim->Disable();
-      mSilence->Disable();
-      mZoomIn->Disable();
-      mZoomOut->Disable();
-      mZoomSel->Disable();
-      mZoomFit->Disable();
-   }
+   bool tracks = (!p->GetTracks()->IsEmpty());
 
-   //Enable/disable based on selection
-   if (ExtractFlag(sumOfFlags,0)) {
+   mZoomIn->SetEnabled(tracks);
+   mZoomOut->SetEnabled(tracks);
+   mZoomSel->SetEnabled(tracks);
+   mZoomFit->SetEnabled(tracks);
 
-      //enable CUT, COPY, TRIM, and SILENCE
-      mCut->Enable();
-      mCopy->Enable();
-      mTrim->Enable();
-      mSilence->Enable();
-      mZoomSel->Enable();
-
-   } else {
-
-      //If anything is selected, enable CUT, COPY, TRIM, and SILENCE
-      mCut->Disable();
-      mCopy->Disable();
-      mTrim->Disable();
-      mSilence->Disable();
-      mZoomSel->Disable();
-   }
-
-   //Enable/Disable undo
-   if(ExtractFlag(sumOfFlags,2))
-      mUndo->Enable();
-   else
-      mUndo->Disable();
-
-   //Enable/Disable redo
-   if(ExtractFlag(sumOfFlags,3))
-      mRedo->Enable();
-   else
-      mRedo->Disable();
+   // Is anything selected?
+   bool selection = false;
+   TrackListIterator iter(p->GetTracks());
+   for (VTrack *t = iter.First(); t; t = iter.Next())
+      if (t->GetSelected()) {
+         selection = true;
+         break;
+      }
+   selection &= (p->GetSel0() < p->GetSel1());
    
-   //Enable/Disable zoomin
- if(ExtractFlag(sumOfFlags,4))
-      mZoomIn->Disable();
-   else
-      mZoomIn->Enable();
- 
+   mCut->SetEnabled(selection);
+   mCopy->SetEnabled(selection);
+   mTrim->SetEnabled(selection);
+   mSilence->SetEnabled(selection);
+   mZoomSel->SetEnabled(selection);
 
-   //Enable/Disable zoomin
- if(ExtractFlag(sumOfFlags,5))
-      mZoomOut->Disable();
-   else
-      mZoomOut->Enable();
- 
+   mUndo->SetEnabled(p->GetUndoManager()->UndoAvailable());
+   mRedo->SetEnabled(p->GetUndoManager()->RedoAvailable());
+
+   mZoomIn->SetEnabled(p->GetZoom() < gMaxZoom);
+   mZoomOut->SetEnabled(p->GetZoom() > gMinZoom);
 }

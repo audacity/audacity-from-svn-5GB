@@ -462,29 +462,15 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
                           && nonZeroRegionSelected);
    }
 
-   /////////////////////////////////////////////////////////////
-   //  This handles specific enabling of buttons on toolbars
-   //
-   //Instructions for what these flags are can be found in
-   // ToolBar.cpp ToolBar::EnableDisableButtons()
-   //Calculate the sum of flags to send to each toolbar.
-   int sumFlags=0;
-   sumFlags += anySelection? 1: 0;
-   sumFlags += numTracks ? 2: 0;
-   sumFlags += mUndoManager.UndoAvailable()? 4: 0;
-   sumFlags += mUndoManager.RedoAvailable()? 8: 0;
-   sumFlags += (mViewInfo.zoom > gMaxZoom) ? 16: 0;
-   sumFlags += (mViewInfo.zoom < gMinZoom) ? 32: 0;
-
    //Now, go through each toolbar, and and call EnableDisableButtons()
    unsigned int i;
    for (i = 0; i < mToolBarArray.GetCount(); i++) {
-      mToolBarArray[i]->EnableDisableButtons(sumFlags);
+      mToolBarArray[i]->EnableDisableButtons();
    }
 
    //Now, do the same thing for the (possibly invisible) floating toolbars
-   gControlToolBarStub->GetToolBar()->EnableDisableButtons(sumFlags);
-   gEditToolBarStub->GetToolBar()->EnableDisableButtons(sumFlags);
+   gControlToolBarStub->GetToolBar()->EnableDisableButtons();
+   gEditToolBarStub->GetToolBar()->EnableDisableButtons();
 }
 
 //

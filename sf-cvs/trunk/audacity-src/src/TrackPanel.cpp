@@ -609,7 +609,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 //  selections.  These are the selections you make by clicking and
 //  dragging over a waveform.
 void TrackPanel::HandleSelect(wxMouseEvent & event)
-      {
+{
    // AS: Ok, did the user just click the mouse, release the mouse,
    //  or drag?
    if (event.ButtonDown(1)|| event.ButtonDown(3)) {
