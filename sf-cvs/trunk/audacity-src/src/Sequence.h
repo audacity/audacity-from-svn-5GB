@@ -21,7 +21,6 @@ typedef int sampleCount;
 class DirManager;
 class BlockArray;
 class SeqBlock;
-class SummaryInfo;
 
 class Sequence: public XMLTagHandler {
  public:
@@ -109,8 +108,6 @@ class Sequence: public XMLTagHandler {
    // Getting block size information
    //
 
-   int GetSummaryBytes() const;
-
    sampleCount GetBestBlockSize(sampleCount start) const;
    sampleCount GetMaxBlockSize() const;
    sampleCount GetIdealBlockSize() const;
@@ -140,8 +137,6 @@ class Sequence: public XMLTagHandler {
    sampleFormat  mSampleFormat;
    sampleCount   mNumSamples;
 
-   SummaryInfo  *mSummary;
-
    sampleCount   mMinSamples;
    sampleCount   mMaxSamples;
 
@@ -154,17 +149,12 @@ class Sequence: public XMLTagHandler {
    int FindBlock(sampleCount pos) const;
    int FindBlock(sampleCount pos, sampleCount lo,
                  sampleCount guess, sampleCount hi) const;
-   SeqBlock *NewInitedSeqBlock();
 
    bool AppendBlock(SeqBlock *b);
 
    bool Read(samplePtr buffer, sampleFormat format,
              SeqBlock * b,
              sampleCount start, sampleCount len) const;
-   bool Read256(float * buffer, SeqBlock * b,
-                sampleCount start, sampleCount len) const;
-   bool Read64K(float * buffer, SeqBlock * b,
-                sampleCount start, sampleCount len) const;
 
    // These are the two ways to write data to a block
    bool FirstWrite(samplePtr buffer, SeqBlock * b, sampleCount len);
@@ -173,8 +163,8 @@ class Sequence: public XMLTagHandler {
 
    // Both block-writing methods and AppendAlias call this
    // method to write the summary data
-   bool UpdateSummaries(samplePtr buffer, SeqBlock * b,
-                        sampleCount len);
+   void *GetSummary(samplePtr buffer, sampleCount len,
+                    float *min, float *max, float *rms);
 
    BlockArray *Blockify(samplePtr buffer, sampleCount len);
 

@@ -150,7 +150,7 @@ wxString ExportCommon(AudacityProject *project,
     * existing file.)
     */
 
-   if (!project->GetDirManager()->EnsureSafeFilename(fName))
+   if (!project->GetDirManager()->EnsureSafeFilename(wxFileName(fName)))
       return "";
 
    path =::wxPathOnly(fName);

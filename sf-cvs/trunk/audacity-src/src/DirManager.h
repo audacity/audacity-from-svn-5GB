@@ -33,17 +33,17 @@
 
 #include <wx/list.h>
 #include <wx/string.h>
+#include <wx/filename.h>
 
 #include "WaveTrack.h"
 
 class wxHashTable;
-
 class BlockFile;
 
-class DirManager {
+class DirManager: public XMLTagHandler {
  public:
    DirManager();
-   ~DirManager();
+   virtual ~DirManager();
 
    static bool InitDirManager();
 
@@ -54,7 +54,10 @@ class DirManager {
 
    wxString GetProjectName();
 
-   BlockFile *NewBlockFile(int summaryLen);
+   BlockFile *NewSimpleBlockFile(samplePtr sampleData, sampleCount sampleLen,
+                                 sampleFormat format);
+   BlockFile *NewAliasBlockFile( wxString aliasedFile, sampleCount aliasStart,
+                                 sampleCount aliasLen, int aliasChannel);
 
    // Adds one to the reference count of the block file,
    // UNLESS it is "locked", then it makes a new copy of
@@ -72,7 +75,7 @@ class DirManager {
    bool MoveToNewProjectDirectory(BlockFile *f);
    bool CopyToNewProjectDirectory(BlockFile *f);
 
-   bool EnsureSafeFilename(wxString fName);
+   bool EnsureSafeFilename(wxFileName fName);
 
    void Ref(BlockFile * f);
    void Deref(BlockFile * f);
@@ -80,15 +83,18 @@ class DirManager {
    // For debugging only
    int GetRefCount(BlockFile * f);
 
+   void SetLoadingTarget(BlockFile **target) { mLoadingTarget = target; }
+   bool HandleXMLTag(const char *tag, const char **attrs);
+   XMLTagHandler *HandleXMLChild(const char *tag) { return NULL; }
+   void WriteXML(int depth, FILE *fp) { }
+
  private:
    void CleanTempDir();
 
    // Create new unique track name
    wxString NewTrackName();
 
-   void MakeBlockFileName(wxString inProjDir,
-                          wxString &outFileName,
-                          wxString &outPathName);
+   wxFileName MakeBlockFileName(wxString inProjDir);
 
    // Create new unique names
    wxString NewTempBlockName();
@@ -109,6 +115,8 @@ class DirManager {
    wxString lastProject;
 
    wxStringList aliasList;
+
+   BlockFile **mLoadingTarget;
 
    static wxString temp;
 
