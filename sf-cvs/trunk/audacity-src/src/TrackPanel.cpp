@@ -98,8 +98,8 @@ enum {
    SELECTION_FORMAT_CDDA_SECTORS_BYTES
 };
 
-// rate is hardwired here to 44100, it really needs to read in the
-// default project rate
+// rate is hardwired here to 44100, it should maybe read in the
+// project rate set in preferences as default
 double rate = 44100.0;
 int iformat = SELECTION_FORMAT_RULER_MIN_SEC;
 
@@ -2962,11 +2962,11 @@ void TrackPanel::DisplaySelection()
    //          from time = 0, where it works very well.  The issue 
    //          seems to lie in the uncoupling of the highlighted
    //          or selected samples in the track and the infinitely
-   //          variable highlighted part of the time scale.  Those
-   //          two things should be directly coupled.  The iformat
-   //          values of 3+ are an attempt to get the selection 
-   //          information to reflect the highlighted audio samples
-   //          in the track itself.
+   //          variable highlighted part of the ruler time scale.
+   //          Those two things should in some cases be directly coupled.
+   //          The iformat values of 3+ are an attempt to get
+   //          the selection information to reflect the highlighted
+   //          audio samples in the track itself.
    //
    // NOTE: best to zoom in to about the first 16 or so samples of a
    //       project and observe for yourself the behavior of using
@@ -2985,21 +2985,11 @@ void TrackPanel::DisplaySelection()
    //       The lowest the selection will go is 0+0004 for a cursor
    //       position and 0+0001 for a selection range.
 
-   // Get project sample rate
-   //
-   // Do something to get the real rate here.
-   // Since everything I tried did not work, it is hardwired to 44100.
-   // Help - someone bail me out on this!!
-// double rate = ???? ;
-// The following line does not work:
-// double rate = ((WaveTrack *)mPopupMenuTarget)->GetRate();
-   // When this gets fixed, remove "(44100 hardwired)" from Set Selection Format
-   // menu items.  The menu item cdda sectors+bytes will always be for 44100 only.
-// double rate = 44100.0;
-   // For now, rate is set as a global double near the top of TrackPanel.cpp
+   // rate is set as a global double near the top of TrackPanel.cpp
    // It is initialized there to 44100, which is the default project rate,
    // unless it is changed in preferences.  Logic added to OnRateChange
-   // and OnRateOther resets this rate value.
+   // and OnRateOther resets this rate value.  For each selection format
+   // that is based on rate, the current rate is printed in the info line.
 
    // variables used
    int imin1, imin2, imintot;
@@ -3072,15 +3062,16 @@ void TrackPanel::DisplaySelection()
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %li samples"), isamples1pos),
+                Format(_("Cursor: %li samples   [based on rate = %7.1f - use Set Rate to reset/set]"),
+                            isamples1pos, rate),
                                         1);
          }
       else
          {
             mListener->
                TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %li - %li (%li samples)"),
-                                              isamples1, isamples2, isamplestot),
+                 Format(_("Selection: %li - %li (%li samples)   [based on rate = %7.1f - use Set Rate to reset/set]"),
+                            isamples1, isamples2, isamplestot, rate),
                                        1);
          }
       break;
@@ -3105,15 +3096,16 @@ void TrackPanel::DisplaySelection()
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %i:%09.6lf min:sec"), imin1pos, dsec1pos),
+                Format(_("Cursor: %i:%09.6lf min:sec   [based on rate = %7.1f - use Set Rate to reset/set]"),
+                                 imin1pos, dsec1pos, rate),
                                         1);
          }
       else
          {
             mListener->
                TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)"),
-                        imin1, dsec1, imin2, dsec2, imintot, dsectot),
+               Format(_("Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)   [based on rate = %7.1f - use Set Rate to reset/set]"),
+                        imin1, dsec1, imin2, dsec2, imintot, dsectot, rate),
                                        1);
          }
       break;
@@ -3135,15 +3127,16 @@ void TrackPanel::DisplaySelection()
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %lf sec"), dsec1pos),
+                     Format(_("Cursor: %lf sec   [based on rate = %7.1f - use Set Rate to reset/set]"),
+                                   dsec1pos, rate),
                                         1);
          }
       else
          {
             mListener->
                TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %lf - %lf (%lf sec)"),
-                                              dsec1, dsec2, dsectot),
+                   Format(_("Selection: %lf - %lf (%lf sec)   [based on rate = %7.1f - use Set Rate to reset/set]"),
+                                              dsec1, dsec2, dsectot, rate),
                                        1);
          }
       break;
@@ -3172,16 +3165,17 @@ void TrackPanel::DisplaySelection()
       if(start == end)
          {
            mListener->
-                TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %i:%02i+%i min:sec+samples"), imin1pos, isec1pos, isamp1pos),
+             TP_DisplayStatusMessage(wxString::
+                Format(_("Cursor: %i:%02i+%i min:sec+samples   [based on rate = %7.1f - use Set Rate to reset/set]"),
+                           imin1pos, isec1pos, isamp1pos, rate),
                                         1);
          }
       else
          {
             mListener->
-               TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sec+samples)"),
-                                         imin1, isec1, isamp1, imin2, isec2, isamp2, imintot, isectot, isamptot),
+              TP_DisplayStatusMessage(wxString::
+                 Format(_("Selection: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sec+samples)   [based on rate = %7.1f - use Set Rate to reset/set]"),
+                       imin1, isec1, isamp1, imin2, isec2, isamp2, imintot, isectot, isamptot, rate),
                                        1);
          }
       break;
@@ -3207,15 +3201,16 @@ void TrackPanel::DisplaySelection()
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %i+%i sec+samples"), isec1pos, isamp1pos),
+                   Format(_("Cursor: %i+%i sec+samples   [based on rate = %7.1f - use Set Rate to reset/set]"),
+                            isec1pos, isamp1pos, rate),
                                         1);
          }
       else
          {
             mListener->
-               TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %i+%i - %i+%i (%i+%i sec+samples)"),
-                                         isec1, isamp1, isec2, isamp2, isectot, isamptot),
+              TP_DisplayStatusMessage(wxString::
+                 Format(_("Selection: %i+%i - %i+%i (%i+%i sec+samples)   [based on rate = %7.1f - use Set Rate to reset/set]"),
+                        isec1, isamp1, isec2, isamp2, isectot, isamptot, rate),
                                        1);
          }
       break;
@@ -3259,16 +3254,16 @@ void TrackPanel::DisplaySelection()
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)"),
-                                               isector1pos, ibyte1pos),
+                    Format(_("Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [based on rate = %7.1f - for use with 44100 only]"),
+                          isector1pos, ibyte1pos, rate),
                                         1);
          }
       else
          {
             mListener->
                TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)"),
-                                         isector1, ibyte1, isector2, ibyte2, isectortot, ibytetot),
+                   Format(_("Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [based on rate = %7.1f - for use with 44100 only]"),
+                      isector1, ibyte1, isector2, ibyte2, isectortot, ibytetot, rate),
                                        1);
          }
       break;
