@@ -1,11 +1,11 @@
 <?php BoxTop('August  2, 2003: Audacity 1.2.0-pre1 udgivet'); ?>
 
 <p>
-Audacity 1.2.0-pre1 er en offentlig testudgave af det gratis lydredigeringsprogram Audacity. Formålet med denne udgave er at lade så mange som muligt prøvekøre de nye faciliteter inden udgivelsen af den endelige stabile version 1.2.0, som vi forventer at frigive i næste måned.
+Audacity 1.2.0-pre1 er en offentlig testudgave af det gratis lydredigeringsprogram Audacity. Formålet med denne udgave er at lade så mange som muligt prøvekøre de nye faciliteter inden udgivelsen af den endelige stabile version 1.2.0, som vi forventer at frigive i oktober.
 </p>
 
 <p>
-Denne udgave har lydbehandling i professionel kvalitet, og mange nye faciliteter, for eksempel evnen til at justere hastighed og toneleje for hvert lydspor. Denne udgave er også i stand til at åbne projektfiler i det gamle Audacity 1.0 format udover naturligvis det nye XML format, der bruges af Audacity 1.1 og nyere. Audacity 1.2.0-pre1 har mange fejlrettelser i forhold til sidste betaudgave.
+Denne udgave har lydbehandling i professionel kvalitet, og vigtige nye faciliteter, for eksempel evnen til at justere hastighed og toneleje for hvert spor. Denne udgave er også i stand til at åbne projektfiler i det gamle Audacity 1.0 format udover naturligvis det nye XML format, der bruges af Audacity 1.1 og nyere. Audacity 1.2.0-pre1 har mange fejlrettelser i forhold til sidste betaudgave.
 </p>
 
 <p>
