@@ -262,6 +262,7 @@ void AStatus::OnPaint(wxPaintEvent & event)
                   mRateField.x + 3, mRateField.y + 2);
 
    dc.Blit(0, 0, mWidth, mHeight, &memDC, 0, 0, wxCOPY, FALSE);
+   memDC.SelectObject(wxNullBitmap);
 
 }
 
