@@ -7,14 +7,14 @@
 # building lang.mo files from the translated lang.po catalogs.
 # This makefile may be invoked to build either audacity.pot or any lang.mo
 
-# Autodetect the languages we support.  Currently this relies on make
+# Autodetect the languages we support.	Currently this relies on make
 # being called with this dir as the cwd, but if we generate this file
 # with configure an explicit path should be specified -- RL.
 
-WX_LINGUAS := `ls *.po 2> /dev/null | sed -n 's/^\(.*\).po$/\1/p'`
+WX_LINGUAS := `ls *.po 2> /dev/null | sed -n 's/^\(.*\)\.po$$/\1/p'`
 
 # the programs we use (TODO: use configure to detect them)
-MSGFMT=msgfmt
+MSGFMT=msgfmt -v
 MSGMERGE=msgmerge
 XGETTEXT=xgettext
 XARGS=xargs
@@ -30,15 +30,18 @@ XGETTEXT_ARGS=-C -k_ -kwxGetTranslation -kwxTRANSLATE -s -j
 POTFILE=audacity.pot 
 
 %.po: $(POTFILE)
-	if [ -f $@ ]; then $(MSGMERGE) $@ $(POTFILE) > $@.new && mv $@.new $@; else cp $(POTFILE) $@; fi
+	if [ -f $@ ]; then $(MSGMERGE) $@ $(POTFILE) > $@.new && mv $@.new $@; \
+	else cp $(POTFILE) $@; fi
 
 $(POTFILE):
 	touch $@
-	find ../src -name "*.h" | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o $(POTFILE)
-	find ../src -name "*.cpp" | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o $(POTFILE)
+	find ../src -name "*.h" \
+		| $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o $(POTFILE)
+	find ../src -name "*.cpp" \
+		| $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o $(POTFILE)
 
 allpo: force-update
-	@-for t in $(WX_LINGUAS); do $(MAKE) $$t.po; done
+	@for t in $(WX_LINGUAS); do $(MAKE) $$t.po; done
 
 allmo:
 	@for t in $(WX_LINGUAS); do $(MAKE) $$t.mo; done
