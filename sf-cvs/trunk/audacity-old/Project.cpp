@@ -50,7 +50,7 @@ AudacityProject *CreateNewAudacityProject()
   where.y = 85;
 
   #ifdef __WXMAC__
-  where.y += 20;
+  where.y += 50;
   #endif
 
   where.x += gAudacityDocNum*25;
