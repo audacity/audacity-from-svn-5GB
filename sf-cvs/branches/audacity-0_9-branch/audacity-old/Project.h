@@ -48,6 +48,8 @@ class AudacityProject:public wxFrame,
     public TrackPanelListener, public AStatusListener {
  public:
 
+   friend class AudacityApp;
+
    // Constructor and Destructor
 
    AudacityProject(wxWindow * parent, wxWindowID id,

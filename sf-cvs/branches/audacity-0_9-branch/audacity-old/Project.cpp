@@ -38,6 +38,7 @@ void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 #include <wx/textfile.h>
 
 #include "Audacity.h"
+#include "AudacityApp.h"
 #include "AColor.h"
 #include "APalette.h"
 #include "AudioIO.h"
@@ -215,7 +216,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mMenuBar = NULL;
    CreateMenuBar();
    
-   #ifdef __WXMAC__
+   #if 0 // fixed in wxWindows instead
    // Work around a Mac OS 8.6 bug
    wxActivateEvent activateEvt;
    this->OnActivate(activateEvt);
@@ -329,13 +330,20 @@ AudacityProject::~AudacityProject()
 
    gAudacityProjects.Remove(this);
    
+   #ifdef __WXMAC__
+   if (gAudacityProjects.IsEmpty())   
+      wxGetApp().SetTopWindow(gParentFrame);
+   #else
    if (gAudacityProjects.IsEmpty())
       QuitAudacity();
+   #endif
 
    if (gActiveProject == this) {
       // Find a new active project
-      if (gAudacityProjects.Count() > 0)
+      if (gAudacityProjects.Count() > 0) {
          gActiveProject = gAudacityProjects[0];
+         wxGetApp().SetTopWindow(gParentFrame);
+      }
       else
          gActiveProject = NULL;
    }
