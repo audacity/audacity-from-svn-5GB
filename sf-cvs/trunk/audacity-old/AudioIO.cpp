@@ -361,18 +361,32 @@ void AudioIO::OnTimer()
    vt = iter.First();
    while (vt) {
       if (vt->GetKind() == VTrack::Wave) {
+      
+         VTrack *mt = vt;
+      
+         // We want to extract mute and solo information from
+         // the top of the two tracks if they're linked
+         // (i.e. a stereo pair only has one set of mute/solo buttons)
+         VTrack *partner = mTracks->GetLink(vt);
+         if (partner && !vt->linked)
+            mt = partner;
+         else
+            mt = vt;
+
+         // Cut if somebody else is soloing
+         if (numSolo>0 && !mt->solo) {
+            vt = iter.Next();
+            continue;
+         }
+         
+         // Cut if we're muted (unless we're soloing)
+         if (mt->mute && !mt->solo) {
+            vt = iter.Next();
+            continue;
+         }
+
          WaveTrack *t = (WaveTrack *) vt;
          
-         if ((numSolo>0 && !vt->solo) ||
-             vt->mute)
-            continue;
-         
-         VTrack *partner = mTracks->GetLink(vt);
-         if (partner && !vt->linked &&
-             (numSolo>0 && !partner->solo) ||
-             partner->mute)
-            continue;
-
          switch (t->channel) {
          case VTrack::LeftChannel:
             mixer->MixLeft(t, mT, mT + deltat);
