@@ -10,6 +10,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "CommandsWriter.h"
 #include "CommandsCfg.h"
 
