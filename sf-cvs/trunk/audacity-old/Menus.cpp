@@ -941,6 +941,19 @@ void AudacityProject::OnImportRaw(wxCommandEvent& event)
 void AudacityProject::OnQuickMix(wxCommandEvent& event)
 {
   if (::QuickMix(mTracks, &mDirManager)) {
+
+	// After the tracks have been mixed, remove the originals
+
+	TrackListIterator iter(mTracks);
+	VTrack *t = iter.First();
+	
+	while(t) {
+	  if (t->selected)
+		t = iter.RemoveCurrent();
+	  else
+		t = iter.Next();
+	}	
+
     PushState();
     
     FixScrollbars();

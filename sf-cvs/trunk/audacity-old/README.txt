@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.94: February 2, 2001
+Version 0.95: targeting April 1, 2001
 
 http://www.cs.cmu.edu/~music/audacity/
 
@@ -21,6 +21,10 @@ Icons and logo:
 
   Harvey Lubin <agrapha@agrapha.com>
   http://www.agrapha.com/
+
+Aqua/MacOS graphics:
+
+  Tom Woodhams <tom@imaginemedia.co.uk>
 
 For changelog, see the bottom of this document
 
@@ -81,6 +85,21 @@ Known problems:
   just keep the tool palette docked with the project window.
 
 -------------------------------------------------------------
+
+Changes in 0.95:
+
+* Fixed the Import Raw Data feature, so now you can
+  import files of almost any arbitrary format
+
+* Lazy import added, speeding up importing by 2x
+
+* Menus are disabled when unavailable
+
+* Online help added
+
+* Added Maximize Amplitude effect
+
+* Many bug fixes
 
 Changes in 0.94:
 
