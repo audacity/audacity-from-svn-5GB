@@ -80,6 +80,7 @@
 #include "TrackPanel.h"
 #include "WaveTrack.h"
 #include "effects/Effect.h"
+#include "prefs/PrefsDialog.h"
 #include "widgets/Warning.h"
 #include "xml/XMLFileReader.h"
 
@@ -1604,6 +1605,11 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 
 void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 {
+   if (gPrefsDialogVisible) {
+      event.Veto();
+      return;
+   }
+
    if (mUndoManager.UnsavedChanges()) {
       int result = wxMessageBox(_("Save changes before closing?"),
                                 _("Save changes?"),
