@@ -16,9 +16,7 @@
 #include <wx/window.h>
 #endif
 
-#ifndef __WXMAC__
 #include <wx/fs_zip.h>
-#endif
 
 #include <wx/image.h>
 
@@ -180,9 +178,7 @@ bool AudacityApp::OnInit()
 {
    ::wxInitAllImageHandlers();
 
-#ifndef __WXMAC__
    wxFileSystem::AddHandler(new wxZipFSHandler);
-#endif
 
    InitPreferences();
    InitAudioIO();
