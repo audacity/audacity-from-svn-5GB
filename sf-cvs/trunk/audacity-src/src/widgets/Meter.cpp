@@ -24,6 +24,7 @@
 #include <wx/menu.h>
 #include <wx/settings.h>
 #include <wx/textdlg.h>
+#include <wx/tooltip.h>
 
 #include <math.h>
 
@@ -296,6 +297,20 @@ void Meter::OnSize(wxSizeEvent &evt)
 
 void Meter::OnMouse(wxMouseEvent &evt)
 {
+  #if wxUSE_TOOLTIPS // Not available in wxX11
+   if (evt.Leaving()){
+      GetActiveProject()->TP_DisplayStatusMessage("",0);
+   }
+   else if (evt.Entering()) {
+      // Display the tooltip in the status bar
+      wxToolTip * pTip = this->GetToolTip();
+      if( pTip ) {
+         wxString tipText = pTip->GetTip();
+         GetActiveProject()->TP_DisplayStatusMessage(tipText, 0);
+      }
+   }
+  #endif
+
    if (evt.RightDown() ||
        (evt.ButtonDown() && mMenuRect.Inside(evt.m_x, evt.m_y))) {
       wxMenu *menu = new wxMenu();
