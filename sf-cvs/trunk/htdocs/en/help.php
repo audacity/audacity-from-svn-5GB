@@ -33,4 +33,12 @@
 >audacity-help@lists.sourceforge.net</a>
 </p>
 
+<p>
+<hr>
+</p>
+
+<p>
+<a href="docs1.1">(Unfinished) documentation for Audacity 1.1</a>
+</p>
+
 <?php BoxBottom(); ?>
