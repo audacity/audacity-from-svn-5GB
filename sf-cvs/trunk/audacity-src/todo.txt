@@ -43,6 +43,7 @@ Website / Sourceforge
 1.1 In Progress / Partially complete
 -----------------------------------------------------------
 
+- Plug-ins directory settable in preferences
 - Make all keyboard shortcuts configurable
 - Command-line exporting
 - LADSPA support (needs work - see email from
