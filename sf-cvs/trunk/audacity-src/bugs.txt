@@ -7,12 +7,11 @@ in Audacity.
 Known bugs to fix:
 -----------------------------------------------------------
 
+- Double-clicking a track selects all in the ruler, but
+  not the track (Windows)
+- Right-click doesn't always zoom out, esp. after
+  doing a drag-zoom...
 - Segfault if slide tool is used while playing/recording
-- Problems recording at other than 44100 Hz on Mac
-- Recording at a rate other than 44100 works, but the
-  track created has the wrong rate in its label
-- Fix id3lib compilation problems on Linux
-- Freeze when opening Prefs panel on MacOS 8.6
 - Exporting using LAME does incorrect sample rate,
   or incorrect # of channels?  Maybe only with certain
   versions of LAME?
@@ -20,10 +19,6 @@ Known bugs to fix:
 - ID3 genre list doesn't fit in the window on Linux/GTK
 - Fix underflow problems when recording (as much as
   possible) and try to report them if not
-- Menu bar does not function when Prefs dialog is
-  in front on MacOS
-- Get rid of any "exit()" calls in snd/ or other
-  libraries
 - Use latest FreeVerb (3.0)
 - Fix divide-by-zero bug in Envelope.cpp (can crash
   on Windows)
@@ -62,15 +57,11 @@ Possible bugs to investigate:
 - Audacity is unstable when working with very large files
 - Possible memory leak in Windows 98 (???)
   See emails from degarb@softhome.net
-- Typing in the root directory as the Temp Files path
-  doesn't work (on Mac OS X)?
 - Problem reading AIFF files on Mac OS X?
   (Private email from Tobias Jeger - the attached
 	AIFF file worked fine under Linux)
 - Does "make install" create all of the directories
   it wants to installs into
-- Audacity won't start under (some versions of?) MacOS 8.5,
-  complains about InterfaceLib and SetAntiAliasedTextEnabled
 - Test USB mics under Mac OS 9 (see email from J. Blucher)
 
 -----------------------------------------------------------
@@ -87,6 +78,22 @@ Fixed, need to port:
 Fixed:
 -----------------------------------------------------------
 
+- Audacity won't start under (some versions of?) MacOS 8.5,
+  complains about InterfaceLib and SetAntiAliasedTextEnabled
+  (now OS 8.6 is required)
+- Typing in the root directory as the Temp Files path
+  doesn't work (on Mac OS X)? (can't reproduce)
+- Menu bar does not function when Prefs dialog is
+  in front on MacOS
+- Get rid of any "exit()" calls in snd/ or other
+  libraries
+- Problems recording at other than 44100 Hz on Mac
+- Recording at a rate other than 44100 works, but the
+  track created has the wrong rate in its label
+- Fix id3lib compilation problems on Linux
+  (worked around: it's disabled by default)
+- Freeze when opening Prefs panel on MacOS 8.6
+  (fixed in wxWindows: it was an incompatibility with ATM)
 - Copy and Paste between projects
 - Temp directory in Prefs dialog should have a "Chooose..."
   button to let you select a directory with a standard

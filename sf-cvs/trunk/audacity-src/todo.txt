@@ -1,4 +1,4 @@
-todo.txt
+Mtodo.txt
 
 This is the file where we keep track of all feature
 requests and plans, and organize them by which
@@ -8,15 +8,14 @@ release they're going in.
 Website / Sourceforge
 -----------------------------------------------------------
 
-- Get announcement list running
 - Upload some icons for people to use with
   KDE, GNOME, WindowMaker, AfterStep, BlackBox...
-- Note on website that Audacity is incompatible
-  with Norton Protected Recycle Bin (see email
-  from Josef Ravenscroft)
+- Add a web counter
+- Make a log of HTTP_REFERER so we see where people
+  are coming from
 
 -----------------------------------------------------------
-1.0 / Audacity 0.9 branch
+1.0.1 TODO
 -----------------------------------------------------------
 
 - Address all bugs in "bugs.txt"
@@ -34,21 +33,41 @@ Website / Sourceforge
 - Select region by typing in start and stop times
 
 -----------------------------------------------------------
-1.1 / HEAD
+1.1 In Progress / Partially complete
 -----------------------------------------------------------
 
-Unit tests:
+- Make all keyboard shortcuts configurable
+- Command-line exporting
+- LADSPA support (needs work - see email from
+  Jim Hainis about Pluggo)
+
+-----------------------------------------------------------
+1.1 TODO
+-----------------------------------------------------------
+
+Unit tests::
 - Need to verify that the new 1.0 mixing code plays every
   sample one and only once.
 
-Audio:
+Audio::
+- Smart Record dialog (tries to use less CPU power
+  and ensure no dropped samples)
 - Choice of dither
 - Pre-roll and post-roll: amount to play before and after
   a selection (see DG Malham email)
 - Latency control in Audio I/O prefs
-- Playthrough (definitely on Mac OS, maybe on others?)
+- portmixer
+  - output volume
+  - input device
+  - input volume
+  - playthrough
 
 UI::
+- Make ID3 tag dialog optional when saving MP3s
+- Horizonal line at zero point in waveform display
+- Vertical playback position indicator
+- Option to turn off blinking cursor
+- Change text of Undo menu item (Undo Cut, Undo Amplify, etc.)
 - While playing, click in ruler to change playback
   position
 - Remember window size and position
@@ -56,12 +75,8 @@ UI::
   and Audacity project files
 - Crash recovery
 - Clean up a project directory upon open
-- Make "Exit program upon closing last window" an option
-  in the Preferences.  (The alternative would be to create
-  a new empty project when you close the last window.)
 - Out of disk space checks
 - Nudge selection with arrow keys
-- Make all keyboard shortcuts configurable
 - Make colors configurable
 - Adapt text color - should be white by default if
   the background color is very dark
@@ -79,8 +94,6 @@ UI::
 - Add high-quality resampling
 - Legend (Ruler) for pitch and spectrum
 - Recognize .mp2, .mpg, .mpeg as libmad-capable files
-- Plug-ins should be split into many separate menus on Linux/GTK
-  (if you have lots of them)
 - 1/24, 1/25 and 1/30-second frame count options for ruler.
 - Envelope editor should support linear, quadratic, and exponential,
   ideally with a right-click.  Default should be linear; it makes the
@@ -94,12 +107,17 @@ UI::
     that waveform repeating forever...
 - Drag the play marker in the ruler to "skip" to a new time
    
-Import/Export
+Import/Export::
 - Import latest libsndfile; finish exporting code
 - Rewrite the Import Raw Data... code
-- Command-line LAME exporting
+- Import Audacity 1.0 projects
+- Support ID3 tags in Ogg files
+- Import/Export markers in WAV files (like Goldwave does - 
+  see email from Shane M.)
 
 Effects::
+- Fix the 47-second bug in Noise Removal (see email
+  from Greg Trounson)
 - Show spectrum in FFT filter
 - Add preview button to all effects dialogs
 - Freeverb 3.0 (and better interface)
@@ -143,4 +161,20 @@ Low level issues::
 - support multi-track I/O
 - support an arbitrary number of channels
 - Make projects one big file
+
+-----------------------------------------------------------
+Completed:
+-----------------------------------------------------------
+
+- Make "Exit program upon closing last window" an option
+  in the Preferences.  (This wasn't implemented like this,
+  but instead the program doesn't quit when the last window
+  is closed on the Mac, but it does on other platforms.
+  This mimics correct native behavior.)
+- Get announcement list running
+- Note on website that Audacity is incompatible
+  with Norton Protected Recycle Bin (see email
+  from Josef Ravenscroft)
+- Plug-ins should be split into many separate menus on Linux/GTK
+  (if you have lots of them)
 
