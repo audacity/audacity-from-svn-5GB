@@ -108,6 +108,7 @@ class TrackArtist {
    void DrawIndividualSamples(wxDC &dc, wxRect r,
                               int ctr, WaveTrack *track,
                               double t0, double pps, double h,
+                              float zoomMin, float zoomMax,
                               bool dB,
                               bool drawSamples,
                               bool showPoints);

@@ -1961,6 +1961,7 @@ void TrackPanel::HandleVZoom(wxMouseEvent & event)
 
       Refresh(false);
       mCapturedTrack = NULL;
+      MakeParentModifyState();
    }
 }
 
@@ -2216,7 +2217,21 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
          
 
          seq->Get((samplePtr)&mDrawingStartSampleValue, floatSample,(int) mDrawingStartSample, 1);
-         newLevel =  -2 * (float)(event.m_y - mDrawingTrackTop) / mDrawingTrack->GetHeight() + 1;
+
+
+         float zoomMin, zoomMax;
+         ((WaveTrack *)mDrawingTrack)->GetDisplayBounds(&zoomMin, &zoomMax);
+         newLevel = zoomMax -
+            ((event.m_y - mDrawingTrackTop)/(float)mDrawingTrack->GetHeight()) *
+            (zoomMax - zoomMin);
+
+         //Take the envelope into account
+         Envelope *env = ((WaveTrack *)mDrawingTrack)->GetEnvelope();
+         double envValue = env->GetValue(t0);
+         if (envValue > 0)
+            newLevel /= envValue;
+         else
+            newLevel = 0;
       
          //Make sure the new level is between +/-1
          newLevel = newLevel >  1.0 ?  1.0: newLevel;
@@ -2257,6 +2272,12 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
          //Get the rate of the sequence, for use later
          rate = ((WaveTrack *)mDrawingTrack)->GetRate();
          sampleCount s0;     //declare this for use below.  It designates the sample number which to draw.
+
+         // Figure out what time the click was at
+         double tOffset = mDrawingTrack->GetOffset();
+         double t0 = PositionToTime(event.m_x, GetLeftOffset()) - tOffset;
+
+
          float newLevel;
          //Find the point that we want to redraw at. If the control button is down, 
          //adjust only the originally clicked-on sample 
@@ -2274,9 +2295,6 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
             //*************************************************
 
             //Otherwise, adjust the sample you are dragging over right now.
-            // Figure out what time the click was at
-            double tOffset = mDrawingTrack->GetOffset();
-            double t0 = PositionToTime(event.m_x, GetLeftOffset()) - tOffset;
    
             //convert this to samples
             s0 = (sampleCount) (double)(t0 * rate + 0.5);
@@ -2287,7 +2305,21 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
          
          //Otherwise, do normal redrawing, based on the mouse position.
          // Calculate where the mouse is located vertically (between +/- 1)
-         newLevel =  -2 * (float)(event.m_y - mDrawingTrackTop) / mDrawingTrack->GetHeight() + 1;
+
+
+         float zoomMin, zoomMax;
+         ((WaveTrack *)mDrawingTrack)->GetDisplayBounds(&zoomMin, &zoomMax);
+         newLevel = zoomMax -
+            ((event.m_y - mDrawingTrackTop)/(float)mDrawingTrack->GetHeight()) *
+            (zoomMax - zoomMin);
+
+         //Take the envelope into account
+         Envelope *env = ((WaveTrack *)mDrawingTrack)->GetEnvelope();
+         double envValue = env->GetValue(t0);
+         if (envValue > 0)
+            newLevel /= envValue;
+         else
+            newLevel = 0;
          
          //Make sure the new level is between +/-1
          newLevel = newLevel >  1.0 ?  1.0: newLevel;

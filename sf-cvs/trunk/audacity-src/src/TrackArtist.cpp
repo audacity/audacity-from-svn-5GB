@@ -486,6 +486,7 @@ void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r, int ctr,
 void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
                                         int ctr, WaveTrack *track,
                                         double t0, double pps, double h,
+                                        float zoomMin, float zoomMax,
                                         bool dB,
                                         bool drawSamples,
                                         bool showPoints)
@@ -523,15 +524,19 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
          xx = 10000;
       
       xpos[s] = (int) xx;
-      ypos[s] = ctr - GetWaveYPos(buffer[s] *
-                                  track->GetEnvelope()->GetValue(tt),
-                                  r.height / 2, dB);
+
+      ypos[s] = GetWaveYPosNew(buffer[s] * track->GetEnvelope()->GetValue(tt),
+                               zoomMin, zoomMax, r.height, dB, false);
+      if (ypos[s] < -1)
+         ypos[s] = -1;
+      if (ypos[s] > r.height)
+         ypos[s] = r.height;
    }
    
    // Draw lines
    for (s = 0; s < slen - 1; s++) {
-      dc.DrawLine(r.x + xpos[s], ypos[s],
-                  r.x + xpos[s + 1], ypos[s + 1]);
+      dc.DrawLine(r.x + xpos[s], r.y + ypos[s],
+                  r.x + xpos[s + 1], r.y + ypos[s + 1]);
    }
    
    if (showPoints) {
@@ -543,9 +548,11 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
       //different colour when draggable.
       dc.SetBrush( drawSamples ? dragsampleBrush : sampleBrush);
       for (s = 0; s < slen; s++) {
-         pr.x = r.x + xpos[s] - tickSize/2;
-         pr.y = ypos[s] - tickSize/2;
-         dc.DrawEllipse(pr);
+         if (ypos[s] >= 0 && ypos[s] < r.height) {
+            pr.x = r.x + xpos[s] - tickSize/2;
+            pr.y = r.y + ypos[s] - tickSize/2;
+            dc.DrawEllipse(pr);
+         }
       }
    }
    
@@ -786,6 +793,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
 
    if (showIndividualSamples) {
       DrawIndividualSamples(dc, mid, ctr, track, t0, pps, h,
+                            zoomMin, zoomMax, 
                             dB, drawSamples, showPoints);
 
    }
