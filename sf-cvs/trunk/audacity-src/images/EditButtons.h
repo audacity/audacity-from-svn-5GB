@@ -10,7 +10,6 @@
 
 #include "EditButtons/CopyAlpha.xpm"
 #include "EditButtons/CutAlpha.xpm"
-#include "EditButtons/Disabled.xpm"  
 #include "EditButtons/Paste.xpm"       
 #include "EditButtons/Redo.xpm"           
 #include "EditButtons/Silence.xpm"     
