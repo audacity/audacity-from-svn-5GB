@@ -122,7 +122,7 @@ DEPS = $(OBJS:$(OBJDIR)/%.o=%.cpp) $(OPTOBJS:$(OBJDIR)/%.o=%.cpp)
 all: dirs ../audacity
 
 ../audacity: $(OBJS) $(EXTRAOBJS) $(OPTOBJS) Makefile
-	$(CCC) -o ../audacity $(OBJS) $(EXTRAOBJS) $(OPTOBJS) $(LIBS)
+	$(CCC) -o ../audacity $(OBJS) $(OPTOBJS) $(EXTRAOBJS) $(LIBS)
 	@AFTERBUILD@
 
 #
