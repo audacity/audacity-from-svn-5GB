@@ -1230,6 +1230,17 @@ public:
       return bytes;
    }
 
+   int EncodeBufferMono(short int inbuffer[], unsigned char outbuffer[]) {
+      if(!mEncoding) return -1;
+
+      return true; // lame_encode_buffer(mGF, inbuffer, inbuffer, mSamplesPerChunk, outbuffer, mOutBufferSize);
+   }
+
+   int EncodeRemainderMono(short int inbuffer[], int nSamples,
+                     unsigned char outbuffer[]) {
+      return true; // lame_encode_buffer(mGF, inbuffer, inbuffer , inbuffer, nSamples, outbuffer, mOutBufferSize);
+   }
+
    int FinishStream(unsigned char outbuffer[]) {
       if(!mEncoding)
          return -1;
