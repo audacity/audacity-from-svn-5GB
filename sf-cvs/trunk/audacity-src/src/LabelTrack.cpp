@@ -310,6 +310,84 @@ void LabelTrack::Import(wxTextFile & in)
    }
 }
 
+bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
+{
+   if (!strcmp(tag, "label")) {
+
+      LabelStruct *l = new LabelStruct();
+
+      // loop through attrs, which is a null-terminated list of
+      // attribute-value pairs
+      while(*attrs) {
+         const char *attr = *attrs++;
+         const char *value = *attrs++;
+         
+         if (!value)
+            break;
+         
+         if (!strcmp(attr, "t"))
+            wxString(value).ToDouble(&l->t);
+         else if (!strcmp(attr, "title"))
+            l->title = value;
+
+      } // while
+
+      mLabels.Add(l);
+
+      return true;
+   }
+   else if (!strcmp(tag, "labeltrack")) {
+      if (*attrs) {
+         const char *attr = *attrs++;
+         const char *value = *attrs++;
+         
+         if (!value)
+            return true;
+
+         if (!strcmp(attr, "numlabels")) {
+            int len = atoi(value);
+            mLabels.Clear();
+            mLabels.Alloc(len);
+         }
+      }
+
+      return true;
+   }
+
+   return false;
+}
+
+XMLTagHandler *LabelTrack::HandleXMLChild(const char *tag)
+{
+   if (!strcmp(tag, "label"))
+      return this;
+   else
+      return NULL;
+}
+
+void LabelTrack::WriteXML(int depth, FILE *fp)
+{
+   int len = mLabels.Count();
+   int i, j;
+
+   for(j=0; j<depth; j++)
+      fprintf(fp, "\t");
+   fprintf(fp, "<labeltrack ");
+   fprintf(fp, "numlabels=\"%d\">\n", len);
+
+   for (i = 0; i < len; i++) {
+      for(j=0; j<depth+1; j++)
+         fprintf(fp, "\t");
+      fprintf(fp, "<label t=\"%.8g\" title=\"%s\">",
+              mLabels[i]->t,
+              (const char *)mLabels[i]->title);
+   }
+   for(j=0; j<depth; j++)
+      fprintf(fp, "\t");
+   fprintf(fp, "</labeltrack>\n");
+}
+
+#if LEGACY_PROJECT_FILE_SUPPORT
 bool LabelTrack::Load(wxTextFile * in, DirManager * dirManager)
 {
    if (in->GetNextLine() != "NumMLabels")
@@ -353,6 +431,7 @@ bool LabelTrack::Save(wxTextFile * out, bool overwrite)
 
    return true;
 }
+#endif
 
 void LabelTrack::Cut(double t0, double t1, VTrack ** dest)
 {

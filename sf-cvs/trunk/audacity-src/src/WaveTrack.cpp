@@ -86,7 +86,8 @@ VTrack(orig)
 WaveTrack::~WaveTrack()
 {
    for (unsigned int i = 0; i < mBlock->Count(); i++) {
-      GetDirManager()->Deref(mBlock->Item(i)->f);
+      if (mBlock->Item(i)->f)
+         GetDirManager()->Deref(mBlock->Item(i)->f);
       delete mBlock->Item(i);
    }
 
@@ -718,6 +719,124 @@ sampleCount WaveTrack::GetBestBlockSize(sampleCount start) const
    return result;
 }
 
+bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
+{
+   if (!strcmp(tag, "blockfile")) {
+      if (mBlock->Count() == 0)
+         return false;
+
+      WaveBlock *lastWaveBlock = mBlock->Item(mBlock->Count()-1);
+      lastWaveBlock->f = GetDirManager()->LoadBlockFile(attrs, mSampleFormat);
+
+      return true;
+   }
+   if (!strcmp(tag, "waveblock")) {
+      WaveBlock *wb = new WaveBlock();
+      wb->f = 0;
+      wb->start = 0;
+      wb->len = 0;
+
+      // loop through attrs, which is a null-terminated list of
+      // attribute-value pairs
+      while(*attrs) {
+         const char *attr = *attrs++;
+         const char *value = *attrs++;
+         
+         if (!value)
+            break;
+         
+         if (!strcmp(attr, "start"))
+            wb->start = atoi(value);
+ 
+         if (!strcmp(attr, "len"))
+            wb->len = atoi(value);
+
+      } // while
+
+      mBlock->Add(wb);
+
+      return true;
+   }
+   
+   if (!strcmp(tag, "wavetrack")) {
+      while(*attrs) {
+         const char *attr = *attrs++;
+         const char *value = *attrs++;
+         
+         if (!value)
+            break;
+         
+         if (!strcmp(attr, "maxsamples"))
+            mMaxSamples = atoi(value);
+         else if (!strcmp(attr, "sampleformat"))
+            mSampleFormat = (sampleFormat)atoi(value);
+         else if (!strcmp(attr, "numsamples"))
+            mNumSamples = atoi(value);
+         else if (!strcmp(attr, "rate"))
+            wxString(value).ToDouble(&mRate);
+         else if (!strcmp(attr, "offset"))
+            wxString(value).ToDouble(&tOffset);
+         else if (!strcmp(attr, "channel"))
+            channel = atoi(value);
+         else if (!strcmp(attr, "linked"))
+            linked = atoi(value);
+         
+      } // while
+      return true;
+   }
+   
+   return false;
+}
+
+XMLTagHandler *WaveTrack::HandleXMLChild(const char *tag)
+{
+   if (!strcmp(tag, "waveblock") ||
+       !strcmp(tag, "blockfile"))
+      return this;
+   else
+      return NULL;
+}
+
+void WaveTrack::WriteXML(int depth, FILE *fp)
+{
+   int i;
+   unsigned int b;
+   
+   for(i=0; i<depth; i++)
+      fprintf(fp, "\t");
+   fprintf(fp, "<wavetrack ");
+   fprintf(fp, "channel=\"%d\" ", channel);
+   fprintf(fp, "linked=\"%d\" ", linked);
+   fprintf(fp, "offset=\"%.8g\" ", tOffset);
+   fprintf(fp, "maxsamples=\"%d\" ", (int)mMaxSamples);
+   fprintf(fp, "sampleformat=\"%d\" ", (int)mSampleFormat);
+   fprintf(fp, "numsamples=\"%d\" ", (int)mNumSamples);
+   fprintf(fp, "rate=\"%g\" ", mRate);
+   fprintf(fp, ">\n");
+
+   for (b = 0; b < mBlock->Count(); b++) {
+      WaveBlock *bb = mBlock->Item(b);
+      for(i=0; i<depth+1; i++)
+         fprintf(fp, "\t");
+      fprintf(fp, "<waveblock ");
+      fprintf(fp, "start=\"%d\" ", bb->start);
+      fprintf(fp, "len=\"%d\" ", bb->len);
+      fprintf(fp, ">\n");
+
+      GetDirManager()->SaveBlockFile(bb->f, depth+2, fp);
+
+      for(i=0; i<depth+1; i++)
+         fprintf(fp, "\t");
+      fprintf(fp, "</waveblock>\n");
+   }
+
+   for(i=0; i<depth; i++)
+      fprintf(fp, "\t");
+   fprintf(fp, "</wavetrack>\n");
+}
+
+#if LEGACY_PROJECT_FILE_SUPPORT
+
 bool WaveTrack::Load(wxTextFile * in, DirManager * dirManager)
 {
    bool result = VTrack::Load(in, dirManager);
@@ -856,6 +975,8 @@ bool WaveTrack::Save(wxTextFile * out, bool overwrite)
 
    return true;
 }
+
+#endif // LEGACY_PROJECT_FILE_SUPPORT
 
 float WaveTrack::Get(sampleCount pos) const
 {
