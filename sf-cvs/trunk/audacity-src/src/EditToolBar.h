@@ -90,12 +90,13 @@ class EditToolBar:public ToolBar {
    void OnZoomFit();
 
  private:
+   void AddButton(AButton **button, char **fg,
+                  char **disabled, char **alpha,
+                  int id, const char *tooltip);
+   void AddSeparator();
 
    void MakeButtons();
-   AButton *MakeButton(wxImage * up, wxImage * down, wxImage * hilite,
-                       char const **foreground,
-                       char const **disabled,
-                       char const **alpha, int id, int left);
+   
    AButton *mCut;
    AButton *mCopy;
    AButton *mPaste;
@@ -113,6 +114,11 @@ class EditToolBar:public ToolBar {
    wxBitmap *mBackgroundBitmap;
    int mBackgroundWidth;
    int mBackgroundHeight;
+
+   int mButtonPos;
+   wxImage *upImage;
+   wxImage *downImage;
+   wxImage *hiliteImage;
 
    DECLARE_EVENT_TABLE()
 };

@@ -365,7 +365,6 @@ void ControlToolBar::MakeButtons()
    delete downOriginal;
    delete hiliteOriginal;
 
-
    /* Tools */
 
    mTool[0] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
