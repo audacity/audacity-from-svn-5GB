@@ -5,19 +5,20 @@
  *
  * sndlib by Roger Dannenberg
  *
+ * I rewrote this code in January 2001 to be compatible with both the old Mac OS
+ * and the new CarbonLib required to run under Mac OS X.
  *
- * Brief description of algorithm: The Macintosh uses callback-based double-buffering
- * for realtime audio support.  We create three buffers: two that the Mac uses for
- * its double-buffering, and a third that we fill to keep ahead of it.  audio_poll
- * returns the sum of available samples in all three.  As soon as two buffers are full,
- * the Mac OS is told to start playing.  When the Mac OS has finished with one buffer,
- * it calls our callback routine.  If we have any bytes in our third buffer, we copy
- * them to the empty buffer and clear the third buffer, and then mark the newly filled
- * buffer as ready to play.
+ * Brief description of algorithm: we keep two buffers.  After the first one is filled
+ * we pass it to the Sound Manager and ask it to call our callback function as soon as
+ * it has finished playing.  In the meantime we start filling the second buffer.
+ * Whenever the first buffer completes, we copy the second buffer to the first buffer
+ * and start playback on that buffer, unless the second buffer is empty, in which case
+ * we play a small amount of silence, hoping the underlying process will catch up.
  *
- * Good reference:
+ * Good references:
  *
  * http://devworld.apple.com/samplecode/Sample_Code/Sound/SndPlayDoubleBuffer.htm
+ * http://devworld.apple.com/technotes/tn/tn1198.htm
  *
  */
  
@@ -33,42 +34,32 @@
 extern "C" {
 #endif
 
-pascal void doubleBack(SndChannelPtr channel, SndDoubleBufferPtr doubleBufferPtr)
+pascal void playbackCallback(SndChannelPtr channel, SndCommand *theCallBackCmd)
 {
-  buffer_state *data = (buffer_state *)doubleBufferPtr->dbUserInfo[0];
+  buffer_state *data = (buffer_state *)(theCallBackCmd->param2);
 
-  if (data->busy)
-    return;
+  // If there's data in the second buffer, copy it into the playback buffer
+  // and mark the second buffer as empty again.
+
+  if (data->curBuffer == 1 && data->curSize>0) {
+    int bytes = data->curSize;
+
+    if (bytes > data->bufferSize)
+      bytes = data->bufferSize;
+
+    BlockMove((Ptr)data->nextBuffer, (Ptr)data->buffer, bytes); 
+    if (bytes != data->curSize)
+      BlockMove((Ptr)&data->nextBuffer[bytes], (Ptr)data->nextBuffer, data->curSize - bytes);
+       
+    data->header.numFrames = bytes / data->frameSize;
     
-  data->busy = 1;
-
-  // If there's data in our third buffer, copy it into the available double-buffer
-  // and mark our third buffer as empty again.
-
-  if (data->curBuffer == 2 && data->curSize>0) {
-    BlockMove((Ptr)data->nextBuffer, (Ptr)doubleBufferPtr->dbSoundData, data->curSize);    
-    doubleBufferPtr->dbNumFrames = data->curSize / data->frameSize;
-    doubleBufferPtr->dbFlags |= dbBufferReady;
-    if (data->flushing) {
-      doubleBufferPtr->dbFlags |= dbLastBuffer;
-      data->finished = 1;
-    }
-    
-    data->curSize = 0;
+    data->curSize -= bytes;
   }
   else {
   
     // Otherwise, either we're finished playing or we're stalling
   
-    if (data->flushing) {
-      // Send a single final sample and tell it to stop
-      ((short *)doubleBufferPtr->dbSoundData)[0] = 0;
-      doubleBufferPtr->dbNumFrames = 1;
-      doubleBufferPtr->dbFlags |= dbLastBuffer;
-      doubleBufferPtr->dbFlags |= dbBufferReady;
-      data->finished = 1;
-    }
-    else {
+    if (!data->flushing) {
       // Send some silence through the speaker while we wait for
       // the program to catch up
       
@@ -79,81 +70,193 @@ pascal void doubleBack(SndChannelPtr channel, SndDoubleBufferPtr doubleBufferPtr
         waittime = data->bufferSize;
       
       for(i=0; i<waittime / 2; i++)
-          ((short *)doubleBufferPtr->dbSoundData)[i] = 0;
-      doubleBufferPtr->dbNumFrames = waittime / data->frameSize;
-      doubleBufferPtr->dbFlags |= dbBufferReady;
+          ((short *)data->buffer)[i] = 0;
+      data->header.numFrames = waittime / data->frameSize;
     }
   }
   
-  data->busy = 0;
+  SndDoCommand(channel, &data->playCmd, true);
+  SndDoCommand(channel, &data->callCmd, true);
+}
+
+pascal void recordingCallback(SPBPtr params, Ptr buffer, short peakAmplitude, long numBytes)
+{
+  buffer_state *data = (buffer_state *)params->userLong;
+  int bytesAvail;
+  int bufferBytesUsed;
+  int i;
+  
+  if (data->recqEnd >= data->recqStart)
+    bufferBytesUsed = data->recqEnd - data->recqStart;
+  else
+    bufferBytesUsed = (data->recqEnd + (data->bufferSize - data->recqStart));
+  
+  bytesAvail = data->bufferSize - data->frameSize - bufferBytesUsed;
+  
+  if (numBytes > bytesAvail) {
+    numBytes = bytesAvail;
+    data->starved++;
+  }
+  
+  for(i=0; i<numBytes; i++)
+    data->recBuffer[(data->recqEnd+i) % data->bufferSize] = ((char *)buffer)[i];
+
+  if (numBytes > 0)
+    data->recqEnd = ((data->recqEnd + numBytes) % data->bufferSize);
 }
 
 int audio_open(snd_node *n, long *f)
 {
   buffer_state *data = (buffer_state *)malloc(sizeof(buffer_state));
   n->u.audio.descriptor = (void *)data;
-  unsigned short numerator;
-  unsigned short denomenator;
+  OSErr	err;
   Fixed sampleRateFixed;
 
-  OSErr	err;
-	
-  data->chan = NULL;
-  err = SndNewChannel(&data->chan, sampledSynth, 0, NULL);
-	
-  if (err)
-    return !SND_SUCCESS;
-	  
   data->frameSize = snd_bytes_per_frame(n);
 
-  data->bufferSize = (int) (0.1 * n->format.srate * (double)data->frameSize);
+  data->bufferSize = (int) (n->format.srate * (double)data->frameSize);
   if (n->u.audio.latency > 0.0)
     data->bufferSize = (int)(n->format.srate * n->u.audio.latency) * data->frameSize;
 
-  data->buffer[0] = (SndDoubleBuffer *)malloc(sizeof(SndDoubleBuffer) + data->bufferSize);
-  data->buffer[0]->dbNumFrames = data->bufferSize / data->frameSize;
-  data->buffer[0]->dbFlags = 0;
-  data->buffer[0]->dbUserInfo[0] = (long)data;
-  data->buffer[1] = (SndDoubleBuffer *)malloc(sizeof(SndDoubleBuffer) + data->bufferSize);    
-  data->buffer[1]->dbNumFrames = data->bufferSize / data->frameSize;
-  data->buffer[1]->dbFlags = 0;
-  data->buffer[1]->dbUserInfo[0] = (long)data;
-  
-  data->nextBuffer = (char *)malloc(data->bufferSize);   
-
-  if (!data->buffer[0] || !data->buffer[1])
-    return !SND_SUCCESS;
-
   /* Calculate sample rate as an unsigned fixed-point number */
   if (n->format.srate > 65535.0 ||
-      n->format.srate < 1.0)
+    n->format.srate < 1.0)
     sampleRateFixed = 0xAC440000; /* Fixed for 44100 */
   else {
-    numerator = (unsigned short)n->format.srate;
-    denomenator = (unsigned short)(65536.0*(n->format.srate - numerator));
-    sampleRateFixed = (numerator << 16) | denomenator;
+    unsigned short numerator = (unsigned short)n->format.srate;
+    unsigned short denominator = (unsigned short)(65536.0*(n->format.srate - numerator));
+    sampleRateFixed = (numerator << 16) | denominator;
   }
 
-  data->dbheader.dbhSampleRate = sampleRateFixed;
-  data->dbheader.dbhNumChannels = n->format.channels;
-  data->dbheader.dbhSampleSize = 16;
-  data->dbheader.dbhCompressionID = 0;
-  data->dbheader.dbhPacketSize = 0;
+  /* Open device for recording or playback, depending on mode selected */
+
+  if (n->write_flag == SND_READ) {
+    /* recording */
+    short gainControl = 0; /* off */
+    short numChannels = n->format.channels;
+    short continuousRecording = 1; /* on */
+    short playthroughVolume = 0; /* off */
+    OSType quality = 'cd  ';
+    short sampleSize = 16;
+    short twos = 0; /* i.e. signed */
+    OSType compression = 'NONE';
   
-  data->dbheader.dbhBufferPtr[0] = data->buffer[0];
-  data->dbheader.dbhBufferPtr[1] = data->buffer[1];
+    data->recording = 1;  
+    
+    err = SPBOpenDevice("\p", siWritePermission, &data->refnum);
+    if (err)
+      return !SND_SUCCESS;
+    
+    err = SPBSetDeviceInfo(data->refnum, 'qual', &quality);
+    if (err)
+      return !SND_SUCCESS;
+
+    err = SPBSetDeviceInfo(data->refnum, 'agc ', &gainControl);
+    if (err)
+      return !SND_SUCCESS;
+    
+    err = SPBSetDeviceInfo(data->refnum, 'srat', &sampleRateFixed);
+    if (err)
+      return !SND_SUCCESS;
+
+    err = SPBSetDeviceInfo(data->refnum, 'ssiz', &sampleSize);
+    if (err)
+      return !SND_SUCCESS;
+
+    err = SPBSetDeviceInfo(data->refnum, 'chan', &numChannels);
+    if (err)
+      return !SND_SUCCESS;
   
-  // On the Mac, function pointers are structures with special extra fields.
-  // Luckily, the Sound Manager provides us with a routine to create one
-  // given a pointer to our callback function.
-  data->dbheader.dbhDoubleBack = NewSndDoubleBackProc(doubleBack);
+    err = SPBSetDeviceInfo(data->refnum, 'cont', &continuousRecording);
+    if (err)
+      return !SND_SUCCESS;
   
-  data->curBuffer = 0;
-  data->curSize = 0;
-  data->firstTime = 1;
-  data->finished = 0;
-  data->busy = 0;
-  data->flushing = 0;
+    err = SPBSetDeviceInfo(data->refnum, 'plth', &playthroughVolume);
+    if (err)
+      return !SND_SUCCESS;
+    
+    err = SPBSetDeviceInfo(data->refnum, 'twos', &twos);
+    if (err)
+      return !SND_SUCCESS;
+
+    err = SPBSetDeviceInfo(data->refnum, 'comp', &compression);
+    if (err)
+      return !SND_SUCCESS;
+      
+    data->recBuffer = (char *)malloc(data->bufferSize);
+    data->recqStart = 0;
+    data->recqEnd = 0;
+    data->starved = 0;
+    
+    data->params.inRefNum = data->refnum;
+    data->params.count = 0; /* data->bufferSize; /* bytes to record */
+    data->params.milliseconds = 0; /* param will be ignored; use count */
+    data->params.bufferLength = 0; /* ignore buffer */
+    data->params.bufferPtr = NULL; /* ignore buffer */
+    data->params.completionRoutine = NULL;
+    data->params.userLong = (long)data;
+    data->params.unused1 = 0;
+    data->params.interruptRoutine = NewSIInterruptUPP(recordingCallback);
+
+    err = SPBRecord(&data->params, true);
+    if (err)
+      return !SND_SUCCESS;
+    
+  }
+  else {
+    /* playback */
+
+    data->recording = 0;
+    data->chan = NULL;
+    err = SndNewChannel(&data->chan, sampledSynth, 0, NULL);
+  	
+    if (err)
+      return !SND_SUCCESS;
+  	  
+    data->buffer = (char *)malloc(data->bufferSize);
+    
+    data->nextBufferSize = data->bufferSize * 3;
+    data->nextBuffer = (char *)malloc(data->nextBufferSize);   
+
+    if (!data->buffer || !data->nextBuffer)
+      return !SND_SUCCESS;
+    
+    data->chan->callBack = NewSndCallBackProc(playbackCallback);
+    
+    data->header.samplePtr = data->buffer;
+    data->header.numChannels = n->format.channels;
+    data->header.sampleRate = sampleRateFixed;
+    data->header.loopStart = 0;
+    data->header.loopEnd = 0;
+    data->header.encode = cmpSH;
+    data->header.baseFrequency = kMiddleC;
+    // data->header.AIFFSampleRate = 0;  -- this parameter is unused
+    data->header.markerChunk = NULL;
+    data->header.format = kSoundNotCompressed;
+    data->header.futureUse2 = NULL;
+    data->header.stateVars = NULL;
+    data->header.leftOverSamples = NULL;
+    data->header.compressionID = 0;
+    data->header.packetSize = 0;
+    data->header.snthID = 0;
+    data->header.sampleSize = 16;
+    data->header.sampleArea[0] = 0;
+    
+    data->playCmd.cmd = bufferCmd;
+    data->playCmd.param1 = 0; //unused
+    data->playCmd.param2 = (long)&data->header;
+    
+    data->callCmd.cmd = callBackCmd;
+    data->callCmd.param1 = 0;
+    data->callCmd.param2 = (long)data;
+    
+    data->curBuffer = 0;
+    data->curSize = 0;
+    data->firstTime = 1;
+    data->finished = 0;
+    data->busy = 0;
+    data->flushing = 0;
+  }
   
   return SND_SUCCESS;
 }
@@ -164,17 +267,36 @@ int audio_close(snd_node *n)
   buffer_state *data = (buffer_state *)n->u.audio.descriptor;
   OSErr err;
   
-  data->finished = 1;
-  
-  err = SndDisposeChannel(data->chan,
-                          true         // quiets the channel now
-                          );
+  if (data->recording) {
+    SPBStopRecording(data->refnum);
+    SPBCloseDevice(data->refnum);
+    
+    if (data->starved) {
+      data->starved = 0;
+    }
+    
+    #ifndef TARGET_CARBON
+    DisposeRoutineDescriptor(data->params.interruptRoutine);
+    #endif
 
-  DisposeRoutineDescriptor(data->dbheader.dbhDoubleBack);
+    free((void *)data->recBuffer);
+  }
+  else {
+    data->finished = 1;
+    
+    SndCallBackUPP callBack = data->chan->callBack;
+    
+    err = SndDisposeChannel(data->chan,
+                            true         // quiets the channel now
+                            );
 
-  free((void *)data->buffer[0]);  
-  free((void *)data->buffer[1]);  
-  free((void *)data->nextBuffer);
+    #ifndef TARGET_CARBON
+    DisposeRoutineDescriptor(callBack);
+    #endif
+    
+    free((void *)data->buffer);  
+    free((void *)data->nextBuffer);
+  }
   
   free((void *)data);
 
@@ -185,29 +307,30 @@ int audio_close(snd_node *n)
 int audio_flush(snd_type snd)
 {
   buffer_state *data = (buffer_state *)snd->u.audio.descriptor;
-  SCStatus status;
-  OSErr err;
 
-  data->flushing = 1;
-  
-  // Start playback if we haven't already
-
-  if (data->firstTime) {
-    data->buffer[data->curBuffer]->dbNumFrames = data->curSize / data->frameSize;
-    data->buffer[0]->dbFlags |= dbBufferReady;
-    if (data->curBuffer == 0) {
-      data->buffer[0]->dbFlags |= dbLastBuffer;
-    }
-    else
-      data->buffer[1]->dbFlags |= (dbBufferReady | dbLastBuffer);    
-    
-    SndPlayDoubleBuffer(data->chan, &data->dbheader);
-    data->firstTime = 0;
+  if (data->recording) {
+    SPBStopRecording(data->refnum);
   }
+  else {
+    SCStatus status;
+    OSErr err;
 
-  do {
-    err = SndChannelStatus(data->chan, sizeof(status), &status);
-  } while (!err && status.scChannelBusy);
+    data->flushing = 1;
+    
+    /* Start playback if we haven't already */
+
+    if (data->firstTime) {
+      data->header.numFrames = data->curSize / data->frameSize;
+      
+      SndDoCommand(data->chan, &data->playCmd, true);
+      
+      data->firstTime = 0;
+    }
+
+    do {
+      err = SndChannelStatus(data->chan, sizeof(status), &status);
+    } while (!err && status.scChannelBusy);
+  }
 
   return SND_SUCCESS;
 }
@@ -215,26 +338,48 @@ int audio_flush(snd_type snd)
 
 long audio_read(snd_node *n, void *buffer, long length)
 {
-    /* audio read not implemented */
-    return !SND_SUCCESS;
+  buffer_state *data = (buffer_state *)n->u.audio.descriptor;
+
+  if (data->recording) {
+
+    int bufferBytesUsed;
+    int i;
+    
+    if (data->recqEnd >= data->recqStart)
+      bufferBytesUsed = data->recqEnd - data->recqStart;
+    else
+      bufferBytesUsed = (data->recqEnd + (data->bufferSize - data->recqStart));
+
+    if (length > bufferBytesUsed)
+      length = bufferBytesUsed;
+    
+    for(i=0; i<length; i++)
+      ((char *)buffer)[i] = data->recBuffer[(data->recqStart+i) % data->bufferSize];
+    
+    data->recqStart = ((data->recqStart + length) % data->bufferSize);
+    
+    return length;
+  }
+  else {
+    /* This shouldn't happen */
+    return -1;
+  }
 }
 
 
 long audio_write(snd_node *n, void *buffer, long length)
 {
   buffer_state *data = (buffer_state *)n->u.audio.descriptor;
-  
-  // Copy into the initial two buffers
-  
+
   long written = 0;
   long block;
   
-  while(data->curBuffer < 2 && length>0) {
+  if (data->curBuffer==0 && length>0) {
     block = min(length, data->bufferSize - data->curSize);
     
     if (block>0) {
     
-      Ptr dest = (Ptr)&(((char *)data->buffer[data->curBuffer]->dbSoundData)[data->curSize]);
+      Ptr dest = (Ptr)&data->buffer[data->curSize];
       BlockMove((Ptr)buffer, dest, block);
       
       length -= block;
@@ -243,17 +388,16 @@ long audio_write(snd_node *n, void *buffer, long length)
       buffer = &((char *)buffer)[block];
       
       if (data->curSize == data->bufferSize) {
-        data->buffer[data->curBuffer]->dbFlags |= dbBufferReady;
         data->curSize = 0;
-        data->curBuffer++;
+        data->curBuffer = 1;
       }
     }
   }
   
-  // Copy into the third buffer (the one we don't pass to the Sound Manager directly)
+  // Copy into the second buffer (the one we don't pass to the Sound Manager directly)
 
-  if (data->curBuffer == 2 && length>0) {
-    block = min(length, data->bufferSize - data->curSize);
+  if (data->curBuffer == 1 && length>0) {
+    block = min(length, data->nextBufferSize - data->curSize);
     
     if (block > 0) {
     
@@ -266,11 +410,13 @@ long audio_write(snd_node *n, void *buffer, long length)
     }
   }
 
-  // when both buffers are full for the first time, start playback:
+  // when the first buffer is full for the first time, start playback:
 
-  if (data->curBuffer==2 && data->firstTime) {
-    SndPlayDoubleBuffer(data->chan, &data->dbheader);
+  if (data->curBuffer==1 && data->firstTime) {
     data->firstTime = 0;
+    data->header.numFrames = data->bufferSize / data->frameSize;
+    SndDoCommand(data->chan, &data->playCmd, true);
+    SndDoCommand(data->chan, &data->callCmd, true);    
   }
 
   return written;
@@ -278,25 +424,38 @@ long audio_write(snd_node *n, void *buffer, long length)
 
 int audio_reset(snd_node *n)
 {
-    /* audio reset not implemented */
-    return !SND_SUCCESS;
+  /* audio reset not implemented */
+  return !SND_SUCCESS;
 }
 
 long audio_poll(snd_type snd)
 {
   buffer_state *data = (buffer_state *)snd->u.audio.descriptor;
-
-  long avail = data->bufferSize - data->curSize;
-
-  if (data->curBuffer < 2)
-    avail += data->bufferSize;
-  if (data->curBuffer < 1)
-    avail += data->bufferSize;  
-
-  // Is this a bug in snd that I have to return frames here,
-  // and bytes everywhere else?
   
-  return avail / data->frameSize;
+  if (data->recording) {
+  
+    int bufferBytesUsed;
+
+    if (data->recqEnd >= data->recqStart)
+      bufferBytesUsed = data->recqEnd - data->recqStart;
+    else
+      bufferBytesUsed = (data->recqEnd + (data->bufferSize - data->recqStart));
+
+    return (bufferBytesUsed / data->frameSize);
+  
+  }
+  else {
+    long avail = data->bufferSize - data->curSize;
+
+    if (data->curBuffer == 0)
+      avail += data->bufferSize;  
+
+    /* Is this a bug in snd that I have to return frames here,
+        and bytes everywhere else?
+    */
+    
+    return avail / data->frameSize;
+  }
 }
 
 snd_fns_node mac_dictionary = { audio_poll, audio_read, audio_write, 
@@ -305,9 +464,8 @@ snd_fns_node mac_dictionary = { audio_poll, audio_read, audio_write,
 
 void snd_init()
 {
-    snd_add_device("Macintosh", "default", &mac_dictionary);
+  snd_add_device((char *)"Macintosh", (char *)"default", &mac_dictionary);
 }
-
 
 #ifdef __cplusplus
 } // extern "C"

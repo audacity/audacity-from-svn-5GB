@@ -5,18 +5,34 @@ extern "C" {
 #endif
 
 typedef struct {
-  SndChannelPtr            chan;
-  SndDoubleBufferHeader    dbheader;
-  SndDoubleBuffer          *buffer[2];
-  char                     *nextBuffer;
+  int                      recording;
+
+  int                      bufferSize;
   int                      frameSize;
+
+  /* Recording */
+  long                     refnum;
+  SPB                      params;
+  char                     *recBuffer;
+  int                      recqStart;
+  int                      recqEnd;
+  int                      starved;
+  
+  /* Playback */
+  SndChannelPtr            chan;
+  CmpSoundHeader           header;
+  SndCommand               playCmd;
+  SndCommand               callCmd;
+  char                     *buffer;
+  char                     *nextBuffer;
+  int                      nextBufferSize;
   int                      curBuffer;
   int                      curSize;
-  int                      bufferSize;
   int                      firstTime;
   int                      finished;
   int                      flushing;
   int                      busy;
+
 } buffer_state;
 	
 #ifdef __cplusplus
