@@ -404,6 +404,21 @@ wxString Ruler::LabelString(double d, bool major)
             d = -d;
          }
 
+         #if ALWAYS_HH_MM_SS
+         int secs = (int)(d + 0.5);
+         if (mMinor >= 1.0) {
+            s.Printf("%d:%02d:%02d", secs/3600, (secs/60)%60, secs%60);
+         }
+         else {
+            wxString t1, t2, format;
+            t1.Printf("%d:%02d:", secs/3600, (secs/60)%60);
+            format.Printf("%%0%d.%dlf", mDigits+3, mDigits);
+            t2.Printf((const char *)format, fmod(d, 60.0));
+            s += t1 + t2;
+         }
+         break;
+         #endif
+
          if (mMinor >= 3600.0) {
             int hrs = (int)(d / 3600.0 + 0.5);
             wxString h;
@@ -433,6 +448,7 @@ wxString Ruler::LabelString(double d, bool major)
          else {
             int secs = (int)(d);
             wxString t1, t2, format;
+
             if (secs >= 3600)
                t1.Printf("%d:%02d:", secs/3600, (secs/60)%60);
             else if (secs >= 60)
