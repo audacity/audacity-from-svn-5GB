@@ -102,7 +102,7 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
 
    for (int i = 0; i < (int)mLabels.Count(); i++) {
 
-      int x = r.x + (int) ((mLabels[i]->t + GetOffset() - h) * pps);
+      int x = r.x + (int) ((mLabels[i]->t - h) * pps);
       int y = r.y;
       int height = r.height;
 
@@ -174,7 +174,7 @@ double LabelTrack::GetMaxLen() const
    if (len == 0)
       return 0.0;
    else
-      return mLabels[len - 1]->t + GetOffset();
+      return mLabels[len - 1]->t;
 }
 
 void LabelTrack::MouseDown(int x, int y, wxRect & r, double h, double pps)
@@ -182,8 +182,8 @@ void LabelTrack::MouseDown(int x, int y, wxRect & r, double h, double pps)
    double mouseH = h + (x - r.x) / pps;
 
    for (int i = 0; i < (int)mLabels.Count(); i++) {
-      double t = mLabels[i]->t + GetOffset();
-      if (t - (8 / pps) < mouseH && mouseH < t + (mLabels[i]->width / pps)) {
+      if (mLabels[i]->t - (8 / pps) < mouseH &&
+          mouseH < mLabels[i]->t + (mLabels[i]->width / pps)) {
          mSelIndex = i;
          return;
       }
@@ -232,7 +232,7 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
       // Create new label
 
       LabelStruct *l = new LabelStruct();
-      l->t = sel0 - GetOffset();
+      l->t = sel0;
       l->title += wxChar(keyCode);
 
       int len = mLabels.Count();
@@ -360,15 +360,14 @@ void LabelTrack::Cut(double t0, double t1, VTrack ** dest)
    int len = mLabels.Count();
 
    for (int i = 0; i < len; i++) {
-      double t = mLabels[i]->t + GetOffset();
-      if (t0 <= t && t <= t1) {
+      if (t0 <= mLabels[i]->t && mLabels[i]->t <= t1) {
          mLabels[i]->t -= t0;
          ((LabelTrack *) (*dest))->mLabels.Add(mLabels[i]);
          mLabels.RemoveAt(i);
          len--;
          i--;
       }
-      else if (t > t1)
+      else if (mLabels[i]->t > t1)
          mLabels[i]->t -= (t1 - t0);
    }
    ((LabelTrack *) (*dest))->mClipLen = (t1 - t0);
@@ -380,10 +379,9 @@ void LabelTrack::Copy(double t0, double t1, VTrack ** dest) const
    int len = mLabels.Count();
 
    for (int i = 0; i < len; i++) {
-      double t = mLabels[i]->t + GetOffset();
-      if (t0 <= t && t <= t1) {
+      if (t0 <= mLabels[i]->t && mLabels[i]->t <= t1) {
          LabelStruct *l = new LabelStruct();
-         l->t = t - wxMax(t0, GetOffset());
+         l->t = mLabels[i]->t - t0;
          l->title = mLabels[i]->title;
          ((LabelTrack *) (*dest))->mLabels.Add(l);
       }
@@ -422,17 +420,13 @@ void LabelTrack::Clear(double t0, double t1)
    int len = mLabels.Count();
 
    for (int i = 0; i < len; i++) {
-      double t = mLabels[i]->t + GetOffset();
-      if (t0 <= t && t <= t1) {
+      if (t0 <= mLabels[i]->t && mLabels[i]->t <= t1) {
          mLabels.RemoveAt(i);
          len--;
          i--;
       }
-      else if (t > t1) {
-         t0 = wxMax(t0, GetOffset());
-         t1 = wxMin(t1, GetMaxLen());
+      else if (mLabels[i]->t > t1)
          mLabels[i]->t -= (t1 - t0);
-      }
    }
 }
 
@@ -441,8 +435,7 @@ void LabelTrack::Silence(double t0, double t1)
    int len = mLabels.Count();
 
    for (int i = 0; i < len; i++) {
-      double t = mLabels[i]->t + GetOffset();
-      if (t0 <= t && t <= t1) {
+      if (t0 <= mLabels[i]->t && mLabels[i]->t <= t1) {
          mLabels.RemoveAt(i);
          len--;
          i--;
@@ -455,7 +448,7 @@ void LabelTrack::InsertSilence(double t, double len)
    int numLabels = mLabels.Count();
 
    for (int i = 0; i < numLabels; i++)
-      if (mLabels[i]->t + GetOffset() >= t)
+      if (mLabels[i]->t >= t)
          mLabels[i]->t += len;
 }
 
