@@ -15,6 +15,7 @@ typedef struct {
   int                      bufferSize;
   int                      firstTime;
   int                      finished;
+  int                      flushing;
   int                      busy;
 } buffer_state;
 	

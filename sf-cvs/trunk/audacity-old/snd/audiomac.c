@@ -37,19 +37,19 @@ pascal void doubleBack(SndChannelPtr channel, SndDoubleBufferPtr doubleBufferPtr
 {
   buffer_state *data = (buffer_state *)doubleBufferPtr->dbUserInfo[0];
 
-  // If there's data in our third buffer, copy it into the available double-buffer
-  // and mark our third buffer as empty again.
-
   if (data->busy)
     return;
     
   data->busy = 1;
 
+  // If there's data in our third buffer, copy it into the available double-buffer
+  // and mark our third buffer as empty again.
+
   if (data->curBuffer == 2 && data->curSize>0) {
     BlockMove((Ptr)data->nextBuffer, (Ptr)doubleBufferPtr->dbSoundData, data->curSize);    
     doubleBufferPtr->dbNumFrames = data->curSize / data->frameSize;
     doubleBufferPtr->dbFlags |= dbBufferReady;
-    if (data->curSize != data->bufferSize) {
+    if (data->flushing) {
       doubleBufferPtr->dbFlags |= dbLastBuffer;
       data->finished = 1;
     }
@@ -57,11 +57,26 @@ pascal void doubleBack(SndChannelPtr channel, SndDoubleBufferPtr doubleBufferPtr
     data->curSize = 0;
   }
   else {
-    // Hack: stick one more byte in and tell it to end...
-    ((short *)doubleBufferPtr->dbSoundData)[0] = 0;
-    doubleBufferPtr->dbNumFrames = 1;
-    doubleBufferPtr->dbFlags |= dbBufferReady;
-    doubleBufferPtr->dbFlags |= dbLastBuffer;
+  
+    // Otherwise, either we're finished playing or we're stalling
+  
+    if (data->flushing) {
+      // Send a single final sample and tell it to stop
+      ((short *)doubleBufferPtr->dbSoundData)[0] = 0;
+      doubleBufferPtr->dbNumFrames = 1;
+      doubleBufferPtr->dbFlags |= dbLastBuffer;
+      doubleBufferPtr->dbFlags |= dbBufferReady;
+      data->finished = 1;
+    }
+    else {
+      // Send some silence through the speaker while we wait for
+      // the program to catch up
+      int i;
+      for(i=0; i<data->bufferSize / 2; i++)
+          ((short *)doubleBufferPtr->dbSoundData)[i] = 0;
+      doubleBufferPtr->dbNumFrames = data->bufferSize / data->frameSize;
+      doubleBufferPtr->dbFlags |= dbBufferReady;
+    }
   }
   
   data->busy = 0;
@@ -77,13 +92,13 @@ int audio_open(snd_node *n, long *f)
 
   OSErr	err;
 	
-	data->chan = NULL;
-	err = SndNewChannel(&data->chan, sampledSynth, 0, NULL);
+  data->chan = NULL;
+  err = SndNewChannel(&data->chan, sampledSynth, 0, NULL);
 	
-	if (err)
-	  return !SND_SUCCESS;
+  if (err)
+    return !SND_SUCCESS;
 	  
-	data->frameSize = snd_bytes_per_frame(n);
+  data->frameSize = snd_bytes_per_frame(n);
 
   data->bufferSize = (int) (0.1 * n->format.srate * (double)data->frameSize);
   if (n->u.audio.latency > 0.0)
@@ -132,6 +147,7 @@ int audio_open(snd_node *n, long *f)
   data->firstTime = 1;
   data->finished = 0;
   data->busy = 0;
+  data->flushing = 0;
   
   return SND_SUCCESS;
 }
@@ -165,8 +181,10 @@ int audio_flush(snd_type snd)
   buffer_state *data = (buffer_state *)snd->u.audio.descriptor;
   SCStatus status;
   OSErr err;
+
+  data->flushing = 1;
   
-  // when both buffers are full for the first time, start playback:
+  // Start playback if we haven't already
 
   if (data->firstTime) {
     data->buffer[data->curBuffer]->dbNumFrames = data->curSize / data->frameSize;
