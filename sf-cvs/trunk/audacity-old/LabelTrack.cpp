@@ -54,7 +54,7 @@ void LabelTrack::Draw(wxDC &dc, wxRect &r, double h, double pps,
   	  dc.DrawRectangle(lr);
  			dc.SetTextForeground(wxColour(255,255,255));
 
-			#ifdef __WXMAC
+			#ifdef __WXMAC__
 			long textWidth, textHeight;
 			#else
  			int textWidth, textHeight;
