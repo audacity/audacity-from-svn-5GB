@@ -26,9 +26,12 @@
 
 #include "Meter.h"
 
+#include "../AudioIO.h"
 #include "../AColor.h"
 #include "../ImageManipulation.h"
 #include "../../images/MixerImages.h"
+#include "../Project.h"
+#include "../MeterToolBar.h"
 
 enum {
    MeterEventID = 6000,
@@ -108,6 +111,7 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    mPeakHoldDuration(3),
    mT(0),
    mRate(0),
+   mNumBars(0),
    mLayoutValid(false),
    mBitmap(NULL),
    mIcon(NULL)
@@ -212,22 +216,22 @@ void Meter::OnMouse(wxMouseEvent &evt)
       // Note: these should be kept in the same order as the enum
       menu->Append(OnHorizontalID, _("Horizontal Stereo"));
       menu->Append(OnVerticalID, _("Vertical Stereo"));
-      menu->Append(OnMultiID, _("Vertical Multichannel"));
-      menu->Append(OnEqualizerID, _("Equalizer"));
-      menu->Append(OnWaveformID, _("Waveform"));
+      //menu->Append(OnMultiID, _("Vertical Multichannel"));
+      //menu->Append(OnEqualizerID, _("Equalizer"));
+      //menu->Append(OnWaveformID, _("Waveform"));
       menu->Enable(OnHorizontalID + mStyle, false);
       menu->AppendSeparator();
       menu->Append(OnLinearID, _("Linear"));
       menu->Append(OnDBID, _("dB"));
       menu->Enable(mDB? OnDBID: OnLinearID, false);
-      menu->AppendSeparator();
-      menu->Append(OnClipID, _("Turn on clipping"));
+      //menu->AppendSeparator();
+      //menu->Append(OnClipID, _("Turn on clipping"));
       if (mIsInput) {
          menu->AppendSeparator();
          menu->Append(OnMonitorID, _("Monitor input"));
       }
-      menu->AppendSeparator();
-      menu->Append(OnFloatID, _("Float Window"));
+      //menu->AppendSeparator();
+      //menu->Append(OnFloatID, _("Float Window"));
 
       if (evt.RightDown())
          PopupMenu(menu, evt.m_x, evt.m_y);
@@ -235,6 +239,10 @@ void Meter::OnMouse(wxMouseEvent &evt)
          PopupMenu(menu, mMenuRect.x + 1, mMenuRect.y + mMenuRect.height + 1);
       delete menu;
    }       
+   else if (evt.ButtonDown()) {
+      if (mIsInput)
+         StartMonitoring();
+   }
 }
 
 void Meter::SetStyle(Meter::Style newStyle)
@@ -297,6 +305,7 @@ void Meter::UpdateDisplay(int numChannels, int numFrames, float *sampleData)
    int i, j;
    float *sptr = sampleData;
    int num = intmin(numChannels, mNumBars);
+
    MeterUpdateEvent *event = new MeterUpdateEvent();
 
    event->numFrames = numFrames;
@@ -694,6 +703,25 @@ void Meter::DrawMeterBar(wxDC &dc, MeterBar *meterBar)
    }
 }
 
+void Meter::StartMonitoring()
+{
+   if (gAudioIO->IsMonitoring())
+      gAudioIO->StopStream();
+   else {
+      gAudioIO->StartMonitoring(44100.0);
+      AudacityProject *p = GetActiveProject();
+      if (p) {
+         MeterToolBar *bar;
+         bar = p->GetMeterToolBar();
+         if (bar) {
+            Meter *play, *record;
+            bar->GetMeters(&play, &record);
+            gAudioIO->SetMeters(record, play);
+         }
+      }
+   }
+}
+
 //
 // Pop-up menu handlers
 //
@@ -743,6 +771,7 @@ void Meter::OnClip(wxCommandEvent &evt)
 
 void Meter::OnMonitor(wxCommandEvent &evt)
 {
+   StartMonitoring();
 }
 
 void Meter::OnFloat(wxCommandEvent &evt)
