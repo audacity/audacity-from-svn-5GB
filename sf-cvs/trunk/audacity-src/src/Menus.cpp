@@ -163,9 +163,37 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem("Split",          _("Spl&it"),                         FN(OnSplit));
    c->AddItem("Duplicate",      _("D&uplicate\tCtrl+D"),             FN(OnDuplicate));
-   c->AddItem("SelectAll",      _("Select &All\tCtrl+A"),            FN(OnSelectAll));
-   c->AddItem("SelStartCursor", _("Select Start to Cursor"),         FN(OnSelectStartCursor));
-   c->AddItem("SelCursorEnd",   _("Select Cursor to End"),           FN(OnSelectCursorEnd));
+
+   c->AddSeparator();
+
+   c->BeginSubMenu(_("Select..."));
+   c->AddItem("SelectAll",      _("&All\tCtrl+A"),                   FN(OnSelectAll));
+   c->AddItem("SelStartCursor", _("Start to Cursor"),                FN(OnSelectStartCursor));
+   c->AddItem("SelCursorEnd",   _("Cursor to End"),                  FN(OnSelectCursorEnd));
+
+   c->EndSubMenu();
+   c->AddItem("ZeroCross",      _("Find Zero Crossings\tZ"),         FN(OnZeroCrossing));
+   c->AddSeparator();
+   c->AddItem("SelSave",        _("Selection Save"),                 FN(OnSelectionSave));
+   c->AddItem("SelRestore",     _("Selection Restore"),              FN(OnSelectionRestore));
+   c->AddSeparator();
+
+   c->BeginSubMenu(_("Move Cursor..."));
+
+   c->AddItem("CursTrackStart", _("to Track Start"),                 FN(OnCursorTrackStart));
+   c->AddItem("CursTrackEnd",   _("to Track End"),                   FN(OnCursorTrackEnd));
+   c->AddItem("CursSelStart",   _("to Selection Start"),             FN(OnCursorSelStart));
+   c->AddItem("CursSelEnd",     _("to Selection End"),               FN(OnCursorSelEnd));
+   c->EndSubMenu();
+
+   c->BeginSubMenu(_("Snap-To..."));
+
+   /* i18n-hint: Set snap-to mode on or off */
+   c->AddItem("SnapOn",         _("Snap On"),                        FN(OnSnapOn));
+   /* i18n-hint: Set snap-to mode on or off */
+   c->AddItem("SnapOff",        _("Snap Off"),                       FN(OnSnapOff));
+   c->EndSubMenu();
+
    c->EndMenu();
 
    c->BeginMenu(_("&View"));
@@ -173,19 +201,12 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("ZoomNormal",     _("Zoom &Normal\tCtrl+2"),           FN(OnZoomNormal));
    c->AddItem("ZoomOut",        _("Zoom &Out\tCtrl+3"),              FN(OnZoomOut));
    c->AddItem("FitInWindow",    _("&Fit in Window\tCtrl+F"),         FN(OnZoomFit));
+   c->AddItem("FitV",           _("Fit &Vertically\tCtrl+Shift+F"),  FN(OnZoomFitV));
    c->AddItem("ZoomSel",        _("&Zoom to Selection\tCtrl+E"),     FN(OnZoomSel));
    c->AddSeparator();
 
    c->BeginSubMenu(_("Set Selection Format"));
    c->AddItemList("SelectionFormat", GetSelectionFormats(), FN(OnSelectionFormat));
-   c->EndSubMenu();
-
-   c->BeginSubMenu(_("Set Snap-to mode"));
-
-   /* i18n-hint: Set snap-to mode on or off */
-   c->AddItem("SnapOn",         _("On"),                             FN(OnSnapOn));
-   /* i18n-hint: Set snap-to mode on or off */
-   c->AddItem("SnapOff",        _("Off"),                            FN(OnSnapOff));
    c->EndSubMenu();
 
    c->AddSeparator();
@@ -216,13 +237,6 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem("RemoveTracks",   _("Remo&ve Tracks"),                 FN(OnRemoveTracks));
    c->AddSeparator();
-   c->AddItem("SelSave",        _("Cursor or Selection Save"),       FN(OnSelectionSave));
-   c->AddItem("SelRestore",     _("Cursor or Selection Restore"),    FN(OnSelectionRestore));
-   c->AddSeparator();
-   c->AddItem("CursTrackStart", _("Cursor to Track Start"),          FN(OnCursorTrackStart));
-   c->AddItem("CursTrackEnd",   _("Cursor to Track End"),            FN(OnCursorTrackEnd));
-   c->AddItem("CursSelStart",   _("Cursor to Selection Start"),      FN(OnCursorSelStart));
-   c->AddItem("CursSelEnd",     _("Cursor to Selection End"),        FN(OnCursorSelEnd));
 
    wxArrayString alignLabels;
    alignLabels.Add(_("Align with &Zero"));
@@ -234,7 +248,7 @@ void AudacityProject::CreateMenusAndCommands()
    alignLabels.Add(_("Align End with Selection End"));
    alignLabels.Add(_("Align Tracks Together"));
 
-   c->BeginSubMenu(_("Align..."));
+   c->BeginSubMenu(_("Align Tracks..."));
    c->AddItemList("Align", alignLabels, FN(OnAlign));
    c->EndSubMenu();
 
@@ -350,7 +364,6 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand("SelExtRight", _("Selection Extend Right\tShift+Right"),   FN(OnSelExtendRight));
    c->AddCommand("SelCntrLeft", _("Selection Contract Left\tCtrl+Shift+Right"),   FN(OnSelContractLeft));
    c->AddCommand("SelCntrRight",_("Selection Contract Right\tCtrl+Shift+Left"), FN(OnSelContractRight));
-   c->AddCommand("ZeroCross",   _("Selection to Nearest Zero Crossings\tZ"), FN(OnZeroCrossing));
 
    mSel0save = 0;
    mSel1save = 0;
@@ -1670,6 +1683,44 @@ void AudacityProject::OnZoomFit()
 
    Zoom(w / len);
    TP_ScrollWindow(0.0);
+}
+
+void AudacityProject::OnZoomFitV()
+{
+   int width, height, count;
+
+   mTrackPanel->GetTracksUsableArea(&width, &height);
+
+   height -= 28;
+
+   count = 0;
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+   while (t) {
+      if (t->GetKind() == Track::Wave)
+         count++;
+      else
+         height -= t->GetHeight();
+
+      t = iter.Next();
+   }
+
+   height = height / count;
+
+   if (height < 40)
+      height = 40;
+
+   TrackListIterator iter2(mTracks);
+   t = iter2.First();
+   while (t) {
+      if (t->GetKind() == Track::Wave)
+         t->SetHeight(height);
+      t = iter2.Next();
+   }
+
+   FixScrollbars();
+   Refresh(false);
+   ModifyState();
 }
 
 void AudacityProject::OnZoomSel()
