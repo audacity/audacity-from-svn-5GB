@@ -3090,7 +3090,7 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
       }
    }
 
-   switch (event.KeyCode()) {
+   switch (event.GetKeyCode()) {
    case WXK_SPACE:
       mListener->TP_OnPlayKey();
       break;

@@ -1190,7 +1190,7 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
  #endif
 #endif
 
-   long keyCode = event.KeyCode();
+   long keyCode = event.GetKeyCode();
 
    if (mSelIndex >= 0) {
       switch (keyCode) {
