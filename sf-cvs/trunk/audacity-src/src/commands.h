@@ -24,6 +24,7 @@
    enum menuCategory {fileMenu = 0, editMenu, viewMenu, projectMenu, effectMenu,
                       pluginMenu, helpMenu, numMenus};
 
+   enum menuType { typeSeparator=0, typeNormal, typeCheckItem, typeRadioItem};
    // BG: This is the structure that holds information about individual command items.
 
    struct CommandMenuItem
@@ -34,6 +35,7 @@
       menuCategory     category;
       menuState        state;
       bool             separatorPrev;
+      menuType         type;
       wxString         comboStrings;
    };
 
@@ -127,8 +129,9 @@
 
 {
    #define CMD_ADDFUNCTION(a) {fp = &AudacityProject::a; tmpCmd->callbackFunction = fp;}
-   #define CMD_ADDMENU(commandName, commandDesc, callback, nCategory, nState) { CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; tmpCmd->state = nState; tmpCmd->separatorPrev = false; CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( tmpCmd ); }
-   #define CMD_ADDMENUSEP(commandName, commandDesc, callback, nCategory, nState) { CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; tmpCmd->state = nState; tmpCmd->separatorPrev = true; CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( tmpCmd ); }
+   #define CMD_ADDMENU(commandName, commandDesc, callback, nCategory, nState)         { CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; tmpCmd->state = nState; tmpCmd->separatorPrev = false; tmpCmd->type=typeNormal;    CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( tmpCmd ); }
+   #define CMD_ADDMENU_CHECKED(commandName, commandDesc, callback, nCategory, nState) { CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; tmpCmd->state = nState; tmpCmd->separatorPrev = false; tmpCmd->type=typeCheckItem; CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( tmpCmd ); }
+   #define CMD_ADDMENUSEP(commandName, commandDesc, callback, nCategory, nState)      { CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; tmpCmd->state = nState; tmpCmd->separatorPrev = true;  tmpCmd->type=typeNormal;    CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( tmpCmd ); }
 
    audEventFunction fp;  //Set up temporary function pointer to use for assigning keybindings
 

@@ -124,7 +124,7 @@ void AudacityProject::BuildMenuBar()
    unsigned int i;
    for (i = 0; i < mCommandMenuItem.Count(); i++) {
       wxMenu *menu = 0;
-
+      //This determines which menu the current MenuItem belongs to.
       switch (mCommandMenuItem[i]->category) {
          case fileMenu:
             menu = mFileMenu;
@@ -146,12 +146,43 @@ void AudacityProject::BuildMenuBar()
             break;
       }
 
+      //This adds a separator before the item if it has the appropriate 
+      //bool flipped:
       if (mCommandMenuItem[i]->separatorPrev)
          menu->AppendSeparator();
-      menu->Append(i + MenuBaseID, mCommandMenuItem[i]->commandString);
+
+      const wxString dummy = "";
+
+      //This adds an element of the correct type:
+      switch(mCommandMenuItem[i]->type) {
+      case typeSeparator:
+         //Currently, separators are encoded as 'previous' to actual items, so
+         //This probably doesn't get used.
+         menu->AppendSeparator();
+         break;
+      
+      case typeNormal:
+         menu->Append(i + MenuBaseID, mCommandMenuItem[i]->commandString);
+         break;
+      case typeCheckItem:
+         menu->Append(i + MenuBaseID,(const wxString &) mCommandMenuItem[i]->commandString, dummy,true);
+         //menu->AppendCheckItem() can be used with wxWindows 2.3
+         //menu->AppendCheckItem(i + MenuBaseID,(const wxString &) mCommandMenuItem[i]->commandString, dummy);
+         break;
+      case typeRadioItem:
+         //This can't be done until wxWindows 2.3
+         //menu->AppendRadioItem(i + MenuBaseID,(const wxString &) mCommandMenuItem[i]->commandString, dummy);
+         menu->Append(i + MenuBaseID, mCommandMenuItem[i]->commandString);
+         break;
+      default:
+         //Error--this shouldn't happen
+         break;
+      }
+
+
+      
 
       gPrefs->SetPath("/Keyboard/" + wxString::Format("%i", i));
-
       long keyIndex;
       wxString keyString;
 
