@@ -16,6 +16,11 @@
 
 #include <math.h>
 
+#ifdef __WXMSW__
+#include <float.h>
+#define finite(x) _finite(x)
+#endif
+
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
 #include <wx/brush.h>
