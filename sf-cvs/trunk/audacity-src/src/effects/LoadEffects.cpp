@@ -16,6 +16,7 @@
 #include "AvcCompressor.h"
 #include "BassBoost.h"
 #include "Compressor.h"
+#include "ChangeSpeed.h"
 #include "ChangeTempo.h"
 #include "Echo.h"
 #include "Equalization.h"
@@ -62,6 +63,7 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectAmplify());
    Effect::RegisterEffect(new EffectAvcCompressor());
    Effect::RegisterEffect(new EffectBassBoost());
+   Effect::RegisterEffect(new EffectChangeSpeed());
    Effect::RegisterEffect(new EffectChangeTempo());
    Effect::RegisterEffect(new EffectCompressor());
    Effect::RegisterEffect(new EffectEcho());
