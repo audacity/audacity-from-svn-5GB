@@ -1,5 +1,5 @@
 %define name	libvorbis
-%define version	1.0rc2
+%define version	1.0rc3
 %define release 1
 
 Summary:	The Vorbis General Audio Compression Codec
@@ -12,7 +12,8 @@ URL:		http://www.xiph.org/
 Vendor:		Xiphophorus <team@xiph.org>
 Source:		ftp://ftp.xiph.org/pub/ogg/vorbis/%{name}-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-root
-Requires:	libogg >= 1.0rc2
+Requires:	libogg >= 1.0rc3
+Prefix:		%{_prefix}
 
 %description
 Ogg Vorbis is a fully open, non-proprietary, patent-and-royalty-free,
@@ -22,7 +23,7 @@ and variable bitrates from 16 to 128 kbps/channel.
 %package devel
 Summary: 	Vorbis Library Development
 Group: 		Development/Libraries
-Requires:	libogg-devel >= 1.0rc2
+Requires:	libogg-devel >= 1.0rc3
 Requires:	libvorbis-devel = %{version}
 
 %description devel
@@ -34,9 +35,9 @@ needed to develop applications with libvorbis.
 
 %build
 if [ ! -f configure ]; then
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=/usr
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%{_prefix}
 else
-  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=/usr
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{_prefix}
 fi
 make
 
@@ -49,9 +50,9 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %doc COPYING
 %doc AUTHORS
 %doc README
-/usr/lib/libvorbis.so.*
-/usr/lib/libvorbisfile.so.*
-/usr/lib/libvorbisenc.so.*
+%{_libdir}/libvorbis.so.*
+%{_libdir}/libvorbisfile.so.*
+%{_libdir}/libvorbisenc.so.*
 
 %files devel
 %doc doc/*.html
@@ -59,16 +60,16 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %doc doc/*.txt
 %doc doc/vorbisfile
 %doc doc/vorbisenc
-/usr/share/aclocal/vorbis.m4
-/usr/include/vorbis/codec.h
-/usr/include/vorbis/vorbisfile.h
-/usr/include/vorbis/vorbisenc.h
-/usr/lib/libvorbis.a
-/usr/lib/libvorbis.so
-/usr/lib/libvorbisfile.a
-/usr/lib/libvorbisfile.so
-/usr/lib/libvorbisenc.a
-/usr/lib/libvorbisenc.so
+%{_datadir}/aclocal/vorbis.m4
+%{_includedir}/vorbis/codec.h
+%{_includedir}/vorbis/vorbisfile.h
+%{_includedir}/vorbis/vorbisenc.h
+%{_libdir}/libvorbis.a
+%{_libdir}/libvorbis.so
+%{_libdir}/libvorbisfile.a
+%{_libdir}/libvorbisfile.so
+%{_libdir}/libvorbisenc.a
+%{_libdir}/libvorbisenc.so
 
 %clean 
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
@@ -80,5 +81,11 @@ make DESTDIR=$RPM_BUILD_ROOT install
 /sbin/ldconfig
 
 %changelog
+* Sun Dec 31 2001 Jack Moffitt <jack@xiph.org>
+- Updated for rc3 release.
+
+* Sun Oct 07 2001 Jack Moffitt <jack@xiph.org>
+- Updated for configurable prefixes
+
 * Sat Oct 21 2000 Jack Moffitt <jack@icecast.org>
 - initial spec file created

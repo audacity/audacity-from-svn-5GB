@@ -7,15 +7,15 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: linear scale -> dB, Bark and Mel scales
- last mod: $Id: scales.h,v 1.1.1.1 2001-08-14 19:04:28 habes Exp $
+ last mod: $Id: scales.h,v 1.1.1.2 2002-04-21 23:36:46 habes Exp $
 
  ********************************************************************/
 
-#ifndef _V_SCALE_H_
+#ifndef _V_SCALES_H_
 #define _V_SCALES_H_
 
 #include <math.h>
