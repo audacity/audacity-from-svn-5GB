@@ -1,0 +1,27 @@
+This is not an absolute list, but rather a sketchpad for keeping ideas,
+refining them, critiquing them, and perhaps implementing them. But it's
+better to write an idea down and throw it away than to have a good idea
+and never remember it again.
+
+UI::
+- make colors configurable
+- right-click capabilities
+- ability to drag tracks instead of move down, move down, move down
+- allow labels to contain selections, which would be activated by clicking
+  on the label
+- "Fit in window" also works vertically
+- auto-fit on open (configurable?)
+- add "trip" (= opposite of delete -- delete all but selection)
+- invert selection
+- legend for pitch and spectrum
+
+NEW FEATURES::
+- visualization window: VU meters, equalizer, continuous waveform, oscilloscope
+- EQ
+
+LOW LEVEL ISSUES::
+- support more bit rates, allow conversion
+- more robust up/downsampling
+- import/export ogg vorbis everywhere
+- move to portaudio (www.portaudio.com), when it's ready
+
