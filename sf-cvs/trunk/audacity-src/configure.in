@@ -141,11 +141,27 @@ AC_ARG_WITH(ladspa,
 	use_ladspa=$withval,
 	use_ladspa="default")
 
+AC_ARG_WITH(nyquist,
+	[AC_HELP_STRING([--with-nyquist],
+		[compile with Nyquist support [default=yes]])],
+	use_nyquist=$withval,
+	use_nyquist="no")
+
 AC_ARG_WITH(help,
 	[AC_HELP_STRING([--with-help],
 		[Make the help file "audacity-help.htb" [default=yes]])],
 	use_help=$withval,
 	use_help="yes")
+
+if [[ "$use_nyquist" = "yes" ]] ; then
+	AC_DEFINE(USE_NYQUIST, 1,	
+	[Define if Nyquist support should be enabled])
+
+	BUILDLIBS="$BUILDLIBS libnyquist/libnyquist.a"
+	CXXFLAGS="$CXXFLAGS -I../lib-src/libnyquist/nyx"
+	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/Nyquist.o"
+	OPTOBJS="$OPTOBJS ../lib-src/libnyquist/libnyquist.a"
+fi
 
 if [[ "$use_libsndfile" = "no" ]] ; then
 	   AC_MSG_ERROR([*** Audacity requires libsndfile 1.0.0 or higher to compile.  You must choose either --with-libsndfile=local or --with-libsndfile=system])
