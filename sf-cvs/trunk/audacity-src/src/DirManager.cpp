@@ -183,6 +183,8 @@ void DirManager::CleanTempDir()
 
    if (progress)
       delete progress;
+
+   delete [] array;
 }
 
 bool DirManager::SetProject(wxString & projPath, wxString & projName,
