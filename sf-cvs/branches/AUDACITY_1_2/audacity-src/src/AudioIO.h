@@ -196,6 +196,7 @@ private:
 
    #if USE_PORTMIXER
    PxMixer            *mPortMixer;
+   float               mPreviousHWPlaythrough;
    #endif
 
    bool                mEmulateMixerOutputVol;
