@@ -643,6 +643,7 @@ void TrackPanel::OnTimer()
       !gAudioIO->IsStreamActive(p->GetAudioIOToken()))
    {
       p->GetControlToolBar()->OnStop(dummyEvent);
+      p->RedrawProject();
    }
 
    // AS: The "indicator" is the little graphical mark shown in the ruler
@@ -660,8 +661,7 @@ void TrackPanel::OnTimer()
       DrawCursors();
    }
    // BG: Update the screen while playing
-   if((gAudioIO->IsStreamActive(p->GetAudioIOToken()) &&
-       !gAudioIO->IsPaused())) {
+   if(gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
       if (gAudioIO->GetNumCaptureChannels()) {
          if ((mTimeCount % 5) == 0)
             p->RedrawProject();
