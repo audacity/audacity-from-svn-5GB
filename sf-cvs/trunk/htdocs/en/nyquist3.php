@@ -209,6 +209,11 @@ join the
 </p>
 
 <p>
+Don't forget to consult the full 
+<a href="http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html">Nyquist Reference Manual</a> for more details of how Nyquist works.
+</p>
+
+<p>
 If there is enough interest in using Nyquist with Audacity, we
 may set up a separate mailing list.
 </p>
