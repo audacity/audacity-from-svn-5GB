@@ -242,7 +242,9 @@ void VolumeFunction(HMIXEROBJ hMixer, DWORD controlID, PxVolume *volume)
 {
    MIXERCONTROLDETAILS details;
    MMRESULT result;
-   MIXERCONTROLDETAILS_UNSIGNED value = 0;
+   MIXERCONTROLDETAILS_UNSIGNED value;
+
+   memset(&value, 0, sizeof(MIXERCONTROLDETAILS_UNSIGNED));
 
    details.cbStruct = sizeof(MIXERCONTROLDETAILS);
    details.dwControlID = controlID;
@@ -255,12 +257,12 @@ void VolumeFunction(HMIXEROBJ hMixer, DWORD controlID, PxVolume *volume)
                                    MIXER_GETCONTROLDETAILSF_VALUE);
 
    if (*volume < 0.0) {
-      *volume = (PxVolume)(value / 65535.0);
+      *volume = (PxVolume)(value.dwValue / 65535.0);
    }
    else {
       if (result != MMSYSERR_NOERROR)
          return;
-      value = (unsigned short)(*volume * 65535.0);
+      value.dwValue = (unsigned short)(*volume * 65535.0);
       mixerSetControlDetails(hMixer, &details,
                              MIXER_GETCONTROLDETAILSF_VALUE);
    }
