@@ -1036,6 +1036,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    UpdateMenus();
 }
 
+/// TODO: Move this into the toolbar class.
 /// DecorateToolBar draws the grabber handle to the left of the toolbar.
 /// It also draws a line under each toolbar.
 /// @param dc - the device context to draw to
@@ -1061,7 +1062,16 @@ void AudacityProject::DecorateToolBar( wxPaintDC & dc, int iToolBar )
    r.y = toolbartop;
    r.width = grabberWidth;
    r.height = toolbarheight;
+   // filled rectangle.
    dc.DrawRectangle(r);
+
+   //JKC: Draw a beveled rectangle round the grab-bar.
+   AColor::Light(&dc, false);
+   dc.DrawLine( r.x, r.y, r.x+r.width, r.y);
+   dc.DrawLine( r.x, r.y, r.x,         r.y+r.height);
+   AColor::Dark(&dc, false);
+   dc.DrawLine( r.x,         r.y+r.height, r.x+r.width, r.y+r.height);
+   dc.DrawLine( r.x+r.width, r.y,          r.x+r.width, r.y+r.height);
 
    // Draw little bumps to the left of the toolbar to
    // make it a "grab-bar".
@@ -1083,12 +1093,6 @@ void AudacityProject::DecorateToolBar( wxPaintDC & dc, int iToolBar )
    dc.SetPen(*wxBLACK_PEN);
    dc.DrawLine(r.x+9, toolbartop, r.x+9, toolbarbottom);
 
-   //Draw some more lines for Windows (tm), along the top and left side 
-   //of the grab-bar
-#ifdef __WXMSW__
-   dc.DrawLine(r.x, toolbartop, r.x+grabberWidth, toolbartop);
-   dc.DrawLine(r.x, toolbartop, r.x, toolbarbottom);
-#endif
    dc.DrawLine(r.x, toolbarbottom, r.x+toolbarwidth+grabberWidth, toolbarbottom);
 }
 

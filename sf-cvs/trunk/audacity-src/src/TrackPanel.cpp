@@ -108,48 +108,208 @@
 
 
 
-//--FIXME: Move this XPM out into an external file,
+//--FIXME: Move these XPMs out into an external file,
 // once the basic idea of custom icons has been validated.
-// Icons MUST be 32x32 (or they will be resized).
+// Cursors MUST be 32x32 (or they will be resized).
+// You only get black, white and transparent to use.
 
 /* XPM */
 static const char * EnvCursorXpm[] = {
 "32 32 3 1",
-" 	c #808080",  // background color = RGB:128,128,128
-".	c #000000",
+".	c #808080", // background color = RGB:128,128,128
+"#	c #000000",
 "+	c #FFFFFF",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"            .........           ",
-"            .+++++++.           ",
-"             .+++++.            ",
-"              .+++.             ",
-"               .+.              ",
-"                .               ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                .               ",
-"               .+.              ",
-"              .+++.             ",
-"             .+++++.            ",
-"            .+++++++.           ",
-"            .........           ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                ",
-"                                "};
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"............#########...........",
+"............#+++++++#...........",
+".............#+++++#............",
+"..............#+++#.............",
+"...............#+#..............",
+"................#...............",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................#...............",
+"...............#+#..............",
+"..............#+++#.............",
+".............#+++++#............",
+"............#+++++++#...........",
+"............#########...........",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................"};
+
+/* XPM */
+static const char * TimeCursorXpm[] = {
+"32 32 3 1",
+".	c #808080", // background color = RGB:128,128,128
+"#	c #000000",
+"+	c #FFFFFF",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"...........++.......++..........",
+"..........+#+.......+#+.........",
+".........+##+.......+##+........",
+"........+###+++++++++###+.......",
+".......+#################+......",
+"........+###+++++++++###+.......",
+".........+##+.......+##+........",
+"..........+#+.......+#+.........",
+"...........++.......++..........",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................"};
+
+
+static const char * IBeamCursorXpm[] = {
+"32 32 3 1",
+".	c #808080", // background color = RGB:128,128,128
+"#	c #000000",
+"+	c #FFFFFF",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+".............####.###...........",
+"................##..............",
+"................##..............",
+"................##..............",
+"................##..............",
+"................##..............",
+"................##..............",
+"................##..............",
+"................##..............",
+"................##..............",
+"................##..............",
+"................##..............",
+"................##..............",
+"................##..............",
+"................##..............",
+".............####.###...........",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................"};
+
+//Image of a pencil.
+static const char * DrawCursorXpm[] = {
+"32 32 3 1",
+".	c #808080", // background color = RGB:128,128,128
+"#	c #000000",
+"+	c #FFFFFF",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+".................+++............",
+"................+###+...........",
+"...............+#+###+..........",
+"..............+#+####+..........",
+"..............+#####+...........",
+".............+#++###+...........",
+".............+#+###+............",
+"............+#++###+............",
+"............+#+###+.............",
+"...........+#++###+.............",
+"...........+#+###+..............",
+"...........+#####+..............",
+"...........+####+...............",
+"...........+###+................",
+"...........+##+.................",
+"...........+#+..................",
+"............+...................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................"};
+
+//Image of a magnifying glass.
+//Don't put a + or a - inside the circle since 
+//Zoom in or zoom out may be changed by modifiers.
+static const char * ZoomCursorXpm[] = {
+"32 32 3 1",
+".	c #808080", // background color = RGB:128,128,128
+"#	c #000000",
+"+	c #FFFFFF",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................++++............",
+"...............+####+...........",
+"..............+##+++#+..........",
+".............+#++#+++#+.........",
+"............+##+#++++##+........",
+"............+#+#++++++#+........",
+"............+#+#++++++#+........",
+"............+##++++++##+........",
+".............+#++++++#+.........",
+"............+####++##+..........",
+"...........+###+####+...........",
+"..........+###+.++++............",
+".........+###+..................",
+"........+###+...................",
+".......+###+....................",
+"........+#+.....................",
+".........+......................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................"};
+
 
 //-- End of XPM FIXME
 
@@ -269,6 +429,27 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU(OnMergeStereoID, TrackPanel::OnMergeStereo)
     END_EVENT_TABLE()
 
+
+// Use CursorId as a fallback.
+wxCursor * MakeCursor( int CursorId, const char * pXpm[36],  int HotX, int HotY )
+{
+   wxCursor * pCursor;
+
+#ifdef __WXMAC__
+   pCursor = new wxCursor(CursorId);
+#else
+   {
+      wxImage Image = wxImage(wxBitmap(pXpm).ConvertToImage());
+      Image.SetMaskColour(128,128,128);
+      Image.SetMask();// Enable mask.
+      Image.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_X, HotX );
+      Image.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_Y, HotY );
+      pCursor = new wxCursor( Image );
+   }
+#endif
+   return pCursor;
+}
+
 TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
                        const wxPoint & pos,
                        const wxSize & size,
@@ -300,27 +481,16 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
 
    mIndicatorShowing = false;
 
-   mArrowCursor = new wxCursor(wxCURSOR_ARROW);
-   mPencilCursor = new wxCursor(wxCURSOR_PENCIL);
-   mSelectCursor = new wxCursor(wxCURSOR_IBEAM);
+   mPencilCursor  = MakeCursor( wxCURSOR_PENCIL,    DrawCursorXpm, 16, 16);
+   mSelectCursor  = MakeCursor( wxCURSOR_IBEAM,     IBeamCursorXpm,16, 16);
+   mEnvelopeCursor= MakeCursor( wxCURSOR_ARROW,     EnvCursorXpm,  16, 16);
+   mSlideCursor   = MakeCursor( wxCURSOR_SIZEWE,    TimeCursorXpm, 16, 16);
+   mZoomInCursor  = MakeCursor( wxCURSOR_MAGNIFIER, ZoomCursorXpm, 16, 16);
+   mZoomOutCursor = MakeCursor( wxCURSOR_MAGNIFIER, ZoomCursorXpm, 16, 16);
 
-   #ifdef __WXMAC__
-   mEnvelopeCursor = new wxCursor(wxCURSOR_ARROW);
-   #else
-   {
-      wxImage EnvImage = wxImage(wxBitmap(EnvCursorXpm).ConvertToImage());
-      EnvImage.SetMaskColour(128,128,128);
-      EnvImage.SetMask();// Enable mask.
-      EnvImage.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_X, 16 );
-      EnvImage.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_Y, 16 );
-      mEnvelopeCursor = new wxCursor( EnvImage );
-   }
-   #endif
-   mSlideCursor = new wxCursor(wxCURSOR_SIZEWE);
+   mArrowCursor = new wxCursor(wxCURSOR_ARROW);
    mSmoothCursor = new wxCursor(wxCURSOR_SPRAYCAN);
    mResizeCursor = new wxCursor(wxCURSOR_SIZENS);
-   mZoomInCursor = new wxCursor(wxCURSOR_MAGNIFIER);
-   mZoomOutCursor = new wxCursor(wxCURSOR_MAGNIFIER);
    mRearrangeCursor = new wxCursor(wxCURSOR_HAND);
    mAdjustLeftSelectionCursor = new wxCursor(wxCURSOR_POINT_LEFT);
    mAdjustRightSelectionCursor = new wxCursor(wxCURSOR_POINT_RIGHT);
@@ -450,7 +620,6 @@ TrackPanel::~TrackPanel()
    delete mNoteTrackMenu;
    delete mLabelTrackMenu;
    delete mTimeTrackMenu;
-
 
    while(!mScreenAtIndicator.IsEmpty())
    {
@@ -1993,15 +2162,23 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
    Track *t = mCapturedTrack;
    wxRect r = mCapturedRect;
 
+   if( t==NULL ){
+      wxASSERT(false);// Soloing or muting but no captured track!
+      mIsSoloing=false;
+      mIsMuting =false;
+      return;
+   }
+
    wxRect buttonRect;
    mTrackLabel.GetMuteSoloRect(r, buttonRect, solo);
 
    wxClientDC dc(this);
 
-   if (event.Dragging())
-      mTrackLabel.DrawMuteSolo(&dc, r, t, buttonRect.Inside(event.m_x, event.m_y),
+   if (event.Dragging()){
+         mTrackLabel.DrawMuteSolo(&dc, r, t, buttonRect.Inside(event.m_x, event.m_y),
                    solo);
-   else if (event.ButtonUp(1)) {
+   }
+   else if (event.ButtonUp(1) ) {
 
       if (buttonRect.Inside(event.m_x, event.m_y)) {
          if (solo)
@@ -2009,13 +2186,12 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
          else
             t->SetMute(!t->GetMute());
       }
-
-      mTrackLabel.DrawMuteSolo(&dc, r, t, false, solo);
       if (solo) {
          mIsSoloing = false;
-         mTrackLabel.DrawMuteSolo(&dc, r, t, false, !solo);
-      } else
+      } else{
          mIsMuting = false;
+      }
+      mTrackLabel.DrawMuteSolo(&dc, r, t, false, solo);
    }
 }
 
@@ -2337,13 +2513,13 @@ bool TrackPanel::MuteSoloFunc(Track * t, wxRect r, int x, int y,
    if (buttonRect.Inside(x, y)) {
 
       wxClientDC dc(this);
-      mTrackLabel.DrawMuteSolo(&dc, r, t, true, solo);
 
       if (solo)
          mIsSoloing = true;
       else
          mIsMuting = true;
 
+      mTrackLabel.DrawMuteSolo(&dc, r, t, true, solo);
       mCapturedTrack = t;
       mCapturedRect = r;
 
@@ -3148,8 +3324,8 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    mTrackLabel.DrawTitleBar(dc, r, t, false);
 
    if (t->GetKind() == Track::Wave) {
-      mTrackLabel.DrawMuteSolo(dc, r, t, false, false);
-      mTrackLabel.DrawMuteSolo(dc, r, t, false, true);
+      mTrackLabel.DrawMuteSolo(dc, r, t, mIsMuting, false);
+      mTrackLabel.DrawMuteSolo(dc, r, t, mIsSoloing, true);
 
       mTrackLabel.DrawSliders(dc, (WaveTrack *)t, r, index);
    }
@@ -3798,9 +3974,15 @@ void TrackLabel::GetTrackControlsRect(const wxRect r, wxRect & dest) const
 
 void TrackLabel::DrawCloseBox(wxDC * dc, const wxRect r, bool down)
 {
+   const int xSize=7;
+   const int offset=5;
+
    dc->SetPen(*wxBLACK_PEN);
-   dc->DrawLine(r.x + 3, r.y + 3, r.x + 13, r.y + 13);  // close "x"
-   dc->DrawLine(r.x + 13, r.y + 3, r.x + 3, r.y + 13);
+   // close "x"
+   dc->DrawLine(r.x + offset  ,         r.y + offset, r.x + offset+xSize  , r.y + offset+xSize);
+   dc->DrawLine(r.x + offset+1,         r.y + offset, r.x + offset+xSize+1, r.y + offset+xSize);
+   dc->DrawLine(r.x + xSize + offset  , r.y + offset, r.x + offset,         r.y + offset+xSize);
+   dc->DrawLine(r.x + xSize + offset-1, r.y + offset, r.x + offset-1,       r.y + offset+xSize);
    wxRect bev;
    GetCloseBoxRect(r, bev);
    bev.Inflate(-1, -1);
@@ -3855,11 +4037,12 @@ void TrackLabel::DrawMuteSolo(wxDC * dc, const wxRect r, Track * t,
 
    long textWidth, textHeight;
    wxString str = (solo) ? _("Solo") : _("Mute");
+
    SetLabelFont(dc);
    dc->GetTextExtent(str, &textWidth, &textHeight);
    dc->DrawText(str, bev.x + (bev.width - textWidth) / 2, bev.y + 2);
 
-   AColor::Bevel(*dc, !down, bev);
+   AColor::Bevel(*dc, (solo?t->GetSolo():t->GetMute()) == down, bev);
 }
 
 void TrackLabel::MakeMoreSliders()

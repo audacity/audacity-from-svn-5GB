@@ -34,6 +34,8 @@ wxBrush AColor::soloBrush;
 
 wxBrush AColor::envelopeBrush;
 wxPen AColor::envelopePen;
+wxPen AColor::WideEnvelopePen;
+wxBrush AColor::tooltipBrush;
 
 void AColor::Bevel(wxDC & dc, bool up, wxRect & r)
 {
@@ -140,12 +142,19 @@ void AColor::Init()
        wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW);
 
    envelopePen.SetColour(110, 110, 220);
+   WideEnvelopePen.SetColour(110, 110, 220);
    envelopeBrush.SetColour(110, 110, 220);
+   WideEnvelopePen.SetWidth( 3 );
    
    // muteBrush[1] is used when solo is on, since solo overrides mute.
-   muteBrush[0].SetColour(110, 220, 110);
-   muteBrush[1].SetColour(170, 180, 170);
-   soloBrush.SetColour(255, 140, 140);
+//   muteBrush[0].SetColour(110, 220, 110);
+//   muteBrush[1].SetColour(170, 180, 170);
+//   soloBrush.SetColour(255, 140, 140);
+   // Colors modified to avoid using reserved colors red and green.
+   muteBrush[0].SetColour(160, 170, 210);
+   muteBrush[1].SetColour(160, 170, 210);
+   soloBrush.SetColour(160, 170, 210);
+
 
    cursorPen.SetColour(0, 0, 0);
 //   indicatorPen[0].SetColour(255, 0, 51); //recording
@@ -155,6 +164,10 @@ void AColor::Init()
    indicatorBrush[0].SetColour(190,129,129); //recording
    indicatorBrush[1].SetColour( 28,171, 51); //playback
 
+//Determine tooltip color
+//TODO: Find out why the commented out version yields black.
+//   tooltipBrush.SetColour( wxSystemSettings::GetSystemColour(wxSYS_COLOUR_INFOTEXT) );
+   tooltipBrush.SetColour( 250,250,215); //pale shade of yellow, to match MS Windows tooltips
 
 #if defined(__WXMSW__) || defined(__WXGTK__)
    // unselected

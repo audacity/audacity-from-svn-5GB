@@ -1583,6 +1583,27 @@ void AudacityProject::OnZoomOut()
 
 }
 
+static double OldZooms[2]={ 44100.0/512.0, 4410.0/512.0 };
+void AudacityProject::OnZoomToggle()
+{
+   double origLeft = mViewInfo.h;
+   double origWidth = mViewInfo.screen;
+
+   float f;
+   // look at percentage difference.  We add a small fudge factor
+   // to avoid testing for zero divisor.
+   f = mViewInfo.zoom / (OldZooms[0] + 0.0001f);
+   // If old zoom is more than 10 percent different, use it.
+   if( (0.90f > f) || (f >1.10) ){
+      OldZooms[1]=OldZooms[0];
+      OldZooms[0]=mViewInfo.zoom;
+   }
+   Zoom( OldZooms[1] );
+   double newh = origLeft + (origWidth - mViewInfo.screen) / 2;
+   TP_ScrollWindow(newh);
+}
+
+
 void AudacityProject::OnZoomNormal()
 {
    Zoom(44100.0 / 512.0);

@@ -102,6 +102,7 @@ void OnSelectStartCursor();
 
 void OnZoomIn();
 void OnZoomOut();
+void OnZoomToggle();
 void OnZoomNormal();
 void OnZoomFit();
 void OnZoomSel();

@@ -603,7 +603,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
    // Draw the plot
 
    if (alg == 0)
-      memDC.SetPen(wxPen(wxColour(50, 150, 50), 1, wxSOLID));
+      memDC.SetPen(wxPen(wxColour(140, 60, 190), 1, wxSOLID));
    else
       memDC.SetPen(wxPen(wxColour(200, 50, 150), 1, wxSOLID));
 
@@ -679,7 +679,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
       else
       px = int ((bestpeak - xMin) * width / (xMax - xMin));
 
-      memDC.SetPen(wxPen(wxColour(200, 0, 0), 1, wxSOLID));
+      memDC.SetPen(wxPen(wxColour(160,160,160), 1, wxSOLID));
       memDC.DrawLine(r.x + 1 + px, r.y, r.x + 1 + px, r.y + r.height);
    }
    // Outline the graph

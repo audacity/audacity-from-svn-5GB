@@ -30,6 +30,8 @@
 #include "EditButtons/ZoomSelAlpha.xpm"
 #include "EditButtons/ZoomFit.xpm"
 #include "EditButtons/ZoomFitAlpha.xpm"
+#include "EditButtons/ZoomToggle.xpm"
+#include "EditButtons/ZoomToggleAlpha.xpm"
 #include "EditButtons/PasteDisabled.xpm"       
 #include "EditButtons/RedoDisabled.xpm"           
 #include "EditButtons/SilenceDisabled.xpm"     
@@ -41,3 +43,4 @@
 #include "EditButtons/ZoomOutDisabled.xpm"
 #include "EditButtons/ZoomSelDisabled.xpm"
 #include "EditButtons/ZoomFitDisabled.xpm"
+#include "EditButtons/ZoomToggleDisabled.xpm"
