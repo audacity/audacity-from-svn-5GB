@@ -1113,6 +1113,22 @@ void AudacityProject::OnExportLabels()
    if (fName == "")
       return;
 
+   // Move existing files out of the way.  Otherwise wxTextFile will
+   // append to (rather than replace) the current file.
+
+   if (wxFileExists(fName)) {
+#ifdef __WXGTK__
+      wxString safetyFileName = fName + "~";
+#else
+      wxString safetyFileName = fName + ".bak";
+#endif
+
+      if (wxFileExists(safetyFileName))
+         wxRemoveFile(safetyFileName);
+
+      wxRename(fName, safetyFileName);
+   }
+
    wxTextFile f(fName);
 #ifdef __WXMAC__
    wxFile *temp = new wxFile();
