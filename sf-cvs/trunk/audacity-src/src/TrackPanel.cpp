@@ -1275,11 +1275,11 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
       case WXK_SPACE:
          mListener->TP_OnPlayKey();
          break;
-      case WXK_UP:
+      case WXK_PRIOR:
          // BG: Page right
          mListener->TP_ScrollWindow((mViewInfo->h + mViewInfo->screen) - (mViewInfo->screen/6));
          break;
-      case WXK_DOWN:
+      case WXK_NEXT:
          // BG: Page left
          mListener->TP_ScrollWindow((mViewInfo->h - mViewInfo->screen) + (mViewInfo->screen/6));
          break;
