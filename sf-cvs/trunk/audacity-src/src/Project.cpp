@@ -852,6 +852,13 @@ bool AudacityProject::ProcessEffectEvent(int nEffectIndex)
    return false;
 }
 
+void AudacityProject::UpdateMenus()
+{
+   wxUpdateUIEvent dummyEvent;
+   mFirstTimeUpdateMenus = true;
+   OnUpdateMenus(dummyEvent);
+}
+
 //TODO: This function is still kinda hackish, clean up
 void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 {

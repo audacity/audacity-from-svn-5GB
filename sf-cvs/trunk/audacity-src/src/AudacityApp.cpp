@@ -120,8 +120,6 @@ void QuitAudacity()
 
 
    QuitHelp();
-
-   FinishPreferences();
 }
 
 IMPLEMENT_APP(AudacityApp)
@@ -856,6 +854,16 @@ int AudacityApp::OnExit()
    {
       Dispatch();
    }
+
+   bool bFalse = false;
+   //Should we change the commands.cfg location next startup?
+   if(gPrefs->Read("/QDeleteCmdCfgLocation", &bFalse))
+   {
+      gPrefs->DeleteEntry("/QDeleteCmdCfgLocation");
+      gPrefs->Write("/DeleteCmdCfgLocation", true);
+   }
+
+   FinishPreferences();
 
 //   delete mChecker;
    return 0;
