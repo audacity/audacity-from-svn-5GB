@@ -47,7 +47,7 @@ PrefsPanel(parent)
       //Add label
       topSizer->Add(
                new wxStaticText(this, -1,
-                  _("This code has undergone a rewrite. The GUI is not complete.\nYou can still define custom keybindings; edit the 'commands.cfg' file.\nIf you need to know what a speciffic key combo is called, type it in the box below.\nClick Assign Defaults to revert the menus back to default.\nClick Rebuild Menus to reparse 'commands.cfg' and rebuild the menus.")),
+                  _("This code has undergone a rewrite. The GUI is not complete.\nYou can still define custom keybindings; edit the 'Audacity-Commands.xml' file.\nIf you need to know what a specific key combo is called, type it in the box below.\nClick Assign Defaults to revert the menus back to default.\nClick Rebuild Menus to reparse 'Audacity-Commands.xml' and rebuild the menus.")),
                0, wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
 
       //Add key combo text box
@@ -68,7 +68,7 @@ PrefsPanel(parent)
                           wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
 
       //Add change commands.cfg location button
-      topSizer->Add(new wxButton(this, ChooseCmdsCfgLocationID, _("Change Commands.cfg Location")), 0,
+      topSizer->Add(new wxButton(this, ChooseCmdsCfgLocationID, _("Change Audacity-Commands.xml Location")), 0,
                           wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
 
       bool bFalse = false;
