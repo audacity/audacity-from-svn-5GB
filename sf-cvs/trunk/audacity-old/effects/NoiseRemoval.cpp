@@ -34,6 +34,7 @@ EffectNoiseRemoval::EffectNoiseRemoval()
    sum = new float[windowSize];
    sumsq = new float[windowSize];
    profileCount = new int[windowSize];
+   smoothing = new float[windowSize];
    hasProfile = false;
    level = 8;
 }
@@ -121,9 +122,11 @@ bool EffectNoiseRemoval::ProcessOne(int count, WaveTrack * t,
    sampleCount originalLen = len;
    
    int i;
+   bool first = true;
    
-   for(i=0; i<windowSize; i++)
+   for(i=0; i<windowSize; i++) {
       lastWindow[i] = 0;
+   }
    
    while(len) {
       int block = idealBlockLen;
@@ -147,7 +150,8 @@ bool EffectNoiseRemoval::ProcessOne(int count, WaveTrack * t,
          if (doProfile)
             GetProfile(windowSize, thisWindow);
          else {
-            RemoveNoise(windowSize, thisWindow);
+            RemoveNoise(windowSize, thisWindow, first);
+            first = false;
             for(j=0; j<windowSize/2; j++)
                buffer[i+j] = thisWindow[j] + lastWindow[windowSize/2 + j];
          }
@@ -206,7 +210,8 @@ void EffectNoiseRemoval::GetProfile(sampleCount len,
 }
 
 void EffectNoiseRemoval::RemoveNoise(sampleCount len,
-                                     sampleType *buffer)
+                                     sampleType *buffer,
+                                     bool first)
 {
    float *inr = new float[len];
    float *ini = new float[len];
@@ -235,15 +240,23 @@ void EffectNoiseRemoval::RemoveNoise(sampleCount len,
    int half = len/2;
    for(i=0; i<=half; i++) {
       int j = len - i;
+      float smooth;
       
-      if (plog[i] < noiseGate[i] + (level/2.0)) {
-         outr[i] = 0;
-         outi[i] = 0;
+      if (plog[i] < noiseGate[i] + (level/2.0))
+         smooth = 0.0;
+      else
+         smooth = 1.0;
       
-         if (i!=0 && i!=len/2) {
-            outr[j] = 0;
-            outi[j] = 0;
-         }
+      if (!first)
+         smooth = smooth * 0.5 + smoothing[i] * 0.5;
+      smoothing[i] = smooth;
+      
+      outr[i] *= smooth;
+      outi[i] *= smooth;
+      
+      if (i!=0 && i!=len/2) {
+         outr[j] *= smooth;
+         outi[j] *= smooth;
       }
    }
 

@@ -52,7 +52,7 @@ private:
    void GetProfile(sampleCount len,
                    sampleType *buffer);
    void RemoveNoise(sampleCount len,
-                    sampleType *buffer);   
+                    sampleType *buffer, bool first);   
    
    Envelope *mEnvelope;
 
@@ -60,6 +60,7 @@ private:
    float    *noiseGate;
    float    *sum;
    float    *sumsq;
+   float    *smoothing;
    int      *profileCount;
    bool      doProfile;
    bool      hasProfile;
