@@ -3,18 +3,24 @@ refining them, critiquing them, and perhaps implementing them. But it's
 better to write an idea down and throw it away than to have a good idea
 and never remember it again.
 
+META::
+- decide which of these are planned for 1.0!
+- library reorganization
+
 UI::
 - make colors configurable
+- better ruler, both for time (horizontally) and magnitude/pitch (vertical)
 - right-click capabilities
 - ability to drag tracks instead of move down, move down, move down
 - allow labels to contain selections, which would be activated by clicking
   on the label
 - "Fit in window" also works vertically
 - auto-fit on open (configurable?)
-- add "trip" (= opposite of delete -- delete all but selection)
+- add "trim" (= opposite of delete -- delete all but selection)
 - invert selection
 - legend for pitch and spectrum
 - loop over a small segment
+- better adaptation to different font sizes (sizers)
 
 NEW FEATURES::
 - visualization window: VU meters, equalizer, continuous waveform, oscilloscope
@@ -25,4 +31,4 @@ LOW LEVEL ISSUES::
 - more robust up/downsampling
 - import/export ogg vorbis everywhere
 - move to portaudio (www.portaudio.com), when it's ready
-
+- move to lossless compression (FLAC?) for internal representation
