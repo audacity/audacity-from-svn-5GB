@@ -1,7 +1,8 @@
 /* C code produced by gperf version 3.0.1 */
 /* Command-line: gperf -tCcTonD -K id -N id3_compat_lookup -s -3 -k '*' compat.gperf  */
 
-#if !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \
+// JKC: use a #define because MSVC barfs on continuation characters for a #if
+#define CHAR_SET_FAILS  !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \
       && ('%' == 37) && ('&' == 38) && ('\'' == 39) && ('(' == 40) \
       && (')' == 41) && ('*' == 42) && ('+' == 43) && (',' == 44) \
       && ('-' == 45) && ('.' == 46) && ('/' == 47) && ('0' == 48) \
@@ -24,6 +25,8 @@
       && ('s' == 115) && ('t' == 116) && ('u' == 117) && ('v' == 118) \
       && ('w' == 119) && ('x' == 120) && ('y' == 121) && ('z' == 122) \
       && ('{' == 123) && ('|' == 124) && ('}' == 125) && ('~' == 126))
+
+#if CHAR_SET_FAILS
 /* The character set is not based on ISO-646.  */
 error "gperf generated tables don't work with this execution character set. Please report a bug to <bug-gnu-gperf@gnu.org>."
 #endif
