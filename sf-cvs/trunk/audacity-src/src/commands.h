@@ -28,9 +28,10 @@
 
 #endif
 
-#ifdef AUDACITY_MENUS_COMMANDS_ENUM
+#ifdef AUDACITY_MENUS_COMMANDS_GLOBALS
 
 /*This defines the  function pointer??*/
+// BG: Yes. For now, this seems like the best place to put it.
 typedef void (AudacityProject::*audEventFunction)(wxCommandEvent&);
 
 enum {

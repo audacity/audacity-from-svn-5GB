@@ -53,9 +53,9 @@
 #include "effects/Effect.h"
 #include "prefs/PrefsDialog.h"
 
-#define AUDACITY_MENUS_ENUM
+#define AUDACITY_MENUS_GLOBALS
 #include "Menus.h"
-#undef AUDACITY_MENUS_ENUM
+#undef AUDACITY_MENUS_GLOBALS
 
 void AudacityProject::CreateMenuBar()
 {
