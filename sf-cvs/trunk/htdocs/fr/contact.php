@@ -1,1 +1,37 @@
-<?php BoxTop($contactUsStr); ?><p>Voici différentes façons de trouver réponse à vos questions au sujet d'Audacity:</p><p><ul><li><?php print "<a href=faq.php?$langLinkStr>$faqStr"; ?></a><br>Pour savoir ce qu'est Audacity ou pour résoudre des problèmes d'installation ou de fonctionnement, veuillez d'abord consulter cette page qui répond à de nombreuses questions.<p><li>Inscrivez-vous à la <a href="http://lists.sourceforge.net/lists/listinfo/audacity-users">Liste de diffusion des utilisateurs d'Audacity </a>.<br>Consultez <a href="http://www.geocrawler.com/lists/3/SourceForge/14680/0/"> les archives de la liste de diffusion des utilisateurs d'Audacity</a>.<br>Cette nouvelle liste de diffusion permet aux utilisateurs d'Audacity d'échanger et de partager leurs connaissances et leurs idées.  Si vous pensez que d'autres utilisateurs pourraient répondre à votre question, inscrivez-vous sur la liste de diffusion et posez-y votre question. Vérifiez également les archives pour voir si votre question aurait déjà été posée.<p><li>Par courriel: <a href="mailto:audacity-help@lists.sourceforge.net">audacity-help@lists.sourceforge.net</a><br> ou consultez les <a href="http://www.geocrawler.com/lists/3/SourceForge/14679/0/"> Archives d'aide Audacity</a>.<br>Si vous rencontrez un problème technique très pointu avec Audacity et qu'il ne peut être résolu par d'autres utilisateurs, écrivez à cette adresse.Votre message sera lu par une équipe de développeurs d'Audacity.Utilisez cette même adresse dans le cas où vous voudriez absolument entrer en contact avec les développeurs pour une quelconque raison.<p>Audacity est développé par des bénévoles de tous les coins du monde.  Il est donc impossible de nous rejoindre par téléphone ou par la poste.  Tout ce qui concerne Audacity se passe sur internet, et seules ces listes d'envoi et ces adresses de courriel permettent de communiquer avec les développeurs. <p></ul><p>Dans ce site, seul le masculin est utilisé dans le but d'alléger le texte.</p><?php BoxBottom(); ?>
+<?php BoxTop($contactUsStr); ?>
+
+<p>
+Voici différentes façons de trouver réponse à vos questions au sujet d'Audacity :
+</p>
+
+<p>
+<ul>
+
+<li>
+<?php print "<a href=faq.php?$langLinkStr>$faqStr"; ?></a><br>
+Pour savoir ce qu'est Audacity ou pour résoudre des problèmes d'installation ou de fonctionnement, veuillez d'abord consulter cette page qui répond à de nombreuses questions.
+<p>
+
+<li>
+Inscrivez-vous à la <a href="http://lists.sourceforge.net/lists/listinfo/audacity-users">Liste de diffusion des utilisateurs d'Audacity </a>.<br>
+Consultez <a href="http://sourceforge.net/mailarchive/forum.php?forum_id=827">les archives de la liste de diffusion des utilisateurs d'Audacity</a>.<br>
+Cette nouvelle liste de diffusion permet aux utilisateurs d'Audacity d'échanger et de partager leurs connaissances et leurs idées.  Si vous pensez que d'autres utilisateurs pourraient répondre à votre question, inscrivez-vous sur la liste de diffusion et posez-y votre question. Vérifiez également les archives pour voir si votre question aurait déjà été posée.
+<p>
+
+<li>
+Par courriel: <a href="mailto:audacity-help@lists.sourceforge.net"
+>audacity-help@lists.sourceforge.net</a><br> ou consultez les <a href="http://sourceforge.net/mailarchive/forum.php?forum_id=828">Archives d'aide Audacity</a>.<br>
+<font size=-1><?php print "$listPrivacyStr"; ?></font><br>
+Si vous rencontrez un problème technique très pointu avec Audacity et qu'il ne peut être résolu par d'autres utilisateurs, écrivez à cette adresse.
+Votre message sera lu par une équipe de développeurs d'Audacity.
+Utilisez cette même adresse dans le cas où vous voudriez absolument entrer en contact avec les développeurs pour une quelconque raison.
+<p>
+Audacity est développé par des bénévoles de tous les coins du monde.  Il est donc impossible de nous rejoindre par téléphone ou par la poste.  Tout ce qui concerne Audacity se passe sur internet, et seules ces listes d'envoi et ces adresses de courriel permettent de communiquer avec les développeurs. 
+<p>
+
+</ul>
+
+<p>Dans ce site, seul le masculin est utilisé dans le but d'alléger le texte.
+</p>
+
+<?php BoxBottom(); ?>

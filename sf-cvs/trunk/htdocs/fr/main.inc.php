@@ -1,6 +1,6 @@
 <?php
 $charset = "iso-8859-1";
-$translatorName = "Simon Beaudry";
+$translatorName = "Simon Beaudry, Lionel Allorge";
 $languageStr = "French";
 $metaDescription = "Audacity, un logiciel de traitement sonore multi-plateformes et gratuit";
 $helpSectionStr = "Aide";
@@ -38,6 +38,8 @@ $browseDoxygenStr = "Accéder à la documentation Doxygen";
 $creditsStr = "Contributions";
 $sourceStr = "Code Source";
 $sourceDepStr = "Dépendences du Code Source";
+$linuxStr = "Binaires Linux";
+$linuxStr2 = "Ceci est un fichier binaire statique, qui devrait fonctionner sous n'importe quelle distribution Linux. Décompressez et lancez le binaire 'audacity' depuis n'importe quel répertoire ou bien lancez 'make install' en tant que root pour installer le programme.";
 $macOS9ReqStr = "Requiert Mac OS 8.6 ou plus récent";
 $macOSXReqStr = "Requiert Mac OS X 10.1 ou plus récent";
 $windowsReqStr = "Requiert Windows 98, ME, 2000, ou XP";
@@ -49,10 +51,11 @@ $zipStr = "fichier ZIP";
 $sitStr = "archive StuffIt";
 $dmgStr = "Image-disque Mac OS X";
 $tarballStr = "Source code tarball";
-$rpmStr = "Binary RPM";
+$linux386Str = "Binaire Linux  (i386 seulement)";
+$rpmStr = "Binaire RPM";
 $srpmStr = "Source RPM";
-$latestStableStr = "Version courante  (stable):";
-$latestBetaStr = "Dernière version (Bêta):";
+$latestStableStr = "Version courante  (stable) :";
+$latestBetaStr = "Dernière version (Bêta) :";
 $releaseNotesStr = "Notes de mises à jour";
 $releaseNotesStr2 = "Notes de mises à jour (Quoi de neuf dans cette version?)";
 $vstLinksHereStr = "Télécharger les modules VST";
@@ -60,4 +63,5 @@ $altDownloadStr = "Des problèmes pour télécharger ? Besoin d'une version précéde
 $altDownloadStr2 = "Cliquez ici pour d'autres liens de téléchargement.";
 $docsStr = "Télécharger la plus récente documentation";
 $clickEnlargeStr = "(Cliquer sur une image pour l'agrandir.)";
+$listPrivacyStr = "(Ceci est une liste de diffusion publique, et les archives sont publiées en ligne.)";
 ?>
