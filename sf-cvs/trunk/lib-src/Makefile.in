@@ -71,7 +71,7 @@ libsndfile.a: libsndfile-recursive
 # SoundTouch
 soundtouch-recursive:
 	$(MAKE) -C soundtouch
-soundtouch.a: soundtouch-recursive
+libSoundTouch.a: soundtouch-recursive
 	ln -sf soundtouch/source/SoundTouch/.libs/libSoundTouch.a .
 
 # PortAudio
