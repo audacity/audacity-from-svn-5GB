@@ -205,8 +205,7 @@ BlockFile *DirManager::NewBlockFile()
    return newBlockFile;
 }
 
-BlockFile *DirManager::NewTempAliasBlockFile(int localLen,
-                                             wxString fullPath,
+BlockFile *DirManager::NewTempAliasBlockFile(wxString fullPath,
                                              sampleCount start,
                                              sampleCount len, int channel)
 {
@@ -218,7 +217,6 @@ BlockFile *DirManager::NewTempAliasBlockFile(int localLen,
    } while (wxFileExists(thePathName));
 
    BlockFile *newBlockFile = new BlockFile(theFileName, thePathName,
-                                           localLen,
                                            fullPath,
                                            start, len, channel);
 
@@ -229,13 +227,12 @@ BlockFile *DirManager::NewTempAliasBlockFile(int localLen,
    return newBlockFile;
 }
 
-BlockFile *DirManager::NewAliasBlockFile(int localLen,
-                                         wxString fullPath,
+BlockFile *DirManager::NewAliasBlockFile(wxString fullPath,
                                          sampleCount start,
                                          sampleCount len, int channel)
 {
    if (projFull == "")
-      return NewTempAliasBlockFile(localLen, fullPath, start, len,
+      return NewTempAliasBlockFile(fullPath, start, len,
                                    channel);
 
    wxString theFileName;
@@ -246,7 +243,6 @@ BlockFile *DirManager::NewAliasBlockFile(int localLen,
    } while (wxFileExists(thePathName));
 
    BlockFile *newBlockFile = new BlockFile(theFileName, thePathName,
-                                           localLen,
                                            fullPath,
                                            start, len, channel);
 
@@ -262,7 +258,6 @@ void DirManager::SaveBlockFile(BlockFile * f, wxTextFile * out)
    if (f->IsAlias()) {
       out->AddLine("Alias");
       out->AddLine(f->mAliasFullPath);
-      out->AddLine(wxString::Format("%d", f->mLocalLen));
       out->AddLine(wxString::Format("%d", f->mStart));
       out->AddLine(wxString::Format("%d", f->mLen));
       out->AddLine(wxString::Format("%d", f->mChannel));
@@ -278,13 +273,11 @@ BlockFile *DirManager::LoadBlockFile(wxTextFile * in)
 
    bool alias = false;
    wxString aliasFullPath;
-   long localLen, start, len, channel;
+   long start, len, channel;
 
    if (blockName == "Alias") {
       alias = true;
       aliasFullPath = in->GetNextLine();
-      if (!(in->GetNextLine().ToLong(&localLen)))
-         return NULL;
       if (!(in->GetNextLine().ToLong(&start)))
          return NULL;
       if (!(in->GetNextLine().ToLong(&len)))
@@ -306,7 +299,6 @@ BlockFile *DirManager::LoadBlockFile(wxTextFile * in)
 
       if (alias)
          newBlockFile = new BlockFile(blockName, pathName,
-                                      localLen,
                                       aliasFullPath, start, len, channel);
       else
          newBlockFile = new BlockFile(blockName, pathName);

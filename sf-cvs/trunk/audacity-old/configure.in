@@ -22,7 +22,7 @@ AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
 
 CFLAGS=""
-CPPFLAGS="-O3"
+CPPFLAGS=""
 CXXFLAGS=""
 
 dnl options
@@ -116,9 +116,11 @@ dnl --- debugging tweaking ---
 debugstring="non-debugging"
 wxconfig="wxgtk-config"
 if [[ $enable_debug = "yes" ]] ; then
-	CPPFLAGS="$CPPFLAGS -g"
+	CPPFLAGS="$CPPFLAGS -g -O0"
 	wxconfig="wxgtkd-config"
    debugstring="debugging"
+else
+   CPPFLAGS="$CPPFLAGS -O3"
 fi
 
 dnl --- check for required libraries ---

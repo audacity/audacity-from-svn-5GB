@@ -49,8 +49,8 @@ class WaveTrack:public VTrack {
    sampleCount numSamples;
    double rate;
 
-    WaveTrack(DirManager * projDirManager);
-    virtual ~ WaveTrack();
+   WaveTrack(DirManager * projDirManager);
+   virtual ~ WaveTrack();
 
    virtual void DeleteButDontDereference();
 
@@ -99,6 +99,7 @@ class WaveTrack:public VTrack {
 
    static sampleCount GetMaxBlockSize();
    static sampleCount GetIdealBlockSize();
+   static int GetHeaderLen();
    sampleCount GetBestBlockSize(sampleCount start);
 
    BlockArray *GetBlockArray() {

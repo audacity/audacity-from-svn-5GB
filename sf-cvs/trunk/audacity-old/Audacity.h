@@ -18,7 +18,7 @@
 
 // Don't change this unless the file format changes
 // in an irrevocable way
-#define AUDACITY_FILE_FORMAT_VERSION "0.95"
+#define AUDACITY_FILE_FORMAT_VERSION "0.97"
 
 class wxWindow;
 

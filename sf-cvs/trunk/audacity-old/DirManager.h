@@ -57,12 +57,10 @@ class DirManager {
    BlockFile *NewTempBlockFile();
    BlockFile *NewBlockFile();
 
-   BlockFile *NewTempAliasBlockFile(int localLen,
-                                    wxString fullPath,
+   BlockFile *NewTempAliasBlockFile(wxString fullPath,
                                     sampleCount start,
                                     sampleCount len, int channel);
-   BlockFile *NewAliasBlockFile(int localLen,
-                                wxString fullPath,
+   BlockFile *NewAliasBlockFile(wxString fullPath,
                                 sampleCount start,
                                 sampleCount len, int channel);
 

@@ -64,11 +64,11 @@ void wxOnAssert(const char *fileName, int lineNumber, const char *msg)
       printf("ASSERTION FAILED!\n%s: %d\n", fileName, lineNumber);
 
    // Force core dump
-//  int *i = 0;
-//  if (*i)
-//      exit(1);
+  int *i = 0;
+  if (*i)
+      exit(1);
 
-//  exit(0);
+  exit(0);
 }
 #endif
 

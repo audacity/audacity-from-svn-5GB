@@ -37,7 +37,6 @@ class BlockFile {
 
    // Alias block file
    BlockFile(wxString name, wxString fullPath,
-             int localLen,
              wxString aliasFullPath,
              sampleCount aliasStart, sampleCount aliasLen,
              int aliasChannel);
@@ -46,7 +45,8 @@ class BlockFile {
 
    bool OpenReadHeader();
    bool OpenReadData();
-   bool OpenWriting();
+   bool OpenWriteHeader();
+   bool OpenWriteData();
 
    void Close();
 
@@ -75,7 +75,18 @@ class BlockFile {
       BLOCK_TYPE_FLAC
    } mType;
 
-   int mPos;
+   enum {
+      BLOCK_MODE_NOT_OPEN     = 0x0001,
+      BLOCK_MODE_READ_HEADER  = 0x0002,
+      BLOCK_MODE_READ_DATA    = 0x0004,
+      BLOCK_MODE_WRITE_HEADER = 0x0008,
+      BLOCK_MODE_WRITE_DATA   = 0x0010
+   } mMode;
+
+#define BLOCK_MODE_READING_MODE   BLOCK_MODE_READ_HEADER | BLOCK_MODE_READ_DATA
+#define BLOCK_MODE_WRITING_MODE   BLOCK_MODE_WRITE_HEADER | BLOCK_MODE_WRITE_DATA
+   
+   int mPos; // This is a raw pointer referencing the combined header+data stream
 
    // Information about local data
    wxString mName;
@@ -84,7 +95,6 @@ class BlockFile {
 
    // Information about aliased sound data
    wxString mAliasFullPath;
-   int mLocalLen;
    sampleCount mStart;
    sampleCount mLen;
    int mChannel;

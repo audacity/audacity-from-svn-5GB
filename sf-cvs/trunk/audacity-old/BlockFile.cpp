@@ -21,6 +21,7 @@ BlockFile::BlockFile(wxString name, wxString fullPath)
    mName = name;
    mFullPath = fullPath;
    mType = BLOCK_TYPE_UNCOMPRESSED;
+   mMode = BLOCK_MODE_NOT_OPEN;
 
    mFile = NULL;
    mSndNode = NULL;
@@ -31,7 +32,6 @@ BlockFile::BlockFile(wxString name, wxString fullPath)
 }
 
 BlockFile::BlockFile(wxString name, wxString fullPath,
-                     int localLen,
                      wxString aliasFullPath,
                      sampleCount aliasStart,
                      sampleCount aliasLen, int aliasChannel)
@@ -40,11 +40,11 @@ BlockFile::BlockFile(wxString name, wxString fullPath,
    mFullPath = fullPath;
 
    mType = BLOCK_TYPE_ALIAS;
+   mMode = BLOCK_MODE_NOT_OPEN;
 
    mFile = NULL;
 
    mAliasFullPath = aliasFullPath;
-   mLocalLen = localLen;
    mStart = aliasStart;
    mLen = aliasLen;
    mChannel = aliasChannel;
@@ -57,7 +57,8 @@ BlockFile::BlockFile(wxString name, wxString fullPath,
 
 BlockFile::~BlockFile()
 {
-   Close();
+   if(mMode != BLOCK_MODE_NOT_OPEN)
+      Close();
 }
 
 wxString BlockFile::GetName()
@@ -79,7 +80,8 @@ bool BlockFile::Deref()
 {
    mRefCount--;
    if (mRefCount <= 0) {
-      Close();
+      if(mMode != BLOCK_MODE_NOT_OPEN)
+         Close();
       wxRemoveFile(mFullPath);
       delete this;
       return true;
@@ -89,16 +91,23 @@ bool BlockFile::Deref()
 
 bool BlockFile::OpenReadHeader()
 {
+   wxASSERT(mMode == BLOCK_MODE_NOT_OPEN);
+
    mPos = 0;
 
    mFile = new wxFFile();
-   bool success = mFile->Open((const wxChar *) mFullPath, "r+b");
+   bool success = mFile->Open((const wxChar *) mFullPath, "rb");
+
+   if(success)
+      mMode = BLOCK_MODE_READ_HEADER;
 
    return success;
 }
 
 bool BlockFile::OpenReadData()
 {
+   wxASSERT(mMode == BLOCK_MODE_NOT_OPEN);
+
    if (mType == BLOCK_TYPE_ALIAS) {
       mSndNode = (void *) new snd_node();
       ((snd_node *) mSndNode)->device = SND_DEVICE_FILE;
@@ -110,38 +119,80 @@ bool BlockFile::OpenReadData()
       int err;
       long flags = 0;
 
-      mPos = mLocalLen;
-
       err = snd_open(((snd_node *) mSndNode), &flags);
 
       if (err == 0) {
          double secs = mStart / ((snd_node *) mSndNode)->format.srate;
          snd_seek(((snd_node *) mSndNode), secs);
+         mMode = BLOCK_MODE_READ_DATA;
+         mPos = WaveTrack::GetHeaderLen();
       }
 
       return (err == 0);
    } else {
-      mPos = mLocalLen;
 
       mFile = new wxFFile();
-      bool success = mFile->Open((const wxChar *) mFullPath, "r+b");
+      bool success = mFile->Open((const wxChar *) mFullPath, "rb");
+
+      if (success) {
+         mMode = BLOCK_MODE_READ_DATA;
+         SeekTo(0);     /* seek to the beginning of the data area */
+      }
 
       return success;
    }
 }
 
-bool BlockFile::OpenWriting()
+bool BlockFile::OpenWriteHeader()
 {
+   wxASSERT(mMode == BLOCK_MODE_NOT_OPEN);
+
    mPos = 0;
+   bool success;
 
    mFile = new wxFFile();
-   bool success = mFile->Open((const wxChar *) mFullPath, "w+b");
+
+   if(wxFileExists(mFullPath))
+      success = mFile->Open((const wxChar *) mFullPath, "r+b");
+   else
+      success = mFile->Open((const wxChar *) mFullPath, "w+b");
+
+   if(success) {
+      mMode = BLOCK_MODE_WRITE_HEADER;
+      mFile->Seek((long)0, wxFromStart);
+   }
+
+   return success;
+}
+
+bool BlockFile::OpenWriteData()
+{
+   wxASSERT(mMode == BLOCK_MODE_NOT_OPEN);
+
+   mPos = 0;
+   bool success;
+
+   mFile = new wxFFile();
+   if(wxFileExists(mFullPath))
+      success = mFile->Open((const wxChar *) mFullPath, "r+b");
+   else
+      success = mFile->Open((const wxChar *) mFullPath, "w+b");
+      
+   
+
+   if(success) {
+      mMode = BLOCK_MODE_WRITE_DATA;
+      mPos = WaveTrack::GetHeaderLen();
+      mFile->Seek((long)mPos, wxFromStart);
+   }
 
    return success;
 }
 
 void BlockFile::Close()
 {
+   wxASSERT(mMode != BLOCK_MODE_NOT_OPEN);
+
    if (mFile) {
       mFile->Close();
       delete mFile;
@@ -154,26 +205,26 @@ void BlockFile::Close()
       mSndNode = NULL;
    }
 
+   mMode = BLOCK_MODE_NOT_OPEN;
 }
 
 int BlockFile::Read(void *data, int len)
 {
-   wxASSERT(!(mType == BLOCK_TYPE_ALIAS && mPos < mLocalLen && mPos + len > mLocalLen));
+   wxASSERT(mMode & BLOCK_MODE_READING_MODE);
+   
+   /* make sure the read doesn't start in the header area and end in the data area */
+   
+   wxASSERT(!(mPos < WaveTrack::GetHeaderLen() && mPos + len > WaveTrack::GetHeaderLen()));
+   
+   /* if you're in data mode, make sure the pointer is in the data area */
+   
+   wxASSERT(mMode == BLOCK_MODE_READ_HEADER || mPos >= WaveTrack::GetHeaderLen());
+   
+   /* if you're in header mode, make sure the pointer is in the header area */
+   
+   wxASSERT(mMode == BLOCK_MODE_READ_DATA   || mPos < WaveTrack::GetHeaderLen());
 
-   if (mType != BLOCK_TYPE_ALIAS || (mType == BLOCK_TYPE_ALIAS && mPos < mLocalLen)) {
-      wxASSERT(mFile);
-
-      int rval = (int) mFile->Read(data, (size_t) len);
-
-      if (rval != len) {
-         printf("Expected %d bytes, got %d\n", len, rval);
-         wxASSERT(0);
-      }
-
-      mPos += rval;
-
-      return rval;
-   } else {
+   if (mType == BLOCK_TYPE_ALIAS && mMode == BLOCK_MODE_READ_DATA) {
       snd_node sndbuffer;
 
       int channels = ((snd_node *) mSndNode)->format.channels;
@@ -211,13 +262,27 @@ int BlockFile::Read(void *data, int len)
       delete[]toBuffer;
 
       return (framesRead * sizeof(sampleType));
+   } else {
+      wxASSERT(mFile);
+
+      int rval = (int) mFile->Read(data, (size_t) len);
+
+      if (rval != len) {
+         printf("Expected %d bytes, got %d\n", len, rval);
+         wxASSERT(0);
+      }
+
+      mPos += rval;
+
+      return rval;
    }
 }
 
 int BlockFile::Write(void *data, int len)
 {
    wxASSERT(mFile);
-   wxASSERT(mType != BLOCK_TYPE_ALIAS || mPos < mLocalLen);
+   wxASSERT(mMode & BLOCK_MODE_WRITING_MODE);
+   wxASSERT(mType != BLOCK_TYPE_ALIAS || mMode == BLOCK_MODE_WRITE_HEADER);
 
    int rval = (int) mFile->Write((const void *) data, (size_t) len);
    mPos += rval;
@@ -227,16 +292,25 @@ int BlockFile::Write(void *data, int len)
 
 bool BlockFile::SeekTo(int where)
 {
-   if (mType == BLOCK_TYPE_ALIAS && where >= mLocalLen) {
-      int skipSamples = (where - mPos) / 2;
-      mPos = where;
+   /* all modes but these two are legit */
+
+   wxASSERT(mMode != BLOCK_MODE_NOT_OPEN && mMode != BLOCK_MODE_WRITE_DATA);
+   
+   if (mType == BLOCK_TYPE_ALIAS && mMode == BLOCK_MODE_READ_DATA) {
+      int skipSamples = (where - (mPos - WaveTrack::GetHeaderLen())) / 2;
+      mPos = where + WaveTrack::GetHeaderLen();
       double secs = skipSamples / ((snd_node *) mSndNode)->format.srate;
 
       snd_seek(((snd_node *) mSndNode), secs);
       return true;
    } else {
+      
       wxASSERT(mFile);
-      mPos = where;
+      if(mMode == BLOCK_MODE_READ_DATA)
+         mPos = where + WaveTrack::GetHeaderLen();
+      else
+         mPos = where;
+      
       return mFile->Seek((long) mPos, wxFromStart);
    }
 }

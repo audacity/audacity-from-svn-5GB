@@ -35,6 +35,11 @@ sampleCount WaveTrack::minSamples = maxSamples / 2;
 
 // Static methods
 
+int WaveTrack::GetHeaderLen()
+{
+   return totalHeaderLen;
+}
+
 sampleCount WaveTrack::GetMaxBlockSize()
 {
    return maxSamples;
@@ -771,8 +776,7 @@ void WaveTrack::AppendAlias(wxString fullPath,
    newBlock->start = numSamples;
    newBlock->len = len;
    newBlock->f =
-       dirManager->NewAliasBlockFile(totalHeaderLen,
-                                     fullPath, start, len, channel);
+       dirManager->NewAliasBlockFile(fullPath, start, len, channel);
 
    InitBlock(newBlock);
 
@@ -1063,7 +1067,9 @@ void WaveTrack::Read(sampleType * buffer, WaveBlock * b,
       f->OpenReadData();
    wxASSERT(opened);
 
-   f->SeekTo(totalHeaderLen + (start * sizeof(sampleType)));
+   /* the seek is in terms of the data stream. ie,
+    * internally it will seek totalHeaderLen + this arg */
+   f->SeekTo(start * sizeof(sampleType));
 
    int result = f->Read((void *) buffer, (int) (len * sizeof(sampleType)));
 
@@ -1182,6 +1188,8 @@ void WaveTrack::CopyWrite(sampleType * buffer, WaveBlock * b,
 
    // OpenWriteData() should automatically seek to this point
    //f->SeekTo(totalHeaderLen + (start * sizeof(sampleType)));
+   // It can't, it doesn't know start!!  [JH]
+   //f->SeekTo(start * sizeof(sampleType));
 
    f->Write((void *) buffer, len * sizeof(sampleType));
    f->Close();
