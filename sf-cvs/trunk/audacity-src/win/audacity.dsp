@@ -272,6 +272,14 @@ SOURCE=..\src\Languages.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\Legacy.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\Legacy.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\Mix.cpp
 # End Source File
 # Begin Source File
