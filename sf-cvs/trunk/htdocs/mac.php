@@ -45,6 +45,14 @@
 </td>
 </tr>
 
+<tr>
+<td></td>
+<td>
+<a href="http://audacity.sourceforge.net/audacity-manual-1.2.zip">
+<?php print "$docsStr</a> (450k $zipStr, in English)"; ?>
+</td>
+</tr>
+
 </table>
 
 <center><hr width=50%></center>
