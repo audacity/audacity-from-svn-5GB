@@ -10,6 +10,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: download/windows.php:18
+#, fuzzy, php-format
+msgid ""
+"<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest "
+"version of the free Audacity audio editor."
+msgstr ""
+
 #: about/credits.php:10 main.inc.php:24
 msgid "Credits"
 msgstr "谢启"
