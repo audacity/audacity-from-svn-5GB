@@ -30,7 +30,7 @@ IMPLEMENT_CLASS(AboutDialog, wxDialog)
 
 AboutDialog::AboutDialog()
   : wxDialog( (wxFrame *)NULL, -1, "About Audacity...",
-  wxDefaultPosition, wxDefaultSize)
+  wxDefaultPosition, wxSize(530, 262))
 {
   wxString fullMessage("Audacity:\n"
 					   "A New Digital Audio Editor\n"
@@ -46,15 +46,32 @@ AboutDialog::AboutDialog()
 				   "and Mark Tomlinson.\n"
 				   "Version " AUDACITY_VERSION_STRING "\n"
 				   "http://www.cs.cmu.edu/~music/audacity/");
+				   
+
+  new wxStaticText( this, -1, caption, wxPoint(8, 150), wxSize(514, 76) );
+  
+  wxButton *ok = new wxButton(this, wxID_OK,
+							  "Audacious!",
+							  wxPoint(400, 232),
+							  wxSize(100, 20));
+	#ifndef TARGET_CARBON
+	ok->SetDefault();
+	ok->SetFocus();
+	#endif
+	
+	logo = new wxBitmap((const char **)AudacityLogo);
+
+  icon =
+	  new wxStaticBitmap(this, -1, *logo, wxPoint(0, 0), wxSize(530, 142));
+				   
+	/*			   
   
   topsizer = new wxBoxSizer( wxVERTICAL );
   
-  logo = new wxBitmap(AudacityLogo);
-
-  icon =
-	new wxStaticBitmap(this, -1, *logo, wxPoint(0, 0), wxSize(530, 142));
+  
   
   topsizer->Add( icon, 0, wxCENTER );
+  
   topsizer->Add( CreateTextSizer(caption), 0, wxCENTER, 10 );
   
   topsizer->Add( CreateButtonSizer( wxOK ),
@@ -70,14 +87,14 @@ AboutDialog::AboutDialog()
 	size.x = size.y*3/2;
 	SetSize( size );
   }
-  
   Centre( wxBOTH | wxCENTER_FRAME);
-  
+  */  
 }
 
 AboutDialog::~AboutDialog()
 {
-  // TODO: Is there anything we need to clean up?
+  delete icon;
+  delete logo;
 }
 
 void AboutDialog::OnOK(wxCommandEvent& WXUNUSED(event))
