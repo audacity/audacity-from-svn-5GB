@@ -77,16 +77,22 @@ bool ConvertLegacyTrack(wxTextFile *f, FILE *outf)
               (const char *)f->GetNextLine());
 
       wxString channel = f->GetNextLine();
-      if (channel == "left")
+      if (channel == "left") {
          fprintf(outf, " channel='0'");
-      else if (channel == "right")
+         line = f->GetNextLine();
+      }
+      else if (channel == "right") {
          fprintf(outf, " channel='1'");
-      else if (channel == "mono")
+         line = f->GetNextLine();
+      }
+      else if (channel == "mono") {
          fprintf(outf, " channel='2'");
-      else
-         return false;
+         line = f->GetNextLine();
+      }
+      else {
+         fprintf(outf, " channel='2'");
+      }
 
-      line = f->GetNextLine();
       if (line == "linked") {
          fprintf(outf, " linked='1'");
          line = f->GetNextLine();
