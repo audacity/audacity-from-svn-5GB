@@ -335,7 +335,7 @@ void ControlToolBar::MakeButtons()
    mPause = MakeButton((char const **)Pause,
                       (char const **) PauseDisabled,
                       (char const **) PauseAlpha, ID_PAUSE_BUTTON);
-   mPause->SetToolTip(_("Stop"));
+   mPause->SetToolTip(_("Pause"));
    
 
 
