@@ -29,14 +29,11 @@ class AudacityApp:public wxApp {
    // These are currently only used on Mac OS, where it's
    // possible to have a menu bar but no windows open.  It doesn't
    // hurt any other platforms, though.
-   // STM: Yes, it does hurt.  I'm not sure why
-#ifdef __WXMAC__
    void OnMenuAbout(wxCommandEvent & event);
    void OnMenuNew(wxCommandEvent & event);
    void OnMenuOpen(wxCommandEvent & event);
    void OnMenuPreferences(wxCommandEvent & event);
    void OnMenuExit(wxCommandEvent & event);
-#endif
    
  private:
    wxLocale *mLocale;
