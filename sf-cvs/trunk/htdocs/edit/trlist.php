@@ -151,7 +151,7 @@ if ($dir = @opendir("../en/")) {
             $s = "up to date";
           else {
             $when = date("Y-m-d", $old);
-            $s = "modified $when";
+            $s = "modified $when (old=$old new=$new)";
             $bg = " bgcolor=#eeeeee";
             $b1 = "<b>";
             $b2 = "</b>";
