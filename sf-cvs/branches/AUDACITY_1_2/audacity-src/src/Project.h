@@ -41,6 +41,7 @@
 
 const int AudacityProjectTimerID = 5200;
 
+class wxFileHistory;
 class wxWindow;
 class wxBoxSizer;
 class wxScrollEvent;
@@ -133,6 +134,11 @@ class AudacityProject:public wxFrame,
    bool Save(bool overwrite = true, bool fromSaveAs = false);
    bool SaveAs();
    void Clear();
+
+   wxString GetFileName() { return mFileName; }
+   bool GetDirty() { return mDirty; }
+   bool GetIsEmpty() { return mTracks->IsEmpty(); }
+   wxFileHistory *GetRecentFiles() { return mRecentFiles; }
 
 #include "Menus.h"
 
@@ -323,6 +329,9 @@ class AudacityProject:public wxFrame,
    int  mAudioIOToken;
 
    bool mIsDeleting;
+
+   // Recent File and Project History
+   wxFileHistory *mRecentFiles;
 
  public:
     DECLARE_EVENT_TABLE()

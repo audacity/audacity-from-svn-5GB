@@ -19,6 +19,7 @@
 #include <math.h>
 
 #include <wx/defs.h>
+#include <wx/docview.h>
 #include <wx/msgdlg.h>
 #include <wx/filedlg.h>
 #include <wx/textfile.h>
@@ -149,6 +150,17 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("SaveAs",         _("Save Project &As..."),            FN(OnSaveAs));
    c->AddSeparator();
 
+   // Recent Files and Recent Projects menus
+   wxMenu* pm = c->BeginSubMenu(_("Recent &Files..."));
+   c->EndSubMenu();
+   // TODO - read the number of files to store in history from preferences
+   mRecentFiles = new wxFileHistory();
+   mRecentFiles->UseMenu(pm);
+   gPrefs->SetPath("/RecentFiles");
+   mRecentFiles->Load(*gPrefs);
+   gPrefs->SetPath("..");
+   c->AddSeparator();
+
    // These 'export' strings are modified later in ModifyExportMenus(), so don't put them
    // up for i18n as it just makes more work for the translators.
    c->AddItem("Export",         "Export As...",                   FN(OnExportMix));
@@ -206,6 +218,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
    c->AddSeparator();
+
    c->AddItem("Exit",           _("E&xit"),                          FN(OnExit));
    c->SetCommandFlags("Exit", 0, 0);
   #endif

@@ -174,7 +174,7 @@ void CommandManager::EndMenu()
 ///
 /// This starts a new submenu, and names it according to
 /// the function's argument.
-void CommandManager::BeginSubMenu(wxString tName)
+wxMenu* CommandManager::BeginSubMenu(wxString tName)
 {
    SubMenuListEntry *tmpEntry = new SubMenuListEntry;
 
@@ -182,6 +182,8 @@ void CommandManager::BeginSubMenu(wxString tName)
    tmpEntry->name = tName;
 
    mSubMenuList.Add(tmpEntry);
+   
+   return(tmpEntry->menu);
 }
 
 
