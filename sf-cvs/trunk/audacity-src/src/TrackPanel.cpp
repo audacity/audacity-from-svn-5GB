@@ -224,6 +224,8 @@ mAutoScrolling(false)
    mIsGainSliding = false;
    mIsPanSliding = false;
 
+   mRedrawAfterStop = false;
+
    mIndicatorShowing = false;
 
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
@@ -639,9 +641,9 @@ void TrackPanel::OnTimer()
    // is still playing.  If not, stop it and update the GUI
    wxCommandEvent dummyEvent;
    AudacityProject *p = (AudacityProject*)GetParent();
-   if( p->GetAudioIOToken() != 0 &&
-      !gAudioIO->IsStreamActive(p->GetAudioIOToken()))
+   if(!gAudioIO->IsStreamActive(p->GetAudioIOToken()) && !mRedrawAfterStop)
    {
+      mRedrawAfterStop = true;
       p->GetControlToolBar()->OnStop(dummyEvent);
       p->RedrawProject();
    }
@@ -662,6 +664,7 @@ void TrackPanel::OnTimer()
    }
    // BG: Update the screen while playing
    if(gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
+      mRedrawAfterStop = false;
       if (gAudioIO->GetNumCaptureChannels()) {
          if ((mTimeCount % 5) == 0)
             p->RedrawProject();
