@@ -2,10 +2,10 @@ todo.txt
 
 This file contains a list of current features being
 worked on, possible ideas, and ideas for the future.
-Last updated June 14, 2003.  Please check the
+Last updated June 22, 2003.  Please check the
 Audacity-devel list to see who's working on what,
-and for updates.  This file is updated only about every
-2-3 months.
+and for updates.  This file is likely to be updated 
+only about every 2-3 months.
 
 ------------------------------------------------------
  Definitely in 1.2.0 - high priority
@@ -42,30 +42,27 @@ and for updates.  This file is updated only about every
     think it did...Juhana, could you test this and clarify the
     problem?
 
+* Allow the user to create keyboard shortcuts for Effects.
 * Normalize Effect that removes DC bias and sets maximum
   amplitude to some standard value like -6 dB
 
-  Note: Juhana wanted a key - instead, I propose the following
-  more general solutions:
-
-* Allow the user to create keyboard shortcuts for Effects
-
-* Finish adding Preview for all effects where it makes sense
-
 * Resize window to a larger size, including to full screen, also does
-  a fit-to-window if we were fitted to window before the resize.
-  I think that tracks should expand proportionally.
+  a fit-to-window if we were fitted-to-window before the resize -JKC.
 
-  I think that when you open a project, auto-track-resizing should
-  be on by default.  It only goes off if you specifically drag the
-  _bottommost_ track and make it bigger or smaller.  (Then, how
-  should you turn it back on again?)
+ALTERNATIVELY:
 
-* Upgrade of cursors and tool-button-bitmaps so that cursors
-  and button bitmaps match (on platforms where this is possible).
-  This should be supported on all platforms - I will personally
-  patch wxMac 2.4.0 to enable this feature on the official Mac
-  build.
+  Remember window size, position and maximized/normal state when 
+  Audacity closes and apply when we open Audacity.  This deals 
+  with a common case where the feature is useful -JKC.
+
+* Automatic Vertical resizing of tracks.
+
+  I think that tracks should expand proportionally (vertically) on
+  a resize.
+  I think that when you open a project, auto-vertical-track-resizing 
+  should be on by default.  It only goes off if you specifically 
+  drag the _bottommost_ track and make it bigger or smaller.  (Then, 
+  how should you turn it back on again?) 
 
 * Vertical zooming (of waveforms)
 
@@ -81,12 +78,6 @@ and for updates.  This file is updated only about every
   drawing in Mac OS X by 2-3x minimum, also should help on
   older PCs.
 
-* Option to have "Close" not exit Audacity, but instead open
-  a new blank document.  A very vocal MINORITY of users seem
-  to prefer it this way; we should give them the option but
-  I don't think it should be the default (except on the Mac,
-  where m programs stay open until you explicitly Quit).
-
 * Check for multiple copies of Audacity on Unix
 
 * Fix all XML writers so that they encode characters
@@ -96,43 +87,20 @@ and for updates.  This file is updated only about every
  Ideas - need further discussion
 ------------------------------------------------------
 
-* Zooming using mousewheel - obviously this shouldn't
-  be the only way to do it, since not everyone has a
-  mousewheel.  When should it be used, then?
-
 * Add a new item at the top of the Effect menu - Repeat Last Effect
   (maybe it could dynamically change its name, i.e. "Repeat
   Compressor".  It would not bring up a dialog, but use the last
-  values.  It would have a keyboard shortcut.
-
-* Make Generate a submenu of the Effect menu?
+  values.  It would have a keyboard shortcut.)
 
 * Add an Audio menu with items like Play, Stop, Record, Pause,
   Loop, etc.?
-
-* We could have a bias parameter per track, next to the track
-  volume fader.  (I don't think this is useful - adjusting the
-  bias is a very unusual operation and the only reasonable
-  justification I can think of is to center the waveform
-  vertically - why would you ever legitimately want to bias
-  it?)
-
-* Fine tuning of colours/bitmaps
-
-  - Should the gain tooltips be the same shade as other
-    tooltips?  Where does wxWindows come up with the shade
-    for tooltip backgrounds?  Can we copy it?
-
-  - What's the consensus on the new magnifying glass image?
-    (I'd actually slightly favor reverting back to the older
-    image.)
 
 * It is possible to extend the selection out of the track display
 (when the view is scrolled to end), but then the end edge of the
 selection cannot be grabbed and dragged. Solution: selection can
 be made only up to the end of the track.
 
-  (I'm not sure this is a good idea...)
+  (I'm not sure this is a good idea... DM)
 
 * Open multiple files (it's supported by wxWindows; we should
   enable and use this feature.)  Both Open and Import.
@@ -175,16 +143,6 @@ continue with a new unstable branch...)
   (Karl, if you want to submit a patch, it's fine with me,
   as long as it's complete and clean.)
 
-* A zoom-toggle button that switches between two zoom levels.
-
-[ We could add two radio buttons and one standard button to toolbar:
-<Z1, level1 select>, <Z2, level2 select>, and <ZS, zoom set>. The set
-button would assign the current zoom level to the selected button.
-Initially the zoom level memories would be empty, and only press of <ZS>
-will change their values, i.e., user could change the zoom in anyway
-but he would get the memorized zoom value by clicking the <Z1> and <Z2>
-buttons. ]
-
 * A function to export all tracks as separate wave files all at once.
 
 * Alternate keyboard layouts
@@ -198,7 +156,7 @@ Multitool should be considered as a base for the default mode.
 Some operations would work always, like making a selection.
 Then various tools would change function of some of the mouse
 buttons. Without the multitool the Audacity is very annoying to
-use, IMHO. ]
+use, IMHO.   JS]
 
 * When drag selecting the tracks out of track window, the window should
 scroll and reveal more tracks.
@@ -216,9 +174,17 @@ scroll and reveal more tracks.
   all of the details of AudioIO wants to do this, I won't object,
   but I'll be wary of a patch.  IMHO, this will be more difficult
   than adding looping if we want to implement it the cleanest and
-  most general way.
+  most general way.  DM
 
-* Maybe post 1.2 as we also need multiple projects in the same window
+  The suggestion of a general mechanism for 'preview in context'
+  with this as a special case makes a lot of sense, so I'm now happy 
+  for this to be post 1.2.0.  JKC.
+  N.B. It would make sense to combine this with a fade-in, fade-out
+  for preview which has been requested for playing short samples,
+  which can click at start/end otherwise.
+  Question: Is this what pre-roll and post-roll mean?
+
+* Maybe post 1.2 we also need multiple projects in the same window
 feature: either by (i) subwindows inside the main window, a common
 toolbars, (ii) no subwindows but the project is technically behind
 a pointer which can be changed from a "projects" menu, (iii) different
@@ -242,28 +208,23 @@ minute). ]
 
 * Half a dozen nyquist scripts, annotated and explained in the
 Audacity documentation.  Nyquist looks an incredibly powerful
-feature, but I haven't a clue how to do some of the simplest things
+feature, but I (JKC) haven't a clue how to do some of the simplest 
 things with it.
 
 * Track label could be changed to look like what is in commercial
-multitrack software. More compact, that is.
+multitrack software. More compact, that is.  JS.
 
-  (I don't think we should necessarily copy the commercial software
+  [I don't think we should necessarily copy the commercial software
    in this regard.  I hate most of their UIs because they force me
    to memorize what tiny little symbols and colors mean.  I like
-   my UIs to be "discoverable".)
-
-* Editable marker system. What key would you suggest to "Save the
-Selection" then?
-[ What EMS would be and how "save the selection" relates to it? ]
+   my UIs to be "discoverable".  DM]
+  [Agree with DM about not simply copying and discoverability.
+  Agree with JS that more compact ways to do Track Label need 
+  investigation.  Screen real estate is valuable.  JKC]
 
 ------------------------------------------------------
  Unclear - what are these?
 ------------------------------------------------------
-
-* Window resizing handle (bottom right corner) in windows
-[ Do you mean "in MS Windows"? This could be wxWindows issue as
-I'm able to resize the window. ]
 
 * In zoom mode, scrollwheel click acts as middle button click, but when
 dragging with it, it behaves strangely (I couldn't figure out the logic)
@@ -274,97 +235,34 @@ and dragging bigger areas would zoom out less.
 ------------------------------------------------------
  Bugs
 ------------------------------------------------------
-
-* In the input/output gain toolbar the pixmaps are in wrong places:
-the output has microphone pixmap.  (REALLY???)
-
-* Time scrollbar < and > buttons do not work after 16 (say) zoom steps,
-e.g., with projects larger than 30 minutes of audio.
-
-* After cut, the view is not at the cut point (if selection was 4 seconds, the view is 4 seconds forward from the cut point).
-
-* A toolbar goes slightly over the transport toolbar when they
-are arranged automatically to the same row. (In wxGTK/Linux.)
-
-* mixer toolbar has no default device written on the menu, but
-clearly some mixer channel is controlled;
-
-* even the play region is completely visible, the display jumps to
-left -- it jumps so that the start of the play region is on the left
-edge of display;
-
-* plot spectrum does not work if the selection is too small;
-
-* multitool slide stops when the pointer moves over the track labels;
-
-* multitool is still not "polished" - the handles on the left and
-  right should line up better
-
-* Drawing tool uses Alt modifier but that does not work in GNome
-  (or with other window managers) - there should be another key
-  sequence that's more likely to be supported
-
-* "Drag the label vertically to change the order of the tracks"
-  performs "select all". Two operations in one.  (It shouldn't
-  do this, right?)
-
-* very narrow selection is not always drawn; very narrow
-selections should be one pixel wide if samples/pixel value
-is high
-
-* very narrow selection with high samples/pixel value
-causes problems in grabbing and dragging the selection edges
-
-* zoom at low samples/pixel value; make a selection; zoom-out;
-now adjust an edge of the selection by one pixel; then
-adjust the edge to its original pixel location; now the
-selection differs from the original selection
-
-* beat finder (nyquist script) caused core dump
-  (I can't reproduce this...can someone send me a gdb trace?)
-
-* libsamplerate crashes if you try to change the rate by
-  more than a factor of 12.  We need to handle this case if
-  the user selects a track with, say, 71 Hz when the project
-  is 44100 Hz.
+Moved to bugs.txt.
 
 ------------------------------------------------------
- More future ideas
+ More far-future ideas
 ------------------------------------------------------
 
-[JC]
-Audio Preview feature. This allows you to hear an edit before you
-commit to it. This is window dressing on the GUI - implemented
-initially by making the change, playing it and then undoing it.
-[JC]
-Cross fades with preview: Don't know how this would look, but will
-combine a fade in a fade out and a shift.
-[JC]
-Clip-out Preview. The key thing here is being able to easily adjust
-the end points of the section you want to cut out, hear what it sounds
-like with that piece removed and repeat.
-[JS]
-Are all these preview features already done?
-Check also item 5 at above in this mail.
+[JKC] L&R <-> Average+Difference display. This way you can see 
+what a stereo track gets mixed down to as mono, and the stereo 
+content separately.
 
-[JC]
-L&R <-> Average+Difference display. This way you can see what a stereo
-track gets mixed down to as mono, and the stereo content separately.
+[JKC] Split Track into band pass filtered components. Useful 
+even just to view a waveform without background mains hum.
+[JS] Spectrogram would do that already?  
+[JKC] No.  This is a split of the actual waveform into two 
+components which sum to the original.
 
-[JC]
-Split Track into band pass filtered components. Useful even just to
-view a waveform without background mains hum.
-[JS] Spectrogram would do that already?
 
-[JC]
-Sound-diff: Ability to compare waveforms and have this displayed
-graphically.
+[JKC] Sound-diff: Ability to compare waveforms and have this 
+displayed graphically.
 [JS] Can a plug-in operate on two tracks and generate preview to
 third track? Or replace the second track with the result.
-It would be essential that the substraction between two tracks
+It would be essential that the subtraction between two tracks
 is made interactively so that user may time-shift the waveforms
 and manually find the alignment between the tracks.
 This may go post-1.2 if it requires changes to plug-in system.
+[JKC] I have in mind something more like Unix diff that compares 
+and aligns waveforms.  Useful when you have several takes of 
+the same track.
 
 * Allow UI while importing 
 
@@ -395,7 +293,8 @@ have been removed, so these are all still valid ideas.
 
 - Choice of dither
 - Pre-roll and post-roll: amount to play before and after
-  a selection (see DG Malham email)
+  a selection (see DG Malham email - Please add date so can
+  check the archives for it.)
 - Latency control in Audio I/O prefs
 - Support portaudio multiple driver models
 
@@ -408,7 +307,6 @@ UI::
 - Create our own progress dialog:
   - Improved time estimate
   - Stop and cancel buttons (not the same!)
-- Save preferences (write to disk) after closing dialog
 - A "mini view" of the whole project, which shows what part
   you're working on, etc. like a lot of other programs have
 - Visual track dragging
@@ -420,9 +318,6 @@ UI::
   as not dirty (i.e. don't ask if they want to save it).
 - Put close box in toolbar.
 - Make ID3 tag dialog optional when saving MP3s
-- Horizonal line at zero point in waveform display
-- While playing, click in ruler to change playback
-  position
 - Import... should be able to import Audacity projects
   and Audacity project files
 - Crash recovery
@@ -437,13 +332,18 @@ UI::
 - Legend (Ruler) for pitch and spectrum
 - A way to turn a track into a loop.  It would be cool if the
   display showed the "real" waveform once, and then "ghosts" of
-  that waveform repeating forever...
+  that waveform repeating forever...  (We now have a loop-play
+  using shift-play which goes some way to answering this request).
+- While playing, click in ruler to change playback
+  position
 - Drag the play marker in the ruler to "skip" to a new time
+- Scrubbing, where you here the track speeded up as you drag 
+  the play marker.
    
 Import/Export::
 - Support ID3 tags in Ogg files
 - Import/Export markers in WAV files (like Goldwave does - 
-  see email from Shane M.)
+  see email from Shane M.  - Please add date so can check archives.)
 
 Effects::
 - Show spectrum in FFT filter
@@ -463,14 +363,85 @@ Future:
 
 - Speed issues when you have a project of 5 or more tracks
 - Edit markers
-- Ability to drag tracks instead of move down, move down, move down
 - "Fit in window" also works vertically
 - Better adaptation to different font sizes (sizers)
 - Move to lossless compression (FLAC?) for internal representation
   (Note: this doesn't support 32-bit float samples)
 - discontiguous selection
 - visualization window: VU meters, equalizer, continuous waveform, oscilloscope
-- Scrubbing
-- Mouse scroller should vertically scroll project
+- Mouse scroller should vertically scroll project (Um, isn't it assigned
+  to zoom-in/-out now?)
 - User-adjustable fonts so I don't have to recompile just to get the
   ruler looking decent and the track label fitting.
+
+-----------------------------------------
+
+Resolved-Issues
+===============
+* Make Generate a submenu of the Effect menu?  [Jun/22/03 No,
+  not at this stage.  That list of Generate's will grow - JKC]
+
+* We could have a bias parameter per track, next to the track
+  volume fader.  (I don't think this is useful - adjusting the
+  bias is a very unusual operation and the only reasonable
+  justification I can think of is to center the waveform
+  vertically - why would you ever legitimately want to bias
+  it? DM) [Jun/22/03.  Bias parameter would be a bad use of
+  screen real estate.  Let's drop this suggestion, and if
+  anyone does want non-zero bias it can be via a Nyquist 
+  effect JKC]
+
+- Horizonal line at zero point in waveform display.  
+  [Has been tried.  The waveform looks better without.  Showing
+  the rms in a lighter blue as Audacity does gives you a good
+  idea of where the zero-line is.  JKC]
+
+
+Done. Remove these items from this list once 1.2.0 is released:
+===============================================================
+
+* Upgrade of cursors and tool-button-bitmaps so that cursors
+  and button bitmaps match (on platforms where this is possible).
+  This should be supported on all platforms - I will personally
+  patch wxMac 2.4.0 to enable this feature on the official Mac
+  build.
+
+* Option to have "Close" not exit Audacity, but instead open
+  a new blank document.  A very vocal MINORITY of users seem
+  to prefer it this way; we should give them the option but
+  I don't think it should be the default (except on the Mac,
+  where m programs stay open until you explicitly Quit).
+
+* Zooming using mousewheel - obviously this shouldn't
+  be the only way to do it, since not everyone has a
+  mousewheel.  When should it be used, then? [Added by Markus]
+
+* Finish adding Preview for all effects where it makes sense
+  [Assuming we are not adding preview for Nyquist.]
+
+* Fine tuning of colours/bitmaps
+
+  - Should the gain tooltips be the same shade as other
+    tooltips?  Where does wxWindows come up with the shade
+    for tooltip backgrounds?  Can we copy it?
+
+  - What's the consensus on the new magnifying glass image?
+    (I'd actually slightly favor reverting back to the older
+    image.)
+
+* MS Windows window resizing handle graphic.  (bottom right 
+  corner).  
+
+* A zoom-toggle button that switches between two zoom levels.
+
+[ We could add two radio buttons and one standard button to toolbar:
+<Z1, level1 select>, <Z2, level2 select>, and <ZS, zoom set>. The set
+button would assign the current zoom level to the selected button.
+Initially the zoom level memories would be empty, and only press of <ZS>
+will change their values, i.e., user could change the zoom in anyway
+but he would get the memorized zoom value by clicking the <Z1> and <Z2>
+buttons. ][Done using a simpler one button solution 15/Jun/03].
+
+- Ability to drag tracks instead of move down, move down, move down
+- Save preferences (write to disk) after closing dialog
+

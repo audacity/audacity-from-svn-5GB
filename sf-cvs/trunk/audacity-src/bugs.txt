@@ -9,12 +9,13 @@ Following are some bugs which may not have been entered
 into bugzilla yet.  Some of these may have been fixed,
 too...people should try to reproduce them...
 
+Last reviewed 22/Jun/2003.
+
+---------
+
 * MAD imports values out of -1.0...1.0 range...need to clip
 
 * Program crashes if gPrefs can't be created (Linux)...
-
-* Plot Spectrum doesn't obey the selection - it grabs
-  all tracks (or the last track?), not the selected track
 
 * Full duplex does not work correctly on Audacity 1.1 on
   Linux.  Sounds recorded appear to be "down an octave".
@@ -23,65 +24,108 @@ too...people should try to reproduce them...
   or incorrect # of channels?  Maybe only with certain
   versions of LAME?
 
-* When using a Nyquist plugin on a track whose sample rate
-  differs from the project rate, the selection changes
-  incorrectly, probably reflecting the project rate rather
-  than the track rate.
-
-* Exporting tracks with envelopes and an offset can result
-  in different WAV output than what you see on the screen in
-  the editor.  (See email from Mike Tyson).
-
-* In the input/output gain toolbar the pixmaps are in wrong places:
-the output has microphone pixmap.  (REALLY???)
-
-* Time scrollbar < and > buttons do not work after 16 (say) zoom steps,
-  e.g., with projects larger than 30 minutes of audio.
-
-* After cut, the view is not at the cut point (if selection was
-  4 seconds, the view is 4 seconds forward from the cut point).
-
-* A toolbar goes slightly over the transport toolbar when they
-  are arranged automatically to the same row. (In wxGTK/Linux.)
-
 * mixer toolbar has no default device written on the menu, but
   clearly some mixer channel is controlled;
 
 * even the play region is completely visible, the display jumps to
   left -- it jumps so that the start of the play region is on the left
-  edge of display;
+  edge of display; [Don't understand.  Please explain again].
 
 * plot spectrum does not work if the selection is too small;
+  [22/Jun/03, still present.]
 
-* multitool slide stops when the pointer moves over the track labels;
-
-* multitool is still not "polished" - the handles on the left and
-  right should line up better
+* Plot Spectrum doesn't obey the selection - it grabs
+  all tracks (or the last track?), not the selected track [Update:
+  22/Jun/03, Plot Spectrum IS selection sensitive, however 
+  pure-tones (produced using generate) have less sharp spectra 
+  than I would expect, so possibly something still needs looking at 
+  here, e.g. whether plot-spectrum is sampling noise as well
+  as the desired data.  JKC]
 
 * Drawing tool uses Alt modifier but that does not work in GNome
   (or with other window managers) - there should be another key
   sequence that's more likely to be supported
 
-* "Drag the label vertically to change the order of the tracks"
-  performs "select all". Two operations in one.  (It shouldn't
-  do this, right?)
-
 * very narrow selection is not always drawn; very narrow
   selections should be one pixel wide if samples/pixel value
-  is high
-
-* very narrow selection with high samples/pixel value
-  causes problems in grabbing and dragging the selection edges
-
-* zoom at low samples/pixel value; make a selection; zoom-out;
-  now adjust an edge of the selection by one pixel; then
-  adjust the edge to its original pixel location; now the
-  selection differs from the original selection
-
-* beat finder (nyquist script) caused core dump
-  (I can't reproduce this...can someone send me a gdb trace?)
+  is high. [22/Jun/03, still present]
 
 * libsamplerate crashes if you try to change the rate by
   more than a factor of 12.  We need to handle this case if
   the user selects a track with, say, 71 Hz when the project
   is 44100 Hz. 
+
+--------------------------------------------------------------
+
+Move these to ToDo (for Post 1.2.0)?:
+=====================================
+* zoom at low samples/pixel value; make a selection; zoom-out;
+  now adjust an edge of the selection by one pixel; then
+  adjust the edge to its original pixel location; now the
+  selection differs from the original selection. --Not really
+  a bug so much as a request for enhanced behaviour.  This 
+  would be part of a more general move to store positions as 
+  float time values, only rounding down to pixels when drawing 
+  to the screen.  Such a feature would improve functionality 
+  in many other instances where zoom level is changed.--
+
+* Very narrow selection with high samples/pixel value
+  causes problems in grabbing and dragging the selection edges.
+  -- Details:  The selection shown on the wavetrack is rounded to
+  the nearest boundary between samples.  To drag the selection 
+  edge you must look at the sample as shown by the ruler.
+  This will cease to be a problem if we add a new feature that 
+  shows both sample selection and the ruler's time selection
+  (using different shading perhaps, or by changing the appearance
+  of the selcted samples) on the wave track.--
+
+* multitool slide stops when the pointer moves over the track labels;
+  --Request for Enhancement, not a bug.--
+
+* "Drag the label vertically to change the order of the tracks"
+  performs "select all". Two operations in one.  (It shouldn't
+  do this, right?)
+  --Request for Enhancement, not a bug.--
+
+
+------------------------------
+
+Non Issues?
+===========
+* In the input/output gain toolbar the pixmaps are in wrong places:
+  the output has microphone pixmap.  --REALLY???--
+
+* Exporting tracks with envelopes and an offset can result
+  in different WAV output than what you see on the screen in
+  the editor.  See email from Mike Tyson. --Please GIVE DATE
+  of this e-mail so that can follow up the detailed description--
+
+* A toolbar goes slightly over the transport toolbar when they
+  are arranged automatically to the same row.  In wxGTK/Linux.
+  --Please post a screenshot to the developer list showing the 
+  problem, for attention JKC.--
+
+* beat finder (nyquist script) caused core dump
+  --I can't reproduce this...can someone send me a gdb trace?,
+  for attention DM.  Nyquist has had a major overhaul since this
+  bug was first posted.--
+  
+------------------------------
+
+Resolved:
+=========
+* When using a Nyquist plugin on a track whose sample rate
+  differs from the project rate, the selection changes
+  incorrectly, probably reflecting the project rate rather
+  than the track rate. [Fixed 19/Apr/03]
+
+* multitool is still not "polished" - the handles on the left and
+  right should line up better [Fixed 15/Jun/03]
+
+* Time scrollbar < and > buttons do not work after 16 (say) zoom steps,
+  e.g., with projects larger than 30 minutes of audio. [Works for me
+  under Win98 JKC]
+
+* After cut, the view is not at the cut point (if selection was
+  4 seconds, the view is 4 seconds forward from the cut point). [Works
+  for me under Win98 JKC]
