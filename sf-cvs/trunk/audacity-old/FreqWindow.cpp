@@ -230,6 +230,8 @@ void FreqWindow::OnSize(wxSizeEvent &event)
   mInfoRect.y = height - 100;
   mInfoRect.width = width - 20;
   mInfoRect.height = 15;
+  
+  #ifndef __WXMAC__
 
   mExportButton->SetSize(width - 90, height - 70, 70, 20);
   mCloseButton->SetSize(width - 90, height - 40, 70, 20);
@@ -238,6 +240,8 @@ void FreqWindow::OnSize(wxSizeEvent &event)
   mSizeChoice->SetSize(180, height - 70, 160, 20);
   mFuncChoice->SetSize(10, height - 40, 160, 20);
   mAxisChoice->SetSize(180, height - 40, 160, 20);
+
+  #endif
 
   if (mBitmap)
 	delete mBitmap;

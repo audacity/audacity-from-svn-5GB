@@ -29,6 +29,23 @@
 
 wxHtmlHelpController     *gHelp = NULL;
 
+#ifdef __WXMAC__
+
+void InitHelp(wxWindow *parent) {}
+
+void ShowHelp(wxWindow *parent) {}
+
+void ShowHelpIndex(wxWindow *parent) {}
+
+void ShowHelp(wxWindow *parent, wxString topic) {}
+
+void SearchHelp(wxWindow *parent) {}
+
+void QuitHelp() {}
+
+
+#else
+
 void InitHelp(wxWindow *parent)
 {
   if (!gHelp) {
@@ -105,3 +122,5 @@ void QuitHelp()
 	gHelp = NULL;
   }
 }
+
+#endif
