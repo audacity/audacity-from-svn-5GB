@@ -14,6 +14,7 @@
 #include <Resources.h>
 #include <Files.h>
 #include <Memory.h>
+#include <CodeFragments.h>
 #endif
 
 #ifdef __MACOSX__
@@ -26,7 +27,7 @@ void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 #include "AudioEffect.hpp"     // VST API
 
 #include "VSTEffect.h"         // This class's header
-#include "../DirManager.h"     // Audacity class which handles data structures
+#include "../../DirManager.h"     // Audacity class which handles data structures
 
 int audacityVSTID = 1;
 
@@ -58,9 +59,14 @@ extern "C" {
 
       wxString fname;
       
+#ifdef __MACOSX__
       audioMasterCallback audioMasterFPtr =
          (audioMasterCallback)NewCFMFromMachO(audioMaster);
-      
+#else
+    // What is the corrct way of creating an audioMasterCallback in OS 9/ Carbon 
+      audioMasterCallback audioMasterFPtr = audioMaster; 
+#endif  //   __MACOSX__
+
       fname = wxFindFirstFile((const char *) (vstDirPath + pathChar + "*"));
 
       while (fname != "") {
@@ -130,8 +136,9 @@ extern "C" {
          CloseResFile(resFileID);
          fname = wxFindNextFile();
       }
-
+#ifdef __MACOSX__
       DisposeCFMFromMachO(audioMasterFPtr);
+#endif  //   __MACOSX__
    }
 
 };                              // extern "C"
