@@ -3307,7 +3307,7 @@ bool TrackPanel::HandleCutLinesMouseEvent(WaveTrack * track, wxRect &r, wxMouseE
       if (x >= 0 && x < r.width)
       {
          wxRect cutlineRect;
-         cutlineRect.x = r.x + x - 5;
+         cutlineRect.x = int( r.x + x ) - 5;
          cutlineRect.width = 11;
          cutlineRect.y = r.y;
          cutlineRect.height = r.height;
