@@ -1,5 +1,5 @@
 # Nederlandse vertaling van Audacity
-# Tino Meinen <a.t.meinen@chello.nl>, 2002-2003.
+# Tino Meinen <a.t.meinen@chello.nl>, 2002-2004.
 # Feedback van Sander J. Alkemade <jubbetje@ilse.nl> 2003.
 # ----
 # Voordat het vertalen begint eerst doen: make updatepo in /locale
@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-01 07:48-0800\n"
-"PO-Revision-Date: 2003-12-21 23:22+0100\n"
+"POT-Creation-Date: 2004-02-11 15:39+0100\n"
+"PO-Revision-Date: 2004-02-11 16:08+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,6 +26,9 @@ msgid ""
 "Audacity does not open this type of file.\n"
 "Try ripping it to a native audio format that Audacity can import."
 msgstr ""
+" is een audio-cd bestand. \n"
+"Audacity opent dit soort bestanden niet.\n"
+"Probeer het bestand te rippen naar een formaat wat Audacity kan importeren."
 
 #. i18n-hint: This refers to a "window function", used in the
 #. Frequency analyze dialog box.
@@ -442,7 +445,7 @@ msgstr "Alt-Links-klikken"
 
 #: ../src/prefs/GUIPrefs.cpp:69
 msgid "Always allow pausing"
-msgstr "Pauzeren altijd toegestaan"
+msgstr "Pauzeren altijd toestaan"
 
 #: ../src/import/ImportRaw.cpp:360
 msgid "Amount to import:"
@@ -642,8 +645,6 @@ msgstr ""
 "importeren\""
 
 #. i18n-hint: This message is used on Mac OS X.  This particular
-#. message must be <= 255 characters.  Be brief.
-#. i18n-hint: This message is used on Mac OS 9.  This particular
 #. message must be <= 255 characters.  Be brief.
 #: ../src/export/ExportMP3.cpp:560 ../src/export/ExportMP3.cpp:874
 msgid ""
@@ -1121,7 +1122,6 @@ msgstr "Exporteren via de opdrachtregel is alleen ondersteund onder UNIX"
 #. i18n-hint: '-help', '-test' and
 #. '-blocksize' need to stay in English.
 #: ../src/AudacityApp.cpp:527 ../src/AudacityApp.cpp:597
-#, c-format
 msgid ""
 "Command-line options supported:\n"
 "  -help (this message)\n"
@@ -1432,9 +1432,8 @@ msgid "DeleteKey\tBackspace"
 msgstr "DeleteKey\tBackspace"
 
 #: ../src/Menus.cpp:492
-#, fuzzy
 msgid "DeleteKey2\tDelete"
-msgstr "DeleteKey\tBackspace"
+msgstr "DeleteKey2\tDelete"
 
 #: ../src/Project.cpp:2412
 #, c-format
@@ -1592,7 +1591,7 @@ msgstr "Mixerbalk tonen"
 
 #: ../src/prefs/GUIPrefs.cpp:101
 msgid "Enable dragging of left and right selection edges"
-msgstr "Verslepen van linker en rechter selectieranden is mogelijk"
+msgstr "Verslepen van linker en rechter selectieranden toestaan"
 
 #: ../src/prefs/GUIPrefs.cpp:108
 msgid "Enable ergonomic order of Audio I/O buttons"
@@ -1642,9 +1641,8 @@ msgid "Equalization"
 msgstr "Toonregeling"
 
 #: ../src/effects/Equalization.cpp:668
-#, fuzzy
 msgid "Equalization, by Mitch Golden && Vaughan Johnson"
-msgstr "Herhalen door Dominic Mazzoni && Vaughan Johnson"
+msgstr "Toonregeling door Mitch Golden && Vaughan Johnson"
 
 # toon bijregeling (sander)
 #: ../src/effects/Equalization.h:38
@@ -2433,14 +2431,12 @@ msgid "Moved Sample"
 msgstr "Sample verplaatst"
 
 #: ../src/TrackPanel.cpp:2766
-#, fuzzy
 msgid "Moved gain slider"
-msgstr "Sample verplaatst"
+msgstr "Hoofdvolumebediening verplaatst"
 
 #: ../src/TrackPanel.cpp:2766
-#, fuzzy
 msgid "Moved pan slider"
-msgstr "Sample verplaatst"
+msgstr "Balansbediening verplaatst"
 
 # de naam van de functieknop is combinatiestand
 #: ../src/prefs/MousePrefs.cpp:105 ../src/prefs/MousePrefs.cpp:106
@@ -2864,8 +2860,8 @@ msgstr "Afspelen/Stoppen\tSpatiebalk"
 msgid "Playback"
 msgstr "Afspelen"
 
+# vertaling van playthrough?
 #: ../src/prefs/AudioIOPrefs.cpp:218
-#, fuzzy
 msgid "Playthrough (Play new track while recording it)"
 msgstr ""
 "Bij het opnemen van een spoor, tegelijkertijd de andere sporen afspelen"
@@ -4302,7 +4298,7 @@ msgstr "naar begin van spoor"
 #.
 #: ../src/AboutDialog.cpp:149 ../src/AboutDialog.cpp:151
 msgid "translator_credits"
-msgstr ""
+msgstr "Nederlandse vertaling door Tino Meinen <a.t.meinen@chello.nl>"
 
 #: ../src/TrackPanel.cpp:4339 ../src/effects/ChangePitch.cpp:275
 msgid "up"
