@@ -136,8 +136,8 @@ void AudioIO::AdjustMixer()
 
 int AudioIO::StartStream(WaveTrackArray playbackTracks,
                          WaveTrackArray captureTracks,
-                         sampleFormat captureFormat, TimeTrack *timeTrack,
-                         double sampleRate, double t0, double t1)
+                         TimeTrack *timeTrack, double sampleRate,
+                         double t0, double t1)
 {
    if( IsStreamActive() )
       return false;
@@ -151,7 +151,6 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mCaptureTracks  = captureTracks;
    mTotalSamplesPlayed = 0;
    mPausedSeconds = 0;
-   mCaptureFormat = captureFormat;
 
    //
    // Attempt to open the device using the given parameters.  If we can't, it's
@@ -193,6 +192,16 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    {
       // For capture, every input channel gets its own track
       mNumCaptureChannels = mCaptureTracks.GetCount();
+
+      // I don't deal with the possibility of the capture tracks
+      // having different sample formats, since it will never happen
+      // with the current code.  This code wouldn't *break* if this
+      // assumption was false, but it would be sub-optimal.  For example,
+      // if the first track was 16-bit and the second track was 24-bit,
+      // we would set the sound card to capture in 16 bits and the second
+      // track wouldn't get the benefit of all 24 bits the card is capable
+      // of.
+      mCaptureFormat = mCaptureTracks[0]->GetSampleFormat();
       captureParameters = new PaStreamParameters;
       const PaDeviceInfo *captureDeviceInfo;
 
@@ -205,7 +214,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
           return false;
 
       // capture in the requested format
-      switch( captureFormat )
+      switch( mCaptureFormat )
       {
          case int16Sample:
             captureParameters->sampleFormat = paInt16;
@@ -228,6 +237,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    else
    {
       captureParameters = NULL;
+      mCaptureFormat = 0;
    }
 
    PaError err = Pa_OpenStream( &mPortStreamV19,
@@ -275,6 +285,15 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
       // For capture, every input channel gets its own track
       mNumCaptureChannels = mCaptureTracks.GetCount();
 
+      // I don't deal with the possibility of the capture tracks
+      // having different sample formats, since it will never happen
+      // with the current code.  This code wouldn't *break* if this
+      // assumption was false, but it would be sub-optimal.  For example,
+      // if the first track was 16-bit and the second track was 24-bit,
+      // we would set the sound card to capture in 16 bits and the second
+      // track wouldn't get the benefit of all 24 bits the card is capable
+      // of.
+      mCaptureFormat = mCaptureTracks[0]->GetSampleFormat();
       captureDevice =  Pa_GetDefaultInputDeviceID();
       wxString captureDeviceName = gPrefs->Read("/AudioIO/RecordingDevice", "");
 
@@ -289,7 +308,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
       }
 
       // capture in the requested format
-      switch( captureFormat )
+      switch( mCaptureFormat )
       {
          case int16Sample:
             paCaptureFormat = paInt16;
@@ -308,6 +327,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    {
       captureDevice = paNoDevice;
       mNumCaptureChannels = 0;
+      mCaptureFormat = (sampleFormat)0;
    }
 
    PaError err = Pa_OpenStream( &mPortStreamV18,
@@ -370,7 +390,8 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
       mCaptureBuffers = new RingBuffer* [mCaptureTracks.GetCount()];
 
       for( unsigned int i = 0; i < mCaptureTracks.GetCount(); i++ )
-         mCaptureBuffers[i] = new RingBuffer( captureFormat, captureBufferSize );
+         mCaptureBuffers[i] = new RingBuffer( mCaptureTracks[i]->GetSampleFormat(),
+                                              captureBufferSize );
    }
 
    // We signal the audio thread to call FillBuffers, to prime the RingBuffers
@@ -680,14 +701,25 @@ void AudioIO::FillBuffers()
 
    if( mCaptureTracks.GetCount() > 0 )
    {
+      int commonlyAvail = mCaptureBuffers[0]->AvailForGet();
+      for( unsigned int i = 1; i < mCaptureTracks.GetCount(); i++ )
+      {
+         int avail = mCaptureBuffers[i]->AvailForGet();
+         if( avail < commonlyAvail )
+            commonlyAvail = avail;
+      }
+      printf("putting %d\n", commonlyAvail);
+
       // For capture buffers, save everything available to disk
       for( unsigned int i = 0; i < mCaptureTracks.GetCount(); i++ )
       {
-         int avail = mCaptureBuffers[i]->AvailForGet();
-         samplePtr temp = NewSamples(avail, mCaptureFormat);
+         //int avail = mCaptureBuffers[i]->AvailForGet();
+         int avail = commonlyAvail;
+         sampleFormat trackFormat = mCaptureTracks[i]->GetSampleFormat();
+         samplePtr temp = NewSamples(avail, trackFormat);
 
-         mCaptureBuffers[i]->Get   (temp, mCaptureFormat, avail);
-         mCaptureTracks[i]-> Append(temp, mCaptureFormat, avail);
+         mCaptureBuffers[i]->Get   (temp, trackFormat, avail);
+         mCaptureTracks[i]-> Append(temp, trackFormat, avail);
 
          DeleteSamples(temp);
       }
@@ -821,7 +853,10 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
       }
 
       if (len < framesPerBuffer)
+      {
          gAudioIO->mLostSamples += (framesPerBuffer - len);
+         printf("lost %d samples\n", framesPerBuffer - len);
+      }
 
       if (len > 0) {
          for( t = 0; t < numCaptureChannels; t++) {
@@ -829,7 +864,7 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                tempFloats[i] = inputFloats[numCaptureChannels*i+t];
 
             gAudioIO->mCaptureBuffers[t]->Put((samplePtr)tempFloats,
-                                              floatSample, len);
+                                              gAudioIO->mCaptureFormat, len);
          }
       }
    }

@@ -498,8 +498,7 @@ void ControlToolBar::OnPlay(wxCommandEvent &evt)
       {
          int token =
             gAudioIO->StartStream(t->GetWaveTrackArray(false),
-                                  WaveTrackArray(),
-                                  (sampleFormat)0, t->GetTimeTrack(),
+                                  WaveTrackArray(), t->GetTimeTrack(),
                                   p->GetRate(), t0, t1);
          if (token != 0)
          {
@@ -553,13 +552,41 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
 
       /* TODO: set up stereo tracks if that is how the user has set up
        * their preferences, and choose sample format based on prefs */
-      WaveTrackArray newRecordingTracks;
-      newRecordingTracks.Add(p->GetTrackFactory()->NewWaveTrack());
-      newRecordingTracks[0]->SetOffset(t0);
+      WaveTrackArray newRecordingTracks, playbackTracks;
 
-      int token = gAudioIO->StartStream(t->GetWaveTrackArray(false),
-                                        newRecordingTracks,
-                                        floatSample, t->GetTimeTrack(),
+      bool duplex;
+      gPrefs->Read("/AudioIO/Duplex", &duplex, true);
+      int recordingChannels = gPrefs->Read("/AudioIO/RecordChannels", 1);
+
+      if( duplex )
+         playbackTracks = t->GetWaveTrackArray(false);
+      else
+         playbackTracks = WaveTrackArray();
+
+      for( int c = 0; c < recordingChannels; c++ )
+      {
+         WaveTrack *newTrack = p->GetTrackFactory()->NewWaveTrack();
+         newTrack->SetOffset(t0);
+         if( recordingChannels == 2 )
+         {
+            if( c == 0 )
+            {
+               newTrack->SetChannel(Track::LeftChannel);
+               newTrack->SetLinked(true);
+            }
+            else
+               newTrack->SetChannel(Track::RightChannel);
+         }
+         else
+         {
+            newTrack->SetChannel( Track::MonoChannel );
+         }
+
+         newRecordingTracks.Add(newTrack);
+      }
+
+      int token = gAudioIO->StartStream(playbackTracks,
+                                        newRecordingTracks, t->GetTimeTrack(),
                                         p->GetRate(), t0, t1);
 
       bool success = (token != 0);
