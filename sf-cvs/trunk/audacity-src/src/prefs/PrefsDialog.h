@@ -18,6 +18,7 @@ class wxNotebook;
 class wxWindow;
 class wxButton;
 class wxCommandEvent;
+class wxFrame;
 
 class PrefsDialog:public wxDialog {
 
@@ -38,6 +39,10 @@ class PrefsDialog:public wxDialog {
    wxButton *mCancel;
 
    int mSelected;
+
+   #ifdef __WXMAC__
+   wxFrame *mMacHiddenFrame;
+   #endif
 
  public:
     DECLARE_EVENT_TABLE()

@@ -108,6 +108,16 @@ PrefsPanel(parent)
    topSizer->Add(pComboLabelSizer, 0,
                        wxALL, GENERIC_CONTROL_BORDER);
 
+   #ifdef __WXMAC__
+   wxBoxSizer * pMacSizer = new wxBoxSizer( wxHORIZONTAL );
+   wxString warningStr = 
+      _("Note: Pressing Cmd+Q will quit. All other keys are valid.");
+   pMacSizer->Add(new wxStaticText(this, -1, warningStr),
+                  0, 
+                  wxALL, GENERIC_CONTROL_BORDER);
+   topSizer->Add(pMacSizer, 0, wxALL, GENERIC_CONTROL_BORDER);
+   #endif
+
    wxButton *pDefaultsButton =
       new wxButton(this, AssignDefaultsButtonID, _("Defaults"));
    wxButton *pSaveButton =
@@ -238,8 +248,17 @@ void KeyConfigPrefs::RepopulateBindingsList()
       mList->InsertItem( i, _T("") );
       wxString label = mManager->GetLabelFromName(mNames[i]);
       label = wxMenuItem::GetLabelFromText(label.BeforeFirst('\t'));
+      wxString key = mManager->GetKeyFromName(mNames[i]);
+
+      #ifdef __WXMAC__
+      // Replace Ctrl with Cmd
+      if (key.Length() >= 5 && key.Left(5)=="Ctrl+") {
+         key = "Cmd+"+key.Right(key.Length()-5);
+      }
+      #endif
+
       mList->SetItem( i, CommandColumn, label );
-      mList->SetItem( i, KeyComboColumn, mManager->GetKeyFromName(mNames[i]) );
+      mList->SetItem( i, KeyComboColumn, key );
    }
 }
 
@@ -272,6 +291,14 @@ bool KeyConfigPrefs::Apply()
       mList->GetItem(item);
       wxString name = mNames[i];
       wxString key = item.m_text;
+
+      #ifdef __WXMAC__
+      // Replace Cmd with Ctrl
+      if (key.Length() >= 4 && key.Left(4)=="Cmd+") {
+         key = "Ctrl+"+key.Right(key.Length()-4);
+      }
+      #endif
+
       wxString defaultKey = mManager->GetDefaultKeyFromName(name);
 
       if (gPrefs->HasEntry(name)) {
