@@ -23,6 +23,8 @@ Source: "E:\sfw_dev\audacity\win\Release\audacity.exe"; DestDir: "{app}"; CopyMo
 Source: "E:\sfw_dev\audacity\win\Release\audacity-1.2-help.htb"; DestDir: "{app}"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\bg\audacity.mo"; DestDir: "{app}\Languages\bg"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\ca\audacity.mo"; DestDir: "{app}\Languages\ca"; CopyMode: alwaysoverwrite
+Source: "E:\sfw_dev\audacity\win\Release\Languages\cs\audacity.mo"; DestDir: "{app}\Languages\cs"; CopyMode: alwaysoverwrite
+Source: "E:\sfw_dev\audacity\win\Release\Languages\cs\wxstd.mo"; DestDir: "{app}\Languages\cs"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\da\audacity.mo"; DestDir: "{app}\Languages\da"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\da\wxstd.mo"; DestDir: "{app}\Languages\da"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\de\audacity.mo"; DestDir: "{app}\Languages\de"; CopyMode: alwaysoverwrite
@@ -36,15 +38,17 @@ Source: "E:\sfw_dev\audacity\win\Release\Languages\hu\wxstd.mo"; DestDir: "{app}
 Source: "E:\sfw_dev\audacity\win\Release\Languages\it\audacity.mo"; DestDir: "{app}\Languages\it"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\it\wxstd.mo"; DestDir: "{app}\Languages\it"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\ja\audacity.mo"; DestDir: "{app}\Languages\ja"; CopyMode: alwaysoverwrite
+Source: "E:\sfw_dev\audacity\win\Release\Languages\mk\audacity.mo"; DestDir: "{app}\Languages\mk"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\nl\audacity.mo"; DestDir: "{app}\Languages\nl"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\nl\wxstd.mo"; DestDir: "{app}\Languages\nl"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\pl\audacity.mo"; DestDir: "{app}\Languages\pl"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\pl\wxstd.mo"; DestDir: "{app}\Languages\pl"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\pt\audacity.mo"; DestDir: "{app}\Languages\pt"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\ru\audacity.mo"; DestDir: "{app}\Languages\ru"; CopyMode: alwaysoverwrite
-; removed file   Source: "E:\sfw_dev\audacity\win\Release\Languages\ru\wxstd.mo"; DestDir: "{app}\Languages\ru"; CopyMode: alwaysoverwrite
+Source: "E:\sfw_dev\audacity\win\Release\Languages\ru\wxstd.mo"; DestDir: "{app}\Languages\ru"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\sl\audacity.mo"; DestDir: "{app}\Languages\sl"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Languages\sl\wxstd.mo"; DestDir: "{app}\Languages\sl"; CopyMode: alwaysoverwrite
+Source: "E:\sfw_dev\audacity\win\Release\Languages\sv\audacity.mo"; DestDir: "{app}\Languages\sv"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\README.txt"; DestDir: "{app}"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\LICENSE.txt"; DestDir: "{app}"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Nyquist\bug.lsp"; DestDir: "{app}\Nyquist"; CopyMode: alwaysoverwrite
@@ -67,6 +71,7 @@ Source: "E:\sfw_dev\audacity\win\Release\Nyquist\test.lsp"; DestDir: "{app}\Nyqu
 Source: "E:\sfw_dev\audacity\win\Release\Nyquist\xlinit.lsp"; DestDir: "{app}\Nyquist"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\analyze.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\beat.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
+Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\clicktrack.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\delay.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\fadein.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\fadeout.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
@@ -76,6 +81,7 @@ Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\highpass.ny"; DestDir: "{app}\
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\lowpass.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\pluck.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\tremolo.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
+Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\undcbias.ny"; DestDir: "{app}\Plug-Ins"; CopyMode: alwaysoverwrite
 
 [Icons]
 Name: "{group}\Audacity 1.2"; Filename: "{app}\audacity.exe"
