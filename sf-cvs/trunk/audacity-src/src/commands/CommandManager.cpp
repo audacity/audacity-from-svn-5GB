@@ -15,6 +15,7 @@
 #include <wx/hash.h>
 #include <wx/intl.h>
 #include <wx/msgdlg.h>
+#include <wx/log.h>
 
 #include "../Prefs.h"
 
@@ -56,22 +57,36 @@ CommandManager::~CommandManager()
 
 void CommandManager::PurgeData()
 {
-   mMenuBarList.Clear();
-   mSubMenuList.Clear();
-   mCommandList.Clear();
+   // Delete callback functors BEFORE clearing mCommandList!
+   // These are the items created within 'FN()'
+   size_t i;
+   CommandFunctor * pCallback = NULL;
+   for(i=0; i<mCommandList.GetCount(); i++)
+   {
+      CommandListEntry *tmpEntry = mCommandList[i];
+      // JKC: We only want to delete each callbacks once.
+      // AddItemList() may have inserted the same callback 
+      // several times over.
+      if( tmpEntry->callback != pCallback )
+      {
+         pCallback = tmpEntry->callback;
+         delete pCallback;
+      }
+   }
+
+   // mCommandList contains pointers to CommandListEntrys
+   // mMenuBarList contains pointers to MenuBarListEntrys.
+   // mSubMenuList contains pointers to SubMenuListEntrys
+   WX_CLEAR_ARRAY( mCommandList );
+   WX_CLEAR_ARRAY( mMenuBarList );
+   WX_CLEAR_ARRAY( mSubMenuList );
+
    mCommandNameHash.clear();
    mCommandKeyHash.clear();
    mCommandIDHash.clear();
+
    mCurrentMenu = NULL;
    mCurrentID = 0;
-
-   // TODO: Does this crash on Windows???
-   #if 0
-   size_t i;
-
-   for(i=0; i<mCommandList.GetCount(); i++)
-      delete mCommandList[i]->callback;
-   #endif
 }
 
 
@@ -359,7 +374,6 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    gPrefs->SetPath("/");
    
    mCommandList.Add(tmpEntry);
-
    mCommandIDHash[mCurrentID] = tmpEntry;   
 
    if (index==0 || !multi)
