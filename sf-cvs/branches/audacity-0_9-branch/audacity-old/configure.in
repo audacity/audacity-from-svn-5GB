@@ -56,9 +56,9 @@ AC_ARG_WITH(vorbis,
 	use_vorbis="no")
 AC_ARG_WITH(id3,
 	[AC_HELP_STRING([--with-id3],
-		[compile with id3lib (the source is included here) [default=yes]])],
+		[compile with id3lib (the source is included here) [default=no]])],
 	use_id3lib=$withval,
-	use_id3lib="yes")
+	use_id3lib="no")
 AC_ARG_WITH(help,
 	[AC_HELP_STRING([--with-help],
 		[Make the help file "audacity-help.htb" [default=yes]])],
