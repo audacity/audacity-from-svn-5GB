@@ -52,8 +52,6 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
          wxDefaultSize, wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
 {
-   CentreOnParent();
-
    wxRect rect = GetRect();
    if(rect.x < 0) rect.x = 0;
    if(rect.y < 0) rect.y = 0;
@@ -130,6 +128,7 @@ wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
    SetSize(525, 363);
    #endif
 
+   CentreOnParent(); // Center after all that resizing.
 }
 
 void PrefsDialog::OnCancel(wxCommandEvent & event)
