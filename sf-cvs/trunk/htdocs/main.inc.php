@@ -4,6 +4,7 @@ require_once 'lang.inc.php';
 require_once 'versions.inc.php';
 
 $langLinkStr = phpLang_link;
+$langQueryStr = phpLang_query;
 
 // defaults
 

@@ -10,13 +10,13 @@
 
 <?php
 
-print "<a href=about.php?$langLinkStr>$aboutStr</a>\n<br>\n";
-print "<a href=screenshots.php?$langLinkStr>$screenshotsStr</a>\n<br>\n";
-print "<a href=help.php?$langLinkStr>$helpStr</a>\n<br>\n";
-print "<a href=faq.php?$langLinkStr>$faqStr</a>\n<br>\n";
-print "<a href=tutorials.php?$langLinkStr>$tutorialsStr</a>\n<br>\n";
-print "<a href=links.php?$langLinkStr>$linksStr</a>\n<br>\n";
-print "<a href=contact.php?$langLinkStr>$contactUsStr</a>\n<br>\n";
+print "<a href=about.php$langQueryStr>$aboutStr</a>\n<br>\n";
+print "<a href=screenshots.php$langQueryStr>$screenshotsStr</a>\n<br>\n";
+print "<a href=help.php$langQueryStr>$helpStr</a>\n<br>\n";
+print "<a href=faq.php$langQueryStr>$faqStr</a>\n<br>\n";
+print "<a href=tutorials.php$langQueryStr>$tutorialsStr</a>\n<br>\n";
+print "<a href=links.php$langQueryStr>$linksStr</a>\n<br>\n";
+print "<a href=contact.php$langQueryStr>$contactUsStr</a>\n<br>\n";
 
 ?>
 
@@ -38,28 +38,28 @@ print "<a href=contact.php?$langLinkStr>$contactUsStr</a>\n<br>\n";
 <table border="0">
 
 <tr>
-<td><?php print "<a href=windows.php?$langLinkStr>"; ?><img src="images/windows.gif" border=0 width=32 height=22></a></td>
-<td><font size="+1"><?php print "<a href=windows.php?$langLinkStr>$windowsStr "; ?>
+<td><?php print "<a href=windows.php$langQueryStr>"; ?><img src="images/windows.gif" border=0 width=32 height=22></a></td>
+<td><font size="+1"><?php print "<a href=windows.php$langQueryStr>$windowsStr "; ?>
 </a></font></td>
 </tr>
 
 <tr>
 <td>
 
-<?php print "<a href=mac.php?$langLinkStr>"; ?><img src="images/macos.gif" border=0 width=26 height=26><img src="images/macosx.gif" border=0 width=19 height=28></a></td>
-<td><font size="+1"><?php print "<a href=mac.php?$langLinkStr>$macStr"; ?>
+<?php print "<a href=mac.php$langQueryStr>"; ?><img src="images/macos.gif" border=0 width=26 height=26><img src="images/macosx.gif" border=0 width=19 height=28></a></td>
+<td><font size="+1"><?php print "<a href=mac.php$langQueryStr>$macStr"; ?>
 </a></font></td>
 </tr>
 
 <tr>
-<td><?php print "<a href=unix.php?$langLinkStr>"; ?><img src="images/linux.gif" border=0 width=22 height=26><img src="images/freebsd.gif" border=0 width=26 height=28></a></td>
-<td><font size="+1"><?php print "<a href=unix.php?$langLinkStr>$unixStr"; ?>
+<td><?php print "<a href=unix.php$langQueryStr>"; ?><img src="images/linux.gif" border=0 width=22 height=26><img src="images/freebsd.gif" border=0 width=26 height=28></a></td>
+<td><font size="+1"><?php print "<a href=unix.php$langQueryStr>$unixStr"; ?>
 </a></font></td>
 </tr>
 
 <tr>
-<td><?php print "<a href=plugins.php?$langLinkStr>"; ?><img src="images/VST.gif" border=0 width=36 height=21></a></td>
-<td><font size="+1"><?php print "<a href=plugins.php?$langLinkStr>$pluginsStr "; ?>
+<td><?php print "<a href=plugins.php$langQueryStr>"; ?><img src="images/VST.gif" border=0 width=36 height=21></a></td>
+<td><font size="+1"><?php print "<a href=plugins.php$langQueryStr>$pluginsStr "; ?>
 </a></font></td>
 </tr>
 
@@ -95,14 +95,14 @@ value="http://audacity.sourceforge.net/list/invalid.php">
 ?>
 
 <br>
-<?php print "<a href=privacy.php?$langLinkStr><font size=-1>$privacyPolicyStr</font></a>"; ?>
+<?php print "<a href=privacy.php$langQueryStr><font size=-1>$privacyPolicyStr</font></a>"; ?>
 
 </form>
 </p>
 
 <p>
 <font size="+1">
-<?php print "<a href=beta.php?$langLinkStr>$betaVersionsStr</a>"; ?>
+<?php print "<a href=beta.php$langQueryStr>$betaVersionsStr</a>"; ?>
 </font>
 </p>
 
@@ -122,11 +122,11 @@ value="http://audacity.sourceforge.net/list/invalid.php">
 <?php print $translationStr; ?>
 </a>
 <br>
-<?php print "<a href=donatetime.php?$langLinkStr>"; ?>
+<?php print "<a href=donatetime.php$langQueryStr>"; ?>
 <?php print $donateTimeStr; ?>
 </a>
 <br>
-<?php print "<a href=donatemoney.php?$langLinkStr>"; ?>
+<?php print "<a href=donatemoney.php$langQueryStr>"; ?>
 <?php print $donateMoneyStr; ?>
 </a>
 
@@ -142,7 +142,7 @@ value="http://audacity.sourceforge.net/list/invalid.php">
 <?php print $develListStr; ?>
 </a>
 <br>
-<?php print "<a href=devel.php?$langLinkStr>"; ?>
+<?php print "<a href=devel.php$langQueryStr>"; ?>
 <?php print $develNewsStr; ?>
 </a>
 <br>
@@ -156,15 +156,15 @@ value="http://audacity.sourceforge.net/list/invalid.php">
 <br>
 <a href=dox/html/index.html>Doxygen Class Docs</a>
 <br>
-<?php print "<a href=nyquist.php?$langLinkStr>"; ?>
+<?php print "<a href=nyquist.php$langQueryStr>"; ?>
 Nyquist
 </a>
 <br>
-<?php print "<a href=cvs.php?$langLinkStr>"; ?>
+<?php print "<a href=cvs.php$langQueryStr>"; ?>
 CVS
 </a>
 <br>
-<?php print "<a href=credits.php?$langLinkStr>"; ?>
+<?php print "<a href=credits.php$langQueryStr>"; ?>
 <?php print $creditsStr; ?>
 </a>
 <br>
