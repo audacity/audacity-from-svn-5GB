@@ -47,6 +47,12 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name libsamplerate
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libflac_cpp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libflac
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -76,6 +82,30 @@ Package=<4>
 ###############################################################################
 
 Project: "expat"="..\LIB-SRC\EXPAT\expat.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libflac"="..\LIB-SRC\LIBFLAC\SRC\LIBFLAC\WIN32\libflac.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libflac_cpp"="..\LIB-SRC\LIBFLAC\SRC\LIBFLAC++\WIN32\libflac_cpp.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
