@@ -40,6 +40,8 @@ Website / Sourceforge
 - Command-line exporting
 - LADSPA support (needs work - see email from
   Jim Hainis about Pluggo)
+- Make envelopes save and load in new project file
+  format
 
 -----------------------------------------------------------
 1.1 TODO
@@ -151,6 +153,7 @@ UI::
 - Envelope editor should support linear, quadratic, and exponential,
   ideally with a right-click.  Default should be linear; it makes the
   most sense visually.  Also add to Filter dialog?
+- Envelopes should also be fully undo-able
 - Some way to insert silence with the mouse???
 - Looping - two forms of looping:
   * An option to continuously loop the selection during playback
