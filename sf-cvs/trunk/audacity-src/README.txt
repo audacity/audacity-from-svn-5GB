@@ -240,6 +240,13 @@ Known issues/problems:
     accented characters work.  Only files inside of folders
     with accented characters in their names will cause problems.
 
+  * Windows only: Audacity is incompatible with some professional
+    sound cards and may crash if one of these cards is the default
+    when you open Audacity.  As a workaround, make a different
+    sound card your default when using Audacity, but please let
+    us know if this affects you so that we can track down and
+    solve the problem.
+
 -------------------------------------------------------------
 
 Changes in 1.2.0-pre2:
