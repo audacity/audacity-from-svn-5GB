@@ -20,8 +20,8 @@ Deze webpagina zal zich ontwikkelen tot een plek waar je te weten kunt komen wat
     - Ondersteuning voor het lezen en schrijven van veel meer types
       niet gecomprimeerde audio bestanden, waaronder ADPCM WAV bestanden.
   * Werkbalken
-    - Nieuwe werkbalk teken code; past zich automatisch aan aan de kleuren van 
-      je besturingssysteem
+    - Nieuwe werkbalk teken code; past zich automatisch aan de kleuren van 
+      je besturingssysteem aan
     - Nieuwe werkbalk knoppen (Spring naar Start, Spring naar Einde)
     - Nieuwe Bewerkings werkbalk
     - Werkbalk knoppen uitschakelen als ze niet beschikbaar zijn
@@ -33,7 +33,7 @@ Deze webpagina zal zich ontwikkelen tot een plek waar je te weten kunt komen wat
     - De wavevorm toont nu de gemiddelde waarden in een lichtere kleur
       binnen de piekwaarden
   * Toewijzing
-    - Audacity kan nu aan verschillende buitenlandse talen worden toegewezen.
+    - Audacity kan nu aan verschillende buitenlandse talen worden aangepast.
 </pre>
 </p>
 
@@ -46,11 +46,11 @@ Deze webpagina zal zich ontwikkelen tot een plek waar je te weten kunt komen wat
 </tr>
 <tr>
 <td bgcolor="#ccccff"
-><a href="http://www.wxwindows.org">wxWindows</a>
+><a href="http://www.wxwidgets.org">wxWidgets</a>
 <td bgcolor="#ccccff"
->Dit is een cross-platform bibliotheek welke onze GUI menus, buttons,
-    windows, drawing, etc.) toestaat op Mac, Windows, and Unix systemen te 
-    draaien.  wxWindows verstrekt ook andere nuttige C++ classes, en
+>Dit is een cross-platform bibliotheek welke onze GUI menus, knoppen,
+    vensters, tekenen etc.) toestaat op Mac, Windows, and Unix systemen te 
+    draaien.  wxWidgets verstrekt ook andere nuttige C++ classes en
     Audacity is 100% afhankelijk van deze bibliotheek.  We adviseren het 
     gebruik van deze bibliotheek ten zeerste als je cross-platform
     ontwikkeling wilt uitvoeren.
@@ -80,11 +80,11 @@ Deze webpagina zal zich ontwikkelen tot een plek waar je te weten kunt komen wat
 <td bgcolor="#ccccff"
 ><p>
     Deze bibliotheek is ook geschreven door Rob Leslie (de auteur van libmad,
-    zie hierboven) en het is een fijne en simpele bibliotheek voor het lezen en 
-    schrijven van ID3 tags in MP3 bestanden.</p>
+    zie hierboven) en het is een fijne en simpele bibliotheek voor het lezen  
+    en schrijven van ID3 tags in MP3 bestanden.</p>
     <p>Deze bibliotheek is optioneel; als het wordt gekoppeld binnen Audacity, 
     zal aan de gebruiker een Tags dialoog worden gepresenteerd tijdens het 
-    exporteren van MP3 bestanden, en de tags zullen worden vastgelegd tijdens 
+    exporteren van MP3 bestanden en de tags zullen worden vastgelegd tijdens 
     het importeren van de MP3 bestanden.
     Merk op dat de libid3tag niet apart wordt gedistribueerd; het is een 
     onderdeel van MAD.</p>
