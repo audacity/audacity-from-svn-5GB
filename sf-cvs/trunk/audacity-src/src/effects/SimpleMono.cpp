@@ -7,8 +7,8 @@
   Dominic Mazzoni
 
   This abstract class simplifies the implementation of a basic
-  monaural effect.  Inherit from it if your effect doesn't just
-  modifies a track in place and doesn't care how many samples
+  monaural effect.  Inherit from it if your effect just modifies
+  a single track in place and doesn't care how many samples
   it gets at a time.  Your derived class only needs to implement
   GetEffectName, GetEffectAction, and ProcessSimpleMono.
 
@@ -53,7 +53,7 @@ bool EffectSimpleMono::ProcessOne(int count, WaveTrack *track,
          block = len-s;
 
       track->Get((samplePtr)buffer, floatSample, t, block);
-      if (!ProcessSimpleMono(buffer, block)) {
+      if (!ProcessSimpleMono(buffer, block, track->GetRate())) {
          delete[] buffer;
          return false;
       }
