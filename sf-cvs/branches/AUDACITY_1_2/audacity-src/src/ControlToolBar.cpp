@@ -641,8 +641,10 @@ void ControlToolBar::SetRecord(bool down)
 void ControlToolBar::PlayPlayRegion(double t0, double t1,
                                     bool looped /* = false */)
 {
-   if (gAudioIO->IsBusy())
+   if (gAudioIO->IsBusy()) {
+      mPlay->PopUp();
       return;
+   }
    
    mStop->Enable();
    mRewind->Disable();
@@ -801,8 +803,10 @@ void ControlToolBar::StopPlaying()
 
 void ControlToolBar::OnRecord(wxCommandEvent &evt)
 {
-   if (gAudioIO->IsBusy())
+   if (gAudioIO->IsBusy()) {
+      mRecord->PopUp();
       return;
+   }
 
    mPlay->Disable();
    mStop->Enable();
