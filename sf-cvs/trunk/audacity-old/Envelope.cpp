@@ -30,6 +30,8 @@ Envelope::Envelope()
    mDirty = false;
 
    mIsDeleting = false;
+
+   mMirror = true;
 }
 
 Envelope::~Envelope()
@@ -37,6 +39,18 @@ Envelope::~Envelope()
    int len = mEnv.Count();
    for (int i = 0; i < len; i++)
       delete mEnv[i];
+}
+
+void Envelope::Mirror(bool mirror)
+{
+   mMirror = mirror;
+}
+
+void Envelope::Flatten(double value)
+{
+   mEnv.Clear();
+   Insert(0.0, value);
+   Insert(1000000000.0, value);
 }
 
 void Envelope::CopyFrom(Envelope * e)
@@ -83,7 +97,15 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB)
    dc.SetPen(AColor::envelopePen);
    dc.SetBrush(*wxWHITE_BRUSH);
 
-   int ctr = r.y + (r.height / 2);
+   int ctr, height;
+   if (mMirror) {
+      height = r.height / 2;
+      ctr = r.y + height;
+   }
+   else {
+      height = r.height;
+      ctr = r.y + height;
+   }
 
    int len = mEnv.Count();
    for (int i = 0; i < len; i++) {
@@ -98,14 +120,16 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB)
          int y;
 
          if (dB)
-            y = int (toDB(v) * (r.height / 2));
+            y = int (toDB(v) * height);
          else
-         y = int (v * (r.height / 2));
+         y = int (v * height);
 
          wxRect circle(r.x + x - 1, ctr - y, 4, 4);
          dc.DrawEllipse(circle);
-         circle.y = ctr + y - 2;
-         dc.DrawEllipse(circle);
+         if (mMirror) {
+            circle.y = ctr + y - 2;
+            dc.DrawEllipse(circle);
+         }
 
          if (i == mDragPoint) {
             dc.SetPen(AColor::envelopePen);
@@ -167,8 +191,18 @@ bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
 {
    //h -= mOffset;
 
-   int ctr = r.y + r.height / 2;
-   bool upper = (event.m_y < ctr);
+   int ctr, height;
+   bool upper;
+   if (mMirror) {
+      height = r.height / 2;
+      ctr = r.y + height;
+      upper = (event.m_y < ctr);
+   }
+   else {
+      height = r.height;
+      ctr = r.y + height;
+      upper = true;
+   }
 
    if (event.ButtonDown()) {
       mIsDeleting = false;
@@ -185,9 +219,9 @@ bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
             int dy;
 
             if (dB)
-               dy = int (toDB(v) * (r.height / 2));
+               dy = int (toDB(v) * height);
             else
-            dy = int (v * (r.height / 2));
+            dy = int (v * height);
 
             int y;
             if (upper)
@@ -223,9 +257,9 @@ bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
          double newVal;
 
          if (dB)
-            newVal = fromDB(dy / double (r.height / 2));
+            newVal = fromDB(dy / double (height));
          else
-            newVal = dy / double (r.height / 2);
+            newVal = dy / double (height);
 
          if (newVal < 0.0)
             newVal = 0.0;
@@ -280,9 +314,9 @@ bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
       double newVal;
 
       if (dB)
-         newVal = fromDB(y / double (r.height / 2));
+         newVal = fromDB(y / double (height));
       else
-         newVal = y / double (r.height / 2);
+         newVal = y / double (height);
 
       if (newVal < 0.0)
          newVal = 0.0;

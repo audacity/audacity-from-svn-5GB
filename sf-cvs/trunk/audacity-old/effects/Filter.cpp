@@ -24,7 +24,12 @@
 EffectFilter::EffectFilter()
 {
    mEnvelope = new Envelope();
+   mEnvelope->Flatten(0.5);
    mEnvelope->SetTrackLen(1.0);
+   mEnvelope->Mirror(false);
+
+   windowSize = 256;
+   filterFunc = new float[windowSize];
 }
 
 bool EffectFilter::Begin(wxWindow *parent)
@@ -37,6 +42,11 @@ bool EffectFilter::Begin(wxWindow *parent)
    
    if (!dlog.GetReturnCode())
       return false;
+
+   for(int i=0; i<=windowSize/2; i++) {
+      double envVal = mEnvelope->GetValue(((double)i)/(windowSize/2));
+      filterFunc[i] = (float)(pow(10.0, envVal*2.0 - 1.0));
+   }
    
    return true;
 }
@@ -47,7 +57,6 @@ bool EffectFilter::DoIt(WaveTrack *t,
 {
    sampleCount s = start;
    sampleCount idealBlockLen = 65536;
-   int windowSize = 256;
    
    sampleType *buffer = new sampleType[idealBlockLen];
    
@@ -131,12 +140,12 @@ void EffectFilter::Filter(sampleCount len,
    for(i=0; i<=half; i++) {
       int j = len - i;
       
-      outr[i] = outr[i]*sin(float(i)/half);
-      outi[i] = outi[i]*sin(float(i)/half);
+      outr[i] = outr[i]*filterFunc[i];
+      outi[i] = outi[i]*filterFunc[i];
       
       if (i!=0 && i!=len/2) {
-         outr[j] = outr[j]*sin(float(i)/half);
-         outi[j] = outi[j]*sin(float(i)/half);
+         outr[j] = outr[j]*filterFunc[i];
+         outi[j] = outi[j]*filterFunc[i];
       }
    }
    
@@ -184,40 +193,48 @@ void FilterPanel::OnPaint(wxPaintEvent & evt)
    wxMemoryDC memDC;
    memDC.SelectObject(*mBitmap);
 
-   wxRect r;
-   r.x = 0;
-   r.y = 0;
-   r.width = mWidth;
-   r.height = mHeight;
+   wxRect border;
+   border.x = 0;
+   border.y = 0;
+   border.width = mWidth;
+   border.height = mHeight;
 
    memDC.SetBrush(*wxWHITE_BRUSH);
    memDC.SetPen(*wxBLACK_PEN);
-   memDC.DrawRectangle(r);
+   memDC.DrawRectangle(border);
+
+   wxRect r = border;
+   r.x += 2;
+   r.width -= 8;
+   r.y += 3;
+   r.height -= 6;
 
    // Pure blue x-axis line
    memDC.SetPen(wxPen(wxColour(0, 0, 255), 1, wxSOLID));
-   int center = height/2;
-   memDC.DrawLine(0, center, width, center);
+   int center = r.height/2;
+   memDC.DrawLine(0, center, r.width, center);
 
    // Med-blue envelope line
    memDC.SetPen(wxPen(wxColour(128, 128, 255), 1, wxSOLID));
 
    // Draw envelope
-   double *values = new double[width];
-   mEnvelope->GetValues(values, width, 0.0, 1.0/width);
-   for(int x=0; x<width; x++) {
-      memDC.DrawLine(x, center-center*values[x]-2,
-                     x, center-center*values[x]+2);
+   double *values = new double[r.width];
+   mEnvelope->GetValues(values, r.width, 0.0, 1.0/r.width);
+   for(int x=0; x<r.width; x++) {
+      memDC.DrawLine(x, r.height-r.height*values[x]-2,
+                     x, r.height-r.height*values[x]+2);
    }
    delete[] values;
-   mEnvelope->Draw(memDC, r, 0.0, width, false);
+   r.y -= 3;
+   mEnvelope->Draw(memDC, r, 0.0, r.width, false);
+   r.y += 3;
 
    // Paint border again
    memDC.SetBrush(*wxTRANSPARENT_BRUSH);
    memDC.SetPen(*wxBLACK_PEN);
-   memDC.DrawRectangle(r);
+   memDC.DrawRectangle(border);
 
-   dc.Blit(0, 0, width, height,
+   dc.Blit(0, 0, mWidth, mHeight,
            &memDC, 0, 0, wxCOPY, FALSE);
 }
 

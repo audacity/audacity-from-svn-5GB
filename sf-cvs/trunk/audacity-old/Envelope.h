@@ -35,6 +35,10 @@ class Envelope {
 
    virtual ~ Envelope();
 
+   void Flatten(double value);
+
+   void Mirror(bool mirror);
+
    void CopyFrom(Envelope * e);
 
    // File I/O
@@ -70,6 +74,8 @@ class Envelope {
    bool IsDirty();
 
  private:
+   
+   bool mMirror;
 
    int Insert(double when, double value);
 

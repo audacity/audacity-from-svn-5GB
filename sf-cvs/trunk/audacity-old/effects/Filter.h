@@ -40,6 +40,9 @@ public:
 private:
    
    Envelope *mEnvelope;
+
+   int windowSize;
+   float *filterFunc;
    
    void Filter(sampleCount len,
                sampleType *buffer);
