@@ -209,7 +209,9 @@ int audio_open(snd_node *n, long *f)
 
     SPBSetDeviceInfo(data->refnum, 'agc ', &gainControl);
     
-    SPBSetDeviceInfo(data->refnum, 'srat', &sampleRateFixed);
+    err = SPBSetDeviceInfo(data->refnum, 'srat', &sampleRateFixed);
+    if (err)
+      return !SND_SUCCESS;
 
     SPBSetDeviceInfo(data->refnum, 'plth', &playthroughVolume);
     
