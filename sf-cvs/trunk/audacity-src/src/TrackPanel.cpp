@@ -109,10 +109,6 @@ double samplerate = 44100.0;
 // set default selection format
 int iformat = SELECTION_FORMAT_RULER_MIN_SEC;
 
-// initialize ThisTrackEndTime which is used in snap-to
-// mode to check for rounding beyond end of track
-float ThisTrackEndTime = 0.0;
-
 // initialize SnapTo mode to off
 int iSnapTo = 0;
 
@@ -732,8 +728,6 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       else
          SelectNone();
 
-      ThisTrackEndTime = t->GetEndTime();
-      
       Refresh(false);
       
    } else if (event.ButtonUp(1) || event.ButtonUp(3)) {
@@ -3089,12 +3083,6 @@ void TrackPanel::DisplaySelection()
             fsec1 = rint(fsec1) + float(imin1*60);
             fsec2 = rint(fsec2) + float(imin2*60);
             fsectot = rint(fsec2 - fsec1);
-            // check for rounding beyond the end
-            if(fsec2 > ThisTrackEndTime)
-               {
-                  fsec2 = fsec2 - 1.0;
-                  fsectot = rint(fsec2 - fsec1);
-               }
             mViewInfo->sel0 = fsec1;
             mViewInfo->sel1 = fsec2;
             // if rounding beyond end happens fix sel0 for proper cursor info
@@ -3136,12 +3124,6 @@ void TrackPanel::DisplaySelection()
             fsec1 = rint(fsec1);
             fsec2 = rint(fsec2);
             fsectot = rint(fsec2 - fsec1);
-            // check for rounding beyond the end
-            if(fsec2 > ThisTrackEndTime)
-               {
-                  fsec2 = fsec2 - 1.0;
-                  fsectot = rint(fsec2 - fsec1);
-               }
             mViewInfo->sel0 = fsec1;
             mViewInfo->sel1 = fsec2;
             // if rounding beyond end happens fix sel0 for proper cursor info
@@ -3176,12 +3158,6 @@ void TrackPanel::DisplaySelection()
             dframes1 = rint(dframes1);
             dframes2 = rint(dframes2);
             dframestot = rint(dframes2 - dframes1);
-            // check for rounding beyond the end
-            if( float(dframes2/24.0) > ThisTrackEndTime)
-               {
-                  dframes2 = dframes2 - 1.0;
-                  dframestot = rint(dframes2 - dframes1);
-               }
             mViewInfo->sel0 = float(dframes1/24.0);
             mViewInfo->sel1 = float(dframes2/24.0);
             // if rounding beyond end happens fix sel0 for proper cursor info
@@ -3216,12 +3192,6 @@ void TrackPanel::DisplaySelection()
             dframes1 = rint(dframes1);
             dframes2 = rint(dframes2);
             dframestot = rint(dframes2 - dframes1);
-            // check for rounding beyond the end
-            if( float(dframes2/25.0) > ThisTrackEndTime)
-               {
-                  dframes2 = dframes2 - 1.0;
-                  dframestot = rint(dframes2 - dframes1);
-               }
             mViewInfo->sel0 = float(dframes1/25.0);
             mViewInfo->sel1 = float(dframes2/25.0);
             // if rounding beyond end happens fix sel0 for proper cursor info
@@ -3256,12 +3226,6 @@ void TrackPanel::DisplaySelection()
             dframes1 = rint(dframes1);
             dframes2 = rint(dframes2);
             dframestot = rint(dframes2 - dframes1);
-            // check for rounding beyond the end
-            if( float(dframes2*1001.0/30000.0) > ThisTrackEndTime)
-               {
-                  dframes2 = dframes2 - 1.0;
-                  dframestot = rint(dframes2 - dframes1);
-               }
             mViewInfo->sel0 = float(dframes1*1001.0/30000.0);
             mViewInfo->sel1 = float(dframes2*1001.0/30000.0);
             // if rounding beyond end happens fix sel0 for proper cursor info
@@ -3303,12 +3267,6 @@ void TrackPanel::DisplaySelection()
             dframes1 = rint(dframes1) + float(isec1*75) + float(imin1*60*75);
             dframes2 = rint(dframes2) + float(isec2*75) + float(imin2*60*75);
             dframestot = rint(dframes2 - dframes1);
-            // check for rounding beyond the end
-            if( float(dframes2/75.0) > ThisTrackEndTime)
-               {
-                  dframes2 = dframes2 - 1.0;
-                  dframestot = rint(dframes2 - dframes1);
-               }
             mViewInfo->sel0 = float(dframes1/75.0);
             mViewInfo->sel1 = float(dframes2/75.0);
             // if rounding beyond end happens fix sel0 for proper cursor info
