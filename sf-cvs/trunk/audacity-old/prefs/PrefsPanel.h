@@ -23,48 +23,33 @@
 #include <wx/panel.h>
 #include <wx/window.h>
 #include <wx/gdicmn.h>
+#include <wx/sizer.h>
+#include <wx/notebook.h>
 
 /* A few constants for an attempt at semi-uniformity */
-#ifdef WIN32
 #define PREFS_FONT_SIZE     8
-#else
-#define PREFS_FONT_SIZE     10
-#endif
 
-#define PREFS_SIDE_MARGINS  10
-#define PREFS_TOP_MARGIN    17
-#define PREFS_BOTTOM_MARGIN 10
+/* these are spacing guidelines: ie. radio buttons should have a 5 pixel
+ * border on each side */
+#define RADIO_BUTTON_BORDER    5
+#define TOP_LEVEL_BORDER       5
+#define GENERIC_CONTROL_BORDER 5
 
 class PrefsPanel:public wxPanel {
 
  public:
-   PrefsPanel(wxWindow * parent):wxPanel(parent, -1, wxPoint(1160, 20),
-                                         wxSize(320, 350)) {
-      SetFont(wxFont(PREFS_FONT_SIZE, wxDEFAULT, wxNORMAL, wxNORMAL));
-      Show(false);
-      mPrefsHidden = true;
-   } virtual ~ PrefsPanel() {
+   PrefsPanel(wxWindow * parent):wxPanel(parent, -1) {
+      /* I'm not sure if we should be setting this... I'll play around
+       * and see what looks best on different platforms under
+       * differing circumstances...*/
+//    SetFont(wxFont(PREFS_FONT_SIZE, wxDEFAULT, wxNORMAL, wxNORMAL));
    }
+   
+   virtual ~ PrefsPanel() {}
    virtual bool Apply() = 0;
 
-   virtual void HidePrefsPanel() {
-      if (!mPrefsHidden) {
-         Show(false);
-         Move(1160, 20);
-         mPrefsHidden = true;
-      }
-   }
-
-   virtual void ShowPrefsPanel() {
-      if (mPrefsHidden) {
-         Move(160, 20);
-         Show(true);
-         mPrefsHidden = false;
-      }
-   }
-
- private:
-   bool mPrefsHidden;
+ protected:
+   wxStaticBoxSizer *topSizer;
 
 };
 

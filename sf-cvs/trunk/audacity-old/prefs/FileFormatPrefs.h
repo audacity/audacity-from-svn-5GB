@@ -13,7 +13,7 @@
 
 #include <wx/window.h>
 #include <wx/statbox.h>
-#include <wx/radiobox.h>
+#include <wx/radiobut.h>
 
 #include "PrefsPanel.h"
 
@@ -25,10 +25,11 @@ class FileFormatPrefs:public PrefsPanel {
    bool Apply();
 
  private:
-    wxStaticBox * mEnclosingBox;
+   wxRadioButton *mCopyOrEdit[2];
+   int mNumFormats;
 
-   wxRadioBox *mCopyOrEdit;
-   wxRadioBox *mDefaultExportFormat;
+   // leave room for expansion. pointers are cheap
+   wxRadioButton *mDefaultExportFormats[20];
 
 };
 

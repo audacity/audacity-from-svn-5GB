@@ -32,77 +32,65 @@ enum {
 };
 
 BEGIN_EVENT_TABLE(PrefsDialog, wxDialog)
-    EVT_LISTBOX(CategoriesID, PrefsDialog::OnCategoryChange)
-    EVT_BUTTON(wxID_OK, PrefsDialog::OnOK)
-    EVT_BUTTON(wxID_CANCEL, PrefsDialog::OnCancel)
-    END_EVENT_TABLE()
+   EVT_BUTTON(wxID_OK, PrefsDialog::OnOK)
+   EVT_BUTTON(wxID_CANCEL, PrefsDialog::OnCancel)
+END_EVENT_TABLE()
 
 
 
 PrefsDialog::PrefsDialog(wxWindow * parent):
 wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
-         wxSize(500, 440), wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
+         wxDefaultSize, wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
 {
    CentreOnParent();
 
-   mCategories = new wxListBox(this,
-                               CategoriesID,
-                               wxPoint(20, 20), wxSize(120, 350));
+   wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
+
+   mCategories = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize,
+                                wxNB_LEFT);
+   wxNotebookSizer *catSizer = new wxNotebookSizer(mCategories);
+
+
+   topSizer->Add(catSizer, 1, wxGROW | wxALL, 0);
+
+   /* All panel additions belong here */
+   mCategories->AddPage(new AudioIOPrefs(mCategories), "Audio I/O");
+   mCategories->AddPage(new SampleRatePrefs(mCategories), "Sample Rates");
+   mCategories->AddPage(new FileFormatPrefs(mCategories), "File Formats");
+   mCategories->AddPage(new SpectrumPrefs(mCategories), "Spectrograms");
+   mCategories->AddPage(new DirectoriesPrefs(mCategories), "Directories");
+
+   long selected = gPrefs->Read("/Prefs/PrefsCategory", 0L);
+   if (selected < 0 || selected >= mCategories->GetPageCount())
+      mSelected = 0;
+
+   mCategories->SetSelection(selected);
 
    mOK = new wxButton(this,
-                      wxID_OK, "OK", wxPoint(400, 385), wxSize(80, 20));
+                      wxID_OK, "OK");
 
 #ifndef TARGET_CARBON
    mOK->SetDefault();
    mOK->SetFocus();
 #endif
 
-   mCancel = new wxButton(this,
+  mCancel = new wxButton(this,
                           wxID_CANCEL,
-                          "Cancel", wxPoint(300, 385), wxSize(90, 20));
+                          "Cancel");
 
-   /* All panel additions belong here */
-   mCategories->Append("Audio I/O", new AudioIOPrefs(this));
-   mCategories->Append("Sample Rates", new SampleRatePrefs(this));
-   mCategories->Append("File Formats", new FileFormatPrefs(this));
-   mCategories->Append("Spectrograms", new SpectrumPrefs(this));
-   mCategories->Append("Directories", new DirectoriesPrefs(this));
+   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 
-   PrefsPanel *panel;
+   buttonSizer->Add(mCancel, 0, wxALL, 7);
+   buttonSizer->Add(mOK, 0, wxALL, 7);
+   
+   topSizer->Add(buttonSizer, 0, wxALIGN_RIGHT);
 
-   for (int i = 0; i < mCategories->Number(); i++) {
-      panel = (PrefsPanel *) mCategories->GetClientData(i);
-      panel->HidePrefsPanel();
-   }
-
-   mSelected = gPrefs->Read("/Prefs/PrefsCategory", 0L);
-   if (mSelected < 0 || mSelected >= mCategories->Number())
-      mSelected = 0;
-
-   mCategories->SetSelection(mSelected);
-   panel = (PrefsPanel *) mCategories->GetClientData(mSelected);
-   panel->ShowPrefsPanel();
-}
+   SetAutoLayout(true);
+   SetSizer(topSizer);
+   topSizer->Fit(this);
+   topSizer->SetSizeHints(this);
 
 
-void PrefsDialog::OnCategoryChange(wxCommandEvent & event)
-{
-   int newSelection = mCategories->GetSelection();
-
-   if (newSelection >= 0 && newSelection < mCategories->Number()
-       && newSelection != mSelected) {
-
-      /* hide the old panel */
-      PrefsPanel *panel =
-          (PrefsPanel *) mCategories->GetClientData(mSelected);
-      panel->HidePrefsPanel();
-
-      /* show the new one */
-      panel = (PrefsPanel *) mCategories->GetClientData(newSelection);
-      panel->ShowPrefsPanel();
-
-      mSelected = newSelection;
-   }
 }
 
 
@@ -116,18 +104,13 @@ void PrefsDialog::OnOK(wxCommandEvent & event)
 {
    PrefsPanel *panel;
 
-   gPrefs->Write("/Prefs/PrefsCategory", (long) mSelected);
+   gPrefs->Write("/Prefs/PrefsCategory", (long)mCategories->GetSelection());
 
-   for (int i = 0; i < mCategories->Number(); i++) {
-      panel = (PrefsPanel *) mCategories->GetClientData(i);
+   for (int i = 0; i < mCategories->GetPageCount(); i++) {
+      panel = (PrefsPanel *) mCategories->GetPage(i);
 
       /* The dialog doesn't end until all the input is valid */
       if (!panel->Apply()) {
-         PrefsPanel *tmp =
-             (PrefsPanel *) mCategories->GetClientData(mSelected);
-         tmp->HidePrefsPanel();
-         panel->ShowPrefsPanel();
-
          mCategories->SetSelection(i);
          mSelected = i;
          return;
@@ -140,12 +123,6 @@ void PrefsDialog::OnOK(wxCommandEvent & event)
 
 PrefsDialog::~PrefsDialog()
 {
-   PrefsPanel *panel;
-   for (int i = 0; i < mCategories->Number(); i++) {
-      panel = (PrefsPanel *) mCategories->GetClientData(i);
-      delete panel;
-   }
-
    delete mCategories;
    delete mOK;
    delete mCancel;

@@ -12,6 +12,7 @@
 #include <wx/statbox.h>
 #include <wx/colordlg.h>
 #include <wx/msgdlg.h>
+#include <wx/sizer.h>
 
 #include "../Prefs.h"
 #include "SpectrumPrefs.h"
@@ -43,49 +44,72 @@ PrefsPanel(parent)
    bool isGrayscale = false;
    gPrefs->Read("/Spectrum/Grayscale", &isGrayscale, false);
 
+   int i;
    int maxFreq = gPrefs->Read("/Spectrum/MaxFreq", 8000L);
    wxString maxFreqStr;
    maxFreqStr.Printf("%d", maxFreq);
 
    int pos = 3;                 // Fall back to 256 if it doesn't match anything else
-   for (int i = 0; i < numFFTSizes; i++)
+   for (i = 0; i < numFFTSizes; i++)
       if (fftSize == FFTSizes[i]) {
          pos = i;
          break;
       }
 
-   mEnclosingBox = new wxStaticBox(this, -1,
-                                   "Spectrogram Options",
-                                   wxPoint(0, 0), GetSize());
+   topSizer = new wxStaticBoxSizer(
+      new wxStaticBox(this, -1, "Spectrogram Options"),
+      wxVERTICAL);
 
-   mFFTSize = new wxRadioBox(this, -1, "FFT Size", wxPoint(PREFS_SIDE_MARGINS, PREFS_TOP_MARGIN), wxSize(GetSize().GetWidth() - PREFS_SIDE_MARGINS * 2, 180), numFFTSizes,      // number of items
-                             stringFFTSizes, 1);
+   {
+      wxStaticBoxSizer *fftSizeSizer = new wxStaticBoxSizer(
+         new wxStaticBox(this, -1, "FFT Size"),
+         wxVERTICAL);
 
-   mFFTSize->SetSelection(pos);
+      mFFTSize[0] = new wxRadioButton(
+         this, -1, "Radio", wxDefaultPosition,
+         wxDefaultSize, wxRB_GROUP );
+      fftSizeSizer->Add(mFFTSize[0], 0, 
+         wxGROW|wxALL, RADIO_BUTTON_BORDER );
 
-   mGrayscale = new wxCheckBox(this, -1,
-                               "Grayscale",
-                               wxPoint(PREFS_SIDE_MARGINS,
-                                       PREFS_TOP_MARGIN + 190),
-                               wxSize(GetSize().GetWidth() -
-                                      PREFS_SIDE_MARGINS * 2, 15));
-   if (isGrayscale)
-      mGrayscale->SetValue(true);
+      for(i = 1; i < numFFTSizes; i++) {
+         mFFTSize[i] = new wxRadioButton(this, -1, stringFFTSizes[i]);
+         fftSizeSizer->Add(mFFTSize[i], 0,
+            wxGROW|wxALL, RADIO_BUTTON_BORDER );
+      }
 
-   mMaxFreqLabel = new wxStaticText(this,
-                                    -1,
-                                    "Maximum Frequency:",
-                                    wxPoint(PREFS_SIDE_MARGINS,
-                                            PREFS_TOP_MARGIN + 220));
+      mFFTSize[pos]->SetValue(true);
+            
+      topSizer->Add( fftSizeSizer, 0, 
+         wxGROW|wxALL, TOP_LEVEL_BORDER );
+   }
 
-   mMaxFreqCtrl = new wxTextCtrl(this,
-                                 -1,
-                                 maxFreqStr,
-                                 wxPoint(140,
-                                         PREFS_TOP_MARGIN + 220),
-                                 wxSize(100, 20));
+   {
+      mGrayscale  = new wxCheckBox(this, -1, "Grayscale");
+      topSizer->Add(mGrayscale, 0,
+         wxGROW|wxALL, RADIO_BUTTON_BORDER );
+      
+      if(isGrayscale)
+         mGrayscale->SetValue(true);
 
-}
+      wxBoxSizer *freqSizer = new wxBoxSizer( wxHORIZONTAL );
+
+      freqSizer->Add(
+         new wxStaticText(this, -1, "Maximum Frequency:"),
+         0, wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER );
+
+      mMaxFreqCtrl = new wxTextCtrl( this, -1, maxFreqStr,
+         wxDefaultPosition, wxSize(80,-1));
+      freqSizer->Add(mMaxFreqCtrl, 1, wxGROW|wxALL, GENERIC_CONTROL_BORDER );
+
+      topSizer->Add(freqSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER );
+   }
+
+
+   SetAutoLayout(true);
+   topSizer->Fit(this);
+   topSizer->SetSizeHints(this);
+   SetSizer(topSizer);
+} 
 
 bool SpectrumPrefs::Apply()
 {
@@ -93,8 +117,16 @@ bool SpectrumPrefs::Apply()
       wxColourDialog dlog(this);
       dlog.ShowModal();
     */
+  
+   int pos;
+   
+   for(int i = 0; i < numFFTSizes; i++)
+      if(mFFTSize[i]->GetValue()) {
+         pos = i;
+         break;
+      }
 
-   long fftSize = FFTSizes[mFFTSize->GetSelection()];
+   long fftSize = FFTSizes[pos];
    gPrefs->Write("/Spectrum/FFTSize", fftSize);
 
    bool isGrayscale = mGrayscale->GetValue();
@@ -122,9 +154,8 @@ bool SpectrumPrefs::Apply()
 
 SpectrumPrefs::~SpectrumPrefs()
 {
-   delete mEnclosingBox;
-   delete mFFTSize;
+   for(int i = 0; i < numFFTSizes; i++)
+      delete mFFTSize[i];
    delete mGrayscale;
-   delete mMaxFreqLabel;
    delete mMaxFreqCtrl;
 }

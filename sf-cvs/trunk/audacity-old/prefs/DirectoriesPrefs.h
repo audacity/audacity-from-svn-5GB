@@ -32,7 +32,7 @@ class DirectoriesPrefs:public PrefsPanel {
 
    wxStaticText *mTempDirLabel;
    wxStaticText *mTempDir;
-   wxButton *mSet;
+   wxButton *mChange;
    wxStaticText *mFreeSpaceLabel;
    wxStaticText *mFreeSpace;
 

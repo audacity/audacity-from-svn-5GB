@@ -13,7 +13,7 @@
 
 #include <wx/window.h>
 #include <wx/statbox.h>
-#include <wx/radiobox.h>
+#include <wx/radiobut.h>
 
 #include "PrefsPanel.h"
 
@@ -25,8 +25,7 @@ class SampleRatePrefs:public PrefsPanel {
    bool Apply();
 
  private:
-    wxStaticBox * mEnclosingBox;
-   wxRadioBox *mDefaultSamplingRate;
+   wxRadioButton *mSampleRates[5];
 
 };
 

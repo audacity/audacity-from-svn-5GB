@@ -14,8 +14,8 @@
 #include <wx/dialog.h>
 #include <wx/window.h>
 #include <wx/event.h>
-#include <wx/listbox.h>
 #include <wx/button.h>
+#include <wx/notebook.h>
 
 class PrefsDialog:public wxDialog {
 
@@ -28,7 +28,7 @@ class PrefsDialog:public wxDialog {
    void OnCancel(wxCommandEvent & event);
 
  private:
-    wxListBox * mCategories;
+   wxNotebook *mCategories;
    wxButton *mOK;
    wxButton *mCancel;
 

@@ -16,6 +16,7 @@
 #include <wx/msgdlg.h>
 #include <wx/button.h>
 #include <wx/utils.h>
+#include <wx/sizer.h>
 
 #include "../Prefs.h"
 #include "AudioIOPrefs.h"
@@ -28,21 +29,17 @@ enum {
 };
 
 BEGIN_EVENT_TABLE(AudioIOPrefs, wxPanel)
-    EVT_BUTTON(PlaybackTestID, AudioIOPrefs::TestPlaybackDevice)
-    EVT_BUTTON(PlaybackDefaultID, AudioIOPrefs::SetPlaybackDeviceDefault)
-    EVT_BUTTON(RecordingTestID, AudioIOPrefs::TestRecordingDevice)
-    EVT_BUTTON(RecordingDefaultID, AudioIOPrefs::SetRecordingDeviceDefault)
-    END_EVENT_TABLE()
+   EVT_BUTTON(PlaybackTestID, AudioIOPrefs::TestPlaybackDevice)
+   EVT_BUTTON(PlaybackDefaultID, AudioIOPrefs::SetPlaybackDeviceDefault)
+   EVT_BUTTON(RecordingTestID, AudioIOPrefs::TestRecordingDevice)
+   EVT_BUTTON(RecordingDefaultID, AudioIOPrefs::SetRecordingDeviceDefault)
+END_EVENT_TABLE()
 
 AudioIOPrefs::AudioIOPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
 
-   mEnclosingBox = new wxStaticBox(this,
-                                   -1,
-                                   "Audio I/O Settings",
-                                   wxPoint(0, 0), GetSize());
-
+   /* read prefs all at once, then set up the dialog */
    gPrefs->SetPath("/AudioIO");
    wxString playDevice = gPrefs->Read("PlaybackDevice", "/dev/dsp");
    wxString recDevice = gPrefs->Read("RecordingDevice", "/dev/dsp");
@@ -52,75 +49,132 @@ PrefsPanel(parent)
    gPrefs->Read("Duplex", &duplex, false);
    gPrefs->SetPath("/");
 
+
+   topSizer = new wxStaticBoxSizer(
+      new wxStaticBox(this,
+                      -1,
+                     "Audio I/O Settings"),
+      wxVERTICAL);
+
 #ifdef __WXGTK__
-   mPlaybackDeviceLabel = new wxStaticText(this,
-                                           -1,
-                                           "Playback Device:",
-                                           wxPoint(PREFS_SIDE_MARGINS,
-                                                   PREFS_TOP_MARGIN + 3));
 
-   mPlaybackDeviceCtrl = new wxTextCtrl(this,
-                                        -1,
-                                        playDevice,
-                                        wxPoint(100, PREFS_TOP_MARGIN),
-                                        wxSize(80, 20));
 
-   mPlaybackDeviceTest = new wxButton(this,
-                                      PlaybackTestID,
-                                      "Test",
-                                      wxPoint(190, PREFS_TOP_MARGIN),
-                                      wxSize(60, 20));
+   {
+      wxStaticBoxSizer *playbackSizer =
+          new wxStaticBoxSizer(
+            new wxStaticBox(this, -1, "Playback Device"),
+            wxVERTICAL);
 
-   mPlaybackDeviceDefault = new wxButton(this,
-                                         PlaybackDefaultID,
-                                         "Default",
-                                         wxPoint(255,
-                                                 PREFS_TOP_MARGIN),
-                                         wxSize(60, 20));
+      {
+         wxBoxSizer *pFileSizer = new wxBoxSizer(wxHORIZONTAL);
 
-#define LINE_TWO_TOP 40
-   mRecordingDeviceLabel = new wxStaticText(this,
-                                            -1,
-                                            "Recording Device:",
-                                            wxPoint(PREFS_SIDE_MARGINS,
-                                                    LINE_TWO_TOP + 3));
+         mPlaybackDeviceCtrl = new wxTextCtrl(this, -1, playDevice);
 
-   mRecordingDeviceCtrl = new wxTextCtrl(this,
-                                         -1,
-                                         recDevice,
-                                         wxPoint(100,
-                                                 LINE_TWO_TOP),
-                                         wxSize(80, 20));
+         pFileSizer->Add(
+            new wxStaticText(this, -1, "Device:"), 0, 
+            wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
-   mRecordingDeviceTest = new wxButton(this,
-                                       RecordingTestID,
-                                       "Test",
-                                       wxPoint(190, LINE_TWO_TOP),
-                                       wxSize(60, 20));
+         pFileSizer->Add(mPlaybackDeviceCtrl, 1, 
+            wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
 
-   mRecordingDeviceDefault = new wxButton(this,
-                                          RecordingDefaultID,
-                                          "Default",
-                                          wxPoint(255, LINE_TWO_TOP),
-                                          wxSize(60, 20));
+         playbackSizer->Add(pFileSizer, 0,
+            wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+      }
+
+
+      {
+         wxBoxSizer *pButtonsSizer = new wxBoxSizer(wxHORIZONTAL);
+
+         mPlaybackDeviceTest = new wxButton(this, PlaybackTestID, "Test");
+         mPlaybackDeviceDefault = new wxButton(this,
+                                               PlaybackDefaultID,
+                                               "Default");
+
+         pButtonsSizer->Add(
+            mPlaybackDeviceTest, 0,
+            wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT,
+            GENERIC_CONTROL_BORDER);
+
+         pButtonsSizer->Add(
+            mPlaybackDeviceDefault, 0,
+            wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT,
+            GENERIC_CONTROL_BORDER);
+
+         playbackSizer->Add(pButtonsSizer, 0,
+            wxALIGN_RIGHT|wxLEFT|wxRIGHT, GENERIC_CONTROL_BORDER);
+      }
+
+      topSizer->Add(playbackSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
+   }
+
+
+
+   {
+      wxStaticBoxSizer *recordingSizer =
+          new wxStaticBoxSizer(
+            new wxStaticBox(this, -1, "Recording Device"),
+            wxVERTICAL);
+
+      {
+
+         wxBoxSizer *rFileSizer = new wxBoxSizer(wxHORIZONTAL);
+
+         mRecordingDeviceCtrl = new wxTextCtrl(this, -1, recDevice);
+
+         rFileSizer->Add(
+            new wxStaticText(this, -1, "Device:"), 0,
+            wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+         rFileSizer->Add(mRecordingDeviceCtrl, 1,
+            wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+         recordingSizer->Add(rFileSizer, 0,
+            wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+      }
+
+      {
+         wxBoxSizer *rButtonsSizer = new wxBoxSizer(wxHORIZONTAL);
+
+         mRecordingDeviceTest = new wxButton(this,
+                                             RecordingTestID, "Test");
+         mRecordingDeviceDefault = new wxButton(this,
+                                                RecordingDefaultID,
+                                                "Default");
+
+         rButtonsSizer->Add(
+            mRecordingDeviceTest, 0,
+            wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT,
+            GENERIC_CONTROL_BORDER);
+
+         rButtonsSizer->Add(mRecordingDeviceDefault, 0,
+            wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT,
+            GENERIC_CONTROL_BORDER);
+
+         recordingSizer->Add(rButtonsSizer, 0,
+            wxALIGN_RIGHT|wxLEFT|wxRIGHT, GENERIC_CONTROL_BORDER);
+      }
+
+      topSizer->Add(recordingSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
+   }
+
 #endif                          // __WXGTK__
 
-   mRecordStereo = new wxCheckBox(this, -1,
-                                  "Record in Stereo",
-                                  wxPoint(PREFS_SIDE_MARGINS,
-                                          PREFS_TOP_MARGIN + 65),
-                                  wxSize(GetSize().GetWidth() -
-                                         PREFS_SIDE_MARGINS * 2, 15));
 
+   mRecordStereo = new wxCheckBox(this, -1, "Record in Stereo");
    mRecordStereo->SetValue(recordStereo);
+   topSizer->Add(mRecordStereo, 0, wxGROW);
 
-   mDuplex = new wxCheckBox(this, -1,
-                            "Play While Recording",
-                            wxPoint(PREFS_SIDE_MARGINS,
-                                    PREFS_TOP_MARGIN + 85),
-                            wxSize(GetSize().GetWidth() -
-                                   PREFS_SIDE_MARGINS * 2, 15));
+
+
+   mDuplex = new wxCheckBox(this, -1, "Play While Recording");
    mDuplex->SetValue(duplex);
+   topSizer->Add(mDuplex, 0, wxGROW);
+
+   SetAutoLayout(true);
+   topSizer->Fit(this);
+   topSizer->SetSizeHints(this);
+   SetSizer(topSizer);
+
 }
 
 
@@ -187,13 +241,10 @@ void AudioIOPrefs::SetRecordingDeviceDefault(wxCommandEvent & event)
 
 AudioIOPrefs::~AudioIOPrefs()
 {
-   delete mEnclosingBox;
 #ifdef __WXGTK__
-   delete mPlaybackDeviceLabel;
    delete mPlaybackDeviceCtrl;
    delete mPlaybackDeviceTest;
    delete mPlaybackDeviceDefault;
-   delete mRecordingDeviceLabel;
    delete mRecordingDeviceCtrl;
    delete mRecordingDeviceTest;
    delete mRecordingDeviceDefault;

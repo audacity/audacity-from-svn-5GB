@@ -14,7 +14,7 @@
 #include <wx/window.h>
 #include <wx/statbox.h>
 #include <wx/checkbox.h>
-#include <wx/radiobox.h>
+#include <wx/radiobut.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 
@@ -28,11 +28,10 @@ class SpectrumPrefs:public PrefsPanel {
    bool Apply();
 
  private:
-    wxStaticBox * mEnclosingBox;
-   wxRadioBox *mFFTSize;
+   /* an arbitrary limit designed to be past what we'll ever need */
+   wxRadioButton *mFFTSize[20];
    wxCheckBox *mGrayscale;
 
-   wxStaticText *mMaxFreqLabel;
    wxTextCtrl *mMaxFreqCtrl;
 };
 

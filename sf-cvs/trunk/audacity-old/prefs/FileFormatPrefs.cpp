@@ -10,6 +10,7 @@
 
 #include <wx/window.h>
 #include <wx/statbox.h>
+#include <wx/sizer.h>
 
 #include "../Prefs.h"
 #include "FileFormatPrefs.h"
@@ -34,63 +35,117 @@ wxString gDefaultExportFormatOptions[] = { "AIFF",
 FileFormatPrefs::FileFormatPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
+   /* Read existing config... */
+
    wxString copyEdit =
        gPrefs->Read("/FileFormats/CopyOrEditUncompressedData", "edit");
 
-   int pos = 1;                 // Fall back to edit if it doesn't match anything else
+   int copyEditPos = 1; // Fall back to edit if it doesn't match anything else
    if (copyEdit.IsSameAs("copy", false))
-      pos = 0;
+      copyEditPos = 0;
 
-   mEnclosingBox = new wxStaticBox(this, -1,
-                                   "File Format Settings",
-                                   wxPoint(0, 0), GetSize());
-   mCopyOrEdit = new wxRadioBox(this, -1,
-                                "When importing uncompressed audio files",
-                                wxPoint(PREFS_SIDE_MARGINS,
-                                        PREFS_TOP_MARGIN),
-                                wxSize(GetSize().GetWidth() -
-                                       PREFS_SIDE_MARGINS * 2,
-                                       65), 2, gCopyOrEditOptions, 1);
-   mCopyOrEdit->SetSelection(pos);
 
    wxString defaultFormat =
        gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");
 
-   pos = 1;                     // Fall back to WAV
-   for (int i = 0; i < 6; i++)
+   mNumFormats = 1;
+   while (gDefaultExportFormatOptions[mNumFormats] != "***last")
+      mNumFormats++;
+
+   int formatPos = 1;                     // Fall back to WAV
+   for (int i = 0; i < mNumFormats; i++)
       if (defaultFormat.IsSameAs(gDefaultExportFormatOptions[i], false)) {
-         pos = i;
+         formatPos = i;
          break;
       }
 
-   int numFormats = 1;
-   while (gDefaultExportFormatOptions[numFormats] != "***last")
-      numFormats++;
+   /* Begin layout code... */
 
-   mDefaultExportFormat = new wxRadioBox(this, -1,
-                                         "Default export format",
-                                         wxPoint(PREFS_SIDE_MARGINS,
-                                                 90),
-                                         wxSize(GetSize().GetWidth() -
-                                                PREFS_SIDE_MARGINS * 2,
-                                                160),
-                                         numFormats,
-                                         gDefaultExportFormatOptions, 1);
-   mDefaultExportFormat->SetSelection(pos);
+   topSizer = new wxStaticBoxSizer(
+      new wxStaticBox(this, -1, "File Format Settings"),
+      wxVERTICAL );
+
+   {
+      wxStaticBoxSizer *copyOrEditSizer = new wxStaticBoxSizer(
+         new wxStaticBox(this, -1, "When importing uncompressed audio files"),
+         wxVERTICAL );
+
+      mCopyOrEdit[0] = new wxRadioButton(
+         this, -1, "Make a copy of the file to edit",
+         wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+          
+      copyOrEditSizer->Add( mCopyOrEdit[0], 0,
+         wxGROW|wxALL, RADIO_BUTTON_BORDER );
+
+      mCopyOrEdit[1] = new wxRadioButton(
+         this, -1, "Edit the original in place",
+         wxDefaultPosition, wxDefaultSize, 0 );
+   
+      copyOrEditSizer->Add( mCopyOrEdit[1], 0,
+         wxGROW|wxALL, RADIO_BUTTON_BORDER );
+
+      topSizer->Add( copyOrEditSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER );
+   }
+
+
+   {
+      wxStaticBoxSizer *defFormatSizer = new wxStaticBoxSizer(
+         new wxStaticBox(this, -1, "Default Export Format"),
+         wxVERTICAL);
+
+      mDefaultExportFormats[0] = new wxRadioButton(
+         this, -1, gDefaultExportFormatOptions[0],
+         wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+
+      defFormatSizer->Add(
+         mDefaultExportFormats[0], 0,
+         wxGROW|wxALL, RADIO_BUTTON_BORDER);
+
+      for(int i = 1; i < mNumFormats; i++) {
+         mDefaultExportFormats[i] = new wxRadioButton(
+            this, -1, gDefaultExportFormatOptions[i]);
+         defFormatSizer->Add(
+            mDefaultExportFormats[i], 
+            0, wxGROW|wxALL, RADIO_BUTTON_BORDER);
+      }
+
+      topSizer->Add(
+         defFormatSizer, 0, 
+         wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, TOP_LEVEL_BORDER );
+   }
+
+   SetAutoLayout(true);
+   SetSizer(topSizer);
+
+   topSizer->Fit(this);
+   topSizer->SetSizeHints(this);
+
+   /* set controls to match existing configuration... */
+
+   mCopyOrEdit[copyEditPos]->SetValue(true);
+   mDefaultExportFormats[formatPos]->SetValue(true);
 }
 
 bool FileFormatPrefs::Apply()
 {
+   int pos;
    wxString copyEditString[] = { "copy", "edit" };
-   wxString copyOrEdit = copyEditString[mCopyOrEdit->GetSelection()];
-   wxString defaultExportFormat
-       = gDefaultExportFormatOptions[mDefaultExportFormat->GetSelection()];
+
+   pos = mCopyOrEdit[0]->GetValue() ? 0 : 1;
+   wxString copyOrEdit = copyEditString[pos];
+
+   for(int i = 0; i < mNumFormats; i++)
+      if(mDefaultExportFormats[i]->GetValue()) {
+         pos = i;
+         break;
+      }
+
+   wxString defaultExportFormat = gDefaultExportFormatOptions[pos];
 
    gPrefs->SetPath("/FileFormats");
    gPrefs->Write("CopyOrEditUncompressedData", copyOrEdit);
    gPrefs->Write("DefaultExportFormat", defaultExportFormat);
    gPrefs->SetPath("/");
-
    return true;
 
 }
@@ -98,6 +153,9 @@ bool FileFormatPrefs::Apply()
 
 FileFormatPrefs::~FileFormatPrefs()
 {
-   delete mEnclosingBox;
-   delete mCopyOrEdit;
+   delete mCopyOrEdit[0];
+   delete mCopyOrEdit[1];
+
+   for(int i = 0; i < mNumFormats; i++)
+      delete mDefaultExportFormats[i];
 }

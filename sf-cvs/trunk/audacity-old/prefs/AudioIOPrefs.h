@@ -34,20 +34,16 @@ class AudioIOPrefs:public PrefsPanel {
    void SetRecordingDeviceDefault(wxCommandEvent & event);
 
  private:
-    wxStaticText * mPlaybackDeviceLabel;
    wxTextCtrl *mPlaybackDeviceCtrl;
    wxButton *mPlaybackDeviceTest;
    wxButton *mPlaybackDeviceDefault;
 
-   wxStaticText *mRecordingDeviceLabel;
    wxTextCtrl *mRecordingDeviceCtrl;
    wxButton *mRecordingDeviceTest;
    wxButton *mRecordingDeviceDefault;
 
    wxCheckBox *mRecordStereo;
    wxCheckBox *mDuplex;
-
-   wxStaticBox *mEnclosingBox;
 
  public:
     DECLARE_EVENT_TABLE()
