@@ -65,6 +65,7 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectToneGen());
 
    // Effect menu
+   
    Effect::RegisterEffect(new EffectAmplify());
 
    //Commented out now that the Compressor effect works better

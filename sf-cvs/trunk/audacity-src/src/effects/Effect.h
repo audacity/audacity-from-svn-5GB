@@ -31,8 +31,11 @@ WX_DEFINE_ARRAY(Effect *, EffectArray);
 #define INSERT_EFFECT   0x0010
 #define PROCESS_EFFECT  0x0020
 #define ANALYZE_EFFECT  0x0040
-
 #define ALL_EFFECTS     0x00FF
+
+// Flag used to disable prompting for configuration
+// parameteres.
+#define CONFIGURED_EFFECT 0x8000
 
 class Effect {
 
@@ -103,10 +106,24 @@ class Effect {
    // Returns true on success.  Will only operate on tracks that
    // have the "selected" flag set to true, which is consistent with
    // Audacity's standard UI.
-   bool DoEffect(wxWindow *parent, TrackList *list,
+   bool DoEffect(wxWindow *parent, int flags, TrackList *list,
                  TrackFactory *factory, double *t0, double *t1);
 
    wxString GetPreviewName();
+
+ private:
+    static int LastType;
+    static int LastIndex;
+    static Effect * pLastEffect;
+ public:
+    static void SetLastEffect(int type, int index, Effect * pEffect){
+       LastType=type;
+       LastIndex=index;
+       pLastEffect = pEffect;
+    }
+    static int GetLastEffectType(){ return LastType;}
+    static int GetLastEffectIndex(){ return LastIndex;}
+    static Effect * GetLastEffect(){ return pLastEffect;}
 
  //
  // protected virtual methods
@@ -214,7 +231,9 @@ class Effect {
    static int sNumEffects;
    
    wxProgressDialog *mProgress;
+
 };
+
 
 // Utility functions
 
