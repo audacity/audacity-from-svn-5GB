@@ -123,6 +123,7 @@ void AudacityProject::BuildMenuBar()
 {
    unsigned int i;
    for (i = 0; i < mCommandMenuItem.Count(); i++) {
+
       wxMenu *menu = 0;
       //This determines which menu the current MenuItem belongs to.
       switch (mCommandMenuItem[i]->category) {
@@ -142,26 +143,24 @@ void AudacityProject::BuildMenuBar()
             menu = mHelpMenu;
             break;
          default:
+    
             // ERROR -- should not happen
             break;
       }
 
-      //This adds a separator before the item if it has the appropriate 
-      //bool flipped:
-      if (mCommandMenuItem[i]->separatorPrev)
-         menu->AppendSeparator();
 
       const wxString dummy = "";
 
       //This adds an element of the correct type:
       switch(mCommandMenuItem[i]->type) {
       case typeSeparator:
-         //Currently, separators are encoded as 'previous' to actual items, so
-         //This probably doesn't get used.
+
          menu->AppendSeparator();
+
          break;
       
       case typeNormal:
+
          menu->Append(i + MenuBaseID, mCommandMenuItem[i]->commandString);
          break;
       case typeCheckItem:
@@ -172,6 +171,7 @@ void AudacityProject::BuildMenuBar()
       case typeRadioItem:
          //This can't be done until wxWindows 2.3
          //menu->AppendRadioItem(i + MenuBaseID,(const wxString &) mCommandMenuItem[i]->commandString, dummy);
+         //Put in a normal item instead.
          menu->Append(i + MenuBaseID, mCommandMenuItem[i]->commandString);
          break;
       default:
@@ -180,7 +180,7 @@ void AudacityProject::BuildMenuBar()
       }
 
 
-      
+
 
       gPrefs->SetPath("/Keyboard/" + wxString::Format("%i", i));
       long keyIndex;
@@ -199,6 +199,7 @@ void AudacityProject::BuildMenuBar()
 
       gPrefs->SetPath("/");
    }
+
 
    int numEffects = Effect::GetNumEffects(false);
    int fi;
@@ -414,6 +415,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    //Modify toolbar-specific Menus
 
    wxMenuItemBase   *dock = mViewMenu->FindItem(FloatEditToolBarID);
+ 
    if (gEditToolBarStub) {
 
       // Loaded or unloaded?
