@@ -264,14 +264,24 @@ Known issues/problems:
 
 Changes in 1.2.4:
 
+  * The "Generate Silence" effect now prompts for a length.
+
   * Audacity is now built with Vorbis 1.1, which features better encoding
     quality and file compression.
 
   * Dragging sound files into the Audacity window now works on Mac OS X
     and Linux, as well as Windows.  (Before, it worked only on Windows.)
 
-  * New or updated translations: Czech (cs), Hungarian (hu),
-    Traditional Chinese (zh_TW).
+  * The "View History" window can now discard old undo levels to save disk
+    space on Windows.  (This previously worked only on Linux and Mac.)
+
+  * Audacity now compiles in Visual C++ .NET 2003.
+
+  * Other minor bug fixes.
+
+  * New or updated translations: Arabic (ar), Czech (cs), Finnish (fi),
+    Hungarian (hu), Japanese (ja), Norwegian (nb), Slovenian (sl), 
+    Simplified Chinese (zh_CN), Traditional Chinese (zh_TW).
 
 Changes in 1.2.3:
 
