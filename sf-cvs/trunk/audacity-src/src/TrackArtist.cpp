@@ -1192,6 +1192,11 @@ void TrackArtist::DrawSpectrum(WaveTrack *track,
                                wxDC & dc, wxRect & r,
                                ViewInfo * viewInfo, bool autocorrelation)
 {
+   // MM: Draw background. We should optimize that a bit more.
+   dc.SetPen(*wxTRANSPARENT_PEN);
+   dc.SetBrush(blankBrush);
+   dc.DrawRectangle(r);
+
    if(!viewInfo->bUpdateSpectrogram && viewInfo->bIsPlaying)
    {
       // BG: Draw (undecorated) waveform instead of spectrum
@@ -1265,14 +1270,13 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
 
    // If the left edge of the track is to the right of the left
    // edge of the display, then there's some blank area to the
-   // left of the track.  Fill it in, and reduce the "mid"
+   // left of the track.  Reduce the "mid"
    // rect by size of the blank area.
    if (tpre < 0) {
       // Fill in the area to the left of the track
       wxRect pre = r;
-      if (t0 < tpost) pre.width = (int) ((t0 - tpre) * pps);
-      dc.SetBrush(blankBrush);
-      dc.DrawRectangle(pre);
+      if (t0 < tpost)
+         pre.width = (int) ((t0 - tpre) * pps);
 
       // Offset the rectangle containing the waveform by the width
       // of the area we just erased.
@@ -1282,14 +1286,13 @@ void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
 
    // If the right edge of the track is to the left of the the right
    // edge of the display, then there's some blank area to the right
-   // of the track.  Fill it in, and reduce the "mid" rect by the
+   // of the track.  Reduce the "mid" rect by the
    // size of the blank area.
    if (tpost > t1) {
       wxRect post = r;
-      if (t1 > tpre) post.x += (int) ((t1 - tpre) * pps);
+      if (t1 > tpre)
+         post.x += (int) ((t1 - tpre) * pps);
       post.width = r.width - (post.x - r.x);
-      dc.SetBrush(blankBrush);
-      dc.DrawRectangle(post);
 
       // Reduce the rectangle containing the waveform by the width
       // of the area we just erased.
