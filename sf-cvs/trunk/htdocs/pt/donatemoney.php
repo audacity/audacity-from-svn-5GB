@@ -1,21 +1,21 @@
 <?php BoxTop($donateMoneyStr); ?>
 
 <p>
-O Audacity é desenvolvido por uma equipe de voluntários, em seu tempo livre. Não é um software "shareware" - onde se distribui gratuitamente apenas uma versão uma versão reduzida do programa - e ninguém espera obter lucros na venda deste software.</p>
+O Audacity é desenvolvido por uma equipe de voluntários, em seu tempo livre. Não é um software "shareware" - onde se distribui gratuitamente apenas uma versão reduzida do programa - e ninguém espera obter lucros na venda deste software.</p>
 
 <p>
-No entanto, ao doar dinheiro, você estará ajudando a pagar os custos da manutenção do programa, como hospedagem na internet, hardware necessário para testes, etc.
-Logo mais abaixo, há um ícone onde você poderá fazer uma doação voluntária utilizando seu cartão de crédito. É possível doar até mesmo 1 dólar americano.
+No entanto, ao doar dinheiro, você estará ajudando a pagar os custos da manutenção do programa como hospedagem na internet, hardware necessário para testes, etc.
+Logo abaixo, há um ícone onde você poderá fazer uma doação voluntária utilizando seu cartão de crédito. É possível doar até mesmo 1 dólar americano.
 </p>
 
 <p>
-Doando dinheiro, você nos ajuda a cubrir os custos da hospedagem das páginas na Internet, ferramentas de desenvolvimento e novos sistemas de teste do programa. Note-se que neste momento, todos estes recursos são disponibilizados gratuitamente na Internet, mas não há garantia que esta condição se manerá no futuro. Qualquer doação hoje manterá o site funcionando amanhã.
+Doando dinheiro, você nos ajuda a cubrir os custos da hospedagem das páginas na Internet, ferramentas de desenvolvimento e novos sistemas de teste do programa. Note que neste momento todos estes recursos são disponibilizados gratuitamente na Internet, mas não há garantia que esta condição se manterá no futuro. Qualquer doação hoje manterá o site funcionando amanhã.
 
 <p>
-O time de desenvolvedores do Audacity gostaria de comprar sistemas de áudio especializados e transformar o programa em uma solução completa para edição de áudio profissional. Suas doações farão isto possível o quanto antes.
+O time de desenvolvedores do Audacity gostaria de comprar sistemas de áudio especializados e transformar o programa em uma solução completa para edição de áudio profissional. Suas doações tornarão isto possível o quanto antes.
 <p>
-Note-se que não damos nenhuma garantia ou promessa de retorno quando é feita uma doação.<p>
-Estamos aceitando doações pelo programa Amazon Honor System.  Com o seu cartã de crédito internacional, é possível fazer doações de US$1,00 a US$50,00. 
+Note que não damos nenhuma garantia ou promessa de retorno para uma doação.<p>
+Estamos aceitando doações pelo programa Amazon Honor System.  Com o seu cartão de crédito internacional, é possível fazer doações de US$1,00 a US$50,00. 
 <p>
 Para doar mais de 50 dólares americanos, ou enviar-nos um cheque pagável nos Estados Unidos (consulte sua instituição bancária sobre esta possibilidade), visite a página de
 <?php print "<a href=credits.php?$langLinkStr>";

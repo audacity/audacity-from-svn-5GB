@@ -10,7 +10,7 @@ Há também recursos avançados como um amplificador em envelope, um espectrograma 
 </p>
 
 <p>
-A versão final do Audacity é a 1.0.0, e muitas pessoas acharam alguns recursos mais fáceis e intuitivos de usar que em outros editores de som, incluindo aí alguns editores comerciais.
+A versão final do Audacity é a 1.0.0, e muitas pessoas acharam alguns recursos mais fáceis e intuitivos de usar que em outros editores de som, incluindo alguns editores comerciais.
 </p>
 
 <p> Os desenvolvedores do Audacity também liberaram a versão 1.1-beta, que já apresenta novos recursos, mas que ainda está em fase de testes.
