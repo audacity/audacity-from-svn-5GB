@@ -1069,12 +1069,45 @@ void AudacityProject::Save(bool overwrite /* = true */ ,
       project = project.Mid(0, project.Len() - 4);
    wxString projName = wxFileNameFromPath(project) + "_data";
    wxString projPath = wxPathOnly(project);
+
+   // We are about to move files from the current directory to
+   // the new directory.  We need to make sure files that belonged
+   // to the last saved project don't get erased, so we "lock" them.
+   // (Otherwise the new project would be fine, but the old one would
+   // be empty of all of its files.)
+
+   // Lock all blocks in all tracks of the last saved version
+   if (mLastSavedTracks && !overwrite) {
+      TrackListIterator iter(mLastSavedTracks);
+      VTrack *t = iter.First();
+      while (t) {
+         if (t->GetKind() == VTrack::Wave)
+            ((WaveTrack *) t)->Lock();
+         t = iter.Next();
+      }
+   }   
+
+   // This renames the project directory, and moves or copies
+   // all of our block files over
    bool success = mDirManager.SetProject(projPath, projName, !overwrite);
+
+   // Unlock all blocks in all tracks of the last saved version
+   if (mLastSavedTracks && !overwrite) {
+      TrackListIterator iter(mLastSavedTracks);
+      VTrack *t = iter.First();
+      while (t) {
+         if (t->GetKind() == VTrack::Wave)
+            ((WaveTrack *) t)->Unlock();
+         t = iter.Next();
+      }
+   }   
 
    if (!success) {
       wxMessageBox(wxString::
                    Format
-                   ("Could not save project because the directory %s could not be created.",
+                   ("Could not save project.  "
+                    "Perhaps %s is not writeable,\n"
+                    "or the disk is full.",
                     (const char *) project));
 
       if (safetyFileName)
@@ -1143,17 +1176,7 @@ void AudacityProject::Save(bool overwrite /* = true */ ,
 #endif
 
    if (mLastSavedTracks) {
-
-      TrackListIterator iter(mLastSavedTracks);
-      VTrack *t = iter.First();
-      while (t) {
-         if (t->GetKind() == VTrack::Wave && !overwrite)
-            ((WaveTrack *) t)->DeleteButDontDereference();
-         else
-            delete t;
-         t = iter.Next();
-      }
-
+      mLastSavedTracks->Clear(true);
       delete mLastSavedTracks;
    }
 
@@ -1245,7 +1268,7 @@ void AudacityProject::PushState(bool makeDirty /* = true */ )
 
 void AudacityProject::PopState(TrackList * l)
 {
-   mTracks->Clear();
+   mTracks->Clear(true);
    TrackListIterator iter(l);
    VTrack *t = iter.First();
    while (t) {

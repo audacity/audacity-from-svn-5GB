@@ -120,7 +120,13 @@ Changes in 0.98:
     (it renames the old file).  You can now export to a file
 	 with the same as the file you imported without any problems.
 
-  - Save As.. for a project doesn't destroy the old project anymore.
+  - Save As... for a project doesn't destroy the old project anymore.
+
+  - Undo information is thrown away when you close a project,
+    saving disk space that had been wasted in previous versions.
+
+  - Save As... recovers gracefully when you try to save to a
+    bad location
 
   - Duplicate of a track with an offset now works
 

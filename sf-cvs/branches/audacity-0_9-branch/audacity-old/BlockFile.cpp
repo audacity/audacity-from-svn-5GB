@@ -28,6 +28,8 @@ BlockFile::BlockFile(wxString name, wxString fullPath)
    mPos = 0;
 
    mRefCount = 1;
+
+   mLocked = false;
 }
 
 BlockFile::BlockFile(wxString name, wxString fullPath,
@@ -53,6 +55,8 @@ BlockFile::BlockFile(wxString name, wxString fullPath,
    mSndNode = NULL;
 
    mRefCount = 1;
+
+   mLocked = false;
 }
 
 BlockFile::~BlockFile()
@@ -63,6 +67,21 @@ BlockFile::~BlockFile()
 wxString BlockFile::GetName()
 {
    return mName;
+}
+
+void BlockFile::Lock()
+{
+   mLocked = true;
+}
+
+void BlockFile::Unlock()
+{
+   mLocked = false;
+}
+
+bool BlockFile::IsLocked()
+{
+   return mLocked;
 }
 
 bool BlockFile::IsAlias()

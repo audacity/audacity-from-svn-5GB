@@ -70,8 +70,6 @@ class DirManager {
    BlockFile *LoadBlockFile(wxTextFile * in);
    void SaveBlockFile(BlockFile * f, wxTextFile * out);
 
-   void MakePartOfProject(BlockFile * f);
-
    // If this filename is one we depend on, tries to rename
    // the existing file so that we can save a new file by this name.
    bool EnsureSafeFilename(wxString fName);
@@ -91,6 +89,9 @@ class DirManager {
    // Create new unique names
    wxString NewTempBlockName();
    wxString NewBlockName();
+
+   bool MoveToNewProjectDirectory(BlockFile *b);
+   bool CopyToNewProjectDirectory(BlockFile *b);
 
    //////////////////////////
 

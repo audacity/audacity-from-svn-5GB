@@ -187,6 +187,13 @@ void DirManager::CleanTempDir()
 bool DirManager::SetProject(wxString & projPath, wxString & projName,
                             bool create)
 {
+   wxString oldPath = projPath;
+   wxString oldName = projName;
+   wxString oldFull = projFull;
+   wxString oldLoc = projFull;
+   if (oldLoc == "")
+      oldLoc = temp;
+
    lastProject = projPath;
 
    if (projPath == "")
@@ -198,12 +205,57 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
 
    if (create) {
       if (!wxPathExists(projFull))
-         return wxMkdir(projFull);
+         if (!wxMkdir(projFull))
+            return false;
    } else {
-#ifndef __WXMAC__
+      #ifndef __WXMAC__
       if (!wxPathExists(projFull))
          return false;
-#endif
+      #endif
+   }
+
+   /* Move all files into this new directory.  Files which are
+      "locked" get copied instead of moved.  (This happens when
+      we perform a Save As - the files which belonged to the last
+      saved version of the old project must not be moved,
+      otherwise the old project would not be safe. */
+
+   blockFileHash->BeginFind();
+   wxNode *n = blockFileHash->Next();
+   bool success = true;
+   while(n && success) {
+      BlockFile *b = (BlockFile *)n->GetData();
+
+      if (b->IsLocked())
+         success = CopyToNewProjectDirectory(b);
+      else
+         success = MoveToNewProjectDirectory(b);
+
+      n = blockFileHash->Next();
+   }
+
+   if (!success) {
+      // If the move failed, we try to move/copy as many files
+      // back as possible so that no damage was done.  (No sense
+      // in checking for errors this time around - there's nothing
+      // that could be done about it.)
+      // Likely causes: directory was not writeable, disk was full
+
+      projFull = oldLoc;
+
+      blockFileHash->BeginFind();
+      wxNode *n = blockFileHash->Next();
+      while(n) {
+         BlockFile *b = (BlockFile *)n->GetData();
+         MoveToNewProjectDirectory(b);         
+         n = blockFileHash->Next();
+      }
+
+      projFull = oldFull;
+      projPath = oldPath;
+      projName = oldName;
+
+      return false;
    }
 
    return true;
@@ -374,49 +426,40 @@ BlockFile *DirManager::LoadBlockFile(wxTextFile * in)
    }
 }
 
-void DirManager::MakePartOfProject(BlockFile * f)
+bool DirManager::MoveToNewProjectDirectory(BlockFile *f)
 {
    wxString newFullPath = projFull + pathChar + f->mName;
    if (newFullPath != f->mFullPath) {
-      if (lastProject != "") {
-         // If the last project was not the temporary project,
-         // copy the file instead of moving it.  (Otherwise we
-         // would destroy the old project.)
-         bool ok = wxCopyFile(f->mFullPath, newFullPath);
-         if (ok)
-            f->mFullPath = newFullPath;
-         else {
-            wxString msg;
-            msg.Printf("Could not rename %s to %s",
-                       (const char *) f->mFullPath,
-                       (const char *) newFullPath);
-            wxMessageBox(msg);
-         }
-      }
+      bool ok = wxRenameFile(f->mFullPath, newFullPath);
+      if (ok)
+         f->mFullPath = newFullPath;
       else {
-         // Otherwise, we're simply saving a project for
-         // the first time.  We're moving block files from
-         // the temporary directory to their own project
-         // directory.
-
-         bool ok = wxRenameFile(f->mFullPath, newFullPath);
-         if (ok)
+         ok = wxCopyFile(f->mFullPath, newFullPath);
+         if (ok) {
+            wxRemoveFile(f->mFullPath);
             f->mFullPath = newFullPath;
-         else {
-            ok = wxCopyFile(f->mFullPath, newFullPath);
-            if (ok) {
-               wxRemoveFile(f->mFullPath);
-               f->mFullPath = newFullPath;
-            } else {
-               wxString msg;
-               msg.Printf("Could not rename %s to %s",
-                          (const char *) f->mFullPath,
-                          (const char *) newFullPath);
-               wxMessageBox(msg);
-            }
          }
+         else
+            return false;
       }
    }
+
+   return true;
+}
+
+bool DirManager::CopyToNewProjectDirectory(BlockFile *f)
+{
+   wxString newFullPath = projFull + pathChar + f->mName;
+   if (newFullPath != f->mFullPath) {
+      bool ok = wxCopyFile(f->mFullPath, newFullPath);
+      if (ok) {
+         f->mFullPath = newFullPath;
+      }
+      else
+         return false;
+   }
+
+   return true;
 }
 
 void DirManager::Ref(BlockFile * f)

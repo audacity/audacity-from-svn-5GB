@@ -95,14 +95,16 @@ WaveTrack::~WaveTrack()
 #endif
 }
 
-void WaveTrack::DeleteButDontDereference()
+void WaveTrack::Lock()
 {
-   for (int i = 0; i < block->Count(); i++) {
-      delete block->Item(i);
-   }
-   block->Clear();
+   for (int i = 0; i < block->Count(); i++)
+      block->Item(i)->f->Lock();
+}
 
-   delete this;
+void WaveTrack::Unlock()
+{
+   for (int i = 0; i < block->Count(); i++)
+      block->Item(i)->f->Unlock();
 }
 
 double WaveTrack::GetMaxLen()
@@ -942,8 +944,6 @@ bool WaveTrack::Save(wxTextFile * out, bool overwrite)
 
    for (b = 0; b < block->Count(); b++) {
       bb = block->Item(b);
-
-      dirManager->MakePartOfProject(bb->f);
 
       out->AddLine("Block start");
       out->AddLine(wxString::Format("%d", bb->start));
