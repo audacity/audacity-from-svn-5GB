@@ -90,14 +90,13 @@ OBJS = \
 	$(OBJDIR)/snd/sndmac.c.o \
 	$(OBJDIR)/snd/sndcvt.c.o \
 	$(OBJDIR)/snd/sndio.c.o \
-	$(OBJDIR)/snd/audionone.c.o \
+	$(OBJDIR)/snd/audiomac.c.o \
 	$(OBJDIR)/prefs/PrefsDialog.cpp.o \
+	$(OBJDIR)/prefs/AudioIOPrefs.cpp.o \
 	$(OBJDIR)/prefs/SampleRatePrefs.cpp.o \
 	$(OBJDIR)/prefs/FileFormatPrefs.cpp.o \
 	$(OBJDIR)/prefs/DirectoriesPrefs.cpp.o \
 	$(OBJDIR)/prefs/SpectrumPrefs.cpp.o
-
-#	$(OBJDIR)/prefs/AudioIOPrefs.cpp.o \
 
 ########################################
 # DEPENDENCIES
