@@ -33,9 +33,9 @@ class Eraser:public wxWindow {
    Eraser(wxWindow * parent, wxWindowID id,
           const wxPoint & pos,
           const wxSize & size):wxWindow(parent, id, pos, size) {
-   } 
-   
-   virtual void OnPaint(wxPaintEvent & event ) {
+   }
+  
+   virtual void OnPaint(wxPaintEvent & /* event */) {
       wxPaintDC dc(this);
       dc.SetPen(*wxWHITE_PEN);
       dc.SetBrush(*wxWHITE_BRUSH);
