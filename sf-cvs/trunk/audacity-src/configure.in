@@ -193,7 +193,7 @@ AC_ARG_WITH(libsamplerate,
 
 AC_ARG_WITH(libflac,
 	[AC_HELP_STRING([--with-libflac],
-		[enable FLAC support])],
+		[enable FLAC support [default=local]])],
 	use_libflac=$withval,
 	use_libflac=$default_libflac)
 
@@ -446,7 +446,7 @@ if [[ $use_libid3tag = "system" ]] ; then
 
 fi
 
-if [[ $use_libflac = "yes" ]] ; then
+if [[ $use_libflac = "local" ]] ; then
    EXTRAOBJS="$EXTRAOBJS ../lib-src/libflac/src/libFLAC/.libs/libFLAC.a"
    EXTRAOBJS="$EXTRAOBJS ../lib-src/libflac/src/libFLAC++/.libs/libFLAC++.a"
    BUILDLIBS="$BUILDLIBS libflac/src/libFLAC/.libs/libFLAC.a"
@@ -684,7 +684,7 @@ else
 	fi
 fi
 
-if [[ $use_libflac = "yes" ]] ; then	
+if [[ $use_libflac = "local" ]] ; then	
 	echo "  with    libflac";
 else
 	if [[ $use_libflac = "system" ]] ; then
@@ -720,6 +720,17 @@ fi
 
 echo "prefix=$prefix";
 
+if [[ "$use_portaudio" = "v19" ]] ; then
+	echo ""
+	echo "Note: portaudio v19 supports ALSA and Jack, but may be less stable."
+else
+	echo ""
+	echo "Note: portaudio v18 only supports OSS.  If your system supports"
+	echo "ALSA, you may want to reconfigure --with-portaudio=v19, though"
+	echo "portaudio v19 is newer and possibly less stable."
+fi
+
+
 echo ""
-echo "Run configure --help for explanation of these options,"
-echo "otherwise type 'make' to build Audacity."
+echo "Run 'configure --help' for an explanation of these options,"
+echo "otherwise run 'make' to build Audacity."
