@@ -30,7 +30,8 @@ if ($fp) {
 
   if ($update == "true") {
 	 if (!is_dir("../updates/$lang")) {
-      mkdir("../updates/$lang", 0777);
+      mkdir("../updates/$lang");
+	   `chmod 775 ../updates/$lang`;
     }
 
     $fp = fopen($updatefile, "w");
