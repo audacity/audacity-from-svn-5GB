@@ -5,11 +5,7 @@ Audacity är en gratis ljudeditor. Du kan spela in ljud, spela upp ljud, importer
 </p>
 
 <p>
-Audacity version 1.0.0 är den mest stabila version som vi släppt hittills, och många har funnit att dess unika funktioner och enkla gränssnitt gör det roligare att använda än andra ljudeditorer, inklusive kommersiella. 
-</p>
-
-<p>
-Utvecklarna för Audacity har också släppt <a href="<?php print "beta.php?$langLinkStr"; ?>">version 1.2.0-pre1</a>, vilken är en betaversion med nya funktioner som vi aktivt arbetar med. Denna version innehåller många, många fler funktioner, men är inte finslipad och stabil än. 
+Audacity version 1.2.0 är den mest stabila version som vi släppt hittills, och många har funnit att dess unika funktioner och enkla gränssnitt gör det roligare att använda än andra ljudeditorer, inklusive kommersiella. 
 </p>
 
 <center>
