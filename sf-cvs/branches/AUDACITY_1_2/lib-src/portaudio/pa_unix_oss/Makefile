@@ -2,7 +2,7 @@
 
 CC = gcc
 
-override CFLAGS += -g -O -ansi -I../pa_common
+override CFLAGS += -g -O -I../pa_common
 PASRC = ../pa_common/pa_lib.c pa_unix_oss.c pa_unix.c
 PAINC = ../pa_common/portaudio.h
 PAOBJ = ../pa_common/pa_lib.o pa_unix_oss.o pa_unix.o
