@@ -489,6 +489,11 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag,
                       AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag);
 
+   c->AddCommand("DeleteKey2",      _("DeleteKey2\tDelete"),           FN(OnDelete));
+   c->SetCommandFlags("DeleteKey2",
+                      AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag,
+                      AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag);
+
    c->AddCommand("CursorLeft",  _("Cursor Left\tLeft"),           FN(OnCursorLeft));
    c->AddCommand("CursorRight", _("Cursor Right\tRight"),         FN(OnCursorRight));
    c->AddCommand("SelExtLeft",  _("Selection Extend Left\tShift+Left"),     FN(OnSelExtendLeft));
