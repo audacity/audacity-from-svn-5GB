@@ -31,6 +31,9 @@ class QualityPrefs:public PrefsPanel {
    wxChoice *mSampleFormats;
    wxTextCtrl *mOtherSampleRate;
 
+   wxChoice *mConverters;
+   wxChoice *mHQConverters;
+
  public:
    DECLARE_EVENT_TABLE();
 };

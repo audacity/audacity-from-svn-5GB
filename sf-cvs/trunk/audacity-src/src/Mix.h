@@ -41,7 +41,9 @@ class Mixer {
          TimeTrack *timeTrack,
          double startTime, double stopTime,
          int numOutChannels, int outBufferSize, bool outInterleaved,
-         double outRate, sampleFormat outFormat);
+         double outRate, sampleFormat outFormat,
+         bool highQuality = true);
+
    virtual ~ Mixer();
 
    //

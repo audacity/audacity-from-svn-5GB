@@ -337,7 +337,8 @@ bool AudioIO::Start()
          mOutMixers[i] = new Mixer(1, &mOutTracks[i],
                                    mTracks->GetTimeTrack(),
                                    mT0, mT1, 1, mOutBufferSize, false,
-                                   mRate, floatSample);
+                                   mRate, floatSample,
+                                   false);
       }
    }
 
