@@ -25,7 +25,7 @@ Nouvelles fonctionnalités d'Audacity 1.2.0-pre1:
     - Normalisation (ajuste le volume et DC bias).
 
   * E/S Audio
-    - Commende 1-seconde de prévisualisation.
+    - Commande 1-seconde de prévisualisation.
     - Lecture en boucle.
 
   * E/S Fichier

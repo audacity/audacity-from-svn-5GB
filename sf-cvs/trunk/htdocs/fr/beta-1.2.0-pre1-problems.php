@@ -24,5 +24,5 @@ Problèmes connus avec Audacity 1.2.0-pre1:
 <li>MacOS X seulement: La command Trouver Zero-Crossings a "Command-Z" listé comme raccourci, mais le raccourci actuel est "Z". Les raccourcies pour "Aide en Ligne" et "Ouvrir" entrent en conflit.</li>
 
 <li>MacOS X seulement: Pour de l'audio avec amplitude zéro, Audacity peut ne rien afficher
-(au lieu d'une fine ligne droide).</li>
+(au lieu d'une fine ligne droite).</li>
 </ul>
