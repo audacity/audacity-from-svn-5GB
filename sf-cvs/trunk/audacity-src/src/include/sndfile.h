@@ -156,6 +156,10 @@ enum
 
 typedef	void	SNDFILE ;
 
+#ifdef WIN32
+typedef off_t loff_t ;
+#endif
+
 typedef loff_t	sf_count_t ;
 
 /* A pointer to a SF_INFO structure is passed to sf_open_read () and filled in.
