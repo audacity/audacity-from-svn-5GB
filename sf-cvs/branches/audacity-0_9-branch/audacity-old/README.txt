@@ -116,6 +116,8 @@ Changes in 1.0:
 
     - Fixed bug which prevented recording low sample rates
       on Mac OS 9
+      
+    - Recognizes MP3 files by file extension and type code
 
     - Audacity is now more stable and functional on MacOS X
 
