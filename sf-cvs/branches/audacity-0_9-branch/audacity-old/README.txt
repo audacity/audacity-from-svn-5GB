@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.98b (February 14, 2002)
+Version 1.0 (Release Candidate 1)
 
 http://audacity.sourceforge.net/
 
@@ -21,6 +21,11 @@ Authors:
   Matt Brubeck <mbrubeck@hmc.edu>
   Mark Phillips <mitb@totaldeath.com>
   Tony Oetzmann <airon@epost.de>
+
+Special thanks to:
+
+  Isaac Wingfield
+  Stuart Hotchkiss
 
 Icons and logo:
 
