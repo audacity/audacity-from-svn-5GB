@@ -43,7 +43,8 @@ wxImage *CreateBackground(int width, int height, wxColour colour);
 
 // Creates an image with the Mac OS X Aqua stripes, to be used
 // as a background
-wxImage *CreateAquaBackground(int width, int height);
+wxImage *CreateAquaBackground(int width, int height, int offset);
 
 // Uses color on all OS except Mac, uses Aqua
-wxImage *CreateSysBackground(int width, int height, wxColour colour);
+wxImage *CreateSysBackground(int width, int height, int offset,
+                             wxColour colour);
