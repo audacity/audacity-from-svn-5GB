@@ -227,6 +227,10 @@ void FreqWindow::OnSize(wxSizeEvent &event)
   if (mBitmap)
 	delete mBitmap;
   mBitmap = NULL;
+  
+  #ifdef __WXMAC__
+  Refresh(true);
+  #endif
 }
 
 void FreqWindow::OnMouseEvent(wxMouseEvent& event)
