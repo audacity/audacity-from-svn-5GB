@@ -656,6 +656,7 @@ void AudacityProject::OnDuplicate(wxCommandEvent & event)
             dest->SetName(n->GetName());
             dest->SetLinked(n->GetLinked());
 
+            // Use max( GetOffset, sel0 ) as the new offset.
             double newOffset = n->GetOffset();
             if (mViewInfo.sel0 > newOffset)
                 newOffset = mViewInfo.sel0;
