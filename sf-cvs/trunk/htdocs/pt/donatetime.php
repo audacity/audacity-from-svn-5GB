@@ -49,7 +49,7 @@ Teste esta versão e diga-nos o que pareceu interessante, o que funcionou, o que 
 
 <li><b>Desenvolva</b>
 <p>
-Se você conhece ferramentas de programação C++ e está acostumado com o CVS, gostaríamos de recebê-lo como um desenvolvedor do Audacity! Baixe a versão mais nova dos fontes no CVS, compile-os, apresente-se ao 
+Se você conhece ferramentas de programação C++ e está acostumado com o CVS, gostaríamos de recebê-lo como um desenvolvedor do Audacity! Baixe a versão mais nova dos fontes no CVS, compile-os, apresente-se à 
 <a href=http://lists.sourceforge.net/lists/listinfo/audacity-devel>
 <?php print $develListStr; ?></a> e seja bem-vindo!
 <p>
