@@ -41,6 +41,7 @@
 #include "effects/LoadEffects.h"
 #include "FreqWindow.h"
 #include "Help.h"
+#include "LangChoice.h"
 #include "Prefs.h"
 #include "Project.h"
 #include "Sequence.h"
@@ -222,7 +223,13 @@ bool AudacityApp::OnInit()
    // wxWindows 2.3 has a much nicer wxLocale API.  We can make this code much
    // better once we move to wx 2.3/2.4.
 
-   wxString lang = gPrefs->Read("/Locale/Language", "en");
+   wxString lang = gPrefs->Read("/Locale/Language", "");
+
+   // Pop up a dialog the first time the program is run
+   if (lang == "")
+      lang = ChooseLanguage(NULL);
+
+   gPrefs->Write("/Locale/Language", lang);
 
    if (lang != "en") {
       wxLogNull nolog;
