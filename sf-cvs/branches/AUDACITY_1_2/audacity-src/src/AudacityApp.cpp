@@ -361,8 +361,14 @@ bool AudacityApp::OnInit()
    #ifdef __MACOSX__
    // On Mac OS X, the path to the Audacity program is in argv[0]
    wxString progPath = wxPathOnly(argv[0]);
+
    AddUniquePathToPathList(progPath, audacityPathList);
+   // If Audacity is a "bundle" package, then the root directory is
+   // the great-great-grandparent of the directory containing the executable.
+   AddUniquePathToPathList(progPath+"/../../../..", audacityPathList);
+
    AddUniquePathToPathList(progPath+"/Languages", audacityPathList);
+   AddUniquePathToPathList(progPath+"/../../../../Languages", audacityPathList);
    defaultTempDir.Printf("%s/audacity1.2-%s",
                          (const char *)tmpDirLoc,
                          (const char *)wxGetUserId());
@@ -424,7 +430,6 @@ bool AudacityApp::OnInit()
 
    LoadEffects();
 
-
 #ifdef __WXMAC__
 
 #ifdef __MACOSX__
@@ -477,8 +482,6 @@ bool AudacityApp::OnInit()
    //Initiate globally-held toolbar stubs here.
    gControlToolBarStub = new ToolBarStub(gParentWindow, ControlToolBarID);
 
-
-
    //Only load the mixer toolbar if it says so in the preferences
    bool mixerToolBar;
    gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, true);
@@ -486,7 +489,6 @@ bool AudacityApp::OnInit()
       gMixerToolBarStub =  new ToolBarStub(gParentWindow, MixerToolBarID);
    else
       gMixerToolBarStub = NULL;
-
 
    // Changing the following to NULL will make the application
    // load without the toolbar in memory at all.
@@ -498,8 +500,12 @@ bool AudacityApp::OnInit()
    else
       gEditToolBarStub = NULL;
 
-
+   #if 0
+   // dmazzoni: no longer create FreqWindow on startup because
+   // it just wastes time.  Now it's created as needed.
    InitFreqWindow(gParentWindow);
+   #endif
+
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
    SetTopWindow(project);
 

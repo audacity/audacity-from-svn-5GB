@@ -57,6 +57,9 @@ FreqWindow *gFreqWindow = NULL;
 
 void InitFreqWindow(wxWindow * parent)
 {
+   if (gFreqWindow)
+      return;
+
    wxPoint where;
 
    where.x = 150;
