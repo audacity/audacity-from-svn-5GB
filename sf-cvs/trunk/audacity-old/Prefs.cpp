@@ -68,6 +68,12 @@ void InitPreferences()
   
   gPrefs = new wxConfig(appName);
   wxConfigBase::Set(gPrefs);
+  
+  #ifdef __WXMAC__
+  if (gPrefs->Read("/Version", "") != AUDACITY_VERSION_STRING) {
+    gPrefs->DeleteAll();
+  }
+  #endif
 
   gPrefs->Write("/Version", AUDACITY_VERSION_STRING);
 }
