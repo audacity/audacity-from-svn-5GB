@@ -33,9 +33,7 @@ PrefsPanel(parent), mCommandSelected(-1)
 {
    mAudacity = GetActiveProject();
 
-   topSizer = new wxStaticBoxSizer(
-      new wxStaticBox(this, -1, _("Configure Keyboard")),
-      wxVERTICAL );
+   topSizer = new wxBoxSizer( wxVERTICAL );
 
    {
       wxBoxSizer *vKeyConfigSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -89,11 +87,14 @@ PrefsPanel(parent), mCommandSelected(-1)
          wxALIGN_LEFT|wxALL, TOP_LEVEL_BORDER );
    }
 
-   SetAutoLayout(true);
-   SetSizer(topSizer);
+   outSizer = new wxBoxSizer( wxVERTICAL );
+   outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
 
-   topSizer->Fit(this);
-   topSizer->SetSizeHints(this);
+   SetAutoLayout(true);
+   SetSizer(outSizer);
+
+   outSizer->Fit(this);
+   outSizer->SetSizeHints(this);
 }
 
 void KeyConfigPrefs::OnItemSelected(wxListEvent &event)

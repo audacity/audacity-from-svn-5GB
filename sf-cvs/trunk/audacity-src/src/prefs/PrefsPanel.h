@@ -48,7 +48,8 @@ class PrefsPanel:public wxPanel {
    virtual bool Apply() = 0;
 
  protected:
-   wxStaticBoxSizer *topSizer;
+   wxBoxSizer *topSizer;
+   wxBoxSizer *outSizer;
 
 };
 

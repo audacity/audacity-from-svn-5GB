@@ -49,9 +49,7 @@ PrefsPanel(parent)
          break;
       }
 
-    topSizer = new wxStaticBoxSizer(
-      new wxStaticBox(this, -1, _("Sample Rate Preferences")), 
-      wxVERTICAL );
+    topSizer = new wxBoxSizer( wxVERTICAL );
 
    {
       wxStaticBoxSizer *defProjSizer = new wxStaticBoxSizer(
@@ -78,10 +76,13 @@ PrefsPanel(parent)
       topSizer->Add( defProjSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER );
    }
 
+   outSizer = new wxBoxSizer( wxVERTICAL );
+   outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
+
    SetAutoLayout(true);
-   topSizer->Fit(this);
-   topSizer->SetSizeHints(this);
-   SetSizer(topSizer);
+   outSizer->Fit(this);
+   outSizer->SetSizeHints(this);
+   SetSizer(outSizer);
 }
 
 bool SampleRatePrefs::Apply()

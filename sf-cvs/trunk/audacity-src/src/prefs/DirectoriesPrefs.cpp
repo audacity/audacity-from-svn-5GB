@@ -43,8 +43,7 @@ PrefsPanel(parent)
    mTempDir = gPrefs->Read("/Directories/TempDir", "");
    mOldTempDir = mTempDir;
 
-   topSizer = new wxStaticBoxSizer(
-      new wxStaticBox(this, -1, _("Directories")), wxVERTICAL );
+   topSizer = new wxBoxSizer( wxVERTICAL );
 
    wxStaticBoxSizer *tempDirSizer = new wxStaticBoxSizer(
       new wxStaticBox(this, -1, _("Temp. Directory")), wxVERTICAL );
@@ -85,11 +84,14 @@ PrefsPanel(parent)
 
    topSizer->Add( tempDirSizer, 0, wxGROW|wxALL, 5 );
 
-   SetAutoLayout(true);
-   SetSizer(topSizer);
+   outSizer = new wxBoxSizer( wxVERTICAL );
+   outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
 
-   topSizer->Fit(this);
-   topSizer->SetSizeHints(this);
+   SetAutoLayout(true);
+   SetSizer(outSizer);
+
+   outSizer->Fit(this);
+   outSizer->SetSizeHints(this);
 }
 
 wxString DirectoriesPrefs::FormatSize(wxLongLong size)
