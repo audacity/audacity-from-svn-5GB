@@ -18,6 +18,7 @@
 #include "TrackArtist.h"
 
 #include <math.h>
+#include <iostream>
 
 #include <wx/brush.h>
 #include <wx/colour.h>
@@ -850,7 +851,8 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
          delete[]xpos;
          delete[]ypos;
       }
-   } else {
+   }
+   else if (mid.width > 0) {
       // Fisplay a line representing the
       // min and max of the samples in this region
       t = t0;
@@ -858,7 +860,6 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
       short *h2 = new short[mid.width];
 
       for (x = 0; x < mid.width; x++) {
-
          h1[x] = ctr - GetWaveYPos(cache->min[x] / 32768.0 *
                                    track->GetEnvelope()->GetValue(t + tOffset),
                                    mid.height / 2,
@@ -888,7 +889,6 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
                                     track->GetEnvelope()->GetValue(t + tOffset),
                                     mid.height / 2,
                                     dB);
-
          if (r1 > h1[x]-1)
             r1 = h1[x]-1;
          if (r2 < h2[x]+1)
@@ -898,11 +898,8 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
 
          t += tstep;
       }
-
       delete[] h1;
       delete[] h2;
-
-
    }
 
    if (drawEnvelope) {
