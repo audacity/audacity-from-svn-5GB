@@ -44,7 +44,7 @@
 #include "ViewInfo.h"
 #include "widgets/Ruler.h"
 
-#define PROFILE_WAVEFORM 0
+#undef PROFILE_WAVEFORM
 #ifdef PROFILE_WAVEFORM
 	#ifdef __WXMSW__
 		#include <time.h>
