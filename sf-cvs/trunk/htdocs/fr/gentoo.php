@@ -1,18 +1,17 @@
+
 <?php BoxTop("Gentoo Linux"); ?>
 
 <p>
-An ebuild for Audacity has been contributed to the
-<a href="http://www.gentoo.org/">Gentoo Linux</a>
-portage system.  To install the latest version of Audacity
-from portage, run
+<a href="http://www.gentoo.org/">Gentoo Linux</a> a actuellement Audacity  1.1.1-3 comme version stable dans son système de portage.
+Pour installer Audacity...
 <p>
 <xmp>$ emerge audacity</xmp>
 </p>
 
 <p>
-Maintainer: 
-Will Glynn <br>
-Email: <tt>delta407 <b>@</b> lerfjhax.com</tt>
+Maintenance: 
+Nick Hadaway <br>
+Email: <tt>raker <b>@</b> gentoo.org</tt>
 </p>
 
 <?php BoxBottom(); ?>
