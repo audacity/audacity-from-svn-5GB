@@ -52,7 +52,7 @@ class Mixer {
    sampleCount Process(sampleCount maxSamples);
 
    /// Current time in seconds
-   double GetCurrentTime();
+   double MixGetCurrentTime();
 
    /// Retrieve the main buffer or the interleaved buffer
    samplePtr GetBuffer();

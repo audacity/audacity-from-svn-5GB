@@ -68,6 +68,8 @@ class AudioIO {
    //  something like that.  The indicator is the little graphic
    //  displayed in TrackPanel showing the current position while
    //  you're playing or recording.
+   // BG: Note on comment above, GetCurrentTime is #defined in the windows header
+   //  files and cannot be used
    double GetIndicator();
 
    AudacityProject *GetProject();

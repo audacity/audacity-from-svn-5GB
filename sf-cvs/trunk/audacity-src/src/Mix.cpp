@@ -128,7 +128,7 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
             new wxProgressDialog(_("Quick Mix"), _("Mixing tracks"), 1000);
       }
       if (progress) {
-         int progressvalue = int (1000 * (mixer->GetCurrentTime() / totalTime));
+         int progressvalue = int (1000 * (mixer->MixGetCurrentTime() / totalTime));
          cancelling = !progress->Update(progressvalue);
       }
    }
@@ -480,7 +480,7 @@ samplePtr Mixer::GetBuffer(int channel)
    return mBuffer[channel];
 }
 
-double Mixer::GetCurrentTime()
+double Mixer::MixGetCurrentTime()
 {
    return mT;
 }
