@@ -113,7 +113,7 @@ const int sbarSpaceWidth = 15;
 const int sbarControlWidth = 15;
 const int sbarExtraLen = 0;
 const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
-#include "../images/AudacityLogo.xpm"
+#include "../images/AudacityLogo48x48.xpm"
 #endif
 
 /* Define Global Variables */
@@ -510,7 +510,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    // loads either the XPM or the windows resource, depending on the platform
 #if !defined(__WXMAC__) && !defined(__WXX11__)
-   wxIcon ic(wxICON(AudacityLogo));
+   wxIcon ic(wxICON(AudacityLogo48x48));
    SetIcon(ic);
 #endif
    mIconized = false;
