@@ -27,6 +27,7 @@ class DirectoriesPrefs:public PrefsPanel {
    ~DirectoriesPrefs();
    bool Apply();
    void UpdateFreeSpace(wxCommandEvent &event);
+   void OnChooseTempDir(wxCommandEvent &event);
 
  private:
    wxString FormatSize(wxLongLong size);

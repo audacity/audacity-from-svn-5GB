@@ -96,7 +96,7 @@ wxString ExportCommon(AudacityProject *project,
                 "in the exported file."));
       else
          wxMessageBox
-             (_("Your tracks will be mixed down to a single mono channel ")
+             (_("Your tracks will be mixed down to a single mono channel "
                 "in the exported file."));
 
    /* Prepare and display the filename selection dialog */
@@ -119,6 +119,16 @@ wxString ExportCommon(AudacityProject *project,
 
    if (fName == "")
       return fName;
+
+   /*
+    * Ensure that exporting a file by this name doesn't overwrite
+    * one of the existing files in the project.  (If it would
+    * overwrite an existing file, DirManager tries to rename the
+    * existing file.)
+    */
+
+   if (!project->GetDirManager()->EnsureSafeFilename(fName))
+      return "";
 
    path =::wxPathOnly(fName);
    gPrefs->Write("/DefaultExportPath", path);

@@ -57,6 +57,7 @@
 void AudacityProject::CreateMenuBar()
 {
    mMenusDirtyCheck = gMenusDirty;
+   mFirstTimeUpdateMenus = true;
 
    mMenuBar = new wxMenuBar();
 
@@ -206,37 +207,8 @@ void AudacityProject::CreateMenuBar()
 void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 {
    if (mMenusDirtyCheck != gMenusDirty) {
-   
       /*
-      
       TODO!
-      
-      This crashes - need to fix:
-      
-      wxString pcmFormat =
-       gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");
-      mExportString.Printf("&Export as %s...", pcmFormat);
-      mExportSelectionString.Printf("Export &Selection as %s...", pcmFormat);
-      wxString lossyFormat =
-          "MP3";
-      mExportLossyString.Printf("Export as %s...", lossyFormat);
-      mExportSelectionLossyString.Printf("Export Selection as %s...", lossyFormat);
-   
-      wxMenuItem *item = mFileMenu->Remove(7);
-      item->SetName(mExportString);
-      mFileMenu->Insert(7, item);
-      
-      item = mFileMenu->Remove(8);
-      item->SetName(mExportSelectionString);
-      mFileMenu->Insert(8, item);
-      
-      item = mFileMenu->Remove(10);
-      item->SetName(mExportLossyString);
-      mFileMenu->Insert(10, item);
-      
-      item = mFileMenu->Remove(11);
-      item->SetName(mExportSelectionLossyString);
-      mFileMenu->Insert(11, item);
       */
    }
 
@@ -272,6 +244,31 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
       t = iter.Next();
    }
 
+   mEditMenu->Enable(mEditMenu->FindItem("Paste"),
+                     numTracksSelected > 0 && msClipLen > 0.0);
+
+   // Return from this function if nothing's changed since
+   // the last time we were here.
+
+   if (!mFirstTimeUpdateMenus &&
+       mLastNonZeroRegionSelected==nonZeroRegionSelected &&
+       mLastNumTracks==numTracks &&
+       mLastNumTracksSelected==numTracksSelected &&
+       mLastNumWaveTracks==numWaveTracks &&
+       mLastNumWaveTracksSelected==numWaveTracksSelected &&
+       mLastNumLabelTracks==numLabelTracks)
+      return;
+
+   // Otherwise, save state and then update all of the menus
+
+   mFirstTimeUpdateMenus = false;
+   mLastNonZeroRegionSelected = nonZeroRegionSelected;
+   mLastNumTracks = numTracks;
+   mLastNumTracksSelected = numTracksSelected;
+   mLastNumWaveTracks = numWaveTracks;
+   mLastNumWaveTracksSelected = numWaveTracksSelected;
+   mLastNumLabelTracks = numLabelTracks;
+
    mFileMenu->Enable(mFileMenu->FindItem(mExportString), numTracks > 0);
    mFileMenu->Enable(mFileMenu->FindItem(mExportSelectionString),
                      numTracksSelected > 0 && nonZeroRegionSelected);
@@ -285,8 +282,6 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
                      numTracksSelected > 0 && nonZeroRegionSelected);
    mEditMenu->Enable(mEditMenu->FindItem(_("Copy")),
                      numTracksSelected > 0 && nonZeroRegionSelected);
-   mEditMenu->Enable(mEditMenu->FindItem(_("Paste")),
-                     numTracksSelected > 0 && msClipLen > 0.0);
    mEditMenu->Enable(mEditMenu->FindItem(_("Delete")),
                      numTracksSelected > 0 && nonZeroRegionSelected);
    mEditMenu->Enable(mEditMenu->FindItem(_("Silence")),
@@ -544,6 +539,7 @@ void AudacityProject::Cut(wxCommandEvent & event)
    }
 
    msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
+   msClipProject = this;
 
    mViewInfo.sel1 = mViewInfo.sel0;
 
@@ -573,8 +569,9 @@ void AudacityProject::Copy(wxCommandEvent & event)
    }
 
    msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
+   msClipProject = this;
 
-   mViewInfo.sel1 = mViewInfo.sel0;
+   //mViewInfo.sel1 = mViewInfo.sel0;
    //UpdateMenus();
 
    //  PushState();
@@ -598,7 +595,14 @@ void AudacityProject::Paste(wxCommandEvent & event)
 
    while (n && c) {
       if (n->GetSelected()) {
+         if (msClipProject != this && c->GetKind()==VTrack::Wave)
+            ((WaveTrack *)c)->Lock();
+         
          n->Paste(tsel, c);
+         
+         if (msClipProject != this && c->GetKind()==VTrack::Wave)
+            ((WaveTrack *)c)->Unlock();
+         
          c = clipIter.Next();
       }
 

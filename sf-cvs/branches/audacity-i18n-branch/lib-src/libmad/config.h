@@ -1,3 +1,1 @@
-#ifdef WIN32
-#include "configwin32.h"
-#endif
+/* config.h.  Generated automatically by configure.  */

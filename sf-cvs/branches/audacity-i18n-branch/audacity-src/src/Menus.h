@@ -168,6 +168,16 @@ wxString mExportSelectionLossyString;
 
 int      mMenusDirtyCheck;
 
+bool mLastNonZeroRegionSelected;
+
+int mLastNumTracks;
+int mLastNumTracksSelected;
+int mLastNumWaveTracks;
+int mLastNumWaveTracksSelected;
+int mLastNumLabelTracks;
+
+bool mFirstTimeUpdateMenus;
+
 public:
 void CreateMenuBar();
 

@@ -37,6 +37,7 @@ class BlockFile {
 
    // Alias block file
    BlockFile(wxString name, wxString fullPath,
+             int localLen,
              wxString aliasFullPath,
              sampleCount aliasStart, sampleCount aliasLen,
              int aliasChannel);
@@ -57,7 +58,19 @@ class BlockFile {
    // this accessor should be used for debugging only
    wxString GetName();
 
+   wxString GetAliasedFile();
+   void ChangeAliasedFile(wxString newFile);
    bool IsAlias();
+
+   // If a BlockFile is locked, it cannot be moved - just
+   // copied.  When performing a Save As, the project
+   // locks all of the blocks which belonged to the old
+   // project, keeping them from being removed.  It doesn't
+   // lock blocks which belong to the new project only; they
+   // get moved to the new location.
+   void Lock();
+   void Unlock();
+   bool IsLocked();
 
  private:
 
@@ -68,6 +81,7 @@ class BlockFile {
 
    // General variables
    int mRefCount;
+   bool mLocked;
 
    enum {
       BLOCK_TYPE_UNCOMPRESSED,
@@ -95,6 +109,7 @@ class BlockFile {
 
    // Information about aliased sound data
    wxString mAliasFullPath;
+   int mLocalLen;
    sampleCount mStart;
    sampleCount mLen;
    int mChannel;
