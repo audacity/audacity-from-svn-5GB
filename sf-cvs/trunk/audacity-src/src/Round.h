@@ -16,7 +16,7 @@
 
 
 /*
- * converts a float to an int, rounding to the nearest even integer
+ * converts a float to an int, rounding n.5 to the nearest even integer
  * - see ISO 31-0:1992(E) "Quantities and units -- General Principles"
  * Annex B (informative) "Guide to rounding numbers" if you want to
  * argue about this :-)
