@@ -300,7 +300,7 @@ void CommandsMenu::AppendEffects(EffectArray *effs, wxString &sType, bool spill)
 //WARNING: Does this conflict with the identifiers set for controls/windows?
 //If it does, a workarround may be to keep controls below wxID_LOWEST
 //and keep menus above wxID_HIGHEST
-int CommandsMenu::GetUniqueIdentifier(wxString &sFunctions, wxString &sKeys)
+int CommandsMenu::GetUniqueIdentifier(wxString sFunctions, wxString sKeys)
 {
    mCurrentID++;
 
@@ -314,7 +314,7 @@ int CommandsMenu::GetUniqueIdentifier(wxString &sFunctions, wxString &sKeys)
    return mCurrentID;
 }
 
-void CommandsMenu::SetIdentifierData(int nID, wxString &sFunctions, wxString &sKeys)
+void CommandsMenu::SetIdentifierData(int nID, wxString sFunctions, wxString sKeys)
 {
    IdentifierNameListEntry *tmpEntry = new IdentifierNameListEntry;
 
