@@ -34,6 +34,11 @@ struct ViewInfo {
    int sbarTotal;
 
    int scrollStep;
+
+   bool bUpdateSpectrogram;
+   bool bUpdateTrackIndicator;
+
+   bool bIsPlaying;
 };
 
 #endif

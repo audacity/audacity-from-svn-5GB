@@ -141,7 +141,6 @@ mAutoScrolling(false)
    mIsSoloing = false;
 
    mIndicatorShowing = false;
-   gPrefs->Read("/GUI/AutoScroll", &mTrackIndicator, false);
 
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
    mSelectCursor = new wxCursor(wxCURSOR_IBEAM);
@@ -234,8 +233,9 @@ TrackPanel::~TrackPanel()
 
 void TrackPanel::ReReadSettings()
 {
-   gPrefs->Read("/GUI/AutoScroll", &mTrackIndicator, false);
-   mTrackArtist->ReReadSettings();
+   mViewInfo->bIsPlaying = (gAudioIO->IsBusy() && gAudioIO->GetProject());
+   gPrefs->Read("/GUI/AutoScroll", &mViewInfo->bUpdateTrackIndicator, true);
+   gPrefs->Read("/GUI/UpdateSpectrogram", &mViewInfo->bUpdateSpectrogram, true);
 }
 
 void TrackPanel::SelectNone()
@@ -371,7 +371,7 @@ void TrackPanel::UpdateIndicator()
 		   mViewInfo->h + mViewInfo->screen);
   
   // BG: Scroll screen if option is set
-  if (mTrackIndicator && gAudioIO->IsBusy()
+  if (mViewInfo->bUpdateTrackIndicator && gAudioIO->IsBusy()
                       && gAudioIO->GetProject() && !onScreen)
      mListener->TP_ScrollIndicator(indicator);
 

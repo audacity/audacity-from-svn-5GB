@@ -219,6 +219,13 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mViewInfo.sbarScreen = 1;
    mViewInfo.sbarTotal = 1;
 
+   // Some GUI prefs
+   gPrefs->Read("/GUI/UpdateSpectrogram", &mViewInfo.bUpdateSpectrogram, true);
+   gPrefs->Read("/GUI/AutoScroll", &mViewInfo.bUpdateTrackIndicator, true);
+
+   // Some extra information
+   mViewInfo.bIsPlaying = false;
+
    mMenuBar = NULL;
    CreateMenuBar();
 
