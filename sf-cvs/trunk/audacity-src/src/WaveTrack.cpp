@@ -81,13 +81,30 @@ VTrack(projDirManager)
 
    SetName("Audio Track");
 
-   display = 0;
+   display = WaveDisplay;
 
    block = new BlockArray();
 
 #if wxUSE_THREADS
    blockMutex = new wxMutex();
 #endif
+}
+
+WaveTrack::WaveTrack(const WaveTrack &orig) :
+VTrack(orig)
+{
+   numSamples = 0;
+   rate = orig.rate;
+   display = orig.display;
+
+   envelope.CopyFrom(&(orig.envelope));
+
+#if wxUSE_THREADS
+   blockMutex = new wxMutex();
+#endif
+
+   block = new BlockArray();
+   Paste(0.0, &orig);
 }
 
 WaveTrack::~WaveTrack()
@@ -139,27 +156,6 @@ void WaveTrack::Offset(double t)
    envelope.SetOffset(GetOffset());
 }
 
-VTrack *WaveTrack::Duplicate() const
-{
-   WaveTrack *copy = new WaveTrack(GetDirManager());
-
-   copy->SetOffset(GetOffset());
-   copy->rate = rate;
-   copy->SetName(GetName());
-   copy->SetLinked(GetLinked());
-   copy->SetMute(GetMute());
-   copy->SetSolo(GetSolo());
-   copy->Paste(0.0, this);
-   copy->SetCollapsedHeight(GetCollapsedHeight());
-   copy->SetExpandedHeight(GetExpandedHeight());
-   copy->SetChannel(GetChannel());
-   copy->SetSelected(GetSelected());
-   copy->envelope.CopyFrom(&envelope);
-   copy->display = display;
-
-   return (VTrack *) copy;
-}
-
 void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
                           sampleType * outMin, sampleType * outMax) const
 {
@@ -178,8 +174,8 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
    sampleCount s0, l0, maxl0;
 
    // First calculate the min/max of the blocks in the middle of this region;
-   // this is very fast because we have the min/max of every entire block already
-   // in memory.
+   // this is very fast because we have the min/max of every entire block
+   // already in memory.
    unsigned int b, i;
 
    for (b = block0 + 1; b < block1; b++) {
@@ -189,10 +185,10 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
          max = block->Item(b)->max;
    }
 
-   // Now we take the first and last blocks into account, noting that the selection
-   // may only partly overlap these blocks.  If the overall min/max of either of
-   // these blocks is within min...max, then we can ignore them.  If not,
-   // we need read some samples and summaries from disk.
+   // Now we take the first and last blocks into account, noting that the
+   // selection may only partly overlap these blocks.  If the overall min/max
+   // of either of these blocks is within min...max, then we can ignore them.
+   // If not, we need read some samples and summaries from disk.
    if (block->Item(block0)->min < min || block->Item(block0)->max > max) {
       s0 = start - block->Item(block0)->start;
       l0 = len;

@@ -21,19 +21,29 @@
 LabelTrack::LabelTrack(DirManager * projDirManager):
 VTrack(projDirManager)
 {
-   mFlagBrush.SetColour(204, 0, 0);
-   mUnselectedBrush.SetColour(192, 192, 192);
-   mSelectedBrush.SetColour(148, 148, 170);
-
-   mFlagPen.SetColour(204, 0, 0);
-   mUnselectedPen.SetColour(192, 192, 192);
-   mSelectedPen.SetColour(148, 148, 170);
-
+   InitColours();
    SetName("Label Track");
 
    SetExpandedHeight(30);         // Label tracks are narrow
 
    mSelIndex = -1;
+}
+
+LabelTrack::LabelTrack(const LabelTrack &orig) :
+VTrack(orig)
+{
+   InitColours();
+
+   int len = orig.mLabels.Count();
+
+   for (int i = 0; i < len; i++) {
+      LabelStruct *l = new LabelStruct();
+      l->t = orig.mLabels[i]->t;
+      l->title = orig.mLabels[i]->title;
+      mLabels.Add(l);
+   }
+
+   mSelIndex = orig.mSelIndex;
 }
 
 LabelTrack::~LabelTrack()
@@ -43,6 +53,7 @@ LabelTrack::~LabelTrack()
    for (int i = 0; i < len; i++)
       delete mLabels[i];
 }
+
 
 void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
                       double sel0, double sel1)
@@ -298,23 +309,6 @@ void LabelTrack::Import(wxTextFile & in)
    }
 }
 
-VTrack *LabelTrack::Duplicate() const
-{
-   LabelTrack *copy = new LabelTrack(GetDirManager());
-   int len = mLabels.Count();
-
-   for (int i = 0; i < len; i++) {
-      LabelStruct *l = new LabelStruct();
-      l->t = mLabels[i]->t;
-      l->title = mLabels[i]->title;
-      copy->mLabels.Add(l);
-   }
-
-   copy->SetName(GetName());
-
-   return copy;
-}
-
 bool LabelTrack::Load(wxTextFile * in, DirManager * dirManager)
 {
    if (in->GetNextLine() != "NumMLabels")
@@ -455,4 +449,16 @@ void LabelTrack::InsertSilence(double t, double len)
    for (int i = 0; i < numLabels; i++)
       if (mLabels[i]->t >= t)
          mLabels[i]->t += len;
+}
+
+// Private method called from the constructor
+void LabelTrack::InitColours()
+{
+   mFlagBrush.SetColour(204, 0, 0);
+   mUnselectedBrush.SetColour(192, 192, 192);
+   mSelectedBrush.SetColour(148, 148, 170);
+
+   mFlagPen.SetColour(204, 0, 0);
+   mUnselectedPen.SetColour(192, 192, 192);
+   mSelectedPen.SetColour(148, 148, 170);
 }

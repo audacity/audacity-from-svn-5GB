@@ -19,7 +19,7 @@
 #include "Track.h"
 
 typedef signed short sampleType;
-typedef unsigned int sampleCount;
+typedef int sampleCount;
 
 class DirManager;
 class BlockFile;
@@ -48,6 +48,7 @@ class WaveTrack:public VTrack {
    };
 
    WaveTrack(DirManager * projDirManager);
+   WaveTrack(const WaveTrack &orig);
    virtual ~ WaveTrack();
 
    // Locks all of this track's BlockFiles, keeping them
@@ -55,7 +56,7 @@ class WaveTrack:public VTrack {
    virtual void Lock();
    virtual void Unlock();
 
-   virtual VTrack *Duplicate() const;
+   virtual VTrack *Duplicate() const { return new WaveTrack(*this); }
 
    virtual void Cut  (double t0, double t1, VTrack ** dest);
    virtual void Copy (double t0, double t1, VTrack ** dest) const;

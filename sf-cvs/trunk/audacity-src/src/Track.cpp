@@ -37,6 +37,27 @@ VTrack::VTrack(DirManager * projDirManager)
    channel = MonoChannel;
 }
 
+VTrack::VTrack(const VTrack &orig)
+{
+   name = orig.name;
+   
+   dirManager = orig.dirManager;
+   selected = orig.selected;
+   collapsed = orig.collapsed;
+   linked = orig.linked;
+   mute = orig.mute;
+   solo = orig.solo;
+
+   collapsedHeight = orig.collapsedHeight;
+   expandedHeight = orig.expandedHeight;
+
+   tOffset = orig.tOffset;
+
+   channel = orig.channel;
+
+   dirty = rand();
+}
+
 bool VTrack::Load(wxTextFile * in, DirManager * dirManager)
 {
    this->dirManager = dirManager;
@@ -76,25 +97,6 @@ bool VTrack::Save(wxTextFile * out, bool overwrite)
    out->AddLine(wxString::Format("%f", tOffset));
 
    return true;
-}
-
-VTrack *VTrack::Duplicate() const
-{
-   VTrack *copy = new VTrack(dirManager);
-
-   // Code duplication warning: if you add code here, you should
-   // probably add it to WaveTrack::Duplicate also, which out
-   // of necessity overrides this entire function
-   copy->collapsedHeight = collapsedHeight;
-   copy->expandedHeight = expandedHeight;
-   copy->tOffset = tOffset;
-   copy->channel = channel;
-   copy->linked = linked;
-   copy->mute = mute;
-   copy->solo = solo;
-   copy->name = name;
-
-   return copy;
 }
 
 void VTrack::SetHeight(int h)
