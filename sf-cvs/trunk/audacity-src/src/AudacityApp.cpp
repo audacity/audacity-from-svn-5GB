@@ -165,33 +165,6 @@ void QuitAudacity(bool bForce)
       }
    }
 
-#if 0
-   if (gControlToolBarStub) {
-      delete gControlToolBarStub;
-      gControlToolBarStub = NULL;
-   }
-
-   if (gMixerToolBarStub) {
-      delete gMixerToolBarStub;
-      gMixerToolBarStub = NULL;
-   }
-
-   if (gEditToolBarStub) {
-      delete gEditToolBarStub;
-      gEditToolBarStub = NULL;
-   }
-
-   if (gMeterToolBarStub) {
-      delete gMeterToolBarStub;
-      gMeterToolBarStub = NULL;
-   }
-
-   if (gTranscriptionToolBarStub){
-      delete gTranscriptionToolBarStub;
-      gTranscriptionToolBarStub = NULL;
-   }
-#endif
-
    //Delete the clipboard
    AudacityProject::DeleteClipboard();
 
@@ -575,7 +548,6 @@ bool AudacityApp::OnInit()
    //Initiate pointers to toolbars here, and create 
    //the toolbars that should be loaded at startup.
 
-
    gControlToolBarStub = 
       LoadToolBar( "",true,
       gParentWindow,ControlToolBarID);
@@ -592,54 +564,9 @@ bool AudacityApp::OnInit()
       LoadToolBar( "/GUI/EnableTranscriptionToolBar",false,
       gParentWindow,TranscriptionToolBarID);
 
-#if 0
-   //Initiate globally-held toolbar stubs here.
-   gControlToolBarStub = new ToolBarStub(gParentWindow, ControlToolBarID);
-
-   //Only load the mixer toolbar if it says so in the preferences
-   bool mixerToolBar;
-   gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, true);
-   if(mixerToolBar)
-      gMixerToolBarStub =  new ToolBarStub(gParentWindow, MixerToolBarID);
-   else
-      gMixerToolBarStub = NULL;
-
-   //Only load the meter toolbar if it says so in the preferences
-   bool meterToolBar;
-   gPrefs->Read("/GUI/EnableMeterToolBar", &meterToolBar, true);
-   if(meterToolBar)
-      gMeterToolBarStub =  new ToolBarStub(gParentWindow, MeterToolBarID);
-   else
-      gMeterToolBarStub = NULL;
-
-   // Changing the following to NULL will make the application
-   // load without the toolbar in memory at all.
-
-   bool editToolBar;
-   gPrefs->Read("/GUI/EnableEditToolBar", &editToolBar, true);
-   if(editToolBar)
-      gEditToolBarStub =  new ToolBarStub(gParentWindow, EditToolBarID);
-   else
-      gEditToolBarStub = NULL;
-
-   bool transcriptionToolBar;
-   gPrefs->Read("/GUI/EnableTranscriptionToolBar", &transcriptionToolBar, false);
-   if(transcriptionToolBar)
-      gTranscriptionToolBarStub =  new ToolBarStub(gParentWindow, TranscriptionToolBarID);
-   else
-      gTranscriptionToolBarStub = NULL;
-
-#endif
-
    /// ToolBar Initiation Complete.
    ////////////////////////////////////////////////////////////////
    ////////////////////////////////////////////////////////////////
-
-   #if 0
-   // dmazzoni: no longer create FreqWindow on startup because
-   // it just wastes time.  Now it's created as needed.
-   InitFreqWindow(gParentWindow);
-   #endif
 
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
    SetTopWindow(project);
