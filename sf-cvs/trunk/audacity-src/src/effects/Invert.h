@@ -32,7 +32,7 @@ class EffectInvert:public EffectSimpleMono {
    }
    
  protected:
-   virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
+   virtual bool ProcessSimpleMono(float *buffer, sampleCount len, double samplerate);
 };
 
 #endif
