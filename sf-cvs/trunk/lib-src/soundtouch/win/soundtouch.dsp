@@ -85,6 +85,10 @@ LIB32=link.exe -lib
 # PROP Default_Filter "cpp;cc;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=..\source\SoundTouch\3dnow_win.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\source\SoundTouch\AAFilter.cpp
 # End Source File
 # Begin Source File
