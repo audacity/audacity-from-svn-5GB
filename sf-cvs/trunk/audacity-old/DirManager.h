@@ -91,7 +91,7 @@ class DirManager {
 
    wxHashTable *blockFileHash;
 
-   static int defaultHashTableSize;
+   static unsigned int defaultHashTableSize;
    static bool hashWarning;
    void CheckHashTableSize();
 

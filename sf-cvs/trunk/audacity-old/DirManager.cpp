@@ -26,7 +26,7 @@ int DirManager::fileIndex = 0;
 bool DirManager::firstCtor = true;
 wxString DirManager::tempDirName = ".audacity_temp";
 
-int DirManager::defaultHashTableSize = 10000;
+unsigned int DirManager::defaultHashTableSize = 10000;
 bool DirManager::hashWarning = false;
 
 // The character which separates directories differs from platform
