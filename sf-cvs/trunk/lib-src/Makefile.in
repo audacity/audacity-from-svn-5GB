@@ -3,6 +3,9 @@ all: @BUILDLIBS@
 allegro/allegro.a:
 	cd allegro && $(MAKE)
 
+expat/expat.a:
+	cd expat && $(MAKE)
+
 libogg/src/.libs/libogg.a:
 	cd libogg && $(MAKE)
 
@@ -37,6 +40,8 @@ wave++/source/libw.a:
 
 clean:
 	cd allegro && $(MAKE) clean
+	cd expat && $(MAKE) clean
+	cd libid3tag && $(MAKE) clean
 	cd libmad && $(MAKE) clean
 	cd libogg && $(MAKE) clean
 	cd libsndfile && $(MAKE) clean
