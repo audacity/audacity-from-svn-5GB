@@ -4,8 +4,10 @@
 
 /* Copyright 1989 Carnegie Mellon University */
 
+#ifndef WIN32
 #define UNIX
 #define BUFFERED_SYNCHRONOUS_INPUT
+#endif
 
 /*------------------------------------------*/
 

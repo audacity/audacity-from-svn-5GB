@@ -18,8 +18,10 @@
 #define min(a, b) ((a) < (b) ? (a) : (b))
 #endif
 
+#ifndef WIN32
 #ifndef abs
 #define abs(a) ((a) > 0 ? (a) : -(a))
+#endif
 #endif
 
 #ifdef WINGUI
