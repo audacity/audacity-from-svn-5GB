@@ -42,6 +42,7 @@
 #include "AboutDialog.h"
 #include "AudioIO.h"
 #include "Benchmark.h"
+#include "DirManager.h"
 #include "effects/LoadEffects.h"
 #include "FreqWindow.h"
 #include "Help.h"
@@ -316,6 +317,16 @@ bool AudacityApp::OnInit()
    } else
       mLocale = NULL;
 
+   // Init DirManager, which initializes the temp directory
+   // If this fails, we must exit the program.
+
+   if (!DirManager::InitDirManager()) {
+      FinishPreferences();
+      return false;
+   }
+
+   // More initialization
+
    InitAudioIO();
 
    LoadEffects();
@@ -513,6 +524,12 @@ void AudacityApp::FindFilesInPathList(wxString pattern,
 void AudacityApp::OnKey(wxKeyEvent& event)
 {
    AudacityProject *audacityPrj = GetActiveProject();
+
+   if (!audacityPrj) {
+      event.Skip();
+      return;
+   }
+
    wxString newStr = "";
 
    long key = event.GetKeyCode();
