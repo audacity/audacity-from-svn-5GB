@@ -335,6 +335,12 @@ void Meter::Reset(double sampleRate, bool resetClipping)
    // wxTimers seem to be a little unreliable - sometimes they stop for
    // no good reason, so this "primes" it every now and then...
    mTimer.Stop();
+
+   // While it's stopped, empty the queue
+   MeterUpdateMsg msg;
+   while(mQueue.Get(msg)) {
+   }
+
    mTimer.Start(25); // every 25 ms -> ~40 updates per second
 
    mLayoutValid = false;
@@ -709,7 +715,7 @@ void Meter::HandlePaint(wxDC &dc)
    dc.SetFont(GetFont());
    dc.DrawText(mLeftText, mLeftTextPos.x, mLeftTextPos.y);
    dc.DrawText(mRightText, mRightTextPos.x, mRightTextPos.y);
-   
+
    for(i=0; i<mNumBars; i++)
       DrawMeterBar(dc, &mBar[i]);
 }
