@@ -7,19 +7,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2005-01-03 20:59-0800\n"
-"PO-Revision-Date: 2005-01-27 16:11+0100\n"
+"PO-Revision-Date: 2005-01-29 08:54+0100\n"
 "Last-Translator: Kevin Brubeck Unhammer <kiwibird@online.no>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: download/windows.php:18
-#, fuzzy, php-format
-msgid ""
-"<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest "
-"version of the free Audacity audio editor."
-msgstr ""
 
 # ikke bare bidragsytere; inkluderer hoved-, aktive og andre utviklere, takk-til-folk, oversettere osv.
 # Anerkjennelse? eh..
@@ -378,7 +371,7 @@ msgstr "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> 
 
 #: about/links.php:26
 msgid "More free software at SourceForge.net:"
-msgstr "Mer gratis programvare fra SourceForge.net:"
+msgstr "Mer fri programvare fra SourceForge.net:"
 
 #: about/links.php:28
 msgid "Audio Editors"
@@ -403,6 +396,7 @@ msgid "News"
 msgstr "Nyheter"
 
 #: about/screenshots.php:9
+#: index.php:36
 #: main.inc.php:21
 msgid "Screenshots"
 msgstr "Skjermbilder"
@@ -455,6 +449,19 @@ msgstr "Audacity sine utviklere eier opphavsretten &copy; %s til dette nettstede
 msgid "\"Audacity\" is a trademark of Dominic Mazzoni.  The Google logo is a trademark of Google, Inc."
 msgstr "\"Audacity\" er et varemerke eid av Dominic Mazzoni. Google-logoen er et varemerke eid av Google, Inc."
 
+#: site-map.php:8
+#: include/footer.inc.php:15
+msgid "Site Map"
+msgstr "Nettkart"
+
+#: 404.php:9
+msgid "Page Not Found"
+msgstr "Siden ble ikke funnet"
+
+#: 404.php:14
+msgid "Sorry, the page you are looking for was not found.  Please try the <a href=\"/\">Audacity home page</a> or the <a href=\"/site-map\">site map</a>."
+msgstr "Beklager, siden du leter etter ble ikke funnet. Vennligst prøv <a href=\"/\">hjemmesiden til Audacity</a> eller <a href=\"/site-map\">nettkartet</a>."
+
 #: index.php:9
 msgid "Free Audio Editor and Recorder"
 msgstr "Fritt lydredigerings- og innspillingsprogram"
@@ -479,7 +486,7 @@ msgstr "Det frie, kryss-platforms lydredigeringsprogrammet"
 
 #: index.php:38
 msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
-msgstr "Audacity er gratis, åpen kildekode-programvare for å spille inn og redigere lyder. Det er tilgjengelig både for Mac OS X, Microsoft Windows, GNU/Linux og andre operativsystem. <a href=\"about/\">Lær mer om Audacity...</a>"
+msgstr "Audacity er fri, åpen kildekode-programvare for å spille inn og redigere lyder. Det er tilgjengelig både for Mac OS X, Microsoft Windows, GNU/Linux og andre operativsystem. <a href=\"about/\">Lær mer om Audacity...</a>"
 
 #: index.php:42
 #, php-format
@@ -620,11 +627,6 @@ msgstr "Utviklere"
 msgid "Donate"
 msgstr "Doner"
 
-#: site-map.php:8
-#: include/footer.inc.php:15
-msgid "Site Map"
-msgstr "Nettkart"
-
 #: community/developers.php:16
 msgid "Join the <a href=\"../contact/lists#devel\">audacity-devel</a> mailing list to discuss current and future development, or to get help building and modifying the Audacity source code."
 msgstr "Bli med på <a href=\"../contact/lists#devel\">audacity-devel</a>-epostlista for å diskutere aktuell og framtidig utvikling, eller for å hjelpe oss med å bygge og modifisere kildekoden til Audacity."
@@ -678,24 +680,32 @@ msgid "Audacity is developed by volunteers, working in our spare time. It is not
 msgstr "Audacity blir utviklet av frivillige, som jobber på fritida. Det er ikke shareware, og vi forventer ikke å tjene noen penger ut av det. Likevel, ved å donere penger kan du hjelpe oss å betale for båndbredde og nettjenere, utviklingsverktøy og lydutstyr&mdash;ting som vil hjelpe oss med å fritt gi ut Audacity og fortsette å forbedre det. "
 
 #: community/donate.php:18
+msgid "For a special gift if you donate US$20 or more, see our <a href=\"http://audacityteam.org/tshirt.php\">Audacity T-shirt offer</a>."
+msgstr "Ved donasjoner på US$20 eller mer får du en spesiell gave, les om <a href=\"http://audacityteam.org/tshirt.php\">Audacity sitt t-skjorte tilbud</a>."
+
+#: community/donate.php:20
 msgid "We currently accept money via the Amazon Honor System. Use your credit card and make a payment as small as US$1.00, or up to US$50.00:"
 msgstr "Vi kan nå ta imot penger via Amazon Honor-systemet. Bruk kredittkortet ditt og betal så lite som US$1.00 eller så mye som US$50.00:"
 
-#: community/donate.php:28
+#: community/donate.php:30
 msgid "We also accept PayPal payments through the SourceForge donation system:"
 msgstr "Vi aksepterer også PayPal-betalinger gjennom SourceForge sitt donasjonssystem:"
 
-#: community/donate.php:31
+#: community/donate.php:33
 msgid "Donate via PayPal"
 msgstr "Doner via PayPal"
 
-#: community/donate.php:34
+#: community/donate.php:36
 msgid "If you prefer to send a personal check or another form of payment, please visit the <a href=\"../about/credits\">credits</a> page and contact one of the lead developers."
 msgstr "Hvis du heller vil sende en personlig sjekk eller en annen type betaling, vennligst besøk siden <a href=\"../about/credits\">takk til</a> og ta kontakt med en av hovedutviklerne."
 
+#: community/donate.php:38
+msgid "We would also like to hear from any companies or groups interested in <a href=\"http://audacityteam.org/sponsor.php\">sponsoring Audacity development</a>."
+msgstr "Vi vil også gjerne høre fra selskaper eller grupper som er interesert i å <a href=\"http://audacityteam.org/sponsor.php\">sponse utviklingen av Audacity</a>."
+
 #: community/index.php:15
 msgid "Audacity is free software, developed by volunteers.  Here's how you can contribute to the Audacity project:"
-msgstr "Audacity er gratis programvare, utviklet på frivillig basis. Slik kan du bidra med din hjelp til Audacity-prosjektet:"
+msgstr "Audacity er fri programvare, utviklet på frivillig basis. Slik kan du bidra med din hjelp til Audacity-prosjektet:"
 
 #: community/index.php:19
 msgid "Give us feedback, report bugs, and become part of the Audacity user community."
@@ -956,7 +966,7 @@ msgid ""
 "  <p><a href=\"http://theopencd.sunsite.dk/\">TheOpenCD</a> is a collection of high-quality free software for Microsoft Windows, including Audacity.  You can <a href=\"http://theopencd.sunsite.dk/wheretobuy.php\">purchase a copy of TheOpenCD</a> from several different vendors.</p>"
 msgstr ""
 "<h3>TheOpenCD (Windows)</h3>\n"
-"  <p><a href=\"http://theopencd.sunsite.dk/\">TheOpenCD</a> er en samling med gratis kvalitetsprogramvare for Microsoft Windows, som inkluderer Audacity. Du kan <a href=\"http://theopencd.sunsite.dk/wheretobuy.php\">kjøpe en kopi av TheOpenCD</a> fra en rekke forskjellige forhandlere.</p>"
+"  <p><a href=\"http://theopencd.sunsite.dk/\">TheOpenCD</a> er en samling med fri kvalitetsprogramvare for Microsoft Windows, som inkluderer Audacity. Du kan <a href=\"http://theopencd.sunsite.dk/wheretobuy.php\">kjøpe en kopi av TheOpenCD</a> fra en rekke forskjellige forhandlere.</p>"
 
 #: download/common.inc.php:10
 msgid "LAME MP3 encoder"
@@ -1001,6 +1011,16 @@ msgstr "Mac OS 9 / X"
 #: download/windows.php:16
 msgid "Recommended Download"
 msgstr "Anbefalt nedlasting"
+
+#: download/mac.php:19
+#, php-format
+msgid "For Mac OS X: <a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor."
+msgstr "For Mac OS X: <a href=\"%s\">Audacity %s</a> (.dmg-fil, %.1lf MB) - Den nyeste versjonen av det frie lydredigeringsprogrammet Audacity."
+
+#: download/mac.php:22
+#, php-format
+msgid "For Mac OS 9: <a href=\"%s\">Audacity %s</a> (.sit file, %.1lf MB)"
+msgstr "For Mac OS 9: <a href=\"%s\">Audacity %s</a> (.sit-fil, %.1lf MB)"
 
 #: download/mac.php:23
 msgid "(Unfortunately, we no longer have the resources to provide new versions of Audacity for Mac OS 9.)"
@@ -1122,6 +1142,11 @@ msgstr ""
 "<li><p>Nye eller oppdaterte oversettelser: Italiensk (it), Ungarsk (hu), Ukransk (uk), Spansk (es), Polsk (pl), Forenklet Kinesisk(zh), Norsk-Bokmål (nb), Fransk (fr), Russisk (ru).</p></li>\n"
 "</ul>"
 
+#: download/source.php:19
+#, php-format
+msgid "<a href=\"%s\">Audacity %s source tarball</a> (%.1lf MB)"
+msgstr "<a href=\"%s\">Audacity %s kilde som tarball</a> (%.1lf MB)"
+
 # utviklingskoden ?
 #: download/source.php:24
 msgid "You can also get the latest development code from <a href=\"../community/developers#cvs\">CVS</a>."
@@ -1168,11 +1193,25 @@ msgstr "Bemerkninger"
 msgid "For additional information about building Audacity on Windows or Mac OS X, see the files <b>win/compile.txt</b> and <b>mac/compile.txt</b> in the Audacity source code directory."
 msgstr "Hvis du vil ha mer informasjon om å bygge Audacity på Windows eller Mac OS X, les filene <b>win/compile.txt</b> og <b>mac/compile.txt</b> i kildekodemappa til Audacity."
 
+#: download/windows.php:18
+#, php-format
+msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor."
+msgstr "<a href=\"%s\">Audacity %s installeringsprogram</a> (.exe-fil, %.1lf MB) - Den nyeste versjonen av det frie lydredigeringsprogrammet Audacity."
+
 #. i18n-hint:  If this string is translated, it will appear above the list of
 #: download/windows.php:28
 #: download/windows.php:29
 msgid "localized_downloads_windows"
 msgstr ""
+
+#: download/windows.php:34
+#, php-format
+msgid ""
+"<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
+"  - If you can’t run the installer because you are in a computer lab or other restricted environment, download and unzip this file instead."
+msgstr ""
+"<a href=\"%s\">Audacity %s zip-fil</a> (%.1lf MB)\n"
+"  - Hvis du ikke kan kjøre installeringsprogrammet fordi du er i en termlab eller et annet miljø med begrenset tilgang, last ned og pakk ut denne fila isteden."
 
 #: download/windows.php:41
 msgid "Windows 98, ME, 2000, XP, or later.  (Sorry, Audacity is not supported on Windows 95 or NT 4.0.)"
@@ -1218,10 +1257,12 @@ msgid "(To use the downloaded manual, unzip it and then open the \"index.html\" 
 msgstr "(For å bruke håndboka du har lastet ned, pakk ut og åpne \"index.html\"-fila.)"
 
 #: help/documentation.php:31
+#: help/index.php:26
 msgid "Other Resources"
 msgstr "Andre ressurser"
 
 #: help/documentation.php:33
+#: help/index.php:28
 msgid "<a href=\"http://audacityteam.org/wiki/\">The Audacity Wiki</a> contains tips, tricks, and documentation that anyone can edit."
 msgstr "<a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a> inneholder tips, triks og dokumentasjon som kan redigeres av alle."
 
@@ -2237,7 +2278,7 @@ msgstr "Drevet av Google"
 
 #: include/header.inc.php:24
 msgid "Search this site"
-msgstr "Søk"
+msgstr "Søk dette nettstedet"
 
 #: include/header.inc.php:28
 msgid "Audacity: Free Sound Editor and Recording Software"
