@@ -1238,6 +1238,9 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
    }
 
    wxRect r;
+   int dummy;
+   
+   FindTrack(event.m_x, event.m_y, false, &r, &dummy);
 
    if (event.ButtonDown() &&
        event.m_y >= (r.y + r.height - 5) &&
