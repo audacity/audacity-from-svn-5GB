@@ -901,7 +901,7 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,
       num = ((mBlock->Item(b)->f->GetLength() -
               (srcX - mBlock->Item(b)->start)) + divisor - 1)
          / divisor;
-      
+
       if (num > (s1 - srcX + divisor - 1) / divisor)
          num = (s1 - srcX + divisor - 1) / divisor;
       

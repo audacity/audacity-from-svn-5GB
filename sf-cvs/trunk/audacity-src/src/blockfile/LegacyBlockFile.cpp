@@ -42,10 +42,13 @@ LegacyBlockFile::LegacyBlockFile(wxFileName existingFile,
       // throw an exception?
       ;
 
-   mSummaryInfo.bytesPerFrame = sizeof(float) * 3; /* min, max, rms */
+   mSummaryInfo.format = floatSample;
+   mSummaryInfo.bytesPerFrame =
+      SAMPLE_SIZE(mSummaryInfo.format) * 3; /* min, max, rms */
    mSummaryInfo.totalSummaryBytes = summaryLen;
    mSummaryInfo.offset64K = 20; /* legacy header tag len */
-   mSummaryInfo.frames64K = (summaryLen-20) / 256;
+   mSummaryInfo.frames64K = (summaryLen-20) /
+      (mSummaryInfo.bytesPerFrame * 256);
    mSummaryInfo.offset256 = mSummaryInfo.offset64K +
       (mSummaryInfo.frames64K * mSummaryInfo.bytesPerFrame);
    mSummaryInfo.frames256 =
@@ -58,7 +61,10 @@ LegacyBlockFile::LegacyBlockFile(wxFileName existingFile,
    // 64K summary data
    //
 
-   float *data = new float[mSummaryInfo.frames64K * 3];
+   float *summary = new float[mSummaryInfo.frames64K * 3];
+   samplePtr data = NewSamples(mSummaryInfo.frames64K * 3,
+                               mSummaryInfo.format);
+
    wxFFile summaryFile;
    if( !summaryFile.Open(mFileName.GetFullPath(), "rb") ) {
       delete[] data;
@@ -71,20 +77,24 @@ LegacyBlockFile::LegacyBlockFile(wxFileName existingFile,
 
    int count = read / mSummaryInfo.bytesPerFrame;
 
+   CopySamples(data, mSummaryInfo.format,
+               (samplePtr)summary, floatSample, count);
+
    mMin = FLT_MAX;
    mMax = FLT_MIN;
    float sumsq = 0;
 
    for(int i=0; i<count; i++) {
-      if (data[3*i] < mMin)
-         mMin = data[3*i];
-      if (data[3*i+1] > mMax)
-         mMax = data[3*i+1];
-      sumsq += data[3*i+2]*data[3*i+2];
+      if (summary[3*i] < mMin)
+         mMin = summary[3*i];
+      if (summary[3*i+1] > mMax)
+         mMax = summary[3*i+1];
+      sumsq += summary[3*i+2]*summary[3*i+2];
    }
    mRMS = sqrt(sumsq / count);
 
-   delete[] data;
+   DeleteSamples(data);
+   delete[] summary;
 }
 
 LegacyBlockFile::~LegacyBlockFile()
@@ -195,7 +205,7 @@ void LegacyBlockFile::SaveXML(int depth, wxFFile &xmlFile)
    for(int i = 0; i < depth; i++)
       xmlFile.Write("\t");
    xmlFile.Write("<legacyblockfile ");
-   xmlFile.Write(wxString::Format("filename='%s' ", mFileName.GetFullName().c_str()));
+   xmlFile.Write(wxString::Format("name='%s' ", mFileName.GetFullName().c_str()));
    xmlFile.Write(wxString::Format("len='%d' ", mLen));
    xmlFile.Write(wxString::Format("summarylen='%d' ", mSummaryInfo.totalSummaryBytes));
    xmlFile.Write("/>\n");

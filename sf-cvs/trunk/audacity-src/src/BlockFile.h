@@ -24,6 +24,7 @@ class SummaryInfo {
  public:
    SummaryInfo(sampleCount samples);
 
+   sampleFormat   format;
    int            bytesPerFrame;
    sampleCount    frames64K;
    int            offset64K;
