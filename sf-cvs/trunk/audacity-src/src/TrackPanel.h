@@ -92,9 +92,11 @@ class TrackPanel:public wxWindow {
  private:
 
    void DrawCursors(wxDC * dc = NULL);
+   void RemoveStaleCursors(wxRegionIterator * upd);
 
    void ScrollDuringDrag();
    void UpdateIndicator(wxDC * dc = NULL);
+   void RemoveStaleIndicators(wxRegionIterator * upd);
 
    // AS: Selection handling
    void HandleSelect(wxMouseEvent & event);
