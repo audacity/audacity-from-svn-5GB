@@ -8,10 +8,11 @@
 
 **********************************************************************/
 
-#include <wx/radiobut.h>
-#include <wx/statbox.h>
+#include <wx/choice.h>
+#include <wx/stattext.h>
 #include <wx/sizer.h>
 #include <wx/intl.h>
+#include <wx/textctrl.h>
 
 #include "../Prefs.h"
 #include "QualityPrefs.h"
@@ -21,7 +22,8 @@ int rates[] = { 8000,
    16000,
    22050,
    44100,
-   48000
+   48000,
+   44100
 };
 
 wxString stringRates[] = { "8000",
@@ -29,55 +31,102 @@ wxString stringRates[] = { "8000",
    "16000",
    "22050",
    "44100",
-   "48000"
+   "48000",
+   "Other"
 };
 
-// Don't forget to change the size of the mSampleRates array in
-// QualityPrefs.h when you change this
+int formats[] = { 0x00020001,
+   0x00040001,
+   0x0004000F
+};
+
+wxString stringFormats[] = { "16-bit",
+   "24-bit",
+   "32-bit float"
+};
+
 #define NUM_RATES 6
+#define NUM_FORMATS 3
+
+#define ID_SAMPLE_RATE_CHOICE           7001
+
+BEGIN_EVENT_TABLE(QualityPrefs, wxPanel)
+   EVT_CHOICE(ID_SAMPLE_RATE_CHOICE,   QualityPrefs::OnSampleRateChoice)
+END_EVENT_TABLE()
 
 QualityPrefs::QualityPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
+   int i;
    int rate =
        gPrefs->Read("/SamplingRate/DefaultProjectSampleRate", 44100);
+   int format =
+      gPrefs->Read("/SamplingRate/DefaultProjectSampleFormat", 0x0004000F);
 
-   int pos = 4;     // Fall back to 44100 if it doesn't match anything else
-   for (int i = 0; i < NUM_RATES; i++)
+   int pos = NUM_RATES;     // Fall back to other
+   for (i = 0; i < NUM_RATES; i++)
       if (rate == rates[i]) {
          pos = i;
          break;
       }
 
-    topSizer = new wxBoxSizer( wxVERTICAL );
-
-   {
-      wxStaticBoxSizer *defProjSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("Default Project Sample Rate")),
-         wxVERTICAL );
-
-      mSampleRates[0] = new wxRadioButton(this, -1, stringRates[0],
-                                          wxDefaultPosition, wxDefaultSize,
-                                          wxRB_GROUP);
-      mSampleRates[0]->SetValue(false);
-
-      defProjSizer->Add(
-         mSampleRates[0], 0, wxGROW | wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER);
-
-      for(int j = 1; j < NUM_RATES; j++) {
-         mSampleRates[j] = new wxRadioButton(this, -1, stringRates[j]);
-         mSampleRates[j]->SetValue(false);
-         defProjSizer->Add(
-            mSampleRates[j], 0, wxGROW| wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER);
+   int fmtpos = NUM_FORMATS-1;
+   for (i = 0; i < NUM_FORMATS; i++)
+      if (format == formats[i]) {
+         fmtpos = i;
+         break;
       }
 
-      mSampleRates[pos]->SetValue(true);
+    topSizer = new wxBoxSizer( wxHORIZONTAL );
 
-      topSizer->Add( defProjSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER );
+   {
+      topSizer->Add(
+         new wxStaticText(this, -1, _("Default Sample Rate:")), 0, 
+         wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
+
+      mSampleRates = new wxChoice(this, ID_SAMPLE_RATE_CHOICE, wxDefaultPosition, wxDefaultSize,
+                                 NUM_RATES+1, stringRates);
+      mSampleRates->SetSelection(pos);
+
+      topSizer->Add( mSampleRates, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
+
+      char regTxtRate[10];
+      itoa(rate, regTxtRate, 10);
+
+      mOtherSampleRate = NULL;
+      mOtherSampleRate = new wxTextCtrl(
+         this, -1, regTxtRate,
+         wxDefaultPosition, wxSize(50, -1), 0 );
+
+      if(pos == NUM_RATES)
+      {
+         mOtherSampleRate->Enable();
+      }
+      else
+      {
+         mOtherSampleRate->Disable();
+      }
+
+      topSizer->Add( mOtherSampleRate, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
+   }
+
+    wxBoxSizer *top2Sizer = new wxBoxSizer( wxHORIZONTAL );
+
+   {
+      top2Sizer->Add(
+         new wxStaticText(this, -1, _("Default Sample Format:")), 0, 
+         wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
+
+      mSampleFormats = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
+                                 NUM_FORMATS, stringFormats);
+      mSampleFormats->SetSelection(fmtpos);
+
+      top2Sizer->Add( mSampleFormats, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
    }
 
    outSizer = new wxBoxSizer( wxVERTICAL );
    outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
+   outSizer->Add(top2Sizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
 
    SetAutoLayout(true);
    outSizer->Fit(this);
@@ -88,20 +137,38 @@ PrefsPanel(parent)
 bool QualityPrefs::Apply()
 {
    long rate = 44100;
+   long format = 0x0004000F;
+   int sel = mSampleRates->GetSelection();
+   int fmtsel = mSampleFormats->GetSelection();
 
-   for(int i = 0; i < NUM_RATES; i++)
-      if(mSampleRates[i]->GetValue()) {
-         rate = rates[i];
-         break;
-      }
+   if(sel < NUM_RATES) rate = rates[sel];
+   else rate = atoi(mOtherSampleRate->GetValue());
 
    gPrefs->Write("/SamplingRate/DefaultProjectSampleRate", rate);
+
+   format = formats[fmtsel];
+
+   gPrefs->Write("/SamplingRate/DefaultProjectSampleFormat", format);
 
    /* Audacity will automatically re-read this value whenever a new project
     * is created, so don't bother making it do so now... */
 
    return true;
 
+}
+
+void QualityPrefs::OnSampleRateChoice(wxCommandEvent& evt)
+{
+   int sel = mSampleRates->GetSelection();
+
+   if(sel == NUM_RATES)
+   {
+      mOtherSampleRate->Enable();
+   }
+   else
+   {
+      mOtherSampleRate->Disable();
+   }
 }
 
 

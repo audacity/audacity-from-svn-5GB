@@ -13,18 +13,26 @@
 
 #include "PrefsPanel.h"
 
-class wxRadioButton;
+class wxChoice;
+class wxTextCtrl;
 
 class QualityPrefs:public PrefsPanel {
 
  public:
    QualityPrefs(wxWindow * parent);
    ~QualityPrefs();
+
+   void OnSampleRateChoice(wxCommandEvent& evt);
+
    bool Apply();
 
  private:
-   wxRadioButton *mSampleRates[6];
+   wxChoice *mSampleRates;
+   wxChoice *mSampleFormats;
+   wxTextCtrl *mOtherSampleRate;
 
+ public:
+   DECLARE_EVENT_TABLE();
 };
 
 #endif
