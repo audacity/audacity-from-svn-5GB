@@ -64,6 +64,9 @@ PrefsPanel(parent)
    gPrefs->Read("Playthrough", &playthrough, false);
    #endif
 
+   bool swplaythrough;
+   gPrefs->Read("SWPlaythrough", &swplaythrough, false);
+
    gPrefs->SetPath("/");
 
    topSizer = new wxBoxSizer( wxVERTICAL );
@@ -242,10 +245,15 @@ PrefsPanel(parent)
 
    #ifdef __MACOSX__
    mPlaythrough = new wxCheckBox(this, -1,
-                                 _("Playthrough (Play new track while recording it)"));
+                                 _("Hardware Playthrough (Play new track while recording it)"));
    mPlaythrough->SetValue(playthrough);
    topSizer->Add(mPlaythrough, 0, wxGROW|wxALL, 2);
    #endif
+
+   mSWPlaythrough = new wxCheckBox(this, -1,
+                                 _("Software Playthrough (Play new track while recording it)"));
+   mSWPlaythrough->SetValue(swplaythrough);
+   topSizer->Add(mSWPlaythrough, 0, wxGROW|wxALL, 2);
 
    outSizer = new wxBoxSizer( wxVERTICAL );
    outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
@@ -285,6 +293,8 @@ bool AudioIOPrefs::Apply()
    #ifdef __MACOSX__
    gPrefs->Write("Playthrough", mPlaythrough->GetValue());
    #endif
+
+   gPrefs->Write("SWPlaythrough", mSWPlaythrough->GetValue());
 
    gPrefs->SetPath("/");
 

@@ -176,6 +176,7 @@ private:
    volatile double     mPausedSeconds;
    volatile bool       mInCallbackFinishedState;
 #endif
+   bool                mSoftwarePlaythrough;
    unsigned int        mNumCaptureChannels;
    unsigned int        mNumPlaybackChannels;
    sampleFormat        mCaptureFormat;
