@@ -42,6 +42,7 @@ AC_SUBST(OPTOBJS)
 AC_SUBST(CDEPEND)
 AC_SUBST(AFTERBUILD)
 AC_SUBST(INSTALL_PREFIX)
+AC_SUBST(CONFIGHEADER)
 
 dnl allow the user to specify options to configure that change the
 dnl name "audacity" anywhere it appears in a pathname.  This allows
@@ -526,6 +527,8 @@ else
 	  darwin* | rhapsody*)
 		dnl Mac OS X configuration
 
+		CONFIGHEADER="configunix.h"
+
 		dnl CoreAudio
 
 		CXXFLAGS="-I../mac $CXXFLAGS"
@@ -553,8 +556,34 @@ else
 		OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/VSTEffect.o"
 
 	;;
+
+	cygwin*)
+ 	dnl Windows/CygWin configuration
+ 	
+ 	BUILDLIBS="$BUILDLIBS portaudio/pa_win_wmme/portaudio.a"
+ 	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_win_wmme/portaudio.a"
+ 	LIBS="$LIBS -lkernel32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lodbc32 -lodbccp32 -lwsock32 -lwinmm"
+ 	CONFIGHEADER="configwin.h"
+ 
+    if [[ "$use_portmixer" = "yes" ]] ; then
+ 		BUILDLIBS="$BUILDLIBS portmixer/px_win_wmme/portmixer.a"
+ 		EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_win_wmme/portmixer.a"
+    fi
+ 
+ 	if [[ "$use_ladspa" = "default" ]] ; then
+ 		use_ladspa="yes";
+ 	fi
+ 
+ 	AC_DEFINE(__CYGWIN__,1,[We're using cygwin])
+ 	AC_DEFINE(_FILE_OFFSET_BITS,32,[Placeholder for large file support])
+ 
+ 	AFTERBUILD=""
+	;;
+
 	  *)
 		dnl Unix OSS configuration
+
+		CONFIGHEADER="configunix.h"
 
 		BUILDLIBS="$BUILDLIBS portaudio/pa_unix_oss/portaudio.a"
 		EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
@@ -617,7 +646,15 @@ AC_TYPE_SIZE_T
 
 dnl Checks for library functions.
 
-AC_CONFIG_HEADER(src/configunix.h:src/configtemplate.h)
+case "${host_os}" in
+ 	cygwin*)
+ 		AC_CONFIG_HEADER(src/configwin.h:src/configtemplate.h)
+ 		;;
+ 	*)
+ 		AC_CONFIG_HEADER(src/configunix.h:src/configtemplate.h)
+ 		;;
+esac
+
 AC_CONFIG_FILES([Makefile src/Makefile lib-src/Makefile \
 					  lib-src/allegro/Makefile lib-src/expat/Makefile \
 					  lib-src/libnyquist/Makefile \
