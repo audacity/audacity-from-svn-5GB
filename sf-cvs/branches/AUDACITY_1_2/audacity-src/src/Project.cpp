@@ -25,6 +25,7 @@
 #include <wx/app.h>
 #include <wx/dc.h>
 #include <wx/dcmemory.h>
+#include <wx/docview.h>
 #include <wx/intl.h>
 #include <wx/string.h>
 #include <wx/ffile.h>
@@ -624,6 +625,9 @@ AudacityProject::~AudacityProject()
    mTracks->Clear(true);
    delete mTracks;
    mTracks = NULL;
+
+   delete mRecentFiles;
+   mRecentFiles = NULL;
 
    // MM: Tell the DirManager it can now delete itself
    // if it finds it is no longer needed. If it is still
@@ -1783,15 +1787,17 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
       // project directory, etc.
       if (!proj || proj->mDirty || !proj->mTracks->IsEmpty()) {
          // Open in a new window
-         AudacityProject *newProject =
-            CreateNewAudacityProject(gParentWindow);
-         newProject->OpenFile(fileName);
-      } else {
-         // This project is clean; it's never been touched.  Therefore
-         // all relevant member variables are in their initial state,
-         // and it's okay to open a new project inside this window.
-         proj->OpenFile(fileName);
+         proj = CreateNewAudacityProject(gParentWindow);
       }
+      // This project is clean; it's never been touched.  Therefore
+      // all relevant member variables are in their initial state,
+      // and it's okay to open a new project inside this window.
+      proj->OpenFile(fileName);
+
+      proj->mRecentFiles->AddFileToHistory(fileName);
+      gPrefs->SetPath("/RecentFiles");
+      proj->mRecentFiles->Save(*gPrefs);
+      gPrefs->SetPath("..");
    }
 }
 
@@ -2333,7 +2339,16 @@ bool AudacityProject::SaveAs()
    mFileName = fName + ".aup";
    SetTitle(GetName());
 
-   return Save(false, true);
+   bool sucess = Save(false, true);
+
+   if (sucess) {
+      mRecentFiles->AddFileToHistory(mFileName);
+      gPrefs->SetPath("/RecentFiles");
+      mRecentFiles->Save(*gPrefs);
+      gPrefs->SetPath("..");
+   }
+
+   return(sucess);
 }
 
 //

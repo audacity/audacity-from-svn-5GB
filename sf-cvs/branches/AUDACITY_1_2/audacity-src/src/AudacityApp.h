@@ -45,6 +45,11 @@ class AudacityApp:public wxApp {
    void OnMenuOpen(wxCommandEvent & event);
    void OnMenuPreferences(wxCommandEvent & event);
    void OnMenuExit(wxCommandEvent & event);
+   
+   // Most Recently Used File support (for all platforms).
+   void OnMRUFile(wxCommandEvent &event);
+   // Backend for above - returns true for success, false for failure
+   bool MRUOpen(wxString fileName);
 
 	#if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
 		void AssociateFileTypes(); 
