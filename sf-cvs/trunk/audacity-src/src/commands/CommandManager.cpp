@@ -237,7 +237,7 @@ void CommandManager::AddItem(wxString name, wxString label,
    // -DMM
    mHiddenID++;
    wxString dummy, newLabel;
-   dummy.Printf("%08d", mHiddenID);
+   dummy.Printf("%s%08d", (const char *)label, mHiddenID);
    newLabel = label;
    if (mCommandIDHash[ID]->key) {
       dummy = dummy + "\t" + mCommandIDHash[ID]->key;
