@@ -113,9 +113,11 @@ fi
 
 if [[ $use_vorbis = "yes" ]] ; then
 
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/libvorbis/lib/.libs/libvorbisenc.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/libvorbis/lib/.libs/libvorbisfile.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/libvorbis/lib/.libs/libvorbis.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/libogg/src/.libs/libogg.a"
+	BUILDLIBS="$BUILDLIBS libvorbis/lib/.libs/libvorbisenc.a"
 	BUILDLIBS="$BUILDLIBS libvorbis/lib/.libs/libvorbisfile.a"
 	BUILDLIBS="$BUILDLIBS libvorbis/lib/.libs/libvorbis.a"
 	BUILDLIBS="$BUILDLIBS libogg/src/.libs/libogg.a"
