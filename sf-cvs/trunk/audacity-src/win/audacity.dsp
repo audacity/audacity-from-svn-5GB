@@ -447,6 +447,14 @@ SOURCE=..\src\TrackPanel.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\TranscriptionToolBar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\TranscriptionToolBar.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\UndoManager.cpp
 # End Source File
 # Begin Source File
@@ -456,6 +464,14 @@ SOURCE=..\src\UndoManager.h
 # Begin Source File
 
 SOURCE=..\src\ViewInfo.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\VoiceKey.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\VoiceKey.h
 # End Source File
 # Begin Source File
 
