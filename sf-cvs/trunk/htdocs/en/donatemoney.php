@@ -44,6 +44,9 @@ developers.
 <area coords="5,135,145,145" href="http://s1.amazon.com/exec/varzea/subst/fx/help/how-we-know.html" alt="Learn More" target=_top>
 </map>
 <!-- End Amazon Honor System Paybox -->
+<p>
+<a href="http://sourceforge.net/donate/index.php?group_id=6235"><img
+src="images/paypal.gif" border="0" alt="Donate by PayPal"></a>
 </center>
 
 <p>
