@@ -4,6 +4,9 @@ all: @BUILDLIBS@
 allegro/allegro.a:
 	cd allegro && $(MAKE)
 
+dlcompat/libdl.a:
+	cd dlcompat && $(MAKE)
+
 expat/expat.a:
 	cd expat && $(MAKE)
 
@@ -62,6 +65,7 @@ soundtouch/soundtouch.a:
 
 clean:
 	-$(MAKE) -C allegro clean
+	-$(MAKE) -C dlcompat clean	
 	-$(MAKE) -C expat clean
 	-$(MAKE) -C libid3tag clean
 	-$(MAKE) -C libmad clean
@@ -79,6 +83,7 @@ clean:
 
 distclean:
 	-$(MAKE) -C allegro distclean
+	-$(MAKE) -C dlcompat distclean
 	-$(MAKE) -C expat distclean
 	-$(MAKE) -C libid3tag distclean
 	-$(MAKE) -C libmad distclean
