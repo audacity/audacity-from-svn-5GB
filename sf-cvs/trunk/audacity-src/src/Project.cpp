@@ -797,6 +797,35 @@ void AudacityProject::TP_ScrollWindow(double scrollto)
    delete dummy;
 }
 
+//
+// Scroll vertically. This is called for example by the mouse wheel
+// handler in Track Panel. A positive argument makes the window
+// scroll down, while a negative argument scrolls up.
+//
+void AudacityProject::TP_ScrollUpDown(int delta)
+{
+   int oldPos = mVsbar->GetThumbPosition();
+   int pos = oldPos + delta;
+   int max = mVsbar->GetRange() - mVsbar->GetThumbSize();
+
+   // Can be negative in case of only one track
+   if (max < 0)
+      max = 0;
+
+   if (pos > max)
+      pos = max;
+   else if (pos < 0)
+      pos = 0;
+ 
+   if (pos != oldPos)
+   {
+      mVsbar->SetThumbPosition(pos);
+
+      wxScrollEvent dummy;
+      OnScroll(dummy);
+   }
+}
+
 void AudacityProject::FixScrollbars()
 {
    if(!mTracks)

@@ -3131,15 +3131,15 @@ void TrackPanel::HandleWheelRotation(wxMouseEvent & event)
    int steps = event.m_wheelRotation /
       (event.m_wheelDelta > 0 ? event.m_wheelDelta : 120);
 
-   if (event.ControlDown())
+   if (event.ShiftDown())
    {
-      // MM: Scroll left/right when used with CTRL key down
+      // MM: Scroll left/right when used with Shift key down
       mListener->TP_ScrollWindow(
          mViewInfo->h +
-         steps * (mViewInfo->screen  * 0.1));
-   } else
+         50.0 * -steps / mViewInfo->zoom);
+   } else if (event.ControlDown())
    {
-      // MM: Zoom in/out
+      // MM: Zoom in/out when used with Control key down
       // MM: I don't understand what trackLeftEdge does
       int trackLeftEdge = GetLabelWidth()+1;
       
@@ -3156,6 +3156,10 @@ void TrackPanel::HandleWheelRotation(wxMouseEvent & event)
       
       MakeParentRedrawScrollbars();
       Refresh(false);
+   } else
+   {
+      // MM: Zoom up/down when used without modifier keys
+      mListener->TP_ScrollUpDown(-steps * 4.0);
    }
 }
 
