@@ -5,7 +5,7 @@
 # Standard list of includes (common to all unix versions)
 INCL = -Inyqsrc -Itran -Ixlisp -Icmt -Isys -Isnd -Ifft
 
-CC = cc
+CC = @CC@
 override CFLAGS += -g -DCMTSTUFF -O2 -DEXT $(INCL)
 LN = $(CC)
 LFLAGS = -lm
