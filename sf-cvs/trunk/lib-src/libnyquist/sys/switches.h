@@ -5,6 +5,13 @@
  * 28Apr03  dm  major reorganization of conditional compilation in Nyquist
  */
 
+/*
+ *
+ * This is the Unix version of switches.h - in libnyquist, see the
+ * win and mac subdirectories for the other versions.
+ *
+ */
+
 #define HAS_STDLIB_H 1
 #define HAS_SYS_TYPES_H 1
 #define HAS_SYS_STAT_H 1
