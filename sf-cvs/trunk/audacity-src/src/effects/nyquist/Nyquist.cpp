@@ -32,6 +32,10 @@ WX_DEFINE_OBJARRAY(NyqControlArray);
 
 wxString EffectNyquist::mXlispPath;
 
+#define NYQ_CTRL_INT 0
+#define NYQ_CTRL_REAL 1
+#define NYQ_CTRL_STRING 2
+
 extern "C" {
    extern void set_xlisp_path(const char *p);
 }
@@ -128,10 +132,17 @@ void EffectNyquist::Parse(wxString line)
       return;
    }
 
-   // We're on verison 1.  Reject if it's an earlier version.
-   if (len>=2 && tokens[0]=="version" && tokens[1]!="1") {
-      mOK = false;
-      return;
+   // We support versions 1 and 2
+   // (Version 2 added support for string parameters.)
+   if (len>=2 && tokens[0]=="version") {
+      if (tokens[1]=="1" || tokens[1]=="2") {
+         // We're okay
+      }
+      else {
+         // This is an unsupported plug-in version
+         mOK = false;
+         return;
+      }
    }
 
    if (len>=2 && tokens[0]=="name") {
@@ -149,21 +160,30 @@ void EffectNyquist::Parse(wxString line)
       return;
    }
 
-   if (len>=8 && tokens[0]=="control") {
-      NyqControl ctrl;
++    if (len>=6 && tokens[0]=="control") {
+        NyqControl ctrl;
+  
+        ctrl.var = tokens[1];
+        ctrl.name = tokens[2];
+        ctrl.label = tokens[4];
+        ctrl.valStr = tokens[5];
+ 
+       if (tokens[3]=="string")
+          ctrl.type = NYQ_CTRL_STRING;
+       else {
+          if (len < 8)
+             return;
+          
+          if (tokens[3]=="real")
+             ctrl.type = NYQ_CTRL_REAL;
+          else
+             ctrl.type = NYQ_CTRL_INT;
+          
+          ctrl.lowStr = tokens[6];
+          ctrl.highStr = tokens[7];
+       }
 
-      ctrl.var = tokens[1];
-      ctrl.name = tokens[2];
-      ctrl.type = 0;
-      if (tokens[3]=="real")
-         ctrl.type = 1;
-      ctrl.label = tokens[4];
-      ctrl.valStr = tokens[5];
-      ctrl.lowStr = tokens[6];
-      ctrl.highStr = tokens[7];
-      ctrl.low = 0.0;
-      ctrl.high = 0.0;
-      ctrl.val = UNINITIALIZED_CONTROL;
+       ctrl.val = UNINITIALIZED_CONTROL;
 
       mControls.Add(ctrl);
    }
@@ -256,18 +276,25 @@ bool EffectNyquist::PromptUser()
 {
    if (!SetXlispPath())
       return false;
-   
-   if (mInteractive) {
-      wxString temp;
-      wxString title = _("Nyquist Prompt");
-      wxString caption = _("Enter Nyquist Command: ");
 
-      temp = wxGetTextFromUser(caption, title,
-                               mCmd, mParent, -1, -1, TRUE);
-      if (temp == "")
+   if (mInteractive) {
+      NyquistInputDialog dlog(mParent, -1,
+                              _("Nyquist Prompt"),
+                              _("Enter Nyquist Command: "),
+                              mCmd);
+      dlog.CentreOnParent();
+      int result = dlog.ShowModal();
+
+      if (result == wxID_CANCEL)
          return false;
+
+      if (result == wxID_MORE)
+         mDebug = true;
+      else
+         mDebug = false;
       
-      mCmd = temp;
+      mCmd = dlog.GetCommand();
+
       return true;
    }
 
@@ -281,6 +308,9 @@ bool EffectNyquist::PromptUser()
 
    for(unsigned int i=0; i<mControls.GetCount(); i++) {
       NyqControl *ctrl = &mControls[i];
+
+      if (ctrl->type == NYQ_CTRL_STRING)
+         continue;
 
       if (ctrl->val == UNINITIALIZED_CONTROL)
          ctrl->val = GetCtrlValue(ctrl->valStr);
@@ -296,28 +326,36 @@ bool EffectNyquist::PromptUser()
          ctrl->val = ctrl->high;
 
       ctrl->ticks = 1000;
-      if (ctrl->type==0 &&
+      if (ctrl->type==NYQ_CTRL_INT &&
           (ctrl->high - ctrl->low < ctrl->ticks))
          ctrl->ticks = (int)(ctrl->high - ctrl->low);
    }
 
    NyquistDialog dlog(mParent, -1, mName, mInfo, &mControls);
    dlog.CentreOnParent();
-   dlog.ShowModal();
+   int result = dlog.ShowModal();
 
-   if (!dlog.GetReturnCode())
+   if (result == wxID_CANCEL)
       return false;
+   
+   if (result == wxID_MORE)
+      mDebug = true;
+   else
+      mDebug = false;
 
    return true;
 }
 
 bool EffectNyquist::Process()
 {
+   bool success = true;
+   
    TrackListIterator iter(mWaveTracks);
    mCurTrack[0] = (WaveTrack *) iter.First();
    mOutputTime = mT1 - mT0;
    mCount = 0;
    mProgress = 0;
+   mDebugOutput = "";
    while (mCurTrack[0]) {
       mCurNumChannels = 1;
       double trackStart = mCurTrack[0]->GetStartTime();
@@ -342,8 +380,9 @@ bool EffectNyquist::Process()
          longSampleCount end = mCurTrack[0]->TimeToLongSamples(t1);
          mCurLen = (sampleCount)(end - mCurStart[0]);
 
-         if (!ProcessOne())
-            return false;
+         success = ProcessOne();
+         if (!success)
+            goto finish;
       }
 
       mCurTrack[0] = (WaveTrack *) iter.Next();
@@ -352,7 +391,18 @@ bool EffectNyquist::Process()
 
    mT1 = mT0 + mOutputTime;
 
-   return true;
+ finish:
+
+   if (mDebug) {
+      NyquistOutputDialog dlog(mParent, -1,
+                               _("Nyquist"),
+                               _("Nyquist Output: "),
+                               mDebugOutput);
+      dlog.CentreOnParent();
+      dlog.ShowModal();
+   }
+
+   return success;
 }
 
 
@@ -439,15 +489,37 @@ bool EffectNyquist::ProcessOne()
    nyx_rval rval;
 
    nyx_init();
+
+   if (mDebug)
+      nyx_capture_output(65536);
+
    nyx_set_input_audio(StaticGetCallback, (void *)this,
                        mCurNumChannels,
                        mCurLen, mCurTrack[0]->GetRate());
 
    wxString cmd;
-   for(unsigned int j=0; j<mControls.GetCount(); j++)
-      cmd = cmd+wxString::Format("(setf %s %f)\n",
-                                 (const char *)mControls[j].var,
-                                 mControls[j].val);
+
+   if (mDebug) {
+      cmd = cmd + "(setf *tracenable* T)\n";
+   }
+
+   for(unsigned int j=0; j<mControls.GetCount(); j++) {
+      if (mControls[j].type==NYQ_CTRL_REAL)
+         cmd = cmd+wxString::Format("(setf %s %f)\n",
+                                    (const char *)mControls[j].var,
+                                    mControls[j].val);
+      else if (mControls[j].type==NYQ_CTRL_INT)
+         cmd = cmd+wxString::Format("(setf %s %d)\n",
+                                    (const char *)mControls[j].var,
+                                    (int)(mControls[j].val));
+      else if (mControls[j].type==NYQ_CTRL_STRING) {
+         wxString str = mControls[j].valStr;
+         str.Replace("\"", "'");
+         cmd = cmd+wxString::Format("(setf %s \"%s\")\n",
+                                    (const char *)mControls[j].var,
+                                    str.c_str());
+      }
+   }
    
    cmd += mCmd;
 
@@ -455,6 +527,14 @@ bool EffectNyquist::ProcessOne()
 	for (i = 0; i < mCurNumChannels; i++)
 		mCurBuffer[i] = NULL;
    rval = nyx_eval_expression(cmd);
+
+   if (mDebug) {
+      int len;
+      const char *str;
+
+      nyx_get_captured_output(&len, &str);
+      mDebugOutput += wxString(str, len);
+   }
 
    if (rval == nyx_string) {
       wxMessageBox(nyx_get_string(), "Nyquist",
@@ -582,6 +662,7 @@ bool EffectNyquist::ProcessOne()
 BEGIN_EVENT_TABLE(NyquistDialog, wxDialog)
    EVT_BUTTON(wxID_OK, NyquistDialog::OnOk)
    EVT_BUTTON(wxID_CANCEL, NyquistDialog::OnCancel)
+   EVT_BUTTON(wxID_MORE, NyquistDialog::OnDebug)
    EVT_COMMAND_RANGE(ID_NYQ_SLIDER, ID_NYQ_SLIDER+99,
                      wxEVT_COMMAND_SLIDER_UPDATED, NyquistDialog::OnSlider)
    EVT_COMMAND_RANGE(ID_NYQ_TEXT, ID_NYQ_TEXT+99,
@@ -616,24 +697,43 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
                       (ctrl->high - ctrl->low));
 
       item = new wxStaticText(this, -1, ctrl->name);
-      grid->Add(item, 0, wxALIGN_RIGHT | wxALL, 5);
+      grid->Add(item, 0, wxALIGN_RIGHT | 
+                wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-      item = new wxTextCtrl(this, ID_NYQ_TEXT+i, "",
-                            wxDefaultPosition, wxSize(60, -1));
-      grid->Add(item, 0, wxALIGN_CENTRE | wxALL, 5);
+      if (ctrl->type == NYQ_CTRL_STRING) {
+         grid->Add(10, 10);
 
-      item = new wxSlider(this, ID_NYQ_SLIDER+i, val, 0, ctrl->ticks,
-                          wxDefaultPosition, wxSize(150, -1));
-      grid->Add(item, 0, wxALIGN_CENTRE | wxALL, 5);
+         item = new wxTextCtrl(this, ID_NYQ_TEXT+i, ctrl->valStr,
+                               wxDefaultPosition, wxSize(150, -1));
+         grid->Add(item, 0, wxALIGN_CENTRE |
+                   wxALIGN_CENTER_VERTICAL | wxALL, 5);
+      }
+      else {
+         // Integer or Real
 
+         item = new wxTextCtrl(this, ID_NYQ_TEXT+i, "",
+                               wxDefaultPosition, wxSize(60, -1));
+         grid->Add(item, 0, wxALIGN_CENTRE |
+                   wxALIGN_CENTER_VERTICAL | wxALL, 5);
+         
+         item = new wxSlider(this, ID_NYQ_SLIDER+i, val, 0, ctrl->ticks,
+                             wxDefaultPosition, wxSize(150, -1));
+         grid->Add(item, 0, wxALIGN_CENTRE |
+                   wxALIGN_CENTER_VERTICAL | wxALL, 5);
+      }
+         
       item = new wxStaticText(this, -1, ctrl->label);
-      grid->Add(item, 0, wxALIGN_LEFT | wxALL, 5);
+      grid->Add(item, 0, wxALIGN_LEFT | 
+                wxALIGN_CENTER_VERTICAL | wxALL, 5);
    }
    mainSizer->Add(grid, 0, wxALIGN_CENTRE | wxALL, 5);
 
    hSizer = new wxBoxSizer(wxHORIZONTAL);
 
    button = new wxButton(this, wxID_CANCEL, _("Cancel"));
+   hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   button = new wxButton(this, wxID_MORE, _("Debug"));
    hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
    button = new wxButton(this, wxID_OK, _("OK"));
@@ -660,6 +760,10 @@ void NyquistDialog::OnSlider(wxCommandEvent & /* event */)
 
    for(unsigned int i=0; i<mControls->GetCount(); i++) {
       NyqControl *ctrl = &((*mControls)[i]);
+
+      if (ctrl->type == NYQ_CTRL_STRING)
+         continue;
+
       wxSlider *slider = (wxSlider *)FindWindow(ID_NYQ_SLIDER + i);
       wxTextCtrl *text = (wxTextCtrl *)FindWindow(ID_NYQ_TEXT + i);
       wxASSERT(slider && text);
@@ -669,7 +773,7 @@ void NyquistDialog::OnSlider(wxCommandEvent & /* event */)
          (ctrl->high - ctrl->low) + ctrl->low;
       
       wxString valStr;
-      if (ctrl->type == 1) {
+      if (ctrl->type == NYQ_CTRL_REAL) {
          if (ctrl->high - ctrl->low < 1)
             valStr.Printf("%.3f", ctrl->val);
          else if (ctrl->high - ctrl->low < 10)
@@ -679,10 +783,11 @@ void NyquistDialog::OnSlider(wxCommandEvent & /* event */)
          else
             valStr.Printf("%d", (int)floor(ctrl->val + 0.5));
       }
-      else
+      else if (ctrl->type == NYQ_CTRL_INT)
          valStr.Printf("%d", (int)floor(ctrl->val + 0.5));
-      
-      text->SetValue(valStr);
+
+      if (valStr != "")
+         text->SetValue(valStr);
    }
 
    mInHandler = false;
@@ -696,12 +801,18 @@ void NyquistDialog::OnText(wxCommandEvent & /* event */)
 
    for(unsigned int i=0; i<mControls->GetCount(); i++) {
       NyqControl *ctrl = &((*mControls)[i]);
-      wxSlider *slider = (wxSlider *)FindWindow(ID_NYQ_SLIDER + i);
       wxTextCtrl *text = (wxTextCtrl *)FindWindow(ID_NYQ_TEXT + i);
-      wxASSERT(slider && text);
+      wxASSERT(text);
 
-      wxString valStr = text->GetValue();
-      valStr.ToDouble(&ctrl->val);
+      ctrl->valStr = text->GetValue();
+
+      if (ctrl->type == NYQ_CTRL_STRING)
+         continue;
+
+      wxSlider *slider = (wxSlider *)FindWindow(ID_NYQ_SLIDER + i);
+      wxASSERT(slider);
+
+      ctrl->valStr.ToDouble(&ctrl->val);
       int pos = (int)floor((ctrl->val - ctrl->low) /
                            (ctrl->high - ctrl->low) * ctrl->ticks + 0.5);
       if (pos < 0)
@@ -718,12 +829,140 @@ void NyquistDialog::OnOk(wxCommandEvent & /* event */)
 {
    // Transfer data
 
-   EndModal(true);
+   EndModal(wxID_OK);
 }
 
 void NyquistDialog::OnCancel(wxCommandEvent & /* event */)
 {
-   EndModal(false);
+   EndModal(wxID_CANCEL);
+}
+
+void NyquistDialog::OnDebug(wxCommandEvent & /* event */)
+{
+   // Transfer data
+
+   EndModal(wxID_MORE);
+}
+
+/**********************************************************/
+
+BEGIN_EVENT_TABLE(NyquistInputDialog, wxDialog)
+   EVT_BUTTON(wxID_OK, NyquistInputDialog::OnOk)
+   EVT_BUTTON(wxID_CANCEL, NyquistInputDialog::OnCancel)
+   EVT_BUTTON(wxID_MORE, NyquistInputDialog::OnDebug)
+END_EVENT_TABLE()
+
+NyquistInputDialog::NyquistInputDialog(wxWindow * parent, wxWindowID id,
+                                       const wxString & title,
+                                       const wxString & prompt,
+                                       wxString initialCommand)
+   :wxDialog(parent, id, title)
+{
+   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+   wxBoxSizer *hSizer;
+   wxButton   *button;
+   wxControl  *item;
+
+   item = new wxStaticText(this, -1, prompt);
+   mainSizer->Add(item, 0, wxALIGN_LEFT |
+                  wxLEFT | wxTOP | wxRIGHT, 10);
+
+   mCommandText = new wxTextCtrl(this, -1, initialCommand,
+                                 wxDefaultPosition, wxSize(400, 200),
+                                 wxTE_MULTILINE);
+   mainSizer->Add(mCommandText, 0, wxALIGN_LEFT | wxALL, 10);
+
+   hSizer = new wxBoxSizer(wxHORIZONTAL);
+
+   button = new wxButton(this, wxID_CANCEL, _("Cancel"));
+   hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   button = new wxButton(this, wxID_MORE, _("Debug"));
+   hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   button = new wxButton(this, wxID_OK, _("OK"));
+   hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE |
+                  wxLEFT | wxBOTTOM | wxRIGHT, 5);
+
+   SetAutoLayout(true);
+   SetSizer(mainSizer);
+   mainSizer->Fit(this);
+   mainSizer->SetSizeHints(this);
+
+   mCommandText->SetFocus();
+}
+
+wxString NyquistInputDialog::GetCommand()
+{
+   return mCommandText->GetValue();
+}
+
+void NyquistInputDialog::OnOk(wxCommandEvent & /* event */)
+{
+   EndModal(wxID_OK);
+}
+
+void NyquistInputDialog::OnCancel(wxCommandEvent & /* event */)
+{
+   EndModal(wxID_CANCEL);
+}
+
+void NyquistInputDialog::OnDebug(wxCommandEvent & /* event */)
+{
+   // Transfer data
+
+   EndModal(wxID_MORE);
+}
+
+
+/**********************************************************/
+
+
+BEGIN_EVENT_TABLE(NyquistOutputDialog, wxDialog)
+   EVT_BUTTON(wxID_OK, NyquistOutputDialog::OnOk)
+END_EVENT_TABLE()
+
+NyquistOutputDialog::NyquistOutputDialog(wxWindow * parent, wxWindowID id,
+                                       const wxString & title,
+                                       const wxString & prompt,
+                                       wxString message)
+   :wxDialog(parent, id, title)
+{
+   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+   wxBoxSizer *hSizer;
+   wxButton   *button;
+   wxControl  *item;
+
+   item = new wxStaticText(this, -1, prompt);
+   mainSizer->Add(item, 0, wxALIGN_LEFT | 
+                  wxLEFT | wxTOP | wxRIGHT, 10);
+
+   item = new wxTextCtrl(this, -1, message,
+                         wxDefaultPosition, wxSize(400, 200),
+                         wxTE_MULTILINE | wxTE_READONLY);
+   mainSizer->Add(item, 0, wxALIGN_LEFT | wxALL, 10);
+
+   hSizer = new wxBoxSizer(wxHORIZONTAL);
+
+   button = new wxButton(this, wxID_OK, _("OK"));
+   button->SetDefault();
+   button->SetFocus();
+   hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   mainSizer->Add(hSizer, 0, wxALIGN_CENTRE |
+                  wxLEFT | wxBOTTOM | wxRIGHT, 5);
+
+   SetAutoLayout(true);
+   SetSizer(mainSizer);
+   mainSizer->Fit(this);
+   mainSizer->SetSizeHints(this);
+}
+
+void NyquistOutputDialog::OnOk(wxCommandEvent & /* event */)
+{
+   EndModal(wxID_OK);
 }
 
 
