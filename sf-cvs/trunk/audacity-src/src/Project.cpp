@@ -55,7 +55,6 @@
 #include "WaveTrack.h"
 #include "effects/Effect.h"
 
-#include "iostream.h"
 
 #include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
 
@@ -67,19 +66,19 @@ AudacityProject *AudacityProject::msClipProject = NULL;
 const int sbarSpaceWidth = 15;
 const int sbarControlWidth = 16;
 const int sbarExtraLen = 1;
-const int sbarHjump=30;          //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
+const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
 #endif
 #ifdef __WXMSW__
 const int sbarSpaceWidth = 16;
 const int sbarControlWidth = 16;
 const int sbarExtraLen = 0;
-const int sbarHjump=30;          //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
+const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
 #endif
 #ifdef __WXGTK__
 const int sbarSpaceWidth = 15;
 const int sbarControlWidth = 15;
 const int sbarExtraLen = 0;
-const int sbarHjump=30;          //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
+const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
 #endif
 
 #if defined(__WXGTK__) || defined(__WXMOTIF__)
@@ -170,17 +169,17 @@ enum {
 #undef AUDACITY_MENUS_ENUM
 
 BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
-   EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
-   EVT_PAINT(AudacityProject::OnPaint)
-   EVT_CLOSE(AudacityProject::OnCloseWindow)
-   EVT_SIZE(AudacityProject::OnSize)
-   EVT_ACTIVATE(AudacityProject::OnActivate)
-   EVT_COMMAND_SCROLL_LINEUP(HSBarID, AudacityProject::OnScrollLeftButton)
-   EVT_COMMAND_SCROLL_LINEDOWN(HSBarID, AudacityProject::OnScrollRightButton)
-   EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
+    EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
+    EVT_PAINT(AudacityProject::OnPaint)
+    EVT_CLOSE(AudacityProject::OnCloseWindow)
+    EVT_SIZE(AudacityProject::OnSize)
+    EVT_ACTIVATE(AudacityProject::OnActivate)
+    EVT_COMMAND_SCROLL_LINEUP(HSBarID, AudacityProject::OnScrollLeftButton)
+    EVT_COMMAND_SCROLL_LINEDOWN(HSBarID, AudacityProject::OnScrollRightButton)
+EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
 
-   EVT_DROP_FILES(AudacityProject::OnDropFiles)
-   EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
+    EVT_DROP_FILES(AudacityProject::OnDropFiles)
+EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
     // Update menu method
     EVT_UPDATE_UI(UndoID, AudacityProject::OnUpdateMenus)
 END_EVENT_TABLE()
@@ -195,9 +194,10 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 mRate((double) gPrefs->
       Read("/SamplingRate/DefaultProjectSampleRate", 44100)),
 mDefaultFormat((sampleFormat) gPrefs->
-      Read("/SamplingRate/DefaultProjectSampleFormat", floatSample)),   
-mDirty(false), mDrag(NULL), mTrackPanel(NULL), mHistoryWindow(NULL),
-mAutoScrolling(false), mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
+               Read("/SamplingRate/DefaultProjectSampleFormat",
+                    floatSample)), mDirty(false), mDrag(NULL),
+mTrackPanel(NULL), mHistoryWindow(NULL), mAutoScrolling(false),
+mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
 {
 
    //
@@ -232,7 +232,8 @@ mAutoScrolling(false), mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
    mViewInfo.sbarTotal = 1;
 
    // Some GUI prefs
-   gPrefs->Read("/GUI/UpdateSpectrogram", &mViewInfo.bUpdateSpectrogram, true);
+   gPrefs->Read("/GUI/UpdateSpectrogram", &mViewInfo.bUpdateSpectrogram,
+                true);
    gPrefs->Read("/GUI/AutoScroll", &mViewInfo.bUpdateTrackIndicator, true);
 
    // Some extra information
@@ -251,31 +252,32 @@ mAutoScrolling(false), mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
 
 
 
-   if (!gControlToolBarStub->GetWindowedStatus()) 
-      {
-         int h = gControlToolBarStub->GetHeight();
-         ToolBar *tb = new ControlToolBar(this, 0, wxPoint(10, top), wxSize(width - 10, h));
-         mToolBarArray.Add((ToolBar *) tb);
-         
+   if (!gControlToolBarStub->GetWindowedStatus()) {
+      int h = gControlToolBarStub->GetHeight();
+      ToolBar *tb =
+          new ControlToolBar(this, 0, wxPoint(10, top),
+                             wxSize(width - 10, h));
+      mToolBarArray.Add((ToolBar *) tb);
+
+      top += h + 1;
+      height -= h + 1;
+      mTotalToolBarHeight += h;
+   }
+
+   if (gEditToolBarStub) {
+      if (gEditToolBarStub->GetLoadedStatus()
+          && !gEditToolBarStub->GetWindowedStatus()) {
+         int h = gEditToolBarStub->GetHeight();
+         ToolBar *etb =
+             new EditToolBar(this, 0, wxPoint(10, top),
+                             wxSize(width - 10, h));
+         mToolBarArray.Add((ToolBar *) etb);
+
          top += h + 1;
          height -= h + 1;
          mTotalToolBarHeight += h;
       }
-   
-   if (gEditToolBarStub) {
-      if(gEditToolBarStub->GetLoadedStatus() 
-         && !gEditToolBarStub->GetWindowedStatus())
-         {
-            int h = gEditToolBarStub->GetHeight();
-            ToolBar *etb = new EditToolBar(this,0 ,wxPoint(10,top), wxSize(width-10,h));
-            mToolBarArray.Add((ToolBar *) etb);
-            
-            top +=h + 1;
-            height -= h + 1;
-            mTotalToolBarHeight +=h;
-         }
    }
-
 
    //
    // Create the status bar
@@ -363,12 +365,11 @@ AudacityProject::~AudacityProject()
 
 
 
-   for (i = mToolBarArray.GetCount() - 1; i >= 0; i--) 
-      {
+   for (i = mToolBarArray.GetCount() - 1; i >= 0; i--) {
 
-         delete mToolBarArray[i];
-         mToolBarArray.RemoveAt(i);
-      }
+      delete mToolBarArray[i];
+      mToolBarArray.RemoveAt(i);
+   }
    mToolBarArray.Clear();
    WX_CLEAR_ARRAY(mToolBarArray)
 
@@ -388,22 +389,19 @@ AudacityProject::~AudacityProject()
 
    gAudacityProjects.Remove(this);
 
-   if (gAudacityProjects.IsEmpty())
-      {
+   if (gAudacityProjects.IsEmpty()) {
       QuitAudacity();
-      }
-   else
-      {
+   } else {
 
-         if (gActiveProject == this) {
-            // Find a new active project
-            if (gAudacityProjects.GetCount() > 0)
-               gActiveProject = gAudacityProjects[0];
-            else
-               gActiveProject = NULL;
-         }
-
+      if (gActiveProject == this) {
+         // Find a new active project
+         if (gAudacityProjects.GetCount() > 0)
+            gActiveProject = gAudacityProjects[0];
+         else
+            gActiveProject = NULL;
       }
+
+   }
 }
 
 void AudacityProject::RedrawProject()
@@ -479,10 +477,10 @@ void AudacityProject::OnScrollLeft()
 
 
    int pos = mHsbar->GetThumbPosition();
-   pos= (pos>0) ? pos: 0;        //Set to larger of pos and 0
-   
+   pos = (pos > 0) ? pos : 0;   //Set to larger of pos and 0
+
    if (pos > 0) {
-      mHsbar->SetThumbPosition(pos - sbarHjump);     //Jump 30 pixels to the left
+      mHsbar->SetThumbPosition(pos - sbarHjump);        //Jump 30 pixels to the left
       FinishAutoScroll();
    }
 }
@@ -492,24 +490,23 @@ void AudacityProject::OnScrollRight()
 
    int pos = mHsbar->GetThumbPosition();
    int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
-   pos= (pos < max)? pos: max;  //Set to smaller of pos and max
-   
+   pos = (pos < max) ? pos : max;       //Set to smaller of pos and max
+
    if (pos < max) {
-      mHsbar->SetThumbPosition(pos + sbarHjump);   //Jump 30 pixels to the right
+      mHsbar->SetThumbPosition(pos + sbarHjump);        //Jump 30 pixels to the right
       FinishAutoScroll();
-      }
+   }
 }
 
 void AudacityProject::OnScrollLeftButton(wxScrollEvent & event)
-
 {
 
 
    int pos = mHsbar->GetThumbPosition();
-   pos= (pos>0) ? pos: 0;        //Set to larger of pos and 0
-   
+   pos = (pos > 0) ? pos : 0;   //Set to larger of pos and 0
+
    if (pos > 0) {
-      mHsbar->SetThumbPosition(pos - sbarHjump);     //Jump 30 pixels to the left
+      mHsbar->SetThumbPosition(pos - sbarHjump);        //Jump 30 pixels to the left
       OnScroll(event);
    }
 }
@@ -520,10 +517,10 @@ void AudacityProject::OnScrollRightButton(wxScrollEvent & event)
 
    int pos = mHsbar->GetThumbPosition();
    int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
-   pos= (pos < max)? pos: max;  //Set to smaller of pos and max
-   
+   pos = (pos < max) ? pos : max;       //Set to smaller of pos and max
+
    if (pos < max) {
-      mHsbar->SetThumbPosition(pos + sbarHjump);   //Jump 30 pixels to the right
+      mHsbar->SetThumbPosition(pos + sbarHjump);        //Jump 30 pixels to the right
 
       OnScroll(event);
    }
@@ -534,7 +531,7 @@ void AudacityProject::OnScrollRightButton(wxScrollEvent & event)
 void AudacityProject::TP_ScrollWindow(double scrollto)
 {
    int pos = (int) (scrollto * mViewInfo.zoom);
-  
+
    int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
 
 
@@ -562,8 +559,9 @@ void AudacityProject::FixScrollbars()
    int panelWidth, panelHeight;
    mTrackPanel->GetTracksUsableArea(&panelWidth, &panelHeight);
 
-   mViewInfo.total = mTracks->GetMaxLen() + 1.0;
+
    mViewInfo.screen = ((double) panelWidth) / mViewInfo.zoom;
+   mViewInfo.total = mTracks->GetMaxLen() + mViewInfo.screen / 4;       //Add 1/4 of a screen of blank space to the end of the longest track
 
    if (mViewInfo.h > mViewInfo.total - mViewInfo.screen) {
       mViewInfo.h = mViewInfo.total - mViewInfo.screen;
@@ -611,7 +609,7 @@ void AudacityProject::FixScrollbars()
    }
 
    mHsbar->SetScrollbar(mViewInfo.sbarH, mViewInfo.sbarScreen,
-                        mViewInfo.sbarTotal, 180 , TRUE);
+                        mViewInfo.sbarTotal, mViewInfo.sbarScreen, TRUE);
    mVsbar->SetScrollbar(mViewInfo.vpos / mViewInfo.scrollStep,
                         panelHeight / mViewInfo.scrollStep,
                         totalHeight / mViewInfo.scrollStep,
@@ -691,14 +689,15 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
    int hoffset = 0;
    int voffset = 0;
 
-   
-   
-   mViewInfo.sbarH =  mHsbar->GetThumbPosition() ;
- 
+
+
+   mViewInfo.sbarH = mHsbar->GetThumbPosition();
+
 
    if (mViewInfo.sbarH != hlast) {
-      mViewInfo.h =  mViewInfo.sbarH  / mViewInfo.zoom;
-   
+      mViewInfo.h = mViewInfo.sbarH / mViewInfo.zoom;
+
+
       if (mViewInfo.h > mViewInfo.total - mViewInfo.screen)
          mViewInfo.h = mViewInfo.total - mViewInfo.screen;
       if (mViewInfo.h < 0.0)
@@ -709,18 +708,18 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
    mViewInfo.vpos = mVsbar->GetThumbPosition() * mViewInfo.scrollStep;
    voffset = mViewInfo.vpos - vlast;
 
-   
+
    /*   TODO: add back fast scrolling code
 
       // Track panel is updated either way, but it is smart and only redraws
       // what is needed
-      mTrackPanel->FastScroll(-hoffset, -voffset);
+      TrackPanel->FastScroll(-hoffset, -voffset);
 
       // Ruler panel updated if we scroll horizontally
       if (hoffset) {
       REDRAW(rulerPanel);
-     }
-   */
+      }
+    */
 
 
    SetActiveProject(this);
@@ -740,19 +739,17 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
    int numPlugins = Effect::GetNumEffects(true);
    Effect *f = NULL;
 
-   if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED)
-   {
+   if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED) {
       // Builtin Effects
-      if(event.GetId() >= FirstEffectID &&
-      event.GetId() < FirstEffectID + numEffects) {
+      if (event.GetId() >= FirstEffectID &&
+          event.GetId() < FirstEffectID + numEffects) {
          f = Effect::GetEffect(event.GetId() - FirstEffectID, false);
-      }
-      else if(event.GetId() >= FirstPluginID &&
-      event.GetId() < FirstPluginID + numPlugins) {
+      } else if (event.GetId() >= FirstPluginID &&
+                 event.GetId() < FirstPluginID + numPlugins) {
          f = Effect::GetEffect(event.GetId() - FirstPluginID, true);
-      }
-      else {
-         if(HandleMenuEvent(event)) return true;
+      } else {
+         if (HandleMenuEvent(event))
+            return true;
       }
    }
 
@@ -922,21 +919,26 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
    switch (t) {
    case ControlToolBarID:
       h = gControlToolBarStub->GetHeight();
-      toolbar = new ControlToolBar(this, -1, wxPoint(10, tbheight), wxSize(width - 10, h));
-      ((wxMenuItemBase *)mViewMenu->FindItem(FloatControlToolBarID))->SetName(_("Float Control Toolbar"));
+      toolbar =
+          new ControlToolBar(this, -1, wxPoint(10, tbheight),
+                             wxSize(width - 10, h));
+      ((wxMenuItemBase *) mViewMenu->FindItem(FloatControlToolBarID))->
+          SetName(_("Float Control Toolbar"));
       mToolBarArray.Insert(toolbar, 0);
       break;
 
    case EditToolBarID:
 
-      if (!gEditToolBarStub){
+      if (!gEditToolBarStub) {
          gEditToolBarStub = new ToolBarStub(gParentWindow, EditToolBarID);
       }
-      
+
       h = gEditToolBarStub->GetHeight();
-      toolbar = new EditToolBar(this, -1, wxPoint(10, tbheight), wxSize(width - 10, h));
-      
-      
+      toolbar =
+          new EditToolBar(this, -1, wxPoint(10, tbheight),
+                          wxSize(width - 10, h));
+
+
       mToolBarArray.Add(toolbar);
       break;
 
@@ -955,54 +957,56 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
 //
 // To make menu items consistent with the state of 
 // audacity, put code here and call this function at appropriate times..
-void AudacityProject::MakeToolBarMenuEntriesCorrect ()
+void AudacityProject::MakeToolBarMenuEntriesCorrect()
 {
 
-   if(gEditToolBarStub)
-      {
-         
-         if(gEditToolBarStub->GetLoadedStatus())
-            {
-          
-               if(gEditToolBarStub->GetWindowedStatus())
-                  {
-                 
-                     //Loaded/windowed
-                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Unload Edit Toolbar"));
-                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Unfloat Edit Toolbar"));
-                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->Enable(true);                 
-                  }
-               else
-                  {
-                  
-                     //Loaded/unwindowed
-                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Unload Edit Toolbar"));
-                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Float Edit Toolbar"));
-                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->Enable(true);                 
-                  }
-            }
-         else
-            { 
-          
-               if(gEditToolBarStub->GetWindowedStatus())
-                  {
-                   
-                     //Unloaded/windowed
-                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Load Edit Toolbar"));
-                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Unfloat Edit Toolbar"));
-                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->Enable(false);                 
-                  }
-               else
-                  {
-                  
-                     //Unloaded/unwindowed
-                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Load Edit Toolbar"));
-                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Float Edit Toolbar"));
-                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->Enable(false);                 
-                     
-                  }
-            }
+   if (gEditToolBarStub) {
+
+      if (gEditToolBarStub->GetLoadedStatus()) {
+
+         if (gEditToolBarStub->GetWindowedStatus()) {
+
+            //Loaded/windowed
+            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
+                SetName(_("Unload Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                SetName(_("Unfloat Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                Enable(true);
+         } else {
+
+            //Loaded/unwindowed
+            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
+                SetName(_("Unload Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                SetName(_("Float Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                Enable(true);
+         }
+      } else {
+
+         if (gEditToolBarStub->GetWindowedStatus()) {
+
+            //Unloaded/windowed
+            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
+                SetName(_("Load Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                SetName(_("Unfloat Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                Enable(false);
+         } else {
+
+            //Unloaded/unwindowed
+            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
+                SetName(_("Load Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                SetName(_("Float Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                Enable(false);
+
+         }
       }
+   }
 }
 
 void AudacityProject::UnloadToolBar(enum ToolBarType t)
@@ -1010,29 +1014,31 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
    //Go through all of the toolbars (from the bottom up)
    //And delete it if it is type T
 
-   for (int i = mToolBarArray.GetCount()-1; i >=0; i--) {
-      
+   for (int i = mToolBarArray.GetCount() - 1; i >= 0; i--) {
+
       if (mToolBarArray[i]->GetType() == t) {
 
          mTotalToolBarHeight -= mToolBarArray[i]->GetHeight();
          delete mToolBarArray[i];
          mToolBarArray.RemoveAt(i);
-         
-         
+
+
          //Now, do any changes specific to different toolbar types
          switch (t) {
          case ControlToolBarID:
 
             //If the ControlToolBar is being unloaded from this project, you
             //should change the menu entry of this project
-            ((wxMenuItemBase *)mViewMenu->FindItem(FloatControlToolBarID))->SetName(_("Unfloat Control Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->
+             FindItem(FloatControlToolBarID))->
+SetName(_("Unfloat Control Toolbar"));
             break;
 
          case EditToolBarID:
-           
-            
+
+
             break;
-         
+
          case NoneID:
          default:
             break;
@@ -1107,17 +1113,17 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 
          wxClientDC dc(this);
          //Make the new bitmap a bit bigger
-         wxBitmap *bitmap = new wxBitmap((width+2),(height+2));
-         
+         wxBitmap *bitmap = new wxBitmap((width + 2), (height + 2));
+
          wxMemoryDC *memDC = new wxMemoryDC();
          memDC->SelectObject(*bitmap);
-      
+
          //Draw a black box on perimeter
          memDC->SetPen(*wxBLACK_PEN);
-         memDC->DrawRectangle(0,0,width+2, height+2);
+         memDC->DrawRectangle(0, 0, width + 2, height + 2);
 
          //copy an image of the toolbar into the box
-         memDC->Blit(1, 1, width, height, &dc, 0, h - height-1);
+         memDC->Blit(1, 1, width, height, &dc, 0, h - height - 1);
          delete memDC;
 
          mDrag = new wxDragImage(*bitmap);
@@ -1125,7 +1131,7 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
          delete bitmap;
 
          mDrag->BeginDrag(hotspot, this, true);
-         mDrag->Move(mouse - wxPoint(1,2));  //Adjust a little because the bitmap is bigger than the toolbar
+         mDrag->Move(mouse - wxPoint(1, 2));    //Adjust a little because the bitmap is bigger than the toolbar
          mDrag->Show();
          mToolBarHotspot = hotspot;
 
@@ -1162,7 +1168,7 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
          break;
       }
 
-     
+
       mDraggingToolBar = NoneID;
       HandleResize();
 
@@ -1578,11 +1584,12 @@ void AudacityProject::ZoomFit()
 
 void AudacityProject::ZoomSel()
 {
-   if (mViewInfo.sel1 <= mViewInfo.sel0) return;
+   if (mViewInfo.sel1 <= mViewInfo.sel0)
+      return;
 
    // BG: CTRL+E
    // BG: Zoom to selection
-   mViewInfo.zoom *= mViewInfo.screen/(mViewInfo.sel1-mViewInfo.sel0);
+   mViewInfo.zoom *= mViewInfo.screen / (mViewInfo.sel1 - mViewInfo.sel0);
 
    FixScrollbars();
    TP_ScrollWindow(mViewInfo.sel0);
@@ -1717,9 +1724,9 @@ void AudacityProject::SkipEnd(bool shift)
    // (2) If the total width of the sample is less than the viewport is
    //     wide, set the viewport's left edge to be 0.
 
-   //The following formula for viewstart is simple: End of sample  - new width
-   double viewstart= len - mViewInfo.screen * .95;
-   viewstart = viewstart > 0 ? viewstart: 0.0;
+   //Calculates viewstart: End of sample  - 95% of a screen width
+   double viewstart = len - mViewInfo.screen * .95;
+   viewstart = viewstart > 0 ? viewstart : 0.0;
 
    TP_ScrollWindow(viewstart);
 }
