@@ -18,9 +18,14 @@
 
 #include <wx/defs.h>
 #include <wx/panel.h>
+#include <wx/timer.h>
 
 #include "../SampleFormat.h"
 #include "Ruler.h"
+
+// Increase this when we add support for multichannel meters
+// (most of the code is already there)
+const int kMaxMeterBars = 2;
 
 struct MeterBar {
    bool   vert;
@@ -35,7 +40,34 @@ struct MeterBar {
    float  peakPeakHold;
 };
 
-class MeterUpdateEvent;
+struct MeterUpdateMsg
+{
+   int numFrames;
+   float peak[kMaxMeterBars];
+   float rms[kMaxMeterBars];
+   bool clipping[kMaxMeterBars];
+   int headPeakCount[kMaxMeterBars];
+   int tailPeakCount[kMaxMeterBars];
+};
+
+// Thread-safe queue of update messages
+class MeterUpdateQueue
+{
+ public:
+   MeterUpdateQueue(int maxLen);
+   ~MeterUpdateQueue();
+
+   bool Put(MeterUpdateMsg &msg);
+   bool Get(MeterUpdateMsg &msg);
+
+   void Clear();
+
+ private:
+   int              mStart;
+   int              mEnd;
+   int              mBufferSize;
+   MeterUpdateMsg  *mBuffer;
+};
 
 class Meter : public wxPanel
 {
@@ -80,7 +112,7 @@ class Meter : public wxPanel
    void OnSize(wxSizeEvent &evt);
    void OnMouse(wxMouseEvent &evt);
 
-   void OnMeterUpdate(MeterUpdateEvent &evt);
+   void OnMeterUpdate(wxTimerEvent &evt);
 
    void HandlePaint(wxDC &dc);
    void HandleLayout();
@@ -109,6 +141,9 @@ class Meter : public wxPanel
    void StartMonitoring();
    wxFont GetFont();
 
+   MeterUpdateQueue mQueue;
+   wxTimer          mTimer;
+
    int       mWidth;
    int       mHeight;
 
@@ -128,7 +163,7 @@ class Meter : public wxPanel
    long      mMeterRefreshRate;
 
    int       mNumBars;
-   MeterBar  mBar[32];
+   MeterBar  mBar[kMaxMeterBars];
 
    bool      mLayoutValid;
 

@@ -37,9 +37,71 @@
 #include "../MeterToolBar.h"
 #include "../Prefs.h"
 
+//
+// The Meter passes itself messages via this queue so that it can
+// communicate between the audio thread and the GUI thread.
+// This class is as simple as possible in order to be thread-safe
+// without needing mutexes.
+//
+
+MeterUpdateQueue::MeterUpdateQueue(int maxLen):
+   mBufferSize(maxLen)
+{
+   mBuffer = new MeterUpdateMsg[mBufferSize];
+   Clear();
+}
+
+// destructor
+MeterUpdateQueue::~MeterUpdateQueue()
+{
+   delete[] mBuffer;
+}
+
+void MeterUpdateQueue::Clear()
+{
+   mStart = 0;
+   mEnd = 0;
+}
+
+// Add a message to the end of the queue.  Return false if the
+// queue was full.
+bool MeterUpdateQueue::Put(MeterUpdateMsg &msg)
+{
+   int len = (mEnd + mBufferSize - mStart) % mBufferSize;
+
+   // Never completely fill the queue, because then the
+   // state is ambiguous (mStart==mEnd)
+   if (len >= mBufferSize-1)
+      return false;
+
+   mBuffer[mEnd] = msg;
+   mEnd = (mEnd+1)%mBufferSize;
+
+   return true;
+}
+
+// Get the next message from the start of the queue.
+// Return false if the queue was empty.
+bool MeterUpdateQueue::Get(MeterUpdateMsg &msg)
+{
+   int len = (mEnd + mBufferSize - mStart) % mBufferSize;
+
+   if (len == 0)
+      return false;
+
+   msg = mBuffer[mStart];
+   mStart = (mStart+1)%mBufferSize;
+
+   return true;
+}
+
+//
+// Meter class
+//
+
 enum {
-   MeterEventID = 6000,
-	OnDisableMeterID,
+   OnMeterUpdateID = 6000,
+   OnDisableMeterID,
    OnHorizontalID,
    OnVerticalID,
    OnMultiID,
@@ -53,36 +115,8 @@ enum {
    OnPreferencesID
 };
 
-class MeterUpdateEvent: public wxCommandEvent
-{
-public:
-   MeterUpdateEvent():
-      wxCommandEvent(wxEVT_COMMAND_SLIDER_UPDATED, MeterEventID)
-   {
-   }
-
-   virtual wxEvent *Clone() const 
-   {
-      MeterUpdateEvent *newEvent = new MeterUpdateEvent();
-      memcpy(newEvent->peak, peak, 32*sizeof(float));
-      memcpy(newEvent->rms, rms, 32*sizeof(float));
-      memcpy(newEvent->clipping, clipping, 32*sizeof(bool));
-      memcpy(newEvent->headPeakCount, headPeakCount, 32*sizeof(int));
-      memcpy(newEvent->tailPeakCount, tailPeakCount, 32*sizeof(int));
-      newEvent->numFrames = numFrames;
-      return (wxEvent *)newEvent;
-   }
-
-   int numFrames;
-   float peak[32];
-   float rms[32];
-   bool clipping[32];
-   int headPeakCount[32];
-   int tailPeakCount[32];
-};
-
 BEGIN_EVENT_TABLE(Meter, wxPanel)
-   EVT_SLIDER(MeterEventID, Meter::OnMeterUpdate)
+   EVT_TIMER(OnMeterUpdateID, Meter::OnMeterUpdate)
    EVT_MOUSE_EVENTS(Meter::OnMouse)
    EVT_PAINT(Meter::OnPaint)
    EVT_SIZE(Meter::OnSize)
@@ -107,6 +141,7 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
              const wxPoint& pos /*= wxDefaultPosition*/,
              const wxSize& size /*= wxDefaultSize*/):
    wxPanel(parent, id, pos, size),
+   mQueue(1024),
    mWidth(size.x), mHeight(size.y),
    mIsInput(isInput),
    mStyle(HorizontalStereo),
@@ -190,13 +225,16 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    mRuler.SetFonts(GetFont(), GetFont());
 
    Reset(44100.0, true);
-   for(i=0; i<32; i++)
+   for(i=0; i<kMaxMeterBars; i++)
       mBar[i].clipping = false;
 
    delete image;
    delete alpha;
    delete bkgnd;
    delete final;
+
+   mTimer.SetOwner(this, OnMeterUpdateID);
+   mTimer.Start(1000/mMeterRefreshRate);
 }
 
 Meter::~Meter()
@@ -346,22 +384,21 @@ void Meter::UpdateDisplay(int numChannels, int numFrames, float *sampleData)
    int i, j;
    float *sptr = sampleData;
    int num = intmin(numChannels, mNumBars);
+   MeterUpdateMsg msg;
 
-   MeterUpdateEvent *event = new MeterUpdateEvent();
-
-   event->numFrames = numFrames;
+   msg.numFrames = numFrames;
    for(j=0; j<mNumBars; j++) {
-      event->peak[j] = 0;
-      event->rms[j] = 0;
-      event->clipping[j] = false;
-      event->headPeakCount[j] = 0;
-      event->tailPeakCount[j] = 0;
+      msg.peak[j] = 0;
+      msg.rms[j] = 0;
+      msg.clipping[j] = false;
+      msg.headPeakCount[j] = 0;
+      msg.tailPeakCount[j] = 0;
    }
 
    for(i=0; i<numFrames; i++) {
       for(j=0; j<num; j++) {
-         event->peak[j] = floatMax(event->peak[j], sptr[j]);
-         event->rms[j] += sptr[j]*sptr[j];
+         msg.peak[j] = floatMax(msg.peak[j], sptr[j]);
+         msg.rms[j] += sptr[j]*sptr[j];
 
          // In addition to looking for mNumPeakSamplesToClip peaked
          // samples in a row, also send the number of peaked samples
@@ -370,75 +407,88 @@ void Meter::UpdateDisplay(int numChannels, int numFrames, float *sampleData)
          // in case there's a run of peaked samples that crosses
          // block boundaries
          if (fabs(sptr[j])>=1.0) {
-            if (event->headPeakCount[j]==i)
-               event->headPeakCount[j]++;
-            event->tailPeakCount[j]++;
-            if (event->tailPeakCount[j] > mNumPeakSamplesToClip)
-               event->clipping[j] = true;
+            if (msg.headPeakCount[j]==i)
+               msg.headPeakCount[j]++;
+            msg.tailPeakCount[j]++;
+            if (msg.tailPeakCount[j] > mNumPeakSamplesToClip)
+               msg.clipping[j] = true;
          }
          else
-            event->tailPeakCount[j] = 0;
+            msg.tailPeakCount[j] = 0;
       }
       sptr += numChannels;
    }
    for(j=0; j<mNumBars; j++)
-      event->rms[j] = sqrt(event->rms[j]/numFrames);
+      msg.rms[j] = sqrt(msg.rms[j]/numFrames);
 
    if (mDB) {
       for(j=0; j<mNumBars; j++) {
-         event->peak[j] = ToDB(event->peak[j], mDBRange);
-         event->rms[j] = ToDB(event->rms[j], mDBRange);
+         msg.peak[j] = ToDB(msg.peak[j], mDBRange);
+         msg.rms[j] = ToDB(msg.rms[j], mDBRange);
       }
    }
 
-   AddPendingEvent(*event);
-   delete event;
+   mQueue.Put(msg);
 }
 
-void Meter::OnMeterUpdate(MeterUpdateEvent &evt)
+void Meter::OnMeterUpdate(wxTimerEvent &evt)
 {
-   double deltaT = evt.numFrames / mRate;
-   int j;
-
-   if (mMeterDisabled)
-      return;
-
-   mT += deltaT;
-   for(j=0; j<mNumBars; j++) {
-      if (mDecay) {
-         if (mDB) {
-            float decayAmount = mDecayRate * deltaT / mDBRange;
-            mBar[j].peak = floatMax(evt.peak[j],
-                                    mBar[j].peak - decayAmount);
+   MeterUpdateMsg msg;
+   int numChanges = 0;
+  
+   // There may have been several update messages since the last
+   // time we got to this function.  Catch up to real-time by
+   // popping them off until there are none left.  It is necessary
+   // to process all of them, otherwise we won't handle peaks and
+   // peak-hold bars correctly.
+   while(mQueue.Get(msg)) {
+      numChanges++;
+      double deltaT = msg.numFrames / mRate;
+      int j;
+      
+      if (mMeterDisabled)
+         return;
+      
+      mT += deltaT;
+      for(j=0; j<mNumBars; j++) {
+         if (mDecay) {
+            if (mDB) {
+               float decayAmount = mDecayRate * deltaT / mDBRange;
+               mBar[j].peak = floatMax(msg.peak[j],
+                                       mBar[j].peak - decayAmount);
+            }
+            else {
+               double decayAmount = mDecayRate * deltaT;
+               double decayFactor = pow(10.0, -decayAmount/20);
+               mBar[j].peak = floatMax(msg.peak[j],
+                                       mBar[j].peak * decayFactor);
+            }
          }
-         else {
-            double decayAmount = mDecayRate * deltaT;
-            double decayFactor = pow(10.0, -decayAmount/20);
-            mBar[j].peak = floatMax(evt.peak[j],
-                                    mBar[j].peak * decayFactor);
+         else
+            mBar[j].peak = msg.peak[j];
+
+         // This smooths out the RMS signal
+         mBar[j].rms = mBar[j].rms * 0.9 + msg.rms[j] * 0.1;
+         
+         if (mT - mBar[j].peakHoldTime > mPeakHoldDuration ||
+             mBar[j].peak > mBar[j].peakHold) {
+            mBar[j].peakHold = mBar[j].peak;
+            mBar[j].peakHoldTime = mT;
          }
+         
+         if (mBar[j].peak > mBar[j].peakPeakHold )
+            mBar[j].peakPeakHold = mBar[j].peak;
+         
+         if (msg.clipping[j] ||
+             mBar[j].tailPeakCount+msg.headPeakCount[j] >=
+             mNumPeakSamplesToClip)
+            mBar[j].clipping = true;
+         mBar[j].tailPeakCount = msg.tailPeakCount[j];
       }
-      else
-         mBar[j].peak = evt.peak[j];
-
-      // This smooths out the RMS signal
-      mBar[j].rms = mBar[j].rms * 0.9 + evt.rms[j] * 0.1;
-
-      if (mT - mBar[j].peakHoldTime > mPeakHoldDuration ||
-          mBar[j].peak > mBar[j].peakHold) {
-         mBar[j].peakHold = mBar[j].peak;
-         mBar[j].peakHoldTime = mT;
-      }
-
-      if (mBar[j].peak > mBar[j].peakPeakHold )
-         mBar[j].peakPeakHold = mBar[j].peak;
-
-      if (evt.clipping[j] ||
-          mBar[j].tailPeakCount+evt.headPeakCount[j] >= mNumPeakSamplesToClip)
-         mBar[j].clipping = true;
-      mBar[j].tailPeakCount = evt.tailPeakCount[j];
-   }
-   RepaintBarsNow();
+   } // while
+  
+   if (numChanges > 0)      
+      RepaintBarsNow();
 }
 
 wxFont Meter::GetFont()
@@ -659,14 +709,6 @@ void Meter::RepaintBarsNow()
 {
    if (!mLayoutValid)
       return;
-
-   // to limit repaint at <=30 mS intervals, by ChackoN
-   static wxLongLong lastTime = ::wxGetLocalTimeMillis();
-   wxLongLong now = ::wxGetLocalTimeMillis();
-   long delta = (now - lastTime).ToLong();
-   if (delta < 1000.0/mMeterRefreshRate)
-       return;
-   lastTime = now;
 
    wxClientDC dc(this);
    int i;
@@ -907,17 +949,20 @@ void Meter::OnFloat(wxCommandEvent &evt)
 
 void Meter::OnPreferences(wxCommandEvent &evt)
 {
-long refreshRate = 0;
-if (-1 <  (refreshRate = ::wxGetNumberFromUser (_(
-                                    "This determines how often the meter is refreshed.\n"
-                                    "If you have a slower PC you may want to select a\n"
-                                    "lower refresh rate (30 per second or lower), so that\n"
-                                    "audio qualtiy is not affected by the meter display."),
-                                   _("Meter refresh rate per second [1-100]: "),
-                                   _("Meter Perferences"),
-                                   mMeterRefreshRate, 1, 100)))
+   long refreshRate = 0;
+   if (-1 <  (refreshRate = ::wxGetNumberFromUser
+              (_(
+                 "This determines how often the meter is refreshed.\n"
+                 "If you have a slower PC you may want to select a\n"
+                 "lower refresh rate (30 per second or lower), so that\n"
+                 "audio qualtiy is not affected by the meter display."),
+               _("Meter refresh rate per second [1-100]: "),
+               _("Meter Perferences"),
+               mMeterRefreshRate, 1, 100)))
       mMeterRefreshRate = refreshRate;
-      gPrefs->Write("/Meter/MeterRefreshRate", mMeterRefreshRate);
+   gPrefs->Write("/Meter/MeterRefreshRate", mMeterRefreshRate);
+   
+   mTimer.Start(1000/mMeterRefreshRate);
 }
 
 
