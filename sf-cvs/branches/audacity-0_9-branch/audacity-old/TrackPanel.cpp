@@ -977,7 +977,8 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
       wxClientDC dc(this);
       DrawCloseBox(&dc, r, false);
       if (closeRect.Inside(event.m_x, event.m_y)) {
-         RemoveTrack(t);
+         if (!gAudioIO->IsRecording(t))
+            RemoveTrack(t);
          mCapturedTrack = 0;
       }
       mIsClosing = false;

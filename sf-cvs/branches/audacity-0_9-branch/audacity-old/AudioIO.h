@@ -49,7 +49,7 @@ class AudioIO {
    void HardStop();
    bool IsBusy();
    bool IsPlaying();
-   bool IsRecording();
+   bool IsRecording(VTrack *t = NULL);
 
    AudacityProject *GetProject();
    double GetIndicator();

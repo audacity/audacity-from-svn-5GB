@@ -450,9 +450,13 @@ bool AudioIO::IsPlaying()
    return false;
 }
 
-bool AudioIO::IsRecording()
+bool AudioIO::IsRecording(VTrack *t)
 {
-   return (mProject != NULL && mRecording);
+   bool recording = (mProject != NULL && mRecording);
+   if (!t)
+      return recording;
+
+   return (recording && t == mRecordLeft || t == mRecordRight);
 }
 
 void AudioIOTimer::Notify()
