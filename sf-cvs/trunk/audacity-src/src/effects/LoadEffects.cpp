@@ -60,7 +60,9 @@ void LoadEffects()
 #endif
 
 #if defined(__WXMAC__) || defined(__WXMSW__)
+# ifndef __UNIX__
    LoadVSTPlugins();
+# endif
 #endif
 
 #ifdef USE_LADSPA
