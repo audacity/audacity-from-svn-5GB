@@ -5,11 +5,11 @@
 # DESC: This file builds various utilities for Nyquist
 #
 
-CC = gcc $(CFLAGS)
+CC = cc $(CFLAGS)
 
 # the unix path gets us switches.h:
 # the cmt path gets us swlogic.h:
-CFLAGS = -g -I../sys/unix -I../cmt
+CFLAGS = -g -I../sys -I../cmt
 
 # Directory info:
 BINPATH = .
