@@ -60,6 +60,8 @@ WaveTrack::WaveTrack(DirManager *projDirManager):
 {
   numSamples = 0;
   rate = 44100.0;
+  
+  name = "Audio Track";
 
   display = 0;
   
@@ -123,6 +125,8 @@ VTrack *WaveTrack::Duplicate()
 
   copy->tOffset = tOffset;
   copy->rate = rate;
+  copy->name = name;
+  copy->linked = linked;
   copy->Paste(0.0, this);
   copy->collapsedHeight = collapsedHeight;
   copy->expandedHeight = expandedHeight;

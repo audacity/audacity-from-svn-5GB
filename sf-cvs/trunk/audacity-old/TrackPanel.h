@@ -64,9 +64,8 @@ public:
 
   void OnTimer();
   
-  int GetLabelWidth();
-  int GetLabelOffset();
   int GetRulerHeight();
+  int GetLeftOffset();
 
   void GetTracksUsableArea(int *width, int *height);
 
@@ -81,9 +80,12 @@ private:
   void HandleSlide(wxMouseEvent& event);
   void HandleZoom(wxMouseEvent& event);
   void HandleLabelClick(wxMouseEvent& event);
+  void HandleClosing(wxMouseEvent& event);
 
   void MakeParentRedrawScrollbars();
   void MakeParentPushState();
+
+  void OnSetName();
 
   void OnChannelLeft();
   void OnChannelRight();
@@ -99,21 +101,40 @@ private:
   void OnRate44();
   void OnRate48();
   void OnRateOther();
+  
+  void OnSplitStereo();
+  void OnMergeStereo();
+  
+  void RemoveTrack(VTrack *toRemove);
 
   // Find track info by coordinate
   VTrack *FindTrack(int mouseX, int mouseY, bool label,
 					wxRect *trackRect = NULL, int *trackNum = NULL);
 
   // Find track info by pointer
-  bool FindTrack(VTrack *target, bool label,
-				 wxRect *trackRect = NULL, int *trackNum = NULL);
+  //bool FindTrack(VTrack *target, bool label,
+	//			 wxRect *trackRect = NULL, int *trackNum = NULL);
 
   bool GetLabelFieldRect(wxRect &labelRect,
 						 int field, bool rightOnly,
 						 wxRect& fieldRect);
 
+  int GetTitleWidth();
+  int GetTitleOffset();
+  int GetVRulerWidth();  
+  int GetVRulerOffset();
+  int GetLabelWidth();
+
   void DrawRuler(wxDC *dc, bool text = true);
   void DrawTracks(wxDC *dc);
+  
+  void GetCloseBoxRect(wxRect &trackRect, wxRect &r);
+  void GetTitleBarRect(wxRect &trackRect, wxRect &r);
+
+  void DrawCloseBox(wxDC *dc, wxRect &r, bool down);
+  void DrawTitleBar(wxDC *dc, wxRect &r, VTrack *t, bool down);
+  
+  void DrawVRuler(wxDC *dc, wxRect &r, VTrack *t);
 
   TrackPanelListener *mListener;
 
@@ -148,6 +169,7 @@ private:
 
   bool            mAutoScrolling;
 
+  bool            mIsClosing;
   bool            mIsSelecting;
   bool            mIsResizing;
   bool            mIsSliding;
@@ -160,9 +182,8 @@ private:
   wxCursor        *mZoomInCursor;
   wxCursor        *mZoomOutCursor;
 
-  wxMenu          *mChannelMenu;
+  wxMenu          *mTrackMenu;
   wxMenu          *mRateMenu;
-  wxMenu          *mDisplayMenu;
 
   VTrack          *mPopupMenuTarget;
 
