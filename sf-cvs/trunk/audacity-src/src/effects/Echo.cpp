@@ -87,11 +87,11 @@ bool EffectEcho::ProcessOne(int count, WaveTrack * t,
    if (blockSize < 1 || blockSize > len)
       return true;
 
-   sampleType *buffer0 = new sampleType[blockSize];
-   sampleType *buffer1 = new sampleType[blockSize];
+   float *buffer0 = new float[blockSize];
+   float *buffer1 = new float[blockSize];
 
-   sampleType *ptr0 = buffer0;
-   sampleType *ptr1 = buffer1;
+   float *ptr0 = buffer0;
+   float *ptr1 = buffer1;
 
    bool first = true;
 
@@ -103,11 +103,11 @@ bool EffectEcho::ProcessOne(int count, WaveTrack * t,
       t->Get(ptr0, s, block);
       if (!first) {
          for (sampleCount i = 0; i < block; i++)
-            ptr0[i] += (sampleType) (ptr1[i] * decay);
+            ptr0[i] += ptr1[i] * decay;
          t->Set(ptr0, s, block);
       }
 
-      sampleType *ptrtemp = ptr0;
+      float *ptrtemp = ptr0;
       ptr0 = ptr1;
       ptr1 = ptrtemp;
 

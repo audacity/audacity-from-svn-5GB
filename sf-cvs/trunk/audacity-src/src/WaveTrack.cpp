@@ -9,7 +9,7 @@
 **********************************************************************/
 
 #include <math.h>
-#include <wx/file.h>
+
 #include <wx/msgdlg.h>
 #include <wx/textfile.h>
 #include <wx/intl.h>
@@ -17,155 +17,186 @@
 #include "WaveTrack.h"
 #include "BlockFile.h"
 #include "DirManager.h"
-#include "Prefs.h"
-
-// Max file size of 16-bit samples is 1MB
-// (About 12 seconds of audio)
 
 const int headerTagLen = 20;
-char headerTag[headerTagLen + 1] = "AudacityBlockFile095";
+char headerTag[headerTagLen + 1] = "AudacityBlockFile110";
 
-// Static variables for block size
+int WaveTrack::sMaxDiskBlockSize = 1048576;
 
-sampleCount WaveTrack::summary64KLen = 8 * 2;
-sampleCount WaveTrack::summary256Len = summary64KLen * 256;
-sampleCount WaveTrack::totalHeaderLen =
-    headerTagLen + (summary64KLen + summary256Len) * sizeof(sampleType);
-
-sampleCount WaveTrack::maxSamples = summary256Len * 256 / 2;
-sampleCount WaveTrack::minSamples = maxSamples / 2;
-
-// Static methods
-
-int WaveTrack::GetHeaderLen()
-{
-   return totalHeaderLen;
-}
-
-sampleCount WaveTrack::GetMaxBlockSize()
-{
-   return maxSamples;
-}
-
-sampleCount WaveTrack::GetIdealBlockSize()
-{
-   return maxSamples;
-   
-   // Originally we split the difference between the minimum and maximum
-   // size.  Now I believe that always making blocks as big as possible
-   // is actually optimal more often.  -dmazzoni
-   //
-   //return (minSamples + maxSamples) / 2;
-}
-
+// Static
 void WaveTrack::SetMaxDiskBlockSize(int bytes)
 {
-   maxSamples = bytes / sizeof(sampleType);
-   minSamples = maxSamples / 2;
-
-   summary64KLen = (maxSamples + 65535) / 65536 * 2;
-   summary256Len = summary64KLen * 256;
-   totalHeaderLen =
-       headerTagLen + (summary64KLen + summary256Len) * sizeof(sampleType);
-}
-
-int WaveTrack::GetMaxDiskBlockSize()
-{
-   return maxSamples * sizeof(sampleType);
+   sMaxDiskBlockSize = bytes;
 }
 
 // WaveTrack methods
 WaveTrack::WaveTrack(DirManager * projDirManager):
 VTrack(projDirManager)
 {
-   numSamples = 0;
-   rate = 44100.0;
+   mNumSamples = 0;
+   mRate = 44100.0;
    SetName(_("Audio Track"));
-   display = WaveformDisplay;
+   mDisplay = WaveformDisplay;
 
-   block = new BlockArray();
+   mSampleFormat = int16Sample;
 
-#if wxUSE_THREADS
-   blockMutex = new wxMutex();
-#endif
+   mBlock = new BlockArray();
+
+   mMinSamples = sMaxDiskBlockSize / SAMPLE_SIZE(mSampleFormat) / 2;
+   mMaxSamples = mMinSamples * 2;
+
+   SummaryInfo *s = &mSummary;
+
+   s->bytesPerFrame = 6;
+
+   s->frames64K = (mMaxSamples + 65535) / 65536;
+   s->frames256 = s->frames64K * 256;
+
+   s->offset64K = headerTagLen;
+   s->offset256 = s->offset64K + (s->frames64K * s->bytesPerFrame);
+   s->totalSummaryBytes = s->offset256 + (s->frames256 * s->bytesPerFrame);
 }
 
 WaveTrack::WaveTrack(const WaveTrack &orig) :
 VTrack(orig)
 {
-   rate = orig.rate;
-   display = orig.display;
+   mRate = orig.mRate;
+   mDisplay = orig.mDisplay;
+   mSampleFormat = orig.mSampleFormat;
+   mSummary = orig.mSummary;
+   mMaxSamples = orig.mMaxSamples;
+   mMinSamples = orig.mMinSamples;
 
-#if wxUSE_THREADS
-   blockMutex = new wxMutex();
-#endif
-
-   numSamples = 0;
-   block = new BlockArray();
+   mNumSamples = 0;
+   mBlock = new BlockArray();
    Paste(0.0, &orig);
 
-   envelope.CopyFrom(&(orig.envelope), GetOffset(), GetMaxLen());
+   mEnvelope.CopyFrom(&(orig.mEnvelope), GetOffset(), GetMaxLen());
 }
 
 WaveTrack::~WaveTrack()
 {
-   for (unsigned int i = 0; i < block->Count(); i++) {
-      GetDirManager()->Deref(block->Item(i)->f);
-      delete block->Item(i);
+   for (unsigned int i = 0; i < mBlock->Count(); i++) {
+      GetDirManager()->Deref(mBlock->Item(i)->f);
+      delete mBlock->Item(i);
    }
 
-   delete block;
+   delete mBlock;
 
-#if wxUSE_THREADS
-   delete blockMutex;
-#endif
+}
+
+int WaveTrack::GetSummaryBytes() const
+{
+   return mSummary.totalSummaryBytes;
+}
+
+sampleCount WaveTrack::GetMaxBlockSize() const
+{
+   return mMaxSamples;
+}
+
+sampleCount WaveTrack::GetIdealBlockSize() const
+{
+   return mMaxSamples;
 }
 
 void WaveTrack::Lock()
 {
-   for (int i = 0; i < block->Count(); i++)
-      block->Item(i)->f->Lock();
+   for (int i = 0; i < mBlock->Count(); i++)
+      mBlock->Item(i)->f->Lock();
 }
 
 void WaveTrack::Unlock()
 {
-   for (int i = 0; i < block->Count(); i++)
-      block->Item(i)->f->Unlock();
+   for (int i = 0; i < mBlock->Count(); i++)
+      mBlock->Item(i)->f->Unlock();
 }
 
 double WaveTrack::GetMaxLen() const
 {
-   return ((double) numSamples) / (rate) + GetOffset();
+   return ((double) mNumSamples) / (mRate) + GetOffset();
 }
 
 double WaveTrack::GetRate() const
 {
-   return rate;
+   return mRate;
 }
 
 void WaveTrack::SetRate(double newRate)
 {
-   rate = newRate;
+   mRate = newRate;
    SetDirty(GetDirty() + 1);                     // forces redraw
 }
 
 void WaveTrack::SetOffset(double t)
 {
    VTrack::SetOffset(t);
-   envelope.SetOffset(t);
+   mEnvelope.SetOffset(t);
+}
+
+sampleFormat WaveTrack::GetSampleFormat() const
+{
+   return mSampleFormat;
+}
+
+bool WaveTrack::SetSampleFormat(sampleFormat format)
+{
+   if (mBlock->Count() > 0 || mNumSamples > 0)
+      return false;
+
+   mSampleFormat = format;
+   return true;
+}
+
+void WaveTrack::ConvertToSampleFormat(sampleFormat format)
+{
+   if (format == mSampleFormat)
+      return;
+
+   if (mBlock->Count() == 0)
+      return;
+
+   wxBusyCursor busy;
+   wxYield();
+
+   for (unsigned int i = 0; i < mBlock->Count(); i++) {
+      BlockFile *oldBlock = mBlock->Item(i)->f;
+      sampleCount len = mBlock->Item(i)->len;
+
+      if (!oldBlock->IsAlias()) {
+         BlockFile *newBlock =
+            GetDirManager()->NewBlockFile(mSummary.totalSummaryBytes);
+
+         samplePtr buffer1 = NewSamples(len, mSampleFormat);
+         samplePtr buffer2 = NewSamples(len, format);
+
+         oldBlock->ReadData(buffer1, mSampleFormat, 0, len);
+         CopySamples(buffer1, mSampleFormat,
+                     buffer2, format, len);
+         newBlock->WriteData(buffer2, format, len);
+         
+         mBlock->Item(i)->f = newBlock;
+         GetDirManager()->Deref(oldBlock);
+
+         DeleteSamples(buffer2);
+         DeleteSamples(buffer1);
+      }
+   }
+
+   mSampleFormat = format;
 }
 
 void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
-                          sampleType * outMin, sampleType * outMax) const
+                          float * outMin, float * outMax) const
 {
-   if (len == 0 || block->Count() == 0) {
-      *outMin = 0;
-      *outMax = 0;
+   if (len == 0 || mBlock->Count() == 0) {
+      *outMin = 0.0;
+      *outMax = 0.0;
       return;
    }
 
-   sampleType min = 32727;
-   sampleType max = -32768;
+   float min = 1.0;
+   float max = -1.0;
 
    unsigned int block0 = FindBlock(start);
    unsigned int block1 = FindBlock(start + len);
@@ -178,26 +209,27 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
    unsigned int b, i;
 
    for (b = block0 + 1; b < block1; b++) {
-      if (block->Item(b)->min < min)
-         min = block->Item(b)->min;
-      if (block->Item(b)->max > max)
-         max = block->Item(b)->max;
+      if (mBlock->Item(b)->min < min)
+         min = mBlock->Item(b)->min;
+      if (mBlock->Item(b)->max > max)
+         max = mBlock->Item(b)->max;
    }
 
    // Now we take the first and last blocks into account, noting that the
    // selection may only partly overlap these blocks.  If the overall min/max
    // of either of these blocks is within min...max, then we can ignore them.
    // If not, we need read some samples and summaries from disk.
-   if (block->Item(block0)->min < min || block->Item(block0)->max > max) {
-      s0 = start - block->Item(block0)->start;
+   if (mBlock->Item(block0)->min < min || mBlock->Item(block0)->max > max) {
+      s0 = start - mBlock->Item(block0)->start;
       l0 = len;
-      maxl0 = block->Item(block0)->start + block->Item(block0)->len - start;
+      maxl0 = mBlock->Item(block0)->start + mBlock->Item(block0)->len - start;
       if (l0 > maxl0)
          l0 = maxl0;
-      sampleType *buffer = new sampleType[l0];
+
+      float *buffer = new float[l0];
 
       // TODO: optimize this to use Read256 and Read64K
-      Read(buffer, block->Item(block0), s0, l0);
+      Read((samplePtr)buffer, floatSample, mBlock->Item(block0), s0, l0);
       for (i = 0; i < l0; i++) {
          if (buffer[i] < min)
             min = buffer[i];
@@ -209,15 +241,15 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
    }
 
    if (block1 > block0 &&
-       (block->Item(block1)->min < min
-        || block->Item(block1)->max > max)) {
+       (mBlock->Item(block1)->min < min
+        || mBlock->Item(block1)->max > max)) {
 
       s0 = 0;
-      l0 = (start + len) - block->Item(block1)->start;
-      sampleType *buffer = new sampleType[l0];
+      l0 = (start + len) - mBlock->Item(block1)->start;
+      float *buffer = new float[l0];
 
       // TODO: optimize this to use Read256 and Read64K
-      Read(buffer, block->Item(block1), s0, l0);
+      Read((samplePtr)buffer, floatSample, mBlock->Item(block1), s0, l0);
       for (i = 0; i < l0; i++) {
          if (buffer[i] < min)
             min = buffer[i];
@@ -234,13 +266,13 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
 
 void WaveTrack::SetDisplay(int d)
 {
-   display = d;
+   mDisplay = d;
    SetDirty(GetDirty() + 1);                     // forces redraw
 }
 
 int WaveTrack::GetDisplay() const
 {
-   return display;
+   return mDisplay;
 }
 
 void WaveTrack::Cut(double t0, double t1, VTrack ** dest)
@@ -255,62 +287,59 @@ void WaveTrack::Copy(double t0, double t1, VTrack ** dest) const
 
    wxASSERT(t0 <= t1);
 
-#if wxUSE_THREADS
-   wxMutexLocker lock(*blockMutex);
-#endif
-
-   sampleCount s0 = (sampleCount) ((t0 - GetOffset()) * rate + 0.5);
-   sampleCount s1 = (sampleCount) ((t1 - GetOffset()) * rate + 0.5);
+   sampleCount s0 = (sampleCount) ((t0 - GetOffset()) * mRate + 0.5);
+   sampleCount s1 = (sampleCount) ((t1 - GetOffset()) * mRate + 0.5);
 
    if (t0 < GetOffset())
       s0 = 0;
-   if (s1 >= numSamples)
-      s1 = numSamples;
+   if (s1 >= mNumSamples)
+      s1 = mNumSamples;
 
-   if (s0 >= s1 || s0 >= numSamples || s1 < 0)
+   if (s0 >= s1 || s0 >= mNumSamples || s1 < 0)
       return;
 
-   int numBlocks = block->Count();
+   int numBlocks = mBlock->Count();
    int b0 = FindBlock(s0);
    int b1 = FindBlock(s1);
 
-   if (s1 == numSamples)
+   if (s1 == mNumSamples)
       b1 = numBlocks;
 
    *dest = new WaveTrack(GetDirManager());
-   ((WaveTrack *) * dest)->rate = rate;
+   ((WaveTrack *) * dest)->mRate = mRate;
+   ((WaveTrack *) * dest)->mSampleFormat = mSampleFormat;
 
-   sampleType *buffer = new sampleType[maxSamples];
+   samplePtr buffer = NewSamples(mMaxSamples, mSampleFormat);
 
    unsigned int blocklen;
 
    // Do the first block
 
-   if (b0 >= 0 && b0 < numBlocks && s0 != block->Item(b0)->start) {
+   if (b0 >= 0 && b0 < numBlocks && s0 != mBlock->Item(b0)->start) {
 
-      blocklen = (block->Item(b0)->start + block->Item(b0)->len - s0);
+      blocklen = (mBlock->Item(b0)->start + mBlock->Item(b0)->len - s0);
       if (blocklen > (s1 - s0))
          blocklen = s1 - s0;
-      Get(buffer, s0, blocklen);
+      Get(buffer, mSampleFormat, s0, blocklen);
 
-      ((WaveTrack *) * dest)->Append(buffer, blocklen);
+      ((WaveTrack *) * dest)->Append(buffer, mSampleFormat, blocklen);
    }
 
-   if (b0 >= 0 && b0 < numBlocks && s0 == block->Item(b0)->start) {
+   if (b0 >= 0 && b0 < numBlocks && s0 == mBlock->Item(b0)->start) {
       b0--;
    }
    // If there are blocks in the middle, copy the blockfiles directly
    for (int b = b0 + 1; b < b1; b++)
-      ((WaveTrack *) * dest)->AppendBlock(block->Item(b));
+      ((WaveTrack *) * dest)->AppendBlock(mBlock->Item(b));
 
    // Do the last block
    if (b1 > b0 && b1 < numBlocks) {
-      blocklen = (s1 - block->Item(b1)->start);
-      Get(buffer, block->Item(b1)->start, blocklen);
-      ((WaveTrack *) * dest)->Append(buffer, blocklen);
+      blocklen = (s1 - mBlock->Item(b1)->start);
+      Get(buffer, mSampleFormat, mBlock->Item(b1)->start, blocklen);
+      ((WaveTrack *) * dest)->Append(buffer, mSampleFormat, blocklen);
    }
 
-   delete[]buffer;
+   DeleteSamples(buffer);
 
    ((WaveTrack *) *dest)->GetEnvelope()->CopyFrom(GetEnvelope(), t0, t1);
 }
@@ -319,28 +348,24 @@ void WaveTrack::Paste(double t, const VTrack * src)
 {
    wxASSERT(src->GetKind() == WaveTrack::Wave);
 
-   envelope.Paste(t, &((WaveTrack *) src)->envelope);
+   mEnvelope.Paste(t, &((WaveTrack *) src)->mEnvelope);
 
-#if wxUSE_THREADS
-   wxMutexLocker lock(*blockMutex);
-#endif
-
-   sampleCount s = (sampleCount) ((t - GetOffset()) * rate + 0.5);
+   sampleCount s = (sampleCount) ((t - GetOffset()) * mRate + 0.5);
 
    if (s < 0)
       s = 0;
-   if (s >= numSamples)
-      s = numSamples;
+   if (s >= mNumSamples)
+      s = mNumSamples;
 
    BlockArray *srcBlock = ((WaveTrack *) src)->GetBlockArray();
-   int addedLen = ((WaveTrack *) src)->numSamples;
+   int addedLen = ((WaveTrack *) src)->mNumSamples;
    unsigned int srcNumBlocks = srcBlock->Count();
 
    if (addedLen == 0 || srcNumBlocks == 0)
       return;
 
    unsigned int b = FindBlock(s);
-   unsigned int numBlocks = block->Count();
+   unsigned int numBlocks = mBlock->Count();
 
    if (numBlocks == 0) {
       // Special case: this track is currently empty.
@@ -348,7 +373,7 @@ void WaveTrack::Paste(double t, const VTrack * src)
       for (unsigned int i = 0; i < srcNumBlocks; i++)
          AppendBlock(srcBlock->Item(i));
 
-      envelope.SetTrackLen(numSamples / rate);
+      mEnvelope.SetTrackLen(mNumSamples / mRate);
 
       ConsistencyCheck("Paste branch one");
 
@@ -356,42 +381,39 @@ void WaveTrack::Paste(double t, const VTrack * src)
    }
 
    if (b >= 0 && b < numBlocks
-       && block->Item(b)->len + addedLen < maxSamples) {
+       && mBlock->Item(b)->len + addedLen < mMaxSamples) {
       // Special case: we can fit all of the new samples inside of
       // one block!
 
-      sampleType *buffer = new sampleType[maxSamples];
+      samplePtr buffer = NewSamples(mMaxSamples, mSampleFormat);
 
-      int splitPoint = s - block->Item(b)->start;
-      Read(buffer, block->Item(b), 0, splitPoint);
-      ((WaveTrack *) src)->Get(&buffer[splitPoint], 0, addedLen);
-      Read(&buffer[splitPoint + addedLen], block->Item(b),
-           splitPoint, block->Item(b)->len - splitPoint);
+      int splitPoint = s - mBlock->Item(b)->start;
+      Read(buffer, mSampleFormat, mBlock->Item(b), 0, splitPoint);
+      ((WaveTrack *) src)->Get(&buffer[splitPoint], mSampleFormat,
+                               0, addedLen);
+      Read(&buffer[splitPoint + addedLen], mSampleFormat, mBlock->Item(b),
+           splitPoint, mBlock->Item(b)->len - splitPoint);
 
       WaveBlock *largerBlock = new WaveBlock();
-      largerBlock->start = block->Item(b)->start;
-      largerBlock->len = block->Item(b)->len + addedLen;
-      largerBlock->f = GetDirManager()->NewBlockFile();
-#ifdef __WXDEBUG__
-      bool inited =
-#endif
-         InitBlock(largerBlock);
-      wxASSERT(inited);
+      largerBlock->start = mBlock->Item(b)->start;
+      largerBlock->len = mBlock->Item(b)->len + addedLen;
+      largerBlock->f =
+         GetDirManager()->NewBlockFile(mSummary.totalSummaryBytes);
 
       FirstWrite(buffer, largerBlock, largerBlock->len);
 
-      GetDirManager()->Deref(block->Item(b)->f);
-      delete block->Item(b);
-      block->Item(b) = largerBlock;
+      GetDirManager()->Deref(mBlock->Item(b)->f);
+      delete mBlock->Item(b);
+      mBlock->Item(b) = largerBlock;
 
       for (unsigned int i = b + 1; i < numBlocks; i++)
-         block->Item(i)->start += addedLen;
+         mBlock->Item(i)->start += addedLen;
 
-      numSamples += addedLen;
+      mNumSamples += addedLen;
 
-      delete[]buffer;
+      DeleteSamples(buffer);
 
-      envelope.SetTrackLen(numSamples / rate);
+      mEnvelope.SetTrackLen(mNumSamples / mRate);
 
       ConsistencyCheck("Paste branch two");
 
@@ -409,24 +431,27 @@ void WaveTrack::Paste(double t, const VTrack * src)
    int newNumBlocks = 0;
 
    for (i = 0; i < b; i++) {
-      newBlock->Add(block->Item(i));
+      newBlock->Add(mBlock->Item(i));
       newNumBlocks++;
    }
 
-   WaveBlock *splitBlock = block->Item(b);
-   sampleCount splitLen = block->Item(b)->len;
+   WaveBlock *splitBlock = mBlock->Item(b);
+   sampleCount splitLen = mBlock->Item(b)->len;
    int splitPoint = s - splitBlock->start;
 
    if (srcNumBlocks <= 4) {
 
       sampleCount sum = splitLen + addedLen;
 
-      sampleType *sumBuffer = new sampleType[sum];
-
-      Read(sumBuffer, splitBlock, 0, splitPoint);
-      ((WaveTrack *) src)->Get(&sumBuffer[splitPoint], 0, addedLen);
-      Read(&sumBuffer[splitPoint + addedLen], splitBlock,
-           splitPoint, splitBlock->len - splitPoint);
+      samplePtr sumBuffer = NewSamples(sum, mSampleFormat);
+      int sampleSize = SAMPLE_SIZE(mSampleFormat);
+      Read(sumBuffer, mSampleFormat, splitBlock, 0, splitPoint);
+      ((WaveTrack *) src)->Get(sumBuffer + splitPoint * sampleSize,
+                               mSampleFormat,
+                               0, addedLen);
+      Read(sumBuffer + (splitPoint + addedLen) * sampleSize, mSampleFormat,
+           splitBlock, splitPoint,
+           splitBlock->len - splitPoint);
 
       BlockArray *split = Blockify(sumBuffer, sum);
       for (i = 0; i < split->Count(); i++) {
@@ -435,8 +460,7 @@ void WaveTrack::Paste(double t, const VTrack * src)
          newNumBlocks++;
       }
       delete split;
-
-      delete[]sumBuffer;
+      DeleteSamples(sumBuffer);
    } else {
 
       // The final case is that we're inserting at least five blocks.
@@ -449,10 +473,12 @@ void WaveTrack::Paste(double t, const VTrack * src)
           srcBlock->Item(0)->len + srcBlock->Item(1)->len;
       sampleCount leftLen = splitPoint + srcFirstTwoLen;
 
-      sampleType *leftBuffer = new sampleType[leftLen];
-
-      Read(leftBuffer, splitBlock, 0, splitPoint);
-      ((WaveTrack *) src)->Get(&leftBuffer[splitPoint], 0, srcFirstTwoLen);
+      samplePtr leftBuffer = NewSamples(leftLen, mSampleFormat);
+      int sampleSize = SAMPLE_SIZE(mSampleFormat);
+      Read(leftBuffer, mSampleFormat, splitBlock, 0, splitPoint);
+      ((WaveTrack *) src)->Get(leftBuffer + splitPoint*sampleSize,
+                               mSampleFormat,
+                               0, srcFirstTwoLen);
 
       BlockArray *split = Blockify(leftBuffer, leftLen);
       for (i = 0; i < split->Count(); i++) {
@@ -461,7 +487,7 @@ void WaveTrack::Paste(double t, const VTrack * src)
          newNumBlocks++;
       }
       delete split;
-      delete[]leftBuffer;
+      DeleteSamples(leftBuffer);
 
       for (i = 2; i < srcNumBlocks - 2; i++) {
          WaveBlock *insertBlock = new WaveBlock();
@@ -485,12 +511,12 @@ void WaveTrack::Paste(double t, const VTrack * src)
       sampleCount rightSplit = splitBlock->len - splitPoint;
       sampleCount rightLen = rightSplit + srcLastTwoLen;
 
-      sampleType *rightBuffer = new sampleType[rightLen];
-
+      samplePtr rightBuffer = NewSamples(rightLen, mSampleFormat);
       sampleCount lastStart = srcBlock->Item(srcNumBlocks - 2)->start;
-      ((WaveTrack *) src)->Get(rightBuffer, lastStart, srcLastTwoLen);
-      Read(&rightBuffer[srcLastTwoLen], splitBlock, splitPoint,
-           rightSplit);
+      ((WaveTrack *) src)->Get(rightBuffer, mSampleFormat,
+                               lastStart, srcLastTwoLen);
+      Read(rightBuffer + srcLastTwoLen * sampleSize, mSampleFormat,
+           splitBlock, splitPoint, rightSplit);
 
       sampleCount pos = s + lastStart;
 
@@ -501,7 +527,7 @@ void WaveTrack::Paste(double t, const VTrack * src)
          newNumBlocks++;
       }
       delete split;
-      delete[]rightBuffer;
+      DeleteSamples(rightBuffer);
    }
 
    GetDirManager()->Deref(splitBlock->f);
@@ -510,17 +536,17 @@ void WaveTrack::Paste(double t, const VTrack * src)
    // Copy remaining blocks to new block array and
    // swap the new block array in for the old
    for (i = b + 1; i < numBlocks; i++) {
-      block->Item(i)->start += addedLen;
-      newBlock->Add(block->Item(i));
+      mBlock->Item(i)->start += addedLen;
+      newBlock->Add(mBlock->Item(i));
       newNumBlocks++;
    }
 
-   delete block;
-   block = newBlock;
+   delete mBlock;
+   mBlock = newBlock;
 
-   numSamples += addedLen;
+   mNumSamples += addedLen;
 
-   envelope.SetTrackLen(numSamples / rate);
+   mEnvelope.SetTrackLen(mNumSamples / mRate);
 
    ConsistencyCheck("Paste branch three");
 }
@@ -529,17 +555,17 @@ void WaveTrack::Clear(double t0, double t1)
 {
    wxASSERT(t0 <= t1);
 
-   envelope.CollapseRegion(t0, t1);
+   mEnvelope.CollapseRegion(t0, t1);
 
-   sampleCount s0 = (sampleCount) ((t0 - GetOffset()) * rate + 0.5);
-   sampleCount s1 = (sampleCount) ((t1 - GetOffset()) * rate + 0.5);
+   sampleCount s0 = (sampleCount) ((t0 - GetOffset()) * mRate + 0.5);
+   sampleCount s1 = (sampleCount) ((t1 - GetOffset()) * mRate + 0.5);
 
    if (t0 < GetOffset())
       s0 = 0;
-   if (s1 >= numSamples)
-      s1 = numSamples;
+   if (s1 >= mNumSamples)
+      s1 = mNumSamples;
 
-   if (s0 >= s1 || s0 >= numSamples || s1 < 0)
+   if (s0 >= s1 || s0 >= mNumSamples || s1 < 0)
       return;
 
    Delete(s0, (s1 - s0));
@@ -549,34 +575,36 @@ void WaveTrack::Silence(double t0, double t1)
 {
    wxASSERT(t0 <= t1);
 
-   sampleCount s0 = (sampleCount) ((t0 - GetOffset()) * rate + 0.5);
-   sampleCount s1 = (sampleCount) ((t1 - GetOffset()) * rate + 0.5);
+   sampleCount s0 = (sampleCount) ((t0 - GetOffset()) * mRate + 0.5);
+   sampleCount s1 = (sampleCount) ((t1 - GetOffset()) * mRate + 0.5);
 
    if (t0 < GetOffset())
       s0 = 0;
-   if (s1 >= numSamples)
-      s1 = numSamples;
+   if (s1 >= mNumSamples)
+      s1 = mNumSamples;
 
-   if (s0 >= s1 || s0 >= numSamples || s1 < 0)
+   if (s0 >= s1 || s0 >= mNumSamples || s1 < 0)
       return;
 
-   Set(NULL, s0, s1 - s0);
+   Set(NULL, mSampleFormat, s0, s1 - s0);
 }
 
 void WaveTrack::InsertSilence(double t, double lenSecs)
 {
    // Create a new track containing as much silence as we
    // need to insert, and then call Paste to do the insertion
-   sampleCount len = (sampleCount) (lenSecs * rate + 0.5);
+   sampleCount len = (sampleCount) (lenSecs * mRate + 0.5);
 
    WaveTrack *sTrack = new WaveTrack(GetDirManager());
-   sTrack->rate = rate;
+   sTrack->mRate = mRate;
+   sTrack->mSampleFormat = mSampleFormat;
 
    sampleCount idealSamples = GetIdealBlockSize();
-   sampleType *buffer = new sampleType[idealSamples];
-   sampleCount i;
-   for (i = 0; i < idealSamples; i++)
-      buffer[i] = 0;
+
+   // Allocate a zeroed buffer, exploiting the fact that zeroing a
+   // buffer creates zero ints and zero floats equally well...
+   samplePtr buffer = NewSamples(idealSamples, mSampleFormat);
+   ClearSamples(buffer, mSampleFormat, 0, idealSamples);
 
    sampleCount pos = 0;
    BlockFile *firstBlockFile = NULL;
@@ -590,13 +618,8 @@ void WaveTrack::InsertSilence(double t, double lenSecs)
       w->min = 0;
       w->max = 0;
       if (pos == 0 || len == l) {
-         w->f = GetDirManager()->NewBlockFile();
+         w->f = GetDirManager()->NewBlockFile(mSummary.totalSummaryBytes);
          firstBlockFile = w->f;
-#ifdef __WXDEBUG__
-         bool inited =
-#endif
-            InitBlock(w);
-         wxASSERT(inited);
          FirstWrite(buffer, w, l);
       } else {
          w->f = GetDirManager()->CopyBlockFile(firstBlockFile);
@@ -605,17 +628,18 @@ void WaveTrack::InsertSilence(double t, double lenSecs)
          }
       }
 
-      sTrack->block->Add(w);
+      sTrack->mBlock->Add(w);
 
       pos += l;
       len -= l;
    }
 
-   sTrack->numSamples = pos;
+   sTrack->mNumSamples = pos;
 
    Paste(t, sTrack);
 
    delete sTrack;
+   DeleteSamples(buffer);
 
    ConsistencyCheck("InsertSilence");
 }
@@ -625,40 +649,30 @@ void WaveTrack::AppendAlias(wxString fullPath,
                             sampleCount len, int channel)
 {
    WaveBlock *newBlock = new WaveBlock();
-   newBlock->start = numSamples;
+   newBlock->start = mNumSamples;
    newBlock->len = len;
-   newBlock->f =
-       GetDirManager()->NewAliasBlockFile(totalHeaderLen,
-                                          fullPath, start, len, channel);
-
-   InitBlock(newBlock);
+   newBlock->f = GetDirManager()->NewBlockFile(mSummary.totalSummaryBytes);
+   newBlock->f->SetAliasedData(fullPath, start, len, channel);
 
    BlockFile *f = newBlock->f;
 
-   sampleType *buffer = new sampleType[len];
-   Read(buffer, newBlock, 0, len);
+   samplePtr buffer = NewSamples(len, mSampleFormat);
+   Read(buffer, mSampleFormat, newBlock, 0, len);
 
-   wxASSERT(f);
-#ifdef __WXDEBUG__
-   bool opened = 
-#endif
-      f->OpenWriteHeader();
-   wxASSERT(opened);
    UpdateSummaries(buffer, newBlock, len);
-   f->Close();
 
-   delete[]buffer;
+   DeleteSamples(buffer);
 
-   block->Add(newBlock);
-   numSamples += newBlock->len;
+   mBlock->Add(newBlock);
+   mNumSamples += newBlock->len;
 
-   envelope.SetTrackLen(numSamples / rate);
+   mEnvelope.SetTrackLen(mNumSamples / mRate);
 }
 
 void WaveTrack::AppendBlock(WaveBlock * b)
 {
    WaveBlock *newBlock = new WaveBlock();
-   newBlock->start = numSamples;
+   newBlock->start = mNumSamples;
    newBlock->len = b->len;
    newBlock->f = GetDirManager()->CopyBlockFile(b->f);
    if (!newBlock->f) {
@@ -667,10 +681,10 @@ void WaveTrack::AppendBlock(WaveBlock * b)
    newBlock->min = b->min;
    newBlock->max = b->max;
    GetDirManager()->Ref(newBlock->f);
-   block->Add(newBlock);
-   numSamples += newBlock->len;
+   mBlock->Add(newBlock);
+   mNumSamples += newBlock->len;
 
-   envelope.SetTrackLen(numSamples / rate);
+   mEnvelope.SetTrackLen(mNumSamples / mRate);
 
    // Don't do a consistency check here because this
    // function gets called in an inner loop
@@ -683,17 +697,17 @@ sampleCount WaveTrack::GetBestBlockSize(sampleCount start) const
    // sample.  The value returned will always be nonzero and will be no larger
    // than the value of GetMaxBlockSize();
    int b = FindBlock(start);
-   int numBlocks = block->Count();
+   int numBlocks = mBlock->Count();
    
-   sampleCount result = (block->Item(b)->start + block->Item(b)->len - start);
+   sampleCount result = (mBlock->Item(b)->start + mBlock->Item(b)->len - start);
    
-   while(result < minSamples && b+1<numBlocks &&
-         (block->Item(b)->len+result) <= maxSamples) {
+   while(result < mMinSamples && b+1<numBlocks &&
+         (mBlock->Item(b)->len+result) <= mMaxSamples) {
       b++;
-      result += block->Item(b)->len;
+      result += mBlock->Item(b)->len;
    }
    
-   wxASSERT(result > 0 && result <= maxSamples);
+   wxASSERT(result > 0 && result <= mMaxSamples);
    
    return result;
 }
@@ -702,19 +716,16 @@ bool WaveTrack::Load(wxTextFile * in, DirManager * dirManager)
 {
    bool result = VTrack::Load(in, dirManager);
 
-   envelope.SetOffset(GetOffset());
+   mEnvelope.SetOffset(GetOffset());
 
    if (result) {
-      result = envelope.Load(in, dirManager);
+      result = mEnvelope.Load(in, dirManager);
    }
 
    if (!result) {
       wxMessageBox(_("Error loading a Track.\n"));
       return false;
    }
-#if wxUSE_THREADS
-   blockMutex->Lock();
-#endif
 
    int b;
    long longNumSamples;
@@ -727,11 +738,11 @@ bool WaveTrack::Load(wxTextFile * in, DirManager * dirManager)
       goto readWaveTrackError;
    if (!(in->GetNextLine().ToLong(&longNumSamples)))
       goto readWaveTrackError;
-   numSamples = longNumSamples;
+   mNumSamples = longNumSamples;
 
    if (in->GetNextLine() != "rate")
       goto readWaveTrackError;
-   if (!(in->GetNextLine().ToDouble(&rate)))
+   if (!(in->GetNextLine().ToDouble(&mRate)))
       goto readWaveTrackError;
 
    if (in->GetNextLine() != "numBlocks")
@@ -739,7 +750,7 @@ bool WaveTrack::Load(wxTextFile * in, DirManager * dirManager)
    if (!(in->GetNextLine().ToLong(&numBlocks)))
       goto readWaveTrackError;
 
-   block->Alloc(numBlocks);
+   mBlock->Alloc(numBlocks);
 
    for (b = 0; b < numBlocks; b++) {
       w = new WaveBlock();
@@ -763,10 +774,8 @@ bool WaveTrack::Load(wxTextFile * in, DirManager * dirManager)
 
       if (!w->f) {
 
-         numSamples = 0;
-         block->Clear();
-
-         blockMutex->Unlock();
+         mNumSamples = 0;
+         mBlock->Clear();
 
          wxString msg;
          msg.Printf(_("The file named \"%s\" is missing from the project."),
@@ -776,10 +785,8 @@ bool WaveTrack::Load(wxTextFile * in, DirManager * dirManager)
          return false;
       }
 
-      block->Add(w);
+      mBlock->Add(w);
    }
-
-   blockMutex->Unlock();
 
    return true;
 
@@ -793,23 +800,23 @@ bool WaveTrack::Save(wxTextFile * out, bool overwrite)
 {
    VTrack::Save(out, overwrite);
 
-   envelope.Save(out, overwrite);
+   mEnvelope.Save(out, overwrite);
 
    unsigned int b;
 
    out->AddLine("numSamples");
-   out->AddLine(wxString::Format("%d", numSamples));
+   out->AddLine(wxString::Format("%d", mNumSamples));
 
    out->AddLine("rate");
-   out->AddLine(wxString::Format("%g", rate));
+   out->AddLine(wxString::Format("%g", mRate));
 
    out->AddLine("numBlocks");
-   out->AddLine(wxString::Format("%d", block->Count()));
+   out->AddLine(wxString::Format("%d", mBlock->Count()));
 
    WaveBlock *bb;
 
-   for (b = 0; b < block->Count(); b++) {
-      bb = block->Item(b);
+   for (b = 0; b < mBlock->Count(); b++) {
+      bb = mBlock->Item(b);
 
       out->AddLine("Block start");
       out->AddLine(wxString::Format("%d", bb->start));
@@ -822,51 +829,31 @@ bool WaveTrack::Save(wxTextFile * out, bool overwrite)
    return true;
 }
 
-sampleType WaveTrack::Get(sampleCount pos) const
+float WaveTrack::Get(sampleCount pos) const
 {
-   sampleType temp[1];
-   Get(temp, pos, 1);
+   float temp[1];
+   Get((samplePtr)temp, floatSample, pos, 1);
    return temp[0];
 }
 
 WaveBlock *WaveTrack::NewInitedWaveBlock()
 {
    WaveBlock *b = new WaveBlock();
-   b->f = GetDirManager()->NewBlockFile();
-#ifdef __WXDEBUG__
-   bool inited =
-#endif
-      InitBlock(b);
-   wxASSERT(inited);
+   b->f = GetDirManager()->NewBlockFile(mSummary.totalSummaryBytes);
    return b;
-}
-
-bool WaveTrack::InitBlock(WaveBlock * b)
-{
-   wxASSERT(b);
-
-   BlockFile *f = b->f;
-
-   if (!f->OpenWriteHeader())
-      return false;
-
-   f->Write(headerTag, headerTagLen);
-   f->Close();
-
-   return true;
 }
 
 int WaveTrack::FindBlock(sampleCount pos, sampleCount lo,
                          sampleCount guess, sampleCount hi) const
 {
-   wxASSERT(block->Item(guess)->len > 0);
+   wxASSERT(mBlock->Item(guess)->len > 0);
    wxASSERT(lo <= guess && guess <= hi && lo <= hi);
 
-   if (pos >= block->Item(guess)->start &&
-       pos < block->Item(guess)->start + block->Item(guess)->len)
+   if (pos >= mBlock->Item(guess)->start &&
+       pos < mBlock->Item(guess)->start + mBlock->Item(guess)->len)
       return guess;
 
-   if (pos < block->Item(guess)->start)
+   if (pos < mBlock->Item(guess)->start)
       return FindBlock(pos, lo, (lo + guess) / 2, guess);
    else
       return FindBlock(pos, guess + 1, (guess + 1 + hi) / 2, hi);
@@ -874,328 +861,304 @@ int WaveTrack::FindBlock(sampleCount pos, sampleCount lo,
 
 int WaveTrack::FindBlock(sampleCount pos) const
 {
-   wxASSERT(pos >= 0 && pos <= numSamples);
+   wxASSERT(pos >= 0 && pos <= mNumSamples);
 
-   int numBlocks = block->Count();
+   int numBlocks = mBlock->Count();
 
    if (pos == 0)
       return 0;
 
-   if (pos == numSamples)
+   if (pos == mNumSamples)
       return (numBlocks - 1);
 
    int rval = FindBlock(pos, 0, numBlocks / 2, numBlocks);
 
    wxASSERT(rval >= 0 && rval < numBlocks &&
-            pos >= block->Item(rval)->start &&
-            pos < block->Item(rval)->start + block->Item(rval)->len);
+            pos >= mBlock->Item(rval)->start &&
+            pos < mBlock->Item(rval)->start + mBlock->Item(rval)->len);
 
    return rval;
 }
 
-void WaveTrack::Read(sampleType * buffer, WaveBlock * b,
-                     sampleCount start, sampleCount len) const
+void WaveTrack::Read(samplePtr buffer, sampleFormat format,
+                     WaveBlock * b, sampleCount start, sampleCount len) const
 {
    wxASSERT(b);
    wxASSERT(start >= 0);
    wxASSERT(start + len <= b->len);
 
    BlockFile *f = b->f;
-#ifdef __WXDEBUG__
-   bool opened =
-#endif
-      f->OpenReadData();
-   wxASSERT(opened);
 
-   /* the seek is in terms of the data stream. ie,
-    * internally it will seek totalHeaderLen + this arg */
-   f->SeekTo(start * sizeof(sampleType));
+   int result = f->ReadData(buffer, format, start, len);
 
-   int result = f->Read((void *) buffer, (int) (len * sizeof(sampleType)));
-
-   if (result != (int) (len * sizeof(sampleType))) {
-      printf(_("Expected to read %d bytes, got %d bytes.\n"),
-             len * sizeof(sampleType), result);
+   if (result != len) {
+      printf(_("Expected to read %d samples, got %d samples.\n"),
+             len, result);
    }
-
-   /* wxASSERT(result == (int) (len * sizeof(sampleType))); */
-
-   f->Close();
 }
 
-void WaveTrack::Read256(sampleType * buffer, WaveBlock * b,
+void WaveTrack::Read256(short *buffer, WaveBlock * b,
                         sampleCount start, sampleCount len) const
 {
    wxASSERT(b);
    wxASSERT(start >= 0);
    wxASSERT(start + len <= ((b->len + 255) / 256));
-   start *= 2;
-   len *= 2;
 
-   BlockFile *f = b->f;
-#ifdef __WXDEBUG__
-   bool opened = 
-#endif
-      f->OpenReadHeader();
-   wxASSERT(opened);
+   char *summary = (char *)malloc(GetSummaryBytes());
+   if (!b->f->ReadSummary(summary)) {
+      // TODO handle missing file
+      return;
+   }
 
-   f->SeekTo(headerTagLen + summary64KLen * sizeof(sampleType)
-             + start * sizeof(sampleType));
+   memcpy(buffer,
+          summary + mSummary.offset256 + (start * mSummary.bytesPerFrame),
+          len * mSummary.bytesPerFrame);
 
-#ifdef __WXDEBUG__
-   int result = 
-#endif
-      f->Read((void *) buffer, (int) (len * sizeof(sampleType)));
-   wxASSERT(result == (int) (len * sizeof(sampleType)));
-
-   f->Close();
+   free(summary);
 }
 
-void WaveTrack::Read64K(sampleType * buffer, WaveBlock * b,
+void WaveTrack::Read64K(short *buffer, WaveBlock * b,
                         sampleCount start, sampleCount len) const
 {
    wxASSERT(b);
    wxASSERT(start >= 0);
    wxASSERT(start + len <= ((b->len + 65535) / 65536));
-   start *= 2;
-   len *= 2;
 
-   BlockFile *f = b->f;
-#ifdef __WXDEBUG__
-   bool opened =
-#endif
-      f->OpenReadHeader();
-   wxASSERT(opened);
+   char *summary = (char *)malloc(GetSummaryBytes());
+   if (!b->f->ReadSummary(summary)) {
+      // TODO handle missing file
+      return;
+   }
 
-   f->SeekTo(headerTagLen + start * sizeof(sampleType));
+   memcpy(buffer,
+          summary + mSummary.offset64K + (start * mSummary.bytesPerFrame),
+          len * mSummary.bytesPerFrame);
 
-#ifdef __WXDEBUG__
-   int result =
-#endif
-      f->Read((void *) buffer, (int) (len * sizeof(sampleType)));
-   wxASSERT(result == (int) (len * sizeof(sampleType)));
-
-   f->Close();
+   free(summary);
 }
 
-void WaveTrack::CopyWrite(sampleType * buffer, WaveBlock * b,
-                          sampleCount start, sampleCount len)
-{
-   // Usually we don't write to an existing block; to support Undo,
-   // we copy the old block entirely into memory, dereference it,
-   // make the change, and then write the new block to disk.
-   wxASSERT(b);
-   wxASSERT(b->len <= maxSamples);
-   wxASSERT(start + len <= b->len);
-
-   SetDirty(GetDirty() + 1);                     // forces redraw
-
-   sampleType *newBuffer = 0;
-
-   newBuffer = new sampleType[maxSamples];
-   wxASSERT(newBuffer);
-
-   Read(newBuffer, b, 0, b->len);
-
-   for (unsigned int i = 0; i < len; i++)
-      newBuffer[start + i] = buffer[i];
-
-   BlockFile *oldBlockFile = b->f;
-   b->f = GetDirManager()->NewBlockFile();
-#ifdef __WXDEBUG__
-   bool inited =
-#endif
-      InitBlock(b);
-   wxASSERT(inited);
-
-   buffer = newBuffer;
-   start = 0;
-   len = b->len;
-
-   GetDirManager()->Deref(oldBlockFile);
-
-   // Write the block
-
-   BlockFile *f = b->f;
-
-   wxASSERT(f);
-#ifdef __WXDEBUG__
-   bool opened =
-#endif
-      f->OpenWriteData();
-   wxASSERT(opened);
-
-   // OpenWriteData() should automatically seek to this point
-   //f->SeekTo(totalHeaderLen + (start * sizeof(sampleType)));
-   // It can't, it doesn't know start!!  [JH]
-   //f->SeekTo(start * sizeof(sampleType));
-   f->Write((void *) buffer, len * sizeof(sampleType));
-   f->Close();
-
-   f->OpenWriteHeader();
-   UpdateSummaries(buffer, b, len);
-   f->Close();
-
-   if (newBuffer)
-      delete[]newBuffer;
-}
-
-void WaveTrack::FirstWrite(sampleType * buffer, WaveBlock * b,
+void WaveTrack::FirstWrite(samplePtr buffer, WaveBlock * b,
                            sampleCount len)
 {
    wxASSERT(b);
-   wxASSERT(b->len <= maxSamples);
+   wxASSERT(b->len <= mMaxSamples);
 
-   SetDirty(GetDirty() + 1);                     // forces redraw
+   SetDirty(GetDirty() + 1);    // forces redraw
 
-   BlockFile *f = b->f;
-
-   wxASSERT(f);
-#ifdef __WXDEBUG__
-   bool opened = 
-#endif
-      f->OpenWriteData();
-   wxASSERT(opened);
-
-   // OpenWriteData() should automatically seek to this point
-   //f->SeekTo(totalHeaderLen);
-   f->Write((void *) buffer, len * sizeof(sampleType));
-   f->Close();
-
-   f->OpenWriteHeader();
    UpdateSummaries(buffer, b, len);
-   f->Close();
+   b->f->WriteData(buffer, mSampleFormat, len);
 }
 
-void WaveTrack::UpdateSummaries(sampleType * buffer,
+void WaveTrack::CopyWrite(samplePtr buffer, WaveBlock *b,
+                          sampleCount start, sampleCount len)
+{
+   // We don't ever write to an existing block; to support Undo,
+   // we copy the old block entirely into memory, dereference it,
+   // make the change, and then write the new block to disk.
+
+   wxASSERT(b);
+   wxASSERT(b->len <= mMaxSamples);
+   wxASSERT(start + len <= b->len);
+
+   SetDirty(GetDirty() + 1);    // forces redraw
+
+   int sampleSize = SAMPLE_SIZE(mSampleFormat);
+   samplePtr newBuffer = NewSamples(mMaxSamples, mSampleFormat);
+   wxASSERT(newBuffer);
+
+   Read(newBuffer, mSampleFormat, b, 0, b->len);
+   memcpy(newBuffer + start*sampleSize, buffer, len*sampleSize);
+
+   BlockFile *oldBlockFile = b->f;
+   b->f = GetDirManager()->NewBlockFile(mSummary.totalSummaryBytes);
+
+   GetDirManager()->Deref(oldBlockFile);
+
+   b->f->WriteData(newBuffer, mSampleFormat, b->len);
+   UpdateSummaries(newBuffer, b, len);
+
+   DeleteSamples(newBuffer);
+}
+
+void WaveTrack::UpdateSummaries(samplePtr buffer,
                                 WaveBlock * b, sampleCount len)
 {
-   // This method assumes that b->f is already opened
-   BlockFile *f = b->f;
+   char *fullSummary = (char *)malloc(mSummary.totalSummaryBytes);
 
-   sampleType *summary64K = new sampleType[summary64KLen];
-   sampleType *summary256 = new sampleType[summary256Len];
+   memcpy(fullSummary, headerTag, headerTagLen);
+
+   short *summary64K = (short *)(fullSummary + mSummary.offset64K);
+   short *summary256 = (short *)(fullSummary + mSummary.offset256);
+
+   short *sbuffer = new short[len];
+   CopySamples(buffer, mSampleFormat,
+               (samplePtr)sbuffer, int16Sample, len);
 
    sampleCount sumLen;
    sampleCount i, j, jcount;
 
-   sampleType min, max;
+   short min, max;
+   float sumsq;
 
    // Recalc 256 summaries
    sumLen = (len + 255) / 256;
 
    for (i = 0; i < sumLen; i++) {
-      min = buffer[i * 256];
-      max = buffer[i * 256];
+      min = sbuffer[i * 256];
+      max = sbuffer[i * 256];
+      sumsq = ((float)min) * ((float)min);
       jcount = 256;
       if (i * 256 + jcount > len)
          jcount = len - i * 256;
       for (j = 1; j < jcount; j++) {
-         if (buffer[i * 256 + j] < min)
-            min = buffer[i * 256 + j];
-         else if (buffer[i * 256 + j] > max)
-            max = buffer[i * 256 + j];
+         short s1 = sbuffer[i * 256 + j];
+         sumsq += ((float)s1) * ((float)s1);
+         if (s1 < min)
+            min = s1;
+         else if (s1 > max)
+            max = s1;
       }
-      summary256[i * 2] = min;
-      summary256[i * 2 + 1] = max;
+
+      float rms = (float)sqrt(sumsq / jcount);
+
+      summary256[i * 3] = min;
+      summary256[i * 3 + 1] = max;
+      summary256[i * 3 + 2] = (short)(rms + 0.5);
    }
-   for (i = sumLen; i < summary256Len / 2; i++) {
-      summary256[i * 2] = 0;
-      summary256[i * 2 + 1] = 0;
+   for (i = sumLen; i < mSummary.frames256; i++) {
+      summary256[i * 3] = 0;
+      summary256[i * 3 + 1] = 0;
+      summary256[i * 3 + 2] = 0;
    }
 
    // Recalc 64K summaries
    sumLen = (len + 65535) / 65536;
 
    for (i = 0; i < sumLen; i++) {
-      min = summary256[2 * i * 256];
-      max = summary256[2 * i * 256 + 1];
+      min = summary256[3 * i * 256];
+      max = summary256[3 * i * 256 + 1];
+      sumsq = (float)summary256[3 * i * 256 + 2];
+      sumsq *= sumsq;
 
       for (j = 1; j < 256; j++) {
-         if (summary256[2 * (i * 256 + j)] < min)
-            min = summary256[2 * (i * 256 + j)];
-         if (summary256[2 * (i * 256 + j) + 1] > max)
-            max = summary256[2 * (i * 256 + j) + 1];
+         if (summary256[3 * (i * 256 + j)] < min)
+            min = summary256[3 * (i * 256 + j)];
+         if (summary256[3 * (i * 256 + j) + 1] > max)
+            max = summary256[3 * (i * 256 + j) + 1];
+         float r1 = summary256[3 * (i * 256 + j) + 2];
+         sumsq += r1*r1;
       }
-      summary64K[i * 2] = min;
-      summary64K[i * 2 + 1] = max;
+
+      float rms = (float)sqrt(sumsq / 256);
+
+      summary64K[i * 3] = min;
+      summary64K[i * 3 + 1] = max;
+      summary64K[i * 3 + 2] = (short)(rms + 0.5);
    }
-   for (i = sumLen; i < summary64KLen / 2; i++) {
-      summary256[i * 2] = 0;
-      summary256[i * 2 + 1] = 0;
+   for (i = sumLen; i < mSummary.frames64K; i++) {
+      summary256[i * 3] = 0;
+      summary256[i * 3 + 1] = 0;
+      summary256[i * 3 + 2] = 0;
    }
 
    // Recalc block-level summary
    min = summary64K[0];
    max = summary64K[1];
+   sumsq = (float)summary64K[2];
+   sumsq *= sumsq;
+   
    for (i = 1; i < sumLen; i++) {
-      if (summary64K[2*i] < min)
-         min = summary64K[2*i];
-      else if (summary64K[2*i+1] > max)
-         max = summary64K[2*i+1];
+      if (summary64K[3*i] < min)
+         min = summary64K[3*i];
+      else if (summary64K[3*i+1] > max)
+         max = summary64K[3*i+1];
+      float r1 = (float)summary64K[3*i+2];
+      sumsq += (r1*r1);
    }
    b->min = min;
    b->max = max;
+   b->rms = (short)(sqrt(sumsq / sumLen) + 0.5);
 
-   // Write 256 and 64K summaries to disk
-   f->SeekTo(headerTagLen);
-   f->Write((void *) summary64K, summary64KLen * sizeof(sampleType));
-   f->Write((void *) summary256, summary256Len * sizeof(sampleType));
+   b->f->WriteSummary(fullSummary);
 
-   delete[]summary64K;
-   delete[]summary256;
+   delete[] sbuffer;
+   free(fullSummary);
 }
 
-void WaveTrack::Get(sampleType * buffer, sampleCount start,
+void WaveTrack::Get(float * buffer, sampleCount start,
                     sampleCount len) const
 {
-   wxASSERT(start < numSamples && start + len <= numSamples);
+   Get((samplePtr)buffer, floatSample, start, len);
+}
+
+void WaveTrack::Get(samplePtr buffer, sampleFormat format,
+                    sampleCount start, sampleCount len) const
+{
+   wxASSERT(start < mNumSamples && start + len <= mNumSamples);
    int b = FindBlock(start);
 
    while (len) {
       sampleCount blen =
-          block->Item(b)->start + block->Item(b)->len - start;
+          mBlock->Item(b)->start + mBlock->Item(b)->len - start;
       if (blen > len)
          blen = len;
-      sampleCount bstart = (start - (block->Item(b)->start));
-      Read(buffer, block->Item(b), bstart, blen);
+      sampleCount bstart = (start - (mBlock->Item(b)->start));
+
+      Read(buffer, format, mBlock->Item(b), bstart, blen);
+
       len -= blen;
-      buffer += blen;
+      buffer += (blen * SAMPLE_SIZE(format));
       b++;
       start += blen;
    }
 }
 
 // Pass NULL to set silence
-void WaveTrack::Set(sampleType * buffer, sampleCount start,
-                    sampleCount len)
+void WaveTrack::Set(float *buffer,
+                    sampleCount start, sampleCount len)
 {
-   wxASSERT(start < numSamples && start + len <= numSamples);
+   Set((samplePtr)buffer, floatSample, start, len);
+}
 
-#if wxUSE_THREADS
-   wxMutexLocker lock(*blockMutex);
-#endif
+// Pass NULL to set silence
+void WaveTrack::Set(samplePtr buffer, sampleFormat format,
+                    sampleCount start, sampleCount len)
+{
+   wxASSERT(start < mNumSamples && start + len <= mNumSamples);
+
+   samplePtr temp;
+   if (format != mSampleFormat) {
+      temp = NewSamples(mMaxSamples, mSampleFormat);
+      wxASSERT(temp);
+   }
+
+   samplePtr silence = NULL;
+   if (!buffer) {
+      silence = NewSamples(mMaxSamples, format);
+      wxASSERT(silence);
+      ClearSamples(silence, format, 0, mMaxSamples);
+   }
 
    int b = FindBlock(start);
 
-   sampleType *silence = NULL;
-   if (!buffer) {
-      silence = new sampleType[maxSamples];
-      for (unsigned int i = 0; i < maxSamples; i++)
-         silence[i] = 0;
-   }
-
    while (len) {
-      unsigned int blen = block->Item(b)->start + block->Item(b)->len - start;
+      unsigned int blen =
+         mBlock->Item(b)->start + mBlock->Item(b)->len - start;
       if (blen > len)
          blen = len;
 
       if (buffer) {
-         CopyWrite(buffer, block->Item(b), start - block->Item(b)->start,
-                   blen);
-         buffer += blen;
+         if (format == mSampleFormat)
+            CopyWrite(buffer, mBlock->Item(b), start - mBlock->Item(b)->start,
+                      blen);
+         else {
+            CopySamples(buffer, format, temp, mSampleFormat, blen);
+            CopyWrite(temp, mBlock->Item(b), start - mBlock->Item(b)->start,
+                      blen);
+         }
+         buffer += (blen * SAMPLE_SIZE(format));
       } else
-         CopyWrite(silence, block->Item(b), start - block->Item(b)->start,
+         CopyWrite(silence, mBlock->Item(b), start - mBlock->Item(b)->start,
                    blen);
 
       len -= blen;
@@ -1204,77 +1167,96 @@ void WaveTrack::Set(sampleType * buffer, sampleCount start,
    }
 
    if (!buffer)
-      delete[]silence;
+      DeleteSamples(silence);
+
+   if (format != mSampleFormat)
+      DeleteSamples(temp);
 
    ConsistencyCheck("Set");
 }
 
-void WaveTrack::Append(sampleType * buffer, sampleCount len)
+void WaveTrack::Append(samplePtr buffer, sampleFormat format,
+                       sampleCount len)
 {
-#if wxUSE_THREADS
-   wxMutexLocker lock(*blockMutex);
-#endif
+   samplePtr temp;
+   if (format != mSampleFormat) {
+      temp = NewSamples(mMaxSamples, mSampleFormat);
+      wxASSERT(temp);
+   }
 
    // If the last block is not full, we need to add samples to it
-   int numBlocks = block->Count();
-   if (numBlocks > 0 && block->Item(numBlocks - 1)->len < minSamples) {
-      WaveBlock *lastBlock = block->Item(numBlocks - 1);
+   int numBlocks = mBlock->Count();
+   if (numBlocks > 0 && mBlock->Item(numBlocks - 1)->len < mMinSamples) {
+      WaveBlock *lastBlock = mBlock->Item(numBlocks - 1);
       sampleCount addLen;
-      if (lastBlock->len + len < maxSamples)
+      if (lastBlock->len + len < mMaxSamples)
          addLen = len;
       else
          addLen = GetIdealBlockSize() - lastBlock->len;
 
       WaveBlock *newLastBlock = NewInitedWaveBlock();
 
-      sampleType *buffer2 = new sampleType[lastBlock->len + addLen];
-      Read(buffer2, lastBlock, 0, lastBlock->len);
+      samplePtr buffer2 = NewSamples((lastBlock->len + addLen), mSampleFormat);
+      Read(buffer2, mSampleFormat, lastBlock, 0, lastBlock->len);
 
-      for (unsigned int j = 0; j < addLen; j++)
-         buffer2[lastBlock->len + j] = buffer[j];
+      if (format == mSampleFormat)
+         memcpy(buffer2 + lastBlock->len * SAMPLE_SIZE(format),
+                buffer,
+                addLen * SAMPLE_SIZE(format));
+      else {
+         CopySamples(buffer, format, temp, mSampleFormat, addLen);
+         memcpy(buffer2 + lastBlock->len * SAMPLE_SIZE(format),
+                temp,
+                addLen * SAMPLE_SIZE(format));
+      }
 
       newLastBlock->start = lastBlock->start;
       newLastBlock->len = lastBlock->len + addLen;
 
       FirstWrite(buffer2, newLastBlock, lastBlock->len + addLen);
 
-      delete[]buffer2;
+      DeleteSamples(buffer2);
 
       GetDirManager()->Deref(lastBlock->f);
       delete lastBlock;
-      block->Item(numBlocks - 1) = newLastBlock;
+      mBlock->Item(numBlocks - 1) = newLastBlock;
 
       len -= addLen;
-      numSamples += addLen;
-      buffer += addLen;
+      mNumSamples += addLen;
+      buffer += addLen * SAMPLE_SIZE(format);
    }
    // Append the rest as new blocks
    while (len) {
       sampleCount idealSamples = GetIdealBlockSize();
       sampleCount l = (len > idealSamples ? idealSamples : len);
       WaveBlock *w = new WaveBlock();
-      w->f = GetDirManager()->NewBlockFile();
-      w->start = numSamples;
+      w->f = GetDirManager()->NewBlockFile(mSummary.totalSummaryBytes);
+      w->start = mNumSamples;
       w->len = l;
-#ifdef __WXDEBUG__
-      bool inited = 
-#endif
-         InitBlock(w);
-      wxASSERT(inited);
-      FirstWrite(buffer, w, l);
-      block->Add(w);
 
-      buffer += l;
-      numSamples += l;
+      if (format == mSampleFormat)
+         FirstWrite(buffer, w, l);
+      else {
+         CopySamples(buffer, format, temp, mSampleFormat, l);
+         FirstWrite(temp, w, l);
+      }
+
+      mBlock->Add(w);
+
+      buffer += l * SAMPLE_SIZE(format);
+      mNumSamples += l;
       len -= l;
    }
 
-   envelope.SetTrackLen(numSamples / rate);
+   mEnvelope.SetTrackLen(mNumSamples / mRate);
+
+   if (format != mSampleFormat)
+      DeleteSamples(temp);
 
    ConsistencyCheck("Append");
 }
 
-BlockArray *WaveTrack::Blockify(sampleType * buffer, sampleCount len)
+BlockArray *WaveTrack::Blockify(samplePtr buffer, sampleCount len)
 {
    BlockArray *list = new BlockArray();
    list->Alloc(10);
@@ -1282,7 +1264,7 @@ BlockArray *WaveTrack::Blockify(sampleType * buffer, sampleCount len)
    if (len == 0)
       return list;
 
-   int num = (len + (maxSamples - 1)) / maxSamples;
+   int num = (len + (mMaxSamples - 1)) / mMaxSamples;
 
    for (int i = 0; i < num; i++) {
       WaveBlock *b = NewInitedWaveBlock();
@@ -1290,7 +1272,8 @@ BlockArray *WaveTrack::Blockify(sampleType * buffer, sampleCount len)
       b->start = i * len / num;
       b->len = ((i + 1) * len / num) - b->start;
 
-      FirstWrite(&buffer[b->start], b, b->len);
+      FirstWrite(buffer + (b->start * SAMPLE_SIZE(mSampleFormat)),
+                 b, b->len);
 
       list->Add(b);
    }
@@ -1303,45 +1286,45 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
    if (len == 0)
       return;
 
-   unsigned int numBlocks = block->Count();
+   unsigned int numBlocks = mBlock->Count();
    unsigned int newNumBlocks = 0;
-
-#if wxUSE_THREADS
-   wxMutexLocker lock(*blockMutex);
-#endif
 
    unsigned int b0 = FindBlock(start);
    unsigned int b1 = FindBlock(start + len - 1);
 
+   int sampleSize = SAMPLE_SIZE(mSampleFormat);
+
    // Special case: if the samples to delete are all within a single
    // block and the resulting length is not too small, perform the
    // deletion within this block:
-   if (b0 == b1 && block->Item(b0)->len - len >= minSamples) {
-      WaveBlock *b = block->Item(b0);
+   if (b0 == b1 && mBlock->Item(b0)->len - len >= mMinSamples) {
+      WaveBlock *b = mBlock->Item(b0);
       sampleCount pos = start - b->start;
       sampleCount newLen = b->len - len;
-      sampleType *buffer = new sampleType[newLen];
 
-      Read(buffer, b, 0, pos);
-      Read(&buffer[pos], b, pos + len, newLen - pos);
+      samplePtr buffer = NewSamples(newLen, mSampleFormat);
+
+      Read(buffer, mSampleFormat, b, 0, pos);
+      Read(buffer + (pos * sampleSize), mSampleFormat,
+           b, pos + len, newLen - pos);
 
       WaveBlock *newBlock = NewInitedWaveBlock();
       newBlock->start = b->start;
       newBlock->len = newLen;
       FirstWrite(buffer, newBlock, newLen);
 
-      block->Item(b0) = newBlock;
+      mBlock->Item(b0) = newBlock;
 
       for (unsigned int j = b0 + 1; j < numBlocks; j++)
-         block->Item(j)->start -= len;
+         mBlock->Item(j)->start -= len;
 
-      delete[]buffer;
+      DeleteSamples(buffer);
 
       GetDirManager()->Deref(b->f);
       delete b;
 
-      numSamples -= len;
-      envelope.SetTrackLen(numSamples / rate);
+      mNumSamples -= len;
+      mEnvelope.SetTrackLen(mNumSamples / mRate);
       ConsistencyCheck("Delete - branch one");
 
       return;
@@ -1355,7 +1338,7 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
    // the new array
    unsigned int i;
    for (i = 0; i < b0; i++) {
-      newBlock->Add(block->Item(i));
+      newBlock->Add(mBlock->Item(i));
       newNumBlocks++;
    }
 
@@ -1364,19 +1347,19 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
    // or if this would be the first block in the array, write it out.
    // Otherwise combine it with the previous block (splitting them
    // 50/50 if necessary).
-   WaveBlock *preBlock = block->Item(b0);
+   WaveBlock *preBlock = mBlock->Item(b0);
    sampleCount preBufferLen = start - preBlock->start;
    if (preBufferLen) {
-      if (preBufferLen >= minSamples || b0 == 0) {
+      if (preBufferLen >= mMinSamples || b0 == 0) {
          WaveBlock *insBlock = NewInitedWaveBlock();
 
          insBlock->len = preBufferLen;
          insBlock->start = preBlock->start;
 
-         sampleType *preBuffer = new sampleType[preBufferLen];
-         Read(preBuffer, preBlock, 0, preBufferLen);
+         samplePtr preBuffer = NewSamples(preBufferLen, mSampleFormat);
+         Read(preBuffer, mSampleFormat, preBlock, 0, preBufferLen);
          FirstWrite(preBuffer, insBlock, preBufferLen);
-         delete[]preBuffer;
+         DeleteSamples(preBuffer);
 
          newBlock->Add(insBlock);
          newNumBlocks++;
@@ -1386,13 +1369,15 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
             delete preBlock;
          }
       } else {
-         WaveBlock *prepreBlock = block->Item(b0 - 1);
+         WaveBlock *prepreBlock = mBlock->Item(b0 - 1);
          sampleCount prepreLen = prepreBlock->len;
          sampleCount sum = prepreLen + preBufferLen;
 
-         sampleType *sumBuffer = new sampleType[sum];
-         Read(sumBuffer, prepreBlock, 0, prepreLen);
-         Read(&sumBuffer[prepreLen], preBlock, 0, preBufferLen);
+         samplePtr sumBuffer = NewSamples(sum, mSampleFormat);
+
+         Read(sumBuffer, mSampleFormat, prepreBlock, 0, prepreLen);
+         Read(sumBuffer + prepreLen*sampleSize, mSampleFormat,
+              preBlock, 0, preBufferLen);
 
          BlockArray *split = Blockify(sumBuffer, sum);
          split->Item(0)->start += prepreBlock->start;
@@ -1404,7 +1389,7 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
          }
          delete split;
 
-         delete[]sumBuffer;
+         DeleteSamples(sumBuffer);
 
          GetDirManager()->Deref(prepreBlock->f);
          delete prepreBlock;
@@ -1418,15 +1403,15 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
       // The sample where we begin deletion happens to fall
       // right on the beginning of a block.
       if (b0 != b1) {
-         GetDirManager()->Deref(block->Item(b0)->f);
-         delete block->Item(b0);
+         GetDirManager()->Deref(mBlock->Item(b0)->f);
+         delete mBlock->Item(b0);
       }
    }
 
    // Next, delete blocks strictly between b0 and b1
    for (i = b0 + 1; i < b1; i++) {
-      GetDirManager()->Deref(block->Item(i)->f);
-      delete block->Item(i);
+      GetDirManager()->Deref(mBlock->Item(i)->f);
+      delete mBlock->Item(i);
    }
 
    // Now, symmetrically, grab the samples in block b1 after the
@@ -1434,21 +1419,21 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
    // for its own block, or if this would be the last block in
    // the array, write it out.  Otherwise combine it with the
    // subsequent block (splitting them 50/50 if necessary).
-   WaveBlock *postBlock = block->Item(b1);
+   WaveBlock *postBlock = mBlock->Item(b1);
    sampleCount postBufferLen =
        (postBlock->start + postBlock->len) - (start + len);
    if (postBufferLen) {
-      if (postBufferLen >= minSamples || b1 == numBlocks - 1) {
+      if (postBufferLen >= mMinSamples || b1 == numBlocks - 1) {
          WaveBlock *insBlock = NewInitedWaveBlock();
 
          insBlock->len = postBufferLen;
          insBlock->start = start;
 
-         sampleType *postBuffer = new sampleType[postBufferLen];
+         samplePtr postBuffer = NewSamples(postBufferLen, mSampleFormat);
          sampleCount pos = (start + len) - postBlock->start;
-         Read(postBuffer, postBlock, pos, postBufferLen);
+         Read(postBuffer, mSampleFormat, postBlock, pos, postBufferLen);
          FirstWrite(postBuffer, insBlock, postBufferLen);
-         delete[]postBuffer;
+         DeleteSamples(postBuffer);
 
          newBlock->Add(insBlock);
          newNumBlocks++;
@@ -1456,14 +1441,15 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
          GetDirManager()->Deref(postBlock->f);
          delete postBlock;
       } else {
-         WaveBlock *postpostBlock = block->Item(b1 + 1);
+         WaveBlock *postpostBlock = mBlock->Item(b1 + 1);
          sampleCount postpostLen = postpostBlock->len;
          sampleCount sum = postpostLen + postBufferLen;
 
-         sampleType *sumBuffer = new sampleType[sum];
+         samplePtr sumBuffer = NewSamples(sum, mSampleFormat);
          sampleCount pos = (start + len) - postBlock->start;
-         Read(sumBuffer, postBlock, pos, postBufferLen);
-         Read(&sumBuffer[postBufferLen], postpostBlock, 0, postpostLen);
+         Read(sumBuffer, mSampleFormat, postBlock, pos, postBufferLen);
+         Read(sumBuffer + (postBufferLen * sampleSize), mSampleFormat,
+              postpostBlock, 0, postpostLen);
 
          BlockArray *split = Blockify(sumBuffer, sum);
          for (i = 0; i < split->Count(); i++) {
@@ -1474,7 +1460,7 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
          delete split;
          b1++;
 
-         delete[]sumBuffer;
+         DeleteSamples(sumBuffer);
 
          GetDirManager()->Deref(postpostBlock->f);
          delete postpostBlock;
@@ -1485,47 +1471,42 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
       // The sample where we begin deletion happens to fall
       // right on the end of a block.
       if (b0 != b1) {
-         GetDirManager()->Deref(block->Item(b1)->f);
-         delete block->Item(b1);
+         GetDirManager()->Deref(mBlock->Item(b1)->f);
+         delete mBlock->Item(b1);
       }
    }
 
    // Copy the remaining blocks over from the old array
    for (i = b1 + 1; i < numBlocks; i++) {
-      block->Item(i)->start -= len;
-      newBlock->Add(block->Item(i));
+      mBlock->Item(i)->start -= len;
+      newBlock->Add(mBlock->Item(i));
       newNumBlocks++;
    }
 
    // Substitute our new array for the old one
-   delete block;
-   block = newBlock;
+   delete mBlock;
+   mBlock = newBlock;
 
    // Update total number of samples, update the envelope,
    // and do a consistency check.
-   numSamples -= len;
-   envelope.SetTrackLen(numSamples / rate);
+   mNumSamples -= len;
+   mEnvelope.SetTrackLen(mNumSamples / mRate);
    ConsistencyCheck("Delete - branch two");
-}
-
-void WaveTrack::Reblockify()
-{
-   // TODO
 }
 
 void WaveTrack::ConsistencyCheck(const char *whereStr)
 {
    unsigned int i;
    unsigned int pos = 0;
-   unsigned int numBlocks = block->Count();
+   unsigned int numBlocks = mBlock->Count();
    bool error = false;
 
    for (i = 0; i < numBlocks; i++) {
-      if (pos != block->Item(i)->start)
+      if (pos != mBlock->Item(i)->start)
          error = true;
-      pos += block->Item(i)->len;
+      pos += mBlock->Item(i)->len;
    }
-   if (pos != numSamples)
+   if (pos != mNumSamples)
       error = true;
 
    if (error) {
@@ -1545,22 +1526,22 @@ void WaveTrack::DebugPrintf(wxString *dest)
    unsigned int i;
    unsigned int pos = 0;
 
-   for (i = 0; i < block->Count(); i++) {
+   for (i = 0; i < mBlock->Count(); i++) {
       *dest += wxString::Format
          ("Block %3d: start %8d len %8d  %s",
           i,
-          block->Item(i)->start,
-          block->Item(i)->len,
-          (const char *) (block->Item(i)->f->GetName()));
-      if (pos != block->Item(i)->start)
+          mBlock->Item(i)->start,
+          mBlock->Item(i)->len,
+          (const char *) (mBlock->Item(i)->f->GetName()));
+      if (pos != mBlock->Item(i)->start)
          *dest += "  ERROR\n";
       else
          *dest += "\n";
-      pos += block->Item(i)->len;
+      pos += mBlock->Item(i)->len;
    }
-   if (pos != numSamples)
+   if (pos != mNumSamples)
       *dest += wxString::Format
-         ("ERROR numSamples = %d\n", numSamples);
+         ("ERROR mNumSamples = %d\n", mNumSamples);
 }
 
 void WaveTrack::Debug()

@@ -21,7 +21,7 @@
   height: the desired number of frequencies
 */
 
-bool ComputeSpectrum(sampleType * data, int width, int height,
+bool ComputeSpectrum(float * data, int width, int height,
                      double rate, float *out, bool autocorrelation);
 
 int GetSpectrumWindowSize();

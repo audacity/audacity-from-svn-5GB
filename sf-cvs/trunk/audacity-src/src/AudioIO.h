@@ -18,6 +18,7 @@
 #include <wx/string.h>
 #include <wx/timer.h>
 
+#include "SampleFormat.h"
 #include "WaveTrack.h"
 
 class AudioIO;
@@ -35,7 +36,7 @@ class AudioIOTimer:public wxTimer {
 struct AudioIOBuffer {
    int          ID;
    int          len;
-   sampleType  *data;
+   samplePtr    data;
 };
 
 class AudioIO {
@@ -66,6 +67,8 @@ class AudioIO {
 
    void OnTimer();
 
+   sampleFormat GetFormat();
+
  private:
 
    bool Start();
@@ -86,6 +89,8 @@ class AudioIO {
 
    int                 mNumInChannels;
    int                 mNumOutChannels;
+
+   sampleFormat        mFormat;
    
    WaveTrack         **mInTracks;
 

@@ -54,8 +54,9 @@ bool ImportPCM(wxWindow * parent,
                int *numChannels,
                DirManager * dirManager)
 {
-   SF_INFO    info;
-   SNDFILE   *fp;
+   SF_INFO       info;
+   SNDFILE      *fp;
+   sampleFormat  format;
 
    fp = sf_open_read(fName, &info);
 
@@ -75,9 +76,15 @@ bool ImportPCM(wxWindow * parent,
    *numChannels = info.channels;
    *channels = new WaveTrack*[*numChannels];
 
+   if (info.pcmbitwidth > 16)
+      format = floatSample;
+   else
+      format = int16Sample;
+
    int c;
    for(c=0; c<*numChannels; c++) {
       (*channels)[c] = new WaveTrack(dirManager);
+      (*channels)[c]->SetSampleFormat(format);
       (*channels)[c]->SetRate(info.samplerate);
       (*channels)[c]->SetName(TrackNameFromFileName(fName));
       (*channels)[c]->SetChannel(VTrack::MonoChannel);
@@ -90,7 +97,7 @@ bool ImportPCM(wxWindow * parent,
    }
 
    sampleCount fileTotalFrames = (sampleCount)info.samples;
-   sampleCount maxBlockSize = (sampleCount)WaveTrack::GetIdealBlockSize();
+   sampleCount maxBlockSize = (*channels)[0]->GetMaxBlockSize();
 
    wxString copyEdit =
        gPrefs->Read("/FileFormats/CopyOrEditUncompressedData", "edit");
@@ -158,8 +165,9 @@ bool ImportPCM(wxWindow * parent,
    // samples from the file and store our own local copy of the
    // samples in the tracks.
 
-   sampleType *srcbuffer = new short[maxBlockSize * (*numChannels)];
-   sampleType *buffer = new short[maxBlockSize];
+   samplePtr srcbuffer = NewSamples(maxBlockSize * (*numChannels),
+                                    format);
+   samplePtr buffer = NewSamples(maxBlockSize, format);
 
    unsigned long framescompleted = 0;
 
@@ -173,13 +181,25 @@ bool ImportPCM(wxWindow * parent,
    long block;
    do {
       block = maxBlockSize;
-      block = sf_readf_short(fp, srcbuffer, block);
+
+      if (format == int16Sample)
+         block = sf_readf_short(fp, (short *)srcbuffer, block);
+      else
+         block = sf_readf_float(fp, (float *)srcbuffer, block);
 
       if (block) {
          for(c=0; c<(*numChannels); c++) {
-            for(int j=0; j<block; j++)
-               buffer[j] = srcbuffer[(*numChannels)*j+c];
-            (*channels)[c]->Append(buffer, block);
+
+            if (format==int16Sample)
+               for(int j=0; j<block; j++)
+                  ((short *)buffer)[j] =
+                     ((short *)srcbuffer)[(*numChannels)*j+c];
+            else
+               for(int j=0; j<block; j++)
+                  ((float *)buffer)[j] =
+                     ((float *)srcbuffer)[(*numChannels)*j+c];
+
+            (*channels)[c]->Append(buffer, format, block);
          }
 
          framescompleted += block;
@@ -212,8 +232,8 @@ bool ImportPCM(wxWindow * parent,
    if (progress)
       delete progress;
 
-   delete[] srcbuffer;
-   delete[] buffer;
+   DeleteSamples(srcbuffer);
+   DeleteSamples(buffer);
 
    if (cancelling) {
       for(c=0; c<*numChannels; c++)

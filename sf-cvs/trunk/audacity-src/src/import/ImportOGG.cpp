@@ -98,6 +98,7 @@ bool ImportOGG(wxWindow * parent,
    for (c = 0; c < *numChannels; c++) {
       (*channels)[c] = new WaveTrack(dirManager);
       (*channels)[c]->SetRate(vi->rate);
+      (*channels)[c]->SetSampleFormat(int16Sample);
 
       switch (c) {
          case 0:
@@ -122,12 +123,12 @@ bool ImportOGG(wxWindow * parent,
 /* The number of bytes to get from the codec in each run */
 #define CODEC_TRANSFER_SIZE 4096
    
-   const int bufferSize = WaveTrack::GetIdealBlockSize();
-   sampleType *mainBuffer = new sampleType[CODEC_TRANSFER_SIZE];
+   const int bufferSize = 1048576;
+   short *mainBuffer = new short[CODEC_TRANSFER_SIZE];
 
-   sampleType **buffers = new sampleType *[*numChannels];
+   short **buffers = new short *[*numChannels];
    for (int i = 0; i < *numChannels; i++) {
-      buffers[i] = new sampleType[bufferSize];
+      buffers[i] = new short[bufferSize];
    }
 
    /* determine endianness (clever trick courtesy of Nicholas Devillard,
@@ -151,11 +152,13 @@ bool ImportOGG(wxWindow * parent,
                           2,    // word length (2 for 16 bit samples)
                           1,    // signed
                           &bitstream);
-      samplesRead = bytesRead / *numChannels / sizeof(sampleType);
+      samplesRead = bytesRead / *numChannels / sizeof(short);
 
       if (samplesRead + bufferCount > bufferSize) {
          for (c = 0; c < *numChannels; c++)
-            (*channels)[c]->Append(buffers[c], bufferCount);
+            (*channels)[c]->Append((samplePtr)buffers[c],
+                                   int16Sample,
+                                   bufferCount);
          bufferCount = 0;
       }
 

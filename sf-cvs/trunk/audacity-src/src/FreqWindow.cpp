@@ -897,7 +897,7 @@ void FreqWindow::Recalc()
 
       case 1:
       case 2:
-      case 3:                  // Autocorrelation, Cuberoot AC or Enhanced AC
+      case 3:   // Autocorrelation, Cuberoot AC or Enhanced AC
 
          // Take FFT
          FFT(mWindowSize, false, in, NULL, out, out2);

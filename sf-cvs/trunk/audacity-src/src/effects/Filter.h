@@ -48,7 +48,7 @@ private:
                    sampleCount start, sampleCount len);
 
    void Filter(sampleCount len,
-               sampleType *buffer);
+               float *buffer);
    
    Envelope *mEnvelope;
 

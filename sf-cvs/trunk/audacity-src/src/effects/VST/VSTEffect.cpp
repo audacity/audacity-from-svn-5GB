@@ -151,7 +151,7 @@ bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
    if (mBlockSize == 0) {
       mBlockSize = left->GetMaxBlockSize() * 2;
 
-      buffer = new sampleType[mBlockSize];
+      buffer = new float[mBlockSize];
       fInBuffer = new float *[inputs];
       int i;
       for (i = 0; i < inputs; i++)
@@ -192,22 +192,22 @@ bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
 
       left->Get(buffer, ls, block);
       for (i = 0; i < block; i++)
-         fInBuffer[0][i] = float (buffer[i] / 32767.);
+         fInBuffer[0][i] = buffer[i];
       if (right) {
          right->Get(buffer, rs, block);
          for (i = 0; i < block; i++)
-            fInBuffer[1][i] = float (buffer[i] / 32767.);
+            fInBuffer[1][i] = buffer[i];
       }
 
       aEffect->processReplacing(aEffect, fInBuffer, fOutBuffer, block);
 
       for (i = 0; i < block; i++)
-         buffer[i] = (sampleType) (fOutBuffer[0][i] * 32767.);
+         buffer[i] = fOutBuffer[0][i];
       left->Set(buffer, ls, block);
       
       if (right) {
          for (i = 0; i < block; i++)
-            buffer[i] = (sampleType) (fOutBuffer[1][i] * 32767.);
+            buffer[i] = fOutBuffer[1][i];
          right->Set(buffer, rs, block);
       }      
 

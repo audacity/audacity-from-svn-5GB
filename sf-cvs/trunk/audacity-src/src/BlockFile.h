@@ -29,32 +29,34 @@
 
 #include "WaveTrack.h"
 
-class wxFFile;
-
 class BlockFile {
  public:
-   // Normal block file
-   BlockFile(wxString name, wxString fullPath);
 
-   // Alias block file
-   BlockFile(wxString name, wxString fullPath,
-             int localLen,
-             wxString aliasFullPath,
-             sampleCount aliasStart, sampleCount aliasLen,
-             int aliasChannel);
+   // Constructor / Destructor
+
+   BlockFile(wxString name, wxString fullPath, int summaryLen);
 
    ~BlockFile();
 
-   bool OpenReadHeader();
-   bool OpenReadData();
-   bool OpenWriteHeader();
-   bool OpenWriteData();
+   // Writing
 
-   void Close();
+   bool WriteSummary(void *data);
 
-   int Read(void *data, int len);
-   int Write(void *data, int len);
-   bool SeekTo(int where);
+   bool WriteData(void *data, sampleFormat format, sampleCount len);
+
+   void SetAliasedData(wxString aliasFullPath,
+                       sampleCount aliasStart, sampleCount aliasLen,
+                       int aliasChannel);
+
+   // Reading
+
+   bool ReadSummary(void *data);
+
+   sampleFormat GetNativeFormat();
+   int ReadData(void *data, sampleFormat format,
+                sampleCount start, sampleCount len);
+
+   // Other Properties
 
    // this accessor should be used for debugging only
    wxString GetName();
@@ -62,6 +64,7 @@ class BlockFile {
    wxString GetAliasedFile();
    void ChangeAliasedFile(wxString newFile);
    bool IsAlias();
+   int  GetSummaryLen();
 
    // If a BlockFile is locked, it cannot be moved - just
    // copied.  When performing a Save As, the project
@@ -75,7 +78,7 @@ class BlockFile {
 
  private:
 
-    friend class DirManager;
+   friend class DirManager;
 
    void Ref();
    bool Deref();
@@ -90,32 +93,17 @@ class BlockFile {
       BLOCK_TYPE_FLAC
    } mType;
 
-   enum {
-      BLOCK_MODE_NOT_OPEN     = 0x0001,
-      BLOCK_MODE_READ_HEADER  = 0x0002,
-      BLOCK_MODE_READ_DATA    = 0x0004,
-      BLOCK_MODE_WRITE_HEADER = 0x0008,
-      BLOCK_MODE_WRITE_DATA   = 0x0010
-   } mMode;
-
-#define BLOCK_MODE_READING_MODE   BLOCK_MODE_READ_HEADER | BLOCK_MODE_READ_DATA
-#define BLOCK_MODE_WRITING_MODE   BLOCK_MODE_WRITE_HEADER | BLOCK_MODE_WRITE_DATA
-   
-   int mPos; // This is a raw pointer referencing the combined header+data stream
-
    // Information about local data
-   wxString mName;
-   wxString mFullPath;
-   wxFFile *mFile;
+   wxString      mName;
+   wxString      mFullPath;
+   sampleFormat  mSampleFormat;
+   int           mSummaryLen;
 
    // Information about aliased sound data
-   wxString mAliasFullPath;
-   int mLocalLen;
-   sampleCount mStart;
-   sampleCount mLen;
-   int mChannel;
-   void *mSoundFile;
-   void *mInfo;
+   wxString      mAliasFullPath;
+   sampleCount   mStart;
+   sampleCount   mLen;
+   int           mChannel;
 };
 
 #endif

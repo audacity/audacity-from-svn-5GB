@@ -36,10 +36,10 @@ bool EffectAmplify::Init()
    int count = 0;
    while(t) {
       sampleCount start, len;
-      sampleType min, max;
+      float min, max;
       GetSamples((WaveTrack *)t, &start, &len);
       ((WaveTrack *)t)->GetMinMax(start, len, &min, &max);
-      float newpeak = (abs(min) > abs(max) ? abs(min) : abs(max)) / 32767.0;
+      float newpeak = (fabs(min) > fabs(max) ? fabs(min) : fabs(max));
       
       if (newpeak > peak)
          peak = newpeak;
@@ -96,7 +96,7 @@ bool EffectAmplify::ProcessOne(int count, WaveTrack *t,
    sampleCount originalLen = len;
    sampleCount blockSize = t->GetMaxBlockSize();
 
-   sampleType *buffer = new sampleType[blockSize];
+   float *buffer = new float[blockSize];
    
    while (len) {
       unsigned int block = t->GetBestBlockSize(s);
@@ -105,7 +105,7 @@ bool EffectAmplify::ProcessOne(int count, WaveTrack *t,
 
       t->Get(buffer, s, block);
       for (unsigned int i = 0; i < block; i++) {
-         buffer[i] = (sampleType) (buffer[i] * ratio);
+         buffer[i] = (buffer[i] * ratio);
       }
       t->Set(buffer, s, block);
 

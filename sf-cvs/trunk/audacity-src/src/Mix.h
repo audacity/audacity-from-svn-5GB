@@ -12,17 +12,21 @@
 #define __AUDACITY_MIX__
 
 #include <wx/string.h>
+
+#include "SampleFormat.h"
 #include "WaveTrack.h"
 #include "ControlToolBar.h"
 
 class ControlToolBar;
 class DirManager;
 
-bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate);
+bool QuickMix(TrackList * tracks, DirManager * dirManager,
+              double rate, sampleFormat format);
 
 class Mixer {
  public:
-   Mixer(int numChannels, int bufferSize, bool interleaved, double rate);
+   Mixer(int numChannels, int bufferSize, bool interleaved,
+         double rate, sampleFormat format);
    virtual ~ Mixer();
 
    void UseVolumeSlider(ControlToolBar * c);
@@ -33,29 +37,31 @@ class Mixer {
    void Mix(int *channelFlags, WaveTrack * src, double t0, double t1);
 
    // Interleaved
-   sampleType *GetBuffer();
+   samplePtr GetBuffer();
 
    // Non-interleaved
-   sampleType *GetBuffer(int channel);
+   samplePtr GetBuffer(int channel);
 
  private:
    void GetSamples(WaveTrack *src, int s0, int slen);
    void MixDiffRates(int *channelFlags, WaveTrack * src, double t0, double t1);
    void MixSameRate(int *channelFlags, WaveTrack * src, double t0, double t1);
 
-   int mNumChannels;
-   int mNumBuffers;
-   int mBufferSize;
-   int mInterleavedBufferSize;
-   bool mInterleaved;
-   bool mUseVolumeSlider;
+ private:
+   int             mNumChannels;
+   int             mNumBuffers;
+   int             mBufferSize;
+   int             mInterleavedBufferSize;
+   sampleFormat    mFormat;
+   bool            mInterleaved;
+   bool            mUseVolumeSlider;
    ControlToolBar *mControlToolBar;
-   sampleType **mBuffer;
-   double *mEnvValues;
-   double mRate;
+   samplePtr      *mBuffer;
+   double         *mEnvValues;
+   double          mRate;
 
-   sampleType *mTemp;
-   int mTempBufferSize;
+   samplePtr      mTemp;
+   int            mTempBufferSize;
 };
 
 #endif

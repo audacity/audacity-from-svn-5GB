@@ -49,7 +49,7 @@ private:
     bool ProcessOne(int count, WaveTrack * t,
                     sampleCount start, sampleCount len);
     void RemoveNoise(sampleCount len,
-                    sampleType *buffer, bool first);
+                    float *buffer, bool first);
 
     int windowSize;
     real threshold;

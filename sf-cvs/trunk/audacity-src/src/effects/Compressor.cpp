@@ -72,7 +72,7 @@ bool EffectCompressor::ProcessOne(int count, WaveTrack * t,
    sampleCount originalLen = len;
    sampleCount blockSize = t->GetMaxBlockSize();
 
-   sampleType *buffer = new sampleType[blockSize];
+   float *buffer = new float[blockSize];
    
    while (len) {
       unsigned int block = t->GetBestBlockSize(s);
@@ -97,11 +97,11 @@ bool EffectCompressor::ProcessOne(int count, WaveTrack * t,
    return true;
 }
 
-sampleType EffectCompressor::DoCompression(sampleType x)
+float EffectCompressor::DoCompression(float x)
 {
-   double value = x/32767.0;
-   double level;
-   double mult;
+   float value = x/32767.0;
+   float level;
+   float mult;
    
    if (mRMS) {
       // Calculate current level from root-mean-squared of
@@ -127,5 +127,5 @@ sampleType EffectCompressor::DoCompression(sampleType x)
 
    mMult = mult*mDecayMult + mMult*(1.0-mDecayMult);
 
-   return (sampleType)(value*mMult*32767.0);
+   return value*mMult;
 }

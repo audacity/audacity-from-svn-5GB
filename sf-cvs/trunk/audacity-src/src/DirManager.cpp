@@ -98,7 +98,8 @@ DirManager::DirManager()
       }
       else {
          wxMessageBox(_("Audacity could not find a place to store "
-                        "temporary files.\n  Please enter an appropriate "
+                        "temporary files.\n"
+                        "Please enter an appropriate "
                         "directory in the preferences dialog."));
 
          PrefsDialog dialog(NULL);
@@ -281,82 +282,18 @@ void DirManager::MakeBlockFileName(wxString inProjDir,
    } while (wxFileExists(outPathName));
 }
 
-BlockFile *DirManager::NewTempBlockFile()
+BlockFile *DirManager::NewBlockFile(int summaryLen)
 {
    wxString theFileName;
    wxString thePathName;
-   MakeBlockFileName(temp, theFileName, thePathName);
+   wxString loc = (projFull != ""? projFull: temp);
+   MakeBlockFileName(loc, theFileName, thePathName);
 
-   BlockFile *newBlockFile = new BlockFile(theFileName, thePathName);
-
-   blockFileHash->Put(theFileName, (wxObject *) newBlockFile);
-
-   CheckHashTableSize();
-
-   return newBlockFile;
-}
-
-BlockFile *DirManager::NewBlockFile()
-{
-   if (projFull == "")
-      return NewTempBlockFile();
-
-   wxString theFileName;
-   wxString thePathName;
-   MakeBlockFileName(projFull, theFileName, thePathName);
-
-   BlockFile *newBlockFile = new BlockFile(theFileName, thePathName);
+   BlockFile *newBlockFile = new BlockFile(theFileName,
+                                           thePathName,
+                                           summaryLen);
 
    blockFileHash->Put(theFileName, (wxObject *) newBlockFile);
-
-   CheckHashTableSize();
-
-   return newBlockFile;
-}
-
-BlockFile *DirManager::NewTempAliasBlockFile(int localLen,
-                                             wxString fullPath,
-                                             sampleCount start,
-                                             sampleCount len, int channel)
-{
-   wxString theFileName;
-   wxString thePathName;
-   MakeBlockFileName(temp, theFileName, thePathName);
-
-   BlockFile *newBlockFile = new BlockFile(theFileName, thePathName,
-                                           localLen,
-                                           fullPath,
-                                           start, len, channel);
-
-   blockFileHash->Put(theFileName, (wxObject *) newBlockFile);
-   aliasList.Add(fullPath);
-
-   CheckHashTableSize();
-
-   return newBlockFile;
-}
-
-BlockFile *DirManager::NewAliasBlockFile(int localLen,
-                                         wxString fullPath,
-                                         sampleCount start,
-                                         sampleCount len, int channel)
-{
-   if (projFull == "")
-      return NewTempAliasBlockFile(localLen,
-                                   fullPath, start, len,
-                                   channel);
-
-   wxString theFileName;
-   wxString thePathName;
-   MakeBlockFileName(temp, theFileName, thePathName);
-
-   BlockFile *newBlockFile = new BlockFile(theFileName, thePathName,
-                                           localLen,
-                                           fullPath,
-                                           start, len, channel);
-
-   blockFileHash->Put(theFileName, (wxObject *) newBlockFile);
-   aliasList.Add(fullPath);
 
    CheckHashTableSize();
 
@@ -382,16 +319,13 @@ BlockFile *DirManager::CopyBlockFile(BlockFile *b)
    if (!ok)
       return NULL;
 
-   BlockFile *b2;
+   BlockFile *b2 = new BlockFile(theFileName,
+                                 thePathName,
+                                 b->GetSummaryLen());
    if (b->IsAlias()) {
-      b2 = new BlockFile(theFileName, thePathName,
-                         b->mLocalLen,
-                         b->mAliasFullPath,
+      b2->SetAliasedData(b->mAliasFullPath,
                          b->mStart, b->mLen,
                          b->mChannel);
-   }
-   else {
-      b2 = new BlockFile(theFileName, thePathName);
    }
 
    blockFileHash->Put(theFileName, (wxObject *) b2);
@@ -404,6 +338,7 @@ BlockFile *DirManager::CopyBlockFile(BlockFile *b)
 
 void DirManager::SaveBlockFile(BlockFile * f, wxTextFile * out)
 {
+   out->AddLine(wxString::Format("%d", f->mSummaryLen));
    if (f->IsAlias()) {
       out->AddLine("Alias");
       out->AddLine(f->mAliasFullPath);
@@ -417,6 +352,11 @@ void DirManager::SaveBlockFile(BlockFile * f, wxTextFile * out)
 BlockFile *DirManager::LoadBlockFile(wxTextFile * in)
 {
    wxASSERT(projFull != "");
+
+   long summaryLen;
+
+   if (!(in->GetNextLine().ToLong(&summaryLen)))
+      return NULL;
 
    wxString blockName = in->GetNextLine();
 
@@ -446,16 +386,13 @@ BlockFile *DirManager::LoadBlockFile(wxTextFile * in)
       retrieved->Ref();
       return retrieved;
    } else {
-      BlockFile *newBlockFile;
+      BlockFile *newBlockFile =
+         new BlockFile(blockName, pathName, summaryLen);
 
       if (alias) {
-         newBlockFile = new BlockFile(blockName, pathName,
-                                      localLen,
-                                      aliasFullPath, start, len, channel);
+         newBlockFile->SetAliasedData(aliasFullPath, start, len, channel);
          aliasList.Add(aliasFullPath);
       }
-      else
-         newBlockFile = new BlockFile(blockName, pathName);
 
       blockFileHash->Put(blockName, (wxObject *) newBlockFile);
 

@@ -97,7 +97,7 @@ bool EffectBassBoost::ProcessOne(int count, WaveTrack * t,
    sampleCount originalLen = len;
    sampleCount blockSize = t->GetMaxBlockSize();
 
-   sampleType *buffer = new sampleType[blockSize];
+   float *buffer = new float[blockSize];
 
    while (len) {
       unsigned int block = t->GetBestBlockSize(s);
@@ -114,12 +114,12 @@ bool EffectBassBoost::ProcessOne(int count, WaveTrack * t,
          yn2 = yn1;
          yn1 = out;
 
-         if (out < -32768)
-            out = -32768;
-         else if (out > 32767)
-            out = 32767;        //Prevents clipping
+         if (out < -1.0)
+            out = -1.0;
+         else if (out > 1.0)
+            out = 1.0;        //Prevents clipping
 
-         buffer[i] = (sampleType) out;
+         buffer[i] = out;
       }
 
       t->Set(buffer, s, block);

@@ -55,6 +55,7 @@ OBJS = \
 	$(OBJDIR)/NoteTrack.o \
 	$(OBJDIR)/Prefs.o \
 	$(OBJDIR)/Project.o \
+	$(OBJDIR)/SampleFormat.o \
 	$(OBJDIR)/Spectrum.o \
 	$(OBJDIR)/Tags.o \
 	$(OBJDIR)/Track.o \

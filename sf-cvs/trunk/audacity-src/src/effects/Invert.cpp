@@ -49,7 +49,7 @@ bool EffectInvert::ProcessOne(int count, WaveTrack *t,
    sampleCount originalLen = len;
    sampleCount blockSize = t->GetMaxBlockSize();
    
-   sampleType *buffer = new sampleType[blockSize];
+   float *buffer = new float[blockSize];
    
    while (len > 0) {
       unsigned int block = t->GetBestBlockSize(s);
@@ -58,7 +58,7 @@ bool EffectInvert::ProcessOne(int count, WaveTrack *t,
 
       t->Get(buffer, s, block);
       for (unsigned int i = 0; i < block; i++) {
-         buffer[i] = (sampleType) (-buffer[i]);
+         buffer[i] = (float) (-buffer[i]);
       }
       t->Set(buffer, s, block);
 

@@ -44,7 +44,7 @@ class VSTEffect:public Effect {
    AEffect *aEffect;
 
    sampleCount mBlockSize;
-   sampleType *buffer;
+   float *buffer;
    float **fInBuffer;
    float **fOutBuffer;
    int inputs;

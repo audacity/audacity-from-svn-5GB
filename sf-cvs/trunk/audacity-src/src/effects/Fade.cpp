@@ -39,7 +39,7 @@ bool EffectFadeIn::ProcessOne(int count, WaveTrack * t,
    sampleCount s = start;
    sampleCount blockSize = t->GetMaxBlockSize();
 
-   sampleType *buffer = new sampleType[blockSize];
+   float *buffer = new float[blockSize];
    
    sampleCount originalLen = len;
 
@@ -50,7 +50,7 @@ bool EffectFadeIn::ProcessOne(int count, WaveTrack * t,
 
       t->Get(buffer, s, block);
       for (sampleCount i = 0; i < block; i++)
-         buffer[i] = (sampleType) (buffer[i]
+         buffer[i] = (float) (buffer[i]
                                    * (float) (s + i - start)
                                    / (float) (len));
       t->Set(buffer, s, block);
@@ -91,7 +91,7 @@ bool EffectFadeOut::ProcessOne(int count, WaveTrack * t,
    sampleCount s = start;
    sampleCount blockSize = t->GetMaxBlockSize();
 
-   sampleType *buffer = new sampleType[blockSize];
+   float *buffer = new float[blockSize];
    
    sampleCount originalLen = len;
 
@@ -102,7 +102,7 @@ bool EffectFadeOut::ProcessOne(int count, WaveTrack * t,
 
       t->Get(buffer, s, block);
       for (sampleCount i = 0; i < block; i++)
-         buffer[i] = (sampleType) (buffer[i]
+         buffer[i] = (float) (buffer[i]
                                    * (float) (len - 1 - (s + i - start))
                                    / (float) (len));
       t->Set(buffer, s, block);

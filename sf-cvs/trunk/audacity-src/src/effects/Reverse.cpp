@@ -48,9 +48,9 @@ bool EffectReverse::ProcessOne(int count, WaveTrack *t,
    sampleCount first = start, second;
    sampleCount originalLen = len;
    sampleCount blockSize = t->GetMaxBlockSize();
-   sampleType tmp;
-   sampleType *buffer1 = new sampleType[blockSize],
-              *buffer2 = new sampleType[blockSize];
+   float tmp;
+   float *buffer1 = new float[blockSize];
+   float *buffer2 = new float[blockSize];
    
    while (len > 1) {
       unsigned int block = t->GetBestBlockSize(first);

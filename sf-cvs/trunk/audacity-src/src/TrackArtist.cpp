@@ -60,8 +60,8 @@ class TrackInfoCache:public wxObject {
    bool spectrum;
 
    // WaveTrack minmax only
-   sampleType *min;
-   sampleType *max;
+   short *min;
+   short *max;
 
    // WaveTrack Spectrum only
    float *freq;
@@ -428,15 +428,15 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
    cache->pps = pps;
    cache->start = start;
    cache->len = screenWidth;
-   cache->min = new sampleType[cache->len];
+   cache->min = new short[cache->len];
    wxASSERT(cache->min);
-   cache->max = new sampleType[cache->len];
+   cache->max = new short[cache->len];
    wxASSERT(cache->max);
    cache->where = new sampleCount[cache->len + 1];
    wxASSERT(cache->where);
 
    double rate = track->GetRate();
-   sampleCount numSamples = track->numSamples;
+   sampleCount numSamples = track->GetNumSamples();
 
    sampleCount x;
 
@@ -515,20 +515,20 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
 
    int block0 = track->FindBlock(s0);
 
-   sampleType *temp = new sampleType[track->maxSamples];
+   short *temp = new short[track->mMaxSamples];
 
    int pixel = p0;
 
-   sampleType theMin = 0;
-   sampleType theMax = 0;
+   short theMin = 0;
+   short theMax = 0;
    unsigned int b = block0;
 
    while (srcX < s1) {
       // Get more samples
       sampleCount num;
 
-      num = ((track->block->Item(b)->len -
-              (srcX - track->block->Item(b)->start)) + divisor - 1)
+      num = ((track->mBlock->Item(b)->len -
+              (srcX - track->mBlock->Item(b)->start)) + divisor - 1)
           / divisor;
 
       if (num > (s1 - srcX + divisor - 1) / divisor) {
@@ -537,17 +537,18 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
 
       switch (divisor) {
       case 1:
-         track->Read(temp, track->block->Item(b),
-                     srcX - track->block->Item(b)->start, num);
+         track->Read((samplePtr)temp, int16Sample,
+                     track->mBlock->Item(b),
+                     srcX - track->mBlock->Item(b)->start, num);
          break;
       case 256:
-         track->Read256(temp, track->block->Item(b),
-                        (srcX - track->block->Item(b)->start) / divisor,
+         track->Read256(temp, track->mBlock->Item(b),
+                        (srcX - track->mBlock->Item(b)->start) / divisor,
                         num);
          break;
       case 65536:
-         track->Read64K(temp, track->block->Item(b),
-                        (srcX - track->block->Item(b)->start) / divisor,
+         track->Read64K(temp, track->mBlock->Item(b),
+                        (srcX - track->mBlock->Item(b)->start) / divisor,
                         num);
          break;
       default:
@@ -615,10 +616,10 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
 
       srcX += num * divisor;
 
-      if (b >= track->block->Count())
+      if (b >= track->mBlock->Count())
          break;
 
-      srcX = track->block->Item(b)->start;
+      srcX = track->mBlock->Item(b)->start;
 
    }
 
@@ -673,7 +674,7 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
    double sel1 = viewInfo->sel1;
 
    WaveTrack *track = (WaveTrack *) cache->track;
-   sampleCount numSamples = track->numSamples;
+   sampleCount numSamples = track->GetNumSamples();
    double tOffset = track->GetOffset();
 
    if (!track->GetSelected())
@@ -760,7 +761,7 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
       envValues = new double[mid.width];
    }
 
-   track->envelope.GetValues(envValues, mid.width, t0 + tOffset, tstep);
+   track->mEnvelope.GetValues(envValues, mid.width, t0 + tOffset, tstep);
 
    double t = t0;
    int x;
@@ -803,11 +804,11 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
             s0--;
          }
          slen += 4;
-         if (s0 + slen > track->numSamples)
-            slen = track->numSamples - s0;
+         if (s0 + slen > track->GetNumSamples())
+            slen = track->GetNumSamples() - s0;
 
-         sampleType *buffer = new sampleType[slen];
-         track->Get(buffer, s0, slen);
+         short *buffer = new short[slen];
+         track->Get((samplePtr)buffer, int16Sample, s0, slen);
          int *xpos = new int[slen];
          int *ypos = new int[slen];
 
@@ -822,7 +823,7 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
             double tt = (s0 + s) / rate - tOffset;
             xpos[s] = (int) xx;
             ypos[s] = ctr - GetWaveYPos(buffer[s] / 32768.0 *
-                                        track->envelope.GetValue(tt),
+                                        track->mEnvelope.GetValue(tt),
                                         mid.height / 2, dB);
          }
 
@@ -856,11 +857,11 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
       for (x = 0; x < mid.width; x++) {
 
          int h1 = ctr - GetWaveYPos(cache->min[x] / 32768.0 *
-                                    track->envelope.GetValue(t + tOffset),
+                                    track->mEnvelope.GetValue(t + tOffset),
                                     mid.height / 2,
                                     dB);
          int h2 = ctr - GetWaveYPos(cache->max[x] / 32768.0 *
-                                    track->envelope.GetValue(t + tOffset),
+                                    track->mEnvelope.GetValue(t + tOffset),
                                     mid.height / 2,
                                     dB);
 
@@ -907,7 +908,7 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
    if (drawEnvelope) {
       wxRect envRect = r;
       envRect.height -= 2;
-      track->envelope.Draw(dc, envRect, h, pps, dB);
+      track->mEnvelope.Draw(dc, envRect, h, pps, dB);
    }
 }
 
@@ -922,7 +923,7 @@ void TrackArtist::PrepareCacheSpectrum(TrackInfoCache * cache,
    wxASSERT(screenHeight > 0);
 
    WaveTrack *track = (WaveTrack *) cache->track;
-   double rate = track->rate;
+   double rate = track->GetRate();
 
    if (cache->spectrum &&
        track->GetDirty() == cache->dirty &&
@@ -991,7 +992,7 @@ void TrackArtist::PrepareCacheSpectrum(TrackInfoCache * cache,
    }
 
    int windowSize = GetSpectrumWindowSize();
-   sampleType *buffer = new sampleType[windowSize];
+   float *buffer = new float[windowSize];
 
    for (x = 0; x < cache->len; x++)
       if (recalc[x]) {
@@ -1001,14 +1002,14 @@ void TrackArtist::PrepareCacheSpectrum(TrackInfoCache * cache,
 
          sampleCount i;
 
-         if (start >= track->numSamples) {
+         if (start >= track->GetNumSamples()) {
             for (i = 0; i < (sampleCount)screenHeight; i++)
                cache->freq[screenHeight * x + i] = 0;
 
          } else {
 
-            if (start + len > track->numSamples) {
-               len = track->numSamples - start;
+            if (start + len > track->GetNumSamples()) {
+               len = track->GetNumSamples() - start;
                for (i = len; i < (sampleCount)windowSize; i++)
                   buffer[i] = 0;
             }
@@ -1059,7 +1060,7 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
    double sel1 = viewInfo->sel1;
 
    WaveTrack *track = (WaveTrack *) cache->track;
-   sampleCount numSamples = track->numSamples;
+   sampleCount numSamples = track->GetNumSamples();
    double tOffset = track->GetOffset();
    double rate = track->GetRate();
 

@@ -776,14 +776,14 @@ bool ImportRaw(wxWindow * parent,
       len--;
    }
 
-   int blockSize = WaveTrack::GetIdealBlockSize();
+   int blockSize = 1048576;
    int bytescompleted = 0;
 
    char *buffer = new char[blockSize];
    float *data1 = new float[blockSize];
    float *data2 = new float[blockSize];
-   sampleType *samples1 = new sampleType[blockSize];
-   sampleType *samples2 = new sampleType[blockSize];
+   short *samples1 = new short[blockSize];
+   short *samples2 = new short[blockSize];
    wxASSERT(buffer);
    wxASSERT(samples1);
    wxASSERT(samples2);
@@ -797,15 +797,15 @@ bool ImportRaw(wxWindow * parent,
               buffer, block, data1, data2, &len1, &len2);
 
       for (i = 0; i < len1; i++) {
-         samples1[i] = (sampleType) (data1[i] * 32767);
+         samples1[i] = (short) (data1[i] * 32767);
       }
-      (*dest1)->Append(samples1, len1);
+      (*dest1)->Append((samplePtr)samples1, int16Sample, len1);
 
       if (stereo) {
          for (i = 0; i < len2; i++) {
-            samples2[i] = (sampleType) (data2[i] * 32767);
+            samples2[i] = (short) (data2[i] * 32767);
          }
-         (*dest2)->Append(samples2, len2);
+         (*dest2)->Append((samplePtr)samples2, int16Sample, len2);
       }
 
       numBytes -= actual;
