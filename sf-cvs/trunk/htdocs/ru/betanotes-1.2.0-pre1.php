@@ -1,5 +1,5 @@
 <pre>
-Changes in 1.2.0-pre3:
+Изменения в 1.2.0-pre3:
 
   * Исправлена ошибка деактивации пункта Экспорт в меню, 
     если никакие данные не выделены.
@@ -17,46 +17,47 @@ Changes in 1.2.0-pre3:
 
   * Добавлен VST Enabler для Windows.
 
-  * Испралвена ошибка аварийного выхода из программы при попытке 
+  * Исправлена ошибка аварийного выхода из программы при попытке 
     закрыть приложение с открытым диалогом настроек.
 
   * Исправлена ошибка дублирования символов дорожках ля заметок в 
     версии для Mac OS X.
 
-  * The recording level control on Linux now adjusts the IGAIN,
-    rather than the playthrough level of the recording source.
+  * В версии для Linux регулятор уровня записи теперь изменяет IGAIN,
+    а не громкость воспроизведения с источника записи.
 
-  * Fixed bug that caused corruption to 16-bit stereo recordings.
+  * Исправлена ошибка, приводившая к порче 16-битных стереодорожек.
 
-  * Fixed bug that caused data loss if you deleted all tracks in
-    a saved project and then open a new file into the same window.
+  * Исправлена ошибка, приводившая к потере данных при удалении 
+    всех дорожек из сохранённого проекта и последующем открытии 
+    нового файла в том же окне.
 
-  * Added support for alternate audio button order (in Interface
-    preferences)
+  * Добавлена поддержка альтернативного порядка контрольных кнопок 
+    (на закладке &laquo;Интерфейс&raquo; диалога настроек).
 
-  * Added preliminary support for wxX11
+  * Добавлена предварительная поддержка wxX11.
 
-  * Added fully transparent Windows XP icon
+  * Добавлена полупрозрачная пиктограмма для Windows XP.
 
-  * Fixed crash if you try to record (or play) and no audio
-    devices exist, or if the audio device doesn't support the
-    mode you selected.
+  * Исправлена ошибка, возникавшая при записи или воспроизведении 
+    через отсутствующее или неподдерживаемое звуковое устройство, 
+    что приводило к аварийному выходу из программы.
 
-  * Audacity no longer sets the process priority to high while
-    recording on Windows.  Users can still do this manually
-    using the Task Manager.
+  * Audacity больше не пытается получить самый высокий приоритет 
+    при записи в Windows. Пользователи могут изменить приоритетность 
+    сами при помощи Менеджера (Диспетчера) задач.
 
-  * Fixed bug that caused last ~100 ms of the selection to get
-    cut off on Windows.
+  * Исправлена ошибка в версии для Windows, приводившая к потере 
+    последних ~100 мс выделения.
 
-  * Fixed FFT Filter and Equalization effects dialogs.
+  * Исправлены диалоговые окна FFT-фильтра и Эквалайзера.
 
-  * Fixed bugs in Unix build system (DESTDIR in locale directory,
-    choosing libsamplerate instead of libresample)
+  * Исправлены ошибки в версиях дял UNIX-систем, приводившие к 
+    использованию libsamplerate вместо libresample.
 
-  * Support for LADSPA plug-ins on Windows added, and 
-    three open source LADSPA plug-ins ported to Windows
-    (GVerb reverb, SC4 compressor, and Hard Limiter)
+  * Добавлена поддержка LADSPA-модулей в Windows, а также портированы 
+    три свободных LADSPA-модуля (GVerb reverb, SC4 compressor и 
+    Hard Limiter)
 
 Новое в Audacity 1.2.0-pre2:
 
