@@ -785,7 +785,7 @@ void WaveTrack::AppendAlias(wxString fullPath,
 #ifdef __WXDEBUG__
    bool opened = 
 #endif
-      f->OpenWriting();
+      f->OpenWriteHeader();
    wxASSERT(opened);
    UpdateSummaries(buffer, newBlock, len);
    f->Close();
@@ -990,7 +990,7 @@ bool WaveTrack::InitBlock(WaveBlock * b)
 
    BlockFile *f = b->f;
 
-   if (!f->OpenWriting())
+   if (!f->OpenWriteHeader())
       return false;
 
    f->Write(headerTag, headerTagLen);
@@ -1177,19 +1177,21 @@ void WaveTrack::CopyWrite(sampleType * buffer, WaveBlock * b,
 #ifdef __WXDEBUG__
    bool opened =
 #endif
-      f->OpenWriting();
+      f->OpenWriteData();
    wxASSERT(opened);
 
-   f->SeekTo(totalHeaderLen + (start * sizeof(sampleType)));
+   // OpenWriteData() should automatically seek to this point
+   //f->SeekTo(totalHeaderLen + (start * sizeof(sampleType)));
 
    f->Write((void *) buffer, len * sizeof(sampleType));
+   f->Close();
 
+   f->OpenWriteHeader();
    UpdateSummaries(buffer, b, len);
+   f->Close();
 
    if (newBuffer)
       delete[]newBuffer;
-
-   f->Close();
 }
 
 void WaveTrack::FirstWrite(sampleType * buffer, WaveBlock * b,
@@ -1206,14 +1208,16 @@ void WaveTrack::FirstWrite(sampleType * buffer, WaveBlock * b,
 #ifdef __WXDEBUG__
    bool opened = 
 #endif
-      f->OpenWriting();
+      f->OpenWriteData();
    wxASSERT(opened);
 
-   f->SeekTo(totalHeaderLen);
+   // OpenWriteData() should automatically seek to this point
+   //f->SeekTo(totalHeaderLen);
    f->Write((void *) buffer, len * sizeof(sampleType));
+   f->Close();
 
+   f->OpenWriteHeader();
    UpdateSummaries(buffer, b, len);
-
    f->Close();
 }
 
