@@ -551,6 +551,14 @@ SOURCE=..\src\export\ExportMP3.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\export\ExportOGG.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\export\ExportOGG.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\export\ExportPCM.cpp
 # End Source File
 # Begin Source File
