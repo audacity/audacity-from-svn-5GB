@@ -697,7 +697,7 @@ Optional Packages:
   --with-ladspa           compile with ladspa plug-in support [default=yes]
   --with-nyquist          compile with Nyquist support [default=yes]
   --with-portmixer        compile with PortMixer [default=yes]
-  --with-help             Make the help file "audacity-help.htb" [default=yes]
+  --with-help             Make the help file "audacity-help.htb" [default=no]
 
 Some influential environment variables:
   CC          C compiler command
@@ -2977,7 +2977,7 @@ if test "${with_help+set}" = set; then
   withval="$with_help"
   use_help=$withval
 else
-  use_help="yes"
+  use_help="no"
 fi;
 
 if [ "$use_portmixer" = "yes" ] ; then
