@@ -63,7 +63,7 @@ enum ToolBarType {
 ////////////////////////////////////////////////////////////
 
 class ToolBar:public wxWindow {
-
+   DECLARE_DYNAMIC_CLASS(ToolBar) 
  public:
    ToolBar() {
    };

@@ -27,7 +27,6 @@
 
 #include "TrackPanel.h"
 
-#include "APalette.h"
 #include "AColor.h"
 #include "AudioIO.h"
 #include "LabelTrack.h"
@@ -118,7 +117,7 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU(OnRateOtherID, TrackPanel::OnRateOther)
     EVT_MENU(OnSplitStereoID, TrackPanel::OnSplitStereo)
     EVT_MENU(OnMergeStereoID, TrackPanel::OnMergeStereo)
-    END_EVENT_TABLE()
+END_EVENT_TABLE()
 
 TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
                            const wxPoint & pos,
@@ -496,11 +495,11 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 
          // Change the cursor based on the selected tool.
          switch (operation) {
-            case selectTool:   SetCursor(*mSelectCursor); break;
-            case envelopeTool: SetCursor(*mArrowCursor);  break;
-            case slideTool:    SetCursor(*mSlideCursor);  break;
-            case zoomTool:
-               SetCursor(event.ShiftDown() ? *mZoomOutCursor : *mZoomInCursor);
+                case selectTool:   SetCursor(*mSelectCursor); break;
+                case envelopeTool: SetCursor(*mArrowCursor);  break;
+                case slideTool:    SetCursor(*mSlideCursor);  break;
+                case zoomTool:
+            SetCursor(event.ShiftDown() ? *mZoomOutCursor : *mZoomInCursor);
             break;
          }
       }
