@@ -3,7 +3,7 @@
 require_once 'main.inc.php';
 $title = $tutorialsStr;
 include 'top.inc.php';
-include phpLang_current.'/tutorials.php';
+IncludeFile("tutorials");
 include 'bottom.inc.php';
 
 ?>

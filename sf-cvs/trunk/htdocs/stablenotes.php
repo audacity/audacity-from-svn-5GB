@@ -3,7 +3,7 @@
 require_once 'main.inc.php';
 $title = $releaseNotesStr;
 include 'top.inc.php';
-include phpLang_current.'/stablenotes.php';
+IncludeFile("stablenotes");
 include 'bottom.inc.php';
 
 ?>
