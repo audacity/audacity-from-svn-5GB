@@ -177,6 +177,8 @@ FreqWindow::FreqWindow(wxWindow* parent, wxWindowID id, const wxString& title,
   
   mBackgroundBrush.SetColour(wxColour(204, 204, 204));
   mBackgroundPen.SetColour(wxColour(204, 204, 204));
+  
+  SetBackgroundColour(wxColour(204, 204, 204));
 
   // Min size, max size
   SetSizeHints(FREQ_WINDOW_WIDTH, FREQ_WINDOW_HEIGHT,
