@@ -15,14 +15,11 @@ CCC = @CXX@
 CDEPEND = @CDEPEND@
 
 # For precompiled header support
-PRECOMP_CFLAGS =
-
-# (Mac OS X only)
-# CDEPEND = $(CDEPEND) AudacityHeaders.h.gch
-# PRECOMP_CFLAGS = -include AudacityHeaders.h
+PRECOMP_CFLAGS = @PRECOMP_CFLAGS@
 
 LOCAL_LIBS = @LOCAL_LIBS@
 EXTRAOBJS = @EXTRAOBJS@
+EXTRATARGETS = @EXTRATARGETS@
 LIBS = @LIBS@
 DIRS=blockfile commands effects effects/ladspa effects/nyquist export import prefs widgets xml
 
@@ -177,7 +174,7 @@ LIBAUDACITY_SOURCES = $(LIBAUDACITY_OBJS:%.o=%.cpp)
 
 ########################################
 
-all: $(DIRS) libaudacity.a ../audacity
+all: $(DIRS) libaudacity.a ../audacity $(EXTRATARGETS)
 
 libaudacity.a: $(LIBAUDACITY_OBJS)
 	ar rcs libaudacity.a $(LIBAUDACITY_OBJS)
@@ -188,6 +185,21 @@ libaudacity.a: $(LIBAUDACITY_OBJS)
 
 $(DIRS):
 	mkdir -p $(DIRS)
+
+#
+# Mac OS X application
+#
+
+../Audacity.app: ../audacity
+	mkdir -p ../Audacity.app/Contents/MacOS
+	mkdir -p ../Audacity.app/Contents/Resources
+	cp -f ../audacity ../Audacity.app/Contents/MacOS
+	cp -f ../mac/Info.plist ../Audacity.app/Contents
+	test -f "../Audacity.app/Contents/PkgInfo" || \
+	     echo "APPLauDy" > ../Audacity.app/Contents/PkgInfo
+	cp -f ../mac/Resources/*.icns ../Audacity.app/Contents/Resources
+	cp -f ../mac/Resources2/Audacity.rsrc \
+		../Audacity.app/Contents/Resources/Audacity.rsrc
 
 #
 # You can optionally "make dep" to make dependencies.
