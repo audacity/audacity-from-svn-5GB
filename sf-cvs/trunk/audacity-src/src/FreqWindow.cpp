@@ -17,6 +17,8 @@
 
 #ifndef WX_PRECOMP
 #include <wx/brush.h>
+#include <wx/button.h>
+#include <wx/choice.h>
 #include <wx/image.h>
 #include <wx/dcmemory.h>
 #include <wx/msgdlg.h>

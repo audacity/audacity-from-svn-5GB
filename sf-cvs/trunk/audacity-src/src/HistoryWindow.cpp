@@ -8,9 +8,14 @@
 
 **********************************************************************/
 
+#include <wx/button.h>
+#include <wx/event.h>
 #include <wx/image.h>
 #include <wx/imaglist.h>
+#include <wx/listctrl.h>
 #include <wx/textctrl.h>
+#include <wx/sizer.h>
+#include <wx/spinctrl.h>
 #include <wx/statbox.h>
 #include <wx/stattext.h>
 #include <wx/intl.h>

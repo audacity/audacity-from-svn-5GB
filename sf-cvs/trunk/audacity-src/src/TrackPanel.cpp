@@ -35,6 +35,7 @@
 #include "Track.h"
 #include "TrackArtist.h"
 #include "Project.h"
+#include "ViewInfo.h"
 #include "WaveTrack.h"
 
 #include "widgets/Ruler.h"

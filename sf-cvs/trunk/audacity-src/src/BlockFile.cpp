@@ -9,6 +9,7 @@
 **********************************************************************/
 
 #include <wx/file.h>
+#include <wx/ffile.h>
 #include <wx/filefn.h>
 #include <wx/intl.h>
 

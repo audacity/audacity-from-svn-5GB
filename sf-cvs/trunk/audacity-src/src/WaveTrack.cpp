@@ -15,6 +15,7 @@
 #include <wx/intl.h>
 
 #include "WaveTrack.h"
+#include "BlockFile.h"
 #include "DirManager.h"
 #include "Prefs.h"
 

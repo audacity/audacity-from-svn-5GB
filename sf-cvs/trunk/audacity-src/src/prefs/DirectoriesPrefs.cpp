@@ -10,17 +10,18 @@
 
 #include <math.h>
 
-#include <wx/window.h>
-#include <wx/statbox.h>
-#include <wx/textdlg.h>
-#include <wx/msgdlg.h>
-#include <wx/filefn.h>
-#include <wx/utils.h>
+#include <wx/button.h>
 #include <wx/dirdlg.h>
-#include <wx/sizer.h>
-#include <wx/log.h>
 #include <wx/event.h>
+#include <wx/filefn.h>
 #include <wx/intl.h>
+#include <wx/log.h>
+#include <wx/msgdlg.h>
+#include <wx/sizer.h>
+#include <wx/statbox.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
+#include <wx/utils.h>
 
 #include "../Prefs.h"
 #include "../DiskFunctions.h"

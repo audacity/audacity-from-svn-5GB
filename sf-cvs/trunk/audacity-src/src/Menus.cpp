@@ -17,14 +17,17 @@
 
 #ifndef WX_PRECOMP
    #include <wx/app.h>
+   #include <wx/intl.h>
    #include <wx/menu.h>
    #include <wx/string.h>
+   #include <wx/filedlg.h>
+   #include <wx/msgdlg.h>
+   #include <wx/textdlg.h>
 #endif
 
 #include "sndfile.h"
 
 #include <wx/textfile.h>
-#include <wx/intl.h>
 
 #include "Audacity.h"
 #include "AboutDialog.h"

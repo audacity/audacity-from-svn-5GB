@@ -12,15 +12,14 @@
 #define __AUDACITY_HISTORY_WINDOW__
 
 #include <wx/dialog.h>
-#include <wx/window.h>
-#include <wx/event.h>
-#include <wx/button.h>
-#include <wx/notebook.h>
-#include <wx/sizer.h>
-#include <wx/spinctrl.h>
-#include <wx/listctrl.h>
-#include <wx/stattext.h>
 
+class wxBoxSizer;
+class wxListCtrl;
+class wxSpinCtrl;
+class wxButton;
+class wxStaticText;
+class wxCommandEvent;
+class wxListEvent;
 
 class AudacityProject;
 class UndoManager;

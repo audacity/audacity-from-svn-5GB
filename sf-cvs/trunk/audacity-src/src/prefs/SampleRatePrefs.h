@@ -11,11 +11,9 @@
 #ifndef __AUDACITY_SAMPLE_RATE_PREFS__
 #define __AUDACITY_SAMPLE_RATE_PREFS__
 
-#include <wx/window.h>
-#include <wx/statbox.h>
-#include <wx/radiobut.h>
-
 #include "PrefsPanel.h"
+
+class wxRadioButton;
 
 class SampleRatePrefs:public PrefsPanel {
 

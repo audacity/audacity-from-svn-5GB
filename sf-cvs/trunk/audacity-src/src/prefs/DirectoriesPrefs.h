@@ -11,14 +11,14 @@
 #ifndef __AUDACITY_DIRECTORIES_PREFS__
 #define __AUDACITY_DIRECTORIES_PREFS__
 
-#include <wx/window.h>
-#include <wx/stattext.h>
-#include <wx/button.h>
 #include <wx/string.h>
-#include <wx/textctrl.h>
 #include <wx/longlong.h>
 
 #include "PrefsPanel.h"
+
+class wxStaticBox;
+class wxStaticText;
+class wxTextCtrl;
 
 class DirectoriesPrefs:public PrefsPanel {
 

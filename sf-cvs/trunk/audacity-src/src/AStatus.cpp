@@ -10,11 +10,11 @@
 
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
-#include <wx/image.h>
+#include <wx/intl.h>
+#include <wx/gdicmn.h>
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
-#include <wx/intl.h>
 
 #include "AColor.h"
 #include "AStatus.h"

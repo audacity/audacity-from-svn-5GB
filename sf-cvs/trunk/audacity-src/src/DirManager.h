@@ -31,14 +31,15 @@
 #ifndef _DIRMANAGER_
 #define _DIRMANAGER_
 
-#include <wx/hash.h>
 #include <wx/list.h>
 #include <wx/string.h>
 
-#include "BlockFile.h"
 #include "WaveTrack.h"
 
 class wxTextFile;
+class wxHashTable;
+
+class BlockFile;
 
 class DirManager {
  public:

@@ -12,6 +12,7 @@
 #define __AUDACITY_PREFS_DIALOG__
 
 #include <wx/dialog.h>
+#include <wx/string.h>
 
 class wxNotebook;
 class wxWindow;

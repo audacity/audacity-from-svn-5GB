@@ -11,9 +11,11 @@
 #ifndef __AUDACITY_ABOUT_DLG__
 #define __AUDACITY_ABOUT_DLG__
 
-#include <wx/wx.h>
-#include <wx/setup.h>
 #include <wx/dialog.h>
+
+class wxBoxSizer;
+class wxStaticBitmap;
+class wxBitmap;
 
 class AboutDialog:public wxDialog {
    DECLARE_DYNAMIC_CLASS(AboutDialog)

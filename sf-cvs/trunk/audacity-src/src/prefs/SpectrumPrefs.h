@@ -11,14 +11,11 @@
 #ifndef __AUDACITY_SPECTRUM_PREFS__
 #define __AUDACITY_SPECTRUM_PREFS__
 
-#include <wx/window.h>
-#include <wx/statbox.h>
-#include <wx/checkbox.h>
-#include <wx/radiobut.h>
-#include <wx/stattext.h>
-#include <wx/textctrl.h>
-
 #include "PrefsPanel.h"
+
+class wxRadioButton;
+class wxCheckBox;
+class wxTextCtrl;
 
 class SpectrumPrefs:public PrefsPanel {
 

@@ -17,8 +17,11 @@
 #define __AUDACITY_ENVELOPE__
 
 #include <wx/dynarray.h>
-#include <wx/event.h>
-#include <wx/textfile.h>
+
+class wxRect;
+class wxDC;
+class wxMouseEvent;
+class wxTextFile;
 
 class DirManager;
 

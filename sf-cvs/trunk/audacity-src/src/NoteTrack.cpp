@@ -13,6 +13,8 @@
 #include <wx/pen.h>
 #include <wx/intl.h>
 
+#include "allegro.h"
+
 #include "AColor.h"
 #include "NoteTrack.h"
 #include "DirManager.h"
@@ -126,7 +128,7 @@ void NoteTrack::CalcLen()
    }
 }
 
-void NoteTrack::SetSequence(Seq_ptr seq)
+void NoteTrack::SetSequence(Seq *seq)
 {
    if (mSeq)
       delete mSeq;
