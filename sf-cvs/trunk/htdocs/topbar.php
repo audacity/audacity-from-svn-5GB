@@ -5,7 +5,9 @@
 
 </td>
 <td align="center" valign="top">
-<?php print "<a href=screenshots.php$langQueryStr>"; ?><img src="images/audacity1.1.small.jpg" width="141" height="100" border="0"></a>
+<?php print "<a href=screenshots.php$langQueryStr>"; ?><img
+src="images/audacity1.1.small.jpg" alt="Screenshots" title="Audacity
+Screenshots" width="141" height="100" border="0"></a>
 </td>
 
 <td align="right" valign="bottom">
