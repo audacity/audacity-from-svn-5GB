@@ -32,6 +32,7 @@
 
 #include "Export.h"
 #include "ExportPCM.h"
+#include "ExportMP3.h"
 
 bool Export(wxWindow *parent,
 			TrackList *tracks, bool selectionOnly,
@@ -156,8 +157,9 @@ bool Export(wxWindow *parent,
       format == "AIFF with track markers")
         return ExportPCM(format, stereo, rate, fName, parent, tracks,
           selectionOnly, t0, t1);
-//  else if (format == "MP3")
-//    return ExportMP3(parent, tracks, selectionOnly, t0, t1);
+  else if (format == "MP3")
+        return ExportMP3(stereo, rate, fName, parent, tracks,
+          selectionOnly, t0, t1);
 
   /* Execution should never reach this point...! */
 

@@ -32,6 +32,7 @@ OBJS = \
 	$(OBJDIR)/DiskFunctions.cpp.o \
 	$(OBJDIR)/Envelope.cpp.o \
 	$(OBJDIR)/Export.cpp.o \
+	$(OBJDIR)/ExportMP3.cpp.o \
   $(OBJDIR)/ExportPCM.cpp.o \
 	$(OBJDIR)/FFT.cpp.o \
 	$(OBJDIR)/FreqWindow.cpp.o \
