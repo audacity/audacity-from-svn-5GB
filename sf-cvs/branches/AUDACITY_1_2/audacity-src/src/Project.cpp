@@ -63,6 +63,7 @@
 #include "AudioIO.h"
 #include "ControlToolBar.h"
 #include "EditToolBar.h"
+#include "MeterToolBar.h"
 #include "FormatSelection.h"
 #include "FreqWindow.h"
 #include "HistoryWindow.h"
@@ -85,7 +86,6 @@
 #include "xml/XMLFileReader.h"
 #include "PlatformCompatibility.h"
 #include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
-
 
 TrackList *AudacityProject::msClipboard = new TrackList();
 double AudacityProject::msClipLen = 0.0;
@@ -407,6 +407,20 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 //      top += h + 1;
 //      height -= h + 1;
 //      mTotalToolBarHeight += h;
+   }
+
+   if (gMeterToolBarStub) {
+      if (gMeterToolBarStub->GetLoadedStatus()
+          && !gMeterToolBarStub->GetWindowedStatus()) {
+         int h = gMeterToolBarStub->GetHeight();
+         ToolBar *etb = new MeterToolBar(this, 0, wxPoint(10, top),
+                                        wxSize(width - 10 - sbarSpaceWidth, h));
+         mToolBarArray.Add((ToolBar *) etb);
+
+//         top += h + 1;
+//         height -= h + 1;
+//         mTotalToolBarHeight += h;
+      }
    }
 
    if (gMixerToolBarStub) {
@@ -966,6 +980,9 @@ void AudacityProject::OnIconize(wxIconizeEvent &event)
       if (gEditToolBarStub) {
          gEditToolBarStub->Iconize( mIconized );
       }
+      if (gMeterToolBarStub) {
+         gMeterToolBarStub->Iconize( mIconized );
+      }
    }
 
    event.Skip();
@@ -1286,7 +1303,7 @@ int AudacityProject::FlowLayout( int i, int x, int y, int width, int height )
                mToolBarArray[i-2]->GetPosition( &bar2X, &bar2Y );
                if( bar2Y == barY ){
                   int dummy;
-                  mToolBarArray[i-2]->GetSize( &barWidth, &dummy );
+                  mToolBarArray[i-2]->GetIdealSize( &barWidth, &dummy );
                   mToolBarArray[i-2]->SetSize( barWidth,  barHeight + height+extraSpace);
 //                  wxLogDebug("b: At %i,%i for %i Toolbar %i has adjusted height %i", x,y,bar2Y, i-2, barHeight + height + extraSpace );
                }
@@ -1416,6 +1433,22 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
      break;
       
      
+   case MeterToolBarID:
+
+     if (!gMeterToolBarStub) {
+       gMeterToolBarStub = new ToolBarStub(gParentWindow, MeterToolBarID);
+     }
+     
+     h = gMeterToolBarStub->GetHeight();
+     toolbar =
+       new MeterToolBar(this, -1, wxPoint(10, tbheight),
+			wxSize(width - 10, h));
+     
+     
+     mToolBarArray.Insert(toolbar, 1);
+     break;
+      
+     
    case NoneID:
    default:
      toolbar = NULL;
@@ -1459,6 +1492,8 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
          case MixerToolBarID:
             break;
 
+         case MeterToolBarID:
+            break;
 
          case NoneID:
          default:
@@ -1586,6 +1621,10 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
       case MixerToolBarID:
          gMixerToolBarStub->ShowWindowedToolBar(&mouse);
          gMixerToolBarStub->UnloadAll();
+         break;
+      case MeterToolBarID:
+         gMeterToolBarStub->ShowWindowedToolBar(&mouse);
+         gMeterToolBarStub->UnloadAll();
          break;
 
       case NoneID:
@@ -2528,6 +2567,18 @@ MixerToolBar *AudacityProject::GetMixerToolBar()
 
    if (gMixerToolBarStub)
       return (MixerToolBar *)gMixerToolBarStub->GetToolBar();
+
+   return NULL;
+}
+
+MeterToolBar *AudacityProject::GetMeterToolBar()
+{
+   for(unsigned int i=0; i<mToolBarArray.GetCount(); i++)
+      if ((mToolBarArray[i]->GetType()) == MeterToolBarID)
+         return (MeterToolBar *)mToolBarArray[i];
+
+   if (gMeterToolBarStub)
+      return (MeterToolBar *)gMeterToolBarStub->GetToolBar();
 
    return NULL;
 }

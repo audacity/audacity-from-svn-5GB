@@ -139,6 +139,8 @@ void OnLoadEditToolBar();
 void OnFloatEditToolBar();
 void OnLoadMixerToolBar();
 void OnFloatMixerToolBar();
+void OnLoadMeterToolBar();
+void OnFloatMeterToolBar();
 
 
         // Project Menu

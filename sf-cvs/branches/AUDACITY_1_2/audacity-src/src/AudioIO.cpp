@@ -43,9 +43,7 @@
 #include "Prefs.h"
 #include "TimeTrack.h"
 
-#if 0 // VU METER
 #include "widgets/Meter.h"
-#endif
 
 #if USE_PORTMIXER
 #include "MixerToolBar.h"
@@ -409,6 +407,8 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    if (mStreamToken != -1)
       return 0;
 
+   mInputMeter = NULL;
+   mOutputMeter = NULL;
    mRate    = sampleRate;
    mT0      = t0;
    mT       = t0;
@@ -785,6 +785,17 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    return mStreamToken;
 }
 
+void AudioIO::SetMeters(Meter *inputMeter, Meter *outputMeter)
+{
+   mInputMeter = inputMeter;
+   mOutputMeter = outputMeter;
+
+   if (mInputMeter)
+      mInputMeter->Reset(mRate);
+   if (mOutputMeter)
+      mOutputMeter->Reset(mRate);
+}
+
 void AudioIO::StopStream()
 {
 #if USE_PORTAUDIO_V19
@@ -880,6 +891,11 @@ void AudioIO::StopStream()
 
       delete[] mCaptureBuffers;
    }
+
+   if (mInputMeter)
+      mInputMeter->Reset(mRate);
+   if (mOutputMeter)
+      mOutputMeter->Reset(mRate);
 
    //
    // Only set token to 0 after we're totally finished with everything
@@ -1556,25 +1572,26 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
    gAudioIO->mLastBufferAudibleTime = timeInfo->outputBufferDacTime;
 #endif
 
-   #if 0 // VU METER
+   // Send data to VU meters
 
-   // Example code showing how to use the Meter class
-
-   if( outputBuffer && numPlaybackChannels == 2 )
-   {
-      float left = 0, right = 0;
-      float *outputFloats = (float *)outputBuffer;
-
-      for( i = 0; i < framesPerBuffer; i++) {
-         if (outputFloats[2*i] > left)
-            left = outputFloats[2*i];
-         if (outputFloats[2*i+1] > right)
-            right = outputFloats[2*i+1];
+   if (gAudioIO->mOutputMeter && outputBuffer)
+      gAudioIO->mOutputMeter->UpdateDisplay(numPlaybackChannels,
+                                            framesPerBuffer,
+                                            (float *)outputBuffer);
+   if (gAudioIO->mInputMeter && inputBuffer) {
+      if (gAudioIO->mCaptureFormat == floatSample)
+         gAudioIO->mInputMeter->UpdateDisplay(numCaptureChannels,
+                                              framesPerBuffer,
+                                              (float *)inputBuffer);
+      else {
+         CopySamples((samplePtr)inputBuffer, gAudioIO->mCaptureFormat,
+                     (samplePtr)tempFloats, floatSample,
+                     framesPerBuffer);
+         gAudioIO->mInputMeter->UpdateDisplay(numCaptureChannels,
+                                              framesPerBuffer,
+                                              tempFloats);
       }
-      gMeter->PostUpdate(left, right, (double)outTime);
    }
-
-   #endif
 
    return callbackReturn;
 }
