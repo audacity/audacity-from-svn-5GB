@@ -32,7 +32,8 @@
 #include <wx/ffile.h>
 #include <wx/log.h>
 #include <wx/timer.h>
-#include <wx/Notebook.h>
+#include <wx/sizer.h>
+#include <wx/notebook.h>
 
 #ifdef __MACOSX__
 #include <CoreServices/CoreServices.h>
@@ -1008,7 +1009,9 @@ void AudacityProject::OnIconize(wxIconizeEvent &event)
    // void return?  I don't know.
    mIconized = event.Iconized();
 
-   for(unsigned int i=0;i<gAudacityProjects.Count();i++){
+   unsigned int i;
+
+   for(i=0;i<gAudacityProjects.Count();i++){
       if(gAudacityProjects[i]){
          if( !gAudacityProjects[i]->mIconized )
             VisibleProjectCount++;
