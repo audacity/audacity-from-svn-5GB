@@ -156,6 +156,10 @@ value="http://audacity.sourceforge.net/list/invalid.php">
 <br>
 <a href=dox/html/index.html>Doxygen Class Docs</a>
 <br>
+<?php print "<a href=nyquist.php?$langLinkStr>"; ?>
+Nyquist
+</a>
+<br>
 <?php print "<a href=cvs.php?$langLinkStr>"; ?>
 CVS
 </a>
