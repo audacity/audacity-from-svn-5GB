@@ -370,7 +370,7 @@ bool TagsDialog::Validate()
    {
       if(mTags->mTitle.Length() > 30)
       {
-         wxMessageBox(wxString::Format(errorString, _("Title"), 30);
+         wxMessageBox(wxString::Format(errorString, _("Title"), 30));
 
          mTags->mTitle = mTags->mTitle.Left(30);
          TransferDataToWindow();
@@ -380,7 +380,7 @@ bool TagsDialog::Validate()
 
       if(mTags->mArtist.Length() > 30)
       {
-         wxMessageBox(wxString::Format(errorString, _("Artist"), 30);
+         wxMessageBox(wxString::Format(errorString, _("Artist"), 30));
 
          mTags->mArtist = mTags->mArtist.Left(30);
          TransferDataToWindow();
@@ -390,7 +390,7 @@ bool TagsDialog::Validate()
 
       if(mTags->mAlbum.Length() > 30)
       {
-         wxMessageBox(wxString::Format(errorString, _("Album"), 30);
+         wxMessageBox(wxString::Format(errorString, _("Album"), 30));
 
          mTags->mAlbum = mTags->mAlbum.Left(30);
          TransferDataToWindow();
@@ -400,7 +400,7 @@ bool TagsDialog::Validate()
 
       if(mTags->mYear.Length() > 4)
       {
-         wxMessageBox(wxString::Format(errorString, _("Year"), 4);
+         wxMessageBox(wxString::Format(errorString, _("Year"), 4));
 
          mTags->mYear = mTags->mYear.Left(4);
          TransferDataToWindow();
@@ -410,7 +410,7 @@ bool TagsDialog::Validate()
 
       if(mTags->mComments.Length() > 30)
       {
-         wxMessageBox(wxString::Format(errorString, _("Comments"), 30);
+         wxMessageBox(wxString::Format(errorString, _("Comments"), 30));
 
          mTags->mComments = mTags->mComments.Left(30);
          TransferDataToWindow();
