@@ -11,10 +11,10 @@
 #ifndef __AUDACITY_EFFECT_NYQUIST__
 #define __AUDACITY_EFFECT_NYQUIST__
 
-class wxString;
-
 #include <wx/button.h>
 #include <wx/dialog.h>
+#include <wx/filename.h>
+#include <wx/datetime.h>
 #include <wx/stattext.h>
 #include <wx/slider.h>
 #include <wx/textctrl.h>
@@ -89,10 +89,14 @@ private:
    bool       ProcessOne();
 
    void       Parse(wxString line);
+   void       ParseFile();
    wxString   UnQuote(wxString s);
    double     GetCtrlValue(wxString s);
 
    static wxString  mXlispPath;
+
+   wxFileName       mFileName;
+   wxDateTime       mFileModified;
 
    bool             mInteractive;
    bool             mOK;

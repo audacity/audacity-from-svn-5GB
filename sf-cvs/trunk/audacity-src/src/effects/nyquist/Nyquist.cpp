@@ -169,9 +169,31 @@ void EffectNyquist::Parse(wxString line)
    }
 }
 
+void EffectNyquist::ParseFile()
+{
+   wxTextFile f(mFileName.GetFullPath());
+   if (!f.Open())
+      return;
+
+   mCmd = "";
+   mFlags = PROCESS_EFFECT | PLUGIN_EFFECT;
+   mOK = false;
+   mControls.Clear();
+
+   int i;
+   int len = f.GetLineCount();
+   wxString line;
+   for(i=0; i<len; i++) {
+      line = f[i];
+      if (line.Length()>1 && line.GetChar(0)==';')
+         Parse(line);
+      else
+         mCmd += line + "\n";
+   }
+}
+
 EffectNyquist::EffectNyquist(wxString fName)
 {
-   mOK = false;
    mInteractive = false;
    mAction = _("Applying Nyquist Effect...");
 
@@ -187,24 +209,10 @@ EffectNyquist::EffectNyquist(wxString fName)
 
    wxLogNull dontLog;
 
-   wxTextFile f(fName);
-   if (!f.Open())
-      return;
-
-   mCmd = "";
-   mName = wxFileNameFromPath(fName);
-   mFlags = PROCESS_EFFECT | PLUGIN_EFFECT;
-
-   int i;
-   int len = f.GetLineCount();
-   wxString line;
-   for(i=0; i<len; i++) {
-      line = f[i];
-      if (line.Length()>1 && line.GetChar(0)==';')
-         Parse(line);
-      else
-         mCmd += line + "\n";
-   }
+   mFileName = wxFileName(fName);
+   mName = mFileName.GetName();
+   mFileModified = mFileName.GetModificationTime();
+   ParseFile();
 }
 
 EffectNyquist::~EffectNyquist()
@@ -260,6 +268,11 @@ bool EffectNyquist::PromptUser()
       
       mCmd = temp;
       return true;
+   }
+
+   if (mFileName.GetModificationTime().IsLaterThan(mFileModified)) {
+      ParseFile();
+      mFileModified = mFileName.GetModificationTime();
    }
 
    if (mControls.GetCount() == 0)
