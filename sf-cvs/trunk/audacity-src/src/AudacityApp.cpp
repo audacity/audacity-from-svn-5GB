@@ -230,26 +230,6 @@ bool AudacityApp::OnInit()
    #endif
 
    InitPreferences();
-   InitAudioIO();
-
-   // Locale
-   // wxWindows 2.3 has a much nicer wxLocale API.  We can make this code much
-   // better once we move to wx 2.3/2.4.
-
-   wxString lang = gPrefs->Read("/Locale/Language", "");
-
-   // Pop up a dialog the first time the program is run
-   if (lang == "")
-      lang = ChooseLanguage(NULL);
-
-   gPrefs->Write("/Locale/Language", lang);
-
-   if (lang != "en") {
-      wxLogNull nolog;
-      mLocale = new wxLocale("", lang, "", true, true);
-      mLocale->AddCatalog("audacity");
-   } else
-      mLocale = NULL;
 
    //
    // Paths: set search path and temp dir path
@@ -257,9 +237,12 @@ bool AudacityApp::OnInit()
 
    wxString home = wxGetHomeDir();
 
-   // On Unix systems, search the install path and the user's
-   // .audacity-files directory, plus check the AUDACITY_PATH
-   // environment variable.  The default temp dir is in /tmp
+   // On Unix systems, the default temp dir is in /tmp.
+   // Search path (in this order):
+   // * The AUDACITY_PATH environment variable
+   // * The current directory
+   // * The user's .audacity-files directory in their home directory
+   // * The "share" and "share/doc" directories in their install path
    #ifdef __WXGTK__
    defaultTempDir.Printf("/tmp/audacity1.1-%s", wxGetenv("USER"));
    wxString pathVar = wxGetenv("AUDACITY_PATH");
@@ -282,12 +265,14 @@ bool AudacityApp::OnInit()
    // On Windows, the path to the Audacity program is in argv[0]
    wxString progPath = wxPathOnly(argv[0]);
    AddUniquePathToPathList(progPath, audacityPathList);
+   AddUniquePathToPathList(progPath+"\\Languages", audacityPathList);
    defaultTempDir.Printf("%s\\audacity_1_1_temp", (const char *)progPath);
    #endif
    #ifdef __MACOSX__
    // On Mac OS X, the path to the Audacity program is in argv[0]
    wxString progPath = wxPathOnly(argv[0]);
    AddUniquePathToPathList(progPath, audacityPathList);
+   AddUniquePathToPathList(progPath+"/Languages", audacityPathList);
    defaultTempDir.Printf("%s/audacity_1_1_temp", (const char *)progPath);
    #endif
    #ifdef __MACOS9__
@@ -295,8 +280,34 @@ bool AudacityApp::OnInit()
    // contains the program.
    wxString progPath = wxGetCwd();
    AddUniquePathToPathList(progPath, audacityPathList);
+   AddUniquePathToPathList(progPath+":Languages", audacityPathList);
    defaultTempDir.Printf("%s/audacity_1_1_temp", (const char *)progPath);
    #endif
+
+   // Locale
+   // wxWindows 2.3 has a much nicer wxLocale API.  We can make this code much
+   // better once we move to wx 2.3/2.4.
+
+   wxString lang = gPrefs->Read("/Locale/Language", "");
+
+   // Pop up a dialog the first time the program is run
+   if (lang == "")
+      lang = ChooseLanguage(NULL);
+
+   gPrefs->Write("/Locale/Language", lang);
+
+   if (lang != "en") {
+      wxLogNull nolog;
+      mLocale = new wxLocale("", lang, "", true, true);
+
+      for(unsigned int i=0; i<audacityPathList.GetCount(); i++)
+         mLocale->AddCatalogLookupPathPrefix(audacityPathList[i]);
+
+      mLocale->AddCatalog("audacity");
+   } else
+      mLocale = NULL;
+
+   InitAudioIO();
 
    LoadEffects();
 
