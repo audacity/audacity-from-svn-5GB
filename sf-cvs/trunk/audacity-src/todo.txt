@@ -32,6 +32,7 @@ Website / Sourceforge
   it be used for recording, too?
 - Bug on Linux: hold down spacebar to keep playing/stopping,
   gets in endless loop...
+- Support MP3 exporting at even lower bitrates
 - Select region by typing in start and stop times
 
 -----------------------------------------------------------
