@@ -21,6 +21,7 @@
 #endif
 
 #ifndef WX_PRECOMP
+#include <wx/dcmemory.h>
 #include <wx/defs.h>
 #include <wx/event.h>
 #include <wx/brush.h>
@@ -126,10 +127,16 @@ void ControlToolBar::InitializeControlToolBar()
    wxImage *sliderOriginal = new wxImage(wxBitmap(Slider).ConvertToImage());
    wxImage *thumbOriginal = new wxImage(wxBitmap(SliderThumb).ConvertToImage());
 #endif
+
+#ifdef __WXMAC__
+   wxImage *sliderNew = sliderOriginal;
+   wxImage *thumbNew = thumbOriginal;
+#else
    wxImage *sliderNew = ChangeImageColour(sliderOriginal,
                                           backgroundColour);
    wxImage *thumbNew = ChangeImageColour(thumbOriginal,
                                          backgroundColour);
+#endif
 
    mVolume =
        new ASlider(this, 0, wxPoint(sliderX, 14), wxSize(100, 28),
@@ -139,8 +146,10 @@ void ControlToolBar::InitializeControlToolBar()
 
    delete sliderOriginal;
    delete thumbOriginal;
+#ifndef __WXMAC__
    delete sliderNew;
    delete thumbNew;
+#endif
 
    mVolume->Set(80);
 
@@ -349,9 +358,15 @@ void ControlToolBar::MakeButtons()
    wxColour newColour =
        wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
 
+#ifdef __WXMAC__
+   upPattern = upOriginal;
+   downPattern = downOriginal;
+   hilitePattern = hiliteOriginal;
+#else
    upPattern = ChangeImageColour(upOriginal, newColour);
    downPattern = ChangeImageColour(downOriginal, newColour);
    hilitePattern = ChangeImageColour(hiliteOriginal, newColour);
+#endif
 
    /* Buttons */
 
@@ -382,9 +397,12 @@ void ControlToolBar::MakeButtons()
                     (char const **) FFwdAlpha, ID_FF_BUTTON);
    mFF->SetToolTip(_("Skip to End"));
 
+#ifndef __WXMAC__
    delete upPattern;
    delete downPattern;
    delete hilitePattern;
+#endif
+
    delete upOriginal;
    delete downOriginal;
    delete hiliteOriginal;
@@ -612,7 +630,7 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
    int width, height;
    GetSize(&width, &height);
 
-#if defined(__WXMAC__0)          // && defined(TARGET_CARBON)
+#if defined(__WXMAC__)
 
    if (mBackgroundWidth < width) {
       if (mBackgroundBitmap)
@@ -633,16 +651,19 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
       memDC.SetPen(wxPen(wxColour(255, 255, 255), 1, wxSOLID));
       for (y = 2; y < height; y += 4)
          memDC.DrawLine(0, y, width, y);
-
-      memDC.DrawBitmap(*mDivBitmap, 240, 4);
-      memDC.DrawBitmap(*mMuteBitmap, 250, 4);
-      memDC.DrawBitmap(*mLoudBitmap, 404, 4);
    }
 
    wxMemoryDC memDC;
    memDC.SelectObject(*mBackgroundBitmap);
 
    dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
+
+   dc.SetPen(*wxBLACK_PEN);
+
+   dc.DrawLine(27, 0, 27, height - 1);
+   dc.DrawLine(55, 0, 55, height - 1);
+   dc.DrawLine(83, 0, 83, 27);
+   dc.DrawLine(0, 27, 83, 27);
 
 #else
 
@@ -656,7 +677,9 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
    dc.DrawLine(55, 0, 55, height - 1);
    dc.DrawLine(83, 0, 83, height - 1);
    dc.DrawLine(0, 27, 83, 27);
+
 #endif
+
 }
 
 void ControlToolBar::EnableDisableButtons()
