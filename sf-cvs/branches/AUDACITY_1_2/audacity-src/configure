@@ -4444,9 +4444,9 @@ cat >>confdefs.h <<\_ACEOF
 #define USE_SOUNDTOUCH 1
 _ACEOF
 
-	CXXFLAGS="-I../lib-src/soundtouch/src $CXXFLAGS"
-	BUILDLIBS="$BUILDLIBS soundtouch/soundtouch.a"
-	EXTRAOBJS="$EXTRAOBJS ../lib-src/soundtouch/soundtouch.a"
+	CXXFLAGS="-I../lib-src/soundtouch/include $CXXFLAGS"
+	BUILDLIBS="$BUILDLIBS soundtouch/source/SoundTouch/.libs/libSoundTouch.a"
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/soundtouch/source/SoundTouch/.libs/libSoundTouch.a"
 
    if test ! -f "lib-src/soundtouch/Makefile"; then
 		echo "--- Configuring soundtouch";

@@ -11,10 +11,10 @@
  * Author e-mail : oparviai @ iki.fi
  * File created  : 13-Jan-2002
  *
- * Last changed  : $Date: 2004-10-26 19:09:38 $
- * File revision : $Revision: 1.2 $
+ * Last changed  : $Date: 2004-11-05 03:28:10 $
+ * File revision : $Revision: 1.2.2.1 $
  *
- * $Id: TDStretch.h,v 1.2 2004-10-26 19:09:38 vjohnson Exp $
+ * $Id: TDStretch.h,v 1.2.2.1 2004-11-05 03:28:10 mbrubeck Exp $
  *
  * License :
  * 

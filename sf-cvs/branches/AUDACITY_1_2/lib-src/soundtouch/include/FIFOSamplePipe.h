@@ -15,10 +15,10 @@
  * Author e-mail : oparviai @ iki.fi
  * File created  : 13-Jan-2002
  *
- * Last changed  : $Date: 2004-03-14 15:51:41 $
- * File revision : $Revision: 1.1.1.1 $
+ * Last changed  : $Date: 2004-11-05 03:28:09 $
+ * File revision : $Revision: 1.1.1.1.2.1 $
  *
- * $Id: FIFOSamplePipe.h,v 1.1.1.1 2004-03-14 15:51:41 mbrubeck Exp $
+ * $Id: FIFOSamplePipe.h,v 1.1.1.1.2.1 2004-11-05 03:28:09 mbrubeck Exp $
  *
  * License :
  * 

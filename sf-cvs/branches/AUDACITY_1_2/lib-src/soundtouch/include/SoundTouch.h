@@ -30,10 +30,10 @@
  * Author        : Copyright (c) Olli Parviainen
  * Author e-mail : oparviai @ iki.fi
  *
- * Last changed  : $Date: 2004-10-26 19:09:39 $
- * File revision : $Revision: 1.2 $
+ * Last changed  : $Date: 2004-11-05 03:28:09 $
+ * File revision : $Revision: 1.2.2.1 $
  *
- * $Id: SoundTouch.h,v 1.2 2004-10-26 19:09:39 vjohnson Exp $
+ * $Id: SoundTouch.h,v 1.2.2.1 2004-11-05 03:28:09 mbrubeck Exp $
  *
  * License :
  *

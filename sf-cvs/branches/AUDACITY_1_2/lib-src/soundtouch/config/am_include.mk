@@ -1,7 +1,7 @@
 ## vim:tw=78
 ## Process this file with automake to create Makefile.in
 ##
-## $Id: am_include.mk,v 1.1.1.1 2004-03-14 15:51:39 mbrubeck Exp $
+## $Id: am_include.mk,v 1.1.1.1.2.1 2004-11-05 03:28:08 mbrubeck Exp $
 ##
 ## Copyright (C) 2003 - David W. Durham
 ## 

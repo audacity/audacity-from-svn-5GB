@@ -7,7 +7,7 @@
 @REM Copyright (c) Olli Parviainen
 @REM File Created: 09/Sep/2003
 @REM
-@REM $Id: make-win.bat,v 1.2 2004-10-26 19:16:42 vjohnson Exp $ 
+@REM $Id: make-win.bat,v 1.2.2.1 2004-11-05 03:28:08 mbrubeck Exp $ 
 
 @if "%MsDevDir%"=="" goto nodevdir
 
