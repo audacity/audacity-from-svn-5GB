@@ -12,7 +12,7 @@ Audacity 1.2.0 je nová stabilní verze svobodného zvukového editoru Audacity. Opr
 </ul>
 
 <p>
-Pokud chctet vìdìt všechno o zmìnách a známých problémech, pøeètìte si <a href="stablenotes.php<?php print $langQueryStr; ?>">poznámky k vydání</a>.
+Pokud chcete vìdìt všechno o zmìnách a známých problémech, pøeètìte si <a href="stablenotes.php<?php print $langQueryStr; ?>">poznámky k vydání</a>.
 </p>
 
 <?php BoxBottom(); ?>
