@@ -28,7 +28,7 @@
   $srcStableVersion = "1.0.0-2";
   $srcStableSize =    "1.6 MB";
   $srcBetaVersion =   "1.1.3";
-  $srcBetaSize =      "2.3 MB";
+  $srcBetaSize =      "3.1 MB";
 
   $rpmStableVersion = "1.0.0-2";
   $rpmStableSize =    "750K";
