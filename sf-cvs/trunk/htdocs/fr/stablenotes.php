@@ -8,7 +8,7 @@ Problèmes connus:
 * Linux: le duplex intégral (lecture d'une piste et enregistrement d'une autre en simultané)
   ne fonctionne pas même si la carte de son est conçue pour le faire. Ce problème est probablement dû à notre façon d'utiliser OSS.
 
-* Linux: avec la version actuelle, les cartes de son qui ne traitent que plus de 2 canaux ne sont pas supportées.
+* Linux: avec la version actuelle, les cartes son qui ne traitent que plus de 2 canaux ne sont pas supportées.
 
 -------------------------------------------------------------
 
@@ -116,7 +116,7 @@ Modifications dans la version 0.97:
 
   - Ajout de l'effet Elimination du bruit (Dominic)
 
-  - Improved click-drag zoom.
+  - Zoom par glisser-déposer amélioré.
 
   - Support du glisser-déposer pour importer un fichier audio (Windows)
 
