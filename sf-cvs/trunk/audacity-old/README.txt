@@ -17,6 +17,7 @@ Authors:
   Mark Tomlinson <marktoml@hotmail.com>
   Joshua Haberman <joshua@haberman.com>
   Nasca Octavian Paul <paulnasca@email.ro> or <paulnasca@yahoo.com>
+  Logan Lewis <proxima@proxc.com>
 
 Icons and logo:
 
