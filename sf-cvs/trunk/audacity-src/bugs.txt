@@ -7,6 +7,10 @@ in Audacity.
 Known bugs to fix:
 -----------------------------------------------------------
 
+- Crash with FireWire audio devices on OS 9
+- Can't record on OS 9 when Finale is open
+- Export doesn't work on Mac OS 9???   AIFF???
+  See email from Laurie Sosna.
 - Amplify's "avoid clipping" doesn't always work because
   of roundoff errors...it needs to be more conservative
   about not clipping.
