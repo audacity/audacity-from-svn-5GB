@@ -2021,7 +2021,8 @@ void AudacityProject::AddImportedTracks(wxString fileName,
       }
    }
 
-   PushState(wxString::Format(_("Imported '%s'"), fileName.c_str()));
+   PushState(wxString::Format(_("Imported '%s'"), fileName.c_str()),
+             _("Import"));
 
    OnZoomFit();
 
@@ -2105,21 +2106,13 @@ bool AudacityProject::SaveAs()
 void AudacityProject::InitialState()
 {
    mUndoManager.ClearStates();
-   PushState(_("Created new project"), false);
-   mUndoManager.StateSaved();
-   ModifyUndoMenus();
-}
 
-void AudacityProject::PushState(wxString desc,
-                                bool makeDirty /* = true */ )
-{
    TrackList *l = new TrackList(mTracks);
-
-   mUndoManager.PushState(l, mViewInfo.sel0, mViewInfo.sel1, desc);
+   mUndoManager.PushState(l, mViewInfo.sel0, mViewInfo.sel1,
+                          _("Created new project"), _(""));
    delete l;
 
-   if (makeDirty)
-      mDirty = true;
+   mUndoManager.StateSaved();
 
    if (mHistoryWindow)
       mHistoryWindow->UpdateDisplay();
@@ -2127,6 +2120,35 @@ void AudacityProject::PushState(wxString desc,
    ModifyUndoMenus();
 
    UpdateMenus();
+}
+
+void AudacityProject::PushState(wxString desc,
+                                wxString shortDesc,
+                                bool consolidate)
+{
+   TrackList *l = new TrackList(mTracks);
+
+   mUndoManager.PushState(l, mViewInfo.sel0, mViewInfo.sel1,
+                          desc, shortDesc, consolidate);
+   delete l;
+
+   mDirty = true;
+
+   if (mHistoryWindow)
+      mHistoryWindow->UpdateDisplay();
+
+   ModifyUndoMenus();
+
+   UpdateMenus();
+}
+
+void AudacityProject::ModifyState()
+{
+   TrackList *l = new TrackList(mTracks);
+
+   mUndoManager.ModifyState(l, mViewInfo.sel0, mViewInfo.sel1);
+
+   delete l;
 }
 
 void AudacityProject::PopState(TrackList * l)
@@ -2201,7 +2223,8 @@ void AudacityProject::Clear()
 
    PushState(wxString::Format(_("Deleted %.2f seconds at t=%.2f"),
                               mViewInfo.sel0 - mViewInfo.sel1,
-                              mViewInfo.sel0));
+                              mViewInfo.sel0),
+             _("Delete"));
    FixScrollbars();
    mTrackPanel->Refresh(false);
 }
@@ -2410,9 +2433,16 @@ void AudacityProject::TP_OnPlayKey()
 }
 
 // TrackPanel callback method
-void AudacityProject::TP_PushState(wxString desc)
+void AudacityProject::TP_PushState(wxString desc, wxString shortDesc,
+                                   bool consolidate)
 {
-   PushState(desc);
+   PushState(desc, shortDesc, consolidate);
+}
+
+// TrackPanel callback method
+void AudacityProject::TP_ModifyState()
+{
+   ModifyState();
 }
 
 // TrackPanel callback method

@@ -723,7 +723,7 @@ void TrackPanel::OnTimer()
                ((WaveTrack *)t)->Flush();
             }
          }
-         p->TP_PushState("Recorded Audio");
+         MakeParentPushState(_("Recorded Audio"), _("Record"));
       }
 
       MakeParentRedrawScrollbars();
@@ -946,9 +946,15 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
 
 // AS: Make our Parent (well, whoever is listening to us) push their state.
 //  this causes application state to be preserved on a stack for undo ops.
-void TrackPanel::MakeParentPushState(wxString desc)
+void TrackPanel::MakeParentPushState(wxString desc, wxString shortDesc,
+                                     bool consolidate)
 {
-   mListener->TP_PushState(desc);
+   mListener->TP_PushState(desc, shortDesc, consolidate);
+}
+
+void TrackPanel::MakeParentModifyState()
+{
+   mListener->TP_ModifyState();
 }
 
 void TrackPanel::MakeParentRedrawScrollbars()
@@ -1128,7 +1134,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       mIsSelecting = false;
       
       //Send the new selection state to the undo/redo stack:
-      MakeParentPushState(wxString::Format(_("Changed Selection Region")));
+      MakeParentModifyState();
       
    } else if (event.ButtonDClick(1) && !event.ShiftDown()) {
       if (!mCapturedTrack)
@@ -1145,7 +1151,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
 
       mCapturedTrack = NULL;
       mIsSelecting = false;
-      MakeParentPushState(wxString::Format(_("Changed Selection Region")));
+      MakeParentModifyState();
    } else
       SelectionHandleDrag(event);
 }
@@ -1354,7 +1360,11 @@ void TrackPanel::HandleEnvelope(wxMouseEvent & event)
 
    if (event.ButtonUp(1)) {
       mCapturedTrack = NULL;
-      MakeParentPushState(_("Adjusted envelope."));
+      MakeParentPushState(_("Adjusted envelope."),
+                          _("Envelope"),
+                          true /* consolidate these actions --
+                                  see UndoManager */
+                          );
    }
 }
 
@@ -1440,12 +1450,14 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
       MakeParentRedrawScrollbars();
       if (totalOffset != 0)
          MakeParentPushState(wxString::
-                             Format(_("Slid track '%s' %s %.02f seconds"),
+                             Format(_("Time shifted track '%s' %s %.02f seconds"),
                                     name.c_str(),
                                     totalOffset >
                                     0 ? _("right") : _("left"),
                                     totalOffset >
-                                    0 ? totalOffset : -totalOffset));
+                                    0 ? totalOffset : -totalOffset),
+                             _("Time Shift"),
+                             true /* consolidate */ );
    }
 }
 
@@ -1901,7 +1913,9 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
    //On up-click, send the state to the undo stack
    else if(event.ButtonUp()) {
       mDrawingTrack=NULL;       //Set this to NULL so it will catch improper drag events.
-      MakeParentPushState(wxString::Format(_("Moved Sample")));
+      MakeParentPushState(_("Moved Sample"),
+                          _("Sample Edit"),
+                          true /* consolidate */);
    }
 }
 
@@ -1966,7 +1980,8 @@ void TrackPanel::RemoveTrack(Track * toRemove)
    }
 
    MakeParentPushState(wxString::Format(_("Removed track '%s.'"),
-                                        name.c_str()));
+                                        name.c_str()),
+                       _("Track Remove"));
    MakeParentRedrawScrollbars();
    MakeParentResize();
    Refresh(false);
@@ -2036,10 +2051,7 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
       mIsGainSliding = false;
       mIsPanSliding = false;
 
-      if (pan)
-         MakeParentPushState(_("Changed track panning"));
-      else
-         MakeParentPushState(_("Changed track gain"));
+      MakeParentModifyState();
    }
 
    this->Refresh(false);
@@ -2227,7 +2239,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    mViewInfo->sel1 = t->GetEndTime();
 
    Refresh(false);  
-   MakeParentPushState(wxString::Format(_("Changed Selection Region")));
+   MakeParentModifyState();
 }
 
 
@@ -2466,14 +2478,16 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
       // DM: This happens when the button is released from a drag.
       //  Since we actually took care of resizing the track when
       //  we got drag events, all we have to do here is clean up.
-      //  We also push the state so that this action is undo-able.
+      //  We also modify the undo state (the action doesn't become
+      //  undo-able, but it gets merged with the previous undo-able
+      //  event).
       else if (event.ButtonUp(1)) {
          mCapturedTrack = NULL;
          mIsResizing = false;
          mIsResizingBelowLinkedTracks = false;
          mIsResizingBetweenLinkedTracks = false;
          MakeParentRedrawScrollbars();
-         MakeParentPushState("TrackPanel::HandleResize() FIXME!!");
+         MakeParentModifyState();
       }
    }
 }
@@ -2523,16 +2537,18 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
 
    TrackListIterator iter(mTracks);
 
-   // AS: This logic seems really flawed.  We send keyboard input
-   //  to the first LabelTrack we find, not to the one with focus?
-   //  I guess the problem being that we don't have "focus."
+   // Send keyboard input to the first selected LabelTrack
+   // There currently isn't a way to efficiently work with
+   // more than one LabelTrack
    for (Track * t = iter.First(); t; t = iter.Next()) {
       if (t->GetKind() == Track::Label && t->GetSelected()) {
          ((LabelTrack *) t)->KeyEvent(mViewInfo->sel0, mViewInfo->sel1,
                                       event);
          
          Refresh(false);
-         MakeParentPushState("TrackPanel::OnKeyEvent() FIXME!!");
+         MakeParentPushState(_("Modified Label"),
+                             _("Label Edit"),
+                             true /* consolidate */);
          event.Skip();
          return;
       }
@@ -3278,19 +3294,21 @@ void TrackPanel::OnChannelChange(wxEvent & event)
                                         mPopupMenuTarget->GetName().
                                         c_str(),
                                         channelmsgs[id -
-                                                    OnChannelLeftID]));
+                                                    OnChannelLeftID]),
+                       _("Channel"));
    mPopupMenuTarget = NULL;
    Refresh(false);
 }
 
-// AS: Split a stereo track into two tracks... ??
+// AS: Split a stereo track into two tracks...
 void TrackPanel::OnSplitStereo(wxEvent &event)
 {
    wxASSERT(mPopupMenuTarget);
    mPopupMenuTarget->SetLinked(false);
    MakeParentPushState(wxString::Format(_("Split stereo track '%s'"),
                                         mPopupMenuTarget->GetName().
-                                        c_str()));
+                                        c_str()),
+                       _("Split"));
 
    Refresh(false);
 }
@@ -3306,7 +3324,8 @@ void TrackPanel::OnMergeStereo(wxEvent &event)
       partner->SetChannel(Track::RightChannel);
       MakeParentPushState(wxString::Format(_("Made '%s' a stereo track"),
                                            mPopupMenuTarget->GetName().
-                                           c_str()));
+                                           c_str()),
+                          _("Make Stereo"));
    } else
       mPopupMenuTarget->SetLinked(false);
 
@@ -3326,10 +3345,7 @@ void TrackPanel::OnSetDisplay(wxEvent & event)
    Track *partner = mTracks->GetLink(mPopupMenuTarget);
    if (partner)
       ((WaveTrack *) partner)->SetDisplay(id - OnWaveformID);
-   MakeParentPushState(wxString::Format(_("Changed '%s' to %s display"),
-                                        mPopupMenuTarget->GetName().
-                                        c_str(),
-                                        gModes[id - OnWaveformID]));
+   MakeParentModifyState();
    mPopupMenuTarget = NULL;
    Refresh(false);
 }
@@ -3343,7 +3359,8 @@ void TrackPanel::SetRate(Track * pTrack, double rate)
    if (partner)
       ((WaveTrack *) partner)->SetRate(rate);
    MakeParentPushState(wxString::Format(_("Changed '%s' to %d Hz"),
-                                        pTrack->GetName().c_str(), rate));
+                                        pTrack->GetName().c_str(), rate),
+                       _("Rate Change"));
 }
 
 // DM: Handles the selection from the Format submenu of the
@@ -3380,7 +3397,8 @@ void TrackPanel::OnFormatChange(wxEvent & event)
    MakeParentPushState(wxString::Format(_("Changed '%s' to %s"),
                                         mPopupMenuTarget->GetName().
                                         c_str(),
-                                        GetSampleFormatStr(newFormat)));
+                                        GetSampleFormatStr(newFormat)),
+                       _("Format Change"));
 
    SetMenuCheck( *mFormatMenu, id );
    mPopupMenuTarget = NULL;
@@ -3522,7 +3540,8 @@ void TrackPanel::OnSetTimeTrackRange()
          t->SetRangeUpper(upper);
          MakeParentPushState(wxString::Format(_("Set range to '%d' - '%d'"),
                                               lower,
-                                              upper));
+                                              upper),
+                             _("Set Range"));
          Refresh(false);
       }
    }
@@ -3572,7 +3591,8 @@ void TrackPanel::OnMoveTrack(wxEvent & event)
                                            c_str(),
                                            event.GetId() ==
                                            OnMoveUpID ? _("up") :
-                                           _("down")));
+                                           _("down")),
+                          _("Move Track"));
       Refresh(false);
    }
 }
@@ -3589,7 +3609,7 @@ void TrackPanel::OnChangeOctave(wxEvent & event)
    bool bDown = (OnDownOctaveID == event.GetId());
    t->SetBottomNote(t->GetBottomNote() + ((bDown) ? -12 : 12));
 
-   MakeParentPushState("TrackPanel::OnChangeOctave() FIXME!!");
+   MakeParentModifyState();
    Refresh(false);
 }
 
@@ -3605,7 +3625,8 @@ void TrackPanel::OnSetName(wxEvent &event)
          t->SetName(newName);
       MakeParentPushState(wxString::Format(_("Renamed '%s' to '%s'"),
                                            defaultStr.c_str(),
-                                           newName.c_str()));
+                                           newName.c_str()),
+                          _("Name Change"));
 
       Refresh(false);
    }

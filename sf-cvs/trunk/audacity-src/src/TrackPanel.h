@@ -50,7 +50,9 @@ class TrackPanelListener {
    virtual int TP_GetCurrentTool() = 0;
    virtual ControlToolBar * TP_GetControlToolBar() = 0;
    virtual void TP_OnPlayKey() = 0;
-   virtual void TP_PushState(wxString desc) = 0;
+   virtual void TP_PushState(wxString shortDesc, wxString longDesc,
+                             bool consolidate = false) = 0;
+   virtual void TP_ModifyState() = 0;
    virtual void TP_RedrawScrollbars() = 0;
    virtual void TP_ScrollLeft() = 0;
    virtual void TP_ScrollRight() = 0;
@@ -216,7 +218,9 @@ class TrackPanel:public wxWindow {
    void MakeParentRedrawScrollbars();
    
    // AS: Pushing the state preserves state for Undo operations.
-   void MakeParentPushState(wxString desc);
+   void MakeParentPushState(wxString desc, wxString shortDesc,
+                            bool consolidate = false);
+   void MakeParentModifyState();
 
    void MakeParentResize();
 
