@@ -5,6 +5,18 @@ dnl Joshua Haberman
 dnl Dominic Mazzoni
 dnl
 
+dnl
+dnl Instructions: to create "configure" from "configure.in", run:
+dnl
+dnl aclocal
+dnl autoconf
+dnl
+dnl Note: you need pkgconfig installed for this to work.  If pkg.m4 is
+dnl not in the standard place, like /usr/share/aclocal, use the -I option
+dnl to aclocal, for example on Mac OS X when pkgconfig was installed by
+dnl fink:
+dnl  aclocal -I /sw/share/aclocal
+dnl
 
 dnl TODO:
 dnl
@@ -38,8 +50,10 @@ AC_PROG_INSTALL
 dnl extra variables
 AC_SUBST(BUILDLIBS)
 AC_SUBST(EXTRAOBJS)
+AC_SUBST(EXTRATARGETS)
 AC_SUBST(OPTOBJS)
 AC_SUBST(CDEPEND)
+AC_SUBST(PRECOMP_CFLAGS)
 AC_SUBST(AFTERBUILD)
 AC_SUBST(INSTALL_PREFIX)
 AC_SUBST(CONFIGHEADER)
@@ -224,6 +238,12 @@ AC_ARG_WITH(ladspa,
    use_ladspa=$withval,
    use_ladspa="yes")
 
+AC_ARG_WITH(audiounits,
+   [AC_HELP_STRING([--with-audiounits],
+      [compile with ladspa plug-in support [default=auto]])],
+   use_audiounits=$withval,
+   use_audiounits="auto")
+
 AC_ARG_WITH(portmixer,
    [AC_HELP_STRING([--with-portmixer],
       [compile with PortMixer [default=yes]])],
@@ -287,10 +307,17 @@ dnl OS-specific configuration
 case "${host_os}" in
    darwin* | rhapsody*)
       dnl Mac OS X configuration
+      CDEPEND="AudacityHeaders.h.gch"
+      PRECOMP_CFLAGS="-include AudacityHeaders.h"
       CONFIGHEADER="configunix.h"
       CXXFLAGS="-I../mac $CXXFLAGS"
-      AFTERBUILD="cp ../audacity ../Audacity.app && `$WX_CONFIG --rezflags` ../Audacity.app ../mac/audacity.r -c auDy && /Developer/Tools/SetFile -a avBstClinmed ../Audacity.app"
-      ;;
+      AFTERBUILD=""
+      EXTRATARGETS="../Audacity.app"
+      if [[ "$use_audiounits" = "auto" ]] ; then
+         use_audiounits="yes"
+      fi
+
+      ;;      
 
    cygwin*)
       dnl Windows/CygWin configuration
@@ -422,6 +449,14 @@ if [[ "$use_ladspa" = "yes" ]] ; then
              [Define if LADSPA plug-ins are enabled])
 fi
 
+if [[ "$use_audiounits" = "yes" ]] ; then
+   OPTOBJS="$OPTOBJS effects/audiounits/LoadAudioUnits.o"
+   OPTOBJS="$OPTOBJS effects/audiounits/AudioUnitEffect.o"
+
+   AC_DEFINE(USE_AUDIO_UNITS, 1,
+             [Define if Audio Unit plug-ins are enabled (Mac OS X only)])
+fi
+
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_TYPE_SIZE_T
@@ -457,6 +492,18 @@ for lib in $LIBRARIES ; do
       echo "$lib: disabled"
    fi
 done
+
+if [[ "$use_ladspa" = "yes" ]] ; then
+   echo "ladspa: enabled"
+else
+   echo "ladspa: disabled"        
+fi
+
+if [[ "$use_audiounits" = "yes" ]] ; then
+   echo "audiounits: enabled"
+else
+   echo "audiounits: disabled"        
+fi
 
 echo "prefix=$prefix";
 
