@@ -106,17 +106,27 @@
 #include "widgets/ASlider.h"
 #include "widgets/Ruler.h"
 
+// Mac only supports 16x16 pixel cursors.
+#ifdef __WXMAC__
+#define CURSORS_SIZE16
+#else
+#define CURSORS_SIZE32
+#endif
 
-
+#ifdef CURSORS_SIZE32
 //--FIXME: Move these XPMs out into an external file,
 // once the basic idea of custom icons has been validated.
 // Cursors MUST be 32x32 (or they will be resized).
 // You only get black, white and transparent to use.
 
+// N.B. Under windows the mask color must be in 
+// the color palette.  To cater for Win2K a mask
+// color of saturated red was used.  (middle grey 
+
 /* XPM */
 static const char * EnvCursorXpm[] = {
 "32 32 3 1",
-".	c #808080", // background color = RGB:128,128,128
+".	c #FF0000", // mask color = RGB:255,0,0
 "#	c #000000",
 "+	c #FFFFFF",
 "................................",
@@ -155,7 +165,7 @@ static const char * EnvCursorXpm[] = {
 /* XPM */
 static const char * TimeCursorXpm[] = {
 "32 32 3 1",
-".	c #808080", // background color = RGB:128,128,128
+".	c #FF0000", // mask color = RGB:255,0,0
 "#	c #000000",
 "+	c #FFFFFF",
 "................................",
@@ -194,7 +204,7 @@ static const char * TimeCursorXpm[] = {
 
 static const char * IBeamCursorXpm[] = {
 "32 32 3 1",
-".	c #808080", // background color = RGB:128,128,128
+".	c #FF0000", // mask color = RGB:255,0,0
 "#	c #000000",
 "+	c #FFFFFF",
 "................................",
@@ -233,10 +243,9 @@ static const char * IBeamCursorXpm[] = {
 //Image of a pencil.
 static const char * DrawCursorXpm[] = {
 "32 32 3 1",
-".	c #808080", // background color = RGB:128,128,128
+".	c #FF0000", // mask color = RGB:255,0,0
 "#	c #000000",
 "+	c #FFFFFF",
-"................................",
 "................................",
 "................................",
 "................................",
@@ -267,14 +276,14 @@ static const char * DrawCursorXpm[] = {
 "................................",
 "................................",
 "................................",
+"................................",
 "................................"};
 
 static const char * ZoomInCursorXpm[] = {
 "32 32 3 1",
-".	c #808080", // background color = RGB:128,128,128
+".	c #FF0000", // mask color = RGB:255,0,0
 "#	c #000000",
 "+	c #FFFFFF",
-"................................",
 "................................",
 "................................",
 "................................",
@@ -286,33 +295,33 @@ static const char * ZoomInCursorXpm[] = {
 "................++++............",
 "...............+####+...........",
 "..............+##...#+..........",
-".............+#......#+.........",
-"............+##......##+........",
-"............+#........#+........",
-"............+#........#+........",
-"............+##......##+........",
-".............+#......#+.........",
+".............+#..##..#+.........",
+"............+##..##..##+........",
+"............+#.######.#+........",
+"............+#.######.#+........",
+"............+##..##..##+........",
+".............+#..##..#+.........",
 "............+####..##+..........",
 "...........+###+####+...........",
 "..........+###+.++++............",
 ".........+###+..................",
 "........+###+...................",
-".......+###+............##......",
-"........+#+.............##......",
-".........+..............##......",
-".....................########...",
-".....................########...",
-"........................##......",
-"........................##......",
-"........................##......",
+".......+###+....................",
+"........+#+.....................",
+".........+......................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
 "................................"};
 
 static const char * ZoomOutCursorXpm[] = {
 "32 32 3 1",
-".	c #808080", // background color = RGB:128,128,128
+".	c #FF0000", // mask color = RGB:255,0,0
 "#	c #000000",
 "+	c #FFFFFF",
-"................................",
 "................................",
 "................................",
 "................................",
@@ -326,8 +335,8 @@ static const char * ZoomOutCursorXpm[] = {
 "..............+##...#+..........",
 ".............+#......#+.........",
 "............+##......##+........",
-"............+#........#+........",
-"............+#........#+........",
+"............+#.######.#+........",
+"............+#.######.#+........",
 "............+##......##+........",
 ".............+#......#+.........",
 "............+####..##+..........",
@@ -338,13 +347,156 @@ static const char * ZoomOutCursorXpm[] = {
 ".......+###+....................",
 "........+#+.....................",
 ".........+......................",
-".....................########...",
-".....................########...",
+"................................",
+"................................",
+"................................",
 "................................",
 "................................",
 "................................",
 "................................"};
 
+#else
+// cursors size 16.
+
+/* XPM */
+static const char * EnvCursorXpm[] = {
+"16 16 3 1",
+".	c #FF0000", // mask color = RGB:255,0,0
+"#	c #000000",
+"+	c #FFFFFF",
+"......#####.....",
+"......#+++#.....",
+".......#+#......",
+"........#.......",
+"................",
+"................",
+"................",
+"................",
+"................",
+"................",
+"................",
+"................",
+"........#.......",
+".......#+#......",
+"......#+++#.....",
+"......#####....."};
+
+/* XPM */
+static const char * TimeCursorXpm[] = {
+"16 16 3 1",
+".	c #FF0000", // mask color = RGB:255,0,0
+"#	c #000000",
+"+	c #FFFFFF",
+"................",
+"................",
+"................",
+"................",
+"....++....++....",
+"...+#+....+#+...",
+"..+##+....+##+..",
+".+###++++++###+.",
+"+##############+",
+".+###++++++###+.",
+"..+##+....+##+..",
+"...+#+....+#+...",
+"....++....++....",
+"................",
+"................",
+"................"};
+
+
+// Classic optical illusion.
+// the beam looks taller than the arrow.
+static const char * IBeamCursorXpm[] = {
+"16 16 3 1",
+".	c #FF0000", // mask color = RGB:255,0,0
+"#	c #000000",
+"+	c #FFFFFF",
+"....####.###....",
+".......##.......",
+".......##.......",
+".......##.......",
+".......##.......",
+".......##.......",
+".......##.......",
+".......##.......",
+".......##.......",
+".......##.......",
+".......##.......",
+".......##.......",
+".......##.......",
+".......##.......",
+".......##.......",
+"....####.###...."};
+
+//Image of a pencil.
+static const char * DrawCursorXpm[] = {
+"16 16 3 1",
+".	c #FF0000", // mask color = RGB:255,0,0
+"#	c #000000",
+"+	c #FFFFFF",
+".....+###+......",
+"....+#+###+.....",
+"...+#+####+.....",
+"...+#####+......",
+"..+#++###+......",
+"..+#+###+.......",
+".+#++###+.......",
+".+#+###+........",
+"+#++###+........",
+"+#+###+.........",
+"+#####+.........",
+"+####+..........",
+"+###+...........",
+"+##+............",
+"+#+.............",
+".+.............."};
+
+static const char * ZoomInCursorXpm[] = {
+"16 16 3 1",
+".	c #FF0000", // mask color = RGB:255,0,0
+"#	c #000000",
+"+	c #FFFFFF",
+"........++++....",
+".......+####+...",
+"......+##...#+..",
+".....+#..##..#+.",
+"....+##..##..##+",
+"....+#.######.#+",
+"....+#.######.#+",
+"....+##..##..##+",
+".....+#..##..#+.",
+"....+####..##+..",
+"...+###+####+...",
+"..+###+.++++....",
+".+###+..........",
+"+###+...........",
+"###+............",
+"+#+............."};
+
+static const char * ZoomOutCursorXpm[] = {
+"16 16 3 1",
+".	c #FF0000", // mask color = RGB:255,0,0
+"#	c #000000",
+"+	c #FFFFFF",
+"........++++....",
+".......+####+...",
+"......+##...#+..",
+".....+#......#+.",
+"....+##......##+",
+"....+#.######.#+",
+"....+#.######.#+",
+"....+##......##+",
+".....+#......#+.",
+"....+####..##+..",
+"...+###+####+...",
+"..+###+.++++....",
+".+###+..........",
+"+###+...........",
+"###+............",
+"+#+............."};
+
+#endif
 
 //-- End of XPM FIXME
 
@@ -470,15 +622,22 @@ wxCursor * MakeCursor( int CursorId, const char * pXpm[36],  int HotX, int HotY 
 {
    wxCursor * pCursor;
 
+#ifdef CURSORS_SIZE32
+   const int HotAdjust =0;
+#else
+   const int HotAdjust =8;
+#endif
+
 #ifdef __WXMAC__
    pCursor = new wxCursor(CursorId);
 #else
    {
       wxImage Image = wxImage(wxBitmap(pXpm).ConvertToImage());
-      Image.SetMaskColour(128,128,128);
+//      Image.SetMaskColour(128,128,128);
+      Image.SetMaskColour(255,0,0);
       Image.SetMask();// Enable mask.
-      Image.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_X, HotX );
-      Image.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_Y, HotY );
+      Image.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_X, HotX-HotAdjust );
+      Image.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_Y, HotY-HotAdjust );
       pCursor = new wxCursor( Image );
    }
 #endif
@@ -519,12 +678,12 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
 
    mIndicatorShowing = false;
 
-   mPencilCursor  = MakeCursor( wxCURSOR_PENCIL,    DrawCursorXpm, 12, 25);
-   mSelectCursor  = MakeCursor( wxCURSOR_IBEAM,     IBeamCursorXpm,17, 16);
-   mEnvelopeCursor= MakeCursor( wxCURSOR_ARROW,     EnvCursorXpm,  16, 16);
-   mSlideCursor   = MakeCursor( wxCURSOR_SIZEWE,    TimeCursorXpm, 16, 16);
-   mZoomInCursor  = MakeCursor( wxCURSOR_MAGNIFIER, ZoomInCursorXpm, 19, 16);
-   mZoomOutCursor = MakeCursor( wxCURSOR_MAGNIFIER, ZoomOutCursorXpm, 19, 16);
+   mPencilCursor  = MakeCursor( wxCURSOR_PENCIL,    DrawCursorXpm,    12, 24);
+   mSelectCursor  = MakeCursor( wxCURSOR_IBEAM,     IBeamCursorXpm,   17, 16);
+   mEnvelopeCursor= MakeCursor( wxCURSOR_ARROW,     EnvCursorXpm,     16, 16);
+   mSlideCursor   = MakeCursor( wxCURSOR_SIZEWE,    TimeCursorXpm,    16, 16);
+   mZoomInCursor  = MakeCursor( wxCURSOR_MAGNIFIER, ZoomInCursorXpm,  19, 15);
+   mZoomOutCursor = MakeCursor( wxCURSOR_MAGNIFIER, ZoomOutCursorXpm, 19, 15);
 
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
    mSmoothCursor = new wxCursor(wxCURSOR_SPRAYCAN);
