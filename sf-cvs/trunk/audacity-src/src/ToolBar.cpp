@@ -102,16 +102,21 @@ void ToolBarStub::UnloadAll()
    }
 } 
 
-
+#include <iostream.h>
 // This will make the floating ToolBarFrame appear at the specified location
 void ToolBarStub::ShowWindowedToolBar(wxPoint * where /* = NULL */ ) 
 {
    if (!mWindowedStatus) {
-
+      
       //Move the frame to the mouse position
       if (where)
-         mToolBarFrame->Move(*where);
-
+         {
+            cout <<"here" << where->x <<"--" << where->y << endl;
+            mToolBarFrame->Move(*where);
+            cout << "helle" << endl;
+         }
+      else
+         cout << "UHOHH" << endl;
       //Show the new window
       mToolBarFrame->Show();
    }
@@ -337,7 +342,7 @@ AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
                                   const char **foreground,
                                   const char **disabledfg,
                                   const char **alpha, wxWindowID id,
-                                  wxPoint placement, wxSize size,
+                                  wxPoint placement, bool processdownevents, wxSize size,
                                   int xoff, int yoff) 
 {
    //This is a generic function that will make a button, given
@@ -354,6 +359,8 @@ AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
    //                 foreground shows through
    // id            Button ID
    // placement     Location on the toolbar
+   // processdownevents      boolean that determine whether the button will process events
+   //                        if it is in the down position (and pop up when clicked in the down position)
    // xoff          x-offset to place icon pixmaps at, with respect to background image
    // yoff          y-offset to place icon pixmaps at, with respect to background image
 
@@ -380,7 +387,7 @@ AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
 
    AButton * button =
       new AButton(this, id, placement, size, up2, hilite2, down2,
-            disable2);
+            disable2, processdownevents);
 
    delete color;
    delete color_disabled;

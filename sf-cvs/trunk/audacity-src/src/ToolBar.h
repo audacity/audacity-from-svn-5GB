@@ -100,6 +100,7 @@ class ToolBar:public wxWindow {
                                 const char **alpha,
                                 wxWindowID id,
                                 wxPoint placement, 
+                                bool processdownevents,                               
                                 wxSize size,
                                 int xoff, int yoff);
 

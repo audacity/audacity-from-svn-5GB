@@ -102,6 +102,7 @@ void EditToolBar::AddButton(const char **fg, const char **disabled, const char *
                      upImage, downImage, hiliteImage, fg,
                      disabled, alpha,
                      wxWindowID(id), wxPoint(mButtonPos, buttonTop),
+                     false /*No edit buttons should process down events.*/,
                      wxSize(BUTTON_WIDTH, BUTTON_WIDTH), 3, 3);
    mButtons[id]->SetToolTip(tooltip);
    mButtonPos += BUTTON_WIDTH;

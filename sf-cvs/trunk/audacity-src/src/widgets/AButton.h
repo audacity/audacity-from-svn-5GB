@@ -32,12 +32,15 @@ class AButton:public wxWindow {
            wxImage *up,
            wxImage *over,
            wxImage *down,
-           wxImage *dis);
+           wxImage *dis,
+           bool sticky);
 
    AButton(wxWindow * parent, wxWindowID id,
            const wxPoint & pos,
            const wxSize & size,
-           char **upXPM, char **overXPM, char **downXPM, char **disXPM);
+           char **upXPM, char **overXPM, char **downXPM, char **disXPM,
+           bool sticky           
+           );
 
    virtual ~ AButton();
 
@@ -73,6 +76,13 @@ class AButton:public wxWindow {
    bool mButtonIsDown;
    bool mIsClicking;
    bool mEnabled;
+   bool mProcessDownEvents;    // This bool, if true, makes the button able to process 
+                               // events when it is in the down state, and moving to
+                               // the opposite state when it is clicked. It is used for the Pause
+                               // button, and possibly others. If false, it (should)
+                               // behave just like a standard button.
+   
+
    AButtonState mButtonState;
 
    wxBitmap *mBitmap[4];

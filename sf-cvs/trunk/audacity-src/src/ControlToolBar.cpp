@@ -250,7 +250,7 @@ AButton *ControlToolBar::MakeTool(const char **tool, const char **alpha,
 
    AButton *button =
        new AButton(this, id, wxPoint(left, top), wxSize(27, 27),
-                   up, hilite, down, dis);
+                   up, hilite, down, dis, false);
 
    delete ctr;
    delete mask;
@@ -267,7 +267,7 @@ AButton *ControlToolBar::MakeTool(const char **tool, const char **alpha,
 // MakeButtons() with fewer arguments
 AButton *ControlToolBar::MakeButton(char const **foreground,
                                     char const **disabled,
-                                    char const **alpha, int id)
+                                    char const **alpha, int id, bool processdownevents)
 {
 
    // Windows (TM) has a little extra room for some reason, so the top of the
@@ -279,8 +279,9 @@ AButton *ControlToolBar::MakeButton(char const **foreground,
 
 
    AButton *r = ToolBar::MakeButton(upPattern, downPattern, hilitePattern,
-                              foreground, disabled, alpha, wxWindowID(id),
-                              wxPoint(mButtonPos,buttonTop), wxSize(48, 48), 16, 16);
+                                    foreground, disabled, alpha, wxWindowID(id),
+                                    wxPoint(mButtonPos,buttonTop), processdownevents,
+                                    wxSize(48, 48), 16, 16);
    mButtonPos += BUTTON_WIDTH;
    return r;
 }
@@ -317,36 +318,42 @@ void ControlToolBar::MakeButtons()
 
    mRewind = MakeButton((char const **) Rewind,
                         (char const **) RewindDisabled,
-                        (char const **) RewindAlpha, ID_REW_BUTTON);
+                        (char const **) RewindAlpha, ID_REW_BUTTON,
+                        false);
    mRewind->SetToolTip(_("Skip to Start"));
 
    mPlay = MakeButton((char const **) Play,
                       (char const **) PlayDisabled,
-                      (char const **) PlayAlpha, ID_PLAY_BUTTON);
+                      (char const **) PlayAlpha, ID_PLAY_BUTTON,
+                      false);
    mPlay->SetToolTip(_("Play"));
 
 
 
    mRecord = MakeButton((char const **) Record,
                         (char const **) RecordDisabled,
-                        (char const **) RecordAlpha, ID_RECORD_BUTTON);
+                        (char const **) RecordAlpha, ID_RECORD_BUTTON,
+                        false);
    mRecord->SetToolTip(_("Record"));
 
    mPause = MakeButton((char const **)Pause,
                       (char const **) PauseDisabled,
-                      (char const **) PauseAlpha, ID_PAUSE_BUTTON);
+                      (char const **) PauseAlpha, ID_PAUSE_BUTTON,
+                       true);
    mPause->SetToolTip(_("Pause"));
    
 
 
    mStop = MakeButton((char const **) Stop,
                       (char const **) StopDisabled,
-                      (char const **) StopAlpha, ID_STOP_BUTTON);
+                      (char const **) StopAlpha, ID_STOP_BUTTON,
+                      false);
    mStop->SetToolTip(_("Stop"));
 
    mFF = MakeButton((char const **) FFwd,
                     (char const **) FFwdDisabled,
-                    (char const **) FFwdAlpha, ID_FF_BUTTON);
+                    (char const **) FFwdAlpha, ID_FF_BUTTON,
+                    false);
    mFF->SetToolTip(_("Skip to End"));
 
 #ifndef __WXMAC__
@@ -500,7 +507,10 @@ void ControlToolBar::OnStop()
 {
    gAudioIO->Stop();
    SetStop(false);
+   
+   mPause->PopUp();
    mPause->Disable();
+   mPaused=false;
 }
 
 void ControlToolBar::OnRecord()
@@ -530,17 +540,17 @@ void ControlToolBar::OnRecord()
    }
 }
 
+
 void ControlToolBar::OnPause()
 {
    //Do stuff here
-   mPause->PopUp();
    if(mPaused)
       {
          mPaused=false;
-         
+
       }
    else
-      {
+      {       
          mPaused=true;
 
       }

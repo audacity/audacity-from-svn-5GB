@@ -87,7 +87,7 @@ class ControlToolBar:public ToolBar {
    AButton *MakeTool(const char **tool, const char **alpha,
                      wxWindowID id, int left, int top);
    AButton *MakeButton(char const **foreground, char const **disabled,
-                       char const **alpha, int id);
+                       char const **alpha, int id, bool processdownevents);
    void MakeButtons();
    int mButtonPos;
 
@@ -95,11 +95,10 @@ class ControlToolBar:public ToolBar {
 
    AButton *mRewind;
    AButton *mPlay;
-   AButton *mStop;
    AButton *mRecord;
-   AButton *mFF;
    AButton *mPause;
-
+   AButton *mStop;
+   AButton *mFF;
    
 
    ASlider *mVolume;
