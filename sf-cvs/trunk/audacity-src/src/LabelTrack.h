@@ -41,9 +41,10 @@ class LabelTrack:public VTrack {
                bool selectionOnly, double t0, double t1);
 
  public:
-    LabelTrack(DirManager * projDirManager);
+   LabelTrack(DirManager * projDirManager);
+   LabelTrack(const LabelTrack &orig);
 
-    virtual ~ LabelTrack();
+   virtual ~ LabelTrack();
 
    void Draw(wxDC & dc, wxRect & r, double h, double pps,
              double sel0, double sel1);
@@ -51,7 +52,7 @@ class LabelTrack:public VTrack {
    virtual int GetKind() const { return Label; } 
    virtual double GetMaxLen() const;
 
-   virtual VTrack *Duplicate() const;
+   virtual VTrack *Duplicate() const { return new LabelTrack(*this); }
 
    virtual bool Load(wxTextFile * in, DirManager * dirManager);
    virtual bool Save(wxTextFile * out, bool overwrite);
@@ -92,6 +93,7 @@ class LabelTrack:public VTrack {
    // Used only for a LabelTrack on the clipboard
    double mClipLen;
 
+   void InitColours();
 };
 
 #endif

@@ -47,10 +47,11 @@ class VTrack {
    } TrackKindEnum;
 
    VTrack(DirManager * projDirManager);
+   VTrack(const VTrack &orig);
 
    virtual ~ VTrack() { }
    
-   virtual VTrack *Duplicate() const;
+   virtual VTrack *Duplicate() const { return new VTrack(*this); }
 
    int GetCollapsedHeight() const { return collapsedHeight; }
    int GetExpandedHeight () const { return expandedHeight;  }
