@@ -1,0 +1,84 @@
+Compiling Audacity under Windows using Microsoft Visual C++ 6.0
+
+Before trying to compile Audacity, please make sure that
+your copy of Visual C++ 6.0 has been upgraded to Service
+Patch 5.  If you require it, this patch is available from
+Microsoft at
+http://msdn.microsoft.com/vstudio/downloads/updates/sp/vs6/sp5/default.asp
+
+To simplify the implementation of a near-identical user
+interface across platforms, Audacity uses classes and
+resources from wxWindows, a portable GUI framework for C++
+(and Python).  You must download and build wxWindows before
+attempting to compile Audacity, or nothing will work!
+
+wxWindows is available from http://www.wxwindows.org.
+Similar to the Linux kernel, wxWindows is available as
+stable and development branches.  Audacity is currently
+written against wxWindows 2.2.9, which can be downloaded
+from http://www.wxwindows.org/dl_msw2.htm#stable
+
+When you have downloaded and installed wxWindows, you must
+build it.  First though, to be compatible with Audacity, you
+must alter the build settings to use the multithreaded
+statically-linked run-time libraries instead of the
+multithreaded DLL run-time libraries.  This isn't hard:
+launch Visual C++ and open the workspace file called
+"wxvc.dsw" in the "wx2\src" directory of your wxWindows
+installation.  (Ignore "wxvc_dll.dsw".)  Select
+"Project"->"Settings" (Alt+F7), choose "Win32 Release" in
+the "Settings For" combo box and select everything visible
+in the tree window on the left of the dialog box.  Now
+select the "C/C++" tab and change "Use run-time library" to
+"Multithreaded".  Now select "Win32 Debug" from the
+"Settings For" combo and change the run-time library to
+"Debug Multithreaded".  Now you can click "OK" and build
+wxWindows by selecting "Build"->"Batch Build" and clicking
+"Rebuild All".  This will build both Debug and Release
+versions of the wxWindows library.
+
+Now you can compile Audacity.  If you want to checkout a
+copy of the latest source code from CVS (assuming you
+haven't already!), there are instructions at
+http://audacity.sourceforge.net/cvs.php.  Run Visual C++ and
+load the Audacity workspace: it's "audacity.dsw" in the
+"win" directory of the Audacity source tree.  Before you can
+start the build process, you must update the project
+settings to tell Visual C++ where to find wxWindows.  There
+are three settings that need changing: 
+
+  1. Include Directories.  Bring up the "Project Settings" dialog again.
+Select "All Configurations" from the "Settings For" combo
+and again select all the top-level entries in the tree.
+Choose the "C/C++" tab, select "Preprocessor" from the
+"Category" combo and enter the path of your wx2\include
+directory in the "Additional Include Directories" box.  (eg
+if you installed wxWindows in a directory called "c:\devel"
+then enter "c:\devel\wx2\include".)  
+
+  2. Resources.  Select the "Resources" tab and add the same
+path as before in the "Additional resource include
+directories" box.
+
+  3. Libraries.  Deselect everything in the tree but
+"Audacity" and click on the "Link" tab.  Select "Input" from
+the "Category" combo and add the path of your wx2\lib
+directory to the end of the list of paths in the "Additional
+library path" box.  (eg ",c:\devel\wx2\lib" - don't forget
+the comma!)  Lastly select "Win32 Release" from the
+"Settings For" combo and enter "libcmtd.lib" in the "Ignore
+Libraries" box.
+
+Now select the configuration that you wish to build
+("Audacity - Win32 Release" for general use, "Audacity -
+Win32 Debug" for a slower but debuggable executable) from
+the "Build"->"Set Active Configuration" dialog and choose
+"Build"->"Rebuild All" to compile Audacity!
+
+That's all - if this procedure doesn't work, you can ask for
+help on the Audacity development mailing list:
+audacity-devel@lists.sourceforge.net.  The first suggestion
+is likely to be "try it again with a clean installation of
+the wxWindows source and the latest Audacity source from
+CVS" though, so if that's not what you just attempted, you
+might want to try that first...
