@@ -166,7 +166,7 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
    return true;
 }
 
-#ifdef __WXGTK__
+#if defined(__WXGTK__) || defined(__WXX11__) || defined(__WXMOTIF__)
 
    /* --------------------------------------------------------------------------*/
 
