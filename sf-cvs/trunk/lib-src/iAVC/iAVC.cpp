@@ -49,6 +49,27 @@
     #define c_WithDebug 0
 #endif
 
+#ifdef IDEBUGLOG
+    #include "LogFlags.h"
+    #include "../Logger/IDebugLog.h"
+#else
+  #ifdef _DEBUG
+	#define log0(fn,lf,ulid,fmt)			    fprintf(stderr,fmt);
+	#define log1(fn,lf,ulid,fmt,p1)			    fprintf(stderr,fmt,p1);
+	#define log2(fn,lf,ulid,fmt,p1,p2)			fprintf(stderr,fmt,p1,p2);
+	#define log3(fn,lf,ulid,fmt,p1,p2,p3)		fprintf(stderr,fmt,p1,p2,p3);
+	#define log4(fn,lf,ulid,fmt,p1,p2,p3,p4)	fprintf(stderr,fmt,p1,p2,p3,p4);
+	#define log5(fn,lf,ulid,fmt,p1,p2,p3,p4,p5)	fprintf(stderr,fmt,p1,p2,p3,p4,p5);
+  #else
+	#define log0(fn,lf,ulid,fmt)			;
+	#define log1(fn,lf,ulid,fmt,p1)			;
+	#define log2(fn,lf,ulid,fmt,p1,p2)			;
+	#define log3(fn,lf,ulid,fmt,p1,p2,p3)		;
+	#define log4(fn,lf,ulid,fmt,p1,p2,p3,p4)	;
+	#define log5(fn,lf,ulid,fmt,p1,p2,p3,p4,p5)	;
+  #endif
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
