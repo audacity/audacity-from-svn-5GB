@@ -110,7 +110,7 @@ msgstr "&Создание"
 
 #: ../src/Menus.cpp:443
 msgid "&Help"
-msgstr "С&правка"
+msgstr "&?"
 
 #: ../src/Menus.cpp:293
 msgid "&History..."
@@ -126,7 +126,7 @@ msgstr "&Новый\tCtrl+N"
 
 #: ../src/Menus.cpp:447
 msgid "&Online Help..."
-msgstr "&Справка..."
+msgstr "&Помощь..."
 
 #: ../src/Menus.cpp:132
 msgid "&Open...\tCtrl+O"
