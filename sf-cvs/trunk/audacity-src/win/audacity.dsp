@@ -663,10 +663,6 @@ SOURCE=..\src\import\ImportPCM.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\import\ImportRaw.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=..\src\import\ImportRaw.h
 # End Source File
 # End Group
