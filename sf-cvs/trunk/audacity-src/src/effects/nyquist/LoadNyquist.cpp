@@ -39,7 +39,7 @@ void LoadNyquistPlugins()
    Effect::RegisterEffect(effect);
 
    // Load .ny plug-ins
-   for(unsigned i=0; i<audacityPathList.GetCount(); i++) {
+   for(i=0; i<audacityPathList.GetCount(); i++) {
       wxString prefix = audacityPathList[i] + wxFILE_SEP_PATH;
       wxGetApp().AddUniquePathToPathList(prefix + "nyquist",
                                          pathList);
