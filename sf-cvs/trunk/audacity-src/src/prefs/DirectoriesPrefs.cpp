@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  FileFormatPrefs.cpp
+  DirectoriesPrefs.cpp
 
   Joshua Haberman
 
