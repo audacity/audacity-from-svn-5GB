@@ -108,3 +108,6 @@
 
 /* Version number of package */
 #define VERSION "0.0.14"
+
+/* Disable massive warnings */
+#pragma warning( disable : 4305 )
