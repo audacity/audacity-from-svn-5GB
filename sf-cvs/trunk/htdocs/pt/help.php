@@ -38,21 +38,20 @@ Os caminhos para conseguir ajuda são:
 </form>
 
 
-</blockquote><p>
+</blockquote><p><br>
 <p><b>3. Ler a documentação online:</b>
 <blockquote>
   <p>A documentação online (Manual do usuário) exibe e explica cada recurso, menu e
   opção do programa. <p><a href="docs/contents.html">Clique aqui</a>  e leia a versão online
   do manual do usuário para o <b>Audacity versão 1.0</b>
-  </blockquote><p></p><p>
+  </blockquote><p></p><p><br>
   <b>4. Ler a Guia de Referência Rápida do Audacity 1.2:</b>
 <blockquote>
 <p> A Guia de Referência Rápida explica os recursos do programa um a um,
 de maneira simples e objetiva: <p><a href="onlinehelp-1.2/contents.htm">Clique aqui e leia a Guia.</a>
 
 </blockquote>
-  <p> </p>
-<p><b>5. Copiar o manual do usuário</b>
+  <p><p><br><b>5. Copiar o manual do usuário</b>
 <blockquote>
   <p>É possível ter o manual do usuário para consulta mesmo sem estar
   conectado à Internet e em diversos idiomas. <p>Clique no idioma desejado
