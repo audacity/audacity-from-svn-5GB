@@ -1,5 +1,5 @@
 // -*- C++ -*-
-// $Id: io_strings.h,v 1.2.2.1 2001-09-30 01:51:52 dmazzoni Exp $
+// $Id: io_strings.h,v 1.2.2.2 2002-01-04 07:28:44 dmazzoni Exp $
 
 // id3lib: a software library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug
@@ -63,7 +63,7 @@ namespace dami
       }
       virtual size_type readChars(char_type buf[], size_type len)
       {
-        size_type size = min(len, _string.size() - _cur);
+        size_type size = min(len, (size_type)(_string.size() - _cur));
         _string.copy(reinterpret_cast<String::value_type *>(buf), size, _cur);
         _cur += size;
         return size;
@@ -100,7 +100,7 @@ namespace dami
 
       virtual size_type skipChars(size_type len)
       {
-        size_type size = min(len, _string.size() - _cur);
+        size_type size = min(len, (size_type)(_string.size() - _cur));
         _cur += size;
         return size;
       }
@@ -133,7 +133,7 @@ namespace dami
       }
       virtual size_type readChars(char_type buf[], size_type len)
       {
-        size_type size = min(len, _string.size() - _cur);
+        size_type size = min(len, (size_type)(_string.size() - _cur));
         _string.copy(reinterpret_cast<BString::value_type *>(buf), size, _cur);
         _cur += size;
         return size;
@@ -170,7 +170,7 @@ namespace dami
 
       virtual size_type skipChars(size_type len)
       {
-        size_type size = min(len, _string.size() - _cur);
+        size_type size = min(len, (size_type)(_string.size() - _cur));
         _cur += size;
         return size;
       }

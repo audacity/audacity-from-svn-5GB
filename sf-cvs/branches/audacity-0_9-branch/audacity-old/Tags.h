@@ -74,7 +74,7 @@ private:
    bool      mID3V2;
 };
 
-wxSizer *MakeTagsDialog(wxPanel * parent, bool call_fit,
+wxSizer *MakeTagsDialog(wxWindow * parent, bool call_fit,
                         bool set_sizer);
                         
 #define ID_TEXT 10000

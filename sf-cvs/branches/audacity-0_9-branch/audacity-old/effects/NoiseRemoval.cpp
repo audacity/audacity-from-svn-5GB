@@ -21,6 +21,11 @@
 #define finite(x) _finite(x)
 #endif
 
+#ifdef __WXMAC__
+#include <fp.h>
+#define finite(x) isfinite(x)
+#endif
+
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
 #include <wx/brush.h>
@@ -321,7 +326,7 @@ void NoiseRemovalDialog::OnCancel(wxCommandEvent &event)
    EndModal(0);
 }
 
-wxSizer *NoiseRemovalDialog::MakeNoiseRemovalDialog( wxPanel *parent, bool call_fit, bool set_sizer )
+wxSizer *NoiseRemovalDialog::MakeNoiseRemovalDialog( wxWindow *parent, bool call_fit, bool set_sizer )
 {
    wxBoxSizer *mainSizer = new wxBoxSizer( wxVERTICAL );
    wxStaticBoxSizer *group;

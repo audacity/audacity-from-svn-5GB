@@ -90,7 +90,7 @@ public:
                        const wxSize& size = wxDefaultSize,
                        long style = wxDEFAULT_DIALOG_STYLE );
 
-   wxSizer *MakeNoiseRemovalDialog( wxPanel *parent, bool call_fit = TRUE,
+   wxSizer *MakeNoiseRemovalDialog( wxWindow *parent, bool call_fit = TRUE,
                            bool set_sizer = TRUE );
    
    wxButton *mRemoveNoiseButton;
