@@ -133,7 +133,7 @@ class WaveTrack: public Track {
    //
 
    bool Get(samplePtr buffer, sampleFormat format,
-            longSampleCount start, sampleCount len);
+            longSampleCount start, sampleCount len) const;
    bool Set(samplePtr buffer, sampleFormat format,
             longSampleCount start, sampleCount len);
 
@@ -152,7 +152,7 @@ class WaveTrack: public Track {
    // for efficiency
    //
 
-   sampleCount GetBestBlockSize(longSampleCount t);
+   sampleCount GetBestBlockSize(longSampleCount t) const;
    sampleCount GetMaxBlockSize() const;
    sampleCount GetIdealBlockSize() const;
 

@@ -712,7 +712,7 @@ bool WaveTrack::GetMinMax(float *min, float *max,
 //
 
 bool WaveTrack::Get(samplePtr buffer, sampleFormat format,
-                    longSampleCount start, sampleCount len)
+                    longSampleCount start, sampleCount len) const
 {
    longSampleCount startTime = (longSampleCount)floor(mOffset*mRate + 0.5);
    longSampleCount endTime = startTime + mSequence->GetNumSamples();
@@ -826,7 +826,7 @@ bool WaveTrack::AppendAlias(wxString fName, sampleCount start,
    return ret;
 }
 
-sampleCount WaveTrack::GetBestBlockSize(longSampleCount s)
+sampleCount WaveTrack::GetBestBlockSize(longSampleCount s) const
 {
    longSampleCount startTime = (longSampleCount)floor(mOffset*mRate + 0.5);
    longSampleCount endTime = startTime + mSequence->GetNumSamples();
