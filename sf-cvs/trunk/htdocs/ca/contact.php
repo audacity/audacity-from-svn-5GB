@@ -13,19 +13,19 @@ Si us esteu preguntant què és l'Audacity, o esteu tenint problemes instal·lant-l
 <p>
 
 <li>
-Uniu-vos: <a href="http://lists.sourceforge.net/lists/listinfo/audacity-users">Al llistat d'usuaris de l'Audacity</a><br>
-Navegueu per: <a href="http://www.geocrawler.com/lists/3/SourceForge/14680/0/">Els arxius del llistat d'usuaris de l'Audacity</a><br>
-Aquest és el nou llistat de l'Audacity on els usuaris poden parlar entre ells i compartir les seves idees. Si creieu que les vostres preguntes poden ser respostes per altres usuaris de l'Audacity, uniu-vos al llistat de correu i formuleu les vostres preguntes ací. Podeu revisar els arxius per veure ja han estat contestades.
+Uniu-vos a la <a href="http://lists.sourceforge.net/lists/listinfo/audacity-users">llista de correu d'usuaris de l'Audacity</a><br>
+Navegueu pels <a href="http://www.geocrawler.com/lists/3/SourceForge/14680/0/">arxius de la llista de correu d'usuaris de l'Audacity</a><br>
+Aquesta és la nova llista de correu de l'Audacity on els usuaris poden parlar entre ells i compartir les seves idees. Si creieu que les vostres preguntes poden ser respostes per altres usuaris de l'Audacity, uniu-vos a la llista de correu i formuleules ací. Podeu revisar els arxius per veure ja han estat contestades.
 <p>
 
 <li>
 Adreça electrònica: <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a><br>
 o navegueu cap a: <a href="http://www.geocrawler.com/lists/3/SourceForge/14679/0/">Arxius d'ajuda de l'Audacity</a><br>
-Si teniu algun problema tècnic amb l'Audacity, i és massa específic com per anar molestant als altres usuaris de l'Audacity envieu un missatge a aquesta adreça. Serà llegit per un membre dels desenvolupadors i mantenidors de  l'Audacity. També hauríeu d'utilitzar aquesta adreça si realment necessiteu contactar els desenvolupadors de l'Audacity directament per qualsevol altra raó.
+Si teniu algun problema tècnic amb l'Audacity, i és massa específic com per anar molestant als altres usuaris de l'Audacity envieu un missatge a aquesta adreça. Serà llegit per un membre de l'equip de desenvolupadors i mantenidors de l'Audacity. També hauríeu d'utilitzar aquesta adreça si realment necessiteu contactar els desenvolupadors de l'Audacity directament per qualsevol altra raó.
 <p>
 L'Audacity està sent desenvolupat per voluntaris d'arreu del món.
-No hi ha per tant cap número de telèfon o adreça de correu on ens pugueu contactar. tot el desenvolupament de l'Audacity es realitza a internet, i l'única manera en què podreu contactar els desenvolupadors és un d'aquests llistats de correu o adreces electròniques.
+No hi ha per tant cap número de telèfon o adreça de correu on ens pugueu contactar. Tot el desenvolupament de l'Audacity es realitza a internet, i la única manera de contactar els desenvolupadors és mitjançant una d'aquestes llistes de correu o adreces electròniques.
 <p>
 
 </ul>
