@@ -48,6 +48,8 @@
 #define TOOLBAR_HEIGHT_OFFSET 25
 #endif
 
+#include <iostream.h>
+
 ////////////////////////////////////////////////////////////
 /// Methods for ToolBarStub
 ////////////////////////////////////////////////////////////
@@ -166,11 +168,13 @@ ToolBar *ToolBarStub::GetToolBar()
 ////////////////////////////////////////////////////////////
 
 IMPLEMENT_DYNAMIC_CLASS(ToolBar, wxWindow)
+
 // Constructor for ToolBar. Should be used by children toolbars
 // to instantiate the initial parameters of the toolbar.
 ToolBar::ToolBar(wxWindow * parent, wxWindowID id, const wxPoint & pos, const wxSize & size):
 wxWindow(parent, id, pos, size)
 {
+
    //Set some default values that should be overridden
    mTitle = "Audacity Toolbar";
    mType = DummyToolBarID;
@@ -287,19 +291,28 @@ wxImage *ToolBar::OverlayImage(wxImage * background,
    // returns an new image where the foreground has been
    // overlaid onto the background using alpha-blending,
    // at location (xoff, yoff).
-
+  
    unsigned char *bk = background->GetData();
    unsigned char *fg = foreground->GetData();
    unsigned char *m = mask->GetData();
    int width = background->GetWidth();
    int height = background->GetHeight();
-   int w2 = foreground->GetWidth();
-   int h2 = foreground->GetHeight();
-   // If the foreground + offset is bigger than the background, masking
-   // should only occur within these bounds of the foreground image
+   int wmask = mask->GetWidth();
+   int hmask = mask->GetHeight();
 
-   int wcutoff = (width > (w2 + xoff)) ? w2 : width - xoff;
-   int hcutoff = (height > (h2 + yoff)) ? h2 : height - yoff;
+   //Make sure the foreground size is no bigger than the mask
+   int wfg = foreground->GetWidth();
+   wfg = (wfg < wmask)? wfg:wmask;
+   int hfg = foreground->GetHeight();
+   hfg = (hfg < hmask) ? hfg:hmask;  
+
+
+   // If the masked foreground + offset is bigger than the background, masking
+   // should only occur within these bounds of the foreground image
+	
+
+   int wcutoff = (width > (wfg + xoff)) ? wfg : width - xoff;
+   int hcutoff = (height > (hfg + yoff)) ? hfg : height - yoff;
 
    wxImage *dstImage = new wxImage(width, height);
    unsigned char *dst = dstImage->GetData();
@@ -309,8 +322,8 @@ wxImage *ToolBar::OverlayImage(wxImage * background,
 
    // Go through the foreground image bit by bit and mask it on to the
    // background, at an offset of xoff,yoff.
-   // BUT...Don't go beyond the size of the background image
-
+   // BUT...Don't go beyond the size of the background image,
+   // the foreground image, sor the mask 
    for (y = 0; y < hcutoff; y++) {
 
       unsigned char *bkp = bk + 3 * ((y + yoff) * width + xoff);
@@ -318,18 +331,17 @@ wxImage *ToolBar::OverlayImage(wxImage * background,
 
       for (x = 0; x < wcutoff; x++) {
 
-         int value = m[3 * (y * w2 + x)];
+         int value = m[3 * (y * wfg + x)];
          int opp = 255 - value;
 
          for (int c = 0; c < 3; c++)
             dstp[x * 3 + c] =
                 ((bkp[x * 3 + c] * opp) +
-                 (fg[3 * (y * w2 + x) + c] * value)) / 255;
+                 (fg[3 * (y * wfg + x) + c] * value)) / 255;
       }
    }
 
    return dstImage;
-
 }
 
 
@@ -464,8 +476,6 @@ wxMiniFrame(gParentWindow,
             | wxMINIMIZE_BOX
             | wxFRAME_FLOAT_ON_PARENT)
 {
-
-   int floatingwidth;
    //Create an embedded toolbar of the proper type
    switch (tbt) {
 
