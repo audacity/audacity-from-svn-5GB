@@ -11,11 +11,11 @@
 #ifndef __AUDACITY_HELP__
 #define __AUDACITY_HELP__
 
-void InitHelp();
-void ShowHelp();
-void ShowHelp(wxString topic);
+void InitHelp(wxWindow *parent);
+void ShowHelp(wxWindow *parent);
+void ShowHelp(wxWindow *parent, wxString topic);
 void SearchHelp(wxWindow *parent);
-void ShowHelpIndex();
+void ShowHelpIndex(wxWindow *parent);
 
 void QuitHelp();
 

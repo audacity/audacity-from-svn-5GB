@@ -1182,7 +1182,7 @@ void AudacityProject::SaveAs()
                          NULL,
                          fName,
                          "aup",
-                         "*.aup",
+                         "Audacity projects (*.aup)|*.aup",
                          wxSAVE,
                          this);
 

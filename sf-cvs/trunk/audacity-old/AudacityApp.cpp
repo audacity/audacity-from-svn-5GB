@@ -16,6 +16,7 @@
 #include <wx/window.h>
 #endif
 
+#include <wx/fs_zip.h>
 #include <wx/image.h>
 
 #ifdef __WXGTK__
@@ -162,6 +163,8 @@ pascal OSErr AEOpenFiles (AppleEvent *theAppleEvent, AppleEvent *theReply, long 
 bool AudacityApp::OnInit()
 {
   ::wxInitAllImageHandlers();
+
+  wxFileSystem::AddHandler(new wxZipFSHandler);
 
   InitPreferences();
   InitAudioIO();

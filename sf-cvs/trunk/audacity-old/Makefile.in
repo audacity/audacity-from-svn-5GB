@@ -84,10 +84,16 @@ DEPS = $(OBJS:$(OBJDIR)/%.o=%)
 
 ########################################
 
-all: dirs audacity
+all: dirs audacity audacity-help.htb
 
 audacity: $(OBJS) Makefile
 	$(CCC) -o audacity $(OBJS) $(LIBS)
+
+#
+# make help file from the help directory
+audacity-help.htb: help/*
+	rm -f audacity-help.htb
+	cd help && zip ../audacity-help.htb *.htm *.png *.hhc *.hhk *.hhp
 
 #
 # rule for building libmpeg3 -- however, it's only built if selected in
@@ -112,8 +118,9 @@ dep:
 #
 
 clean:
-	rm -f audacity .depend
+	rm -f audacity audacity-help.htb .depend
 	rm -rf obj/
+	rm -f mpeg3/libmpeg3.a:
 
 #
 # We stick object files in separate directories for convenience

@@ -1091,12 +1091,12 @@ void AudacityProject::OnAbout(wxCommandEvent& event)
 
 void AudacityProject::OnHelp(wxCommandEvent& event)
 {
-  ::ShowHelp();
+  ::ShowHelp(this);
 }
 
 void AudacityProject::OnHelpIndex(wxCommandEvent& event)
 {
-  ::ShowHelpIndex();
+  ::ShowHelpIndex(this);
 }
 
 void AudacityProject::OnHelpSearch(wxCommandEvent& event)
