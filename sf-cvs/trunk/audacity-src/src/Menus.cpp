@@ -314,8 +314,9 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand("Pause",       _("Pause\tP"),                    FN(OnPause));
    c->AddCommand("Record",      _("Record\tR"),                   FN(OnRecord));
    
-   c->AddCommand("PlayOneSec",  _("Play One Second\t1"),          FN(OnPlayOneSecond));
-   c->AddCommand("PlayLooped",  _("Play Looped\tL"),              FN(OnPlayLooped));
+   c->AddCommand("PlayOneSec",     _("Play One Second\t1"),       FN(OnPlayOneSecond));
+   c->AddCommand("PlayToSelection",_("Play One Second\tB"),       FN(OnPlayToSelection));
+   c->AddCommand("PlayLooped",     _("Play Looped\tL"),           FN(OnPlayLooped));
 
    c->AddCommand("SkipStart",   _("Skip to Start\tHome"),         FN(OnSkipStart));
    c->AddCommand("SkipEnd",     _("Skip to End\tEnd"),            FN(OnSkipEnd));
@@ -460,8 +461,6 @@ void AudacityProject::UpdateMenus()
       }
    }
    
-   
-   
    // Get ahold of the clipboard status
    bool clipboardStatus = static_cast<bool>(GetActiveProject()->Clipboard());
 
@@ -594,7 +593,14 @@ void AudacityProject::UpdateMenus()
 // Audio I/O Commands
 //
 
-void AudacityProject::OnPlayOneSecond()
+// TODO: Should all these functions which involve
+// the toolbar actually move into ControlToolBar?
+
+/// MakeReadyToPlay stops whatever is currently playing 
+/// and pops the play button up.  Then, if nothing is now
+/// playing, it pushes the play button down and enables
+/// the stop button.
+bool AudacityProject::MakeReadyToPlay()
 {
    ControlToolBar *toolbar = GetControlToolBar();
    wxCommandEvent evt;
@@ -611,36 +617,76 @@ void AudacityProject::OnPlayOneSecond()
    // If it didn't stop playing quickly, or if some other
    // project is playing, return
    if (gAudioIO->IsBusy())
+      return false;
+
+   toolbar->SetPlay(true);
+   toolbar->SetStop(false);
+
+   return true;
+}
+
+void AudacityProject::OnPlayOneSecond()
+{
+   if( !MakeReadyToPlay() )
       return;
 
+   ControlToolBar *toolbar = GetControlToolBar();
    double pos = mTrackPanel->GetMostRecentXPos();
    mLastPlayMode = oneSecondPlay;
    toolbar->PlayPlayRegion(pos - 0.5, pos + 0.5);
 }
 
+
+/// The idea for this function (and first implementation)
+/// was from Juhana Sadeharju.  The function plays the 
+/// sound between the current mouse position and the 
+/// nearest selection boundary.  This gives four possible 
+/// play regions depending on where the current mouse 
+/// position is relative to the left and right boundaries 
+/// of the selection region.
+void AudacityProject::OnPlayToSelection()
+{
+   if( !MakeReadyToPlay() )
+      return;
+
+   ControlToolBar *toolbar = GetControlToolBar();
+   double pos = mTrackPanel->GetMostRecentXPos();
+
+   double t0,t1;
+   // check region between pointer and the nearest selection edge
+   if (fabs(pos - mViewInfo.sel0) < fabs(pos - mViewInfo.sel1)) {
+      t0 = t1 = mViewInfo.sel0;
+   } else {
+      t0 = t1 = mViewInfo.sel1;
+   }
+   if( pos < t1) 
+      t0=pos;
+   else
+      t1=pos;
+
+   // JKC: oneSecondPlay mode disables auto scrolling
+   // On balance I think we should always do this in this function
+   // since you are typically interested in the sound EXACTLY 
+   // where the cursor is.
+   // TODO: have 'playing attributes' such as 'with_autoscroll'
+   // rather than modes, since that's how we're now using the modes.
+   mLastPlayMode = oneSecondPlay;
+
+   // An alternative, commented out below, is to disable autoscroll
+   // only when playing a short region, less than or equal to a second.
+//   mLastPlayMode = ((t1-t0) > 1.0) ? normalPlay : oneSecondPlay;
+
+   toolbar->PlayPlayRegion(t0, t1);
+}
+
 void AudacityProject::OnPlayLooped()
 {
-   ControlToolBar *toolbar = GetControlToolBar();
-
-   // If already playing, stop playing
-   if (gAudioIO->IsStreamActive(GetAudioIOToken())) {
-      toolbar->SetPlay(false);
-      toolbar->SetStop(true);
-      toolbar->StopPlaying();
-
-      ::wxUsleep(100);
-   }
-
-   // If it didn't stop playing quickly, or if some other
-   // project is playing, return
-   if (gAudioIO->IsBusy())
+   if( !MakeReadyToPlay() )
       return;
 
    // Now play in a loop
-   toolbar->SetPlay(true);
-   toolbar->SetStop(false);
-
    // Will automatically set mLastPlayMode
+   ControlToolBar *toolbar = GetControlToolBar();
    toolbar->PlayCurrentRegion(true);
 }
 

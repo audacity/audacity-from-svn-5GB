@@ -37,8 +37,10 @@ void OnSkipEnd();
 
         // Different posibilities for playing sound
 
+bool MakeReadyToPlay(); // Helper function that sets button states etc.
 void OnPlayStop();
 void OnPlayOneSecond();
+void OnPlayToSelection();
 void OnPlayLooped();
 
         // Selection-Editing Commands
