@@ -267,6 +267,7 @@ void AButton::Disable()
 {
    mEnabled = false;
    mButtonState = AButtonDis;
+   ReleaseMouse();
    this->Refresh(false);
 }
 
@@ -282,7 +283,7 @@ void AButton::PopUp()
     
    mButtonIsDown = false;
    mButtonState = AButtonUp;
-
+   ReleaseMouse();
 
    this->Refresh(false);
 }
