@@ -20,7 +20,8 @@ You can browse the updated
 <a href="onlinehelp-1.2/contents.htm">Quick Reference</a> for Audacity 1.2.
 For more help options, see the
 <?php print "<a href=help.php?$langLinkStr>"; ?>
-Help</a> page.
+Help</a> page or the <a href="http://www.audacityteam.org/wiki"
+>Audacity Wiki</a>.
 </p>
 
 <?php BoxBottom(); ?>

@@ -7,8 +7,34 @@ Audacity 1.2 Complete Manual:
 </p>
 
 <p>
-Audacity 1.2 Online Help:
+Audacity 1.2 Quick Reference:
 [<a href="onlinehelp-1.2/contents.htm">Browse Online</a>]
+</p>
+
+<p>
+<a href="http://www.audacityteam.org/wiki">Audacity Wiki</a>
+(Publicly-editable documentation, tips, tricks, and more)
+</p>
+
+<p>
+
+Search Audacity documentation:
+
+<form method="post" action="/isearch/index.php" target="_self">
+
+<table border="0" cellpadding="3" cellspacing="1">
+  <tr>
+    <td>
+
+      <input maxLength="255" name="s" size="20" value=''>
+      <input type="submit" value="Search Site">
+      <a TARGET="_blank" HREF="/isearch/help.php">Help</a>
+    </td>
+  </tr>
+</table>
+
+<input type="hidden" name="action" value="search">
+</form>
 </p>
 
 <p>
