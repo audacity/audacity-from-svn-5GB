@@ -313,16 +313,16 @@ void TrackPanel::OnTimer()
 void TrackPanel::ScrollDuringDrag()
 {
    // DM: If we're "autoscrolling" (which means that we're scrolling
-   // because the user dragged from inside to outside the window,
-   // not because the user clicked in the scroll bar), then
-   // the selection code needs to be handled slightly differently.
-   // We set this flag ("mAutoScrolling") to tell the selecting
-   // code that we didn't get here as a result of a mouse event,
-   // and therefore it should ignore the mouseEvent parameter,
-   // and instead use the last known mouse position.  Setting
-   // this flag also causes the Mac to redraw immediately rather
-   // than waiting for the next update event; this makes scrolling
-   // smoother on MacOS 9.
+   //  because the user dragged from inside to outside the window,
+   //  not because the user clicked in the scroll bar), then
+   //  the selection code needs to be handled slightly differently.
+   //  We set this flag ("mAutoScrolling") to tell the selecting
+   //  code that we didn't get here as a result of a mouse event,
+   //  and therefore it should ignore the mouseEvent parameter,
+   //  and instead use the last known mouse position.  Setting
+   //  this flag also causes the Mac to redraw immediately rather
+   //  than waiting for the next update event; this makes scrolling
+   //  smoother on MacOS 9.
   mAutoScrolling = true;
   
   if (mMouseMostRecentX > mCapturedRect.x + mCapturedRect.width)
@@ -414,7 +414,7 @@ void TrackPanel::MakeParentRedrawScrollbars()
 }
 
 // AS: This is still bad unclean: it's dependant on select=0, envelope=1, 
-// move/slide=2, and zoom=3.  And this should go somewhere else...
+//  move/slide=2, and zoom=3.  And this should go somewhere else...
 const char *pMessages[] = {"Click and drag to select audio", 
 			   "Click and drag to edit the amplitude envelope",
 			   "Click and drag to move a track in time",
@@ -534,7 +534,7 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent &event,
   mMouseClickY = event.m_y;
   
   // AS: If the shift button is being held down, 
-  // extend the current selection.
+  //  extend the current selection.
   if (event.ShiftDown()) {
 
     ExtendSelectionRight(event.m_x, r.x);
@@ -639,7 +639,7 @@ void TrackPanel::ExtendSelectionRight(int mouseXCoordinate,
   double selend = PositionToTime(mouseXCoordinate, trackLeftEdge);
 
   // JR: grabs either the left or right side, depending on
-  // which is closer.
+  //  which is closer.
   if (selend >= mViewInfo->sel1) {
      mViewInfo->sel1 = selend;
      mSelStart = mViewInfo->sel0;
@@ -673,16 +673,14 @@ void TrackPanel::ExtendSelectionLeft(int mouseXCoordinate,
 }
 
 // DM: Converts a position (mouse X coordinate) to 
-// project time, in seconds.  Needs the left edge of
-// the track as an additional parameter.
+//  project time, in seconds.  Needs the left edge of
+//  the track as an additional parameter.
 double TrackPanel::PositionToTime(int mouseXCoordinate,
                                   int trackLeftEdge) const
 {
    return mViewInfo->h + ((mouseXCoordinate - trackLeftEdge)
                           / mViewInfo->zoom);  
 }
-
-
 
 // AS: HandleEnvelope gets called when the user is changing the
 //  amplitude envelope on a track.
@@ -898,7 +896,7 @@ void TrackPanel::DragZoom(int trackLeftEdge)
 }
 
 // AS: This handles normal Zoom In/Out, if you just clicked;
-// IOW, if you were NOT dragging to zoom an area.
+//  IOW, if you were NOT dragging to zoom an area.
 // AS: MAGIC NUMBER: We've got several in this function.
 void TrackPanel::DoZoomInOut(wxMouseEvent &event, int trackLeftEdge)
 {
@@ -967,7 +965,7 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
 }
 
 // AS: This function gets called when a user clicks on the
-// title of a track, dropping down the menu.
+//  title of a track, dropping down the menu.
 void TrackPanel::DoPopupMenu(wxMouseEvent &event, wxRect& titleRect, 
 			     VTrack* t, wxRect& r, int num)
 {
@@ -1040,9 +1038,12 @@ void TrackPanel::DoPopupMenu(wxMouseEvent &event, wxRect& titleRect,
   }
 }
 
-// AS: Oh boy, this one's complicated.
+// AS: This handles when the user clicks on the "Label" area
+//  of a track, ie the part with all the buttons and the drop
+//  down menu, etc.
 void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 {
+   // AS: If not a click, ignore the mouse event.
    if (!(event.ButtonDown() || event.ButtonDClick()))
       return;
 
@@ -1051,6 +1052,8 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 
    VTrack *t = FindTrack(event.m_x, event.m_y, true, &r, &num);
 
+   // AS: If the user clicked outside all tracks, make nothing
+   //  selected.
    if (!t) {
       SelectNone();
       Refresh(false);
@@ -1061,6 +1064,8 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    if (!t->GetLinked() && mTracks->GetLink(t))
       second = true;
 
+   // AS: If the shift botton is being held down, then invert 
+   //  the selection on this track.
    if (event.ShiftDown()) {
       mTracks->Select(t, !t->GetSelected());
       Refresh(false);
@@ -1069,6 +1074,11 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 
    wxRect closeRect;
    GetCloseBoxRect(r, closeRect);
+
+   // AS: If they clicked on the x (ie, close button) on this
+   //  track, then we capture the mouse and display the x
+   //  as depressed.  Somewhere else, when the mouse is released,
+   //  we'll see if we're still supposed to close the track.
    if (!second && closeRect.Inside(event.m_x, event.m_y)) {
       wxClientDC dc(this);
       DrawCloseBox(&dc, r, true);
@@ -1080,19 +1090,21 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 
    wxRect titleRect;
    GetTitleBarRect(r, titleRect);
+
+   // AS: If the clicked on the title area, show the popup menu.
    if (!second && titleRect.Inside(event.m_x, event.m_y)) {
      DoPopupMenu(event, titleRect, t, r, num);
      return;
    }
    
-   // Check Mute and Solo buttons on WaveTracks:
+   // DM: Check Mute and Solo buttons on WaveTracks:
    if (!second && t->GetKind() == VTrack::Wave) {
-     if (MuteSoloFunc(t, r, event, false) ||
-	 MuteSoloFunc(t, r, event, true ))
+     if (MuteSoloFunc(t, r, event.m_x, event.m_y, false) ||
+	 MuteSoloFunc(t, r, event.m_x, event.m_y, true ))
        return;
    }      
    
-   // If it's a NoteTrack, it has special controls
+   // DM: If it's a NoteTrack, it has special controls
    if (!second && t && t->GetKind() == VTrack::Note) {
       wxRect midiRect;
       GetTrackControlsRect(r, midiRect);
@@ -1105,20 +1117,22 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
       }
    }
 
-   // If they weren't clicking on a particular part of a track label,
-   // deselect other tracks and select this one.
+   // DM: If they weren't clicking on a particular part of a track label,
+   //  deselect other tracks and select this one.
    SelectNone();
    mTracks->Select(t);
    mViewInfo->sel0 = 0.0;
    mViewInfo->sel1 = mTracks->GetMaxLen();
    Refresh(false);
 }
-
-bool TrackPanel::MuteSoloFunc(VTrack *t, wxRect r, wxMouseEvent &event, bool solo)
+// AS: Mute or solo the given track (t).  If solo is true, we're 
+//  soloing, otherwise we're muting.  Basically, check and see 
+//  whether x and y fall within the  area of the appropriate button.
+bool TrackPanel::MuteSoloFunc(VTrack *t, wxRect r, int x, int y, bool solo)
 {
   wxRect buttonRect;
   GetMuteSoloRect(r, buttonRect, solo);
-  if (buttonRect.Inside(event.m_x, event.m_y)) {
+  if (buttonRect.Inside(x, y)) {
 
     wxClientDC dc(this);
     DrawMuteSolo(&dc, r, t, true, solo);
@@ -1136,31 +1150,34 @@ bool TrackPanel::MuteSoloFunc(VTrack *t, wxRect r, wxMouseEvent &event, bool sol
 }
 
 
-/*
+// DM: HandleResize gets called when:
+//  1. A mouse-down event occurs in the "resize region" of a track,
+//     i.e. to change its vertical height.
+//  2. A mouse event occurs and mIsResizing==true (i.e. while
+//     the resize is going on)
 void TrackPanel::HandleResize(wxMouseEvent & event)
 {
-   // This gets called when:
-   // 1. A mouse-down event occurs in the "resize region" of a track,
-   //    i.e. to change its vertical height.
-   // 2. A mouse event occurs and mIsResizing==true (i.e. while
-   //    the resize is going on)
-
-   // ButtonDown means they just clicked and haven't released yet.
-   // We use this opportunity to save which track they clicked on,
-   // and the initial height of the track, so as they drag we can
-   // update the track size.
+   // DM: ButtonDown means they just clicked and haven't released yet.
+   //  We use this opportunity to save which track they clicked on,
+   //  and the initial height of the track, so as they drag we can
+   //  update the track size.
    if (event.ButtonDown()) {
 
-      // Figure out what track is about to be resized
-      VTrack *t = FindTrack(event.m_x, event.m_y);
+      wxRect r;
+      int num;
+
+      // DM: Figure out what track is about to be resized
+      VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
 
       if (t) {
 
-         // Capture the track so that we continue to resize
-         // THIS track, no matter where the user moves the mouse
+         // DM: Capture the track so that we continue to resize
+         //  THIS track, no matter where the user moves the mouse
          mCapturedTrack = t;
+	 //         mCapturedRect = r;
+         //mCapturedNum = num;
 
-         // Save the initial mouse location and the initial height
+         // DM: Save the initial mouse location and the initial height
          mMouseClickX = event.m_x;
          mMouseClickY = event.m_y;
          mInitialTrackHeight = t->GetHeight();
@@ -1168,13 +1185,12 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
          mIsResizing = true;
       }
    }
-
    else if (mIsResizing) {
 
-      // Dragging means that the mouse button IS down and has moved
-      // from its initial location.  By the time we get here, we
-      // have already received a ButtonDown() event and saved the
-      // track being resized in mCapturedTrack.
+      // DM: Dragging means that the mouse button IS down and has moved
+      //  from its initial location.  By the time we get here, we
+      //  have already received a ButtonDown() event and saved the
+      //  track being resized in mCapturedTrack.
       if (event.Dragging()) {
          int delta = (event.m_y - mMouseClickY);
          int newTrackHeight = mInitialTrackHeight + delta;
@@ -1184,11 +1200,11 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
          Refresh(false);
       }
 
-      // This happens when the button is released from a drag.
-      // Since we actually took care of resizing the track when
-      // we got drag events, all we have to do here is clean up.
-      // We also push the state so that this action is undo-able.
-      if (event.ButtonUp()) {
+      // DM: This happens when the button is released from a drag.
+      //  Since we actually took care of resizing the track when
+      //  we got drag events, all we have to do here is clean up.
+      //  We also push the state so that this action is undo-able.
+      else if (event.ButtonUp()) {
          mCapturedTrack = NULL;
          mIsResizing = false;
          MakeParentRedrawScrollbars();
@@ -1196,94 +1212,59 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
       }
    }
 }
-*/
 
-void TrackPanel::HandleResize(wxMouseEvent & event)
-{
-   if (event.ButtonDown()) {
-      wxRect r;
-      int num;
-
-      VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
-
-      if (t) {
-         mCapturedTrack = t;
-         mCapturedRect = r;
-         mCapturedNum = num;
-
-         mMouseClickX = event.m_x;
-         mMouseClickY = event.m_y;
-
-         mIsResizing = true;
-         mInitialTrackHeight = t->GetHeight();
-      }
-   }
-
-   if (!mIsResizing)
-      return;
-
-   if (event.Dragging()) {
-      int delta = (event.m_y - mMouseClickY);
-      int newTrackHeight = mInitialTrackHeight + delta;
-      if (newTrackHeight < 20)
-         newTrackHeight = 20;
-      mCapturedTrack->SetHeight(newTrackHeight);
-      Refresh(false);
-   }
-
-   if (event.ButtonUp()) {
-      mCapturedTrack = NULL;
-      mIsResizing = false;
-      MakeParentRedrawScrollbars();
-      MakeParentPushState("TrackPanel::HandleResize() FIXME!!");
-   }
-}
-
+// AS: Handle key presses by the user.  Notably, play and stop when the
+//  user presses the spacebar.  Also, LabelTracks can be typed into.
 void TrackPanel::OnKeyEvent(wxKeyEvent & event)
 {
   if (event.ControlDown()) {
     event.Skip();
     return;
   }
-  
+
   TrackListIterator iter(mTracks);
-  
+
+  // AS: This logic seems really flawed.  We send keyboard input
+  //  to the first LabelTrack we find, not to the one with focus?
+  //  I guess the problem being that we don't have "focus."
+  for (VTrack * t = iter.First(); t; t = iter.Next()) {
+    if (t->GetKind() == VTrack::Label && t->GetSelected()) {
+      ((LabelTrack *) t)->KeyEvent(mViewInfo->sel0, mViewInfo->sel1,
+				   event);
+      Refresh(false);
+      MakeParentPushState("TrackPanel::OnKeyEvent() FIXME!!");
+      return;
+    }
+  }
+
   switch (event.KeyCode()) {
   case WXK_SPACE:
     mListener->TP_OnPlayKey();
     break;
-    
   default:
-    
-    for (VTrack * t = iter.First(); t; t = iter.Next()) {
-      if (t->GetKind() == VTrack::Label) {
-	((LabelTrack *) t)->KeyEvent(mViewInfo->sel0, mViewInfo->sel1,
-				     event);
-	Refresh(false);
-	MakeParentPushState("TrackPanel::OnKeyEvent() FIXME!!");
-	return;
-      }
-    }  
+    break;
   }
 }
 
+// AS: This handles just generic mouse events.  Then, based
+//  on our current state, we forward the mouse events to
+//  various interested parties.
 void TrackPanel::OnMouseEvent(wxMouseEvent & event)
 {
   mListener->TP_HasMouse();
-  
+
   if (!mAutoScrolling) {
     mMouseMostRecentX = event.m_x;
     mMouseMostRecentY = event.m_y;
   }
-  
+
   if (event.ButtonDown()) {
     mCapturedTrack = NULL;
     
-    wxActivateEvent *e = new wxActivateEvent();
-    GetParent()->ProcessEvent(*e);
-    delete e;
+    wxActivateEvent e;
+    GetParent()->ProcessEvent(e);
   }
-  
+
   if (mIsClosing)
     HandleClosing(event);
   else if (mIsMuting)
@@ -1295,41 +1276,48 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
     HandleCursor(event);
   }
   else
-    {
-      wxRect r;
-      int dummy;
-      
-      FindTrack(event.m_x, event.m_y, false, &r, &dummy);
-      
-      if (event.ButtonDown() &&
-	  event.m_y >= (r.y + r.height - 5) &&
-	  event.m_y < (r.y + r.height + 5)) {
-	HandleResize(event);
-	HandleCursor(event);
-	return;
-      }
-      
-      if (!mCapturedTrack && event.m_x < GetLabelWidth()) {
-	HandleLabelClick(event);
-	HandleCursor(event);
-	return;
-      }
-      
-      switch (mListener->TP_GetCurrentTool()) {
-      case 0: HandleSelect  (event); break;
-      case 1: HandleEnvelope(event); break;
-      case 2: HandleSlide   (event); break;
-      case 3: HandleZoom    (event); break;
-      }
-      
-      if ((event.Moving() || event.ButtonUp()) &&
-	  !mIsSelecting && !mIsEnveloping && !mIsSliding) {
-	HandleCursor(event);
-      }
-      if (event.ButtonUp()) {
-	mCapturedTrack = NULL;
-      }
-    }
+    TrackSpecificMouseEvent(event);
+}
+
+// AS: I don't really understand why this code is sectioned off
+//  from the other OnMouseEvent code.
+void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
+{
+  wxRect r;
+  int dummy;
+
+  FindTrack(event.m_x, event.m_y, false, &r, &dummy);
+
+  // AS: MAGIC NUMBER: Hey, here's that 5 again.  What's
+  //  going on here?
+  if (event.ButtonDown() &&
+      event.m_y >= (r.y + r.height - 5) &&
+      event.m_y < (r.y + r.height + 5)) {
+    HandleResize(event);
+    HandleCursor(event);
+    return;
+  }
+
+  if (!mCapturedTrack && event.m_x < GetLabelWidth()) {
+    HandleLabelClick(event);
+    HandleCursor(event);
+    return;
+  }
+
+  switch (mListener->TP_GetCurrentTool()) {
+  case 0: HandleSelect  (event); break;
+  case 1: HandleEnvelope(event); break;
+  case 2: HandleSlide   (event); break;
+  case 3: HandleZoom    (event); break;
+  }
+
+  if ((event.Moving() || event.ButtonUp()) &&
+      !mIsSelecting && !mIsEnveloping && !mIsSliding) {
+    HandleCursor(event);
+  }
+  if (event.ButtonUp()) {
+    mCapturedTrack = NULL;
+  }
 }
 
 void TrackPanel::SetLabelFont(wxDC * dc)
@@ -1608,7 +1596,7 @@ void TrackPanel::DrawTitleBar(wxDC * dc, const wxRect r, VTrack * t, bool down)
    AColor::Bevel(*dc, !down, bev);
 }
 
-// AS: Drow the Mute or the Solo button, depending on the value of solo.
+// AS: Draw the Mute or the Solo button, depending on the value of solo.
 void TrackPanel::DrawMuteSolo(wxDC * dc, const wxRect r, VTrack *t, bool down, bool solo)
 {
    wxRect bev;
@@ -1628,8 +1616,8 @@ void TrackPanel::DrawMuteSolo(wxDC * dc, const wxRect r, VTrack *t, bool down, b
 }
 
 // AS: Draw the actual track areas.  We only draw the borders
-// and the little buttons and menues and whatnot here, the
-// actual contents of each track are drawn by the TrackArtist.
+//  and the little buttons and menues and whatnot here, the
+//  actual contents of each track are drawn by the TrackArtist.
 void TrackPanel::DrawTracks(wxDC * dc)
 {
    wxRect clip;
@@ -1647,7 +1635,7 @@ void TrackPanel::DrawTracks(wxDC * dc)
    tracksRect.width -= GetLabelWidth();
 
    // AS: Presumably 1 indicates that we are using the "Envelope"
-   // adjusting tool (for changing the amplitude envelope).
+   //  adjusting tool (for changing the amplitude envelope).
    bool envelopeFlag = (mListener->TP_GetCurrentTool() == 1);
 
    // The track artist actually draws the stuff inside each track
@@ -1678,7 +1666,7 @@ void TrackPanel::DrawEverythingElse(wxDC *dc, const wxRect panelRect, const wxRe
 }
 
 // AS: Note that this is being called in a loop and that the parameter values are
-// expected to be maintained each time through.
+//  expected to be maintained each time through.
 void TrackPanel::DrawEverythingElse(VTrack *t, wxDC *dc, wxRect &r, wxRect &trackRect)
 {
   trackRect.height = t->GetHeight();
@@ -1831,8 +1819,8 @@ void TrackPanel::DrawShadow(VTrack *t, wxDC* dc, const wxRect r)
 }
 
 // AS: Returns the string to be displayed in the track label
-// indicating whether the track is mono, left, right, or 
-// stereo and what sample rate it's using.
+//  indicating whether the track is mono, left, right, or 
+//  stereo and what sample rate it's using.
 wxString TrackPanel::TrackSubText(VTrack *t)
 {
   wxString s =
@@ -1854,7 +1842,7 @@ wxString TrackPanel::TrackSubText(VTrack *t)
 }
 
 // AS: Handle the menu options that change a track between
-// left channel, right channel, and mono.
+//  left channel, right channel, and mono.
 int channels[] = {VTrack::LeftChannel, VTrack::RightChannel,
 		  VTrack::MonoChannel};
 const char* channelmsgs[] = {"'left' channel", "'right' channel",
@@ -1902,7 +1890,7 @@ void TrackPanel::OnMergeStereo()
 }
 
 // AS: This actually removes the specified track.  Not sure where
-// it gets called from, though.  Seems oddly placed among these handlers.
+//  it gets called from, though.  Seems oddly placed among these handlers.
 void TrackPanel::RemoveTrack(VTrack * toRemove)
 {
    TrackListIterator iter(mTracks);
@@ -1927,7 +1915,7 @@ void TrackPanel::RemoveTrack(VTrack * toRemove)
 }
 
 // AS: Set the Display mode based on the menu choice in the Track Menu.
-// Note that gModes MUST BE IN THE SAME ORDER AS THE MENU CHOICES!!
+//  Note that gModes MUST BE IN THE SAME ORDER AS THE MENU CHOICES!!
 const char* gModes[] = {"waveform", "waveformDB", "spectrum", "pitch"};
 void TrackPanel::OnSetDisplay(wxEvent &event)
 {
@@ -1947,7 +1935,7 @@ void TrackPanel::OnSetDisplay(wxEvent &event)
 }
 
 // AS: Sets the sample rate for a track, and if it is linked to
-// another track, that one as well.
+//  another track, that one as well.
 void TrackPanel::SetRate(VTrack *pTrack, double rate)
 {
   ((WaveTrack *) pTrack)->SetRate(rate);
@@ -1960,9 +1948,9 @@ void TrackPanel::SetRate(VTrack *pTrack, double rate)
 }
 
 // AS: Ok, this function handles the selection from the Rate
-// submenu of the track menu, except for "Other" (see OnRateOther).
-// gRates MUST CORRESPOND DIRECTLY TO THE RATES AS LISTED IN THE MENU!!
-// IN THE SAME ORDER!!
+//  submenu of the track menu, except for "Other" (see OnRateOther).
+//  gRates MUST CORRESPOND DIRECTLY TO THE RATES AS LISTED IN THE MENU!!
+//  IN THE SAME ORDER!!
 int gRates[] = {8000, 11025, 16000, 22050, 44100, 48000};
 void TrackPanel::OnRateChange(wxEvent &event)
 {
@@ -1978,7 +1966,7 @@ void TrackPanel::OnRateChange(wxEvent &event)
 }
 
 // AS: This function handles the case when the user selects "Other"
-// from the Rate submenu on the Track menu.
+//  from the Rate submenu on the Track menu.
 void TrackPanel::OnRateOther()
 {
   assert (mPopupMenuTarget && mPopupMenuTarget->GetKind() == VTrack::Wave);
@@ -2029,7 +2017,7 @@ void TrackPanel::OnMoveTrack(wxEvent &event)
 }
 
 // AS: This only applies to MIDI tracks.  Presumably, it shifts the
-// whole sequence by an octave.
+//  whole sequence by an octave.
 void TrackPanel::OnChangeOctave(wxEvent &event)
 {
   assert (event.GetId() == OnUpOctaveID || event.GetId() == OnDownOctaveID);

@@ -51,6 +51,7 @@ class TrackPanel:public wxWindow {
 
    void OnPaint(wxPaintEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
+   void TrackSpecificMouseEvent(wxMouseEvent & event);
    void OnKeyEvent(wxKeyEvent & event);
 
    void OnTimer();
@@ -107,7 +108,7 @@ class TrackPanel:public wxWindow {
    void HandleLabelClick(wxMouseEvent & event);
    void HandleClosing(wxMouseEvent & event);
    void HandleMutingSoloing(wxMouseEvent & event, bool solo);
-   bool MuteSoloFunc(VTrack *t, wxRect r, wxMouseEvent &event, bool solo);
+   bool MuteSoloFunc(VTrack *t, wxRect r, int x, int f, bool solo);
    void MakeParentRedrawScrollbars();
    
    // AS: Pushing the state preserves state for Undo operations.

@@ -24,6 +24,7 @@ class VTrack {
    bool linked;
    bool mute;
    bool solo;
+   bool collapsed;
    int channel;
    double tOffset;
    int dirty;
@@ -110,10 +111,6 @@ class VTrack {
    }
 
    virtual double GetMaxLen() const { return 0.0; }
-
- private:
-   bool collapsed;
-
 };
 
 /*
