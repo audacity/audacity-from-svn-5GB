@@ -155,7 +155,7 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
    }
 }
 
-double LabelTrack::GetMaxLen()
+double LabelTrack::GetMaxLen() const
 {
    int len = mLabels.Count();
 
@@ -240,7 +240,7 @@ void LabelTrack::Unselect()
    mSelIndex = -1;
 }
 
-bool LabelTrack::IsSelected()
+bool LabelTrack::IsSelected() const
 {
    return (mSelIndex >= 0 && mSelIndex < (int)mLabels.Count());
 }
@@ -298,7 +298,7 @@ void LabelTrack::Import(wxTextFile & in)
    }
 }
 
-VTrack *LabelTrack::Duplicate()
+VTrack *LabelTrack::Duplicate() const
 {
    LabelTrack *copy = new LabelTrack(GetDirManager());
    int len = mLabels.Count();
@@ -378,7 +378,7 @@ void LabelTrack::Cut(double t0, double t1, VTrack ** dest)
    ((LabelTrack *) (*dest))->mClipLen = (t1 - t0);
 }
 
-void LabelTrack::Copy(double t0, double t1, VTrack ** dest)
+void LabelTrack::Copy(double t0, double t1, VTrack ** dest) const
 {
    *dest = new LabelTrack(GetDirManager());
    int len = mLabels.Count();
@@ -394,7 +394,7 @@ void LabelTrack::Copy(double t0, double t1, VTrack ** dest)
    ((LabelTrack *) (*dest))->mClipLen = (t1 - t0);
 }
 
-void LabelTrack::Paste(double t, VTrack * src)
+void LabelTrack::Paste(double t, const VTrack * src)
 {
    if (src->GetKind() != VTrack::Label)
       return;

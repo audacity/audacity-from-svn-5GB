@@ -48,19 +48,18 @@ class LabelTrack:public VTrack {
    void Draw(wxDC & dc, wxRect & r, double h, double pps,
              double sel0, double sel1);
 
-   virtual int GetKind() {
-      return Label;
-   } virtual double GetMaxLen();
+   virtual int GetKind() const { return Label; } 
+   virtual double GetMaxLen() const;
 
-   virtual VTrack *Duplicate();
+   virtual VTrack *Duplicate() const;
 
    virtual bool Load(wxTextFile * in, DirManager * dirManager);
    virtual bool Save(wxTextFile * out, bool overwrite);
 
-   virtual void Cut(double t0, double t1, VTrack ** dest);
-   virtual void Copy(double t0, double t1, VTrack ** dest);
-   virtual void Paste(double t, VTrack * src);
+   virtual void Cut  (double t0, double t1, VTrack ** dest);
+   virtual void Copy (double t0, double t1, VTrack ** dest) const;
    virtual void Clear(double t0, double t1);
+   virtual void Paste(double t, const VTrack * src);
 
    virtual void Silence(double t0, double t1);
    virtual void InsertSilence(double t, double len);
@@ -74,7 +73,7 @@ class LabelTrack:public VTrack {
 
    void Unselect();
 
-   bool IsSelected();
+   bool IsSelected() const;
 
  private:
 
