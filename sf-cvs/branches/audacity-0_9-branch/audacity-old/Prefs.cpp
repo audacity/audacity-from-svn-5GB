@@ -71,7 +71,7 @@ void InitPreferences()
    gPrefs = new wxConfig(appName);
    wxConfigBase::Set(gPrefs);
 
-#ifdef __WXMAC__
+#if defined(__WXMAC__) && !defined(__DARWIN__)
    // This fixes changes in Mac filenames under wxWindows between versions
    // 0.95 and 0.96 of Audacity.
    wxString path;
