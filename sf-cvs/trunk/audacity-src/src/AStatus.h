@@ -39,13 +39,13 @@ class AStatus:public wxWindow {
 
    void SetRate(double rate);
 
-   void OnRate8();
-   void OnRate11();
-   void OnRate16();
-   void OnRate22();
-   void OnRate44();
-   void OnRate48();
-   void OnRateOther();
+   void OnRate8(wxCommandEvent & event);
+   void OnRate11(wxCommandEvent & event);
+   void OnRate16(wxCommandEvent & event);
+   void OnRate22(wxCommandEvent & event);
+   void OnRate44(wxCommandEvent & event);
+   void OnRate48(wxCommandEvent & event);
+   void OnRateOther(wxCommandEvent & event);
 
  private:
 

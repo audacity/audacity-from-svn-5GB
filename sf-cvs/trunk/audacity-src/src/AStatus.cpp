@@ -212,49 +212,49 @@ void AStatus::OnMouseEvent(wxMouseEvent & event)
    }
 }
 
-void AStatus::OnRate8()
+void AStatus::OnRate8(wxCommandEvent & WXUNUSED(event))
 {
    mRate = 8000.0;
    mListener->AS_SetRate(mRate);
    Refresh(false);
 }
 
-void AStatus::OnRate11()
+void AStatus::OnRate11(wxCommandEvent & WXUNUSED(event))
 {
    mRate = 11025.0;
    mListener->AS_SetRate(mRate);
    Refresh(false);
 }
 
-void AStatus::OnRate16()
+void AStatus::OnRate16(wxCommandEvent & WXUNUSED(event))
 {
    mRate = 16000.0;
    mListener->AS_SetRate(mRate);
    Refresh(false);
 }
 
-void AStatus::OnRate22()
+void AStatus::OnRate22(wxCommandEvent & WXUNUSED(event))
 {
    mRate = 22050.0;
    mListener->AS_SetRate(mRate);
    Refresh(false);
 }
 
-void AStatus::OnRate44()
+void AStatus::OnRate44(wxCommandEvent & WXUNUSED(event))
 {
    mRate = 44100.0;
    mListener->AS_SetRate(mRate);
    Refresh(false);
 }
 
-void AStatus::OnRate48()
+void AStatus::OnRate48(wxCommandEvent & WXUNUSED(event))
 {
    mRate = 48000.0;
    mListener->AS_SetRate(mRate);
    Refresh(false);
 }
 
-void AStatus::OnRateOther()
+void AStatus::OnRateOther(wxCommandEvent & WXUNUSED(event))
 {
    wxString defaultStr;
    defaultStr.Printf("%d", (int) (mRate + 0.5));
