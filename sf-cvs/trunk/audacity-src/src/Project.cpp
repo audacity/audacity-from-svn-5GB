@@ -180,7 +180,6 @@ enum {
 #undef AUDACITY_MENUS_GLOBALS
 
 BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
-    EVT_CHAR_HOOK(AudacityProject::OnKey)
     EVT_CHAR(AudacityProject::OnKey)
     EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
     EVT_PAINT(AudacityProject::OnPaint)
