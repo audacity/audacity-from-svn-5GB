@@ -24,6 +24,7 @@
 #include "Internat.h"
 #include "Prefs.h"
 
+
 wxFont LabelTrack::msFont;
 
 // static member variables.
@@ -105,11 +106,14 @@ LabelTrack::~LabelTrack()
 
 void LabelTrack::ResetFont()
 {
-   wxString facename = gPrefs->Read("/GUI/LabelFontFacename", "");
+
+   wxString facename = gPrefs->Read("/GUI/LabelFontFacename", "times");
    if (facename != "") {
       msFont = wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
                       wxFONTWEIGHT_NORMAL, FALSE, facename,
                       wxFONTENCODING_SYSTEM);
+
+ 
    }
 }
 
@@ -445,6 +449,7 @@ void LabelStruct::DrawText( wxDC & dc, wxRect & r)
 void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
                       double sel0, double sel1)
 {
+
    dc.SetFont(msFont);
 
    double right = h + r.width / pps;
@@ -479,6 +484,7 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
       after.width -= (r.x - after.x);
       after.x = r.x;
    }
+
    dc.SetBrush(mUnselectedBrush);
    dc.SetPen(mUnselectedPen);
    dc.DrawRectangle(after);
@@ -508,14 +514,11 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
    // happens with a new label track.
    dc.GetTextExtent("Demo Text x^y", &textWidth, &textHeight);
    mTextHeight = (int)textHeight;   
-
    ComputeLayout( r, h , pps );
-
    dc.SetTextForeground(wxColour(0, 0, 0));
    dc.SetBackgroundMode(wxTRANSPARENT);
    dc.SetBrush(mTextNormalBrush);
    dc.SetPen(mLabelSurroundPen);
-
    const int nLabels = (int)mLabels.Count();
    int GlyphLeft;
    int GlyphRight;
@@ -535,6 +538,7 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
          GlyphRight = mbHitCenter ? 7:4;
       mLabels[i]->DrawGlyphs( dc, r, GlyphLeft, GlyphRight );
    }
+
    for (i = 0; i < nLabels; i++)
    {
       if( mSelIndex==i) dc.SetBrush(mTextEditBrush);
