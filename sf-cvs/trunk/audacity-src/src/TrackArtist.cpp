@@ -539,14 +539,14 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
 
          sampleCount s;
          for (s = 0; s < slen; s++) {
-            double xx =
-                ((double (s0 + s) / rate + tOffset - h) * pps + 0.5);
+            double tt = double (s0 + s) / rate + tOffset;
+            double xx = ((tt - h) * pps + 0.5);
 
             if (xx < -10000)
                xx = -10000;
             if (xx > 10000)
                xx = 10000;
-            double tt = (s0 + s) / rate - tOffset;
+
             xpos[s] = (int) xx;
             ypos[s] = ctr - GetWaveYPos(buffer[s] *
                                         track->GetEnvelope()->GetValue(tt),
