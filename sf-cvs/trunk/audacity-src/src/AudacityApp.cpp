@@ -517,10 +517,9 @@ bool AudacityApp::OnInit()
    delete temporarywindow;
 
    // Can't handle command-line args on Mac OS X yet...
-   #ifndef __MACOSX__
-
+   // Cygwin command-line parser below...
+   #if !defined(__MACOSX__) && !defined(__CYGWIN__)
    // Parse command-line arguments
-
    if (argc > 1) {
       for (int option = 1; option < argc; option++) {
          if (!argv[option])
@@ -572,6 +571,85 @@ bool AudacityApp::OnInit()
    }                            // if (argc>1)
 
    #endif // not Mac OS X
+
+   // Cygwin command line parser (by Dave Fancella)
+	#if defined(__CYGWIN__)
+   if (argc > 1) {
+		int optionstart = 1;
+		bool startAtOffset = false;
+		
+		// Scan command line arguments looking for trouble
+		for (int option = 1; option < argc; option++) {
+			if (!argv[option])
+				continue;
+			// Check to see if argv[0] is copied across other arguments.
+         // This is the reason Cygwin gets its own command line parser.
+			if (wxString(argv[option]).Lower().Contains(wxString("audacity.exe"))) {
+				startAtOffset = true;
+				optionstart = option + 1;
+			}
+		}
+		
+      for (int option = optionstart; option < argc; option++) {
+			if (!argv[option])
+            continue;
+         bool handled = false;
+			bool openThisFile = false;
+			wxString fileToOpen;
+			
+         if (!wxString("-help").CmpNoCase(argv[option])) {
+            printf(/* i18n-hint: '-help', '-test' and
+                      '-blocksize' need to stay in English. */
+                   _("Command-line options supported:\n"
+                     "  -help (this message)\n"
+                     "  -test (run self diagnostics)\n"
+                     "  -blocksize ### (set max disk block size in bytes)\n"
+                     "\n"
+                     "In addition, specify the name of an audio file or "
+                     "Audacity project\n" "to open it.\n" "\n"));
+            exit(0);
+         }
+
+         if (option < argc - 1 &&
+             argv[option + 1] &&
+             !wxString("-blocksize").CmpNoCase(argv[option])) {
+            long theBlockSize;
+            if (wxString(argv[option + 1]).ToLong(&theBlockSize)) {
+               if (theBlockSize >= 256 && theBlockSize < 100000000) {
+                  fprintf(stderr, _("Using block size of %ld\n"),
+                          theBlockSize);
+                  Sequence::SetMaxDiskBlockSize(theBlockSize);
+               }
+            }
+            option++;
+            handled = true;
+         }
+
+         if (!handled && !wxString("-test").CmpNoCase(argv[option])) {
+            RunBenchmark(NULL);
+            exit(0);
+         }
+
+         if (argv[option][0] == '-' && !handled) {
+            printf(_("Unknown command line option: %s\n"), argv[option]);
+            exit(0);
+         }
+			
+			if(handled)
+				fileToOpen.Clear();
+			
+         if (!handled)
+				fileToOpen = fileToOpen + " " + argv[option];
+				if(wxString(argv[option]).Lower().Contains(".aup"))
+					openThisFile = true;
+				if(openThisFile) {
+					openThisFile = false;
+					project->OpenFile(fileToOpen);
+				}
+
+      }                         // for option...
+   }                            // if (argc>1)
+	#endif // Cygwin command-line parser
 
    return TRUE;
 }

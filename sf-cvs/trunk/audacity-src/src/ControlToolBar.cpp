@@ -72,6 +72,8 @@ enum {
 // Strings to convert a tool number into a status message
 // These MUST be in the same order as the ids above.
 const char * MessageOfTool[numTools] = { _("Click and drag to select audio"),
+   _("Click and drag to edit the amplitude envelope"),
+   _("Click and drag to edit the samples"),
 #if defined( __WXMAC__ )
    _("Click to Zoom In, Shift-Click to Zoom Out"),
 #elif defined( __WXMSW__ )
@@ -79,9 +81,8 @@ const char * MessageOfTool[numTools] = { _("Click and drag to select audio"),
 #elif defined( __WXGTK__ )
    _("Left=Zoom In, Right=Zoom Out, Middle=Normal"),
 #endif
-   _("Click and drag to edit the amplitude envelope"),
    _("Click and drag to move a track in time"),
-   _("Click and drag to edit the samples")
+   "" // multi-mode tool
 };
 
 
@@ -341,14 +342,22 @@ void ControlToolBar::RegenerateToolsTooltips()
 //   to workaround the problem.  The problem is not fully understood though
 //   (as of April 2003).
    
-   wxSafeYield(); //Deal with some queued up messages...
+   //	Vaughan, October 2003: Now we're crashing on Win2K if 
+ 	// "Quit when closing last window" is unchecked, when we come back 
+ 	// through here, on either of the wxSafeYield calls.
+ 	// James confirms that commenting them out does not cause his original problem 
+ 	// to reappear, so they're commented out now.
+ 	//		wxSafeYield(); //Deal with some queued up messages...
+ 
+   #if wxUSE_TOOLTIPS
    mTool[selectTool]->SetToolTip(_("Selection Tool"));
    mTool[envelopeTool]->SetToolTip(_("Envelope Tool"));
    mTool[slideTool]->SetToolTip(_("Time Shift Tool"));
    mTool[zoomTool]->SetToolTip(_("Zoom Tool"));
    mTool[drawTool]->SetToolTip(_("Draw Tool"));
    mTool[multiTool]->SetToolTip(_("Multi-Tool Mode"));
-   wxSafeYield();
+   #endif
+   // wxSafeYield();
    return;
 
 }
@@ -405,7 +414,6 @@ void ControlToolBar::MakeButtons()
                               (char const **) RewindDisabled,
                               (char const **) RewindAlpha, ID_REW_BUTTON,
                               false);
-         mRewind->SetToolTip(_("Skip to Start"));
          break;
       
       case ID_PLAY_BUTTON:
@@ -413,7 +421,6 @@ void ControlToolBar::MakeButtons()
                             (char const **) PlayDisabled,
                             (char const **) PlayAlpha, ID_PLAY_BUTTON,
                             false);
-         mPlay->SetToolTip(_("Play (Shift for loop-play)"));
          MakeLoopImage();
          break;
       
@@ -425,7 +432,6 @@ void ControlToolBar::MakeButtons()
                               (char const **) RecordDisabled,
                               (char const **) RecordAlpha, ID_RECORD_BUTTON,
                               false);
-         mRecord->SetToolTip(_("Record"));
          break;
       
       case ID_PAUSE_BUTTON:
@@ -433,7 +439,6 @@ void ControlToolBar::MakeButtons()
                             (char const **) PauseDisabled,
                             (char const **) PauseAlpha, ID_PAUSE_BUTTON,
                              true);
-         mPause->SetToolTip(_("Pause"));
          break;
       
       case ID_STOP_BUTTON:
@@ -441,7 +446,6 @@ void ControlToolBar::MakeButtons()
                             (char const **) StopDisabled,
                             (char const **) StopAlpha, ID_STOP_BUTTON,
                             false);
-         mStop->SetToolTip(_("Stop"));
          break;
       
       case ID_FF_BUTTON:
@@ -449,13 +453,21 @@ void ControlToolBar::MakeButtons()
                           (char const **) FFwdDisabled,
                           (char const **) FFwdAlpha, ID_FF_BUTTON,
                           false);
-         mFF->SetToolTip(_("Skip to End"));
          break;
       
       default:
          wxASSERT(false); // unknown button id
       }
    }
+
+   #if wxUSE_TOOLTIPS
+         mRewind->SetToolTip(_("Skip to Start"));
+         mPlay->SetToolTip(_("Play (Shift for loop-play)"));
+         mRecord->SetToolTip(_("Record"));
+         mPause->SetToolTip(_("Pause"));
+         mStop->SetToolTip(_("Stop"));
+         mFF->SetToolTip(_("Skip to End"));
+   #endif
 
 #ifndef __WXMAC__
    delete upPattern;
@@ -469,14 +481,23 @@ void ControlToolBar::MakeButtons()
 
    /* Tools */
 
+   #ifdef __WXMAC__ // different positioning
+   mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
+   mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 26);
+   mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 26, 0);
+   mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 26, 26);
+   mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 52, 0);
+   mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 52, 26); 
+   #else
    mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
    mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 28);
    mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 27, 0);
    mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 27, 28);
    mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 54, 0);
    mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 54, 28); 
-   RegenerateToolsTooltips();
+   #endif
 
+#if wxUSE_TOOLTIPS
 #ifdef __WXMAC__
    wxToolTip::Enable(false);    // DM: tooltips are broken in wxMac
 #else
@@ -484,6 +505,9 @@ void ControlToolBar::MakeButtons()
    wxToolTip::Enable(true);     
    wxToolTip::SetDelay(1000);
 #endif
+#endif
+
+   RegenerateToolsTooltips();
 }
 
 ControlToolBar::~ControlToolBar()
@@ -835,6 +859,11 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
          mBusyProject = p;
       }
       else {
+         // msmeyer: Show error message if stream could not be opened
+         wxMessageBox(_("Error while opening sound device. Please check the output "
+                        "device settings and the project sample rate."),
+                      _("Error"), wxOK | wxICON_EXCLAMATION, this);
+         
          SetPlay(false);
          SetStop(false);
          SetRecord(false);
@@ -964,12 +993,14 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
    AColor::Bevel( dc, true, bevelRect );
 #endif
 
+   #ifndef __WXMAC__
    // JKC: Grey horizontal spacer line between buttons.
    // Not quite ideal, but seems the best solution to 
    // make the tool button heights add up to the 
    // main control button height.
    AColor::Dark( &dc, false);
    dc.DrawLine(0, 27, 81, 27);
+   #endif
 
 }
 
@@ -987,7 +1018,9 @@ void ControlToolBar::EnableDisableButtons()
    } else mPlay->Disable();
 #endif
 
-   mPlay->SetEnabled(tracks && !busy);
+   //mPlay->SetEnabled(tracks && !busy);
+   mPlay->SetEnabled(tracks && !mRecord->IsDown());
+
    mStop->SetEnabled(busy);
    mRewind->SetEnabled(tracks && !busy);
    mFF->SetEnabled(tracks && !busy);

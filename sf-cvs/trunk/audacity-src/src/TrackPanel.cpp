@@ -1533,7 +1533,13 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 
       //In Multi-tool mode, give multitool prompt if no-special-hit.
       if( ctb->GetMultiToolDown() && (tool==selectTool )) {
+         #ifdef __WXMAC__
+         /* i18n-hint: This string is for the Mac OS, which uses Command-, as the shortcut for Preferences */
+         tip = _("Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences");
+         #else
+         /* i18n-hint: This string is for Windows and Linux, which uses Control-P as the shortcut for Preferences */
          tip = _("Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences");
+         #endif
       }
       else{
          tip = ctb->GetMessageForTool( tool );
@@ -3921,9 +3927,17 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    r = trackRect;
 
    if (t->GetKind() == Track::Wave) {
-      dc->DrawText(TrackSubText(t), r.x + 16, r.y + 22);
+      int offset;
+
+      #ifdef __WXMAC__
+      offset = 8;
+      #else
+      offset = 16;
+      #endif
+
+      dc->DrawText(TrackSubText(t), r.x + offset, r.y + 22);
       dc->DrawText(GetSampleFormatStr
-                   (((WaveTrack *) t)->GetSampleFormat()), r.x + 16,
+                   (((WaveTrack *) t)->GetSampleFormat()), r.x + offset,
                    r.y + 38);
    } else if (t->GetKind() == Track::Note) {
       wxRect midiRect;

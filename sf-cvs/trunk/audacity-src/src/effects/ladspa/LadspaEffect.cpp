@@ -400,14 +400,22 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
    this->mData = data;
    this->inputControls = inputControls;
    this->sampleRate = sampleRate;
-   inSlider = false;
+	#ifdef __WXMSW__
+		// On Windows, for some reason, wxWindows calls OnTextCtrl during creation
+		// of the text control, and LadspaEffectDialog::OnTextCtrl calls HandleText, 
+		// which assumes all the fields have been initialized. 
+		// This can give us a bad pointer crash, so manipulate inSlider to 
+		// no-op HandleText during creation.
+		inSlider = true;
+	#else
+		inSlider = false;
+	#endif
    inText = false;
    targetSlider = NULL;
 
    sliders = new wxSlider*[mData->PortCount];
    fields = new wxTextCtrl*[mData->PortCount];
-	fields[0] = NULL; // Use for flag in LadspaEffectDialog::OnTextCtrl().
-   labels = new wxStaticText*[mData->PortCount];
+	labels = new wxStaticText*[mData->PortCount];
    ports = new unsigned long [mData->PortCount];
 
    unsigned long p;
@@ -472,6 +480,7 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
 
    // Set all of the sliders based on the value in the
    // text fields
+	inSlider = false; // Now we're ready for HandleText to actually do something.
    HandleText();
    
    paramSizer->Add(gridSizer, 1, wxALL, 5);
@@ -516,10 +525,7 @@ void LadspaEffectDialog::OnSlider(wxCommandEvent &event)
 
 void LadspaEffectDialog::OnTextCtrl(wxCommandEvent & WXUNUSED(event))
 {
-	// This gets called when wxWindows creates the control, but HandleText 
-	// uses fields, assuming they've been created.
-	if (fields[0] != NULL)
-		HandleText();
+	HandleText();
 }
 
 void LadspaEffectDialog::HandleSlider()
@@ -627,7 +633,6 @@ void LadspaEffectDialog::OnPreview(wxCommandEvent & WXUNUSED(event))
 {
    effect->Preview();
 }
-
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

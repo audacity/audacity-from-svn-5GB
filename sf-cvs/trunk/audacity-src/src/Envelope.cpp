@@ -295,49 +295,58 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
    bool upper;
    int ctr = (int)(r.height * zoomMax / (zoomMax - zoomMin));
    upper = (event.m_y - r.y < ctr);
-
+   
    int clip_y = event.m_y - r.y;
    if(clip_y < 0) clip_y = 0;
    if(clip_y > r.height) clip_y = r.height;
-
+   
    mIsDeleting = false;
    double tleft = h - mOffset;
    double tright = tleft + (r.width / pps);
    int bestNum = -1;
    int bestDist = 10; // Must be within 10 pixel radius.
-
+   
    double dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
-
+   
    mContourOffset = false;
-
-//   wxLogDebug("Y:%i Height:%i Offset:%i", y, height, mContourOffset );
-
+   
+   //   wxLogDebug("Y:%i Height:%i Offset:%i", y, height, mContourOffset );
+   
    int len = mEnv.Count();
    for (int i = 0; i < len; i++) {
       if (mEnv[i]->t >= tleft && mEnv[i]->t <= tright) {
+         
+         int x = int ((mEnv[i]->t + mOffset - h) * pps) + r.x;
+         int y[4];
+         int numControlPoints;
 
-	int x = int ((mEnv[i]->t + mOffset - h) * pps) + r.x;
-	int y[4];
+         // Outer control points
+         y[0] = GetWaveYPosNew( mEnv[i]->val, zoomMin, zoomMax, r.height,
+                                dB, true, dBr, false);
+         y[1] = GetWaveYPosNew( -mEnv[i]->val, zoomMin, zoomMax, r.height,
+                                dB, true, dBr, false);
 
-	y[0] = GetWaveYPosNew( mEnv[i]->val, zoomMin, zoomMax, r.height,
-			       dB, true, dBr, false);
-	y[1] = GetWaveYPosNew( -mEnv[i]->val, zoomMin, zoomMax, r.height,
-			       dB, true, dBr, false);
-	y[2] = GetWaveYPosNew( mEnv[i]->val, zoomMin, zoomMax, r.height,
-			       dB, false, dBr, false);
-	y[3] = GetWaveYPosNew( -mEnv[i]->val-.00000001, zoomMin, zoomMax, 
-			       r.height, dB, false, dBr, false);
+         // Inner control points(contour)
+         y[2] = GetWaveYPosNew( mEnv[i]->val, zoomMin, zoomMax, r.height,
+                                dB, false, dBr, false);
+         y[3] = GetWaveYPosNew( -mEnv[i]->val-.00000001, zoomMin, zoomMax, 
+                                r.height, dB, false, dBr, false);
 
-	for(int j=0; j<4; j++){
+         numControlPoints = 4;
 
-	  if(j>1 && (!mMirror || y[2]>y[3]))continue;
-	  
-	  int d = (int)(sqrt(SQR(x-event.m_x) + SQR(y[j]-(event.m_y-r.y))) + 0.5);
+         if (y[2] > y[3])
+            numControlPoints = 2;
+
+         if (!mMirror)
+            numControlPoints = 1;
+         
+         for(int j=0; j<numControlPoints; j++){
+            
+            int d = (int)(sqrt(SQR(x-event.m_x) + SQR(y[j]-(event.m_y-r.y))) + 0.5);
             if (d < bestDist) {
                bestNum = i;
                bestDist = d;
-	    mContourOffset = false;
-	    if(j>1)mContourOffset = true;
+               mContourOffset = (bool)(j > 1);
             }
          }
       }
@@ -349,40 +358,42 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
    else {
       // Create new point
       double when = h + (event.m_x - r.x) / pps - mOffset;
-
-//      if (when <= 0 || when >= mTrackLen)
-//         return false;
-
+      
+      //      if (when <= 0 || when >= mTrackLen)
+      //         return false;
+      
       double v = GetValueAtX( event.m_x, r, h, pps );
-
+      
       int ct = GetWaveYPosNew( v, zoomMin, zoomMax, r.height, dB, 
-				 false, dBr, false) ;
+                               false, dBr, false) ;
       int cb = GetWaveYPosNew( -v-.000000001, zoomMin, zoomMax, r.height, dB, 
-				 false, dBr, false) ;
-      if( ct <= cb ){
-	int t = GetWaveYPosNew( v, zoomMin, zoomMax, r.height, dB, 
-				   true, dBr, false) ;
-	int b = GetWaveYPosNew( -v, zoomMin, zoomMax, r.height, dB, 
-				 true, dBr, false) ;
-
-	ct = (t + ct) / 2;
-	cb = (b + cb) / 2;
-
-	mContourOffset = false;
-	if((event.m_y - r.y) > ct &&
-	   ((event.m_y - r.y) < cb))
-         mContourOffset = true;
+                               false, dBr, false) ;
+      if( ct <= cb || !mMirror ){
+         int t = GetWaveYPosNew( v, zoomMin, zoomMax, r.height, dB, 
+                                 true, dBr, false) ;
+         int b = GetWaveYPosNew( -v, zoomMin, zoomMax, r.height, dB, 
+                                 true, dBr, false) ;
+         
+         ct = (t + ct) / 2;
+         cb = (b + cb) / 2;
+         
+         if(mMirror &&
+            (event.m_y - r.y) > ct &&
+            ((event.m_y - r.y) < cb))
+            mContourOffset = true;
+         else
+            mContourOffset = false;
       }
-
+      
       double newVal = ValueOfPixel(clip_y, r.height, upper, dB,
                                    zoomMin, zoomMax);
-
+      
       //float MaxAmplify = ( mContourOffset ) ? 1.4 : 1.0;
       float MaxAmplify = 2.0;
-
+      
       if (newVal > MaxAmplify)
          newVal = MaxAmplify;
-
+      
       mDragPoint = Insert(when, newVal);
       mDirty = true;
    }

@@ -14,7 +14,7 @@
 **********************************************************************/
 
 // Increment this every time you release a new version
-#define AUDACITY_VERSION_STRING "1.2.0-pre2"
+#define AUDACITY_VERSION_STRING "1.3.0-beta"
 
 // Increment this every time the prefs need to be reset
 // the first part (before the r) indicates the version the reset took place

@@ -496,12 +496,14 @@ void LWSlider::FormatPopWin()
 void LWSlider::OnMouseEvent(wxMouseEvent & event)
 {
    if (event.Entering()) {
+      #if wxUSE_TOOLTIPS // Not available in wxX11
       // Display the tooltip in the status bar
       if (mParent->GetToolTip()) {
          wxString tip = mParent->GetToolTip()->GetTip();
          GetActiveProject()->TP_DisplayStatusMessage(tip, 0);
          Refresh();
       }
+      #endif
    }
    else if (event.Leaving()) {
       GetActiveProject()->TP_DisplayStatusMessage("",0);

@@ -100,6 +100,13 @@ void MixerToolBar::InitializeMixerToolBar()
    mIdealSize = wxSize(500, 27);
    mTitle = _("Audacity Mixer Toolbar");
    mType = MixerToolBarID;
+   int offset;
+
+   #ifdef __WXMAC__
+   offset = 0;
+   #else
+   offset = 1;
+   #endif
 
    wxColour backgroundColour =
        wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
@@ -107,7 +114,7 @@ void MixerToolBar::InitializeMixerToolBar()
 
    wxImage *speaker = new wxImage(wxBitmap(Speaker).ConvertToImage());
    wxImage *speakerAlpha = new wxImage(wxBitmap(SpeakerAlpha).ConvertToImage());
-   wxImage *bkgnd = CreateSysBackground(25, 25, 0,
+   wxImage *bkgnd = CreateSysBackground(25, 25, 1,
                                         backgroundColour);
    wxImage *speakerFinal = OverlayImage(bkgnd, speaker, speakerAlpha, 0, 0);
    wxImage *mic = new wxImage(wxBitmap(Mic).ConvertToImage());
@@ -126,10 +133,10 @@ void MixerToolBar::InitializeMixerToolBar()
    delete micFinal;
 
    mOutputSlider = new ASlider(this, OutputVolumeID, _("Output Volume"),
-                               wxPoint(30, 1), wxSize(130, 25));
+                               wxPoint(30, offset), wxSize(130, 25));
 
    mInputSlider = new ASlider(this, InputVolumeID, _("Input Volume"),
-                              wxPoint(210, 1), wxSize(130, 25));
+                              wxPoint(210, offset), wxSize(130, 25));
 
    mInputSourceChoice = NULL;
 
@@ -209,16 +216,18 @@ void MixerToolBar::SetMixer(wxCommandEvent &event)
 void MixerToolBar::OnPaint(wxPaintEvent & evt)
 {
    wxPaintDC dc(this);
-   AColor::Medium( &dc, false );
-
-   #ifndef __WXMAC__
    int width, height;
    GetSize(&width, &height);
+
+#ifdef __WXMAC__
+   // Mac has an Aqua background...
+   DrawBackground(dc, width, height); 
+#else
    // Reduce width by 3 to visually separate from next 
    // Grab bar
    wxRect BevelRect( 0,0,width-3,height-1);
    AColor::Bevel( dc, true, BevelRect );
-   #endif
+#endif
 
    dc.DrawBitmap(*mPlayBitmap, 1, 1);
    dc.DrawBitmap(*mRecordBitmap, 181, 1);

@@ -221,6 +221,13 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    int bitstream = 0;
    int samplesSinceLastCallback = 0;
 
+   // You would think that the stream would already be seeked to 0, and
+   // indeed it is if the file is legit.  But I had several ogg files on
+   // my hard drive that have malformed headers, and this added call
+   // causes them to be read correctly.  Otherwise they have lots of
+   // zeros inserted at the beginning
+   ov_pcm_seek(mVorbisFile, 0);
+   
    do {
       /* get data from the decoder */
       bytesRead = ov_read(mVorbisFile, (char *) mainBuffer,

@@ -153,8 +153,8 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("ExportLabels",   _("Export &Labels..."),              FN(OnExportLabels));
 
    // Enable Export commands only when there are tracks
-   c->SetCommandFlags(AudioIONotBusyFlag | TracksSelectedFlag,
-                      AudioIONotBusyFlag | TracksSelectedFlag,
+   c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
+                      AudioIONotBusyFlag | TracksExistFlag,
                       "Export", "ExportMP3", "ExportOgg", NULL);
    // Enable Export Selection commands only when there's a selection
    c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
@@ -474,7 +474,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand("Record",      _("Record\tR"),                   FN(OnRecord));
    
    c->AddCommand("PlayOneSec",     _("Play One Second\t1"),       FN(OnPlayOneSecond));
-   c->AddCommand("PlayToSelection",_("Play One Second\tB"),       FN(OnPlayToSelection));
+   c->AddCommand("PlayToSelection",_("Play To Selection\tB"),       FN(OnPlayToSelection));
    c->AddCommand("PlayLooped",     _("Play Looped\tL"),           FN(OnPlayLooped));
    c->AddCommand("PlayLoopAlt",    _("Play Looped\tShift+Spacebar"), FN(OnPlayLooped));
 
@@ -2584,6 +2584,7 @@ void AudacityProject::OnNewWaveTrack()
 void AudacityProject::OnNewStereoTrack()
 {
    WaveTrack *t = mTrackFactory->NewWaveTrack(mDefaultFormat);
+   t->SetChannel(Track::LeftChannel);
    t->SetRate(mRate);
    SelectNone();
    
@@ -2592,6 +2593,7 @@ void AudacityProject::OnNewStereoTrack()
    t->SetLinked (true);
    
    t = mTrackFactory->NewWaveTrack(mDefaultFormat);
+   t->SetChannel(Track::RightChannel);
    t->SetRate(mRate);
    
    mTracks->Add(t);
