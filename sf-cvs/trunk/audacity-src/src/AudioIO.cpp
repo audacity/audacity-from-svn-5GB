@@ -806,6 +806,9 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
 
    if( outputBuffer && (numPlaybackChannels > 0) )
    {
+      bool cut = false;
+      bool linkFlag = false;
+
       float *outputFloats = (float *)outputBuffer;
       for( i = 0; i < framesPerBuffer*numPlaybackChannels; i++)
          outputFloats[i] = 0.0;
@@ -819,15 +822,23 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
       {
          WaveTrack *vt = gAudioIO->mPlaybackTracks[t];
 
-         // Cut if somebody else is soloing
-         if (numSolo>0 && !vt->GetSolo())
-         {
-            gAudioIO->mPlaybackBuffers[t]->Discard(framesPerBuffer);
-            continue;
+         if (linkFlag)
+            linkFlag = false;
+         else {
+            cut = false;
+
+            // Cut if somebody else is soloing
+            if (numSolo>0 && !vt->GetSolo())
+               cut = true;
+            
+            // Cut if we're muted (unless we're soloing)
+            if (vt->GetMute() && !vt->GetSolo())
+               cut = true;
+
+            linkFlag = vt->GetLinked();
          }
 
-         // Cut if we're muted (unless we're soloing)
-         if (vt->GetMute() && !vt->GetSolo())
+         if (cut)
          {
             gAudioIO->mPlaybackBuffers[t]->Discard(framesPerBuffer);
             continue;
