@@ -253,6 +253,10 @@ if [[ "$use_soundtouch" = "yes" ]] ; then
    fi
 fi
 
+if [[ "$use_portmixer" = "yes" ]] && [[ "$use_portaudio" = "v19" ]] ; then
+	AC_MSG_ERROR([*** PortAudio v19 does not work with PortMixer (at least not yet) ])
+fi
+
 if [[ "$use_nyquist" = "yes" ]] ; then
 	AC_DEFINE(USE_NYQUIST, 1,	
 	[Define if Nyquist support should be enabled])

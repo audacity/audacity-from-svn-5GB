@@ -4300,6 +4300,12 @@ subdirs="$subdirs lib-src/soundtouch"
    fi
 fi
 
+if [ "$use_portmixer" = "yes" ] && [ "$use_portaudio" = "v19" ] ; then
+	{ { echo "$as_me:$LINENO: error: *** PortAudio v19 does not work with PortMixer (at least not yet) " >&5
+echo "$as_me: error: *** PortAudio v19 does not work with PortMixer (at least not yet) " >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
 if [ "$use_nyquist" = "yes" ] ; then
 
 cat >>confdefs.h <<\_ACEOF
