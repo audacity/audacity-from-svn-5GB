@@ -107,7 +107,13 @@ class Ruler {
    void SetFlip(bool flip);
 
    // Good defaults are provided, but you can override here
-   void SetFonts(wxFont& minorFont, wxFont& majorFont);
+   void SetFonts(const wxFont &minorFont, const wxFont &majorFont);
+
+   // The ruler will not draw text within this (pixel) range.
+   // Use this if you have another graphic object obscuring part
+   // of the ruler's area.  The values start and end are interpreted
+   // relative to the Ruler's local coordinates.
+   void OfflimitsPixels(int start, int end);
 
    //
    // Drawing
@@ -142,7 +148,9 @@ class Ruler {
 
    int          mDigits;
 
+   int         *mUserBits;
    int         *mBits;
+   int          mUserBitLen;
 
    bool         mValid;
 

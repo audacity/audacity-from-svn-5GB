@@ -57,6 +57,8 @@ Ruler::Ruler()
    mMajorLabels = 0;
    mMinorLabels = 0;
    mBits = NULL;
+   mUserBits = NULL;
+   mUserBitLen = 0;
    
    mValid = false;
 }
@@ -65,7 +67,6 @@ Ruler::~Ruler()
 {
    Invalidate();  // frees up our arrays
 
-   delete[] mBits;
    delete mMinorFont;
    delete mMajorFont;
 }
@@ -169,7 +170,7 @@ void Ruler::SetFlip(bool flip)
    }
 }
 
-void Ruler::SetFonts(wxFont &minorFont, wxFont &majorFont)
+void Ruler::SetFonts(const wxFont &minorFont, const wxFont &majorFont)
 {
    *mMinorFont = minorFont;
    *mMajorFont = majorFont;
@@ -180,6 +181,36 @@ void Ruler::SetFonts(wxFont &minorFont, wxFont &majorFont)
    #endif
 
    Invalidate();
+}
+
+void Ruler::OfflimitsPixels(int start, int end)
+{
+   int i;
+
+   if (!mUserBits) {
+      if (mOrientation == wxHORIZONTAL)
+         mLength = mRight-mLeft;
+      else
+         mLength = mBottom-mTop;      
+      mUserBits = new int[mLength];
+      for(i=0; i<mLength; i++)
+         mUserBits[i] = 0;
+      mUserBitLen  = mLength;
+   }
+
+   if (end < start) {
+      i = end;
+      end = start;
+      start = i;
+   }
+
+   if (start < 0)
+      start = 0;
+   if (end > mLength-1)
+      end = mLength-1;
+
+   for(i=start; i<=end; i++)
+      mUserBits[i] = 1;
 }
 
 void Ruler::SetBounds(int left, int top, int right, int bottom)
@@ -199,6 +230,11 @@ void Ruler::Invalidate()
 {
    mValid = false;
 
+   if (mOrientation == wxHORIZONTAL)
+      mLength = mRight-mLeft;
+   else
+      mLength = mBottom-mTop;
+
    if (mMajorLabels) {
       delete [] mMajorLabels;
       mMajorLabels = NULL;
@@ -211,7 +247,11 @@ void Ruler::Invalidate()
       delete [] mBits;
       mBits = NULL;
    }
-
+   if (mUserBits && mLength != mUserBitLen) {
+      delete[] mUserBits;
+      mUserBits = NULL;
+      mUserBitLen = 0;
+   }
 }
 
 void Ruler::FindLinearTickSizes(double UPP)
@@ -517,7 +557,7 @@ void Ruler::Tick(int pos, double d, bool major)
          strPos = mLength - strH;
       strTop = mTop + strPos;
       if (mFlip)
-         strLeft = mLeft + 4;
+         strLeft = mLeft + 5;
       else
          strLeft = mRight - strW - 6;
    }
@@ -565,11 +605,6 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
    // (i.e. we've been invalidated).  Recompute all
    // tick positions.
 
-   if (mOrientation == wxHORIZONTAL)
-      mLength = mRight-mLeft;
-   else
-      mLength = mBottom-mTop;
-
    int i;
    int j;
 
@@ -581,8 +616,12 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
    if (mBits)
       delete[] mBits;
    mBits = new int[mLength+1];
-   for(i=0; i<=mLength; i++)
-      mBits[i] = 0;
+   if (mUserBits)
+      for(i=0; i<=mLength; i++)
+         mBits[i] = mUserBits[i];
+   else
+      for(i=0; i<=mLength; i++)
+         mBits[i] = 0;
 
    if(mLog==false) {
 
@@ -723,10 +762,18 @@ void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
    mDC->SetPen(*wxBLACK_PEN);
    mDC->SetTextForeground(*wxBLACK);
 
-   if (mOrientation == wxHORIZONTAL)
-      mDC->DrawLine(mLeft, mBottom, mRight+1, mBottom);
-   else
-      mDC->DrawLine(mRight, mTop, mRight, mBottom+1);
+   if (mOrientation == wxHORIZONTAL) {
+      if (mFlip)
+         mDC->DrawLine(mLeft, mTop, mRight+1, mTop);
+      else
+         mDC->DrawLine(mLeft, mBottom, mRight+1, mBottom);
+   }
+   else {
+      if (mFlip)
+         mDC->DrawLine(mLeft, mTop, mLeft, mBottom+1);
+      else
+         mDC->DrawLine(mRight, mTop, mRight, mBottom+1);
+   }
 
    int i;
 
