@@ -44,3 +44,15 @@ class EffectNoise:public Effect {
 };
 
 #endif
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 3d52765e-51bb-4f53-8ed8-4239f7b42d16
+

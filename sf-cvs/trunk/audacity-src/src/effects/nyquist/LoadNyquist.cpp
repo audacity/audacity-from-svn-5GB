@@ -54,3 +54,15 @@ void LoadNyquistPlugins()
    for(i=0; i<files.GetCount(); i++)
       LoadNyquistEffect(files[i]);
 }
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 4d0ce991-4c11-40a7-952f-3d9250b2f813
+

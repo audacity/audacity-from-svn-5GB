@@ -185,3 +185,15 @@ HistoryWindow::~HistoryWindow()
    delete mList->GetImageList(wxIMAGE_LIST_SMALL);
 }
 
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: a32dc48c-50da-4cda-90a6-b5aa4fd7673e
+

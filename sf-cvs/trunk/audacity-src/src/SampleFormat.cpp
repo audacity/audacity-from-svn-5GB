@@ -106,3 +106,15 @@ void CopySamples(samplePtr src, sampleFormat srcFormat,
       src, srcFormat, dst, dstFormat, len, stride);
 }
 
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 1dacb18a-a027-463b-b558-73b6d24995d6
+

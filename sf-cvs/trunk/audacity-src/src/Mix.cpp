@@ -557,3 +557,15 @@ void Mixer::Restart()
       mQueueLen[i] = 0;
    }
 }
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: d4e10e74-cdf9-46ac-b309-91b115d2a78f
+

@@ -43,3 +43,15 @@ class PCMAliasBlockFile : public AliasBlockFile
 
 #endif
 
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: a61d1bbb-662b-4abe-8995-149df0bd24f4
+

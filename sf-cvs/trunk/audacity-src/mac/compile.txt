@@ -115,3 +115,7 @@ To compile everything:
 ./configure --with-help --with-libflac
 make
 
+
+(This is just a tag identifying this file to Arch)
+arch-tag: 4388ba16-7889-4874-a000-d8699498ef16
+

@@ -348,3 +348,15 @@ wxSizer *BassBoostDialog::MakeBassBoostDialog(wxWindow * parent, bool call_fit,
 
    return item0;
 }
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 25dfd7cb-9e1b-4c8d-a188-ed406c2b51b7
+

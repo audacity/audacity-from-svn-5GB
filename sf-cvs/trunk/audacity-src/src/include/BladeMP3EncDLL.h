@@ -232,3 +232,15 @@ __declspec(dllexport) BE_ERR	beWriteVBRHeader(LPCSTR lpszFileName);
 #pragma pack(pop)
 
 #endif
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: bc0f4c41-2a1d-4c74-b2fb-021057e0ff0e
+

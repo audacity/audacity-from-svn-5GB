@@ -771,3 +771,6 @@ fi
 echo ""
 echo "Run 'configure --help' for an explanation of these options,"
 echo "otherwise run 'make' to build Audacity."
+
+dnl arch-tag: aba52141-47c0-40c6-8629-aa61e7bee0c7
+

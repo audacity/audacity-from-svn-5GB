@@ -87,3 +87,15 @@ class TimeTrack: public Track {
 
 
 #endif // __AUDACITY_TIMETRACK__
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 58e4cd09-07ee-47d0-bcb9-a37ddcac8483
+

@@ -304,3 +304,15 @@ void AboutDialog::OnOK(wxCommandEvent & WXUNUSED(event))
 {
    EndModal(wxID_YES);
 }
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: a8955864-40e2-47aa-923b-cace3994493a
+

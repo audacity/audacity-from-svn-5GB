@@ -106,3 +106,15 @@ class AButton:public wxWindow {
 };
 
 #endif
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 5f222fbb-bd31-4041-9c45-c3233ebe982c
+

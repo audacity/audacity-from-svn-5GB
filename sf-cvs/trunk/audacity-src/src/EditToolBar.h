@@ -102,3 +102,15 @@ class EditToolBar:public ToolBar {
 };
 
 #endif
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: b06d2006-b412-41e0-90fe-fa8330420e0d
+

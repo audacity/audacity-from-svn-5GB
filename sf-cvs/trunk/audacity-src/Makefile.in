@@ -100,3 +100,5 @@ distclean: clean
 	rm -f locale/Makefile src/configunix.h
 	rm -f config.log config.status
 
+# arch-tag: c91c8fbf-edcc-458d-a1de-7e0956a857f2
+

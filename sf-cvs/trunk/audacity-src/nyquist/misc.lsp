@@ -90,3 +90,6 @@
 (defun power (x y)
   (exp (* (log (float x)) y)))
   
+
+; arch-tag: 4c739a4e-1495-4b2a-aad0-85b3003e3291
+

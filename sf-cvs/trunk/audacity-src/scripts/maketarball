@@ -79,3 +79,6 @@ chdir "..";
 #`tar zcf audacity-src-$version.tgz audacity-src-$version`;
 
 print "done.\n";
+
+# arch-tag: 19e94077-c171-4f10-8dc0-11dbce186a99
+

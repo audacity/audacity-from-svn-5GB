@@ -103,3 +103,15 @@ extern "C" {
 
 #endif // USE_VST
 
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 9f1d7f8b-23a6-4e16-80cd-f5f976f5b213
+

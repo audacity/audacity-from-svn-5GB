@@ -30,3 +30,6 @@
 (format t "    Version 2.29~%~%")
 
 (setf *gc-flag* t)
+
+; arch-tag: f709df74-c08d-41a0-b11d-e84daaba1457
+

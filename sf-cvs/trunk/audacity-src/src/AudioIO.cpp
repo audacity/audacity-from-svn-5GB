@@ -1490,3 +1490,15 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
    return callbackReturn;
 }
 
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 7ee3c9aa-b58b-4069-8a07-8866f2303963
+

@@ -35,3 +35,15 @@ bool EffectSilence::Process()
 
    return true;
 }
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 78c8d521-815a-4fdb-830a-f9655cd4f529
+
