@@ -23,7 +23,7 @@
 
 #ifdef AUDACITY_COMMANDS_CALLBACK_POINTERS
 
-#define NUM_CALLBACK_FUNCTIONS 74
+#define NUM_CALLBACK_FUNCTIONS 88
 
 audEventFunction callback_function_pointers[] = {&AudacityProject::OnNew,&AudacityProject::OnOpen,&AudacityProject::OnClose,
 &AudacityProject::OnSave,&AudacityProject::OnSaveAs,&AudacityProject::OnExportMix,&AudacityProject::OnExportSelection,
@@ -44,6 +44,11 @@ audEventFunction callback_function_pointers[] = {&AudacityProject::OnNew,&Audaci
 &AudacityProject::OnAlignEndSelStart,&AudacityProject::OnAlignEndSelEnd,&AudacityProject::OnAlignGroupCursor,
 &AudacityProject::OnAlignGroupSelStart,&AudacityProject::OnAlignGroupSelEnd,&AudacityProject::OnAlignGroupEndCursor,
 &AudacityProject::OnAlignGroupEndSelStart,&AudacityProject::OnAlignGroupEndSelEnd,
+&AudacityProject::OnAlignZeroMoveSel,&AudacityProject::OnAlignGroupZeroMoveSel,
+&AudacityProject::OnAlignCursorMoveSel,&AudacityProject::OnAlignSelStartMoveSel,&AudacityProject::OnAlignSelEndMoveSel,
+&AudacityProject::OnAlignEndCursorMoveSel,&AudacityProject::OnAlignEndSelStartMoveSel,&AudacityProject::OnAlignEndSelEndMoveSel,
+&AudacityProject::OnAlignGroupCursorMoveSel,&AudacityProject::OnAlignGroupSelStartMoveSel,&AudacityProject::OnAlignGroupSelEndMoveSel,
+&AudacityProject::OnAlignGroupEndCursorMoveSel,&AudacityProject::OnAlignGroupEndSelStartMoveSel,&AudacityProject::OnAlignGroupEndSelEndMoveSel,
 &AudacityProject::OnNewWaveTrack,&AudacityProject::OnNewLabelTrack,&AudacityProject::OnRemoveTracks,
 &AudacityProject::OnAbout,&AudacityProject::OnHelp,&AudacityProject::OnHelpIndex,&AudacityProject::OnHelpSearch,
 &AudacityProject::OnBenchmark,&AudacityProject::OnSeparator,&AudacityProject::OnAddLabel};
@@ -56,8 +61,11 @@ const char *callback_function_strings[] = {"OnNew","OnOpen","OnClose","OnSave","
 "OnEditID3","OnQuickMix","OnSelectionSave","OnSelectionRestore","OnCursorTrackStart","OnCursorTrackEnd","OnCursorSelStart",
 "OnCursorSelEnd","OnAlignZero","OnAlignGroupZero","OnAlign","OnAlignCursor","OnAlignSelStart","OnAlignSelEnd","OnAlignEndCursor",
 "OnAlignEndSelStart","OnAlignEndSelEnd", "OnAlignGroupCursor","OnAlignGroupSelStart","OnAlignGroupSelEnd",
-"OnAlignGroupEndCursor","OnAlignGroupEndSelStart","OnAlignGroupEndSelEnd","OnNewWaveTrack",
-"OnNewLabelTrack","OnRemoveTracks","OnAbout","OnHelp","OnHelpIndex","OnHelpSearch","OnBenchmark","OnSeparator","OnAddLabel"};
+"OnAlignGroupEndCursor","OnAlignGroupEndSelStart","OnAlignGroupEndSelEnd","OnAlignZeroMoveSel","OnAlignGroupZeroMoveSel",
+"OnAlignCursorMoveSel","OnAlignSelStartMoveSel","OnAlignSelEndMoveSel","OnAlignEndCursorMoveSel","OnAlignEndSelStartMoveSel",
+"OnAlignEndSelEndMoveSel","OnAlignGroupCursorMoveSel","OnAlignGroupSelStartMoveSel","OnAlignGroupSelEndMoveSel",
+"OnAlignGroupEndCursorMoveSel","OnAlignGroupEndSelStartMoveSel","OnAlignGroupEndSelEndMoveSel",
+"OnNewWaveTrack", "OnNewLabelTrack","OnRemoveTracks","OnAbout","OnHelp","OnHelpIndex","OnHelpSearch","OnBenchmark","OnSeparator","OnAddLabel"};
 
 #endif
 
@@ -141,20 +149,34 @@ void OnCursorSelStart();
 void OnCursorSelEnd();
 
 void OnAlignZero();
+void OnAlignZeroMoveSel();
 void OnAlignGroupZero();
+void OnAlignGroupZeroMoveSel();
 void OnAlign();
 void OnAlignCursor();
+void OnAlignCursorMoveSel();
 void OnAlignSelStart();
+void OnAlignSelStartMoveSel();
 void OnAlignSelEnd();
+void OnAlignSelEndMoveSel();
 void OnAlignEndCursor();
+void OnAlignEndCursorMoveSel();
 void OnAlignEndSelStart();
+void OnAlignEndSelStartMoveSel();
 void OnAlignEndSelEnd();
+void OnAlignEndSelEndMoveSel();
 void OnAlignGroupCursor();
+void OnAlignGroupCursorMoveSel();
 void OnAlignGroupSelStart();
+void OnAlignGroupSelStartMoveSel();
 void OnAlignGroupSelEnd();
+void OnAlignGroupSelEndMoveSel();
 void OnAlignGroupEndCursor();
+void OnAlignGroupEndCursorMoveSel();
 void OnAlignGroupEndSelStart();
+void OnAlignGroupEndSelStartMoveSel();
 void OnAlignGroupEndSelEnd();
+void OnAlignGroupEndSelEndMoveSel();
 
 void OnNewWaveTrack();
 void OnNewLabelTrack();

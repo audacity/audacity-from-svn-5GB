@@ -1061,6 +1061,32 @@ void AudacityProject::OnAlignZero()
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::OnAlignZeroMoveSel()
+{
+   double thisOffset = 0.0;
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisOffset = t->GetOffset();
+         t->SetOffset(0.0);
+      }
+
+      t = iter.Next();
+   }
+
+   // putting this here works since the
+   // function is only called if there is
+   // one selected wave track
+   mViewInfo.sel0 -= thisOffset;
+   mViewInfo.sel1 -= thisOffset;
+
+   PushState(_("Aligned with zero"));
+
+   mTrackPanel->Refresh(false);
+}
+
 void AudacityProject::OnAlignGroupZero()
 {
    double minOffset = 1000000.0;
@@ -1092,6 +1118,46 @@ void AudacityProject::OnAlignGroupZero()
 
       t = iter2.Next();
    }
+
+   PushState(_("Aligned group with zero"));
+
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnAlignGroupZeroMoveSel()
+{
+   double minOffset = 1000000.0;
+   double delta = 0.0;
+   double thisOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         if (t->GetOffset() < minOffset)
+            minOffset = t->GetOffset();
+      }
+
+      t = iter.Next();
+   }
+
+   delta = -minOffset;
+
+   TrackListIterator iter2(mTracks);
+   t = iter2.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisOffset = t->GetOffset();
+         t->SetOffset(thisOffset + delta);
+      }
+
+      t = iter2.Next();
+   }
+
+   mViewInfo.sel0 += delta;
+   mViewInfo.sel1 += delta;
 
    PushState(_("Aligned group with zero"));
 
@@ -1152,6 +1218,30 @@ void AudacityProject::OnAlignCursor()
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::OnAlignCursorMoveSel()
+{
+   double thisOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisOffset = t->GetOffset();
+         t->SetOffset(mViewInfo.sel0);
+      }
+
+      t = iter.Next();
+   }
+
+   mViewInfo.sel0 = mViewInfo.sel0 + (mViewInfo.sel0 - thisOffset);
+   mViewInfo.sel1 = mViewInfo.sel1 + (mViewInfo.sel1 - thisOffset);
+
+   PushState(_("Aligned with sel0"));
+
+   mTrackPanel->Refresh(false);
+}
+
 void AudacityProject::OnAlignSelStart()
 {
 
@@ -1170,6 +1260,31 @@ void AudacityProject::OnAlignSelStart()
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::OnAlignSelStartMoveSel()
+{
+   double thisOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisOffset = t->GetOffset();
+         t->SetOffset(mViewInfo.sel0);
+      }
+
+      t = iter.Next();
+   }
+
+   thisOffset = mViewInfo.sel0 - thisOffset;
+   mViewInfo.sel0 = mViewInfo.sel0 + thisOffset;
+   mViewInfo.sel1 = mViewInfo.sel1 + thisOffset;
+
+   PushState(_("Aligned with sel0"));
+
+   mTrackPanel->Refresh(false);
+}
+
 void AudacityProject::OnAlignSelEnd()
 {
 
@@ -1182,6 +1297,31 @@ void AudacityProject::OnAlignSelEnd()
 
       t = iter.Next();
    }
+
+   PushState(_("Aligned with sel1"));
+
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnAlignSelEndMoveSel()
+{
+   double thisOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisOffset = t->GetOffset();
+         t->SetOffset(mViewInfo.sel1);
+      }
+
+      t = iter.Next();
+   }
+
+   thisOffset = mViewInfo.sel1 - thisOffset;
+   mViewInfo.sel0 = mViewInfo.sel0 + thisOffset;
+   mViewInfo.sel1 = mViewInfo.sel1 + thisOffset;
 
    PushState(_("Aligned with sel1"));
 
@@ -1208,6 +1348,33 @@ void AudacityProject::OnAlignEndCursor()
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::OnAlignEndCursorMoveSel()
+{
+   double relativeCursor = 0.0;
+   double thisOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+            relativeCursor = mViewInfo.sel0 - t->GetOffset(); 
+            t->SetOffset(0.0);
+            t->SetOffset(mViewInfo.sel0 - t->GetEndTime() );
+            thisOffset = t->GetOffset();
+         }
+
+      t = iter.Next();
+   }
+
+   mViewInfo.sel0 = thisOffset + relativeCursor;
+   mViewInfo.sel1 = mViewInfo.sel0;
+
+   PushState(_("Aligned end with sel0"));
+
+   mTrackPanel->Refresh(false);
+}
+
 void AudacityProject::OnAlignEndSelStart()
 {
 
@@ -1228,6 +1395,35 @@ void AudacityProject::OnAlignEndSelStart()
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::OnAlignEndSelStartMoveSel()
+{
+   double relativeStart = 0.0;
+   double selLength = 0.0;
+   double thisOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+            relativeStart = mViewInfo.sel0 - t->GetOffset();
+            selLength = mViewInfo.sel1 - mViewInfo.sel0;
+            t->SetOffset(0.0);
+            t->SetOffset(mViewInfo.sel0 - t->GetEndTime() );
+            thisOffset = t->GetOffset();
+         }
+
+      t = iter.Next();
+   }
+
+   mViewInfo.sel0 = thisOffset + relativeStart;
+   mViewInfo.sel1 = thisOffset + relativeStart + selLength;
+
+   PushState(_("Aligned end with sel0"));
+
+   mTrackPanel->Refresh(false);
+}
+
 void AudacityProject::OnAlignEndSelEnd()
 {
 
@@ -1242,6 +1438,35 @@ void AudacityProject::OnAlignEndSelEnd()
 
       t = iter.Next();
    }
+
+   PushState(_("Aligned end with sel1"));
+
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnAlignEndSelEndMoveSel()
+{
+   double relativeStart = 0.0;
+   double selLength = 0.0;
+   double thisOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         relativeStart = mViewInfo.sel0 - t->GetOffset();
+         selLength = mViewInfo.sel1 - mViewInfo.sel0;
+         t->SetOffset(0.0);
+         t->SetOffset(mViewInfo.sel1 - t->GetEndTime() );
+         thisOffset = t->GetOffset();
+      }
+
+      t = iter.Next();
+   }
+
+   mViewInfo.sel0 = thisOffset + relativeStart;
+   mViewInfo.sel1 = thisOffset + relativeStart + selLength;
 
    PushState(_("Aligned end with sel1"));
 
@@ -1285,6 +1510,46 @@ void AudacityProject::OnAlignGroupCursor()
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::OnAlignGroupCursorMoveSel()
+{
+   double minOffset = 1000000.0;
+   double delta = 0.0;
+   double thisOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         if (t->GetOffset() < minOffset)
+            minOffset = t->GetOffset();
+      }
+
+      t = iter.Next();
+   }
+
+   delta = mViewInfo.sel0 - minOffset;
+
+   TrackListIterator iter2(mTracks);
+   t = iter2.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisOffset = t->GetOffset();
+         t->SetOffset(thisOffset + delta);
+      }
+
+      t = iter2.Next();
+   }
+
+   mViewInfo.sel0 += delta;
+   mViewInfo.sel1 += delta;
+
+   PushState(_("Aligned group with sel0"));
+
+   mTrackPanel->Refresh(false);
+}
+
 void AudacityProject::OnAlignGroupSelStart()
 {
    double minOffset = 1000000.0;
@@ -1322,6 +1587,46 @@ void AudacityProject::OnAlignGroupSelStart()
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::OnAlignGroupSelStartMoveSel()
+{
+   double minOffset = 1000000.0;
+   double delta = 0.0;
+   double thisOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         if (t->GetOffset() < minOffset)
+            minOffset = t->GetOffset();
+      }
+
+      t = iter.Next();
+   }
+
+   delta = mViewInfo.sel0 - minOffset;
+
+   TrackListIterator iter2(mTracks);
+   t = iter2.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisOffset = t->GetOffset();
+         t->SetOffset(thisOffset + delta);
+      }
+
+      t = iter2.Next();
+   }
+
+   mViewInfo.sel0 += delta;
+   mViewInfo.sel1 += delta;
+
+   PushState(_("Aligned group with sel0"));
+
+   mTrackPanel->Refresh(false);
+}
+
 void AudacityProject::OnAlignGroupSelEnd()
 {
    double minOffset = 1000000.0;
@@ -1353,6 +1658,46 @@ void AudacityProject::OnAlignGroupSelEnd()
 
       t = iter2.Next();
    }
+
+   PushState(_("Aligned group with sel1"));
+
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnAlignGroupSelEndMoveSel()
+{
+   double minOffset = 1000000.0;
+   double delta = 0.0;
+   double thisOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         if (t->GetOffset() < minOffset)
+            minOffset = t->GetOffset();
+      }
+
+      t = iter.Next();
+   }
+
+   delta = mViewInfo.sel1 - minOffset;
+
+   TrackListIterator iter2(mTracks);
+   t = iter2.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisOffset = t->GetOffset();
+         t->SetOffset(thisOffset + delta);
+      }
+
+      t = iter2.Next();
+   }
+
+   mViewInfo.sel0 += delta;
+   mViewInfo.sel1 += delta;
 
    PushState(_("Aligned group with sel1"));
 
@@ -1398,6 +1743,48 @@ void AudacityProject::OnAlignGroupEndCursor()
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::OnAlignGroupEndCursorMoveSel()
+{
+   double maxEndOffset = -1000000.0;
+   double delta = 0.0;
+   double thisOffset = 0.0;
+   double thisEndOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisEndOffset = t->GetEndTime();
+         if (thisEndOffset > maxEndOffset)
+            maxEndOffset = thisEndOffset;
+      }
+
+      t = iter.Next();
+   }
+
+   delta = mViewInfo.sel0 - maxEndOffset;
+
+   TrackListIterator iter2(mTracks);
+   t = iter2.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisOffset = t->GetOffset();
+         t->SetOffset(thisOffset + delta);
+      }
+
+      t = iter2.Next();
+   }
+
+   mViewInfo.sel0 += delta;
+   mViewInfo.sel1 += delta;
+
+   PushState(_("Aligned group end with sel0"));
+
+   mTrackPanel->Refresh(false);
+}
+
 void AudacityProject::OnAlignGroupEndSelStart()
 {
    double maxEndOffset = -1000000.0;
@@ -1437,6 +1824,48 @@ void AudacityProject::OnAlignGroupEndSelStart()
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::OnAlignGroupEndSelStartMoveSel()
+{
+   double maxEndOffset = -1000000.0;
+   double delta = 0.0;
+   double thisOffset = 0.0;
+   double thisEndOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisEndOffset = t->GetEndTime();
+         if (thisEndOffset > maxEndOffset)
+            maxEndOffset = thisEndOffset;
+      }
+
+      t = iter.Next();
+   }
+
+   delta = mViewInfo.sel0 - maxEndOffset;
+
+   TrackListIterator iter2(mTracks);
+   t = iter2.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisOffset = t->GetOffset();
+         t->SetOffset(thisOffset + delta);
+      }
+
+      t = iter2.Next();
+   }
+
+   mViewInfo.sel0 += delta;
+   mViewInfo.sel1 += delta;
+
+   PushState(_("Aligned group end with sel0"));
+
+   mTrackPanel->Refresh(false);
+}
+
 void AudacityProject::OnAlignGroupEndSelEnd()
 {
    double maxEndOffset = -1000000.0;
@@ -1470,6 +1899,48 @@ void AudacityProject::OnAlignGroupEndSelEnd()
 
       t = iter2.Next();
    }
+
+   PushState(_("Aligned group end with sel0"));
+
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnAlignGroupEndSelEndMoveSel()
+{
+   double maxEndOffset = -1000000.0;
+   double delta = 0.0;
+   double thisOffset = 0.0;
+   double thisEndOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisEndOffset = t->GetEndTime();
+         if (thisEndOffset > maxEndOffset)
+            maxEndOffset = thisEndOffset;
+      }
+
+      t = iter.Next();
+   }
+
+   delta = mViewInfo.sel1 - maxEndOffset;
+
+   TrackListIterator iter2(mTracks);
+   t = iter2.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisOffset = t->GetOffset();
+         t->SetOffset(thisOffset + delta);
+      }
+
+      t = iter2.Next();
+   }
+
+   mViewInfo.sel0 += delta;
+   mViewInfo.sel1 += delta;
 
    PushState(_("Aligned group end with sel0"));
 
