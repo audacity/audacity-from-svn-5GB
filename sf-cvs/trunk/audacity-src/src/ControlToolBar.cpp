@@ -107,7 +107,7 @@ void ControlToolBar::InitializeControlToolBar()
 #endif
 
    mIdealSize = wxSize(440, 55);
-   mTitle = "Audacity Control Toolbar";
+   mTitle = _("Audacity Control Toolbar");
    mType = ControlToolBarID;
 
    wxColour backgroundColour =
