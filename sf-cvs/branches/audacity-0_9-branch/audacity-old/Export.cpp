@@ -50,9 +50,7 @@ bool Export(AudacityProject *project,
 #ifdef __WXMAC__
        format != "AIFF with track markers" &&
 #endif
-#ifdef USE_LIBVORBIS
        format != "OGG" &&
-#endif
        format != "MP3") {
       wxMessageBox(wxString::Format("Sorry, cannot export %s data (yet)."
                                     "Change the default export format in your preferences",
