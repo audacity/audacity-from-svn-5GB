@@ -101,7 +101,7 @@ bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::Init()
    mnBlockSize = 0;
 
    TrackListIterator iter(mTracks);
-   WaveTrack *left = dynamic_cast<WaveTrack*>(iter.First());
+   WaveTrack *left = (WaveTrack*)(iter.First());
    if ( left == 0 )
 	  return false;		// we need an existing track
 
@@ -112,7 +112,7 @@ bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::Init()
      
        if (left->GetLinked()) {
 	 	 mnTracks = 2;
-         WaveTrack *right = dynamic_cast<WaveTrack*>(iter.Next());
+         WaveTrack *right = (WaveTrack*)(iter.Next());
          GetSamples((WaveTrack *)right, &rstart, &rlen);
         
          if (llen != rlen || ((WaveTrack *)left)->GetRate() != ((WaveTrack *)right)->GetRate()) {
@@ -122,7 +122,7 @@ bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::Init()
 		 }
       }
      
-      left = dynamic_cast<WaveTrack*>(iter.Next());
+      left = (WaveTrack*)(iter.Next());
    }
 
    return true;
@@ -133,7 +133,7 @@ bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::Process()
 {
    TrackListIterator iter(mTracks);
    int count = 0;
-   WaveTrack *left = dynamic_cast<WaveTrack*>(iter.First());
+   WaveTrack *left = (WaveTrack*)(iter.First());
    WaveTrack *right;
    while(left) {
       longSampleCount lstart, rstart;
@@ -142,7 +142,7 @@ bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::Process()
 
       right = NULL;
       if (left->GetLinked()) {
-         right = dynamic_cast<WaveTrack*>(iter.Next());         
+         right = (WaveTrack*)(iter.Next());         
          GetSamples((WaveTrack *)right, &rstart, &len);
       }
 
@@ -155,7 +155,7 @@ bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::Process()
       if (!success)
          return false;
    
-      left = dynamic_cast<WaveTrack*>(iter.Next());
+      left = (WaveTrack*)(iter.Next());
       count++;
    }
    
