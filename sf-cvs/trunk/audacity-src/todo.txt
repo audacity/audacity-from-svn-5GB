@@ -42,6 +42,13 @@ Website / Sourceforge
   Jim Hainis about Pluggo)
 - Make envelopes save and load in new project file
   format
+- Refactoring of TrackArtist/WaveTrack/Sequence
+  - Eliminate copy in GetWaveDisplay: WaveTrack could just
+    return a pointer to its own internal buffer, which
+	 will be valid as long as the track is valid...
+  - Add a WaveTrack::Clean method which throws away
+    cached data which is far behind in the undo history
+
 
 -----------------------------------------------------------
 1.1 TODO
@@ -97,6 +104,7 @@ Internationalization:
   working directory for language directories
 
 UI::
+- Label the "Left" and "Right" channels!
 - Select None
 - Small toolbar option
 - Create our own progress dialog:
