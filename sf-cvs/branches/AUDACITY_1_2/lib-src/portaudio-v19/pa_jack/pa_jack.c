@@ -1,5 +1,5 @@
 /*
- * $Id: pa_jack.c,v 1.1.2.2 2004-06-01 09:21:11 dmazzoni Exp $
+ * $Id: pa_jack.c,v 1.1.2.3 2004-06-01 09:26:50 dmazzoni Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * JACK Implementation by Joshua Haberman
@@ -976,7 +976,7 @@ static PaTime GetStreamTime( PaStream *s )
 
     /* TODO: what if we're recording-only? */
     int delta_t = jack_frame_time( stream->jack_client ) - stream->t0;
-    return delta_t / jack_get_sample_rate( stream->jack_client );
+    return delta_t / (PaTime)jack_get_sample_rate( stream->jack_client );
 }
 
 
