@@ -662,8 +662,12 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       mCapturedTrack = NULL;
       mIsSelecting = false;
    } else if (event.ButtonDClick(1) && !event.ShiftDown()) {
+      if (!mCapturedTrack)
+         return;
+
       // Deselect all other tracks and select this one.
       SelectNone();
+      
       mTracks->Select(mCapturedTrack);
       mViewInfo->sel0 = mCapturedTrack->GetOffset();
       mViewInfo->sel1 = mCapturedTrack->GetEndTime();
