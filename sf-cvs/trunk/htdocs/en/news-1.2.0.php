@@ -1,8 +1,8 @@
 <?php BoxTop('March 1, 2004: Audacity 1.2.0 released'); ?>
 
 <p>
-Audacity 1.2.0 is a new stable release of the free Audacity sound editor.
-This version features major improvements over version 1.0, including new
+Audacity 1.2.0 is a new stable version of the free Audacity sound editor.
+This release features major improvements over version 1.0, including new
 effects, improved audio quality, and an updated user interface.
 </p>
 
@@ -14,9 +14,8 @@ effects, improved audio quality, and an updated user interface.
 </ul>
 
 <p>
-Read the <a href="releasenotes.php<?php print $langQueryStr; ?>">Release
-Notes</a> to find out what's new in this version, along with a list of
-known problems.
+Read the <a href="stablenotes.php<?php print $langQueryStr; ?>">Release
+Notes</a> to see what's changed, and also a list of known problems.
 </p>
 
 <?php BoxBottom(); ?>
