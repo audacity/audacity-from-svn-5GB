@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.96
+Version 0.96b
 
 http://audacity.sourceforge.net/
 
@@ -79,7 +79,7 @@ dependencies:
 
 For more information on compilation on other platforms (VC++
 for Windows and CodeWarrior for Mac are supported) please
-email Dominic Mazzoni <dmazzoni+@cs.cmu.edu>.
+email audacity-devel@lists.sourceforge.net
 
 -------------------------------------------------------------
 
@@ -109,6 +109,29 @@ Known issues/problems:
   channels are not yet supported.
 
 -------------------------------------------------------------
+
+Changes in 0.96b:
+
+* Installation/configuration
+
+  - New Windows installer
+
+  - More options in the configure script on Unix
+
+* User interface:
+
+  - Fixed Effects menu bug that would freeze if some but
+    not all tracks were selected.
+
+* MacOS:
+
+  - Fixed autoscrolling bug (would sometimes appear if you
+    drag the cursor outside the window while selecting).
+
+* Unix:
+
+  - Fixed Amplify bug (would sometimes freeze trying to
+    open the dialog).
 
 Changes in 0.96:
 
