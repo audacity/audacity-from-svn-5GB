@@ -780,7 +780,7 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
       mCapturedTrack = NULL;
       mIsSliding = false;
       MakeParentRedrawScrollbars();
-      if(totalOffset > 0)
+      if(totalOffset != 0)
          MakeParentPushState(
             wxString::Format(_("Slid track '%s' %s %.02f seconds"), 
                              name.c_str(),
