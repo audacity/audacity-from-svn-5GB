@@ -335,6 +335,7 @@ AudacityProject::~AudacityProject()
    delete mTracks;
    mTracks = NULL;
 
+   WX_CLEAR_ARRAY(mCommandDesc)
    WX_CLEAR_ARRAY(mCommandNames)
    for(int i = 1; i <= mCommandFunctions.GetCount(); i++)
    {

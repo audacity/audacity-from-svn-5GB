@@ -12,6 +12,7 @@
 #define __AUDACITY_KEY_CONFIG_PREFS__
 
 #include "PrefsPanel.h"
+#include "../Project.h"
 
 class wxChoice;
 class wxCommandEvent;
@@ -31,6 +32,10 @@ class KeyConfigPrefs:public PrefsPanel {
    void OnItemSelected(wxListEvent &event);
 
    wxListCtrl *mCommandsList;
+
+   int mCommandSelected;
+
+   AudacityProject *mAudacity;
 
  public:
    DECLARE_EVENT_TABLE();

@@ -19,7 +19,6 @@
 
 #include "../Prefs.h"
 #include "KeyConfigPrefs.h"
-#include "../Project.h"
 
 #define HistoryListID     7001
 #define DescriptionTextID 7002
@@ -29,8 +28,10 @@ BEGIN_EVENT_TABLE(KeyConfigPrefs, wxPanel)
 END_EVENT_TABLE()
 
 KeyConfigPrefs::KeyConfigPrefs(wxWindow * parent):
-PrefsPanel(parent)
+PrefsPanel(parent), mCommandSelected(-1)
 {
+   mAudacity = GetActiveProject();
+
    topSizer = new wxStaticBoxSizer(
       new wxStaticBox(this, -1, _("Configure Keyboard")),
       wxVERTICAL );
@@ -46,17 +47,16 @@ PrefsPanel(parent)
 
       mCommandsList->InsertColumn(0, _("Commands"), wxLIST_FORMAT_LEFT, 200);
 
-      AudacityProject *mAud = GetActiveProject();
-      for(int i = 0; i < mAud->GetNumCommands(); i++)
+      for(int i = 0; i < mAudacity->GetNumCommands(); i++)
       {
-         mCommandsList->InsertItem(i, mAud->GetCommandName(i));
+         mCommandsList->InsertItem(i, mAudacity->GetCommandName(i));
       }
 
       vCategorySizer->Add(mCommandsList, 0,
                           wxALL, GENERIC_CONTROL_BORDER);
 
       vCategorySizer->Add(
-               new wxStaticText(this, -1, _(/*"Description:\n Nothing selected."*/"THIS CODE IS A WORK IN PROGRESS")), 0,
+               new wxStaticText(this, DescriptionTextID, _(/*"Description:\n Nothing selected."*/"THIS CODE IS A WORK IN PROGRESS")), 0,
                wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
       topSizer->Add(
@@ -73,7 +73,14 @@ PrefsPanel(parent)
 
 void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
 {
-   int sel = event.GetIndex();
+   wxWindow *wDescLabel = FindWindow(DescriptionTextID);
+   mCommandSelected = event.GetIndex();
+
+   if(wDescLabel)
+   {
+      // BG: Set the description
+      wDescLabel->SetLabel("Description:\n " + mAudacity->GetCommandDesc(mCommandSelected));
+   }
 }  
 
 bool KeyConfigPrefs::Apply()
