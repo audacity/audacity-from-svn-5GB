@@ -44,7 +44,7 @@ bool ImportOGG(wxWindow * parent,
                int *numChannels, DirManager * dirManager)
 {
 
-   wxFFile file(Filename);
+   wxFFile file(Filename, "rb");
 
    if (!file.IsOpened()) {
       // No need for a message box, it's done automatically (but how?)
@@ -58,21 +58,21 @@ bool ImportOGG(wxWindow * parent,
       wxString message;
 
       switch (err) {
-      case OV_EREAD:
-         message = "Media read error";
-         break;
-      case OV_ENOTVORBIS:
-         message = "Not an Ogg Vorbis file";
-         break;
-      case OV_EVERSION:
-         message = "Vorbis version mismatch";
-         break;
-      case OV_EBADHEADER:
-         message = "Invalid Vorbis bitstream header";
-         break;
-      case OV_EFAULT:
-         message = "Internal logic fault";
-         break;
+         case OV_EREAD:
+            message = "Media read error";
+            break;
+         case OV_ENOTVORBIS:
+            message = "Not an Ogg Vorbis file";
+            break;
+         case OV_EVERSION:
+            message = "Vorbis version mismatch";
+            break;
+         case OV_EBADHEADER:
+            message = "Invalid Vorbis bitstream header";
+            break;
+         case OV_EFAULT:
+            message = "Internal logic fault";
+            break;
       }
 
       wxMessageBox(message);
@@ -99,14 +99,14 @@ bool ImportOGG(wxWindow * parent,
       (*channels)[c]->rate = vi->rate;
 
       switch (c) {
-      case 0:
-         (*channels)[c]->channel = VTrack::LeftChannel;
-         break;
-      case 1:
-         (*channels)[c]->channel = VTrack::RightChannel;
-         break;
-      default:
-         (*channels)[c]->channel = VTrack::MonoChannel;
+         case 0:
+            (*channels)[c]->channel = VTrack::LeftChannel;
+            break;
+         case 1:
+            (*channels)[c]->channel = VTrack::RightChannel;
+            break;
+         default:
+            (*channels)[c]->channel = VTrack::MonoChannel;
       }
    }
 
