@@ -108,6 +108,10 @@ typedef __int64 int64_t ;
 ** Generic functions for performing endian swapping on integer arrays.
 */
 
+#ifdef WIN32 //vvv for compatibility with MSVC++ 6 compiler
+   #define inline  
+#endif
+
 static inline void
 endswap_short_array (short *ptr, int len)
 {	short	temp ;

@@ -787,6 +787,10 @@ unsigned char ulaw_encode [8193] =
 	0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x00
 } ;
 
+#ifdef WIN32 //vvv for compatibility with MSVC++ 6 compiler
+   #define inline  
+#endif
+
 static inline void
 ulaw2s_array (unsigned char *buffer, int count, short *ptr)
 {	while (--count >= 0)
