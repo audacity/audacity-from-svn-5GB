@@ -37,6 +37,7 @@ $browseSourceStr = "Bla gjennom kildekoden";
 $browseDoxygenStr = "Bla gjennom Doxygen-dokumentasjon";
 $creditsStr = "Credits";
 $sourceStr = "Kildekode";
+$sourceDepStr = "Kildekodeavhengigheter";
 $linuxStr = "Linux binærfil";
 $linuxStr2 = "Dette er en statisk binærfil, som bør fungere på alle Linux-distribusjoner. Bare dekomprimer og kjør 'audacity'-binærfila fra hvilken som helst katalog, eller kjør 'make install' som root-bruker for å installere programmet.";
 $macOS9ReqStr = "Behøver Mac OS 8.6 eller høyere";
