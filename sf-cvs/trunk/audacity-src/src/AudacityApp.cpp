@@ -697,6 +697,8 @@ bool AudacityApp::InitTempDir()
    if (!CreateSingleInstanceChecker(temp))
       return false;
 
+   DirManager::CleanTempDir(true);
+
    return true;
 }
 
