@@ -40,8 +40,6 @@ Track::Track(DirManager * projDirManager)
 
    mOffset = 0.0;
 
-   mDirty = 0;
-
    mChannel = MonoChannel;
 }
 
@@ -51,7 +49,6 @@ Track::Track(const Track &orig)
 
    Init(orig);
    mOffset = orig.mOffset;
-   mDirty = rand();
 }
 
 // Copy all the track properties except the actual contents
@@ -540,9 +537,14 @@ unsigned int TrackList::GetSpaceUsage()
    std::map<BlockFile*,unsigned int> blockFiles;
    for (TrackListNode *p = head; p; p = p->next) {
       if (p->t->GetKind() == Track::Wave) {
-         BlockArray *blocks = ((WaveTrack*)p->t)->GetSequence()->GetBlockArray();
-         for (unsigned int i = 0; i < blocks->GetCount(); i++)
-            blockFiles[blocks->Item(i)->f] = blocks->Item(i)->f->GetSpaceUsage();
+         WaveTrack* track = ((WaveTrack*)p->t);
+         for (WaveClipList::Node* it=track->GetClipIterator(); it; it=it->GetNext())
+         {
+            WaveClip* clip = it->GetData();
+            BlockArray *blocks = clip->GetSequenceBlockArray();
+            for (unsigned int i = 0; i < blocks->GetCount(); i++)
+               blockFiles[blocks->Item(i)->f] = blocks->Item(i)->f->GetSpaceUsage();
+         }
       }
    }
 
@@ -569,9 +571,14 @@ unsigned int TrackList::GetAdditionalSpaceUsage(UndoStack *stack)
    std::map<BlockFile*,unsigned int> curBlockFiles;
    for (p = head; p; p = p->next) {
       if (p->t->GetKind() == Track::Wave) {
-         BlockArray *blocks = ((WaveTrack*)p->t)->GetSequence()->GetBlockArray();
-         for (unsigned int i = 0; i < blocks->GetCount(); i++)
-            curBlockFiles[blocks->Item(i)->f] = blocks->Item(i)->f->GetSpaceUsage();
+         WaveTrack* track = ((WaveTrack*)p->t);
+         for (WaveClipList::Node* it=track->GetClipIterator(); it; it=it->GetNext())
+         {
+            WaveClip* clip = it->GetData();
+            BlockArray *blocks = clip->GetSequenceBlockArray();
+            for (unsigned int i = 0; i < blocks->GetCount(); i++)
+               curBlockFiles[blocks->Item(i)->f] = blocks->Item(i)->f->GetSpaceUsage();
+         }
       }
    }
 
@@ -584,9 +591,14 @@ unsigned int TrackList::GetAdditionalSpaceUsage(UndoStack *stack)
          break;
       for (p = stackElem->tracks->head; p; p = p->next) {
          if (p->t->GetKind() == Track::Wave) {
-            BlockArray *blocks = ((WaveTrack*)p->t)->GetSequence()->GetBlockArray();
-            for (unsigned int i = 0; i < blocks->GetCount(); i++)
-               prevBlockFiles.insert(blocks->Item(i)->f);
+            WaveTrack* track = ((WaveTrack*)p->t);
+            for (WaveClipList::Node* it=track->GetClipIterator(); it; it=it->GetNext())
+            {
+               WaveClip* clip = it->GetData();
+               BlockArray *blocks = clip->GetSequenceBlockArray();
+               for (unsigned int i = 0; i < blocks->GetCount(); i++)
+                  prevBlockFiles.insert(blocks->Item(i)->f);
+            }         
          }
       }
    }

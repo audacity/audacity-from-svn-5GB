@@ -83,6 +83,7 @@ OBJS = \
 	ToolBar.o \
 	UndoManager.o \
 	VoiceKey.o \
+	WaveClip.o \
 	WaveTrack.o \
 	TimeTrack.o \
 	commands/CommandManager.o \

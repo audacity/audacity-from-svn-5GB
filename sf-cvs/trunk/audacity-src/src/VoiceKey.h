@@ -24,16 +24,16 @@ class VoiceKey {
  public:
 	VoiceKey();
 	~VoiceKey();
-	sampleCount OnForward   (const  WaveTrack & t, sampleCount start, sampleCount len);
-	sampleCount OnBackward  (const  WaveTrack & t, sampleCount start, sampleCount len);
-	sampleCount OffForward  (const  WaveTrack & t, sampleCount start, sampleCount len);
-	sampleCount OffBackward (const  WaveTrack & t, sampleCount start, sampleCount len);
+	sampleCount OnForward   (WaveTrack & t, sampleCount start, sampleCount len);
+	sampleCount OnBackward  (WaveTrack & t, sampleCount start, sampleCount len);
+	sampleCount OffForward  (WaveTrack & t, sampleCount start, sampleCount len);
+	sampleCount OffBackward (WaveTrack & t, sampleCount start, sampleCount len);
 
-	void CalibrateNoise(const  WaveTrack & t, sampleCount start, sampleCount len);
+	void CalibrateNoise(WaveTrack & t, sampleCount start, sampleCount len);
 	void AdjustThreshold(double t);
 
 
-	bool AboveThreshold(const WaveTrack & t, sampleCount start,sampleCount len);
+	bool AboveThreshold(WaveTrack & t, sampleCount start,sampleCount len);
 
 
  private:
@@ -63,9 +63,9 @@ class VoiceKey {
 	double mSilentWindowSize;           //Time in milliseconds of below-threshold windows required for silence
 	double mSignalWindowSize;           //Time in milliseconds of above-threshold windows required for speech
 	
-	double TestEnergy (const WaveTrack & t, sampleCount start,sampleCount len);
-	double TestSignChanges (const WaveTrack & t, sampleCount start, sampleCount len);
-	double TestDirectionChanges(const WaveTrack & t, sampleCount start, sampleCount len);	
+	double TestEnergy (WaveTrack & t, sampleCount start,sampleCount len);
+	double TestSignChanges (WaveTrack & t, sampleCount start, sampleCount len);
+	double TestDirectionChanges(WaveTrack & t, sampleCount start, sampleCount len);	
 	
 	void TestEnergyUpdate (double & prevErg, int length, const sampleFormat & drop, const sampleFormat & add);
 	void TestSignChangesUpdate(double & currentsignchanges,int length, const sampleFormat & a1,

@@ -1561,7 +1561,10 @@ void TrackPanel::ForwardEventToEnvelope(wxMouseEvent & event)
    else if (mCapturedTrack && mCapturedTrack->GetKind() == Track::Wave)
    {
       WaveTrack *pwavetrack = (WaveTrack *) mCapturedTrack;
-      Envelope *penvelope = pwavetrack->GetEnvelope();
+      Envelope *penvelope = pwavetrack->GetEnvelopeAtX(event.GetX());
+      
+      if (!penvelope)
+         return;
       
       // AS: WaveTracks can be displayed in several different formats.
       //  This asks which one is in use. (ie, Wave, Spectrum, etc)
@@ -1588,7 +1591,7 @@ void TrackPanel::ForwardEventToEnvelope(wxMouseEvent & event)
          // change to the linked envelope:
          WaveTrack *link = (WaveTrack *) mTracks->GetLink(mCapturedTrack);
          if (link) {
-            Envelope *e2 = link->GetEnvelope();
+            Envelope *e2 = link->GetEnvelopeAtX(event.GetX());
             wxRect envRect = mCapturedRect;
             envRect.y++;
             envRect.height -= 2;
@@ -1656,6 +1659,17 @@ void TrackPanel::StartSlide(wxMouseEvent & event, double &totalOffset,
       // AS: This name is used when we put a message in the undo list via
       //  MakeParentPushState on ButtonUp.
       name = vt->GetName();
+      
+      if (vt->GetKind() == Track::Wave && !event.ShiftDown())
+      {
+         WaveTrack* wt = (WaveTrack*)vt;
+         mCapturedClip = wt->GetClipIndex(wt->GetClipAtX(event.m_x));
+         if (mCapturedClip == -1)
+            return;
+      } else
+      {
+         mCapturedClip = -1;
+      }
 
       mCapturedTrack = vt;
       mCapturedRect = r;
@@ -1695,6 +1709,39 @@ void TrackPanel::StartSlide(wxMouseEvent & event, double &totalOffset,
 // form of DoSlide is commented out above.
 void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
 {
+   // Implement sliding between different tracks
+   WaveTrackArray tracks = mTracks->GetWaveTrackArray(false);
+   WaveTrack* mouseTrack = NULL;
+   for (int i=0; i<tracks.GetCount(); i++)
+   {
+      WaveTrack* track = tracks.Item(i);
+      wxRect r;
+      track->GetDisplayRect(&r);
+      if (event.m_y >= r.y && event.m_y < r.y+r.height)
+      {
+         mouseTrack = track;
+         break;
+      }
+   }
+
+   if (mCapturedClip >= 0 && mouseTrack && mouseTrack != mCapturedTrack)
+   {
+      // Make sure we always have the first linked track of a stereo track
+      if (!mouseTrack->GetLinked() && mTracks->GetLink(mouseTrack))
+         mouseTrack = (WaveTrack*)mTracks->GetLink(mouseTrack);
+
+      // Move clip to new track
+      int newClipIndex = MoveClipToTrack(mCapturedClip, (WaveTrack*)mCapturedTrack, mouseTrack);
+      if (newClipIndex != -1)
+      {
+         mCapturedClip = newClipIndex;
+         mCapturedTrack = mouseTrack;
+      }
+
+      Refresh(false);
+   }
+
+   // Implement sliding within the track
    double samplerate = ((WaveTrack *)mCapturedTrack)->GetRate();
 
    double selend = mViewInfo->h +
@@ -1705,12 +1752,40 @@ void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
    selend = rint(samplerate*selend) / samplerate;
 
    if (selend != mSelStart) {
-      mCapturedTrack->Offset(rint(samplerate * (selend - mSelStart)) / samplerate);
-      totalOffset += rint(samplerate * (selend - mSelStart)) / samplerate;
+      double amount = rint(samplerate * (selend - mSelStart)) / samplerate;
+
+      if (mCapturedClip >= 0)
+      {
+         double allowedAmount;
+         WaveClip* clip = ((WaveTrack*)mCapturedTrack)->GetClipByIndex(mCapturedClip);
+         if (((WaveTrack*)mCapturedTrack)->CanOffsetClip(clip, amount, &allowedAmount))
+            clip->Offset(amount);
+         else
+         {
+            if (allowedAmount != 0)
+            {
+               amount = allowedAmount;
+               clip->Offset(amount);
+            } else
+               return;
+         }
+      } else
+         mCapturedTrack->Offset(amount);
+
+      totalOffset += amount;
 
       Track *link = mTracks->GetLink(mCapturedTrack);
       if (link)
-        link->Offset(rint(samplerate * (selend - mSelStart)) / samplerate);
+      {
+         if (mCapturedClip >= 0) {
+            // Get linked clip
+            WaveClip* linkclip = ((WaveTrack*)link)->GetClipByIndex(mCapturedClip);
+            linkclip->Offset(amount);
+         } else
+         {
+            link->Offset(amount);
+         }
+      }
 
       Refresh(false);
    }
@@ -2112,16 +2187,20 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
             (zoomMax - zoomMin);
 
          //Take the envelope into account
-         Envelope *env = ((WaveTrack *)mDrawingTrack)->GetEnvelope();
-         double envValue = env->GetValue(t0);
-         if (envValue > 0)
-            newLevel /= envValue;
-         else
-            newLevel = 0;
+         Envelope *env = ((WaveTrack *)mDrawingTrack)->GetEnvelopeAtX(event.GetX());
+
+         if (env)
+         {
+            double envValue = env->GetValue(t0);
+            if (envValue > 0)
+               newLevel /= envValue;
+            else
+               newLevel = 0;
       
-         //Make sure the new level is between +/-1
-         newLevel = newLevel >  1.0 ?  1.0: newLevel;
-         newLevel = newLevel < -1.0 ? -1.0: newLevel;
+            //Make sure the new level is between +/-1
+            newLevel = newLevel >  1.0 ?  1.0: newLevel;
+            newLevel = newLevel < -1.0 ? -1.0: newLevel;
+         }
 
          //Set the sample to the point of the mouse event
          ((WaveTrack*)mDrawingTrack)->Set((samplePtr)&newLevel, floatSample, mDrawingStartSample, 1);
@@ -2199,17 +2278,19 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
             (zoomMax - zoomMin);
 
          //Take the envelope into account
-         Envelope *env = ((WaveTrack *)mDrawingTrack)->GetEnvelope();
-         double envValue = env->GetValue(t0);
-         if (envValue > 0)
-            newLevel /= envValue;
-         else
-            newLevel = 0;
-         
-         //Make sure the new level is between +/-1
-         newLevel = newLevel >  1.0 ?  1.0: newLevel;
-         newLevel = newLevel < -1.0 ? -1.0: newLevel;
-         
+         Envelope *env = ((WaveTrack *)mDrawingTrack)->GetEnvelopeAtX(event.GetX());
+         if (env)
+         {
+            double envValue = env->GetValue(t0);
+            if (envValue > 0)
+               newLevel /= envValue;
+            else
+               newLevel = 0;
+
+            //Make sure the new level is between +/-1
+            newLevel = newLevel >  1.0 ?  1.0: newLevel;
+            newLevel = newLevel < -1.0 ? -1.0: newLevel;
+         }
       
          //Now, redraw all samples between current and last redrawn sample
          
@@ -3275,7 +3356,10 @@ int TrackPanel::DetermineToolToUse( ControlToolBar * pCtb, wxMouseEvent & event)
 bool TrackPanel::HitTestEnvelope(Track *track, wxRect &r, wxMouseEvent & event)
 {
    WaveTrack *wavetrack = (WaveTrack *)track;
-   Envelope *envelope = wavetrack->GetEnvelope();
+   Envelope *envelope = wavetrack->GetEnvelopeAtX(event.GetX());
+
+   if (!envelope)
+      return false;   
 
    int displayType = wavetrack->GetDisplay();
    // Not an envelope hit, unless we're using a type of wavetrack display 
@@ -3360,8 +3444,13 @@ bool TrackPanel::HitTestSamples(Track *track, wxRect &r, wxMouseEvent & event)
 
    wavetrack->GetDisplayBounds(&zoomMin, &zoomMax);
    float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
-   int yValue = GetWaveYPosNew( oneSample *
-      wavetrack->GetEnvelope()->GetValue(tt), 
+   
+   double envValue = 1.0;
+   Envelope* env = wavetrack->GetEnvelopeAtX(event.GetX());
+   if (env)
+      envValue = env->GetValue(tt);
+
+   int yValue = GetWaveYPosNew( oneSample * envValue, 
       zoomMin, zoomMax,      
       r.height, dB, true, dBr, false) + r.y;   
 
@@ -4509,6 +4598,32 @@ void TrackLabel::DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index)
       mPans[index]->Set(t->GetPan());
       mPans[index]->OnPaint(*dc, t->GetSelected());
    }
+}
+
+int TrackPanel::MoveClipToTrack(int clipIndex, WaveTrack* src, WaveTrack* dst)
+{
+   // Make sure we have the first track of two stereo tracks
+   // with both source and destination
+   if (!src->GetLinked() && mTracks->GetLink(src))
+      src = (WaveTrack*)mTracks->GetLink(src);
+   if (!dst->GetLinked() && mTracks->GetLink(dst))
+      dst = (WaveTrack*)mTracks->GetLink(dst);
+
+   // Get the second track of two stereo tracks
+   WaveTrack* src2 = (WaveTrack*)mTracks->GetLink(src);
+   WaveTrack* dst2 = (WaveTrack*)mTracks->GetLink(dst);
+
+   if ((src2 && !dst2) || (dst2 && !src2))
+      return -1; // cannot move stereo- to mono track or other way around
+
+   if (!dst->CanInsertClip(src->GetClipByIndex(clipIndex)))
+      return -1;
+
+   src->MoveClipToTrack(clipIndex, dst);
+   if (src2)
+      src2->MoveClipToTrack(clipIndex, dst2);
+
+   return dst->GetNumClips() - 1;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

@@ -1964,7 +1964,12 @@ void AudacityProject::OpenFile(wxString fileName)
          
          t = iter.First();
          while (t) {
-            t->MarkChanged();
+            if (t->GetKind() == Track::Wave)
+            {
+               // Only wave tracks have a notion of "changed"
+               for (WaveClipList::Node* it=((WaveTrack*)t)->GetClipIterator(); it; it=it->GetNext())
+                  it->GetData()->MarkChanged();
+            }
             t = iter.Next();
          }
          mTrackPanel->Refresh(true);

@@ -1114,7 +1114,7 @@ bool LabelTrack::Copy(double t0, double t1, Track ** dest)
    return true;
 }
 
-bool LabelTrack::Paste(double t, const Track * src)
+bool LabelTrack::Paste(double t, Track * src)
 {
    if (src->GetKind() != Track::Label)
       return false;

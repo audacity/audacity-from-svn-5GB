@@ -34,8 +34,6 @@ class Track: public XMLTagHandler {
 
    bool       mSelected;
 
-   int        mDirty;
-
    bool       mLinked;
    bool       mMinimized;
 
@@ -94,12 +92,10 @@ class Track: public XMLTagHandler {
 
    int    GetChannel() const { return mChannel; }
    double GetOffset () const { return mOffset; }
-   int    GetDirty  () const { return mDirty;   }
 
    void Offset(double t) { SetOffset(mOffset + t); }
    virtual void SetOffset (double o) { mOffset = o; }
 
-   void MarkChanged()  { mDirty++; }
    void SetChannel(int    c) { mChannel = c; }
 
    // AS: Note that the dirManager is mutable.  This is
@@ -111,7 +107,7 @@ class Track: public XMLTagHandler {
    virtual bool Cut  (double t0, double t1, Track ** dest) {return false;}
    virtual bool Copy (double t0, double t1, Track ** dest) {return false;}
    virtual bool Clear(double t0, double t1) {return false;}
-   virtual bool Paste(double t, const Track * src) {return false;}
+   virtual bool Paste(double t, Track * src) {return false;}
 
    virtual bool Silence(double t0, double t1) {return false;}
    virtual bool InsertSilence(double t, double len) {return false;}

@@ -840,8 +840,9 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       for( int c = 0; c < recordingChannels; c++ )
       {
          WaveTrack *newTrack = p->GetTrackFactory()->NewWaveTrack();
-         newTrack->SetOffset(t0);
          newTrack->SetRate(p->GetRate());
+         newTrack->CreateClip();
+         newTrack->SetOffset(t0);
          if( recordingChannels == 2 )
          {
             if( c == 0 )

@@ -14,15 +14,15 @@
 #include "Track.h"
 #include "SampleFormat.h"
 #include "Sequence.h"
+#include "WaveClip.h"
 
+#include <wx/gdicmn.h>
 #include <wx/longlong.h>
 #include <wx/thread.h>
 
 typedef wxLongLong_t longSampleCount; /* 64-bit int */
 
 class Envelope;
-class WaveCache;
-class SpecCache;
 
 class WaveTrack: public Track {
 
@@ -44,13 +44,16 @@ class WaveTrack: public Track {
 
    friend class TrackFactory;
 
-   // REMOVE ME: one we figure out the coupling between AudacityProject
-   // and AudioIO
-   friend class AudioIO;
-
  public:
 
    virtual ~WaveTrack();
+   virtual void SetOffset (double o);
+
+   // Start time is the earliest time there is a clip
+   double GetStartTime();
+
+   // End time is where the last clip ends, plus recorded stuff
+   double GetEndTime();
 
    //
    // Identifying the type of track
@@ -76,31 +79,8 @@ class WaveTrack: public Track {
    // Takes gain and pan into account
    float GetChannelGain(int channel);
 
-   virtual double GetOffset() const;
-   virtual void SetOffset(double t);
-
-   virtual double GetStartTime();
-   virtual double GetEndTime();
-
-   sampleFormat GetSampleFormat() {return mSequence->GetSampleFormat();}
+   sampleFormat GetSampleFormat() { return mFormat; }
    bool ConvertToSampleFormat(sampleFormat format);
-
-   //
-   // The following code will eventually become part of a GUIWaveTrack
-   // and will be taken out of the WaveTrack class:
-   //
-   
-   enum {
-      WaveformDisplay,
-      WaveformDBDisplay,
-      SpectrumDisplay,
-      PitchDisplay
-   } WaveTrackDisplay;
-   void SetDisplay(int display) {mDisplay = display;}
-   int GetDisplay() {return mDisplay;}
-
-   void GetDisplayBounds(float *min, float *max);
-   void SetDisplayBounds(float min, float max);
 
    //
    // High-level editing
@@ -109,33 +89,10 @@ class WaveTrack: public Track {
    virtual bool Cut  (double t0, double t1, Track **dest);
    virtual bool Copy (double t0, double t1, Track **dest);
    virtual bool Clear(double t0, double t1);
-   virtual bool Paste(double t, const Track *src);
+   virtual bool Paste(double t, Track *src);
 
    virtual bool Silence(double t0, double t1);
    virtual bool InsertSilence(double t, double len);
-
-   //
-   // Getting high-level data from the track for screen display and
-   // clipping calculations
-   //
-
-   bool GetWaveDisplay(float *min, float *max, float *rms, sampleCount *where,
-                       int numPixels, double t0, double pixelsPerSecond);
-   bool GetSpectrogram(float *buffer, sampleCount *where,
-                       int numPixels, int height,
-                       double t0, double pixelsPerSecond,
-                       bool autocorrelation);
-   bool GetMinMax(float *min, float *max, double t0, double t1);
-
-   //
-   // Getting/setting samples.  The sample counts here are
-   // expressed relative to t=0.0 at the track's sample rate.
-   //
-
-   bool Get(samplePtr buffer, sampleFormat format,
-            longSampleCount start, sampleCount len) const;
-   bool Set(samplePtr buffer, sampleFormat format,
-            longSampleCount start, sampleCount len);
 
    /// You must call Flush after the last Append
    bool Append(samplePtr buffer, sampleFormat format,
@@ -146,15 +103,43 @@ class WaveTrack: public Track {
    bool AppendAlias(wxString fName, sampleCount start,
                     sampleCount len, int channel);
 
+   ///
+   /// MM: Now that each wave track can contain multiple clips, we don't
+   /// have a continous space of samples anymore, but we simulate it,
+   /// because there are alot of places (e.g. effects) using this interface.
+   /// This interface makes much sense for modifying samples, but note that
+   /// it is not time-accurate, because the "offset" is a double value and
+   /// therefore can lie inbetween samples. But as long as you use the
+   /// same value for "start" in both calls to "Set" and "Get" it is
+   /// guaranteed that the same samples are affected.
+   ///
+   bool Get(samplePtr buffer, sampleFormat format,
+                   longSampleCount start, sampleCount len);
+   bool Set(samplePtr buffer, sampleFormat format,
+                   longSampleCount start, sampleCount len);
+   void GetEnvelopeValues(double *buffer, int bufferLen,
+                         double t0, double tstep);
+   bool GetMinMax(float *min, float *max,
+                  double t0, double t1);
+
+   //
+   // MM: We now have more than one sequence and envelope per track, so
+   // instead of GetSequence() and GetEnvelope() we have the following
+   // function which give the sequence and envelope which is under the
+   // given X coordinate of the mouse pointer.
+   //
+   WaveClip* GetClipAtX(int xcoord);
+   Sequence* GetSequenceAtX(int xcoord);
+   Envelope* GetEnvelopeAtX(int xcoord);
 
    //
    // Getting information about the track's internal block sizes
    // for efficiency
    //
 
-   sampleCount GetBestBlockSize(longSampleCount t) const;
-   sampleCount GetMaxBlockSize() const;
-   sampleCount GetIdealBlockSize() const;
+   sampleCount GetBestBlockSize(longSampleCount t);
+   sampleCount GetMaxBlockSize();
+   sampleCount GetIdealBlockSize();
 
    //
    // XMLTagHandler callback methods for loading and saving
@@ -176,22 +161,72 @@ class WaveTrack: public Track {
    bool Lock();
    bool Unlock();
 
-   //
-   // Access the track's amplitude envelope
-   //
-
-   Envelope *GetEnvelope() { return mEnvelope; }
-
    // Utility function to convert between times in seconds
    // and sample positions
 
    longSampleCount TimeToLongSamples(double t0);
 
-   //
-   // Temporary - to be removed after TrackArtist is deleted:
-   //
+   // Get access to the clips in the tracks. This is used by
+   // track artists and subject to be removed.
+   WaveClipList::Node* GetClipIterator() { return mClips.GetFirst(); }
 
-   Sequence *GetSequence() { return mSequence; }
+   // Create new clip and add it to this track. Returns a pointer
+   // to the newly created clip.
+   WaveClip* CreateClip();
+
+   // Get access to the last clip, or create a clip, if there is not
+   // already one.
+   WaveClip* GetLastOrCreateClip();
+
+   // Get the linear index of a given clip (-1 if the clip is not found)
+   int GetClipIndex(WaveClip* clip);
+
+   // Get the nth clip in this WaveTrack (will return NULL if not found).
+   // Use this only in special cases (like getting the linked clip), because
+   // it is much slower than GetClipIterator().
+   WaveClip* GetClipByIndex(int index);
+
+   // Get number of clips in this WaveTrack
+   int GetNumClips() const;
+
+   // Before calling 'Offset' on a clip, use this function to see if the
+   // offsetting is allowed with respect to the other clips in this track.
+   // This function can optionally return the amount that is allowed for offsetting
+   // in this direction maximally.
+   bool CanOffsetClip(WaveClip* clip, double amount, double *allowedAmount=NULL);
+
+   // Before moving a clip into a track (or inserting a clip), use this 
+   // function to see if the times are valid (i.e. don't overlap with
+   // existing clips).
+   bool CanInsertClip(WaveClip* clip);
+
+   // Move a clip into a new track. This will remove the clip
+   // in this cliplist and add it to the cliplist of the
+   // other clip. No fancy additional stuff is done.
+   void MoveClipToTrack(int clipIndex, WaveTrack* dest);
+
+   // Set/get rectangle that this WaveClip fills on screen. This is
+   // called by TrackArtist while actually drawing the tracks and clips.
+   void SetDisplayRect(const wxRect& r) { mDisplayRect = r; }
+   void GetDisplayRect(wxRect* r) { *r = mDisplayRect; }
+
+   //
+   // The following code will eventually become part of a GUIWaveTrack
+   // and will be taken out of the WaveTrack class:
+   //
+   
+   enum {
+      WaveformDisplay,
+      WaveformDBDisplay,
+      SpectrumDisplay,
+      PitchDisplay
+   } WaveTrackDisplay;
+
+   void SetDisplay(int display) {mDisplay = display;}
+   int GetDisplay() {return mDisplay;}
+
+   void GetDisplayBounds(float *min, float *max);
+   void SetDisplayBounds(float min, float max);
 
  protected:
 
@@ -199,31 +234,26 @@ class WaveTrack: public Track {
    // Protected variables
    //
 
-   Sequence     *mSequence;
-   double        mRate;
+   WaveClipList mClips;
+
+   wxRect        mDisplayRect;
+   sampleFormat  mFormat;
+   int           mRate;
    float         mGain;
    float         mPan;
-   Envelope     *mEnvelope;
-   samplePtr     mAppendBuffer;
-   int           mAppendBufferLen;
 
-   WaveCache    *mWaveCache;
-   SpecCache    *mSpecCache;
 
    //
    // Data that should be part of GUIWaveTrack
    // and will be taken out of the WaveTrack class:
    //
-   int           mDisplay;
    float         mDisplayMin;
    float         mDisplayMax;
+   int           mDisplay; // type of display, from WaveTrackDisplay enum
 
    //
    // Protected methods
    //
-
-   bool TimeToSamples(double t0, sampleCount *s0);
-   void TimeToSamplesClip(double t0, sampleCount *s0);
 
  private:
 
