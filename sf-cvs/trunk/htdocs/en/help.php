@@ -9,6 +9,7 @@ Audacity 1.2 Complete Manual:
 <p>
 Audacity 1.2 Quick Reference:
 [<a href="onlinehelp-1.2/contents.htm">Browse Online</a>]
+[<a href="onlinehelp-1.2/reference.html">Printable Version</a>]
 </p>
 
 <p>
