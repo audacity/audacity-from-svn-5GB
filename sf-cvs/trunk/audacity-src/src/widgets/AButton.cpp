@@ -284,7 +284,8 @@ void AButton::PopUp()
     
    mButtonIsDown = false;
    mButtonState = AButtonUp;
-   ReleaseMouse();
+   if (HasCapture())
+      ReleaseMouse();
 
    this->Refresh(false);
 }
