@@ -5,7 +5,6 @@
 
 #ifdef AUDACITY_MENUS_COMMANDS_METHODS
 
-   WX_DEFINE_ARRAY(CommandMenuItem *, CommandMenuItemArray);
    CommandMenuItemArray mCommandMenuItem;
 
 #endif
@@ -15,114 +14,112 @@
 #ifndef AMGC_DEFINED_H
 #define AMGC_DEFINED_H
 
-//This defines the  function pointer
-// BG: Yes. For now, this seems like the best place to put it.
+   //This defines the  function pointer
+   // BG: Yes. For now, this seems like the best place to put it.
 
-typedef void (AudacityProject::*audEventFunction)(wxEvent&);
+   typedef void (AudacityProject::*audEventFunction)(wxEvent&);
 
-enum menuState {disabledMenu = 0, enabledMenu};
+   enum menuState {disabledMenu = 0, enabledMenu};
 
-enum menuCategory {fileMenu = 0, editMenu, viewMenu, projectMenu, effectMenu,
-                   pluginMenu, helpMenu, numMenus};
+   enum menuCategory {fileMenu = 0, editMenu, viewMenu, projectMenu, effectMenu,
+                      pluginMenu, helpMenu, numMenus};
 
-// BG: This is the structure that holds information about individual command items.
+   // BG: This is the structure that holds information about individual command items.
 
-struct CommandMenuItem
-{
-   wxString         commandString;
-   wxString         descriptionString;
-   audEventFunction callbackFunction;
-   menuCategory     category;
-   menuState        state;
-   bool             separatorPrev;
-};
+   struct CommandMenuItem
+   {
+      wxString         commandString;
+      wxString         descriptionString;
+      audEventFunction callbackFunction;
+      menuCategory     category;
+      menuState        state;
+      bool             separatorPrev;
+   };
+
+   WX_DEFINE_ARRAY(CommandMenuItem *, CommandMenuItemArray);
+
+   enum {
+      MenuBaseID = 1100,
+
+      // File Menu
+
+      NewID = MenuBaseID,
+      OpenID,
+      CloseID,
+      SaveID,
+      SaveAsID,
+      ExportMixID,
+      ExportSelectionID,
+      ExportLossyMixID,
+      ExportLossySelectionID,
+      ExportLabelsID,
+      PreferencesID,
+      ExitID,
+
+      // Edit Menu
+
+      UndoID,
+      RedoID,
+      CutID,
+      CopyID,
+      PasteID,
+      TrimID,
+      DeleteID,
+      SilenceID,
+      InsertSilenceID,
+      SplitID,
+      SplitLabelsID,
+      DuplicateID,
+      SelectAllID,
+
+      // View Menu
+
+      ZoomInID,
+      ZoomNormalID,
+      ZoomOutID,
+      ZoomFitID,
+      ZoomSelID,
+      UndoHistoryID,
+      PlotSpectrumID,
+
+      FloatControlToolBarID, 
+      LoadEditToolBarID,
+      FloatEditToolBarID,
+
+      // Project Menu
+
+      ImportID,
+      ImportLabelsID,
+      ImportMIDIID,
+      ImportRawID,
+   #ifdef USE_LIBID3TAG
+      EditID3ID,
+   #endif
+      QuickMixID,
+      AlignID,
+      AlignZeroID,
+      NewWaveTrackID,
+      NewLabelTrackID,
+      RemoveTracksID,
+
+      // Help Menu
+
+      AboutID,
+      HelpID,
+      HelpIndexID,
+      HelpSearchID,
+      BenchmarkID,
+
+      // Effect Menu
+
+      FirstEffectID = 2000,
+
+      // Plugin Menu
+
+      FirstPluginID = 3000
+   };
 
 #endif
-
-#endif
-
-#ifdef AUDACITY_MENUS_COMMANDS_ENUM
-
-enum {
-   MenuBaseID = 1100,
-
-   // File Menu
-
-   NewID = MenuBaseID,
-   OpenID,
-   CloseID,
-   SaveID,
-   SaveAsID,
-   ExportMixID,
-   ExportSelectionID,
-   ExportLossyMixID,
-   ExportLossySelectionID,
-   ExportLabelsID,
-   PreferencesID,
-   ExitID,
-
-   // Edit Menu
-
-   UndoID,
-   RedoID,
-   CutID,
-   CopyID,
-   PasteID,
-   TrimID,
-   DeleteID,
-   SilenceID,
-   InsertSilenceID,
-   SplitID,
-   SplitLabelsID,
-   DuplicateID,
-   SelectAllID,
-
-   // View Menu
-
-   ZoomInID,
-   ZoomNormalID,
-   ZoomOutID,
-   ZoomFitID,
-   ZoomSelID,
-   UndoHistoryID,
-   PlotSpectrumID,
-
-   FloatControlToolBarID, 
-   LoadEditToolBarID,
-   FloatEditToolBarID,
-
-   // Project Menu
-
-   ImportID,
-   ImportLabelsID,
-   ImportMIDIID,
-   ImportRawID,
-#ifdef USE_LIBID3TAG
-   EditID3ID,
-#endif
-   QuickMixID,
-   AlignID,
-   AlignZeroID,
-   NewWaveTrackID,
-   NewLabelTrackID,
-   RemoveTracksID,
-
-   // Help Menu
-
-   AboutID,
-   HelpID,
-   HelpIndexID,
-   HelpSearchID,
-   BenchmarkID,
-
-   // Effect Menu
-
-   FirstEffectID = 2000,
-
-   // Plugin Menu
-
-   FirstPluginID = 3000
-};
 
 #endif
 
