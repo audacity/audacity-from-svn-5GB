@@ -4,6 +4,7 @@
 #include "Gabor.h"
 #include <assert.h>
 #include <math.h>
+#include <float.h>
   
 RealGabor::RealGabor(const real &S, const real &U, const real &V, 
 		     const real &W) : s(S), u(U),v(V), w(W)  

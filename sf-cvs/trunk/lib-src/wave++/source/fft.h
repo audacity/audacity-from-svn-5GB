@@ -4,7 +4,6 @@
 
 #include "common.h"
 
-
 #define CRRMULRE(z, yre, yim)        ((z).Re*(yre)-(z).Im*(yim))
 #define CRRMULIM(z, yre, yim)        ((z).Re*(yim)+(z).Im*(yre))
 #define CCMULRE(z1, z2)        ((z1).Re*(z2).Re-(z1).Im*(z2).Im)
@@ -23,16 +22,14 @@ extern "C" int
 
 extern "C" void
   bitrevd(
-	  void *out,		/* Pointer to base of the output array. */
-	  const void *in,	/* Pointer to base of the input array. */
-	  int   q,		/* # of index bits, or elements of `in[]'. */
-	  int   size);		/* Number of bytes in an `in[]' element.  */
+	  complex *out,		/* Pointer to base of the output array. */
+	  const complex *in,	/* Pointer to base of the input array. */
+	  int   q);		/* # of index bits, or elements of `in[]'. */
 
 extern "C" void
   bitrevi(
-	  void *x,		/* Pointer to the input/output array. */
-	  int   q,		/* # of index bits, or elements of `x[]'. */
-	  int   size);		/* Number of bytes in an `x[]' element.  */
+	  complex *x,		/* Pointer to the input/output array. */
+	  int   q);		/* # of index bits, or elements of `x[]'. */
 
 extern "C" void
   fftproduct(                  /* Apply sparse matrix product. */

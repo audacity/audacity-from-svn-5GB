@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include "fft.h"
 
-#define fftbitrev(out,in,q)  bitrevd(out,in,q,sizeof(complex))
-#define fftbrinpl(x,q)       bitrevi(x,q,sizeof(complex))
+#define fftbitrev(out,in,q)  bitrevd(out,in,q)
+#define fftbrinpl(x,q)       bitrevi(x,q)
 
 extern "C" int
   br( 
@@ -28,53 +28,45 @@ extern "C" int
 
 extern "C" void
   bitrevd(
-	  void *out,		/* Pointer to base of the output array. */
-	  const void *in,	/* Pointer to base of the input array. */
-	  int   q,		/* # of index bits, or elements of `in[]'. */
-	  int   size)		/* Number of bytes in an `in[]' element.  */
+	  complex *out,		/* Pointer to base of the output array. */
+	  const complex *in,	/* Pointer to base of the input array. */
+	  int   q)		/* # of index bits, or elements of `in[]'. */
 {
   int u, n;
 
   assert(in);
   assert(out);
   assert(q>=0);
-  assert(size>0);
 
   for(n=0; n<(1<<q); n++)
     {
       u = br(n,q);
-      memcpy( out+n*size, in+u*size, size );
+      out[n] = in[u];
     }
   return;
 }
 
 extern "C" void
   bitrevi(
-	  void *x,		/* Pointer to the input/output array. */
-	  int   q,		/* # of index bits, or elements of `x[]'. */
-	  int   size)		/* Number of bytes in an `x[]' element.  */
+	  complex *x,		/* Pointer to the input/output array. */
+	  int   q)		/* # of index bits, or elements of `x[]'. */
 {
   int u, n;
-  void *temp, *xn, *xu;
+  complex temp;
 
   assert(x);
   assert(q>=0);
-  assert(size>0);
 
-  temp = malloc(size);
   for(n=0; n<(1<<q); n++)
     {
       u = br(n,q);
       if( u > n )
-	{
-	  xu  = x+u*size;
-	  xn =  x+n*size;
-	  memcpy( temp, xu, size );
-	  memcpy( xu, xn, size );
-	  memcpy( xn, temp, size );
-	}
+        {
+          temp = x[u];
+          x[u] = x[n];
+          x[n] = temp;
+        }
     }
-  free(temp);
   return;
 }
 
