@@ -6,7 +6,7 @@
 
   Vaughan Johnson, Dominic Mazzoni
   
-  This class supports a Change Tempo effect, that allows speeding up or 
+  Change Tempo effect, that allows speeding up or 
   slowing down tempo without changing pitch.
 
 **********************************************************************/
@@ -73,9 +73,6 @@ class EffectChangeTempo:public EffectSimpleMono {
 //----------------------------------------------------------------------------
 // ChangeTempoDialog
 //----------------------------------------------------------------------------
-
-wxSizer * MakeChangeTempoDialog(wxWindow * parent, bool call_fit, 
-							   bool set_sizer);
 
 class ChangeTempoDialog:public wxDialog {
  public:
