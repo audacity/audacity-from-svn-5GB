@@ -287,10 +287,25 @@ int
 psf_fclose (SF_PRIVATE *psf)
 {	int retval ;
 
+#if 0
+
+/* This fsync below is a large liability in our typical file
+   usage.
+
+   It's not clear what the intended benefit is, as the fsync is only
+   local to a single file and most of Audacity's file I/O is massively
+   non-atomic; the fsync lends no additional robustness (over, say, a
+   data-ordered journaled FS) and causes serious buffer-cache
+   thrashing/contention on at least Linux.
+
+   --Monty 20040723 */
+
 #if ((defined (__MWERKS__) && defined (macintosh)) == 0)
 	/* Must be MacOS9 which doesn't have fsync(). */
 	if (fsync (psf->filedes) == -1 && errno == EBADF)
 		return 0 ;
+#endif
+
 #endif
 
 	if (psf->do_not_close_descriptor)
