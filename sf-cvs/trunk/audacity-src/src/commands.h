@@ -22,7 +22,7 @@
    enum menuState {disabledMenu = 0, enabledMenu};
 
    enum menuCategory {fileMenu = 0, editMenu, viewMenu, projectMenu,
-                      insertMenu, effectMenu, analyzeMenu, helpMenu,
+                      generateMenu, effectMenu, analyzeMenu, helpMenu,
                       numMenus};
 
    enum menuType { typeSeparator=0, typeNormal, typeCheckItem, typeRadioItem};
