@@ -33,20 +33,26 @@
 
 #include "Audacity.h"
 
-#ifdef USE_ID3LIB
-   #include "id3/tag.h"
-   #include "id3/misc_support.h"
+#ifdef USE_LIBID3TAG 
+   #include "libid3tag/id3tag.h"
+
+// DM: the following functions were supposed to have been
+// included in id3tag.h - should be fixed in the next release
+// of mad.
+extern "C" {
+   struct id3_frame *id3_frame_new(char const *);
+   id3_length_t id3_latin1_length(id3_latin1_t const *);
+   void id3_latin1_decode(id3_latin1_t const *, id3_ucs4_t *);
+} 
+
 #endif
 
 #include "Tags.h"
 
-const int gNumGenres = 128;
-extern const wxString gGenreList[gNumGenres];
-
 Tags::Tags()
 {
    mTrackNum = -1;
-   mGenre = 127;
+   mGenre = -1;
    
    mID3V2 = true;
 }
@@ -57,7 +63,7 @@ Tags::~Tags()
 
 bool Tags::Load(wxTextFile * in, DirManager * dirManager)
 {
-/*   Oddly enought, MSVC doesn't understand #warning  */
+/*   Oddly enough, MSVC doesn't understand #warning  */
 /*   #warning TODO */
 
    return true;
@@ -70,7 +76,8 @@ bool Tags::Save(wxTextFile * out, bool overwrite)
 
 bool Tags::ShowEditDialog(wxWindow *parent, wxString title)
 {
-#ifdef USE_ID3LIB
+#ifdef USE_LIBID3TAG 
+
    Tags theCopy;
    theCopy.mTitle = mTitle;
    theCopy.mArtist = mArtist;
@@ -100,64 +107,190 @@ bool Tags::ShowEditDialog(wxWindow *parent, wxString title)
       return false;
    }
 
+#endif // ifdef LIBID3TAG
+
    return true;
-#else
-   return true; // we want callers to think it succeeded, otherwise they'll cancel what
-                // they were doing...
-#endif
 }
+
+#ifdef USE_LIBID3TAG
+
+wxString GetID3FieldStr(struct id3_tag *tp, const char *name)
+{
+   struct id3_frame *frame;
+
+   frame = id3_tag_findframe(tp, name, 0);
+   if (frame) {
+      if (frame->nfields > 0) {
+         int i;
+         for(i=0; i<frame->nfields; i++) {
+            union id3_field *field = &frame->fields[i];
+            if (field->type == ID3_FIELD_TYPE_STRINGLIST &&
+                id3_field_getnstrings(field) > 0) {
+               const id3_ucs4_t *ustr = id3_field_getstrings(field, 0);
+               char *str = (char *)id3_ucs4_latin1duplicate(ustr);
+               wxString s = str;
+               free(str);
+               return s;
+            }
+         }
+      }
+   }
+
+   return "";
+}
+
+int GetNumGenres()
+{
+   return 148;
+}
+
+wxString GetGenreNum(int i)
+{
+  id3_latin1_t      i_latin1[50];
+  id3_ucs4_t       *i_ucs4;
+  const id3_ucs4_t *genre_ucs4;
+
+  sprintf((char *)i_latin1, "%d", i);
+  i_ucs4 =
+     (id3_ucs4_t *)malloc((id3_latin1_length(i_latin1) + 1) *
+                          sizeof(*i_ucs4));
+  if (i_ucs4) {
+    id3_latin1_decode(i_latin1, i_ucs4);
+    genre_ucs4 = id3_genre_name(i_ucs4);
+    char *genre_char = (char *)id3_ucs4_latin1duplicate(genre_ucs4);
+    wxString genreStr = genre_char;
+    free(genre_char);
+    free(i_ucs4);
+    return genreStr;    
+  }   
+
+  return "";
+}
+
+#endif // ifdef USE_LIBID3TAG 
 
 void Tags::ImportID3(wxString fileName)
 {
-#ifdef USE_ID3LIB
-   ID3_Tag tag((char *) fileName.c_str());
+#ifdef USE_LIBID3TAG 
 
-   mTitle = ID3_GetTitle(&tag);
-   mArtist = ID3_GetArtist(&tag);
-   mAlbum = ID3_GetAlbum(&tag);
-   mTrackNum = ID3_GetTrackNum(&tag);
-   mYear = ID3_GetYear(&tag);
-   mGenre = ID3_GetGenreNum(&tag);
-   mComments = ID3_GetComment(&tag);
-#endif // USE_ID3LIB
+   struct id3_file  *fp;
+   struct id3_tag   *tp;
+   const char       *str;
+
+   fp = id3_file_open((const char *)fileName,
+                      ID3_FILE_MODE_READONLY);
+   if (!fp)
+      return;
+   tp = id3_file_tag(fp);
+   if (!tp)
+      return;
+
+   mTitle = GetID3FieldStr(tp, ID3_FRAME_TITLE);
+   mArtist = GetID3FieldStr(tp, ID3_FRAME_ARTIST);
+   mAlbum = GetID3FieldStr(tp, ID3_FRAME_ALBUM);   
+   mYear = GetID3FieldStr(tp, ID3_FRAME_YEAR);
+   mComments = GetID3FieldStr(tp, ID3_FRAME_COMMENT);
+
+   long l;
+   wxString s;
+   if ((s = GetID3FieldStr(tp, ID3_FRAME_TRACK)).ToLong(&l))
+      mTrackNum = l;
+
+   s = GetID3FieldStr(tp, ID3_FRAME_GENRE);
+
+   int numGenres = GetNumGenres();
+   for(int i=0; i<numGenres; i++)
+      if (0 == s.CmpNoCase(GetGenreNum(i)))
+         mGenre = i;
+
+   id3_file_close(fp);
+#endif // ifdef USE_LIBID3TAG 
 }
+
+#ifdef USE_LIBID3TAG 
+
+struct id3_frame *MakeID3Frame(const char *name, const char *data)
+{
+  struct id3_frame *frame;
+  id3_latin1_t     *latin1;
+  id3_ucs4_t       *ucs4;
+
+  frame = id3_frame_new(name);
+
+  latin1 = (id3_latin1_t *)data;
+  ucs4 = (id3_ucs4_t *)malloc((id3_latin1_length(latin1) + 1) * sizeof(*ucs4));
+  if (ucs4) {
+    id3_latin1_decode(latin1, ucs4);
+    id3_field_setstrings(&frame->fields[1], 1, &ucs4);
+    free(ucs4);
+  }
+
+  return frame;
+} 
+
+#endif //ifdef USE_LIBID3TAG 
 
 // returns buffer len; caller frees
 int Tags::ExportID3(char **buffer, bool *endOfFile)
 {
-#ifdef USE_ID3LIB
-   ID3_Tag tag;   
+#ifdef USE_LIBID3TAG 
+   struct id3_tag   *tp;
+   struct id3_frame *frame;
 
-   ID3_AddTitle(&tag, (const char *)mTitle);
-   ID3_AddArtist(&tag, (const char *)mArtist);
-   ID3_AddAlbum(&tag, (const char *)mAlbum);
-   if (mTrackNum >=0 && mTrackNum<=255)
-      ID3_AddTrack(&tag, (uchar)mTrackNum);
-   ID3_AddGenre(&tag, mGenre);
-   ID3_AddComment(&tag, (const char *)mComments, STR_V1_COMMENT_DESC);
-   ID3_AddYear(&tag, (const char *)mYear);
+   tp = id3_tag_new();
    
+   if (mTitle != "")
+      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_TITLE, mTitle));
+
+   if (mArtist != "")
+      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_ARTIST, mArtist));
+
+   if (mAlbum != "")
+      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_ALBUM, mAlbum));
+
+   if (mYear != "")
+      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_YEAR, mYear));
+
+   if (mComments != "")
+      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_COMMENT, mComments));
+
+   if (mTrackNum >= 0) {
+      wxString trackNumStr;
+      trackNumStr.Printf("%d", mTrackNum);
+      id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_TRACK, trackNumStr));
+   }
+
+   if (mGenre >= 0) {
+      if (mID3V2) {
+         wxString genreStr = GetGenreNum(mGenre);
+         id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_GENRE, genreStr));
+      }
+      else {
+         wxString genreStr;
+         genreStr.Printf("%d", mGenre);
+         id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_GENRE, genreStr));
+      }
+   }
+
    if (mID3V2) {
-      int tagSize = tag.Size();
-      *buffer = new char[tagSize];
-      tag.Render((uchar *)*buffer, ID3TT_ID3V2);
-      *endOfFile = false;
-      return tagSize;
+      tp->options |= ID3_TAG_OPTION_COMPRESSION;
+      *endOfFile = false;      
    }
    else {
-      *buffer = new char[128];
-      for(int i=0; i<128; i++)
-         (*buffer)[i] = 0;
-      tag.Render((uchar *)*buffer, ID3TT_ID3V1);
+      tp->options |= ID3_TAG_OPTION_ID3V1;
       *endOfFile = true;
-      return 128;
    }
+
+   id3_length_t len;
    
-#else
-   *buffer = new char[0];
-   *endOfFile = true;
-   return 0;
-#endif // USE_ID3LIB
+   len = id3_tag_render(tp, 0);
+   *buffer = (char *)malloc(len);
+   len = id3_tag_render(tp, (id3_byte_t *)*buffer);
+
+   id3_tag_delete(tp);
+
+   return len;
+#endif //ifdef USE_LIBID3TAG 
 }
 
 //
@@ -210,9 +343,9 @@ bool TagsDialog::TransferDataToWindow()
    }
    
    wxChoice *genre = GetGenreChoice();
-   if (genre && mTags->mGenre>=0 && mTags->mGenre<gNumGenres) {
+   int numGenres = GetNumGenres();
+   if (genre && mTags->mGenre>=0 && mTags->mGenre<numGenres)
       genre->SetSelection(mTags->mGenre);
-   }
    
    wxRadioBox *format = GetFormatRadioBox();
    if (format) {
@@ -268,9 +401,8 @@ bool TagsDialog::TransferDataFromWindow()
    }
    
    wxChoice *genre = GetGenreChoice();
-   if (genre && mTags->mGenre>=0 && mTags->mGenre<gNumGenres) {
+   if (genre)
       mTags->mGenre = genre->GetSelection();
-   }
    
    wxRadioBox *format = GetFormatRadioBox();
    if (format) {
@@ -383,11 +515,17 @@ wxSizer *MakeTagsDialog(wxPanel * parent, bool call_fit,
                         wxDefaultPosition, wxDefaultSize, 0);
    gridSizer->Add(item20, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
+   int numGenres = GetNumGenres();
+   wxString *genres = new wxString[numGenres];
+   for(int i=0; i<numGenres; i++)
+      genres[i] = GetGenreNum(i);
+
    wxChoice *item21 =
        new wxChoice(parent, ID_GENRE,
                     wxDefaultPosition, wxSize(-1, -1),
-                    gNumGenres, gGenreList);
+                    numGenres, genres);
    gridSizer->Add(item21, 1, wxEXPAND | wxALL, 5);
+   delete[] genres;
    
    wxStaticText *item22 =
        new wxStaticText(parent, ID_TEXT, _("Comments:"),
@@ -430,137 +568,4 @@ wxSizer *MakeTagsDialog(wxPanel * parent, bool call_fit,
    
    return mainSizer;
 }
-
-// MB: Should these be translated?
-
-const wxString gGenreList[gNumGenres] = {
-/*  0*/ "Blues",
-/*  1*/ "Classic Rock",
-/*  2*/ "Country",
-/*  3*/ "Dance",
-/*  4*/ "Disco",
-/*  5*/ "Funk",
-/*  6*/ "Grunge",
-/*  7*/ "Hip-Hop",
-/*  8*/ "Jazz",
-/*  9*/ "Metal",
-/* 10*/ "New Age",
-/* 11*/ "Oldies",
-/* 12*/ "Other",
-/* 13*/ "Pop",
-/* 14*/ "R&B",
-/* 15*/ "Rap",
-/* 16*/ "Reggae",
-/* 17*/ "Rock",
-/* 18*/ "Techno",
-/* 19*/ "Industrial",
-/* 20*/ "Alternative",
-/* 21*/ "Ska",
-/* 22*/ "Death Metal",
-/* 23*/ "Pranks",
-/* 24*/ "Soundtrack",
-/* 25*/ "Euro-Techno",
-/* 26*/ "Ambient",
-/* 27*/ "Trip-Hop",
-/* 28*/ "Vocal",
-/* 29*/ "Jazz+Funk",
-/* 30*/ "Fusion",
-/* 31*/ "Trance",
-/* 32*/ "Classical",
-/* 33*/ "Instrumental",
-/* 34*/ "Acid",
-/* 35*/ "House",
-/* 36*/ "Game",
-/* 37*/ "Sound Clip",
-/* 38*/ "Gospel",
-/* 39*/ "Noise",
-/* 40*/ "AlternRock",
-/* 41*/ "Bass",
-/* 42*/ "Soul",
-/* 43*/ "Punk",
-/* 44*/ "Space",
-/* 45*/ "Meditative",
-/* 46*/ "Instrumental Pop",
-/* 47*/ "Instrumental Rock",
-/* 48*/ "Ethnic",
-/* 49*/ "Gothic",
-/* 50*/ "Darkwave",
-/* 51*/ "Techno-Industrial",
-/* 52*/ "Electronic",
-/* 53*/ "Pop-Folk",
-/* 54*/ "Eurodance",
-/* 55*/ "Dream",
-/* 56*/ "Southern Rock",
-/* 57*/ "Comedy",
-/* 58*/ "Cult",
-/* 59*/ "Gangsta",
-/* 60*/ "Top 40",
-/* 61*/ "Christian Rap",
-/* 62*/ "Pop/Funk",
-/* 63*/ "Jungle",
-/* 64*/ "Native American",
-/* 65*/ "Cabaret",
-/* 66*/ "New Wave",
-/* 67*/ "Psychadelic",
-/* 68*/ "Rave",
-/* 69*/ "Showtunes",
-/* 70*/ "Trailer",
-/* 71*/ "Lo-Fi",
-/* 72*/ "Tribal",
-/* 73*/ "Acid Punk",
-/* 74*/ "Acid Jazz",
-/* 75*/ "Polka",
-/* 76*/ "Retro",
-/* 77*/ "Musical",
-/* 78*/ "Rock & Roll",
-/* 79*/ "Hard Rock",
-/*** Winamp extensions ***/
-/* 80*/ "Folk",
-/* 81*/ "Folk-Rock",
-/* 82*/ "National Folk",
-/* 83*/ "Swing",
-/* 84*/ "Fast Fusion",
-/* 85*/ "Bebop",
-/* 86*/ "Latin",
-/* 87*/ "Revival",
-/* 88*/ "Celtic",
-/* 89*/ "Bluegrass",
-/* 90*/ "Avantgarde",
-/* 91*/ "Gothic Rock",
-/* 92*/ "Progressive Rock",
-/* 93*/ "Psychedelic Rock",
-/* 94*/ "Symphonic Rock",
-/* 95*/ "Slow Rock",
-/* 96*/ "Big Band",
-/* 97*/ "Chorus",
-/* 98*/ "Easy Listening",
-/* 99*/ "Acoustic",
-/*100*/ "Humour",
-/*101*/ "Speech",
-/*102*/ "Chanson",
-/*103*/ "Opera",
-/*104*/ "Chamber Music",
-/*105*/ "Sonata",
-/*106*/ "Symphony",
-/*107*/ "Booty Bass",
-/*108*/ "Primus",
-/*109*/ "Porn Groove",
-/*110*/ "Satire",
-/*111*/ "Slow Jam",
-/*112*/ "Club",
-/*113*/ "Tango",
-/*114*/ "Samba",
-/*115*/ "Folklore",
-/*116*/ "Ballad",
-/*117*/ "Power Ballad",
-/*118*/ "Rhythmic Soul",
-/*119*/ "Freestyle",
-/*120*/ "Duet",
-/*121*/ "Punk Rock",
-/*122*/ "Drum Solo",
-/*123*/ "A capella",
-/*124*/ "Euro-House",
-/*125*/ "Dance Hall",
-/*126*/ "---",
-/*127*/ "None"};
 

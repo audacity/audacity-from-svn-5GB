@@ -21,7 +21,7 @@
   inserted at the BEGINNING of an mp3 file, which is far more
   useful for streaming.
   
-  Use of this functionality requires that id3lib be compiled in
+  Use of this functionality requires that libid3tag be compiled in
   with Audacity.
   
 **********************************************************************/

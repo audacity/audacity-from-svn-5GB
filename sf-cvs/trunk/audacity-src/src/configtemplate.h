@@ -39,8 +39,8 @@
 /* Define to `unsigned' if <sys/types.h> does not define. */
 #undef size_t
 
-/* Define if id3lib is present */
-#undef USE_ID3LIB
+/* Define if libid3tag is present */
+#undef USE_LIBID3TAG
 
 /* Define if the ogg vorbis decoding library is present */
 #undef USE_LIBVORBIS
