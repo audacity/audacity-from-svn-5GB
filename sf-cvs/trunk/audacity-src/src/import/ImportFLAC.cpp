@@ -129,7 +129,7 @@ void MyFLACFile::metadata_callback(const FLAC__StreamMetadata *metadata)
 
 void MyFLACFile::error_callback(FLAC__StreamDecoderErrorStatus status)
 {
-   wxASSERT(0);
+   assert(0);
 }
 
 
@@ -176,7 +176,11 @@ wxString FLACImportPlugin::GetPluginFormatDescription()
 ImportFileHandle *FLACImportPlugin::Open(wxString filename)
 {
    MyFLACFile *file = new MyFLACFile;
-   wxASSERT(file->set_filename(filename));
+   file->set_filename(filename);
+
+   // Check for errors.
+   if (file->get_state() != FLAC__FILE_DECODER_OK)
+      return NULL;
 
    return new FLACImportFileHandle(filename,file);
 }
@@ -223,10 +227,10 @@ bool FLACImportFileHandle::Import(TrackFactory *trackFactory,
 				  int *outNumTracks)
 {
    mFile->init();
-   wxASSERT(mFile->process_until_end_of_metadata());
+   mFile->process_until_end_of_metadata();
    // FIXME handle errors
 
-   wxASSERT(mStreamInfoDone);
+   assert(mStreamInfoDone);
    
    *outNumTracks = mNumChannels;
 
@@ -255,7 +259,7 @@ bool FLACImportFileHandle::Import(TrackFactory *trackFactory,
    if (*outNumTracks == 2)
       mChannels[0]->SetLinked(true);
 
-   wxASSERT(mFile->process_until_end_of_file());
+   mFile->process_until_end_of_file();
    
    *outTracks = new Track *[*outNumTracks];
    for(c = 0; c < *outNumTracks; c++) {
