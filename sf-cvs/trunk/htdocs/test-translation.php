@@ -196,12 +196,12 @@ Source code dependencies:
 
   BoxBottom();
 
+  print "<p>\n";
+
+  BoxTop("$releaseNotesStr 1.2.0-pre1");
+  include GetTranslation("betanotes-1.2.0-pre1");
+  BoxBottom();
+
   include 'bottom.inc.php';
 
 ?>
-
-
-
-
-
-
