@@ -41,6 +41,7 @@
 
 #include "Audacity.h"
 
+#include <wx/defs.h>
 #include <wx/msgdlg.h>
 #include <wx/app.h>
 #include <wx/config.h>
