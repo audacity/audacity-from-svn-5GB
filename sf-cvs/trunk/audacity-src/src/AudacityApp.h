@@ -43,6 +43,10 @@ class AudacityApp:public wxApp {
    void OnMenuPreferences(wxCommandEvent & event);
    void OnMenuExit(wxCommandEvent & event);
 
+	#if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
+		void AssociateFileTypes(); 
+	#endif
+
    // A list of directories that should be searched
    // for Audacity files (plug-ins, help files, etc.).  On Unix
    // this will include the directory Audacity was installed into,
