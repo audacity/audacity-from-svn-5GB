@@ -22,7 +22,7 @@ class LadspaEffect:public Effect {
  public:
 
    LadspaEffect(const LADSPA_Descriptor *data);
-   ~LadspaEffect();
+   virtual ~LadspaEffect();
 
    virtual wxString GetEffectName();
    
