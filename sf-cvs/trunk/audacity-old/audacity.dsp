@@ -288,77 +288,16 @@ SOURCE=.\effects\Fade.cpp
 SOURCE=.\effects\Fade.h
 # End Source File
 # End Group
-# Begin Source File
+# Begin Group "Resources"
 
-SOURCE=.\AboutDialog.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AboutDialog.h
-# End Source File
+# PROP Default_Filter ".bmp, .cur, .rc"
 # Begin Source File
 
 SOURCE=.\res\audacity.rc
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\AudacityLogo.bmp
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\AudacitySmall.bmp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AudioApp.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AudioApp.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\AudioDoc.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AudioDoc.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\AudioFrame.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AudioFrame.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\AudioView.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AudioView.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\AutoCorrelate.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AutoCorrelate.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\res\blank.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\BlockFile.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\BlockFile.h
 # End Source File
 # Begin Source File
 
@@ -370,22 +309,6 @@ SOURCE=.\res\cross.bmp
 # End Source File
 # Begin Source File
 
-SOURCE=.\DDC.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\DDCMath.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\DirManager.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\DirManager.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\res\disable.bmp
 # End Source File
 # Begin Source File
@@ -394,71 +317,7 @@ SOURCE=.\res\error.ico
 # End Source File
 # Begin Source File
 
-SOURCE=.\Export.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Export.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\FFTMisc.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Fourier.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\FourierD.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\FourierF.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\GenericStream.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\GenericStream.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\res\hand.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\Import.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Import.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ImportMIDI.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ImportMIDI.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ImportMP3.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ImportMP3.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ImportRaw.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ImportRaw.h
 # End Source File
 # Begin Source File
 
@@ -466,39 +325,7 @@ SOURCE=.\res\info.ico
 # End Source File
 # Begin Source File
 
-SOURCE=.\LabelTrack.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\LabelTrack.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Landmark.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Landmark.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Mix.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Mix.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\res\noentry.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\NoteTrack.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\NoteTrack.h
 # End Source File
 # Begin Source File
 
@@ -506,35 +333,7 @@ SOURCE=.\res\pbrush.cur
 # End Source File
 # Begin Source File
 
-SOURCE=.\Peak.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Peak.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\res\pencil.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\Pitch.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Pitch.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Play.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\PlaySnd.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\PlaySnd.h
 # End Source File
 # Begin Source File
 
@@ -570,19 +369,248 @@ SOURCE=.\res\size.cur
 # End Source File
 # Begin Source File
 
-SOURCE=.\Spectrum.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Spectrum.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\res\tick.bmp
 # End Source File
 # Begin Source File
 
 SOURCE=.\res\tip.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\warning.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\watch1.cur
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\AboutDialog.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AboutDialog.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AButton.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AButton.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AColor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AColor.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\APalette.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\APalette.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ASlider.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ASlider.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AudacityApp.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AudacityApp.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\AudacityLogo.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\AudacitySmall.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AutoCorrelate.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AutoCorrelate.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\BlockFile.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\BlockFile.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\DDC.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\DDCMath.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\DirManager.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\DirManager.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\DiskFunctions.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\DiskFunctions.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Export.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Export.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\FFTMisc.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Fourier.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\FourierD.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\FourierF.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Import.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Import.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ImportMIDI.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ImportMIDI.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ImportMP3.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ImportMP3.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ImportRaw.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ImportRaw.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\LabelTrack.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\LabelTrack.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Landmark.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Landmark.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Mix.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Mix.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\NoteTrack.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\NoteTrack.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Peak.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Peak.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Pitch.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Pitch.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Play.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Play.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\PlayUp.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Project.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Project.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Spectrum.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Spectrum.h
 # End Source File
 # Begin Source File
 
@@ -594,19 +622,19 @@ SOURCE=.\Track.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\TrackPanel.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\TrackPanel.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\UndoManager.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\UndoManager.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\warning.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\watch1.cur
 # End Source File
 # Begin Source File
 

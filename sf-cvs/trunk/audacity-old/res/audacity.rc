@@ -14,8 +14,28 @@ ZoomIn                BITMAP  "ZoomIn.bmp"
 ZoomOut               BITMAP  "ZoomOut.bmp"
 AudacityLogo          BITMAP  "AudacityLogo.bmp"
 AudacitySmall         BITMAP  "AudacitySmall.bmp"
-Play                  BITMAP  "Play.bmp"
-Stop                  BITMAP  "Stop.bmp"
+IBeamDown             BITMAP  "IBeamDown.bmp"
+IBeamOver             BITMAP  "IBeamOver.bmp"
+IBeamUp               BITMAP  "IBeamUp.bmp"
+MoveDown              BITMAP  "MoveDown.bmp"
+MoveOver              BITMAP  "MoveOver.bmp"
+MoveUp                BITMAP  "MoveUp.bmp"
+ZoomDown              BITMAP  "ZoomDown.bmp"
+ZoomOver              BITMAP  "ZoomOver.bmp"
+ZoomUp                BITMAP  "ZoomUp.bmp"
+SelectDown            BITMAP  "SelectDown.bmp"
+SelectOver            BITMAP  "SelectOver.bmp"
+SelectUp              BITMAP  "SelectUp.bmp"
+PlayDown              BITMAP  "PlayDown.bmp"
+PlayOver              BITMAP  "PlayOver.bmp"
+PlayUp                BITMAP  "PlayUp.bmp"
+PlayDisabled          BITMAP  "PlayDisabled.bmp"
+StopDown              BITMAP  "StopDown.bmp"
+StopOver              BITMAP  "StopOver.bmp"
+StopUp                BITMAP  "StopUp.bmp"
+StopDisabled          BITMAP  "StopDisabled.bmp"
+Slider                BITMAP  "Slider.bmp"
+SliderThumb           BITMAP  "SliderThumb.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 // File:     wx.rc
@@ -45,7 +65,7 @@ Stop                  BITMAP  "Stop.bmp"
 // DAMAGE, AND ON ANY THEORY OF LIABILITY, ARISING OUT OF OR IN CONNECTION WITH
 // THE USE OR PERFORMANCE OF THIS SOFTWARE.
 //
-// Version: $Id: audacity.rc,v 1.2 2000-06-11 23:51:52 dmazzoni Exp $
+// Version: $Id: audacity.rc,v 1.3 2000-09-06 21:38:22 dmazzoni Exp $
 /////////////////////////////////////////////////////////////////////////////
 
 #if (defined( __GNUWIN32__ ) && !defined(__TWIN32__)) || defined(__MWERKS__)
