@@ -182,7 +182,7 @@ pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent,
 #endif
 
 BEGIN_EVENT_TABLE(AudacityApp, wxApp)
-    EVT_CHAR(AudacityApp::OnKey)
+   //    EVT_CHAR(AudacityApp::OnKey)
 	EVT_MENU(AboutID, AudacityApp::OnMenuAbout)
 	EVT_MENU(NewID, AudacityApp::OnMenuNew)
 	EVT_MENU(OpenID, AudacityApp::OnMenuOpen)
