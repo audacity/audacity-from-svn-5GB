@@ -34,6 +34,8 @@ class KeyConfigPrefs:public PrefsPanel {
 
  private:
    void OnItemSelected(wxListEvent &event);
+   void RemoveComboFromList(wxCommandEvent& event);
+   void ClearComboList(wxCommandEvent& event);
    void AddComboToList(wxCommandEvent& event);
 
    wxListCtrl *mCommandsList;
