@@ -143,6 +143,7 @@ void TDStretch::setParameters(const uint sampleRate, const uint sequenceMS,
 
     maxOffset = seekLength;
 
+    setTempo(tempo);
 }
 
 
