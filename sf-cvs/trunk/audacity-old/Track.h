@@ -150,7 +150,14 @@ public:
   // Otherwise return null.
   VTrack *GetLink(VTrack *t);
   
+  VTrack *GetPrev(VTrack *t);
   VTrack *GetNext(VTrack *t);
+
+  bool CanMoveUp(VTrack *t);
+  bool CanMoveDown(VTrack *t);
+
+  bool MoveUp(VTrack *t);
+  bool MoveDown(VTrack *t);
 
   // Test
   bool Contains(VTrack *t);
@@ -165,6 +172,8 @@ public:
   virtual bool Save(wxTextFile *out, bool overwrite);
   
 private:
+  void Swap(TrackListNode *s1, TrackListNode *s2);
+
   TrackListNode *head;
   TrackListNode *tail;
 };

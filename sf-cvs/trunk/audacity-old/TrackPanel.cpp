@@ -43,6 +43,9 @@ enum {
   
   OnSetNameID,
 
+  OnMoveUpID,
+  OnMoveDownID,
+
   OnUpOctaveID,
   OnDownOctaveID,
 
@@ -75,6 +78,9 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
   EVT_PAINT(TrackPanel::OnPaint)
 
   EVT_MENU(OnSetNameID, TrackPanel::OnSetName)
+
+  EVT_MENU(OnMoveUpID, TrackPanel::OnMoveUp)
+  EVT_MENU(OnMoveDownID, TrackPanel::OnMoveDown)
 
   EVT_MENU(OnUpOctaveID, TrackPanel::OnUpOctave)
   EVT_MENU(OnDownOctaveID, TrackPanel::OnDownOctave)
@@ -140,6 +146,9 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
   mWaveTrackMenu = new wxMenu();
   mWaveTrackMenu->Append(OnSetNameID, "Name...");
   mWaveTrackMenu->AppendSeparator();
+  mWaveTrackMenu->Append(OnMoveUpID, "Move Track Up");
+  mWaveTrackMenu->Append(OnMoveDownID, "Move Track Down");
+  mWaveTrackMenu->AppendSeparator();
   mWaveTrackMenu->Append(OnWaveformID, "Waveform");
   mWaveTrackMenu->Append(OnWaveformDBID, "Waveform (dB)");
   mWaveTrackMenu->Append(OnSpectrumID, "Spectrum");
@@ -156,11 +165,17 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
   mNoteTrackMenu = new wxMenu();
   mNoteTrackMenu->Append(OnSetNameID, "Name...");
   mNoteTrackMenu->AppendSeparator();
+  mNoteTrackMenu->Append(OnMoveUpID, "Move Track Up");
+  mNoteTrackMenu->Append(OnMoveDownID, "Move Track Down");
+  mNoteTrackMenu->AppendSeparator();
   mNoteTrackMenu->Append(OnUpOctaveID, "Up Octave");
   mNoteTrackMenu->Append(OnDownOctaveID, "Down Octave");
 
   mLabelTrackMenu = new wxMenu();
   mLabelTrackMenu->Append(OnSetNameID, "Name...");
+  mLabelTrackMenu->AppendSeparator();
+  mLabelTrackMenu->Append(OnMoveUpID, "Move Track Up");
+  mLabelTrackMenu->Append(OnMoveDownID, "Move Track Down");
 
   mTrackArtist = new TrackArtist();
   mTrackArtist->SetInset(1, kTopInset+2, kLeftInset+2, 2);
@@ -920,7 +935,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent& event)
 	  if (next && !t->linked && !next->linked &&
 		  t->GetKind() == VTrack::Wave && next->GetKind() == VTrack::Wave)
 		canMakeStereo = true;
-	
+
 	  theMenu->Enable(theMenu->FindItem
 							 ("Make Stereo Track"), canMakeStereo);
 	  theMenu->Enable(theMenu->FindItem
@@ -954,6 +969,11 @@ void TrackPanel::HandleLabelClick(wxMouseEvent& event)
 
 	if (theMenu) {
 
+	  theMenu->Enable(theMenu->FindItem
+					  ("Move Track Up"), mTracks->CanMoveUp(t));
+	  theMenu->Enable(theMenu->FindItem
+					  ("Move Track Down"), mTracks->CanMoveDown(t));
+
       #ifdef __WXMAC__
 	    ::InsertMenu( mRateMenu->GetHMenu() , -1 ) ;
       #endif
@@ -966,15 +986,18 @@ void TrackPanel::HandleLabelClick(wxMouseEvent& event)
 	}    
 	
 	{
-	  wxClientDC dc(this);
-	  SetLabelFont(&dc);
-	  DrawTitleBar(&dc, r, t, false);
+	  VTrack *t2 = FindTrack(event.m_x, event.m_y, true, &r, &num);
+	  if (t2 == t) {
+		wxClientDC dc(this);
+		SetLabelFont(&dc);
+		DrawTitleBar(&dc, r, t, false);
+	  }
 	}
     return;
   }
 
   // If it's a NoteTrack, it has special controls
-  if (t->GetKind()==VTrack::Note) {
+  if (t && t->GetKind()==VTrack::Note) {
 	wxRect midiRect;
 	GetTrackControlsRect(r, midiRect);
 	if (midiRect.Inside(event.m_x, event.m_y)) {
@@ -1102,8 +1125,8 @@ void TrackPanel::OnMouseEvent(wxMouseEvent& event)
   VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
 
   if (event.ButtonDown() &&
-	  event.m_y >= (r.y + r.height - 10) &&
-	  event.m_y <  (r.y + r.height)) {
+	  event.m_y >= (r.y + r.height - 2) &&
+	  event.m_y <  (r.y + r.height + kTopInset)) {
   	HandleResize(event);
   	HandleCursor(event);
   	return;
@@ -2005,6 +2028,24 @@ void TrackPanel::OnRateOther()
   }
 }
 
+void TrackPanel::OnMoveUp()
+{
+  VTrack *t = mPopupMenuTarget;
+  if (mTracks->MoveUp(t)) {
+	MakeParentPushState();
+    Refresh(false);
+  }
+}
+
+void TrackPanel::OnMoveDown()
+{
+  VTrack *t = mPopupMenuTarget;
+  if (mTracks->MoveDown(t)) {
+	MakeParentPushState();
+    Refresh(false);
+  }
+}
+
 void TrackPanel::OnUpOctave()
 {
   VTrack *t = mPopupMenuTarget;
@@ -2012,6 +2053,7 @@ void TrackPanel::OnUpOctave()
 	((NoteTrack *)t)->mBottomNote += 12;
 	if (((NoteTrack *)t)->mBottomNote < 0)
 	  ((NoteTrack *)t)->mBottomNote = 0;
+	MakeParentPushState();
     Refresh(false);
   }
 }
@@ -2023,6 +2065,7 @@ void TrackPanel::OnDownOctave()
 	((NoteTrack *)t)->mBottomNote -= 12;
 	if (((NoteTrack *)t)->mBottomNote > 96)
 	  ((NoteTrack *)t)->mBottomNote = 96;
+	MakeParentPushState();
     Refresh(false);
   }
 }
@@ -2038,6 +2081,7 @@ void TrackPanel::OnSetName()
                                          defaultStr);
     if (newName != "")
       t->name = newName;
+	MakeParentPushState();
     Refresh(false);
   }
 }
@@ -2049,6 +2093,7 @@ VTrack *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
   r.x = 0;
   r.y = -mViewInfo->vpos;
   r.y += GetRulerHeight();
+  r.y += kTopInset;
   GetSize(&r.width, &r.height);  
   
   if (label) {
@@ -2069,6 +2114,7 @@ VTrack *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
 
     if (r.Inside(mouseX, mouseY)) {
       if (trackRect) {
+		r.y -= kTopInset;
         if (label) {
           r.x += kLeftInset;
           r.width -= kLeftInset;

@@ -388,6 +388,148 @@ VTrack *TrackList::GetNext(VTrack *t)
   return NULL;
 }
 
+VTrack *TrackList::GetPrev(VTrack *t)
+{
+  TrackListNode *p = head;
+  while(p) {
+  	if (p->t == t) {
+  	  if (p->prev)
+  		  return p->prev->t;
+  	  else
+  	    return NULL;
+  	}
+  	p = p->next;
+  }
+  return NULL;
+}
+
+bool TrackList::CanMoveUp(VTrack *t)
+{
+  TrackListNode *p = head;
+  while(p) {
+  	if (p->t == t) {
+  	  if (p->prev && p->prev->t->linked)
+		return CanMoveUp(p->prev->t);
+  	  else if (p->prev)
+		return true;
+	  else
+  	    return false;
+  	}
+  	p = p->next;
+  }
+  return false;
+}
+
+bool TrackList::CanMoveDown(VTrack *t)
+{
+  TrackListNode *p = head;
+  while(p) {
+  	if (p->t == t) {
+  	  if (t->linked)
+		return (p->next != NULL && p->next->next != NULL);
+  	  else
+		return (p->next != NULL);
+  	}
+  	p = p->next;
+  }
+  return false;
+}
+
+// Precondition: if either of s1 or s2 are "linked", then
+// s1 and s2 must each be the FIRST node of the linked pair.
+//
+// This is used when you want to swap the track or pair of
+// tracks in s1 with the track or pair of tracks in s2.
+// The complication is that the tracks are stored in a single
+// linked list, and pairs of tracks are marked only by a flag
+// in one of the tracks.
+void TrackList::Swap(TrackListNode *s1, TrackListNode *s2)
+{
+  VTrack *source[4];
+  TrackListNode *target[4];
+
+  target[0] = s1;
+  source[0] = target[0]->t;
+  if (source[0]->linked) {
+	target[1] = target[0]->next;
+	source[1] = target[1]->t;
+  }
+  else {
+	target[1] = NULL;
+	source[1] = NULL;
+  }
+
+  target[2] = s2;
+  source[2] = target[2]->t;
+  if (source[2]->linked) {
+	target[3] = target[2]->next;
+	source[3] = target[3]->t;
+  }
+  else {
+	target[3] = NULL;
+	source[3] = NULL;
+  }
+  
+  int s = 2;
+  for(int t=0; t<4; t++) {
+	if (target[t]) {
+	  target[t]->t = source[s];
+	  s = (s+1)%4;
+	  if (!source[s])
+		s = (s+1)%4;
+	}
+  }
+}
+
+bool TrackList::MoveUp(VTrack *t)
+{
+  TrackListNode *p = head;
+  while(p) {
+  	if (p->t == t) {
+	  TrackListNode *second = p;
+	  if (second->prev && second->prev->t->linked)
+		second = second->prev;
+
+	  TrackListNode *first = second->prev;
+	  if (!first)
+		return false;
+	  if (first->prev && first->prev->t->linked)
+		first = first->prev;
+
+	  Swap(first, second);
+
+	  return true;
+	}
+	p = p->next;
+  }
+  return false;
+}
+
+bool TrackList::MoveDown(VTrack *t)
+{
+  TrackListNode *p = head;
+  while(p) {
+  	if (p->t == t) {
+	  TrackListNode *first = p;
+	  if (first->prev && first->prev->t->linked)
+		first = first->prev;
+
+	  TrackListNode *second;
+	  if (!p->next)
+		return false;
+	  if (p->t->linked)
+		second = p->next->next;
+	  else
+		second = p->next;
+
+	  Swap(first, second);
+	  return true;
+	}
+	p = p->next;
+  }
+  return false;
+}
+
 bool TrackList::Contains(VTrack *t)
 {
   TrackListNode *p = head;

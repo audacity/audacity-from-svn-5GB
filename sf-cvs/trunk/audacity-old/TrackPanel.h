@@ -87,6 +87,9 @@ private:
 
   void OnSetName();
 
+  void OnMoveUp();
+  void OnMoveDown();
+
   void OnUpOctave();
   void OnDownOctave();
 

@@ -549,6 +549,8 @@ void AudacityProject::OnDuplicate(wxCommandEvent& event)
   	if (n->selected) {
   	  n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
   	  if (dest) {
+		dest->name = n->name;
+		dest->linked = n->linked;
         dest->tOffset = mViewInfo.sel0;
         newTracks.Add(dest);
       }
