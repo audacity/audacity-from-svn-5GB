@@ -1,22 +1,31 @@
 <?php BoxTop($helpStr); ?>
 
 <p>
-<a href="docs/contents.html">Guide per gli utenti / Documentazione</a>
+<a href="docs/contents.html">Leggi la documentazione in linea</a>
+</p>
+
+<p>
+<?php print $docsStr; ?>:
+<ul>
+<li><a href="audacity-manual-1.0.0-A.zip">Inglese</a>
+<li><a href="audacity-manual-1.0.0-bg.zip">Bulgaro</a>
+<li><a href="audacity-manual-1.0.0-es.zip">Spagnolo</a>
+</ul>
 </p>
 
 <p>
 <?php print "<a href=tutorials.php?$langLinkStr>";
-?>Guide</a>
+?>Tutorials</a>
 </p>
 
 <p>
 <?php print "<a href=faq.php?$langLinkStr>";
-?>Domande e risposte (F.A.Q.)</a>
+?>Domande frequentemente poste (F.A.Q.)</a>
 </p>
 
 <p>
-<a href="http://www.geocrawler.com/lists/3/SourceForge/14679/0/"
->Archivi Mailing List Audacity-Help<a>
+<a href="http://sourceforge.net/mailarchive/forum.php?forum_id=828"
+>Archivi Mailing List Audacity-Help</a>
 </p>
 
 <p>
@@ -25,3 +34,5 @@
 </p>
 
 <?php BoxBottom(); ?>
+
+
