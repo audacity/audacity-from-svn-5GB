@@ -18,6 +18,7 @@
 #include "../Audacity.h"
 #include "../Prefs.h"
 #include "../SampleFormat.h"
+#include "../dither.h"
 #include "QualityPrefs.h"
 
 #if USE_LIBSAMPLERATE
@@ -163,6 +164,44 @@ PrefsPanel(parent)
    delete[] converterStrings;
    #endif
 
+   // These ditherers are currently defined
+   int numDithers = 4;
+   wxString ditherStrings[4];
+   ditherStrings[Dither::none] = _("None");
+   ditherStrings[Dither::rectangle] = _("Rectangle");
+   ditherStrings[Dither::triangle] = _("Triangle");
+   ditherStrings[Dither::shaped] = _("Shaped");
+   
+   // Low-quality dithering option
+   int dither = gPrefs->Read("/Quality/DitherAlgorithm", (long)Dither::none);
+   
+   wxBoxSizer *top5Sizer = new wxBoxSizer(wxHORIZONTAL);
+   
+   top5Sizer->Add(
+         new wxStaticText(this, -1, _("Real-time dither:")), 0,
+         wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
+   
+   mDithers = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
+                           numDithers, ditherStrings);
+   mDithers->SetSelection(dither);
+   
+   top5Sizer->Add(mDithers, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER);
+   
+   // High quality dithering option
+   int ditherHQ = gPrefs->Read("/Quality/HQDitherAlgorithm", (long)Dither::triangle);;
+   
+   wxBoxSizer *top6Sizer = new wxBoxSizer(wxHORIZONTAL);
+   
+   top6Sizer->Add(
+         new wxStaticText(this, -1, _("High-quality dither:")), 0,
+         wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
+   
+   mHQDithers = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
+                             numDithers, ditherStrings);
+   mHQDithers->SetSelection(ditherHQ);
+   
+   top6Sizer->Add(mHQDithers, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER);
+   
    outSizer = new wxBoxSizer( wxVERTICAL );
    outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
    outSizer->Add(top2Sizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
@@ -171,6 +210,9 @@ PrefsPanel(parent)
    outSizer->Add(top3Sizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
    outSizer->Add(top4Sizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
    #endif
+
+   outSizer->Add(top5Sizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
+   outSizer->Add(top6Sizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
 
    SetAutoLayout(true);
    outSizer->Fit(this);
@@ -204,8 +246,16 @@ bool QualityPrefs::Apply()
    gPrefs->Write("/Quality/SampleRateConverter", (long)converter);
    #endif
 
-   return true;
+   // Save dither options
+   int dither = mDithers->GetSelection();
+   int ditherHQ = mHQDithers->GetSelection();
+   gPrefs->Write("/Quality/HQDitherAlgorithm", (long)ditherHQ);
+   gPrefs->Write("/Quality/DitherAlgorithm", (long)dither);
+   
+   // Tell CopySamples() to use these ditherers now
+   InitDitherers();
 
+   return true;
 }
 
 void QualityPrefs::OnSampleRateChoice(wxCommandEvent& evt)

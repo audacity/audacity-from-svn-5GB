@@ -34,6 +34,9 @@ class QualityPrefs:public PrefsPanel {
    wxChoice *mConverters;
    wxChoice *mHQConverters;
 
+   wxChoice *mDithers;
+   wxChoice *mHQDithers;
+
  public:
    DECLARE_EVENT_TABLE();
 };
