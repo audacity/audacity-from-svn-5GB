@@ -114,7 +114,7 @@ function IncludeFile($name)
 	if (file_exists("updates/$f")) {
 		include "updates/$f";
 	}
-	else if file_exists($f) {
+	else if (file_exists($f)) {
 		include $f;
 	}
 	else {
