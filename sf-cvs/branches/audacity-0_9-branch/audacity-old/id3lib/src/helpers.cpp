@@ -1,7 +1,10 @@
-// $Id: helpers.cpp,v 1.1.2.1 2001-09-30 01:51:53 dmazzoni Exp $
+// $Id: helpers.cpp,v 1.1.2.2 2002-01-04 06:42:56 dmazzoni Exp $
 
 // id3lib: a C++ library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug
+
+// Lots of hacking added to this file by Scott Wheeler (scott@slackorama.net)
+// 11/02/2001
 
 // This library is free software; you can redistribute it and/or modify it
 // under the terms of the GNU Library General Public License as published by
@@ -115,6 +118,8 @@ ID3_Frame* id3::v2::setFrameText(ID3_TagImpl& tag, ID3_FrameID id, String text)
   return frame;
 }
 
+////////////////////////////////////////////////////////////
+
 ID3_Frame* id3::v2::hasArtist(const ID3_TagImpl& tag)
 {
   ID3_Frame* fp = NULL;
@@ -152,6 +157,14 @@ size_t id3::v2::removeArtists(ID3_TagImpl& tag)
   return numRemoved;
 }
 
+////////////////////////////////////////////////////////////
+
+ID3_Frame* id3::v2::hasAlbum(const ID3_TagImpl& tag)
+{
+  ID3_Frame* frame = tag.Find(ID3FID_ALBUM);
+  return(frame);
+}
+
 String id3::v2::getAlbum(const ID3_TagImpl& tag)
 {
   return getFrameText(tag, ID3FID_ALBUM);
@@ -165,6 +178,14 @@ ID3_Frame* id3::v2::setAlbum(ID3_TagImpl& tag, String text)
 size_t id3::v2::removeAlbums(ID3_TagImpl& tag)
 {
   return removeFrames(tag, ID3FID_ALBUM);
+}
+
+////////////////////////////////////////////////////////////
+
+ID3_Frame* id3::v2::hasTitle(const ID3_TagImpl& tag)
+{
+  ID3_Frame* frame = tag.Find(ID3FID_TITLE);
+  return(frame);
 }
 
 String id3::v2::getTitle(const ID3_TagImpl& tag)
@@ -182,6 +203,14 @@ size_t id3::v2::removeTitles(ID3_TagImpl& tag)
   return removeFrames(tag, ID3FID_TITLE);
 }
 
+////////////////////////////////////////////////////////////
+
+ID3_Frame* id3::v2::hasYear(const ID3_TagImpl& tag)
+{
+  ID3_Frame* frame = tag.Find(ID3FID_YEAR);
+  return(frame);
+}
+
 String id3::v2::getYear(const ID3_TagImpl& tag)
 {
   return getFrameText(tag, ID3FID_YEAR);
@@ -195,6 +224,23 @@ ID3_Frame* id3::v2::setYear(ID3_TagImpl& tag, String text)
 size_t id3::v2::removeYears(ID3_TagImpl& tag)
 {
   return removeFrames(tag, ID3FID_YEAR);
+}
+
+////////////////////////////////////////////////////////////
+
+ID3_Frame* id3::v2::hasV1Comment(const ID3_TagImpl& tag)
+{
+  ID3_Frame* frame = NULL;
+  (frame = tag.Find(ID3FID_COMMENT, ID3FN_DESCRIPTION, STR_V1_COMMENT_DESC)) ||
+  (frame = tag.Find(ID3FID_COMMENT, ID3FN_DESCRIPTION, ""                 )) ||
+  (frame = tag.Find(ID3FID_COMMENT));
+  return(frame);
+}
+
+ID3_Frame* id3::v2::hasComment(const ID3_TagImpl& tag)
+{
+  ID3_Frame* frame = tag.Find(ID3FID_COMMENT);
+  return(frame);
 }
 
 String id3::v2::getV1Comment(const ID3_TagImpl& tag)
@@ -291,6 +337,14 @@ size_t id3::v2::removeComments(ID3_TagImpl& tag, String desc)
   return numRemoved;
 }
 
+////////////////////////////////////////////////////////////
+
+ID3_Frame* id3::v2::hasTrack(const ID3_TagImpl& tag)
+{
+  ID3_Frame* frame = tag.Find(ID3FID_TRACKNUM);
+  return(frame);
+}
+
 String id3::v2::getTrack(const ID3_TagImpl& tag)
 {
   return getFrameText(tag, ID3FID_TRACKNUM);
@@ -319,6 +373,14 @@ ID3_Frame* id3::v2::setTrack(ID3_TagImpl& tag, uchar trk, uchar ttl)
 size_t id3::v2::removeTracks(ID3_TagImpl& tag)
 {
   return removeFrames(tag, ID3FID_TRACKNUM);
+}
+
+////////////////////////////////////////////////////////////
+
+ID3_Frame* id3::v2::hasGenre(const ID3_TagImpl& tag)
+{
+  ID3_Frame* frame = tag.Find(ID3FID_CONTENTTYPE);
+  return(frame);
 }
 
 String id3::v2::getGenre(const ID3_TagImpl& tag)
@@ -362,6 +424,14 @@ ID3_Frame* id3::v2::setGenre(ID3_TagImpl& tag, size_t genre)
 size_t id3::v2::removeGenres(ID3_TagImpl& tag)
 {
   return removeFrames(tag, ID3FID_CONTENTTYPE);
+}
+
+////////////////////////////////////////////////////////////
+
+ID3_Frame* id3::v2::hasLyrics(const ID3_TagImpl& tag)
+{
+  ID3_Frame* frame = tag.Find(ID3FID_UNSYNCEDLYRICS);
+  return(frame);
 }
 
 String id3::v2::getLyrics(const ID3_TagImpl& tag)
@@ -421,6 +491,16 @@ ID3_Frame* id3::v2::setLyricist(ID3_TagImpl& tag, String text)
 size_t id3::v2::removeLyricists(ID3_TagImpl& tag)
 {
   return removeFrames(tag, ID3FID_LYRICIST);
+}
+
+////////////////////////////////////////////////////////////
+
+ID3_Frame* id3::v2::hasSyncLyrics(const ID3_TagImpl& tag, String lang, String desc)
+{
+  ID3_Frame* frame=NULL;
+  (frame = tag.Find(ID3FID_SYNCEDLYRICS, ID3FN_LANGUAGE, lang)) ||
+  (frame = tag.Find(ID3FID_SYNCEDLYRICS, ID3FN_DESCRIPTION, desc));
+  return(frame);
 }
 
 ID3_Frame* id3::v2::setSyncLyrics(ID3_TagImpl& tag, BString data,

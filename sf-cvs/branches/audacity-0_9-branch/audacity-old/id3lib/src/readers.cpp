@@ -1,4 +1,4 @@
-// $Id: readers.cpp,v 1.1.2.1 2001-09-30 01:51:53 dmazzoni Exp $
+// $Id: readers.cpp,v 1.1.2.2 2002-01-04 06:42:56 dmazzoni Exp $
 
 // id3lib: a C++ library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug

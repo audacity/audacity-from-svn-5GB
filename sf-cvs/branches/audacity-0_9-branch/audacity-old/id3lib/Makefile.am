@@ -8,8 +8,8 @@
 # WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-# require automake 1.4
-AUTOMAKE_OPTIONS = 1.4
+# require automake 1.5
+AUTOMAKE_OPTIONS = 1.5
 
 EXTRA_DIST =                    \
         HISTORY                 \
@@ -17,7 +17,9 @@ EXTRA_DIST =                    \
         config.h.win32.in       \
         id3lib.spec             \
         id3lib.spec.in          \
-        reconf
+        reconf			\
+	makefile.win32		\
+	makewin32.bat
 if ID3_NEEDZLIB
 zlib_subdir = zlib
 else
@@ -25,7 +27,7 @@ zlib_subdir =
 endif
 
 SUBDIRS =  . m4 $(zlib_subdir) doc include src examples
-DIST_SUBDIRS = . m4 zlib doc include src examples
+DIST_SUBDIRS = . m4 zlib doc include src examples prj libprj
 
 INCLUDES = @ID3LIB_DEBUG_FLAGS@
 

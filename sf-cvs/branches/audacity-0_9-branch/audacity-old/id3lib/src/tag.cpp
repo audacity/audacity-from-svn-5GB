@@ -1,4 +1,4 @@
-// $Id: tag.cpp,v 1.1.2.1 2001-09-30 01:51:53 dmazzoni Exp $
+// $Id: tag.cpp,v 1.1.2.2 2002-01-04 06:42:56 dmazzoni Exp $
 
 // id3lib: a C++ library for creating and manipulating id3v1/v2 tags
 // Copyright 1999, 2000  Scott Thomas Haug
@@ -277,7 +277,7 @@ using namespace dami;
  ** formatted 'CDM' frames from the unreleased ID3v2 2.01 draft specification.
  **
  ** \author Dirk Mahoney
- ** \version $Id: tag.cpp,v 1.1.2.1 2001-09-30 01:51:53 dmazzoni Exp $
+ ** \version $Id: tag.cpp,v 1.1.2.2 2002-01-04 06:42:56 dmazzoni Exp $
  ** \sa ID3_Frame
  ** \sa ID3_Field
  ** \sa ID3_Err
@@ -967,7 +967,7 @@ void ID3_Tag::AddNewFrame(ID3_Frame* f)
  **/
 void ID3_Tag::AddFrames(const ID3_Frame *frames, size_t numFrames)
 {
-  for (index_t i = numFrames - 1; i >= 0; i--)
+  for (int i = numFrames - 1; i >= 0; i--)
   {
     this->AddFrame(frames[i]);
   }

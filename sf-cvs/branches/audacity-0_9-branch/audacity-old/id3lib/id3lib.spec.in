@@ -1,4 +1,4 @@
-# $Id: id3lib.spec.in,v 1.1 2001-07-08 08:49:20 dmazzoni Exp $
+# $Id: id3lib.spec.in,v 1.1.2.1 2002-01-04 06:42:56 dmazzoni Exp $
 
 %define name    @PACKAGE@
 %define	version	@VERSION@
@@ -52,14 +52,14 @@ Requires:       %{name}
 
 %description	examples
 This package contains simple example applications that make use of id3lib, a 
-software library for ID3v1 and ID3v2 tag maniuplation.
+software library for ID3v1 and ID3v2 tag manipulation.
 
 %prep
 %setup -q
 
 %build
 
-CXXFLAGS="$RPM_OPT_FLAGS -fnoexceptions" ./configure --prefix=%prefix --enable-debug=no
+CXXFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix --enable-debug=no
 
 %ifnarch noarch
 
@@ -126,6 +126,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Sat Sep 08 2001 Cedric Tefft <cedric@earthling.net> 3.8.0pre2
+- Version 3.8.0pre2
+
 * Mon Nov 20 2000 Scott Thomas Haug <scott@id3.org> 3.8.0pre1-1
 - Version 3.8.0pre1
 
