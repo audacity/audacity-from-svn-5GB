@@ -37,7 +37,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "portaudio.h"
-#define NUM_SECONDS   (8)
+#define NUM_SECONDS   (4)
 #define SAMPLE_RATE   (44100)
 #define FRAMES_PER_BUFFER  (512)
 #ifndef M_PI
@@ -59,8 +59,7 @@ static int patestCallback(   void *inputBuffer, void *outputBuffer,
 {
 	paTestData *data = (paTestData*)userData;
 	float *out = (float*)outputBuffer;
-	int i;
-	int framesToCalc;
+	unsigned long i;
 	int finished = 0;
 	(void) outTime; /* Prevent unused variable warnings. */
 	(void) inputBuffer;
@@ -75,6 +74,7 @@ static int patestCallback(   void *inputBuffer, void *outputBuffer,
 	}
 	return finished;
 }
+
 /*******************************************************************/
 int main(void);
 int main(void)
@@ -111,7 +111,7 @@ int main(void)
 	if( err != paNoError ) goto error;
 	err = Pa_StartStream( stream );
 	if( err != paNoError ) goto error;
-	printf("Play for several seconds.\n");
+	printf("Play for %d seconds.\n", NUM_SECONDS );
 	Pa_Sleep( NUM_SECONDS * 1000 );
 	
 	err = Pa_StopStream( stream );

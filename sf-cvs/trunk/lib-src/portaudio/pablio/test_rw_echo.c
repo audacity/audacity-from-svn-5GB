@@ -7,6 +7,10 @@
  * This program uses PABLIO, the Portable Audio Blocking I/O Library.
  * PABLIO is built on top of PortAudio, the Portable Audio Library.
  *
+ * Note that if you need low latency, you should not use PABLIO.
+ * Use the PA_OpenStream callback technique which is lower level
+ * than PABLIO.
+ *
  * For more information see: http://www.audiomulch.com/portaudio/
  * Copyright (c) 1999-2000 Ross Bencina and Phil Burk
  *
