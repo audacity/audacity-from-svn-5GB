@@ -1063,7 +1063,7 @@ void FreqWindow::OnExport()
 #endif
    f.Open();
    if (!f.IsOpened()) {
-      wxMessageBox(_("Couldn't write to ") + fName);
+      wxMessageBox(_("Couldn't write to file: ") + fName);
       return;
    }
 

@@ -26,8 +26,7 @@ bool ImportMIDI(wxString fName, NoteTrack * dest)
    FILE *mf = fopen(fName, "rb");
 
    if (!mf || ferror(mf)) {
-      wxMessageBox(wxString::
-                   Format(_("Could not open %s"), (const char *) fName));
+      wxMessageBox( _("Could not open file: ") + fName);
       return false;
    }
 
