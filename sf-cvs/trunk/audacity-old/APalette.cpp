@@ -49,7 +49,7 @@ APalette *gAPalette = NULL;
 #define APALETTE_HEIGHT 80
 #endif
 
-void InitAPalette(wxFrame *parent)
+void InitAPalette(wxWindow *parent)
 {
   wxPoint where;
 
@@ -78,7 +78,7 @@ BEGIN_EVENT_TABLE(APalette, wxMiniFrame)
                      wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnStop)
 END_EVENT_TABLE()
 
-APalette::APalette(wxFrame* parent, wxWindowID id, const wxString& title,
+APalette::APalette(wxWindow* parent, wxWindowID id, const wxString& title,
 				   const wxPoint& pos) :
   wxMiniFrame(parent, id, title, pos, wxSize(300, APALETTE_HEIGHT),
               wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP )

@@ -24,12 +24,12 @@ class TrackList;
 
 extern FreqWindow *gFreqWindow;
 
-void InitFreqWindow(wxFrame *parent);
+void InitFreqWindow(wxWindow *parent);
 
 class FreqWindow: public wxFrame
 {
 public:
-  FreqWindow(wxFrame *parent, wxWindowID id,
+  FreqWindow(wxWindow *parent, wxWindowID id,
 			 const wxString& title,
 			 const wxPoint& pos);
 

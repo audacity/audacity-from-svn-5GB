@@ -63,7 +63,7 @@ int gAudacityDocNum = 0;
 AProjectArray gAudacityProjects;
 AudacityProject *gActiveProject;
 
-AudacityProject *CreateNewAudacityProject()
+AudacityProject *CreateNewAudacityProject(wxWindow *parentWindow)
 {
   wxPoint where;
   where.x = 10;
@@ -77,7 +77,7 @@ AudacityProject *CreateNewAudacityProject()
   where.y += gAudacityDocNum*25;
 
   AudacityProject *p =
-	new AudacityProject((wxFrame *) NULL, -1, 
+	new AudacityProject(parentWindow, -1, 
 						where, wxSize(600, 300));
 
   p->Show(true);
@@ -695,7 +695,7 @@ void AudacityProject::OpenFile(wxString fileName)
   if (f.GetFirstLine() != "AudacityProject") {
 	f.Close();
 	if (mDirty) {
-	  AudacityProject *project = CreateNewAudacityProject();
+	  AudacityProject *project = CreateNewAudacityProject(gParentWindow);
 	  project->ImportFile(fileName);
 	}
 	else {
@@ -776,7 +776,7 @@ openFileError:
 
 void AudacityProject::OnNew()
 {
-  CreateNewAudacityProject();
+  CreateNewAudacityProject(gParentWindow);
 }
 
 void AudacityProject::OnOpen()
@@ -792,7 +792,7 @@ void AudacityProject::OnOpen()
   
   if (fileName != "") {
 	if (mDirty) {
-	  AudacityProject *project = CreateNewAudacityProject();
+	  AudacityProject *project = CreateNewAudacityProject(gParentWindow);
 	  project->OpenFile(fileName);
 	}
 	else

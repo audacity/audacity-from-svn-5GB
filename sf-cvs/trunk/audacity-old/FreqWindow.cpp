@@ -48,7 +48,7 @@ FreqWindow *gFreqWindow = NULL;
 #define FREQ_WINDOW_WIDTH 440
 #define FREQ_WINDOW_HEIGHT 330
 
-void InitFreqWindow(wxFrame *parent)
+void InitFreqWindow(wxWindow *parent)
 {
   wxPoint where;
 
@@ -74,7 +74,7 @@ BEGIN_EVENT_TABLE(FreqWindow, wxFrame)
   EVT_CHOICE (FreqAxisChoiceID,     FreqWindow::OnAxisChoice)
 END_EVENT_TABLE()
 
-FreqWindow::FreqWindow(wxFrame* parent, wxWindowID id, const wxString& title,
+FreqWindow::FreqWindow(wxWindow* parent, wxWindowID id, const wxString& title,
 				   const wxPoint& pos) :
   wxFrame(parent, id, title, pos,
 	      wxSize(FREQ_WINDOW_WIDTH, FREQ_WINDOW_HEIGHT)),
@@ -414,7 +414,13 @@ void FreqWindow::OnPaint(wxPaintEvent &evt)
 
   int i;
 
-  wxFont freqWindowFont(10, wxSWISS, wxNORMAL, wxNORMAL);
+#ifdef __WXMSW__
+  const int fontSize = 8;
+#else
+  const int fontSize = 10;
+#endif
+
+  wxFont freqWindowFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
   memDC.SetFont(freqWindowFont);
 
   // Draw y axis and gridlines

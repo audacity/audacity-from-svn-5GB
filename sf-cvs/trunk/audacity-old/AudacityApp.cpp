@@ -60,12 +60,17 @@ void wxOnAssert(const char* fileName, int lineNumber, const char* msg)
 }
 #endif
 
+wxFrame *gParentFrame = NULL;
+wxWindow *gParentWindow = NULL;
+
 void QuitAudacity()
 {
   if (gAPalette)
 	gAPalette->Destroy();
   if (gFreqWindow)
 	gFreqWindow->Destroy();
+  if (gParentFrame)
+    gParentFrame->Destroy();
 }
 
 IMPLEMENT_APP(AudacityApp)
@@ -90,9 +95,24 @@ bool AudacityApp::OnInit()
 
   SetExitOnFrameDelete(true);
 
-  InitAPalette(NULL);
-  InitFreqWindow(NULL);
-  AudacityProject *project = CreateNewAudacityProject();
+  /*
+  #ifdef __WXMSW__
+  wxMDIParentFrame *parentFrame;
+  parentFrame = new wxMDIParentFrame(NULL, 0, "Audacity",
+	                                 wxDefaultPosition,
+									 wxDefaultSize,
+									 wxDEFAULT_FRAME_STYLE | wxMAXIMIZE,
+									 "Audacity");
+  parentFrame->Show(true);
+
+  gParentFrame = parentFrame;
+  gParentWindow = parentFrame->GetClientWindow();
+  #endif
+  */
+
+  InitAPalette(gParentWindow);
+  InitFreqWindow(gParentWindow);
+  AudacityProject *project = CreateNewAudacityProject(gParentWindow);
   SetTopWindow(gAPalette);
 
   // Parse command-line arguments

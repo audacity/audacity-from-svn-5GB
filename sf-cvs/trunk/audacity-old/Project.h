@@ -32,7 +32,7 @@ class TrackList;
 
 class AudacityProject;
 
-AudacityProject *CreateNewAudacityProject();
+AudacityProject *CreateNewAudacityProject(wxWindow *parentFrame);
 AudacityProject *GetActiveProject();
 void RedrawAllProjects();
 

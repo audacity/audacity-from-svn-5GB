@@ -30,13 +30,13 @@ class APalette;
 
 extern APalette *gAPalette;
 
-void InitAPalette(wxFrame *parent);
+void InitAPalette(wxWindow *parent);
 
 // Define a new mini frame
 class APalette: public wxMiniFrame
 {
 public:
-  APalette(wxFrame *parent, wxWindowID id,
+  APalette(wxWindow *parent, wxWindowID id,
 		   const wxString& title,
 		   const wxPoint& pos);
 

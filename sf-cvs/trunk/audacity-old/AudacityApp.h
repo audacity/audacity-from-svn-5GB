@@ -18,6 +18,8 @@
 // in an irrevocable way
 #define AUDACITY_FILE_FORMAT_VERSION "0.9"
 
+extern wxWindow *gParentWindow;
+
 void QuitAudacity();
 
 class AudacityApp: public wxApp
