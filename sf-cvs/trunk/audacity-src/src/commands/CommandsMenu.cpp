@@ -14,9 +14,16 @@
 
 #include "CommandsMenu.h"
 
+
+
+
+// On wxGTK, there may be many many many plugins, but the menus don't automatically
+// allow for scrolling, so we build sub-menus.  If the menu gets longer than
+// MAX_MENU_LEN, we put things in submenus that have MAX_SUBMENU_LEN items in them.
+// 
 #ifdef __WXGTK__
 #define MAX_MENU_LEN 20
-#define MAX_SUBMENU_LEN 10
+#define MAX_SUBMENU_LEN 15
 #else
 #define MAX_MENU_LEN 1000
 #define MAX_SUBMENU_LEN 1000
@@ -215,19 +222,31 @@ void CommandsMenu::AppendEffects(EffectArray *effs, wxString sType, bool spill)
 
    wxString label;
    int listnum = 1;
+   int tmpmax = MAX_SUBMENU_LEN  < effLen? MAX_SUBMENU_LEN: effLen;
 
-   BeginSubMenu(wxString::Format("Plugins #%i", listnum));
+
+   //The first submenu starts at 1.
+   BeginSubMenu(wxString::Format(_("Plugins 1 to %i"), tmpmax));
 
    for (i=0; i<effLen; i++) {
-      AppendEffect((*effs)[i]->GetID(), (*effs)[i]->GetEffectName(), sType);
+     
 
-      if(((i+1) % MAX_SUBMENU_LEN) == 0 && i != (effLen - 1))
-      {
-         EndSubMenu();
-         listnum++;
-         BeginSubMenu(wxString::Format("Plugins #%i", listnum));
-      }
+     AppendEffect((*effs)[i]->GetID(), (*effs)[i]->GetEffectName(), sType);
+     
+     if(((i+1) % MAX_SUBMENU_LEN) == 0 && i != (effLen - 1))
+       {
 
+	 EndSubMenu();
+	 listnum++;
+	 
+	 tmpmax = i + MAX_SUBMENU_LEN  < effLen? 1 + i + MAX_SUBMENU_LEN: effLen;
+	 //This label the plugins by number in the submenu title (1 to 15, 15 to 30, etc.)
+         BeginSubMenu(wxString::Format(_("Plugins %i to %i"),i+2,tmpmax));
+       }
+
+
+
+     
    }
 
    EndSubMenu();
