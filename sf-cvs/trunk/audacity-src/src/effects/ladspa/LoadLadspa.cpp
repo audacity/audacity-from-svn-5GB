@@ -109,7 +109,11 @@ void LoadLadspaPlugins()
                                          pathList);
    }
 
+   #ifdef __WXMSW__
+   wxGetApp().FindFilesInPathList("*.dll", pathList, wxFILE, files);   
+   #else
    wxGetApp().FindFilesInPathList("*.so", pathList, wxFILE, files);
+   #endif
 
    for(i=0; i<files.GetCount(); i++)
       LoadLadspaEffect(files[i]);
