@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
 <head>
-<title>Audioeffect - Delay</title>
+<title>Audio effect - Delay</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         <link rel=stylesheet type="text/css" href="audacity.css">
 </head>
@@ -25,10 +25,10 @@
 </P>
 <P class=a>
  The RAM buffer will not always be just large enough to store the amount of audio set by the current delay time, but will
- actualy be considerably larger sometimes, because many delay effects allow for their delay parameter to automated.
+ actually be considerably larger sometimes, because many delay effects allow for their delay parameter to automated.
 </P>
 <center>
-<img border=0 src="images/delay_signalflow.png" width="296" height="117" alt="Delay Effect Signalflow">
+<img border=0 src="images/delay_signalflow.png" width="296" height="117" alt="Delay Effect Signal flow">
 <BR>&nbsp;<br>
 <img border=0 src="images/delay.png" width="459" height="169" alt="Delay Effect diagram">
 </center>
@@ -37,7 +37,7 @@
 <P class=qr>Multi-Tap Delays</P>
 <P class=a>
  This effect simply incorporates several discrete delay lines, each with its own delay time,
- level(amplitude) and panning. The feedback parameter is usualy shared by all delays in a multi-tap delay.
+ level(amplitude) and panning. The feedback parameter is usually shared by all delays in a multi-tap delay.
  Some multi-tap delays feature a modulation section that modulates the delay times, which can be used to
  create <a href="effects_chorus.html">chorus</a> effects.
 </P>
@@ -59,7 +59,7 @@
    </P>
    <P class=a>
     The delay software plugin Supertap by Waves for example comes in two flavours on Protools TDM systems.
-    One allows for delays of up to two seconds, but another version accomodates delay times of up to six seconds.
+    One allows for delays of up to two seconds, but another version accommodates delay times of up to six seconds.
     This is due to the availability of RAM on the DSP hardware of a TDM system. The native(->CPU) version of this plugin
     for Windows for example only allows for delays of up to four seconds in length, but there are delay plugins that
     allow for delays of several minutes.
@@ -70,7 +70,7 @@
  <td valign=top align=right class=menuref_item>Feedback</td>
  <td valign=top>
    <P class=a>
-    Today's delay units and plugins will feature one of several different types of feeback parameters :
+    Today's delay units and plugins will feature one of several different types of feedback parameters :
    </P>
    <P class=a>
     <B>a) Percentage Range : 0 to 99(or 100)%</B>
@@ -88,7 +88,7 @@
     <B>c) Feedback Delay Time : 0.000 to xxx.xxx seconds</B>
     <BR>
     This is like an additional delay line that takes the already delayed signal as input.
-    This kind of parameter also requires a level setting, which is usualy a percentage parameter, like a).
+    This kind of parameter also requires a level setting, which is usually a percentage parameter, like a).
    </P>
    <P>
     <!-- push it down a bit -->&nbsp;
@@ -99,8 +99,8 @@
  <td valign=top align=right class=menuref_item>EQs&nbsp;&amp;&nbsp;Filters</td>
  <td valign=top>
    <P class=a>
-    Many delay plugins feature hishelf and/or lowshelf EQs, or they feature hipass and/or lowpass filters.
-    These EQs or filters usualy process each delay. The idea behind this is usualy to simulate distance, because
+    Many delay plugins feature highshelf and/or lowshelf EQs, or they feature highpass and/or lowpass filters.
+    These EQs or filters usually process each delay. The idea behind this is usually to simulate distance, because
     with increasing distance, the lower and higher frequencies are dampened.
    </P>
    <P class=a>
@@ -110,7 +110,7 @@
       <UL><LI>Gain : -xx to xx dB</LI><LI>Frequency: 20 Hz - 20 kHz</LI></UL>
      </td>
      <td valign=top>
-      <B><B>Low- &amp; Hipass Filters</B><BR>
+      <B><B>Low- &amp; Highpass Filters</B><BR>
       <UL><LI>Frequency: 20 Hz - 20 kHz</LI><LI>Filter Strength : 6, 12, 18 or 24 dB/Octave</LI></UL>
      </td>
     </tr></table>

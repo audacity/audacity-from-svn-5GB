@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
 <head>
-<title>Audioeffect - Reverb</title>
+<title>Audio effect - Reverb</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         <link rel=stylesheet type="text/css" href="audacity.css">
 </head>
@@ -22,14 +22,14 @@
 <P class=qr>What is Reverb ?</P>
 <P class=a>
  A Reverb simulates the component of sound that results from reflections from surrounding walls or objects.
- It is in effect a room simulator. Some peope think it's just a delay effect with some filters, but it's way
+ It is in effect a room simulator. Some people think it's just a delay effect with some filters, but it's way
  more complex than that. Reverb effects (software plugins or external hardware units) provide
- an interface to their changable parameters that need some explaining. Let's look at a simple room first.
+ an interface to their changeable parameters that need some explaining. Let's look at a simple room first.
 </P>
 <P class=qr>Basic Simulation of a Room</P>
 <P class=a>
  <B>Our model is a simple room</B> with four straight walls, a sound source and a listener. In <i>Figure 1</i>
- the arrows stand for the path of travelling sound.
+ the arrows stand for the path of traveling sound.
 </P>
 <P class=a>
  The listener hears the DIRECT signal first. The DIRECT signal is also referred to as the DRY part of the signal when using
@@ -62,7 +62,7 @@
 <td valign=top>
  <P class=a>
   The sound reflects off the walls and objects in the room, and in time individual reflections
-  disapear and the Reverb develops.
+  disappear and the Reverb develops.
  </P>
  <P class=a>
   <U><B>Predelay</B></U><BR>
@@ -76,7 +76,7 @@
   from that sound dropping by 60dB is called <B>RT60</B>.
  </P>
  <P class=a>
-  This is usualy referred to as the <B>Reverb Time</B>. When anyone refers to the reverb time
+  This is usually referred to as the <B>Reverb Time</B>. When anyone refers to the reverb time
   of a real room or that of a digital reverb, RT60 is what they're talking about.
  </P>
  <P class=a>
@@ -93,11 +93,11 @@
  <td valign=top align=right class=menuref_item>Early&nbsp;Reflections</td>
  <td valign=top>
    <P class=a>
-    Usualy controlled via <B>Room type</B> and/or <B>Room Size</B> parameters.
+    Usually controlled via <B>Room type</B> and/or <B>Room Size</B> parameters.
    </P>
    <P class=a>
     The <B>EARLY REFLECTIONS</B> enable the human brain to quickly identify the room size. They are
-    therefore the most critical part of a reverb effect, if a room simluation is the goal.
+    therefore the most critical part of a reverb effect, if a room simulation is the goal.
    </P><BR>
  </td>
 </tr>
@@ -105,7 +105,7 @@
  <td valign=top align=right class=menuref_item>Predelay</td>
  <td valign=top>
    <P class=a>
-    Paramter Range : 0 to x milliseconds
+    Parameter Range : 0 to x milliseconds
    </P>
    <P class=a>
     Time between Direct Signal and start of Reverb portion.
@@ -119,18 +119,18 @@
  <td valign=top align=right class=menuref_item>Reverb Time</td>
  <td valign=top>
    <P class=a>
-    Paramter Range : 0.1 to x.x seconds
+    Parameter Range : 0.1 to x.x seconds
    </P>
    <P class=a>
     The greater the enclosed(!) volume of the space you're in, the longer the reverb time. This is of course true only
     to a certain extent. The larger the room or chamber, the louder your source signal needs to be to produce any
     significant level of reverb tail. A good way to demonstrate this is to visit some huge cathedral and talk quietly.
-    Then yell a bit and you'll actualy hear some significantly loud reverb. The RT60 value is measured with a noise impuls, but the level
+    Then yell a bit and you'll actually hear some significantly loud reverb. The RT60 value is measured with a noise impulse, but the level
     at which that impulse was sent out should be known too.
    </P>
    <P class=a>
     Many reverb effects let you set different reverb times for different frequency bands. Most reverb units on PC and Mac architectures provide two bands,
-    so you get to set the reverb time for each frequency band individualy.
+    so you get to set the reverb time for each frequency band individually.
    </P><BR>
  </td>
 </tr>
@@ -138,10 +138,10 @@
  <td valign=top align=right class=menuref_item>Reverb Damping</td>
  <td valign=top>
    <P class=a>
-    Usualy a Hishelf and/or a Lowshelf EQ with variable Frequency.
+    Usually a Highshelf and/or a Lowshelf EQ with variable Frequency.
    </P>
    <P class=a>
-    These EQs are applied continously to an evolving reverb of a piece of audio.
+    These EQs are applied continuously to an evolving reverb of a piece of audio.
     Over time, as the reverb fades, so do certain frequencies, either in the lower
     or higher frequency range. The more less-reflective surfaces the sound bounces
     around from, the more the reverb is dampened the higher frequencies.
@@ -156,11 +156,11 @@
  <td valign=top align=right class=menuref_item>Reverb EQ</td>
  <td valign=top>
    <P class=a>
-    Usualy a Hishelf and/or Lowshelf EQ with variable Frequency.
+    Usually a Highshelf and/or Lowshelf EQ with variable Frequency.
    </P>
    <P class=a>
     These EQs are only applied to the output of the reverb or perhaps even just the reverb portion
-    of the Reverb effect. Some reverbs have Hishelf and Lowshelf EQs for the Early Reflections as well.
+    of the Reverb effect. Some reverbs have Highshelf and Lowshelf EQs for the Early Reflections as well.
    </P>
    <P class=a>
     Freeverb has both a Hicut and Lowcut parameter.
@@ -179,7 +179,7 @@
 <small><span class=ss>reproduced with permission</span></small>
 </center>
 <P class=a>
- Here we have the Hishelf and Lowshelf EQs for Damping(left) and for the final output(right). The upper middle display
+ Here we have the Highshelf and Lowshelf EQs for Damping(left) and for the final output(right). The upper middle display
  depicts the Early Reflections placement and level, as well as the Reverb portion start and fading. Above this display
  is the <i>Reverb Type</i> selector. This changes the placement and level of the Early Reflections. The <i>Size</i> slider
  has influence on the Early Reflections as well.
@@ -191,7 +191,7 @@
 </P -->
 <P class=a>
  Blank concrete will reflect sound quite well across the frequency spectrum. A large thick curtain
- or padded walls will reflect sound poorly. A large club filled with people sounds completly different
+ or padded walls will reflect sound poorly. A large club filled with people sounds completely different
  from an empty one. People, comfy chairs, curtains, carpets, beds and many more objects reflect only
  part of the sound that hits them.
 </P>
