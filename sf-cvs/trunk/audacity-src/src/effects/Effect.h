@@ -81,7 +81,8 @@ class Effect {
    // Override to include effect parameters, so typically useful only after PromptUser. 
    virtual wxString GetEffectDescription() { 
       // Default provides effect name. 
-      return wxString::Format(_("Applied effect: %s"), this->GetEffectName()); 
+      return wxString::Format(_("Applied effect: %s"), 
+                              (const char *)(this->GetEffectName())); 
    } 
 	 
    // Return flags which tell you what kind of effect this is.
