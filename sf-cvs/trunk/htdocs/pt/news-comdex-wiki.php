@@ -1,7 +1,5 @@
 <?php BoxTop('COMDEX, Fotos de tela, Wiki, Camisetas!   <font size=1>28/10/03</font>'); ?>
 
-<?php BoxTop('October 28, 2003: COMDEX, Screenshots, Wiki, T-Shirts'); ?>
-
 Trabalhamos numa série de aprimoramentos no Audacity desde a última versão de testes e em poucos dias estará disponível para cópia a versão 1.2.0-pre3, que trará habilitado o suporte a plug-ins VST. 
 Até a liberação da versão de testes, temos outras novidades:
 
