@@ -11,8 +11,8 @@ ChangesAssociations=yes
 DefaultDirName={pf}\Audacity
 DisableProgramGroupPage=yes
 UninstallDisplayIcon="{app}\audacity.exe"
-LicenseFile=E:\sfw_dev\audacity\LICENSE.txt
-InfoBeforeFile=E:\sfw_dev\audacity\README.txt
+LicenseFile=..\LICENSE.txt
+InfoBeforeFile=..\README.txt
 ; uncomment the following line if you want your installation to run on NT 3.51 too.
 ; MinVersion=4,3.51
 
@@ -22,78 +22,78 @@ Name: associate_aup; Description: "&Associate Audacity project files"; GroupDesc
 
 
 [Files]
-Source: "E:\sfw_dev\audacity\win\Release\audacity.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\audacity-1.2-help.htb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\bg\audacity.mo"; DestDir: "{app}\Languages\bg"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\ca\audacity.mo"; DestDir: "{app}\Languages\ca"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\ca\wxstd.mo"; DestDir: "{app}\Languages\ca"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\cs\audacity.mo"; DestDir: "{app}\Languages\cs"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\cs\wxstd.mo"; DestDir: "{app}\Languages\cs"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\da\audacity.mo"; DestDir: "{app}\Languages\da"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\da\wxstd.mo"; DestDir: "{app}\Languages\da"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\de\audacity.mo"; DestDir: "{app}\Languages\de"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\de\wxstd.mo"; DestDir: "{app}\Languages\de"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\es\audacity.mo"; DestDir: "{app}\Languages\es"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\es\wxstd.mo"; DestDir: "{app}\Languages\es"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\fi\audacity.mo"; DestDir: "{app}\Languages\fi"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\fi\wxstd.mo"; DestDir: "{app}\Languages\fi"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\fr\audacity.mo"; DestDir: "{app}\Languages\fr"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\fr\wxstd.mo"; DestDir: "{app}\Languages\fr"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\hu\audacity.mo"; DestDir: "{app}\Languages\hu"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\hu\wxstd.mo"; DestDir: "{app}\Languages\hu"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\it\audacity.mo"; DestDir: "{app}\Languages\it"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\it\wxstd.mo"; DestDir: "{app}\Languages\it"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\ja\audacity.mo"; DestDir: "{app}\Languages\ja"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\mk\audacity.mo"; DestDir: "{app}\Languages\mk"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\nb\audacity.mo"; DestDir: "{app}\Languages\no"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\nl\audacity.mo"; DestDir: "{app}\Languages\nl"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\nl\wxstd.mo"; DestDir: "{app}\Languages\nl"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\pl\audacity.mo"; DestDir: "{app}\Languages\pl"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\pl\wxstd.mo"; DestDir: "{app}\Languages\pl"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\pt\audacity.mo"; DestDir: "{app}\Languages\pt"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\ru\audacity.mo"; DestDir: "{app}\Languages\ru"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\ru\wxstd.mo"; DestDir: "{app}\Languages\ru"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\sl\audacity.mo"; DestDir: "{app}\Languages\sl"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\sl\wxstd.mo"; DestDir: "{app}\Languages\sl"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\sv\audacity.mo"; DestDir: "{app}\Languages\sv"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Languages\sv\wxstd.mo"; DestDir: "{app}\Languages\sv"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\README.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\bug.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\dspprims.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\evalenv.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\follow.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\init.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\misc.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\nyinit.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\nyqmisc.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\nyquist.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\printrec.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\profile.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\seq.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\seqfnint.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\seqmidi.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\sndfnint.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\system.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\test.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Nyquist\xlinit.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
-; doesn't work:     Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\analyze.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\beat.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\clicktrack.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\crossfadein.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\crossfadeout.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\delay.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-; redundant:     Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\fadein.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-; redundant:     Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\fadeout.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\GVerb.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\Hard Limiter.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\highpass.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\highpass.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\lowpass.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\pluck.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\sc4.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\tremolo.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-; redundant:     Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\undcbias.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "..\win\Release\audacity.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\win\Release\audacity-1.2-help.htb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\win\Release\Languages\bg\audacity.mo"; DestDir: "{app}\Languages\bg"; Flags: ignoreversion
+Source: "..\win\Release\Languages\ca\audacity.mo"; DestDir: "{app}\Languages\ca"; Flags: ignoreversion
+Source: "..\win\Release\Languages\ca\wxstd.mo"; DestDir: "{app}\Languages\ca"; Flags: ignoreversion
+Source: "..\win\Release\Languages\cs\audacity.mo"; DestDir: "{app}\Languages\cs"; Flags: ignoreversion
+Source: "..\win\Release\Languages\cs\wxstd.mo"; DestDir: "{app}\Languages\cs"; Flags: ignoreversion
+Source: "..\win\Release\Languages\da\audacity.mo"; DestDir: "{app}\Languages\da"; Flags: ignoreversion
+Source: "..\win\Release\Languages\da\wxstd.mo"; DestDir: "{app}\Languages\da"; Flags: ignoreversion
+Source: "..\win\Release\Languages\de\audacity.mo"; DestDir: "{app}\Languages\de"; Flags: ignoreversion
+Source: "..\win\Release\Languages\de\wxstd.mo"; DestDir: "{app}\Languages\de"; Flags: ignoreversion
+Source: "..\win\Release\Languages\es\audacity.mo"; DestDir: "{app}\Languages\es"; Flags: ignoreversion
+Source: "..\win\Release\Languages\es\wxstd.mo"; DestDir: "{app}\Languages\es"; Flags: ignoreversion
+Source: "..\win\Release\Languages\fi\audacity.mo"; DestDir: "{app}\Languages\fi"; Flags: ignoreversion
+Source: "..\win\Release\Languages\fi\wxstd.mo"; DestDir: "{app}\Languages\fi"; Flags: ignoreversion
+Source: "..\win\Release\Languages\fr\audacity.mo"; DestDir: "{app}\Languages\fr"; Flags: ignoreversion
+Source: "..\win\Release\Languages\fr\wxstd.mo"; DestDir: "{app}\Languages\fr"; Flags: ignoreversion
+Source: "..\win\Release\Languages\hu\audacity.mo"; DestDir: "{app}\Languages\hu"; Flags: ignoreversion
+Source: "..\win\Release\Languages\hu\wxstd.mo"; DestDir: "{app}\Languages\hu"; Flags: ignoreversion
+Source: "..\win\Release\Languages\it\audacity.mo"; DestDir: "{app}\Languages\it"; Flags: ignoreversion
+Source: "..\win\Release\Languages\it\wxstd.mo"; DestDir: "{app}\Languages\it"; Flags: ignoreversion
+Source: "..\win\Release\Languages\ja\audacity.mo"; DestDir: "{app}\Languages\ja"; Flags: ignoreversion
+Source: "..\win\Release\Languages\mk\audacity.mo"; DestDir: "{app}\Languages\mk"; Flags: ignoreversion
+Source: "..\win\Release\Languages\nb\audacity.mo"; DestDir: "{app}\Languages\nb"; Flags: ignoreversion
+Source: "..\win\Release\Languages\nl\audacity.mo"; DestDir: "{app}\Languages\nl"; Flags: ignoreversion
+Source: "..\win\Release\Languages\nl\wxstd.mo"; DestDir: "{app}\Languages\nl"; Flags: ignoreversion
+Source: "..\win\Release\Languages\pl\audacity.mo"; DestDir: "{app}\Languages\pl"; Flags: ignoreversion
+Source: "..\win\Release\Languages\pl\wxstd.mo"; DestDir: "{app}\Languages\pl"; Flags: ignoreversion
+Source: "..\win\Release\Languages\pt\audacity.mo"; DestDir: "{app}\Languages\pt"; Flags: ignoreversion
+Source: "..\win\Release\Languages\ru\audacity.mo"; DestDir: "{app}\Languages\ru"; Flags: ignoreversion
+Source: "..\win\Release\Languages\ru\wxstd.mo"; DestDir: "{app}\Languages\ru"; Flags: ignoreversion
+Source: "..\win\Release\Languages\sl\audacity.mo"; DestDir: "{app}\Languages\sl"; Flags: ignoreversion
+Source: "..\win\Release\Languages\sl\wxstd.mo"; DestDir: "{app}\Languages\sl"; Flags: ignoreversion
+Source: "..\win\Release\Languages\sv\audacity.mo"; DestDir: "{app}\Languages\sv"; Flags: ignoreversion
+Source: "..\win\Release\Languages\sv\wxstd.mo"; DestDir: "{app}\Languages\sv"; Flags: ignoreversion
+Source: "..\README.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\bug.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\dspprims.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\evalenv.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\follow.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\init.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\misc.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\nyinit.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\nyqmisc.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\nyquist.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\printrec.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\profile.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\seq.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\seqfnint.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\seqmidi.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\sndfnint.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\system.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\test.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+Source: "..\win\Release\Nyquist\xlinit.lsp"; DestDir: "{app}\Nyquist"; Flags: ignoreversion
+; doesn't work:     Source: "..\win\Release\Plug-Ins\analyze.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "..\win\Release\Plug-Ins\beat.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "..\win\Release\Plug-Ins\clicktrack.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "..\win\Release\Plug-Ins\crossfadein.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "..\win\Release\Plug-Ins\crossfadeout.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "..\win\Release\Plug-Ins\delay.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+; redundant:     Source: "..\win\Release\Plug-Ins\fadein.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+; redundant:     Source: "..\win\Release\Plug-Ins\fadeout.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "..\win\Release\Plug-Ins\GVerb.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "..\win\Release\Plug-Ins\Hard Limiter.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "..\win\Release\Plug-Ins\highpass.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "..\win\Release\Plug-Ins\highpass.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "..\win\Release\Plug-Ins\lowpass.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "..\win\Release\Plug-Ins\pluck.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "..\win\Release\Plug-Ins\sc4.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "..\win\Release\Plug-Ins\tremolo.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+; redundant:     Source: "..\win\Release\Plug-Ins\undcbias.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 
 
 [Icons]
