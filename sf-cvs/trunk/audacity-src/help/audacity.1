@@ -24,10 +24,11 @@ currently uses
 .B libsndfile
 to open many uncompressed audio formats such as WAV,
 AIFF, and AU, and it can also be linked to
-.B libmad
+.B libmad,
+.B libvorbis,
 and
-.B libvorbis
-to provide support for opening MP3 and Ogg Vorbis files,
+.B libflac,
+to provide support for opening MP3, Ogg Vorbis, and FLAC files,
 respectively.
 
 If you specify multiple files on the command-line, Audacity
@@ -35,19 +36,19 @@ will import all of them into the same project, which is
 convenient if you want to mix them.
 
 Audacity is an interactive, graphical editor, not a
-batch-processing tool.  There are no options which make
+batch-processing tool.  There are no options that make
 it easy to perform an operation on a set of files.
 If you need to batch-process audio or do simple edits
 from the command line, use
 .B sox.
 
 .SH FILES
-.I ~/.Audacity
+.I ~/.audacity
 .RS
 Per user configuration file.
 .RE
 
-.I /tmp/audacity1.1-<user>/
+.I /tmp/audacity1.2-<user>/
 .RS
 Default location of Audacity's temp directory, where <user> is your
 username.  If this location is not suitable (not enough space in
@@ -132,7 +133,8 @@ handle running out of disk space.
 
 .SH AUTHORS
 Primary contributors include Dominic Mazzoni, Joshua Haberman,
-Matt Brubeck, Shane Mueller, and Brian Gunlogson,
+Matt Brubeck, Shane Mueller, Brian Gunlogson, Vaughan Johnson,
+Greg Mekkes, James Crook, and Markus Meyer,
 but dozens of others have contributed, and Audacity would not
 be possible without wxWindows, libsndfile, and many of
 the other libraries it is built upon.  For the most recent list
