@@ -9,6 +9,9 @@
 
 **********************************************************************/
 
+#ifndef __AUDACITY_COMMAND_MANAGER__
+#define __AUDACITY_COMMAND_MANAGER__
+
 #include <wx/string.h>
 #include <wx/dynarray.h>
 #include <wx/menu.h>
@@ -39,6 +42,7 @@ struct CommandListEntry
    int id;
    wxString name;
    wxString key;
+   wxString defaultKey;
    wxString label;
    wxMenu *menu;
    CommandFunctor *callback;
@@ -103,6 +107,16 @@ class CommandManager
 
    bool HandleKey(wxKeyEvent &evt);
 
+   //
+   // Accessing
+   //
+
+   void GetAllCommandNames(wxArrayString &names, bool includeMultis);
+
+   wxString GetLabelFromName(wxString name);
+   wxString GetKeyFromName(wxString name);
+   wxString GetDefaultKeyFromName(wxString name);
+
  protected:
 
    wxMenuBar * CurrentMenuBar();
@@ -115,23 +129,6 @@ class CommandManager
 
    wxString GetKey(wxString label);
 
-   /*
-   void AddDynamicItem(wxString sName);
-   void AppendEffect(int idEffect, wxString sName, wxString sType);
-   void AppendEffects(EffectArray *effs, wxString sType, bool spill);
-
-
-   wxMenu * GetMenuFromIdentifier(int nID);
-
-   int GetIdentifiersFromFunction(wxString sFunction, bool bReset = false);
-   int GetIdentifierFromFunctions(wxString sFunctions);
-   wxString GetFunctionsFromIdentifier(int nID);
-
-   wxString GetKeysFromIdentifier(int nID);
-   int GetIdentifierFromKey(wxString sKey);
-
-   */
-
 private:
    MenuBarList  mMenuBarList;
    SubMenuList  mSubMenuList;
@@ -142,3 +139,5 @@ private:
    int mCurrentID;
    wxMenu * mCurrentMenu;
 };
+
+#endif

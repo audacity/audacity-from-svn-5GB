@@ -992,6 +992,13 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
    return wxFrame::ProcessEvent(event);
 }
 
+void AudacityProject::RebuildMenuBar()
+{
+   SetMenuBar(NULL);
+   mCommandManager.PurgeData();
+   CreateMenusAndCommands();
+}
+
 void AudacityProject::UpdateMenus()
 {
    #if 0

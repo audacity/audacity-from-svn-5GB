@@ -12,6 +12,8 @@
 
 #include <wx/hash.h>
 
+#include "../Prefs.h"
+
 #include "CommandManager.h"
 
 #include "Keyboard.h"
@@ -54,6 +56,8 @@ void CommandManager::PurgeData()
 {
    size_t i;
 
+   #if 0
+
    //delete the menubars
    for(i = 0; i < mMenuBarList.GetCount(); i++)
       delete mMenuBarList[i]->menubar;
@@ -74,6 +78,8 @@ void CommandManager::PurgeData()
    //reset other variables
    mCurrentMenu = NULL;
    mCurrentID = 0;
+
+   #endif
 }
 
 
@@ -217,6 +223,11 @@ void CommandManager::AddItem(wxString name, wxString label,
 {
    int ID = NewIdentifier(name, label, CurrentMenu(), callback, false, 0);
 
+   // Replace the accel key with the one from the preferences
+   label = label.BeforeFirst('\t');
+   if (mCommandIDHash[ID]->key)
+      label = label + "\t" + mCommandIDHash[ID]->key;
+
    CurrentMenu()->Append(ID, label);
 }
 
@@ -246,7 +257,7 @@ void CommandManager::AddItemList(wxString name, wxArrayString labels,
    }
 
    wxString label;
-   int effLen = labels.GetCount();
+   unsigned int effLen = labels.GetCount();
    int listnum = 1;
    int tmpmax = MAX_SUBMENU_LEN  < effLen? MAX_SUBMENU_LEN: effLen;
 
@@ -308,6 +319,13 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    tmpEntry->multi = multi;
    tmpEntry->index = index;
    tmpEntry->key = GetKey(label);
+   tmpEntry->defaultKey = GetKey(label);
+
+   // Key from preferences overridse the default key given
+   gPrefs->SetPath("/NewKeys");
+   if (gPrefs->HasEntry(name))
+      tmpEntry->key = gPrefs->Read(name, GetKey(label));
+   gPrefs->SetPath("/");
    
    mCommandList.Add(tmpEntry);
    mCommandNameHash[name] = tmpEntry;
@@ -380,184 +398,41 @@ bool CommandManager::HandleKey(wxKeyEvent &evt)
    return true;
 }
 
-//
-// Stuff to rewrite still
-//
-
-#if 0
-
-void CommandManager::AddDynamicItem(wxString sName)
+void CommandManager::GetAllCommandNames(wxArrayString &names,
+                                        bool includeMultis)
 {
-   int effType = -1;
-   EffectArray *effs;
-
-   //determine what dynamic item to add
-   if(!sName.Cmp("GeneratePlugins"))
-      effType = INSERT_EFFECT;
-   else if(!sName.Cmp("EffectPlugins"))
-      effType = PROCESS_EFFECT;
-   else if(!sName.Cmp("AnalyzePlugins"))
-      effType = ANALYZE_EFFECT;
-   else
-      return;
-
-   effs = Effect::GetEffects(BUILTIN_EFFECT | effType);
-   AppendEffects(effs, sName, false);
-   delete effs;
-
-   effs = Effect::GetEffects(PLUGIN_EFFECT | effType);
-   if (effs->GetCount() > 0)
-   {
-      AddSeparator();
-      AppendEffects(effs, sName, true);
-   }
-   delete effs;
-
-   if(!CurrentMenu()->GetMenuItemCount())
-   {
-      //Add disabled None item
-      AddItem(_("None"), "", "");
-      CurrentMenu()->Enable(mCurrentID, false);
-   }
-}
-
-void CommandManager::AppendEffect(int idEffect, wxString sName, wxString sType)
-{
-   AddItem(sName, wxString::Format("%i@%s@Effect", idEffect, sType.c_str()), "");
-}
-
-void CommandManager::AppendEffects(EffectArray *effs, wxString sType, bool spill)
-{
-   unsigned int currentLen = CurrentMenu()->GetMenuItemCount();
-   unsigned int effLen = effs->GetCount();
    unsigned int i;
 
-   if (!spill || currentLen + effLen <= MAX_MENU_LEN)
-   {
-      for(i=0; i<effLen; i++)
-         AppendEffect((*effs)[i]->GetID(), (*effs)[i]->GetEffectName(), sType);
-      return;
+   for(i=0; i<mCommandList.GetCount(); i++) {
+      if (includeMultis || !mCommandList[i]->multi)
+         names.Add(mCommandList[i]->name);
    }
-
-   // There were too many effects in this menu.  Put the
-   // extras (plug-ins) in submenus.
-
-   wxString label;
-   int listnum = 1;
-   int tmpmax = MAX_SUBMENU_LEN  < effLen? MAX_SUBMENU_LEN: effLen;
-
-
-   //The first submenu starts at 1.
-   BeginSubMenu(wxString::Format(_("Plugins 1 to %i"), tmpmax));
-
-   for (i=0; i<effLen; i++) {
-     
-
-     AppendEffect((*effs)[i]->GetID(), (*effs)[i]->GetEffectName(), sType);
-     
-     if(((i+1) % MAX_SUBMENU_LEN) == 0 && i != (effLen - 1))
-       {
-
-	 EndSubMenu();
-	 listnum++;
-	 
-	 tmpmax = i + MAX_SUBMENU_LEN  < effLen? 1 + i + MAX_SUBMENU_LEN: effLen;
-	 //This label the plugins by number in the submenu title (1 to 15, 15 to 30, etc.)
-         BeginSubMenu(wxString::Format(_("Plugins %i to %i"),i+2,tmpmax));
-       }
-
-
-
-     
-   }
-
-   EndSubMenu();
 }
 
-
-wxMenu * CommandManager::GetMenuFromIdentifier(int nID)
+wxString CommandManager::GetLabelFromName(wxString name)
 {
-   for(unsigned int i = 0; i < mIdentifierNameList.GetCount(); i++)
-   {
-      if(mIdentifierNameList[i]->id == nID)
-         return mIdentifierNameList[i]->menu;
-   }
+   CommandListEntry *entry = mCommandNameHash[name];
+   if (!entry)
+      return "";
 
-   return NULL;
+   return entry->label;
 }
 
-int CommandManager::GetIdentifiersFromFunction(wxString sFunction, bool bReset)
+wxString CommandManager::GetKeyFromName(wxString name)
 {
-   static unsigned int uIndex = 0;
-
-   if(bReset)
-      uIndex = 0;
-
-   for(unsigned int i = uIndex; i < mIdentifierNameList.GetCount(); i++)
-   {
-      uIndex = i+1;
-
-      wxStringTokenizer tFunctions(mIdentifierNameList[i]->functions, ":");
-      while(tFunctions.HasMoreTokens())
-      {
-         wxString token = tFunctions.GetNextToken();
-
-         if(!token.Cmp(sFunction))
-            return mIdentifierNameList[i]->id;
-      }
-   }
-
-   return -1;
+   CommandListEntry *entry = mCommandNameHash[name];
+   if (!entry)
+      return "";
+ 
+   return entry->key;
 }
 
-int CommandManager::GetIdentifierFromFunctions(wxString sFunctions)
+wxString CommandManager::GetDefaultKeyFromName(wxString name)
 {
-   for(unsigned int i = 0; i < mIdentifierNameList.GetCount(); i++)
-   {
-      if(!mIdentifierNameList[i]->functions.Cmp(sFunctions))
-         return mIdentifierNameList[i]->id;
-   }
-
-   return -1;
+   CommandListEntry *entry = mCommandNameHash[name];
+   if (!entry)
+      return "";
+ 
+   return entry->defaultKey;
 }
 
-wxString CommandManager::GetFunctionsFromIdentifier(int nID)
-{
-   for(unsigned int i = 0; i < mIdentifierNameList.GetCount(); i++)
-   {
-      if(mIdentifierNameList[i]->id == nID)
-         return mIdentifierNameList[i]->functions;
-   }
-
-   return "";
-}
-
-wxString CommandManager::GetKeysFromIdentifier(int nID)
-{
-   for(unsigned int i = 0; i < mIdentifierNameList.GetCount(); i++)
-   {
-      if(mIdentifierNameList[i]->id == nID)
-         return mIdentifierNameList[i]->keys;
-   }
-
-   return "";
-}
-
-int CommandManager::GetIdentifierFromKey(wxString sKey)
-{
-   for(unsigned int i = 0; i < mIdentifierNameList.GetCount(); i++)
-   {
-      wxStringTokenizer tKeys(mIdentifierNameList[i]->keys, ":");
-      while(tKeys.HasMoreTokens())
-      {
-         wxString token = tKeys.GetNextToken();
-
-         if(!token.Cmp(sKey))
-            return mIdentifierNameList[i]->id;
-      }
-   }
-
-   return -1;
-}
-
-#endif

@@ -133,6 +133,10 @@ class AudacityProject:public wxFrame,
 
 #include "Menus.h"
 
+   CommandManager *GetCommandManager() { return &mCommandManager; }
+
+   void RebuildMenuBar();
+
  public:
 
    // Message Handlers
