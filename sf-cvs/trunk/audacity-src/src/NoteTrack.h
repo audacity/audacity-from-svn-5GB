@@ -15,9 +15,12 @@
 
 #include "Track.h"
 
-class Seq;   // from "allegro.h"
+class wxDC;
+class wxRect;
 
 class DirManager;
+class Seq;   // from "allegro.h"
+
 
 class NoteTrack:public VTrack {
  public:
@@ -35,14 +38,14 @@ class NoteTrack:public VTrack {
 
    int GetBottomNote() const { return mBottomNote; }
    void SetBottomNote(int note) 
-     { 
-       if (note < 0)
-	 note = 0;
-       else if (note > 96)
-	 note = 96;
+   { 
+      if (note < 0)
+         note = 0;
+      else if (note > 96)
+         note = 96;
 
-       mBottomNote = note; 
-     }
+      mBottomNote = note; 
+   }
 
  private:
    Seq *mSeq;
