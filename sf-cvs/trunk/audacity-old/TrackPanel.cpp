@@ -56,7 +56,9 @@ enum {
   OnRateOtherID,
 
   OnWaveformID,
+  OnWaveformDBID,
   OnSpectrumID,
+  OnPitchID,
   
   OnSplitStereoID,
   OnMergeStereoID
@@ -76,7 +78,9 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
   EVT_MENU(OnChannelMonoID, TrackPanel::OnChannelMono)
 
   EVT_MENU(OnWaveformID, TrackPanel::OnWaveform)
+  EVT_MENU(OnWaveformDBID, TrackPanel::OnWaveformDB)
   EVT_MENU(OnSpectrumID, TrackPanel::OnSpectrum)
+  EVT_MENU(OnPitchID, TrackPanel::OnPitch)
 
   EVT_MENU(OnRate8ID, TrackPanel::OnRate8)
   EVT_MENU(OnRate11ID, TrackPanel::OnRate11)
@@ -130,8 +134,10 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
   mWaveTrackMenu = new wxMenu();
   mWaveTrackMenu->Append(OnSetNameID, "Name...");
   mWaveTrackMenu->AppendSeparator();
-  mWaveTrackMenu->Append(OnWaveformID, "Show Waveform");
-  mWaveTrackMenu->Append(OnSpectrumID, "Show Spectrum");
+  mWaveTrackMenu->Append(OnWaveformID, "Waveform");
+  mWaveTrackMenu->Append(OnWaveformDBID, "Waveform (dB)");
+  mWaveTrackMenu->Append(OnSpectrumID, "Spectrum");
+  mWaveTrackMenu->Append(OnPitchID, "Pitch (EAC)");
   mWaveTrackMenu->AppendSeparator();
   mWaveTrackMenu->Append(OnChannelMonoID, "Mono");
   mWaveTrackMenu->Append(OnChannelLeftID, "Left Channel");
@@ -597,18 +603,26 @@ void TrackPanel::HandleEnvelope(wxMouseEvent& event)
 
   if (mCapturedTrack && mCapturedTrack->GetKind()==VTrack::Wave) {
 	Envelope *e = ((WaveTrack *)mCapturedTrack)->GetEnvelope();
+	int display = ((WaveTrack *)mCapturedTrack)->GetDisplay();
+	bool needUpdate = false;
 
-	bool needUpdate = e->MouseEvent(event, mCapturedRect,
-									mViewInfo->h, mViewInfo->zoom);
+	if (display <= 1) {
+	  bool dB = (display == 1);
+		
+	  needUpdate = e->MouseEvent(event, mCapturedRect,
+								 mViewInfo->h, mViewInfo->zoom,
+								 dB);
 
-	// If this track is linked to another track, make the identical
-	// change to the linked envelope:
-
-	WaveTrack *link = (WaveTrack *)(mTracks->GetLink(mCapturedTrack));
-	if (link && link->GetKind()==VTrack::Wave) {
-	  Envelope *e2 = link->GetEnvelope();
-	  e2->MouseEvent(event, mCapturedRect,
-					 mViewInfo->h, mViewInfo->zoom);
+	  // If this track is linked to another track, make the identical
+	  // change to the linked envelope:
+	  
+	  WaveTrack *link = (WaveTrack *)(mTracks->GetLink(mCapturedTrack));
+	  if (link && link->GetKind()==VTrack::Wave) {
+		Envelope *e2 = link->GetEnvelope();
+		e2->MouseEvent(event, mCapturedRect,
+					   mViewInfo->h, mViewInfo->zoom,
+					   dB);
+	  }
 	}
 
 	if (needUpdate)
@@ -905,6 +919,17 @@ void TrackPanel::HandleLabelClick(wxMouseEvent& event)
 							 ("Left Channel"), !t->linked);
 	  theMenu->Enable(theMenu->FindItem
 							 ("Right Channel"), !t->linked);
+
+	  int display = ((WaveTrack *)t)->GetDisplay();
+
+	  theMenu->Enable(theMenu->FindItem
+					  ("Waveform"), display != 0);
+	  theMenu->Enable(theMenu->FindItem
+					  ("Waveform (dB)"), display != 1);
+	  theMenu->Enable(theMenu->FindItem
+					  ("Spectrum"), display != 2);
+	  theMenu->Enable(theMenu->FindItem
+					  ("Pitch (EAC)"), display != 3);
 	}
 
 	if (t->GetKind() == VTrack::Note) {
@@ -1842,13 +1867,39 @@ void TrackPanel::OnWaveform()
   }
 }
 
-void TrackPanel::OnSpectrum()
+void TrackPanel::OnWaveformDB()
 {
   if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
     ((WaveTrack *)mPopupMenuTarget)->SetDisplay(1);
     VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
     if (partner)
       ((WaveTrack *)partner)->SetDisplay(1);
+    mPopupMenuTarget = NULL;
+    MakeParentPushState();
+    Refresh(false);
+  }
+}
+
+void TrackPanel::OnSpectrum()
+{
+  if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
+    ((WaveTrack *)mPopupMenuTarget)->SetDisplay(2);
+    VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
+    if (partner)
+      ((WaveTrack *)partner)->SetDisplay(2);
+    mPopupMenuTarget = NULL;
+    MakeParentPushState();
+    Refresh(false);
+  }
+}
+
+void TrackPanel::OnPitch()
+{
+  if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
+    ((WaveTrack *)mPopupMenuTarget)->SetDisplay(3);
+    VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
+    if (partner)
+      ((WaveTrack *)partner)->SetDisplay(3);
     mPopupMenuTarget = NULL;
     MakeParentPushState();
     Refresh(false);

@@ -59,16 +59,18 @@ private:
   wxPen samplePen;
   wxPen selsamplePen;
   wxPen shadowPen;
-  wxPen envelopePen;
 
   void PrepareCacheWaveform(TrackInfoCache *cache,
 							double start, double pps,
 							int screenWidth);
 
+  int GetWaveYPos(float value, int height, bool dB);
+
   void DrawWaveform(TrackInfoCache *cache,
 					wxDC &dc, wxRect &r,
 					ViewInfo *viewInfo,
-					bool drawEnvelope);
+					bool drawEnvelope,
+					bool dB);
 
   void PrepareCacheSpectrum(TrackInfoCache *cache,
 							double start, double pps,
@@ -76,7 +78,8 @@ private:
 
   void DrawSpectrum(TrackInfoCache *cache,
 					wxDC &dc, wxRect &r,
-					ViewInfo *viewInfo);
+					ViewInfo *viewInfo,
+					bool autocorrelation);
 
   void DrawNoteTrack(TrackInfoCache *cache,
 					 wxDC &dc, wxRect &r,

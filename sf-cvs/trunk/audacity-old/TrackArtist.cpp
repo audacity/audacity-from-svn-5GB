@@ -15,6 +15,8 @@
 
 **********************************************************************/
 
+#include <math.h>
+
 #include <wx/brush.h>
 #include <wx/colour.h>
 #include <wx/dc.h>
@@ -57,6 +59,8 @@ public:
 
 TrackArtist::TrackArtist()
 {
+  AColor::Init();
+
   mTrackHash = NULL;
 
   mInsetLeft = 0;
@@ -76,7 +80,6 @@ TrackArtist::TrackArtist()
   samplePen.SetColour(50,50,200);
   selsamplePen.SetColour(50,50,200);
   shadowPen.SetColour(148, 148, 148);
-  envelopePen.SetColour(0, 220, 0);
 }
 
 TrackArtist::~TrackArtist()
@@ -159,11 +162,21 @@ void TrackArtist::DrawTracks(TrackList *tracks,
 
     switch(t->GetKind()) {
     case VTrack::Wave:
-      if (((WaveTrack *)t)->GetDisplay()==1)
-        DrawSpectrum(info, dc, rr, viewInfo);
-      else
-        DrawWaveform(info, dc, rr, viewInfo, drawEnvelope);
-      break;
+	  switch(((WaveTrack *)t)->GetDisplay()) {
+	  case 0: // Std waveform
+        DrawWaveform(info, dc, rr, viewInfo, drawEnvelope, false);
+		break;
+	  case 1: // Waveform (dB)
+        DrawWaveform(info, dc, rr, viewInfo, drawEnvelope, true);
+		break;
+	  case 2: // Spectrum
+        DrawSpectrum(info, dc, rr, viewInfo, false);
+		break;
+	  case 3: // Pitch (enhanced autocorrelation)
+        DrawSpectrum(info, dc, rr, viewInfo, true);
+		break;
+	  }
+	  break; // case Wave
     case VTrack::Note:
       DrawNoteTrack(info, dc, rr, viewInfo);
       break;
@@ -434,10 +447,32 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache *cache,
   delete[] temp;
 }
 
+int TrackArtist::GetWaveYPos(float value, int height, bool dB)
+{
+  float sign = (value>=0? 1: -1);
+
+  if (dB) {
+	if (value == 0 || height==0)
+	  return 0;
+	float db = 10*log10(fabs(value));
+	// The smallest value we will see is -45.15 (10*log10(1/32768))
+    float val = (db+45.0)/45.0;
+	if (val < 0.0)
+	  val = 0.0;
+	if (val > 1.0)
+	  val = 1.0;
+	
+	return (int)(sign*(height*val+0.5));
+  }
+  else
+	return (int)(value*height + sign*0.5);
+}
+
 void TrackArtist::DrawWaveform(TrackInfoCache *cache,
 							   wxDC &dc, wxRect &r,
 							   ViewInfo *viewInfo,
-							   bool drawEnvelope)
+							   bool drawEnvelope,
+							   bool dB)
 {
   double h = viewInfo->h;
   double pps = viewInfo->zoom;
@@ -531,8 +566,10 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
   double t = t0;
   int x;
   for(x=0; x<mid.width; x++) {
-    heights[x] = int((mid.height/2) *
-    				 track->envelope.GetValue(t+tOffset));
+    heights[x] = GetWaveYPos(track->envelope.GetValue(t+tOffset),
+							 mid.height/2,
+							 dB);
+
     t += 1/pps;
   }
 
@@ -560,16 +597,25 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
 
   dc.SetPen(samplePen);
 
+  t = t0;
   for(x=0; x<mid.width; x++) {
 	
-    int h1 = ctr-(cache->min[x] * heights[x]) / 32767;
-    int h2 = ctr-(cache->max[x] * heights[x]) / 32767;
+    int h1 = ctr-GetWaveYPos(cache->min[x]/32768.0 *
+							 track->envelope.GetValue(t+tOffset),
+							 mid.height/2,
+							 dB);
+    int h2 = ctr-GetWaveYPos(cache->max[x]/32768.0 *
+							 track->envelope.GetValue(t+tOffset),
+							 mid.height/2,
+							 dB);
     
     dc.DrawLine(mid.x+x,h2,mid.x+x,h1+1);
+
+	t += 1/pps;
   }
 
   if (drawEnvelope) {
-  	dc.SetPen(envelopePen);
+  	dc.SetPen(AColor::envelopePen);
 
   	for(x=0; x<mid.width; x++) {
   	  
@@ -601,7 +647,7 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
   if (drawEnvelope) {
   	wxRect envRect = r;
   	envRect.height-=2;
-  	track->envelope.Draw(dc, envRect, h, pps);
+  	track->envelope.Draw(dc, envRect, h, pps, dB);
   }
 }
 
@@ -726,7 +772,8 @@ void TrackArtist::PrepareCacheSpectrum(TrackInfoCache *cache,
 
 void TrackArtist::DrawSpectrum(TrackInfoCache *cache,
 							   wxDC &dc, wxRect &r,
-							   ViewInfo *viewInfo)
+							   ViewInfo *viewInfo,
+							   bool autocorrelation)
 {
   double h = viewInfo->h;
   double pps = viewInfo->zoom;

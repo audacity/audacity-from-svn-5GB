@@ -14,6 +14,7 @@
 #include <wx/brush.h>
 #include <wx/pen.h>
 
+#include "AColor.h"
 #include "Envelope.h"
 #include "DirManager.h"
 
@@ -47,13 +48,31 @@ void Envelope::CopyFrom(Envelope *e)
 	Insert(e->mEnv[i]->t, e->mEnv[i]->val);
 }
 
-void Envelope::Draw(wxDC &dc, wxRect &r, double h, double pps)
+double Envelope::toDB(double value)
+{
+  if (value == 0)
+	return 0;
+
+  double sign = (value>=0? 1: -1);
+
+  double db = 10*log10(fabs(value));
+  // The smallest value we will see is -45.15 (10*log10(1/32768))
+  double val = (db+45.0)/45.0;
+  if (val < 0.0)
+	val = 0.0;
+  if (val > 1.0)
+	val = 1.0;
+	
+  return sign*val;
+}
+
+void Envelope::Draw(wxDC &dc, wxRect &r, double h, double pps, bool dB)
 {
   h -= mOffset;
 
   double tright = h + (r.width / pps);
 
-  dc.SetPen(*wxGREEN_PEN);
+  dc.SetPen(AColor::envelopePen);
   dc.SetBrush(*wxWHITE_BRUSH);
 
   int ctr = r.y + (r.height/2);
@@ -62,20 +81,26 @@ void Envelope::Draw(wxDC &dc, wxRect &r, double h, double pps)
   for(int i=0; i<len; i++) {
 	if (mEnv[i]->t >= h && mEnv[i]->t <= tright) {
 	  if (i == mDragPoint) {
-		dc.SetPen(*wxGREEN_PEN);
-		dc.SetBrush(*wxGREEN_BRUSH);
+		dc.SetPen(AColor::envelopePen);
+		dc.SetBrush(AColor::envelopeBrush);
 	  }
 
 	  double v = mEnv[i]->val;
 	  int x = int((mEnv[i]->t - h) * pps);
-	  int y = int(ctr - v*(r.height/2));
-	  wxRect circle(r.x+x-1, y-1, 4, 4);
+	  int y;
+
+	  if (dB)
+		y = int(toDB(v)*(r.height/2));
+	  else
+		y = int(v*(r.height/2));
+
+	  wxRect circle(r.x+x-1, ctr-y-1, 4, 4);
 	  dc.DrawEllipse(circle);
-	  circle.y = int(ctr + v*(r.height/2))-2;
+	  circle.y = ctr+y-2;
 	  dc.DrawEllipse(circle);
 
 	  if (i == mDragPoint) {
-		dc.SetPen(*wxGREEN_PEN);
+		dc.SetPen(AColor::envelopePen);
 		dc.SetBrush(*wxWHITE_BRUSH);
 	  }
 	}
@@ -123,7 +148,8 @@ bool Envelope::Save(wxTextFile *out, bool overwrite)
 }
 
 // Returns true if parent needs to be redrawn
-bool Envelope::MouseEvent(wxMouseEvent &event, wxRect &r, double h, double pps)
+bool Envelope::MouseEvent(wxMouseEvent &event, wxRect &r,
+						  double h, double pps, bool dB)
 {
   //h -= mOffset;
 
@@ -141,11 +167,18 @@ bool Envelope::MouseEvent(wxMouseEvent &event, wxRect &r, double h, double pps)
 		  if (mEnv[i]->t >= h && mEnv[i]->t <= tright) {
 			double v = mEnv[i]->val;
 			int x = int((mEnv[i]->t + mOffset - h) * pps) + r.x;
+			int dy;
+
+			if (dB)
+			  dy = int(toDB(v)*(r.height/2));
+			else
+			  dy = int(v*(r.height/2));
+
 			int y;
 			if (upper)
-			  y = int(ctr - v*(r.height/2));
+			  y = int(ctr - dy);
 			else
-			  y = int(ctr + v*(r.height/2));
+			  y = int(ctr + dy);
 			
 		     #ifndef SQR
 		     #define SQR(X) ((X)*(X))
@@ -166,13 +199,19 @@ bool Envelope::MouseEvent(wxMouseEvent &event, wxRect &r, double h, double pps)
 	  // Create new point
 	  double when = h + (event.m_x - r.x)/pps - mOffset;
 
-	  int y;
+	  int dy;
 	  if (upper)
-		y = ctr - event.m_y;
+		dy = ctr - event.m_y;
 	  else
-		y = event.m_y - ctr;
+		dy = event.m_y - ctr;
 	  
-	  double newVal = y / double(r.height/2);
+	  double newVal;
+
+	  if (dB)
+		newVal = pow(10.0, 4.5*(dy / double(r.height/2)));
+	  else
+		newVal = dy / double(r.height/2);
+
 	  if (newVal < 0.0)
 		newVal = 0.0;
 	  if (newVal > 1.0)
@@ -404,15 +443,15 @@ double Envelope::GetValue(double t)
   }
 
   double t0 = mEnv[lo]->t;
-  double v0 = log(mEnv[lo]->val);
+  double v0 = log10(mEnv[lo]->val);
   double t1 = mEnv[hi]->t;
-  double v1 = log(mEnv[hi]->val);
+  double v1 = log10(mEnv[hi]->val);
 
   // Special case for the log of zero
   if (mEnv[lo]->val <= 0.0)
-	v0 = -10.4; // This corresponds to the log of 1/32768
+	v0 = -4.6; // This corresponds to the log10 of 1/32768
   if (mEnv[hi]->val <= 0.0)
-	v1 = -10.4;
+	v1 = -4.6;
   
   // Interpolate in logspace
   
@@ -428,7 +467,7 @@ double Envelope::GetValue(double t)
   double to = t - t0;
   double v = (v0*(dt-to) + v1*to) / dt;
 
-  return exp(v);
+  return pow(10.0, v);
 }
 
 /*

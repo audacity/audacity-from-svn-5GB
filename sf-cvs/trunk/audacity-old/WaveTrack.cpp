@@ -133,6 +133,7 @@ VTrack *WaveTrack::Duplicate()
   copy->channel = channel;
   copy->selected = selected;
   copy->envelope.CopyFrom(&envelope);
+  copy->display = display;
 
   return (VTrack *)copy;
 }

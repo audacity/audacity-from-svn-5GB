@@ -23,6 +23,9 @@ wxPen AColor::lightPen[2];
 wxPen AColor::mediumPen[2];
 wxPen AColor::darkPen[2];
 
+wxBrush AColor::envelopeBrush;
+wxPen AColor::envelopePen;
+
 void AColor::Bevel(wxDC& dc, bool up, wxRect& r)
 {
   if (up)
@@ -68,12 +71,17 @@ void AColor::Dark(wxDC *dc, bool selected)
 
 void AColor::Init()
 {
+  if (inited) return;
+
   wxColour light =
 	wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DHIGHLIGHT);
   wxColour med =
 	wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
   wxColour dark =
 	wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW);
+
+  envelopePen.SetColour(110, 110, 220);
+  envelopeBrush.SetColour(110, 110, 220);
 
   #if defined(__WXMSW__) || defined(__WXGTK__)
   // unselected

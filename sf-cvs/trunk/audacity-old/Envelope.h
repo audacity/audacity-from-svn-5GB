@@ -45,10 +45,11 @@ public:
 
   // Event Handlers
 
-  void Draw(wxDC &dc, wxRect &r, double h, double pps);
+  void Draw(wxDC &dc, wxRect &r, double h, double pps, bool dB);
 
   // Returns true if parents needs to be redrawn
-  bool MouseEvent(wxMouseEvent &event, wxRect &r, double h, double pps);
+  bool MouseEvent(wxMouseEvent &event, wxRect &r,
+				  double h, double pps, bool dB);
 
   // Handling Cut/Copy/Paste events
   void CollapseRegion(double t0, double t1);
@@ -70,6 +71,8 @@ public:
 private:
 
   int Insert(double when, double value);
+
+  double toDB(double x);
 
   EnvArray   mEnv;
   double     mOffset;

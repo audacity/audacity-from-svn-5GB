@@ -92,7 +92,9 @@ private:
   void OnChannelMono();
 
   void OnWaveform();
+  void OnWaveformDB();
   void OnSpectrum();
+  void OnPitch();
 
   void OnRate8();
   void OnRate11();

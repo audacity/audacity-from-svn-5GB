@@ -45,7 +45,7 @@ enum {
 
 FreqWindow *gFreqWindow = NULL;
 
-#define FREQ_WINDOW_WIDTH 440
+#define FREQ_WINDOW_WIDTH 480
 #define FREQ_WINDOW_HEIGHT 330
 
 void InitFreqWindow(wxWindow *parent)
@@ -98,7 +98,7 @@ FreqWindow::FreqWindow(wxWindow* parent, wxWindowID id, const wxString& title,
 
   mPlotRect.x = 10;
   mPlotRect.y = 10;
-  mPlotRect.width = 420;
+  mPlotRect.width = 460;
   mPlotRect.height = 215;
   
   mLeftMargin = 40;
@@ -106,31 +106,32 @@ FreqWindow::FreqWindow(wxWindow* parent, wxWindowID id, const wxString& title,
 
   mInfoRect.x = 10;
   mInfoRect.y = 230;
-  mInfoRect.width = 420;
+  mInfoRect.width = 460;
   mInfoRect.height = 15;
 
   mExportButton = new wxButton(this, FreqExportButtonID,
 							   "Export...",
-							   wxPoint(350, 260),
+							   wxPoint(390, 260),
 							   wxSize(70, 20));
 
   mCloseButton = new wxButton(this, FreqCloseButtonID,
 							  "Close",
-							  wxPoint(350, 290),
+							  wxPoint(390, 290),
 							  wxSize(70, 20));
   #ifndef TARGET_CARBON
   mCloseButton->SetDefault();
   mCloseButton->SetFocus();							  
   #endif
 
-  wxString algChoiceStrings[4] = {"Spectrum",
-								  "Autocorrelation",
-								  "Enhanced Autocor.",
+  wxString algChoiceStrings[5] = {"Spectrum",
+								  "Standard Autocorrelation",
+								  "Cuberoot Autocorrelation",
+								  "Enhanced Autocorrelation",
 								  "Cepstrum"};
   
   mAlgChoice = new wxChoice(this, FreqAlgChoiceID,
 							wxPoint(10, 260),
-							wxSize(160, 20),
+							wxSize(200, 20),
 							4, algChoiceStrings);
 
   mAlgChoice->SetSelection(0);
@@ -145,7 +146,7 @@ FreqWindow::FreqWindow(wxWindow* parent, wxWindowID id, const wxString& title,
 								   "16384"};
   
   mSizeChoice = new wxChoice(this, FreqSizeChoiceID,
-							 wxPoint(180, 260),
+							 wxPoint(220, 260),
 							 wxSize(160, 20),
 							 8, sizeChoiceStrings);  
 
@@ -159,7 +160,7 @@ FreqWindow::FreqWindow(wxWindow* parent, wxWindowID id, const wxString& title,
   
   mFuncChoice = new wxChoice(this, FreqFuncChoiceID,
 							 wxPoint(10, 290),
-							 wxSize(160, 20),
+							 wxSize(200, 20),
 							 f, funcChoiceStrings);
 
   mFuncChoice->SetSelection(3);
@@ -169,7 +170,7 @@ FreqWindow::FreqWindow(wxWindow* parent, wxWindowID id, const wxString& title,
 								   "Log frequency"};
   
   mAxisChoice = new wxChoice(this, FreqAxisChoiceID,
-							 wxPoint(180, 290),
+							 wxPoint(220, 290),
 							 wxSize(160, 20),
 							 2, axisChoiceStrings);  
 
@@ -504,8 +505,9 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
   // Draw y axis and gridlines
 
   if (alg==0) {
-	for(i=(int)mYMin; i<=(int)mYMax; i+=mYStep) {
-	  int y = r.y + r.height - 1 - (i - mYMin)*(r.height-1)/yTotal;
+	for(float yi=mYMin; yi<=mYMax; yi+=mYStep) {
+	  i = (int)yi;
+	  int y = (int)(r.y + r.height - 1 - (yi - mYMin)*(r.height-1)/yTotal);
 	  
 	  // Light blue gridline
 	  memDC.SetPen(wxPen(wxColour(204,204,255),1,wxSOLID));
@@ -757,8 +759,8 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
 	if (alg==0) {
 	  wxString xpitch = PitchName(int(Freq2Pitch(xPos)+0.5), false);
 	  wxString peakpitch = PitchName(int(Freq2Pitch(bestpeak)+0.5), false);
-	  info.Printf("Cursor: freq=%d Hz (%s), magnitude=%d dB    "
-				  "Peak: freq=%d Hz (%s)",
+	  info.Printf("Cursor: %d Hz (%s) = %d dB    "
+				  "Peak: %d Hz (%s)",
 				  int(xPos+0.5),
 				  (const char *)xpitch,
 				  int(value+0.5),
@@ -768,8 +770,8 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
 	else if (xPos > 0.0 && bestpeak > 0.0) {
 	  wxString xpitch = PitchName(int(Freq2Pitch(1.0/xPos)+0.5), false);
 	  wxString peakpitch = PitchName(int(Freq2Pitch(1.0/bestpeak)+0.5), false);
-	  info.Printf("Cursor: lag=%.4f sec, freq=%d Hz (%s), magnitude=%f    "
-				  "Peak: lag=%.4f sec, freq= %d Hz (%s)",
+	  info.Printf("Cursor: %.4f sec (%d Hz) (%s) = %f,    "
+				  "Peak: %.4f sec (%d Hz) (%s)",
 				  xPos,
 				  int(1.0/xPos + 0.5),
 				  (const char *)xpitch,
@@ -863,7 +865,8 @@ void FreqWindow::Recalc()
 	  break;
 
 	case 1:
-	case 2: // Autocorrelation or Enhanced Autocorrelation
+	case 2:
+	case 3: // Autocorrelation, Cuberoot AC or Enhanced AC
 
 	  // Take FFT
 	  FFT(mWindowSize, false, in, NULL, out, out2);
@@ -872,13 +875,17 @@ void FreqWindow::Recalc()
 	  for(i=0; i<mWindowSize; i++)
 		in[i] = (out[i]*out[i]) + (out2[i]*out2[i]);
 
-	  // Tolonen and Karjalainen recommend taking the magnitude
-	  // of the DFT to the power of 0.67, instead of typically
-	  // taking the power or the magnitude.  (This corresponds to
-	  // the cube root of the power.)
+	  if (alg==1) {
+		for(i=0; i<mWindowSize; i++)
+		  in[i] = sqrt(in[i]);
+	  }
+	  if (alg==2 || alg==3) {
+		// Tolonen and Karjalainen recommend taking the cube root
+		// of the power, instead of the square root
 
-	  for(i=0; i<mWindowSize; i++)
-		in[i] = pow(in[i], 1.0/3.0); //pow(sqrt(in[i]), 0.67);
+		for(i=0; i<mWindowSize; i++)
+		  in[i] = pow(in[i], 1.0/3.0);
+	  }
 
 	  // Take FFT
 	  FFT(mWindowSize, false, in, NULL, out, out2);
@@ -888,7 +895,7 @@ void FreqWindow::Recalc()
 		mProcessed[i] += out[i];
 	  break;
 
-	case 3: // Cepstrum
+	case 4: // Cepstrum
 	  FFT(mWindowSize, false, in, NULL, out, out2);
 
 	  // Compute log power
@@ -921,7 +928,8 @@ void FreqWindow::Recalc()
 	mYStep = 10;
 	break;
 
-  case 1: // Autocorrelation
+  case 1: // Standard Autocorrelation
+  case 2: // Cuberoot Autocorrelation
     for(i=0; i<half; i++)
 	  mProcessed[i] = mProcessed[i]/windows;
 
@@ -939,7 +947,7 @@ void FreqWindow::Recalc()
     mProcessedSize = half;
 	break;
 
-  case 2: // Enhanced Autocorrelation
+  case 3: // Enhanced Autocorrelation
     for(i=0; i<half; i++)
 	  mProcessed[i] = mProcessed[i]/windows;
 
@@ -989,7 +997,7 @@ void FreqWindow::Recalc()
     mProcessedSize = half;
 	break;
 
-  case 3: // Cepstrum
+  case 4: // Cepstrum
     for(i=0; i<half; i++)
 	  mProcessed[i] = mProcessed[i]/windows;
 
@@ -1008,38 +1016,6 @@ void FreqWindow::Recalc()
     mProcessedSize = half;
 	break;
   }
-
-	/*
-	// Inverse FFT
-    FFT(mProcessedSize, true, mProcessed, NULL, out, out2);
-
-    for(i=0; i<mProcessedSize; i++)
-      mProcessed[i] = out[i];
-	*/
-
-    /*
-    // Normalize, ignoring first and last few Cepstral coefficients
-    
-    float min = mProcessed[15];
-    float max = mProcessed[15];
-	int imin = 16;
-	int imax = 16;
-    for(i=17; i<mProcessedSize-16; i++) {
-      if (mProcessed[i] < min) {
-        min = mProcessed[i];
-		imin = i;
-	  }
-      if (mProcessed[i] > max) {
-        max = mProcessed[i];
-		imax = i;
-	  }
-    }
-
-	printf("%f (%d) - %f (%d)\n", min, imin, max, imax);
-    
-    for(i=0; i<mProcessedSize; i++)
-      mProcessed[i] = ((mProcessed[i]-min)/(max-min))*90 - 80;
-	*/
 
   delete[] in;
   delete[] in2;
@@ -1077,10 +1053,20 @@ void FreqWindow::OnExport()
 	wxMessageBox("Couldn't write to "+fName);
 	return;
   }
-  
-  f.AddLine("Frequency (Hz)\tLevel (dB)");
-  for(int i=1; i<mProcessedSize; i++)
-    f.AddLine(wxString::Format("%f\t%f", i*mRate/mWindowSize, mProcessed[i]));
+
+  if (mAlgChoice->GetSelection() == 0) {
+	f.AddLine("Frequency (Hz)\tLevel (dB)");
+	for(int i=1; i<mProcessedSize; i++)
+	  f.AddLine(wxString::Format("%f\t%f", i*mRate/mWindowSize, mProcessed[i]));
+  }
+  else {
+	f.AddLine("Lag (seconds)\tFrequency (Hz)\tLevel");
+	for(int i=1; i<mProcessedSize; i++)
+	  f.AddLine(wxString::Format("%f\t%f\t%f",
+								 i/mRate,
+								 1.0/i,
+								 mProcessed[i]));
+  }
   
   #ifdef __WXMAC__
   f.Write(wxTextFileType_Mac);

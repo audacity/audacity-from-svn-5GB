@@ -23,6 +23,8 @@ class wxRect;
 class AColor
 {
 public:
+  static void Init();
+
   static void Bevel(wxDC& dc, bool up, wxRect& r);
 
   static void Light(wxDC *dc, bool selected);
@@ -40,9 +42,11 @@ public:
   static wxPen mediumPen[2];
   static wxPen darkPen[2];
 
+  static wxPen envelopePen;
+  static wxBrush envelopeBrush;
+
 private:
   static bool inited;
-  static void Init();
 
 };
 
