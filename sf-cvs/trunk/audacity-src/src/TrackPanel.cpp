@@ -1176,21 +1176,31 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
 
    //The following will happen on a drag or a down-click.
    // The point should get re-drawn at the location of the mouse.
-  else if (event.Dragging() )
+  else if (event.Dragging())
       {
          //Exit if the mDrawingTrack is null.
          if( mDrawingTrack == NULL)
             return;
          
-         //Get the rate of the sequence
+
+         //Get the rate of the sequence, for use later
          rate = ((WaveTrack *)mDrawingTrack)->GetRate();
-         
-         // Figure out what time the click was at
-         double t0 = PositionToTime(event.m_x, GetLeftOffset());
-      
-         //convert this to samples
-         sampleCount s0 = (sampleCount) (double)(t0 * rate + 0.5);
-      
+         sampleCount s0;     //declare this for use below.  It designates the sample number which to draw.
+
+         //Find the point that we want to redraw at. If the control button is down, 
+         //adjust only the originally clicked-on sample 
+         if( event.m_controlDown) {
+            s0 = mDrawingStartSample;
+         }
+         else {
+            //Otherwise, adjust the sample you are dragging over right now.
+            // Figure out what time the click was at
+            double t0 = PositionToTime(event.m_x, GetLeftOffset());
+            
+            //convert this to samples
+            s0 = (sampleCount) (double)(t0 * rate + 0.5);
+         }
+
          // Calculate where the mouse is located vertically (between +/- 1)
          float newLevel =  -2 * (float)(event.m_y - mDrawingTrackTop) / mDrawingTrack->GetHeight() + 1;
    
