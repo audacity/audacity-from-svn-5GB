@@ -475,6 +475,14 @@ SOURCE=..\src\effects\Reverse.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\effects\ToneGen.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\ToneGen.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\effects\Wahwah.cpp
 # End Source File
 # Begin Source File
