@@ -6,7 +6,7 @@
 INCL = -Inyqsrc -Itran -Ixlisp -Icmt -Isys -Isnd -Ifft
 
 CC = cc
-CFLAGS = -g -DCMTSTUFF -O2 -DEXT $(INCL)
+override CFLAGS += -g -DCMTSTUFF -O2 -DEXT $(INCL)
 LN = $(CC)
 LFLAGS = -lm
 

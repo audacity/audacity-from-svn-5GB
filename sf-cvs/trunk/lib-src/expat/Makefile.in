@@ -1,6 +1,6 @@
 CC = @CC@
 
-CFLAGS = @CFLAGS@ -Ixmlparse -Ixmltok
+override CFLAGS += @CFLAGS@ -Ixmlparse -Ixmltok
 
 OBJS = xmlparse/xmlparse.o xmltok/xmlrole.o xmltok/xmltok.o
 
