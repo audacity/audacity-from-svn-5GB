@@ -96,4 +96,39 @@ void AColor::Init()
   inited = true;
 }
 
+void GetColorGradient(float value,
+                      unsigned char *red,
+                      unsigned char *green,
+                      unsigned char *blue)
+{
+  /* grayscale
+  *red = unsigned char (255*(1.0-value));
+  *green = *red;
+  *blue = *red;
+  */
+  
+  float r, g, b;
+
+  if (value < 0.25) {
+    r = 1.0;
+    g = 1.0;
+    b = (0.25 - value)/0.25;
+    // --> (1.0, 1.0, 0.0)
+  }
+  else if (value < 0.5) {
+    r = (0.5 - value)/0.25;
+    g = 1.0 - (value - 0.25);
+    b = 0.0;
+    // --> (0.0, 0.75, 0.0)
+  }
+  else {
+    r = (value - 0.5)/0.5;
+    g = 0.75 - (value-0.5)*1.5;
+    b = 0.0;
+  }
+  
+  *red = (unsigned char) (255*r);
+  *green = (unsigned char) (255*g);
+  *blue = (unsigned char) (255*b);
+}
 

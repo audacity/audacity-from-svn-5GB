@@ -14,6 +14,86 @@
 
 #include "FFT.h"
 
+bool ComputeSpectrum(sampleType *data, int width, int height,
+		     double rate, float *grayscaleOut)
+{
+  int windowSize = 512;
+  int windowFunc = 3;
+
+  if (width < windowSize)
+    return false;
+  
+  if (!data || !grayscaleOut)
+    return true;
+    
+  float *processed = new float[windowSize];
+
+  int i;
+  for(i=0; i<windowSize; i++)
+	processed[i] = 0.0;
+  int half = windowSize/2;
+
+  float *in = new float[windowSize];
+  float *out = new float[windowSize];
+
+  int start = 0;
+  int windows = 0;
+  while(start + windowSize <= width) {
+	for(i=0; i<windowSize; i++)
+	  in[i] = data[start+i]/32767.;
+	
+	WindowFunc(windowFunc, windowSize, in);
+	PowerSpectrum(windowSize, in, out);
+
+	for(i=0; i<half; i++)
+	  processed[i] += out[i];
+
+	start += half;
+	windows++;
+  }
+
+  // Convert to decibels
+  for(i=0; i<half; i++)
+    processed[i] = 10*log10(processed[i]/windowSize/windows);
+
+  // Finally, put it into bins in grayscaleOut[], normalized to a 0.0-1.0 scale
+  
+  for(i=0; i<height; i++) {
+    float bin0 = float(i)*half/height;
+    float bin1 = float(i+1)*half/height;
+    
+    float binwidth = bin1-bin0;
+
+    float value = 0.0;
+
+    value += processed[int(bin0)]*(int(bin0)+1-bin0);
+    bin0 = 1+int(bin0);
+    while(bin0 < int(bin1)) {
+      value += processed[int(bin0)];
+      bin0 += 1.0;
+    }
+    value += processed[int(bin1)]*(bin1-int(bin1));    
+
+    value /= binwidth;
+    
+    // Last step converts dB to a 0.0-1.0 range
+    
+    value = (value+70.0)/80.0;
+    if (value > 1.0) value = 1.0;
+    if (value < 0.0) value = 0.0;
+    
+    grayscaleOut[i] = value;
+  }
+
+  delete[] in;
+  delete[] out;
+  delete[] processed;
+  
+  return true;
+}
+
+/*
+
 // Bartlett Window (looks like a triangle)
 #define WINDOW(j,a,b) (1.0-fabs((((j)-1)-(a))*(b)))
 
@@ -21,6 +101,8 @@
 #ifndef SQR
 #define SQR(A) ((A)*(A))
 #endif
+
+*/
 
 /*
   This function computes the power (mean square amplitude) as
@@ -35,6 +117,8 @@
 
   Algorithm based on "Numerical Recipes in C"
 */
+
+/*
 
 bool ComputeSpectrum(sampleType *data, int width, int height,
 		     double rate, float *out)
@@ -184,5 +268,5 @@ bool ComputeSpectrum(sampleType *data, int width, int height,
   return true;
 }
 
-
+*/
 

@@ -17,6 +17,7 @@
 #include <wx/msgdlg.h>
 #include <wx/textfile.h>
 
+#include "AColor.h"
 #include "Spectrum.h"
 #include "WaveTrack.h"
 #include "DirManager.h"
@@ -487,6 +488,9 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
   double tpre = h - tOffset;
   double tstep = 1.0/pps;
 
+  int ssel0 = (int)((sel0 - tOffset) * rate);
+  int ssel1 = (int)((sel1 - tOffset) * rate);
+
   if (tpre*rate >= numSamples)
     return;
 
@@ -504,8 +508,15 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
   while(x<r.width) {
     sampleCount w0 = (sampleCount)((tpre+x*tstep)*rate);
 
-    if (w0 >= numSamples)
-      break;
+    if (w0 < 0 || w0 >= numSamples) {
+      for(int yy=0; yy<r.height; yy++) {
+	    data[(yy*r.width + x)*3] = 0xFF;
+	    data[(yy*r.width + x)*3+1] = 0xFF;
+	    data[(yy*r.width + x)*3+2] = 0xFF;	  
+      }
+      x++;
+      continue;
+    }
 
     sampleCount wsize;
     int k=0;
@@ -523,13 +534,22 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
     if (ComputeSpectrum(buffer, (int)wsize, r.height, rate, spec)) {
 
       for(int yy=0; yy<r.height; yy++) {
-	unsigned char value = (unsigned char)((1.0-spec[r.height-1-yy])*255);
-	for(int xx=0; xx<k; xx++) {
-	  data[(yy*r.width + x+xx)*3] = value;
-	  data[(yy*r.width + x+xx)*3+1] = value;
-	  data[(yy*r.width + x+xx)*3+2] = value;
-	}
-      }      
+        
+        unsigned char rv, gv, bv;
+        GetColorGradient(spec[r.height-1-yy], &rv, &gv, &bv);
+        
+        if (ssel0 <= w0 && w0 < ssel1) {
+          rv = (rv * 2 / 3);
+          gv = (gv * 2 / 3);
+          bv = (bv * 2 / 3);
+        }
+        
+        for(int xx=0; xx<k; xx++) {
+	      data[(yy*r.width + x+xx)*3] = rv;
+	      data[(yy*r.width + x+xx)*3+1] = gv;
+	      data[(yy*r.width + x+xx)*3+2] = bv;	  
+	    }
+      }
 
     }
     
@@ -543,9 +563,15 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
 
   dc.DrawBitmap(converted, r.x, r.y);
 
-  delete image;  
+  delete image;
 
   delete[] spec;
+  
+  if (drawEnvelope) {
+	wxRect envRect = r;
+	envRect.height-=2;
+	envelope.Draw(dc, envRect, h, pps);
+  }
 }
 
 void WaveTrack::Draw(wxDC &dc, wxRect &r, double h, double pps,

@@ -38,4 +38,9 @@ private:
 
 };
 
+void GetColorGradient(float value,
+                      unsigned char *red,
+                      unsigned char *green,
+                      unsigned char *blue);
+
 #endif

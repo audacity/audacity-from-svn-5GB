@@ -351,3 +351,49 @@ void PowerSpectrum(
   delete[] ImagOut;
 }
 
+/*
+ * Windowing Functions
+ */
+
+int NumWindowFuncs()
+{
+  return 4;
+}
+
+char *WindowFuncName(int whichFunction)
+{
+  switch(whichFunction) {
+  default:
+  case 0: return "Rectangular";
+  case 1: return "Bartlett";
+  case 2: return "Hamming";
+  case 3: return "Hanning";
+  }
+}
+
+void WindowFunc (int     whichFunction,
+                 int     NumSamples,
+                 float   *in)
+{
+  int i;
+
+  if (whichFunction == 1) {	  
+    // Bartlett (triangular) window
+    for(i=0; i<NumSamples/2; i++) {
+	  in[i] *= (i/(float)(NumSamples/2));
+	  in[i+(NumSamples/2)] *= (1.0 - (i/(float)(NumSamples/2)));
+    }
+  }
+
+  if (whichFunction == 2) {
+    // Hamming
+    for(i=0; i<NumSamples; i++)
+	  in[i] *= 0.54 - 0.46 * cos(2 * M_PI * i / (NumSamples-1));
+  }
+
+  if (whichFunction == 3) {
+    // Hanning
+    for(i=0; i<NumSamples; i++)
+	  in[i] *= 0.50 - 0.50 * cos(2 * M_PI * i / (NumSamples-1));
+  }
+}

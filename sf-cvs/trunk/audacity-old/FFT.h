@@ -9,14 +9,15 @@
   This file contains a few FFT routines, including a real-FFT
   routine that is almost twice as fast as a normal complex FFT,
   and a power spectrum routine which is more convenient when
-  you know you don't care about phase information.
+  you know you don't care about phase information.  It now also
+  contains a few basic windowing functions.
 
   Some of this code was based on a free implementation of an FFT
   by Don Cross, available on the web at:
 
     http://www.intersrv.com/~dcross/fft.html
 
-  The basic algorithm for his code was based on Numerican Recipes
+  The basic algorithm for his code was based on Numerical Recipes
   in Fortran.  I optimized his code further by reducing array
   accesses, caching the bit reversal table, and eliminating
   float-to-double conversions, and I added the routines to
@@ -70,3 +71,28 @@ void FFT (int       NumSamples,
 		  float    *ImagIn,
 		  float    *RealOut,
 		  float    *ImagOut );
+
+/*
+ * Applies a windowing function to the data in place
+ *
+ * 0: Rectangular (no window)
+ * 1: Bartlett    (triangular)
+ * 2: Hamming
+ * 3: Hanning
+ */
+
+void WindowFunc (int     whichFunction,
+                 int     NumSamples,
+                 float   *data);
+
+/*
+ * Returns the name of the windowing function (for UI display)
+ */
+
+char *WindowFuncName(int whichFunction);
+
+/*
+ * Returns the number of windowing functions supported
+ */
+
+int NumWindowFuncs();
