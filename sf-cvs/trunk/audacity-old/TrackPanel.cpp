@@ -510,10 +510,13 @@ void TrackPanel::HandleEnvelope(wxMouseEvent& event)
 void TrackPanel::HandleSlide(wxMouseEvent& event)
 {
   if (event.ButtonDown()) {
+
 	wxRect r;
 	int num;
 	
 	VTrack *vt = FindTrack(event.m_x, event.m_y, false, &r, &num);
+
+	/* Scrub
 
     if (!vt) return;
     if (vt->GetKind() != VTrack::Wave) return;
@@ -592,7 +595,7 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
           int sign = 1;
           if (deltaSamples < 0)
             sign = -1;
-          int rate = /*44100 * sign;// */ deltaSamples * 1000 / deltaTime;
+          int rate = 44100 * sign;
           int playLen = rate * block / t->rate;          
         
           if (deltaSamples == 0)
@@ -630,7 +633,8 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
     delete[] buffer;
     delete[] blockBuffer;
 	
-	/*
+    End scrub
+    */ 
 	if (vt) {
 	
 	  mCapturedTrack = vt;
@@ -643,9 +647,9 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
 	  mSelStart = mViewInfo->h + ((event.m_x - r.x) / mViewInfo->zoom);
 	  mIsSliding = true;
 	}
-	*/
+
   }
-/*
+
   if (!mIsSliding)
 	return;
   
@@ -671,7 +675,6 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
 	MakeParentRedrawScrollbars();
 	MakeParentPushState();
   }
-  */
 }
 
 void TrackPanel::HandleZoom(wxMouseEvent& event)
