@@ -33,10 +33,12 @@
 	<li><?=_('<a href="http://audacityteam.org/wiki/">The Audacity Wiki</a> contains tips, tricks, and documentation that anyone can edit.')?></li>
 </ul>
 
-<h3>Aide en Français</h3>
-<ul>
-	<li><a href="../audacity-mode-d'emploi.pdf">Mode d'emploi en français</a> (PDF, 700 ko.  Ce fichier peut prendre un bon moment de télécharger.)</li>
-</ul>
+<div lang="fr">
+  <h3>Aide en Français</h3>
+  <ul>
+    <li><a href="../audacity-mode-d'emploi.pdf">Mode d'emploi en français</a> (PDF, 700 ko.  Ce fichier peut prendre un bon moment de télécharger.)</li>
+  </ul>
+</div>
 
 <?php
   include "../include/footer.inc.php";
