@@ -10,7 +10,7 @@
   any type of sampled audio file (i.e. anything except MIDI)
   and return the tracks that were imported.  This function just
   figures out which one to call; the actual importers are in
-  ImportPCM, ImportMP3, ImportOGG, and ImportRawData.
+  ImportPCM, ImportMP3, ImportOGG, ImportRawData, and ImportLOF.
 
 **********************************************************************/
 
@@ -28,6 +28,7 @@
 #include "ImportMP3.h"
 #include "ImportOGG.h"
 #include "ImportRaw.h"
+#include "ImportLOF.h"
 #include "../Track.h"
 
 WX_DEFINE_LIST(ImportPluginList);
@@ -44,8 +45,7 @@ Importer::Importer()
    GetPCMImportPlugin(mImportPluginList, mUnusableImportPluginList);
    GetOGGImportPlugin(mImportPluginList, mUnusableImportPluginList);
    GetMP3ImportPlugin(mImportPluginList, mUnusableImportPluginList);
-
-   // TODO: others
+   GetLOFImportPlugin(mImportPluginList, mUnusableImportPluginList);
 }
 
 Importer::~Importer()
@@ -92,6 +92,10 @@ int Importer::Import(wxString fName,
             mInFile->SetProgressCallback(progressCallback, userData);
             if( mInFile->Import(trackFactory, tracks, &numTracks) == true )
             {
+               // LOF ("list-of-files") has different semantics
+               if (extension.IsSameAs("lof", false))
+                  return 1;
+
                if (numTracks > 0) {
                   // success!
                   delete mInFile;

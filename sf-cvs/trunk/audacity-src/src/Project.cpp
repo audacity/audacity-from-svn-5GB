@@ -1535,8 +1535,9 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
                                         "WAV files (*.wav)|*.wav|"
                                         "AIFF files (*.aif)|*.aif|"
                                         "AU files (*.au)|*.au|"
-                                        "IRCAM files (*.snd)|*.snd|"
-                                        "MP3 files (*.mp3)|*.mp3"),
+                                        "MP3 files (*.mp3)|*.mp3|"
+                                        "Ogg Vorbis files (*.ogg)|*.ogg|"
+                                        "List of Files (*.lof)|*.lof"),
                                       0,        // Flags
                                       proj);    // Parent
 
@@ -2021,6 +2022,13 @@ void AudacityProject::Import(wxString fileName)
                                  errorMessage,
                                  AudacityProject::ImportProgressCallback,
                                  this);
+
+   // for LOF ("list of files") files, do not import the file as if it
+   // were an audio file itself
+   if (fileName.AfterLast('.').IsSameAs("lof", false))
+   {
+      return;
+   }
 
    if(mImportProgressDialog) {
       delete mImportProgressDialog;
