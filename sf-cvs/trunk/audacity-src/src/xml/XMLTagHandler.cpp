@@ -24,11 +24,11 @@ wxString XMLTagHandler::XMLEsc(wxString s)
 {
    int len = s.Length();
    int i;
-   char c;
+   wxChar c;
    wxString result;
 
    for(i=0; i<len; i++) {
-      c = s[i];
+      c = s.GetChar(i);
 
       if (c < 32 || c>127 ||
           c=='\'' || c=='"' ||
