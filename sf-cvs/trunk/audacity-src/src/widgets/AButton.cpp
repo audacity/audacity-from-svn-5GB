@@ -26,8 +26,8 @@
 #include <wx/tooltip.h>
 
 BEGIN_EVENT_TABLE(AButton, wxWindow)
-    EVT_MOUSE_EVENTS(AButton::OnMouseEvent)
-    EVT_PAINT(AButton::OnPaint)
+   EVT_MOUSE_EVENTS(AButton::OnMouseEvent)
+   EVT_PAINT(AButton::OnPaint)
 END_EVENT_TABLE()
 
 AButton::AButton(wxWindow * parent, wxWindowID id,
@@ -52,6 +52,13 @@ AButton::AButton(wxWindow * parent, wxWindowID id,
    mBitmap[1] = new wxBitmap((const char **) overXPM);
    mBitmap[2] = new wxBitmap((const char **) downXPM);
    mBitmap[3] = new wxBitmap((const char **) disXPM);
+
+   mAltBitmap[0] = NULL;
+   mAltBitmap[1] = NULL;
+   mAltBitmap[2] = NULL;
+   mAltBitmap[3] = NULL;
+
+   mAlternate = false;
 
    GetSize(&mWidth, &mHeight);
 }
@@ -78,6 +85,13 @@ AButton::AButton(wxWindow * parent, wxWindowID id,
    mBitmap[2] = new wxBitmap(down);
    mBitmap[3] = new wxBitmap(dis);
 
+   mAltBitmap[0] = NULL;
+   mAltBitmap[1] = NULL;
+   mAltBitmap[2] = NULL;
+   mAltBitmap[3] = NULL;
+
+   mAlternate = false;
+
    GetSize(&mWidth, &mHeight);
 }
 
@@ -87,16 +101,48 @@ AButton::~AButton()
    delete mBitmap[1];
    delete mBitmap[2];
    delete mBitmap[3];
+
+   if (mAltBitmap[0]) {
+      delete mAltBitmap[0];
+      delete mAltBitmap[1];
+      delete mAltBitmap[2];
+      delete mAltBitmap[3];
+   }
+}
+
+void AButton::SetAlternateImages(wxImage *up,
+                                 wxImage *over,
+                                 wxImage *down,
+                                 wxImage *dis)
+{
+   mAltBitmap[0] = new wxBitmap(up);
+   mAltBitmap[1] = new wxBitmap(over);
+   mAltBitmap[2] = new wxBitmap(down);
+   mAltBitmap[3] = new wxBitmap(dis);
+}
+
+void AButton::SetAlternate(bool useAlternateImages)
+{
+   mAlternate = useAlternateImages;
+   Refresh(false);
 }
 
 void AButton::OnPaint(wxPaintEvent & event)
 {
    wxPaintDC dc(this);
 #ifdef __WXMAC__
-   dc.DrawBitmap(*mBitmap[mButtonState], 0, 0);
+   if (mAlternate)
+      dc.DrawBitmap(*mAltBitmap[mButtonState], 0, 0);
+   else
+      dc.DrawBitmap(*mBitmap[mButtonState], 0, 0);
 #else
    wxMemoryDC memDC;
-   memDC.SelectObject(*mBitmap[mButtonState]);
+   if (mAlternate)
+      memDC.SelectObject(*mAltBitmap[mButtonState]);
+   else {
+      fflush(stdout);
+      memDC.SelectObject(*mBitmap[mButtonState]);
+   }
    dc.Blit(0, 0, mWidth, mHeight, &memDC, 0, 0, wxCOPY, FALSE);
 #endif
 }
@@ -104,11 +150,17 @@ void AButton::OnPaint(wxPaintEvent & event)
 
 void AButton::OnMouseEvent(wxMouseEvent & event)
 {
-
-  if (event.Leaving()){
-      GetActiveProject()->TP_DisplayStatusMessage("",0);
+   if (mAltBitmap[0] && mButtonState != AButtonDown) {
+      if (mAlternate != event.ShiftDown()) {
+         mAlternate = event.ShiftDown();
+         Refresh(false);
+      }
    }
 
+   if (event.Leaving()){
+      GetActiveProject()->TP_DisplayStatusMessage("",0);
+   }
+   
 
 // In windows, Leave/Enter events appear to clobber each other,
 // so the new enter event doesn't get processed.  If we change to a newer

@@ -159,7 +159,8 @@ class AudacityProject:public wxFrame,
    void OnCloseWindow(wxCloseEvent & event);
    void OnTimer(wxTimerEvent & event);
 
-   bool HandleKeyEvent(wxKeyEvent & event);
+   bool HandleKeyDown(wxKeyEvent & event);
+   bool HandleKeyUp(wxKeyEvent & event);
 
    void HandleResize();
 

@@ -652,7 +652,8 @@ void AudacityApp::FindFilesInPathList(wxString pattern,
 int AudacityApp::FilterEvent(wxEvent& event)
 {
    //Send key events to the commands code
-   if(event.GetEventType() == wxEVT_KEY_DOWN)
+   if(event.GetEventType() == wxEVT_KEY_DOWN ||
+      event.GetEventType() == wxEVT_KEY_UP)
       return (this->*((SPECIALKEYEVENT) (&AudacityApp::OnAllKeys)))
          ((wxKeyEvent&)event);
 
@@ -675,9 +676,13 @@ int AudacityApp::OnAllKeys(wxKeyEvent& event)
 
    if(audacityPrj->IsActive())
    {
-      if(audacityPrj->HandleKeyEvent(event))
-      {
-         return TRUE;
+      if (event.GetEventType() == wxEVT_KEY_DOWN) {
+         if (audacityPrj->HandleKeyDown(event))
+            return true;
+      }
+      if (event.GetEventType() == wxEVT_KEY_UP) {
+         if (audacityPrj->HandleKeyUp(event))
+            return true;
       }
    }
 

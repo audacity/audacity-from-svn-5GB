@@ -976,8 +976,15 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
    }
 }
 
-bool AudacityProject::HandleKeyEvent(wxKeyEvent & event)
+bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
 {
+   // Allow the Play button to change to a Loop button
+   if (event.GetKeyCode() == WXK_SHIFT) {
+      ControlToolBar *tb = GetControlToolBar();
+      if (tb)
+         tb->OnShiftDown(event);
+   }
+
    // If there is a selected label track and the event did not
    // involve the control key, the label track gets dibs.
    // By returning "false", that says that we want someone else
@@ -994,6 +1001,16 @@ bool AudacityProject::HandleKeyEvent(wxKeyEvent & event)
    }
    
    return mCommandManager.HandleKey(event);
+}
+
+bool AudacityProject::HandleKeyUp(wxKeyEvent & event)
+{
+   // Allow the Play button to change to a Loop button
+   if (event.GetKeyCode() == WXK_SHIFT) {
+      ControlToolBar *tb = GetControlToolBar();
+      if (tb)
+         tb->OnShiftUp(event);
+   }
 }
 
 bool AudacityProject::ProcessEvent(wxEvent & event)
