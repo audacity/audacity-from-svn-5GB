@@ -1201,6 +1201,17 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
          int x = mAutoScrolling ? mMouseMostRecentX : event.m_x;
          int y = mAutoScrolling ? mMouseMostRecentY : event.m_y;
 
+         // JKC: Logic to prevent a selection smaller than 5 pixels to
+         // prevent accidental dragging when selecting.
+         // (if user really wants a tiny selection, they should zoom in).
+         // Can someone make this value of '5' configurable in
+         // preferences?
+         const int minimumSizedSelection = 5; //measured in pixels
+         int SelStart=TimeToPosition( mSelStart, r.x); //cvt time to pixels.
+         // Abandon this drag if selecting < 5 pixels.
+         if(abs( SelStart-x) < minimumSizedSelection)
+             return;
+
          ExtendSelection(x, r.x);
          DisplaySelection();
 
@@ -1441,12 +1452,16 @@ void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
 //  mViewInfo actually keeps track of our zoom constant,
 //  so we achieve zooming by altering the zoom constant
 //  and forcing a refresh.
+// JKC: Dragging is now only handled if left mouse button.
+//  is down too.  This prevents this code being used when 
+//  you are clicking on the right mouse button (to zoom 
+//  out) and accidently drag as you do so.
 void TrackPanel::HandleZoom(wxMouseEvent & event)
 {
    if (event.ButtonDown(1) || event.ButtonDClick(1)) {
       mZoomStart = event.m_x;
       mZoomEnd = event.m_x;
-   } else if (event.Dragging()) {
+   } else if (event.Dragging() && event.LeftIsDown()) {
       mZoomEnd = event.m_x;
 
       if (IsDragZooming()){
