@@ -51,6 +51,9 @@ class EffectAmplify:public EffectSimpleMono {
       return wxString(_("Amplifying"));
    }
    
+   // Useful only after PromptUser values have been set. 
+   virtual wxString GetEffectDescription(); 
+
    virtual bool Init();
 
    virtual bool PromptUser();

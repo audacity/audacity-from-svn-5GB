@@ -27,6 +27,12 @@ EffectAmplify::EffectAmplify()
    ratio = float(1.0);
 }
 
+wxString EffectAmplify::GetEffectDescription() { 
+   // Note: This is useful only after ratio has been set. 
+   return wxString::Format(_("Applied effect: %s %.1f dB"), 
+                           this->GetEffectName(), 20*log10(ratio)); 
+} 
+
 bool EffectAmplify::Init()
 {
    peak = float(0.0);

@@ -35,6 +35,17 @@ EffectWahwah::EffectWahwah()
    res = float(2.5);
 }
 
+wxString EffectWahwah::GetEffectDescription() { 
+   // Note: This is useful only after values have been set. 
+   return wxString::Format(_("Applied effect: %s frequency = %.1f Hz, start phase = %.0f deg, depth = %.0f%%, resonance = %.1f, frequency offset = %.0f%%"),
+                           this->GetEffectName(), 
+                           freq, 
+                           (startphase * 180 / M_PI), 
+                           (depth * 100), 
+                           res, 
+                           (freqofs * 100)); 
+} 
+
 bool EffectWahwah::PromptUser()
 {
    WahwahDialog dlog(mParent, -1, _("Wahwah"));

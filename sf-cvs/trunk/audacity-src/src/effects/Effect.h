@@ -12,6 +12,7 @@
 #define __AUDACITY_EFFECT__
 
 #include <wx/dynarray.h>
+#include <wx/intl.h> 
 #include <wx/string.h>
 
 class wxWindow;
@@ -75,6 +76,14 @@ class Effect {
    // is "Boosting Bass Frequencies".
    virtual wxString GetEffectAction() = 0;
 
+   // Each subclass of Effect should override this method. 
+   // This description will go in the History state. 
+   // Override to include effect parameters, so typically useful only after PromptUser. 
+   virtual wxString GetEffectDescription() { 
+      // Default provides effect name. 
+      return wxString::Format(_("Applied effect: %s"), this->GetEffectName()); 
+   } 
+	 
    // Return flags which tell you what kind of effect this is.
    // It will be either a built-in or a plug-in effect, and it
    // will be one of Insert, Process, or Analyze.

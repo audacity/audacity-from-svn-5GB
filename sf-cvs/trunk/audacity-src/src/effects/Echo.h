@@ -32,6 +32,9 @@ class EffectEcho:public Effect {
       return wxString(_("Performing Echo"));
    }
    
+   // Useful only after PromptUser values have been set. 
+   virtual wxString GetEffectDescription(); 
+
    virtual bool PromptUser();
    
    virtual bool Process();

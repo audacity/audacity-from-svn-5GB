@@ -41,6 +41,18 @@ EffectPhaser::EffectPhaser()
    fb = float(0.0);
 }
 
+wxString EffectPhaser::GetEffectDescription() { 
+   // Note: This is useful only after values have been set. 
+   return wxString::Format(_("Applied effect: %s %d stages, %.0f%% wet, frequency = %.1f Hz, start phase = %.0f deg, depth = %d, feedback = %.0f%%"), 
+                           this->GetEffectName(), 
+                           stages, 
+                           float(drywet*100/255), 
+                           freq, 
+                           (startphase * 180 / M_PI), 
+                           depth, 
+                           fb); 
+} 
+
 bool EffectPhaser::PromptUser()
 {
    PhaserDialog dlog(mParent, -1, _("Phaser"));
