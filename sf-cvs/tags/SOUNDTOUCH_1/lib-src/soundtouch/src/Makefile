@@ -1,0 +1,29 @@
+CCC = g++
+CXXFLAGS = -O2
+
+LIBS = 
+
+AR = /usr/bin/ar
+RANLIB = ranlib
+
+OBJS = \
+	AAFilter.cc.o \
+	FIFOSampleBuffer.cc.o \
+	FIRFilter.cc.o \
+	RateTransposer.cc.o \
+	SoundTouch.cc.o \
+	TDStretch.cc.o \
+	mmx_gcc.cc.o
+
+../soundtouch.a: $(OBJS) Makefile
+	$(AR) ruv ../soundtouch.a $(OBJS)
+	ranlib ../soundtouch.a
+
+clean:
+	rm -f  *.o *~ ../soundtouch.a
+
+distclean: clean
+	rm -f Makefile
+
+%.cc.o: %.cc Makefile
+	$(CCC) -c $(CXXFLAGS) $< -o $@
