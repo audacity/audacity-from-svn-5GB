@@ -45,7 +45,7 @@ Stop                  BITMAP  "Stop.bmp"
 // DAMAGE, AND ON ANY THEORY OF LIABILITY, ARISING OUT OF OR IN CONNECTION WITH
 // THE USE OR PERFORMANCE OF THIS SOFTWARE.
 //
-// Version: $Id: audacity.rc,v 1.1.1.1 2000-06-01 02:03:33 dmazzoni Exp $
+// Version: $Id: audacity.rc,v 1.2 2000-06-11 23:51:52 dmazzoni Exp $
 /////////////////////////////////////////////////////////////////////////////
 
 #if (defined( __GNUWIN32__ ) && !defined(__TWIN32__)) || defined(__MWERKS__)
@@ -114,7 +114,7 @@ END
 WXCURSOR_HAND           CURSOR  DISCARDABLE     "hand.cur"
 WXCURSOR_BULLSEYE       CURSOR  DISCARDABLE     "bullseye.cur"
 WXCURSOR_PENCIL         CURSOR  DISCARDABLE     "pencil.cur"
-WXCURSOR_MAGNIFIER      CURSOR  DISCARDABLE     "magnif1.cur"
+//WXCURSOR_MAGNIFIER      CURSOR  DISCARDABLE     "magnif1.cur"
 WXCURSOR_NO_ENTRY       CURSOR  DISCARDABLE     "noentry.cur"
 WXCURSOR_SIZING         CURSOR  DISCARDABLE     "size.cur"
 WXCURSOR_ROLLER         CURSOR  DISCARDABLE     "roller.cur"
