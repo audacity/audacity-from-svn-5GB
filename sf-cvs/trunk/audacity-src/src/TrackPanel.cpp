@@ -1378,7 +1378,7 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    RemoveStaleIndicators(&upd);
    //UpdateIndicator(&dc);
    RemoveStaleCursors(&upd);
-   if(!mIsSelecting && mViewInfo->sel0 == mViewInfo->sel1)
+   if(/*!mIsSelecting &&*/ mViewInfo->sel0 == mViewInfo->sel1)
       DrawCursors(&dc);
 
    dc.EndDrawing();
@@ -1414,7 +1414,7 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    //UpdateIndicator(&memDC);
    RemoveStaleCursors(&upd);
 
-   if(!mIsSelecting && mViewInfo->sel0 == mViewInfo->sel1)
+   if(/*!mIsSelecting &&*/ mViewInfo->sel0 == mViewInfo->sel1)
       DrawCursors(&memDC);
 
    dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
