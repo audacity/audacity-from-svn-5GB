@@ -25,9 +25,11 @@
 #define DescriptionTextID 7002
 #define KeysListID        7003
 #define CurrentComboID    7004
+#define AddComboButtonID  7005
 
 BEGIN_EVENT_TABLE(KeyConfigPrefs, wxPanel)
    EVT_LIST_ITEM_SELECTED(CommandsListID, KeyConfigPrefs::OnItemSelected)
+   EVT_BUTTON(AddComboButtonID, KeyConfigPrefs::AddComboToList)
 END_EVENT_TABLE()
 
 KeyConfigPrefs::KeyConfigPrefs(wxWindow * parent):
@@ -60,7 +62,7 @@ PrefsPanel(parent), mCommandSelected(-1)
                           wxALL, GENERIC_CONTROL_BORDER);
 
       vCommandSizer->Add(
-               new wxStaticText(this, DescriptionTextID, _(/*"Description:\n Nothing selected."*/"I WILL RESUME WORKING ON THIS SOON")), 0,
+               new wxStaticText(this, DescriptionTextID, _("Description:\n Nothing selected.")), 0,
                wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
 
       vKeyConfigSizer->Add(
@@ -68,6 +70,7 @@ PrefsPanel(parent), mCommandSelected(-1)
          wxALL, TOP_LEVEL_BORDER );
 
       wxBoxSizer *vKeySizer = new wxBoxSizer(wxVERTICAL);
+      wxBoxSizer *hKeySizer = new wxBoxSizer(wxHORIZONTAL);
 
       // BG: Create list control that will hold the commands supported under the selected category
       mKeysList = new wxListCtrl(this, KeysListID, wxDefaultPosition, wxSize(200, 180),
@@ -83,10 +86,20 @@ PrefsPanel(parent), mCommandSelected(-1)
       mCurrentComboText = NULL;
       mCurrentComboText = new SysKeyTextCtrl(
          this, CurrentComboID, "",
-         wxDefaultPosition, wxSize(160, -1), 0 );
+         wxDefaultPosition, wxSize(115, -1), 0 );
 
-      vKeySizer->Add(mCurrentComboText, 0,
+      hKeySizer->Add(mCurrentComboText, 0,
                           wxALL, GENERIC_CONTROL_BORDER);
+
+      wxButton *addComboButton =
+         new wxButton(this, AddComboButtonID, _("Add"));
+
+      hKeySizer->Add(addComboButton, 0,
+                          wxALL, GENERIC_CONTROL_BORDER);
+
+      vKeySizer->Add(
+         hKeySizer, 0, 
+         wxALL, 0 );
 
       vKeyConfigSizer->Add(
          vKeySizer, 0, 
@@ -124,6 +137,19 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
 */
 }
 
+void KeyConfigPrefs::AddComboToList(wxCommandEvent& event)
+{
+   wxString comboString = mCurrentComboText->GetValue();
+
+   for(int i = 0; i < mKeysList->GetItemCount(); i++)
+   {
+      if(comboString == mKeysList->GetItemText(i))
+         return;
+   }
+
+   mKeysList->InsertItem(mKeysList->GetItemCount(), comboString);
+}
+
 bool KeyConfigPrefs::Apply()
 {
    mAudacity->RebuildMenuBar();
@@ -131,9 +157,15 @@ bool KeyConfigPrefs::Apply()
    return true;
 }
 
+wxListCtrl *KeyConfigPrefs::GetKeysList()
+{
+   return mKeysList;
+}
+
 KeyConfigPrefs::~KeyConfigPrefs()
 {
 }
+
 
 //BG: A quick and dirty override of wxTextCtrl to capture keys like Ctrl, Alt
 
