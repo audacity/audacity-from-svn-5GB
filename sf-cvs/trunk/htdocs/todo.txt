@@ -4,6 +4,7 @@
 - contact: Add section for press and PR.
 - download/*: Link to release notes from download pages?
 - download/mac: OS 9 System Requirements should link to CarbonLib updates?
+- download/release-notes: Add archives and permalinks for Release Notes.
 - help/documentation: Link to localized manual/reference when available.
 - help/faq: LAME instructions should also promote Ogg Vorbis.
 - help/faq: If there are more than ten questions in a section, show the top 
