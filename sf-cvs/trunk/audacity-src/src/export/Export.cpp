@@ -41,7 +41,7 @@
 
 wxString ExportCommon(AudacityProject *project,
                       wxString format, wxString extension,
-                      bool selectionOnly, double t0, double t1,
+                      bool selectionOnly, double *t0, double *t1,
                       bool *isStereo)
 {
    TrackList *tracks = project->GetTracks();
@@ -53,6 +53,7 @@ wxString ExportCommon(AudacityProject *project,
       least one track is selected (if selectionOnly==true) */
 
    int numSelected = 0, numLeft = 0, numRight = 0, numMono = 0;
+   float earliestBegin = *t1, latestEnd = *t0;
 
    TrackListIterator iter1(tracks);
    VTrack *tr = iter1.First();
@@ -69,11 +70,24 @@ wxString ExportCommon(AudacityProject *project,
                numRight++;
             else if (tr->GetChannel() == VTrack::MonoChannel)
                numMono++;
+            
+            if(tr->GetOffset() < earliestBegin)
+               earliestBegin = tr->GetOffset();
+
+            if(tr->GetMaxLen() > latestEnd)
+               latestEnd = tr->GetMaxLen();
+
          }
       }
 
       tr = iter1.Next();
    }
+
+   if(*t0 < earliestBegin)
+      *t0 = earliestBegin;
+   
+   if(*t1 > latestEnd)
+      *t1 = latestEnd;
 
    if (numSelected == 0 && selectionOnly) {
       wxMessageBox(_("No tracks are selected!\n"
@@ -156,7 +170,7 @@ bool Export(AudacityProject *project,
    extension = "." + sf_header_extension(format & SF_FORMAT_TYPEMASK);
 
    fName = ExportCommon(project, formatStr, extension,
-                        selectionOnly, t0, t1, &stereo);
+                        selectionOnly, &t0, &t1, &stereo);
 
    if (fName == "")
       return false;
@@ -175,7 +189,7 @@ bool ExportLossy(AudacityProject *project,
 
    if( format == "MP3" ) {
       fName = ExportCommon(project, "MP3", ".mp3",
-                        selectionOnly, t0, t1, &stereo);
+                        selectionOnly, &t0, &t1, &stereo);
 
       if (fName == "")
          return false;
@@ -186,7 +200,7 @@ bool ExportLossy(AudacityProject *project,
    else if( format == "OGG" ) {
 #ifdef USE_LIBVORBIS
       fName = ExportCommon(project, "OGG", ".ogg",
-                        selectionOnly, t0, t1, &stereo);
+                        selectionOnly, &t0, &t1, &stereo);
 
       if (fName == "")
          return false;
@@ -201,7 +215,7 @@ bool ExportLossy(AudacityProject *project,
 #ifdef __WXGTK__
       wxString extension = gPrefs->Read( "/FileFormats/ExternalProgramExportExtension", "" );
       fName = ExportCommon(project, "External Program", "." + extension,
-                        selectionOnly, t0, t1, &stereo);
+                        selectionOnly, &t0, &t1, &stereo);
 
       if (fName == "")
          return false;
