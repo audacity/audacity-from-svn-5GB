@@ -52,7 +52,7 @@ class AudacityProject;
 #elif defined(__WXGTK__)
    #define TOOLBAR_HEIGHT_OFFSET 22
 #elif defined(__WXMSW__)
-   #define TOOLBAR_HEIGHT_OFFSET 25
+   #define TOOLBAR_HEIGHT_OFFSET 22
 #endif
 
 enum ToolBarType {
