@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -16,34 +16,44 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-
-
 #include	<stdio.h>
 #include	<string.h>
 #include	<unistd.h>
 #include	<math.h>
 
+#if (defined (WIN32) || defined (_WIN32))
+#include	<fcntl.h>
+static int truncate (const char *filename, int ignored) ;
+#endif
+
 #include	<sndfile.h>
-#include	"check_log_buffer.h"
 
-#define	BUFFER_SIZE		(1<<15)
+#include	"utils.h"
 
-static	void	pcm_test_char	(char *str, char *filename, int typemajor, int typeminor) ;
-static	void	pcm_test_short	(char *str, char *filename, int typemajor, int typeminor) ;
-static	void	pcm_test_24bit	(char *str, char *filename, int typemajor, int typeminor, int long_file_ok) ;
-static	void	pcm_test_int	(char *str, char *filename, int typemajor, int typeminor) ;
+#define	SAMPLE_RATE			11025
+#define	DATA_LENGTH			(1<<12)
 
-static	void	pcm_float_test	(char *str, char *filename, int typemajor, int typeminor) ;
+#define	SILLY_WRITE_COUNT	(234)
 
-/* Force the start of this buffer to be double aligned. Sparc-solaris will
-** choke if its not.
-*/
-static	double	test_buffer [(BUFFER_SIZE/sizeof(double))+1] ;
+static void	pcm_test_char	(char *str, int filetype, int long_file_ok) ;
+static void	pcm_test_short	(char *str, int filetype, int long_file_ok) ;
+static void	pcm_test_24bit	(char *str, int filetype, int long_file_ok) ;
+static void	pcm_test_int	(char *str, int filetype, int long_file_ok) ;
+static void	pcm_test_float	(char *str, int filetype, int long_file_ok) ;
+static void	pcm_test_double	(char *str, int filetype, int long_file_ok) ;
+
+
+enum
+{	FALSE = 0,
+	TRUE  = 1
+} ;
+ 
+static	double	orig_data [DATA_LENGTH] ;
+static	double	test_data [DATA_LENGTH] ;
 
 int		
-main (int argc, char *argv[])
-{	char	*filename ;
-	int		bDoAll = 0 ;
+main (int argc, char **argv)
+{	int		bDoAll = 0 ;
 	int		nTests = 0 ;
 
 	if (argc != 2)
@@ -51,120 +61,147 @@ main (int argc, char *argv[])
 		printf ("    Where <test> is one of the following:\n") ;
 		printf ("           wav   - test WAV file functions (little endian)\n") ;
 		printf ("           aiff  - test AIFF file functions (big endian)\n") ;
-		printf ("           au    - test AU file functions (big endian)\n") ;
-		printf ("           aule  - test little endian AU file functions\n") ;
+		printf ("           au    - test AU file functions\n") ;
 		printf ("           raw   - test RAW header-less PCM file functions\n") ;
 		printf ("           paf   - test PAF file functions\n") ;
 		printf ("           svx   - test 8SVX/16SV file functions\n") ;
-		printf ("           nist  - test IRCAM Sphere file functions\n") ;
+		printf ("           nist  - test NIST Sphere file functions\n") ;
 		printf ("           ircam - test IRCAM file functions\n") ;
+		printf ("           voc   - Create Voice file functions\n") ;
+		printf ("           w64   - Sonic Foundry's W64 file functions\n") ;
 		printf ("           all   - perform all tests\n") ;
 		exit (1) ;
 		} ;
 
-	bDoAll=!strcmp (argv [1], "all");
+	bDoAll = !strcmp (argv [1], "all");
 		
 	if (bDoAll || ! strcmp (argv [1], "wav"))
-	{	filename = "test.wav" ;
-		pcm_test_char 	("wav", filename, SF_FORMAT_WAV, SF_FORMAT_PCM) ;
-		pcm_test_short	("wav", filename, SF_FORMAT_WAV, SF_FORMAT_PCM) ;
-		pcm_test_24bit	("wav", filename, SF_FORMAT_WAV, SF_FORMAT_PCM, 0) ;
-		pcm_test_int	("wav", filename, SF_FORMAT_WAV, SF_FORMAT_PCM) ;
-		pcm_float_test	("wav_float", filename, SF_FORMAT_WAV, SF_FORMAT_FLOAT) ;
-		unlink (filename) ;
+	{	pcm_test_char 	("char.wav"  , SF_FORMAT_WAV | SF_FORMAT_PCM_U8, FALSE) ;
+		pcm_test_short	("short.wav" , SF_FORMAT_WAV | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_24bit	("24bit.wav" , SF_FORMAT_WAV | SF_FORMAT_PCM_24, FALSE) ;
+		pcm_test_int	("int.wav"   , SF_FORMAT_WAV | SF_FORMAT_PCM_32, FALSE) ;
+		pcm_test_float	("float.wav" , SF_FORMAT_WAV | SF_FORMAT_FLOAT , FALSE) ;
+		pcm_test_double	("double.wav", SF_FORMAT_WAV | SF_FORMAT_DOUBLE, FALSE) ;
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "aiff"))
-	{	filename = "test.aiff" ;
-		pcm_test_char	("aiff", filename, SF_FORMAT_AIFF, SF_FORMAT_PCM) ;
-		pcm_test_short	("aiff", filename, SF_FORMAT_AIFF, SF_FORMAT_PCM) ;
-		pcm_test_24bit	("aiff", filename, SF_FORMAT_AIFF, SF_FORMAT_PCM, 0) ;
-		pcm_test_int	("aiff", filename, SF_FORMAT_AIFF, SF_FORMAT_PCM) ;
-		pcm_test_short	("aifc_sowt", filename, SF_FORMAT_AIFF, SF_FORMAT_PCM_LE) ;
-		pcm_test_24bit	("aifc_sowt", filename, SF_FORMAT_AIFF, SF_FORMAT_PCM_LE, 0) ;
-		pcm_test_int	("aifc_sowt", filename, SF_FORMAT_AIFF, SF_FORMAT_PCM_LE) ;
-		pcm_test_short	("aifc_twos", filename, SF_FORMAT_AIFF, SF_FORMAT_PCM_BE) ;
-		pcm_test_24bit	("aifc_twos", filename, SF_FORMAT_AIFF, SF_FORMAT_PCM_BE, 0) ;
-		pcm_test_int	("aifc_twos", filename, SF_FORMAT_AIFF, SF_FORMAT_PCM_BE) ;
-		pcm_float_test	("aifc_float", filename, SF_FORMAT_AIFF, SF_FORMAT_FLOAT) ;
-		unlink (filename) ;
+	{	pcm_test_char	("char_u8.aiff", SF_FORMAT_AIFF | SF_FORMAT_PCM_U8, FALSE) ;
+		pcm_test_char	("char_s8.aiff", SF_FORMAT_AIFF | SF_FORMAT_PCM_S8, FALSE) ;
+		pcm_test_short	("short.aiff"  , SF_FORMAT_AIFF | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_24bit	("24bit.aiff"  , SF_FORMAT_AIFF | SF_FORMAT_PCM_24, FALSE) ;
+		pcm_test_int	("int.aiff"    , SF_FORMAT_AIFF | SF_FORMAT_PCM_32, FALSE) ;
+
+		pcm_test_short	("short_sowt.aifc", SF_ENDIAN_LITTLE | SF_FORMAT_AIFF | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_24bit	("24bit_sowt.aifc", SF_ENDIAN_LITTLE | SF_FORMAT_AIFF | SF_FORMAT_PCM_24, FALSE) ;
+		pcm_test_int	("int_sowt.aifc"  , SF_ENDIAN_LITTLE | SF_FORMAT_AIFF | SF_FORMAT_PCM_32, FALSE) ;
+
+		pcm_test_short	("short_twos.aifc", SF_ENDIAN_BIG | SF_FORMAT_AIFF | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_24bit	("24bit_twos.aifc", SF_ENDIAN_BIG | SF_FORMAT_AIFF | SF_FORMAT_PCM_24, FALSE) ;
+		pcm_test_int	("int_twos.aifc"  , SF_ENDIAN_BIG | SF_FORMAT_AIFF | SF_FORMAT_PCM_32, FALSE) ;
+
+		pcm_test_short	("dwvw16.aifc", SF_FORMAT_AIFF | SF_FORMAT_DWVW_16, TRUE) ;
+		pcm_test_24bit	("dwvw24.aifc", SF_FORMAT_AIFF | SF_FORMAT_DWVW_24, TRUE) ;
+
+		pcm_test_float	("float.aifc" , SF_FORMAT_AIFF | SF_FORMAT_FLOAT , FALSE) ;
+		pcm_test_double	("double.aifc", SF_FORMAT_AIFF | SF_FORMAT_DOUBLE, FALSE) ;
+
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "au"))
-	{	filename = "test.au" ;
-		pcm_test_char	("au", filename, SF_FORMAT_AU, SF_FORMAT_PCM) ;
-		pcm_test_short	("au", filename, SF_FORMAT_AU, SF_FORMAT_PCM) ;
-		pcm_test_24bit	("au", filename, SF_FORMAT_AU, SF_FORMAT_PCM, 0) ;
-		pcm_test_int	("au", filename, SF_FORMAT_AU, SF_FORMAT_PCM) ;
-		unlink (filename) ;
-		nTests++ ;
-		} ;
+	{	pcm_test_char	("char.au"  , SF_FORMAT_AU | SF_FORMAT_PCM_S8, FALSE) ;
+		pcm_test_short	("short.au" , SF_FORMAT_AU | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_24bit	("24bit.au" , SF_FORMAT_AU | SF_FORMAT_PCM_24, FALSE) ;
+		pcm_test_int	("int.au"   , SF_FORMAT_AU | SF_FORMAT_PCM_32, FALSE) ;
+		pcm_test_float	("float.au" , SF_FORMAT_AU | SF_FORMAT_FLOAT , FALSE) ;
+		pcm_test_double	("double.au", SF_FORMAT_AU | SF_FORMAT_DOUBLE, FALSE) ;
 
-	if (bDoAll || ! strcmp (argv [1], "aule"))
-	{	filename = "test.au" ;
-		pcm_test_char	("aule", filename, SF_FORMAT_AULE, SF_FORMAT_PCM) ;
-		pcm_test_short	("aule", filename, SF_FORMAT_AULE, SF_FORMAT_PCM) ;
-		pcm_test_24bit	("aule", filename, SF_FORMAT_AULE, SF_FORMAT_PCM, 0) ;
-		pcm_test_int	("aule", filename, SF_FORMAT_AULE, SF_FORMAT_PCM) ;
-		unlink (filename) ;
+		pcm_test_char	("char_le.au"  , SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_PCM_S8, FALSE) ;
+		pcm_test_short	("short_le.au" , SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_24bit	("24bit_le.au" , SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_PCM_24, FALSE) ;
+		pcm_test_int	("int_le.au"   , SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_PCM_32, FALSE) ;
+		pcm_test_float	("float_le.au" , SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_FLOAT , FALSE) ;
+		pcm_test_double	("double_le.au", SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_DOUBLE, FALSE) ;
+
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "raw"))
-	{	filename = "test.raw" ;
-		pcm_test_char	("raw-s8", filename, SF_FORMAT_RAW, SF_FORMAT_PCM_S8) ;
-		pcm_test_char	("raw-u8", filename, SF_FORMAT_RAW, SF_FORMAT_PCM_U8) ;
-		pcm_test_short	("raw-le", filename, SF_FORMAT_RAW, SF_FORMAT_PCM_LE) ;
-		pcm_test_short	("raw-be", filename, SF_FORMAT_RAW, SF_FORMAT_PCM_BE) ;
-		pcm_test_24bit	("raw-le", filename, SF_FORMAT_RAW, SF_FORMAT_PCM_LE, 0) ;
-		pcm_test_24bit	("raw-be", filename, SF_FORMAT_RAW, SF_FORMAT_PCM_BE, 0) ;
-		pcm_test_int	("raw-le", filename, SF_FORMAT_RAW, SF_FORMAT_PCM_LE) ;
-		pcm_test_int	("raw-be", filename, SF_FORMAT_RAW, SF_FORMAT_PCM_BE) ;
-		unlink (filename) ;
+	{	pcm_test_char	("char_s8.raw", SF_FORMAT_RAW | SF_FORMAT_PCM_S8, FALSE) ;
+		pcm_test_char	("char_u8.raw", SF_FORMAT_RAW | SF_FORMAT_PCM_U8, FALSE) ;
+		
+		pcm_test_short	("short_le.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_short	("short_be.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_24bit	("24bit_le.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_PCM_24, FALSE) ;
+		pcm_test_24bit	("24bit_be.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_PCM_24, FALSE) ;
+		pcm_test_int	("int_le.raw"  , SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_PCM_32, FALSE) ;
+		pcm_test_int	("int_be.raw"  , SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_PCM_32, FALSE) ;
+
+		pcm_test_float	("float_le.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_FLOAT , FALSE) ;
+		pcm_test_float	("float_be.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_FLOAT , FALSE) ;
+
+		pcm_test_double	("double_le.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_DOUBLE, FALSE) ;
+		pcm_test_double	("double_be.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_DOUBLE, FALSE) ;
+
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "paf"))
-	{	filename = "test.paf" ;
-		pcm_test_short	("paf-le", filename, SF_FORMAT_PAF, SF_FORMAT_PCM_LE) ;
-		pcm_test_short	("paf-be", filename, SF_FORMAT_PAF, SF_FORMAT_PCM_BE) ;
-		pcm_test_24bit	("paf-le", filename, SF_FORMAT_PAF, SF_FORMAT_PCM_LE, 1) ;
-		pcm_test_24bit	("paf-be", filename, SF_FORMAT_PAF, SF_FORMAT_PCM_BE, 1) ;
-		unlink (filename) ;
+	{	pcm_test_char	("char_le.paf", SF_ENDIAN_LITTLE | SF_FORMAT_PAF | SF_FORMAT_PCM_S8, FALSE) ;
+		pcm_test_char	("char_be.paf", SF_ENDIAN_BIG    | SF_FORMAT_PAF | SF_FORMAT_PCM_S8, FALSE) ;
+		pcm_test_short	("short_le.paf", SF_ENDIAN_LITTLE | SF_FORMAT_PAF | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_short	("short_be.paf", SF_ENDIAN_BIG    | SF_FORMAT_PAF | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_24bit	("24bit_le.paf", SF_ENDIAN_LITTLE | SF_FORMAT_PAF | SF_FORMAT_PCM_24, TRUE) ;
+		pcm_test_24bit	("24bit_be.paf", SF_ENDIAN_BIG    | SF_FORMAT_PAF | SF_FORMAT_PCM_24, TRUE) ;
+		
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "svx"))
-	{	filename = "test.svx" ;
-		pcm_test_char	("svx", filename, SF_FORMAT_SVX, SF_FORMAT_PCM) ;
-		pcm_test_short	("svx", filename, SF_FORMAT_SVX, SF_FORMAT_PCM) ;
-		unlink (filename) ;
+	{	pcm_test_char	("char.svx" , SF_FORMAT_SVX | SF_FORMAT_PCM_S8, FALSE) ;
+		pcm_test_short	("short.svx", SF_FORMAT_SVX | SF_FORMAT_PCM_16, FALSE) ;
+
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "nist"))
-	{	filename = "test.nist" ;
-		pcm_test_short	("nist-le", filename, SF_FORMAT_NIST, SF_FORMAT_PCM_LE) ;
-		pcm_test_short	("nist-be", filename, SF_FORMAT_NIST, SF_FORMAT_PCM_BE) ;
-		pcm_test_24bit	("nist-le", filename, SF_FORMAT_NIST, SF_FORMAT_PCM_LE, 0) ;
-		pcm_test_24bit	("nist-be", filename, SF_FORMAT_NIST, SF_FORMAT_PCM_BE, 0) ;
-		pcm_test_int	("nist-le", filename, SF_FORMAT_NIST, SF_FORMAT_PCM_LE) ;
-		pcm_test_int 	("nist-be", filename, SF_FORMAT_NIST, SF_FORMAT_PCM_BE) ;
-		unlink (filename) ;
+	{	pcm_test_short	("short_le.nist", SF_ENDIAN_LITTLE | SF_FORMAT_NIST | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_short	("short_be.nist", SF_ENDIAN_BIG    | SF_FORMAT_NIST | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_24bit	("24bit_le.nist", SF_ENDIAN_LITTLE | SF_FORMAT_NIST | SF_FORMAT_PCM_24, FALSE) ;
+		pcm_test_24bit	("24bit_be.nist", SF_ENDIAN_BIG    | SF_FORMAT_NIST | SF_FORMAT_PCM_24, FALSE) ;
+		pcm_test_int	("int_le.nist"  , SF_ENDIAN_LITTLE | SF_FORMAT_NIST | SF_FORMAT_PCM_32, FALSE) ;
+		pcm_test_int 	("int_be.nist"  , SF_ENDIAN_BIG    | SF_FORMAT_NIST | SF_FORMAT_PCM_32, FALSE) ;
+
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "ircam"))
-	{	filename = "test.ircam" ;
-		pcm_test_short	("ircam-le", filename, SF_FORMAT_IRCAM, SF_FORMAT_PCM_LE) ;
-		pcm_test_short	("ircam-be", filename, SF_FORMAT_IRCAM, SF_FORMAT_PCM_BE) ;
-		pcm_test_int	("ircam-le", filename, SF_FORMAT_IRCAM, SF_FORMAT_PCM_LE) ;
-		pcm_test_int 	("ircam-be", filename, SF_FORMAT_IRCAM, SF_FORMAT_PCM_BE) ;
-		pcm_float_test	("ircam_le_float", filename, SF_FORMAT_IRCAM, SF_FORMAT_FLOAT_LE) ;
-		pcm_float_test	("ircam_be_float", filename, SF_FORMAT_IRCAM, SF_FORMAT_FLOAT_BE) ;
-		unlink (filename) ;
+	{	pcm_test_short	("short_be.ircam", SF_ENDIAN_BIG    | SF_FORMAT_IRCAM | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_short	("short_le.ircam", SF_ENDIAN_LITTLE | SF_FORMAT_IRCAM | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_int	("int_be.ircam"  , SF_ENDIAN_BIG    | SF_FORMAT_IRCAM | SF_FORMAT_PCM_32, FALSE) ;
+		pcm_test_int 	("int_le.ircam"  , SF_ENDIAN_LITTLE | SF_FORMAT_IRCAM | SF_FORMAT_PCM_32, FALSE) ;
+		pcm_test_float	("float_be.ircam", SF_ENDIAN_BIG    | SF_FORMAT_IRCAM | SF_FORMAT_FLOAT , FALSE) ;
+		pcm_test_float	("float_le.ircam", SF_ENDIAN_LITTLE | SF_FORMAT_IRCAM | SF_FORMAT_FLOAT , FALSE) ;
+
+		nTests++ ;
+		} ;
+
+	if (bDoAll || ! strcmp (argv [1], "voc"))
+	{	pcm_test_char 	("char.voc" , SF_FORMAT_VOC | SF_FORMAT_PCM_U8, FALSE) ;
+		pcm_test_short	("short.voc", SF_FORMAT_VOC | SF_FORMAT_PCM_16, FALSE) ;
+
+		nTests++ ;
+		} ;
+
+	if (bDoAll || ! strcmp (argv [1], "w64"))
+	{	pcm_test_char 	("char.w64"  , SF_FORMAT_W64 | SF_FORMAT_PCM_U8, FALSE) ;
+		pcm_test_short	("short.w64" , SF_FORMAT_W64 | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_24bit	("24bit.w64" , SF_FORMAT_W64 | SF_FORMAT_PCM_24, FALSE) ;
+		pcm_test_int	("int.w64"   , SF_FORMAT_W64 | SF_FORMAT_PCM_32, FALSE) ;
+		pcm_test_float	("float.w64" , SF_FORMAT_W64 | SF_FORMAT_FLOAT , FALSE) ;
+		pcm_test_double	("double.w64", SF_FORMAT_W64 | SF_FORMAT_DOUBLE, FALSE) ;
+
 		nTests++ ;
 		} ;
 
@@ -179,1381 +216,2351 @@ main (int argc, char *argv[])
 } /* main */
 
 /*============================================================================================
-**	Here are the test functions.
+**	Helper functions and macros.
 */ 
 
+static void	create_short_file (char *filename) ; 
+
+#define	CHAR_ERROR(x,y)		(abs ((x) - (y)) > 255)
+#define	INT_ERROR(x,y)		(((x) - (y)) != 0)
+#define	TRIBYTE_ERROR(x,y)	(abs ((x) - (y)) > 255)
+#define	FLOAT_ERROR(x,y)	(fabs ((x) - (y)) > 1e-5)
+
+#define PUT_DOTS(k)					\
+			{	while (k--)			\
+					putchar ('.') ;	\
+				putchar (' ') ;		\
+				}
+
+#define CONVERT_DATA(k,len,new,orig)	\
+			{	for ((k) = 0 ; (k) < (len) ; (k)++)	\
+					(new) [k] = (orig) [k] ;		\
+				}
+
+
+/*======================================================================================
+*/
+
 static void	
-pcm_test_char (char *str, char *filename, int typemajor, int typeminor)
-{	SNDFILE			*file ;
-	SF_INFO			sfinfo ;
-	unsigned int	k, items, frames ;
-	short			*data ;
-
-	printf ("    pcm_test_char  : %s ... ", str) ;
-	fflush (stdout) ;
-
-	items = 127 ;
-
-	data = (short*) test_buffer ;
-	for (k = 0 ; k < items ; k++)
-		data [k] = k * ((k % 2) ? 1 : -1) ;
-		
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.samples     = 123456789 ; /* Wrong length. Library should correct this on sf_close. */
-	sfinfo.channels    = 1 ;
-	sfinfo.pcmbitwidth = 8 ;
-	sfinfo.format 	   = (typemajor | typeminor) ;
-
-	if (! (file = sf_open_write (filename, &sfinfo)))
-	{	printf ("Mono : sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
-		exit (1) ;
-		} ;
+pcm_test_char (char *filename, int filetype, int long_file_ok)
+{	SNDFILE		*file ;
+	SF_INFO		sfinfo ;
+	short		*orig, *test ;
+	int			k, items, frames, pass ;
 	
-	if ((k = sf_write_short (file, data, items)) != items)
-	{	printf ("Mono : sf_write_short failed with short write (%d => %d).\n", items, k) ;
-		sf_perror (file) ;
-		exit (1) ;
-		} ;
+	printf ("    %-18s  : %s ", "pcm_test_char", filename) ;
+	fflush (stdout) ;
+	
+	k = abs (18 - strlen (filename)) ;
+	PUT_DOTS (k) ;
+
+	sfinfo.samplerate  = 44100 ;
+	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels    = 1 ;
+	sfinfo.format 	   = filetype ;
+
+	gen_windowed_sine (orig_data, DATA_LENGTH, 32000.0) ;
+	
+	orig = (short*) orig_data ;
+	test = (short*) test_data ;
+
+	/* Make this a macro so gdb steps over it in one go. */	
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+
+	items = DATA_LENGTH ;
+
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+		
+	test_write_short_or_die (file, 0, orig, items, __LINE__) ;
+
+	/* Add non-audio data after the audio. */
+	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+
 	sf_close (file) ;
 	
-	memset (data, 0, items * sizeof (short)) ;
+	memset (test, 0, items * sizeof (short)) ;
 	
-	if (typemajor != SF_FORMAT_RAW)
+	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 	
-	if (! (file = sf_open_read (filename, &sfinfo)))
-	{	printf ("Mono : sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.format != (typemajor | typeminor))
-	{	printf ("Mono : Returned format incorrect (0x%08X => 0x%08X).\n", (typemajor | typeminor), sfinfo.format) ;
+	if (sfinfo.frames < items)
+	{	printf ("\n\nLine %d : Mono : Incorrect number of frames in file (too short). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), items) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.samples != items)
-	{	printf ("Mono : Incorrect number of samples in file. (%u => %u)\n", items, sfinfo.samples) ;
+	if (! long_file_ok && sfinfo.frames > items)
+	{	printf ("\n\nLine %d : Mono : Incorrect number of frames in file (too long). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), items) ;
 		exit (1) ;
 		} ;
 	
 	if (sfinfo.channels != 1)
-	{	printf ("Mono : Incorrect number of channels in file.\n") ;
+	{	printf ("\n\nLine %d : Mono : Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
 		} ;
 
-	if (sfinfo.pcmbitwidth != 8)
-	{	printf ("Mono : Incorrect bit width (%d).\n", sfinfo.pcmbitwidth) ;
-		exit (1) ;
-		} ;
-		
-	check_log_buffer (file) ;
+	check_log_buffer_or_die (file) ;
 
-	if ((k = sf_read_short (file, data, items)) != items)
-	{	printf ("Mono : short read (%d).\n", k) ;
-		exit (1) ;
-		} ;
-
+	test_read_short_or_die (file, 0, test, items, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample A (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (CHAR_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d: Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			} ;
 
 	/* Seek to start of file. */
-	if ((k = sf_seek (file, 0, SEEK_SET) != 0))
-	{	printf ("Mono : sf_seek (file, 0, SEEK_SET) failed.\n") ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
 
-	sf_read_short (file, data, 4) ;
+	test_read_short_or_die (file, 0, test, 4, __LINE__) ;
 	for (k = 0 ; k < 4 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample A (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (CHAR_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 	
-	/* Seek to offset from start of file. */
-	if ((k = sf_seek (file, 10, SEEK_SET) != 10))
-	{	printf ("Mono : sf_seek (file, 10, SEEK_SET) failed.\n") ;
-		exit (1) ;
+	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
+		(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
+	{	unlink (filename) ;
+		printf ("ok\n") ;
+		return ;
 		} ;
+	
+	/* Seek to offset from start of file. */
+	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_short (file, data + 10, 4) ;
+	test_read_short_or_die (file, 0, test + 10, 4, __LINE__) ;
 	for (k = 10 ; k < 14 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample B (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (CHAR_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, test [k], orig [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from current position. */
-	if ((k = sf_seek (file, 6, SEEK_CUR) != 20))
-	{	printf ("Mono : sf_seek (file, 7, SEEK_CUR) failed.\n") ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 6, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
 
-	sf_read_short (file, data + 20, 4) ;
+	test_read_short_or_die (file, 0, test + 20, 4, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample C (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (CHAR_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, test [k], orig [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from end of file. */
-	if ((k = sf_seek (file, -(sfinfo.samples - 10), SEEK_END) != 10))
-	{	printf ("Mono : sf_seek (file, -(sfinfo.samples - 10), SEEK_END) failed (%d).\n", k) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_short (file, data + 10, 4) ;
+	test_read_short_or_die (file, 0, test + 10, 4, __LINE__) ;
 	for (k = 10 ; k < 14 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample D (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (CHAR_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample D (#%d : 0x%X => 0x%X).\n", __LINE__, k, test [k], orig [k]) ;
 			exit (1) ;
 			};
 
 	sf_close (file) ;
+	
 
-	/* Now test Stereo. */
+	/*==================================================================================
+	** Now test Mono RDWR. 
+	*/
 
-	if (typemajor == SF_FORMAT_SVX)
-	{	printf ("ok\n") ;
+	sfinfo.samplerate  = SAMPLE_RATE ;
+	sfinfo.frames     = DATA_LENGTH ;
+	sfinfo.channels    = 1 ;
+	sfinfo.format 	   = filetype ;
+
+	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
+		unlink (filename) ;
+	else
+	{	/* Create a short file. */
+		create_short_file (filename) ; 
+
+		/* Opening a already existing short file (ie invalid header) RDWR is disallowed. 
+		** If this returns a valif pointer sf_open() screwed up.
+		*/ 
+		if ((file = sf_open (filename, SFM_RDWR, &sfinfo)))
+		{	printf ("\n\nLine %d: sf_open should (SFM_RDWR) have failed but didn't.\n", __LINE__) ;
+			exit (1) ;
+			} ;
+		
+		/* Truncate the file to zero bytes. */
+		if (truncate (filename, 0) < 0)
+		{	printf ("\n\nLine %d: truncate (%s) failed", __LINE__, filename) ;
+			perror (NULL) ;
+			exit (1) ;
+			} ;
+		} ;
+
+	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
+	** all the usual data required when opening the file in WRITE mode.
+	*/
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+
+	/* Do 3 writes followed by reads. After each, check the data and the current
+	** read and write offsets.
+	*/
+	for (pass = 1 ; pass <= 3 ; pass ++)
+	{	orig [20] = pass * 2 ;
+	
+		/* Write some data. */
+		test_write_short_or_die (file, 0, orig, DATA_LENGTH, __LINE__) ;
+	
+		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, pass * DATA_LENGTH) ;
+
+		/* Read what we just wrote. */
+		test_read_short_or_die (file, 0, test, DATA_LENGTH, __LINE__) ;
+
+		/* Check the data. */
+		for (k = 0 ; k < DATA_LENGTH ; k++)
+			if (CHAR_ERROR (orig [k], test [k]))
+			{	printf ("\n\nLine %d (pass %d): Error at sample %d (0x%X => 0x%X).\n", __LINE__, pass, k, orig [k], test [k]) ;
+				oct_save_short (orig, test, DATA_LENGTH) ;
+				exit (1) ;
+				} ;
+
+		test_read_write_position_or_die (file, __LINE__, pass, pass * DATA_LENGTH, pass * DATA_LENGTH) ;
+		} ; /* for (pass ...) */
+				
+	sf_close (file) ;
+
+	/* Open the file again to check the data. */
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+		
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.frames < 3 * DATA_LENGTH)
+	{	printf ("\n\nLine %d : Not enough frames in file. (%ld < %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), 3 * DATA_LENGTH ) ;
+		exit (1) ;
+		}
+
+	if (! long_file_ok && sfinfo.frames != 3 * DATA_LENGTH)
+	{	printf ("\n\nLine %d : Incorrect number of frames in file. (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), 3 * DATA_LENGTH ) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.channels != 1)
+	{	printf ("\n\nLine %d : Incorrect number of channels in file.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+
+	if (! long_file_ok)
+		test_read_write_position_or_die (file, __LINE__, 0, 0, 3 * DATA_LENGTH) ;
+	else
+		test_seek_or_die (file, 3 * DATA_LENGTH, SFM_WRITE | SEEK_SET, 3 * DATA_LENGTH, sfinfo.channels, __LINE__) ;
+		
+
+	for (pass = 1 ; pass <= 3 ; pass ++)
+	{	orig [20] = pass * 2 ;
+	
+		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, 3 * DATA_LENGTH) ;
+
+		/* Read what we just wrote. */
+		test_read_short_or_die (file, pass, test, DATA_LENGTH, __LINE__) ;
+
+		/* Check the data. */
+		for (k = 0 ; k < DATA_LENGTH ; k++)
+			if (CHAR_ERROR (orig [k], test [k]))
+			{	printf ("\n\nLine %d (pass %d): Error at sample %d (0x%X => 0x%X).\n", __LINE__, pass, k, orig [k], test [k]) ;
+				oct_save_short (orig, test, DATA_LENGTH) ;
+				exit (1) ;
+				} ;
+
+		} ; /* for (pass ...) */
+
+	sf_close (file) ;
+
+	/*==================================================================================
+	** Now test Stereo. 
+	*/
+
+	sfinfo.samplerate  = 44100 ;
+	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels    = 2 ;
+	sfinfo.format 	   = filetype ;
+
+	if (! sf_format_check (&sfinfo))
+	{	/* SVX currently only supports mono. */
+		if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_SVX)
+			printf ("ok, (no stereo)\n") ;
+		unlink (filename) ;
+		printf ("ok\n") ;
 		return ;
 		} ;
-
-	items = 126 ;
-
-	data = (short*) test_buffer ;
-	for (k = 0 ; k < items ; k++)
-		data [k] = k * ((k % 2) ? 1 : -1) ;
-		
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.samples     = 123456789 ; /* Wrong length. Library should correct this on sf_close. */
-	sfinfo.channels    = 2 ;
-	sfinfo.pcmbitwidth = 8 ;
-	sfinfo.format 	   = (typemajor | typeminor) ;
 	
+	gen_windowed_sine (orig_data, DATA_LENGTH, 32000.0) ;
+
+	orig = (short*) orig_data ;
+	test = (short*) test_data ;
+
+	/* Make this a macro so gdb steps over it in one go. */	
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+		
+	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
 
-	if (! (file = sf_open_write (filename, &sfinfo)))
-	{	printf ("Stereo : sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
-		exit (1) ;
-		} ;
-	
-	if ((k = sf_writef_short (file, data, frames)) != frames)
-	{	printf ("Stereo : sf_writef_short failed with short write (%d => %d).\n", frames, k) ;
-		sf_perror (file) ;
-		exit (1) ;
-		} ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+
+	test_writef_short_or_die (file, 0, orig, frames, __LINE__) ;
+
+	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+
 	sf_close (file) ;
 	
-	memset (data, 0, items * sizeof (short)) ;
+	memset (test, 0, items * sizeof (short)) ;
 	
-	if (typemajor != SF_FORMAT_RAW)
+	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 	
-	if (! (file = sf_open_read (filename, &sfinfo)))
-	{	printf ("Stereo : sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Stereo : Returned format incorrect (0x%08X => 0x%08X).\n", 
+				__LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.format != (typemajor | typeminor))
-	{	printf ("Stereo : Returned format incorrect (0x%08X => 0x%08X).\n", (typemajor | typeminor), sfinfo.format) ;
+	if (sfinfo.frames < frames)
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too short). (%ld should be %d)\n", 
+				__LINE__, SF_COUNT_TO_LONG (sfinfo.frames), frames) ;
 		exit (1) ;
 		} ;
-	
-	if (sfinfo.samples != frames)
-	{	printf ("Stereo : Incorrect number of samples in file. (%u => %u)\n", frames, sfinfo.samples) ;
+
+	if (! long_file_ok && sfinfo.frames > frames)
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too long). (%ld should be %d)\n", 
+				__LINE__, SF_COUNT_TO_LONG (sfinfo.frames), frames) ;
 		exit (1) ;
 		} ;
 	
 	if (sfinfo.channels != 2)
-	{	printf ("Stereo : Incorrect number of channels in file.\n") ;
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
 		} ;
 
-	if (sfinfo.pcmbitwidth != 8)
-	{	printf ("Stereo : Incorrect bit width (%d).\n", sfinfo.pcmbitwidth) ;
-		exit (1) ;
-		} ;
+	check_log_buffer_or_die (file) ;
 
-	check_log_buffer (file) ;
-
-	if ((k = sf_readf_short (file, data, frames)) != frames)
-	{	printf ("Stereo : short read (%d).\n", k) ;
-		exit (1) ;
-		} ;
-
+	test_readf_short_or_die (file, 0, test, frames, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (CHAR_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			} ;
 
 	/* Seek to start of file. */
-	if ((k = sf_seek (file, 0, SEEK_SET) != 0))
-	{	printf ("Stereo : sf_seek (file, 0, SEEK_SET) failed.\n") ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
 
-	sf_read_short (file, data, 4) ;
+	test_readf_short_or_die (file, 0, test, 2, __LINE__) ;
 	for (k = 0 ; k < 4 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample A (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (CHAR_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 	
 	/* Seek to offset from start of file. */
-	if ((k = sf_seek (file, 10, SEEK_SET) != 10))
-	{	printf ("Stereo : sf_seek (file, 10, SEEK_SET) failed.\n") ;
+	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
+
+	/* Check for errors here. */
+	if (sf_error (file))
+	{	printf ("Line %d: Should NOT return an error.\n", __LINE__) ;
+		sf_perror (file) ;
 		exit (1) ;
 		} ;
 
-	sf_read_short (file, data + 10, 4) ;
+	if (sf_read_short (file, test, 1) > 0)
+	{	printf ("Line %d: Should return 0.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+
+	if (! sf_error (file))
+	{	printf ("Line %d: Should return an error.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+	/*-----------------------*/
+
+	test_readf_short_or_die (file, 0, test + 10, 2, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample B (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (CHAR_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from current position. */
-	if ((k = sf_seek (file, 8, SEEK_CUR)) != 20)
-	{	printf ("Stereo : sf_seek (file, 8, SEEK_CUR) failed. (20 -> %d)\n", k) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 8, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
 
-	sf_read_short (file, data + 40, 4) ;
+	test_readf_short_or_die (file, 0, test + 20, 2, __LINE__) ;
 	for (k = 40 ; k < 44 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample C (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (CHAR_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from end of file. */
-	if ((k = sf_seek (file, -(sfinfo.samples - 10), SEEK_END) != 10))
-	{	printf ("Stereo : sf_seek (file, -(sfinfo.samples - 10), SEEK_END) failed (%d).\n", k) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_short (file, data + 20, 4) ;
+	test_readf_short_or_die (file, 0, test + 20, 2, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample D (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (CHAR_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
-
+			
 	sf_close (file) ;
 
+	unlink (filename) ;
 	printf ("ok\n") ;
+
+	return ;			
 } /* pcm_test_char */
 
+
+/*======================================================================================
+*/
+
 static void	
-pcm_test_short (char *str, char *filename, int typemajor, int typeminor)
-{	SNDFILE			*file ;
-	SF_INFO			sfinfo ;
-	unsigned int	k, items, frames ;
-	short			*data ;
-
-	printf ("    pcm_test_short : %s ... ", str) ;
-	fflush (stdout) ;
-
-	items = BUFFER_SIZE / sizeof (short) ;
-
-	data = (short*) test_buffer ;
-	for (k = 0 ; k < items ; k++)
-		data [k] = k * ((k % 2) ? 1 : -1) ;
-		
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.samples     = items ;
-	sfinfo.channels    = 1 ;
-	sfinfo.pcmbitwidth = 16 ;
-	sfinfo.format 	   = (typemajor | typeminor) ;
-
-	if (! (file = sf_open_write (filename, &sfinfo)))
-	{	printf ("Mono : sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
-		exit (1) ;
-		} ;
+pcm_test_short (char *filename, int filetype, int long_file_ok)
+{	SNDFILE		*file ;
+	SF_INFO		sfinfo ;
+	short		*orig, *test ;
+	int			k, items, frames, pass ;
 	
-	if ((k = sf_write_short (file, data, items)) != items)
-	{	printf ("Mono : sf_write_short failed with short write (%d => %d).\n", items, k) ;
-		sf_perror (file) ;
-		exit (1) ;
-		} ;
+	printf ("    %-18s  : %s ", "pcm_test_short", filename) ;
+	fflush (stdout) ;
+	
+	k = abs (18 - strlen (filename)) ;
+	PUT_DOTS (k) ;
+
+	sfinfo.samplerate  = 44100 ;
+	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels    = 1 ;
+	sfinfo.format 	   = filetype ;
+
+	gen_windowed_sine (orig_data, DATA_LENGTH, 32000.0) ;
+	
+	orig = (short*) orig_data ;
+	test = (short*) test_data ;
+
+	/* Make this a macro so gdb steps over it in one go. */	
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+
+	items = DATA_LENGTH ;
+
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+		
+	test_write_short_or_die (file, 0, orig, items, __LINE__) ;
+
+	/* Add non-audio data after the audio. */
+	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
 
 	sf_close (file) ;
 	
-	memset (data, 0, items * sizeof (short)) ;
-
-	if (typemajor != SF_FORMAT_RAW)
+	memset (test, 0, items * sizeof (short)) ;
+	
+	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 	
-	if (! (file = sf_open_read (filename, &sfinfo)))
-	{	printf ("Mono : sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.format != (typemajor | typeminor))
-	{	printf ("Mono : Returned format incorrect (0x%08X => 0x%08X).\n", (typemajor | typeminor), sfinfo.format) ;
+	if (sfinfo.frames < items)
+	{	printf ("\n\nLine %d : Mono : Incorrect number of frames in file (too short). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), items) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.samples != items)
-	{	printf ("Mono : Incorrect number of samples in file. (%d => %d)\n", items, sfinfo.samples) ;
+	if (! long_file_ok && sfinfo.frames > items)
+	{	printf ("\n\nLine %d : Mono : Incorrect number of frames in file (too long). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), items) ;
 		exit (1) ;
 		} ;
 	
 	if (sfinfo.channels != 1)
-	{	printf ("Mono : Incorrect number of channels in file.\n") ;
+	{	printf ("\n\nLine %d : Mono : Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
 		} ;
 
-	if (sfinfo.pcmbitwidth != 16)
-	{	printf ("Mono : Incorrect bit width (%d).\n", sfinfo.pcmbitwidth) ;
-		exit (1) ;
-		} ;
+	check_log_buffer_or_die (file) ;
 
-	check_log_buffer (file) ;
-
-	if ((k = sf_read_short (file, data, items)) != items)
-	{	printf ("Mono : short read (%d).\n", k) ;
-		exit (1) ;
-		} ;
-
+	test_read_short_or_die (file, 0, test, items, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d: Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			} ;
-			
-	/* Seek to start of file. */
-	if ((k = sf_seek (file, 0, SEEK_SET) != 0))
-	{	printf ("Mono : sf_seek (file, 0, SEEK_SET) failed.\n") ;
-		exit (1) ;
-		} ;
 
-	sf_read_short (file, data, 4) ;
+	/* Seek to start of file. */
+	test_seek_or_die (file, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
+
+	test_read_short_or_die (file, 0, test, 4, __LINE__) ;
 	for (k = 0 ; k < 4 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample A (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 	
-	/* Seek to offset from start of file. */
-	if ((k = sf_seek (file, 10, SEEK_SET) != 10))
-	{	printf ("Mono : sf_seek (file, 10, SEEK_SET) failed. XXXXX\n") ;
-		exit (1) ;
+	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
+		(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
+	{	unlink (filename) ;
+		printf ("ok\n") ;
+		return ;
 		} ;
+	
+	/* Seek to offset from start of file. */
+	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_short (file, data + 10, 4) ;
+	test_read_short_or_die (file, 0, test + 10, 4, __LINE__) ;
 	for (k = 10 ; k < 14 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample B (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, test [k], orig [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from current position. */
-	if ((k = sf_seek (file, 6, SEEK_CUR) != 20))
-	{	printf ("Mono : sf_seek (file, 7, SEEK_CUR) failed.\n") ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 6, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
 
-	sf_read_short (file, data + 20, 4) ;
+	test_read_short_or_die (file, 0, test + 20, 4, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample C (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, test [k], orig [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from end of file. */
-	if ((k = sf_seek (file, -(sfinfo.samples - 10), SEEK_END) != 10))
-	{	printf ("Mono : sf_seek (file, -(sfinfo.samples - 10), SEEK_END) failed (%d).\n", k) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_short (file, data + 10, 4) ;
+	test_read_short_or_die (file, 0, test + 10, 4, __LINE__) ;
 	for (k = 10 ; k < 14 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample D (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample D (#%d : 0x%X => 0x%X).\n", __LINE__, k, test [k], orig [k]) ;
 			exit (1) ;
 			};
 
 	sf_close (file) ;
+	
 
-	/* Now test Stereo. */
+	/*==================================================================================
+	** Now test Mono RDWR. 
+	*/
 
-	if (typemajor == SF_FORMAT_SVX)
-	{	printf ("ok\n") ;
+	sfinfo.samplerate  = SAMPLE_RATE ;
+	sfinfo.frames     = DATA_LENGTH ;
+	sfinfo.channels    = 1 ;
+	sfinfo.format 	   = filetype ;
+
+	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
+		unlink (filename) ;
+	else
+	{	/* Create a short file. */
+		create_short_file (filename) ; 
+
+		/* Opening a already existing short file (ie invalid header) RDWR is disallowed. 
+		** If this returns a valif pointer sf_open() screwed up.
+		*/ 
+		if ((file = sf_open (filename, SFM_RDWR, &sfinfo)))
+		{	printf ("\n\nLine %d: sf_open should (SFM_RDWR) have failed but didn't.\n", __LINE__) ;
+			exit (1) ;
+			} ;
+		
+		/* Truncate the file to zero bytes. */
+		if (truncate (filename, 0) < 0)
+		{	printf ("\n\nLine %d: truncate (%s) failed", __LINE__, filename) ;
+			perror (NULL) ;
+			exit (1) ;
+			} ;
+		} ;
+
+	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
+	** all the usual data required when opening the file in WRITE mode.
+	*/
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+
+	/* Do 3 writes followed by reads. After each, check the data and the current
+	** read and write offsets.
+	*/
+	for (pass = 1 ; pass <= 3 ; pass ++)
+	{	orig [20] = pass * 2 ;
+	
+		/* Write some data. */
+		test_write_short_or_die (file, 0, orig, DATA_LENGTH, __LINE__) ;
+	
+		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, pass * DATA_LENGTH) ;
+
+		/* Read what we just wrote. */
+		test_read_short_or_die (file, 0, test, DATA_LENGTH, __LINE__) ;
+
+		/* Check the data. */
+		for (k = 0 ; k < DATA_LENGTH ; k++)
+			if (INT_ERROR (orig [k], test [k]))
+			{	printf ("\n\nLine %d (pass %d): Error at sample %d (0x%X => 0x%X).\n", __LINE__, pass, k, orig [k], test [k]) ;
+				oct_save_short (orig, test, DATA_LENGTH) ;
+				exit (1) ;
+				} ;
+
+		test_read_write_position_or_die (file, __LINE__, pass, pass * DATA_LENGTH, pass * DATA_LENGTH) ;
+		} ; /* for (pass ...) */
+				
+	sf_close (file) ;
+
+	/* Open the file again to check the data. */
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+		
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.frames < 3 * DATA_LENGTH)
+	{	printf ("\n\nLine %d : Not enough frames in file. (%ld < %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), 3 * DATA_LENGTH ) ;
+		exit (1) ;
+		}
+
+	if (! long_file_ok && sfinfo.frames != 3 * DATA_LENGTH)
+	{	printf ("\n\nLine %d : Incorrect number of frames in file. (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), 3 * DATA_LENGTH ) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.channels != 1)
+	{	printf ("\n\nLine %d : Incorrect number of channels in file.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+
+	if (! long_file_ok)
+		test_read_write_position_or_die (file, __LINE__, 0, 0, 3 * DATA_LENGTH) ;
+	else
+		test_seek_or_die (file, 3 * DATA_LENGTH, SFM_WRITE | SEEK_SET, 3 * DATA_LENGTH, sfinfo.channels, __LINE__) ;
+		
+
+	for (pass = 1 ; pass <= 3 ; pass ++)
+	{	orig [20] = pass * 2 ;
+	
+		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, 3 * DATA_LENGTH) ;
+
+		/* Read what we just wrote. */
+		test_read_short_or_die (file, pass, test, DATA_LENGTH, __LINE__) ;
+
+		/* Check the data. */
+		for (k = 0 ; k < DATA_LENGTH ; k++)
+			if (INT_ERROR (orig [k], test [k]))
+			{	printf ("\n\nLine %d (pass %d): Error at sample %d (0x%X => 0x%X).\n", __LINE__, pass, k, orig [k], test [k]) ;
+				oct_save_short (orig, test, DATA_LENGTH) ;
+				exit (1) ;
+				} ;
+
+		} ; /* for (pass ...) */
+
+	sf_close (file) ;
+
+	/*==================================================================================
+	** Now test Stereo. 
+	*/
+
+	sfinfo.samplerate  = 44100 ;
+	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels    = 2 ;
+	sfinfo.format 	   = filetype ;
+
+	if (! sf_format_check (&sfinfo))
+	{	/* SVX currently only supports mono. */
+		if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_SVX)
+			printf ("ok, (no stereo)\n") ;
+		unlink (filename) ;
+		printf ("ok\n") ;
 		return ;
 		} ;
-
-	items = BUFFER_SIZE / sizeof (short) ;
-
-	data = (short*) test_buffer ;
-	for (k = 0 ; k < items ; k++)
-		data [k] = k * ((k % 2) ? 1 : -1) ;
-		
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.samples     = items ;
-	sfinfo.channels    = 2 ;
-	sfinfo.pcmbitwidth = 16 ;
-	sfinfo.format 	   = (typemajor | typeminor) ;
 	
+	gen_windowed_sine (orig_data, DATA_LENGTH, 32000.0) ;
+
+	orig = (short*) orig_data ;
+	test = (short*) test_data ;
+
+	/* Make this a macro so gdb steps over it in one go. */	
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+		
+	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
 
-	if (! (file = sf_open_write (filename, &sfinfo)))
-	{	printf ("Stereo : sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
-		exit (1) ;
-		} ;
-	
-	if ((k = sf_writef_short (file, data, frames)) != frames)
-	{	printf ("Stereo : sf_writef_short failed with short write (%d => %d).\n", frames, k) ;
-		sf_perror (file) ;
-		exit (1) ;
-		} ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+
+	test_writef_short_or_die (file, 0, orig, frames, __LINE__) ;
+
+	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+
 	sf_close (file) ;
 	
-	memset (data, 0, items * sizeof (short)) ;
-
-	if (typemajor != SF_FORMAT_RAW)
+	memset (test, 0, items * sizeof (short)) ;
+	
+	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 	
-	if (! (file = sf_open_read (filename, &sfinfo)))
-	{	printf ("Stereo : sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Stereo : Returned format incorrect (0x%08X => 0x%08X).\n", 
+				__LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.format != (typemajor | typeminor))
-	{	printf ("Stereo : Returned format incorrect (0x%08X => 0x%08X).\n", (typemajor | typeminor), sfinfo.format) ;
+	if (sfinfo.frames < frames)
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too short). (%ld should be %d)\n", 
+				__LINE__, SF_COUNT_TO_LONG (sfinfo.frames), frames) ;
 		exit (1) ;
 		} ;
-	
-	if (sfinfo.samples != frames)
-	{	printf ("Stereo : Incorrect number of samples in file. (%d => %d)\n", frames, sfinfo.samples) ;
+
+	if (! long_file_ok && sfinfo.frames > frames)
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too long). (%ld should be %d)\n", 
+				__LINE__, SF_COUNT_TO_LONG (sfinfo.frames), frames) ;
 		exit (1) ;
 		} ;
 	
 	if (sfinfo.channels != 2)
-	{	printf ("Stereo : Incorrect number of channels in file.\n") ;
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
 		} ;
 
-	if (sfinfo.pcmbitwidth != 16)
-	{	printf ("Stereo : Incorrect bit width (%d).\n", sfinfo.pcmbitwidth) ;
-		exit (1) ;
-		} ;
+	check_log_buffer_or_die (file) ;
 
-	check_log_buffer (file) ;
-
-	if ((k = sf_readf_short (file, data, frames)) != frames)
-	{	printf ("Stereo : short read (%d).\n", k) ;
-		exit (1) ;
-		} ;
-
+	test_readf_short_or_die (file, 0, test, frames, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			} ;
 
 	/* Seek to start of file. */
-	if ((k = sf_seek (file, 0, SEEK_SET) != 0))
-	{	printf ("Stereo : sf_seek (file, 0, SEEK_SET) failed.\n") ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
 
-	sf_read_short (file, data, 4) ;
+	test_readf_short_or_die (file, 0, test, 2, __LINE__) ;
 	for (k = 0 ; k < 4 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample A (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 	
 	/* Seek to offset from start of file. */
-	if ((k = sf_seek (file, 10, SEEK_SET) != 10))
-	{	printf ("Stereo : sf_seek (file, 10, SEEK_SET) failed.\n") ;
+	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
+
+	/* Check for errors here. */
+	if (sf_error (file))
+	{	printf ("Line %d: Should NOT return an error.\n", __LINE__) ;
+		sf_perror (file) ;
 		exit (1) ;
 		} ;
 
-	sf_read_short (file, data + 10, 4) ;
+	if (sf_read_short (file, test, 1) > 0)
+	{	printf ("Line %d: Should return 0.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+
+	if (! sf_error (file))
+	{	printf ("Line %d: Should return an error.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+	/*-----------------------*/
+
+	test_readf_short_or_die (file, 0, test + 10, 2, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample B (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from current position. */
-	if ((k = sf_seek (file, 8, SEEK_CUR)) != 20)
-	{	printf ("Stereo : sf_seek (file, 8, SEEK_CUR) failed. (20 -> %d)\n", k) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 8, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
 
-	sf_read_short (file, data + 40, 4) ;
+	test_readf_short_or_die (file, 0, test + 20, 2, __LINE__) ;
 	for (k = 40 ; k < 44 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample C (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from end of file. */
-	if ((k = sf_seek (file, -(sfinfo.samples - 10), SEEK_END) != 10))
-	{	printf ("Stereo : sf_seek (file, -(sfinfo.samples - 10), SEEK_END) failed (%d).\n", k) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_short (file, data + 20, 4) ;
+	test_readf_short_or_die (file, 0, test + 20, 2, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
-		if (data [k] != k * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample D (#%d : %d => %d).\n", k, k * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
-
+			
 	sf_close (file) ;
 
+	unlink (filename) ;
 	printf ("ok\n") ;
+
+	return ;			
 } /* pcm_test_short */
 
+
+/*======================================================================================
+*/
+
 static void	
-pcm_test_24bit (char *str, char *filename, int typemajor, int typeminor, int long_file_ok)
-{	SNDFILE			*file ;
-	SF_INFO			sfinfo ;
-	unsigned int	k, items, frames ;
-	int				*data ;
-
-	printf ("    pcm_test_24bit : %s ... ", str) ;
-	fflush (stdout) ;
-
-	items = BUFFER_SIZE / sizeof (int) ;
-
-	data = (int*) test_buffer ;
-	for (k = 0 ; k < items ; k++)
-		data [k] = k * 256 * ((k % 2) ? 1 : -1) ;
-		
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.samples     = items ;
-	sfinfo.channels    = 1 ;
-	sfinfo.pcmbitwidth = 24 ;
-	sfinfo.format 	   = (typemajor | typeminor) ;
-
-	if (! (file = sf_open_write (filename, &sfinfo)))
-	{	printf ("Mono : sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
-		exit (1) ;
-		} ;
+pcm_test_24bit (char *filename, int filetype, int long_file_ok)
+{	SNDFILE		*file ;
+	SF_INFO		sfinfo ;
+	int		*orig, *test ;
+	int			k, items, frames, pass ;
 	
-	if (sf_write_int (file, data, items) != items)
-	{	printf ("Mono : sf_write_int failed with error : ") ;
-		sf_perror (file) ;
-		exit (1) ;
-		} ;
+	printf ("    %-18s  : %s ", "pcm_test_24bit", filename) ;
+	fflush (stdout) ;
+	
+	k = abs (18 - strlen (filename)) ;
+	PUT_DOTS (k) ;
+
+	sfinfo.samplerate  = 44100 ;
+	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels    = 1 ;
+	sfinfo.format 	   = filetype ;
+
+	gen_windowed_sine (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
+	
+	orig = (int*) orig_data ;
+	test = (int*) test_data ;
+
+	/* Make this a macro so gdb steps over it in one go. */	
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+
+	items = DATA_LENGTH ;
+
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+		
+	test_write_int_or_die (file, 0, orig, items, __LINE__) ;
+
+	/* Add non-audio data after the audio. */
+	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+
 	sf_close (file) ;
 	
-	memset (data, 0, items * 3) ;
-
-	if (typemajor != SF_FORMAT_RAW)
+	memset (test, 0, items * sizeof (int)) ;
+	
+	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 	
-	if (! (file = sf_open_read (filename, &sfinfo)))
-	{	printf ("Mono : sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.format != (typemajor | typeminor))
-	{	printf ("Mono : Returned format incorrect (0x%08X => 0x%08X).\n", (typemajor | typeminor), sfinfo.format) ;
+	if (sfinfo.frames < items)
+	{	printf ("\n\nLine %d : Mono : Incorrect number of frames in file (too short). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), items) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.samples < items)
-	{	printf ("Mono : Incorrect number of samples in file (too short). (%d should be %d)\n", sfinfo.samples, items) ;
-		exit (1) ;
-		} ;
-	
-	if (! long_file_ok && sfinfo.samples > items)
-	{	printf ("Mono : Incorrect number of samples in file (too long). (%d should be %d)\n", sfinfo.samples, items) ;
+	if (! long_file_ok && sfinfo.frames > items)
+	{	printf ("\n\nLine %d : Mono : Incorrect number of frames in file (too long). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), items) ;
 		exit (1) ;
 		} ;
 	
 	if (sfinfo.channels != 1)
-	{	printf ("Mono : Incorrect number of channels in file.\n") ;
+	{	printf ("\n\nLine %d : Mono : Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
 		} ;
 
-	if (sfinfo.pcmbitwidth != 24)
-	{	printf ("Mono : Incorrect bit width (%d).\n", sfinfo.pcmbitwidth) ;
-		exit (1) ;
-		} ;
+	check_log_buffer_or_die (file) ;
 
-	check_log_buffer (file) ;
-
-	if ((k = sf_read_int (file, data, items)) != items)
-	{	printf ("Mono : short read (%d).\n", k) ;
-		exit (1) ;
-		} ;
-
+	test_read_int_or_die (file, 0, test, items, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
-		if (data [k] != k * 256 * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample (#%d : %d => %d).\n", k, k * 256 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (TRIBYTE_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d: Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			} ;
-			
-	/* Seek to start of file. */
-	if ((k = sf_seek (file, 0, SEEK_SET) != 0))
-	{	printf ("Mono : sf_seek (file, 0, SEEK_SET) failed.\n") ;
-		exit (1) ;
-		} ;
 
-	sf_read_int (file, data, 4) ;
+	/* Seek to start of file. */
+	test_seek_or_die (file, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
+
+	test_read_int_or_die (file, 0, test, 4, __LINE__) ;
 	for (k = 0 ; k < 4 ; k++)
-		if (data [k] != k * 256 * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample A (#%d : %d => %d).\n", k, k * 256 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (TRIBYTE_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 	
-	/* Seek to offset from start of file. */
-	if ((k = sf_seek (file, 10, SEEK_SET) != 10))
-	{	printf ("Mono : sf_seek (file, 10, SEEK_SET) failed. XXXXX\n") ;
-		exit (1) ;
+	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
+		(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
+	{	unlink (filename) ;
+		printf ("ok\n") ;
+		return ;
 		} ;
+	
+	/* Seek to offset from start of file. */
+	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_int (file, data + 10, 4) ;
+	test_read_int_or_die (file, 0, test + 10, 4, __LINE__) ;
 	for (k = 10 ; k < 14 ; k++)
-		if (data [k] != k * 256 * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample B (#%d : %d => %d).\n", k, k * 256 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (TRIBYTE_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, test [k], orig [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from current position. */
-	if ((k = sf_seek (file, 6, SEEK_CUR) != 20))
-	{	printf ("Mono : sf_seek (file, 7, SEEK_CUR) failed.\n") ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 6, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
 
-	sf_read_int (file, data + 20, 4) ;
+	test_read_int_or_die (file, 0, test + 20, 4, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
-		if (data [k] != k * 256 * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample C (#%d : %d => %d).\n", k, k * 256 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (TRIBYTE_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, test [k], orig [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from end of file. */
-	if ((k = sf_seek (file, -(sfinfo.samples - 10), SEEK_END) != 10))
-	{	printf ("Mono : sf_seek (file, -(sfinfo.samples - 10), SEEK_END) failed (%d).\n", k) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_int (file, data + 10, 4) ;
+	test_read_int_or_die (file, 0, test + 10, 4, __LINE__) ;
 	for (k = 10 ; k < 14 ; k++)
-		if (data [k] != k * 256 * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample D (#%d : %d => %d).\n", k, k * 256 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (TRIBYTE_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample D (#%d : 0x%X => 0x%X).\n", __LINE__, k, test [k], orig [k]) ;
 			exit (1) ;
 			};
 
 	sf_close (file) ;
-		
-	/* Now test Stereo. */
+	
 
-	if (typemajor == SF_FORMAT_SVX)
-	{	printf ("ok\n") ;
+	/*==================================================================================
+	** Now test Mono RDWR. 
+	*/
+
+	sfinfo.samplerate  = SAMPLE_RATE ;
+	sfinfo.frames     = DATA_LENGTH ;
+	sfinfo.channels    = 1 ;
+	sfinfo.format 	   = filetype ;
+
+	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
+		unlink (filename) ;
+	else
+	{	/* Create a short file. */
+		create_short_file (filename) ; 
+
+		/* Opening a already existing short file (ie invalid header) RDWR is disallowed. 
+		** If this returns a valif pointer sf_open() screwed up.
+		*/ 
+		if ((file = sf_open (filename, SFM_RDWR, &sfinfo)))
+		{	printf ("\n\nLine %d: sf_open should (SFM_RDWR) have failed but didn't.\n", __LINE__) ;
+			exit (1) ;
+			} ;
+		
+		/* Truncate the file to zero bytes. */
+		if (truncate (filename, 0) < 0)
+		{	printf ("\n\nLine %d: truncate (%s) failed", __LINE__, filename) ;
+			perror (NULL) ;
+			exit (1) ;
+			} ;
+		} ;
+
+	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
+	** all the usual data required when opening the file in WRITE mode.
+	*/
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+
+	/* Do 3 writes followed by reads. After each, check the data and the current
+	** read and write offsets.
+	*/
+	for (pass = 1 ; pass <= 3 ; pass ++)
+	{	orig [20] = pass * 2 ;
+	
+		/* Write some data. */
+		test_write_int_or_die (file, 0, orig, DATA_LENGTH, __LINE__) ;
+	
+		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, pass * DATA_LENGTH) ;
+
+		/* Read what we just wrote. */
+		test_read_int_or_die (file, 0, test, DATA_LENGTH, __LINE__) ;
+
+		/* Check the data. */
+		for (k = 0 ; k < DATA_LENGTH ; k++)
+			if (TRIBYTE_ERROR (orig [k], test [k]))
+			{	printf ("\n\nLine %d (pass %d): Error at sample %d (0x%X => 0x%X).\n", __LINE__, pass, k, orig [k], test [k]) ;
+				oct_save_int (orig, test, DATA_LENGTH) ;
+				exit (1) ;
+				} ;
+
+		test_read_write_position_or_die (file, __LINE__, pass, pass * DATA_LENGTH, pass * DATA_LENGTH) ;
+		} ; /* for (pass ...) */
+				
+	sf_close (file) ;
+
+	/* Open the file again to check the data. */
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+		
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.frames < 3 * DATA_LENGTH)
+	{	printf ("\n\nLine %d : Not enough frames in file. (%ld < %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), 3 * DATA_LENGTH ) ;
+		exit (1) ;
+		}
+
+	if (! long_file_ok && sfinfo.frames != 3 * DATA_LENGTH)
+	{	printf ("\n\nLine %d : Incorrect number of frames in file. (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), 3 * DATA_LENGTH ) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.channels != 1)
+	{	printf ("\n\nLine %d : Incorrect number of channels in file.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+
+	if (! long_file_ok)
+		test_read_write_position_or_die (file, __LINE__, 0, 0, 3 * DATA_LENGTH) ;
+	else
+		test_seek_or_die (file, 3 * DATA_LENGTH, SFM_WRITE | SEEK_SET, 3 * DATA_LENGTH, sfinfo.channels, __LINE__) ;
+		
+
+	for (pass = 1 ; pass <= 3 ; pass ++)
+	{	orig [20] = pass * 2 ;
+	
+		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, 3 * DATA_LENGTH) ;
+
+		/* Read what we just wrote. */
+		test_read_int_or_die (file, pass, test, DATA_LENGTH, __LINE__) ;
+
+		/* Check the data. */
+		for (k = 0 ; k < DATA_LENGTH ; k++)
+			if (TRIBYTE_ERROR (orig [k], test [k]))
+			{	printf ("\n\nLine %d (pass %d): Error at sample %d (0x%X => 0x%X).\n", __LINE__, pass, k, orig [k], test [k]) ;
+				oct_save_int (orig, test, DATA_LENGTH) ;
+				exit (1) ;
+				} ;
+
+		} ; /* for (pass ...) */
+
+	sf_close (file) ;
+
+	/*==================================================================================
+	** Now test Stereo. 
+	*/
+
+	sfinfo.samplerate  = 44100 ;
+	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels    = 2 ;
+	sfinfo.format 	   = filetype ;
+
+	if (! sf_format_check (&sfinfo))
+	{	/* SVX currently only supports mono. */
+		if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_SVX)
+			printf ("ok, (no stereo)\n") ;
+		unlink (filename) ;
+		printf ("ok\n") ;
 		return ;
 		} ;
-
-	items = BUFFER_SIZE / sizeof (int) ;
-
-	data = (int*) test_buffer ;
-	for (k = 0 ; k < items ; k++)
-		data [k] = k * 256 * ((k % 2) ? 1 : -1) ;
-		
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.samples     = items ;
-	sfinfo.channels    = 2 ;
-	sfinfo.pcmbitwidth = 24 ;
-	sfinfo.format 	   = (typemajor | typeminor) ;
 	
+	gen_windowed_sine (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
+
+	orig = (int*) orig_data ;
+	test = (int*) test_data ;
+
+	/* Make this a macro so gdb steps over it in one go. */	
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+		
+	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
 
-	if (! (file = sf_open_write (filename, &sfinfo)))
-	{	printf ("Stereo : sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
-		exit (1) ;
-		} ;
-	
-	if (sf_writef_int (file, data, frames) != frames)
-	{	printf ("Stereo : sf_writef_int failed with error : ") ;
-		sf_perror (file) ;
-		exit (1) ;
-		} ;
-		
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+
+	test_writef_int_or_die (file, 0, orig, frames, __LINE__) ;
+
+	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+
 	sf_close (file) ;
 	
-	memset (data, 0, items * 3) ;
-
-	if (typemajor != SF_FORMAT_RAW)
+	memset (test, 0, items * sizeof (int)) ;
+	
+	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 	
-	if (! (file = sf_open_read (filename, &sfinfo)))
-	{	printf ("Stereo : sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Stereo : Returned format incorrect (0x%08X => 0x%08X).\n", 
+				__LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.format != (typemajor | typeminor))
-	{	printf ("Stereo : Returned format incorrect (0x%08X => 0x%08X).\n", (typemajor | typeminor), sfinfo.format) ;
+	if (sfinfo.frames < frames)
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too short). (%ld should be %d)\n", 
+				__LINE__, SF_COUNT_TO_LONG (sfinfo.frames), frames) ;
 		exit (1) ;
 		} ;
-	
-	if (sfinfo.samples < frames)
-	{	printf ("Stereo : Incorrect number of samples in file (too short). (%d should be %d)\n", sfinfo.samples, frames) ;
-		exit (1) ;
-		} ;
-	
-	if (! long_file_ok && sfinfo.samples > frames)
-	{	printf ("Stereo : Incorrect number of samples in file (too long). (%d should be %d)\n", sfinfo.samples, frames) ;
+
+	if (! long_file_ok && sfinfo.frames > frames)
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too long). (%ld should be %d)\n", 
+				__LINE__, SF_COUNT_TO_LONG (sfinfo.frames), frames) ;
 		exit (1) ;
 		} ;
 	
 	if (sfinfo.channels != 2)
-	{	printf ("Stereo : Incorrect number of channels in file.\n") ;
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
 		} ;
 
-	if (sfinfo.pcmbitwidth != 24)
-	{	printf ("Stereo : Incorrect bit width (%d).\n", sfinfo.pcmbitwidth) ;
-		exit (1) ;
-		} ;
+	check_log_buffer_or_die (file) ;
 
-	check_log_buffer (file) ;
-
-	if ((k = sf_readf_int (file, data, frames)) != frames)
-	{	printf ("Stereo : short read (%d).\n", k) ;
-		exit (1) ;
-		} ;
-
+	test_readf_int_or_die (file, 0, test, frames, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
-		if (data [k] != k * 256 * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample (#%d : %d => %d).\n", k, k * 256 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (TRIBYTE_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			} ;
 
 	/* Seek to start of file. */
-	if ((k = sf_seek (file, 0, SEEK_SET) != 0))
-	{	printf ("Stereo : sf_seek (file, 0, SEEK_SET) failed.\n") ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
 
-	sf_read_int (file, data, 4) ;
+	test_readf_int_or_die (file, 0, test, 2, __LINE__) ;
 	for (k = 0 ; k < 4 ; k++)
-		if (data [k] != k * 256 * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample A (#%d : %d => %d).\n", k, k * 256 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (TRIBYTE_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 	
 	/* Seek to offset from start of file. */
-	if ((k = sf_seek (file, 10, SEEK_SET) != 10))
-	{	printf ("Stereo : sf_seek (file, 10, SEEK_SET) failed.\n") ;
+	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
+
+	/* Check for errors here. */
+	if (sf_error (file))
+	{	printf ("Line %d: Should NOT return an error.\n", __LINE__) ;
+		sf_perror (file) ;
 		exit (1) ;
 		} ;
 
-	sf_read_int (file, data + 10, 4) ;
+	if (sf_read_int (file, test, 1) > 0)
+	{	printf ("Line %d: Should return 0.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+
+	if (! sf_error (file))
+	{	printf ("Line %d: Should return an error.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+	/*-----------------------*/
+
+	test_readf_int_or_die (file, 0, test + 10, 2, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
-		if (data [k] != k * 256 * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample B (#%d : %d => %d).\n", k, k * 256 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (TRIBYTE_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from current position. */
-	if ((k = sf_seek (file, 8, SEEK_CUR)) != 20)
-	{	printf ("Stereo : sf_seek (file, 8, SEEK_CUR) failed. (20 -> %d)\n", k) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 8, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
 
-	sf_read_int (file, data + 40, 4) ;
+	test_readf_int_or_die (file, 0, test + 20, 2, __LINE__) ;
 	for (k = 40 ; k < 44 ; k++)
-		if (data [k] != k * 256 * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample C (#%d : %d => %d).\n", k, k * 256 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (TRIBYTE_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from end of file. */
-	if ((k = sf_seek (file, -(sfinfo.samples - 10), SEEK_END) != 10))
-	{	printf ("Stereo : sf_seek (file, -(sfinfo.samples - 10), SEEK_END) failed (%d).\n", k) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_int (file, data + 20, 4) ;
+	test_readf_int_or_die (file, 0, test + 20, 2, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
-		if (data [k] != k * 256 * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample D (#%d : %d => %d).\n", k, k * 256 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (TRIBYTE_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
-
+			
 	sf_close (file) ;
-		
+
+	unlink (filename) ;
 	printf ("ok\n") ;
+
+	return ;			
 } /* pcm_test_24bit */
 
+
+/*======================================================================================
+*/
+
 static void	
-pcm_test_int (char *str, char *filename, int typemajor, int typeminor)
-{	SNDFILE			*file ;
-	SF_INFO			sfinfo ;
-	unsigned int	k, items, frames ;
-	int				sign, *data ;
-
-	printf ("    pcm_test_int   : %s ... ", str) ;
-	fflush (stdout) ;
-
-	items = BUFFER_SIZE / sizeof (int) ;
-
-	data = (int*) test_buffer ;
-	for (sign = 1, k = 0 ; k < items ; k++)
-		data [k] = k * 200000 * ((k % 2) ? 1 : -1) ;
-		
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.samples     = items ;
-	sfinfo.channels    = 1 ;
-	sfinfo.pcmbitwidth = 32 ;
-	sfinfo.format 	   = (typemajor | typeminor) ;
-
-	if (! (file = sf_open_write (filename, &sfinfo)))
-	{	printf ("Mono : sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
-		exit (1) ;
-		} ;
+pcm_test_int (char *filename, int filetype, int long_file_ok)
+{	SNDFILE		*file ;
+	SF_INFO		sfinfo ;
+	int		*orig, *test ;
+	int			k, items, frames, pass ;
 	
-	if (sf_write_int (file, data, items) != items)
-	{	printf ("Mono : sf_write_int failed with error : ") ;
-		sf_perror (file) ;
-		exit (1) ;
-		} ;
+	printf ("    %-18s  : %s ", "pcm_test_int", filename) ;
+	fflush (stdout) ;
+	
+	k = abs (18 - strlen (filename)) ;
+	PUT_DOTS (k) ;
+
+	sfinfo.samplerate  = 44100 ;
+	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels    = 1 ;
+	sfinfo.format 	   = filetype ;
+
+	gen_windowed_sine (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
+	
+	orig = (int*) orig_data ;
+	test = (int*) test_data ;
+
+	/* Make this a macro so gdb steps over it in one go. */	
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+
+	items = DATA_LENGTH ;
+
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+		
+	test_write_int_or_die (file, 0, orig, items, __LINE__) ;
+
+	/* Add non-audio data after the audio. */
+	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+
 	sf_close (file) ;
 	
-	memset (data, 0, items * sizeof (short)) ;
-
-	if (typemajor != SF_FORMAT_RAW)
+	memset (test, 0, items * sizeof (int)) ;
+	
+	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 	
-	if (! (file = sf_open_read (filename, &sfinfo)))
-	{	printf ("Mono : sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.format != (typemajor | typeminor))
-	{	printf ("Mono : Returned format incorrect (0x%08X => 0x%08X).\n", (typemajor | typeminor), sfinfo.format) ;
+	if (sfinfo.frames < items)
+	{	printf ("\n\nLine %d : Mono : Incorrect number of frames in file (too short). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), items) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.samples != items)
-	{	printf ("Mono : Incorrect number of samples in file. (%d => %d)\n", items, sfinfo.samples) ;
+	if (! long_file_ok && sfinfo.frames > items)
+	{	printf ("\n\nLine %d : Mono : Incorrect number of frames in file (too long). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), items) ;
 		exit (1) ;
 		} ;
 	
 	if (sfinfo.channels != 1)
-	{	printf ("Mono : Incorrect number of channels in file.\n") ;
+	{	printf ("\n\nLine %d : Mono : Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
 		} ;
 
-	if (sfinfo.pcmbitwidth != 32)
-	{	printf ("Mono : Incorrect bit width (%d).\n", sfinfo.pcmbitwidth) ;
-		exit (1) ;
-		} ;
+	check_log_buffer_or_die (file) ;
 
-	check_log_buffer (file) ;
-
-	if ((k = sf_read_int (file, data, items)) != items)
-	{	printf ("Mono : short read (%d).\n", k) ;
-		exit (1) ;
-		} ;
-
-	for (sign = 1, k = 0 ; k < items ; k++)
-		if (data [k] != k * 200000 * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample (#%d : %d => %d).\n", k, (k % 2) ? 1 : -1, data [k]) ;
+	test_read_int_or_die (file, 0, test, items, __LINE__) ;
+	for (k = 0 ; k < items ; k++)
+		if (INT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d: Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			} ;
 
 	/* Seek to start of file. */
-	if ((k = sf_seek (file, 0, SEEK_SET) != 0))
-	{	printf ("Mono : sf_seek (file, 0, SEEK_SET) failed.\n") ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
 
-	sf_read_int (file, data, 4) ;
+	test_read_int_or_die (file, 0, test, 4, __LINE__) ;
 	for (k = 0 ; k < 4 ; k++)
-		if (data [k] != k * 200000 * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample A (#%d : %d => %d).\n", k, k * 200000 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 	
-	/* Seek to offset from start of file. */
-	if ((k = sf_seek (file, 10, SEEK_SET) != 10))
-	{	printf ("Mono : sf_seek (file, 10, SEEK_SET) failed. XXXXX\n") ;
-		exit (1) ;
+	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
+		(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
+	{	unlink (filename) ;
+		printf ("ok\n") ;
+		return ;
 		} ;
+	
+	/* Seek to offset from start of file. */
+	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_int (file, data + 10, 4) ;
+	test_read_int_or_die (file, 0, test + 10, 4, __LINE__) ;
 	for (k = 10 ; k < 14 ; k++)
-		if (data [k] != k * 200000 * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample B (#%d : %d => %d).\n", k, k * 200000 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, test [k], orig [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from current position. */
-	if ((k = sf_seek (file, 6, SEEK_CUR) != 20))
-	{	printf ("Mono : sf_seek (file, 7, SEEK_CUR) failed.\n") ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 6, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
 
-	sf_read_int (file, data + 20, 4) ;
+	test_read_int_or_die (file, 0, test + 20, 4, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
-		if (data [k] != k * 200000 * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample C (#%d : %d => %d).\n", k, k * 200000 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : 0x%X => 0x%X).\n", __LINE__, k, test [k], orig [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from end of file. */
-	if ((k = sf_seek (file, -(sfinfo.samples - 10), SEEK_END) != 10))
-	{	printf ("Mono : sf_seek (file, -(sfinfo.samples - 10), SEEK_END) failed (%d).\n", k) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_int (file, data + 10, 4) ;
+	test_read_int_or_die (file, 0, test + 10, 4, __LINE__) ;
 	for (k = 10 ; k < 14 ; k++)
-		if (data [k] != k * 200000 * ((k % 2) ? 1 : -1))
-		{	printf ("Mono : Incorrect sample D (#%d : %d => %d).\n", k, k * 200000 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample D (#%d : 0x%X => 0x%X).\n", __LINE__, k, test [k], orig [k]) ;
 			exit (1) ;
 			};
 
 	sf_close (file) ;
+	
 
-	/* Now test Stereo. */
+	/*==================================================================================
+	** Now test Mono RDWR. 
+	*/
 
-	if (typemajor == SF_FORMAT_SVX)
-	{	printf ("ok\n") ;
+	sfinfo.samplerate  = SAMPLE_RATE ;
+	sfinfo.frames     = DATA_LENGTH ;
+	sfinfo.channels    = 1 ;
+	sfinfo.format 	   = filetype ;
+
+	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
+		unlink (filename) ;
+	else
+	{	/* Create a short file. */
+		create_short_file (filename) ; 
+
+		/* Opening a already existing short file (ie invalid header) RDWR is disallowed. 
+		** If this returns a valif pointer sf_open() screwed up.
+		*/ 
+		if ((file = sf_open (filename, SFM_RDWR, &sfinfo)))
+		{	printf ("\n\nLine %d: sf_open should (SFM_RDWR) have failed but didn't.\n", __LINE__) ;
+			exit (1) ;
+			} ;
+		
+		/* Truncate the file to zero bytes. */
+		if (truncate (filename, 0) < 0)
+		{	printf ("\n\nLine %d: truncate (%s) failed", __LINE__, filename) ;
+			perror (NULL) ;
+			exit (1) ;
+			} ;
+		} ;
+
+	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
+	** all the usual data required when opening the file in WRITE mode.
+	*/
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+
+	/* Do 3 writes followed by reads. After each, check the data and the current
+	** read and write offsets.
+	*/
+	for (pass = 1 ; pass <= 3 ; pass ++)
+	{	orig [20] = pass * 2 ;
+	
+		/* Write some data. */
+		test_write_int_or_die (file, 0, orig, DATA_LENGTH, __LINE__) ;
+	
+		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, pass * DATA_LENGTH) ;
+
+		/* Read what we just wrote. */
+		test_read_int_or_die (file, 0, test, DATA_LENGTH, __LINE__) ;
+
+		/* Check the data. */
+		for (k = 0 ; k < DATA_LENGTH ; k++)
+			if (INT_ERROR (orig [k], test [k]))
+			{	printf ("\n\nLine %d (pass %d): Error at sample %d (0x%X => 0x%X).\n", __LINE__, pass, k, orig [k], test [k]) ;
+				oct_save_int (orig, test, DATA_LENGTH) ;
+				exit (1) ;
+				} ;
+
+		test_read_write_position_or_die (file, __LINE__, pass, pass * DATA_LENGTH, pass * DATA_LENGTH) ;
+		} ; /* for (pass ...) */
+				
+	sf_close (file) ;
+
+	/* Open the file again to check the data. */
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+		
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.frames < 3 * DATA_LENGTH)
+	{	printf ("\n\nLine %d : Not enough frames in file. (%ld < %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), 3 * DATA_LENGTH ) ;
+		exit (1) ;
+		}
+
+	if (! long_file_ok && sfinfo.frames != 3 * DATA_LENGTH)
+	{	printf ("\n\nLine %d : Incorrect number of frames in file. (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), 3 * DATA_LENGTH ) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.channels != 1)
+	{	printf ("\n\nLine %d : Incorrect number of channels in file.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+
+	if (! long_file_ok)
+		test_read_write_position_or_die (file, __LINE__, 0, 0, 3 * DATA_LENGTH) ;
+	else
+		test_seek_or_die (file, 3 * DATA_LENGTH, SFM_WRITE | SEEK_SET, 3 * DATA_LENGTH, sfinfo.channels, __LINE__) ;
+		
+
+	for (pass = 1 ; pass <= 3 ; pass ++)
+	{	orig [20] = pass * 2 ;
+	
+		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, 3 * DATA_LENGTH) ;
+
+		/* Read what we just wrote. */
+		test_read_int_or_die (file, pass, test, DATA_LENGTH, __LINE__) ;
+
+		/* Check the data. */
+		for (k = 0 ; k < DATA_LENGTH ; k++)
+			if (INT_ERROR (orig [k], test [k]))
+			{	printf ("\n\nLine %d (pass %d): Error at sample %d (0x%X => 0x%X).\n", __LINE__, pass, k, orig [k], test [k]) ;
+				oct_save_int (orig, test, DATA_LENGTH) ;
+				exit (1) ;
+				} ;
+
+		} ; /* for (pass ...) */
+
+	sf_close (file) ;
+
+	/*==================================================================================
+	** Now test Stereo. 
+	*/
+
+	sfinfo.samplerate  = 44100 ;
+	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels    = 2 ;
+	sfinfo.format 	   = filetype ;
+
+	if (! sf_format_check (&sfinfo))
+	{	/* SVX currently only supports mono. */
+		if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_SVX)
+			printf ("ok, (no stereo)\n") ;
+		unlink (filename) ;
+		printf ("ok\n") ;
 		return ;
 		} ;
-
-	items = BUFFER_SIZE / sizeof (int) ;
-
-	data = (int*) test_buffer ;
-	for (sign = 1, k = 0 ; k < items ; k++)
-		data [k] = k * 200000 * ((k % 2) ? 1 : -1) ;
-		
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.samples     = items ;
-	sfinfo.channels    = 2 ;
-	sfinfo.pcmbitwidth = 32 ;
-	sfinfo.format 	   = (typemajor | typeminor) ;
 	
+	gen_windowed_sine (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
+
+	orig = (int*) orig_data ;
+	test = (int*) test_data ;
+
+	/* Make this a macro so gdb steps over it in one go. */	
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+		
+	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
 
-	if (! (file = sf_open_write (filename, &sfinfo)))
-	{	printf ("Stereo : sf_open_write failed with error : ") ;
-		sf_perror (NULL) ;
-		exit (1) ;
-		} ;
-	
-	if (sf_writef_int (file, data, frames) != frames)
-	{	printf ("Stereo : sf_writef_int failed with error : ") ;
-		sf_perror (file) ;
-		exit (1) ;
-		} ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+
+	test_writef_int_or_die (file, 0, orig, frames, __LINE__) ;
+
+	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+
 	sf_close (file) ;
 	
-	memset (data, 0, items * sizeof (short)) ;
-
-	if (typemajor != SF_FORMAT_RAW)
+	memset (test, 0, items * sizeof (int)) ;
+	
+	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 	
-	if (! (file = sf_open_read (filename, &sfinfo)))
-	{	printf ("Stereo : sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Stereo : Returned format incorrect (0x%08X => 0x%08X).\n", 
+				__LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.format != (typemajor | typeminor))
-	{	printf ("Stereo : Returned format incorrect (0x%08X => 0x%08X).\n", (typemajor | typeminor), sfinfo.format) ;
+	if (sfinfo.frames < frames)
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too short). (%ld should be %d)\n", 
+				__LINE__, SF_COUNT_TO_LONG (sfinfo.frames), frames) ;
 		exit (1) ;
 		} ;
-	
-	if (sfinfo.samples != frames)
-	{	printf ("Stereo : Incorrect number of samples in file. (%d => %d)\n", frames, sfinfo.samples) ;
+
+	if (! long_file_ok && sfinfo.frames > frames)
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too long). (%ld should be %d)\n", 
+				__LINE__, SF_COUNT_TO_LONG (sfinfo.frames), frames) ;
 		exit (1) ;
 		} ;
 	
 	if (sfinfo.channels != 2)
-	{	printf ("Stereo : Incorrect number of channels in file.\n") ;
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
 		} ;
 
-	if (sfinfo.pcmbitwidth != 32)
-	{	printf ("Stereo : Incorrect bit width (%d).\n", sfinfo.pcmbitwidth) ;
-		exit (1) ;
-		} ;
+	check_log_buffer_or_die (file) ;
 
-	check_log_buffer (file) ;
-
-	if ((k = sf_readf_int (file, data, frames)) != frames)
-	{	printf ("Stereo : short read (%d).\n", k) ;
-		exit (1) ;
-		} ;
-
-	for (sign = 1, k = 0 ; k < items ; k++)
-		if (data [k] != k * 200000 * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample (#%d : %d => %d).\n", k, (k % 2) ? 1 : -1, data [k]) ;
+	test_readf_int_or_die (file, 0, test, frames, __LINE__) ;
+	for (k = 0 ; k < items ; k++)
+		if (INT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			} ;
 
 	/* Seek to start of file. */
-	if ((k = sf_seek (file, 0, SEEK_SET) != 0))
-	{	printf ("Stereo : sf_seek (file, 0, SEEK_SET) failed.\n") ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
 
-	sf_read_int (file, data, 4) ;
+	test_readf_int_or_die (file, 0, test, 2, __LINE__) ;
 	for (k = 0 ; k < 4 ; k++)
-		if (data [k] != k * 200000 * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample A (#%d : %d => %d).\n", k, k * 200000 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 	
 	/* Seek to offset from start of file. */
-	if ((k = sf_seek (file, 10, SEEK_SET) != 10))
-	{	printf ("Stereo : sf_seek (file, 10, SEEK_SET) failed.\n") ;
+	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
+
+	/* Check for errors here. */
+	if (sf_error (file))
+	{	printf ("Line %d: Should NOT return an error.\n", __LINE__) ;
+		sf_perror (file) ;
 		exit (1) ;
 		} ;
 
-	sf_read_int (file, data + 10, 4) ;
+	if (sf_read_int (file, test, 1) > 0)
+	{	printf ("Line %d: Should return 0.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+
+	if (! sf_error (file))
+	{	printf ("Line %d: Should return an error.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+	/*-----------------------*/
+
+	test_readf_int_or_die (file, 0, test + 10, 2, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
-		if (data [k] != k * 200000 * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample B (#%d : %d => %d).\n", k, k * 200000 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from current position. */
-	if ((k = sf_seek (file, 8, SEEK_CUR)) != 20)
-	{	printf ("Stereo : sf_seek (file, 8, SEEK_CUR) failed. (20 -> %d)\n", k) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 8, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
 
-	sf_read_int (file, data + 40, 4) ;
+	test_readf_int_or_die (file, 0, test + 20, 2, __LINE__) ;
 	for (k = 40 ; k < 44 ; k++)
-		if (data [k] != k * 200000 * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample C (#%d : %d => %d).\n", k, k * 200000 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
 
 	/* Seek to offset from end of file. */
-	if ((k = sf_seek (file, -(sfinfo.samples - 10), SEEK_END) != 10))
-	{	printf ("Stereo : sf_seek (file, -(sfinfo.samples - 10), SEEK_END) failed (%d).\n", k) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_int (file, data + 20, 4) ;
+	test_readf_int_or_die (file, 0, test + 20, 2, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
-		if (data [k] != k * 200000 * ((k % 2) ? 1 : -1))
-		{	printf ("Stereo : Incorrect sample D (#%d : %d => %d).\n", k, k * 200000 * ((k % 2) ? 1 : -1), data [k]) ;
+		if (INT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : 0x%X => 0x%X).\n", __LINE__, k, orig [k], test [k]) ;
 			exit (1) ;
 			};
-
+			
 	sf_close (file) ;
 
+	unlink (filename) ;
 	printf ("ok\n") ;
+
+	return ;			
 } /* pcm_test_int */
 
+
+/*======================================================================================
+*/
+
 static void	
-pcm_float_test (char *str, char *filename, int	typemajor, int typeminor)
-{	SNDFILE			*file ;
-	SF_INFO			sfinfo ;
-	unsigned int	k, items, frames ;
-	int				sign ;
-	double			*data, error ;
-
-	printf ("    pcm_float_test : %s ... ", str) ;
-	fflush (stdout) ;
-
-	items = BUFFER_SIZE / sizeof (double) ;
-
-	data = (double*) test_buffer ;
-	for (sign = 1, k = 0 ; k < items ; k++)
-		data [k] = ((double) k) / 100.0 * (sign *= -1) ;
-		
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.samples     = items ;
-	sfinfo.channels    = 1 ;
-	sfinfo.pcmbitwidth = 32 ;
-	sfinfo.format 	   = (typemajor | typeminor) ;
-
-	if (! (file = sf_open_write (filename, &sfinfo)))
-	{	printf ("\n\nError (%s:%d) Mono : sf_open_write failed with error : ", __FILE__, __LINE__) ;
-		fflush (stdout) ;
-		sf_perror (NULL) ;
-		exit (1) ;
-		} ;
+pcm_test_float (char *filename, int filetype, int long_file_ok)
+{	SNDFILE		*file ;
+	SF_INFO		sfinfo ;
+	float		*orig, *test ;
+	int			k, items, frames, pass ;
 	
-	if (sf_write_double (file, data, items, 0) != items)
-	{	printf ("\n\nError (%s:%d) Mono : sf_write_int failed with error : ", __FILE__, __LINE__) ;
-		fflush (stdout) ;
-		sf_perror (file) ;
-		exit (1) ;
-		} ;
+	printf ("    %-18s  : %s ", "pcm_test_float", filename) ;
+	fflush (stdout) ;
+	
+	k = abs (18 - strlen (filename)) ;
+	PUT_DOTS (k) ;
+
+	sfinfo.samplerate  = 44100 ;
+	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels    = 1 ;
+	sfinfo.format 	   = filetype ;
+
+	gen_windowed_sine (orig_data, DATA_LENGTH, 1.0) ;
+	
+	orig = (float*) orig_data ;
+	test = (float*) test_data ;
+
+	/* Make this a macro so gdb steps over it in one go. */	
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+
+	items = DATA_LENGTH ;
+
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+		
+	test_write_float_or_die (file, 0, orig, items, __LINE__) ;
+
+	/* Add non-audio data after the audio. */
+	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+
 	sf_close (file) ;
 	
-	memset (data, 0, items * sizeof (double)) ;
-	memset (&sfinfo, 0, sizeof (sfinfo)) ;
+	memset (test, 0, items * sizeof (float)) ;
 	
-	if (! (file = sf_open_read (filename, &sfinfo)))
-	{	printf ("\n\nError (%s:%d) Mono : sf_open_read failed with error : ", __FILE__, __LINE__) ;
-		fflush (stdout) ;
-		sf_perror (NULL) ;
+	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+		memset (&sfinfo, 0, sizeof (sfinfo)) ;
+	
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.format != (typemajor | typeminor))
-	{	printf ("\n\nError (%s:%d) Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __FILE__, __LINE__, (typemajor | typeminor), sfinfo.format) ;
+	if (sfinfo.frames < items)
+	{	printf ("\n\nLine %d : Mono : Incorrect number of frames in file (too short). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), items) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.samples != items)
-	{	printf ("\n\nError (%s:%d) Mono : Incorrect number of samples in file. (%d => %d)\n", __FILE__, __LINE__, items, sfinfo.samples) ;
+	if (! long_file_ok && sfinfo.frames > items)
+	{	printf ("\n\nLine %d : Mono : Incorrect number of frames in file (too long). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), items) ;
 		exit (1) ;
 		} ;
 	
 	if (sfinfo.channels != 1)
-	{	printf ("\n\nError (%s:%d) Mono : Incorrect number of channels in file.\n", __FILE__, __LINE__) ;
+	{	printf ("\n\nLine %d : Mono : Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
 		} ;
 
-	if (sfinfo.pcmbitwidth != 32)
-	{	printf ("\n\nError (%s:%d) Mono : Incorrect bit width (%d).\n", __FILE__, __LINE__, sfinfo.pcmbitwidth) ;
-		exit (1) ;
+	check_log_buffer_or_die (file) ;
+
+	test_read_float_or_die (file, 0, test, items, __LINE__) ;
+	for (k = 0 ; k < items ; k++)
+		if (FLOAT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d: Mono : Incorrect sample A (#%d : %g => %g).\n", __LINE__, k, orig [k], test [k]) ;
+			exit (1) ;
+			} ;
+
+	/* Seek to start of file. */
+	test_seek_or_die (file, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
+
+	test_read_float_or_die (file, 0, test, 4, __LINE__) ;
+	for (k = 0 ; k < 4 ; k++)
+		if (FLOAT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : %g => %g).\n", __LINE__, k, orig [k], test [k]) ;
+			exit (1) ;
+			};
+	
+	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
+		(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
+	{	unlink (filename) ;
+		printf ("ok\n") ;
+		return ;
 		} ;
+	
+	/* Seek to offset from start of file. */
+	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
 
-	check_log_buffer (file) ;
+	test_read_float_or_die (file, 0, test + 10, 4, __LINE__) ;
+	for (k = 10 ; k < 14 ; k++)
+		if (FLOAT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : %g => %g).\n", __LINE__, k, test [k], orig [k]) ;
+			exit (1) ;
+			};
 
-	if ((k = sf_read_double (file, data, items, 0)) != items)
-	{	printf ("\n\nError (%s:%d) Mono : short read (%d).\n", __FILE__, __LINE__, k) ;
-		exit (1) ;
-		} ;
+	/* Seek to offset from current position. */
+	test_seek_or_die (file, 6, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
 
-	for (sign = 1, k = 0 ; k < items ; k++)
-	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
-		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
-		{	printf ("\n\nError (%s:%d) Mono : Incorrect sample (#%d : %f => %f).\n", __FILE__, __LINE__, k, ((double) k) / 100.0, data [k]) ;
+	test_read_float_or_die (file, 0, test + 20, 4, __LINE__) ;
+	for (k = 20 ; k < 24 ; k++)
+		if (FLOAT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : %g => %g).\n", __LINE__, k, test [k], orig [k]) ;
+			exit (1) ;
+			};
+
+	/* Seek to offset from end of file. */
+	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+
+	test_read_float_or_die (file, 0, test + 10, 4, __LINE__) ;
+	for (k = 10 ; k < 14 ; k++)
+		if (FLOAT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample D (#%d : %g => %g).\n", __LINE__, k, test [k], orig [k]) ;
+			exit (1) ;
+			};
+
+	sf_close (file) ;
+	
+
+	/*==================================================================================
+	** Now test Mono RDWR. 
+	*/
+
+	sfinfo.samplerate  = SAMPLE_RATE ;
+	sfinfo.frames     = DATA_LENGTH ;
+	sfinfo.channels    = 1 ;
+	sfinfo.format 	   = filetype ;
+
+	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
+		unlink (filename) ;
+	else
+	{	/* Create a short file. */
+		create_short_file (filename) ; 
+
+		/* Opening a already existing short file (ie invalid header) RDWR is disallowed. 
+		** If this returns a valif pointer sf_open() screwed up.
+		*/ 
+		if ((file = sf_open (filename, SFM_RDWR, &sfinfo)))
+		{	printf ("\n\nLine %d: sf_open should (SFM_RDWR) have failed but didn't.\n", __LINE__) ;
+			exit (1) ;
+			} ;
+		
+		/* Truncate the file to zero bytes. */
+		if (truncate (filename, 0) < 0)
+		{	printf ("\n\nLine %d: truncate (%s) failed", __LINE__, filename) ;
+			perror (NULL) ;
 			exit (1) ;
 			} ;
 		} ;
 
-	/* Seek to start of file. */
-	if ((k = sf_seek (file, 0, SEEK_SET) != 0))
-	{	printf ("\n\nError (%s:%d) Mono : sf_seek (file, 0, SEEK_SET) failed.\n", __FILE__, __LINE__) ;
-		exit (1) ;
-		} ;
+	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
+	** all the usual data required when opening the file in WRITE mode.
+	*/
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
-	sf_read_double (file, data, 4, 0) ;
-	for (k = 0 ; k < 4 ; k++)
-	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
-		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
-		{	printf ("\n\nError (%s:%d) Mono : Incorrect sample A (#%d : %f => %f).\n", __FILE__, __LINE__, k, ((double) k) / 100.0, data [k]) ;
-			exit (1) ;
-			};
-		};
-		
-	/* Seek to offset from start of file. */
-	if ((k = sf_seek (file, 10, SEEK_SET) != 10))
-	{	printf ("\n\nError (%s:%d) Mono : sf_seek (file, 10, SEEK_SET) failed. XXXXX\n", __FILE__, __LINE__) ;
-		exit (1) ;
-		} ;
+	/* Do 3 writes followed by reads. After each, check the data and the current
+	** read and write offsets.
+	*/
+	for (pass = 1 ; pass <= 3 ; pass ++)
+	{	orig [20] = pass * 2 ;
+	
+		/* Write some data. */
+		test_write_float_or_die (file, 0, orig, DATA_LENGTH, __LINE__) ;
+	
+		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, pass * DATA_LENGTH) ;
 
-	sf_read_double (file, data + 10, 4, 0) ;
-	for (k = 10 ; k < 14 ; k++)
-	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
-		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
-		{	printf ("\n\nError (%s:%d) Mono : Incorrect sample B (#%d : %f => %f).\n", __FILE__, __LINE__, k, ((double) k) / 100.0, data [k]) ;
-			exit (1) ;
-			};
-		} ;
-		
-	/* Seek to offset from current position. */
-	if ((k = sf_seek (file, 6, SEEK_CUR) != 20))
-	{	printf ("\n\nError (%s:%d) Mono : sf_seek (file, 7, SEEK_CUR) failed.\n", __FILE__, __LINE__) ;
-		exit (1) ;
-		} ;
+		/* Read what we just wrote. */
+		test_read_float_or_die (file, 0, test, DATA_LENGTH, __LINE__) ;
 
-	sf_read_double (file, data + 20, 4, 0) ;
-	for (k = 20 ; k < 24 ; k++)
-	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
-		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
-		{	printf ("\n\nError (%s:%d) Mono : Incorrect sample C (#%d : %f => %f).\n", __FILE__, __LINE__, k, ((double) k) / 100.0, data [k]) ;
-			exit (1) ;
-			};
-		};
-		
-	/* Seek to offset from end of file. */
-	if ((k = sf_seek (file, -(sfinfo.samples - 10), SEEK_END) != 10))
-	{	printf ("\n\nError (%s:%d) Mono : sf_seek (file, -(sfinfo.samples - 10), SEEK_END) failed (%d).\n", __FILE__, __LINE__, k) ;
-		exit (1) ;
-		} ;
+		/* Check the data. */
+		for (k = 0 ; k < DATA_LENGTH ; k++)
+			if (FLOAT_ERROR (orig [k], test [k]))
+			{	printf ("\n\nLine %d (pass %d): Error at sample %d (%g => %g).\n", __LINE__, pass, k, orig [k], test [k]) ;
+				oct_save_float (orig, test, DATA_LENGTH) ;
+				exit (1) ;
+				} ;
 
-	sf_read_double (file, data + 10, 4, 0) ;
-	for (k = 10 ; k < 14 ; k++)
-	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
-		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
-		{	printf ("\n\nError (%s:%d) Mono : Incorrect sample D (#%d : %f => %f).\n", __FILE__, __LINE__, k, ((double) k) / 100.0, data [k]) ;
-			exit (1) ;
-			};
-		} ;
-		
+		test_read_write_position_or_die (file, __LINE__, pass, pass * DATA_LENGTH, pass * DATA_LENGTH) ;
+		} ; /* for (pass ...) */
+				
 	sf_close (file) ;
 
-	/* Now test Stereo. */
+	/* Open the file again to check the data. */
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+		
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.frames < 3 * DATA_LENGTH)
+	{	printf ("\n\nLine %d : Not enough frames in file. (%ld < %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), 3 * DATA_LENGTH ) ;
+		exit (1) ;
+		}
 
-	if (typemajor == SF_FORMAT_SVX) /* SVX is mono only */
-	{	printf ("ok\n") ;
+	if (! long_file_ok && sfinfo.frames != 3 * DATA_LENGTH)
+	{	printf ("\n\nLine %d : Incorrect number of frames in file. (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), 3 * DATA_LENGTH ) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.channels != 1)
+	{	printf ("\n\nLine %d : Incorrect number of channels in file.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+
+	if (! long_file_ok)
+		test_read_write_position_or_die (file, __LINE__, 0, 0, 3 * DATA_LENGTH) ;
+	else
+		test_seek_or_die (file, 3 * DATA_LENGTH, SFM_WRITE | SEEK_SET, 3 * DATA_LENGTH, sfinfo.channels, __LINE__) ;
+		
+
+	for (pass = 1 ; pass <= 3 ; pass ++)
+	{	orig [20] = pass * 2 ;
+	
+		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, 3 * DATA_LENGTH) ;
+
+		/* Read what we just wrote. */
+		test_read_float_or_die (file, pass, test, DATA_LENGTH, __LINE__) ;
+
+		/* Check the data. */
+		for (k = 0 ; k < DATA_LENGTH ; k++)
+			if (FLOAT_ERROR (orig [k], test [k]))
+			{	printf ("\n\nLine %d (pass %d): Error at sample %d (%g => %g).\n", __LINE__, pass, k, orig [k], test [k]) ;
+				oct_save_float (orig, test, DATA_LENGTH) ;
+				exit (1) ;
+				} ;
+
+		} ; /* for (pass ...) */
+
+	sf_close (file) ;
+
+	/*==================================================================================
+	** Now test Stereo. 
+	*/
+
+	sfinfo.samplerate  = 44100 ;
+	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels    = 2 ;
+	sfinfo.format 	   = filetype ;
+
+	if (! sf_format_check (&sfinfo))
+	{	/* SVX currently only supports mono. */
+		if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_SVX)
+			printf ("ok, (no stereo)\n") ;
+		unlink (filename) ;
+		printf ("ok\n") ;
 		return ;
 		} ;
-
-	items = BUFFER_SIZE / sizeof (double) ;
-
-	data = (double*) test_buffer ;
-	for (sign = 1, k = 0 ; k < items ; k++)
-		data [k] = ((double) k) / 100.0 * (sign *= -1) ;
-		
-	sfinfo.samplerate = 44100 ;
-	sfinfo.samples    = items ;
-	sfinfo.channels   = 2 ;
-	sfinfo.pcmbitwidth   = 32 ;
-	sfinfo.format 	  = (typemajor | typeminor) ;
 	
+	gen_windowed_sine (orig_data, DATA_LENGTH, 1.0) ;
+
+	orig = (float*) orig_data ;
+	test = (float*) test_data ;
+
+	/* Make this a macro so gdb steps over it in one go. */	
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+		
+	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
 
-	if (! (file = sf_open_write (filename, &sfinfo)))
-	{	printf ("\n\nError (%s:%d) Stereo : sf_open_write failed with error : ", __FILE__, __LINE__) ;
-		fflush (stdout) ;
-		sf_perror (NULL) ;
-		exit (1) ;
-		} ;
-	
-	if (sf_writef_double (file, data, frames, 0) != frames)
-	{	printf ("\n\nError (%s:%d) Stereo : sf_writef_int failed with error : ", __FILE__, __LINE__) ;
-		fflush (stdout) ;
-		sf_perror (file) ;
-		exit (1) ;
-		} ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+
+	test_writef_float_or_die (file, 0, orig, frames, __LINE__) ;
+
+	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+
 	sf_close (file) ;
 	
-	memset (data, 0, items * sizeof (double)) ;
-	memset (&sfinfo, 0, sizeof (sfinfo)) ;
+	memset (test, 0, items * sizeof (float)) ;
 	
-	if (! (file = sf_open_read (filename, &sfinfo)))
-	{	printf ("\n\nError (%s:%d) Stereo : sf_open_read failed with error : ", __FILE__, __LINE__) ;
-		fflush (stdout) ;
-		sf_perror (NULL) ;
+	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+		memset (&sfinfo, 0, sizeof (sfinfo)) ;
+	
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Stereo : Returned format incorrect (0x%08X => 0x%08X).\n", 
+				__LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
 	
-	if (sfinfo.format != (typemajor | typeminor))
-	{	printf ("\n\nError (%s:%d) Stereo : Returned format incorrect (0x%08X => 0x%08X).\n", __FILE__, __LINE__, (typemajor | SF_FORMAT_FLOAT), sfinfo.format) ;
+	if (sfinfo.frames < frames)
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too short). (%ld should be %d)\n", 
+				__LINE__, SF_COUNT_TO_LONG (sfinfo.frames), frames) ;
 		exit (1) ;
 		} ;
-	
-	if (sfinfo.samples != frames)
-	{	printf ("\n\nError (%s:%d) Stereo : Incorrect number of samples in file. (%d => %d)\n", __FILE__, __LINE__, frames, sfinfo.samples) ;
+
+	if (! long_file_ok && sfinfo.frames > frames)
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too long). (%ld should be %d)\n", 
+				__LINE__, SF_COUNT_TO_LONG (sfinfo.frames), frames) ;
 		exit (1) ;
 		} ;
 	
 	if (sfinfo.channels != 2)
-	{	printf ("\n\nError (%s:%d) Stereo : Incorrect number of channels in file.\n", __FILE__, __LINE__) ;
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of channels in file.\n", __LINE__) ;
 		exit (1) ;
 		} ;
 
-	if (sfinfo.pcmbitwidth != 32)
-	{	printf ("\n\nError (%s:%d) Stereo : Incorrect bit width (%d).\n", __FILE__, __LINE__, sfinfo.pcmbitwidth) ;
+	check_log_buffer_or_die (file) ;
+
+	test_readf_float_or_die (file, 0, test, frames, __LINE__) ;
+	for (k = 0 ; k < items ; k++)
+		if (FLOAT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : %g => %g).\n", __LINE__, k, orig [k], test [k]) ;
+			exit (1) ;
+			} ;
+
+	/* Seek to start of file. */
+	test_seek_or_die (file, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
+
+	test_readf_float_or_die (file, 0, test, 2, __LINE__) ;
+	for (k = 0 ; k < 4 ; k++)
+		if (FLOAT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : %g => %g).\n", __LINE__, k, orig [k], test [k]) ;
+			exit (1) ;
+			};
+	
+	/* Seek to offset from start of file. */
+	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
+
+	/* Check for errors here. */
+	if (sf_error (file))
+	{	printf ("Line %d: Should NOT return an error.\n", __LINE__) ;
+		sf_perror (file) ;
 		exit (1) ;
 		} ;
 
-	check_log_buffer (file) ;
-
-	if ((k = sf_readf_double (file, data, frames, 0)) != frames)
-	{	printf ("\n\nError (%s:%d) Stereo : short read (%d).\n", __FILE__, __LINE__, k) ;
+	if (sf_read_float (file, test, 1) > 0)
+	{	printf ("Line %d: Should return 0.\n", __LINE__) ;
 		exit (1) ;
 		} ;
 
-	for (sign = 1, k = 0 ; k < items ; k++)
-	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
-		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
-		{	printf ("\n\nError (%s:%d) Stereo : Incorrect sample (#%d : %f => %f).\n", __FILE__, __LINE__, k, ((double) k) / 100.0, data [k]) ;
+	if (! sf_error (file))
+	{	printf ("Line %d: Should return an error.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+	/*-----------------------*/
+
+	test_readf_float_or_die (file, 0, test + 10, 2, __LINE__) ;
+	for (k = 20 ; k < 24 ; k++)
+		if (FLOAT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : %g => %g).\n", __LINE__, k, orig [k], test [k]) ;
+			exit (1) ;
+			};
+
+	/* Seek to offset from current position. */
+	test_seek_or_die (file, 8, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
+
+	test_readf_float_or_die (file, 0, test + 20, 2, __LINE__) ;
+	for (k = 40 ; k < 44 ; k++)
+		if (FLOAT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : %g => %g).\n", __LINE__, k, orig [k], test [k]) ;
+			exit (1) ;
+			};
+
+	/* Seek to offset from end of file. */
+	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+
+	test_readf_float_or_die (file, 0, test + 20, 2, __LINE__) ;
+	for (k = 20 ; k < 24 ; k++)
+		if (FLOAT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : %g => %g).\n", __LINE__, k, orig [k], test [k]) ;
+			exit (1) ;
+			};
+			
+	sf_close (file) ;
+
+	unlink (filename) ;
+	printf ("ok\n") ;
+
+	return ;			
+} /* pcm_test_float */
+
+
+/*======================================================================================
+*/
+
+static void	
+pcm_test_double (char *filename, int filetype, int long_file_ok)
+{	SNDFILE		*file ;
+	SF_INFO		sfinfo ;
+	double		*orig, *test ;
+	int			k, items, frames, pass ;
+	
+	printf ("    %-18s  : %s ", "pcm_test_double", filename) ;
+	fflush (stdout) ;
+	
+	k = abs (18 - strlen (filename)) ;
+	PUT_DOTS (k) ;
+
+	sfinfo.samplerate  = 44100 ;
+	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels    = 1 ;
+	sfinfo.format 	   = filetype ;
+
+	gen_windowed_sine (orig_data, DATA_LENGTH, 1.0) ;
+	
+	orig = (double*) orig_data ;
+	test = (double*) test_data ;
+
+	/* Make this a macro so gdb steps over it in one go. */	
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+
+	items = DATA_LENGTH ;
+
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+		
+	test_write_double_or_die (file, 0, orig, items, __LINE__) ;
+
+	/* Add non-audio data after the audio. */
+	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+
+	sf_close (file) ;
+	
+	memset (test, 0, items * sizeof (double)) ;
+	
+	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+		memset (&sfinfo, 0, sizeof (sfinfo)) ;
+	
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.frames < items)
+	{	printf ("\n\nLine %d : Mono : Incorrect number of frames in file (too short). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), items) ;
+		exit (1) ;
+		} ;
+	
+	if (! long_file_ok && sfinfo.frames > items)
+	{	printf ("\n\nLine %d : Mono : Incorrect number of frames in file (too long). (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), items) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.channels != 1)
+	{	printf ("\n\nLine %d : Mono : Incorrect number of channels in file.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+
+	check_log_buffer_or_die (file) ;
+
+	test_read_double_or_die (file, 0, test, items, __LINE__) ;
+	for (k = 0 ; k < items ; k++)
+		if (FLOAT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d: Mono : Incorrect sample A (#%d : %g => %g).\n", __LINE__, k, orig [k], test [k]) ;
+			exit (1) ;
+			} ;
+
+	/* Seek to start of file. */
+	test_seek_or_die (file, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
+
+	test_read_double_or_die (file, 0, test, 4, __LINE__) ;
+	for (k = 0 ; k < 4 ; k++)
+		if (FLOAT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : %g => %g).\n", __LINE__, k, orig [k], test [k]) ;
+			exit (1) ;
+			};
+	
+	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
+		(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
+	{	unlink (filename) ;
+		printf ("ok\n") ;
+		return ;
+		} ;
+	
+	/* Seek to offset from start of file. */
+	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
+
+	test_read_double_or_die (file, 0, test + 10, 4, __LINE__) ;
+	for (k = 10 ; k < 14 ; k++)
+		if (FLOAT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : %g => %g).\n", __LINE__, k, test [k], orig [k]) ;
+			exit (1) ;
+			};
+
+	/* Seek to offset from current position. */
+	test_seek_or_die (file, 6, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
+
+	test_read_double_or_die (file, 0, test + 20, 4, __LINE__) ;
+	for (k = 20 ; k < 24 ; k++)
+		if (FLOAT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample A (#%d : %g => %g).\n", __LINE__, k, test [k], orig [k]) ;
+			exit (1) ;
+			};
+
+	/* Seek to offset from end of file. */
+	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+
+	test_read_double_or_die (file, 0, test + 10, 4, __LINE__) ;
+	for (k = 10 ; k < 14 ; k++)
+		if (FLOAT_ERROR (orig [k], test [k]))
+		{	printf ("\n\nLine %d : Mono : Incorrect sample D (#%d : %g => %g).\n", __LINE__, k, test [k], orig [k]) ;
+			exit (1) ;
+			};
+
+	sf_close (file) ;
+	
+
+	/*==================================================================================
+	** Now test Mono RDWR. 
+	*/
+
+	sfinfo.samplerate  = SAMPLE_RATE ;
+	sfinfo.frames     = DATA_LENGTH ;
+	sfinfo.channels    = 1 ;
+	sfinfo.format 	   = filetype ;
+
+	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
+		unlink (filename) ;
+	else
+	{	/* Create a short file. */
+		create_short_file (filename) ; 
+
+		/* Opening a already existing short file (ie invalid header) RDWR is disallowed. 
+		** If this returns a valif pointer sf_open() screwed up.
+		*/ 
+		if ((file = sf_open (filename, SFM_RDWR, &sfinfo)))
+		{	printf ("\n\nLine %d: sf_open should (SFM_RDWR) have failed but didn't.\n", __LINE__) ;
+			exit (1) ;
+			} ;
+		
+		/* Truncate the file to zero bytes. */
+		if (truncate (filename, 0) < 0)
+		{	printf ("\n\nLine %d: truncate (%s) failed", __LINE__, filename) ;
+			perror (NULL) ;
 			exit (1) ;
 			} ;
 		} ;
 
-	/* Seek to start of file. */
-	if ((k = sf_seek (file, 0, SEEK_SET) != 0))
-	{	printf ("\n\nError (%s:%d) Stereo : sf_seek (file, 0, SEEK_SET) failed.\n", __FILE__, __LINE__) ;
-		exit (1) ;
-		} ;
+	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
+	** all the usual data required when opening the file in WRITE mode.
+	*/
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
-	sf_read_double (file, data, 4, 0) ;
-	for (k = 0 ; k < 4 ; k++)
-	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
-		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
-		{	printf ("\n\nError (%s:%d) Stereo : Incorrect sample A (#%d : %f => %f).\n", __FILE__, __LINE__, k, ((double) k) / 100.0, data [k]) ;
-			exit (1) ;
-			};
-		} ;
-		
-	/* Seek to offset from start of file. */
-	if ((k = sf_seek (file, 10, SEEK_SET) != 10))
-	{	printf ("\n\nError (%s:%d) Stereo : sf_seek (file, 10, SEEK_SET) failed.\n", __FILE__, __LINE__) ;
-		exit (1) ;
-		} ;
+	/* Do 3 writes followed by reads. After each, check the data and the current
+	** read and write offsets.
+	*/
+	for (pass = 1 ; pass <= 3 ; pass ++)
+	{	orig [20] = pass * 2 ;
+	
+		/* Write some data. */
+		test_write_double_or_die (file, 0, orig, DATA_LENGTH, __LINE__) ;
+	
+		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, pass * DATA_LENGTH) ;
 
-	sf_read_double (file, data + 10, 4, 0) ;
-	for (k = 20 ; k < 24 ; k++)
-	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
-		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
-		{	printf ("\n\nError (%s:%d) Stereo : Incorrect sample B (#%d : %f => %f).\n", __FILE__, __LINE__, k, ((double) k) / 100.0, data [k]) ;
-			exit (1) ;
-			};
-		} ;
-		
-	/* Seek to offset from current position. */
-	if ((k = sf_seek (file, 8, SEEK_CUR)) != 20)
-	{	printf ("\n\nError (%s:%d) Stereo : sf_seek (file, 8, SEEK_CUR) failed. (20 -> %d)\n", __FILE__, __LINE__, k) ;
-		exit (1) ;
-		} ;
+		/* Read what we just wrote. */
+		test_read_double_or_die (file, 0, test, DATA_LENGTH, __LINE__) ;
 
-	sf_read_double (file, data + 40, 4, 0) ;
-	for (k = 40 ; k < 44 ; k++)
-	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
-		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
-		{	printf ("\n\nError (%s:%d) Stereo : Incorrect sample C (#%d : %f => %f).\n", __FILE__, __LINE__, k, ((double) k) / 100.0, data [k]) ;
-			exit (1) ;
-			};
-		} ;
-		
-	/* Seek to offset from end of file. */
-	if ((k = sf_seek (file, -(sfinfo.samples - 10), SEEK_END) != 10))
-	{	printf ("\n\nError (%s:%d) Stereo : sf_seek (file, -(sfinfo.samples - 10), SEEK_END) failed (%d).\n", __FILE__, __LINE__, k) ;
-		exit (1) ;
-		} ;
+		/* Check the data. */
+		for (k = 0 ; k < DATA_LENGTH ; k++)
+			if (FLOAT_ERROR (orig [k], test [k]))
+			{	printf ("\n\nLine %d (pass %d): Error at sample %d (%g => %g).\n", __LINE__, pass, k, orig [k], test [k]) ;
+				oct_save_double (orig, test, DATA_LENGTH) ;
+				exit (1) ;
+				} ;
 
-	sf_read_double (file, data + 20, 4, 0) ;
-	for (k = 20 ; k < 24 ; k++)
-	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
-		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
-		{	printf ("\n\nError (%s:%d) Stereo : Incorrect sample D (#%d : %f => %f).\n", __FILE__, __LINE__, k, ((double) k) / 100.0, data [k]) ;
-			exit (1) ;
-			};
-		} ;
-		
+		test_read_write_position_or_die (file, __LINE__, pass, pass * DATA_LENGTH, pass * DATA_LENGTH) ;
+		} ; /* for (pass ...) */
+				
 	sf_close (file) ;
 
-	printf ("ok\n") ;
-} /* pcm_float_test */
+	/* Open the file again to check the data. */
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+		
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.frames < 3 * DATA_LENGTH)
+	{	printf ("\n\nLine %d : Not enough frames in file. (%ld < %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), 3 * DATA_LENGTH ) ;
+		exit (1) ;
+		}
 
+	if (! long_file_ok && sfinfo.frames != 3 * DATA_LENGTH)
+	{	printf ("\n\nLine %d : Incorrect number of frames in file. (%ld should be %d)\n", __LINE__, SF_COUNT_TO_LONG (sfinfo.frames), 3 * DATA_LENGTH ) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.channels != 1)
+	{	printf ("\n\nLine %d : Incorrect number of channels in file.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+
+	if (! long_file_ok)
+		test_read_write_position_or_die (file, __LINE__, 0, 0, 3 * DATA_LENGTH) ;
+	else
+		test_seek_or_die (file, 3 * DATA_LENGTH, SFM_WRITE | SEEK_SET, 3 * DATA_LENGTH, sfinfo.channels, __LINE__) ;
+		
+
+	for (pass = 1 ; pass <= 3 ; pass ++)
+	{	orig [20] = pass * 2 ;
+	
+		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, 3 * DATA_LENGTH) ;
+
+		/* Read what we just wrote. */
+		test_read_double_or_die (file, pass, test, DATA_LENGTH, __LINE__) ;
+
+		/* Check the data. */
+		for (k = 0 ; k < DATA_LENGTH ; k++)
+			if (FLOAT_ERROR (orig [k], test [k]))
+			{	printf ("\n\nLine %d (pass %d): Error at sample %d (%g => %g).\n", __LINE__, pass, k, orig [k], test [k]) ;
+				oct_save_double (orig, test, DATA_LENGTH) ;
+				exit (1) ;
+				} ;
+
+		} ; /* for (pass ...) */
+
+	sf_close (file) ;
+
+	/*==================================================================================
+	** Now test Stereo. 
+	*/
+
+	sfinfo.samplerate  = 44100 ;
+	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels    = 2 ;
+	sfinfo.format 	   = filetype ;
+
+	if (! sf_format_check (&sfinfo))
+	{	/* SVX currently only supports mono. */
+		if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_SVX)
+			printf ("ok, (no stereo)\n") ;
+		unlink (filename) ;
+		printf ("ok\n") ;
+		return ;
+		} ;
+	
+	gen_windowed_sine (orig_data, DATA_LENGTH, 1.0) ;
+
+	orig = (double*) orig_data ;
+	test = (double*) test_data ;
+
+	/* Make this a macro so gdb steps over it in one go. */	
+	CONVERT_DATA (k, DATA_LENGTH, orig, orig_data) ;
+		
+	items = DATA_LENGTH ;
+	frames = items / sfinfo.channels ;
+
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+
+	test_writef_double_or_die (file, 0, orig, frames, __LINE__) ;
+
+	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+
+	sf_close (file) ;
+	
+	memset (test, 0, items * sizeof (double)) ;
+	
+	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+		memset (&sfinfo, 0, sizeof (sfinfo)) ;
+	
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	
+	if (sfinfo.format != filetype)
+	{	printf ("\n\nLine %d : Stereo : Returned format incorrect (0x%08X => 0x%08X).\n", 
+				__LINE__, filetype, sfinfo.format) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.frames < frames)
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too short). (%ld should be %d)\n", 
+				__LINE__, SF_COUNT_TO_LONG (sfinfo.frames), frames) ;
+		exit (1) ;
+		} ;
+
+	if (! long_file_ok && sfinfo.frames > frames)
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of frames in file (too long). (%ld should be %d)\n", 
+				__LINE__, SF_COUNT_TO_LONG (sfinfo.frames), frames) ;
+		exit (1) ;
+		} ;
+	
+	if (sfinfo.channels != 2)
+	{	printf ("\n\nLine %d : Stereo : Incorrect number of channels in file.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+
+	check_log_buffer_or_die (file) ;
+
+	test_readf_double_or_die (file, 0, test, frames, __LINE__) ;
+	for (k = 0 ; k < items ; k++)
+		if (FLOAT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : %g => %g).\n", __LINE__, k, orig [k], test [k]) ;
+			exit (1) ;
+			} ;
+
+	/* Seek to start of file. */
+	test_seek_or_die (file, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
+
+	test_readf_double_or_die (file, 0, test, 2, __LINE__) ;
+	for (k = 0 ; k < 4 ; k++)
+		if (FLOAT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : %g => %g).\n", __LINE__, k, orig [k], test [k]) ;
+			exit (1) ;
+			};
+	
+	/* Seek to offset from start of file. */
+	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
+
+	/* Check for errors here. */
+	if (sf_error (file))
+	{	printf ("Line %d: Should NOT return an error.\n", __LINE__) ;
+		sf_perror (file) ;
+		exit (1) ;
+		} ;
+
+	if (sf_read_double (file, test, 1) > 0)
+	{	printf ("Line %d: Should return 0.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+
+	if (! sf_error (file))
+	{	printf ("Line %d: Should return an error.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+	/*-----------------------*/
+
+	test_readf_double_or_die (file, 0, test + 10, 2, __LINE__) ;
+	for (k = 20 ; k < 24 ; k++)
+		if (FLOAT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : %g => %g).\n", __LINE__, k, orig [k], test [k]) ;
+			exit (1) ;
+			};
+
+	/* Seek to offset from current position. */
+	test_seek_or_die (file, 8, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
+
+	test_readf_double_or_die (file, 0, test + 20, 2, __LINE__) ;
+	for (k = 40 ; k < 44 ; k++)
+		if (FLOAT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : %g => %g).\n", __LINE__, k, orig [k], test [k]) ;
+			exit (1) ;
+			};
+
+	/* Seek to offset from end of file. */
+	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+
+	test_readf_double_or_die (file, 0, test + 20, 2, __LINE__) ;
+	for (k = 20 ; k < 24 ; k++)
+		if (FLOAT_ERROR (test [k], orig [k]))
+		{	printf ("\n\nLine %d : Stereo : Incorrect sample (#%d : %g => %g).\n", __LINE__, k, orig [k], test [k]) ;
+			exit (1) ;
+			};
+			
+	sf_close (file) ;
+
+	unlink (filename) ;
+	printf ("ok\n") ;
+
+	return ;			
+} /* pcm_test_double */
+
+
+
+/*----------------------------------------------------------------------------------------
+*/
+
+static void	
+create_short_file (char *filename)
+{	FILE *file ;
+
+	if (! (file = fopen (filename, "w")))
+	{	printf ("create_short_file : fopen (%s, \"w\") failed.", filename) ;
+		fflush (stdout) ;
+		perror (NULL) ; 
+		exit (1) ;
+		} ;
+
+	fprintf (file, "This is the file data.\n") ;
+	
+	fclose (file) ;
+} /* create_short_file */ 
+
+#if (defined (WIN32) || defined (__WIN32))
+
+/* Win32 does not have truncate (nor does it have the POSIX function ftruncate).
+** Hack somethng up here to over come this. This function can only truncate to a 
+** length of zero.
+*/
+
+static int 
+truncate (const char *filename, int ignored)
+{	int fd ;
+
+	if ((fd = open (filename, O_RDWR | O_TRUNC | O_BINARY)) < 0)
+		return 0 ;
+	
+	close (fd) ;
+	
+	return 0 ;
+} /* truncate */
+
+#endif

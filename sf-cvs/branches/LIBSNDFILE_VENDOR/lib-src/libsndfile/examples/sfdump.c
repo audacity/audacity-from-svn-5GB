@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ int     main (int argc, char *argv[])
 		exit (0) ;
 		} ;
 		
-	if (! (infile = sf_open_read (filename, &sfinfo)))
+	if (! (infile = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("Error : Not able to open input file %s.\n", filename) ;
 		sf_perror (NULL) ;
 		return  1 ;

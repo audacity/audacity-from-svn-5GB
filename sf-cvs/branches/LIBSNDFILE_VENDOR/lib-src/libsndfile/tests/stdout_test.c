@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2001-2002 Erik de Castro Lopo <erikd@zip.com.au>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -29,16 +29,21 @@ static	void	stdout_test	(char *str, int typemajor, int count) ;
 
 int
 main (int argc, char *argv [])
-{	unsigned int	count, bDoAll, nTests = 0 ;
+{	int	count, bDoAll, nTests = 0 ;
 	
 	if (argc != 3 || !(count = atoi (argv [2])))
 	{	fprintf (stderr, "This program cannot be run by itself. It needs\n") ;
-		fprintf (stderr, "to be run from the stdio_test.sh sheel script.\n") ;
+		fprintf (stderr, "to be run from the stdio_test program.\n") ;
 		exit (1) ;
 		} ;
 
 	bDoAll =! strcmp (argv [1], "all");
 		
+	if (bDoAll || ! strcmp (argv [1], "raw"))
+	{	stdout_test	("raw", SF_FORMAT_RAW, count) ;
+		nTests++ ;
+		} ;
+
 	if (bDoAll || ! strcmp (argv [1], "wav"))
 	{	stdout_test	("wav", SF_FORMAT_WAV, count) ;
 		nTests++ ;
@@ -74,10 +79,20 @@ main (int argc, char *argv [])
 		nTests++ ;
 		} ;
 
+	if (bDoAll || ! strcmp (argv [1], "voc"))
+	{	stdout_test	("voc", SF_FORMAT_VOC, count) ;
+		nTests++ ;
+		} ;
+
+	if (bDoAll || ! strcmp (argv [1], "w64"))
+	{	stdout_test	("w64", SF_FORMAT_W64, count) ;
+		nTests++ ;
+		} ;
+
 	if (nTests == 0)
-	{	printf ("Mono : ************************************\n") ;
-		printf ("Mono : *  No '%s' test defined.\n", argv [1]) ;
-		printf ("Mono : ************************************\n") ;
+	{	fprintf (stderr, "************************************\n") ;
+		fprintf (stderr, "*  No '%s' test defined.\n", argv [1]) ;
+		fprintf (stderr, "************************************\n") ;
 		return 1 ;
 		} ;
 
@@ -88,23 +103,22 @@ static	void
 stdout_test	(char *str, int typemajor, int count)
 {	static	short	data [BUFFER_LEN] ;
 
-	SNDFILE			*file ;
-	SF_INFO			sfinfo ;
-	unsigned int	k, total, this_write ;
+	SNDFILE		*file ;
+	SF_INFO		sfinfo ;
+	int			k, total, this_write ;
 	
-	fprintf (stderr, "    %-5s : writing %d samples to stdout  ... ", str, count) ;
+	fprintf (stderr, "    %-5s : writing %d frames to stdout  ... ", str, count) ;
 	
 	sfinfo.samplerate  = 44100 ;
-	sfinfo.pcmbitwidth = 16 ;
-	sfinfo.format 	   = (typemajor | SF_FORMAT_PCM) ;
+	sfinfo.format 	   = (typemajor | SF_FORMAT_PCM_16) ;
 	sfinfo.channels    = 1 ;
-	sfinfo.samples     = 0 ;
+	sfinfo.frames     = 0 ;
 
 	/* Create some random data. */
 	for (k = 0 ; k < BUFFER_LEN ; k++)
 		data [k] = (rand () % 2000) ;
 		
-	if (! (file = sf_open_write ("-", &sfinfo)))
+	if (! (file = sf_open ("-", SFM_WRITE, &sfinfo)))
 	{	fprintf (stderr, "sf_open_write failed with error : ") ;
 		sf_perror (NULL) ;
 		exit (1) ;

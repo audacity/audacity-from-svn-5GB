@@ -4,13 +4,10 @@
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
  */
 
-/* $Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/gsm_encode.c,v 1.1.1.1 2001-10-15 04:39:16 dmazzoni Exp $ */
-
-#include "private.h"
+#include "gsm610_priv.h"
 #include "gsm.h"
-#include "proto.h"
 
-void gsm_encode P3((s, source, c), gsm s, gsm_signal * source, gsm_byte * c)
+void gsm_encode (gsm s, gsm_signal * source, gsm_byte * c)
 {
 	word	 	LARc[8], Nc[4], Mc[4], bc[4], xmaxc[4], xmc[13*4];
 

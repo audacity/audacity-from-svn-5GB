@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -26,13 +26,14 @@
 #define	 BUFFER_LEN      400
 
 
-int     main (int argc, char *argv[])
+int     
+main (int argc, char *argv[])
 {	static double	data [BUFFER_LEN] ;
-	char 			*progname, *infilename, *outfilename, *cptr ;
-	SNDFILE	 		*infile ;
-	SF_INFO	 		sfinfo ;
-	FILE			*outfile ;
-	unsigned int	k, readcount, len, total ;
+	char 		*progname, *infilename, *outfilename, *cptr ;
+	SNDFILE		*infile ;
+	SF_INFO		sfinfo ;
+	FILE		*outfile ;
+	long		k, readcount, len, total ;
 
 	progname = strrchr (argv [0], '/') ;
 	progname = progname ? progname + 1 : argv [0] ;
@@ -50,7 +51,7 @@ int     main (int argc, char *argv[])
 		return 1 ;
 		} ;
 		
-	if (! (infile = sf_open_read (infilename, &sfinfo)))
+	if (! (infile = sf_open (infilename, SFM_READ, &sfinfo)))
 	{	printf ("Not able to open input file %s.\n", infilename) ;
 		sf_perror (NULL) ;
 		return  1 ;
@@ -69,12 +70,14 @@ int     main (int argc, char *argv[])
 		
 	fprintf (outfile, "# name: %s\n", outfilename) ;
 	fprintf (outfile, "# type: matrix\n") ;
-	fprintf (outfile, "# rows: %d\n", sfinfo.samples) ;
+	fprintf (outfile, "# rows: %ld\n", (long) sfinfo.frames) ;
 	fprintf (outfile, "# columns: %d", sfinfo.channels) ;
-		
+	
+	/*-sf_command (infile, SFC_SET_NORM_DOUBLE, NULL, SF_FALSE) ;-*/
+
 	len = BUFFER_LEN - (BUFFER_LEN % sfinfo.channels) ;
 	total = 0 ;
-	while ((readcount = sf_read_double (infile, data, len, 0)))
+	while ((readcount = sf_read_double (infile, data, len)))
 	{	
 		for (k = 0 ; k < readcount ; k++)
 		{	if (! (k % sfinfo.channels))
@@ -84,8 +87,8 @@ int     main (int argc, char *argv[])
 		memset (data, 0, len * sizeof (double)) ;
 		total += readcount ;
 		} ;
-	if (total != sfinfo.samples * sfinfo.channels)
-		printf ("Error : Values read (%d) != samples * channels (%d)\n", total, sfinfo.samples * sfinfo.channels) ;
+	if (total != sfinfo.frames * sfinfo.channels)
+		printf ("Error : Values read (%ld) !=.frames * channels (%ld)\n", total, (long) (sfinfo.frames * sfinfo.channels)) ;
 
 	fclose (outfile) ;
 	sf_close (infile) ;

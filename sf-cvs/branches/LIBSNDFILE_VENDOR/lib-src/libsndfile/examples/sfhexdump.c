@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -49,10 +49,10 @@ int     main (int argc, char *argv[])
 		
 	infilename = argv [1] ;
 		
-	if (! (infile = sf_open_read (infilename, &sfinfo)))
+	if (! (infile = sf_open (infilename, SFM_READ, &sfinfo)))
 	{	printf ("Error : Not able to open input file %s.\n", infilename) ;
 		sf_perror (NULL) ;
-		sf_get_header_info (NULL, strbuffer, BUFFER_LEN, 0) ;
+		sf_command (NULL, SFC_GET_LOG_INFO, strbuffer, BUFFER_LEN) ;
 		printf (strbuffer) ;
 		return  1 ;
 		} ;
