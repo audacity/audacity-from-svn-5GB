@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "POT-Creation-Date: 2004-01-14 19:36+0300\n"
-"PO-Revision-Date: 2004-01-16 20:13+0300\n"
+"PO-Revision-Date: 2004-01-18 15:11+0300\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2845,7 +2845,7 @@ msgstr "Быстрое сведение"
 
 #: ../src/prefs/GUIPrefs.cpp:94
 msgid "Quit Audacity upon closing last window"
-msgstr "Выйти из Audacity при закрытии последнего окна"
+msgstr "Выходить из Audacity при закрытии последнего окна"
 
 #. i18n-hint: One-letter abbreviation for Right, in the Pan slider
 #: ../src/widgets/ASlider.cpp:332
@@ -3547,7 +3547,7 @@ msgstr "Остановить\tS"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:52
 msgid "Temp. Directory"
-msgstr "Каталог для временных файлов"
+msgstr " Каталог для временных файлов "
 
 #: ../src/Menus.cpp:2245
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
