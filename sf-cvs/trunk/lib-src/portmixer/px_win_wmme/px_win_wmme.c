@@ -329,7 +329,7 @@ void Px_SetPCMOutputVolume( PxMixer *mixer, PxVolume volume )
   MMRESULT result;
   PxInfo *info = (PxInfo *)mixer;
 
-  result = waveOutSetVolume(info->muxID, volume*65535);
+  result = waveOutSetVolume(info->muxID, MAKELONG(volume*0xFFFF, volume*0xFFFF));
 
   if (result != MMSYSERR_NOERROR)
       return;
