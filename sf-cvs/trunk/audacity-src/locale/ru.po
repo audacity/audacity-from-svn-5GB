@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
-"POT-Creation-Date: 2003-03-04 14:11+0300\n"
-"PO-Revision-Date: 2003-03-04 14:30+0300\n"
+"POT-Creation-Date: 2003-03-10 11:57+0300\n"
+"PO-Revision-Date: 2003-03-10 12:56+0300\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -65,7 +65,7 @@ msgstr "%d"
 
 #: ../src/commands/CommandsDefaultData.h:307
 msgid "&Analyze"
-msgstr "&Анализировать"
+msgstr "&Анализ"
 
 #: ../src/commands/CommandsDefaultData.h:199
 msgid "&Close"
@@ -95,7 +95,7 @@ msgstr "&Уместить в окне"
 
 #: ../src/commands/CommandsDefaultData.h:301
 msgid "&Generate"
-msgstr "&Сгенерировать:"
+msgstr "&Создание"
 
 #: ../src/commands/CommandsDefaultData.h:310
 msgid "&Help"
@@ -103,7 +103,7 @@ msgstr "Справ&ка"
 
 #: ../src/commands/CommandsDefaultData.h:255
 msgid "&Import Audio..."
-msgstr "&Импортировать аудио"
+msgstr "&Импортировать аудио..."
 
 #: ../src/commands/CommandsDefaultData.h:197
 msgid "&New"
@@ -161,11 +161,11 @@ msgstr ""
 msgid "0.0"
 msgstr "0.0"
 
-#: ../src/prefs/AudioIOPrefs.cpp:165
+#: ../src/prefs/AudioIOPrefs.cpp:168
 msgid "1 (Mono)"
 msgstr "1 (Моно)"
 
-#: ../src/prefs/AudioIOPrefs.cpp:166
+#: ../src/prefs/AudioIOPrefs.cpp:169
 msgid "2 (Stereo)"
 msgstr "2 (Стерео)"
 
@@ -369,7 +369,7 @@ msgstr "Сведённые по нулю"
 msgid "All files (*.*)|*.*"
 msgstr "Все файлы (*.*)|*.*"
 
-#: ../src/Project.cpp:1568
+#: ../src/Project.cpp:1573
 msgid ""
 "All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|"
 "AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|IRCAM files (*.snd)|*.snd|MP3 "
@@ -522,7 +522,7 @@ msgid ""
 "At 44100 Hz, 16-bits per sample, the estimated number of\n"
 "simultaneous tracks that could be played at once: %.1f\n"
 msgstr ""
-"При 44100 Гц и 16 бит на сэмпл может быть одновременно\n"
+"При 44100 Гц и 16 битах на сэмпл может быть одновременно\n"
 "воспроизведено следующее количество дорожек: %.1f\n"
 
 #: ../src/AboutDialog.cpp:251
@@ -541,7 +541,7 @@ msgstr "Панель редактирования Audacity"
 msgid "Audacity First Run"
 msgstr "Первый запуск Audacity"
 
-#: ../src/MixerToolBar.cpp:96
+#: ../src/MixerToolBar.cpp:100
 msgid "Audacity Mixer Toolbar"
 msgstr "Микшерная панель Audacity"
 
@@ -643,7 +643,7 @@ msgstr ""
 "необходимо перезагрузить Audacity.\n"
 "Перед перезагрузкой сохраните и закройте все открытые проекты Audacity."
 
-#: ../src/Project.cpp:2131
+#: ../src/Project.cpp:2136
 msgid "Audacity projects (*.aup)|*.aup"
 msgstr "Проекты Audacity (*.aup)|*.aup"
 
@@ -719,7 +719,7 @@ msgstr "Битрейт:"
 
 #: ../src/Benchmark.cpp:305
 msgid "Block size should be in the range 1 - 1024 KB."
-msgstr "Размер блоков должен быть в пределах 1 - 1024 Кбайт."
+msgstr "Размер блоков должен быть в пределах 1 - 1024 КБ."
 
 #: ../src/effects/BassBoost.cpp:288
 msgid "Boost (dB):"
@@ -749,7 +749,7 @@ msgstr "Невозможно экспортировать данные в этот формат"
 msgid "Cannot export audio to %s"
 msgstr "Невозможно экспортировать данные в %s"
 
-#: ../src/widgets/ASlider.cpp:385
+#: ../src/widgets/ASlider.cpp:391
 msgid "Center"
 msgstr "центр"
 
@@ -857,7 +857,7 @@ msgstr "Изменяется темп"
 msgid "Changing volume"
 msgstr "Именяется увень звука"
 
-#: ../src/prefs/AudioIOPrefs.cpp:173
+#: ../src/prefs/AudioIOPrefs.cpp:176
 msgid "Channels:"
 msgstr "Каналы:"
 
@@ -975,12 +975,12 @@ msgstr "Копировать"
 msgid "Could not open MP3 encoding library!"
 msgstr "Не удалось открыть библиотеку для экспорта в MP3!"
 
-#: ../src/Project.cpp:1615 ../src/Project.cpp:1621 ../src/Project.cpp:1814
+#: ../src/Project.cpp:1620 ../src/Project.cpp:1626 ../src/Project.cpp:1819
 #: ../src/commands/CommandsCallback.cpp:853 ../src/import/ImportMIDI.cpp:30
 msgid "Could not open file: "
 msgstr "Не удалось открыть файл: "
 
-#: ../src/Project.cpp:1965
+#: ../src/Project.cpp:1970
 #, c-format
 msgid ""
 "Could not save project.  Perhaps %s is not writeable,\n"
@@ -993,7 +993,7 @@ msgstr ""
 msgid "Couldn't open the Audacity Help file."
 msgstr "Не удалось открыть файл справки Audacity."
 
-#: ../src/FreqWindow.cpp:1090 ../src/Project.cpp:1978
+#: ../src/FreqWindow.cpp:1090 ../src/Project.cpp:1983
 #: ../src/commands/CommandsCallback.cpp:120
 msgid "Couldn't write to file: "
 msgstr "Не удалось произвести запись в файл: "
@@ -1006,7 +1006,7 @@ msgstr "Создана новая звуковая дорожка"
 msgid "Created new label track"
 msgstr "Создан новая дорожка для заметок"
 
-#: ../src/Project.cpp:2154
+#: ../src/Project.cpp:2159
 msgid "Created new project"
 msgstr "Создан новый проект"
 
@@ -1182,7 +1182,7 @@ msgstr "Стандартный байтовый порядок"
 msgid "Delay time (seconds): "
 msgstr "Время задержки (сек):"
 
-#: ../src/Project.cpp:2244
+#: ../src/Project.cpp:2249
 #, c-format
 msgid "Deleted %.2f seconds at t=%.2f"
 msgstr "Удалено %.2f сек начиная с t=%.2f"
@@ -1195,7 +1195,7 @@ msgstr "Глубина (%):"
 msgid "Depth:"
 msgstr "Глубина:"
 
-#: ../src/prefs/AudioIOPrefs.cpp:101 ../src/prefs/AudioIOPrefs.cpp:150
+#: ../src/prefs/AudioIOPrefs.cpp:104 ../src/prefs/AudioIOPrefs.cpp:153
 msgid "Device:"
 msgstr "Устройство:"
 
@@ -1227,13 +1227,13 @@ msgstr "Блоков диска #: \n"
 
 #: ../src/Benchmark.cpp:150
 msgid "Disk Block Size (KB):"
-msgstr "Размер блоков (Кбайт):"
+msgstr "Размер блоков (КБ):"
 
-#: ../src/Project.cpp:1388
+#: ../src/Project.cpp:1393
 msgid "Dock Control Toolbar"
 msgstr "Прицепить контрольную панель"
 
-#: ../src/Project.cpp:1104
+#: ../src/Project.cpp:1109
 msgid "Dock Edit Toolbar"
 msgstr "Отцепить панель инструментов редактирования"
 
@@ -1342,11 +1342,7 @@ msgstr "Введите коэффициент угасания: "
 msgid "Envelope Tool"
 msgstr "Инструмент диапазона"
 
-#: ../src/effects/Equalization.cpp:155
-msgid "Equaliation"
-msgstr "Эквализация"
-
-#: ../src/effects/Equalization.cpp:653
+#: ../src/effects/Equalization.cpp:155 ../src/effects/Equalization.cpp:653
 msgid "Equalization"
 msgstr "Эквализация"
 
@@ -1371,7 +1367,7 @@ msgstr "Произошла ошибка при чтении файла в формате Allegro"
 msgid "Error parsing MIDI file."
 msgstr "Произошла ошибка при чтении MIDI-файла"
 
-#: ../src/Project.cpp:1891
+#: ../src/Project.cpp:1896
 #, c-format
 msgid "Error reading Audacity Project %s in line %d"
 msgstr "Произошла ошибка при чтении проекта Audacity %s в строке %d"
@@ -1421,7 +1417,7 @@ msgstr "Экспортировать выделенное как %s..."
 
 #: ../src/FreqWindow.cpp:1074
 msgid "Export Spectral Data As:"
-msgstr "Экспортировать результаты спектр.анализа как:"
+msgstr "Экспортировать результаты спектрального анализа"
 
 #: ../src/commands/CommandsDefaultData.h:206
 #: ../src/prefs/FileFormatPrefs.cpp:346
@@ -1515,11 +1511,11 @@ msgstr "Уместить весь проект в окне"
 msgid "Fit selection in window"
 msgstr "Уместить выделенное в окне"
 
-#: ../src/Project.cpp:1332 ../src/commands/CommandsDefaultData.h:249
+#: ../src/Project.cpp:1337 ../src/commands/CommandsDefaultData.h:249
 msgid "Float Control Toolbar"
 msgstr "Отцепить контрольную панель"
 
-#: ../src/Project.cpp:1106 ../src/commands/CommandsDefaultData.h:250
+#: ../src/Project.cpp:1111 ../src/commands/CommandsDefaultData.h:250
 msgid "Float Edit Toolbar"
 msgstr "Отцепить панель редактирования"
 
@@ -1615,7 +1611,7 @@ msgstr "ID3v1 (более распространен)"
 msgid "ID3v2 (more flexible)"
 msgstr "ID3v2 (более гибок)"
 
-#: ../src/Project.cpp:2043 ../src/import/ImportPCM.cpp:396
+#: ../src/Project.cpp:2048 ../src/import/ImportPCM.cpp:396
 #: ../src/import/ImportPCM.cpp:481 ../src/import/ImportRaw.cpp:395
 msgid "Import"
 msgstr "Вставка"
@@ -1636,7 +1632,7 @@ msgstr "Вставить Raw-&файл..."
 msgid "Import Raw Data"
 msgstr "Вставить Raw-файл"
 
-#: ../src/Project.cpp:2079
+#: ../src/Project.cpp:2084
 #, c-format
 msgid "Imported '%s'"
 msgstr "Импортирован файл '%s'"
@@ -1651,7 +1647,7 @@ msgstr "Импортирован MIDI-файл из '%s'"
 msgid "Imported labels from '%s'"
 msgstr "Импортированы метки из файла '%s'"
 
-#: ../src/Project.cpp:2040
+#: ../src/Project.cpp:2045
 #, c-format
 msgid "Importing %s File..."
 msgstr "Импортируется файл %s..."
@@ -1697,17 +1693,17 @@ msgstr "Производится инвертация"
 msgid "Keyboard"
 msgstr "Клавиатура"
 
-#: ../src/widgets/ASlider.cpp:245
+#: ../src/widgets/ASlider.cpp:246
 msgid "L"
 msgstr "Л"
 
 #: ../src/AboutDialog.cpp:100
 msgid "LADSPA plug-in suppport disabled"
-msgstr "Поддержка плагинов LADSPA отключена"
+msgstr "Поддержка модулей LADSPA отключена"
 
 #: ../src/AboutDialog.cpp:98
 msgid "LADSPA plug-in suppport enabled"
-msgstr "Поддержка плагинов LADSPA включена"
+msgstr "Поддержка модулей LADSPA включена"
 
 #: ../src/effects/Phaser.cpp:463 ../src/effects/Wahwah.cpp:438
 msgid "LFO Frequency (Hz):"
@@ -1719,7 +1715,7 @@ msgstr "Начальная фаза LFO (степень):"
 
 #: ../src/LabelTrack.cpp:31
 msgid "Label Track"
-msgstr "Дорожка с заметками"
+msgstr "Дорожка для заметок"
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:408
 msgid "Ladspa Effect Settings"
@@ -1733,7 +1729,7 @@ msgstr "Отставание (сек)\tЧастота (Гц)\tУровень"
 msgid "Language:"
 msgstr "Язык:"
 
-#: ../src/widgets/ASlider.cpp:388
+#: ../src/widgets/ASlider.cpp:394
 msgid "Left"
 msgstr "слева"
 
@@ -1803,7 +1799,7 @@ msgstr "Версия библиотеки MP3:"
 
 #: ../src/prefs/FileFormatPrefs.cpp:258
 msgid "MP3 exporting plugin not found"
-msgstr "Плагин экспорта в MP3 не найден"
+msgstr "Модуль экспорта в MP3 не найден"
 
 #: ../src/AboutDialog.cpp:78
 msgid "MP3 importing disabled"
@@ -2132,7 +2128,7 @@ msgstr "Другие участники проекта:"
 msgid "Other..."
 msgstr "Другие..."
 
-#: ../src/Project.cpp:2396
+#: ../src/Project.cpp:2405
 msgid "Out of disk space"
 msgstr "Свободное пространство на диске закончилось"
 
@@ -2207,11 +2203,11 @@ msgstr "Питч (EAC)"
 msgid "Play"
 msgstr "Воспроизводить"
 
-#: ../src/prefs/AudioIOPrefs.cpp:185
+#: ../src/prefs/AudioIOPrefs.cpp:188
 msgid "Play other tracks while recording new one"
 msgstr "Воспроизводить другие дорожки при записи новой"
 
-#: ../src/prefs/AudioIOPrefs.cpp:68
+#: ../src/prefs/AudioIOPrefs.cpp:71
 msgid "Playback"
 msgstr "Воспроизведение"
 
@@ -2230,12 +2226,12 @@ msgstr "Нарисовать график спектра"
 #: ../src/commands/CommandsMenu.cpp:289
 #, c-format
 msgid "Plugins %i to %i"
-msgstr "Плагины от %i до %i"
+msgstr "Модули от %i до %i"
 
 #: ../src/commands/CommandsMenu.cpp:274
 #, c-format
 msgid "Plugins 1 to %i"
-msgstr "Плагины 1 до %i"
+msgstr "Модули 1 до %i"
 
 #: ../src/effects/Equalization.cpp:697
 msgid "Predefined:"
@@ -2287,7 +2283,7 @@ msgstr "Быстрое сведение"
 msgid "Quick mix"
 msgstr "Быстрое сведение"
 
-#: ../src/widgets/ASlider.cpp:246
+#: ../src/widgets/ASlider.cpp:247
 msgid "R"
 msgstr "П"
 
@@ -2295,7 +2291,7 @@ msgstr "П"
 msgid "Random Seed :"
 msgstr "Случайная величина :"
 
-#: ../src/Project.cpp:2035
+#: ../src/Project.cpp:2040
 msgid "Raw"
 msgstr "Raw"
 
@@ -2315,26 +2311,26 @@ msgstr "Перестроить меню"
 msgid "Record"
 msgstr "Записывать"
 
-#: ../src/prefs/AudioIOPrefs.cpp:118
+#: ../src/prefs/AudioIOPrefs.cpp:121
 msgid "Recording"
 msgstr "Запись"
 
-#: ../src/Project.cpp:2384
+#: ../src/Project.cpp:2393
 #, c-format
 msgid "Recording time remaining: %d hours and %d minutes"
 msgstr "Время до конца записи: %d часов и %d минут"
 
-#: ../src/Project.cpp:2390
+#: ../src/Project.cpp:2399
 #, c-format
 msgid "Recording time remaining: %d minutes"
 msgstr "Время до конца записи: %d минут"
 
-#: ../src/Project.cpp:2393
+#: ../src/Project.cpp:2402
 #, c-format
 msgid "Recording time remaining: %d seconds"
 msgstr "Время до конца записи: %d секунд"
 
-#: ../src/Project.cpp:2387
+#: ../src/Project.cpp:2396
 #, c-format
 msgid "Recording time remaining: 1 hour and %d minutes"
 msgstr "Время до конца записи: 1 час и %d минут"
@@ -2385,7 +2381,7 @@ msgstr "Перевернуть"
 msgid "Reversing"
 msgstr "Применяется переворот"
 
-#: ../src/widgets/ASlider.cpp:391
+#: ../src/widgets/ASlider.cpp:397
 msgid "Right"
 msgstr "справа"
 
@@ -2426,19 +2422,19 @@ msgstr "Сохранить файл %s как:"
 msgid "Save Project &As..."
 msgstr "Сохранить проект как..."
 
-#: ../src/Project.cpp:2127
+#: ../src/Project.cpp:2132
 msgid "Save Project As:"
 msgstr "Сохранить проект как:"
 
-#: ../src/Project.cpp:1530
+#: ../src/Project.cpp:1535
 msgid "Save changes before closing?"
 msgstr "Сохранить изменения перед закрытием?"
 
-#: ../src/Project.cpp:1531
+#: ../src/Project.cpp:1536
 msgid "Save changes?"
 msgstr "Сохранить изменения?"
 
-#: ../src/Project.cpp:2016
+#: ../src/Project.cpp:2021
 #, c-format
 msgid "Saved %s"
 msgstr "Сохранён %s"
@@ -2499,7 +2495,7 @@ msgstr ""
 "фильтр, укажите, сколько шума отфильтровать, а затем \n"
 "щёлкните мышкой по кнопке \"Удалить шум\"\n"
 
-#: ../src/Project.cpp:1564 ../src/commands/CommandsCallback.cpp:810
+#: ../src/Project.cpp:1569 ../src/commands/CommandsCallback.cpp:810
 msgid "Select an audio file..."
 msgstr "Выберите аудиофайл..."
 
@@ -2780,17 +2776,17 @@ msgstr "Врем. каталог"
 
 #: ../src/Benchmark.cpp:168
 msgid "Test Data Size (MB):"
-msgstr "Размер тестовых данных (МБайт):"
+msgstr "Размер тестовых данных (МБ):"
 
 #: ../src/Benchmark.cpp:315
 msgid "Test data size should be in the range 1 - 2000 MB."
-msgstr "Объём данных для теста должен находиться в пределах от 1 до 2000 МБайт."
+msgstr "Объём данных для теста должен находиться в пределах от 1 до 2000 МБ."
 
 #: ../src/commands/CommandsCallback.cpp:841
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*"
 
-#: ../src/Project.cpp:1586
+#: ../src/Project.cpp:1591
 msgid "That project is already open in another window."
 msgstr "Этот проект уже открыт в другом окне"
 
@@ -2806,7 +2802,7 @@ msgstr ""
 
 #: ../src/commands/CommandsCallback.cpp:95
 msgid "There are no label tracks to export."
-msgstr "Дорожек с заметками для экспорта нет"
+msgstr "Экспортируемых дорожек для заметок нет"
 
 #: ../src/AudioIO.cpp:94
 msgid "There was an error initializing the audio i/o layer.\n"
@@ -2844,7 +2840,7 @@ msgstr ""
 "признательны за оставленные на нашем сайте сообщения об ошибках и "
 "функциональные запросы."
 
-#: ../src/Project.cpp:1829
+#: ../src/Project.cpp:1834
 msgid ""
 "This project was saved by a different version of Audacity and is no longer "
 "supported."
@@ -3083,7 +3079,7 @@ msgstr "Белый шум"
 msgid "Year:"
 msgstr "Год:"
 
-#: ../src/Project.cpp:956
+#: ../src/Project.cpp:958
 msgid "You must select a track first."
 msgstr "Предварительно выделите дорожку."
 
@@ -3170,6 +3166,9 @@ msgstr "spectrum.txt"
 #: ../src/TrackPanel.cpp:3382
 msgid "up"
 msgstr "вверх"
+
+#~ msgid "Equaliation"
+#~ msgstr "Эквализация"
 
 #~ msgid "Audacity was unable to find any audio devices."
 #~ msgstr "Не удалось обнаружить хотя бы одно аудиоустройство."
