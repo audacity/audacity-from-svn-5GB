@@ -212,11 +212,15 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mTrackPanel(NULL), mAutoScrolling(false), mHistoryWindow(NULL),
      mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
 {
+   bool alreadyAssigned = false;
    //BG: Assign default keybindings if needed
-   if(!(bool)gPrefs->Read("/Keyboard/Settings/AlreadyAssigned", (bool)false))
+   gPrefs->Read("/Keyboard/Settings/AlreadyAssigned",
+                &alreadyAssigned);
+
+   if (!alreadyAssigned)
    {
       AssignDefaults();
-      gPrefs->Write("/Keyboard/Settings/AlreadyAssigned", (bool)true);
+      gPrefs->Write("/Keyboard/Settings/AlreadyAssigned", true);
    }
 
    #ifndef __WXMAC__
