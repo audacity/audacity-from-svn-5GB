@@ -120,13 +120,6 @@ SOURCE=..\src\AStatus.h
 # Begin Source File
 
 SOURCE=..\src\AudacityApp.cpp
-
-!IF  "$(CFG)" == "Audacity - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "Audacity - Win32 Debug"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -879,6 +872,10 @@ SOURCE=..\src\xml\XMLFileReader.cpp
 # Begin Source File
 
 SOURCE=..\src\xml\XMLFileReader.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\xml\XMLTagHandler.cpp
 # End Source File
 # Begin Source File
 
