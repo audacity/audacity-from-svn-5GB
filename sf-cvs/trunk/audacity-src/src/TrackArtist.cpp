@@ -176,11 +176,11 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
       float min, max;
 
       ((WaveTrack *)t)->GetDisplayBounds(&min, &max);
-      vruler->SetBounds(r.x, r.y+1, r.x + r.width, r.y + r.height-2);
+      vruler->SetBounds(r.x, r.y+1, r.x + r.width, r.y + r.height-1);
       vruler->SetOrientation(wxVERTICAL);
       vruler->SetRange(max, min);
       vruler->SetFormat(Ruler::RealFormat);
-
+      vruler->SetLabelEdges(false);
       vruler->Draw(*dc);
    }
 
@@ -190,6 +190,43 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
       wxRect bev = r;
       bev.Inflate(-1, -1);
       AColor::Bevel(*dc, true, bev);
+
+      float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
+      float min, max;
+      ((WaveTrack *)t)->GetDisplayBounds(&min, &max);
+
+      if (max > 0) {
+         int top = 0;
+         float topval = 0;
+         int bot = r.height;
+         float botval = -dBr;
+
+         if (min < 0) {
+            bot = top + (int)((max / (max-min))*(bot-top));
+            min = 0;
+         }
+
+         if (max > 1) {
+            top += (int)((max-1)/(max-min) * (bot-top));
+            max = 1;
+         }
+
+         if (max < 1)
+            topval = -((1-max)*dBr);
+
+         if (min > 0) {
+            botval = -((1-min)*dBr);
+         }
+
+         if (topval > botval && bot > top+10) {
+            vruler->SetBounds(r.x, r.y+top+1, r.x + r.width, r.y + bot-1);
+            vruler->SetOrientation(wxVERTICAL);
+            vruler->SetRange(topval, botval);
+            vruler->SetFormat(Ruler::RealFormat);
+            vruler->SetLabelEdges(true);
+            vruler->Draw(*dc);
+         }
+      }
    }
 
    if (t->GetKind() == Track::Wave
