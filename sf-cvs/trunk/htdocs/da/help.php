@@ -14,38 +14,21 @@ Audacity 1.2 Online Hjælp:
 <p>
 
 Søg i Audacity dokumentationen:
+<form method="post" action="/isearch/index.php" target="_self">
 
-<?php
-/* Include the iSearch search form */
+<table border="0" cellpadding="3" cellspacing="1">
+  <tr>
+    <td>
 
-/* Relative reference to isearch directory */
-$isearch_path = "isearch";
+      <input maxLength="255" name="s" size="20" value=''>
+      <input type="submit" value="Søg hjemmeside">
+      <a TARGET="_blank" HREF="/isearch/help.php">Hjælp</a>
+    </td>
+  </tr>
+</table>
 
-/* Set the width of the entry box in chars */
-$isearch_searchFormWidth = 20;
-
-/* Optional - set target frame for search results.
- * Default value is "_self".
- */
-$isearch_resultFrame = "_self";
-
-/* Optional - allow the user to select "all words" or "any words" to match.
- * Default value is False.
- */
-$isearch_allowSetOperator = False;
-
-/* Optional - add a "Search Internet" button to be displayed.
- * Default value is True.
- */
-$isearch_allowSearchInternet = False;
-
-/* Optional - Determine whether page containing this form is UTF-8 encoded.
- * Default value is True.
- */
-$isearch_charsetUtf8 = "True";
-
-include("$isearch_path/isearch_form.inc.php");
-?>
+<input type="hidden" name="action" value="search">
+</form>
 </p>
 
 <p>
@@ -79,13 +62,7 @@ include("$isearch_path/isearch_form.inc.php");
 <?php BoxTop("$helpStr - Audacity 1.0.0"); ?>
 
 <p>
-<a href="docs/contents.html">Read documentation Online</a>
-</p>
-
-<p><?php BoxTop($helpStr); ?>
-
-<p>
-<a href="docs/contents.html">Brugerguide / Dokumentation online</a>
+<a href="docs/contents.html">Læs dokumentation Online</a>
 </p>
 
 <p>
