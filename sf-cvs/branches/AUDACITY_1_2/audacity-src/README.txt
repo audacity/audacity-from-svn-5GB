@@ -272,7 +272,7 @@ Changes in 1.2.3:
     use a new version of the SoundTouch library by Olli Parviainen,
     with better speed and higher quality.
 
-  * libsndfile has been upgraded to version 1.0.10
+  * libsndfile has been upgraded to version 1.0.11.
 
   * Fixed a bug that caused the program to run slowly when using the
     Envelope tool.
