@@ -22,7 +22,6 @@ class wxString;
 
 #include "Effect.h"
 
-class Envelope;
 class WaveTrack;
 
 class EffectNoiseRemoval: public Effect {
@@ -55,8 +54,6 @@ private:
    void RemoveNoise(sampleCount len,
                     sampleType *buffer, bool first);   
    
-   Envelope *mEnvelope;
-
    int       windowSize;
    float    *noiseGate;
    float    *sum;

@@ -31,7 +31,6 @@
 #include <wx/statbox.h>
 
 #include "NoiseRemoval.h"
-#include "../Envelope.h"
 #include "../FFT.h"
 #include "../WaveTrack.h"
 
