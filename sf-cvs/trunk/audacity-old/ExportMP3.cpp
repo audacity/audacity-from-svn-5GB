@@ -234,6 +234,209 @@
 LinuxLAMEExporter gLinuxLAMEExporter;
 MP3Exporter *gMP3Exporter = &gLinuxLAMEExporter;
 
+#elif defined(__WXMAC__)
+
+   /* --------------------------------------------------------------------------*/
+
+   /* The following code is intended to work with LAMELib, roughly LAME
+      verson 3.87, as distributed by N2MP3. */
+
+   typedef struct {
+      unsigned long num_samples;
+      int num_channels;
+      int in_samplerate;
+
+      /* The above are the ONLY members of this structure we can reliably read
+       * or write to. */
+
+      int space[1000];  /* to liberally accomadate for the real size of the struct */
+   } lame_global_flags;
+
+   /* All functions types are suffexed with _t because gcc won't let you have a
+    * type and a variable of the same name */
+
+   typedef void lame_init_t(lame_global_flags *);
+
+   /* NOTE: Same deal with this one: >= 3.88 changes it to: const char
+    * *get_lame_version(), but this time they don't even leave us a
+    * compatibility version! aggh! */
+   typedef void lame_version_t(lame_global_flags *, char *);
+   typedef const char *get_lame_version_t();
+
+   typedef void lame_init_params_t(lame_global_flags*);
+
+   typedef int lame_encode_buffer_t (
+         lame_global_flags* gf,
+         const short int    buffer_l [],
+         const short int    buffer_r [],
+         const int          nsamples,
+         unsigned char *    mp3buf,
+         const int          mp3buf_size );
+
+   typedef int lame_encode_buffer_interleaved_t(
+         lame_global_flags* gf,
+         short int          pcm[],
+         int                num_samples,   /* per channel */
+         unsigned char*     mp3buf,
+         int                mp3buf_size );
+
+   typedef int lame_encode_finish_t(
+         lame_global_flags *gf,
+         unsigned char*     mp3buf,
+         int                size );
+
+   /* --------------------------------------------------------------------------*/
+
+   class MacLAMEExporter : public MP3Exporter {
+      private:
+         lame_init_t* lame_init;
+         lame_version_t* lame_version;
+         get_lame_version_t* get_lame_version;
+         lame_init_params_t* lame_init_params;
+         lame_encode_buffer_t* lame_encode_buffer;
+         lame_encode_finish_t* lame_encode_finish;
+
+         lame_global_flags *mGF;
+         
+         bool mLibraryLoaded, mEncoding;
+         char mVersion[20];
+
+         static const int mSamplesPerChunk = 220500;
+         static const int mOutBufferSize = int(1.25 * mSamplesPerChunk + 7200);
+
+         short int *mLeftBuffer;
+         short int *mRightBuffer;
+         
+      public:
+         
+         MacLAMEExporter() {
+            mLibraryLoaded = false;
+            mEncoding = false;
+            mGF = NULL;
+         }
+
+         bool  LoadLibrary(wxString fileName = "") {
+            if(fileName == "") fileName = "LAMELib";
+
+            wxDllType libHandle = NULL;
+            
+            if (wxFileExists(wxGetCwd() + wxFILE_SEP_PATH + fileName))
+               libHandle = wxDllLoader::LoadLibrary(
+                           wxGetCwd() + wxFILE_SEP_PATH + fileName);
+            else
+               return false;
+
+            lame_init = (lame_init_t *) wxDllLoader::GetSymbol(libHandle, "lame_init");
+
+            lame_version = (lame_version_t *) wxDllLoader::GetSymbol(libHandle, "lame_version");
+            
+            get_lame_version =
+               (get_lame_version_t *) wxDllLoader::GetSymbol(libHandle, "get_lame_version");
+
+            lame_init_params = 
+               (lame_init_params_t *) wxDllLoader::GetSymbol(libHandle, "lame_init_params");
+
+            lame_encode_buffer =
+                (lame_encode_buffer_t *) wxDllLoader::GetSymbol(libHandle,
+                                                                "lame_encode_buffer");
+            lame_encode_finish =
+                (lame_encode_finish_t *) wxDllLoader::GetSymbol(libHandle, "lame_encode_finish");
+
+            if (!lame_init ||
+                !lame_init_params ||
+                !lame_encode_buffer ||
+                !(lame_version || get_lame_version) ||
+                !lame_encode_finish) {
+               return false;
+            }
+
+            mGF = new lame_global_flags;
+            lame_init(mGF);
+            mLibraryLoaded = true;
+            return true;
+         }
+
+      bool ValidLibraryLoaded() { return mLibraryLoaded; }
+
+      const char *GetLibraryVersion() {
+         if(!mLibraryLoaded) return "";
+
+         if(get_lame_version)
+            return get_lame_version();
+         else {
+            lame_version(mGF, mVersion);
+            return mVersion;
+         }
+      }
+
+      int InitializeStream(int channels, int sampleRate) {
+         if(!mLibraryLoaded) return -1;
+
+         mGF->num_channels = channels;
+         mGF->in_samplerate = sampleRate;
+         mGF->num_samples = 0;
+
+         lame_init_params(mGF);
+         
+         mLeftBuffer = new short[mSamplesPerChunk];
+         mRightBuffer = new short[mSamplesPerChunk];
+
+         mEncoding = true;
+         return mSamplesPerChunk;
+      }
+
+      int GetOutBufferSize() {
+         return mOutBufferSize;
+      }
+
+      int EncodeBuffer(short int inbuffer[], unsigned char outbuffer[]) {
+         if(!mEncoding) return -1;
+         
+         for(int i=0; i<mSamplesPerChunk; i++) {
+            mLeftBuffer[i] = inbuffer[2*i];
+            mRightBuffer[i] = inbuffer[2*i+1];
+         }
+
+         return lame_encode_buffer(mGF, mLeftBuffer, mRightBuffer, mSamplesPerChunk,
+                                   outbuffer, mOutBufferSize);
+      }
+
+      int EncodeRemainder(short int inbuffer[], int nSamples,
+                        unsigned char outbuffer[]) {
+
+         for(int i=0; i<nSamples; i++) {
+            mLeftBuffer[i] = inbuffer[2*i];
+            mRightBuffer[i] = inbuffer[2*i+1];
+         }
+
+         return lame_encode_buffer(mGF, mLeftBuffer, mRightBuffer, nSamples, outbuffer,
+            mOutBufferSize);
+      }
+
+      int FinishStream(unsigned char outbuffer[]) {
+         mEncoding = false;
+         int result = lame_encode_finish(mGF, outbuffer, mOutBufferSize);
+         
+         delete[] mLeftBuffer;
+         delete[] mRightBuffer;
+         
+         return result;
+      }
+
+      void CancelEncoding() { mEncoding = false; }
+
+      int GetQualityVariance() { return -1; }
+
+      void SetBitrate(int rate) { }
+      int GetBitrate() { return -1; }
+
+      void SetQuality(int quality) { }
+      int GetQuality() { return -1; }
+   };
+
+MacLAMEExporter gMacLAMEExporter;
+MP3Exporter *gMP3Exporter = &gMacLAMEExporter;
+
 #elif defined(__WXMSW__)
 
 #include "BladeMP3EncDLL.h"
@@ -395,13 +598,6 @@ MP3Exporter *gMP3Exporter = &gBladeEncExporter;
 
 #endif      
 
-
-#ifdef __WXMSW__
-const char *libname = "lame_enc.dll";
-#elif defined(__WXMAC__)
-const char *libname = "LAMELib";
-#endif
-
 bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
                TrackList * tracks, bool selectionOnly, double t0,
                double t1)
@@ -441,7 +637,7 @@ bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
    while (t < t1 && !cancelling) {
 
       double deltat = timeStep;
-      bool lastFrame;
+      bool lastFrame = false;
       sampleCount numSamples = inSamples;
 
       if (t + deltat > t1) {
