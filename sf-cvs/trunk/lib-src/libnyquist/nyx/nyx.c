@@ -580,10 +580,12 @@ extern int dbgflg;
 
 /* osbgetc - get a character from a binary file */
 /* int osbgetc(fp) FILE *fp; {return (getc(fp));} */
-int osbgetc(FILE *fp)
-{
-   return (getc(fp));
-}
+#ifndef WIN32  // duplicated in winfun.c, per James Crook, 7/4/2003
+	int osbgetc(FILE *fp)
+	{
+		return (getc(fp));
+	}
+#endif
 
 /* osbputc - put a character to a binary file */
 int osbputc(int ch, FILE *fp)
@@ -613,6 +615,7 @@ void oscheck(void)
 }
 
 /* xsystem - execute a system command */
+#ifndef WIN32  // duplicated in winfun.c, per James Crook, 7/4/2003
 LVAL xsystem()
 {
    if (moreargs()) {
@@ -622,6 +625,7 @@ LVAL xsystem()
    }
    return s_true;
 }
+#endif
 
 /* xsetdir -- set current directory of the process */
 LVAL xsetdir()
@@ -637,13 +641,19 @@ LVAL xsetdir()
 }
 
 /* xgetkey - get a key from the keyboard */
-LVAL xgetkey() {xllastarg(); return (cvfixnum((FIXTYPE)getchar()));}
+#ifndef WIN32  // duplicated in winfun.c, per James Crook, 7/4/2003
+	LVAL xgetkey() {xllastarg(); return (cvfixnum((FIXTYPE)getchar()));}
+#endif
 
 /* ossymbols - enter os specific symbols */
-void ossymbols(void) {}
+#ifndef WIN32  // duplicated in winfun.c, per James Crook, 7/4/2003
+	void ossymbols(void) {}
+#endif
 
 /* xsetupconsole -- used to configure window in Win32 version */
-LVAL xsetupconsole() { return NULL; }
+#ifndef WIN32  // duplicated in winfun.c, per James Crook, 7/4/2003
+	LVAL xsetupconsole() { return NULL; }
+#endif
 
 /* control-C handling */
 void ctcinit()	{}
