@@ -1299,6 +1299,18 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
          // BG: Scroll left
          mListener->TP_ScrollWindow((mViewInfo->h - mViewInfo->screen) + (mViewInfo->screen*.95));
          break;
+      case WXK_HOME:
+         // BG: Skip to beginning
+         mViewInfo->sel0 = 0;
+         mViewInfo->sel1 = 0;
+         mListener->TP_ScrollWindow(0);
+         break;
+      case WXK_END:
+         // BG: Skip to end
+         mViewInfo->sel1 = mTracks->GetMaxLen();
+         mViewInfo->sel0 = mViewInfo->sel1;
+         mListener->TP_ScrollWindow(mViewInfo->sel0);
+         break;
       default:
          event.Skip();
          break;
