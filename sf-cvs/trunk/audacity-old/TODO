@@ -18,10 +18,7 @@ Known bugs to fix:
   this in conjunction with save changes dialogs.)
 - Save As... for a project should work.
 - Record at other than 44100 Hz (on Mac only?)
-- Stereo "linked" track that's really two mono tracks
-  Check upon opening project
 - Find VST folder on startup
-- Must warn user if temp directory can't be created
 - Recording/Playback devices backwards on Windows
 - Need to have a warning when you write over a file the
   project depends on - and an option to rename the file
@@ -156,4 +153,12 @@ Already done:
   together
 
 - Noise reduction (this is the most requested effect)
+
+- Bug fixed: each track's channel was not being saved
+  in the project file.
+  (Was: stereo "linked" track that's really two mono tracks,
+   Check upon opening project)
+
+- Bug fixed: Must warn user if temp directory can't be created
+  Now checks on startup and opens Prefs Dialog for user to fix.
 
