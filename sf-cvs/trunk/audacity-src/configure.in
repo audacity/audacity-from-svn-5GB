@@ -83,12 +83,6 @@ AC_ARG_WITH(ladspa,
 	use_ladspa=$withval,
 	use_ladspa="default")
 
-AC_ARG_WITH(wavelet,
-	[AC_HELP_STRING([--with-wavelet],
-		[compile with wave++ wavelet library [default=no]])],
-	use_wavelet=$withval,
-	use_wavelet="no")
-
 AC_ARG_WITH(help,
 	[AC_HELP_STRING([--with-help],
 		[Make the help file "audacity-help.htb" [default=yes]])],
@@ -169,18 +163,6 @@ if [[ $use_vorbis = "system" ]] ; then
 	LIBS="$LIBS -lvorbisenc -lvorbisfile -lvorbis -logg"
 	AC_DEFINE(USE_LIBVORBIS, 1,
 		[Define if the ogg vorbis decoding library is present])
-fi
-
-if [[ $use_wavelet = "yes" ]] ; then
-	SUBDIRS="$SUBDIRS wave++/source"
-	BUILDLIBS="$BUILDLIBS wave++/source/libw.a"
-	EXTRAOBJS="$EXTRAOBJS ../lib-src/wave++/source/libw.a"
-	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/WaveletDenoise.o"
-
-	CXXFLAGS="$CXXFLAGS -I../lib-src/wave++/source"
-		
-	AC_DEFINE(USE_WAVELET, 1,
-      [Define if wave++ is present])
 fi
 
 if [[ $use_libid3tag = "yes" ]] ; then
@@ -316,12 +298,6 @@ else
 	else
 		echo "  without libmad";	
 	fi
-fi
-
-if [[ $use_wavelet = "yes" ]] ; then
-	echo "  with    wavelet denoising";
-else
-	echo "  without wavelet denoising";
 fi
 
 if [[ $use_ladspa = "yes" ]] ; then

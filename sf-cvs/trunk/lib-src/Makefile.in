@@ -35,9 +35,6 @@ portaudio/pa_unix_oss/portaudio.a:
 portaudio/pa_mac_core/portaudio.a:
 	cd portaudio/pa_mac_core && $(MAKE)
 
-wave++/source/libw.a:
-	cd wave++/source && $(MAKE)
-
 clean:
 	cd allegro && $(MAKE) clean
 	cd expat && $(MAKE) clean
@@ -47,4 +44,3 @@ clean:
 	cd libsndfile && $(MAKE) clean
 	cd libvorbis && $(MAKE) clean
 	cd portaudio/pa_unix_oss && $(MAKE) clean
-	cd wave++/source && $(MAKE) clean
