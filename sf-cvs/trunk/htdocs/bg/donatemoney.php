@@ -3,7 +3,7 @@
 <p>
 Audacity е създадена от доброволци в свободното им време. Тя не е
 shareware и никой не очаква да спечели пари от работата си по нея.
-От друга страна обаче, дярявайки пари, можете да ни помогнете със
+От друга страна обаче, дарявайки пари, можете да ни помогнете със
 заплащането на трансфера и подслоняването на сайта, развойните
 средства и звуковия хардуер - неща, от които се нуждаем, за да
 продължим да предоставяме Audacity безплатно и да я подобряваме.
@@ -37,12 +37,21 @@ shareware и никой не очаква да спечели пари от работата си по нея.
 
 <center>
 <!-- Begin Amazon Honor System Paybox -->
-<img src="http://s1.amazon.com/exec/varzea/tipbox/A2NTHQTXQE4A60/TVWQG2UJNWCBH" usemap="#TVWQG2UJNWCBH" border="0" alt="Amazon Honor System" width="150" height="150">
+ <font size=1>[Amazon Honor System]</font>
 <map name="TVWQG2UJNWCBH">
 <area coords="20,60,130,115" href="http://s1.amazon.com/exec/varzea/pay/TVWQG2UJNWCBH" alt="Click Here to Pay" target=_top>
 <area coords="5,135,145,145" href="http://s1.amazon.com/exec/varzea/subst/fx/help/how-we-know.html" alt="Learn More" target=_top>
 </map>
 <!-- End Amazon Honor System Paybox -->
+<p>
+</center>
+
+<p>
+Освен това приемаме плащания чрез PayPal през системата за дарения на  SourceForge:
+
+<center>
+<a target=_top href="http://sourceforge.net/donate/index.php?group_id=6235"><img
+src="images/paypal.gif" border="0" alt="Дарение чрез PayPal"></a>
 </center>
 
 <p>

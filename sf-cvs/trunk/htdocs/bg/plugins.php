@@ -1,27 +1,4 @@
 <p>
-<table border=0 cellpadding=4 cellspacing=1>
-<tr>
-<td width=50% bgcolor=#000099><font color=#ffffff size=+2>Audacity 1.0</font></td>
-<td width=50% bgcolor=#000099><font color=#ffffff size=+2>Audacity 1.2.0-pre3</font></td>
-</tr>
-<td valign=top bgcolor=#eeeeee>
-<p>
-Audacity 1.0 поддържа ефекти-приставки VST на платформи Macintosh и Windows.
-Лесно можете да намерите приставки за най-различни филтри, еквалайзери,
-реверберация, хорус и много други! По-долу следва списък с места, от които можете да
-свалите или закупите приставки.
-</p>
-
-<p>
-За да използвате ефект-приставка VST в Audacity, просто създайте папка
-с име <b>VST</b> в папката на Audacity, ако все още няма такава, и копирайте
-приставките там! При следващото отваряне на Audacity приставките ще са
-изброени в менюто Ефекти.
-</p>
-
-</td>
-<td valign=top bgcolor=#d9d9d9>
-<p>
 Audacity 1.2.0 има вградена поддръжка за приставки <a target=_top href="http://www.ladspa.org/">LADSPA</a> и
 <a href="nyquist.php">Nyquist</a>, а поддържа и приставки VST чрез модула <a target=_top href="http://audacityteam.org/vst/">Audacity VST Enabler</a>.
 </p>
@@ -33,10 +10,6 @@ LADSPA и Nyquist в папката <b>Plug-ins</b>. За да използвате VST Enabler
 Генериране и Анализ. Ефектите - приставки винаги се показват в края
 на менюто, а вградените ефекти - в началото му.
 </p>
-
-</td>
-</tr>
-</table>
 
 <p>
 Поддръжката на Audacity за приставки се подобрява. Моля, уведомете ни,

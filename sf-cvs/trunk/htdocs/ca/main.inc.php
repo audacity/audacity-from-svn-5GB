@@ -1,6 +1,6 @@
 <?php
 $charset = "iso-8859-1";
-$translatorName = "Pau Crespo i Francesc Busquets";
+$translatorName = "Pau Bosch Crespo i Francesc Busquets";
 $languageStr = "Català";
 $metaDescription = "Audacity, un programa lliure d'edició d'àudio digital multiplataforma";
 $helpSectionStr = "Ajuda";
@@ -38,10 +38,11 @@ $browseDoxygenStr = "Navegar per la documentació Doxygen";
 $creditsStr = "Crèdits";
 $sourceStr = "Codi Font";
 $linuxStr = "Linux binari";
+$linuxStr2 = "Aquest és un binari estàtic que hauria de funcionar en qualsevol distribució de Linux. Només cal descomprimir-lo i executar el binari 'audacity' des de qualsevol directori, o fer 'make install' com a root per a instal·lar el programa.";
 $macOS9ReqStr = "Requereix el Mac OS 8.6 o superior";
 $macOSXReqStr = "Requereix el Mac OS X 10.1 o superior";
 $windowsReqStr = "Requereix el Windows 98, ME, 2000, o XP";
-$lameStr = "Biblioteca de codificació MP3 LAME";
+$lameStr = "Biblioteca LAME de codificació MP3";
 $lameStr2 = "(Heu de descarregar-la si voleu crear fitxers MP3 amb l'Audacity.)";
 $vstEnablerStr = "Habilitador de filtres VST";
 $installerStr = "Programa instal·lador";

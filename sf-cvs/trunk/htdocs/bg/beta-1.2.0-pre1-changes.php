@@ -1,8 +1,8 @@
-<h2>Промени от Audacity 1.0</h2>
+<h2>Промени в Audacity 1.2</h2>
 
 Тук са изброени основните промени от последната стабилна версия, Audacity
 1.0.0. За потребителите на бета-версиите е добре да прочетат бележките
-за <a href="<?php print "betanotes.php$langQueryStr"; ?>">промените в сравнение с Audacity 1.1.3</a>.
+за <a href="<?php print "betanotes.php$langQueryStr"; ?>">промените в сравнение с Audacity 1.1.0</a>.
 
 <h3>Звук с професионално качество</h3>
 
@@ -12,18 +12,18 @@
 запетая) звук. Писти с различна честота и формат на дискретизация могат
 да се използват заедно в един и същ проект - при нужда Audacity ги
 преобразува в реално време. За всички преобразувания се използват
-висококачествени алгоритми. При предискретизирането са използвани алгоритми
-от библиотеката <a target=_top href="http://www.mega-nerd.com/SRC/">SRC</a>
-на Erik de Castro Lopo.
+висококачествени алгоритми.
 </li>
 
 <li>
 Входът и изходът на звук са подобрени. Audacity вече може да записва повече
-от два канала едновременно. Закъснението е намалено, а така намалява и
+от два канала едновременно. Буферирането е подобрено, което намалява
 вероятността за "прескачане" и изпразване на буфера.
 </li>
 </ul>
 
+<a href="screenshots.php<?php print $langQueryStr; ?>">
+<img alt="screenshots" border="0" src="images/screen/linux/change-pitch.png" align="right"></a>
 
 <h3>Ефекти</h3>
 
@@ -77,6 +77,7 @@
 
 <li>
 Всяка писта има плъзгачи за усилване и панорамно изместване за по-лесно смесване.
+<a href="screenshots.php<?php print $langQueryStr; ?>"><img alt="screenshots" border="0" src="images/screen/linux/track-controls.png" align="right"></a>
 </li>
 
 <li>
@@ -133,6 +134,8 @@ Audacity вече може да зарежда приставки <a target=_top href="http://www.ladspa.o
 
 
 <h3>Подобрен потребителски интерфейс</h3>
+
+<a href="screenshots.php<?php print $langQueryStr; ?>"><img alt="screenshots" border="0" src="images/screen/macosx/main-toolbar.png" align="right"></a>
 
 <ul>
 <li>
