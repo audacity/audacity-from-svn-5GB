@@ -254,9 +254,14 @@ bool AudacityApp::OnInit()
    
    // Changing the following to NULL will make the application
    // load without the toolbar in memory at all.
-
-   gEditToolBarStub =  new ToolBarStub(gParentWindow, EditToolBarID);
    
+   bool editToolBar;
+   gPrefs->Read("/GUI/EnableEditToolBar", &editToolBar, true);
+   if(editToolBar)
+      gEditToolBarStub =  new ToolBarStub(gParentWindow, EditToolBarID);
+   else
+      gEditToolBarStub = NULL;
+
 
    InitFreqWindow(gParentWindow);
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
