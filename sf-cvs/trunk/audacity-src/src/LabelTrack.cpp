@@ -539,7 +539,7 @@ double LabelTrack::GetEndTime()
    if (len == 0)
       return 0.0;
    else
-      return mLabels[len - 1]->t;
+      return mLabels[len - 1]->t1;
 }
  
 
