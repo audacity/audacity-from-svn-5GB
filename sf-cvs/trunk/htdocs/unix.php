@@ -109,8 +109,6 @@ These RPMs have been reported to work well with Caldera OpenLinux, also.
 
   include GetTranslation("gentoo");
 
-  include 'bottom.inc.php';
-
 ?>
 
 <?php BoxTop("Unix Tips"); ?>
@@ -130,6 +128,14 @@ Example:
 </p>
 
 <?php BoxBottom(); ?>
+
+<?php
+
+  include 'bottom.inc.php';
+
+?>
+
+
 
 
 
