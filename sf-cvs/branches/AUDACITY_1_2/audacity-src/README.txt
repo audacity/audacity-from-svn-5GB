@@ -270,6 +270,10 @@ Changes in 1.2.2:
   * Export Multiple - new feature that lets you export multiple
     files at once, either by track, or split based on labels.
 
+  * Fixed a serious bug that could cause data loss when you save and
+    then reload and re-edit an Audacity project containing repeated
+    or duplicate data.
+
   * MP3 tags dialog will only pop up the first time you export as
     MP3; after that it will not pop up again as long as you have
     filled in at least one tag.
@@ -280,23 +284,24 @@ Changes in 1.2.2:
   * Clicking on a label now selects all of the tracks, making it
     easier to use the label track to recall selections.
 
-  * Fixed freeze in Unix/X-Windows caused by captured mouse when
-    audio device hangs.  (Audacity may not respond, but it will
-    no longer freeze all of X.)
+  * Windows: Fixed a crash in the Time Track "Set Rate" command.
 
-  * Fixed cosmetic bug that caused improper waveform display if
+  * Fixed a bug that caused problems with recordings over 45 minutes
+    on some Windows systems.
+
+  * Mac OS X: Improved support for the Griffin iMic by fixing a bug
+    that was causing it to always record in mono instead of stereo.
+
+  * Unix/Linux: Fixed freeze caused by captured mouse when audio
+    device hangs.  (Audacity may not respond, but it will no longer
+    freeze all of X.)
+
+  * Fixed a cosmetic bug that caused improper waveform display if
     you tried to open an Audacity project saved on a different
     platform (e.g., copying a project from a Mac to a PC).
 
-  * Fixed serious bug that could cause data loss when you save and
-    then load and re-edit an Audacity project containing repeated
-    or duplicate data.
-
   * Fixed bug that could cause instability when pasting, splitting,
     or duplicating a label track.
-
-  * Mac OS X: improved support for the Griffin iMic by fixing a bug
-    that was causing it to always record in mono instead of stereo.
 
   * You can now change the font of a label track by choosing "Font..."
     from the label track's pop-up menu.
@@ -305,8 +310,8 @@ Changes in 1.2.2:
     entire project to fit exactly on one page.  Try printing in
     landscape orientation for best results.
 
-  * Mac OS X and Windows: Audacity ships with a newer version of
-    the Ogg Vorbis encoder.  Vorbis compression will now have higher
+  * Mac OS X and Windows: Audacity ships with a newer version (1.0.1)
+    of the Ogg Vorbis encoder.  Vorbis compression will now have higher
     quality and smaller file sizes.
 
   * Other minor bug fixes and performance improvements.
