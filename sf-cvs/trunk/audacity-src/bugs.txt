@@ -74,6 +74,10 @@ Known bugs to fix:
   grab drag the track, with the rest of the label offering the 'select
   all' behavior. This would make the ability to drag tracks around more
   obvious as well.
+- Typing a key while there is no open window crashes on MacOS X. 
+  Wasn't present in 1.0 or 1.1.
+- Spacebar to play and stop only works after clicking an empty part
+  of the the control bar in MacOS X. Wasn't in 1.0 or 1.1.
 -----------------------------------------------------------
 Possible bugs to investigate:
 -----------------------------------------------------------
