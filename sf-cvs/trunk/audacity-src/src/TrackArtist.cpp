@@ -73,10 +73,13 @@ TrackArtist::TrackArtist()
    selsamplePen .SetColour( 50,  50, 200);
    rmsPen       .SetColour(100, 100, 220);
    shadowPen    .SetColour(148, 148, 148);
+
+   vruler = new Ruler();
 }
 
 TrackArtist::~TrackArtist()
 {
+   delete vruler;
 }
 
 void TrackArtist::SetInset(int left, int top, int right, int bottom)
@@ -153,13 +156,12 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
       bev.Inflate(-1, -1);
       AColor::Bevel(*dc, true, bev);
 
-      Ruler vruler;
-      vruler.SetBounds(r.x, r.y+1, r.x + r.width, r.y + r.height-2);
-      vruler.SetOrientation(wxVERTICAL);
-      vruler.SetRange(1.0, -1.0);
-      vruler.SetFormat(Ruler::RealFormat);
+      vruler->SetBounds(r.x, r.y+1, r.x + r.width, r.y + r.height-2);
+      vruler->SetOrientation(wxVERTICAL);
+      vruler->SetRange(1.0, -1.0);
+      vruler->SetFormat(Ruler::RealFormat);
 
-      vruler.Draw(*dc);
+      vruler->Draw(*dc);
    }
 
    if (t->GetKind() == Track::Wave
@@ -542,6 +544,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
       }
    }
    else if (mid.width > 0) {
+
       // Display a line representing the
       // min and max of the samples in this region
       t = t0;
@@ -559,7 +562,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
                                    dB);
 
          dc.DrawLine(mid.x + x, h2[x], mid.x + x, h1[x] + 1);
-
+         
          t += tstep;
       }
 
