@@ -1,0 +1,347 @@
+/**********************************************************************
+
+  Audacity: A Digital Audio Editor
+
+  EditToolBar.cpp
+
+  Dominic Mazzoni
+  Shane T. Mueller
+ 
+  See EditToolBar.h for details
+
+**********************************************************************/
+
+// For compilers that support precompilation, includes "wx/wx.h".
+#include <wx/wxprec.h>
+
+#ifdef __BORLANDC__
+#pragma hdrstop
+#endif
+
+#ifndef WX_PRECOMP
+#include <wx/brush.h>
+#include <wx/dcclient.h>
+#include <wx/intl.h>
+#include <wx/settings.h>
+#endif
+
+#include <wx/image.h>
+#include <wx/tooltip.h>
+
+#include <math.h>
+
+#include "widgets/AButton.h"
+#include "widgets/ASlider.h"
+#include "EditToolBar.h"
+#include "AudioIO.h"
+#include "Project.h"
+
+#include <iostream.h>
+
+#ifdef __WXMAC__
+#define TOOLBAR_HEIGHT_OFFSET 0
+#endif
+
+#ifdef __WXGTK__
+#define TOOLBAR_HEIGHT_OFFSET 22
+#endif
+
+#ifdef __WXMSW__
+#define TOOLBAR_HEIGHT_OFFSET 25
+#endif
+
+#include "../images/EditButtons.h"
+
+
+class ToolBar;
+
+////////////////////////////////////////////////////////////
+/// Methods for EditToolBar
+////////////////////////////////////////////////////////////
+
+//This is necessary to do RTTI  Require a DECLARE_DYNAMIC_CLASS() in header.
+IMPLEMENT_DYNAMIC_CLASS(EditToolBar, ToolBar)
+
+
+    BEGIN_EVENT_TABLE(EditToolBar, wxWindow)
+    EVT_PAINT(EditToolBar::OnPaint)
+    EVT_CHAR(EditToolBar::OnKeyEvent)
+    EVT_COMMAND(ETBCopyID,
+            wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnCopy)
+    EVT_COMMAND(ETBCutID,
+            wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnCut)
+    EVT_COMMAND(ETBPasteID,
+            wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnPaste)
+    EVT_COMMAND(ETBTrimID,
+            wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnTrim)
+    EVT_COMMAND(ETBSilenceID,
+            wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnSilence)
+    EVT_COMMAND(ETBUndoID,
+                wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnUndo)
+    EVT_COMMAND(ETBRedoID,
+                wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnRedo)
+    END_EVENT_TABLE()
+
+    //Standard contructor
+EditToolBar::EditToolBar(wxWindow * parent):
+ToolBar(parent, -1, wxPoint(1, 1), wxSize(200, 27))
+{
+   InitializeEditToolBar();
+}
+
+//Another constructor
+EditToolBar::EditToolBar(wxWindow * parent, wxWindowID id,
+                               const wxPoint & pos,
+                               const wxSize & size):ToolBar(parent, id,
+                                                            pos, size)
+{
+   InitializeEditToolBar();
+}
+
+
+// This sets up the EditToolBar, initializing all the important values
+// and creating the buttons.
+void EditToolBar::InitializeEditToolBar()
+{
+   mIdealSize = wxSize(200, 27);
+   mTitle = "Audacity Edit Toolbar";
+   mType = EditToolBarID;
+
+   wxColour backgroundColour =
+       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+   wxColour origColour(204, 204, 204);
+
+   MakeButtons();
+
+   mBackgroundBrush.SetColour(backgroundColour);
+   mBackgroundPen.SetColour(backgroundColour);
+
+   mBackgroundBitmap = NULL;
+   mBackgroundHeight = 0;
+   mBackgroundWidth = 0;
+
+}
+
+
+
+// This is a convenience function that allows for button creation in
+// MakeButtons() with fewer arguments
+AButton *EditToolBar::MakeButton(wxImage * up,
+                                 wxImage * down,
+                                 wxImage * hilite,
+                                 char const **foreground,
+                                 char const **alpha, int id, int left)
+{
+   wxPoint p;
+   p.x = left;
+   p.y = 0;
+
+   AButton *button = this->ToolBar::MakeButton(up, down, hilite,
+                                               foreground,
+                                               (const char **) Disabled,
+                                               alpha,
+                                               wxWindowID(id), p,
+                                               wxSize(27,27),3,3);
+   return button;
+}
+
+
+
+void EditToolBar::MakeButtons()
+{
+
+ 
+
+   wxImage *upOriginal = new wxImage(Up);
+   wxImage *downOriginal = new wxImage(Down);
+   wxImage *hiliteOriginal = new wxImage(Hilite);
+
+  
+
+   wxColour newColour =
+       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+   wxColour baseColour = wxColour(204,204,204);
+
+   wxImage *upPattern = ChangeImageColour(upOriginal,baseColour, newColour);
+   wxImage *downPattern = ChangeImageColour(downOriginal,baseColour, newColour);
+   wxImage *hilitePattern = ChangeImageColour(hiliteOriginal,baseColour, newColour);
+
+ 
+
+   /* Buttons */
+
+   //Copy Button
+   mCopy = MakeButton(upPattern, downPattern, hilitePattern,
+                      (char const **) Copy,
+                      (char const **) CopyAlpha, ETBCopyID, 1);
+   mCopy->SetToolTip(_("Copy selection to clipboard"));
+
+   //Cut Button
+   mCut = MakeButton(upPattern, downPattern, hilitePattern,
+                     (char const **) Cut,
+                     (char const **) CutAlpha, ETBCutID, 28);
+   mCut->SetToolTip(_("Cut selection (to clipboard)"));
+
+   //Paste Button
+   mPaste = MakeButton(upPattern, downPattern, hilitePattern,
+                      (char const **) Paste,
+                       (char const **) PasteAlpha, ETBPasteID, 55);
+   mPaste->SetToolTip(_("Paste clipboard"));
+
+   //Trim Button
+   mTrim = MakeButton(upPattern, downPattern, hilitePattern,
+                      (char const **) Trim,
+                      (char const **) TrimAlpha, ETBTrimID, 82 );
+   mTrim->SetToolTip(_("Trim everything outside selection"));
+
+   //Silence Button
+   mSilence = MakeButton(upPattern, downPattern, hilitePattern,
+                         (char const **) Silence,
+                         (char const **) SilenceAlpha, ETBSilenceID, 109);
+   mSilence->SetToolTip(_("Insert Silence"));
+   
+   //Undo Button
+   mUndo = MakeButton(upPattern, downPattern, hilitePattern,
+                      (char const **) Undo,  
+                      (char const **) UndoAlpha, ETBUndoID, 136);
+   mUndo->SetToolTip(_("Undo last action"));
+ 
+   //Redo Button
+   mRedo = MakeButton(upPattern, downPattern, hilitePattern,
+                      (char const **) Redo,  
+                      (char const **) RedoAlpha, ETBRedoID, 163);
+   mRedo->SetToolTip(_("Redo last action"));
+
+   delete upPattern;
+   delete downPattern;
+   delete hilitePattern;
+   delete upOriginal;
+   delete downOriginal;
+   delete hiliteOriginal;
+}
+
+EditToolBar::~EditToolBar()
+{
+   delete mCopy;
+   delete mCut;
+   delete mPaste;
+   delete mTrim;
+   delete mSilence;
+   delete mUndo;
+   delete mRedo;
+
+   if (mBackgroundBitmap)
+      delete mBackgroundBitmap;
+
+}
+
+void EditToolBar::OnKeyEvent(wxKeyEvent & event)
+{
+    if (event.KeyCode() == WXK_SPACE) {
+      if (gAudioIO->IsBusy()) {
+       }
+      else {
+      }
+      return;
+   } 
+   else
+      event.Skip();
+}
+
+
+
+void EditToolBar::OnCopy()
+{ 
+  if (gAudioIO->IsBusy())
+      return;
+  wxCommandEvent event;
+  AudacityProject *p = GetActiveProject();
+  if (p) {
+     p->Copy(event);
+  }
+  SetButton(false, mCopy);
+}   
+
+void EditToolBar::OnCut()
+{
+   if (gAudioIO->IsBusy())
+      return;
+  wxCommandEvent event;
+  AudacityProject *p = GetActiveProject();
+  if (p) {
+   p->Cut(event);
+  }
+  SetButton(false, mCut);
+}
+
+void EditToolBar::OnPaste()
+{
+   if (gAudioIO->IsBusy())
+      return;
+  wxCommandEvent event;
+   AudacityProject *p = GetActiveProject();
+   if (p) {
+   p->Paste(event);
+   }
+  SetButton(false, mPaste);
+}
+
+void EditToolBar::OnTrim()
+{
+   if (gAudioIO->IsBusy())
+      return;
+   //Not Implemented Yet.
+  SetButton(false, mTrim);
+}
+
+void EditToolBar::OnSilence()
+{
+   if (gAudioIO->IsBusy())
+      return;
+  wxCommandEvent event;
+   AudacityProject *p = GetActiveProject();
+   if (p) {
+      p->OnSilence(event);
+      }
+  SetButton(false, mSilence);
+}
+
+void EditToolBar::OnUndo()
+{
+   if (gAudioIO->IsBusy())
+      return;   
+   wxCommandEvent event;
+   AudacityProject *p = GetActiveProject();
+   if (p) {
+      p->Undo(event);
+   }
+  SetButton(false, mUndo);
+}
+
+void EditToolBar::OnRedo()
+{
+   if (gAudioIO->IsBusy())
+      return;   
+   wxCommandEvent event;
+   AudacityProject *p = GetActiveProject();
+   if (p) {
+      p->Redo(event);
+   }
+  SetButton(false, mRedo);
+}
+
+void EditToolBar::OnPaint(wxPaintEvent & evt)
+{
+   wxPaintDC dc(this);
+
+   int width, height;
+   GetSize(&width, &height);
+ 
+   dc.SetBrush(mBackgroundBrush);
+   dc.SetPen(mBackgroundPen);
+   dc.DrawRectangle(0, 0, width, height);
+
+   dc.SetPen(*wxBLACK_PEN);
+}
+
+
