@@ -499,7 +499,7 @@ void TrackPanel::UpdateIndicator()
 
    // BG: Scroll screen if option is set
    if (mViewInfo->bUpdateTrackIndicator && gAudioIO->IsBusy()
-       && gAudioIO->GetProject() && !onScreen)
+       && gAudioIO->GetProject() && indicator>=0 && !onScreen)
       mListener->TP_ScrollWindow(indicator);
 
    if (mIndicatorShowing || onScreen) {
