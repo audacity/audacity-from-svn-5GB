@@ -11,6 +11,9 @@
 #ifndef __AUDACITY_VIEWINFO__
 #define __AUDACITY_VIEWINFO__
 
+const double gMaxZoom = 6000000,
+             gMinZoom = 1.0;
+
 struct ViewInfo {
 
    // Current selection (in seconds)
@@ -35,8 +38,8 @@ struct ViewInfo {
 
    int scrollStep;
 
-   // Other stuff, mainly states (true or false) related to autoscroll and drawing the waveform
-   // Mabye this should be put somewhere else?
+   // Other stuff, mainly states (true or false) related to autoscroll and
+   // drawing the waveform. Maybe this should be put somewhere else?
 
    bool bUpdateSpectrogram;
    bool bRedrawWaveform;

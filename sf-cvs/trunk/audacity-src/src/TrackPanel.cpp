@@ -1001,10 +1001,10 @@ void TrackPanel::DragZoom(int trackLeftEdge)
    double right = PositionToTime(mZoomEnd  , trackLeftEdge);      
 
    mViewInfo->zoom *= mViewInfo->screen/(right-left);
-   if (mViewInfo->zoom > 6000000)
-      mViewInfo->zoom = 6000000;
-   if(mViewInfo->zoom <= 1.0)
-      mViewInfo->zoom = 1.0;
+   if (mViewInfo->zoom > gMaxZoom)
+      mViewInfo->zoom = gMaxZoom;
+   if(mViewInfo->zoom <= gMinZoom)
+      mViewInfo->zoom = gMinZoom;
 
    mViewInfo->h = left;
 }
@@ -1017,17 +1017,9 @@ void TrackPanel::DoZoomInOut(wxMouseEvent &event, int trackLeftEdge)
    double center_h = PositionToTime(event.m_x, trackLeftEdge);
 
    if (event.RightUp() || event.RightDClick() || event.ShiftDown())
-   {
-      mViewInfo->zoom /= 2.0;
-      if(mViewInfo->zoom <= 1.0)
-         mViewInfo->zoom = 1.0;
-   }
+      mViewInfo->zoom = wxMax(mViewInfo->zoom / 2.0, gMinZoom);
    else
-   {
-      mViewInfo->zoom *= 2.0;
-      if (mViewInfo->zoom > 6000000)
-         mViewInfo->zoom = 6000000;
-   }
+      mViewInfo->zoom = wxMin(mViewInfo->zoom * 2.0, gMaxZoom);
 
    if (event.MiddleUp() || event.MiddleDClick())
       mViewInfo->zoom = 44100.0 / 512.0;  // AS: Reset zoom.
