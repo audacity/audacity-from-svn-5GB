@@ -199,8 +199,8 @@ void TranscriptionToolBar::MakeButtons()
   AddButton(StartOff,    StartOffDisabled,  StartOffAlpha,  TTB_StartOff,  _("Adjust left selection to next offset"));
   AddButton(EndOff,      EndOffDisabled,    EndOffAlpha,    TTB_EndOff,    _("Adjust right selection to previous onset"));
   AddButton(CalibrateUp, CalibrateDisabled, CalibrateAlpha, TTB_Calibrate, _("Calibrate voicekey"));
-  AddButton(AutomateSelection,   AutomateSelectionDisabled,   AutomateSelectionAlpha,   TTB_AutomateSelection,   _("Automatically make labels from words\n"));
-  AddButton(MakeTag,     MakeTagDisabled,   MakeTagAlpha,   TTB_MakeLabel,  _("Make label from selection.\n"));
+  AddButton(AutomateSelection,   AutomateSelectionDisabled,   AutomateSelectionAlpha,   TTB_AutomateSelection,   _("Automatically make labels from words"));
+  AddButton(MakeTag,     MakeTagDisabled,   MakeTagAlpha,   TTB_MakeLabel,  _("Add label at selection"));
   
   mSensitivitySlider = new ASlider(this, TTB_SensitivitySlider, _("Adjust Sensitivity"),
                                    wxPoint(mButtonPos,0),wxSize(100,28));
