@@ -132,6 +132,6 @@ In Tracks kann jetzt Durch Klicken oder Ziehen in die vertikalen Lineale eingezo
 Lineale und Statusleiste können Zeitangaben in verschiedenen Formaten darstellen, u.B. in Sekunden, Samples oder in Einzelbildern (Video Frames).</li>
 
 <li>
-Die Benutzeroberfläche von Audacity kann jetzt anderen Sprachen neben Englisch verfügbar gemacht werden. Unter <a href="translation/">Audacity übersetzen</a> können Sie helfen, Audacity in Ihre Sprache zu übersetzen.
+Die Benutzeroberfläche von Audacity kann jetzt anderen Sprachen neben Englisch verf&uuml;gbar gemacht werden. Unter <a href="translation/">Audacity &uuml;bersetzen</a> können Sie helfen, Audacity in Ihre Sprache zu übersetzen.
 </li>
 </ul>

@@ -4,7 +4,7 @@
 Für
 <a href="http://www.gentoo.org/">Gentoo Linux</a>
 wurde ein ebuild bereitgestellt. Um die aktuelle Version 
-aus dem portage system zu installieren, dürfte ein kurzes
+aus dem Portage System zu installieren, dürfte ein kurzes
 <p>
 <xmp>$ emerge audacity</xmp>
 ausreichen.
@@ -12,8 +12,8 @@ ausreichen.
 
 <p>
 Maintainer: 
-Will Glynn <br>
-Email: <tt>delta407 <b>@</b> lerfjhax.com</tt>
+Nick Hadaway <br>
+Email: <tt>raker <b>@</b> gentoo.org</tt>
 </p>
 
 <?php BoxBottom(); ?>
