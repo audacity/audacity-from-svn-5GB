@@ -34,8 +34,8 @@
  *
  *****************************************************************************/
 
-//v #include <soundtouch/mmx.h>
-#include <mmx.h>
+// #include <soundtouch/mmx.h>
+#include "mmx.h"
 
 #ifndef WIN32
 #error wrong platform - this source code file is exclusively for Win32 platform
@@ -107,8 +107,8 @@ bool mmxDetect(void)
 //
 //////////////////////////////////////////////////////////////////////////////
 
-//v #include <soundtouch/TDStretch.h>
-#include <TDStretch.h>
+// #include <soundtouch/TDStretch.h>
+#include "TDStretch.h"
 #include <limits.h>
 
 // these are declared in 'TDStretch.cpp'

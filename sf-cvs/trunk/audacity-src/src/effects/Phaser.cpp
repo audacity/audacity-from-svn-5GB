@@ -33,7 +33,7 @@
 //
 
 
-#define phaserlfoshape 4
+#define phaserlfoshape 4.0
 
 // How many samples are processed before compute the lfo value again
 #define lfoskipsamples 20

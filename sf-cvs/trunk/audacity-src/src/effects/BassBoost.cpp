@@ -54,7 +54,7 @@ bool EffectBassBoost::NewTrackSimpleMono()
    omega = 2 * 3.141592653589 * frequency / mCurRate;
    sn = sin(omega);
    cs = cos(omega);
-   a = exp(log(10) * dB_boost / 40);
+   a = exp(log(10.0) * dB_boost / 40);
    shape = float(1.0);           /*Low Shelf filter's shape, if this is too large
                             or too small it will result an unstable filter */
    beta = sqrt((a * a + 1) / shape - (pow((a - 1), 2)));

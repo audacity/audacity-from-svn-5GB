@@ -343,7 +343,7 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
          
          for(int j=0; j<numControlPoints; j++){
             
-            int d = (int)(sqrt(SQR(x-event.m_x) + SQR(y[j]-(event.m_y-r.y))) + 0.5);
+            int d = (int)(sqrt((double)(SQR(x-event.m_x) + SQR(y[j]-(event.m_y-r.y)))) + 0.5);
             if (d < bestDist) {
                bestNum = i;
                bestDist = d;

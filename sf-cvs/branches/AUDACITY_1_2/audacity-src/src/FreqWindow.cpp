@@ -557,7 +557,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
       xPos = xMin;
       xLast = xPos / 2.0;
       if (mLogAxis)
-         xStep = pow(2.0, (log(xRatio) / log(2)) / width);
+         xStep = pow(2.0f, (log(xRatio) / log(2.0f)) / width);
       else
          xStep = (xMax - xMin) / width;
    } else {
@@ -861,7 +861,7 @@ void FreqWindow::Recalc()
             // of the power, instead of the square root
 
             for (i = 0; i < mWindowSize; i++)
-               in[i] = pow(in[i], 1.0 / 3.0);
+               in[i] = pow(in[i], 1.0f / 3.0f);
          }
          // Take FFT
          FFT(mWindowSize, false, in, NULL, out, out2);

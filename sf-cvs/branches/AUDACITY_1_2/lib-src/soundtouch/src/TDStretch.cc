@@ -111,7 +111,7 @@ TDStretch::~TDStretch()
 // Calculates the x having the closest 2^x value for the given value
 static int _getClosest2Power(double value)
 {
-    return (int)(log(value) / log(2) + 0.5);
+    return (int)(log(value) / log(2.0) + 0.5);
 }
 
 

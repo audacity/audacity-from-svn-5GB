@@ -64,7 +64,7 @@ bool EffectChangePitch::Init()
 	return true;
 }
 
-// DeduceFrequency is Dominic's extremely cool trick (Vaughan sez so!) 
+// DeduceFrequencies is Dominic's extremely cool trick (Vaughan sez so!) 
 // to set deduce m_FromFrequency from the samples at the beginning of 
 // the selection. Then we set some other params accordingly.
 void EffectChangePitch::DeduceFrequencies()
