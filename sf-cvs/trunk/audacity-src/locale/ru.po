@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2003-07-02 15:00+0400\n"
+"PO-Revision-Date: 2003-07-04 17:26+0400\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -270,9 +270,8 @@ msgid "Adjustment Window:"
 msgstr "Окно подстройки:"
 
 #: ../src/Tags.cpp:393
-#, fuzzy
 msgid "Album"
-msgstr "Альбом:"
+msgstr "Альбом"
 
 #: ../src/Tags.cpp:579
 msgid "Album:"
@@ -374,8 +373,7 @@ msgstr ""
 "ogg|Список файлов (*.lof)|*.lof"
 
 #: ../src/Menus.cpp:2054
-msgid ""
-"All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
+msgid "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
 msgstr ""
 "Все файлы (*.*)|*.*| Файлы в формате MIDI (*.mid)|*.mid| Файлы в формате "
 "Allegro (*.gro)|*.gro"
@@ -492,8 +490,7 @@ msgstr ""
 
 #: ../src/effects/ToneGen.cpp:32
 #, c-format
-msgid ""
-"Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f"
+msgid "Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f"
 msgstr ""
 "Применён эффект: Создать волну формы \"%s %s\" с частотой %.2f Гц и "
 "амплитудой %.2f"
@@ -531,9 +528,8 @@ msgid "Are you sure you want to save the file as \""
 msgstr "Вы уверены, что хотите сохранить файл как \""
 
 #: ../src/Tags.cpp:383
-#, fuzzy
 msgid "Artist"
-msgstr "Исполнитель:"
+msgstr "Исполнитель"
 
 #: ../src/Tags.cpp:569
 msgid "Artist:"
@@ -889,8 +885,7 @@ msgid "Change upper speed limit (%) to:"
 msgstr "Изменить верхний предел скорости (%) на:"
 
 #: ../src/effects/AvcCompressor.cpp:395
-msgid ""
-"Change window size must be less than or equal to Adjustment window size."
+msgid "Change window size must be less than or equal to Adjustment window size."
 msgstr ""
 "Значение в окне изменения должно быть меньше\n"
 "или равно значению в окне подстройки."
@@ -965,8 +960,7 @@ msgstr "Очистить"
 
 #: ../src/TrackPanel.cpp:1321
 msgid "Click and drag to adjust relative size of stereo tracks."
-msgstr ""
-"Щёлкните и перетащите для регуляции относительного размера стереодорожек"
+msgstr "Щёлкните и перетащите для регуляции относительного размера стереодорожек"
 
 #: ../src/ControlToolBar.cpp:79
 msgid "Click and drag to edit the amplitude envelope"
@@ -1049,9 +1043,8 @@ msgstr ""
 "\n"
 
 #: ../src/Tags.cpp:413
-#, fuzzy
 msgid "Comments"
-msgstr "Комментарии:"
+msgstr "Комментарии"
 
 #: ../src/Tags.cpp:637
 msgid "Comments:"
@@ -1212,15 +1205,12 @@ msgstr ""
 
 #: ../src/FormatSelection.cpp:387
 #, c-format
-msgid ""
-"Cursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL frames)   %s"
-msgstr ""
-"Курсор: %1i:%02i:%02i:%06.3lf PAL ч:мм:сс:кк 25 fps (%.3lf кадров PAL)   %s"
+msgid "Cursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL frames)   %s"
+msgstr "Курсор: %1i:%02i:%02i:%06.3lf PAL ч:мм:сс:кк 25 fps (%.3lf кадров PAL)   %s"
 
 #: ../src/FormatSelection.cpp:309
 #, c-format
-msgid ""
-"Cursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 fps (%.3lf film frames)   %s"
+msgid "Cursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 fps (%.3lf film frames)   %s"
 msgstr ""
 "Курсор: %1i:%02i:%02i:%06.3lf film ч:мм:сс:кк 24 кадров/c (%.3lf кадров "
 "фильма)   %s"
@@ -1403,8 +1393,7 @@ msgstr "Октавой ниже"
 
 #: ../src/TrackPanel.cpp:1237
 msgid "Drag the label vertically to change the order of the tracks."
-msgstr ""
-"Перетащите эту дорожку вверх/вниз для смены порядка представления дорожек."
+msgstr "Перетащите эту дорожку вверх/вниз для смены порядка представления дорожек."
 
 #: ../src/ControlToolBar.cpp:75
 msgid "Drag to Zoom Into Region, Right-Click to Zoom Out"
@@ -1418,8 +1407,7 @@ msgstr "Инструмент для рисования"
 
 #: ../src/TrackPanel.cpp:2064
 msgid "Draw currently only works with waveforms."
-msgstr ""
-"Этот инструмент работает пока только с волновым представлением сигнала."
+msgstr "Этот инструмент работает пока только с волновым представлением сигнала."
 
 #: ../src/Menus.cpp:1435
 msgid "Duplicate"
@@ -1976,12 +1964,10 @@ msgid "L"
 msgstr "Л"
 
 #: ../src/AboutDialog.cpp:100
-#, fuzzy
 msgid "LADSPA plug-in support disabled"
 msgstr "Поддержка модулей LADSPA отключена"
 
 #: ../src/AboutDialog.cpp:98
-#, fuzzy
 msgid "LADSPA plug-in support enabled"
 msgstr "Поддержка модулей LADSPA включена"
 
@@ -2128,8 +2114,7 @@ msgstr "Предел понижения скорости"
 
 #: ../src/import/ImportLOF.cpp:361
 msgid "MIDI tracks cannot be offset individually, only audio files may be."
-msgstr ""
-"MIDI-дорожки не могут быть отделены друг от друга - только звуковые файлы."
+msgstr "MIDI-дорожки не могут быть отделены друг от друга - только звуковые файлы."
 
 #: ../src/prefs/FileFormatPrefs.cpp:172
 msgid "MP3 Export Setup"
@@ -2185,11 +2170,11 @@ msgid "Maximum frequency must be in the range 100 Hz - 100,000 Hz"
 msgstr "Макс. частота должна находиться в пределах от 100 Гц до 100 000 Гц"
 
 #: ../src/Tags.cpp:367
-#, fuzzy, c-format
+#, c-format
 msgid "Maximum length of attribute '%s' is %d characters. Data was truncated."
 msgstr ""
-"Маскимально возможная продолжительность аттрибута 'Год' - 4 символа. "
-"Пришлось \"отрезать\" непоместившиеся данные."
+"Маскимально возможная продолжительность аттрибута '%s' - %d. "
+"Пришлось \"отрезать\" не поместившиеся данные."
 
 #: ../src/import/ImportOGG.cpp:123
 msgid "Media read error"
@@ -2277,8 +2262,7 @@ msgstr "Многоинструментальный режим"
 
 #: ../src/TrackPanel.cpp:1258
 msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
-msgstr ""
-"Мультиинструментальный режим: нажмите Ctrl-P для настройки мыши и клавиатуры"
+msgstr "Мультиинструментальный режим: нажмите Ctrl-P для настройки мыши и клавиатуры"
 
 #: ../src/TrackPanel.cpp:4314
 msgid "Mute"
@@ -3141,13 +3125,11 @@ msgstr ""
 msgid ""
 "Selection: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f hr:min:sec)   %"
 "s"
-msgstr ""
-"Выделение: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f ч:мин:сек)   %s"
+msgstr "Выделение: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f ч:мин:сек)   %s"
 
 #: ../src/FormatSelection.cpp:787
 #, c-format
-msgid ""
-"Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]"
+msgid "Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]"
 msgstr ""
 "Выделение: %i+%04i - %i+%04i (%i+%04i cdda секторов+байт)   [привязка по "
 "семплам]"
@@ -3180,8 +3162,7 @@ msgstr "Выделение: %i:%09.6f - %i:%09.6f (%i:%09.6f мин:сек)   %s"
 
 #: ../src/FormatSelection.cpp:676
 #, c-format
-msgid ""
-"Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)   [Snap-To Samples]"
+msgid "Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)   [Snap-To Samples]"
 msgstr ""
 "Выделение: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf мин:сек)   [привязка по "
 "семплам]"
@@ -3338,8 +3319,7 @@ msgstr ""
 "несовпадающими индивидуальными дорожками."
 
 #: ../src/effects/nyquist/Nyquist.cpp:326
-msgid ""
-"Sorry, cannot apply effect on stereo tracks where the tracks don't match."
+msgid "Sorry, cannot apply effect on stereo tracks where the tracks don't match."
 msgstr ""
 "Извините, но эффект невозможно применить к стереодорожкам\n"
 "с несовпадающими индивидуальными дорожками"
@@ -3452,8 +3432,7 @@ msgstr ""
 "Вы уверены, что хотите загрузить Audacity?"
 
 #: ../src/Menus.cpp:2414
-msgid ""
-"The version of Audacity you are using does not support multiple time tracks."
+msgid "The version of Audacity you are using does not support multiple time tracks."
 msgstr ""
 "Загруженная версия Audacity не может использовать\n"
 "несколько дорожек времени в одном проекте."
@@ -3529,9 +3508,8 @@ msgid "Time-Shift"
 msgstr "Сдвиг дорожки во времени"
 
 #: ../src/Tags.cpp:373
-#, fuzzy
 msgid "Title"
-msgstr "Название:"
+msgstr "Название"
 
 #: ../src/Tags.cpp:559
 msgid "Title:"
@@ -3597,23 +3575,20 @@ msgid "Trim outside selection"
 msgstr "Обрезать всё вне выделенного"
 
 #: ../src/Menus.cpp:201
-#, fuzzy
 msgid "Turn Grid Snap Off"
-msgstr "Выключить привязку"
+msgstr "Выключить привязку по сетке"
 
 #: ../src/Menus.cpp:200
 msgid "Turn Grid Snap On"
-msgstr ""
+msgstr "Включить привязку по сетке"
 
 #: ../src/Menus.cpp:199
-#, fuzzy
 msgid "Turn Snap-To Off"
-msgstr "[Привязка выключена]"
+msgstr "Выключить привязку"
 
 #: ../src/Menus.cpp:198
-#, fuzzy
 msgid "Turn Snap-To On"
-msgstr "[Привязка включена]"
+msgstr "Включить привязку"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:113
 msgid "Unable to determine"
@@ -3777,9 +3752,8 @@ msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*"
 msgstr "XML-файлы (*.xml)|*.txt|Все файлы (*.*)|*.*"
 
 #: ../src/Tags.cpp:403
-#, fuzzy
 msgid "Year"
-msgstr "Год:"
+msgstr "Год"
 
 #: ../src/Tags.cpp:605
 msgid "Year:"
@@ -3819,13 +3793,11 @@ msgstr ""
 "\n"
 
 #: ../src/export/Export.cpp:130
-msgid ""
-"Your tracks will be mixed down to a single mono channel in the exported file."
+msgid "Your tracks will be mixed down to a single mono channel in the exported file."
 msgstr "В экспортируемом файле дорожки будут сведены в один моноканал"
 
 #: ../src/export/Export.cpp:125
-msgid ""
-"Your tracks will be mixed down to two stereo channels in the exported file."
+msgid "Your tracks will be mixed down to two stereo channels in the exported file."
 msgstr "В экспортируемом файле дорожки будут сведены в два стереоканала"
 
 #: ../src/prefs/MousePrefs.cpp:92 ../src/prefs/MousePrefs.cpp:93
@@ -4464,3 +4436,4 @@ msgstr "с использованием SoundTouch (Olli Parviainen)"
 
 #~ msgid "keeping Cursor or Selection..."
 #~ msgstr "сохраняя положение курсора или выделения..."
+
