@@ -30,8 +30,8 @@ EffectWahwah::EffectWahwah()
 {
    freq = 1.5;
    startphase = 0;
-   depth = 0.7;
-   freqofs = 0.3;
+   depth = (float)0.7;
+   freqofs = (float)0.3;
    res = 2.5;
 }
 
@@ -64,41 +64,53 @@ bool EffectWahwah::PromptUser()
 bool EffectWahwah::Process()
 {
    TrackListIterator iter(mWaveTracks);
-   Track *t = iter.First();
+   WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
-   while(t) {
-      sampleCount start, len;
-      GetSamples((WaveTrack *)t, &start, &len);
-      bool success = ProcessOne(count, (WaveTrack *)t, start, len, startphase);
-      
-      if (!success)
-         return false;
-      
-      if (t->GetLinked()) {
-         // In a stereo pair, the "other" half should be 180 degrees out of phase
+
+   /// \todo: find some way to make this less messy!
+   while(track) {
+      double starttime = mT0;
+      double endtime = mT1;
+      double trackend = track->GetEndTime();
+
+      if (starttime < trackend) {    //make sure part of track is within selection
+         if (endtime > trackend)
+            endtime = trackend;      //make sure all of track is within selection
+         sampleCount len =
+             (sampleCount) floor((endtime - starttime) * track->GetRate() + 0.5);
+
+         if (!ProcessOne(count, (WaveTrack *)track, starttime, len, startphase))
+            return false;
          
-         t = iter.Next();
+         if (track->GetLinked()) {
+            // In a stereo pair, the "other" half should be 180 degrees out of phase
+               
+            track = (WaveTrack *) iter.Next();
+            count++;
+               
+            if (!ProcessOne(count, (WaveTrack *)track, starttime, len, startphase + M_PI))
+               return false;
+            
+         }
+      } else if (track->GetLinked()) { //skip the other half of the stereo pair too
+         track = (WaveTrack *) iter.Next();
          count++;
-         
-         GetSamples((WaveTrack *)t, &start, &len);
-         success = ProcessOne(count, (WaveTrack *)t, start, len, startphase + M_PI);
-         
-         if (!success)
-         return false;
       }
-   
-      t = iter.Next();
+
+      track = (WaveTrack *) iter.Next();
       count++;
    }
    
    return true;
 }
 
-bool EffectWahwah::ProcessOne(int count, WaveTrack * t,
-                              sampleCount start, sampleCount len,
+bool EffectWahwah::ProcessOne(int count, WaveTrack * track,
+                              double start, sampleCount len,
                               float startphase)
 {
-   float samplerate = (float) (t->GetRate());
+   double t = start;
+   sampleCount s = 0;
+   float samplerate = (float) (track->GetRate());
 
    /*Wahwah initialisation */
    float lfoskip = freq * 2 * 3.141592653589 / samplerate;
@@ -108,18 +120,16 @@ bool EffectWahwah::ProcessOne(int count, WaveTrack * t,
    float b0 = 0, b1 = 0, b2 = 0, a0 = 0, a1 = 0, a2 = 0;
    float in, out;
 
-   sampleCount s = start;
-   sampleCount originalLen = len;
-   sampleCount blockSize = t->GetMaxBlockSize();
+   sampleCount blockSize = track->GetMaxBlockSize();
 
    float *buffer = new float[blockSize];
 
-   while (len) {
-      sampleCount block = t->GetBestBlockSize(s);
-      if (block > len)
-         block = len;
+   while (s < len) {
+      sampleCount block = track->GetBestBlockSize(t);
+      if (s + block > len)
+         block = len - s;
 
-      t->Get(buffer, s, block);
+      track->Get((samplePtr) buffer, floatSample, t, block);
 
       for (int i = 0; i < block; i++) {
          in = buffer[i];
@@ -154,12 +164,12 @@ bool EffectWahwah::ProcessOne(int count, WaveTrack * t,
          buffer[i] = (float) out;
       }
 
-      t->Set(buffer, s, block);
+      track->Set((samplePtr) buffer, floatSample, t, block);
 
-      len -= block;
       s += block;
-      
-      TrackProgress(count, (s-start)/(double)originalLen);
+      t += (block / track->GetRate());
+
+      TrackProgress(count, s / (double) len);
    }
 
    delete[]buffer;

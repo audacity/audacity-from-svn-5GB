@@ -10,6 +10,7 @@
 
 #include <wx/generic/textdlgg.h>
 #include <wx/intl.h>
+#include <math.h>
 
 #include "Echo.h"
 #include "../WaveTrack.h"
@@ -59,31 +60,38 @@ bool EffectEcho::PromptUser()
 bool EffectEcho::Process()
 {
    TrackListIterator iter(mWaveTracks);
-   Track *t = iter.First();
+   WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
-   while(t) {
-      sampleCount start, len;
-      GetSamples((WaveTrack *)t, &start, &len);
-      bool success = ProcessOne(count, (WaveTrack *)t, start, len);
-      
-      if (!success)
-         return false;
-   
-      t = iter.Next();
+   while (track) {
+      double starttime = mT0;
+      double endtime = mT1;
+
+      if (starttime < track->GetEndTime()) {    //make sure part of track is within selection
+         if (endtime > track->GetEndTime())
+            endtime = track->GetEndTime();      //make sure all of track is within selection
+         sampleCount len =
+             (sampleCount) floor((endtime - starttime) * track->GetRate() + 0.5);
+
+         if (!ProcessOne(count, track, starttime, len))
+            return false;
+      }
+
+      track = (WaveTrack *) iter.Next();
       count++;
    }
-   
+
    return true;
 }
 
-bool EffectEcho::ProcessOne(int count, WaveTrack * t,
-                            sampleCount start, sampleCount len)
+bool EffectEcho::ProcessOne(int count, WaveTrack * track,
+                            double start, sampleCount len)
 {
-   sampleCount s = start;
-   sampleCount blockSize = (sampleCount) (t->GetRate() * delay);
+   double t=start;
+   sampleCount s = 0;
+   sampleCount blockSize = (sampleCount) (track->GetRate() * delay);
    
-   sampleCount originalLen = len;
-
+   //do nothing if the delay is less than 1 sample or greater than
+   //the length of the selection
    if (blockSize < 1 || blockSize > len)
       return true;
 
@@ -95,16 +103,16 @@ bool EffectEcho::ProcessOne(int count, WaveTrack * t,
 
    bool first = true;
 
-   while (len) {
+   while (s < len) {
       sampleCount block = blockSize;
-      if (block > len)
-         block = len;
+      if (s + block > len)
+         block = len - s;
 
-      t->Get(ptr0, s, block);
+      track->Get((samplePtr)ptr0, floatSample, t, block);
       if (!first) {
          for (sampleCount i = 0; i < block; i++)
             ptr0[i] += ptr1[i] * decay;
-         t->Set(ptr0, s, block);
+         track->Set((samplePtr)ptr0, floatSample, t, block);
       }
 
       float *ptrtemp = ptr0;
@@ -113,10 +121,10 @@ bool EffectEcho::ProcessOne(int count, WaveTrack * t,
 
       first = false;
 
-      len -= block;
       s += block;
+      t += (block / track->GetRate());
       
-      TrackProgress(count, (s-start)/(double)originalLen);
+      TrackProgress(count, s / (double) len);
    }
 
    delete[]buffer0;

@@ -45,11 +45,6 @@ void LoadEffects(wxString searchDir)
 {
    Effect::RegisterEffect(new EffectAmplify(), false);
    Effect::RegisterEffect(new EffectBassBoost(), false);
-   Effect::RegisterEffect(new EffectInvert(), false);
-   Effect::RegisterEffect(new EffectToneGen(), false);
-
-#if 0 //temporary disable effects that haven't been ported
-      //to the new WaveTrack/Sequence classes
    Effect::RegisterEffect(new EffectCompressor(), false);
    Effect::RegisterEffect(new EffectEcho(), false);
    Effect::RegisterEffect(new EffectFadeIn(), false);
@@ -59,7 +54,11 @@ void LoadEffects(wxString searchDir)
    Effect::RegisterEffect(new EffectNoiseRemoval(), false);
    Effect::RegisterEffect(new EffectPhaser(), false);
    Effect::RegisterEffect(new EffectReverse(), false);
+   Effect::RegisterEffect(new EffectToneGen(), false);
    Effect::RegisterEffect(new EffectWahwah(), false);
+
+#if 0 //temporary disable effects that haven't been ported
+      //to the new WaveTrack/Sequence classes
 
 #ifdef USE_WAVELET
    Effect::RegisterEffect(new EffectWaveletDenoise(), false);

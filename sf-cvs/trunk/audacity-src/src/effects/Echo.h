@@ -38,7 +38,7 @@ class EffectEcho:public Effect {
 
  private:
    bool ProcessOne(int count, WaveTrack * t,
-                   sampleCount start, sampleCount len);
+                   double start, sampleCount len);
  
    float delay;
    float decay;

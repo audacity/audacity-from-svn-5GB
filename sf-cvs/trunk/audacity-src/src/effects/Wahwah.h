@@ -60,8 +60,8 @@ class EffectWahwah:public Effect {
    res should be greater than 0 !  */
 
  private:
-   bool ProcessOne(int count, WaveTrack * t,
-                   sampleCount start, sampleCount len,
+   bool ProcessOne(int count, WaveTrack * track,
+                   double start, sampleCount len,
                    float startphase);
 
    float freq, startphase;
