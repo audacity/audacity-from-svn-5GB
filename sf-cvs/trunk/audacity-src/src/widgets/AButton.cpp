@@ -142,7 +142,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
    }
 
    //If the mouse button is released, the following stuff happens
-   if (event.ButtonUp() ) {
+   if (event.ButtonUp() && HasCapture()) {
       mIsClicking = false;
       ReleaseMouse();
 
