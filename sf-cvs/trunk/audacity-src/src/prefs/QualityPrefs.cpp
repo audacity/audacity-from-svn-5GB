@@ -15,9 +15,14 @@
 #include <wx/intl.h>
 #include <wx/textctrl.h>
 
+#include "../Audacity.h"
 #include "../Prefs.h"
 #include "../SampleFormat.h"
 #include "QualityPrefs.h"
+
+#if USE_LIBSAMPLERATE
+#include <samplerate.h>
+#endif
 
 int rates[] = { 8000,
    11025,
@@ -118,9 +123,54 @@ PrefsPanel(parent)
       top2Sizer->Add( mSampleFormats, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
    }
 
+   #if USE_LIBSAMPLERATE
+
+   int converterHQ = 
+      gPrefs->Read("/Quality/HQSampleRateConverter", (long)SRC_SINC_BEST_QUALITY);
+   int converter = 
+      gPrefs->Read("/Quality/SampleRateConverter", (long)SRC_SINC_FASTEST);
+
+   wxString *converterStrings;
+   int numConverters = 0;
+   while(src_get_name(numConverters))
+      numConverters++;
+   converterStrings = new wxString[numConverters];
+   for(i=0; i<numConverters; i++)
+      converterStrings[i] = src_get_name(i);
+
+   wxBoxSizer *top3Sizer = new wxBoxSizer( wxHORIZONTAL );
+
+   top3Sizer->Add(
+         new wxStaticText(this, -1, _("Real-time sample rate converter:")), 0, 
+         wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
+
+   mConverters = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
+                              numConverters, converterStrings);
+   mConverters->SetSelection(converter);
+   top3Sizer->Add(mConverters, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
+
+   wxBoxSizer *top4Sizer = new wxBoxSizer( wxHORIZONTAL );
+
+   top4Sizer->Add(
+         new wxStaticText(this, -1, _("High-quality sample rate converter:")), 0, 
+         wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
+
+   mHQConverters = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
+                                numConverters, converterStrings);
+   mHQConverters->SetSelection(converterHQ);
+   top4Sizer->Add(mHQConverters, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
+   
+   delete[] converterStrings;
+   #endif
+
    outSizer = new wxBoxSizer( wxVERTICAL );
    outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
    outSizer->Add(top2Sizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
+
+   #if USE_LIBSAMPLERATE
+   outSizer->Add(top3Sizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
+   outSizer->Add(top4Sizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
+   #endif
 
    SetAutoLayout(true);
    outSizer->Fit(this);
@@ -134,7 +184,7 @@ bool QualityPrefs::Apply()
    long format = floatSample;
    int sel = mSampleRates->GetSelection();
    int fmtsel = mSampleFormats->GetSelection();
-
+   
    if(sel < NUM_RATES) rate = rates[sel];
    else (mOtherSampleRate->GetValue()).ToLong(&rate);
 
@@ -146,6 +196,13 @@ bool QualityPrefs::Apply()
 
    /* Audacity will automatically re-read this value whenever a new project
     * is created, so don't bother making it do so now... */
+
+   #if USE_LIBSAMPLERATE
+   int converter = mConverters->GetSelection();
+   int converterHQ = mHQConverters->GetSelection();
+   gPrefs->Write("/Quality/HQSampleRateConverter", (long)converterHQ);
+   gPrefs->Write("/Quality/SampleRateConverter", (long)converter);
+   #endif
 
    return true;
 

@@ -162,7 +162,8 @@ Mixer::Mixer(int numInputTracks, WaveTrack **inputTracks,
              TimeTrack *timeTrack,
              double startTime, double stopTime,
              int numOutChannels, int outBufferSize, bool outInterleaved,
-             double outRate, sampleFormat outFormat)
+             double outRate, sampleFormat outFormat,
+             bool highQuality)
 {
    int i;
 
@@ -202,9 +203,14 @@ Mixer::Mixer(int numInputTracks, WaveTrack **inputTracks,
    long converterType;
    if (mTimeTrack)
       converterType = (long)timeTrack->getConverter();
-   else
-      converterType = gPrefs->Read("/Quality/SampleRateConverter",
-                                   (long)SRC_SINC_FASTEST);
+   else {
+      if (highQuality)
+         converterType = gPrefs->Read("/Quality/HQSampleRateConverter",
+                                      (long)SRC_SINC_BEST_QUALITY);
+      else
+         converterType = gPrefs->Read("/Quality/SampleRateConverter",
+                                      (long)SRC_SINC_FASTEST);
+   }
 
    mQueueMaxLen = 65536;
    mProcessLen = 1024;
@@ -332,6 +338,14 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
          *queueStart = 0;
 
          int getLen = mQueueMaxLen - *queueLen;
+
+         double trackTime = (*pos + getLen) / track->GetRate();
+         if (trackTime > track->GetEndTime()) {
+            getLen = (int)(0.5 + track->GetRate() *
+                           (track->GetEndTime() -
+                            ((*pos) / track->GetRate())));
+         }
+
          track->Get((samplePtr)&queue[*queueLen], floatSample,
                     *pos, getLen);
 
@@ -344,10 +358,14 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
          *pos += getLen;
       }
 
+      sampleCount thisProcessLen = mProcessLen;
+      if (*queueLen < mProcessLen)
+         thisProcessLen = *queueLen;
+
       SRC_DATA mySrcData;
 
-      mySrcData.end_of_input = 0;
-      mySrcData.input_frames = mProcessLen;
+      mySrcData.end_of_input = (*queueLen < mProcessLen);
+      mySrcData.input_frames = thisProcessLen;
       mySrcData.output_frames = mMaxOut - out;
       mySrcData.data_in = &queue[*queueStart];
       mySrcData.data_out = &mFloatBuffer[out];
@@ -369,6 +387,9 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
       *queueLen -= mySrcData.input_frames_used;
       out += mySrcData.output_frames_gen;
       t += (mySrcData.input_frames_used / track->GetRate());
+
+      if (mySrcData.end_of_input)
+         break;
    }
 
    CopySamples((samplePtr)mFloatBuffer, floatSample,
