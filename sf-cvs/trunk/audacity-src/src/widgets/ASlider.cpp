@@ -25,7 +25,7 @@
 #include <wx/tooltip.h>
 #include <wx/debug.h>
 
-#ifdef __WXMSW__
+#if defined(__WXMSW__) && !defined(__CYGWIN__)
 #define USE_POPUPWIN 1
 #endif
 
