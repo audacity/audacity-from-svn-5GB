@@ -23,16 +23,16 @@ LIBINST = /usr/local/lib
 TESTS:= $(wildcard pa_tests/pa*.c pa_tests/debug*.c)
 TESTO:= $(wildcard pa_tests/pa*.o pa_tests/debug*.o)
 
-LIBFILES:= ./pa_common/pa_lib.c ./pa_unix_oss/pa_unix_oss.c
+LIBFILES:= ./pa_common/pa_lib.c ./pa_unix_oss/pa_unix_oss.c ./pa_unix_oss/pa_unix.c
 
 #all: sharedlib libinstall tests
 all: sharedlib libinstall testo testq
 
 .c.o:
-	-gcc -c -I./pa_common $< -o $*.o
+	-gcc $(CFLAGS) -c -I./pa_common $< -o $*.o
 
 .o:
-	-gcc $*.o -o $* -Lpa_unix_oss $(LIBS) -lportaudio
+	-gcc $*.o -o $* -Lpa_unix_oss -lportaudio $(LIBS)
 
 #.c.o:
 #	-gcc -c -I./pa_common $< -o $*.o
@@ -40,7 +40,7 @@ all: sharedlib libinstall testo testq
 
 
 sharedlib:	$(LIBFILES:.c=.o)
-	gcc -shared -o ./pa_unix_oss/libportaudio.so ./pa_common/pa_lib.o ./pa_unix_oss/pa_unix_oss.o
+	gcc -shared -o ./pa_unix_oss/libportaudio.so ./pa_common/pa_lib.o ./pa_unix_oss/pa_unix_oss.o ./pa_unix_oss/pa_unix.o
 
 libinstall:	./pa_unix_oss/libportaudio.so
 	@cp -f ./pa_unix_oss/libportaudio.so $(LIBINST)

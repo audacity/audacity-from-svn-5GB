@@ -6,7 +6,7 @@
         ASIO support.
 */
 /*
- * $Id: pa_devs.c,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: pa_devs.c,v 1.1.1.1 2004-04-22 04:08:24 mbrubeck Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
@@ -53,7 +53,7 @@ static void PrintSupportedStandardSampleRates(
 {
     static double standardSampleRates[] = {
         8000.0, 9600.0, 11025.0, 12000.0, 16000.0, 22050.0, 24000.0, 32000.0,
-        44100.0, 48000.0, 88200.0, 96000.0, -1 /* negative terminated  list */
+        44100.0, 48000.0, 88200.0, 96000.0, 192000.0, -1 /* negative terminated  list */
     };
     int     i, printCount;
     PaError err;

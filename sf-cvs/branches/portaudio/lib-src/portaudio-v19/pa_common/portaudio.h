@@ -1,13 +1,7 @@
 #ifndef PORTAUDIO_H
 #define PORTAUDIO_H
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif /* __cplusplus */
-
 /*
- * $Id: portaudio.h,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: portaudio.h,v 1.1.1.1 2004-04-22 04:08:19 mbrubeck Exp $
  * PortAudio Portable Real-Time Audio Library
  * PortAudio API Header File
  * Latest version available at: http://www.portaudio.com/
@@ -36,8 +30,17 @@ extern "C"
  * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
  */
+
+/** @file
+ @brief The PortAudio API.
+*/
+
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
 
  
 /** Retrieve the release number of the currently running PortAudio build,
@@ -83,7 +86,12 @@ typedef enum PaErrorCode
     paInputOverflowed,
     paOutputUnderflowed,
     paHostApiNotFound,
-    paInvalidHostApi
+    paInvalidHostApi,
+    paCanNotReadFromACallbackStream,      /**< @todo review error code name */
+    paCanNotWriteToACallbackStream,       /**< @todo review error code name */
+    paCanNotReadFromAnOutputOnlyStream,   /**< @todo review error code name */
+    paCanNotWriteToAnInputOnlyStream,     /**< @todo review error code name */
+    paIncompatibleStreamHostApi
 } PaErrorCode;
 
 
@@ -98,10 +106,13 @@ const char *Pa_GetErrorText( PaError errorCode );
  host APIs for use. This function MUST be called before using any other
  PortAudio API functions.
 
- If Pa_Initialize() is called multiple times, each call must be matched with
- a corresponding call to Pa_Terminate(). Pairs of calls to
- Pa_Initialize()/Pa_Terminate() may overlap, and are not requireed to be fully
- nested.
+ If Pa_Initialize() is called multiple times, each successful 
+ call must be matched with a corresponding call to Pa_Terminate(). 
+ Pairs of calls to Pa_Initialize()/Pa_Terminate() may overlap, and are not 
+ required to be fully nested.
+
+ Note that if Pa_Initialize() returns an error code, Pa_Terminate() should
+ NOT be called.
 
  @return paNoError if successful, otherwise an error code indicating the cause
  of failure.
@@ -382,13 +393,12 @@ PaDeviceIndex Pa_GetDefaultOutputDevice( void );
 typedef double PaTime;
 
 
-/** A type used to specify one or more sample formats. They indicate
- the formats used to pass sound data between the stream callback and the
- stream. Each device has one or more "native" formats which may be used when
- optimum efficiency or control over conversion is required.
+/** A type used to specify one or more sample formats. Each value indicates
+ a possible format for sound data passed to and from the stream callback,
+ Pa_ReadStream and Pa_WriteStream.
 
- Formats marked "always available" are supported (emulated) by all
- PortAudio implementations.
+ The standard formats paFloat32, paInt16, paInt32, paInt24, paInt8
+ and aUInt8 are usually implemented by all implementations.
 
  The floating point representation (paFloat32) uses +1.0 and -1.0 as the
  maximum and minimum respectively.
@@ -591,16 +601,21 @@ typedef unsigned long PaStreamFlags;
 */
 #define   paDitherOff       ((PaStreamFlags) 0x00000002)
 
-/** A full duplex stream will not discard overflowed input samples without
- calling the stream callback, this flag is ignored for blocking read/write
- streams.
- @see PaStreamFlags
+/** Flag requests that where possible a full duplex stream will not discard
+ overflowed input samples without calling the stream callback. This flag is
+ only valid for full duplex callback streams and only when used in combination
+ with the paFramesPerBufferUnspecified (0) framesPerBuffer parameter. Using
+ this flag incorrectly results in a paInvalidFlag error being returned from
+ Pa_OpenStream and Pa_OpenDefaultStream.
+
+ @see PaStreamFlags, paFramesPerBufferUnspecified
 */
 #define   paNeverDropInput  ((PaStreamFlags) 0x00000004)
 
 /** Call the stream callback to fill initial output buffers, rather than the
  default behavior of priming the buffers with zeros (silence). This flag has
  no effect for input-only and blocking read/write streams.
+ 
  @see PaStreamFlags
 */
 #define   paPrimeOutputBuffersUsingStreamCallback ((PaStreamFlags) 0x00000008)
@@ -628,23 +643,31 @@ typedef struct PaStreamCallbackTimeInfo{
 */
 typedef unsigned long PaStreamCallbackFlags;
 
-/** Input data is all zeros because no real data is available.
+/** In a stream opened with paFramesPerBufferUnspecified, indicates that
+ input data is all silence (zeros) because no real data is available. In a
+ stream opened without paFramesPerBufferUnspecified, it indicates that one or
+ more zero samples have been inserted into the input buffer to compensate
+ for an input underflow.
  @see PaStreamCallbackFlags
 */
 #define paInputUnderflow   ((PaStreamCallbackFlags) 0x00000001)
 
-/** Input data was discarded by PortAudio
+/** In a stream opened with paFramesPerBufferUnspecified, indicates that data
+ prior to the first sample of the input buffer was discarded due to an
+ overflow, possibly because the stream callback is using too much CPU time.
+ Otherwise indicates that data prior to one or more samples in the
+ input buffer was discarded.
  @see PaStreamCallbackFlags
 */
 #define paInputOverflow    ((PaStreamCallbackFlags) 0x00000002)
 
-/** Output data was inserted by PortAudio because the stream callback is using
- too much CPU 
+/** Indicates that output data (or a gap) was inserted, possibly because the
+ stream callback is using too much CPU time.
  @see PaStreamCallbackFlags
 */
 #define paOutputUnderflow  ((PaStreamCallbackFlags) 0x00000004)
 
-/** Output data will be discarded because no room is available.
+/** Indicates that output data will be discarded because no room is available.
  @see PaStreamCallbackFlags
 */
 #define paOutputOverflow   ((PaStreamCallbackFlags) 0x00000008)
@@ -976,7 +999,7 @@ const PaStreamInfo* Pa_GetStreamInfo( PaStream *stream );
  to generate buffer timestamps. This time may be used for syncronising other
  events to the audio stream, for example synchronizing audio to MIDI.
                                         
- @return The stream's current time in seconds.
+ @return The stream's current time in seconds, or 0 if an error occurred.
 
  @see PaTime, PaStreamCallback
 */
@@ -997,7 +1020,7 @@ PaTime Pa_GetStreamTime( PaStream *stream );
  to maintain real-time operation. A value of 0.5 would imply that PortAudio and
  the stream callback was consuming roughly 50% of the available CPU time. The
  return value may exceed 1.0. A value of 0.0 will always be returned for a
- blocking read/write stream.
+ blocking read/write stream, or if an error occurrs.
 */
 double Pa_GetStreamCpuLoad( PaStream* stream );
 

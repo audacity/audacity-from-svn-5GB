@@ -1,5 +1,5 @@
 /*
- * $Id: pa_trace.c,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: pa_trace.c,v 1.1.1.1 2004-04-22 04:08:19 mbrubeck Exp $
  * Portable Audio I/O Library Trace Facility
  * Store trace information in real-time for later printing.
  *
@@ -29,6 +29,11 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+/** @file
+ @brief Event trace mechanism for debugging.
+*/
+
 
 #include <stdio.h>
 #include <stdlib.h>

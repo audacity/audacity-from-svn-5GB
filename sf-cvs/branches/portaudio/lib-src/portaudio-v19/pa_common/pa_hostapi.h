@@ -1,7 +1,7 @@
 #ifndef PA_HOSTAPI_H
 #define PA_HOSTAPI_H
 /*
- *
+ * $Id: pa_hostapi.h,v 1.1.1.1 2004-04-22 04:08:20 mbrubeck Exp $
  * Portable Audio I/O Library
  * host api representation
  *
@@ -33,8 +33,10 @@
  */
 
 /** @file
- Interface used by pa_front to virtualize functions which operate on host APIs.
+ @brief Interface used by pa_front to virtualize functions which operate on
+ host APIs.
 */
+
 
 #include "portaudio.h"
 
@@ -154,6 +156,8 @@ typedef struct PaUtilHostApiRepresentation {
  
             PaStreamFlags streamFlags
                 - unused platform neutral flags are zero
+                - paNeverDropInput is only used for full-duplex callback streams
+                    with variable buffer size (paFramesPerBufferUnspecified)
 
             [*END PA FRONT VALIDATIONS*]
 

@@ -1,7 +1,7 @@
 #ifndef __DSOUND_WRAPPER_H
 #define __DSOUND_WRAPPER_H
 /*
- * $Id: dsound_wrapper.h,v 1.1 2003-09-18 22:13:25 habes Exp $
+ * $Id: dsound_wrapper.h,v 1.1.1.1 2004-04-22 04:08:27 mbrubeck Exp $
  * Simplified DirectSound interface.
  *
  * Author: Phil Burk & Robert Marsanyi
