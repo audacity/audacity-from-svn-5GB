@@ -102,17 +102,36 @@ Known issues/problems:
 
 -------------------------------------------------------------
 
-Major new features in Audacity 1.1.0:
+New features in Audacity 1.1.0:
 
-  * Automatic real-time resampling (using linear
-      interpolation)
-  * 24-bit and 32-bit sample formats
-  * New toolbar buttons and a new Edit toolbar
-  * Autoscroll while playing or recording
-  * LADSPA effects plugins on Linux / Unix
-  * Ogg Vorbis exporting
-  * Export to command-line programs on Unix
-  * Many user interface improvements
+  * Core audio processing:
+    - Support for 24-bit and 32-bit sample formats
+    - Automatic real-time resampling (using linear
+        interpolation)
+  * Effects:
+    - Support LADSPA plugins on Linux / Unix
+  * File formats:
+    - New XML-based Audacity project format
+    - Full Ogg Vorbis support now (importing and exporting)
+    - Export to any command-line programs on Unix
+    - Support for reading and writing many more types of
+        uncompressed audio files, including ADPCM WAV files.
+  * Toolbars
+    - New toolbar drawing code; automatically adopts your
+        operating system's colors
+    - New toolbar buttons (Skip to Start, Skip to End)
+    - New Edit toolbar
+    - Toolbar buttons disable when they're not available
+  * User Interface
+    - Fully customizable keyboard commands
+    - Autoscroll while playing or recording
+    - New Ruler, used in main view and in
+        FFT Filter effect
+    - The waveform now displays the average value in a lighter
+        color inside the peak values
+  * Localization
+    - Audacity can now be localized to different foreign
+      languages.
 
 New libraries in Audacity 1.1:
 
