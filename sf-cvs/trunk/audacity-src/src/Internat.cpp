@@ -21,13 +21,7 @@ wxMBConv *Internat::mConvLocal = 0;
 void Internat::Init()
 {
    // Set up character-set conversion for UTF-8 input and output.
-   wxString encoding;
-   if (wxLocale::GetSystemEncoding() == -1)
-      encoding = "ISO-8859-1"; // Sensible default for unknown systems.
-   else
-      encoding = wxLocale::GetSystemEncodingName();
-
-   mConvLocal = new wxCSConv(encoding);
+   mConvLocal = new wxCSConv(wxLocale::GetSystemEncodingName());
 
    // There is no way to check the 'default' (rather than the current
    // decimal separator character), so we set the 'default' number locale
