@@ -108,7 +108,9 @@ AudioIO::~AudioIO()
 {
    Pa_Terminate();
 
-   mThread->Wait();
+   /* Delete is a "graceful" way to stop the thread.
+      (Kill is the not-graceful way.) */
+   mThread->Delete();
 
    delete [] mTempFloats;
    delete mThread;
@@ -710,7 +712,6 @@ void AudioIO::FillBuffers()
          if( avail < commonlyAvail )
             commonlyAvail = avail;
       }
-      printf("putting %d\n", commonlyAvail);
 
       // For capture buffers, save everything available to disk
       for( i = 0; i < mCaptureTracks.GetCount(); i++ )
