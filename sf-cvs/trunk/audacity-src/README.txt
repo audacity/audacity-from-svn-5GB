@@ -66,6 +66,10 @@ compile this program, you will need to download wxWindows from:
 
   http://www.wxwindows.org/
 
+If you install the RPM, make sure you install the devel RPM
+as well, otherwise, you won't be able to compile Audacity
+from source.
+
 To compile on Linux and other Unix systems, simply run:
 
   ./configure
