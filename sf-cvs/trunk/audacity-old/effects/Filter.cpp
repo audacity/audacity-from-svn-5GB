@@ -17,16 +17,20 @@
 #include <wx/dcmemory.h>
 
 #include "Filter.h"
-#include "../WaveTrack.h"
+#include "../Envelope.h"
 #include "../FFT.h"
+#include "../WaveTrack.h"
 
 EffectFilter::EffectFilter()
 {
+   mEnvelope = new Envelope();
+   mEnvelope->SetTrackLen(1.0);
 }
 
 bool EffectFilter::Begin(wxWindow *parent)
 {
    FilterDialog dlog(parent, -1, "FFT Filter");
+   dlog.SetEnvelope(mEnvelope);
 
    dlog.CentreOnParent();
    dlog.ShowModal();
@@ -156,24 +160,77 @@ FilterPanel::FilterPanel( wxWindow *parent, wxWindowID id,
                           const wxSize& size):
    wxPanel(parent, id, pos, size)
 {
-   
+   mBitmap = NULL;
+   mWidth = 0;
+   mHeight = 0;
 }
 
 void FilterPanel::OnPaint(wxPaintEvent & evt)
 {
+   wxPaintDC dc(this);
+
    int width, height;
    GetSize(&width, &height);
-   
-   wxPaintDC dc(this);
-   
-   dc.SetBrush(*wxWHITE_BRUSH);
-   dc.SetPen(*wxWHITE_PEN);
-   dc.DrawRectangle(0, 0, width, height);
+ 
+   if (!mBitmap || mWidth!=width || mHeight!=height) {
+      if (mBitmap)
+         delete mBitmap;
+
+      mWidth = width;
+      mHeight = height;
+      mBitmap = new wxBitmap(mWidth, mHeight);
+   }
+  
+   wxMemoryDC memDC;
+   memDC.SelectObject(*mBitmap);
+
+   wxRect r;
+   r.x = 0;
+   r.y = 0;
+   r.width = mWidth;
+   r.height = mHeight;
+
+   memDC.SetBrush(*wxWHITE_BRUSH);
+   memDC.SetPen(*wxBLACK_PEN);
+   memDC.DrawRectangle(r);
+
+   // Pure blue x-axis line
+   memDC.SetPen(wxPen(wxColour(0, 0, 255), 1, wxSOLID));
+   int center = height/2;
+   memDC.DrawLine(0, center, width, center);
+
+   // Med-blue envelope line
+   memDC.SetPen(wxPen(wxColour(128, 128, 255), 1, wxSOLID));
+
+   // Draw envelope
+   double *values = new double[width];
+   mEnvelope->GetValues(values, width, 0.0, 1.0/width);
+   for(int x=0; x<width; x++) {
+      memDC.DrawLine(x, center-center*values[x]-2,
+                     x, center-center*values[x]+2);
+   }
+   delete[] values;
+   mEnvelope->Draw(memDC, r, 0.0, width, false);
+
+   // Paint border again
+   memDC.SetBrush(*wxTRANSPARENT_BRUSH);
+   memDC.SetPen(*wxBLACK_PEN);
+   memDC.DrawRectangle(r);
+
+   dc.Blit(0, 0, width, height,
+           &memDC, 0, 0, wxCOPY, FALSE);
 }
 
 void FilterPanel::OnMouseEvent(wxMouseEvent & event)
 {
+   wxRect r;
+   r.x = 0;
+   r.y = 0;
+   r.width = mWidth;
+   r.height = mHeight;
 
+   if (mEnvelope->MouseEvent(event, r, 0.0, mWidth, false))
+      Refresh(false);
 }
 
 // WDR: class implementations
@@ -200,6 +257,11 @@ FilterDialog::FilterDialog(wxWindow *parent, wxWindowID id,
    MakeFilterDialog( this, TRUE ); 
    
    SetSizeHints(300, 200, 20000, 20000);
+}
+
+void FilterDialog::SetEnvelope(Envelope *env)
+{
+   ((FilterPanel *) FindWindow(ID_FILTERPANEL))->mEnvelope = env;
 }
 
 bool FilterDialog::Validate()

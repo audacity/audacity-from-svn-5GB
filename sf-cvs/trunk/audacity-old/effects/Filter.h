@@ -11,6 +11,7 @@
 #ifndef __AUDACITY_EFFECT_FILTER__
 #define __AUDACITY_EFFECT_FILTER__
 
+#include <wx/bitmap.h>
 #include <wx/button.h>
 #include <wx/panel.h>
 #include <wx/sizer.h>
@@ -20,25 +21,28 @@ class wxString;
 
 #include "Effect.h"
 
+class Envelope;
 class WaveTrack;
 
 class EffectFilter: public Effect {
-
+   
 public:
-
-  EffectFilter();
-
-  virtual wxString GetEffectName() { return wxString("Filter..."); }
-
-  virtual bool Begin(wxWindow *parent);
-  virtual bool DoIt(WaveTrack *t,
-            sampleCount start,
-            sampleCount len);
-
+   
+   EffectFilter();
+   
+   virtual wxString GetEffectName() { return wxString("Filter..."); }
+   
+   virtual bool Begin(wxWindow *parent);
+   virtual bool DoIt(WaveTrack *t,
+                     sampleCount start,
+                     sampleCount len);
+   
 private:
-
-  void Filter(sampleCount len,
-              sampleType *buffer);
+   
+   Envelope *mEnvelope;
+   
+   void Filter(sampleCount len,
+               sampleType *buffer);
 };
 
 class FilterPanel: public wxPanel
@@ -50,9 +54,16 @@ public:
 
    void OnMouseEvent(wxMouseEvent & event);
    void OnPaint(wxPaintEvent & event);
-  
+
+   Envelope *mEnvelope;
+
 private:
-    DECLARE_EVENT_TABLE()
+
+   wxBitmap *mBitmap;
+   int mWidth;
+   int mHeight;
+
+   DECLARE_EVENT_TABLE()
 };
 
 // WDR: class declarations
@@ -73,29 +84,31 @@ wxSizer *MakeFilterDialog( wxPanel *parent, bool call_fit = TRUE,
 class FilterDialog: public wxDialog
 {
 public:
-    // constructors and destructors
-    FilterDialog( wxWindow *parent, wxWindowID id, const wxString &title,
-        const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxDefaultSize,
-        long style = wxDEFAULT_DIALOG_STYLE );
-    
-    // WDR: method declarations for FilterDialog
-    virtual bool Validate();
-    virtual bool TransferDataToWindow();
-    virtual bool TransferDataFromWindow();
-    
+   // constructors and destructors
+   FilterDialog( wxWindow *parent, wxWindowID id, const wxString &title,
+                 const wxPoint& pos = wxDefaultPosition,
+                 const wxSize& size = wxDefaultSize,
+                 long style = wxDEFAULT_DIALOG_STYLE );
+   
+   // WDR: method declarations for FilterDialog
+   virtual bool Validate();
+   virtual bool TransferDataToWindow();
+   virtual bool TransferDataFromWindow();
+   
+   void SetEnvelope(Envelope *env);
+   
 private:
-    // WDR: member variable declarations for FilterDialog
-    
+   // WDR: member variable declarations for FilterDialog
+   
 private:
-    // WDR: handler declarations for FilterDialog
-    void OnClear( wxCommandEvent &event );
-    void OnOk( wxCommandEvent &event );
-    void OnCancel( wxCommandEvent &event );
-    void OnSize( wxSizeEvent &event );
-
+   // WDR: handler declarations for FilterDialog
+   void OnClear( wxCommandEvent &event );
+   void OnOk( wxCommandEvent &event );
+   void OnCancel( wxCommandEvent &event );
+   void OnSize( wxSizeEvent &event );
+   
 private:
-    DECLARE_EVENT_TABLE()
+   DECLARE_EVENT_TABLE()
 };
 
 #endif
