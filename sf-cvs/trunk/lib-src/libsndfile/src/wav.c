@@ -123,7 +123,7 @@ wav_open	(SF_PRIVATE *psf)
 		psf->blockwidth  = psf->bytewidth * psf->sf.channels ;
 
 		if (psf->mode != SFM_RDWR || psf->filelength < 44)
-		{	psf->filelength = 0 ; 
+		{	psf->filelength = 0 ;
 			psf->datalength = 0 ;
 			psf->dataoffset = 0 ;
 			psf->sf.frames = 0 ;
@@ -352,18 +352,18 @@ wav_read_header	(SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 			case cue_MARKER :
 					{	int bytesread, cue_count ;
 						int id, position, chunk_id, chunk_start, block_start, offset ;
-					
+
 						bytesread = psf_binheader_readf (psf, "e44", &dword, &cue_count) ;
 						bytesread -= 4 ; /* Remove bytes for first dword. */
 						psf_log_printf (psf, "%M : %u\n  Count : %d\n", marker, dword, cue_count) ;
-						
+
 						while (cue_count)
-						{	bytesread += psf_binheader_readf (psf, "e444444", &id, &position, 
+						{	bytesread += psf_binheader_readf (psf, "e444444", &id, &position,
 									&chunk_id, &chunk_start, &block_start, &offset) ;
 							psf_log_printf (psf, "   Cue ID : %2d"
 												 "  Pos : %5u  Chunk : %M"
 												 "  Chk Start : %d  Blk Start : %d"
-												 "  Offset : %5d\n",												 
+												 "  Offset : %5d\n",
 									id, position, chunk_id, chunk_start, block_start, offset) ;
 							cue_count -- ;
 							} ;
@@ -374,7 +374,7 @@ wav_read_header	(SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 							} ;
 						} ;
 					break ;
-					
+
 			case smpl_MARKER :
 					psf_binheader_readf (psf, "e4", &dword) ;
 					psf_log_printf (psf, "smpl : %u\n", dword) ;
@@ -431,7 +431,7 @@ wav_read_header	(SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 			break ;
 			} ;
 
-		if (psf_ftell (psf->filedes) >= (int) (psf->filelength - (2 * sizeof (dword))))
+		if (psf_ftell (psf->filedes) >= psf->filelength - sizeof (dword))
 			break ;
 
 		if (psf->logindex >= sizeof (psf->logbuffer) - 2)
@@ -512,7 +512,7 @@ static int
 wav_write_header (SF_PRIVATE *psf, int calc_length)
 {	sf_count_t	current ;
 	int 		fmt_size, k, subformat, add_fact_chunk = SF_FALSE ;
-	
+
 	current = psf_ftell (psf->filedes) ;
 
 	if (calc_length)
@@ -686,10 +686,10 @@ wav_write_header (SF_PRIVATE *psf, int calc_length)
 	psf_fwrite (psf->header, psf->headindex, 1, psf->filedes) ;
 
 	psf->dataoffset = psf->headindex ;
-	
+
 	if (current > 0)
 		psf_fseek (psf->filedes, current, SEEK_SET) ;
-		
+
 	return 0 ;
 } /* wav_write_header */
 
@@ -710,17 +710,17 @@ wav_write_tailer (SF_PRIVATE *psf)
 		for (k = 0 ; k < psf->sf.channels ; k++)
 			psf_binheader_writef (psf, "ef4", psf->peak.peak[k].value, psf->peak.peak[k].position) ; /* XXXXX */
 		} ;
-	
+
 	if (psf->add_test_tailer)
 	{	/* Add INFO chunk. */
 		namelen = strlen (PACKAGE "-" VERSION) ;
 		namelen = (namelen & 1) ? namelen + 1 : namelen ; /* Length must be even. */
 
-		psf_binheader_writef (psf, "em4mm", LIST_MARKER, namelen + 8, INFO_MARKER, ISFT_MARKER) ; 
+		psf_binheader_writef (psf, "em4mm", LIST_MARKER, namelen + 8, INFO_MARKER, ISFT_MARKER) ;
 		psf_binheader_writef (psf, "e4b", namelen, PACKAGE "-" VERSION "\0", namelen) ;
 		} ;
 
-	/* Write the tailer. */	
+	/* Write the tailer. */
 	if (psf->headindex > 0)
 		psf_fwrite (psf->header, psf->headindex, 1, psf->filedes) ;
 
@@ -753,16 +753,16 @@ wav_close (SF_PRIVATE  *psf)
 
 static int
 wav_command (SF_PRIVATE *psf, int command, void *data, int datasize)
-{	
+{
 	/* Avoid compiler warnings. */
 	data = data ;
 	datasize = datasize ;
-	
+
 	switch (command)
 	{	case SFC_TEST_ADD_TRAILING_DATA :
 			psf->add_test_tailer = SF_TRUE ;
 			break ;
-			
+
 		default : break ;
 		} ;
 
@@ -858,60 +858,63 @@ wav_subchunk_parse (SF_PRIVATE *psf, int chunk)
 static int
 wav_read_smpl_chunk (SF_PRIVATE *psf, unsigned int chunklen)
 {	unsigned int bytesread = 0, dword ;
-					
+
 	chunklen += (chunklen & 1) ;
-						
+
 	bytesread += psf_binheader_readf (psf, "e4", &dword);
 	psf_log_printf (psf, "  Manufacturer : %u\n", dword) ;
-						
+
 	bytesread += psf_binheader_readf (psf, "e4", &dword);
 	psf_log_printf (psf, "  Product      : %u\n", dword) ;
-						
+
 	bytesread += psf_binheader_readf (psf, "e4", &dword);
 	psf_log_printf (psf, "  Period       : %u nsec\n", dword) ;
-						
+
 	bytesread += psf_binheader_readf (psf, "e4", &dword);
 	psf_log_printf (psf, "  Midi Note    : %u\n", dword) ;
-						
+
 	bytesread += psf_binheader_readf (psf, "e4", &dword);
-	LSF_SNPRINTF ((char*) psf->buffer, sizeof (psf->buffer), "%f", 
+	LSF_SNPRINTF ((char*) psf->buffer, sizeof (psf->buffer), "%f",
 			(1.0 * 0x80000000) / ((unsigned int) dword)) ;
 	psf_log_printf (psf, "  Pitch Fract. : %s\n", psf->buffer) ;
-						
+
 	bytesread += psf_binheader_readf (psf, "e4", &dword);
 	psf_log_printf (psf, "  SMPTE Format : %u\n", dword) ;
-						
+
 	bytesread += psf_binheader_readf (psf, "e4", &dword);
-	LSF_SNPRINTF ((char*) psf->buffer, sizeof (psf->buffer), "%02d:%02d:%02d %02d", 
+	LSF_SNPRINTF ((char*) psf->buffer, sizeof (psf->buffer), "%02d:%02d:%02d %02d",
 		(dword >> 24) & 0x7F, (dword >> 16) & 0x7F, (dword >> 8) & 0x7F, dword & 0x7F) ;
 	psf_log_printf (psf, "  SMPTE Offset : %s\n", psf->buffer) ;
-						
+
 	bytesread += psf_binheader_readf (psf, "e4", &dword);
 	psf_log_printf (psf, "  Loop Count   : %u\n", dword) ;
-						
+
+	/* This is probably wrong. Sampler Data hols the number of data bytes after
+	** The CUE chunks which is not actually CUE data. Need to find an example
+	** of these files and then fix this.
+	*/
 	bytesread += psf_binheader_readf (psf, "e4", &dword);
 	psf_log_printf (psf, "  Sampler Data : %u\n", dword) ;
-						
+
 	while (chunklen - bytesread >= 24)
 	{
 		bytesread += psf_binheader_readf (psf, "e4", &dword);
 		psf_log_printf (psf, "    Cue ID : %2u", dword) ;
-		
+
 		bytesread += psf_binheader_readf (psf, "e4", &dword);
 		psf_log_printf (psf, "  Type : %2u", dword) ;
-		
+
 		bytesread += psf_binheader_readf (psf, "e4", &dword);
 		psf_log_printf (psf, "  Start : %5u", dword) ;
-		
+
 		bytesread += psf_binheader_readf (psf, "e4", &dword);
 		psf_log_printf (psf, "  End : %5u", dword) ;
-		
+
 		bytesread += psf_binheader_readf (psf, "e4", &dword);
 		psf_log_printf (psf, "  Fraction : %5u", dword) ;
-		
+
 		bytesread += psf_binheader_readf (psf, "e4", &dword);
 		psf_log_printf (psf, "  Count : %5u\n", dword) ;
-		
 		} ;
 
 	if (chunklen - bytesread != 0)

@@ -152,7 +152,13 @@ psf_ftell (int fd)
 
 int
 psf_fclose (int fd)
-{	return close (fd) ;
+{	if (fsync (fd) < 0 && errno == EBADF)
+		return 0 ;
+
+	while (close (fd) < 0 && errno == EINTR)
+		errno = 0 ;
+
+	return 0 ;
 } /* psf_fclose */
 
 sf_count_t
