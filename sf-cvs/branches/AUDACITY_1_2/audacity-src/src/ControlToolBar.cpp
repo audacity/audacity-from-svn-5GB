@@ -913,9 +913,6 @@ void ControlToolBar::OnRewind(wxCommandEvent &evt)
 
    AudacityProject *p = GetActiveProject();
    if (p) {
-      if (gAudioIO->IsStreamActive(p->GetAudioIOToken()))
-         StopPlaying();
-      
       p->Rewind(mRewind->WasShiftDown());
    }
 }
@@ -928,9 +925,6 @@ void ControlToolBar::OnFF(wxCommandEvent &evt)
    AudacityProject *p = GetActiveProject();
 
    if (p) {
-      if (gAudioIO->IsStreamActive(p->GetAudioIOToken()))
-         StopPlaying();
-      
       p->SkipEnd(mFF->WasShiftDown());
    }
 }
