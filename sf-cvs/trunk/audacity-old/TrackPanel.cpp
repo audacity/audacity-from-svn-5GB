@@ -29,6 +29,7 @@
 #include "WaveTrack.h"
 
 #ifdef BOUNCE
+foobar
 #include "Bounce.h"
 extern Bounce *gBounce;
 #endif
@@ -197,13 +198,13 @@ void TrackPanel::OnTimer()
   }
 
 #ifdef BOUNCE
-  if (gAudioIO->IsBusy() &&
+  if (gAudioIO->IsPlaying() &&
 	  gAudioIO->GetProject() == (AudacityProject *)GetParent())
 	gBounce->SetTime(gAudioIO->GetIndicator());
 #endif
 
   if (mIndicatorShowing ||
-      (gAudioIO->IsBusy() &&
+      (gAudioIO->IsPlaying() &&
        gAudioIO->GetProject() == (AudacityProject *)GetParent())) {
 
     double ind = gAudioIO->GetIndicator();
@@ -226,7 +227,7 @@ void TrackPanel::OnTimer()
 
       memDC->SelectObject(*rulerBitmap);
       
-      DrawRuler(*memDC, true);
+      DrawRuler(memDC, true);
       
       dc.Blit(0, 0, width, height, memDC, 0, 0, wxCOPY, FALSE);
       
@@ -294,8 +295,8 @@ void TrackPanel::OnPaint(wxPaintEvent& event)
 
   memDC.SelectObject(*mBitmap);
 
-  DrawTracks(memDC);
-  DrawRuler(memDC);
+  DrawTracks(&memDC);
+  DrawRuler(&memDC);
 
   dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
 }
@@ -985,7 +986,7 @@ void TrackPanel::OnMouseEvent(wxMouseEvent& event)
   }
 }
 
-void TrackPanel::DrawRuler(wxDC& dc, bool text)
+void TrackPanel::DrawRuler(wxDC *dc, bool text)
 {
   wxRect r;
   
@@ -998,54 +999,54 @@ void TrackPanel::DrawRuler(wxDC& dc, bool text)
   // Draw ruler border
   //
   
-  AColor::Medium(&dc, false);  
-  dc.DrawRectangle(r);
+  AColor::Medium(dc, false);  
+  dc->DrawRectangle(r);
 
   r.width--;
   r.height--;
-  AColor::Bevel(dc, true, r);  
+  AColor::Bevel(*dc, true, r);  
 
-  dc.SetPen(*wxBLACK_PEN);
-  dc.DrawLine(r.x, r.y+r.height+1, r.x+r.width+1, r.y+r.height+1);
+  dc->SetPen(*wxBLACK_PEN);
+  dc->DrawLine(r.x, r.y+r.height+1, r.x+r.width+1, r.y+r.height+1);
 
   //
   // Draw selection
   //
 
   if (mViewInfo->sel0 < mViewInfo->sel1) {
-	double sel0 = mViewInfo->sel0 - mViewInfo->h +
-	  GetLabelOffset() / mViewInfo->zoom;
-	double sel1 = mViewInfo->sel1 - mViewInfo->h +
-	  GetLabelOffset() / mViewInfo->zoom;
+    double sel0 = mViewInfo->sel0 - mViewInfo->h +
+      GetLabelOffset() / mViewInfo->zoom;
+    double sel1 = mViewInfo->sel1 - mViewInfo->h +
+      GetLabelOffset() / mViewInfo->zoom;
 
-	if (sel0 < 0.0)
-	  sel0 = 0.0;
-	if (sel1 > (r.width / mViewInfo->zoom))
-	  sel1 = r.width / mViewInfo->zoom;
+    if (sel0 < 0.0)
+      sel0 = 0.0;
+    if (sel1 > (r.width / mViewInfo->zoom))
+      sel1 = r.width / mViewInfo->zoom;
 
-	int p0 = int(sel0 * mViewInfo->zoom + 0.5);
-	int p1 = int(sel1 * mViewInfo->zoom + 0.5);
+    int p0 = int(sel0 * mViewInfo->zoom + 0.5);
+    int p1 = int(sel1 * mViewInfo->zoom + 0.5);
 
-	wxBrush selectedBrush;
-	selectedBrush.SetColour(148,148,170);
-	wxPen selectedPen;
-	selectedPen.SetColour(148,148,170);
-	dc.SetBrush(selectedBrush);
-	dc.SetPen(selectedPen);
+    wxBrush selectedBrush;
+    selectedBrush.SetColour(148,148,170);
+    wxPen selectedPen;
+    selectedPen.SetColour(148,148,170);
+    dc->SetBrush(selectedBrush);
+    dc->SetPen(selectedPen);
 
-	wxRect sr;
-	sr.x = p0;
-	sr.y = 1;
-	sr.width = p1-p0-1;
-	sr.height = GetRulerHeight()-3;
-	dc.DrawRectangle(sr);
+    wxRect sr;
+    sr.x = p0;
+    sr.y = 1;
+    sr.width = p1-p0-1;
+    sr.height = GetRulerHeight()-3;
+    dc->DrawRectangle(sr);
   }
 
   //
   // Draw marks on ruler
   //
 
-  dc.SetPen(*wxBLACK_PEN);
+  dc->SetPen(*wxBLACK_PEN);
 
   int fontSize = 10;
   #ifdef __WXMSW__
@@ -1054,7 +1055,7 @@ void TrackPanel::DrawRuler(wxDC& dc, bool text)
 
   wxFont rulerFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
   if (text)
-    dc.SetFont(rulerFont);
+    dc->SetFont(rulerFont);
 
   int minSpace = 60;  // min pixels between labels
 
@@ -1106,7 +1107,7 @@ void TrackPanel::DrawRuler(wxDC& dc, bool text)
   double pos = mViewInfo->h - GetLabelOffset() / mViewInfo->zoom;
   int unitcount = (int)(pos / unit);
 
-  dc.SetTextForeground(wxColour(0,0,204));
+  dc->SetTextForeground(wxColour(0,0,204));
   
   int nextxpos = 0;
 
@@ -1117,7 +1118,7 @@ void TrackPanel::DrawRuler(wxDC& dc, bool text)
 
       switch((unitcount)%4) {
       case 0:
-    	dc.DrawLine(r.x+pixel,r.y+8,r.x+pixel,r.y+r.height);
+    	dc->DrawLine(r.x+pixel,r.y+8,r.x+pixel,r.y+r.height);
 
           if (text) {
       		char str[100];
@@ -1127,7 +1128,7 @@ void TrackPanel::DrawRuler(wxDC& dc, bool text)
       		dc.GetTextExtent(str, &textWidth, &textHeight);
       		
       		if (pixel >= nextxpos && pixel+2+textWidth < r.width) {*/
-      		  dc.DrawText(str, r.x+pixel+3, r.y+2);
+      		  dc->DrawText(str, r.x+pixel+3, r.y+2);
       		  /*
       		  nextxpos = pixel + textWidth + 12;
       		}*/
@@ -1137,11 +1138,11 @@ void TrackPanel::DrawRuler(wxDC& dc, bool text)
 
       case 1:
       case 3:
-    	dc.DrawLine(r.x+pixel,r.y+r.height-4,r.x+pixel,r.y+r.height);
+    	dc->DrawLine(r.x+pixel,r.y+r.height-4,r.x+pixel,r.y+r.height);
     	break;
 
       case 2:
-    	dc.DrawLine(r.x+pixel,r.y+r.height-6,r.x+pixel,r.y+r.height);
+    	dc->DrawLine(r.x+pixel,r.y+r.height-6,r.x+pixel,r.y+r.height);
     	break;
       }
     }
@@ -1160,8 +1161,8 @@ void TrackPanel::DrawRuler(wxDC& dc, bool text)
     if (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen)) {
       int indp = GetLabelOffset() + int((ind - mViewInfo->h)*mViewInfo->zoom);
 
-      dc.SetPen(*wxTRANSPARENT_PEN);
-      dc.SetBrush(*wxBLACK_BRUSH);
+      dc->SetPen(*wxTRANSPARENT_PEN);
+      dc->SetBrush(*wxBLACK_BRUSH);
 
       int indsize = 6;
     
@@ -1173,12 +1174,12 @@ void TrackPanel::DrawRuler(wxDC& dc, bool text)
 	  tri[2].x = indp + indsize;
 	  tri[2].y = 1;
 
-	  dc.DrawPolygon(3, tri);
+	  dc->DrawPolygon(3, tri);
     }
   }
 }
 
-void TrackPanel::DrawTracks(wxDC& dc)
+void TrackPanel::DrawTracks(wxDC *dc)
 {
   int windowWidth;
   int windowHeight;
@@ -1223,32 +1224,32 @@ void TrackPanel::DrawTracks(wxDC& dc)
     #endif
 
 	wxFont labelFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
-	dc.SetFont(labelFont);
-	dc.SetTextForeground(wxColour(0, 0, 0));
+	dc->SetFont(labelFont);
+	dc->SetTextForeground(wxColour(0, 0, 0));
 
 	wxRect labelRect = r;
 	labelRect.width = GetLabelWidth();
 
-	AColor::Medium(&dc, false);
-	dc.DrawRectangle(labelRect);
+	AColor::Medium(dc, false);
+	dc->DrawRectangle(labelRect);
 
 	labelRect.Inflate(-4, -4);
-	AColor::Medium(&dc, t->selected);
-	dc.DrawRectangle(labelRect);
-	AColor::Bevel(dc, false, labelRect);
+	AColor::Medium(dc, t->selected);
+	dc->DrawRectangle(labelRect);
+	AColor::Bevel(*dc, false, labelRect);
 	labelRect.Inflate(4, 4);
 
 	wxRect titleRect;
 	if (GetLabelFieldRect(labelRect, 0, false, titleRect)) {
-	  AColor::Bevel(dc, false, titleRect);
-	  dc.DrawText(wxString::Format("Track %d", num+1),
+	  AColor::Bevel(*dc, false, titleRect);
+	  dc->DrawText(wxString::Format("Track %d", num+1),
 				  titleRect.x + 7, titleRect.y + 2);
 	}
 	
 	wxRect channelRect;
 	if (GetLabelFieldRect(labelRect, 1, true, channelRect)) {
-	  dc.DrawText("Channel:", labelRect.x + 7, channelRect.y + 2);
-	  AColor::Bevel(dc, true, channelRect);
+	  dc->DrawText("Channel:", labelRect.x + 7, channelRect.y + 2);
+	  AColor::Bevel(*dc, true, channelRect);
 	  wxString str;
 	  switch(t->channel) {
 	  case VTrack::MonoChannel: str = "Mono"; break;
@@ -1256,28 +1257,28 @@ void TrackPanel::DrawTracks(wxDC& dc)
 	  case VTrack::RightChannel: str = "Right"; break;
 	  default: str = "Other"; break;
 	  }
-	  dc.DrawText(str, channelRect.x + 3, channelRect.y + 2);	  
+	  dc->DrawText(str, channelRect.x + 3, channelRect.y + 2);	  
 	}
 
 	if (t->GetKind()==VTrack::Wave) {
 	  wxRect rateRect;
 	  if (GetLabelFieldRect(labelRect, 2, true, rateRect)) {
-		dc.DrawText("Rate:", labelRect.x + 7, rateRect.y + 2);
-		AColor::Bevel(dc, true, rateRect);
-		dc.DrawText(wxString::Format("%d",int(((WaveTrack *)t)->rate + 0.5)),
+		dc->DrawText("Rate:", labelRect.x + 7, rateRect.y + 2);
+		AColor::Bevel(*dc, true, rateRect);
+		dc->DrawText(wxString::Format("%d",int(((WaveTrack *)t)->rate + 0.5)),
 					rateRect.x + 3, rateRect.y + 2);
 	  }
 
 	  wxRect displayRect;
 	  if (GetLabelFieldRect(labelRect, 3, true, displayRect)) {
-		dc.DrawText("Display:", labelRect.x + 7, displayRect.y + 2);
-		AColor::Bevel(dc, true, displayRect);
+		dc->DrawText("Display:", labelRect.x + 7, displayRect.y + 2);
+		AColor::Bevel(*dc, true, displayRect);
 		wxString str;
 		if (((WaveTrack *)t)->GetDisplay() == 1)
 		  str = "Spectr";
 		else
 		  str = "Wavefm";
-		dc.DrawText(str, displayRect.x + 3, displayRect.y + 2);
+		dc->DrawText(str, displayRect.x + 3, displayRect.y + 2);
 	  }
 	}
 
@@ -1287,11 +1288,11 @@ void TrackPanel::DrawTracks(wxDC& dc)
 	trackRect.x += GetLabelWidth();
 	trackRect.width -= GetLabelWidth();
 
-	AColor::Medium(&dc, false);
-	dc.DrawRectangle(trackRect);
+	AColor::Medium(dc, false);
+	dc->DrawRectangle(trackRect);
 
 	trackRect.Inflate(-4, -4);
-	AColor::Bevel(dc, false, trackRect);	
+	AColor::Bevel(*dc, false, trackRect);	
 
 	// Don't draw if it's not visible at all (vertically)
 	// if (r.y < (visible->y + visible->height)
@@ -1308,11 +1309,11 @@ void TrackPanel::DrawTracks(wxDC& dc)
 
 	if (!t->IsCollapsed()) {
 	  if (sel)
-		t->Draw(dc, innerRect, h,
+		t->Draw(*dc, innerRect, h,
 				mViewInfo->zoom, mViewInfo->sel0, mViewInfo->sel1,
 				envelopeFlag);
 	  else
-		t->Draw(dc, innerRect, h,
+		t->Draw(*dc, innerRect, h,
 				mViewInfo->zoom, 0.0, 0.0,
 				envelopeFlag);
 	}
@@ -1335,8 +1336,8 @@ void TrackPanel::DrawTracks(wxDC& dc)
   }
 
   GetSize(&r.width, &r.height);
-  AColor::Medium(&dc, false);
-  dc.DrawRectangle(r);
+  AColor::Medium(dc, false);
+  dc->DrawRectangle(r);
 }
 
 void TrackPanel::OnChannelLeft()

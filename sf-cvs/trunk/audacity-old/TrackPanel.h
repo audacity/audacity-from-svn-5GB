@@ -134,8 +134,8 @@ private:
 						 int field, bool rightOnly,
 						 wxRect& fieldRect);
 
-  void DrawRuler(wxDC& dc, bool text = true);
-  void DrawTracks(wxDC& dc);
+  void DrawRuler(wxDC *dc, bool text = true);
+  void DrawTracks(wxDC *dc);
 
   TrackPanelListener *mListener;
 
