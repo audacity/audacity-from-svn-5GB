@@ -38,7 +38,7 @@ ASlider::ASlider(wxWindow * parent, wxWindowID id,
    mMax = max;
    mValue = 0;
    mIsDragging = false;
-#if wxVERSION_NUMBER < 233
+#if wxVERSION_NUMBER < 2303
    mBitmap = new wxBitmap(slider->ConvertToBitmap());
    mThumbBitmap = new wxBitmap(thumb->ConvertToBitmap());
 #else
