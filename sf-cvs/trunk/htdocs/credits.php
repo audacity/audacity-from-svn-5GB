@@ -19,7 +19,7 @@ General comments and questions about Audacity should be sent to
 <p>
 <b>Matt Brubeck</b> is a primary Audacity developer.
 He is in charge of the internationalization and localization
-efforts for Audacity version 1.1, and has also contributed
+efforts for Audacity version 1.2, and has also contributed
 many other features and bug fixes.  He graduated from Harvey Mudd
 College in May, 2002 and is currently living in Seattle, WA.
 <br>
@@ -29,28 +29,23 @@ College in May, 2002 and is currently living in Seattle, WA.
 
 <p>
 <b>Joshua Haberman</b> is a primary Audacity developer.
-He wrote most of the Preferences dialog,
-all Ogg Vorbis support, MP3 exporting support, plus lots of
-other features and bug fixes.  He maintains the Audacity
+He contributed the Preferences dialog, Ogg Vorbis support, and
+MP3 exporting support, and lately has made large contributions
+to the real-time audio I/O code.  He maintains the Audacity package
 for Debian GNU/Linux.
-He is a student at the University of Puget Sound in Tacoma, WA,
-and working for Myricom, Inc in Arcadia, CA for the summer of 2002.
+He is a student at the University of Puget Sound in Tacoma, WA.
 <br>
 <tt>email: joshua <b>@</b> haberman.com</tt><br>
 <a href="http://www.reverberate.org/">web page</a><br>
 </p>
 
 <p>
-<b>Dominic Mazzoni</b> is the project leader and 
-Audacity's primary programmer.  He developed almost all of the
-initial code for Audacity, and is currently working on improving
-support for 32-bit samples and dithering, improving resampling,
-and adding a new "Smart Record" feature which gets the most
-accurate and reliable recording possible by minimizing CPU
-and disk usage.
-He began Audacity while a graduate student at 
-Carnegie Mellon University in Pittsburgh, PA.
-He is currently a research programmer at the
+<b>Dominic Mazzoni</b> is the project leader and one of
+Audacity's primary programmers.  He developed almost all of the
+initial code for Audacity while he was a graduate student at 
+Carnegie Mellon University in Pittsburgh, PA, and he is actively
+working on many new features now along with the rest of the team.
+He is employed as a research programmer at the
 NASA Jet Propulsion Laboratory in Pasadena, CA.
 <br>
 <tt>email: dominic <b>@</b> minorninth.com</tt><br>
@@ -74,7 +69,7 @@ and effective.
 and has worked mostly on effects: new effects (Change Pitch, 
 Change Speed, and Change Tempo), and added Preview to most. 
 He is a consultant in software development and management, 
-with a background in AI, computer graphics, and GUI.
+with a background in AI, computer graphics, and GUIs.
 <br>
 <tt>email: vjohnson <b>@</b> computer.org</tt><br> 
 </p>
@@ -83,7 +78,7 @@ with a background in AI, computer graphics, and GUI.
 <b>Markus Meyer</b> joined development shortly after the 
 1.1.3 beta release. He has implemented functions like Dithering 
 and Loop Play, but at the moment focuses on improving usability 
-and fixing bugs. He works freelance in Germany.
+and fixing bugs.  He works freelance in Germany.
 <br>
 <tt>email: meyer <b>@</b> mesw.de</tt><br> 
 </p>
@@ -136,9 +131,8 @@ in Hampton, VA.<br>
 <p>
 <b>Augustus Saunders</b> worked on a project called
 <i>libaudacity</i>, which will separate the core processing
-code from the GUI of Audacity, resulting in a cross-platform
-C++ library that could be easily incorporated into other programs.
-He is currently consulting for Verilogix, Inc. in Torrance, CA.<br>
+code from the GUI of Audacity, in addition to fixing bugs and
+refactoring code.
 <tt>email: augustus.saunders <b>@</b> verilogix.net</tt><br>
 </p>
 
@@ -166,7 +160,7 @@ Scientist at Carnegie Mellon University in Pittsburgh, PA.
 <p>
 <b>Rob Leslie</b> is the author of
 <a href="http://www.mars.org/home/rob/proj/mpeg/">libmad</a>, the
-MPEG/MP3 audio decoder that Audacity uses.  It also includes libid3tag,
+MPEG/MP3 audio decoder that Audacity uses.  He also wrote libid3tag,
 which Audacity uses to decode and encode ID3 tags.  Besides writing
 such excellent libraries, Rob also gives great support for them, and
 even contributed a patch to Audacity when we were having trouble using
@@ -180,16 +174,15 @@ logo and icons.
 </p>
 
 <p>
-<b>Paul Nasca</b> wrote many of the digital effects
+<b>Paul Nasca</b> wrote some of the digital effects
 included in Audacity, including BassBoost, Phaser, and Wahwah.
-He studies Mathematics and Computer Science at
-Petru Maior University in Targu-Mures, Romania.
+He lives in Romania.
 <br>
 <tt>email: paulnasca <b>@</b> email.ro</tt><br>
 </p>
 
 <p>
-<b>Tom Woodhams</b> did the graphics for the Aqua toolbar for the Macintosh.
+<b>Tom Woodhams</b> contributed graphics for the Mac OS X port.
 </p>
 
 <p>
@@ -202,15 +195,25 @@ Petru Maior University in Targu-Mures, Romania.
 <p>
 <ul>
 
-<li>Henrik Clausen (Danish, program and website)
-
-<li>Ezequiel Plaza (Spanish, program and website)
-
-<li>Yuri Ilyin (Russian, website)
-
-<li>Alexandre Prokoudine (Russian, program)
-
-<li>Lionel Allorge (French, program)
+<li>Lionel Allorge (French)
+<li>Mikhail Balabanov (Bulgarian)
+<li>Olivier Ballestraz (French)
+<li>Lars Carlsson (Swedish)
+<li>Pau Crespo (Catalan)
+<li>Aldo Boccacci (Italian)
+<li>Henrik Clausen (Danish)
+<li>Rok Hecl (Slovenian)
+<li>Jozsef Herczeg (Hungarian)
+<li>Ilija Iliev (Macedonian)
+<li>Yuri Ilyin (Russian)
+<li>Christoph Kobe (German)
+<li>Ohkubo Kohei (Japanese)
+<li>Tino Meinen (Dutch)
+<li>Ezequiel Plaza (Spanish)
+<li>Sebastian Pacholski (Polish)
+<li>Alexandre Prokoudine (Russian)
+<li>Cleber Tavano (Brazilian Portuguese)
+<li>Ales Tosovsky (Czech)
 
 </ul>
 
