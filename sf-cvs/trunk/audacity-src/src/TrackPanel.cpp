@@ -1386,7 +1386,7 @@ void TrackPanel::DrawRuler(wxDC * dc, bool text)
       r.y = 0;
       r.height = GetRulerHeight();
 
-      AColor::Medium(dc, false);
+      AColor::Dark(dc, false);
       dc->DrawRectangle(r);
    }
 }
@@ -1709,7 +1709,7 @@ void TrackPanel::DrawEverythingElse(wxDC *dc, const wxRect panelRect, const wxRe
 
    // Paint over the part below the tracks
    GetSize(&trackRect.width, &trackRect.height);
-   AColor::Medium(dc, false);
+   AColor::Dark(dc, false);
    dc->DrawRectangle(trackRect);
 }
 
@@ -1805,7 +1805,7 @@ void TrackPanel::DrawOutside(VTrack *t, wxDC* dc, const wxRect rec, const int la
 void TrackPanel::DrawOutsideOfTrack(VTrack *t, wxDC* dc, const wxRect r)
 {
    // Fill in area outside of the track
-   AColor::Medium(dc, false);
+   AColor::Dark(dc, false);
    wxRect side = r;
    side.width = kLeftInset;
    dc->DrawRectangle(side);
