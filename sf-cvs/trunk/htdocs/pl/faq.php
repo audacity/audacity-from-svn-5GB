@@ -35,8 +35,7 @@ Używanie Audacity:<br>
 <a href="#a1">Jak mogę zmiksować (zmieszać) razem dwie ścieżki?</a><br>
 <a href="#a2">Czy można usunąć wokal z nagrania?</a><br>
 
-<a href="#a3">When I try to record harmonies with myself,
-              why are the two tracks out of sync?</a><br>
+<a href="#a3">Podczas próby "dogrywania się" do odtwarzanego dźwięku, dlaczego obie ścieżki są rozsynchronizowane?</a><br>
 <a href="#a4">Dlaczego Audacity nie jest rozpowrzechniany razem enkoderem MP3?</a><br>
 <a href="#a5">Czy można nagrywać RealAudio lub inne strumienie audio?</a><br>
 <a href="#a6">Pomocy! Naciskam Nagrywaj, a otrzymuję tylko ciszę!</a><br>
@@ -225,216 +224,204 @@ Jeżeli w dalszym ciągu pojawiają się błędy podczas instalacji, to mógł w
 <a name="i5"></a>
 <font size=+1><b>
 
-5. Unix: Why do I get an error while loading
-	the shared library libwx_gtk.so?<br></b></font>
+5. Unix: Dlaczego pojawia się błąd w czasie wczytywania współdzielonej biblioteki libwx_gtk.so?<br></b></font>
 
-<p><font size=+0>This could be one of two problems:
-<br>- If you installed the wxWindows RPM, be sure to run "ldconfig" (as
-root) so your system knows about the new library.
-
-<br><br>- If you installed wxWidgets
-from source, it may have been installed in /usr/local, but /usr/local/lib may
-not be in your library path. Add /usr/local/lib to the file "/etc/ld.so.conf"
-and then run "ldconfig". You may also want to add "/usr/local/bin" to your path,
-so that programs can find the "wx-config" utility.<br>
+<p><font size=+0>o może być jeden z dwóch powodów:
+<br>- jeżeli instalowałeś wxWindows z RPM'a, miej pewność że uruchomiono
+"ldconfig" (jako root) , dzięki czemu Twój system wie o nowej bibliotece.
+<br><br>- jeżeli instalowałeś bibliotekę wxWidgets ze źródeł, mogła ona zostać 
+zainstalowana w katalogu /usr/local, ale katalog /usr/local/lib może nie być
+wpisany w pliku "/etc/ld.so.conf". Dopisz ścieżkę "/usr/local/lib" do pliku
+"/etc/ld.so.conf", a następnie uruchom "ldconfig". Możesz także dodać
+"/usr/local/bin" do Twojej ścieżki, tak żeby progamy mogły tam znaleźć narzędzie
+"wx-config".<br>
 
 <p>
 <table cellpadding=6 width=100%><tr><td bgcolor="#ffd0d0" align="center">
-<font size="+1">Using Audacity</font>
+<font size="+1">Używanie Audacity</font>
 </td></tr></table>
 
 <p>
 <a name="a1"></a>
 <font size=+1><b>
 
-1. How do I mix two tracks together?
+1. Jak mogę zmiksować (zmieszać) razem dwie ścieżki?
 </b></font>
 <p>
 
-Audacity mixes automatically.  All you have to do is
-import two tracks into the same project, which you can
-do using the "Import Audio" command in the Project
-menu, or simply by dragging the two audio files to
-Audacity.  When you press the record button, Audacity
-generates a new track automatically, also.
+Audacity miksuje automatycznie. Wszystko co musisz zrobić
+to zaimportować dwie ścieżki do swojego projektu, co 
+możesz zrobić przy użyciu "Importuj Audio" w menu projektu,
+lub po prostu "przeciągnąć" dwa pliki audio do Audacity.
+Gdy naciśniesz klawisz nagrywania, Audacity także stworzy nową ścieżkę automatycznie.
 
 <p>
 
-In order to save your mix, you can either Export the
-project, which will automatically mix all of your
-tracks together, or you can select your tracks and
-use the "Quick Mix" command in the Project menu.
+Aby zapisać swój mix możesz albo Eksportować projekt 
+co spowoduje utworzenie mixu wszystkich twoich ścieżek 
+automatycznie, albo możesz zaznaczyć ścieżki i użyć opcji
+"Szybki mix" z menu Projekt.
+
 
 <p>
 <a name="a2"></a>
 <font size=+1><b>
-2. Can I remove the vocals from a recording?
+2. Czy można usunąć wokal z nagrania?
 </b></font>
 <p>
 
-With some stereo recordings, it is possible to remove the vocals
-because of the way in which the recording was mixed at the studio.
-Often, the vocals are placed in the exact center of the recording,
-while all other instruments are slightly off-center.  If you
-subtract the right channel from the left channel, the vocals get
-completely canceled out, leaving only the other instruments.
+W niektórych stereofonicznych rejestratorach dźwięku jest możliwe usunięcie
+wokali, w zależności od tego jak został on zmiksowany w studio.
+Często wokale umieszczane są dokładnie pośrodku, podczas gdy instrumenty
+są nieznacznie porozsuwane. Jeżeli odejmiesz od siebie kanały lewy i prawy,
+wokal zostanie całkowicie wycięty,pozostawiając jedynie instrumenty.
 <p>
 
-<b>This only works on some recordings!</b>
+<b>To działa tylko dla niektórych nagrań!</b>
 <p>
+Aby wykonać tego w Audacity, importuj nagranie stereo, wybierz
+na ścieżce menu pop
 To attempt this in Audacity, import a stereo recording, then
-click on the track pop-up menu (the little down-arrow next to
-the name of the track) and select "Split Stereo Track".
-Now select the lower track (the right channel) and use the
-"Invert" effect (from the Effect menu).  Finally, use the
-track pop-up menus to make both channels Mono channels,
-and then mix them together using Quick Mix.  If you're lucky,
-the vocals will be gone.
+click on the track pop-up menu (troche poniżej dolnej strzałki
+za nazwą ścieżki(i wybierz "Rozdziel ścieżki stereo".
+Następnie zaznacz niższą ścieżkę (prawy kanał) i użyj efektu "Odwróć" z menu Efektów.
+W kolejnym kroku utwórz z obie ścieżki monofoniczne i połącz je przy użyciu
+Szybkiego miksu. Jeżeli małeś szczęście , wokale zostaną usunięte.
 
 <p>
 <a name="a3"></a>
 <font size=+1><b>
-3. When I try to record harmonies with myself,
-              why are the two tracks out of sync?
+3. Podczas próby "dogrywania się" do odtwarzanego dźwięku, dlaczego obie ścieżki są rozsynchronizowane?
 </b></font>
 <p>
-This is normal and it happens because there is a small delay
-between when Audacity starts playing sound and when it actually
-reaches your speaker.  Audacity does not automatically try to
-correct for this delay, and you must do it manually.
+Jest to normalne zjawisko i dzieje się tak ponieważ jest małe opóźnienie pomiędzy rozpoczęciem odtwarzania przez Audacity, a sygnałem docierającym do głośnika.
+Audacity nie koryguje tego opóźnienia automatycznie, musisz tego dokonać manualnie.
 <p>
-To correct this delay, use the
-Time Shift tool to slide
-one of the tracks over until they line up.  Note that you can
-use the tool while you are listening to the recording.
-
+Aby skorygować opóźnienie, użyj narzędzia do przesuwania w czasie i przesuń jedną ze ścieżek aż uda ci się to skorygować.
+Zauważ że możesz użyć tego narzędzia podczas odsłuchu nagrania.
 <p>
 
 <a name="a4"></a>
 <font size=+1><b>
-4. Why doesn't Audacity ship with an MP3 encoder?
+4. Dlaczego Audacity nie jest rozpowrzechniany razem enkoderem MP3?
 </b></font>
 <p>
 
-Unfortunately, the algorithm to encode or create MP3 files
-is patented, and <b>Audacity</b> would not be able to
-include an MP3 exporting algorithm without either
-charging a fee or violating the law in many countries.
+Niestety, algorytm służący do enkodowania lub tworzenia plików MP3
+jest opatentowany i <b>Audacity</b> nie może zawierać algorytmu exportu
+do MP3 bez konieczności uiszczenia honorarium lub naruszenia prawa 
+w niektórych państwach.
 <p>
-As a compromise, Audacity comes with the ability to use
-other MP3 encoders, which you must download separately.
-It is up to you to make sure you are in compliance with
-any licensing restrictions imposed by MP3 encoders.
+Ale tak się składa, że Audacity jest przygotowane do
+używania enkoderów MP3, które musisz ściągną niezależnie.
+Powinieneś mieć pewność że spełniasz warunki licencji
+nakłożone na enkodery MP3.
 <p>
-For more information, see the page on Exporting MP3 files in
-our Online Help.
-
+Aby uzyskać więcej informacji, zobacz stronę Eksportowanie plików MP3 w
+naszej pomocy Online.
 <p>
-
-
 
 <a name="a5"></a>
 <font size=+1><b>
-5. Can I record RealAudio or other streaming audio?
+5. Czy można nagrywać RealAudio lub inne strumienie audio?
 </b></font>
 </p><p>
 
-Not automatically.  Most streaming audio, including most music delivered to
-the RealOne Player, Windows Media Player, and Quicktime, is specifically
-designed to prevent you from recording it.
+Nie automatycznie. Wiele strumieni audio, głównie dostarczających muzykę:
+RealOne Player, Windows Media Player i Quicktime jest specjalnie zrobionych
+tak żeby uniemożliwić zapis.
+
 </p><p>
-Still, it's almost always still possible to record anything your computer
-can play by looping your sound-out jack to your sound-in/microphone jack
-on your computer's sound card.
+Mimo to prawie zawsze jest możliwe nagrywanie wszystkiego co twoj komputer 
+odtwarza, poprzez zapętlenie Twojego wyjścia audio (jack) z Twoim
+wejściem (sound-in/microphone) w twojej karcie dźwiękowej.
 </p><p>
-Use a 1/8 inch stereo mini to 1/8 inch stereo mini cable.  Connect one end
-to the sound-out jack on your computer or sound card (where you would
-plug speakers or headphones - it's often colored green).  Connect the other
-end to the microphone or line-in jack (it's often colored red).
+Użyj kabla z wtyczkami stereo mini jack. Podłącz jeden koniec do wyjścia
+karty dźwiękowej(tam gdzie podłączasz głośniki lub słuchawki - często jest koloru zielonego).
+Drugi koniec podłącz do wejścia mikrofonowego lub liniowego (często jest koloru czerwonego).
 </p><p>
-Now Audacity can record anything your computer plays.  Press Record
-in Audacity, and then press Play in your streaming audio program.
+Teraz Audacity potrafi nagrywać wszystko co komputer odtwarza.
+Naciśnij Nagrywaj w Audacity, a następnie Odtwarzaj w Twoim programie do odtwarzania strumienia audio.
 </p><p>
 
 <a name="a6"></a>
 <font size=+1><b>
-6. Help! I press Record, but all I get is silence!
+6. Pomocy! Naciskam Nagrywaj, a otrzymuję tylko ciszę!
 </b></font>
 </p><p>
-Audacity records from the default input source that is selected by
-your operating system.  If you have multiple input sources (such as
-a built-in microphone, an external microphone, line-in jack, or an
-audio CD) you have to select one of these to record from.  If you are
-trying to record from a microphone, for example, but your input source
-is set to "line in", then Audacity will just record silence.
+Audacity nagrywa domyślny sygnał wejściowy który jest wybrany w Twoim
+systemie operacyjnym. Jeżel masz wiele wejść 
+(takich jak np. wbudowany mikrofon,zewnętrzny mikrofon,wejście liniowe jack,
+lub audio CD) musisz wybrać to którego będziesz używać do nagrywania.
+Jeżeli na przykład będziesz próbować nagrywać mikrofon, a twoje źródło dźwięku jest ustawione
+na wejście liniowe - Audacity nagra ciszę.
 </p><p>
-If you use Windows, you can set the input source by right-clicking
-on the volume icon in your tool tray (in the lower-right corner of
-your screen).
+Jeżeli używasz Windows'a źródło dźwięku możesz ustawić poprzez 
+kliknięcie prawym klawiszem na ikonce głłośnika w prawym dolnym rogu
 </p><p>
-If you use Mac OS 9, use the Sound control panel.  On Mac OS X, use
-the Sound panel in the System Preferences (there's an Input tab if you
-have 10.2 or higher).
+Jeżeli używasz Mac OS 9, użyj panelu kontroli dźwięku. W systemie Mac OS X
+użyj panel dźwięku we właściwościach systemu.
 </p><p>
-On Linux, use a mixer like "xmixer" or "kmix".
+W linuksie użyj miksera, np. "xmixer" or "kmix".
 </p><p>
 
 <a name="a7"></a>
 <font size=+1><b>
-7. How do I split a single file into multiple tracks?
+7. Jak podzielić pojedynczy plik na wiele ścieżek?
 </b></font>
 </p><p>
-Sometimes you might end up with a recording of multiple songs that are
-in a single file.  If you want to burn these songs onto a CD as separate
-tracks, you need to create a separate file for each song.
+Czasami możesz nagrać wiele utworów w jednym ciągłym pliku. Jeżeli
+chcesz wypalić te piosenki na płycie CD jako osobne ścieżki,
+musisz utworzyć osobny plik dla każdej piosenki.
 </p><p>
-There are lots of ways to split a recording into multiple tracks using
-Audacity.  Here are a few methods you can try:
+JEst wiele sposobów na podział nagrania na wiele ścieżek przy użyciu Audacity.
+Tutaj zostały wymienione niektóre z nich, które możesz wypróbować:
 </p><p>
-Method 1: Export Selection
+Metoda 1: Eksport zaznaczenia
 </p><ul>
-<li>Select the region of audio corresponding to the first track.
-</li><li>Choose "Export Selection as WAV" from the File menu, and save it to
-    disk.
-</li><li>Continue for all remaining tracks.
+<li>Zaznacz region odpowiadający pierwszej ścieżce. 
+</li><li>Wybierz opcję
+"Eksportuj zaznaczenie jako WAV" z menu Plik i zapisz go na dysk.
+</li><li>Powtórz dla pozostałych ścieżek.
 </li></ul>
 <p>
-Method 2: Delete and Undo
+Metoda 2: Usuń i Cofnij
 </p><ul>
-<li>Delete everything <i>except</i> for the first track.
-</li><li>Choose "Export as WAV" from the File menu, and save the first track
-    to disk.
-</li><li>Select "Undo" from the Edit menu.  Keep undo-ing until you have the rest
-    of your audio back.  (Audacity has unlimited undo.)
-</li><li>Continue for all remaining tracks.
+<li>Usuń wszystko <i>za wyjątkiem</i> pierwszej ścieżki
+</li><li>Wybierz opcję
+"Eksportuj zaznaczenie jako WAV" z menu Plik i zapisz go na dysk.
+</li><li>Wybierz  "Cofnij" z menu Edycja.  Cofaj tak długo aż odzyskasz cały materiał audio zpowrotem.
+(Audacity ma nieograniczone cofanie)
+</li><li>Powtóz dla pozostałych ścieżek.
 </li></ul>
 <p>
-Method 3: Split and Export
+Metoda 3: Podział i Eksport
 </p><ul>
-<li>Select what you would like to be the first track.
-</li><li>Choose "Split" from the Edit menu, which moves the selection into
-    a separate track within Audacity.
-</li><li>Keep doing this until all of the songs are in separate tracks.
-    Don't forget that you can Undo at any point if you make a mistake.
-</li><li>Now go back through and use "Export Selection as WAV" to export each
-    track to a separate file.  To quickly select each track, click on its
-    label (anywhere in the area to the left of the waveform, underneath
-    the title).
+<li>Zaznacz to cochcesz żeby było pierwszą ścieżką.
+</li><li>Wybierz "Podziel" zmenu Edycji, co przeniesie zaznaczenie
+ do osobnej ścieżki w Audacity.
+</li><li>Rób to aż wszystkie piosenki będoą w osobnych ścieżkach.
+Nie zapominaj że możesz cofnąć każdą operację jeżeli popełniłeś błąd.
+    
+</li><li>Teraz cofni się do opcji "Eksportuj zaznaczenie jako WAV" żeby wyeksportować każdą
+    ścieżkę do osobnego pliku. Aby szybko zaznaczyć każdą ścieżkę, kliknij na jej
+    etykiecie (w dowolnym miejscu panela z lewej strony przebiegu czasowego, poniżej
+    tytułu).
 </li></ul>
 <p>
 
 <a name="a8"></a>
 <font size=+1><b>
-8. How do I get songs from an audio CD?
+8. Jak można "wyciągnąć" utwór z płyty audio CD?
 </b></font>
 </p><p>
-Audacity does not extract songs from audio CDs.  You need to use a
-"ripper" program for this.
+Audacity nie "wyciąga" utworów z płyt audio CD. Musisz użyć programu
+do "rippowania" ,aby tego dokonać.
 </p><p>
-For Windows, we recommend <a href="http://cdexos.sourceforge.net/">CDex</a>.
+Dla Windowsa polecamy<a href="http://cdexos.sourceforge.net/">CDex</a>.
 </p><p>
-For Mac OS (9 and X), we recommend Apple's <a href="http://www.apple.com/itunes/">iTunes</a>.
+Dla Mac OS (9 i X), polecamy Apple'a <a href="http://www.apple.com/itunes/">iTunes</a>.
 </p><p>
-For Linux, try <a href="http://www.xiph.org/paranoia/">Paranoia</a>.
+Dla Linuksa, wypróbuj <a href="http://www.xiph.org/paranoia/">Paranoia</a>.
 
 <?php BoxBottom(); ?>
