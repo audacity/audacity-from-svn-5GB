@@ -1,6 +1,6 @@
 /*
  * libid3tag - ID3 tag manipulation library
- * Copyright (C) 2000-2003 Underbit Technologies, Inc.
+ * Copyright (C) 2000-2004 Underbit Technologies, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: genre.h,v 1.2 2003-09-07 01:21:44 dmazzoni Exp $
+ * $Id: genre.h,v 1.3 2004-06-08 06:38:15 dmazzoni Exp $
  */
 
 # ifndef LIBID3TAG_GENRE_H

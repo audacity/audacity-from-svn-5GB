@@ -1,7 +1,7 @@
 dnl -*- m4 -*-
 dnl
 dnl libid3tag - ID3 tag manipulation library
-dnl Copyright (C) 2000-2003 Underbit Technologies, Inc.
+dnl Copyright (C) 2000-2004 Underbit Technologies, Inc.
 dnl
 dnl This program is free software; you can redistribute it and/or modify
 dnl it under the terms of the GNU General Public License as published by
@@ -17,11 +17,11 @@ dnl You should have received a copy of the GNU General Public License
 dnl along with this program; if not, write to the Free Software
 dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 dnl
-AC_REVISION([$Id: configure.ac,v 1.2 2003-09-07 01:27:03 dmazzoni Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.3 2004-06-08 06:38:15 dmazzoni Exp $])dnl
 
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([ID3 Tag], [0.15.0b], [support@underbit.com], [libid3tag])
+AC_INIT([ID3 Tag], [0.15.1b], [support@underbit.com], [libid3tag])
 AC_PREREQ(2.53)
 
 AC_CONFIG_SRCDIR([id3tag.h])
@@ -29,6 +29,8 @@ AC_CONFIG_SRCDIR([id3tag.h])
 AM_INIT_AUTOMAKE
 
 AM_CONFIG_HEADER([config.h])
+
+AM_MAINTAINER_MODE
 
 dnl System type.
 
@@ -200,5 +202,6 @@ test -n "$profile"  && CFLAGS="$CFLAGS $profile" LDFLAGS="$LDFLAGS $profile"
 dnl LTLIBOBJS=`echo "$LIBOBJS" | sed -e 's/\.o/.lo/g'`
 dnl AC_SUBST(LTLIBOBJS)
 
-AC_CONFIG_FILES([Makefile libid3tag.list])
+AC_CONFIG_FILES([Makefile msvc++/Makefile  \
+	libid3tag.list])
 AC_OUTPUT
