@@ -100,6 +100,8 @@ class TrackPanel:public wxWindow {
    void DragZoom(int x);
    void DoZoomInOut(wxMouseEvent &event, int x_center);
 
+   // BG: Handle drawing
+   void HandleDraw(wxMouseEvent & event);
 
    void DoPopupMenu(wxMouseEvent &event, wxRect& titleRect, 
 		    VTrack* t, wxRect &r, int num);

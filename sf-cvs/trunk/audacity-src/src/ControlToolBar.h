@@ -44,6 +44,7 @@ enum {
    envelopeTool,
    slideTool,
    zoomTool,
+   drawTool,
    numTools
 };
 
