@@ -118,7 +118,7 @@ END_EVENT_TABLE()
 
 //Standard constructor
 ControlToolBar::ControlToolBar(wxWindow * parent):
-ToolBar(parent, -1, wxPoint(1, 1), wxSize(420, 55))
+ToolBar(parent, -1, wxPoint(1, 1), wxSize(420, 55),gControlToolBarStub)
 {
    InitializeControlToolBar();
 }
@@ -126,8 +126,8 @@ ToolBar(parent, -1, wxPoint(1, 1), wxSize(420, 55))
 //Another constructor
 ControlToolBar::ControlToolBar(wxWindow * parent, wxWindowID id,
                                const wxPoint & pos,
-                               const wxSize & size):ToolBar(parent, id,
-                                                            pos, size)
+                               const wxSize & size):
+   ToolBar(parent, id, pos, size,gControlToolBarStub)
 {
    InitializeControlToolBar();
 }

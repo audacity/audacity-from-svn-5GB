@@ -58,7 +58,7 @@ END_EVENT_TABLE()
 
 //Standard contructor
 EditToolBar::EditToolBar(wxWindow * parent)
-   : ToolBar(parent, -1, wxPoint(1, 1), wxSize(377, 27))
+   : ToolBar(parent, -1, wxPoint(1, 1), wxSize(377, 27),gEditToolBarStub)
 {
    InitializeEditToolBar();
 }
@@ -66,7 +66,7 @@ EditToolBar::EditToolBar(wxWindow * parent)
 //Another constructor
 EditToolBar::EditToolBar(wxWindow * parent, wxWindowID id,
                          const wxPoint & pos, const wxSize & size)
-   : ToolBar(parent, id, pos, size)
+   : ToolBar(parent, id, pos, size,gEditToolBarStub)
 {
    InitializeEditToolBar();
 }

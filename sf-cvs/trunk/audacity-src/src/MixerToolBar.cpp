@@ -78,7 +78,7 @@ END_EVENT_TABLE()
 
 //Standard contructor
 MixerToolBar::MixerToolBar(wxWindow * parent):
-   ToolBar(parent, -1, wxPoint(1, 1), wxSize(500, 27))
+   ToolBar(parent, -1, wxPoint(1, 1), wxSize(500, 27),gMixerToolBarStub)
 {
    InitializeMixerToolBar();
 }
@@ -86,8 +86,8 @@ MixerToolBar::MixerToolBar(wxWindow * parent):
 //Another constructor
 MixerToolBar::MixerToolBar(wxWindow * parent, wxWindowID id,
                            const wxPoint & pos,
-                           const wxSize & size):ToolBar(parent, id,
-                                                        pos, size)
+                           const wxSize & size):
+   ToolBar(parent, id,pos, size,gMixerToolBarStub)
 {
    InitializeMixerToolBar();
 }

@@ -21,9 +21,9 @@ void CreateMenusAndCommands();
 
 void ModifyExportMenus();
 void ModifyUndoMenus();
-void ModifyToolbarMenus();
+//void ModifyToolbarMenus();
 
-int GetToolBarChecksum();
+//int GetToolBarChecksum();
 wxUint32 GetUpdateFlags();
 
 double NearestZeroCrossing(double t0);
