@@ -922,6 +922,9 @@ void TrackPanel::HandleZoom(wxMouseEvent &event)
          mZoomStart = tmp;
       }
 
+      if (zoomLength == 0)
+         mZoomEnd++;
+
       if (isZooming || zoomLength > 3) {
 
          double left =
