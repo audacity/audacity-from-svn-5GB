@@ -28,7 +28,7 @@
  * was a bitch to track down. */
 #include <wx/ffile.h>
 
-#include "vorbis/include/vorbis/vorbisfile.h"
+#include <vorbis/vorbisfile.h>
 
 #include "ImportOGG.h"
 
@@ -39,9 +39,9 @@ bool ImportOGG(wxWindow *parent,
 			   wxString Filename, WaveTrack **channels[], int *numChannels,
 			   DirManager *dirManager)
 {
-  #ifndef linux
+  #ifdef __WXMAC__
   // This is only temporary until the OGG Vorbis libraries are linked in on the
-  // Mac and Windows
+  // Mac
   return false;
   #else
 
@@ -82,7 +82,15 @@ bool ImportOGG(wxWindow *parent,
 	*numChannels = vi->channels;
 	*channels = new WaveTrack *[*numChannels];
 
-	for(int c = 0; c < *numChannels; c++) {
+	/* The Stroustrup book says that variables declared in the
+	 * initialization part of a for loop are only in scope until
+	 * the end of the loop, but Visual C complains about you
+	 * "redefining" the variable if you assume that. So
+	 * I'll declare a function-global count variable once,
+	 * and use it in all the loops. Grudgingly. */
+	int c;
+
+	for(c = 0; c < *numChannels; c++) {
 		(*channels)[c] = new WaveTrack(dirManager);
 		(*channels)[c]->rate = vi->rate;
 
@@ -130,14 +138,14 @@ bool ImportOGG(wxWindow *parent,
 		samplesRead = bytesRead / *numChannels / sizeof(sampleType);
 
 		if(samplesRead + bufferCount > bufferSize) {
-			for(int c = 0; c < *numChannels; c++)
+			for(c = 0; c < *numChannels; c++)
 				(*channels)[c]->Append(buffers[c], bufferCount);
 			bufferCount = 0;
 		}
 
 		/* Un-interleave */
 		for(int s = 0; s < samplesRead; s++)
-			for(int c = 0; c < *numChannels; c++)
+			for(c = 0; c < *numChannels; c++)
 				buffers[c][s+bufferCount] = mainBuffer[s*(*numChannels)+c];
 
 		bufferCount += samplesRead;
@@ -165,7 +173,7 @@ bool ImportOGG(wxWindow *parent,
 
 	delete[] mainBuffer;
 	
-	for(int c = 0; c < *numChannels; c++)
+	for(c = 0; c < *numChannels; c++)
 		delete[] buffers[c];
 	delete[] buffers;
 	
@@ -173,7 +181,7 @@ bool ImportOGG(wxWindow *parent,
 		delete progress;
 	
 	if(cancelled) {
-		for(int c = 0; c < *numChannels; c++)
+		for(c = 0; c < *numChannels; c++)
 			delete (*channels)[c];
 		delete[] *channels;
 

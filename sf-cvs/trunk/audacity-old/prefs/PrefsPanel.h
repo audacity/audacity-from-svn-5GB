@@ -25,7 +25,12 @@
 #include <wx/gdicmn.h>
 
 /* A few constants for an attempt at semi-uniformity */
+#ifdef WIN32
+#define PREFS_FONT_SIZE     8
+#else
 #define PREFS_FONT_SIZE     10
+#endif
+
 #define PREFS_SIDE_MARGINS  10
 #define PREFS_TOP_MARGIN    17
 #define PREFS_BOTTOM_MARGIN 10

@@ -38,7 +38,8 @@ END_EVENT_TABLE()
 
 PrefsDialog::PrefsDialog(wxWindow *parent):
 	wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
-			 wxSize(500, 420), wxDIALOG_MODAL)
+			 wxSize(500, 440),
+			 wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
 {
     CentreOnParent();
 

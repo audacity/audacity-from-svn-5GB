@@ -72,7 +72,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /Gm /GX /ZI /Od /I "../../include" /I "../../contrib/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D "__WX__" /YX"wx/wxprec.h" /FD /c
+# ADD CPP /nologo /MD /W3 /Gm /GX /ZI /Od /I "../../include" /I "../../contrib/include" /I "./allegro" /I "./vorbis/win/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D DEBUG=1 /D "__WXDEBUG__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /D "__WX__" /YX"wx/wxprec.h" /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x809 /d "_DEBUG"
@@ -82,7 +82,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 wxd.lib xpmd.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib xaudio.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"../../lib" /libpath:"../../contrib/lib"
+# ADD LINK32 wxd.lib xpmd.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib xaudio.lib ogg.lib vorbis.lib vorbisfile.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"../../lib" /libpath:"../../contrib/lib" /libpath:"./xaudio/win/lib" /libpath:"./vorbis/win/lib"
 
 !ELSEIF  "$(CFG)" == "Audacity - Win32 Debug DLL"
 
@@ -393,6 +393,118 @@ SOURCE=.\res\watch1.cur
 
 # PROP Default_Filter ""
 # End Group
+# Begin Group "allegro"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\allegro\allegro.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\allegro.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\allegrowr.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\allegrowr.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\mfallegro.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\mfallegro.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\mfmidi.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\mfmidi.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\stime.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\stimewin32.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\strparse.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\strparse.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\trace.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\writemidi.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\allegro\writemidi.h
+# End Source File
+# End Group
+# Begin Group "prefs"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\prefs\AudioIOPrefs.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\prefs\AudioIOPrefs.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\prefs\FileFormatPrefs.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\prefs\FileFormatPrefs.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\prefs\PrefsDialog.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\prefs\PrefsDialog.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\prefs\PrefsPanel.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\prefs\SampleRatePrefs.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\prefs\SampleRatePrefs.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\prefs\SpectrumPrefs.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\prefs\SpectrumPrefs.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\AboutDialog.cpp
@@ -547,6 +659,10 @@ SOURCE=.\ImportMP3.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\ImportOGG.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ImportRaw.cpp
 # End Source File
 # Begin Source File
@@ -568,6 +684,10 @@ SOURCE=.\Landmark.cpp
 # Begin Source File
 
 SOURCE=.\Landmark.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Menus.cpp
 # End Source File
 # Begin Source File
 
