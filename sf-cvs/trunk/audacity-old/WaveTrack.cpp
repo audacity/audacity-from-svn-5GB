@@ -938,8 +938,9 @@ bool WaveTrack::InitBlock(WaveBlock *b)
     tempSamples[i] = 0;
   f->Write((void *)tempSamples, sizeof(sampleType) * slen);
   delete[] tempSamples;
-  f->Close();
   */
+
+  f->Close();
 
   return true;
 }
@@ -1108,7 +1109,6 @@ void WaveTrack::FirstWrite(sampleType *buffer, WaveBlock *b,
 {
   wxASSERT(b);
   wxASSERT(b->len <= maxSamples);
-  wxASSERT(start + len <= b->len);
 
   dirty++; // forces redraw
 
