@@ -124,7 +124,7 @@ bool ImportWAV(wxWindow *parent,
       framescompleted += block;
       
     }
-    
+
 	if (!progress && wxGetElapsedTime(false) > 500) {
 	  progress =
 		new wxProgressDialog("Import","Importing audio file...",

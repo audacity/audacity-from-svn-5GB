@@ -91,7 +91,17 @@ long GetFreeDiskSpace( TCHAR *path )
 		return -1;
 	}
 }
+
 #elif defined(__WXMAC__)
+
+void my_c2pstr(char *str)
+{
+  int len = strlen((const char *)str);
+  for(int i=len; i>0; i--)
+    str[i] = str[i-1];
+  str[0] = (len>255? 255: (char)len);
+}
+
 long GetFreeDiskSpace( const char *path )
 {
 	char *str = new char[strlen(path)+1];
@@ -113,7 +123,7 @@ long GetFreeDiskSpace( const char *path )
 	  *p++;
 	   
 	/* Mac routines want Pascal strings */
-	c2pstr(p);
+	my_c2pstr(p);
 	
 	HVolumeParam pb;
 	
