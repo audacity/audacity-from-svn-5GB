@@ -30,8 +30,12 @@
 #define AssignDefaultsButtonID  7001
 #define CurrentComboID          7002
 #define SetButtonID             7003
-#define ClearButtonID             7004
+#define ClearButtonID           7004
 #define CommandsListID          7005
+
+
+// The numbers of the columns of the mList.
+enum { BlankColumn=0, KeyComboColumn=1, CommandColumn=2};
 
 BEGIN_EVENT_TABLE(KeyConfigPrefs, wxPanel)
    EVT_BUTTON(AssignDefaultsButtonID, KeyConfigPrefs::AssignDefaults)
@@ -62,18 +66,17 @@ PrefsPanel(parent)
 
    //An empty first column is a workaround - under Win98 the first column 
    //can't be right aligned.
-   mList->InsertColumn(0, _T(""), wxLIST_FORMAT_LEFT );
-   mList->InsertColumn(1, _("Command"),  wxLIST_FORMAT_LEFT );
-   mList->InsertColumn(2, _("Key Combination"), wxLIST_FORMAT_RIGHT );
+   mList->InsertColumn(BlankColumn,    _T(""), wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(KeyComboColumn, _("Key Combination"), wxLIST_FORMAT_RIGHT );
+   mList->InsertColumn(CommandColumn,  _("Command"),  wxLIST_FORMAT_LEFT );
 
    RepopulateBindingsList();
 
-   mList->SetColumnWidth( 0, 0 ); // First column width is zero, to hide it.
-   //   mList->SetColumnWidth( 1, wxLIST_AUTOSIZE );
+   mList->SetColumnWidth( BlankColumn, 0 ); // First column width is zero, to hide it.
    // Would like to use wxLIST_AUTOSIZE but
    // wxWindows does not look at the size of column heading.
-   mList->SetColumnWidth( 1, 250 );
-   mList->SetColumnWidth( 2, 212 );
+   mList->SetColumnWidth( KeyComboColumn, 115 );
+   mList->SetColumnWidth( CommandColumn, 250 );
 
    topSizer->Add( mList, 1, 
                   wxGROW | wxALL, GENERIC_CONTROL_BORDER);
@@ -118,7 +121,7 @@ void KeyConfigPrefs::OnSet(wxCommandEvent& event)
    if (mCommandSelected < 0 || mCommandSelected >= (int)mNames.GetCount())
       return;
 
-   mList->SetItem( mCommandSelected, 2, mCurrentComboText->GetValue() );
+   mList->SetItem( mCommandSelected, KeyComboColumn, mCurrentComboText->GetValue() );
 }
 
 void KeyConfigPrefs::OnClear(wxCommandEvent& event)
@@ -128,7 +131,7 @@ void KeyConfigPrefs::OnClear(wxCommandEvent& event)
    if (mCommandSelected < 0 || mCommandSelected >= (int)mNames.GetCount())
       return;
 
-   mList->SetItem( mCommandSelected, 2, "" );
+   mList->SetItem( mCommandSelected, KeyComboColumn, "" );
 }
 
 void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
@@ -153,15 +156,11 @@ void KeyConfigPrefs::RepopulateBindingsList()
    unsigned int i;
    for(i=0; i<mNames.GetCount(); i++) {
       mList->InsertItem( i, _T("") );
-
       wxString label = mManager->GetLabelFromName(mNames[i]);
       label = wxMenuItem::GetLabelFromText(label.BeforeFirst('\t'));
-      mList->SetItem( i, 1, label );
-      mList->SetItem( i, 2, mManager->GetKeyFromName(mNames[i]) );
+      mList->SetItem( i, KeyComboColumn, mManager->GetKeyFromName(mNames[i]) );
+      mList->SetItem( i, CommandColumn, label );
    }
-
-   // TODO
-   //gAudacityProjects[0]->GetCommands()->FillKeyBindingsList(mList);
 }
 
 
@@ -170,7 +169,7 @@ void KeyConfigPrefs::AssignDefaults(wxCommandEvent& event)
    unsigned int i;
 
    for(i=0; i<mNames.GetCount(); i++) {
-      mList->SetItem( i, 2, mManager->GetDefaultKeyFromName(mNames[i]) );
+      mList->SetItem( i, 1, mManager->GetDefaultKeyFromName(mNames[i]) );
    }
 }
 
@@ -186,9 +185,10 @@ bool KeyConfigPrefs::Apply()
    // than the default value.
    //
 
-   item.m_col = 2;
+   item.m_col = KeyComboColumn;
+   item.m_mask = wxLIST_MASK_TEXT;
    for(i=0; i<mNames.GetCount(); i++) {
-      item.m_itemId = i;
+      item.SetId( i );
       mList->GetItem(item);
       wxString name = mNames[i];
       wxString key = item.m_text;
@@ -196,14 +196,17 @@ bool KeyConfigPrefs::Apply()
 
       if (gPrefs->HasEntry(name)) {
          wxString oldKey = gPrefs->Read(name, key);
-         if (oldKey != key)
+         if (oldKey != key)  {
             gPrefs->Write(name, key);
-         if (key == defaultKey)
+         }
+         if (key == defaultKey)   {
             gPrefs->DeleteEntry(name);
+         }
       }
       else {
-         if (key != defaultKey)
+         if (key != defaultKey){
             gPrefs->Write(name, key);
+         }
       }
    }
 
