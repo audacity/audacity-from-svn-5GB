@@ -19,7 +19,7 @@
  * If you would like to negotiate alternate licensing terms, you may do
  * so by contacting: Underbit Technologies, Inc. <info@underbit.com>
  *
- * $Id: id3tag.h,v 1.2.2.1 2003-09-29 17:03:20 dmazzoni Exp $
+ * $Id: id3tag.h,v 1.2.2.2 2004-02-25 06:11:05 mbrubeck Exp $
  */
 
 # ifndef LIBID3TAG_ID3TAG_H
@@ -130,6 +130,8 @@ enum {
 };
 
 /* library options */
+
+#define ID3_TAG_HAS_TAG_OPTION_ID3V2_3
 
 enum {
   ID3_TAG_OPTION_UNSYNCHRONISATION = 0x0001,	/* use unsynchronisation */
