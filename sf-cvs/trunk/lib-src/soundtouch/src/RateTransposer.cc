@@ -148,7 +148,7 @@ end:
 
 
 // Transposes the sample rate of the given samples using linear interpolation. 
-// 'Mono' version of the routine. Returns the number of samples returned in 
+// 'Stereo' version of the routine. Returns the number of samples returned in 
 // the "dest" buffer
 uint RateTransposer::transposeStereo(Sample *dest, const Sample *src, const uint numSamples)
 {
@@ -249,7 +249,7 @@ void RateTransposer::upsample(const Sample *src, const uint numSamples)
 
     // First check that there's enough room in 'storeBuffer' 
     // (+16 is to reserve some slack in the destination buffer)
-    sizeTemp = SCALEI * numSamples / uRate + 16;
+    sizeTemp = (int)((SCALEI * (double)numSamples / uRate) + 16);
 
     // Transpose the samples, store the result into the end of "storeBuffer"
     count = transpose(storeBuffer.ptrEnd(sizeTemp), src, numSamples);
@@ -294,7 +294,8 @@ void RateTransposer::downsample(const Sample *src, const uint numSamples)
     storeBuffer.receiveSamples(count);
 
     // Transpose the samples (+16 is to reserve some slack in the destination buffer)
-    sizeTemp = SCALEI * numSamples / uRate + 16;
+    sizeTemp = (int)((SCALEI * (double)numSamples / uRate) + 16);
+
     count = transpose(outputBuffer.ptrEnd(sizeTemp), tempBuffer.ptrBegin(), count);
     outputBuffer.putSamples(count);
 }
