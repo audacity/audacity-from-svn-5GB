@@ -474,12 +474,21 @@ void ControlToolBar::MakeButtons()
 
    /* Tools */
 
+   #ifdef __WXMAC__ // different positioning
+   mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
+   mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 26);
+   mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 26, 0);
+   mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 26, 26);
+   mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 52, 0);
+   mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 52, 26); 
+   #else
    mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
    mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 28);
    mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 27, 0);
    mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 27, 28);
    mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 54, 0);
    mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 54, 28); 
+   #endif
 
 #ifdef __WXMAC__
    wxToolTip::Enable(false);    // DM: tooltips are broken in wxMac
@@ -970,13 +979,14 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
    AColor::Bevel( dc, true, bevelRect );
 #endif
 
+   #ifndef __WXMAC__
    // JKC: Grey horizontal spacer line between buttons.
    // Not quite ideal, but seems the best solution to 
    // make the tool button heights add up to the 
    // main control button height.
    AColor::Dark( &dc, false);
    dc.DrawLine(0, 27, 81, 27);
-
+   #endif
 }
 
 void ControlToolBar::EnableDisableButtons()
