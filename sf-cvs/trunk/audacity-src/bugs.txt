@@ -7,6 +7,7 @@ in Audacity.
 Known bugs to fix:
 -----------------------------------------------------------
 
+- MAD imports values out of -1.0...1.0 range...need to clip
 - Program crashes if gPrefs can't be created (Linux)...
 - Fade doesn't fade out quite enough - it should finish
   fading out a hair early.
