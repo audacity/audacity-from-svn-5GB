@@ -1308,7 +1308,7 @@ bool ExportMP3(AudacityProject *project,
       }
 
       if (progress) {
-         int progressvalue = int (1000 * (mixer->GetCurrentTime() /
+         int progressvalue = int (1000 * (mixer->MixGetCurrentTime() /
                                           tracks->GetEndTime()));
          cancelling = !progress->Update(progressvalue);
       }

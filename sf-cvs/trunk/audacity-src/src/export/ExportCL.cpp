@@ -154,7 +154,7 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
                                   wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
       }
       if (progress) {
-         int progressvalue = int (1000 * (mixer->GetCurrentTime() /
+         int progressvalue = int (1000 * (mixer->MixGetCurrentTime() /
                                           tracks->GetEndTime()));
          cancelling = !progress->Update(progressvalue);
       }
