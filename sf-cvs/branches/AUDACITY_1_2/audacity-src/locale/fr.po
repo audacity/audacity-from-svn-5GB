@@ -4119,6 +4119,7 @@ msgstr ""
 "christian.brochec@ac-rennes.fr\n"
 "et Lionel Allorge\n"
 "lionel.allorge@lunerouge.org\n"
+" "
 
 #: ../src/TrackPanel.cpp:4339
 #: ../src/effects/ChangePitch.cpp:275
