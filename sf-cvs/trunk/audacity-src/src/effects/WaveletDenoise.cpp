@@ -63,6 +63,13 @@ bool EffectWaveletDenoise::Process()
 }
 
 
+// ProcessOne
+//
+// Called once for each WaveTrack.  We divide the track into overlapping
+// intervals and call RemoveNoise() on each interval.  RemoveNoise()
+// multiplies its input by a Hanning window before processing, so we get
+// cross-fade when we add the overlapping windows together again.
+
 bool EffectWaveletDenoise::ProcessOne(int count, WaveTrack * t,
         sampleCount start, sampleCount len)
 {
@@ -136,6 +143,11 @@ bool EffectWaveletDenoise::ProcessOne(int count, WaveTrack * t,
 }
 
 
+// RemoveNoise
+//
+// Takes an interval of signal whose length is a power of two, and applies the
+// wavelet denoising algorithm.
+
 void EffectWaveletDenoise::RemoveNoise(sampleCount len,
         sampleType *buffer,
         bool first)
@@ -143,25 +155,25 @@ void EffectWaveletDenoise::RemoveNoise(sampleCount len,
     PQMF H(d20soqf, 0, 19);  // Daubechies filters
     PQMF G(d20doqf, 0, 19); 
 
-    // multiply by Hanning window
+    // Multiply by Hanning window
     float *window = new float[len];
     for (int i=0; i<len; i++) {
         window[i] = buffer[i]/32767.;
     }
     WindowFunc(3, len, window);
 
-    // construct wave++ interval from buffer
+    // Construct wave++ interval from buffer
     Interval signal(0,len-1);
     for (int i=0; i<len; i++) {
         signal[i] = window[i];
     }
     delete[] window;
 
-    // wavelet transform
+    // Wavelet transform
     Interval coeff(0, len-1);
     WaveTrans(signal, coeff, H, G, ConvDecPer);
 
-    // thresholding
+    // Thresholding
     Interval delta(0, len-1);   // initialized to 0
     for(int i=0; i<len; i++) {
         // Hard thresholding
@@ -179,11 +191,11 @@ void EffectWaveletDenoise::RemoveNoise(sampleCount len,
     for(int i=0; i<len; i++)
         coeff[i] *= delta[i];
 
-    // inverse transform
+    // Inverse transform
     Interval output(0, len-1);
     InvWaveTrans(coeff, output, H, G, AdjConvDecPer);
 
-    // write interval data back to buffer
+    // Write interval data back to buffer
     for (int i=0; i<len; i++)
         buffer[i] = sampleType(output[i]*32767);
 }
