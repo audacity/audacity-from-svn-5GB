@@ -32,6 +32,11 @@
 #define __AUDACITY_TAGS__
 
 #include <wx/string.h>
+#include <wx/choice.h>
+#include <wx/radiobox.h>
+#include <wx/textctrl.h>
+#include <wx/panel.h>
+#include <wx/dialog.h>
 
 class wxTextFile;
 

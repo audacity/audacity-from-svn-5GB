@@ -26,6 +26,10 @@
   
 **********************************************************************/
 
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/button.h>
+
 #include "Audacity.h"
 
 #ifdef ID3SUPPORT
@@ -95,6 +99,9 @@ bool Tags::ShowEditDialog(wxWindow *parent, wxString title)
    }
 
    return true;
+#else
+   return true; // we want callers to think it succeeded, otherwise they'll cancel what
+                // they were doing...
 #endif
 }
 

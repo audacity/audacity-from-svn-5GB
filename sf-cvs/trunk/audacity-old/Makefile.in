@@ -33,7 +33,7 @@ OBJS = \
 	$(OBJDIR)/Envelope.cpp.o \
 	$(OBJDIR)/Export.cpp.o \
 	$(OBJDIR)/ExportMP3.cpp.o \
-  $(OBJDIR)/ExportPCM.cpp.o \
+	$(OBJDIR)/ExportPCM.cpp.o \
 	$(OBJDIR)/FFT.cpp.o \
 	$(OBJDIR)/FreqWindow.cpp.o \
 	$(OBJDIR)/Help.cpp.o \
@@ -50,6 +50,7 @@ OBJS = \
 	$(OBJDIR)/Prefs.cpp.o \
 	$(OBJDIR)/Project.cpp.o \
 	$(OBJDIR)/Spectrum.cpp.o \
+	$(OBJDIR)/Tags.cpp.o \
 	$(OBJDIR)/Track.cpp.o \
 	$(OBJDIR)/TrackArtist.cpp.o \
 	$(OBJDIR)/TrackPanel.cpp.o \

@@ -13,6 +13,7 @@
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/msgdlg.h>
+#include <wx/button.h>
 
 #include "../Prefs.h"
 #include "../Track.h"
@@ -137,15 +138,16 @@ PrefsPanel(parent)
 
       {
          wxFlexGridSizer *mp3InfoSizer = new wxFlexGridSizer(0, 3, 0, 0);
+         mp3InfoSizer->AddGrowableCol(1);
 
          mp3InfoSizer->Add(
             new wxStaticText(this, -1, "MP3 Library Version:"), 0, 
             wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
-         mMP3Version = new wxStaticText(this, -1, "");
+         mMP3Version = new wxStaticText(this, -1, "CAPITAL LETTERS");
          SetMP3VersionText();
 
-         mp3InfoSizer->Add(mMP3Version, 1,
+         mp3InfoSizer->Add(mMP3Version, 0,
             wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
          
          mMP3FindButton = new wxButton(this, ID_MP3_FIND_BUTTON, "Find Library");
@@ -233,7 +235,8 @@ void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
       gPrefs->Write("/MP3/MP3LibPath", oldPath);
    }
    
-   mMP3Bitrate->Enable(GetMP3Exporter()->ValidLibraryLoaded());
+   if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE)
+      mMP3Bitrate->Enable(GetMP3Exporter()->ValidLibraryLoaded());
 }
 
 bool FileFormatPrefs::Apply()

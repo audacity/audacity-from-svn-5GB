@@ -59,12 +59,12 @@ void AudacityProject::CreateMenuBar()
    
    wxString pcmFormat =
        gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");
-   mExportString.Printf("&Export as %s...", pcmFormat);
-   mExportSelectionString.Printf("Export &Selection as %s...", pcmFormat);
+   mExportString.Printf("&Export as %s...", pcmFormat.c_str());
+   mExportSelectionString.Printf("Export &Selection as %s...", pcmFormat.c_str());
    wxString lossyFormat =
        "MP3";
-   mExportLossyString.Printf("Export as %s...", lossyFormat);
-   mExportSelectionLossyString.Printf("Export Selection as %s...", lossyFormat);
+   mExportLossyString.Printf("Export as %s...", lossyFormat.c_str());
+   mExportSelectionLossyString.Printf("Export Selection as %s...", lossyFormat.c_str());
 
    mFileMenu = new wxMenu();
    mFileMenu->Append(NewID, "&New...\tCtrl+N");

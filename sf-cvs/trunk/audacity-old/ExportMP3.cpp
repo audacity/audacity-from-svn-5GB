@@ -44,6 +44,7 @@
 #include <wx/window.h>
 #include <wx/ffile.h>
 #include <wx/log.h>
+#include <wx/filedlg.h>
 
 #include "ExportMP3.h"
 #include "Mix.h"
@@ -214,15 +215,15 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
          
          wxString GetLibraryTypeString()
          {
-            return "Shared Object files (*.so)|*.so"
+            return wxString("Shared Object files (*.so)|*.so");
          }
          
          wxString GetLibraryMessage()
          {
-            return "Audacity does not export MP3 files directly, but instead uses the "
-                   "freely available LAME library to handle MP3 file encoding.  You must "
-                   "obtain libmp3lame.so separately, either by downloading it or building "
-                   "it from the sources, and then locate the file for Audacity.  You only "
+            return "Audacity does not export MP3 files directly, but instead uses the \n"
+                   "freely available LAME library to handle MP3 file encoding.  You must \n"
+                   "obtain libmp3lame.so separately, either by downloading it or building \n"
+                   "it from the sources, and then locate the file for Audacity.  You only \n"
                    "need to do this once.\n\n"
                    "Would you like to locate libmp3lame.so now?";
          }
