@@ -28,10 +28,9 @@ extern "C" {
          default:return 0;
    }} typedef AEffect *(*vstPluginMain) (audioMasterCallback audioMaster);
 
-   void LoadVSTPlugins() {
-      wxString home = DirManager::GetHomeDir();
+   void LoadVSTPlugins(wxString searchDir) {
       wxString pathChar = DirManager::GetPathChar();
-      wxString vstDirPath = home + pathChar + "vst";
+      wxString vstDirPath = searchDir + pathChar + "vst";
       wxString fname;
 
       fname =

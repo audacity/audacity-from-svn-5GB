@@ -190,8 +190,11 @@ bool AudacityApp::OnInit()
    Effect::RegisterEffect(new EffectReverse());
    Effect::RegisterEffect(new EffectWahwah());
 
-#if defined(__WXMAC__) || defined(__WXMSW__)
+#if defined(__WXMAC__)
    LoadVSTPlugins();
+#endif
+#if defined(__WXMSW__)
+   LoadVSTPlugins(wxPathOnly(argv[0]));
 #endif
 
 #ifdef __WXMAC__
