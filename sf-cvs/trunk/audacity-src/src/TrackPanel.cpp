@@ -14,14 +14,6 @@
 
 #include "TrackPanel.h"
 
-#ifdef __WXDEBUG__
- #ifdef __WXMSW__
-  #error "Comment out this line to compile."
-  //A hack that allows you to compile on Windows as a debug build.
-  #define MSW_DEBUG_HACK_DISABLE_STL
- #endif
-#endif
-
 #ifdef __WXMAC__
 #ifdef __UNIX__
 #include <Carbon/Carbon.h>
@@ -29,10 +21,6 @@
 #endif
 
 #include <math.h>
-
-#ifndef MSW_DEBUG_HACK_DISABLE_STL
- #include <algorithm>
-#endif
 
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
@@ -46,6 +34,7 @@
 
 #include "AColor.h"
 #include "AudioIO.h"
+#include "ControlToolBar.h"
 #include "Envelope.h"
 #include "LabelTrack.h"
 #include "NoteTrack.h"
@@ -974,10 +963,11 @@ void TrackPanel::HandleZoom(wxMouseEvent &event)
    }
    else if (event.ButtonUp()) {
 
-#ifndef MSW_DEBUG_HACK_DISABLE_STL
-      if (mZoomEnd < mZoomStart)
-         std::swap(mZoomEnd, mZoomStart);
-#endif
+      if (mZoomEnd < mZoomStart) {
+         int temp = mZoomEnd;
+         mZoomEnd = mZoomStart;
+         mZoomStart = temp;
+      }
 
       wxRect r;
 
@@ -1064,7 +1054,7 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
 
       mListener->TP_RedrawScrollbars();
       
-      mListener->TP_DisplayStatusMessage(_(""),0);  //STM: Clear message if all tracks are removed
+      mListener->TP_DisplayStatusMessage("",0);  //STM: Clear message if all tracks are removed
       
       Refresh(false);
    }
