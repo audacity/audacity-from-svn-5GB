@@ -26,14 +26,6 @@ EffectToneGen::EffectToneGen()
    mix = false;
 }
 
-bool EffectToneGen::NewTrackSimpleMono()
-{
-   mSample = 0; //used to keep track of the current sample number
-   //between calls to EffectToneGen::ProcessSimpleMono
-   //to avoid phase jumps at block boundaries
-   return true;
-}
-
 bool EffectToneGen::PromptUser()
 {
    ToneGenDialog dlog(mParent, -1, _("Tone Generator"));
@@ -59,7 +51,7 @@ bool EffectToneGen::PromptUser()
    return true;
 }
 
-bool EffectToneGen::ProcessSimpleMono(float *buffer, sampleCount len)
+bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
 {
    double throwaway = 0;        //passed to modf but never used
    int i;
@@ -108,6 +100,47 @@ bool EffectToneGen::ProcessSimpleMono(float *buffer, sampleCount len)
    default:
       break;
    }
+   return true;
+}
+
+bool EffectToneGen::Process()
+{
+   double length = mT1 - mT0;
+
+   if (length <= 0.0)
+      length = sDefaultGenerateLen;
+
+   //Iterate over each track
+   TrackListIterator iter(mWaveTracks);
+   WaveTrack *track = (WaveTrack *)iter.First();
+   while (track) {
+      mSample = 0;
+      WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat());
+      mCurRate = track->GetRate();
+      tmp->SetRate(mCurRate);
+      longSampleCount numSamples =
+         (longSampleCount)(length * mCurRate + 0.5);
+      longSampleCount i = 0;
+      float *data = new float[tmp->GetMaxBlockSize()];
+      sampleCount block;
+
+      while(i < numSamples) {
+         block = tmp->GetBestBlockSize(i);
+         if (block > (numSamples - i))
+             block = numSamples - i;
+         MakeTone(data, block);
+         tmp->Append((samplePtr)data, floatSample, block);
+         i += block;
+      }
+      delete[] data;
+
+      track->Paste(mT0, tmp);
+      delete tmp;
+      
+      //Iterate to the next track
+      track = (WaveTrack *)iter.Next();
+   }
+
    return true;
 }
 
@@ -274,6 +307,7 @@ wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
 
    item0->Add(item8, 1, wxALIGN_CENTRE | wxALL, 5);
 
+#if 0 // dmazzoni: Mix not necessary anymore with the Generate semantics
 
    wxBoxSizer *item14 = new wxBoxSizer(wxHORIZONTAL);
 
@@ -290,11 +324,12 @@ wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
 
    item0->Add(item14, 0, wxALIGN_CENTRE | wxALL, 5);
 
+#endif
 
    wxBoxSizer *item11 = new wxBoxSizer(wxHORIZONTAL);
 
    wxButton *item12 =
-       new wxButton(parent, wxID_OK, _("Create Tone"), wxDefaultPosition,
+       new wxButton(parent, wxID_OK, _("Generate Tone"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item12->SetDefault();
    item11->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);

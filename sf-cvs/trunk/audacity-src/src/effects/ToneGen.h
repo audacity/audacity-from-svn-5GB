@@ -31,11 +31,10 @@
 
 class WaveTrack;
 
-class EffectToneGen:public EffectSimpleMono {
+class EffectToneGen:public Effect {
 
  public:
    EffectToneGen();
-
 
    virtual wxString GetEffectName() {
       return wxString(_("Tone..."));
@@ -51,10 +50,10 @@ class EffectToneGen:public EffectSimpleMono {
 
    virtual bool PromptUser();
 
- protected:
-   virtual bool NewTrackSimpleMono();
+   virtual bool Process();
 
-   virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
+ protected:
+   virtual bool MakeTone(float *buffer, sampleCount len);
 
  private:
    int waveform;
@@ -62,6 +61,7 @@ class EffectToneGen:public EffectSimpleMono {
    float amplitude;
    bool mix;
    int mSample;
+   double mCurRate;
 };
 
 // Declare window functions
