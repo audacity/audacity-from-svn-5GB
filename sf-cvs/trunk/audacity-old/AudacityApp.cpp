@@ -8,18 +8,9 @@
 
 **********************************************************************/
 
-// For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
-#ifndef WX_PRECOMP
-#include <wx/wx.h>
-#include <wx/brush.h>
+#include <wx/app.h>
 #include <wx/image.h>
-#endif
+#include <wx/window.h>
 
 #include "AudacityApp.h"
 #include "AButton.h"
