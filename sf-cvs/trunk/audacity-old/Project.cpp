@@ -598,7 +598,7 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
       Effect *f = Effect::GetEffect(event.GetId() - FirstEffectID);
 
       if (f->DoEffect(this, mTracks, mViewInfo.sel0, mViewInfo.sel1)) {
-         PushState();
+         PushState("Applied an effect. (maybe more specific?)");
          FixScrollbars();
          mTrackPanel->Refresh(false);
       }
@@ -995,7 +995,8 @@ void AudacityProject::Import(wxString fileName)
                    "the same sampling rate as the project.");
    }
 
-   PushState();
+   PushState(
+      wxString::Format("Imported '%s'", fileName.c_str()));
    ZoomFit();
    mTrackPanel->Refresh(false);
 
@@ -1257,7 +1258,9 @@ void AudacityProject::Clear()
 
    mViewInfo.sel1 = mViewInfo.sel0;
 
-   PushState();
+   PushState(
+      wxString::Format("Deleted %.2f seconds at t=%.2f",
+         mViewInfo.sel0 - mViewInfo.sel1, mViewInfo.sel0));
    FixScrollbars();
    mTrackPanel->Refresh(false);
 }
