@@ -34,10 +34,12 @@ public:
    
    virtual bool PromptUser();
    
-private:
-   bool ProcessSimpleMono(float *buffer, sampleCount len, double samplerate);
+ protected:
+   virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
 
-   bool NewTrackSimpleMono(int count, double samplerate);
+ private:
+
+   bool NewTrackSimpleMono();
 
    float DoCompression(float x);
    

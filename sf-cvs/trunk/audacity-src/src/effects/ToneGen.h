@@ -46,10 +46,10 @@ class EffectToneGen:public EffectSimpleMono {
    virtual bool PromptUser();
 
  protected:
-   bool NewTrackSimpleMono(int count);
+   virtual bool NewTrackSimpleMono();
 
-   bool ProcessSimpleMono(float *buffer,
-                          sampleCount len, double samplerate);
+   virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
+
  private:
    int waveform;
    float frequency;

@@ -25,7 +25,7 @@ EffectToneGen::EffectToneGen()
    mix = false;
 }
 
-bool EffectToneGen::NewTrackSimpleMono(int count)
+bool EffectToneGen::NewTrackSimpleMono()
 {
    mSample = 0; //used to keep track of the current sample number
    //between calls to EffectToneGen::ProcessSimpleMono
@@ -58,7 +58,7 @@ bool EffectToneGen::PromptUser()
    return true;
 }
 
-bool EffectToneGen::ProcessSimpleMono(float *buffer, sampleCount len, double samplerate)
+bool EffectToneGen::ProcessSimpleMono(float *buffer, sampleCount len)
 {
    double throwaway = 0;        //passed to modf but never used
    int i;
@@ -69,24 +69,24 @@ bool EffectToneGen::ProcessSimpleMono(float *buffer, sampleCount len, double sam
          for (i = 0; i < len; i++)
             buffer[i] =
                 (buffer[i] +
-                 amplitude * (float) sin(2 * M_PI * (i + mSample) * frequency / samplerate)) / 2;
+                 amplitude * (float) sin(2 * M_PI * (i + mSample) * frequency / mCurRate)) / 2;
       else
          for (i = 0; i < len; i++)
             buffer[i] =
-                amplitude * (float) sin(2 * M_PI * (i + mSample) * frequency / samplerate);
+                amplitude * (float) sin(2 * M_PI * (i + mSample) * frequency / mCurRate);
       mSample += len;
       break;
 
    case 1:                     //square
       if (mix)
          for (i = 0; i < len; i++) {
-            if (modf(((i + mSample) * frequency / samplerate), &throwaway) < 0.5)
+            if (modf(((i + mSample) * frequency / mCurRate), &throwaway) < 0.5)
                buffer[i] = (buffer[i] + amplitude) / 2;
             else
                buffer[i] = (buffer[i] - amplitude) / 2;
       } else
          for (i = 0; i < len; i++) {
-            if (modf(((i + mSample) * frequency / samplerate), &throwaway) < 0.5)
+            if (modf(((i + mSample) * frequency / mCurRate), &throwaway) < 0.5)
                buffer[i] = amplitude;
             else
                buffer[i] = -amplitude;
@@ -97,10 +97,10 @@ bool EffectToneGen::ProcessSimpleMono(float *buffer, sampleCount len, double sam
    case 2:                     //sawtooth
       if (mix)
          for (i = 0; i < len; i++)
-            buffer[i] = amplitude * ((((i + mSample) % (int) (samplerate / frequency)) / (samplerate / frequency)) - 0.5) + buffer[i] / 2;      //hmm
+            buffer[i] = amplitude * ((((i + mSample) % (int) (mCurRate / frequency)) / (mCurRate / frequency)) - 0.5) + buffer[i] / 2;      //hmm
       else
          for (i = 0; i < len; i++)
-            buffer[i] = 2 * amplitude * ((((i + mSample) % (int) (samplerate / frequency)) / (samplerate / frequency)) - 0.5);
+            buffer[i] = 2 * amplitude * ((((i + mSample) % (int) (mCurRate / frequency)) / (mCurRate / frequency)) - 0.5);
       mSample += len;
       break;
 

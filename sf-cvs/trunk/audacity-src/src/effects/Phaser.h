@@ -27,11 +27,11 @@
 
 class wxString;
 
-#include "Effect.h"
+#include "SimpleMono.h"
 
 class WaveTrack;
 
-class EffectPhaser:public Effect {
+class EffectPhaser:public EffectSimpleMono {
 
  public:
    EffectPhaser();
@@ -45,9 +45,12 @@ class EffectPhaser:public Effect {
    }
    
    virtual bool PromptUser();
-   
-   virtual bool Process();
 
+ protected:
+   virtual bool NewTrackSimpleMono();
+
+   virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
+   
 /*
     Phaser Parameters        
 
@@ -61,17 +64,22 @@ class EffectPhaser:public Effect {
 */
 
  private:
-   bool ProcessOne(int count, WaveTrack * track ,
-                   double start, sampleCount len,
-                   float startphase);
  
+   // parameters
    float freq;
    float startphase;
    float fb;
-
    int depth;
    int stages;
    int drywet;
+
+   // state variables
+   unsigned long skipcount;
+   float old[24]; // must be as large as MAX_STAGES
+   float gain;
+   float fbout;
+   float lfoskip;
+   float phase;
 };
 
 // Declare window functions

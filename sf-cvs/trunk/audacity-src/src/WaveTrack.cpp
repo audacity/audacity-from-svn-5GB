@@ -326,39 +326,10 @@ bool WaveTrack::InsertSilence(double t, double len)
       return false;
 }
 
-bool WaveTrack::Get(samplePtr buffer, sampleFormat format,
-                    double t0, sampleCount len)
-{
-   double t1 = t0 + len/mRate;
-
-   if (t1 < GetStartTime() || t0 > GetEndTime()) {
-      ClearSamples(buffer, format, 0, len);
-      return true;
-   }
-
-   sampleCount s0 = (sampleCount)floor(((t0 - mOffset) * mRate) + 0.5);
-
-   sampleCount soffset = 0;
-   sampleCount getlen = len;
-
-   if (s0 < 0) {
-      soffset = -s0;
-      getlen -= soffset;
-      s0 = 0;
-   }
-
-   if (s0+getlen > mSequence->GetNumSamples())
-      getlen = mSequence->GetNumSamples() - s0;
-   
-   if (!mSequence->Get(buffer + soffset*SAMPLE_SIZE(format), format,
-                       s0, getlen))
-      return false;
-
-   ClearSamples(buffer, format, 0, soffset);
-   ClearSamples(buffer, format, soffset+getlen, len-(soffset+getlen));
-
-   return true;
-}
+//
+// Getting high-level data from the track for screen display and
+// clipping calculations
+//
 
 bool WaveTrack::GetWaveDisplay(float *min, float *max, float *rms,
                                sampleCount *where,
@@ -582,15 +553,60 @@ bool WaveTrack::GetMinMax(float *min, float *max,
    return mSequence->GetMinMax(s0, s1-s0, min, max);
 }
 
-bool WaveTrack::Set(samplePtr buffer, sampleFormat format,
-                    double t0, sampleCount len)
+//
+// Getting/setting samples.  The sample counts here are
+// expressed relative to t=0.0 at the track's sample rate.
+//
+
+bool WaveTrack::Get(samplePtr buffer, sampleFormat format,
+                    longSampleCount start, sampleCount len)
 {
-   double t1 = t0 + len/mRate;
+   longSampleCount startTime = (longSampleCount)floor(mOffset*mRate + 0.5);
+   longSampleCount endTime = startTime + mSequence->GetNumSamples();
+
+   if (start+len < startTime || start>=endTime) {
+      ClearSamples(buffer, format, 0, len);
+      return true;
+   }
+
+   sampleCount s0 = (sampleCount)(start - startTime);
+   sampleCount soffset = 0;
+   sampleCount getlen = len;
+
+   if (s0 < 0) {
+      soffset = -s0;
+      getlen -= soffset;
+      s0 = 0;
+   }
+
+   if (s0+getlen > mSequence->GetNumSamples())
+      getlen = mSequence->GetNumSamples() - s0;
    
-   if (t0 < GetStartTime() || t1 > GetEndTime())
+   if (!mSequence->Get(buffer + soffset*SAMPLE_SIZE(format), format,
+                       s0, getlen))
       return false;
 
-   sampleCount s0 = (sampleCount)floor(((t0 - mOffset) * mRate) + 0.5);   
+   ClearSamples(buffer, format, 0, soffset);
+   ClearSamples(buffer, format, soffset+getlen, len-(soffset+getlen));
+
+   return true;
+}
+
+bool WaveTrack::Set(samplePtr buffer, sampleFormat format,
+                    longSampleCount start, sampleCount len)
+{
+   longSampleCount startTime = (longSampleCount)floor(mOffset*mRate + 0.5);
+
+   sampleCount s0 = (sampleCount)(start - startTime);
+
+   if (s0 < 0) {
+      len += s0;
+      buffer -= s0*SAMPLE_SIZE(format);
+      s0 = 0;
+   }
+
+   if (s0 + len > mSequence->GetNumSamples())
+      len = mSequence->GetNumSamples() - s0;
 
    MarkChanged();
    return mSequence->Set(buffer, format, s0, len);
@@ -650,13 +666,15 @@ bool WaveTrack::AppendAlias(wxString fName, sampleCount start,
    return mSequence->AppendAlias(fName, start, len, channel);
 }
 
-sampleCount WaveTrack::GetBestBlockSize(double t0)
+sampleCount WaveTrack::GetBestBlockSize(longSampleCount s)
 {
-   sampleCount s0;
+   longSampleCount startTime = (longSampleCount)floor(mOffset*mRate + 0.5);
+   longSampleCount endTime = startTime + mSequence->GetNumSamples();
 
-   TimeToSamplesClip(t0, &s0);
+   if (s < startTime || s >= endTime)
+      return mSequence->GetMaxBlockSize();
 
-   return mSequence->GetBestBlockSize(s0);
+   return mSequence->GetBestBlockSize((sampleCount)(s - startTime));
 }
 
 sampleCount WaveTrack::GetMaxBlockSize() const
@@ -762,6 +780,11 @@ bool WaveTrack::Unlock()
       return false;
 
    mSequence->Unlock();
+}
+
+longSampleCount WaveTrack::TimeToLongSamples(double t0)
+{
+   return (longSampleCount)floor(t0 * mRate + 0.5);
 }
 
 bool WaveTrack::TimeToSamples(double t0, sampleCount *s0)

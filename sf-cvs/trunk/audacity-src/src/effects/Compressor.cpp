@@ -44,12 +44,12 @@ bool EffectCompressor::PromptUser()
    return true;
 }
 
-bool EffectCompressor::NewTrackSimpleMono(int count, double samplerate)
+bool EffectCompressor::NewTrackSimpleMono()
 {
    if (mCircle) delete mCircle;
    
-   mDecayMult = exp(log(0.1)/(mDecayTime*samplerate));
-   mCircleSize = int(mAttackTime * samplerate + 0.5);
+   mDecayMult = exp(log(0.1)/(mDecayTime*mCurRate));
+   mCircleSize = int(mAttackTime * mCurRate + 0.5);
    mCircle = new double[mCircleSize];
    for(int j=0; j<mCircleSize; j++)
       mCircle[j] = 0.0;
@@ -60,7 +60,7 @@ bool EffectCompressor::NewTrackSimpleMono(int count, double samplerate)
    return true;
 }
 
-bool EffectCompressor::ProcessSimpleMono(float *buffer, sampleCount len, double samplerate)
+bool EffectCompressor::ProcessSimpleMono(float *buffer, sampleCount len)
 {
    for (int i = 0; i < len; i++) {
       buffer[i] = DoCompression(buffer[i]);

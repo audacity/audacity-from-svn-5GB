@@ -49,7 +49,7 @@ public:
    
 private:
    bool ProcessOne(int count, WaveTrack * track,
-                   double start, sampleCount len);
+                   longSampleCount start, sampleCount len);
 
    void GetProfile(sampleCount len,
                    float *buffer);

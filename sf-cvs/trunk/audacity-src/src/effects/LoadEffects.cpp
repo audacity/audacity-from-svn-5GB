@@ -57,8 +57,6 @@ void LoadEffects(wxString searchDir)
    Effect::RegisterEffect(new EffectToneGen(), false);
    Effect::RegisterEffect(new EffectWahwah(), false);
 
-#if 0 //temporary disable effects that haven't been ported
-      //to the new WaveTrack/Sequence classes
 
 #ifdef USE_WAVELET
    Effect::RegisterEffect(new EffectWaveletDenoise(), false);
@@ -73,6 +71,4 @@ void LoadEffects(wxString searchDir)
 #endif
 
    // TODO: sort
-
-#endif // 0
 }

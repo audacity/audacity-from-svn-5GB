@@ -69,120 +69,60 @@ bool EffectPhaser::PromptUser()
    return true;
 }
 
-bool EffectPhaser::Process()
+bool EffectPhaser::NewTrackSimpleMono()
 {
-   TrackListIterator iter(mWaveTracks);
-   WaveTrack *track = (WaveTrack *) iter.First();
-   int count = 0;
+   for (int j = 0; j < stages; j++)
+      old[j] = 0;   
 
-   /// \todo: find some way to make this less messy!
-   while(track) {
-      double starttime = mT0;
-      double endtime = mT1;
-      double trackend = track->GetEndTime();
+   skipcount = 0;
+   gain = 0;
+   fbout = 0;
+   lfoskip = freq * 2 * M_PI / mCurRate;
 
-      if (starttime < trackend) {    //make sure part of track is within selection
-         if (endtime > trackend)
-            endtime = trackend;      //make sure all of track is within selection
-         sampleCount len =
-             (sampleCount) floor((endtime - starttime) * track->GetRate() + 0.5);
+   phase = startphase;
+   if (mCurChannel == Track::RightChannel)
+      phase += M_PI;
 
-         if (!ProcessOne(count, (WaveTrack *)track, starttime, len, startphase))
-            return false;
-         
-         if (track->GetLinked()) {
-            // In a stereo pair, the "other" half should be 180 degrees out of phase
-               
-            track = (WaveTrack *) iter.Next();
-            count++;
-               
-            if (!ProcessOne(count, (WaveTrack *)track, starttime, len, startphase + M_PI))
-               return false;
-            
-         }
-      } else if (track->GetLinked()) { //skip the other half of the stereo pair too
-         track = (WaveTrack *) iter.Next();
-         count++;
-      }
-
-      track = (WaveTrack *) iter.Next();
-      count++;
-   }
-   
    return true;
 }
 
-bool EffectPhaser::ProcessOne(int count, WaveTrack * track,
-                              double start, sampleCount len,
-                              float startphase)
+bool EffectPhaser::ProcessSimpleMono(float *buffer, sampleCount len)
 {
-   double t = start;
-   sampleCount s = 0;
-   float samplerate = (float) (track->GetRate());
-
-   /*Phaser initialisation */
-   float *old = new float[stages];
-   int j;
-   unsigned long skipcount = 0;
-   for (j = 0; j < stages; j++)
-      old[j] = 0;
-   float m, gain = 0, tmp, in, out, fbout = 0;
-   float lfoskip = freq * 2 * 3.141592653589 / samplerate;
-
-   sampleCount blockSize = track->GetMaxBlockSize();
-
-   float *buffer = new float[blockSize];
-
-   while (s < len) {
-      sampleCount block = track->GetBestBlockSize(t);
-      if (s + block > len)
-         block = len - s;
-
-      track->Get((samplePtr) buffer, floatSample, t, block);
-
-      for (int i = 0; i < block; i++) {
-         in = buffer[i];
-
-         m = in + fbout * fb / 100;
-         if (((skipcount++) % lfoskipsamples) == 0) {
-            //compute sine between 0 and 1
-            gain = (1 + cos(skipcount * lfoskip + startphase)) / 2;
-
-            // change lfo shape
-            gain =
-                (exp(gain * phaserlfoshape) - 1) / (exp(phaserlfoshape) -
-                                                    1);
-
-            gain = 1 - gain / 255 * depth;      // attenuate the lfo
-         }
-         // phasing routine
-         for (j = 0; j < stages; j++) {
-            tmp = old[j];
-            old[j] = gain * tmp + m;
-            m = tmp - gain * old[j];
-         }
-         fbout = m;
-         out = (m * drywet + in * (255 - drywet)) / 255;
-
-         // Prevents clipping
-         if (out < -1.0)
-            out = -1.0;
-         else if (out > 1.0)
-            out = 1.0;
-
-         buffer[i] = out;
+   float m, tmp, in, out;
+   int i, j;
+   
+   for (i = 0; i < len; i++) {
+      in = buffer[i];
+      
+      m = in + fbout * fb / 100;
+      if (((skipcount++) % lfoskipsamples) == 0) {
+         //compute sine between 0 and 1
+         gain = (1 + cos(skipcount * lfoskip + phase)) / 2;
+         
+         // change lfo shape
+         gain =
+            (exp(gain * phaserlfoshape) - 1) / (exp(phaserlfoshape)-1);
+         
+         gain = 1 - gain / 255 * depth;      // attenuate the lfo
       }
-
-      track->Set((samplePtr) buffer, floatSample, t, block);
-
-      s += block;
-      t += (block / track->GetRate());
-
-      TrackProgress(count, s / (double) len);
+      // phasing routine
+      for (j = 0; j < stages; j++) {
+         tmp = old[j];
+         old[j] = gain * tmp + m;
+         m = tmp - gain * old[j];
+      }
+      fbout = m;
+      out = (m * drywet + in * (255 - drywet)) / 255;
+      
+      // Prevents clipping
+      if (out < -1.0)
+         out = -1.0;
+      else if (out > 1.0)
+         out = 1.0;
+      
+      buffer[i] = out;
    }
-
-   delete[]buffer;
-
+   
    return true;
 }
 
@@ -237,23 +177,23 @@ bool PhaserDialog::TransferDataToWindow()
 
    slider = GetFreqSlider();
    if (slider)
-      slider->SetValue(freq * 10);
+      slider->SetValue((int)(freq * 10));
 
    slider = GetPhaseSlider();
    if (slider)
-      slider->SetValue(startphase);
+      slider->SetValue((int)startphase);
 
    slider = GetDepthSlider();
    if (slider)
-      slider->SetValue(depth);
+      slider->SetValue((int)depth);
 
    slider = GetFeedbackSlider();
    if (slider)
-      slider->SetValue(fb);
+      slider->SetValue((int)fb);
 
    slider = GetDryWet();
    if (slider)
-      slider->SetValue(drywet);
+      slider->SetValue((int)drywet);
 
    wxSpinCtrl *spin = GetStages();
    if (spin)
@@ -431,7 +371,7 @@ void PhaserDialog::OnFreqText(wxCommandEvent & event)
 
       wxSlider *slider = GetFreqSlider();
       if (slider)
-         slider->SetValue(freq);
+         slider->SetValue((int)freq);
    }
 }
 
