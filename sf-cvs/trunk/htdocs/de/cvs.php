@@ -1,58 +1,52 @@
 <?php BoxTop("CVS"); ?>
 
 Wir benutzen <a href="http://www.cvshome.org">CVS</a>, das Concurrent Versions
-System, um zusammen Audacity entwickeln zu k&ouml;nnen.
-. Klicke 
-<a
+System um Audacity gemeinsam entwickeln zu können. Schaue <a
 href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/audacity/audacity-src/"
->hier</a> um den Source Code in unserem CVS Verzeichnis zu durchsuchen.
+>hier</a> um den Quelltext und Sourcecode im CVS zu durchsuchen.
 
 <p>
-<h3>Note: Version 1.2 is now branched:</h3>
-If you want the stable branch of Audacity, version 1.2.x, you now need to
-type <tt>-r AUDACITY_1_2</tt> when you do a cvs update or checkout.
-Otherwise you will get the CVS HEAD, which may become quite unstable
-now as we start working on version 1.3.0.
+<h3>Achtung: Version 1.2 ist veröffentlicht:</h3>
+Wenn du die stabile Version von Audacity, Version 1.2.x haben willst, muss man nun
+<tt>-r AUDACITY_1_2</tt> eingeben, wenn du ein Update oder einen Checkout machen willst.
+Andernfalls bekommst du den CVS HEAD, der eventuell instabil wird, wenn wir jetzt anfangen an
+Version 1.3.0.
 
-<p><h3>Quick Audacity CVS Howto:</h3>
-  If you want to access the Audacity source code, you can
-  use a cvs client to download a cvs branch onto your
-  computer. Once you have checked out a branch once, your CVS
-  client software will be able to help you keep your version
-  updated with the other Audacity developers. Follow the
-  instructions below to get the source code.
+<p><h3>Audacity CVS Kurzanleitung:</h3>
+  Wenn Sie den Audacity Quellcode^haben möchten, können Sie einen
+  CVS Klient benutzen um einen cvs Branch auf Ihren PC zu laden. Einmal gemacht,
+  hilft Ihnen die CVS Software, den Code aktuell zu halten. Beachten Sie bitte folgendene 
+  Anleitungen:
 
 
-<h4>Anonymous CVS access with a command-line cvs client:</h4>
-<p>Enter the following on the command line (note that it
-is a single line with no carriage returns):<br>
+<h4>Anonymer CVS Zugang mit einem CVS Kommandozeilen-Klienten:</h4>
+<p>Schreiben Sie bitte folgendes in die Zeile: :<br>
 <ul><tt>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity
 login </tt><br></ul>
-and hit the enter key when it asks for a password.
+und drücken die ENTER taste wenn er nach einem Passwort fragt.
 
-<p>Then, <b>to get the latest cutting-edge code (1.3.0)</b> (as a single line):
+<p>Dann, <b>um den letzten Code zu bekommen (1.3.0)</b> (wieder in <b>eine</b> Zeile):
 <br>
    <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity co
 audacity</tt></ul>
-or <b>for the stable branch (1.2.0)</b> (as a single line):<br>
+oder <b>für eine stabile Version: (1.2.0)</b> :<br>
    <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity co -r AUDACITY_1_2 audacity</tt></ul>
-or <b>for the old 1.0 branch (1.0.0)</b> (as a single line):<br>
+oder <b>für die alte Version 1.0 (1.0.0)</b>:<br>
    <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity co -r audacity-0_9-branch audacity-old</tt></ul>
 
-<p> Alternately, you can set your <tt>CVSROOT</tt> environment
-variable to
+<p> Alternativ kann man die <tt>CVSROOT</tt> Umgebungsvariable
+auf 
 <tt>:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity</tt>
-(see below).<br>
-Then, <b>to get the latest unstable branch (1.3.0)</b>, enter<br> 
+(siehe unten) setzen<br>
+Dann, <b>um die letzte Version (instabil) (1.3.0)</b>, gib folgendes ein<br> 
    <ul><tt>cvs checkout audacity</tt></ul>
-Or, <b>for the stable branch (1.2)</b>, enter <br>
+oder, <b>für die stabile Version (1.2)</b>, gib ein <br>
    <ul><tt>cvs checkout -r AUDACITY_1_2 audacity</tt></ul>
-or <b>for the old 1.0 branch</b>, enter <br>
+oder <b>für die alte Version 1.0 </b>, gib folgendes ein: <br>
    <ul><tt>cvs checkout -r audacity-0_9-branch audacity-old</tt></ul>
 
-<p> To set the  <tt>CVSROOT</tt> environment variable, you
-can use your command shell's resource file, or one of the following
-commands:
+<p> Um die <tt>CVSROOT</tt> Environment Variable richtig zu setzen, kann man
+die command shell's resource file benutzen oder eines der folgenden Kommandos benutzen:
 <h5>In bash or bourne shell, as one line:</h5>
 <ul><tt>export
 CVSROOT=:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity</tt><br></ul>
@@ -63,6 +57,9 @@ CVSROOT=:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity</tt><br></ul>
 <hr width="80%">
 
 <h4>Anonymous CVS access with a graphical client</h4>
+<h2> Anmerkung des Übersetzers (Pennywize): Ab hier keine weitere Übersetzung mehr, wer diese Tools benutzt muss !!
+Englisch können und das folgende auch so lesen können, außerdem ist es sehr technisches Englisch, also kann
+kaum übersetzt werden.</h2> 
 
 For a graphical client like wincvs, maccvs, or gcvs,
 (available at <a href="http://www.wincvs.org">wincvs.org</a>) you must set
@@ -117,40 +114,36 @@ href="http://www.cvshome.org/docs/manual">Per
  Cederqvist manual</a>.
 
 
-<p> For specific help with CVS on sourceforge.net, try the
-sourceforge documentation for
+<p> Um eine konkrete Hilfe für CVS in sourceforge.net zu erhalten, versuche folgende
+sourceforge Dokumentationen: 
 <a
 href="http://sourceforge.net/docman/display_doc.php?docid=763&group_id=1">Unix</a>,
 <a
-href="http://sourceforge.net/docman/display_doc.php?docid=766&group_id=1">Microsoft Windows</a>, and <a
+href="http://sourceforge.net/docman/display_doc.php?docid=766&group_id=1">Microsoft Windows</a> und <a
 href="http://sourceforge.net/docman/display_doc.php?docid=2973&group_id=1">MacOS
-(prior to OS X)</a> platforms.
+(prior to OS X)</a> Systeme.
 
 <hr width="80%">
 
 <p>
-<b>More details:</b>
+<b>Detailliertere Informationen:</b>
 
 </p>
 
-<p>Audacity uses many third party libraries. Many of them require tweaking
-to build on all our target platforms. Therefore, we keep a local repository
-of all third party library source code in CVS. Here is how it works:
+<p>Audacity benutzt mehrere libraries die von "Drittanbietern" stammen. Einge dieser libraries benötigen
+Änderungen um auf allen Systemen zu laufen. Deswegen haben wir ein Extraverzeichnis all dieser
+librariers eingerichtet im CVS. 
 </p>
-<p>There are two repositories: 'audacity-src', which contains all of
-the code we have written, and
-'lib-src,' which contains the source code to all the
-libraries we use.
-In order to guarantee interoperability between Audacity and our
-libraries, we recommend that you use the versions of the libraries
-contained in 'lib-src'.  However, on a Unix system you can avoid compiling
-some of the libraries by using libraries you already have on your system.
-Type 'configure --help' to see the options.
+<p>Wir haben zwei Verzeichnisse: 'audacity-src', dieser enthält allen Code den wir geschrieben haben und
+'lib-src,' dieser enthält den Code der libraries.<br>
+Um garantieren zu können, dass Audacity und diese libraries miteinander arbeiten können, benutzte bitte die
+libraries die in dem Ordner'lib-src' liegen. In Unix Systemen kann man diese libraries auch mit vorhandenen libraries 
+auf dem eigenen System kompilieren.
+Schreibe 'configure --help' um die Optionen zu sehen.
 </p>
 <p>
-So, if you want to check out everything, including the library source code,
-checkout the module 'audacity' which will check out audacity-src but also
-grab the lib-src repository as a subdirectory of 'audacity'.
+Wenn du den kompletten Source-Code haben möchtest, solltest du das Modul
+'audacity' mit CVS laden, dieses enthält als Unterordner auch das lib-src Verzeichnis.
 </td>
 </tr>
 </table>

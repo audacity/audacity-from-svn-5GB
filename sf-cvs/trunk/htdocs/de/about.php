@@ -1,12 +1,12 @@
 <?php BoxTop($aboutStr); ?>
 
 <p>
-Audacity ist ein freier Mehrspur-Audio-Editor f&uuml;r Linux, Mac und Windows. Mit 
-Audacity k&ouml;nnen T&ouml;ne aufgenommen und wiedergegeben werden sowie Audiodaten 
-im- und exportiert werden in den Formaten wav, mp3 und ogg. Die T&ouml;ne k&ouml;nnen 
+Audacity ist ein kostenloser Mehrspur-Audio-Editor für Linux, Mac und Windows. Mit 
+Audacity können Töne aufgenommen und wiedergegeben werden sowie Audiodaten 
+im- und exportiert werden in den Formaten wav, mp3 und ogg. Die Töne können 
 auf einer unbegrenzten Zahl Spuren geschnitten, kopiert oder mit hunderten 
-von Effekten versehen werden. Audacity verf&uuml;gt &uuml;ber zahlreiche Werkzeuge um 
-Lautst&auml;rken zu ver&auml;ndern oder mit wenigen Handgriffen Idealpegel 
+von Effekten versehen werden. Audacity verfügt über zahlreiche Werkzeuge um 
+Lautstärken zu verändern oder mit wenigen Handgriffen Idealpegel 
 einzustellen.
 </p>
 
@@ -16,22 +16,22 @@ zu Audacity.</b>
 </p>
 
 <p>
-Auffallend an Audacity in der aktuellen Version 1.2 ist die au&szlig;ergew&ouml;hnlich 
-intuitiv zu bediendende Oberfl&auml;che. Wer Audacity gestartet hat kann sofort 
-mit einem einzigen Mausklick die erste Aufnahme starten, die gebr&auml;uchlichsten 
-Arbeitsschritte lehnen sich an g&auml;ngige Computer-Konventionen an. F&uuml;r Audacity 
+Auffallend an Audacity in der aktuellen Version 1.2 ist die außergewöhnlich 
+intuitiv zu bediendende Oberfläche. Wer Audacity gestartet hat kann sofort 
+mit einem einzigen Mausklick die erste Aufnahme starten, die gebräuchlichsten 
+Arbeitsschritte lehnen sich an gängige Computer-Konventionen an. Für Audacity 
 gibt es zahlreiche Sprachmodule, so ist auch eine komplett deutsch-sprachige 
-Men&uuml;f&uuml;hrung m&ouml;glich. 
+Menüführung möglich. 
 </p>
 
 <p>
-Audacity eignet sich hervorragend f&uuml;r Musikproduktionen, gerade wenn auf 
-mehreren Spuren ein Mix produziert werden soll. Ebenso k&ouml;nnen 
-Radioproduktionen au&szlig;ergew&ouml;hnlich z&uuml;gig realisiert werden, da Audacity mit 
+Audacity eignet sich hervorragend für Musikproduktionen, gerade wenn auf 
+mehreren Spuren ein Mix produziert werden soll. Ebenso können 
+Radioproduktionen außergewöhnlich zügig realisiert werden, da Audacity mit 
 seinem schlanken Aufbau die erforderlichen Funktionen unmittelbar zur 
-Verf&uuml;gung stellt und h&auml;ufig auftretende Abl&auml;ufe auf beliebige Tasten gelegt 
-werden k&ouml;nnen. In zuk&uuml;nftigen Versionen sollen die Audios noch flexibler auf 
-den jeweiligen Spuren bewegt werden k&ouml;nnen. 
+Verfügung stellt und häufig auftretende Abläufe auf beliebige Tasten gelegt 
+werden können. In zukünftigen Versionen sollen die Audios noch flexibler auf 
+den jeweiligen Spuren bewegt werden können. 
 </p>
 
 <p>
@@ -40,16 +40,15 @@ entwickelt. Das Programm ist in C++ geschrieben und verwendet das
 Cross-Platform-Toolkit <a href="http://www.wxwidgets.org/">wxWidgets</a>.
 Der gesamte Quelltext des Programms ist unter der
 <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a>
-verf&uuml;gbar: Dadurch ist es erlaubt, den Code zu ver&auml;ndern, solange die &Auml;nderungen
-wieder ver&ouml;ffentlicht und somit der Community zur  Verf&uuml;gung gestellt werden.
+verfügbar: Dadurch ist es erlaubt, den Code zu verändern, solange die Änderungen
+wieder veröffentlicht und somit der Community zur Verfügung gestellt werden.
 Der Quelltext wird von <a href="http://www.sourceforge.net">SourceForge</a> gehostet.
 </p>
 
 <p>
 Fragen/Kommentare?
-Im neuen <a href="http://audacity.fuchsi.de/">deutschsprachigen Audacity-Forum</a> k&ouml;nnen Sie
-Fragen zu Audacity stellen und Anmerkungen sowie Kritik loswerden. Eine Reihe von kompetenten und
-erfahrenen Benutzern und Entwicklern haben stets ein offenes Ohr f&uuml;r Ihr Anliegen.
+Im neuen <a href="http://audacity.fuchsi.de/">deutschsprachigen Audacity-Forum</a> können Sie
+Fragen zu Audacity stellen und Anmerkungen sowie Kritik loswerden. Eine Reihe von kompetenten und erfahrenen Benutzern und Entwicklern haben stets ein offenes Ohr für Ihr Anliegen.
 </p>
 
 <?php BoxBottom(); ?>
