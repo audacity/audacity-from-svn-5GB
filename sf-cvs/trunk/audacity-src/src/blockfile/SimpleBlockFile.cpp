@@ -8,6 +8,7 @@
 
 **********************************************************************/
 
+#include <wx/filefn.h>
 #include <wx/ffile.h>
 #include <wx/utils.h>
 

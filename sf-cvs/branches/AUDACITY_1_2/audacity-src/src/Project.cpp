@@ -1034,8 +1034,11 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
 
       mTrackPanel->Refresh(false);
 #ifdef __WXMAC__
+ #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
       mTrackPanel->MacUpdateImmediately();
+ #endif
 #endif
+
    }
 }
 

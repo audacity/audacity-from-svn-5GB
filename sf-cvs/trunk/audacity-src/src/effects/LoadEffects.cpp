@@ -46,9 +46,10 @@
 #include "nyquist/LoadNyquist.h"
 #endif
 
-#ifdef __WXMAC__
-#include "VST/LoadVSTMac.h"
-#endif
+// VST is separate now
+//#ifdef __WXMAC__
+//#include "VST/LoadVSTMac.h"
+//#endif
 
 #if defined(__WXMSW__) && !defined(__CYGWIN__)
 #include "VST/LoadVSTWin.h"
@@ -104,9 +105,10 @@ void LoadEffects()
    LoadNyquistPlugins();
 #endif
 
-#if defined(__WXMAC__) || defined(__WXMSW__)  && !defined(__CYGWIN__)
-   LoadVSTPlugins();
-#endif
+   // VST is separate now
+   //#if defined(__WXMAC__) || defined(__WXMSW__)  && !defined(__CYGWIN__)
+   //LoadVSTPlugins();
+   //#endif
 
 #ifdef USE_LADSPA
    LoadLadspaPlugins();

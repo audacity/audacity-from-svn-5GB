@@ -13,6 +13,7 @@
 #include <math.h>
 
 #include <wx/utils.h>
+#include <wx/filefn.h>
 #include <wx/ffile.h>
 
 #include "BlockFile.h"

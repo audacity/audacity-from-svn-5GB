@@ -15,6 +15,7 @@
 
 #include <wx/dynarray.h>
 #include <wx/intl.h>
+#include <wx/filefn.h>
 #include <wx/ffile.h>
 
 #include "Sequence.h"
