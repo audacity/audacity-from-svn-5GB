@@ -54,6 +54,6 @@ $latestBetaStr = "Última versão em teste - beta:";
 $releaseNotesStr = "Notas de versão";
 $releaseNotesStr2 = "Notas de versão (O que há de novo?)";
 $vstLinksHereStr = "Baixe os plug-ins para VST aqui:";
-$docsStr = "Baixe os manuais em inglês mais recentes ";
+$docsStr = "Baixe os manuais: ";
 $clickEnlargeStr = "Clique nas imagens para ampliar";
 ?>
