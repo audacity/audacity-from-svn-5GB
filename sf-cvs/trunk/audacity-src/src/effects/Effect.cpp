@@ -333,6 +333,10 @@ void Effect::Preview()
    }
 
    delete mWaveTracks;
+   delete mixLeft;
+   if (mixRight)
+      delete mixRight;
+
    mWaveTracks = saveWaveTracks;
 }
 
