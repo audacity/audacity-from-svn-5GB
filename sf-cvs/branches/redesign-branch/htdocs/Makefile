@@ -17,6 +17,7 @@ $(POT_FILE): $(SOURCES)
 MSGMERGE=msgmerge
 MSGMERGE_ARGS=-U
 %/LC_MESSAGES/audacity_website.po: %.po $(POT_FILE)
+	mkdir -p $(@:%/audacity_website.po=%)
 	cp -f $< $@
 	$(MSGMERGE) $(MSGMERGE_ARGS) $@ $<
 	touch $@
