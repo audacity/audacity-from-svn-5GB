@@ -203,7 +203,7 @@ void TranscriptionToolBar::MakeButtons()
    
    //Add a slider that controls the speed of playback.
    const int SliderWidth=100;
-   mPlaySpeedSlider = new ASlider(this,TTB_PlaySpeedSlider,  _("Playback Speed (Unimplemented)"), 
+   mPlaySpeedSlider = new ASlider(this,TTB_PlaySpeedSlider,  _("Playback Speed"), 
                                   wxPoint(mxButtonPos,0),wxSize(SliderWidth,28),
                                   SPEED_SLIDER);
    mPlaySpeedSlider->Set(1.0);
