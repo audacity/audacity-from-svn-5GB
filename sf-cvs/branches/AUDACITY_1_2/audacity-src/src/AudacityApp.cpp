@@ -936,7 +936,7 @@ void AudacityApp::AssociateFileTypes()
 					if (!associateFileTypes.Exists() || 
 							(tmpRegAudPath.Find("\\audacity.exe") >= 0)) {
 						associateFileTypes.Create(true);
-						associateFileTypes = (wxString)argv[0] + (wxString)" \"%1\"";
+						associateFileTypes = "\"" + (wxString)argv[0] + "\" \"%1\"";
 					}
 				}
 			} else {
