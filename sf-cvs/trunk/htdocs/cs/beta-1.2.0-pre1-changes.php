@@ -89,7 +89,7 @@ Projektové soubory Audacity 1.2 používají formát XML. Projektové soubory ze star
 </li>
 
 <li>
-Audacity 1.2 používá pro mnohem rychlejší dekódování souborù MP3 <a href="http://www.underbit.com/products/mad/">libmad</a>. <a href="http://www.zip.com.au/~erikd/libsndfile/">Libsndfile</a> od Erika de Castro Lopo poskytuje zlepšenou kompatibilitu s mnoha nekomprimovanými zvokovými souborovými formáty.
+Audacity 1.2 používá pro mnohem rychlejší dekódování souborù MP3 <a href="http://www.underbit.com/products/mad/">libmad</a>. <a href="http://www.zip.com.au/~erikd/libsndfile/">Libsndfile</a> od Erika de Castro Lopo poskytuje zlepšenou kompatibilitu s mnoha nekomprimovanými zvukovými souborovými formáty.
 </li>
 
 <li>
@@ -107,7 +107,10 @@ Nové editaèní a mixovací panely umožòující rychlý pøístup k bìžným funkcím.
 </li>
 
 <li>
-Nový nástroj Kreslení umožòuje úpravy jednotlivých vzorkù pøi plném zvìtšení. Vícenástrojový režim poskytuje rychlý pøístup k rùzným editaèním funkcím bez pøepínání mezi nástroji.
+Nový nástroj Kreslení umožòuje úpravy jednotlivých vzorkù pøi plném zvìtšení. 
+</li>
+<li>
+Vícenástrojový režim poskytuje rychlý pøístup k rùzným editaèním funkcím bez pøepínání mezi nástroji.
 </li>
 
 <li>
