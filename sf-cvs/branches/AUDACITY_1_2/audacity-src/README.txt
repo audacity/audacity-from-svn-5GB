@@ -303,6 +303,9 @@ Changes in 1.2.2:
   * Fixed bug that could cause instability when pasting, splitting,
     or duplicating a label track.
 
+  * Mac OS X: improved support for the Griffin iMic by fixing a bug
+    that was causing it to always record in mono instead of stereo.
+
 Changes in 1.2.1:
 
   * The following translations have been added or updated:  Finnish,
