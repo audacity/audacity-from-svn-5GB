@@ -31,20 +31,27 @@ Other Contributors:
   Dave Beydler
   Jason Cohen
   Roger Dannenberg
+  Dave Fancella
   Steve Harris
+  Daniel James
+  Steve Jolly
   Daniil Kolpakov
   Robert Leidle
   Logan Lewis
   Abe Milde
+  Monty
   Paul Nasca
   Jason Pepas
   Mark Phillips
+  Alexandre Prokoudine
   Jonathan Ryshpan
+  Juhana Sadeharju
   Patrick Shirkey
   Mark Tomlinson
   David Topper
   Rudy Trubitt
   Tom Woodhams
+  Otto Wyss
 
 
 The Audacity Logo:
