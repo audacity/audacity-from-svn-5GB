@@ -80,6 +80,7 @@ LangChoiceDialog::LangChoiceDialog(wxWindow * parent,
       langArray[i] = mLangNames[i];
    mChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
                           mNumLangs, langArray);
+   mChoice->SetSelection(0); // in case nothing else matches
    delete[] langArray;
    for(i=0; i<mNumLangs; i++)
       if (mLangCodes[i] == sysLang)

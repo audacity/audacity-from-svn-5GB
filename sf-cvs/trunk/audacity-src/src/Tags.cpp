@@ -631,6 +631,7 @@ wxSizer *MakeTagsDialog(wxWindow * parent, bool call_fit,
        new wxChoice(parent, ID_GENRE,
                     wxDefaultPosition, wxSize(-1, -1),
                     numGenres, genres);
+   item21->SetSelection(0);
    gridSizer->Add(item21, 1, wxEXPAND | wxALL, 5);
    delete[] genres;
    
