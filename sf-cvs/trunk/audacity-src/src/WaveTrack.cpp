@@ -93,18 +93,18 @@ VTrack(projDirManager)
 WaveTrack::WaveTrack(const WaveTrack &orig) :
 VTrack(orig)
 {
-   numSamples = 0;
    rate = orig.rate;
    display = orig.display;
-
-   envelope.CopyFrom(&(orig.envelope));
 
 #if wxUSE_THREADS
    blockMutex = new wxMutex();
 #endif
 
+   numSamples = 0;
    block = new BlockArray();
    Paste(0.0, &orig);
+
+   envelope.CopyFrom(&(orig.envelope));
 }
 
 WaveTrack::~WaveTrack()
