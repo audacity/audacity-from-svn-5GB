@@ -177,7 +177,6 @@ int audio_open(snd_node *n, long *f)
        }
     }
     
-    CopyCStringToPascal((const char *)device, (unsigned char *)device);
     err = SPBOpenDevice(c2pstr(device), siWritePermission, &data->refnum);
     if (err)
       return !SND_SUCCESS;
