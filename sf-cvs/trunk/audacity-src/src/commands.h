@@ -5,36 +5,43 @@
 
 #ifdef AUDACITY_MENUS_COMMANDS_METHODS
 
-   WX_DEFINE_ARRAY(wxKeyEvent *, CommandAssignedKeyArray);
-   CommandAssignedKeyArray mCommandAssignedKey;
-
-   WX_DEFINE_ARRAY(wxKeyEvent *, CommandUsedKeyArray);
-   CommandUsedKeyArray mCommandUsedKey;
-
-   WX_DEFINE_ARRAY(int *, CommandStateArray);
-   CommandStateArray mCommandState;
-
-   WX_DEFINE_ARRAY(int *, CommandIDArray);
-   CommandIDArray mCommandIDs;
-
-   WX_DEFINE_ARRAY(wxObjectEventFunction *, CommandFuncArray);
-   CommandFuncArray mCommandFunctions;
-
-   WX_DEFINE_ARRAY(wxString *, CommandNameArray);
-   CommandNameArray mCommandNames;
-
-   WX_DEFINE_ARRAY(wxString *, CommandDescArray);
-   CommandDescArray mCommandDesc;
+   WX_DEFINE_ARRAY(CommandMenuItem *, CommandMenuItemArray);
+   CommandMenuItemArray mCommandMenuItem;
 
 #endif
 
 #ifdef AUDACITY_MENUS_COMMANDS_GLOBALS
 
+#ifndef AMGC_DEFINED_H
+#define AMGC_DEFINED_H
 
 //This defines the  function pointer
 // BG: Yes. For now, this seems like the best place to put it.
 
-typedef void (AudacityProject::*audEventFunction)(wxCommandEvent&);
+typedef void (AudacityProject::*audEventFunction)(wxEvent&);
+
+enum menuState {disabledMenu = 0, enabledMenu};
+
+enum menuCategory {fileMenu = 0, editMenu, viewMenu, projectMenu, effectMenu, pluginsMenu, helpMenu};
+
+// BG: This is the structure that holds information about individual command items.
+
+struct CommandMenuItem
+{
+   wxString         commandString;
+   wxString         descriptionString;
+   audEventFunction callbackFunction;
+   menuCategory     category;
+   menuState        state;
+};
+
+#endif
+
+#endif
+
+#ifdef AUDACITY_MENUS_COMMANDS_ENUM
+
+#define MenuBaseID 1101
 
 enum {
    MenusFirstID = 1100,
@@ -58,7 +65,6 @@ enum {
 
    UndoID,
    RedoID,
-   UndoHistoryID,
 
    CutID,
    CopyID,
@@ -77,11 +83,12 @@ enum {
    // View Menu
 
    ZoomInID,
-   ZoomOutID,
    ZoomNormalID,
+   ZoomOutID,
    ZoomFitID,
    ZoomSelID,
 
+   UndoHistoryID,
    PlotSpectrumID,
 
    FloatControlToolBarID, 
@@ -95,20 +102,14 @@ enum {
    ImportMIDIID,
    ImportRawID,
    
-   EditID3ID,
+   QuickMixID,
 
-   AlignZeroID,
    AlignID,
+   AlignZeroID,
 
    NewWaveTrackID,
    NewLabelTrackID,
    RemoveTracksID,
-
-   WaveDisplayID,
-   SpectrumDisplayID,
-   AutoCorrelateID,
-   PitchID,
-   QuickMixID,
 
    // Help Menu
 
@@ -132,333 +133,85 @@ enum {
 #ifdef AUDACITY_MENUS_COMMANDS_EVENT_TABLE
 
 {
-   #define CMD_CETINT(a) ( (int *) a )
-   #define CMD_CACFUNC(a) ( (wxObjectEventFunction *)memcpy(malloc(sizeof(audEventFunction)), a, sizeof(audEventFunction)) )
-   #define CMD_CSTNAME(a) ( new wxString( a ) )
-   #define CMD_ASSIGNKEY(keyCode, controlDown, shiftDown, altDown) { wxKeyEvent tmpKeyEvent; tmpKeyEvent.m_x = 0; tmpKeyEvent.m_y = 0; tmpKeyEvent.m_keyCode = (wxKeyCode)keyCode; tmpKeyEvent.m_controlDown = controlDown; tmpKeyEvent.m_shiftDown = shiftDown; tmpKeyEvent.m_altDown = altDown; tmpKeyEvent.m_metaDown = FALSE; tmpKeyEvent.m_scanCode = 0; mCommandAssignedKey.Add( ( (wxKeyEvent *)memcpy(malloc(sizeof(wxKeyEvent)), &tmpKeyEvent, sizeof(wxKeyEvent)) ) ); }
-   #define CMD_ADDFUNCTION(a) {fp = &AudacityProject::a; mCommandFunctions.Add(CMD_CACFUNC(&fp));}
+   #define CMD_ADDFUNCTION(a) {fp = &AudacityProject::a; tmpCmd.callbackFunction = fp;}
+   #define CMD_ADDMENU(commandName, commandDesc, callback, nCategory, nState) { tmpCmd.commandString = commandName; tmpCmd.descriptionString = commandDesc; tmpCmd.category = nCategory; tmpCmd.state = nState; CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( (CommandMenuItem *)memcpy((new CommandMenuItem), &tmpCmd, sizeof(CommandMenuItem)) ); }
 
+   CommandMenuItem tmpCmd; // BG: Temporary command structure
    audEventFunction fp;  //Set up temporary function pointer to use for assigning keybindings
-  
-    // File menu
-   CMD_ADDFUNCTION(OnNew);
-   CMD_ASSIGNKEY('n', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(NewID) );
-   mCommandNames.Add( CMD_CSTNAME("New") );
-   mCommandDesc.Add( CMD_CSTNAME("New") );
 
-   CMD_ADDFUNCTION(OnOpen);
-   CMD_ASSIGNKEY('o', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(OpenID) );
-   mCommandNames.Add( CMD_CSTNAME("Open") );
-   mCommandDesc.Add( CMD_CSTNAME("Open") );
-
-   CMD_ADDFUNCTION(OnClose);
-   CMD_ASSIGNKEY('w', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(CloseID) );
-   mCommandNames.Add( CMD_CSTNAME("Close") );
-   mCommandDesc.Add( CMD_CSTNAME("Close") );
-
-   CMD_ADDFUNCTION(OnSave);
-   CMD_ASSIGNKEY('s', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(SaveID) );
-   mCommandNames.Add( CMD_CSTNAME("Save") );
-   mCommandDesc.Add( CMD_CSTNAME("Save") );
-
-   CMD_ADDFUNCTION(OnSaveAs);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(SaveAsID) );
-   mCommandNames.Add( CMD_CSTNAME("Save As") );
-   mCommandDesc.Add( CMD_CSTNAME("Save As") );
-   
-   CMD_ADDFUNCTION(OnExportMix);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(ExportMixID) );
-   mCommandNames.Add( CMD_CSTNAME("Export Mix") );
-   mCommandDesc.Add( CMD_CSTNAME("Export Mix") );
-
-   CMD_ADDFUNCTION(OnExportSelection);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(ExportSelectionID) );
-   mCommandNames.Add( CMD_CSTNAME("Export Selection") );
-   mCommandDesc.Add( CMD_CSTNAME("Export Selection") );
-
-   CMD_ADDFUNCTION(OnExportLossyMix);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(ExportLossyMixID) );
-   mCommandNames.Add( CMD_CSTNAME("Export Lossy Mix") );
-   mCommandDesc.Add( CMD_CSTNAME("Export Lossy Mix") );
-
-
-   CMD_ADDFUNCTION(OnExportLossySelection);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(ExportLossySelectionID) );
-   mCommandNames.Add( CMD_CSTNAME("Export Lossy Selection") );
-   mCommandDesc.Add( CMD_CSTNAME("Export Lossy Selection") );
-
-   CMD_ADDFUNCTION(OnExportLabels);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(ExportLabelsID) );
-   mCommandNames.Add( CMD_CSTNAME("Export Labels") );
-   mCommandDesc.Add( CMD_CSTNAME("Export Labels") );
-
-   CMD_ADDFUNCTION(OnPreferences);
-   CMD_ASSIGNKEY('p', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(PreferencesID) );
-   mCommandNames.Add( CMD_CSTNAME("Preferences") );
-   mCommandDesc.Add( CMD_CSTNAME("Preferences") );
-
-   CMD_ADDFUNCTION(OnExit);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(ExitID) );
-   mCommandNames.Add( CMD_CSTNAME("Exit") );
-   mCommandDesc.Add( CMD_CSTNAME("Exit") );
+   // File menu
+   CMD_ADDMENU("New\tCtrl+N", "New", OnNew, fileMenu, enabledMenu);
+   CMD_ADDMENU("Open...\tCtrl+O", "Open", OnOpen, fileMenu, enabledMenu);
+   CMD_ADDMENU("Close\tCtrl+W", "Close", OnClose, fileMenu, enabledMenu);
+   CMD_ADDMENU("Save Project\tCtrl+S", "Save Project", OnSave, fileMenu, enabledMenu);
+   CMD_ADDMENU("Save Project &As...", "Save Project As", OnSaveAs, fileMenu, enabledMenu);
+   CMD_ADDMENU("Export as %s...", "Export As", OnExportMix, fileMenu, enabledMenu);
+   CMD_ADDMENU("Export &Selection as %s...", "Export Selection As", OnExportSelection, fileMenu, enabledMenu);
+   CMD_ADDMENU("Export as %s...", "Export As (lossy)", OnExportLossyMix, fileMenu, enabledMenu);
+   CMD_ADDMENU("Export Selection as %s...", "Export Selection As (lossy)", OnExportLossySelection, fileMenu, enabledMenu);
+   CMD_ADDMENU("Export &Labels...", "Export Labels", OnExportLabels, fileMenu, enabledMenu);
+   CMD_ADDMENU("Prefrences...\tCtrl+P", "Prefrences", OnPreferences, fileMenu, enabledMenu);
+   CMD_ADDMENU("E&xit", "Exit", OnExit, fileMenu, enabledMenu);
 
    // Edit menu
-   CMD_ADDFUNCTION(Undo);
-   CMD_ASSIGNKEY('z', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(UndoID) );
-   mCommandNames.Add( CMD_CSTNAME("Undo") );
-   mCommandDesc.Add( CMD_CSTNAME("Undo") );
-
-   CMD_ADDFUNCTION(Redo);
-   CMD_ASSIGNKEY('r', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(RedoID) );
-   mCommandNames.Add( CMD_CSTNAME("Redo") );
-   mCommandDesc.Add( CMD_CSTNAME("Redo") );
-
-   CMD_ADDFUNCTION(UndoHistory);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(UndoHistoryID) );
-   mCommandNames.Add( CMD_CSTNAME("Undo History") );
-   mCommandDesc.Add( CMD_CSTNAME("Undo History") );
-
-   CMD_ADDFUNCTION(Cut);
-   CMD_ASSIGNKEY('x', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(CutID) );
-   mCommandNames.Add( CMD_CSTNAME("Cut") );
-   mCommandDesc.Add( CMD_CSTNAME("Cut") );
-
-   CMD_ADDFUNCTION(Copy);
-   CMD_ASSIGNKEY('c', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(CopyID) );
-   mCommandNames.Add( CMD_CSTNAME("Copy") );
-   mCommandDesc.Add( CMD_CSTNAME("Copy") );
-
-   CMD_ADDFUNCTION(Paste);
-   CMD_ASSIGNKEY('v', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(PasteID) );
-   mCommandNames.Add( CMD_CSTNAME("Paste") );
-   mCommandDesc.Add( CMD_CSTNAME("Paste") );
-
-   CMD_ADDFUNCTION(Trim);
-   CMD_ASSIGNKEY('t', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(TrimID) );
-   mCommandNames.Add( CMD_CSTNAME("Trim") );
-   mCommandDesc.Add( CMD_CSTNAME("Trim") );
-
-   CMD_ADDFUNCTION(OnDelete);
-   CMD_ASSIGNKEY('k', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(DeleteID) );
-   mCommandNames.Add( CMD_CSTNAME("Delete") );
-   mCommandDesc.Add( CMD_CSTNAME("Delete") );
-
-   CMD_ADDFUNCTION(OnSilence);
-   CMD_ASSIGNKEY('l', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(SilenceID) );
-   mCommandNames.Add( CMD_CSTNAME("Silence") );
-   mCommandDesc.Add( CMD_CSTNAME("Silence") );
-
-   CMD_ADDFUNCTION(OnSplit);
-   CMD_ASSIGNKEY('y', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(SplitID) );
-   mCommandNames.Add( CMD_CSTNAME("Split") );
-   mCommandDesc.Add( CMD_CSTNAME("Split") );
-
-   CMD_ADDFUNCTION(OnDuplicate);
-   CMD_ASSIGNKEY('d', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(DuplicateID) );
-   mCommandNames.Add( CMD_CSTNAME("Duplicate") );
-   mCommandDesc.Add( CMD_CSTNAME("Duplicate") );
-
-   CMD_ADDFUNCTION(OnInsertSilence);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(InsertSilenceID) );
-   mCommandNames.Add( CMD_CSTNAME("Insert Silence") );
-   mCommandDesc.Add( CMD_CSTNAME("Insert Silence") );
-
-   CMD_ADDFUNCTION(OnSelectAll);
-   CMD_ASSIGNKEY('a', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(SelectAllID) );
-   mCommandNames.Add( CMD_CSTNAME("Select All") );
-   mCommandDesc.Add( CMD_CSTNAME("Select All") );
+   CMD_ADDMENU("Undo\tCtrl+Z", "Undo", Undo, editMenu, enabledMenu);
+   CMD_ADDMENU("Redo\tCtrl+R", "Redo", Redo, editMenu, enabledMenu);
+   CMD_ADDMENU("Cut\tCtrl+X", "Cut", Cut, editMenu, enabledMenu);
+   CMD_ADDMENU("Copy\tCtrl+C", "Copy", Copy, editMenu, enabledMenu);
+   CMD_ADDMENU("Pase\tCtrl+V", "Paste", Paste, editMenu, enabledMenu);
+   CMD_ADDMENU("Trim\tCtrl+T", "Trim", Trim, editMenu, enabledMenu);
+   CMD_ADDMENU("Delete\tCtrl+K", "Delete", OnDelete, editMenu, enabledMenu);
+   CMD_ADDMENU("Silence\tCtrl+L", "Silence", OnSilence, editMenu, enabledMenu);
+   CMD_ADDMENU("Insert Silence...", "Insert Silence", OnInsertSilence, editMenu, enabledMenu);
+   CMD_ADDMENU("Split\tCtrl+Y", "New", OnSplit, editMenu, enabledMenu);
+   CMD_ADDMENU("Duplicate\tCtrl+D", "New", OnDuplicate, editMenu, enabledMenu);
+   CMD_ADDMENU("Select All\tCtrl+A", "Select All", OnSelectAll, editMenu, enabledMenu);
 
    // View menu
-   CMD_ADDFUNCTION(OnZoomIn);
-   CMD_ASSIGNKEY('1', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(ZoomInID) );
-   mCommandNames.Add( CMD_CSTNAME("Zoom In") );
-   mCommandDesc.Add( CMD_CSTNAME("Zoom In") );
-
-   CMD_ADDFUNCTION(OnZoomOut);
-   CMD_ASSIGNKEY('3', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(ZoomOutID) );
-   mCommandNames.Add( CMD_CSTNAME("Zoom Out") );
-   mCommandDesc.Add( CMD_CSTNAME("Zoom Out") );
-
-   CMD_ADDFUNCTION(OnZoomNormal);
-   CMD_ASSIGNKEY('2', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(ZoomNormalID) );
-   mCommandNames.Add( CMD_CSTNAME("Zoom Normal") );
-   mCommandDesc.Add( CMD_CSTNAME("Zoom Normal") );
-
-   CMD_ADDFUNCTION(OnZoomFit);
-   CMD_ASSIGNKEY('f', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(ZoomFitID) );
-   mCommandNames.Add( CMD_CSTNAME("Zoom Fit") );
-   mCommandDesc.Add( CMD_CSTNAME("Zoom Fit") );
-
-   CMD_ADDFUNCTION(OnZoomSel);
-   CMD_ASSIGNKEY('e', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(ZoomSelID) );
-   mCommandNames.Add( CMD_CSTNAME("Zoom Sel") );
-   mCommandDesc.Add( CMD_CSTNAME("Zoom Sel") );
-
-   CMD_ADDFUNCTION(OnPlotSpectrum);
-   CMD_ASSIGNKEY('u', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(PlotSpectrumID) );
-   mCommandNames.Add( CMD_CSTNAME("Plot Spectrum") );
-   mCommandDesc.Add( CMD_CSTNAME("Plot Spectrum") );
-
-
-   CMD_ADDFUNCTION(OnFloatControlToolBar);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(FloatControlToolBarID) );
-   mCommandNames.Add( CMD_CSTNAME("Float Control Toolbar") );
-   mCommandDesc.Add( CMD_CSTNAME("Float Control Toolbar") );
-
-
-   CMD_ADDFUNCTION(OnLoadEditToolBar);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(LoadEditToolBarID) );
-   mCommandNames.Add( CMD_CSTNAME("Load Edit Toolbar") );
-   mCommandDesc.Add( CMD_CSTNAME("Load Edit Toolbar") );
-
-   CMD_ADDFUNCTION(OnFloatEditToolBar);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(FloatEditToolBarID) );
-   mCommandNames.Add( CMD_CSTNAME("Float Edit Toolbar") );
-   mCommandDesc.Add( CMD_CSTNAME("Float Edit Toolbar") );
+   CMD_ADDMENU("Zoom In\tCtrl+1", "Zoom In", OnZoomIn, viewMenu, enabledMenu);
+   CMD_ADDMENU("Zoom Normal\tCtrl+2", "Zoom Normal", OnZoomNormal, viewMenu, enabledMenu);
+   CMD_ADDMENU("Zoom Out\tCtrl+3", "Zoom Out", OnZoomOut, viewMenu, enabledMenu);
+   CMD_ADDMENU("Fit in Window\tCtrl+F", "Fit in Window", OnZoomFit, viewMenu, enabledMenu);
+   CMD_ADDMENU("Zoom to Selection\tCtrl+E", "Zoom to Selection", OnZoomSel, viewMenu, enabledMenu);
+   CMD_ADDMENU("History", "Undo History", UndoHistory, viewMenu, enabledMenu);
+   CMD_ADDMENU("Plot Spectrum\tCtrl+U", "Plot Spectrum", OnPlotSpectrum, viewMenu, enabledMenu);
+   CMD_ADDMENU("%s Control Toolbar", "Float Control Toolbar", OnFloatControlToolBar, viewMenu, enabledMenu);
+   CMD_ADDMENU("%s Edit Toolbar", "Load Edit Toolbar", OnLoadEditToolBar, viewMenu, enabledMenu);
+   CMD_ADDMENU("%s Edit Toolbar", "Float Edit Toolbar", OnFloatEditToolBar, viewMenu, enabledMenu);
 
    // Project menu
-   CMD_ADDFUNCTION(OnImport);
-   CMD_ASSIGNKEY('i', TRUE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(ImportID) );
-   mCommandNames.Add( CMD_CSTNAME("Import") );
-   mCommandDesc.Add( CMD_CSTNAME("Import") );
-
-   CMD_ADDFUNCTION(OnImportLabels);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(ImportLabelsID) );
-   mCommandNames.Add( CMD_CSTNAME("Import Labels") );
-   mCommandDesc.Add( CMD_CSTNAME("Import Labels") );
-
-   CMD_ADDFUNCTION(OnImportMIDI);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(ImportMIDIID) );
-   mCommandNames.Add( CMD_CSTNAME("Import MIDI") );
-   mCommandDesc.Add( CMD_CSTNAME("Import MIDI") );
-
-   CMD_ADDFUNCTION(OnImportRaw);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(ImportRawID) );
-   mCommandNames.Add( CMD_CSTNAME("Import Raw") );
-   mCommandDesc.Add( CMD_CSTNAME("Import Raw") );
-
-   CMD_ADDFUNCTION(OnEditID3);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(EditID3ID) );
-   mCommandNames.Add( CMD_CSTNAME("Edit ID3") );
-   mCommandDesc.Add( CMD_CSTNAME("Edit ID3") );
-
-   CMD_ADDFUNCTION(OnAlign);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(AlignID) );
-   mCommandNames.Add( CMD_CSTNAME("Align") );
-   mCommandDesc.Add( CMD_CSTNAME("Align") );
-
-   CMD_ADDFUNCTION(OnAlignZero);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(AlignZeroID) );
-   mCommandNames.Add( CMD_CSTNAME("Align Zero") );
-   mCommandDesc.Add( CMD_CSTNAME("Align Zero") );
-
-   CMD_ADDFUNCTION(OnQuickMix);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(QuickMixID) );
-   mCommandNames.Add( CMD_CSTNAME("Quick Mix") );
-   mCommandDesc.Add( CMD_CSTNAME("Quick Mix") );
-
-   CMD_ADDFUNCTION(OnNewWaveTrack);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(NewWaveTrackID) );
-   mCommandNames.Add( CMD_CSTNAME("New Wave Track") );
-   mCommandDesc.Add( CMD_CSTNAME("New Wave Track") );
-
-   CMD_ADDFUNCTION(OnNewLabelTrack);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(NewLabelTrackID) );
-   mCommandNames.Add( CMD_CSTNAME("New Label Track") );
-   mCommandDesc.Add( CMD_CSTNAME("New Label Track") );
-
-   CMD_ADDFUNCTION(OnRemoveTracks);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(RemoveTracksID) );
-   mCommandNames.Add( CMD_CSTNAME("Remove Tracks") );
-   mCommandDesc.Add( CMD_CSTNAME("Remove Tracks") );
+   CMD_ADDMENU("Import Audio...\tCtrl+I", "Import Audio", OnImport, projectMenu, enabledMenu);
+   CMD_ADDMENU("Import Labels...", "Import Labels...", OnImportLabels, projectMenu, enabledMenu);
+   CMD_ADDMENU("Import &MIDI...", "Import MIDI", OnImportMIDI, projectMenu, enabledMenu);
+   CMD_ADDMENU("Import Raw Data...", "Import Raw Data", OnImportRaw, projectMenu, enabledMenu);
+   CMD_ADDMENU("&Quick Mix", "Quick Mix", OnQuickMix, projectMenu, enabledMenu);
+   CMD_ADDMENU("Align Tracks Together", "Align Tracks Together", OnAlign, projectMenu, enabledMenu);
+   CMD_ADDMENU("Align with Zero", "Align with Zero", OnAlignZero, projectMenu, enabledMenu);
+   CMD_ADDMENU("New &Audio Track", "New Audio Track", OnNewWaveTrack, projectMenu, enabledMenu);
+   CMD_ADDMENU("New &Label Track", "New Label Track", OnNewLabelTrack, projectMenu, enabledMenu);
+   CMD_ADDMENU("&Remove Track(s)", "Remove Track(s)", OnRemoveTracks, projectMenu, enabledMenu);
 
    // Help menu
-   CMD_ADDFUNCTION(OnAbout);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(AboutID) );
-   mCommandNames.Add( CMD_CSTNAME("About") );
-   mCommandDesc.Add( CMD_CSTNAME("About") );
-
-   CMD_ADDFUNCTION(OnHelp);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(HelpID) );
-   mCommandNames.Add( CMD_CSTNAME("Help") );
-   mCommandDesc.Add( CMD_CSTNAME("Help") );
-
-   CMD_ADDFUNCTION(OnHelpIndex);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(HelpIndexID) );
-   mCommandNames.Add( CMD_CSTNAME("Help Index") );
-   mCommandDesc.Add( CMD_CSTNAME("Help Index") );
-
-   CMD_ADDFUNCTION(OnHelpSearch);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(HelpSearchID) );
-   mCommandNames.Add( CMD_CSTNAME("Help Search") );
-   mCommandDesc.Add( CMD_CSTNAME("Help Search") );
-
-   CMD_ADDFUNCTION(OnBenchmark);
-   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(BenchmarkID) );
-   mCommandNames.Add( CMD_CSTNAME("Benchmark") );
-   mCommandDesc.Add( CMD_CSTNAME("Benchmark") );
-
-   for(int i = 0; i < GetNumCommands(); i++)
-   {
-      mCommandState.Add( CMD_CETINT(1) );
-   }
+   CMD_ADDMENU("About Audacity...", "About Audacity", OnAbout, helpMenu, enabledMenu);
+   CMD_ADDMENU("Online Help...", "Online Help", OnHelp, helpMenu, enabledMenu);
+   CMD_ADDMENU("Online Help Index...", "Online Help Index", OnHelpIndex, helpMenu, enabledMenu);
+   CMD_ADDMENU("Search Online Help...", "Search Online Help", OnHelpSearch, helpMenu, enabledMenu);
+   CMD_ADDMENU("Run Benchmark...", "Run Benchmark", OnBenchmark, helpMenu, enabledMenu);
 }
 
 #endif
 
 #ifdef AUDACITY_MENUS_COMMANDS_ACCELL_TABLE
 
-   #define MNU_UPDATE_ACCELL(menuClass, ID) { wxString mnuText; mnuText = (menuClass->FindItem(ID))->GetLabel(); if(GetCommandKeyText(ID, &mnuText)) { (menuClass->FindItem(ID))->SetText(mnuText); } }
+   #define MNU_UPDATE_ACCELL(menuClass, ID) {  if(GetCommandKeyText(ID, &mnuText)) { (menuClass->FindItem(ID))->SetText(mnuText); } }
+
+   for(int amcat_i = 0; amcat_i < GetNumCommands(); amcat_i++)
+   {
+      wxMenu tempMenu;
+      wxString mnuText;
+      mnuText = (menuClass->FindItem(ID))->GetLabel();
+      tempMenu.Append(56183, )
+   }
 
    MNU_UPDATE_ACCELL(mFileMenu, NewID)
    MNU_UPDATE_ACCELL(mFileMenu, OpenID)
