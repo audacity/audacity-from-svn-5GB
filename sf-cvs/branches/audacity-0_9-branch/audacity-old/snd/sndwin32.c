@@ -12,7 +12,7 @@
 void snd_fail(char *msg)
 {
     MessageBox(0, msg, 0, 0);
-    exit(1);
+    //exit(1);
 }
 
 int snd_file_open(char *fname, int mode)
