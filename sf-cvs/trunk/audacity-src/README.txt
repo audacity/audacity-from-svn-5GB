@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.1.1 (November 6, 2002)
+Version 1.1.1 (November 10, 2002)
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -82,8 +82,55 @@ information visit our website at:
 
   http://audacity.sourceforge.net/
 
-This program uses wxWindows, a cross-platform GUI toolkit.  To
-compile this program, you will need to download wxWindows from:
+Audacity is built upon other free libraries; some of
+these libraries may have come with Audacity in the lib-src
+directory.  Others you are expected to install first if
+you want Audacity to have certain capabilities.  Most
+of these libraries are not distributed under the terms
+of the GPL, but rather some other free, GPL-compatible
+license.  Specifically:
+
+  wxWindows: LGPL
+    Cross-platform GUI library - must be downloaded and
+    compiled separately.
+
+  expat: BSD-like license.
+    Provides XML parsing.  Included with Audacity
+
+  iAVC: LGPL
+    Part of the code to the AVC Compressor effect.
+    Included with Audacity.
+
+  libid3tag: GPL
+    Reads/writes ID3 tags in MP3 files.  Optional
+    separate download as part of libmad.
+
+  libmad: GPL
+    Decodes MP3 files.  Optional separate download.
+
+  libnyquist: BSD-like license.
+    Functional language for manipulating audio; available
+    within Audacity for effects processing.
+
+  libogg: BSD-like license.
+    Optional separate download, along with libvorbis.
+
+  libsndfile: LGPL
+    Reads and writes uncompressed PCM audio files.
+    Included with Audacity.
+
+  libvorbis: BSD-like license.
+    Decodes and encodes Ogg Vorbis files.  Optional
+    separate download.
+
+For more information, see the documentation inside
+each library's source code directory.
+
+-------------------------------------------------------------
+
+Compilation instructions:
+
+First you must download wxWindows from:
 
   http://www.wxwindows.org/
 
@@ -92,11 +139,14 @@ as well, otherwise, you won't be able to compile Audacity
 from source.
 
 To compile on Linux, Mac OS X, and other Unix systems,
-simply run:
+simply execute these commands:
 
   ./configure
   make
   make install  # as root
+
+To see compile-time options you can set, you can type
+"./configure --help".
   
 If you want to do any development, you might want to generate
 a configure cache and header dependencies:
