@@ -22,9 +22,9 @@
 
 #include "APalette.h"
 #include "AColor.h"
+#include "AudioIO.h"
 #include "LabelTrack.h"
 #include "Track.h"
-#include "Play.h"
 #include "Project.h"
 #include "WaveTrack.h"
 
@@ -192,16 +192,16 @@ void TrackPanel::OnTimer()
   }
 
   if (mIndicatorShowing ||
-      (gSoundPlayer->IsBusy() &&
-       gSoundPlayer->GetProject() == (AudacityProject *)GetParent())) {
+      (gAudioIO->IsBusy() &&
+       gAudioIO->GetProject() == (AudacityProject *)GetParent())) {
 
-    double ind = gSoundPlayer->GetIndicator();
+    double ind = gAudioIO->GetIndicator();
     bool onScreen = (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen));
     
     if (mIndicatorShowing || onScreen) {
       mIndicatorShowing = (onScreen &&
-                           gSoundPlayer->IsBusy() &&
-                           gSoundPlayer->GetProject() == (AudacityProject *)GetParent());
+                           gAudioIO->IsBusy() &&
+                           gAudioIO->GetProject() == (AudacityProject *)GetParent());
 
       wxClientDC dc(this);
 
@@ -1141,10 +1141,10 @@ void TrackPanel::DrawRuler(wxDC& dc, bool text)
   // Draw indicator
   //
 
-  if (gSoundPlayer->IsBusy() &&
-      gSoundPlayer->GetProject() == (AudacityProject *)GetParent()) {
+  if (gAudioIO->IsBusy() &&
+      gAudioIO->GetProject() == (AudacityProject *)GetParent()) {
   
-    double ind = gSoundPlayer->GetIndicator();
+    double ind = gAudioIO->GetIndicator();
   
     if (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen)) {
       int indp = GetLabelOffset() + int((ind - mViewInfo->h)*mViewInfo->zoom);

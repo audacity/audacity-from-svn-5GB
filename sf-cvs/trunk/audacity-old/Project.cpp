@@ -32,6 +32,7 @@
 #include "AudacityApp.h"
 #include "AColor.h"
 #include "APalette.h"
+#include "AudioIO.h"
 #include "Export.h"
 #include "FreqWindow.h"
 #include "Import.h"
@@ -41,7 +42,6 @@
 #include "LabelTrack.h"
 #include "Mix.h"
 #include "NoteTrack.h"
-#include "Play.h"
 #include "Prefs.h"
 #include "Project.h"
 #include "Track.h"
@@ -462,6 +462,11 @@ void AudacityProject::RedrawProject()
 {
   FixScrollbars();
   mTrackPanel->Refresh(false);
+}
+
+DirManager *AudacityProject::GetDirManager()
+{
+  return &mDirManager;
 }
 
 wxString AudacityProject::GetName()
@@ -2054,7 +2059,7 @@ void AudacityProject::TP_OnPlayKey()
 { 
   APalette *palette = GetAPalette();
 
-  if (gSoundPlayer->IsBusy()) {
+  if (gAudioIO->IsBusy()) {
 	palette->OnStop();
 	palette->SetPlay(false);
 	palette->SetStop(true);

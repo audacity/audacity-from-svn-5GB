@@ -32,8 +32,8 @@
 #include "AButton.h"
 #include "ASlider.h"
 #include "APalette.h"
+#include "AudioIO.h"
 #include "Project.h"
-#include "Play.h"
 
 APaletteFrame *gAPaletteFrame = NULL;
 
@@ -231,20 +231,23 @@ void APalette::OnPlay()
 	double t1 = p->GetSel1();
 	if (t1 == t0)
 	  t1 = t->GetMaxLen();
-	gSoundPlayer->Begin(p, t, t0, t1);
+	gAudioIO->StartPlay(p, t, t0, t1);
   }
 }
 
 void APalette::OnStop()
 {
-  gSoundPlayer->Stop();
+  gAudioIO->Stop();
   SetStop(false);
 }
 
 void APalette::OnRecord()
 {
-  //  gSoundPlayer->Record();
-  SetStop(false);
+  AudacityProject *p = GetActiveProject();
+  if (p) {
+	TrackList *t = p->GetTracks();
+	gAudioIO->StartRecord(p, t);
+  }
 }
 
 float APalette::GetSoundVol()

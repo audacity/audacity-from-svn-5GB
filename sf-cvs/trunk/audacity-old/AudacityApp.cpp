@@ -30,8 +30,8 @@
 #include "AButton.h"
 #include "ASlider.h"
 #include "APalette.h"
+#include "AudioIO.h"
 #include "FreqWindow.h"
-#include "Play.h"
 #include "Prefs.h"
 #include "Project.h"
 #include "WaveTrack.h"
@@ -161,7 +161,7 @@ bool AudacityApp::OnInit()
   ::wxInitAllImageHandlers();
 
   InitPreferences();
-  InitSoundPlayer();
+  InitAudioIO();
   
   Effect::RegisterEffect(new EffectAmplify());
   Effect::RegisterEffect(new EffectEcho());

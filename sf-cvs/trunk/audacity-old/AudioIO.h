@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  Play.h
+  AudioIO.h
 
   Dominic Mazzoni
 
@@ -10,8 +10,8 @@
 
 **********************************************************************/
 
-#ifndef __AUDACITY_PLAY__
-#define __AUDACITY_PLAY__
+#ifndef __AUDACITY_AUDIO_IO__
+#define __AUDACITY_AUDIO_IO__
 
 #include "snd/snd.h"
 
@@ -20,31 +20,31 @@
 
 #include "WaveTrack.h"
 
-class SoundPlayer;
+class AudioIO;
 class AudacityProject;
 
-extern SoundPlayer *gSoundPlayer;
+extern AudioIO *gAudioIO;
 
-void InitSoundPlayer();
+void InitAudioIO();
 
-class SoundTimer: public wxTimer
+class AudioIOTimer: public wxTimer
 {
 public:
   virtual void Notify();
 };
 
-class SoundPlayer {
+class AudioIO {
 
 public:
-  SoundPlayer();
-  ~SoundPlayer();
+  AudioIO();
+  ~AudioIO();
 
-  bool Begin(AudacityProject *project,
-			 TrackList *tracks,
-			 double t0, double t1);
+  bool StartPlay(AudacityProject *project,
+				 TrackList *tracks,
+				 double t0, double t1);
 
-  bool Record(AudacityProject *project,
-			  TrackList *tracks);			  
+  bool StartRecord(AudacityProject *project,
+				   TrackList *tracks);			  
 
   void OnTimer();
 
@@ -65,8 +65,13 @@ private:
   double          mT1;
   int             mTicks;
   bool            mStop;
-  snd_node        mAudioOut;
-  SoundTimer      mTimer;
+  snd_node        mSndNode;
+
+  bool            mRecording;
+  WaveTrack       *mRecordLeft;
+  WaveTrack       *mRecordRight;
+
+  AudioIOTimer    mTimer;
   wxStopWatch     mStopWatch;
   
   #ifdef __WXMAC__

@@ -27,6 +27,7 @@ OBJS = \
 	$(OBJDIR)/AStatus.cpp.o \
 	$(OBJDIR)/AboutDialog.cpp.o \
 	$(OBJDIR)/AudacityApp.cpp.o \
+	$(OBJDIR)/AudioIO.cpp.o \
 	$(OBJDIR)/BlockFile.cpp.o \
 	$(OBJDIR)/DirManager.cpp.o \
 	$(OBJDIR)/DiskFunctions.cpp.o \
@@ -41,7 +42,6 @@ OBJS = \
 	$(OBJDIR)/LabelTrack.cpp.o \
 	$(OBJDIR)/Mix.cpp.o \
 	$(OBJDIR)/NoteTrack.cpp.o \
-	$(OBJDIR)/Play.cpp.o \
 	$(OBJDIR)/Prefs.cpp.o \
 	$(OBJDIR)/Project.cpp.o \
 	$(OBJDIR)/Spectrum.cpp.o \

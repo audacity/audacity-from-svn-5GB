@@ -33,7 +33,6 @@ class wxDragImage;
 class TrackList;
 class APalette;
 
-
 class AudacityProject;
 
 AudacityProject *CreateNewAudacityProject(wxWindow *parentFrame);
@@ -65,6 +64,7 @@ public:
   double      GetSel1();
   APalette   *GetAPalette();
   wxString    GetName();
+  DirManager *GetDirManager();
 
   // File I/O
 
