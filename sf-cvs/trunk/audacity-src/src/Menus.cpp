@@ -57,7 +57,6 @@
 #include "effects/Effect.h"
 #include "prefs/PrefsDialog.h"
 
-#include <iostream.h>
 
 #define AUDACITY_MENUS_GLOBALS
 #include "Menus.h"
