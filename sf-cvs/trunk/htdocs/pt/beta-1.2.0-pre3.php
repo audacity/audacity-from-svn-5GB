@@ -1,4 +1,4 @@
-<h1>Audacity 1.2.0-pre1</h1>
+<h1>Audacity 1.2.0-pre3</h1>
 
 <p>
 O Audacity 1.2.0-pre3 é a terceira versão liberada para testes do editor de áudio gratuito Audacity. Espera-se que os usuários possam conhecer e testar os novos recursos da próxima versão final, 1.2.0.
@@ -12,5 +12,4 @@ audacity-help@lists.sourceforge.net</a>
 
 <p>
 Suas sugestões farão toda a diferença para que a nova versão final seja estável e livre de falhas!
-Esta versão deverá estar disponível para download em Novembro de 2003.
 </p>

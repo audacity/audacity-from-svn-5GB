@@ -1,4 +1,45 @@
 <pre>
+Falhas corrigidas no Audacity 1.2.0-pre3:
+
+  * Comando exportar não disponível sem seleção ativa.
+
+  * Abrir o Audacity em um computador com placa de som sem suporte a mixer.
+
+  * Importar dados Raw.
+
+  * Ajustes estéticos na interface da versão MacOS X.
+
+  * Encerrar o Audacity com a caixa de diálogo Preferências aberta.
+
+  * Caracteres duplicados nas faixas de título da versão MacOS X.
+
+  * Nível de gravação ajusta o controle de IGAIN, ao invés de ajustar o nível de saída do dispositivo selecionado, na versão Linux.
+
+  * Arquivos 16bit estéreo corrompidos.
+
+  * Perda de dados em arquivo salvo ao abrir um novo projeto na mesma janela.
+
+  * Ícones transparentes para o Windows XP.
+
+  * Executar o programa em um computador com placa de som não-suportada.
+
+  * Corte dos últimos 100ms, em média, das seleções na versão Windows.
+
+  * Ajuste automático da prioridade de tarefa para "Alta" ao gravar na versão Windows. 
+
+  * Unix Build System
+
+  * Caixas de diálogo dos Filtros FFT e Equalização.
+
+  * Suportes adicionados:
+    - Plug-ins VST na versão Windows (adicionados os plug-ins de demonstração: GVerb reverb, SC4 compressor e Hard Limiter)
+    - wxX11
+    - Organização alternativa dos botões
+
+
+---
+
+
 Novos recursos no Audacity 1.2.0-pre1:
 
   * Interface
