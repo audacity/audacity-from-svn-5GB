@@ -249,7 +249,11 @@ GZIP_ENV = --best
 SOURCES = $(sfversion_SOURCES) $(floating_point_test_SOURCES) $(write_read_test_SOURCES) $(lossy_comp_test_SOURCES) $(error_test_SOURCES) $(ulaw_test_SOURCES) $(alaw_test_SOURCES) $(dwvw_test_SOURCES) $(peak_chunk_test_SOURCES) $(command_test_SOURCES) $(stdin_test_SOURCES) $(stdout_test_SOURCES) $(stdio_test_SOURCES) $(pcm_test_SOURCES) $(headerless_test_SOURCES) $(pipe_test_SOURCES) $(benchmark_SOURCES) $(misc_test_SOURCES) $(fix_this_SOURCES)
 OBJECTS = $(sfversion_OBJECTS) $(floating_point_test_OBJECTS) $(write_read_test_OBJECTS) $(lossy_comp_test_OBJECTS) $(error_test_OBJECTS) $(ulaw_test_OBJECTS) $(alaw_test_OBJECTS) $(dwvw_test_OBJECTS) $(peak_chunk_test_OBJECTS) $(command_test_OBJECTS) $(stdin_test_OBJECTS) $(stdout_test_OBJECTS) $(stdio_test_OBJECTS) $(pcm_test_OBJECTS) $(headerless_test_OBJECTS) $(pipe_test_OBJECTS) $(benchmark_OBJECTS) $(misc_test_OBJECTS) $(fix_this_OBJECTS)
 
-all: all-redirect
+# dmazzoni: do nothing!
+#all: all-redirect
+all:
+
+
 .SUFFIXES:
 .SUFFIXES: .S .c .lo .o .obj .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
