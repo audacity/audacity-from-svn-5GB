@@ -46,7 +46,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
 
    wxString informationStr;
 
-   #ifdef MP3SUPPORT
+   #ifdef USE_LIBMAD
    informationStr += _("MP3 importing enabled");
    #else
    informationStr += _("MP3 importing disabled");
@@ -282,3 +282,15 @@ void AboutDialog::OnOK(wxCommandEvent & WXUNUSED(event))
 {
    EndModal(wxID_OK);
 }
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: a8955864-40e2-47aa-923b-cace3994493a
+
