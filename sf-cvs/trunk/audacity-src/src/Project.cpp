@@ -514,6 +514,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mImporter = new Importer;
    mImportingRaw = false;
 
+   mAudioIOToken = -1;
+
 #ifdef __WXMSW__
    // Accept drag 'n' drop files
    DragAcceptFiles(true);
