@@ -49,6 +49,7 @@ class PreviewPanel:public wxPanel {
    PreviewPanel(char *rawData, int dataLen, wxWindow * parent,
                  const wxPoint & pos, const wxSize & size,
                  const long style);
+   ~PreviewPanel();
 
    void OnEraseBackground(wxEraseEvent & ignore);
 
@@ -71,11 +72,13 @@ class ImportDialog:public wxDialog {
    ImportDialog(char *data, int dataLen,
                  wxWindow * parent,
                  const wxPoint & pos = wxDefaultPosition);
+   ~ImportDialog();
 
    void OnOK(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
 
    void RadioButtonPushed(wxCommandEvent & event);
+   void RefreshPreview();
 
    DECLARE_EVENT_TABLE()
 };

@@ -729,21 +729,17 @@ bool ImportRaw(wxWindow * parent,
    dlg.stereo[stereo]->SetValue(true);
    dlg.endian[big]->SetValue(true);
    dlg.offset[offset]->SetValue(true);
+   dlg.RefreshPreview();
 
    dlg.ShowModal();
    if (!dlg.GetReturnCode())
       return false;
 
-   if (dlg.bits[!b16]->GetValue())
-      b16 = !b16;
-   if (dlg.sign[sign]->GetValue())
-      sign = !sign;
-   if (dlg.stereo[!stereo]->GetValue())
-      stereo = !stereo;
-   if (dlg.endian[!big]->GetValue())
-      big = !big;
-   if (dlg.offset[!offset]->GetValue())
-      offset = !offset;
+   b16    = dlg.bits[1]->GetValue();
+   sign   = dlg.sign[0]->GetValue();
+   stereo = dlg.stereo[1]->GetValue();
+   big    = dlg.endian[1]->GetValue();
+   offset = dlg.offset[1]->GetValue();
 
    *dest1 = new WaveTrack(dirManager);
    (*dest1)->SetName(TrackNameFromFileName(fName));
@@ -849,14 +845,14 @@ BEGIN_EVENT_TABLE(ImportDialog, wxDialog)
     EVT_BUTTON(wxID_OK, ImportDialog::OnOK)
     EVT_BUTTON(wxID_CANCEL, ImportDialog::OnCancel)
     EVT_RADIOBUTTON(PREV_RADIO_ID, ImportDialog::RadioButtonPushed)
-    END_EVENT_TABLE()
+END_EVENT_TABLE()
 
 IMPLEMENT_CLASS(ImportDialog, wxDialog)
 
 ImportDialog::ImportDialog(char *data,
                            int dataLen,
                            wxWindow * parent, const wxPoint & pos)
-:wxDialog(parent, -1, "Import Raw Data", pos,
+:wxDialog(parent, -1, _("Import Raw Data"), pos,
           wxDefaultSize, wxDEFAULT_DIALOG_STYLE)
 {
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -866,32 +862,32 @@ ImportDialog::ImportDialog(char *data,
    wxBoxSizer *rightSizer = new wxBoxSizer(wxVERTICAL);
 
    bits[0] =
-       new wxRadioButton(this, PREV_RADIO_ID, "8-bit", wxDefaultPosition,
+       new wxRadioButton(this, PREV_RADIO_ID, _("8-bit"), wxDefaultPosition,
                          wxDefaultSize, wxRB_GROUP);
-   bits[1] = new wxRadioButton(this, PREV_RADIO_ID, "16-bit");
+   bits[1] = new wxRadioButton(this, PREV_RADIO_ID, _("16-bit"));
 
    sign[0] =
-       new wxRadioButton(this, PREV_RADIO_ID, "signed", wxDefaultPosition,
+       new wxRadioButton(this, PREV_RADIO_ID, _("signed"), wxDefaultPosition,
                          wxDefaultSize, wxRB_GROUP);
-   sign[1] = new wxRadioButton(this, PREV_RADIO_ID, "unsigned");
+   sign[1] = new wxRadioButton(this, PREV_RADIO_ID, _("unsigned"));
 
    stereo[0] =
-       new wxRadioButton(this, PREV_RADIO_ID, "mono", wxDefaultPosition,
+       new wxRadioButton(this, PREV_RADIO_ID, _("mono"), wxDefaultPosition,
                          wxDefaultSize, wxRB_GROUP);
-   stereo[1] = new wxRadioButton(this, PREV_RADIO_ID, "stereo");
+   stereo[1] = new wxRadioButton(this, PREV_RADIO_ID, _("stereo"));
 
    endian[0] =
-       new wxRadioButton(this, PREV_RADIO_ID, "little-endian",
+       new wxRadioButton(this, PREV_RADIO_ID, _("little-endian"),
                          wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
-   endian[1] = new wxRadioButton(this, PREV_RADIO_ID, "big-endian");
+   endian[1] = new wxRadioButton(this, PREV_RADIO_ID, _("big-endian"));
 
    offset[0] =
-       new wxRadioButton(this, PREV_RADIO_ID, "0-byte offset",
+       new wxRadioButton(this, PREV_RADIO_ID, _("0-byte offset"),
                          wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
-   offset[1] = new wxRadioButton(this, PREV_RADIO_ID, "1-byte offset");
+   offset[1] = new wxRadioButton(this, PREV_RADIO_ID, _("1-byte offset"));
 
-   wxButton *ok = new wxButton(this, wxID_OK, "Import");
-   wxButton *cancel = new wxButton(this, wxID_CANCEL, "Cancel");
+   wxButton *ok = new wxButton(this, wxID_OK, _("Import"));
+   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
 
    preview = new PreviewPanel(data, dataLen,
                               this, wxDefaultPosition,
@@ -929,8 +925,10 @@ ImportDialog::ImportDialog(char *data,
    mainSizer->Fit(this);
 
    Centre(wxBOTH | wxCENTER_FRAME);
+}
 
-   // TODO: Class destructor to clean this stuff up
+ImportDialog::~ImportDialog()
+{
 }
 
 void ImportDialog::OnOK(wxCommandEvent & WXUNUSED(event))
@@ -1013,6 +1011,11 @@ void PreviewPanel::OnPaint(wxPaintEvent & event)
 
 void ImportDialog::RadioButtonPushed(wxCommandEvent & event)
 {
+   RefreshPreview();
+}
+
+void ImportDialog::RefreshPreview()
+{
    preview->param[0] = bits[1]->GetValue();
    preview->param[1] = sign[0]->GetValue();
    preview->param[2] = stereo[1]->GetValue();
@@ -1037,5 +1040,8 @@ PreviewPanel::PreviewPanel(char *rawData, int dataLen, wxWindow * parent,
    bitmap = 0;
 }
 
-// TODO: destructor
-// TODO: destructor
+PreviewPanel::~PreviewPanel()
+{
+   delete data1;
+   delete data2;
+}
