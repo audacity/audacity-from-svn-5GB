@@ -110,7 +110,7 @@ bool EffectSimpleMono::ProcessOne(WaveTrack * track,
       s += block;
 
       //Update the Progress meter
-      if (TrackProgress(mCurTrackNum, s / len))
+      if (TrackProgress(mCurTrackNum, (s - start) / len))
          return false;
    }
 
