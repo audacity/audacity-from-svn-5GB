@@ -165,7 +165,8 @@ double LabelTrack::GetMaxLen()
       return mLabels[len - 1]->t;
 }
 
-void LabelTrack::MouseDown(int x, int y, wxRect & r, double h, double pps)
+void LabelTrack::MouseDown(int x, int y, wxRect & r, double h, double pps,
+                           double *newSel0, double *newSel1)
 {
    double mouseH = h + (x - r.x) / pps;
 
@@ -173,6 +174,8 @@ void LabelTrack::MouseDown(int x, int y, wxRect & r, double h, double pps)
       if (mLabels[i]->t - (8 / pps) < mouseH &&
           mouseH < mLabels[i]->t + (mLabels[i]->width / pps)) {
          mSelIndex = i;
+         *newSel0 = mLabels[i]->t;
+         *newSel1 = mLabels[i]->t1;
          return;
       }
    }
@@ -221,6 +224,7 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
 
       LabelStruct *l = new LabelStruct();
       l->t = sel0;
+      l->t1 = sel1;
       l->title += wxChar(keyCode);
 
       int len = mLabels.Count();
@@ -233,6 +237,23 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
 
       mSelIndex = pos;
    }
+}
+
+void LabelTrack::AddLabel(double sel0, double sel1)
+{
+   LabelStruct *l = new LabelStruct();
+   l->t = sel0;
+   l->t1 = sel1;
+   
+   int len = mLabels.Count();
+   int pos = 0;
+   
+   while (pos < len && l->t > mLabels[pos]->t)
+      pos++;
+   
+   mLabels.Insert(l, pos);
+   
+   mSelIndex = pos;
 }
 
 void LabelTrack::Unselect()
@@ -293,6 +314,7 @@ void LabelTrack::Import(wxTextFile & in)
 
       LabelStruct *l = new LabelStruct();
       l->t = t;
+      l->t1 = t;
       l->title = title;
       mLabels.Add(l);
    }

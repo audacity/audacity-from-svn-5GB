@@ -405,6 +405,48 @@ void TrackPanel::MakeParentRedrawScrollbars()
    mListener->TP_RedrawScrollbars();
 }
 
+void TrackPanel::SetToolCursor(bool shiftDown)
+{
+   switch (mListener->TP_GetCurrentTool()) {
+   case 0:                  // select
+      mListener->
+         TP_DisplayStatusMessage("Click and drag to select audio", 0);
+      SetCursor(*mSelectCursor);
+      break;
+   case 1:                  // envelope
+      mListener->TP_DisplayStatusMessage("Click and drag to edit the "
+                                         "amplitude envelope", 0);
+      SetCursor(*mArrowCursor);
+      break;
+   case 2:                  // move/slide
+      mListener->
+         TP_DisplayStatusMessage("Click and drag to move a track "
+                                 "in time", 0);
+      SetCursor(*mSlideCursor);
+      break;
+   case 3:                  // zoom
+#ifdef __WXMAC__
+      mListener->
+         TP_DisplayStatusMessage
+         ("Click to Zoom In, Shift-Click to Zoom Out", 0);
+#endif
+#ifdef __WXMSW__
+      mListener->TP_DisplayStatusMessage("Left-Click to Zoom In, "
+                                         "Right-Click to Zoom Out", 0);
+#endif
+#ifdef __WXGTK__
+      mListener->
+         TP_DisplayStatusMessage("Left=Zoom In, Right=Zoom Out, "
+                                 "Middle=Normal", 0);
+#endif
+      if (shiftDown)
+         SetCursor(*mZoomInCursor);
+      else
+         SetCursor(*mZoomOutCursor);
+      break;
+   }
+}
+
 void TrackPanel::HandleCursor(wxMouseEvent & event)
 {
    if (mIsZooming) {
@@ -451,45 +493,8 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
          return;
       }
       // Otherwise set the cursor based on the current tool
-
-      switch (mListener->TP_GetCurrentTool()) {
-      case 0:                  // select
-         mListener->
-             TP_DisplayStatusMessage("Click and drag to select audio", 0);
-         SetCursor(*mSelectCursor);
-         break;
-      case 1:                  // envelope
-         mListener->TP_DisplayStatusMessage("Click and drag to edit the "
-                                            "amplitude envelope", 0);
-         SetCursor(*mArrowCursor);
-         break;
-      case 2:                  // move/slide
-         mListener->
-             TP_DisplayStatusMessage("Click and drag to move a track "
-                                     "in time", 0);
-         SetCursor(*mSlideCursor);
-         break;
-      case 3:                  // zoom
-#ifdef __WXMAC__
-         mListener->
-             TP_DisplayStatusMessage
-             ("Click to Zoom In, Shift-Click to Zoom Out", 0);
-#endif
-#ifdef __WXMSW__
-         mListener->TP_DisplayStatusMessage("Left-Click to Zoom In, "
-                                            "Right-Click to Zoom Out", 0);
-#endif
-#ifdef __WXGTK__
-         mListener->
-             TP_DisplayStatusMessage("Left=Zoom In, Right=Zoom Out, "
-                                     "Middle=Normal", 0);
-#endif
-         if (event.ShiftDown())
-            SetCursor(*mZoomInCursor);
-         else
-            SetCursor(*mZoomOutCursor);
-         break;
-      }
+      
+      SetToolCursor(event.ShiftDown());
    } else {
       // Not over a track
       SetCursor(*mArrowCursor);
@@ -559,7 +564,9 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
                ((LabelTrack *) t)->MouseDown(mMouseClickX, mMouseClickY,
                                              mCapturedRect,
                                              mViewInfo->h,
-                                             mViewInfo->zoom);
+                                             mViewInfo->zoom,
+                                             &mViewInfo->sel0,
+                                             &mViewInfo->sel1);
          }
 
          Refresh(false);
@@ -1231,34 +1238,41 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
 
 void TrackPanel::OnKeyEvent(wxKeyEvent & event)
 {
-   if (event.ControlDown() || event.AltDown()) {
+   if ((event.ControlDown() || event.AltDown()) &&
+       event.KeyCode() >= '0' && event.KeyCode() <= 'z') {
       event.Skip();
       return;
    }
 
+   // If a label track is selected, send the event there
+
+   LabelTrack *lt = NULL;
    TrackListIterator iter(mTracks);
-
-   switch (event.KeyCode()) {
-    case WXK_SPACE:
-      mListener->TP_OnPlayKey();
-      return;
-
-    default:
-      VTrack * t = iter.First();
-      while (t) {
-         if ( /* t->selected && */ t->GetKind() == VTrack::Label) {
-            ((LabelTrack *) t)->KeyEvent(mViewInfo->sel0, mViewInfo->sel1,
-                                         event);
-            Refresh(false);
-            MakeParentPushState();
-            return;
-         }
-
-         t = iter.Next();
-      }
+   VTrack * t = iter.First();
+   while (t && !lt) {
+      if (t->GetKind() == VTrack::Label)
+         lt = (LabelTrack *)t;
+      t = iter.Next();
    }
-   // None of the above
-   event.Skip();
+
+   if (lt && lt->IsSelected()) {
+      lt->KeyEvent(mViewInfo->sel0, mViewInfo->sel1, event);
+      Refresh(false);
+      MakeParentPushState();
+      return;
+   }
+
+   // Send the event to the project; if the project returns
+   // true it was handled, and if it returns false, then we
+   // don't want the event.
+
+   if (mListener->TP_OnKey(event.KeyCode(),
+                           event.ShiftDown(),
+                           event.ControlDown())) {
+      SetToolCursor(event.ShiftDown());
+   }
+   else
+      event.Skip();
 }
 
 void TrackPanel::OnMouseEvent(wxMouseEvent & event)

@@ -1375,19 +1375,68 @@ int AudacityProject::TP_GetCurrentTool()
 }
 
 // TrackPanel callback method
-void AudacityProject::TP_OnPlayKey()
+bool AudacityProject::TP_OnKey(long key, bool shift, bool ctrl)
 {
    APalette *palette = GetAPalette();
 
-   if (gAudioIO->IsBusy()) {
-      palette->OnStop();
-      palette->SetPlay(false);
-      palette->SetStop(true);
-   } else {
-      palette->SetPlay(true);
-      palette->SetStop(false);
-      palette->OnPlay();
+   if (palette->OnKey(key, shift))
+      return true;
+
+   bool nonZeroRegionSelected = (mViewInfo.sel1 > mViewInfo.sel0);
+   int numTracksSelected = 0;
+   double len = mTracks->GetMaxLen();
+
+   TrackListIterator iter(mTracks);
+   VTrack *t = iter.First();
+   while (t) {
+      if (t->selected)
+         numTracksSelected++;
+      t = iter.Next();
    }
+
+   switch (key) {
+   case WXK_BACK:
+   case WXK_DELETE:
+      if (nonZeroRegionSelected && numTracksSelected>0)
+         Clear();
+      return true;
+      
+   case WXK_LEFT:
+   case WXK_NUMPAD4:
+      if (ctrl) {
+         mViewInfo.sel1 -= 1/mViewInfo.zoom;
+         if (mViewInfo.sel0 > mViewInfo.sel1)
+            mViewInfo.sel0 = mViewInfo.sel1;
+      }
+      else {
+         mViewInfo.sel0 -= 1/mViewInfo.zoom;
+         if (mViewInfo.sel0 < 0.0)
+            mViewInfo.sel0 = 0.0;
+         if (!shift)
+            mViewInfo.sel1 = mViewInfo.sel0;
+      }
+      mTrackPanel->Refresh(false);
+      return true;
+
+   case WXK_RIGHT:
+   case WXK_NUMPAD6:
+      if (ctrl) {
+         mViewInfo.sel0 += 1/mViewInfo.zoom;
+         if (mViewInfo.sel1 < mViewInfo.sel0)
+            mViewInfo.sel1 = mViewInfo.sel0;
+      }
+      else {
+         mViewInfo.sel1 += 1/mViewInfo.zoom;
+         if (mViewInfo.sel1 > len)
+            mViewInfo.sel1 = len;
+         if (!shift)
+            mViewInfo.sel0 = mViewInfo.sel1;
+      }
+      mTrackPanel->Refresh(false);
+      return true;
+   }
+
+   return false;
 }
 
 // TrackPanel callback method

@@ -75,6 +75,8 @@ enum {
    NewLabelTrackID,
    RemoveTracksID,
 
+   AddLabelID,
+
    WaveDisplayID,
    SpectrumDisplayID,
    AutoCorrelateID,
@@ -141,6 +143,7 @@ EVT_MENU(NewID, AudacityProject::OnNew)
     EVT_MENU(NewWaveTrackID, AudacityProject::OnNewWaveTrack)
     EVT_MENU(NewLabelTrackID, AudacityProject::OnNewLabelTrack)
     EVT_MENU(RemoveTracksID, AudacityProject::OnRemoveTracks)
+    EVT_MENU(AddLabelID, AudacityProject::OnAddLabel)
     // Help menu
     EVT_MENU(AboutID, AudacityProject::OnAbout)
     EVT_MENU(HelpID, AudacityProject::OnHelp)
@@ -243,6 +246,8 @@ void OnAlign(wxCommandEvent & event);
 void OnNewWaveTrack(wxCommandEvent & event);
 void OnNewLabelTrack(wxCommandEvent & event);
 void OnRemoveTracks(wxCommandEvent & event);
+
+void OnAddLabel(wxCommandEvent & event);
 
         // Help Menu
 

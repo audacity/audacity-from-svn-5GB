@@ -20,9 +20,11 @@
 #define __AUDACITY_PALETTE__
 
 #include <wx/brush.h>
+#include <wx/event.h>
 #include <wx/gdicmn.h>
 #include <wx/pen.h>
 #include <wx/minifram.h>
+
 
 #include "Project.h"
 
@@ -48,6 +50,9 @@ class APalette:public wxWindow {
    virtual ~ APalette();
 
    int GetCurrentTool();
+   void SetCurrentTool(int tool);
+
+   bool OnKey(long key, bool shift);
 
    void OnPaint(wxPaintEvent & event);
    void OnKeyEvent(wxKeyEvent & event);

@@ -136,6 +136,8 @@ void AudacityProject::CreateMenuBar()
    mProjectMenu->Append(NewLabelTrackID, "New &Label Track");
    mProjectMenu->AppendSeparator();
    mProjectMenu->Append(RemoveTracksID, "&Remove Track(s)");
+   mProjectMenu->AppendSeparator();
+   mProjectMenu->Append(AddLabelID, "Add Label At Selection\tCtrl+B");
 
    /*
       mTrackMenu = new wxMenu();
@@ -310,6 +312,9 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
                         numTracksSelected > 0);
    mProjectMenu->Enable(mProjectMenu->FindItem("Remove Track(s)"),
                         numTracksSelected > 0);
+
+   mProjectMenu->Enable(mProjectMenu->FindItem("Add Label At Selection"),
+                        nonZeroRegionSelected);
 
    for (int e = 0; e < Effect::GetNumEffects(); e++) {
       Effect *f = Effect::GetEffect(e);
@@ -1119,6 +1124,36 @@ void AudacityProject::OnNewLabelTrack(wxCommandEvent & event)
 
    mTracks->Add(t);
    t->selected = true;
+
+   PushState();
+
+   FixScrollbars();
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnAddLabel(wxCommandEvent & event)
+{
+   TrackListIterator iter(mTracks);
+   LabelTrack *lt = NULL;
+
+   VTrack *t = iter.First();
+   while (t && !lt) {
+      if (t->GetKind() == VTrack::Label)
+         lt = (LabelTrack *)t;
+      else
+         t = iter.Next();
+   }
+
+   if (!lt) {
+      lt = new LabelTrack(&mDirManager);
+      
+      SelectNone();
+      
+      mTracks->Add(lt);
+      lt->selected = true;
+   }
+
+   lt->AddLabel(mViewInfo.sel0, mViewInfo.sel1);
 
    PushState();
 
