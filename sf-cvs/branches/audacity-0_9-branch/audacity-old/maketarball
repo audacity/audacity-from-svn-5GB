@@ -97,8 +97,17 @@ elsif($ARGV[0] eq "rpm") {
 	`cp -r . ../audacity-$version`;
 	chdir "../audacity-$version";
 
+	printf "make clean...\n";
+	`make clean`;
+
 	printf "removing CVS directories...\n";
 	`find . -name "CVS" -exec rm -rf '{}' \\; 2> /dev/null`;
+
+	printf "removing mpeg3 directories...\n";
+	`rm -rf mpeg3`;
+
+   printf "removing Aqua graphics...\n";
+	`rm -rf xpm/Aqua.xpm`;
 
 	printf "removing emacs temp files...\n";
 	`find . -name "*~" -exec rm -rf '{}' \\; 2> /dev/null`;
