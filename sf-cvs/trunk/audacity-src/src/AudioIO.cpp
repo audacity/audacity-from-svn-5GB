@@ -109,6 +109,14 @@ AudioIO::AudioIO()
    // Start thread
    mThread = new AudioThread();
    mThread->Create();
+
+
+#if USE_PORTMIXER
+#ifndef USE_PORTAUDIO_V19
+   mPortMixer = NULL;
+   HandleDeviceChange();
+#endif
+#endif
 }
 
 AudioIO::~AudioIO()
@@ -124,27 +132,99 @@ AudioIO::~AudioIO()
    delete mThread;
 }
 
-void AudioIO::AdjustMixer()
-{
 #if USE_PORTMIXER
 #ifndef USE_PORTAUDIO_V19 // PortMixer doesn't support v19 yet...
-
-   MixerToolBar *mixerToolbar = GetCurrentMixerToolBar();
+void AudioIO::SetMixer(int recordDevice, float recordVolume,
+                       float playbackVolume)
+{
    PxMixer *mixer = mPortMixer;
 
-   if (mixerToolbar && mixer) {
-      if (mNumPlaybackChannels > 0) {
-         Px_SetPCMOutputVolume(mixer, mixerToolbar->GetOutputVol());
-      }
-      if (mNumCaptureChannels > 0) {
-         Px_SetCurrentInputSource(mixer, mixerToolbar->GetInputSource());
-         Px_SetInputVolume(mixer, mixerToolbar->GetInputVol());
-      }
+   if( mixer )
+   {
+      int oldRecordDevice = Px_GetCurrentInputSource(mixer);
+      float oldRecordVolume = Px_GetInputVolume(mixer);
+      float oldPlaybackVolume = Px_GetPCMOutputVolume(mixer);
+
+      if( recordDevice != oldRecordDevice )
+         Px_SetCurrentInputSource(mixer, recordDevice);
+      if( fabs(oldRecordVolume-recordVolume) > 0.05 )
+         Px_SetInputVolume(mixer, recordVolume);
+      if( fabs(oldPlaybackVolume-playbackVolume) > 0.05 )
+         Px_SetPCMOutputVolume(mixer, playbackVolume);
+   }
+}
+
+void AudioIO::GetMixer(int *recordDevice, float *recordVolume,
+                       float *playbackVolume)
+{
+   PxMixer *mixer = mPortMixer;
+
+   if( mixer )
+   {
+      *recordDevice = Px_GetCurrentInputSource(mixer);
+      *recordVolume = Px_GetInputVolume(mixer);
+      *playbackVolume = Px_GetPCMOutputVolume(mixer);
+   }
+   else
+   {
+      *recordDevice = 0;
+      *recordVolume = 0;
+      *playbackVolume = 0;
+   }
+}
+
+wxArrayString AudioIO::GetInputSourceNames()
+{
+   wxArrayString deviceNames;
+
+   if( mPortMixer )
+   {
+      int numSources = Px_GetNumInputSources(mPortMixer);
+      for( int source = 0; source < numSources; source++ )
+         deviceNames.Add(Px_GetInputSourceName(mPortMixer, source));
    }
 
-#endif
-#endif
+   return deviceNames;
 }
+
+void AudioIO::HandleDeviceChange()
+{
+   // This should not happen, but it would screw things up if it did.
+   if( IsStreamActive() )
+      return;
+
+   if( mPortMixer )
+      Px_CloseMixer(mPortMixer);
+   mPortMixer = NULL;
+
+   int recDeviceNum = Pa_GetDefaultInputDeviceID();
+   int playDeviceNum = Pa_GetDefaultOutputDeviceID();
+   wxString recDevice = gPrefs->Read("/AudioIO/RecordingDevice", "");
+   wxString playDevice = gPrefs->Read("/AudioIO/PlaybackDevice", "");
+   int j;
+
+   for(j=0; j<Pa_CountDevices(); j++) {
+      const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
+      if (info->name == playDevice && info->maxOutputChannels > 0)
+         playDeviceNum = j;
+      if (info->name == recDevice && info->maxInputChannels > 0)
+         recDeviceNum = j;
+   }
+
+   // TODO: open two streams (one after another), for playback
+   // and recording separately
+   PortAudioStream *stream;
+   int error;
+   error = Pa_OpenStream(&stream, recDeviceNum, 2, paFloat32, NULL,
+                         paNoDevice, 0, paFloat32, NULL,
+                         44100, 512, 1, paClipOff | paDitherOff,
+                         audacityAudioCallback, NULL);
+   if( !error )
+      mPortMixer = Px_OpenMixer(stream, 0);
+   Pa_CloseStream(stream);
+}
+#endif
+#endif
 
 int AudioIO::StartStream(WaveTrackArray playbackTracks,
                          WaveTrackArray captureTracks,
@@ -367,12 +447,9 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
                                 audacityAudioCallback, NULL );
 
 #if USE_PORTMIXER
-   mPortMixer = NULL;
-   if (mPortStreamV18 != NULL && err == paNoError) {
-      mPortMixer = Px_OpenMixer(mPortStreamV18, 0);
-      if (mPortMixer)
-         AdjustMixer();
-   }
+   if( mPortMixer )
+      Px_CloseMixer(mPortMixer);
+   mPortMixer = Px_OpenMixer(mPortStreamV18, 0);
 #endif
 
    mInCallbackFinishedState = false;
@@ -797,7 +874,6 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
       return paContinue;
    }
 
-   gAudioIO->AdjustMixer();
    //printf("Callback called.\n");
 
    //

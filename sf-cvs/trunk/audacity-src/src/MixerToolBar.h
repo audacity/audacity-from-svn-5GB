@@ -30,14 +30,10 @@ class MixerToolBar:public ToolBar {
                 const wxPoint & pos, const wxSize & size);
    MixerToolBar(wxWindow * parent);
    virtual ~ MixerToolBar();
-   
-   void UpdatePrefs();
 
    void RecreateTipWindows();
-
-   float GetInputVol();
-   float GetOutputVol();
-   int GetInputSource();
+   void UpdateControls();
+   void SetMixer(wxCommandEvent &event);
 
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnKeyEvent(wxKeyEvent & event);
