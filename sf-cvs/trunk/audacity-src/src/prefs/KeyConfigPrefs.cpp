@@ -17,22 +17,25 @@
 #include <wx/listctrl.h>
 #include <wx/choice.h>
 #include <wx/intl.h>
+#include <wx/msgdlg.h>
 
 #include "../Prefs.h"
 #include "KeyConfigPrefs.h"
 #include "../commands/CommandsCfg.h"
 
-#define AssignDefaultsButtonID 7001
-#define CurrentComboID         7002
-#define RebuildMenusButtonID   7003
+#define AssignDefaultsButtonID  7001
+#define CurrentComboID          7002
+#define RebuildMenusButtonID    7003
+#define ChooseCmdsCfgLocationID 7004
 
 BEGIN_EVENT_TABLE(KeyConfigPrefs, wxPanel)
    EVT_BUTTON(AssignDefaultsButtonID, KeyConfigPrefs::AssignDefaults)
    EVT_BUTTON(RebuildMenusButtonID, KeyConfigPrefs::RebuildMenus)
+   EVT_BUTTON(ChooseCmdsCfgLocationID, KeyConfigPrefs::CmdsCfgLocation)
 END_EVENT_TABLE()
 
 KeyConfigPrefs::KeyConfigPrefs(wxWindow * parent):
-PrefsPanel(parent), mCommandSelected(-1)
+PrefsPanel(parent)
 {
    mAudacity = GetActiveProject();
    if (!mAudacity)
@@ -64,10 +67,22 @@ PrefsPanel(parent), mCommandSelected(-1)
       topSizer->Add(new wxButton(this, RebuildMenusButtonID, _("Rebuild Menus")), 0,
                           wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
 
+      //Add change commands.cfg location button
+      topSizer->Add(new wxButton(this, ChooseCmdsCfgLocationID, _("Change Commands.cfg Location")), 0,
+                          wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+
+      bool bFalse = false;
+      //Check commands.cfg location status
+      wxString locationStatus;
+      if(gPrefs->Read("/QDeleteCmdCfgLocation", &bFalse))
+         locationStatus += wxString("\n* ") + wxString(_("Queued for location change"));
+      if(gPrefs->Read("/DeleteCmdCfgLocation", &bFalse))
+         locationStatus += wxString("\n* ") + wxString(_("Location change failed"));
+
       //Add label
       topSizer->Add(
                new wxStaticText(this, -1,
-                  gCommandsCfgLocation),
+                  gCommandsCfgLocation + locationStatus),
                0, wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
    }
 
@@ -90,6 +105,7 @@ void KeyConfigPrefs::AssignDefaults(wxCommandEvent& event)
          gAudacityProjects[i]->SetMenuBar(NULL);
          gAudacityProjects[i]->GetCommands()->AssignDefaults();
          gAudacityProjects[i]->SetMenuBar(gAudacityProjects[i]->GetCommands()->GetMenuBar("appmenu"));
+         gAudacityProjects[i]->UpdateMenus();
       }
    }
 }
@@ -103,8 +119,15 @@ void KeyConfigPrefs::RebuildMenus(wxCommandEvent& event)
          gAudacityProjects[i]->SetMenuBar(NULL);
          gAudacityProjects[i]->GetCommands()->Reparse();
          gAudacityProjects[i]->SetMenuBar(gAudacityProjects[i]->GetCommands()->GetMenuBar("appmenu"));
+         gAudacityProjects[i]->UpdateMenus();
       }
    }
+}
+
+void KeyConfigPrefs::CmdsCfgLocation(wxCommandEvent& event)
+{
+   gPrefs->Write("/QDeleteCmdCfgLocation", true);
+   wxMessageBox(_("Audacity needs to be restarted for this change to take effect.\nPlease close all open Audacity projects."));
 }
 
 bool KeyConfigPrefs::Apply()

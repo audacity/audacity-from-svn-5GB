@@ -146,6 +146,7 @@ class AudacityProject:public wxFrame,
 
    // Other commands
 
+   void UpdateMenus();
    void UpdatePrefs();
    void RedrawProject();
    void PostRedrawMessage();
