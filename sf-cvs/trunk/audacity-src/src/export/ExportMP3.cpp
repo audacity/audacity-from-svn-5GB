@@ -474,7 +474,7 @@ MP3Exporter *GetMP3Exporter()
 
          wxString GetLibraryPath()
          {
-            return NULL;
+            return "";
          }
 
          wxString GetLibraryName()
@@ -705,7 +705,7 @@ public:
 
    wxString GetLibraryPath()
    {
-      return NULL;
+      return "";
    }
 
    wxString GetLibraryName()
