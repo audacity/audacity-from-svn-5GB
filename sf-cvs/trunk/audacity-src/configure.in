@@ -193,10 +193,10 @@ AC_ARG_WITH(libsamplerate,
 	use_libsamplerate=$default_libsamplerate)
 
 AC_ARG_WITH(libflac,
-	[AC_HELP_STRING([--with-libflac],
-		[enable FLAC support [default=local]])],
+	[AC_HELP_STRING([--with-libflac [local system none]],
+		[enable FLAC support [default=none]])],
 	use_libflac=$withval,
-	use_libflac=$default_libflac)
+	use_libflac="no")
 
 AC_ARG_WITH(ladspa,
 	[AC_HELP_STRING([--with-ladspa],
