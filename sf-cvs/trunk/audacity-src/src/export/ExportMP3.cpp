@@ -709,7 +709,7 @@ void ReleaseMP3Exporter()
 
       int EncodeRemainderMono(short int inbuffer[], int nSamples,
                         unsigned char outbuffer[]) {
-         return lame_encode_buffer(mGF, inbuffer, inbuffer , inbuffer, nSamples, outbuffer,
+         return lame_encode_buffer(mGF, inbuffer, inbuffer, nSamples, outbuffer,
             mOutBufferSize);
       }
 
