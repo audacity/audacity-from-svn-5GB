@@ -655,6 +655,8 @@ wxThread::ExitCode AudioThread::Entry()
 // (which communicates with the audio device.
 void AudioIO::FillBuffers()
 {
+   unsigned int i;
+
    if( mPlaybackTracks.GetCount() > 0 )
    {
       // Though extremely unlikely, it is possible that some buffers
@@ -664,7 +666,7 @@ void AudioIO::FillBuffers()
       // ALL buffers, and advance the global time by that much.
       int commonlyAvail = mPlaybackBuffers[0]->AvailForPut();
 
-      for( unsigned int i = 1; i < mPlaybackTracks.GetCount(); i++ )
+      for( i = 1; i < mPlaybackTracks.GetCount(); i++ )
       {
          int thisBlockAvail = mPlaybackBuffers[i]->AvailForPut();
 
@@ -688,7 +690,7 @@ void AudioIO::FillBuffers()
 
       if( commonlyAvail > 0 )
       {
-         for( unsigned int i = 0; i < mPlaybackTracks.GetCount(); i++ )
+         for( i = 0; i < mPlaybackTracks.GetCount(); i++ )
          {
             // The mixer here isn't actually mixing: it's just doing whatever
             // warping is needed for the time track
@@ -702,7 +704,7 @@ void AudioIO::FillBuffers()
    if( mCaptureTracks.GetCount() > 0 )
    {
       int commonlyAvail = mCaptureBuffers[0]->AvailForGet();
-      for( unsigned int i = 1; i < mCaptureTracks.GetCount(); i++ )
+      for( i = 1; i < mCaptureTracks.GetCount(); i++ )
       {
          int avail = mCaptureBuffers[i]->AvailForGet();
          if( avail < commonlyAvail )
@@ -711,7 +713,7 @@ void AudioIO::FillBuffers()
       printf("putting %d\n", commonlyAvail);
 
       // For capture buffers, save everything available to disk
-      for( unsigned int i = 0; i < mCaptureTracks.GetCount(); i++ )
+      for( i = 0; i < mCaptureTracks.GetCount(); i++ )
       {
          //int avail = mCaptureBuffers[i]->AvailForGet();
          int avail = commonlyAvail;
