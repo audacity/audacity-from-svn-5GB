@@ -466,6 +466,8 @@ void AudacityProject::UpdateMenus()
    // Get ahold of the clipboard status
    bool clipboardStatus = static_cast<bool>(GetActiveProject()->Clipboard());
 
+   bool hasLastEffect = (Effect::GetLastEffect() != NULL);
+
    // Return from this function if nothing's changed since
    // the last time we were here.
  
@@ -480,7 +482,8 @@ void AudacityProject::UpdateMenus()
        mLastToolBarCheckSum == toolBarCheckSum &&
        mLastUndoState == mUndoManager.UndoAvailable() &&
        mLastRedoState == mUndoManager.RedoAvailable() &&
-       mLastClipboardState == clipboardStatus  ) 
+       mLastClipboardState == clipboardStatus &&
+       mLastHasLastEffect == hasLastEffect) 
       return;
    
    // Otherwise, save state and then update all of the menus
@@ -497,6 +500,7 @@ void AudacityProject::UpdateMenus()
    mLastUndoState = mUndoManager.UndoAvailable();
    mLastRedoState = mUndoManager.RedoAvailable();  
    mLastClipboardState = clipboardStatus;
+   mLastHasLastEffect = hasLastEffect;
 
    bool anySelection = numTracksSelected > 0 && nonZeroRegionSelected;
 
@@ -571,8 +575,9 @@ void AudacityProject::UpdateMenus()
 
    // Effects menus
 
-   mCommandManager.Enable("RepeatLastEffect", numWaveTracksSelected > 0 && nonZeroRegionSelected
-      && (Effect::GetLastEffect() != NULL));
+   mCommandManager.Enable("RepeatLastEffect", numWaveTracksSelected > 0 &&
+                          nonZeroRegionSelected &&
+                          hasLastEffect);
    mCommandManager.Enable("Effect", numWaveTracksSelected > 0 && nonZeroRegionSelected);
    mCommandManager.Enable("EffectPlugin", numWaveTracksSelected > 0 && nonZeroRegionSelected);
    mCommandManager.Enable("Analyze", numWaveTracksSelected > 0 && nonZeroRegionSelected);

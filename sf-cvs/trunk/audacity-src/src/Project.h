@@ -292,6 +292,8 @@ class AudacityProject:public wxFrame,
 
    bool mFirstTimeUpdateMenus;
    bool mLastNonZeroRegionSelected;
+
+   bool mLastHasLastEffect;
    int mLastNumTracks;
    int mLastNumTracksSelected;
    int mLastNumWaveTracks;
