@@ -4,13 +4,18 @@
  */
 
 /*****************************************************************************
-*       Change Log
-*       Date    | who : Change
+* Change Log
+*   Date    | who : Change
 *-----------+-----------------------------------------------------------------
 *  2-Mar-92 | GWL : created changelog; MIDIFILE_ERROR to satisfy compiler
+* 28-Apr-03 | DM  : changed #includes and give return types for portability
 *****************************************************************************/
 
-#include "stdio.h"
+#include "switches.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "mfmidi.h"
 #include "midifile.h"
 #include "cext.h"
@@ -515,7 +520,7 @@ to32bit(c1,c2,c3,c4)
         return (value);
 }
 
-static
+static int
 to16bit(c1,c2)
 int c1, c2;
 {

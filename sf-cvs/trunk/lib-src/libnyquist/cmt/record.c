@@ -4,7 +4,7 @@
  * the interface consists of three routines:
  *      rec_init()      -- initialization
  *      rec_event(byte *data)   -- called to insert (record) midi data, 
- *                              -- returns false if no more space
+ *                              -- returns FALSE if no more space
  *      rec_final()     -- called to finish up
  */
 
@@ -13,20 +13,24 @@
 *  Date | Change
 *-----------+-----------------------------------------------------------------
 * 27-Feb-86 | Created changelog
-*       | Use pedal information when computing durations (code taken
-*       |  from transcribe.c)
+*           | Use pedal information when computing durations (code taken
+*           |  from transcribe.c)
 * 23-Mar-86 | Determine size of transcription when rec_init is called.
 * 21-May-86 | Major rewrite to use continuous controls (code taken 
-*       |  from transcribe.c)
-* 1-Aug-87  | F.H. Changed rec_init() to new memory handling.
+*           |  from transcribe.c)
+*  1-Aug-87 | F.H. Changed rec_init() to new memory handling.
 * 17-Oct-88 | JCD : portable version.
 * 31-Jan-90 | GWL : cleaned up for LATTICE
 * 30-Jun-90 | RBD : further changes
-* 2-April-91 | JDW :further changes
+*  2-Apr-91 | JDW : further changes
+* 28-Apr-03 | DM  : changed for portability; true->TRUE, false->FALSE
 *****************************************************************************/
 
 #include "switches.h"
-#include "stdio.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "cext.h"
 #include "midifns.h"
 #include "userio.h"
@@ -36,7 +40,7 @@
 
 extern long space;    /* how much space is left? */
 
-int debug_rec = false;    /* verbose debug flag for this module */
+int debug_rec = FALSE;    /* verbose debug flag for this module */
 
 long max_notes = -1L;    /* -1 is flag that space must be allocated */
 
@@ -212,7 +216,7 @@ private void filter(last)
 note_type last;
 {
     note_type note;    /* loop control variable */
-    long now;   /* last time seen */
+    long now=0;   /* last time seen */
     int command;    /* command pointed to by note */
 
     for (note = event_buff; note <= last; note++) {
@@ -245,7 +249,7 @@ note_type last;
 * Inputs:
 *    int i: index of the note
 *    note_type last: pointer to the last event recorded
-*    int ped: true if pedal is down at event i
+*    int ped: TRUE if pedal is down at event i
 *    long now: the time at event i
 * Outputs:
 *    returns long: the duration of note i
@@ -255,7 +259,7 @@ note_type last;
 *    This is tricky because of pedal messages.  The note is kept on by
 *    either the key or the pedal.  Keep 2 flags, key and ped.  Key is
 *    turned off when a key is released, ped goes off and on with pedal.
-*    Note ends when (1) both key and ped are false, (2) key is
+*    Note ends when (1) both key and ped are FALSE, (2) key is
 *    pressed (this event will also start another note).
 ****************************************************************************/
 
@@ -265,13 +269,13 @@ note_type last;
 int ped;
 long now;
 {
-    int key = true;    /* flag that says if note is on */
+    int key = TRUE;    /* flag that says if note is on */
     long start = now;
     int chan = event_buff[i].n[0] & MIDI_CHN_MASK;
     int pitch = event_buff[i].n[1];
     note_type note = &(event_buff[i+1]);
-    int noteon; /* true if a noteon message received on chan */
-    int keyon;    /* true if noteon message had non-zero velocity */
+    int noteon; /* TRUE if a noteon message received on chan */
+    int keyon;    /* TRUE if noteon message had non-zero velocity */
 
     /* search from the next event (i+1) to the end of the buffer:
          */
@@ -280,18 +284,18 @@ long now;
             now = note->when;
         } 
         else {
-            noteon = keyon = false;
+            noteon = keyon = FALSE;
             if ((note->n[0] & MIDI_CHN_MASK) == chan) {
                 noteon = ((note->n[0] & MIDI_CODE_MASK) == MIDI_ON_NOTE) &&
                     (note->n[1] == pitch);
                 keyon = noteon && (note->n[2] != 0);
                 if ((noteon && (note->n[2] == 0)) ||
                     (((note->n[0] & MIDI_CODE_MASK) == MIDI_OFF_NOTE) &&
-                    (note->n[1] == pitch))) key = false;
+                    (note->n[1] == pitch))) key = FALSE;
                 if (((note->n[0] & MIDI_CODE_MASK) == MIDI_CTRL) &&
-                    note->n[1] == SUSTAIN && note->n[2] == 127) ped = true;
+                    note->n[1] == SUSTAIN && note->n[2] == 127) ped = TRUE;
                 if (((note->n[0] & MIDI_CODE_MASK) == MIDI_CTRL) &&
-                    note->n[1] == SUSTAIN && note->n[2] == 0) ped = false;
+                    note->n[1] == SUSTAIN && note->n[2] == 0) ped = FALSE;
 
                 if ((!key && !ped) || keyon)
                     return(now - start);
@@ -374,7 +378,7 @@ int control;
 * Inputs:
 *    FILE *fp: an opened file pointer
 *    note_type last: the last data in the buffer
-*    boolean absflag: set to true if first line of the adagio score should
+*    boolean absflag: set to TRUE if first line of the adagio score should
 *       include the absolute time
 * Effect: 
 *    write adagio file using data in event_buff
@@ -395,9 +399,9 @@ boolean absflag;
     int voice;			/* the midi channel of the current event */
     int last_velocity = -1;	/* used to filter repeated Lnn attributes */
     int last_voice = 0; 	/* the default adagio channel (1) */
-    int ped = false;            /* flag maintains state of pedal */
+    int ped = FALSE;            /* flag maintains state of pedal */
     int how_many = last - event_buff;
-    long now;                   /* the time of the next event */
+    long now=0;                 /* the time of the next event */
 
     if (fp == NULL) {
         gprintf(ERROR, "internal error: output called with NULL file.\n");
@@ -414,11 +418,15 @@ boolean absflag;
     if (absflag) {
         now = event_buff[0].when;
         if (now < 0) {
-            fprintf(fp, "* First event took place at Adagio time %d,\n", now);
+            fprintf(fp, "* First event took place at Adagio time %d,\n",
+                    (int)now);
             fprintf(fp, "*  but Adagio cannot represent negative times,\n");
-            fprintf(fp, "*  so this entire score will be %d ms late\n", -now);
-            gprintf(TRANS, "First event took place at Adagio time %d!\n", now);
-            gprintf(TRANS, "All events times will be %d ms late\n", -now);
+            fprintf(fp, "*  so this entire score will be %d ms late\n",
+                    (int)-now);
+            gprintf(TRANS, "First event took place at Adagio time %d!\n",
+                    (int)now);
+            gprintf(TRANS, "All events times will be %d ms late\n",
+                    (int)-now);
             now = 0L;
         }
         fprintf(fp, "T%ld ", now);
@@ -434,7 +442,7 @@ boolean absflag;
             now = event_buff[i].when;
             if (debug_rec) gprintf(GDEBUG,"i = %d, now = %ld\n", i, now);
         } else {
-            boolean needs_voice = true;
+            boolean needs_voice = TRUE;
             command = event_buff[i].n[0] & MIDI_CODE_MASK;
             voice = event_buff[i].n[0] & MIDI_CHN_MASK;
 
@@ -451,7 +459,7 @@ boolean absflag;
             } else if (command == MIDI_CTRL &&
                 event_buff[i].n[1] == SUSTAIN) {
                 ped = (event_buff[i].n[2] != 0);
-                needs_voice = false;
+                needs_voice = FALSE;
             } else if (command == MIDI_CTRL) {
                 char c = map_ctrl(event_buff[i].n[1]);
                 if (c != EOS) fprintf(fp, "%c%d", c, event_buff[i].n[2]);
@@ -461,17 +469,17 @@ boolean absflag;
             } else if (command == MIDI_BEND) {
                 fprintf(fp, "Y%d", event_bend(&event_buff[i]));
             } else if (command == MIDI_ON_NOTE || command == MIDI_OFF_NOTE) {
-                needs_voice = false; /* ignore note-offs */
+                needs_voice = FALSE; /* ignore note-offs */
             } else {
                 gprintf(ERROR, "Command 0x%x ignored\n", command);
-                needs_voice = false;
+                needs_voice = FALSE;
             }
             if (needs_voice) {
                 if (last_voice != voice) {
                     fprintf(fp, " V%d", voice + 1);
                     last_voice = voice;
                 }
-                fprintf(fp, " N%d", getnext(i, last, now) - now);
+                fprintf(fp, " N%d", (int)(getnext(i, last, now) - now));
                 fprintf(fp, "\n");
             }
         }
@@ -499,7 +507,7 @@ void write_pitch(FILE *fp, int p)
                     "A low note was transposed up an octave\n",
                     "(Adagio cannot express the lowest MIDI octave).\n",
                     "This message will appear only once.\n");
-            fixed_octave = true;
+            fixed_octave = TRUE;
         }
         p += 12;
     }
@@ -509,7 +517,7 @@ void write_pitch(FILE *fp, int p)
 /**********************************************************************
 *           rec_final
 * Inputs:
-*    boolean absflag: output absolute time of first note if true
+*    boolean absflag: output absolute time of first note if TRUE
 * Effect:
 *    Write recorded data to a file
 **********************************************************************/
@@ -532,9 +540,9 @@ void rec_final(FILE *fp, boolean absflag)
 *               rec_init
 * Inputs:
 *    char *file:  pointer to file name from command line (if any)
-*    boolean bender: true if pitch bend should be enabled
+*    boolean bender: TRUE if pitch bend should be enabled
 * Outputs:
-*    return true if initialization succeeds
+*    return TRUE if initialization succeeds
 * Effect:
 *    prepares module to record midi input
 ****************************************************************************/
@@ -562,17 +570,17 @@ boolean rec_init(boolean bender)
     pile_ups = 0;
     max_pile_up = 0;
     previous_time = (unsigned) -1L; /* this will force putting in initial timestamp */
-    fixed_octave = false;
+    fixed_octave = FALSE;
 
     if (max_notes == -1) {    /* allocate space 1st time rec_init called */
         biggestChunk = AVAILMEM;
         if (biggestChunk <= SPACE_FOR_PLAY) {
             /* not enough memory; give up */
-            return(false);
+            return(FALSE);
         } 
         else {
             spaceForRecord =
-                min((biggestChunk - SPACE_FOR_PLAY), ENOUGH_ROOM);
+                MIN((biggestChunk - SPACE_FOR_PLAY), ENOUGH_ROOM);
             /* leave SPACE_FOR_PLAY contiguous bytes of memory */
         }
         max_notes = spaceForRecord / sizeof(note_node);
@@ -581,7 +589,7 @@ boolean rec_init(boolean bender)
         if (event_buff == NULL) {
             /* should never happen */
             gprintf(FATAL, "Implementation error (record.c): getting memory.");
-            return false;
+            return FALSE;
         }
     }
     next = event_buff;
@@ -599,7 +607,7 @@ boolean rec_init(boolean bender)
 *    long time: the current time
 *    long data: midi data to record
 * Outputs:
-*    returns false if there is no more memory
+*    returns FALSE if there is no more memory
 * Effect: reads and stores any input
 * Implementation:
 *    time stamps and midi events share the same buffer of 4-byte events
@@ -621,10 +629,10 @@ boolean rec_event(long *data, time_type time)
     next->when = *data;
     next++->n[3] = MIDI_CMD_BIT;        /* set tag bit */
     if (next >= last) goto overflow;
-    return true;
+    return TRUE;
 
 overflow:
     next = last; /* last doesn't really point to last storage */
     gprintf(ERROR, "No more memory.\n");
-    return false;
+    return FALSE;
 }

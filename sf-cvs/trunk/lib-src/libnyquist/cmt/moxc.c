@@ -17,6 +17,7 @@
 *  2-Apr-91 | JDW : further changes
 *  4-Mar-91 | GWL : DOS allows odd inst addrs
 * 10-Oct-94 | nix : posicionador tridimensionale interface
+* 28-Apr-03 |  DM : true->TRUE, false->FALSE
 *****************************************************************************/
 
 #include "switches.h"
@@ -72,12 +73,12 @@ extern char *app_syntax;
 *  EXPORTS:
 *       
 *       cause(delay, routine, p1, p2, ..., p8)
-*       moxcdone -- set to true to quit
+*       moxcdone -- set to TRUE to quit
 *       eventtime -- ideallized current time
 *
 *****************************************************************************/
 
-#define SAFEMOXC true
+#define SAFEMOXC TRUE
 #define BREAKKEY 0x03
 
 int moxcdone;   /* flag to halt execution */
@@ -85,10 +86,10 @@ time_type eventtime;    /* time of current call -- used to avoid        */
                         /* timing errors due to finite execution speed  */
 time_type virttime;     /* virtual time of current call */
 timebase_type timebase; /* time base of current call */
-int mididecode = true;  /* whether to decode messages or just call midievent */
+int mididecode = TRUE;  /* whether to decode messages or just call midievent */
 
-int debug = false;
-int moxcdebug = false;
+int debug = FALSE;
+int moxcdebug = FALSE;
 time_type next_wakeup;
 timebase_type default_base;
 
@@ -406,7 +407,7 @@ boolean moxcinit(argc, argv)
 #else
         ggetchar();
 #endif
-        return false;
+        return FALSE;
     }
     debug = cl_switch("debug");
     moxcdebug = cl_switch("moxc");
@@ -420,7 +421,7 @@ boolean moxcinit(argc, argv)
     ptInit();
 #endif
     moxcdone = 0;
-    return true;
+    return TRUE;
 }
 
 
@@ -478,7 +479,7 @@ private void decode()
 * poll for and decode midi keyboard input 
 ***********************************************/
 
-    while (getbuf(false, midi_data)) {
+    while (getbuf(FALSE, midi_data)) {
         /* only divide if necessary, divides take 100us on 8MHz 68000: */
         if (virttime == 0)
             virttime = real_to_virt(default_base, now);
@@ -635,16 +636,16 @@ private void decode()
 
 void quit()
 {
-    moxcdone = true;
+    moxcdone = TRUE;
 }
 
 /* moxcrun -- schedule events until done */
 /**/
 void moxcrun()
 {
-    moxcdone = false;
+    moxcdone = FALSE;
     while (!moxcdone && !abort_flag) {          /* test for finish */
-        if (!timebase_queue) moxcdone = true;
+        if (!timebase_queue) moxcdone = TRUE;
         else moxcwait(MAXTIME);         /* do work */
     }
 }

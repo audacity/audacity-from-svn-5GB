@@ -15,8 +15,10 @@
 * 16-Dec-92 | RBD : replace JMN's mpu.c with LMS's mpu.c
 * 11-Mar-94 | PLu : port to  IRIX
 * 25-Apr-97 | RBD : it looks like SGI changed their interface.  I
-*	    | made it compile again, but MIDI does not work, so
-*	    | took out calls to actually send/recv MIDI data
+*	        |       made it compile again, but MIDI does not work, so
+*	        |       took out calls to actually send/recv MIDI data
+* 28-Apr-03 | DM  : Renamed random -> cmtrand, true->TRUE, false->FALSE
+*           |       Use features rather than system names in #ifdef's
 *****************************************************************************/
 
 #include "switches.h"
@@ -179,12 +181,12 @@ static int ignore_realtime = 0;
 *
 ****************************************************************************/
 
-boolean miditrace = false;      /* enables printed trace of MIDI output */
-boolean musictrace = false;     /* enables printed trace of commands */
+boolean miditrace = FALSE;      /* enables printed trace of MIDI output */
+boolean musictrace = FALSE;     /* enables printed trace of commands */
 #ifdef MACINTOSH_OR_DOS
-boolean ctrlFilter = true;    /* suppress continuous controller data */
-boolean exclFilter = true;    /* suppress exclusive messages */
-boolean realFilter = true;    /* suppress realtime messages */
+boolean ctrlFilter = TRUE;    /* suppress continuous controller data */
+boolean exclFilter = TRUE;    /* suppress exclusive messages */
+boolean realFilter = TRUE;    /* suppress realtime messages */
 #endif
 
 /****************************************************************************
@@ -253,7 +255,7 @@ public char *midifns_syntax = "miditrace<s>Trace low-level midi functions;\
 #endif /* UNIX */
 
 #ifdef MACINTOSH
-boolean do_midi_thru = false; /* exported: copy midi in to midi out */
+boolean do_midi_thru = FALSE; /* exported: copy midi in to midi out */
 #endif
 
 
@@ -263,25 +265,25 @@ boolean do_midi_thru = false; /* exported: copy midi in to midi out */
 *
 ****************************************************************************/
 
-private int initialized = false;   /* set by musicinit, cleared by musicterm */
-private boolean tune_flag = false; /* set by musicinit, never cleared */
+private int initialized = FALSE;   /* set by musicinit, cleared by musicterm */
+private boolean tune_flag = FALSE; /* set by musicinit, never cleared */
 #ifdef DOS
-private boolean metroflag = false; /* flag to turn on metronome */
+private boolean metroflag = FALSE; /* flag to turn on metronome */
 #endif
-private int user_scale = false;    /* true if user-defined scale */
+private int user_scale = FALSE;    /* TRUE if user-defined scale */
 private int bend[MAX_CHANNELS];    /* current pitch bend on channel */
 short cur_midi_prgm[MAX_CHANNELS];
 private pitch_table pit_tab[128];  /* scale definition */
 
 #ifdef DOS
 private ulong timeoffset = 0;
-public boolean exclerr = false;
+public boolean exclerr = FALSE;
 public byte xcodemask; /* mask (00 or FF) */
 public byte xcode; /* mfr code */
 #endif
 
 #ifdef MACINTOSH_OR_DOS
-boolean sysex_pending = false;
+boolean sysex_pending = FALSE;
 #endif
 
 #ifdef AMIGA
@@ -486,7 +488,7 @@ void eventwait(timeout)
 /****************************************************************************
 *                exclusive
 * Inputs:
-*    boolean onflag -- set to true to receive midi exclusive data
+*    boolean onflag -- set to TRUE to receive midi exclusive data
 * Effect: 
 *    Tells module to read exclusive messages into buffer
 ****************************************************************************/
@@ -531,10 +533,10 @@ long get_excl(byte *buffer, long len)
     long l = len;
 #endif
 #ifdef UNIX_ITC  /* was ITC */
-    ret = mi_getx(midiconn, False, len, (char *) buffer);
+    ret = mi_getx(midiconn, FALSE, len, (char *) buffer);
 #endif
 #ifdef UNIX_MACH
-    ret = mi_getx(midiconn, false, len, (unsigned char *)buffer);
+    ret = mi_getx(midiconn, FALSE, len, (unsigned char *)buffer);
 #endif
 #ifdef UNIX_IRIX_MIDIFNS
     if (!sysex_p) return 0;
@@ -572,7 +574,7 @@ long get_excl(byte *buffer, long len)
     *buffer = xbuff[xbufhead++];
     ret++;
     if (*buffer == MIDI_EOX) {
-        sysex_pending = false;
+        sysex_pending = FALSE;
         break;
     }
     buffer++;
@@ -586,14 +588,14 @@ long get_excl(byte *buffer, long len)
 /****************************************************************************
 *                   getbuf
 * Inputs:
-*    boolean waitflag: true if routine should wait for data
+*    boolean waitflag: TRUE if routine should wait for data
 *    byte * p: Pointer to data destination
 * Result: boolean
-*    true if data was written to *p
-*    false if data not written to *p
+*    TRUE if data was written to *p
+*    FALSE if data not written to *p
 * Effect: 
 *    copies data from buffer to *p
-*    will wait for buffer to become nonempty if waitflag is true
+*    will wait for buffer to become nonempty if waitflag is TRUE
 *
 * Modified 24 May 1988 for AMIGA (JCD)
 ****************************************************************************/
@@ -647,7 +649,7 @@ boolean getbuf(boolean waitflag, unsigned char * p)
         /* filter out realtime msgs */
         do {
             ret = mi_get(midiconn, waitflag, (char *) p);
-            if (ret == false)
+            if (ret == FALSE)
                 return(ret);
         } while(p[0] == 0xf8);
         return(ret);
@@ -658,7 +660,7 @@ boolean getbuf(boolean waitflag, unsigned char * p)
     gprintf(ERROR, "getbuf called with waitflag!");
     EXIT(1);
     }
-    return false;
+    return FALSE;
 #endif /* UNIX_IRIX */
 #endif /* UNIX_ITC */
 #endif /* UNIX */
@@ -670,18 +672,18 @@ boolean getbuf(boolean waitflag, unsigned char * p)
         xbufhead &= xbufmask;
         if (xbufhead == xbuftail) break;
         }
-        sysex_pending = false;
+        sysex_pending = FALSE;
     }
     if (waitflag) while (buffhead == bufftail) /* wait */ ;
     else if (buffhead == bufftail) return(false);
     *(long *)p = *(long *)(((char *)buff)+buffhead);
     buffhead = (buffhead + 4) & BUFF_MASK;
     if (*p == MIDI_SYSEX) { /* if sys-ex, remember to fetch from xbuff */
-        sysex_pending = true;
+        sysex_pending = TRUE;
     }
     return(true);
 #else
-    return false;
+    return FALSE;
 #endif /* WINDOWS */
 #endif /* MACINTOSH_OR_DOS */
 
@@ -727,8 +729,8 @@ private void flush_sysex()
 #ifndef WINDOWS
 public boolean check_midi()
 {
-    if (buffhead == bufftail) return false;
-    else return true;
+    if (buffhead == bufftail) return FALSE;
+    else return TRUE;
 }
 #endif
 #endif
@@ -737,12 +739,12 @@ public boolean check_midi()
 /****************************************************************************
 *                   getkey
 * Inputs:
-*    boolean waitflag: true if wait until key depression, false if
+*    boolean waitflag: TRUE if wait until key depression, FALSE if
 *             return immediately
 * Result: int
 *    key number of key which has been depressed
-*    It returns -1 if waitflag is false and no key has been pressed
-*    If waitflag is true this routine will block until a key is pressed
+*    It returns -1 if waitflag is FALSE and no key has been pressed
+*    If waitflag is TRUE this routine will block until a key is pressed
 * Effect: 
 *    reads a key
 ****************************************************************************/
@@ -756,7 +758,7 @@ short getkey(boolean waitflag)
 
     if (!initialized) fixup();
 
-    while (true) {    /* process data until you find a note */
+    while (TRUE) {    /* process data until you find a note */
     /* look for data and exit if none found */
     /* NOTE: waitflag will force waiting until data arrives */
     if (!getbuf(waitflag, msg)) { /* nothing there */
@@ -795,12 +797,11 @@ short getkey(boolean waitflag)
 
 ulong gettime()         /*DMH: ulong is from mpu->midifns conversion, for Mac*/
 {
-#ifdef UNIX
-#if (defined(UNIX_IRIX) || defined(__APPLE__))
+#if HAS_GETTIMEOFDAY
     struct timeval timeval;
-#else
-    struct timeb ftime_res;
 #endif
+#if HAS_FTIME
+    struct timeb ftime_res;
 #endif
     register ulong ticks = 0L;
 
@@ -828,14 +829,13 @@ ulong gettime()         /*DMH: ulong is from mpu->midifns conversion, for Mac*/
 #endif
 #endif  /* ifdef DOS */
 
-#ifdef UNIX
-#if (defined(UNIX_IRIX) || defined(__APPLE__))
+#if HAS_GETTIMEOFDAY
     gettimeofday(&timeval, 0);
     ticks = timeval.tv_sec * 1000 + timeval.tv_usec / 1000 - timeoffset;
-#else
+#endif
+#if HAS_FTIME
     ftime(&ftime_res);
     ticks = ((ftime_res.time - timeoffset) * 1000) + ftime_res.millitm;
-#endif
 #endif
 
     /* if (miditrace) gprintf(TRANS, "."); */
@@ -892,7 +892,7 @@ long time;
 /****************************************************************************
 *               metronome
 * Inputs:
-*    boolean onflag: true or false
+*    boolean onflag: TRUE or FALSE
 * Effect:
 *    enables (true) or disables (false) MPU-401 metronome function.
 *    must be called before musicinit
@@ -933,7 +933,7 @@ void midi_bend(int channel, int value)
 *    byte * buffer: the buffer address
 *    int size: number of bytes in buffer
 * Returns:
-*    false if size is less than 16 or buffer is NULL, otherwise true
+*    FALSE if size is less than 16 or buffer is NULL, otherwise TRUE
 * Effect: DOS, MAC:
 *    tells interrupt routine to store system exclusive messages in
 *    buffer.     The largest power of 2 bytes less than size will be
@@ -949,7 +949,7 @@ void midi_bend(int channel, int value)
 
 boolean midi_buffer(byte huge *buffer, ulong size)
 {
-    if (!buffer) return false;
+    if (!buffer) return FALSE;
 #ifdef AMIGA
     if (!SetSysExQueue(cmt_mi, (UBYTE *) buffer, (ULONG) size)) return(false);
     cu_register(remove_sysex_buffer, buffer);
@@ -971,10 +971,10 @@ boolean midi_buffer(byte huge *buffer, ulong size)
 #endif
 #endif
 #ifdef UNIX
-    return false;
+    return FALSE;
 #else
-    exclusive(true);
-    return(true);
+    exclusive(TRUE);
+    return TRUE;
 #endif
 }
 
@@ -992,7 +992,7 @@ void midi_clock()
 /****************************************************************************
 *               midi_cont
 * Inputs:
-*    boolean onflag: true or false
+*    boolean onflag: TRUE or FALSE
 * Effect:
 *    enables (true) or disables (false) continuous control
 ****************************************************************************/
@@ -1079,17 +1079,17 @@ unsigned char *msg; /* the data to be sent */
     int count = 0;      /* counter for formatting midi byte trace */
     MIDIPacket TheMIDIPacket;
     unsigned char prev = 0;
-    boolean first_packet = true;
+    boolean first_packet = TRUE;
 #endif
 #endif
 
     /*
      *  if user mistakenly called midi_exclusive instead of exclusive,
-     *  the argument will be true or false, both of which are highly    
+     *  the argument will be TRUE or FALSE, both of which are highly    
      *  unlikely valid arguments for midi_exclusive:
      */
 
-    if (msg == (byte *) false || msg == (byte *) true) {
+    if (msg == (byte *) FALSE || msg == (byte *) TRUE) {
     gprintf(ERROR,"midi_exclusive: invalid argument %u.\n", msg);
     EXIT(1);
     }
@@ -1111,7 +1111,7 @@ unsigned char *msg; /* the data to be sent */
     TheMIDIPacket.tStamp = 0;
     if (first_packet && (prev != MIDI_EOX)) {
         TheMIDIPacket.flags = midiTimeStampCurrent + midiStartCont;
-        first_packet = false;
+        first_packet = FALSE;
     } else if (first_packet) {
         TheMIDIPacket.flags = midiTimeStampCurrent + midiNoCont;
     } else if (prev == MIDI_EOX) {
@@ -1234,7 +1234,7 @@ void midi_program(int channel, int program)
 /****************************************************************************
 *               midi_real
 * Inputs:
-*    boolean onflag: true or false
+*    boolean onflag: TRUE or FALSE
 * Effect:
 *    enables (true) or disables (false) midi realtime messages F8-FF
 ****************************************************************************/
@@ -1295,7 +1295,7 @@ void midi_stop()
 /****************************************************************************
 *               midi_thru
 * Inputs:
-*    boolean onflag: true or false
+*    boolean onflag: TRUE or FALSE
 * Effect:
 * DOS:      enables (true) or disables (false) midi thru info from
 *      MPU-401 to host.  (Default is set; reset with cmdline -block.)
@@ -1493,7 +1493,7 @@ char *filename;
     float bend;
     FILE *fpp;
 
-    user_scale = true;
+    user_scale = TRUE;
     set_pitch_default();
 
     fpp = fileopen(filename, "tun", "r", "Tuning definition file");
@@ -1527,7 +1527,7 @@ void musicinit()
     cu_register((cu_fn_type) musicterm, NULL);
     midi_init();
     }
-    initialized = true;
+    initialized = TRUE;
     /* this does some random cleanup activity */
 
 #ifndef APPLICATION
@@ -1545,7 +1545,7 @@ void musicinit()
     mPutCmd(EXCLUSIVOFF);   /* initially prevent Sys-Ex data */
 #endif
 #endif
-    tune_flag = true;
+    tune_flag = TRUE;
     filename = cl_option("tune");
     if (filename != NULL) read_tuning(filename);
     }
@@ -1588,12 +1588,12 @@ void musicinit()
 private void musicterm()
 {
     if (musictrace) gprintf(TRANS, "musicterm()\n");
-    initialized = false;
+    initialized = FALSE;
 }
 
 
 /****************************************************************************
-*                   random
+*                   cmtrand
 * Inputs:
 *    int lo: Lower limit of value
 *    int hi: Upper limit of value
@@ -1658,13 +1658,13 @@ void settime(newtime)
 
 void timereset()
 {
-#ifdef UNIX
-#if (defined(UNIX_IRIX) || defined(__APPLE__))
+#if HAS_GETTIMEOFDAY
     struct timeval timeval;
-#else
+#endif
+#if HAS_FTIME
     struct timeb ftime_res;
 #endif
-#endif
+
     if (!initialized) fixup();
     if (musictrace) gprintf(TRANS,"timereset()\n");
 
@@ -1686,14 +1686,13 @@ void timereset()
 #endif
 #endif
     
-#ifdef UNIX
-#if (defined(UNIX_IRIX) || defined(__APPLE__))
+#if HAS_GETTIMEOFDAY
     gettimeofday(&timeval, 0);
     timeoffset = timeval.tv_sec * 1000 + timeval.tv_usec / 1000 - timeoffset;
-#else
+#endif
+#if HAS_FTIME
     ftime(&ftime_res);
     timeoffset = ftime_res.time;
-#endif
 #endif
 }
 
@@ -1701,9 +1700,9 @@ void timereset()
 /****************************************************************************
 *                  trace
 * Inputs:
-*    boolean flag: true for trace on
+*    boolean flag: TRUE for trace on
 * Effect: 
-*    turns tracing on (flag == true) or off (flag == false)
+*    turns tracing on (flag == TRUE) or off (flag == FALSE)
 ****************************************************************************/
 
 void trace(boolean flag)
@@ -1714,9 +1713,9 @@ void trace(boolean flag)
 /****************************************************************************
 *                  tracemidi
 * Inputs:
-*    boolean flag: true for trace on
+*    boolean flag: TRUE for trace on
 * Effect: 
-*    turns midi tracing on (flag == true) or off (flag == false)
+*    turns midi tracing on (flag == TRUE) or off (flag == FALSE)
 ****************************************************************************/
 
 void tracemidi(boolean flag)

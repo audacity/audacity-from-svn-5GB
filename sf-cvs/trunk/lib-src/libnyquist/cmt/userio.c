@@ -14,6 +14,7 @@
 *  5-Apr    | JDW : Further changes
 *  2-Mar-92 | GWL : Little changes to satisfy compiler
 * 19-Nov-92 | JDZ : Mach tty io threads
+* 28-Apr-03 |  DM : portability changes. true->TRUE, false->FALSE
 *****************************************************************************/
 
 /* Notes on ascii input:
@@ -69,28 +70,33 @@ ascii_input = poll for char + CR->EOL conversion
 */
 
 #include "switches.h"
-#include "string.h"
+
+#include <stdio.h>
+#include <string.h>
+#if HAS_STDLIB_H
+#include <stdlib.h> /* normal case */
+#endif
+
 
 #ifdef MACINTOSH
-#include "StandardFile.h"
-/* added for ThinkC 7 */
-#ifdef THINK_C
-#include <pascal.h>
-#endif
-#include "string.h"
+# include "StandardFile.h"
+  /* added for ThinkC 7 */
+# ifdef THINK_C
+#  include <pascal.h>
+# endif
 #endif
 
 #ifdef AMIGA
 
-#ifdef AZTEC
-#include "functions.h"
-#else /* LATTICE */
-#include "amiga.h"
-#include "stdarg.h"
-#endif
+# ifdef AZTEC
+#  include "functions.h"
+# else /* LATTICE */
+#  include "amiga.h"
+#  include "stdarg.h"
+# endif
 
-#include "intuition/intuition.h"
-#include "devices/console.h"
+# include "intuition/intuition.h"
+# include "devices/console.h"
 #endif
 
 #include "ctype.h"
@@ -211,8 +217,8 @@ private struct NewWindow NewWindow = {
 #endif
 
 #ifdef MACINTOSH
-private OSType io_file_type = '????';
-private OSType io_file_creator = '????';
+private OSType io_file_type = 0x3F3F3F3F; /* '????' */
+private OSType io_file_creator = 0x3F3F3F3F; /* '????' */
 #endif
 
 #define type_ahead_max 100
@@ -409,12 +415,12 @@ public void cleanup_abort_handler()
 *                                       init_abort_handler
 * Effect:
 *       starts abort watcher
-*       aborted flag is set to false
+*       aborted flag is set to FALSE
 ****************************************************************************/
 
 public void init_abort_handler()
 {
-        abort_flag = false;
+        abort_flag = FALSE;
         (void) sigset(SIGINT, abort_watcher);   /* activate abort watcher */
 }
 #endif
@@ -426,9 +432,9 @@ public void init_abort_handler()
 *               askbool
 * Inputs:
 *    char *prompt: string to prompt for user input
-*    int deflt: true or false default
+*    int deflt: TRUE or FALSE default
 * Returns:
-*    boolean: true or false as entered by user
+*    boolean: TRUE or FALSE as entered by user
 * Effect:
 *    prompts user for yes or no input, returns result
 ****************************************************************************/
@@ -441,7 +447,7 @@ int deflt;
     char defchar;    /* the default answer */
     char c;     /* user input */
     char in_string[100];
-    int result = -1;    /* the result: -1 = undefined, 0 = false, 1 = true */
+    int result = -1;    /* the result: -1 = undefined, 0 = FALSE, 1 = TRUE */
     if (deflt) defchar = 'y';
     else defchar = 'n';
     while (result == undefined) {
@@ -449,8 +455,8 @@ int deflt;
         ggets(in_string);
         c = in_string[0];
         if (islower(c)) c = toupper(c);
-        if (c == 'Y') result = true;
-        else if (c == 'N') result = false;
+        if (c == 'Y') result = TRUE;
+        else if (c == 'N') result = FALSE;
         else if (c == EOS) result = deflt;
         else if (abort_flag) result = deflt;
         /* space before Please to separate from user's type-in: */
@@ -497,7 +503,7 @@ FILE *fileopen(deflt, extension, mode, prompt)
     char extname[100];          /* trial name with extension added */
     FILE *fp = NULL;            /* file corresponding to filename */
     FILE *fpext;                /* file corresponding to extname */
-    char *problem;              /* tells user why he has to try again */
+    char *problem = NULL;       /* tells user why he has to try again */
 
     if (!deflt) deflt = "";     /* treat NULL as the empty string */
     strcpy(fileopen_name, deflt);
@@ -543,15 +549,15 @@ FILE *fileopen(deflt, extension, mode, prompt)
             }
             if (fp == NULL) problem = "Couldn't find %s.\n";
         } else if (mode[0] == 'w') {
-            boolean added_extension = false;
+            boolean added_extension = FALSE;
             
             /* add the extension if there is no '.' in the file name */
             if (!strchr(fileopen_name, '.')) {
                 strcat(fileopen_name, ".");
                 strcat(fileopen_name, extension);
-                added_extension = true;
+                added_extension = TRUE;
             }
-            if (true
+            if (TRUE
 #ifdef MACINTOSH
                 /* file open dialog already asked user to confirm unless we're
                  * adding an extension
@@ -565,7 +571,7 @@ FILE *fileopen(deflt, extension, mode, prompt)
                     fclose(fp);
                     strcpy(question, "OK to overwrite ");
                     strcat(question, fileopen_name);
-                    if (!askbool(question, false)) {
+                    if (!askbool(question, FALSE)) {
                         fp = NULL;
                         problem = "\n";
                         goto tryagain;
@@ -595,9 +601,9 @@ char *name;
     SFReply loadfile;
     SFTypeList mytypes;
     
-    mytypes[0] = 'TEXT';
-    mytypes[1] = 'Midi';
-    mytypes[2] = '????';
+    mytypes[0] = 0x54455854; /* 'TEXT' */
+    mytypes[1] = 0x4D696469; /* 'Midi' */
+    mytypes[2] = 0x3F3F3F3F; /* '????' */
 /* could put any filter here (i.e. giofilefileter) */
     SFGetFile(p, "\p", NULL, 3, mytypes, 0L, &loadfile); 
     if (loadfile.good) {
@@ -654,16 +660,16 @@ boolean get_file_info(char *filename, OSType *file_type, OSType *file_creator)
     if (rc = GetFInfo((byte*)fn, 0, &fi)) {
         gprintf(ERROR, "rc from GetFInfo=%d\n", rc);
         gprintf(ERROR, "unable to get file type\n");
-        *file_type = '????';
-        *file_creator = '????';
-        return false;
+        *file_type = 0x3F3F3F3F; /* '????' */
+        *file_creator = 0x3F3F3F3F; /* '????' */
+        return FALSE;
     } else /* set file type & creator */ {
         if (debug) gprintf(TRANS, "File Type: '%.4s'  File Creator: '%.4s'\n",
                            &fi.fdType, &fi.fdCreator );
         *file_type = fi.fdType;
         *file_creator = fi.fdCreator;
     }
-    return true;
+    return TRUE;
 }
 
 
@@ -1022,7 +1028,7 @@ public char *ggets(str)
 /****************************************************************************
 *                 get_ascii
 * Returns:
-*    boolean: true if a character was found
+*    boolean: TRUE if a character was found
 *    int * c: pointer to int into which to store the character, if any
 * Effect:
 *    polls (doesn't wait) for an ascii character and says if it got one
@@ -1033,7 +1039,7 @@ public boolean get_ascii(c)
   char *c;
 {
     check_aborted(); /* input buffer check */
-    if (type_ahead_count == 0) return false;
+    if (type_ahead_count == 0) return FALSE;
 #ifdef AMIGA
     /* if the buffer is full, then there is no outstanding read, restart it: */
     if (type_ahead_count == type_ahead_max) ConRead();
@@ -1041,7 +1047,7 @@ public boolean get_ascii(c)
     type_ahead_count--;
     *c = type_ahead[type_ahead_head++];
     if (type_ahead_head == type_ahead_max) type_ahead_head = 0;
-    return true;
+    return TRUE;
 }
 
 #ifdef MACINTOSH  /** Macintosh direct ascii input**/
@@ -1074,15 +1080,15 @@ char *c;
 {
     if (abort_flag == ABORT_LEVEL) {
             *c=ABORT_CHAR;
-        return((boolean)true);
+        return((boolean)TRUE);
     }
     if (kbhit()) {              /* If the keyboard was hit */
         *c = getch();           /* Don't echo it */
 //      printf("now break");
         if (*c == '\r') *c = '\n';
-        return((boolean)true);
+        return((boolean)TRUE);
     }
-    return((boolean)false);     /* Keeps Lattice compiler happy */
+    return((boolean)FALSE);     /* Keeps Lattice compiler happy */
 }
 #endif
 
@@ -1097,13 +1103,13 @@ char *c;
          * wait for that thread to read a character and then take
          * it
          */
-        boolean ret = false;
+        boolean ret = FALSE;
 
         A_LOCK();
                 if (a_in_flag) {
                         (*c) = a_in;
                         a_in_flag = 0;
-                        ret = true;
+                        ret = TRUE;
                 }
         A_UNLOCK();
         if (ret) {
@@ -1122,10 +1128,10 @@ char *c;
     if (input != IOnochar) {
         *c = input;
         if (*c == '\r') *c = '\n';
-        return true;
+        return TRUE;
     }
 #endif /* BUFFERED_SYNCHRONOUS_INPUT */
-    return false;
+    return FALSE;
 #endif /* UNIX_MACH */
 }
 #endif
@@ -1146,9 +1152,9 @@ public boolean check_ascii()
         
         if(get_ascii(&c)) {
                 unget_ascii(c);
-                return true;
+                return TRUE;
         }
-        else return false;
+        else return FALSE;
 }
 #endif
 

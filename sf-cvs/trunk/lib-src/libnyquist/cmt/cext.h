@@ -16,10 +16,10 @@ byte     -- unsigned 8-bit quantity
 ushort     -- unsigned 16-bit quantity
 ulong     -- unsigned 32-bit quantity
 Pointer -- pointer to char, a generic pointer
-abs()     -- absolute value of any type of number
-max()     -- maximum of two numbers
-min()     -- minimum of two numbers
-round()	  -- round a double to long		     
+ABS()     -- absolute value of any type of number
+MAX()     -- maximum of two numbers
+MIN()     -- minimum of two numbers
+ROUND()	  -- round a double to long		     
 
 NULL     -- pointer to nothing, a constant
 EOS      -- end of string, a constant '\0'
@@ -31,84 +31,61 @@ EXIT(n)  -- calls exit(n) after shutting down/deallocating resources
 
 *****************************************************************************/
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  many changes for new conditional compilation switches
+ * 28Apr03  rbd removed macro redefinitions: min, max
+ */
+
 #ifndef CEXT_H
 #ifndef SWITCHES
 #include "switches.h"
 #endif
 
-#ifdef UNIX
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+
+#if HAS_STDLIB_H
+#include <stdlib.h>
+#endif
+
+#if HAS_SYS_TYPES_H
 #include <sys/types.h>
-#ifndef _IBMR2
-#ifndef sgi
-#ifndef linux
+#endif
+
+#if HAS_MALLOC_H
+#include <malloc.h>
+#endif
+
+#if NEED_ULONG
 typedef unsigned long ulong;
-/* under Mach, ushort is defined in types.h, but ulong isn't (!) */
-#ifndef __sparc__
-#ifndef NeXT
-/* typedef unsigned short ushort; */
 #endif
+
+#if NEED_USHORT
+typedef unsigned long ushort;
 #endif
-#endif
-#endif
-#endif
+
+#if NEED_BYTE
+typedef unsigned char byte;
 #endif
 
 /* There's a name conflict between true/false as an enum type in
  * Apple #includes:Types.h on the Mac, and true/false as #defined below
  */
-#ifdef MACINTOSH
-#include "Types.h"
-#else
-#define true 1
-#define false 0
+#ifndef TRUE
+#define TRUE 1
 #endif
+
+#ifndef FALSE
+#define FALSE 0
+#endif
+
 #define private static
 #define public
 
-#ifdef MACINTOSH
-/* declare malloc: */
-#include <stdlib.h>
-#include <stdio.h>
-
-typedef unsigned char byte;
-typedef unsigned short ushort;
-typedef unsigned long ulong;
-
-/*FILE *fopen(char *filename, char *mode);
-int fclose(FILE *file);*/
-
-#else
-#ifdef DOS
-#include "stdlib.h"
-#include "malloc.h"
-typedef unsigned char byte;
-typedef unsigned short ushort;
-typedef unsigned long ulong;
-#else
-/* declare malloc for everyone else */
+#if NEED_DEFINE_MALLOC
 public void *malloc();
-#endif
-#endif
-
-#ifdef UNIX
-typedef unsigned char byte;
-#ifdef ITC
-/* Note: stdio will pull this in later if we don't do it now: */
-#include "sys/types.h"
-/* on RS6000, types.h defines ulong and ushort if _ALL_SOURCE is defined */
-#ifndef _ALL_SOURCE
-typedef unsigned long ulong;
-#ifdef UNIX_ITC
-typedef unsigned short ushort;
-#endif
-#endif
-#endif
-#endif
-
-#ifdef AMIGA
-typedef unsigned char byte;
-typedef unsigned short ushort;
-typedef unsigned long ulong;
 #endif
 
 typedef char *Pointer;
@@ -120,14 +97,14 @@ typedef int boolean;
 typedef unsigned char boolean;
 #endif
 
-#ifndef abs
-#define abs(a) (((a) > 0) ? (a) : -(a))
+#ifndef ABS
+#define ABS(a) (((a) > 0) ? (a) : -(a))
 #endif
-#ifndef max
-#define max(a, b) (((a) > (b)) ? (a) : (b))
+#ifndef MAX
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #endif
-#ifndef min
-#define min(a, b) (((a) < (b)) ? (a) : (b))
+#ifndef MIN
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #endif
 
 #define MAXULONG 0xffffffff
@@ -144,7 +121,7 @@ typedef unsigned char boolean;
 #define BIGGEST_BLOCK    32765    /* Should find a happy medium for this  */
 
 #ifdef MACINTOSH /*DMH: gets AVAILMEM in record.c*/
-#include "stddef.h"
+#include <stddef.h>
 #define MALLOC(x)       malloc((size_t)(x))  /*DMH: size_t is ulong, for MAC*/
 #define FREE(x)    free((char *)(x))
 #define AVAILMEM    MyMaxMem(NULL)/*???*/
@@ -201,7 +178,12 @@ public void EXIT(int);
 MALLOC is not defined!
 #endif
 
-#define round(x) ((long) ((x) + 0.5))
+#define ROUND(x) ((long) ((x) + 0.5))
+
+/* for compatibility */
+#ifdef NEED_ROUND
+#define round ROUND
+#endif
 
 #define CEXT_H
 #endif

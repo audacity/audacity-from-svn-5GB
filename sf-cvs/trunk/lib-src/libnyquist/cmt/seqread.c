@@ -58,12 +58,16 @@
 * 13-Apr-89 | JCD : New portable version.
 * 31-Jan-90 | GWL : Cleaned up for LATTICE
 * 30-Jun-90 | RBD : further changes
-* 2-April-91 | JDW : further changes
+*  2-Apr-91 | JDW : further changes
 * 30-Jun-91 | RBD : parse '+' and '/' in durations, * after space is comment
+* 28-Apr-03 |  DM : changes for portability
 *****************************************************************************/
 
 #include "switches.h"
-#include "stdio.h"
+
+#include <stdio.h>
+#include <string.h>
+
 #include "cext.h"
 #include "cmdline.h"
 #include "midifns.h" /* to get time_type */
@@ -75,7 +79,6 @@
 /* ctype.h used to be included only by UNIX and AMIGA,
    surely everyone wants this? */
 #include "ctype.h"
-#include "string.h"
 
 #ifndef toupper
 /* we're already taking precautions, so inline version of toupper is ok: */
@@ -159,13 +162,13 @@ struct durt {    /* duration translation table */
 
 #define durtable_len 7
 struct durt durtable[durtable_len] = {
-    'W', 4800L,
-    'H', 2400L,
-    'Q', 1200L,
-    'I', 600L,
-    'S', 300L,
-    '%', 150L,
-    '^', 75L
+    {'W', 4800L},
+    {'H', 2400L},
+    {'Q', 1200L},
+    {'I', 600L},
+    {'S', 300L},
+    {'%', 150L},
+    {'^', 75L}
 };
 
 struct loudt {    /* loudness translation table */
@@ -174,14 +177,14 @@ struct loudt {    /* loudness translation table */
 };
 
 struct loudt loudtable[] = {
-    "PPP", 20,
-    "PP\0", 26,
-    "P\0\0", 34,
-    "MP\0", 44,
-    "MF\0", 58,
-    "F\0\0", 75,
-    "FF\0", 98,
-    "FFF", 127
+    {"PPP", 20},
+    {"PP\0", 26},
+    {"P\0\0", 34},
+    {"MP\0", 44},
+    {"MF\0", 58},
+    {"F\0\0", 75},
+    {"FF\0", 98},
+    {"FFF", 127}
 };
 
 char too_many_error[] = "Too many parameters";
@@ -217,7 +220,7 @@ private boolean rest_flag;    /* set when a rest (R) is found */
 /* this flag is NOT inherited by the next line */
 
 private boolean symbolic_dur_flag;
-/* true if last dur was not absolute
+/* TRUE if last dur was not absolute
          * (if this is set, then the default duration is changed
          *  accordingly when the tempo is changed.)
          */
@@ -226,8 +229,8 @@ private boolean symbolic_dur_flag;
 #define nctrl 8
 
 private boolean ctrlflag[nctrl];
-/* true if control change was present
-         * ctrlflag[0] true if ANY control change
+/* TRUE if control change was present
+         * ctrlflag[0] TRUE if ANY control change
          * was present
          */
 private int ctrlval[nctrl];
@@ -253,7 +256,7 @@ private time_type time_scale; /* 1000 if centisec, 100 if millisec */
 *
 ****************************************************************************/
 
-private boolean end_flag = false;    /* set "true" when "!END" is seen */
+private boolean end_flag = FALSE;    /* set "true" when "!END" is seen */
 
 /****************************************************************************
 *               state variables
@@ -319,10 +322,10 @@ boolean def_append(def, nparms, data)
     /* first parameter has to be able to reference last byte: */
     if ((def[base])++ >= (254 - (nparms << 1))) {
         fferror("Data too long");
-        return false;
+        return FALSE;
     }
     def[base + def[base]] = data;
-    return true;
+    return TRUE;
 }
 
 
@@ -374,7 +377,7 @@ private void do_a_rest()
 {
     if (token[fieldx])
         fferror("Nothing expected after rest");
-    rest_flag = true;
+    rest_flag = TRUE;
 }
 
 /****************************************************************************
@@ -452,8 +455,8 @@ private void doartic()
 /**/
 private void docall()
 {
-    boolean error_flag = true;
-    ndurp = false;
+    boolean error_flag = TRUE;
+    ndurp = FALSE;
 
     linex += scan();
 
@@ -462,7 +465,7 @@ private void docall()
         char symbol[100];
         struct symb_descr *desc;
         long value[SEQ_MAX_PARMS];
-        int i;
+        int i=0;
 
         scansymb(symbol);
         if (fieldx == 1) fferror("Routine name expected");
@@ -477,7 +480,7 @@ private void docall()
                 gprintf(TRANS, "desc->symb_type is %d\n", desc->symb_type);
                 fferror("This is not a function");
             } else {
-                error_flag = false;
+                error_flag = FALSE;
                 fieldx++;       /* skip over paren */
                 for (i = 0; i < SEQ_MAX_PARMS; i++) value[i] = 0;
                 i = 0;
@@ -489,14 +492,14 @@ private void docall()
                         fieldx++;
                     } else if (token[fieldx] != ')') {
                         fferror("Unexpected character");
-                        error_flag = true;
+                        error_flag = TRUE;
                         break;
                     }
                 }
                 fieldx++;
                 if (i > SEQ_MAX_PARMS) fferror("Too many parameters");
             }
-            while (true) {
+            while (TRUE) {
                 linex += scan();
                 if (nullstring(token)) {
                     break;
@@ -569,8 +572,8 @@ int n;
     if (token[fieldx]) {
         fferror("Only digits expected here");
     } else {
-        ctrlflag[n] = true;
-        ctrlflag[0] = true;    /* ctrlflag[0] set if any flag is set */
+        ctrlflag[n] = TRUE;
+        ctrlflag[0] = TRUE;    /* ctrlflag[0] set if any flag is set */
     }
 }
 
@@ -591,7 +594,7 @@ private void dodef()
     else {
         strcpy(symbol, token);
         def[0] = def[1] = 0;
-        while (true) {
+        while (TRUE) {
             linex += scan1(&line[linex]);
             c = token[0];
             if (!c) {
@@ -667,11 +670,11 @@ private void dodef()
 private time_type dodur()
 {
     time_type result = 0L;
-    symbolic_dur_flag = true;
+    symbolic_dur_flag = TRUE;
 
     if (token[fieldx-1] == 'U') {
         result = doabsdur();
-        symbolic_dur_flag = false;
+        symbolic_dur_flag = FALSE;
     } else result = dosymdur();
     while (token[fieldx] == '+') {
         fieldx += 2;
@@ -826,7 +829,7 @@ void domacro()
 
 private void donextdur()
 {
-    ndurp = true;    /* flag that N was given */
+    ndurp = TRUE;    /* flag that N was given */
     if (isdigit(token[fieldx])) {
         ntime = precise(scanint());
         ntime = scale(ntime, (ulong)time_scale, rate);
@@ -845,12 +848,12 @@ private void donextdur()
 
 private int dopitch()
 {
-    int p, octave;
-    int octflag = false;    /* set if octave is specified */
+    int p, octave=0;
+    int octflag = FALSE;    /* set if octave is specified */
     int oldfieldx = fieldx;
 
     p = pitchtable[token[fieldx-1]-'A'];
-    while (true) {
+    while (TRUE) {
         if (token[fieldx] == 'S') {                /* sharp */
             p++;
             fieldx++;
@@ -864,7 +867,7 @@ private int dopitch()
         } 
         else if (isdigit(token[fieldx]) && !octflag) {      /* octave */
             octave = (int) scanint();
-            octflag = true;
+            octflag = TRUE;
         } 
         else break;                /* none of the above */
     }
@@ -893,7 +896,7 @@ private int dopitch()
 private void doprogram()
 {
     register int program = (int) scanint();
-    ctrlflag[PROGRAM_CTRL] = ctrlflag[0] = true;
+    ctrlflag[PROGRAM_CTRL] = ctrlflag[0] = TRUE;
     if (token[fieldx]) {
         fferror("Z must be followed by digits only");
     } else if (program < minprogram) {
@@ -914,9 +917,9 @@ private void doramp()
     int values[2];
     time_type stepsize = 100L;  /* default 10 per second */
     int index = 0;
-    ndurp = false;
+    ndurp = FALSE;
     values[0] = values[1] = 0;
-    while (true) {
+    while (TRUE) {
         linex += scan();
         fieldx = 1;
         if (nullstring(token)) {
@@ -925,7 +928,7 @@ private void doramp()
             stepsize = dodur();
         } else {
             int ctrlx = 0;
-            static ctrl_map[] = { -BEND_CTRL, VOLUME, -TOUCH_CTRL, MODWHEEL };
+            static int ctrl_map[] = { -BEND_CTRL, VOLUME, -TOUCH_CTRL, MODWHEEL };
 
             switch (token[0]) {
               case 'M': ctrlx++;        /* modwheel */
@@ -1031,7 +1034,7 @@ private void dorate()
 private void doset(vec_flag)
   boolean vec_flag;
 {
-    ndurp = false;
+    ndurp = FALSE;
     linex += scan();
     if (!token[0]) fferror("Variable name expected");
     else {
@@ -1048,7 +1051,7 @@ private void doset(vec_flag)
             int *address = desc->ptr.intptr;
             value[0] = value[1] = 0;
             i = 0;
-            while (true) {
+            while (TRUE) {
                 linex += scan();
                 if (nullstring(token)) {
                     break;
@@ -1126,10 +1129,10 @@ private void dospecial()
         time_scale = 100L;
         break;
       case sym_seti:
-        doset(false);
+        doset(FALSE);
         break;
       case sym_setv:
-        doset(true);
+        doset(TRUE);
         break;
       case sym_call:
         docall();
@@ -1144,7 +1147,7 @@ private void dospecial()
         dodef();
         break;
       case sym_end:
-        end_flag = true;
+        end_flag = TRUE;
         break;
       default: 
         fferror("Special command expected");
@@ -1161,7 +1164,7 @@ private time_type dosymdur()
 {
     int i, dotcnt = 0;
     long dotfactor;
-    time_type result;
+    time_type result = 0;
 
     for (i = 0; i < durtable_len; i++) {
         if (durtable[i].symbol == token[fieldx-1]) {
@@ -1311,13 +1314,13 @@ private void init()
 {
     int i;
 
-    end_flag = false;
+    end_flag = FALSE;
 
     /* initial (default) values for all state variables */
-    symbolic_dur_flag = true; /* default dur is symbolic */
+    symbolic_dur_flag = TRUE; /* default dur is symbolic */
     for (i = 0; i < nctrl; i++) {
         /* no initial control changes */
-        ctrlflag[i] = false;
+        ctrlflag[i] = FALSE;
         ctrlval[i] = 0;
     }
 
@@ -1339,7 +1342,7 @@ private void init()
 /****************************************************************************
 *               ins_a_note
 * Returns:
-*    boolean: true on success, false if not enough memory
+*    boolean: TRUE on success, FALSE if not enough memory
 * Effect:
 *    note events (if any) corresponding to the current line are inserted
 * Implementation:
@@ -1359,19 +1362,19 @@ private boolean ins_a_note()
     if (rest_flag) the_pitch = NO_PITCH;
     note = insert_note(the_score, seqround(thetime), lineno, voice,
                        the_pitch, the_dur, loud);
-    if (!note) return false;
-    return true;    /* success! */
+    if (!note) return FALSE;
+    return TRUE;    /* success! */
 }
 
 /****************************************************************************
 *               ins_ctrls
 * Returns:
-*    boolean: true on success, false if not enough memory
+*    boolean: TRUE on success, FALSE if not enough memory
 * Effect:
 *    control events corresponding to current line are inserted in score
 * Implementation:
-*    ctrlflag[i] is true if control i was specified in this line, so
-*    insert one control change for each ctrlflag[i] that is true
+*    ctrlflag[i] is TRUE if control i was specified in this line, so
+*    insert one control change for each ctrlflag[i] that is TRUE
 ****************************************************************************/
 
 private boolean ins_ctrls()
@@ -1383,12 +1386,12 @@ private boolean ins_ctrls()
         if (ctrlflag[i]) {
             ctrl = insert_ctrl(the_score, seqround(thetime), lineno, i, voice,
                                ctrlval[i]);
-            if (!ctrl) return false;
-            ctrlflag[i] = false;
+            if (!ctrl) return FALSE;
+            ctrlflag[i] = FALSE;
             ctrlval[i] = 0;
         }
     }
-    return true;    /* success! */
+    return TRUE;    /* success! */
 }
 
 /****************************************************************************
@@ -1405,7 +1408,7 @@ private int issymbol()
     for (symb_num = 0; symb_num < sym_n; symb_num++) {
         sym = ssymbols[symb_num];
         i = 1;
-        while (true) {
+        while (TRUE) {
             if (token[i] != *sym) break;
             if (*sym == 0) return symb_num;
             sym++; 
@@ -1443,19 +1446,19 @@ int count;
 
 private void parseend()
 {
-    boolean done = false;
+    boolean done = FALSE;
     while (!done) {
         linex += scan1(&line[linex]);
         switch (token[0]) {
         case ',':
-            ndurp = true;    /* switch that next time was specified */
+            ndurp = TRUE;    /* switch that next time was specified */
             ntime = 0L;
-            done = true;
+            done = TRUE;
             break;
         case ';':
         case '\n':
         case EOS:
-            done = true;
+            done = TRUE;
             break;
         case ' ':
         case '\t':
@@ -1502,11 +1505,11 @@ private void parsefield()
     case 'F':
     case 'G': 
         pitch = dopitch(); 
-        pitch_flag = true;
+        pitch_flag = TRUE;
         break;
     case 'P': 
         pitch = doabspitch(); 
-        pitch_flag = true;
+        pitch_flag = TRUE;
         break;
     case 'L': 
         loud = doloud(); 
@@ -1565,11 +1568,11 @@ private void parsefield()
 
 private boolean parsenote()
 {
-    boolean out_of_memory = false;
+    boolean out_of_memory = FALSE;
     int i;
 
-    ndurp = false;
-    rest_flag = false;
+    ndurp = FALSE;
+    rest_flag = FALSE;
 
     /* this loop reads tokens for a note */
     while (token[0]) {
@@ -1632,13 +1635,13 @@ private boolean parseparm(valptr)
     register char c = token[fieldx];
     if (isdigit(c) || c == '-') {
         *valptr = scansgnint();
-        return true;
+        return TRUE;
     } else {
         switch (c) {
           case 'P':
             fieldx++;
             *valptr = doabspitch();
-             return true;
+             return TRUE;
           case 'A':
           case 'B':
           case 'C':
@@ -1648,7 +1651,7 @@ private boolean parseparm(valptr)
           case 'G':
             fieldx++;
             *valptr = dopitch();
-            return true;
+            return TRUE;
           case 'U':
           case 'W':
           case 'H':
@@ -1659,11 +1662,11 @@ private boolean parseparm(valptr)
           case '^':
             fieldx++;
             *valptr = seqround(dodur());
-            return true;
+            return TRUE;
           case 'L':
             fieldx++;
             *valptr = doloud();
-            return true;
+            return TRUE;
           case '\'':
             fieldx++;
             *valptr = token[fieldx];
@@ -1672,10 +1675,10 @@ private boolean parseparm(valptr)
                 fferror("single quote expected");
             }
             fieldx++;
-            return true;
+            return TRUE;
           default:
             fferror("Parameter expected");
-            return false;
+            return FALSE;
         }
     }
 }
@@ -1781,7 +1784,7 @@ private long scanint()
 {
     long i = 0;
     char c;
-    while (c = token[fieldx]) {
+    while ((c = token[fieldx])) {
         if (isdigit(c)) {
             i = (i*10) + (c - '0');
             fieldx++;
@@ -1810,7 +1813,7 @@ private void scansymb(str)
   char *str;
 {
     char c;
-    while (c = token[fieldx]) {
+    while ((c = token[fieldx])) {
         if (isdigit(c) || isalpha(c) || c == '_') {
             *str++ = c;
             fieldx++;
@@ -1834,7 +1837,7 @@ void seq_read(seq, fp)
   seq_type seq;
   FILE *fp;
 {
-    boolean out_of_memory = false;    /* set when no more memory */
+    boolean out_of_memory = FALSE;    /* set when no more memory */
     /* printf("seq_read: chunklist is 0x%x\n", seq->chunklist); */
     the_score = seq;  /* current sequence is a global within this module */
     if (!seq) return;
@@ -1853,10 +1856,10 @@ void seq_read(seq, fp)
         /* this loop reads notes from a line */
         while ((line[linex] != EOS) && !out_of_memory) {
             /* loop invariant: line[linex] is first char of next note */
-            ctrlflag[0] = false;  /* other ctrlflags are reset by ins_ctrls() */
+            ctrlflag[0] = FALSE;  /* other ctrlflags are reset by ins_ctrls() */
             macctrlx = 0;
             macctrlnextparm = 0;
-            pitch_flag = false;
+            pitch_flag = FALSE;
             linex += scan();
             if (!nullstring(token)) {
                 if (token[0] == '*') docomment();

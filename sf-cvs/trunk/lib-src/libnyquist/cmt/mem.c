@@ -7,8 +7,17 @@
    chunck for more memory.  The freelist array only holds lists of
    nodes up to a certain size.  After that, malloc is used directly.
  */
+/* CHANGE LOG
+ ----------------------------------------------------------------------
+   28-Apr-03 | DM  : fix #includes for portability
+ ----------------------------------------------------------------------
+ */
 
-#include "stdio.h"
+#include "switches.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "cext.h"
 #include "userio.h"
 
@@ -50,7 +59,7 @@ void *memget(register size_t size)
 /*			gprintf(TRANS, "memget->%lx\n", result); */
             return result;
         /* note that we throw away remaining chunk when there isn't enough */
-        } else if (mem_chunk = (char *) MALLOC(MEM_CHUNK_SIZE)) {
+        } else if ((mem_chunk = (char *) MALLOC(MEM_CHUNK_SIZE))) {
             register char *result = mem_chunk;
 /*			gprintf(TRANS, "mem_chunk at %lx\n", mem_chunk); */
             size = (size + 3) & ~3; /* round up to multiple of 4 */

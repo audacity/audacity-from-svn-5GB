@@ -4,6 +4,7 @@
 /* ChangeLog:
  *    2-jan-85 rbd    Added option to count entries: define COUNTER and
  *          HASHENTER routine will increment it on new entries
+ *   28-Apr-03 DM     Explicit declaration of int type for HASHENTER() 
  */
 
 /*
@@ -142,6 +143,8 @@ extern COUNTER;
 
 #ifdef HASHPOINT
 HASHTYPE *
+#else
+int
 #endif
 HASHENTER (s)
 char *s;

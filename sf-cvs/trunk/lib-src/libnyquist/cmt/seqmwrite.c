@@ -5,9 +5,13 @@
 *-----------+---------------------------------------------------------------
 * 11-Mar-94 | Created Change Log
 * 11-Mar-94 | PLu : Added private to function defs.
+* 28-Apr-03 |  DM : Change #include's for portability
 ****************************************************************************/
 
-#include "stdio.h"
+#include "switches.h"
+
+#include <stdio.h>
+
 #include "cext.h"
 #include "userio.h"
 #include "midicode.h"
@@ -36,7 +40,7 @@ extern seq_type sequence; /* this is a global to be accessed by
                * routines called from the sequence */
 /* clock state: */
 extern time_type clock_ticksize;  /* millisec per tick shifted 16 bits */
-extern boolean clock_running;     /* true if clock is running */
+extern boolean clock_running;     /* TRUE if clock is running */
 extern boolean use_midi_clock;
 
 private void smfw_bend();
@@ -173,8 +177,8 @@ private void smfw_dotrack(seq)
     set_virttime(seq->timebase, 0L);
     seq->current = seq_events(seq);
     seq->noteoff_count = 0L;
-    seq->runflag = true;
-    seq->paused = true;
+    seq->runflag = TRUE;
+    seq->paused = TRUE;
     last_clock_event = 0L;
     last_event = 0L;
     if(debug)   gprintf(TRANS, "dotrack (reset) %d %ld (%lu) \n", 
@@ -475,21 +479,25 @@ private void smfw_send_macro(ptr, voice, parameter, parm_num, value)
   int value;
 {
     register unsigned char code, *loc;
-    while (code = *ptr++) {
-    loc = ptr + *ptr;
-    ptr++;
-    if (code <= nmacroparms) {
-        code--;
-        *loc = (code == parm_num ? value : parameter[code]) & 0x7f;
-    } else if (code == nmacroparms + 1) {
-        *loc = ((voice - 1) & 0xF) | *loc;
-    } else {
-        code -= (nmacroparms + 2);
-        *loc = ((code == parm_num ? value : parameter[code]) >> 7) & 0x7F;
+    while ((code = *ptr++)) {
+        loc = ptr + *ptr;
+        ptr++;
+        if (code <= nmacroparms) {
+            code--;
+            *loc = (code == parm_num ? value : parameter[code]) & 0x7f;
+        }
+        else if (code == nmacroparms + 1) {
+            *loc = ((voice - 1) & 0xF) | *loc;
+        }
+        else {
+            code -= (nmacroparms + 2);
+            *loc = ((code == parm_num ? value : parameter[code]) >> 7) & 0x7F;
+        }
     }
-    }
-    if (ptr[1] == MIDI_SYSEX) smfw_exclusive(*ptr, ptr + 1);
-    else smfw_msg_write(*ptr, ptr[1], ptr[2], ptr[3]);
+    if (ptr[1] == MIDI_SYSEX)
+        smfw_exclusive(*ptr, ptr + 1);
+    else
+        smfw_msg_write(*ptr, ptr[1], ptr[2], ptr[3]);
 }
 
 

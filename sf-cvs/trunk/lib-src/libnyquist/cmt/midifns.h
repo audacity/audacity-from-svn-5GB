@@ -6,6 +6,7 @@
 *-----------+-----------------------------------------------------------------
 *  5-Mar-92 | GWL : insert definitions and logs from JMN's mpu.h
 *                   for LATTICE322, only variable type in prototypes
+* 28-Apr-03 |  DM : random() is now named cmtrand() to avoid conflicts
 *****************************************************************************/
 
 #ifndef _MIDIFNS_H_
@@ -77,7 +78,7 @@ void    midi_thru();/*boolean onflag*/
 void    midi_touch(short, short);
 void    midi_write();
 void    musicinit();
-short	cmtrand(short, short);
+short	  cmtrand(short, short);
 void    read_tuning();/*char *filename*/
 void    settime();
 void    synth_init();/*void*/
@@ -118,47 +119,11 @@ void midi_write(int n, int port, unsigned char c1, unsigned char c2, unsigned ch
 void midi_write_trace(int n, int port,
               unsigned char c1, unsigned char c2, unsigned char c3);
 void musicinit(void);
-/* Borland defines random - this might mess up someone's code, but
-   they'll figure it out fast when the parameters don't match */
-#ifdef random
-#undef random
-#endif
-/* But watch out for random()'s already declared ... */
-#define random cmt_random
-short random(short lo, short hi);
 void settime(time_type newtime);
 void timereset(void);
 void trace(boolean flag);
 void tracemidi(boolean flag);
 
-
-#ifdef DELETE_ME_PLEASE
-/* old code here, replaced by the defs above */
-/* this list is incomplete */
-
-#ifdef UNIX
-#ifndef UNIX_ITC /* was ITC */
-ulong   gettime();
-void l_restuntil();
-#define DID_UNIX_DEFS
-#endif
-#endif
-
-#ifndef DID_UNIX_DEFS
-void    exclusive(boolean onflag);
-unsigned char get_exclusive(void);
-boolean getbuf(boolean waitflag, byte *p);
-long	get_excl(byte *buffer, long len);
-short   getkey(boolean waitflag);
-ulong   gettime(void);
-void    l_rest(long time);
-void    l_restuntil(long time);
-void    metronome(boolean onflag);
-boolean midi_buffer(byte * buffer, ulong size);
-void    midi_cont(boolean onflag);
-void    midi_exclusive(unsigned char * msg);
-#endif
-#endif
 
 boolean check_midi(void);
 #endif  /* ifdef OLD_PROTOTYPES */
