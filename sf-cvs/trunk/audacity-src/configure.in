@@ -233,6 +233,8 @@ fi
 LIBS="$LIBS `$WX_CONFIG --libs`"
 CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cxxflags`"
 
+AC_CANONICAL_HOST
+
 if [[ "$host_os" = "darwin5.3" ]] ; then
 	dnl Mac OS X configuration
 
