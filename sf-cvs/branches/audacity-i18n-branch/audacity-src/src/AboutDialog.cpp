@@ -24,6 +24,7 @@
 #endif
 
 // MB: Figure out how to translate this
+// (problem is the VERSION_STRING macro in the middle)
 
 const char *creditText =
   "<html>"
