@@ -121,7 +121,7 @@ wxString GetID3FieldStr(struct id3_tag *tp, const char *name)
    frame = id3_tag_findframe(tp, name, 0);
    if (frame) {
       if (frame->nfields > 0) {
-         int i;
+         unsigned int i;
          for(i=0; i<frame->nfields; i++) {
             union id3_field *field = &frame->fields[i];
             if (field->type == ID3_FIELD_TYPE_STRINGLIST &&
@@ -176,17 +176,12 @@ void Tags::ImportID3(wxString fileName)
 {
 #ifdef USE_LIBID3TAG 
 
-   struct id3_file  *fp;
-   struct id3_tag   *tp;
-   const char       *str;
+   struct id3_file *fp = id3_file_open((const char *)fileName,
+                                       ID3_FILE_MODE_READONLY);
+   if (!fp) return;
 
-   fp = id3_file_open((const char *)fileName,
-                      ID3_FILE_MODE_READONLY);
-   if (!fp)
-      return;
-   tp = id3_file_tag(fp);
-   if (!tp)
-      return;
+   struct id3_tag *tp = id3_file_tag(fp);
+   if (!tp) return;
 
    mTitle = GetID3FieldStr(tp, ID3_FRAME_TITLE);
    mArtist = GetID3FieldStr(tp, ID3_FRAME_ARTIST);
@@ -237,10 +232,7 @@ struct id3_frame *MakeID3Frame(const char *name, const char *data)
 int Tags::ExportID3(char **buffer, bool *endOfFile)
 {
 #ifdef USE_LIBID3TAG 
-   struct id3_tag   *tp;
-   struct id3_frame *frame;
-
-   tp = id3_tag_new();
+   struct id3_tag *tp = id3_tag_new();
    
    if (mTitle != "")
       id3_tag_attachframe(tp, MakeID3Frame(ID3_FRAME_TITLE, mTitle));
