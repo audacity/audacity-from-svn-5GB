@@ -23,6 +23,7 @@
 #include <wx/filedlg.h>
 #include <wx/textfile.h>
 #include <wx/progdlg.h>
+#include <wx/scrolbar.h>
 
 #include "Project.h"
 
@@ -2029,6 +2030,7 @@ void AudacityProject::OnZoomFitV()
       t = iter2.Next();
    }
 
+   mVsbar->SetThumbPosition(0);
    FixScrollbars();
    Refresh(false);
    ModifyState();
