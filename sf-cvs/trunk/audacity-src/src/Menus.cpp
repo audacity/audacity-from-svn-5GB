@@ -68,33 +68,58 @@ void AudacityProject::CreateMenuBar()
    mFirstTimeUpdateMenus = true;
 
 #define AUDACITY_MENUS_COMMANDS_EVENT_TABLE
-#include "commands.h"           // BG: Generate an array of command names, and their corresponding functions
+// BG: Generate an array of command names, and their corresponding functions
+#include "commands.h"
 #undef AUDACITY_MENUS_COMMANDS_EVENT_TABLE
 
-   BuildMenuBar();
-}
-
-void AudacityProject::RebuildMenuBar()
-{
-#include "commandkeys.h"        // BG: Generate an array of keys combos that cannot be used
-
-   SetMenuBar(NULL);
-
-   delete mMenuBar;
-
-   BuildMenuBar();
-}
-
-void AudacityProject::BuildMenuBar()
-{
    mMenuBar = new wxMenuBar();
 
    mFileMenu = new wxMenu();
    mEditMenu = new wxMenu();
    mViewMenu = new wxMenu();
    mProjectMenu = new wxMenu();
+   mEffectMenu = new wxMenu();
+   mPluginMenu = new wxMenu();
    mHelpMenu = new wxMenu();
 
+   mMenuBar->Append(mFileMenu, _("&File"));
+   mMenuBar->Append(mEditMenu, _("&Edit"));
+   mMenuBar->Append(mViewMenu, _("&View"));
+   mMenuBar->Append(mProjectMenu, _("&Project"));
+   mMenuBar->Append(mEffectMenu, _("Effec&t"));
+   mMenuBar->Append(mPluginMenu, _("Plugin&s"));
+   mMenuBar->Append(mHelpMenu, _("&Help"));
+
+   BuildMenuBar();
+   SetMenuBar(mMenuBar);
+}
+
+void AudacityProject::RebuildMenuBar()
+{
+// BG: Generate an array of keys combos that cannot be used
+#include "commandkeys.h"
+
+   mFileMenu = new wxMenu();
+   mEditMenu = new wxMenu();
+   mViewMenu = new wxMenu();
+   mProjectMenu = new wxMenu();
+   mEffectMenu = new wxMenu();
+   mPluginMenu = new wxMenu();
+   mHelpMenu = new wxMenu();
+
+   delete mMenuBar->Replace(fileMenu, mFileMenu, _("&File"));
+   delete mMenuBar->Replace(editMenu, mEditMenu, _("&Edit"));
+   delete mMenuBar->Replace(viewMenu, mViewMenu, _("&View"));
+   delete mMenuBar->Replace(projectMenu, mProjectMenu, _("&Project"));
+   delete mMenuBar->Replace(effectMenu, mEffectMenu, _("Effec&t"));
+   delete mMenuBar->Replace(pluginMenu, mPluginMenu, _("Plugin&s"));
+   delete mMenuBar->Replace(helpMenu, mHelpMenu, _("&Help"));
+
+   BuildMenuBar();
+}
+
+void AudacityProject::BuildMenuBar()
+{
    unsigned int i;
    for (i = 0; i < mCommandMenuItem.Count(); i++) {
       wxMenu *menu = 0;
@@ -125,15 +150,11 @@ void AudacityProject::BuildMenuBar()
       menu->Append(i + MenuBaseID, mCommandMenuItem[i]->commandString);
    }
 
-   mEffectMenu = new wxMenu();
-
    int numEffects = Effect::GetNumEffects(false);
    int fi;
    for (fi = 0; fi < numEffects; fi++)
       mEffectMenu->Append(FirstEffectID + fi,
                           (Effect::GetEffect(fi, false))->GetEffectName());
-
-   mPluginMenu = new wxMenu();
 
    int numPlugins = Effect::GetNumEffects(true);
    for (fi = 0; fi < numPlugins; fi++)
@@ -143,16 +164,6 @@ void AudacityProject::BuildMenuBar()
 #ifdef __WXMAC__
    wxApp::s_macAboutMenuItemId = AboutID;
 #endif
-
-   mMenuBar->Append(mFileMenu, _("&File"));
-   mMenuBar->Append(mEditMenu, _("&Edit"));
-   mMenuBar->Append(mViewMenu, _("&View"));
-   mMenuBar->Append(mProjectMenu, _("&Project"));
-   mMenuBar->Append(mEffectMenu, _("Effec&t"));
-   mMenuBar->Append(mPluginMenu, _("Plugin&s"));
-   mMenuBar->Append(mHelpMenu, _("&Help"));
-
-   SetMenuBar(mMenuBar);
 
    mInsertSilenceAmount = 1.0;
 }
