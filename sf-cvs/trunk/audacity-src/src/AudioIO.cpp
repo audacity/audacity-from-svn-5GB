@@ -334,6 +334,10 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
    mNumInChannels = stereo? 2: 1;
    mNumInBuffers = mMaxBuffers;
 
+#ifdef __MACOSX__
+   mNumInChannels = 2; // DM: OS X is buggy, only does stereo
+#endif
+
    mNumOutChannels = duplex? 2: 0;
    mNumOutBuffers = duplex? mInitialNumOutBuffers: 0;
    

@@ -161,6 +161,12 @@ PrefsPanel(parent)
    mRecordStereo->SetValue(recordStereo);
    topSizer->Add(mRecordStereo, 0, wxGROW|wxALL, 2);
 
+#ifdef __MACOSX__
+   // DM: Mono is broken in PortAudio for OS X
+   mRecordStereo->SetValue(true);
+   mRecordStereo->Enable(false);
+#endif
+
    mDuplex = new wxCheckBox(this, -1,
                             _("Play other tracks while recording new one"));
    mDuplex->SetValue(duplex);
