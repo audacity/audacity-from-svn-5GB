@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity Website - 1.0\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2005-02-14 20:40+0100\n"
+"PO-Revision-Date: 2005-02-21 13:58+0100\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian <info@lugos.si>\n"
 "MIME-Version: 1.0\n"
@@ -47,6 +47,13 @@ msgstr ""
 "</ul>"
 
 #. i18n-hint: You may change the link addresses below, if there is a
+#. version of the page in your language at a different location.
+#.
+#. For official translations of the phrase "free software", please see:
+#. http://www.fsf.org/philosophy/fs-translations.html
+#.
+#. Also check the translations of this web page:
+#. http://www.fsf.org/philosophy/free-sw.html
 #: about/index.php:33
 msgid ""
 "<h3>About Free Software</h3>\n"
@@ -340,6 +347,13 @@ msgid "License"
 msgstr "Licenca"
 
 #. i18n-hint:  These gnu.org web pages are available in several languages.
+#. Please link to the version in your language, if possible.  For example:
+#.
+#. http://www.gnu.org/licenses/licenses.es.html#GPL
+#. http://www.gnu.org/licenses/gpl-faq.cs.html
+#.
+#. See the bottom of each page for versions in other languages.
+#.
 #: about/license.php:25
 msgid ""
 "<p>Audacity is free software; you can redistribute it and/or modify it under the terms of the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License</a> as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.</p>\n"
@@ -479,6 +493,7 @@ msgstr ""
 "<p>Če vam je všeč delo z Audacity, <a href=\"../contact/\">nam pišite</a> in nam povejte, da vam je všeč.  Veseli nas vedeti, da je ljudem všeč.  Prav tako nam pošljite pripombe in predloge.  Vedno izboljšujemo Audacity in cenimo vaše povratne informacije.</p>"
 
 #. i18n-hint:  Note that the wiki is in English.  If you want, you can create
+#. a page in your language on the wiki, and link to it instead.
 #: community/users.php:24
 msgid ""
 "<h3>Join the User Community</h3>\n"
@@ -560,6 +575,7 @@ msgid "wxWidgets i18n"
 msgstr "wxWidgets i18n"
 
 #. i18n-hint: These instructions are for translators only, so you may
+#. leave them untranslated if you like.
 #: community/translation.php:29
 #, php-format
 msgid ""
@@ -598,7 +614,7 @@ msgstr ""
 "  <li><a href=\"%s\">prevodi spletnih strani Audacity</a></li>\n"
 "</ul>\n"
 "\n"
-"<p>Ti programi lahko ustvarjajo in urejajo datoteke PO:</p>\n"
+"<p>Z naslednjimi programi lahko ustvarjate in urejate datoteke PO:</p>\n"
 "<ul>\n"
 "  <li><a href=\"http://poedit.sourceforge.net/\">poEdit</a> za Windows in Unix.</li>\n"
 "  <li><a href=\"http://i18n.kde.org/tools/kbabel/\">KBabel</a> za KDE.</li>\n"
@@ -642,7 +658,7 @@ msgid ""
 "  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity checkout audacity</kbd></p></li>\n"
 "</ul>\n"
 "<p>For more information, read the <a href=\"http://sourceforge.net/cvs/?group_id=6235\">SourceForge CVS instructions</a>.</p>\n"
-"<p>See the source code page for <a href=\"../download/source#instructions\">compilation instructions</a>.</a>"
+"<p>See the source code page for <a href=\"../download/source#instructions\">compilation instructions</a>.</p>"
 msgstr ""
 "<h3 id=\"cvs\">CVS</h3>\n"
 "<p>Zadnjo razvijalsko kodo lahko dobite iz našega odlagališča CVS.</p>\n"
@@ -656,7 +672,7 @@ msgstr ""
 "  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity checkout audacity</kbd></p></li>\n"
 "</ul>\n"
 "<p>Za več informacij preberite <a href=\"http://sourceforge.net/cvs/?group_id=6235\">navodila SourceForge CVS</a>.</p>\n"
-"<p>Poglejte si stran izvorne kode za <a href=\"../download/source#instructions\">navodila za prevajanje</a>.</a>"
+"<p>Poglejte si stran izvorne kode za <a href=\"../download/source#instructions\">navodila za prevajanje</a>.</p>"
 
 #: community/developers.php:32
 msgid ""
@@ -681,6 +697,8 @@ msgid "Privacy Policy"
 msgstr "Politika zasebnosti"
 
 #. i18n-hint:  Please add a note that we can answer questions to
+#. audacity-help in English only.  If there is an Audacity forum or mailing
+#. list in your language, you may add a link to it below.
 #: contact/index.php:19
 msgid ""
 "<p>If you have questions or comments for the Audacity developers, e-mail us at: <a href=\"mailto:audacity-help@lists.sourceforge.net\">audacity-help@lists.sourceforge.net</a>.\n"
@@ -748,6 +766,7 @@ msgid "%s archives and subscription information"
 msgstr "Arhivi %s in podatki o prijavi"
 
 #. i18n-hint: Please add a note that these lists are in English.  If there are
+#. Audacity mailing lists or forums in your language, please link to them here.
 #: contact/lists.php:20
 msgid ""
 "These mailing lists are for discussion of the Audacity audio editor.  </p>\n"
@@ -785,6 +804,10 @@ msgid "Web Site Copyright and Trademark"
 msgstr "Zaščitena znamka in pravice spletnih strani"
 
 #. i18n-hint: The Creative Commons web page below is available in several
+#. languages.  Please link to the version in your language if possible.
+#.
+#. You may add a sentence like "Czech translation copyright YOUR NAME HERE"
+#. if you wish.
 #: copyright.php:22
 #, php-format
 msgid "This web site is Copyright &copy; %s members of the Audacity development team.  Except where otherwise noted, all text and images on this site are licensed under the <a href=\"http://creativecommons.org/licenses/by/2.0/\">Creative Commons Attribution License, version 2.0</a>.  You may modify, copy, distribute, and display this material, but you must give credit to the original authors.  Please see the license for details."
@@ -850,6 +873,10 @@ msgid "Optional Downloads"
 msgstr "Dodatni prenosi"
 
 #. i18n-hint:  If this string is translated, it will appear above the list of
+#. optional downloads on the "downloads/windows" page.  If there are extra
+#. files available in your language, add them here.  Otherwise, do not
+#. translate this string.  (Or make the translation identical to the
+#. original string.)
 #: download/windows.php:28
 #: download/windows.php:29
 msgid "localized_downloads_windows"
@@ -1115,6 +1142,8 @@ msgid "Documentation and Support"
 msgstr "Dokumentacija in podpora"
 
 #. i18n-hint: If there are any special resources for Audacity users in your
+#. language (forums, documentation, mailing lists...), you can add links to
+#. them here.
 #: help/index.php:17
 msgid ""
 "<p>If you have a question, check the list of <a href=\"faq\">Frequently Asked Questions</a>.</p>\n"
@@ -1154,6 +1183,7 @@ msgid "Documentation"
 msgstr "Dokumentacija"
 
 #. i18n-hint:  Please add a note that the manuals below are in English.  If
+#. there is documentation available in your language, link to it here.
 #: help/documentation.php:16
 msgid "This page contains manuals and user’s guides for the free Audacity sound editor.  For additional help, see the <a href=\"faq\">Frequently Asked Questions</a> and <a href=\"tutorials\">Tutorials</a>."
 msgstr "Ta stran vsebuje priročnike in uporabniške vodnike za brezplačni urejevalnik zvoka Audacity. Za dodatno pomoč si oglejte še <a href=\"faq\">pogosto zastavljena vprašanja</a> in <a href=\"tutorials\">razložene primere</a>."
@@ -1200,6 +1230,9 @@ msgid ""
 "<p>The authors of Audacity decided to release it under the GPL for many reasons. Some of us do it out of generosity. Some of us do it for moral reasons, because we feel that all software should be free; others believe that there is a place for both free and proprietary software.</p>\n"
 "<p>One reason Audacity is free is so that it will be more popular and useful.  Yet another reason is to encourage collaboration. Because of Audacity's free license, dozens of people around the world have contributed code, bug fixes, documentation, and graphics.</p>"
 msgstr ""
+"<p>Da, Audacity je <a href=\"../about/\">popolnoma brezplačna, odprtokodna programska oprema</a>.  Ta program lahko brezplačno uporabljate za osebne ali poslovne namene.  Prav tako ga lahko brezplačno podarite, prodajate ali spreminjate za lastno uporabo pod pogoji <a href=\"../about/license\">splošne javne licence GNU</a>.</p>\n"
+"<p>Avtorji Audacity so se odločili aplikacijo objaviti pod GPL iz več razlogov. Nekateri to počnemo iz radodarnosti. Nekateri to počnemo iz moralnih razlogov, ker čutimo, da bi morala biti vsa programska oprema zastonj; drugi verjamejo, da je prostor za tako brezplačno kot lastniško programsko opremo.</p>\n"
+"<p>Eden od razlogov, zakaj je Audacity brezplačen, je tudi, da bi bil bolj priljubljen in uporaben.  Še en razlog je vzpodbuditi sodelovanje. Zaradi brezplačne licence Audacity so ducati ljudi po svetu prispevali kodo, popravke hroščev, dokumentacijo in grafiko.</p>"
 
 #: help/faq.php:32
 msgid "Does Audacity contain any spyware or adware?"
@@ -1227,6 +1260,9 @@ msgid ""
 "<p>Some vendors try to trick customers by selling the software under a different name.  If you bought a product and later found out it was Audacity, we encourage you to <b>ask for a refund or file a complaint</b> if you feel you did not get a fair deal.  We ask vendors to give proper credit to the Audacity project, and allow users to make an informed choice.</p>\n"
 "<p><b>If you want to buy Audacity on CD</b>, please check out the vendors listed on our <a href=\"../download/buy\">purchase page</a>.</p>"
 msgstr ""
+"<p>Prodajati Audacity je zakonito, dokler prodajalec ponuja program in izvorno kodo pod <a href=\"../about/license\">splošno javno licenco GNU</a>.</p>\n"
+"<p>Nekateri prodajalci poskušajo prelisičiti potrošnike s prodajo programske opreme pod drugim imenom.  Če ste kupili izdelek in kasneje ugotovili, da gre za Audacity, vas spodbujamo, da <b>zahtevate povračilo ali vložite pritožbo</b>, če menite, da niste bili pošteno obravnavani.  Prodajalce prosimo, da projektu Audacity priznajo ustrezne zasluge in uporabnikom dovolijo opraviti izbiro na osnovi vseh informacij.</p>\n"
+"<p><b>Če želite kupiti Audacity na zgoščenki</b>, si prosim poglejte prodajalce, navedene na naši <a href=\"../download/buy\">prodajni strani</a>.</p>"
 
 #: help/faq.php:46
 msgid "Does Audacity work with screen-reader programs for blind users?"
@@ -1235,7 +1271,7 @@ msgstr "Deluje Audacity z zaslonskimi bralnimi programi za slepe in slabovidne u
 #. i18n-hint: The link below is in English.
 #: help/faq.php:48
 msgid "<p>Audacity works with most screen-reader programs, but some of Audacity’s features are difficult or impossible to use without a mouse.  We are working on improving the program’s accessibility and keyboard shortcuts.  For more information, see <a href=\"http://audacityteam.org/wiki/index.pl?AudacityForBlindUsers\">Audacity for Blind Users</a>.</p>"
-msgstr ""
+msgstr "<p>Audacity deluje z večino programov za screen-reader, vendar je nekatere zmožnosti Audacity težko ali nemogoče uporabljati brez miške.  Delamo na tem, da bi izboljšali dostopnost programa in bližnjice za tipkovnico.  Za več informacij si oglejte <a href=\"http://audacityteam.org/wiki/index.pl?AudacityForBlindUsers\">Audacity za slepe in slabovidne uporabnike</a>.</p>"
 
 #: help/faq.php:51
 msgid "What does “time remaining” mean?  Does Audacity expire?"
@@ -1273,6 +1309,22 @@ msgid ""
 "  <li>The first time you use the \"Export as MP3\" command, Audacity will ask you where LameLib is saved.</li>\n"
 "</ol>"
 msgstr ""
+"<p>Zaradi patentov programske opreme sami ne moremo razpečevati programske opreme za kodiranje MP3.  Za uporabo prostega kodirnika LAME za izvoz datotek MP3 z Audacity sledite tem navodilom.\n"
+"<h3>Windows</h3>\n"
+"<ol>\n"
+"  <li>Pojdite na <a href=\"%s\">stran za prenos LAME</a>.</li>\n"
+"  <li>Kliknite na katero koli povezavo s seznama identičnih \"%s\" povezav.</li>\n"
+"  <li>Ko ste končali s prenosom LAME, ga razširite in shranite datoteko <b>lame_enc.dll</b> kamor koli na svoj računalnik.</li>\n"
+"  <li>Prvič ko uporabite ukaz \"Izvozi kot MP3\", vas Audacity povpraša, kje je shranjen lame_enc.dll.</li>\n"
+"</ol>\n"
+"<h3>Mac OS 9 ali X</h3>\n"
+"<ol>\n"
+"  <li>Pojdite na <a href=\"%s\">stran za prenos LAME</a>.</li>\n"
+"  <li>Prenesite različico LameLib za svoj operacijski sistem.</li>\n"
+"  <li>Ko prenehate s prenosom, uporabite Stuffit Expander za razširjanje datotek.  (To se lahko opravi samodejno.)</li>\n"
+"  <li>Shranite datoteko \"LameLib\" kamor koli na svojem računalniku.</li>\n"
+"  <li>Prvič ko uporabite ukaz \"Izvozi kot MP3\", vas Audacity povpraša, kje je shranjen LameLib.</li>\n"
+"</ol>"
 
 #: help/faq.php:80
 msgid "How do I install VST plug-ins?"
@@ -1288,6 +1340,12 @@ msgid ""
 "</ol>\n"
 "<p>See also: <a href=\"faq?s=install&amp;i=vst-bugs\">Why do some VST plug-ins look wrong, or not work?</a></p>"
 msgstr ""
+"<ol>\n"
+"<li><p>Najprej prenesite in razširite <a href=\"%s\">Omogočevalnik VST</a>.</li>\n"
+"<li><p>Postavite razširjeni Omogočevalnik VST skupaj s svojimi vtičniki VST v imenik “Plug-ins” v namestitvenem imeniku Audacity.  (Na Mac OS X je to ponavadi imenik Applications.  V okolju Windows je to ponavadi pod imenikom Program Files.)</li>\n"
+"<li><p>Naslednjič ko zaženete Audacity, se vaši učinki VST pojavijo na dnu menija “Učinek”.</li>\n"
+"</ol>\n"
+"<p>Poglejte tudi: <a href=\"faq?s=install&amp;i=vst-bugs\">Zakaj nekateri vtičniki VST izgledajo čudni ali ne delajo?</a></p>"
 
 #: help/faq.php:89
 msgid "Why do some VST plug-ins look wrong, or not work?"
@@ -1339,6 +1397,15 @@ msgid ""
 "</ul>\n"
 "<p>See also: <a href=\"faq?s=files&amp;i=split\">How to split a long recording into multiple files</a>.</p>"
 msgstr ""
+"<p>Najprej nastavite Audacity na <a href=\"faq?s=recording&amp;i=stereo\">stereo snemanje</a>.</p>\n"
+"<p>Nato vtaknite konec stereo kabla v vhod “Line Out” ali “Headphone” na svojem kasetniku, predvajalniku minidiskov ali stereo sistemu.  Drugi konec vtaknite v vtičnik “Line In” na svojem računalniku.  Če nimate kabla, ki ustreza obema priključkoma, ga lahko kupite v trgovini z elektrotehničnim blagom.</p>\n"
+"<p>Izberite “Linijski vhod” kot vhodni vir na orodni vrstici Audacity in pritisnite gumb Snemaj.  Medtem ko Audacity snema, začnite predvajati svoj trak ali disk.  Ko ste zajeli celoten posnetek, pritisnite gumb Ustavi.</p>\n"
+"<p>Opombe:</p>\n"
+"<ul>\n"
+"\t<li><p>Ne vtikajte stereo opreme v vhod “Microphone” vašega računalnika, ki je oblikovan le za nizko-napajane signale (“mic-level”).   Namesto tega uporabite priključek “Line In”.</p></li>\n"
+"\t<li><p>Ne povezujte gramofona neposredno na računalnik.  Signal z gramofona je moten; popravljen mora biti s prehajanjem skoti predojačevalnik ali sprejemnik z vhodom “phono”.</p></li>\n"
+"</ul>\n"
+"<p>Poglejte še: <a href=\"faq?s=files&amp;i=split\">Kako razbiti dolg posnetek na več datotek</a>.</p>"
 
 #: help/faq.php:118
 #: help/faq.php:177
@@ -1364,6 +1431,11 @@ msgid ""
 "<h3>Mac OS X</h3>\n"
 "<p>Open the Audacity preferences.  In the “Audio I/O” section, turn on the “playthrough” option.  “Hardware Playthrough” is best if it is available.  If it does not work, you can choose “Software Playthrough” instead.</p>\n"
 msgstr ""
+"<h3>Windows in Linux</h3>\n"
+"<p>Za nadzor jakosti snemanega zvoka odprite računalnikovo nadzorno ploščo jakosti.  Ojačajte glasnost predvajanja in izklopite polje “nemo” za snemalni vir (ponavadi “mikrofon” ali “linijski vhod”).</p>\n"
+"<p>Če to ne deluje, odprite možnosti Audacity.  V razdelku “Zvočni V/I” vklopite možnost “Programsko predvajanje skozi”.</p>\n"
+"<h3>Mac OS X</h3>\n"
+"<p>Odprite možnosti Audacity.  V razdelku “Zvočni V/I” vključite možnost “predvajanje skozi”.  “Strojno predvajanje skozi” je najboljše, če je na voljo.  Če ne deluje, lahko izberete namesto njega “Programsko predvajanje skozi”.</p>\n"
 
 #: help/faq.php:130
 msgid "Can I play a track while recording a new one on top of it?"
@@ -1379,6 +1451,13 @@ msgid ""
 "</ol>\n"
 "<p>See also: <a href=\"faq?s=recording&amp;i=sync\">Why isn't my new track in sync with the previous ones?</a></p>"
 msgstr ""
+"<p>To se imenuje več-sledno snemanje.  Z njim je možno snemati harmonije samega seboj ali dodati nove instrumente ali vokale k obstoječemu posnetku.  V Audacity sledite tem napotkom:</p>\n"
+"<ol>\n"
+"  <li>Uvozite ali posnamite prvo sled.</li>\n"
+"  <li>Odprite razdelek “Zvočni V/I” v nastavitvah Audacity in označite polje <b>Predvajaj druge sledi med snemanjem nove.</b></li>\n"
+"  <li>Zaprite nastavitve in pritisnite gumb <b>Snemaj</b>.</li>\n"
+"</ol>\n"
+"<p>Poglejte tudi: <a href=\"faq?s=recording&amp;i=sync\">Zakaj ni moja nova sled sinhrona s predhodnimi?</a></p>"
 
 #: help/faq.php:140
 msgid "Why isn’t my new track in sync with the previous ones?"
@@ -1405,6 +1484,12 @@ msgid ""
 "<h3>Mac OS X</h3>\n"
 "<p>Mac OS X users can capture streaming audio using a program like <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> or <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>\n"
 msgstr ""
+"<h3>Windows in Linux</h3>\n"
+"<p>Z večino zvočnih naprav Windows in Linux je možno snemati kateri koli zvok, ki ga računalnik trenutno predvaja, vključno s spletnimi radijskimi pretoki.</p>\n"
+"<p>V meniju drop-down na orodni vrstici za mešanja Audacity kot vhodni vir izberite “Wave Out” ali “Stereo Mix”.  (Natančno ime se lahko razlikuje glede na zvočne gonilnike računalnika.)  Ko pritisnete gumb Snemaj, bo Audacity zajel kateri koli zvok, ki se predvaja na zvočnikih računalnika.</p>\n"
+"<p>Če to na vašem računalniku ne deluje, lahko namesto tega uporabite kabel in povežete vrata “Line Out” (zvočniki) vašega računalnika na njegova vrata “Line In” in z Audacity snemate iz linijskega vhoda.</p>\n"
+"<h3>Mac OS X</h3>\n"
+"<p>Uporabniki Mac OS X lahko zajemajo pretočni zvok z uporabo programa, kot sta <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> in <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>\n"
 
 #: help/faq.php:155
 msgid "Can I set Audacity to record at a certain time?"
@@ -1421,6 +1506,14 @@ msgid ""
 "  <li>Start recording.  Audacity will stop recording automatically when it reaches the end of the selected area.</li>\n"
 "</ol>"
 msgstr ""
+"<p>Oprostite, Audacity še ne podpira scheduled snemanja.  To sposobnost bomo morda dodali v bodočih različicah programa.</p>\n"
+"<p>Audacity lahko nastavite, da <b>prekine</b> snemanje po določenem času, če sledite tem korakom:</p>\n"
+"<ol>\n"
+"  <li>Vklopite možnost “Predvajaj obstoječe sledi med snemanjem” v razdelku “Zvočni V/I” nastavitev.</li>\n"
+"  <li>Izberite “Nova zvočna sled” iz projektnega menija.</li>\n"
+"  <li>Pomanjšajte pogled, če je potrebno, nato kliknite in povlecite za izbor dolžine časa, kolikor želite snemati.</li>\n"
+"  <li>Začnite snemati.  Audacity bo samodejno prenehal s snemanjem, ko doseže konec izbranega področja.</li>\n"
+"</ol>"
 
 #: help/faq.php:168
 msgid "Opening and Saving Files"
@@ -1448,6 +1541,8 @@ msgid "Audacity crashed!  Can I recover any unsaved data?"
 msgstr "Aplikacija Audacity se je sesula! Lahko rešim neshranjene podatke?"
 
 #. i18n-hint: Sorry, these links are in English only.  If you would
+#. like to make more information available, please create a page on
+#. the wiki for now.
 #: help/faq.php:184
 msgid "<p>You may be able to recover your project automatically with the <a href=\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>.  Please see the <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Crash Recovery</a> page for more information.</p>"
 msgstr "<p>Svoj projekt lahko obnovite samodejno z <a href=\"http://www.mesw.de/audacity/recovery/\">Orodje za reševanje Audacity</a>.  Prosimo oglejte si stran <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Reševanje zrušenega</a>za več informacij.</p>"
@@ -1463,6 +1558,10 @@ msgid ""
 "<p>For a list of supported formats, see the <a href=\"../about/features\">feature list</a>.</p>\n"
 "<p>See also: <a href=\"faq?s=files&amp;i=midi\">Why can't I play MIDI files?</a></p>"
 msgstr ""
+"<p>Audacity <b>ne more</b> uvažati ali izvažati datotek v zapisih <b>WMA, AAC, RealAudio, Shorten (SHN)</b> ali večini drugih lastninskih zapisov.  Zaradi licenciranja in patentnih omejitev ne smemo teh formatov dodajati Audacity.  Bodoče razlilčice Audacity bodo morda podpirale te zapise z uporabo kodekov, nameščenih v vašem operacijskem sistemu.</p>\n"
+"<p>Nekateri odprti zapisi še niso podprti v Audacity, vključno z zapisoma <b>Ogg Speex</b> in <b>FLAC</b>.  Upamo, da bomo te zapise podprli v bodočih različicah Audacity.</p>\n"
+"<p>Za seznam podprtih zapisov si oglejte <a href=\"../about/features\">seznam zmožnosti</a>.</p>\n"
+"<p>Poglejte tudi: <a href=\"faq?s=files&amp;i=midi\">Zakaj ne morem predvajati datotek MIDI?</a></p>"
 
 #: help/faq.php:194
 msgid "Why can’t I play MIDI files?"
@@ -1499,6 +1598,18 @@ msgid ""
 "</ol>\n"
 "<p>See also: <a href=\"faq?s=files&amp;i=split\">How can I split a long recording into multiple tracks?</a></p>"
 msgstr ""
+"<ol>\n"
+"  <li>Za shranjevanje posnetka Audacity v zvočno datoteko uporabite ukaz “Izvozi kot WAV” ali “Izvozi kot AIFF”.</li>\n"
+"  <li>Za peko te datoteke na zgoščenko uporabite kateri koli program za snemanje zgoščenk (na primer iTunes ali Nero) .</li>\n"
+"</ol>\n"
+"<p>Za izdelo glasbene zgoščenke, ki jo predvaja vsak predvajalnik, zagotovite, da ustvarjate “glasbeno” ali “zvočno” zgoščenko (ne “podatkovni” CD).  Uporabite diske CD-R, saj nekateri predvajalniki ne zmorejo brati CD-RW.</p>\n"
+"<p>Nekatera programska oprema lahko peče le 16-bitne, 44.1KHz stereo zvočne datoteke.  Če vaša programska oprema za snemanje zgoščenk ne odpre zvočnih datotek, ponovno izvozite datoteko po izbiranju naslednjih nastavitev v Audacity:</p>\n"
+"<ol>\n"
+"  <li>Na dnu okna Audacity nastavite frekvenco projekta na 44100 Hz.</li>\n"
+"  <li>V nastavitvah oblik datotečnih zapisov izberite WAV (16-bitno...) ali AIFF (16-bitno...).</li>\n"
+"  <li>Če vaš projekt še ne vsebuje stereo sledi, izberite “Nova stereo sled” iz projektnega menija.  (To bo povzročilo v Audacity izvoz posnetka kot stereo datoteke.)</li>\n"
+"</ol>\n"
+"<p>Poglejte tudi: <a href=\"faq?s=files&amp;i=split\">Kako lahko razdelim dolg posnetek na več sledi?</a></p>"
 
 #: help/faq.php:218
 msgid "How can I split a long recording into multiple files or CD tracks?"
@@ -1514,6 +1625,13 @@ msgid ""
 "  <li>When you are finished, choose “Export Multiple” from the File menu.  When you click the “Export” button, Audacity will save each song as a separate file, using the format and location you choose.</li>\n"
 "</ol>"
 msgstr ""
+"<p>Sledite tem korakom za ustvarjanje ločene datoteke za vsako pesem ali segment daljšega posnetka.  To je še posebej uporabno, če ustvarjate glasbeno zgoščenko, saj bo vsaka datoteka posamezna pesem na zgoščenki.</p>\n"
+"<ol>\n"
+"  <li>S klikom postavite kazalko na začetek prve pesmi.</li>\n"
+"  <li>Izberite “Dodaj naslov izbiri” iz menija Projekt.  Če želite lahko vtipkate ime pesmi.</li>\n"
+"  <li>Ponovite koraka 1 in 2 za vsako pesem.</li>\n"
+"  <li>Ko končate, izberite “Izvozi posamično” iz menija Datoteka.  Ko kliknete gumb “Izvozi”, bo Audacity vsako pesem posnel kot ločeno datoteko, pri čemer bo uporabljen zapis in mesto, ki ste ga izbrali.</li>\n"
+"</ol>"
 
 #: help/faq.php:231
 msgid "Editing"
@@ -1543,6 +1661,15 @@ msgid ""
 "</ol>\n"
 "<p>You can press the Play button to hear the result, and use the Export commands (in the File menu) to save it as a sound file.</p>"
 msgstr ""
+"<p>Sledite tem korakom za stikanje dveh datotek skupaj:</p>\n"
+"<ol>\n"
+"  <li>Uvozite obe datoteki v Audacity.</li>\n"
+"  <li>Izberite drugo tako, da kliknete na njen naslov (področje okoli gumbov nemo/solo).</li>\n"
+"  <li>Izberite “Izreži” v meniju Uredi.</li>\n"
+"  <li>Postavite kazalko s klikom na prvo sled, na konec prve zvočne datoteke.</li>\n"
+"  <li>Izberite “Prilepi” v meniju Uredi.</li>\n"
+"</ol>\n"
+"<p>Pritisnete lahko gumb Predvajaj in si poslušate rezultat, ali pa uporabite ukaze za izvoz (v meniju Datoteka), da ga shranite kot zvočno datoteko.</p>"
 
 #: help/faq.php:250
 msgid "How do I mix two tracks together?"
@@ -1569,6 +1696,16 @@ msgid ""
 "</ol>\n"
 "<p>Press the Play button to hear the results.  If you are lucky, the voice will be gone but most of the other instruments will be unaffected, just like a karaoke track.  You can use the Export commands in the File menu to save the results.</p>\n"
 msgstr ""
+"<p>To je možno <b>le za nekatere stereo sledi</b>.  Ko so vokali natanko enaki na obeh stereo kanalih, jih lahko odstranite z “odštevanjem” enega kanala od drugega.  To deluje za številne studijske posnetke, kjer je vokalna sled vmešana natanko v sredini.</p>\n"
+"<p>Da bi to naredili v Audacity:</p>\n"
+"<ol>\n"
+"  <li>Uvozite stereo datoteko v Audacity.</li>\n"
+"  <li>Odprite meni sledi (kliknite puščico poleg naslova sledi) in izberite “Razdeli stereo sled.”</li>\n"
+"  <li>Izberite spodnjo sled (desni kanal) s klikom na področje okoli gumbov nemo/solo.</li>\n"
+"  <li>Iz menija Učinki izberite “Invert”.</li>\n"
+"  <li>Z uporabo menijev sledi spremenite vse sledi v “Mono.”</li>\n"
+"</ol>\n"
+"<p>Pritisnite gumb Predvajaj, da bi slišali rezultate.  Če ste imeli srečo, bo glas izginil, večina instrumentov pa bo neprizadetih, kot pri posnetku za karaoke.  Za shranjevanje rezultata lahko uporabite ukaze Izvozi v meniju Datoteka.</p>\n"
 
 #: help/faq.php:284
 msgid "Other frequently asked questions..."
@@ -1588,11 +1725,15 @@ msgid "Tutorials"
 msgstr "Primeri z razlago"
 
 #. i18n-hint:  Please add a note that the links on this page are in English.
+#. If there are tutorials in your language, link to them here.
 #: help/tutorials.php:16
 msgid "These articles give step-by-step instructions for common tasks using the free Audacity sound editor."
 msgstr "Ti članki vsebujejo navodila po korakih za običajna opravila z uporabo brezplačnega urejevalnika zvoka Audacity."
 
 #. i18n-hint:  If this string is translated, it will appear above the list of
+#. tutorials on the "help/tutorials" page.  If there are extra tutorials
+#. available in your language, add them here.  Otherwise, do not translate
+#. this string.  (Or make the translation identical to the original string.)
 #: help/tutorials.php:22
 #: help/tutorials.php:23
 msgid "localized_tutorials"
@@ -2072,8 +2213,9 @@ msgid "Site Map"
 msgstr "Zemljevid strani"
 
 #: include/footer.inc.php:17
+#, fuzzy
 msgid "Creative Commons Attribution license"
-msgstr ""
+msgstr "Licenca “Creative Commons Attribution“"
 
 #: include/footer.inc.php:17
 msgid "Creative Commons: Some rights reserved."
@@ -2088,6 +2230,7 @@ msgid "View this page in a different language"
 msgstr "Oglejte si to stran v drugem jeziku"
 
 #. i18n-hint: Controls how dates are formatted.
+#. See http://www.php.net/manual/function.strftime.php for details.
 #: include/news.inc.php:24
 msgid "%B %d, %Y"
 msgstr "%d.%m.%Y"
