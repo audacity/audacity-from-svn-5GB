@@ -188,8 +188,8 @@ libaudacity.a: $(DIRS) $(LIBAUDACITY_OBJS)
 	test -f "../Audacity.app/Contents/PkgInfo" || \
 	     echo "APPLauDy" > ../Audacity.app/Contents/PkgInfo
 	cp -f ../mac/Resources/*.icns ../Audacity.app/Contents/Resources
-	cp -f ../mac/Resources/audacity.Rsrc \
-		../Audacity.app/Contents/Resources/Audacity.rsrc	
+	cp -f ../mac/Resources2/Audacity.rsrc \
+		../Audacity.app/Contents/Resources/Audacity.rsrc
 
 #
 # You can optionally "make dep" to make dependencies.
