@@ -36,9 +36,7 @@ Envelope::Envelope()
 
 Envelope::~Envelope()
 {
-   int len = mEnv.Count();
-   for (int i = 0; i < len; i++)
-      delete mEnv[i];
+   WX_CLEAR_ARRAY(mEnv)
 }
 
 void Envelope::Mirror(bool mirror)
@@ -58,12 +56,11 @@ void Envelope::CopyFrom(Envelope * e)
    mOffset = e->mOffset;
    int len = e->mEnv.Count();
    mTrackLen = e->mEnv[len - 1]->t;
-   int i;
-   for (i = 0; i < mEnv.Count(); i++)
-      delete mEnv[i];
-   mEnv.Clear();
+
+   WX_CLEAR_ARRAY(mEnv)
    mEnv.Alloc(len);
-   for (i = 0; i < len; i++) {
+
+   for (int i = 0; i < len; i++) {
       EnvPoint *pt = new EnvPoint();
       pt->t = e->mEnv[i]->t;
       pt->val = e->mEnv[i]->val;
@@ -157,13 +154,10 @@ bool Envelope::Load(wxTextFile * in, DirManager * dirManager)
    if (!(in->GetNextLine().ToLong(&len)))
       return false;
 
-   int i;
-   for (i = 0; i < mEnv.Count(); i++)
-      delete mEnv[i];
-   mEnv.Clear();
+   WX_CLEAR_ARRAY(mEnv)
    mEnv.Alloc(len);
 
-   for (i = 0; i < len; i++) {
+   for (int i = 0; i < len; i++) {
       EnvPoint *e = new EnvPoint();
       if (!(in->GetNextLine().ToDouble(&e->t)))
          return false;
@@ -457,6 +451,7 @@ void Envelope::SetTrackLen(double trackLen)
          delete mEnv[i];
          mEnv.RemoveAt(i);
          len--;
+         i--;
       }
    mEnv[len - 1]->t = mTrackLen;
 }
