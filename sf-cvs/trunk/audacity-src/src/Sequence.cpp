@@ -630,8 +630,10 @@ XMLTagHandler *Sequence::HandleXMLChild(const char *tag)
 {
    if (!strcmp(tag, "waveblock"))
       return this;
-   else
+   else {
+      mDirManager->SetLoadingFormat(mSampleFormat);
       return mDirManager;
+   }
 }
 
 void Sequence::WriteXML(int depth, FILE *fp)

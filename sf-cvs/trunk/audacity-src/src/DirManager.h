@@ -86,6 +86,7 @@ class DirManager: public XMLTagHandler {
    int GetRefCount(BlockFile * f);
 
    void SetLoadingTarget(BlockFile **target) { mLoadingTarget = target; }
+   void SetLoadingFormat(sampleFormat format) { mLoadingFormat = format; }
    bool HandleXMLTag(const char *tag, const char **attrs);
    XMLTagHandler *HandleXMLChild(const char *tag) { return NULL; }
    void WriteXML(int depth, FILE *fp) { }
@@ -119,6 +120,7 @@ class DirManager: public XMLTagHandler {
    wxStringList aliasList;
 
    BlockFile **mLoadingTarget;
+   sampleFormat mLoadingFormat;
 
    static wxString temp;
 

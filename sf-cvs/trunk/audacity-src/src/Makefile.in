@@ -41,6 +41,7 @@ OBJS = \
 	$(OBJDIR)/Benchmark.o \
 	$(OBJDIR)/ControlToolBar.o \
 	$(OBJDIR)/DirManager.o \
+	$(OBJDIR)/Dither.o \
 	$(OBJDIR)/Envelope.o \
 	$(OBJDIR)/EditToolBar.o \
 	$(OBJDIR)/FFT.o \
@@ -130,6 +131,7 @@ LIBAUDACITY_OBJS = \
 	$(OBJDIR)/BlockFile.o \
 	$(OBJDIR)/FileFormats.o \
 	$(OBJDIR)/SampleFormat.o \
+	$(OBJDIR)/blockfile/LegacyBlockFile.o \
 	$(OBJDIR)/blockfile/SimpleBlockFile.o \
 	$(OBJDIR)/blockfile/PCMAliasBlockFile.o \
 
