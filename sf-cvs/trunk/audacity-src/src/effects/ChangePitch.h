@@ -22,12 +22,6 @@
 #include <wx/intl.h>
 #include <wx/slider.h>
 
-class wxString;
-class wxChoice;
-class wxRadioBox;
-class wxTextCtrl;
-class wxChoice;
-
 class EffectChangePitch:public EffectSoundTouch {
 
  public:
@@ -72,6 +66,11 @@ friend class ChangePitchDialog;
 //----------------------------------------------------------------------------
 // ChangePitchDialog
 //----------------------------------------------------------------------------
+
+class wxChoice;
+class wxRadioBox;
+class wxString;
+class wxTextCtrl;
 
 class ChangePitchDialog:public wxDialog {
  public:
