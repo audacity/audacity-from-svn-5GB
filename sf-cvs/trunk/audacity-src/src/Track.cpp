@@ -275,8 +275,10 @@ TrackList::~TrackList()
 
 double TrackList::GetMaxLen() const
 {
-   double len = DBL_MIN;
+   if (IsEmpty())
+      return 0.0;
 
+   double len = head->t->GetMaxLen();
    ConstTrackListIterator iter(this);
 
    for (VTrack *t = iter.First(); t; t = iter.Next()) {
@@ -290,8 +292,10 @@ double TrackList::GetMaxLen() const
 
 double TrackList::GetMinOffset() const
 {
-   double len = DBL_MAX;
+   if (IsEmpty())
+      return 0.0;
 
+   double len = head->t->GetOffset();
    ConstTrackListIterator iter(this);
 
    for (VTrack *t = iter.First(); t; t = iter.Next()) {
