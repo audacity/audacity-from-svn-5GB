@@ -890,7 +890,8 @@ static PaError Pa_SetupDeviceFormat( int devHandle, int numChannels, int sampleR
         ERR_RPT(("Pa_SetupDeviceFormat: could not SNDCTL_DSP_SPEED\n" ));
         return paHostError;
     }
-    if( tmp != sampleRate)
+
+    if( abs(tmp - sampleRate) > 10)
     {
         ERR_RPT(("Pa_SetupDeviceFormat: HW does not support %d Hz sample rate\n",sampleRate ));
         return paHostError;
