@@ -118,11 +118,16 @@ wxString DirectoriesPrefs::FormatSize(wxLongLong size)
 void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent &event)
 {
    static wxLongLong space;
-   mTempDir.sprintf("%s", event.GetString().c_str());
-   if(!wxDirExists(mTempDir))
-      mTempDir = mTempDir.BeforeLast(wxFILE_SEP_PATH);
+   static wxString tempDir;
+   tempDir = event.GetString();
+
+   /* Try to be smart: if the directory doesn't exist, go up the
+    * directory path until one is, because that's the volume that
+    * the new directory would be created on */
+   while(!wxDirExists(tempDir) && tempDir.Find(wxFILE_SEP_PATH) != -1)
+      tempDir = tempDir.BeforeLast(wxFILE_SEP_PATH) + wxFILE_SEP_PATH;
       
-   space = GetFreeDiskSpace(mTempDir.c_str());
+   space = GetFreeDiskSpace(tempDir.c_str());
    
    mFreeSpace->SetLabel(FormatSize(space));
 }
