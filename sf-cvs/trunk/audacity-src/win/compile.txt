@@ -1,10 +1,14 @@
 Compiling Audacity under Microsoft Windows (TM) using Microsoft Visual C++ 6.0
 
+(For instructions on compiling Audacity under the Cygwin UNIX Emulation Layer,
+scroll down to the bottom)
+
 Authors:
   Vince Busam
   Steve Jolly
   Shane Mueller
   Vaughan Johnson
+  Dave Fancella
 
 ================================================================
 This version is currently accurate for Audacity version 1.2.0.
@@ -191,3 +195,285 @@ here is how to enable it.
 8. Run Audacity and the plug-ins should appear in the 
 	Generate, Effect, &/or Analyze menus.
 
+-------------------------------
+Compiling Audacity under Cygwin
+-------------------------------
+
+Compiling Audacity under Cygwin is considered "experimental" at this time, and you
+may notice a few problems when you do so.  Please be patient, and make sure to submit
+bug reports to the development team.  If you follow these instructions closely, you
+*should* be able to build Audacity.
+
+These instructions will attempt to help you to compile using the
+experimental additions that appeared sometime around the 1.2 release.  They will also
+attempt to help you to compile Audacity yourself without the aforementioned support.
+Make sure to read the instructions in their entirety before beginning, because no matter
+which source tree you wind up using, all of these instructions are likely to assist you.
+
+--------------------------
+STEP 1:  Installing Cygwin
+--------------------------
+
+1.  If you have not already installed Cygwin, download it from http://www.cygwin.com .  If
+you have plenty of bandwidth available, you should use the net installer.  Otherwise,
+you might be better off ordering a CD.
+
+2.  If you already have Cygwin installed, you should fire up the installer again and
+compare your installed packages to the list of packages needed.
+
+3.  Install the following packages: (This is probably not a complete list.  If you find that
+                                     you have to install more than this, make sure to let
+									 us know which ones, so they can be added to this list)
+    Autoconf
+	Autoconf-devel (Autoconf 2.53 is required if you need to rebuild 'configure')
+	Automake
+	Automake-devel
+	binutils
+	gcc (only tested version is 3.3.1)
+	gcc-mingw
+	make
+	mingw-runtime
+	zip (required by configure, although gzip is actually used)
+	w32api
+
+---------------------------------------
+STEP 2:  Download and install wxWindows
+---------------------------------------
+
+1.  Go to http://www.wxwindows.org/ and download wxWindows v2.4.1 or greater.  Make
+sure you download the "wxAll" package that contains source code for all ports.  The
+Win32 port will not work for compiling audacity, since it was compiled and installed
+to work with MS Visual C++.
+
+2.  Untar the archive from the Cygwin command line, using a command like:
+tar -xzvf (wxwindows).
+
+3.  From the top-level of the wxWindows source tree, type './configure --disable-shared'.
+When complete, type "make".  When that's complete, "make install".  If all goes well,
+you will have wxWindows installed in your Cygwin installation!  Note: If you wish to
+link dynamically to wxWindows later, you should leave out the --disable-shared switch.
+This is not the recommended practice.
+
+--------------------------
+STEP 3:  Download Audacity
+--------------------------
+
+1.  Go to http://audacity.sourceforge.net/ and download the Audacity source distribution.
+To get experimental Cygwin support, you are most likely going to have to get the source
+through anonymous cvs.  There are two known versions of Audacity that were compiled with
+Cygwin.  One is known to Bill Eldridge and was attempted in June of 2003, but not to
+the author of these instructions.  The other is the cvs snapshot dated September 19, 2003,
+and it is assumed that future versions after that date will pick up support for Cygwin.
+
+2.  From a cygwin prompt, go to the tarball that you downloaded and use a command like
+'tar -xzvf (audacity tarball)' to open it.
+
+-----------------------
+STEP 4:  Build Audacity
+-----------------------
+
+This is the tricky part.  :)
+
+If you were able to download a version with experimental support, follow these steps:
+
+1.  ./configure --without-nyquist --without-libid3tag --without-libvorbis --without-ladspa
+2.  make
+3.  ./audacity
+4.  If you have any problems or errors, read the next section.
+
+--------------------------------------
+Notes on building Audacity with Cygwin
+--------------------------------------
+
+The problems that appear when compiling Audacity under Cygwin are pretty consistent in how
+they appear.  The win32 port is written under the assumption that MSVC++ will be the
+compiler used, and is the current standard and supported method of building Audacity.
+Therefore, the problems that appear are mostly related to various symbols defined to make
+Audacity compile out of the box on MSVC++.  Other problems that surface will likely
+be based on the fact that Cygwin passes itself to configure as a UNIX variant, and there
+are various other symbols defined for UNIX variants.  GNU/Linux is the standard UNIX variant
+supported by Audacity, so you will have problems similar to what someone using OpenBSD might
+encounter.  The exception is Mac OS X, which is well-supported already.
+
+Audacity uses a series of libraries that are either required or optional, and can be set
+at compile time.  The ones that are optional have --without switches for configure, the others
+do not.  So if a bundled library doesn't compile, your best bet is to try disabling the library
+in your configure command line.  If that doesn't work, you'll have to investigate the library
+to see why it's not compiling.
+
+PortAudio is required, and at the time of writing PortAudio does not have a Makefile for
+Cygwin that is directly compatible with Audacity's build system under Cygwin.  There is a
+Makefile for PortAudio that works with Cygwin, but will either require tweaking or will
+require tweaking Audacity's configure script.  This makefile will compile PortAudio as a shared
+library, and will require additional arguments to gcc for proper linking.  A binary compiled
+with it will require the PortAudio shared library to be distributed with it.  However, there
+is a Makefile for PortAudio that works directly with Audacity's build system that was pending
+acceptance at the time of this writing.  If you do not have this Makefile, you can create it
+yourself with these instructions:
+
+1.  Copy the Makefile from pa_unix_oss into pa_win_wmme.
+2.  Edit the Makefile in pa_win_wmme.  Remove object files that are in the pa_unix_oss directory.
+Add as an object the only .c file in pa_win_wmme.
+
+PortMixer is not required, but is recommended.  If you have the Makefile submitted for acceptance
+for PortAudio already, then chances are you have the Makefile for PortMixer.  If not, then you can
+create this makefile by following the instructions for PortAudio, replacing pa with px.  Since
+you will either already have the PortMixer makefile for Cygwin or you will have had to create
+one for PortAudio, there's really no excuse for not taking a few extra minutes to get PortMixer
+working.  However, if all else fails, --disable it on your configure command line.
+
+Libsamplerate is not supported at all with Cygwin, and it is doubtful that it will ever be
+supported.  If make tries to build it, --disable it.  Use Libresample instead.
+
+Libresample may require tweaking some #define statements in a fashion that is noted below.
+
+Expat should compile out of the box.  If not, you might be better off trying to install the version
+of expat that ships with Cygwin.  If configure fails to detect a system installed expat, this
+is probably a bug and should be submitted to the Audacity developers.
+
+Any other libraries are probably not required, and if they fail to compile you should be able
+to --disable them with configure.
+
+------------------
+Configwin.h
+------------------
+
+Configwin.h is a file that exists in the win directory from the root of Audacity's source tree.
+You have three options for getting gcc to find this file.  You can modify Audacity's Makefile to
+include -I../win (or whatever a good path is that will point at the directory).  You can copy
+or move the configwin.h file to Audacity's source directory.  Preferably, you will modify
+configure.in to generate configwin.h in exactly the same fashion and location that it already
+generates configunix.h.
+
+A fourth option is to not use Configwin.h at all, but to modify the appropriate header files to
+use configunix.h.  Since this might be similar to opening a can of worms, I don't recommend this
+approach.
+
+---------------------
+Dealing with #defines
+---------------------
+
+There are a few files in Audacity that will not compile out of the box without the Cygwin patch
+that was pending acceptance at the time of this writing.  Whenever make bombs on a file, you need
+to carefully note the line it made the error on and open the source file in a good syntax
+highlighting editor, or you can use Wordpad, which is neither good nor syntax highlighting.  Find
+the appropriate line on which the error occurred.  Then scroll up.  Chances are very good that
+the line that triggered the error is wrapped in a #ifndef, #if defined, or #ifdef block.  The
+#define symbol is usually __WIN32__.  You will be able to get it to compile by making the line
+read something like this:
+
+#if defined(__WIN32__) && !defined(__CYGWIN__)
+
+In order for that to work, you will need to make sure that configure sets the __CYGWIN__ symbol to
+be defined.  You may be able to just add it to Audacity's Makefile, however.  If you chose to use
+the existing Configwin.h file and not have it generated by configure, then you should be able
+to add a #define in it that defines __CYGWIN__.
+
+Ultimately, if you find any of these options too difficult or time-consuming, you might consider
+just deleting the entire block of code that is afflicted.  Since that route will likely wind up
+making the job hundreds of times more difficult than it actually is, it is not recommended.
+
+-----------------
+Linking Audacity
+-----------------
+
+The normal Unix flags for linking will not work with Audacity.  Well, they will but they won't
+include everything that needs to be linked.  Before discussing what actually needs to be linked,
+it would be beneficial to discuss the win32api and Cygwin.  This discussion is surrounded on top
+and bottom by **********'s, so if you already know this information you can easily skip it.
+
+************************************************************
+
+Cygwin is capable of compiling Windows programs that do not depend on the Cygwin runtime.  It
+does this by using the Mingw libraries and header files, which are available under the GPL.
+However, in order to make these libraries available to GCC, which operates thinking that it's
+running on a Unix system, the libraries must be stored and named in a location that GCC (or more
+specifically, LD, the linker) will understand.
+
+On GNU systems, and likely on proprietary Unix systems as well (although I don't know this as a
+fact), a library that is to be linked dynamically will have the extension .so.  A library that is
+to be linked statically has the extension .a.  Furthermore, in either case the text "lib" is
+prepended to the library.  When you pass a -l switch to GCC, GCC transparently passes this switch
+to ld, the linker.  The text associated with -l will name the library.  For example:  If you pass
+-lfoobar, ld will receive it.  In order to actually find the library, ld must prepend "lib" and
+append ".a", and then search in its known library locations.  So it will search for a file called
+"libfoobar.a" in its known library locations.
+
+The known library locations vary from system to system.  On some GNU/Linux systems, the known
+library locations are stored in a special file called "ldconfig".  Cygwin does not, however.  It
+appears to know by magic where the libraries are stored.  You will find them in /usr/lib, 
+/usr/local/lib, /usr/share/lib, and ~/.lib.  If you look around your Cygwin installation, you'll
+find a directory /usr/lib/w32api.  In this directory is stored all of the Mingw libraries that
+allow you to link to the win32api.  If you've ever worked with MSVC++, you'll probably recognize
+the names of these libraries.  There's kernel32, odbc32, winmm, and the rest.  But they're named
+with ld's peculiar naming convention, libkernel32.a, libodbc32.a, and libwinmm.a respectively in
+this example.
+
+*************************************************************
+
+From the MSVC++ project file, here are the libraries that need to be linked statically for
+Audacity to successfully build.
+
+kernel32.lib user32.lib gdi32.lib winspool.lib
+comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib
+odbc32.lib odbccp32.lib wsock32.lib winmm.lib
+
+You can also obtain this list by modifying the Audacity Makefile to use
+`wx-config --static --libs` instead of `wx-config --libs` which it already uses.  In the future
+it is hoped that Audacity's configure script will support this as an option.
+
+----------------------
+Miscellaneous Problems
+----------------------
+
+When I tried to get Audacity to compile with wxWindows 2.4.0, I ran into trouble with large file
+support.  This trouble is characterized by a linker error that looks like this:
+
+obj/import/ImportMP3.o(.text+0x63b): In function
+`_Z8input_cbPvP10mad_stream':
+/home/dfancella/audacity/src/import/ImportMP3.cpp:278: undefined
+reference to `wxFile::Read(void*, long long)'
+
+This problem went away when compiled with wxWindows 2.4.1.  However, since the proper solution
+to the problem was never identified, it is possible that this problem will resurface with future
+versions of wxWindows.  It is possible that this occurred as a bug in wxWindows 2.4.0 that was
+fixed in 2.4.1, in which case it's not likely to reappear.
+
+The root of the problem is that wxWindows was compiled without large file support enabled, while
+Audacity was compiled with it.  This is determined by a #define symbol, _INPUT_BYTE_OFFSET being
+set to 64 for large file support.  It should also affect libsndfile, but mysteriously it did not.
+If you encounter this problem and find a fix, please submit a patch.
+
+If you're having to do all of this from scratch, you will occasionally encounter trouble with
+compiled object files from previous runs of configure conflicting with current settings.  This
+is a problem that has yet to be solved by the GNU guys, but will hopefully someday be resolved.
+You should periodically do a "make clean", and try it sometimes when all else fails to resolve
+the problem you are having.  It's not a guaranteed solution, but it may surprise you how many
+problems appear during this work that are solely because of object files conflicting with current
+settings.  You should also keep backups of the original files, and periodically get diffs of
+the files you've modified and start with a fresh source tree, patching with your diff files.
+This will ensure that no files that are hanging around will conflict with the work.  It is, however,
+a lot of extra effort for questionable returns.
+
+If you modify Audacity's Makefile and then run configure, configure will overwrite your changes
+to the Makefile when it regenerates it.  This is not a bug, this is the expected behavior.  The way
+to address this issue is to make sure that you migrate changes to the Makefile to Makefile.in
+before rerunning configure.  This is also why it is recommended that you work with configure.in to
+provide the features you need rather than editing Audacity's Makefile.  Just keep in mind that
+Audacity's Makefile is a strong Makefile that successfully compiles under multiple Linux distributions,
+and even FreeBSD.  If you find yourself modifying it a lot, you are probably making a mistake and
+should step back and re-evaluate how you are working.  I was able to effect all changes needed
+to successfully build Audacity under Cygwin without modifying Audacity's Makefile, although I
+did frequently test changes by modifying the Makefile directly.  After each change, you should
+find a way to put it in configure.in and rerun autoconf and configure.
+
+-----------------------------------
+Status of Cygwin patch for Audacity
+-----------------------------------
+
+At the time of this writing, the patch I submitted is pending acceptance.  It may not make it into
+the 1.2 release of Audacity, which is in active development.  The reason(s) are simple, but the
+most obvious reason to me is that it's just not a good idea to change a known working build system
+on the eve of a stable release, and there is the potential for my patch to break other Unix builds.
+If you are unable to find the files needed and would like help building Audacity under Cygwin,
+you may email me at david.fancella@comcast.net and I will try to help as much as possible.
