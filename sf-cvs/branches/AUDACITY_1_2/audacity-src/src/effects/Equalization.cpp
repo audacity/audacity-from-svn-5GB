@@ -337,6 +337,7 @@ EqualizationPanel::EqualizationPanel( double loFreq, double hiFreq,
 
    mEnvelope = env;
    mEnvelope->Flatten(0.5);
+   mEnvelope->Mirror(false);
    mEnvelope->SetTrackLen(1.0);
 
 }
@@ -428,7 +429,7 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
 
    memDC.SetPen(*wxBLACK_PEN);
    mEnvRect.y -= 5;
-   mEnvelope->Draw(memDC, mEnvRect, 0.0, mEnvRect.width, false);
+   mEnvelope->Draw(memDC, mEnvRect, 0.0, mEnvRect.width, false, 0.0, 1.0);
    mEnvRect.y += 5;
 
    // Paint border again
@@ -466,7 +467,8 @@ void EqualizationPanel::OnMouseEvent(wxMouseEvent & event)
       CaptureMouse();
    }
 
-   if (mEnvelope->MouseEvent(event, mEnvRect, 0.0, mEnvRect.width, false))
+   if (mEnvelope->MouseEvent(event, mEnvRect, 0.0, mEnvRect.width, false,
+                             0.0, 1.0))
       Refresh(false);
 
    if (event.ButtonUp()) {
@@ -500,7 +502,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
 					const wxPoint &position,
 					const wxSize& size,
 					long style):
-   wxDialog( parent, id, title, position, size, style )
+   wxDialog( parent, id, title, position, size, style | wxRESIZE_BORDER )
 {
 	m_pEffect = effect;
 
