@@ -8,6 +8,13 @@
 
 // Mac OS X, compiled with g++
 
+// Use libmad for importing MP3 on OS X
+#define MP3SUPPORT
+#define USE_LIBMAD
+
+// Ogg Vorbis support
+#define USE_LIBVORBIS
+
 #else
 
 // Mac OS 9, compiled with CodeWarrior

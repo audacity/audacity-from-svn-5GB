@@ -7,6 +7,10 @@
 
 LIBS = ../wxWindows/macbuildstatic/lib/libwx_mac-2.3.a \
 	-framework Carbon -framework System \
+       ../libmad/.libs/libmad.a \
+       ../libogg/src/.libs/libogg.a \
+       ../libvorbis/lib/.libs/libvorbis.a \
+       ../libvorbis/lib/.libs/libvorbisfile.a \
 	-lz -lpthread -lm
 
 CFLAGS = -g -O2 \
@@ -15,6 +19,9 @@ CFLAGS = -g -O2 \
 	-I../wxWindows/macbuildstatic/lib/wx/include/mac-2.3 \
 	-I../wxWindows/include \
 	-I../wxWindows/src/mac/morefile \
+        -I../libmad \
+        -I../libogg/include \
+        -I../libvorbis/include \
 	-D__WXMAC__   -fno-rtti -fno-exceptions -MMD \
 	-fpascal-strings \
 	-Iallegro
