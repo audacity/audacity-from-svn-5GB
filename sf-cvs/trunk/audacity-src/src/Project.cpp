@@ -132,6 +132,8 @@ void SetActiveProject(AudacityProject * project)
 AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
 {
 
+
+   //where determines the point that a new window should open at.
    wxPoint where;
    where.x = 10;
    where.y = 10;
@@ -519,7 +521,7 @@ void AudacityProject::OnScrollRight()
 }
 
 ///
-///  This handles when the left direction button on the scrollbar is depresssed
+///  This handles the event when the left direction button on the scrollbar is depresssed
 ///
 void AudacityProject::OnScrollLeftButton(wxScrollEvent & event)
 {
@@ -533,7 +535,7 @@ void AudacityProject::OnScrollLeftButton(wxScrollEvent & event)
 }
 
 ///
-///  This handles when the right direction button on the scrollbar is depresssed
+///  This handles  the event when the right direction button on the scrollbar is depresssed
 ///
 void AudacityProject::OnScrollRightButton(wxScrollEvent & event)
 {
@@ -548,7 +550,10 @@ void AudacityProject::OnScrollRightButton(wxScrollEvent & event)
 }
 
 
-
+//
+// This method, like the other methods prefaced with TP, handles TrackPanel
+// 'callback'.
+//
 void AudacityProject::TP_ScrollWindow(double scrollto)
 {
    int pos = (int) (scrollto * mViewInfo.zoom);
@@ -611,12 +616,15 @@ void AudacityProject::FixScrollbars()
 
    if (panelHeight >= totalHeight && mViewInfo.vpos != 0) {
       mViewInfo.vpos = 0;
-      mTrackPanel->Refresh();
+      
+
+      mTrackPanel->Refresh(false);
       rescroll = false;
    }
    if (mViewInfo.screen >= mViewInfo.total && mViewInfo.sbarH != 0) {
       mViewInfo.sbarH = 0;
-      mTrackPanel->Refresh();
+
+      mTrackPanel->Refresh(false);
       rescroll = false;
    }
 
@@ -629,8 +637,9 @@ void AudacityProject::FixScrollbars()
 
    mViewInfo.lastZoom = mViewInfo.zoom;
 
-   if (rescroll && mViewInfo.screen < mViewInfo.total)
-      mTrackPanel->Refresh();
+   if (rescroll && mViewInfo.screen < mViewInfo.total){
+      mTrackPanel->Refresh(false);
+   }
 }
 
 void AudacityProject::HandleResize()
@@ -686,7 +695,6 @@ void AudacityProject::HandleResize()
                       sbarControlWidth,
                       height - sbarSpaceWidth - voffset +
                       2 * sbarExtraLen);
-
       FixScrollbars();
    }
 }
@@ -733,6 +741,7 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
    SetActiveProject(this);
 
    if (!mAutoScrolling) {
+
       mTrackPanel->Refresh(false);
 #ifdef __WXMAC__
       mTrackPanel->MacUpdateImmediately();
@@ -777,6 +786,7 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
       if (f->DoEffect(this, mTracks, mViewInfo.sel0, mViewInfo.sel1)) {
          PushState(_("Applied an effect."));    // maybe more specific?
          FixScrollbars();
+
          mTrackPanel->Refresh(false);
       } else {
          // TODO: undo the effect if necessary?
@@ -947,6 +957,7 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
    //Add the new toolbar to the ToolBarArray and redraw screen
    mTotalToolBarHeight += toolbar->GetHeight() +1;
    HandleResize();
+
    Refresh();
 }
 
