@@ -169,7 +169,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_ACTIVATE(AudacityProject::OnActivate)
     EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
     EVT_DROP_FILES(AudacityProject::OnDropFiles)
-EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
+    EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
     // Update menu method
     EVT_UPDATE_UI(UndoID, AudacityProject::OnUpdateMenus)
 END_EVENT_TABLE()
@@ -644,13 +644,7 @@ void AudacityProject::HandleResize()
                            height - sbarSpaceWidth);
 
       int hoffset = mTrackPanel->GetLeftOffset() - 1;
-      int voffset;
-
-      // BG: Hide ruler if no tracks
-      if(mTracks->IsEmpty())
-         voffset = 0;
-      else
-         voffset = mTrackPanel->GetRulerHeight();
+      int voffset = mTrackPanel->GetRulerHeight();
 
       mHsbar->SetSize(hoffset, top + height - sbarSpaceWidth,
                       width - hoffset - sbarSpaceWidth + sbarExtraLen,
@@ -1559,12 +1553,10 @@ void AudacityProject::ZoomFit()
    mTrackPanel->Refresh(false);
 }
 
-//
-// Zoom methods
-//
-
 void AudacityProject::ZoomSel()
 {
+   if (mViewInfo.sel1 >= mViewInfo.sel0) return;
+
    // BG: CTRL+E
    // BG: Zoom to selection
    mViewInfo.zoom *= mViewInfo.screen/(mViewInfo.sel1-mViewInfo.sel0);
