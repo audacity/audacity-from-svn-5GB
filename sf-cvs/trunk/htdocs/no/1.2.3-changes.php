@@ -7,7 +7,7 @@
 		systemer).
 </p></li>
 <li><p>
-		Mac OS X: Rettet en større feil som fikk Audacity til å krasje
+		Mac OS X: Rettet en større feil som fikk Audacity til å kræsje
 		på tilsynelatende tilfeldige ganger på noen Mac-systemer, 
 		spesielt ved avspilling eller opptak.
 </p></li>

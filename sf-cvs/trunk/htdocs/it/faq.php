@@ -70,7 +70,7 @@ generosità, alcuni per ragioni morali perchè crediamo che
 tutto il software dovrebbe essere libero mentre alcuni di noi
 pensano ci sia la necessità sia di software libero che commerciale.
 <p>
-Una ragione per quì Audacity è libero è perchè così può godere di
+Una ragione per cui Audacity è libero è perchè così può godere di
 maggiore popolarità. Molti di noi preferiscono sapere che ci sono
 milioni di utenti che usano felicemente Audacity che non avere solo
 qualche centinaia di utenti per un software commerciale.
