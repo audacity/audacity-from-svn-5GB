@@ -168,6 +168,7 @@ bool AudacityApp::OnInit()
   Effect::RegisterEffect(new EffectFadeIn());
   Effect::RegisterEffect(new EffectFadeOut());
   Effect::RegisterEffect(new EffectFilter());
+  Effect::RegisterEffect(new EffectMaxAmplify());  
 
   #if defined(__WXMAC__) || defined(__WXMSW__)
   LoadVSTPlugins();
