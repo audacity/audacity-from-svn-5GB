@@ -39,6 +39,8 @@ END_EVENT_TABLE()
 FileFormatPrefs::FileFormatPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
+   mAudacity = GetActiveProject();
+
    /* Read existing config... */
 
    wxString copyEdit =
@@ -336,6 +338,15 @@ bool FileFormatPrefs::Apply()
 
    gPrefs->Write("/FileFormats/LossyExportFormat", lossyFormat);
    gPrefs->Write("/FileFormats/OggExportQuality", oggQuality);
+
+   const char *pcmFmt = ((wxString)sf_header_name(mFormat & SF_FORMAT_TYPEMASK)).c_str();
+
+   mAudacity->SetCommandValue(ExportMixID, wxString::Format(_("&Export as %s..."), pcmFmt));
+   mAudacity->SetCommandValue(ExportSelectionID, wxString::Format(_("Export Selection as %s..."), pcmFmt));
+   mAudacity->SetCommandValue(ExportLossyMixID, wxString::Format(_("Export as %s..."), lossyFormat.c_str()));
+   mAudacity->SetCommandValue(ExportLossySelectionID, wxString::Format(_("Export Selection as %s..."), lossyFormat.c_str()));
+
+   mAudacity->RebuildMenuBar();
 
    return true;
 }
