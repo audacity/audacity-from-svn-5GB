@@ -835,60 +835,57 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
 
 void TrackPanel::HandleZoom(wxMouseEvent &event)
 {
-	if (event.ButtonDown()) {
-		mViewInfo->zoomStart = event.m_x;
-		HandleSelect(event);
-	}
-	else if (event.Dragging()) {
-		HandleSelect(event);
-	}
-	else if (event.ButtonUp() || event.ButtonDClick()) {
-		SelectNone();
-		int zoomLength = event.m_x - mViewInfo->zoomStart;
+    if (event.ButtonDown()) {
+        mViewInfo->zoomStart = event.m_x;
+        HandleSelect(event);
+    }
+    else if (event.Dragging()) {
+        HandleSelect(event);
+    }
+    else if (event.ButtonUp() || event.ButtonDClick()) {
+        int zoomLength = event.m_x - mViewInfo->zoomStart;
 
-		if (zoomLength < 0) zoomLength = - zoomLength;
+        if (zoomLength < 0) zoomLength = - zoomLength;
 
-		if (zoomLength > 3) {
-			mViewInfo->zoom *= (mViewInfo->screen * mViewInfo->zoom) / zoomLength;
+        if (zoomLength > 3) {
+            mViewInfo->zoom *= (mViewInfo->screen * mViewInfo->zoom) / zoomLength;
 
-			if (mViewInfo->zoom > 6000000)
-				mViewInfo->zoom = 6000000;
+            if (mViewInfo->zoom > 6000000)
+                mViewInfo->zoom = 6000000;
 
-			if (mViewInfo->zoomStart < event.m_x)
-				mViewInfo->h += mViewInfo->zoomStart / mViewInfo->zoom;
-			else mViewInfo->h += event.m_x / mViewInfo->zoom;
-	
-			if (mViewInfo->h < 0) mViewInfo->h = 0;
+            mViewInfo->h = mViewInfo->sel0;
+    
+            if (mViewInfo->h < 0) mViewInfo->h = 0;
 
-			MakeParentRedrawScrollbars();
-			Refresh(false);
-		}
-		else {
-			double center_h = mViewInfo->h + (event.m_x - 115) / mViewInfo->zoom;
+            MakeParentRedrawScrollbars();
+            Refresh(false);
+        }
+        else {
+            double center_h = mViewInfo->h + (event.m_x - 115) / mViewInfo->zoom;
 
-			if (event.RightUp() || event.RightDClick() || event.ShiftDown())
-				mViewInfo->zoom /= 2.0;
-			else
-				mViewInfo->zoom *= 2.0;
-		
-			if (event.MiddleUp() || event.MiddleDClick())
-				mViewInfo->zoom = 44100.0 / 512.0;
-	
-			if (mViewInfo->zoom > 6000000)
-				mViewInfo->zoom = 6000000;
-	
-			double new_center_h =
-				mViewInfo->h + (event.m_x - 115) / mViewInfo->zoom;
-	
-			mViewInfo->h += (center_h - new_center_h);
-	
-			if (mViewInfo->h < 0)
-			mViewInfo->h = 0;
+            if (event.RightUp() || event.RightDClick() || event.ShiftDown())
+                mViewInfo->zoom /= 2.0;
+            else
+                mViewInfo->zoom *= 2.0;
+        
+            if (event.MiddleUp() || event.MiddleDClick())
+                mViewInfo->zoom = 44100.0 / 512.0;
+    
+            if (mViewInfo->zoom > 6000000)
+                mViewInfo->zoom = 6000000;
+    
+            double new_center_h =
+                mViewInfo->h + (event.m_x - 115) / mViewInfo->zoom;
+    
+            mViewInfo->h += (center_h - new_center_h);
+    
+            if (mViewInfo->h < 0)
+            mViewInfo->h = 0;
 
-			MakeParentRedrawScrollbars();
-			Refresh(false);
-		}
-	}
+            MakeParentRedrawScrollbars();
+            Refresh(false);
+        }
+    }
 }
 
 void TrackPanel::HandleClosing(wxMouseEvent & event)
@@ -1671,140 +1668,140 @@ void TrackPanel::DrawTracks(wxDC *dc)
   
   t = iter.First();
   while(t) {
-	r.height = t->GetHeight();
+    r.height = t->GetHeight();
 
-	// Skip it if it's totally offscreen
-	if (r.y + r.height < GetRulerHeight() ||
-		r.y >windowHeight) {
-	  
-	  r.y += r.height;
-	  num++;
-	  t = iter.Next();
-	  continue;
-	}
+    // Skip it if it's totally offscreen
+    if (r.y + r.height < GetRulerHeight() ||
+        r.y >windowHeight) {
+      
+      r.y += r.height;
+      num++;
+      t = iter.Next();
+      continue;
+    }
 
-	// Draw label area
+    // Draw label area
 
-	SetLabelFont(dc);
-	dc->SetTextForeground(wxColour(0, 0, 0));
+    SetLabelFont(dc);
+    dc->SetTextForeground(wxColour(0, 0, 0));
 
-	wxRect labelRect = r;
-	labelRect.width = GetLabelWidth();	
+    wxRect labelRect = r;
+    labelRect.width = GetLabelWidth();  
 
-	// If this track is linked to the next one, display a common
-	// border for both, otherwise draw a normal border
+    // If this track is linked to the next one, display a common
+    // border for both, otherwise draw a normal border
 
-	wxRect labelBorder = labelRect;
-	
-	bool skipBorder = false;
-	if (t->linked) {
-	  labelBorder.height += mTracks->GetLink(t)->GetHeight();
-	}
-	else if (mTracks->GetLink(t))
-	  skipBorder = true;
+    wxRect labelBorder = labelRect;
+    
+    bool skipBorder = false;
+    if (t->linked) {
+      labelBorder.height += mTracks->GetLink(t)->GetHeight();
+    }
+    else if (mTracks->GetLink(t))
+      skipBorder = true;
 
-	if (!skipBorder) {
-	  AColor::Medium(dc, false);
-	  dc->DrawRectangle(labelBorder);
-	  
-	  labelBorder.Inflate(-4, -4);
-	  AColor::Medium(dc, t->selected);
-	  dc->DrawRectangle(labelBorder);
-	  AColor::Bevel(*dc, false, labelBorder);
-	}
+    if (!skipBorder) {
+      AColor::Medium(dc, false);
+      dc->DrawRectangle(labelBorder);
+      
+      labelBorder.Inflate(-4, -4);
+      AColor::Medium(dc, t->selected);
+      dc->DrawRectangle(labelBorder);
+      AColor::Bevel(*dc, false, labelBorder);
+    }
 
-	wxRect titleRect;
-	if (GetLabelFieldRect(labelRect, 0, false, titleRect)) {
-	  AColor::Bevel(*dc, false, titleRect);
-	  dc->DrawText(wxString::Format("Track %d", num+1),
-				   titleRect.x + 7, titleRect.y + 2);
-	}
-	
-	wxRect channelRect;
-	if (GetLabelFieldRect(labelRect, 1, true, channelRect)) {
-	  dc->DrawText("Channel:", labelRect.x + 7, channelRect.y + 2);
-	  AColor::Bevel(*dc, true, channelRect);
-	  wxString str;
-	  switch(t->channel) {
-	  case VTrack::MonoChannel: str = "Mono"; break;
-	  case VTrack::LeftChannel: str = "Left"; break;
-	  case VTrack::RightChannel: str = "Right"; break;
-	  default: str = "Other"; break;
-	  }
-	  dc->DrawText(str, channelRect.x + 3, channelRect.y + 2);	  
-	}
+    wxRect titleRect;
+    if (GetLabelFieldRect(labelRect, 0, false, titleRect)) {
+      AColor::Bevel(*dc, false, titleRect);
+      dc->DrawText(wxString::Format("Track %d", num+1),
+                   titleRect.x + 7, titleRect.y + 2);
+    }
+    
+    wxRect channelRect;
+    if (GetLabelFieldRect(labelRect, 1, true, channelRect)) {
+      dc->DrawText("Channel:", labelRect.x + 7, channelRect.y + 2);
+      AColor::Bevel(*dc, true, channelRect);
+      wxString str;
+      switch(t->channel) {
+      case VTrack::MonoChannel: str = "Mono"; break;
+      case VTrack::LeftChannel: str = "Left"; break;
+      case VTrack::RightChannel: str = "Right"; break;
+      default: str = "Other"; break;
+      }
+      dc->DrawText(str, channelRect.x + 3, channelRect.y + 2);    
+    }
 
-	if (t->GetKind()==VTrack::Wave) {
-	  wxRect rateRect;
-	  if (GetLabelFieldRect(labelRect, 2, true, rateRect)) {
-		dc->DrawText("Rate:", labelRect.x + 7, rateRect.y + 2);
-		AColor::Bevel(*dc, true, rateRect);
-		dc->DrawText(wxString::Format("%d",int(((WaveTrack *)t)->rate + 0.5)),
-					rateRect.x + 3, rateRect.y + 2);
-	  }
+    if (t->GetKind()==VTrack::Wave) {
+      wxRect rateRect;
+      if (GetLabelFieldRect(labelRect, 2, true, rateRect)) {
+        dc->DrawText("Rate:", labelRect.x + 7, rateRect.y + 2);
+        AColor::Bevel(*dc, true, rateRect);
+        dc->DrawText(wxString::Format("%d",int(((WaveTrack *)t)->rate + 0.5)),
+                    rateRect.x + 3, rateRect.y + 2);
+      }
 
-	  wxRect displayRect;
-	  if (GetLabelFieldRect(labelRect, 3, true, displayRect)) {
-		dc->DrawText("Display:", labelRect.x + 7, displayRect.y + 2);
-		AColor::Bevel(*dc, true, displayRect);
-		wxString str;
-		if (((WaveTrack *)t)->GetDisplay() == 1)
-		  str = "Spectr";
-		else
-		  str = "Wavefm";
-		dc->DrawText(str, displayRect.x + 3, displayRect.y + 2);
-	  }
-	}
-	
-	if (t->GetKind()==VTrack::Note) {
-	  wxRect midiRect;
-	  if (GetLabelFieldRect(labelRect, 2, false, midiRect)) {
-	    midiRect.height = labelRect.height - (midiRect.y - labelRect.y) - (midiRect.x - labelRect.x);
-	    ((NoteTrack *)t)->DrawLabelControls(*dc, midiRect);
-	  }
-	}
+      wxRect displayRect;
+      if (GetLabelFieldRect(labelRect, 3, true, displayRect)) {
+        dc->DrawText("Display:", labelRect.x + 7, displayRect.y + 2);
+        AColor::Bevel(*dc, true, displayRect);
+        wxString str;
+        if (((WaveTrack *)t)->GetDisplay() == 1)
+          str = "Spectr";
+        else
+          str = "Wavefm";
+        dc->DrawText(str, displayRect.x + 3, displayRect.y + 2);
+      }
+    }
+    
+    if (t->GetKind()==VTrack::Note) {
+      wxRect midiRect;
+      if (GetLabelFieldRect(labelRect, 2, false, midiRect)) {
+        midiRect.height = labelRect.height - (midiRect.y - labelRect.y) - (midiRect.x - labelRect.x);
+        ((NoteTrack *)t)->DrawLabelControls(*dc, midiRect);
+      }
+    }
 
-	// Draw track area
+    // Draw track area
 
-	wxRect trackRect = r;
-	trackRect.x += GetLabelWidth();
-	trackRect.width -= GetLabelWidth();
+    wxRect trackRect = r;
+    trackRect.x += GetLabelWidth();
+    trackRect.width -= GetLabelWidth();
 
-	AColor::Medium(dc, false);
-	dc->DrawRectangle(trackRect);
+    AColor::Medium(dc, false);
+    dc->DrawRectangle(trackRect);
 
-	trackRect.Inflate(-4, -4);
-	AColor::Bevel(*dc, false, trackRect);	
+    trackRect.Inflate(-4, -4);
+    AColor::Bevel(*dc, false, trackRect);   
 
-	// Don't draw if it's not visible at all (vertically)
-	// if (r.y < (visible->y + visible->height)
+    // Don't draw if it's not visible at all (vertically)
+    // if (r.y < (visible->y + visible->height)
     // && (r.y + r.height) > visible->y)
 
-	double h = mViewInfo->h;
+    double h = mViewInfo->h;
 
-	bool sel = t->selected;
-	
-	// Tell VTrack to draw itself
-	
-	wxRect innerRect = trackRect;
-	innerRect.Inflate(-1, -1);
+    bool sel = t->selected;
+    
+    // Tell VTrack to draw itself
+    
+    wxRect innerRect = trackRect;
+    innerRect.Inflate(-1, -1);
 
-	// Code duplication warning:  If you add anything here
-	// that happens any time in the loop, add it to the top
-	// of this loop also for the special case of tracks that
-	// are totally offscreen.
+    // Code duplication warning:  If you add anything here
+    // that happens any time in the loop, add it to the top
+    // of this loop also for the special case of tracks that
+    // are totally offscreen.
     r.y += r.height;
-	num++;
+    num++;
     t = iter.Next();
   }
 
   // The track artist actually draws the stuff in the tracks
 
   mTrackArtist->DrawTracks(mTracks,
-						   *dc, allTracksRect,
-						   clip,
-						   mViewInfo,
-						   envelopeFlag);
+                           *dc, allTracksRect,
+                           clip,
+                           mViewInfo,
+                           envelopeFlag);
 
   // Paint over the part below the tracks
 
