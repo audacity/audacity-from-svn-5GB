@@ -392,6 +392,8 @@ bool DirManager::HandleXMLTag(const char *tag, const char **attrs)
    else
       return false;
 
+   blockFileHash->Put( (*mLoadingTarget)->GetFileName().GetName(),
+                       (wxObject*) *mLoadingTarget );
    return true;
 }
 
