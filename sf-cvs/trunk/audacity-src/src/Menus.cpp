@@ -84,24 +84,12 @@ void AudacityProject::CreateMenuBar()
    wxMenu *menu = 0;
    for(i = 0; i < mCommandMenuItem.Count(); i++) {
       switch(mCommandMenuItem[i]->category) {
-      case fileMenu:
-         menu = mFileMenu;
-         break;
-      case editMenu:
-         menu = mEditMenu;
-         break;
-      case viewMenu:
-         menu = mViewMenu;
-         break;
-      case projectMenu:
-         menu = mProjectMenu;
-         break;
-      case helpMenu:
-         menu = mHelpMenu;
-         break;
-      default:
-         // ERROR -- should not happen
-         break;
+         case fileMenu:    menu = mFileMenu;    break;
+         case editMenu:    menu = mEditMenu;    break;
+         case viewMenu:    menu = mViewMenu;    break;
+         case projectMenu: menu = mProjectMenu; break;
+         case helpMenu:    menu = mHelpMenu;    break;
+         default: break;// ERROR -- should not happen
       }
 
       if(mCommandMenuItem[i]->commandString == "---")
@@ -755,8 +743,6 @@ void AudacityProject::Trim(wxEvent & event)
 
    TrackListIterator iter(mTracks);
    VTrack *n = iter.First();
-
-   double selLength = mViewInfo.sel1 - mViewInfo.sel0;
 
    while (n) {
       if (n->GetSelected()) {
