@@ -304,6 +304,9 @@ void TrackPanel::OnTimer()
          GetSize(&width, &height);
          height = GetRulerHeight();
 
+#ifdef __DARWIN__
+         DrawRuler(&dc, true);
+#else
          wxMemoryDC *memDC = new wxMemoryDC();
          wxBitmap *rulerBitmap = new wxBitmap();
          rulerBitmap->Create(width, height);
@@ -316,6 +319,7 @@ void TrackPanel::OnTimer()
 
          delete memDC;
          delete rulerBitmap;
+#endif
 
       }
    }
@@ -361,6 +365,13 @@ void TrackPanel::OnTimer()
 void TrackPanel::OnPaint(wxPaintEvent & event)
 {
    wxPaintDC dc(this);
+
+#ifdef __DARWIN__
+
+   DrawTracks(&dc);
+   DrawRuler(&dc);
+
+#else
    int width, height;
    GetSize(&width, &height);
    if (width != mPrevWidth || height != mPrevHeight || !mBitmap) {
@@ -381,6 +392,7 @@ void TrackPanel::OnPaint(wxPaintEvent & event)
    DrawRuler(&memDC);
 
    dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
+#endif
 }
 
 void TrackPanel::MakeParentPushState()
