@@ -32,18 +32,27 @@
 GUIPrefs::GUIPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
-   // Scrolling
-   bool autoscroll, spectrogram, editToolBar,mixerToolBar, alwaysEnablePause,
-      quitOnClose, adjustSelectionEdges, ergonomicTransportButtons,
-      meterToolBar;
+
+   bool autoscroll,             // Scrolling
+      spectrogram, 
+      editToolBar,              //Whether the edit toolbar should be loaded
+      mixerToolBar,             //Whether the mixer toolbar should be loaded
+      meterToolBar,             //Whether the meter toolbar should be loaded
+      transcriptionToolBar,     //Whether the transcription toolbar should be loaded
+      alwaysEnablePause,
+      quitOnClose, 
+      adjustSelectionEdges, 
+      ergonomicTransportButtons;
+
    int envdBRange;
 
+   //Read default settings.
    gPrefs->Read("/GUI/AutoScroll", &autoscroll, true);
    gPrefs->Read("/GUI/UpdateSpectrogram", &spectrogram, true);
-
    gPrefs->Read("/GUI/EnableEditToolBar", &editToolBar, true);
    gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, true);
    gPrefs->Read("/GUI/EnableMeterToolBar", &meterToolBar, true);
+   gPrefs->Read("/GUI/EnableTranscriptionToolBar", &transcriptionToolBar, true);
    gPrefs->Read("/GUI/AlwaysEnablePause", &alwaysEnablePause, false);
 
    // Code duplication warning: this default is repeated in Project.cpp
@@ -93,6 +102,10 @@ PrefsPanel(parent)
    mMeterToolBar->SetValue(meterToolBar);
    topSizer->Add(mMeterToolBar, 0, wxGROW|wxALL, 2);
 
+   //Enable Meter toolbar preference
+   mTranscriptionToolBar = new wxCheckBox(this, -1, _("Enable Transcription Toolbar"));
+   mTranscriptionToolBar->SetValue(transcriptionToolBar);
+   topSizer->Add(mTranscriptionToolBar, 0, wxGROW|wxALL, 2);
 
    // Quit Audacity when last window closes?
    mQuitOnClose = new wxCheckBox(this, -1,
@@ -279,6 +292,29 @@ bool GUIPrefs::Apply()
    //----------------------End of Meter toolbar loading/unloading
    //---------------------------------------------------------------
 
+ //-------------------------------------------------------------
+   //---------------------- Transcription toolbar loading/unloading
+   gPrefs->Write("/GUI/EnableTranscriptionToolBar", 
+                 mTranscriptionToolBar->GetValue());
+   enable = mTranscriptionToolBar->GetValue();
+   
+   if(gTranscriptionToolBarStub && !enable) {
+      gTranscriptionToolBarStub->UnloadAll();    //Unload all docked METER toolbars
+      delete gTranscriptionToolBarStub;
+      gTranscriptionToolBarStub = NULL;
+   }
+   else if(!gTranscriptionToolBarStub && enable) {
+      gTranscriptionToolBarStub =  new ToolBarStub(gParentWindow, TranscriptionToolBarID);
+      gTranscriptionToolBarStub->LoadAll();
+   }
+   //----------------------End of Meter toolbar loading/unloading
+   //---------------------------------------------------------------
+
+
+
+
+
+
 
    int localeIndex = mLocale->GetSelection();
    if (localeIndex >= 0 && (unsigned) localeIndex < mLangCodes.GetCount())
@@ -296,6 +332,21 @@ bool GUIPrefs::Apply()
 
 GUIPrefs::~GUIPrefs()
 {
+
+//    if(mAutoscroll)                delete mAutoscroll;
+//    if(mAlwaysEnablePause)         delete mAlwaysEnablePause;
+//    if(mSpectrogram)               delete mSpectrogram;
+//    if(mEditToolBar)               delete mEditToolBar;
+//    if(mMixerToolBar)              delete mMixerToolBar;
+//    if(mMeterToolBar)              delete mMeterToolBar;
+//    if(mTranscriptionToolBar)      delete mTranscriptionToolBar;
+//    if(mQuitOnClose)               delete mQuitOnClose;
+//    if(mAdjustSelectionEdges)      delete mAdjustSelectionEdges;
+//    if(mErgonomicTransportButtons) delete mErgonomicTransportButtons;
+//    if(mdBArray)                   delete []  mdBArray;
+//    if(mLocale)                    delete mLocale;
+//    if(mLocaleLabel)               delete mLocaleLabel;
+
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

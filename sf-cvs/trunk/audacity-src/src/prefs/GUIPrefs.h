@@ -38,6 +38,7 @@ class GUIPrefs : public PrefsPanel {
     wxCheckBox *mEditToolBar;
     wxCheckBox *mMixerToolBar;
     wxCheckBox *mMeterToolBar;
+    wxCheckBox *mTranscriptionToolBar;
     wxCheckBox *mQuitOnClose;
     wxCheckBox *mAdjustSelectionEdges;
     wxCheckBox *mErgonomicTransportButtons;
