@@ -3,7 +3,7 @@
 typedef double FASTFLOAT;
 typedef float MEMFLOAT;
 
-#if 0
+#if __MWERKS__
 
 #define min(a, b) ((a) < (b) ? (a) : (b))
 #define max(a, b) ((a) > (b) ? (a) : (b))
