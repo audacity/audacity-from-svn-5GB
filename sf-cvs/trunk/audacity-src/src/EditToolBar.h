@@ -33,13 +33,11 @@
 
 #include "ToolBar.h"
 
-
 class AButton;
 class ASlider;
 class EditToolBar;
 class ToolBar;
 class ToolBarFrame;
-
 
 class wxImage;
 class wxSize;
@@ -58,9 +56,10 @@ enum {
    ETBZoomInID,
    ETBZoomOutID,
    ETBZoomSelID,
-   ETBZoomFitID
-};
+   ETBZoomFitID,
 
+   ETBNumButtons
+};
 
 class EditToolBar:public ToolBar {
  public:
@@ -75,41 +74,16 @@ class EditToolBar:public ToolBar {
    virtual void OnKeyEvent(wxKeyEvent & event);
    virtual void EnableDisableButtons();
 
-   void OnCut();
-   void OnCopy();
-   void OnPaste();
-   void OnTrim();
-   void OnSilence();
-
-   void OnUndo();
-   void OnRedo();
-
-   void OnZoomIn();
-   void OnZoomOut();
-   void OnZoomSel();
-   void OnZoomFit();
+   void OnButton(wxCommandEvent &event);
 
  private:
-   void AddButton(AButton **button, char **fg,
-                  char **disabled, char **alpha,
+   void AddButton(char **fg, char **disabled, char **alpha,
                   int id, const char *tooltip);
    void AddSeparator();
 
    void MakeButtons();
    
-   AButton *mCut;
-   AButton *mCopy;
-   AButton *mPaste;
-   AButton *mTrim;
-   AButton *mSilence;
-
-   AButton *mUndo;
-   AButton *mRedo;
-
-   AButton *mZoomIn;
-   AButton *mZoomOut;
-   AButton *mZoomSel;
-   AButton *mZoomFit;
+   AButton *mButtons[ETBNumButtons];
 
    wxBitmap *mBackgroundBitmap;
    int mBackgroundWidth;
