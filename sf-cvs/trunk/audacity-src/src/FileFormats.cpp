@@ -231,6 +231,8 @@ void sf_get_all_extensions(wxStringList exts)
 // are at least the same type used by
 // SoundApp.
 
+#define NUM_HEADERS 13
+
 OSType MacNames[NUM_HEADERS] = {
    'WAVE', // WAVE
    'AIFF', // AIFF
