@@ -10,6 +10,8 @@
 
 **********************************************************************/
 
+#if USE_LIBSAMPLERATE
+
 #ifndef __AUDACITY_EFFECT_CHANGESPEED__
 #define __AUDACITY_EFFECT_CHANGESPEED__
 
@@ -23,7 +25,10 @@
 
 #include <wx/intl.h>
 
-#include "SimpleMono.h"
+#include <samplerate.h>
+
+#include "Effect.h"
+
 
 #define ID_TEXT 10000
 #define ID_TEXT_PERCENTCHANGE 10001
@@ -32,11 +37,10 @@
 #define ID_CHOICE_TOVINYL 10004
 
 
-class WaveTrack;
 class wxString;
 
 
-class EffectChangeSpeed:public EffectSimpleMono {
+class EffectChangeSpeed : public Effect {
 
  public:
    EffectChangeSpeed();
@@ -44,7 +48,6 @@ class EffectChangeSpeed:public EffectSimpleMono {
    virtual wxString GetEffectName() {
       return wxString(_("Change Speed..."));
    }
-   
    virtual wxString GetEffectAction() {
       return wxString(_("Changing Speed"));
    }
@@ -52,14 +55,27 @@ class EffectChangeSpeed:public EffectSimpleMono {
    // Useful only after PromptUser values have been set. 
    virtual wxString GetEffectDescription(); 
 
-   virtual bool Init();
-
-   virtual bool PromptUser();
-   
  protected:
-   virtual bool ProcessSimpleMono(float * buffer, sampleCount len);
+   virtual bool PromptUser();
+   virtual bool Process();
 
  private:
+   bool ProcessOne(WaveTrack * t,
+                   longSampleCount start, longSampleCount end);
+	void ReportLibSampleRateError(int error);
+
+ private:
+	// libsamplerate related
+	SRC_STATE *	m_pSRC_STATE;
+
+	// track related (from EffectSoundTouch)
+   int    mCurTrackNum;
+   double mCurRate;
+   double mCurT0;
+   double mCurT1;
+   int    mCurChannel;
+
+	// control values
    double	m_PercentChange;	// percent change to apply to tempo
 										// -100% is meaningless, but sky's the upper limit.
 										// Slider is (-100, 200], but textCtrls can set higher.
@@ -131,3 +147,5 @@ class ChangeSpeedDialog:public wxDialog {
 
 
 #endif // __AUDACITY_EFFECT_CHANGESPEED__
+
+#endif // USE_LIBSAMPLERATE
