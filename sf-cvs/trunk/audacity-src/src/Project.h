@@ -21,7 +21,6 @@
 #include "Audacity.h"
 
 #include "AStatus.h"
-#include "AudacityFileHistory.h"
 #include "DirManager.h"
 #include "UndoManager.h"
 #include "ViewInfo.h"
@@ -40,6 +39,8 @@
 #include <wx/frame.h>
 #include <wx/intl.h>
 #include <wx/dcclient.h>
+
+class wxFileHistory;
 
 const int AudacityProjectTimerID = 5200;
 
@@ -147,8 +148,7 @@ class AudacityProject:public wxFrame,
    wxString GetFileName() { return mFileName; }
    bool GetDirty() { return mDirty; }
    bool GetIsEmpty() { return mTracks->IsEmpty(); }
-   audFileHistory *GetRecentFiles() { return mRecentFiles; }
-   audFileHistory *GetRecentProjects() { return mRecentProjects; }
+   wxFileHistory *GetRecentFiles() { return mRecentFiles; }
 
 #include "Menus.h"
 
@@ -348,8 +348,7 @@ class AudacityProject:public wxFrame,
    bool mIsDeleting;
 
    // Recent File and Project History
-   audFileHistory *mRecentFiles;
-   audFileHistory *mRecentProjects;
+   wxFileHistory *mRecentFiles;
 
  public:
     DECLARE_EVENT_TABLE()
