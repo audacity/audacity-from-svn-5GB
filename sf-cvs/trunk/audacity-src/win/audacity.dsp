@@ -563,6 +563,14 @@ SOURCE=..\src\effects\NoiseRemoval.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\effects\Normalize.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Normalize.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\effects\Phaser.cpp
 # End Source File
 # Begin Source File
