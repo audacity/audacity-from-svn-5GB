@@ -119,6 +119,10 @@ class BlockFile {
    /// Read the summary section of the file.  Derived classes implement.
    virtual bool ReadSummary(void *data) = 0;
 
+   /// Byte-swap the summary data, in case it was saved by a system
+   /// on a different platform
+   virtual void FixSummary(void *data);
+
  private:
    int mLockCount;
    int mRefCount;

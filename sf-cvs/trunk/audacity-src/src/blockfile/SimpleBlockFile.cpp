@@ -159,6 +159,8 @@ bool SimpleBlockFile::ReadSummary(void *data)
 
    int read = (int)file.Read(data, (size_t)mSummaryInfo.totalSummaryBytes);
 
+   FixSummary(data);
+
    return (read == mSummaryInfo.totalSummaryBytes);
 }
 
