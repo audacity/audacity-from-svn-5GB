@@ -171,8 +171,13 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | TracksExistFlag);
 
    // On Mac OS X, Preferences and Quit are in the application menu,
-   // not the File menu.
-  #ifndef __WXMAC__
+   // not the File menu.  In wx 2.4 and lower, we handle this by
+   // not including these menus at all.  In wx 2.5 and higher, we
+   // include them, but wxMac automatically moves them to the appropriate
+   // place.
+
+  #if (!defined(__WXMAC__) || \
+       !((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4)))
    c->AddSeparator();
    c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
    c->AddSeparator();
@@ -451,6 +456,7 @@ void AudacityProject::CreateMenusAndCommands()
    delete effects;
    c->EndMenu();
 
+   /* i18n-hint: The name of the Help menu */
    c->BeginMenu(_("&Help"));
    c->SetDefaultFlags(0, 0);
    c->AddItem("Help",           _("&Online Help..."),             FN(OnHelp));
@@ -463,6 +469,12 @@ void AudacityProject::CreateMenusAndCommands()
 #endif 
 
    c->EndMenu();
+
+#ifdef __WXMAC__
+ #if (!((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4)))
+   wxGetApp().s_macHelpMenuTitleName = _("&Help");
+ #endif
+#endif
 
    ModifyExportMenus();
 

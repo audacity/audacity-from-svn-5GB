@@ -372,11 +372,27 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
                                   CommandFunctor *callback,
                                   bool multi, int index, int count)
 {
-   mCurrentID = NextIdentifier(mCurrentID);
-
    CommandListEntry *tmpEntry = new CommandListEntry;
    
+   // wxMac 2.5 and higher will do special things with the
+   // Preferences and About menu items, if we give them the right IDs.
+   // Otherwise we just pick increasing ID numbers for each new
+   // command.  Note that the name string we are comparing
+   // ("About", "Preferences") is the internal command name
+   // (untranslated), not the label that actually appears in the
+   // menu (which might be translated).
+
+   mCurrentID = NextIdentifier(mCurrentID);
    tmpEntry->id = mCurrentID;
+
+  #if (defined(__WXMAC__) && \
+    !((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4)))
+   if (name == "Preferences")
+      tmpEntry->id = wxID_PREFERENCES;
+   else if (name == "About")
+      tmpEntry->id = wxID_ABOUT;
+  #endif
+
    tmpEntry->name = name;
    tmpEntry->label = label;
    tmpEntry->menu = menu;
@@ -398,7 +414,7 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    gPrefs->SetPath("/");
    
    mCommandList.Add(tmpEntry);
-   mCommandIDHash[mCurrentID] = tmpEntry;   
+   mCommandIDHash[tmpEntry->id] = tmpEntry;   
 
    if (index==0 || !multi)
       mCommandNameHash[name] = tmpEntry;
@@ -406,7 +422,7 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    if (tmpEntry->key != "")
       mCommandKeyHash[tmpEntry->key] = tmpEntry;
 
-   return mCurrentID;
+   return tmpEntry->id;
 }
 
 wxString CommandManager::GetKey(wxString label)
