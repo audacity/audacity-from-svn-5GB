@@ -428,7 +428,7 @@ void Ruler::Tick(int pos, double d, bool major)
    if (major)
       label = &mMajorLabels[mNumMajor++];
    else
-      label = &mMinorLabels[mNumMajor++];
+      label = &mMinorLabels[mNumMinor++];
 
    label->pos = pos;
    label->lx = mLeft - 1000; // don't display
