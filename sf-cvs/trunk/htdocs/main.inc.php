@@ -108,4 +108,18 @@ function BoxBottom()
 	print '</td></tr></table></td></tr></table>';
 }
 
+function IncludeFile($name)
+{
+	$f = phpLang_current.'/'.$name.'.php';
+	if (file_exists("updates/$f")) {
+		include "updates/$f";
+	}
+	else if file_exists($f) {
+		include $f;
+	}
+	else {
+		include "en/${name}.php";
+	}
+}
+
 ?>
