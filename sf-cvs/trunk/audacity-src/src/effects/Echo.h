@@ -76,9 +76,6 @@ class EchoDialog:public wxDialog {
 
  private:
 	// handlers
-	//vvv void OnText_Delay(wxCommandEvent & event);
-	//vvv void OnText_Decay(wxCommandEvent & event);
-
    void OnPreview( wxCommandEvent &event );
    void OnOk(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
