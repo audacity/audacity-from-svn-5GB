@@ -157,7 +157,7 @@ ChangeTempoDialog::ChangeTempoDialog(wxWindow * parent,
 
 	//v Override wxTextValidator to disallow negative values <= -100.0?
    wxTextCtrl * pTextCtrl_PercentChange =
-       new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, _("0.0"), 
+       new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, "0.0", 
 								wxDefaultPosition, wxSize(40, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_PercentChange->Add(pTextCtrl_PercentChange, 0, 
@@ -286,7 +286,7 @@ bool ChangeTempoDialog::TransferDataToWindow()
 	wxTextCtrl * pTextCtrl = this->GetTextCtrl_FromBPM();
 	if (pTextCtrl) {
 		if (m_FromBPM != 0)
-			str.Printf(_("%d"), m_FromBPM);
+			str.Printf("%d", m_FromBPM);
 		else
 			str = "";
 		pTextCtrl->SetValue(str);
@@ -295,7 +295,7 @@ bool ChangeTempoDialog::TransferDataToWindow()
 	pTextCtrl = this->GetTextCtrl_ToBPM();
 	if (pTextCtrl) {
 		if (m_ToBPM != 0)
-			str.Printf(_("%d"), m_ToBPM);
+			str.Printf("%d", m_ToBPM);
 		else
 			str = "";
 		pTextCtrl->SetValue(str);
@@ -305,14 +305,14 @@ bool ChangeTempoDialog::TransferDataToWindow()
 	// from/to Length controls
 	pTextCtrl = this->GetTextCtrl_FromLength();
 	if (pTextCtrl) {
-		str.Printf(_("%.2f"), m_FromLength);
+		str.Printf("%.2f", m_FromLength);
 		pTextCtrl->SetValue(str);
 		pTextCtrl->Enable(false); // Disable because the value comes from the user selection.
 	}
 
 	pTextCtrl = this->GetTextCtrl_ToLength();
 	if (pTextCtrl) {
-		str.Printf(_("%.2f"), m_ToLength);
+		str.Printf("%.2f", m_ToLength);
 		pTextCtrl->SetValue(str);
 	}
 
@@ -506,7 +506,7 @@ void ChangeTempoDialog::Update_Text_PercentChange()
 	wxTextCtrl * pTextCtrl = this->GetTextCtrl_PercentChange();
 	if (pTextCtrl) {
 		wxString str;
-		str.Printf(_("%.1f"), m_PercentChange);
+		str.Printf("%.1f", m_PercentChange);
 		pTextCtrl->SetValue(str);
 	}
 }
@@ -536,7 +536,7 @@ void ChangeTempoDialog::Update_Text_ToBPM()
 	wxTextCtrl * pTextCtrl_ToBPM = this->GetTextCtrl_ToBPM();
 	if (pTextCtrl_ToBPM) {
 		wxString str;
-		str.Printf(_("%d"), m_ToBPM);
+		str.Printf("%d", m_ToBPM);
 		pTextCtrl_ToBPM->SetValue(str);
 	}
 }
@@ -548,7 +548,7 @@ void ChangeTempoDialog::Update_Text_ToLength()
 	wxTextCtrl * pTextCtrl_ToLength = this->GetTextCtrl_ToLength();
 	if (pTextCtrl_ToLength) {
 		wxString str;
-		str.Printf(_("%.2f"), m_ToLength);
+		str.Printf("%.2f", m_ToLength);
 		pTextCtrl_ToLength->SetValue(str);
 	}
 }
