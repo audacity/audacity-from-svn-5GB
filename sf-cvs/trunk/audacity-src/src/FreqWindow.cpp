@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include "FreqWindow.h"
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -32,7 +34,6 @@
 #include <math.h>
 
 #include "AColor.h"
-#include "FreqWindow.h"
 #include "FFT.h"
 
 enum {
@@ -73,7 +74,7 @@ BEGIN_EVENT_TABLE(FreqWindow, wxFrame)
     EVT_CHOICE(FreqSizeChoiceID, FreqWindow::OnSizeChoice)
     EVT_CHOICE(FreqFuncChoiceID, FreqWindow::OnFuncChoice)
     EVT_CHOICE(FreqAxisChoiceID, FreqWindow::OnAxisChoice)
-    END_EVENT_TABLE()
+END_EVENT_TABLE()
 
 FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
                            const wxString & title,
@@ -266,6 +267,15 @@ void FreqWindow::PlotMouseEvent(wxMouseEvent & event)
 
 void FreqWindow::OnAlgChoice(wxCommandEvent & event)
 {
+   // Log-frequency axis works for spectrum plots only.
+   if (mAlgChoice->GetSelection() == 0) {
+      mAxisChoice->Enable();
+      mLogAxis = mAxisChoice->GetSelection();
+   }
+   else {
+      mAxisChoice->Disable();
+      mLogAxis = false;
+   }
    Recalc();
 }
 
