@@ -2,7 +2,7 @@ todo.txt
 
 This file contains a list of current features being
 worked on, possible ideas, and ideas for the future.
-Last updated June 22, 2003.  Please check the
+Last updated June 27, 2003.  Please check the
 Audacity-devel list to see who's working on what,
 and for updates.  This file is likely to be updated 
 only about every 2-3 months.
@@ -10,6 +10,52 @@ only about every 2-3 months.
 ------------------------------------------------------
  Definitely in 1.2.0 - high priority
 ------------------------------------------------------
+
+* Some improvements to Save / Export - not a full
+  refactoring, but some of the ideas below.
+
+* Normalize Effect that removes DC bias and sets maximum
+  amplitude to some standard value like -6 dB
+
+* Allow the user to create keyboard shortcuts for Effects
+
+* A Fit option that sizes the tracks vertically to fit
+  in the window.  Shortcut should be Shift+Ctrl+F.
+
+* Finish adding Preview for all effects where it makes sense
+
+* Support custom cursors on Mac.
+
+* New waveform-drawing code that I half-finished  Speeds up
+  drawing in Mac OS X by 2-3x minimum, also should help on
+  older PCs.
+
+* Check for multiple copies of Audacity on Unix
+
+* Add a new item at the top of the Effect menu - Repeat Last Effect
+  (maybe it could dynamically change its name, i.e. "Repeat
+  Compressor".  It would not bring up a dialog, but use the last
+  values.  It would have a keyboard shortcut.
+
+* Open multiple files (it's supported by wxWindows; we should
+  enable and use this feature.)  Both Open and Import.
+
+* VU meters, if at all possible, with a "monitor" mode for recording.
+
+* A master gain control, if at all possible
+
+------------------------------------------------------
+ Ideas - need further discussion
+------------------------------------------------------
+
+* Resize window to a larger size, including to full screen, also does
+  a fit-to-window if we were fitted to window before the resize.
+  I think that tracks should expand proportionally.
+
+  I think that when you open a project, auto-track-resizing should
+  be on by default.  It only goes off if you specifically drag the
+  _bottommost_ track and make it bigger or smaller.  (Then, how
+  should you turn it back on again?)
 
 * Improved Save / Export
 
@@ -42,6 +88,10 @@ only about every 2-3 months.
     think it did...Juhana, could you test this and clarify the
     problem?
 
+* Zooming using mousewheel - obviously this shouldn't
+  be the only way to do it, since not everyone has a
+  mousewheel.  When should it be used, then?
+
 * Allow the user to create keyboard shortcuts for Effects.
 * Normalize Effect that removes DC bias and sets maximum
   amplitude to some standard value like -6 dB
@@ -64,34 +114,6 @@ ALTERNATIVELY:
   drag the _bottommost_ track and make it bigger or smaller.  (Then, 
   how should you turn it back on again?) 
 
-* Vertical zooming (of waveforms)
-
-  - You zoom in by clicking in a track's vertical ruler.  One
-    click zooms in, click-drag selects a region just like with
-    horizontal zooming.
-
-  - How best to zoom out or reset?  I think that when a track
-    is vertically zoomed in, a little button should appear
-    that lets you zoom out...
-
-* New waveform-drawing code that I half-finished  Speeds up
-  drawing in Mac OS X by 2-3x minimum, also should help on
-  older PCs.
-
-* Check for multiple copies of Audacity on Unix
-
-* Fix all XML writers so that they encode characters
-  like '&' and '<'
-
-------------------------------------------------------
- Ideas - need further discussion
-------------------------------------------------------
-
-* Add a new item at the top of the Effect menu - Repeat Last Effect
-  (maybe it could dynamically change its name, i.e. "Repeat
-  Compressor".  It would not bring up a dialog, but use the last
-  values.  It would have a keyboard shortcut.)
-
 * Add an Audio menu with items like Play, Stop, Record, Pause,
   Loop, etc.?
 
@@ -101,9 +123,6 @@ selection cannot be grabbed and dragged. Solution: selection can
 be made only up to the end of the track.
 
   (I'm not sure this is a good idea... DM)
-
-* Open multiple files (it's supported by wxWindows; we should
-  enable and use this feature.)  Both Open and Import.
 
 * When a selection is readjusted by grab&drag, the release of the
 button at outside of the track panel could mean "undo".
@@ -121,8 +140,6 @@ edge so that the coming wave can be seen
 and I don't have time, I think it's okay if they slip...
 Note that some of them might make it into 1.2.1 even as we
 continue with a new unstable branch...)
-
-* VU meters, with a "monitor" mode for recording.
 
 * "Smart Record"
 
