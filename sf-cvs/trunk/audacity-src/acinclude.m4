@@ -413,6 +413,67 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBVORBIS], [
    fi
 ])
 
+AC_DEFUN([AUDACITY_CHECKLIB_LIBFLAC], [
+
+   if false ; then
+      AC_DEFINE(USE_LIBFLAC, 1,
+                [Define if the FLAC library is present])
+   fi
+
+   AC_ARG_WITH(flac,
+               [AC_HELP_STRING([--with-flac],
+                               [enable FLAC support])],
+               LIBFLAC_ARGUMENT=$withval,
+               LIBFLAC_ARGUMENT="unspecified")
+
+   dnl See if FLAC is installed in the system
+
+   AC_CHECK_LIB(FLAC,
+                FLAC__file_decoder_new,
+                lib_found="yes",
+                lib_found="no",
+                -lFLAC++ -lFLAC)
+
+   AC_CHECK_HEADER(FLAC/format.h,
+                   header_found="yes",
+                   header_found="no")
+
+   if test $lib_found = yes && test $header_found = yes ; then
+      LIBFLAC_SYSTEM_AVAILABLE="yes"
+      LIBFLAC_SYSTEM_LIBS="-lFLAC++ -lFLAC"
+      LIBFLAC_SYSTEM_CPPSYMBOLS="USE_LIBFLAC"
+      AC_MSG_NOTICE([FLAC libraries are available as system libraries])
+   else
+      LIBFLAC_SYSTEM_AVAILABLE="no"
+      AC_MSG_NOTICE([FLAC libraries are NOT available as system libraries])
+   fi
+
+   dnl see if FLAC is available in the source dir
+
+   AC_CHECK_FILE(${srcdir}/lib-src/libflac/include/FLAC/format.h,
+                 flac_h_available="yes",
+                 flac_h_available="no")
+
+   AC_CHECK_FILE(${srcdir}/lib-src/libflac/include/FLAC++/decoder.h,
+                 flacpp_h_available="yes",
+                 flacpp_h_available="no")
+
+   if test $flac_h_available = yes && test $flacpp_h_available="yes" ; then
+      LIBFLAC_LOCAL_AVAILABLE="yes"
+
+      LIBFLAC_LOCAL_LIBS="libFLAC++.a libFLAC.a"
+
+      LIBFLAC_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libflac/include'
+      LIBFLAC_LOCAL_CXXFLAGS="$LIBFLAC_LOCAL_CXXFLAGS -I\$(top_srcdir)/lib-src/libflac/include"
+
+      LIBFLAC_LOCAL_CPPSYMBOLS="USE_LIBFLAC"
+
+      LIBFLAC_LOCAL_CONFIG_SUBDIRS="lib-src/libflac"
+      AC_MSG_NOTICE([FLAC libraries are available in this source tree])
+   else
+      AC_MSG_NOTICE([FLAC libraries are NOT available in this source tree])
+   fi
+])
 
 dnl @synopsis AC_C99_FUNC_LRINT
 dnl

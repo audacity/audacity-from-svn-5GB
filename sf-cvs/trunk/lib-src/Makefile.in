@@ -30,6 +30,13 @@ libvorbis.a libvorbisfile.a libvorbisenc.a: libvorbis-recursive
 	ln -sf libvorbis/lib/.libs/libvorbisfile.a libvorbisfile.a
 	ln -sf libvorbis/lib/.libs/libvorbisenc.a libvorbisenc.a
 
+# libflac
+libflac-recursive:
+	$(MAKE)  -C libflac
+libFLAC++.a libFLAC.a: libflac-recursive
+	ln -sf libflac/src/libFLAC++/.libs/libFLAC++.a libFLAC++.a
+	ln -sf libflac/src/libFLAC/.libs/libFLAC.a libFLAC.a
+
 # libnyquist
 libnyquist-recursive:
 	$(MAKE) -C libnyquist

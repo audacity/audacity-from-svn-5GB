@@ -106,6 +106,7 @@ OBJS = \
 	export/ExportPCM.o \
 	export/ExportCL.o \
 	import/Import.o \
+	import/ImportFLAC.o \
 	import/ImportLOF.o \
 	import/ImportMIDI.o \
 	import/ImportMP3.o \

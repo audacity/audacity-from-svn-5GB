@@ -61,6 +61,9 @@
 /* Define if LADSPA plug-ins are enabled */
 #undef USE_LADSPA
 
+/* Define if the FLAC library is present */
+#undef USE_LIBFLAC
+
 /* Define if libid3tag is present */
 #undef USE_LIBID3TAG
 
@@ -87,6 +90,9 @@
 
 /* Define if SoundTouch support should be enabled */
 #undef USE_SOUNDTOUCH
+
+/* Define if FLAC support should be enabled */
+#undef USE_LIBFLAC
 
 /* Placeholder for large file support */
 #undef _FILE_OFFSET_BITS
