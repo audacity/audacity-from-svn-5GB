@@ -41,6 +41,7 @@ class WaveTrack:public VTrack {
    friend class TrackArtist;
 
    static void SetMaxDiskBlockSize(int bytes);
+   static int  GetMaxDiskBlockSize();
 
    enum { WaveDisplay,
       SpectrumDisplay
@@ -157,6 +158,7 @@ class WaveTrack:public VTrack {
    // This function prints information to stdout about the blocks in the
    // tracks and indicates if there are inconsistencies.
    void Debug();
+   void DebugPrintf(wxString *dest);
 
 };
 

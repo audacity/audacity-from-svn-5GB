@@ -61,10 +61,15 @@ void WaveTrack::SetMaxDiskBlockSize(int bytes)
    maxSamples = bytes / sizeof(sampleType);
    minSamples = maxSamples / 2;
 
-   summary256Len = (maxSamples + 255) / 256 * 2;
-   summary64KLen = (summary256Len + 255) / 256 * 2;
+   summary64KLen = (maxSamples + 65535) / 65536 * 2;
+   summary256Len = summary64KLen * 256;
    totalHeaderLen =
        headerTagLen + (summary64KLen + summary256Len) * sizeof(sampleType);
+}
+
+int WaveTrack::GetMaxDiskBlockSize()
+{
+   return maxSamples * sizeof(sampleType);
 }
 
 // WaveTrack methods
@@ -1716,23 +1721,32 @@ void WaveTrack::ConsistencyCheck(const char *whereStr)
    }
 }
 
-void WaveTrack::Debug()
+void WaveTrack::DebugPrintf(wxString *dest)
 {
    unsigned int i;
    unsigned int pos = 0;
 
    for (i = 0; i < block->Count(); i++) {
-      printf("Block %3d: start %8d len %8d  %s",
-             i,
-             block->Item(i)->start,
-             block->Item(i)->len,
-             (const char *) (block->Item(i)->f->GetName()));
+      *dest += wxString::Format
+         ("Block %3d: start %8d len %8d  %s",
+          i,
+          block->Item(i)->start,
+          block->Item(i)->len,
+          (const char *) (block->Item(i)->f->GetName()));
       if (pos != block->Item(i)->start)
-         printf("  ERROR\n");
+         *dest += "  ERROR\n";
       else
-         printf("\n");
+         *dest += "\n";
       pos += block->Item(i)->len;
    }
    if (pos != numSamples)
-      printf("ERROR numSamples = %d\n", numSamples);
+      *dest += wxString::Format
+         ("ERROR numSamples = %d\n", numSamples);
+}
+
+void WaveTrack::Debug()
+{
+   wxString s;
+   DebugPrintf(&s);
+   printf((const char *)s);
 }
