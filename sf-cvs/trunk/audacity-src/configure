@@ -3119,7 +3119,7 @@ echo "$as_me: error: \"Could not find wx-config: is wxWindows installed? is wx-c
    { (exit 1); exit 1; }; }
 fi
 LIBS="$LIBS `$WX_CONFIG --libs`"
-CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cflags`"
+CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cxxflags`"
 
 if [ "$host_os" = "darwin5.3" ] ; then
 
