@@ -102,6 +102,7 @@ class Meter : public wxPanel
    void DrawMeterBar(wxDC &dc, MeterBar *meterBar);
    void ResetBar(MeterBar *bar, bool resetClipping);
    void RepaintBarsNow();
+   void StartMonitoring();
    wxFont GetFont();
 
    int       mWidth;
