@@ -28,7 +28,7 @@ Search Audacity websites and documentation:
 
       <input maxLength="255" name="s" size="20" value=''>
       <input type="submit" value="Search">
-      <a TARGET="_blank" HREF="http://audacityteam.org/isearch/help.php">Search Help</a>
+      <a TARGET="_blank" HREF="http://audacityteam.org/isearch/help.php"><font size="-1"> Help with searching</font></a>
     </td>
   </tr>
 </table>
