@@ -1015,8 +1015,8 @@ void TrackPanel::DoPopupMenu(wxMouseEvent &event, wxRect& titleRect,
 
       theMenu->Enable(OnWaveformID, display != WaveTrack::WaveformDisplay);
       theMenu->Enable(OnWaveformDBID, display != WaveTrack::WaveformDBDisplay);
-      theMenu->Enable(OnSpectrumID, display != WaveTrack::SpectrumDisplay);
-      theMenu->Enable(OnPitchID, display != WaveTrack::PitchDisplay);
+      theMenu->Enable(OnSpectrumID, (display != WaveTrack::SpectrumDisplay)&&(!this->mTrackIndicator)); // BG: Also disable if following progress indicator, because redraws are way too slow in this mode
+      theMenu->Enable(OnPitchID, (display != WaveTrack::PitchDisplay)&&(!this->mTrackIndicator)); // BG: Also disable if following progress indicator, because redraws are way too slow in this mode
    }
 
    if (t->GetKind() == VTrack::Note)
