@@ -215,6 +215,12 @@ AC_ARG_WITH(portmixer,
 	use_portmixer=$withval,
 	use_portmixer="yes")
 
+AC_ARG_WITH(portaudio,
+	[AC_HELP_STRING([--with-portaudio],
+		[which version of PortAudio to use (=[v18,v19]) [default=v18]])],
+	use_portaudio=$withval,
+	use_portaudio="v18")
+
 AC_ARG_WITH(soundtouch,
 	[AC_HELP_STRING([--with-soundtouch],
 		[compile with SoundTouch [default=yes]])],
@@ -232,6 +238,7 @@ if [[ "$use_portmixer" = "yes" ]] ; then
 	[Define if PortMixer support should be enabled])
 	CXXFLAGS="-I../lib-src/portmixer/px_common $CXXFLAGS"
 fi
+
 
 if [[ "$use_soundtouch" = "yes" ]] ; then
 	AC_DEFINE(USE_SOUNDTOUCH, 1,	
@@ -492,59 +499,75 @@ fi
 LIBS="$LIBS `$WX_CONFIG --libs`"
 CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cxxflags`"
 
-CXXFLAGS="-I../lib-src/portaudio/pa_common $CXXFLAGS"
 
 AC_CANONICAL_HOST
 
-case "${host_os}" in
-  darwin* | rhapsody*)
-	dnl Mac OS X configuration
+dnl PortAudio configuration
 
-	dnl CoreAudio
+if [[ "$use_portaudio" = "v19" ]] ; then
+	AC_DEFINE(USE_PORTAUDIO_V19, 1,
+		[Define if PortAudio v19 is being used (instead of v18)])
 
-	CXXFLAGS="-I../mac $CXXFLAGS"
+	BUILDLIBS="$BUILDLIBS portaudio-v19/lib/libportaudio.a"
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
+	CXXFLAGS="-I../lib-src/portaudio-v19/pa_common $CXXFLAGS"
 
-	BUILDLIBS="$BUILDLIBS portaudio/pa_mac_core/portaudio.a"
-	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_mac_core/portaudio.a"
+	AC_CONFIG_SUBDIRS([[lib-src/portaudio-v19]])
 
-   if [[ "$use_portmixer" = "yes" ]] ; then
-		BUILDLIBS="$BUILDLIBS portmixer/px_mac_core/portmixer.a"
-		EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_mac_core/portmixer.a"		
-   fi
+else
 
-	LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
-	LIBS="-framework CoreAudio $LIBS -lz"
+	CXXFLAGS="-I../lib-src/portaudio/pa_common $CXXFLAGS"
 
-	AFTERBUILD="cp ../audacity ../Audacity.app && `$WX_CONFIG --rezflags` ../Audacity.app ../mac/audacity.r -c auDy && /Developer/Tools/SetFile -a avBstClinmed ../Audacity.app"
+	case "${host_os}" in
+	  darwin* | rhapsody*)
+		dnl Mac OS X configuration
 
-	if [[ "$use_ladspa" = "default" ]] ; then
-		use_ladspa="yes";
-	fi
+		dnl CoreAudio
 
-	dnl VST
-	
-	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/LoadVSTMac.o"
-	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/VSTEffect.o"
+		CXXFLAGS="-I../mac $CXXFLAGS"
 
-;;
-  *)
-	dnl Unix OSS configuration
+		BUILDLIBS="$BUILDLIBS portaudio/pa_mac_core/portaudio.a"
+		EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_mac_core/portaudio.a"
 
-	BUILDLIBS="$BUILDLIBS portaudio/pa_unix_oss/portaudio.a"
-	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
+	   if [[ "$use_portmixer" = "yes" ]] ; then
+			BUILDLIBS="$BUILDLIBS portmixer/px_mac_core/portmixer.a"
+			EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_mac_core/portmixer.a"		
+	   fi
 
-   if [[ "$use_portmixer" = "yes" ]] ; then
-		BUILDLIBS="$BUILDLIBS portmixer/px_unix_oss/portmixer.a"
-		EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_unix_oss/portmixer.a"		
-   fi
+		LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
+		LIBS="-framework CoreAudio $LIBS -lz"
 
-	if [[ "$use_ladspa" = "default" ]] ; then
-		use_ladspa="yes";
-	fi
+		AFTERBUILD="cp ../audacity ../Audacity.app && `$WX_CONFIG --rezflags` ../Audacity.app ../mac/audacity.r -c auDy && /Developer/Tools/SetFile -a avBstClinmed ../Audacity.app"
 
-	AFTERBUILD=""
+		if [[ "$use_ladspa" = "default" ]] ; then
+			use_ladspa="yes";
+		fi
 
-esac
+		dnl VST
+		
+		OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/LoadVSTMac.o"
+		OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/VSTEffect.o"
+
+	;;
+	  *)
+		dnl Unix OSS configuration
+
+		BUILDLIBS="$BUILDLIBS portaudio/pa_unix_oss/portaudio.a"
+		EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
+
+	   if [[ "$use_portmixer" = "yes" ]] ; then
+			BUILDLIBS="$BUILDLIBS portmixer/px_unix_oss/portmixer.a"
+			EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_unix_oss/portmixer.a"		
+	   fi
+
+		if [[ "$use_ladspa" = "default" ]] ; then
+			use_ladspa="yes";
+		fi
+
+		AFTERBUILD=""
+
+	esac
+fi
 
 case "$host_os" in
 	darwin* | rhapsody*)
@@ -671,6 +694,12 @@ if [[ "$use_portmixer" = "yes" ]] ; then
 	echo "  with    portmixer";
 else
 	echo "  without portmixer";
+fi
+
+if [[ "$use_portaudio" = "v19" ]] ; then
+	echo "  with    portaudio v19  (note: if portmixer is enabled it will not work)";
+else
+	echo "  with    portaudio v18";
 fi
 
 if [[ "$use_soundtouch" = "yes" ]] ; then
