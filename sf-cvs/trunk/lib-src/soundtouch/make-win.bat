@@ -7,10 +7,28 @@
 @REM Copyright (c) Olli Parviainen
 @REM File Created: 09/Sep/2003
 @REM
-@REM $Id: make-win.bat,v 1.1.1.1 2004-03-14 15:51:34 mbrubeck Exp $ 
+@REM $Id: make-win.bat,v 1.2 2004-10-26 19:16:42 vjohnson Exp $ 
+
+@if "%MsDevDir%"=="" goto nodevdir
 
 md bin
 md lib
 msdev source\SoundTouch\SoundTouch.dsw /MAKE ALL
 msdev source\example\bpm\bpm.dsw /MAKE ALL
 msdev source\example\SoundStretch\SoundStretch.dsw /MAKE "SoundStretch - Win32 Release"
+
+goto end
+
+:nodevdir
+
+@echo off
+echo *********************************************************************
+echo **
+echo ** ERROR: Visual Studio path not set.
+echo **
+echo ** Run "vcvars32.bat" from Visual Studio installation directory, e.g. 
+echo ** "\Program Files\Microsoft Visual Studio\VC98\Bin", then try again.
+echo **
+echo *********************************************************************
+
+:end
