@@ -1244,8 +1244,8 @@ void WaveTrack::UpdateSummaries(sampleType * buffer,
       summary64K[i * 2 + 1] = max;
    }
    for (i = sumLen; i < summary64KLen / 2; i++) {
-      summary256[i * 2] = 0;
-      summary256[i * 2 + 1] = 0;
+      summary64K[i * 2] = 0;
+      summary64K[i * 2 + 1] = 0;
    }
 
    // Recalc block-level summary
