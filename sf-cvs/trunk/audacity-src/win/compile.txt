@@ -88,8 +88,15 @@ There are three settings that need changing:
     2.  Resource Directory  (e.g. D:\wxWindows\wx2\include)
     3.  Library Directory   (e.g. D:\wxWindows\wx2\lib)
 
-There are at least two ways you can set the directories.
+All of the examples below assume you have installed the
+wxWindows directory at "D:\wxWindows" and therefore the
+"D:\wxWindows\wx2" directory exists.
+
+There are at least three ways you can set the directories.
 Select the best option for your development environment.
+If you are not sure which option is best for you, start out
+using Option 4.1.  You can always switch to another option
+later.
 
 -----------------------------------------------------
 OPTION 4-1. Set wxWindows directories global for VC++
@@ -109,20 +116,31 @@ Select the Directories tab in the popup.
 2.  Select "Library files" in the right combo box and add the
     wxWindows lib directory to the end of the list.
 
-Before building a debug version of Audacity, you may want to
-do the following to eliminate link warning messages:
+------------------------------------------------------------
+OPTION 4-2. Set a virtual drive for your wxWindows directory
+------------------------------------------------------------
+The audacity.dsp file assumes that you might have wxWindows
+installed on your "W:" drive.  Normally "W:" is not a drive
+on most systems but it is very easy to map your wxWindows
+directory to act as a "W:" virtual drive.
 
-Go to the "Project"->"Settings" menu item in Visual Studio.
+In your C:autoexec.bat file, add the following line:
 
-3. Ignore lib. Select "Win32 Debug" from the "Settings For"
-   combo. Select only "Audacity" in the tree, the Link tab, and
-   "Input" in the combo box. Enter "libcmtd.lib" in the
-   "Ignore Libraries" box.
-   (7/13/02 note: This may be added to the audacity.dsp file
-   so you may not need to do this step in the future.)
+subst W: D:\wxWindows\
+
+where instead of "D:\wxWindows\" you put the acutal
+directory where you have installed wxWindows.
+
+Reboot your system.  In Windows Explorer (or My Computer)
+you should now see a W: drive with the wx2 directory in it.
+
+This option may not be the best option for everyone because
+there have been reports of filesharing problems with files
+in virtual drives.  However, you only have to set this up
+once - not everytime you download a new version of Audacity. 
 
 --------------------------------------------------------------
-OPTION 4-2. Set wxWindows directories in the Audacity dsp file
+OPTION 4-3. Set wxWindows directories in the Audacity dsp file
 --------------------------------------------------------------
 This option sets the wxWindows directories only for the Audacity
 project; it does not affect any other projects you have.  The
@@ -153,11 +171,24 @@ Go to the "Project"->"Settings" menu item in Visual Studio.
    library path" box.  (eg ",D:\wxWindows\wx2\lib" - don't
    forget the comma!)
 
-Before building a debug version of Audacity, you may want to
-do the "Ignore lib" setting give above.
+---------------------------
+STEP 5:  Ignore lib setting
+---------------------------
+Some people previously reported error messages linking
+Audacity.  You may not have this problem.  However, if you
+receive error messages during the link process, try the
+following.
+
+Go to the "Project"->"Settings" menu item in Visual Studio.
+
+Ignore lib. Select "Win32 Debug" or "Win32Release" as
+appropriate for the build you were doing from the "Settings For"
+combo. Select only "Audacity" in the tree, the Link tab, and
+"Input" in the combo box. Enter "libcmtd.lib" in the
+"Ignore Libraries" box.
 
 -----------------------
-STEP 5:  Build Audacity
+STEP 6:  Build Audacity
 -----------------------
 Now select the configuration that you wish to build
 ("Audacity - Win32 Release" for general use, "Audacity -
