@@ -151,6 +151,11 @@ Changes in 0.98:
   - Windows: recording/playback devices are no longer reversed
     in the preferences!
 
+  - Windows: VST plug-ins are found no matter how Audacity is
+    launched.
+
+  - Windows: You can now import Ogg Vorbis files.
+
   - If recording fails, a phantom track is no longer created.
 
   - Changing the export format now changes the menu bar.
