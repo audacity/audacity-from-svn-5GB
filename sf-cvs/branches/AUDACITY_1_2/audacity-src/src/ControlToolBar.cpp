@@ -602,6 +602,7 @@ void ControlToolBar::SetCurrentTool(int tool, bool show)
       if (show)
          mTool[mCurrentTool]->PushDown();
    }
+   RedrawAllProjects();
 }
 
 void ControlToolBar::SetPlay(bool down)
