@@ -6,7 +6,8 @@ in Audacity.
 -----------------------------------------------------------
 Known bugs to fix:
 -----------------------------------------------------------
-
+- Mac OS 9: typing while in an Open/Save dialog can
+  cause playback to start!!!
 - MAD imports values out of -1.0...1.0 range...need to clip
 - Program crashes if gPrefs can't be created (Linux)...
 - Fade doesn't fade out quite enough - it should finish
