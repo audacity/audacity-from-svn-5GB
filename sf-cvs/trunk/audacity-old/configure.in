@@ -50,8 +50,10 @@ if [[ "$use_libmpeg3" = "yes" ]] ; then
 	dnl do we need to do a host check?? I have no idea what os's 
 	dnl libmpeg3 will compile on...
 
-	AC_DEFINE(USE_LIBMPEG3)
-	AC_DEFINE(MP3SUPPORT)
+	AC_DEFINE(USE_LIBMPEG3, 1,
+		[Define if mp3 support is implemented with the libmpeg3 library])
+	AC_DEFINE(MP3SUPPORT, 1,
+		[Define if at least one supported library for mp3 functions is present])
 	EXTRAOBJS="$EXTRAOBJS mpeg3/libmpeg3.a"
 	use_xaudio="no"
 fi
@@ -71,7 +73,8 @@ if [[ "$use_xaudio" = "yes" ] || [ "$use_xaudio" = "default" ]] ; then
 			;;
 	esac
 			
-	AC_DEFINE(USE_XAUDIO)
+	AC_DEFINE(USE_XAUDIO, 1,
+		[Define if mp3 support is implemented with the xaudio library])
 	AC_DEFINE(MP3SUPPORT)
 fi
 
@@ -86,7 +89,8 @@ AC_CHECK_LIB(vorbisfile, ov_open,
 	-lvorbis -logg) dnl auxiliary library that -lvorbisfile needs
 
 	LIBS="$LIBS -lvorbisfile -lvorbis -logg"
-	AC_DEFINE(USE_LIBVORBIS)
+	AC_DEFINE(USE_LIBVORBIS, 1,
+		[Define if the ogg vorbis decoding library is present])
 fi
 
 AC_PATH_PROG(WX_CONFIG, wx-config, no)
@@ -103,4 +107,5 @@ AC_TYPE_SIZE_T
 
 dnl Checks for library functions.
 
+AC_CONFIG_HEADERS(configunix.h:configtemplate.h)
 AC_OUTPUT(Makefile)

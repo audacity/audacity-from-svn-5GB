@@ -9,7 +9,7 @@
 #
 
 LIBS = @LIBS@
-CFLAGS = @DEFS@ @CFLAGS@ @CPPFLAGS@ -Iallegro
+CFLAGS = @CFLAGS@ @CPPFLAGS@ -Iallegro
 CCC = @CXX@
 CC = @CC@
 

@@ -30,3 +30,7 @@ void QuitAudacity();
 #include "configmac.h"
 #endif
 
+#ifdef __WXGTK__
+#include "configunix.h"
+#endif
+
