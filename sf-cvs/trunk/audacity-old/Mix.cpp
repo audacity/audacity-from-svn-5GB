@@ -256,9 +256,9 @@ void Mixer::Mix(int *channelFlags, WaveTrack *src, double t0, double t1)
   int soffset = 0;
 
   if (s0 < 0) {
-		soffset = -s0;
-		slen -= soffset;
-		s0 = 0;
+    soffset = -s0;
+    slen -= soffset;
+    s0 = 0;
   }
   if (s1 > (int)src->numSamples) {
 		slen -= (s1 - src->numSamples);
@@ -267,22 +267,18 @@ void Mixer::Mix(int *channelFlags, WaveTrack *src, double t0, double t1)
 
   // Sometimes the length of the data we want to grab
   // ends up one sample too big, so we truncate it
-  if (soffset+slen >= mBufferSize)
+  if (soffset+slen >= mBufferSize) {
     slen = (mBufferSize - soffset);
+    s1 = s0 + slen;
+  }
 
   if (slen <= 0)
-		return;
+    return;
   
   int i;
   
   // Get the samples from the track
-  src->Get(&mTemp[soffset], (sampleCount)s0, (sampleCount)slen);
-
-  // and zero the rest of the buffer
-  for(i=0; i<soffset; i++)
-    mTemp[i] = 0;
-  for(i=s1; i<mBufferSize; i++)
-    mTemp[i] = 0;
+  src->Get(mTemp, (sampleCount)s0, (sampleCount)slen);
 
   // Apply the envelope and volume
 
@@ -291,63 +287,63 @@ void Mixer::Mix(int *channelFlags, WaveTrack *src, double t0, double t1)
 	
   double volume;
   if (mUseVolumeSlider)
-		volume = mAPalette->GetSoundVol();
+    volume = mAPalette->GetSoundVol();
   else
-		volume = 1.0;
-
+    volume = 1.0;
+  
   Envelope *e = src->GetEnvelope();
   if (e->IsLinearInRegion(t0, t1)) {
-		double leftVal = e->GetValue(t0) * volume;
-		double rightVal = e->GetValue(t1) * volume;
-
-		double val = leftVal;
-		double step = (rightVal-leftVal)/slen;
-		sampleType *buffer = &mTemp[soffset];
-		for(i=0; i<slen; i++) {
-		  buffer[i] = sampleType(buffer[i]*val);
-		  val += step;
-		}
+    double leftVal = e->GetValue(t0) * volume;
+    double rightVal = e->GetValue(t1) * volume;
+    
+    double val = leftVal;
+    double step = (rightVal-leftVal)/slen;
+    sampleType *buffer = &mTemp[soffset];
+    for(i=0; i<slen; i++) {
+      buffer[i] = sampleType(buffer[i]*val);
+      val += step;
+    }
   }
   else {
-		// The envelope changes within this region, so we
-		// do things the slow way, calculating the value of
-		// the envelope at each pixel
-
-		double t = t0;
-		double tstep = 1.0 / src->rate;
-		for(i=0; i<slen; i++) {
-		  mTemp[soffset+i] =
-			sampleType(mTemp[soffset+i]*volume*e->GetValue(t));
-		  t += tstep;
-		}
-	}
-
-	// Then mix it down to the appropriate tracks
-
-	for(int c=0; c<mNumChannels; c++) {
-		if (!channelFlags[c])
-		  continue;
-
-		sampleType *src = &mTemp[soffset];
-		sampleType *dest;
-		int skip;
-
-		if (mInterleaved) {
-		  dest = &mBuffer[0][(mNumChannels*soffset) + c];
-		  skip = mNumChannels;
-		}
-		else {
-		  dest = &mBuffer[c][soffset];
-		  skip = 1;
-		}
-
-		// This is the mixing inner loop, which we want
-		// as optimized as possible
-
-		for(int j=0; j<slen; j++) {
-		  *dest += mTemp[j];
-		  dest += skip;
-		}
+    // The envelope changes within this region, so we
+    // do things the slow way, calculating the value of
+    // the envelope at each pixel
+    
+    double t = t0;
+    double tstep = 1.0 / src->rate;
+    for(i=0; i<slen; i++) {
+      mTemp[soffset+i] =
+	sampleType(mTemp[soffset+i]*volume*e->GetValue(t));
+      t += tstep;
+    }
+  }
+  
+  // Then mix it down to the appropriate tracks
+  
+  for(int c=0; c<mNumChannels; c++) {
+    if (!channelFlags[c])
+      continue;
+    
+    sampleType *src = mTemp;
+    sampleType *dest;
+    int skip;
+    
+    if (mInterleaved) {
+      dest = &mBuffer[0][(mNumChannels*soffset) + c];
+      skip = mNumChannels;
+    }
+    else {
+      dest = &mBuffer[c][soffset];
+      skip = 1;
+    }
+    
+    // This is the mixing inner loop, which we want
+    // as optimized as possible
+    
+    for(int j=0; j<slen; j++) {
+      *dest += mTemp[j];
+      dest += skip;
+    }
   }
 }
   

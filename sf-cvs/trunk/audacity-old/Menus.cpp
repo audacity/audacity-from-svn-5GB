@@ -63,8 +63,8 @@ void AudacityProject::CreateMenuBar()
   mFileMenu->Append(SaveID, "&Save\tCtrl+S");
   mFileMenu->Append(SaveAsID, "Save &As...");
   mFileMenu->AppendSeparator();
-  mFileMenu->Append(ExportSelectionID, "Export &Selection...");
-  mFileMenu->Append(ExportMixID, "&Export Mix...");
+  mFileMenu->Append(ExportMixID, "&Export...");
+  mFileMenu->Append(ExportSelectionID, "Export &Selected Audio...");
   mFileMenu->Append(ExportLabelsID, "Export &Labels...");
   mFileMenu->AppendSeparator();
   mFileMenu->Append(PreferencesID, "&Preferences...\tCtrl+P");
@@ -276,48 +276,12 @@ void AudacityProject::OnExportLabels(wxCommandEvent& event)
 
 void AudacityProject::OnExportMix(wxCommandEvent& event)
 {
-  wxMessageBox("Not implemented");
+  ::Export(mTracks, false, 0.0, mTracks->GetMaxLen());
 }
 
 void AudacityProject::OnExportSelection(wxCommandEvent& event)
 {
-  VTrack *left = 0;
-  VTrack *right = 0;
-  VTrack *t;
-  int numSelected = 0;
-
-  TrackListIterator iter(mTracks);
-  
-  t = iter.First();
-  while(t) {
-	if (t->selected)
-	  numSelected++;
-	if (t->GetKind() != VTrack::Wave) {
-	  wxMessageBox("Only audio tracks can be exported.");
-	  return;
-	}
-	t = iter.Next();
-  }
-
-  if (numSelected == 0) {
-	wxMessageBox("Please select one or two tracks before trying to export.");
-	return;
-  }
-
-  if (numSelected > 2) {
-	wxMessageBox("Cannot export more than two tracks (stereo).  "
-				 "Please select either one or two tracks.");
-  }
-
-  left = iter.First();  
-  while (left && (!left->selected))
-	left = iter.Next();
-  
-  do {
-	right = iter.Next();
-  } while (right && (!right->selected));
-  
-  ::Export((WaveTrack *)left, (WaveTrack *)right);
+  ::Export(mTracks, true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
 void AudacityProject::OnPreferences(wxCommandEvent& event)
