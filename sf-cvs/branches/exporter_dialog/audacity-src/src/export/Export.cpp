@@ -9,22 +9,41 @@
 **********************************************************************/
 
 #include <wx/textctrl.h>
+#include <wx/button.h>
+#include <wx/choice.h>
+#include <wx/defs.h>
 #include <wx/file.h>
 #include <wx/timer.h>
 #include <wx/filedlg.h>
 #include <wx/msgdlg.h>
 #include <wx/progdlg.h>
+#include <wx/statbox.h>
+#include <wx/stattext.h>
 #include <wx/string.h>
+#include <wx/sizer.h>
+
+#include "Exporter.h"
+#include "CLExporter.h"
+#include "FLACExporter.h"
+#include "MP3Exporter.h"
+#include "LabelExporter.h"
+#include "OggExporter.h"
+#include "PCMExporter.h"
+
 
 #include "Export.h"
+
+//Use of the next files is deprecated.
 #include "ExportPCM.h"
-#include "ExportMP3.h"
+//#include "ExportMP3.h"
 #include "ExportOGG.h"
 #include "ExportCL.h"
+
 
 #include "sndfile.h"
 
 #include "../Audacity.h"
+#include "../AudioIO.h"
 #include "../DirManager.h"
 #include "../FileFormats.h"
 #include "../LabelTrack.h"
@@ -34,106 +53,620 @@
 #include "../Track.h"
 #include "../WaveTrack.h"
 
-/* Declare Static functions */
-static wxString ExportCommon(AudacityProject *project,
-                             wxString format, wxString extension,
-                             bool selectionOnly, double *t0, double *t1,
-                             bool *isStereo,
-                             wxString &actualName);
-                      
-/*
- * This first function contains the code common to both
- * Export() and ExportLossy()
- *
- * For safety, if the file already exists it stores the filename
- * the user wants in actualName, and returns a temporary file name.
- * The calling function should rename the file when it's successfully
- * exported.
- */
-wxString ExportCommon(AudacityProject *project,
-                      wxString format, wxString defaultExtension,
-                      bool selectionOnly, double *t0, double *t1,
-                      bool *isStereo,
-                      wxString &actualName)
+ 
+#include <iostream>
+
+
+//These get called by menu functions. To be fixed.
+bool Export(AudacityProject *project,
+            bool selectionOnly, double t0, double t1)
 {
-   TrackList *tracks = project->GetTracks();
+  FormatSelectionDialog *  select = new FormatSelectionDialog(project, selectionOnly,t0,t1);
+  if(select->ShowModal() == wxID_CANCEL)
+    {
+      return false;
+    }
+  return true;
+}
 
-   /* First analyze the selected audio, perform sanity checks, and provide
-    * information as appropriate. */
+bool ExportLossy(AudacityProject *project,
+                 bool selectionOnly, double t0, double t1)
+{
+  FormatSelectionDialog *  select = new FormatSelectionDialog(project, selectionOnly,t0,t1);
+  if(select->ShowModal() == wxID_CANCEL)
+    {
+      return false;
+    }
+  return true;
 
-   /* Tally how many are right, left, mono, and make sure at
-      least one track is selected (if selectionOnly==true) */
+}
 
-   int numSelected = 0, numLeft = 0, numRight = 0, numMono = 0;
-   float earliestBegin = *t1;
-   float latestEnd = *t0;
 
-   TrackListIterator iter1(tracks);
-   Track *tr = iter1.First();
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+BEGIN_EVENT_TABLE(FormatSelectionDialog, wxDialog)
+  EVT_CHOICE(FSD_FORMAT_CHOOSER,       FormatSelectionDialog::OnSelectFormat)
+  EVT_CHOICE(FSD_SECONDARY_CHOOSER,    FormatSelectionDialog::OnOptions)
+  EVT_CHOICE(FSD_SAMPLE_RATE_CHOOSER,  FormatSelectionDialog::OnRate)
+  EVT_BUTTON(FSD_OK,  FormatSelectionDialog::OnOK)
+  EVT_BUTTON(FSD_CANCEL, FormatSelectionDialog::OnCancel)
+  EVT_SIZE(FormatSelectionDialog::OnSize)
 
-   while (tr) {
-      if (tr->GetKind() == Track::Wave) {
-         if (tr->GetSelected() || !selectionOnly) {
+END_EVENT_TABLE()
+  ;
 
-            numSelected++;
 
-            if (tr->GetChannel() == Track::LeftChannel)
-               numLeft++;
-            else if (tr->GetChannel() == Track::RightChannel)
-               numRight++;
-            else if (tr->GetChannel() == Track::MonoChannel)
-               numMono++;
-            
-            if(tr->GetOffset() < earliestBegin)
-               earliestBegin = tr->GetOffset();
+FormatSelectionDialog::FormatSelectionDialog(AudacityProject * project, bool selection,double t0, double t1):
+  wxDialog(project, -1, _("Select Export Format"), wxDefaultPosition,
+	   wxSize(500,500),  wxTHICK_FRAME, _("Selection Format Dialog")),
+  mProject(project),
+  mCurrentFormatChoice(FORMAT_TYPE_UNKNOWN),
+  mFileName(""),
+  m_sf_Format(0),
+  m_sf_Encoding(0),
+  m_sf_Endianness(0),
+  mEncodings(NULL),
+  mSelectionOnly(selection),
+  m_t0(t0),
+  m_t1(t1)
+{
 
-            if(tr->GetEndTime() > latestEnd)
-               latestEnd = tr->GetEndTime();
+  //Create a top-level sizer, which hase to sizers inside it, 
+  //spaced horizontally.
+  mainSizer = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer * topSizer = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer * leftSizer = new wxBoxSizer(wxVERTICAL);
+  mSecondaryOptionSizer = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer * bottomSizer = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer * tmpSizer;
+    
+
+  //------------------------------------------------------  
+  //Create the format chooser.
+  //------------------------------------------------------  
+  //numFormats will be all formats provided by lsf, plus
+  //.mp3, .ogg, and .flac, command-line, and text labels. 
+  //mNumAvailableFormats tells us how many are available currently
+
+  int numFormats = sf_num_headers() + 5;
+  
+  //Hold the names of each format string in this array:
+  wxString *formatStrings = new wxString[numFormats];
+  mFormats = new FormatType[numFormats];
+
+
+  //Iterate through each format, adding it to the string array.
+  mNumAvailableFormats = 0;
+  //Do the non-SF formats first.
+
+  if(USE_LIBVORBIS)
+    {
+      formatStrings[mNumAvailableFormats] = _("Ogg Vorbis");
+      mFormats[mNumAvailableFormats] = FORMAT_TYPE_OGG;
+      mNumAvailableFormats++;
+    }
+  
+  formatStrings[mNumAvailableFormats] = _("MP3 (Lame Encoder)");
+  mFormats[mNumAvailableFormats] = FORMAT_TYPE_MP3;
+  mNumAvailableFormats++;
+
+
+  //Is there a USE_FLAC or something defined when FLAC is available?
+#ifndef USE_FLAC
+#define USE_FLAC 0
+#endif
+
+  if(USE_FLAC) //This should not be loaded if unavailable: 
+    {
+      formatStrings[mNumAvailableFormats] = _("FLAC (Lossless format)");
+      mFormats[mNumAvailableFormats] = FORMAT_TYPE_FLAC;
+      mNumAvailableFormats++;
+    }
+  
+  formatStrings[mNumAvailableFormats] = _("Text Labels");
+  mFormats[mNumAvailableFormats] = FORMAT_TYPE_LABELS;
+  mNumAvailableFormats++;
+
+
+  formatStrings[mNumAvailableFormats] = _("Command-Line Exporter");
+  mFormats[mNumAvailableFormats] = FORMAT_TYPE_COMMANDLINE;
+  mNumAvailableFormats++;
+  
+  for(int i =0; i < sf_num_headers(); i++)
+    {
+      formatStrings[i+mNumAvailableFormats] = sf_header_index_name(i);
+      
+      //This is a nasty kludge. Convert sf format types with a cast to our format, which happens to be identical.
+      mFormats[i+mNumAvailableFormats]      = (FormatType)sf_header_index_to_type(i);
+    }
+  
+  
+  //Create a chooser from the formatStrings array:
+  mFormatChooser = new wxChoice(this, FSD_FORMAT_CHOOSER,
+				wxDefaultPosition, wxDefaultSize,
+				mNumAvailableFormats+sf_num_headers(), formatStrings);
+
+  //By default, export to microsoft wave.... (should be whatever was exported to last, or 
+  //what is stored in the preferences.)
+  mFormatChooser->SetSelection(mNumAvailableFormats + 10);
+  
+
+  //Create new tmpSizer, add label and chooser to it, then add it to panel.
+  tmpSizer= new wxBoxSizer(wxHORIZONTAL);
+  tmpSizer->Add(new wxStaticText(this, -1, _("Select type of file:")), 0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
+ //Add the primary format chooser to the left sizer.
+  tmpSizer->Add(mFormatChooser,1,wxALL | wxALIGN_CENTER, 0);
+  leftSizer->Add(tmpSizer,1,wxALL | wxALIGN_CENTER,10);
+
+  
+  //------------------------------------------------------  
+  //Create the channels chooser.  
+  //------------------------------------------------------  
+  
+  // This chooser gives you the option of exporting mone, stereo,
+  // or with each track in its own channel. It defaults to whatever
+  // is set in the preferences.
+
+  //Determine how many tracks (of each kind) are selected.
+  TrackList *tracks = project->GetTracks();
+  TrackListIterator iter1(tracks);
+  Track *tr = iter1.First();
+  int numSelected = 0, numLeft = 0, numRight = 0, numMono = 0;
+  float earliestBegin = m_t1;
+  float latestEnd = m_t0;
+
+
+  //Iterate through all the tracks, keeping track of how many of each type
+  //exist and determine what the left and right export regions are.
+  while (tr) {
+    if (tr->GetKind() == Track::Wave) {
+      if (tr->GetSelected() || !mSelectionOnly) {
+	
+	numSelected++;
+
+	if (tr->GetChannel() == Track::LeftChannel)
+	  numLeft++;
+	else if (tr->GetChannel() == Track::RightChannel)
+	  numRight++;
+	else if (tr->GetChannel() == Track::MonoChannel)
+	  numMono++;
+
+
+	if(tr->GetOffset() < earliestBegin)
+	  earliestBegin = tr->GetOffset();
+	
+	if(tr->GetEndTime() > latestEnd)
+	  latestEnd = tr->GetEndTime();
 
          }
+    }
+
+    
+    
+    if(m_t0 < earliestBegin)
+      m_t0 = earliestBegin;
+    
+    if(m_t1 > latestEnd)
+      m_t1 = latestEnd;
+    
+    tr = iter1.Next();
+  }
+  mNumTotalChannels = numSelected;
+
+
+
+  mChannelChooser = new wxChoice(this, FSD_CHANNEL_CHOOSER,
+				 wxDefaultPosition,  wxSize(200, -1),
+				 0, NULL);
+
+  
+  mChannelChooser->Append(_("1 (mono)"));
+  mChannelChooser->Append(_("2 (stereo--Mixed)"));
+
+  if(numSelected > 2)
+    {
+      wxString tmp = numSelected + _(" (each a separate track)");
+      mChannelChooser->Append(tmp);
+    }
+  //The default selection should depend on what was in the project.  If there were
+  //no left or right tracks, export mono by default.  If there were any
+  //left or right tracks, export stereo.
+  
+  if((numLeft + numRight ) == 0)       //Mono
+    {
+      mChannelChooser->SetSelection(0);
+      mNumExportedChannels = 1;
+    }
+  else                                 //Stereo
+    {
+      mChannelChooser->SetSelection(1);
+      mNumExportedChannels = 2;
+    }
+  
+  //Add controls to a sizer and add sizer to left panel.
+  tmpSizer= new wxBoxSizer(wxHORIZONTAL);
+  tmpSizer->Add(new wxStaticText(this, -1, _("Select number of channels to export:")), 0, 
+		 wxALL|wxALIGN_CENTER_VERTICAL, 0);
+  tmpSizer->Add(mChannelChooser,1,wxALL | wxALIGN_CENTER, 0);
+  leftSizer->Add(tmpSizer, 0, wxALL|wxALIGN_CENTER_VERTICAL, 10);
+
+  //------------------------------------------------------  
+  //Create a sample rate selector.
+  //------------------------------------------------------  
+  wxArrayLong sampleRates = AudioIO::GetSupportedSampleRates();
+  
+
+  //Get the project sample rate and set the default export rate to the project rate.
+  double rate = mProject->GetRate();
+  
+  int pos = sampleRates.GetCount(); // Fall back to "Other..."
+  for (int i = 0; i < (int)sampleRates.GetCount(); i++)
+    {
+      if (rate == sampleRates[i]) 
+	{
+	  pos = i;
+	  break;
+	}
+    }
+  
+  wxString *stringRates = new wxString[sampleRates.GetCount() + 1];
+      
+   
+  for (int i = 0; i < (int)sampleRates.GetCount(); i++)
+    {
+      int sampleRate = (int)sampleRates[i];
+      stringRates[i] = wxString::Format("%i Hz", sampleRate);
+    }
+  
+  //The last choice control option is "Other...", which if selected will allow user to enter their own rate.
+  stringRates[sampleRates.GetCount()] = _("Other...");
+  mSampleRates = new wxChoice(this, FSD_SAMPLE_RATE_CHOOSER, wxDefaultPosition, wxDefaultSize,
+			      (int)sampleRates.GetCount() + 1, stringRates);
+  mSampleRates->SetSelection(pos);
+
+  
+  mOtherSampleRate = NULL;
+  mOtherSampleRate = new wxTextCtrl( this, -1, wxString::Format("%i", static_cast<int>(rate)),
+				     wxDefaultPosition, wxSize(50, -1), 0 );
+  
+  mOtherSampleRate->Enable(pos == (int)sampleRates.GetCount() + 1);
+  
+
+  
+ //(re)create a sizer, and add label, chooser, and textbox to it. Then add it to left panel.
+  tmpSizer= new wxBoxSizer(wxHORIZONTAL);
+  tmpSizer->Add(new wxStaticText(this, -1, _("Select Sample Rate:")), 0,  wxALL|wxALIGN_CENTER_VERTICAL, 0);
+  tmpSizer->Add( mSampleRates, 0, wxALL|wxALIGN_CENTER_VERTICAL, 0 );
+  tmpSizer->Add( mOtherSampleRate, 0, wxALL|wxALIGN_CENTER_VERTICAL, 0 );
+  leftSizer->Add( tmpSizer, 0, wxALL|wxALIGN_CENTER_VERTICAL, 10 );
+  
+  
+  delete[] stringRates;
+  //-------------------------------------------------------------------
+  //Create a (blank) encoding chooser. Filled in when a format is chosen
+  //--------------------------------------------------------------------
+  
+  mOptionChooser = new wxChoice(this, FSD_SECONDARY_CHOOSER,
+				wxDefaultPosition,wxSize(200, -1),
+				0, NULL);
+  mSecondaryOptionSizer->Add(mOptionChooser,1, wxALL | wxALIGN_CENTER, 10);
+
+
+  topSizer->Add(leftSizer,1, wxALL | wxALIGN_CENTER, 10);
+  topSizer->Add(mSecondaryOptionSizer,1, wxALL | wxALIGN_CENTER, 10);
+  
+  mainSizer->Add(topSizer,1, wxALL | wxALIGN_CENTER,10);
+  
+  //-----------------
+  //Now, the bottom sizer.
+
+  mOK = new wxButton(this, FSD_OK, _("OK") );
+  mCancel = new wxButton(this, FSD_CANCEL, _("Cancel") );
+  bottomSizer->Add(mCancel,1,wxALL | wxALIGN_CENTER,10);
+  bottomSizer->Add(mOK,1, wxALL | wxALIGN_CENTER,10);
+  mainSizer->Add(bottomSizer,1, wxALL | wxALIGN_CENTER,10);
+
+
+  SetAutoLayout(true);
+  
+  wxCommandEvent evt;
+  OnSelectFormat(evt);
+  OnResize(evt);
+}
+
+
+///Standard destructor.
+FormatSelectionDialog::~FormatSelectionDialog()
+{
+}
+
+
+
+/// This callback gets executed whenever the main option
+/// selecting the primary format for exporting changes.
+void FormatSelectionDialog::OnSelectFormat(wxCommandEvent &event)
+{
+
+  //Recode the selected index of the choice box
+  //to FormatType and sf formats.
+
+  mCurrentFormatChoice = mFormats[mFormatChooser->GetSelection()];
+  
+  //Get rid of all the items in mOptionChooser
+  mOptionChooser->Clear();
+  
+
+  
+  switch(mCurrentFormatChoice)
+    {
+    case FORMAT_TYPE_OGG:         //Ogg Vorbis
+      break;
+      
+    case FORMAT_TYPE_MP3:         //MP3
+      {
+
+	//Give user option of these bitrates to export to:
+	int numBitrates = 16;
+	wxString bitrates[] = { "16", "24", "32", "40", "48", "56", "64",
+				"80", "96", "112", "128", "160",
+				"192", "224", "256", "320" };
+	mEncodings = new int[numBitrates];
+	
+
+	//Rebuild the chooser with the above options
+	for(int i = 0; i< numBitrates; i++)
+	  {
+	    mOptionChooser->Append(bitrates[i]);
+	    mEncodings[i]=atoi(bitrates[i]);
+	  }
+	
+	//This sets the initial selection. It *should* see what
+	//the project or default is and use that by default.
+	mOptionChooser->SetSelection(12);
+	
+	wxCommandEvent evt;
+	OnOptions(evt);
+	
+      }
+      break;
+
+
+    case FORMAT_TYPE_FLAC:         //FLAC
+      break;
+
+    case FORMAT_TYPE_LABELS:        //Text labels 
+      break;
+ 
+    case FORMAT_TYPE_COMMANDLINE:   //Command-line export
+      break;
+
+
+    case FORMAT_TYPE_SF_WAV:   //Start of LibSndFile Formats
+    case FORMAT_TYPE_SF_AIFF:
+    case FORMAT_TYPE_SF_AU:
+    case FORMAT_TYPE_SF_RAW:
+    case FORMAT_TYPE_SF_PAF:
+    case FORMAT_TYPE_SF_SVX:
+    case FORMAT_TYPE_SF_NIST:
+    case FORMAT_TYPE_SF_VOC:
+    case FORMAT_TYPE_SF_IRCAM:
+    case FORMAT_TYPE_SF_W64:
+    case FORMAT_TYPE_SF_MAT4:
+    case FORMAT_TYPE_SF_MAT5:  
+
+      
+      {
+	//Create an array of labels.  We may not use all of them.
+	//To do this, make a SF_INFO structure for each type, and the
+	//call sf_format_check() on it.  If it comes back true, the
+	//parameters were valid, and we should add it to the array.
+
+	m_sf_Format = mCurrentFormatChoice;
+
+
+	int numEncodings = sf_num_encodings();
+	mEncodings = new int[numEncodings];
+	
+
+	int usedEncodings = 0;
+	int tmpFormat=0;
+	for(int i=0; i<numEncodings; i++)
+	  {
+	    //The format is a bitwise or (|) of the format and the subtype.
+	    tmpFormat =m_sf_Format | sf_encoding_index_to_subtype(i);
+	    SF_INFO info = {44100, 1, mNumExportedChannels, tmpFormat,1,1};
+
+	    if(sf_format_check(&info))
+	      {
+		//Add the valid name to the chooser.
+		mOptionChooser->Append(sf_encoding_index_name(i));
+		
+		//Keep track of its actual sf code.
+		mEncodings[usedEncodings]=sf_encoding_index_to_subtype(i);
+		usedEncodings++;
+	      }
+	  }
+	
+	
+	//This sets the initial selection. It *should* see what
+	//the project or default is and use that by default.
+	mOptionChooser->SetSelection(1);
+	
+	wxCommandEvent evt;
+	OnOptions(evt);
+	
+
       }
 
-      tr = iter1.Next();
-   }
+      break;
+    default:
+      break;
+    }
 
-   if(*t0 < earliestBegin)
-      *t0 = earliestBegin;
-   
-   if(*t1 > latestEnd)
-      *t1 = latestEnd;
 
-   if (numSelected == 0 && selectionOnly) {
-      wxMessageBox(_("No tracks are selected!\n"
-                     "Choose Export... to export all tracks."));
-      return "";
-   }
+}
 
-   /* Detemine if exported file will be stereo or mono,
-      and if mixing will occur */
 
-   bool stereo = false;
-   if (numRight > 0 || numLeft > 0)
-      stereo = true;
+/// This callback gets executed whenever the rate-change slider moves.
+void FormatSelectionDialog::OnRate(wxCommandEvent & event)
+{
+  int sel = mSampleRates->GetSelection();
+  mOtherSampleRate->Enable(sel == mSampleRates->GetCount() - 1);
+  mRate = 44100;
+}
 
-   numRight += numMono;
-   numLeft += numMono;
+void FormatSelectionDialog::OnChannelsChange(wxCommandEvent & event){
 
-   if (numLeft > 1 || numRight > 1)
-      if (stereo)
-         wxMessageBox
-             (_("Your tracks will be mixed down to two stereo channels "
-                "in the exported file."));
-      else
-         wxMessageBox
-             (_("Your tracks will be mixed down to a single mono channel "
-                "in the exported file."));
+  int index = mChannelChooser->GetSelection();
+  if (index < 2)
+    mNumExportedChannels = index + 1;
+  else
+    mNumExportedChannels = mNumTotalChannels;
+  
+  wxCommandEvent evt;
+  OnSelectFormat(evt);
+}
 
-   /* Prepare and display the filename selection dialog */
+
+/// This callback gets executed whenever the secondary option
+/// choice box is acted on.
+void FormatSelectionDialog::OnOptions(wxCommandEvent &event)
+{
+  //The selected encoding has changed.  update m_sf_Encoding.
+  int index = mOptionChooser->GetSelection();
+
+  if( mCurrentFormatChoice == FORMAT_TYPE_SF_WAV 
+      || mCurrentFormatChoice == FORMAT_TYPE_SF_AIFF
+      || mCurrentFormatChoice == FORMAT_TYPE_SF_AU
+      || mCurrentFormatChoice == FORMAT_TYPE_SF_RAW
+      || mCurrentFormatChoice == FORMAT_TYPE_SF_PAF
+      || mCurrentFormatChoice == FORMAT_TYPE_SF_SVX
+      || mCurrentFormatChoice == FORMAT_TYPE_SF_NIST
+      || mCurrentFormatChoice == FORMAT_TYPE_SF_VOC
+      || mCurrentFormatChoice == FORMAT_TYPE_SF_IRCAM
+      || mCurrentFormatChoice == FORMAT_TYPE_SF_W64
+      || mCurrentFormatChoice == FORMAT_TYPE_SF_MAT4
+      || mCurrentFormatChoice == FORMAT_TYPE_SF_MAT5)  
+    
+    m_sf_Encoding = mEncodings[index];
+  
+
+}
+
+
+/// This callback gets executed whenever the Cancel button gets clicked.
+void FormatSelectionDialog::OnCancel(wxCommandEvent &event)
+{
+  EndModal(wxID_CANCEL);
+}
+
+
+/// This callback gets executed whenever the OK button gets clicked.
+void FormatSelectionDialog::OnOK(wxCommandEvent &event)
+{
+
+  //The OK button should create the proper export handler and export the stuff.
+
+
+
+  //Now, create an exporter with proper parameters; also create the proper
+  //filename extension to send to the file dialog.
+  Exporter * tmpExporter = NULL;
+  wxString defaultExtension;
+  wxString formatStr;
+  
+  switch(mCurrentFormatChoice)
+    {
+    case FORMAT_TYPE_OGG:         //Ogg Vorbis
+      formatStr = _("Ogg Vorbis");
+      defaultExtension = ".ogg";
+	break;
+      
+    case FORMAT_TYPE_MP3:         //MP3
+
+
+      formatStr = "MP3";
+      defaultExtension = ".mp3";
+      
+      //Determine what platform you are on. Depending on
+      //this, we use a different mp3exporter subclass.
+
+      
+
+      tmpExporter = new PlatformMP3Exporter(mProject, m_t0, m_t1, 
+					    mSelectionOnly, mRate, 
+					    mNumExportedChannels,
+					    128,
+					    5);
+
+
+      break;
+
+
+    case FORMAT_TYPE_FLAC:         //FLAC
+      formatStr = _("Free Lossless Audio Compression (flac)");
+      defaultExtension = ".flac";
+      break;
+
+
+
+    case FORMAT_TYPE_SF_WAV:   //Start of LibSndFile Formats
+    case FORMAT_TYPE_SF_AIFF:
+    case FORMAT_TYPE_SF_AU:
+    case FORMAT_TYPE_SF_RAW:
+    case FORMAT_TYPE_SF_PAF:
+    case FORMAT_TYPE_SF_SVX:
+    case FORMAT_TYPE_SF_NIST:
+    case FORMAT_TYPE_SF_VOC:
+    case FORMAT_TYPE_SF_IRCAM:
+    case FORMAT_TYPE_SF_W64:
+    case FORMAT_TYPE_SF_MAT4:
+    case FORMAT_TYPE_SF_MAT5:  
+      
+      {
+	//Libsndfile keeps track of the format with an or'ed
+	//format code (i.e., the header format),
+	//  along with an encoding format for that type (float, int, etc.)
+	int format = m_sf_Format | m_sf_Encoding;
+	
+	
+	tmpExporter = new PCMExporter(mProject, m_t0, m_t1,
+				      mSelectionOnly, mRate,
+				      mNumExportedChannels, format);
+	
+	formatStr = sf_header_name(m_sf_Format);
+	defaultExtension = "." + sf_header_extension(m_sf_Format);
+
+      }
+      break;
+    case FORMAT_TYPE_LABELS:
+      formatStr = _("Text Labels");
+      defaultExtension = ".txt";
+
+      break;
+
+
+    case FORMAT_TYPE_COMMANDLINE:
+      formatStr = _("Command-Line Exporter");
+      defaultExtension = ".dat";
+
+      break;
+      
+    default:
+      return EndModal(wxID_CANCEL);
+      
+    }
+  
+  //We need to get the filename. Call a common dialog box, with appropriate
+  //file extensions:
+  /* Prepare and display the filename selection dialog */
 
    wxString path = gPrefs->Read("/DefaultExportPath",::wxGetCwd());
    wxString nameOnly;
    wxString extension;
-   wxString defaultName = project->GetName();
+   wxString defaultName = mProject->GetName();
    wxString fName;
    wxString maskString;
 
@@ -141,8 +674,10 @@ wxString ExportCommon(AudacityProject *project,
       defaultExtension =
          defaultExtension.Right(defaultExtension.Length()-1);
 
-   maskString.Printf("%s files (*.%s)|*.%s|All files (*.*)|*.*", (const char *)format,
-                     (const char *)defaultExtension, (const char *)defaultExtension);
+   maskString.Printf("%s files (*.%s)|*.%s|All files (*.*)|*.*", 
+		     (const char *)formatStr,
+                     (const char *)defaultExtension,
+		     (const char *)defaultExtension);
 
    bool fileOkay;
 
@@ -151,29 +686,35 @@ wxString ExportCommon(AudacityProject *project,
 
       fName = defaultName + "." + defaultExtension;
       fName = wxFileSelector(wxString::Format(_("Save %s File As:"),
-                                              (const char *) format),
+                                              (const char *) formatStr),
                              path,
                              fName,       // default file name
                              defaultExtension,
                              maskString,
                              wxSAVE | wxOVERWRITE_PROMPT);
       
-      if (fName.Length() >= 256) {
-         wxMessageBox
+      if (fName.Length() >= 256)
+	{
+	  wxMessageBox
             (_("Sorry, pathnames longer than 256 characters not supported."));
-         return "";
-      }
+	  delete tmpExporter;
+	  return;
+	}
       
       if (fName == "")
-         return "";
+	{
+	  delete tmpExporter;
+	  return;
+	}
 
+ 
       ::wxSplitPath(fName, &path, &nameOnly, &extension);
 
       //
       // Make sure the user doesn't accidentally save the file
       // as an extension with no name, like just plain ".wav".
       //
-
+ 
       if ((nameOnly.Left(1)=="." && extension=="") ||
           (nameOnly=="" && extension!="")) {
          wxString prompt =
@@ -183,7 +724,7 @@ wxString ExportCommon(AudacityProject *project,
          int action = wxMessageBox(prompt,
                                    "Warning",
                                    wxYES_NO | wxICON_EXCLAMATION,
-                                   project);
+                                   mProject);
          
          fileOkay = (action == wxYES);
          continue;
@@ -193,42 +734,42 @@ wxString ExportCommon(AudacityProject *project,
       // Check the extension - add the default if it's not there,
       // and warn user if it's abnormal.
       //
-
+ 
       wxString defaultExtension3 = defaultExtension;
       if (defaultExtension.Length() > 3)
          defaultExtension = defaultExtension.Left(3);
       
       if (extension == "") {
-         #ifdef __WXMSW__
-         // Windows prefers 3-char uppercase extensions
+#ifdef __WXMSW__
+	// Windows prefers 3-char uppercase extensions
          extension = defaultExtension;
-         #else
+#else
          // Linux and Mac prefer lowercase extensions
          extension = defaultExtension.Lower();
-         #endif
+#endif
       }
       else if (extension.Upper() != defaultExtension.Upper() &&
                extension.Upper() != defaultExtension3.Upper()) {
-         #ifdef __WXMSW__
+#ifdef __WXMSW__
          // Windows prefers 3-char extensions
          defaultExtension3 = defaultExtension3;
-         #endif
-
+#endif
+ 
          wxString prompt;
          prompt.Printf("You are about to save a %s file with the name %s.\n"
                        "Normally these files end in %s, and some programs "
                        "will not open files with nonstandard extensions.\n"
                        "Are you sure you want to save the file "
                        "under this name?",
-                       (const char *)format,
-                       (const char *)("\""+nameOnly+"."+extension+"\""),
+                       (const char *)formatStr,
+                       (const char *)("\""+nameOnly+"."+ extension +"\""),
                        (const char *)("\"."+defaultExtension+"\""));
 
          int action = wxMessageBox(prompt,
                                    "Warning",
                                    wxYES_NO | wxICON_EXCLAMATION,
-                                   project);
-
+                                   mProject);
+ 
          if (action == wxYES)
             fileOkay = true;
          else {
@@ -237,8 +778,7 @@ wxString ExportCommon(AudacityProject *project,
          }
       }
 
-      fName = path + wxFILE_SEP_PATH + 
-         nameOnly + "." + extension;
+      mFileName = path + wxFILE_SEP_PATH + nameOnly + "." + extension;
    } while(!fileOkay);
 
    /*
@@ -248,19 +788,21 @@ wxString ExportCommon(AudacityProject *project,
     * existing file.)
     */
 
-   if (!project->GetDirManager()->EnsureSafeFilename(wxFileName(fName)))
-      return "";
-
+   if (!mProject->GetDirManager()->EnsureSafeFilename(wxFileName(fName)))
+     {
+       wxMessageBox("Trying to overwrite another file.");
+       delete tmpExporter;
+       return EndModal(wxID_CANCEL);
+     }
    gPrefs->Write("/DefaultExportPath", path);
 
-   *isStereo = stereo;
 
    /*
-    * To be even MORE safe, return a temporary file name based
+    * To be even MORE safe, create a temporary file name based
     * on this one...
     */
 
-   actualName = fName;
+   wxString actualName = fName;
 
    int suffix = 0;
    while(::wxFileExists(fName)) {
@@ -269,96 +811,35 @@ wxString ExportCommon(AudacityProject *project,
       suffix++;
    }
 
-   return fName;
-}
+   bool success = false;
+   // Verify whether the format is OK, and then
+   // export the file if it is.
+   if(tmpExporter->Verify())
+     {
 
-bool Export(AudacityProject *project,
-            bool selectionOnly, double t0, double t1)
-{
-   wxString fName;
-   wxString formatStr;
-   wxString extension;
-   wxString actualName;
-   bool     success;
-   int      format;
-   bool     stereo;
-   
-   format = ReadExportFormatPref();
-                         
-   formatStr = sf_header_name(format & SF_FORMAT_TYPEMASK);
-   extension = "." + sf_header_extension(format & SF_FORMAT_TYPEMASK);
+       success = tmpExporter->Export(fName);
+     }
+   else
+     {
 
-   fName = ExportCommon(project, formatStr, extension,
-                        selectionOnly, &t0, &t1, &stereo,
-                        actualName);
-
-   if (fName == "")
-      return false;
-
-   success = ::ExportPCM(project, stereo, fName,
-                         selectionOnly, t0, t1);
+       //Should have a 
+       wxMessageBox(_("Unable to export in selected format."));
+       delete tmpExporter;
+       EndModal(wxID_OK);
+     }
 
    if (success && actualName != fName)
       ::wxRenameFile(fName, actualName);
-
-   return success;
+   delete tmpExporter;
+  EndModal(wxID_OK);
 }
 
-bool ExportLossy(AudacityProject *project,
-                 bool selectionOnly, double t0, double t1)
+
+void FormatSelectionDialog::OnResize(wxCommandEvent & event)
 {
-   wxString fName;
-   bool stereo;
-   wxString actualName;
-   bool     success = false;
-   wxString format = gPrefs->Read("/FileFormats/LossyExportFormat", "MP3");
+  //Make the mainSizer be the primary sizer for the dialog.
 
-   if( format == "MP3" ) {
-      fName = ExportCommon(project, "MP3", ".mp3",
-                           selectionOnly, &t0, &t1, &stereo,
-                           actualName);
-
-      if (fName == "")
-         return false;
-
-      success = ::ExportMP3(project, stereo, fName,
-                            selectionOnly, t0, t1);
-   }
-   else if( format == "OGG" ) {
-#ifdef USE_LIBVORBIS
-      fName = ExportCommon(project, "OGG", ".ogg",
-                           selectionOnly, &t0, &t1, &stereo,
-                           actualName);
-
-      if (fName == "")
-         return false;
-
-      success = ::ExportOGG(project, stereo, fName,
-                      selectionOnly, t0, t1);
-#else
-      wxMessageBox(_("Ogg Vorbis support is not included in this build of Audacity"));
-#endif
-   }
-   else if( format == "External Program" ) {
-#ifdef __WXGTK__
-      wxString extension = gPrefs->Read( "/FileFormats/ExternalProgramExportExtension", "" );
-      fName = ExportCommon(project, "External Program", "." + extension,
-                           selectionOnly, &t0, &t1, &stereo,
-                           actualName);
-
-      if (fName == "")
-         return false;
-
-      success = ::ExportCL(project, stereo, fName,
-                           selectionOnly, t0, t1);
-#else
-      wxMessageBox(_("Command-line exporting is only supported on UNIX"));
-#endif
-   }
-
-   if (success && actualName != fName)
-      ::wxRenameFile(fName, actualName);
-
-   return success;
+  mainSizer->Fit(this);
+  mainSizer->SetSizeHints(this);
+  SetSizer(mainSizer);
 }
-
