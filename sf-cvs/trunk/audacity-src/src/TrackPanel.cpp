@@ -996,12 +996,10 @@ void TrackPanel::HandleZoom(wxMouseEvent & event)
          mZoomStart = temp;
       }
 
-      wxRect r;
-
       if (IsDragZooming())
-         DragZoom(r.x);
+         DragZoom(GetLabelWidth()+1);
       else
-         DoZoomInOut(event, r.x);
+         DoZoomInOut(event, GetLabelWidth()+1);
 
       mZoomEnd = mZoomStart = 0;
 

@@ -190,10 +190,18 @@ bool ImportPCM(wxWindow * parent,
       if (block) {
          for(c=0; c<(*numChannels); c++) {
 
-            if (format==int16Sample)
-               for(int j=0; j<block; j++)
-                  ((short *)buffer)[j] =
-                     ((short *)srcbuffer)[(*numChannels)*j+c];
+            if (format==int16Sample) {
+               if (info.pcmbitwidth == 8) {
+                  for(int j=0; j<block; j++)
+                     ((short *)buffer)[j] =
+                        ((short *)srcbuffer)[(*numChannels)*j+c] << 8;
+               }
+               else {
+                  for(int j=0; j<block; j++)
+                     ((short *)buffer)[j] =
+                        ((short *)srcbuffer)[(*numChannels)*j+c];
+               }
+            }
             else
                for(int j=0; j<block; j++)
                   ((float *)buffer)[j] =
