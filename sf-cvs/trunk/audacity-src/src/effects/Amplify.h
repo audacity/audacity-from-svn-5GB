@@ -26,7 +26,6 @@
 
 // Declare window functions
 
-#define ID_TEXT 10000
 #define ID_AMP_TEXT 10001
 #define ID_PEAK_TEXT 10002
 #define ID_AMP_SLIDER 10003
