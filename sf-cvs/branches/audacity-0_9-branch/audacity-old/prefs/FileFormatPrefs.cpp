@@ -164,9 +164,10 @@ PrefsPanel(parent)
             mp3InfoSizer->Add(
                new wxStaticText(this, -1, "Bit Rate:"), 0,
                wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-            wxString bitrates[] = { "56", "96", "128", "192", "256", "320" };
-            int numBitrates = 6;
+            wxString bitrates[] = { "16", "24", "32", "40", "48", "56", "64",
+                                    "80", "96", "112", "128", "160",
+                                    "192", "224", "256", "320" };
+            int numBitrates = 16;
 
             mMP3Bitrate = new wxChoice(
                this, -1, wxDefaultPosition, wxDefaultSize, numBitrates, bitrates);
