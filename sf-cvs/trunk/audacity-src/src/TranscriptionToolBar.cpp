@@ -526,6 +526,8 @@ void TranscriptionToolBar::OnAutomateSelection(wxCommandEvent &event)
          sampleCount newStart, newEnd;
          double newStartPos, newEndPos;
          
+
+         //This is the minumum word size in samples (.05 is 50 ms)
          int minWordSize = (int)(((WaveTrack*)t)->GetRate() * .05);
          
          //Continue until we have processed the entire
@@ -550,11 +552,17 @@ void TranscriptionToolBar::OnAutomateSelection(wxCommandEvent &event)
                
 
                //OK, now we have found a new starting point.  A 'word' should be at least 
-               //50 ms long, so jump ahead 50 ms.
+               //50 ms long, so jump ahead minWordSize
                
                newEnd   = vk->OffForward(*(WaveTrack*)t,newStart+minWordSize, len);
                
-               //Adjust len by the new wod end
+               //If newEnd didn't move, we should give up, because
+               // there isn't another end before the end of the selection.
+               if(newEnd == (newStart + minWordSize))
+                  break;
+
+
+               //Adjust len by the new word end
                len -= (newEnd - newStart);
                
                //Calculate the start and end of the words, in seconds
