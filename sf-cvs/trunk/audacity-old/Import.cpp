@@ -72,6 +72,7 @@ bool ImportWAV(wxWindow *parent,
     *dest2 = new WaveTrack(dirManager);
     wxASSERT(*dest1);
     (*dest2)->rate = sndfile.format.srate;
+	(*dest1)->linked = true;
   }
 
   long fileTotalFrames;

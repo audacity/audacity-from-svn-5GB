@@ -12,8 +12,6 @@
 #define __AUDACITY_TRACK__
 
 class wxString;
-class wxDC;
-class wxRect;
 class wxTextFile;
 class DirManager;
 
@@ -24,6 +22,8 @@ public:
   int expandedHeight;
 
   bool selected;
+
+  bool linked;
 
   int channel;
 
@@ -144,6 +144,15 @@ public:
 
   // Make the list empty
   void Clear();
+
+  // Select a track, and if it is linked to another track,
+  // select it, too.
+  void Select(VTrack *t, bool selected=true);
+
+  // If this track is linked to another track (the track
+  // immediately before or after it), return its partner.
+  // Otherwise return null.
+  VTrack *GetLink(VTrack *t);
 
   // Test
   bool Contains(VTrack *t);

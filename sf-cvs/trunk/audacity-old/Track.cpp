@@ -23,6 +23,8 @@ VTrack::VTrack(DirManager *projDirManager)
 
   collapsed = false;
 
+  linked = false;
+
   collapsedHeight = 20;
   expandedHeight = 160;
 
@@ -39,7 +41,12 @@ bool VTrack::Load(wxTextFile *in, DirManager *dirManager)
 {
   this->dirManager = dirManager;
 
-  if (in->GetNextLine() != "offset") return false;
+  wxString line = in->GetNextLine();
+  if (line == "linked") {
+	linked = true;
+	line = in->GetNextLine();
+  }
+  if (line != "offset") return false;
   if (!(in->GetNextLine().ToDouble(&tOffset))) return false;
 
   return true;
@@ -47,6 +54,8 @@ bool VTrack::Load(wxTextFile *in, DirManager *dirManager)
 
 bool VTrack::Save(wxTextFile *out, bool overwrite)
 {
+  if (linked)
+	out->AddLine("linked");
   out->AddLine("offset");
   out->AddLine(wxString::Format("%f", tOffset));
 
@@ -327,6 +336,40 @@ void TrackList::Clear()
 	delete temp;
   }
   tail = 0;
+}
+
+void TrackList::Select(VTrack *t, bool selected /* = true */)
+{
+  TrackListNode *p = head;
+  while(p) {
+	if (p->t == t) {
+	  t->selected = selected;
+	  if (t->linked && p->next)
+		p->next->t->selected = selected;
+	  else if (p->prev && p->prev->t->linked)
+		p->prev->t->selected = selected;
+
+	  return;
+	}
+	p = p->next;
+  }
+}
+
+VTrack *TrackList::GetLink(VTrack *t)
+{
+  TrackListNode *p = head;
+  while(p) {
+	if (p->t == t) {
+	  if (t->linked && p->next)
+		return p->next->t;
+	  else if (p->prev && p->prev->t->linked)
+		return p->prev->t;
+
+	  return NULL;
+	}
+	p = p->next;
+  }
+  return NULL;
 }
 
 bool TrackList::Contains(VTrack *t)

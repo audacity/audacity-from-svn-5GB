@@ -439,7 +439,7 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 		mSelStart = mViewInfo->h + ((event.m_x - r.x) / mViewInfo->zoom);
 		
 		SelectNone();
-		t->selected = true;
+		mTracks->Select(t);
 		
 		mViewInfo->sel0 = mSelStart;
 		mViewInfo->sel1 = mSelStart;
@@ -525,7 +525,8 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 		VTrack *t = iter.First();
 		int i=1;
 		while(t) {
-		  t->selected = (i>=num && i<=num2) || (i>=num2 && i<=num);
+		  if ((i>=num && i<=num2) || (i>=num2 && i<=num))
+			mTracks->Select(t);
 		  t = iter.Next();
 		  i++;
 		}
@@ -571,6 +572,17 @@ void TrackPanel::HandleEnvelope(wxMouseEvent& event)
 
 	bool needUpdate = e->MouseEvent(event, mCapturedRect,
 									mViewInfo->h, mViewInfo->zoom);
+
+	// If this track is linked to another track, make the identical
+	// change to the linked envelope:
+
+	WaveTrack *link = (WaveTrack *)(mTracks->GetLink(mCapturedTrack));
+	if (link && link->GetKind()==VTrack::Wave) {
+	  Envelope *e2 = link->GetEnvelope();
+	  e2->MouseEvent(event, mCapturedRect,
+					 mViewInfo->h, mViewInfo->zoom);
+	}
+
 	if (needUpdate)
 	  Refresh(false);
   }
@@ -737,6 +749,11 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
 	
 	if (selend != mSelStart) {
 	  mCapturedTrack->Offset(selend - mSelStart);
+
+	  VTrack *link = mTracks->GetLink(mCapturedTrack);
+	  if (link)
+		link->Offset(selend - mSelStart);
+
 	  Refresh(false);
 	}
     
@@ -786,7 +803,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent& event)
 
 	if (t) {
 	  if (event.ShiftDown()) {
-		t->selected = !t->selected;
+		mTracks->Select(t, !t->selected);
 	  }
 	  else {
 
@@ -853,7 +870,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent& event)
 		// deselect other tracks and select this one.
 
 		SelectNone();
-		t->selected = true;
+		mTracks->Select(t);
 		mViewInfo->sel0 = 0.0;
 		mViewInfo->sel1 = mTracks->GetMaxLen();
 	  }
@@ -1260,22 +1277,35 @@ void TrackPanel::DrawTracks(wxDC *dc)
 	dc->SetTextForeground(wxColour(0, 0, 0));
 
 	wxRect labelRect = r;
-	labelRect.width = GetLabelWidth();
+	labelRect.width = GetLabelWidth();	
 
-	AColor::Medium(dc, false);
-	dc->DrawRectangle(labelRect);
+	// If this track is linked to the next one, display a common
+	// border for both, otherwise draw a normal border
 
-	labelRect.Inflate(-4, -4);
-	AColor::Medium(dc, t->selected);
-	dc->DrawRectangle(labelRect);
-	AColor::Bevel(*dc, false, labelRect);
-	labelRect.Inflate(4, 4);
+	wxRect labelBorder = labelRect;
+	
+	bool skipBorder = false;
+	if (t->linked) {
+	  labelBorder.height += mTracks->GetLink(t)->GetHeight();
+	}
+	else if (mTracks->GetLink(t))
+	  skipBorder = true;
+
+	if (!skipBorder) {
+	  AColor::Medium(dc, false);
+	  dc->DrawRectangle(labelBorder);
+	  
+	  labelBorder.Inflate(-4, -4);
+	  AColor::Medium(dc, t->selected);
+	  dc->DrawRectangle(labelBorder);
+	  AColor::Bevel(*dc, false, labelBorder);
+	}
 
 	wxRect titleRect;
 	if (GetLabelFieldRect(labelRect, 0, false, titleRect)) {
 	  AColor::Bevel(*dc, false, titleRect);
 	  dc->DrawText(wxString::Format("Track %d", num+1),
-				  titleRect.x + 7, titleRect.y + 2);
+				   titleRect.x + 7, titleRect.y + 2);
 	}
 	
 	wxRect channelRect;
