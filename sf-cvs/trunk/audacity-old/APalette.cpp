@@ -8,7 +8,7 @@
 
   This class manages the miniframe window (aka floating window)
   which contains the tool selection (ibeam, envelope, move, zoom),
-  the play/stop buttons, and the volume control.  All of the
+  the play/stop/record buttons, and the volume control.  All of the
   controls in this window were custom-written for Audacity - they
   are not native controls on any platform - however, it is intended
   that the images could be easily replaced to allow "skinning" or
@@ -111,7 +111,7 @@ APaletteFrame::APaletteFrame(wxWindow* parent,
 							 const wxString& title,
 							 const wxPoint& pos) :
   wxMiniFrame(parent, id, title, pos,
-			  wxSize(300, GetAPaletteHeight() + APALETTE_HEIGHT_OFFSET),
+			  wxSize(360, GetAPaletteHeight() + APALETTE_HEIGHT_OFFSET),
               wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP |
 			  wxMINIMIZE_BOX |
 			  wxFRAME_FLOAT_ON_PARENT),
@@ -130,6 +130,8 @@ BEGIN_EVENT_TABLE(APalette, wxWindow)
                      wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnPlay)
   EVT_COMMAND_RANGE (ID_STOP_BUTTON, ID_STOP_BUTTON,
                      wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnStop)
+  EVT_COMMAND_RANGE (ID_RECORD_BUTTON, ID_RECORD_BUTTON,
+                     wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnRecord)
 END_EVENT_TABLE()
 
 APalette::APalette(wxWindow* parent, wxWindowID id,
@@ -162,9 +164,14 @@ APalette::APalette(wxWindow* parent, wxWindowID id,
 	new AButton(this, ID_STOP_BUTTON, wxPoint(114, 4), wxSize(48, 48),
 				StopUp, StopOver,
 				StopDown, StopDisabled);
+
+  mRecord =
+	new AButton(this, ID_RECORD_BUTTON, wxPoint(164, 4), wxSize(48, 48),
+				RecordUp, RecordOver,
+				RecordDown, RecordDisabled);
   
   mVolume =
-	new ASlider(this, 0, wxPoint(172, 14), wxSize(100, 28),
+	new ASlider(this, 0, wxPoint(222, 14), wxSize(100, 28),
 				Slider, SliderThumb, 100);
 
   mVolume->Set(80);
@@ -182,6 +189,7 @@ APalette::~APalette()
 	delete mTool[i];
   delete mPlay;
   delete mStop;
+  delete mRecord;
   delete mVolume;
 }
 
@@ -206,6 +214,14 @@ void APalette::SetStop(bool down)
 	mStop->PopUp();
 }
 
+void APalette::SetRecord(bool down)
+{
+  if (down)
+	mRecord->PushDown();
+  else
+	mRecord->PopUp();
+}
+
 void APalette::OnPlay()
 {
   AudacityProject *p = GetActiveProject();
@@ -222,6 +238,12 @@ void APalette::OnPlay()
 void APalette::OnStop()
 {
   gSoundPlayer->Stop();
+  SetStop(false);
+}
+
+void APalette::OnRecord()
+{
+  //  gSoundPlayer->Record();
   SetStop(false);
 }
 

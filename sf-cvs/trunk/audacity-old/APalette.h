@@ -8,7 +8,7 @@
 
   This class manages the miniframe window (aka floating window)
   which contains the tool selection (ibeam, envelope, move, zoom),
-  the play/stop buttons, and the volume control.  All of the
+  the play/stop/record buttons, and the volume control.  All of the
   controls in this window were custom-written for Audacity - they
   are not native controls on any platform - however, it is intended
   that the images could be easily replaced to allow "skinning" or
@@ -56,9 +56,11 @@ public:
 
   void OnPlay();
   void OnStop();
+  void OnRecord();
 
   void SetPlay(bool down);
   void SetStop(bool down);
+  void SetRecord(bool down);
 
   float GetSoundVol();
   
@@ -67,6 +69,7 @@ private:
   
   AButton *mPlay;
   AButton *mStop;
+  AButton *mRecord;
 
   ASlider *mVolume;
 
@@ -101,5 +104,6 @@ DECLARE_EVENT_TABLE()
 #define ID_LAST_TOOL       503
 #define ID_PLAY_BUTTON     504
 #define ID_STOP_BUTTON     505
+#define ID_RECORD_BUTTON   506
 
 #endif
