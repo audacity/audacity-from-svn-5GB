@@ -30,8 +30,10 @@
 
 #ifdef AUDACITY_MENUS_COMMANDS_GLOBALS
 
-/*This defines the  function pointer??*/
+
+//This defines the  function pointer
 // BG: Yes. For now, this seems like the best place to put it.
+
 typedef void (AudacityProject::*audEventFunction)(wxCommandEvent&);
 
 enum {
@@ -81,7 +83,9 @@ enum {
 
    PlotSpectrumID,
 
-   FloatPaletteID,
+   FloatControlToolBarID, 
+   LoadEditToolBarID,
+   FloatEditToolBarID,
 
    // Project Menu
 
@@ -136,8 +140,6 @@ enum {
    audEventFunction fp;  //Set up temporary function pointer to use for assigning keybindings
   
     // File menu
-   //   fp = &AudacityProject::OnNew;
-   //   mCommandFunctions.Add(CMD_CACFUNC(&fp));
    CMD_ADDFUNCTION(OnNew);
    CMD_ASSIGNKEY('n', TRUE, FALSE, FALSE);
    mCommandIDs.Add( CMD_CETINT(NewID) );
@@ -150,8 +152,7 @@ enum {
    mCommandNames.Add( CMD_CSTNAME("Open") );
    mCommandDesc.Add( CMD_CSTNAME("Open") );
 
-
-   CMD_ADDFUNCTION(OnOpen);
+   CMD_ADDFUNCTION(OnClose);
    CMD_ASSIGNKEY('w', TRUE, FALSE, FALSE);
    mCommandIDs.Add( CMD_CETINT(CloseID) );
    mCommandNames.Add( CMD_CSTNAME("Close") );
@@ -322,11 +323,25 @@ enum {
    mCommandNames.Add( CMD_CSTNAME("Plot Spectrum") );
    mCommandDesc.Add( CMD_CSTNAME("Plot Spectrum") );
 
-   CMD_ADDFUNCTION(OnFloatPalette);
+
+   CMD_ADDFUNCTION(OnFloatControlToolBar);
    CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
-   mCommandIDs.Add( CMD_CETINT(FloatPaletteID) );
-   mCommandNames.Add( CMD_CSTNAME("Float Palette") );
-   mCommandDesc.Add( CMD_CSTNAME("Float Palette") );
+   mCommandIDs.Add( CMD_CETINT(FloatControlToolBarID) );
+   mCommandNames.Add( CMD_CSTNAME("Float Control Toolbar") );
+   mCommandDesc.Add( CMD_CSTNAME("Float Control Toolbar") );
+
+
+   CMD_ADDFUNCTION(OnLoadEditToolBar);
+   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
+   mCommandIDs.Add( CMD_CETINT(LoadEditToolBarID) );
+   mCommandNames.Add( CMD_CSTNAME("Load Edit Toolbar") );
+   mCommandDesc.Add( CMD_CSTNAME("Load Edit Toolbar") );
+
+   CMD_ADDFUNCTION(OnFloatEditToolBar);
+   CMD_ASSIGNKEY(0, FALSE, FALSE, FALSE);
+   mCommandIDs.Add( CMD_CETINT(FloatEditToolBarID) );
+   mCommandNames.Add( CMD_CSTNAME("Float Edit Toolbar") );
+   mCommandDesc.Add( CMD_CSTNAME("Float Edit Toolbar") );
 
    // Project menu
    CMD_ADDFUNCTION(OnImport);
@@ -468,7 +483,9 @@ enum {
    MNU_UPDATE_ACCELL(mViewMenu, ZoomFitID)
    MNU_UPDATE_ACCELL(mViewMenu, ZoomSelID)
    MNU_UPDATE_ACCELL(mViewMenu, PlotSpectrumID)
-   MNU_UPDATE_ACCELL(mViewMenu, FloatPaletteID)
+   MNU_UPDATE_ACCELL(mViewMenu, FloatControlToolBarID)
+   MNU_UPDATE_ACCELL(mViewMenu, LoadEditToolBarID)
+   MNU_UPDATE_ACCELL(mViewMenu, FloatEditToolBarID)
    MNU_UPDATE_ACCELL(mProjectMenu, ImportID)
    MNU_UPDATE_ACCELL(mProjectMenu, ImportLabelsID)
    MNU_UPDATE_ACCELL(mProjectMenu, ImportMIDIID)
