@@ -259,8 +259,10 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    if (!gControlToolBarStub->GetWindowedStatus()) {
       int h = gControlToolBarStub->GetHeight();
+
+
       ToolBar *tb = new ControlToolBar(this, 0, wxPoint(10, top),
-                                       wxSize(width - 10, h));
+                                       wxSize(width - 10 - sbarSpaceWidth, h));
       mToolBarArray.Add((ToolBar *) tb);
 
       top += h + 1;
@@ -273,7 +275,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
           && !gEditToolBarStub->GetWindowedStatus()) {
          int h = gEditToolBarStub->GetHeight();
          ToolBar *etb = new EditToolBar(this, 0, wxPoint(10, top),
-                                        wxSize(width - 10, h));
+                                        wxSize(width - 10 - sbarSpaceWidth, h));
          mToolBarArray.Add((ToolBar *) etb);
 
          top += h + 1;
@@ -308,7 +310,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    int hoffset = mTrackPanel->GetLeftOffset() - 1;
    int voffset = mTrackPanel->GetRulerHeight();
 
-#ifdef __WXMAC__
+#if defined __WXMAC__ 
    width++;
    height++;
 #endif
@@ -441,7 +443,7 @@ void AudacityProject::OnScrollLeft()
    pos = (pos > 0) ? pos : 0;   //Set to larger of pos and 0
 
    if (pos > 0) {
-      mHsbar->SetThumbPosition(pos - sbarHjump);        //Jump 30 pixels to the left
+      mHsbar->SetThumbPosition(pos - sbarHjump);        //Jump sbarHjump pixels to the left
       FinishAutoScroll();
    }
 }
@@ -453,7 +455,7 @@ void AudacityProject::OnScrollRight()
    pos = (pos < max) ? pos : max;       //Set to smaller of pos and max
 
    if (pos < max) {
-      mHsbar->SetThumbPosition(pos + sbarHjump);        //Jump 30 pixels to the right
+      mHsbar->SetThumbPosition(pos + sbarHjump);        //Jump sbarHjump pixels to the right
       FinishAutoScroll();
    }
 }
@@ -464,7 +466,7 @@ void AudacityProject::OnScrollLeftButton(wxScrollEvent & event)
    pos = (pos > 0) ? pos : 0;   //Set to larger of pos and 0
 
    if (pos > 0) {
-      mHsbar->SetThumbPosition(pos - sbarHjump);        //Jump 30 pixels to the left
+      mHsbar->SetThumbPosition(pos - sbarHjump);        //Jump sbarHjump pixels to the left
       OnScroll(event);
    }
 }
@@ -477,7 +479,7 @@ void AudacityProject::OnScrollRightButton(wxScrollEvent & event)
    pos = (pos < max) ? pos : max;       //Set to smaller of pos and max
 
    if (pos < max) {
-      mHsbar->SetThumbPosition(pos + sbarHjump);        //Jump 30 pixels to the right
+      mHsbar->SetThumbPosition(pos + sbarHjump);        //Jump sbarHjump pixels to the right
       OnScroll(event);
    }
 }
@@ -577,8 +579,17 @@ void AudacityProject::HandleResize()
       //Deal with the ToolBars 
       int toolbartop, toolbarbottom, toolbarheight;
       unsigned int i;
-      int h = 0;
-      int ptop = 0;
+
+      
+      //This adjust the initial toolbar offset, allowing
+      //the horizontal lines between toolbars and menus to show up.
+#if defined __WXMSW__
+	int h = 1;
+#else
+	int h = 0;
+#endif
+	  
+	  int ptop = 0;
 
       for (i = 0; i < mToolBarArray.GetCount(); i++) {
          toolbartop = h;
@@ -728,28 +739,19 @@ void AudacityProject::OnPaint(wxPaintEvent & event)
    int width, height;
    GetClientSize(&width, &height);
 
+
+
    //Deal with the ToolBars 
    for (i = 0; i < mToolBarArray.GetCount(); i++) {
 
-      AColor::Medium(&dc, false);
+   
+	  AColor::Medium(&dc, false);
       toolbartop = h;
-      h += mToolBarArray[i]->GetHeight();
+	  toolbarheight = mToolBarArray[i]->GetHeight();
+      h += toolbarheight;
       toolbarbottom = h;
-      toolbarheight = toolbarbottom - toolbartop;
 
-      //Adjust a little for Windows (tm) 
-#ifdef __WXMSW__
-      h++;
-#endif
-
-      //Draw a rectangle the space of scrollbar
-      r.x = width - sbarSpaceWidth;
-      r.y = toolbartop;
-      r.width = sbarSpaceWidth;
-      r.height = toolbarheight;
-      dc.DrawRectangle(r);
-
-      //Draw a rectangle around the "grab-bar"
+      //Draw a rectangle beneath the "grab-bar"
       r.x = 0;
       r.y = toolbartop;
       r.width = 10;
@@ -775,15 +777,18 @@ void AudacityProject::OnPaint(wxPaintEvent & event)
       //Draw a black line to the right of the grab-bar
       dc.SetPen(*wxBLACK_PEN);
       dc.DrawLine(9, toolbartop, 9, toolbarbottom);
-
-      //Draw some more lines for Windows (tm)
+	
+	  //Draw some more lines for Windows (tm), along the top and left side 
+	  //of the grab-bar
 #ifdef __WXMSW__
-      dc.DrawLine(0, toolbartop, width, toolbartop);
-      dc.DrawLine(0, toolbartop, 0, toolbarbottom);
+	  dc.DrawLine(0, toolbartop, 10, toolbartop);
+	  dc.DrawLine(0, toolbartop, 0, toolbarbottom);
 #endif
-
       dc.DrawLine(0, toolbarbottom, width, toolbarbottom);
-      h++;
+
+      
+	  h++;
+  
    }
 
    //Now, h is equal to the total height of all the toolbars
@@ -823,6 +828,7 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
    //First, go through ToolBarArray and determine the current 
    //combined height of all toolbars.
    int tbheight = 0;
+
    int len = mToolBarArray.GetCount();
    for (int i = 0; i < len; i++)
       tbheight += mToolBarArray[i]->GetHeight();
@@ -837,6 +843,7 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
    switch (t) {
    case ControlToolBarID:
       h = gControlToolBarStub->GetHeight();
+
       toolbar =
           new ControlToolBar(this, -1, wxPoint(10, tbheight),
                              wxSize(width - 10, h));
@@ -867,9 +874,9 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
    }
 
    //Add the new toolbar to the ToolBarArray and redraw screen
-   mTotalToolBarHeight += toolbar->GetHeight() + 1;
-
+   mTotalToolBarHeight += toolbar->GetHeight() +1;
    HandleResize();
+   Refresh();
 }
 
 void AudacityProject::UnloadToolBar(enum ToolBarType t)
@@ -906,6 +913,7 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
       }
    }
    HandleResize();
+   Refresh();
 }
 
 bool AudacityProject::IsToolBarLoaded(enum ToolBarType t)

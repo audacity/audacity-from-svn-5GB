@@ -105,7 +105,7 @@ void EditToolBar::AddButton(char **fg, char **disabled, char **alpha,
    // buttons should be a little lower.
    int buttonTop = 0;
 #ifdef __WXMSW__
-   buttonTop=2;
+   buttonTop=0;
 #endif
 
    mButtons[id] = ToolBar::MakeButton(
