@@ -195,8 +195,8 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
       return;
    }
 
-   float min = 1.0;
-   float max = -1.0;
+   short min = 32767;
+   short max = -32768;
 
    unsigned int block0 = FindBlock(start);
    unsigned int block1 = FindBlock(start + len);
@@ -226,10 +226,10 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
       if (l0 > maxl0)
          l0 = maxl0;
 
-      float *buffer = new float[l0];
+      short *buffer = new short[l0];
 
       // TODO: optimize this to use Read256 and Read64K
-      Read((samplePtr)buffer, floatSample, mBlock->Item(block0), s0, l0);
+      Read((samplePtr)buffer, int16Sample, mBlock->Item(block0), s0, l0);
       for (i = 0; i < l0; i++) {
          if (buffer[i] < min)
             min = buffer[i];
@@ -246,10 +246,10 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
 
       s0 = 0;
       l0 = (start + len) - mBlock->Item(block1)->start;
-      float *buffer = new float[l0];
+      short *buffer = new short[l0];
 
       // TODO: optimize this to use Read256 and Read64K
-      Read((samplePtr)buffer, floatSample, mBlock->Item(block1), s0, l0);
+      Read((samplePtr)buffer, int16Sample, mBlock->Item(block1), s0, l0);
       for (i = 0; i < l0; i++) {
          if (buffer[i] < min)
             min = buffer[i];
@@ -260,8 +260,11 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
       delete[]buffer;
 
    }
-   *outMin = min;
-   *outMax = max;
+
+   CopySamples((samplePtr)&min, int16Sample,
+               (samplePtr)outMin, floatSample, 1);
+   CopySamples((samplePtr)&max, int16Sample,
+               (samplePtr)outMax, floatSample, 1);
 }
 
 void WaveTrack::SetDisplay(int d)
