@@ -30,12 +30,6 @@
 /* Define if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
-/* Define if id3lib is present */
-#undef USE_ID3LIB
-
-/* Define if the ogg vorbis decoding library is present */
-#undef USE_LIBVORBIS
-
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 
@@ -44,3 +38,15 @@
 
 /* Define to `unsigned' if <sys/types.h> does not define. */
 #undef size_t
+
+/* Define if id3lib is present */
+#undef USE_ID3LIB
+
+/* Define if the ogg vorbis decoding library is present */
+#undef USE_LIBVORBIS
+
+/* Define if at least one supported library for mp3 functions is present */
+#undef MP3SUPPORT
+
+/* Define if mp3 support is implemented with the libmad library */
+#undef USE_LIBMAD

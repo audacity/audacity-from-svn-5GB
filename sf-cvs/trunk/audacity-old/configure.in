@@ -40,15 +40,17 @@ AC_SUBST(EXTRAOBJS)
 AC_SUBST(MAKEALL)
 
 dnl Required sublibraries
-SUBDIRS="lib-src/libsndfile"
+SUBDIRS="$SUBDIRS lib-src/libsndfile"
+SUBDIRS="$SUBDIRS lib-src/portaudio/pa_linux_oss"
 EXTRAOBJS="$EXTRAOBJS lib-src/libsndfile/src/.libs/libsndfile.a"
+EXTRAOBJS="$EXTRAOBJS lib-src/portaudio/pa_linux_oss/portaudio.a"
 
 dnl options
 AC_ARG_WITH(libmad,
 	[AC_HELP_STRING([--with-libmad],
       [use libmad for mp3 decoding support [default=yes]])],
-	use_libmpeg3=$withval,
-	use_libmpeg3="yes")
+	use_libmad=$withval,
+	use_libmad="yes")
 AC_ARG_WITH(vorbis,
 	[AC_HELP_STRING([--with-vorbis],
 		[enable ogg vorbis support [default=yes]])],
@@ -79,15 +81,16 @@ if [[ "$use_libmad" = "yes" ]] ; then
 
 	EXTRAOBJS="$EXTRAOBJS lib-src/libmad/.libs/libmad.a"
 	SUBDIRS="$SUBDIRS lib-src/libmad"
-	
+	CXXFLAGS="$CXXFLAGS -Ilib-src/libmad"
+
    mp3support="true"
 fi
 
 if [[ $use_vorbis = "yes" ]] ; then
 
-	EXTRAOBJS="$EXTRAOBJS lib-src/libogg/.libs/libogg.a"
-	EXTRAOBJS="$EXTRAOBJS lib-src/libvorbis/.libs/libvorbis.a"
-	EXTRAOBJS="$EXTRAOBJS lib-src/libvorbis/.libs/libvorbisfile.a"
+	EXTRAOBJS="$EXTRAOBJS lib-src/libvorbis/lib/.libs/libvorbisfile.a"
+	EXTRAOBJS="$EXTRAOBJS lib-src/libvorbis/lib/.libs/libvorbis.a"
+	EXTRAOBJS="$EXTRAOBJS lib-src/libogg/src/.libs/libogg.a"
 	SUBDIRS="$SUBDIRS lib-src/libogg lib-src/libvorbis"
 
 	AC_DEFINE(USE_LIBVORBIS, 1,
@@ -113,7 +116,7 @@ fi
 if [[ $use_id3lib = "yes" ]] ; then
 	EXTRAOBJS="$EXTRAOBJS id3lib/src/.libs/libid3.a"
 	MAKEALL="$MAKEALL id3lib/src/.libs/libid3.a"
-	CFLAGS="$CFLAGS -Iid3lib/include"
+	CPPFLAGS="$CPPFLAGS -Iid3lib/include"
 		
 	AC_DEFINE(USE_ID3LIB, 1,
       [Define if id3lib is present])
@@ -131,7 +134,7 @@ if [[ "$WX_CONFIG" = "no" ]] ; then
 	AC_MSG_ERROR("Could not find wx-config: is wxWindows installed? is wx-config in your path?")
 fi
 LIBS="$LIBS `$WX_CONFIG --libs`"
-CFLAGS="$CFLAGS `$WX_CONFIG --cflags`"
+CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cflags`"
 
 
 dnl Checks for typedefs, structures, and compiler characteristics.

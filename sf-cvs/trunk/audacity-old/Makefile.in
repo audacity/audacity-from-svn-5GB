@@ -8,15 +8,21 @@
 # from Makefile.in
 #
 
-LIBS = @LIBS@
-
-# CFLAGS are specific to C. CXXFLAGS are specific 
-# to C++. CPPFLAGS are for both
-CFLAGS = @CFLAGS@
-CPPFLAGS = @CPPFLAGS@ -Wall -Iallegro
-CXXFLAGS = @CXXFLAGS@
-CCC = @CXX@
 CC = @CC@
+CCC = @CXX@
+INSTALL = @INSTALL@
+PREFIX = @prefix@
+
+# CFLAGS are specific to C.
+CFLAGS = @CFLAGS@
+
+# CXXFLAGS are specific to C++.
+CXXFLAGS = @CXXFLAGS@
+
+# CPPFLAGS are for both C and C++.
+CPPFLAGS = @CPPFLAGS@ -Iallegro -Iinclude -Iinclude/linux
+
+LIBS = @LIBS@
 
 ########################################
 # ALL OBJECT FILES
@@ -39,7 +45,7 @@ OBJS = \
 	$(OBJDIR)/Export.cpp.o \
 	$(OBJDIR)/ExportMP3.cpp.o \
 	$(OBJDIR)/ExportPCM.cpp.o \
-	$(OBJDIR)/FileFormat.cpp.o \
+	$(OBJDIR)/FileFormats.cpp.o \
 	$(OBJDIR)/FFT.cpp.o \
 	$(OBJDIR)/FreqWindow.cpp.o \
 	$(OBJDIR)/Help.cpp.o \
@@ -91,7 +97,8 @@ OBJS = \
 	$(OBJDIR)/prefs/SampleRatePrefs.cpp.o \
 	$(OBJDIR)/prefs/FileFormatPrefs.cpp.o \
 	$(OBJDIR)/prefs/DirectoriesPrefs.cpp.o \
-	$(OBJDIR)/prefs/SpectrumPrefs.cpp.o
+	$(OBJDIR)/prefs/SpectrumPrefs.cpp.o \
+	@EXTRAOBJS@
 
 ########################################
 # DEPENDENCIES
@@ -100,10 +107,23 @@ DEPS = $(OBJS:$(OBJDIR)/%.o=%)
 
 ########################################
 
-all: dirs audacity audacity-help.htb
+all: dirs @MAKEALL@ audacity
 
 audacity: $(OBJS) Makefile
 	$(CCC) -o audacity $(OBJS) $(LIBS)
+
+#
+#
+install:
+	-test ! -d $(PREFIX)/share/doc/audacity || \
+		mkdir -m 755 -p $(PREFIX)/share/doc/audacity
+	-test ! -f audacity-help.htb || $(INSTALL) -m 644 audacity-help.htb \
+		$(PREFIX)/share/doc/audacity/audacity-help.htb
+	$(INSTALL) -m 644 README.txt $(PREFIX)/share/doc/audacity/README.txt
+	$(INSTALL) -m 644 LICENSE.txt $(PREFIX)/share/doc/audacity/LICENSE.txt
+	-test ! -d $(PREFIX)/bin || \
+		mkdir -m 755 -p $(PREFIX)/bin
+	$(INSTALL) -m 755 audacity $(PREFIX)/bin/audacity
 
 #
 # make help file from the help directory
@@ -113,13 +133,13 @@ audacity-help.htb: help/*
 
 #
 # build our sublibraries if needed
-lib-src/libogg/.libs/libogg.a:
+lib-src/libogg/src/.libs/libogg.a:
 	cd lib-src/libogg && $(MAKE)
 
-lib-src/libvorbis/.libs/libvorbis.a:
+lib-src/libvorbis/lib/.libs/libvorbis.a:
 	cd lib-src/libvorbis && $(MAKE)
 
-lib-src/libvorbis/.libs/libvorbisfile.a:
+lib-src/libvorbis/lib/.libs/libvorbisfile.a:
 	cd lib-src/libvorbis && $(MAKE)
 
 lib-src/libmad/.libs/libmad.a:
@@ -127,6 +147,9 @@ lib-src/libmad/.libs/libmad.a:
 
 lib-src/libsndfile/src/.libs/libsndfile.a:
 	cd lib-src/libsndfile && $(MAKE)
+
+lib-src/portaudio/pa_linux_oss/portaudio.a:
+	cd lib-src/portaudio/pa_linux_oss && $(MAKE)
 
 #
 # You can optionally "make dep" to make dependencies.
@@ -136,7 +159,7 @@ lib-src/libsndfile/src/.libs/libsndfile.a:
 # I'm not brave enough to try and translate that regex to sed
 
 dep:
-	$(CCC) -M $(CPPFLAGS) $(DEPS) | \
+	$(CCC) -M $(CXXFLAGS) $(CPPFLAGS) $(DEPS) | \
 		perl -pe 's/^(.*)\.o: ([^\/]*\/)??([^ \/]+\.(\w+))/$(OBJDIR)\/$$2$$1.$$4.o: $$2$$3/;' \
 		> .depend
 
@@ -147,6 +170,11 @@ dep:
 clean:
 	rm -f audacity audacity-help.htb .depend
 	rm -rf obj/
+	cd lib-src/libsndfile && $(MAKE) clean
+	cd lib-src/libmad && $(MAKE) clean
+	cd lib-src/libogg && $(MAKE) clean
+	cd lib-src/libvorbis && $(MAKE) clean
+	cd lib-src/portaudio/pa_linux_oss && $(MAKE) clean
 
 #
 # We stick object files in separate directories for convenience
@@ -174,10 +202,10 @@ obj/prefs:
 #
 
 $(OBJDIR)/%.cpp.o: %.cpp
-	$(CCC) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@
+	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
 
 $(OBJDIR)/%.c.o: %.c
-	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
+	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 #
 # Include ".depend" if it exists (run "make dep" to generate it)
