@@ -24,6 +24,7 @@
       <li><a href="http://ccrma.stanford.edu/planetccrma/software/">Planet CCRMA</a></li>
     </ul>
   </li>
+  <li><a href="http://www.ubuntulinux.org/support/documentation/howto/helpcenterhowto.2004-09-30.5359349801">Ubuntu Linux</a> ("universe")</li>
 </ul>
 
 <p><?=_('Linux and Unix users may also compile Audacity from <a href="source">source code</a>.')?></p>
