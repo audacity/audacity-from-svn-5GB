@@ -1,7 +1,7 @@
 #ifndef PA_CPULOAD_H
 #define PA_CPULOAD_H
 /*
- * $Id: pa_cpuload.h,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: pa_cpuload.h,v 1.1.2.1 2004-04-22 04:39:41 mbrubeck Exp $
  * Portable Audio I/O Library CPU Load measurement functions
  * Portable CPU load measurement facility.
  *
@@ -31,7 +31,13 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
- 
+
+/** @file
+ @brief Functions to assist in measuring the CPU utilization of a callback
+ stream. Used to implement the Pa_GetStreamCpuLoad() function.
+*/
+
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -42,11 +48,12 @@ typedef struct {
     double samplingPeriod;
     double measurementStartTime;
     double averageLoad;
-} PaUtilCpuLoadMeasurer; /** @todo need better name than measurer */
+} PaUtilCpuLoadMeasurer; /**< @todo need better name than measurer */
 
 void PaUtil_InitializeCpuLoadMeasurer( PaUtilCpuLoadMeasurer* measurer, double sampleRate );
 void PaUtil_BeginCpuLoadMeasurement( PaUtilCpuLoadMeasurer* measurer );
 void PaUtil_EndCpuLoadMeasurement( PaUtilCpuLoadMeasurer* measurer, unsigned long framesProcessed );
+void PaUtil_ResetCpuLoadMeasurer( PaUtilCpuLoadMeasurer* measurer );
 double PaUtil_GetCpuLoad( PaUtilCpuLoadMeasurer* measurer );
 
 

@@ -1,5 +1,5 @@
 /*
- * $Id: debug_sine_amp.c,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: debug_sine_amp.c,v 1.1.2.1 2004-04-22 04:39:41 mbrubeck Exp $
  * Play a different sine wave on each channels,
  * using the Portable Audio api.
  * Allos amplitude to be set interactively.

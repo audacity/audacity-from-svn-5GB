@@ -1,5 +1,5 @@
 /*
- * Id:
+ * $Id: pa_allocation.c,v 1.1.2.1 2004-04-22 04:39:41 mbrubeck Exp $
  * Portable Audio I/O Library allocation group implementation
  * memory allocation group for tracking allocation groups
  *
@@ -29,9 +29,15 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
- 
+
+/** @file
+ @brief Allocation Group implementation.
+*/
+
+
 #include "pa_allocation.h"
 #include "pa_util.h"
+
 
 /*
     Maintain 3 singly linked lists...
