@@ -1,32 +1,32 @@
 <?php BoxTop($aboutStr); ?>
 
 <p>
-Audacity ist ein freier Mehrspur-Audio-Editor für Linux, Mac und Windows. Mit 
-Audacity können Töne aufgenommen und wiedergegeben werden sowie Audiodaten 
-im- und exportiert werden in den Formaten wav, mp3 und ogg. Die Töne können 
+Audacity ist ein freier Mehrspur-Audio-Editor f&uuml;r Linux, Mac und Windows. Mit 
+Audacity k&ouml;nnen T&ouml;ne aufgenommen und wiedergegeben werden sowie Audiodaten 
+im- und exportiert werden in den Formaten wav, mp3 und ogg. Die T&ouml;ne k&ouml;nnen 
 auf einer unbegrenzten Zahl Spuren geschnitten, kopiert oder mit hunderten 
-von Effekten versehen werden. Audacity verfügt über zahlreiche Werkzeuge um 
-Lautstärken zu verändern oder mit wenigen Handgriffen Idealpegel 
+von Effekten versehen werden. Audacity verf&uuml;gt &uuml;ber zahlreiche Werkzeuge um 
+Lautst&auml;rken zu ver&auml;ndern oder mit wenigen Handgriffen Idealpegel 
 einzustellen.
 </p>
 
 <p>
-Auffallend an Audacity in der aktuellen Version 1.2.1 ist die außergewöhnlich 
-intuitiv zu bediendende Oberfläche. Wer Audacity gestartet hat kann sofort 
-mit einem einzigen Mausklick die erste Aufnahme starten, die gebräuchlichsten 
-Arbeitsschritte lehnen sich an gängige Computer-Konventionen an. Für Audacity 
+Auffallend an Audacity in der aktuellen Version 1.2.1 ist die au&szlig;ergew&ouml;hnlich 
+intuitiv zu bediendende Oberfl&auml;che. Wer Audacity gestartet hat kann sofort 
+mit einem einzigen Mausklick die erste Aufnahme starten, die gebr&auml;uchlichsten 
+Arbeitsschritte lehnen sich an g&auml;ngige Computer-Konventionen an. F&uuml;r Audacity 
 gibt es zahlreiche Sprachmodule, so ist auch eine komplett deutsch-sprachige 
-Menüführung möglich. 
+Men&uuml;f&uuml;hrung m&ouml;glich. 
 </p>
 
 <p>
-Audacity eignet sich hervorragend für Musikproduktionen, gerade wenn auf 
-mehreren Spuren ein Mix produziert werden soll. Ebenso können 
-Radioproduktionen außergewöhnlich zügig realisiert werden, da Audacity mit 
+Audacity eignet sich hervorragend f&uuml;r Musikproduktionen, gerade wenn auf 
+mehreren Spuren ein Mix produziert werden soll. Ebenso k&ouml;nnen 
+Radioproduktionen au&szlig;ergew&ouml;hnlich z&uuml;gig realisiert werden, da Audacity mit 
 seinem schlanken Aufbau die erforderlichen Funktionen unmittelbar zur 
-Verfügung stellt und häufig auftretende Abläufe auf beliebige Tasten gelegt 
-werden können. In zukünftigen Versionen sollen die Audios noch flexibler auf 
-den jeweiligen Spuren bewegt werden können. 
+Verf&uuml;gung stellt und h&auml;ufig auftretende Abl&auml;ufe auf beliebige Tasten gelegt 
+werden k&ouml;nnen. In zuk&uuml;nftigen Versionen sollen die Audios noch flexibler auf 
+den jeweiligen Spuren bewegt werden k&ouml;nnen. 
 </p>
 
 <p>
@@ -35,8 +35,8 @@ entwickelt. Das Programm ist in C++ geschrieben und verwendet das
 Cross-Platform-Toolkit <a href="http://www.wxwidgets.org/">wxWidgets</a>.
 Der gesamte Quelltext des Programms ist unter der
 <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a>
-verfügbar: Dadurch ist es erlaubt, den Code zu verändern, solange die Änderungen
-wieder veröffentlicht und somit der Community zur  Verfügung gestellt werden.
+verf&uuml;gbar: Dadurch ist es erlaubt, den Code zu ver&auml;ndern, solange die &Auml;nderungen
+wieder ver&ouml;ffentlicht und somit der Community zur  Verf&uuml;gung gestellt werden.
 Der Quelltext wird von <a href="http://www.sourceforge.net">SourceForge</a> gehostet.
 </p>
 
