@@ -23,6 +23,29 @@ Known bugs to fix:
 - Find VST folder on startup
 - Must warn user if temp directory can't be created
 - Recording/Playback devices backwards on Windows
+- Need to have a warning when you write over a file the
+  project depends on - and an option to rename the file
+  if necessary.
+- Set Rate... dialog doesn't initialize with the
+  current rate.  Sometimes 0, sometimes junk.
+  (Note that there are two of these dialogs.)
+- Better aRts support (or at least a warning???)
+- Device prefs in Mac OS X
+- Duplicate doesn't work when a track is time-shifted
+  past zero
+
+-----------------------------------------------------------
+Possible bugs to investigate:
+-----------------------------------------------------------
+
+- Possible memory leak in Windows 98 (???)
+  See emails from degarb@softhome.net
+- Typing in the root directory as the Temp Files path
+  doesn't work (on Mac OS X)?
+- Problem reading AIFF files on Mac OS X?
+  (Private email from Tobias Jeger - the attached
+	AIFF file worked fine under Linux)
+- Insert silence crashes Mac OS X
 
 -----------------------------------------------------------
 Unit tests:
@@ -30,6 +53,7 @@ Unit tests:
 
 - Need to test that block size does remain constrained
   even with lots of edits in one place.
+  (al la email from Peter Peterson)
 - Need to verify that the new 1.0 mixing code plays every
   sample one and only once.
 
@@ -58,6 +82,7 @@ Meta::
 - Move to new repository with src/ directory
 
 UI::
+- Edit markers
 - Roger's Allegro stuff
 - Finish history window
 - ability to drag tracks instead of move down, move down, move down

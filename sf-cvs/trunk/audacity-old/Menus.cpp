@@ -936,9 +936,10 @@ void AudacityProject::OnImportMIDI(wxCommandEvent & event)
    wxString fileName = wxFileSelector("Select a MIDI file...",
                                       path,     // Path
                                       "",       // Name
-                                      ".mid",   // Extension
+                                      "",   // Extension
+                                      "All files (*.*)|*.*|"
                                       "MIDI files (*.mid)|*.mid|"
-                                      "All files (*.*)|*.*",
+                                      "Allegro files (*.gro)|*.gro",
                                       0,        // Flags
                                       this);    // Parent
 
