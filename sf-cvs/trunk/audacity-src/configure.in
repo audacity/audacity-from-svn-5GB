@@ -232,11 +232,9 @@ if [[ "$host_os" = "darwin5.3" ]] ; then
 	BUILDLIBS="$BUILDLIBS portaudio/pa_mac_core/portaudio.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_mac_core/portaudio.a"
 
-	LIBS="-framework CoreAudio $LIBS"
+	LIBS="-framework CoreAudio $LIBS -lz"
 
-	AFTERBUILD="cp audacity Audacity.app \
-`$WX_CONFIG --rezflags` Audacity.App audacity.r -c auDy \
-/Developer/Tools/SetFile -a avBstClinmed Audacity.app"
+	AFTERBUILD="cp ../audacity ../Audacity.app && `$WX_CONFIG --rezflags` ../Audacity.app ../mac/audacity.r -c auDy && /Developer/Tools/SetFile -a avBstClinmed ../Audacity.app"
 
 	if [[ "$use_ladspa" = "default" ]] ; then
 		use_ladspa="no";
