@@ -24,6 +24,8 @@ Links to Other Audio Editors
   <li><a href="http://www.cooledit.com">CoolEdit Pro/CoolEdit 2000</a>
       from Syntrillium
   <li><a href="http://www.sonicfoundry.com/products/NewShowProduct.asp?PID=426">Sound Forge 5.0</a> or <a href="http://www.sonicfoundry.com/products/NewShowProduct.asp?PID=6">Sound Forge XP</a> from Sonic Foundry
+  <li><a href="http://www.goldwave.com/"
+      >GoldWave</a> from GoldWave Inc.
   <li><a href="http://www.geocities.com/SiliconValley/Platform/9182/"
       >ASIA - a digital audio editor</a>
   <li><a href="http://audioedit.mystikmedia.com/"
@@ -113,7 +115,8 @@ Links to Other Audio Editors
      >Amadeus II</a> from HairerSoft
    <li><a href="http://www.bannister.org/software/cacophony.htm"
       >Cacophony</a> from Richard Bannister
-
+   <li><a href="http://www.bias-inc.com"
+      >Peak</a> from Bias
    <li><a href="http://www.kumulipo.com/"
      >Jasmine</a> from Kumulipo</a>
   </ul>
@@ -163,9 +166,10 @@ Links to Other Audio Editors
        >Protux</a> - PROfessional audio Tools for linUX
   </ul>
 
-  <li>Multitrack editors
+  <li>Multitrack recording/editing
   <ul>
    <li><a href="http://ardour.sourceforge.net/">Ardour</a>
+       by Paul Davis
   </ul>
 
 </ul>
@@ -205,6 +209,7 @@ of these.
 
 <ul>
 <li><a href="http://tuxedo.org/~esr/writings/dragnet/eric-comments.html">From a talk by Eric S. Raymond</a>
+<li><a href="http://www.catb.org/~esr/writings/taoup/html/ch06s01.html#audacity">From a book by Eric S. Raymond</a>
 <li><a href="http://slashdot.org/article.pl?sid=02/06/11/0322200&mode=nested&tid=106">Slashdot Article, June 11, 2002</a>
 </ul>
 
