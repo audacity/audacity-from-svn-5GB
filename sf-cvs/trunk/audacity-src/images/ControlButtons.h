@@ -4,10 +4,14 @@
 #include "Aqua/UpButtonSquare.xpm"
 #include "Aqua/DownButtonSquare.xpm"
 #include "Aqua/HiliteButtonSquare.xpm"
+#include "Aqua/SliderThumb.xpm"
+#include "Aqua/Slider.xpm"
 #else
 #include "ControlButtons/UpButton.xpm"
 #include "ControlButtons/DownButton.xpm"
 #include "ControlButtons/HiliteButton.xpm"
+#include "ControlButtons/SliderThumb.xpm"
+#include "ControlButtons/Slider.xpm"
 #endif
 
 #include "ControlButtons/EnvelopeAlpha.xpm"
@@ -26,8 +30,6 @@
 #include "ControlButtons/RewindAlpha.xpm"
 #include "ControlButtons/RewindDisabled.xpm"
 #include "ControlButtons/Rewind.xpm"
-#include "ControlButtons/SliderThumb.xpm"
-#include "ControlButtons/Slider.xpm"
 #include "ControlButtons/StopAlpha.xpm"
 #include "ControlButtons/StopDisabled.xpm"
 #include "ControlButtons/Stop.xpm"
