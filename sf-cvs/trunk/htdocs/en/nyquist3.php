@@ -130,7 +130,7 @@ that will get set when the user manipulates the dialog.
 </ol>
 
 <p>
-<b>Returning labels
+<b>Returning labels</b>
 </p>
 
 <p>
