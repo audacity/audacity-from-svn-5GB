@@ -51,6 +51,7 @@ void MeterToolBar::InitializeMeterToolBar()
 {
    mIdealSize = wxSize(200, 55);
    mTitle = _("Audacity Meter Toolbar");
+   SetLabel(_("Meter"));
    mType = MeterToolBarID;
 
    mPlayMeter = new Meter(this, -1, false,
@@ -60,6 +61,8 @@ void MeterToolBar::InitializeMeterToolBar()
                             wxPoint(100, 0),
                             wxSize(99, 55));
 
+   mPlayMeter->SetLabel( "Meter-Play");
+   mRecordMeter->SetLabel( "Meter-Record");
    #if wxUSE_TOOLTIPS
    mPlayMeter->SetToolTip(_("Output level meter"));
    mRecordMeter->SetToolTip(_("Input level meter - click to monitor input"));
@@ -116,4 +119,19 @@ void MeterToolBar::OnKeyEvent(wxKeyEvent & event)
 {
    event.Skip();
 }
+
+void MeterToolBar::PlaceButton(int i, wxWindow *pWind)
+{
+   wxSize Size;
+   if( i==0 )
+   {
+      mxButtonPos = 0;
+   }
+   Size = pWind->GetSize();
+   pWind->SetSize( mxButtonPos, 0, Size.GetX(), Size.GetY());
+   mxButtonPos+=Size.GetX()+1;
+//   mIdealSize = wxSize(mxButtonPos+3, 27);
+//   SetSize(mIdealSize );
+}
+
 

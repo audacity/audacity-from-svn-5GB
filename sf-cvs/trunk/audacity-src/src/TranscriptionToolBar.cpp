@@ -39,26 +39,10 @@
 #include <cmath>
 #include <iostream>
 
-
-#ifdef __WXMAC__
-#define TRANSCRIPTIONTOOLBAR_HEIGHT_OFFSET 0
-#endif
-
-#ifdef __WXGTK__
-#define TRANSCRIPTIONTOOLBAR_HEIGHT_OFFSET 22
-#endif
-
-#ifdef __WXMSW__
-#define TRANSCRIPTIONTOOLBAR_HEIGHT_OFFSET 25
-#endif
-
-
 #include "../images/TranscriptionButtons.h"
-
 
 const int BUTTON_WIDTH = 27;
 const int SEPARATOR_WIDTH = 14;
-
 
 using std::cout;
 using std::flush;
@@ -109,6 +93,7 @@ TranscriptionToolBar::TranscriptionToolBar(wxWindow * parent, wxWindowID id,
 void TranscriptionToolBar::InitializeTranscriptionToolBar()
 {
    mTitle = _("Audacity Transcription Toolbar");
+   SetLabel(_("Transcription"));
    mType = TranscriptionToolBarID;
    
    mIdealSize = wxSize(550, 27);
@@ -122,8 +107,6 @@ void TranscriptionToolBar::InitializeTranscriptionToolBar()
    mBackgroundHeight = 0;
    mBackgroundWidth = 0;
  
-   mNumDividers = 0;
-
    MakeButtons();
  
    mButtons[TTB_StartOn]->Disable();
@@ -141,32 +124,26 @@ void TranscriptionToolBar::InitializeTranscriptionToolBar()
 // MakeButtons() with fewer arguments
 
 void TranscriptionToolBar::AddButton(const char **fg, const char **disabled, const char **alpha,
-				     int id, const char *tooltip)
+				     int id, const char *tooltip, const char *label)
 {
-
    // Windows (TM) has a little extra room for some reason, so the top of the
    // buttons should be a little lower.
    int buttonTop = 0;
 #ifdef __WXMSW__
    buttonTop=0;
 #endif
-
    mButtons[id] = ToolBar::MakeButton(
                                       upImage, downImage, hiliteImage, fg,
                                       disabled, alpha,
-                                      wxWindowID(id), wxPoint(mButtonPos, buttonTop),
+                                      wxWindowID(id), wxPoint(mxButtonPos, buttonTop),
                                       false /*No buttons should process down events.*/,
                                       wxSize(BUTTON_WIDTH, BUTTON_WIDTH), 0, 0);
 #if wxUSE_TOOLTIPS // Not available in wxX11
    mButtons[id]->SetToolTip(tooltip);
 #endif
-
-   mButtonPos += BUTTON_WIDTH;
-   mDividers[mNumDividers++] = mButtonPos++;
+   mButtons[id]->SetLabel( label );
+   mxButtonPos += BUTTON_WIDTH+1;
 }
-
-
-
 
 void TranscriptionToolBar::MakeButtons()
 {
@@ -189,19 +166,38 @@ void TranscriptionToolBar::MakeButtons()
    hiliteImage = ChangeImageColour(hiliteOriginal, baseColour, newColour);
 
 
-   mButtonPos = 0;
-   AddButton(StartOn,     StartOnDisabled,   StartOnAlpha,   TTB_StartOn,   _("Adjust left selection to  next onset"));
-   AddButton(EndOn,       EndOnDisabled,     EndOnAlpha,     TTB_EndOn,     _("Adjust right selection to previous offset"));
-   AddButton(StartOff,    StartOffDisabled,  StartOffAlpha,  TTB_StartOff,  _("Adjust left selection to next offset"));
-   AddButton(EndOff,      EndOffDisabled,    EndOffAlpha,    TTB_EndOff,    _("Adjust right selection to previous onset"));
-   AddButton(CalibrateUp, CalibrateDisabled, CalibrateAlpha, TTB_Calibrate, _("Calibrate voicekey"));
-   AddButton(AutomateSelection,   AutomateSelectionDisabled,   AutomateSelectionAlpha,   TTB_AutomateSelection,   _("Automatically make labels from words"));
-   AddButton(MakeTag,     MakeTagDisabled,   MakeTagAlpha,   TTB_MakeLabel,  _("Add label at selection"));
+   mxButtonPos = 0;
+   AddButton(StartOn,     StartOnDisabled,   StartOnAlpha,   TTB_StartOn,
+      _("Adjust left selection to  next onset"),
+      _("Left-to-On"));
+   AddButton(EndOn,       EndOnDisabled,     EndOnAlpha,     TTB_EndOn,
+      _("Adjust right selection to previous offset"),
+      _("Right-to-Off"));
+   AddButton(StartOff,    StartOffDisabled,  StartOffAlpha,  TTB_StartOff,
+      _("Adjust left selection to next offset"),
+      _("Left-to-Off"));
+   AddButton(EndOff,      EndOffDisabled,    EndOffAlpha,    TTB_EndOff,
+      _("Adjust right selection to previous onset"),
+      _("Right-to-On"));
+   AddButton(CalibrateUp, CalibrateDisabled, CalibrateAlpha, TTB_Calibrate,
+      _("Calibrate voicekey"),
+      _("Calibrate"));
+   AddButton(AutomateSelection,   AutomateSelectionDisabled,   AutomateSelectionAlpha,      TTB_AutomateSelection,
+      _("Automatically make labels from words"),
+      _("Make Labels"));
+   AddButton(MakeTag,     MakeTagDisabled,   MakeTagAlpha,   TTB_MakeLabel,  
+      _("Add label at selection"),
+      _("Add Label"));
   
+   const int SliderWidth=100;
    mSensitivitySlider = new ASlider(this, TTB_SensitivitySlider, _("Adjust Sensitivity"),
-                                    wxPoint(mButtonPos,0),wxSize(100,28));
+                                    wxPoint(mxButtonPos,0),wxSize(SliderWidth,28));
   
-  
+   mSensitivitySlider->SetLabel(_("Sensitivity"));
+   mxButtonPos +=  SliderWidth;
+   mIdealSize = wxSize(mxButtonPos+3, 27);
+   SetSize(mIdealSize );
+
    mSensitivitySlider->Set(.5);
 
 }
@@ -571,18 +567,12 @@ void TranscriptionToolBar::OnAutomateSelection(wxCommandEvent &event)
       }
 }
 
-
-
-
-
 void TranscriptionToolBar::OnMakeLabel(wxCommandEvent &event)
 {
    AudacityProject *p = GetActiveProject();
    SetButton(false, mButtons[TTB_MakeLabel]);  
    p->DoAddLabel(p->GetSel0(),  p->GetSel1());
- 
 }
-
 
 //This returns a double z-score between 0 and 10.
 double TranscriptionToolBar::GetSensitivity()
@@ -590,16 +580,12 @@ double TranscriptionToolBar::GetSensitivity()
    return (double)mSensitivity;
 }
 
-
-
-
 void TranscriptionToolBar::OnPaint(wxPaintEvent & evt)
 {
    wxPaintDC dc(this);
 
    int width, height;
    GetSize(&width, &height);
-
 
 #if defined(__WXMAC__)          // && defined(TARGET_CARBON)
 
@@ -661,7 +647,20 @@ void TranscriptionToolBar::EnableDisableButtons()
    selection &= (p->GetSel0() < p->GetSel1());
 
    mButtons[TTB_Calibrate]->SetEnabled(selection);
-   
+}
+
+void TranscriptionToolBar::PlaceButton(int i, wxWindow *pWind)
+{
+   wxSize Size;
+   if( i==0 )
+   {
+      mxButtonPos = 0;
+   }
+   Size = pWind->GetSize();
+   pWind->SetSize( mxButtonPos, 0, Size.GetX(), Size.GetY());
+   mxButtonPos+=Size.GetX()+1;
+   mIdealSize = wxSize(mxButtonPos+3, 27);
+   SetSize(mIdealSize );
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
@@ -673,5 +672,5 @@ void TranscriptionToolBar::EnableDisableButtons()
 // End:
 //
 // vim: et sts=3 sw=3
-// arch-tag: 
+// arch-tag: ToDo
 

@@ -80,23 +80,20 @@ class EditToolBar:public ToolBar {
    virtual void EnableDisableButtons();
 
    void OnButton(wxCommandEvent &event);
+   virtual void PlaceButton(int i, wxWindow *pWind);
 
  private:
    void AddButton(const char **fg, const char **disabled, const char **alpha,
-                  int id, const char *tooltip);
+                  int id, const char *tooltip, const char *label);
    void AddSeparator();
 
    void MakeButtons();
    
    AButton *mButtons[ETBNumButtons];
 
-   int mButtonPos;
    wxImage *upImage;
    wxImage *downImage;
    wxImage *hiliteImage;
-
-   int mDividers[100];
-   int mNumDividers;
 
    DECLARE_EVENT_TABLE()
 };

@@ -139,6 +139,8 @@ void ControlToolBar::InitializeControlToolBar()
 {
    mIdealSize = wxSize(420, 55);
    mTitle = _("Audacity Control Toolbar");
+   SetLabel(_("Control"));
+
    mType = ControlToolBarID;
 
    wxColour backgroundColour =
@@ -293,12 +295,11 @@ AButton *ControlToolBar::MakeButton(char const **foreground,
    buttonTop=4;
 #endif
 
-
    AButton *r = ToolBar::MakeButton(upPattern, downPattern, hilitePattern,
                                     foreground, disabled, alpha, wxWindowID(id),
-                                    wxPoint(mButtonPos,buttonTop), processdownevents,
+                                    wxPoint(mxButtonPos,buttonTop), processdownevents,
                                     wxSize(48, 48), 16, 16);
-   mButtonPos += BUTTON_WIDTH;
+   mxButtonPos += BUTTON_WIDTH;
    return r;
 }
 
@@ -367,6 +368,31 @@ void ControlToolBar::RegenerateToolsTooltips()
 
 void ControlToolBar::MakeButtons()
 {
+   /* Tools */
+
+   #ifdef USE_AQUA_THEME // different positioning
+   mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
+   mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 26);
+   mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 26, 0);
+   mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 26, 26);
+   mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 52, 0);
+   mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 52, 26); 
+   #else
+   mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
+   mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 28);
+   mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 27, 0);
+   mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 27, 28);
+   mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 54, 0);
+   mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 54, 28); 
+   #endif
+
+   mTool[selectTool]->SetLabel(_("SelectionTool"));
+   mTool[envelopeTool]->SetLabel(_("EnvelopeTool"));
+   mTool[slideTool]->SetLabel(_("TimeShiftTool"));
+   mTool[zoomTool]->SetLabel(_("ZoomTool"));
+   mTool[drawTool]->SetLabel(_("DrawTool"));
+   mTool[multiTool]->SetLabel(_("MultiTool"));
+
    wxImage *upOriginal = new wxImage(wxBitmap(UpButton).ConvertToImage());
    wxImage *downOriginal = new wxImage(wxBitmap(DownButton).ConvertToImage());
    wxImage *hiliteOriginal = new wxImage(wxBitmap(HiliteButton).ConvertToImage());
@@ -386,7 +412,7 @@ void ControlToolBar::MakeButtons()
 
    /* Buttons */
    int buttonOrder[6];
-   mButtonPos = 95;
+   mxButtonPos = 95;
    
    gPrefs->Read("/GUI/ErgonomicTransportButtons", &mErgonomicTransportButtons, true);
 
@@ -429,7 +455,7 @@ void ControlToolBar::MakeButtons()
       
       case ID_RECORD_BUTTON:
          if (mErgonomicTransportButtons)
-            mButtonPos += 10; // space before record button
+            mxButtonPos += 10; // space before record button
          
          mRecord = MakeButton((char const **) Record,
                               (char const **) RecordDisabled,
@@ -463,6 +489,18 @@ void ControlToolBar::MakeButtons()
       }
    }
 
+   // Labels are for the Nyquist Inspector.
+   // We need these whether or not tool tips are available.
+   // These are the names of the buttons rather than 
+   // helpful tips for the user.
+   // TODO: Should we disable translation of these names?
+   mRewind->SetLabel(_("Start"));
+   mPlay->SetLabel(_("Play"));
+   mRecord->SetLabel(_("Record"));
+   mPause->SetLabel(_("Pause"));
+   mStop->SetLabel(_("Stop"));
+   mFF->SetLabel(_("End"));
+
    #if wxUSE_TOOLTIPS
          mRewind->SetToolTip(_("Skip to Start"));
          mPlay->SetToolTip(_("Play (Shift for loop-play)"));
@@ -482,23 +520,6 @@ void ControlToolBar::MakeButtons()
    delete downOriginal;
    delete hiliteOriginal;
 
-   /* Tools */
-
-   #ifdef USE_AQUA_THEME // different positioning
-   mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
-   mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 26);
-   mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 26, 0);
-   mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 26, 26);
-   mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 52, 0);
-   mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 52, 26); 
-   #else
-   mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
-   mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 28);
-   mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 27, 0);
-   mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 27, 28);
-   mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 54, 0);
-   mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 54, 28); 
-   #endif
 
 #if wxUSE_TOOLTIPS
 #ifdef __WXMAC__
@@ -840,9 +861,8 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       for( int c = 0; c < recordingChannels; c++ )
       {
          WaveTrack *newTrack = p->GetTrackFactory()->NewWaveTrack();
-         newTrack->SetRate(p->GetRate());
-         newTrack->CreateClip();
          newTrack->SetOffset(t0);
+         newTrack->SetRate(p->GetRate());
          if( recordingChannels == 2 )
          {
             if( c == 0 )
@@ -1031,6 +1051,66 @@ void ControlToolBar::EnableDisableButtons()
    mStop->SetEnabled(busy);
    mRewind->SetEnabled(tracks && !busy);
    mFF->SetEnabled(tracks && !busy);
+}
+
+void ControlToolBar::PlaceButton(int i, wxWindow *pWind)
+{
+
+#ifdef USE_AQUA_THEME // different positioning of small buttons.
+   const int AquaAdjust=1;
+#else
+   const int AquaAdjust=0;
+#endif
+
+   wxSize Size;
+   if( i==0 )
+   {
+      mxButtonPos = 0 + AquaAdjust;
+      myButtonPos = 0;
+      mnBigButtons=0;
+      mbSpaceBelow=false;
+   }
+
+   Size = pWind->GetSize();
+
+   if(Size.GetX() > 30 )
+   {
+      // IF big button then position accordingly.  
+      // and no space below.
+      myButtonPos=4;
+      mxButtonPos+=2;//A little extra space before the large buttons.
+      mbSpaceBelow = false;
+
+      // Mild hackery before we actually have real spacers.
+      // These two tests add extra space for the standard layout,
+      // and don't mess things up too badly for custom layouts.
+      if((mnBigButtons==0) &&(i==6))
+         mxButtonPos += 11;
+      if((mnBigButtons==5) &&(i==11) && (mErgonomicTransportButtons))
+         mxButtonPos += 10;
+      mnBigButtons++;
+   }
+   else if( mbSpaceBelow )
+   {
+      // ELSE small button, IF space below then use it.
+      mxButtonPos -=Size.GetX();
+      myButtonPos  =Size.GetY()+1-2*AquaAdjust;
+      mbSpaceBelow = false;
+   }
+   else
+   {
+      // ELSE small button in new column, and it has space below.
+      mxButtonPos -= AquaAdjust;
+      myButtonPos = 0;
+      mbSpaceBelow = true;
+   }
+
+   pWind->SetSize( mxButtonPos, myButtonPos, Size.GetX(), Size.GetY());
+   mxButtonPos+=Size.GetX();
+
+   mIdealSize = wxSize(mxButtonPos+15, 55);
+   SetSize(mIdealSize );
+
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

@@ -124,12 +124,16 @@ ToolBarStub::~ToolBarStub()
 /// even if one of that type already exists.
 void ToolBarStub::LoadAll() 
 {
+   const bool CREATE_STUB_IF_REQUIRED=true;
    wxUpdateUIEvent evt;
    
    //Add the toolbar to each Window 
    int len = gAudacityProjects.GetCount();
    for (int i = 0; i < len; i++) {
-      gAudacityProjects[i]->LoadToolBar(mType);
+      gAudacityProjects[i]->LoadToolBar(mType, CREATE_STUB_IF_REQUIRED );
+      //Add the new toolbar to the ToolBarArray and redraw screen
+      gAudacityProjects[i]->HandleResize();
+      gAudacityProjects[i]->Refresh();
       gAudacityProjects[i]->OnUpdateMenus(evt);
    }
 } 
@@ -391,7 +395,8 @@ void ToolBar::DrawBackground(wxDC &dc, int width, int height)
 
 }
 
-ToolBar *MakeToolBar(enum ToolBarType tbt, wxWindow *parent)
+// Static function.
+ToolBar * ToolBar::MakeToolBar(wxWindow *parent, enum ToolBarType tbt)
 {
    ToolBar *tb = NULL;
    
@@ -419,6 +424,15 @@ ToolBar *MakeToolBar(enum ToolBarType tbt, wxWindow *parent)
    return tb;
 }
 
+// Virtual function.
+// Leaves buttons positioned as-is unless
+// a derived toolbar over-rides it.
+void ToolBar::PlaceButton(int i, wxWindow *pWind)
+{
+
+}
+
+
 ////////////////////////////////////////////////////////////
 /// Methods for ToolBarMiniFrame and ToolBarFullFrame
 ////////////////////////////////////////////////////////////
@@ -435,7 +449,7 @@ ToolBarMiniFrame::ToolBarMiniFrame(wxWindow * parent, enum ToolBarType tbt)
                  wxSTAY_ON_TOP | wxMINIMIZE_BOX | wxCAPTION
                  | ((parent == NULL)?0x0:wxFRAME_FLOAT_ON_PARENT))
 {
-   mToolBar = MakeToolBar(tbt, this);
+   mToolBar = ToolBar::MakeToolBar(this, tbt);
    SetTitle(mToolBar->GetTitle());
    SetSize(wxSize(mToolBar->GetSize().x,
                   mToolBar->GetSize().y + TOOLBAR_HEIGHT_OFFSET));
@@ -478,7 +492,7 @@ ToolBarFullFrame::ToolBarFullFrame(wxWindow * parent, enum ToolBarType tbt)
              | wxRESIZE_BORDER
              | ((parent == NULL)?0x0:wxFRAME_FLOAT_ON_PARENT))
 {
-   mToolBar = MakeToolBar(tbt, this);
+   mToolBar = ToolBar::MakeToolBar(this, tbt);
    SetTitle(mToolBar->GetTitle());
 
    // This is a hack for now
@@ -525,3 +539,4 @@ void ToolBarFullFrame::DoMove(wxPoint where)
 //
 // vim: et sts=3 sw=3
 // arch-tag: 2f4ec75c-bdb7-4889-96d1-5d00abc41027
+

@@ -25,7 +25,6 @@
   there are some methods in ToolBarStub that will load and unload toolbars from
   all project windows.
 
-
 **********************************************************************/
 
 #ifndef __AUDACITY_TOOLBAR__
@@ -74,6 +73,9 @@ class ToolBar:public wxWindow {
    ToolBar(wxWindow * parent);
    ToolBar(wxWindow * parent, wxWindowID id,
            const wxPoint & pos, const wxSize & size);
+   
+   // This function makes a toolbar of a specific type.
+   static ToolBar * MakeToolBar( wxWindow *parent, enum ToolBarType tbt );
 
    virtual ~ToolBar();
    virtual int GetHeight() {
@@ -94,6 +96,7 @@ class ToolBar:public wxWindow {
       *width = mIdealSize.x;
       *height = mIdealSize.y;
    }
+	virtual void PlaceButton( int i, wxWindow * pWind);
    virtual void EnableDisableButtons() = 0;
 
 
@@ -126,6 +129,9 @@ class ToolBar:public wxWindow {
 
    //These keep track of how big the tool bar "should" be.
    wxSize mIdealSize;
+   int mxButtonPos;
+   int myButtonPos;
+   bool mbSpaceBelow;
 };
 
 
