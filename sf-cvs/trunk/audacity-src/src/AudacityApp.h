@@ -28,7 +28,7 @@ class AudacityApp:public wxApp {
    int FilterEvent(wxEvent& event);
 
    int OnAllKeys(wxKeyEvent& event);
-   
+
    // These are currently only used on Mac OS, where it's
    // possible to have a menu bar but no windows open.  It doesn't
    // hurt any other platforms, though.

@@ -134,6 +134,18 @@ void ToolBarStub::HideWindowedToolBar()
    }
 }
 
+// To Iconize a windowed toolbar we just hide it,
+// To de-Iconize a windowed toolbar we just show it. 
+void ToolBarStub::Iconize(bool bIconize) 
+{
+   if (mWindowedStatus) {
+      if( bIconize )
+         mToolBarFrame->Hide();
+      else
+         mToolBarFrame->Show();
+   }
+}
+
 
 /// This finds out if a ToolBar of this type is loaded in
 /// a given project window

@@ -311,6 +311,8 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_TIMER(AudacityProjectTimerID, AudacityProject::OnTimer)
     // Update menu method
     EVT_UPDATE_UI(1, AudacityProject::OnUpdateMenus)
+    EVT_ICONIZE(  AudacityProject::OnIconize)
+
 END_EVENT_TABLE()
 
 AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
@@ -512,6 +514,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    wxIcon ic(wxICON(AudacityLogo));
    SetIcon(ic);
 #endif
+   mIconized = false;
 
    // Min size, max size
    SetSizeHints(250, 200, 20000, 20000);
@@ -886,6 +889,45 @@ void AudacityProject::HandleResize()
                       2 * sbarExtraLen);
       FixScrollbars();
    }
+}
+
+
+void AudacityProject::OnIconize(wxIconizeEvent &event)
+{
+   int VisibleProjectCount = 0;
+
+   //JKC: On Iconizing we get called twice.  Don't know
+   // why but it does no harm.
+   // Should we be returning true/false rather than 
+   // void return?  I don't know.
+   mIconized = event.Iconized();
+
+   for(int i=0;i<gAudacityProjects.Count();i++){
+      if(gAudacityProjects[i]){
+         if( !gAudacityProjects[i]->mIconized )
+            VisibleProjectCount++;
+      }
+   }
+
+   //Only do anything to the tool windows if we've just iconized and there
+   //are no more projects visible OR
+   //We've just un-iconized and there is only one project visible.
+   bool bToolBarIconizationChange = VisibleProjectCount == (mIconized ? 0 : 1);
+
+   if( bToolBarIconizationChange )
+   {
+      if (gControlToolBarStub) {
+         gControlToolBarStub->Iconize( mIconized );
+      }
+      if (gMixerToolBarStub) {
+         gMixerToolBarStub->Iconize( mIconized );
+      }
+      if (gEditToolBarStub) {
+         gEditToolBarStub->Iconize( mIconized );
+      }
+   }
+
+   event.Skip();
 }
 
 void AudacityProject::OnSize(wxSizeEvent & event)
