@@ -114,6 +114,16 @@ Known issues/problems:
 * Linux: Sound cards that only deal with more than two
   channels are not yet supported.
 
+* Mac OS X: Audacity does not process audio while you are
+  holding down the mouse button over a scrollbar or menu.
+  You must avoid holding down the mouse button too long
+  while recording, or Audacity will lose samples.
+
+* Mac OS X: Audacity 1.0 does not support exporting MP3 files.
+  This feature will be introduced in a future version of
+  Audacity for Mac OS X.  (Hint: for now, export as WAV,
+  then use iTunes to make MP3's.)
+
 -------------------------------------------------------------
 
 Changes in 1.0:
@@ -151,6 +161,8 @@ Changes in 1.0:
       (esp. on Mandrake systems).
 
   * Other:
+
+    - VST Effects are processed faster
 
     - Miscellaneous bug fixes
 
