@@ -215,6 +215,11 @@ bool ImportMP3(wxWindow *parent,
   (*left)->channel = VTrack::LeftChannel;
   (*right)->channel = VTrack::RightChannel;
 
+  (*left)->name = TrackNameFromFileName(fName);
+  (*right)->name = TrackNameFromFileName(fName);
+  
+  (*left)->linked = true;
+
   wxProgressDialog *progress = NULL;
 
   wxYield();
