@@ -99,7 +99,7 @@ bool ExportPCM(AudacityProject *project,
    tracks->GetWaveTracks(selectionOnly, &numWaveTracks, &waveTracks);
    Mixer *mixer = new Mixer(numWaveTracks, waveTracks,
                             tracks->GetTimeTrack(),
-                            0.0, tracks->GetEndTime(),
+                            t0, t1,
                             info.channels, maxBlockLen, true,
                             rate, format);
 
@@ -140,8 +140,8 @@ bool ExportPCM(AudacityProject *project,
                                   wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
       }
       if (progress) {
-         int progressvalue = int (1000 * (mixer->MixGetCurrentTime() /
-                                          tracks->GetEndTime()));
+         int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
+                                          (t1-t0)));
          cancelling = !progress->Update(progressvalue);
       }
    }
