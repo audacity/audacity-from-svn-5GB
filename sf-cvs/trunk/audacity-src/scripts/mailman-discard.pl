@@ -1,17 +1,22 @@
 #!/usr/bin/env perl
 
-print "This script uses 'curl' to connect to Sourceforge's mailman server and";
-print "discard all of the pending messages in a mailbox.  This is useful";
-print "when an account gets hit with a virus or lots of spam.";
-print "";
-print "Note that ALL pending messages are discarded, with no notice sent";
-print "to anyone!";
+# Mailman-discard
+# Written by Dominic Mazzoni, 2003
+# Released into the Public Domain
+# NO WARRANTY
+
+print "This script uses 'curl' to connect to Sourceforge's mailman server\n";
+print "and discard all of the pending messages in a mailbox.  This is\n";
+print "useful when an account gets hit with a virus or lots of spam.\n";
+print "\n";
+print "Note that ALL pending messages are discarded, with no notice sent\n";
+print "to anyone!  You CANNOT recover messages after running this script!\n";
 print "";
 
 print "Enter Sourceforge list name (such as 'audacity-devel'): ";
 $list = <STDIN>;
 
-print "Enter list password: ";
+print "Enter list password (warning, not hidden): ";
 $pass = <STDIN>;
 chop $pass;
 
