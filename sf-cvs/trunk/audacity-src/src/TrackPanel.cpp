@@ -163,7 +163,8 @@ mAutoScrolling(false)
    mZoomInCursor = new wxCursor(wxCURSOR_MAGNIFIER);
    mZoomOutCursor = new wxCursor(wxCURSOR_MAGNIFIER);
    mRearrangeCursor = new wxCursor(wxCURSOR_HAND);
-   mAdjustSelectionCursor = mSlideCursor;
+   mAdjustLeftSelectionCursor = new wxCursor(wxCURSOR_POINT_LEFT);
+   mAdjustRightSelectionCursor = new wxCursor(wxCURSOR_POINT_RIGHT);
    mRateMenu = new wxMenu();
    mRateMenu->Append(OnRate8ID, "8000 Hz");
    mRateMenu->Append(OnRate11ID, "11025 Hz");
@@ -248,12 +249,9 @@ TrackPanel::~TrackPanel()
    delete mZoomInCursor;
    delete mZoomOutCursor;
    delete mRearrangeCursor;
+   delete mAdjustLeftSelectionCursor;
+   delete mAdjustRightSelectionCursor;
 
-   //mAdjustSelectionCursor is just a pointer to mSlideCursor, so deleting 
-   //it can cause a seg fault. If the cursors change, enable this code:
-#if 0
-   delete mAdjustSelectionCursor;
-#endif
 
    // Note that the submenus (mRateMenu, ...)
    // are deleted by their parent
@@ -534,7 +532,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
          SetCursor(*mArrowCursor);
       }
       /////////////////////////////////////////
-      // next test to see if we're over the area that
+      // test to see if we're over the area that
       // resizes a track
       else if (event.m_y >= (r.y + r.height - VERTICAL_TRACK_RESIZE_REGION)
                && event.m_y <
@@ -557,36 +555,47 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
          switch (operation) {
          case selectTool:
 
-            leftSel = TimeToPosition(mViewInfo->sel0, r.x);
-            rightSel = TimeToPosition(mViewInfo->sel1, r.x);
+            //Make sure you are within the selected track
+            if ((label && label->GetSelected())
+                || (nonlabel && nonlabel->GetSelected())) {
 
-            ///////////////////////////////////////
-            // Check to see if the cursor is on top 
-            //of the left selection boundary
-            if (leftSel < rightSel
-                && event.m_x >=
-                leftSel - HORIZONTAL_SELECTION_RESIZE_REGION
-                && event.m_x <=
-                leftSel + HORIZONTAL_SELECTION_RESIZE_REGION) {
-               mListener->
-                   TP_DisplayStatusMessage(_
-                                           ("Click and drag to move left selection boundary (Unimplemented)."),
-                                           0);
-               SetCursor(*mAdjustSelectionCursor);
-            }
-            ///////////////////////////////////////
-            // Check to see if the cursor is on top 
-            //of the right selection boundary, (or if right==left)
+               leftSel = TimeToPosition(mViewInfo->sel0, r.x);
+               rightSel = TimeToPosition(mViewInfo->sel1, r.x);
 
-            else if (event.m_x >=
-                     rightSel - HORIZONTAL_SELECTION_RESIZE_REGION
-                     && event.m_x <=
-                     rightSel + HORIZONTAL_SELECTION_RESIZE_REGION) {
-               mListener->
-                   TP_DisplayStatusMessage(_
-                                           ("Click and drag to move right selection boundary (Unimplemented)."),
-                                           0);
-               SetCursor(*mAdjustSelectionCursor);
+               ///////////////////////////////////////
+               // Check to see if the cursor is on top 
+               //of the left selection boundary
+               if (leftSel < rightSel
+                   && event.m_x >=
+                   leftSel - HORIZONTAL_SELECTION_RESIZE_REGION
+                   && event.m_x <=
+                   leftSel + HORIZONTAL_SELECTION_RESIZE_REGION) {
+                  mListener->
+                      TP_DisplayStatusMessage(_
+                                              ("Click and drag to move left selection boundary."),
+                                              0);
+                  SetCursor(*mAdjustLeftSelectionCursor);
+               }
+               ///////////////////////////////////////
+               // Check to see if the cursor is on top 
+               //of the right selection boundary, (or if right==left)
+
+               else if (event.m_x >=
+                        rightSel - HORIZONTAL_SELECTION_RESIZE_REGION
+                        && event.m_x <=
+                        rightSel + HORIZONTAL_SELECTION_RESIZE_REGION) {
+                  mListener->
+                      TP_DisplayStatusMessage(_
+                                              ("Click and drag to move right selection boundary."),
+                                              0);
+                  SetCursor(*mAdjustRightSelectionCursor);
+               } else {
+                  //Draw a normal cursor
+                  mListener->TP_DisplayStatusMessage(pMessages[operation],
+                                                     0);
+                  SetCursor(*mSelectCursor);
+
+               }
             }
             ///////////////////////////////////////
             // Otherwise, draw the normal cursor 
@@ -630,7 +639,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
 {
    // AS: Ok, did the user just click the mouse, release the mouse,
    //  or drag?
-   if (event.ButtonDown(1) || event.ButtonDown(3)) {
+   if (event.ButtonDown(1)) {
       wxRect r;
       int num;
 
@@ -672,8 +681,9 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
 
    mMouseClickX = event.m_x;
    mMouseClickY = event.m_y;
+   bool startNewSelection = true;
 
-   if (event.ShiftDown() || event.ButtonDown(3)) {
+   if (event.ShiftDown()) {
       // If the shift button is down, extend the current selection.
       double x = PositionToTime(event.m_x, r.x);
 
@@ -689,24 +699,53 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
                                          mViewInfo->sel0, mViewInfo->sel1),
                                   1);
    } else {
-      // Otherwise, start a new selection
-      SelectNone();
-      StartSelection(event.m_x, r.x);
 
-      mTracks->Select(pTrack);
+      //Make sure you are within the selected track
+      if (pTrack && pTrack->GetSelected()) {
 
-      mListener->
-          TP_DisplayStatusMessage(wxString::
-                                  Format(_("Cursor: %lf s"), mSelStart),
-                                  1);
+         int leftSel = TimeToPosition(mViewInfo->sel0, r.x);
+         int rightSel = TimeToPosition(mViewInfo->sel1, r.x);
+
+         ///////////////////////////////////////
+         // Check to see if the cursor is on top 
+         //of the left selection boundary
+         if (leftSel < rightSel
+             && event.m_x >= leftSel - HORIZONTAL_SELECTION_RESIZE_REGION
+             && event.m_x <= leftSel + HORIZONTAL_SELECTION_RESIZE_REGION)
+         {
+            mSelStart = mViewInfo->sel1;        //Pin the right selection boundary
+            mIsSelecting = true;
+            startNewSelection = false;
+         } else if (event.m_x >=
+                    rightSel - HORIZONTAL_SELECTION_RESIZE_REGION
+                    && event.m_x <=
+                    rightSel + HORIZONTAL_SELECTION_RESIZE_REGION) {
+            mSelStart = mViewInfo->sel0;        //Pin the left selection boundary
+            mIsSelecting = true;
+            startNewSelection = false;
+         }
+
+      }
+
+      if (startNewSelection) {
+         // If we didn't move a selection boundary, start a new selection
+         SelectNone();
+         StartSelection(event.m_x, r.x);
+         mTracks->Select(pTrack);
+         mListener->
+             TP_DisplayStatusMessage(wxString::
+                                     Format(_("Cursor: %lf s"), mSelStart),
+                                     1);
+      }
+
+      if (pTrack->GetKind() == VTrack::Label)
+         ((LabelTrack *) pTrack)->MouseDown(mMouseClickX, mMouseClickY,
+                                            mCapturedRect,
+                                            mViewInfo->h, mViewInfo->zoom);
    }
-
-   if (pTrack->GetKind() == VTrack::Label)
-      ((LabelTrack *) pTrack)->MouseDown(mMouseClickX, mMouseClickY,
-                                         mCapturedRect,
-                                         mViewInfo->h, mViewInfo->zoom);
    mIsSelecting = true;
 }
+
 
 // AS: Reset our selection markers.
 void TrackPanel::StartSelection(int mouseXCoordinate, int trackLeftEdge)
@@ -1583,7 +1622,7 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
 void TrackPanel::SetLabelFont(wxDC * dc)
 {
    int fontSize = 10;
-#ifdef __WXMSW__
+#if defined __WXMSW__ 
    fontSize = 8;
 #endif
 
