@@ -58,10 +58,55 @@ Tags::Tags()
    mGenre = -1;
    
    mID3V2 = true;
+
+   mEditTitle = true;
+   mEditTrackNumber = true;
 }
 
 Tags::~Tags()
 {
+}
+
+bool Tags::IsEmpty()
+{
+   // At least one of these should be filled in, otherwise
+   // it's assumed that the tags have not been set...
+   if (mTitle.Length()==0 &&
+       mArtist.Length()==0 &&
+       mAlbum.Length()==0)
+      return true;
+   else
+      return false;
+}
+
+void Tags::AllowEditTitle(bool editTitle)
+{
+   mEditTitle = editTitle;
+}
+
+void Tags::SetTitle(wxString title)
+{
+   mTitle = title;
+}
+
+wxString Tags::GetTitle()
+{
+   return mTitle;
+}
+
+void Tags::AllowEditTrackNumber(bool editTrackNumber)
+{
+   mEditTrackNumber = editTrackNumber;
+}
+
+void Tags::SetTrackNumber(int num)
+{
+   mTrackNum = num;
+}
+
+int Tags::GetTrackNumber()
+{
+   return mTrackNum;
 }
 
 bool Tags::HandleXMLTag(const char *tag, const char **attrs)
@@ -137,7 +182,7 @@ bool Tags::ShowEditDialog(wxWindow *parent, wxString title)
    theCopy.mComments = mComments;
    theCopy.mID3V2 = mID3V2;
 
-   TagsDialog dlog(parent, -1, title);
+   TagsDialog dlog(parent, -1, title, mEditTitle, mEditTrackNumber);
    dlog.mTags = this;
    dlog.TransferDataToWindow();
    dlog.CentreOnParent();
@@ -368,10 +413,18 @@ BEGIN_EVENT_TABLE(TagsDialog, wxDialog)
     EVT_BUTTON(wxID_CANCEL, TagsDialog::OnCancel)
 END_EVENT_TABLE()
 
-TagsDialog::TagsDialog(wxWindow * parent, wxWindowID id, const wxString & title, const wxPoint & position, const wxSize & size, long style):
-  wxDialog(parent, id, title, position, size, style)
+TagsDialog::TagsDialog(wxWindow * parent, wxWindowID id,
+                       const wxString & title,
+                       bool editTitle, bool editTrackNumber):
+   wxDialog(parent, id, title)
 {
    MakeTagsDialog(this, TRUE, TRUE);
+   
+   if (!editTitle)
+      GetTitleText()->Enable(false);
+
+   if (!editTrackNumber)
+      GetTrackNumText()->Enable(false);
 }
 
 bool TagsDialog::Validate()
@@ -548,7 +601,7 @@ void TagsDialog::OnCancel(wxCommandEvent & event)
 }
 
 wxSizer *MakeTagsDialog(wxWindow * parent, bool call_fit,
-                             bool set_sizer)
+                        bool set_sizer)
 {
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 

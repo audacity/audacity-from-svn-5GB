@@ -40,6 +40,7 @@
 #include "../LabelTrack.h"
 #include "../Project.h"
 #include "../Prefs.h"
+#include "../Tags.h"
 
 enum {
    FormatID = 10001,
@@ -249,7 +250,8 @@ static bool DoExport(AudacityProject *project,
                      int format, wxString dir,
                      bool stereo, wxString name,
                      bool selectionOnly, double t0, double t1,
-                     bool overwrite)
+                     bool overwrite,
+                     int trackNumber)
 {
    switch(format) {
    case 0:
@@ -263,6 +265,9 @@ static bool DoExport(AudacityProject *project,
                        selectionOnly, t0, t1);
    } break;
    case 1: {
+      Tags *tags = project->GetTags();
+      tags->SetTitle(name);            
+      tags->SetTrackNumber(trackNumber);
       wxString fullPath = MakeFullPath(overwrite,
                                        dir, name, ".mp3");
       return ExportMP3(project, stereo, fullPath,
@@ -335,7 +340,7 @@ bool ExportMultipleByTrack(AudacityProject *project,
          MakeNameUnique(otherNames, name);
 
          ok = DoExport(project, format, dir, stereo, name, true, t0, t1,
-                       overwrite);
+                       overwrite, i+1);
          if (!ok)
             break;
          otherNames.Add(name);
@@ -448,7 +453,7 @@ bool ExportMultipleByLabel(AudacityProject *project,
       MakeNameUnique(otherNames, name);
       
       ok = DoExport(project, format, dir, stereo, name, false, t0, t1,
-                    overwrite);
+                    overwrite, count+1);
       if (!ok)
          break;
       otherNames.Add(name);
@@ -494,6 +499,28 @@ bool ExportMultiple(AudacityProject *project)
 
    if (!dlog.GetReturnCode())
       return false;
+
+   if (dlog.format == 1) { // MP3
+      Tags *tags = project->GetTags();
+      if (tags->IsEmpty()) {
+         wxString saveTitle = tags->GetTitle();
+         int saveTrackNumber = tags->GetTrackNumber();
+         tags->SetTitle("(automatic)");
+         tags->SetTrackNumber(0);
+         tags->AllowEditTitle(false);
+         tags->AllowEditTrackNumber(false);
+         bool rval = tags->ShowEditDialog(project,
+                                          _("Edit the ID3 tags "
+                                            "for all MP3 files"));
+         tags->AllowEditTitle(true);
+         tags->AllowEditTrackNumber(true);
+         if (!rval) {
+            tags->SetTitle(saveTitle);
+            tags->SetTrackNumber(saveTrackNumber);
+            return false;
+         }
+      }
+   }
 
    if (dlog.byLabels)
       return ExportMultipleByLabel(project, dlog.dir, dlog.format,

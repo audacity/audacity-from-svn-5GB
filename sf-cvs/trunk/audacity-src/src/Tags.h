@@ -60,6 +60,16 @@ public:
    // if endOfFile is true, should put the ID3 tags at
    // the END, rather than the beginning, of the MP3 file
    int ExportID3(char **buffer, bool *endOfFile); 
+   
+   void AllowEditTitle(bool editTitle);
+   void SetTitle(wxString title);
+   wxString GetTitle();
+
+   void AllowEditTrackNumber(bool editTrackNumber);
+   void SetTrackNumber(int trackNumber);
+   int GetTrackNumber();
+   
+   bool IsEmpty();
 
 private:
    wxString  mTitle;
@@ -70,6 +80,9 @@ private:
    int       mGenre;
    wxString  mComments;
    bool      mID3V2;
+
+   bool      mEditTitle;
+   bool      mEditTrackNumber;
 };
 
 wxSizer *MakeTagsDialog(wxWindow * parent, bool call_fit,
@@ -90,9 +103,8 @@ class TagsDialog:public wxDialog {
  public:
    // constructors and destructors
    TagsDialog(wxWindow * parent, wxWindowID id,
-              const wxString & title, const wxPoint & pos =
-              wxDefaultPosition, const wxSize & size =
-              wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+              const wxString & title,
+              bool editTitle, bool editTrackNumber);
 
    wxTextCtrl *GetTitleText() {
       return (wxTextCtrl *) FindWindow(ID_TITLE_TEXT);
