@@ -1,5 +1,6 @@
 <?php
 $charset = "iso-8859-1";
+$translatorName = "Simon Beaudry";
 $languageStr = "French";
 $metaDescription = "Audacity, un logiciel de traitement sonore multi-plateformes et gratuit";
 $helpSectionStr = "Aide";
