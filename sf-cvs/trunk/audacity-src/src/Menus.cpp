@@ -85,19 +85,54 @@ void AudacityProject::CreateMenuBar()
       switch(mCommandMenuItem[i]->category)
       {
       case fileMenu:
-         mFileMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+         if(mCommandMenuItem[i]->commandString == "---")
+         {
+            mFileMenu->AppendSeparator();
+         }
+         else
+         {
+            mFileMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+         }
          break;
       case editMenu:
-         mEditMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+         if(mCommandMenuItem[i]->commandString == "---")
+         {
+            mEditMenu->AppendSeparator();
+         }
+         else
+         {
+            mEditMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+         }
          break;
       case viewMenu:
-         mViewMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+         if(mCommandMenuItem[i]->commandString == "---")
+         {
+            mViewMenu->AppendSeparator();
+         }
+         else
+         {
+            mViewMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+         }
          break;
       case projectMenu:
-         mProjectMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+         if(mCommandMenuItem[i]->commandString == "---")
+         {
+            mProjectMenu->AppendSeparator();
+         }
+         else
+         {
+            mProjectMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+         }
          break;
       case helpMenu:
-         mHelpMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+         if(mCommandMenuItem[i]->commandString == "---")
+         {
+            mHelpMenu->AppendSeparator();
+         }
+         else
+         {
+            mHelpMenu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+         }
          break;
       }
    }
@@ -1424,4 +1459,11 @@ void AudacityProject::OnHelpSearch(wxEvent & event)
 void AudacityProject::OnBenchmark(wxEvent & event)
 {
    ::RunBenchmark(this);
+}
+
+//
+
+void AudacityProject::OnSeperator(wxEvent & event)
+{
+
 }
