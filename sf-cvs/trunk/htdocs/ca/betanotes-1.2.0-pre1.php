@@ -39,17 +39,20 @@ Noves característiques de l'Audacity 1.2.0-pre1:
 
 Errors fixats en l'Audacity 1.2.0-pre1
 
-  * Els fitxers de projectes amb caràcters especials han deixat de ser invàlids.
+  * Els fitxers de projectes amb caràcters especials han deixat de ser
+    invàlids.
 
   * S'han fixat els sorolls de ratllades causats per mals trucaments .
 
-  * L'Audacity ja no exporta fitxers Ogg invàlids i no talla els últims pocs segons dels fitxers Ogg exportats.
+  * L'Audacity ja no exporta fitxers Ogg invàlids i no talla els últims
+    pocs segons dels fitxers Ogg exportats.
 
   * Els fitxers MP3 Mono exporten a la velociitat correcta.
 
   * Many incorrect results from the Envelope tool have been fixed.
 
-  * L'ordre de "Exportar etiquetes" ara sorebescriu correctament els fitxers existents.
+  * L'ordre de "Exportar etiquetes" ara sorebescriu correctament els
+    fitxers existents.
   
   * Ara es mostra correctament el número correcte de l'octava de les notes.
 

@@ -1,4 +1,4 @@
-<?php BoxTop('2 d'agost del 2003: Llançament de l'Audacity 1.2.0-pre1'); ?>
+<?php BoxTop("2 d'agost del 2003: Llançament de l'Audacity 1.2.0-pre1"); ?>
 
 <p>
 L'Audacity 1.2.0-pre1 és un llençament públic de prova de l'editor de so gratuït.  El propòsit d'aquest llançament és permetre als usuaris de previsualitzar i provar les noves característiques que apareixeran en la següent versió estable 1.2.0, que desitgem poder llençar el proper mes.
