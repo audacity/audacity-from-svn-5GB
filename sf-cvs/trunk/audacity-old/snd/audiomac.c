@@ -71,6 +71,9 @@ int audio_open(snd_node *n, long *f)
 {
   buffer_state *data = (buffer_state *)malloc(sizeof(buffer_state));
   n->u.audio.descriptor = (void *)data;
+  unsigned short numerator;
+  unsigned short denomenator;
+  Fixed sampleRateFixed;
 
   OSErr	err;
 	
@@ -99,14 +102,23 @@ int audio_open(snd_node *n, long *f)
 
   if (!data->buffer[0] || !data->buffer[1])
     return !SND_SUCCESS;
-    
+
+  /* Calculate sample rate as an unsigned fixed-point number */
+  if (n->format.srate > 65535.0 ||
+      n->format.srate < 1.0)
+    sampleRateFixed = 0xAC440000; /* Fixed for 44100 */
+  else {
+    numerator = (unsigned short)n->format.srate;
+    denomenator = (unsigned short)(65536.0*(n->format.srate - numerator));
+    sampleRateFixed = (numerator << 16) | denomenator;
+  }
+
+  data->dbheader.dbhSampleRate = sampleRateFixed;
   data->dbheader.dbhNumChannels = n->format.channels;
   data->dbheader.dbhSampleSize = 16;
   data->dbheader.dbhCompressionID = 0;
   data->dbheader.dbhPacketSize = 0;
-  data->dbheader.dbhSampleRate = 0xAC440000; // Fixed for 44100 
-                     //Long2Fix((long)n->format.srate);
-                     //X2Fix((long double)n->format.srate);
+  
   data->dbheader.dbhBufferPtr[0] = data->buffer[0];
   data->dbheader.dbhBufferPtr[1] = data->buffer[1];
   
