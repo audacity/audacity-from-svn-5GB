@@ -224,6 +224,10 @@ void AudacityApp::MacReopenApp()
 
 typedef int (AudacityApp::*SPECIALKEYEVENT)(wxKeyEvent&);
 
+#ifndef wxID_PREFERENCES
+#define wxID_PREFERENCES 1
+#endif
+
 BEGIN_EVENT_TABLE(AudacityApp, wxApp)
 #ifdef __WXMAC__
    EVT_MENU(wxID_NEW, AudacityApp::OnMenuNew)

@@ -37,6 +37,9 @@
 #define MAX_SUBMENU_LEN 1000
 #endif
 
+#ifndef wxID_PREFERENCES
+#define wxID_PREFERENCES 1
+#endif
 
 ///
 ///  Standard Constructor
