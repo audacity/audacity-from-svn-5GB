@@ -654,7 +654,7 @@ wxThread::ExitCode AudioThread::Entry()
          gAudioIO->Finish();
       }
 
-      Yield();
+      Sleep(10);
    }
 
    return 0;
