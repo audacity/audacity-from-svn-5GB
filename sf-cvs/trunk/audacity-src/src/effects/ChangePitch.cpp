@@ -6,7 +6,7 @@
 
   Vaughan Johnson, Dominic Mazzoni
   
-  Change Pitch effect, that allows raising or lowering 
+  Change Pitch effect provides raising or lowering 
   the pitch without changing the tempo.
 
 **********************************************************************/
@@ -17,14 +17,16 @@
 
 #include <math.h>
 
-#include <SoundTouch.h>
-
 #include <wx/intl.h>
 #include <wx/valtext.h>
 
+#include <SoundTouch.h>
+
 #include "ChangePitch.h"
-#include "../WaveTrack.h"
+
+#include "../PitchName.h"
 #include "../Spectrum.h"
+#include "../WaveTrack.h"
 
 //
 // EffectChangePitch
@@ -32,13 +34,14 @@
 
 EffectChangePitch::EffectChangePitch()
 {
-	m_FromPitch = 0; // indicates not yet set
-	m_ToPitch = 0; // indicates not yet set
+	m_FromPitchIndex = -1;		// -1 => uninitialized
+	m_bWantPitchDown = false;
+	m_ToPitchIndex = -1;			// -1 => uninitialized
 
 	m_SemitonesChange = 0.0;
 
-   m_FromFrequency = 0;	
-   m_ToFrequency = 0;	
+   m_FromFrequency = 0.0;		// 0.0 => uninitialized
+   m_ToFrequency = 0.0;			// 0.0 => uninitialized
 
 	m_PercentChange = 0.0;
 }
@@ -56,7 +59,10 @@ bool EffectChangePitch::Init()
 	return true;
 }
 
-bool EffectChangePitch::PromptUser()
+// DeduceFrequency is Dominic's extremely cool trick (Vaughan sez so!) 
+// to set deduce m_FromFrequency from the samples at the beginning of 
+// the selection. Then we set some other params accordingly.
+void EffectChangePitch::DeduceFrequencies()
 {
    // As a neat trick, attempt to get the frequency of the note at the
    // beginning of the selection.
@@ -91,27 +97,41 @@ bool EffectChangePitch::PromptUser()
          if (freqa[j] > freqa[argmax])
             argmax = j;
       lag = (windowSize/2 - 1) - argmax;
-      m_FromFrequency = (unsigned int)(rate / lag + 0.5);
-      m_ToFrequency = (unsigned int)(((double)(m_FromFrequency) * 
-                                      (100.0 + m_PercentChange)) / 100.0);
+      m_FromFrequency = rate / lag;
+		m_ToFrequency = (m_FromFrequency * (100.0 + m_PercentChange)) / 100.0;
+
+		// Now we can set the pitch control values. 
+		m_FromPitchIndex = PitchIndex(Freq2Pitch(m_FromFrequency));
+		m_bWantPitchDown = (m_ToFrequency < m_FromFrequency);
+		m_ToPitchIndex = PitchIndex(Freq2Pitch(m_ToFrequency));
    }
+}
+
+bool EffectChangePitch::PromptUser()
+{
+	this->DeduceFrequencies(); // Set frequency-related control values based on sample.
 
    ChangePitchDialog dlog(mParent, -1, _("Change Pitch"));
-   dlog.m_FromPitch = m_FromPitch;
-   dlog.m_ToPitch = m_ToPitch;
+   dlog.m_FromPitchIndex = m_FromPitchIndex;
+   dlog.m_bWantPitchDown = m_bWantPitchDown;
+   dlog.m_ToPitchIndex = m_ToPitchIndex;
 	dlog.m_SemitonesChange = m_SemitonesChange;
    dlog.m_FromFrequency = m_FromFrequency;
    dlog.m_ToFrequency = m_ToFrequency;
    dlog.m_PercentChange = m_PercentChange;
-   dlog.TransferDataToWindow();
+	//v Don't need to call TransferDataToWindow, although other Audacity dialogs 
+	//v (from which I derived this one) do it, because ShowModal calls stuff that 
+	//v eventually calls wxWindowBase::OnInitDialog, which calls TransferDataToWindow.
+   //v		dlog.TransferDataToWindow();
    dlog.CentreOnParent();
    dlog.ShowModal();
 
    if (!dlog.GetReturnCode())
       return false;
 
-   m_FromPitch = dlog.m_FromPitch;
-   m_ToPitch = dlog.m_ToPitch;
+   m_FromPitchIndex = dlog.m_FromPitchIndex;
+   m_bWantPitchDown = dlog.m_bWantPitchDown;
+   m_ToPitchIndex = dlog.m_ToPitchIndex;
 	m_SemitonesChange = dlog.m_SemitonesChange;
    m_FromFrequency = dlog.m_FromFrequency;
    m_ToFrequency = dlog.m_ToFrequency;
@@ -138,8 +158,9 @@ BEGIN_EVENT_TABLE(ChangePitchDialog, wxDialog)
     EVT_BUTTON(wxID_OK, ChangePitchDialog::OnOk)
     EVT_BUTTON(wxID_CANCEL, ChangePitchDialog::OnCancel)
 
-    EVT_TEXT(ID_TEXT_FROMPITCH, ChangePitchDialog::OnText_FromPitch)
-    EVT_TEXT(ID_TEXT_TOPITCH, ChangePitchDialog::OnText_ToPitch)
+    EVT_CHOICE(ID_CHOICE_FROMPITCH, ChangePitchDialog::OnChoice_FromPitch)
+	 EVT_RADIOBOX(ID_RADIOBOX_PITCHUPDOWN, ChangePitchDialog::OnRadioBox_PitchUpDown)
+    EVT_CHOICE(ID_CHOICE_TOPITCH, ChangePitchDialog::OnChoice_ToPitch)
 
     EVT_TEXT(ID_TEXT_SEMITONESCHANGE, ChangePitchDialog::OnText_SemitonesChange)
 
@@ -159,13 +180,14 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
 {
    m_bLoopDetect = false;
 
-	m_FromPitch = 0; // indicates not yet set
-	m_ToPitch = 0; // indicates not yet set
+	m_FromPitchIndex = -1;		// -1 => uninitialized
+	m_bWantPitchDown = false;
+	m_ToPitchIndex = -1;			// -1 => uninitialized
 
 	m_SemitonesChange = 0.0;
 
-   m_FromFrequency = 0;	
-   m_ToFrequency = 0;	
+   m_FromFrequency = 0.0;		// 0.0 => uninitialized
+   m_ToFrequency = 0.0;			// 0.0 => uninitialized
 
 	m_PercentChange = 0.0;
 
@@ -203,24 +225,35 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
    pBoxSizer_Pitch->Add(pStaticText, 0, 
 								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-   wxTextCtrl * pTextCtrl_FromPitch =
-       new wxTextCtrl(this, ID_TEXT_FROMPITCH, _(""), 
-								wxDefaultPosition, wxSize(40, -1), 0,
-								wxTextValidator(wxFILTER_ALPHA));
-   pBoxSizer_Pitch->Add(pTextCtrl_FromPitch, 0, 
+	const wxString strArray_PitchNames[] = 
+		{_("C"), _("C#/Db"), _("D"), _("D#/Eb"), _("E"), _("F"), 
+			_("F#/Gb"), _("G"), _("G#/Ab"), _("A"), _("A#/Bb"), _("B")};
+	const int numChoicesPitchNames = 12;
+
+   wxChoice * pChoice_FromPitch =
+		new wxChoice(this, ID_CHOICE_FROMPITCH, wxDefaultPosition, wxSize(64, -1), 
+							numChoicesPitchNames, strArray_PitchNames);
+   pBoxSizer_Pitch->Add(pChoice_FromPitch, 0, 
 								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
-   pStaticText =
+	const wxString strArray_RadioPitchUpDown[] = {_("up"), _("down")};
+	wxRadioBox * pRadioBox_PitchUpDown = 
+		new wxRadioBox(this, ID_RADIOBOX_PITCHUPDOWN, _(""), 
+							wxDefaultPosition, wxDefaultSize, 
+							2, strArray_RadioPitchUpDown, 1);
+   pBoxSizer_Pitch->Add(pRadioBox_PitchUpDown, 0, 
+								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
+   
+	pStaticText =
        new wxStaticText(this, ID_TEXT, _("to"),
                         wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Pitch->Add(pStaticText, 0, 
 								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-   wxTextCtrl * pTextCtrl_ToPitch =
-       new wxTextCtrl(this, ID_TEXT_TOPITCH, _(""), 
-								wxDefaultPosition, wxSize(40, -1), 0,
-								wxTextValidator(wxFILTER_ALPHA));
-   pBoxSizer_Pitch->Add(pTextCtrl_ToPitch, 0, 
+   wxChoice * pChoice_ToPitch =
+		new wxChoice(this, ID_CHOICE_TOPITCH, wxDefaultPosition, wxSize(64, -1), 
+							numChoicesPitchNames, strArray_PitchNames);
+   pBoxSizer_Pitch->Add(pChoice_ToPitch, 0, 
 								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
    pBoxSizer_Dialog->Add(pBoxSizer_Pitch, 0, wxALIGN_CENTER | wxALL, 4);
@@ -245,6 +278,7 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
 
 	
 	// from/to frequency controls
+   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
    wxBoxSizer * pBoxSizer_Frequency = new wxBoxSizer(wxHORIZONTAL);
    
    pStaticText =
@@ -255,7 +289,7 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
 
    wxTextCtrl * pTextCtrl_FromFrequency =
        new wxTextCtrl(this, ID_TEXT_FROMFREQUENCY, _(""), 
-								wxDefaultPosition, wxSize(48, -1), 0,
+								wxDefaultPosition, wxSize(64, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_Frequency->Add(pTextCtrl_FromFrequency, 0, 
 									wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
@@ -268,7 +302,7 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
 
    wxTextCtrl * pTextCtrl_ToFrequency =
        new wxTextCtrl(this, ID_TEXT_TOFREQUENCY, _(""), 
-								wxDefaultPosition, wxSize(48, -1), 0,
+								wxDefaultPosition, wxSize(64, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_Frequency->Add(pTextCtrl_ToFrequency, 0, 
 								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
@@ -345,57 +379,31 @@ bool ChangePitchDialog::TransferDataToWindow()
 {
    m_bLoopDetect = true;
 
-	wxString str;
-	wxTextCtrl * pTextCtrl;
+	// from/to pitch controls
+	wxChoice * pChoice = this->GetChoice_FromPitch();
+	if (pChoice) 
+		pChoice->SetSelection(m_FromPitchIndex);
 
-	// from/to Pitch controls
-	pTextCtrl = this->GetTextCtrl_FromPitch();
-	if (pTextCtrl) {
-		if (m_FromPitch != 0)
-			str.Printf(_("%d"), m_FromPitch);
-		else
-			str = _("");
-		pTextCtrl->SetValue(str);
-		pTextCtrl->Enable(false); //v Disable until it's working.
-	}
-
-	pTextCtrl = this->GetTextCtrl_ToPitch();
-	if (pTextCtrl) {
-		if (m_ToPitch != 0)
-			str.Printf(_("%d"), m_ToPitch);
-		else
-			str = _("");
-		pTextCtrl->SetValue(str);
-		pTextCtrl->Enable(false); //v Disable until it's working.
-	}
+	this->Update_RadioBox_PitchUpDown();
+	this->Update_Choice_ToPitch();
 
 
 	// semitones change control
-	pTextCtrl = this->GetTextCtrl_SemitonesChange();
-	if (pTextCtrl) {
-		str.Printf(_("%.2f"), m_SemitonesChange);
-		pTextCtrl->SetValue(str);
-	}
+	this->Update_Text_SemitonesChange();
 
 
 	// from/to frequency controls
-	pTextCtrl = this->GetTextCtrl_FromFrequency();
+	wxTextCtrl * pTextCtrl = this->GetTextCtrl_FromFrequency();
 	if (pTextCtrl) {
-		if (m_FromFrequency != 0)
-			str.Printf(_("%d"), m_FromFrequency);
+		wxString str;
+		if (m_FromFrequency > 0.0)
+			str.Printf(_("%.3f"), m_FromFrequency);
 		else
 			str = _("");
 		pTextCtrl->SetValue(str);
 	}
 
-	pTextCtrl = this->GetTextCtrl_ToFrequency();
-	if (pTextCtrl) {
-		if (m_ToFrequency != 0)
-			str.Printf(_("%d"), m_ToFrequency);
-		else
-			str = _("");
-		pTextCtrl->SetValue(str);
-	}
+	this->Update_Text_ToFrequency();
 
 	
 	// percent change controls
@@ -411,25 +419,23 @@ bool ChangePitchDialog::TransferDataToWindow()
 bool ChangePitchDialog::TransferDataFromWindow()
 {
    double newDouble;
-   long newLong;
-	wxString str;
+	wxChoice * pChoice;
 	wxTextCtrl * pTextCtrl;
+	wxString str;
 
 
-	// from/to Pitch controls
-   pTextCtrl = this->GetTextCtrl_FromPitch();
-   if (pTextCtrl) {
-      str = pTextCtrl->GetValue();
-      str.ToLong(&newLong);
-		m_FromPitch = (int)(newLong);
-	}
+	// from/to pitch controls
+   pChoice = this->GetChoice_FromPitch();
+	if (pChoice) 
+		m_FromPitchIndex = pChoice->GetSelection(); 
 
-   pTextCtrl = this->GetTextCtrl_ToPitch();
-   if (pTextCtrl) {
-      str = pTextCtrl->GetValue();
-      str.ToLong(&newLong);
-		m_ToPitch = (int)(newLong);
-	}
+	wxRadioBox * pRadioBox = this->GetRadioBox_PitchUpDown();
+	if (pRadioBox)
+		m_bWantPitchDown = (pRadioBox->GetSelection() == 1);
+
+   pChoice = this->GetChoice_ToPitch();
+	if (pChoice) 
+		m_ToPitchIndex = pChoice->GetSelection();
 
 
 	// semitones change control
@@ -445,15 +451,15 @@ bool ChangePitchDialog::TransferDataFromWindow()
    pTextCtrl = this->GetTextCtrl_FromFrequency();
    if (pTextCtrl) {
       str = pTextCtrl->GetValue();
-      str.ToLong(&newLong);
-		m_FromFrequency = (int)(newLong);
+      str.ToDouble(&newDouble);
+		m_FromFrequency = newDouble;
 	}
 
    pTextCtrl = this->GetTextCtrl_ToFrequency();
    if (pTextCtrl) {
       str = pTextCtrl->GetValue();
-      str.ToLong(&newLong);
-		m_ToFrequency = (int)(newLong);
+      str.ToDouble(&newDouble);
+		m_ToFrequency = newDouble;
 	}
 
 
@@ -473,57 +479,101 @@ bool ChangePitchDialog::TransferDataFromWindow()
 }
 
 
-// handler implementations for ChangePitchDialog
+// calculations
 
-void ChangePitchDialog::OnText_FromPitch(wxCommandEvent & event)
+void ChangePitchDialog::Calc_ToFrequency()
+{
+	m_ToFrequency = (m_FromFrequency * (100.0 + m_PercentChange)) / 100.0;
+}
+
+void ChangePitchDialog::Calc_ToPitchIndex()
+{
+	m_ToPitchIndex = (m_FromPitchIndex + 
+							(int)(m_SemitonesChange + 
+									// Round in the right direction.
+									((m_bWantPitchDown ? -1.0 : 1.0) * 0.5))) 
+							% 12;
+}
+
+void ChangePitchDialog::Calc_SemitonesChange_fromPitches()
+{
+	int sign = m_bWantPitchDown ? -1 : 1;
+	m_SemitonesChange = sign * (((sign * (m_ToPitchIndex - m_FromPitchIndex)) + 12) % 12); 
+}
+
+void ChangePitchDialog::Calc_SemitonesChange_fromPercentChange()
+{
+	// Use m_PercentChange rather than m_FromFrequency & m_ToFrequency, because 
+	// they start out uninitialized, but m_PercentChange is always valid.
+	m_SemitonesChange = (12.0 * log((100.0 + m_PercentChange) / 100.0)) / log(2.0);
+}
+
+void ChangePitchDialog::Calc_PercentChange()
+{
+	m_PercentChange = 100.0 * (pow(2.0, (m_SemitonesChange / 12.0)) - 1.0);
+}
+
+
+// handlers
+
+void ChangePitchDialog::OnChoice_FromPitch(wxCommandEvent & event)
 {
    if (m_bLoopDetect)
       return;
 
-   wxTextCtrl * pTextCtrl_FromPitch = this->GetTextCtrl_FromPitch();
-   if (pTextCtrl_FromPitch) {
-      wxString str = pTextCtrl_FromPitch->GetValue();
+	wxChoice * pChoice = this->GetChoice_FromPitch();
+   if (pChoice) {
+		m_FromPitchIndex = pChoice->GetSelection();
 
-		long newValue;
-		str.ToLong(&newValue);
-		m_FromPitch = (int)(newValue);
+		this->Calc_ToPitchIndex();
 
 		m_bLoopDetect = true;
-
-		//v Update FromFrequency first, then use that to calculate ToPitch?
-		this->Update_Text_ToPitch();
-
+		this->Update_Choice_ToPitch();
 		m_bLoopDetect = false;
    }
 }
 
-void ChangePitchDialog::OnText_ToPitch(wxCommandEvent & event)
+void ChangePitchDialog::OnRadioBox_PitchUpDown(wxCommandEvent & event)
 {
    if (m_bLoopDetect)
       return;
 
-   wxTextCtrl * pTextCtrl_ToPitch = this->GetTextCtrl_ToPitch();
-   if (pTextCtrl_ToPitch) {
-      wxString str = pTextCtrl_ToPitch->GetValue();
-		/* //v 
-			long newValue;
-			str.ToLong(&newValue);
-			m_ToPitch = (int)(newValue);
+	wxRadioBox * pRadioBox = this->GetRadioBox_PitchUpDown();
+	if (pRadioBox) {
+		m_bWantPitchDown = (pRadioBox->GetSelection() == 1);
 
-			m_bLoopDetect = true;
+		this->Calc_SemitonesChange_fromPitches();
+		this->Calc_PercentChange(); // Call *after* m_SemitonesChange is updated.
+		this->Calc_ToFrequency(); // Call *after* m_PercentChange is updated.
 
-			// If FromPitch has already been set, then there's a new percent change.
-			if (m_FromPitch != 0) {
-				m_PercentChange = (((double)(m_ToPitch) * 100.0) / (double)(m_FromPitch)) - 100.0;
+		m_bLoopDetect = true;
+		this->Update_Text_SemitonesChange();
+		this->Update_Text_ToFrequency();
+		this->Update_Text_PercentChange();
+		this->Update_Slider_PercentChange();
+		m_bLoopDetect = false;
+	}
+}
 
-				this->Update_Text_PercentChange();
-				this->Update_Slider_PercentChange();
+void ChangePitchDialog::OnChoice_ToPitch(wxCommandEvent & event)
+{
+   if (m_bLoopDetect)
+      return;
 
-				this->Update_Text_ToFrequency();
-			}
-      
-			m_bLoopDetect = false;
-			*/
+	wxChoice * pChoice = this->GetChoice_ToPitch();
+   if (pChoice) {
+		m_ToPitchIndex = pChoice->GetSelection();
+
+		this->Calc_SemitonesChange_fromPitches();
+		this->Calc_PercentChange(); // Call *after* m_SemitonesChange is updated.
+		this->Calc_ToFrequency(); // Call *after* m_PercentChange is updated.
+
+		m_bLoopDetect = true;
+		this->Update_Text_SemitonesChange();
+		this->Update_Text_ToFrequency();
+		this->Update_Text_PercentChange();
+		this->Update_Slider_PercentChange();
+		m_bLoopDetect = false;
    }
 }
 
@@ -532,24 +582,26 @@ void ChangePitchDialog::OnText_SemitonesChange(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-	wxTextCtrl * pTextCtrl_SemitonesChange = this->GetTextCtrl_SemitonesChange();
-	if (pTextCtrl_SemitonesChange) {
-		wxString str = pTextCtrl_SemitonesChange->GetValue();
+	wxTextCtrl * pTextCtrl = this->GetTextCtrl_SemitonesChange();
+	if (pTextCtrl) {
+		wxString str = pTextCtrl->GetValue();
       double newValue;
       str.ToDouble(&newValue);
 		m_SemitonesChange = newValue;
 
-		m_PercentChange = 100.0 * (pow(2.0, (m_SemitonesChange / 12.0)) - 1.0);
+		this->Calc_PercentChange();
+		this->Calc_ToFrequency(); // Call *after* m_PercentChange is updated.
+		m_bWantPitchDown = (m_ToFrequency < m_FromFrequency);
+		this->Calc_ToPitchIndex(); // Call *after* m_bWantPitchDown is updated.
 
 		m_bLoopDetect = true;
-
-		this->Update_Text_ToPitch();
-
+		this->Update_RadioBox_PitchUpDown();
+		if (pTextCtrl->IsModified())
+			pTextCtrl->SetFocus(); // See note at implementation of Update_RadioBox_PitchUpDown.
+		this->Update_Choice_ToPitch();
 		this->Update_Text_ToFrequency();
-
 		this->Update_Text_PercentChange();
 		this->Update_Slider_PercentChange();
-
 		m_bLoopDetect = false;
 	}
 }
@@ -559,20 +611,24 @@ void ChangePitchDialog::OnText_FromFrequency(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-	wxTextCtrl * pTextCtrl_FromFrequency = this->GetTextCtrl_FromFrequency();
-	if (pTextCtrl_FromFrequency) {
-		wxString str = pTextCtrl_FromFrequency->GetValue();
-		long newValue;
-		str.ToLong(&newValue);
-		m_FromFrequency = (unsigned int)newValue;
+	wxTextCtrl * pTextCtrl = this->GetTextCtrl_FromFrequency();
+	if (pTextCtrl) {
+		wxString str = pTextCtrl->GetValue();
+		double newDouble;
+      str.ToDouble(&newDouble);
+		m_FromFrequency = newDouble;
+
+		m_FromPitchIndex = PitchIndex(Freq2Pitch(m_FromFrequency));
+		this->Calc_ToFrequency();
+		m_bWantPitchDown = (m_ToFrequency < m_FromFrequency);
+		this->Calc_ToPitchIndex(); // Call *after* m_bWantPitchDown is updated.
 
 		m_bLoopDetect = true;
-
-		//v update m_FromPitch
-		this->Update_Text_ToPitch();
-
+		this->Update_RadioBox_PitchUpDown();
+		if (pTextCtrl->IsModified())
+			pTextCtrl->SetFocus(); // See note at implementation of Update_RadioBox_PitchUpDown.
+		this->Update_Choice_ToPitch();
 		this->Update_Text_ToFrequency();
-
 		m_bLoopDetect = false;
 	}
 }
@@ -582,28 +638,29 @@ void ChangePitchDialog::OnText_ToFrequency(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-   wxTextCtrl * pTextCtrl_ToFrequency = this->GetTextCtrl_ToFrequency();
-   if (pTextCtrl_ToFrequency) {
-      wxString str = pTextCtrl_ToFrequency->GetValue();
-		double newValue;
-		str.ToDouble(&newValue);
-		m_ToFrequency = (unsigned int)newValue;
+   wxTextCtrl * pTextCtrl = this->GetTextCtrl_ToFrequency();
+   if (pTextCtrl) {
+      wxString str = pTextCtrl->GetValue();
+		double newDouble;
+      str.ToDouble(&newDouble);
+		m_ToFrequency = newDouble;
 
-		if (m_FromFrequency != 0) {
-			m_PercentChange = (((double)(m_ToFrequency) * 100.0) / 
-										(double)(m_FromFrequency)) - 100.0;
+		m_PercentChange = (((double)(m_ToFrequency) * 100.0) / 
+									(double)(m_FromFrequency)) - 100.0;
 
-			m_bLoopDetect = true;
+		this->Calc_SemitonesChange_fromPercentChange();
+		this->Calc_ToPitchIndex(); // Call *after* m_SemitonesChange is updated.
+		m_bWantPitchDown = (m_ToFrequency < m_FromFrequency);
 
-			this->Update_Text_ToPitch();
-   
-			this->Update_Text_SemitonesChange();
-
-			this->Update_Text_PercentChange();
-			this->Update_Slider_PercentChange();
-
-			m_bLoopDetect = false;
-		}
+		m_bLoopDetect = true;
+		this->Update_RadioBox_PitchUpDown();
+		if (pTextCtrl->IsModified())
+			pTextCtrl->SetFocus(); // See note at implementation of Update_RadioBox_PitchUpDown.
+		this->Update_Choice_ToPitch();
+		this->Update_Text_SemitonesChange();
+		this->Update_Text_PercentChange();
+		this->Update_Slider_PercentChange();
+		m_bLoopDetect = false;
    }
 }
 
@@ -612,23 +669,26 @@ void ChangePitchDialog::OnText_PercentChange(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-   wxTextCtrl * pTextCtrl_PercentChange = this->GetTextCtrl_PercentChange();
-   if (pTextCtrl_PercentChange) {
-      wxString str = pTextCtrl_PercentChange->GetValue();
+   wxTextCtrl * pTextCtrl = this->GetTextCtrl_PercentChange();
+   if (pTextCtrl) {
+      wxString str = pTextCtrl->GetValue();
       double newValue;
       str.ToDouble(&newValue);
 		m_PercentChange = newValue;
 
+		this->Calc_SemitonesChange_fromPercentChange();
+		this->Calc_ToPitchIndex(); // Call *after* m_SemitonesChange is updated.
+		this->Calc_ToFrequency();
+		m_bWantPitchDown = (m_ToFrequency < m_FromFrequency);
+
       m_bLoopDetect = true;
-
-		this->Update_Text_ToPitch();
-
+		this->Update_RadioBox_PitchUpDown();
+		if (pTextCtrl->IsModified())
+			pTextCtrl->SetFocus(); // See note at implementation of Update_RadioBox_PitchUpDown.
+		this->Update_Choice_ToPitch();
 		this->Update_Text_SemitonesChange();
-
 		this->Update_Text_ToFrequency();
-
 		this->Update_Slider_PercentChange();
-
       m_bLoopDetect = false;
    }
 }
@@ -638,23 +698,24 @@ void ChangePitchDialog::OnSlider_PercentChange(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-	wxSlider * slider = this->GetSlider_PercentChange();
-	if (slider) {
-		m_PercentChange = (double)(slider->GetValue()); 
+	wxSlider * pSlider = this->GetSlider_PercentChange();
+	if (pSlider) {
+		m_PercentChange = (double)(pSlider->GetValue()); 
 		// Warp positive values to actually go up faster & further than negatives.
 		if (m_PercentChange > 0.0)
 			m_PercentChange = pow(m_PercentChange, PERCENTCHANGE_SLIDER_WARP);
 
-	   m_bLoopDetect = true;
+		this->Calc_SemitonesChange_fromPercentChange();
+		this->Calc_ToPitchIndex(); // Call *after* m_SemitonesChange is updated.
+		this->Calc_ToFrequency();
+		m_bWantPitchDown = (m_ToFrequency < m_FromFrequency);
 
-		this->Update_Text_ToPitch();
-
+		m_bLoopDetect = true;
+		this->Update_RadioBox_PitchUpDown();
+		this->Update_Choice_ToPitch();
 		this->Update_Text_SemitonesChange();
-
 		this->Update_Text_ToFrequency();
-
 		this->Update_Text_PercentChange();
-
 	   m_bLoopDetect = false;
 	}
 }
@@ -677,54 +738,53 @@ void ChangePitchDialog::OnCancel(wxCommandEvent & event)
 
 // helper fns
 
-void ChangePitchDialog::Update_Text_ToPitch() 
-// Use m_FromPitch & m_PercentChange to set new m_ToPitch & control.
+// NOTE: wxWindows ref (C:\wxWindows_2.4.0\docs\htmlhelp) says 
+// wxRadioBox::SetSelection "does not cause a 
+// wxEVT_COMMAND_RADIOBOX_SELECTED event to get emitted", but it 
+// calls SetFocus, which sure as heck DOES select the radio button.
+//
+// So, any wxTextCtrl handler that calls Update_RadioBox_PitchUpDown 
+// needs to call wxTextCtrl::SetFocus afterward, to return the 
+// focus to the wxTextCtrl so the user can keep typing.
+//
+// Also, it turns out the wxTextCtrl handlers are sometimes 
+// called before the dialog is displayed, so those SetFocus calls 
+// need to be conditionalized on wxTextCtrl::IsModified.
+void ChangePitchDialog::Update_RadioBox_PitchUpDown() 
 {
-   // Update m_ToPitch iff m_FromPitch has been set.
-	if (m_FromPitch == 0) 
-		return;
-
-	/* //v 
-	m_ToPitch = (unsigned int)((((double)(m_FromPitch) * 
-											(100.0 + m_PercentChange)) / 100.0) + 
-										0.5); // Add 0.5 so trunc -> round.
-	wxTextCtrl * pTextCtrl_ToPitch = this->GetTextCtrl_ToPitch();
-	if (pTextCtrl_ToPitch) {
-		wxString str;
-		str.Printf(_("%d"), m_ToPitch);
-		pTextCtrl_ToPitch->SetValue(str);
-	}
-	*/
+	wxRadioBox * pRadioBox = this->GetRadioBox_PitchUpDown();
+	if (pRadioBox)
+		pRadioBox->SetSelection((int)(m_bWantPitchDown));
 }
 
-void ChangePitchDialog::Update_Text_SemitonesChange()
-// Use m_PercentChange to set new m_SemitonesChange & control.
+void ChangePitchDialog::Update_Choice_ToPitch() 
 {
-	// Use m_PercentChange rather than m_FromFrequency & m_ToFrequency, because 
-	// they start out uninitialized, but m_PercentChange is always valid.
-	m_SemitonesChange = (12.0 * log((100.0 + m_PercentChange) / 100.0)) / log(2.0);
-	wxTextCtrl * pTextCtrl_SemitonesChange = this->GetTextCtrl_SemitonesChange();
-	if (pTextCtrl_SemitonesChange) {
+	wxChoice * pChoice = this->GetChoice_ToPitch();
+	if (pChoice) 
+		pChoice->SetSelection(m_ToPitchIndex);
+}
+
+
+void ChangePitchDialog::Update_Text_SemitonesChange()
+{
+	wxTextCtrl * pTextCtrl = this->GetTextCtrl_SemitonesChange();
+	if (pTextCtrl) {
 		wxString str;
 		str.Printf(_("%.2f"), m_SemitonesChange);
-		pTextCtrl_SemitonesChange->SetValue(str);
+		pTextCtrl->SetValue(str);
 	}
 }
 
 void ChangePitchDialog::Update_Text_ToFrequency() 
-// Use m_FromFrequency & m_PercentChange to set new m_ToFrequency & control.
 {
-   // Update m_ToFrequency iff m_FromFrequency has been set.
-	if (m_FromFrequency == 0) 
-		return;
-
-	m_ToFrequency = (unsigned int)(((double)(m_FromFrequency) * 
-												(100.0 + m_PercentChange)) / 100.0);
-	wxTextCtrl * pTextCtrl_ToFrequency = this->GetTextCtrl_ToFrequency();
-	if (pTextCtrl_ToFrequency) {
+	wxTextCtrl * pTextCtrl = this->GetTextCtrl_ToFrequency();
+	if (pTextCtrl) {
 		wxString str;
-		str.Printf(_("%d"), m_ToFrequency);
-		pTextCtrl_ToFrequency->SetValue(str);
+		if (m_ToFrequency > 0.0)
+			str.Printf(_("%.3f"), m_ToFrequency);
+		else
+			str = _("");
+		pTextCtrl->SetValue(str);
 	}
 }
 
@@ -741,13 +801,13 @@ void ChangePitchDialog::Update_Text_PercentChange()
 
 void ChangePitchDialog::Update_Slider_PercentChange()
 {
-   wxSlider * slider = this->GetSlider_PercentChange();
-   if (slider) {
+   wxSlider * pSlider = this->GetSlider_PercentChange();
+   if (pSlider) {
 		double unwarped = m_PercentChange;
 		if (unwarped > 0.0)
 			// Un-warp values above zero to actually go up to PERCENTCHANGE_MAX.
 			unwarped = pow(m_PercentChange, (1.0 / PERCENTCHANGE_SLIDER_WARP));
-		slider->SetValue((int)(unwarped + 0.5)); // Add 0.5 so trunc -> round.
+		pSlider->SetValue((int)(unwarped + 0.5)); // Add 0.5 so trunc -> round.
 	}
 }
 

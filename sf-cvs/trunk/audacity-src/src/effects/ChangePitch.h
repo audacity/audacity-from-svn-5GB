@@ -6,7 +6,7 @@
 
   Vaughan Johnson, Dominic Mazzoni
   
-  Change Pitch effect, that allows raising or lowering 
+  Change Pitch effect provides raising or lowering 
   the pitch without changing the tempo.
 
 **********************************************************************/
@@ -16,29 +16,35 @@
 #ifndef __AUDACITY_EFFECT_CHANGEPITCH__
 #define __AUDACITY_EFFECT_CHANGEPITCH__
 
+// wxWindows controls 
 #include <wx/button.h>
+#include <wx/choice.h>
 #include <wx/dialog.h>
-#include <wx/stattext.h>
-#include <wx/slider.h>
-#include <wx/textctrl.h>
+#include <wx/radiobox.h>
 #include <wx/sizer.h>
+#include <wx/slider.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
 
 #include <wx/intl.h>
 
 #include "SoundTouchEffect.h"
 
+// Make these first 3 ID_'s match ChangeSpeed and ChangeTempo to avoid compiler warnings.
 #define ID_TEXT 10000
 
-#define ID_TEXT_FROMPITCH 10001
-#define ID_TEXT_TOPITCH 10002
+#define ID_TEXT_PERCENTCHANGE 10001
+#define ID_SLIDER_PERCENTCHANGE 10002
 
-#define ID_TEXT_SEMITONESCHANGE 10003	
+#define ID_CHOICE_FROMPITCH 10003
+#define ID_RADIOBOX_PITCHUPDOWN 10004
+#define ID_CHOICE_TOPITCH 10005
 
-#define ID_TEXT_FROMFREQUENCY 10004
-#define ID_TEXT_TOFREQUENCY 10005
+#define ID_TEXT_SEMITONESCHANGE 10006
 
-#define ID_TEXT_PERCENTCHANGE 10006
-#define ID_SLIDER_PERCENTCHANGE 10007
+#define ID_TEXT_FROMFREQUENCY 10007
+#define ID_TEXT_TOFREQUENCY 10008
+
 
 
 class WaveTrack;
@@ -63,16 +69,22 @@ class EffectChangePitch:public EffectSoundTouch {
 
    virtual bool Init();
 
+	// DeduceFrequency is Dominic's extremely cool trick (Vaughan sez so!) 
+	// to set deduce m_FromFrequency from the samples at the beginning of 
+	// the selection. Then we set some other params accordingly.
+	virtual void DeduceFrequencies(); 
+
    virtual bool PromptUser();
    
  private:
-   unsigned int	m_FromPitch;			// user-set pitch. Zero means not yet set.
-   unsigned int	m_ToPitch;				// Zero value means not yet set.
+   int				m_FromPitchIndex;		// pitch index, per PitchIndex
+	bool				m_bWantPitchDown;		// up to ToPitchNum if false (default), else down
+   int				m_ToPitchIndex;		// pitch index, per PitchIndex
 
 	double			m_SemitonesChange;	// how many semitones to change pitch
 	
-   unsigned int	m_FromFrequency;		// starting frequency of selection
-   unsigned int	m_ToFrequency;			// target frequency of selection
+   float				m_FromFrequency;		// starting frequency of selection
+   float				m_ToFrequency;			// target frequency of selection
 
    double			m_PercentChange;		// percent change to apply to pitch
 };
@@ -91,11 +103,14 @@ class ChangePitchDialog:public wxDialog {
 							long style = wxDEFAULT_DIALOG_STYLE);
 
    // accessors
-   wxTextCtrl * GetTextCtrl_FromPitch() { 
-      return (wxTextCtrl *) FindWindow(ID_TEXT_FROMPITCH);
+   wxChoice * GetChoice_FromPitch() { 
+      return (wxChoice *) FindWindow(ID_CHOICE_FROMPITCH);
    }
-   wxTextCtrl * GetTextCtrl_ToPitch() { 
-      return (wxTextCtrl *) FindWindow(ID_TEXT_TOPITCH);
+	wxRadioBox * GetRadioBox_PitchUpDown() {
+		return (wxRadioBox *) FindWindow(ID_RADIOBOX_PITCHUPDOWN);
+	}
+   wxChoice * GetChoice_ToPitch() { 
+      return (wxChoice *) FindWindow(ID_CHOICE_TOPITCH);
    }
    
    wxTextCtrl * GetTextCtrl_SemitonesChange() { 
@@ -125,9 +140,17 @@ class ChangePitchDialog:public wxDialog {
    virtual bool TransferDataFromWindow();
 
  private:
+	// calculations
+	void Calc_ToFrequency(); // Update m_ToFrequency from m_FromFrequency & m_PercentChange.
+	void Calc_ToPitchIndex(); // Update m_ToPitchIndex from new m_SemitonesChange.
+	void Calc_SemitonesChange_fromPitches(); // Update m_SemitonesChange from new m_*PitchIndex-es.
+	void Calc_SemitonesChange_fromPercentChange(); // Update m_SemitonesChange from new m_PercentChange.
+	void Calc_PercentChange(); // Update m_PercentChange based on new m_SemitonesChange.
+
 	// handlers
-   void OnText_FromPitch(wxCommandEvent & event); 
-   void OnText_ToPitch(wxCommandEvent & event); 
+   void OnChoice_FromPitch(wxCommandEvent & event); 
+	void OnRadioBox_PitchUpDown(wxCommandEvent & event);
+   void OnChoice_ToPitch(wxCommandEvent & event); 
 
    void OnText_SemitonesChange(wxCommandEvent & event); 
    
@@ -140,10 +163,13 @@ class ChangePitchDialog:public wxDialog {
    void OnOk(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
 
-	// helper fns
-	void Update_Text_ToPitch(); // Use m_FromPitch & m_PercentChange to set new m_ToPitch & control.
-	void Update_Text_SemitonesChange(); // Use m_PercentChange to set new m_SemitonesChange & control.
-	void Update_Text_ToFrequency(); // Use m_FromFrequency & m_PercentChange to set new m_ToFrequency & control.
+	// helper fns for controls
+	void Update_RadioBox_PitchUpDown();
+	void Update_Choice_ToPitch(); 
+
+	void Update_Text_SemitonesChange(); 
+	
+	void Update_Text_ToFrequency(); 
 
 	void Update_Text_PercentChange(); // Update control per current m_PercentChange.
    void Update_Slider_PercentChange(); // Update control per current m_PercentChange.
@@ -153,13 +179,14 @@ class ChangePitchDialog:public wxDialog {
    DECLARE_EVENT_TABLE()
 
  public:
-   unsigned int	m_FromPitch;			// user-set pitch. Zero means not yet set.
-   unsigned int	m_ToPitch;				// Zero value means not yet set.
+   int				m_FromPitchIndex;		// pitch index, per PitchIndex
+	bool				m_bWantPitchDown;		// up to ToPitchNum if false (default), else down
+   int				m_ToPitchIndex;		// pitch index, per PitchIndex
 
 	double			m_SemitonesChange;	// how many semitones to change pitch
 	
-   unsigned int	m_FromFrequency;		// starting frequency of selection
-   unsigned int	m_ToFrequency;			// target frequency of selection
+   float				m_FromFrequency;		// starting frequency of selection
+   float				m_ToFrequency;			// target frequency of selection
 
    double			m_PercentChange;		// percent change to apply to pitch
 													// Slider is (-100, 200], but textCtrls can set higher.
