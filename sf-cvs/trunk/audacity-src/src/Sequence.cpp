@@ -304,8 +304,11 @@ bool Sequence::Paste(sampleCount s, const Sequence *src)
    unsigned int b = FindBlock(s);
    unsigned int numBlocks = mBlock->Count();
 
-   if (numBlocks == 0) {
-      // Special case: this track is currently empty.
+   if (numBlocks == 0 ||
+       s == mNumSamples && mBlock->Item(numBlocks-1)->f->GetLength() >= mMinSamples) {
+      // Special case: this track is currently empty, or it's safe to append
+      // onto the end because the current last block is longer than the
+      // minimum size
 
       for (unsigned int i = 0; i < srcNumBlocks; i++)
          AppendBlock(srcBlock->Item(i));
