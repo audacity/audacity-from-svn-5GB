@@ -524,7 +524,7 @@ BEGIN_EVENT_TABLE(ExportMultipleDialog, wxDialog)
 END_EVENT_TABLE()
 
 ExportMultipleDialog::ExportMultipleDialog(wxWindow *parent, wxWindowID id):
-   wxDialog(parent, id, _("Export Multiple"))
+   wxDialog(parent, id, (wxString)_("Export Multiple"))
 {
    wxBoxSizer *vSizer, *hSizer, *bigHSizer;
    wxStaticBoxSizer *group;
