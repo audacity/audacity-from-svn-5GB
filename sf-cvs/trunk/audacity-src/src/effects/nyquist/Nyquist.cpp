@@ -159,6 +159,8 @@ EffectNyquist::EffectNyquist(wxString fName)
       return;
    }
 
+   wxLogNull dontLog;
+
    wxTextFile f(fName);
    if (!f.Open())
       return;
@@ -187,7 +189,7 @@ bool EffectNyquist::SetXlispPath()
 {
    wxString fname;
 
-   fname.Printf("%s/nyinit.lsp", (const char *)mXlispPath);
+   fname = mXlispPath + wxFILE_SEP_PATH + "nyinit.lsp";
    if (!(::wxFileExists(fname)))
       mXlispPath = "";
 
@@ -211,7 +213,7 @@ bool EffectNyquist::SetXlispPath()
 
    strncpy(global_xlisp_path, (const char *)mXlispPath, 1000);
 
-   fname.Printf("%s/nyinit.lsp", (const char *)mXlispPath);
+   fname = mXlispPath + wxFILE_SEP_PATH + "nyinit.lsp";
    return ::wxFileExists(fname);
 }
 
