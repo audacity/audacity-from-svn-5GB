@@ -136,7 +136,7 @@ KeyConfigPrefs::~KeyConfigPrefs()
 //BG: A quick and dirty override of wxTextCtrl to capture keys like Ctrl, Alt
 
 BEGIN_EVENT_TABLE(SysKeyTextCtrl, wxTextCtrl)
-   EVT_CHAR(SysKeyTextCtrl::OnChar)
+   EVT_KEY_DOWN(SysKeyTextCtrl::OnKey)
 END_EVENT_TABLE()
 
 SysKeyTextCtrl::SysKeyTextCtrl(wxWindow *parent, wxWindowID id,
@@ -154,22 +154,32 @@ SysKeyTextCtrl::~SysKeyTextCtrl()
 }
 
 //BG: Still Not working yet
-void SysKeyTextCtrl::OnChar(wxKeyEvent& event)
+//DM: On Linux, now it works except for Ctrl+3...Ctrl+8
+void SysKeyTextCtrl::OnKey(wxKeyEvent& event)
 {
-   SetValue("");
+   wxString newStr = "";
+
+   long key = event.GetKeyCode();
 
    if(event.ControlDown())
-   {
-      AppendText(wxString::Format("Ctrl+"));
-   }
-   if(event.AltDown())
-   {
-      AppendText(wxString::Format("Alt+"));
-   }
-   if(event.ShiftDown())
-   {
-      AppendText(wxString::Format("Shift+"));
-   }
+      newStr += "Ctrl+";
 
-   AppendText(wxString::Format("%c", event.GetKeyCode()));
+   if(event.AltDown())
+      newStr += "Alt+";
+
+   if(event.ShiftDown())
+      newStr += "Shift+";
+
+   if (event.ControlDown() && key >= 1 && key <= 26)
+      newStr += (char)(64 + key);
+   else if (key >= '0' && key <= 'z')
+      newStr += (char)key;
+   else if (key == WXK_BACK)
+      newStr = "";
+   else if (key == WXK_SPACE)
+      newStr = "Spacebar";
+   else
+      return; // Don't change it if we don't recognize the key
+
+   SetValue(newStr);
 }

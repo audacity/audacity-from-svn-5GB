@@ -59,7 +59,7 @@ public:
    ~SysKeyTextCtrl();
 
 private:
-   void OnChar(wxKeyEvent& event);
+   void OnKey(wxKeyEvent& event);
 
 protected:
    DECLARE_EVENT_TABLE()
