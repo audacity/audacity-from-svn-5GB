@@ -763,26 +763,30 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
 	if (alg==0) {
 	  wxString xpitch = PitchName(int(Freq2Pitch(xPos)+0.5), false);
 	  wxString peakpitch = PitchName(int(Freq2Pitch(bestpeak)+0.5), false);
-	  info.Printf("Cursor: %d Hz (%s) = %d dB    "
+          const char *xp = (const char *)xpitch;
+          const char *pp = (const char *)peakpitch;
+          info.Printf("Cursor: %d Hz (%s) = %d dB    "
 				  "Peak: %d Hz (%s)",
 				  int(xPos+0.5),
-				  (const char *)xpitch,
+				  xp,
 				  int(value+0.5),
 				  int(bestpeak+0.5),
-				  (const char *)peakpitch);
+				  pp);
 	}
 	else if (xPos > 0.0 && bestpeak > 0.0) {
 	  wxString xpitch = PitchName(int(Freq2Pitch(1.0/xPos)+0.5), false);
 	  wxString peakpitch = PitchName(int(Freq2Pitch(1.0/bestpeak)+0.5), false);
-	  info.Printf("Cursor: %.4f sec (%d Hz) (%s) = %f,    "
+	  const char *xp = (const char *)xpitch;
+          const char *pp = (const char *)peakpitch;
+          info.Printf("Cursor: %.4f sec (%d Hz) (%s) = %f,    "
 				  "Peak: %.4f sec (%d Hz) (%s)",
 				  xPos,
 				  int(1.0/xPos + 0.5),
-				  (const char *)xpitch,
+				  xp,
 				  value,
 				  bestpeak,
 				  int(1.0/bestpeak + 0.5),
-				  (const char *)peakpitch);
+				  pp);
 	}
 
     memDC.DrawText(info,

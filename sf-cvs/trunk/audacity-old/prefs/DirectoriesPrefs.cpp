@@ -66,7 +66,7 @@ DirectoriesPrefs::DirectoriesPrefs(wxWindow *parent):
 										       35));
 	mFreeSpace      = new wxStaticText(this,
 			                           -1,
-									   FormatSize(GetFreeDiskSpace(dir)),
+									   FormatSize(GetFreeDiskSpace((char *)(const char *)dir)),
 									   wxPoint(100,
 										       35));
 }
@@ -86,7 +86,7 @@ void DirectoriesPrefs::SetTempDir(wxCommandEvent& event)
 	/* TODO: make sure directory is writable */
 
 	mTempDir->SetLabel(dir);
-	mFreeSpace->SetLabel(FormatSize(GetFreeDiskSpace(dir)));
+	mFreeSpace->SetLabel(FormatSize(GetFreeDiskSpace((char *)(const char *)dir)));
 }
 
 
