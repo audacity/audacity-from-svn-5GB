@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>File Menu</title>
+</head>
+<body>
+
+<h1>
+File Menu
+</h1>
+
+<a name="new"></a>
+<h2>
+New...
+</h2>
+Creates a new empty project window.
+
+<a name="open"></a>
+<h2>
+Open...
+</h2>
+Selecting <i>Open</i> presents you with a dialog where you
+can choose a file to open.  If the current project window
+is empty, the new file will take over the current window,
+otherwise a new project window will be opened.  The file formats
+recognized by Audacity are
+<a href="fileformats.htm#wav">WAV</a>,
+<a href="fileformats.htm#aiff">AIFF</a>,
+<a href="fileformats.htm#au">NeXT/AU</a>,
+<a href="fileformats.htm#ircam">IRCAM</a>,
+<a href="fileformats.htm#mp3">MP3</a>,
+<a href="fileformats.htm#midi">MIDI</a>,
+and the Audacity Project file format 
+(<a href="fileformats.htm#aup">AUP</a>).
+In addition, Audacity can also attempt to open an audio file in
+a different format, as long as it is uncompressed - to do this,
+use the <a href="menu4.htm#importraw">Import Raw Data</a> command.
+
+<a name="close"></a>
+<h2>
+Close
+</h2>
+Closes the current project window.
+
+<a name="save"></a>
+<h2>
+Save
+</h2>
+Saves the current Audacity project (<a href="fileformats.htm#aup">AUP</a>)
+file.  Audacity projects are <i>not</i> intended to be read by other
+programs, but they are extremely fast to load and save within Audacity.
+When you are finished working on a project and you want to be able to
+use it in another program, select <a href="#export">Export</a> instead.
+Note that most of the audio data for an Audacity project is not
+stored in the <a href="fileformats.htm#aup">AUP</a> file, but in a
+directory (folder) with the same name as the project.  For example,
+if you save a project as <tt>chanson.aup</tt>, there will be a directory
+called <tt>chanson_data</tt> created to store the actual audio tracks
+of the project.  For more information on the project file format,
+see <a href="fileformats.htm#aup">the file formats page</a>.
+
+<a name="saveas"></a>
+<h2>
+Save As...
+</h2>
+Saves the current Audacity project (<a href="fileformats.htm#aup">AUP</a>)
+file.  Audacity projects are <i>not</i> intended to be read by other
+programs, but they are extremely fast to load and save within Audacity.
+When you are finished working on a project and you want to be able to
+use it in another program, select <a href="#export">Export</a> instead.
+For more information on the project file format,
+see <a href="fileformats.htm#aup">the file formats page</a>.
+
+<a name="export"></a>
+<h2>
+Export...
+</h2>
+Exports the current Audacity project as a standard audio file format
+such as 
+<a href="fileformats.htm#wav">WAV</a> or 
+<a href="fileformats.htm#aiff">AIFF</a>.
+Unfortunately, exporting to 
+<a href="fileformats.htm#mp3">MP3</a> 
+is not possible at this time,
+so if you want to create an MP3 file, you must first export to
+a WAV or AIFF file and then use a separate MP3 encoder.
+<p>
+If there are multiple tracks of the same channel in your project,
+they will be automatically mixed in the exported data.  For more
+information about mixing, see
+<a href="menu4.htm#quickmix">Quick Mix</a>.
+To export only a single track,
+use <a href="#exportsel">Export Selection</a>.
+
+<a name="exportsel"></a>
+<h2>
+Export Selection...
+</h2>
+This is the same as <a href="#export">Export</a>, but it only
+exports the part of the project that is selected.  This is very
+useful if you want to save a small clip from part of a track as
+a separate file.
+
+<a name="exportlabels"></a>
+<h2>
+Export Labels...
+</h2>
+If you have any <a href="tracks.htm#label">Label Tracks</a>, this
+command will export them as a text file.  This feature is commonly
+used in Speech Recognition research to annotate a speech utterance
+and export the annotation to be later processed by another program.
+To import these labels into a different project later, use the
+<a href="menu4.htm#importlabels">Import Labels</a> command.
+
+<a name="prefs"></a>
+<h2>
+Preferences
+</h2>
+Opens a dialog window that lets you configure Audacity.
+For more information on the different preferences, see
+the section on <a href="prefs.htm">Audacity Preferences</a>.
+
+<a name="exit"></a>
+<h2>
+Exit/Quit
+</h2>
+Closes all project windows and exits Audacity.
+
+</body>
+</html>
+

@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+Index
+</head>
+<body>
+
+<ul>
+
+	<li><object>
+		<param name="Name" value="New">
+		<param name="Local" value="menu1.htm#new">
+		</object>
+	<li><object>
+		<param name="Name" value="Open...">
+		<param name="Local" value="menu1.htm#open">
+		</object>
+	<li><object>
+		<param name="Name" value="Close">
+		<param name="Local" value="menu1.htm#close">
+		</object>
+	<li><object>
+		<param name="Name" value="Save">
+		<param name="Local" value="menu1.htm#save">
+		</object>
+	<li><object>
+		<param name="Name" value="Save As...">
+		<param name="Local" value="menu1.htm#saveas">
+		</object>
+	<li><object>
+		<param name="Name" value="Export...">
+		<param name="Local" value="menu1.htm#export">
+		</object>
+	<li><object>
+		<param name="Name" value="Export Selection...">
+		<param name="Local" value="menu1.htm#exportsel">
+		</object>
+	<li><object>
+		<param name="Name" value="Export Labels...">
+		<param name="Local" value="menu1.htm#exportlabels">
+		</object>
+	<li><object>
+		<param name="Name" value="Preferences...">
+		<param name="Local" value="menu1.htm#prefs">
+		</object>
+	<li><object>
+		<param name="Name" value="Exit">
+		<param name="Local" value="menu1.htm#exit">
+		</object>
+	<li><object>
+		<param name="Name" value="Quit">
+		<param name="Local" value="menu1.htm#exit">
+		</object>
+	<li><object>
+		<param name="Name" value="Undo">
+		<param name="Local" value="menu2.htm#undo">
+		</object>
+	<li><object>
+		<param name="Name" value="Redo">
+		<param name="Local" value="menu2.htm#redo">
+		</object>
+	<li><object>
+		<param name="Name" value="Cut">
+		<param name="Local" value="menu2.htm#cut">
+		</object>
+	<li><object>
+		<param name="Name" value="Copy">
+		<param name="Local" value="menu2.htm#copy">
+		</object>
+	<li><object>
+		<param name="Name" value="Paste">
+		<param name="Local" value="menu2.htm#Paste">
+		</object>
+	<li><object>
+		<param name="Name" value="Delete">
+		<param name="Local" value="menu2.htm#delete">
+		</object>
+	<li><object>
+		<param name="Name" value="Silence">
+		<param name="Local" value="menu2.htm#silence">
+		</object>
+	<li><object>
+		<param name="Name" value="Insert Silence...">
+		<param name="Local" value="menu2.htm#insertsilence">
+		</object>
+	<li><object>
+		<param name="Name" value="Split">
+		<param name="Local" value="menu2.htm#split">
+		</object>
+	<li><object>
+		<param name="Name" value="Duplicate">
+		<param name="Local" value="menu2.htm#duplicate">
+		</object>
+	<li><object>
+		<param name="Name" value="Select All">
+		<param name="Local" value="menu2.htm#selectall">
+		</object>
+	<li><object>
+		<param name="Name" value="Zoom In">
+		<param name="Local" value="menu3.htm#zoomin">
+		</object>
+	<li><object>
+		<param name="Name" value="Zoom Normal">
+		<param name="Local" value="menu3.htm#zoomnormal">
+		</object>
+	<li><object>
+		<param name="Name" value="Zoom Out">
+		<param name="Local" value="menu3.htm#zoomout">
+		</object>
+	<li><object>
+		<param name="Name" value="Fit in Window">
+		<param name="Local" value="menu3.htm#zoomfit">
+		</object>
+	<li><object>
+		<param name="Name" value="Plot Spectrum">
+		<param name="Local" value="menu3.htm#spectrum">
+		</object>
+	<li><object>
+		<param name="Name" value="Float Palette">
+		<param name="Local" value="menu3.htm#float">
+		</object>
+	<li><object>
+		<param name="Name" value="Unfloat Palette">
+		<param name="Local" value="menu3.htm#float">
+		</object>
+	<li><object>
+		<param name="Name" value="Import...">
+		<param name="Local" value="menu4.htm#import">
+		</object>
+	<li><object>
+		<param name="Name" value="Quick Mix">
+		<param name="Local" value="menu4.htm#quickmix">
+		</object>
+	<li><object>
+		<param name="Name" value="Align Together">
+		<param name="Local" value="menu4.htm#aligntogether">
+		</object>
+	<li><object>
+		<param name="Name" value="Align with Zero">
+		<param name="Local" value="menu4.htm#alignzero">
+		</object>
+	<li><object>
+		<param name="Name" value="New Audio Track">
+		<param name="Local" value="menu4.htm#newaudiotrack">
+		</object>
+	<li><object>
+		<param name="Name" value="New Label Track">
+		<param name="Local" value="menu4.htm#newlabeltrack">
+		</object>
+	<li><object>
+		<param name="Name" value="Remove Track(s)">
+		<param name="Local" value="menu4.htm#remove">
+		</object>
+	<li><object>
+		<param name="Name" value="Effects">
+		<param name="Local" value="menu5.htm">
+		</object>
+	<li><object>
+		<param name="Name" value="Amplify...">
+		<param name="Local" value="menu5.htm">
+		</object>
+	<li><object>
+		<param name="Name" value="Fade In">
+		<param name="Local" value="menu5.htm">
+		</object>
+	<li><object>
+		<param name="Name" value="Fade Out">
+		<param name="Local" value="menu5.htm">
+		</object>
+	<li><object>
+		<param name="Name" value="Echo...">
+		<param name="Local" value="menu5.htm">
+		</object>
+	<li><object>
+		<param name="Name" value="Maximize Amplitude">
+		<param name="Local" value="menu5.htm">
+		</object>
+
+
+	<li><object>
+		<param name="Name" value="Introduction">
+		<param name="Local" value="intro.htm">
+		</object>
+	<li><object>
+		<param name="Name" value="Menus">
+		<param name="Local" value="menus.htm">
+		</object>
+	<li><object>
+		<param name="Name" value="Toolbar">
+		<param name="Local" value="toolbar.htm">
+		</object>
+
+</ul>
+
+</body>
+</html>

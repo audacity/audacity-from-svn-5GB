@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Project Menu</title>
+</head>
+<body>
+
+<h1>
+Project Menu
+</h1>
+
+<a name="import"></a>
+<h2>
+Import...
+</h2>
+
+
+
+
+<a name="quickmix"></a>
+<h2>
+Quick Mix
+</h2>
+This command mixes all of the selected tracks down to one or two
+tracks.  The channel of a track being mixed affects whether it
+will be mixed into the left channel of the resulting track(s),
+the right channel, or both (mono).  For example, if you have
+four tracks:
+
+<ul>
+<li> Track 1: left channel
+<li> Track 2: left channel
+<li> Track 3: right channel
+<li> Track 4: mono channel
+</ul>
+
+and you select them all and perform a Quick Mix, you will end up
+with two tracks: the first will contain a mix of tracks 1, 2, and 4
+(the new left channel) and the other will contain a mix of tracks
+3 and 4 (the new right channel).
+
+<p>
+
+Your tracks are implicitly mixed whenever you hit the
+<a href="toolbar.htm#play">Play</a> 
+button and whenever you select 
+<a href="menu1.htm#export">Export</a>.
+
+<a name="aligntogether"></a>
+<h2>
+Align Tracks Together
+</h2>
+If you select multiple tracks, this command adjusts their time offset
+so that they start at the same time.  It adjusts their starting time
+to the average of all of the tracks' original starting times.
+To adjust the time offset of a track, use the 
+<a href="toolbar.htm">Time Shift</a> tool.
+
+<a name="alignzero"></a>
+<h2>
+Align with Zero
+</h2>
+If you select multiple tracks, this command resets their time offset
+to zero.
+To adjust the time offset of a track, use the 
+<a href="toolbar.htm">Time Shift</a> tool.
+
+<a name="newaudiotrack"></a>
+<h2>
+New Audio Track
+</h2>
+This creates a new empty audio track.  This command is rarely needed,
+since importing, recording, and mixing automatically create new tracks
+as needed.  But you can use this to cut or copy data from an existing
+track and paste it into a blank track.
+
+<a name="newlabeltrack"></a>
+<h2>
+New Label Track
+</h2>
+This creates a new Label track, which can be very useful for
+textual annotation.  See the discussion on 
+<a name="tracks.htm#label">Label tracks</a> for more information
+on how to use label tracks.
+
+<a name="remove"></a>
+<h2>
+Remove Track(s)
+</h2>
+
+This command removes the selected track or tracks from the project.
+Even if only part of a track is selected, the entire track is removed.
+To cut out only part of the audio in a track, use
+<a href="menu1.htm#delete">Delete</a> or 
+<a href="menu1.htm#silence">Silence</a>.
+
+</body>
+</html>
+
