@@ -37,6 +37,7 @@ $browseSourceStr = "Visita i sorgenti";
 $browseDoxygenStr = "Visita la documentazione Doxygen";
 $creditsStr = "Crediti";
 $sourceStr = "Codice sorgente";
+$sourceDepStr = "Dipendenze del codice sorgente";
 $linuxStr = "Binari per Linux";
 $linuxStr2 = "Questo è un binario compilato staticamente, che dovrebbe funzionare su ogni distribuzione Linux. E' sufficiente decomprimerlo e avviare il programma 'audacity' da una qualsiasi cartella, oppure eseguire 'make install' come utente root per installare il programma";
 $macOS9ReqStr = "Richiede Mac OS 8.6 o superiore";
