@@ -46,6 +46,7 @@
 
 int DirManager::numDirManagers = 0;
 int DirManager::fileIndex = 0;
+bool DirManager::dontDeleteTempFiles = false;
 
 unsigned int DirManager::defaultHashTableSize = 10000;
 
@@ -175,6 +176,9 @@ void DirManager::CleanTempDir(bool startup)
    wxStringList fnameList;
    int count = 0;
 
+   if (dontDeleteTempFiles)
+      return;
+
    // XXX: is this too destructive, to delete everything?
    fname = wxFindFirstFile((const char *) (temp + wxFILE_SEP_PATH + "b*"));
    while (fname != "") {
@@ -199,8 +203,10 @@ void DirManager::CleanTempDir(bool startup)
                                 wxYES_NO | wxICON_EXCLAMATION,
                                 NULL);
       
-      if (action != wxYES)
+      if (action != wxYES) {
+         dontDeleteTempFiles = true;
          return;
+      }
    }
 
    wxChar **array = fnameList.ListToArray();
