@@ -25,6 +25,10 @@
 #include <math.h>
 #include <stdlib.h>
 
+#ifdef __WXMSW__
+#include <malloc.h>
+#endif
+
 #include <wx/log.h>
 #include <wx/textctrl.h>
 #include <wx/msgdlg.h>
@@ -840,6 +844,8 @@ void AudioIO::FillBuffers()
 //
 //////////////////////////////////////////////////////////////////////
 
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+
 #if USE_PORTAUDIO_V19
 int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                           unsigned long framesPerBuffer,
@@ -858,7 +864,8 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
    int numPlaybackTracks = gAudioIO->mPlaybackTracks.GetCount();
    int numCaptureChannels = gAudioIO->mNumCaptureChannels;
    int callbackReturn = paContinue;
-   float *tempFloats = gAudioIO->mTempFloats;
+   float *tempFloats = (float*)alloca(framesPerBuffer*sizeof(float)*
+                                      MAX(numCaptureChannels,numPlaybackChannels));
    unsigned int i;
    int t;
 
