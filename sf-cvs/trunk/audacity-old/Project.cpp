@@ -864,6 +864,7 @@ void AudacityProject::OpenFile(wxString fileName)
       !fileName.Right(4).CmpNoCase("aiff") ||
       !fileName.Right(3).CmpNoCase("aif") ||
       !fileName.Right(2).CmpNoCase("au") ||
+      !fileName.Right(3).CmpNoCase("snd") ||
       !fileName.Right(5).CmpNoCase("ircam")) {
     if (mDirty || !mTracks->IsEmpty()) {
 	    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
@@ -1260,8 +1261,8 @@ void AudacityProject::ImportMP3(wxString fileName)
     
     PushState();
     
-    FixScrollbars();
-    mTrackPanel->Refresh(false);
+	ZoomFit();
+
   }
 }
 
@@ -1281,8 +1282,7 @@ void AudacityProject::ImportOGG(wxString fileName)
 
 		PushState();
 
-		FixScrollbars();
-		mTrackPanel->Refresh(false);
+		ZoomFit();
 	}
 }
 #endif /* HAVE_LIBVORBISFILE */
