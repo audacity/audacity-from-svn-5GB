@@ -77,8 +77,10 @@ class VTrack {
    double GetOffset () const { return tOffset; }
    int    GetDirty  () const { return dirty;   }
 
+   void Offset(double t) { SetOffset(tOffset + t); }
+   virtual void SetOffset (double o) { tOffset = o; }
+
    void SetDirty  (int    d) { dirty   = d; }
-   void SetOffset (double o) { tOffset = o; }
    void SetChannel(int    c) { channel = c; }
 
    // AS: Note that the dirManager is mutable.  This is
@@ -87,8 +89,8 @@ class VTrack {
    // seperate from the Track.
    DirManager* GetDirManager() const { return dirManager; }
 
-   virtual void Cut  (double t0, double t1, VTrack ** dest) { dest = 0; }
-   virtual void Copy (double t0, double t1, VTrack ** dest) const { dest = 0; }
+   virtual void Cut  (double t0, double t1, VTrack ** dest) { *dest = 0; }
+   virtual void Copy (double t0, double t1, VTrack ** dest) const { *dest = 0; }
    virtual void Clear(double t0, double t1) {}
    virtual void Paste(double t, const VTrack * src) {}
 
@@ -102,7 +104,6 @@ class VTrack {
    virtual void Toggle();
    virtual bool IsCollapsed() const;
 
-   virtual void Offset(double t) {tOffset += t; }
    virtual int GetKind() const { return None; }
 
    virtual bool Load(wxTextFile * in, DirManager * dirManager);

@@ -151,11 +151,10 @@ void WaveTrack::SetRate(double newRate)
    SetDirty(GetDirty() + 1);                     // forces redraw
 }
 
-void WaveTrack::Offset(double t)
+void WaveTrack::SetOffset(double t)
 {
-   VTrack::Offset(t);
-
-   envelope.SetOffset(GetOffset());
+   VTrack::SetOffset(t);
+   envelope.SetOffset(t);
 }
 
 void WaveTrack::GetMinMax(sampleCount start, sampleCount len,

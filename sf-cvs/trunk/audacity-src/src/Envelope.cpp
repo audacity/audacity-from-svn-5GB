@@ -58,7 +58,7 @@ void Envelope::Flatten(double value)
 void Envelope::CopyFrom(const Envelope * e, double t0, double t1)
 {
    mOffset = wxMax(t0, e->mOffset);
-   mTrackLen = wxMin(t1 - mOffset, e->mTrackLen);
+   mTrackLen = wxMin(t1, e->mOffset + e->mTrackLen) - mOffset;
 
    int i;
    for (i = 0; i < mEnv.Count(); i++)
@@ -75,11 +75,11 @@ void Envelope::CopyFrom(const Envelope * e, double t0, double t1)
 
    // Skip the points that come before the copied region
    i = 0;
-   while (i < len && e->mEnv[i]->t <= t0 - mOffset)
+   while (i < len && e->mOffset + e->mEnv[i]->t <= t0)
       i++;
 
    // Copy points from inside the copied region
-   while (i < len && e->mEnv[i]->t < mOffset + mTrackLen) {
+   while (i < len && e->mOffset + e->mEnv[i]->t < t1) {
       EnvPoint *pt = new EnvPoint();
       pt->t = e->mEnv[i]->t + e->mOffset - mOffset;
       pt->val = e->mEnv[i]->val;
@@ -88,7 +88,7 @@ void Envelope::CopyFrom(const Envelope * e, double t0, double t1)
    }
 
    // Create the final point
-   if (i > 0 && e->mEnv[i-i]->t != mOffset + mTrackLen) {
+   if (mTrackLen != 0) {
       EnvPoint *pt = new EnvPoint();
       pt->t = mTrackLen;
       pt->val = e->GetValue(t1);
