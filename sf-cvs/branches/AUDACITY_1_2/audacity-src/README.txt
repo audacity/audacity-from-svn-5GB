@@ -269,9 +269,21 @@ Known issues/problems:
 
 Changes in 1.2.1:
 
-  * Fix a crash when resizing the Equalization window.
+  * Fix a possible crash when opening or resizing the Equalization window.
+
+  * Don't allow percentages less than -100% in Change Pitch/Speed/Tempo
+    effects.  Fixes a possible crash.
+
+  * Correctly load saved ID3 tags from Audacity project files.
+
+  * On Linux and OS X, store lockfiles in the temp directory instead of
+    the user's home directory.  This fixes problems in lab environments
+    where users have restricted or network-mounted home directories.
+
   * Linux: Fix endianness problems in playback on PowerPC.
+
   * Linux: Fix compilation problem in Nyquist on MIPS.
+
   * Updated translations.
 
 Changes in 1.2.0:
