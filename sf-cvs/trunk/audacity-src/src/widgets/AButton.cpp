@@ -21,6 +21,10 @@
 #include <wx/dcmemory.h>
 #include <wx/image.h>
 
+//This is needed for tooltips
+#include "../Project.h"
+#include <wx/tooltip.h>
+
 BEGIN_EVENT_TABLE(AButton, wxWindow)
     EVT_MOUSE_EVENTS(AButton::OnMouseEvent)
     EVT_PAINT(AButton::OnPaint)
@@ -94,8 +98,37 @@ void AButton::OnPaint(wxPaintEvent & event)
 
 void AButton::OnMouseEvent(wxMouseEvent & event)
 {
-   if (mButtonIsDown || !mEnabled)
+
+
+   if (mButtonIsDown ) {
+      if (event.Entering()) {
+         
+         //This sets the status window to the tooltip
+         GetActiveProject()->TP_DisplayStatusMessage( this->GetToolTip()->GetTip(), 0);
+         this->Refresh(false);
+      }
+      else if (event.Leaving()) {
+         GetActiveProject()->TP_DisplayStatusMessage("",0);
+         this->Refresh(false);
+      }
       return;
+   }
+
+  
+   if (!mEnabled) {
+      if (event.Entering()) {
+      
+         //This sets the status window to the tooltip
+         GetActiveProject()->TP_DisplayStatusMessage( this->GetToolTip()->GetTip() + _(" (disabled)") ,0);
+         this->Refresh(false);
+      }
+      else if (event.Leaving()) {
+         GetActiveProject()->TP_DisplayStatusMessage("",0);
+         this->Refresh(false);
+      }
+     return;
+   }
+
 
    if (event.ButtonUp()) {
       mIsClicking = false;
@@ -134,11 +167,15 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
    } else {
       if (event.Entering()) {
          mButtonState = AButtonOver;
+
+         //This sets the status window to the tooltip
+         GetActiveProject()->TP_DisplayStatusMessage(this->GetToolTip()->GetTip(),0);
          this->Refresh(false);
       }
 
       if (event.Leaving()) {
          mButtonState = AButtonUp;
+         GetActiveProject()->TP_DisplayStatusMessage("",0);
          this->Refresh(false);
       }
    }
