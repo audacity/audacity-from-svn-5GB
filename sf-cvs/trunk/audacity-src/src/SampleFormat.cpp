@@ -118,7 +118,7 @@ void CopySamples(samplePtr src, sampleFormat srcFormat,
             ((float *)dst)[i] = (((short *)src)[i] + fHalf) / fDiv16;
       else if (srcFormat == int24Sample)
          for(i=0; i<len; i++)
-            ((float *)dst)[i] = (((short *)src)[i] + fHalf) / fDiv24;
+            ((float *)dst)[i] = (((int *)src)[i] + fHalf) / fDiv24;
       break;
 
    case int24Sample:
@@ -146,7 +146,7 @@ void CopySamples(samplePtr src, sampleFormat srcFormat,
          switch(gDither) {
          case 0:
             for(i=0; i<len; i++)
-               ((short *)dst)[i] = (short)((int *)src)[i] >> 8;
+               ((short *)dst)[i] = (short)(((int *)src)[i] >> 8);
             break;
          }
       break;
