@@ -4,19 +4,22 @@
 // with all of its support libraries included.  However, if you
 // downloaded the source tarball of Audacity, some of these libraries
 // might be missing, so there might be lines later in this file that
-// disables support for these libraries.
+// disable support for these libraries.
+
+// To disable an option, just comment it out, or #undef the flag.
+// Setting a value to '0' will not work!
 
 #define MP3SUPPORT 1
 #define USE_LADSPA 1
 #define USE_LIBID3TAG 1
 #define USE_LIBMAD 1
 #define USE_LIBRESAMPLE 1
-#undef USE_LIBSAMPLERATE
+// #define USE_LIBSAMPLERATE 1
 #define USE_LIBVORBIS 1
 #define USE_NYQUIST 1
 #define USE_PORTMIXER 1
 #define USE_SOUNDTOUCH 1
-#undef USE_VST
+// #define USE_VST 1
 
 #define INSTALL_PREFIX "."
 
