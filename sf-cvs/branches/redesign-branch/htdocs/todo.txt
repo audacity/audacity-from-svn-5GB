@@ -1,11 +1,7 @@
-content: about/screenshots
-content: download/plugins
 help/documentation: Change links by locale?
 sort news items
 nyquist plugin listing
 link to release notes from download/*?
-t-shirt info?
-audacityteam.org links?
 links to wiki from help pages?
 add more links to about/features?
 RSS feed
