@@ -95,9 +95,9 @@ AboutDialog::AboutDialog(wxWindow * parent)
 
    #ifdef __WXGTK__
    # if USE_LADSPA
-   informationStr += _("LADSPA plug-in suppport enabled");
+   informationStr += _("LADSPA plug-in support enabled");
    # else
-   informationStr += _("LADSPA plug-in suppport disabled");
+   informationStr += _("LADSPA plug-in support disabled");
    # endif
    informationStr += "<br>\n";
    #endif

@@ -263,7 +263,9 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
             }
             else
             {
+               /* i18n-hint: You do not need to translate "LOF" */
                wxMessageBox(_("Invalid window offset in LOF file."),
+                            /* i18n-hint: You do not need to translate "LOF" */
                             _("LOF Error"), wxOK | wxCENTRE, gParentWindow);
             }
                
@@ -282,7 +284,9 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
             }
             else
             {
+               /* i18n-hint: You do not need to translate "LOF" */
                wxMessageBox(_("Invalid duration in LOF file."),
+                            /* i18n-hint: You do not need to translate "LOF" */
                             _("LOF Error"), wxOK | wxCENTRE, gParentWindow);
             }
          }     // End if statement
@@ -374,6 +378,7 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
             }            
             else
             {
+               /* i18n-hint: You do not need to translate "LOF" */
                wxMessageBox(_("Invalid track offset in LOF file."),
                             _("LOF Error"), wxOK | wxCENTRE, gParentWindow);
             }
@@ -386,15 +391,9 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
       // # indicates comments; ignore line
       tok = wxStringTokenizer("", " ");
    }
-   else // Script error
+   else
    {
-      // Commented out by dmazzoni because it was causing errors even with
-      // blank lines (which I think should be allowed).
-      #if 0
-      wxMessageBox(_("Only window, file, or # may begin each line in an LOF file.\n"
-                     "Ignoring line..."),
-                   _("LOF Error"), wxOK | wxCENTRE, gParentWindow);
-      #endif
+      // Couldn't parse a line
    }
 }
 

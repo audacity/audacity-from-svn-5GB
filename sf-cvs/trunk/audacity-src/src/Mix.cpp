@@ -157,10 +157,12 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
    double elapsedTime = elapsedMS * 0.001;
    double maxTracks = totalTime / (elapsedTime / numWaves);
 
-   printf(_("      Tracks: %d\n"), numWaves);
-   printf(_("  Mix length: %f sec\n"), totalTime);
-   printf(_("Elapsed time: %f sec\n"), elapsedTime);
-   printf(_("Max number of tracks to mix in real time: %f\n"), maxTracks);
+   // Note: these shouldn't be translated - they're for debugging
+   // and profiling only.
+   printf("      Tracks: %d\n", numWaves);
+   printf("  Mix length: %f sec\n", totalTime);
+   printf("Elapsed time: %f sec\n", elapsedTime);
+   printf("Max number of tracks to mix in real time: %f\n", maxTracks);
 #endif
 
    delete[] waveArray;

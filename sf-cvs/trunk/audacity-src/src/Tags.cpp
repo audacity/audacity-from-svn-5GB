@@ -363,11 +363,14 @@ TagsDialog::TagsDialog(wxWindow * parent, wxWindowID id, const wxString & title,
 
 bool TagsDialog::Validate()
 {
+   wxString errorString =
+      _("Maximum length of attribute '%s' is %d characters. Data was truncated.");
+
    if(!mTags->mID3V2)
    {
       if(mTags->mTitle.Length() > 30)
       {
-         wxMessageBox(_("Maximum length of attribute 'Title' is 30 characters. Data was truncated."));
+         wxMessageBox(wxString::Format(errorString, _("Title"), 30);
 
          mTags->mTitle = mTags->mTitle.Left(30);
          TransferDataToWindow();
@@ -377,7 +380,7 @@ bool TagsDialog::Validate()
 
       if(mTags->mArtist.Length() > 30)
       {
-         wxMessageBox(_("Maximum length of attribute 'Artist' is 30 characters. Data was truncated."));
+         wxMessageBox(wxString::Format(errorString, _("Artist"), 30);
 
          mTags->mArtist = mTags->mArtist.Left(30);
          TransferDataToWindow();
@@ -387,7 +390,7 @@ bool TagsDialog::Validate()
 
       if(mTags->mAlbum.Length() > 30)
       {
-         wxMessageBox(_("Maximum length of attribute 'Album' is 30 characters. Data was truncated."));
+         wxMessageBox(wxString::Format(errorString, _("Album"), 30);
 
          mTags->mAlbum = mTags->mAlbum.Left(30);
          TransferDataToWindow();
@@ -397,7 +400,7 @@ bool TagsDialog::Validate()
 
       if(mTags->mYear.Length() > 4)
       {
-         wxMessageBox(_("Maximum length of attribute 'Year' is 4 characters. Data was truncated."));
+         wxMessageBox(wxString::Format(errorString, _("Year"), 4);
 
          mTags->mYear = mTags->mYear.Left(4);
          TransferDataToWindow();
@@ -407,7 +410,7 @@ bool TagsDialog::Validate()
 
       if(mTags->mComments.Length() > 30)
       {
-         wxMessageBox(_("Maximum length of attribute 'Comments' is 30 characters. Data was truncated."));
+         wxMessageBox(wxString::Format(errorString, _("Comments"), 30);
 
          mTags->mComments = mTags->mComments.Left(30);
          TransferDataToWindow();
