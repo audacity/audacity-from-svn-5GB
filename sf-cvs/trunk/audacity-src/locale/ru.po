@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "POT-Creation-Date: 2003-05-12 16:06+0400\n"
-"PO-Revision-Date: 2003-05-12 16:19+0400\n"
+"PO-Revision-Date: 2003-05-12 18:29+0400\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1441,11 +1441,11 @@ msgstr "Прицепить контрольную панель"
 
 #: ../src/Menus.cpp:507
 msgid "Dock Edit Toolbar"
-msgstr "Отцепить панель инструментов редактирования"
+msgstr "Прицепить панель инструментов редактирования"
 
 #: ../src/Menus.cpp:522
 msgid "Dock Mixer Toolbar"
-msgstr "Отцепить панель микшера"
+msgstr "Прицепить панель микшера"
 
 #: ../src/AboutDialog.cpp:189
 msgid "Documentation Writer"
@@ -1469,7 +1469,7 @@ msgstr "Перетащите эту дорожку вверх/вниз для смены порядка представления дороже
 
 #: ../src/ControlToolBar.cpp:73
 msgid "Drag to Zoom Into Region, Right-Click to Zoom Out"
-msgstr ""
+msgstr "Перетащить для приближения области, щёлкнуть правой кнопкой мыши дял отдаления"
 
 #: ../src/ControlToolBar.cpp:322
 msgid "Draw Tool"
@@ -2241,7 +2241,7 @@ msgstr "Тихо"
 
 #: ../src/FormatSelection.cpp:31
 msgid "NTSC drop-frame h:mm:ss:ff"
-msgstr ""
+msgstr "NTSC drop-frame ч:мм:сс:кк"
 
 #: ../src/FormatSelection.cpp:30
 msgid "NTSC frames 29.97 fps"
@@ -2249,7 +2249,7 @@ msgstr "NTSC-кадры при 29.97 fps"
 
 #: ../src/FormatSelection.cpp:32
 msgid "NTSC non-drop-frame h:mm:ss:ff"
-msgstr ""
+msgstr "NTSC non-drop-frame ч:мм:сс:кк"
 
 #: ../src/TrackPanel.cpp:335 ../src/TrackPanel.cpp:356
 #: ../src/TrackPanel.cpp:365 ../src/TrackPanel.cpp:371
@@ -2710,7 +2710,7 @@ msgstr "Время до конца записи: 1 час и %d минут"
 
 #: ../src/prefs/QualityPrefs.cpp:171
 msgid "Rectangle"
-msgstr "Прямоугольник"
+msgstr "Прямоугольный"
 
 #: ../src/FFT.cpp:364
 msgid "Rectangular"
@@ -3431,7 +3431,7 @@ msgstr "Тест %d\n"
 
 #: ../src/prefs/QualityPrefs.cpp:172
 msgid "Triangle"
-msgstr "Треугольник"
+msgstr "Треугольный"
 
 #: ../src/EditToolBar.cpp:150
 msgid "Trim everything outside selection"
