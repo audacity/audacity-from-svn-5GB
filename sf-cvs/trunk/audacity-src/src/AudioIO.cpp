@@ -627,6 +627,14 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
 
    return (mLastPaError == paNoError);
 }
+#if USE_PORTAUDIO_V19
+   if ( mPortStreamV19 || mStreamToken )
+      return;
+#else
+   if ( mPortStreamV18 || mStreamToken )
+      return;
+#endif
+
 
 void AudioIO::StartMonitoring(double sampleRate)
 {
