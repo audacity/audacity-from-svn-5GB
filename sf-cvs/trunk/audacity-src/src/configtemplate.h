@@ -91,6 +91,9 @@
 /* Define if SoundTouch support should be enabled */
 #undef USE_SOUNDTOUCH
 
+/* Define if Audio Unit plug-ins are enabled (Mac OS X only) */
+#undef USE_AUDIO_UNITS
+
 /* Placeholder for large file support */
 #undef _FILE_OFFSET_BITS
 

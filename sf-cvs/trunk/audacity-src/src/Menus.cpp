@@ -1216,7 +1216,7 @@ void AudacityProject::OnEffect(int type, int index)
       }
    }
    
-   if (f->DoEffect(this, type, mTracks, mTrackFactory,
+   if (f->DoEffect(this, type, mRate, mTracks, mTrackFactory,
                    &mViewInfo.sel0, &mViewInfo.sel1)) {
       wxString longDesc = f->GetEffectDescription();
       wxString shortDesc = f->GetEffectName();
