@@ -181,6 +181,7 @@ enum {
 
 BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_CHAR_HOOK(AudacityProject::OnKey)
+    EVT_CHAR(AudacityProject::OnKey)
     EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
     EVT_PAINT(AudacityProject::OnPaint)
     EVT_CLOSE(AudacityProject::OnCloseWindow)
@@ -838,9 +839,14 @@ void AudacityProject::OnKey(wxKeyEvent& event)
    else if (key == WXK_SPACE)
       newStr = "Spacebar";
    else
+   {
+      event.Skip();
       return; // Don't change it if we don't recognize the key
+   }
 
    (this->*((wxEventFunction) (GetCommandFunc(FindCommandByCombos(newStr)))))(event);
+
+   event.Skip();
 }
 
 void AudacityProject::OnActivate(wxActivateEvent & event)
