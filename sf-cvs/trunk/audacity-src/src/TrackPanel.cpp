@@ -937,32 +937,16 @@ void TrackPanel::RemoveTrack(VTrack * toRemove)
    VTrack *partner = mTracks->GetLink(toRemove);
    wxString name;
 
-   VTrack *t = iter.First();
-   while (t && t != toRemove && t != partner)
-      t = iter.Next();
-
-   if (t && (t == toRemove || t == partner)) {
-      name = t->GetName();
-      delete t;
-      t = iter.RemoveCurrent();
-   }
-
-   if (partner) {
-      // Repeat to find the other half of a linked track
-      t = iter.First();
-      while (t && t != toRemove && t != partner)
-         t = iter.Next();
-
-      if (t && (t == toRemove || t == partner)) {
+   for (VTrack *t = iter.First(); t; t = iter.Next())
+      if (t == toRemove || t == partner) {
+         name = t->GetName();
          delete t;
          t = iter.RemoveCurrent();
       }
-   }
 
    MakeParentPushState(wxString::Format(_("Removed track '%s.'"),
                                         name.c_str()));
    MakeParentRedrawScrollbars();
-
    Refresh(false);
 }
 
