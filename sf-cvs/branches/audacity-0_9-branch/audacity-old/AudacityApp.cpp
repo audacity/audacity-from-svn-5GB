@@ -44,6 +44,7 @@
 #include "effects/Echo.h"
 #include "effects/Fade.h"
 #include "effects/Filter.h"
+#include "effects/NoiseRemoval.h"
 #include "effects/Phaser.h"
 #include "effects/Wahwah.h"
 
@@ -181,6 +182,7 @@ bool AudacityApp::OnInit()
    Effect::RegisterEffect(new EffectFadeIn());
    Effect::RegisterEffect(new EffectFadeOut());
    Effect::RegisterEffect(new EffectFilter());
+   Effect::RegisterEffect(new EffectNoiseRemoval());
    Effect::RegisterEffect(new EffectPhaser());
    Effect::RegisterEffect(new EffectWahwah());
 

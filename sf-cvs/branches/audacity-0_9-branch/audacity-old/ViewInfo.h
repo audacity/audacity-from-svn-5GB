@@ -28,7 +28,6 @@ struct ViewInfo {
    double zoom;                 // pixels per second
    double lastZoom;
 
-   int zoomStart;
    // Actual scroll bar positions, in pixels
    int sbarH;
    int sbarScreen;

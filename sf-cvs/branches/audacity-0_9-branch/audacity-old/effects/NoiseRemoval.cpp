@@ -21,6 +21,7 @@
 #include <wx/brush.h>
 #include <wx/image.h>
 #include <wx/dcmemory.h>
+#include <wx/statbox.h>
 
 #include "NoiseRemoval.h"
 #include "../Envelope.h"
@@ -198,7 +199,7 @@ void EffectNoiseRemoval::GetProfile(sampleCount len,
    for(i=0; i<=len/2; i++) {
       float value = log(out[i]);
       
-      if (isfinite(value)) {
+      if (finite(value)) {
          sum[i] += value;
          sumsq[i] += value*value;
          profileCount[i]++;
