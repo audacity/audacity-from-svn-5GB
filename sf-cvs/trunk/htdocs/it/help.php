@@ -2,7 +2,7 @@
 
 <p>
 Manuale completo di Audacity 1.2: 
-[<a href="manual-1.2">Navigazione Online</a>]
+[<a href="manual-1.2">Naviga Online</a>]
 [<a href="audacity-manual-1.2.zip">Download (450k ZIP)</a>]
 </p>
 
@@ -13,39 +13,24 @@ Audacity 1.2 Online Help:
 
 <p>
 
-Ricerca documentazione Audacity:
+Ricerca nella documentazione e nel sito di Audacity:
 
-<?php
-/* Includi la ricerca tramite iSearch */
 
-/* Referenza relativa rispetto la isearch directory */
-$isearch_path = "isearch";
+<form method="post" action="http://audacityteam.org/isearch/index.php" target="_self">
 
-/* Scegli la larghezza della casella in caratteri */
-$isearch_searchFormWidth = 20;
+<table border="0" cellpadding="3" cellspacing="1">
+  <tr>
+    <td>
 
-/* Opzionale - seleziona il frame di destinazione per i risultati della ricerca.
- * Default value is "_self".
- */
-$isearch_resultFrame = "_self";
+      <input maxLength="255" name="s" size="20" value=''>
+      <input type="submit" value="Search">
+      <a TARGET="_blank" HREF="http://audacityteam.org/isearch/help.php"><font size="-1"> Help with searching</font></a>
+    </td>
+  </tr>
+</table>
 
-/* Opzionale - permetti agli utenti di selezionare "tutte le parole" o "una delle parole" per la corrispondenza.
- * Il valore di default è falso.
- */
-$isearch_allowSetOperator = False;
-
-/* Opzionale - aggiungi la "Ricerca Internet" perchè sia visualizzato la casella per la ricerca.
- * Default value is True.
- */
-$isearch_allowSearchInternet = False;
-
-/* Opzionale - Determina quale pagina contiene il form.
- * Default value is True.
- */
-$isearch_charsetUtf8 = "True";
-
-include("$isearch_path/isearch_form.inc.php");
-?>
+<input type="hidden" name="action" value="search">
+</form>
 </p>
 
 <p>
@@ -54,17 +39,17 @@ include("$isearch_path/isearch_form.inc.php");
 
 <p>
 <?php print "<a href=tutorials.php?$langLinkStr>";
-?>Manuali</a>
+?>Tutorials</a>
 </p>
 
 <p>
 <?php print "<a href=faq.php?$langLinkStr>";
-?>Domande frequentemente fatte (F.A.Q.)</a>
+?>Domande Frequenti(F.A.Q.)</a>
 </p>
 
 <p>
 <a href="http://sourceforge.net/mailarchive/forum.php?forum_id=828"
->Archivi della mailing list Audacity-Help</a>
+>Audacity-Help Mailing List Archives</a>
 </p>
 
 <p>
@@ -79,14 +64,14 @@ include("$isearch_path/isearch_form.inc.php");
 <?php BoxTop("$helpStr - Audacity 1.0.0"); ?>
 
 <p>
-<a href="docs/contents.html">Leggi la documentazione Online</a>
+<a href="docs/contents.html">Leggi la dicumentazione Online</a>
 </p>
 
 <p>
 <?php print $docsStr; ?>:
 <ul>
 <li><a href="audacity-manual-1.0.0-A.zip">Inglese</a>
-<li><a href="audacity-manual-1.0.0-bg.zip">Bulgaro</a>
+<li><a href="audacity-manual-1.0.0-bg.zip">Bulgarian</a>
 <li><a href="audacity-manual-1.0.0-es.zip">Spagnolo</a>
 </ul>
 </p>
@@ -97,17 +82,17 @@ include("$isearch_path/isearch_form.inc.php");
 
 <p>
 <?php print "<a href=tutorials.php?$langLinkStr>";
-?>Manuali</a>
+?>Tutorials</a>
 </p>
 
 <p>
 <?php print "<a href=faq.php?$langLinkStr>";
-?>Domande frequentemente fatte (F.A.Q.)</a>
+?>Domande frequenti (F.A.Q.)</a>
 </p>
 
 <p>
 <a href="http://sourceforge.net/mailarchive/forum.php?forum_id=828"
->Archivi della mailing list Audacity-Help</a>
+>Audacity-Help Mailing List Archives</a>
 </p>
 
 <p>
@@ -116,3 +101,4 @@ include("$isearch_path/isearch_form.inc.php");
 </p>
 
 <?php BoxBottom(); ?>
+
