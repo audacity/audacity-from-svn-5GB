@@ -1,0 +1,148 @@
+########################################
+#
+# Audacity Makefile
+#
+# Dominic Mazzoni
+#
+# Run configure to generate Makefile
+# from Makefile.in
+#
+
+CC = @CC@
+CCC = @CXX@
+
+# CFLAGS are specific to C.
+CFLAGS = @CFLAGS@
+
+# CXXFLAGS are specific to C++.
+CXXFLAGS = @CXXFLAGS@
+
+# CPPFLAGS are for both C and C++.
+CPPFLAGS = @CPPFLAGS@ -Iinclude -Iinclude/linux
+
+# Files that must exist in order to compile a C/C++ files
+CDEPEND = @CDEPEND@
+
+EXTRAOBJS = @EXTRAOBJS@
+LIBS = @LIBS@
+
+########################################
+# ALL OBJECT FILES
+
+OBJDIR = obj
+
+OBJS = \
+	$(OBJDIR)/AColor.o \
+	$(OBJDIR)/APalette.o \
+	$(OBJDIR)/AStatus.o \
+	$(OBJDIR)/AboutDialog.o \
+	$(OBJDIR)/AudacityApp.o \
+	$(OBJDIR)/AudioIO.o \
+	$(OBJDIR)/Benchmark.o \
+	$(OBJDIR)/BlockFile.o \
+	$(OBJDIR)/DirManager.o \
+	$(OBJDIR)/DiskFunctions.o \
+	$(OBJDIR)/Envelope.o \
+	$(OBJDIR)/FileFormats.o \
+	$(OBJDIR)/FFT.o \
+	$(OBJDIR)/FreqWindow.o \
+	$(OBJDIR)/Help.o \
+	$(OBJDIR)/HistoryWindow.o \
+	$(OBJDIR)/LabelTrack.o \
+	$(OBJDIR)/Menus.o \
+	$(OBJDIR)/Mix.o \
+	$(OBJDIR)/NoteTrack.o \
+	$(OBJDIR)/Prefs.o \
+	$(OBJDIR)/Project.o \
+	$(OBJDIR)/Spectrum.o \
+	$(OBJDIR)/Tags.o \
+	$(OBJDIR)/Track.o \
+	$(OBJDIR)/TrackArtist.o \
+	$(OBJDIR)/TrackPanel.o \
+	$(OBJDIR)/UndoManager.o \
+	$(OBJDIR)/WaveTrack.o \
+	$(OBJDIR)/effects/Effect.o \
+	$(OBJDIR)/effects/LoadEffects.o \
+	$(OBJDIR)/effects/Amplify.o \
+	$(OBJDIR)/effects/BassBoost.o \
+	$(OBJDIR)/effects/Compressor.o \
+	$(OBJDIR)/effects/Echo.o \
+	$(OBJDIR)/effects/Fade.o \
+	$(OBJDIR)/effects/Filter.o \
+	$(OBJDIR)/effects/NoiseRemoval.o \
+	$(OBJDIR)/effects/Phaser.o \
+	$(OBJDIR)/effects/Wahwah.o \
+	$(OBJDIR)/export/Export.o \
+	$(OBJDIR)/export/ExportMP3.o \
+	$(OBJDIR)/export/ExportPCM.o \
+	$(OBJDIR)/import/Import.o \
+	$(OBJDIR)/import/ImportMIDI.o \
+	$(OBJDIR)/import/ImportMP3.o \
+	$(OBJDIR)/import/ImportOGG.o \
+	$(OBJDIR)/import/ImportPCM.o \
+	$(OBJDIR)/import/ImportRaw.o \
+	$(OBJDIR)/prefs/PrefsDialog.o \
+	$(OBJDIR)/prefs/AudioIOPrefs.o \
+	$(OBJDIR)/prefs/SampleRatePrefs.o \
+	$(OBJDIR)/prefs/FileFormatPrefs.o \
+	$(OBJDIR)/prefs/DirectoriesPrefs.o \
+	$(OBJDIR)/prefs/SpectrumPrefs.o \
+	$(OBJDIR)/widgets/AButton.o \
+	$(OBJDIR)/widgets/ASlider.o \
+
+
+########################################
+# DEPENDENCIES
+
+DEPS = $(OBJS:$(OBJDIR)/%.o=%)
+
+########################################
+
+all: dirs ../audacity
+
+../audacity: $(OBJS) $(EXTRAOBJS) Makefile
+	$(CCC) -o ../audacity $(OBJS) $(EXTRAOBJS) $(LIBS)
+
+#
+# You can optionally "make dep" to make dependencies.
+# voodoo magic in the form of a perl script turns
+# Foo.o: Foo.cpp into obj/Foo.o: Foo.cpp
+#
+# I'm not brave enough to try and translate that regex to sed
+
+dep:
+	$(CCC) -M $(CXXFLAGS) $(CPPFLAGS) $(DEPS) | \
+		perl -pe 's/^(.*)\.o: ([^\/]*\/)??([^ \/]+\.(\w+))/$(OBJDIR)\/$$2$$1.$$4.o: $$2$$3/;' \
+		> .depend
+
+clean:
+	rm -rf obj/
+
+#
+# Rule for compiling C++ files
+#
+
+$(OBJS): $(OBJDIR)/%.o: %.cpp configunix.h $(CDEPEND)
+	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
+
+#
+# We stick object files in separate directories for convenience
+#
+
+DIRS = \
+	$(OBJDIR) $(OBJDIR)/effects $(OBJDIR)/export \
+	$(OBJDIR)/import $(OBJDIR)/prefs $(OBJDIR)/widgets
+
+dirs: $(DIRS)
+
+$(DIRS): %: 
+	mkdir $@
+
+#
+# Include ".depend" if it exists (run "make dep" to generate it)
+#
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif
+

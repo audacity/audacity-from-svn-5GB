@@ -1,0 +1,368 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+
+<html>
+
+<head>
+
+<title>Project Menu</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+</head>
+
+<body>
+
+
+
+<font size=+3>
+
+Project Menu
+
+</font>
+
+
+
+<a name="import"></a>
+
+<p><font size=+0><b>
+
+Import Audio...
+
+</b></font>
+
+
+
+<p>
+
+This command is used to import audio from a standard audio format into
+
+your project.  Use this command if you already have a couple of tracks,
+
+and you want to add another track to the same project, maybe to mix
+
+them together.
+
+<p>
+
+Use this command to import anything except MIDI files.
+
+You cannot yet use this option to import Audacity Projects.
+
+
+
+<a name="importlabels"></a>
+
+<p><font size=+0><b>
+
+Import Labels...
+
+</b></font>
+
+
+
+<p>
+
+This command takes a text file which contains time codes and labels,
+
+and turns them into a 
+
+<a href="tracks.htm#label>Label Track</a>.
+
+
+
+<a name="importmidi"></a>
+
+<p><font size=+0><b>
+
+Import MIDI...
+
+</b></font>
+
+
+
+<p>
+
+This menu command imports MIDI files and puts them into a 
+
+<a href="tracks.htm#note">Note Track</a>.  Audacity can display
+
+MIDI files, but cannot play, edit, or save them yet.
+
+
+
+<a name="importraw"></a>
+
+<p><font size=+0><b>
+
+Import Raw Data...
+
+</b></font>
+
+
+
+<p>This menu command allows you to open a file in virtually any
+
+format, as long as it is not compressed.  When you select the
+
+file, Audacity will look through it and try to guess its format.
+
+It will guess correctly about 90% of the time, so you can try just
+
+pressing "OK" and listening to it.  If it is not correct, however,
+
+you can use the dialog presented to try all of the different
+
+possibilities.
+
+<p>
+
+At the beginning of your imported track(s), you may notice a little
+
+bit of noise.  This is probably the file's header, which Audacity
+
+was not able to parse.  Just zoom in and select the noise with the
+
+<a href="toolbar.htm#selection">Selection Tool</a>, and then
+
+choose <a href="menu2.htm#delete">Delete</a>.
+
+
+
+<a name="editid3tags"></a>
+
+<p><font size=+0><b>
+
+Edit ID3 Tags...
+
+</b></font>
+
+
+
+<p>
+
+Opens a dialog allowing you to edit the ID3 tags associated with
+
+a project, for MP3 exporting.
+
+<p>
+
+ID3 Tags are used to store the Title, Artist, Author, and other
+
+information in MP3 files.  When you import an MP3 file,
+
+Audacity remembers this information and stores it with your
+
+project.  When you export an MP3 file, Audacity will prompt
+
+you for the ID3 tags, showing you any tags it collected from
+
+an original MP3 file, or that you typed by selecting
+
+"Edit ID3 Tags" from the Project menu.
+
+<p>
+
+Audacity allows you to store ID3 tags in either the ID3v1 or
+
+the ID3v2 format.  In general, you should use the ID3v2 format,
+
+because ID3v2 tags go at the <i>beginning</i> of an MP3 file,
+
+whereas ID3v1 tags go at the end.  Having the title and author
+
+first means that someone downloading an MP3 you created will
+
+know that information before they've finished downloading the
+
+song. 
+
+
+
+<a name="quickmix"></a>
+
+<p><font size=+0><b>
+
+Quick Mix
+
+</b></font>
+
+
+
+<p>This command mixes all of the selected tracks down to one or two
+
+tracks.  The channel of a track being mixed affects whether it
+
+will be mixed into the left channel of the resulting track(s),
+
+the right channel, or both (mono).  For example, if you have
+
+four tracks:
+
+
+
+<ul>
+
+<li> Track 1: left channel
+
+<li> Track 2: left channel
+
+<li> Track 3: right channel
+
+<li> Track 4: mono channel
+
+</ul>
+
+
+
+and you select them all and perform a Quick Mix, you will end up
+
+with two tracks: the first will contain a mix of tracks 1, 2, and 4
+
+(the new left channel) and the other will contain a mix of tracks
+
+3 and 4 (the new right channel).
+
+
+
+<p>
+
+
+
+Your tracks are implicitly mixed whenever you hit the
+
+<a href="toolbar.htm#play">Play</a> 
+
+button and whenever you select 
+
+<a href="menu1.htm#export">Export</a>.
+
+
+
+<p>
+
+
+
+Note that if you try to mix two very loud tracks together, you may
+
+get clipping (it will sound like pops, clicks, and noise).  To avoid
+
+this, you should first use the Amplify... command to reduce the amplitude
+
+of all of your tracks.  A future version of Audacity will do automatic
+
+gain control and calculate the optimal amplitude for you.
+
+
+
+<a name="aligntogether"></a>
+
+<p><font size=+0><b>
+
+Align Tracks Together
+
+</b></font>
+
+
+
+<p>If you select multiple tracks, this command adjusts their time offset
+
+so that they start at the same time.  It adjusts their starting time
+
+to the average of all of the tracks' original starting times.
+
+To adjust the time offset of a track, use the 
+
+<a href="toolbar.htm#timeshift">Time Shift</a> tool.
+
+
+
+<a name="alignzero"></a>
+
+<p><font size=+0><b>
+
+Align with Zero
+
+</b></font>
+
+
+
+<p>If you select multiple tracks, this command resets their time offset
+
+to zero.
+
+To adjust the time offset of a track, use the 
+
+<a href="toolbar.htm">Time Shift</a> tool.
+
+
+
+<a name="newaudiotrack"></a>
+
+<p><font size=+0><b>
+
+New Audio Track
+
+</b></font>
+
+
+
+<p>This creates a new empty audio track.  This command is rarely needed,
+
+since importing, recording, and mixing automatically create new tracks
+
+as needed.  But you can use this to cut or copy data from an existing
+
+track and paste it into a blank track.
+
+
+
+<a name="newlabeltrack"></a>
+
+<p><font size=+0><b>
+
+New Label Track
+
+</b></font>
+
+
+
+<p>This creates a new Label track, which can be very useful for
+
+textual annotation.  See the discussion on 
+
+<a name="tracks.htm#label">Label tracks</a> for more information
+
+on how to use label tracks.
+
+
+
+<a name="remove"></a>
+
+<p><font size=+0><b>
+
+Remove Track(s)
+
+</b></font>
+
+
+
+<p>This command removes the selected track or tracks from the project.
+
+Even if only part of a track is selected, the entire track is removed.
+
+You can also delete a track by clicking the X in its upper-left corner.
+
+To cut out only part of the audio in a track, use
+
+<a href="menu1.htm#delete">Delete</a> or 
+
+<a href="menu1.htm#silence">Silence</a>.
+
+
+
+</body>
+
+</html>
+
+
+

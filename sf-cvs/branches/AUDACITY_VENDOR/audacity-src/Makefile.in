@@ -1,0 +1,34 @@
+INSTALL = @INSTALL@
+PREFIX = @prefix@
+ZIP = @ZIP@
+
+audacity: audacity-help.htb
+	cd lib-src && $(MAKE)
+	cd src && $(MAKE)
+
+install: audacity
+	-test -d $(PREFIX)/share/doc/audacity || \
+		mkdir -m 755 -p $(PREFIX)/share/doc/audacity
+	-test -f audacity-help.htb || $(INSTALL) -m 644 audacity-help.htb \
+		$(PREFIX)/share/doc/audacity/audacity-help.htb
+	$(INSTALL) -m 644 README.txt $(PREFIX)/share/doc/audacity/README.txt
+	$(INSTALL) -m 644 LICENSE.txt $(PREFIX)/share/doc/audacity/LICENSE.txt
+	-test -d $(PREFIX)/bin || \
+		mkdir -m 755 -p $(PREFIX)/bin
+	$(INSTALL) -m 755 audacity $(PREFIX)/bin/audacity
+
+audacity-help.htb: help/*
+	rm -f audacity-help.htb
+	cd help && $(ZIP) ../audacity-help.htb *.htm *.png *.hhc *.hhk *.hhp
+
+clean:
+	cd lib-src && $(MAKE) clean
+	cd src && $(MAKE) clean
+	rm -f audacity-help.htb
+	rm -f audacity
+
+veryclean: clean
+	rm -f Makefile src/Makefile lib-src/Makefile
+	rm -f src/configunix.h
+	rm -f `find . -name "*~"`
+	rm -f `find . -name core`
