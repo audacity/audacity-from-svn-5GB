@@ -909,8 +909,7 @@ bool WaveTrack::Load(wxTextFile * in, DirManager * dirManager)
          blockMutex->Unlock();
 
          wxString msg;
-         msg.Printf("The file named \"%s\" is missing from the project.",
-                    (const char *) in->GetCurrentLine());
+         msg.Printf("One or more data files is missing from this project.");
          wxMessageBox(msg);
 
          return false;
