@@ -23,16 +23,46 @@ plug-ins (contributed by users)</b>:
 -->
 
 <ul>
+<li><a href="nyquist/all.html">All Nyquist Plug-ins</a>
+    <p>
+
+<li><b>Generators</b>
+    <p>
+
+<li><a href="nyquist/buzz.zip">Buzz</a>
+    <a href="nyquist/buzz.html">[Info]</a>
+<li><a href="nyquist/randomtouchtones.zip">Random Touch Tones</a>
+    <a href="nyquist/randomtouchtones.html">[Info]</a>
+<li><a href="nyquist/risset.zip">Risset Drum Generator</a>
+    <a href="nyquist/risset.html">[Info]</a>
+<li><a href="nyquist/touchtone.zip">Touch Tones</a>
+    <a href="nyquist/touchtone.html">[Info]</a>
+<li><a href="nyquist/varsilence.zip">Variable-length Silence</a>
+    <a href="nyquist/varsilence.html">[Info]</a>
+
+<li><b>Effects</b>
+    <p>
+
 <li><a href="nyquist/10bandeq.zip">10-Band Equalizer</a>
     <a href="nyquist/10bandeq.html">[Info]</a>
 <li><a href="nyquist/bbdelay.zip">Bouncing Ball Delay with Panning</a>
     <a href="nyquist/bbdelay.html">[Info]</a>
 <li><a href="nyquist/bouncingball.zip">Bouncing Ball Delay</a>
     <a href="nyquist/bouncingball.html">[Info]</a>
+<li><a href="nyquist/butterflyramp.zip">Butterfly Ramp</a>
+    <a href="nyquist/butterflyramp.html">[Info]</a>
+<li><a href="nyquist/butterflystatic.zip">Butterfly Static</a>
+    <a href="nyquist/butterflystatic.html">[Info]</a>
+<li><a href="nyquist/comb.zip">Comb</a>
+    <a href="nyquist/comb.html">[Info]</a>
 <li><a href="nyquist/customeq.zip">Custom EQ</a>
     <a href="nyquist/customeq.html">[Info]</a>
+<li><a href="nyquist/dualtapedecks.zip">Dual Tape Decks</a>
+    <a href="nyquist/dualtapedecks.html">[Info]</a>
 <li><a href="nyquist/hpdelay.zip">High Pass Delay</a>
     <a href="nyquist/hpdelay.html">[Info]</a>
+<li><a href="nyquist/hyperexp.zip">Hyper Expansion</a>
+    <a href="nyquist/hyperexp.html">[Info]</a>
 <li><a href="nyquist/lfolp.zip">LFO Low Pass Filter</a>
     <a href="nyquist/lfolp.html">[Info]</a>
 <li><a href="nyquist/lfopan.zip">LFO Pan</a>
@@ -41,12 +71,13 @@ plug-ins (contributed by users)</b>:
     <a href="nyquist/lpdelay.html">[Info]</a>
 <li><a href="nyquist/multibandeq.zip">Multi-Band EQ</a>
     <a href="nyquist/multibandeq.html">[Info]</a>
+<li><a href="nyquist/mutron.zip">Mutron</a>
+    <a href="nyquist/mutron.html">[Info]</a>
 <li><a href="nyquist/pan.zip">Pan</a>
     <a href="nyquist/pan.html">[Info]</a>
 <li><a href="nyquist/ramppan.zip">Ramp Pan</a>
     <a href="nyquist/ramppan.html">[Info]</a>
-<li><a href="nyquist/touchtone.zip">Touch Tones</a>
-    <a href="nyquist/touchtone.html">[Info]</a>
+
 </ul>
 
 <b>Windows:</b>
