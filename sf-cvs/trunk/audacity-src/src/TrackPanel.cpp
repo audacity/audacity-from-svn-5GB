@@ -1268,6 +1268,22 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
       case WXK_SPACE:
          mListener->TP_OnPlayKey();
          break;
+      case WXK_UP:
+         // BG: Page right
+         mListener->TP_ScrollWindow((mViewInfo->h + mViewInfo->screen) - (mViewInfo->screen/6));
+         break;
+      case WXK_DOWN:
+         // BG: Page left
+         mListener->TP_ScrollWindow((mViewInfo->h - mViewInfo->screen) + (mViewInfo->screen/6));
+         break;
+      case WXK_RIGHT:
+         // BG: Scroll right
+         mListener->TP_ScrollWindow((mViewInfo->h + mViewInfo->screen) - (mViewInfo->screen*.95));
+         break;
+      case WXK_LEFT:
+         // BG: Scroll left
+         mListener->TP_ScrollWindow((mViewInfo->h - mViewInfo->screen) + (mViewInfo->screen*.95));
+         break;
       default:
          event.Skip();
          break;
