@@ -165,12 +165,12 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
            "Audacity",
            pos,
            size),
-   mDirty(false),
-   mTrackPanel(NULL),
-   mAPalette(NULL),
    mRate((double) gPrefs->Read("/SamplingRate/DefaultProjectSampleRate",
                                44100)),
+   mDirty(false),
+   mAPalette(NULL),
    mDrag(NULL),
+   mTrackPanel(NULL),
    mAutoScrolling(false)
 {
 
@@ -383,7 +383,6 @@ void AudacityProject::FinishAutoScroll()
 void AudacityProject::OnScrollLeft()
 {
    int pos = mHsbar->GetThumbPosition();
-   int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
 
    if (pos > 0) {
       mHsbar->SetThumbPosition(pos - 1);
@@ -976,11 +975,9 @@ void AudacityProject::Import(wxString fileName)
 
    bool initiallyEmpty = mTracks->IsEmpty();
    bool rateWarning = false;
-   double newRate;
+   double newRate = newTracks[0]->rate;
 
    for (int i = 0; i < numTracks; i++) {
-      if (i == 0)
-         newRate = newTracks[i]->rate;
       if (newTracks[i]->rate != mRate)
          rateWarning = true;
       mTracks->Add(newTracks[i]);

@@ -121,7 +121,7 @@ bool SpectrumPrefs::Apply()
       dlog.ShowModal();
     */
   
-   int pos;
+   int pos = 0;
    
    for(int i = 0; i < numFFTSizes; i++)
       if(mFFTSize[i]->GetValue()) {

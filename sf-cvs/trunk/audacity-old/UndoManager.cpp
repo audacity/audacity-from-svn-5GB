@@ -46,12 +46,12 @@ bool UndoManager::UndoAvailable()
 
 bool UndoManager::RedoAvailable()
 {
-   return (current < stack.Count() - 1);
+   return (current < (int)stack.Count() - 1);
 }
 
 void UndoManager::PushState(TrackList * l, double sel0, double sel1)
 {
-   int i;
+   unsigned int i;
 
    for (i = current + 1; i < stack.Count(); i++) {
       TrackListIterator iter(stack[i]->tracks);
@@ -63,7 +63,7 @@ void UndoManager::PushState(TrackList * l, double sel0, double sel1)
    }
 
    i = stack.Count() - 1;
-   while (i > current)
+   while (i > (unsigned int)current)
       stack.RemoveAt(i--);
 
    TrackList *tracksCopy = new TrackList();
@@ -109,11 +109,11 @@ TrackList *UndoManager::Redo(double *sel0, double *sel1)
 
 void UndoManager::Debug()
 {
-   for (int i = 0; i < stack.Count(); i++) {
+   for (unsigned int i = 0; i < stack.Count(); i++) {
 
       TrackListIterator iter(stack[i]->tracks);
       WaveTrack *t = (WaveTrack *) (iter.First());
-      printf("*%d* %s %d\n", i, (i == current) ? "-->" : "   ",
+      printf("*%d* %s %d\n", i, (i == (unsigned int)current) ? "-->" : "   ",
              t ? t->numSamples : 0);
    }
 }

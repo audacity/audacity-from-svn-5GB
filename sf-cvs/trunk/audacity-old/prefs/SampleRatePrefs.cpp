@@ -85,7 +85,7 @@ PrefsPanel(parent)
 
 bool SampleRatePrefs::Apply()
 {
-   long rate;
+   long rate = 44100;
 
    for(int i = 0; i < NUM_RATES; i++)
       if(mSampleRates[i]->GetValue()) {

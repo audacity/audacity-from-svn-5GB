@@ -32,7 +32,9 @@ bool ExportPCM(AudacityProject *project,
    TrackList *tracks = project->GetTracks();
 
    int header = SND_HEAD_NONE;
+#ifdef __WXMAC__
    bool trackMarkers = false;
+#endif
 
    if (format == "WAV")
       header = SND_HEAD_WAVE;
@@ -90,8 +92,6 @@ bool ExportPCM(AudacityProject *project,
 
    double timeStep = 10.0;      // write in blocks of 10 secs
 
-   sampleCount maxSamples = int (timeStep * rate + 0.5);
-
    wxProgressDialog *progress = NULL;
    wxYield();
    wxStartTimer();
@@ -136,7 +136,7 @@ bool ExportPCM(AudacityProject *project,
       long b2 = snd_convert(&sndfile, buffer,   // to
                             &sndbuffer, mixed, numSamples);     // from
 
-      int actual = snd_write(&sndfile, buffer, b2);
+      snd_write(&sndfile, buffer, b2);
 
       t += deltat;
 

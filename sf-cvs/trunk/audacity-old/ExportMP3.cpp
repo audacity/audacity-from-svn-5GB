@@ -884,8 +884,6 @@ bool ExportMP3(AudacityProject *project,
    long bitrate = gPrefs->Read("/FileFormats/MP3Bitrate", 128);
    GetMP3Exporter()->SetBitrate(bitrate);
 
-   int iRate = int (rate + 0.5);
-
    sampleCount inSamples = GetMP3Exporter()->InitializeStream(stereo ? 2 : 1, int(rate + 0.5));
    double timeStep =  (double)inSamples / rate;
    double t = t0;

@@ -54,7 +54,7 @@ AStatus::AStatus(wxWindow * parent, wxWindowID id,
                      double rate,
                      AStatusListener * listener):wxWindow(parent, id, pos,
                                                           size),
-mListener(listener), mRate(rate), mBitmap(NULL)
+mListener(listener), mBitmap(NULL), mRate(rate)
 {
    GetSize(&mWidth, &mHeight);
 

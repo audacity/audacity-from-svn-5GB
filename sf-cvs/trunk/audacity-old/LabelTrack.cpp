@@ -88,7 +88,7 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
 
    int nextx = 0;
 
-   for (int i = 0; i < mLabels.Count(); i++) {
+   for (int i = 0; i < (int)mLabels.Count(); i++) {
 
       int x = r.x + (int) ((mLabels[i]->t - h) * pps);
       int y = r.y;
@@ -169,7 +169,7 @@ void LabelTrack::MouseDown(int x, int y, wxRect & r, double h, double pps)
 {
    double mouseH = h + (x - r.x) / pps;
 
-   for (int i = 0; i < mLabels.Count(); i++) {
+   for (int i = 0; i < (int)mLabels.Count(); i++) {
       if (mLabels[i]->t - (8 / pps) < mouseH &&
           mouseH < mLabels[i]->t + (mLabels[i]->width / pps)) {
          mSelIndex = i;
@@ -207,7 +207,7 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
             if (mSelIndex > 0)
                mSelIndex--;
          } else {
-            if (mSelIndex < mLabels.Count() - 1)
+            if (mSelIndex < (int)mLabels.Count() - 1)
                mSelIndex++;
          }
          break;
@@ -242,12 +242,12 @@ void LabelTrack::Unselect()
 
 bool LabelTrack::IsSelected()
 {
-   return (mSelIndex >= 0 && mSelIndex < mLabels.Count());
+   return (mSelIndex >= 0 && mSelIndex < (int)mLabels.Count());
 }
 
 void LabelTrack::Export(wxTextFile & f)
 {
-   for (int i = 0; i < mLabels.Count(); i++) {
+   for (int i = 0; i < (int)mLabels.Count(); i++) {
       f.AddLine(wxString::Format("%lf\t%s",
                                  mLabels[i]->t,
                                  (const char *) (mLabels[i]->title)));
@@ -320,11 +320,11 @@ bool LabelTrack::Load(wxTextFile * in, DirManager * dirManager)
    if (in->GetNextLine() != "NumMLabels")
       return false;
 
-   long len;
-   if (!(in->GetNextLine().ToLong(&len)))
+   unsigned long len;
+   if (!(in->GetNextLine().ToULong(&len)))
       return false;
 
-   int i;
+   unsigned int i;
    for (i = 0; i < mLabels.Count(); i++)
       delete mLabels[i];
    mLabels.Clear();
@@ -406,7 +406,7 @@ void LabelTrack::Paste(double t, VTrack * src)
       pos++;
 
    LabelTrack *sl = (LabelTrack *) src;
-   for (int j = 0; j < sl->mLabels.Count(); j++) {
+   for (unsigned int j = 0; j < sl->mLabels.Count(); j++) {
       LabelStruct *l = new LabelStruct();
       l->t = sl->mLabels[j]->t + t;
       l->title = sl->mLabels[j]->title;

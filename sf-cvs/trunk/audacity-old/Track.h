@@ -46,8 +46,9 @@ class VTrack {
 
     VTrack(DirManager * projDirManager);
 
-    virtual ~ VTrack() {
-   } virtual VTrack *Duplicate();
+   virtual ~ VTrack() { }
+   
+   virtual VTrack *Duplicate();
 
    virtual void Cut(double t0, double t1, VTrack ** dest) {
       dest = 0;
@@ -133,7 +134,7 @@ class TrackList {
    TrackList(TrackList * t);
 
    // Destructor
-   ~TrackList();
+   virtual ~TrackList();
 
    friend class TrackListIterator;
 

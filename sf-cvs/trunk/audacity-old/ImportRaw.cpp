@@ -343,8 +343,6 @@ bool GuessPCMFormat(wxString fName,
    int len1;
    int len2;
 
-   int z;
-
    //
    // First test: we attempt to determine if the data is 8-bit or 16-bit.
    // We extract the odd and even bytes interpreted as signed-valued samples,
@@ -793,7 +791,6 @@ bool ImportRaw(wxWindow * parent,
    wxASSERT(samples1);
    wxASSERT(samples2);
    int numBytes = len;
-   int block;
    while (numBytes && !cancelling) {
       int block = (numBytes < blockSize ? numBytes : blockSize);
       int actual = inf.Read((void *) buffer, block);
@@ -929,8 +926,6 @@ BEGIN_EVENT_TABLE(ImportDialog, wxDialog)
 
    mainSizer->SetSizeHints(this);
    mainSizer->Fit(this);
-
-   wxSize size(GetSize());
 
    Centre(wxBOTH | wxCENTER_FRAME);
 

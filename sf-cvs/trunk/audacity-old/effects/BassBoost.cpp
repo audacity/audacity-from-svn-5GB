@@ -99,13 +99,13 @@ bool EffectBassBoost::ProcessOne(int count, WaveTrack * t,
    sampleType *buffer = new sampleType[blockSize];
 
    while (len) {
-      int block = t->GetBestBlockSize(s);
+      unsigned int block = t->GetBestBlockSize(s);
       if (block > len)
          block = len;
 
       t->Get(buffer, s, block);
 
-      for (int i = 0; i < block; i++) {
+      for (unsigned int i = 0; i < block; i++) {
          in = buffer[i];
          out = (b0 * in + b1 * xn1 + b2 * xn2 - a1 * yn1 - a2 * yn2) / a0;
          xn2 = xn1;

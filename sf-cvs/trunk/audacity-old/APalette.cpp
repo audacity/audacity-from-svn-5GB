@@ -244,8 +244,6 @@ void APalette::OnKeyEvent(wxKeyEvent & event)
       return;
    }
 
-   long key = event.KeyCode();
-
    if (event.KeyCode() == WXK_SPACE) {
       if (gAudioIO->IsBusy()) {
          OnStop();

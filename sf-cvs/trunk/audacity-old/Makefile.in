@@ -9,7 +9,12 @@
 #
 
 LIBS = @LIBS@
-CFLAGS = @CFLAGS@ @CPPFLAGS@ -Iallegro
+
+# CFLAGS are specific to C. CXXFLAGS are specific 
+# to C++. CPPFLAGS are for both
+CFLAGS = @CFLAGS@
+CPPFLAGS = @CPPFLAGS@ -Wall -Iallegro
+CXXFLAGS = -Werror
 CCC = @CXX@
 CC = @CC@
 
@@ -82,7 +87,7 @@ OBJS = \
 	$(OBJDIR)/prefs/SampleRatePrefs.cpp.o \
 	$(OBJDIR)/prefs/FileFormatPrefs.cpp.o \
 	$(OBJDIR)/prefs/DirectoriesPrefs.cpp.o \
-	$(OBJDIR)/prefs/SpectrumPrefs.cpp.o @EXTRAOBJS@
+	$(OBJDIR)/prefs/SpectrumPrefs.cpp.o
 
 ########################################
 # DEPENDENCIES
@@ -103,12 +108,6 @@ audacity-help.htb: help/*
 	cd help && zip ../audacity-help.htb *.htm *.png *.hhc *.hhk *.hhp
 
 #
-# rule for building libmpeg3 -- however, it's only built if selected in
-# the configure script
-mpeg3/libmpeg3.a:
-	$(MAKE) -C mpeg3
-
-#
 # You can optionally "make dep" to make dependencies.
 # voodoo magic in the form of a perl script turns
 # Foo.o: Foo.cpp into obj/Foo.cpp.o: Foo.cpp
@@ -116,7 +115,7 @@ mpeg3/libmpeg3.a:
 # I'm not brave enough to try and translate that regex to sed
 
 dep:
-	$(CCC) -M $(CFLAGS) $(DEPS) | \
+	$(CCC) -M $(CPPFLAGS) $(DEPS) | \
 		perl -pe 's/^(.*)\.o: ([^\/]*\/)??([^ \/]+\.(\w+))/$(OBJDIR)\/$$2$$1.$$4.o: $$2$$3/;' \
 		> .depend
 
@@ -127,7 +126,6 @@ dep:
 clean:
 	rm -f audacity audacity-help.htb .depend
 	rm -rf obj/
-	rm -f mpeg3/libmpeg3.a:
 
 #
 # We stick object files in separate directories for convenience
@@ -155,10 +153,10 @@ obj/prefs:
 #
 
 $(OBJDIR)/%.cpp.o: %.cpp
-	$(CCC) -c $(CFLAGS) $< -o $@
+	$(CCC) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@
 
 $(OBJDIR)/%.c.o: %.c
-	$(CC) -c $(CFLAGS) $< -o $@
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
 
 #
 # Include ".depend" if it exists (run "make dep" to generate it)

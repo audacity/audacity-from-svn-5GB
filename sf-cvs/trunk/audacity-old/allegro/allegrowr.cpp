@@ -38,7 +38,7 @@ void parameter_print(FILE *file, Parameter_ptr p)
 
     case 'i':
 
-        fprintf(file, "%d", p->i);
+        fprintf(file, "%ld", p->i);
 
         break;
 
@@ -118,7 +118,7 @@ void allegro_write(Seq_ptr seq, FILE *file)
 
         if (e->chan != -1) {
 
-            fprintf(file, " V%d", e->chan);
+            fprintf(file, " V%ld", e->chan);
 
         }
 
@@ -128,7 +128,7 @@ void allegro_write(Seq_ptr seq, FILE *file)
 
             double dur = seq->map.time_to_beat(n->time + n->dur) - start;
 
-            fprintf(file, " K%d P%g Q%g L%g", n->key, n->pitch, dur, n->loud);
+            fprintf(file, " K%ld P%g Q%g L%g", n->key, n->pitch, dur, n->loud);
 
             Parameters_ptr p = n->parameters;
 
@@ -146,7 +146,7 @@ void allegro_write(Seq_ptr seq, FILE *file)
 
             if (u->key != -1) {
 
-                fprintf(file, " K%d", u->key);
+                fprintf(file, " K%ld", u->key);
 
             }
 

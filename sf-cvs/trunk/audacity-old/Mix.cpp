@@ -171,9 +171,9 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager)
 
 #ifdef __WXGTK__
    printf("      Tracks: %d\n", numWaves);
-   printf("  Mix length: %lf sec\n", totalTime);
-   printf("Elapsed time: %lf sec\n", elapsedTime);
-   printf("Max number of tracks to mix in real time: %lf\n", maxTracks);
+   printf("  Mix length: %f sec\n", totalTime);
+   printf("Elapsed time: %f sec\n", elapsedTime);
+   printf("Max number of tracks to mix in real time: %f\n", maxTracks);
 #endif
 
    delete waveArray;
@@ -317,7 +317,6 @@ void Mixer::Mix(int *channelFlags, WaveTrack * src, double t0, double t1)
       if (!channelFlags[c])
          continue;
 
-      sampleType *src = mTemp;
       sampleType *dest;
       int skip;
 

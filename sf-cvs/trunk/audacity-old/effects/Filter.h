@@ -51,7 +51,7 @@ private:
    
    Envelope *mEnvelope;
 
-   int windowSize;
+   unsigned int windowSize;
    float *filterFunc;
    
 };

@@ -247,7 +247,7 @@ bool AudacityApp::OnInit()
             long theBlockSize;
             if (wxString(argv[option + 1]).ToLong(&theBlockSize)) {
                if (theBlockSize >= 256 && theBlockSize < 100000000) {
-                  fprintf(stderr, "Using block size of %d\n",
+                  fprintf(stderr, "Using block size of %ld\n",
                           theBlockSize);
                   WaveTrack::SetMaxDiskBlockSize(theBlockSize);
                }
@@ -299,17 +299,13 @@ void AudacityApp::RunTest()
 
    printf("scale: %d\n", scale);
 
-   int ideal = t->GetIdealBlockSize();
-
    sampleType *small = new sampleType[len];
    sampleType *small2 = new sampleType[len];
    sampleType *block = new sampleType[scale];
 
    printf("Preparing...\n");
 
-   int i, j, b, v;
-
-   int m = 0;
+   int i, b, v;
 
    for (i = 0; i < len; i++) {
       v = sampleType(rand());
@@ -320,7 +316,7 @@ void AudacityApp::RunTest()
       t->Append(block, scale);
    }
 
-   if (t->numSamples != len * scale) {
+   if (t->numSamples != (sampleCount)len * scale) {
       printf("Expected len %d, track len %d.\n", len * scale,
              t->numSamples);
       exit(0);
@@ -354,7 +350,7 @@ void AudacityApp::RunTest()
 
       t->Paste(double (y0 * scale), tmp);
 
-      if (t->numSamples != len * scale) {
+      if (t->numSamples != (sampleCount)len * scale) {
          printf("Trial %d\n", z);
          printf("Expected len %d, track len %d.\n", len * scale,
                 t->numSamples);

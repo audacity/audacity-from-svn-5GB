@@ -132,7 +132,7 @@ bool ImportPCM(wxWindow * parent,
       (*dest1)->linked = true;
    }
 
-   long fileTotalFrames;
+   unsigned long fileTotalFrames;
 
    if (sndfile.u.file.header == SND_HEAD_WAVE) {
       // Wave files are notorious for having bad headers, so we
@@ -241,7 +241,7 @@ bool ImportPCM(wxWindow * parent,
    char *leftbuffer = new char[maxblocksize * 2];
    char *rightbuffer = new char[maxblocksize * 2];
 
-   long framescompleted = 0;
+   unsigned long framescompleted = 0;
 
    wxProgressDialog *progress = NULL;
    wxYield();

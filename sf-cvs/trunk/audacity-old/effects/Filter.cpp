@@ -50,7 +50,7 @@ bool EffectFilter::PromptUser()
    if (!dlog.GetReturnCode())
       return false;
 
-   for(int i=0; i<=windowSize/2; i++) {
+   for(unsigned int i=0; i<=windowSize/2; i++) {
       double envVal = mEnvelope->GetValue(((double)i)/(windowSize/2));
       filterFunc[i] = (float)(pow(4.0, envVal*2.0 - 1.0));
    }
@@ -96,25 +96,24 @@ bool EffectFilter::ProcessOne(int count, WaveTrack * t,
    
    sampleCount originalLen = len;
    
-   int i;
+   unsigned int i;
    
    for(i=0; i<windowSize; i++)
       lastWindow[i] = 0;
    
    while(len) {
-      int block = idealBlockLen;
+      unsigned int block = idealBlockLen;
       if (block > len)
          block = len;
       
       t->Get(buffer, s, block);
       
       for(i=0; i<block; i+=windowSize/2) {
-         int wlen = i + windowSize;
-         int wcopy = windowSize;
+         unsigned int wcopy = windowSize;
          if (i + wcopy > block)
             wcopy = block - i;
          
-         int j;
+         unsigned int j;
          for(j=0; j<wcopy; j++)
             thisWindow[j] = buffer[i+j];
          for(j=wcopy; j<windowSize; j++)
@@ -156,7 +155,7 @@ void EffectFilter::Filter(sampleCount len,
    float *outr = new float[len];
    float *outi = new float[len];
    
-   int i;
+   unsigned int i;
    
    for(i=0; i<len; i++)
       inr[i] = buffer[i]/32767.;
@@ -166,7 +165,7 @@ void EffectFilter::Filter(sampleCount len,
    FFT(len, false, inr, NULL, outr, outi);
    
    // Apply filter
-   int half = len/2;
+   unsigned int half = len/2;
    for(i=0; i<=half; i++) {
       int j = len - i;
       
@@ -256,7 +255,7 @@ void FilterPanel::OnPaint(wxPaintEvent & evt)
    // Draw envelope
    double *values = new double[mEnvRect.width];
    mEnvelope->GetValues(values, mEnvRect.width, 0.0, 1.0/mEnvRect.width);
-   int x, y, xlast, ylast;
+   int x, y, xlast = 0, ylast = 0;
    for(int i=0; i<mEnvRect.width; i++) {
       x = mEnvRect.x + i;
       y = (int)(mEnvRect.height-mEnvRect.height*values[i]);

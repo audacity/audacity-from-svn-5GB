@@ -99,7 +99,7 @@ wxString DirectoriesPrefs::FormatSize(wxLongLong size)
    else {
       /* make it look nice, by formatting into k, MB, etc */
       if (size < 1024)
-         sizeStr.sprintf("%d bytes", size.GetLo());
+         sizeStr.sprintf("%ld bytes", size.GetLo());
       else if (size < 1024 * 1024) {
          sizeStr.sprintf("%.1f kB", dSize / 1024);
       }

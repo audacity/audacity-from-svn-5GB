@@ -115,7 +115,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
                                                                    id, pos,
                                                                    size,
                                                                    wxWANTS_CHARS),
-mTracks(tracks), mViewInfo(viewInfo), mListener(listener), mBitmap(NULL),
+mListener(listener), mTracks(tracks), mViewInfo(viewInfo), mBitmap(NULL),
 mAutoScrolling(false)
 {
    mIsClosing = false;
@@ -1163,8 +1163,6 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
       return;
    }
 
-   long key = event.KeyCode();
-
    TrackListIterator iter(mTracks);
 
    switch (event.KeyCode()) {
@@ -1228,9 +1226,6 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
    }
 
    wxRect r;
-   int num;
-
-   VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
 
    if (event.ButtonDown() &&
        event.m_y >= (r.y + r.height - 5) &&
@@ -1394,7 +1389,7 @@ void TrackPanel::DrawRuler(wxDC * dc, bool text)
 
    dc->SetTextForeground(wxColour(0, 0, 204));
 
-   int nextxpos = 0;
+   //int nextxpos = 0;
 
    for (int pixel = 0; pixel < r.width; pixel++) {
 

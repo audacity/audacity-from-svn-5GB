@@ -102,7 +102,8 @@ bool EffectWahwah::ProcessOne(int count, WaveTrack * t,
    float lfoskip = freq * 2 * 3.141592653589 / samplerate;
    unsigned long skipcount = 0;
    float xn1 = 0, xn2 = 0, yn1 = 0, yn2 = 0;
-   float frequency, omega, sn, cs, alpha, b0, b1, b2, a0, a1, a2;
+   float frequency, omega, sn, cs, alpha;
+   float b0 = 0, b1 = 0, b2 = 0, a0 = 0, a1 = 0, a2 = 0;
    float in, out;
 
    sampleCount s = start;
@@ -112,13 +113,13 @@ bool EffectWahwah::ProcessOne(int count, WaveTrack * t,
    sampleType *buffer = new sampleType[blockSize];
 
    while (len) {
-      int block = t->GetBestBlockSize(s);
+      unsigned int block = t->GetBestBlockSize(s);
       if (block > len)
          block = len;
 
       t->Get(buffer, s, block);
 
-      for (int i = 0; i < block; i++) {
+      for (unsigned int i = 0; i < block; i++) {
          in = buffer[i];
 
          if ((skipcount++) % lfoskipsamples == 0) {

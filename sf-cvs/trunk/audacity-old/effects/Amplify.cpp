@@ -97,15 +97,13 @@ bool EffectAmplify::ProcessOne(int count, WaveTrack *t,
 
    sampleType *buffer = new sampleType[blockSize];
    
-   int clip = 0;
-
    while (len) {
-      int block = t->GetBestBlockSize(s);
+      unsigned int block = t->GetBestBlockSize(s);
       if (block > len)
          block = len;
 
       t->Get(buffer, s, block);
-      for (int i = 0; i < block; i++) {
+      for (unsigned int i = 0; i < block; i++) {
          buffer[i] = (sampleType) (buffer[i] * ratio);
       }
       t->Set(buffer, s, block);

@@ -584,7 +584,6 @@ void AudacityProject::OnSilence(wxCommandEvent & event)
    TrackListIterator iter(mTracks);
 
    VTrack *n = iter.First();
-   VTrack *dest = 0;
 
    while (n) {
       if (n->selected)
@@ -699,7 +698,6 @@ void AudacityProject::OnInsertSilence(wxCommandEvent & event)
    TrackListIterator iter(mTracks);
 
    VTrack *n = iter.First();
-   VTrack *dest = 0;
 
    while (n) {
       if (n->selected)
@@ -765,7 +763,7 @@ void AudacityProject::OnZoomFit(wxCommandEvent & event)
 void AudacityProject::OnPlotSpectrum(wxCommandEvent & event)
 {
    int selcount = 0;
-   WaveTrack *selt;
+   WaveTrack *selt = NULL;
    TrackListIterator iter(mTracks);
    VTrack *t = iter.First();
    while (t) {
@@ -779,6 +777,16 @@ void AudacityProject::OnPlotSpectrum(wxCommandEvent & event)
       wxMessageBox("Please select a single track first.\n");
       return;
    }
+
+   /* This shouldn't be possible, since the menu is grayed out.
+    * But we'll check just in case it does happen, to prevent
+    * the crash that would result. */
+
+   if(!selt) {
+      wxMessageBox("Please select a track first.\n");
+      return;
+   }
+
 
    sampleCount s0 = (sampleCount) ((mViewInfo.sel0 - selt->tOffset)
                                    * selt->rate);

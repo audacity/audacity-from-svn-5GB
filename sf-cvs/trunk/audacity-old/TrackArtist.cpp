@@ -94,7 +94,7 @@ TrackArtist::~TrackArtist()
    if (mTrackHash && mTrackHash->GetCount() > 0) {
       mTrackHash->BeginFind();
       wxNode *node;
-      while (node = mTrackHash->Next()) {
+      while (( node = mTrackHash->Next() )) {
          TrackInfoCache *cache = (TrackInfoCache *) node->GetData();
          if (cache->where)
             delete cache->where;
@@ -209,7 +209,7 @@ void TrackArtist::DrawTracks(TrackList * tracks,
    if (mTrackHash && mTrackHash->GetCount() > 0) {
       mTrackHash->BeginFind();
       wxNode *node;
-      while (node = mTrackHash->Next()) {
+      while (( node = mTrackHash->Next() )) {
          TrackInfoCache *cache = (TrackInfoCache *) node->GetData();
          if (cache->where)
             delete cache->where;
@@ -414,7 +414,7 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
    if (!cache->spectrum &&
        track->dirty == cache->dirty &&
        pps == cache->pps &&
-       start == cache->start && screenWidth <= cache->len)
+       start == cache->start && screenWidth <= (int)cache->len)
       return;
 
    TrackInfoCache oldcache = *cache;
@@ -515,12 +515,11 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
 
    sampleType *temp = new sampleType[track->maxSamples];
 
-   sampleCount dstX = 0;
    int pixel = p0;
 
-   sampleType theMin;
-   sampleType theMax;
-   int b = block0;
+   sampleType theMin = 0;
+   sampleType theMax = 0;
+   unsigned int b = block0;
 
    while (srcX < s1) {
       // Get more samples
@@ -700,13 +699,8 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
    if (t0 > t1)
       t0 = t1;
 
-   sampleCount s0 = (sampleCount) (t0 * rate + 0.5);
-   sampleCount s1 = (sampleCount) (t1 * rate + 0.5);
-
-   sampleCount slen = (sampleCount) (s1 - s0);
-
-   int ssel0 = (int) ((sel0 - tOffset) * rate + 0.5);
-   int ssel1 = (int) ((sel1 - tOffset) * rate + 0.5);
+   unsigned int ssel0 = (unsigned int) ((sel0 - tOffset) * rate + 0.5);
+   unsigned int ssel1 = (unsigned int) ((sel1 - tOffset) * rate + 0.5);
 
    if (sel1 < tOffset) {
       ssel0 = 0;
@@ -935,7 +929,7 @@ void TrackArtist::PrepareCacheSpectrum(TrackInfoCache * cache,
        track->dirty == cache->dirty &&
        pps == cache->pps &&
        start == cache->start &&
-       screenWidth <= cache->len && cache->fheight == screenHeight)
+       screenWidth <= (int)cache->len && cache->fheight == (int)screenHeight)
       return;
 
    TrackInfoCache oldcache = *cache;
@@ -978,8 +972,8 @@ void TrackArtist::PrepareCacheSpectrum(TrackInfoCache * cache,
          if (cache->where[x] >= oldcache.where[0] &&
              cache->where[x] <= oldcache.where[oldcache.len - 1]) {
 
-            int ox =
-                int ((double (oldcache.len) *
+            unsigned int ox =
+                (unsigned int) ((double (oldcache.len) *
                       (cache->where[x] -
                        oldcache.where[0])) /(oldcache.where[oldcache.len] -
                                              oldcache.where[0]) + 0.5);
@@ -987,7 +981,7 @@ void TrackArtist::PrepareCacheSpectrum(TrackInfoCache * cache,
             if (ox >= 0 && ox <= oldcache.len &&
                 cache->where[x] == oldcache.where[ox]) {
 
-               for (sampleCount i = 0; i < screenHeight; i++)
+               for (sampleCount i = 0; i < (sampleCount)screenHeight; i++)
                   cache->freq[screenHeight * x + i] =
                       oldcache.freq[screenHeight * ox + i];
 
@@ -1010,14 +1004,14 @@ void TrackArtist::PrepareCacheSpectrum(TrackInfoCache * cache,
          sampleCount i;
 
          if (start >= track->numSamples) {
-            for (i = 0; i < screenHeight; i++)
+            for (i = 0; i < (sampleCount)screenHeight; i++)
                cache->freq[screenHeight * x + i] = 0;
 
          } else {
 
             if (start + len > track->numSamples) {
                len = track->numSamples - start;
-               for (i = len; i < windowSize; i++)
+               for (i = len; i < (sampleCount)windowSize; i++)
                   buffer[i] = 0;
             }
 
@@ -1067,8 +1061,8 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
 
    double t0 = (tpre >= 0.0 ? tpre : 0.0);
 
-   int ssel0 = (int) ((sel0 - tOffset) * rate + 0.5);
-   int ssel1 = (int) ((sel1 - tOffset) * rate + 0.5);
+   sampleCount ssel0 = (sampleCount) ((sel0 - tOffset) * rate + 0.5);
+   sampleCount ssel1 = (sampleCount) ((sel1 - tOffset) * rate + 0.5);
 
    if ((sampleCount) (tpre * rate + 0.5) >= numSamples)
       return;

@@ -144,11 +144,11 @@ bool Envelope::Load(wxTextFile * in, DirManager * dirManager)
    if (in->GetNextLine() != "EnvNumPoints")
       return false;
 
-   long len;
-   if (!(in->GetNextLine().ToLong(&len)))
+   unsigned long len;
+   if (!(in->GetNextLine().ToULong(&len)))
       return false;
 
-   int i;
+   unsigned int i;
    for (i = 0; i < mEnv.Count(); i++)
       delete mEnv[i];
    mEnv.Clear();
@@ -288,7 +288,7 @@ bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
       larger.Inflate(5, 5);
 
       if (!mIsDeleting &&
-          mDragPoint > 0 && mDragPoint < mEnv.Count() - 1 &&
+          mDragPoint > 0 && mDragPoint < (int)mEnv.Count() - 1 &&
           !larger.Inside(event.m_x, event.m_y)) {
 
          mEnv[mDragPoint]->t = mEnv[mDragPoint - 1]->t;
@@ -328,14 +328,14 @@ bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
       if (mDragPoint > 0 && newWhen < mEnv[mDragPoint - 1]->t)
          newWhen = mEnv[mDragPoint - 1]->t;
 
-      if (mDragPoint < mEnv.Count() - 1
-          && newWhen > mEnv[mDragPoint + 1]->t)
+      if (mDragPoint < (int)mEnv.Count() - 1
+          && newWhen > (double)mEnv[mDragPoint + 1]->t)
          newWhen = mEnv[mDragPoint + 1]->t;
 
       if (mDragPoint == 0)
          newWhen = 0;
 
-      if (mDragPoint == mEnv.Count() - 1)
+      if (mDragPoint == (int)mEnv.Count() - 1)
          newWhen = mTrackLen;
 
       mEnv[mDragPoint]->t = newWhen;
@@ -505,7 +505,7 @@ void Envelope::GetValues(double *buffer, int bufferLen,
 
    double t = t0;
 
-   double tprev, vprev, tnext, vnext, vstep;
+   double tprev, vprev, tnext = 0, vnext, vstep = 0;
 
    for (int b = 0; b < bufferLen; b++) {
 
