@@ -15,6 +15,11 @@
 		long value, void *ptr, float opt));
 */
 
+/* dmazzoni: PRAGMA_ALIGN_SUPPORTED is obsolete in mwerks */
+#ifdef __MWERKS__
+#undef PRAGMA_ALIGN_SUPPORTED
+#endif
+
 #if PRAGMA_ALIGN_SUPPORTED || __MWERKS__
 	#pragma options align=mac68k
 #elif defined CBUILDER
