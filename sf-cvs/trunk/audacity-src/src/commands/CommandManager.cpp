@@ -452,11 +452,35 @@ bool CommandManager::HandleMenuID(int id)
 ///Call this when a key event is received.
 ///If it matches a command, it will call the appropriate
 ///CommandManagerListener function.
+
+///*****************************************************************************
+///*****Required for Ugly Hack (tm) below.
+#include "../Project.h"
+///*****End Ugly Hack
+///*****************************************************************************
+
 bool CommandManager::HandleKey(wxKeyEvent &evt)
 {
    wxString keyStr = KeyEventToKeyString(evt);
+	
+	///*****************************************************************************
+	///***** Ugly Hack (tm)
+	///*****The following is an ugly hack to make shift-space operate play-loop.
+	///*****This should be removed when multiple key-bindings are allowed.
+#if 1
+	if(   strcmp(keyStr, "Shift+Spacebar")==0
+			|| strcmp(keyStr, "Shift+Meta+Spacebar")==0  //For me, meta shows up when numlock is on.
+		)
+		{
+			AudacityProject * project = GetActiveProject();
+			project->OnPlayLooped();
 
-   CommandListEntry *entry = mCommandKeyHash[keyStr];
+			return true;
+		}
+#endif
+	///*****End Ugly Hack
+	///*****************************************************************************
+	CommandListEntry *entry = mCommandKeyHash[keyStr];
    if (!entry)
       return false;
 
