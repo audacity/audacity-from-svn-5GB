@@ -279,4 +279,6 @@ void EditToolBar::EnableDisableButtons()
 
    mButtons[ETBZoomSelID]->SetEnabled(selection);
    mButtons[ETBZoomFitID]->SetEnabled(tracks);
+
+   mButtons[ETBPasteID]->SetEnabled(p->Clipboard());
 }
