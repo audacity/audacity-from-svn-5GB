@@ -140,15 +140,15 @@ void EditToolBar::MakeButtons()
    mButtonPos = 1;
 
    AddButton(Cut, CutDisabled, CutAlpha, ETBCutID,
-             _("Cut selection to clipboard"));
+             _("Cut"));
    AddButton(Copy, CopyDisabled, CopyAlpha, ETBCopyID,
-             _("Copy selection to clipboard"));
+             _("Copy"));
    AddButton(Paste, PasteDisabled, PasteAlpha, ETBPasteID,
-             _("Paste selection"));
+             _("Paste"));
    AddButton(Trim, TrimDisabled, TrimAlpha, ETBTrimID,
-             _("Trim everything ETBOutsIDe selection"));
+             _("Trim everything outside selection"));
    AddButton(Silence, SilenceDisabled, SilenceAlpha, ETBSilenceID,
-             _("Insert Silence"));
+             _("Silence selection"));
 
    AddSeparator();
    AddButton(Undo, UndoDisabled, UndoAlpha, ETBUndoID, _("Undo"));
@@ -162,7 +162,7 @@ void EditToolBar::MakeButtons()
    AddButton(ZoomSel, ZoomSelDisabled, ZoomSelAlpha, ETBZoomSelID,
              _("Fit selection in window"));
    AddButton(ZoomFit, ZoomFitDisabled, ZoomFitAlpha, ETBZoomFitID,
-             _("Fit entire file in window"));
+             _("Fit entire project in window"));
 
    delete upImage;
    delete downImage;
