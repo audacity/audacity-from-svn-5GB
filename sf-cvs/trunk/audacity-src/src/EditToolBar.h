@@ -102,6 +102,7 @@ class EditToolBar:public ToolBar {
    void MakeButtons();
    AButton *MakeButton(wxImage * up, wxImage * down, wxImage * hilite,
                        char const **foreground,
+                       char const **disabled,
                        char const **alpha, int id, int left);
    AButton *mCut;
    AButton *mCopy;

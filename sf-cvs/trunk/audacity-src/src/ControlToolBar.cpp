@@ -344,32 +344,32 @@ void ControlToolBar::MakeButtons()
 
    mRewind = MakeButton(upPattern, downPattern, hilitePattern,
                         (char const **) Rewind,
-                        (char const **) Disabled,
+                        (char const **) RewindDisabled,
                         (char const **) RewindAlpha, ID_REW_BUTTON, 64);
    mRewind->SetToolTip(_("Skip to Start"));
 
    mPlay = MakeButton(upPattern, downPattern, hilitePattern,
                       (char const **) Play,
-                      (char const **) Disabled,
+                      (char const **) PlayDisabled,
                       (char const **) PlayAlpha, ID_PLAY_BUTTON, 114);
    mPlay->SetToolTip(_("Play"));
 
    mStop = MakeButton(upPattern, downPattern, hilitePattern,
                       (char const **) Stop,
-                      (char const **) Disabled,
+                      (char const **) StopDisabled,
                       (char const **) StopAlpha, ID_STOP_BUTTON, 164);
    mStop->SetToolTip(_("Stop"));
 
    mRecord = MakeButton(upPattern, downPattern, hilitePattern,
                         (char const **) Record,
-                        (char const **) Disabled,
+                        (char const **) RecordDisabled,
                         (char const **) RecordAlpha, ID_RECORD_BUTTON,
                         214);
    mRecord->SetToolTip(_("Record"));
 
    mFF = MakeButton(upPattern, downPattern, hilitePattern,
                     (char const **) FFwd,
-                    (char const **) Disabled,
+                    (char const **) FFwdDisabled,
                     (char const **) FFwdAlpha, ID_FF_BUTTON, 264);
    mFF->SetToolTip(_("Skip to End"));
 
