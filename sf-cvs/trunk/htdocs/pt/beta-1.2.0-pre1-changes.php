@@ -1,7 +1,7 @@
-<h2>O que há de novo desde o Audacity 1.0</h2>
+<h2>O que há de novo desde o Audacity 1.2</h2>
 
 Esta seção lista as principais alterações da versão mais recente em relação à última versão estável do programa.
-Usuários das versões beta devem visitar a <a href="<?php print "betanotes.php?$langLinkStr"; ?>">página de versões beta</a> para saber as alterações desde a versão 1.1.3.
+Usuários das versões beta devem visitar a <a href="<?php print "betanotes.php?$langLinkStr"; ?>">página de versões beta</a> para saber as alterações desde a versão 1.1.0.
 
 
 
@@ -10,15 +10,14 @@ Usuários das versões beta devem visitar a <a href="<?php print "betanotes.php?$l
 <ul>
 <li>
 O Audacity agora grava e edita áudio captado com amostragens a 24-bit e 32-bit (ponto-flutuante). Faixas com amostragens diferentes podem ser editadas no mesmo projeto e o programa se encarrega de converter as taxas onde for necessário, utilizando algoritmos de conversão de alta-qualidade .
-As conversões agora utilizam algoritmos da
-<a href="http://www.mega-nerd.com/SRC/">SRC</a>, de Erik de Castro Lopo.
 </li>
 
 <li>
 A importação e exportação de som foi melhorada. O programa agora pode gravar mais de duas faixas simultaneamente. O tempo de latência foi reduzido, diminuindo as chances de falhas na captação de som.
 </li>
 </ul>
-
+<a href="screenshots.php<?php print $langQueryStr; ?>">
+<img alt="screenshots" border="0" src="images/screen/linux/change-pitch.png" align="right"></a>
 
 <h3>Efeitos</h3>
 
@@ -59,7 +58,7 @@ O novo recurso "Faixa de Tempo" (Time track) executa funções semelhantes às da f
 </li>
 
 <li>
-É possível ajustar o Ganho e Balanço de cada faixa individualmente.
+É possível ajustar o Ganho e Balanço de cada faixa individualmente.<a href="screenshots.php<?php print $langQueryStr; ?>"><img alt="screenshots" border="0" src="images/screen/linux/track-controls.png" align="right"></a>
 </li>
 
 <li>
@@ -85,7 +84,7 @@ Esta versão oferece suporte ao processador digital de sinais <a href="nyquist.ph
 
 <ul>
 <li>
-O Audacity 1.2 apresenta seu novo formato de arquivos de projeto, baseado em XML. É possível que os arquivos salvos em qualquer versão anterior do programa sejam lidos.
+O Audacity agora apresenta seu novo formato de arquivos de projeto, baseado em XML. É possível que os arquivos salvos em qualquer versão anterior do programa sejam lidos.
 </li>
 
 <li>
@@ -104,6 +103,7 @@ As janelas de "Importar" e "Abrir" agora permitem a seleção de vários arquivos p
 
 <h3>Nova interface:</h3>
 
+<a href="screenshots.php<?php print $langQueryStr; ?>"><img alt="screenshots" border="0" src="images/screen/macosx/main-toolbar.png" align="right"></a>
 <ul>
 <li>
 As novas barras de ferramentas "Edição" e "Mixagem" trazem rápido acesso às funções mais comuns.
@@ -138,6 +138,6 @@ As réguas de tempo e a barra de status podem exibir o tempo com diversas medidas
 </li>
 
 <li>
-A interface agora está disponível em diferentes línguas, graças ao trabalho de times de tradutores voluntários. Você também pode ajudar <a href="translation/">traduzindo o Audacity</a>.
+A interface agora está disponível em diferentes línguas, graças ao trabalho de times de tradutores voluntários. Você também pode ajudar <a href="translation/">traduzindo</a>, revisando traduções ou criando um manual em língua portuguesa para o Audacity.
 </li>
 </ul>

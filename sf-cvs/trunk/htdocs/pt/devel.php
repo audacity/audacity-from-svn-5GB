@@ -52,8 +52,8 @@ Esta página mostra em que os desenvolvedores estão envolvidos neste momento.</p>
 </tr>
 <tr>
 <td bgcolor="#ccccff"
-><a href="http://www.wxwindows.org">wxWindows</a>
-<td bgcolor="#ccccff"> Esta biblioteca possibilita o uso dos botões da interface em sistemas Windows, MacOS e Linux. O Audacity utiliza-se 100% desta biblioteca e recomendamos fortemente o seu uso para o desenvolvimento em múltiplas plataformas.
+><a href="http://wxwidgets.org/">wxWidgets</a>
+<td bgcolor="#ccccff"> Esta biblioteca possibilita o uso dos elementos da interface em sistemas Windows, MacOS e Linux. O Audacity depende totalmente desta biblioteca e recomendamos fortemente o seu uso para o desenvolvimento em múltiplas plataformas.
 </tr>
 
 <tr>

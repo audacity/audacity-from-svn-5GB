@@ -3,13 +3,13 @@
 <p>
 Um pacote do Audacity está disponível para o <a href="http://www.gentoo.org/">Gentoo Linux</a>.  Para instalá-lo, execute
 <p>
-<xmp>$ emerge audacity</xmp>
+<kbd>emerge audacity</kbd>
 </p>
 
 <p>
 Mantenedor: 
-Will Glynn <br>
-Email: <tt>delta407 <b>@</b> lerfjhax.com</tt>
+Nick Hadaway <br>
+Email: <tt>raker <b>@</b> gentoo.org</tt>
 </p>
 
 <?php BoxBottom(); ?>
