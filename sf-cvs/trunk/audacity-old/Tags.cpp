@@ -32,10 +32,9 @@
 
 #include "Audacity.h"
 
-#ifdef ID3SUPPORT
-   #include "id3/tag.h"
-   #include "id3/misc_support.h"
-#endif
+#include "id3/tag.h"
+#include "id3/misc_support.h"
+
 
 #include "Tags.h"
 
@@ -56,7 +55,7 @@ Tags::~Tags()
 
 bool Tags::Load(wxTextFile * in, DirManager * dirManager)
 {
-   #warning TODO
+//   #warning TODO
 
    return true;
 }
@@ -68,7 +67,6 @@ bool Tags::Save(wxTextFile * out, bool overwrite)
 
 bool Tags::ShowEditDialog(wxWindow *parent, wxString title)
 {
-#ifdef ID3SUPPORT
    Tags theCopy;
    theCopy.mTitle = mTitle;
    theCopy.mArtist = mArtist;
@@ -99,15 +97,10 @@ bool Tags::ShowEditDialog(wxWindow *parent, wxString title)
    }
 
    return true;
-#else
-   return true; // we want callers to think it succeeded, otherwise they'll cancel what
-                // they were doing...
-#endif
 }
 
 void Tags::ImportID3(wxString fileName)
 {
-#ifdef ID3SUPPORT
    ID3_Tag tag((char *) fileName.c_str());
 
    mTitle = ID3_GetTitle(&tag);
@@ -117,13 +110,11 @@ void Tags::ImportID3(wxString fileName)
    mYear = ID3_GetYear(&tag);
    mGenre = ID3_GetGenreNum(&tag);
    mComments = ID3_GetComment(&tag);
-#endif // ID3SUPPORT
 }
 
 // returns buffer len; caller frees
 int Tags::ExportID3(char **buffer, bool *endOfFile)
 {
-#ifdef ID3SUPPORT
    ID3_Tag tag;   
 
    ID3_AddTitle(&tag, (const char *)mTitle);
@@ -150,12 +141,6 @@ int Tags::ExportID3(char **buffer, bool *endOfFile)
       *endOfFile = true;
       return 128;
    }
-   
-#else
-   *buffer = new char[0];
-   *endOfFile = true;
-   return 0;
-#endif // ID3SUPPORT
 }
 
 //

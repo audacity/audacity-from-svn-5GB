@@ -93,6 +93,9 @@ PrefsPanel(parent)
       mCopyOrEdit[1] = new wxRadioButton(
          this, -1, "Edit the original in place",
          wxDefaultPosition, wxDefaultSize, 0 );
+
+	  mCopyOrEdit[0]->SetValue(false);
+	  mCopyOrEdit[1]->SetValue(false);
    
       copyOrEditSizer->Add( mCopyOrEdit[1], 0,
          wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
@@ -227,7 +230,7 @@ void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
 {
    wxString oldPath = gPrefs->Read("/MP3/MP3LibPath", "");
  
-   gPrefs->Write("/MP3/MP3LibPath", "");
+   gPrefs->Write("/MP3/MP3LibPath", wxString(""));
    
    if (GetMP3Exporter()->FindLibrary(this))
       SetMP3VersionText();

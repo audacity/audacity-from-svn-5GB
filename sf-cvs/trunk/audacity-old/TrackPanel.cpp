@@ -966,13 +966,14 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 
    VTrack *t = FindTrack(event.m_x, event.m_y, true, &r, &num);
 
-   if (!t->linked && mTracks->GetLink(t))
-      return;
-
    if (!t) {
       SelectNone();
       Refresh(false);
+	  return;
    }
+
+   if (!t->linked && mTracks->GetLink(t))
+      return;
 
    if (event.ShiftDown()) {
       mTracks->Select(t, !t->selected);

@@ -55,7 +55,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 wx.lib xpm.lib png.lib zlib.lib jpeg.lib tiff.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib xaudio.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libc.lib" /nodefaultlib:"libci.lib" /nodefaultlib:"msvcrtd.lib" /libpath:"../../lib" /libpath:"../../contrib/lib" /libpath:"./xaudio/win/lib" /libpath:"h:\wx2\lib"
+# ADD LINK32 wx.lib xpm.lib png.lib zlib.lib jpeg.lib tiff.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib xaudio.lib id3lib.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"msvcrtd.lib" /nodefaultlib:"libc.lib" /nodefaultlib:"libci.lib" /libpath:"../../lib" /libpath:"../../contrib/lib" /libpath:"./xaudio/win/lib" /libpath:"h:\wx2\lib" /libpath:"./id3lib/libprj"
 # SUBTRACT LINK32 /nodefaultlib
 
 !ELSEIF  "$(CFG)" == "Audacity - Win32 Debug"
@@ -789,6 +789,14 @@ SOURCE=.\Spectrum.cpp
 # Begin Source File
 
 SOURCE=.\Spectrum.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Tags.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Tags.h
 # End Source File
 # Begin Source File
 

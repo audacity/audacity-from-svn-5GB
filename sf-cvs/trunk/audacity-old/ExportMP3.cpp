@@ -672,7 +672,7 @@ public:
    
    wxString GetLibraryTypeString()
    {
-      return "Dynamically Linked Libraries (*.dll)|*.dll"
+      return "Dynamically Linked Libraries (*.dll)|*.dll";
    }
    
    wxString GetLibraryMessage()
@@ -846,14 +846,14 @@ bool ExportMP3(AudacityProject *project,
    success = GetMP3Exporter()->LoadLibrary();
    if (!success) {
       wxMessageBox("Could not open MP3 encoding library!");
-      gPrefs->Write("/MP3/MP3LibPath", "");
+      gPrefs->Write("/MP3/MP3LibPath", wxString(""));
 
       return false;
    }
 
    if(!GetMP3Exporter()->ValidLibraryLoaded()) {
       wxMessageBox("Not a valid or supported MP3 encoding library!");      
-      gPrefs->Write("/MP3/MP3LibPath", "");
+      gPrefs->Write("/MP3/MP3LibPath", wxString(""));
       
       return false;
    }

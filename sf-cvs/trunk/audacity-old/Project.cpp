@@ -728,7 +728,8 @@ void AudacityProject::HidePalette()
 
 void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 {
-   SetActiveProject(this);
+   if(event.ButtonDown())
+      SetActiveProject(this);
 
    wxPoint hotspot;
    hotspot.x = event.m_x;
@@ -1329,6 +1330,7 @@ void AudacityProject::TP_RedrawScrollbars()
 // TrackPanel callback method
 void AudacityProject::TP_HasMouse()
 {
-   SetActiveProject(this);
-   mTrackPanel->SetFocus();
+   // This is unneccesary, I think, because it already gets done in our own ::OnMouseEvent
+   //SetActiveProject(this);
+   //mTrackPanel->SetFocus();
 }
