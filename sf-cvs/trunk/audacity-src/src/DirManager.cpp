@@ -17,6 +17,7 @@
 #include <wx/progdlg.h>
 #include <wx/timer.h>
 #include <wx/intl.h>
+#include <wx/file.h>
 
 #include "BlockFile.h"
 #include "DirManager.h"
