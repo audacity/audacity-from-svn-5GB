@@ -25,11 +25,6 @@
 **  increment        : 128
 */
 
-// BG: 1000's of warnings are too many, show only once
-#ifdef WIN32
-#pragma warning( once : 4305 )
-#endif
-
  9.73822959712628111184e-01,
  9.73730227534126968614e-01,
  9.73452062795049033461e-01,
@@ -17118,8 +17113,3 @@
 -4.33275254142092293362e-08,
 -2.44520526242285169324e-08,
  0			/* Need a final zero coefficient */
-
-// BG: resume default warnings
-#ifdef WIN32
-#pragma warning( default : 4305 )
-#endif
