@@ -12,26 +12,29 @@
 #include <wx/brush.h>
 #include <wx/pen.h>
 
+#include "AColor.h"
 #include "NoteTrack.h"
 #include "DirManager.h"
 
 NoteTrack::NoteTrack(DirManager *projDirManager):
   VTrack(projDirManager)
 {
-  numEvents = 0;
-  maxEvents = 1024;
-  event = new NoteEvent[maxEvents];
-  wxASSERT(event);
+  mSeq = NULL;
+  mLen = 0.0;
+  
+  mVisibleChannels = 0xFFFF;
 }
 
 void NoteTrack::Draw(wxDC &dc, wxRect &r, double h, double pps,
 					 double sel0, double sel1, bool drawEnvelope)
 {
-  int note0 = 50;
-  int noteht = 4;
+  int ctrpitch = 60;
+  int pitch0;
+  int pitchht = 4;
   int n;
 
-  bool sel = false; // TODO
+  int numPitches = r.height / pitchht;
+  pitch0 = (ctrpitch - numPitches/2);
 
   wxBrush backBrush;
   wxPen backPen;
@@ -46,76 +49,166 @@ void NoteTrack::Draw(wxDC &dc, wxRect &r, double h, double pps,
   
   dc.SetPen(wxPen(wxColour(151,0,255),1,wxSOLID));
   
-  for(n=noteht; n<r.height; n+=noteht)
-	dc.DrawLine(r.x, r.y+r.height-n,
-				 r.x + r.width, r.y+r.height-n);
-  
+  for(n=pitchht; n<r.height; n+=pitchht)
+    dc.DrawLine(r.x, r.y+r.height-n,
+                r.x + r.width, r.y+r.height-n);
+
+  int numEvents = mSeq->notes.len;
   int index;
+
+  for(index=0; index<numEvents; index++) {
   
-  dc.SetBrush(wxBrush(wxColour(0,0,204),wxSOLID));
-  dc.SetPen(wxPen(wxColour(0,0,204),1,wxSOLID));
+    if (mSeq->notes[index]->type == 'n') {
+    
+      Note_ptr note = (Note_ptr)(mSeq->notes[index]);
+      
+      if (mVisibleChannels & (1 << (mSeq->notes[index]->chan & 15))) {
+      
+      	int ypos = pitchht * (note->pitch - pitch0);
 
-  for(index=0; index < numEvents; index++) {
-	
-	int ypos = noteht * (event[index].note - note0);
+      	if (ypos >= 0 && ypos < r.height) {
+      	  int ht = pitchht;
+      	  if (ypos + pitchht >= r.height)
+            ht = r.height - ypos;
+      	  
+      	  wxRect nr;
 
-	if (ypos >= 0 && ypos < r.height) {
-	  int ht = noteht;
-	  if (ypos + noteht >= r.height)
-		ht = r.height - ypos;
-	  
-	  wxRect nr;
+      	  nr.x = r.x + (int)((note->time - h) * pps);
+      	  nr.width = (int)(note->dur * pps) + 1;
+      	  nr.y = r.y + r.height - ypos - pitchht;
+      	  nr.height = ht;
+      	  
+      	  if (nr.x + nr.width >= r.x && nr.x<= r.x + r.width) {
+      	    if (nr.x < r.x) {
+      	      nr.width -= (r.x - nr.x);
+      	      nr.x = r.x;
+      	    }
+      	    if (nr.x + nr.width > r.x + r.width)
+      	      nr.width = r.x + r.width - nr.x;
+      	    
+      	    AColor::MIDIChannel(&dc, note->chan+1);
+      	    
+      	    if (note->time + note->dur >= sel0 &&
+      	        note->time <= sel1)
+      	      dc.SetBrush(*wxWHITE_BRUSH);
 
-	  nr.x = (int)(((event[index].when / 44100.0) - h) * pps);
-	  nr.width = (int)(event[index].len / 44100.0 * pps) + 1;
-	  nr.y = r.y + r.height - ypos;
-	  nr.height = ht;
-	  
-	  dc.DrawRectangle(nr);
-	}
+      	    dc.DrawRectangle(nr);
+      	  }
+      	}
+      }
+
+    }
 
   }
   
+}
+
+void NoteTrack::DrawLabelControls(wxDC &dc, wxRect &r)
+{
+  int wid = 23;
+  int ht = 16;
+
+  if (r.height < ht*4)
+    return;
+  
+  int x = r.x + r.width / 2 - wid*2;
+  int y = r.y + 4;
+  
+  for(int row=0; row<4; row++)
+    for(int col=0; col<4; col++) {
+      int channel = row*4 + col + 1;
+      
+      wxRect box;
+      box.x = x + col*wid;
+      box.y = y + row*ht;
+      box.width = wid;
+      box.height = ht;
+      
+      if (mVisibleChannels & (1 << (channel-1))) {      
+        AColor::MIDIChannel(&dc, channel);
+        dc.DrawRectangle(box);
+
+        AColor::LightMIDIChannel(&dc, channel);
+        dc.DrawLine(box.x, box.y, box.x+box.width-1, box.y);
+        dc.DrawLine(box.x, box.y, box.x, box.y+box.height-1);
+        
+        AColor::DarkMIDIChannel(&dc, channel);
+        dc.DrawLine(box.x+box.width-1, box.y, box.x+box.width-1, box.y+box.height);
+        dc.DrawLine(box.x, box.y+box.height-1, box.x+box.width, box.y+box.height-1);
+      }
+      else {
+        AColor::MIDIChannel(&dc, 0);
+        dc.DrawRectangle(box);
+      }
+      
+      dc.DrawText(wxString::Format("%d", channel), box.x+5, box.y+3);
+    }
+      
+}
+
+bool NoteTrack::LabelClick(wxRect &r, int mx, int my, bool right)
+{
+  int wid = 23;
+  int ht = 16;
+
+  if (r.height < ht*4)
+    return;
+  
+  int x = r.x + r.width / 2 - wid*2;
+  int y = r.y + 4;
+  
+  int col = (mx - x) / wid;
+  int row = (my - y) / ht;
+  
+  if (row < 0 || row >= 4 || col < 0 || col >= 4)
+    return false;
+  
+  int channel = row*4 + col;
+  
+  if (right) {
+    if (mVisibleChannels == (1 << channel))
+      mVisibleChannels = 0xFFFF;
+    else
+      mVisibleChannels = (1 << channel);
+  }
+  else
+    mVisibleChannels ^= (1 << channel);
+  
+  return true;
 }
 
 double NoteTrack::GetMaxLen()
 {
-  if (numEvents == 0)
-	return 0.0;
-  else
-	return ((event[numEvents-1].when + event[numEvents-1].len) /
-			44100.0);
+  return mLen;
 }
 
-void NoteTrack::Add(int when, int len, int note)
+void NoteTrack::CalcLen()
 {
-  if (numEvents == maxEvents) {
-	NoteEvent *ne = new NoteEvent[maxEvents*2];
-	wxASSERT(ne);
-	for(int i=0; i<maxEvents; i++)
-	  ne[i] = event[i];
-	delete[] event;
-	event = ne;
-	maxEvents*=2;
+  int numEvents = mSeq->notes.len;
+  
+  if (numEvents <= 0)
+    mLen = 0.0;
+  else {
+    mLen = 0.0;
+    for(int i=0; i<numEvents; i++) {
+      if (mSeq->notes[numEvents-1]->time > mLen)
+        mLen = mSeq->notes[numEvents-1]->time;
+      if (mSeq->notes[numEvents-1]->type == 'n') {
+        double endtime = mSeq->notes[numEvents-1]->time +
+               ((Note_ptr)mSeq->notes[numEvents-1])->dur;
+        if (endtime > mLen)
+          mLen = endtime;
+      }
+    }
   }
-  int pos = Find(when);
-  for(int i=numEvents; i>pos; i--)
-	event[i] = event[i-1];
-  event[pos].when = when;
-  event[pos].len = len;
-  event[pos].note = note;
-  numEvents++;
 }
 
-int NoteTrack::Find(int when)
+void NoteTrack::SetSequence(Seq_ptr seq)
 {
-  // TODO: This should use binary search
-
-  int i=0;
-  while(i<numEvents && event[i].when>=when)
-	i++;
-
-  return i;
+  if (mSeq)
+    delete mSeq;
+  
+  mSeq = seq;
+  
+  CalcLen();
 }
-
-

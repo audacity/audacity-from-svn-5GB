@@ -24,6 +24,7 @@
 #include "AColor.h"
 #include "AudioIO.h"
 #include "LabelTrack.h"
+#include "NoteTrack.h"
 #include "Track.h"
 #include "Project.h"
 #include "WaveTrack.h"
@@ -798,17 +799,30 @@ void TrackPanel::HandleLabelClick(wxMouseEvent& event)
 
 		if (t->GetKind() == VTrack::Wave) {
 		  if (GetLabelFieldRect(r, 2, true, tempRect))
-			if (tempRect.Inside(event.m_x, event.m_y)) {
-			  popupMenu = mRateMenu;
-			  fieldRect = tempRect;
-			}
+  			if (tempRect.Inside(event.m_x, event.m_y)) {
+  			  popupMenu = mRateMenu;
+  			  fieldRect = tempRect;
+  			}
 		  
 		  if (GetLabelFieldRect(r, 3, true, tempRect))
-			if (tempRect.Inside(event.m_x, event.m_y)) {
-			  popupMenu = mDisplayMenu;
-			  fieldRect = tempRect;
-			}
+  			if (tempRect.Inside(event.m_x, event.m_y)) {
+  			  popupMenu = mDisplayMenu;
+  			  fieldRect = tempRect;
+  			}
 		}
+		
+		if (t->GetKind()==VTrack::Note) {
+  	  wxRect midiRect;
+  	  if (GetLabelFieldRect(r, 2, false, midiRect)) {
+  	    midiRect.height = r.height - (midiRect.y - r.y) - (midiRect.x - r.x);
+  	    if (midiRect.Inside(event.m_x, event.m_y)) {
+  	      ((NoteTrack *)t)->LabelClick(midiRect, event.m_x, event.m_y,
+  	                                   event.RightDown() || event.RightDClick());
+  	      Refresh(false);
+  	      return;
+  	    }
+  	  }
+  	}
 
 		if (popupMenu) {
 		  mPopupMenuTarget = t;
@@ -1279,6 +1293,14 @@ void TrackPanel::DrawTracks(wxDC *dc)
 		else
 		  str = "Wavefm";
 		dc->DrawText(str, displayRect.x + 3, displayRect.y + 2);
+	  }
+	}
+	
+	if (t->GetKind()==VTrack::Note) {
+	  wxRect midiRect;
+	  if (GetLabelFieldRect(labelRect, 2, false, midiRect)) {
+	    midiRect.height = labelRect.height - (midiRect.y - labelRect.y) - (midiRect.x - labelRect.x);
+	    ((NoteTrack *)t)->DrawLabelControls(*dc, midiRect);
 	  }
 	}
 
