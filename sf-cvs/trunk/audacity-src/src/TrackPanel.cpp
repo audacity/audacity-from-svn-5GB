@@ -281,9 +281,9 @@ static const char * DrawCursorXpm[] = {
 
 static const char * ZoomInCursorXpm[] = {
 "32 32 3 1",
+"+	c #FFFFFF",
 ".	c #FF0000", // mask color = RGB:255,0,0
 "#	c #000000",
-"+	c #FFFFFF",
 "................................",
 "................................",
 "................................",
@@ -633,9 +633,19 @@ wxCursor * MakeCursor( int CursorId, const char * pXpm[36],  int HotX, int HotY 
 #else
    {
       wxImage Image = wxImage(wxBitmap(pXpm).ConvertToImage());
-//      Image.SetMaskColour(128,128,128);
+
+#ifdef __WXGTK__
+      // Because of a bug in GTK's XPM reader, the red color may
+      // not end up pure red.  So we grab the color of the first
+      // pixel.
+      unsigned char *base = Image.GetData();
+      Image.SetMaskColour(base[0], base[1], base[2]);      
+#else
       Image.SetMaskColour(255,0,0);
+#endif
+
       Image.SetMask();// Enable mask.
+
       Image.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_X, HotX-HotAdjust );
       Image.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_Y, HotY-HotAdjust );
       pCursor = new wxCursor( Image );
