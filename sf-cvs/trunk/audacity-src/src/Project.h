@@ -88,6 +88,8 @@ class AudacityProject:public wxFrame,
    double GetSel0() { return mViewInfo.sel0; }
    double GetSel1() { return mViewInfo.sel1; }
 
+   bool Clipboard() { return msClipLen > 0.0; }
+
    wxString GetName();
    DirManager *GetDirManager();
    Tags *GetTags();
