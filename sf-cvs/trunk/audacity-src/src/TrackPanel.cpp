@@ -483,17 +483,18 @@ void TrackPanel::MakeParentResize()
 }
 
 // AS: This is still bad unclean: it's dependant on select=0, envelope=1, 
-//  move/slide=2, and zoom=3.  And this should go somewhere else...
+//  move/slide=2, zoom=3, and draw=4.  And this should go somewhere else...
 const char *pMessages[] = { _("Click and drag to select audio"),
    _("Click and drag to edit the amplitude envelope"),
    _("Click and drag to move a track in time"),
 #if defined( __WXMAC__ )
-   _("Click to Zoom In, Shift-Click to Zoom Out")
+   _("Click to Zoom In, Shift-Click to Zoom Out"),
 #elif defined( __WXMSW__ )
-   _("Left-Click to Zoom In, Right-Click to Zoom Out")
+   _("Left-Click to Zoom In, Right-Click to Zoom Out"),
 #elif defined( __WXGTK__ )
-   _("Left=Zoom In, Right=Zoom Out, Middle=Normal")
+   _("Left=Zoom In, Right=Zoom Out, Middle=Normal"),
 #endif
+   _("Click and drag to edit the samples")
 };
 
 
@@ -588,6 +589,9 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
          break;
       case zoomTool:
          SetCursor(event.ShiftDown()? *mZoomOutCursor : *mZoomInCursor);
+         break;
+      case drawTool:
+         SetCursor(*mArrowCursor);
          break;
       }
    }
@@ -1044,6 +1048,11 @@ void TrackPanel::DoZoomInOut(wxMouseEvent & event, int trackLeftEdge)
    double new_center_h = PositionToTime(event.m_x, trackLeftEdge);
 
    mViewInfo->h += (center_h - new_center_h);
+}
+
+// BG: This handles drawing
+void TrackPanel::HandleDraw(wxMouseEvent & event)
+{
 }
 
 // AS: This is for when a given track gets the x.
@@ -1669,6 +1678,9 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
       break;
    case zoomTool:
       HandleZoom(event);
+      break;
+   case drawTool:
+      HandleDraw(event);
       break;
    }
 
