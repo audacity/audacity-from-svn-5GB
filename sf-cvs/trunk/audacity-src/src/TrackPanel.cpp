@@ -317,6 +317,8 @@ wxCursor * MakeCursor( int CursorId, const char * pXpm[36],  int HotX, int HotY 
    return pCursor;
 }
 
+
+
 // Don't warn us about using 'this' in the base member initializer list.
 #pragma warning( disable: 4355 )
 TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
@@ -334,22 +336,10 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
      mAutoScrolling(false)
 #pragma warning( default: 4355 )
 {
-   mIsVZooming = false;
-   mIsClosing = false;
-   mIsSelecting = false;
-   mIsAdjustingLabel = false;
-   mIsResizing = false;
-   mIsResizingBetweenLinkedTracks = false;
-   mIsResizingBelowLinkedTracks = false;
-   mIsRearranging = false;
-   mIsSliding = false;
-   mIsEnveloping = false;
-   mIsMuting = false;
-   mIsSoloing = false;
-   mIsGainSliding = false;
-   mIsPanSliding = false;
-   mIsMinimizing = false;
+
+   mMouseCapture = IsUncaptured;
    mSlideUpDownOnly = false;
+
    startXPos=-1;
 
    gPrefs->Read("/GUI/AdjustSelectionEdges", &mAdjustSelectionEdges, true);
@@ -542,6 +532,21 @@ void TrackPanel::SetStop(bool bStopped)
    
    Refresh(false);
 }
+
+void TrackPanel::SetCapturedTrack( Track * t, enum TrackPanel::MouseCaptureEnum MouseCapture )
+{
+   if( t== NULL ) 
+   {
+      wxASSERT( MouseCapture == IsUncaptured );
+   }
+   else
+   {
+      wxASSERT( MouseCapture != IsUncaptured );
+   }
+   mCapturedTrack = t;
+   mMouseCapture = MouseCapture;
+}
+
 
 void TrackPanel::SelectNone()
 {
@@ -767,7 +772,7 @@ void TrackPanel::OnTimer()
    mTimeCount++;
    // AS: If the user is dragging the mouse and there is a track that
    //  has captured the mouse, then scroll the screen, as necessary.
-   if (mIsSelecting && mCapturedTrack) {
+   if ((mMouseCapture==IsSelecting) && mCapturedTrack) {
       ScrollDuringDrag();
    }
 
@@ -818,7 +823,8 @@ void TrackPanel::OnTimer()
    // AS: Um, I get the feeling we want to redraw the cursors
    //  every 10 timer ticks or something...
    if ((mTimeCount % 10) == 0 &&
-       !mTracks->IsEmpty() && mViewInfo->sel0 == mViewInfo->sel1 && !mIsSelecting) {
+       !mTracks->IsEmpty() && mViewInfo->sel0 == mViewInfo->sel1 
+       && (mMouseCapture != IsSelecting)) {
       DrawCursors();
    }
 
@@ -977,7 +983,7 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    RemoveStaleIndicators(&upd);
    //UpdateIndicator(&dc);
    RemoveStaleCursors(&upd);
-   if(/*!mIsSelecting &&*/ mViewInfo->sel0 == mViewInfo->sel1)
+   if( mViewInfo->sel0 == mViewInfo->sel1)
       DrawCursors(&dc);
 
    dc.EndDrawing();
@@ -1013,7 +1019,7 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    //UpdateIndicator(&memDC);
    RemoveStaleCursors(&upd);
 
-   if(/*!mIsSelecting &&*/ mViewInfo->sel0 == mViewInfo->sel1)
+   if(mViewInfo->sel0 == mViewInfo->sel1)
       DrawCursors(&memDC);
 
    dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
@@ -1062,29 +1068,24 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 
    // (1), If possible, set the cursor based on the current activity
    //      ( leave the StatusBar alone ).
-   if (unsafe && (mIsSliding || mIsEnveloping || mIsRearranging)) {
-      SetCursor(*mDisabledCursor);
-      return;
-   }
-   if (mIsSelecting) {
+   switch( mMouseCapture )
+   {
+   case IsSelecting:
       SetCursor(*mSelectCursor);
       return;
-   } else if (mIsSliding) {
-      SetCursor(*mSlideCursor);
+   case IsSliding:
+      SetCursor( unsafe ? *mDisabledCursor : *mSlideCursor);
       return;
-   } else if (mIsEnveloping) {
-//      SetCursor(*mArrowCursor);
-      SetCursor(*mEnvelopeCursor);
+   case IsEnveloping:
+      SetCursor( unsafe ? *mDisabledCursor : *mEnvelopeCursor);
       return;
-   } else if (mIsRearranging) {
-      SetCursor(*mRearrangeCursor);
+   case IsRearranging:
+      SetCursor( unsafe ? *mDisabledCursor : *mRearrangeCursor);
       return;
-   } else if (mIsAdjustingLabel) {
-//    SetCursor(*mRearrangeCursor); Already set...
+   case IsAdjustingLabel:
       return;
-   } else {
-      // none of the above
-
+   default:
+      break;
    }
 
    // (2) If we are not over a track at all, set the cursor to Arrow and 
@@ -1298,9 +1299,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       Refresh(false);
       
    } else if (event.ButtonUp(1) || event.ButtonUp(3)) {
-      mCapturedTrack = NULL;
-      mIsSelecting = false;
-      mIsAdjustingLabel = false;      //Stop adjusting label if we happen to up-click on a non-label track.
+      SetCapturedTrack( NULL );
       //Send the new selection state to the undo/redo stack:
       MakeParentModifyState();
       
@@ -1317,8 +1316,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
 
       Refresh(false);
 
-      mCapturedTrack = NULL;
-      mIsSelecting = false;
+      SetCapturedTrack( NULL );
       MakeParentModifyState();
    } 
 
@@ -1369,13 +1367,13 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
             if (within(event.m_x, leftSel, SELECTION_RESIZE_REGION)) {
                // Pin the right selection boundary
                mSelStart = mViewInfo->sel1;
-               mIsSelecting = true;
+               mMouseCapture=IsSelecting;
                startNewSelection = false;
             }
             else if (within(event.m_x, rightSel, SELECTION_RESIZE_REGION)) {
                // Pin the left selection boundary
                mSelStart = mViewInfo->sel0;
-               mIsSelecting = true;
+               mMouseCapture=IsSelecting;
                startNewSelection = false;
             }
          }
@@ -1414,7 +1412,7 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
 #endif
 
    }
-   mIsSelecting = true;
+   mMouseCapture=IsSelecting;
 }
 
 
@@ -1438,7 +1436,7 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
    // AS: If we're not in the process of selecting (set in
    //  the SelectionHandleClick above), fuhggeddaboudit.
 
-   if (!mIsSelecting)
+   if ( mMouseCapture!=IsSelecting)
       return;
    
    if (event.Dragging() || mAutoScrolling) {
@@ -1656,7 +1654,7 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
    if (event.ButtonDown(1))
       StartSlide(event, totalOffset, name);
 
-   if (!mIsSliding)
+   if (mMouseCapture != IsSliding)
       return;
 
    if (event.Dragging() && mCapturedTrack)
@@ -1664,8 +1662,7 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
 
 
    if (event.ButtonUp(1)) {
-      mCapturedTrack = NULL;
-      mIsSliding = false;
+      SetCapturedTrack( NULL );
       MakeParentRedrawScrollbars();
       if (totalOffset != 0)
          MakeParentPushState(wxString::
@@ -1720,7 +1717,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event, double &totalOffset,
       mMouseClickY = event.m_y;
 
       mSelStart = mViewInfo->h + ((event.m_x - r.x) / mViewInfo->zoom);
-      mIsSliding = true;
+      mMouseCapture = IsSliding;
    }
 }
 
@@ -1854,7 +1851,7 @@ void TrackPanel::HandleVZoom(wxMouseEvent & event)
       if (mCapturedTrack->GetKind() != Track::Wave)
          return;
 
-      mIsVZooming = true;
+      mMouseCapture = IsVZooming;
       mZoomStart = event.m_y;
       mZoomEnd = event.m_y;
    }
@@ -1868,7 +1865,7 @@ void TrackPanel::HandleVZoom(wxMouseEvent & event)
       if (!mCapturedTrack)
          return;
 
-      mIsVZooming = false;
+      mMouseCapture = IsUncaptured;
       if (mCapturedTrack->GetKind() != Track::Wave)
          return;
 
@@ -2407,10 +2404,8 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
          AudacityProject *p = GetProject();
          if (!gAudioIO->IsStreamActive(p->GetAudioIOToken()))
             RemoveTrack(t);
-         mCapturedTrack = 0;
       }
-
-      mIsClosing = false;
+      SetCapturedTrack( NULL );
    }
    // BG: There are no more tracks on screen
    if (mTracks->IsEmpty()) {
@@ -2463,8 +2458,7 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
 
    if( t==NULL ){
       wxASSERT(false);// Soloing or muting but no captured track!
-      mIsSoloing=false;
-      mIsMuting =false;
+      SetCapturedTrack( NULL );
       return;
    }
 
@@ -2485,11 +2479,7 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
          else
             t->SetMute(!t->GetMute());
       }
-      if (solo) {
-         mIsSoloing = false;
-      } else{
-         mIsMuting = false;
-      }
+      SetCapturedTrack( NULL );
       // mTrackLabel.DrawMuteSolo(&dc, r, t, false, solo);
       Refresh(false);
    }
@@ -2502,8 +2492,7 @@ void TrackPanel::HandleMinimizing(wxMouseEvent & event)
    wxRect r = mCapturedRect;
 
    if( t==NULL ){
-      mIsMinimizing = false;
-      mCapturedTrack = NULL;
+      SetCapturedTrack( NULL );
       return;
    }
 
@@ -2524,8 +2513,7 @@ void TrackPanel::HandleMinimizing(wxMouseEvent & event)
          MakeParentModifyState();
       }
 
-      mIsMinimizing = false;
-      mCapturedTrack = NULL;
+      SetCapturedTrack( NULL );
 
       mTrackLabel.DrawMinimize(&dc, r, t, false, t->GetMinimized());
       Refresh(false);
@@ -2559,12 +2547,10 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
    }
    
    if (event.ButtonUp()) {
-      mIsGainSliding = false;
-      mIsPanSliding = false;
-
       MakeParentPushState(pan ? _("Moved pan slider") : _("Moved gain slider"),
                           pan ? _("Pan") : _("Gain"),
                           true /* consolidate */);
+      SetCapturedTrack( NULL );
    }
 
    this->Refresh(false);
@@ -2689,7 +2675,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    if (!second && closeRect.Inside(event.m_x, event.m_y)) {
       wxClientDC dc(this);
       mTrackLabel.DrawCloseBox(&dc, r, true);
-      mIsClosing = true;
+      mMouseCapture = IsClosing;
       mCapturedTrack = t;
       mCapturedRect = r;
       return;
@@ -2744,8 +2730,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    // JH: also, capture the current track for rearranging, so the user
    //  can drag the track up or down to swap it with others
    if (!unsafe) {
-      mCapturedTrack = t;
-      mIsRearranging = true;
+      SetCapturedTrack( t, IsRearranging );
       TrackPanel::CalculateRearrangingThresholds(event);
    }
 
@@ -2774,8 +2759,7 @@ void TrackPanel::HandleRearrange(wxMouseEvent & event)
 {
    // are we finishing the drag?
    if (event.ButtonUp(1)) {
-      mCapturedTrack = NULL;
-      mIsRearranging = false;
+      SetCapturedTrack( NULL );
       SetCursor(*mArrowCursor);
       return;
    }
@@ -2821,8 +2805,7 @@ bool TrackPanel::GainFunc(Track * t, wxRect r, wxMouseEvent &event,
    wxRect sliderRect;
    mTrackLabel.GetGainRect(r, sliderRect);
    if (sliderRect.Inside(x, y)) {
-      mIsGainSliding = true;
-      mCapturedTrack = t;
+      SetCapturedTrack( t, IsGainSliding);
       mCapturedRect = r;
       mCapturedNum = index;
       HandleSliders(event, false);
@@ -2839,8 +2822,7 @@ bool TrackPanel::PanFunc(Track * t, wxRect r, wxMouseEvent &event,
    wxRect sliderRect;
    mTrackLabel.GetPanRect(r, sliderRect);
    if (sliderRect.Inside(x, y)) {
-      mIsPanSliding = true;
-      mCapturedTrack = t;
+      SetCapturedTrack( t, IsPanSliding);
       mCapturedRect = r;
       mCapturedNum = index;
       HandleSliders(event, true);
@@ -2862,16 +2844,10 @@ bool TrackPanel::MuteSoloFunc(Track * t, wxRect r, int x, int y,
    if (buttonRect.Inside(x, y)) {
 
       wxClientDC dc(this);
-
-      if (solo)
-         mIsSoloing = true;
-      else
-         mIsMuting = true;
-
-      mTrackLabel.DrawMuteSolo(&dc, r, t, true, solo);
-      mCapturedTrack = t;
+      SetCapturedTrack( t, solo ? IsSoloing : IsMuting);
       mCapturedRect = r;
 
+      mTrackLabel.DrawMuteSolo(&dc, r, t, true, solo);
       return true;
    }
 
@@ -2884,10 +2860,10 @@ bool TrackPanel::MinimizeFunc(Track * t, wxRect r, int x, int y)
    mTrackLabel.GetMinimizeRect(r, buttonRect, t->GetMinimized());
    if (buttonRect.Inside(x, y)) {
       wxClientDC dc(this);
-      mIsMinimizing = true;
-      mTrackLabel.DrawMinimize(&dc, r, t, true, t->GetMinimized());
-      mCapturedTrack = t;
+      SetCapturedTrack( t, IsMinimizing );
       mCapturedRect = r;
+
+      mTrackLabel.DrawMinimize(&dc, r, t, true, t->GetMinimized());
 
       return true;
    }
@@ -2932,13 +2908,12 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
 
          // DM: Capture the track so that we continue to resize
          //  THIS track, no matter where the user moves the mouse
-         mCapturedTrack = t;
+         SetCapturedTrack( t, IsResizing );
          //mCapturedRect = r;
          //mCapturedNum = num;
 
          mMouseClickX = event.m_x;
          mMouseClickY = event.m_y;
-         mIsResizing = true;
 
          //STM:  Determine whether we should rescale one or two tracks
 
@@ -2946,93 +2921,94 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
             // mCapturedTrack is the lower track
             mInitialTrackHeight = t->GetHeight();
             mInitialUpperTrackHeight = prev->GetHeight();
-            mIsResizingBelowLinkedTracks = true;
+            SetCapturedTrack( t, IsResizingBelowLinkedTracks );
          } else if (next && mTracks->GetLink(t) == next) {
             // mCapturedTrack is the upper track
             mInitialTrackHeight = next->GetHeight();
             mInitialUpperTrackHeight = t->GetHeight();
-            mIsResizingBetweenLinkedTracks = true;
+            SetCapturedTrack( t, IsResizingBetweenLinkedTracks );
          } else {
             // DM: Save the initial mouse location and the initial height
             mInitialTrackHeight = t->GetHeight();
          }
       }
-   } else if (mIsResizing) {
-
-      // DM: Dragging means that the mouse button IS down and has moved
-      //  from its initial location.  By the time we get here, we
-      //  have already received a ButtonDown() event and saved the
-      //  track being resized in mCapturedTrack.
-      if (event.Dragging()) {
-
-         int delta = (event.m_y - mMouseClickY);
-
-         //STM: We may be dragging one or two (stereo) tracks.  
-         // If two, resize proportionally if we are dragging the lower track, and
-         // adjust compensatively if we are dragging the upper track.
-         if (mIsResizingBelowLinkedTracks) {
-            Track *prev = mTracks->GetPrev(mCapturedTrack);
-
-            double proportion = static_cast < double >(mInitialTrackHeight)
-                / (mInitialTrackHeight + mInitialUpperTrackHeight);
-
-            int newTrackHeight = static_cast < int >
-                (mInitialTrackHeight + delta * proportion);
-
-            int newUpperTrackHeight = static_cast < int >
-                (mInitialUpperTrackHeight + delta * (1.0 - proportion));
-
-            //make sure neither track is smaller than 20;
-            if (newTrackHeight < 20)
-               newTrackHeight = 20;
-            if (newUpperTrackHeight < 20)
-               newUpperTrackHeight = 20;
-
-            mCapturedTrack->SetHeight(newTrackHeight);
-            prev->SetHeight(newUpperTrackHeight);
-         } else if (mIsResizingBetweenLinkedTracks) {
-
-            Track *next = mTracks->GetNext(mCapturedTrack);
-            int newUpperTrackHeight = mInitialUpperTrackHeight + delta;
-            int newTrackHeight = mInitialTrackHeight - delta;
-
-            // make sure neither track is smaller than 20;
-            if (newTrackHeight < 20) {
-               newTrackHeight = 20;
-               newUpperTrackHeight =
-                   mInitialUpperTrackHeight + mInitialTrackHeight - 20;
-            }
-            if (newUpperTrackHeight < 20) {
-               newUpperTrackHeight = 20;
-               newTrackHeight =
-                   mInitialUpperTrackHeight + mInitialTrackHeight - 20;
-            }
-
-            mCapturedTrack->SetHeight(newUpperTrackHeight);
-            next->SetHeight(newTrackHeight);
-         } else {
-            int newTrackHeight = mInitialTrackHeight + delta;
-            if (newTrackHeight < 20)
-               newTrackHeight = 20;
-            mCapturedTrack->SetHeight(newTrackHeight);
-         }
-         
-         Refresh(false);
-      }
+   } 
+   else if (event.ButtonUp(1)) 
+   {
       // DM: This happens when the button is released from a drag.
       //  Since we actually took care of resizing the track when
       //  we got drag events, all we have to do here is clean up.
       //  We also modify the undo state (the action doesn't become
       //  undo-able, but it gets merged with the previous undo-able
       //  event).
-      else if (event.ButtonUp(1)) {
-         mCapturedTrack = NULL;
-         mIsResizing = false;
-         mIsResizingBelowLinkedTracks = false;
-         mIsResizingBetweenLinkedTracks = false;
-         MakeParentRedrawScrollbars();
-         MakeParentModifyState();
+      SetCapturedTrack( NULL );
+      MakeParentRedrawScrollbars();
+      MakeParentModifyState();
+   }
+   else if (event.Dragging()) {
+      // DM: Dragging means that the mouse button IS down and has moved
+      //  from its initial location.  By the time we get here, we
+      //  have already received a ButtonDown() event and saved the
+      //  track being resized in mCapturedTrack.
+
+      int delta = (event.m_y - mMouseClickY);
+
+      //STM: We may be dragging one or two (stereo) tracks.  
+      // If two, resize proportionally if we are dragging the lower track, and
+      // adjust compensatively if we are dragging the upper track.
+      if (mMouseCapture == IsResizingBelowLinkedTracks) {
+         Track *prev = mTracks->GetPrev(mCapturedTrack);
+
+         double proportion = static_cast < double >(mInitialTrackHeight)
+             / (mInitialTrackHeight + mInitialUpperTrackHeight);
+
+         int newTrackHeight = static_cast < int >
+             (mInitialTrackHeight + delta * proportion);
+
+         int newUpperTrackHeight = static_cast < int >
+             (mInitialUpperTrackHeight + delta * (1.0 - proportion));
+
+         //make sure neither track is smaller than 20;
+         if (newTrackHeight < 20)
+            newTrackHeight = 20;
+         if (newUpperTrackHeight < 20)
+            newUpperTrackHeight = 20;
+
+         mCapturedTrack->SetHeight(newTrackHeight);
+         prev->SetHeight(newUpperTrackHeight);
+      } else if (mMouseCapture == IsResizingBetweenLinkedTracks) {
+
+         Track *next = mTracks->GetNext(mCapturedTrack);
+         int newUpperTrackHeight = mInitialUpperTrackHeight + delta;
+         int newTrackHeight = mInitialTrackHeight - delta;
+
+         // make sure neither track is smaller than 20;
+         if (newTrackHeight < 20) {
+            newTrackHeight = 20;
+            newUpperTrackHeight =
+                mInitialUpperTrackHeight + mInitialTrackHeight - 20;
+         }
+         if (newUpperTrackHeight < 20) {
+            newUpperTrackHeight = 20;
+            newTrackHeight =
+                mInitialUpperTrackHeight + mInitialTrackHeight - 20;
+         }
+
+         mCapturedTrack->SetHeight(newUpperTrackHeight);
+         next->SetHeight(newTrackHeight);
+      } else if (mMouseCapture == IsResizing )   {
+         int newTrackHeight = mInitialTrackHeight + delta;
+         if (newTrackHeight < 20)
+            newTrackHeight = 20;
+         mCapturedTrack->SetHeight(newTrackHeight);
       }
+      else
+      {
+         // don't refresh in this case.
+         return;
+      }
+      
+      Refresh(false);
    }
 }
 
@@ -3203,29 +3179,42 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
          ReleaseMouse();
    }
 
-   if (mIsVZooming) {
+   switch( mMouseCapture )
+   {
+   case IsVZooming: 
       HandleVZoom(event);
-   }
-   else if (mIsClosing)
+      break;
+   case IsClosing:
       HandleClosing(event);
-   else if (mIsMuting)
+      break;
+   case IsMuting:
       HandleMutingSoloing(event, false);
-   else if (mIsSoloing)
+      break;
+   case IsSoloing:
       HandleMutingSoloing(event, true);
-   else if (mIsResizing) {
+      break;
+   case IsResizing: 
+   case IsResizingBetweenLinkedTracks:
+   case IsResizingBelowLinkedTracks:
       HandleResize(event);
       HandleCursor(event);
-   }
-   else if (mIsRearranging)
+      break;
+   case IsRearranging:
       HandleRearrange(event);
-   else if (mIsGainSliding)
+      break;
+   case IsGainSliding:
       HandleSliders(event, false);
-   else if (mIsPanSliding)
+      break;
+   case IsPanSliding:
       HandleSliders(event, true);
-   else if (mIsMinimizing)
+      break;
+   case IsMinimizing:
       HandleMinimizing(event);
-   else
+      break;
+   default:
       TrackSpecificMouseEvent(event);
+      break;
+   }
 }
 
 // AS: I don't really understand why this code is sectioned off
@@ -3296,13 +3285,12 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
          //std::cout << ((LabelTrack*)pTrack)->OverGlyph(event.m_x, event.m_y) << std::endl;
          if(((LabelTrack*)pTrack)->OverGlyph(event.m_x, event.m_y))
          {
-            mIsAdjustingLabel = true;
-            mCapturedTrack=pTrack;
+            SetCapturedTrack(pTrack, IsAdjustingLabel);
          }
       } else if (event.Dragging()) {
          ;
       } else if( event.ButtonUp(1)) {
-         mIsAdjustingLabel = false;
+         SetCapturedTrack( NULL );
       }
       
       lTrack->HandleMouse(event, r,//mCapturedRect,
@@ -3326,7 +3314,7 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
       
       //If we are adjusting a label on a labeltrack, do not do anything 
       //that follows. Instead, redraw the track.
-      if(mIsAdjustingLabel)
+      if(mMouseCapture == IsAdjustingLabel)
       {
          Refresh(false);
          return;
@@ -3407,9 +3395,12 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
       break;
    }
 
-   if ((event.Moving() || event.ButtonUp(1)) &&
-       !mIsSelecting && !mIsEnveloping &&
-       !mIsSliding) {
+   if ((event.Moving() || event.ButtonUp(1))  &&
+       (mMouseCapture == IsUncaptured ))
+//       (mMouseCapture != IsSelecting ) && 
+//       (mMouseCapture != IsEnveloping) &&
+//       (mMouseCapture != IsSliding) )
+   {
       HandleCursor(event);
    }
    if (event.ButtonUp(1)) {
@@ -3436,7 +3427,8 @@ int TrackPanel::DetermineToolToUse( ControlToolBar * pCtb, wxMouseEvent & event)
    // Just like dragging.
    // But, this event might be the final button up
    // so keep the same tool.
-   if( mIsSliding || mIsSelecting || mIsEnveloping )
+//   if( mIsSliding || mIsSelecting || mIsEnveloping )
+   if( mMouseCapture != IsUncaptured )
       return currentTool;
 
    // So now we have to find out what we are near to..
@@ -3761,7 +3753,7 @@ void TrackPanel::DrawEverythingElse(wxDC * dc, const wxRect panelRect,
       i++;
    }
 
-   if (IsDragZooming()  && !mIsAdjustingLabel)
+   if (IsDragZooming()  && (mMouseCapture != IsAdjustingLabel))
       DrawZooming(dc, clip);
 
    // Paint over the part below the tracks
@@ -3835,7 +3827,7 @@ void TrackPanel::DrawZooming(wxDC * dc, const wxRect clip)
    dc->SetBrush(*wxTRANSPARENT_BRUSH);
    dc->SetPen(*wxBLACK_DASHED_PEN);
 
-   if (mIsVZooming) {
+   if (mMouseCapture==IsVZooming) {
       r.y = mZoomStart;
       r.x = GetVRulerOffset();
       r.width = 10000;
@@ -3873,11 +3865,11 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    mTrackLabel.DrawCloseBox(dc, r, false);
    mTrackLabel.DrawTitleBar(dc, r, t, false);
 
-   mTrackLabel.DrawMinimize(dc, r, t, mIsMinimizing, t->GetMinimized());
+   mTrackLabel.DrawMinimize(dc, r, t, (mMouseCapture==IsMinimizing), t->GetMinimized());
 
    if (t->GetKind() == Track::Wave) {
-      mTrackLabel.DrawMuteSolo(dc, r, t, mIsMuting, false);
-      mTrackLabel.DrawMuteSolo(dc, r, t, mIsSoloing, true);
+      mTrackLabel.DrawMuteSolo(dc, r, t, (mMouseCapture == IsMuting), false);
+      mTrackLabel.DrawMuteSolo(dc, r, t, (mMouseCapture == IsSoloing), true);
 
       mTrackLabel.DrawSliders(dc, (WaveTrack *)t, r, index);
    }
