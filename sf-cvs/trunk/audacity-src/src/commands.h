@@ -357,6 +357,30 @@ enum menuType {
 
 gPrefs->DeleteGroup("/Keyboard");
 
+#ifdef __MACOSX__
+gPrefs->Write("/Keyboard/0/Ctrl+N", (long)0);
+gPrefs->Write("/Keyboard/1/Ctrl+O", (long)0);
+gPrefs->Write("/Keyboard/2/Ctrl+W", (long)0);
+gPrefs->Write("/Keyboard/3/Ctrl+S", (long)0);
+gPrefs->Write("/Keyboard/15/Ctrl+Z", (long)0);
+gPrefs->Write("/Keyboard/16/Ctrl+R", (long)0);
+gPrefs->Write("/Keyboard/18/Ctrl+X", (long)0);
+gPrefs->Write("/Keyboard/19/Ctrl+C", (long)0);
+gPrefs->Write("/Keyboard/20/Ctrl+V", (long)0);
+gPrefs->Write("/Keyboard/21/Ctrl+T", (long)0);
+gPrefs->Write("/Keyboard/24/Ctrl+L", (long)0);
+gPrefs->Write("/Keyboard/23/Ctrl+K", (long)0);
+gPrefs->Write("/Keyboard/26/Ctrl+Y", (long)0);
+gPrefs->Write("/Keyboard/29/Ctrl+D", (long)0);
+gPrefs->Write("/Keyboard/30/Ctrl+A", (long)0);
+gPrefs->Write("/Keyboard/33/Ctrl+1", (long)0);
+gPrefs->Write("/Keyboard/34/Ctrl+2", (long)0);
+gPrefs->Write("/Keyboard/35/Ctrl+3", (long)0);
+gPrefs->Write("/Keyboard/36/Ctrl+F", (long)0);
+gPrefs->Write("/Keyboard/37/Ctrl+E", (long)0);
+gPrefs->Write("/Keyboard/39/Ctrl+U", (long)0);
+gPrefs->Write("/Keyboard/41/Ctrl+I", (long)0);
+#else
 gPrefs->Write("/Keyboard/0/Ctrl+N", (long)0);
 gPrefs->Write("/Keyboard/1/Ctrl+O", (long)0);
 gPrefs->Write("/Keyboard/2/Ctrl+W", (long)0);
@@ -380,5 +404,6 @@ gPrefs->Write("/Keyboard/38/Ctrl+F", (long)0);
 gPrefs->Write("/Keyboard/39/Ctrl+E", (long)0);
 gPrefs->Write("/Keyboard/41/Ctrl+U", (long)0);
 gPrefs->Write("/Keyboard/46/Ctrl+I", (long)0);
+#endif
 
 #endif
