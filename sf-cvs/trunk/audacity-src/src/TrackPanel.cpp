@@ -663,12 +663,15 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       mIsSelecting = false;
    } else if (event.ButtonDClick(1) && !event.ShiftDown()) {
       // Deselect all other tracks and select this one.
+
+
       SelectNone();
-      mViewInfo->sel0 = mTracks->GetMinOffset();
-      mViewInfo->sel1 = mTracks->GetEndTime();
       mTracks->Select(mCapturedTrack);
+      mViewInfo->sel0 = mCapturedTrack->GetOffset();
+      mViewInfo->sel1 = mCapturedTrack->GetEndTime();
 
       Refresh(false);
+      DisplaySelection();
 
       mCapturedTrack = NULL;
       mIsSelecting = false;
@@ -1113,12 +1116,31 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
 
       } else if (event.Dragging()) {
 
-         float yoffset = -mViewInfo->vpos;
-         yoffset += GetRulerHeight();
-         yoffset += selectedTrack->GetHeight() * (int)((mViewInfo->vpos + (event.m_y - GetRulerHeight())) / selectedTrack->GetHeight());
+         // The following code handles dragging samples around with the draw tool
+         // event is relative to the top of the ruler, so this needs to be accounted for
+         // when doing the redrawing.
 
+         //Calculate the height of the sample:
+         // start with the negative vertical position of the mViewInfo
+         //I can't figure out why this is done:
+         float yoffset = -mViewInfo->vpos;
+
+         //Add the ruler height
+         yoffset += GetRulerHeight();
+
+         // Add the height of the pixel in question
+         // This is done by (1) finding the proportionate level that the current mouse event
+         // occurred at and multiplying by the track height to get an actual pixel location.
+
+         yoffset += selectedTrack->GetHeight() * (int)((mViewInfo->vpos + (event.m_y - GetRulerHeight())) 
+                                                       / selectedTrack->GetHeight());
+
+         // Now, yoffset should indicate the current vertical position of the sample on the track.  
+         // use it to calculate yval, which does???
          float yval = -(event.m_y-yoffset) + (selectedTrack->GetHeight()/2);
 
+
+         //Calculate the sign of the event. Not clear on why this matters
          float sign = (event.m_y >= 0 ? 1 : -1);
 
          mDrawEnd = ((float)(yval - (sign * 0.5)) / (float)(selectedTrack->GetHeight()/2));
@@ -1422,9 +1444,11 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 
    SelectNone();
    mTracks->Select(t);
-   mViewInfo->sel0 = mTracks->GetMinOffset();
-   mViewInfo->sel1 = mTracks->GetEndTime();
-   Refresh(false);
+   mViewInfo->sel0 = t->GetOffset();
+   mViewInfo->sel1 = t->GetEndTime();
+
+   Refresh(false);  
+   DisplaySelection();
 }
 
 
@@ -2574,7 +2598,7 @@ void TrackPanel::OnSetName()
 
 
 //  Here, 'label' refers to the rectangle to the left of the track
-// or tracks (if stereo)
+// or tracks (if stereo); i.e., whether the label should be considered.
 Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
                               wxRect * trackRect, int *trackNum)
 {
