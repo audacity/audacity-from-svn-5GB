@@ -199,11 +199,10 @@ int SimpleBlockFile::ReadData(samplePtr data, sampleFormat format,
 
       // libsndfile gave us the 3 byte sample in the 3 most
       // significant bytes -- we want it in the 3 least
-      // significant bytes.  The cast to unsigned prevents
-      // sign extension.
+      // significant bytes.
       int *intPtr = (int *)data;
       for( int i = 0; i < framesRead; i++ )
-         intPtr[i] = (unsigned int)intPtr[i] >> 8;
+         intPtr[i] = intPtr[i] >> 8;
    }
    else {
       // Otherwise, let libsndfile handle the conversion and
