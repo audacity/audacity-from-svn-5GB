@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /Ob2 /I "." /I "w:\wx2\include" /I "..\src\include" /I "..\src\include\win32" /I "..\lib-src\allegro" /I "..\lib-src\expat" /I "..\lib-src\libid3tag" \I "..\lib-src\portaudio\pa_common" \I "..\lib-src\libsndfile\src" \I "..\lib-src\libmad" \I "..\lib-src\libogg\include" \I "..\lib-src\libvorbis\include" /D "NDEBUG" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /Ob2 /I "." /I "w:\wx2\include" /I "..\src\include" /I "..\src\include\win32" /I "..\lib-src\allegro" /I "..\lib-src\expat" /I "..\lib-src\libid3tag" /I "..\lib-src\portaudio\pa_common" /I "..\lib-src\libsndfile\src" /I "..\lib-src\libmad" /I "..\lib-src\libogg\include" /I "..\lib-src\libvorbis\include" /D "NDEBUG" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x809 /d "NDEBUG"
@@ -70,7 +70,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /Zi /Od /I "." /I "w:\wx2\include" /I "..\src\include" /I "..\src\include\win32" /I "..\lib-src\allegro" /I "..\lib-src\expat" /I "..\lib-src\libid3tag" \I "..\lib-src\portaudio\pa_common" \I "..\lib-src\libsndfile\src" \I "..\lib-src\libmad" \I "..\lib-src\libogg\include" \I "..\lib-src\libvorbis\include" /D "_DEBUG" /D DEBUG=1 /D "__WXDEBUG__" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /YX"wx/wxprec.h" /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /Zi /Od /I "." /I "w:\wx2\include" /I "..\src\include" /I "..\src\include\win32" /I "..\lib-src\allegro" /I "..\lib-src\expat" /I "..\lib-src\libid3tag" /I "..\lib-src\portaudio\pa_common" /I "..\lib-src\libsndfile\src" /I "..\lib-src\libmad" /I "..\lib-src\libogg\include" /I "..\lib-src\libvorbis\include" /D "_DEBUG" /D DEBUG=1 /D "__WXDEBUG__" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /YX"wx/wxprec.h" /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x809 /d "_DEBUG"
