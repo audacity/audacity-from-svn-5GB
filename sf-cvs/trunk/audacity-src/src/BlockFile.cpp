@@ -251,11 +251,13 @@ void BlockFile::GetMinMax(sampleCount start, sampleCount len,
 
    for( int i = 0; i < len; i++ )
    {
-      if( blockData[i] > max )
-         max = blockData[i];
-      if( blockData[i] < min )
-         min = blockData[i];
-      sumsq = (blockData[i] * blockData[i]);
+      float sample = ((float*)blockData)[i];
+
+      if( sample > max )
+         max = sample;
+      if( sample < min )
+         min = sample;
+      sumsq = (sample*sample);
    }
 
    DeleteSamples(blockData);
