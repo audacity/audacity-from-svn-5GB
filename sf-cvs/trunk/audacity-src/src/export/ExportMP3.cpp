@@ -229,7 +229,7 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
          
          wxString GetLibraryTypeString()
          {
-            return wxString(_("Only libmp3lame.so|libmp3lame.so|Shared Object files (*.so)|*.so|All Files (*)|*"));
+            return wxString(_("Only libmp3lame.so|libmp3lame.so|Primary Shared Object files (*.so)|*.so|Extended Libraries (*.so*)|*.so*|All Files (*)|*"));
          }
          
          wxString GetLibraryMessage()
