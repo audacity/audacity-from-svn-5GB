@@ -101,7 +101,23 @@ SOURCE=..\src\au_g72x.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\command.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\common.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\double64.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\dwvw.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\file_io.c
 # End Source File
 # Begin Source File
 
@@ -109,7 +125,19 @@ SOURCE=..\src\float32.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\gsm610.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\ima_adpcm.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\ircam.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\ms_adpcm.c
 # End Source File
 # Begin Source File
 
@@ -129,7 +157,19 @@ SOURCE=..\src\raw.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\samplitude.c
+SOURCE=..\src\rx2.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\sd2.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\sds.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\sfendian.c
 # End Source File
 # Begin Source File
 
@@ -141,6 +181,10 @@ SOURCE=..\src\svx.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\txw.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\ulaw.c
 # End Source File
 # Begin Source File
@@ -149,19 +193,15 @@ SOURCE=..\src\voc.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\w64.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\wav.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\wav_gsm610.c
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\wav_ima_adpcm.c
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\wav_ms_adpcm.c
+SOURCE=..\src\wav_w64.c
 # End Source File
 # End Group
 # Begin Group "Header Files"
