@@ -33,6 +33,12 @@ libmad/mad.h: libmad/.libs/libmad.a
 libsamplerate/src/.libs/libsamplerate.a:
 	cd libsamplerate && $(MAKE)
 
+libflac/src/libFLAC/.libs/libFLAC.a:
+	cd libflac && $(MAKE)
+
+libflac/src/libFLAC++/.libs/libFLAC++.a:
+	cd libflac && $(MAKE)
+
 libsndfile/src/.libs/libsndfile.a:
 	cd libsndfile && $(MAKE)
 
@@ -57,6 +63,7 @@ clean:
 	-$(MAKE) -C libsamplerate clean
 	-$(MAKE) -C libsndfile clean
 	-$(MAKE) -C libvorbis clean
+	-$(MAKE) -C libflac clean
 	-$(MAKE) -C portaudio/pa_unix_oss clean
 	-$(MAKE) -C portaudio/pa_mac_core clean
 	-$(MAKE) -C portmixer/px_unix_oss clean
@@ -71,6 +78,7 @@ distclean:
 	-$(MAKE) -C libsamplerate distclean
 	-$(MAKE) -C libsndfile distclean
 	-$(MAKE) -C libvorbis distclean
+	-$(MAKE) -C libflac distclean
 	-$(MAKE) -C portaudio/pa_unix_oss distclean
 	-$(MAKE) -C portaudio/pa_mac_core distclean
 	-$(MAKE) -C portmixer/px_unix_oss distclean
