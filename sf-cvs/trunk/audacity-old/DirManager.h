@@ -32,6 +32,7 @@
 #define _DIRMANAGER_
 
 #include <wx/string.h>
+#include <wx/hash.h>
 
 #include "BlockFile.h"
 

@@ -42,6 +42,7 @@
 #include "ImportRaw.h"
 #include "ImportMIDI.h"
 #include "ImportMP3.h"
+#include "ImportOGG.h"
 #include "LabelTrack.h"
 #include "Mix.h"
 #include "NoteTrack.h"
@@ -175,6 +176,7 @@ enum {
   ImportLabelsID,
   ImportMIDIID,
   ImportMP3ID,
+  ImportOGGID,
   ImportRawID,
   
   AlignZeroID,
@@ -238,6 +240,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
   EVT_MENU(ImportMIDIID, AudacityProject::OnImportMIDI)
   EVT_MENU(ImportRawID, AudacityProject::OnImportRaw)
   EVT_MENU(ImportMP3ID, AudacityProject::OnImportMP3)
+  EVT_MENU(ImportOGGID, AudacityProject::OnImportOGG)
   EVT_MENU(AlignID, AudacityProject::OnAlign)
   EVT_MENU(AlignZeroID, AudacityProject::OnAlignZero)
   EVT_MENU(QuickMixID, AudacityProject::OnQuickMix)
@@ -335,6 +338,7 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   mProjectMenu->Append(ImportLabelsID, "Import Labels...");
   mProjectMenu->Append(ImportMIDIID, "Import &MIDI...");
   mProjectMenu->Append(ImportMP3ID, "Import MP&3...");
+  mProjectMenu->Append(ImportOGGID, "Import &OGG...");
   mProjectMenu->Append(ImportRawID, "Import Raw Data...");
   mProjectMenu->AppendSeparator();
   mProjectMenu->Append(QuickMixID, "&Quick Mix");
@@ -1013,6 +1017,25 @@ void AudacityProject::OpenFile(wxString fileName)
     }
     else {
 	    ImportMP3(fileName);
+		if (!mTracks->IsEmpty()) {
+		  mFileName = fileName;
+		  mName = wxFileNameFromPath(mFileName);
+		  SetTitle(mName);
+		}
+	    return;
+    }
+  }
+
+// Check for .OGG suffix
+
+  if (!fileName.Right(3).CmpNoCase("ogg")) {
+    if (mDirty || !mTracks->IsEmpty()) {
+	    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
+	    project->ImportOGG(fileName);
+      return;
+    }
+    else {
+	    ImportOGG(fileName);
 		if (!mTracks->IsEmpty()) {
 		  mFileName = fileName;
 		  mName = wxFileNameFromPath(mFileName);
@@ -1836,6 +1859,39 @@ void AudacityProject::ImportMP3(wxString fileName)
     FixScrollbars();
     mTrackPanel->Refresh(false);
   }
+}
+
+void AudacityProject::OnImportOGG(wxCommandEvent& event)
+{
+	wxString fileName =
+		wxFileSelector("Select an OGG file...",
+			"", //Path
+			"", //Name
+			".ogg", //Extension
+			"*.ogg", //Wildcard
+			0, //Flags
+			this); //Parent
+	
+	if(fileName != "")
+		ImportOGG(fileName);
+}
+
+void AudacityProject::ImportOGG(wxString fileName)
+{
+	WaveTrack **channels = 0;
+	int numChannels = 0;
+
+	if(::ImportOGG(this, fileName, &channels, &numChannels, &mDirManager)) {
+		for(int c = 0; c < numChannels; c++) {
+			mTracks->Add(channels[c]);
+			channels[c]->selected = true;
+		}
+
+		PushState();
+
+		FixScrollbars();
+		mTrackPanel->Refresh(false);
+	}
 }
 
 void AudacityProject::UpdateMenus()

@@ -73,6 +73,7 @@ public:
   void SaveAs();
   void ImportFile(wxString fileName);
   void ImportMP3(wxString fileName);
+  void ImportOGG(wxString fileName);
 
   // File Menu
 
@@ -119,6 +120,7 @@ public:
   void OnImportLabels(wxCommandEvent& event);
   void OnImportMIDI(wxCommandEvent& event);
   void OnImportMP3(wxCommandEvent& event);
+  void OnImportOGG(wxCommandEvent& event);
   void OnImportRaw(wxCommandEvent& event);
 
   void OnQuickMix(wxCommandEvent& event);

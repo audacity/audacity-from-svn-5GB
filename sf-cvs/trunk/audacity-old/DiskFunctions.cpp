@@ -13,6 +13,11 @@
 #include <windows.h>		//the windows stuff
 #include <tchar.h>
 #endif
+
+#ifdef linux
+#include <sys/vfs.h>
+#endif
+
 #include <iostream.h>
 #include <stdio.h>			//the std I/O stuff
 
@@ -86,8 +91,7 @@ long GetFreeDiskSpace( TCHAR *path )
 		return -1;
 	}
 }
-#else
-#ifdef __WXMAC__
+#elif defined(__WXMAC__)
 long GetFreeDiskSpace( const char *path )
 {
 	char *str = new char[strlen(path)+1];
@@ -128,6 +132,23 @@ long GetFreeDiskSpace( const char *path )
 	delete[] str;
 	
 	return freeBytes;
+}
+#elif defined(__WXGTK__)
+#ifdef linux
+long GetFreeDiskSpace( const char *path )
+{
+	struct statfs theStats;
+	if(statfs(path, &theStats) != 0)
+		return -1L;
+	
+	/* f_bsize is described in the man page as "optimal transfer block size."
+	 * I'm not sure what they mean my that, but on my system at least, it
+	 * correctly reports the block size of the filesystem. glibc >= 2.1
+	 * offers a function "statvfs" which has a field for the actual block
+	 * size, but I'd rather not create a dependency on glibc.
+	 *
+	 * f_bavail is "free blocks available to non-superuser." */
+	return theStats.f_bavail * theStats.f_bsize;
 }
 #else
 #warning GetFreeDiskSpace has not been implemented on this system...
