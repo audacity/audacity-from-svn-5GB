@@ -4,7 +4,9 @@ require_once 'main.inc.php';
 $title = $screenshotsStr;
 include 'top.inc.php';
 
-<?php BoxTop($screenshotsStr); ?>
+BoxTop($screenshotsStr);
+
+?>
 
 <center>
 
@@ -35,8 +37,9 @@ Audacity 1.0.0 / Mac OS X
 
 </center>
 
-<?php BoxBottom(); ?>
+<?php
 
+BoxBottom();
 
 include 'bottom.inc.php';
 

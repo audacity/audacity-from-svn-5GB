@@ -21,7 +21,10 @@ if ($fp) {
   }
   fclose($fp);
 
-  $target = "../$lang/main.inc.php";
+  $target = "../updates/$lang/main.inc.php";
+  if (!file_exists($target)) {
+    $target = "../$lang/main.inc.php";
+  }
 
   $fp = fopen($target, "r");
 
