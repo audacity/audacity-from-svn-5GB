@@ -827,8 +827,11 @@ void TrackPanel::UpdateIndicator(wxDC * dc)
                                      mViewInfo->h + mViewInfo->screen);
 
    // BG: Scroll screen if option is set
+   // msmeyer: But only if not playing looped or in one-second mode
    AudacityProject *p = (AudacityProject*)GetParent();
    if (mViewInfo->bUpdateTrackIndicator &&
+       p->mLastPlayMode != loopedPlay &&
+       p->mLastPlayMode != oneSecondPlay && 
        gAudioIO->IsStreamActive(p->GetAudioIOToken()) &&
        indicator>=0 && !onScreen && !gAudioIO->IsPaused())
       mListener->TP_ScrollWindow(indicator);

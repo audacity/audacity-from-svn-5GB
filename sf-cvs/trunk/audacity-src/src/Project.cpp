@@ -327,6 +327,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                  const wxPoint & pos,
                                  const wxSize & size)
    : wxFrame(parent, id, "Audacity", pos, size),
+     mLastPlayMode(normalPlay),
      mImportProgressDialog(NULL),
      mRate((double) gPrefs->Read("/SamplingRate/DefaultProjectSampleRate", AudioIO::GetOptimalSupportedSampleRate())),
      mDefaultFormat((sampleFormat) gPrefs->

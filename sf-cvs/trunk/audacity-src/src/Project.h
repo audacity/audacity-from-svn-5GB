@@ -86,6 +86,11 @@ extern AProjectArray gAudacityProjects;
 WX_DEFINE_ARRAY(ToolBar *, ToolBarArray);
 WX_DEFINE_ARRAY(wxMenu *, MenuArray);
 
+enum PlayMode {
+   normalPlay,
+   oneSecondPlay,
+   loopedPlay
+};
 
 class AudacityProject:public wxFrame,
                       public TrackPanelListener,
@@ -227,6 +232,8 @@ class AudacityProject:public wxFrame,
    virtual XMLTagHandler *HandleXMLChild(const char *tag);
    virtual void WriteXML(int depth, FILE *fp);
 
+   PlayMode mLastPlayMode;
+
  private:
 
 
@@ -324,7 +331,6 @@ class AudacityProject:public wxFrame,
    int  mAudioIOToken;
 
  public:
-
     DECLARE_EVENT_TABLE()
 };
 

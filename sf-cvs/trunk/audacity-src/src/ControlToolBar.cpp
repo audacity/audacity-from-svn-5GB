@@ -445,18 +445,16 @@ void ControlToolBar::OnKeyEvent(wxKeyEvent & event)
       return;
    }
 
-   wxCommandEvent dummyEvent;
-
    if (event.KeyCode() == WXK_SPACE) {
       if (gAudioIO->IsStreamActive(GetActiveProject()->GetAudioIOToken())) {
          SetPlay(false);
          SetStop(true);
-         OnStop(dummyEvent);
+         StopPlaying();
       }
       else if (!gAudioIO->IsBusy()) {
          SetPlay(true);
          SetStop(false);
-         OnPlay(dummyEvent);
+         PlayCurrentRegion();
       }
       return;
    }
@@ -535,7 +533,8 @@ void ControlToolBar::SetRecord(bool down)
       mRecord->PopUp();
 }
 
-void ControlToolBar::PlayPlayRegion(double t0, double t1)
+void ControlToolBar::PlayPlayRegion(double t0, double t1,
+                                    bool looped /* = false */)
 {
    if (gAudioIO->IsBusy())
       return;
@@ -597,7 +596,7 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1)
          int token =
             gAudioIO->StartStream(t->GetWaveTrackArray(false),
                                   WaveTrackArray(), t->GetTimeTrack(),
-                                  p->GetRate(), t0, t1);
+                                  p->GetRate(), t0, t1, looped);
          if (token != 0) {
             success = true;
             p->SetAudioIOToken(token);
@@ -621,13 +620,28 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1)
 
 void ControlToolBar::OnPlay(wxCommandEvent &evt)
 {
+   PlayCurrentRegion();
+}
+
+void ControlToolBar::PlayCurrentRegion(bool looped /* = false */)
+{
    AudacityProject *p = GetActiveProject();
-   if (p) {
-     PlayPlayRegion(p->GetSel0(),p->GetSel1());
+   if (p)
+   {
+      if (looped)
+         p->mLastPlayMode = loopedPlay;
+      else
+         p->mLastPlayMode = normalPlay;
+      PlayPlayRegion(p->GetSel0(), p->GetSel1(), looped);
    }
 }
 
 void ControlToolBar::OnStop(wxCommandEvent &evt)
+{
+   StopPlaying();
+}
+
+void ControlToolBar::StopPlaying()
 {
    mStop->PushDown();
 
@@ -749,7 +763,7 @@ void ControlToolBar::OnRewind(wxCommandEvent &evt)
    AudacityProject *p = GetActiveProject();
    if (p) {
       if (gAudioIO->IsStreamActive(p->GetAudioIOToken()))
-         OnStop(evt);
+         StopPlaying();
       
       p->Rewind(mRewind->WasShiftDown());
    }
@@ -764,7 +778,7 @@ void ControlToolBar::OnFF(wxCommandEvent &evt)
 
    if (p) {
       if (gAudioIO->IsStreamActive(p->GetAudioIOToken()))
-         OnStop(evt);
+         StopPlaying();
       
       p->SkipEnd(mFF->WasShiftDown());
    }

@@ -6,6 +6,7 @@
 
   Dominic Mazzoni
   Joshua Haberman
+  Markus Meyer
 
   Use the PortAudio library to play and record sound
 
@@ -94,6 +95,7 @@ AudioIO::AudioIO()
 
    mNumCaptureChannels = 0;
    mPaused = false;
+   mPlayLooped = false;
 
    PaError err = Pa_Initialize();
 
@@ -330,7 +332,7 @@ void AudioIO::HandleDeviceChange()
 int AudioIO::StartStream(WaveTrackArray playbackTracks,
                          WaveTrackArray captureTracks,
                          TimeTrack *timeTrack, double sampleRate,
-                         double t0, double t1)
+                         double t0, double t1, bool playLooped /* = false */)
 {
    if( IsBusy() )
       return 0;
@@ -350,6 +352,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mCaptureTracks  = captureTracks;
    mTotalSamplesPlayed = 0;
    mPausedSeconds = 0;
+   mPlayLooped = playLooped;
 
    //
    // The RingBuffer sizes, and the max amount of the buffer to
@@ -842,13 +845,20 @@ bool AudioIO::IsAudioTokenActive(int token)
    return ( token > 0 && token == mStreamToken );
 }
 
+double AudioIO::NormalizeStreamTime(double absoluteTime) const
+{
+   while (absoluteTime > mT1)
+      absoluteTime -= mT1 - mT0;
+   return absoluteTime;
+}
+
 double AudioIO::GetStreamTime()
 {
    if( !IsBusy() )
       return -1000000000;
 
    if( mPaused )
-      return mPausePosition;
+      return NormalizeStreamTime(mPausePosition);
 
 #if USE_PORTAUDIO_V19
 
@@ -864,7 +874,7 @@ double AudioIO::GetStreamTime()
    double deltat = Pa_GetStreamTime(stream) - mLastBufferAudibleTime;
 
    double time = lastBufferTime + deltat;
-   return time;
+   return NormalizeStreamTime(time);
 #else
    PaStream *stream = mPortStreamV18;
 
@@ -879,7 +889,7 @@ double AudioIO::GetStreamTime()
    }
    mLastIndicator = indicator;
    mLastStableIndicator = indicator;
-   return indicator;
+   return NormalizeStreamTime(indicator);
 #endif
 }
 
@@ -965,14 +975,7 @@ void AudioIO::FillBuffers()
       //
       // Determine how much this will globally advance playback time
       //
-      double deltat = commonlyAvail / mRate;
-
-      //
-      // Never fill more than this amount at a time.  This
-      // significantly improves performance.
-      //
-      if (deltat > mMaxPlaybackSecsToCopy)
-         deltat = mMaxPlaybackSecsToCopy;
+      double secsAvail = commonlyAvail / mRate;
 
       //
       // Don't fill the buffers at all unless we can do the
@@ -983,27 +986,49 @@ void AudioIO::FillBuffers()
       // The exception is if we're at the end of the selected
       // region - then we should just fill the buffer.
       //
-      if (deltat == mMaxPlaybackSecsToCopy ||
-          (deltat > 0 && mT+deltat >= mT1))
+      if (secsAvail >= mMaxPlaybackSecsToCopy ||
+          (!mPlayLooped && (secsAvail > 0 && mT+secsAvail >= mT1)))
       {
-         if( mT + deltat > mT1 )
-         {
-            deltat = mT1 - mT;
-            if( deltat < 0.0 )
-               deltat = 0.0;
-         }
-         mT += deltat;
-         
-         for( i = 0; i < mPlaybackTracks.GetCount(); i++ )
-         {
-            // The mixer here isn't actually mixing: it's just doing
-            // resampling, format conversion, and possibly time track
-            // warping
-            int processed =
-               mPlaybackMixers[i]->Process((int)(deltat * mRate + 0.5));
-            samplePtr warpedSamples = mPlaybackMixers[i]->GetBuffer();
-            mPlaybackBuffers[i]->Put(warpedSamples, floatSample, processed);
-         }
+         // Limit maximum buffer size (increases performance)
+         if (secsAvail > mMaxPlaybackSecsToCopy)
+            secsAvail = mMaxPlaybackSecsToCopy;
+
+         // msmeyer: When playing a very short selection in looped
+         // mode, the selection must be copied to the buffer multiple
+         // times, to ensure, that the buffer has a reasonable size
+         // This is the purpose of this loop.
+         do {
+            double deltat = secsAvail;
+
+            if( mT + deltat > mT1 )
+            {
+               deltat = mT1 - mT;
+               if( deltat < 0.0 )
+                  deltat = 0.0;
+            }
+            mT += deltat;
+            secsAvail -= deltat;
+
+            for( i = 0; i < mPlaybackTracks.GetCount(); i++ )
+            {
+               // The mixer here isn't actually mixing: it's just doing
+               // resampling, format conversion, and possibly time track
+               // warping
+               int processed =
+                  mPlaybackMixers[i]->Process((int)(deltat * mRate + 0.5));
+               samplePtr warpedSamples = mPlaybackMixers[i]->GetBuffer();
+               mPlaybackBuffers[i]->Put(warpedSamples, floatSample, processed);
+            }
+      
+            // msmeyer: If playing looped, check if we are at the end of the buffer
+            // and if yes, restart from the beginning.
+            if (mPlayLooped && mT >= mT1)
+            {
+               for (i = 0; i < mPlaybackTracks.GetCount(); i++)
+                  mPlaybackMixers[i]->Restart();
+               mT = mT0;
+            }
+         } while (mPlayLooped && secsAvail > 0.0);
       }
    }
 
@@ -1132,7 +1157,8 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
          // If our buffer is empty and the time indicator is past
          // the end, then we've actually finished playing the entire
          // selection.
-         if (len == 0 && gAudioIO->mT >= gAudioIO->mT1 )
+         // msmeyer: We never finish if we are playing looped
+         if (len == 0 && gAudioIO->mT >= gAudioIO->mT1 && !gAudioIO->mPlayLooped)
          {
 #if USE_PORTAUDIO_V19
             callbackReturn = paComplete;

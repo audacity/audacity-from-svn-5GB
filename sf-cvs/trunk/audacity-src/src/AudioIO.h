@@ -57,7 +57,7 @@ class AudioIO {
     * instance.  For use with IsStreamActive() below */
    int StartStream(WaveTrackArray playbackTracks, WaveTrackArray captureTracks,
                    TimeTrack *timeTrack, double sampleRate,
-                   double t0, double t1);
+                   double t0, double t1, bool playLooped = false);
 
    void StopStream();
 
@@ -122,19 +122,24 @@ class AudioIO {
     */
    static int GetOptimalSupportedSampleRate();
 
-   // This is given in seconds based on starting at t0
+   /* This is given in seconds based on starting at t0
+    * When playing looped, this will start from t0 again,
+    * too. So the returned time should be always between
+    * t0 and t1
+    */
    double GetStreamTime();
+
    sampleFormat GetCaptureFormat() { return mCaptureFormat; }
    int GetNumCaptureChannels() { return mNumCaptureChannels; }
 
-
-
-public: 
+private:
 
    void FillBuffers();
 
    int GetCommonlyAvailPlayback();
    int GetCommonlyAvailCapture();
+
+   double NormalizeStreamTime(double absoluteTime) const;
 
    AudioThread        *mThread;
    RingBuffer        **mCaptureBuffers;
@@ -180,6 +185,8 @@ public:
    float               mMixerOutputVol;
    float               mMixerInputVol;
    #endif
+
+   bool                mPlayLooped;
 
    friend class AudioThread;
 
