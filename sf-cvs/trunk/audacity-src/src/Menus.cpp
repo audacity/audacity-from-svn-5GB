@@ -1390,8 +1390,15 @@ void AudacityProject::OnCut()
    while (n) {
       if (n->GetSelected()) {
          n->Cut(mViewInfo.sel0, mViewInfo.sel1, &dest);
-         if (dest)
+         if (dest) {
+            dest->SetChannel(n->GetChannel());
+            dest->SetLinked(n->GetLinked());
+            dest->SetName(n->GetName());
+            if (n->GetKind() == Track::Wave) {
+               ((WaveTrack *)dest)->SetRate(((WaveTrack *)n)->GetRate());
+            }
             msClipboard->Add(dest);
+         }
       }
       n = iter.Next();
    }
@@ -1421,8 +1428,15 @@ void AudacityProject::OnCopy()
    while (n) {
       if (n->GetSelected()) {
          n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
-         if (dest)
+         if (dest) {
+            dest->SetChannel(n->GetChannel());
+            dest->SetLinked(n->GetLinked());
+            dest->SetName(n->GetName());
+            if (n->GetKind() == Track::Wave) {
+               ((WaveTrack *)dest)->SetRate(((WaveTrack *)n)->GetRate());
+            }
             msClipboard->Add(dest);
+         }
       }
       n = iter.Next();
    }
@@ -1436,6 +1450,78 @@ void AudacityProject::OnCopy()
 
 void AudacityProject::OnPaste()
 {
+   // If nothing's selected, we just insert new tracks...so first
+   // check to see if anything's selected
+   
+   TrackListIterator iter2(mTracks);
+   Track *countTrack = iter2.First();
+   int numSelected =0;
+   while (countTrack) {
+      if (countTrack->GetSelected())
+         numSelected++;
+      countTrack = iter2.Next();
+   }
+   
+   if (numSelected == 0) {
+      TrackListIterator clipIter(msClipboard);
+      Track *c = clipIter.First();
+      Track *n;
+
+      while (c) {
+         if (msClipProject != this && c->GetKind() == Track::Wave)
+            ((WaveTrack *) c)->Lock();
+         
+         switch(c->GetKind()) {
+         case Track::Wave: {
+            WaveTrack *w = (WaveTrack *)c;
+            n = mTrackFactory->NewWaveTrack(w->GetSampleFormat());
+            ((WaveTrack *)n)->SetRate(w->GetRate());
+            } break;
+
+         case Track::Note:
+            n = mTrackFactory->NewNoteTrack();
+            break;
+
+         case Track::Label:
+            n = mTrackFactory->NewLabelTrack();
+            break;
+            
+         case Track::Time:
+            n = mTrackFactory->NewTimeTrack();
+            break;
+
+         default:
+            c = clipIter.Next();
+            continue;
+         }
+
+         n->SetLinked(c->GetLinked());
+         n->SetChannel(c->GetChannel());
+         n->SetName(c->GetName());
+
+         n->Paste(0.0, c);
+         mTracks->Add(n);
+         n->SetSelected(true);         
+         
+         if (msClipProject != this && c->GetKind() == Track::Wave)
+            ((WaveTrack *) c)->Unlock();
+         
+         c = clipIter.Next();
+      }
+
+      mViewInfo.sel0 = 0.0;
+      mViewInfo.sel1 = msClipLen;
+      
+      PushState(_("Pasted from the clipboard"), _("Paste"));
+      
+      FixScrollbars();
+      mTrackPanel->Refresh(false);
+
+      return;
+   }
+
+   // Otherwise, paste into the selected tracks.
+
    if (mViewInfo.sel0 != mViewInfo.sel1)
       Clear();
 

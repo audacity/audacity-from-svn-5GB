@@ -119,6 +119,7 @@ int Importer::Import(wxString fName,
       if( mInFile != NULL )
       {
          mInFile->SetProgressCallback(progressCallback, userData);
+         numTracks = 0;
          if( mInFile->Import(trackFactory, tracks, &numTracks) == true )
          {
             if (numTracks > 0) {
@@ -128,6 +129,12 @@ int Importer::Import(wxString fName,
             }
          }
          delete mInFile;
+
+         // This will happen if the user cancelled, or if we
+         // tried and got an error partially through.  Either way,
+         // no need to try any other formats at this point!
+         if (numTracks > 0)
+            return 0;
       }
       importPluginNode = importPluginNode->GetNext();
    }

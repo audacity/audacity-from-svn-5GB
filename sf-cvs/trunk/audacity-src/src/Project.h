@@ -237,6 +237,7 @@ class AudacityProject:public wxFrame,
 
    // Callbacks for backend operations
 
+   bool mUserCanceledProgress;
    static bool ImportProgressCallback(void *self, float percent);
 
    wxProgressDialog *mImportProgressDialog;
