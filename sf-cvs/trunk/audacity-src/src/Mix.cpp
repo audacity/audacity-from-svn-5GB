@@ -70,8 +70,6 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
    if (numMono == numWaves || numLeft == numWaves || numRight == numWaves)
       mono = true;
 
-   printf("mono: %d\n", (int)mono);
-
    double totalTime = 0.0;
 
    waveArray = new WaveTrack *[numWaves];
