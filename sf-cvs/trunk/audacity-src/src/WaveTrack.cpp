@@ -1008,7 +1008,7 @@ void WaveTrack::CopyWrite(samplePtr buffer, WaveBlock *b,
    GetDirManager()->Deref(oldBlockFile);
 
    b->f->WriteData(newBuffer, mSampleFormat, b->len);
-   UpdateSummaries(newBuffer, b, len);
+   UpdateSummaries(newBuffer, b, b->len);
 
    DeleteSamples(newBuffer);
 }
