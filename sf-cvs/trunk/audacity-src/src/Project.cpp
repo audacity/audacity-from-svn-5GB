@@ -194,7 +194,7 @@ mRate((double) gPrefs->
 mDefaultFormat((sampleFormat) gPrefs->
                Read("/SamplingRate/DefaultProjectSampleFormat",
                     floatSample)), mDirty(false), mDrag(NULL),
-mTrackPanel(NULL), mHistoryWindow(NULL), mAutoScrolling(false),
+mTrackPanel(NULL), mAutoScrolling(false), mHistoryWindow(NULL),
 mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
 {
    // Create track list
