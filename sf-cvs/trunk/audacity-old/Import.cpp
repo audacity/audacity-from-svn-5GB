@@ -38,17 +38,19 @@ bool ImportWAV(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager 
   
   err = snd_open(&sndfile, &flags);
   if (err) return false;
-  
-  if (sndfile.format.channels < 1 || sndfile.format.channels > 2)
+
+  int channels = sndfile.format.channels;
+
+  if (channels < 1 || channels > 2)
   {
     wxMessageBox("Unknown audio format.");
-	  return false;
+	return false;
   }
 
   *dest1 = new WaveTrack(dirManager);
   wxASSERT(*dest1);
   (*dest1)->rate = sndfile.format.srate;
-  if (sndfile.format.channels == 2) {
+  if (channels == 2) {
     *dest2 = new WaveTrack(dirManager);
     wxASSERT(*dest1);
     (*dest2)->rate = sndfile.format.srate;
@@ -60,15 +62,15 @@ bool ImportWAV(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager 
   sndbuffer.u.mem.buffer = 0;
   sndbuffer.u.mem.buffer_len = 0;
   sndbuffer.u.mem.buffer_pos = 0;
-  sndbuffer.format.channels = sndfile.format.channels;
+  sndbuffer.format.channels = channels;
   sndbuffer.format.mode = SND_MODE_PCM; // SND_MODE_FLOAT
   sndbuffer.format.bits = 16;
   sndbuffer.format.srate = sndfile.format.srate;
 
   int maxblocksize = WaveTrack::GetIdealBlockSize();
 
-  char *srcbuffer = new char[maxblocksize*2];
-  char *dstbuffer = new char[maxblocksize*2];
+  char *srcbuffer = new char[maxblocksize*2*channels];
+  char *dstbuffer = new char[maxblocksize*2*channels];
   char *leftbuffer = new char[maxblocksize*2];
   char *rightbuffer = new char[maxblocksize*2];
 
@@ -89,7 +91,7 @@ bool ImportWAV(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager 
     if (block > 0) {
       long b2 = snd_convert(&sndbuffer, dstbuffer,  // to
 			    &sndfile, srcbuffer, block);      // from
-      if (sndfile.format.channels == 1)
+      if (channels == 1)
 	(*dest1)->Append((sampleType *)dstbuffer, b2);
       else {
 	for(int i=0; i<b2; i++) {
