@@ -21,16 +21,16 @@ if ($fp) {
   }
   fclose($fp);
 
-  $target = "../$lang/main.inc.php";
-  $b = 1;
-  while(file_exists("$target.bk$b")) {
-    $b++;
+  $updatefile = "../updates/$lang/main.inc.php";
+
+  $target = $updatefile;
+  if (!file_exists($target)) {
+    $target = "../$lang/main.inc.php";
   }
-  $backup = "$target.bk$b";
 
   if ($update == "true") {
-    $tmpfile = tempnam("../$lang", "tmp");
-    $fp = fopen($tmpfile, "w");
+    mkdir("../updates/$lang", 0777);
+    $fp = fopen($updatefile, "w");
     if (!($fp)) {
       $update = "Could not write temp file.";
     }
@@ -44,18 +44,12 @@ if ($fp) {
       }
       fwrite($fp, "?>\n");
       fclose($fp);
-      chmod($tmpfile, 0666);
-      if (copy($target, $backup)) {
-        rename($tmpfile, $target);
-      }
-      else {
-        $update = "Could not make backup copy of old translation.";
-      }
+      chmod($updatefile, 0666);
     }
+    $target = $updatefile;
   }
 
   $fp = fopen($target, "r");
-
   if ($fp) {
     while($line = fgets($fp, 1024)) {
       if (ereg("\\\$([a-zA-Z0-9]+).*=.*\"(.*)\"", $line, $matches)) {

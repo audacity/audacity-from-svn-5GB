@@ -21,10 +21,12 @@ if ($fp) {
   }
   fclose($fp);
 
-  $target = "../$lang/main.inc.php";
+  $target = "../updates/$lang/main.inc.php";
+  if (!file_exists($target)) {
+    $target = "../$lang/main.inc.php";
+  }
 
   $fp = fopen($target, "r");
-
   if ($fp) {
     while($line = fgets($fp, 1024)) {
       if (ereg("\\\$([a-zA-Z0-9]+).*=.*\"(.*)\"", $line, $matches)) {
@@ -58,36 +60,17 @@ header("Content-type: text/html; charset=$charset");
 <?php
 
 if ($newtranslation) {
-  $target = "../$lang/$file";
-  $b = 1;
-  while(file_exists("$target.bk$b")) {
-    $b++;
-  }
-  $backup = "$target.bk$b";
-
-  $tmpfile = tempnam("../$lang", "tmp");
-  $fp = fopen($tmpfile, "w");
+  $target = "../updates/$lang/$file";
+  $fp = fopen($target, "w");
   if (!($fp)) {
-    $update = "Could not write temp file.";
+    $update = "Could not write updated file to disk.";
   }
   else {
     fwrite($fp, stripslashes($newtext));
     fclose($fp);
     $val = stripslashes(${$key});
-    chmod($tmpfile, 0666);
-    if (file_exists("$target")) {
-      if (copy($target, $backup)) {
-	rename($tmpfile, $target);
-	$update = "Successfully updated translation of $file.";
-      }
-      else {
-	$update = "Could not make backup copy of old translation.";
-      }
-    }
-    else {
-      rename($tmpfile, $target);
-      $update = "Successfully added translation of $file.";
-    }
+    chmod($target, 0666);
+    $update = "Successfully updated translation of $file.";
   }
 }
 
@@ -120,12 +103,16 @@ if ($dir = @opendir("../en/")) {
       $b1 = "";
       $b2 = "";
       $n++;
-      if (is_file("../$lang/$file")) {
-        $new = filemtime("../$lang/$file");
+      if (is_file("../updates/$lang/$file"))
+	     $langfile = "../updates/$lang/$file";
+      else
+	     $langfile = "../$lang/$file";
+      if (is_file($langfile)) {
+        $new = filemtime($langfile);
         if ($new > $old + 60)
           $s = "up to date";
         else {
-          $when = date("Y-m-d", $new);
+          $when = date("Y-m-d", $old);
           $s = "modified $when";
           $bg = " bgcolor=#eeeeee";
           $b1 = "<b>";
