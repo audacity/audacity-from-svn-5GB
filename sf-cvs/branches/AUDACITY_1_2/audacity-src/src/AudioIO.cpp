@@ -799,11 +799,17 @@ void AudioIO::StopStream()
    mAudioThreadFillBuffersLoopRunning = false;
 
 #if USE_PORTAUDIO_V19
-   Pa_AbortStream( mPortStreamV19 );
+   if (mInCallbackFinishedState)
+      Pa_StopStream( mPortStreamV19 );
+   else
+      Pa_AbortStream( mPortStreamV19 );
    Pa_CloseStream( mPortStreamV19 );
    mPortStreamV19 = NULL;
 #else
-   Pa_AbortStream( mPortStreamV18 );
+   if (mInCallbackFinishedState)
+      Pa_StopStream( mPortStreamV18 );
+   else
+      Pa_AbortStream( mPortStreamV18 );
    Pa_CloseStream( mPortStreamV18 );
    mPortStreamV18 = NULL;
    mInCallbackFinishedState = false;
