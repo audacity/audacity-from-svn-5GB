@@ -44,6 +44,17 @@
 #include "ViewInfo.h"
 #include "widgets/Ruler.h"
 
+#define PROFILE_WAVEFORM 0
+#ifdef PROFILE_WAVEFORM
+#include <sys/time.h>
+double gWaveformTimeTotal = 0;
+int gWaveformTimeCount = 0;
+#endif
+
+#ifdef __WXMAC__
+#define BUFFERED_DRAWING 1
+#endif
+
 const int octaveHeight = 62;
 const int blackPos[5] = { 6, 16, 32, 42, 52 };
 const int whitePos[7] = { 0, 9, 17, 26, 35, 44, 53 };
@@ -95,7 +106,9 @@ void TrackArtist::DrawTracks(TrackList * tracks,
                              wxDC & dc, wxRect & r,
                              wxRect & clip,
                              ViewInfo * viewInfo,
-                             bool drawEnvelope,bool drawSamples,bool drawSliders)
+                             bool drawEnvelope,
+                             bool drawSamples,
+                             bool drawSliders)
 {
    wxRect trackRect = r;
 
@@ -392,7 +405,16 @@ void TrackArtist::DrawNegativeOffsetTrackArrows(wxDC &dc, wxRect &r)
                r.y + r.height - 12);
 }
 
-void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r, int ctr,
+void GetColour(wxPen &pen, uchar *r, uchar *g, uchar *b)
+{
+   wxColour colour = pen.GetColour();
+   *r = colour.Red();
+   *g = colour.Green();
+   *b = colour.Blue();
+}
+
+void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r,
+                                         uchar *imageBuffer,
                                          int *where, int ssel0, int ssel1,
                                          double *env,
                                          float zoomMin, float zoomMax,
@@ -435,46 +457,83 @@ void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r, int ctr,
       }
    }
 
-   // First drawing pass: draw everything that's background-colored:
-   // above, below, and in the middle of the waveform.
+   if (imageBuffer) {
+      uchar r0, g0, b0, r1, g1, b1, r2, g2, b2;
+      int *sel;
+      int y;
 
-   dc.SetPen(blankPen);
-   for (x = 0; x < r.width; x++) {
-      if (maxtop[x] > 0)
-         dc.DrawLine(r.x + x, r.y, r.x + x, r.y + maxtop[x]);
-      if (maxbot[x] != mintop[x])
-         dc.DrawLine(r.x + x, r.y + maxbot[x],
-                     r.x + x, r.y + mintop[x]);
-      if (minbot[x] < r.height)
-         dc.DrawLine(r.x + x, r.y + minbot[x],
-                     r.x + x, r.y + r.height);
-   }
+      sel = new int[r.width];
+      for(x=0; x<r.width; x++)
+         sel[x] = (ssel0 <= where[x] && where[x + 1] < ssel1);
 
-   // Finally draw the waveform background itself, using the selected
-   // pen when we're between the selections.
-
-   bool usingSelPen = false;
-   dc.SetPen(unselectedPen);
-   for (x = 0; x < r.width; x++) {
-      bool sel = false;
-      if (ssel0 <= where[x] && where[x + 1] < ssel1)
-         sel = true;
-      
-      if (sel && !usingSelPen)
-         dc.SetPen(selectedPen);
-      else if (!sel && usingSelPen)
-         dc.SetPen(unselectedPen);
-      usingSelPen = sel;
-
-      if (maxbot[x] != mintop[x]) {
-         dc.DrawLine(r.x + x, r.y + maxtop[x],
-                     r.x + x, r.y + maxbot[x]);
-         dc.DrawLine(r.x + x, r.y + mintop[x],
-                     r.x + x, r.y + minbot[x]);
+      GetColour(blankPen, &r0, &g0, &b0);
+      GetColour(unselectedPen, &r1, &g1, &b1);
+      GetColour(selectedPen, &r2, &g2, &b2);
+      for(y=0; y<r.height; y++) {
+         for(x=0; x<r.width; x++) {
+            if (y < maxtop[x] || y >= minbot[x] ||
+                (y >= mintop[x] && y < maxbot[x])) {
+               *imageBuffer++ = r0;
+               *imageBuffer++ = g0;
+               *imageBuffer++ = b0;
+            }
+            else if (sel[x]) {
+               *imageBuffer++ = r2;
+               *imageBuffer++ = g2;
+               *imageBuffer++ = b2;
+            }
+            else {
+               *imageBuffer++ = r1;
+               *imageBuffer++ = g1;
+               *imageBuffer++ = b1;
+            }
+         }
       }
-      else
-         dc.DrawLine(r.x + x, r.y + maxtop[x],
-                     r.x + x, r.y + minbot[x]);
+
+      delete[] sel;
+   }
+   else {
+      // First drawing pass: draw everything that's background-colored:
+      // above, below, and in the middle of the waveform.
+      
+      dc.SetPen(blankPen);
+      for (x = 0; x < r.width; x++) {
+         if (maxtop[x] > 0)
+            dc.DrawLine(r.x + x, r.y, r.x + x, r.y + maxtop[x]);
+         if (maxbot[x] != mintop[x])
+            dc.DrawLine(r.x + x, r.y + maxbot[x],
+                        r.x + x, r.y + mintop[x]);
+         if (minbot[x] < r.height)
+            dc.DrawLine(r.x + x, r.y + minbot[x],
+                        r.x + x, r.y + r.height);
+      }
+      
+      // Finally draw the waveform background itself, using the selected
+      // pen when we're between the selections.
+      
+      bool usingSelPen = false;
+      dc.SetPen(unselectedPen);
+      for (x = 0; x < r.width; x++) {
+         bool sel = false;
+         if (ssel0 <= where[x] && where[x + 1] < ssel1)
+            sel = true;
+         
+         if (sel && !usingSelPen)
+            dc.SetPen(selectedPen);
+         else if (!sel && usingSelPen)
+            dc.SetPen(unselectedPen);
+         usingSelPen = sel;
+         
+         if (maxbot[x] != mintop[x]) {
+            dc.DrawLine(r.x + x, r.y + maxtop[x],
+                        r.x + x, r.y + maxbot[x]);
+            dc.DrawLine(r.x + x, r.y + mintop[x],
+                        r.x + x, r.y + minbot[x]);
+         }
+         else
+            dc.DrawLine(r.x + x, r.y + maxtop[x],
+                        r.x + x, r.y + minbot[x]);
+      }
    }
 
    delete[] maxtop;
@@ -484,7 +543,7 @@ void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r, int ctr,
 }
 
 void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
-                                        int ctr, WaveTrack *track,
+                                        WaveTrack *track,
                                         double t0, double pps, double h,
                                         float zoomMin, float zoomMax,
                                         bool dB,
@@ -561,7 +620,7 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
    delete[]ypos;
 }
 
-void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r,
+void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                                 float zoomMin, float zoomMax,
                                 double *envValues,
                                 float *min, float *max, float *rms,
@@ -604,25 +663,50 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r,
       if (r2[x]>r1[x])
          r2[x] = r1[x];
    }
-   
-   // Draw the waveform min/max lines
-   dc.SetPen(samplePen);
-   for (x = 0; x < r.width; x++) {
-      if (r1[x] != r2[x]) {
-         dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + r2[x] );
-         dc.DrawLine(r.x + x, r.y + r1[x], r.x + x, r.y + h1[x]+1 );
-      }
-      else
-         dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + h1[x]+1 );
-   }
 
-   // Draw the waveform rms lines
-   dc.SetPen(rmsPen);
-   for (x = 0; x < r.width; x++) {
-      if (r1[x] != r2[x])
-         dc.DrawLine(r.x + x, r.y + r2[x], r.x + x, r.y + r1[x]);
+   if (imageBuffer) {
+      uchar rs, gs, bs, rr, gr, br;
+      int y;
+
+      GetColour(samplePen, &rs, &gs, &bs);
+      GetColour(rmsPen, &rr, &gr, &br);
+      for(y=0; y<r.height; y++) {
+         for(x=0; x<r.width; x++) {
+            if (y >= r2[x] && y < r1[x]) {
+               *imageBuffer++ = rr;
+               *imageBuffer++ = gr;
+               *imageBuffer++ = br;
+            }
+            else if (y >= h2[x] && y < h1[x]) {
+               *imageBuffer++ = rs;
+               *imageBuffer++ = gs;
+               *imageBuffer++ = bs;               
+            }
+            else
+               imageBuffer += 3;
+         }
+      }
    }
-   
+   else {
+      // Draw the waveform min/max lines
+      dc.SetPen(samplePen);
+      for (x = 0; x < r.width; x++) {
+         if (r1[x] != r2[x]) {
+            dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + r2[x] );
+            dc.DrawLine(r.x + x, r.y + r1[x], r.x + x, r.y + h1[x]+1 );
+         }
+         else
+            dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + h1[x]+1 );
+      }
+      
+      // Draw the waveform rms lines
+      dc.SetPen(rmsPen);
+      for (x = 0; x < r.width; x++) {
+         if (r1[x] != r2[x])
+            dc.DrawLine(r.x + x, r.y + r2[x], r.x + x, r.y + r1[x]);
+      }
+   }
+      
    delete[] h1;
    delete[] h2;
    delete[] r1;
@@ -659,6 +743,11 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
                                bool drawSliders,
                                bool dB)
 {
+#if PROFILE_WAVEFORM
+   struct timeval tv0, tv1;
+   gettimeofday(&tv0, NULL);
+#endif
+
    double h = viewInfo->h;          //The horizontal position in seconds
    double pps = viewInfo->zoom;     //points-per-second--the zoom level
    double sel0 = viewInfo->sel0;    //left selection bound
@@ -746,11 +835,18 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
 
    // The "mid" rect contains the part of the display actually
    // containing the waveform.  If it's empty, we're done.
-   if (mid.width <= 0)
-      return;
+   if (mid.width <= 0) {
+     #if PROFILE_WAVEFORM
+      gettimeofday(&tv1, NULL);
+      double elapsed =
+         (tv1.tv_sec + tv1.tv_usec*0.000001) -
+         (tv0.tv_sec + tv0.tv_usec*0.000001);
+      gWaveformTimeTotal += elapsed;
+      gWaveformTimeCount++;
+     #endif
 
-   // The vertical center of the track
-   int ctr = r.y + (r.height / 2);
+     return;
+   }
 
    // The bounds (controlled by vertical zooming; -1.0...1.0
    // by default)
@@ -777,30 +873,58 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
       return;
    }
 
+   // The following section of code may be optionally sped up
+   // by drawing directly to an image buffer, then blitting it
+   // to the screen.
+
+   uchar *imageBuffer = NULL;
+   wxRect drawRect = mid;
+
+   #if BUFFERED_DRAWING
+
+   drawRect.x = 0;
+   drawRect.y = 0;
+   wxImage *image = new wxImage(drawRect.width, drawRect.height);
+   imageBuffer = image->GetData();
+   #endif
+
    // Get the values of the envelope corresponding to each pixel
    // in the display, and use these to compute the height of the
    // track at each pixel
 
-   double *envValues = new double[mid.width];
-   track->GetEnvelope()->GetValues(envValues, mid.width, t0 + tOffset, tstep);
+   double *envValues = new double[drawRect.width];
+   track->GetEnvelope()->GetValues(envValues, drawRect.width,
+                                   t0 + tOffset, tstep);
 
    // Draw the background of the track, outlining the shape of
    // the envelope and using a colored pen for the selected
    // part of the waveform
 
-   DrawWaveformBackground(dc, mid, ctr, where, ssel0, ssel1,
+   DrawWaveformBackground(dc, drawRect, imageBuffer, where, ssel0, ssel1,
                           envValues, zoomMin, zoomMax, dB, drawEnvelope);
 
-   if (showIndividualSamples) {
-      DrawIndividualSamples(dc, mid, ctr, track, t0, pps, h,
+   if (!showIndividualSamples)
+      DrawMinMaxRMS(dc, drawRect, imageBuffer, zoomMin, zoomMax,
+                    envValues, min, max, rms, dB);
+
+   // Transfer any buffered drawing to the DC.  Everything
+   // from now on is drawn using ordinary wxWindows drawing code.
+
+   #if BUFFERED_DRAWING
+   wxBitmap *bitmap = new wxBitmap(image);
+   wxMemoryDC *bitmapDC = new wxMemoryDC();
+   bitmapDC->SelectObject(*bitmap);
+   dc.Blit(mid.x, mid.y, drawRect.width, drawRect.height,
+           bitmapDC, 0, 0, wxCOPY);
+   delete bitmapDC;
+   delete bitmap;
+   delete image;
+   #endif
+
+   if (showIndividualSamples)
+      DrawIndividualSamples(dc, mid, track, t0, pps, h,
                             zoomMin, zoomMax, 
                             dB, drawSamples, showPoints);
-
-   }
-   else {
-      DrawMinMaxRMS(dc, mid, zoomMin, zoomMax,
-                    envValues, min, max, rms, dB);
-   }
 
    if (drawEnvelope) {
       dc.SetPen(AColor::envelopePen);
@@ -843,6 +967,17 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
       DrawTimeSlider(track,dc, r, viewInfo, true);  // directed right
       DrawTimeSlider(track,dc, r, viewInfo, false); // directed left
    }
+
+#if PROFILE_WAVEFORM
+   gettimeofday(&tv1, NULL);
+   double elapsed =
+      (tv1.tv_sec + tv1.tv_usec*0.000001) -
+      (tv0.tv_sec + tv0.tv_usec*0.000001);
+   gWaveformTimeTotal += elapsed;
+   gWaveformTimeCount++;
+   printf("Avg waveform drawing time: %f\n",
+          gWaveformTimeTotal / gWaveformTimeCount);
+#endif
 }
 
 

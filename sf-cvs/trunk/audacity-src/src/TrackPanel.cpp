@@ -269,49 +269,6 @@ static const char * DrawCursorXpm[] = {
 "................................",
 "................................"};
 
-//Image of a magnifying glass.
-//Don't put a + or a - inside the circle since 
-//Zoom in or zoom out may be changed by modifiers.
-static const char * ZoomCursorXpm[] = {
-"32 32 3 1",
-".	c #808080", // background color = RGB:128,128,128
-"#	c #000000",
-"+	c #FFFFFF",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................++++............",
-"...............+####+...........",
-"..............+##...#+..........",
-".............+#......#+.........",
-"............+##......##+........",
-"............+#........#+........",
-"............+#........#+........",
-"............+##......##+........",
-".............+#......#+.........",
-"............+####..##+..........",
-"...........+###+####+...........",
-"..........+###+.++++............",
-".........+###+..................",
-"........+###+...................",
-".......+###+....................",
-"........+#+.....................",
-".........+......................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
-
-
 static const char * ZoomInCursorXpm[] = {
 "32 32 3 1",
 ".	c #808080", // background color = RGB:128,128,128
@@ -640,7 +597,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mTimeTrackMenu->Append(OnSetTimeTrackConverterID, _("Set Converter..."));
 
    mTrackArtist = new TrackArtist();
-   mTrackArtist->SetInset(1, kTopInset + 1, kLeftInset + 2, 2);
+   mTrackArtist->SetInset(1, kTopInset + 1, kLeftInset + 2, 1);
 
    mCapturedTrack = NULL;
 
@@ -1658,7 +1615,7 @@ void TrackPanel::ForwardEventToEnvelope(wxMouseEvent & event)
       
       wxRect envRect = mCapturedRect;
       envRect.y++;
-      envRect.height -=3;
+      envRect.height -= 2;
       bool needUpdate =
          pspeedenvelope->MouseEvent(event, envRect,
                                     mViewInfo->h, mViewInfo->zoom,
@@ -1688,7 +1645,7 @@ void TrackPanel::ForwardEventToEnvelope(wxMouseEvent & event)
          // It'll recalculate and then tell us whether or not to redraw.
          wxRect envRect = mCapturedRect;
          envRect.y++;
-         envRect.height -=3;
+         envRect.height -= 2;
          float zoomMin, zoomMax;
          pwavetrack->GetDisplayBounds(&zoomMin, &zoomMax);
          needUpdate = penvelope->MouseEvent(event, envRect,
@@ -1702,7 +1659,7 @@ void TrackPanel::ForwardEventToEnvelope(wxMouseEvent & event)
             Envelope *e2 = link->GetEnvelope();
             wxRect envRect = mCapturedRect;
             envRect.y++;
-            envRect.height -=3;
+            envRect.height -= 2;
             float zoomMin, zoomMax;
             pwavetrack->GetDisplayBounds(&zoomMin, &zoomMax);
             needUpdate |= e2->MouseEvent(event, envRect,
