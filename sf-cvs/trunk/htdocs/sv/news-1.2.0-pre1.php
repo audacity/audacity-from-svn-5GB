@@ -1,4 +1,4 @@
-<?php BoxTop('August  2, 2003: Audacity 1.2.0-pre1 released'); ?>
+<?php BoxTop('2 augusti, 2003: Audacity 1.2.0-pre1 släppt'); ?>
 
 <p>
 Audacity 1.2.0-pre1 är en "pröva på"-release för Audacity ljudeditor. Meningen med denna release är att låta användare få en förhandstitt och få testa nya funktioner som finns i vår nästa stabila version 1.2.0, som vi hoppas kunna släppa i nästa månad. 
