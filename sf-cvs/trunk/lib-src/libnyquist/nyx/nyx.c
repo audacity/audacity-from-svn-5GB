@@ -28,6 +28,7 @@
 #include "sound.h"
 #include "falloc.h"
 
+
 /* nyquist externs */
 extern LVAL a_sound;
 extern snd_list_type zero_snd_list;
@@ -423,7 +424,7 @@ const char *nyx_get_string()
    if (nyx_get_type(nyx_result) != nyx_string)
       return NULL;
 
-   return getstring(nyx_result);
+   return (const char *)getstring(nyx_result);
 
 }
 
@@ -466,7 +467,7 @@ void nyx_get_label(int index,
       *time = getflonum(t_expr);
    else if (fixp(t_expr))
       *time = (double)getfixnum(t_expr);
-   *label = getstring(car(cdr(car(s))));
+   *label = (const char *)getstring(car(cdr(car(s))));
 }
 
 const char *nyx_get_error_str()
@@ -599,7 +600,7 @@ LVAL xsystem()
 /* xsetdir -- set current directory of the process */
 LVAL xsetdir()
 {
-   char *dir = getstring(xlgastring());
+   char *dir = (char *)getstring(xlgastring());
    int result;
    xllastarg();
    result = chdir(dir);
