@@ -1464,30 +1464,6 @@ void TrackPanel::StartSlide(wxMouseEvent & event, double &totalOffset,
 }
 
 //AS: Change the selected track's (and its link's, if one) offset.
-void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
-{
-   double selend = mViewInfo->h +
-       ((event.m_x - mCapturedRect.x) / mViewInfo->zoom);
-
-   clip_bottom(selend, 0.0);
-
-   if (selend != mSelStart) {
-      mCapturedTrack->Offset(selend - mSelStart);
-      totalOffset += selend - mSelStart;
-
-      Track *link = mTracks->GetLink(mCapturedTrack);
-      if (link)
-         link->Offset(selend - mSelStart);
-
-      Refresh(false);
-   }
-
-   mSelStart = selend;
-}
-// GM: alternate version of DoSlide implementing snap-to
-// functionality based on sample rate.  Commented out for
-// now since this is just based on TrackPanel global
-// variable 'samplerate'.
 //void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
 //{
 //   double selend = mViewInfo->h +
@@ -1495,21 +1471,46 @@ void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
 //
 //   clip_bottom(selend, 0.0);
 //
-//   selend = rint(samplerate*selend) / samplerate;
-//
 //   if (selend != mSelStart) {
-//      mCapturedTrack->Offset(rint(samplerate * (selend - mSelStart)) / samplerate);
-//      totalOffset += rint(samplerate * (selend - mSelStart)) / samplerate;
+//      mCapturedTrack->Offset(selend - mSelStart);
+//      totalOffset += selend - mSelStart;
 //
 //      Track *link = mTracks->GetLink(mCapturedTrack);
 //      if (link)
-//        link->Offset(rint(samplerate * (selend - mSelStart)) / samplerate);
+//         link->Offset(selend - mSelStart);
 //
 //      Refresh(false);
 //   }
 //
 //   mSelStart = selend;
 //}
+// GM: alternate version of DoSlide implementing snap-to
+// samples functionality based on sample rate.  Previous
+// form of DoSlide is commented out above.
+void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
+{
+   double samplerate = ((WaveTrack *)mCapturedTrack)->GetRate();
+
+   double selend = mViewInfo->h +
+       ((event.m_x - mCapturedRect.x) / mViewInfo->zoom);
+
+   clip_bottom(selend, 0.0);
+
+   selend = rint(samplerate*selend) / samplerate;
+
+   if (selend != mSelStart) {
+      mCapturedTrack->Offset(rint(samplerate * (selend - mSelStart)) / samplerate);
+      totalOffset += rint(samplerate * (selend - mSelStart)) / samplerate;
+
+      Track *link = mTracks->GetLink(mCapturedTrack);
+      if (link)
+        link->Offset(rint(samplerate * (selend - mSelStart)) / samplerate);
+
+      Refresh(false);
+   }
+
+   mSelStart = selend;
+}
 
 // AS: This function takes care of our different zoom 
 //  possibilities.  It is possible for a user to just
