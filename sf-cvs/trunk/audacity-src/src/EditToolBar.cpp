@@ -104,7 +104,7 @@ void EditToolBar::AddButton(const char **fg, const char **disabled, const char *
                      disabled, alpha,
                      wxWindowID(id), wxPoint(mButtonPos, buttonTop),
                      false /*No edit buttons should process down events.*/,
-                     wxSize(BUTTON_WIDTH, BUTTON_WIDTH), 3, 3);
+                     wxSize(BUTTON_WIDTH, BUTTON_WIDTH), 0, 0);
    mButtons[id]->SetToolTip(tooltip);
    mButtonPos += BUTTON_WIDTH;
    mDividers[mNumDividers++] = mButtonPos++;
