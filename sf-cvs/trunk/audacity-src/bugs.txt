@@ -24,8 +24,6 @@ Known bugs to fix:
   (Note that there are two of these dialogs.)
 - Better aRts support (or at least a warning???)
 - Device prefs in Mac OS X
-- Duplicate doesn't work when a track is time-shifted
-  past zero
 - Clicking close box only deletes one track of
   stereo pair
 - Audacity "forgets" tracks' channels when saving/loading
@@ -68,3 +66,6 @@ Fixed:
 - Bug fixed: Must warn user if temp directory can't be created
   Now checks on startup and opens Prefs Dialog for user to fix.
 
+- Bug fixed: Duplicate track doesn't work if track is shifted
+  past zero.  Track selection and copying are now more aware
+  of offsets.
