@@ -366,7 +366,8 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
 
   int *heights = new int[mid.width];
   double t = t0;
-  for(int x=0; x<mid.width; x++) {
+  int x;
+  for(x=0; x<mid.width; x++) {
 	heights[x] = int((mid.height/2.0) *
 					 envelope.GetValue(t+tOffset));
 	t += 1/pps;
@@ -375,7 +376,7 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
   // Draw shadow
 
   dc.SetPen(shadowPen);
-  for(int x=0; x<mid.width; x++) {
+  for(x=0; x<mid.width; x++) {
 	if (x+2<r.width)
 	  dc.DrawLine(mid.x+x+2, ctr-heights[x]+2, mid.x+x+2, ctr+heights[x]+2);
   }
@@ -384,7 +385,7 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
   bool usingSelPen = false;
   dc.SetPen(unselectedPen);
 
-  for(int x=0; x<mid.width; x++) {
+  for(x=0; x<mid.width; x++) {
 	
 	bool sel = false;
 	if (ssel0 <= cache.where[x] && cache.where[x+1] < ssel1) 
@@ -404,9 +405,9 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
 
   dc.SetPen(samplePen);
 
-  for(int x=0; x<mid.width; x++) {
+  for(x=0; x<mid.width; x++) {
 	
-	int h1 = ctr+(cache.min[x] * heights[x]) / 32767;
+    int h1 = ctr+(cache.min[x] * heights[x]) / 32767;
     int h2 = ctr+(cache.max[x] * heights[x]) / 32767;
 	
     dc.DrawLine(mid.x+x,h1,mid.x+x,h2+1);
@@ -415,7 +416,7 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
   if (drawEnvelope) {
 	dc.SetPen(envelopePen);
 
-	for(int x=0; x<mid.width; x++) {
+	for(x=0; x<mid.width; x++) {
 	  
 	  int z1 = ctr-heights[x]+3 > ctr? ctr: ctr-heights[x]+3;
 	  int z2 = ctr+heights[x]-3 < ctr? ctr: ctr+heights[x]-3;  

@@ -1,3 +1,4 @@
+#include <windows.h>
 #include <io.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -7,6 +8,12 @@
 #include "sndfileio.h"
 
 #define PERMISSION 0x0644
+
+void snd_fail(char *msg)
+{
+    MessageBox(0, msg, 0, 0);
+    exit(1);
+}
 
 int snd_file_open(char *fname, int mode)
 {

@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include <math.h>
+
 #include <wx/dc.h>
 #include <wx/brush.h>
 #include <wx/pen.h>
@@ -75,10 +77,12 @@ void Envelope::Draw(wxDC &dc, wxRect &r, double h, double pps)
 
 bool Envelope::Load(wxTextFile *in, DirManager *dirManager)
 {
+    return true;
 }
 
 bool Envelope::Save(wxTextFile *out, bool overwrite)
 {
+    return true;
 }
 
 // Returns true if parent needs to be redrawn

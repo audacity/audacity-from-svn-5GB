@@ -32,6 +32,10 @@
 #include "effects/LoadVSTMac.h"
 #endif
 
+#ifdef __WXMSW__
+#include "effects/LoadVSTWin.h"
+#endif
+
 #ifdef __WXGTK__
 void wxOnAssert(const char* fileName, int lineNumber, const char* msg)
 {
@@ -51,14 +55,14 @@ bool AudacityApp::OnInit()
 {
   ::wxInitAllImageHandlers();
 
+  InitSoundPlayer();
+  
   Effect::RegisterEffect(new EffectAmplify());
   Effect::RegisterEffect(new EffectEcho());
   Effect::RegisterEffect(new EffectFadeIn());
   Effect::RegisterEffect(new EffectFadeOut());
 
-  InitSoundPlayer();
-  
-  #ifdef __WXMAC__
+  #if defined(__WXMAC__) || defined(__WXMSW__)
   LoadVSTPlugins();
   #endif
 
