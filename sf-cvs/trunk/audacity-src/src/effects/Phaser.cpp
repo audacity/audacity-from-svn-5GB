@@ -21,6 +21,7 @@
 #include "Phaser.h"
 #include "../WaveTrack.h"
 #include "../FFT.h"
+#include "../Internat.h"
 
 //
 // EffectPhaser
@@ -255,7 +256,7 @@ bool PhaserDialog::TransferDataFromWindow()
    c = GetFreqText();
    if (c) {
       double d;
-      c->GetValue().ToDouble(&d);
+      Internat::ToDouble(c->GetValue(), &d);
       freq = TrapDouble(d * 10, FREQ_MIN, FREQ_MAX) / 10;
    }
 
@@ -383,7 +384,7 @@ void PhaserDialog::OnFreqText(wxCommandEvent & event)
    if (c) {
       double freq;
 
-      c->GetValue().ToDouble(&freq);
+      Internat::ToDouble(c->GetValue(), &freq);
       freq = TrapDouble(freq * 10, FREQ_MIN, FREQ_MAX);
 
       wxSlider *slider = GetFreqSlider();

@@ -13,6 +13,7 @@
 #include <wx/wxprec.h> 
 #include "ToneGen.h"
 #include "../WaveTrack.h"
+#include "../Internat.h"
 
 //
 // EffectToneGen
@@ -224,15 +225,13 @@ bool ToneGenDialog::TransferDataFromWindow()
 
    t = GetAmpText();
    if (t) {
-      double d;
-      t->GetValue().ToDouble(&d);
+      double d = Internat::ToDouble(t->GetValue());
       amplitude = TrapDouble(d, AMP_MIN, AMP_MAX);
    }
 
    t = GetFreqText();
    if (t) {
-      double d;
-      t->GetValue().ToDouble(&d);
+      double d = Internat::ToDouble(t->GetValue());
       frequency = TrapDouble(d, FREQ_MIN, FREQ_MAX);
    }
 

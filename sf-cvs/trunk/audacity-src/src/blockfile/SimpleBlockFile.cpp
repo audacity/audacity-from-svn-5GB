@@ -15,6 +15,7 @@
 #include "../FileFormats.h"
 
 #include "sndfile.h"
+#include "../Internat.h"
 
 // The AU formats we care about
 enum {
@@ -251,11 +252,11 @@ BlockFile *SimpleBlockFile::BuildFromXML(wxString projDir, const char **attrs)
        if( !strcmp(attr, "len") )
           len = atoi(value);
        if( !strcmp(attr, "min") )
-          min = atof(value);
+          min = Internat::CompatibleToDouble(value);
        if( !strcmp(attr, "max") )
-          max = atof(value);
+          max = Internat::CompatibleToDouble(value);
        if( !strcmp(attr, "rms") )
-          rms = atof(value);
+          rms = Internat::CompatibleToDouble(value);
    }
 
    return new SimpleBlockFile(fileName, len, min, max, rms);

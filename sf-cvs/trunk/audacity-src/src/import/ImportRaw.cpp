@@ -34,6 +34,7 @@
 
 #include "../WaveTrack.h"
 #include "../DirManager.h"
+#include "../Internat.h"
 
 class ImportRawDialog:public wxDialog {
 
@@ -426,17 +427,14 @@ ImportRawDialog::~ImportRawDialog()
 void ImportRawDialog::OnOK(wxCommandEvent & WXUNUSED(event))
 {
    long l;
-   double d;
    
    mEncoding = sf_encoding_index_to_subtype(mEncodingChoice->GetSelection());
    mEncoding += (mEndianChoice->GetSelection() * 0x10000000);
    mChannels = mChannelChoice->GetSelection() + 1;
    mOffsetText->GetValue().ToLong(&l);
    mOffset = l;
-   mPercentText->GetValue().ToDouble(&d);
-   mPercent = d;
-   mRateText->GetValue().ToDouble(&d);
-   mRate = d;
+   mPercent = Internat::ToDouble(mPercentText->GetValue());
+   mRate = Internat::ToDouble(mRateText->GetValue());
 
    if (mChannels < 1 || mChannels > 16)
       mChannels = 1;
