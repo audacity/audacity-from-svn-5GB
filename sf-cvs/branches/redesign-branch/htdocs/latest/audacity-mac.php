@@ -10,6 +10,6 @@ fclose($fp);
 
 include 'mirror.inc.php';
 include 'versions.inc.php';
-header('Location: '.mirror.'audacity-mac-'.mac_classic_version.'.sit');
+header('Location: '.download_url('audacity-mac-'.mac_classic_version.'.sit'));
 
 ?>

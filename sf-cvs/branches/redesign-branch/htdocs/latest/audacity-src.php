@@ -10,6 +10,6 @@ fclose($fp);
 
 include 'mirror.inc.php';
 include 'versions.inc.php';
-header('Location: '.mirror.'audacity-src-'.src_version.'.tar.gz');
+header('Location: '.download_url('audacity-src-'.src_version.src_suffix));
 
 ?>
