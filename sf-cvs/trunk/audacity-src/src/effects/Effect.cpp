@@ -317,15 +317,15 @@ void Effect::Preview()
                             rate, t0, t1);
    if (token) {
       wxBusyCursor busy;
-      ::wxUsleep((int)(previewLen*1000));
+      ::wxMilliSleep((int)(previewLen*1000));
 
       while(gAudioIO->IsStreamActive(token)) {
-         ::wxUsleep(100);
+         ::wxMilliSleep(100);
       }
       gAudioIO->StopStream();
 
       while(gAudioIO->IsBusy()) {
-         ::wxUsleep(100);
+         ::wxMilliSleep(100);
       }
    }
    else {

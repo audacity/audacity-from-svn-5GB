@@ -599,7 +599,7 @@ AudacityProject::~AudacityProject()
       gAudioIO->StopStream();
 
       while(gAudioIO->IsBusy()) {
-         wxUsleep(100);
+         wxMilliSleep(100);
       }
    }
 
@@ -1680,7 +1680,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
       wxBusyCursor busy;
       gAudioIO->StopStream();
       while(gAudioIO->IsBusy()) {
-         wxUsleep(100);
+         wxMilliSleep(100);
       }
       
       // We were playing or recording audio, but we've stopped the stream.
