@@ -110,21 +110,20 @@ private:
    wxTextFile           *mTextFile;
    void                 *mUserData;
    progress_callback_t  mProgressCallback;
-   AudacityProject		*mProject;
+   AudacityProject     *mProject;
 
-   int					numberOfChannels;
-   NoteTrack*			nTrack;
+   NoteTrack*        nTrack;
 
    // In order to know whether or not to create a new window
-   bool					windowCalledOnce;
+   bool              windowCalledOnce;
 
    // In order to zoom in, it must be done after files are opened
-   bool					callDurationFactor;
-   double				durationFactor;
+   bool              callDurationFactor;
+   double            durationFactor;
 
    // In order to offset scrollbar, it must be done after files are opened
-   bool					callScrollOffset;
-   double				scrollOffset;
+   bool              callScrollOffset;
+   double            scrollOffset;
 };
 
 LOFImportFileHandle::LOFImportFileHandle(wxTextFile *file):
@@ -133,7 +132,6 @@ LOFImportFileHandle::LOFImportFileHandle(wxTextFile *file):
    mProgressCallback(NULL)
 {
    mProject = GetActiveProject();
-   numberOfChannels = 0;
    windowCalledOnce = false;
    callDurationFactor = false;
    durationFactor = 1;
@@ -192,8 +190,8 @@ bool LOFImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
 
    while (!mTextFile->Eof())
    {
-	   lofOpenFiles(&line);
-	   line = mTextFile->GetNextLine();  
+      lofOpenFiles(&line);
+      line = mTextFile->GetNextLine();  
    }
 
    // for last line
@@ -218,6 +216,7 @@ static int CountNumTracks(AudacityProject *proj)
    TrackListIterator iter(proj->GetTracks());
    
    t = iter.First();
+
    while(t) {
       count++;
       t = iter.Next();
@@ -227,7 +226,7 @@ static int CountNumTracks(AudacityProject *proj)
 }
 
 void LOFImportFileHandle::lofOpenFiles(wxString* ln)
-{	
+{  
    wxStringTokenizer tok(*ln, " ");
    wxStringTokenizer temptok1(*ln, "\"");
    wxStringTokenizer temptok2(*ln, " ");
@@ -286,15 +285,15 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
                wxMessageBox(_("Invalid duration in LOF file."),
                             _("LOF Error"), wxOK | wxCENTRE, gParentWindow);
             }
-         }		// End if statement
+         }     // End if statement
 
          if (tokenholder.IsSameAs("#"))
          {
             // # indicates comments; ignore line
             tok = wxStringTokenizer("", " ");
          }
-      }		// End while loop
-   }			// End if statement
+      }     // End while loop
+   }        // End if statement
    
    else if (tokenholder.IsSameAs("file", false))
    {
@@ -310,17 +309,13 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
          nTrack = new NoteTrack(mProject->GetDirManager());
          
          if (::ImportMIDI(targetfile, nTrack))
-         {
             mProject->GetTracks()->Add(nTrack);
-            numberOfChannels++;
-         }
       }
       
       // If not a midi, open audio file
       else
       {
          mProject->OpenFile(targetfile);
-         numberOfChannels = CountNumTracks(mProject);
       }
 
       // Set tok to right after filename
@@ -353,7 +348,7 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
                
                t = iter.First();
                
-               for (int i = 1; i < numberOfChannels - 1; i++)
+               for (int i = 1; i < CountNumTracks(mProject) - 1; i++)
                   t = iter.Next();
 
                if (targetfile.AfterLast('.').IsSameAs("mid", false) ||
@@ -365,8 +360,13 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
                }
                else
                {
-                  t->SetOffset(offset);
-                  if (t->GetLinked()) {
+                  if (CountNumTracks(mProject) == 1)
+                     t->SetOffset(offset);
+                  else
+                  {
+                     if (t->GetLinked())
+                        t->SetOffset(offset);
+                     
                      t = iter.Next();
                      t->SetOffset(offset);
                   }
@@ -377,9 +377,9 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
                wxMessageBox(_("Invalid track offset in LOF file."),
                             _("LOF Error"), wxOK | wxCENTRE, gParentWindow);
             }
-         }		// End if statement
-      }		// End if statement
-   }		// End if statement
+         }     // End if statement
+      }     // End if statement
+   }     // End if statement
    
    else if (tokenholder.IsSameAs("#"))
    {
