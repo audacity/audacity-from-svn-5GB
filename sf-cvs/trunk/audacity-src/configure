@@ -3007,8 +3007,8 @@ if [ $use_vorbis = "yes" ] ; then
 	BUILDLIBS="$BUILDLIBS libvorbis/lib/.libs/libvorbis.a"
 	BUILDLIBS="$BUILDLIBS libogg/src/.libs/libogg.a"
 	SUBDIRS="$SUBDIRS lib-src/libogg lib-src/libvorbis"
-	CXXFLAGS="$CXXFLAGS -I../lib-src/libogg/include/"
-	CXXFLAGS="$CXXFLAGS -I../lib-src/libvorbis/include/"
+	CXXFLAGS="$CXXFLAGS -I../lib-src/libogg/include"
+	CXXFLAGS="$CXXFLAGS -I../lib-src/libvorbis/include"
 
 cat >>confdefs.h <<\EOF
 #define USE_LIBVORBIS 1
