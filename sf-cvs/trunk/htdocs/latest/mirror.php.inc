@@ -1,1 +1,1 @@
-<?php define('mirror', 'http://telia.dl.sourceforge.net/sourceforge/audacity/'); ?>
+<?php define('mirror', 'http://easynews.dl.sourceforge.net/sourceforge/audacity/'); ?>
