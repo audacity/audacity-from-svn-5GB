@@ -22,6 +22,7 @@
 #endif
 
 #include "FreqWindow.h"
+#include "FFT.h"
 
 enum {
   FirstID = 7000,
@@ -35,17 +36,17 @@ enum {
 FreqWindow *gFreqWindow = NULL;
 
 #ifdef __WXMAC__
-#define FREQ_WINDOW_WIDTH 400
+#define FREQ_WINDOW_WIDTH 440
 #define FREQ_WINDOW_HEIGHT 300
 #endif
 
 #ifdef __WXGTK__
-#define FREQ_WINDOW_WIDTH 410
+#define FREQ_WINDOW_WIDTH 450
 #define FREQ_WINDOW_HEIGHT 320
 #endif
 
 #ifdef __WXMSW__
-#define FREQ_WINDOW_WIDTH 400
+#define FREQ_WINDOW_WIDTH 440
 #define FREQ_WINDOW_HEIGHT 300
 #endif
 
@@ -77,16 +78,17 @@ FreqWindow::FreqWindow(wxFrame* parent, wxWindowID id, const wxString& title,
   wxMiniFrame(parent, id, title, pos,
 			  wxSize(FREQ_WINDOW_WIDTH, FREQ_WINDOW_HEIGHT),
               wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP),
-  mData(NULL)
+  mData(NULL),
+  mProcessed(NULL)
 {
   mPlotRect.x = 10;
   mPlotRect.y = 10;
-  mPlotRect.width = 380;
+  mPlotRect.width = 420;
   mPlotRect.height = 240;
 
   mCloseButton = new wxButton(this, FreqCloseButtonID,
 							  "Close",
-							  wxPoint(320, 260),
+							  wxPoint(360, 260),
 							  wxSize(60, 30));
 
   wxString algChoiceStrings[4] = {"Spectrum",
@@ -96,7 +98,7 @@ FreqWindow::FreqWindow(wxFrame* parent, wxWindowID id, const wxString& title,
   
   mAlgChoice = new wxChoice(this, FreqAlgChoiceID,
 							wxPoint(10, 260),
-							wxSize(90, 30),
+							wxSize(100, 30),
 							4, algChoiceStrings);
 
   wxString sizeChoiceStrings[7] = {"256",
@@ -107,9 +109,9 @@ FreqWindow::FreqWindow(wxFrame* parent, wxWindowID id, const wxString& title,
 								   "8192",
 								   "16384"};
   
-  mSizeChoice = new wxChoice(this, FreqAlgChoiceID,
-							 wxPoint(110, 260),
-							 wxSize(90, 30),
+  mSizeChoice = new wxChoice(this, FreqSizeChoiceID,
+							 wxPoint(120, 260),
+							 wxSize(100, 30),
 							 7, sizeChoiceStrings);  
 
   wxString funcChoiceStrings[3] = {"Rectangular",
@@ -117,8 +119,8 @@ FreqWindow::FreqWindow(wxFrame* parent, wxWindowID id, const wxString& title,
 								   "Hanning"};
   
   mFuncChoice = new wxChoice(this, FreqFuncChoiceID,
-							 wxPoint(220, 260),
-							 wxSize(90, 30),
+							 wxPoint(240, 260),
+							 wxSize(110, 30),
 							 3, funcChoiceStrings);  
   
   mBackgroundBrush.SetColour(wxColour(204, 204, 204));
@@ -137,14 +139,17 @@ FreqWindow::~FreqWindow()
 
 void FreqWindow::OnAlgChoice(wxCommandEvent &event)
 {
+  Recalc();
 }
 
 void FreqWindow::OnSizeChoice(wxCommandEvent &event)
 {
+  Recalc();
 }
 
 void FreqWindow::OnFuncChoice(wxCommandEvent &event)
 {
+  Recalc();
 }
 
 void FreqWindow::OnPaint(wxPaintEvent &evt)
@@ -166,4 +171,9 @@ void FreqWindow::OnPaint(wxPaintEvent &evt)
 void FreqWindow::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
 {
   this->Show(FALSE);
+}
+
+void FreqWindow::Recalc()
+{
+  
 }

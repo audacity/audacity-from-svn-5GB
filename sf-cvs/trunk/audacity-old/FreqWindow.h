@@ -35,7 +35,7 @@ public:
 
   virtual ~FreqWindow();
 
-  //void Plot(TrackList *list);
+  void Plot(int len, float *data);
   
   void OnCloseWindow(wxCloseEvent& event);
   void OnPaint(wxPaintEvent& event);
@@ -43,7 +43,7 @@ public:
   void OnSizeChoice(wxCommandEvent& event);
   void OnFuncChoice(wxCommandEvent& event);
 
-  //void Recalc();
+  void Recalc();
   
 private:
   
@@ -59,6 +59,8 @@ private:
 
   int       mDataLen;
   float     *mData;
+  int       mWindowSize;
+  float     *mProcessed;
     
 DECLARE_EVENT_TABLE()
 };

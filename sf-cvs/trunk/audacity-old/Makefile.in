@@ -80,7 +80,7 @@ DEPS = $(OBJS:$(OBJDIR)/%.o=%)
 all: dirs audacity
 
 audacity: $(OBJS) Makefile
-	$(CCC) -o audacity $(LIBFLAGS) $(OBJS)
+	$(CCC) -o audacity $(OBJS) $(LIBFLAGS)
 
 #
 # You can optionally "make dep" to make dependencies.
