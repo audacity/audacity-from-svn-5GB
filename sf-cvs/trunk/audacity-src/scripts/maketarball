@@ -52,6 +52,9 @@ print "removing Doxygen (since we're not making use of it yet\n";
 print "removing wxstd locale files (since they should come with wxWindows\n";
 `rm -rf locale/wxstd`;
 
+printf "removing Nyquist plug-ins that are just for show\n";
+`rm -f plug-ins/analyze.ny plug-ins/beat.ny plug-ins/fadein.ny plug-ins/fadeout.ny`;
+
 #print "making tarball audacity-src-$version.tgz...\n";
 chdir "..";
 #`tar zcf audacity-src-$version.tgz audacity-src-$version`;
