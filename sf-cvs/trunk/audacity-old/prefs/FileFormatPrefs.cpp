@@ -45,7 +45,8 @@ FileFormatPrefs::FileFormatPrefs(wxWindow *parent):
 								   		   PREFS_SIDE_MARGINS * 2,
 										   60),
 								   2,
-								   gCopyOrEditOptions);
+								   gCopyOrEditOptions,
+								   1);
 	mCopyOrEdit->SetSelection(pos);
 
 	wxString defaultFormat =
@@ -62,11 +63,12 @@ FileFormatPrefs::FileFormatPrefs(wxWindow *parent):
 			                       "Default export format",
 								   wxPoint(PREFS_SIDE_MARGINS,
 									       85),
-								   wxSize (150,
-								   		   GetSize().GetHeight() - 
-										   85 - PREFS_BOTTOM_MARGIN),
+								   wxSize (GetSize().GetWidth() -
+								   		   PREFS_SIDE_MARGINS * 2,
+								   		   130),
 								   6,
-								   gDefaultExportFormatOptions);
+								   gDefaultExportFormatOptions,
+								   1);
 	mDefaultExportFormat->SetSelection(pos);
 }
 

@@ -47,11 +47,13 @@ SampleRatePrefs::SampleRatePrefs(wxWindow *parent):
 										 "Default Project Sample Rate",
 										  wxPoint(PREFS_SIDE_MARGINS,
 										 		 PREFS_TOP_MARGIN),
-										  wxSize(150,
+										  wxSize(GetSize().GetWidth() -
+								   		   PREFS_SIDE_MARGINS * 2,
 												 GetSize().GetHeight() -
 												 (2 * PREFS_TOP_MARGIN)),
 										  5, // number of items
-										  stringRates);
+										  stringRates,
+										  1);
 	
 	mDefaultSamplingRate->SetSelection(pos);
 }

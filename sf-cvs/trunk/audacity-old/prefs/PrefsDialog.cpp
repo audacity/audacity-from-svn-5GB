@@ -37,29 +37,41 @@ END_EVENT_TABLE()
 
 PrefsDialog::PrefsDialog():
 	wxDialog(NULL, -1, "Audacity Preferences", wxDefaultPosition,
-			 wxSize(500, 400), wxDIALOG_MODAL)
+			 wxSize(500, 410), wxDIALOG_MODAL)
 {
 	mCategories = new wxListBox(this,
 	                            CategoriesID, 
 								wxPoint(20, 20),
 								wxSize(120, 350));
+
 	mOK         = new wxButton (this, 
 	                            wxID_OK,
 								"OK",
-								wxPoint(400, 375));
+								wxPoint(400, 375),
+								wxSize(80, 20));
 	mCancel      = new wxButton(this, 
 	                            wxID_CANCEL,
 								"Cancel",
-								wxPoint(310, 375));
-	
+								wxPoint(300, 375),
+								wxSize(90, 20));
+
 	/* All panel additions belong here */
+	#ifdef __WXGTK__
 	mCategories->Append("Audio I/O",    new AudioIOPrefs(this));
+	#endif
 	mCategories->Append("Sample Rates", new SampleRatePrefs(this));
 	mCategories->Append("File Formats", new FileFormatPrefs(this));
 
+  PrefsPanel *panel;
+
+	for(int i = 0; i < mCategories->Number(); i++) {
+		panel = (PrefsPanel *)mCategories->GetClientData(i);
+		panel->HidePrefsPanel();
+  }
+
 	mCategories->SetSelection(0);
-	PrefsPanel *panel = (PrefsPanel *)mCategories->GetClientData(0);
-	panel->Show();
+	panel = (PrefsPanel *)mCategories->GetClientData(0);
+	panel->ShowPrefsPanel();
 
 	mSelected = 0;
 }
@@ -67,15 +79,21 @@ PrefsDialog::PrefsDialog():
 
 void PrefsDialog::OnCategoryChange(wxCommandEvent& event)
 {
-	/* hide the old panel */
-	PrefsPanel *panel = (PrefsPanel *)mCategories->GetClientData(mSelected);
-	panel->Show(false);
-	
-	/* show the new one */
-	panel=(PrefsPanel*)mCategories->GetClientData(mCategories->GetSelection());
-	panel->Show();
+  int newSelection = mCategories->GetSelection();
+  
+  if (newSelection>=0 && newSelection<mCategories->Number()
+      && newSelection != mSelected) {
 
-	mSelected = mCategories->GetSelection();
+  	/* hide the old panel */
+  	PrefsPanel *panel = (PrefsPanel *)mCategories->GetClientData(mSelected);
+  	panel->HidePrefsPanel();
+  	
+  	/* show the new one */
+  	panel=(PrefsPanel*)mCategories->GetClientData(newSelection);
+  	panel->ShowPrefsPanel();
+
+  	mSelected = newSelection;
+  }
 }
 
 
@@ -96,8 +114,8 @@ void PrefsDialog::OnOK(wxCommandEvent& event)
 		if(!panel->Apply()) {
 			PrefsPanel *tmp = 
 				(PrefsPanel*)mCategories->GetClientData(mSelected);
-			tmp->Show(false);
-			panel->Show();
+			tmp->HidePrefsPanel;
+			panel->ShowPrefsPanel();
 
 			mCategories->SetSelection(i);
 			mSelected = i;
