@@ -247,13 +247,17 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    VTrack *t = iter.First();
    while (t) {
       numTracks++;
-      if (t->GetKind() == VTrack::Wave)
+      // JH: logically, we only want to count a stereo pair as one track. Right??
+      // I'm changing it and hoping I don't break anything
+      if (t->GetKind() == VTrack::Wave && t->GetLinked() == false)
          numWaveTracks++;
       if (t->GetKind() == VTrack::Label)
          numLabelTracks++;
       if (t->GetSelected()) {
          numTracksSelected++;
-         if (t->GetKind() == VTrack::Wave)
+         // JH: logically, we only want to count a stereo pair as one track. Right??
+         // I'm changing it and hoping I don't break anything
+         if (t->GetKind() == VTrack::Wave && t->GetLinked() == false)
             numWaveTracksSelected++;
          else if(t->GetKind() == VTrack::Label)
             numLabelTracksSelected++;
@@ -836,17 +840,27 @@ void AudacityProject::OnSplit(wxEvent & event)
 
 void AudacityProject::OnSplitLabels(wxEvent & event)
 {
-   // There is one wavetrack and one labeltrack selected. find them.
    TrackListIterator iter(mTracks);
 
    VTrack *n = iter.First();
-   VTrack *wave = 0;
+   VTrack *srcRight = 0;
+   VTrack *srcLeft = 0;
+   bool stereo = false;
    LabelTrack *label = 0;
 
    while(n) {
       if(n->GetSelected()) {
-         if(n->GetKind() == VTrack::Wave)
-            wave = n;
+         if(n->GetKind() == VTrack::Wave) {
+            if(n->GetLinked() == true) {
+               stereo = true;
+               srcLeft = n;
+               srcRight  = iter.Next();
+            }
+            else {
+               srcRight = n;
+               stereo = false;
+            }
+         }
          else if(n->GetKind() == VTrack::Label)
             label = (LabelTrack*)n;  // cast necessary to call LabelTrack specific methods
       }
@@ -863,20 +877,41 @@ void AudacityProject::OnSplitLabels(wxEvent & event)
       double end;
 
       // if on the last label, extend to the end of the wavetrack
-      if(i == label->GetNumLabels() - 1)
-         end = wave->GetMaxLen();
+      if(i == label->GetNumLabels() - 1) {
+         if(stereo)
+            end = wxMax(srcLeft->GetMaxLen(), srcRight->GetMaxLen());
+         else
+            end = srcLeft->GetMaxLen();
+      }
       else
          end = label->GetLabel(i+1)->t;
 
-      VTrack *dest = 0;
+      VTrack *destLeft = 0;
+      VTrack *destRight = 0;
 
-      wave->Copy(begin, end, &dest);
-      if (dest) {
-         dest->Init(*wave);
-         dest->SetOffset(wxMax(begin, wave->GetOffset()));
-         dest->SetName(name);
+      srcLeft->Copy(begin, end, &destLeft);
+      if (destLeft) {
+         destLeft->Init(*srcLeft);
+         destLeft->SetOffset(wxMax(begin, srcLeft->GetOffset()));
+         destLeft->SetName(name);
          
-         mTracks->Add(dest);
+         mTracks->Add(destLeft);
+      }
+
+      if(stereo) {
+         srcRight->Copy(begin, end, &destRight);
+         if (destRight) {
+            destRight->Init(*srcRight);
+            destRight->SetOffset(wxMax(begin, srcRight->GetOffset()));
+            destRight->SetName(name);
+            
+            mTracks->Add(destRight);
+         }
+         else if(destLeft)
+            // account for possibility of a non-aligned linked track, which could
+            // cause the left channel to be eligible for creating a new track,
+            // but not the right.
+            destLeft->SetLinked(false);
       }
    }
 
