@@ -524,6 +524,11 @@ void DirManager::Ref(BlockFile * f)
    //  printf("Ref(%d): %s\n",f->refCount, (const char *)(f->fullPath));
 }
 
+int DirManager::GetRefCount(BlockFile * f)
+{
+   return f->mRefCount;
+}
+
 void DirManager::Deref(BlockFile * f)
 {
    wxString theFileName = f->mName;

@@ -77,6 +77,9 @@ class DirManager {
    void Ref(BlockFile * f);
    void Deref(BlockFile * f);
 
+   // For debugging only
+   int GetRefCount(BlockFile * f);
+
  private:
    void CleanTempDir();
 

@@ -1615,10 +1615,11 @@ void Sequence::DebugPrintf(wxString *dest)
 
    for (i = 0; i < mBlock->Count(); i++) {
       *dest += wxString::Format
-         ("Block %3d: start %8d len %8d  %s",
+         ("Block %3d: start %8d len %8d refs %d %s",
           i,
           mBlock->Item(i)->start,
           mBlock->Item(i)->len,
+          mDirManager->GetRefCount(mBlock->Item(i)->f),
           (const char *) (mBlock->Item(i)->f->GetName()));
       if (pos != mBlock->Item(i)->start)
          *dest += "  ERROR\n";
