@@ -114,7 +114,7 @@ int RingBuffer::Get(samplePtr buffer, sampleFormat format,
                   dest, format,
                   block);
 
-      dest += block;
+      dest += block * SAMPLE_SIZE(mFormat);
       mStart = (mStart + block) % mBufferSize;
       samplesToCopy -= block;
       copied += block;
