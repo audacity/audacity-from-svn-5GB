@@ -259,6 +259,9 @@ bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
          // Create new point
          double when = h + (event.m_x - r.x) / pps - mOffset;
 
+         if (when < 0 || when > mTrackLen)
+            return false;
+
          int dy;
          if (upper)
             dy = ctr - event.m_y;
