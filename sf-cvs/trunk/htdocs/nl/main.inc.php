@@ -63,4 +63,5 @@ $altDownloadStr = "Pronlemen met downloaden? Een vorige versie nodig?";
 $altDownloadStr2 = "Klik hier voor andere downloadlinks";
 $docsStr = "Download de laatste documentatie";
 $clickEnlargeStr = "(Klik op de plaatjes om ze te vergroten.)";
+$listPrivacyStr = ">privacy beleid.)";
 ?>
