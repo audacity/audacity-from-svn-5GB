@@ -39,6 +39,7 @@
 #include "widgets/ASlider.h"
 #include "Prefs.h"
 #include "Project.h"
+#include "AColor.h"
 
 #if USE_PORTMIXER
 #include "AudioIO.h"
@@ -201,6 +202,15 @@ void MixerToolBar::SetMixer(wxCommandEvent &event)
 void MixerToolBar::OnPaint(wxPaintEvent & evt)
 {
    wxPaintDC dc(this);
+   AColor::Medium( &dc, false );
+
+   int width, height;
+   GetSize(&width, &height);
+   // Reduce width by 3 to visually separate from next 
+   // Grab bar
+   wxRect BevelRect( 0,0,width-3,height-1);
+
+   AColor::Bevel( dc, true, BevelRect );
    dc.DrawBitmap(*mPlayBitmap, 1, 1);
    dc.DrawBitmap(*mRecordBitmap, 181, 1);
 }

@@ -371,7 +371,7 @@ void ControlToolBar::MakeButtons()
 
    /* Buttons */
 
-   mButtonPos = 92;
+   mButtonPos = 90;
 
    mRewind = MakeButton((char const **) Rewind,
                         (char const **) RewindDisabled,
@@ -425,10 +425,10 @@ void ControlToolBar::MakeButtons()
 
    mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_SELECT, 0, 0);
    mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 28);
-   mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 28, 0);
-   mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 28, 28);
-   mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 56, 0);
-   mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 56, 28); 
+   mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 27, 0);
+   mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 27, 28);
+   mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 54, 0);
+   mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 54, 28); 
    RegenerateToolsTooltips();
 
 #ifdef __WXMAC__
@@ -898,28 +898,26 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
    int width, height;
    GetSize(&width, &height);
 
+
 #if defined __WXMAC__
    // Mac has an Aqua background...
    DrawBackground(dc, width, height); 
 #else
+   //TODO: Get rid of all the magic numbers used in sizing.
    // On other platforms put the big buttons on a beveled platform.
-   DrawBackground(dc, 84, height);
-   wxRect bevelRect( 83, 0, width-84, height-1 );
+   DrawBackground(dc, 81, height);
+   // Width is reduced by an extra two pixels to visually separate
+   // the control toolbar from the next grab bar on the right.
+   wxRect bevelRect( 81, 0, width-84, height-1 );
    AColor::Bevel( dc, true, bevelRect );
 #endif
 
-#if 0
-   //TODO: These dividers between the six buttons aren't needed?
-   dc.SetPen(*wxBLACK_PEN);
-   dc.DrawLine(27, 0, 27, height);
-   dc.DrawLine(55, 0, 55, height);
-   dc.DrawLine(0, 27, 83, 27);
-#ifdef __WXMAC__
-   dc.DrawLine(83, 0, 83, 27);
-#else
-   dc.DrawLine(83, 0, 83, height);
-#endif
-#endif
+   // JKC: Grey horizontal spacer line between buttons.
+   // Not quite ideal, but seems the best solution to 
+   // make the tool button heights add up to the 
+   // main control button height.
+   AColor::Dark( &dc, false);
+   dc.DrawLine(0, 27, 81, 27);
 
 }
 

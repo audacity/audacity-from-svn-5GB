@@ -3972,6 +3972,8 @@ void TrackLabel::DrawBackground(wxDC * dc, const wxRect r, bool bSelected,
    fill.width = labelw - r.x;
    AColor::Medium(dc, bSelected);
    dc->DrawRectangle(fill);
+   fill=wxRect( r.x+1, r.y+17, fill.width - 32, fill.height-20); 
+   AColor::Bevel( *dc, true, fill );
 }
 
 void TrackLabel::GetTrackControlsRect(const wxRect r, wxRect & dest) const
