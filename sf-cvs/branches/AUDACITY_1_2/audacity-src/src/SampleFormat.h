@@ -43,6 +43,11 @@ void      CopySamples(samplePtr src, sampleFormat srcFormat,
                       unsigned int len, bool highQuality=true,
                       unsigned int stride=1);
 
+void      CopySamplesNoDither(samplePtr src, sampleFormat srcFormat,
+                      samplePtr dst, sampleFormat dstFormat,
+                      unsigned int len,
+                      unsigned int stride=1);
+                      
 void      ClearSamples(samplePtr buffer, sampleFormat format,
                        int start, int len);
 

@@ -456,9 +456,16 @@ sampleCount Mixer::MixSameRate(int *channelFlags, WaveTrack *track,
    e->GetValues(mEnvValues, slen, t, 1.0 / mRate);
    for(int i=0; i<slen; i++)
       mFloatBuffer[i] *= mEnvValues[i]; // Track gain control will go here?
-   CopySamples((samplePtr)mFloatBuffer, floatSample,
-               mTemp, mFormat,
-               slen);
+   
+   if (mFormat == track->GetSampleFormat())
+   {
+      CopySamplesNoDither((samplePtr)mFloatBuffer, floatSample,
+                          mTemp, mFormat, slen);
+   } else {
+      CopySamples((samplePtr)mFloatBuffer, floatSample,
+                          mTemp, mFormat, slen);
+   }
+   
 
    for(c=0; c<mNumChannels; c++)
       if (mApplyTrackGains)
