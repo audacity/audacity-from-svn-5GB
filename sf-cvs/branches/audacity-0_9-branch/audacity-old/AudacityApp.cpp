@@ -312,6 +312,8 @@ bool AudacityApp::OnInit()
 
 
 int AudacityApp::OnExit() {
+   while (Pending())
+      Dispatch();
 
 #if 0
    delete mChecker;
