@@ -102,16 +102,24 @@ WaveTrack::WaveTrack(WaveTrack &orig):
    mDisplay = 0; // DELETEME
 
    orig.Flush();
+   Init(orig);
+
    mSequence = new Sequence(*orig.mSequence);
-   mRate = orig.mRate;
    mAppendBuffer = NULL;
    mAppendBufferLen = 0;
-   SetName(orig.GetName());
    mEnvelope = new Envelope();
    mEnvelope->Paste(0.0, orig.mEnvelope);
    mEnvelope->SetOffset(orig.GetOffset());
    mWaveCache = new WaveCache(1);
    mSpecCache = new SpecCache(1, 1, false);
+}
+
+// Copy the track metadata but not the contents.
+void WaveTrack::Init(const WaveTrack &orig)
+{
+   Track::Init(orig);
+   mRate = orig.mRate;
+   SetName(orig.GetName());
 }
 
 WaveTrack::~WaveTrack()
@@ -216,25 +224,25 @@ bool WaveTrack::Cut(double t0, double t1, Track **dest)
 
 bool WaveTrack::Copy(double t0, double t1, Track **dest)
 {
-   bool success;
-   sampleCount s0, s1;
-   WaveTrack *newTrack;
-
    if (t1 < t0)
       return false;
 
    if (!Flush())
       return false;
 
+   sampleCount s0, s1;
+
    TimeToSamplesClip(t0, &s0);
    TimeToSamplesClip(t1, &s1);
 
-   newTrack = new WaveTrack(mDirManager);
+   WaveTrack *newTrack = new WaveTrack(mDirManager);
+   newTrack->Init(*this);
+
    delete newTrack->mSequence;
    newTrack->mSequence = NULL;
-   success = mSequence->Copy(s0, s1, &newTrack->mSequence);
    
-   if (!success) {
+   if (!mSequence->Copy(s0, s1, &newTrack->mSequence)) {
+      // Error
       *dest = NULL;
       delete newTrack;
       return false;

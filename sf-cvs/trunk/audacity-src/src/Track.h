@@ -66,7 +66,7 @@ class Track: public XMLTagHandler {
 
    virtual ~ Track() { }
    
-   virtual void Init(const Track &orig);
+   void Init(const Track &orig);
    virtual Track *Duplicate() = 0;
 
    wxString GetName() const { return mName; }
