@@ -78,6 +78,9 @@ class TrackPanel:public wxWindow {
    void ScrollDuringDrag();
    void UpdateIndicator();
 
+   void DisplaySelection();
+
+
    // AS: Selection handling
    void HandleSelect(wxMouseEvent & event);
    void SelectionHandleDrag(wxMouseEvent &event);
