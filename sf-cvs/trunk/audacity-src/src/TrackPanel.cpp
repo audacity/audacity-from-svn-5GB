@@ -723,13 +723,13 @@ void TrackPanel::OnTimer()
    }
 
    // AS: The "indicator" is the little graphical mark shown in the ruler
-   //  that indicates where the current play/record position is.  IsBusy
-   //  is basically IsPlaying || IsRecording.
+   //  that indicates where the current play/record position is.
    if (!gAudioIO->IsPaused() &&
-        (mIndicatorShowing || gAudioIO->IsStreamActive(p->GetAudioIOToken())))
+       (mIndicatorShowing || gAudioIO->IsStreamActive(p->GetAudioIOToken())))
    {
       UpdateIndicator();
    }
+
    // AS: Um, I get the feeling we want to redraw the cursors
    //  every 10 timer ticks or something...
    if ((mTimeCount % 10) == 0 &&
@@ -1910,8 +1910,8 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
    else if (event.ButtonUp(1)) {
       mTrackLabel.DrawCloseBox(&dc, r, false);
       if (closeRect.Inside(event.m_x, event.m_y)) {
-         //BG: We may want to check if we are busy in just this project
-         if (!gAudioIO->IsStreamActive())
+         AudacityProject *p = (AudacityProject*)GetParent();
+         if (!gAudioIO->IsStreamActive(p->GetAudioIOToken()))
             RemoveTrack(t);
          mCapturedTrack = 0;
       }

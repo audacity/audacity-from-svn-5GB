@@ -233,7 +233,7 @@ wxArrayString AudioIO::GetInputSourceNames()
 void AudioIO::HandleDeviceChange()
 {
    // This should not happen, but it would screw things up if it did.
-   if( IsStreamActive() )
+   if( IsBusy() )
       return;
 
 #if defined(USE_PORTMIXER) && !defined(USE_PORTAUDIO_V19)
@@ -332,8 +332,11 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
                          TimeTrack *timeTrack, double sampleRate,
                          double t0, double t1)
 {
-   if( IsStreamActive() )
+   if( IsBusy() )
       return false;
+
+   // Temporary - just so we don't have a race condition
+   mStreamToken = -1;
 
    mRate    = sampleRate;
    mT0      = t0;
@@ -726,12 +729,6 @@ void AudioIO::StopStream()
    }
 
    //
-   // Only set token to 0 after we're finished writing all of our
-   // data to the WaveTracks.
-   //
-   mStreamToken = 0;
-
-   //
    // Everything is taken care of.  Now, just free all the resources
    // we allocated in StartStream()
    //
@@ -758,6 +755,11 @@ void AudioIO::StopStream()
 
       delete[] mCaptureBuffers;
    }
+
+   //
+   // Only set token to 0 after we're totally finished with everything
+   //
+   mStreamToken = 0;
 }
 
 void AudioIO::SetPaused(bool state)
@@ -785,6 +787,25 @@ void AudioIO::SetPaused(bool state)
 bool AudioIO::IsPaused()
 {
    return mPaused;
+}
+
+bool AudioIO::IsBusy()
+{
+   if (IsStreamActive())
+      return true;
+
+#if USE_PORTAUDIO_V19
+   if (mPortStreamV19)
+      return true;
+#else
+   if (mPortStreamV18)
+      return true;
+#endif
+
+   if (mStreamToken != 0)
+      return true;
+
+   return false;
 }
 
 bool AudioIO::IsStreamActive()
@@ -819,7 +840,7 @@ bool AudioIO::IsAudioTokenActive(int token)
 
 double AudioIO::GetStreamTime()
 {
-   if( !IsStreamActive() )
+   if( !IsBusy() )
       return -1000000000;
 
    if( mPaused )
