@@ -265,10 +265,17 @@ void AudioIO::HandleDeviceChange()
                             audacityAudioCallback, NULL);
    }
 
-   if( !error ) {
-      mPortMixer = Px_OpenMixer(stream, 0);
-      Pa_CloseStream(stream);
+   if( error ) {
+      mEmulateMixerInputVol = true;
+      mEmulateMixerOutputVol = true;
+      mMixerInputVol = 1.0;
+      mMixerOutputVol = 1.0;
+
+      return;
    }
+
+   mPortMixer = Px_OpenMixer(stream, 0);
+   Pa_CloseStream(stream);
 
    // Determine mixer capabilities - it it doesn't support either
    // input or output, we emulate them (by multiplying this value
