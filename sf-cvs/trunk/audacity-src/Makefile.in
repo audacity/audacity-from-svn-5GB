@@ -6,6 +6,7 @@ BINDIR= @bindir@
 DATADIR= @datadir@
 MANDIR= @mandir@
 ZIP = @ZIP@
+AUDACITY_NAME = @AUDACITY_NAME@
 
 .PHONY: all
 all: audacity help/audacity.1.gz
@@ -20,33 +21,33 @@ audacity:
 install: audacity audacity-help.htb
 	# install the binary
 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
-	$(INSTALL) -m 755 audacity $(DESTDIR)$(BINDIR)/audacity
+	$(INSTALL) -m 755 audacity $(DESTDIR)$(BINDIR)/$(AUDACITY_NAME)
 	
 	# install docs
-	$(INSTALL) -d $(DESTDIR)$(DATADIR)/doc/audacity
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/doc/$(AUDACITY_NAME)
 	-test -f audacity-help.htb && $(INSTALL) -m 644 audacity-help.htb \
-		$(DESTDIR)$(DATADIR)/doc/audacity/audacity-help.htb
-	$(INSTALL) -m 644 README.txt $(DESTDIR)$(DATADIR)/doc/audacity/README.txt
-	$(INSTALL) -m 644 LICENSE.txt $(DESTDIR)$(DATADIR)/doc/audacity/LICENSE.txt
+		$(DESTDIR)$(DATADIR)/doc/$(AUDACITY_NAME)/audacity-help.htb
+	$(INSTALL) -m 644 README.txt $(DESTDIR)$(DATADIR)/doc/$(AUDACITY_NAME)/README.txt
+	$(INSTALL) -m 644 LICENSE.txt $(DESTDIR)$(DATADIR)/doc/$(AUDACITY_NAME)/LICENSE.txt
 
 	# install manpage
 	$(INSTALL) -d $(DESTDIR)$(MANDIR)/man1
 	-test -f help/audacity.1.gz && \
 		$(INSTALL) -m 644 help/audacity.1.gz \
-		$(DESTDIR)$(MANDIR)/man1
-	$(INSTALL) -d $(DESTDIR)$(DATADIR)/audacity/nyquist
-	$(INSTALL) -m 644 nyquist/*.lsp $(DESTDIR)$(DATADIR)/audacity/nyquist
-	$(INSTALL) -d $(DESTDIR)$(DATADIR)/audacity/plug-ins
-	$(INSTALL) -m 644 plug-ins/*.ny $(DESTDIR)$(DATADIR)/audacity/plug-ins
+		$(DESTDIR)$(MANDIR)/man1/$(AUDACITY_NAME).1.gz
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/nyquist
+	$(INSTALL) -m 644 nyquist/*.lsp $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/nyquist
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/plug-ins
+	$(INSTALL) -m 644 plug-ins/*.ny $(DESTDIR)$(DATADIR)/$(AUDACITY_NAME)/plug-ins
 
 	# install locales
 	$(MAKE) -C locale install
 
 uninstall:
-	rm -rf $(BINDIR)/audacity
-	rm -rf $(DATADIR)/doc/audacity
-	rm -rf $(DATADIR)/audacity
-	rm -rf $(MANDIR)/man1/audacity.1.gz
+	rm -rf $(BINDIR)/$(AUDACITY_NAME)
+	rm -rf $(DATADIR)/doc/$(AUDACITY_NAME)
+	rm -rf $(DATADIR)/$(AUDACITY_NAME)
+	rm -rf $(MANDIR)/man1/$(AUDACITY_NAME).1.gz
 
 	$(MAKE) -C locale uninstall
 

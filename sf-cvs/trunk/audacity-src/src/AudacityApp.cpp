@@ -270,12 +270,26 @@ bool AudacityApp::OnInit()
    AddUniquePathToPathList(wxString::Format("%s/.audacity-files",
                                             (const char *)home),
                            audacityPathList);
-   AddUniquePathToPathList(wxString::Format("%s/share/audacity",
+   #ifdef AUDACITY_NAME
+      AddUniquePathToPathList(wxString::Format("%s/share/%s",
+                                               INSTALL_PREFIX, AUDACITY_NAME),
+                              audacityPathList);
+      AddUniquePathToPathList(wxString::Format("%s/share/doc/%s",
+                                               INSTALL_PREFIX, AUDACITY_NAME),
+                              audacityPathList);
+   #else
+      AddUniquePathToPathList(wxString::Format("%s/share/audacity",
+                                               INSTALL_PREFIX),
+                              audacityPathList);
+      AddUniquePathToPathList(wxString::Format("%s/share/doc/audacity",
+                                               INSTALL_PREFIX),
+                              audacityPathList);
+   #endif
+
+   AddUniquePathToPathList(wxString::Format("%s/share/locale",
                                             INSTALL_PREFIX),
                            audacityPathList);
-   AddUniquePathToPathList(wxString::Format("%s/share/doc/audacity",
-                                            INSTALL_PREFIX),
-                           audacityPathList);
+
    #endif
    
    // On Mac and Windows systems, use the directory which contains Audacity.
@@ -325,7 +339,11 @@ bool AudacityApp::OnInit()
       for(unsigned int i=0; i<audacityPathList.GetCount(); i++)
          mLocale->AddCatalogLookupPathPrefix(audacityPathList[i]);
 
+#ifdef AUDACITY_NAME
+      mLocale->AddCatalog(AUDACITY_NAME);
+#else
       mLocale->AddCatalog("audacity");
+#endif
    } else
       mLocale = NULL;
 

@@ -15,6 +15,12 @@ prefix=@prefix@
 DATADIR=@datadir@
 top_srcdir=@top_srcdir@
 INSTALL=@INSTALL@
+AUDACITY_NAME=@AUDACITY_NAME@
+ifdef DESTDIR
+   INSTALL_PATH=$(top_srcdir)/$(DESTDIR)
+else
+   INSTALL_PATH=
+endif
 
 all: allmo
 
@@ -65,13 +71,13 @@ FORCE:
 
 install: allmo
 	linguas='$(LINGUAS)'; for lang in $$linguas ; do \
-	   $(INSTALL) -d $(top_srcdir)/$(DESTDIR)$(DATADIR)/locale/$$lang/LC_MESSAGES ; \
-	   $(INSTALL) -m 644 $$lang/audacity.mo $(top_srcdir)/$(DESTDIR)$(DATADIR)/locale/$$lang/LC_MESSAGES ; \
+	   $(INSTALL) -d $(INSTALL_PATH)$(DATADIR)/locale/$$lang/LC_MESSAGES ; \
+	   $(INSTALL) -m 644 $$lang/audacity.mo $(INSTALL_PATH)$(DATADIR)/locale/$$lang/LC_MESSAGES/$(AUDACITY_NAME).mo ; \
 	done
 
 uninstall:
 	linguas='$(LINGUAS)'; for lang in $$linguas ; do \
-	   rm -f $(top_srcdir)/$(DESTDIR)$(DATADIR)/locale/$$lang/LC_MESSAGES/audacity.mo ; \
+	   rm -f $(DATADIR)/locale/$$lang/LC_MESSAGES/$(AUDACITY_NAME).mo ; \
 	done
 
 clean:
