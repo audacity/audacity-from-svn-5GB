@@ -20,7 +20,7 @@ class AboutDialog: public wxDialog
 DECLARE_DYNAMIC_CLASS(AboutDialog)
 
 public:
-  AboutDialog();
+  AboutDialog(wxWindow *parent);
   virtual ~AboutDialog();
 
   void OnOK(wxCommandEvent& event);

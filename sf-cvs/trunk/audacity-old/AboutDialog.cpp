@@ -28,41 +28,46 @@ END_EVENT_TABLE()
 
 IMPLEMENT_CLASS(AboutDialog, wxDialog)
 
-AboutDialog::AboutDialog()
-  : wxDialog( (wxFrame *)NULL, -1, "About Audacity...",
-  wxDefaultPosition, wxSize(530, 290))
+AboutDialog::AboutDialog(wxWindow *parent)
+  : wxDialog(parent, -1, "About Audacity...",
+  wxDefaultPosition, wxSize(400, 400))
 {
-  wxString fullMessage("Audacity:\n"
-					   "A New Digital Audio Editor\n"
-					   "by Dominic Mazzoni, Roger Dannenberg, "
-					   "Jason Cohen, Robert Leidle,\n"
-					   "Mark Tomlinson, and Joshua Haberman.\n"
-					   "Version " AUDACITY_VERSION_STRING "\n"
-					   "http://www.cs.cmu.edu/~music/audacity/");
-  
-  wxString caption("A New Digital Audio Editor\n"
-				   "by Dominic Mazzoni, Roger Dannenberg, "
-				   "Jason Cohen, Robert Leidle,\n"
-				   "Mark Tomlinson, and Joshua Haberman.\n"
-				   "Version " AUDACITY_VERSION_STRING "\n"
-				   "http://www.cs.cmu.edu/~music/audacity/");
-				   
+  Centre();
 
-  new wxStaticText( this, -1, caption, wxPoint(8, 150), wxSize(514, 100) );
+  wxWindow *panel = new wxWindow(this, -1,
+								 wxPoint(0, 0),
+								 wxSize(400, 400));
+  panel->SetBackgroundColour(wxColour(255, 255, 255));
+
+  wxString topMessage("Audacity version " AUDACITY_VERSION_STRING);
+
+  wxString botMessage("A New Digital Audio Editor\n"
+					  "by Dominic Mazzoni, Roger Dannenberg, "
+					  "Jason Cohen, \n"
+					  "Robert Leidle, "
+					  "Mark Tomlinson, and Joshua Haberman.\n"
+					  "Logo by Harvey Lubin.\n\n"
+					  "http://www.cs.cmu.edu/~music/audacity/");
+
+  new wxStaticText( panel, -1, topMessage, wxPoint(10, 10), wxSize(380, 20),
+					wxALIGN_CENTER);
+
+  new wxStaticText( panel, -1, botMessage, wxPoint(10, 230), wxSize(380, 130),
+					wxALIGN_CENTER);
   
-  wxButton *ok = new wxButton(this, wxID_OK,
+  wxButton *ok = new wxButton(panel, wxID_OK,
 							  "Audacious!",
-							  wxPoint(400, 260),
+							  wxPoint(150, 370),
 							  wxSize(100, 20));
-	#ifndef TARGET_CARBON
-	ok->SetDefault();
-	ok->SetFocus();
-	#endif
+  #ifndef TARGET_CARBON
+  ok->SetDefault();
+  ok->SetFocus();
+  #endif
 	
-	logo = new wxBitmap((const char **)AudacityLogo);
+  logo = new wxBitmap((const char **)AudacityLogo);
 
   icon =
-	  new wxStaticBitmap(this, -1, *logo, wxPoint(0, 0), wxSize(530, 142));
+	  new wxStaticBitmap(panel, -1, *logo, wxPoint(93, 30), wxSize(215, 190));
 }
 
 AboutDialog::~AboutDialog()
