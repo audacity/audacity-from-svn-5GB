@@ -2974,6 +2974,8 @@ Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
 
 void TrackPanel::DisplaySelection()
 {
+   if (!mListener)
+      return;
 
    float start = mViewInfo->sel0;
    float end = mViewInfo->sel1;
