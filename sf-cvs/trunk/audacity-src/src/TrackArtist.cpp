@@ -14,11 +14,11 @@
   currently on-screen.
 
 **********************************************************************/
-
+#include "Audacity.h"
 #include "TrackArtist.h"
 
-#include <float.h>
 #include <math.h>
+#include <float.h>
 
 #include <wx/brush.h>
 #include <wx/colour.h>
