@@ -59,7 +59,10 @@ extern "C" {
             OSType resType;
             OSErr err;
 
-            codeH = Get1IndResource('aEff', count);
+            codeH = Get1IndResource('aEff', i+1);
+            if (!codeH)
+               continue;
+
             GetResInfo(codeH, &resID, &resType, fragName);
             DetachResource(codeH);
             HLock(codeH);
