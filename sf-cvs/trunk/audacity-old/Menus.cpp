@@ -228,7 +228,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    mEditMenu->Enable(mEditMenu->FindItem("Redo"),
                      mUndoManager.RedoAvailable());
    mEditMenu->Enable(UndoHistoryID,
-                     mUndoManager.GetNumUndoableStates() > 0);
+                     mUndoManager.GetCurrentState() > 1);
 
    bool nonZeroRegionSelected = (mViewInfo.sel1 > mViewInfo.sel0);
 

@@ -1197,14 +1197,14 @@ void AudacityProject::ZoomFit()
 void AudacityProject::InitialState()
 {
    mUndoManager.ClearStates();
-   PushState(false);
+   PushState("Created new project", false);
 }
 
-void AudacityProject::PushState(bool makeDirty /* = true */ )
+void AudacityProject::PushState(wxString desc, bool makeDirty /* = true */ )
 {
    TrackList *l = new TrackList(mTracks);
 
-   mUndoManager.PushState(l, mViewInfo.sel0, mViewInfo.sel1);
+   mUndoManager.PushState(l, mViewInfo.sel0, mViewInfo.sel1, desc);
    delete l;
 
    if (makeDirty)
@@ -1304,9 +1304,9 @@ void AudacityProject::TP_OnPlayKey()
 }
 
 // TrackPanel callback method
-void AudacityProject::TP_PushState()
+void AudacityProject::TP_PushState(wxString desc)
 {
-   PushState();
+   PushState(desc);
 }
 
 // TrackPanel callback method

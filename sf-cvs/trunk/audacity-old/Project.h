@@ -110,7 +110,7 @@ class AudacityProject:public wxFrame,
    virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum);
    virtual int TP_GetCurrentTool();
    virtual void TP_OnPlayKey();
-   virtual void TP_PushState();
+   virtual void TP_PushState(wxString desc = wxString("Not SPECIFIED YET!"));
    virtual void TP_RedrawScrollbars();
    virtual void TP_ScrollLeft();
    virtual void TP_ScrollRight();
@@ -131,7 +131,7 @@ class AudacityProject:public wxFrame,
 
    void ClearClipboard();
    void InitialState();
-   void PushState(bool makeDirty = true);
+   void PushState(wxString desc = wxString("oops, not yet"), bool makeDirty = true);
    void PopState(TrackList * l);
 
    // The project's name and file info

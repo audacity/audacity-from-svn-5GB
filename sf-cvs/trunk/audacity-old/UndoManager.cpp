@@ -23,30 +23,51 @@ UndoManager::~UndoManager()
    ClearStates();
 }
 
-void UndoManager::ClearStates(int num)
+
+void UndoManager::GetDescription(unsigned int n, wxString *desc, wxString *size)
 {
-   for (int i = 0; i < num; i++) {
-      TrackListIterator iter(stack[0]->tracks);
+   n -= 1; // 1 based to zero based
 
-      VTrack *t = iter.First();
-      while (t) {
-         delete t;
-         t = iter.Next();
-      }
-      stack.RemoveAt(0);
+   wxASSERT(n < stack.Count());
+
+   *desc = stack[n]->description;
+   *size = "X MB";
+}
+
+void UndoManager::RemoveStateAt(int n)
+{
+   TrackListIterator iter(stack[n]->tracks);
+
+   VTrack *t = iter.First();
+   while (t) {
+      delete t;
+      t = iter.Next();
    }
+   stack.RemoveAt(n);
 
-   current -= num;
+   current -= 1;
+}
+
+
+void UndoManager::RemoveStates(int num)
+{
+   for (int i = 0; i < num; i++)
+      RemoveStateAt(0);
 }
    
 void UndoManager::ClearStates()
 {
-   ClearStates(stack.Count());
+   RemoveStates(stack.Count());
 }
 
-unsigned int UndoManager::GetNumUndoableStates()
+unsigned int UndoManager::GetNumStates()
 {
-   return current;
+   return stack.Count();
+}
+
+unsigned int UndoManager::GetCurrentState()
+{
+   return current + 1;  // the array is 0 based, the abstraction is 1 based
 }
 
 bool UndoManager::UndoAvailable()
@@ -59,7 +80,8 @@ bool UndoManager::RedoAvailable()
    return (current < (int)stack.Count() - 1);
 }
 
-void UndoManager::PushState(TrackList * l, double sel0, double sel1)
+void UndoManager::PushState(TrackList * l, double sel0, double sel1,
+                            wxString desc)
 {
    unsigned int i;
 
@@ -88,6 +110,7 @@ void UndoManager::PushState(TrackList * l, double sel0, double sel1)
    push->tracks = tracksCopy;
    push->sel0 = sel0;
    push->sel1 = sel1;
+   push->description = desc;
 
    stack.Add(push);
    current++;

@@ -18,6 +18,7 @@
 #include <wx/notebook.h>
 #include <wx/sizer.h>
 #include <wx/spinctrl.h>
+#include <wx/listctrl.h>
 
 #include "UndoManager.h"
 
@@ -32,6 +33,7 @@ class HistoryWindow :public wxDialog {
 
  private:
    wxStaticBoxSizer *mTopSizer;
+   wxListCtrl *mList;
    wxSpinCtrl *mDiscardNum;
    UndoManager *mManager;
 

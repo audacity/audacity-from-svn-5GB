@@ -36,7 +36,7 @@ class TrackPanelListener {
    virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum) = 0;
    virtual int TP_GetCurrentTool() = 0;
    virtual void TP_OnPlayKey() = 0;
-   virtual void TP_PushState() = 0;
+   virtual void TP_PushState(wxString desc) = 0;
    virtual void TP_RedrawScrollbars() = 0;
    virtual void TP_ScrollLeft() = 0;
    virtual void TP_ScrollRight() = 0;
@@ -82,7 +82,7 @@ class TrackPanel:public wxWindow {
    void HandleSoloing(wxMouseEvent & event);
 
    void MakeParentRedrawScrollbars();
-   void MakeParentPushState();
+   void MakeParentPushState(wxString desc = wxString("NOT DONE YET!!"));
 
    void OnSetName();
 

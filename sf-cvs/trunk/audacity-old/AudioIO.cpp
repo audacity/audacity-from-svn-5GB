@@ -150,7 +150,7 @@ void AudioIO::Finish()
    if (mRecording) {
       snd_close(&mRecordNode);
       if (!mHardStop)
-         mProject->TP_PushState();
+         mProject->TP_PushState("Recorded Audio");
    }
    // TODO mProject->SoundDone();
    mProject = NULL;

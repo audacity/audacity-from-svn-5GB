@@ -367,9 +367,9 @@ void TrackPanel::OnPaint(wxPaintEvent & event)
    dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
 }
 
-void TrackPanel::MakeParentPushState()
+void TrackPanel::MakeParentPushState(wxString desc)
 {
-   mListener->TP_PushState();
+   mListener->TP_PushState(desc);
 }
 
 void TrackPanel::MakeParentRedrawScrollbars()
@@ -657,18 +657,24 @@ void TrackPanel::HandleEnvelope(wxMouseEvent & event)
 
    if (event.ButtonUp()) {
       mCapturedTrack = NULL;
-      MakeParentPushState();
+      MakeParentPushState("Adjusted envelope.");
    }
 }
 
 void TrackPanel::HandleSlide(wxMouseEvent & event)
 {
+   static double totalOffset;
+   static wxString name;
+
    if (event.ButtonDown()) {
+
+      totalOffset = 0;
 
       wxRect r;
       int num;
 
       VTrack *vt = FindTrack(event.m_x, event.m_y, false, &r, &num);
+      name = vt->GetName();
 
       /* Scrub
 
@@ -817,6 +823,7 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
 
       if (selend != mSelStart) {
          mCapturedTrack->Offset(selend - mSelStart);
+         totalOffset += selend - mSelStart;
 
          VTrack *link = mTracks->GetLink(mCapturedTrack);
          if (link)
@@ -832,7 +839,12 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
       mCapturedTrack = NULL;
       mIsSliding = false;
       MakeParentRedrawScrollbars();
-      MakeParentPushState();
+      if(totalOffset > 0)
+         MakeParentPushState(
+            wxString::Format("Slid track '%s' %s %.02f seconds", 
+                             name.c_str(),
+                             totalOffset > 0 ? "right" : "left",
+                             totalOffset > 0 ? totalOffset : -totalOffset));
    }
 }
 
@@ -1952,8 +1964,10 @@ void TrackPanel::OnChannelLeft()
 {
    if (mPopupMenuTarget) {
       mPopupMenuTarget->channel = VTrack::LeftChannel;
+      MakeParentPushState(
+            wxString::Format("Changed '%s' to 'left' channel",
+                             mPopupMenuTarget->GetName().c_str()));
       mPopupMenuTarget = NULL;
-      MakeParentPushState();
       Refresh(false);
    }
 }
@@ -1962,8 +1976,10 @@ void TrackPanel::OnChannelRight()
 {
    if (mPopupMenuTarget) {
       mPopupMenuTarget->channel = VTrack::RightChannel;
+      MakeParentPushState(
+            wxString::Format("Changed '%s' to 'right' channel",
+                             mPopupMenuTarget->GetName().c_str()));
       mPopupMenuTarget = NULL;
-      MakeParentPushState();
       Refresh(false);
    }
 }
@@ -1972,8 +1988,10 @@ void TrackPanel::OnChannelMono()
 {
    if (mPopupMenuTarget) {
       mPopupMenuTarget->channel = VTrack::MonoChannel;
+      MakeParentPushState(
+            wxString::Format("Changed '%s' to 'mono'",
+                             mPopupMenuTarget->GetName().c_str()));
       mPopupMenuTarget = NULL;
-      MakeParentPushState();
       Refresh(false);
    }
 }
@@ -1982,7 +2000,9 @@ void TrackPanel::OnSplitStereo()
 {
    if (mPopupMenuTarget) {
       mPopupMenuTarget->linked = false;
-      MakeParentPushState();
+      MakeParentPushState(
+            wxString::Format("Split stereo track '%s'",
+                             mPopupMenuTarget->GetName().c_str()));
       Refresh(false);
    }
 }
@@ -1995,9 +2015,11 @@ void TrackPanel::OnMergeStereo()
       if (partner) {
          mPopupMenuTarget->channel = VTrack::LeftChannel;
          partner->channel = VTrack::RightChannel;
+         MakeParentPushState(
+             wxString::Format("Made '%s' a stereo track",
+                              mPopupMenuTarget->GetName().c_str()));
       } else
          mPopupMenuTarget->linked = false;
-      MakeParentPushState();
       Refresh(false);
    }
 }
@@ -2007,15 +2029,18 @@ void TrackPanel::RemoveTrack(VTrack * toRemove)
    TrackListIterator iter(mTracks);
    VTrack *t = iter.First();
    VTrack *partner = mTracks->GetLink(toRemove);
+   wxString name;
 
    while (t) {
-      if (t == toRemove || (partner && t == partner))
+      if (t == toRemove || (partner && t == partner)) {
+         name = t->GetName();
          t = iter.RemoveCurrent();
+      }
       else
          t = iter.Next();
    }
 
-   MakeParentPushState();
+   MakeParentPushState(wxString::Format("Removed track '%s.'", name.c_str()));
    MakeParentRedrawScrollbars();
 
    Refresh(false);
@@ -2028,8 +2053,10 @@ void TrackPanel::OnWaveform()
       VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
       if (partner)
          ((WaveTrack *) partner)->SetDisplay(0);
+      MakeParentPushState(
+          wxString::Format("Changed '%s' to waveform display",
+                           mPopupMenuTarget->GetName().c_str()));
       mPopupMenuTarget = NULL;
-      MakeParentPushState();
       Refresh(false);
    }
 }
@@ -2041,8 +2068,10 @@ void TrackPanel::OnWaveformDB()
       VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
       if (partner)
          ((WaveTrack *) partner)->SetDisplay(1);
+      MakeParentPushState(
+          wxString::Format("Changed '%s' to waveformDB display",
+                           mPopupMenuTarget->GetName().c_str()));
       mPopupMenuTarget = NULL;
-      MakeParentPushState();
       Refresh(false);
    }
 }
@@ -2054,8 +2083,10 @@ void TrackPanel::OnSpectrum()
       VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
       if (partner)
          ((WaveTrack *) partner)->SetDisplay(2);
+      MakeParentPushState(
+          wxString::Format("Changed '%s' to spectrum display",
+                           mPopupMenuTarget->GetName().c_str()));
       mPopupMenuTarget = NULL;
-      MakeParentPushState();
       Refresh(false);
    }
 }
@@ -2067,8 +2098,10 @@ void TrackPanel::OnPitch()
       VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
       if (partner)
          ((WaveTrack *) partner)->SetDisplay(3);
+      MakeParentPushState(
+          wxString::Format("Changed '%s' to pitch display",
+                           mPopupMenuTarget->GetName().c_str()));
       mPopupMenuTarget = NULL;
-      MakeParentPushState();
       Refresh(false);
    }
 }
@@ -2080,8 +2113,10 @@ void TrackPanel::OnRate8()
       VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
       if (partner)
          ((WaveTrack *) partner)->SetRate(8000.0);
+      MakeParentPushState(
+          wxString::Format("Changed '%s' to 8000 Hz",
+                           mPopupMenuTarget->GetName().c_str()));
       mPopupMenuTarget = NULL;
-      MakeParentPushState();
       MakeParentRedrawScrollbars();
       Refresh(false);
    }
@@ -2094,8 +2129,10 @@ void TrackPanel::OnRate11()
       VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
       if (partner)
          ((WaveTrack *) partner)->SetRate(11025.0);
+      MakeParentPushState(
+          wxString::Format("Changed '%s' to 11025 Hz",
+                           mPopupMenuTarget->GetName().c_str()));
       mPopupMenuTarget = NULL;
-      MakeParentPushState();
       MakeParentRedrawScrollbars();
       Refresh(false);
    }
@@ -2108,8 +2145,10 @@ void TrackPanel::OnRate16()
       VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
       if (partner)
          ((WaveTrack *) partner)->SetRate(16000.0);
+      MakeParentPushState(
+          wxString::Format("Changed '%s' to 16 kHz",
+                           mPopupMenuTarget->GetName().c_str()));
       mPopupMenuTarget = NULL;
-      MakeParentPushState();
       MakeParentRedrawScrollbars();
       Refresh(false);
    }
@@ -2122,8 +2161,10 @@ void TrackPanel::OnRate22()
       VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
       if (partner)
          ((WaveTrack *) partner)->SetRate(22050.0);
+      MakeParentPushState(
+          wxString::Format("Changed '%s' to 22 kHz",
+                           mPopupMenuTarget->GetName().c_str()));
       mPopupMenuTarget = NULL;
-      MakeParentPushState();
       MakeParentRedrawScrollbars();
       Refresh(false);
    }
@@ -2136,8 +2177,10 @@ void TrackPanel::OnRate44()
       VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
       if (partner)
          ((WaveTrack *) partner)->SetRate(44100.0);
+      MakeParentPushState(
+          wxString::Format("Changed '%s' to 44 kHz",
+                           mPopupMenuTarget->GetName().c_str()));
       mPopupMenuTarget = NULL;
-      MakeParentPushState();
       MakeParentRedrawScrollbars();
       Refresh(false);
    }
@@ -2150,8 +2193,10 @@ void TrackPanel::OnRate48()
       VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
       if (partner)
          ((WaveTrack *) partner)->SetRate(48000.0);
+      MakeParentPushState(
+          wxString::Format("Changed '%s' to 48 kHz",
+                           mPopupMenuTarget->GetName().c_str()));
       mPopupMenuTarget = NULL;
-      MakeParentPushState();
       MakeParentRedrawScrollbars();
       Refresh(false);
    }
@@ -2177,7 +2222,9 @@ void TrackPanel::OnRateOther()
             VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
             if (partner)
                ((WaveTrack *) partner)->SetRate(theRate);
-            MakeParentPushState();
+            MakeParentPushState(
+                wxString::Format("Changed '%s' to %.0f Hz",
+                                 mPopupMenuTarget->GetName().c_str(), theRate));
             MakeParentRedrawScrollbars();
             Refresh(false);
          } else
@@ -2192,7 +2239,8 @@ void TrackPanel::OnMoveUp()
 {
    VTrack *t = mPopupMenuTarget;
    if (mTracks->MoveUp(t)) {
-      MakeParentPushState();
+      MakeParentPushState(
+         wxString::Format("Moved '%s' up", mPopupMenuTarget->GetName().c_str()));
       Refresh(false);
    }
 }
@@ -2201,7 +2249,8 @@ void TrackPanel::OnMoveDown()
 {
    VTrack *t = mPopupMenuTarget;
    if (mTracks->MoveDown(t)) {
-      MakeParentPushState();
+      MakeParentPushState(
+         wxString::Format("Moved '%s' down", mPopupMenuTarget->GetName().c_str()));
       Refresh(false);
    }
 }
@@ -2241,7 +2290,9 @@ void TrackPanel::OnSetName()
                                            defaultStr);
       if (newName != "")
          t->name = newName;
-      MakeParentPushState();
+      MakeParentPushState(
+          wxString::Format("Renamed '%s' to '%s'",
+                           defaultStr.c_str(), newName.c_str()));
       Refresh(false);
    }
 }

@@ -50,6 +50,9 @@ class VTrack {
    
    virtual VTrack *Duplicate();
 
+   wxString GetName() {
+      return name;
+   }
    virtual void Cut(double t0, double t1, VTrack ** dest) {
       dest = 0;
    }

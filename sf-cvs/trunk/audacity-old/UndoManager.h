@@ -35,6 +35,7 @@ class TrackList;
 
 struct UndoStackElem {
    TrackList *tracks;
+   wxString description;
    double sel0;
    double sel1;
 };
@@ -46,10 +47,15 @@ class UndoManager {
    UndoManager();
    ~UndoManager();
 
-   void PushState(TrackList * l, double sel0, double sel1);
+   void PushState(TrackList * l, double sel0, double sel1,
+                  wxString desc = "TOO LAZY TO SUPPLY DESCRIPTION! :-)");
+                  // (the incentive to always write descriptions ...)
    void ClearStates();
-   void ClearStates(int num);
-   unsigned int  GetNumUndoableStates();
+   void RemoveStates(int num);  // removes the 'num' oldest states
+   void RemoveStateAt(int n);   // removes the n'th state (1 is oldest) 
+   unsigned int GetNumStates();
+   unsigned int GetCurrentState();
+   void GetDescription(unsigned int n, wxString *desc, wxString *size);
    TrackList *Undo(double *sel0, double *sel1);
    TrackList *Redo(double *sel0, double *sel1);
 
