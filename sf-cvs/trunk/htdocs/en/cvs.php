@@ -3,8 +3,16 @@
 We use <a href="http://www.cvshome.org">CVS</a>, the Concurrent Versions
 System, to help the us
 develop Audacity collaboratively. Click
- <a
-href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/audacity/audacity-src/">here</a> to browse the source code in our CVS repository.
+<a
+href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/audacity/audacity-src/"
+>here</a> to browse the source code in our CVS repository.
+
+<p>
+<h3>Note: Version 1.2 is now branched:</h3>
+If you want the stable branch of Audacity, version 1.2.x, you now need to
+type <tt>-r AUDACITY_1_2</tt> when you do a cvs update or checkout.
+Otherwise you will get the CVS HEAD, which may become quite unstable
+now as we start working on version 1.3.0.
 
 <p><h3>Quick Audacity CVS Howto:</h3>
   If you want to access the Audacity source code, you can
@@ -22,20 +30,24 @@ is a single line with no carriage returns):<br>
 login </tt><br></ul>
 and hit the enter key when it asks for a password.
 
-<p>Then, <b>to get the latest branch (1.1.0)</b> (as a single line):
+<p>Then, <b>to get the latest cutting-edge code (1.3.0)</b> (as a single line):
 <br>
    <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co
 audacity</tt></ul>
-or <b>for the stable branch (0.9-1.0)</b> (as a single line):<br>
+or <b>for the stable branch (1.2.0)</b> (as a single line):<br>
+   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co -r AUDACITY_1_2 audacity</tt></ul>
+or <b>for the old 1.0 branch (1.0.0)</b> (as a single line):<br>
    <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co -r audacity-0_9-branch audacity-old</tt></ul>
 
 <p> Alternately, you can set your <tt>CVSROOT</tt> environment
 variable to
 <tt>:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt>
 (see below).<br>
-Then, <b>to get the latest unstable branch (1.1.0)</b>, enter<br> 
+Then, <b>to get the latest unstable branch (1.3.0)</b>, enter<br> 
    <ul><tt>cvs checkout audacity</tt></ul>
-Or, <b>for the stable branch (0.9-1.0)</b>, enter <br>
+Or, <b>for the stable branch (1.2)</b>, enter <br>
+   <ul><tt>cvs checkout -r AUDACITY_1_2 audacity</tt></ul>
+or <b>for the old 1.0 branch</b>, enter <br>
    <ul><tt>cvs checkout -r audacity-0_9-branch audacity-old</tt></ul>
 
 <p> To set the  <tt>CVSROOT</tt> environment variable, you
