@@ -9,7 +9,7 @@ href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/audacity/audacity-src/">hie
 
 <p>
 <h3>Opmerking: Versie 1.2 heeft nu een broncode:</h3>
-Als je de stabiele broncode van Audacity wilt gebruiken, versie 1.2.x, dien je nu in te typen <tt>-r AUDACITY_1_2</tt> als je een cvs update of checkout uitvoert. Anders is het mogelijk dat je de CVS HEAD verkrijgt die mogelijk behoorlijk instabiel kan zijn oomdat we begonnen zijn met versie 1.3.0.
+Als je de stabiele broncode van Audacity wilt gebruiken, versie 1.2.x, dien je nu in te typen <tt>-r AUDACITY_1_2</tt> als je een cvs update of checkout uitvoert. Anders is het mogelijk dat je de CVS HEAD verkrijgt die mogelijk behoorlijk instabiel kan zijn omdat we begonnen zijn met versie 1.3.0.
 
 <p><h3>Snelle Audacity CVS Hoe te:</h3>
   Als je toegang wilt krijgen tot de Audacity broncode, kun je
@@ -44,7 +44,7 @@ aanapssen naar
 Dan, <b>om de laatste instabiele branch te verkrijgen (1.3.0)</b>, toets in<br> 
    <ul><tt>cvs checkout audacity</tt></ul>
 Of, <b>voor de stabiele branch (1.2)</b>, toets in <br>
-   <ul><tt>cvs checkout -r audacity-0_9-branch audacity-old</tt></ul>
+   <ul><tt>cvs checkout -r AUDACITY_1_2 audacity</tt></ul>
 of <b>voor de oude 1.0 branch<b/>, toets in <br>
    <ul><tt>cvs checkout -r audacity-0_9-branch audacity-old</tt></ul>
 
@@ -86,7 +86,7 @@ branch zal automatisch naar je computer worden gedownload.
 <p>
 <b>Om de stabiele (1.2.0) branch te verkrijgen: </b><br>
 In de "Checkout Settings" dialoog, toets in
-<tt>audacity-old</tt> als de module naam.  Dan, in de
+<tt>audacity</tt> als de module naam.  Dan, in de
 "Sticky options" tab, check het "Retrieve rev./tag/branch
 (-r)" vakje en toets in <tt>AUDACITY-1_2</tt> in het
 vakje ernaast. Druk op "OK" en de branch zal automatisch naar je computer
@@ -96,7 +96,7 @@ worden gedownload.
 In de "Checkout Settings" dialoog, toets in
 <tt>audacity-old</tt> als de module naam.  Dan, in de
 "Sticky options" tab, check het "Retrieve rev./tag/branch
-(-r)" vakje en toets in <tt>audacity-0_9</tt> in het
+(-r)" vakje en toets in <tt>audacity-0_9-branch</tt> in het
 vakje ernaast. Druk op "OK" en de branch zal automatisch naar je computer
 worden gedownload.
 
@@ -139,7 +139,7 @@ die we hebben geschreven, en
 bibliotheken die we gebruiken.
 Om samenwerking met andere systemen te kunnen garanderen tussen Audacity en
 onze bibliotheken, raden wij aan dat je de versies van de bibliotheek gebruikt
-van de 'lib-src'.  Echter, op een Unix systeem kun je de samenwerking van sommige bibliotheken vermijde door de bibliotheken te gebruiken die je al op je systeem hebt staan.
+van de 'lib-src'.  Echter, op een Unix systeem kun je de samenwerking van sommige bibliotheken vermijden door de bibliotheken te gebruiken die je al op je systeem hebt staan.
 Type 'configure --help' om de opties te bekijken.
 </p>
 <p>
