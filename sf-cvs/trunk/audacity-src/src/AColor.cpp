@@ -121,7 +121,7 @@ void AColor::Init()
    
    // muteBrush[1] is used when solo is on, since solo overrides mute.
    muteBrush[0].SetColour(110, 220, 110);
-   muteBrush[1].SetColour(140, 160, 140);
+   muteBrush[1].SetColour(170, 180, 170);
    soloBrush.SetColour(255, 140, 140);
 
 #if defined(__WXMSW__) || defined(__WXGTK__)
