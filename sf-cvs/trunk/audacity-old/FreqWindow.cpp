@@ -415,7 +415,8 @@ float FreqWindow::GetProcessedValue(float freq0, float freq1)
 							 binmid - ibin);
   }
   else {
-	value += mProcessed[int(bin0)]*(int(bin0)+1-bin0);
+	if (int(bin1) > int(bin0))
+	  value += mProcessed[int(bin0)]*(int(bin0)+1-bin0);
 	bin0 = 1+int(bin0);
 	while(bin0 < int(bin1)) {
 	  value += mProcessed[int(bin0)];

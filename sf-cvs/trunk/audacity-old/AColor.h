@@ -43,6 +43,7 @@ private:
 };
 
 void GetColorGradient(float value,
+					  bool selected,
                       unsigned char *red,
                       unsigned char *green,
                       unsigned char *blue);

@@ -106,6 +106,11 @@ WaveTrack::~WaveTrack()
 
   delete block;
 
+  if (cache.min) delete[] cache.min;
+  if (cache.max) delete[] cache.max;
+  if (cache.where) delete[] cache.where;
+  if (cache.freq) delete[] cache.freq;
+
   #if wxUSE_THREADS
   delete blockMutex;
   #endif
@@ -446,10 +451,10 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
 
   for(x=0; x<mid.width; x++) {
 	
-    int h1 = ctr+(cache.min[x] * heights[x]) / 32767;
-    int h2 = ctr+(cache.max[x] * heights[x]) / 32767;
+    int h1 = ctr-(cache.min[x] * heights[x]) / 32767;
+    int h2 = ctr-(cache.max[x] * heights[x]) / 32767;
 	
-    dc.DrawLine(mid.x+x,h1,mid.x+x,h2+1);
+    dc.DrawLine(mid.x+x,h2,mid.x+x,h1+1);
   }
 
   if (drawEnvelope) {
@@ -508,12 +513,7 @@ void WaveTrack::PrepareCacheSpectrum(double start, double pps,
   wxMutexLocker lock(*blockMutex);
   #endif
 
-  if (cache.min) delete[] cache.min;
-  if (cache.max) delete[] cache.max;
-  if (cache.where) delete[] cache.where;
-  if (cache.freq) delete[] cache.freq;
-  cache.min = NULL;
-  cache.max = NULL;
+  DisplayCache oldcache = cache;
 
   cache.spectrum = true;
   cache.pps = pps;
@@ -524,43 +524,88 @@ void WaveTrack::PrepareCacheSpectrum(double start, double pps,
   wxASSERT(cache.freq);
   cache.where = new sampleCount[cache.len+1];
   wxASSERT(cache.where);
+  cache.min = NULL;
+  cache.max = NULL;
   
   sampleCount x;
 
-  for(x=0; x<cache.len+1; x++)
-	cache.where[x] = (sampleCount)(start*rate + x*rate/pps);
+  bool *recalc = new bool[cache.len+1];
   
+  for(x=0; x<cache.len+1; x++) {
+	recalc[x] = true;
+	cache.where[x] = (sampleCount)(start*rate + x*rate/pps);
+  }
+
+  // Optimization: if the old cache is good and overlaps
+  // with the current one, re-use as much of the cache as
+  // possible
+
+  if (oldcache.spectrum &&
+	  oldcache.pps == pps &&
+	  oldcache.fheight == screenHeight &&
+	  oldcache.where[0] < cache.where[cache.len] &&
+	  oldcache.where[oldcache.len] > cache.where[0]) {
+
+	for(x=0; x<cache.len+1; x++)
+
+	  if (cache.where[x] >= oldcache.where[0] &&
+		  cache.where[x] <= oldcache.where[oldcache.len-1]) {
+
+		int ox =
+		  int(oldcache.len * (cache.where[x] - oldcache.where[0]) /
+			  (oldcache.where[oldcache.len-1] - oldcache.where[0])+0.5);
+
+		if (cache.where[x] == oldcache.where[ox]) {
+
+		  for(sampleCount i=0; i<screenHeight; i++)
+			cache.freq[screenHeight*x + i] =
+			  oldcache.freq[screenHeight*ox + i];
+		  
+		  recalc[x] = false;
+		}
+
+	  }
+		
+  }
+
   int windowSize = GetSpectrumWindowSize();
   sampleType *buffer = new sampleType[windowSize];
 
-  for(x=0; x<cache.len; x++) {
-	
-	sampleCount start = cache.where[x];
-	sampleCount len = windowSize;
+  for(x=0; x<cache.len; x++)
+	if (recalc[x]) {
+	  
+	  sampleCount start = cache.where[x];
+	  sampleCount len = windowSize;
+	  
+	  sampleCount i;
+	  
+	  if (start >= numSamples) {
+		for(i=0; i<screenHeight; i++)
+		  cache.freq[screenHeight*x + i] = 0;
 
-	sampleCount i;
-
-	if (start >= numSamples) {
-	  for(i=0; i<screenHeight; i++)
-		cache.freq[screenHeight*x + i] = 0;
-
-	}
-	else {
-
-	  if (start + len > numSamples) {
-		len = numSamples - start;
-		for(i=len; i<windowSize; i++)
-		  buffer[i] = 0;
 	  }
+	  else {
+
+		if (start + len > numSamples) {
+		  len = numSamples - start;
+		  for(i=len; i<windowSize; i++)
+			buffer[i] = 0;
+		}
 	  
-	  Get(buffer, start, len);
+		Get(buffer, start, len);
 	  
-	  ComputeSpectrum(buffer, windowSize, screenHeight, rate,
-					  &cache.freq[screenHeight*x]);
+		ComputeSpectrum(buffer, windowSize, screenHeight, rate,
+						&cache.freq[screenHeight*x]);
+	  }
 	}
-  }
 
   delete[] buffer;
+  delete[] recalc;
+
+  if (oldcache.min) delete[] oldcache.min;
+  if (oldcache.max) delete[] oldcache.max;
+  if (oldcache.where) delete[] oldcache.where;
+  if (oldcache.freq) delete[] oldcache.freq;
 }
 
 void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
@@ -596,9 +641,9 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
 
     if (w0 < 0 || w0 >= numSamples) {
       for(int yy=0; yy<r.height; yy++) {
-	    data[(yy*r.width + x)*3] = 0xFF;
-	    data[(yy*r.width + x)*3+1] = 0xFF;
-	    data[(yy*r.width + x)*3+2] = 0xFF;	  
+	    data[(yy*r.width + x)*3] = 214;
+	    data[(yy*r.width + x)*3+1] = 214;
+	    data[(yy*r.width + x)*3+2] = 214;
       }
       x++;
       continue;
@@ -608,14 +653,10 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
 	
 	for(int yy=0; yy<r.height; yy++) {
 	  
+	  bool selflag = (ssel0 <= w0 && w0 < ssel1);
+
 	  unsigned char rv, gv, bv;
-	  GetColorGradient(spec[r.height-1-yy], &rv, &gv, &bv);
-	  
-	  if (ssel0 <= w0 && w0 < ssel1) {
-		rv = (rv * 2 / 3);
-		gv = (gv * 2 / 3);
-		bv = (bv * 2 / 3);
-	  }
+	  GetColorGradient(spec[r.height-1-yy], selflag, &rv, &gv, &bv);
 	  
 	  data[(yy*r.width + x)*3] = rv;
 	  data[(yy*r.width + x)*3+1] = gv;

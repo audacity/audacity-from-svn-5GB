@@ -116,6 +116,7 @@ void AColor::Init()
 }
 
 void GetColorGradient(float value,
+					  bool selected,
                       unsigned char *red,
                       unsigned char *green,
                       unsigned char *blue)
@@ -125,27 +126,34 @@ void GetColorGradient(float value,
   *green = *red;
   *blue = *red;
   */
+
+  const int gsteps = 4;
+  float gradient[gsteps+1][3] = {
+	{0.75, 0.75, 0.75},  // lt gray
+	{0.30, 0.60, 1.00},  // lt blue
+	{0.90, 0.10, 0.90},  // violet
+	{1.00, 0.00, 0.00},  // red
+	{1.00, 1.00, 1.00}}; // white
+
   
   float r, g, b;
 
-  if (value < 0.25) {
-    r = 1.0;
-    g = 1.0;
-    b = (0.25 - value)/0.25;
-    // --> (1.0, 1.0, 0.0)
-  }
-  else if (value < 0.5) {
-    r = (0.5 - value)/0.25;
-    g = 1.0 - (value - 0.25);
-    b = 0.0;
-    // --> (0.0, 0.75, 0.0)
-  }
-  else {
-    r = (value - 0.5)/0.5;
-    g = 0.75 - (value-0.5)*1.5;
-    b = 0.0;
-  }
+  int left = int(value * gsteps);
+  int right = (left==gsteps? gsteps: left+1);
+
+  float rweight = (value * gsteps) - left;
+  float lweight = 1.0 - rweight;
+
+  r = (gradient[left][0] * lweight) + (gradient[right][0] * rweight);
+  g = (gradient[left][1] * lweight) + (gradient[right][1] * rweight);
+  b = (gradient[left][2] * lweight) + (gradient[right][2] * rweight);
   
+  if (selected) {
+	r *= 0.77;
+	g *= 0.77;
+	b *= 0.885;
+  }
+
   *red = (unsigned char) (255*r);
   *green = (unsigned char) (255*g);
   *blue = (unsigned char) (255*b);

@@ -16,7 +16,7 @@
 
 int GetSpectrumWindowSize()
 {
-  return 512;
+  return 256;
 }
 
 bool ComputeSpectrum(sampleType *data, int width, int height,
@@ -71,19 +71,23 @@ bool ComputeSpectrum(sampleType *data, int width, int height,
 
     float value = 0.0;
 
-    value += processed[int(bin0)]*(int(bin0)+1-bin0);
-    bin0 = 1+int(bin0);
-    while(bin0 < int(bin1)) {
-      value += processed[int(bin0)];
-      bin0 += 1.0;
-    }
-    value += processed[int(bin1)]*(bin1-int(bin1));    
+	if (int(bin1) == int(bin0))
+	  value = processed[int(bin0)];
+	else {
+	  value += processed[int(bin0)]*(int(bin0)+1-bin0);
+	  bin0 = 1+int(bin0);
+	  while(bin0 < int(bin1)) {
+		value += processed[int(bin0)];
+		bin0 += 1.0;
+	  }
+	  value += processed[int(bin1)]*(bin1-int(bin1));
 
-    value /= binwidth;
-    
-    // Last step converts dB to a 0.0-1.0 range
-    
-    value = (value+70.0)/80.0;
+	  value /= binwidth;
+    }
+
+	// Last step converts dB to a 0.0-1.0 range
+	
+	value = (value+80.0)/80.0;
     if (value > 1.0) value = 1.0;
     if (value < 0.0) value = 0.0;
     
