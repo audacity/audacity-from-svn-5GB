@@ -1067,6 +1067,12 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
       double rate = ((WaveTrack *)selectedTrack)->GetRate();
       bool showPoints = (mViewInfo->zoom / rate > 3.0);
 
+      if(((WaveTrack *)selectedTrack)->GetDisplay() != WaveTrack::WaveformDisplay)
+      {
+         wxMessageBox("Draw currently only works with waveforms.", "Notice");
+         return;
+      }
+
       if(!showPoints)
       {
          wxMessageBox("You are not zoomed in enough. Zoom in until you can see the individual samples.", "Notice");
