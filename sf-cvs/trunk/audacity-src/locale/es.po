@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audicity Spanish Translation.\n"
 "POT-Creation-Date: 2002-05-04 18:58-0700\n"
-"PO-Revision-Date: 2002-05-05 09:44--300\n"
+"PO-Revision-Date: 2002-05-10 15:16--300\n"
 "Last-Translator: Ezequiel <eze@eze.com>\n"
 "Language-Team: Spanish. <sp@sp.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 #: ../src/Mix.cpp:170
 #, c-format
 msgid "      Tracks: %d\n"
-msgstr "      Tracks: %d\n"
+msgstr "      Pistas: %d\n"
 
 #: ../src/Mix.cpp:171
 #, c-format
@@ -101,7 +101,7 @@ msgstr "&Rehacer\tCtrl+R"
 
 #: ../src/commands.h:221
 msgid "&Remove Track(s)"
-msgstr "&Remover Track(s)"
+msgstr "&Remover Pista(s)"
 
 #: ../src/commands.h:153
 msgid "&Save Project\tCtrl+S"
@@ -202,11 +202,11 @@ msgstr "Album:"
 
 #: ../src/commands.h:215
 msgid "Align Tracks &Together"
-msgstr "Alinear Tracks &Conjuntamente"
+msgstr "Alinear Pistas &Conjuntamente"
 
 #: ../src/commands.h:215
 msgid "Align Tracks Together"
-msgstr "Alinear Tracks Conjuntamente"
+msgstr "Alinear Pistas Conjuntamente"
 
 #: ../src/commands.h:216
 msgid "Align with &Zero"
@@ -218,7 +218,7 @@ msgstr "Alinear en Cero"
 
 #: ../src/Menus.cpp:1407
 msgid "Aligned tracks"
-msgstr "Tracks Alineados"
+msgstr "Pistas Alineadas"
 
 #: ../src/Menus.cpp:1371
 msgid "Aligned with zero"
@@ -293,7 +293,7 @@ msgstr "Artista:"
 msgid "At 44100 Hz, 16-bits per sample, the estimated number of\n"
 "simultaneous tracks that could be played at once: %.1f\n"
 msgstr "A 44100 Hz, 16-bits por muestreo, el número estimado de\n"
-"tracks que pueden ser reproducidos a la vez: %.1f\n"
+"pistas que pueden ser reproducidas a la vez: %.1f\n"
 
 #: ../src/AboutDialog.cpp:168
 msgid "Audacious!"
@@ -384,7 +384,7 @@ msgstr "Audio E/S"
 
 #: ../src/WaveTrack.cpp:54
 msgid "Audio Track"
-msgstr "Track de Audio"
+msgstr "Pista Audio"
 
 #: ../src/AboutDialog.cpp:113
 msgid "Audio and MIDI I/O Libraries"
@@ -473,7 +473,7 @@ msgstr "Cepstrum"
 
 #: ../src/TrackPanel.cpp:2408
 msgid "Change track name to:"
-msgstr "Cambiar nombre del Track a:"
+msgstr "Cambiar nombre de la Pista a:"
 
 #: ../src/TrackPanel.cpp:2266
 #, c-format
@@ -522,7 +522,7 @@ msgstr "Haz click y arrastra para editar la amplitud de la envolvente"
 
 #: ../src/TrackPanel.cpp:489
 msgid "Click and drag to move a track in time"
-msgstr "Haz click y arrastra para mover un track en el tiempo"
+msgstr "Haz click y arrastra para mover una pista en el tiempo"
 
 #: ../src/TrackPanel.cpp:611
 msgid "Click and drag to move left selection boundary."
@@ -534,12 +534,12 @@ msgstr "Haz click y arrastra para mover el límite derecho de la selección"
 
 #: ../src/TrackPanel.cpp:548
 msgid "Click and drag to resize both tracks"
-msgstr "Haz click y arrastra para modificar el tamaño de ambos tracks"
+msgstr "Haz click y arrastra para modificar el tamaño de ambas pistas"
 
 #: ../src/TrackPanel.cpp:557
 #: ../src/TrackPanel.cpp:583
 msgid "Click and drag to resize the track"
-msgstr "Haz click y arrastra para modificar el tamaño del track"
+msgstr "Haz click y arrastra para modificar el tamaño de la pista"
 
 #: ../src/TrackPanel.cpp:487
 msgid "Click and drag to select audio"
@@ -590,7 +590,7 @@ msgstr "Comentarios:"
 
 #: ../src/effects/Compressor.h:32
 msgid "Compressing"
-msgstr "Comprimiendo"
+msgstr "Aplicando Compressor"
 
 #: ../src/effects/Compressor.h:28
 msgid "Compressor..."
@@ -639,11 +639,11 @@ msgstr "No se pudo escribir en el archivo:"
 
 #: ../src/Menus.cpp:1421
 msgid "Created new audio track"
-msgstr "Se creó un nuevo track de audio"
+msgstr "Se creó una nueva pista de audio"
 
 #: ../src/Menus.cpp:1436
 msgid "Created new label track"
-msgstr "Se creó un nuevo track tipo rótulo"
+msgstr "Se creó una nueva pista de rótulos"
 
 #: ../src/Project.cpp:1559
 msgid "Created new project"
@@ -813,7 +813,7 @@ msgstr "Bajar una Octava"
 
 #: ../src/TrackPanel.cpp:568
 msgid "Drag this track up or down to change the order of the tracks."
-msgstr "Arrastra este track hacia arriba o abajo para cambiar el orden de tracks."
+msgstr "Arrastra esta pista hacia arriba o abajo para cambiar el orden de pistas."
 
 #: ../src/Menus.cpp:789
 msgid "Duplicated"
@@ -908,7 +908,7 @@ msgstr "Error (el archivo puede no haber sido escrito): %s"
 
 #: ../src/WaveTrack.cpp:851
 msgid "Error loading a Track.\n"
-msgstr "Error cargando un Track.\n"
+msgstr "Error cargando una Pista.\n"
 
 #: ../src/AudioIO.cpp:258
 msgid "Error opening audio device.\n"
@@ -932,7 +932,7 @@ msgstr "Error leyendo Proyecto Audacity %s en línea %d"
 #: ../src/WaveTrack.cpp:935
 #, c-format
 msgid "Error reading WaveTrack in line %d"
-msgstr "Error leyendo WaveTrack en línea %d"
+msgstr "Error leyendo Pista de Audio en línea %d"
 
 #: ../src/Benchmark.cpp:462
 #, c-format
@@ -953,7 +953,7 @@ msgstr "Esperado %d bytes, obtenido %d bytes."
 #: ../src/Benchmark.cpp:404
 #, c-format
 msgid "Expected len %d, track len %d.\n"
-msgstr "Longitud esperada %d, longitud de track %d.\n"
+msgstr "Longitud esperada %d, longitud de pista %d.\n"
 
 #: ../src/WaveTrack.cpp:1044
 #, c-format
@@ -1105,15 +1105,15 @@ msgstr "Buscar Librería"
 
 #: ../src/EditToolBar.cpp:165
 msgid "Fit entire project in window"
-msgstr "Ajustar el proyecto entero en ventana"
+msgstr "Ajustar el proyecto entero a la ventana"
 
 #: ../src/commands.h:191
 msgid "Fit in Window"
-msgstr "Ajustar en Ventana"
+msgstr "Ajustar a la Ventana"
 
 #: ../src/EditToolBar.cpp:163
 msgid "Fit selection in window"
-msgstr "Ajustar selección en ventana"
+msgstr "Ajustar selección a la ventana"
 
 #: ../src/Project.cpp:847
 #: ../src/commands.h:198
@@ -1210,12 +1210,12 @@ msgstr "Importar Ogg Vorbis"
 
 #: ../src/commands.h:207
 msgid "Import Raw &Data..."
-msgstr "Importar Archibo en &Bruto (raw)..."
+msgstr "Importar Archivo en &Bruto (raw)..."
 
 #: ../src/commands.h:207
 #: ../src/import/ImportRaw.cpp:856
 msgid "Import Raw Data"
-msgstr "Importar Archibo en &Bruto"
+msgstr "Importar Archivo en &Bruto"
 
 #: ../src/import/Import.cpp:51
 msgid "Import audio file"
@@ -1266,7 +1266,7 @@ msgstr "Interface"
 
 #: ../src/WaveTrack.cpp:1666
 msgid "Internal error (WaveTrack)"
-msgstr "Error Interno (WaveTrack)"
+msgstr "Error Interno (Pista de Audio)"
 
 #: ../src/import/ImportOGG.cpp:79
 msgid "Internal logic fault"
@@ -1313,11 +1313,11 @@ msgstr "Fase de Inicio LFO (grados):"
 
 #: ../src/LabelTrack.cpp:26
 msgid "Label Track"
-msgstr "Track tipo Rótulo"
+msgstr "Pista Rótulos"
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:373
 msgid "Ladspa Effect Settings"
-msgstr "Opciones del Efecto Ladspa"
+msgstr "Configuración del Efecto Ladspa"
 
 #: ../src/FreqWindow.cpp:1089
 msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
@@ -1383,7 +1383,7 @@ msgstr "No se encontró plugin para exportar a MP3"
 #: ../src/TrackPanel.cpp:2228
 #, c-format
 msgid "Made '%s' a stereo track"
-msgstr "Se hizo estéreo al track'%s'"
+msgstr "Se hizo estéreo a la pista '%s'"
 
 #: ../src/AboutDialog.cpp:121
 msgid "Main Logo"
@@ -1391,7 +1391,7 @@ msgstr "Logo Principal"
 
 #: ../src/TrackPanel.cpp:201
 msgid "Make Stereo Track"
-msgstr "Hacer Track Estéreo."
+msgstr "Hacer Pista Estéreo."
 
 #: ../src/prefs/FileFormatPrefs.cpp:73
 msgid "Make a copy of the file to edit"
@@ -1404,7 +1404,7 @@ msgstr "Control de Ganancia Master"
 #: ../src/Mix.cpp:173
 #, c-format
 msgid "Max number of tracks to mix in real time: %f\n"
-msgstr "Máx número de tracks a mezclar en tiempo real: %f\n"
+msgstr "Máx número de pistas a mezclar en tiempo real: %f\n"
 
 #: ../src/prefs/SpectrumPrefs.cpp:104
 msgid "Maximum Frequency (Hz):"
@@ -1425,7 +1425,7 @@ msgstr "Mezcla"
 
 #: ../src/Mix.cpp:151
 msgid "Mixing tracks"
-msgstr "Meclando tracks"
+msgstr "Mezclando pistas"
 
 #: ../src/TrackPanel.cpp:198
 msgid "Mono"
@@ -1443,13 +1443,13 @@ msgstr "Más"
 #: ../src/TrackPanel.cpp:212
 #: ../src/TrackPanel.cpp:221
 msgid "Move Track Down"
-msgstr "Mover Track hacia Abajo"
+msgstr "Mover Pista hacia Abajo"
 
 #: ../src/TrackPanel.cpp:190
 #: ../src/TrackPanel.cpp:211
 #: ../src/TrackPanel.cpp:220
 msgid "Move Track Up"
-msgstr "Mover Track hacia Arriba"
+msgstr "Mover Pista hacia Arriba"
 
 #: ../src/TrackPanel.cpp:2377
 #, c-format
@@ -1479,19 +1479,19 @@ msgstr "Nuevo "
 
 #: ../src/commands.h:218
 msgid "New &Audio Track"
-msgstr "Nuevo Track de &Audio"
+msgstr "Nueva Pista de &Audio"
 
 #: ../src/commands.h:219
 msgid "New &Label Track"
-msgstr "Nuevo Track tipo &Rótulo"
+msgstr "Nueva Pista de &Rótulos"
 
 #: ../src/commands.h:218
 msgid "New Audio Track"
-msgstr "Nuevo Track de Audio"
+msgstr "Nueva Pista de Audio"
 
 #: ../src/commands.h:219
 msgid "New Label Track"
-msgstr "Nuevo Track tipo Rótulo"
+msgstr "Nueva Pista de Rótulos"
 
 #: ../src/effects/Amplify.cpp:367
 msgid "New Peak Amplitude (dB):"
@@ -1508,8 +1508,8 @@ msgstr "No hay audio seleccionado."
 #: ../src/export/Export.cpp:93
 msgid "No tracks are selected!\n"
 "Choose Export... to export all tracks."
-msgstr "No hay tracks seleccionados!\n"
-"Elige Exportar... para exportar todos los tracks."
+msgstr "No hay pistas seleccionadas!\n"
+"Elige Exportar... para exportar todas las pistas."
 
 #: ../src/effects/NoiseRemoval.cpp:60
 msgid "Noise Removal"
@@ -1549,7 +1549,7 @@ msgstr "No hay suficientes muestreos seleccionados.\n"
 
 #: ../src/NoteTrack.cpp:25
 msgid "Note Track"
-msgstr "Track de Notas"
+msgstr "Pista Notas"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:66
 msgid "Nothing selected."
@@ -1702,7 +1702,7 @@ msgstr "Reproducir"
 
 #: ../src/prefs/AudioIOPrefs.cpp:165
 msgid "Play other tracks while recording new one"
-msgstr "Reproducir otros tracks mientras se graba uno nuevo."
+msgstr "Reproducir otras pistas mientras se graba una nueva."
 
 #: ../src/prefs/AudioIOPrefs.cpp:67
 msgid "Playback Device"
@@ -1718,11 +1718,11 @@ msgstr "Por favor ingrese un número positivo para el tiempo de retraso:"
 
 #: ../src/Menus.cpp:1067
 msgid "Please select a single track first.\n"
-msgstr "Por favor seleccione sólo un track primero.\n"
+msgstr "Por favor seleccione sólo una pista primero.\n"
 
 #: ../src/Menus.cpp:1076
 msgid "Please select a track first.\n"
-msgstr "Por favor seleccione un track primero.\n"
+msgstr "Por favor seleccione una pista primero.\n"
 
 #: ../src/import/Import.cpp:50
 msgid "Please use the Import MIDI command instead."
@@ -1821,16 +1821,16 @@ msgstr "Remover Ruido"
 
 #: ../src/commands.h:221
 msgid "Remove Track(s)"
-msgstr "Remover Track(s)"
+msgstr "Remover Pista(s)"
 
 #: ../src/Menus.cpp:1454
 msgid "Removed audio track(s)"
-msgstr "Track(s) de audio Removidos"
+msgstr "Pista(s) de audio Removidas"
 
 #: ../src/TrackPanel.cpp:1170
 #, c-format
 msgid "Removed track '%s.'"
-msgstr "Track '%s' removido."
+msgstr "Pista '%s' removida."
 
 #: ../src/effects/NoiseRemoval.h:43
 msgid "Removing Noise"
@@ -1867,11 +1867,11 @@ msgstr "Ejecutar"
 
 #: ../src/commands.h:234
 msgid "Run Benchmark"
-msgstr "Correr Benchmark (test de Performance)"
+msgstr "Correr Benchmark (test de rendimiento)"
 
 #: ../src/commands.h:234
 msgid "Run Benchmark..."
-msgstr "Correr Benchmark (test de Performance)..."
+msgstr "Correr Benchmark (test de rendimiento)..."
 
 #: ../src/FileFormats.cpp:34
 msgid "SEK'D Samplitude"
@@ -2026,12 +2026,12 @@ msgstr "Silencio"
 
 #: ../src/EditToolBar.cpp:151
 msgid "Silence selection"
-msgstr "Selección de silencio."
+msgstr "Silenciar Selección."
 
 #: ../src/Menus.cpp:755
 #, c-format
 msgid "Silenced selected tracks for %.2f seconds at %.2f"
-msgstr "Tracks seleccionados silenciados por %.2f  segundos en %.2f"
+msgstr "Pistas seleccionadas silenciadas por %.2f  segundos en %.2f"
 
 #: ../src/HistoryWindow.cpp:61
 msgid "Size"
@@ -2048,7 +2048,7 @@ msgstr "Saltar hasta el Comienzo"
 #: ../src/TrackPanel.cpp:976
 #, c-format
 msgid "Slid track '%s' %s %.02f seconds"
-msgstr "Track '%s' %s deslizado %.02f seconds"
+msgstr "Pista '%s' %s deslizada %.02f seconds"
 
 #: ../src/TrackPanel.cpp:1939
 msgid "Solo"
@@ -2060,11 +2060,11 @@ msgstr "Algunas de tus preferencias eran de una versión anterior de Audacity y h
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:125
 msgid "Sorry, Ladspa Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
-msgstr "Disculpa, Efectos Ladspa no pueden ser aplicados en tracks estéreo donde los canales individuales del track no coinciden."
+msgstr "Disculpa, Efectos Ladspa no pueden ser aplicados en pistas estéreo donde los canales individuales de la pista no coinciden."
 
 #: ../src/effects/VST/VSTEffect.cpp:73
 msgid "Sorry, VST Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
-msgstr "Disculpa, Efectos VST no pueden ser aplicados en tracks estéreo donde los canales individuales del track no coinciden."
+msgstr "Disculpa, Efectos VST no pueden ser aplicados en pistas estéreo donde los canales individuales de la pista no coinciden."
 
 #: ../src/export/Export.cpp:133
 msgid "Sorry, pathnames longer than 256 characters not supported."
@@ -2085,19 +2085,19 @@ msgstr "Espectro"
 
 #: ../src/Menus.cpp:835
 msgid "Split"
-msgstr "Separar"
+msgstr "Partir"
 
 #: ../src/commands.h:181
 msgid "Split\tCtrl+Y"
-msgstr "Separar\tCtrl+Y"
+msgstr "Partir\tCtrl+Y"
 
 #: ../src/commands.h:182
 msgid "Split At Labels"
-msgstr "Separar en Rótulos"
+msgstr "Partir En Rótulos"
 
 #: ../src/TrackPanel.cpp:202
 msgid "Split Stereo Track"
-msgstr "Separar Track Estéreo"
+msgstr "Partir Pista Estéreo"
 
 #: ../src/Menus.cpp:918
 msgid "Split at labels"
@@ -2106,7 +2106,7 @@ msgstr "Partir en rótulos"
 #: ../src/TrackPanel.cpp:2213
 #, c-format
 msgid "Split stereo track '%s'"
-msgstr "Separar Track Estéreo '%s'"
+msgstr "Partir Pista Estéreo '%s'"
 
 #: ../src/effects/Phaser.cpp:459
 msgid "Stages:"
@@ -2167,7 +2167,7 @@ msgstr "La frecuencia máxima debe ser un entero"
 
 #: ../src/Menus.cpp:488
 msgid "There are no label tracks to export."
-msgstr "No hay tracks tipo rótulo para exportar."
+msgstr "No hay pistas de rótulos para exportar."
 
 #: ../src/AudioIO.cpp:563
 #, c-format
@@ -2181,7 +2181,7 @@ msgstr "Hubo %d frames (grupo de muestreos) posiblemente repetidos, cercano a %l
 
 #: ../src/AboutDialog.cpp:78
 msgid "This program is still in beta!  Many people find it very useful and stable enough for everyday use, but it is not finished and comes with no guarantee!  We depend on your feedback, so please visit our website and give us your bug reports and feature requests."
-msgstr "Este programa está todavía en su face Beta!  Mucha gente lo encuentra muy útil y suficientemente estable para su uso cotideano, pero no está terminado y biene sin garantía!  Dependemos de tu participación reportando errores y pidiendo incorporar nuevas funciones. Para ello visita nuestro sitio web."
+msgstr "Este programa está todavía en su face Beta!  Mucha gente lo encuentra muy útil y suficientemente estable para su uso cotidiano, pero no está terminado y biene sin garantía!  Dependemos de tu participación reportando errores y pidiendo incorporar nuevas funciones. Para ello visita nuestro sitio web."
 
 #: ../src/Project.cpp:1295
 msgid "This project was saved by a different version of Audacity and is no longer supported."
@@ -2197,7 +2197,7 @@ msgstr "Esta versión de Audacity no fue compilada con soporte para Ogg Vorbis."
 
 #: ../src/ControlToolBar.cpp:374
 msgid "Time Shift Tool"
-msgstr "Herramienta de Traslado de Tiempo"
+msgstr "Herramienta de Traslado enTiempo"
 
 #: ../src/Benchmark.cpp:484
 #, c-format
@@ -2225,11 +2225,11 @@ msgstr ""
 
 #: ../src/TrackPanel.cpp:2409
 msgid "Track Name"
-msgstr "Nombre del Track"
+msgstr "Nombre de la Pista"
 
 #: ../src/Tags.cpp:533
 msgid "Track Number:"
-msgstr "Número de Track:"
+msgstr "Número de Pista:"
 
 #: ../src/Benchmark.cpp:388
 #: ../src/Benchmark.cpp:403
@@ -2401,11 +2401,11 @@ msgstr "Año:"
 
 #: ../src/export/Export.cpp:115
 msgid "Your tracks will be mixed down to a single mono channel in the exported file."
-msgstr "Tus tracks serán mezclados a un solo canal mono en el archivo exportado."
+msgstr "Tus pistas serán mezcladas a un solo canal mono en el archivo exportado."
 
 #: ../src/export/Export.cpp:111
 msgid "Your tracks will be mixed down to two stereo channels in the exported file."
-msgstr "Tus tracks serán mezclados a dos canales estéreo en el archivo exportado."
+msgstr "Tus pistas serán mezcladas a dos canales estéreo en el archivo exportado."
 
 #: ../src/commands.h:188
 msgid "Zoom &In\tCtrl+1"
