@@ -21,14 +21,18 @@
 #include "../Prefs.h"
 #include "KeyConfigPrefs.h"
 
-#define CommandsListID    7001
-#define DescriptionTextID 7002
-#define KeysListID        7003
-#define CurrentComboID    7004
-#define AddComboButtonID  7005
+#define CommandsListID      7001
+#define DescriptionTextID   7002
+#define KeysListID          7003
+#define CurrentComboID      7004
+#define RemoveComboButtonID 7005
+#define ClearComboButtonID  7006
+#define AddComboButtonID    7007
 
 BEGIN_EVENT_TABLE(KeyConfigPrefs, wxPanel)
    EVT_LIST_ITEM_SELECTED(CommandsListID, KeyConfigPrefs::OnItemSelected)
+   EVT_BUTTON(RemoveComboButtonID, KeyConfigPrefs::RemoveComboFromList)
+   EVT_BUTTON(ClearComboButtonID, KeyConfigPrefs::ClearComboList)
    EVT_BUTTON(AddComboButtonID, KeyConfigPrefs::AddComboToList)
 END_EVENT_TABLE()
 
@@ -71,7 +75,8 @@ PrefsPanel(parent), mCommandSelected(-1)
          wxALL, TOP_LEVEL_BORDER );
 
       wxBoxSizer *vKeySizer = new wxBoxSizer(wxVERTICAL);
-      wxBoxSizer *hKeySizer = new wxBoxSizer(wxHORIZONTAL);
+      wxBoxSizer *hKeySizer1 = new wxBoxSizer(wxHORIZONTAL);
+      wxBoxSizer *hKeySizer2 = new wxBoxSizer(wxHORIZONTAL);
 
       // BG: Create list control that will hold the commands supported under the selected category
       mKeysList = new wxListCtrl(this, KeysListID, wxDefaultPosition, wxSize(200, 180),
@@ -84,22 +89,29 @@ PrefsPanel(parent), mCommandSelected(-1)
       vKeySizer->Add(mKeysList, 0,
                           wxALL, GENERIC_CONTROL_BORDER);
 
+      hKeySizer1->Add(new wxButton(this, RemoveComboButtonID, _("Remove")), 0,
+                          wxALL, GENERIC_CONTROL_BORDER);
+
+      hKeySizer1->Add(new wxButton(this, ClearComboButtonID, _("Clear")), 0,
+                          wxALL, GENERIC_CONTROL_BORDER);
+
+      vKeySizer->Add(
+         hKeySizer1, 0, 
+         wxALL, 0 );
+
       mCurrentComboText = NULL;
       mCurrentComboText = new SysKeyTextCtrl(
          this, CurrentComboID, "",
          wxDefaultPosition, wxSize(115, -1), 0 );
 
-      hKeySizer->Add(mCurrentComboText, 0,
+      hKeySizer2->Add(mCurrentComboText, 0,
                           wxALL, GENERIC_CONTROL_BORDER);
 
-      wxButton *addComboButton =
-         new wxButton(this, AddComboButtonID, _("Add"));
-
-      hKeySizer->Add(addComboButton, 0,
+      hKeySizer2->Add(new wxButton(this, AddComboButtonID, _("Add")), 0,
                           wxALL, GENERIC_CONTROL_BORDER);
 
       vKeySizer->Add(
-         hKeySizer, 0, 
+         hKeySizer2, 0, 
          wxALL, 0 );
 
       vKeyConfigSizer->Add(
@@ -137,6 +149,26 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
    // BG: Test the function
    (this->*((wxEventFunction) (mAudacity->GetCommandFunc(mCommandSelected))))(event);
 */
+}
+
+void KeyConfigPrefs::RemoveComboFromList(wxCommandEvent& event)
+{
+   long item = -1;
+
+   for ( ;; )
+   {
+      item = mKeysList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+
+      if ( item == -1 )
+         break;
+
+      mKeysList->DeleteItem(item);
+   }
+}
+
+void KeyConfigPrefs::ClearComboList(wxCommandEvent& event)
+{
+   mKeysList->DeleteAllItems();
 }
 
 void KeyConfigPrefs::AddComboToList(wxCommandEvent& event)
