@@ -1124,6 +1124,7 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
       else
          mSelStart = mViewInfo->sel0;
 
+      ExtendSelection(event.m_x, r.x);
       DisplaySelection();
 
    } else {
