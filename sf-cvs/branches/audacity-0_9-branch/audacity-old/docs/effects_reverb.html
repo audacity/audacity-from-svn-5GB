@@ -1,0 +1,304 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Audio Effect - Reverb</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+<body>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="contents.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="effects.html">Back to the Effects page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+
+<H1 align=center>Reverb</H1>
+</center>
+
+<P class=qr>What is Reverb ?</P>
+<P class=a>
+ A Reverb simulates the component of sound that results from reflections from surrounding walls or objects.
+ It is in effect a room simulator. Some people think it's just a delay effect with some filters, but it's way
+ more complex than that.  This document explains the parameters to a Reverb effect and how they affect
+the sound.
+</P>
+<P class=qr>Basic Simulation of a Room</P>
+<P class=a>
+ <B>Our model is a simple room</B> with four straight walls, a sound source and a listener. In <i>Figure 1</i>
+ the arrows stand for the path of traveling sound.
+</P>
+<P class=a>
+ The listener hears the DIRECT signal first. The DIRECT signal is also referred to as the DRY part of the signal when using
+ any effect. Most digital reverbs produce two parts: The Early Reflections and the Reverb component.
+</P>
+
+
+<P class=menuref_item>I. Early Reflections</P>
+<table><tr>
+<td valign=top align=right><img border=0 src="images/reverb_er1.png" width="352" height="373" alt="Early Reflections">
+                           <br><i><B>Figure 1</B></i></td>
+<td valign=top>
+ <P class=a>
+  The path of the Early Reflections is longer than the direct signal, so it reaches the Listeners later.
+  The difference in time between the arrival of
+  the direct signal and the first Early Reflections is typically measured in milliseconds 
+ </P>
+</td>
+</tr></table>
+
+
+<P class=menuref_item>II. Reverb</P>
+<table><tr>
+<td valign=top align=right><img border=0 src="images/reverb_rev1.png" width="348" height="370" alt="Reverb">
+                           <br><i><B>Figure 1</B></i></td>
+<td valign=top>
+ <P class=a>
+  The sound reflects off the walls and objects in the room, and in time individual reflections
+  disappear and the Reverb develops.
+ </P>
+ <P class=a>
+  <U><B>Predelay</B></U><BR>
+  The time between the reception of the DIRECT signal by the listener and start of the Reverb portion
+  of the effect is called <B>Predelay</B>. This is a parameter in many digital reverb effects, and it
+  is also expressed in milliseconds.
+ </P>
+ <P class=a>
+  <U><B>Reverb Time</B></U><BR>
+  The time difference between the end of the original sound and the level of the reverb resulting
+  from that sound dropping by 60dB is called <B>RT60</B>, otherwise known as the <B>Reverb Time</b>. 
+  In other words, it's how long it takes for the reverberations to die away almost completely.
+ </P>
+ <P class=a>
+  Some digital reverbs feature this as a parameter.
+ </P>
+</td>
+</tr></table>
+
+<P class=qr>Common parameters of a digital Reverb</P>
+
+<table cellpadding=4>
+<tr>
+ <td valign=top align=right class=menuref_item>Early&nbsp;Reflections</td>
+ <td valign=top>
+   <P class=a>
+    Usually controlled via <B>Room type</B> and/or <B>Room Size</B> parameters.
+   </P>
+   <P class=a>
+    The <B>EARLY REFLECTIONS</B> enable the human brain to quickly identify the room size. They are
+    therefore the most critical part of a reverb effect, if a room simulation is the goal.
+   </P><BR>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>Predelay</td>
+ <td valign=top>
+   <P class=a>
+    Paramter Range : 0 to x milliseconds
+   </P>
+   <P class=a>
+    Time between Direct Signal and start of Reverb portion.
+   </P>
+   <P class=a>
+    The more space between you and walls or other reflective objects, the greater the Predelay.
+   </P><BR>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>Reverb Time</td>
+ <td valign=top>
+   <P class=a>
+    Paramter Range : 0.1 to x.x seconds
+   </P>
+   <P class=a>
+    The greater the enclosed volume of the space you're in, the longer the reverb time. Many reverb effects
+    let you set different reverb times for different frequency bands.
+   </P><BR>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>Reverb Damping</td>
+ <td valign=top>
+   <P class=a>
+    Usualy a Hishelf and/or a Lowshelf EQ with variable Frequency.
+   </P>
+   <P class=a>
+    These EQs are applied continuously to an evolving reverb of a piece of audio.
+    Over time, as the reverb fades, so do certain frequencies, either in the lower
+    or higher frequency range. The more less-reflective surfaces the sound bounces
+    around, the more the reverb dampens the higher frequencies.
+   </P>
+   <P class=a>
+    Freeverb features a Damping parameter that dampens the upper frequencies.
+   </P>
+   <BR>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>Reverb EQ</td>
+ <td valign=top>
+   <P class=a>
+    Usualy a Hishelf and/or Lowshelf EQ with variable Frequency.
+   </P>
+   <P class=a>
+    These EQs are only applied to the output of the reverb or perhaps even just the reverb portion
+    of the Reverb effect. Some reverbs have Hishelf and Lowshelf EQs for the Early Reflections as well.
+   </P>
+   <P class=a>
+    Freeverb has both a Hicut and Lowcut parameter.
+   </P>
+   <BR>
+ </td>
+</tr>
+
+</table>
+
+<P class=a>
+ Here are several screenshots taken from the reverb plugin Trueverb by <a href="http://www.waves.com">Waves</a>.
+ The red vertical line on the left is the DIRECT SIGNAL, which is only kept for illustration and is usualy
+ omitted when the reverb effect is used as a SEND effect.
+ See <a href="effects_reverb_tips.html">Tips for Using the Reverb</a> for more details on what
+ SEND effects are and why reverbs usualy are SEND effects.
+</P>
+
+<P class=a>
+ The surface of a wall as well as different shapes and sizes of objects in a room influence
+ the way sound reflects, bends or spreads from off them.
+</P>
+<P class=a>
+ Blank concrete will reflect sound quite well across the frequency spectrum. A large thick curtain
+ or padded walls will reflect sound poorly. A large club filled with people sounds completly different
+ from an empty one. People, comfy chairs, curtains, carpets, beds and many more objects reflect only
+ part of the sound that hits them.
+</P>
+<P class=a>
+ Most reverb effects therefore feature filters or hishelf and lowshelf EQs to simulate this kind
+ of reverb behaviour.
+</P>
+<P class=a>
+ Some reverb effect plugins (or hardware units) give you a <B>ROOM SIZE</B> parameter
+</P>
+
+
+
+
+
+
+<P class=qr>An example by the numbers</P>
+
+<P class=a>
+ As an example I'd like to show you how to create a reverb for small club
+ with a band.
+</P>
+<P class=a>
+ Let's see what we have to do with parameters in the reverb fx in sample
+ editors. First we determine some basics about the room we want to simulate.
+</P>
+<P class=a>
+ Our room(the club) is about eight meters on all sides(for simplicity)
+ and three meters high. The band will be playing no more than four meters
+ away from us. The room volume will be about 200 cubic meters.
+</P>
+<P class=a>
+ This means that the DIRECT SOUND will get to you within about
+ 11 ms (milliseconds). This the time we'll need to take off the other values.
+</P>
+<P class=a>
+ The first EARLY REFLECTIONS (off the left and right walls) travel
+ around nine meters before reaching you, so they'll get to your ears about
+ 15 ms later! (9 meters at 343 meters/sec -> 26 ms minus the 11 ms the DIRECT
+ SOUND takes to travel to your ears).
+</P>
+<P class=a>
+ I'm not taking the floor into account because of the obstacles, such as your
+ own legs and a table that prevents that reflection from the band from
+ reaching you.  It is also probable that you're sitting close to a wall and
+ the EARLY REFLECTION time may drop considerably. Experiment and listen very
+ carefully.
+</P>
+<P class=a>
+ The reason I'm deducting 11 ms from the 26 ms is that in a sample editor
+ we already have the DIRECT SOUND.
+ Please note that the timing of the EARLY REFLECTIONS are defined by the
+ rooms characteristics such as shape and size. The sound colour of the
+ EARLY REFLECTIONS is defined by the surfaces in the room.  These are parameters
+ that are available to professional reverbs only (hardware or software), so don't
+ worry about not finding that stuff in great detail in free or consumer software.
+
+</P>
+<P class=a>
+ The PRE-DELAY and REVERB TIME depend on more than just room size.
+ Wall and floor material, as well as anything else that reflects, disperses
+ and dampens sound will influence the reverb in quite a few ways.
+</P>
+<P class=a>
+ Our club has lots of wood on its walls and floor and people are sitting
+ at tables and the air's probably filled with a little smoke (except in
+ California!).
+</P>
+<P class=a>
+ The REVERB TIME, a parameter found in just about all sample editors, should be set to
+ no more than one second. In small, crowded rooms where little REVERB occurs
+ it is quite important to set the EARLY REFLECTIONS right. Experiment with
+ the reverb time keep it lower than 1.2 seconds and above 0.7 seconds.
+</P>
+<P class=a>
+ The PRE-DELAY can be set to 30 ms or more. Larger rooms will develop REVERB
+ later since the reflecting sound will travel a while before the reflections
+ become hard to identify but it also depends on the reflecting materials.
+</P>
+<P class=a>
+ Both Cool Edit and Soundforge have parameters referring to the DENSITY of the
+ REVERB part of the sound. Materials such as polished marble will reflect the
+ sound very well and disperse the sound very little. Wood disperses the sound
+ a lot and a carpet practically swallows a large chunk of it.
+ For our Club we need to set the density high since our material disperses the
+ sound a lot(humans,wood and obstacles).
+</P>
+<P class=a>
+ Higher frequencies are swallowed a lot faster than low frequencies.
+ Many reverb algorithms refer to this in some form or another. Cool Edit
+ has the 'High Frequency Absorbtion Time' as a parameter for this.
+ Sound Forge gives you a choice, whether to do this at all for both low and
+ high frequencies and even lets you set them but doesn't provide any time
+ parameters. Professional Reverb hardware such as Lexicon PCM 70,80&90 let you
+ you control frequency and time of this, for low and high frequencies.
+</P>
+<P class=a>
+ This can effectively add to a room's liveliness.  A room full of people will
+ absorb high frequencies a lot faster than an empty room, in which only the
+ materials would make the difference, so in Cool Edit we'll set the 'High
+ Frequency Absorbtion Time' very low, since we're in a crowded club.
+ For Soundforge activate the 'Attenuate high frequencies above' box and set
+ the frequency parameter to around 2000-2500 Hz. Experiment a bit. The higher
+ this frequeny and the longer the Absorbtion Time parameter in Cool Edit,
+ the emptier and and colder your room will seem. In small rooms this can
+ cause the room to sound very metallic. Sewer pipes and oil pipelines e.g.
+</P>
+<P class=a>
+ The last thing you have to do is set the balance between the WET signal
+ and your original DRY signal. Here you can do as you please but remember
+ that only very smoothed hard surfaces in big cavernous space create very loud
+ reverbs. A church might do that if there aren't a big number of people and
+ wooden benches in there, but a club doesn't :).
+</P>
+<P class=a>
+ So when you create your next 'soon-to-be-the-hit-of-Hornet' module, be sure
+ to check the possibilities of adding dimension and scope to your song.
+ Put your snare to the front, the piano a little to the back, and the sax
+ just a little in front of the drums. Experiment. With these basics you'll
+ be able to get better results in less time.
+</P>
+<P class=a>
+ Btw, Snare always gets reverb. How much and what kind up to you, but it's a
+ generaly good thing. It's also important to decide whether you're trying to
+ simulate a real live band or doint a multitrack sound, which boasts all kinds
+ of nice ideas, like doubling(another take of the same thing on top of the
+ first take), extreme panning and in general NOT reality :).
+</P>
+
+</body>
+</html>
