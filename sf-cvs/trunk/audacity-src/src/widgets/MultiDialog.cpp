@@ -61,7 +61,7 @@ MultiDialog::MultiDialog(wxString prompt,
    
    int count=0;
    while(buttons[count])count++;
-   wxString prompts[count];
+   wxString *prompts= new wxString[count];
 
    count=0;
    while(buttons[count]){
@@ -83,6 +83,7 @@ MultiDialog::MultiDialog(wxString prompt,
    SetSizer(mainSizer);
    mainSizer->Fit(this);
    mainSizer->SetSizeHints(this);
+   delete *prompts;
 }
 
 void MultiDialog::OnOK(wxCommandEvent &event)
