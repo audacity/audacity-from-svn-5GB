@@ -7,8 +7,34 @@ Audacity 1.2 Complete Handleiding:
 </p>
 
 <p>
-Audacity 1.2 Online Help:
+Audacity 1.2 Snelgids:
 [<a href="onlinehelp-1.2/contents.htm">Bekijk Online</a>]
+</p>
+
+<p>
+<a href="http://www.audacityteam.org/wiki">Audacity Wiki</a>
+(Publiek-bewerkbare documentatie, tips, trucs en meer)
+</p>
+
+<p>
+
+Doorzoek de Audacity documentatie:
+
+<form method="post" action="/isearch/index.php" target="_self">
+
+<table border="0" cellpadding="3" cellspacing="1">
+  <tr>
+    <td>
+
+      <input maxLength="255" name="s" size="20" value=''>
+      <input type="submit" value="Search Site">
+      <a TARGET="_blank" HREF="/isearch/help.php">Help</a>
+    </td>
+  </tr>
+</table>
+
+<input type="hidden" name="action" value="search">
+</form>
 </p>
 
 <p>
@@ -22,12 +48,12 @@ Audacity 1.2 Online Help:
 
 <p>
 <?php print "<a href=faq.php?$langLinkStr>";
-?>Veel gestelde vragen (F.A.Q.)</a>
+?>Veelgestelde vragen (F.A.Q.)</a>
 </p>
 
 <p>
 <a href="http://sourceforge.net/mailarchive/forum.php?forum_id=828"
->Audacity-Help Mailing List Archieven</a>
+>Audacity-Help Mailing List Archives</a>
 </p>
 
 <p>
@@ -41,9 +67,6 @@ Audacity 1.2 Online Help:
 
 <?php BoxTop("$helpStr - Audacity 1.0.0"); ?>
 
-
-<?php BoxTop($helpStr); ?>
-
 <p>
 <a href="docs/contents.html">Read documentation Online</a>
 </p>
@@ -51,10 +74,14 @@ Audacity 1.2 Online Help:
 <p>
 <?php print $docsStr; ?>:
 <ul>
-<li><a href="audacity-manual-1.0.0-A.zip">English</a>
-<li><a href="audacity-manual-1.0.0-bg.zip">Bulgarian</a>
-<li><a href="audacity-manual-1.0.0-es.zip">Spanish</a>
+<li><a href="audacity-handleiding-1.0.0-A.zip">Engels</a>
+<li><a href="audacity-handleiding-1.0.0-bg.zip">Bulgaars</a>
+<li><a href="audacity-handleiding-1.0.0-es.zip">Spaans</a>
 </ul>
+</p>
+
+<p>
+<hr>
 </p>
 
 <p>
@@ -64,12 +91,12 @@ Audacity 1.2 Online Help:
 
 <p>
 <?php print "<a href=faq.php?$langLinkStr>";
-?>Veel Gestelde Vragen (F.A.Q.)</a>
+?>Veelgestelde vragen (F.A.Q.)</a>
 </p>
 
 <p>
 <a href="http://sourceforge.net/mailarchive/forum.php?forum_id=828"
->Audacity-Help Mailing Lijst Archieven</a>
+>Audacity-Help Mailing List Archives</a>
 </p>
 
 <p>

@@ -4,7 +4,7 @@ We hebben een aantal fouten uit de laatste publieke testvrijgave kunnen herstell
 
 <p>
 Audacity was genomineerd als een van de mogelijke open-source
-programm's die <a href="http://www.oreilly.com/">O'Reilly</a> naar de 
+programma's die <a href="http://www.oreilly.com/">O'Reilly</a> naar de 
 <a href="http://www.comdex.com/">COMDEX</a> in Las Vegas gestuurd kon worden tussen 17-20 november.  <a href="http://www.oreillynet.com/contest/comdex/"
 >Klik hier</a> voor meer informatie en het stemmen op
 Audacity (gratis registratie bij O'Reilly benodigd om te kunnen stemmen).
@@ -28,7 +28,7 @@ welke we opgezet hebben voor extra inhoud betreffende Audacity en onderwerpen di
 </p>
 
 <p>
-Kom binnekort nog eens hier terug voor Audacity 1.2.0-pre3.  Als je de laatste tijd (of nooit) een beta-versie of pre-uitgave van Audacity hebt uitgeprobeerd, neem dan eens een kijkje bij onze niuewe en geupdate
+Kom binnekort nog eens hier terug voor Audacity 1.2.0-pre3. Als je de laatste tijd (of nooit) een beta-versie of pre-uitgave van Audacity hebt uitgeprobeerd, neem dan eens een kijkje bij onze nieuwe en geupdate
 <a href="http://audacity.sourceforge.net/screenshots.php"
 >Screenshots</a>. 
 </p>
