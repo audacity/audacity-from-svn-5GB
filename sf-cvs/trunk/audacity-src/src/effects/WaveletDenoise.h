@@ -17,6 +17,7 @@
 #include <wx/sizer.h>
 #include <wx/slider.h>
 #include <wx/stattext.h>
+#include <libw.h>
 
 class wxString;
 
@@ -45,9 +46,12 @@ public:
     
 private:
     bool ProcessOne(int count, WaveTrack * t,
-                         sampleCount start, sampleCount len);
+                    sampleCount start, sampleCount len);
+    void RemoveNoise(sampleCount len,
+                    sampleType *buffer, bool first);
 
-    int      windowSize;
+    int windowSize;
+    real threshold;
 };
 
 #endif
