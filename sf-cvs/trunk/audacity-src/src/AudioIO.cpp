@@ -314,6 +314,12 @@ void AudioIO::FillBuffers()
    unsigned int numEmpty = 0;
    int i;
    
+   // BG: Attempt to fix bug
+   if(mTracks->IsEmpty()) {
+      Stop();
+      return;
+   }
+
    // Playback buffers
 
    for(i=0; i<mNumOutBuffers; i++) {
