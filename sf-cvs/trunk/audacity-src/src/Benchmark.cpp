@@ -330,7 +330,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    WaveTrack *t = fact->NewWaveTrack(int16Sample);
    Track *tmp = NULL;
 
-   t->SetRate(1.0);
+   t->SetRate(1);
 
    srand(randSeed);
 

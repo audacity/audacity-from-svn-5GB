@@ -412,9 +412,6 @@ void LabelStruct::DrawText( wxDC & dc, wxRect & r)
       return;
    //If y is positive then it is the center line for the 
    //text we are about to draw.
-   const int yBarHeight=3;
-   const int yFrameHeight = LabelTrack::mTextHeight+3;
-   const int xBarShorten  = LabelTrack::mIconWidth+4;
 
    // Draw frame for the text...
    // We draw it half an icon width left of the text itself.
@@ -490,7 +487,7 @@ void LabelStruct::DrawHighlight( wxDC & dc, int xPos1, int xPos2, int charHeight
    curPen.SetColour(wxString(wxT("BLUE")));
    wxBrush curBrush = dc.GetBrush();
    curBrush.SetColour(wxString(wxT("BLUE")));
-   dc.DrawRectangle(xPos1, y-charHeight/2, xPos2-xPos1+0.5, charHeight );
+   dc.DrawRectangle(xPos1, y-charHeight/2, (int) (xPos2-xPos1+0.5), charHeight);
 }
 
 void LabelStruct::getXPos( wxDC & dc, int * xPos1, int cursorPos) 
@@ -651,7 +648,7 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
       if (mMouseXPos != -1) 
       {
          // set current cursor position
-         SetCurrentCursorPosition(dc, mMouseXPos);
+         SetCurrentCursorPosition(dc, (int) mMouseXPos);
          // for preventing from resetting by shift+mouse left button
          // set initialCursorPos equal to currentCursorPos
          if (mLabels[mSelIndex]->changeInitialMouseXPos)
@@ -1081,9 +1078,9 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
       if (mSelIndex != -1) {
          // the rectangle  of highlighted area
          if (mXPos1 < mXPos2)
-            highlightedRect = wxRect(mXPos1, mLabels[mSelIndex]->y - mFontHeight/2, mXPos2-mXPos1+0.5, mFontHeight);
+            highlightedRect = wxRect(mXPos1, mLabels[mSelIndex]->y - mFontHeight/2, (int) (mXPos2-mXPos1+0.5), mFontHeight);
          else
-            highlightedRect = wxRect(mXPos2, mLabels[mSelIndex]->y - mFontHeight/2, mXPos1-mXPos2+0.5, mFontHeight);
+            highlightedRect = wxRect(mXPos2, mLabels[mSelIndex]->y - mFontHeight/2, (int) (mXPos1-mXPos2+0.5), mFontHeight);
 
          // reset when left button is down
          if (evt.LeftDown()) 
@@ -1104,7 +1101,7 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
 
       if(mIsAdjustingLabel )
       {
-         float t;
+         float t = 0.0;
          // When we start dragging the label(s) we don't want them to jump.
          // so we calculate the displacement of the mouse from the drag center
          // and use that in subsequent dragging calculations.  The mouse stays 

@@ -863,7 +863,7 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
          WaveTrack *newTrack = p->GetTrackFactory()->NewWaveTrack();
          int initialheight = newTrack->GetHeight();
          newTrack->SetOffset(t0);
-         newTrack->SetRate(p->GetRate());
+         newTrack->SetRate((int) p->GetRate());
          newTrack->SetHeight(initialheight /  recordingChannels);
          if( recordingChannels == 2 )
          {

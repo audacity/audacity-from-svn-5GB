@@ -1376,7 +1376,7 @@ void AudacityProject::OnEffect(int type, int index)
 
    TrackListIterator iter(mTracks);
    Track *t = iter.First();
-   double prevEndTime = mTracks->GetEndTime();
+   //double prevEndTime = mTracks->GetEndTime();
    int count = 0;
    
    while (t) {
@@ -2983,7 +2983,7 @@ void AudacityProject::OnAlignMoveSel(int index)
 void AudacityProject::OnNewWaveTrack()
 {
    WaveTrack *t = mTrackFactory->NewWaveTrack(mDefaultFormat);
-   t->SetRate(mRate);
+   t->SetRate((int) mRate);
    SelectNone();
 
    mTracks->Add(t);
@@ -2999,7 +2999,7 @@ void AudacityProject::OnNewStereoTrack()
 {
    WaveTrack *t = mTrackFactory->NewWaveTrack(mDefaultFormat);
    t->SetChannel(Track::LeftChannel);
-   t->SetRate(mRate);
+   t->SetRate((int) mRate);
    SelectNone();
    
    mTracks->Add(t);
@@ -3008,7 +3008,7 @@ void AudacityProject::OnNewStereoTrack()
    
    t = mTrackFactory->NewWaveTrack(mDefaultFormat);
    t->SetChannel(Track::RightChannel);
-   t->SetRate(mRate);
+   t->SetRate((int) mRate);
    
    mTracks->Add(t);
    t->SetSelected (true);

@@ -164,7 +164,7 @@ AudacityDropTarget::~AudacityDropTarget()
 
 bool AudacityDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
 {
-   for (int i = 0; i < filenames.GetCount(); i++)
+   for (unsigned int i = 0; i < filenames.GetCount(); i++)
       mProject->Import(filenames[i]);
    return true;
 }
@@ -365,11 +365,11 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mAutoScrolling(false),
      mActive(true),
      mHistoryWindow(NULL),
+     mLastSelectionAdjustment(0),
      mTotalToolBarHeight(0),
      mDraggingToolBar(NoneID),
      mAudioIOToken(-1),
-     mIsDeleting(false),
-     mLastSelectionAdjustment(0)
+     mIsDeleting(false)
 {
    // These consts are used to make the function call more readable.
    const bool ONLY_IF_STUB_EXISTS=false;
@@ -1471,10 +1471,6 @@ ToolBarStub ** AudacityProject::ppToolBarStubOfToolBarType( enum ToolBarType t )
 ///LoadToolBar creates a toolbar of type t in the ToolBars array
 void AudacityProject::LoadToolBar(enum ToolBarType t, bool bCreateStubIfRqd)
 {
-   //First, go through ToolBarArray and determine the current 
-   //combined height of all toolbars.
-   int tbheight = 0;
-
    //Get the size of the current project window
    int width, height;
    //GetSize(&width, &height);
@@ -2597,7 +2593,7 @@ ControlToolBar *AudacityProject::GetControlToolBar()
    // be other than at position 0.
    if(!tb)
    {
-      for(int i=1;i<mToolBarArray.GetCount();i++)
+      for(unsigned int i=1;i<mToolBarArray.GetCount();i++)
       {
          if ((mToolBarArray[i]->GetType()) == ControlToolBarID)
          {

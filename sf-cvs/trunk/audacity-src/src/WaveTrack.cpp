@@ -57,7 +57,7 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
    mDisplay = 0; // Move to GUIWaveTrack
 
    mFormat = format;
-   mRate = rate;
+   mRate = (int) rate;
    mGain = 1.0;
    mPan = 0.0;
    SetName(_("Audio Track"));
@@ -154,9 +154,9 @@ double WaveTrack::GetRate() const
 
 void WaveTrack::SetRate(double newRate)
 {
-   mRate = newRate;
+   mRate = (int) newRate;
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
-      it->GetData()->SetRate(newRate);
+      it->GetData()->SetRate((int) newRate);
 }
 
 float WaveTrack::GetGain() const
@@ -724,7 +724,7 @@ longSampleCount WaveTrack::TimeToLongSamples(double t0)
 double WaveTrack::GetStartTime()
 {
    bool found = false;
-   double best;
+   double best = 0.0;
 
    if (mClips.IsEmpty())
       return 0;
@@ -743,7 +743,7 @@ double WaveTrack::GetStartTime()
 double WaveTrack::GetEndTime()
 {
    bool found = false;
-   double best;
+   double best = 0.0;
 
    if (mClips.IsEmpty())
       return 0;
@@ -916,7 +916,7 @@ void WaveTrack::GetEnvelopeValues(double *buffer, int bufferLen,
 
          if (rt0 < clip->GetStartTime())
          {
-            int dx = floor((clip->GetStartTime() - rt0) / tstep + 0.5);
+            int dx = (int) floor((clip->GetStartTime() - rt0) / tstep + 0.5);
             rbuf += dx;
             rlen -= dx;
             rt0 = clip->GetStartTime();
@@ -924,7 +924,7 @@ void WaveTrack::GetEnvelopeValues(double *buffer, int bufferLen,
 
          if (rt0+rlen*tstep > clip->GetEndTime())
          {
-            rlen = (clip->GetEndTime()-rt0) / tstep;
+            rlen = (int) ((clip->GetEndTime()-rt0) / tstep);
          }
 
          clip->GetEnvelope()->GetValues(rbuf, rlen, rt0, tstep);

@@ -272,7 +272,7 @@ bool EffectSoundTouch::ProcessStereoResults(const unsigned int outputCount,
    // Dis-interleave outputSoundTouchBuffer into separate track buffers.
    float* outputLeftBuffer = new float[outputCount];
    float* outputRightBuffer = new float[outputCount];
-   for (int index = 0; index < outputCount; index++)
+   for (unsigned int index = 0; index < outputCount; index++)
    {
       outputLeftBuffer[index] = outputSoundTouchBuffer[index*2];
       outputRightBuffer[index] = outputSoundTouchBuffer[(index*2)+1];
