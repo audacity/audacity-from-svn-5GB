@@ -8,7 +8,7 @@
 # This makefile may be invoked to build either audacity.pot or any lang.mo
 
 PROGNAME=audacity
-LINGUAS=bg da de es fr hu it ja nl pl pt ru sl
+LINGUAS=bg ca da de es fr hu it ja nl pl pt ru sl
 
 prefix=@prefix@
 # this defaults to /usr/share
