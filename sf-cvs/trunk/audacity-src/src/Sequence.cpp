@@ -1125,10 +1125,10 @@ BlockArray *Sequence::Blockify(samplePtr buffer, sampleCount len)
       SeqBlock *b = new SeqBlock();
 
       b->start = i * len / num;
-      int len = ((i + 1) * len / num) - b->start;
+      int newLen = ((i + 1) * len / num) - b->start;
       samplePtr bufStart = buffer + (b->start * SAMPLE_SIZE(mSampleFormat));
 
-      b->f = mDirManager->NewSimpleBlockFile(bufStart, len, mSampleFormat);
+      b->f = mDirManager->NewSimpleBlockFile(bufStart, newLen, mSampleFormat);
 
       list->Add(b);
    }
