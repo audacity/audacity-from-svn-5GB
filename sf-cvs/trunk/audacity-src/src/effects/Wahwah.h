@@ -17,10 +17,10 @@
 #define __AUDACITY_EFFECT_WAHWAH__
 
 #include <wx/dialog.h>
+#include <wx/slider.h>
 
 class wxString;
 class wxSizer;
-class wxSlider;
 class wxTextCtrl;
 
 #include "SimpleMono.h"

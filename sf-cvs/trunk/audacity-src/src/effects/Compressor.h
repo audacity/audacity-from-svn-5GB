@@ -19,9 +19,9 @@ class wxString;
 #include <wx/dialog.h>
 #include <wx/intl.h>
 #include <wx/panel.h>
+#include <wx/slider.h>
 
 class wxCheckBox;
-class wxSlider;
 class wxStaticText;
 
 class WaveTrack;

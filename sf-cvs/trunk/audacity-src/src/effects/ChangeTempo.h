@@ -20,11 +20,10 @@
 
 #include <wx/intl.h>
 #include <wx/dialog.h>
+#include <wx/slider.h>
 
 class wxString;
-class wxSlider;
 class wxTextCtrl;
-class wxSlider;
 
 
 class EffectChangeTempo:public EffectSoundTouch {

@@ -9,6 +9,7 @@
 **********************************************************************/
 
 #include <math.h>
+#include <locale.h>
 
 #include <wx/defs.h>
 #include <wx/log.h>

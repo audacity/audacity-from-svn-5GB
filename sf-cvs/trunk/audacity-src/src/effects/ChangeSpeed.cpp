@@ -19,13 +19,9 @@
 #include <math.h>
 
 #include <wx/button.h>
-#include <wx/choice.h>
-#include <wx/intl.h>
 #include <wx/msgdlg.h> // for wxMessageBox
 #include <wx/sizer.h>
-#include <wx/slider.h>
 #include <wx/stattext.h>
-#include <wx/textctrl.h>
 #include <wx/valtext.h>
 
 
