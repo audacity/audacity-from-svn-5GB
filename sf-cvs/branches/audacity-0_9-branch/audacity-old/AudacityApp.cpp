@@ -83,6 +83,12 @@ wxWindow *gParentWindow = NULL;
 
 void QuitAudacity()
 {
+   // Try to close and save each window.  If the user hits cancel, bail.
+   int len = gAudacityProjects.Count();
+   for (int i = 0; i < len; i++)
+      if (!gAudacityProjects[i]->Close())
+         return;
+
    if (gAPaletteFrame)
       gAPaletteFrame->Destroy();
    if (gFreqWindow)
@@ -97,10 +103,6 @@ void QuitAudacity()
    QuitHelp();
 
    FinishPreferences();
-
-   int len = gAudacityProjects.Count();
-   for (int i = 0; i < len; i++)
-      gAudacityProjects[i]->Destroy();
 }
 
 IMPLEMENT_APP(AudacityApp)

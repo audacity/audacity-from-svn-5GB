@@ -850,7 +850,7 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 
 void AudacityProject::OnClose(wxCommandEvent & event)
 {
-   Destroy();
+   Close();
 }
 
 void AudacityProject::OnCloseWindow(wxCloseEvent & event)
