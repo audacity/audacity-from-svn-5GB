@@ -176,7 +176,7 @@ void TrackPanel::OnTimer()
 
 	if (mMouseMostRecentX < mCapturedRect.x) {
 	  mAutoScrolling = true;
-	  mListener->TP_ScrollRight();
+	  mListener->TP_ScrollLeft();
 
 	  wxMouseEvent *e2 = new wxMouseEvent(wxEVT_MOTION);
 	  HandleSelect(*e2);
@@ -764,11 +764,16 @@ void TrackPanel::HandleLabelClick(wxMouseEvent& event)
 		if (popupMenu) {
 		  mPopupMenuTarget = t;
 		  
-		  wxClientDC dc(this);
-		  AColor::Bevel(dc, false, fieldRect);
+		  {
+		    wxClientDC dc(this);
+		    AColor::Bevel(dc, false, fieldRect);
+		  }
 		  PopupMenu(popupMenu,
 					fieldRect.x, fieldRect.y + fieldRect.height);
-		  AColor::Bevel(dc, true, fieldRect);
+		  {
+		    wxClientDC dc(this);
+   	 	    AColor::Bevel(dc, true, fieldRect);
+   	 	  }
 
 		  return;
 		}
