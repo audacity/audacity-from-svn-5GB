@@ -13,6 +13,7 @@
 #include "Effect.h"
 
 #include "Amplify.h"
+#include "AvcCompressor.h"
 #include "BassBoost.h"
 #include "Compressor.h"
 #include "Echo.h"
@@ -44,6 +45,7 @@
 void LoadEffects(wxString searchDir)
 {
    Effect::RegisterEffect(new EffectAmplify(), false);
+   Effect::RegisterEffect(new EffectAvcCompressor(), false);
    Effect::RegisterEffect(new EffectBassBoost(), false);
    Effect::RegisterEffect(new EffectCompressor(), false);
    Effect::RegisterEffect(new EffectEcho(), false);
