@@ -31,6 +31,11 @@ Known bugs to fix:
 - Audacity "forgets" tracks' channels when saving/loading
 - Needs to handle temp directory better - bring up a
   dialog if it's not there...
+- Undoing an envelope edit sometimes causes problems
+- Recording at a rate other than 44100 works, but the
+  track created has the wrong rate in its label
+- RPM dependency is wrong - it should depend on:
+  libwx_gtk-2.2.so.6, not libwx_gtk.so
 
 -----------------------------------------------------------
 Possible bugs to investigate:
