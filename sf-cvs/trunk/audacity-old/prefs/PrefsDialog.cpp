@@ -24,6 +24,7 @@
 #include "SampleRatePrefs.h"
 #include "FileFormatPrefs.h"
 #include "SpectrumPrefs.h"
+#include "DirectoriesPrefs.h"
 
 
 enum {
@@ -72,6 +73,7 @@ PrefsDialog::PrefsDialog(wxWindow *parent):
 	mCategories->Append("Sample Rates", new SampleRatePrefs(this));
 	mCategories->Append("File Formats", new FileFormatPrefs(this));
 	mCategories->Append("Spectrograms", new SpectrumPrefs(this));
+	mCategories->Append("Directories",  new DirectoriesPrefs(this));
 
   PrefsPanel *panel;
 

@@ -17,6 +17,7 @@
 
 #include "DirManager.h"
 #include "DiskFunctions.h"
+#include "Prefs.h"
 
 // Static class variables
 
@@ -42,7 +43,11 @@ wxString DirManager::pathChar = "/";
 #endif
 #endif
 
+#ifdef __WXGTK__
+wxString DirManager::home = wxGetHomeDir();
+#else
 wxString DirManager::home = wxGetCwd();
+#endif
 wxString DirManager::temp = (DirManager::home +
 			     DirManager::pathChar +
 			     DirManager::tempDirName);
@@ -52,8 +57,10 @@ wxString DirManager::temp = (DirManager::home +
 DirManager::DirManager()
 {
   if (firstCtor) {
+	temp = gPrefs->Read("/Directories/TempDir", temp);
     if (!wxPathExists(temp))
       wxMkdir(temp);
+	gPrefs->Write("/Directories/TempDir", temp);
     firstCtor = false;
   }
   numDirManagers++;
@@ -72,7 +79,7 @@ DirManager::DirManager()
   if (freeSpace>=0) {
     if (freeSpace < 1048576) {
       // TODO: allow user to select different temporary volume.
-      wxMessageBox("Warning: there is very little free disk space left on this volume.");
+      wxMessageBox("Warning: there is very little free disk space left on this volume. Please select another temporary directory in your preferences.");
     }
   }
 }
