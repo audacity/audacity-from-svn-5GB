@@ -30,6 +30,10 @@
 #include "ControlToolBar.h"
 #include "EditToolBar.h"
 
+#define AUDACITY_MENUS_GLOBALS
+#include "Menus.h"
+#undef AUDACITY_MENUS_GLOBALS
+
 class wxWindow;
 class wxBoxSizer;
 class wxDragImage;
@@ -120,7 +124,9 @@ class AudacityProject:public wxFrame,
 
    void OnScrollLeft();
    void OnScrollRight();
+
    void OnScrollLeftButton(wxScrollEvent & event);
+
    void OnScrollRightButton(wxScrollEvent & event);
 
 

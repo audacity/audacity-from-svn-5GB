@@ -20,6 +20,14 @@
 
 #endif
 
+#ifdef AUDACITY_MENUS_ENUM
+
+#define AUDACITY_MENUS_COMMANDS_ENUM
+#include "commands.h"
+#undef AUDACITY_MENUS_COMMANDS_ENUM
+
+#endif
+
 #ifdef AUDACITY_MENUS_METHODS
 private:
 double mInsertSilenceAmount;
@@ -48,15 +56,13 @@ bool mFirstTimeUpdateMenus;
 public:
 void CreateMenuBar();
 
-wxString &GetCommandName(int nIndex);
-wxString &GetCommandDesc(int nIndex);
-wxObjectEventFunction &GetCommandFunc(int nIndex);
+wxString GetCommandName(int nIndex);
+wxString GetCommandDesc(int nIndex);
+audEventFunction GetCommandFunc(int nIndex);
 int GetNumCommands();
 
-void SetCommandState(int idItem, int iVal);
+void SetCommandState(int nID, int iVal);
 int GetCommandState(int nIndex);
-
-bool GetCommandKeyText(int idItem, wxString *retName);
 
 void OnUpdateMenus(wxUpdateUIEvent & event);
 
@@ -65,84 +71,84 @@ bool HandleMenuEvent(wxEvent & event);
 
         // File Menu
 
-void OnNew(wxCommandEvent & event);
-void OnOpen(wxCommandEvent & event);
-void OnClose(wxCommandEvent & event);
-void OnSave(wxCommandEvent & event);
-void OnSaveAs(wxCommandEvent & event);
+void OnNew(wxEvent & event);
+void OnOpen(wxEvent & event);
+void OnClose(wxEvent & event);
+void OnSave(wxEvent & event);
+void OnSaveAs(wxEvent & event);
 
-void OnExportMix(wxCommandEvent & event);
-void OnExportSelection(wxCommandEvent & event);
-void OnExportLossyMix(wxCommandEvent & event);
-void OnExportLossySelection(wxCommandEvent & event);
+void OnExportMix(wxEvent & event);
+void OnExportSelection(wxEvent & event);
+void OnExportLossyMix(wxEvent & event);
+void OnExportLossySelection(wxEvent & event);
 
-void OnExportLabels(wxCommandEvent & event);
+void OnExportLabels(wxEvent & event);
 
-void OnPreferences(wxCommandEvent & event);
+void OnPreferences(wxEvent & event);
 
-void OnExit(wxCommandEvent & event);
+void OnExit(wxEvent & event);
 
         // Edit Menu
 
-void Undo(wxCommandEvent & event);
-void Redo(wxCommandEvent & event);
-void UndoHistory(wxCommandEvent & event);
+void Undo(wxEvent & event);
+void Redo(wxEvent & event);
+void UndoHistory(wxEvent & event);
 
-void Cut(wxCommandEvent & event);
-void Copy(wxCommandEvent & event);
-void Paste(wxCommandEvent & event);
-void Trim(wxCommandEvent & event);
+void Cut(wxEvent & event);
+void Copy(wxEvent & event);
+void Paste(wxEvent & event);
+void Trim(wxEvent & event);
 
-void OnDelete(wxCommandEvent & event);
-void OnSilence(wxCommandEvent & event);
+void OnDelete(wxEvent & event);
+void OnSilence(wxEvent & event);
 
-void OnInsertSilence(wxCommandEvent & event);
-void OnSplit(wxCommandEvent & event);
-void OnDuplicate(wxCommandEvent & event);
+void OnInsertSilence(wxEvent & event);
+void OnSplit(wxEvent & event);
+void OnDuplicate(wxEvent & event);
 
-void OnSelectAll(wxCommandEvent & event);
+void OnSelectAll(wxEvent & event);
 
         // View Menu
 
-void OnZoomIn(wxCommandEvent & event);
-void OnZoomOut(wxCommandEvent & event);
-void OnZoomNormal(wxCommandEvent & event);
-void OnZoomFit(wxCommandEvent & event);
-void OnZoomSel(wxCommandEvent & event);
+void OnZoomIn(wxEvent & event);
+void OnZoomOut(wxEvent & event);
+void OnZoomNormal(wxEvent & event);
+void OnZoomFit(wxEvent & event);
+void OnZoomSel(wxEvent & event);
 
 void ZoomFit();
 void ZoomSel();
 
-void OnPlotSpectrum(wxCommandEvent & event);
+void OnPlotSpectrum(wxEvent & event);
 
-void OnFloatControlToolBar(wxCommandEvent & event);
-void OnLoadEditToolBar(wxCommandEvent & event);
-void OnFloatEditToolBar(wxCommandEvent & event);
+void OnFloatControlToolBar(wxEvent & event);
+void OnLoadEditToolBar(wxEvent & event);
+void OnFloatEditToolBar(wxEvent & event);
 
         // Project Menu
 
-void OnImport(wxCommandEvent & event);
-void OnImportLabels(wxCommandEvent & event);
-void OnImportMIDI(wxCommandEvent & event);
-void OnImportRaw(wxCommandEvent & event);
+void OnImport(wxEvent & event);
+void OnImportLabels(wxEvent & event);
+void OnImportMIDI(wxEvent & event);
+void OnImportRaw(wxEvent & event);
 
-void OnEditID3(wxCommandEvent & event);
+void OnEditID3(wxEvent & event);
 
-void OnQuickMix(wxCommandEvent & event);
+void OnQuickMix(wxEvent & event);
 
-void OnAlignZero(wxCommandEvent & event);
-void OnAlign(wxCommandEvent & event);
+void OnAlignZero(wxEvent & event);
+void OnAlign(wxEvent & event);
 
-void OnNewWaveTrack(wxCommandEvent & event);
-void OnNewLabelTrack(wxCommandEvent & event);
-void OnRemoveTracks(wxCommandEvent & event);
+void OnNewWaveTrack(wxEvent & event);
+void OnNewLabelTrack(wxEvent & event);
+void OnRemoveTracks(wxEvent & event);
 
         // Help Menu
 
-void OnAbout(wxCommandEvent & event);
-void OnHelp(wxCommandEvent & event);
-void OnHelpIndex(wxCommandEvent & event);
-void OnHelpSearch(wxCommandEvent & event);
-void OnBenchmark(wxCommandEvent & event);
+void OnAbout(wxEvent & event);
+void OnHelp(wxEvent & event);
+void OnHelpIndex(wxEvent & event);
+void OnHelpSearch(wxEvent & event);
+void OnBenchmark(wxEvent & event);
 
 #endif

@@ -54,7 +54,6 @@
 #include "TrackPanel.h"
 #include "WaveTrack.h"
 #include "effects/Effect.h"
-#include "Menus.h"
 
 #include "iostream.h"
 
@@ -165,6 +164,10 @@ enum {
 #define AUDACITY_MENUS_GLOBALS
 #include "Menus.h"
 #undef AUDACITY_MENUS_GLOBALS
+
+#define AUDACITY_MENUS_ENUM
+#include "Menus.h"
+#undef AUDACITY_MENUS_ENUM
 
 BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
    EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
@@ -380,28 +383,8 @@ AudacityProject::~AudacityProject()
    mTracks = NULL;
 
 
-   WX_CLEAR_ARRAY(mCommandDesc)
-   mCommandDesc.Clear();
-   WX_CLEAR_ARRAY(mCommandNames)
-   mCommandNames.Clear();
-   for(i = 1; i <= mCommandFunctions.GetCount(); i++)
-   {
-      free(mCommandFunctions[i-1]);
-   }
-   mCommandFunctions.Clear();
-   mCommandIDs.Clear();
-   mCommandState.Clear();
-   for(i = 1; i <= mCommandUsedKey.GetCount(); i++)
-   {
-      free(mCommandUsedKey[i-1]);
-   }
-   mCommandUsedKey.Clear();
-   for(i = 1; i <= mCommandAssignedKey.GetCount(); i++)
-   {
-      free(mCommandAssignedKey[i-1]);
-   }
-   mCommandAssignedKey.Clear();
-
+   WX_CLEAR_ARRAY(mCommandMenuItem)
+   mCommandMenuItem.Clear();
 
 
    gAudacityProjects.Remove(this);
@@ -519,6 +502,7 @@ void AudacityProject::OnScrollRight()
 }
 
 void AudacityProject::OnScrollLeftButton(wxScrollEvent & event)
+
 {
 
 
@@ -1189,7 +1173,7 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 
 
 
-void AudacityProject::OnClose(wxCommandEvent & event)
+void AudacityProject::OnClose(wxEvent & event)
 {
    Close();
 }

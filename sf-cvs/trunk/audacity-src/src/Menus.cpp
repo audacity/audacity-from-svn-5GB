@@ -57,9 +57,9 @@
 #include "prefs/PrefsDialog.h"
 
 
-#define AUDACITY_MENUS_GLOBALS
+#define AUDACITY_MENUS_ENUM
 #include "Menus.h"
-#undef AUDACITY_MENUS_GLOBALS
+#undef AUDACITY_MENUS_ENUM
 
 void AudacityProject::CreateMenuBar()
 {
@@ -253,62 +253,40 @@ void AudacityProject::CreateMenuBar()
 #include "commandkeys.h" // BG: Generate an array of keys combos that cannot be used
 }
 
-wxString &AudacityProject::GetCommandName(int nIndex)
+wxString AudacityProject::GetCommandName(int nIndex)
 {
-   return *mCommandNames[nIndex];
+   wxMenu holderMenu;
+   holderMenu.Append(58326, mCommandMenuItem[nIndex]->commandString);
+   return (holderMenu.FindItem(58326))->GetLabel();
 }
 
-wxString &AudacityProject::GetCommandDesc(int nIndex)
+wxString AudacityProject::GetCommandDesc(int nIndex)
 {
-   return *mCommandDesc[nIndex];
+   return mCommandMenuItem[nIndex]->descriptionString;
 }
 
-wxObjectEventFunction &AudacityProject::GetCommandFunc(int nIndex)
+audEventFunction AudacityProject::GetCommandFunc(int nIndex)
 {
-   return *mCommandFunctions[nIndex];
+   return mCommandMenuItem[nIndex]->callbackFunction;
 }
 
 int AudacityProject::GetNumCommands()
 {
-   return mCommandNames.GetCount();
+   return mCommandMenuItem.GetCount();
 }
 
-void AudacityProject::SetCommandState(int idItem, int iVal)
+void AudacityProject::SetCommandState(int nID, int iVal)
 {
-   for(int i = 0; i < mCommandIDs.GetCount(); i++)
+   int idz = (nID-MenuBaseID);
+   if((idz >= 0) && (idz < GetNumCommands()))
    {
-      if(mCommandIDs[i] == (int *)idItem)
-      {
-         mCommandState[i] = (int *)iVal;
-      }
+      mCommandMenuItem[idz]->state = (menuState)iVal;
    }
 }
 
 int AudacityProject::GetCommandState(int nIndex)
 {
-   return (int)mCommandState[nIndex];
-}
-
-bool AudacityProject::GetCommandKeyText(int idItem, wxString *retName)
-{
-   wxKeyEvent tmpKeyEvent;
-
-   for(int i = 0; i < mCommandIDs.GetCount(); i++)
-   {
-      if(mCommandIDs[i] == (int *)idItem)
-      {
-         memcpy(&tmpKeyEvent, mCommandAssignedKey[i], sizeof(wxKeyEvent));
-         if(!tmpKeyEvent.GetKeyCode()) return false;
-         *retName += "\t";
-         if(tmpKeyEvent.ControlDown()) *retName += "Ctrl+";
-         if(tmpKeyEvent.AltDown()) *retName += "Alt+";
-         if(tmpKeyEvent.ShiftDown()) *retName += "Shift+";
-         *retName += (char)toupper(tmpKeyEvent.GetKeyCode());
-         return true;
-      }
-   }
-
-   return false;
+   return mCommandMenuItem[nIndex]->state;
 }
 
 void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
@@ -319,9 +297,11 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
        */
    }
 
+/*
 #define AUDACITY_MENUS_COMMANDS_ACCELL_TABLE
 #include "commands.h"
 #undef AUDACITY_MENUS_COMMANDS_ACCELL_TABLE
+*/
 
    // Note that the titles of the menus here are dependent on the
    // titles above.
@@ -449,12 +429,10 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 
 bool AudacityProject::HandleMenuEvent(wxEvent & event)
 {
-   for(int i = 0; i < mCommandIDs.GetCount(); i++)
+   int idz = (event.GetId()-MenuBaseID);
+   if((idz >= 0) && (idz < GetNumCommands()))
    {
-      if((mCommandIDs[i] == (int *)event.GetId()) && (GetCommandState(i)))
-      {
-         (this->*((wxEventFunction) (this->GetCommandFunc(i))))(event);
-      }
+      (this->*((audEventFunction) (this->GetCommandFunc(idz))))(event);
    }
 
    return true; //handled message
@@ -464,12 +442,12 @@ bool AudacityProject::HandleMenuEvent(wxEvent & event)
 // File Menu
 //
 
-void AudacityProject::OnNew(wxCommandEvent & event)
+void AudacityProject::OnNew(wxEvent & event)
 {
    CreateNewAudacityProject(gParentWindow);
 }
 
-void AudacityProject::OnOpen(wxCommandEvent & event)
+void AudacityProject::OnOpen(wxEvent & event)
 {
    wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
 
@@ -508,22 +486,22 @@ void AudacityProject::OnOpen(wxCommandEvent & event)
    }
 }
 
-void AudacityProject::OnSave(wxCommandEvent & event)
+void AudacityProject::OnSave(wxEvent & event)
 {
    Save();
 }
 
-void AudacityProject::OnSaveAs(wxCommandEvent & event)
+void AudacityProject::OnSaveAs(wxEvent & event)
 {
    SaveAs();
 }
 
-void AudacityProject::OnExit(wxCommandEvent & event)
+void AudacityProject::OnExit(wxEvent & event)
 {
    QuitAudacity();
 }
 
-void AudacityProject::OnExportLabels(wxCommandEvent & event)
+void AudacityProject::OnExportLabels(wxEvent & event)
 {
    VTrack *t;
    int numLabelTracks = 0;
@@ -583,27 +561,27 @@ void AudacityProject::OnExportLabels(wxCommandEvent & event)
    f.Close();
 }
 
-void AudacityProject::OnExportMix(wxCommandEvent & event)
+void AudacityProject::OnExportMix(wxEvent & event)
 {
    ::Export(this, false, 0.0, mTracks->GetMaxLen());
 }
 
-void AudacityProject::OnExportSelection(wxCommandEvent & event)
+void AudacityProject::OnExportSelection(wxEvent & event)
 {
    ::Export(this, true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
-void AudacityProject::OnExportLossyMix(wxCommandEvent & event)
+void AudacityProject::OnExportLossyMix(wxEvent & event)
 {
    ::ExportLossy(this, false, 0.0, mTracks->GetMaxLen());
 }
 
-void AudacityProject::OnExportLossySelection(wxCommandEvent & event)
+void AudacityProject::OnExportLossySelection(wxEvent & event)
 {
    ::ExportLossy(this, true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
-void AudacityProject::OnPreferences(wxCommandEvent & event)
+void AudacityProject::OnPreferences(wxEvent & event)
 {
    PrefsDialog dialog(this /* parent */ );
    dialog.ShowModal();
@@ -613,7 +591,7 @@ void AudacityProject::OnPreferences(wxCommandEvent & event)
 // Edit Menu
 //
 
-void AudacityProject::Undo(wxCommandEvent & event)
+void AudacityProject::Undo(wxEvent & event)
 {
    if (!mUndoManager.UndoAvailable()) {
       wxMessageBox(_("Nothing to undo"));
@@ -630,7 +608,7 @@ void AudacityProject::Undo(wxCommandEvent & event)
       mHistoryWindow->UpdateDisplay();
 }
 
-void AudacityProject::Redo(wxCommandEvent & event)
+void AudacityProject::Redo(wxEvent & event)
 {
    if (!mUndoManager.RedoAvailable()) {
       wxMessageBox(_("Nothing to redo"));
@@ -647,7 +625,7 @@ void AudacityProject::Redo(wxCommandEvent & event)
       mHistoryWindow->UpdateDisplay();
 }
 
-void AudacityProject::UndoHistory(wxCommandEvent & event)
+void AudacityProject::UndoHistory(wxEvent & event)
 {
    if (mHistoryWindow)
       mHistoryWindow->Show(true);
@@ -658,7 +636,7 @@ void AudacityProject::UndoHistory(wxCommandEvent & event)
 }
 
 
-void AudacityProject::Cut(wxCommandEvent & event)
+void AudacityProject::Cut(wxEvent & event)
 {
    ClearClipboard();
 
@@ -689,7 +667,7 @@ void AudacityProject::Cut(wxCommandEvent & event)
 
 
 
-void AudacityProject::Copy(wxCommandEvent & event)
+void AudacityProject::Copy(wxEvent & event)
 {
    ClearClipboard();
 
@@ -711,7 +689,7 @@ void AudacityProject::Copy(wxCommandEvent & event)
    msClipProject = this;
 }
 
-void AudacityProject::Paste(wxCommandEvent & event)
+void AudacityProject::Paste(wxEvent & event)
 {
    if (mViewInfo.sel0 != mViewInfo.sel1)
       Clear();
@@ -755,7 +733,7 @@ void AudacityProject::Paste(wxCommandEvent & event)
 
 
 
-void AudacityProject::Trim(wxCommandEvent & event)
+void AudacityProject::Trim(wxEvent & event)
 {
    if(mViewInfo.sel0 >= mViewInfo.sel1)
       return;
@@ -785,12 +763,12 @@ void AudacityProject::Trim(wxCommandEvent & event)
    
 
 
-void AudacityProject::OnDelete(wxCommandEvent & event)
+void AudacityProject::OnDelete(wxEvent & event)
 {
    Clear();
 }
 
-void AudacityProject::OnSilence(wxCommandEvent & event)
+void AudacityProject::OnSilence(wxEvent & event)
 {
    TrackListIterator iter(mTracks);
 
@@ -810,7 +788,7 @@ void AudacityProject::OnSilence(wxCommandEvent & event)
    mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::OnDuplicate(wxCommandEvent & event)
+void AudacityProject::OnDuplicate(wxEvent & event)
 {
    TrackListIterator iter(mTracks);
 
@@ -844,7 +822,7 @@ void AudacityProject::OnDuplicate(wxCommandEvent & event)
    mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::OnSplit(wxCommandEvent & event)
+void AudacityProject::OnSplit(wxEvent & event)
 {
    TrackListIterator iter(mTracks);
 
@@ -890,7 +868,7 @@ void AudacityProject::OnSplit(wxCommandEvent & event)
    mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::OnInsertSilence(wxCommandEvent & event)
+void AudacityProject::OnInsertSilence(wxEvent & event)
 {
    wxString amountStr =
        wxGetTextFromUser(_("Number of seconds of silence to insert:"),
@@ -933,7 +911,7 @@ void AudacityProject::OnInsertSilence(wxCommandEvent & event)
    mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::OnSelectAll(wxCommandEvent & event)
+void AudacityProject::OnSelectAll(wxEvent & event)
 {
    TrackListIterator iter(mTracks);
 
@@ -952,7 +930,7 @@ void AudacityProject::OnSelectAll(wxCommandEvent & event)
 // View Menu
 //
 
-void AudacityProject::OnZoomIn(wxCommandEvent & event)
+void AudacityProject::OnZoomIn(wxEvent & event)
 {
    mViewInfo.zoom *= 2.0;
    if (mViewInfo.zoom > 6000000)
@@ -961,7 +939,7 @@ void AudacityProject::OnZoomIn(wxCommandEvent & event)
    mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::OnZoomOut(wxCommandEvent & event)
+void AudacityProject::OnZoomOut(wxEvent & event)
 {
    mViewInfo.zoom /= 2.0;
    if (mViewInfo.zoom <= 1.0)
@@ -970,24 +948,24 @@ void AudacityProject::OnZoomOut(wxCommandEvent & event)
    mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::OnZoomNormal(wxCommandEvent & event)
+void AudacityProject::OnZoomNormal(wxEvent & event)
 {
    mViewInfo.zoom = 44100.0 / 512.0;
    FixScrollbars();
    mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::OnZoomFit(wxCommandEvent & event)
+void AudacityProject::OnZoomFit(wxEvent & event)
 {
    ZoomFit();
 }
 
-void AudacityProject::OnZoomSel(wxCommandEvent & event)
+void AudacityProject::OnZoomSel(wxEvent & event)
 {
    ZoomSel();
 }
 
-void AudacityProject::OnPlotSpectrum(wxCommandEvent & event)
+void AudacityProject::OnPlotSpectrum(wxEvent & event)
 {
    #if 0
 
@@ -1057,7 +1035,7 @@ void AudacityProject::OnPlotSpectrum(wxCommandEvent & event)
 }
 
 
-void AudacityProject::OnFloatControlToolBar(wxCommandEvent & event)
+void AudacityProject::OnFloatControlToolBar(wxEvent & event)
 {
    if (gControlToolBarStub->GetWindowedStatus()) {
 
@@ -1070,7 +1048,7 @@ void AudacityProject::OnFloatControlToolBar(wxCommandEvent & event)
 }
 
 
-void AudacityProject::OnLoadEditToolBar(wxCommandEvent & event)
+void AudacityProject::OnLoadEditToolBar(wxEvent & event)
 {
    if (gEditToolBarStub) 
       {  
@@ -1114,7 +1092,7 @@ void AudacityProject::OnLoadEditToolBar(wxCommandEvent & event)
 }
 
 
-void AudacityProject::OnFloatEditToolBar(wxCommandEvent & event)
+void AudacityProject::OnFloatEditToolBar(wxEvent & event)
 {
    if (gEditToolBarStub ){
 
@@ -1136,7 +1114,7 @@ void AudacityProject::OnFloatEditToolBar(wxCommandEvent & event)
 // Project Menu
 //
 
-void AudacityProject::OnImport(wxCommandEvent & event)
+void AudacityProject::OnImport(wxEvent & event)
 {
    wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
 
@@ -1162,7 +1140,7 @@ void AudacityProject::OnImport(wxCommandEvent & event)
    }
 }
 
-void AudacityProject::OnImportLabels(wxCommandEvent & event)
+void AudacityProject::OnImportLabels(wxEvent & event)
 {
    wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
 
@@ -1203,7 +1181,7 @@ void AudacityProject::OnImportLabels(wxCommandEvent & event)
    }
 }
 
-void AudacityProject::OnImportMIDI(wxCommandEvent & event)
+void AudacityProject::OnImportMIDI(wxEvent & event)
 {
    wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
 
@@ -1238,7 +1216,7 @@ void AudacityProject::OnImportMIDI(wxCommandEvent & event)
    }
 }
 
-void AudacityProject::OnImportRaw(wxCommandEvent & event)
+void AudacityProject::OnImportRaw(wxEvent & event)
 {
    wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
 
@@ -1281,12 +1259,12 @@ void AudacityProject::OnImportRaw(wxCommandEvent & event)
    }
 }
 
-void AudacityProject::OnEditID3(wxCommandEvent & event)
+void AudacityProject::OnEditID3(wxEvent & event)
 {
    mTags->ShowEditDialog(this, _("Edit ID3 Tags (for MP3 exporting)"));
 }
 
-void AudacityProject::OnQuickMix(wxCommandEvent & event)
+void AudacityProject::OnQuickMix(wxEvent & event)
 {
    if (::QuickMix(mTracks, &mDirManager, mRate, mDefaultFormat)) {
 
@@ -1309,7 +1287,7 @@ void AudacityProject::OnQuickMix(wxCommandEvent & event)
    }
 }
 
-void AudacityProject::OnAlignZero(wxCommandEvent & event)
+void AudacityProject::OnAlignZero(wxEvent & event)
 {
    TrackListIterator iter(mTracks);
    VTrack *t = iter.First();
@@ -1326,7 +1304,7 @@ void AudacityProject::OnAlignZero(wxCommandEvent & event)
    mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::OnAlign(wxCommandEvent & event)
+void AudacityProject::OnAlign(wxEvent & event)
 {
    double avg = 0.0;
    int num = 0;
@@ -1362,7 +1340,7 @@ void AudacityProject::OnAlign(wxCommandEvent & event)
    mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::OnNewWaveTrack(wxCommandEvent & event)
+void AudacityProject::OnNewWaveTrack(wxEvent & event)
 {
    WaveTrack *t = new WaveTrack(&mDirManager);
 
@@ -1377,7 +1355,7 @@ void AudacityProject::OnNewWaveTrack(wxCommandEvent & event)
    mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::OnNewLabelTrack(wxCommandEvent & event)
+void AudacityProject::OnNewLabelTrack(wxEvent & event)
 {
    LabelTrack *t = new LabelTrack(&mDirManager);
 
@@ -1392,7 +1370,7 @@ void AudacityProject::OnNewLabelTrack(wxCommandEvent & event)
    mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::OnRemoveTracks(wxCommandEvent & event)
+void AudacityProject::OnRemoveTracks(wxEvent & event)
 {
    TrackListIterator iter(mTracks);
    VTrack *t = iter.First();
@@ -1413,28 +1391,28 @@ void AudacityProject::OnRemoveTracks(wxCommandEvent & event)
 // Help Menu
 //
 
-void AudacityProject::OnAbout(wxCommandEvent & event)
+void AudacityProject::OnAbout(wxEvent & event)
 {
    AboutDialog dlog(this);
    dlog.ShowModal();
 }
 
-void AudacityProject::OnHelp(wxCommandEvent & event)
+void AudacityProject::OnHelp(wxEvent & event)
 {
    ::ShowHelp(this);
 }
 
-void AudacityProject::OnHelpIndex(wxCommandEvent & event)
+void AudacityProject::OnHelpIndex(wxEvent & event)
 {
    ::ShowHelpIndex(this);
 }
 
-void AudacityProject::OnHelpSearch(wxCommandEvent & event)
+void AudacityProject::OnHelpSearch(wxEvent & event)
 {
    ::SearchHelp(this);
 }
 
-void AudacityProject::OnBenchmark(wxCommandEvent & event)
+void AudacityProject::OnBenchmark(wxEvent & event)
 {
    ::RunBenchmark(this);
 }
