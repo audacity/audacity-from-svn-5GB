@@ -119,7 +119,7 @@ value="http://audacity.sourceforge.net/list/invalid.php">
 
 <a href="http://audacityteam.org/">AudacityTeam.org</a>
 <br>
-<a href="http://lists.sourceforge.net/lists/listinfo/audacity-users>
+<a href="http://lists.sourceforge.net/lists/listinfo/audacity-users">
 <?php print $usersListStr; ?>
 </a>
 <br>
