@@ -521,7 +521,7 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
 #else
 
    PaDeviceID captureDevice, playbackDevice;
-   PaSampleFormat paCaptureFormat;
+   PaSampleFormat paCaptureFormat = 0;
 
    if( numPlaybackChannels > 0 )
    {
