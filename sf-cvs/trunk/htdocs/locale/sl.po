@@ -14,6 +14,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: download/windows.php:18
+#, fuzzy, php-format
+msgid ""
+"<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest "
+"version of the free Audacity audio editor."
+msgstr ""
+
 #: about/credits.php:10 main.inc.php:24
 msgid "Credits"
 msgstr "Zasluge"
@@ -1322,7 +1329,7 @@ msgstr ""
 #. original string.)
 #: download/windows.php:28 download/windows.php:29
 msgid "localized_downloads_windows"
-msgstr "lokalizirani_prenosi_windows"
+msgstr ""
 
 #: download/windows.php:41
 msgid ""
@@ -2567,7 +2574,7 @@ msgstr ""
 #. this string.  (Or make the translation identical to the original string.)
 #: help/tutorials.php:22 help/tutorials.php:23
 msgid "localized_tutorials"
-msgstr "prevedeni_tutoriali"
+msgstr ""
 
 #: help/tutorials.php:27
 msgid "Audacity 1.2 Tutorial by Dan Eliot"

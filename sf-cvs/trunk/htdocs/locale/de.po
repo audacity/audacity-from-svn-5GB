@@ -30,6 +30,13 @@ msgstr ""
 "Hier sind einige der Personen die Audacity <a href=\"../community/\">unterstützt</a> haben.</p>  \n"
 "</p>Wenn Sie Fragen oder Feedback zu Audacity haben <a href=\"../contact/\">kontaktieren</a> Sie uns oder besuchen das <a href=\"http://audacity.fuchsi.de\">deutschsprachige Audacity Forum</a>."
 
+#: download/windows.php:18
+#, fuzzy, php-format
+msgid ""
+"<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest "
+"version of the free Audacity audio editor."
+msgstr ""
+
 #: about/credits.php:18
 msgid "Lead Developers"
 msgstr "Führende Entwickler"
