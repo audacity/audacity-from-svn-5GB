@@ -16,18 +16,11 @@
 #include <wx/utils.h>
 #include <wx/dirdlg.h>
 #include <wx/sizer.h>
+#include <wx/log.h>
 
 #include "../Prefs.h"
 #include "../DiskFunctions.h"
 #include "DirectoriesPrefs.h"
-
-enum {
-   SetID = 1000
-};
-
-BEGIN_EVENT_TABLE(DirectoriesPrefs, wxPanel)
-    EVT_BUTTON(SetID, DirectoriesPrefs::SetTempDir)
-END_EVENT_TABLE()
 
 DirectoriesPrefs::DirectoriesPrefs(wxWindow * parent):
 PrefsPanel(parent)
@@ -42,7 +35,7 @@ PrefsPanel(parent)
       wxStaticBoxSizer *tempDirSizer = new wxStaticBoxSizer(
          new wxStaticBox(this, -1, "Temp. Directory"), wxVERTICAL );
 
-      wxFlexGridSizer *tempDirGridSizer = new wxFlexGridSizer( 2, 0, 0, 0 );
+      wxFlexGridSizer *tempDirGridSizer = new wxFlexGridSizer( 0, 2, 0, 0 );
 
       mTempDirLabel = new wxStaticText(
          this, -1, "Location:", wxDefaultPosition,
@@ -78,40 +71,30 @@ PrefsPanel(parent)
 
 }
 
-void DirectoriesPrefs::SetTempDir(wxCommandEvent & event)
-{
-   wxDirDialog dialog(this,
-                      "Select Temporary Directory", mTempDir);
 
-   if (dialog.ShowModal() == wxID_CANCEL)
-      return;
-
-   mTempDir = dialog.GetPath();
-
-   /* TODO: make sure directory is writable */
-
-   mTempDirText->SetLabel(mTempDir);
-   mFreeSpace->
-       SetLabel(FormatSize(GetFreeDiskSpace((char *) (const char *) mTempDir)));
-}
-
-
-wxString DirectoriesPrefs::FormatSize(long size)
+wxString DirectoriesPrefs::FormatSize(wxLongLong size)
 {
    wxString sizeStr;
+
+   /* wxLongLong contains no built-in conversion to double */
+   double dSize = size.GetHi() * 4294967296;  // 2 ^ 32
+   dSize += size.GetLo();
 
    if (size == -1L)
       sizeStr = "Unable to determine";
    else {
       /* make it look nice, by formatting into k, MB, etc */
       if (size < 1024)
-         sizeStr.sprintf("%d bytes", size);
-      else if (size < 1024 * 1024)
-         sizeStr.sprintf("%.2fkB", (float)size / 1024);
-      else if (size < 1024 * 1024 * 1024)
-         sizeStr.sprintf("%.2fMB", (float)size / (1024 * 1024));
-      else
-         sizeStr.sprintf("%.2fGB", (float)size / (1024 * 1024 * 1024));
+         sizeStr.sprintf("%d bytes", size.GetLo());
+      else if (size < 1024 * 1024) {
+         sizeStr.sprintf("%.1f kB", dSize / 1024);
+      }
+      else if (size < 1024 * 1024 * 1024) {
+         sizeStr.sprintf("%.1f MB", dSize / (1024 * 1024));
+      }
+      else {
+         sizeStr.sprintf("%.1f GB", dSize / (1024 * 1024 * 1024));
+      }
    }
 
    return sizeStr;
@@ -120,11 +103,40 @@ wxString DirectoriesPrefs::FormatSize(long size)
 
 bool DirectoriesPrefs::Apply()
 {
+   
+   mTempDir = mTempDirText->GetValue();
+
+   if(!wxDirExists(mTempDir)) {
+      int ans = wxMessageBox("Directory " + mTempDir + " does not exist. Create it?", "New Temporary Directory",
+         wxOK|wxCANCEL|wxCENTRE|wxICON_EXCLAMATION);
+
+      if(ans == wxOK) {
+         if(!wxMkdir(mTempDir, 0600)) {
+            /* wxWindows throws up a decent looking dialog */
+            return false;
+         }
+      } 
+      else {
+         return false;
+      }
+   }
+   else {
+      /* If the directory already exists, make sure it is writable */
+      wxLogNull logNo;
+      wxString tempDir = mTempDir + wxFILE_SEP_PATH + "canicreate";
+      if(!wxMkdir(tempDir)) {
+         wxMessageBox("Directory " + mTempDir + " is not writable", "Error", wxOK|wxICON_ERROR);
+         return false;
+      }
+      wxRmdir(tempDir);
+   }
+
    gPrefs->Write("/Directories/TempDir", mTempDir);
 
    if (mTempDir != mOldTempDir)
       wxMessageBox
-          ("Changes to temporary directory will not take effect until Audacity is restarted");
+          ("Changes to temporary directory will not take effect until Audacity is restarted",
+              "Temp Directory Update", wxOK|wxCENTRE|wxICON_INFORMATION);
 
    return true;
 }

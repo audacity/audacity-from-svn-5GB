@@ -35,12 +35,16 @@ class MP3Exporter {
       virtual int GetQualityVariance() = 0;
       
       /* These global settings keep state over the life of the object */
+      virtual int GetConfigurationCaps() = 0;
       virtual void SetBitrate(int rate) = 0;
       virtual int GetBitrate() = 0;
       virtual void SetQuality(int quality) = 0;
       virtual int GetQuality() = 0;
       virtual ~MP3Exporter() { };
 };
+
+#define MP3CONFIG_BITRATE 0x00000001
+#define MP3CONFIG_QUALITY 0x00000002
 
 extern MP3Exporter *gMP3Exporter;
         

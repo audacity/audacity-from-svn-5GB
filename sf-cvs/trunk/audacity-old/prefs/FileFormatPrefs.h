@@ -14,6 +14,7 @@
 #include <wx/window.h>
 #include <wx/statbox.h>
 #include <wx/radiobut.h>
+#include <wx/choice.h>
 
 #include "PrefsPanel.h"
 
@@ -27,6 +28,7 @@ class FileFormatPrefs:public PrefsPanel {
  private:
    wxRadioButton *mCopyOrEdit[2];
    int mNumFormats;
+   wxChoice *mMP3Bitrate;
 
    // leave room for expansion. pointers are cheap
    wxRadioButton *mDefaultExportFormats[20];

@@ -52,7 +52,7 @@ DirManager::DirManager()
       wxString tempPref = gPrefs->Read("/Directories/TempDir", temp);
       if (tempPref == "")
          tempPref = temp;
-      #ifndef __WXMAC__         
+      #ifdef __WXGTK__         
       if (tempPref.GetChar(0) != '/')
          tempPref = temp;
       #endif
@@ -74,7 +74,7 @@ DirManager::DirManager()
 
    // Make sure there is plenty of space for temp files
 
-   long freeSpace = GetFreeDiskSpace((char *) (const char *) temp);
+   wxLongLong freeSpace = GetFreeDiskSpace((char *) (const char *) temp);
    if (freeSpace >= 0) {
       if (freeSpace < 1048576) {
          // TODO: allow user to select different temporary volume.

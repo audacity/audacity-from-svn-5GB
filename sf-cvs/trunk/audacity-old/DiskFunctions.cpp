@@ -20,12 +20,13 @@
 
 #include <iostream.h>
 #include <stdio.h>              //the std I/O stuff
+#include <wx/longlong.h>
 
 //GetFreeSpace is an obsoleted Win-16 API name and cannot be used.
 #ifdef WIN32
-long GetFreeDiskSpace(TCHAR * path);
+wxLongLong GetFreeDiskSpace(TCHAR * path);
 #else
-long GetFreeDiskSpace(const char *path);
+wxLongLong GetFreeDiskSpace(const char *path);
 #endif
 /**
   * <path> could be a drive letter, full path to a file or directory,
@@ -40,7 +41,7 @@ long GetFreeDiskSpace(const char *path);
   **/
 
 #ifdef WIN32
-long GetFreeDiskSpace(TCHAR * path)
+wxLongLong GetFreeDiskSpace(TCHAR * path)
 {
    DWORD dwSectorsPerCluster = 0;
    DWORD dwBytesPerSector = 0;
@@ -80,14 +81,35 @@ long GetFreeDiskSpace(TCHAR * path)
    * a little math to add up the free bytes.
    **/
 
-   if (GetDiskFreeSpace
-       (pszPath, &dwSectorsPerCluster, &dwBytesPerSector,
-        &dwNumberOfFreeClusters, &dwTotalNumberOfClusters)) {
-      return (dwNumberOfFreeClusters * dwSectorsPerCluster *
-              dwBytesPerSector);
-   } else {
-      //normally you would call GetLastError here to parse the OS error
-      return -1;
+  /* There are two WIN32 API calls that report free disk space: GetDiskFreeSpace() and
+   * GetDiskFreeSpaceEx(). The first is supported on all Win32 machines, but doesn't work
+   * on driver >2GB. The latter does, but is only available on Win95OSR2 and up (which
+   * is practically everything anyway... we support both by detecting whether
+   * GetDiskFreeSpaceEx() is available at runtime */
+
+   if(GetProcAddress(GetModuleHandle("kernel32.dll"), "GetDiskFreeSpaceExA")) {
+      /* GetDiskFreeSpaceEx() is supported */
+      ULARGE_INTEGER bytesFreeToCaller;
+      ULARGE_INTEGER bytesTotal;
+      ULARGE_INTEGER bytesFree;
+
+      if(!GetDiskFreeSpaceEx(path, &bytesFreeToCaller, &bytesTotal, &bytesFree))
+         return -1L;
+
+      return bytesFreeToCaller.QuadPart;
+
+   }
+   else {
+
+      if (GetDiskFreeSpace
+          (pszPath, &dwSectorsPerCluster, &dwBytesPerSector,
+           &dwNumberOfFreeClusters, &dwTotalNumberOfClusters)) {
+         return (dwNumberOfFreeClusters * dwSectorsPerCluster *
+                 dwBytesPerSector);
+      } else {
+         //normally you would call GetLastError here to parse the OS error
+         return -1;
+      }
    }
 }
 
@@ -101,7 +123,7 @@ void my_c2pstr(char *str)
    str[0] = (len > 255 ? 255 : (char) len);
 }
 
-long GetFreeDiskSpace(const char *path)
+wxLongLong GetFreeDiskSpace(const char *path)
 {
    char *str = new char[strlen(path) + 1];
    strcpy(str, path);
@@ -144,7 +166,7 @@ long GetFreeDiskSpace(const char *path)
 }
 #elif defined(__WXGTK__)
 #ifdef linux
-long GetFreeDiskSpace(const char *path)
+wxLongLong GetFreeDiskSpace(const char *path)
 {
    struct statfs theStats;
    if (statfs(path, &theStats) != 0)
@@ -157,13 +179,13 @@ long GetFreeDiskSpace(const char *path)
     * size, but I'd rather not create a dependency on glibc.
     *
     * f_bavail is "free blocks available to non-superuser." */
-   return theStats.f_bavail * theStats.f_bsize;
+   return wxLongLong(theStats.f_bavail) * theStats.f_bsize;
 }
 #else
 #warning GetFreeDiskSpace has not been implemented on this system...
-long GetFreeDiskSpace(const char *path)
+wxLongLong GetFreeDiskSpace(const char *path)
 {
-   return -1L;
+   return -1;
 }
 #endif
 #endif

@@ -115,15 +115,15 @@ PrefsPanel(parent)
       {
          wxBoxSizer *pButtonsSizer = new wxBoxSizer(wxHORIZONTAL);
 
-         mPlaybackDeviceTest = new wxButton(this, PlaybackTestID, "Test");
+         //mPlaybackDeviceTest = new wxButton(this, PlaybackTestID, "Test");
          mPlaybackDeviceDefault = new wxButton(this,
                                                PlaybackDefaultID,
                                                "Default");
 
-         pButtonsSizer->Add(
+         /* pButtonsSizer->Add(
             mPlaybackDeviceTest, 0,
             wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT,
-            GENERIC_CONTROL_BORDER);
+            GENERIC_CONTROL_BORDER); */
 
          pButtonsSizer->Add(
             mPlaybackDeviceDefault, 0,
@@ -165,16 +165,16 @@ PrefsPanel(parent)
       {
          wxBoxSizer *rButtonsSizer = new wxBoxSizer(wxHORIZONTAL);
 
-         mRecordingDeviceTest = new wxButton(this,
-                                             RecordingTestID, "Test");
+         //mRecordingDeviceTest = new wxButton(this,
+         //                                    RecordingTestID, "Test");
          mRecordingDeviceDefault = new wxButton(this,
                                                 RecordingDefaultID,
                                                 "Default");
 
-         rButtonsSizer->Add(
+         /* rButtonsSizer->Add(
             mRecordingDeviceTest, 0,
             wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT,
-            GENERIC_CONTROL_BORDER);
+            GENERIC_CONTROL_BORDER); */
 
          rButtonsSizer->Add(mRecordingDeviceDefault, 0,
             wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT,
@@ -328,6 +328,7 @@ PrefsPanel(parent)
 
 
       {
+         /* Lets hide these until they actually do something 
          wxBoxSizer *pButtonsSizer = new wxBoxSizer(wxHORIZONTAL);
 
          mPlaybackDeviceTest = new wxButton(this, PlaybackTestID, "Test");
@@ -346,7 +347,7 @@ PrefsPanel(parent)
             GENERIC_CONTROL_BORDER);
 
          playbackSizer->Add(pButtonsSizer, 0,
-            wxALIGN_RIGHT|wxLEFT|wxRIGHT, GENERIC_CONTROL_BORDER);
+            wxALIGN_RIGHT|wxLEFT|wxRIGHT, GENERIC_CONTROL_BORDER); */
       }
 
       topSizer->Add(playbackSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
@@ -393,6 +394,7 @@ PrefsPanel(parent)
       }
 
       {
+         /* Lets hide these until they actually do something
          wxBoxSizer *rButtonsSizer = new wxBoxSizer(wxHORIZONTAL);
 
          mRecordingDeviceTest = new wxButton(this,
@@ -412,6 +414,7 @@ PrefsPanel(parent)
 
          recordingSizer->Add(rButtonsSizer, 0,
             wxALIGN_RIGHT|wxLEFT|wxRIGHT, GENERIC_CONTROL_BORDER);
+         */
       }
 
       topSizer->Add(recordingSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);

@@ -11,8 +11,10 @@
 
 // The free-space routine returns -1 if it can't figure out the
 // answer for any reason
+#include <wx/longlong.h>
+
 #ifdef __WXMSW__
-long GetFreeDiskSpace(TCHAR * path);
+wxLongLong GetFreeDiskSpace(TCHAR * path);
 #else
-long GetFreeDiskSpace(const char *path);
+wxLongLong GetFreeDiskSpace(const char *path);
 #endif

@@ -16,6 +16,7 @@
 #include <wx/button.h>
 #include <wx/string.h>
 #include <wx/textctrl.h>
+#include <wx/longlong.h>
 
 #include "PrefsPanel.h"
 
@@ -28,7 +29,7 @@ class DirectoriesPrefs:public PrefsPanel {
    void SetTempDir(wxCommandEvent & event);
 
  private:
-    wxString FormatSize(long size);
+   wxString FormatSize(wxLongLong size);
    wxStaticBox *mEnclosingBox;
 
    wxStaticText *mTempDirLabel;
@@ -38,9 +39,6 @@ class DirectoriesPrefs:public PrefsPanel {
    
    wxString      mOldTempDir;
    wxString      mTempDir;
-
- public:
-    DECLARE_EVENT_TABLE()
 
 };
 

@@ -48,6 +48,7 @@
 #include "Mix.h"
 #include "WaveTrack.h"
 #include "ExportMP3.h"
+#include "Prefs.h"
 
 #ifdef __WXGTK__
 
@@ -484,6 +485,7 @@ private:
    HBE_STREAM mStreamHandle;
    bool mLibraryLoaded, mEncoding,mStereo;
    unsigned long mOutBufferSize, mInSampleNum;
+   int mDefaultRate;
 
 
    BEINITSTREAM beInitStream;
@@ -524,6 +526,8 @@ public:
       mConf.format.mp3.bCRC = true;
       mConf.format.mp3.bOriginal = false;
       mConf.format.mp3.bPrivate = false;
+      
+      mDefaultRate = 128;
    }
 
    bool LoadLibrary(wxString fileName) {
@@ -558,7 +562,16 @@ public:
 
    bool ValidLibraryLoaded() { return mLibraryLoaded; }
 
-   const char *GetLibraryVersion() { return NULL; }
+   const char *GetLibraryVersion() {
+      BE_VERSION ver;
+
+      if(!mLibraryLoaded)
+         return NULL;
+
+      beVersion(&ver);
+
+      return wxString::Format("LAME v%d.%d", ver.byMajorVersion, ver.byMinorVersion).c_str();
+   }
 
    int InitializeStream(int channels, int sampleRate) {
 
@@ -571,17 +584,21 @@ public:
       int modes[] = { 0, BE_MP3_MODE_MONO, BE_MP3_MODE_STEREO };
       mConf.format.mp3.byMode = modes[channels];
       mConf.format.mp3.dwSampleRate = sampleRate;
+      mConf.format.mp3.wBitrate = mDefaultRate;
 
       beInitStream(&mConf, &mInSampleNum, &mOutBufferSize, &mStreamHandle);
 
-      if(channels == 2)
-		  mStereo = true;
-      else
-		  mStereo = false;
-
       mEncoding = true;
 
-      return(mInSampleNum / 2); /* convert samples_total into samples_per_channel */
+      if(channels == 2) {
+         mStereo = true;
+         return(mInSampleNum / 2); /* convert samples_total into samples_per_channel */
+      }
+      else {
+         mStereo = false;
+         return (mInSampleNum);
+      }
+
    }
 
    int GetOutBufferSize() {
@@ -628,9 +645,19 @@ public:
    }
 
    int GetQualityVariance() { return -1; }
+
+   int GetConfigurationCaps() {
+      return MP3CONFIG_BITRATE;
+   }
    
-   void SetBitrate(int rate) { }
-   int GetBitrate() { return -1; }
+   void SetBitrate(int rate) { 
+      mDefaultRate = rate;
+   }
+
+   int GetBitrate() {
+      return mDefaultRate;
+   }
+
    void SetQuality(int quality) { }
    int GetQuality() { return -1; }
 
@@ -658,6 +685,10 @@ bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
       wxMessageBox("Unable to open target file for writing");
       return false;
    }
+
+   long bitrate = gPrefs->Read("/FileFormats/MP3Bitrate", 128);
+   gMP3Exporter->SetBitrate(bitrate);
+
 
    int iRate = int (rate + 0.5);
 
