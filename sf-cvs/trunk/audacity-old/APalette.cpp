@@ -29,6 +29,8 @@
 #include <wx/image.h>
 #endif
 
+#include <math.h>
+
 #include "AButton.h"
 #include "ASlider.h"
 #include "APalette.h"
@@ -270,7 +272,16 @@ void APalette::OnRecord()
 
 float APalette::GetSoundVol()
 {
-  return mVolume->Get() / 100.0;
+  int v = mVolume->Get();
+  float vol;
+
+  if (v == 0)
+	vol = 0.0;
+
+  else
+	vol = (pow(2.0, (v/10.0)) / 256.0);
+
+  return vol;
 }
 
 void APalette::OnTool(wxCommandEvent& evt)
