@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.2.0-pre2
+Version 1.2.0-pre3
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -245,15 +245,8 @@ Known issues/problems:
     accented characters work.  Only files inside of folders
     with accented characters in their names will cause problems.
 
-  * Windows only: Audacity is incompatible with some professional
-    sound cards and may crash if one of these cards is the default
-    when you open Audacity.  As a workaround, make a different
-    sound card your default when using Audacity, but please let
-    us know if this affects you so that we can track down and
-    solve the problem.
-
-    Also note that the Windows installer will replace 1.0.0 installations, 
-    but not the 1.1.x beta installations.
+  * Windows only:  Also note that the Windows installer will replace
+    1.0.0 installations, but not the 1.1.x beta installations.
 
 -------------------------------------------------------------
 
@@ -261,6 +254,17 @@ Changes in 1.2.0-pre3:
 
   * Fixed bug where Export is grayed out when nothing is
     selected.
+
+  * Fixed crash caused by opening Audacity on a computer with
+    a high-end sound card with no mixer support.
+
+  * Fixed crash in Import Raw
+
+  * Fixed New Stereo Track
+
+  * Cosmetic fixes for Mac OS X
+
+  * Support for the VST Enabler on Windows added
 
 Changes in 1.2.0-pre2:
 
