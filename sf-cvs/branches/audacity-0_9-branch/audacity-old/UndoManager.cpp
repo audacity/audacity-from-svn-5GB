@@ -16,6 +16,7 @@
 UndoManager::UndoManager()
 {
    current = -1;
+   saved = -1;
 }
 
 UndoManager::~UndoManager()
@@ -37,6 +38,7 @@ void UndoManager::ClearStates()
    }
 
    current = -1;
+   saved -= 1;
 }
 
 bool UndoManager::UndoAvailable()
@@ -81,6 +83,9 @@ void UndoManager::PushState(TrackList * l, double sel0, double sel1)
 
    stack.Add(push);
    current++;
+
+   if (saved >= current)
+      saved = -1;
 }
 
 TrackList *UndoManager::Undo(double *sel0, double *sel1)
@@ -105,6 +110,16 @@ TrackList *UndoManager::Redo(double *sel0, double *sel1)
    *sel1 = stack[current]->sel1;
 
    return stack[current]->tracks;
+}
+
+bool UndoManager::UnsavedChanges()
+{
+   return (saved != current);
+}
+
+void UndoManager::StateSaved()
+{
+   saved = current;
 }
 
 void UndoManager::Debug()

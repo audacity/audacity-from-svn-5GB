@@ -54,10 +54,14 @@ class UndoManager {
    bool UndoAvailable();
    bool RedoAvailable();
 
+   bool UnsavedChanges();
+   void StateSaved();
+
    void Debug();
 
  private:
    int current;
+   int saved;
    UndoStack stack;
 };
 
