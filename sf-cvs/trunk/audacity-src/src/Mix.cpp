@@ -231,7 +231,7 @@ void Mixer::MixLeft(WaveTrack * src, double t0, double t1)
    for (int c = 0; c < mNumChannels; c++)
       flags[c] = (c == 0);
    Mix(flags, src, t0, t1);
-   delete flags;
+   delete[] flags;
 }
 
 void Mixer::MixRight(WaveTrack * src, double t0, double t1)
@@ -240,7 +240,7 @@ void Mixer::MixRight(WaveTrack * src, double t0, double t1)
    for (int c = 0; c < mNumChannels; c++)
       flags[c] = (c == 1);
    Mix(flags, src, t0, t1);
-   delete flags;
+   delete[] flags;
 }
 
 void Mixer::MixMono(WaveTrack * src, double t0, double t1)
@@ -249,7 +249,7 @@ void Mixer::MixMono(WaveTrack * src, double t0, double t1)
    for (int c = 0; c < mNumChannels; c++)
       flags[c] = 1;
    Mix(flags, src, t0, t1);
-   delete flags;
+   delete[] flags;
 }
 
 void Mixer::MixDiffRates(int *channelFlags, WaveTrack * src,
