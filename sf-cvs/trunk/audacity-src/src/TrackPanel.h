@@ -241,6 +241,13 @@ class TrackPanel:public wxWindow {
    int mZoomStart;
    int mZoomEnd;
 
+   float mDrawStart;
+   float mDrawEnd;
+
+   int mDrawMouseXStart;
+   int mDrawMouseStart;
+   int mDrawMouseEnd;
+
    double PositionToTime(int mouseXCoordinate,
                          int trackLeftEdge) const;
    int TimeToPosition(double time,
@@ -269,6 +276,8 @@ class TrackPanel:public wxWindow {
    
    // AS: MAGIC NUMBER: I'm not sure why 3.
    bool IsDragZooming() const { return abs(mZoomEnd - mZoomStart) > 3;}
+
+   bool IsDragDrawing() const { return abs(mDrawMouseEnd - mDrawMouseStart) > 3;}
 
    wxCursor *mArrowCursor;
    wxCursor *mPencilCursor;

@@ -1069,28 +1069,89 @@ void TrackPanel::DoZoomInOut(wxMouseEvent & event, int trackLeftEdge)
 // BG: This handles drawing
 void TrackPanel::HandleDraw(wxMouseEvent & event)
 {
-   if (event.ButtonDown(1) || event.ButtonDClick(1)) {
+   if(event.ButtonDown(1) || event.ButtonDClick(1) || event.Dragging() || event.ButtonUp()) {
+
       wxRect r;
       int dummy;
 
+      //BG: Get the track the mouse is over
       Track *selectedTrack = FindTrack(event.m_x, event.m_y, false, &r, &dummy);
 
       if(selectedTrack == NULL)
          return;
 
+      Sequence *seq = ((WaveTrack *)selectedTrack)->GetSequence();
+
       double rate = ((WaveTrack *)selectedTrack)->GetRate();
-      bool showPoints = (mViewInfo->zoom / rate > 3.0);
 
-      if(((WaveTrack *)selectedTrack)->GetDisplay() != WaveTrack::WaveformDisplay)
-      {
-         wxMessageBox("Draw currently only works with waveforms.", "Notice");
-         return;
-      }
+      if (event.ButtonDown(1) || event.ButtonDClick(1)) {
 
-      if(!showPoints)
-      {
-         wxMessageBox("You are not zoomed in enough. Zoom in until you can see the individual samples.", "Notice");
-         return;
+         if(((WaveTrack *)selectedTrack)->GetDisplay() != WaveTrack::WaveformDisplay)
+         {
+            wxMessageBox("Draw currently only works with waveforms.", "Notice");
+            return;
+         }
+
+         bool showPoints = (mViewInfo->zoom / rate > 3.0);
+
+         if(!showPoints)
+         {
+            wxMessageBox("You are not zoomed in enough. Zoom in until you can see the individual samples.", "Notice");
+            return;
+         }
+
+         double t0 = PositionToTime(event.m_x, GetLeftOffset());
+
+         sampleCount s0 = (sampleCount) (double)(t0 * rate + 0.5);
+
+         seq->Get((samplePtr)&mDrawStart, floatSample, s0, 1);
+         mDrawEnd = mDrawStart;
+
+         mDrawMouseXStart = event.m_x;
+         mDrawMouseStart = event.m_y;
+         mDrawMouseEnd = mDrawMouseStart;
+
+      } else if (event.Dragging()) {
+
+         //BG: FIXME: NEED TO MAKE MOUSE POSITION REALITIVE TO THE TOP OF THE TRACK, NOT THE TOP OF THE DISPLAY
+         float yval = -event.m_y + (selectedTrack->GetHeight()/2);
+         float sign = (event.m_y >= 0 ? 1 : -1);
+         mDrawEnd = ((float)(yval - (sign * 0.5)) / (float)(selectedTrack->GetHeight()/2));
+
+         mDrawMouseEnd = event.m_y;
+
+         if (IsDragDrawing()) {
+
+            double t0 = PositionToTime(mDrawMouseXStart, GetLeftOffset());
+
+            sampleCount s0 = (sampleCount) (double)(t0 * rate + 0.5);
+
+            seq->Set((samplePtr)&mDrawEnd, floatSample, s0, 1);
+
+            Refresh(false);
+
+         }
+
+      } else if (event.ButtonUp()) {
+
+         double t0 = PositionToTime(mDrawMouseXStart, GetLeftOffset());
+
+         sampleCount s0 = (sampleCount) (double)(t0 * rate + 0.5);
+
+         if (IsDragDrawing())
+         {
+            seq->Set((samplePtr)&mDrawEnd, floatSample, s0, 1);
+            MakeParentPushState(wxString::Format(_("Moved Sample")));
+         }
+         else
+         {
+            seq->Set((samplePtr)&mDrawStart, floatSample, s0, 1);
+         }
+
+         Refresh(false);
+
+         mDrawMouseStart = mDrawMouseEnd = mDrawMouseXStart = 0;
+
       }
    }
 }
