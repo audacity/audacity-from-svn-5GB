@@ -51,7 +51,7 @@ PrefsPanel(parent)
       copyEditPos = 0;
 
    long mp3Bitrate = gPrefs->Read("/FileFormats/MP3Bitrate", 128);
-   wxString mp3BitrateString = wxString::Format("%d", mp3Bitrate);
+   wxString mp3BitrateString = wxString::Format("%ld", mp3Bitrate);
 
    mFormat = ReadExportFormatPref();
 

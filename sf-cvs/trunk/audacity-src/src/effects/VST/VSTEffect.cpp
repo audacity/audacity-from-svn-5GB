@@ -328,12 +328,13 @@ VSTEffectDialog::VSTEffectDialog(wxWindow * parent,
 
       y += 35;
    }
-
+#if UNUSED /* ??? */
    wxButton *ok =
        new wxButton(this, wxID_OK, "OK", wxPoint(110, y), wxSize(80, 30));
    wxButton *cancel =
        new wxButton(this, wxID_CANCEL, "Cancel", wxPoint(210, y),
                     wxSize(80, 30));
+#endif
    y += 40;
 
    wxSize size;

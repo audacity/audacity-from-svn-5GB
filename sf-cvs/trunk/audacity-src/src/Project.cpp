@@ -1027,9 +1027,9 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
    hotspot.x = event.m_x;
    hotspot.y = event.m_y;
 
+#ifndef __WXMAC__
    wxPoint mouse = ClientToScreen(hotspot);
 
-#ifndef __WXMAC__
    //See if we need to drag a toolbar off the window
    if (event.ButtonDown()
        && !mDrag && event.m_x < 10 && event.m_y < mTotalToolBarHeight) {

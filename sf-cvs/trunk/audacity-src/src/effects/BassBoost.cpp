@@ -229,7 +229,7 @@ void BassBoostDialog::OnFreqSlider(wxCommandEvent & event)
    wxString str;
    long freq = GetFreqSlider()->GetValue();
    freq = ((freq + 5) / 10) * 10;       // round to nearest multiple of 10
-   str.Printf("%d", freq);
+   str.Printf("%ld", freq);
    GetFreqText()->SetValue(str);
 }
 

@@ -270,8 +270,8 @@ bool LabelTrack::IsSelected() const
 void LabelTrack::Export(wxTextFile & f)
 {
    for (int i = 0; i < (int)mLabels.Count(); i++) {
-      f.AddLine(wxString::Format("%lf\t%s",
-                                 mLabels[i]->t,
+      f.AddLine(wxString::Format("%f\t%s",
+                                 (double)mLabels[i]->t,
                                  (const char *) (mLabels[i]->title)));
    }
 }

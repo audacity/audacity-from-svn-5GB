@@ -286,7 +286,7 @@ void PhaserDialog::OnFeedbackSlider(wxCommandEvent & event)
       fb = ((fb + 5) / 10) * 10;
    else
       fb = ((fb - 5) / 10) * 10;
-   str.Printf("%d", fb);
+   str.Printf("%ld", fb);
    GetFeedbackText()->SetValue(str);
 }
 
@@ -294,7 +294,7 @@ void PhaserDialog::OnDepthSlider(wxCommandEvent & event)
 {
    wxString str;
    long depth = GetDepthSlider()->GetValue();
-   str.Printf("%d", depth);
+   str.Printf("%ld", depth);
    GetDepthText()->SetValue(str);
 }
 
@@ -303,7 +303,7 @@ void PhaserDialog::OnPhaseSlider(wxCommandEvent & event)
    wxString str;
    long phase = GetPhaseSlider()->GetValue();
    phase = ((phase + 5) / 10) * 10;     // round to nearest multiple of 10
-   str.Printf("%d", phase);
+   str.Printf("%ld", phase);
    GetPhaseText()->SetValue(str);
 }
 
