@@ -1,3 +1,10 @@
+Version 1.0.0 (2002-08-16)
+  * Final release for 1.0.0.
+
+Version 1.0.0rc6 (2002-08-14)
+  * Release candidate 6 for the 1.0.0 series.
+  * MacOS9 fixes.
+
 Version 1.0.0rc5 (2002-08-10)
   * Release candidate 5 for the 1.0.0 series.
   * Changed the definition of sf_count_t which was causing problems when 

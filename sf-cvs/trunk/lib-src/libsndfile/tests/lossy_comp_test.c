@@ -183,7 +183,7 @@ main (int argc, char *argv[])
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "au_g721"))
-	{	printf ("**** Error bound should be 0.06 ****\n") ;
+	{	printf ("**** Fix this later : error bound should be 0.06 ****\n") ;
 		lcomp_test_short	("g721.au", SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_G721_32, 1, 0.7) ;
 		lcomp_test_int		("g721.au", SF_ENDIAN_BIG    | SF_FORMAT_AU | SF_FORMAT_G721_32, 1, 0.7) ;
 		lcomp_test_float	("g721.au", SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_G721_32, 1, 0.7) ;
@@ -198,7 +198,7 @@ main (int argc, char *argv[])
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "au_g723"))
-	{	printf ("**** Error bound should be 0.16 ****\n") ;
+	{	printf ("**** Fix this later : error bound should be 0.16 ****\n") ;
 		lcomp_test_short	("g723_24.au", SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_G723_24, 1, 0.7) ;
 		lcomp_test_int		("g723_24.au", SF_ENDIAN_BIG    | SF_FORMAT_AU | SF_FORMAT_G723_24, 1, 0.7) ;
 		lcomp_test_float	("g723_24.au", SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_G723_24, 1, 0.7) ;

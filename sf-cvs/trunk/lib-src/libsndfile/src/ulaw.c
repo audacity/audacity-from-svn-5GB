@@ -230,7 +230,7 @@ ulaw_write_f2ulaw	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	float	normfact ;
 
-	normfact = (psf->norm_float == SF_TRUE) ? ((float) 0x8000) : 1.0 ;
+	normfact = (psf->norm_float == SF_TRUE) ? (1.0 * 0x7FFF) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / sizeof (char) ;
 	
@@ -257,7 +257,7 @@ ulaw_write_d2ulaw	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	double	normfact ;
 	
-	normfact = (psf->norm_double) ? ((double) 0x8000) : 1.0 ;
+	normfact = (psf->norm_double) ? (1.0 * 0x7FFF) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / sizeof (char) ;
 	

@@ -311,6 +311,13 @@ wav_w64_format_str (int k)
 			return "WAVE_FORMAT_OLISBC" ;
 		case WAVE_FORMAT_OLIOPR :
 			return "WAVE_FORMAT_OLIOPR" ;
+
+		/* Couple of new ones. */
+		case WAVE_FORMAT_VOXWARE :
+			return "WAVE_FORMAT_VOXWARE" ;
+		case WAVE_FORMAT_INTERWAV_VSC112 :
+			return "WAVE_FORMAT_INTERWAV_VSC112" ;
+
 		case WAVE_FORMAT_EXTENSIBLE :
 			return "WAVE_FORMAT_EXTENSIBLE" ;
 		break ;

@@ -75,7 +75,9 @@ LINK32_OBJS= \
 	".\src\w64.obj" \
 	".\src\wav.obj" \
 	".\src\gsm610.obj" \
-	".\src\wav_w64.obj"
+	".\src\wav_w64.obj" \
+	".\src\dwd.obj" \
+	".\src\wve.obj"
 
 libsndfile.dll : $(LINK32_OBJS) ".\Win32\libsndfile.def"
     $(LINK32) $(DLL_LINK_FLAGS) /def:".\Win32\libsndfile.def" $(LINK32_OBJS)
@@ -352,6 +354,12 @@ CHECK: $(TEST_PROGS)
 
 ".\src\wav_w64.obj" : ".\src\wav_w64.c" 
     $(CPP) $(CFLAGS) /Fo".\src\wav_w64.obj" /c ".\src\wav_w64.c"
+
+".\src\dwd.obj" : ".\src\dwd.c" 
+    $(CPP) $(CFLAGS) /Fo".\src\dwd.obj" /c ".\src\dwd.c"
+
+".\src\wve.obj" : ".\src\wve.c" 
+    $(CPP) $(CFLAGS) /Fo".\src\wve.obj" /c ".\src\wve.c"
 
 #====================================================================
 # Object files for test programs.

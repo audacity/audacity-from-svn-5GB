@@ -199,12 +199,10 @@ aiff_open	(SF_PRIVATE *psf)
 
 	switch (psf->sf.format & SF_FORMAT_SUBMASK)
 	{	case SF_FORMAT_PCM_U8 :
-				psf->chars = SF_CHARS_UNSIGNED ;
 				error = pcm_init (psf) ;
 				break ;
 
 		case SF_FORMAT_PCM_S8 :
-				psf->chars = SF_CHARS_SIGNED ;
 				error = pcm_init (psf) ;
 				break ;
 

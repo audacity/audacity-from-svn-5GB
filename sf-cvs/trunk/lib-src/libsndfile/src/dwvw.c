@@ -627,7 +627,7 @@ dwvw_write_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 		return 0 ;
 	pdwvw = (DWVW_PRIVATE*) psf->fdata ;
 	
-	normfact = (psf->norm_float == SF_TRUE) ? ((float) 0x80000000) : 1.0 ;
+	normfact = (psf->norm_float == SF_TRUE) ? (1.0 * 0x7FFFFFFF) : 1.0 ;
 	
 	iptr = (int*) psf->buffer ;
 	bufferlen = SF_BUFFER_LEN / sizeof (short) ;
@@ -658,7 +658,7 @@ dwvw_write_d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 		return 0 ;
 	pdwvw = (DWVW_PRIVATE*) psf->fdata ;
 	
-	normfact = (psf->norm_double == SF_TRUE) ? ((double) 0x80000000) : 1.0 ;
+	normfact = (psf->norm_double == SF_TRUE) ? (1.0 * 0x7FFFFFFF) : 1.0 ;
 
 	iptr = (int*) psf->buffer ;
 	bufferlen = SF_BUFFER_LEN / sizeof (short) ;
