@@ -42,6 +42,7 @@ AudioIO::AudioIO()
    mMaxBuffers = 48;
    mInitialNumOutBuffers = 8;
    mFormat = floatSample;
+   mPaused = false;
 
    PaError err = Pa_Initialize();
 
@@ -64,11 +65,16 @@ int audacityAudioCallback(
 		unsigned long framesPerBuffer,
 		PaTimestamp outTime, void *userData )
 {
+ 
    int numOutChannels = gAudioIO->mNumOutChannels;
    int numInChannels = gAudioIO->mNumInChannels;
    int minIndex = 0, minID = 0;
    unsigned int i;
+
+
+
    
+
    //
    // Copy from our pool of output buffers to PortAudio's output buffer
    //
@@ -338,8 +344,18 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
    return Start();
 }
 
+void AudioIO::SetPaused(bool state)
+{
+   mPaused = state;
+}
+
+bool AudioIO::GetPaused(){
+   return mPaused;
+}
+
 void AudioIO::FillBuffers()
 {
+
    unsigned int numEmpty = 0;
    unsigned int i;
    

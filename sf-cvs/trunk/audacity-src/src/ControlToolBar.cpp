@@ -543,7 +543,7 @@ void ControlToolBar::OnRecord()
 
 void ControlToolBar::OnPause()
 {
-   //Do stuff here
+ 
    if(mPaused)
       {
          mPaused=false;
@@ -552,8 +552,9 @@ void ControlToolBar::OnPause()
    else
       {       
          mPaused=true;
-
       }
+   
+   gAudioIO->SetPaused(mPaused);
 }
 
 void ControlToolBar::OnRewind()
