@@ -994,7 +994,7 @@ PaError PaHost_OpenStream( internalPortAudioStream   *past )
 		}
 		
 	/* Install our callback function pointer straight into the sound channel structure */
-		pahsc->pahsc_OutputCompletionProc = NewSndCallBackProc (PaMac_OutputCompletionProc);
+		pahsc->pahsc_OutputCompletionProc = NewSndCallBackUPP (PaMac_OutputCompletionProc);
 		pahsc->pahsc_Channel->callBack = pahsc->pahsc_OutputCompletionProc;
 	    	
 		pahsc->pahsc_BytesPerOutputHostBuffer = pahsc->pahsc_FramesPerHostBuffer * past->past_NumOutputChannels * sizeof(int16);
@@ -1184,9 +1184,16 @@ void Pa_Sleep( int32 msec )
 	endTime = TickCount() + sleepTime;
 	do
 	{
+	   EventRecord event;
 		DBUGX(("Sleep for %d ticks.\n", sleepTime ));
-		WaitNextEvent( 0, NULL, sleepTime, NULL );  /* Use this just to sleep without getting events. */
-		sleepTime = endTime - TickCount();
+
+		/* Use this just to sleep without getting events. */
+		
+		/* dmazzoni: don't pass "NULL" for the event, that crashes OS X */
+		WaitNextEvent( 0, &event, sleepTime, NULL );
+
+  		sleepTime = endTime - TickCount();
+
 	} while( sleepTime > 0 );
 }
 /*************************************************************************/
