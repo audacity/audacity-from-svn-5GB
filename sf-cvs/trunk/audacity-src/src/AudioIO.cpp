@@ -238,6 +238,7 @@ bool AudioIO::Start()
 
    PaError error = Pa_StartStream(mPortStream);
 
+   mProject->SetStop(false);
    mProject->ReReadSettings();
    mProject->HandleResize();
 
@@ -514,6 +515,7 @@ void AudioIO::Stop()
          mProject->TP_PushState("Recorded Audio");
    }
 
+   mProject->SetStop(true);
    mProject->ReReadSettings();
    mProject->HandleResize();
 

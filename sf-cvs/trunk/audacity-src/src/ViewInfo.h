@@ -35,7 +35,11 @@ struct ViewInfo {
 
    int scrollStep;
 
+   // Other stuff, mainly states (true or false) related to autoscroll and drawing the waveform
+   // Mabye this should be put somewhere else?
+
    bool bUpdateSpectrogram;
+   bool bRedrawWaveform;
    bool bUpdateTrackIndicator;
 
    bool bIsPlaying;

@@ -225,6 +225,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    // Some extra information
    mViewInfo.bIsPlaying = false;
+   mViewInfo.bRedrawWaveform = false;
 
    mMenuBar = NULL;
    CreateMenuBar();
@@ -452,9 +453,9 @@ void AudacityProject::OnScrollRight()
    }
 }
 
-void AudacityProject::TP_ScrollIndicator(double indicator)
+void AudacityProject::TP_ScrollWindow(double scrollto)
 {
-   int pos = (int) (indicator * mViewInfo.zoom)
+   int pos = (int) (scrollto * mViewInfo.zoom)
        / mViewInfo.scrollStep;
    int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
 
@@ -1410,7 +1411,7 @@ void AudacityProject::Rewind(bool shift)
    if (!shift || mViewInfo.sel1 < mViewInfo.sel0)
       mViewInfo.sel1 = 0;
 
-   mTrackPanel->Refresh(false);
+   TP_ScrollWindow(0);
 }
 
 void AudacityProject::SkipEnd(bool shift)
@@ -1421,12 +1422,17 @@ void AudacityProject::SkipEnd(bool shift)
    if (!shift || mViewInfo.sel0 > mViewInfo.sel1)
       mViewInfo.sel0 = len;
 
-   mTrackPanel->Refresh(false);
+   TP_ScrollWindow(len);
 }
 
 void AudacityProject::ReReadSettings()
 {
    mTrackPanel->ReReadSettings();
+}
+
+void AudacityProject::SetStop(bool bStopped)
+{
+   mTrackPanel->SetStop(bStopped);
 }
 
 // TrackPanel callback method

@@ -1070,6 +1070,9 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
    if (!track->GetSelected())
       sel0 = sel1 = 0.0;
 
+   if(sel0 == sel1)
+      wxBusyCursor busy;
+
    int x = 0;
    double tpre = h - tOffset;
    double tstep = 1.0 / pps;
