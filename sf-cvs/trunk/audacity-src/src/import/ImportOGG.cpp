@@ -228,6 +228,13 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
                           2,    // word length (2 for 16 bit samples)
                           1,    // signed
                           &bitstream);
+
+      if (bytesRead < 0) {
+         /* Malformed Ogg Vorbis file. */
+         /* TODO: Return some sort of meaningful error. */
+         break;
+      }
+
       samplesRead = bytesRead / *outNumTracks / sizeof(short);
 
       /* give the data to the wavetracks */
@@ -248,6 +255,14 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
       }
 
    } while (!cancelled && bytesRead != 0 && bitstream == 0);
+
+   /* Clear out the (partially-full) buffer. */
+   if (samplesSinceLastCallback > 0)
+      for (c = 0; c < *outNumTracks; c++)
+          channels[c]->Append((char *)(mainBuffer + c),
+                              int16Sample,
+                              samplesRead,
+                              *outNumTracks);
 
    /* ...the rest is de-allocation */
    delete[]mainBuffer;
