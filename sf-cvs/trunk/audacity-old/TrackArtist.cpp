@@ -177,18 +177,19 @@ void TrackArtist::DrawTracks(TrackList *tracks,
   // Empty out the hash table
 
   if (mTrackHash && mTrackHash->GetCount() > 0) {
-	mTrackHash->BeginFind();
-	wxNode *node;
-	while(node = mTrackHash->Next()) {
-	  TrackInfoCache *cache = (TrackInfoCache *)node->GetData();
-	  if (cache->where) delete cache->where;
-	  if (cache->min) delete cache->min;
-	  if (cache->max) delete cache->max;
-	  if (cache->freq) delete cache->freq;
-	  delete cache;
-	}
-	delete mTrackHash;
+    mTrackHash->BeginFind();
+    wxNode *node;
+    while(node = mTrackHash->Next()) {
+      TrackInfoCache *cache = (TrackInfoCache *)node->GetData();
+      if (cache->where) delete cache->where;
+      if (cache->min) delete cache->min;
+      if (cache->max) delete cache->max;
+      if (cache->freq) delete cache->freq;
+      delete cache;
+    }
   }
+  if (mTrackHash)
+    delete mTrackHash;
 
   mTrackHash = newHash;
 }
@@ -242,7 +243,7 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache *cache,
   // with the current one, re-use as much of the cache as
   // possible
 
-  if (oldcache.dirty == cache->dirty &&
+  if (oldcache.dirty == track->dirty &&
 	  !oldcache.spectrum &&
 	  oldcache.pps == pps &&
 	  oldcache.where[0] < cache->where[cache->len] &&
@@ -654,7 +655,7 @@ void TrackArtist::PrepareCacheSpectrum(TrackInfoCache *cache,
   // with the current one, re-use as much of the cache as
   // possible
 
-  if (oldcache.dirty == cache->dirty &&
+  if (oldcache.dirty == track->dirty &&
 	  oldcache.spectrum &&
 	  oldcache.pps == pps &&
 	  oldcache.fheight == screenHeight &&
