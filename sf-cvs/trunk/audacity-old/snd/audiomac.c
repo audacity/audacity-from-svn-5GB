@@ -37,6 +37,13 @@ extern "C" {
 pascal void playbackCallback(SndChannelPtr channel, SndCommand *theCallBackCmd)
 {
   buffer_state *data = (buffer_state *)(theCallBackCmd->param2);
+  
+  if (data->busy) {
+    SndDoCommand(channel, &data->callCmd, true);
+    return;
+  }
+  
+  data->busy = 1;
 
   // If there's data in the second buffer, copy it into the playback buffer
   // and mark the second buffer as empty again.
@@ -63,7 +70,7 @@ pascal void playbackCallback(SndChannelPtr channel, SndCommand *theCallBackCmd)
       // Send some silence through the speaker while we wait for
       // the program to catch up
       
-      int waittime = 4096;      
+      int waittime = 4096;
       int i;
       
       if (waittime > data->bufferSize)
@@ -75,8 +82,12 @@ pascal void playbackCallback(SndChannelPtr channel, SndCommand *theCallBackCmd)
     }
   }
   
-  SndDoCommand(channel, &data->playCmd, true);
-  SndDoCommand(channel, &data->callCmd, true);
+  data->busy = 0;
+
+  if (!data->flushing) {
+    SndDoCommand(channel, &data->playCmd, true);
+    SndDoCommand(channel, &data->callCmd, true);
+  }
 }
 
 pascal void recordingCallback(SPBPtr params, Ptr buffer, short peakAmplitude, long numBytes)
@@ -318,7 +329,7 @@ int audio_flush(snd_type snd)
     data->flushing = 1;
     
     /* Start playback if we haven't already */
-
+/*
     if (data->firstTime) {
       data->header.numFrames = data->curSize / data->frameSize;
       
@@ -330,6 +341,10 @@ int audio_flush(snd_type snd)
     do {
       err = SndChannelStatus(data->chan, sizeof(status), &status);
     } while (!err && status.scChannelBusy);
+*/
+
+    data->flushing = 0;
+
   }
 
   return SND_SUCCESS;
@@ -371,6 +386,11 @@ long audio_write(snd_node *n, void *buffer, long length)
 {
   buffer_state *data = (buffer_state *)n->u.audio.descriptor;
 
+  while(data->busy)
+    ;
+  
+  data->busy = 1;
+
   long written = 0;
   long block;
   
@@ -410,15 +430,28 @@ long audio_write(snd_node *n, void *buffer, long length)
     }
   }
 
-  // when the first buffer is full for the first time, start playback:
+  // start playback immediately
 
-  if (data->curBuffer==1 && data->firstTime) {
+  if (data->firstTime) {
     data->firstTime = 0;
-    data->header.numFrames = data->bufferSize / data->frameSize;
+    
+    if (data->curBuffer==1) {
+      data->header.numFrames = data->bufferSize / data->frameSize;
+    }
+    else {
+      data->header.numFrames = data->curSize / data->frameSize;
+      data->curBuffer = 1;
+      data->curSize = 0;
+    }
+    
+    data->busy = 0;
+
     SndDoCommand(data->chan, &data->playCmd, true);
     SndDoCommand(data->chan, &data->callCmd, true);    
   }
-
+  
+  data->busy = 0;
+  
   return written;
 }
 
