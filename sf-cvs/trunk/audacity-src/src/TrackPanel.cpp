@@ -1821,7 +1821,7 @@ void TrackPanel::DrawBordersAroundTrack(VTrack *t, wxDC* dc, const wxRect r, con
 void TrackPanel::DrawShadow(VTrack *t, wxDC* dc, const wxRect r)
 {
    // shadow
-   AColor::Light(dc, true);
+   AColor::Dark(dc, true);
    // bottom
    dc->DrawLine(r.x + 1, r.y + r.height - 1, r.x + r.width, r.y + r.height - 1);
    // right
