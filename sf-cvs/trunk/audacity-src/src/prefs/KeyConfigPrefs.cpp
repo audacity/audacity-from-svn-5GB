@@ -81,7 +81,12 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
       // BG: Set the description
       wDescLabel->SetLabel("Description:\n " + mAudacity->GetCommandDesc(mCommandSelected));
    }
-}  
+
+/*
+   // BG: Test the function
+   (this->*((wxEventFunction) (mAudacity->GetCommandFunc(mCommandSelected))))(event);
+*/
+}
 
 bool KeyConfigPrefs::Apply()
 {

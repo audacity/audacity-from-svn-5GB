@@ -189,6 +189,7 @@ void CreateMenuBar();
 
 wxString &GetCommandName(int nIndex);
 wxString &GetCommandDesc(int nIndex);
+wxObjectEventFunction &GetCommandFunc(int nIndex);
 int GetNumCommands();
 
 void OnUpdateMenus(wxUpdateUIEvent & event);
