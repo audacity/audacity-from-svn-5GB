@@ -1,0 +1,6 @@
+Hi,
+I'm sending you the message catalog for the Bulgarian localization. Hopefully everything is Ok - I believe I have checked all dialog boxes.
+
+Some of the fonts used in the GUI have no Cyrillic letters though, so some of the the Bulgarian labels (and the Russian ones) are unreadable - they are displayed in the Western European code page. (I work under Win XP). The status line is one example, and the labels at the left side of a track window are another.
+
+Mikhail Balabanov
