@@ -78,7 +78,8 @@ plug-in that opens a dialog:
   ;type process
   ;name "Delay..."
   ;action "Performing Delay Effect..."
-  ;info "Demo effect for Nyquist by Roger Dannenberg.\nThis effect creates a fixed number of echos."
+  ;info "Demo effect for Nyquist by Roger Dannenberg.\nThis effect 
+     creates a fixed number of echos."  ; (should be all on one line)
   ;control decay "Decay amount" int "dB" 6 0 24
   ;control delay "Delay time" real "seconds" 0.5 0.0 5.0
   ;control count "Number of echos" int "times" 5 1 30
