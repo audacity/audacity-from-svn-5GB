@@ -256,7 +256,8 @@ class TrackPanel:public wxWindow {
    wxCursor *mZoomInCursor;
    wxCursor *mZoomOutCursor;
    wxCursor *mRearrangeCursor;
-   wxCursor *mAdjustSelectionCursor;
+   wxCursor *mAdjustLeftSelectionCursor;
+   wxCursor *mAdjustRightSelectionCursor;
 
    wxMenu *mWaveTrackMenu;
    wxMenu *mNoteTrackMenu;
@@ -277,6 +278,6 @@ class TrackPanel:public wxWindow {
 
 //This constant determines the size of the horizontal region (in pixels) around
 //the right and left selection bounds that can be used for horizontal selection adjusting
-#define HORIZONTAL_SELECTION_RESIZE_REGION 5
+#define HORIZONTAL_SELECTION_RESIZE_REGION 3
 
 #endif
