@@ -24,7 +24,7 @@ allmo: $(LINGUAS:%=%/$(PROGNAME).mo) FORCE
 
 # Update the POT template file.
 POTFILE=$(PROGNAME).pot 
-update: force-update $(POTFILE) FORCE
+update: force-update $(POTFILE) updatepo FORCE
 
 # the programs we use (TODO: use configure to detect them)
 MSGFMT=msgfmt -v
@@ -41,14 +41,17 @@ XGETTEXT_ARGS=-C -k_ -s -j
 	@test -d $* || mkdir $*
 	$(MSGFMT) -o $@ $<
 
-%.po: $(POTFILE)
-	@if [ -f $@ ]; then \
-		echo "Updating catalog: $@"; \
-		$(MSGMERGE) $@ $(POTFILE) > $@.new && mv $@.new $@; \
-	else \
-		echo "Creating new catalog: $@"; \
-		cp $(POTFILE) $@; \
-	fi
+updatepo: $(POTFILE)
+	linguas='$(LINGUAS)'; for lang in $$linguas ; do \
+	    pofile="$$lang.po"; \
+	    if [ -f $$pofile ]; then \
+		    echo "Updating catalog: $$pofile"; \
+		    $(MSGMERGE) $$pofile $(POTFILE) > $$pofile.new && mv $$pofile.new $$pofile; \
+	    else \
+		    echo "Creating new catalog: $$pofile"; \
+		    cp $(POTFILE) $$pofile; \
+	    fi; \
+	done
 
 $(POTFILE):
 	touch $@
