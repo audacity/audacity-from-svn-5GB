@@ -325,10 +325,9 @@ else
 			use_ladspa="yes";
 		fi
 
-		dnl VST
-		
-		OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/LoadVSTMac.o"
-		OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/VSTEffect.o"
+		dnl VST - now separate
+		dnl OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/LoadVSTMac.o"
+		dnl OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/VSTEffect.o"
 
 	;;
 
