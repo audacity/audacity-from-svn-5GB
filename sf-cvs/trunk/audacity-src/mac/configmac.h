@@ -4,17 +4,18 @@
 #define AUDACITY_CREATOR      'auDy'
 #define AUDACITY_PROJECT_TYPE 'auDp'
 
-#ifndef __UNIX__
+#ifdef __MACH__
 
-// Use libmad for importing MP3 on the mac
-#define MP3SUPPORT
-#define USE_LIBMAD
+# define __MACOSX__
+# include <wx/defs.h>
+# include "../src/configunix.h"
 
-// Ogg Vorbis support
-// #define USE_LIBVORBIS
+#else
 
-// ID3 support
-#define USE_LIBID3TAG
+# define __MACOS9__
+# define MP3SUPPORT       // Use libmad for importing MP3 on the mac
+# define USE_LIBMAD
+# undef  USE_LIBVORBIS  // No Ogg Vorbis support (?)
+# define USE_LIBID3TAG     // ID3 support
 
 #endif
-
