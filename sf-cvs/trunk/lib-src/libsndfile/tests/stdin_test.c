@@ -1,18 +1,18 @@
 /*
 ** Copyright (C) 2001-2002 Erik de Castro Lopo <erikd@zip.com.au>
-**  
+**
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
-** 
+**
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software 
+** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
@@ -25,6 +25,8 @@
 
 #include	<sndfile.h>
 
+#include	"utils.h"
+
 #define	BUFFER_LEN		(1<<10)
 
 static	void	stdin_test	(char *str, int typemajor, int count) ;
@@ -32,13 +34,13 @@ static	void	stdin_test	(char *str, int typemajor, int count) ;
 int
 main (int argc, char *argv [])
 {	int	count, bDoAll = 0, nTests = 0 ;
-	
+
 	if (argc != 3 || !(count = atoi (argv [2])))
 	{	fprintf (stderr, "This program cannot be run by itself. It needs\n") ;
 		fprintf (stderr, "to be run from the stdio_test program.\n") ;
 		exit (1) ;
 		} ;
-		
+
 	bDoAll = ! strcmp (argv [1], "all") ;
 
 	if (bDoAll || ! strcmp (argv [1], "raw"))
@@ -111,26 +113,29 @@ main (int argc, char *argv [])
 	return 0;
 } /* main */
 
-static	void	
+static	void
 stdin_test	(char *str, int typemajor, int count)
 {	static	short	data [BUFFER_LEN] ;
 
 	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	int			k, total ;
-	
-	fprintf (stderr, "    %-5s : reading %d frames from stdin ... ", str, count) ;
-	
+
+	fprintf (stderr, "    %-5s : reading %d frames from stdin .... ", str, count) ;
+
 	if (typemajor == SF_FORMAT_RAW)
-	{	sfinfo.samplerate  = 44100 ;
-		sfinfo.format 	   = SF_FORMAT_RAW | SF_FORMAT_PCM_16 ;
-		sfinfo.channels    = 1 ;
+	{	sfinfo.samplerate = 44100 ;
+		sfinfo.format 	  = SF_FORMAT_RAW | SF_FORMAT_PCM_16 ;
+		sfinfo.channels   = 1 ;
 		sfinfo.frames     = 0 ;
-		} ;
-	
+		}
+	else
+		sfinfo.format = 0 ;
+
 	if (! (file = sf_open ("-", SFM_READ, &sfinfo)))
 	{	fprintf (stderr, "sf_open_read failed with error : ") ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
+		dump_log_buffer (NULL) ;
 		exit (1) ;
 		} ;
 
@@ -138,22 +143,22 @@ stdin_test	(char *str, int typemajor, int count)
 	{	fprintf (stderr, "\n\nError : File type doesn't match\n") ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.samplerate  != 44100)
 	{	fprintf (stderr, "\n\nError : sample rate (%d) should be 44100\n", sfinfo.samplerate) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.channels  != 1)
 	{	fprintf (stderr, "\n\nError : channels (%d) should be 1\n", sfinfo.channels) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.frames < count)
 	{	fprintf (stderr, "\n\nError : sample count (%ld) should be %d\n", (long) sfinfo.frames, count) ;
 		exit (1) ;
 		} ;
-	
+
 	total = 0 ;
 	while ((k = sf_read_short (file, data, BUFFER_LEN)))
 		total += k ;
@@ -163,9 +168,9 @@ stdin_test	(char *str, int typemajor, int count)
 	{	fprintf (stderr, "\n\nError : expected (%d).frames, read %d\n", count, total) ;
 		exit (1) ;
 		} ;
-		
+
 	sf_close (file) ;
-	
+
 	fprintf (stderr, "ok\n") ;
 
 	return ;

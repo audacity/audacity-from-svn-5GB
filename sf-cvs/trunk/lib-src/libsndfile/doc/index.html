@@ -6,7 +6,7 @@
 	libsndfile
 	</TITLE>
 	<META NAME="Author"      CONTENT="Erik de Castro Lopo (erikd AT zip DOT com DOT au)">
-    <META NAME="Version"     CONTENT="libsndfile-1.0.1">
+    <META NAME="Version"     CONTENT="libsndfile-1.0.3">
 	<META NAME="Description" CONTENT="The libsndfile Home Page">
 	<META NAME="Keywords"    CONTENT="WAV AIFF AU SVX PAF NIST W64 libsndfile sound audio dsp Linux">
 	<META NAME="ROBOTS" 	 CONTENT="NOFOLLOW">
@@ -21,7 +21,7 @@
 	
 <CENTER>
 		<A HREF="#History">History</A> -+- 
-		<A HREF="#Capabilities">Capabilities</A> -+- 
+		<A HREF="#Features">Features</A> -+- 
 		<A HREF="#Similar">Similar or Related Projects</A> 
 		<BR> 
 		<A HREF="api.html">Programming Interface</A> -+- 
@@ -80,11 +80,37 @@
 </P>
 
 <A NAME="Capabilities"></A>
-<H1><B>Capabilities</B></H1>
+<A NAME="Features"></A>
+<H1><B>Features</B></H1>
 <P>
-	libsndfile is capable of reading and writing a large number of file formats
-	and encodings.
-	The following table lists the formats across the top and encodings along the left
+	libsndfile has the following main features :
+</P>
+	<UL>
+	<lI> Ability to read and write a large number of file formats.
+	<LI> A simple, elegant and easy to use Applications Programming Interface.
+	<LI> Usable on Unix, Win32, MacOS and others.
+	<LI> On the fly format conversion, including endian swapping, type conversion 
+			and bitwidth scaling.
+	<LI> Optional normalisation when reading floating point data from files containing
+			integer data.
+	<LI> Ability to open files in read/write mode.
+	<LI> The ability to write the file header without closing the file (only on files 
+			open for write or read/write).
+	<LI> Ability to query the library about all supported formats and retrive text 
+			strings describing each format.
+	</UL>
+<P>
+	libsndfile has a comprehensive test suite so that each release is as bug free 
+	as possible. 
+	When new bugs are found, new tests are added to the test suite to ensure that 
+	these bugs don't creep back into the code.
+	When new features are added, tests are added to the test suite to make sure that
+	these features continue to work correctly even when they are old features.
+ </P>
+<P>
+	The following table lists the file formats and encodings that libsndfile can read
+	and write.
+	The file formats formats are arranged across the top and encodings along the left
 	edge.
 </P>
 <BR>
@@ -204,6 +230,10 @@
 	<TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
 </TR>
+<TR><TD>Ok Dialogic ADPCM</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD ALIGN="center">R/W</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+	<TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>
+</TR>
 </TABLE>
 
 <P>
@@ -224,37 +254,30 @@
 	Other file formats may also be added on request.
 </P>
 
-<P>
-	Apart from reading and writing the above file formats libsndfile has the following
-	features:
-</P>
-	<UL>
-	<LI> On the fly format conversion.
-	<LI> Optional normalisation when reading floating point data.
-	<LI> Ability to open files in read/write mode.
-	<LI> On files open for write or read/write, the ability to write the file header without
-			closing the file.
-	</UL>
 
 <A NAME="History"></A>
 <H1><B>History</B></H1>
 <P>
 	My first attempt at reading and writing WAV files was in 1990 or so under Windows
-	3.1. I started using Linux in early 1995 and contributed some code to the 
+	3.1. 
+	I started using Linux in early 1995 and contributed some code to the 
 		<A HREF="http://www.vaxxine.com/ve3wwg/gnuwave.html">wavplay</A>
-	program which would eventually mutate into this library. As one of my interests
-	is Digital Signal Processing (DSP) I decided that as well as reading data from an
-	audio file in the native format (typically 16 bit short integers) it would also 
-	be useful to be able to have the library do the conversion to floating point numbers
-	for DSP applications. It then dawned on me that whatever file format (anything from
-	8 bit unsigned chars, to 32 bit floating point numbers) the library should be able 
-	to convert the data to whatever format the library user wishes to use it in. For 
-	example, in a sound playback program, the library caller typically wants the sound 
+	program. 
+	That contributed code would eventually mutate into this library. 
+	As one of my interests is Digital Signal Processing (DSP) I decided that as well as 
+	reading data from an audio file in the native format (typically 16 bit short integers) 
+	it would also be useful to be able to have the library do the conversion to floating 
+	point numbers for DSP applications. 
+	It then dawned on me that whatever file format (anything from 8 bit unsigned chars, 
+	to 32 bit floating point numbers) the library should be able to convert the data to 
+	whatever format the library user wishes to use it in. 
+	For example, in a sound playback program, the library caller typically wants the sound 
 	data in 16 bit short integers to dump into a sound card even though the data in the
 	file may be 32 bit floating point numbers (ie Microsoft's WAVE_FORMAT_IEEE_FLOAT 
-	format). Another example would be someone doing speech recognition research who has
-	recorded some speech as a 16 bit WAV file but wants to process it as double precision 
-	floating point numbers.
+	format). 
+	Another example would be someone doing speech recognition research who has recorded 
+	some speech as a 16 bit WAV file but wants to process it as double precision floating 
+	point numbers.
 </P>
 <P>
     Here is the release history for libsndfile :
@@ -266,6 +289,8 @@
 	<LI>Version 1.0.0rc6 (Aug 14 2002) MacOS 9 fixes.
 	<LI>Version 1.0.0 (Aug 16 2002) First 1.0.X release.
 	<LI>Version 1.0.1 (Sep 14 2002) Added MAT4 and MAT5 file formats.
+	<LI>Version 1.0.2 (Nov 24 2002) Added VOX ADPCM format.
+	<LI>Version 1.0.3 (Dec 09 2002) Fixes for Linux on ia64 CPUs.
 	</UL>
 <P>
 	<A HREF="version-1.html">This document</A> details the changes in the API between 
@@ -313,7 +338,7 @@ for other licensing arrangements.
 </P>
 	<UL>
 	<LI>Source code as a .tar.gz : 
-			<A HREF="libsndfile-1.0.1.tar.gz">libsndfile-1.0.1.tar.gz</A>
+			<A HREF="libsndfile-1.0.3.tar.gz">libsndfile-1.0.3.tar.gz</A>
 	<LI>Last version 0 release (for compatibility with older software) as a .tar.gz : 
 			<A HREF="libsndfile-0.0.28.tar.gz">libsndfile-0.0.28.tar.gz</A>
 

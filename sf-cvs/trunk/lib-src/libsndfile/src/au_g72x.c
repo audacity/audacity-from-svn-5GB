@@ -17,7 +17,7 @@
 */
 
 #include	<stdio.h>
-#include    <string.h>
+#include	<string.h>
 #include	<unistd.h>
 
 #include	"sndfile.h"
@@ -103,7 +103,7 @@ au_g72x_reader_init (SF_PRIVATE *psf, int codec)
 
 	psf->blockwidth = psf->bytewidth = 1 ;
 
-	psf->filelength = psf_get_filelen (psf->filedes) ;
+	psf->filelength = psf_get_filelen (psf) ;
 	psf->datalength = psf->filelength - psf->dataoffset ;
 
 	if (psf->datalength % pg72x->blocksize)
@@ -174,7 +174,10 @@ au_g72x_writer_init (SF_PRIVATE *psf, int codec)
  
 	psf->blockwidth = psf->bytewidth = 1 ;
 
-	psf->filelength = psf_get_filelen (psf->filedes) ;
+	psf->filelength = psf_get_filelen (psf) ;
+	if (psf->filelength < psf->dataoffset)
+		psf->filelength = psf->dataoffset ; 
+
 	psf->datalength = psf->filelength - psf->dataoffset ;
 
 	if (psf->datalength % pg72x->blocksize)
@@ -182,7 +185,8 @@ au_g72x_writer_init (SF_PRIVATE *psf, int codec)
 	else
 		pg72x->blocks = psf->datalength / pg72x->blocksize ;
 
-	psf->sf.frames = (8 * psf->datalength) / bitspersample ;
+	if (psf->datalength > 0)
+		psf->sf.frames = (8 * psf->datalength) / bitspersample ;
 
 	if ((psf->sf.frames * bitspersample) / 8 != psf->datalength)
 		psf_log_printf (psf, "*** Warning : weird psf->datalength.\n") ;
@@ -206,7 +210,7 @@ au_g72x_decode_block (SF_PRIVATE *psf, G72x_DATA *pg72x)
 		return 1 ;
 		} ;
 
-	if ((k = psf_fread (pg72x->block, 1, pg72x->bytesperblock, psf->filedes)) != pg72x->bytesperblock)
+	if ((k = psf_fread (pg72x->block, 1, pg72x->bytesperblock, psf)) != pg72x->bytesperblock)
 		psf_log_printf (psf, "*** Warning : short read (%d != %d).\n", k, pg72x->bytesperblock) ;
 
 	pg72x->blocksize = k ;
@@ -217,11 +221,11 @@ au_g72x_decode_block (SF_PRIVATE *psf, G72x_DATA *pg72x)
 
 static int
 au_g72x_read_block (SF_PRIVATE *psf, G72x_DATA *pg72x, short *ptr, int len)
-{	int	count, total = 0, index = 0 ;
+{	int	count, total = 0, indx = 0 ;
 
-	while (index < len)
+	while (indx < len)
 	{	if (pg72x->blockcount >= pg72x->blocks && pg72x->samplecount >= pg72x->samplesperblock)
-		{	memset (&(ptr[index]), 0, (len - index) * sizeof (short)) ;
+		{	memset (&(ptr[indx]), 0, (len - indx) * sizeof (short)) ;
 			return total ;
 			} ;
 		
@@ -229,12 +233,12 @@ au_g72x_read_block (SF_PRIVATE *psf, G72x_DATA *pg72x, short *ptr, int len)
 			au_g72x_decode_block (psf, pg72x) ;
 		
 		count = pg72x->samplesperblock - pg72x->samplecount ;
-		count = (len - index > count) ? count : len - index ;
+		count = (len - indx > count) ? count : len - indx ;
 		
-		memcpy (&(ptr[index]), &(pg72x->samples [pg72x->samplecount]), count * sizeof (short)) ;
-		index += count ;
+		memcpy (&(ptr[indx]), &(pg72x->samples [pg72x->samplecount]), count * sizeof (short)) ;
+		indx += count ;
 		pg72x->samplecount += count ;
-		total = index ;
+		total = indx ;
 		} ;
 
 	return total ;		
@@ -420,7 +424,7 @@ au_g72x_seek   (SF_PRIVATE *psf, int mode, sf_count_t offset)
 **			} ;
 **			
 **		if (psf->mode == SFM_READ)
-**		{	psf_fseek (psf->filedes, psf->dataoffset + newblock * pg72x->blocksize, SEEK_SET) ;
+**		{	psf_fseek (psf, psf->dataoffset + newblock * pg72x->blocksize, SEEK_SET) ;
 **			pg72x->blockcount  = newblock ;
 **			au_g72x_decode_block (psf, pg72x) ;
 **			pg72x->samplecount = newsample ;
@@ -449,7 +453,7 @@ au_g72x_encode_block (SF_PRIVATE *psf, G72x_DATA *pg72x)
 	g72x_encode_block (pg72x) ;
 
 	/* Write the block to disk. */
-	if ((k = psf_fwrite (pg72x->block, 1, pg72x->blocksize, psf->filedes)) != pg72x->blocksize)
+	if ((k = psf_fwrite (pg72x->block, 1, pg72x->blocksize, psf)) != pg72x->blocksize)
 		psf_log_printf (psf, "*** Warning : short write (%d != %d).\n", k, pg72x->blocksize) ;
 
 	pg72x->samplecount = 0 ;
@@ -463,18 +467,18 @@ au_g72x_encode_block (SF_PRIVATE *psf, G72x_DATA *pg72x)
 
 static int
 au_g72x_write_block (SF_PRIVATE *psf, G72x_DATA *pg72x, short *ptr, int len)
-{	int	count, total = 0, index = 0 ;
+{	int	count, total = 0, indx = 0 ;
 	
-	while (index < len)
+	while (indx < len)
 	{	count = pg72x->samplesperblock - pg72x->samplecount ;
 
-		if (count > len - index)
-			count = len - index ;
+		if (count > len - indx)
+			count = len - indx ;
 
-		memcpy (&(pg72x->samples [pg72x->samplecount]), &(ptr [index]), count * sizeof (short)) ;
-		index += count ;
+		memcpy (&(pg72x->samples [pg72x->samplecount]), &(ptr [indx]), count * sizeof (short)) ;
+		indx += count ;
 		pg72x->samplecount += count ;
-		total = index ;
+		total = indx ;
 
 		if (pg72x->samplecount >= pg72x->samplesperblock)
 			au_g72x_encode_block (psf, pg72x) ;	
@@ -617,8 +621,8 @@ au_g72x_close	(SF_PRIVATE  *psf)
 		**  re-write correct values for the RIFF and data chunks.
 		*/
 		
-		psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf->filedes) ;
+		psf_fseek (psf, 0, SEEK_END) ;
+		psf->filelength = psf_ftell (psf) ;
 
 		psf->sf.frames = pg72x->samplesperblock * pg72x->blockcount ;
 		psf->datalength = psf->filelength - psf->dataoffset ;

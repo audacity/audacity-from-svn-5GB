@@ -157,11 +157,11 @@ sds_close	(SF_PRIVATE  *psf)
 		 *  re-write correct values for the datasize header element.
 		 */
 
-		psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf->filedes) ;
+		psf_fseek (psf, 0, SEEK_END) ;
+		psf->filelength = psf_ftell (psf) ;
 
 		/*- psf->datalength = psf->filelength - AU_DATA_OFFSET ;-*/
-		psf_fseek (psf->filedes, 0, SEEK_SET) ;
+		psf_fseek (psf, 0, SEEK_SET) ;
 
 		psf->sf.frames = psf->datalength / psf->blockwidth ;
 		sds_write_header (psf, SF_FALSE) ;
@@ -289,7 +289,7 @@ sds_read_header (SF_PRIVATE *psf, SDS_PRIVATE *psds)
 			return SFE_SDS_BAD_BIT_WIDTH ;
 		} ;
 
-	psf_fseek (psf->filedes, SDS_DATA_OFFSET, SEEK_SET) ;
+	psf_fseek (psf, SDS_DATA_OFFSET, SEEK_SET) ;
 
 	return 0 ;
 } /* sds_read_header */
@@ -348,7 +348,7 @@ sds_2byte_read (SF_PRIVATE *psf, SDS_PRIVATE *psds)
 		return 1 ;
 		} ;
 
-	if ((k = psf_fread (psds->data, 1, SDS_BLOCK_SIZE, psf->filedes)) != SDS_BLOCK_SIZE)
+	if ((k = psf_fread (psds->data, 1, SDS_BLOCK_SIZE, psf)) != SDS_BLOCK_SIZE)
 		psf_log_printf (psf, "*** Warning : short read (%d != %d).\n", k, SDS_BLOCK_SIZE) ;
 
 	if (psds->data [0] != 0xF0)
@@ -392,7 +392,7 @@ sds_3byte_read (SF_PRIVATE *psf, SDS_PRIVATE *psds)
 		return 1 ;
 		} ;
 
-	if ((k = psf_fread (psds->data, 1, SDS_BLOCK_SIZE, psf->filedes)) != SDS_BLOCK_SIZE)
+	if ((k = psf_fread (psds->data, 1, SDS_BLOCK_SIZE, psf)) != SDS_BLOCK_SIZE)
 		psf_log_printf (psf, "*** Warning : short read (%d != %d).\n", k, SDS_BLOCK_SIZE) ;
 
 	if (psds->data [0] != 0xF0)
@@ -436,7 +436,7 @@ sds_4byte_read (SF_PRIVATE *psf, SDS_PRIVATE *psds)
 		return 1 ;
 		} ;
 
-	if ((k = psf_fread (psds->data, 1, SDS_BLOCK_SIZE, psf->filedes)) != SDS_BLOCK_SIZE)
+	if ((k = psf_fread (psds->data, 1, SDS_BLOCK_SIZE, psf)) != SDS_BLOCK_SIZE)
 		psf_log_printf (psf, "*** Warning : short read (%d != %d).\n", k, SDS_BLOCK_SIZE) ;
 
 	if (psds->data [0] != 0xF0)

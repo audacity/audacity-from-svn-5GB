@@ -21,7 +21,32 @@
 #include	<stdio.h>
 #include	<string.h>
 #include	<unistd.h>
+#include	<sys/stat.h>
 #include	<math.h>
+
+#if (defined (WIN32) || defined (_WIN32))
+#include <io.h>
+#include <direct.h>
+
+#define	_IFMT		_S_IFMT
+#define _IFREG		_S_IFREG
+
+#define	S_ISREG(m)	((m) & _S_IFREG)
+
+#define	S_IRWXU 	0000700	/* rwx, owner */
+#define		S_IRUSR	0000400	/* read permission, owner */
+#define		S_IWUSR	0000200	/* write permission, owner */
+#define		S_IXUSR	0000100	/* execute/search permission, owner */
+#define	S_IRWXG		0000070	/* rwx, group */
+#define		S_IRGRP	0000040	/* read permission, group */
+#define		S_IWGRP	0000020	/* write permission, grougroup */
+#define		S_IXGRP	0000010	/* execute/search permission, group */
+#define	S_IRWXO		0000007	/* rwx, other */
+#define		S_IROTH	0000004	/* read permission, other */
+#define		S_IWOTH	0000002	/* write permission, other */
+#define		S_IXOTH	0000001	/* execute/search permission, other */
+
+#endif
 
 #include	<sndfile.h>
 
@@ -32,6 +57,8 @@
 
 static void	update_header_test (char *filename, int typemajor) ;
 static void	zero_data_test (char *filename, int typemajor) ;
+static void	filesystem_full_test (int typemajor) ;
+static void	permission_test (char *filename, int typemajor) ;
 
 /* Force the start of this buffer to be double aligned. Sparc-solaris will
 ** choke if its not.
@@ -58,66 +85,88 @@ main (int argc, char *argv[])
 	if (bDoAll || ! strcmp (argv [1], "wav"))
 	{	update_header_test ("header.wav", SF_FORMAT_WAV) ;
 		zero_data_test ("zerolen.wav", SF_FORMAT_WAV) ;
+		filesystem_full_test (SF_FORMAT_WAV) ;
+		permission_test ("readonly.wav", SF_FORMAT_WAV) ;
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "aiff"))
 	{	update_header_test ("header.aiff", SF_FORMAT_AIFF) ;
 		zero_data_test ("zerolen.aiff", SF_FORMAT_AIFF) ;
+		filesystem_full_test (SF_FORMAT_AIFF) ;
+		permission_test ("readonly.aiff", SF_FORMAT_AIFF) ;
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "au"))
 	{	update_header_test ("header.au", SF_FORMAT_AU) ;
 		zero_data_test ("zerolen.au", SF_FORMAT_AU) ;
+		filesystem_full_test (SF_FORMAT_AU) ;
+		permission_test ("readonly.au", SF_FORMAT_AU) ;
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "svx"))
 	{	update_header_test ("header.svx", SF_FORMAT_SVX) ;
 		zero_data_test ("zerolen.svx", SF_FORMAT_SVX) ;
+		filesystem_full_test (SF_FORMAT_SVX) ;
+		permission_test ("readonly.svx", SF_FORMAT_SVX) ;
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "nist"))
 	{	update_header_test ("header.nist", SF_FORMAT_NIST) ;
 		zero_data_test ("zerolen.nist", SF_FORMAT_NIST) ;
+		filesystem_full_test (SF_FORMAT_NIST) ;
+		permission_test ("readonly.nist", SF_FORMAT_NIST) ;
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "paf"))
 	{	update_header_test ("header.paf", SF_FORMAT_PAF) ;
 		zero_data_test ("zerolen.paf", SF_FORMAT_PAF) ;
+		filesystem_full_test (SF_FORMAT_PAF) ;
+		permission_test ("readonly.paf", SF_FORMAT_PAF) ;
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "ircam"))
 	{	update_header_test ("header.ircam", SF_FORMAT_IRCAM) ;
 		zero_data_test ("zerolen.ircam", SF_FORMAT_IRCAM) ;
+		filesystem_full_test (SF_FORMAT_IRCAM) ;
+		permission_test ("readonly.ircam", SF_FORMAT_IRCAM) ;
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "voc"))
 	{	update_header_test ("header.voc", SF_FORMAT_VOC) ;
 		zero_data_test ("zerolen.voc", SF_FORMAT_VOC) ;
+		filesystem_full_test (SF_FORMAT_VOC) ;
+		permission_test ("readonly.voc", SF_FORMAT_VOC) ;
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "w64"))
 	{	update_header_test ("header.w64", SF_FORMAT_W64) ;
 		zero_data_test ("zerolen.w64", SF_FORMAT_W64) ;
+		filesystem_full_test (SF_FORMAT_W64) ;
+		permission_test ("readonly.w64", SF_FORMAT_W64) ;
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "mat4"))
 	{	update_header_test ("header.mat4", SF_FORMAT_MAT4) ;
 		zero_data_test ("zerolen.mat4", SF_FORMAT_MAT4) ;
+		filesystem_full_test (SF_FORMAT_MAT4) ;
+		permission_test ("readonly.mat4", SF_FORMAT_MAT4) ;
 		nTests++ ;
 		} ;
 
 	if (bDoAll || ! strcmp (argv [1], "mat5"))
 	{	update_header_test ("header.mat5", SF_FORMAT_MAT5) ;
 		zero_data_test ("zerolen.mat5", SF_FORMAT_MAT5) ;
+		filesystem_full_test (SF_FORMAT_MAT5) ;
+		permission_test ("readonly.mat5", SF_FORMAT_MAT5) ;
 		nTests++ ;
 		} ;
 
@@ -133,17 +182,6 @@ main (int argc, char *argv[])
 
 
 /*============================================================================================
-**	Helper functions and macros.
-*/ 
-
-#define PUT_DOTS(k)					\
-			{	while (k--)			\
-					putchar ('.') ;	\
-				putchar (' ') ;		\
-				}
-
-
-/*============================================================================================
 **	Here are the test functions.
 */ 
 
@@ -153,11 +191,7 @@ update_header_test (char *filename, int typemajor)
 	SF_INFO		sfinfo ;
 	int			k, frames ;
 
-	printf ("    update_header_test  : %s ", filename) ;
-	fflush (stdout) ;
-	
-	k = abs (18 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+	print_test_name ("update_header_test", filename) ;
 	
 	sfinfo.samplerate  = 44100 ;
 	sfinfo.format 	   = (typemajor | SF_FORMAT_PCM_16) ;
@@ -226,13 +260,9 @@ static void
 zero_data_test (char *filename, int typemajor)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
-	int			k, frames ;
+	int			frames ;
 
-	printf ("    zero_data_test      : %s ", filename) ;
-	fflush (stdout) ;
-	
-	k = abs (18 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+	print_test_name ("zero_data_test", filename) ;
 	
 	sfinfo.samplerate  = 44100 ;
 	sfinfo.format 	   = (typemajor | SF_FORMAT_PCM_16) ;
@@ -254,3 +284,115 @@ zero_data_test (char *filename, int typemajor)
 	unlink (filename) ;
 	puts ("ok") ;
 } /* zero_data_test */
+
+static void	
+filesystem_full_test (int typemajor)
+{	SNDFILE		*file ;
+	SF_INFO		sfinfo ;
+	struct stat buf ;
+
+	const char	*filename = "/dev/full", *errorstr ;
+	int			frames ;
+
+#if (defined (WIN32) || defined (_WIN32))
+	/* Can't run this test on Win32 so return. */
+	return ;
+#endif
+	
+	print_test_name ("filesystem_full_test", filename) ;
+	
+	if (stat (filename, &buf) != 0)
+	{	puts ("/dev/full missing") ;
+		return ;
+		} ;
+		
+	if (S_ISCHR (buf.st_mode) == 0 && S_ISBLK (buf.st_mode) == 0)
+	{	puts ("/dev/full is not a device file") ;
+		return ;
+		} ;
+
+	sfinfo.samplerate = 44100 ;
+	sfinfo.format 	  = (typemajor | SF_FORMAT_PCM_16) ;
+	sfinfo.channels   = 1 ;
+	sfinfo.frames     = 0 ;
+
+	frames = BUFFER_LEN / sfinfo.channels ;
+	
+	if ((file = sf_open (filename, SFM_WRITE, &sfinfo)) != NULL)
+	{	printf ("\n\nLine %d : Error, file should not have openned.\n", __LINE__ - 1) ;
+		exit (1) ;
+		} ;
+		
+	errorstr = sf_strerror (file) ;
+
+	if (strstr (errorstr, " space ") == NULL || strstr (errorstr, "device") == NULL)
+	{	printf ("\n\nLine %d : Error bad error string : %s.\n", __LINE__ - 1, errorstr) ;
+		exit (1) ;
+		} ;
+
+	puts ("ok") ;
+} /* filesystem_full_test */
+
+static void
+permission_test (char *filename, int typemajor)
+{	FILE		*textfile ;
+	SNDFILE		*file ;
+	SF_INFO		sfinfo ;
+	const char	*errorstr ;
+
+	int			frames ;
+
+#if (defined (WIN32) || defined (_WIN32))
+	/* Can't run this test on Win32 so return. */
+	return ;
+#endif
+	
+	print_test_name ("permission_test", filename) ;
+	
+	if ((textfile = fopen (filename, "w")) == NULL)
+	{	printf ("\n\nLine %d : not able to open text file for write.\n", __LINE__) ;
+		exit (1) ;
+		} ;
+	
+	fprintf (textfile, "This is a read only file.\n") ;
+	fclose (textfile) ;
+	
+	if (chmod (filename, S_IRUSR | S_IRGRP))
+	{	printf ("\n\nLine %d : chmod failed", __LINE__) ;
+		fflush (stdout) ;
+		perror ("") ;
+		exit (1) ;
+		} ;
+	
+	sfinfo.samplerate = 44100 ;
+	sfinfo.format 	  = (typemajor | SF_FORMAT_PCM_16) ;
+	sfinfo.channels   = 1 ;
+	sfinfo.frames     = 0 ;
+
+	frames = BUFFER_LEN / sfinfo.channels ;
+	
+	if ((file = sf_open (filename, SFM_WRITE, &sfinfo)) != NULL)
+	{	printf ("\n\nLine %d : Error, file should not have opened.\n", __LINE__ - 1) ;
+		exit (1) ;
+		} ;
+		
+	errorstr = sf_strerror (file) ;
+
+	if (strstr (errorstr, "ould not open file") == NULL)
+	{	printf ("\n\nLine %d : Error bad error string : %s.\n", __LINE__ - 1, errorstr) ;
+		exit (1) ;
+		} ;
+
+	if (chmod (filename, S_IWUSR | S_IWGRP))
+	{	printf ("\n\nLine %d : chmod failed", __LINE__) ;
+		fflush (stdout) ;
+		perror ("") ;
+		exit (1) ;
+		} ;
+
+	unlink (filename) ;
+	
+	puts ("ok") ;
+} /* permission_test */
+
+

@@ -104,7 +104,7 @@ static int		au_read_header (SF_PRIVATE *psf) ;
 
 int
 au_open	(SF_PRIVATE *psf)
-{	int		encoding, subformat ;
+{	int		subformat ;
 	int		error = 0 ;
 
 	if (psf->mode == SFM_READ || (psf->mode == SFM_RDWR && psf->filelength > 0))
@@ -124,7 +124,7 @@ au_open	(SF_PRIVATE *psf)
 		else if (psf->endian != SF_ENDIAN_LITTLE)
 			psf->endian = SF_ENDIAN_BIG ;
 
-		if (! (encoding = au_write_header (psf, SF_FALSE)))
+		if (au_write_header (psf, SF_FALSE))
 			return psf->error ;
 
 		psf->write_header = au_write_header ;
@@ -197,10 +197,10 @@ au_nh_open	(SF_PRIVATE *psf)
 	if (psf->mode == SFM_RDWR)
 		return SFE_BAD_OPEN_FORMAT ;
 
-	if (psf_fseek (psf->filedes, psf->dataoffset, SEEK_SET))
+	if (psf_fseek (psf, psf->dataoffset, SEEK_SET))
 		return SFE_BAD_SEEK ;
 
-	psf_log_printf (psf, "Headers-less u-law encoded file.\n") ;
+	psf_log_printf (psf, "Header-less u-law encoded file.\n") ;
 	psf_log_printf (psf, "Setting up for 8kHz, mono, u-law.\n") ;
 
 	psf->sf.format = SF_FORMAT_AU | SF_FORMAT_ULAW ;
@@ -233,11 +233,11 @@ au_close	(SF_PRIVATE  *psf)
 		 *  re-write correct values for the datasize header element.
 		 */
 
-		psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf->filedes) ;
+		psf_fseek (psf, 0, SEEK_END) ;
+		psf->filelength = psf_ftell (psf) ;
 
 		psf->datalength = psf->filelength - AU_DATA_OFFSET ;
-		psf_fseek (psf->filedes, 0, SEEK_SET) ;
+		psf_fseek (psf, 0, SEEK_SET) ;
 
 		psf->sf.frames = psf->datalength / psf->blockwidth ;
 		au_write_header (psf, SF_FALSE) ;
@@ -255,12 +255,12 @@ au_write_header (SF_PRIVATE *psf, int calc_length)
 {	sf_count_t	current ;
 	int			encoding ;
 
-	current = psf_ftell (psf->filedes) ;
+	current = psf_ftell (psf) ;
 
 	if (calc_length)
-	{	psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf->filedes) ;
-		psf_fseek (psf->filedes, 0, SEEK_SET) ;
+	{	psf_fseek (psf, 0, SEEK_END) ;
+		psf->filelength = psf_ftell (psf) ;
+		psf_fseek (psf, 0, SEEK_SET) ;
 
 		psf->datalength = psf->filelength - psf->dataoffset ;
 		if (psf->dataend)
@@ -271,14 +271,12 @@ au_write_header (SF_PRIVATE *psf, int calc_length)
 
 	encoding = au_format_to_encoding (psf->sf.format & SF_FORMAT_SUBMASK) ;
 	if (! encoding)
-	{	psf->error = SFE_BAD_OPEN_FORMAT ;
-		return	encoding ;
-		} ;
+		return (psf->error = SFE_BAD_OPEN_FORMAT) ;
 
 	/* Reset the current header length to zero. */
 	psf->header [0] = 0 ;
 	psf->headindex = 0 ;
-	psf_fseek (psf->filedes, 0, SEEK_SET) ;
+	psf_fseek (psf, 0, SEEK_SET) ;
 
 	if (psf->endian == SF_ENDIAN_BIG)
 	{	psf_binheader_writef (psf, "Em4", DOTSND_MARKER, AU_DATA_OFFSET) ;
@@ -289,19 +287,20 @@ au_write_header (SF_PRIVATE *psf, int calc_length)
 		psf_binheader_writef (psf, "et8444", psf->datalength, encoding, psf->sf.samplerate, psf->sf.channels) ;
 		}
 	else
-	{	psf->error = SFE_BAD_OPEN_FORMAT ;
-		return	encoding ;
-		} ;
+		return (psf->error = SFE_BAD_OPEN_FORMAT) ;
 
 	/* Header construction complete so write it out. */
-	psf_fwrite (psf->header, psf->headindex, 1, psf->filedes) ;
+	psf_fwrite (psf->header, psf->headindex, 1, psf) ;
+
+	if (psf->error)
+		return psf->error ;
 
 	psf->dataoffset = psf->headindex ;
 
 	if (current > 0)
-		psf_fseek (psf->filedes, current, SEEK_SET) ;
+		psf_fseek (psf, current, SEEK_SET) ;
 
-	return encoding ;
+	return psf->error ;
 } /* au_write_header */
 
 static int
@@ -368,7 +367,7 @@ au_read_header (SF_PRIVATE *psf)
  	psf->dataoffset = au_fmt.dataoffset ;
 	psf->datalength = psf->filelength - psf->dataoffset ;
 
- 	if (psf_fseek (psf->filedes, psf->dataoffset, SEEK_SET) != psf->dataoffset)
+ 	if (psf_fseek (psf, psf->dataoffset, SEEK_SET) != psf->dataoffset)
 		return SFE_BAD_SEEK ;
 
 	psf->close = au_close ;

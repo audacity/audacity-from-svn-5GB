@@ -6,7 +6,7 @@
 	libsndfile : the sf_command function.
 	</TITLE>
 	<META NAME="Author"      CONTENT="Erik de Castro Lopo (erikd AT zip DOT com DOT au)">
-	<META NAME="Version"     CONTENT="Version 1.0.1">
+	<META NAME="Version"     CONTENT="Version 1.0.3">
 	<!-- Another version at the bottom of the page.  -->
 	<META NAME="Description" CONTENT="The libsndfile API.">
 	<META NAME="Keywords"    CONTENT="WAV AIFF AU libsndfile sound audio dsp Linux">
@@ -92,6 +92,11 @@
 </TR>
 
 <TR>
+	<TD><A HREF="#SFC_GET_FORMAT_INFO">SFC_GET_FORMAT_INFO</A></TD>
+	<TD>Retrieve information about a major or subtype format.</TD>
+</TR>
+
+<TR>
 	<TD><A HREF="#SFC_GET_FORMAT_MAJOR_COUNT">SFC_GET_FORMAT_MAJOR_COUNT</A></TD>
 	<TD>Retrieve the number of major formats.</TD>
 </TR>
@@ -124,10 +129,14 @@
 		to be updated after each write to the file.</TD>
 </TR>
 
-
 <TR>
 	<TD><A HREF="#SFC_FILE_TRUNCATE">SFC_FILE_TRUNCATE</A></TD>
 	<TD>Truncate a file open for write or for read/write.</TD>
+</TR>
+
+<TR>
+	<TD><A HREF="#SFC_SET_RAW_START_OFFSET">SFC_SET_RAW_START_OFFSET</A></TD>
+	<TD>Change the data start offset for files opened up as SF_FORMAT_RAW.</TD>
 </TR>
 
 
@@ -631,6 +640,57 @@ Example:
 </DL>
 
 <!-- ========================================================================= -->
+<A NAME="SFC_GET_FORMAT_INFO"></A>
+<H2><BR><B>SFC_GET_FORMAT_INFO</B></H2>
+<P>
+Retrieve information about a major or subtype format.
+</P>
+<P>
+Parameters:
+</P>
+<PRE>
+        sndfile  : Not used.
+        cmd      : SFC_GET_FORMAT_INFO
+        data     : a pointer to an SF_FORMAT_INFO struct
+        datasize : sizeof (SF_FORMAT_INFO)
+</PRE>
+<P>
+The SF_FORMAT_INFO struct is defined in &lt;sndfile.h&gt; as:
+</P>
+<PRE>
+        typedef struct
+        {   int         format ;
+            const char  *name ;
+            const char  *extension ;
+        } SF_FORMAT_INFO ;
+</PRE>
+<P>
+When sf_command() is called with SF_GET_FORMAT_INFO, the format field is 
+examined and if (format & SF_FORMAT_TYPEMASK) is a valid format then the struct
+is filled in with information about the given major type.
+If (format & SF_FORMAT_TYPEMASK) is FALSE and (format & SF_FORMAT_SUBMASK) is a
+valid subtype format then the struct is filled in with information about the given 
+subtype.
+</P>
+<P>
+Example:
+</P>
+<PRE>
+        SF_FORMAT_INFO	format_info ;
+
+        format_info.format = SF_FORMAT_WAV ;
+        sf_command (sndfile, SFC_GET_FORMAT_INFO, &amp;format_info, sizeof (format_info)) ;
+        printf ("%08x  %s %s\n", format_info.format, format_info.name, format_info.extension) ;
+
+        format_info.format = SF_FORMAT_ULAW ;
+        sf_command (sndfile, SFC_GET_FORMAT_INFO, &amp;format_info, sizeof (format_info)) ;
+        printf ("%08x  %s\n", format_info.format, format_info.name) ;
+</PRE>
+<DL>
+<DT>Return value: </DT>
+	<DD>0 on success and non-zero otherwise.
+</DL>
+<!-- ========================================================================= -->
 <A NAME="SFC_GET_FORMAT_MAJOR_COUNT"></A>
 <H2><BR><B>SFC_GET_FORMAT_MAJOR_COUNT</B></H2>
 <P>
@@ -878,7 +938,7 @@ Example:
 <A NAME="SFC_FILE_TRUNCATE"></A>
 <H2><BR><B>SFC_FILE_TRUNCATE</B></H2>
 <P>
-Truncate a fle open for write or for read/write.
+Truncate a file open for write or for read/write.
 </P>
 <P>
 Parameters:
@@ -911,6 +971,38 @@ Example:
 </DL>
 
 <!-- ========================================================================= -->
+<A NAME="SFC_SET_RAW_START_OFFSET"></A>
+<H2><BR><B>SFC_SET_RAW_START_OFFSET</B></H2>
+<P>
+Change the data start offset for files opened up as SF_FORMAT_RAW.
+</P>
+<P>
+Parameters:
+<PRE>
+        sndfile  : A valid SNDFILE* pointer
+        cmd      : SFC_SET_RAW_START_OFFSET
+        data     : A pointer to an sf_count_t.
+        datasize : sizeof (sf_count_t)
+</PRE>
+
+<P>
+For a file opened as format SF_FORMAT_RAW, set the data offset to the value
+given by data.
+</P>
+<P>
+Example:
+</P>
+<PRE>
+        /* Reset the data offset to 5 bytes from the start of the file. */
+        sf_count_t  offset = 5 ;
+        sf_command (sndfile, SFC_SET_RAW_START_OFFSET, &amp;offset, sizeof (offset)) ;
+</PRE>
+<DL>
+<DT>Return value:</DT>
+	<DD>Zero on sucess, non-zero otherwise.
+</DL>
+
+<!-- ========================================================================= -->
 
 <HR>
 <P>
@@ -918,7 +1010,7 @@ Example:
 		<A HREF="http://www.zip.com.au/~erikd/libsndfile/">
 			http://www.zip.com.au/~erikd/libsndfile/</A>.
 <BR>
-Version : 1.0.1
+Version : 1.0.3
 </P>
 
 </BODY>

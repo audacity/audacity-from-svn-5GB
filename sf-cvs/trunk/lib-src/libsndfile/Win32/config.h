@@ -51,6 +51,9 @@
 /* The number of bytes in a short.  */
 #define SIZEOF_SHORT 2
 
+/* The number of bytes in a size_t.  */
+#define SIZEOF_SIZE_T 4
+
 /* The number of bytes in a void*.  */
 #define SIZEOF_VOIDP 4
 
@@ -94,19 +97,28 @@
 #define HAVE_DLFCN_H 1
 
 /* Define if you have the <endian.h> header file.  */
-#define HAVE_ENDIAN_H 0
+#define HAVE_ENDIAN_H 1
+
+/* Define if you have the <stdint.h> header file.  */
+#define HAVE_STDINT_H 1
+
+/* Define if you have the m library (-lm).  */
+#define HAVE_LIBM 1
 
 /* Name of package */
 #define PACKAGE "libsndfile"
 
 /* Version number of package */
-#define VERSION "1.0.1"
-
-/* Set to 1 to force the use of code for processors with broken floats */
-#define FORCE_BROKEN_FLOAT 0
+#define VERSION "1.0.3"
 
 /* Set to 1 to enable experimental code. */
 #define ENABLE_EXPERIMENTAL_CODE 0
+
+/* Set to 1 if the compile is GNU GCC. */
+/* #undef COMPILER_IS_GCC */
+
+/* Major version of GCC or 3 otherwise. */
+/* #undef GCC_MAJOR_VERSION */
 
 /* Number of bits in a file offset, on hosts where this is settable. */
 #define _FILE_OFFSET_BITS 64
@@ -130,16 +142,10 @@
 #define CPU_IS_LITTLE_ENDIAN 1
 
 /* Define if you have C99's lrint function. */
-#define HAVE_LRINT 0
+/* #undef HAVE_LRINT */
 
 /* Define if you have C99's lrintf function. */
-#define HAVE_LRINTF 0
-
-/* Set to 1 to force the use of code for processors with broken floats */
-#define FORCE_BROKEN_FLOAT 0
-
-/* Set to 1 to force the use of code for processors with broken floats */
-#define FORCE_BROKEN_FLOAT 0
+/* #undef HAVE_LRINTF */
 
 /* Set to 1 if compiling for Win32 */
 #define OS_IS_WIN32 1

@@ -73,7 +73,7 @@ main (void)
     {   /* Open failed so print an error message. */
         printf ("Not able to open input file %s.\n", infilename) ;
         /* Print the error message from libsndfile. */
-        sf_perror (NULL) ;
+        puts (sf_strerror (NULL)) ;
         return  1 ;
         } ;
 
@@ -84,7 +84,7 @@ main (void)
     /* Open the output file. */
     if (! (outfile = sf_open (outfilename, SFM_WRITE, &sfinfo)))
     {   printf ("Not able to open output file %s.\n", outfilename) ;
-        sf_perror (NULL) ;
+        puts (sf_strerror (NULL)) ;
         return  1 ;
         } ;
 

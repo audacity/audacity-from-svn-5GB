@@ -32,8 +32,8 @@ static void	pcm_test_bits_16 (char *filename, int filetype, int hash) ;
 static void	pcm_test_bits_24 (char *filename, int filetype, int hash) ;
 static void	pcm_test_bits_32 (char *filename, int filetype, int hash) ;
 
-static	void	pcm_test_float   (char *filename, int filetype, int hash) ;
-static	void	pcm_test_double  (char *filename, int filetype, int hash) ;
+static void pcm_test_float   (char *filename, int filetype, int hash, int replace_float) ;
+static void pcm_test_double  (char *filename, int filetype, int hash, int replace_float) ;
 
 /* Data written to the file. */
 static	double	data_out [(BUFFER_SIZE/sizeof(double))+1] ;
@@ -56,11 +56,19 @@ main (void)
 	pcm_test_bits_32 ("le-pcm32.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_PCM_32, 0x04c84a70) ;
 	pcm_test_bits_32 ("be-pcm32.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_PCM_32, 0x069c84f6) ;
 
-	pcm_test_float   ("le-float.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_FLOAT, 0xbb836603) ;
-	pcm_test_float   ("be-float.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_FLOAT, 0x903cd8fc) ;
+	pcm_test_float   ("le-float.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_FLOAT, 0xbb836603, SF_FALSE) ;
+	pcm_test_float   ("be-float.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_FLOAT, 0x903cd8fc, SF_FALSE) ;
 
-	pcm_test_double  ("le-double.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_DOUBLE, 0xbf84448e) ;
-	pcm_test_double  ("be-double.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_DOUBLE, 0xaf3d9fb5) ;
+	pcm_test_double  ("le-double.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_DOUBLE, 0xbf84448e, SF_FALSE) ;
+	pcm_test_double  ("be-double.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_DOUBLE, 0xaf3d9fb5, SF_FALSE) ;
+
+	puts ("Test IEEE replacement code.") ;
+	
+	pcm_test_float   ("le-float.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_FLOAT, 0xbb836603, SF_TRUE) ;
+	pcm_test_float   ("be-float.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_FLOAT, 0x903cd8fc, SF_TRUE) ;
+
+	pcm_test_double  ("le-double.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_DOUBLE, 0xbf84448e, SF_TRUE) ;
+	pcm_test_double  ("be-double.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_DOUBLE, 0xaf3d9fb5, SF_TRUE) ;
 
 	return 0;
 } /* main */
@@ -68,13 +76,6 @@ main (void)
 /*============================================================================================
 **	Here are the test functions.
 */
-
-#define PUT_DOTS(k)					\
-			{	while (k--)			\
-					putchar ('.') ;	\
-				putchar (' ') ;		\
-				}
-
 
 static void
 pcm_test_bits_8  (char *filename, int filetype, int hash)
@@ -86,11 +87,7 @@ pcm_test_bits_8  (char *filename, int filetype, int hash)
 	float		*float_out, *float_in ;
 	double		*double_out, *double_in ;
 
-	printf ("    pcm_test_%s : %s ", "bits_8 ", filename) ;
-	fflush (stdout) ;
-
-	k = abs (16 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+	print_test_name ("pcm_test_bits_8 ", filename) ;
 
 	items = 127 ;
 
@@ -353,11 +350,7 @@ pcm_test_bits_16 (char *filename, int filetype, int hash)
 	float		*float_out, *float_in ;
 	double		*double_out, *double_in ;
 
-	printf ("    pcm_test_%s : %s ", "bits_16", filename) ;
-	fflush (stdout) ;
-
-	k = abs (16 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+	print_test_name ("pcm_test_bits_16", filename) ;
 
 	items = 1024 ;
 
@@ -620,11 +613,7 @@ pcm_test_bits_24 (char *filename, int filetype, int hash)
 	float		*float_out, *float_in ;
 	double		*double_out, *double_in ;
 
-	printf ("    pcm_test_%s : %s ", "bits_24", filename) ;
-	fflush (stdout) ;
-
-	k = abs (16 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+	print_test_name ("pcm_test_bits_24", filename) ;
 
 	items = 1024 ;
 
@@ -887,11 +876,7 @@ pcm_test_bits_32 (char *filename, int filetype, int hash)
 	float		*float_out, *float_in ;
 	double		*double_out, *double_in ;
 
-	printf ("    pcm_test_%s : %s ", "bits_32", filename) ;
-	fflush (stdout) ;
-
-	k = abs (16 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+	print_test_name ("pcm_test_bits_32", filename) ;
 
 	items = 1024 ;
 
@@ -1150,24 +1135,22 @@ pcm_test_bits_32 (char *filename, int filetype, int hash)
 */
 
 static void
-pcm_test_float (char *filename, int filetype, int hash)
+pcm_test_float (char *filename, int filetype, int hash, int replace_float)
 {	SNDFILE			*file ;
 	SF_INFO			sfinfo ;
 	int				k, items, frames ;
 	int				sign ;
 	double			*data, error ;
 
-	printf ("    pcm_test_float   : %s ", filename) ;
-	fflush (stdout) ;
-
-	k = abs (16 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+	print_test_name ("pcm_test_float", filename) ;
 
 	items = BUFFER_SIZE / sizeof (double) ;
 
 	data = (double*) data_out ;
 	for (sign = 1, k = 0 ; k < items ; k++)
-		data [k] = ((double) k) / 100.0 * (sign *= -1) ;
+	{	data [k] = ((double) (k * sign)) / 100.0 ;
+		sign = (sign > 0) ? -1 : 1 ;
+		} ;
 
 	sfinfo.samplerate  = 44100 ;
 	sfinfo.frames     = items ;
@@ -1175,6 +1158,12 @@ pcm_test_float (char *filename, int filetype, int hash)
 	sfinfo.format 	   = filetype ;
 
 	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	sf_command (file, SFC_TEST_IEEE_FLOAT_REPLACE, NULL, replace_float) ;
+	if (replace_float && string_in_log_buffer (file, "Using IEEE replacement") == 0)
+	{	printf ("\n\nLine %d : Float replacement code not working.\n\n", __LINE__) ;
+		dump_log_buffer (file) ;
+		exit (1) ;
+		} ;
 
 	test_write_double_or_die (file, 0, data, items, __LINE__) ;
 
@@ -1188,6 +1177,12 @@ pcm_test_float (char *filename, int filetype, int hash)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
 	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	sf_command (file, SFC_TEST_IEEE_FLOAT_REPLACE, NULL, replace_float) ;
+	if (replace_float && string_in_log_buffer (file, "Using IEEE replacement") == 0)
+	{	printf ("\n\nLine %d : Float replacement code not working.\n\n", __LINE__) ;
+		dump_log_buffer (file) ;
+		exit (1) ;
+		} ;
 
 	if (sfinfo.format != filetype)
 	{	printf ("\n\nError (%s:%d) Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __FILE__, __LINE__, filetype, sfinfo.format) ;
@@ -1208,7 +1203,7 @@ pcm_test_float (char *filename, int filetype, int hash)
 
 	test_read_double_or_die (file, 0, data, items, __LINE__) ;
 
-	for (sign = 1, k = 0 ; k < items ; k++)
+	for (sign = -1, k = 0 ; k < items ; k++)
 	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
 		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
 		{	printf ("\n\nError (%s:%d) Mono : Incorrect sample (#%d : %f => %f).\n", __FILE__, __LINE__, k, ((double) k) / 100.0, data [k]) ;
@@ -1276,7 +1271,7 @@ pcm_test_float (char *filename, int filetype, int hash)
 	items = BUFFER_SIZE / sizeof (double) ;
 
 	data = (double*) data_out ;
-	for (sign = 1, k = 0 ; k < items ; k++)
+	for (sign = -1, k = 0 ; k < items ; k++)
 		data [k] = ((double) k) / 100.0 * (sign *= -1) ;
 
 	sfinfo.samplerate = 44100 ;
@@ -1287,6 +1282,12 @@ pcm_test_float (char *filename, int filetype, int hash)
 	frames = items / sfinfo.channels ;
 
 	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	sf_command (file, SFC_TEST_IEEE_FLOAT_REPLACE, NULL, replace_float) ;
+	if (replace_float && string_in_log_buffer (file, "Using IEEE replacement") == 0)
+	{	printf ("\n\nLine %d : Float replacement code not working.\n\n", __LINE__) ;
+		dump_log_buffer (file) ;
+		exit (1) ;
+		} ;
 
 	test_writef_double_or_die (file, 0, data, frames, __LINE__) ;
 
@@ -1300,6 +1301,12 @@ pcm_test_float (char *filename, int filetype, int hash)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
 	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	sf_command (file, SFC_TEST_IEEE_FLOAT_REPLACE, NULL, replace_float) ;
+	if (replace_float && string_in_log_buffer (file, "Using IEEE replacement") == 0)
+	{	printf ("\n\nLine %d : Float replacement code not working.\n\n", __LINE__) ;
+		dump_log_buffer (file) ;
+		exit (1) ;
+		} ;
 
 	if (sfinfo.format != filetype)
 	{	printf ("\n\nError (%s:%d) Stereo : Returned format incorrect (0x%08X => 0x%08X).\n", __FILE__, __LINE__, filetype, sfinfo.format) ;
@@ -1319,7 +1326,7 @@ pcm_test_float (char *filename, int filetype, int hash)
 	check_log_buffer_or_die (file) ;
 
 	test_readf_double_or_die (file, 0, data, frames, __LINE__) ;
-	for (sign = 1, k = 0 ; k < items ; k++)
+	for (sign = -1, k = 0 ; k < items ; k++)
 	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
 		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
 		{	printf ("\n\nError (%s:%d) Stereo : Incorrect sample (#%d : %f => %f).\n", __FILE__, __LINE__, k, ((double) k) / 100.0, data [k]) ;
@@ -1382,52 +1389,45 @@ pcm_test_float (char *filename, int filetype, int hash)
 } /* pcm_test_float */
 
 static void
-pcm_test_double (char *filename, int	filetype, int hash)
+pcm_test_double (char *filename, int	filetype, int hash, int replace_float)
 {	SNDFILE			*file ;
 	SF_INFO			sfinfo ;
 	int				k, items, frames ;
 	int				sign ;
 	double			*data, error ;
-	sf_count_t		position ;
 
 	/* This is the best test routine. Other should be brought up to this standard. */
 
-	printf ("    pcm_test_double  : %s ", filename) ;
-	fflush (stdout) ;
-
-	k = abs (16 - strlen (filename)) ;
-	PUT_DOTS (k) ;
+	print_test_name ("pcm_test_double", filename) ;
 
 	items = BUFFER_SIZE / sizeof (double) ;
 
 	data = (double*) data_out ;
 	for (sign = 1, k = 0 ; k < items ; k++)
-		data [k] = ((double) k) / 100.0 * (sign *= -1) ;
+	{	data [k] = ((double) (k * sign)) / 100.0 ;
+		sign = (sign > 0) ? -1 : 1 ;
+		} ;
 
 	sfinfo.samplerate  = 44100 ;
 	sfinfo.frames     = items ;
 	sfinfo.channels    = 1 ;
 	sfinfo.format 	   = filetype ;
 
-	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
-	{	printf ("\n\nError (%s:%d) Mono : sf_open_write failed with error : ", __FILE__, __LINE__) ;
-		fflush (stdout) ;
-		sf_perror (NULL) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	sf_command (file, SFC_TEST_IEEE_FLOAT_REPLACE, NULL, replace_float) ;
+	if (replace_float && string_in_log_buffer (file, "Using IEEE replacement") == 0)
+	{	printf ("\n\nLine %d : Float replacement code not working.\n\n", __LINE__) ;
+		dump_log_buffer (file) ;
 		exit (1) ;
 		} ;
+	
+	test_write_double_or_die (file, 0, data, items, __LINE__) ;
 
-	if ((position = sf_write_double (file, data, items)) != items)
-	{	printf ("\n\nError (%s:%d) Mono : sf_write_double (%d) returned %ld.\n",
-				__FILE__, __LINE__, items, SF_COUNT_TO_LONG (position)) ;
-		fflush (stdout) ;
-		sf_perror (file) ;
-		exit (1) ;
-		} ;
 	sf_close (file) ;
 
 #if (defined (WIN32) || defined (_WIN32))
 	/* File hashing on Win32 fails due to slighty different 
-	** calculated values.
+	** calculated values of the sin() function.
 	*/
 	hash = hash ; /* Avoid compiler warning. */
 #else
@@ -1439,10 +1439,11 @@ pcm_test_double (char *filename, int	filetype, int hash)
 	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
-	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
-	{	printf ("\n\nError (%s:%d) Mono : sf_open_read failed with error : ", __FILE__, __LINE__) ;
-		fflush (stdout) ;
-		sf_perror (NULL) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	sf_command (file, SFC_TEST_IEEE_FLOAT_REPLACE, NULL, replace_float) ;
+	if (replace_float && string_in_log_buffer (file, "Using IEEE replacement") == 0)
+	{	printf ("\n\nLine %d : Float replacement code not working.\n\n", __LINE__) ;
+		dump_log_buffer (file) ;
 		exit (1) ;
 		} ;
 
@@ -1463,12 +1464,9 @@ pcm_test_double (char *filename, int	filetype, int hash)
 
 	check_log_buffer_or_die (file) ;
 
-	if ((k = sf_read_double (file, data, items)) != items)
-	{	printf ("\n\nError (%s:%d) Mono : short read (%d).\n", __FILE__, __LINE__, k) ;
-		exit (1) ;
-		} ;
+	test_read_double_or_die (file, 0, data, items, __LINE__) ;
 
-	for (sign = 1, k = 0 ; k < items ; k++)
+	for (sign = -1, k = 0 ; k < items ; k++)
 	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
 		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
 		{	printf ("\n\nError (%s:%d) Mono : Incorrect sample (#%d : %f => %f).\n", __FILE__, __LINE__, k, ((double) k) / 100.0, data [k]) ;
@@ -1477,12 +1475,9 @@ pcm_test_double (char *filename, int	filetype, int hash)
 		} ;
 
 	/* Seek to start of file. */
-	if ((position = sf_seek (file, 0, SEEK_SET) != 0))
-	{	printf ("\n\nError (%s:%d) Mono : sf_seek (file, 0, SEEK_SET) failed.\n", __FILE__, __LINE__) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
 
-	sf_read_double (file, data, 4) ;
+	test_read_double_or_die (file, 0, data, 4, __LINE__) ;
 	for (k = 0 ; k < 4 ; k++)
 	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
 		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
@@ -1492,18 +1487,11 @@ pcm_test_double (char *filename, int	filetype, int hash)
 		} ;
 
 	/* Seek to offset from start of file. */
-	if ((position = sf_seek (file, 10, SEEK_SET) != 10))
-	{	printf ("\n\nError (%s:%d) Mono : sf_seek (file, 10, SEEK_SET) failed. XXXXX\n", __FILE__, __LINE__) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_double (file, data + 10, 4) ;
+	test_read_double_or_die (file, 0, data + 10, 4, __LINE__) ;
 
-	if ((position = sf_seek (file, 0, SEEK_CUR)) != 14)
-	{	printf ("\n\nError (%s:%d) Mono : sf_seek (file, 0, SEEK_SET) => %ld (should be 14).\n",
-				__FILE__, __LINE__, SF_COUNT_TO_LONG (position)) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 0, SEEK_CUR, 14, sfinfo.channels, __LINE__) ;
 
 	for (k = 10 ; k < 14 ; k++)
 	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
@@ -1514,12 +1502,9 @@ pcm_test_double (char *filename, int	filetype, int hash)
 		} ;
 
 	/* Seek to offset from current position. */
-	if ((position = sf_seek (file, 6, SEEK_CUR) != 20))
-	{	printf ("\n\nError (%s:%d) Mono : sf_seek (file, 6, SEEK_CUR) failed (%ld != 20).\n", __FILE__, __LINE__, SF_COUNT_TO_LONG (position)) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 6, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
 
-	sf_read_double (file, data + 20, 4) ;
+	test_read_double_or_die (file, 0, data + 20, 4, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
 	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
 		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
@@ -1529,12 +1514,9 @@ pcm_test_double (char *filename, int	filetype, int hash)
 		};
 
 	/* Seek to offset from end of file. */
-	if ((position = sf_seek (file, -(sfinfo.frames - 10), SEEK_END) != 10))
-	{	printf ("\n\nError (%s:%d) Mono : sf_seek (file, -(sfinfo.frames - 10), SEEK_END) failed (%ld).\n", __FILE__, __LINE__, SF_COUNT_TO_LONG (position)) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_double (file, data + 10, 4) ;
+	test_read_double_or_die (file, 0, data + 10, 4, __LINE__) ;
 	for (k = 10 ; k < 14 ; k++)
 	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
 		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
@@ -1555,7 +1537,7 @@ pcm_test_double (char *filename, int	filetype, int hash)
 	items = BUFFER_SIZE / sizeof (double) ;
 
 	data = (double*) data_out ;
-	for (sign = 1, k = 0 ; k < items ; k++)
+	for (sign = -1, k = 0 ; k < items ; k++)
 		data [k] = ((double) k) / 100.0 * (sign *= -1) ;
 
 	sfinfo.samplerate = 44100 ;
@@ -1565,19 +1547,16 @@ pcm_test_double (char *filename, int	filetype, int hash)
 
 	frames = items / sfinfo.channels ;
 
-	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
-	{	printf ("\n\nError (%s:%d) Stereo : sf_open_write failed with error : ", __FILE__, __LINE__) ;
-		fflush (stdout) ;
-		sf_perror (NULL) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	sf_command (file, SFC_TEST_IEEE_FLOAT_REPLACE, NULL, replace_float) ;
+	if (replace_float && string_in_log_buffer (file, "Using IEEE replacement") == 0)
+	{	printf ("\n\nLine %d : Float replacement code not working.\n\n", __LINE__) ;
+		dump_log_buffer (file) ;
 		exit (1) ;
 		} ;
 
-	if (sf_writef_double (file, data, frames) != frames)
-	{	printf ("\n\nError (%s:%d) Stereo : sf_writef_int failed with error : ", __FILE__, __LINE__) ;
-		fflush (stdout) ;
-		sf_perror (file) ;
-		exit (1) ;
-		} ;
+	test_writef_double_or_die (file, 0, data, frames, __LINE__) ;
+
 	sf_close (file) ;
 
 #if (defined (WIN32) || defined (_WIN32))
@@ -1594,10 +1573,11 @@ pcm_test_double (char *filename, int	filetype, int hash)
 	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
-	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
-	{	printf ("\n\nError (%s:%d) Stereo : sf_open_read failed with error : ", __FILE__, __LINE__) ;
-		fflush (stdout) ;
-		sf_perror (NULL) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	sf_command (file, SFC_TEST_IEEE_FLOAT_REPLACE, NULL, replace_float) ;
+	if (replace_float && string_in_log_buffer (file, "Using IEEE replacement") == 0)
+	{	printf ("\n\nLine %d : Float replacement code not working.\n\n", __LINE__) ;
+		dump_log_buffer (file) ;
 		exit (1) ;
 		} ;
 
@@ -1618,12 +1598,9 @@ pcm_test_double (char *filename, int	filetype, int hash)
 
 	check_log_buffer_or_die (file) ;
 
-	if ((k = sf_readf_double (file, data, frames)) != frames)
-	{	printf ("\n\nError (%s:%d) Stereo : short read (%d).\n", __FILE__, __LINE__, k) ;
-		exit (1) ;
-		} ;
+	test_readf_double_or_die (file, 0, data, frames, __LINE__) ;
 
-	for (sign = 1, k = 0 ; k < items ; k++)
+	for (sign = -1, k = 0 ; k < items ; k++)
 	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
 		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
 		{	printf ("\n\nError (%s:%d) Stereo : Incorrect sample (#%d : %f => %f).\n", __FILE__, __LINE__, k, ((double) k) / 100.0, data [k]) ;
@@ -1632,12 +1609,9 @@ pcm_test_double (char *filename, int	filetype, int hash)
 		} ;
 
 	/* Seek to start of file. */
-	if ((k = sf_seek (file, 0, SEEK_SET) != 0))
-	{	printf ("\n\nError (%s:%d) Stereo : sf_seek (file, 0, SEEK_SET) failed.\n", __FILE__, __LINE__) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 0, SEEK_SET, 0, sfinfo.channels, __LINE__) ;
 
-	sf_read_double (file, data, 4) ;
+	test_read_double_or_die (file, 0, data, 4, __LINE__) ;
 	for (k = 0 ; k < 4 ; k++)
 	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
 		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
@@ -1647,12 +1621,9 @@ pcm_test_double (char *filename, int	filetype, int hash)
 		} ;
 
 	/* Seek to offset from start of file. */
-	if ((k = sf_seek (file, 10, SEEK_SET) != 10))
-	{	printf ("\n\nError (%s:%d) Stereo : sf_seek (file, 10, SEEK_SET) failed.\n", __FILE__, __LINE__) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 10, SEEK_SET, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_double (file, data + 10, 4) ;
+	test_read_double_or_die (file, 0, data + 10, 4, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
 	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
 		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
@@ -1662,12 +1633,9 @@ pcm_test_double (char *filename, int	filetype, int hash)
 		} ;
 
 	/* Seek to offset from current position. */
-	if ((k = sf_seek (file, 8, SEEK_CUR)) != 20)
-	{	printf ("\n\nError (%s:%d) Stereo : sf_seek (file, 8, SEEK_CUR) failed. (20 -> %d)\n", __FILE__, __LINE__, k) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, 8, SEEK_CUR, 20, sfinfo.channels, __LINE__) ;
 
-	sf_read_double (file, data + 40, 4) ;
+	test_readf_double_or_die (file, 0, data + 40, 4, __LINE__) ;
 	for (k = 40 ; k < 44 ; k++)
 	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
 		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)
@@ -1677,12 +1645,9 @@ pcm_test_double (char *filename, int	filetype, int hash)
 		} ;
 
 	/* Seek to offset from end of file. */
-	if ((k = sf_seek (file, -(sfinfo.frames - 10), SEEK_END) != 10))
-	{	printf ("\n\nError (%s:%d) Stereo : sf_seek (file, -(sfinfo.frames - 10), SEEK_END) failed (%d).\n", __FILE__, __LINE__, k) ;
-		exit (1) ;
-		} ;
+	test_seek_or_die (file, -(sfinfo.frames -10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
-	sf_read_double (file, data + 20, 4) ;
+	test_readf_double_or_die (file, 0, data + 20, 4, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
 	{	error = fabs (data [k] - ((double) k) / 100.0 * (sign *= -1)) ;
 		if (fabs (data [k]) > 1e-100 && fabs (error / data [k]) > 1e-5)

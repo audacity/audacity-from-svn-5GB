@@ -55,3 +55,10 @@ sf_write_short    @37
 sf_write_int      @38
 sf_write_float    @39
 sf_write_double   @40
+
+
+;
+; Added more recently
+;
+sf_strerror		  @50
+

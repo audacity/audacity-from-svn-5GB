@@ -92,7 +92,7 @@ svx_open	(SF_PRIVATE *psf)
 		if (psf->blockwidth)
 			psf->sf.frames  = psf->datalength / psf->blockwidth ;
 
-		psf_fseek (psf->filedes, psf->dataoffset, SEEK_SET) ;
+		psf_fseek (psf, psf->dataoffset, SEEK_SET) ;
 		} ;
 
 	subformat = psf->sf.format & SF_FORMAT_SUBMASK ;
@@ -220,7 +220,7 @@ svx_read_header	(SF_PRIVATE *psf)
 					psf_binheader_readf (psf, "E4", &dword) ;
 					psf->datalength = dword ;
 					
-					psf->dataoffset = psf_ftell (psf->filedes) ;
+					psf->dataoffset = psf_ftell (psf) ;
 					
 					if (psf->datalength > psf->filelength - psf->dataoffset)
 					{	psf_log_printf (psf, " BODY : %d (should be %d)\n", psf->datalength, psf->filelength - psf->dataoffset) ;
@@ -234,7 +234,7 @@ svx_read_header	(SF_PRIVATE *psf)
 					if (! psf->sf.seekable)
 						break ;
 
-					psf_fseek (psf->filedes, psf->datalength, SEEK_CUR) ;
+					psf_fseek (psf, psf->datalength, SEEK_CUR) ;
 					break ;
 
 			case NAME_MARKER :
@@ -287,7 +287,7 @@ svx_read_header	(SF_PRIVATE *psf)
 						psf_binheader_readf (psf, "j", dword) ;
 						break ;
 						} ;
-					if ((dword = psf_ftell (psf->filedes)) & 0x03)
+					if ((dword = psf_ftell (psf)) & 0x03)
 					{	psf_log_printf (psf, "  Unknown chunk marker at position %d. Resynching.\n", dword - 4) ;
 
 						psf_binheader_readf (psf, "j", -3) ;
@@ -297,16 +297,10 @@ svx_read_header	(SF_PRIVATE *psf)
 					done = 1 ;
 			} ;	/* switch (marker) */
 
-		if (psf_ferror (psf->filedes))
-		{	psf_log_printf (psf, "*** Error on file handle. ***\n", marker) ;
-			psf_fclearerr (psf->filedes) ;
-			break ;
-			} ;
-			
 		if (! psf->sf.seekable && (parsestage & HAVE_BODY))
 			break ;
 
-		if (psf_ftell (psf->filedes) >= psf->filelength - sizeof (dword))
+		if (psf_ftell (psf) >= psf->filelength - sizeof (dword))
 			break ;
 		} ; /* while (1) */
 		
@@ -327,9 +321,9 @@ svx_close	(SF_PRIVATE  *psf)
 		**	correct values for the FORM, 8SVX and BODY chunks.
 		*/
                 
-		psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf->filedes) ;
-		psf_fseek (psf->filedes, 0, SEEK_SET) ;
+		psf_fseek (psf, 0, SEEK_END) ;
+		psf->filelength = psf_ftell (psf) ;
+		psf_fseek (psf, 0, SEEK_SET) ;
 		
 		psf->datalength = psf->filelength - psf->dataoffset ;
 
@@ -344,12 +338,12 @@ svx_write_header (SF_PRIVATE *psf, int calc_length)
 {	static	char 	annotation	[] = "libsndfile by Erik de Castro Lopo\0\0\0" ;
 	sf_count_t	current ;
 	
-	current = psf_ftell (psf->filedes) ;
+	current = psf_ftell (psf) ;
 
 	if (calc_length)
-	{	psf_fseek (psf->filedes, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf->filedes) ;
-		psf_fseek (psf->filedes, 0, SEEK_SET) ;
+	{	psf_fseek (psf, 0, SEEK_END) ;
+		psf->filelength = psf_ftell (psf) ;
+		psf_fseek (psf, 0, SEEK_SET) ;
 
 		psf->datalength = psf->filelength - psf->dataoffset ;
 		if (psf->dataend)
@@ -360,7 +354,7 @@ svx_write_header (SF_PRIVATE *psf, int calc_length)
 
 	psf->header [0] = 0 ;
 	psf->headindex = 0 ;
-	psf_fseek (psf->filedes, 0, SEEK_SET) ;
+	psf_fseek (psf, 0, SEEK_SET) ;
 
 	/* FORM marker and FORM size. */	
 	psf_binheader_writef (psf, "Etm8", FORM_MARKER, psf->filelength - 8) ;
@@ -381,14 +375,17 @@ svx_write_header (SF_PRIVATE *psf, int calc_length)
 	/* BODY marker and size. */
 	psf_binheader_writef (psf, "Etm8", BODY_MARKER, psf->datalength) ;
 
-	psf_fwrite (psf->header, psf->headindex, 1, psf->filedes) ;
+	psf_fwrite (psf->header, psf->headindex, 1, psf) ;
+
+	if (psf->error)
+		return psf->error ;
 
 	psf->dataoffset = psf->headindex ;
 	
 	if (current > 0)
-		psf_fseek (psf->filedes, current, SEEK_SET) ;
+		psf_fseek (psf, current, SEEK_SET) ;
 		
-	return 0 ;
+	return psf->error ;
 } /* svx_write_header */
 
 

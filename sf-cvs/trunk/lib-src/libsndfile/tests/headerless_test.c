@@ -53,14 +53,14 @@ main (void)
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("Line %d: sf_open_write failed with error : ", __LINE__) ;
 		fflush (stdout) ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 
 	if ((k = sf_write_short (file, buffer, BUFFER_SIZE)) != BUFFER_SIZE)
 	{	printf ("Line %d: sf_write_short failed with short write (%d => %d).\n", __LINE__, BUFFER_SIZE, k) ;
 		fflush (stdout) ;
-		sf_perror (file) ;
+		puts (sf_strerror (file)) ;
 		exit (1) ;
 		} ;
 
@@ -74,7 +74,7 @@ main (void)
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
 	{	printf ("Line %d: sf_open_read failed with error : ", __LINE__) ;
 		fflush (stdout) ;
-		sf_perror (NULL) ;
+		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
 

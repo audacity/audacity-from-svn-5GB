@@ -73,7 +73,7 @@ sd2_open	(SF_PRIVATE *psf)
 	if (marker != Sd2f_MARKER)
 	{	printf ("Whoops!!!\n") ;
 		puts (psf->logbuffer) ;
-		exit (1) ;
+		return SFE_INTERNAL ;
 		} ;
 
 	psf_log_printf (psf, "Marker   : %M\n"
@@ -116,7 +116,7 @@ sd2_open	(SF_PRIVATE *psf)
 	{	puts ("##############################") ;
 		puts (psf->logbuffer) ;
 		puts ("##############################") ;
-		exit (1) ;
+		return SFE_INTERNAL ;
 		} ;
 
 	memset (psf->buffer, 0, sizeof (psf->buffer)) ;
@@ -159,7 +159,7 @@ sd2_open	(SF_PRIVATE *psf)
 	
 	pcm_init (psf) ;
 
-	psf_fseek (psf->filedes, psf->dataoffset, SEEK_SET) ;
+	psf_fseek (psf, psf->dataoffset, SEEK_SET) ;
 
 	psf->close = sd2_close ;
 	

@@ -1,10 +1,9 @@
 # This file was automatically generated
 # DO NOT EDIT!
 
-bin_PROGRAMS = sndfile-info sndfile-play
+bin_PROGRAMS = sndfile-info sndfile-play sndfile-convert
 
-noinst_PROGRAMS = sfconvert wav32_aiff24 make_sine sfhexdump sfprocess \
-		sfdump list_formats sndfile2oct generate
+noinst_PROGRAMS = make_sine sfprocess list_formats cooledit-fixer generate
 
 # This is the BeOS version of sndfile-play. It needs to be compiled with the C++
 # compiler.
@@ -17,36 +16,25 @@ SNDFILEDIR =../src
 INCLUDES = -I$(srcdir)/$(SNDFILEDIR) $(OS_SPECIFIC_INCLUDES)
 
 sndfile_info_SOURCES = sndfile-info.c 
-sndfile_info_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
+sndfile_info_LDADD = $(SNDFILEDIR)/libsndfile.la
 
 sndfile_play_SOURCES = sndfile-play.c 
-sndfile_play_LDADD = $(SNDFILEDIR)/libsndfile.la -lm $(OS_SPECIFIC_LINKS)
+sndfile_play_LDADD = $(SNDFILEDIR)/libsndfile.la $(OS_SPECIFIC_LINKS)
 
-sfconvert_SOURCES = sfconvert.c 
-sfconvert_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
+sndfile_convert_SOURCES = sndfile-convert.c 
+sndfile_convert_LDADD = $(SNDFILEDIR)/libsndfile.la
  
-sndfile2oct_SOURCES = sndfile2oct.c 
-sndfile2oct_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
-
-wav32_aiff24_SOURCES = wav32_aiff24.c 
-wav32_aiff24_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
-
 make_sine_SOURCES = make_sine.c 
-make_sine_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
-
-sfhexdump_SOURCES = sfhexdump.c 
-sfhexdump_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
+make_sine_LDADD = $(SNDFILEDIR)/libsndfile.la
 
 sfprocess_SOURCES = sfprocess.c 
-sfprocess_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
-
-sfdump_SOURCES = sfdump.c 
-sfdump_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
+sfprocess_LDADD = $(SNDFILEDIR)/libsndfile.la
 
 list_formats_SOURCES = list_formats.c 
-list_formats_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
+list_formats_LDADD = $(SNDFILEDIR)/libsndfile.la
+
+cooledit_fixer_SOURCES = cooledit-fixer.c 
+cooledit_fixer_LDADD = $(SNDFILEDIR)/libsndfile.la
 
 generate_SOURCES = generate.c 
-generate_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
-
-
+generate_LDADD = $(SNDFILEDIR)/libsndfile.la

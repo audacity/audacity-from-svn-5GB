@@ -244,7 +244,7 @@ ircam_write_header (SF_PRIVATE *psf, int calc_length)
 	float		samplerate ;
 	sf_count_t	current ;
 
-	current = psf_ftell (psf->filedes) ;
+	current = psf_ftell (psf) ;
 
 	calc_length = calc_length ;
 
@@ -257,7 +257,7 @@ ircam_write_header (SF_PRIVATE *psf, int calc_length)
 	/* Reset the current header length to zero. */
 	psf->header [0] = 0 ;
 	psf->headindex = 0 ;
-	psf_fseek (psf->filedes, 0, SEEK_SET) ;
+	psf_fseek (psf, 0, SEEK_SET) ;
 	
 	samplerate = psf->sf.samplerate ;
 
@@ -275,12 +275,15 @@ ircam_write_header (SF_PRIVATE *psf, int calc_length)
 	psf_binheader_writef (psf, "z", IRCAM_DATA_OFFSET - psf->headindex) ;
 	
 	/* Header construction complete so write it out. */
-	psf_fwrite (psf->header, psf->headindex, 1, psf->filedes) ;
+	psf_fwrite (psf->header, psf->headindex, 1, psf) ;
+
+	if (psf->error)
+		return psf->error ;
 
 	if (current > 0)
-		psf_fseek (psf->filedes, current, SEEK_SET) ;
+		psf_fseek (psf, current, SEEK_SET) ;
 		
-	return 0 ;
+	return psf->error ;
 } /* ircam_write_header */ 
 
 static int
