@@ -138,6 +138,15 @@ pascal OSErr AEQuit(const AppleEvent * theAppleEvent,
    return noErr;
 }
 
+pascal OSErr AEOpenPrefs(const AppleEvent * theAppleEvent,
+                         AppleEvent * theReply,
+                         long Refcon)
+{
+   PrefsDialog dialog(GetActiveProject());
+   dialog.ShowModal();
+   return noErr;
+}
+
 /* prototype of MoreFiles fn, included in wxMac already */
 
 pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent, AppleEvent * theReply,
@@ -312,6 +321,12 @@ bool AudacityApp::OnInit()
    LoadEffects();
 
 #ifdef __WXMAC__
+
+   EnableMenuCommand(NULL, kHICommandPreferences);
+
+   AEInstallEventHandler(kCoreEventClass,
+                         kAEShowPreferences,
+                         NewAEEventHandlerUPP(AEOpenPrefs), 0, 0);   
 
    // Install AppleEvent handlers (allows us to open documents
    // that are dragged to our application's icon)

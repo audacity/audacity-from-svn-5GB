@@ -209,8 +209,10 @@
    CMD_ADDMENU_SEP(fileMenu);
    CMD_ADDMENU(_("Export &Labels..."), _("Export Labels"), OnExportLabels, fileMenu, enabledMenu);
 
+#ifndef __MACOSX__
    CMD_ADDMENU_SEP(fileMenu);
    CMD_ADDMENU(_("&Preferences..."), _("Preferences"), OnPreferences, fileMenu, enabledMenu);
+#endif
 
    CMD_ADDMENU_SEP(fileMenu);
    CMD_ADDMENU(_("E&xit"), _("Exit"), OnExit, fileMenu, enabledMenu);
