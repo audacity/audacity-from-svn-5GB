@@ -238,7 +238,18 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
    wxString key = mManager->GetKeyFromName(mNames[mCommandSelected]);
    mCurrentComboText->Clear();
    mCurrentComboText->AppendText(key);
+   // JKC: July-2004
+   // Under Windows 98 setting the focus to the combo box whilst
+   // we are still processing an OnItemSelected event can lead
+   // to a crash (try clicking on an item in the list and dragging it).
+   // It's OK under WinXP.  TODO: Is there a #define that only excludes
+   // WIN_98 that we could use here instead??
+#ifndef __WXMSW__
    mCurrentComboText->SetFocus();
+#else
+   //JKC Something like the following might do what we want under Win98?
+   //mCurrentComboText->GetEventHandler()->AddPendingEvent( wxFocusEvent(wxEVT_SET_FOCUS));
+#endif
 }
 
 void KeyConfigPrefs::RepopulateBindingsList()
