@@ -109,8 +109,8 @@ void EditToolBar::AddButton(const char **fg, const char **disabled, const char *
 #endif
 
    mButtons[id] = ToolBar::MakeButton(
-                     upImage, downImage, hiliteImage, (const char **) fg,
-                     (const char **) disabled, (const char **) alpha,
+                     upImage, downImage, hiliteImage, fg,
+                     disabled, alpha,
                      wxWindowID(id), wxPoint(mButtonPos, buttonTop),
                      wxSize(BUTTON_WIDTH, BUTTON_WIDTH), 3, 3);
 

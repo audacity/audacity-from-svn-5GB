@@ -33,7 +33,10 @@
 #endif
 
 #ifdef __WXMAC__
-void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
+#define __MOVIES__            /* Apple's Movies.h not compatible with Audacity */
+#define __MACHELP__           /* Apple's Movies.h not compatible with Audacity */
+
+#include <wx/mac/private.h>
 #else
 #include <wx/dragimag.h>
 #endif
@@ -78,8 +81,6 @@ AudacityProject *AudacityProject::msClipProject = NULL;
 # ifndef __UNIX__
 #  include <Files.h>
 # endif
-
-void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 
 const int sbarSpaceWidth = 15;
 const int sbarControlWidth = 16;
@@ -174,15 +175,15 @@ AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
 
 void RedrawAllProjects()
 {
-   int len = gAudacityProjects.GetCount();
-   for (int i = 0; i < len; i++)
+   size_t len = gAudacityProjects.GetCount();
+   for (size_t i = 0; i < len; i++)
       gAudacityProjects[i]->RedrawProject();
 }
 
 void CloseAllProjects()
 {
-   int len = gAudacityProjects.GetCount();
-   for (int i = 0; i < len; i++)
+   size_t len = gAudacityProjects.GetCount();
+   for (size_t i = 0; i < len; i++)
       gAudacityProjects[i]->Close();
 
    //Set the project number to 0
@@ -399,7 +400,7 @@ AudacityProject::~AudacityProject()
    //Do this from the bottom, to avoid too much popping forward in the array
    // that would be obtained if you keep deleting the 0th item from the front
 
-   int i;
+   size_t i;
    for (i = mToolBarArray.GetCount() - 1; i >= 0; i--) {
       delete mToolBarArray[i];
       mToolBarArray.RemoveAt(i);
@@ -458,7 +459,7 @@ wxString AudacityProject::GetName()
    wxString name = wxFileNameFromPath(mFileName);
 
    // Chop off the extension
-   int len = name.Len();
+   size_t len = name.Len();
    if (len > 4 && name.Mid(len - 4) == ".aup")
       name = name.Mid(0, len - 4);
 
@@ -902,8 +903,8 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
    //First, go through ToolBarArray and determine the current 
    //combined height of all toolbars.
    int tbheight = 0;
-   int len = mToolBarArray.GetCount();
-   for (int i = 0; i < len; i++)
+   size_t len = mToolBarArray.GetCount();
+   for (size_t i = 0; i < len; i++)
       tbheight += mToolBarArray[i]->GetHeight();
 
    //Get the size of the current project window
@@ -960,7 +961,7 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
    //Go through all of the toolbars (from the bottom up)
    //And delete it if it is type T
 
-   for (int i = mToolBarArray.GetCount() - 1; i >= 0; i--) {
+   for (size_t i = mToolBarArray.GetCount() - 1; i >= 0; i--) {
 
       if (mToolBarArray[i]->GetType() == t) {
 
@@ -996,8 +997,8 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
 
 bool AudacityProject::IsToolBarLoaded(enum ToolBarType t)
 {
-   int len = mToolBarArray.GetCount();
-   for (int i = 0; i < len; i++) {
+   size_t len = mToolBarArray.GetCount();
+   for (size_t i = 0; i < len; i++) {
 
       if (mToolBarArray[i]->GetType() == t) {
          return true;
@@ -1173,8 +1174,8 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
       gPrefs->Write("/DefaultOpenPath", wxPathOnly(fileName));
 
       // Make sure it isn't already open
-      int numProjects = gAudacityProjects.Count();
-      for (int i = 0; i < numProjects; i++)
+      size_t numProjects = gAudacityProjects.Count();
+      for (size_t i = 0; i < numProjects; i++)
          if (gAudacityProjects[i]->mFileName == fileName) {
             wxMessageBox
                 (_("That project is already open in another window."));
@@ -1669,7 +1670,7 @@ bool AudacityProject::SaveAs()
    if (fName == "")
       return false;
 
-   int len = fName.Len();
+   size_t len = fName.Len();
    if (len > 4 && fName.Mid(len - 4) == ".aup")
       fName = fName.Mid(0, len - 4);
 

@@ -77,8 +77,8 @@ void QuitAudacity()
 {
    // Try to close each open window.  If the user hits Cancel
    // in a Save Changes dialog, don't continue.
-   int len = gAudacityProjects.Count();
-   for (int i = 0; i < len; i++) {
+   size_t len = gAudacityProjects.Count();
+   for (size_t i = 0; i < len; i++) {
       if (!gAudacityProjects[i]->Close())
          return;
    }
@@ -116,8 +116,12 @@ IMPLEMENT_APP(AudacityApp)
 
 #ifdef __WXMAC__
 
+#define __MOVIES__            /* Apple's Movies.h not compatible with Audacity */
+#define __MACHELP__           /* Apple's Movies.h not compatible with Audacity */
+
+#include <wx/mac/private.h>
+
 /* Declare Static functions */
-static wxString wxMacFSSpec2MacFilename( const FSSpec *spec ) ;
 static pascal OSErr AEQuit(const AppleEvent * theAppleEvent,
                     AppleEvent * theReply, long Refcon);
 pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent, AppleEvent * theReply,

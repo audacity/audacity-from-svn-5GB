@@ -529,9 +529,9 @@ bool Sequence::InsertSilence(sampleCount s0, sampleCount len)
       SeqBlock *w = new SeqBlock();
       w->start = pos;
       w->len = l;
-      w->min = 0.0;
-      w->max = 0.0;
-      w->rms = 0.0;
+      w->min = float(0.0);
+      w->max = float(0.0);
+      w->rms = float(0.0);
       if (pos == 0 || len == l) {
          w->f = mDirManager->NewBlockFile(mSummary->totalSummaryBytes);
          firstBlockFile = w->f;
