@@ -4,14 +4,11 @@
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
  */
 
-/* $Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/gsm_decode.c,v 1.2 2002-04-16 04:30:49 dmazzoni Exp $ */
-
-#include "gsmprivate.h"
+#include "gsm610_priv.h"
 
 #include "gsm.h"
-#include "proto.h"
 
-int gsm_decode P3((s, c, target), gsm s, gsm_byte * c, gsm_signal * target)
+int gsm_decode (gsm s, gsm_byte * c, gsm_signal * target)
 {
 	word  	LARc[8], Nc[4], Mc[4], bc[4], xmaxc[4], xmc[13*4];
 

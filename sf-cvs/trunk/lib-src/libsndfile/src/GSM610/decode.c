@@ -4,19 +4,16 @@
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
  */
 
-/* $Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/decode.c,v 1.2 2002-04-16 04:30:44 dmazzoni Exp $ */
-
 #include <stdio.h>
 
-#include	"gsmprivate.h"
+#include	"gsm610_priv.h"
 #include	"gsm.h"
-#include	"proto.h"
 
 /*
  *  4.3 FIXED POINT IMPLEMENTATION OF THE RPE-LTP DECODER
  */
 
-static void Postprocessing P2((S,s),
+static void Postprocessing (
 	struct gsm_state	* S,
 	register word 		* s)
 {
@@ -33,7 +30,7 @@ static void Postprocessing P2((S,s),
 	S->msr = msr;
 }
 
-void Gsm_Decoder P8((S,LARcr, Ncr,bcr,Mcr,xmaxcr,xMcr,s),
+void Gsm_Decoder (
 	struct gsm_state	* S,
 
 	word		* LARcr,	/* [0..7]		IN	*/
@@ -52,7 +49,7 @@ void Gsm_Decoder P8((S,LARcr, Ncr,bcr,Mcr,xmaxcr,xMcr,s),
 
 	for (j=0; j <= 3; j++, xmaxcr++, bcr++, Ncr++, Mcr++, xMcr += 13) {
 
-		Gsm_RPE_Decoding( S, *xmaxcr, *Mcr, xMcr, erp );
+		Gsm_RPE_Decoding( /*-S,-*/ *xmaxcr, *Mcr, xMcr, erp );
 		Gsm_Long_Term_Synthesis_Filtering( S, *Ncr, *bcr, erp, drp );
 
 		for (k = 0; k <= 39; k++) wt[ j * 40 + k ] =  drp[ k ];

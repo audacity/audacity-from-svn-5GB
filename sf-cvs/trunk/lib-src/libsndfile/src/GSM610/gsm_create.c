@@ -4,42 +4,33 @@
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
  */
 
-static char const	ident[] = "$Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/gsm_create.c,v 1.2 2002-04-16 04:30:46 dmazzoni Exp $";
-
 #include	"config.h"
 
-#ifdef	HAS_STRING_H
+#include	<stdio.h>
+#include	<stdlib.h>
 #include	<string.h>
-#else
-#	include "proto.h"
-	extern char	* memset P((char *, int, int));
-#endif
 
-#ifdef	HAS_STDLIB_H
-#	include	<stdlib.h>
-#else
-#	ifdef	HAS_MALLOC_H
-#		include 	<malloc.h>
-#	else
-		extern char * malloc();
-#	endif
-#endif
 
-#include <stdio.h>
 
 #include "gsm.h"
-#include "gsmprivate.h"
-#include "proto.h"
+#include "gsm610_priv.h"
 
-gsm gsm_create P0()
+gsm gsm_create (void)
 {
 	gsm  r;
 
-	r = (gsm)malloc(sizeof(struct gsm_state));
+	r = malloc (sizeof(struct gsm_state));
 	if (!r) return r;
-
-	memset((char *)r, 0, sizeof(*r));
+	
+	memset((char *)r, 0, sizeof (struct gsm_state));
 	r->nrp = 40;
 
 	return r;
 }
+
+/* Added for libsndfile : May 6, 2002. Not sure if it works. */
+void gsm_init (gsm state)
+{
+	memset (state, 0, sizeof (struct gsm_state)) ;
+	state->nrp = 40 ;
+} 
