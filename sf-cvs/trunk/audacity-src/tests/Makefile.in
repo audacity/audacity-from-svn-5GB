@@ -20,7 +20,7 @@ TESTS = \
 	SimpleBlockFileTest \
 
 $(TESTS): %: %.cpp ../src/libaudacity.a
-	$(CXX) -o $@ $< $(CPPFLAGS) $(LIBS)
+	$(CXX) -o $@ $< $(CXXFLAGS) $(CPPFLAGS) $(LIBS)
 
 run_tests: $(TESTS)
 	tests='$(TESTS)'; for test in $$tests ; do \
