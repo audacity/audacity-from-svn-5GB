@@ -1006,7 +1006,7 @@ void AudacityProject::UpdateMenus()
    if (!gControlToolBarStub)
       return;
 
-   GetCommands()->EnableItemsByFunction("appmenu", "OnSave", mUndoManager.UnsavedChanges());
+   mCommandHandler.Enable("Save", mUndoManager.UnsavedChanges());
 
    bool nonZeroRegionSelected = (mViewInfo.sel1 > mViewInfo.sel0);
 
@@ -1040,8 +1040,8 @@ void AudacityProject::UpdateMenus()
       t = iter.Next();
    }
 
-   GetCommands()->EnableItemsByFunction("appmenu", "Paste", numTracksSelected > 0 && msClipLen > 0.0);
-   GetCommands()->EnableItemsByFunction("appmenu", "PasteOver", numTracksSelected > 0 && msClipLen > 0.0);
+   mCommandHandler.Enable("Paste", numTracksSelected > 0 && msClipLen > 0.0);
+   mCommandHandler.Enable("PasteOver", numTracksSelected > 0 && msClipLen > 0.0);
 
    //Calculate the ToolBarCheckSum (uniquely specifies state of all toolbars):
    int toolBarCheckSum = 0;
@@ -1102,29 +1102,29 @@ void AudacityProject::UpdateMenus()
 
    bool anySelection = numTracksSelected > 0 && nonZeroRegionSelected;
 
-   GetCommands()->EnableItemsByFunction("appmenu", "OnExportMix", numTracks > 0);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnExportSelection", anySelection);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnExportLossyMix", numTracks > 0);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnExportLossySelection", anySelection);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnExportLabels", numLabelTracks > 0);
+   mCommandHandler.Enable("OnExportMix", numTracks > 0);
+   mCommandHandler.Enable("OnExportSelection", anySelection);
+   mCommandHandler.Enable("OnExportLossyMix", numTracks > 0);
+   mCommandHandler.Enable("OnExportLossySelection", anySelection);
+   mCommandHandler.Enable("OnExportLabels", numLabelTracks > 0);
 
-   GetCommands()->EnableItemsByFunction("appmenu", "Cut", anySelection);
-   GetCommands()->EnableItemsByFunction("appmenu", "Copy", anySelection);
-   GetCommands()->EnableItemsByFunction("appmenu", "Trim", anySelection);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnDelete", anySelection);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnSilence", anySelection);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnSplit", anySelection);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnSplitLabels", numLabelTracksSelected == 1 && numWaveTracksSelected == 1);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnDuplicate", anySelection);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnSelectAll", numTracks > 0);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnSelectCursorEnd", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnSelectStartCursor", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
+   mCommandHandler.Enable("Cut", anySelection);
+   mCommandHandler.Enable("Copy", anySelection);
+   mCommandHandler.Enable("Trim", anySelection);
+   mCommandHandler.Enable("OnDelete", anySelection);
+   mCommandHandler.Enable("OnSilence", anySelection);
+   mCommandHandler.Enable("OnSplit", anySelection);
+   mCommandHandler.Enable("OnSplitLabels", numLabelTracksSelected == 1 && numWaveTracksSelected == 1);
+   mCommandHandler.Enable("OnDuplicate", anySelection);
+   mCommandHandler.Enable("OnSelectAll", numTracks > 0);
+   mCommandHandler.Enable("OnSelectCursorEnd", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
+   mCommandHandler.Enable("OnSelectStartCursor", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
 
-   GetCommands()->EnableItemsByFunction("appmenu", "Undo", mUndoManager.UndoAvailable());
-   GetCommands()->EnableItemsByFunction("appmenu", "Redo", mUndoManager.RedoAvailable());
+   mCommandHandler.Enable("Undo", mUndoManager.UndoAvailable());
+   mCommandHandler.Enable("Redo", mUndoManager.RedoAvailable());
 
 
-   GetCommands()->EnableItemsByFunction("appmenu", "OnPlotSpectrum", numWaveTracksSelected > 0
+   mCommandHandler.Enable("OnPlotSpectrum", numWaveTracksSelected > 0
                      && nonZeroRegionSelected);
 
 #ifndef __WXMAC__
@@ -1133,7 +1133,7 @@ void AudacityProject::UpdateMenus()
    if (gEditToolBarStub) {
 
      // Loaded or unloaded?
-     GetCommands()->EnableItemsByFunction("appmenu", "OnFloatEditToolBar", gEditToolBarStub->GetLoadedStatus());
+     mCommandHandler.Enable("OnFloatEditToolBar", gEditToolBarStub->GetLoadedStatus());
 
      // Floating or docked?
      if (gEditToolBarStub->GetWindowedStatus())
@@ -1143,14 +1143,14 @@ void AudacityProject::UpdateMenus()
    }
    else
      {
-       GetCommands()->EnableItemsByFunction("appmenu", "OnFloatEditToolBar", false);
+       mCommandHandler.Enable("OnFloatEditToolBar", false);
      }
 
 
    if (gMixerToolBarStub) {
      
      // Loaded or unloaded?
-     GetCommands()->EnableItemsByFunction("appmenu", "OnFloatMixerToolBar", gMixerToolBarStub->GetLoadedStatus());
+     mCommandHandler.Enable("OnFloatMixerToolBar", gMixerToolBarStub->GetLoadedStatus());
      
      // Floating or docked?
      if (gMixerToolBarStub->GetWindowedStatus())
@@ -1160,48 +1160,48 @@ void AudacityProject::UpdateMenus()
    }
    else
      {
-       GetCommands()->EnableItemsByFunction("appmenu", "OnFloatMixerToolBar", false);
+       mCommandHandler.Enable("OnFloatMixerToolBar", false);
      }
 
 #endif
 
-   GetCommands()->EnableItemsByFunction("appmenu", "OnQuickMix", numWaveTracksSelected > 0);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnSelectionSave", numWaveTracksSelected > 0);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnSelectionRestore", numWaveTracksSelected > 0);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnCursorTrackStart", numWaveTracksSelected > 0);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnCursorTrackEnd", numWaveTracksSelected > 0);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnCursorSelStart", numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnCursorSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlign", numWaveTracksSelected > 1);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignZero", numWaveTracksSelected > 0);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignZeroMoveSel", numWaveTracksSelected == 1);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupZero", numWaveTracksSelected > 1);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupZeroMoveSel", numWaveTracksSelected > 1);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignCursor", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignCursorMoveSel", numWaveTracksSelected == 1 && !nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignSelStart", numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignSelStartMoveSel", numWaveTracksSelected == 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignSelEndMoveSel", numWaveTracksSelected == 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignEndCursor", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignEndCursorMoveSel", numWaveTracksSelected == 1 && !nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignEndSelStart", numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignEndSelStartMoveSel", numWaveTracksSelected == 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignEndSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignEndSelEndMoveSel", numWaveTracksSelected == 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupCursor", numWaveTracksSelected > 1 && !nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupCursorMoveSel", numWaveTracksSelected > 1 && !nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupSelStart", numWaveTracksSelected > 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupSelStartMoveSel", numWaveTracksSelected > 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupSelEnd", numWaveTracksSelected > 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupSelEndMoveSel", numWaveTracksSelected > 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupEndCursor", numWaveTracksSelected > 1 && !nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupEndCursorMoveSel", numWaveTracksSelected > 1 && !nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupEndSelStart", numWaveTracksSelected > 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupEndSelStartMoveSel", numWaveTracksSelected > 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupEndSelEnd", numWaveTracksSelected > 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupEndSelEndMoveSel", numWaveTracksSelected > 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction("appmenu", "OnRemoveTracks", numTracksSelected > 0);
+   mCommandHandler.Enable("OnQuickMix", numWaveTracksSelected > 0);
+   mCommandHandler.Enable("OnSelectionSave", numWaveTracksSelected > 0);
+   mCommandHandler.Enable("OnSelectionRestore", numWaveTracksSelected > 0);
+   mCommandHandler.Enable("OnCursorTrackStart", numWaveTracksSelected > 0);
+   mCommandHandler.Enable("OnCursorTrackEnd", numWaveTracksSelected > 0);
+   mCommandHandler.Enable("OnCursorSelStart", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnCursorSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlign", numWaveTracksSelected > 1);
+   mCommandHandler.Enable("OnAlignZero", numWaveTracksSelected > 0);
+   mCommandHandler.Enable("OnAlignZeroMoveSel", numWaveTracksSelected == 1);
+   mCommandHandler.Enable("OnAlignGroupZero", numWaveTracksSelected > 1);
+   mCommandHandler.Enable("OnAlignGroupZeroMoveSel", numWaveTracksSelected > 1);
+   mCommandHandler.Enable("OnAlignCursor", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignCursorMoveSel", numWaveTracksSelected == 1 && !nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignSelStart", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignSelStartMoveSel", numWaveTracksSelected == 1 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignSelEndMoveSel", numWaveTracksSelected == 1 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignEndCursor", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignEndCursorMoveSel", numWaveTracksSelected == 1 && !nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignEndSelStart", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignEndSelStartMoveSel", numWaveTracksSelected == 1 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignEndSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignEndSelEndMoveSel", numWaveTracksSelected == 1 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignGroupCursor", numWaveTracksSelected > 1 && !nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignGroupCursorMoveSel", numWaveTracksSelected > 1 && !nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignGroupSelStart", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignGroupSelStartMoveSel", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignGroupSelEnd", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignGroupSelEndMoveSel", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignGroupEndCursor", numWaveTracksSelected > 1 && !nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignGroupEndCursorMoveSel", numWaveTracksSelected > 1 && !nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignGroupEndSelStart", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignGroupEndSelStartMoveSel", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignGroupEndSelEnd", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnAlignGroupEndSelEndMoveSel", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   mCommandHandler.Enable("OnRemoveTracks", numTracksSelected > 0);
 
    // Effects menus
 
@@ -1211,21 +1211,21 @@ void AudacityProject::UpdateMenus()
 #if 0 // dmazzoni: Generate menu is now always enabled
    effs = Effect::GetEffects(BUILTIN_EFFECT | PLUGIN_EFFECT | INSERT_EFFECT);
    for(e=0; e<effs->GetCount(); e++)
-      GetCommands()->EnableItemsByFunction("appmenu", wxString::Format("%i@GeneratePlugins@Effect", (*effs)[e]->GetID()),
+      mCommandHandler.Enable(wxString::Format("%i@GeneratePlugins@Effect", (*effs)[e]->GetID()),
                           numWaveTracksSelected > 0);
    delete effs;
 #endif
 
    effs = Effect::GetEffects(BUILTIN_EFFECT | PLUGIN_EFFECT | PROCESS_EFFECT);
    for(e=0; e<effs->GetCount(); e++)
-      GetCommands()->EnableItemsByFunction("appmenu", wxString::Format("%i@EffectPlugins@Effect", (*effs)[e]->GetID()),
+      mCommandHandler.Enable(wxString::Format("%i@EffectPlugins@Effect", (*effs)[e]->GetID()),
                           numWaveTracksSelected > 0
                           && nonZeroRegionSelected);
    delete effs;
 
    effs = Effect::GetEffects(BUILTIN_EFFECT | PLUGIN_EFFECT | ANALYZE_EFFECT);
    for(e=0; e<effs->GetCount(); e++)
-      GetCommands()->EnableItemsByFunction("appmenu", wxString::Format("%i@AnalyzePlugins@Effect", (*effs)[e]->GetID()),
+      mCommandHandler.Enable(wxString::Format("%i@AnalyzePlugins@Effect", (*effs)[e]->GetID()),
                           numWaveTracksSelected > 0
                            && nonZeroRegionSelected);
    delete effs;

@@ -33,6 +33,8 @@ void OnRecord();
 void OnSkipStart();
 void OnSkipEnd();
 
+void OnPlayOneSecond();
+
         // Selection-Editing Commands
 
 void OnCursorLeft();

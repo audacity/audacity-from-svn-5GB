@@ -533,40 +533,70 @@ void ControlToolBar::SetRecord(bool down)
       mRecord->PopUp();
 }
 
-
-void ControlToolBar::OnPlay(wxCommandEvent &evt)
+void ControlToolBar::PlayPlayRegion(double t0, double t1)
 {
    if (gAudioIO->IsStreamActive())
       return;
-
+   
    mStop->Enable();
    mRewind->Disable();
    mRecord->Disable();
    mFF->Disable();
    mPause->Enable();
-
-   mPlay->PushDown();
-
+   
    AudacityProject *p = GetActiveProject();
    if (p) {
       TrackList *t = p->GetTracks();
-      double t0 = p->GetSel0();
-      double t1 = p->GetSel1();
+      double maxofmins,minofmaxs;
+      
+      // JS: clarified how the final play region is computed;
+      
+      if (t1 == t0) {
+         // we play from t0 to end
 
-      if (t1 == t0 || t1 > t->GetEndTime())
+         // move t0 to valid range
+         if (t0 < 0)
+            t0 = t->GetStartTime();
+         if (t0 > t->GetEndTime())
+            t0 = t->GetEndTime();
+         
+         // always play to end
          t1 = t->GetEndTime();
-      if (t0 > t->GetEndTime())
-         t0 = t->GetEndTime();
+      }
+      else {
+         // always t0 < t1 right?
+
+         // the set intersection between the play region and the
+         // valid range maximum of lower bounds
+         if (t0 < t->GetStartTime())
+            maxofmins = t->GetStartTime();
+         else
+            maxofmins = t0;
+         
+         // minimum of upper bounds
+         if (t1 > t->GetEndTime())
+            minofmaxs = t->GetEndTime();
+         else
+            minofmaxs = t1;
+
+         // we test if the intersection has no volume 
+         if (minofmaxs <= maxofmins) {
+            // no volume; play nothing
+            return;
+         }
+         else {
+            t0 = maxofmins;
+            t1 = minofmaxs;
+         }
+      }
 
       bool success = false;
-      if (t1 > t0)
-      {
+      if (t1 > t0) {
          int token =
             gAudioIO->StartStream(t->GetWaveTrackArray(false),
                                   WaveTrackArray(), t->GetTimeTrack(),
                                   p->GetRate(), t0, t1);
-         if (token != 0)
-         {
+         if (token != 0) {
             success = true;
             p->SetAudioIOToken(token);
             mBusyProject = p;
@@ -578,6 +608,14 @@ void ControlToolBar::OnPlay(wxCommandEvent &evt)
          SetStop(false);
          SetRecord(false);
       }
+   }
+}
+
+void ControlToolBar::OnPlay(wxCommandEvent &evt)
+{
+   AudacityProject *p = GetActiveProject();
+   if (p) {
+     PlayPlayRegion(p->GetSel0(),p->GetSel1());
    }
 }
 
