@@ -29,49 +29,15 @@ class AudioIOPrefs:public PrefsPanel {
    ~AudioIOPrefs();
    bool Apply();
 
-   void TestPlaybackDevice(wxCommandEvent & event);
-   void SetPlaybackDeviceDefault(wxCommandEvent & event);
-   void TestRecordingDevice(wxCommandEvent & event);
-   void SetRecordingDeviceDefault(wxCommandEvent & event);
-
-   void OnRecordingDeviceChoice(wxCommandEvent & event);
-
  private:
-   wxString  mPlayDevice;
    wxString  mRecDevice;
+   wxString  mPlayDevice;
    
    wxCheckBox *mRecordStereo;
    wxCheckBox *mDuplex;
 
-   #ifdef __WXGTK__   
-   wxTextCtrl *mPlaybackDeviceCtrl;
-   wxButton *mPlaybackDeviceTest;
-   wxButton *mPlaybackDeviceDefault;
-
-   wxTextCtrl *mRecordingDeviceCtrl;
-   wxButton *mRecordingDeviceTest;
-   wxButton *mRecordingDeviceDefault;
-   #endif
-   
-   #ifdef __WXMSW__   
-   wxChoice *mPlaybackDeviceCtrl;
-   wxButton *mPlaybackDeviceTest;
-   wxButton *mPlaybackDeviceVol;
-
-   wxChoice *mRecordingDeviceCtrl;
-   wxButton *mRecordingDeviceTest;
-   wxButton *mRecordingDeviceVol;
-   #endif
-
-   #ifdef __WXMAC__
-   wxChoice *mRecordingDeviceChoice;
-   wxChoice *mRecordingInputChoice;
-   wxChoice *mPlaybackDeviceChoice;
-
-   void GetRecordingDevices(int *theCount, int *theSelected, wxString **theNames);
-   void GetRecordingInputs(int deviceNum, int *theCount, int *theSelected, wxString **theNames);
-   void GetPlaybackDevices(int *theCount, int *theSelected, wxString **theNames);
-   #endif // __WXMAC__
+   wxChoice *mRecChoice;
+   wxChoice *mPlayChoice;
 
  public:
     DECLARE_EVENT_TABLE()
