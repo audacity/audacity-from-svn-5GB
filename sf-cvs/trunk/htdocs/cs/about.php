@@ -21,7 +21,9 @@ Kód je hostován na serveru <a href="http://www.sourceforge.net">SourceForge</a>.
 </p>
 
 <p>
-Otázky/pøipomínky? Pošlete e-mail na <a href="mailto:audacity-help@lists.sourceforge.net">audacity-help@lists.sourceforge.net</a>. Prozatím jen v angliètinì.
+Otázky/pøipomínky? Pošlete e-mail na <a href="mailto:audacity-help@lists.sourceforge.net">audacity-help@lists.sourceforge.net</a>.
+Prozatím jen v angliètinì.
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font></br>
 </p>
 
 <!-- Translators: please make a note here that the "audacity-help"

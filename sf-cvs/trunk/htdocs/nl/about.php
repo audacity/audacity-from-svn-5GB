@@ -35,5 +35,6 @@ Stuur een email (in het Engels!)naar <a href="mailto:audacity-help@lists.sourcef
 <!-- Engels is de voertaal en daarom dienen vragen en opmerkingen in het engels te worden gemaild. Ook de help-pagina is in het engels!
 We zullen in de toekomst meerdere talen ondersteunen maar tot aan dat moment alles s.v.p. in de engelse taal.
 -->
+I would like to suggest: "Amplitude Envelope Editor" (AEE)
 
 <?php BoxBottom(); ?>

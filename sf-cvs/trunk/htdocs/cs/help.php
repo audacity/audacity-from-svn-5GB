@@ -59,6 +59,7 @@ Prohledávat dokumentaci:
 <p>
 <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font></br>
 </p>
 
 <?php BoxBottom(); ?>
@@ -102,6 +103,7 @@ Prohledávat dokumentaci:
 <p>
 <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font></br>
 </p>
 
 <?php BoxBottom(); ?>
