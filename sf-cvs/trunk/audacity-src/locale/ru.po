@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "POT-Creation-Date: 2003-10-21 19:31+0400\n"
-"PO-Revision-Date: 2003-10-25 17:08+0400\n"
+"PO-Revision-Date: 2003-11-10 17:57+0300\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -110,7 +110,7 @@ msgstr "&Создание"
 
 #: ../src/Menus.cpp:443
 msgid "&Help"
-msgstr "С&правка"
+msgstr "Спр&авка"
 
 #: ../src/Menus.cpp:293
 msgid "&History..."
@@ -118,7 +118,7 @@ msgstr "&История изменений в проекте..."
 
 #: ../src/Menus.cpp:310
 msgid "&Import Audio...\tCtrl+I"
-msgstr "&Импортировать звуковой файл...\tCtrl+I"
+msgstr "&Вставить звуковой файл...\tCtrl+I"
 
 #: ../src/Menus.cpp:130
 msgid "&New\tCtrl+N"
@@ -146,7 +146,7 @@ msgstr "&Настройки...\tCtrl+P"
 
 #: ../src/Menus.cpp:308
 msgid "&Project"
-msgstr "&Проект"
+msgstr "Пр&оект"
 
 #: ../src/Menus.cpp:317
 msgid "&Quick Mix"
