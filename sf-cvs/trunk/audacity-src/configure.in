@@ -42,7 +42,9 @@ AC_SUBST(OPTOBJS)
 AC_SUBST(CDEPEND)
 AC_SUBST(AFTERBUILD)
 
+dnl
 dnl Required sublibraries
+dnl
 
 BUILDLIBS="$BUILDLIBS expat/expat.a"
 EXTRAOBJS="$EXTRAOBJS ../lib-src/expat/expat.a"
@@ -53,26 +55,72 @@ BUILDLIBS="$BUILDLIBS allegro/allegro.a"
 EXTRAOBJS="$EXTRAOBJS ../lib-src/allegro/allegro.a"
 CXXFLAGS="$CXXFLAGS -I../lib-src/allegro"
 
+dnl
+dnl Optional sublibraries
+dnl
+
+dnl For each sublibrary, check to see if the source to this
+dnl library is in the lib-src directory (where it's provided
+dnl for convenience if you get Audacity through CVS).
+
+AC_CHECK_FILE(lib-src/libmad/frame.h,
+              default_libmad="yes",
+              default_libmad="system")
+
+AC_CHECK_FILE(lib-src/libvorbis/include/vorbis/vorbisenc.h,
+              default_vorbis="yes",
+              default_vorbis="system")
+
+AC_CHECK_FILE(lib-src/libid3tag/frame.h,
+              default_libid3tag="yes",
+              default_libid3tag="system")
+
+AC_CHECK_FILE(lib-src/libsndfile/src/sndfile.h,
+              default_libsndfile="local",
+              default_libsndfile="system")
+
+dnl If any of the optional sublibraries was not found in lib-src,
+dnl we assume the user wants to use a system library.  If the
+dnl library isn't installed, though, disable this library by
+dnl default.
+
+if [[ "$default_libmad" = "system" ]] ; then
+	AC_CHECK_HEADER(mad.h, , default_libmad="no")
+fi
+
+if [[ "$default_vorbis" = "system" ]] ; then
+	AC_CHECK_HEADER(vorbis/vorbisenc.h, , default_vorbis="no")
+fi
+
+if [[ "$default_libid3tag" = "system" ]] ; then
+	AC_CHECK_HEADER(id3tag.h, , default_libid3tag="no")
+fi
 
 dnl options
 
 AC_ARG_WITH(libmad,
 	[AC_HELP_STRING([--with-libmad],
-      [use libmad for mp3 decoding support [default=yes]])],
+      [use libmad for mp3 decoding support])],
 	use_libmad=$withval,
-	use_libmad="system")
+	use_libmad=$default_libmad)
 
 AC_ARG_WITH(vorbis,
 	[AC_HELP_STRING([--with-vorbis],
-		[enable ogg vorbis support [default=yes]])],
+		[enable ogg vorbis support])],
 	use_vorbis=$withval,
-	use_vorbis="system")
+	use_vorbis=$default_vorbis)
 
 AC_ARG_WITH(id3tag,
 	[AC_HELP_STRING([--with-id3tag],
-		[compile with libid3tag [default=yes]])],
+		[use libid3tag for mp3 id3 tag support])],
 	use_libid3tag=$withval,
-	use_libid3tag="system")
+	use_libid3tag=$default_libid3tag)
+
+AC_ARG_WITH(libsndfile,
+	[AC_HELP_STRING([--with-libsndfile],
+		[which libsndfile to use: [local or system]])],
+	use_libsndfile=$withval,
+	use_libsndfile=$default_libsndfile)
 
 AC_ARG_WITH(ladspa,
 	[AC_HELP_STRING([--with-ladspa],
@@ -85,6 +133,26 @@ AC_ARG_WITH(help,
 		[Make the help file "audacity-help.htb" [default=yes]])],
 	use_help=$withval,
 	use_help="yes")
+
+if [[ "$use_libsndfile" = "no" ]] ; then
+	   AC_MSG_ERROR([*** Audacity requires libsndfile 1.0.0 or higher to compile.  You must choose either --with-libsndfile=local or --with-libsndfile=system])
+fi
+
+if [[ "$use_libsndfile" = "local" ]] ; then
+	SUBDIRS="$SUBDIRS lib-src/libsndfile"
+	BUILDLIBS="$BUILDLIBS libsndfile/src/.libs/libsndfile.a"
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/libsndfile/src/.libs/libsndfile.a"
+	CXXFLAGS="$CXXFLAGS -I../lib-src/libsndfile/src"
+fi
+
+if [[ "$use_libsndfile" = "system" ]] ; then
+	dnl libsndfile -- we need at least version 1.0
+	dnl PKG_CHECK_MODULES(SNDFILE, sndfile >= 1.0.0,
+	dnl if found...
+	dnl LIBS="$LIBS $SNDFILE_LIBS" CPPFLAGS="$CPPFLAGS $SNDFILE_CFLAGS",
+
+	LIBS="$LIBS -lsndfile"	
+fi
 
 if [[ "$use_libmad" = "yes" ]] ; then
 
@@ -141,6 +209,8 @@ if [[ $use_vorbis = "yes" ]] ; then
 	BUILDLIBS="$BUILDLIBS libvorbis/lib/.libs/libvorbis.a"
 	BUILDLIBS="$BUILDLIBS libogg/src/.libs/libogg.a"
 	SUBDIRS="$SUBDIRS lib-src/libogg lib-src/libvorbis"
+	CXXFLAGS="$CXXFLAGS -I../lib-src/libogg/include/"
+	CXXFLAGS="$CXXFLAGS -I../lib-src/libvorbis/include/"
 
 	AC_DEFINE(USE_LIBVORBIS, 1,
 		[Define if the ogg vorbis decoding library is present])
@@ -212,14 +282,7 @@ fi
 LIBS="$LIBS `$WX_CONFIG --libs`"
 CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cxxflags`"
 
-dnl libsndfile -- we need at least version 1.0
-dnl PKG_CHECK_MODULES(SNDFILE, sndfile >= 1.0.0,
-dnl if found...
-dnl LIBS="$LIBS $SNDFILE_LIBS" CPPFLAGS="$CPPFLAGS $SNDFILE_CFLAGS",
-
-SUBDIRS="$SUBDIRS lib-src/libsndfile"
-BUILDLIBS="$BUILDLIBS libsndfile/src/.libs/libsndfile.a"
-EXTRAOBJS="$EXTRAOBJS ../lib-src/libsndfile/src/.libs/libsndfile.a"
+CXXFLAGS="-I../lib-src/portaudio/pa_common $CXXFLAGS"
 
 AC_CANONICAL_HOST
 
@@ -285,6 +348,10 @@ AC_OUTPUT
 
 echo ""
 echo "Finished configure:"
+
+if [[ $use_libsndfile = "system" ]] ; then
+	echo "  with    libsndfile=system";
+fi
 
 if [[ $use_libid3tag = "yes" ]] ; then
 	echo "  with    libid3tag";
