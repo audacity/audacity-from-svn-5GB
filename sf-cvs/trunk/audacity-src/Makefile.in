@@ -26,6 +26,9 @@ audacity-help.htb: help/wxhelp/*
 	rm -f audacity-help.htb
 	cd help/wxhelp && $(ZIP) ../../audacity-help.htb *.htm *.png *.hhc *.hhk *.hhp
 
+dox:
+	doxygen audacity.dox
+
 dep:
 	cd src && $(MAKE) dep
 
