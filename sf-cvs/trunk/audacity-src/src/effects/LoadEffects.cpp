@@ -28,6 +28,10 @@
 #include "VST/LoadVSTWin.h"
 #endif
 
+#ifdef __WXGTK__
+#include "ladspa/LoadLadspa.h"
+#endif
+
 void LoadEffects()
 {
    Effect::RegisterEffect(new EffectAmplify());
@@ -44,4 +48,10 @@ void LoadEffects()
 #if defined(__WXMAC__) || defined(__WXMSW__)
    LoadVSTPlugins();
 #endif
+
+#if defined(__WXGTK__)
+   LoadLadspaPlugins();
+#endif
+
+   // TODO: sort
 }
