@@ -22,6 +22,16 @@ function plugins($process) {
           print "<a href=\"nyquist/$base.ny\">[.ny]</a>\n";
           print "<a href=\"nyquist/$base.zip\">[.zip]</a>\n";
 	  print "<p>\n";
+
+	  if (file_exists("nyquist/${base}1.mp3")) {
+            print "Example audio clips: ";
+            for($i=1; $i<=9; $i++) {
+              if (file_exists("nyquist/${base}$i.mp3")) {
+                print "<a href=\"nyquist/${base}$i.mp3\">Clip 1 [mp3]</a>\n";
+              }
+            }
+            print "<p>\n";
+          }
 	  system("cat nyquist/$base.html");
 	  print "<p><hr><p>\n";
         }
