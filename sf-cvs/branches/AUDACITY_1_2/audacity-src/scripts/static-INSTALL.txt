@@ -10,7 +10,7 @@ You can run Audacity directly out of this directory by typing:
   ./audacity
 
 To install Audacity in /usr/local, just run "make install" as a
-priveleged user, for example:
+privileged user, for example:
 
   sudo make install
 
