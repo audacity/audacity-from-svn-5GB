@@ -8,6 +8,7 @@ CONTENTS:
   2. License and Copyright
   3. Localization
   4. Updating Content
+  5. Uploading Changes
 
 ---------
 
@@ -88,3 +89,19 @@ CONTENTS:
    message catalogs.  For significant changes, you may want to send the updated
    POT file to the translators before the change is published, so that they
    have a chance to update the PO files.
+
+---------
+
+5. UPLOADING CHANGES
+
+   Unfortunately, the version of gettext on shell.sourceforge.net does not
+   support PHP.  Until this is fixed, we can't update the site using CVS alone,
+   because we can't build the generated POT and MO files on the sf.net server,
+   and don't want to keep them in CVS.
+
+   Instead, files can be uploaded to the live server using rsync or scp.  You
+   can run "make publish" to upload a copy of your working directory to the
+   live server using rsync.
+
+   If gettext is upgraded on shell.sf.net, then we can switch to using "cvs
+   update" and "make" to update the live site.
