@@ -1,5 +1,10 @@
 
-# Set the value of $(MSVCDir) for your installation.
+# Set the value of $(MSVCDir) for your installation. 
+# Please note that none of the directory names are allowed to have spaces 
+# in them. You must use the short name.
+#
+# "C:\Program Files\Microsoft Visual Studio\VC98" will not work.
+# "C:\Progra~1\Micros~1\VC98" will work.
 
 MSVCDir="C:\Progra~1\Micros~1\VC98"
 
@@ -8,20 +13,21 @@ LINK32=link.exe
 DLL_LINK_FLAGS=/nologo /dll /incremental:no /libpath:"$(MSVCDir)\Lib" /pdb:"libsndfile.pdb" /implib:".\libsndfile.lib" /machine:I386 /out:"libsndfile.dll"
 PROG_LINK_FLAGS=/nologo /incremental:no /libpath:"$(MSVCDir)\Lib" /pdb:"libsndfile.pdb" /machine:I386 /exetype:dynamic
 
-CFLAGS=/nologo /MD /W1 /GX /O2 /I "$(MSVCDir)\Include" /I "Win32" /I "src" /D "WIN32" /D "_USRDLL" /YX /FD
+CFLAGS=/nologo /MD /W1 /GX /O2 /I "$(MSVCDir)\Include" /I "src" /D "WIN32" /D "_USRDLL" /D "inline=__inline" /YX /FD
 
 #====================================================================
 # Targets
 
 ALL : libsndfile.dll \
-	".\examples\sndfile-info.exe" \
-	".\examples\sndfile-play.exe" \
-	".\examples\generate.exe"
+	"sndfile-info.exe" \
+	"sndfile-play.exe" \
+	"generate.exe"
 
 CLEAN :
     -@erase "src\*.obj"
     -@erase "src\G72x\*.obj"
     -@erase "src\GSM610\*.obj"
+    -@erase "tests\*.obj"
     -@erase "tests\*.exe"
 
 #====================================================================
@@ -50,16 +56,19 @@ LINK32_OBJS= \
 	".\src\alaw.obj" \
 	".\src\au.obj" \
 	".\src\au_g72x.obj" \
+	".\src\avr.obj" \
 	".\src\common.obj" \
 	".\src\double64.obj" \
 	".\src\dwvw.obj" \
 	".\src\file_io.obj" \
+	".\src\dither.obj" \
 	".\src\float32.obj" \
 	".\src\command.obj" \
+	".\src\strings.obj" \
 	".\src\ima_adpcm.obj" \
-	".\src\ircam.obj" \
 	".\src\ms_adpcm.obj" \
 	".\src\nist.obj" \
+	".\src\ircam.obj" \
 	".\src\paf.obj" \
 	".\src\pcm.obj" \
 	".\src\raw.obj" \
@@ -81,24 +90,27 @@ LINK32_OBJS= \
 	".\src\mat4.obj" \
 	".\src\mat5.obj" \
 	".\src\vox_adpcm.obj" \
-	".\src\ogg.obj"
+	".\src\ogg.obj" \
+	".\src\pvf.obj" \
+	".\src\xi.obj" \
+	".\src\htk.obj"
 
-libsndfile.dll : $(LINK32_OBJS) ".\Win32\libsndfile.def"
-    $(LINK32) $(DLL_LINK_FLAGS) /def:".\Win32\libsndfile.def" $(LINK32_OBJS)
+libsndfile.dll : $(LINK32_OBJS) ".\src\libsndfile.def"
+    $(LINK32) $(DLL_LINK_FLAGS) /def:".\src\libsndfile.def" $(LINK32_OBJS)
 
-".\examples\sndfile-info.exe" : ".\examples\sndfile-info.c"
+"sndfile-info.exe" : ".\examples\sndfile-info.c"
     $(CPP) $(CFLAGS) /Fo".\examples\sndfile-info.obj" /c ".\examples\sndfile-info.c"
-    $(LINK32) $(PROG_LINK_FLAGS) /out:".\examples\sndfile-info.exe" ".\examples\sndfile-info.obj" libsndfile.lib
-
-".\examples\sndfile-play.exe" : ".\examples\sndfile-play.c"
+    $(LINK32) $(PROG_LINK_FLAGS) /out:"sndfile-info.exe" ".\examples\sndfile-info.obj" libsndfile.lib
+"sndfile-play.exe" : ".\examples\sndfile-play.c"
     $(CPP) $(CFLAGS) /Fo".\examples\sndfile-play.obj" /c ".\examples\sndfile-play.c"
-    $(LINK32) $(PROG_LINK_FLAGS) /out:".\examples\sndfile-play.exe" ".\examples\sndfile-play.obj" libsndfile.lib winmm.lib
+    $(LINK32) $(PROG_LINK_FLAGS) /out:"sndfile-play.exe" ".\examples\sndfile-play.obj" libsndfile.lib winmm.lib
 
-".\examples\generate.exe" : ".\examples\generate.c"
+"generate.exe" : ".\examples\generate.c"
     $(CPP) $(CFLAGS) /Fo".\examples\generate.obj" /c ".\examples\generate.c"
-    $(LINK32) $(PROG_LINK_FLAGS) /out:".\examples\generate.exe" ".\examples\generate.obj" libsndfile.lib
+    $(LINK32) $(PROG_LINK_FLAGS) /out:"generate.exe" ".\examples\generate.obj" libsndfile.lib
 
 TEST_PROGS= \
+     ".\src\test_file_io.exe" \
      ".\tests\sfversion.exe" \
      ".\tests\error_test.exe" \
      ".\tests\pcm_test.exe" \
@@ -112,9 +124,14 @@ TEST_PROGS= \
      ".\tests\lossy_comp_test.exe" \
      ".\tests\peak_chunk_test.exe" \
      ".\tests\misc_test.exe" \
+     ".\tests\string_test.exe" \
+     ".\tests\win32_test.exe" \
+     ".\tests\stdio_test.exe" \
+     ".\tests\pipe_test.exe" \
      ".\tests\benchmark.exe"
 
 CHECK: $(TEST_PROGS)
+    ".\src\test_file_io.exe"
     ".\tests\error_test.exe"
     ".\tests\pcm_test.exe"
     ".\tests\ulaw_test.exe"
@@ -137,6 +154,7 @@ CHECK: $(TEST_PROGS)
     ".\tests\lossy_comp_test" wav_gsm610
     ".\tests\peak_chunk_test" wav
     ".\tests\misc_test" wav
+    ".\tests\string_test" wav
     -@echo ----------------------------------------------------------------------
     -@".\tests\sfversion.exe"
     -@echo "passed tests on WAV files.
@@ -224,6 +242,24 @@ CHECK: $(TEST_PROGS)
     -@".\tests\sfversion.exe"
     -@echo " passed tests on MAT5 files."
     -@echo ----------------------------------------------------------------------
+    ".\tests\write_read_test" htk
+    ".\tests\misc_test" htk
+    -@echo ----------------------------------------------------------------------
+    -@".\tests\sfversion.exe"
+    -@echo " passed tests on HTK files."
+    -@echo ----------------------------------------------------------------------
+    ".\tests\write_read_test" avr
+    ".\tests\misc_test" avr
+    -@echo ----------------------------------------------------------------------
+    -@".\tests\sfversion.exe"
+    -@echo " passed tests on AVR files."
+    -@echo ----------------------------------------------------------------------
+    -@".\tests\stdio_test.exe"
+    -@".\tests\pipe_test.exe"
+    -@echo ----------------------------------------------------------------------
+    -@".\tests\sfversion.exe"
+    -@echo " passed all tests."
+    -@echo ----------------------------------------------------------------------
 
 #====================================================================
 # C files in src\GSM610.
@@ -303,6 +339,9 @@ CHECK: $(TEST_PROGS)
 ".\src\au_g72x.obj" : ".\src\au_g72x.c"
     $(CPP) $(CFLAGS) /Fo".\src\au_g72x.obj" /c ".\src\au_g72x.c"
 
+".\src\avr.obj" : ".\src\avr.c"
+    $(CPP) $(CFLAGS) /Fo".\src\avr.obj" /c ".\src\avr.c"
+
 ".\src\common.obj" : ".\src\common.c"
     $(CPP) $(CFLAGS) /Fo".\src\common.obj" /c ".\src\common.c"
 
@@ -315,11 +354,17 @@ CHECK: $(TEST_PROGS)
 ".\src\file_io.obj" : ".\src\file_io.c"
     $(CPP) $(CFLAGS) /Fo".\src\file_io.obj" /c ".\src\file_io.c"
 
+".\src\dither.obj" : ".\src\dither.c"
+    $(CPP) $(CFLAGS) /Fo".\src\dither.obj" /c ".\src\dither.c"
+
 ".\src\float32.obj" : ".\src\float32.c"
     $(CPP) $(CFLAGS) /Fo".\src\float32.obj" /c ".\src\float32.c"
 
 ".\src\command.obj" : ".\src\command.c"
     $(CPP) $(CFLAGS) /Fo".\src\command.obj" /c ".\src\command.c"
+
+".\src\strings.obj" : ".\src\strings.c"
+    $(CPP) $(CFLAGS) /Fo".\src\strings.obj" /c ".\src\strings.c"
 
 ".\src\ima_adpcm.obj" : ".\src\ima_adpcm.c"
     $(CPP) $(CFLAGS) /Fo".\src\ima_adpcm.obj" /c ".\src\ima_adpcm.c"
@@ -399,6 +444,15 @@ CHECK: $(TEST_PROGS)
 ".\src\ogg.obj" : ".\src\ogg.c"
     $(CPP) $(CFLAGS) /Fo".\src\ogg.obj" /c ".\src\ogg.c"
 
+".\src\pvf.obj" : ".\src\pvf.c"
+    $(CPP) $(CFLAGS) /Fo".\src\pvf.obj" /c ".\src\pvf.c"
+
+".\src\xi.obj" : ".\src\xi.c"
+    $(CPP) $(CFLAGS) /Fo".\src\xi.obj" /c ".\src\xi.c"
+
+".\src\htk.obj" : ".\src\htk.c"
+    $(CPP) $(CFLAGS) /Fo".\src\htk.obj" /c ".\src\htk.c"
+
 #====================================================================
 # Object files for test programs.
 
@@ -411,6 +465,10 @@ CHECK: $(TEST_PROGS)
 #====================================================================
 # Test programs.
 
+".\src\test_file_io.exe" : ".\src\file_io.obj" ".\src\test_file_io.c"
+    $(CPP) $(CFLAGS) /Fo".\src\test_file_io.obj" /c ".\src\test_file_io.c"
+    $(LINK32) $(PROG_LINK_FLAGS) /out:".\src\test_file_io.exe" ".\src\test_file_io.obj" ".\src\file_io.obj"
+
 ".\tests\sfversion.exe" : ".\tests\sfversion.c"
     $(CPP) $(CFLAGS) /Fo".\tests\sfversion.obj" /c ".\tests\sfversion.c"
     $(LINK32) $(PROG_LINK_FLAGS) /out:".\tests\sfversion.exe" ".\tests\sfversion.obj" libsndfile.lib
@@ -419,15 +477,15 @@ CHECK: $(TEST_PROGS)
     $(CPP) $(CFLAGS) /Fo".\tests\error_test.obj" /c ".\tests\error_test.c"
     $(LINK32) $(PROG_LINK_FLAGS) /out:".\tests\error_test.exe" ".\tests\error_test.obj" libsndfile.lib
 
-".\tests\pcm_test.exe" : ".\tests\pcm_test.c" ".\tests\utils.obj"
+".\tests\pcm_test.exe" : ".\tests\pcm_test.c" ".\tests\utils.obj" "libsndfile.dll"
     $(CPP) $(CFLAGS) /Fo".\tests\pcm_test.obj" /c ".\tests\pcm_test.c"
     $(LINK32) $(PROG_LINK_FLAGS) /out:".\tests\pcm_test.exe" ".\tests\pcm_test.obj" ".\tests\utils.obj" libsndfile.lib
 
-".\tests\ulaw_test.exe" : ".\tests\ulaw_test.c" ".\tests\utils.obj"
+".\tests\ulaw_test.exe" : ".\tests\ulaw_test.c" ".\tests\utils.obj" "libsndfile.dll"
     $(CPP) $(CFLAGS) /Fo".\tests\ulaw_test.obj" /c ".\tests\ulaw_test.c"
     $(LINK32) $(PROG_LINK_FLAGS) /out:".\tests\ulaw_test.exe" ".\tests\ulaw_test.obj" ".\tests\utils.obj" libsndfile.lib
 
-".\tests\alaw_test.exe" : ".\tests\alaw_test.c" ".\tests\utils.obj"
+".\tests\alaw_test.exe" : ".\tests\alaw_test.c" ".\tests\utils.obj" "libsndfile.dll"
     $(CPP) $(CFLAGS) /Fo".\tests\alaw_test.obj" /c ".\tests\alaw_test.c"
     $(LINK32) $(PROG_LINK_FLAGS) /out:".\tests\alaw_test.exe" ".\tests\alaw_test.obj" ".\tests\utils.obj" libsndfile.lib
 
@@ -463,9 +521,40 @@ CHECK: $(TEST_PROGS)
     $(CPP) $(CFLAGS) /Fo".\tests\misc_test.obj" /c ".\tests\misc_test.c"
     $(LINK32) $(PROG_LINK_FLAGS) /out:".\tests\misc_test.exe" ".\tests\misc_test.obj" ".\tests\utils.obj" libsndfile.lib
 
+".\tests\string_test.exe" : ".\tests\string_test.c" ".\tests\utils.obj"
+    $(CPP) $(CFLAGS) /Fo".\tests\string_test.obj" /c ".\tests\string_test.c"
+    $(LINK32) $(PROG_LINK_FLAGS) /out:".\tests\string_test.exe" ".\tests\string_test.obj" ".\tests\utils.obj" libsndfile.lib
+
+".\tests\win32_test.exe" : ".\tests\win32_test.c"
+    $(CPP) $(CFLAGS) /Fo".\tests\win32_test.obj" /c ".\tests\win32_test.c"
+    $(LINK32) $(PROG_LINK_FLAGS) /out:".\tests\win32_test.exe" ".\tests\win32_test.obj"
+
+".\tests\stdio_test.exe" : ".\tests\stdio_test.c" ".\tests\utils.obj"
+    $(CPP) $(CFLAGS) /Fo".\tests\stdio_test.obj" /c ".\tests\stdio_test.c"
+    $(LINK32) $(PROG_LINK_FLAGS) /out:".\tests\stdio_test.exe" ".\tests\stdio_test.obj" ".\tests\utils.obj" libsndfile.lib
+
+".\tests\pipe_test.exe" : ".\tests\pipe_test.c" ".\tests\utils.obj"
+    $(CPP) $(CFLAGS) /Fo".\tests\pipe_test.obj" /c ".\tests\pipe_test.c"
+    $(LINK32) $(PROG_LINK_FLAGS) /out:".\tests\pipe_test.exe" ".\tests\pipe_test.obj" ".\tests\utils.obj" libsndfile.lib
+
+# ".\tests\stdin_test.exe" : ".\tests\stdin_test.c" ".\tests\utils.obj"
+#     $(CPP) $(CFLAGS) /Fo".\tests\stdin_test.obj" /c ".\tests\stdin_test.c"
+#     $(LINK32) $(PROG_LINK_FLAGS) /out:".\tests\stdin_test.exe" ".\tests\stdin_test.obj" ".\tests\utils.obj" libsndfile.lib
+# 
+# ".\tests\stdout_test.exe" : ".\tests\stdout_test.c" ".\tests\utils.obj"
+#     $(CPP) $(CFLAGS) /Fo".\tests\stdout_test.obj" /c ".\tests\stdout_test.c"
+#     $(LINK32) $(PROG_LINK_FLAGS) /out:".\tests\stdout_test.exe" ".\tests\stdout_test.obj" ".\tests\utils.obj" libsndfile.lib
+
 ".\tests\benchmark.exe" : ".\tests\benchmark.c"
     $(CPP) $(CFLAGS) /Fo".\tests\benchmark.obj" /c ".\tests\benchmark.c"
     $(LINK32) $(PROG_LINK_FLAGS) /out:".\tests\benchmark.exe" ".\tests\benchmark.obj" ".\tests\utils.obj" libsndfile.lib
 
 # End of Makefile
 #====================================================================
+
+# Do not edit or modify anything in this comment block.
+# The arch-tag line is a file identity tag for the GNU Arch 
+# revision control system.
+#
+# arch-tag: 9a46d08e-921f-49f7-961e-3f21ea67851e
+

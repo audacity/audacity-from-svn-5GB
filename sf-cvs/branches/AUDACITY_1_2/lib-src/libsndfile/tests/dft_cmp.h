@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -21,3 +21,10 @@
 
 double	dft_cmp (int linenum, double *orig, double *test, int len, double tolerance, int allow_exit) ;
 
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 10eac7b2-04ef-4d86-b7c0-8f1de57b12a0
+*/

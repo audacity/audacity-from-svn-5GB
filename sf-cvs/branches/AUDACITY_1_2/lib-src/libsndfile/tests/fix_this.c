@@ -1,22 +1,23 @@
 /*
-** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
-**  
+** Copyright (C) 1999-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+**
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
-** 
+**
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software 
+** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
 #include	<stdio.h>
+#include	<stdlib.h>
 #include	<string.h>
 #include	<unistd.h>
 #include	<math.h>
@@ -32,7 +33,7 @@
 #define		M_PI		3.14159265358979323846264338
 #endif
 
-static	void	lcomp_test_int		(char *str, char *filename, int filetype, double margin) ;
+static	void	lcomp_test_int	(const char *str, const char *filename, int filetype, double margin) ;
 
 static	int		error_function (double data, double orig, double margin) ;
 static	int		decay_response (int k) ;
@@ -45,36 +46,34 @@ static	void	gen_signal_double (double *data, double scale, int datalen) ;
 static	double	data_buffer [BUFFER_SIZE + 1] ;
 static	double	orig_buffer [BUFFER_SIZE + 1] ;
 
-int		
+int
 main (void)
-{	char	*filename ;
+{	const char	*filename = "test.au" ;
 
-	filename = "test.au" ;
-	
-	lcomp_test_int		("au_g721", filename, SF_ENDIAN_BIG    | SF_FORMAT_AU | SF_FORMAT_G721_32, 0.06) ;
-	
-	return 0;
+	lcomp_test_int	("au_g721", filename, SF_ENDIAN_BIG | SF_FORMAT_AU | SF_FORMAT_G721_32, 0.06) ;
+
+	return 0 ;
 } /* main */
 
 /*============================================================================================
 **	Here are the test functions.
-*/ 
- 
-static void	
-lcomp_test_int (char *str, char *filename, int filetype, double margin)
+*/
+
+static void
+lcomp_test_int (const char *str, const char *filename, int filetype, double margin)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	int			k, m, *orig, *data, sum_abs ;
 	long		datalen, seekpos ;
 	double		scale ;
-	
+
 	printf ("\nThis is program is not part of the libsndfile test suite.\n\n") ;
-	
+
 	printf ("    lcomp_test_int      : %s ... ", str) ;
 	fflush (stdout) ;
-	
+
 	datalen = BUFFER_SIZE ;
-	
+
 	scale = 1.0 * 0x10000 ;
 
 	data = (int*) data_buffer ;
@@ -83,19 +82,19 @@ lcomp_test_int (char *str, char *filename, int filetype, double margin)
 	gen_signal_double (orig_buffer, 32000.0 * scale, datalen) ;
 	for (k = 0 ; k < datalen ; k++)
 		orig [k] = orig_buffer [k] ;
-		
-		
-	sfinfo.samplerate  = SAMPLE_RATE ;
-	sfinfo.frames     = 123456789 ;	/* Ridiculous value. */
-	sfinfo.channels    = 1 ;
-	sfinfo.format 	   = filetype ;
+
+
+	sfinfo.samplerate	= SAMPLE_RATE ;
+	sfinfo.frames		= 123456789 ;	/* Ridiculous value. */
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("sf_open_write failed with error : ") ;
 		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
-	
+
 	if ((k = sf_writef_int (file, orig, datalen)) != datalen)
 	{	printf ("sf_writef_int failed with short write (%ld => %d).\n", datalen, k) ;
 		exit (1) ;
@@ -112,29 +111,29 @@ lcomp_test_int (char *str, char *filename, int filetype, double margin)
 		puts (sf_strerror (NULL)) ;
 		exit (1) ;
 		} ;
-	
+
 	if ((sfinfo.format & (SF_FORMAT_TYPEMASK | SF_FORMAT_SUBMASK)) != (filetype & (SF_FORMAT_TYPEMASK | SF_FORMAT_SUBMASK)))
 	{	printf ("Line %d: Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.frames < datalen)
 	{	printf ("Too few.frames in file. (%ld should be a little more than %ld)\n", datalen, SF_COUNT_TO_LONG (sfinfo.frames)) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.frames > (datalen + datalen / 2))
 	{	printf ("Too many.frames in file. (%ld should be a little more than %ld)\n", datalen, SF_COUNT_TO_LONG (sfinfo.frames)) ;
 		exit (1) ;
 		} ;
-	
+
 	if (sfinfo.channels != 1)
 	{	printf ("Incorrect number of channels in file.\n") ;
 		exit (1) ;
 		} ;
 
-	check_log_buffer_or_die (file) ;
-		
+	check_log_buffer_or_die (file, __LINE__) ;
+
 	if ((k = sf_readf_int (file, data, datalen)) != datalen)
 	{	printf ("Line %d: short read (%d should be %ld).\n", __LINE__, k, datalen) ;
 		exit (1) ;
@@ -176,7 +175,7 @@ lcomp_test_int (char *str, char *filename, int filetype, double margin)
 		} ;
 
 	/* Now test sf_seek function. */
-	
+
 	if ((k = sf_seek (file, 0, SEEK_SET)) != 0)
 	{	printf ("Line %d: Seek to start of file failed (%d).\n", __LINE__, k) ;
 		exit (1) ;
@@ -199,7 +198,7 @@ lcomp_test_int (char *str, char *filename, int filetype, double margin)
 		} ;
 
 	seekpos = BUFFER_SIZE / 10 ;
-	
+
 	/* Check seek from start of file. */
 	if ((k = sf_seek (file, seekpos, SEEK_SET)) != seekpos)
 	{	printf ("Seek to start of file + %ld failed (%d).\n", seekpos, k) ;
@@ -210,12 +209,12 @@ lcomp_test_int (char *str, char *filename, int filetype, double margin)
 	{	printf ("Line %d: sf_readf_int (file, data, 1) returned %d.\n", __LINE__, k) ;
 		exit (1) ;
 		} ;
-	
+
 	if (error_function ((double) data [0], (double) orig [seekpos], margin))
 	{	printf ("Line %d: sf_seek (SEEK_SET) followed by sf_readf_int failed (%d, %d).\n", __LINE__, orig [1], data [0]) ;
 		exit (1) ;
 		} ;
-	
+
 	if ((k = sf_seek (file, 0, SEEK_CUR)) != seekpos + 1)
 	{	printf ("Line %d: sf_seek (SEEK_CUR) with 0 offset failed (%d should be %ld)\n", __LINE__, k, seekpos + 1) ;
 		exit (1) ;
@@ -228,7 +227,7 @@ lcomp_test_int (char *str, char *filename, int filetype, double margin)
 	{	printf ("Line %d: sf_seek (forwards, SEEK_CUR) followed by sf_readf_int failed (%d, %d) (%d, %ld).\n", __LINE__, data [0], orig [seekpos], k, seekpos + 1) ;
 		exit (1) ;
 		} ;
-	
+
 	seekpos = sf_seek (file, 0, SEEK_CUR) - 20 ;
 	/* Check seek backward from current position. */
 	k = sf_seek (file, -20, SEEK_CUR) ;
@@ -237,7 +236,7 @@ lcomp_test_int (char *str, char *filename, int filetype, double margin)
 	{	printf ("sf_seek (backwards, SEEK_CUR) followed by sf_readf_int failed (%d, %d) (%d, %ld).\n", data [0], orig [seekpos], k, seekpos) ;
 		exit (1) ;
 		} ;
-	
+
 	/* Check that read past end of file returns number of items. */
 	sf_seek (file, (int) sfinfo.frames, SEEK_SET) ;
 
@@ -245,7 +244,7 @@ lcomp_test_int (char *str, char *filename, int filetype, double margin)
  	{	printf ("Line %d: Return value from sf_readf_int past end of file incorrect (%d).\n", __LINE__, k) ;
  		exit (1) ;
  		} ;
-	
+
 	/* Check seek backward from end. */
 	if ((k = sf_seek (file, 5 - (int) sfinfo.frames, SEEK_END)) != 5)
 	{	printf ("sf_seek (SEEK_END) returned %d instead of %d.\n", k, 5) ;
@@ -270,7 +269,7 @@ lcomp_test_int (char *str, char *filename, int filetype, double margin)
 #define		SIGNAL_MAXVAL	30000.0
 #define		DECAY_COUNT		800
 
-static int 
+static int
 decay_response (int k)
 {	if (k < 1)
 		return (int) (1.2 * SIGNAL_MAXVAL) ;
@@ -279,37 +278,37 @@ decay_response (int k)
 	return (int) (1.2 * SIGNAL_MAXVAL * (DECAY_COUNT - k) / (1.0 * DECAY_COUNT)) ;
 } /* decay_response */
 
-static void	
+static void
 gen_signal_double (double *data, double scale, int datalen)
 {	int		k, ramplen ;
 	double	amp = 0.0 ;
-	
+
 	ramplen = datalen / 18 ;
-	
+
 	for (k = 0 ; k < datalen ; k++)
 	{	if (k <= ramplen)
 			amp = scale * k / ((double) ramplen) ;
 		else if (k > datalen - ramplen)
 			amp = scale * (datalen - k) / ((double) ramplen) ;
 
-		data [k] = amp * (0.4 * sin (33.3 * 2.0 * M_PI * ((double) (k+1)) / ((double) SAMPLE_RATE))
-							+ 0.3 * cos (201.1 * 2.0 * M_PI * ((double) (k+1)) / ((double) SAMPLE_RATE))) ;
+		data [k] = amp * (0.4 * sin (33.3 * 2.0 * M_PI * ((double) (k + 1)) / ((double) SAMPLE_RATE))
+							+ 0.3 * cos (201.1 * 2.0 * M_PI * ((double) (k + 1)) / ((double) SAMPLE_RATE))) ;
 		} ;
-	
+
 	return ;
 } /* gen_signal_double */
 
-static int 
+static int
 error_function (double data, double orig, double margin)
 {	double error ;
 
 	if (fabs (orig) <= 500.0)
-		error = fabs (fabs (data) - fabs(orig)) / 2000.0 ;
+		error = fabs (fabs (data) - fabs (orig)) / 2000.0 ;
 	else if (fabs (orig) <= 1000.0)
 		error = fabs (data - orig) / 3000.0 ;
 	else
 		error = fabs (data - orig) / fabs (orig) ;
-		
+
 	if (error > margin)
 	{	printf ("\n\n*******************\nError : %f\n", error) ;
 		return 1 ;
@@ -317,3 +316,10 @@ error_function (double data, double orig, double margin)
 	return 0 ;
 } /* error_function */
 
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 368e2777-2848-4e16-a77f-4db841377c73
+*/

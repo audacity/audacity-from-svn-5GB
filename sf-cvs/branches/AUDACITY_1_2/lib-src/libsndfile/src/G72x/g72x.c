@@ -361,7 +361,7 @@ int quantize(
 	int		size)	/* table size of short integers */
 {
 	short		dqm;	/* Magnitude of 'd' */
-	short		exp;	/* Integer part of base 2 log of 'd' */
+	short		expon;	/* Integer part of base 2 log of 'd' */
 	short		mant;	/* Fractional part of base 2 log */
 	short		dl;	/* Log of magnitude of 'd' */
 	short		dln;	/* Step size scale factor normalized log */
@@ -373,9 +373,9 @@ int quantize(
 	 * Compute base 2 log of 'd', and store in 'dl'.
 	 */
 	dqm = abs(d);
-	exp = quan(dqm >> 1, power2, 15);
-	mant = ((dqm << 7) >> exp) & 0x7F;	/* Fractional portion. */
-	dl = (exp << 7) + mant;
+	expon = quan(dqm >> 1, power2, 15);
+	mant = ((dqm << 7) >> expon) & 0x7F;	/* Fractional portion. */
+	dl = (expon << 7) + mant;
 
 	/*
 	 * SUBTB
@@ -445,7 +445,7 @@ update(
 	G72x_STATE *state_ptr)	/* coder state pointer */
 {
 	int		cnt;
-	short		mag, exp;	/* Adaptive predictor, FLOAT A */
+	short		mag, expon;	/* Adaptive predictor, FLOAT A */
 	short		a2p = 0;	/* LIMC */
 	short		a1ul;		/* UPA1 */
 	short		pks1;		/* UPA2 */
@@ -573,10 +573,10 @@ update(
 	if (mag == 0) {
 		state_ptr->dq[0] = (dq >= 0) ? 0x20 : 0xFC20;
 	} else {
-		exp = quan(mag, power2, 15);
+		expon = quan(mag, power2, 15);
 		state_ptr->dq[0] = (dq >= 0) ?
-		    (exp << 6) + ((mag << 6) >> exp) :
-		    (exp << 6) + ((mag << 6) >> exp) - 0x400;
+		    (expon << 6) + ((mag << 6) >> expon) :
+		    (expon << 6) + ((mag << 6) >> expon) - 0x400;
 	}
 
 	state_ptr->sr[1] = state_ptr->sr[0];
@@ -584,12 +584,12 @@ update(
 	if (sr == 0) {
 		state_ptr->sr[0] = 0x20;
 	} else if (sr > 0) {
-		exp = quan(sr, power2, 15);
-		state_ptr->sr[0] = (exp << 6) + ((sr << 6) >> exp);
+		expon = quan(sr, power2, 15);
+		state_ptr->sr[0] = (expon << 6) + ((sr << 6) >> expon);
 	} else if (sr > -32768) {
 		mag = -sr;
-		exp = quan(mag, power2, 15);
-		state_ptr->sr[0] =  (exp << 6) + ((mag << 6) >> exp) - 0x400;
+		expon = quan(mag, power2, 15);
+		state_ptr->sr[0] =  (expon << 6) + ((mag << 6) >> expon) - 0x400;
 	} else
 		state_ptr->sr[0] = (short) 0xFC20;
 
@@ -625,4 +625,12 @@ update(
 		
 	return ;
 } /* update */
+
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 6298dc75-fd0f-4062-9b90-f73ed69f22d4
+*/
 

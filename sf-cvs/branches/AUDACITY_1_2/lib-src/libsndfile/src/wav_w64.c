@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +17,6 @@
 */
 
 #include	<stdio.h>
-#include	<unistd.h>
 #include	<string.h>
 #include	<ctype.h>
 #include	<time.h>
@@ -34,7 +33,7 @@
 
 int
 wav_w64_read_fmt_chunk (SF_PRIVATE *psf, WAV_FMT *wav_fmt, int structsize)
-{	int	bytesread, k, bytespersec = 0  ;
+{	int	bytesread, k, bytespersec = 0 ;
 
 	memset (wav_fmt, 0, sizeof (WAV_FMT)) ;
 
@@ -47,7 +46,7 @@ wav_w64_read_fmt_chunk (SF_PRIVATE *psf, WAV_FMT *wav_fmt, int structsize)
 	bytesread =
 	psf_binheader_readf (psf, "e224422", &(wav_fmt->format), &(wav_fmt->min.channels),
 			&(wav_fmt->min.samplerate), &(wav_fmt->min.bytespersec),
-			&(wav_fmt->min.blockalign), &(wav_fmt->min.bitwidth))  ;
+			&(wav_fmt->min.blockalign), &(wav_fmt->min.bitwidth)) ;
 
 	psf_log_printf (psf, "  Format        : 0x%X => %s\n", wav_fmt->format, wav_w64_format_str (wav_fmt->format)) ;
 	psf_log_printf (psf, "  Channels      : %d\n", wav_fmt->min.channels) ;
@@ -195,6 +194,7 @@ wav_w64_read_fmt_chunk (SF_PRIVATE *psf, WAV_FMT *wav_fmt, int structsize)
 				psf_binheader_readf (psf, "e422", &(wav_fmt->ext.esf.esf_field1), &(wav_fmt->ext.esf.esf_field2),
 						&(wav_fmt->ext.esf.esf_field3)) ;
 
+                /* compare the esf_fields with each known GUID? and print?*/
 				psf_log_printf (psf, "  Subformat\n") ;
 				psf_log_printf (psf, "    esf_field1 : 0x%X\n", wav_fmt->ext.esf.esf_field1) ;
 				psf_log_printf (psf, "    esf_field2 : 0x%X\n", wav_fmt->ext.esf.esf_field2) ;
@@ -223,115 +223,147 @@ wav_w64_read_fmt_chunk (SF_PRIVATE *psf, WAV_FMT *wav_fmt, int structsize)
 	return 0 ;
 } /* wav_w64_read_fmt_chunk */
 
+/*==============================================================================
+*/
+
+typedef struct
+{	int			ID ;
+	const char	*name ;
+} WAV_FORMAT_DESC ;
+
+#define STR(x)			#x
+#define FORMAT_TYPE(x)	{ x, STR (x) }
+
+static WAV_FORMAT_DESC wave_descs [] =
+{	FORMAT_TYPE	(WAVE_FORMAT_PCM),
+	FORMAT_TYPE (WAVE_FORMAT_MS_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_IEEE_FLOAT),
+	FORMAT_TYPE (WAVE_FORMAT_VSELP),
+	FORMAT_TYPE (WAVE_FORMAT_IBM_CVSD),
+	FORMAT_TYPE (WAVE_FORMAT_ALAW),
+	FORMAT_TYPE (WAVE_FORMAT_MULAW),
+	FORMAT_TYPE (WAVE_FORMAT_OKI_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_IMA_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_MEDIASPACE_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_SIERRA_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_G723_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_DIGISTD),
+	FORMAT_TYPE (WAVE_FORMAT_DIGIFIX),
+	FORMAT_TYPE (WAVE_FORMAT_DIALOGIC_OKI_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_MEDIAVISION_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_CU_CODEC),
+	FORMAT_TYPE (WAVE_FORMAT_YAMAHA_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_SONARC),
+	FORMAT_TYPE (WAVE_FORMAT_DSPGROUP_TRUESPEECH),
+	FORMAT_TYPE (WAVE_FORMAT_ECHOSC1),
+	FORMAT_TYPE (WAVE_FORMAT_AUDIOFILE_AF36),
+	FORMAT_TYPE (WAVE_FORMAT_APTX),
+	FORMAT_TYPE (WAVE_FORMAT_AUDIOFILE_AF10),
+	FORMAT_TYPE (WAVE_FORMAT_PROSODY_1612),
+	FORMAT_TYPE (WAVE_FORMAT_LRC),
+	FORMAT_TYPE (WAVE_FORMAT_DOLBY_AC2),
+	FORMAT_TYPE (WAVE_FORMAT_GSM610),
+	FORMAT_TYPE (WAVE_FORMAT_MSNAUDIO),
+	FORMAT_TYPE (WAVE_FORMAT_ANTEX_ADPCME),
+	FORMAT_TYPE (WAVE_FORMAT_CONTROL_RES_VQLPC),
+	FORMAT_TYPE (WAVE_FORMAT_DIGIREAL),
+	FORMAT_TYPE (WAVE_FORMAT_DIGIADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_CONTROL_RES_CR10),
+	FORMAT_TYPE (WAVE_FORMAT_NMS_VBXADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_ROLAND_RDAC),
+	FORMAT_TYPE (WAVE_FORMAT_ECHOSC3),
+	FORMAT_TYPE (WAVE_FORMAT_ROCKWELL_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_ROCKWELL_DIGITALK),
+	FORMAT_TYPE (WAVE_FORMAT_XEBEC),
+	FORMAT_TYPE (WAVE_FORMAT_G721_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_G728_CELP),
+	FORMAT_TYPE (WAVE_FORMAT_MSG723),
+	FORMAT_TYPE (WAVE_FORMAT_MPEG),
+	FORMAT_TYPE (WAVE_FORMAT_RT24),
+	FORMAT_TYPE (WAVE_FORMAT_PAC),
+	FORMAT_TYPE (WAVE_FORMAT_MPEGLAYER3),
+	FORMAT_TYPE (WAVE_FORMAT_LUCENT_G723),
+	FORMAT_TYPE (WAVE_FORMAT_CIRRUS),
+	FORMAT_TYPE (WAVE_FORMAT_ESPCM),
+	FORMAT_TYPE (WAVE_FORMAT_VOXWARE),
+	FORMAT_TYPE (WAVE_FORMAT_CANOPUS_ATRAC),
+	FORMAT_TYPE (WAVE_FORMAT_G726_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_G722_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_DSAT),
+	FORMAT_TYPE (WAVE_FORMAT_DSAT_DISPLAY),
+	FORMAT_TYPE (WAVE_FORMAT_VOXWARE_BYTE_ALIGNED),
+	FORMAT_TYPE (WAVE_FORMAT_VOXWARE_AC8),
+	FORMAT_TYPE (WAVE_FORMAT_VOXWARE_AC10),
+	FORMAT_TYPE (WAVE_FORMAT_VOXWARE_AC16),
+	FORMAT_TYPE (WAVE_FORMAT_VOXWARE_AC20),
+	FORMAT_TYPE (WAVE_FORMAT_VOXWARE_RT24),
+	FORMAT_TYPE (WAVE_FORMAT_VOXWARE_RT29),
+	FORMAT_TYPE (WAVE_FORMAT_VOXWARE_RT29HW),
+	FORMAT_TYPE (WAVE_FORMAT_VOXWARE_VR12),
+	FORMAT_TYPE (WAVE_FORMAT_VOXWARE_VR18),
+	FORMAT_TYPE (WAVE_FORMAT_VOXWARE_TQ40),
+	FORMAT_TYPE (WAVE_FORMAT_SOFTSOUND),
+	FORMAT_TYPE (WAVE_FORMAT_VOXARE_TQ60),
+	FORMAT_TYPE (WAVE_FORMAT_MSRT24),
+	FORMAT_TYPE (WAVE_FORMAT_G729A),
+	FORMAT_TYPE (WAVE_FORMAT_MVI_MV12),
+	FORMAT_TYPE (WAVE_FORMAT_DF_G726),
+	FORMAT_TYPE (WAVE_FORMAT_DF_GSM610),
+	FORMAT_TYPE (WAVE_FORMAT_ONLIVE),
+	FORMAT_TYPE (WAVE_FORMAT_SBC24),
+	FORMAT_TYPE (WAVE_FORMAT_DOLBY_AC3_SPDIF),
+	FORMAT_TYPE (WAVE_FORMAT_ZYXEL_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_PHILIPS_LPCBB),
+	FORMAT_TYPE (WAVE_FORMAT_PACKED),
+	FORMAT_TYPE (WAVE_FORMAT_RHETOREX_ADPCM),
+	FORMAT_TYPE (IBM_FORMAT_MULAW),
+	FORMAT_TYPE (IBM_FORMAT_ALAW),
+	FORMAT_TYPE (IBM_FORMAT_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_VIVO_G723),
+	FORMAT_TYPE (WAVE_FORMAT_VIVO_SIREN),
+	FORMAT_TYPE (WAVE_FORMAT_DIGITAL_G723),
+	FORMAT_TYPE (WAVE_FORMAT_CREATIVE_ADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_CREATIVE_FASTSPEECH8),
+	FORMAT_TYPE (WAVE_FORMAT_CREATIVE_FASTSPEECH10),
+	FORMAT_TYPE (WAVE_FORMAT_QUARTERDECK),
+	FORMAT_TYPE (WAVE_FORMAT_FM_TOWNS_SND),
+	FORMAT_TYPE (WAVE_FORMAT_BZV_DIGITAL),
+	FORMAT_TYPE (WAVE_FORMAT_VME_VMPCM),
+	FORMAT_TYPE (WAVE_FORMAT_OLIGSM),
+	FORMAT_TYPE (WAVE_FORMAT_OLIADPCM),
+	FORMAT_TYPE (WAVE_FORMAT_OLICELP),
+	FORMAT_TYPE (WAVE_FORMAT_OLISBC),
+	FORMAT_TYPE (WAVE_FORMAT_OLIOPR),
+	FORMAT_TYPE (WAVE_FORMAT_LH_CODEC),
+	FORMAT_TYPE (WAVE_FORMAT_NORRIS),
+	FORMAT_TYPE (WAVE_FORMAT_SOUNDSPACE_MUSICOMPRESS),
+	FORMAT_TYPE (WAVE_FORMAT_DVM),
+	FORMAT_TYPE (WAVE_FORMAT_INTERWAV_VSC112),
+	FORMAT_TYPE (WAVE_FORMAT_EXTENSIBLE),
+} ;
 
 char const*
 wav_w64_format_str (int k)
-{	switch (k)
-	{	case WAVE_FORMAT_UNKNOWN :
-			return "WAVE_FORMAT_UNKNOWN" ;
-		case WAVE_FORMAT_PCM          :
-			return "WAVE_FORMAT_PCM" ;
-		case WAVE_FORMAT_MS_ADPCM :
-			return "WAVE_FORMAT_MS_ADPCM" ;
-		case WAVE_FORMAT_IEEE_FLOAT :
-			return "WAVE_FORMAT_IEEE_FLOAT" ;
-		case WAVE_FORMAT_IBM_CVSD :
-			return "WAVE_FORMAT_IBM_CVSD" ;
-		case WAVE_FORMAT_ALAW :
-			return "WAVE_FORMAT_ALAW" ;
-		case WAVE_FORMAT_MULAW :
-			return "WAVE_FORMAT_MULAW" ;
-		case WAVE_FORMAT_OKI_ADPCM :
-			return "WAVE_FORMAT_OKI_ADPCM" ;
-		case WAVE_FORMAT_IMA_ADPCM :
-			return "WAVE_FORMAT_IMA_ADPCM" ;
-		case WAVE_FORMAT_MEDIASPACE_ADPCM :
-			return "WAVE_FORMAT_MEDIASPACE_ADPCM" ;
-		case WAVE_FORMAT_SIERRA_ADPCM :
-			return "WAVE_FORMAT_SIERRA_ADPCM" ;
-		case WAVE_FORMAT_G723_ADPCM :
-			return "WAVE_FORMAT_G723_ADPCM" ;
-		case WAVE_FORMAT_DIGISTD :
-			return "WAVE_FORMAT_DIGISTD" ;
-		case WAVE_FORMAT_DIGIFIX :
-			return "WAVE_FORMAT_DIGIFIX" ;
-		case WAVE_FORMAT_DIALOGIC_OKI_ADPCM :
-			return "WAVE_FORMAT_DIALOGIC_OKI_ADPCM" ;
-		case WAVE_FORMAT_MEDIAVISION_ADPCM :
-			return "WAVE_FORMAT_MEDIAVISION_ADPCM" ;
-		case WAVE_FORMAT_YAMAHA_ADPCM :
-			return "WAVE_FORMAT_YAMAHA_ADPCM" ;
-		case WAVE_FORMAT_SONARC :
-			return "WAVE_FORMAT_SONARC" ;
-		case WAVE_FORMAT_DSPGROUP_TRUESPEECH  :
-			return "WAVE_FORMAT_DSPGROUP_TRUESPEECH " ;
-		case WAVE_FORMAT_ECHOSC1 :
-			return "WAVE_FORMAT_ECHOSC1" ;
-		case WAVE_FORMAT_AUDIOFILE_AF18   :
-			return "WAVE_FORMAT_AUDIOFILE_AF18  " ;
-		case WAVE_FORMAT_APTX :
-			return "WAVE_FORMAT_APTX" ;
-		case WAVE_FORMAT_AUDIOFILE_AF10   :
-			return "WAVE_FORMAT_AUDIOFILE_AF10  " ;
-		case WAVE_FORMAT_DOLBY_AC2 :
-			return "WAVE_FORMAT_DOLBY_AC2" ;
-		case WAVE_FORMAT_GSM610 :
-			return "WAVE_FORMAT_GSM610" ;
-		case WAVE_FORMAT_MSNAUDIO :
-			return "WAVE_FORMAT_MSNAUDIO" ;
-		case WAVE_FORMAT_ANTEX_ADPCME :
-			return "WAVE_FORMAT_ANTEX_ADPCME" ;
-		case WAVE_FORMAT_CONTROL_RES_VQLPC :
-			return "WAVE_FORMAT_CONTROL_RES_VQLPC" ;
-		case WAVE_FORMAT_DIGIREAL :
-			return "WAVE_FORMAT_DIGIREAL" ;
-		case WAVE_FORMAT_DIGIADPCM :
-			return "WAVE_FORMAT_DIGIADPCM" ;
-		case WAVE_FORMAT_CONTROL_RES_CR10 :
-			return "WAVE_FORMAT_CONTROL_RES_CR10" ;
-		case WAVE_FORMAT_NMS_VBXADPCM :
-			return "WAVE_FORMAT_NMS_VBXADPCM" ;
-		case WAVE_FORMAT_ROCKWELL_ADPCM :
-			return "WAVE_FORMAT_ROCKWELL_ADPCM" ;
-		case WAVE_FORMAT_ROCKWELL_DIGITALK :
-			return "WAVE_FORMAT_ROCKWELL_DIGITALK" ;
-		case WAVE_FORMAT_G721_ADPCM :
-			return "WAVE_FORMAT_G721_ADPCM" ;
-		case WAVE_FORMAT_MPEG :
-			return "WAVE_FORMAT_MPEG" ;
-		case WAVE_FORMAT_MPEGLAYER3 :
-			return "WAVE_FORMAT_MPEGLAYER3" ;
-		case IBM_FORMAT_MULAW :
-			return "IBM_FORMAT_MULAW" ;
-		case IBM_FORMAT_ALAW :
-			return "IBM_FORMAT_ALAW" ;
-		case IBM_FORMAT_ADPCM :
-			return "IBM_FORMAT_ADPCM" ;
-		case WAVE_FORMAT_CREATIVE_ADPCM :
-			return "WAVE_FORMAT_CREATIVE_ADPCM" ;
-		case WAVE_FORMAT_FM_TOWNS_SND :
-			return "WAVE_FORMAT_FM_TOWNS_SND" ;
-		case WAVE_FORMAT_OLIGSM :
-			return "WAVE_FORMAT_OLIGSM" ;
-		case WAVE_FORMAT_OLIADPCM :
-			return "WAVE_FORMAT_OLIADPCM" ;
-		case WAVE_FORMAT_OLICELP :
-			return "WAVE_FORMAT_OLICELP" ;
-		case WAVE_FORMAT_OLISBC :
-			return "WAVE_FORMAT_OLISBC" ;
-		case WAVE_FORMAT_OLIOPR :
-			return "WAVE_FORMAT_OLIOPR" ;
+{	int lower, upper, mid ;
 
-		/* Couple of new ones. */
-		case WAVE_FORMAT_VOXWARE :
-			return "WAVE_FORMAT_VOXWARE" ;
-		case WAVE_FORMAT_INTERWAV_VSC112 :
-			return "WAVE_FORMAT_INTERWAV_VSC112" ;
+	lower = -1 ;
+	upper = sizeof (wave_descs) / sizeof (WAV_FORMAT_DESC) ;
 
-		case WAVE_FORMAT_EXTENSIBLE :
-			return "WAVE_FORMAT_EXTENSIBLE" ;
-		break ;
+	/* binary search */
+	if ((wave_descs [0].ID <= k) & (k <= wave_descs [upper - 1].ID))
+	{
+		while (lower + 1 < upper)
+		{	mid = (upper + lower) / 2 ;
+
+			if (k == wave_descs [mid].ID)
+				return wave_descs [mid].name ;
+			if (k < wave_descs [mid].ID)
+				upper = mid ;
+			else
+				lower = mid ;
+			} ;
 		} ;
+
 	return "Unknown format" ;
 } /* wav_w64_format_str */
 
@@ -345,3 +377,10 @@ wav_w64_srate2blocksize (int srate_chan_product)
 		return 1024 ;
 	return 2048 ;
 } /* srate2blocksize */
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch
+** revision control system.
+**
+** arch-tag: 43c1b1dd-8abd-43da-a8cd-44da914b64a5
+*/

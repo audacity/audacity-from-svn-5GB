@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -17,7 +17,6 @@
 */
 
 #include	<stdio.h>
-#include	<unistd.h>
 #include	<fcntl.h>
 #include	<string.h>
 #include	<ctype.h>
@@ -86,7 +85,10 @@ mat4_open	(SF_PRIVATE *psf)
 	subformat = psf->sf.format & SF_FORMAT_SUBMASK ;
 
 	if (psf->mode == SFM_WRITE || psf->mode == SFM_RDWR)
-	{	psf->endian = psf->sf.format & SF_FORMAT_ENDMASK ;
+	{	if (psf->is_pipe)
+			return SFE_NO_PIPE_WRITE ;
+
+		psf->endian = psf->sf.format & SF_FORMAT_ENDMASK ;
 		if (CPU_IS_LITTLE_ENDIAN && (psf->endian == SF_ENDIAN_CPU || psf->endian == 0))
 			psf->endian = SF_ENDIAN_LITTLE ;
 		else if (CPU_IS_BIG_ENDIAN && (psf->endian == SF_ENDIAN_CPU || psf->endian == 0))
@@ -100,23 +102,23 @@ mat4_open	(SF_PRIVATE *psf)
 
 	psf->close = mat4_close ;
 
-	psf->blockwidth  = psf->bytewidth * psf->sf.channels ;
+	psf->blockwidth = psf->bytewidth * psf->sf.channels ;
 
 	switch (subformat)
-	{	case  SF_FORMAT_PCM_16 :
-		case  SF_FORMAT_PCM_32 :
+	{	case SF_FORMAT_PCM_16 :
+		case SF_FORMAT_PCM_32 :
 				error = pcm_init (psf) ;
 				break ;
 
-		case  SF_FORMAT_FLOAT :
+		case SF_FORMAT_FLOAT :
 				error = float32_init (psf) ;
 				break ;
 
-		case  SF_FORMAT_DOUBLE :
+		case SF_FORMAT_DOUBLE :
 				error = double64_init (psf) ;
 				break ;
 
-		default :   break ;
+		default : break ;
 		} ;
 
 	if (error)
@@ -129,26 +131,10 @@ mat4_open	(SF_PRIVATE *psf)
 */
 
 static int
-mat4_close	(SF_PRIVATE  *psf)
+mat4_close	(SF_PRIVATE *psf)
 {
 	if (psf->mode == SFM_WRITE || psf->mode == SFM_RDWR)
-	{	/*  Now we know for certain the length of the file we can
-		 *  re-write correct values for the datasize header element.
-		 */
-
-		psf_fseek (psf, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf) ;
-
-		psf->datalength = psf->filelength - psf->dataoffset ;
-		psf_fseek (psf, 0, SEEK_SET) ;
-
-		psf->sf.frames = psf->datalength / psf->blockwidth ;
-		mat4_write_header (psf, SF_FALSE) ;
-		} ;
-
-	if (psf->fdata)
-		free (psf->fdata) ;
-	psf->fdata = NULL ;
+		mat4_write_header (psf, SF_TRUE) ;
 
 	return 0 ;
 } /* mat4_close */
@@ -165,9 +151,7 @@ mat4_write_header (SF_PRIVATE *psf, int calc_length)
 	current = psf_ftell (psf) ;
 
 	if (calc_length)
-	{	psf_fseek (psf, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf) ;
-		psf_fseek (psf, 0, SEEK_SET) ;
+	{	psf->filelength = psf_get_filelen (psf) ;
 
 		psf->datalength = psf->filelength - psf->dataoffset ;
 		if (psf->dataend)
@@ -195,7 +179,7 @@ mat4_write_header (SF_PRIVATE *psf, int calc_length)
 		psf_binheader_writef (psf, "tEm484", encoding, psf->sf.channels, psf->sf.frames, 0) ;
 		psf_binheader_writef (psf, "E4b", 9, "wavedata", 9) ;
 		}
-	else if  (psf->endian == SF_ENDIAN_LITTLE)
+	else if (psf->endian == SF_ENDIAN_LITTLE)
 	{	psf_binheader_writef (psf, "em444", MAT4_LE_DOUBLE, 1, 1, 0) ;
 		psf_binheader_writef (psf, "e4bd", 11, "samplerate", 11, samplerate) ;
 		psf_binheader_writef (psf, "tem484", encoding, psf->sf.channels, psf->sf.frames, 0) ;
@@ -222,7 +206,8 @@ static int
 mat4_read_header (SF_PRIVATE *psf)
 {	int		marker, namesize, rows, cols, imag ;
 	double	value ;
-	char	name [64], *marker_str ;
+	const char *marker_str ;
+	char	name [64] ;
 
 	psf_binheader_readf (psf, "pm", 0, &marker) ;
 
@@ -291,8 +276,8 @@ mat4_read_header (SF_PRIVATE *psf)
 		return SFE_MAT4_ZERO_CHANNELS ;
 		} ;
 
-	psf->sf.channels = rows ;
-	psf->sf.frames   = cols ;
+	psf->sf.channels	= rows ;
+	psf->sf.frames		= cols ;
 
 	psf->sf.format = psf->endian | SF_FORMAT_MAT4 ;
 	switch (marker)
@@ -330,14 +315,11 @@ mat4_read_header (SF_PRIVATE *psf)
 				psf->filelength - psf->dataoffset, psf->sf.channels * psf->sf.frames * psf->bytewidth) ;
 		}
 	else if ((psf->filelength - psf->dataoffset) > psf->sf.channels * psf->sf.frames * psf->bytewidth)
-		psf->dataend = rows * cols * psf->bytewidth ;
+		psf->dataend = psf->dataoffset + rows * cols * psf->bytewidth ;
 
 	psf->datalength = psf->filelength - psf->dataoffset - psf->dataend ;
 
-	psf->sf.seekable = SF_TRUE ;
 	psf->sf.sections = 1 ;
-
-	psf->blockwidth = psf->sf.channels * psf->bytewidth ;
 
 	return 0 ;
 } /* mat4_read_header */
@@ -401,3 +383,10 @@ mat4_marker_to_str (int marker)
 	LSF_SNPRINTF (str, sizeof (str) - 1, "%08X", marker) ;
 	return str ;
 } /* mat4_marker_to_str */
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: f7e5f5d6-fc39-452e-bc4a-59627116ff59
+*/

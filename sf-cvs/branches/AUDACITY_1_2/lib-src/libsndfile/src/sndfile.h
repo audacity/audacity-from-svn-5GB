@@ -70,7 +70,7 @@ enum
 	SF_FORMAT_SDS			= 0x110000,		/* Midi Sample Dump Standard */
 	SF_FORMAT_AVR			= 0x120000,		/* Audio Visual Research */
 	SF_FORMAT_WAVEX			= 0x130000,		/* MS WAVE with WAVEFORMATEX */
-	
+
 	/* Subtypes from here on. */
 
 	SF_FORMAT_PCM_S8		= 0x0001,		/* Signed 8 bit data */
@@ -102,7 +102,7 @@ enum
 
 	SF_FORMAT_DPCM_8		= 0x0050,		/* 8 bit differential PCM (XI only) */
 	SF_FORMAT_DPCM_16		= 0x0051,		/* 16 bit differential PCM (XI only) */
-	
+
 
 	/* Endian-ness options. */
 
@@ -152,7 +152,7 @@ enum
 	SFC_SET_UPDATE_HEADER_AUTO		= 0x1061,
 
 	SFC_FILE_TRUNCATE				= 0x1080,
-	
+
 	SFC_SET_RAW_START_OFFSET		= 0x1090,
 
 	SFC_SET_DITHER_ON_WRITE			= 0x10A0,
@@ -162,7 +162,7 @@ enum
 	SFC_GET_DITHER_INFO				= 0x10A3,
 
 	SFC_GET_EMBED_FILE_INFO			= 0x10B0,
-	
+
 	SFC_SET_CLIPPING				= 0x10C0,
 	SFC_GET_CLIPPING				= 0x10C1,
 
@@ -174,9 +174,9 @@ enum
 
 	/*
 	** SFC_SET_ADD_* values are deprecated and will disappear at some
-	** time in the future. They are guaranteed to be here up to and 
-	** including version 1.0.8 to avoid breakage of existng software. 
-	** They currently do nothing and will continue to do nothing. 
+	** time in the future. They are guaranteed to be here up to and
+	** including version 1.0.8 to avoid breakage of existng software.
+	** They currently do nothing and will continue to do nothing.
 	*/
 	SFC_SET_ADD_DITHER_ON_WRITE		= 0x1070,
 	SFC_SET_ADD_DITHER_ON_READ		= 0x1071
@@ -210,13 +210,13 @@ enum
 } ;
 
 /* Pubic error values. These are guaranteed to remain unchanged for the duration
-** of the library major version number. 
+** of the library major version number.
 ** There are also a large number of private error numbers which are internal to
 ** the library which can change at any time.
 */
 
 enum
-{	SF_ERR_NO_ERROR     		= 0,
+{	SF_ERR_NO_ERROR				= 0,
 	SF_ERR_UNRECOGNISED_FORMAT	= 1,
 	SF_ERR_SYSTEM				= 2
 } ;
@@ -230,9 +230,9 @@ typedef	struct SNDFILE_tag	SNDFILE ;
 ** off64_t (Solaris), __int64_t (Win32) etc.
 */
 
-typedef __int64	sf_count_t ;
+typedef loff_t	sf_count_t ;
 
-#define SF_COUNT_MAX		0x7FFFFFFFFFFFFFFFi64
+#define SF_COUNT_MAX		0x7FFFFFFFFFFFFFFFLL
 
 /* A pointer to a SF_INFO structure is passed to sf_open_read () and filled in.
 ** On write, the SF_INFO structure is filled in by the user and passed into
@@ -263,13 +263,13 @@ typedef	struct SF_INFO SF_INFO ;
 
 typedef struct
 {	int			format ;
-	const char  *name ;
-	const char  *extension ;
+	const char	*name ;
+	const char	*extension ;
 } SF_FORMAT_INFO ;
 
 /*
-** Enums and typedefs for adding dither on read and write. 
-** See the html documentation for sf_command(), SFC_SET_DITHER_ON_WRITE 
+** Enums and typedefs for adding dither on read and write.
+** See the html documentation for sf_command(), SFC_SET_DITHER_ON_WRITE
 ** and SFC_SET_DITHER_ON_READ.
 */
 
@@ -331,7 +331,7 @@ SNDFILE* 	sf_open		(const char *path, int mode, SF_INFO *sfinfo) ;
 ** When passed a descriptor like this, the library will assume that the start
 ** of file header is at the current file offset. This allows sound files within
 ** larger container files to be read and/or written.
-** On error, this will return a NULL pointer. To find the error number, pass a 
+** On error, this will return a NULL pointer. To find the error number, pass a
 ** NULL SNDFILE to sf_perror () or sf_error_str ().
 ** All calls to sf_open_fd() should be matched with a call to sf_close().
 
@@ -339,20 +339,20 @@ SNDFILE* 	sf_open		(const char *path, int mode, SF_INFO *sfinfo) ;
 
 SNDFILE* 	sf_open_fd	(int fd, int mode, SF_INFO *sfinfo, int close_desc) ;
 
-/* sf_error () returns a error number which can be translated to a text 
+/* sf_error () returns a error number which can be translated to a text
 ** string using sf_error_number().
 */
 
 int		sf_error		(SNDFILE *sndfile) ;
 
-/* sf_strerror () returns to the caller a pointer to the current error message for 
+/* sf_strerror () returns to the caller a pointer to the current error message for
 ** the given SNDFILE.
 */
 
 const char* sf_strerror (SNDFILE *sndfile) ;
 
 /* sf_error_number () allows the retrieval of the error string for each internal
-** error number. 
+** error number.
 **
 */
 
@@ -458,12 +458,3 @@ int		sf_close		(SNDFILE *sndfile) ;
 #endif	/* __cplusplus */
 
 #endif	/* SNDFILE_H */
-
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: 906bb197-18f2-4f66-a395-b4722bab5114
-*/
-
