@@ -157,16 +157,20 @@ EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
 END_EVENT_TABLE()
 
 AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
-                                     const wxPoint & pos,
-                                     const wxSize & size):wxFrame(parent,
-                                                                  id,
-                                                                  "Audacity",
-                                                                  pos,
-                                                                  size),
-mDirty(false), mTrackPanel(NULL), mAPalette(NULL),
-mRate((double) gPrefs->
-      Read("/SamplingRate/DefaultProjectSampleRate", 44100)), mDrag(NULL),
-mAutoScrolling(false)
+                                 const wxPoint & pos,
+                                 const wxSize & size):
+   wxFrame(parent,
+           id,
+           "Audacity",
+           pos,
+           size),
+   mDirty(false),
+   mTrackPanel(NULL),
+   mAPalette(NULL),
+   mRate((double) gPrefs->Read("/SamplingRate/DefaultProjectSampleRate",
+                               44100)),
+   mDrag(NULL),
+   mAutoScrolling(false)
 {
 
    //
