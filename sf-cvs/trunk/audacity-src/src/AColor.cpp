@@ -1,3 +1,4 @@
+
 /**********************************************************************
 
   Audacity: A Digital Audio Editor
@@ -12,6 +13,7 @@
 
 #include <wx/dc.h>
 #include <wx/settings.h>
+#include <wx/utils.h>
 
 #include "AColor.h"
 

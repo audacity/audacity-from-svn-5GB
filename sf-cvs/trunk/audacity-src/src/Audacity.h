@@ -21,8 +21,11 @@
 #define AUDACITY_FILE_FORMAT_VERSION "0.97"
 
 class wxWindow;
+class ToolBarStub;
 
 extern wxWindow *gParentWindow;
+extern ToolBarStub *gControlToolBarStub;
+extern ToolBarStub *gEditToolBarStub;
 
 void QuitAudacity();
 
