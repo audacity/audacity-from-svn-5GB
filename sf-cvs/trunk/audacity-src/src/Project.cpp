@@ -2065,7 +2065,14 @@ bool AudacityProject::ImportProgressCallback(void *_self, float percent)
    const int progressDialogGranularity = 1000;
 
    if (self->mImportProgressDialog) {
-      return !self->mImportProgressDialog->Update((int)(percent * progressDialogGranularity));
+      bool keepGoing =
+         self->mImportProgressDialog->Update((int)(percent *
+                                                   progressDialogGranularity));
+
+      if (!keepGoing)
+         self->mUserCanceledProgress = true;
+
+      return !keepGoing;
    }
    else if (wxGetElapsedTime(false) > 500) {
       wxString description;
@@ -2153,10 +2160,26 @@ void AudacityProject::Import(wxString fileName)
 
    wxASSERT(!mImportProgressDialog);
 
+   mUserCanceledProgress = false;
    numTracks = mImporter->Import(fileName, mTrackFactory, &newTracks,
                                  errorMessage,
                                  AudacityProject::ImportProgressCallback,
                                  this);
+
+   if(mImportProgressDialog) {
+      delete mImportProgressDialog;
+      mImportProgressDialog = NULL;
+   }
+
+   if (mUserCanceledProgress)
+      return;
+
+   if (numTracks <= 0) {
+      wxMessageBox(errorMessage,
+                   _("Error importing"),
+                   wxOK | wxCENTRE, this);
+      return;
+   }
 
    // If the project is empty, import ID3 tags from the file.
    // Yes, these are normally only in MP3 files, but they could
@@ -2169,18 +2192,6 @@ void AudacityProject::Import(wxString fileName)
    // were an audio file itself
    if (fileName.AfterLast('.').IsSameAs("lof", false))
    {
-      return;
-   }
-
-   if(mImportProgressDialog) {
-      delete mImportProgressDialog;
-      mImportProgressDialog = NULL;
-   }
-
-   if (numTracks <= 0) {
-      wxMessageBox(errorMessage,
-                   _("Error importing"),
-                   wxOK | wxCENTRE, this);
       return;
    }
 

@@ -189,9 +189,10 @@ void DirManager::CleanTempDir(bool startup)
    if (startup) {
       wxString prompt =
          _("Audacity found temporary files that were not deleted or saved\n"
-           "the last time you used Audacity.  Would you like to delete them now?\n\n"
-           "(Audacity can't recover them automatically, but if you choose not\n"
-           "to delete them, you can recover them manually.)");
+           "the last time you used Audacity.\n\n"
+           "Audacity can't recover them automatically, but if you choose not\n"
+           "to delete them, you can recover them manually.\n\n"
+           "Delete temporary files?");
       
       int action = wxMessageBox(prompt,
                                 "Warning",
