@@ -9,9 +9,7 @@
 #
 
 LIBFLAGS = -Lxaudio/linux/lib -lxaudio @LIBS@
-CFLAGS = @CFLAGS@ @CPPFLAGS@ \
-    -Iallegro \
-	-D__WXDEBUG__
+CFLAGS = @DEFS@ @CFLAGS@ @CPPFLAGS@ -Iallegro
 CCC = @CXX@
 CC = @CC@
 
@@ -97,7 +95,7 @@ audacity: $(OBJS) Makefile
 
 dep:
 	$(CCC) -M $(CFLAGS) $(DEPS) | \
-		perl -pe 's/^(.*)\.o: (\w+\.(\w+))/$(OBJDIR)\/$$1.$$3.o: $$2/;' \
+		perl -pe 's/^(.*)\.o: ([^ ]*(?=\/)\/?)([^ \/]+\.(\w+))/$(OBJDIR)\/$$2$$1.$$4.o: $$2$$3/;' \
 		> .depend
 
 #

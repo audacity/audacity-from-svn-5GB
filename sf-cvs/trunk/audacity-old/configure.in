@@ -15,38 +15,34 @@ AC_LANG_CPLUSPLUS
 AC_PROG_CXX
 
 dnl Checks for libraries.
-AC_CHECK_LIB(dl, dlopen)
-AC_CHECK_LIB(gdk, gdk_im_open)
-AC_CHECK_LIB(gtk, main)
-AC_CHECK_LIB(m, main)
-AC_CHECK_LIB(pthread, pthread_create)
-AC_CHECK_LIB(resolv, main)
-AC_CHECK_LIB(wx_gtk, main)
 
-dnl if libvorbisfile AND headers are already installed, do nothing. if not,
-dnl add the static libraries to the command line and vorbis/include
-dnl to the header search path. NOTE: any files that #include vorbis headers
-dnl must be in the base source directory (not a big problem, only one does)
-dnl
-dnl We could probably get away with checking only for the headers (why would
-dnl somone install the headers and not the library?) but we'll be complete
-dnl
-dnl TODO: Make this non-i386 specific (use an $(ARCH) variable)
-use_our_vorbis() {
-	CFLAGS="$CFLAGS -Ivorbis/include"
-	LIBS="-$LIBS vorbis/linux/lib/libvorbisfile.a vorbis/linux/lib/libvorbis.a vorbis/linux/lib/libogg.a"
-	echo "Using bundled libvorbis instead..."
-}
+dnl wx-config takes care of these:
+dnl AC_CHECK_LIB(dl, dlopen)
+dnl AC_CHECK_LIB(gdk, gdk_im_open)
+dnl AC_CHECK_LIB(gtk, main)
+dnl AC_CHECK_LIB(m, main)
+dnl AC_CHECK_LIB(pthread, pthread_create)
 
-check_vorbis_header() {
-	AC_CHECK_HEADER(vorbis/vorbisfile.h,
-					LIBS="$LIBS -lvorbisfile -lvorbis -logg", dnl success!
-					use_our_vorbis)
-}
+dnl we don't seem to be using this one at the moment
+dnl AC_CHECK_LIB(resolv, main)
 
-AC_CHECK_LIB(vorbisfile, ov_open, 
-	 check_vorbis_header ,use_our_vorbis,
-	 -lvorbis -logg) dnl auxiliary library that -lvorbisfile needs
+AC_PATH_PROG(WX_CONFIG, wx-config, no)
+if test "$WX_CONFIG" = "no" ; then
+	AC_MSG_ERROR("Could not find wx-config: is wxWindows installed?")
+fi
+LIBS="$LIBS `$WX_CONFIG --libs`"
+CFLAGS="$CFLAGS `$WX_CONFIG --cflags`" ],
+
+
+dnl this complicated-looking thing is simple a nested function that checks for
+dnl the library, checking for the header as well on success
+AC_CHECK_LIB(vorbisfile, ov_open, [
+	AC_CHECK_HEADER(vorbis/vorbisfile.h, [
+		  LIBS="$LIBS -lvorbisfile -lvorbis -logg"
+		  AC_DEFINE(HAVE_LIBVORBISFILE) ],
+		AC_MSG_WARN("Ogg Vorbis headers not found. Ogg vorbis support disabled"))],
+	AC_MSG_WARN("Ogg Vorbis libraries not found. Ogg vorbis support disabled"),
+	-lvorbis -logg) dnl auxiliary library that -lvorbisfile needs
 
 dnl Checks for header files.
 AC_HEADER_STDC
@@ -56,17 +52,6 @@ dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
-
-WX_CONFIG="wx-config"
-if test "$WX_CONFIG" != "no" ; then
-  AC_MSG_CHECKING(wxWindows compiling and linking flags)
-  WX_CFLAGS=`$WX_CONFIG --cflags`
-  WX_LIBS=`$WX_CONFIG --libs`
-  CFLAGS="$CFLAGS $WX_CFLAGS"
-  LIBS="$LIBS $WX_LIBS"
-else
-  AC_MSG_ERROR("Could not find $WX_CONFIG")
-fi
 
 dnl Checks for library functions.
 
