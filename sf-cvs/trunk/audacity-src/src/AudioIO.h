@@ -190,7 +190,7 @@ private:
 
 #if USE_PORTAUDIO_V19
    friend int audacityAudioCallback(
-                void *inputBuffer, void *outputBuffer,
+                const void *inputBuffer, void *outputBuffer,
                 unsigned long framesPerBuffer,
                 const PaStreamCallbackTimeInfo *timeInfo,
                 PaStreamCallbackFlags statusFlags, void *userData );
