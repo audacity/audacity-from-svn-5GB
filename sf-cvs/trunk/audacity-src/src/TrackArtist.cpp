@@ -912,7 +912,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    if (tpre < 0) {
       // Fill in the area to the left of the track
       wxRect pre = r;
-      pre.width = (int) ((t0 - tpre) * pps);
+      if (t0 < tpost) pre.width = (int) ((t0 - tpre) * pps);
       dc.SetBrush(blankBrush);
       dc.DrawRectangle(pre);
 
@@ -928,7 +928,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    // size of the blank area.
    if (tpost > t1) {
       wxRect post = r;
-      post.x += (int) ((t1 - tpre) * pps);
+      if (t1 > tpre) post.x += (int) ((t1 - tpre) * pps);
       post.width = r.width - (post.x - r.x);
       dc.SetBrush(blankBrush);
       dc.DrawRectangle(post);
