@@ -3372,6 +3372,11 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
 
       wxActivateEvent e;
       GetParent()->ProcessEvent(e);
+
+      // wxTimers seem to be a little unreliable, so this
+      // "primes" it to make sure it keeps going for a while...
+      mTimer.Stop();
+      mTimer.Start(50, FALSE);
    }
 
    if (event.ButtonDown())
