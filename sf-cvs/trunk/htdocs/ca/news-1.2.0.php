@@ -2,10 +2,10 @@
 
 <p>
 L'Audacity 1.2.0 és la nova versió estable del programa lliure d'edició de so digital Audacity.
-Aquesta edició presenta una gran quantitat de millores respecte a la versió 1.0, incloent nous efectes, superior qualitat d'àudio i una interfície d'usuari actualitzada.
+Aquesta edició presenta una gran quantitat de millores respecte a la versió 1.0: nous efectes, millor qualitat d'àudio i actualització de la interfície d'usuari.
 </p>
 
-<p>Descarregueu l'Audacity 1.2.0 per a:</p>
+<p>Descarregueu-vos l'Audacity 1.2.0 per a:</p>
 <ul>
 <li><a href="windows.php<?php print $langQueryStr; ?>">Windows</a>
 <li><a href="mac.php<?php print $langQueryStr; ?>">Mac OS X</a>
