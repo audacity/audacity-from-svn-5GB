@@ -55,8 +55,8 @@ private:
 
 private:
    void InitializeTranslationStrings();
-   CommandsTranslationItem * GetTranslationItem(wxString& untranslatedName);
-   wxString GetTranslatedName(wxString& untranslatedName);
+   CommandsTranslationItem * GetTranslationItem(wxString untranslatedName);
+   wxString GetTranslatedName(wxString untranslatedName);
    const char * GetTranslation(const char *utName, const char *tName);
 
    CommandsTranslationArray mCommandsTranslationArray;

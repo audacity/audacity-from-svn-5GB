@@ -30,7 +30,7 @@ Commands::~Commands()
 
 // Begin forewarder functions
 
-wxMenuBar * Commands::GetMenuBar(wxString &sMenu)
+wxMenuBar * Commands::GetMenuBar(wxString sMenu)
 {
    return mCommandsReader.GetCommandsMenu()->GetMenuBar(sMenu);
 }
@@ -72,7 +72,7 @@ bool Commands::Reparse()
    return Parse();
 }
 
-bool Commands::ProcessKeyCombo(wxString &sKeyCombo)
+bool Commands::ProcessKeyCombo(wxString sKeyCombo)
 {
    return ExecuteFunctionsList(mCommandsReader.GetCommandsMenu()->GetFunctionsFromIdentifier(mCommandsReader.GetCommandsMenu()->GetIdentifierFromKey(sKeyCombo)));
 }
@@ -107,7 +107,7 @@ bool Commands::HandleMenuEvent(wxEvent &event)
    return ExecuteFunctionsList(functionsString);
 }
 
-bool Commands::ExecuteFunctionsList(wxString &sFunctions)
+bool Commands::ExecuteFunctionsList(wxString sFunctions)
 {
    AudacityProject *audacityPrj = GetActiveProject();
 
@@ -138,7 +138,7 @@ bool Commands::ExecuteFunctionsList(wxString &sFunctions)
    return true;
 }
 
-audEventFunction Commands::LookupCallbackByName(wxString &sCallback)
+audEventFunction Commands::LookupCallbackByName(wxString sCallback)
 {
    for(int i = 0; i < NUM_CALLBACK_FUNCTIONS; i++)
    {
@@ -149,7 +149,7 @@ audEventFunction Commands::LookupCallbackByName(wxString &sCallback)
    return NULL;
 }
 
-void Commands::ChangeText(wxString &sMenuBarName, wxString &sFunctions, wxString &sNewText)
+void Commands::ChangeText(wxString sMenuBarName, wxString sFunctions, wxString sNewText)
 {
    wxMenuBar *ChangingMenuBar = GetMenuBar(sMenuBarName);
    if(!ChangingMenuBar)
@@ -169,7 +169,7 @@ void Commands::ChangeText(wxString &sMenuBarName, wxString &sFunctions, wxString
    ChangingMenuItem->SetText(finalNewText);
 }
 
-void Commands::EnableItemsByFunction(wxString &sMenuBarName, wxString &sFunction, bool bEnable)
+void Commands::EnableItemsByFunction(wxString sMenuBarName, wxString sFunction, bool bEnable)
 {
    wxMenuBar *ChangingMenuBar = GetMenuBar(sMenuBarName);
    if(!ChangingMenuBar)

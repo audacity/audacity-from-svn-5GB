@@ -116,7 +116,7 @@ void CommandsMenu::PurgeData()
    mCurrentID = 0;
 }
 
-void CommandsMenu::AddMenuBar(wxString &sMenu)
+void CommandsMenu::AddMenuBar(wxString sMenu)
 {
    MenuBarListEntry *tmpEntry = new MenuBarListEntry;
 
@@ -126,7 +126,7 @@ void CommandsMenu::AddMenuBar(wxString &sMenu)
    mMenuBarList.Add(tmpEntry);
 }
 
-wxMenuBar * CommandsMenu::GetMenuBar(wxString &sMenu)
+wxMenuBar * CommandsMenu::GetMenuBar(wxString sMenu)
 {
    for(unsigned int i = 0; i < mMenuBarList.GetCount(); i++)
    {
@@ -145,7 +145,7 @@ wxMenuBar * CommandsMenu::CurrentMenuBar()
    return mMenuBarList[mMenuBarList.GetCount()-1]->menubar;
 }
 
-void CommandsMenu::BeginMenu(wxString &tName)
+void CommandsMenu::BeginMenu(wxString tName)
 {
    wxMenu *tmpMenu = new wxMenu();
 
@@ -159,7 +159,7 @@ void CommandsMenu::EndMenu()
    mCurrentMenu = NULL;
 }
 
-void CommandsMenu::BeginSubMenu(wxString &tName)
+void CommandsMenu::BeginSubMenu(wxString tName)
 {
    SubMenuListEntry *tmpEntry = new SubMenuListEntry;
 
@@ -208,7 +208,7 @@ wxMenu * CommandsMenu::CurrentMenu()
    return tmpCurrentSubMenu;
 }
 
-void CommandsMenu::AddItem(wxString &tName, wxString &sFunctions, wxString &sKeys)
+void CommandsMenu::AddItem(wxString tName, wxString sFunctions, wxString sKeys)
 {
    wxString finalName = AppendComboString(tName, sKeys);
 
@@ -220,7 +220,7 @@ void CommandsMenu::AddSeparator()
    CurrentMenu()->AppendSeparator();
 }
 
-void CommandsMenu::AddDynamicItem(wxString &sName)
+void CommandsMenu::AddDynamicItem(wxString sName)
 {
    int effType = -1;
    EffectArray *effs;
@@ -250,17 +250,17 @@ void CommandsMenu::AddDynamicItem(wxString &sName)
    if(!CurrentMenu()->GetMenuItemCount())
    {
       //Add disabled None item
-      AddItem(wxString(_("None")), wxString(""), wxString(""));
+      AddItem(_("None"), "", "");
       CurrentMenu()->Enable(mCurrentID, false);
    }
 }
 
-void CommandsMenu::AppendEffect(int idEffect, wxString &sName, wxString &sType)
+void CommandsMenu::AppendEffect(int idEffect, wxString sName, wxString sType)
 {
-   AddItem(sName, wxString::Format("%i@%s@Effect", idEffect, sType.c_str()), wxString(""));
+   AddItem(sName, wxString::Format("%i@%s@Effect", idEffect, sType.c_str()), "");
 }
 
-void CommandsMenu::AppendEffects(EffectArray *effs, wxString &sType, bool spill)
+void CommandsMenu::AppendEffects(EffectArray *effs, wxString sType, bool spill)
 {
    unsigned int currentLen = CurrentMenu()->GetMenuItemCount();
    unsigned int effLen = effs->GetCount();
@@ -337,7 +337,7 @@ wxMenu * CommandsMenu::GetMenuFromIdentifier(int nID)
    return NULL;
 }
 
-int CommandsMenu::GetIdentifiersFromFunction(wxString &sFunction, bool bReset)
+int CommandsMenu::GetIdentifiersFromFunction(wxString sFunction, bool bReset)
 {
    static unsigned int uIndex = 0;
 
@@ -361,7 +361,7 @@ int CommandsMenu::GetIdentifiersFromFunction(wxString &sFunction, bool bReset)
    return -1;
 }
 
-int CommandsMenu::GetIdentifierFromFunctions(wxString &sFunctions)
+int CommandsMenu::GetIdentifierFromFunctions(wxString sFunctions)
 {
    for(unsigned int i = 0; i < mIdentifierNameList.GetCount(); i++)
    {
@@ -394,7 +394,7 @@ wxString CommandsMenu::GetKeysFromIdentifier(int nID)
    return "";
 }
 
-int CommandsMenu::GetIdentifierFromKey(wxString &sKey)
+int CommandsMenu::GetIdentifierFromKey(wxString sKey)
 {
    for(unsigned int i = 0; i < mIdentifierNameList.GetCount(); i++)
    {
@@ -411,12 +411,12 @@ int CommandsMenu::GetIdentifierFromKey(wxString &sKey)
    return -1;
 }
 
-int CommandsMenu::GetIdentifierFromKeys(wxString &sKeys)
+int CommandsMenu::GetIdentifierFromKeys(wxString sKeys)
 {
    return GetIdentifierFromKey(GetFirstKey(sKeys));
 }
 
-wxString CommandsMenu::GetFirstKey(wxString &sKeys)
+wxString CommandsMenu::GetFirstKey(wxString sKeys)
 {
    wxStringTokenizer tKeys(sKeys, ":");
    if(tKeys.HasMoreTokens())
@@ -427,7 +427,7 @@ wxString CommandsMenu::GetFirstKey(wxString &sKeys)
    return "";
 }
 
-wxString CommandsMenu::AppendComboString(wxString &tName, wxString &sKeys)
+wxString CommandsMenu::AppendComboString(wxString tName, wxString sKeys)
 {
    //see if tName contains tabs
    if((tName.Find('\t') != -1) || (tName.Find("\\t") != -1))

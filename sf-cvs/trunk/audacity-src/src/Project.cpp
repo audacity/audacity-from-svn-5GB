@@ -291,7 +291,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
       wxMessageBox("Error: Failed to initialize Audacity's commands!");
    }
 
-   wxMenuBar * MainMenuBar = GetCommands()->GetMenuBar(wxString("appmenu"));
+   wxMenuBar * MainMenuBar = GetCommands()->GetMenuBar("appmenu");
    if(!MainMenuBar)
    {
       wxMessageBox("Error: Failed to clone the 'appmenu' menubar!");
@@ -840,7 +840,7 @@ bool AudacityProject::ProcessEffectEvent(int nEffectIndex)
 //TODO: This function is still kinda hackish, clean up
 void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 {
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnSave"), mUndoManager.UnsavedChanges());
+   GetCommands()->EnableItemsByFunction("appmenu", "OnSave", mUndoManager.UnsavedChanges());
 
    bool nonZeroRegionSelected = (mViewInfo.sel1 > mViewInfo.sel0);
 
@@ -874,7 +874,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
       t = iter.Next();
    }
 
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("Paste"), numTracksSelected > 0 && msClipLen > 0.0);
+   GetCommands()->EnableItemsByFunction("appmenu", "Paste", numTracksSelected > 0 && msClipLen > 0.0);
 
    //Calculate the ToolBarCheckSum (uniquely specifies state of all toolbars):
    int toolBarCheckSum = 0;
@@ -926,29 +926,29 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 
    bool anySelection = numTracksSelected > 0 && nonZeroRegionSelected;
 
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnExportMix"), numTracks > 0);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnExportSelection"), anySelection);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnExportLossyMix"), numTracks > 0);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnExportLossySelection"), anySelection);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnExportLabels"), numLabelTracks > 0);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnExportMix", numTracks > 0);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnExportSelection", anySelection);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnExportLossyMix", numTracks > 0);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnExportLossySelection", anySelection);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnExportLabels", numLabelTracks > 0);
 
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("Cut"), anySelection);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("Copy"), anySelection);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("Trim"), anySelection);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnDelete"), anySelection);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnSilence"), anySelection);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnSplit"), anySelection);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnSplitLabels"), numLabelTracksSelected == 1 && numWaveTracksSelected == 1);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnDuplicate"), anySelection);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnSelectAll"), numTracks > 0);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnSelectCursorEnd"), numWaveTracksSelected > 0 && !nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnSelectStartCursor"), numWaveTracksSelected > 0 && !nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "Cut", anySelection);
+   GetCommands()->EnableItemsByFunction("appmenu", "Copy", anySelection);
+   GetCommands()->EnableItemsByFunction("appmenu", "Trim", anySelection);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnDelete", anySelection);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnSilence", anySelection);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnSplit", anySelection);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnSplitLabels", numLabelTracksSelected == 1 && numWaveTracksSelected == 1);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnDuplicate", anySelection);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnSelectAll", numTracks > 0);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnSelectCursorEnd", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnSelectStartCursor", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
 
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("Undo"), mUndoManager.UndoAvailable());
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("Redo"), mUndoManager.RedoAvailable());
+   GetCommands()->EnableItemsByFunction("appmenu", "Undo", mUndoManager.UndoAvailable());
+   GetCommands()->EnableItemsByFunction("appmenu", "Redo", mUndoManager.RedoAvailable());
 
 
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnPlotSpectrum"), numWaveTracksSelected > 0
+   GetCommands()->EnableItemsByFunction("appmenu", "OnPlotSpectrum", numWaveTracksSelected > 0
                      && nonZeroRegionSelected);
 
 #ifndef __WXMAC__
@@ -957,42 +957,42 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    if (gEditToolBarStub) {
 
       // Loaded or unloaded?
-      GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnFloatEditToolBar"), gEditToolBarStub->GetLoadedStatus());
+      GetCommands()->EnableItemsByFunction("appmenu", "OnFloatEditToolBar", gEditToolBarStub->GetLoadedStatus());
 
       // Floating or docked?
       if (gEditToolBarStub->GetWindowedStatus())
-         GetCommands()->ChangeText(wxString("appmenu"), wxString("OnFloatEditToolBar"), wxString(_("Dock Edit Toolbar")));
+         GetCommands()->ChangeText("appmenu", "OnFloatEditToolBar", _("Dock Edit Toolbar"));
       else
-         GetCommands()->ChangeText(wxString("appmenu"), wxString("OnFloatEditToolBar"), wxString(_("Float Edit Toolbar")));
+         GetCommands()->ChangeText("appmenu", "OnFloatEditToolBar", _("Float Edit Toolbar"));
    }
    else
       {
-         GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnFloatEditToolBar"), false);
+         GetCommands()->EnableItemsByFunction("appmenu", "OnFloatEditToolBar", false);
       }
 #endif
 
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnQuickMix"), numWaveTracksSelected > 1);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnSelectionSave"), numWaveTracksSelected > 0);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnSelectionRestore"), numWaveTracksSelected > 0);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnCursorTrackStart"), numWaveTracksSelected > 0);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnCursorTrackEnd"), numWaveTracksSelected > 0);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnCursorSelStart"), numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnCursorSelEnd"), numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnAlign"), numWaveTracksSelected > 1);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnAlignZero"), numWaveTracksSelected > 0);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnAlignCursor"), numWaveTracksSelected > 0 && !nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnAlignSelStart"), numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnAlignSelEnd"), numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnAlignEndCursor"), numWaveTracksSelected > 0 && !nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnAlignEndSelStart"), numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnAlignEndSelEnd"), numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnAlignGroupCursor"), numWaveTracksSelected > 1 && !nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnAlignGroupSelStart"), numWaveTracksSelected > 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnAlignGroupSelEnd"), numWaveTracksSelected > 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnAlignGroupEndCursor"), numWaveTracksSelected > 1 && !nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnAlignGroupEndSelStart"), numWaveTracksSelected > 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnAlignGroupEndSelEnd"), numWaveTracksSelected > 1 && nonZeroRegionSelected);
-   GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString("OnRemoveTracks"), numTracksSelected > 0);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnQuickMix", numWaveTracksSelected > 1);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnSelectionSave", numWaveTracksSelected > 0);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnSelectionRestore", numWaveTracksSelected > 0);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnCursorTrackStart", numWaveTracksSelected > 0);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnCursorTrackEnd", numWaveTracksSelected > 0);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnCursorSelStart", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnCursorSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlign", numWaveTracksSelected > 1);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignZero", numWaveTracksSelected > 0);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignCursor", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignSelStart", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignEndCursor", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignEndSelStart", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignEndSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupCursor", numWaveTracksSelected > 1 && !nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupSelStart", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupSelEnd", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupEndCursor", numWaveTracksSelected > 1 && !nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupEndSelStart", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnAlignGroupEndSelEnd", numWaveTracksSelected > 1 && nonZeroRegionSelected);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnRemoveTracks", numTracksSelected > 0);
 
    // Effects menus
 
@@ -1001,20 +1001,20 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 
    effs = Effect::GetEffects(BUILTIN_EFFECT | PLUGIN_EFFECT | INSERT_EFFECT);
    for(e=0; e<effs->GetCount(); e++)
-      GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString::Format("%i@GeneratePlugins@Effect", (*effs)[e]->GetID()),
+      GetCommands()->EnableItemsByFunction("appmenu", wxString::Format("%i@GeneratePlugins@Effect", (*effs)[e]->GetID()),
                           numWaveTracksSelected > 0);
    delete effs;
 
    effs = Effect::GetEffects(BUILTIN_EFFECT | PLUGIN_EFFECT | PROCESS_EFFECT);
    for(e=0; e<effs->GetCount(); e++)
-      GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString::Format("%i@EffectPlugins@Effect", (*effs)[e]->GetID()),
+      GetCommands()->EnableItemsByFunction("appmenu", wxString::Format("%i@EffectPlugins@Effect", (*effs)[e]->GetID()),
                           numWaveTracksSelected > 0
                           && nonZeroRegionSelected);
    delete effs;
 
    effs = Effect::GetEffects(BUILTIN_EFFECT | PLUGIN_EFFECT | ANALYZE_EFFECT);
    for(e=0; e<effs->GetCount(); e++)
-      GetCommands()->EnableItemsByFunction(wxString("appmenu"), wxString::Format("%i@AnalyzePlugins@Effect", (*effs)[e]->GetID()),
+      GetCommands()->EnableItemsByFunction("appmenu", wxString::Format("%i@AnalyzePlugins@Effect", (*effs)[e]->GetID()),
                           numWaveTracksSelected > 0
                            && nonZeroRegionSelected);
    delete effs;
@@ -1161,7 +1161,7 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
           new ControlToolBar(this, -1, wxPoint(10, tbheight),
                              wxSize(width - 10, h));
       #ifndef __WXMAC__
-      GetCommands()->ChangeText(wxString("appmenu"), wxString("OnFloatControlToolBar"), wxString(_("Float Control Toolbar")));
+      GetCommands()->ChangeText("appmenu", "OnFloatControlToolBar", _("Float Control Toolbar"));
       #endif
       mToolBarArray.Insert(toolbar, 0);
       break;
@@ -1217,7 +1217,7 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
 #ifndef __WXMAC__
             //If the ControlToolBar is being unloaded from this project, you
             //should change the menu entry of this project
-            GetCommands()->ChangeText(wxString("appmenu"), wxString("OnFloatControlToolBar"), wxString(_("Dock Control Toolbar")));
+            GetCommands()->ChangeText("appmenu", "OnFloatControlToolBar", _("Dock Control Toolbar"));
 #endif
             break;
             

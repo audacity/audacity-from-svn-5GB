@@ -82,7 +82,7 @@ void KeyConfigPrefs::AssignDefaults(wxCommandEvent& event)
       {
          gAudacityProjects[i]->SetMenuBar(NULL);
          gAudacityProjects[i]->GetCommands()->AssignDefaults();
-         gAudacityProjects[i]->SetMenuBar(gAudacityProjects[i]->GetCommands()->GetMenuBar(wxString("appmenu")));
+         gAudacityProjects[i]->SetMenuBar(gAudacityProjects[i]->GetCommands()->GetMenuBar("appmenu"));
       }
    }
 }
@@ -95,7 +95,7 @@ void KeyConfigPrefs::RebuildMenus(wxCommandEvent& event)
       {
          gAudacityProjects[i]->SetMenuBar(NULL);
          gAudacityProjects[i]->GetCommands()->Reparse();
-         gAudacityProjects[i]->SetMenuBar(gAudacityProjects[i]->GetCommands()->GetMenuBar(wxString("appmenu")));
+         gAudacityProjects[i]->SetMenuBar(gAudacityProjects[i]->GetCommands()->GetMenuBar("appmenu"));
       }
    }
 }

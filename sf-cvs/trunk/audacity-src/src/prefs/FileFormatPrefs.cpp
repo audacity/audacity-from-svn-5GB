@@ -341,10 +341,10 @@ bool FileFormatPrefs::Apply()
    {
       if(gAudacityProjects[i])
       {
-         gAudacityProjects[i]->GetCommands()->ChangeText(wxString("appmenu"), wxString("OnExportMix"), wxString::Format(_("&Export as %s..."), pcmFmt));
-         gAudacityProjects[i]->GetCommands()->ChangeText(wxString("appmenu"), wxString("OnExportSelection"), wxString::Format(_("Export Selection as %s..."), pcmFmt));
-         gAudacityProjects[i]->GetCommands()->ChangeText(wxString("appmenu"), wxString("OnExportLossyMix"), wxString::Format(_("Export as %s..."), lossyFormat.c_str()));
-         gAudacityProjects[i]->GetCommands()->ChangeText(wxString("appmenu"), wxString("OnExportLossySelection"), wxString::Format(_("Export Selection as %s..."), lossyFormat.c_str()));
+         gAudacityProjects[i]->GetCommands()->ChangeText("appmenu", "OnExportMix", wxString::Format(_("&Export as %s..."), pcmFmt));
+         gAudacityProjects[i]->GetCommands()->ChangeText("appmenu", "OnExportSelection", wxString::Format(_("Export Selection as %s..."), pcmFmt));
+         gAudacityProjects[i]->GetCommands()->ChangeText("appmenu", "OnExportLossyMix", wxString::Format(_("Export as %s..."), lossyFormat.c_str()));
+         gAudacityProjects[i]->GetCommands()->ChangeText("appmenu", "OnExportLossySelection", wxString::Format(_("Export Selection as %s..."), lossyFormat.c_str()));
       }
    }
 
