@@ -15,8 +15,10 @@
 #include <wx/stattext.h>
 #include <wx/button.h>
 #include <wx/radiobut.h>
+#include <wx/checkbox.h>
 #include <wx/choice.h>
 #include <wx/intl.h>
+#include <wx/slider.h>
 
 #include "sndfile.h"
 
@@ -51,6 +53,9 @@ PrefsPanel(parent)
 
    mFormat = ReadExportFormatPref();
    mFormatBits = ReadExportFormatBitsPref();
+
+   wxString lossyFormat = gPrefs->Read("/FileFormats/LossyExportFormat", "MP3");
+   long oggQuality = gPrefs->Read("/FileFormats/OggExportQuality", 50);
 
    /* Begin layout code... */
 
@@ -125,6 +130,37 @@ PrefsPanel(parent)
 
       topSizer->Add(
          defFormatSizer, 0, 
+         wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, TOP_LEVEL_BORDER );
+   }
+
+   {
+      wxStaticBoxSizer *vOGGFormatSizer = new wxStaticBoxSizer(
+         new wxStaticBox(this, -1, _("OGG Export Setup")),
+         wxVERTICAL);
+      wxBoxSizer *hOGGFormatSizer = new wxBoxSizer(wxHORIZONTAL);
+      wxBoxSizer *vhOGGFormatSizer = new wxBoxSizer(wxVERTICAL);
+
+      mOGGQuality = new wxSlider(this, -1, oggQuality, 0, 100);
+
+      vhOGGFormatSizer->Add(new wxStaticText(this, -1, _("OGG Quality:")), 0, 
+                            wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
+      vhOGGFormatSizer->Add(mOGGQuality, 0,
+                            wxALL, GENERIC_CONTROL_BORDER);
+
+      hOGGFormatSizer->Add(vhOGGFormatSizer, 0, 
+                           wxALIGN_CENTER_VERTICAL|wxALL, 0);
+
+      mOGGEnabled = new wxCheckBox(this, -1, _("Use OGG instead of MP3"));
+      mOGGEnabled->SetValue((lossyFormat == "OGG"));
+
+      hOGGFormatSizer->Add(mOGGEnabled, 0,
+                          wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+      vOGGFormatSizer->Add(hOGGFormatSizer, 0, 
+                           wxALIGN_CENTER_VERTICAL|wxGROW|wxALL, 0);
+
+      topSizer->Add(
+         vOGGFormatSizer, 0, 
          wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, TOP_LEVEL_BORDER );
    }
 
@@ -292,6 +328,14 @@ bool FileFormatPrefs::Apply()
    if (originalExportFormat != mFormat ||
        originalExportBits != mFormatBits)
       gMenusDirty++;
+
+   wxString lossyFormat = "MP3";
+   if(mOGGEnabled->GetValue()) lossyFormat = "OGG";
+
+   long oggQuality = mOGGQuality->GetValue();
+
+   gPrefs->Write("/FileFormats/LossyExportFormat", lossyFormat);
+   gPrefs->Write("/FileFormats/OggExportQuality", oggQuality);
 
    return true;
 }
