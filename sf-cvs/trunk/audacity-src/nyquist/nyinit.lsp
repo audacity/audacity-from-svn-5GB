@@ -27,7 +27,6 @@
 
 (format t "~%Nyquist -- A Language for Sound Synthesis and Composition~%")
 (format t "    Copyright (c) 1991,1992,1995 by Roger B. Dannenberg~%")
-(format t "    Version 2.22~%~%")
+(format t "    Version 2.29~%~%")
 
-;;(re)Setting *gc-flag* nil to keep garbage-collection notices from printing.
-(setf *gc-flag* nil)
+(setf *gc-flag* t)

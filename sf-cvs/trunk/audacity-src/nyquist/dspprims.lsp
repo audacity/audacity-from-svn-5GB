@@ -32,64 +32,40 @@
 ;; comb-delay-from-hz -- compute the delay argument
 ;;
 (defun comb-delay-from-hz (hz caller)
-  (let (delay len)
-    ; convert from hz to delay, iterate over array if necessary
-    (cond ((arrayp hz)
-           (setf len (length hz))
-           (setf delay (make-array len))
-           (dotimes (i len)
-               (let ((h (aref hz i)))
-                 (cond ((numberp h)
-                        (setf (aref delay i) (/ (float h))))
-                       (t
-                        (error "bad argument type" h))))))
-          ((numberp hz)
-           (setf delay (/ (float hz))))
-          (t
-           (error (format nil "~A hz must be a number" caller) h)))
-    delay))
-
+  (recip hz))
 
 ;; comb-feedback-from-decay -- compute the feedback argument
 ;;
 (defun comb-feedback (decay delay)
-  (let (feedback len d)
-    (cond ((arrayp decay)
-           (setf len (length decay))
-           (setf feedback (make-array len))
-           (dotimes (i len)
-               (setf d delay)
-               (cond ((arrayp d)
-                      (setf d (aref delay i))))
-               (setf (aref feedback i)
-                     (s-exp (scale (* -6.9078 d)
-                                   (recip (aref decay i)))))))
-          ((numberp decay)
-           (setf feedback (exp (/ (* -6.9078 delay) decay))))
-          (t
-           (setf feedback (s-exp (scale (* -6.9078 delay) (recip decay))))))
-    feedback))
-
+  (s-exp (mult -6.9087 delay (recip decay))))
 
 ;; COMB - comb filter
 ;; 
 ;; this is just a feedback-delay with different arguments
 ;;
 (defun comb (snd decay hz)
+  (multichan-expand #'nyq:comb snd decay hz))
+
+(defun nyq:comb (snd decay hz)
   (let (delay feedback len d)
     ; convert decay to feedback, iterate over array if necessary
     (setf delay (comb-delay-from-hz hz "comb"))
     (setf feedback (comb-feedback decay delay))
-    (feedback-delay snd delay feedback)))
+    (nyq:feedback-delay snd delay feedback)))
 
 ;; ALPASS - all-pass filter
 ;; 
-(defun alpass (snd decay hz)
+(defun alpass (snd decay hz &optional min-hz)
+  (multichan-expand #'nyq:alpass snd decay hz min-hz))
+  
+
+
+(defun nyq:alpass (snd decay hz min-hz)
   (let (delay feedback len d)
     ; convert decay to feedback, iterate over array if necessary
     (setf delay (comb-delay-from-hz hz "alpass"))
     (setf feedback (comb-feedback decay delay))
-    (nyq:alpass snd delay feedback)))
+    (nyq:alpass1 snd delay feedback min-hz)))
 
 
 ;; CONST -- a constant at control-srate
@@ -109,14 +85,7 @@
 ;;
 (defun feedback-delay (snd delay feedback)
   (multichan-expand #'nyq:feedback-delay snd delay feedback))
-
-
-;; NYQ:ALPASS -- alpass with delay and feedback args
-;;
-(defun nyq:alpass (snd delay feedback)
-  (multichan-expand #'nyq:alpass1 snd delay feedback))
-
-
+  
 
 ;; SND-DELAY-ERROR -- report type error
 ;;
@@ -124,8 +93,21 @@
   (error "feedback-delay with variable delay is not implemented"))
 
 
+;; NYQ::DELAYCV -- coerce sample rates and call snd-delaycv
+;;
+(defun nyq:delaycv (the-snd delay feedback)
+  (display "delaycv" the-snd delay feedback)
+  (let ((the-snd-srate (snd-srate the-snd))
+        (feedback-srate (snd-srate feedback)))
+    (cond ((> the-snd-srate feedback-srate)
+           (setf feedback (snd-up the-snd-srate feedback)))
+          ((< the-snd-srate feedback-srate)
+           (format t "Warning: down-sampling feedback in feedback-delay/comb~%")
+           (setf feedback (snd-down the-snd-srate feedback))))
+    (snd-delaycv the-snd delay feedback)))
+
 (setf feedback-delay-implementations
-      (vector #'snd-delay #'snd-delay-error #'snd-delaycv #'snd-delay-error))
+      (vector #'snd-delay #'snd-delay-error #'nyq:delaycv #'snd-delay-error))
 
 
 ;; NYQ:FEEDBACK-DELAY -- single channel delay
@@ -138,25 +120,74 @@
 ;; SND-ALPASS-ERROR -- report type error
 ;;
 (defun snd-alpass-error (snd delay feedback)
-  (error "allpass with variable hz is not implemented"))
+  (error "alpass with constant decay and variable hz is not implemented"))
 
 
 (if (not (fboundp 'snd-alpasscv))
-    (defun snd-alpasscv (snd delay feedback)
+    (defun snd-alpasscv (snd delay feedback min-hz)
       (error "snd-alpasscv (ALPASS with variable decay) is not implemented")))
+(if (not (fboundp 'snd-alpassvv))
+    (defun snd-alpassvv (snd delay feedback min-hz)
+      (error "snd-alpassvv (ALPASS with variable decay and feedback) is not implemented")))
+      
+(defun snd-alpass-4 (snd delay feedback min-hz)
+    (snd-alpass snd delay feedback))
+    
+
+(defun snd-alpasscv-4 (the-snd delay feedback min-hz)
+    (display "snd-alpasscv-4" (snd-srate the-snd) (snd-srate feedback))
+    (let ((the-snd-srate (snd-srate the-snd))
+          (feedback-srate (snd-srate feedback)))
+      (cond ((> the-snd-srate feedback-srate)
+             (setf feedback (snd-up the-snd-srate feedback)))
+            ((< the-snd-srate feedback-srate)
+             (format t "Warning: down-sampling feedback in alpass~%")
+             (setf feedback (snd-down the-snd-srate feedback))))
+      (display "snd-alpasscv-4 after cond" (snd-srate the-snd) (snd-srate feedback))
+      (snd-alpasscv the-snd delay feedback)))
+
+    
+(defun snd-alpassvv-4 (the-snd delay feedback min-hz)
+    ;(display "snd-alpassvv-4" (snd-srate the-snd) (snd-srate feedback))
+    (let ((the-snd-srate (snd-srate the-snd))
+          (delay-srate (snd-srate delay))
+          (feedback-srate (snd-srate feedback))
+          max-delay)
+      (cond ((or (not (numberp min-hz))
+                 (<= min-hz 0))
+             (error "alpass needs numeric (>0) 4th parameter (min-hz) when delay is variable")))
+      (setf max-delay (/ 1.0 min-hz))
+      ; make sure delay is between 0 and max-delay
+      ; use clip function, which is symetric, with an offset
+      (setf delay (snd-offset (clip (snd-offset delay (* max-delay 0.5))
+                                    max-delay)
+                              (* max-delay -0.5)))
+      ; now delay is between 0 and max-delay, so we won't crash nyquist when
+      ; we call snd-alpassvv, which doesn't test for out-of-range data
+      (cond ((> the-snd-srate feedback-srate)
+             (setf feedback (snd-up the-snd-srate feedback)))
+            ((< the-snd-srate feedback-srate)
+             (format t "Warning: down-sampling feedback in alpass~%")
+             (setf feedback (snd-down the-snd-srate feedback))))
+      (cond ((> the-snd-srate delay-srate)
+             (setf delay (snd-up the-snd-srate delay)))
+            ((< the-snd-srate delay-srate)
+             (format t "Warning: down-sampling delay in alpass~%")
+             (setf delay (snd-down the-snd-srate delay))))
+      ;(display "snd-alpassvv-4 after cond" (snd-srate the-snd) (snd-srate feedback))
+      (snd-alpassvv the-snd delay feedback max-delay)))
 
 (setf alpass-implementations
-      (vector #'snd-alpass #'snd-alpass-error 
-              #'snd-alpasscv #'snd-alpass-error))
+      (vector #'snd-alpass-4 #'snd-alpass-error
+              #'snd-alpasscv-4 #'snd-alpassvv-4))
 
 
 
 ;; NYQ:ALPASS1 -- single channel alpass
 ;;
-(defun nyq:alpass1 (snd delay feedback)
-  (select-implementation-1-1 alpass-implementations 
-                             snd delay feedback))
-
+(defun nyq:alpass1 (snd delay feedback min-hz)
+  (select-implementation-1-2 alpass-implementations
+                             snd delay feedback min-hz))
 
 ;; S-EXP -- exponentiate a sound
 ;;
@@ -166,6 +197,22 @@
 ;; NYQ:EXP -- exponentiate number or sound
 ;;
 (defun nyq:exp (s) (if (soundp s) (snd-exp s) (exp s)))
+
+;; S-ABS -- absolute value of a sound
+;;
+(defun s-abs (s) (multichan-expand #'nyq:abs s))
+
+;; NYQ:ABS -- absolute value of number or sound
+;;
+(defun nyq:abs (s) (if (soundp s) (snd-abs s) (abs s)))
+
+;; S-SQRT -- square root of a sound
+;;
+(defun s-sqrt (s) (multichan-expand #'nyq:sqrt s))
+
+;; NYQ:SQRT -- square root of a number or sound
+;;
+(defun nyq:sqrt (s) (if (soundp s) (snd-sqrt s) (sqrt s)))
 
 
 ;; INTEGRATE -- integration
@@ -350,6 +397,7 @@
          (b2 1.0))
     (biquad-m x b0 b1 b2 a0 a1 a2)))
 
+
 ; two-pole allpass.
 (defun allpass2 (x hz q)
   (let* ((w (* 2.0 Pi (/ hz (snd-srate x))))
@@ -363,6 +411,7 @@
          (b1 a1)
          (b2 1.0))
     (biquad-m x b0 b1 b2 a0 a1 a2)))
+
 
 ; bass shelving EQ.  gain in dB; Fc is halfway point.
 ; response becomes peaky at slope > 1.
@@ -384,6 +433,7 @@
          (a2           (+ A  1.0    amc  (- bs) )))
     (biquad-m x b0 b1 b2 a0 a1 a2)))
 
+
 ; treble shelving EQ.  gain in dB; Fc is halfway point.
 ; response becomes peaky at slope > 1.
 (defun eq-highshelf (x hz gain &optional (slope 1.0))
@@ -403,14 +453,28 @@
          (a1 (*  2.0   (+ A -1.0 (- apc)        )))
          (a2           (+ A  1.0 (- amc) (- bs) )))
     (biquad-m x b0 b1 b2 a0 a1 a2)))
+    
+(defun nyq:eq-band (x hz gain width)
+  (cond ((and (numberp hz) (numberp gain) (numberp width))
+         (eq-band-ccc x hz gain width))
+        ((and (soundp hz) (soundp gain) (soundp width))
+         (snd-eqbandvvv x hz (db-to-linear gain) width))
+        (t
+         (error "eq-band hz, gain, and width must be all numbers or all sounds"))))
 
 ; midrange EQ.  gain in dB, width in octaves (half-gain width).
 (defun eq-band (x hz gain width)
+  (multichan-expand #'nyq:eq-band x hz gain width))
+  
+  
+(defun eq-band-ccc (x hz gain width)
   (let* ((w (* 2.0 Pi (/ hz (snd-srate x))))
          (sw (sin w))
          (cw (cos w))
          (J (sqrt (expt 10.0 (/ gain 20.0))))
+         ;(dummy (display "eq-band-ccc" gain J))
          (g (* sw (sinh (* 0.5 (log 2.0) width (/ w sw)))))
+         ;(dummy2 (display "eq-band-ccc" width w sw g))
          (b0 (+ 1.0 (* g J)))
          (b1 (* -2.0 cw))
          (b2 (- 1.0 (* g J)))

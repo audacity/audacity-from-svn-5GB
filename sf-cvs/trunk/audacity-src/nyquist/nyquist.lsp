@@ -344,6 +344,19 @@ loop
     d			; duration
     phase)))		; phase
 
+;; FMLFO -- like LFO but uses frequency modulation
+;;
+(defun fmlfo (freq &optional (sound *SINE-TABLE*) (phase 0.0))
+  (let ()
+    (cond ((numberp freq)
+           (lfo freq 1.0 sound phase))
+          ((soundp freq)
+           (cond ((> (snd-srate freq) *CONTROL-SRATE*)
+                  (setf freq (force-srate *CONTROL-SRATE* freq))))
+           (snd-fmosc (car sound) (cadr sound) *CONTROL-SRATE* 0.0 
+                      (local-to-global 0) freq phase))
+          (t
+           (error "frequency must be a number or sound")))))
 
 ;; OSC - table lookup oscillator
 ;;
@@ -1518,5 +1531,11 @@ loop
 ; hz is a sound or scalar
 (defun osc-pulse (hz bias &optional (compare-shape *step-shape*))
   (compare bias (osc-tri hz) compare-shape))
+
+;;; tapped delays
+
+;(tapv snd offset vardelay maxdelay)
+(setfn tapv snd-tapv) ;; linear interpolation
+(setfn tapf snd-tapf) ;; no interpolation
 
 
