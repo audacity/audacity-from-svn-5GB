@@ -78,6 +78,8 @@ class TrackPanel:public wxWindow {
    void HandleZoom(wxMouseEvent & event);
    void HandleLabelClick(wxMouseEvent & event);
    void HandleClosing(wxMouseEvent & event);
+   void HandleMuting(wxMouseEvent & event);
+   void HandleSoloing(wxMouseEvent & event);
 
    void MakeParentRedrawScrollbars();
    void MakeParentPushState();
@@ -130,9 +132,13 @@ class TrackPanel:public wxWindow {
    void GetTrackControlsRect(wxRect & trackRect, wxRect & r);
    void GetCloseBoxRect(wxRect & trackRect, wxRect & r);
    void GetTitleBarRect(wxRect & trackRect, wxRect & r);
+   void GetMuteRect(wxRect & trackRect, wxRect & r);
+   void GetSoloRect(wxRect & trackRect, wxRect & r);
 
    void DrawCloseBox(wxDC * dc, wxRect & r, bool down);
    void DrawTitleBar(wxDC * dc, wxRect & r, VTrack * t, bool down);
+   void DrawMute(wxDC * dc, wxRect & r, VTrack * t, bool down);
+   void DrawSolo(wxDC * dc, wxRect & r, VTrack * t, bool down);
 
    void DrawVRuler(wxDC * dc, wxRect & r, VTrack * t);
 
@@ -174,6 +180,8 @@ class TrackPanel:public wxWindow {
    bool mIsResizing;
    bool mIsSliding;
    bool mIsEnveloping;
+   bool mIsMuting;
+   bool mIsSoloing;
 
    wxCursor *mArrowCursor;
    wxCursor *mSelectCursor;

@@ -20,10 +20,10 @@
 VTrack::VTrack(DirManager * projDirManager)
 {
    selected = false;
-
    collapsed = false;
-
    linked = false;
+   mute = false;
+   solo = false;
 
    collapsedHeight = 20;
    expandedHeight = 121;
@@ -79,6 +79,8 @@ VTrack *VTrack::Duplicate()
    copy->tOffset = tOffset;
    copy->channel = channel;
    copy->linked = linked;
+   copy->mute = mute;
+   copy->solo = solo;
    copy->name = name;
 
    return copy;

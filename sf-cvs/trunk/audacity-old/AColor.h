@@ -29,6 +29,9 @@ class AColor {
    static void Light(wxDC * dc, bool selected);
    static void Medium(wxDC * dc, bool selected);
    static void Dark(wxDC * dc, bool selected);
+   
+   static void Mute(wxDC * dc, bool on, bool selected);
+   static void Solo(wxDC * dc, bool on, bool selected);
 
    static void MIDIChannel(wxDC * dc, int channel /* 1 - 16 */ );
    static void LightMIDIChannel(wxDC * dc, int channel /* 1 - 16 */ );
@@ -40,6 +43,9 @@ class AColor {
    static wxPen lightPen[2];
    static wxPen mediumPen[2];
    static wxPen darkPen[2];
+   
+   static wxBrush muteBrush;
+   static wxBrush soloBrush;
 
    static wxPen envelopePen;
    static wxBrush envelopeBrush;

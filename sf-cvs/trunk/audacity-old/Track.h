@@ -23,6 +23,8 @@ class VTrack {
    wxString name;
    bool selected;
    bool linked;
+   bool mute;
+   bool solo;
    int channel;
    double tOffset;
    int dirty;

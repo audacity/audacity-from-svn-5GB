@@ -122,6 +122,8 @@ mAutoScrolling(false)
    mIsResizing = false;
    mIsSliding = false;
    mIsEnveloping = false;
+   mIsMuting = false;
+   mIsSoloing = false;
 
    mIndicatorShowing = false;
 
@@ -910,6 +912,50 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
    }
 }
 
+void TrackPanel::HandleMuting(wxMouseEvent & event)
+{
+   VTrack *t = mCapturedTrack;
+   wxRect r = mCapturedRect;
+
+   wxRect muteRect;
+   GetMuteRect(r, muteRect);
+   if (event.Dragging()) {
+      wxClientDC dc(this);
+      DrawMute(&dc, r, t, muteRect.Inside(event.m_x, event.m_y));
+      return;
+   }
+   if (event.ButtonUp()) {
+      wxClientDC dc(this);
+      if (muteRect.Inside(event.m_x, event.m_y)) {
+         t->mute = !t->mute;
+      }
+      DrawMute(&dc, r, t, false);
+      mIsMuting = false;
+   }
+}
+
+void TrackPanel::HandleSoloing(wxMouseEvent & event)
+{
+   VTrack *t = mCapturedTrack;
+   wxRect r = mCapturedRect;
+
+   wxRect soloRect;
+   GetSoloRect(r, soloRect);
+   if (event.Dragging()) {
+      wxClientDC dc(this);
+      DrawSolo(&dc, r, t, soloRect.Inside(event.m_x, event.m_y));
+      return;
+   }
+   if (event.ButtonUp()) {
+      wxClientDC dc(this);
+      if (soloRect.Inside(event.m_x, event.m_y)) {
+         t->solo = !t->solo;
+      }
+      DrawSolo(&dc, r, t, false);
+      mIsSoloing = false;
+   }
+}
+
 void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 {
    if (!(event.ButtonDown() || event.ButtonDClick()))
@@ -919,6 +965,9 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    int num;
 
    VTrack *t = FindTrack(event.m_x, event.m_y, true, &r, &num);
+
+   if (!t->linked && mTracks->GetLink(t))
+      return;
 
    if (!t) {
       SelectNone();
@@ -1016,6 +1065,32 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
       }
       return;
    }
+   
+   // Check Mute and Solo buttons on WaveTracks:
+   if (t->GetKind() == VTrack::Wave) {
+      wxRect muteRect;
+      GetMuteRect(r, muteRect);
+      if (muteRect.Inside(event.m_x, event.m_y)) {
+         wxClientDC dc(this);
+         DrawMute(&dc, r, t, true);
+         mIsMuting = true;
+         mCapturedTrack = t;
+         mCapturedRect = r;
+         return;
+      }
+      
+      wxRect soloRect;
+      GetSoloRect(r, soloRect);
+      if (soloRect.Inside(event.m_x, event.m_y)) {
+         wxClientDC dc(this);
+         DrawSolo(&dc, r, t, true);
+         mIsSoloing = true;
+         mCapturedTrack = t;
+         mCapturedRect = r;
+         return;
+      }
+   }      
+   
    // If it's a NoteTrack, it has special controls
    if (t && t->GetKind() == VTrack::Note) {
       wxRect midiRect;
@@ -1131,6 +1206,16 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
 
    if (mIsClosing) {
       HandleClosing(event);
+      return;
+   }
+   
+   if (mIsMuting) {
+      HandleMuting(event);
+      return;
+   }
+   
+   if (mIsSoloing) {
+      HandleSoloing(event);
       return;
    }
 
@@ -1399,6 +1484,22 @@ void TrackPanel::GetTitleBarRect(wxRect & r, wxRect & dest)
    dest.height = 16;
 }
 
+void TrackPanel::GetMuteRect(wxRect & r, wxRect & dest)
+{
+   dest.x = r.x + 8;
+   dest.y = r.y + 34;
+   dest.width = 36;
+   dest.height = 16;
+}
+
+void TrackPanel::GetSoloRect(wxRect & r, wxRect & dest)
+{
+   dest.x = r.x + 8 + 36 + 8;
+   dest.y = r.y + 34;
+   dest.width = 36;
+   dest.height = 16;
+}
+
 void TrackPanel::GetTrackControlsRect(wxRect & r, wxRect & dest)
 {
    dest = r;
@@ -1449,6 +1550,38 @@ void TrackPanel::DrawTitleBar(wxDC * dc, wxRect & r, VTrack * t, bool down)
       yy++;
       triWid -= 2;
    }
+
+   AColor::Bevel(*dc, !down, bev);
+}
+
+void TrackPanel::DrawMute(wxDC * dc, wxRect & r, VTrack * t, bool down)
+{
+   wxRect bev;
+   GetMuteRect(r, bev);
+   bev.Inflate(-1, -1);
+   AColor::Mute(dc, t->mute, t->selected);
+   dc->DrawRectangle(bev);
+
+   long textWidth, textHeight;
+   wxString str = "Mute";
+   dc->GetTextExtent(str, &textWidth, &textHeight);
+   dc->DrawText(str, bev.x + (bev.width - textWidth)/2, bev.y + 2);
+
+   AColor::Bevel(*dc, !down, bev);
+}
+
+void TrackPanel::DrawSolo(wxDC * dc, wxRect & r, VTrack * t, bool down)
+{
+   wxRect bev;
+   GetSoloRect(r, bev);
+   bev.Inflate(-1, -1);
+   AColor::Solo(dc, t->solo, t->selected);
+   dc->DrawRectangle(bev);
+
+   long textWidth, textHeight;
+   wxString str = "Solo";
+   dc->GetTextExtent(str, &textWidth, &textHeight);
+   dc->DrawText(str, bev.x + (bev.width - textWidth)/2, bev.y + 2);
 
    AColor::Bevel(*dc, !down, bev);
 }
@@ -1581,6 +1714,11 @@ void TrackPanel::DrawTracks(wxDC * dc)
          r.width = GetTitleWidth();
          DrawCloseBox(dc, r, false);
          DrawTitleBar(dc, r, t, false);
+         
+         if (t->GetKind() == VTrack::Wave) {
+            DrawMute(dc, r, t, false);
+            DrawSolo(dc, r, t, false);
+         }
 
          r = trackRect;
 

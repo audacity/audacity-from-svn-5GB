@@ -23,6 +23,9 @@ wxPen AColor::lightPen[2];
 wxPen AColor::mediumPen[2];
 wxPen AColor::darkPen[2];
 
+wxBrush AColor::muteBrush;
+wxBrush AColor::soloBrush;
+
 wxBrush AColor::envelopeBrush;
 wxPen AColor::envelopePen;
 
@@ -72,6 +75,36 @@ void AColor::Dark(wxDC * dc, bool selected)
    dc->SetPen(darkPen[index]);
 }
 
+void AColor::Mute(wxDC * dc, bool on, bool selected)
+{
+   if (!inited)
+      Init();
+   int index = (int) selected;
+   if (on) {
+      dc->SetPen(*wxBLACK_PEN);
+      dc->SetBrush(muteBrush);
+   }
+   else {
+      dc->SetPen(*wxTRANSPARENT_PEN);
+      dc->SetBrush(mediumBrush[index]);
+   }
+}
+
+void AColor::Solo(wxDC * dc, bool on, bool selected)
+{
+   if (!inited)
+      Init();
+   int index = (int) selected;
+   if (on) {
+      dc->SetPen(*wxBLACK_PEN);
+      dc->SetBrush(soloBrush);
+   }
+   else {
+      dc->SetPen(*wxTRANSPARENT_PEN);
+      dc->SetBrush(mediumBrush[index]);
+   }
+}
+
 void AColor::Init()
 {
    if (inited)
@@ -85,6 +118,9 @@ void AColor::Init()
 
    envelopePen.SetColour(110, 110, 220);
    envelopeBrush.SetColour(110, 110, 220);
+   
+   muteBrush.SetColour(110, 220, 110);
+   soloBrush.SetColour(255, 140, 140);
 
 #if defined(__WXMSW__) || defined(__WXGTK__)
    // unselected

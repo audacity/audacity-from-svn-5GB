@@ -461,7 +461,7 @@ wxSizer *CreatePhaserDialog(wxPanel * parent, bool call_fit,
 
    wxSpinCtrl *item4 =
        new wxSpinCtrl(parent, ID_STAGES, "2", wxDefaultPosition,
-                      wxSize(40, -1), 0, 2, 24, 2);
+                      wxSize(80, -1), 0, 2, 24, 2);
    item2->Add(item4, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxBoxSizer *item5 = new wxBoxSizer(wxVERTICAL);

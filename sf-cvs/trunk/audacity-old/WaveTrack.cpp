@@ -136,6 +136,8 @@ VTrack *WaveTrack::Duplicate()
    copy->rate = rate;
    copy->name = name;
    copy->linked = linked;
+   copy->mute = mute;
+   copy->solo = solo;
    copy->Paste(0.0, this);
    copy->collapsedHeight = collapsedHeight;
    copy->expandedHeight = expandedHeight;
@@ -150,6 +152,12 @@ VTrack *WaveTrack::Duplicate()
 void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
                           sampleType * outMin, sampleType * outMax)
 {
+   if (block->Count() == 0) {
+      *outMin = 0;
+      *outMax = 0;
+      return;
+   }
+
    sampleType min = 32727;
    sampleType max = -32768;
 

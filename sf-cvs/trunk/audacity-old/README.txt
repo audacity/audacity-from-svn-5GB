@@ -90,10 +90,6 @@ Known issues/problems:
   and its data directory somewhere else manually when you
   need to make a copy of a project.
 
-* All platforms: Maximize Amplitude doesn't always work.
-  As a workaround, use "Amplify..." and figure out the
-  best amplification factor manually.
-
 * Windows: The floating tool palette does not minimize when
   minimizing a project window.  As a workaround, you can
   just keep the tool palette docked with the project window.
@@ -112,15 +108,23 @@ Known issues/problems:
 
 Changes in 0.96:
 
+* General User Interface:
+
+  - Added mute/solo buttons
+
 * Importing Audio:
 
   - Fixed regression bug in 0.95 which caused stereo files to be imported as
     two mono tracks
+    
+  - Imports MP3 ID3 tags
 
 * Exporting Audio:
 
   - Exporting MP3 now works, if the appropriate version of the LAME DLL is
     installed (Joshua)
+  
+  - Allows editing of MP3 ID3 tags with export.
 
 * Effects:
 
@@ -130,7 +134,7 @@ Changes in 0.96:
   - Added support for stereo effects and effects that add or
     remove tracks, or require multiple passes.
   
-  - Improved Amplify effect (Dominic)
+  - Improved Amplify effect and fixed all known bugs (Dominic)
   
   - Improved Bass Boost effect
   

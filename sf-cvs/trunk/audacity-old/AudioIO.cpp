@@ -347,12 +347,31 @@ void AudioIO::OnTimer()
    mixer->UseVolumeSlider(mProject->GetAPalette());
    mixer->Clear();
 
+   TrackListIterator iter2(mTracks);
+   int numSolo = 0;
+   VTrack *vt = iter2.First();
+   while (vt) {
+      if (vt->GetKind() == VTrack::Wave && vt->solo)
+         numSolo++;
+      vt = iter2.Next();
+   }
+
    TrackListIterator iter(mTracks);
 
-   VTrack *vt = iter.First();
+   vt = iter.First();
    while (vt) {
       if (vt->GetKind() == VTrack::Wave) {
          WaveTrack *t = (WaveTrack *) vt;
+         
+         if ((numSolo>0 && !vt->solo) ||
+             vt->mute)
+            continue;
+         
+         VTrack *partner = mTracks->GetLink(vt);
+         if (partner && !vt->linked &&
+             (numSolo>0 && !partner->solo) ||
+             partner->mute)
+            continue;
 
          switch (t->channel) {
          case VTrack::LeftChannel:

@@ -836,7 +836,7 @@ void AudacityProject::OnImport(wxCommandEvent & event)
                                       "AU files (*.au)|*.au|"
                                       "IRCAM files (*.snd)|*.snd|"
                                       "MP3 files (*.mp3)|*.mp3|"
-                                      "Ogg Vorbis files (*.ogg)|*.ogg|",
+                                      "Ogg Vorbis files (*.ogg)|*.ogg",
                                       0,        // Flags
                                       this);    // Parent
 
