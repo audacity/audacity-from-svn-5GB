@@ -87,8 +87,14 @@ A.sf             {      font-weight : bold;		}
                          margin-left : 16px;		}
 
 .ss,.top_y,.top_r,.top_b,.top_g,.top_o
-		{	font-size : 10px; /*8pt;70%;xx-small;*/
+		{	font-size : 11px; /*formerly 10px*/
 			font-weight : bold;		}
+
+/*
+A.ss		{	color : #80FF80;
+			background-color : #006000;
+			padding : 1px;	}
+*/
 
 .title_r,.top_r,.bg_r,
 .title_g,.top_g,.bg_g,
@@ -102,6 +108,12 @@ A.sf             {      font-weight : bold;		}
 .title_b,.top_b,.bg_b,.qb	{	background-color : #D0D0FF;        }
 .title_y,.top_y,.bg_y,.qy	{	background-color : #FFFF80;        }
 .title_o,.top_o,.bg_o,.qo	{	background-color : #FFD060;        }
+
+.textr		{       color : #F03030;	}
+.textg		{       color : #30D030;	}
+.textb		{       color : #705DCF;	}
+.texty		{       color : #E0E020;	}
+.texto		{	color : #E08000;	}
 
 .ar		{       border-color: #FF7D7D;	background-color : #FFF0F0;	}
 .ag		{       border-color: #B4FFA7;	background-color : #F0FFF0;	}
