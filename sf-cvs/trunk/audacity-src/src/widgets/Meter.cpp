@@ -299,14 +299,14 @@ void Meter::OnMouse(wxMouseEvent &evt)
 {
   #if wxUSE_TOOLTIPS // Not available in wxX11
    if (evt.Leaving()){
-      GetActiveProject()->TP_DisplayStatusMessage(wxT(""),0);
+      GetActiveProject()->TP_DisplayStatusMessage(wxT(""));
    }
    else if (evt.Entering()) {
       // Display the tooltip in the status bar
       wxToolTip * pTip = this->GetToolTip();
       if( pTip ) {
          wxString tipText = pTip->GetTip();
-         GetActiveProject()->TP_DisplayStatusMessage(tipText, 0);
+         GetActiveProject()->TP_DisplayStatusMessage(tipText);
       }
    }
   #endif
@@ -1049,5 +1049,17 @@ void Meter::OnPreferences(wxCommandEvent &evt)
    
    mTimer.Start(1000/mMeterRefreshRate);
 }
+
+// Indentation settings for Vim and Emacs.
+// Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// 
+
 
 

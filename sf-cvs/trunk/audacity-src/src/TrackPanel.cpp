@@ -808,7 +808,8 @@ void TrackPanel::OnTimer()
 
       MakeParentRedrawScrollbars();
       p->SetAudioIOToken(0);
-      p->RedrawProject();         
+      p->RedrawProject();
+      DisplaySelection();
    }
 
    // AS: The "indicator" is the little graphical mark shown in the ruler
@@ -907,6 +908,9 @@ void TrackPanel::UpdateIndicator(wxDC * dc)
    double indicator = gAudioIO->GetStreamTime();
    bool onScreen = between_inclusive(mViewInfo->h, indicator,
                                      mViewInfo->h + mViewInfo->screen);
+
+   // This displays the audio time, too...
+   DisplaySelection();
 
    // BG: Scroll screen if option is set
    // msmeyer: But only if not playing looped or in one-second mode
@@ -1270,7 +1274,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 
    if (!t) {
       SetCursor(*mArrowCursor);
-      mListener->TP_DisplayStatusMessage(wxT(""), 0);
+      mListener->TP_DisplayStatusMessage(wxT(""));
       return;
    }
 
@@ -1333,7 +1337,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
    }
 
    if (tip)
-      mListener->TP_DisplayStatusMessage(tip, 0);
+      mListener->TP_DisplayStatusMessage(tip);
 }
 
 
@@ -2454,7 +2458,7 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
       mViewInfo->sel1 = 0.0;
 
       mListener->TP_RedrawScrollbars();
-      mListener->TP_DisplayStatusMessage(wxT(""), 0);        //STM: Clear message if all tracks are removed
+      mListener->TP_DisplayStatusMessage(wxT("")); //STM: Clear message if all tracks are removed
       
       Refresh(false);
    }
@@ -4281,7 +4285,7 @@ void TrackPanel::OnTrackClose(Track * t)
       mViewInfo->sel1 = 0.0;
       
       mListener->TP_RedrawScrollbars();
-      mListener->TP_DisplayStatusMessage(wxT(""), 0);        //STM: Clear message if all tracks are removed
+      mListener->TP_DisplayStatusMessage(wxT(""));        //STM: Clear message if all tracks are removed
    }
    Refresh(false);
 }
@@ -4926,7 +4930,7 @@ void TrackPanel::DisplaySelection()
    if (!mListener)
       return;
 
-   // DM: Note that FormatSelection actually MODIFIES the selection
+   // DM: Note that the Selection Bar can actually MODIFY the selection
    // if snap-to mode is on!!!
    mListener->TP_DisplaySelection();
 }

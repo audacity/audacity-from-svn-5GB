@@ -40,7 +40,6 @@
 #include "HistoryWindow.h"
 #include "Internat.h"
 #include "FileFormats.h"
-#include "FormatSelection.h"
 #include "FreqWindow.h"
 #include "Prefs.h"
 #include "Printing.h"
@@ -332,11 +331,6 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem(wxT("CollapseAllTracks"), _("&Collapse All Tracks\tCtrl+Shift+C"), FN(OnCollapseAllTracks));
    c->AddItem(wxT("ExpandAllTracks"), _("E&xpand All Tracks\tCtrl+Shift+X"), FN(OnExpandAllTracks));
-
-   c->AddSeparator();
-   c->BeginSubMenu(_("Set Selection Format"));
-   c->AddItemList(wxT("SelectionFormat"), GetSelectionFormats(), FN(OnSelectionFormat));
-   c->EndSubMenu();
 
    c->AddSeparator();
    c->AddItem(wxT("UndoHistory"),    _("&History..."),               FN(OnHistory));
@@ -2408,12 +2402,6 @@ void AudacityProject::OnZoomSel()
 
    Zoom(mViewInfo.zoom * mViewInfo.screen / (mViewInfo.sel1 - mViewInfo.sel0)),
    TP_ScrollWindow(mViewInfo.sel0);
-}
-
-void AudacityProject::OnSelectionFormat(int index)
-{
-   mSelectionFormat = index;
-   TP_DisplaySelection();
 }
 
 void AudacityProject::OnSnapOn()
