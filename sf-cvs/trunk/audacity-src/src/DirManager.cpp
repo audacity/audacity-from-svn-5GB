@@ -363,15 +363,18 @@ BlockFile *DirManager::LoadBlockFile(const char **attrs, sampleFormat format)
          blockName = value;
       else if (!strcmp(attr, "alias"))
          alias = atoi(value)>0;
-      else if (!strcmp(attr, "summarystart"))
+      else if (!strcmp(attr, "aliasstart"))
          start = atoi(value);
-      else if (!strcmp(attr, "summarylen"))
+      else if (!strcmp(attr, "aliaslen"))
          len = atoi(value);
-      else if (!strcmp(attr, "summarychannel"))
+      else if (!strcmp(attr, "aliaschannel"))
          channel = atoi(value);
+      else if (!strcmp(attr, "aliaspath"))
+         aliasFullPath = value;
    } // while
 
    wxString pathName = projFull + pathChar + blockName;
+
    BlockFile *retrieved = (BlockFile *) blockFileHash->Get(blockName);
    if (retrieved) {
       wxASSERT(retrieved->IsAlias() == alias);
