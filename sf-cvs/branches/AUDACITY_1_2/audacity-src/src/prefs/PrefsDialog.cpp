@@ -130,7 +130,11 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 
    #ifdef __MACOSX__
    // Until sizing works properly on the Mac
+   # if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION >= 5))
+   SetSize(720, 350); 
+   # else
    SetSize(620, 350);
+   # endif
    #endif
 
    #ifdef __WXMSW__
