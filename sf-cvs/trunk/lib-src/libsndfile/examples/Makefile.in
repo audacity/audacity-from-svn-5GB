@@ -1,6 +1,6 @@
-# Makefile.in generated automatically by automake 1.4-p4 from Makefile.am
+# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
 
-# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -9,6 +9,9 @@
 # but WITHOUT ANY WARRANTY, to the extent permitted by law; without
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
+
+# This file was automatically generated
+# DO NOT EDIT!
 
 
 SHELL = @SHELL@
@@ -66,50 +69,80 @@ target_triplet = @target@
 AS = @AS@
 CC = @CC@
 DLLTOOL = @DLLTOOL@
+ECHO = @ECHO@
+ENABLE_EXPERIMENTAL_CODE = @ENABLE_EXPERIMENTAL_CODE@
+EXEEXT = @EXEEXT@
+GETCONF = @GETCONF@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SHARED_VERSION_INFO = @SHARED_VERSION_INFO@
+SIZEOF_SF_COUNT_T = @SIZEOF_SF_COUNT_T@
+STRIP = @STRIP@
+TYPEOF_SF_COUNT_T = @TYPEOF_SF_COUNT_T@
 VERSION = @VERSION@
+autogen = @autogen@
 subdirs = @subdirs@
 
-bin_PROGRAMS = sndfile_info 
+bin_PROGRAMS = sndfile-info sndfile-play
 
-noinst_PROGRAMS = sfconvert sndfile2oct wav32_aiff24 make_sine sfhexdump 					sfprocess sfdump
+noinst_PROGRAMS = sfconvert wav32_aiff24 make_sine sfhexdump sfprocess 		sfdump list_formats sndfile2oct generate
 
+
+# This is the BeOS version of sndfile-play. It needs to be compiled with the C++
+# compiler.
+EXTRA_DIST = sndfile-play-beos.cpp
+
+OS_SPECIFIC_INCLUDES = @OS_SPECIFIC_INCLUDES@
+OS_SPECIFIC_LINKS = @OS_SPECIFIC_LINKS@
 
 SNDFILEDIR = ../src
-INCLUDES = -I$(srcdir)/$(SNDFILEDIR)
+INCLUDES = -I$(srcdir)/$(SNDFILEDIR) $(OS_SPECIFIC_INCLUDES)
+
+sndfile_info_SOURCES = sndfile-info.c 
+sndfile_info_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
+
+sndfile_play_SOURCES = sndfile-play.c 
+sndfile_play_LDADD = $(SNDFILEDIR)/libsndfile.la -lm $(OS_SPECIFIC_LINKS)
 
 sfconvert_SOURCES = sfconvert.c 
-sfconvert_LDADD = $(SNDFILEDIR)/libsndfile.la
+sfconvert_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
 
 sndfile2oct_SOURCES = sndfile2oct.c 
-sndfile2oct_LDADD = $(SNDFILEDIR)/libsndfile.la
+sndfile2oct_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
 
 wav32_aiff24_SOURCES = wav32_aiff24.c 
-wav32_aiff24_LDADD = $(SNDFILEDIR)/libsndfile.la
+wav32_aiff24_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
 
 make_sine_SOURCES = make_sine.c 
 make_sine_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
 
-sndfile_info_SOURCES = sndfile_info.c 
-sndfile_info_LDADD = $(SNDFILEDIR)/libsndfile.la
-
 sfhexdump_SOURCES = sfhexdump.c 
-sfhexdump_LDADD = $(SNDFILEDIR)/libsndfile.la
+sfhexdump_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
 
 sfprocess_SOURCES = sfprocess.c 
-sfprocess_LDADD = $(SNDFILEDIR)/libsndfile.la
+sfprocess_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
 
 sfdump_SOURCES = sfdump.c 
-sfdump_LDADD = $(SNDFILEDIR)/libsndfile.la
+sfdump_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
+
+list_formats_SOURCES = list_formats.c 
+list_formats_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
+
+generate_SOURCES = generate.c 
+generate_LDADD = $(SNDFILEDIR)/libsndfile.la -lm
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../src/config.h
 CONFIG_CLEAN_FILES = 
+bin_PROGRAMS =  sndfile-info$(EXEEXT) sndfile-play$(EXEEXT)
+noinst_PROGRAMS =  sfconvert$(EXEEXT) wav32_aiff24$(EXEEXT) \
+make_sine$(EXEEXT) sfhexdump$(EXEEXT) sfprocess$(EXEEXT) \
+sfdump$(EXEEXT) list_formats$(EXEEXT) sndfile2oct$(EXEEXT) \
+generate$(EXEEXT)
 PROGRAMS =  $(bin_PROGRAMS) $(noinst_PROGRAMS)
 
 
@@ -117,30 +150,39 @@ DEFS = @DEFS@ -I. -I$(srcdir) -I../src
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
-sndfile_info_OBJECTS =  sndfile_info.o
+sndfile_info_OBJECTS =  sndfile-info.$(OBJEXT)
 sndfile_info_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 sndfile_info_LDFLAGS = 
-sfconvert_OBJECTS =  sfconvert.o
+sndfile_play_OBJECTS =  sndfile-play.$(OBJEXT)
+sndfile_play_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
+sndfile_play_LDFLAGS = 
+sfconvert_OBJECTS =  sfconvert.$(OBJEXT)
 sfconvert_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 sfconvert_LDFLAGS = 
-sndfile2oct_OBJECTS =  sndfile2oct.o
-sndfile2oct_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
-sndfile2oct_LDFLAGS = 
-wav32_aiff24_OBJECTS =  wav32_aiff24.o
+wav32_aiff24_OBJECTS =  wav32_aiff24.$(OBJEXT)
 wav32_aiff24_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 wav32_aiff24_LDFLAGS = 
-make_sine_OBJECTS =  make_sine.o
+make_sine_OBJECTS =  make_sine.$(OBJEXT)
 make_sine_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 make_sine_LDFLAGS = 
-sfhexdump_OBJECTS =  sfhexdump.o
+sfhexdump_OBJECTS =  sfhexdump.$(OBJEXT)
 sfhexdump_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 sfhexdump_LDFLAGS = 
-sfprocess_OBJECTS =  sfprocess.o
+sfprocess_OBJECTS =  sfprocess.$(OBJEXT)
 sfprocess_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 sfprocess_LDFLAGS = 
-sfdump_OBJECTS =  sfdump.o
+sfdump_OBJECTS =  sfdump.$(OBJEXT)
 sfdump_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
 sfdump_LDFLAGS = 
+list_formats_OBJECTS =  list_formats.$(OBJEXT)
+list_formats_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
+list_formats_LDFLAGS = 
+sndfile2oct_OBJECTS =  sndfile2oct.$(OBJEXT)
+sndfile2oct_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
+sndfile2oct_LDFLAGS = 
+generate_OBJECTS =  generate.$(OBJEXT)
+generate_DEPENDENCIES =  $(SNDFILEDIR)/libsndfile.la
+generate_LDFLAGS = 
 CFLAGS = @CFLAGS@
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -153,19 +195,16 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = tar
 GZIP_ENV = --best
-DEP_FILES =  .deps/make_sine.P .deps/sfconvert.P .deps/sfdump.P \
-.deps/sfhexdump.P .deps/sfprocess.P .deps/sndfile2oct.P \
-.deps/sndfile_info.P .deps/wav32_aiff24.P
-SOURCES = $(sndfile_info_SOURCES) $(sfconvert_SOURCES) $(sndfile2oct_SOURCES) $(wav32_aiff24_SOURCES) $(make_sine_SOURCES) $(sfhexdump_SOURCES) $(sfprocess_SOURCES) $(sfdump_SOURCES)
-OBJECTS = $(sndfile_info_OBJECTS) $(sfconvert_OBJECTS) $(sndfile2oct_OBJECTS) $(wav32_aiff24_OBJECTS) $(make_sine_OBJECTS) $(sfhexdump_OBJECTS) $(sfprocess_OBJECTS) $(sfdump_OBJECTS)
+SOURCES = $(sndfile_info_SOURCES) $(sndfile_play_SOURCES) $(sfconvert_SOURCES) $(wav32_aiff24_SOURCES) $(make_sine_SOURCES) $(sfhexdump_SOURCES) $(sfprocess_SOURCES) $(sfdump_SOURCES) $(list_formats_SOURCES) $(sndfile2oct_SOURCES) $(generate_SOURCES)
+OBJECTS = $(sndfile_info_OBJECTS) $(sndfile_play_OBJECTS) $(sfconvert_OBJECTS) $(wav32_aiff24_OBJECTS) $(make_sine_OBJECTS) $(sfhexdump_OBJECTS) $(sfprocess_OBJECTS) $(sfdump_OBJECTS) $(list_formats_OBJECTS) $(sndfile2oct_OBJECTS) $(generate_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
-.SUFFIXES: .S .c .lo .o .s
+.SUFFIXES: .S .c .lo .o .obj .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu examples/Makefile
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign --include-deps examples/Makefile
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
@@ -204,6 +243,14 @@ distclean-noinstPROGRAMS:
 
 maintainer-clean-noinstPROGRAMS:
 
+.c.o:
+	$(COMPILE) -c $<
+
+# FIXME: We should only use cygpath when building on Windows,
+# and only if it is available.
+.c.obj:
+	$(COMPILE) -c `cygpath -w $<`
+
 .s.o:
 	$(COMPILE) -c $<
 
@@ -212,6 +259,7 @@ maintainer-clean-noinstPROGRAMS:
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
+	-rm -f *.$(OBJEXT)
 
 clean-compile:
 
@@ -219,6 +267,9 @@ distclean-compile:
 	-rm -f *.tab.c
 
 maintainer-clean-compile:
+
+.c.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
 
 .s.lo:
 	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
@@ -236,37 +287,49 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
-sndfile_info: $(sndfile_info_OBJECTS) $(sndfile_info_DEPENDENCIES)
-	@rm -f sndfile_info
+sndfile-info$(EXEEXT): $(sndfile_info_OBJECTS) $(sndfile_info_DEPENDENCIES)
+	@rm -f sndfile-info$(EXEEXT)
 	$(LINK) $(sndfile_info_LDFLAGS) $(sndfile_info_OBJECTS) $(sndfile_info_LDADD) $(LIBS)
 
-sfconvert: $(sfconvert_OBJECTS) $(sfconvert_DEPENDENCIES)
-	@rm -f sfconvert
+sndfile-play$(EXEEXT): $(sndfile_play_OBJECTS) $(sndfile_play_DEPENDENCIES)
+	@rm -f sndfile-play$(EXEEXT)
+	$(LINK) $(sndfile_play_LDFLAGS) $(sndfile_play_OBJECTS) $(sndfile_play_LDADD) $(LIBS)
+
+sfconvert$(EXEEXT): $(sfconvert_OBJECTS) $(sfconvert_DEPENDENCIES)
+	@rm -f sfconvert$(EXEEXT)
 	$(LINK) $(sfconvert_LDFLAGS) $(sfconvert_OBJECTS) $(sfconvert_LDADD) $(LIBS)
 
-sndfile2oct: $(sndfile2oct_OBJECTS) $(sndfile2oct_DEPENDENCIES)
-	@rm -f sndfile2oct
-	$(LINK) $(sndfile2oct_LDFLAGS) $(sndfile2oct_OBJECTS) $(sndfile2oct_LDADD) $(LIBS)
-
-wav32_aiff24: $(wav32_aiff24_OBJECTS) $(wav32_aiff24_DEPENDENCIES)
-	@rm -f wav32_aiff24
+wav32_aiff24$(EXEEXT): $(wav32_aiff24_OBJECTS) $(wav32_aiff24_DEPENDENCIES)
+	@rm -f wav32_aiff24$(EXEEXT)
 	$(LINK) $(wav32_aiff24_LDFLAGS) $(wav32_aiff24_OBJECTS) $(wav32_aiff24_LDADD) $(LIBS)
 
-make_sine: $(make_sine_OBJECTS) $(make_sine_DEPENDENCIES)
-	@rm -f make_sine
+make_sine$(EXEEXT): $(make_sine_OBJECTS) $(make_sine_DEPENDENCIES)
+	@rm -f make_sine$(EXEEXT)
 	$(LINK) $(make_sine_LDFLAGS) $(make_sine_OBJECTS) $(make_sine_LDADD) $(LIBS)
 
-sfhexdump: $(sfhexdump_OBJECTS) $(sfhexdump_DEPENDENCIES)
-	@rm -f sfhexdump
+sfhexdump$(EXEEXT): $(sfhexdump_OBJECTS) $(sfhexdump_DEPENDENCIES)
+	@rm -f sfhexdump$(EXEEXT)
 	$(LINK) $(sfhexdump_LDFLAGS) $(sfhexdump_OBJECTS) $(sfhexdump_LDADD) $(LIBS)
 
-sfprocess: $(sfprocess_OBJECTS) $(sfprocess_DEPENDENCIES)
-	@rm -f sfprocess
+sfprocess$(EXEEXT): $(sfprocess_OBJECTS) $(sfprocess_DEPENDENCIES)
+	@rm -f sfprocess$(EXEEXT)
 	$(LINK) $(sfprocess_LDFLAGS) $(sfprocess_OBJECTS) $(sfprocess_LDADD) $(LIBS)
 
-sfdump: $(sfdump_OBJECTS) $(sfdump_DEPENDENCIES)
-	@rm -f sfdump
+sfdump$(EXEEXT): $(sfdump_OBJECTS) $(sfdump_DEPENDENCIES)
+	@rm -f sfdump$(EXEEXT)
 	$(LINK) $(sfdump_LDFLAGS) $(sfdump_OBJECTS) $(sfdump_LDADD) $(LIBS)
+
+list_formats$(EXEEXT): $(list_formats_OBJECTS) $(list_formats_DEPENDENCIES)
+	@rm -f list_formats$(EXEEXT)
+	$(LINK) $(list_formats_LDFLAGS) $(list_formats_OBJECTS) $(list_formats_LDADD) $(LIBS)
+
+sndfile2oct$(EXEEXT): $(sndfile2oct_OBJECTS) $(sndfile2oct_DEPENDENCIES)
+	@rm -f sndfile2oct$(EXEEXT)
+	$(LINK) $(sndfile2oct_LDFLAGS) $(sndfile2oct_OBJECTS) $(sndfile2oct_LDADD) $(LIBS)
+
+generate$(EXEEXT): $(generate_OBJECTS) $(generate_DEPENDENCIES)
+	@rm -f generate$(EXEEXT)
+	$(LINK) $(generate_LDFLAGS) $(generate_OBJECTS) $(generate_LDADD) $(LIBS)
 
 tags: TAGS
 
@@ -286,7 +349,7 @@ TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
 	  awk '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
 	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
-	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+	  || (cd $(srcdir) && etags -o $$here/TAGS $(ETAGS_ARGS) $$tags  $$unique $(LISP))
 
 mostlyclean-tags:
 
@@ -302,11 +365,6 @@ distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 subdir = examples
 
 distdir: $(DISTFILES)
-	here=`cd $(top_builddir) && pwd`; \
-	top_distdir=`cd $(top_distdir) && pwd`; \
-	distdir=`cd $(distdir) && pwd`; \
-	cd $(top_srcdir) \
-	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --gnu examples/Makefile
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -317,38 +375,6 @@ distdir: $(DISTFILES)
 	    || cp -p $$d/$$file $(distdir)/$$file || :; \
 	  fi; \
 	done
-
-DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
-
--include $(DEP_FILES)
-
-mostlyclean-depend:
-
-clean-depend:
-
-distclean-depend:
-	-rm -rf .deps
-
-maintainer-clean-depend:
-
-%.o: %.c
-	@echo '$(COMPILE) -c $<'; \
-	$(COMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
-
-%.lo: %.c
-	@echo '$(LTCOMPILE) -c $<'; \
-	$(LTCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
 info-am:
 info: info-am
 dvi-am:
@@ -387,19 +413,18 @@ distclean-generic:
 maintainer-clean-generic:
 mostlyclean-am:  mostlyclean-binPROGRAMS mostlyclean-noinstPROGRAMS \
 		mostlyclean-compile mostlyclean-libtool \
-		mostlyclean-tags mostlyclean-depend mostlyclean-generic
+		mostlyclean-tags mostlyclean-generic
 
 mostlyclean: mostlyclean-am
 
 clean-am:  clean-binPROGRAMS clean-noinstPROGRAMS clean-compile \
-		clean-libtool clean-tags clean-depend clean-generic \
-		mostlyclean-am
+		clean-libtool clean-tags clean-generic mostlyclean-am
 
 clean: clean-am
 
 distclean-am:  distclean-binPROGRAMS distclean-noinstPROGRAMS \
 		distclean-compile distclean-libtool distclean-tags \
-		distclean-depend distclean-generic clean-am
+		distclean-generic clean-am
 	-rm -f libtool
 
 distclean: distclean-am
@@ -407,8 +432,8 @@ distclean: distclean-am
 maintainer-clean-am:  maintainer-clean-binPROGRAMS \
 		maintainer-clean-noinstPROGRAMS \
 		maintainer-clean-compile maintainer-clean-libtool \
-		maintainer-clean-tags maintainer-clean-depend \
-		maintainer-clean-generic distclean-am
+		maintainer-clean-tags maintainer-clean-generic \
+		distclean-am
 	@echo "This command is intended for maintainers to use;"
 	@echo "it deletes files that may require special tools to rebuild."
 
@@ -421,14 +446,12 @@ clean-noinstPROGRAMS maintainer-clean-noinstPROGRAMS \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile mostlyclean-libtool distclean-libtool \
 clean-libtool maintainer-clean-libtool tags mostlyclean-tags \
-distclean-tags clean-tags maintainer-clean-tags distdir \
-mostlyclean-depend distclean-depend clean-depend \
-maintainer-clean-depend info-am info dvi-am dvi check check-am \
-installcheck-am installcheck install-exec-am install-exec \
-install-data-am install-data install-am install uninstall-am uninstall \
-all-redirect all-am all installdirs mostlyclean-generic \
-distclean-generic clean-generic maintainer-clean-generic clean \
-mostlyclean distclean maintainer-clean
+distclean-tags clean-tags maintainer-clean-tags distdir info-am info \
+dvi-am dvi check check-am installcheck-am installcheck install-exec-am \
+install-exec install-data-am install-data install-am install \
+uninstall-am uninstall all-redirect all-am all installdirs \
+mostlyclean-generic distclean-generic clean-generic \
+maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -4,15 +4,12 @@
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
  */
 
-/* $Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/preprocess.c,v 1.2 2002-04-16 04:31:30 dmazzoni Exp $ */
-
 #include	<stdio.h>
 #include	<assert.h>
 
-#include "gsmprivate.h"
+#include "gsm610_priv.h"
 
 #include	"gsm.h"
-#include 	"proto.h"
 
 /*	4.2.0 .. 4.2.3	PREPROCESSING SECTION
  *  
@@ -31,7 +28,7 @@
  */
 
 
-void Gsm_Preprocess P3((S, s, so),
+void Gsm_Preprocess (
 	struct gsm_state * S,
 	word		 * s,
 	word 		 * so )		/* [0..159] 	IN/OUT	*/

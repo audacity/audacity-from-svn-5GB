@@ -1,6 +1,6 @@
-# Makefile.in generated automatically by automake 1.4-p4 from Makefile.am
+# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
 
-# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -12,7 +12,6 @@
 
 # This file was automatically generated
 # DO NOT EDIT!
-#
 
 
 SHELL = @SHELL@
@@ -69,30 +68,43 @@ target_triplet = @target@
 AS = @AS@
 CC = @CC@
 DLLTOOL = @DLLTOOL@
+ECHO = @ECHO@
+ENABLE_EXPERIMENTAL_CODE = @ENABLE_EXPERIMENTAL_CODE@
+EXEEXT = @EXEEXT@
+GETCONF = @GETCONF@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
+OS_SPECIFIC_INCLUDES = @OS_SPECIFIC_INCLUDES@
+OS_SPECIFIC_LINKS = @OS_SPECIFIC_LINKS@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SHARED_VERSION_INFO = @SHARED_VERSION_INFO@
+SIZEOF_SF_COUNT_T = @SIZEOF_SF_COUNT_T@
+STRIP = @STRIP@
+TYPEOF_SF_COUNT_T = @TYPEOF_SF_COUNT_T@
 VERSION = @VERSION@
+autogen = @autogen@
 subdirs = @subdirs@
 
-DIST_SUBDIRS = GSM610 G72x
 SUBDIRS = GSM610 G72x
 
 lib_LTLIBRARIES = libsndfile.la
 include_HEADERS = sndfile.h
-INCLUDES = -I$(srcdir)/../src -I$(srcdir)
 
-noinst_HEADERS = common.h sfendian.h floatcast.h wav.h au.h
+EXTRA_DIST = sndfile.h.in config.h.in
 
-COMMON = common.c pcm.c ulaw.c alaw.c float32.c sndfile.c  
-FILESPECIFIC = aiff.c au.c au_g72x.c nist.c paf.c raw.c samplitude.c 				svx.c wav.c wav_gsm610.c wav_ima_adpcm.c 				wav_ms_adpcm.c voc.c ircam.c
+noinst_HEADERS = common.h sfendian.h float_cast.h wav_w64.h au.h
+
+COMMON = sndfile.c common.c file_io.c command.c pcm.c ulaw.c alaw.c float32.c 			double64.c ima_adpcm.c ms_adpcm.c gsm610.c dwvw.c sfendian.c
 
 
-libsndfile_la_SOURCES = $(COMMON) $(FILESPECIFIC) sndfile.h
+FILESPECIFIC = aiff.c au.c au_g72x.c nist.c paf.c raw.c svx.c 				wav.c wav_w64.c voc.c ircam.c w64.c 				sd2.c rx2.c txw.c sds.c
+
+
+libsndfile_la_SOURCES = $(COMMON) $(FILESPECIFIC) $(noinst_HEADERS)
 libsndfile_la_LDFLAGS = -version-info @SHARED_VERSION_INFO@
 libsndfile_la_LIBADD = GSM610/libgsm.la G72x/libg72x.la
 
@@ -100,7 +112,7 @@ libsndfile_la_LIBADD = GSM610/libgsm.la G72x/libg72x.la
 AUTOHEADER = echo
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = 
+CONFIG_CLEAN_FILES =  sndfile.h
 LTLIBRARIES =  $(lib_LTLIBRARIES)
 
 
@@ -109,10 +121,11 @@ CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 libsndfile_la_DEPENDENCIES =  GSM610/libgsm.la G72x/libg72x.la
-libsndfile_la_OBJECTS =  common.lo pcm.lo ulaw.lo alaw.lo float32.lo \
-sndfile.lo aiff.lo au.lo au_g72x.lo nist.lo paf.lo raw.lo samplitude.lo \
-svx.lo wav.lo wav_gsm610.lo wav_ima_adpcm.lo wav_ms_adpcm.lo voc.lo \
-ircam.lo
+libsndfile_la_OBJECTS =  sndfile.lo common.lo file_io.lo command.lo \
+pcm.lo ulaw.lo alaw.lo float32.lo double64.lo ima_adpcm.lo ms_adpcm.lo \
+gsm610.lo dwvw.lo sfendian.lo aiff.lo au.lo au_g72x.lo nist.lo paf.lo \
+raw.lo svx.lo wav.lo wav_w64.lo voc.lo ircam.lo w64.lo sd2.lo rx2.lo \
+txw.lo sds.lo
 CFLAGS = @CFLAGS@
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -120,28 +133,24 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
 HEADERS =  $(include_HEADERS) $(noinst_HEADERS)
 
-DIST_COMMON =  ./stamp-h.in Makefile.am Makefile.in config.h.in
+DIST_COMMON =  ./stamp-h.in Makefile.am Makefile.in config.h.in \
+sndfile.h.in
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = tar
 GZIP_ENV = --best
-DEP_FILES =  .deps/aiff.P .deps/alaw.P .deps/au.P .deps/au_g72x.P \
-.deps/common.P .deps/float32.P .deps/ircam.P .deps/nist.P .deps/paf.P \
-.deps/pcm.P .deps/raw.P .deps/samplitude.P .deps/sndfile.P .deps/svx.P \
-.deps/ulaw.P .deps/voc.P .deps/wav.P .deps/wav_gsm610.P \
-.deps/wav_ima_adpcm.P .deps/wav_ms_adpcm.P
 SOURCES = $(libsndfile_la_SOURCES)
 OBJECTS = $(libsndfile_la_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
-.SUFFIXES: .S .c .lo .o .s
+.SUFFIXES: .S .c .lo .o .obj .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Makefile
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign --include-deps src/Makefile
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
@@ -173,6 +182,8 @@ distclean-hdr:
 	-rm -f config.h
 
 maintainer-clean-hdr:
+sndfile.h: $(top_builddir)/config.status sndfile.h.in
+	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 mostlyclean-libLTLIBRARIES:
 
@@ -199,6 +210,14 @@ uninstall-libLTLIBRARIES:
 	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
 	done
 
+.c.o:
+	$(COMPILE) -c $<
+
+# FIXME: We should only use cygpath when building on Windows,
+# and only if it is available.
+.c.obj:
+	$(COMPILE) -c `cygpath -w $<`
+
 .s.o:
 	$(COMPILE) -c $<
 
@@ -207,6 +226,7 @@ uninstall-libLTLIBRARIES:
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
+	-rm -f *.$(OBJEXT)
 
 clean-compile:
 
@@ -214,6 +234,9 @@ distclean-compile:
 	-rm -f *.tab.c
 
 maintainer-clean-compile:
+
+.c.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
 
 .s.lo:
 	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
@@ -285,7 +308,7 @@ maintainer-clean-recursive:
 	dot_seen=no; \
 	rev=''; list='$(SUBDIRS)'; for subdir in $$list; do \
 	  rev="$$subdir $$rev"; \
-	  test "$$subdir" = "." && dot_seen=yes; \
+	  test "$$subdir" != "." || dot_seen=yes; \
 	done; \
 	test "$$dot_seen" = "no" && rev=". $$rev"; \
 	target=`echo $@ | sed s/-recursive//`; \
@@ -327,7 +350,7 @@ TAGS: tags-recursive $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) $(LI
 	  awk '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
 	test -z "$(ETAGS_ARGS)config.h.in$$unique$(LISP)$$tags" \
-	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags config.h.in $$unique $(LISP) -o $$here/TAGS)
+	  || (cd $(srcdir) && etags -o $$here/TAGS $(ETAGS_ARGS) $$tags config.h.in $$unique $(LISP))
 
 mostlyclean-tags:
 
@@ -343,11 +366,6 @@ distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 subdir = src
 
 distdir: $(DISTFILES)
-	here=`cd $(top_builddir) && pwd`; \
-	top_distdir=`cd $(top_distdir) && pwd`; \
-	distdir=`cd $(distdir) && pwd`; \
-	cd $(top_srcdir) \
-	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --gnu src/Makefile
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -358,7 +376,7 @@ distdir: $(DISTFILES)
 	    || cp -p $$d/$$file $(distdir)/$$file || :; \
 	  fi; \
 	done
-	for subdir in $(DIST_SUBDIRS); do \
+	for subdir in $(SUBDIRS); do \
 	  if test "$$subdir" = .; then :; else \
 	    test -d $(distdir)/$$subdir \
 	    || mkdir $(distdir)/$$subdir \
@@ -368,38 +386,6 @@ distdir: $(DISTFILES)
 	      || exit 1; \
 	  fi; \
 	done
-
-DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
-
--include $(DEP_FILES)
-
-mostlyclean-depend:
-
-clean-depend:
-
-distclean-depend:
-	-rm -rf .deps
-
-maintainer-clean-depend:
-
-%.o: %.c
-	@echo '$(COMPILE) -c $<'; \
-	$(COMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
-
-%.lo: %.c
-	@echo '$(LTCOMPILE) -c $<'; \
-	$(LTCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
 info-am:
 info: info-recursive
 dvi-am:
@@ -442,18 +428,18 @@ distclean-generic:
 maintainer-clean-generic:
 mostlyclean-am:  mostlyclean-hdr mostlyclean-libLTLIBRARIES \
 		mostlyclean-compile mostlyclean-libtool \
-		mostlyclean-tags mostlyclean-depend mostlyclean-generic
+		mostlyclean-tags mostlyclean-generic
 
 mostlyclean: mostlyclean-recursive
 
 clean-am:  clean-hdr clean-libLTLIBRARIES clean-compile clean-libtool \
-		clean-tags clean-depend clean-generic mostlyclean-am
+		clean-tags clean-generic mostlyclean-am
 
 clean: clean-recursive
 
 distclean-am:  distclean-hdr distclean-libLTLIBRARIES distclean-compile \
-		distclean-libtool distclean-tags distclean-depend \
-		distclean-generic clean-am
+		distclean-libtool distclean-tags distclean-generic \
+		clean-am
 	-rm -f libtool
 
 distclean: distclean-recursive
@@ -461,8 +447,8 @@ distclean: distclean-recursive
 maintainer-clean-am:  maintainer-clean-hdr \
 		maintainer-clean-libLTLIBRARIES \
 		maintainer-clean-compile maintainer-clean-libtool \
-		maintainer-clean-tags maintainer-clean-depend \
-		maintainer-clean-generic distclean-am
+		maintainer-clean-tags maintainer-clean-generic \
+		distclean-am
 	@echo "This command is intended for maintainers to use;"
 	@echo "it deletes files that may require special tools to rebuild."
 
@@ -481,12 +467,10 @@ uninstalldirs-recursive all-recursive check-recursive \
 installcheck-recursive info-recursive dvi-recursive \
 mostlyclean-recursive distclean-recursive clean-recursive \
 maintainer-clean-recursive tags tags-recursive mostlyclean-tags \
-distclean-tags clean-tags maintainer-clean-tags distdir \
-mostlyclean-depend distclean-depend clean-depend \
-maintainer-clean-depend info-am info dvi-am dvi check check-am \
-installcheck-am installcheck all-recursive-am install-exec-am \
-install-exec install-data-am install-data install-am install \
-uninstall-am uninstall all-redirect all-am all installdirs-am \
+distclean-tags clean-tags maintainer-clean-tags distdir info-am info \
+dvi-am dvi check check-am installcheck-am installcheck all-recursive-am \
+install-exec-am install-exec install-data-am install-data install-am \
+install uninstall-am uninstall all-redirect all-am all installdirs-am \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
