@@ -79,6 +79,7 @@ class BlockFile {
  private:
 
    friend class DirManager;
+   friend class TrackList;
 
    void Ref();
    bool Deref();
