@@ -18,16 +18,19 @@
 int audacityVSTID = 1;
 
 extern "C" {
-
+   
    long audioMaster(AEffect * effect, long opcode, long index,
                     long value, void *ptr, float opt) {
       switch (opcode) {
       case audioMasterVersion:
          return 2;
-         case audioMasterCurrentId:return audacityVSTID;
+      case audioMasterCurrentId:return audacityVSTID;
          default:return 0;
-   }} typedef AEffect *(*vstPluginMain) (audioMasterCallback audioMaster);
-
+      }
+   }
+   
+   typedef AEffect *(*vstPluginMain) (audioMasterCallback audioMaster);
+   
    void LoadVSTPlugins(wxString searchDir) {
       wxString pathChar = DirManager::GetPathChar();
       wxString vstDirPath = searchDir + pathChar + "vst";
