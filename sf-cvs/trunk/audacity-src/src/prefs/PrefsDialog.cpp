@@ -20,6 +20,8 @@
 #include <wx/notebook.h>
 #include <wx/sizer.h>
 
+#include "../Audacity.h"
+
 #include "../Prefs.h"
 
 #include "PrefsDialog.h"
@@ -109,9 +111,14 @@ wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
    outSizer->Fit(this);
    outSizer->SetSizeHints(this);
 
-   #ifdef __WXMAC__
+   #ifdef __MACOS9__
    // Until sizing works properly on the Mac
    SetSize(525, 350);
+   #endif
+
+   #ifdef __MACOSX__
+   // Until sizing works properly on the Mac
+   SetSize(600, 350);
    #endif
 
    #ifdef __WXMSW__
