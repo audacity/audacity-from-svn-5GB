@@ -58,6 +58,10 @@ class AButton:public wxWindow {
 
    virtual bool WasShiftDown(); // returns true if shift was held down
                                 // the last time the button was clicked
+   bool IsDown(){ return mButtonIsDown;}
+   void SetButtonToggles( bool toggler ){ mProcessDownEvents = toggler;}
+   void Toggle(){ mButtonIsDown ? PopUp() : PushDown();}
+   void SetToolTips( wxString enabled, wxString disabled );
 
  private:
 

@@ -121,10 +121,13 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
 #endif
 
    // Display the tooltip in the status bar
-      wxString tip = this->GetToolTip()->GetTip();
-      if (!mEnabled)
-         tip += _(" (disabled)");
-      GetActiveProject()->TP_DisplayStatusMessage(tip, 0);
+      wxToolTip * pTip = this->GetToolTip();
+      if( pTip ) {
+         wxString tipText = pTip->GetTip();
+         if (!mEnabled)
+            tipText += _(" (disabled)");
+         GetActiveProject()->TP_DisplayStatusMessage(tipText, 0);
+      }
    }
 
    //If the graphical button is disabled, or the button is down
@@ -275,11 +278,16 @@ void AButton::PushDown()
 
 void AButton::PopUp()
 {
-    
+
    mButtonIsDown = false;
    mButtonState = AButtonUp;
    if (GetCapture()==this)
       ReleaseMouse();
 
    this->Refresh(false);
+}
+
+void AButton::SetToolTips( wxString enabled, wxString disabled )
+{
+   SetToolTip( mButtonIsDown ? disabled : enabled );
 }
