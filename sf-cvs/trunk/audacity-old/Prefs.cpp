@@ -118,7 +118,7 @@ void InitPreferences()
                                          vendorName,
                                          prefsPath,
                                          prefsPath,
-                                         wxCONFIG_USE_LOCAL_FILE);
+                                         wxCONFIG_USE_GLOBAL_FILE);
   
   wxConfigBase::Set(gPrefs);
   
