@@ -1,6 +1,6 @@
 
 <p>
-I seguenti sono i bug conosciuti di Audacity 1.2.0-pre3:
+I seguenti sono i bug conosciuti di Audacity 1.2.0:
 </p>
 
 <ul>
@@ -11,6 +11,5 @@ I seguenti sono i bug conosciuti di Audacity 1.2.0-pre3:
   <li>Solo MacOS X: Audacity non può lavorare con file o cartelle che sono contenute all'interno di cartelle con caratteri internazionali ( accenti, ...) nel loro nome. Fate attenzione: i file o i progetti di Audacity con caratteri accentati funzionano senza problemi.  Danno problemi solo i file contenuti all'interno di cartelle che hanno  caratteri accentati nel nome.
     <p>
 
-   <li>Solo Windows: fate attenzione! l'installer di Windows sostituirà le installazioni di Audacity 1.0.0, ma non le versioni beta (1.1.x). 
-    <p>
+   <li><p>L'effetto che consente di cambiare l'intonazione può causare un crash se usato su una traccia con frequenza di campionamento di 96 KHz.</p></li>
 </ul>
