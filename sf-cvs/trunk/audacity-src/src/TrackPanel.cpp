@@ -38,6 +38,8 @@
 #include "ViewInfo.h"
 #include "WaveTrack.h"
 
+#include "prefs.h"
+
 #include "widgets/Ruler.h"
 
 #define kLeftInset 4
@@ -140,6 +142,7 @@ mAutoScrolling(false)
    mIsSoloing = false;
 
    mIndicatorShowing = false;
+   gPrefs->Read("/GUI/AutoScroll", &mTrackIndicator, false);
 
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
    mSelectCursor = new wxCursor(wxCURSOR_IBEAM);
@@ -362,6 +365,16 @@ void TrackPanel::UpdateIndicator()
   bool onScreen = between_inclusive(mViewInfo->h, indicator,
 		   mViewInfo->h + mViewInfo->screen);
   
+  // BG: Scroll screen if option is set
+  if(mTrackIndicator) {
+     if(indicator > (mViewInfo->h + mViewInfo->screen)) {
+         mListener->TP_ScrollIndicator(indicator);
+     }
+     else if(indicator < mViewInfo->h) {
+         mListener->TP_ScrollIndicator(indicator);
+     }
+  }
+
   if (mIndicatorShowing || onScreen) {
     mIndicatorShowing = (onScreen &&
 			 gAudioIO->IsBusy() &&

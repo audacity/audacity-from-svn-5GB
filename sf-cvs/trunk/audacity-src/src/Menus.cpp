@@ -777,6 +777,8 @@ void AudacityProject::OnZoomIn(wxCommandEvent & event)
 void AudacityProject::OnZoomOut(wxCommandEvent & event)
 {
    mViewInfo.zoom /= 2.0;
+   if(mViewInfo.zoom <= 1.0)
+      mViewInfo.zoom = 1.0;
    FixScrollbars();
    mTrackPanel->Refresh(false);
 }
