@@ -1,5 +1,7 @@
 Options +MultiViews
 
+ErrorDocument 404 /404.php
+
 RewriteEngine On
 RewriteBase /
 
