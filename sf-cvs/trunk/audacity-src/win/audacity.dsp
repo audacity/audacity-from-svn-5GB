@@ -90,360 +90,152 @@ LINK32=link.exe
 
 # Name "Audacity - Win32 Release"
 # Name "Audacity - Win32 Debug"
-# Begin Group "snd"
+# Begin Group "VST"
 
 # PROP Default_Filter ""
+
 # Begin Source File
 
-SOURCE=.\snd\audio.h
+SOURCE=..\src\effects\AEffect.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\snd\audiowin32.c
+SOURCE=..\src\effects\aeffectx.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\snd\audiowin32.h
+SOURCE=..\src\effects\audioeffectx.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\snd\ieeecvt.c
+SOURCE=..\src\effects\audioeffectx.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\snd\ieeecvt.h
+SOURCE=..\src\effects\vstcontrols.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\snd\snd.c
+SOURCE=..\src\effects\VSTEffect.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\snd\snd.h
+SOURCE=..\src\effects\VSTEffect.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\snd\sndcvt.c
+SOURCE=..\src\effects\vstgui.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\snd\sndhead.h
+SOURCE=..\src\effects\LoadVSTWin.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\snd\sndheader.c
+SOURCE=..\src\effects\LoadVSTWin.h
 # End Source File
-# Begin Source File
 
-SOURCE=.\snd\sndio.c
-# End Source File
-# Begin Source File
 
-SOURCE=.\snd\sndwin32.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\snd\sndwin32.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\snd\sndwrite.h
-# End Source File
 # End Group
+
 # Begin Group "effects"
 
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\effects\AEffect.h
+SOURCE=..\src\effects\Amplify.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\aeffectx.h
+SOURCE=..\src\effects\Amplify.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\Amplify.cpp
+SOURCE=..\src\effects\AudioEffect.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\Amplify.h
+SOURCE=..\src\effects\BassBoost.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\AudioEffect.cpp
+SOURCE=..\src\effects\BassBoost.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\audioeffectx.cpp
+SOURCE=..\src\effects\Compressor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\audioeffectx.h
+SOURCE=..\src\effects\Compressor.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\BassBoost.cpp
+SOURCE=..\src\effects\Echo.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\BassBoost.h
+SOURCE=..\src\effects\Echo.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\Compressor.cpp
+SOURCE=..\src\effects\Effect.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\Compressor.h
+SOURCE=..\src\effects\Effect.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\Echo.cpp
+SOURCE=..\src\effects\Fade.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\Echo.h
+SOURCE=..\src\effects\Fade.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\Effect.cpp
+SOURCE=..\src\effects\Filter.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\Effect.h
+SOURCE=..\src\effects\Filter.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\Fade.cpp
+SOURCE=..\src\effects\NoiseRemoval.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\Fade.h
+SOURCE=..\src\effects\NoiseRemoval.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\Filter.cpp
+SOURCE=..\src\effects\Phaser.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\Filter.h
+SOURCE=..\src\effects\Phaser.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\LoadVSTWin.cpp
+SOURCE=..\src\effects\Wahwah.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\effects\LoadVSTWin.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\effects\NoiseRemoval.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\effects\NoiseRemoval.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\effects\Phaser.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\effects\Phaser.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\effects\vstcontrols.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\effects\VSTEffect.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\effects\VSTEffect.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\effects\vstgui.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\effects\Wahwah.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\effects\Wahwah.h
+SOURCE=..\src\effects\Wahwah.h
 # End Source File
 # End Group
 # Begin Group "Resources"
 
-# PROP Default_Filter ".bmp, .cur, .rc"
+# PROP Default_Filter ".bmp, .cur, .rc, .ico"
 # Begin Source File
 
-SOURCE=.\res\audacity.rc
+SOURCE=.\audacity.rc
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\blank.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\bullseye.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\cross.bmp
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\disable.bmp
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\error.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\hand.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\info.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\noentry.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\pbrush.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\pencil.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\plot_dwn.bmp
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\plot_zot.bmp
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\pntleft.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\pntright.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\query.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\question.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\roller.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\size.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\tick.bmp
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\tip.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\warning.ico
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\watch1.cur
-# End Source File
-# End Group
-# Begin Group "allegro"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\allegro\allegro.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\allegro.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\allegrord.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\allegrord.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\allegrowr.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\allegrowr.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\mfallegro.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\mfallegro.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\mfmidi.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\mfmidi.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\stime.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\stimewin32.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\strparse.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\strparse.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\trace.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\writemidi.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\allegro\writemidi.h
+SOURCE=.\audacity.ico
 # End Source File
 # End Group
 # Begin Group "prefs"
@@ -451,108 +243,117 @@ SOURCE=.\allegro\writemidi.h
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\prefs\AudioIOPrefs.cpp
+SOURCE=..\src\prefs\AudioIOPrefs.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\prefs\AudioIOPrefs.h
+SOURCE=..\src\prefs\AudioIOPrefs.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\prefs\DirectoriesPrefs.cpp
+SOURCE=..\src\prefs\DirectoriesPrefs.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\prefs\DirectoriesPrefs.h
+SOURCE=..\src\prefs\DirectoriesPrefs.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\prefs\FileFormatPrefs.cpp
+SOURCE=..\src\prefs\FileFormatPrefs.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\prefs\FileFormatPrefs.h
+SOURCE=..\src\prefs\FileFormatPrefs.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\prefs\PrefsDialog.cpp
+SOURCE=..\src\prefs\PrefsDialog.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\prefs\PrefsDialog.h
+SOURCE=..\src\prefs\PrefsDialog.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\prefs\PrefsPanel.h
+SOURCE=..\src\prefs\PrefsPanel.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\prefs\SampleRatePrefs.cpp
+SOURCE=..\src\prefs\SampleRatePrefs.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\prefs\SampleRatePrefs.h
+SOURCE=..\src\prefs\SampleRatePrefs.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\prefs\SpectrumPrefs.cpp
+SOURCE=..\src\prefs\SpectrumPrefs.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\prefs\SpectrumPrefs.h
+SOURCE=..\src\prefs\SpectrumPrefs.h
 # End Source File
 # End Group
+
+# Begin Group "widgets"
+
+# PROP Default_Filter ""
+
 # Begin Source File
 
-SOURCE=.\AboutDialog.cpp
+SOURCE=..\src\widgets\AButton.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\AboutDialog.h
+SOURCE=..\src\widgets\AButton.h
+# End Source File
+
+# Begin Source File
+
+SOURCE=..\src\widgets\ASlider.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\AButton.cpp
+SOURCE=..\src\widgets\ASlider.h
+# End Source File
+
+# End Group
+
+# Begin Source File
+
+SOURCE=..\src\AboutDialog.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\AButton.h
+SOURCE=..\src\AboutDialog.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\AColor.cpp
+SOURCE=..\src\AColor.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\AColor.h
+SOURCE=..\src\AColor.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\APalette.cpp
+SOURCE=..\src\APalette.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\APalette.h
+SOURCE=..\src\APalette.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ASlider.cpp
+SOURCE=..\src\AStatus.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ASlider.h
+SOURCE=..\src\AStatus.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\AStatus.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AStatus.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\AudacityApp.cpp
+SOURCE=..\src\AudacityApp.cpp
 
 !IF  "$(CFG)" == "Audacity - Win32 Release"
 
@@ -565,283 +366,279 @@ SOURCE=.\AudacityApp.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\AudacityApp.h
+SOURCE=..\src\AudacityApp.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\AudioIO.cpp
+SOURCE=..\src\AudioIO.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\AudioIO.h
+SOURCE=..\src\AudioIO.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Benchmark.cpp
+SOURCE=..\src\Benchmark.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Benchmark.h
+SOURCE=..\src\Benchmark.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\BladeMP3EncDLL.h
+SOURCE=..\src\BlockFile.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\BlockFile.cpp
+SOURCE=..\src\BlockFile.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\BlockFile.h
+SOURCE=..\src\configwin.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\configwin.h
+SOURCE=..\src\DirManager.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\DirManager.cpp
+SOURCE=..\src\DirManager.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\DirManager.h
+SOURCE=..\src\DiskFunctions.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\DiskFunctions.cpp
+SOURCE=..\src\DiskFunctions.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\DiskFunctions.h
+SOURCE=..\src\Envelope.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Envelope.cpp
+SOURCE=..\src\Envelope.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Envelope.h
+SOURCE=..\src\Export.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Export.cpp
+SOURCE=..\src\Export.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Export.h
+SOURCE=..\src\ExportMP3.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ExportMP3.cpp
+SOURCE=..\src\ExportMP3.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ExportMP3.h
+SOURCE=..\src\ExportPCM.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ExportPCM.cpp
+SOURCE=..\src\ExportPCM.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ExportPCM.h
+SOURCE=..\src\FFT.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\FFT.cpp
+SOURCE=..\src\FFT.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\FFT.h
+SOURCE=..\src\FileFormats.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\FileFormats.cpp
+SOURCE=..\src\FileFormats.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\FileFormats.h
+SOURCE=..\src\FreqWindow.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\FreqWindow.cpp
+SOURCE=..\src\FreqWindow.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\FreqWindow.h
+SOURCE=..\src\Help.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Help.cpp
+SOURCE=..\src\Help.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Help.h
+SOURCE=..\src\HistoryWindow.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\HistoryWindow.cpp
+SOURCE=..\src\HistoryWindow.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\HistoryWindow.h
+SOURCE=..\src\Import.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Import.cpp
+SOURCE=..\src\Import.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Import.h
+SOURCE=..\src\ImportMIDI.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ImportMIDI.cpp
+SOURCE=..\src\ImportMIDI.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ImportMIDI.h
+SOURCE=..\src\ImportMP3.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ImportMP3.cpp
+SOURCE=..\src\ImportMP3.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ImportMP3.h
+SOURCE=..\src\ImportOGG.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ImportOGG.cpp
+SOURCE=..\src\ImportPCM.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ImportPCM.cpp
+SOURCE=..\src\ImportPCM.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ImportPCM.h
+SOURCE=..\src\ImportRaw.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\ImportRaw.cpp
+SOURCE=..\src\ImportRaw.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ImportRaw.h
+SOURCE=..\src\LabelTrack.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\LabelTrack.cpp
+SOURCE=..\src\LabelTrack.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\LabelTrack.h
+SOURCE=..\src\Landmark.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Landmark.cpp
+SOURCE=..\src\Landmark.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Landmark.h
+SOURCE=..\src\Menus.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Menus.cpp
+SOURCE=..\src\Mix.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Mix.cpp
+SOURCE=..\src\Mix.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Mix.h
+SOURCE=..\src\NoteTrack.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\NoteTrack.cpp
+SOURCE=..\src\NoteTrack.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\NoteTrack.h
+SOURCE=..\src\Prefs.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Prefs.cpp
+SOURCE=..\src\Prefs.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Prefs.h
+SOURCE=..\src\Project.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Project.cpp
+SOURCE=..\src\Project.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Project.h
+SOURCE=..\src\Spectrum.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Spectrum.cpp
+SOURCE=..\src\Spectrum.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Spectrum.h
+SOURCE=..\src\Tags.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Tags.cpp
+SOURCE=..\src\Tags.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Tags.h
+SOURCE=..\src\Track.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Track.cpp
+SOURCE=..\src\Track.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Track.h
+SOURCE=..\src\TrackArtist.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\TrackArtist.cpp
+SOURCE=..\src\TrackArtist.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\TrackArtist.h
+SOURCE=..\src\TrackPanel.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\TrackPanel.cpp
+SOURCE=..\src\TrackPanel.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\TrackPanel.h
+SOURCE=..\src\UndoManager.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\UndoManager.cpp
+SOURCE=..\src\UndoManager.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\UndoManager.h
+SOURCE=..\src\ViewInfo.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ViewInfo.h
+SOURCE=..\src\WaveTrack.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\WaveTrack.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\WaveTrack.h
+SOURCE=..\src\WaveTrack.h
 # End Source File
 # End Target
 # End Project
