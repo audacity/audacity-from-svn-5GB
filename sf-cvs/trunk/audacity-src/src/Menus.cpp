@@ -744,9 +744,11 @@ void AudacityProject::Undo(wxEvent & event)
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
+   mTrackPanel->DisplaySelection();
 
    if (mHistoryWindow)
       mHistoryWindow->UpdateDisplay();
+   
 }
 
 void AudacityProject::Redo(wxEvent & event)
@@ -761,9 +763,11 @@ void AudacityProject::Redo(wxEvent & event)
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
+   mTrackPanel->DisplaySelection();
 
    if (mHistoryWindow)
       mHistoryWindow->UpdateDisplay();
+
 }
 
 void AudacityProject::UndoHistory(wxEvent & event)
