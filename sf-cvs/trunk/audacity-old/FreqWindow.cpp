@@ -665,16 +665,19 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
       freq = min_freq + freq_step * (mMouseX - (r.x + 1));
       value = GetProcessedValue(freq, freq + freq_step);
     }
+
+	int bestpitch = int(Freq2Pitch(bestpeak)+0.5);
     
     wxString info = wxString::Format("%d Hz: %d dB    Peak: %d Hz (%s)",
                                       int(freq+0.5), int(value+0.5),
                                       int(bestpeak+0.5),
-                                      PitchName(Freq2Pitch(bestpeak), false));
+                                      PitchName(bestpitch, false));
     memDC.DrawText(info,
-  			    mInfoRect.x + 2, mInfoRect.y + 2);
+				   mInfoRect.x + 2, mInfoRect.y + 2);
   }  
   
-  dc.Blit(0, 0, mUpdateRect.width, mUpdateRect.height, &memDC, 0, 0, wxCOPY, FALSE);
+  dc.Blit(0, 0, mUpdateRect.width, mUpdateRect.height,
+		  &memDC, 0, 0, wxCOPY, FALSE);
 }
 
 void FreqWindow::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
