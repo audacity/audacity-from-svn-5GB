@@ -396,7 +396,7 @@ void LabelTrack::WriteXML(int depth, FILE *fp)
    for (i = 0; i < len; i++) {
       for(j=0; j<depth+1; j++)
          fprintf(fp, "\t");
-      fprintf(fp, "<label t=\"%.8g\" title=\"%s\"/>",
+      fprintf(fp, "<label t=\"%.8g\" title=\"%s\"/>\n",
               mLabels[i]->t,
               (const char *)mLabels[i]->title);
    }
