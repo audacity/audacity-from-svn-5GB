@@ -1,9 +1,9 @@
 <?php BoxTop("CVS"); ?>
 
 За съвместното разработване на Audacity се използва системата
-<a href="http://www.cvshome.org">CVS</a>, или Concurrent Versions
+<a target=_top href="http://www.cvshome.org">CVS</a>, или Concurrent Versions
 System [система за управление на успоредни версии]. Щракнете
-<a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/audacity/audacity-src/">тук</a>, за да
+<a target=_top href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/audacity/audacity-src/">тук</a>, за да
 видите изходния код в хранилището на CVS.
 
 <p><h3>Бърз курс за работа с Audacity чрез CVS:</h3>
@@ -47,7 +47,7 @@ CVSROOT=:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt><b
 
 <h4>Анонимен достъп до CVS чрез графичен клиент</h4>
 За графичен клиент като wincvs, maccvs или gcvs (достъпни от
-<a href="http://cvsgui.org">cvsgui.org</a>), трябва да присвоите на променливата
+<a target=_top href="http://cvsgui.org">cvsgui.org</a>), трябва да присвоите на променливата
 <tt>CVSROOT</tt> (в подменюто Admin|Preferences) стойност
 <tt>:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt>
 и за режим на достъп (authentication) да изберете "pserver" или "Password".
@@ -56,7 +56,7 @@ CVSROOT=:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt><b
 натиснете Enter на запитването за парола (тя е ""). Накрая, изберете "Create|Checkout module",
 изберете местоназначение за изтегляне на разклонението и следвайте указанията по-долу
 в зависимост от желаното разклонение. Ако получите съобщение за грешка, проверете
-дали променливата <tt>CVSROOT</tt> не завършва с интервали.
+дали променливата <tt>CVSROOT</tt> не завършва с интервали - което може да се случи, ако сте копирали стойността направо от настоящата страница.
 
 <p>
 <b>За да получите последното нестабилно разклонение (1.1.0):</b><br>
@@ -74,21 +74,15 @@ CVSROOT=:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt><b
 <hr width="80%">
 Не сте работили с CVS досега? Започнете, прочитайки <a href="">Introduction
 to
-CVS</a> [Въведение в CVS] на Джим Бленди (Jim Blandy), <a
-href="http://www.cvshome.org/new_users.html">CVS for new
-users</a> [CVS за нови потребители] на Боб Арнсън (Bob Arnson), или посетете страницата на CVS на адрес <a
-href="http://www.cvshome.org/">www.cvshome.org</a>.
+CVS</a> [Въведение в CVS] на Джим Бленди (Jim Blandy), <a target=_top href="http://www.cvshome.org/new_users.html">CVS for new
+users</a> [CVS за нови потребители] на Боб Арнсън (Bob Arnson), или посетете страницата на CVS на адрес <a target=_top href="http://www.cvshome.org/">www.cvshome.org</a>.
 По-подробна информация е достъпна в главите, разпространявани по лиценз GPL, от книгата за CVS на Карл Фогел (Karl
-Fogel) на <a href="http://cvsbook.red-bean.com/cvsbook.html">cvsbook.red-bean.com</a>, или "официалното" <a
-href="http://www.cvshome.org/docs/manual">ръководство</a> на Пер Седерквист (Per Cederqvist).
+Fogel) на <a target=_top href="http://cvsbook.red-bean.com/cvsbook.html">cvsbook.red-bean.com</a>, или "официалното" <a target=_top href="http://www.cvshome.org/docs/manual">ръководство</a> на Пер Седерквист (Per Cederqvist).
 
 
 <p>За помощ конкретно по работата със sourceforge.net чрез CVS вижте документацията на Source Forge за
-платформите <a
-href="http://sourceforge.net/docman/display_doc.php?docid=763&group_id=1">Unix</a>,
-<a
-href="http://sourceforge.net/docman/display_doc.php?docid=766&group_id=1">Microsoft Windows</a> и <a
-href="http://sourceforge.net/docman/display_doc.php?docid=2973&group_id=1">MacOS
+платформите <a target=_top href="http://sourceforge.net/docman/display_doc.php?docid=763&group_id=1">Unix</a>,
+<a target=_top href="http://sourceforge.net/docman/display_doc.php?docid=766&group_id=1">Microsoft Windows</a> и <a target=_top href="http://sourceforge.net/docman/display_doc.php?docid=2973&group_id=1">MacOS
 (преди OS X)</a>.
 
 <hr width="80%">

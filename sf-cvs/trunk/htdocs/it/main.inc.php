@@ -2,7 +2,7 @@
 $charset = "ISO-8859-1";
 $translatorName = "Vaccari Federico";
 $languageStr = "Italian";
-$metaDescription = "Audacity, un audio editor libero e cross-platform ";
+$metaDescription = "Audacity, un audio editor libero e multi piattafroma";
 $helpSectionStr = "Aiuto";
 $aboutStr = "Cosa è Audacity";
 $screenshotsStr = "Anteprime";
@@ -33,7 +33,8 @@ $develSectionStr = "Sviluppo";
 $develListStr = "Lista sviluppo Audacity";
 $develNewsStr = "Notizie riguardanti lo sviluppo";
 $sourceForgeStr = "SourceForge Project";
-$browseSourceStr = "Naviga i sorgenti";
+$browseSourceStr = "Visita i sorgenti";
+$browseDoxygenStr = "Visita la documentazione Doxygen";
 $creditsStr = "Crediti";
 $sourceStr = "Codice sorgente";
 $macOS9ReqStr = "Richiede Mac OS 8.6 o superiore";
@@ -54,5 +55,5 @@ $releaseNotesStr = "Note";
 $releaseNotesStr2 = "Note (cosa c'è di nuovo in questa versione?)";
 $vstLinksHereStr = "Scarica i VST Plug-ins qui:";
 $docsStr = "Scarica la documentazione aggiornata";
-$clickEnlargeStr = "(Click on any image to enlarge.)";
+$clickEnlargeStr = "(Clicca sulle immagini per ingrandirle.)";
 ?>
