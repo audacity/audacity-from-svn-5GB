@@ -432,9 +432,19 @@ bool EffectNyquist::ProcessOne()
 
    wxString cmd;
    for(unsigned int j=0; j<mControls.GetCount(); j++)
-      cmd = cmd+wxString::Format("(setf %s %f)\n",
+   {
+      // msmeyer: Some internationalized versions of wxString::Format() use
+      //          a comma for the decimal point. This will confuse Nyquist,
+      //          so fix it.
+      wxString valueString;
+      valueString.Printf("%f", mControls[j].val);
+      valueString.Replace(",", ".");
+      
+      cmd = cmd+wxString::Format("(setf %s %s)\n",
                                  (const char *)mControls[j].var,
-                                 mControls[j].val);
+                                 (const char *)valueString);
+   }
+   
    cmd += mCmd;
 
    int i;
