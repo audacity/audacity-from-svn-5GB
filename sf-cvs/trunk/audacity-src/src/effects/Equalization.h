@@ -5,6 +5,7 @@
   EffectEqualization.h
 
   Mitch Golden
+  Vaughan Johnson (Preview)
 
 **********************************************************************/
 
@@ -73,6 +74,8 @@ public:
    static const float curvex[];
    static const float curvey[][nCurvePoints];
    static const char * curveNames[];
+
+friend class EqualizationDialog;
 };
 
 
@@ -117,6 +120,7 @@ private:
 #define ID_FILTERPANEL 10001
 #define ID_CLEAR 10002
 #define ID_LOADCURVE 10003
+#define ID_BUTTON_PREVIEW 10004
 
 wxSizer *MakeEqualizationDialog( double loFreq, double hiFreq,
 				 Envelope *env,
@@ -128,13 +132,14 @@ class EqualizationDialog: public wxDialog
 {
 public:
    // constructors and destructors
-   EqualizationDialog( double loFreq, double hiFreq,
-		       float *filterFunc, long windowSize,
-		       wxWindow *parent, wxWindowID id,
-		       const wxString &title,
-		       const wxPoint& pos = wxDefaultPosition,
-		       const wxSize& size = wxDefaultSize,
-		       long style = wxDEFAULT_DIALOG_STYLE );
+   EqualizationDialog(EffectEqualization * effect,
+								double loFreq, double hiFreq,
+								float *filterFunc, long windowSize,
+								wxWindow *parent, wxWindowID id,
+								const wxString &title,
+								const wxPoint& pos = wxDefaultPosition,
+								const wxSize& size = wxDefaultSize,
+								long style = wxDEFAULT_DIALOG_STYLE );
    
    // WDR: method declarations for EqualizationDialog
    virtual bool Validate();
@@ -149,12 +154,16 @@ private:
 private:
    // WDR: handler declarations for EqualizationDialog
    void OnClear( wxCommandEvent &event );
+   void OnPreview(wxCommandEvent &event);
    void OnOk( wxCommandEvent &event );
    void OnCancel( wxCommandEvent &event );
    void OnLoadCurve( wxCommandEvent &event );
    void OnSize( wxSizeEvent &event );
    
    void setCurve(Envelope *env, int currentCurve);
+
+private:
+	EffectEqualization * m_pEffect;
 
    double mLoFreq;
    double mHiFreq;
