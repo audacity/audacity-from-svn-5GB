@@ -1,73 +1,97 @@
-
 all: @LOCAL_LIBS@ @BUILDLIBS@
 
-allegro.a:
+# Allegro
+allegro-recursive:
 	$(MAKE) -C allegro
+allegro.a: allegro-recursive
 	ln -sf allegro/allegro.a allegro.a
 
+# dlcompat
 dlcompat/libdl.a:
-	cd dlcompat && $(MAKE)
+	$(MAKE) -C dlcompat
 
-expat.a:
+# expat
+expat-recursive:
 	$(MAKE) -C expat
+expat.a: expat-recursive
 	ln -sf expat/expat.a expat.a
 
-libogg.a:
+# libogg
+libogg-recursive:
 	$(MAKE) -C libogg
+libogg.a: libogg-recursive
 	ln -sf libogg/src/.libs/libogg.a libogg.a
 
-libvorbis.a libvorbisfile.a libvorbisenc.a:
+# libvorbis
+libvorbis-recursive:
 	$(MAKE) -C libvorbis
+libvorbis.a libvorbisfile.a libvorbisenc.a: libvorbis-recursive
 	ln -sf libvorbis/lib/.libs/libvorbis.a libvorbis.a
 	ln -sf libvorbis/lib/.libs/libvorbisfile.a libvorbisfile.a
 	ln -sf libvorbis/lib/.libs/libvorbisenc.a libvorbisenc.a
 
-libnyquist.a:
+# libnyquist
+libnyquist-recursive:
 	$(MAKE) -C libnyquist
+libnyquist.a: libnyquist-recursive
 	ln -sf libnyquist/libnyquist.a libnyquist.a
 
-libmad.a:
+# libmad
+libmad-recursive:
 	$(MAKE) -C libmad
+libmad.a: libmad-recursive
 	ln -sf libmad/.libs/libmad.a libmad.a
+libmad/mad.h: libmad-recursive
 
-libid3tag.a:
+# libid3tag
+libid3tag-recursive:
 	$(MAKE) -C libid3tag
+libid3tag.a: libid3tag-recursive
 	ln -sf libid3tag/.libs/libid3tag.a libid3tag.a
 
-libmad/mad.h: libmad/.libs/libmad.a
-
-libsamplerate.a:
+# libsamplerate
+libsamplerate-recursive:
 	$(MAKE) -C libsamplerate
+libsamplerate.a: libsamplerate-recursive
 	ln -sf libsamplerate/src/.libs/libsamplerate.a libsamplerate.a
 
-libresample.a:
+# libresample
+libresample-recursive:
 	$(MAKE) -C libresample
+libresample.a: libresample-recursive
 	ln -sf libresample/libresample.a libresample.a
 
-libsndfile.a:
+
+# libsndfile
+libsndfile-recursive:
 	$(MAKE) -C libsndfile
+libsndfile.a: libsndfile-recursive
 	ln -sf libsndfile/src/.libs/libsndfile.a libsndfile.a
 
-soundtouch.a:
+# SoundTouch
+soundtouch-recursive:
 	$(MAKE) -C soundtouch
-	ln -sf soundtouch/source/SoundTouch/.libs/libSoundTouch.a libSoundTouch.a
+soundtouch.a: soundtouch-recursive
+	ln -sf soundtouch/source/SoundTouch/.libs/libSoundTouch.a .
 
+# PortAudio
 portaudio/pa_unix_oss/portaudio.a:
-	cd portaudio/pa_unix_oss && $(MAKE)
+	$(MAKE) -C cd portaudio/pa_unix_oss
 
 portaudio-v19/lib/libportaudio.a:
-	cd portaudio-v19 && $(MAKE)
+	$(MAKE) -C cd portaudio-v19
 
 portaudio/pa_mac_core/portaudio.a:
-	cd portaudio/pa_mac_core && $(MAKE)
+	$(MAKE) -C cd portaudio/pa_mac_core
 
 portmixer/px_unix_oss/portmixer.a:
-	cd portmixer/px_unix_oss && $(MAKE)
+	$(MAKE) -C cd portmixer/px_unix_oss
 
 portmixer/px_mac_core/portmixer.a:
-	cd portmixer/px_mac_core && $(MAKE)
+	$(MAKE) -C cd portmixer/px_mac_core
 
 
+# Utility rules
 clean:
 	-$(MAKE) -C allegro clean
 	-$(MAKE) -C dlcompat clean	
@@ -106,3 +130,7 @@ distclean:
 	-$(MAKE) -C portmixer/px_mac_core distclean
 	-$(MAKE) -C soundtouch distclean
 
+.PHONY: allegro-recursive expat-recursive libogg-recursive \
+	libvorbis-recursive libnyquist-recursive libmad-recursive \
+	libid3tag-recursive soundtouch-recursive libsndfile-recursive \
+	libresample-recursive libsamplerate-recursive
