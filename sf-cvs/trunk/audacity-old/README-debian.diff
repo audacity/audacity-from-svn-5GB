@@ -1,0 +1,20 @@
+--- README.txt	Wed Mar 21 23:07:08 2001
++++ README2.txt	Sun Mar 25 12:52:39 2001
+@@ -30,16 +30,11 @@
+ 
+ -------------------------------------------------------------
+ 
+-With the exception of the Xaudio library for importing MP3 files,
+-this program is free software; you can redistribute it and/or
++This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or (at your option) any later version.
+ 
+-The Xaudio library is commercial software and has been licensed
+-for use in this program.  For more information, see their
+-website at http://www.xaudio.com/
+-
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
