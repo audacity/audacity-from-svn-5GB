@@ -35,7 +35,7 @@ class SimpleBlockFile : public BlockFile {
                    samplePtr sampleData, sampleCount sampleLen,
                    sampleFormat format);
    /// Create the memory structure to refer to the given block file
-   SimpleBlockFile(wxFileName existingFile,
+   SimpleBlockFile(wxFileName existingFile, sampleCount len,
                    float min, float max, float rms);
 
    ~SimpleBlockFile();
