@@ -14,57 +14,43 @@
 #include <wx/log.h>
 #include <wx/string.h>
 
+#include "../../Audacity.h"
+#include "../../AudacityApp.h"
 #include "Nyquist.h"
 
-void SearchNyquistInDir(wxString dir)
+void LoadNyquistEffect(wxString fname)
 {
-   wxLogNull logNo;
-   wxString fname =
-      wxFindFirstFile((const char *)(dir + wxFILE_SEP_PATH + "*.ny"));
-
-   while (fname != "") {
-      EffectNyquist *effect = new EffectNyquist(fname);
-      if (effect->LoadedNyFile())
-         Effect::RegisterEffect(effect);
-      else
-         delete effect;
- 
-      fname = wxFindNextFile();
-   }
+   EffectNyquist *effect = new EffectNyquist(fname);
+   if (effect->LoadedNyFile())
+      Effect::RegisterEffect(effect);
+   else
+      delete effect;
 }
 
 void LoadNyquistPlugins()
 {
-   wxStringList paths;
+   wxArrayString audacityPathList = wxGetApp().audacityPathList;
+   wxArrayString pathList;
+   wxArrayString files;
+   unsigned int i;
 
    // Create one "interactive Nyquist"
    EffectNyquist *effect = new EffectNyquist("");
    Effect::RegisterEffect(effect);
 
    // Load .ny plug-ins
-   wxString pathVar = wxGetenv("NYQUIST_PATH");
-   if (pathVar != "") {
-      wxString onePath = pathVar.BeforeFirst(wxPATH_SEP[0]);
-      pathVar = pathVar.AfterFirst(wxPATH_SEP[0]);
-      if (!paths.Member(onePath))
-         paths.Add(onePath);
+   for(unsigned i=0; i<audacityPathList.GetCount(); i++) {
+      wxString prefix = audacityPathList[i] + wxFILE_SEP_PATH;
+      wxGetApp().AddUniquePathToPathList(prefix + "nyquist",
+                                         pathList);
+      wxGetApp().AddUniquePathToPathList(prefix + "plugins",
+                                         pathList);
+      wxGetApp().AddUniquePathToPathList(prefix + "plug-ins",
+                                         pathList);
    }
 
-   #ifdef __WXGTK__
-   wxString stdPath = "/usr/share/audacity/nyquist";
-   if (!paths.Member(stdPath))
-      paths.Add(stdPath);
-   stdPath = "/usr/share/nyquist";
-   if (!paths.Member(stdPath))
-      paths.Add(stdPath);
-   stdPath = ".";
-   if (!paths.Member(stdPath))
-      paths.Add(stdPath);
-   #endif
+   wxGetApp().FindFilesInPathList("*.ny", pathList, wxFILE, files);
 
-   for ( wxStringList::Node *node = paths.GetFirst();
-         node;
-         node = node->GetNext() ) {
-      SearchNyquistInDir(node->GetData());
-   }
+   for(i=0; i<files.GetCount(); i++)
+      LoadNyquistEffect(files[i]);
 }

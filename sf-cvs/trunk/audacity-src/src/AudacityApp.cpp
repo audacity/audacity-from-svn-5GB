@@ -265,6 +265,7 @@ bool AudacityApp::OnInit()
    wxString pathVar = wxGetenv("AUDACITY_PATH");
    if (pathVar != "")
       AddMultiPathsToPathList(pathVar, audacityPathList);
+   AddUniquePathToPathList(".", audacityPathList);
    AddUniquePathToPathList(wxString::Format("%s/.audacity-files",
                                             (const char *)home),
                            audacityPathList);

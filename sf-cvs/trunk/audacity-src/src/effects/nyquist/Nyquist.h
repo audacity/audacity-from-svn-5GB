@@ -50,6 +50,8 @@ public:
    EffectNyquist(wxString fname);
    virtual ~EffectNyquist();
 
+   bool SetXlispPath();
+
    bool LoadedNyFile() {
       return mOK;
    }
@@ -89,6 +91,8 @@ private:
    void       Parse(wxString line);
    wxString   UnQuote(wxString s);
    double     GetCtrlValue(wxString s);
+
+   static wxString  mXlispPath;
 
    bool             mInteractive;
    bool             mOK;
