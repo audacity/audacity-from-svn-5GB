@@ -1,7 +1,7 @@
 <?php BoxTop('2. srpna 2003: Audacity 1.2.0-pre1 uvolnìna'); ?>
 
 <p>
-Audacity 1.2.0-pre1 je veøejná testovací verze svobodného (free) zvukového editoru Audacity. Úèelem této verze je umožnit uživatelùm seznámit se a otestovat nové vlastnosti, které se objeví v naší pøíští stabilní verzi 1.2.0, kterou, jak doufáme, uvolníme pøíští mìsíc.
+Audacity 1.2.0-pre1 je veøejná testovací verze svobodného (free) zvukového editoru Audacity. Úèelem této verze je umožnit uživatelùm seznámit se s ní a otestovat nové vlastnosti, které se objeví v naší pøíští stabilní verzi 1.2.0, kterou, jak doufáme, uvolníme pøíští mìsíc.
 </p>
 
 <p>

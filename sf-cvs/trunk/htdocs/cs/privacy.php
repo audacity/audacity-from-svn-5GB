@@ -1,6 +1,6 @@
 <?php BoxTop($privacyPolicyStr); ?>
 
-<p>Jestliže chcete dostávat oznámení kdykoliv je uvolnìna nová verze Audacity, nic vám nemùže zabránit v tom abyste zapsali svùj e-mail do okénka vlevo a klikli na "Vložit". Budete zaøazeni do našeho soukromého e-mailového seznamu, který používáme jen pro zasílání obèasných struèných oznámení v angliètinì. Pokud chcete dostávat oznámení v èeštinì, zapojte se pozdìji do plánované e-mailové konference ve svém rodném jazyce.
+<p>Jestliže chcete dostávat oznámení kdykoliv je uvolnìna nová verze Audacity, nic vám nemùže zabránit v tom, abyste zapsali svùj e-mail do okénka vlevo a klikli na "Vložit". Budete zaøazeni do našeho soukromého e-mailového seznamu, který používáme jen pro zasílání obèasných struèných oznámení v angliètinì. Pokud chcete dostávat oznámení v èeštinì, zapojte se pozdìji do plánované e-mailové konference ve svém rodném jazyce.
 </p>
 
 <!-- Translators - please add a sentence which explains that these
