@@ -19,6 +19,7 @@
 #include "Export.h"
 #include "ExportPCM.h"
 #include "ExportMP3.h"
+#include "ExportOGG.h"
 
 #include "sndfile.h"
 
@@ -166,18 +167,35 @@ bool Export(AudacityProject *project,
 bool ExportLossy(AudacityProject *project,
                  bool selectionOnly, double t0, double t1)
 {
-   /* Until we add full Ogg Vorbis support, MP3 is the
-      only Lossy format we can export */
-
    wxString fName;
    bool stereo;
 
-   fName = ExportCommon(project, "MP3", ".mp3",
+   wxString format = gPrefs->Read("/FileFormats/LossyExportFormat", "MP3");
+
+   if( format == "MP3" ) {
+      fName = ExportCommon(project, "MP3", ".mp3",
                         selectionOnly, t0, t1, &stereo);
 
-   if (fName == "")
-      return false;
+      if (fName == "")
+         return false;
 
-   return ::ExportMP3(project, stereo, fName,
-                      selectionOnly, t0, t1);   
+      return ::ExportMP3(project, stereo, fName,
+                      selectionOnly, t0, t1);
+   }
+   else if( format == "OGG" ) {
+#ifdef USE_LIBVORBIS
+      fName = ExportCommon(project, "OGG", ".ogg",
+                        selectionOnly, t0, t1, &stereo);
+
+      if (fName == "")
+         return false;
+
+      return ::ExportOGG(project, stereo, fName,
+                      selectionOnly, t0, t1);
+#else
+      wxMessageBox(_("Ogg Vorbis support is not included in this build of Audacity"));
+#endif
+   }
+
 }
+
