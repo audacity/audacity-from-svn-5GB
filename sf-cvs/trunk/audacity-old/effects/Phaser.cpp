@@ -18,6 +18,7 @@
 
 #include "Phaser.h"
 #include "../WaveTrack.h"
+#include "../FFT.h"
 
 //
 // EffectPhaser

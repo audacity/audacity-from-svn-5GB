@@ -42,7 +42,7 @@ extern "C" {
          short resID;
          FSSpec spec;
 
-         wxUnixFilename2FSSpec(fname, &spec);
+         wxMacFilename2FSSpec(fname, &spec);
          resID = FSpOpenResFile(&spec, fsRdPerm);
          Handle codeH;
 

@@ -42,6 +42,8 @@ bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
                TrackList * tracks, bool selectionOnly, double t0,
                double t1)
 {
+#warning TODO
+#ifndef __WXMAC__
    wxLogNull logNo;             /* temporarily disable wxWindows error messages */
 
    wxDllType libHandle = NULL;
@@ -195,6 +197,6 @@ bool ExportMP3(bool stereo, double rate, wxString fName, wxWindow * parent,
 
    delete[]buffer;
 
-
+#endif
    return true;
 }

@@ -14,21 +14,13 @@ void snd_fail(char *msg)
 
 int snd_file_open(char *fname, int mode)
 {
-#ifdef __WXMAC__
-  return (int)fopen(wxUnix2MacFilename( fname ), mode==SND_RDONLY? "rb" : "r+b");
-#else
   return (int)fopen(fname, mode==SND_RDONLY? "rb" : "r+b");
-#endif
 }
 
 
 int snd_file_creat(char *fname)
 {
-#ifdef __WXMAC__
-  return (int)fopen(wxUnix2MacFilename( fname ), "wb");
-#else
   return (int)fopen(fname, "wb");
-#endif
 }
 
 

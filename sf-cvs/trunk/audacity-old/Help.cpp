@@ -19,16 +19,6 @@
 
 **********************************************************************/
 
-#include <wx/filedlg.h>
-#include <wx/msgdlg.h>
-#include <wx/textdlg.h>
-#include <wx/html/helpctrl.h>
-
-#include "Help.h"
-#include "Prefs.h"
-
-wxHtmlHelpController *gHelp = NULL;
-
 #ifdef __WXMAC__
 
 void InitHelp(wxWindow * parent)
@@ -57,6 +47,16 @@ void QuitHelp()
 
 
 #else
+
+#include <wx/filedlg.h>
+#include <wx/msgdlg.h>
+#include <wx/textdlg.h>
+#include <wx/html/helpctrl.h>
+
+#include "Help.h"
+#include "Prefs.h"
+
+wxHtmlHelpController *gHelp = NULL;
 
 void InitHelp(wxWindow * parent)
 {

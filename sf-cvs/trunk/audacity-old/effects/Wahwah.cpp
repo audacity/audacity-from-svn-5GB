@@ -16,6 +16,7 @@
 
 #include "Wahwah.h"
 #include "../WaveTrack.h"
+#include "../FFT.h"
 
 //
 // EffectWahwah
