@@ -117,7 +117,8 @@ void AudacityProject::RebuildMenuBar()
    delete mMenuBar->Replace(projectMenu, mProjectMenu, _("&Project"));
    delete mMenuBar->Replace(effectMenu, mEffectMenu, _("Effec&t"));
    wxMenu * tmp = mMenuBar->Replace(pluginMenu, mPluginMenu, _("Plugin&s"));
-   for(int e = 0; e < tmp->GetMenuItemCount(); e++){
+   size_t eMax = tmp->GetMenuItemCount(); 
+   for(size_t e = 0; e < eMax; e++){
       tmp->Destroy(FirstPluginSubMenuID + e);
    }
 
