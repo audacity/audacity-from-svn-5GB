@@ -33,10 +33,10 @@ class wxDC;
 
 #include "AStatus.h"
 #include "DirManager.h"
-#include "TrackPanel.h"
 #include "UndoManager.h"
 #include "ViewInfo.h"
 #include "ToolBar.h"
+#include "TrackPanel.h"
 
 #define AUDACITY_MENUS_GLOBALS
 #include "Menus.h"
@@ -51,6 +51,7 @@ class Toolbar;
 class TrackList;
 class Tags;
 class ControlToolBar;
+class HistoryWindow;
 
 class AudacityProject;
 
@@ -63,8 +64,6 @@ WX_DEFINE_ARRAY(AudacityProject *, AProjectArray);
 
 extern AProjectArray gAudacityProjects;
 
-class HistoryWindow;
-class ToolBar;
 
 WX_DEFINE_ARRAY(ToolBar *, ToolBarArray);
 
