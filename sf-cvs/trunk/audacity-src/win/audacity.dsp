@@ -351,6 +351,14 @@ SOURCE=..\src\Prefs.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\Printing.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\Printing.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\Project.cpp
 # End Source File
 # Begin Source File
@@ -916,6 +924,14 @@ SOURCE=..\src\widgets\Meter.cpp
 # Begin Source File
 
 SOURCE=..\src\widgets\Meter.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\widgets\MultiDialog.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\widgets\MultiDialog.h
 # End Source File
 # Begin Source File
 
