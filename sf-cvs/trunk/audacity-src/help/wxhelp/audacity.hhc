@@ -40,6 +40,10 @@ Contents
 
 		<ul>
 			<li><object type="text/sitemap">
+				<param name="Name" value="Track Pop-Down Menu">
+				<param name="Local" value="menu_track.htm">
+				</object>
+			<li><object type="text/sitemap">
 				<param name="Name" value="File Menu">
 				<param name="Local" value="menu_file.htm">
 				</object>
@@ -61,7 +65,7 @@ Contents
 				</object>
 			<li><object type="text/sitemap">
 				<param name="Name" value="Effect menu">
-				<param name="Local" value="menu_effects.htm">
+				<param name="Local" value="menu_effect.htm">
 				</object>
 			<li><object type="text/sitemap">
 				<param name="Name" value="Analyze menu">
@@ -101,22 +105,67 @@ Contents
       </ul>
 
 	<li><object type="text/sitemap">
+		<param name="Name" value="Preferences">
+	</object>
+      <ul>
+
+		<li><object type="text/sitemap">
+			<param name="Name" value="Audio I/O Preferences">
+			<param name="Local" value="prefs_audio.htm">
+			</object>	
+
+		<li><object type="text/sitemap">
+			<param name="Name" value="Quality Preferences">
+			<param name="Local" value="prefs_quality.htm">
+			</object>	
+
+		<li><object type="text/sitemap">
+			<param name="Name" value="File Format Preferences">
+			<param name="Local" value="prefs_fileformats.htm">
+			</object>	
+
+		<li><object type="text/sitemap">
+			<param name="Name" value="Spectrogram Preferences">
+			<param name="Local" value="prefs_spectrograms.htm">
+			</object>	
+
+		<li><object type="text/sitemap">
+			<param name="Name" value="Directory Preferences">
+			<param name="Local" value="prefs_directories.htm">
+			</object>	
+
+		<li><object type="text/sitemap">
+			<param name="Name" value="Interface Preferences">
+			<param name="Local" value="prefs_interface.htm">
+			</object>	
+
+		<li><object type="text/sitemap">
+			<param name="Name" value="Keyboard Preferences">
+			<param name="Local" value="prefs_keyboard.htm">
+			</object>	
+
+		<li><object type="text/sitemap">
+			<param name="Name" value="Mouse Preferences">
+			<param name="Local" value="prefs_mouse.htm">
+			</object>	
+
+      </ul>
+
+	<li><object type="text/sitemap">
 		<param name="Name" value="Other">
 	</object>
       <ul>
 
 		<li><object type="text/sitemap">
-			<param name="Name" value="Preferences">
-			<param name="Local" value="prefs.htm">
-			</object>
-		<li><object type="text/sitemap">
 			<param name="Name" value="Sound File Formats">
 			<param name="Local" value="fileformats.htm">
 			</object>	
+
 		<li><object type="text/sitemap">
 			<param name="Name" value="Exporting MP3 Files">
 			<param name="Local" value="exportmp3.htm">
 			</object>
+
 		<li><object type="text/sitemap">
 			<param name="Name" value="General Public License">
 			<param name="Local" value="license.htm">
