@@ -1083,7 +1083,6 @@ void AudacityProject::Undo()
 	wxMessageBox("Nothing to undo");
 	return;
   }
-	return;
 
   TrackList *l = mUndoManager.Undo(&mViewInfo.sel0, &mViewInfo.sel1);
   PopState(l);
