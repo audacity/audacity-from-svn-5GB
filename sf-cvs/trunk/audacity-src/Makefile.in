@@ -22,9 +22,9 @@ install: audacity
 		mkdir -m 755 -p $(PREFIX)/bin
 	$(INSTALL) -m 755 audacity $(PREFIX)/bin/audacity
 
-audacity-help.htb: help/*
+audacity-help.htb: help/wxhelp/*
 	rm -f audacity-help.htb
-	cd help && $(ZIP) ../audacity-help.htb *.htm *.png *.hhc *.hhk *.hhp
+	cd help/wxhelp && $(ZIP) ../../audacity-help.htb *.htm *.png *.hhc *.hhk *.hhp
 
 dep:
 	cd src && $(MAKE) dep
