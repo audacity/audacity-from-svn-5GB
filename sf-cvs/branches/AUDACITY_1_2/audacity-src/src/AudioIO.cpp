@@ -466,8 +466,10 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
 
       playbackDeviceInfo = Pa_GetDeviceInfo( playbackParameters->device );
 
-      if( playbackDeviceInfo == NULL )
-          return false;
+      if( playbackDeviceInfo == NULL ) {
+         mStreamToken = 0;
+         return 0;
+      }
 
       // regardless of source formats, we always mix to float
       playbackParameters->sampleFormat = paFloat32;
@@ -513,8 +515,10 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
 
       captureDeviceInfo = Pa_GetDeviceInfo( captureParameters->device );
 
-      if( captureDeviceInfo == NULL )
-          return false;
+      if( captureDeviceInfo == NULL ) {
+         mStreamToken = 0;
+         return 0;
+      }
 
       // capture in the requested format
       switch( mCaptureFormat )
@@ -643,6 +647,8 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
       mCaptureFormat = (sampleFormat)0;
    }
 
+   mPortStreamV18 = NULL;
+
    PaError err = Pa_OpenStream( &mPortStreamV18,
                                 /* capture parameters */
                                 captureDevice,
@@ -658,6 +664,8 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
                                 mRate, 256, 0,
                                 paClipOff | paDitherOff,
                                 audacityAudioCallback, NULL );
+
+   printf("Stream: %d err: %d\n", (int)mPortStreamV18, err);
 
 #if USE_PORTMIXER
 
@@ -675,14 +683,8 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
 #endif
 
    if (err != paNoError) {
-      wxString errStr = _("There was an error opening your audio device.\n");
-      wxString paErrStr = Pa_GetErrorText(err);
-      if (paErrStr)
-         errStr += _("Error: ")+paErrStr;
-      // XXX: we are in libaudacity, popping up dialogs not allowed!  A
-      // long-term solution will probably involve exceptions
-      wxMessageBox(errStr, _("Error Opening Audio Device"), wxICON_ERROR|wxOK);
-
+      printf("%s\n", Pa_GetErrorText(err));
+      mStreamToken = 0;
       return 0;
    }
 
@@ -749,6 +751,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
       // we'll need a more complete way to indicate error.
       // AND we need to delete the ring buffers and mixers, etc.
       printf("%s\n", Pa_GetErrorText(err));
+      mStreamToken = 0;
       return 0;
    }
 
