@@ -10,7 +10,7 @@ AppUpdatesURL=http://audacity.sourceforge.net
 ChangesAssociations=yes
 DefaultDirName={pf}\Audacity
 DefaultGroupName=Audacity
-; AlwaysCreateUninstallIcon=yes
+UninstallDisplayIcon="{app}\audacity.exe"
 LicenseFile=E:\sfw_dev\audacity\LICENSE.txt
 InfoBeforeFile=E:\sfw_dev\audacity\README.txt
 ; uncomment the following line if you want your installation to run on NT 3.51 too.
