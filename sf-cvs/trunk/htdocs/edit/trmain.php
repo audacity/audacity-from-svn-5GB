@@ -84,10 +84,16 @@ header("Content-type: text/html; charset=$charset");
 
 if ($update == "true") {
   BoxTop("Success");
-  print "<center><p>The web site has been updated.<p>";
-  print "<p><a href=\"http://audacity.sf.net/?lang=$lang\">";
-  print "Click here to return to the Audacity home page</a>";
-  print "</p></center>\n";
+  print "<center><p>Main phrase list updated.";
+  print "</p>\n";
+  print "<p>\n";
+  print "<form action=trmain.php method=post>\n";
+  print "<input type=hidden name=lang value=$lang>\n";
+  print "<input type=hidden name=passwd value=\"$passwd\">\n";
+  print "<input type=submit value=\"Back to translation editor\">\n";
+  print "</form>\n";
+  print "</p>\n";
+  print "</center>\n";
   BoxBottom();
   print "<p>\n";
 }
