@@ -184,12 +184,12 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU(OnMergeStereoID, TrackPanel::OnMergeStereo)
     END_EVENT_TABLE()
 
-    TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
-                           const wxPoint & pos,
-                           const wxSize & size,
-                           TrackList * tracks,
-                           ViewInfo * viewInfo,
-                           TrackPanelListener * listener)
+TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
+                       const wxPoint & pos,
+                       const wxSize & size,
+                       TrackList * tracks,
+                       ViewInfo * viewInfo,
+                       TrackPanelListener * listener)
 :wxWindow(parent, id, pos, size, wxWANTS_CHARS),
 mListener(listener), mTracks(tracks), mViewInfo(viewInfo), mBitmap(NULL),
 mAutoScrolling(false)
@@ -312,6 +312,12 @@ mAutoScrolling(false)
    //drawing track.
    mDrawingTrack =NULL;
 
+   //More initializations, some of these for no other reason than
+   //to prevent runtime memory check warnings
+   mZoomStart = -1;
+   mZoomEnd = -1;
+   mPrevWidth = -1;
+   mPrevHeight = -1;
 }
 
 TrackPanel::~TrackPanel()
