@@ -234,7 +234,9 @@ LIBS="$LIBS `$WX_CONFIG --libs`"
 CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cxxflags`"
 
 if [[ "$host_os" = "darwin5.3" ]] ; then
-	dnl Mac OS X CoreAudio configuration
+	dnl Mac OS X configuration
+
+	dnl CoreAudio
 
 	CXXFLAGS="-I../mac $CXXFLAGS"
 
@@ -248,6 +250,11 @@ if [[ "$host_os" = "darwin5.3" ]] ; then
 	if [[ "$use_ladspa" = "default" ]] ; then
 		use_ladspa="no";
 	fi
+
+	dnl VST
+	
+	OPTOBJS="$(OPTOBJS) \$(OBJDIR)/effects/VST/LoadVSTMac.cpp.o"
+	OPTOBJS="$(OPTOBJS) \$(OBJDIR)/effects/VST/VSTEffect.o"
 
 else
 	dnl Unix OSS configuration
