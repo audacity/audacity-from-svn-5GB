@@ -1650,7 +1650,7 @@ bool AudacityProject::ImportProgressCallback(void *_self, float percent)
                                          wxPD_CAN_ABORT |
                                          wxPD_REMAINING_TIME |
                                          wxPD_AUTO_HIDE);
-      return self->mImportProgressDialog->Update(percent * progressDialogGranularity);
+      return !self->mImportProgressDialog->Update(percent * progressDialogGranularity);
    }
    else {
       return 0;
