@@ -70,7 +70,7 @@ int audacityAudioCallback(
    // Copy from our pool of output buffers to PortAudio's output buffer
    //
    
-   if (numOutChannels > 0) {
+   if (outputBuffer && numOutChannels > 0) {
    
       for(i=0; i<gAudioIO->mNumOutBuffers; i++) {
          if (gAudioIO->mOutBuffer[i].ID>0 &&
@@ -109,7 +109,7 @@ int audacityAudioCallback(
    // Copy from PortAudio's input buffer to one of our input buffers.
    //
    
-   if (numInChannels > 0) {
+   if (inputBuffer && numInChannels > 0) {
       for(i=0; i<gAudioIO->mNumInBuffers; i++)
          if (gAudioIO->mInBuffer[i].ID == 0) {
             int len = framesPerBuffer; //gAudioIO->mBufferSize;
