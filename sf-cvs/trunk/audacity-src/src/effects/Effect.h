@@ -106,7 +106,7 @@ class Effect {
    // Returns true on success.  Will only operate on tracks that
    // have the "selected" flag set to true, which is consistent with
    // Audacity's standard UI.
-   bool DoEffect(wxWindow *parent, int flags, TrackList *list,
+   bool DoEffect(wxWindow *parent, int flags, double projectRate, TrackList *list,
                  TrackFactory *factory, double *t0, double *t1);
 
    wxString GetPreviewName();
@@ -169,6 +169,8 @@ class Effect {
  //
  protected:
    wxWindow     *mParent;
+   double        mProjectRate; // Sample rate of the project - new tracks should
+                               // be created with this rate...
    TrackFactory *mFactory;
    TrackList    *mTracks;      // the complete list of all tracks
    TrackList    *mWaveTracks;  // effects which do not add or remove tracks

@@ -46,6 +46,10 @@
 #include "nyquist/LoadNyquist.h"
 #endif
 
+#ifdef USE_AUDIO_UNITS
+#include "audiounits/LoadAudioUnits.h"
+#endif
+
 // VST is separate now
 //#ifdef __WXMAC__
 //#include "VST/LoadVSTMac.h"
@@ -112,6 +116,10 @@ void LoadEffects()
 
 #ifdef USE_LADSPA
    LoadLadspaPlugins();
+#endif
+
+#ifdef USE_AUDIO_UNITS
+   LoadAudioUnits();
 #endif
 }
 
