@@ -33,7 +33,8 @@ $develSectionStr = "Desarrolladores";
 $develListStr = "Audacity-Devel List";
 $develNewsStr = "Noticias sobre Desarrollo";
 $sourceForgeStr = "Proyecto SourceForge";
-$browseSourceStr = "Observa el código fuente";
+$browseSourceStr = "Observa el Código Fuente";
+$browseDoxygenStr = "Documentación de Doxygen";
 $creditsStr = "Créditos";
 $sourceStr = "Código Fuente";
 $macOS9ReqStr = "Requiere Mac OS 8.6 o superior";
@@ -54,4 +55,5 @@ $releaseNotesStr = "Notas sobre el Lanzamiento";
 $releaseNotesStr2 = "Notas sobre el Lanzamiento (¿Qué es nuevo en esta versión?)";
 $vstLinksHereStr = "Descarga Plug-ins VST aquí:";
 $docsStr = "Descargar la última documentación";
+$clickEnlargeStr = "(Haz click en cualquier imagen para agrandar).";
 ?>
