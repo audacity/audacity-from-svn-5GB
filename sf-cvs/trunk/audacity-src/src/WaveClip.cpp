@@ -492,7 +492,8 @@ bool WaveClip::GetMinMax(float *min, float *max,
 
 void WaveClip::ConvertToSampleFormat(sampleFormat format)
 {
-   bool result = mSequence->ConvertToSampleFormat(format);
+   bool result;
+   result = mSequence->ConvertToSampleFormat(format);
    MarkChanged();
    wxASSERT(result);
 }

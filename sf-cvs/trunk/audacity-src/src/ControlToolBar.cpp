@@ -564,7 +564,7 @@ void ControlToolBar::OnKeyEvent(wxKeyEvent & event)
       return;
    }
 
-   if (event.KeyCode() == WXK_SPACE) {
+   if (event.GetKeyCode() == WXK_SPACE) {
       if (gAudioIO->IsStreamActive(GetActiveProject()->GetAudioIOToken())) {
          SetPlay(false);
          SetStop(true);
